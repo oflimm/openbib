@@ -1,19 +1,19 @@
 <!-- Begin Template: corporate_banner -->
-    <table  BORDER="0" CELLSPACING="0" CELLPADDING="0" width="100%">
+    <table  border="0" cellspacing="0" cellpadding="0" width="100%">
 	<tr>
-	  <td ALIGN="LEFT">
-	      <table><tr><td rowspan="2" valign="bottom"><img SRC="/images/openbib/openbib-80pix.png" BORDER="0"></td><td valign="bottom"><img SRC="/images/openbib/koelner.virtueller-20pix.png" BORDER="0"></td></tr><tr><td valign="top"><img SRC="/images/openbib/institutsgesamtkatalog-20pix.png" BORDER="0"></td></tr></table>
+	  <td align="left">
+	      <table><tr><td rowspan="2" valign="bottom"><img src="/images/openbib/openbib-80pix.png" border="0" alt="KUG"/></td><td valign="bottom"><img src="/images/openbib/koelner.virtueller-20pix.png" border="0" alt="K&ouml;lner" /></td></tr><tr><td valign="top"><img src="/images/openbib/institutsgesamtkatalog-20pix.png" border="0" alt="Universit&auml;tsGesamtkatalog" /></td></tr></table>
 	  </td>
 
 	  <td> &nbsp;&nbsp;</td>
 	  
-	  <td ALIGN="RIGHT">
-	    <a target="_top" HREF="http://www.uni-koeln.de/"><img SRC="/images/openbib/gold.gif" height="95" BORDER="0"></a>
+	  <td align="right">
+	    <a target="_top" href="http://www.uni-koeln.de/"><img src="/images/openbib/gold.gif" height="95" border="0" alt="Goldenes Universit&auml;tssigel" /></a>
 	  </td>
 	</tr>
 	[% IF view %]
         <tr>
-  	  <td colspan=3 align=left><img src="/images/openbib/views/[% view %].png"></td>
+  	  <td colspan="3" align="left"><img src="/images/openbib/views/[% view %].png" /></td>
 	</tr>
         [% END %]
     </table>

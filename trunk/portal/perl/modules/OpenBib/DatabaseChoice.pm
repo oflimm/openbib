@@ -93,7 +93,7 @@ sub handler {
 	    nr => '0',
 	   },
 	   {
-	    full => 'Wirtschafts- u. Sozialwissenschaftliche Fakult&auml;',
+	    full => 'Wirtschafts- u. Sozialwissenschaftliche Fakult&auml;t',
 	    short => '1wiso',
 	    nr   => '1',
 	   },

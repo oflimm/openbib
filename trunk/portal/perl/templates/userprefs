@@ -13,7 +13,7 @@
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 
 <table width="100%">
-<tr><th>Benutzerinformationen</th></tr>
+<tr><th>KUG Benutzerinformationen</th></tr>
 <tr><td class="boxed">
 <table>
 <tr><td><b>Benutzername:</b></td><td>[% loginname %]</td>
@@ -33,6 +33,33 @@
 </tr>
 </table>
 </form>
+
+<p />
+
+[% IF !email_valid %]
+<table width="100%">
+<tr><th>Personendaten</th><td></td><th>Ausleihinformationen</th></tr>
+<tr><td class="boxedclear" style="font-size:12pt">
+<table>
+<tr><td><b>Nachname:</b></td><td align="left">&nbsp;[% userinfo.nachname %]</td></tr>
+<tr><td><b>Vorname:</b></td><td align="left">&nbsp;[% userinfo.vorname %]</td></tr>
+<tr><td><b>Geburtsdatum:</b></td><td align="left">&nbsp;[% userinfo.gebdatum %]</td></tr>
+</table>
+</td>
+<td>
+&nbsp;&nbsp;
+</td>
+<td class="boxedclear" style="font-size:12pt" valign="bottom">
+<table>
+<tr><td><b>Guthaben:</b></td><td align="left">&nbsp;[% userinfo.gut %]</td><td>&nbsp;&nbsp;</td><td><b>Soll:</b></td><td><span style="color:red">[% userinfo.soll %]</span></td><td></td><td></td><td></td></tr>
+<tr><td><b>Ausgeliehen:</b></td><td align="left">&nbsp;[% userinfo.avanz %]</td><td>&nbsp;&nbsp;</td><td><b>Vorgemerkt:</b></td><td>[% userinfo.vmanz %]</td><td>&nbsp;&nbsp;</td><td><b>&Uuml;berzogen:</b></td><td><span style="color:red">[% userinfo.bsanz %]</span></td></tr>
+</table>
+</td>
+</tr>
+</table>
+
+<p />
+[% END %]
 
 <form method="post" action="http://[% config.servername %][% config.userprefs_loc %]" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="action" value="changefields" />

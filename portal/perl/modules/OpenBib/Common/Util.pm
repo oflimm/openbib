@@ -233,14 +233,14 @@ sub print_extended_header {
     <table  BORDER=0 CELLSPACING=0 CELLPADDING=0 width="100%">
 	<tr>
 	  <td WIDTH=140 ALIGN=LEFT>
-	    <table><tr><td rowspan=2 valign=bottom><img SRC="/images/openbib/openbib-80pix.png" BORDER=0></td><td valign=bottom><img SRC="/images/openbib/koelner.virtueller-20pix.png" BORDER=0></td></tr><tr><td valign=top><img SRC="/images/openbib/institutsgesamtkatalog-20pix.png" BORDER=0></td></tr></table>
+	    <table><tr><td rowspan=2 valign=bottom><img SRC="/images/openbib/logo.png" BORDER=0></td><td valign=bottom><img SRC="/images/openbib/logozeile1.png" BORDER=0></td></tr><tr><td valign=top><img SRC="/images/openbib/logozeile2.png" BORDER=0></td></tr></table>
 	    
 	  </td>
 	  
 	  <td height="42" valign="middle" WIDTH=40> &nbsp;&nbsp;</td>
 	  
 	  <td WIDTH=170 ALIGN=RIGHT>
-	    <a target="_top" HREF="http://www.uni-koeln.de/"><img SRC="/images/openbib/gold.gif" height=95 BORDER=0></a>
+	    <a target="_top" HREF="http://www.uni-koeln.de/"><img SRC="/images/openbib/logorechts.png" height=95 BORDER=0></a>
 	  </td>
 	</tr>
     </table>

@@ -1,7 +1,8 @@
-<table width="100%">
+<table BORDER=0 CELLSPACING=0 CELLPADDING=0 width="100%">
 [% IF show_foot_banner %]
-<!-- <tr><td class="boxedfull"><b>KUG</b> powered by <strong><a href=\"http://www.openbib.org/\">OpenBib</a></strong> - Dem OpenSource Suchportal</td></tr> -->
-<tr><td class="boxedfull"><b>KUG</b> ist ein Dienst der Universit&auml;ts- und Stadbibliothek K&ouml;ln</td></tr>
+<tr><td class="boxedfull" align="left"><table BORDER=0 CELLSPACING=0 CELLPADDING=0 width=100%><tr><td
+align="left"><b>KUG</b> ist ein Dienst der Universit&auml;ts- und
+Stadbibliothek K&ouml;ln</td><td>&nbsp;</td><td align="right"><img src="/images/openbib/openbib-powered.png" alt="" /></td></tr></table></td></tr>
 </table>
 [% END %]
 </BODY>

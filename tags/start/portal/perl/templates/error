@@ -1,0 +1,16 @@
+[% PROCESS std_header %]
+
+[% IF show_corporate_banner %]
+[% PROCESS corporate_banner %] 
+[% END %]
+
+<table BORDER=0 CELLSPACING=0 CELLPADDING=0 width="100%">
+  <tr bgcolor="lightblue">
+    <td  width="20">&nbsp;</td><td valign="middle" ALIGN=left height="32"><img src="/images/kvik/fehler.png"></td>
+  </tr>
+</table>
+
+<h1>[% errmsg %]</h1>
+
+[% PROCESS std_footer %]
+

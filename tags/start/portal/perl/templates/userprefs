@@ -1,0 +1,63 @@
+[% PROCESS std_header %]
+
+[% IF show_corporate_banner %]
+[% PROCESS corporate_banner %] 
+[% END %]
+
+<table>
+<tr valign=top><td align=left>&gt;&gt;&nbsp;<a href="http://[% config.servername %][% config.userprefs_loc %]?sessionID=[% sessionID %]&action=showfields" target="body"><b>Grundeinstellungen</b></a>&nbsp;&nbsp;<a href="http://[% config.servername %][% config.databaseprofile_loc %]?sessionID=[% sessionID %]&action=show" target="body">Katalogprofile</a></td></tr>
+</table>
+<p>
+
+<form method="POST" action="http://[% config.servername %][% config.userprefs_loc %]" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="sessionID" value="[% sessionID %]">
+
+<table width="100%">
+<tr><th>Benutzerinformationen</th></tr>
+<tr><td class="boxed">
+<table>
+<tr><td><b>Benutzername:</b></td><td>[% loginname %]</td>
+
+[% IF email_valid %]
+<td><input type="submit" name="action" value="Kennung l&ouml;schen"></td>
+[% END %]
+
+</tr>
+
+[% IF email_valid %]
+<tr><td><b>Passwort:</b></td><td><input type="password" name="password1" value="[% password %]">&nbsp;wiederholt:&nbsp;<input type="password" name="password2" value="[% password %]"></td><td><input type="submit" name="action" value="Passwort &auml;ndern"></td></tr>
+[% END %]
+
+</table>
+</tr></tr>
+</table>
+</form>
+
+<form method="POST" action="http://[% config.servername %][% config.userprefs_loc %]" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="action" value="changefields">
+<input type="hidden" name="sessionID" value="[% sessionID %]">
+<table>
+<tr><td colspan=2><b>Welche Suchfelder sollen angezeigt werden?</b></td></tr>
+<tr><td colspan=2>&nbsp;</td></tr>
+<tr><td align="right"><input type="checkbox" name="showfs" value="1" [% fschecked %]></td><td>Freie Suche</td></tr>
+<tr><td align="right"><input type="checkbox" name="showhst" value="1" [% hstchecked %]></td><td>Hauptsachtitel (HST)</td></tr>
+<tr><td align="right"><input type="checkbox" name="showverf" value="1" [% verfchecked %]></td><td>Verfasser</td></tr>
+<tr><td align="right"><input type="checkbox" name="showkor" value="1" [% korchecked %]></td><td>K&ouml;rperschaft</td></tr>
+<tr><td align="right"><input type="checkbox" name="showswt" value="1" [% swtchecked %]></td><td>Schlagwort</td></tr>
+<tr><td align="right"><input type="checkbox" name="shownotation" value="1" [% notationchecked %]></td><td>Notation</td></tr>
+<tr><td align="right"><input type="checkbox" name="showisbn" value="1" [% isbnchecked %]></td><td>ISBN</td></tr>
+<tr><td align="right"><input type="checkbox" name="showissn" value="1" [% issnchecked %]></td><td>ISSN</td></tr>
+<tr><td align="right"><input type="checkbox" name="showsign" value="1" [% signchecked %]></td><td>Signatur</td></tr>
+<tr><td align="right"><input type="checkbox" name="showmart" value="1" [% martchecked %]></td><td>Medienart</td></tr>
+<tr><td align="right"><input type="checkbox" name="showejahr" value="1" [% ejahrchecked %]></td><td>Erscheinungsjahr</td></tr>
+<tr><td colspan=2>&nbsp;</td></tr>
+<tr><td colspan=2><input type=submit value="Suchfelder &auml;ndern"></td></tr>
+</table>
+</form>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+[% PROCESS std_footer %]

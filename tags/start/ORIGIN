@@ -1,0 +1,44 @@
+Urspruenge und Ziel des OpenBib-Rechercheportals:
+
+Ziel des bei berliOS (www.berlios.de) gehosteten Projektes ist die
+Weiterentwicklung und freie Bereitstellung eines OpenSource
+Rechercheportals zur gemeinsamen Suche in verschiedenen Datenquellen,
+insbesondere Bibliothekskatalogen. BerliOS liefert hierzu die
+benoetigte Infrastrukur wie CVS, Bug-Tracking, Mailing-Listen etc.
+
+Das Rechercheportal OpenBib geht auf ein von mir (Oliver Flimm
+<flimm@openbib.org>) unter die GPL (Version >= 2) gestelltes
+Freizeitprojekt aus dem Jahr 1997 zurueck, das urspruenglich den
+Arbeitsnamen 'Biblio' trug. Noch im selben Jahr ueberliess ich es nach
+einer Vorfuehrung der Universitaets- und Stadtbibliothek Koeln (USB
+Koeln) unter den Bedingungen der GPL zur freien Nutzung. Seither wurde
+es von mir stetig weiterentwickelt und zunaechst als KVIK (Koelner
+Virtueller Institutsgesamtkatalog) sowie derzeit als KUG (Koelner
+UniversitaetsGesamtkatalog) an der USB Koeln betrieben.
+
+Die Produktionsversion dieses Recherche-Portals ist unter dem URL
+http://kug.ub.uni-koeln.de/, eine Entwicklerverstion unter
+http://kugtest.ub.uni-koeln.de/ verfuegbar.
+
+Als verwendete Komponenten kommen Perl als Programmiersprache, mySQL
+als Datenbank sowie Apache mit mod_perl als Web-Frontend zum
+Einsatz. Entwicklungsplattform ist Linux. Als 'Datenlieferanten' sind
+derzeit die proprietaeren Bibliothekssysteme Sisis SunRise(R), Bis-Lok
+von ExLibris(R), Lars(R), sowie das demgegenueber 'halbwegs' freie
+Allegro nutzbar. Eine Ausdehnung auf andere Systeme (z.B.  Aleph von
+ExLibris(R)) von externer Seite ist ausdruecklich erwuenscht. 
+
+Darueberhinaus koennen auch OAI-Datenquellen abgezogen und in das
+System eingespielt werden.
+
+Was einen externen Zugriff angeht, so sind die Katalogdaten des
+Portals ueber die Digitale Bibliothek NRW zugreifbar (derzeit im
+Testbetrieb).
+
+Zielgruppe dieses Projektes sind insbesondere deutschsprachige
+Bibliotheken, z.B. an einer Universitaet, die einen Gesamtkatalog
+ihrer Einzelbestaende ueber ein Web-Frontend anbieten wollen und die
+sowohl die Flexibilitaet wie auch den freien Charakter einer
+OpenSource-Loesung benoetigen.
+
+Oliver Flimm                                          Koeln, 23.10.2004 

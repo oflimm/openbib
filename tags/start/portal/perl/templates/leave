@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+  <HEAD>
+    <meta http-equiv="pragma" content="no-cache">
+    [% stylesheet %]
+    <link href="/images/kvik/favicon.ico" rel="shortcut icon">
+
+    [% PROCESS invisible_links_css %]
+
+    <TITLE>KUG - K&ouml;lner Universit&auml;tsGesamtkatalog</TITLE>
+  </HEAD>
+  <BODY BGCOLOR="#FFFFFF">
+
+[% PROCESS corporate_banner %] 
+
+<br>
+  <br>
+  <center>
+    <p style="font-size:16pt">
+      Ihre Sitzung wurde beendet.<br>
+        <br>Vielen Dank f&uuml;r Ihren Besuch beim K&ouml;lner Universit&auml;tsGesamtkatalog.
+
+    </p>
+  </center>
+
+  <center>
+    <p>
+      <a href="http://[% config.loadbalancerservername %][% config.loadbalancer_loc %]?view=[% view %]" target="_parent"><img src="/images/kvik/neue.sitzung-30pix.png"></a>
+    </p>
+  </center>
+<br>
+<br>
+<br>
+<br>
+[% PROCESS std_footer %]

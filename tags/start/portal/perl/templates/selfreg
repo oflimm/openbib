@@ -1,0 +1,38 @@
+[% PROCESS std_header %]
+
+[% IF show_corporate_banner %]
+[% PROCESS corporate_banner %] 
+[% END %]
+
+<table BORDER=0 CELLSPACING=0 CELLPADDING=0 width="100%">
+  <tr bgcolor="lightblue">
+    <td  width="20">&nbsp;</td><td valign="middle" ALIGN=left height="32"><img src="/images/kvik/selbstregistrierung-30px.png" alt="Login"></td>
+  </tr>
+</table>
+<p>
+<table width="100%">
+<tr><th>Hinweis</th></tr>
+<tr><td class="boxedclear" style="font-size:9pt">
+Geben Sie f&uuml;r die Selbstregistrierung bitte als Benutzername Ihre g&uuml;ltige Email-Adresse ein und danach zwei Mal Ihr selbst gew&auml;hltes Passwort. Danach best&auml;tigen Sie bitte mit <b>Registrieren</b>.
+</td></tr>
+</table>
+<br>
+<br>
+<p>
+<form method="POST" action="http://[% config.servername %][% config.selfreg_loc %]" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="action" value="auth">
+<input type="hidden" name="sessionID" value="[% sessionID %]">
+<table>
+<tr><td align="right"><b>Benutzername:</b></td><td><input type=text name="loginname">&nbsp;<small>&lt;&lt; Geben Sie hier bitte Ihre E-Mail-Adresse ein</small></td></tr>
+<tr><td align="right"><b>Passwort:</b></td><td><input type=password name="password1"></td></tr>
+<tr><td align="right"><b>Passwort (wiederholt):</b></td><td><input type=password name="password2"></td></tr>
+<tr><td></td><td><input type=submit value="Registrieren"></td></tr>
+</table>
+</form>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+[% PROCESS std_footer %]

@@ -112,6 +112,9 @@ sub handler {
   my $notfilename=$query->param('notfilename') || '';
   my $mexfilename=$query->param('mexfilename') || '';
   my $autoconvert=$query->param('autoconvert') || '';
+  my $circ=$query->param('circ') || '';
+  my $circurl=$query->param('circurl') || '';
+  my $circcheckurl=$query->param('circcheckurl') || '';
 
   my $singlesessionid=$query->param('singlesessionid') || '';
 
@@ -220,11 +223,13 @@ sub handler {
       $idnresult->execute();
       $idnresult=$sessiondbh->prepare("delete from titcount where dbname='$dbname'");
       $idnresult->execute();
+      $idnresult=$sessiondbh->prepare("delete from dboptions where dbname='$dbname'");
+      $idnresult->execute();
       $idnresult->finish();
       
       # Und nun auch die Datenbank komplett loeschen
       
-      system("sudo $config{tool_dir}/destroypool.pl $dbname > /dev/null 2>&1");
+      system("$config{tool_dir}/destroypool.pl $dbname > /dev/null 2>&1");
       $r->internal_redirect("http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showcat");
       return OK;
 
@@ -234,7 +239,7 @@ sub handler {
       $idnresult->execute();
       $idnresult->finish();
 
-      my $idnresult=$sessiondbh->prepare("update dboptions set protocol='$protocol', host='$host', remotepath='$remotepath', remoteuser='$remoteuser', remotepasswd='$remotepasswd', titfilename='$titfilename', autfilename='$autfilename', korfilename='$korfilename', swtfilename='$swtfilename', notfilename='$notfilename', mexfilename='$mexfilename', filename='$filename', autoconvert='$autoconvert' where dbname='$dbname'");
+      $idnresult=$sessiondbh->prepare("update dboptions set protocol='$protocol', host='$host', remotepath='$remotepath', remoteuser='$remoteuser', remotepasswd='$remotepasswd', titfilename='$titfilename', autfilename='$autfilename', korfilename='$korfilename', swtfilename='$swtfilename', notfilename='$notfilename', mexfilename='$mexfilename', filename='$filename', autoconvert='$autoconvert', circ='$circ', circurl='$circurl', circcheckurl='$circcheckurl' where dbname='$dbname'");
       $idnresult->execute();
       $idnresult->finish();
 
@@ -247,15 +252,17 @@ sub handler {
       $idnresult->execute();
       $idnresult=$sessiondbh->prepare("insert into titcount values ('$dbname','0')");
       $idnresult->execute();
+      $idnresult=$sessiondbh->prepare("insert into dboptions values ('$dbname','','','','','','','','','','','','',0,0,'','')");
+      $idnresult->execute();
       $idnresult->finish();
       
       # Und nun auch die Datenbank zuerst komplett loeschen (falls vorhanden)
       
-      system("sudo $config{tool_dir}/destroypool.pl $dbname > /dev/null 2>&1");
+      system("$config{tool_dir}/destroypool.pl $dbname > /dev/null 2>&1");
       
       # ... und dann wieder anlegen
       
-      system("sudo $config{tool_dir}/createpool.pl $dbname > /dev/null 2>&1");
+      system("$config{tool_dir}/createpool.pl $dbname > /dev/null 2>&1");
 
       $r->internal_redirect("http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showcat");
       return OK;
@@ -293,6 +300,9 @@ sub handler {
       my $notfilename=$result->{'notfilename'};
       my $mexfilename=$result->{'mexfilename'};
       my $autoconvert=$result->{'autoconvert'};
+      my $circ=$result->{'circ'};
+      my $circurl=$result->{'circurl'};
+      my $circcheckurl=$result->{'circcheckurl'};
 
       
       my $katalog={
@@ -307,7 +317,7 @@ sub handler {
 
 		   imxconfig => {
 				 host => $host,
-				 prococol => $protocol,
+				 protocol => $protocol,
 				 remotepath => $remotepath,
 				 remoteuser => $remoteuser,
 				 remotepasswd => $remotepasswd,
@@ -319,6 +329,12 @@ sub handler {
 				 notfilename => $notfilename,
 				 mexfilename => $mexfilename,
 				 autoconvert => $autoconvert,
+				},
+
+		   circconfig => {
+				 circ         => $circ,
+				 circurl      => $circurl,
+				 circcheckurl => $circcheckurl,
 				},
 		   
 		  };
@@ -473,6 +489,8 @@ sub handler {
       $idnresult=$sessiondbh->prepare("delete from viewdbs where viewname='$viewname'");
       $idnresult->execute();
       $idnresult->finish();
+      $r->internal_redirect("http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showviews");
+      return OK;
       
     }
     elsif ($viewaction eq "Ändern"){
@@ -597,8 +615,74 @@ sub handler {
     }
     
   }
-  elsif ($action eq "imx"){
+  elsif ($action eq "showimx"){
+
+    my @kataloge=();
+
+    my $idnresult=$sessiondbh->prepare("select dbinfo.*,titcount.count from dbinfo,titcount where dbinfo.dbname=titcount.dbname order by faculty,dbname");
+    $idnresult->execute();
+
+    my $katalog;
+    while (my $result=$idnresult->fetchrow_hashref()){
+      my $dbid=$result->{'dbid'};
+      my $faculty=$result->{'faculty'};
+
+      my $unitsref=$config{units};
+
+      my @units=@$unitsref;
+
+      my $unitref="";
+
+      foreach $unitref (@units){
+	my %unit=%$unitref;
+	if ($unit{short} eq $faculty){
+	  $faculty=$unit{desc};
+	}
+      }
+
+      my $description=$result->{'description'};
+      my $system=$result->{'system'};
+      $system="Sisis" if ($system eq "s");
+      $system="Lars" if ($system eq "l");
+      $system="Allegro" if ($system eq "a");
+      $system="Bislok" if ($system eq "b");
+
+      my $dbname=$result->{'dbname'};
+      my $sigel=$result->{'sigel'};
+      my $url=$result->{'url'};
+      my $active=$result->{'active'};
+      $active="Ja" if ($active eq "1");
+      $active="Nein" if ($active eq "0");
+      my $count=$result->{'count'};
+
+      $katalog={
+		dbid => $dbid,
+		faculty => $faculty,
+		description => $description,
+		system => $system,
+		dbname => $dbname,
+		sigel => $sigel,
+		active => $active,
+		url => $url,
+		count => $count,
+	       };
+
+      push @kataloge, $katalog;
+    }
+
+    my $ttdata={
+		stylesheet => $stylesheet,
+		sessionID => $sessionID,
+		kataloge => \@kataloge,
+
+		config     => \%config,
+	       };
     
+    OpenBib::Common::Util::print_page($config{tt_admin_showimx_tname},$ttdata,$r);
+
+    $idnresult->finish();
+  }
+  elsif ($action eq "bla"){
     # Zuerst schauen, ob Aktionen gefordert sind
     
     if ($imxaction eq "Alle importieren"){
@@ -610,34 +694,34 @@ sub handler {
     elsif ($imxaction eq "Import"){
       if ($system eq "s"){
 	if ($dbname eq "inst001"){
-	  system("nohup sudo $config{autoconv_dir}/bin/autoconvert-sikis-usb.pl --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
+	  system("nohup $config{autoconv_dir}/bin/autoconvert-sikis-usb.pl --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
 	}
 	elsif ($dbname eq "lehrbuchsmlg"){
-	  system("nohup sudo $config{autoconv_dir}/bin/autoconvert-sisis.pl --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
+	  system("nohup $config{autoconv_dir}/bin/autoconvert-sisis.pl --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
 	}
 	else {
-	  system("nohup sudo $config{autoconv_dir}/bin/autoconvert-sikis.pl -get-via-wget --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
+	  system("nohup $config{autoconv_dir}/bin/autoconvert-sikis.pl -get-via-wget --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
 	}	
       }
       elsif ($system eq "l"){
 	if ($dbname eq "inst900"){
-	  system("nohup sudo $config{autoconv_dir}/bin/autoconvert-colonia.pl --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
+	  system("nohup $config{autoconv_dir}/bin/autoconvert-colonia.pl --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
 	  
 	}
 	else {
-	  system("nohup sudo $config{autoconv_dir}/bin/autoconvert-lars.pl --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
+	  system("nohup $config{autoconv_dir}/bin/autoconvert-lars.pl --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
 	}
       }
       elsif ($system eq "a"){
 	if ($dbname eq "inst127"){
-	  system("nohup sudo $config{autoconv_dir}/bin/autoconvert-ald.pl -get-via-ftp --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
+	  system("nohup $config{autoconv_dir}/bin/autoconvert-ald.pl -get-via-ftp --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
 	}
 	else {
-	  system("nohup sudo $config{autoconv_dir}/bin/autoconvert-mld.pl -get-via-ftp --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
+	  system("nohup $config{autoconv_dir}/bin/autoconvert-mld.pl -get-via-ftp --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
 	}
       }
       elsif ($system eq "b"){
-	system("nohup sudo $config{autoconv_dir}/bin/biblio-autoconvert.pl -get-via-ftp --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
+	system("nohup $config{autoconv_dir}/bin/biblio-autoconvert.pl -get-via-ftp --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
       }
       
       
@@ -659,7 +743,7 @@ sub handler {
       $idnresult2->execute();
       my $numqueries=$idnresult2->rows;
 
-      if ($benutzernr eq ""){
+      if (!$benutzernr){
 	$benutzernr="Anonym";
       }
 
@@ -743,7 +827,7 @@ sub handler {
       }    
 
 
-      if ($benutzernr eq ""){
+      if (!$benutzernr){
 	$benutzernr="Anonym";
       }
 
@@ -766,142 +850,12 @@ sub handler {
 	         };
 
       OpenBib::Common::Util::print_page($config{tt_admin_editsession_tname},$ttdata,$r);
-    
+
+      $idnresult->finish;
+      $idnresult2->finish;
       $sessiondbh->disconnect;
       return OK;
     }
-  }
-  elsif ($action eq "config"){
-    
-    if ($confaction eq "Importparameter ändern"){
-      
-      my $idnresult=$sessiondbh->prepare("delete from dboptions where dbname='$dbname'") or die "Error -- $DBI::errstr";
-      $idnresult->execute();
-      $idnresult=$sessiondbh->prepare("insert into dboptions values ('$dbname','$host','$protocol','$remotepath','$remoteuser','$remotepasswd','$filename','$titfilename','$autfilename','$korfilename','$swtfilename','$notfilename','$mexfilename','$autoconvert')") or die "Error -- $DBI::errstr";
-      $idnresult->execute();
-      
-      $idnresult->finish();
-            
-    }
-    
-    OpenBib::Common::Util::print_simple_header("Biblio-Administration: Import-Konfiguration",$r);
-    
-    print << "MASKE";
-<table>
-<tr><td><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showcat">Kataloge</a></td><td>&nbsp;&nbsp;&nbsp;</td><td align="left"><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showviews">Views</a></td><td>&nbsp;&nbsp;&nbsp;</td><td><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showsession"><b>Sessions</b></a></td><td>&nbsp;&nbsp;&nbsp;</td><td><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=logout"><b>Logout</b></a></td></tr>
-</table>
-<hr>
-<table>
-<tr><td><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showcat">Anzeigen</a></td><td>&nbsp;&nbsp;&nbsp;</td><td><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=editcat">Bearbeiten</a></td><td>&nbsp;&nbsp;&nbsp;</td><td><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=imxcat"><b>Import</b></a></td></tr>
-</table>
-<hr>
-MASKE
-
-    
-    my $idnresult=$sessiondbh->prepare("select * from dboptions where dbname='$dbname'");
-    $idnresult->execute();
-    my $result=$idnresult->fetchrow_hashref();
-    my $host=$result->{'host'};
-    my $protocol=$result->{'protocol'};
-    my $remotepath=$result->{'remotepath'};
-    my $remoteuser=$result->{'remoteuser'};
-    my $remotepasswd=$result->{'remotepasswd'};
-    my $filename=$result->{'filename'};
-    my $titfilename=$result->{'titfilename'};
-    my $autfilename=$result->{'autfilename'};
-    my $korfilename=$result->{'korfilename'};
-    my $swtfilename=$result->{'swtfilename'};
-    my $notfilename=$result->{'notfilename'};
-    my $mexfilename=$result->{'mexfilename'};
-    my $autoconvert=$result->{'autoconvert'};
-    
-    
-    my $autoconvertchecked0="";
-    my $autoconvertchecked1="";
-    
-    if ($autoconvert eq "0"){
-      $autoconvertchecked0="selected";
-    }
-    elsif ($autoconvert eq "1"){
-      $autoconvertchecked1="selected";
-    }
-    
-    $idnresult=$sessiondbh->prepare("select system from dbinfo where dbname='$dbname'");
-    $idnresult->execute();
-    $result=$idnresult->fetchrow_hashref();
-    my $system=$result->{'system'};
-    my $descsystem="";
-    $descsystem="Sisis" if ($system eq "s");
-    $descsystem="Lars" if ($system eq "l");
-    $descsystem="Allegro" if ($system eq "a");
-    $descsystem="Bislok" if ($system eq "b");
-    
-    
-    my $protocolcheckedhttp="";
-    my $protocolcheckedftp="";
-    my $protocolcheckedlokal="";
-    
-    if ($protocol eq "http"){
-      $protocolcheckedhttp="selected";
-    }
-    if ($protocol eq "ftp"){
-      $protocolcheckedftp="selected";
-    }
-    if ($protocol eq "lokal"){
-      $protocolcheckedlokal="selected";
-    }
-    
-    my $lokalcolor="";
-    
-    if ($protocol eq "lokal"){
-      $lokalcolor="slategrey";
-    }
-    
-    
-    print << "MASKE2";
-<form method="GET" action="http://$config{servername}$config{admin_loc}">
-<input type="hidden" name="sessionID" value="$sessionID">
-<input type="hidden" name="action" value="config">
-<input type="hidden" name="system" value="$system">
-<input type="hidden" name="dbname" value="$dbname">
-
-<table>
-<tr><td><b>DB-Name</b></td><td>$dbname</td></tr>
-<tr><td><b>System</b></td><td>$descsystem</td></tr>
-<tr><td><b>Protokoll</b></td><td><select name="protocol"><option value="ftp" $protocolcheckedftp>FTP</option><option value="http" $protocolcheckedhttp>Web</option><option value="lokal" $protocolcheckedlokal>Lokal</option></td></tr>
-<tr bgcolor="$lokalcolor"><td><b>Entfernter Rechnername</b></td><td><input type="text" size="20" name="host" value="$host"></td></tr>
-<tr bgcolor="$lokalcolor"><td><b>Entferntes Verz.</b></td><td><input type="text" size="20" name="remotepath" value="$remotepath"></td></tr>
-<tr bgcolor="$lokalcolor"><td><b>Entfernter Nutzername</b></td><td><input type="text" size="20" name="remoteuser" value="$remoteuser"></td></tr>
-<tr bgcolor="$lokalcolor"><td><b>Entferntes Passwort</b></td><td><input type="password" size="20" name="remotepasswd" value="$remotepasswd"></td></tr>
-<tr bgcolor="$lokalcolor"><td><b></b></td><td></td></tr>
-MASKE2
-
-    
-    if ($system eq "s"){
-      print << "MASKE1";
-<tr bgcolor="$lokalcolor"><td><b>Tit-Datei</b></td><td><input type="text" size="20" name="titfilename" value="$titfilename"></td></tr>
-<tr bgcolor="$lokalcolor"><td><b>Aut-Datei</b></td><td><input type="text" size="20" name="autfilename" value="$autfilename"></td></tr>
-<tr bgcolor="$lokalcolor"><td><b>Kor-Datei</b></td><td><input type="text" size="20" name="korfilename" value="$korfilename"></td></tr>
-<tr bgcolor="$lokalcolor"><td><b>Swt-Datei</b></td><td><input type="text" size="20" name="swtfilename" value="$swtfilename"></td></tr>
-<tr bgcolor="$lokalcolor"><td><b>Not-Datei</b></td><td><input type="text" size="20" name="notfilename" value="$notfilename"></td></tr>
-<tr bgcolor="$lokalcolor"><td><b>Mex-Datei</b></td><td><input type="text" size="20" name="mexfilename" value="$mexfilename"></td></tr>
-
-MASKE1
-    }
-    
-    print << "MASKE2";
-<tr><td><b>DB-Datei</b></td><td><input type="text" size="50" name="filename" value="$filename"></td></tr>
-MASKE2
-
-
-    print << "FOOT";
-<tr><td><b>Autokonvertierung (cron)</b></td><td><select name="autoconvert"><option value="0" $autoconvertchecked0>Nein</option><option value="1" $autoconvertchecked1>Ja</option></td></tr>
-<tr><td colspan="2"><input type="submit" name="confaction" value="Importparameter &auml;ndern"></td></tr>
-</table>
-FOOT
-
-    OpenBib::Common::Util::print_footer();
-    goto LEAVEPROG;
   }
   elsif ($action eq "logout"){
 

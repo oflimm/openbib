@@ -7,7 +7,7 @@
 <table width="100%">
 <tr>
   <td align="left"><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showcat">Kataloge</a>&nbsp;&nbsp;&nbsp;<a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showviews"><b>Views</b></a>&nbsp;&nbsp;&nbsp;<a href="http://[% config.servername %][%
-config.admin_loc %]?sessionID=[% sessionID %]&action=showsession">Sessions</a></td><td>&nbsp;&nbsp;&nbsp;</td><td>&nbsp;</td><td
+config.admin_loc %]?sessionID=[% sessionID %]&action=showsession">Sessions</a>&nbsp;&nbsp;&nbsp;<a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showimx">Import</a></td><td>&nbsp;&nbsp;&nbsp;</td><td>&nbsp;</td><td
 align="right"><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=logout"><b>Logout</b></a>&nbsp;</td>
 </tr>
 </table>
@@ -26,14 +26,14 @@ align="right"><a href="http://[% config.servername %][% config.admin_loc %]?sess
 <tr><td><input type="text" name="viewname"></td><td><input type="text" name="description" size="20" />
 </td><td><select name=active><option value="1">Ja</option><option value="0" selected>Nein</option></select></td><td><input type="submit" name="viewaction" value="Neu" /></td></tr>
 </table>
-<p />
-Geben Sie bitte die zu diesem View geh&ouml;renden Datenbanknamen getrennt mit <b>;</b> in das entsprechende Feld ein.
 </td></tr>
 </table>
 
 </form>
 
 <p />
+
+[% IF views.size > 0 %]
 
 <table width="100%">
 <tr><th>Bereits existierende Views</th></tr>
@@ -50,6 +50,9 @@ Um einen bereits existierenden View zu bearbeiten klicken Sie bitte auf den View
 [% END %]
 
 </table>
+
+[% END %]
+
 </td></tr>
 </table>
 

@@ -46,11 +46,30 @@ selected>Nein</option></select></td><td><input type="submit" name="cataction" va
 <tr><td class="boxedclear" style="font-size:12pt">
 <table>
 <tr><td><b>Fakult&auml;t</b></td><td><b>Beschreibung</b></td><td><b>System</b></td><td>
-<b>DB-Name</b></td><td><b>Sigel</b></td><td>URL</td><td><b>Aktiv</b></td><td><b>Titel-Anzahl</b></td></tr>
+<b>DB-Name</b></td><td><b>Sigel</b></td><td>URL</td><td><b>Aktiv</b></td><td><b>Auto-Konv</b></td><td><b>Titel-Anzahl</b></td></tr>
 
 [% FOREACH katalog IN kataloge %]
-<tr><td>[% katalog.faculty %]</td><td><a href="http://[%
-config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=editcat&dbid=[% katalog.dbid %]&cataction=Bearbeiten">[% katalog.description %]</a></td><td>[% katalog.system %]</td><td>[% katalog.dbname %]</td><td>[% katalog.sigel %]</td><td>[%katalog.url %]</td><td>[% katalog.active %]</td><td>[% katalog.count %]</td></tr>
+<tr
+[% IF katalog.active == 1%]
+ bgcolor="aliceblue"
+[% END %]
+><td>[% katalog.faculty %]</td><td><a href="http://[%
+config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=editcat&dbid=[% katalog.dbid %]&cataction=Bearbeiten">[% katalog.description %]</a></td><td>[% katalog.system %]</td><td>[% katalog.dbname %]</td><td>[% katalog.sigel %]</td><td>[%katalog.url %]</td><td align="center">
+
+[% IF katalog.active == 1 %]
+<span style="font-weight:bold; color:green;">Ja</span>
+[% ELSE %] 
+<span style="color:red;">Nein</span>
+[% END %]
+</td><td align="center">
+
+[% IF katalog.autoconvert == 1 %]
+Ja
+[% ELSE %] 
+Nein
+[% END %]
+
+</td><td align="right">[% katalog.count %]</td></tr>
 [% END %]
 
 </table>

@@ -278,7 +278,7 @@ sub print_footer {
 <table BORDER=0 CELLSPACING=0 CELLPADDING=0 width="100%">
 <tr><td class="boxedfull" align="left"><table BORDER=0 CELLSPACING=0 CELLPADDING=0 width=100%><tr><td
 align="left"><b>KUG</b> ist ein Dienst der Universit&auml;ts- und
-Stadbibliothek K&ouml;ln</td><td>&nbsp;</td><td align="right"><a class="invisible" href="http://www.openbib.org/" target="_blank"><img src="/images/openbib/openbib-powered.png" alt="Powered by OpenBib" /></a></td></tr></table></td></tr>
+Stadtbibliothek K&ouml;ln</td><td>&nbsp;</td><td align="right"><a class="invisible" href="http://www.openbib.org/" target="_blank"><img src="/images/openbib/openbib-powered.png" alt="Powered by OpenBib" /></a></td></tr></table></td></tr>
 </table>
 <p />
 <tt>KUG v1.1</tt>

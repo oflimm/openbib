@@ -152,14 +152,14 @@ sub handler {
       
       # Zuerst die bestehende Auswahl loeschen
       
-      $idnresult=$sessiondbh->prepare("delete from dbchoice where sessionid='$sessionID'") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
+      $idnresult=$sessiondbh->prepare("delete from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
+      $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
       
       # Wenn es eine neue Auswahl gibt, dann wird diese eingetragen
       my $database;
       foreach $database (@databases){
-	$idnresult=$sessiondbh->prepare("insert into dbchoice (sessionid,dbname) values ('$sessionID','$database')") or $logger->error($DBI::errstr);
-	$idnresult->execute() or $logger->error($DBI::errstr);
+	$idnresult=$sessiondbh->prepare("insert into dbchoice (sessionid,dbname) values (?,?)") or $logger->error($DBI::errstr);
+	$idnresult->execute($sessionID,$database) or $logger->error($DBI::errstr);
       }
       
       $idnresult->finish();
@@ -170,8 +170,8 @@ sub handler {
     
     # ... sonst anzeigen
     else {
-      $idnresult=$sessiondbh->prepare("select dbname from dbchoice where sessionid='$sessionID'") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
+      $idnresult=$sessiondbh->prepare("select dbname from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
+      $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
       while (my $result=$idnresult->fetchrow_hashref()){
 	my $dbname=$result->{'dbname'};
 	$checkeddb{$dbname}="checked=\"checked\"";

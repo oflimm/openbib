@@ -186,8 +186,8 @@ sub handler {
     # Session ist nun authentifiziert und wird mit dem Admin 
     # assoziiert.
 
-    my $idnresult=$sessiondbh->prepare("update session set benutzernr='$adminuser' where sessionID='$sessionID'") or $logger->error($DBI::errstr);
-    $idnresult->execute() or $logger->error($DBI::errstr);
+    my $idnresult=$sessiondbh->prepare("update session set benutzernr = ? where sessionID = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($adminuser,$sessionID) or $logger->error($DBI::errstr);
 
 
     # TT-Data erzeugen
@@ -208,8 +208,8 @@ sub handler {
   
   # Admin-SessionID ueberpruefen
   
-  my $idnresult=$sessiondbh->prepare("select * from session where benutzernr='$adminuser' and sessionid='$sessionID'") or $logger->error($DBI::errstr);
-  $idnresult->execute() or $logger->error($DBI::errstr);
+  my $idnresult=$sessiondbh->prepare("select * from session where benutzernr = ? and sessionid = ?") or $logger->error($DBI::errstr);
+  $idnresult->execute($adminuser,$sessionID) or $logger->error($DBI::errstr);
   my $rows=$idnresult->rows;
   $idnresult->finish;
   
@@ -225,12 +225,12 @@ sub handler {
     # Zuerst schauen, ob Aktionen gefordert sind
     
     if ($cataction eq "Löschen"){
-      my $idnresult=$sessiondbh->prepare("delete from dbinfo where dbname='$dbname'") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
-      $idnresult=$sessiondbh->prepare("delete from titcount where dbname='$dbname'") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
-      $idnresult=$sessiondbh->prepare("delete from dboptions where dbname='$dbname'") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
+      my $idnresult=$sessiondbh->prepare("delete from dbinfo where dbname = ?") or $logger->error($DBI::errstr);
+      $idnresult->execute($dbname) or $logger->error($DBI::errstr);
+      $idnresult=$sessiondbh->prepare("delete from titcount where dbname = ?") or $logger->error($DBI::errstr);
+      $idnresult->execute($dbname) or $logger->error($DBI::errstr);
+      $idnresult=$sessiondbh->prepare("delete from dboptions where dbname = ?") or $logger->error($DBI::errstr);
+      $idnresult->execute($dbname) or $logger->error($DBI::errstr);
       $idnresult->finish();
       
       # Und nun auch die Datenbank komplett loeschen
@@ -241,12 +241,12 @@ sub handler {
 
     }
     elsif ($cataction eq "Ändern"){
-      my $idnresult=$sessiondbh->prepare("update dbinfo set faculty='$faculty', description='$description', system='$system', dbname='$dbname', sigel='$sigel', url='$url', active='$active' where dbid='$dbid'") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
+      my $idnresult=$sessiondbh->prepare("update dbinfo set faculty = ?, description = ?, system = ?, dbname = ?, sigel = ?, url = ?, active = ? where dbid = ?") or $logger->error($DBI::errstr);
+      $idnresult->execute($faculty,$description,$system,$dbname,$sigel,$url,$active,$dbid) or $logger->error($DBI::errstr);
       $idnresult->finish();
 
-      $idnresult=$sessiondbh->prepare("update dboptions set protocol='$protocol', host='$host', remotepath='$remotepath', remoteuser='$remoteuser', remotepasswd='$remotepasswd', titfilename='$titfilename', autfilename='$autfilename', korfilename='$korfilename', swtfilename='$swtfilename', notfilename='$notfilename', mexfilename='$mexfilename', filename='$filename', autoconvert='$autoconvert', circ='$circ', circurl='$circurl', circcheckurl='$circcheckurl' where dbname='$dbname'") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
+      $idnresult=$sessiondbh->prepare("update dboptions set protocol = ?, host = ?, remotepath = ?, remoteuser = ?, remotepasswd = ?', titfilename = ?, autfilename = ?, korfilename = ?, swtfilename = ?, notfilename = ?, mexfilename = ?, filename = ?, autoconvert = ?, circ = ?, circurl = ?, circcheckurl = ? where dbname= ?") or $logger->error($DBI::errstr);
+      $idnresult->execute($protocol,$host,$remotepath,$remoteuser,$remotepasswd,$titfilename,$autfilename,$korfilename,$swtfilename,$notfilename,$mexfilename,$filename,$autoconvert,$circ,$circurl,$circcheckurl,$dbname) or $logger->error($DBI::errstr);
       $idnresult->finish();
 
       $r->internal_redirect("http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showcat");
@@ -264,8 +264,8 @@ sub handler {
 	return OK;
       }
 
-      my $idnresult=$sessiondbh->prepare("select dbid from dbinfo where dbname='$dbname'") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
+      my $idnresult=$sessiondbh->prepare("select dbid from dbinfo where dbname = ?") or $logger->error($DBI::errstr);
+      $idnresult->execute($dbname) or $logger->error($DBI::errstr);
 
       if ($idnresult->rows > 0){
 
@@ -276,12 +276,12 @@ sub handler {
 	return OK;
       }
 
-      $idnresult=$sessiondbh->prepare("insert into dbinfo values (NULL,'$faculty','$description','$system','$dbname','$sigel','$url','$active')") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
-      $idnresult=$sessiondbh->prepare("insert into titcount values ('$dbname','0')") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
-      $idnresult=$sessiondbh->prepare("insert into dboptions values ('$dbname','','','','','','','','','','','','',0,0,'','')") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
+      $idnresult=$sessiondbh->prepare("insert into dbinfo values (NULL,?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
+      $idnresult->execute($faculty,$description,$system,$dbname,$sigel,$url,$active) or $logger->error($DBI::errstr);
+      $idnresult=$sessiondbh->prepare("insert into titcount values (?,'0')") or $logger->error($DBI::errstr);
+      $idnresult->execute($dbname) or $logger->error($DBI::errstr);
+      $idnresult=$sessiondbh->prepare("insert into dboptions values (?,'','','','','','','','','','','','',0,0,'','')") or $logger->error($DBI::errstr);
+      $idnresult->execute($dbname) or $logger->error($DBI::errstr);
       $idnresult->finish();
       
       # Und nun auch die Datenbank zuerst komplett loeschen (falls vorhanden)
@@ -298,8 +298,8 @@ sub handler {
     elsif ($cataction eq "Bearbeiten"){
 
 
-      my $idnresult=$sessiondbh->prepare("select * from dbinfo where dbid=$dbid") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
+      my $idnresult=$sessiondbh->prepare("select * from dbinfo where dbid = ?") or $logger->error($DBI::errstr);
+      $idnresult->execute($dbid) or $logger->error($DBI::errstr);
       
       my $result=$idnresult->fetchrow_hashref();
       
@@ -312,8 +312,8 @@ sub handler {
       my $url=$result->{'url'};
       my $active=$result->{'active'};
 
-      $idnresult=$sessiondbh->prepare("select * from dboptions where dbname='$dbname'") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
+      $idnresult=$sessiondbh->prepare("select * from dboptions where dbname = ?") or $logger->error($DBI::errstr);
+      $idnresult->execute($dbname) or $logger->error($DBI::errstr);
       $result=$idnresult->fetchrow_hashref();
       my $host=$result->{'host'};
       my $protocol=$result->{'protocol'};
@@ -473,8 +473,8 @@ sub handler {
       $active="Ja" if ($active eq "1");
       $active="Nein" if ($active eq "0");
       
-      my $idnresult2=$sessiondbh->prepare("select * from viewdbs where viewname='$viewname' order by dbname") or $logger->error($DBI::errstr);
-      $idnresult2->execute();
+      my $idnresult2=$sessiondbh->prepare("select * from viewdbs where viewname = ? order by dbname") or $logger->error($DBI::errstr);
+      $idnresult2->execute($viewname);
       
       my @viewdbs=();
       while (my $result2=$idnresult2->fetchrow_hashref()){
@@ -516,10 +516,10 @@ sub handler {
     # Zuerst schauen, ob Aktionen gefordert sind
     
     if ($viewaction eq "Löschen"){
-      my $idnresult=$sessiondbh->prepare("delete from viewinfo where viewid='$viewid'") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
-      $idnresult=$sessiondbh->prepare("delete from viewdbs where viewname='$viewname'") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
+      my $idnresult=$sessiondbh->prepare("delete from viewinfo where viewid = ?") or $logger->error($DBI::errstr);
+      $idnresult->execute($viewid) or $logger->error($DBI::errstr);
+      $idnresult=$sessiondbh->prepare("delete from viewdbs where viewname = ?") or $logger->error($DBI::errstr);
+      $idnresult->execute($viewname) or $logger->error($DBI::errstr);
       $idnresult->finish();
       $r->internal_redirect("http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showviews");
       return OK;
@@ -529,13 +529,13 @@ sub handler {
 
       # Zuerst die Aenderungen in der Tabelle Viewinfo vornehmen
 
-      my $idnresult=$sessiondbh->prepare("update viewinfo set viewname='$viewname', description='$description', active='$active' where viewid='$viewid'") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
+      my $idnresult=$sessiondbh->prepare("update viewinfo set viewname = ?, description = ?, active = ? where viewid = ?") or $logger->error($DBI::errstr);
+      $idnresult->execute($viewname,$description,$active,$viewid) or $logger->error($DBI::errstr);
 
       # Datenbanken zunaechst loeschen
 
-      $idnresult=$sessiondbh->prepare("delete from viewdbs where viewname='$viewname'") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
+      $idnresult=$sessiondbh->prepare("delete from viewdbs where viewname = ?") or $logger->error($DBI::errstr);
+      $idnresult->execute($viewname) or $logger->error($DBI::errstr);
 
       
       # Dann die zugehoerigen Datenbanken eintragen
@@ -544,8 +544,8 @@ sub handler {
       my $singleviewdb="";
 
       foreach $singleviewdb (@viewdb){
-	$idnresult=$sessiondbh->prepare("insert into viewdbs values ('$viewname','$singleviewdb')") or $logger->error($DBI::errstr);
-	$idnresult->execute() or $logger->error($DBI::errstr);
+	$idnresult=$sessiondbh->prepare("insert into viewdbs values (?,?)") or $logger->error($DBI::errstr);
+	$idnresult->execute($viewname,$singleviewdb) or $logger->error($DBI::errstr);
       }
 
       $idnresult->finish();
@@ -566,8 +566,8 @@ sub handler {
       }
 
 
-      my $idnresult=$sessiondbh->prepare("select * from viewinfo where viewname='$viewname'") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
+      my $idnresult=$sessiondbh->prepare("select * from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
+      $idnresult->execute($viewname) or $logger->error($DBI::errstr);
 
       if ($idnresult->rows > 0){
 
@@ -578,13 +578,13 @@ sub handler {
 	return OK;
       }
       
-      $idnresult=$sessiondbh->prepare("insert into viewinfo values (NULL,'$viewname','$description','$active')") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
+      $idnresult=$sessiondbh->prepare("insert into viewinfo values (NULL,?,?,?)") or $logger->error($DBI::errstr);
+      $idnresult->execute($viewname,$description,$active) or $logger->error($DBI::errstr);
 
 
 
-      $idnresult=$sessiondbh->prepare("select viewid from viewinfo where viewname='$viewname'") or $logger->error($DBI::errstr);
-      $idnresult->execute();
+      $idnresult=$sessiondbh->prepare("select viewid from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
+      $idnresult->execute($viewname);
 
 
       my $res=$idnresult->fetchrow_hashref();
@@ -602,8 +602,8 @@ sub handler {
     elsif ($viewaction eq "Bearbeiten"){
 
 
-      my $idnresult=$sessiondbh->prepare("select * from viewinfo where viewid='$viewid'") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
+      my $idnresult=$sessiondbh->prepare("select * from viewinfo where viewid = ?") or $logger->error($DBI::errstr);
+      $idnresult->execute($viewid) or $logger->error($DBI::errstr);
       
       my $result=$idnresult->fetchrow_hashref();
 
@@ -612,8 +612,8 @@ sub handler {
       my $description=$result->{'description'};
       my $active=$result->{'active'};
 
-      my $idnresult2=$sessiondbh->prepare("select * from viewdbs where viewname='$viewname' order by dbname") or $logger->error($DBI::errstr);
-      $idnresult2->execute() or $logger->error($DBI::errstr);
+      my $idnresult2=$sessiondbh->prepare("select * from viewdbs where viewname = ? order by dbname") or $logger->error($DBI::errstr);
+      $idnresult2->execute($viewname) or $logger->error($DBI::errstr);
       
       my @viewdbs=();
       while (my $result2=$idnresult2->fetchrow_hashref()){
@@ -771,8 +771,8 @@ sub handler {
       my $createtime=$result->{'createtime'};
       my $benutzernr=$result->{'benutzernr'};
 
-      my $idnresult2=$sessiondbh->prepare("select * from queries where sessionid='$singlesessionid'") or $logger->error($DBI::errstr);
-      $idnresult2->execute() or $logger->error($DBI::errstr);
+      my $idnresult2=$sessiondbh->prepare("select * from queries where sessionid = ?") or $logger->error($DBI::errstr);
+      $idnresult2->execute($singlesessionid) or $logger->error($DBI::errstr);
       my $numqueries=$idnresult2->rows;
 
       if (!$benutzernr){
@@ -806,15 +806,15 @@ sub handler {
   elsif ($action eq "editsession"){
 
     if ($sessionaction eq "Anzeigen"){
-      my $idnresult=$sessiondbh->prepare("select * from session where sessionID='$singlesessionid'") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
+      my $idnresult=$sessiondbh->prepare("select * from session where sessionID = ?") or $logger->error($DBI::errstr);
+      $idnresult->execute($singlesessionid) or $logger->error($DBI::errstr);
 
       my $result=$idnresult->fetchrow_hashref();
       my $createtime=$result->{'createtime'};
       my $benutzernr=$result->{'benutzernr'};
 
-      my $idnresult2=$sessiondbh->prepare("select * from queries where sessionid='$singlesessionid'") or $logger->error($DBI::errstr);
-      $idnresult2->execute() or $logger->error($DBI::errstr);
+      my $idnresult2=$sessiondbh->prepare("select * from queries where sessionid = ?") or $logger->error($DBI::errstr);
+      $idnresult2->execute($singlesessionid) or $logger->error($DBI::errstr);
 
       my $numqueries=$idnresult2->rows;
 
@@ -900,9 +900,8 @@ sub handler {
       
     OpenBib::Common::Util::print_page($config{tt_admin_logout_tname},$ttdata,$r);
 
-    my $idnresult=$sessiondbh->prepare("delete from session where benutzernr='$adminuser' and sessionid='$sessionID'") or $logger->error($DBI::errstr);
-    $idnresult->execute() or $logger->error($DBI::errstr);
-
+    my $idnresult=$sessiondbh->prepare("delete from session where benutzernr = ? and sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($adminuser,$sessionID) or $logger->error($DBI::errstr);
 
   }
   else {

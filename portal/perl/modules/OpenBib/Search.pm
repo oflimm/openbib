@@ -1,3 +1,4 @@
+
 #####################################################################
 #
 #  OpenBib::Search.pm
@@ -413,22 +414,23 @@ sub handler {
   #####################################################################
   ## Ausleihkonfiguration fuer den Katalog einlesen
 
-  $dbinforesult=$sessiondbh->prepare("select circ,circurl,circcheckurl from dboptions where dbname = ?") or $logger->error($DBI::errstr);
+  $dbinforesult=$sessiondbh->prepare("select circ,circurl,circcheckurl,circdb from dboptions where dbname = ?") or $logger->error($DBI::errstr);
   $dbinforesult->execute($database) or $logger->error($DBI::errstr);;
 
   my $circ=0;
   my $circurl="";
   my $circcheckurl="";
+  my $circdb="";
 
   while (my $result=$dbinforesult->fetchrow_hashref()){
     $circ=$result->{'circ'};
     $circurl=$result->{'circurl'};
     $circcheckurl=$result->{'circcheckurl'};
+    $circdb=$result->{'circdb'};
   }
 
   $dbinforesult->finish();
-  
-  
+    
   # Generiere SessionID, wenn noch keine vorhanden ist
   
   my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
@@ -815,7 +817,7 @@ HEAD1
     
     # Genau ein Treffer
     if ($#tidns == 0){
-      OpenBib::Search::Util::get_tit_by_idn("$tidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+      OpenBib::Search::Util::get_tit_by_idn("$tidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
     }
     
     # Mehr als ein Treffer
@@ -907,7 +909,7 @@ HEAD1
 	
 	my $omode=($dbmode == 2)?8:5;
 	if (length($idn)>0){
-	  $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","none",$omode,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+	  $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","none",$omode,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
 	  $maxcount++;		
 	}
 	
@@ -1004,7 +1006,7 @@ HEAD1
       }
       
       if ($#gtfidns == 0){
-	OpenBib::Search::Util::get_tit_by_idn($gtfidns[0],"none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+	OpenBib::Search::Util::get_tit_by_idn($gtfidns[0],"none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
       }
       
       if ($#gtfidns > 0){
@@ -1061,7 +1063,7 @@ HEAD1
 	  }
 	  
 	  if (length($gtfidn)>0){
-	    $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$gtfidn","$gtftit",6,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+	    $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$gtfidn","$gtftit",6,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
 	    $maxcount++;		
 	  }
 	  
@@ -1118,7 +1120,7 @@ HEAD1
       }
       
       if ($#gtmidns == 0){
-	OpenBib::Search::Util::get_tit_by_idn("$gtmidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+	OpenBib::Search::Util::get_tit_by_idn("$gtmidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
       }
       
       if ($#gtmidns > 0){
@@ -1171,7 +1173,7 @@ HEAD1
 	  }
 	  
 	  if (length($idn)>0){
-	    $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","$gtmtit",7,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+	    $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","$gtmtit",7,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
 	    $maxcount++;		
 	  }
 	  
@@ -1228,7 +1230,7 @@ HEAD1
       }
       
       if ($#invkidns == 0){
-	OpenBib::Search::Util::get_tit_by_idn("$invkidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+	OpenBib::Search::Util::get_tit_by_idn("$invkidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
       }
       
       if ($#invkidns > 0){
@@ -1281,7 +1283,7 @@ HEAD1
 	  }
 	  
 	  if (length($idn)>0){
-	    $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","$invktit",8,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+	    $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","$invktit",8,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
 	    $maxcount++;		
 	  }
 	  
@@ -1330,7 +1332,7 @@ HEAD1
         
     if ($generalsearch=~/^hst/){
       my $titidn=$query->param("$generalsearch");
-      OpenBib::Search::Util::get_tit_by_idn("$titidn","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+      OpenBib::Search::Util::get_tit_by_idn("$titidn","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
       goto LEAVEPROG;
     }
     
@@ -1340,7 +1342,7 @@ HEAD1
       }
       else {
 	my $swtidn=$query->param("$generalsearch");
-	OpenBib::Search::Util::get_swt_by_idn("$swtidn",3,$dbh,$benchmark,$searchmultipleswt,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,$sessionID);
+	OpenBib::Search::Util::get_swt_set_by_idn("$swtidn",$dbh,$searchmultipleswt,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,$sessionID);
 	goto LEAVEPROG;
       }
     } 
@@ -1351,20 +1353,20 @@ HEAD1
       }
       else {
 	my $notidn=$query->param("notation");
-	OpenBib::Search::Util::get_not_by_idn("$notidn",3,$dbh,$benchmark,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID);
+	OpenBib::Search::Util::get_not_set_by_idn("$notidn",$dbh,$benchmark,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID);
 	goto LEAVEPROG;
       }
     } 
     
     if ($generalsearch=~/^singlegtm/){
       my $titidn=$query->param("$generalsearch");
-      OpenBib::Search::Util::get_tit_by_idn("$titidn","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+      OpenBib::Search::Util::get_tit_by_idn("$titidn","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
       goto LEAVEPROG;
     } 
     
     if ($generalsearch=~/^singlegtf/){
       my $titidn=$query->param("$generalsearch");
-      OpenBib::Search::Util::get_tit_by_idn("$titidn","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+      OpenBib::Search::Util::get_tit_by_idn("$titidn","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
       goto LEAVEPROG;
     } 
   }
@@ -1377,7 +1379,7 @@ HEAD1
     
     my $mtit;
     foreach $mtit (@mtitidns){
-      OpenBib::Search::Util::get_tit_by_idn("$mtit","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+      OpenBib::Search::Util::get_tit_by_idn("$mtit","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
     }
     goto LEAVEPROG;	
   }    
@@ -1416,7 +1418,7 @@ HEAD1
     
     my $mtit;
     foreach $mtit (@mtitidns){
-      OpenBib::Search::Util::get_tit_by_idn("$mtit","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+      OpenBib::Search::Util::get_tit_by_idn("$mtit","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
     }
     goto LEAVEPROG;	
   }    
@@ -1429,7 +1431,7 @@ HEAD1
     
     my $mswt;
     foreach $mswt (@mswtidns){
-      OpenBib::Search::Util::get_swt_by_idn("$mswt",3,$dbh,$benchmark,$searchmultipleswt,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,$sessionID);
+      OpenBib::Search::Util::get_swt_set_by_idn("$mswt",$dbh,$searchmultipleswt,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,$sessionID);
     }
     goto LEAVEPROG;	
   }    
@@ -1437,7 +1439,7 @@ HEAD1
   #####################################################################
   
   if ($searchsingletit){
-    OpenBib::Search::Util::get_tit_by_idn("$searchsingletit","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+    OpenBib::Search::Util::get_tit_by_idn("$searchsingletit","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
     goto LEAVEPROG;	
   }    
   
@@ -1448,7 +1450,7 @@ HEAD1
       $searchtitofswt=$searchsingleswt;
     }
     else {		
-      OpenBib::Search::Util::get_swt_by_idn("$searchsingleswt",3,$dbh,$benchmark,$searchmultipleswt,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,$sessionID);
+      OpenBib::Search::Util::get_swt_set_by_idn("$searchsingleswt",$dbh,$benchmark,$searchmultipleswt,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,$sessionID);
       goto LEAVEPROG;	
     }
   }    
@@ -1472,7 +1474,7 @@ HEAD1
       $searchtitofnot=$searchsinglenot;
     }
     else {		
-      OpenBib::Search::Util::get_not_by_idn("$searchsinglenot",3,$dbh,$benchmark,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID);
+      OpenBib::Search::Util::get_not_set_by_idn("$searchsinglenot",$dbh,$benchmark,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID);
       goto LEAVEPROG;	
     }
   }    
@@ -1498,7 +1500,7 @@ HEAD1
     }
     
     if ($#titelidns == 0){
-      OpenBib::Search::Util::get_tit_by_idn("$titelidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+      OpenBib::Search::Util::get_tit_by_idn("$titelidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
     }
     
     if ($#titelidns > 0){
@@ -1551,7 +1553,7 @@ HEAD1
 	}
 	
 	if (length($idn)>0){
-	  $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","none",5,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+	  $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","none",5,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
 	  $maxcount++;		
 	}
 	
@@ -1604,7 +1606,7 @@ HEAD1
     my @requests=("select titidn from titurh where urhverw=$searchtitofurhkor","select titidn from titkor where korverw=$searchtitofurhkor");
     my @titelidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh,$benchmark);
     if ($#titelidns == 0){
-      OpenBib::Search::Util::get_tit_by_idn("$titelidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+      OpenBib::Search::Util::get_tit_by_idn("$titelidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
     }
     if ($#titelidns > 0){
       my $treffer=$#titelidns+1;
@@ -1658,7 +1660,7 @@ HEAD1
 	}
 	
 	if (length($idn)>0){
-	  $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","none",5,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+	  $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","none",5,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
 	  $maxcount++;		
 	}
 	
@@ -1711,7 +1713,7 @@ HEAD1
     my @requests=("select titidn from titurh where urhverw=$searchtitofurh");
     my @titelidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh,$benchmark);
     if ($#titelidns == 0){
-      OpenBib::Search::Util::get_tit_by_idn("$titelidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+      OpenBib::Search::Util::get_tit_by_idn("$titelidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
     }
     if ($#titelidns > 0){
       my $treffer=$#titelidns+1;
@@ -1763,7 +1765,7 @@ HEAD1
 	}
 	
 	if (length($idn)>0){
-	  $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","none",5,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+	  $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","none",5,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
 	  $maxcount++;		
 	}
 	
@@ -1816,7 +1818,7 @@ HEAD1
     my @requests=("select titidn from titkor where korverw=$searchtitofkor");
     my @titelidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh,$benchmark);	
     if ($#titelidns == 0){
-      OpenBib::Search::Util::get_tit_by_idn("$titelidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+      OpenBib::Search::Util::get_tit_by_idn("$titelidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
     }
     if ($#titelidns > 0){
       my $treffer=$#titelidns+1;
@@ -1868,7 +1870,7 @@ HEAD1
 	}
 	
 	if (length($idn)>0){
-	  $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","none",5,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+	  $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","none",5,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
 	  $maxcount++;		
 	}
 	
@@ -1924,7 +1926,7 @@ HEAD1
       OpenBib::Search::Util::no_result();
     }
     if ($#titelidns == 0){
-      OpenBib::Search::Util::get_tit_by_idn("$titelidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+      OpenBib::Search::Util::get_tit_by_idn("$titelidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
     }
     if ($#titelidns > 0){
       my $treffer=$#titelidns+1;
@@ -1977,7 +1979,7 @@ HEAD1
 	}
 	
 	if (length($idn)>0){
-	  $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","none",5,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+	  $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","none",5,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
 	  $maxcount++;		
 	}
 	
@@ -2035,7 +2037,7 @@ HEAD1
     }
     
     if ($#titelidns == 0){
-      OpenBib::Search::Util::get_tit_by_idn("$titelidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+      OpenBib::Search::Util::get_tit_by_idn("$titelidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
     }
     
     if ($#titelidns > 0){
@@ -2088,7 +2090,7 @@ HEAD1
 	}
 	
 	if (length($idn)>0){
-	  $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","none",5,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+	  $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","none",5,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
 	  $maxcount++;		
 	}
 	

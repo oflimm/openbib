@@ -121,6 +121,7 @@ sub handler {
   my $circ=$query->param('circ') || '';
   my $circurl=$query->param('circurl') || '';
   my $circcheckurl=$query->param('circcheckurl') || '';
+  my $circdb=$query->param('circdb') || '';
 
   my $singlesessionid=$query->param('singlesessionid') || '';
 
@@ -245,8 +246,8 @@ sub handler {
       $idnresult->execute($faculty,$description,$system,$dbname,$sigel,$url,$active,$dbid) or $logger->error($DBI::errstr);
       $idnresult->finish();
 
-      $idnresult=$sessiondbh->prepare("update dboptions set protocol = ?, host = ?, remotepath = ?, remoteuser = ?, remotepasswd = ?', titfilename = ?, autfilename = ?, korfilename = ?, swtfilename = ?, notfilename = ?, mexfilename = ?, filename = ?, autoconvert = ?, circ = ?, circurl = ?, circcheckurl = ? where dbname= ?") or $logger->error($DBI::errstr);
-      $idnresult->execute($protocol,$host,$remotepath,$remoteuser,$remotepasswd,$titfilename,$autfilename,$korfilename,$swtfilename,$notfilename,$mexfilename,$filename,$autoconvert,$circ,$circurl,$circcheckurl,$dbname) or $logger->error($DBI::errstr);
+      $idnresult=$sessiondbh->prepare("update dboptions set protocol = ?, host = ?, remotepath = ?, remoteuser = ?, remotepasswd = ?, titfilename = ?, autfilename = ?, korfilename = ?, swtfilename = ?, notfilename = ?, mexfilename = ?, filename = ?, autoconvert = ?, circ = ?, circurl = ?, circcheckurl = ?, circdb = ? where dbname= ?") or $logger->error($DBI::errstr);
+      $idnresult->execute($protocol,$host,$remotepath,$remoteuser,$remotepasswd,$titfilename,$autfilename,$korfilename,$swtfilename,$notfilename,$mexfilename,$filename,$autoconvert,$circ,$circurl,$circcheckurl,$circdb,$dbname) or $logger->error($DBI::errstr);
       $idnresult->finish();
 
       $r->internal_redirect("http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showcat");
@@ -280,7 +281,7 @@ sub handler {
       $idnresult->execute($faculty,$description,$system,$dbname,$sigel,$url,$active) or $logger->error($DBI::errstr);
       $idnresult=$sessiondbh->prepare("insert into titcount values (?,'0')") or $logger->error($DBI::errstr);
       $idnresult->execute($dbname) or $logger->error($DBI::errstr);
-      $idnresult=$sessiondbh->prepare("insert into dboptions values (?,'','','','','','','','','','','','',0,0,'','')") or $logger->error($DBI::errstr);
+      $idnresult=$sessiondbh->prepare("insert into dboptions values (?,'','','','','','','','','','','','',0,0,'','','')") or $logger->error($DBI::errstr);
       $idnresult->execute($dbname) or $logger->error($DBI::errstr);
       $idnresult->finish();
       
@@ -331,6 +332,7 @@ sub handler {
       my $circ=$result->{'circ'};
       my $circurl=$result->{'circurl'};
       my $circcheckurl=$result->{'circcheckurl'};
+      my $circdb=$result->{'circdb'};
 
       
       my $katalog={
@@ -363,6 +365,7 @@ sub handler {
 				 circ         => $circ,
 				 circurl      => $circurl,
 				 circcheckurl => $circcheckurl,
+				 circdb       => $circdb,
 				},
 		   
 		  };

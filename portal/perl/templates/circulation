@@ -11,12 +11,28 @@
 
 <form method="post" action="http://[% config.servername %][% config.circulation_loc %]" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
+<input type="hidden" name="action" value="showcirc" />
+
+<table width="100%">
+<tr><th>Anzeige</th></tr>
+<tr><td class="boxedclear">
+
+<select name="circaction"><option value="borrows" selected="selected">Ausleihen</option><option value="reservations">Vormerkungen</option><option value="reminders">&Uuml;berziehungen</option></select>&nbsp<input type="submit" value="Los">
+
+</td></td></table>
+
+<p />
 
 <table width="100%">
 <tr><th>Ausleihen</th></tr>
 <tr><td class="boxedclear">
-<table>
-<tr><td><b>Titelangaben</b></td><td><b>R&uuml;ckgabedatum</b></td></tr>
+
+[% IF borrows.size == 0 %]
+<b>Sie haben keine Ausleihen get&auml;tigt.</b>
+[% ELSE  %]
+
+<table cellpadding="5">
+<tr><td><b>Titelangaben</b></td><td><b>Signatur</b></td><td><b>Ausleihfrist</b></td></tr>
 [% color = 'white' %]
 
 [%- FOREACH borrow = borrows -%]
@@ -28,9 +44,17 @@ bgcolor="[% color %]"
 [% ELSE %]
 [% color = 'white' %] 
 [% END %]
-><td><i>[% utf2iso(borrow.Verfasser) %]</i><br>[% utf2iso(borrow.Titel) %]</td><td>[% borrow.RueckgabeDatum %]</td></tr>
+><td><i>[% utf2iso(borrow.Verfasser) %]</i><br>[% utf2iso(borrow.Titel) %]
+
+[% IF borrow.EJahr %]
+, [% utf2iso(borrow.EJahr) %]
+[% END %]
+
+</td><td>[% utf2iso(borrow.Signatur) %]</td><td>[% borrow.AusleihDatum %]-[% borrow.RueckgabeDatum %]</td></tr>
 [% END %]
 </table>
+
+[% END %]
 </td></tr>
 </table>
 

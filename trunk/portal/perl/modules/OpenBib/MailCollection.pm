@@ -117,7 +117,13 @@ sub handler {
   
   if ($email eq ""){
     print << "KEINEMAIL";
-<h1>Sie haben keine Mailadresse eingegeben</h1>
+<table width="100%">
+<tr><th>Fehlerbeschreibung</th></tr>
+<tr><td class="boxedclear" style="font-size:12pt">
+Sie haben keine Mailadresse eingegeben.
+</td></tr>
+</table>
+<p />
 KEINEMAIL
     OpenBib::Common::Util::print_footer();
 
@@ -128,8 +134,13 @@ KEINEMAIL
 
   unless (Email::Valid->address($email)) {
     print << "FALSCHEMAIL";
-<h1>Sie haben eine falsche Mailadresse eingegeben</h1>
-Email::Valid->address($email}
+<table width="100%">
+<tr><th>Fehlerbeschreibung</th></tr>
+<tr><td class="boxedclear" style="font-size:12pt">
+Sie haben eine ung&uuml;ltige Mailadresse eingegeben.
+</td></tr>
+</table>
+<p />
 FALSCHEMAIL
     OpenBib::Common::Util::print_footer();
 
@@ -529,7 +540,13 @@ MAILSEND
   }
 
   print << "ENDE6";
-<h1>Ihre Merkliste wurde erfolgreich versendet</h1>
+<table width="100%">
+<tr><th>Erfolgreiche Aktion</th></tr>
+<tr><td class="boxedclear" style="font-size:12pt">
+Ihre Merkliste wurde an Sie per Mail versendet.
+</td></tr>
+</table>
+<p />
 ENDE6
 
   OpenBib::Common::Util::print_footer();

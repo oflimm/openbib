@@ -151,6 +151,7 @@ selected
 [% END %]
 
 >Ja</option></td></tr>
+<tr><td><b>DB-Name im Lokalsystem</b></td><td><input type="text" size="50" name="circdb" value="[% katalog.circconfig.circdb %]"></td></tr>
 <tr><td><b>WebOPAC-URL</b></td><td><input type="text" size="50" name="circurl" value="[% katalog.circconfig.circurl %]"></td></tr>
 <tr><td><b>Bestands-&Uuml;berpr&uuml;fungs-URL</b></td><td><input type="text" size="50" name="circcheckurl" value="[% katalog.circconfig.circcheckurl %]"></td></tr>
 </table>

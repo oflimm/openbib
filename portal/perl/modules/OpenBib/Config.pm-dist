@@ -115,6 +115,7 @@ use vars qw(%config);
 	   # Mapping der einzelnen Kompontenten zu ihren Zugriffs-URI's
 
 	   admin_loc            => '/portal/admin',
+	   circulation_loc      => '/portal/benutzerkonto',
 	   databasechoice_loc   => '/portal/katalogauswahl',
 	   databaseprofile_loc  => '/portal/katalogprofile',
 	   headerframe_loc      => '/portal/kopf',
@@ -180,6 +181,8 @@ use vars qw(%config);
 	   tt_admin_logout_tname         => 'admin_logout',
 
 	   tt_leave_tname          => 'leave',
+
+	   tt_circulation_tname          => 'circulation',
 
 	   tt_headerframe_tname    => 'headerframe',
 

@@ -43,7 +43,6 @@ use vars qw(%config);
 *config=\%OpenBib::Config::config;
 
 &GetOptions("single-pool=s" => \$singlepool,
-	    "convert-only" => \$convertonly,
 	    "mit-schlagworten" => \$mitschlagworten,
 	    "oaifile=s" => \$oaifile,
 	    );
@@ -51,10 +50,7 @@ use vars qw(%config);
 $datidx=0;
 $bufferidx=0;
 
-$gk=0;
-
 $viaidn=1;
-$sigel=127;
 
 $date=`date '+%Y%m%d'`;
 chop $date;
@@ -65,33 +61,20 @@ $startswtidn=1;
 $startkoridn=1;
 $startmexidn=1;            
 
-if ($viaidn){
-  %al2bis=('20 ','3000 ',    # Titel
-           '21 ','2700 ',    # WST
-           '50 ','8050 ',    # URL
-           '51 ','4500 ',    # HSFN
-           '74 ','4000 ',
-           '75 ','4002 ',
-           '76 ','4040 ',
-           '87 ','4600 ',
-           '71 ','3700 ',
-           '77 ','4102 ',
-           '85 ','4240 ',
-	   '91 ','7560 ',
-           'END','END');
-}
-else {
-  %al2bis=('20 ','HST                *',    # Titel
-           '74 ','ORT d.1. Verl.      ',
-           '75 ','1. Verl.            ',
-           '76 ','E-JAHR              ',
-           '87 ','ISBN                ',
-           '71 ','AUSG                ',
-           '77 ','KOLLAT              ',
-           '85 ','GT unverkn.         ',
-	   '91 ','INV.NR.        ',
-           'END','END');
-}                                                              
+%al2bis=('20 ','3000 ',    # Titel
+	 '21 ','2700 ',    # WST
+	 '50 ','8050 ',    # URL
+	 '51 ','4500 ',    # HSFN
+	 '74 ','4000 ',
+	 '75 ','4002 ',
+	 '76 ','4040 ',
+	 '87 ','4600 ',
+	 '71 ','3700 ',
+	 '77 ','4102 ',
+	 '85 ','4240 ',
+	 '91 ','7560 ',
+	 '99 ','9000 ',
+	 'END','END');
 
 $idx=0; 
 $oldid=""; 
@@ -127,11 +110,12 @@ sub kategorien {
     $line=~s/^OR==/74 /;
     $line=~s/^SO==/75 /;
 #    $line=~s/^SE==/ /;
-    $line=~s/^KO==/77 /;
+    $line=~s/^KO==/61 /;
     $line=~s/^AS==/71 /;
     $line=~s/^SW==/20a/;
     $line=~s/^EJ==/76 /;
     $line=~s/^IS==/87 /;
+    $line=~s/^AB==/99 /;
 #    $line=~s/^AK==/91 /;
     $line=~s/^AK==.*/DuMMy/;
     $line=~s/^ID==.*/DuMMy/;
@@ -150,7 +134,7 @@ sub tidy_buffer {
 
 }
 
-sub buffer_reorg {
+sub buffer_reorg{
 #  print STDERR "Reorganizing Buffer\n";
     tidy_buffer();
     $i=0;
@@ -335,7 +319,7 @@ sub convert_reorgbuffer {
       while ($ti < $tempidx){
 	  $nkennung=substr($tempbuffer[$ti],0,3);
 	  
-	  if (($nkennung eq "71 ")||($nkennung eq "74 ")||($nkennung eq "75 ")||($nkennung eq "76 ")||($nkennung eq "77 ")||($nkennung eq "87 ")||($nkennung eq "85 ") || ($nkennung eq "50 ") || ($nkennung eq "51 ") || ($nkennung eq "21 "))
+	  if (($nkennung eq "71 ")||($nkennung eq "74 ")||($nkennung eq "75 ")||($nkennung eq "76 ")||($nkennung eq "77 ")||($nkennung eq "87 ")||($nkennung eq "85 ") || ($nkennung eq "50 ") || ($nkennung eq "51 ") || ($nkennung eq "21 "|| ($nkennung eq "99 ")))
 	    {
 	      substr($tempbuffer[$ti],0,3)=$al2bis{$nkennung};
 	      $titbuffer[$titidx++]=$tempbuffer[$ti];
@@ -477,7 +461,7 @@ sub convert_reorgbuffer {
 	  
 	  # Koerperschaften abarbeiten Anfang
 	  
-	  if (($nkennung eq "61 ")&&($dokor)){
+	  if ($nkennung eq "61 "){
 	    
 	    $koridn=get_koridn(substr($tempbuffer[$ti],3,length($tempbuffer[$ti])-3));
 	    
@@ -861,14 +845,6 @@ sub sonderzeichen {
   $_=~s/\[/#091/g;
   $_=~s/\]/#093/g;
 
-  $_=~s//\}/g;
-  $_=~s/„/\{/g;
-  $_=~s/”/\|/g;
-  $_=~s/š/\]/g;
-  $_=~s/™/\\/g;
-  $_=~s/Ž/\[/g;
-  $_=~s/á/\~/g;
-  
   $_=~s/ú/-:-/g;
   #    $_=~s/š/Ü/g; # Ue
 #    $_=~s/™/Ö/g; # Oe

@@ -17,6 +17,7 @@ align="right"><a href="http://[% config.servername %][% config.admin_loc %]?sess
 <form method="get" action="http://[% config.servername %][% config.admin_loc %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="dbid" value="[% katalog.dbid %]" />
+<input type="hidden" name="dbname" value="[% katalog.dbname %]" />
 <input type="hidden" name="action" value="editcat" />
 
 <table width="100%">
@@ -58,8 +59,7 @@ selected
 selected
 [% END %]
 >Sisis</option></select></td><td>
-<input type="text" name="dbname" value="[% katalog.dbname %]"
-size="8"></td><td><input type="text" name="sigel" value="[%
+[% katalog.dbname %]</td><td><input type="text" name="sigel" value="[%
 katalog.sigel %]" size="3"></td><td><input type="text" name="url"
 value="[% katalog.url %]" size="20"></td><td><select
 name=active><option value="1" 
@@ -74,11 +74,69 @@ selected
 </td></tr>
 </table>
 <p />
+
+</td></tr>
+</table>
+
+<p />
+
+<table width="100%">
+<tr><th>Import-Einstellungen</th></tr>
+<tr><td class="boxedclear" style="font-size:12pt">
+<table>
+<tr><td><b>Protokoll</b></td><td><select name="protocol"><option value="ftp" 
+[% IF katalog.imxconfig.protocol == 'ftp' %]
+selected
+[% END %]
+>FTP</option><option value="http" 
+[% IF katalog.imxconfig.protocol == 'http' %]
+selected
+[% END %]
+>Web</option><option value="lokal" 
+[% IF katalog.imxconfig.protocol == 'lokal' %]
+selected
+[% END %]
+>Lokal</option></td></tr>
+<tr><td><b>Entfernter Rechnername</b></td><td><input type="text" size="20" name="host" value="[% katalog.imxconfig.host %]"></td></tr>
+<tr><td><b>Entferntes Verz.</b></td><td><input type="text" size="20" name="remotepath" value="[% katalog.imxconfig.remotepath %]"></td></tr>
+<tr><td><b>Entfernter Nutzername</b></td><td><input type="text" size="20" name="remoteuser" value="[% katalog.imxconfig.remoteuser %]"></td></tr>
+<tr><td><b>Entferntes Passwort</b></td><td><input type="password" size="20" name="remotepasswd" value="[% katalog.imxconfig.remotepasswd %]"></td></tr>
+<tr><td><b></b></td><td></td></tr>
+
+    
+[% IF katalog.system == 's' %]
+<tr><td><b>Tit-Datei</b></td><td><input type="text" size="20" name="titfilename" value="[% katalog.imxconfig.titfilename %]"></td></tr>
+<tr><td><b>Aut-Datei</b></td><td><input type="text" size="20" name="autfilename" value="[% katalog.imxconfig.autfilename %]"></td></tr>
+<tr><td><b>Kor-Datei</b></td><td><input type="text" size="20" name="korfilename" value="[% katalog.imxconfig.korfilename %]"></td></tr>
+<tr><td><b>Swt-Datei</b></td><td><input type="text" size="20" name="swtfilename" value="[% katalog.imxconfig.swtfilename %]"></td></tr>
+<tr><td><b>Not-Datei</b></td><td><input type="text" size="20" name="notfilename" value="[% katalog.imxconfig.notfilename %]"></td></tr>
+<tr><td><b>Mex-Datei</b></td><td><input type="text" size="20" name="mexfilename" value="[% katalog.imxconfig.mexfilename %]"></td></tr>
+[% END %]
+    
+<tr><td><b>DB-Datei</b></td><td><input type="text" size="50" name="filename" value="[% katalog.imxconfig.filename %]"></td></tr>
+
+<tr><td><b>Autokonvertierung (cron)</b></td><td><select name="autoconvert"><option value="0"
+
+[% IF katalog.imxconfig.autoconvert == '0' %]
+selected
+[% END %]
+
+>Nein</option><option value="1" 
+
+[% IF katalog.imxconfig.autoconvert == '1' %]
+selected
+[% END %]
+
+>Ja</option></td></tr>
+</table>
+</td></tr>
+</table>
+
+
+<p />
 <table width="100%">
 <tr><td align="left"><input type="submit" name="cataction"
 value="&Auml;ndern"></td><td>&nbsp;</td><td align="right"><input type="submit" name="cataction" value="L&ouml;schen"></td></tr>
-</table>
-</td></tr>
 </table>
 
 </form>

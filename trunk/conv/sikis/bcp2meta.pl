@@ -784,6 +784,7 @@ while (($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<SWD>)){
   @swtkette=();
   foreach $key (sort {$b cmp $a} keys %SATZn){
     if ($key =~/^6510/){
+       $SATZn{$key}=~s/^[a-z]([A-Z0-9¬])/$1/;
 #      $SATZn{$key}=~s/^[a-z]//;
       push @swtkette, konv($SATZn{$key});
     }
@@ -806,6 +807,7 @@ while (($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<SWD>)){
     next if ($key=~/^6510/);
     $outkey=$key;
     $outkey=~s/(\d\d\d\d)\.\d\d\d/$1/;
+    $SATZn{$key}=~s/^[a-z]([A-Z0-9¬])/$1/;
  #   $SATZn{$key}=~s/^[a-z]// if ($key=~/^6520/);
     printf SWT $outkey.konv($SATZn{$key})."\n" if ($SATZn{$key} !~ /idn:/);
   }

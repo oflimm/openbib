@@ -139,9 +139,25 @@ use vars qw(%config);
 	   tt_error_tname          => 'error',
 	   tt_info_message_tname   => 'info_message',
 
+	   # Geheimer String zur Generierung der Web-Passworte
+
+	   web_seed                => 'Geheim',
+
+	   # Verschiedene Pfadangaben
+
+	   base_dir                => '/opt/openbib',
+	   conv_dir                => '/opt/openbib/conv',
+	   autoconv_dir            => '/opt/openbib/autoconv',
+	   dbdesc_dir              => '/opt/openbib/db',
+
 	   # Sollen Performance-Benchmarks durchgefuehrt werden
 
 	   benchmark               => 0,
+
+	   # Testsystem
+
+	   testsystem              => 0,
+
 );
 
 1;

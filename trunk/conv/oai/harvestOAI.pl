@@ -83,16 +83,19 @@ while( my $rec = $response->next ) {
   my $doc = new XML::DOM::Document();
   my $dom = $md->toDOM($doc); # Clone internal XML
 
+#  print $dom->toString;
+
   # Author -> Verfasser
 
   my $authors=$dom->getElementsByTagName("dc:creator");
 
   for (my $i=0; $i < $authors->getLength; $i++){
-    my $author=$authors->item($i);
+    my $author=$authors->item($i)->getFirstChild();
 
-    $cleanauthor=$author->toString;
-    $cleanauthor=~s/<.+?>//g;
-    print "AU==$cleanauthor\n" if ($cleanauthor);
+    if ($author){
+      $author=$author->getData();
+    }
+    print "AU==".$author."\n";
   }
 
   # Titel -> HST
@@ -100,13 +103,14 @@ while( my $rec = $response->next ) {
   my $titles=$dom->getElementsByTagName("dc:title");
 
   for (my $i=0; $i < $titles->getLength; $i++){
-    my $title=$titles->item($i);
+    my $title=$titles->item($i)->getFirstChild();
 
-    $cleantitle=$title->toString;
-    $cleantitle=~s/<.+?>//g;
-
-    print "TI==$cleantitle\n" if ($i==0);
-    print "WT==$cleantitle\n" if ($i>0);
+    if ($title){
+      $title=$title->getData();
+      
+      print "TI==$title\n" if ($i==0);
+      print "WT==$title\n" if ($i>0);
+    }
   }
 
   # Art -> HSFN
@@ -114,22 +118,23 @@ while( my $rec = $response->next ) {
   my $types=$dom->getElementsByTagName("dc:type");
 
   for (my $i=0; $i < $types->getLength; $i++){
-    my $type=$types->item($i);
+    my $type=$types->item($i)->getFirstChild();
 
-    $cleantype=$type->toString;
-    $cleantype=~s/<.+?>//g;
+    if ($type){
+      $type=$type->getData();
 
-    if ($cleantype=~/Text.Thesis.Doctoral/){
-      $cleantype="Dissertation";
+      if ($type=~/Text.Thesis.Doctoral/){
+	$type="Dissertation";
+      }
+      elsif ($type=~/Text.Thesis.Habilitation/){
+	$type="Habilitation";
+      }
+      elsif ($cleantype=~/Text.Thesis.Doctoral.Abstract/){
+	$type="Dissertations-Abstract";
+      }
+      
+      print "HS==$type\n";
     }
-    elsif ($cleantype=~/Text.Thesis.Habilitation/){
-      $cleantype="Habilitation";
-    }
-    elsif ($cleantype=~/Text.Thesis.Doctoral.Abstract/){
-      $cleantype="Dissertations-Abstract";
-    }
-
-    print "HS==$cleantype\n";
   }
 
 
@@ -138,25 +143,27 @@ while( my $rec = $response->next ) {
   my $subjects=$dom->getElementsByTagName("dc:subject");
 
   for (my $i=0; $i < $subjects->getLength; $i++){
-    my $subject=$subjects->item($i);
+    my $subject=$subjects->item($i)->getFirstChild();
 
-    $cleansubject=$subject->toString;
-    $cleansubject=~s/<.+?>//g;
-    print "SW==$cleansubject\n" if ($cleansubject && $cleansubject ne "no entry");
+    if ($subject){
+      $subject=$subject->getData();
 
+      print "SW==$subject\n" if ($subject && $subject ne "no entry");
+    }
   }
 
-  # Jahr -> Ercheinungsjahr
+  # Jahr -> Erscheinungsjahr
 
   my $ejahre=$dom->getElementsByTagName("dc:date");
 
   for (my $i=0; $i < $ejahre->getLength; $i++){
-    my $ejahr=$ejahre->item($i);
+    my $ejahr=$ejahre->item($i)->getFirstChild();
 
-    $cleanejahr=$ejahr->toString;
-    $cleanejahr=~s/<.+?>//g;
-
-    print "EJ==$cleanejahr\n";
+    if ($ejahr){
+      $ejahr=$ejahr->getData();
+      
+      print "EJ==$ejahr\n";
+    }
   }
 
   # URL -> URL
@@ -164,14 +171,37 @@ while( my $rec = $response->next ) {
   my $urls=$dom->getElementsByTagName("dc:identifier");
 
   for (my $i=0; $i < $urls->getLength; $i++){
-    my $url=$urls->item($i);
+    my $url=$urls->item($i)->getFirstChild();
 
-    $cleanurl=$url->toString;
-    $cleanurl=~s/<.+?>//g;
+    if ($url){
+      $url=$url->getData();
 
-    print "UR==$cleanurl\n" if ($cleanurl =~/http/);
+      print "UR==$url\n" if ($url =~/http/);
+    }
+  }
+
+  # Abstract -> Abstract
+
+  my $abstracts=$dom->getElementsByTagName("dc:description");
+  
+  for (my $i=0; $i < $abstracts->getLength; $i++){
+    my $abstract=$abstracts->item($i)->getFirstChild();
+
+    if ($abstract){
+      $abstract=$abstract->getData();
+
+      $abstract=~s/&lt;(\S{1,5})&gt;/<$1>/g;
+      $abstract=~s/&amp;(\S{1,8});/&$1;/g;
+      $abstract=~s/\n/<br>/g;
+      $abstract=~s/^Zusammenfassung<br>//g;
+      $abstract=~s/^Summary<br>//g;
+      $abstract=~s/\|/&#124;/g;
+      
+      print "AB==$abstract\n";
+    }
   }
 
   print "\n";
+
 }
 

@@ -151,7 +151,7 @@ sub handler {
 
         $viewdesc
 
-<tr><td align=left>&nbsp;&nbsp;<a href="$config{databasechoice_loc}?sessionID=$sessionID" target="body">Katalogauswahl</a>&nbsp;&nbsp;<a href="$config{searchframe_loc}?sessionID=$sessionID" target="body">Recherche</a>&nbsp;&nbsp;<a href="$config{virtualsearch_loc}?sessionID=$sessionID&trefferliste=choice" target="body">Trefferliste</a>&nbsp;&nbsp;<a href="$config{managecollection_loc}?sessionID=$sessionID&action=show" target="merkliste">Merkliste</a> [$anzahl]</td><td height=25>&nbsp;</td><td align=right>$loginpreflink<a href="/suchhilfe.html" target="body">Hilfe</a>&nbsp;&nbsp;<a href="$config{leave_loc}?sessionID=$sessionID" target="_parent">Sitzung beenden</a>&nbsp;</td></tr>
+<tr><td align=left>&nbsp;&nbsp;<a href="$config{databasechoice_loc}?sessionID=$sessionID&view=$view" target="body">Katalogauswahl</a>&nbsp;&nbsp;<a href="$config{searchframe_loc}?sessionID=$sessionID&view=$view" target="body">Recherche</a>&nbsp;&nbsp;<a href="$config{virtualsearch_loc}?sessionID=$sessionID&trefferliste=choice&view=$view" target="body">Trefferliste</a>&nbsp;&nbsp;<a href="$config{managecollection_loc}?sessionID=$sessionID&action=show&view=$view" target="merkliste">Merkliste</a> [$anzahl]</td><td height=25>&nbsp;</td><td align=right>$loginpreflink<a href="/suchhilfe.html" target="body">Hilfe</a>&nbsp;&nbsp;<a href="$config{leave_loc}?sessionID=$sessionID&view=$view" target="_parent">Sitzung beenden</a>&nbsp;</td></tr>
     </table>
   </body>
 </html>

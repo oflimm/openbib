@@ -1,0 +1,78 @@
+[% SET title='KUG Administration - View bearbeiten' %]
+[% SET show_foot_banner = 1 %]
+[% PROCESS std_header %]
+
+[% PROCESS corporate_banner %]
+
+<table width="100%">
+<tr>
+  <td align="left"><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showcat">Kataloge</a>&nbsp;&nbsp;&nbsp;<a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showviews"><b>Views</b></a>&nbsp;&nbsp;&nbsp;<a href="http://[% config.servername %][%
+config.admin_loc %]?sessionID=[% sessionID %]&action=showsession">Sessions</a></td><td>&nbsp;&nbsp;&nbsp;</td><td>&nbsp;</td><td
+align="right"><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=logout"><b>Logout</b></a>&nbsp;</td>
+</tr>
+</table>
+
+<hr />
+
+<form method="get" action="http://[% config.servername %][% config.admin_loc %]">
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<input type="hidden" name="viewid" value="[% view.viewid %]" />
+<input type="hidden" name="viewname" value="[% view.viewname %]" />
+<input type="hidden" name="action" value="editview" />
+
+<table width="100%">
+<tr><th>View bearbeiten</th></tr>
+<tr><td class="boxedclear" style="font-size:12pt">
+<table>
+<tr><td><b>Viewname</b></td><td><b>Beschreibung</b></td><td><b>Aktiv</b></td><td></td></tr>
+
+<tr><td><span style="color:blue">[% view.viewname %]</span></td><td><input type="text" name="description" value="[% view.description %]" size="40" /></td>
+<td><select
+name=active><option value="1" 
+[% IF active == 1 %]
+selected
+[% END %]
+>Ja</option><option value="0" 
+[% IF active == 0 %]
+selected
+[% END %]
+>Nein</option></select>
+</td></tr>
+</table>
+<p />
+
+<b>Katalogauswahl zu diesem View</b><br /><br />
+
+<select name="viewdb" multiple="multiple">
+
+[% FOREACH singledb IN dbnames %]
+
+<option value="[% singledb.dbname %]"
+
+[% FOREACH checkeddb IN view.viewdbs %]
+
+[% IF singledb.dbname == checkeddb %]
+selected="selected"
+[% END %]
+
+[% END %]
+
+>[% singledb.description %]</option>
+
+[% END %]
+
+
+<select>
+
+<p />
+<table width="100%">
+<tr><td align="left"><input type="submit" name="viewaction"
+value="&Auml;ndern" /></td><td>&nbsp;</td><td align="right"><input type="submit" name="viewaction" value="L&ouml;schen" /></td></tr>
+</table>
+</td></tr>
+</table>
+
+</form>
+<p />
+
+[% PROCESS std_footer %]

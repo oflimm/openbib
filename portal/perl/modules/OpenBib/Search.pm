@@ -480,7 +480,7 @@ HEAD3
     if ($#schlagwte > 5000){
       print "<h1>$fullpoolname:</h1>\n";
       print "<h2>Es wurden zu viele Schlagworte beginnend mit <b>'$swtindex'</b></h2>\n";
-      print "Mehr als 5000 Schlagworte wurden gefunden. Eine vollst&auml;ndige Darstellung ist daher leider nicht m&ouml;glich. Wir bitten um Ihr Verst&auml;ndnis.<p>\n";
+      print "Mehr als 5000 Schlagworte wurden gefunden. Eine vollst&auml;ndige Darstellung ist daher leider nicht m&ouml;glich. Wir bitten um Ihr Verst&auml;ndnis.<p>Erweitern Sie daher bitte Ihre Anfrage um weitere Zeichen, um die Treffermenge weiter einzuschr&auml;nken.<p>\n";
       
       goto LEAVEPROG;
       
@@ -2210,19 +2210,31 @@ HEAD1
   
 LEAVEPROG: 
 
-  my @alphabet=("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z");
-  
-  my $acount=0;
-
-  print "<hr><table><tr><td bgcolor=\"lightblue\">Schlagwortindex</td><td>";
-
-  while ($acount <= $#alphabet){
-    print "&nbsp;<a href=\"$config{search_loc}?sessionID=$sessionID&swtindex=".$alphabet[$acount]."&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showvbu=$showvbu&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;showmexintit=$showmexintit&amp;database=$database\"><b>".$alphabet[$acount]."</b></a>";
-    
-    $acount++;
-  }
-  
-  print "&nbsp;</td></tr></table></form>\n";
+  print << "SWTIDX";
+</form>
+<hr>
+<table>
+<tr><td bgcolor="lightblue">Schlagwortindex dieses Katalogs&nbsp;</td><td>
+<form method="get" action="$config{search_loc}">
+<input type="hidden" name="sessionID" value="$sessionID">
+<input type="hidden" name="searchmode" value="$searchmode">
+<input type="hidden" name="rating" value="$rating">
+<input type="hidden" name="bookinfo" value="$bookinfo">
+<input type="hidden" name="showvbu" value="$showvbu">
+<input type="hidden" name="casesensitive" value="$casesensitive">
+<input type="hidden" name="hitrange" value="$hitrange">
+<input type="hidden" name="showmexintit" value="$showmexintit">
+<input type="hidden" name="database" value="$database">
+&nbsp;
+<input type="text" name="swtindex" value="$swtindex" size="4" maxlength="50" title="Geben Sie hier den Schlagwortanfang ein">
+&nbsp;
+<input type="submit" value="Suchen">
+&nbsp;</td>
+</tr>
+</table>
+</form>
+<p>
+SWTIDX
   
   OpenBib::Common::Util::print_footer();
   

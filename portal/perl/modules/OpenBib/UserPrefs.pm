@@ -188,8 +188,13 @@ sub handler {
     $userinfo{'soll'}=$res->{'soll'};
     $userinfo{'gut'}=$res->{'gut'};
     $userinfo{'avanz'}=$res->{'avanz'};
-    $userinfo{'bsanz'}=$res->{'bsanz'};
+    $userinfo{'branz'}=$res->{'branz'};
     $userinfo{'vmanz'}=$res->{'vmanz'};
+    $userinfo{'maanz'}=$res->{'maanz'};
+    $userinfo{'vlanz'}=$res->{'vlanz'};
+    $userinfo{'sperre'}=$res->{'sperre'};
+    $userinfo{'sperrdatum'}=$res->{'sperrdatum'};
+    $userinfo{'email'}=$res->{'email'};
     $userinfo{'gebdatum'}=$res->{'gebdatum'};
 
     my $loginname=$res->{'loginname'};

@@ -361,13 +361,14 @@ sub handler {
 
     my @kataloge=();
 
-    my $idnresult=$sessiondbh->prepare("select dbinfo.*,titcount.count from dbinfo,titcount where dbinfo.dbname=titcount.dbname order by faculty,dbname");
+    my $idnresult=$sessiondbh->prepare("select dbinfo.*,titcount.count,dboptions.autoconvert from dbinfo,titcount,dboptions where dbinfo.dbname=titcount.dbname and titcount.dbname=dboptions.dbname order by faculty,dbname");
     $idnresult->execute();
 
     my $katalog;
     while (my $result=$idnresult->fetchrow_hashref()){
       my $dbid=$result->{'dbid'};
       my $faculty=$result->{'faculty'};
+      my $autoconvert=$result->{'autoconvert'};
 
       my $unitsref=$config{units};
 
@@ -393,9 +394,11 @@ sub handler {
       my $sigel=$result->{'sigel'};
       my $url=$result->{'url'};
       my $active=$result->{'active'};
-      $active="Ja" if ($active eq "1");
-      $active="Nein" if ($active eq "0");
       my $count=$result->{'count'};
+
+      if (!$description){
+	$description="Keine Bezeichnung";
+      }
 
       $katalog={
 		dbid => $dbid,
@@ -407,6 +410,7 @@ sub handler {
 		active => $active,
 		url => $url,
 		count => $count,
+		autoconvert => $autoconvert,
 	       };
 
       push @kataloge, $katalog;

@@ -39,7 +39,10 @@ use vars qw(%config);
 
 *config=\%OpenBib::Config::config;
 
-my @stopwords = (
+sub strip_first_stopword {
+  my ($content)=@_;
+
+  my @stopwords = (
 	      'A', 
 	      'a', 
 	      'Alla',
@@ -117,10 +120,6 @@ my @stopwords = (
 	      '\'n', 
 	      '\'t', 
 	     );
-
-
-sub strip_first_stopword {
-  my ($content)=@_;
 
   my $sw;
 

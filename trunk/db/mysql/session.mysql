@@ -72,6 +72,10 @@ create table dboptions (
  swtfilename VARCHAR(255),
  notfilename VARCHAR(255),
  mexfilename VARCHAR(255),
+ autoconvert BOOL,
+ circ        BOOL,
+ circurl     TEXT,
+ circcheckurl     TEXT,
  INDEX(dbname)
 );
 

@@ -84,8 +84,8 @@ sub handler {
   
   # Assoziierten View zur Session aus Datenbank holen
   
-  my $idnresult=$sessiondbh->prepare("select viewname from sessionview where sessionid='$sessionID'") or $logger->error($DBI::errstr);
-  $idnresult->execute() or $logger->error($DBI::errstr);
+  my $idnresult=$sessiondbh->prepare("select viewname from sessionview where sessionid = ?") or $logger->error($DBI::errstr);
+  $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
   
   my $result=$idnresult->fetchrow_hashref();
   
@@ -112,16 +112,16 @@ sub handler {
     
     # Zuallererst Suchen, wieviele Titel in der Merkliste vorhanden sind.
     
-    my $idnresult=$userdbh->prepare("select * from treffer where userid=$userid") or $logger->error($DBI::errstr);
-    $idnresult->execute() or $logger->error($DBI::errstr);
+    my $idnresult=$userdbh->prepare("select * from treffer where userid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($userid) or $logger->error($DBI::errstr);
     $anzahl=$idnresult->rows();
     $idnresult->finish();
   }
   else {
     #  Zuallererst Suchen, wieviele Titel in der Merkliste vorhanden sind.
   
-    my $idnresult=$sessiondbh->prepare("select * from treffer where sessionid='$sessionID'") or $logger->error($DBI::errstr);
-    $idnresult->execute() or $logger->error($DBI::errstr);
+    my $idnresult=$sessiondbh->prepare("select * from treffer where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
     $anzahl=$idnresult->rows();
     $idnresult->finish();
   }

@@ -81,8 +81,8 @@ sub handler {
   
   # Assoziierten View zur Session aus Datenbank holen
   
-  my $idnresult=$sessiondbh->prepare("select viewname from sessionview where sessionid='$sessionID'") or $logger->error($DBI::errstr);
-  $idnresult->execute() or $logger->error($DBI::errstr);
+  my $idnresult=$sessiondbh->prepare("select viewname from sessionview where sessionid = ?") or $logger->error($DBI::errstr);
+  $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
   
   my $result=$idnresult->fetchrow_hashref();
 
@@ -96,43 +96,43 @@ sub handler {
     
     if ($userid){
       
-      my $userresult=$userdbh->prepare("delete from usersession where userid=$userid") or $logger->error($DBI::errstr);
-      $userresult->execute() or $logger->error($DBI::errstr);
+      my $userresult=$userdbh->prepare("delete from usersession where userid = ?") or $logger->error($DBI::errstr);
+      $userresult->execute($userid) or $logger->error($DBI::errstr);
       $userresult->finish();
     }
     
     # Zuallererst loeschen der Trefferliste fuer diese sessionID
     
-    my $idnresult=$sessiondbh->prepare("delete from treffer where sessionid='$sessionID'") or $logger->error($DBI::errstr);
-    $idnresult->execute() or $logger->error($DBI::errstr);
+    my $idnresult=$sessiondbh->prepare("delete from treffer where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
     
-    $idnresult=$sessiondbh->prepare("delete from dbchoice where sessionid='$sessionID'") or $logger->error($DBI::errstr);
-    $idnresult->execute() or $logger->error($DBI::errstr);
+    $idnresult=$sessiondbh->prepare("delete from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
     
-    $idnresult=$sessiondbh->prepare("delete from searchresults where sessionid='$sessionID'") or $logger->error($DBI::errstr);
-    $idnresult->execute() or $logger->error($DBI::errstr);
+    $idnresult=$sessiondbh->prepare("delete from searchresults where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
     
-    $idnresult=$sessiondbh->prepare("delete from sessionview where sessionid='$sessionID'") or $logger->error($DBI::errstr);
-    $idnresult->execute() or $logger->error($DBI::errstr);
+    $idnresult=$sessiondbh->prepare("delete from sessionview where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
     
     $idnresult->finish();
     
     # Kopieren ins sessionlog
     
-    #  $idnresult=$sessiondbh->prepare("insert into sessionlog (sessionid,query,createtime) select session.sessionid,session.query,session.createtime from session where sessionid='$sessionID')") or $logger->error($DBI::errstr);
-    #  $idnresult->execute() or $logger->error($DBI::errstr);
+    #  $idnresult=$sessiondbh->prepare("insert into sessionlog (sessionid,query,createtime) select session.sessionid,session.query,session.createtime from session where sessionid = ?)") or $logger->error($DBI::errstr);
+    #  $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
     
     #  my $endtime = POSIX::strftime('%Y-%m-%d% %H:%M:%S', localtime());
     
-    #  $idnresult=$sessiondbh->prepare("insert into sessionlog (endtime) values ('$endtime')  where sessionid='$sessionID')") or $logger->error($DBI::errstr);
-    #  $idnresult->execute() or $logger->error($DBI::errstr);
+    #  $idnresult=$sessiondbh->prepare("insert into sessionlog (endtime) values (?)  where sessionid = ?)") or $logger->error($DBI::errstr);
+    #  $idnresult->execute($endtime,$sessionID) or $logger->error($DBI::errstr);
     
     #  $idnresult->finish();
     
     # Dann loeschen der Session in der Datenbank
     
-    my $anzahlresult=$sessiondbh->prepare("delete from session where sessionid='$sessionID'") or $logger->error($DBI::errstr);
-    $anzahlresult->execute() or $logger->error($DBI::errstr);
+    my $anzahlresult=$sessiondbh->prepare("delete from session where sessionid = ?") or $logger->error($DBI::errstr);
+    $anzahlresult->execute($sessionID) or $logger->error($DBI::errstr);
     $anzahlresult->finish();
 
     my $template = Template->new({ 

@@ -69,8 +69,8 @@ sub init_new_session {
     
     # Nachschauen, ob es diese ID schon gibt
     
-    my $idnresult=$sessiondbh->prepare("select count(sessionid) from session where sessionid='$sessionID'") or $logger->error($DBI::errstr);
-    $idnresult->execute() or $logger->error($DBI::errstr);
+    my $idnresult=$sessiondbh->prepare("select count(sessionid) from session where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
 
     my @idn=$idnresult->fetchrow_array();
     my $anzahl=$idn[0];
@@ -83,8 +83,8 @@ sub init_new_session {
       
       # Eintrag in die Datenbank
       
-      $idnresult=$sessiondbh->prepare("insert into session (sessionid,createtime) values ('$sessionID','$createtime')") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
+      $idnresult=$sessiondbh->prepare("insert into session (sessionid,createtime) values (?,?)") or $logger->error($DBI::errstr);
+      $idnresult->execute($sessionID,$createtime) or $logger->error($DBI::errstr);
     }
     
     $idnresult->finish();
@@ -104,8 +104,8 @@ sub session_is_valid {
     return 1;
   }
 
-  my $idnresult=$sessiondbh->prepare("select count(sessionid) from session where sessionid='$sessionID'") or $logger->error($DBI::errstr);
-  $idnresult->execute() or $logger->error($DBI::errstr);
+  my $idnresult=$sessiondbh->prepare("select count(sessionid) from session where sessionid = ?") or $logger->error($DBI::errstr);
+  $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
 
   my @idn=$idnresult->fetchrow_array();
   my $anzahl=$idn[0];
@@ -126,9 +126,10 @@ sub get_userid_of_session {
   
   my $logger = get_logger();
 
-  my $userresult=$userdbh->prepare("select userid from usersession where sessionid='$config{servername}:$sessionID'") or $logger->error($DBI::errstr);
+  my $globalsessionID="$config{servername}:$sessionID";
+  my $userresult=$userdbh->prepare("select userid from usersession where sessionid = ?") or $logger->error($DBI::errstr);
 
-  $userresult->execute() or $logger->error($DBI::errstr);
+  $userresult->execute($globalsessionID) or $logger->error($DBI::errstr);
   
   my $userid="";
   
@@ -677,8 +678,8 @@ sub updatelastresultset {
 
   my $resultsetstring=join("|",@resultset);
 
-  my $sessionresult=$sessiondbh->prepare("update session set lastresultset='$resultsetstring' where sessionid='$sessionID'") or $logger->error($DBI::errstr);
-  $sessionresult->execute() or $logger->error($DBI::errstr);
+  my $sessionresult=$sessiondbh->prepare("update session set lastresultset = ? where sessionid = ?") or $logger->error($DBI::errstr);
+  $sessionresult->execute($resultsetstring,$sessionID) or $logger->error($DBI::errstr);
   $sessionresult->finish();
 
   return;

@@ -182,6 +182,9 @@ sub handler {
 
     $userinfo{'nachname'}=$res->{'nachname'};
     $userinfo{'vorname'}=$res->{'vorname'};
+    $userinfo{'strasse'}=$res->{'strasse'};
+    $userinfo{'ort'}=$res->{'ort'};
+    $userinfo{'plz'}=$res->{'plz'};
     $userinfo{'soll'}=$res->{'soll'};
     $userinfo{'gut'}=$res->{'gut'};
     $userinfo{'avanz'}=$res->{'avanz'};

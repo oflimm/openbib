@@ -16,7 +16,7 @@ align="right"><a href="http://[% config.servername %][% config.admin_loc %]?sess
 
 <form method="get" action="http://[% config.servername %][%config.admin_loc %]">
 <input type="hidden" name="action" value="editcat">
-<input type="hidden" name="sessionID" value="$sessionID">
+<input type="hidden" name="sessionID" value="[% sessionID %]">
 
 <table width="100%">
 <tr><th>Neuen Katalog anlegen</th></tr>

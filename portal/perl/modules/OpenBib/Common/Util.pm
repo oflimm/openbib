@@ -119,6 +119,31 @@ sub session_is_valid {
   return 0;
 }
 
+sub get_cred_for_userid {
+  my ($userdbh,$userid)=@_;
+
+  # Log4perl logger erzeugen
+  
+  my $logger = get_logger();
+
+  my $userresult=$userdbh->prepare("select loginname,pin from user where userid = ?") or $logger->error($DBI::errstr);
+
+  $userresult->execute($userid) or $logger->error($DBI::errstr);
+  
+  my @cred=();
+  
+  if ($userresult->rows > 0){
+    my $res=$userresult->fetchrow_hashref();
+     $cred[0]=$res->{loginname};
+     $cred[1]=$res->{pin};
+  }
+
+  $userresult->finish();
+
+  return @cred;
+
+}
+
 sub get_userid_of_session {
   my ($userdbh,$sessionID)=@_;
 
@@ -139,6 +164,28 @@ sub get_userid_of_session {
   }
 
   return $userid;
+}
+
+sub get_targetdb_of_session {
+  my ($userdbh,$sessionID)=@_;
+
+  # Log4perl logger erzeugen
+  
+  my $logger = get_logger();
+
+  my $globalsessionID="$config{servername}:$sessionID";
+  my $userresult=$userdbh->prepare("select db from usersession,logintarget where usersession.sessionid = ? and usersession.targetid = logintarget.targetid") or $logger->error($DBI::errstr);
+
+  $userresult->execute($globalsessionID) or $logger->error($DBI::errstr);
+  
+  my $targetdb="";
+  
+  if ($userresult->rows > 0){
+    my $res=$userresult->fetchrow_hashref();
+    $targetdb=$res->{'db'};
+  }
+
+  return $targetdb;
 }
 
 sub get_css_by_browsertype {

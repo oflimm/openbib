@@ -5,7 +5,13 @@
 [% END %]
 
 <table>
-<tr valign="top"><td align="left">&gt;&gt;&nbsp;<a href="http://[% config.servername %][% config.userprefs_loc %]?sessionID=[% sessionID %];action=showfields" target="body"><b>Grundeinstellungen</b></a>&nbsp;&nbsp;<a href="http://[% config.servername %][% config.databaseprofile_loc %]?sessionID=[% sessionID %];action=show" target="body">Katalogprofile</a></td></tr>
+<tr valign="top"><td align="left">&gt;&gt;&nbsp;<a href="http://[% config.servername %][% config.userprefs_loc %]?sessionID=[% sessionID %];action=showfields" target="body"><b>Grundeinstellungen</b></a>
+
+[% IF !email_valid %]
+&nbsp;&nbsp;<a href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc" target="body">Benutzerkonto</a>
+[% END %]
+
+&nbsp;&nbsp;<a href="http://[% config.servername %][% config.databaseprofile_loc %]?sessionID=[% sessionID %];action=show" target="body">Katalogprofile</a></td></tr>
 </table>
 <p />
 
@@ -44,6 +50,12 @@
 <tr><td><b>Nachname:</b></td><td align="left">&nbsp;[% userinfo.nachname %]</td></tr>
 <tr><td><b>Vorname:</b></td><td align="left">&nbsp;[% userinfo.vorname %]</td></tr>
 <tr><td><b>Geburtsdatum:</b></td><td align="left">&nbsp;[% userinfo.gebdatum %]</td></tr>
+<tr><td><b>Strasse:</b></td><td align="left">&nbsp;[% userinfo.strasse %]</td></tr>
+<tr><td><b>Ort:</b></td><td align="left">
+[% IF userinfo.plz %]
+&nbsp;[% userinfo.plz %]
+[% END %] 
+&nbsp;[% userinfo.ort %]</td></tr>
 </table>
 </td>
 <td>

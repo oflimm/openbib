@@ -398,7 +398,7 @@ HEADER
 	  print "<input type=submit value=\"Auswahl\"></td></tr></table></form>";
 	}
       }
-      print "</table>";
+      print "</table><p>";
       OpenBib::Common::Util::print_footer();
       
       goto LEAVEPROG;
@@ -593,7 +593,7 @@ HEADER
       
       $idnresult->finish();
       
-      print "</table>";    
+      print "</table><p>";    
       OpenBib::Common::Util::print_footer();
       
       goto LEAVEPROG;
@@ -697,7 +697,7 @@ HEADER
       
       $idnresult->finish();
       
-      print "</table>";    
+      print "</table><p>";    
       OpenBib::Common::Util::print_footer();
       
       goto LEAVEPROG;
@@ -1113,7 +1113,7 @@ HEADER
     
   }
   
-  print "</table>\n";
+  print "</table><p>";
   OpenBib::Common::Util::print_footer();
   
 LEAVEPROG: sleep 0;

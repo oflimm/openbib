@@ -112,7 +112,7 @@ sub handler {
 	    nr => '4',
 	   },
 	   {
-	    full => 'Mathematisch-Naturwissenschaftliche Fakult&auml;',
+	    full => 'Mathematisch-Naturwissenschaftliche Fakult&auml;t',
 	    short => '5matnat',
 	    nr => '5',
 	   },
@@ -167,7 +167,7 @@ sub handler {
       $idnresult->execute();
       while (my $result=$idnresult->fetchrow_hashref()){
 	my $dbname=$result->{'dbname'};
-	$checkeddb{$dbname}="checked";
+	$checkeddb{$dbname}="checked=\"checked\"";
       }
       $idnresult->finish();
 
@@ -233,7 +233,7 @@ sub handler {
 
 	my $checked="";
 	if (defined $checkeddb{$pool}){
-          $checked="checked";
+          $checked="checked=\"checked\"";
         }
 
 	push @catdb, { 
@@ -252,7 +252,9 @@ sub handler {
       }
       
       # TT-Data erzeugen
-      
+
+      my $colspan=$maxcolumn*3;
+
       my $ttdata={
 		  title      => 'KUG: Katalogauswahl',
 		  stylesheet => $stylesheet,
@@ -262,6 +264,7 @@ sub handler {
 		  show_testsystem_info => 0,
 		  categories    => $categories,
 		  maxcolumn => $maxcolumn,
+		  colspan => $colspan,
 		  catdb      => \@catdb,
 		  config     => \%config,
 		 };

@@ -1879,7 +1879,7 @@ LASTNEXT
 
     my $titres5;
     while ($titres5=$titresult5->fetchrow_hashref){
-	my $titstatement="select hst,ast,vorlverf,zuergurh from tit where idn=$titres5->{verwidn}";
+	my $titstatement="select hst,ast,vorlverf,zuergurh,vorlunter from tit where idn=$titres5->{verwidn}";
 	my $titresult=$dbh->prepare("$titstatement") or die "Error -- $DBI::errstr";   
 	$titresult->execute();
 	my $titres=$titresult->fetchrow_hashref;
@@ -1896,6 +1896,13 @@ LASTNEXT
 	  $asthst=$titres->{ast};
 	}
 	
+	my $vorlunter=$titres->{vorlunter};
+	
+        if ($vorlunter){
+          $asthst="$asthst : $vorlunter";
+        }
+	
+
 	if ($verfurh){
 	  $asthst=$asthst." / ".$verfurh;
 	}
@@ -2566,10 +2573,6 @@ sub get_mex_by_idn {
     my $lokfn=$mexres1->{'lokfn'};
     my $titidn1=$mexres1->{'titidn'};
 
-    #if ($database ne "instzs") {
-#	$erschverl=" - "
- #   }
-
     $mexresult1->finish();
 
     if ($config{benchmark}){
@@ -2989,49 +2992,48 @@ sub print_warning {
 
 sub input2sgml {
   my ($line,$initialsearch,$withumlaut)=@_;
-  
+
+  # Bei der initialen Suche via Volltext wird eine Normierung auf
+  # ausgeschriebene Umlaute und den Grundbuchstaben bei Diakritika
+  # vorgenommen
+ 
   if ($initialsearch) { 
-    if (!$withumlaut){
-      $line=~s/ü/ue/g; 
-      $line=~s/ä/ae/g;
-      $line=~s/ö/oe/g;
-      $line=~s/Ü/Ue/g;
-      $line=~s/Ä/Ae/g;
-      $line=~s/Ö/Oe/g;
-      $line=~s/ß/ss/g; 
-
-      # Weitere Diakritika
-
-      $line=~s/è/e/g;
-      $line=~s/à/a/g;
-      $line=~s/ò/o/g;
-      $line=~s/ù/u/g;
-      $line=~s/È/e/g;
-      $line=~s/À/a/g;
-      $line=~s/Ò/o/g;
-      $line=~s/Ù/u/g;
-      $line=~s/é/e/g;
-      $line=~s/É/E/g;
-      $line=~s/á/a/g;
-      $line=~s/Á/a/g;
-      $line=~s/í/i/g;
-      $line=~s/Í/I/g;
-      $line=~s/ó/o/g;
-      $line=~s/Ó/O/g;
-      $line=~s/ú/u/g;
-      $line=~s/Ú/U/g;
-      $line=~s/ı/y/g;
-      $line=~s/İ/Y/g;
-
-      if ($line=~/\"/){
-         $line=~s/`/ /g;
-      }
-      else {
-         $line=~s/`/ +/g;
-      }
-
-
-
+    $line=~s/ü/ue/g; 
+    $line=~s/ä/ae/g;
+    $line=~s/ö/oe/g;
+    $line=~s/Ü/Ue/g;
+    $line=~s/Ä/Ae/g;
+    $line=~s/Ö/Oe/g;
+    $line=~s/ß/ss/g; 
+    
+    # Weitere Diakritika
+    
+    $line=~s/è/e/g;
+    $line=~s/à/a/g;
+    $line=~s/ò/o/g;
+    $line=~s/ù/u/g;
+    $line=~s/È/e/g;
+    $line=~s/À/a/g;
+    $line=~s/Ò/o/g;
+    $line=~s/Ù/u/g;
+    $line=~s/é/e/g;
+    $line=~s/É/E/g;
+    $line=~s/á/a/g;
+    $line=~s/Á/a/g;
+    $line=~s/í/i/g;
+    $line=~s/Í/I/g;
+    $line=~s/ó/o/g;
+    $line=~s/Ó/O/g;
+    $line=~s/ú/u/g;
+    $line=~s/Ú/U/g;
+    $line=~s/ı/y/g;
+    $line=~s/İ/Y/g;
+    
+    if ($line=~/\"/){
+      $line=~s/`/ /g;
+    }
+    else {
+      $line=~s/`/ +/g;
     }
     return $line;
   }

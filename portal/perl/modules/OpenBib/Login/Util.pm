@@ -173,7 +173,11 @@ BENKONTO
     }
 
     if ($response=~/^601 AvAnz:(.*)$/){
-      $userinfo{'AVanz'}=$1;
+      $userinfo{'Avanz'}=$1;
+    }
+
+    if ($response=~/^601 BsAnz:(.*)$/){
+      $userinfo{'Bsanz'}=$1;
     }
 
     if ($response=~/^601 VmAnz:(.*)$/){

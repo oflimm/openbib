@@ -4,7 +4,7 @@
 [% PROCESS corporate_banner %] 
 [% END %]
 
-<FORM method="get" id="kvik" action="http://[% config.servername %][% config.virtualsearch_loc %]">
+<FORM method="get" id="openbib" action="http://[% config.servername %][% config.virtualsearch_loc %]">
 <INPUT type="hidden" name="hitrange" value=-1>
 <INPUT type="hidden" name="view" value="[% view %]">
 <INPUT type="hidden" name="sessionID" value="[% sessionID %]">
@@ -13,7 +13,7 @@
 
 <table BORDER=0 CELLSPACING=0 CELLPADDING=0 width="100%">
   <tr bgcolor="lightblue">
-    <td  width="20">&nbsp;</td><td valign="middle" ALIGN=left height="32"><img src="/images/kvik/recherche2.png" alt="Recherche"></td>
+    <td  width="20">&nbsp;</td><td valign="middle" ALIGN=left height="32"><img src="/images/openbib/recherche2.png" alt="Recherche"></td>
   </tr>
 </table>
 

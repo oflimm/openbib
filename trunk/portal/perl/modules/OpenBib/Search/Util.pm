@@ -2,7 +2,7 @@
 #
 #  OpenBib::Search::Util
 #
-#  Dieses File ist (C) 2004 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2005 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -29,6 +29,8 @@ use strict;
 use warnings;
 
 use Log::Log4perl qw(get_logger :levels);
+
+use SOAP::Lite;
 
 use OpenBib::Config;
 
@@ -64,14 +66,13 @@ if ($OpenBib::Config::config{benchmark}){
 ## $searchmultipleaut
 ## $searchmode
 ## $showmexintit
-## $casesensitive
 ## $hitrange
 ## $sorttype
 ## $database
 
 sub get_aut_by_idn {
 
-    my ($autidn,$mode,$dbh,$benchmark,$searchmultipleaut,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID)=@_;
+    my ($autidn,$mode,$dbh,$benchmark,$searchmultipleaut,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID)=@_;
 
     # Log4perl logger erzeugen
     
@@ -114,7 +115,7 @@ sub get_aut_by_idn {
     if (($mode == 2)||($mode == 3)){
       print_inst_head($database,"base");
 
-      print_mult_sel_form($searchmode,$casesensitive,$hitrange,$rating,$bookinfo,$showmexintit,$database,$dbmode,$sessionID);
+      print_mult_sel_form($searchmode,$hitrange,$rating,$bookinfo,$database,$dbmode,$sessionID);
       
 	if ($searchmultipleaut){
 	    print "\n<hr>\n";
@@ -170,7 +171,7 @@ sub get_aut_by_idn {
 	my @requests=("select titidn from titverf where verfverw=$autres1->{idn}","select titidn from titpers where persverw=$autres1->{idn}","select titidn from titgpers where persverw=$autres1->{idn}");
 	my $titelnr=get_number(\@requests,$dbh);
 
-	print_url_category("Anzahl Titel","$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&rating=$rating&bookinfo=$bookinfo&showmexintit=$showmexintit&casesensitive=$casesensitive&hitrange=$hitrange&sorttype=$sorttype&sortorder=$sortorder&database=$database&searchtitofaut=$autres1->{idn}","$titelnr</a>");
+	print_url_category("Anzahl Titel","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;searchtitofaut=$autres1->{idn}","$titelnr</a>");
 
     }
 
@@ -178,7 +179,7 @@ sub get_aut_by_idn {
 
 	print "<tr><td><input type=checkbox name=searchmultipleaut value=$autres1->{idn} ";
 	print "></td><td>";
-	print "<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;sorttype=$sorttype&amp;sortorder=$sortorder&amp;database=$database&amp;searchsingleaut=$autres1->{idn}&amp;generalsearch=searchsingleaut\">";
+	print "<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;searchsingleaut=$autres1->{idn};generalsearch=searchsingleaut\">";
 	print "<strong>$autres1->{ans}</strong></a></td></tr>\n";
 	return;
     }
@@ -228,7 +229,7 @@ sub get_aut_ans_by_idn {
 
 sub get_aut_set_by_idn {
 
-    my ($autidn,$dbh,$searchmultipleaut,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID)=@_;
+    my ($autidn,$dbh,$searchmultipleaut,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID)=@_;
 
     # Log4perl logger erzeugen
     
@@ -263,7 +264,7 @@ sub get_aut_set_by_idn {
 
     print_inst_head($database,"base");
     
-    print_mult_sel_form($searchmode,$casesensitive,$hitrange,$rating,$bookinfo,$showmexintit,$database,$dbmode,$sessionID);
+    print_mult_sel_form($searchmode,$hitrange,$rating,$bookinfo,$database,$dbmode,$sessionID);
     
     if ($searchmultipleaut){
       print "\n<hr>\n";
@@ -316,7 +317,7 @@ sub get_aut_set_by_idn {
 
     my $titelnr=get_number(\@requests,$dbh);
     
-    print_url_category("Anzahl Titel","$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&rating=$rating&bookinfo=$bookinfo&showmexintit=$showmexintit&casesensitive=$casesensitive&hitrange=$hitrange&sorttype=$sorttype&sortorder=$sortorder&database=$database&searchtitofaut=$autres1->{idn}","$titelnr</a>");
+    print_url_category("Anzahl Titel","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;searchtitofaut=$autres1->{idn}","$titelnr</a>");
 
     print "</table>";
     return;
@@ -340,14 +341,13 @@ sub get_aut_set_by_idn {
 ## $searchmultiplekor
 ## $searchmode
 ## $showmexintit
-## $casesensitive
 ## $hitrange
 ## $sorttype
 ## $database
 
 sub get_kor_by_idn {
 
-    my ($koridn,$mode,$dbh,$benchmark,$searchmultiplekor,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID)=@_;
+    my ($koridn,$mode,$dbh,$benchmark,$searchmultiplekor,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID)=@_;
 
     # Log4perl logger erzeugen
     
@@ -391,7 +391,7 @@ sub get_kor_by_idn {
     if (($mode == 2)||($mode == 3)){
       print_inst_head($database,"base");
 
-      print_mult_sel_form($searchmode,$casesensitive,$hitrange,$rating,$bookinfo,$showmexintit,$database,$dbmode,$sessionID);
+      print_mult_sel_form($searchmode,$hitrange,$rating,$bookinfo,$database,$dbmode,$sessionID);
 
 	if ($searchmultiplekor){
 	    print "\n<hr>\n";
@@ -491,13 +491,13 @@ sub get_kor_by_idn {
 	my @requests=("select titidn from titurh where urhverw=$korres1->{idn}","select titidn from titkor where korverw=$korres1->{idn}");
 	my $titelnr=get_number(\@requests,$dbh);
 
-	print_url_category("Anzahl Titel","$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&rating=$rating&bookinfo=$bookinfo&showmexintit=$showmexintit&casesensitive=$casesensitive&hitrange=$hitrange&sorttype=$sorttype&sortorder=$sortorder&database=$database&searchtitofurhkor=$korres1->{idn}","$titelnr</a>");
+	print_url_category("Anzahl Titel","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;searchtitofurhkor=$korres1->{idn}","$titelnr</a>");
     }
 
     if ($mode == 5){
 	print "<tr><td><input type=checkbox name=searchmultiplekor value=$korres1->{idn} ";
 	print "></td><td>";
-	print "<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;sorttype=$sorttype&amp;sortorder=$sortorder&amp;database=$database&amp;searchsinglekor=$korres1->{idn}\">";
+	print "<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;searchsinglekor=$korres1->{idn}\">";
 	print "<strong>$korres1->{korans}</strong></a></td></tr>\n";
 	return;
     }
@@ -545,7 +545,7 @@ sub get_kor_ans_by_idn {
 }
 
 sub get_kor_set_by_idn {
-  my ($koridn,$dbh,$searchmultiplekor,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID)=@_;
+  my ($koridn,$dbh,$searchmultiplekor,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID)=@_;
 
   # Log4perl logger erzeugen
   
@@ -581,7 +581,7 @@ sub get_kor_set_by_idn {
   
   print_inst_head($database,"base");
   
-  print_mult_sel_form($searchmode,$casesensitive,$hitrange,$rating,$bookinfo,$showmexintit,$database,$dbmode,$sessionID);
+  print_mult_sel_form($searchmode,$hitrange,$rating,$bookinfo,$database,$dbmode,$sessionID);
   
   if ($searchmultiplekor){
     print "\n<hr>\n";
@@ -676,7 +676,7 @@ sub get_kor_set_by_idn {
   my @requests=("select titidn from titurh where urhverw=$korres1->{idn}","select titidn from titkor where korverw=$korres1->{idn}");
   my $titelnr=get_number(\@requests,$dbh);
 
-  print_url_category("Anzahl Titel","$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&rating=$rating&bookinfo=$bookinfo&showmexintit=$showmexintit&casesensitive=$casesensitive&hitrange=$hitrange&sorttype=$sorttype&sortorder=$sortorder&database=$database&searchtitofurhkor=$korres1->{idn}","$titelnr</a>");
+  print_url_category("Anzahl Titel","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;searchtitofurhkor=$korres1->{idn}","$titelnr</a>");
 
   print "</table>";
   return;
@@ -700,14 +700,13 @@ sub get_kor_set_by_idn {
 ## $searchmultipleswt
 ## $searchmode
 ## $showmexintit
-## $casesensitive
 ## $hitrange
 ## $sorttype
 ## $database
 
 sub get_swt_by_idn {
 
-    my ($swtidn,$mode,$dbh,$benchmark,$searchmultipleswt,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$rdbinfo,$sessionID)=@_;
+    my ($swtidn,$mode,$dbh,$benchmark,$searchmultipleswt,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$rdbinfo,$sessionID)=@_;
 
     # Log4perl logger erzeugen
     
@@ -756,7 +755,7 @@ sub get_swt_by_idn {
     if (($mode == 2)||($mode == 3)){
       print_inst_head($database,"base");
 
-      print_mult_sel_form($searchmode,$casesensitive,$hitrange,$rating,$bookinfo,$showmexintit,$database,$dbmode,$sessionID);
+      print_mult_sel_form($searchmode,$hitrange,$rating,$bookinfo,$database,$dbmode,$sessionID);
 
       if ($searchmultipleswt){
 	print "\n<hr>\n";
@@ -900,7 +899,7 @@ sub get_swt_by_idn {
 	my @requests=("select titidn from titswtlok where swtverw=$swtres1->{idn}");
 	my $swtanzahl=get_number(\@requests,$dbh);
 	
-	print_url_category("Anzahl Titel","$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&rating=$rating&bookinfo=$bookinfo&showmexintit=$showmexintit&casesensitive=$casesensitive&hitrange=$hitrange&sorttype=$sorttype&sortorder=$sortorder&database=$database&searchtitofswt=$swtres1->{idn}","$swtanzahl</a>");
+	print_url_category("Anzahl Titel","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;searchtitofswt=$swtres1->{idn}","$swtanzahl</a>");
 	
       }
       print "</table>";
@@ -908,7 +907,7 @@ sub get_swt_by_idn {
     if ($mode == 5){
       print "<tr><td><input type=checkbox name=searchmultipleswt value=$swtres1->{idn} ";
       print "></td><td><strong>";
-      print "<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;sorttype=$sorttype&amp;sortorder=$sortorder&amp;database=$database&amp;searchsingleswt=$swtres1->{idn}\">";
+      print "<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;searchsingleswt=$swtres1->{idn}\">";
       print "$swtres1->{schlagw}</strong></a></td>";
     }
     return;
@@ -946,7 +945,7 @@ sub get_swt_ans_by_idn {
 
 sub get_swt_set_by_idn {
   
-  my ($swtidn,$dbh,$searchmultipleswt,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$rdbinfo,$sessionID)=@_;
+  my ($swtidn,$dbh,$searchmultipleswt,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$rdbinfo,$sessionID)=@_;
   
   # Log4perl logger erzeugen
   
@@ -982,7 +981,7 @@ sub get_swt_set_by_idn {
   
   print_inst_head($database,"base");
   
-  print_mult_sel_form($searchmode,$casesensitive,$hitrange,$rating,$bookinfo,$showmexintit,$database,$dbmode,$sessionID);
+  print_mult_sel_form($searchmode,$hitrange,$rating,$bookinfo,$database,$dbmode,$sessionID);
   
   if ($searchmultipleswt){
     print "\n<hr>\n";
@@ -1029,7 +1028,7 @@ sub get_swt_set_by_idn {
   my @requests=("select titidn from titswtlok where swtverw=$swtres1->{idn}");
   my $swtanzahl=get_number(\@requests,$dbh);
   
-  print_url_category("Anzahl Titel","$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&rating=$rating&bookinfo=$bookinfo&showmexintit=$showmexintit&casesensitive=$casesensitive&hitrange=$hitrange&sorttype=$sorttype&sortorder=$sortorder&database=$database&searchtitofswt=$swtres1->{idn}","$swtanzahl</a>");
+  print_url_category("Anzahl Titel","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;searchtitofswt=$swtres1->{idn}","$swtanzahl</a>");
   
   print "</table>";
   return;
@@ -1053,14 +1052,13 @@ sub get_swt_set_by_idn {
 ## $searchmultiplenot
 ## $searchmode
 ## $showmexintit
-## $casesensitive
 ## $hitrange
 ## $sorttype
 ## $database
 
 sub get_not_by_idn {
 
-    my ($notidn,$mode,$dbh,$benchmark,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID)=@_;
+    my ($notidn,$mode,$dbh,$benchmark,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID)=@_;
 
     # Log4perl logger erzeugen
     
@@ -1093,7 +1091,7 @@ sub get_not_by_idn {
     
     if (($mode == 2)||($mode == 3)){
       print_inst_head($database,"base");
-      print_mult_sel_form($searchmode,$casesensitive,$hitrange,$rating,$bookinfo,$showmexintit,$database,$dbmode,$sessionID);
+      print_mult_sel_form($searchmode,$hitrange,$rating,$bookinfo,$database,$dbmode,$sessionID);
 
 #	print "<h1>Gefundene Notation</h1>\n";
 	print "<table cellpadding=2>";
@@ -1181,7 +1179,7 @@ sub get_not_by_idn {
 	  my @requests=("select titidn from titnot where notidn=$notres1->{idn}");
 	  my $anzahl=get_number(\@requests,$dbh);
 	  
-	  print_url_category("Anzahl Titel","$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&rating=$rating&bookinfo=$bookinfo&showmexintit=$showmexintit&casesensitive=$casesensitive&hitrange=$hitrange&sorttype=$sorttype&sortorder=$sortorder&database=$database&searchtitofnot=$notres1->{idn}","$anzahl</a>");
+	  print_url_category("Anzahl Titel","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;searchtitofnot=$notres1->{idn}","$anzahl</a>");
 
 	}
 	print "</table>";
@@ -1200,7 +1198,7 @@ sub get_not_by_idn {
     if ($mode == 5){
 	print "<tr><td><input type=checkbox name=searchsinglenot value=$notres1->{idn} ";
 	print "></td><td>";
-	print "<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;sorttype=$sorttype&amp;sortorder=$sortorder&amp;database=$database&amp;searchsinglenot=$notres1->{idn}\">";
+	print "<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;searchsinglenot=$notres1->{idn}\">";
 	print "<strong>$notres1->{notation}</strong></a></td>";
 	return;
     }
@@ -1227,10 +1225,8 @@ sub get_not_by_idn {
 ## $searchmultipleswt
 ## $searchmultiplekor
 ## $searchmultipletit
-## $searchmultiplemex
 ## $searchmode
 ## $showmexintit
-## $casesensitive
 ## $hitrange
 ## $rating
 ## $database
@@ -1242,7 +1238,7 @@ sub get_not_by_idn {
 
 sub get_tit_by_idn { 
 
-    my ($titidn,$hint,$mode,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmultiplemex,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$rdbinfo,$rtiteltyp,$rsigel,$rdbases,$rbibinfo,$sessionID)=@_;
+    my ($titidn,$hint,$mode,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$rdbinfo,$rtiteltyp,$rsigel,$rdbases,$rbibinfo,$sessionID)=@_;
 
     # Log4perl logger erzeugen
     
@@ -1350,7 +1346,7 @@ sub get_tit_by_idn {
       my $titidn10;
       foreach $titidn10 (@titres10){
 	
-	push @verfasserarray, get_kor_by_idn("$titidn10",1,$dbh,$benchmark,$searchmultiplekor,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$sessionID);
+	push @verfasserarray, get_kor_by_idn("$titidn10",1,$dbh,$benchmark,$searchmultiplekor,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$sessionID);
       }
       
       # Ausgabe der K"orperschaften
@@ -1360,7 +1356,7 @@ sub get_tit_by_idn {
       my $titidn11;
       foreach $titidn11 (@titres11){
 	
-	push @verfasserarray, get_kor_by_idn("$titidn11",1,$dbh,$benchmark,$searchmultiplekor,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$sessionID);
+	push @verfasserarray, get_kor_by_idn("$titidn11",1,$dbh,$benchmark,$searchmultiplekor,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$sessionID);
 	
       }
 
@@ -1417,7 +1413,7 @@ sub get_tit_by_idn {
 
 		  $retval.="<strong><span id=\"rlauthor\">$verfasserstring</span></strong><br>";
 
-		  $retval.="<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchsingletit=$titres1->{idn}\"><strong><span id=\"rltitle\">$tithst[0] ; $gtmzus[0]</span></strong></a>, <span id=\"rlpublisher\">$titres1->{verlag}</span> <span id=\"rlyearofpub\">$showerschjahr</span></td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><span id=\"rlmerken\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></span></a></td><td align=left><b>$signaturstring</b>";
+		  $retval.="<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;database=$database;searchsingletit=$titres1->{idn}\"><strong><span id=\"rltitle\">$tithst[0] ; $gtmzus[0]</span></strong></a>, <span id=\"rlpublisher\">$titres1->{verlag}</span> <span id=\"rlyearofpub\">$showerschjahr</span></td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=insert;database=$database;singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><span id=\"rlmerken\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></span></a></td><td align=left><b>$signaturstring</b>";
 
 
 		}
@@ -1468,7 +1464,7 @@ sub get_tit_by_idn {
 		  
 		  $retval.="<strong><span id=\"rlauthor\">$verfasserstring</span></strong><br>";
   
-		  $retval.="<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchsingletit=$titres1->{idn}\"><strong><span id=\"rltitle\">$tithst[0] ; $gtfzus[0]</span></strong></a>, <span id=\"rlpublisher\">$titres1->{verlag}</span> <span id=\"rlyearofpub\">$showerschjahr</span></td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>$signaturstring</b>";
+		  $retval.="<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;database=$database;searchsingletit=$titres1->{idn}\"><strong><span id=\"rltitle\">$tithst[0] ; $gtfzus[0]</span></strong></a>, <span id=\"rlpublisher\">$titres1->{verlag}</span> <span id=\"rlyearofpub\">$showerschjahr</span></td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=insert;database=$database;singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=insert;database=$database;singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>$signaturstring</b>";
 
 
 		}		    
@@ -1502,7 +1498,7 @@ sub get_tit_by_idn {
 
 		  $retval.="<strong><span id=\"rlauthor\">$verfasserstring</span></strong><br>";
 
-		  $retval.="<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchsingletit=$titres1->{idn}\"><strong><span id=\"rltitle\">$tithst[0] ; $gtfzus[0]</span></strong></a>, <span id=\"rlpublisher\">$titres1->{verlag}</span> <span id=\"rlyearofpub\">$showerschjahr</span></td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>$signaturstring</b>";		
+		  $retval.="<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;database=$database;searchsingletit=$titres1->{idn}\"><strong><span id=\"rltitle\">$tithst[0] ; $gtfzus[0]</span></strong></a>, <span id=\"rlpublisher\">$titres1->{verlag}</span> <span id=\"rlyearofpub\">$showerschjahr</span></td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=insert;database=$database;singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=insert;database=$database;singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>$signaturstring</b>";		
 		}
 		if ($mode == 7){
 		  my $showerschjahr=$titres1->{erschjahr};
@@ -1515,7 +1511,7 @@ sub get_tit_by_idn {
 		  my @gtmzus=OpenBib::Common::Util::get_sql_result(\@requests,$dbh,$benchmark);
 
 		$retval.="<strong><span id=\"rlauthor\">$verfasserstring</span></strong><br>";
-		$retval.="<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchsingletit=$titres1->{idn}\"><strong><span id=\"rltitle\">$tithst[0] ; $gtmzus[0]</span></strong></a>, <span id=\"rlpublisher\">$titres1->{verlag}</span> <span id=\"rlyearofpub\">$showerschjahr</span></td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>$signaturstring</b>";		
+		$retval.="<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;database=$database;searchsingletit=$titres1->{idn}\"><strong><span id=\"rltitle\">$tithst[0] ; $gtmzus[0]</span></strong></a>, <span id=\"rlpublisher\">$titres1->{verlag}</span> <span id=\"rlyearofpub\">$showerschjahr</span></td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=insert;database=$database;singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=insert;database=$database;singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>$signaturstring</b>";		
 
 		}			     
 		if ($mode == 8){
@@ -1529,7 +1525,7 @@ sub get_tit_by_idn {
 		  my @invkzus=OpenBib::Common::Util::get_sql_result(\@requests,$dbh,$benchmark);
  		$retval.="<strong><span id=\"rlauthor\">$verfasserstring</span></strong><br>";
 
-		$retval.="<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchsingletit=$titres1->{idn}\"><strong><span id=\"rltitle\">$tithst[0] ; $invkzus[0]</span></strong></a>, <span id=\"rlpublisher\">$titres1->{verlag}</span> <span id=\"rlyearofpub\">$showerschjahr</span></td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>$signaturstring</b>";		
+		$retval.="<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;database=$database;searchsingletit=$titres1->{idn}\"><strong><span id=\"rltitle\">$tithst[0] ; $invkzus[0]</span></strong></a>, <span id=\"rlpublisher\">$titres1->{verlag}</span> <span id=\"rlyearofpub\">$showerschjahr</span></td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=insert;database=$database;singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=insert;database=$database;singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>$signaturstring</b>";		
 		}			     
 	    }
 	  }
@@ -1550,7 +1546,7 @@ sub get_tit_by_idn {
 		}
 
 		$retval.="<strong><span id=\"rlauthor\">$verfasserstring</span></strong><br>";
-		$retval.=" <a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;sorttype=$sorttype&amp;sortorder=$sortorder&amp;database=$database&amp;searchsingletit=$titres1->{idn}\">";
+		$retval.=" <a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;searchsingletit=$titres1->{idn}\">";
 
 		  my $showerschjahr=$titres1->{erschjahr};
 
@@ -1567,7 +1563,7 @@ sub get_tit_by_idn {
 		  $titstring=$titres1->{sachlben};
 		}
 
-		$retval.="<strong><span id=\"rltitle\">$titstring</span></strong></a>, <span id=\"rlpublisher\">$titres1->{verlag}</span> <span id=\"rlyearofpub\">$showerschjahr</span></td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>$signaturstring</b>";
+		$retval.="<strong><span id=\"rltitle\">$titstring</span></strong></a>, <span id=\"rlpublisher\">$titres1->{verlag}</span> <span id=\"rlyearofpub\">$showerschjahr</span></td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=insert;database=$database;singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=insert;database=$database;singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>$signaturstring</b>";
 		
 	      }
 	$retval.="</td></tr>\n";
@@ -1635,7 +1631,7 @@ sub get_tit_by_idn {
       $lasttiturl=$1;
       my ($lastdatabase,$lastkatkey)=split(":",$lasttiturl);
       $lasttiturl=<< "LAST";
-<a href="$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&rating=$rating&bookinfo=$bookinfo&showmexintit=$showmexintit&casesensitive=$casesensitive&hitrange=$hitrange&sorttype=$sorttype&sortorder=$sortorder&database=$lastdatabase&searchsingletit=$lastkatkey">[Vorheriger Titel]</a>
+<a href="$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$lastdatabase;searchsingletit=$lastkatkey">[Vorheriger Titel]</a>
 LAST
     }
     else {
@@ -1646,7 +1642,7 @@ LAST
       $nexttiturl=$1;
       my ($nextdatabase,$nextkatkey)=split(":",$nexttiturl);
       $nexttiturl=<< "NEXT";
-<a href="$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&rating=$rating&bookinfo=$bookinfo&showmexintit=$showmexintit&casesensitive=$casesensitive&hitrange=$hitrange&sorttype=$sorttype&sortorder=$sortorder&database=$nextdatabase&searchsingletit=$nextkatkey">[N&auml;chster Titel]</a>
+<a href="$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$nextdatabase;searchsingletit=$nextkatkey">[N&auml;chster Titel]</a>
 NEXT
     }
     else {
@@ -1657,7 +1653,7 @@ NEXT
 #    close(DEB);
 
     print_inst_head($database,"extended",$sessionID,$titidn);
-    print_mult_sel_form($searchmode,$casesensitive,$hitrange,$rating,$bookinfo,$showmexintit,$database,$dbmode,$sessionID);
+    print_mult_sel_form($searchmode,$hitrange,$rating,$bookinfo,$database,$dbmode,$sessionID);
 
     if ($searchmultipletit){
 	print "\n<hr>\n";
@@ -1686,7 +1682,7 @@ LASTNEXT
     # Ausgabe der Toolzeile fuer Merkliste
 
 
-#    print "<a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\">In Merkliste</a><hr>\n";
+#    print "<a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=insert;database=$database;singleidn=$titidn\" target=\"header\">In Merkliste</a><hr>\n";
 
     print "<p>\n";
 
@@ -1710,7 +1706,7 @@ LASTNEXT
     my $titidn8;
     foreach $titidn8 (@titres8){
 
-      print_url_category_global("Verfasser","$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&rating=$rating&bookinfo=$bookinfo&showmexintit=$showmexintit&casesensitive=$casesensitive&hitrange=$hitrange&sorttype=$sorttype&sortorder=$sortorder&database=$database&verf=$titidn8&generalsearch=verf",get_aut_ans_by_idn("$titidn8",$dbh)."</a>","verf",$sorttype,$sessionID);
+      print_url_category_global("Verfasser","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;verf=$titidn8;generalsearch=verf",get_aut_ans_by_idn("$titidn8",$dbh)."</a>","verf",$sorttype,$sessionID);
 
     }
 
@@ -1721,7 +1717,7 @@ LASTNEXT
     my $titidn9;
     foreach $titidn9 (@titres9){
 
-      print_url_category_global("Person","$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&rating=$rating&bookinfo=$bookinfo&showmexintit=$showmexintit&casesensitive=$casesensitive&hitrange=$hitrange&sorttype=$sorttype&sortorder=$sortorder&database=$database&pers=$titidn9&generalsearch=pers",get_aut_ans_by_idn("$titidn9",$dbh)."</a>","verf",$sorttype,$sessionID);
+      print_url_category_global("Person","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;pers=$titidn9;generalsearch=pers",get_aut_ans_by_idn("$titidn9",$dbh)."</a>","verf",$sorttype,$sessionID);
 
     }
 
@@ -1732,7 +1728,7 @@ LASTNEXT
     my $titidn13;
     foreach $titidn13 (@titres13){
 
-      print_url_category_global("Gefeierte Person","$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&rating=$rating&bookinfo=$bookinfo&showmexintit=$showmexintit&casesensitive=$casesensitive&hitrange=$hitrange&sorttype=$sorttype&sortorder=$sortorder&database=$database&pers=$titidn13&generalsearch=pers",get_aut_ans_by_idn("$titidn13",$dbh)."</a>","verf",$sorttype,$sessionID);
+      print_url_category_global("Gefeierte Person","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;pers=$titidn13;generalsearch=pers",get_aut_ans_by_idn("$titidn13",$dbh)."</a>","verf",$sorttype,$sessionID);
 
     }
 
@@ -1743,7 +1739,7 @@ LASTNEXT
     my $titidn10;
     foreach $titidn10 (@titres10){
 
-      print_url_category_global("Urheber","$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&rating=$rating&bookinfo=$bookinfo&showmexintit=$showmexintit&casesensitive=$casesensitive&hitrange=$hitrange&sorttype=$sorttype&sortorder=$sortorder&database=$database&urh=$titidn10&generalsearch=urh",get_kor_by_idn("$titidn10",1,$dbh,$benchmark,$searchmultiplekor,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$sessionID)."</a>","kor",$sorttype,$sessionID);
+      print_url_category_global("Urheber","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;urh=$titidn10;generalsearch=urh",get_kor_by_idn("$titidn10",1,$dbh,$benchmark,$searchmultiplekor,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$sessionID)."</a>","kor",$sorttype,$sessionID);
     }
 
     # Ausgabe der K"orperschaften
@@ -1753,7 +1749,7 @@ LASTNEXT
     my $titidn11;
     foreach $titidn11 (@titres11){
 
-      print_url_category_global("K&ouml;rperschaft","$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&rating=$rating&bookinfo=$bookinfo&showmexintit=$showmexintit&casesensitive=$casesensitive&hitrange=$hitrange&sorttype=$sorttype&sortorder=$sortorder&database=$database&kor=$titidn11&generalsearch=kor",get_kor_by_idn("$titidn11",1,$dbh,$benchmark,$searchmultiplekor,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$sessionID)."</a>","kor",$sorttype,$sessionID);
+      print_url_category_global("K&ouml;rperschaft","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;kor=$titidn11;generalsearch=kor",get_kor_by_idn("$titidn11",1,$dbh,$benchmark,$searchmultiplekor,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$sessionID)."</a>","kor",$sorttype,$sessionID);
 
     }
 
@@ -1953,7 +1949,7 @@ LASTNEXT
 	$titresult->execute($titres4->{verwidn}) or $logger->error($DBI::errstr);
 	my $titres=$titresult->fetchrow_hashref;
 
-	print_url_category("GTM","$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&rating=$rating&bookinfo=$bookinfo&showmexintit=$showmexintit&casesensitive=$casesensitive&hitrange=$hitrange&sorttype=$sorttype&sortorder=$sortorder&database=$database&singlegtm=$titres4->{verwidn}&generalsearch=singlegtm","$titres->{hst}</a> ; $titres4->{zus}");
+	print_url_category("GTM","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;singlegtm=$titres4->{verwidn};generalsearch=singlegtm","$titres->{hst}</a> ; $titres4->{zus}");
 
     }
     $titresult4->finish();
@@ -2010,7 +2006,7 @@ LASTNEXT
 	  $asthst=$asthst." / ".$verfurh;
 	}
 
-	print_url_category("GTF","$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&rating=$rating&bookinfo=$bookinfo&showmexintit=$showmexintit&casesensitive=$casesensitive&hitrange=$hitrange&sorttype=$sorttype&sortorder=$sortorder&database=$database&singlegtf=$titres5->{verwidn}&generalsearch=singlegtf","$asthst</a> ; $titres5->{zus}");
+	print_url_category("GTF","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;singlegtf=$titres5->{verwidn};generalsearch=singlegtf","$asthst</a> ; $titres5->{zus}");
 
     }
     $titresult5->finish();
@@ -2105,7 +2101,7 @@ LASTNEXT
 	  $zusatz=~s/^.+? \; (.+?)$/$1/;
 	}
 
-	print_url_category("IN verkn","$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&rating=$rating&bookinfo=$bookinfo&showmexintit=$showmexintit&casesensitive=$casesensitive&hitrange=$hitrange&sorttype=$sorttype&sortorder=$sortorder&database=$database&singlegtf=$titverw&generalsearch=singlegtf","$verkn</a> ; $zusatz ");
+	print_url_category("IN verkn","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;singlegtf=$titverw;generalsearch=singlegtf","$verkn</a> ; $zusatz ");
 
     }
 
@@ -2416,7 +2412,7 @@ LASTNEXT
     my $titidn7;
     foreach $titidn7 (@titres7){
 
-      print_url_category_global("Schlagwort","$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&rating=$rating&bookinfo=$bookinfo&showmexintit=$showmexintit&casesensitive=$casesensitive&hitrange=$hitrange&sorttype=$sorttype&sortorder=$sortorder&database=$database&swt=$titidn7&generalsearch=swt",get_swt_ans_by_idn("$titidn7",$dbh)."</a>","swt",$sorttype,$sessionID);
+      print_url_category_global("Schlagwort","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;swt=$titidn7;generalsearch=swt",get_swt_ans_by_idn("$titidn7",$dbh)."</a>","swt",$sorttype,$sessionID);
 
     }
 
@@ -2427,7 +2423,7 @@ LASTNEXT
     my $titidn12;
     foreach $titidn12 (@titres12){
 
-      print_url_category("Notation","$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&rating=$rating&bookinfo=$bookinfo&showmexintit=$showmexintit&casesensitive=$casesensitive&hitrange=$hitrange&sorttype=$sorttype&sortorder=$sortorder&database=$database&notation=$titidn12&generalsearch=not",get_not_by_idn("$titidn12",1,$dbh,$benchmark,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$sessionID)."</a>");
+      print_url_category("Notation","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;notation=$titidn12;generalsearch=not",get_not_by_idn("$titidn12",1,$dbh,$benchmark,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$sessionID)."</a>");
 
     }
 
@@ -2497,7 +2493,7 @@ LASTNEXT
     my $verkntit=get_number(\@requests,$dbh);
       if ($verkntit > 0){
 
-	print_url_category("B&auml;nde","$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&rating=$rating&bookinfo=$bookinfo&showmexintit=$showmexintit&casesensitive=$casesensitive&hitrange=$hitrange&sorttype=$sorttype&sortorder=$sortorder&database=$database&gtmtit=$titres1->{idn}&generalsearch=gtmtit","$verkntit</a>");
+	print_url_category("B&auml;nde","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;gtmtit=$titres1->{idn};generalsearch=gtmtit","$verkntit</a>");
 
     }
 
@@ -2506,7 +2502,7 @@ LASTNEXT
     @requests=("select titidn from titgtf where verwidn=$titres1->{idn}");
     $verkntit=get_number(\@requests,$dbh);
     if ($verkntit > 0){
-      print_url_category("St&uuml;cktitel","$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&rating=$rating&bookinfo=$bookinfo&showmexintit=$showmexintit&casesensitive=$casesensitive&hitrange=$hitrange&sorttype=$sorttype&sortorder=$sortorder&database=$database&gtftit=$titres1->{idn}&generalsearch=gtftit","$verkntit</a>");
+      print_url_category("St&uuml;cktitel","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;gtftit=$titres1->{idn};generalsearch=gtftit","$verkntit</a>");
     }
 
     # Ausgabe der Anzahl verkn"upfter IN verkn.
@@ -2515,50 +2511,146 @@ LASTNEXT
     $verkntit=get_number(\@requests,$dbh);
     if ($verkntit > 0){
 
-      print_url_category("Teil. UW","$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&rating=$rating&bookinfo=$bookinfo&showmexintit=$showmexintit&casesensitive=$casesensitive&hitrange=$hitrange&sorttype=$sorttype&sortorder=$sortorder&database=$database&invktit=$titres1->{idn}&generalsearch=invktit","$verkntit</a>");
+      print_url_category("Teil. UW","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;invktit=$titres1->{idn};generalsearch=invktit","$verkntit</a>");
 
     }
     
-    # Ausgabe der Anzahl verkn"upfter Exemplardaten
+    # Gegebenenfalls bestimmung der Ausleihinfo fuer Exemplare
 
-    @requests=("select idn from mex where titidn=$titres1->{idn}");
-    my @verknmex=OpenBib::Common::Util::get_sql_result(\@requests,$dbh,$benchmark);
+    my $circexlist=undef;
 
-    if (!$showmexintit){
-	if ($#verknmex >= 0){
+    if ($circ){
 
-	  print_url_category("Exemplare","$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&rating=$rating&bookinfo=$bookinfo&showmexintit=$showmexintit&casesensitive=$casesensitive&hitrange=$hitrange&sorttype=$sorttype&sortorder=$sortorder&database=$database&mextit=$titres1->{idn}&generalsearch=mextit",$#verknmex+1);
+      my $endpoint="http://arwen.sigtrap.de:9000";
+#      my $endpoint="http://arwen.sigtrap.de/cgi-bin/openbib-ws.pl";
+      my $soap = SOAP::Lite
+	-> uri("http://arwen.sigtrap.de/MediaStatus")
+	  -> proxy($endpoint);
+      my $result = $soap->get_mediastatus($titres1->{idn},'sisis');
+      
+      unless ($result->fault) {
+	$circexlist=$result->result;
+      }
+      else {
+	$logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+      }
+    }
 
-	}
-	print "</table>\n";
+    # Bei einer Ausleihbibliothek haben - falls Exemplarinformationen
+    # in den Ausleihdaten vorhanden sind -- diese Vorrange ueber die
+    # titelbasierten Exemplardaten
+
+    my @circexemplarliste = @{$circexlist};
+
+    if ($circ && $#circexemplarliste >= 0){
+      print "</table>\n";
+
+      print "<p>\n";
+      print "<table>\n";
+      print "<tr align=center><td bgcolor=\"lightblue\">Besitzende Bibliothek</td><td bgcolor=\"lightblue\">Standort</td><td bgcolor=\"lightblue\">Lokale Signatur</td><td bgcolor=\"lightblue\">Bestandsverlauf</td><td bgcolor=\"lightblue\">Ausleihstatus</td><td bgcolor=\"lightblue\">Aktion</td></tr>\n";
+      
+      foreach my $singleex (@circexemplarliste) {
+	my $standort=$singleex->{'Standort'};
+	my $signatur=$singleex->{'Signatur'};
+	my $ausleihstatus=$singleex->{'Status'};
+	my $rueckgabe=$singleex->{'Rueckgabe'};
+	my $exemplar=$singleex->{'Exemplar'};
+
+	# Ein im Exemplar-Datensatz gefundenes Sigel geht vor
+
+	my $bibliothek="";
+
+	my $sigel=$dbases{$database};
+
+    if (length($sigel)>0){
+      
+      if (exists $sigel{$sigel}){
+	$bibliothek=$sigel{$sigel};
+      }
+      else{
+	$bibliothek="Unbekannt (38/$sigel)";
+      }
     }
     else {
+      if (exists $sigel{$dbases{$database}}){
+	$bibliothek=$sigel{$dbases{$database}};
+      }
+      else{
+	$bibliothek="Unbekannt (38/$sigel)";
+      }
+    }
+	
+	my $bibinfourl=$bibinfo{$dbases{$database}};
+
+	print "<tr align=center><td><a href=\"$bibinfourl\"><strong>$bibliothek</strong></a></td><td>$standort</td><td><strong><span id=\"rlsignature\">$signatur</span></strong></td>";
+	
+	print "<td>-</td>";
+
+
+	my $ausleihstring;
+	if ($ausleihstatus eq "bestellbar"){
+	  $ausleihstring="ausleihen?";
+	}
+	elsif ($ausleihstatus eq "bestellt"){
+	  $ausleihstring="vormerken?";
+	}
+	elsif ($ausleihstatus eq "entliehen"){
+	  $ausleihstring="vormerken/verl&auml;ngern?";
+	}
+	elsif ($ausleihstatus eq "bestellbar"){
+	  $ausleihstring="ausleihen?";
+	}
+	else {
+	  $ausleihstring="WebOPAC?";
+	}
+	if ($standort=~/Erziehungswiss/ || $standort=~/Heilp.*?dagogik-Magazin/){
+	  print "<td><strong>$ausleihstatus</strong></td><td bgcolor=\"yellow\"><a TARGET=_blank href=\"$circurl;branch=4;KatKeySearch=$titidn\">$ausleihstring</a></td>";
+	}
+	else {
+	  if ($database eq "inst001" || $database eq "poetica"){
+	    print "<td><strong>$ausleihstatus</strong></td><td bgcolor=\"yellow\"><a TARGET=_blank href=\"$circurl;branch=0;KatKeySearch=$titidn\">$ausleihstring</a></td>";
+	  }
+	  else {
+	    print "<td><strong>$ausleihstatus</strong></td><td bgcolor=\"yellow\"><a TARGET=_blank href=\"$circurl;KatKeySearch=$titidn\">$ausleihstring</a></td>";
+	  }
+	}
+
+
+      }
+
+      print "</table>\n";
+    }
+      else {
+
+	@requests=("select idn from mex where titidn=$titres1->{idn}");
+	my @verknmex=OpenBib::Common::Util::get_sql_result(\@requests,$dbh,$benchmark);
+	
 	print "</table>\n";
 	if ($#verknmex >= 0){
-	    print "<p>\n";
-	    print "<table>\n";
-	    #print "<tr align=center><td bgcolor=\"lightblue\">Besitzende Bibliothek</td><td bgcolor=\"lightblue\">Standort</td><td bgcolor=\"lightblue\">Inventarnummer</td><td bgcolor=\"lightblue\">Lokale Signatur</td>";
-	    print "<tr align=center><td bgcolor=\"lightblue\">Besitzende Bibliothek</td><td bgcolor=\"lightblue\">Standort</td><td bgcolor=\"lightblue\">Lokale Signatur</td>";
+	  print "<p>\n";
+	  print "<table>\n";
+	  print "<tr align=center><td bgcolor=\"lightblue\">Besitzende Bibliothek</td><td bgcolor=\"lightblue\">Standort</td><td bgcolor=\"lightblue\">Lokale Signatur</td>";
+	  
+	  print "<td bgcolor=\"lightblue\">Bestandsverlauf</td>";
 
-	    print "<td bgcolor=\"lightblue\">Bestandsverlauf</td>";
-	    
-	    if ($circ){
-	      print "<td bgcolor=\"lightblue\">Ausleihstatus</td><td bgcolor=\"lightblue\">Aktion</td>";
-	    }
+      if ($circ){
+       print "<td bgcolor=\"lightblue\">Ausleihstatus</td><td bgcolor=\"lightblue\">Aktion</td>";
+       }
 
-	    print "</tr>\n";
-
-	    my $mexsatz;
-	    foreach $mexsatz (@verknmex){
-		get_mex_by_idn($mexsatz,6,$dbh,$benchmark,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%sigel,\%dbases,\%bibinfo,$searchmultiplemex,$sessionID);
-	    }
-	    print "</table>\n";
-	}	    
-    }
-
-    # Ausgabe der Buchinformationen anhand der ISBN
-
-    if ($bookinfo){
+	  
+	  print "</tr>\n";
+	  
+	  my $mexsatz;
+	  foreach $mexsatz (@verknmex){
+	    get_mex_by_idn($mexsatz,$dbh,$benchmark,$searchmode,$circ,$circurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%sigel,\%dbases,\%bibinfo,$sessionID);
+	  }
+	  print "</table>\n";
+	}
+	
+      }
+      # Ausgabe der Buchinformationen anhand der ISBN
+      
+      if ($bookinfo){
       my @bookinfobuffer=();
       my $bookinfoidx=0;
       $bookinfobuffer[$bookinfoidx++]="<p>\n<table>\n";
@@ -2660,7 +2752,7 @@ LASTNEXT
       #	  print "<tr><td bgcolor=\"lightblue\" colspan=2>Durchschnittliche Bewertung</td><td bgcolor=\"lightblue\">$avgrating</td></tr>\n";
       
       print "</table>\n";
-      print "Wenn Sie ihre Meinung zu diesem Buch abgeben wollen, so klicken sie bitte <a href=\"/cgi-bin/biblio-rating.pl?titidn=$titres1->{idn}&database=$database&action=mask\"><b>hier</b></a>\n";
+      print "Wenn Sie ihre Meinung zu diesem Buch abgeben wollen, so klicken sie bitte <a href=\"/cgi-bin/biblio-rating.pl?titidn=$titres1->{idn};database=$database;action=mask\"><b>hier</b></a>\n";
 
     }
 
@@ -2674,11 +2766,7 @@ LASTNEXT
 ##                              Exemplardatenstammsatz aus
 ##
 ## mexidn: IDN des Exemplardatenstammsatzes
-## mode:     2 : Gesamten Exemplardatenstammsatz ausgeben
-##           3 : Gesamten Exemplardatenstammsatz + Verknuepfung wird
-##               ausgeben
-##           5 : Nur Bibliothekssigel wird ausgegeben
-##           6 : Reihenauflistung
+##         Anzeige als tabellarische Auflistung
 ##
 ## Und nun jede Menge Variablen, damit mod_perl keine Probleme macht
 ##
@@ -2686,23 +2774,23 @@ LASTNEXT
 ## $benchmark
 ## $searchmode
 ## $showmexintit
-## $casesensitive
 ## $hitrange
 ## $sorttype
 ## $database
 ## $rsigel - Referenz auf %sigel
 ## $rdbases
 ## $rbibinfo
-## $searchmultiplemex
 
 sub get_mex_by_idn {
 
-    my ($mexidn,$mode,$dbh,$benchmark,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$rsigel,$rdbases,$rbibinfo,$searchmultiplemex,$sessionID)=@_;
+    my ($mexidn,$dbh,$benchmark,$searchmode,$circ,$circurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$rsigel,$rdbases,$rbibinfo,$sessionID)=@_;
 
     # Log4perl logger erzeugen
     
     my $logger = get_logger();
 
+    # 
+	
     my $mexstatement1="select * from mex where idn = ?";
     my $mexstatement2="select * from mexsign where mexidn = ?";
     my $atime;
@@ -2713,7 +2801,7 @@ sub get_mex_by_idn {
     my %dbases=%$rdbases;
     my %bibinfo=%$rbibinfo;
 
-    my @requests=("select titidn from mex where idn = ?");
+    my @requests=("select titidn from mex where idn = $mexidn");
     my @verkntit=OpenBib::Common::Util::get_sql_result(\@requests,$dbh,$benchmark);
 
     if ($config{benchmark}){
@@ -2746,340 +2834,76 @@ sub get_mex_by_idn {
 	undef $timeall;
     }
 
-    if ($mode == 5){
-	print "<tr><td><input type=checkbox name=searchmultiplemex value=$mexidn ";
-	print "></td><td>";
-	print "<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;sorttype=$sorttype&amp;sortorder=$sortorder&amp;database=$database&amp;searchsinglemex=$mexidn\">";
+    my $bibliothek="";
 
-	if (length($sigel)>0){
-	    if (exists $sigel{$sigel}){
-		print "<strong>$sigel{$sigel}</strong></a>";
-	    }
-	    else{
-		print "<strong>Unbekannt (38/$sigel)</strong></a>";
-	    }
-	}
-        else {
-	    if (exists $dbases{$database}){
-		print "<strong>$dbases{$database}</strong></a>";
-	    }
-	    else{
-		print "<strong>Unbekannt (38/$sigel)</strong></a>";
-	    }
-	}
-
-	if ($config{benchmark}){
-	    $atime=new Benchmark;
-	}
-
-	my $mexresult2=$dbh->prepare("$mexstatement2") or $logger->error($DBI::errstr);
-	$mexresult2->execute($mexidn) or $logger->error($DBI::errstr);
-
-	my @mexres2;
-	while (@mexres2=$mexresult2->fetchrow){ 
-	    if ($mexres2[1]){
-		print ", ".$mexres2[1];
-	    }
-	}
-	$mexresult2->finish();
-	print "</td></tr>\n";
-
-	if ($config{benchmark}){
-	    $btime=new Benchmark;
-	    $timeall=timediff($btime,$atime);
-	    $logger->info("Zeit fuer : $mexstatement2 : ist ".timestr($timeall));
-	    undef $atime;
-	    undef $btime;
-	    undef $timeall;
-	}
-	return;
+    # Ein im Exemplar-Datensatz gefundenes Sigel geht vor
+    
+    if (length($sigel)>0){
+      
+      if (exists $sigel{$sigel}){
+	$bibliothek=$sigel{$sigel};
+      }
+      else{
+	$bibliothek="Unbekannt (38/$sigel)";
+      }
     }
-
-    if ($mode == 6){	
-
-	my $bibliothek="";
-
-	# Ein im Exemplar-Datensatz gefundenes Sigel geht vor
-
-	if (length($sigel)>0){
-
-	  if (exists $sigel{$sigel}){
-	    $bibliothek=$sigel{$sigel};
-	  }
-	  else{
-	    $bibliothek="Unbekannt (38/$sigel)";
-	  }
-	}
-        else {
-	  if (exists $sigel{$dbases{$database}}){
-	    $bibliothek=$sigel{$dbases{$database}};
-	  }
-	  else{
-	    $bibliothek="Unbekannt (38/$sigel)";
-	  }
-	}
-
-	my $bibinfourl="";
-
-	if (exists $bibinfo{$sigel}){
-	  $bibinfourl=$bibinfo{$sigel};
-	}
-	else {
-	  $bibinfourl="http://www.ub.uni-koeln.de/dezkat/bibfuehrer.html";
-	}
-
-#	$bibliothek=$database;
-
-#	my $bibliothek;
-#	if (!$sigel{$sigel}){
-#	    $bibliothek="-";
-#	}
-#	else {
-#	    $bibliothek=$sigel{$sigel};
-#	}
-	
-# 	if (!$standort){
-# 	    $standort="-";
-# 	}
-	
-# 	if (!$inventarnummer){
-# 	    $inventarnummer="-";
-# 	}
-
-# 	my $ausleihstatus;
-	#if (!$mexres1[8]){
-	    #$ausleihstatus="vorr&auml;tig";
-	#}
-	#else {
-	  #if ($mexres1[8] eq "A"){
-	    #$ausleihstatus="ausgeliehen";
-	  #}
-	  #else {
-	    #$ausleihstatus="vorr&auml;tig";
-	  #}
-	#}
-
-# 	my $buchung;
-# 	if (!$buchung){
-# 	    $buchung="-";
-# 	}
-
-# 	my $faellig;
-# 	if (!$mexres1[12]){
-# 	    $faellig="-";
-# 	}
-# 	else {
-# 	    $faellig=$mexres1[12];
-# 	}
-
-# 	my $erschverl;
-# 	if (!$mexres1[13]){
-# 	    $erschverl="-";
-# 	}
-# 	else {
-# 	    $erschverl=$mexres1[13];
-# 	}
-	
-	my $mexresult2=$dbh->prepare("$mexstatement2") or $logger->error($DBI::errstr);
-	$mexresult2->execute($mexidn) or $logger->error($DBI::errstr);
-
-	if ($mexresult2->rows == 0){
-
-	    #print "<tr align=center><td><a href=\"$bibinfourl\"><strong>$bibliothek</strong></a></td><td>$standort</td><td>$inventarnummer</td><td> - </td>";
-	    print "<tr align=center><td><a href=\"$bibinfourl\"><strong>$bibliothek</strong></a></td><td>$standort</td><td> - </td>";
-
-	    print "<td>$erschverl</td>";
-
-	    if ($circ){
-	      print "<td></td>";
-	    }
-
-	    print "</tr>\n";
-	}
-	else {
-	    my @mexres2;
-	    while (@mexres2=$mexresult2->fetchrow){
-                my $signatur=$mexres2[1];
-		my $titidn=$verkntit[0];
-		#print "<tr align=center><td><a href=\"$bibinfourl\"><strong>$bibliothek</strong></a></td><td>$standort</td><td>$inventarnummer</td><td><strong><span id=\"rlsignature\">$signatur</span></strong></td>";
-		print "<tr align=center><td><a href=\"$bibinfourl\"><strong>$bibliothek</strong></a></td><td>$standort</td><td><strong><span id=\"rlsignature\">$signatur</span></strong></td>";
-
-		print "<td>$erschverl</td>";
-
-		if ($circ){
-                  my $ua=new LWP::UserAgent;
-                  my $request=new HTTP::Request POST => $circcheckurl;
-
-                  $request->content_type("application/x-www-form-urlencoded");
-
-                  my $suchstring="katkey=$titidn&signatur=$signatur&database=$database";
-                  $request->content("$suchstring");
-                  my $response=$ua->request($request);
-
-		  if ($response->is_success) {
-		    $logger->debug("Getting ", $response->content);
-		  }
-		  else {
-		    $logger->error("Getting ", $response->status_line);
-		  }
-
-                  my $status=$response->content();
-                  my($ausleihstatus,$faellig)=split(":#:",$status);
-
-                  my $ausleihstring;
-                  if ($ausleihstatus eq "bestellbar"){
-                      $ausleihstring="ausleihen?";
-                  }
-                  elsif ($ausleihstatus eq "bestellt"){
-                      $ausleihstring="vormerken?";
-                  }
-                  elsif ($ausleihstatus eq "entliehen"){
-                      $ausleihstring="vormerken/verl&auml;ngern?";
-                  }
-                  elsif ($ausleihstatus eq "bestellbar"){
-                      $ausleihstring="ausleihen?";
-                  }
-                  else {
-                      $ausleihstring="WebOPAC?";
-                  }
-		  if ($standort=~/Erziehungswiss/ || $standort=~/Heilp.*?dagogik-Magazin/){
-		     print "<td><strong>$ausleihstatus</strong></td><td bgcolor=\"yellow\"><a TARGET=_blank href=\"$circurl&branch=4&KatKeySearch=$titidn\">$ausleihstring</a></td>";
-		  }
-		  else {
-		    if ($database eq "inst001" || $database eq "poetica"){
-		      print "<td><strong>$ausleihstatus</strong></td><td bgcolor=\"yellow\"><a TARGET=_blank href=\"$circurl&branch=0&KatKeySearch=$titidn\">$ausleihstring</a></td>";
-		    }
-		    else {
-		      print "<td><strong>$ausleihstatus</strong></td><td bgcolor=\"yellow\"><a TARGET=_blank href=\"$circurl&KatKeySearch=$titidn\">$ausleihstring</a></td>";
-		    }
-		  }
-#		  print "<td><a TARGET=_blank href=\"/cgi-bin/benutzerkonto.pl?sessionID=$sessionID\">Benutzerkonto-Test</a></td>";
-		}
-		print "</tr>\n";
-	    }    
-	}
-	
-	$mexresult2->finish();
+    else {
+      if (exists $sigel{$dbases{$database}}){
+	$bibliothek=$sigel{$dbases{$database}};
+      }
+      else{
+	$bibliothek="Unbekannt (38/$sigel)";
+      }
     }
     
+    my $bibinfourl="";
+    
+    if (exists $bibinfo{$sigel}){
+      $bibinfourl=$bibinfo{$sigel};
+    }
+    else {
+      $bibinfourl="http://www.ub.uni-koeln.de/dezkat/bibfuehrer.html";
+    }
+    
+    my $mexresult2=$dbh->prepare("$mexstatement2") or $logger->error($DBI::errstr);
+    $mexresult2->execute($mexidn) or $logger->error($DBI::errstr);
+    
+    if ($mexresult2->rows == 0){
+      
+      #print "<tr align=center><td><a href=\"$bibinfourl\"><strong>$bibliothek</strong></a></td><td>$standort</td><td>$inventarnummer</td><td> - </td>";
+      print "<tr align=center><td><a href=\"$bibinfourl\"><strong>$bibliothek</strong></a></td><td>$standort</td><td> - </td>";
+      
+      print "<td>$erschverl</td>";
 
-    if (($mode == 2)||($mode == 3)){
-	if ($searchmultiplemex){
-	    print "<hr>\n";
-	}
-	else {
-#	    print "<h1>Gefundene Exemplardaten</h1>\n";
-	}
-
-	print "<table cellpadding=2>\n";
-	print "<tr><td>Kategorie</td><td>Inhalt</td></tr>\n";
-#	print "<tr bgcolor=\"lightblue\"><td>&nbsp;</td><td>".$dbinfo{"$database"}."</td></tr>\n";
-
-	print "<tr><td bgcolor=\"lightblue\"><strong>Ident-Nr</strong></td>";
-	print "<td>$mexidn";
-	print "</td>";
-	print "</tr>\n";
-	if ($ida){
-	    print "<tr><td bgcolor=\"lightblue\"><strong>Ident-Alt</strong></td>";
-	    print "<td>$ida";
-	    print "</td>";
-	    print "</tr>\n";
-	}
-
-	print "<tr><td bgcolor=\"lightblue\"><strong>Bibliothek</strong></td><td>";
-
-	if (length($sigel)>0){
-	    if ($sigel{$sigel} ne ""){
-		print "<a href=\"".$bibinfo{$sigel}."\"><strong>$sigel{$sigel}</strong></a>";
-	    }
-	    else{
-		print "<strong>Unbekannt</strong>";
-	    }
-	}
-	else {
-	    if ($dbases{$database} ne ""){
-		print "<strong>$dbases{$database}</strong></a>";
-	    }
-	    else{
-		print "<strong>Unbekannt</strong></a>";
-	    }
-	}
+      if ($circ){
+	print "<td></td>";
+      }
+      
+      print "</tr>\n";
+    }
+    else {
+      my @mexres2;
+      while (@mexres2=$mexresult2->fetchrow){
+	my $signatur=$mexres2[1];
+	my $titidn=$verkntit[0];
+	#print "<tr align=center><td><a href=\"$bibinfourl\"><strong>$bibliothek</strong></a></td><td>$standort</td><td>$inventarnummer</td><td><strong><span id=\"rlsignature\">$signatur</span></strong></td>";
+	print "<tr align=center><td><a href=\"$bibinfourl\"><strong>$bibliothek</strong></a></td><td>$standort</td><td><strong><span id=\"rlsignature\">$signatur</span></strong></td>";
 	
-	print "</td>";
-	print "</tr>\n";
+	print "<td>$erschverl</td>";
 	
-		
-	if ($verbnr){
-	    print "<tr><td bgcolor=\"lightblue\"><strong>Verbnr</strong></td>";
-	    print "<td>$verbnr";
-	    print "</td>";
-	    print "</tr>\n";
-	}    
-	if ($standort){
-	    print "<tr><td bgcolor=\"lightblue\"><strong>Standort</strong></td>";
-	    print "<td>$standort";
-	    print "</td>";
-	    print "</tr>\n";
-	}    
-	if ($inventarnummer){
-	    print "<tr><td bgcolor=\"lightblue\"><strong>Inventar-Nr.</strong></td>";
-	    print "<td>$inventarnummer";
-	    print "</td>";
-	    print "</tr>\n";
-	}    
+	if ($circ){
 
-	if ($lokfn){
-	    print "<tr><td bgcolor=\"lightblue\"><strong>LOK FN</strong></td>";
-	    print "<td>$lokfn";
-	    print "</td>";
-	    print "</tr>\n";
-	}    
+	  my $ausleihstatus="unbekannt";
+	  my $ausleihstring="WebOPAC?";
 
-	if ($config{benchmark}){
-	    $atime=new Benchmark;
+	  print "<td><strong>$ausleihstatus</strong></td><td bgcolor=\"yellow\"><a TARGET=_blank href=\"$circurl;KatKeySearch=$titidn\">$ausleihstring</a></td>";
 	}
-
-	my $mexresult2=$dbh->prepare("$mexstatement2") or $logger->error($DBI::errstr);
-	$mexresult2->execute($mexidn) or $logger->error($DBI::errstr);
-
-	my @mexres2;
-	while (@mexres2=$mexresult2->fetchrow){
-	    print "<tr><td bgcolor=\"lightblue\"><strong>Sign-lok</strong></td>";
-	    print "<td>$mexres2[1]";
-	    print "</td>";
-	    print "</tr>\n";
-	}    
-	$mexresult2->finish();
-
-	if ($config{benchmark}){
-	    $btime=new Benchmark;
-	    $timeall=timediff($btime,$atime);
-	    $logger->info("Zeit fuer : $mexstatement2 : ist ".timestr($timeall));
-	    undef $atime;
-	    undef $btime;
-	    undef $timeall;
-	}
-
-    }
-
-    if ($mode == 3){
-	print "<tr><td bgcolor=\"lightblue\"><strong>Zugeh. Titelnr.</strong></td>";
-	print "<td>";
-	print "<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;sorttype=$sorttype&amp;sortorder=$sortorder&amp;database=$database&amp;searchsingletit=$titidn1\">";
-	print $titidn1;
-	print "</a></td>";
 	print "</tr>\n";
+      }    
     }
-
-    if ($mode == 5){
-	print "<tr><td><input type=checkbox name=searchmultipleaut value=$mexidn ";
-	print "></td><td>";
-	print "<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;sorttype=$sorttype&amp;sortorder=$sortorder&amp;database=$database&amp;searchtitofaut=$mexidn\">";
-	print "<strong>$mexidn</strong></a></td>";
-	return;
-    }
-    print "</table>" unless ($mode==6);
-}
+    
+    $mexresult2->finish();
+  }
 
 
 #####################################################################
@@ -3314,15 +3138,15 @@ sub print_url_category_global {
   my $globalurl="";
 
   if ($type eq "swt"){
-    $globalurl="$config{virtualsearch_loc}?sessionID=$sessionID&hitrange=-1&swtindexall=&verf=&hst=&swt=%22$globalcontents%22&kor=&sign=&isbn=&notation=&verknuepfung=und&ejahr=&ejahrop=genau&maxhits=200&sorttype=$sorttype&tosearch=In+allen+Katalogen+suchen";
+    $globalurl="$config{virtualsearch_loc}?sessionID=$sessionID;hitrange=-1;swtindexall=;verf=;hst=;swt=%22$globalcontents%22;kor=;sign=;isbn=;notation=;verknuepfung=und;ejahr=;ejahrop=genau;maxhits=200;sorttype=$sorttype;tosearch=In+allen+Katalogen+suchen";
   }
 
   if ($type eq "kor"){
-    $globalurl="$config{virtualsearch_loc}?sessionID=$sessionID&hitrange=-1&swtindexall=&verf=&hst=&swt=&kor=%22$globalcontents%22&sign=&isbn=&notation=&verknuepfung=und&ejahr=&ejahrop=genau&maxhits=200&sorttype=$sorttype&tosearch=In%20allen%20Katalogen%20suchen";
+    $globalurl="$config{virtualsearch_loc}?sessionID=$sessionID;hitrange=-1;swtindexall=;verf=;hst=;swt=;kor=%22$globalcontents%22;sign=;isbn=;notation=;verknuepfung=und;ejahr=;ejahrop=genau;maxhits=200;sorttype=$sorttype;tosearch=In%20allen%20Katalogen%20suchen";
   }
 
   if ($type eq "verf"){
-    $globalurl="$config{virtualsearch_loc}?sessionID=$sessionID&hitrange=-1&swtindexall=&verf=%22$globalcontents%22&hst=&swt=&kor=&sign=&isbn=&notation=&verknuepfung=und&ejahr=&ejahrop=genau&maxhits=200&sorttype=$sorttype&tosearch=In+allen+Katalogen+suchen";
+    $globalurl="$config{virtualsearch_loc}?sessionID=$sessionID;hitrange=-1;swtindexall=;verf=%22$globalcontents%22;hst=;swt=;kor=;sign=;isbn=;notation=;verknuepfung=und;ejahr=;ejahrop=genau;maxhits=200;sorttype=$sorttype;tosearch=In+allen+Katalogen+suchen";
   }
 
   print << "CATEGORY";
@@ -3339,7 +3163,7 @@ sub print_simple_category {
   # Sonderbehandlung fuer bestimmte Kategorien
   
   if ($name eq "ISSN"){
-    my $ezbquerystring="http://www.bibliothek.uni-regensburg.de/ezeit/searchres.phtml?bibid=USBK&frames=&colors=7&offset=0&KT=&KT_bool=OR&KW=&Notations[]=all&selected_colors[]=1&selected_colors[]=2&selected_colors[]=4&input_date=&PU=&IS=".$contents."&howmany=25&=Suchen";
+    my $ezbquerystring="http://www.bibliothek.uni-regensburg.de/ezeit/searchres.phtml?bibid=USBK;frames=;colors=7;offset=0;KT=;KT_bool=OR;KW=;Notations[]=all;selected_colors[]=1;selected_colors[]=2;selected_colors[]=4;input_date=;PU=;IS=".$contents.";howmany=25;=Suchen";
 
     $contents="$contents (<a href=\"$ezbquerystring\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB)\" target=ezb>Verf&uuml;gbarkeit EZB</a>)";
   }
@@ -3374,10 +3198,10 @@ INSTHEAD
     <td valign="middle" ALIGN=left height="32"><img src="/images/openbib/$database.png"></td>
       <td>&nbsp;</td>
       <td bgcolor=white align=right width=180>
-	<a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="In die Merkliste" border=0></a>&nbsp;
-        <a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=mail&database=$database&singleidn=$titidn\" target=\"mail\" title=\"Als Mail verschicken\"><img src="/images/openbib/3d-file-blue-mailbox.png" height="29" alt="Als Mail verschicken" border=0></a>&nbsp;
-        <a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=save&database=$database&singleidn=$titidn\" target=\"save\" title=\"Abspeichern\"><img src="/images/openbib/3d-file-blue-disk35.png" height="29" alt="Abspeichern" border=0></a>&nbsp;
-        <a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=print&database=$database&singleidn=$titidn\" target=\"print\" title=\"Ausdrucken\"><img src="/images/openbib/3d-file-blue-printer.png" height="29" alt="Ausdrucken" border=0></a>&nbsp;
+	<a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=insert;database=$database;singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="In die Merkliste" border=0></a>&nbsp;
+        <a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=mail;database=$database;singleidn=$titidn\" target=\"mail\" title=\"Als Mail verschicken\"><img src="/images/openbib/3d-file-blue-mailbox.png" height="29" alt="Als Mail verschicken" border=0></a>&nbsp;
+        <a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=save;database=$database;singleidn=$titidn\" target=\"save\" title=\"Abspeichern\"><img src="/images/openbib/3d-file-blue-disk35.png" height="29" alt="Abspeichern" border=0></a>&nbsp;
+        <a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=print;database=$database;singleidn=$titidn\" target=\"print\" title=\"Ausdrucken\"><img src="/images/openbib/3d-file-blue-printer.png" height="29" alt="Ausdrucken" border=0></a>&nbsp;
        </td>
   </tr>
 </table>
@@ -3388,16 +3212,14 @@ INSTHEAD
 }
 
 sub print_mult_sel_form {
-  my ($searchmode,$casesensitive,$hitrange,$rating,$bookinfo,$showmexintit,$database,$dbmode,$sessionID)=@_;
+  my ($searchmode,$hitrange,$rating,$bookinfo,$database,$dbmode,$sessionID)=@_;
 
 print << "SEL_FORM_HEAD";
 <form method="get" action="$config{search_loc}">
 <input type=hidden name=searchmode value=$searchmode>
-<input type=hidden name=casesensitive value=$casesensitive>
 <input type=hidden name=hitrange value=$hitrange>
 <input type=hidden name=rating value=$rating>
 <input type=hidden name=bookinfo value=$bookinfo>
-<input type=hidden name=showmexintit value=$showmexintit>
 <input type=hidden name=database value=$database>
 <input type=hidden name=dbmode value=$dbmode>
 <input type=hidden name=sessionID value=$sessionID>

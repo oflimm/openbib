@@ -1,0 +1,76 @@
+[% PROCESS std_header %]
+
+<script language="JavaScript" type="text/javascript">
+<!--
+
+function update_fak(yourform, checked, fak) {
+    for (var i = 0; i < yourform.elements.length; i++) {
+         if (yourform.elements[i].id.indexOf(fak) != -1) {
+              yourform.elements[i].checked = checked;
+         }
+    }
+}
+
+// -->
+</script>
+
+<form method="get" action="http://[% config.servername %][% config.databasechoice_loc %]">
+<input type="hidden" name="hitrange" value="-1" />
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+  <tr bgcolor="lightblue">
+    <td  width="20">&nbsp;</td><td valign="middle" align="left" height="32"><img src="/images/openbib/katalogauswahl.png" alt="Katalogauswahl" /></td>
+  </tr>
+</table>
+<p />
+<table width="100%">
+<tr><th>Hinweis</th></tr>
+<tr><td class="boxedclear" style="font-size:9pt">
+Auf dieser Seite k&ouml;nnen Sie einzelne Kataloge als Suchziel ausw&auml;hlen. Bei aktiviertem JavaScript reicht ein Klick auf das Schaltelement einer &uuml;bergeordneten hellblau hinterlegten Kategorie, um alle zugeh&ouml;rigen Kataloge automatisch auszuw&auml;hlen<p />
+Nachdem Sie Ihre Auswahl getroffen haben aktivieren Sie bitte <b>Kataloge ausw&auml;hlen</b>. Sie springen dann auf die Rechercheseite und k&ouml;nnen Ihre Suchbegriffe eingeben. Ihre gerade getroffene Datenbankauswahl ist unter <b>Suchprofil</b> vorausgew&auml;hlt. Nun m&uuml;ssen Sie nur noch auf <b>In ausgew&auml;hlten Katalogen suchen</b> klicken, um in den ausgew&auml;hlten Datenbanken zu recherchieren.
+</td></tr>
+</table>
+<p>
+<input type="submit" name="action" value="Kataloge ausw&auml;hlen" />&nbsp;<input type="reset" value="Urspr&uuml;ngliche Auswahl wiederherstellen" />
+<p />
+<table>
+<tr><td colspan="9" align="left" bgcolor="lightblue"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /><b>Alle Kataloge</b></td></tr>
+
+[%- FOREACH category = categories -%]
+<tr><td colspan="9"></td></tr>
+<tr><td colspan="9" align="left" bgcolor="lightblue"><input type="checkbox" name="fakult" value="inst[% category.nr %]" onclick="update_fak(this.form, this.checked,'inst[% category.nr %]')" id="inst" /><b>[% category.full %]</b></td></tr>
+<tr><td colspan="9"></td></tr>
+[%- FOREACH db = catdb -%]
+[%- IF db.category == category.short -%]
+[%- IF db.column == 1 -%]
+<tr><td><input type="checkbox" name="database" value="[% db.db %]" id="inst[% category.nr %]" [% db.checked %] /><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% db.url %]" target="_blank">[% db.name %]</a></td>
+[%- END -%]
+[%- IF db.column > 1 && db.column < maxcolumn -%]
+<td>
+[%- IF db.db -%]
+<input type="checkbox" name="database" value="[% db.db %]" id="inst[% category.nr %]" [% db.checked %] /><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% db.url %]" target="_blank">[% db.name %]</a>
+[%- END -%]
+</td>
+[%- END -%]
+[%- IF db.column == maxcolumn -%]
+[%- IF db.column != 1 -%]
+<td>
+[%- IF db.db -%]
+<input type="checkbox" name="database" value="[% db.db %]" id="inst[% category.nr %]" [% db.checked %] /><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% db.url %]" target="_blank">[% db.name %]</a>
+[%- END -%]
+</td>
+[%- END -%]
+</tr>
+[%- END -%]
+[%- END -%]
+[%- END -%]
+[%- END -%]
+</table>
+<p />
+<input type="submit" name="action" value="Kataloge ausw&auml;hlen" />&nbsp;<input type="reset" value="Urspr&uuml;ngliche Auswahl wiederherstellen" />
+</form>
+<p />
+
+[% PROCESS std_footer %]
+

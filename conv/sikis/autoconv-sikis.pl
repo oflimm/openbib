@@ -177,7 +177,7 @@ if ($singlepool ne "instzs"){
   system("$mysqlexe -e \"update mex set sigel=\\\"".$thispoolsigel."\\\" where idn < 99999999 \" ".$singlepool."");
 }
 else {
-  system("$mysqlexe -e \"update mex set standort='' where standort='USB-Magazin'\" ");
+  system("$mysqlexe -e \"update mex set standort='' where standort='USB-Magazin'\" instzs");
 }
 
   

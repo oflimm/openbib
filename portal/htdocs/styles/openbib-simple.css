@@ -1,0 +1,68 @@
+/* Vereinfachtes Stylesheet fuer das OpenBib-Portal */
+
+h1 {
+  font-family: 'Trebuchet MS',Arial,Geneva,Helvetica;
+  font-size: 24px;
+  margin: 1px;
+  border-bottom: 4px solid lightblue;
+  width: 100%;
+  text-align: left;
+}
+
+h2, h3, h4, h5 { 
+     color: black;
+     font-family: Arial,helv,Helvetica,Verdana;
+   }
+
+body {
+     color: black;
+     background-color: #ffffff;
+     font-family: Arial,helv,Helvetica,Verdana;
+   }
+
+table {
+  padding: 0px;
+}
+
+th {
+  font-family: 'Trebuchet MS',Arial,Helvetica,Geneva;
+  font-size: 20px;
+  font-weight: bold;
+  color: black;
+  background-color: #ffffff;
+  padding: 2px;
+  text-align: left;
+  vertical-align: top;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom-style: dashed;
+  border-bottom-color: lightblue;
+  border-bottom-width: 1px;
+}
+
+td.boxed {
+  padding: 5px;
+  background-color: aliceblue;
+  border-left: #999999;
+  border-right: #999999;
+  border-bottom: #999999;
+}
+
+.titlenav {
+  padding: 5px;
+  background-color: white;
+  margin-top: 5px;
+  border-top-style: solid;
+  border-top-color: lightblue;
+  border-top-width: 2px;
+  border-left-style: solid;
+  border-left-color: lightblue;
+  border-left-width: 2px;
+  border-right-style: solid;
+  border-right-color: lightblue;
+  border-right-width: 2px;
+  border-bottom-style: solid;
+  border-bottom-color: lightblue;
+  border-bottom-width: 2px;
+}

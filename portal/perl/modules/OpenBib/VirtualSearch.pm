@@ -36,6 +36,8 @@ use warnings;
 
 use Apache::Request();      # CGI-Handling (or require)
 
+use Log::Log4perl qw(get_logger :levels);
+
 use LWP::UserAgent;
 use HTTP::Request;
 use HTTP::Response;
@@ -63,7 +65,11 @@ use vars qw(%config);
 sub handler {
   
   my $r=shift;
-  
+
+  # Log4perl logger erzeugen
+
+  my $logger = get_logger();
+    
   my $query=Apache::Request->new($r);
   
   my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
@@ -71,10 +77,9 @@ sub handler {
   #####################################################################
   # Verbindung zur SQL-Datenbank herstellen
   
-  my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or die "could not connect";
+  my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
   
-  my $userdbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd}) or die "could not connect";
-  
+  my $userdbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd}) or $logger->error_die($DBI::errstr);
   
   # Standardwerte festlegen
   
@@ -179,11 +184,11 @@ sub handler {
   if ($hitrange eq "alles"){
     $hitrange=-1;
   }
-  
+
   # Verweis: Datenbankname -> Informationen zum zugeh"origen Institut/Seminar
   
-  my $dbinforesult=$sessiondbh->prepare("select dbname,url,description from dbinfo") or die "Error -- $DBI::errstr";
-  $dbinforesult->execute();
+  my $dbinforesult=$sessiondbh->prepare("select dbname,url,description from dbinfo") or $logger->error($DBI::errstr);
+  $dbinforesult->execute() or $logger->error($DBI::errstr);
   
   my %dbases=();
   my %dbnames=();
@@ -228,6 +233,8 @@ sub handler {
   # Authorisierter user?
   
   my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
+
+  $logger->info("Authorization: ", $sessionID, " ", ($userid)?$userid:'none');
   
   # BEGIN Trefferliste
   #
@@ -236,8 +243,8 @@ sub handler {
   ####################################################################
   
   if ($trefferliste){
-    my $idnresult=$sessiondbh->prepare("select sessionid from searchresults where sessionid='$sessionID'") or die "Error -- $DBI::errstr";
-    $idnresult->execute();
+    my $idnresult=$sessiondbh->prepare("select sessionid from searchresults where sessionid='$sessionID'") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
     
     if ($idnresult->rows <= 0){
       OpenBib::Common::Util::print_warning("Derzeit existiert (noch) keine Trefferliste",$r);
@@ -255,8 +262,8 @@ sub handler {
       my @querystrings=();
       my @queryhits=();
       
-      $idnresult=$sessiondbh->prepare("select distinct searchresults.queryid,queries.query,queries.hits from searchresults,queries where searchresults.sessionid='$sessionID' and searchresults.queryid=queries.queryid order by queryid desc") or die "Error -- $DBI::errstr";
-      $idnresult->execute();
+      $idnresult=$sessiondbh->prepare("select distinct searchresults.queryid,queries.query,queries.hits from searchresults,queries where searchresults.sessionid='$sessionID' and searchresults.queryid=queries.queryid order by queryid desc") or $logger->error($DBI::errstr);
+      $idnresult->execute() or $logger->error($DBI::errstr);
       
       while (my @res=$idnresult->fetchrow){
 	push @queryids, $res[0];
@@ -283,8 +290,8 @@ sub handler {
       
       ($fs,$verf,$hst,$swt,$kor,$sign,$isbn,$issn,$notation,$mart,$ejahr,$hststring,$bool1,$bool2,$bool3,$bool4,$bool5,$bool6,$bool7,$bool8,$bool9,$bool10,$bool11,$bool12)=split('\|\|',$querystrings[$thisqueryidx]);
       
-      $idnresult=$sessiondbh->prepare("select dbname,hits from searchresults where sessionid='$sessionID' and queryid=$thisqueryid order by hits desc") or die "Error -- $DBI::errstr";
-      $idnresult->execute();
+      $idnresult=$sessiondbh->prepare("select dbname,hits from searchresults where sessionid='$sessionID' and queryid=$thisqueryid order by hits desc") or $logger->error($DBI::errstr);
+      $idnresult->execute() or $logger->error($DBI::errstr);
       
       # Header mit allen Elementen ausgeben
       
@@ -426,16 +433,16 @@ HEADER
       
       if ($queryid eq ""){
 	
-	$idnresult=$sessiondbh->prepare("select max(queryid) from queries where sessionid='$sessionID'") or die "Error -- $DBI::errstr";
-	$idnresult->execute();
+	$idnresult=$sessiondbh->prepare("select max(queryid) from queries where sessionid='$sessionID'") or $logger->error($DBI::errstr);
+	$idnresult->execute() or $logger->error($DBI::errstr);
 	
 	my @res=$idnresult->fetchrow;
 	$queryid=$res[0];
       }
       
       
-      $idnresult=$sessiondbh->prepare("select searchresults.searchresult from searchresults, dbinfo where searchresults.dbname=dbinfo.dbname and sessionid='$sessionID' and queryid=$queryid order by dbinfo.faculty,searchresults.dbname") or die "Error -- $DBI::errstr";
-      $idnresult->execute();
+      $idnresult=$sessiondbh->prepare("select searchresults.searchresult from searchresults, dbinfo where searchresults.dbname=dbinfo.dbname and sessionid='$sessionID' and queryid=$queryid order by dbinfo.faculty,searchresults.dbname") or $logger->error($DBI::errstr);
+      $idnresult->execute() or $logger->error($DBI::errstr);
       
       # Header mit allen Elementen ausgeben
       
@@ -615,8 +622,8 @@ HEADER
       
       my @resultset=();
       
-      $idnresult=$sessiondbh->prepare("select searchresult from searchresults where sessionid='$sessionID' and dbname='$trefferliste' and queryid=$queryid") or die "Error -- $DBI::errstr";
-      $idnresult->execute();
+      $idnresult=$sessiondbh->prepare("select searchresult from searchresults where sessionid='$sessionID' and dbname='$trefferliste' and queryid=$queryid") or $logger->error($DBI::errstr);
+      $idnresult->execute() or $logger->error($DBI::errstr);
       
       # Header mit allen Elementen ausgeben
       
@@ -735,14 +742,21 @@ HEADER
       my $ergidx;
       
       foreach $database (@databases){
-	#my $request=new HTTP::Request GET => $befehlsurl;
-	
 	my $suchstring="swtindexall=Schlagwortindex&fs=$fs&verf=$verf&hst=$hst&hststring=$hststring&swt=$swt&kor=$kor&isbn=$isbn&issn=$issn&mart=$mart&sign=$sign&verknuepfung=$verknuepfung&ejahr=$ejahr&ejahrop=$ejahrop&searchmode=$searchmode&showmexintit=$showmexintit&maxhits=$maxhits&hitrange=-1&searchall=$searchall&dbmode=$dbmode&database=$database";
 	
 	my $request=new HTTP::Request GET => "$befehlsurl?$suchstring";
-	#$request->content("$suchstring");    
-	
+
+	$logger->debug("Sending ",$suchstring," to ",$befehlsurl);
+
 	my $response=$ua->request($request);
+
+	if ($response->is_success) {
+	  $logger->debug("Getting ", $response->content);
+	}
+	else {
+	  $logger->error("Getting ", $response->status_line);
+	}
+
 	$ergebnisse[$ergidx]=$response->content();
 	$katalog[$ergidx]=$dbases{"$database"};
 	$ergidx++;
@@ -783,8 +797,8 @@ HEADER
   
   if ($tosearch eq "In allen Katalogen suchen"){
     
-    my $idnresult=$sessiondbh->prepare("select dbname from dbinfo where active=1 order by faculty,dbname") or die "Error -- $DBI::errstr";
-    $idnresult->execute();
+    my $idnresult=$sessiondbh->prepare("select dbname from dbinfo where active=1 order by faculty,dbname") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
     
     @databases=();
     my @idnres;
@@ -805,8 +819,8 @@ HEADER
     if ($profil=~/^user(\d+)/){
       my $profilid=$1;
       
-      my $profilresult=$userdbh->prepare("select profildb.dbname from profildb,userdbprofile where userdbprofile.userid=$userid and userdbprofile.profilid=$profilid and userdbprofile.profilid=profildb.profilid order by dbname");
-      $profilresult->execute();
+      my $profilresult=$userdbh->prepare("select profildb.dbname from profildb,userdbprofile where userdbprofile.userid=$userid and userdbprofile.profilid=$profilid and userdbprofile.profilid=profildb.profilid order by dbname") or $logger->error($DBI::errstr);
+      $profilresult->execute() or $logger->error($DBI::errstr);
       
       my @poolres;
       while (@poolres=$profilresult->fetchrow){	    
@@ -816,8 +830,8 @@ HEADER
       
     }
     else {
-      my $idnresult=$sessiondbh->prepare("select dbname from dbinfo where active=1 and faculty='$profil' order by faculty,dbname") or die "Error -- $DBI::errstr";
-      $idnresult->execute();
+      my $idnresult=$sessiondbh->prepare("select dbname from dbinfo where active=1 and faculty='$profil' order by faculty,dbname") or $logger->error($DBI::errstr);
+      $idnresult->execute() or $logger->error($DBI::errstr);
       
       my @idnres;
       while (@idnres=$idnresult->fetchrow){	    
@@ -959,11 +973,21 @@ HEADER
   
   foreach $database (@databases){
 
+
     my $suchstring="sessionID=$sessionID&search=$search&fs=$fs&verf=$verf&hst=$hst&hststring=$hststring&swt=$swt&kor=$kor&sign=$sign&isbn=$isbn&issn=$issn&mart=$mart&notation=$notation&verknuepfung=$verknuepfung&ejahr=$ejahr&ejahrop=$ejahrop&searchmode=$searchmode&showmexintit=$showmexintit&maxhits=$maxhits&hitrange=-1&searchall=$searchall&dbmode=$dbmode&bool1=$bool1&bool2=$bool2&bool3=$bool3&bool4=$bool4&bool5=$bool5&bool6=$bool6&bool7=$bool7&bool8=$bool8&bool9=$bool9&bool10=$bool10&bool11=$bool11&bool12=$bool12&sorttype=$sorttype&database=$database";
 
     my $request=new HTTP::Request GET => "$befehlsurl?$suchstring";
     
+    $logger->debug("Sending ",$suchstring," to ",$befehlsurl);
+    
     my $response=$ua->request($request);
+    
+    if ($response->is_success) {
+      $logger->debug("Getting ", $response->content);
+    }
+    else {
+      $logger->error("Getting ", $response->status_line);
+    }
     
     my $ergebnis=$response->content();
     
@@ -1040,7 +1064,9 @@ HEADER
   ######################################################################
   #
   # ENDE Anfrage an Datenbanken schicken und Ergebnisse einsammeln
-  
+
+  $logger->info("InitialSearch: ", $sessionID, " ", $gesamttreffer, " fs=(", $fs, ") verf=(", $bool9, "#", $verf, ") hst=(", $bool1, "#", $hst, ") hststring=(", $bool12, "#", $hststring, ") swt=(", $bool2, "#", $swt, ") kor=(", $bool3, "#", $kor, ") sign=(", $bool6, "#", $sign, ") isbn=(", $bool5, "#", $isbn, ") issn=(", $bool8, "#", $issn, ") mart=(", $bool11, "#", $mart, ") notation=(", $bool4, "#", $notation, ") ejahr=(", $bool7, "#", $ejahr, ") ejahrop=(", $ejahrop, ") databases=(",join(' ',sort @databases),") ");
+
   # Wenn nichts gefunden wurde, dann entsprechende Information
   
   if ($gesamttreffer == 0) {
@@ -1076,15 +1102,15 @@ HEADER
     my $dbasesstring=join("||",@databases);
     
     
-    my $idnresult=$sessiondbh->prepare("select * from queries where query='$fs||$verf||$hst||$swt||$kor||$sign||$isbn||$issn||$notation||$mart||$ejahr||$hststring||$bool1||$bool2||$bool3||$bool4||$bool5||$bool6||$bool7||$bool8||$bool9||$bool10||$bool11||$bool12' and sessionid='$sessionID' and dbases='$dbasesstring'") or die "Error -- $DBI::errstr";
-    $idnresult->execute();
+    my $idnresult=$sessiondbh->prepare("select * from queries where query='$fs||$verf||$hst||$swt||$kor||$sign||$isbn||$issn||$notation||$mart||$ejahr||$hststring||$bool1||$bool2||$bool3||$bool4||$bool5||$bool6||$bool7||$bool8||$bool9||$bool10||$bool11||$bool12' and sessionid='$sessionID' and dbases='$dbasesstring'") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
     
     my $queryalreadyexists=0;
     
     # Neuer Query
     if ($idnresult->rows <= 0){
-      $idnresult=$sessiondbh->prepare("insert into queries (queryid,sessionid,query,hits,dbases) values (NULL,'$sessionID','$fs||$verf||$hst||$swt||$kor||$sign||$isbn||$issn||$notation||$mart||$ejahr||$hststring||$bool1||$bool2||$bool3||$bool4||$bool5||$bool6||$bool7||$bool8||$bool9||$bool10||$bool11||$bool12',$gesamttreffer,'$dbasesstring')") or die "Error -- $DBI::errstr";
-      $idnresult->execute();
+      $idnresult=$sessiondbh->prepare("insert into queries (queryid,sessionid,query,hits,dbases) values (NULL,'$sessionID','$fs||$verf||$hst||$swt||$kor||$sign||$isbn||$issn||$notation||$mart||$ejahr||$hststring||$bool1||$bool2||$bool3||$bool4||$bool5||$bool6||$bool7||$bool8||$bool9||$bool10||$bool11||$bool12',$gesamttreffer,'$dbasesstring')") or $logger->error($DBI::errstr);
+      $idnresult->execute() or $logger->error($DBI::errstr);
     }
     
     # Query existiert schon
@@ -1093,8 +1119,8 @@ HEADER
     }
     
     
-    $idnresult=$sessiondbh->prepare("select queryid from queries where query='$fs||$verf||$hst||$swt||$kor||$sign||$isbn||$issn||$notation||$mart||$ejahr||$hststring||$bool1||$bool2||$bool3||$bool4||$bool5||$bool6||$bool7||$bool8||$bool9||$bool10||$bool11||$bool12' and sessionid='$sessionID' and dbases='$dbasesstring'") or die "Error -- $DBI::errstr";
-    $idnresult->execute();
+    $idnresult=$sessiondbh->prepare("select queryid from queries where query='$fs||$verf||$hst||$swt||$kor||$sign||$isbn||$issn||$notation||$mart||$ejahr||$hststring||$bool1||$bool2||$bool3||$bool4||$bool5||$bool6||$bool7||$bool8||$bool9||$bool10||$bool11||$bool12' and sessionid='$sessionID' and dbases='$dbasesstring'") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
     
     my @idnres;
     my $queryid;
@@ -1106,12 +1132,12 @@ HEADER
       
       my $db="";
       
-      $idnresult=$sessiondbh->prepare("insert into searchresults values (?,?,?,?,?)") or die "Error -- $DBI::errstr";
+      $idnresult=$sessiondbh->prepare("insert into searchresults values (?,?,?,?,?)") or $logger->error($DBI::errstr);
       
       foreach $db (keys %trefferpage){
 	my $res=$trefferpage{$db};
 	my $num=$dbhits{$db};
-	$idnresult->execute($sessionID,$db,$res,$num,$queryid);
+	$idnresult->execute($sessionID,$db,$res,$num,$queryid) or $logger->error($DBI::errstr);
       }
     }
     

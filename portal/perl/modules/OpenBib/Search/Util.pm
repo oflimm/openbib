@@ -28,6 +28,8 @@ package OpenBib::Search::Util;
 use strict;
 use warnings;
 
+use Log::Log4perl qw(get_logger :levels);
+
 use OpenBib::Config;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
@@ -63,6 +65,11 @@ use vars qw(%config);
 sub get_aut_by_idn {
 
     my ($autidn,$mode,$dbh,$benchmark,$searchmultipleaut,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID)=@_;
+
+    # Log4perl logger erzeugen
+    
+    my $logger = get_logger();
+
     my $autstatement1="select * from aut where idn=$autidn";
     my $autstatement2="select * from autverw where autidn=$autidn";
 
@@ -74,8 +81,8 @@ sub get_aut_by_idn {
 	$atime=new Benchmark;
     }
 
-    my $autresult1=$dbh->prepare("$autstatement1") or die "Error -- $DBI::errstr";   
-    $autresult1->execute();
+    my $autresult1=$dbh->prepare("$autstatement1") or $logger->error($DBI::errstr);
+    $autresult1->execute() or $logger->error($DBI::errstr);
 
     my $autres1=$autresult1->fetchrow_hashref;
 
@@ -128,8 +135,8 @@ sub get_aut_by_idn {
 
 	# Ausgabe der Verweisformen
 
-	my $autresult2=$dbh->prepare("$autstatement2") or die "Error -- $DBI::errstr";   
-	$autresult2->execute();
+	my $autresult2=$dbh->prepare("$autstatement2") or $logger->error($DBI::errstr);
+	$autresult2->execute() or $logger->error($DBI::errstr);
 
 	my $autres2;
 	while ($autres2=$autresult2->fetchrow_hashref){
@@ -176,6 +183,10 @@ sub get_aut_ans_by_idn {
 
     my ($autidn,$dbh)=@_;
 
+    # Log4perl logger erzeugen
+    
+    my $logger = get_logger();
+
     my $autstatement1="select * from aut where idn=$autidn";
 
     my $atime;
@@ -186,8 +197,8 @@ sub get_aut_ans_by_idn {
 	$atime=new Benchmark;
     }
 
-    my $autresult1=$dbh->prepare("$autstatement1") or die "Error -- $DBI::errstr";   
-    $autresult1->execute();
+    my $autresult1=$dbh->prepare("$autstatement1") or $logger->error($DBI::errstr);
+    $autresult1->execute() or $logger->error($DBI::errstr);
 
     my $autres1=$autresult1->fetchrow_hashref;
 
@@ -212,6 +223,10 @@ sub get_aut_set_by_idn {
 
     my ($autidn,$dbh,$searchmultipleaut,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID)=@_;
 
+    # Log4perl logger erzeugen
+    
+    my $logger = get_logger();
+
     my $autstatement1="select * from aut where idn=$autidn";
     my $autstatement2="select * from autverw where autidn=$autidn";
 
@@ -223,7 +238,7 @@ sub get_aut_set_by_idn {
 	$atime=new Benchmark;
     }
 
-    my $autresult1=$dbh->prepare("$autstatement1") or die "Error -- $DBI::errstr";   
+    my $autresult1=$dbh->prepare("$autstatement1") or $logger->error($DBI::errstr);
     $autresult1->execute();
 
     my $autres1=$autresult1->fetchrow_hashref;
@@ -269,8 +284,8 @@ sub get_aut_set_by_idn {
     
     # Ausgabe der Verweisformen
     
-    my $autresult2=$dbh->prepare("$autstatement2") or die "Error -- $DBI::errstr";   
-    $autresult2->execute();
+    my $autresult2=$dbh->prepare("$autstatement2") or $logger->error($DBI::errstr);
+    $autresult2->execute() or $logger->error($DBI::errstr);
     
     my $autres2;
     while ($autres2=$autresult2->fetchrow_hashref){
@@ -326,6 +341,11 @@ sub get_aut_set_by_idn {
 sub get_kor_by_idn {
 
     my ($koridn,$mode,$dbh,$benchmark,$searchmultiplekor,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID)=@_;
+
+    # Log4perl logger erzeugen
+    
+    my $logger = get_logger();
+
     my $korstatement1="select * from kor where idn=$koridn";
     my $korstatement2="select * from korverw where koridn=$koridn";
     my $korstatement3="select * from korfrueh where koridn=$koridn";
@@ -338,9 +358,9 @@ sub get_kor_by_idn {
 	$atime=new Benchmark;
     }
 
-    my $korresult1=$dbh->prepare("$korstatement1") or die "Error -- $DBI::errstr";   
+    my $korresult1=$dbh->prepare("$korstatement1") or $logger->error($DBI::errstr);
+    $korresult1->execute() or $logger->error($DBI::errstr);
 
-    $korresult1->execute();
     my $korres1=$korresult1->fetchrow_hashref;
     $korresult1->finish();
 
@@ -388,8 +408,8 @@ sub get_kor_by_idn {
 	    $atime=new Benchmark;
 	}
 
-	my $korresult2=$dbh->prepare("$korstatement2") or die "Error -- $DBI::errstr";   
-	$korresult2->execute();
+	my $korresult2=$dbh->prepare("$korstatement2") or $logger->error($DBI::errstr);
+	$korresult2->execute() or $logger->error($DBI::errstr);
 
 	my $korres2;
 	while ($korres2=$korresult2->fetchrow_hashref){
@@ -413,8 +433,8 @@ sub get_kor_by_idn {
 	    $atime=new Benchmark;
 	}
 
-	my $korresult3=$dbh->prepare("$korstatement3") or die "Error -- $DBI::errstr";   
-	$korresult3->execute();
+	my $korresult3=$dbh->prepare("$korstatement3") or $logger->error($DBI::errstr);
+	$korresult3->execute() or $logger->error($DBI::errstr);
 
 	my $korres3;
 	while ($korres3=$korresult3->fetchrow_hashref){
@@ -437,8 +457,8 @@ sub get_kor_by_idn {
 	    $atime=new Benchmark;
 	}
 
-	my $korresult4=$dbh->prepare("$korstatement4") or die "Error -- $DBI::errstr";   
-	$korresult4->execute();
+	my $korresult4=$dbh->prepare("$korstatement4") or $logger->error($DBI::errstr);
+	$korresult4->execute() or $logger->error($DBI::errstr);
 
 	my $korres4;
 	while ($korres4=$korresult4->fetchrow_hashref){
@@ -481,6 +501,11 @@ sub get_kor_by_idn {
 sub get_kor_ans_by_idn {
 
   my ($koridn,$dbh)=@_;
+
+  # Log4perl logger erzeugen
+  
+  my $logger = get_logger();
+
   my $korstatement1="select * from kor where idn=$koridn";
   
   my $atime;
@@ -491,9 +516,8 @@ sub get_kor_ans_by_idn {
     $atime=new Benchmark;
   }
   
-  my $korresult1=$dbh->prepare("$korstatement1") or die "Error -- $DBI::errstr";   
-  
-  $korresult1->execute();
+  my $korresult1=$dbh->prepare("$korstatement1") or $logger->error($DBI::errstr);
+  $korresult1->execute() or $logger->error($DBI::errstr);
   my $korres1=$korresult1->fetchrow_hashref;
   $korresult1->finish();
   
@@ -515,6 +539,11 @@ sub get_kor_ans_by_idn {
 
 sub get_kor_set_by_idn {
   my ($koridn,$dbh,$searchmultiplekor,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID)=@_;
+
+  # Log4perl logger erzeugen
+  
+  my $logger = get_logger();
+
   my $korstatement1="select * from kor where idn=$koridn";
   my $korstatement2="select * from korverw where koridn=$koridn";
   my $korstatement3="select * from korfrueh where koridn=$koridn";
@@ -527,9 +556,9 @@ sub get_kor_set_by_idn {
     $atime=new Benchmark;
   }
   
-  my $korresult1=$dbh->prepare("$korstatement1") or die "Error -- $DBI::errstr";   
-  
-  $korresult1->execute();
+  my $korresult1=$dbh->prepare("$korstatement1") or $logger->error($DBI::errstr);
+  $korresult1->execute() or $logger->error($DBI::errstr);
+
   my $korres1=$korresult1->fetchrow_hashref;
   $korresult1->finish();
   
@@ -569,8 +598,8 @@ sub get_kor_set_by_idn {
     $atime=new Benchmark;
   }
   
-  my $korresult2=$dbh->prepare("$korstatement2") or die "Error -- $DBI::errstr";   
-  $korresult2->execute();
+  my $korresult2=$dbh->prepare("$korstatement2") or $logger->error($DBI::errstr);
+  $korresult2->execute() or $logger->error($DBI::errstr);
   
   my $korres2;
   while ($korres2=$korresult2->fetchrow_hashref){
@@ -594,8 +623,8 @@ sub get_kor_set_by_idn {
     $atime=new Benchmark;
   }
   
-  my $korresult3=$dbh->prepare("$korstatement3") or die "Error -- $DBI::errstr";   
-  $korresult3->execute();
+  my $korresult3=$dbh->prepare("$korstatement3") or $logger->error($DBI::errstr);
+  $korresult3->execute() or $logger->error($DBI::errstr);
   
   my $korres3;
   while ($korres3=$korresult3->fetchrow_hashref){
@@ -618,8 +647,8 @@ sub get_kor_set_by_idn {
     $atime=new Benchmark;
   }
   
-  my $korresult4=$dbh->prepare("$korstatement4") or die "Error -- $DBI::errstr";   
-  $korresult4->execute();
+  my $korresult4=$dbh->prepare("$korstatement4") or $logger->error($DBI::errstr);
+  $korresult4->execute() or $logger->error($DBI::errstr);
   
   my $korres4;
   while ($korres4=$korresult4->fetchrow_hashref){
@@ -673,6 +702,10 @@ sub get_swt_by_idn {
 
     my ($swtidn,$mode,$dbh,$benchmark,$searchmultipleswt,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$rdbinfo,$sessionID)=@_;
 
+    # Log4perl logger erzeugen
+    
+    my $logger = get_logger();
+
     my %dbinfo=%$rdbinfo;
 
     my $swtstatement1="select * from swt where idn=$swtidn";
@@ -690,8 +723,9 @@ sub get_swt_by_idn {
 	$atime=new Benchmark;
     }
 
-    my $swtresult1=$dbh->prepare("$swtstatement1") or die "Error -- $DBI::errstr";   
-    $swtresult1->execute();
+    my $swtresult1=$dbh->prepare("$swtstatement1") or $logger->error($DBI::errstr);
+    $swtresult1->execute() or $logger->error($DBI::errstr);
+
     my $swtres1=$swtresult1->fetchrow_hashref;
     $swtresult1->finish();
 
@@ -740,8 +774,8 @@ sub get_swt_by_idn {
 	$atime=new Benchmark;
       }
       
-      my $swtresult2=$dbh->prepare("$swtstatement2") or die "Error -- $DBI::errstr";   
-      $swtresult2->execute();
+      my $swtresult2=$dbh->prepare("$swtstatement2") or $logger->error($DBI::errstr);
+      $swtresult2->execute() or $logger->error($DBI::errstr);
       
       my $swtres2;
       while ($swtres2=$swtresult2->fetchrow_hashref){
@@ -764,8 +798,8 @@ sub get_swt_by_idn {
 	$atime=new Benchmark;
       }
       
-      my $swtresult3=$dbh->prepare("$swtstatement3") or die "Error -- $DBI::errstr";   
-      $swtresult3->execute();
+      my $swtresult3=$dbh->prepare("$swtstatement3") or $logger->error($DBI::errstr);
+      $swtresult3->execute() or $logger->error($DBI::errstr);
       
       my $swtres3;
       while ($swtres3=$swtresult3->fetchrow_hashref){
@@ -788,8 +822,8 @@ sub get_swt_by_idn {
 	$atime=new Benchmark;
       }
       
-      my $swtresult4=$dbh->prepare("$swtstatement4") or die "Error -- $DBI::errstr";   
-      $swtresult4->execute();
+      my $swtresult4=$dbh->prepare("$swtstatement4") or $logger->error($DBI::errstr);
+      $swtresult4->execute() or $logger->error($DBI::errstr);
       
       my $swtres4;
       while ($swtres4=$swtresult4->fetchrow_hashref){
@@ -812,8 +846,8 @@ sub get_swt_by_idn {
 	$atime=new Benchmark;
       }
       
-      my $swtresult5=$dbh->prepare("$swtstatement5") or die "Error -- $DBI::errstr";   
-      $swtresult5->execute();
+      my $swtresult5=$dbh->prepare("$swtstatement5") or $logger->error($DBI::errstr);
+      $swtresult5->execute() or $logger->error($DBI::errstr);
       
       my $swtres5;
       while ($swtres5=$swtresult5->fetchrow_hashref){
@@ -836,8 +870,8 @@ sub get_swt_by_idn {
 	$atime=new Benchmark;
       }
       
-      my $swtresult6=$dbh->prepare("$swtstatement6") or die "Error -- $DBI::errstr";   
-      $swtresult6->execute();
+      my $swtresult6=$dbh->prepare("$swtstatement6") or $logger->error($DBI::errstr);
+      $swtresult6->execute() or $logger->error($DBI::errstr);
       
       my $swtres6;
       while ($swtres6=$swtresult6->fetchrow_hashref){
@@ -877,6 +911,10 @@ sub get_swt_ans_by_idn {
 
     my ($swtidn,$dbh)=@_;
 
+    # Log4perl logger erzeugen
+    
+    my $logger = get_logger();
+
     my $swtstatement1="select * from swt where idn=$swtidn";
 
     my $atime;
@@ -887,8 +925,9 @@ sub get_swt_ans_by_idn {
 	$atime=new Benchmark;
     }
 
-    my $swtresult1=$dbh->prepare("$swtstatement1") or die "Error -- $DBI::errstr";   
-    $swtresult1->execute();
+    my $swtresult1=$dbh->prepare("$swtstatement1") or $logger->error($DBI::errstr);
+    $swtresult1->execute() or $logger->error($DBI::errstr);
+
     my $swtres1=$swtresult1->fetchrow_hashref;
     $swtresult1->finish();
 
@@ -902,6 +941,10 @@ sub get_swt_set_by_idn {
   
   my ($swtidn,$dbh,$searchmultipleswt,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$rdbinfo,$sessionID)=@_;
   
+  # Log4perl logger erzeugen
+  
+  my $logger = get_logger();
+
   my %dbinfo=%$rdbinfo;
   
   my $swtstatement1="select * from swt where idn=$swtidn";
@@ -915,8 +958,9 @@ sub get_swt_set_by_idn {
     $atime=new Benchmark;
   }
   
-  my $swtresult1=$dbh->prepare("$swtstatement1") or die "Error -- $DBI::errstr";   
-  $swtresult1->execute();
+  my $swtresult1=$dbh->prepare("$swtstatement1") or $logger->error($DBI::errstr);
+  $swtresult1->execute() or $logger->error($DBI::errstr);
+
   my $swtres1=$swtresult1->fetchrow_hashref;
   $swtresult1->finish();
 
@@ -956,8 +1000,8 @@ sub get_swt_set_by_idn {
     $atime=new Benchmark;
   }
   
-  my $swtresult2=$dbh->prepare("$swtstatement2") or die "Error -- $DBI::errstr";   
-  $swtresult2->execute();
+  my $swtresult2=$dbh->prepare("$swtstatement2") or $logger->error($DBI::errstr);
+  $swtresult2->execute() or $logger->error($DBI::errstr);
   
   my $swtres2;
   while ($swtres2=$swtresult2->fetchrow_hashref){
@@ -1011,6 +1055,10 @@ sub get_not_by_idn {
 
     my ($notidn,$mode,$dbh,$benchmark,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID)=@_;
 
+    # Log4perl logger erzeugen
+    
+    my $logger = get_logger();
+
     my $notstatement1="select * from notation where idn=$notidn";
     my $notstatement2="select * from notverw where notidn=$notidn";
     my $notstatement3="select * from notbenverw where notidn=$notidn";
@@ -1022,8 +1070,9 @@ sub get_not_by_idn {
 	$atime=new Benchmark;
     }
 
-    my $notresult1=$dbh->prepare("$notstatement1") or die "Error -- $DBI::errstr";   
-    $notresult1->execute();
+    my $notresult1=$dbh->prepare("$notstatement1") or $logger->error($DBI::errstr);
+    $notresult1->execute() or $logger->error($DBI::errstr);
+
     my $notres1=$notresult1->fetchrow_hashref;
     $notresult1->finish();
     if ($config{benchmark}){
@@ -1058,8 +1107,8 @@ sub get_not_by_idn {
 
 	# Ausgabe der Verweise
 
-	my $notresult2=$dbh->prepare("$notstatement2") or die "Error -- $DBI::errstr";   
-	$notresult2->execute();
+	my $notresult2=$dbh->prepare("$notstatement2") or $logger->error($DBI::errstr);
+	$notresult2->execute() or $logger->error($DBI::errstr);
 
 	my $notres2;
 	while ($notres2=$notresult2->fetchrow_hashref){
@@ -1082,8 +1131,8 @@ sub get_not_by_idn {
 
 	# Ausgabe von Benverw
 
-	my $notresult3=$dbh->prepare("$notstatement3") or die "Error -- $DBI::errstr";   
-	$notresult3->execute();
+	my $notresult3=$dbh->prepare("$notstatement3") or $logger->error($DBI::errstr);
+	$notresult3->execute() or $logger->error($DBI::errstr);
 
 	my $notres3;
 	while ($notres3=$notresult3->fetchrow_hashref){
@@ -1188,6 +1237,10 @@ sub get_tit_by_idn {
 
     my ($titidn,$hint,$mode,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmultiplemex,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$rdbinfo,$rtiteltyp,$rsigel,$rdbases,$rbibinfo,$sessionID)=@_;
 
+    # Log4perl logger erzeugen
+    
+    my $logger = get_logger();
+
     my %dbinfo=%$rdbinfo;
     my %titeltyp=%$rtiteltyp;
     my %sigel=%$rsigel;
@@ -1204,8 +1257,9 @@ sub get_tit_by_idn {
 	$atime=new Benchmark;
     }
 
-    my $titresult1=$dbh->prepare("$titstatement1") or die "Error -- $DBI::errstr";   
-    $titresult1->execute();
+    my $titresult1=$dbh->prepare("$titstatement1") or $logger->error($DBI::errstr);
+    $titresult1->execute() or $logger->error($DBI::errstr);
+
     my $titres1=$titresult1->fetchrow_hashref;
     $titresult1->finish();
 
@@ -1543,8 +1597,8 @@ sub get_tit_by_idn {
 
 #    open (DEB,">/tmp/lastnext.out");
 
-    my $sessionresult=$sessiondbh->prepare("select lastresultset from session where sessionid='$sessionID'") or die "Error -- $DBI::errstr";
-    $sessionresult->execute();
+    my $sessionresult=$sessiondbh->prepare("select lastresultset from session where sessionid='$sessionID'") or $logger->error($DBI::errstr);
+    $sessionresult->execute() or $logger->error($DBI::errstr);
 
 #    print DEB "select lastresultset from session where sessionid='$sessionID'\n";
 
@@ -1696,8 +1750,8 @@ LASTNEXT
 
     # Ausgabe der Sammlungsvermerke
 
-    my $titresult19=$dbh->prepare("$titstatement19") or die "Error -- $DBI::errstr";   
-    $titresult19->execute();
+    my $titresult19=$dbh->prepare("$titstatement19") or $logger->error($DBI::errstr);
+    $titresult19->execute() or $logger->error($DBI::errstr);
 
     my $titres19;
     while ($titres19=$titresult19->fetchrow_hashref){
@@ -1717,8 +1771,8 @@ LASTNEXT
 
     # Ausgabe der WST's
 
-    my $titresult14=$dbh->prepare("$titstatement14") or die "Error -- $DBI::errstr";   
-    $titresult14->execute();
+    my $titresult14=$dbh->prepare("$titstatement14") or $logger->error($DBI::errstr);
+    $titresult14->execute() or $logger->error($DBI::errstr);
 
     my $titres14;
     while ($titres14=$titresult14->fetchrow_hashref){
@@ -1737,8 +1791,8 @@ LASTNEXT
 
     # Ausgabe der PSTHTS
 
-    my $titresult16=$dbh->prepare("$titstatement16") or die "Error -- $DBI::errstr";   
-    $titresult16->execute();
+    my $titresult16=$dbh->prepare("$titstatement16") or $logger->error($DBI::errstr);
+    $titresult16->execute() or $logger->error($DBI::errstr);
 
     my $titres16;
     while ($titres16=$titresult16->fetchrow_hashref){
@@ -1757,8 +1811,8 @@ LASTNEXT
 
     # Ausgabe der Beigefuegten Werke
 
-    my $titresult17=$dbh->prepare("$titstatement17") or die "Error -- $DBI::errstr";   
-    $titresult17->execute();
+    my $titresult17=$dbh->prepare("$titstatement17") or $logger->error($DBI::errstr);
+    $titresult17->execute() or $logger->error($DBI::errstr);
 
     my $titres17;
     while ($titres17=$titresult17->fetchrow_hashref){
@@ -1777,8 +1831,8 @@ LASTNEXT
 
     # Ausgabe der URL's
 
-    my $titresult15=$dbh->prepare("$titstatement15") or die "Error -- $DBI::errstr";   
-    $titresult15->execute();
+    my $titresult15=$dbh->prepare("$titstatement15") or $logger->error($DBI::errstr);
+    $titresult15->execute() or $logger->error($DBI::errstr);
 
     my $titres15;
     while ($titres15=$titresult15->fetchrow_hashref){
@@ -1818,8 +1872,8 @@ LASTNEXT
 
     # Ausgabe der Illustrationsangaben
 
-    my $titresult29=$dbh->prepare("$titstatement29") or die "Error -- $DBI::errstr";   
-    $titresult29->execute();
+    my $titresult29=$dbh->prepare("$titstatement29") or $logger->error($DBI::errstr);
+    $titresult29->execute() or $logger->error($DBI::errstr);
 
     my $titres29;
     while ($titres29=$titresult29->fetchrow_hashref){
@@ -1844,14 +1898,14 @@ LASTNEXT
 
     # Ausgabe GTM
 
-    my $titresult4=$dbh->prepare("$titstatement4") or die "Error -- $DBI::errstr";   
-    $titresult4->execute();
+    my $titresult4=$dbh->prepare("$titstatement4") or $logger->error($DBI::errstr);
+    $titresult4->execute() or $logger->error($DBI::errstr);
 
     my $titres4;
     while ($titres4=$titresult4->fetchrow_hashref){
 	my $titstatement="select hst from tit where idn=$titres4->{verwidn}";
-	my $titresult=$dbh->prepare("$titstatement") or die "Error -- $DBI::errstr";   
-	$titresult->execute();
+	my $titresult=$dbh->prepare("$titstatement") or $logger->error($DBI::errstr);
+	$titresult->execute() or $logger->error($DBI::errstr);
 	my $titres=$titresult->fetchrow_hashref;
 
 	print_url_category("GTM","$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&rating=$rating&bookinfo=$bookinfo&showmexintit=$showmexintit&casesensitive=$casesensitive&hitrange=$hitrange&sorttype=$sorttype&sortorder=$sortorder&database=$database&singlegtm=$titres4->{verwidn}&generalsearch=singlegtm","$titres->{hst}</a> ; $titres4->{zus}");
@@ -1874,14 +1928,14 @@ LASTNEXT
 
     # Augabe GTF
 
-    my $titresult5=$dbh->prepare("$titstatement5") or die "Error -- $DBI::errstr";   
-    $titresult5->execute();
+    my $titresult5=$dbh->prepare("$titstatement5") or $logger->error($DBI::errstr);
+    $titresult5->execute() or $logger->error($DBI::errstr);
 
     my $titres5;
     while ($titres5=$titresult5->fetchrow_hashref){
 	my $titstatement="select hst,ast,vorlverf,zuergurh,vorlunter from tit where idn=$titres5->{verwidn}";
-	my $titresult=$dbh->prepare("$titstatement") or die "Error -- $DBI::errstr";   
-	$titresult->execute();
+	my $titresult=$dbh->prepare("$titstatement") or $logger->error($DBI::errstr);
+	$titresult->execute() or $logger->error($DBI::errstr);
 	my $titres=$titresult->fetchrow_hashref;
 
 	my $asthst=$titres->{hst};
@@ -1927,14 +1981,14 @@ LASTNEXT
 
     # Ausgabe IN Verkn.
 
-    my $titresult6=$dbh->prepare("$titstatement6") or die "Error -- $DBI::errstr";   
-    $titresult6->execute();
+    my $titresult6=$dbh->prepare("$titstatement6") or $logger->error($DBI::errstr);
+    $titresult6->execute() or $logger->error($DBI::errstr);
 
     my $titres6;
     while ($titres6=$titresult6->fetchrow_hashref){
 	my $titstatement="select hst,sachlben from tit where idn=$titres6->{titverw}";
-	my $titresult=$dbh->prepare("$titstatement") or die "Error -- $DBI::errstr";   
-	$titresult->execute();
+	my $titresult=$dbh->prepare("$titstatement") or $logger->error($DBI::errstr);
+	$titresult->execute() or $logger->error($DBI::errstr);
 	my $titres=$titresult->fetchrow_hashref;
 
 	# Wenn HST vorhanden, dann nimm ihn, sonst Sachlben.
@@ -1949,15 +2003,15 @@ LASTNEXT
 	# hangeln :-(
 
 	if (!$verkn){
-	  my $gtmidnresult1=$dbh->prepare("select verwidn from titgtm where titidn=$verkntempidn");
-	  $gtmidnresult1->execute();
+	  my $gtmidnresult1=$dbh->prepare("select verwidn from titgtm where titidn=$verkntempidn") or $logger->error($DBI::errstr);
+	  $gtmidnresult1->execute() or $logger->error($DBI::errstr);
 	  my $gtmidnres1=$gtmidnresult1->fetchrow_hashref;
 	  my $gtmidn=$gtmidnres1->{verwidn};
 	  $gtmidnresult1->finish();
 
 	  if ($gtmidn){
-	    my $gtmidnresult2=$dbh->prepare("select hst,sachlben from tit where idn=$gtmidn");
-	    $gtmidnresult2->execute();
+	    my $gtmidnresult2=$dbh->prepare("select hst,sachlben from tit where idn=$gtmidn") or $logger->error($DBI::errstr);
+	    $gtmidnresult2->execute() or $logger->error($DBI::errstr);
 	    my $gtmidnres2=$gtmidnresult2->fetchrow_hashref;
 	    $verkn=($gtmidnres2->{hst})?$gtmidnres2->{hst}:$gtmidnres2->{sachlben};
 	    $gtmidnresult2->finish();
@@ -1965,16 +2019,16 @@ LASTNEXT
 	}
 
 	if (!$verkn){
-	  my $gtfidnresult1=$dbh->prepare("select verwidn, zus from titgtf where titidn=$verkntempidn");
-	  $gtfidnresult1->execute();
+	  my $gtfidnresult1=$dbh->prepare("select verwidn, zus from titgtf where titidn=$verkntempidn") or $logger->error($DBI::errstr);
+	  $gtfidnresult1->execute() or $logger->error($DBI::errstr);
 	  my $gtfidnres1=$gtfidnresult1->fetchrow_hashref;
 	  my $gtfidn=$gtfidnres1->{verwidn};
 	  my $gtfzus=$gtfidnres1->{zus};
 	  $gtfidnresult1->finish();
 	  
 	  if ($gtfidn){
-	    my $gtfidnresult2=$dbh->prepare("select hst,sachlben from tit where idn=$gtfidn");
-	    $gtfidnresult2->execute();
+	    my $gtfidnresult2=$dbh->prepare("select hst,sachlben from tit where idn=$gtfidn") or $logger->error($DBI::errstr);
+	    $gtfidnresult2->execute() or $logger->error($DBI::errstr);
 	    my $gtfidnres2=$gtfidnresult2->fetchrow_hashref;
 	    $verkn=($gtfidnres2->{hst})?$gtfidnres2->{hst}:$gtfidnres2->{sachlben};
 	    $gtfidnresult2->finish();
@@ -2018,8 +2072,8 @@ LASTNEXT
 
     # Ausgabe GT unverkn.
 
-    my $titresult2=$dbh->prepare("$titstatement2") or die "Error -- $DBI::errstr";   
-    $titresult2->execute();
+    my $titresult2=$dbh->prepare("$titstatement2") or $logger->error($DBI::errstr);
+    $titresult2->execute() or $logger->error($DBI::errstr);
 
     my $titres2;
     while ($titres2=$titresult2->fetchrow_hashref){
@@ -2047,8 +2101,8 @@ LASTNEXT
 
     # Ausgabe der AngabenHST
 
-    my $titresult20=$dbh->prepare("$titstatement20") or die "Error -- $DBI::errstr";   
-    $titresult20->execute();
+    my $titresult20=$dbh->prepare("$titstatement20") or $logger->error($DBI::errstr);
+    $titresult20->execute() or $logger->error($DBI::errstr);
 
     my $titres20;
     while ($titres20=$titresult20->fetchrow_hashref){
@@ -2068,8 +2122,8 @@ LASTNEXT
 
     # Ausgabe der ParallelAusgabe
 
-    my $titresult21=$dbh->prepare("$titstatement21") or die "Error -- $DBI::errstr";   
-    $titresult21->execute();
+    my $titresult21=$dbh->prepare("$titstatement21") or $logger->error($DBI::errstr);
+    $titresult21->execute() or $logger->error($DBI::errstr);
 
     my $titres21;
     while ($titres21=$titresult21->fetchrow_hashref){
@@ -2088,8 +2142,8 @@ LASTNEXT
 
     # Ausgabe der TitBeilage
 
-    my $titresult22=$dbh->prepare("$titstatement22") or die "Error -- $DBI::errstr";   
-    $titresult22->execute();
+    my $titresult22=$dbh->prepare("$titstatement22") or $logger->error($DBI::errstr);
+    $titresult22->execute() or $logger->error($DBI::errstr);
 
     my $titres22;
     while ($titres22=$titresult22->fetchrow_hashref){
@@ -2108,8 +2162,8 @@ LASTNEXT
 
     # Ausgabe der Bezugswerk
 
-    my $titresult23=$dbh->prepare("$titstatement23") or die "Error -- $DBI::errstr";   
-    $titresult23->execute();
+    my $titresult23=$dbh->prepare("$titstatement23") or $logger->error($DBI::errstr);
+    $titresult23->execute() or $logger->error($DBI::errstr);
 
     my $titres23;
     while ($titres23=$titresult23->fetchrow_hashref){
@@ -2128,8 +2182,8 @@ LASTNEXT
 
     # Ausgabe der FruehAusg
 
-    my $titresult24=$dbh->prepare("$titstatement24") or die "Error -- $DBI::errstr";   
-    $titresult24->execute();
+    my $titresult24=$dbh->prepare("$titstatement24") or $logger->error($DBI::errstr);
+    $titresult24->execute() or $logger->error($DBI::errstr);
 
     my $titres24;
     while ($titres24=$titresult24->fetchrow_hashref){
@@ -2148,8 +2202,8 @@ LASTNEXT
 
     # Ausgabe des FruehTit
 
-    my $titresult25=$dbh->prepare("$titstatement25") or die "Error -- $DBI::errstr";   
-    $titresult25->execute();
+    my $titresult25=$dbh->prepare("$titstatement25") or $logger->error($DBI::errstr);
+    $titresult25->execute() or $logger->error($DBI::errstr);
 
     my $titres25;
     while ($titres25=$titresult25->fetchrow_hashref){
@@ -2168,8 +2222,8 @@ LASTNEXT
 
     # Ausgabe der SpaetAusg
 
-    my $titresult26=$dbh->prepare("$titstatement26") or die "Error -- $DBI::errstr";   
-    $titresult26->execute();
+    my $titresult26=$dbh->prepare("$titstatement26") or $logger->error($DBI::errstr);
+    $titresult26->execute() or $logger->error($DBI::errstr);
 
     my $titres26;
     while ($titres26=$titresult26->fetchrow_hashref){
@@ -2193,8 +2247,8 @@ LASTNEXT
 
     # Ausgabe der Abstracts
 
-    my $titresult27=$dbh->prepare("$titstatement27") or die "Error -- $DBI::errstr";   
-    $titresult27->execute();
+    my $titresult27=$dbh->prepare("$titstatement27") or $logger->error($DBI::errstr);
+    $titresult27->execute() or $logger->error($DBI::errstr);
 
     my $titres27;
     while ($titres27=$titresult27->fetchrow_hashref){
@@ -2218,8 +2272,8 @@ LASTNEXT
 
     # Ausgabe der NER
 
-    my $titresult28=$dbh->prepare("$titstatement28") or die "Error -- $DBI::errstr";   
-    $titresult28->execute();
+    my $titresult28=$dbh->prepare("$titstatement28") or $logger->error($DBI::errstr);
+    $titresult28->execute() or $logger->error($DBI::errstr);
 
     my $titres28;
     while ($titres28=$titresult28->fetchrow_hashref){
@@ -2238,8 +2292,8 @@ LASTNEXT
 
     # Ausgabe der Medienart/Art-Inhalt
 
-    my $titresult18=$dbh->prepare("$titstatement18") or die "Error -- $DBI::errstr";   
-    $titresult18->execute();
+    my $titresult18=$dbh->prepare("$titstatement18") or $logger->error($DBI::errstr);
+    $titresult18->execute() or $logger->error($DBI::errstr);
 
     my $titres18;
     while ($titres18=$titresult18->fetchrow_hashref){
@@ -2284,8 +2338,8 @@ LASTNEXT
 
     # Ausgabe der ISBN's
 
-    my $titresult3=$dbh->prepare("$titstatement3") or die "Error -- $DBI::errstr";   
-    $titresult3->execute();
+    my $titresult3=$dbh->prepare("$titstatement3") or $logger->error($DBI::errstr);
+    $titresult3->execute() or $logger->error($DBI::errstr);
 
     my $titres3;
     my $isbn;
@@ -2312,8 +2366,8 @@ LASTNEXT
 
     # Ausgabe der ISSN's
 
-    my $titresult13=$dbh->prepare("$titstatement13") or die "Error -- $DBI::errstr";   
-    $titresult13->execute();
+    my $titresult13=$dbh->prepare("$titstatement13") or $logger->error($DBI::errstr);
+    $titresult13->execute() or $logger->error($DBI::errstr);
 
     my $titres13;
     while ($titres13=$titresult13->fetchrow_hashref){
@@ -2421,10 +2475,9 @@ LASTNEXT
       
       $birequest="select * from bookinfo where isbn = '$biisbn'";
       
-      my $biresult=$bidbh->prepare($birequest) or die "Error -- $DBI::errstr
-";
+      my $biresult=$bidbh->prepare($birequest) or $logger->error($DBI::errstr);
       
-      $biresult->execute(); 
+      $biresult->execute() or $logger->error($DBI::errstr);
       
       my $bookcounter;
       while(($biisbn,$biquelle,$biinfo)=$biresult->fetchrow()){
@@ -2478,11 +2531,10 @@ LASTNEXT
       
       $rrequest="select * from rating where titidn = $titres1->{idn}";
       
-      my $rresult=$rdbh->prepare($rrequest) or die "Error -- $DBI::errstr
-";
+      my $rresult=$rdbh->prepare($rrequest) or $logger->error($DBI::errstr);
       
       
-      $rresult->execute(); 
+      $rresult->execute() or $logger->error($DBI::errstr);
       
       while (($ridn,$rtidn,$rdate,$rname,$rurl,$rsubject,$rrating,$rmeinung)=$rresult->fetchrow){	    
 	
@@ -2540,6 +2592,10 @@ sub get_mex_by_idn {
 
     my ($mexidn,$mode,$dbh,$benchmark,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$rsigel,$rdbases,$rbibinfo,$searchmultiplemex,$sessionID)=@_;
 
+    # Log4perl logger erzeugen
+    
+    my $logger = get_logger();
+
     my $mexstatement1="select * from mex where idn=$mexidn";
     my $mexstatement2="select * from mexsign where mexidn=$mexidn";
     my $atime;
@@ -2558,8 +2614,8 @@ sub get_mex_by_idn {
     my @requests=("select titidn from mex where idn=$mexidn");
     my @verkntit=OpenBib::Common::Util::get_sql_result(\@requests,$dbh,$benchmark);
 
-    my $mexresult1=$dbh->prepare("$mexstatement1") or die "Error -- $DBI::errstr";   
-    $mexresult1->execute();
+    my $mexresult1=$dbh->prepare("$mexstatement1") or $logger->error($DBI::errstr);
+    $mexresult1->execute() or $logger->error($DBI::errstr);
     my $mexres1=$mexresult1->fetchrow_hashref;    
 
     my $sigel=$mexres1->{'sigel'};
@@ -2610,8 +2666,8 @@ sub get_mex_by_idn {
 	    $atime=new Benchmark;
 	}
 
-	my $mexresult2=$dbh->prepare("$mexstatement2") or die "Error -- $DBI::errstr";   	
-	$mexresult2->execute();
+	my $mexresult2=$dbh->prepare("$mexstatement2") or $logger->error($DBI::errstr);
+	$mexresult2->execute() or $logger->error($DBI::errstr);
 
 	my @mexres2;
 	while (@mexres2=$mexresult2->fetchrow){ 
@@ -2718,8 +2774,8 @@ sub get_mex_by_idn {
 # 	    $erschverl=$mexres1[13];
 # 	}
 	
-	my $mexresult2=$dbh->prepare("$mexstatement2") or die "Error -- $DBI::errstr";   
-	$mexresult2->execute();
+	my $mexresult2=$dbh->prepare("$mexstatement2") or $logger->error($DBI::errstr);
+	$mexresult2->execute() or $logger->error($DBI::errstr);
 
 	if ($mexresult2->rows == 0){
 
@@ -2753,6 +2809,14 @@ sub get_mex_by_idn {
                   my $suchstring="katkey=$titidn&signatur=$signatur&database=$database";
                   $request->content("$suchstring");
                   my $response=$ua->request($request);
+
+		  if ($response->is_success) {
+		    $logger->debug("Getting ", $response->content);
+		  }
+		  else {
+		    $logger->error("Getting ", $response->status_line);
+		  }
+
                   my $status=$response->content();
                   my($ausleihstatus,$faellig)=split(":#:",$status);
 
@@ -2869,8 +2933,8 @@ sub get_mex_by_idn {
 	    $atime=new Benchmark;
 	}
 
-	my $mexresult2=$dbh->prepare("$mexstatement2") or die "Error -- $DBI::errstr";   
-	$mexresult2->execute();
+	my $mexresult2=$dbh->prepare("$mexstatement2") or $logger->error($DBI::errstr);
+	$mexresult2->execute() or $logger->error($DBI::errstr);
 
 	my @mexres2;
 	while (@mexres2=$mexresult2->fetchrow){
@@ -2922,6 +2986,10 @@ sub get_number {
 
     my ($rreqarray,$dbh)=@_;
 
+    # Log4perl logger erzeugen
+    
+    my $logger = get_logger();
+
     my %metaidns;
     my @idns;
     my $atime;
@@ -2937,8 +3005,8 @@ sub get_number {
 	    $atime=new Benchmark;
 	}
     
-	my $numberresult=$dbh->prepare("$numberrequest") or die "Error -- $DBI::errstr";   
-	$numberresult->execute();
+	my $numberresult=$dbh->prepare("$numberrequest") or $logger->error($DBI::errstr);
+	$numberresult->execute() or $logger->error($DBI::errstr);
 
 	my @numberres;
 	while (@numberres=$numberresult->fetchrow){

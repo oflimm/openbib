@@ -132,6 +132,7 @@ sub handler {
   my $trefferliste=$query->param('trefferliste') || '';
   my $autoplus=$query->param('autoplus') || '';
   my $queryid=$query->param('queryid') || '';
+  my $view=$query->param('view') || '';
   
   # Filter: ISBN und ISSN
   
@@ -721,6 +722,12 @@ HEADER
   ####################################################################
   # ENDE Trefferliste
   #
+
+  # BEGIN Schlagworte
+  # (derzeit nicht unterstuetzt)
+  ####################################################################
+  # Wenn ein kataloguebergreifender Schlagwortindex ausgewaehlt wurde
+  ####################################################################
   
   my $ua=new LWP::UserAgent;
   my $item;
@@ -794,10 +801,31 @@ HEADER
     }  
     goto LEAVEPROG;
   }
-  
+
+  ####################################################################
+  # ENDE Schlagworte
+  #
+
+
+  # Ueber view koennen bei Direkteinsprung in VirtualSearch die
+  # entsprechenden Kataloge vorausgewaehlt werden
+
+  if ($view && $#databases == -1){
+    my $idnresult=$sessiondbh->prepare("select dbname from viewdbs where viewname='$view'") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
+    
+    @databases=();
+    my @idnres;
+    while (@idnres=$idnresult->fetchrow){	    
+      push @databases, $idnres[0];
+    }
+    $idnresult->finish();
+
+  }
+
   if ($tosearch eq "In allen Katalogen suchen"){
     
-    my $idnresult=$sessiondbh->prepare("select dbname from dbinfo where active=1 order by faculty,dbname") or $logger->error($DBI::errstr);
+    my $idnresult=$sessiondbh->prepare("select dbname,description from dbinfo where active=1 order by faculty,description") or $logger->error($DBI::errstr);
     $idnresult->execute() or $logger->error($DBI::errstr);
     
     @databases=();
@@ -808,7 +836,7 @@ HEADER
     $idnresult->finish();
     
   }
-  elsif (($tosearch eq "In ausgewählten Katalogen suchen")&&(($databases[0] eq "") && ($profil eq ""))){
+  elsif (($tosearch eq "In ausgewählten Katalogen suchen")&&(($#databases == -1) && ($profil eq ""))){
     OpenBib::Common::Util::print_warning("Sie haben \"In ausgew&auml;hlten Katalogen suchen\" angeklickt, obwohl sie keine <a href=\"$config{databasechoice_loc}?sessionID=$sessionID\" target=\"body\">Kataloge</a> oder Suchprofile ausgew&auml;hlt haben. Bitte w&auml;hlen Sie die gew&uuml;nschten Kataloge/Suchprofile aus oder bet&auml;tigen Sie \"In allen Katalogen suchen\".",$r);
     goto LEAVEPROG;
   }

@@ -369,7 +369,7 @@ sub handler {
                 prevqueries  => $prevqueries,
                 useragent    => $useragent,                
 		show_corporate_banner => 0,
-		show_foot_banner      => 0,
+		show_foot_banner      => 1,
                 invisible_links       => 0,
 		config       => \%config,
 	       };

@@ -492,6 +492,7 @@ ejahr int,
 isbn text,
 issn text,
 artinh text,
+hststring varchar(255),
 FULLTEXT (verf),
 FULLTEXT (hst),
 FULLTEXT (kor),
@@ -502,6 +503,7 @@ INDEX    (ejahr),
 FULLTEXT (isbn),
 FULLTEXT (issn),
 FULLTEXT (artinh),
+index    (hststring),
 FULLTEXT (verf,hst,kor,swt,notation,sign,isbn,issn)
 );
 

@@ -351,6 +351,7 @@ sub print_recherche_hinweis {
 
  my $hbzmonofernleihbaseurl=$config{hbzmonofernleih_exturl};
  my $hbzzeitfernleihbaseurl=$config{hbzzeitfernleih_exturl};
+ my $dbisexturl=$config{dbis_exturl};
 
  print << "DIGIBIB";
 <table width="100%">
@@ -364,7 +365,7 @@ Konnten Sie das von Ihnen gesuchte Buch oder den von Ihnen gesuchten Zeitschrift
 </ul>
 <b>Zeitschriftenartikel</b>
 <ul>
-<li>Suchen Sie in den elektronischen <a href="http://www.bibliothek.uni-regensburg.de/dbinfo/?bib_id=usb_k" target="_blank">Fachdatenbanken</a> und den <a href="$config{ezb_exturl}" target="_blank">elektronisch verf&uuml;gbaren Zeitschriften</a> der Universit&auml;tsbibliothek.</a>
+<li>Suchen Sie in den elektronischen <a href="$dbisexturl" target="_blank">Fachdatenbanken</a> und den <a href="$config{ezb_exturl}" target="_blank">elektronisch verf&uuml;gbaren Zeitschriften</a> der Universit&auml;tsbibliothek.</a>
 <li>Versuchen Sie den Artikel in NRW im Rahmen der <a href="$hbzzeitfernleihbaseurl&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_ZDB=on&D_PARAM_QUERY_azTI=$hst&D_PARAM_QUERY_czCO=$kor&D_PARAM_QUERY_gzIS=$issn$authurl" target="_blank">Online-Zeitschriftenlieferung</a> in der Digitalen Bibliothek zu finden.</li>
 </ul>
 </td></tr>

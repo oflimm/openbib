@@ -38,6 +38,8 @@ use Apache::Request();      # CGI-Handling (or require)
 
 use DBI;
 
+use Template;
+
 use OpenBib::Common::Util;
 
 use OpenBib::Config;
@@ -53,6 +55,8 @@ sub handler {
   my $r=shift;
   
   my $query=Apache::Request->new($r);
+
+  my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
   my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
   my @databases=($query->param('database'))?$query->param('database'):();
@@ -81,14 +85,38 @@ sub handler {
   
   my %checkeddb;
   
-  my %fak=(
-	   "1wiso", "Wirtschafts- u. Sozialwissenschaftliche Fakult&auml;t",
-	   "2recht","Rechtswissenschaftliche Fakult&auml;t",
-	   "3ezwheil","Erziehungswissenschaftliche u. Heilp&auml;dagogische Fakult&auml;t",
-	   "4phil","Philosophische Fakult&auml;t",
-	   "5matnat","Mathematisch-Naturwissenschaftliche Fakult&auml;t",
-	   "0ungeb","Fakult&auml;tsungebunden"
-	   );
+  my $categories=[
+	   {
+	    full => 'Fakult&auml;tsungebunden',
+	    short => '0ungeb',
+	    nr => '0',
+	   },
+	   {
+	    full => 'Wirtschafts- u. Sozialwissenschaftliche Fakult&auml;',
+	    short => '1wiso',
+	    nr   => '1',
+	   },
+	   {
+	    full => 'Rechtswissenschaftliche Fakult&auml;t',
+	    short => '2recht',
+	    nr   => '2',
+	   },
+	   {
+	    full => 'Erziehungswissenschaftliche u. Heilp&auml;dagogische Fakult&auml;t',
+	    short => '3ezwheil',
+	    nr => '3',
+	   },
+	   {
+	    full => 'Philosophische Fakult&auml;t',
+	    short => '4phil',
+	    nr => '4',
+	   },
+	   {
+	    full => 'Mathematisch-Naturwissenschaftliche Fakult&auml;',
+	    short => '5matnat',
+	    nr => '5',
+	   },
+	   ];
   
   #####################################################################
   # Verbindung zur SQL-Datenbank herstellen
@@ -142,74 +170,29 @@ sub handler {
 	$checkeddb{$dbname}="checked";
       }
       $idnresult->finish();
-      
-      OpenBib::Common::Util::print_simple_header("Datenbankauswahl",$r);
-      
-      print << "HEAD";
-<script language="JavaScript">
-<!--
 
-function update_fak(yourform, checked, fak) {
-    for (var i = 0; i < yourform.elements.length; i++) {
-         if (yourform.elements[i].id.indexOf(fak) != -1) {
-              yourform.elements[i].checked = checked;
-         }
-    }
-}
-
-// -->
-</script>
-
-<FORM method="get" action="http://$config{servername}$config{databasechoice_loc}">
-<INPUT type=hidden name=hitrange value=-1>
-<INPUT type=hidden name=sessionID value=$sessionID>
-
-<table BORDER=0 CELLSPACING=0 CELLPADDING=0 width="100%">
-  <tr bgcolor="lightblue">
-    <td  width="20">&nbsp;</td><td valign="middle" ALIGN=left height="32"><img src="/images/openbib/katalogauswahl.png" alt="Katalogauswahl"></td>
-  </tr>
-</table>
-<p>
-<table width="100%">
-<tr><th>Hinweis</th></tr>
-<tr><td class="boxedclear" style="font-size:9pt">
-Auf dieser Seite k&ouml;nnen Sie einzelne Kataloge als Suchziel ausw&auml;hlen. Bei aktiviertem JavaScript reicht ein Klick auf das Schaltelement einer &uuml;bergeordneten hellblau hinterlegten Kategorie, um alle zugeh&ouml;rigen Kataloge automatisch auszuw&auml;hlen<p>
-Nachdem Sie Ihre Auswahl getroffen haben aktivieren Sie bitte <b>Kataloge ausw&auml;hlen</b>. Sie springen dann auf die Rechercheseite und k&ouml;nnen Ihre Suchbegriffe eingeben. Ihre gerade getroffene Datenbankauswahl ist unter <b>Suchprofil</b> vorausgew&auml;hlt. Nun m&uuml;ssen Sie nur noch auf <b>In ausgew&auml;hlten Katalogen suchen</b> klicken, um in den ausgew&auml;hlten Datenbanken zu recherchieren.
-</td></tr>
-</table>
-<p>
-<INPUT type=submit name="action" value="Kataloge ausw&auml;hlen">&nbsp;<INPUT type=reset value="Urspr&uuml;ngliche Auswahl wiederherstellen">
-<p>
-<table>
-HEAD
-
-      my $lastfakult="";
+      my $lastcategory="";
       my $count=0;
+
+      my $maxcolumn=$config{databasechoice_maxcolumn};
       
       my %stype;
-      print "<TR><TD colspan=9 align=left bgcolor=lightblue><input type=\"checkbox\" name=\"fakult\" value=\"inst\" onclick=\"update_fak(this.form, this.checked,'inst')\" /><B>Alle Kataloge</B></TD></TR>\n";
 	    
       $idnresult=$sessiondbh->prepare("select * from dbinfo where active=1 order by faculty ASC, description ASC");
       $idnresult->execute();
-	    
+
+      my @catdb=();
+
       while (my $result=$idnresult->fetchrow_hashref){
-	my $fakult=$result->{'faculty'};
+	my $category=$result->{'faculty'};
 	my $name=$result->{'description'};
 	my $systemtype=$result->{'system'};
 	my $pool=$result->{'dbname'};
+	my $url=$result->{'url'};
 	my $sigel=$result->{'sigel'};
 	
-	# Spezielle Sigel umbiegen - Spaeter Eintrag des URLs in die DB geplant
-	if ($sigel eq "301"){
-	  $sigel="ezw";
-	}
-	elsif ($sigel eq "998"){
-	  $sigel="bibfuehrer";
-	}
-      
-	#    my ($dbid,$fakult,$name,$systemtype,$pool,$sigel)=@result;  
-      
-	
+	my $rcolumn;
+
 	if ($systemtype eq "a"){
 	  $stype{$pool}="yellow";
 	}
@@ -222,67 +205,73 @@ HEAD
 	elsif ($systemtype eq "s"){
 	  $stype{$pool}="blue";
 	}
-	
-	
-	my $fakultpools="inst".substr($fakult,0,1);
-	
-	if ($fakult ne $lastfakult){
-	  
-	  # Tabelle aus vorherigen Durchgang muss geschlossen werden.
-	  
-	  if ($count%3 == 1){
-	    print "  <TD></TD><TD></TD>\n  <TD></TD><TD></TD>\n</TR>\n";
+
+	if ($category ne $lastcategory){
+	  while ($count % $maxcolumn != 0){
+
+	    $rcolumn=($count % $maxcolumn)+1;
+	    # 'Leereintrag erzeugen'
+	    push @catdb, { 
+			  column => $rcolumn, 
+			  category => $lastcategory,
+			  db => '',
+			  name => '',
+			  systemtype => '',
+			  sigel => '',
+			  url => '',
+			 };
+	    
+	    $count++;
 	  }
-	  elsif ($count%3 == 2){
-	    print "  <TD></TD><TD></TD>\n</TR>\n";
-	  }
-	  # Ueberschriftszeilt mit Fakultaet ausgeben
-	  print "<TR><TD colspan=9></TD></TR>\n";
-	  print "<TR><TD colspan=9 align=left bgcolor=lightblue><input type=\"checkbox\" name=\"fakult\" value=\"$fakultpools\" onclick=\"update_fak(this.form, this.checked,'$fakultpools')\" id=\"inst\"/><B>".$fak{$fakult}."</B></TD></TR>\n";
-	  print "<TR><TD colspan=9></TD></TR>\n";
-	  # Wieder links mit Tabelle anfangen.
-	  
+
 	  $count=0;
 	}
-		
-	$lastfakult=$fakult;
-	
+
+	$lastcategory=$category;
+
+	$rcolumn=($count % $maxcolumn)+1;
+
 	my $checked="";
-	
 	if (defined $checkeddb{$pool}){
-	  $checked="checked";
-	}
-	if ($count%3 == 0){
-	  print "<TR>\n  <TD><INPUT type=checkbox name=database value=$pool id=\"$fakultpools\" $checked><TD bgcolor=".$stype{$pool}.">&nbsp;</TD><TD><a href=\"http://www.ub.uni-koeln.de/dezkat/bibinfo/$sigel.html\" target=_blank>$name</a></TD>\n";
-	}
-	elsif ($count%3 == 1) {
-	  print "  <TD><INPUT type=checkbox name=database value=$pool id=\"$fakultpools\" $checked><TD bgcolor=".$stype{$pool}.">&nbsp;</TD><TD><a href=\"http://www.ub.uni-koeln.de/dezkat/bibinfo/$sigel.html\" target=_blank>$name</a></TD>\n";
-	}
-	elsif ($count%3 == 2){
-	  print "  <TD><INPUT type=checkbox name=database value=$pool id=\"$fakultpools\" $checked><TD bgcolor=".$stype{$pool}.">&nbsp;</TD><TD><a href=\"http://www.ub.uni-koeln.de/dezkat/bibinfo/$sigel.html\" target=_blank>$name</a></TD>\n</TR>\n";
-	}
+          $checked="checked";
+        }
+
+	push @catdb, { 
+		      column => $rcolumn,
+		      category => $category,
+		      db => $pool,
+		      name => $name,
+		      systemtype => $stype{$pool},
+		      sigel => $sigel,
+		      url => $url,
+		      checked => $checked,
+		     };
+
+
 	$count++;
       }
       
-      $idnresult->finish();
+      # TT-Data erzeugen
       
+      my $ttdata={
+		  title      => 'KUG: Katalogauswahl',
+		  stylesheet => $stylesheet,
+		  sessionID  => $sessionID,
+		  show_corporate_banner => 0,
+		  show_foot_banner => 1,
+		  show_testsystem_info => 0,
+		  categories    => $categories,
+		  maxcolumn => $maxcolumn,
+		  catdb      => \@catdb,
+		  config     => \%config,
+		 };
+    
+      OpenBib::Common::Util::print_page($config{tt_databasechoice_tname},$ttdata,$r);
+
+
+      $idnresult->finish();
       $sessiondbh->disconnect();
       
-      if ($count%3 == 1){
-	print "<TD></TD><TD></TD></TR>\n";
-      }
-      elsif ($count%3 == 2){
-	print "<TD></TD></TR>\n";
-      }
-      
-      print << "ENDE";
-	    </TABLE>
-		<p>
-		<INPUT type=submit name="action" value="Kataloge ausw&auml;hlen">&nbsp;<INPUT type=reset value="Urspr&uuml;ngliche Auswahl wiederherstellen">
-		</FORM>
-		<p>
-ENDE
-      OpenBib::Common::Util::print_footer();
     }
   }
   else {

@@ -3,7 +3,7 @@
   <head>
     <meta http-equiv="pragma" content="no-cache" />
     [% stylesheet %]
-    <link href="/images/kvik/favicon.ico" rel="shortcut icon" />
+    <link href="/images/openbib/favicon.ico" rel="shortcut icon" />
 
     [% IF invisible_links %]
     [% PROCESS invisible_links_css %]

@@ -20,7 +20,8 @@
 
 <table width="100%">
 <tr><th>KUG Benutzerinformationen</th></tr>
-<tr><td class="boxed">
+<tr><td class="boxed" 
+>
 <table>
 <tr><td><b>Benutzername:</b></td><td>[% loginname %]</td>
 
@@ -56,22 +57,52 @@
 &nbsp;[% userinfo.plz %]
 [% END %] 
 &nbsp;[% userinfo.ort %]</td></tr>
+[% IF userinfo.email %]
+<tr><td><b>E-Mail:</b></td><td align="left">&nbsp;[% userinfo.email %]</td></tr>
+[% END %]
+<tr><td><b>Sperre:</b></td><td align="left">&nbsp;
+[%- IF userinfo.sperre -%]
+ja, seit [% userinfo.sperrdatum %]
+[%- ELSE -%]
+nein
+[%- END -%]
+</td></tr>
 </table>
+<br />
+<span style="font-size:9pt">&nbsp;Bitte wenden Sie sich bei Unstimmigkeiten in Ihren Personendaten an die Auskunft der Bibliothek.</span>
 </td>
 <td>
 &nbsp;&nbsp;
 </td>
 <td class="boxedclear" style="font-size:12pt" valign="bottom">
 <table>
-<tr><td><b>Guthaben:</b></td><td align="left">&nbsp;[% userinfo.gut %]</td><td>&nbsp;&nbsp;</td><td><b>Soll:</b></td><td><span style="color:red">[% userinfo.soll %]</span></td><td></td><td></td><td></td></tr>
+<tr><td><b>Guthaben:</b></td><td align="right">[% userinfo.gut %] </td><td>&nbsp;EUR</td></tr>
+<tr><td><b>Soll:</b></td><td align="right"><span style="color:red">[% userinfo.soll %] </td><td>&nbsp;EUR</span></td></tr>
+</table>
+<table>
 <tr><td><b>Ausgeliehen:</b></td><td align="left">&nbsp;
+[%- IF userinfo.avanz > 0 -%]
+<a href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc;circaction=borrows">[% userinfo.avanz %]</a>
+[%- ELSE -%]
+[%- userinfo.avanz -%]
+[%- END -%]
+</td><td>&nbsp;&nbsp;</td><td><b>Vorgemerkt:</b></td><td>
 
-[% IF userinfo.avanz > 0 %]
-<a href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc">[% userinfo.avanz %]</a>
+[%- IF userinfo.vmanz > 0 -%]
+<a href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc;circaction=reservations">[% userinfo.vmanz %]</a>
+[%- ELSE -%]
+[%- userinfo.vmanz -%]
+[%- END -%]
+
+</td><td>&nbsp;&nbsp;</td><td><b>&Uuml;berzogen:</b></td><td><span style="color:red">
+
+[% IF userinfo.maanz > 0 %]
+<a href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc;circaction=reminders">[% userinfo.maanz %]</a>
 [% ELSE %]
-[% userinfo.avanz %]
+[% userinfo.maanz %]
 [% END %]
-</td><td>&nbsp;&nbsp;</td><td><b>Vorgemerkt:</b></td><td>[% userinfo.vmanz %]</td><td>&nbsp;&nbsp;</td><td><b>Bestellt:</b></td><td><span style="color:red">[% userinfo.bsanz %]</span></td></tr>
+
+</span></td></tr>
 </table>
 </td>
 </tr>

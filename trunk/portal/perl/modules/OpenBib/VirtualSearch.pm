@@ -90,6 +90,7 @@ sub handler {
   my $fs=$query->param('fs') || '';
   my $verf=$query->param('verf') || '';
   my $hst=$query->param('hst') || '';
+  my $hststring=$query->param('hststring') || '';
   my $swt=$query->param('swt') || '';
   my $kor=$query->param('kor') || '';
   my $sign=$query->param('sign') || '';
@@ -111,6 +112,7 @@ sub handler {
   my $bool9=$query->param('bool9') || '';
   my $bool10=$query->param('bool10') || '';
   my $bool11=$query->param('bool11') || '';
+  my $bool12=$query->param('bool12') || '';
   my @databases=($query->param('database'))?$query->param('database'):();
   my $starthit=($query->param('starthit'))?$query->param('starthit'):1;
   my $hitrange=($query->param('hitrange'))?$query->param('hitrange'):20;
@@ -122,7 +124,7 @@ sub handler {
   my $swtindexall=$query->param('swtindexall') || '';
   my $profil=$query->param('profil') || '';
   my $trefferliste=$query->param('trefferliste') || '';
-  my $autoplus=$query->param('autoplus') || '1';
+  my $autoplus=$query->param('autoplus') || '';
   my $queryid=$query->param('queryid') || '';
   
   # Filter: Freie Suche
@@ -139,6 +141,7 @@ sub handler {
   
   $verf=OpenBib::VirtualSearch::Util::cleansearchterm($verf);
   $hst=OpenBib::VirtualSearch::Util::cleansearchterm($hst);
+  $hststring=OpenBib::VirtualSearch::Util::cleansearchterm($hststring);
   $swt=OpenBib::VirtualSearch::Util::cleansearchterm($swt);
   $kor=OpenBib::VirtualSearch::Util::cleansearchterm($kor);
   $sign=OpenBib::VirtualSearch::Util::cleansearchterm($sign);
@@ -152,7 +155,7 @@ sub handler {
   
   # Umwandlung impliziter ODER-Verknuepfung in UND-Verknuepfung
   
-  if ($autoplus){
+  if ($autoplus eq "1"){
     
     $fs=OpenBib::VirtualSearch::Util::conv2autoplus($fs) if ($fs);
     $verf=OpenBib::VirtualSearch::Util::conv2autoplus($verf) if ($verf);
@@ -277,7 +280,7 @@ sub handler {
 	$thisqueryid=$queryid;
       }
       
-      my ($fs,$verf,$hst,$swt,$kor,$sign,$isbn,$issn,$notation,$mart,$ejahr,$bool1,$bool2,$bool3,$bool4,$bool5,$bool6,$bool7,$bool8,$bool9,$bool10,$bool11)=split('\|\|',$querystrings[$thisqueryidx]);
+      ($fs,$verf,$hst,$swt,$kor,$sign,$isbn,$issn,$notation,$mart,$ejahr,$hststring,$bool1,$bool2,$bool3,$bool4,$bool5,$bool6,$bool7,$bool8,$bool9,$bool10,$bool11,$bool12)=split('\|\|',$querystrings[$thisqueryidx]);
       
       $idnresult=$sessiondbh->prepare("select dbname,hits from searchresults where sessionid='$sessionID' and queryid=$thisqueryid order by hits desc") or die "Error -- $DBI::errstr";
       $idnresult->execute();
@@ -318,6 +321,7 @@ HEADER
       print "&nbsp;ISBN: $isbn " if ($isbn);
       print "&nbsp;ISSN: $issn " if ($issn);
       print "&nbsp;MART: $mart " if ($mart);
+      print "&nbsp;HSTR: $hststring " if ($hststring);
       
       #    print "= Treffer: $hits" if ($hits);
       print ")</td></tr><tr><td colspan=\"2\"></td></tr>";
@@ -374,7 +378,7 @@ HEADER
 	  
 	  while ($i <= $#queryids){
 	    
-	    my ($fs,$verf,$hst,$swt,$kor,$sign,$isbn,$issn,$notation,$mart,$ejahr,$bool1,$bool2,$bool3,$bool4,$bool5,$bool6,$bool7,$bool8,$bool9,$bool10,$bool11)=split('\|\|',$querystrings[$i]);
+	    my ($fs,$verf,$hst,$swt,$kor,$sign,$isbn,$issn,$notation,$mart,$ejahr,$hststring,$bool1,$bool2,$bool3,$bool4,$bool5,$bool6,$bool7,$bool8,$bool9,$bool10,$bool11,$bool12)=split('\|\|',$querystrings[$i]);
 	    
 	    print "<OPTION value=\"".$queryids[$i]."\">";
 	    print "(";
@@ -389,6 +393,7 @@ HEADER
 	    print "&nbsp;ISBN: $isbn " if ($isbn);
 	    print "&nbsp;ISSN: $issn " if ($issn);
 	    print "&nbsp;MART: $mart " if ($mart);
+	    print "&nbsp;HSTR: $hststring " if ($hststring);
 	    print "= Treffer: $queryhits[$i])" if ($queryhits[$i]);
 	    print "</OPTION>\n";
 	    
@@ -731,7 +736,7 @@ HEADER
       foreach $database (@databases){
 	#my $request=new HTTP::Request GET => $befehlsurl;
 	
-	my $suchstring="swtindexall=Schlagwortindex&fs=$fs&verf=$verf&hst=$hst&swt=$swt&kor=$kor&isbn=$isbn&issn=$issn&mart=$mart&sign=$sign&verknuepfung=$verknuepfung&ejahr=$ejahr&ejahrop=$ejahrop&searchmode=$searchmode&showmexintit=$showmexintit&maxhits=$maxhits&hitrange=-1&searchall=$searchall&dbmode=$dbmode&database=$database";
+	my $suchstring="swtindexall=Schlagwortindex&fs=$fs&verf=$verf&hst=$hst&hststring=$hststring&swt=$swt&kor=$kor&isbn=$isbn&issn=$issn&mart=$mart&sign=$sign&verknuepfung=$verknuepfung&ejahr=$ejahr&ejahrop=$ejahrop&searchmode=$searchmode&showmexintit=$showmexintit&maxhits=$maxhits&hitrange=-1&searchall=$searchall&dbmode=$dbmode&database=$database";
 	
 	my $request=new HTTP::Request GET => "$befehlsurl?$suchstring";
 	#$request->content("$suchstring");    
@@ -858,6 +863,10 @@ HEADER
   if ($mart){
     $firstsql=1;
   }
+
+  if ($hststring){
+    $firstsql=1;
+  }
   
   if ($ejahr){
     my ($ejtest)=$ejahr=~/.*(\d\d\d\d).*/;
@@ -953,7 +962,7 @@ HEADER
     if (defined($ausleihe{"$database"}) && $ausleihe{"$database"} eq "yea"){
       $showvbu=1;
     }  
-    my $suchstring="sessionID=$sessionID&search=$search&fs=$fs&verf=$verf&hst=$hst&swt=$swt&kor=$kor&sign=$sign&isbn=$isbn&issn=$issn&mart=$mart&notation=$notation&verknuepfung=$verknuepfung&ejahr=$ejahr&ejahrop=$ejahrop&searchmode=$searchmode&showmexintit=$showmexintit&maxhits=$maxhits&hitrange=-1&searchall=$searchall&showvbu=$showvbu&dbmode=$dbmode&bool1=$bool1&bool2=$bool2&bool3=$bool3&bool4=$bool4&bool5=$bool5&bool6=$bool6&bool7=$bool7&bool8=$bool8&bool9=$bool9&bool10=$bool10&bool11=$bool11&sorttype=$sorttype&database=$database";
+    my $suchstring="sessionID=$sessionID&search=$search&fs=$fs&verf=$verf&hst=$hst&hststring=$hststring&swt=$swt&kor=$kor&sign=$sign&isbn=$isbn&issn=$issn&mart=$mart&notation=$notation&verknuepfung=$verknuepfung&ejahr=$ejahr&ejahrop=$ejahrop&searchmode=$searchmode&showmexintit=$showmexintit&maxhits=$maxhits&hitrange=-1&searchall=$searchall&showvbu=$showvbu&dbmode=$dbmode&bool1=$bool1&bool2=$bool2&bool3=$bool3&bool4=$bool4&bool5=$bool5&bool6=$bool6&bool7=$bool7&bool8=$bool8&bool9=$bool9&bool10=$bool10&bool11=$bool11&bool12=$bool12&sorttype=$sorttype&database=$database";
 
     my $request=new HTTP::Request GET => "$befehlsurl?$suchstring";
     
@@ -1070,14 +1079,14 @@ HEADER
     my $dbasesstring=join("||",@databases);
     
     
-    my $idnresult=$sessiondbh->prepare("select * from queries where query='$fs||$verf||$hst||$swt||$kor||$sign||$isbn||$issn||$notation||$mart||$ejahr||$bool1||$bool2||$bool3||$bool4||$bool5||$bool6||$bool7||$bool8||$bool9||$bool10||$bool11' and sessionid='$sessionID' and dbases='$dbasesstring'") or die "Error -- $DBI::errstr";
+    my $idnresult=$sessiondbh->prepare("select * from queries where query='$fs||$verf||$hst||$swt||$kor||$sign||$isbn||$issn||$notation||$mart||$ejahr||$hststring||$bool1||$bool2||$bool3||$bool4||$bool5||$bool6||$bool7||$bool8||$bool9||$bool10||$bool11||$bool12' and sessionid='$sessionID' and dbases='$dbasesstring'") or die "Error -- $DBI::errstr";
     $idnresult->execute();
     
     my $queryalreadyexists=0;
     
     # Neuer Query
     if ($idnresult->rows <= 0){
-      $idnresult=$sessiondbh->prepare("insert into queries (queryid,sessionid,query,hits,dbases) values (NULL,'$sessionID','$fs||$verf||$hst||$swt||$kor||$sign||$isbn||$issn||$notation||$mart||$ejahr||$bool1||$bool2||$bool3||$bool4||$bool5||$bool6||$bool7||$bool8||$bool9||$bool10||$bool11',$gesamttreffer,'$dbasesstring')") or die "Error -- $DBI::errstr";
+      $idnresult=$sessiondbh->prepare("insert into queries (queryid,sessionid,query,hits,dbases) values (NULL,'$sessionID','$fs||$verf||$hst||$swt||$kor||$sign||$isbn||$issn||$notation||$mart||$ejahr||$hststring||$bool1||$bool2||$bool3||$bool4||$bool5||$bool6||$bool7||$bool8||$bool9||$bool10||$bool11||$bool12',$gesamttreffer,'$dbasesstring')") or die "Error -- $DBI::errstr";
       $idnresult->execute();
     }
     
@@ -1087,7 +1096,7 @@ HEADER
     }
     
     
-    $idnresult=$sessiondbh->prepare("select queryid from queries where query='$fs||$verf||$hst||$swt||$kor||$sign||$isbn||$issn||$notation||$mart||$ejahr||$bool1||$bool2||$bool3||$bool4||$bool5||$bool6||$bool7||$bool8||$bool9||$bool10||$bool11' and sessionid='$sessionID' and dbases='$dbasesstring'") or die "Error -- $DBI::errstr";
+    $idnresult=$sessiondbh->prepare("select queryid from queries where query='$fs||$verf||$hst||$swt||$kor||$sign||$isbn||$issn||$notation||$mart||$ejahr||$hststring||$bool1||$bool2||$bool3||$bool4||$bool5||$bool6||$bool7||$bool8||$bool9||$bool10||$bool11||$bool12' and sessionid='$sessionID' and dbases='$dbasesstring'") or die "Error -- $DBI::errstr";
     $idnresult->execute();
     
     my @idnres;

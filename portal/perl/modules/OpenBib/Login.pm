@@ -99,6 +99,7 @@ sub handler {
 
     return OK;
   }
+
   
   if ($action eq "login"){
     
@@ -165,9 +166,31 @@ sub handler {
 
     $targetresult->finish();
     
+
+    #####################################################################
+    ## Ausleihkonfiguration fuer den Katalog einlesen
+    
+    my $dbinforesult=$sessiondbh->prepare("select circ,circurl,circcheckurl,circdb from dboptions where dbname = ?") or $logger->error($DBI::errstr);
+    $dbinforesult->execute($db) or $logger->error($DBI::errstr);;
+    
+    my $circ=0;
+    my $circurl="";
+    my $circcheckurl="";
+    my $circdb="";
+    
+    while (my $result=$dbinforesult->fetchrow_hashref()){
+      $circ=$result->{'circ'};
+      $circurl=$result->{'circurl'};
+      $circcheckurl=$result->{'circcheckurl'};
+      $circdb=$result->{'circdb'};
+    }
+
+    $dbinforesult->finish();
+
+
     if ($type eq "olws"){
       
-      my $ruserinfo=OpenBib::Login::Util::authenticate_olws_user($loginname,$password,$hostname,$db);
+      my $ruserinfo=OpenBib::Login::Util::authenticate_olws_user($loginname,$password,$circcheckurl,$circdb);
       
       my %userinfo=%$ruserinfo;
       
@@ -189,21 +212,27 @@ sub handler {
 	if ($userresult->rows <= 0){
 
 	  # Neuen Satz eintragen
-	  $userresult=$userdbh->prepare("insert into user values (NULL,'',?,?,'','','','','','','','','')") or $logger->error($DBI::errstr);
+	  $userresult=$userdbh->prepare("insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','')") or $logger->error($DBI::errstr);
 	  
 	  $userresult->execute($loginname,$password) or $logger->error($DBI::errstr);
 
 	}
 	else {
+
+	  # Neuen Satz eintragen
+	  $userresult=$userdbh->prepare("update user set pin = ? where loginname = ?") or $logger->error($DBI::errstr);
+	  
+	  $userresult->execute($password,$loginname) or $logger->error($DBI::errstr);
+
 	  $userid=$userresult->{'userid'};
 	}
 
 
 	# Benuzerinformationen eintragen
 
-	$userresult=$userdbh->prepare("update user set nachname = ?, vorname = ?, soll = ?, gut = ?, avanz = ?, bsanz = ?, vmanz = ?, gebdatum = ? where loginname = ?") or $logger->error($DBI::errstr);
+	$userresult=$userdbh->prepare("update user set nachname = ?, vorname = ?, strasse = ?, ort = ?, plz = ?, soll = ?, gut = ?, avanz = ?, bsanz = ?, vmanz = ?, gebdatum = ? where loginname = ?") or $logger->error($DBI::errstr);
 	
-	$userresult->execute($userinfo{'Nachname'},$userinfo{'Vorname'},$userinfo{'Soll'},$userinfo{'Guthaben'},$userinfo{'Avanz'},$userinfo{'Bsanz'},$userinfo{'Vmanz'},$userinfo{'Geburtsdatum'},$loginname) or $logger->error($DBI::errstr);
+	$userresult->execute($userinfo{'Nachname'},$userinfo{'Vorname'},$userinfo{'Strasse'},$userinfo{'Ort'},$userinfo{'PLZ'},$userinfo{'Soll'},$userinfo{'Guthaben'},$userinfo{'Avanz'},$userinfo{'Bsanz'},$userinfo{'Vmanz'},$userinfo{'Geburtsdatum'},$loginname) or $logger->error($DBI::errstr);
 	$userresult->finish();
       }
     }
@@ -214,6 +243,9 @@ sub handler {
       if ($result <= 0){
 	$loginfailed=2;
       }
+    }
+    else {
+      $loginfailed=2;
     }
     
     if (!$loginfailed){
@@ -226,7 +258,7 @@ sub handler {
       my $res=$userresult->fetchrow_hashref();
       
       my $userid=$res->{'userid'};
-      
+
       # Es darf keine Session assoziiert sein. Daher stumpf loeschen
       
       my $globalsessionID="$config{servername}:$sessionID";
@@ -234,9 +266,9 @@ sub handler {
       
       $userresult->execute($globalsessionID) or $logger->error($DBI::errstr);
       
-      $userresult=$userdbh->prepare("insert into usersession values (?,?)") or $logger->error($DBI::errstr);
+      $userresult=$userdbh->prepare("insert into usersession values (?,?,?)") or $logger->error($DBI::errstr);
       
-      $userresult->execute($globalsessionID,$userid) or $logger->error($DBI::errstr);
+      $userresult->execute($globalsessionID,$userid,$targetid) or $logger->error($DBI::errstr);
       
       # Ueberpruefen, ob der Benutzer schon ein Suchprofil hat
       

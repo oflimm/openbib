@@ -35,6 +35,9 @@ use strict;
 use warnings;
 
 use Apache::Request();      # CGI-Handling (or require)
+
+use Log::Log4perl qw(get_logger :levels);
+
 use DBI;
 
 use POSIX;
@@ -71,6 +74,10 @@ use Digest::MD5; # qw(md5 md5_hex md5_base64);
 sub handler {
   
   my $r=shift;
+
+  # Log4perl logger erzeugen
+
+  my $logger = get_logger();
   
   #####################################################################
   ## Wandlungstabelle Erscheinungsjahroperator
@@ -366,10 +373,9 @@ sub handler {
   #####################################################################
   # Verbindung zur SQL-Datenbank herstellen
   
-  my $dbh=DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
-    or die "could not connect";
+  my $dbh=DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd}) or $logger->error_die($DBI::errstr);
   
-  my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or die "could not connect";
+  my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
   
   
   #####################################################################
@@ -377,8 +383,8 @@ sub handler {
   
   # Verweis: Datenbankname -> Informationen zum zugeh"origen Institut/Seminar
   
-  my $dbinforesult=$sessiondbh->prepare("select dbname,sigel,url,description from dbinfo") or die "Error -- $DBI::errstr";
-  $dbinforesult->execute();
+  my $dbinforesult=$sessiondbh->prepare("select dbname,sigel,url,description from dbinfo") or $logger->error($DBI::errstr);
+  $dbinforesult->execute() or $logger->error($DBI::errstr);;
   
   my %sigel=();
   my %bibinfo=();
@@ -427,8 +433,8 @@ sub handler {
   #####################################################################
   ## Ausleihkonfiguration fuer den Katalog einlesen
 
-  $dbinforesult=$sessiondbh->prepare("select circ,circurl,circcheckurl from dboptions where dbname='$database'") or die "Error -- $DBI::errstr";
-  $dbinforesult->execute();
+  $dbinforesult=$sessiondbh->prepare("select circ,circurl,circcheckurl from dboptions where dbname='$database'") or $logger->error($DBI::errstr);
+  $dbinforesult->execute() or $logger->error($DBI::errstr);;
 
   my $circ=0;
   my $circurl="";

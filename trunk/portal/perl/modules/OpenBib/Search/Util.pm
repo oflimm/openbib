@@ -769,7 +769,7 @@ sub get_swt_by_idn {
       
       my $swtres3;
       while ($swtres3=$swtresult3->fetchrow_hashref){
-	print_simple_category("&Uuml;berordnung","$swtres2->{ueber}") if ($swtres3->{ueber});
+	print_simple_category("&Uuml;berordnung","$swtres3->{ueber}") if ($swtres3->{ueber});
       }    
       $swtresult3->finish();
       

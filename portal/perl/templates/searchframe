@@ -98,7 +98,7 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
 <table>
 <tr><td>&nbsp;</td></tr>
 </table></td>
-<td class="boxed" valign="top">
+<td class="boxed" valign="top" style="font-size:9pt">
 <table>
 <tr><td>[% PROCESS search_info %]</td></tr>
 </table>

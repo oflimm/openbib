@@ -2,7 +2,7 @@
 #
 #  OpenBib::Circulation
 #
-#  Dieses File ist (C) 2005 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -73,6 +73,9 @@ sub handler {
   my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
   my $action=($query->param('action'))?$query->param('action'):'none';
+  my $circaction=($query->param('action'))?$query->param('circaction'):'none';
+  my $offset=($query->param('offset'))?$query->param('offset'):0;
+  my $listlength=($query->param('listlength'))?$query->param('listlength'):10;
   my $sessionID=$query->param('sessionID')||'';
   
   my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
@@ -128,44 +131,126 @@ sub handler {
   $dbinforesult->finish();
 
   if ($action eq "showcirc"){
-    
-    my $circexlist=undef;
-    
-    my $soap = SOAP::Lite
-      -> uri("urn:/Circulation")
-	-> proxy($circcheckurl);
-    my $result = $soap->get_borrows($loginname,$password,$circdb);
-    
-    unless ($result->fault) {
-      $circexlist=$result->result;
+
+    if ($circaction eq "reservations"){
+      my $circexlist=undef;
+      
+      my $soap = SOAP::Lite
+	-> uri("urn:/Circulation")
+	  -> proxy($circcheckurl);
+      my $result = $soap->get_reservations($loginname,$password,$circdb);
+      
+      unless ($result->fault) {
+	$circexlist=$result->result;
+      }
+      else {
+	$logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+      }
+      
+      # TT-Data erzeugen
+      
+      my $ttdata={
+		  stylesheet => $stylesheet,
+		  
+		  sessionID  => $sessionID,
+		  loginname => $loginname,
+		  password => $password,
+		  
+		  reservations => $circexlist,
+		  
+		  utf2iso => sub { 
+		    my $string=shift;
+		    $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
+		    return $string;
+		  },
+		  
+		  show_corporate_banner => 0,
+		  show_foot_banner => 1,
+		  config     => \%config,
+		 };
+      
+      OpenBib::Common::Util::print_page($config{tt_circulation_reserv_tname},$ttdata,$r);
+
+    }
+    elsif ($circaction eq "reminders"){
+      my $circexlist=undef;
+      
+      my $soap = SOAP::Lite
+	-> uri("urn:/Circulation")
+	  -> proxy($circcheckurl);
+      my $result = $soap->get_reminders($loginname,$password,$circdb);
+      
+      unless ($result->fault) {
+	$circexlist=$result->result;
+      }
+      else {
+	$logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+      }
+      
+      # TT-Data erzeugen
+      
+      my $ttdata={
+		  stylesheet => $stylesheet,
+		  
+		  sessionID  => $sessionID,
+		  loginname => $loginname,
+		  password => $password,
+		  
+		  reminders => $circexlist,
+		  
+		  utf2iso => sub { 
+		    my $string=shift;
+		    $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
+		    return $string;
+		  },
+		  
+		  show_corporate_banner => 0,
+		  show_foot_banner => 1,
+		  config     => \%config,
+		 };
+      
+      OpenBib::Common::Util::print_page($config{tt_circulation_remind_tname},$ttdata,$r);
     }
     else {
-      $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+      my $circexlist=undef;
+      
+      my $soap = SOAP::Lite
+	-> uri("urn:/Circulation")
+	  -> proxy($circcheckurl);
+      my $result = $soap->get_borrows($loginname,$password,$circdb);
+      
+      unless ($result->fault) {
+	$circexlist=$result->result;
+      }
+      else {
+	$logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+      }
+      
+      # TT-Data erzeugen
+      
+      my $ttdata={
+		  stylesheet => $stylesheet,
+		  
+		  sessionID  => $sessionID,
+		  loginname => $loginname,
+		  password => $password,
+		  
+		  borrows => $circexlist,
+		  
+		  utf2iso => sub { 
+		    my $string=shift;
+		    $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
+		    return $string;
+		  },
+		  
+		  show_corporate_banner => 0,
+		  show_foot_banner => 1,
+		  config     => \%config,
+		 };
+      
+      OpenBib::Common::Util::print_page($config{tt_circulation_tname},$ttdata,$r);
     }
 
-    # TT-Data erzeugen
-
-    my $ttdata={
-		stylesheet => $stylesheet,
-
-		sessionID  => $sessionID,
-		loginname => $loginname,
-		password => $password,
-
-		borrows => $circexlist,
-
-		utf2iso => sub { 
-		                  my $string=shift;
-				  $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
-				  return $string;
-	 			},
-
-		show_corporate_banner => 0,
-		show_foot_banner => 1,
-		config     => \%config,
-	       };
-
-    OpenBib::Common::Util::print_page($config{tt_circulation_tname},$ttdata,$r);
 
   }
   else {

@@ -149,8 +149,8 @@ sub handler {
 
   # Assoziierten View zur Session aus Datenbank holen
 
-  my $idnresult=$sessiondbh->prepare("select viewname from sessionview where sessionid='$sessionID'") or $logger->error($DBI::errstr);
-  $idnresult->execute() or $logger->error($DBI::errstr);
+  my $idnresult=$sessiondbh->prepare("select viewname from sessionview where sessionid = ?") or $logger->error($DBI::errstr);
+  $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
 
   my $result=$idnresult->fetchrow_hashref();
   
@@ -172,16 +172,16 @@ sub handler {
     if ($userid){
       # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
       
-      my $idnresult=$userdbh->prepare("select * from treffer where userid=$userid and dbname='$database' and singleidn=$singleidn") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
+      my $idnresult=$userdbh->prepare("select * from treffer where userid = ? and dbname = ? and singleidn = ?") or $logger->error($DBI::errstr);
+      $idnresult->execute($userid,$database,$singleidn) or $logger->error($DBI::errstr);
       my $anzahl=$idnresult->rows();
       $idnresult->finish();
       
       if ($anzahl == 0){
 	# Zuerst Eintragen der Informationen
 	
-	my $idnresult=$userdbh->prepare("insert into treffer values ($userid,'$database',$singleidn)") or $logger->error($DBI::errstr);
-	$idnresult->execute() or $logger->error($DBI::errstr);
+	my $idnresult=$userdbh->prepare("insert into treffer values (?,?,?)") or $logger->error($DBI::errstr);
+	$idnresult->execute($userid,$database,$singleidn) or $logger->error($DBI::errstr);
 	$idnresult->finish();
 	
       }
@@ -191,16 +191,16 @@ sub handler {
       
       # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
       
-      my $idnresult=$sessiondbh->prepare("select * from treffer where sessionid='$sessionID' and dbname='$database' and singleidn=$singleidn") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
+      my $idnresult=$sessiondbh->prepare("select * from treffer where sessionid = ? and dbname = ? and singleidn = ?") or $logger->error($DBI::errstr);
+      $idnresult->execute($sessionID,$database,$singleidn) or $logger->error($DBI::errstr);
       my $anzahl=$idnresult->rows();
       $idnresult->finish();
       
       if ($anzahl == 0){
 	# Zuerst Eintragen der Informationen
 	
-	my $idnresult=$sessiondbh->prepare("insert into treffer values ('$sessionID','$database',$singleidn)") or $logger->error($DBI::errstr);
-	$idnresult->execute() or $logger->error($DBI::errstr);
+	my $idnresult=$sessiondbh->prepare("insert into treffer values (?,?,?)") or $logger->error($DBI::errstr);
+	$idnresult->execute($sessionID,$database,$singleidn) or $logger->error($DBI::errstr);
 	$idnresult->finish();
 	
       }
@@ -227,13 +227,13 @@ sub handler {
 	my ($loeschdb,$loeschidn)=split(":",$loeschtit);
 	
 	if ($userid){
-	  my $idnresult=$userdbh->prepare("delete from treffer where userid=$userid and dbname='$loeschdb' and singleidn=$loeschidn") or $logger->error($DBI::errstr);
-	  $idnresult->execute() or $logger->error($DBI::errstr);
+	  my $idnresult=$userdbh->prepare("delete from treffer where userid = ? and dbname = ? and singleidn = ?") or $logger->error($DBI::errstr);
+	  $idnresult->execute($userid,$loeschdb,$loeschidn) or $logger->error($DBI::errstr);
 	  $idnresult->finish();
 	}
 	else {
-	  my $idnresult=$sessiondbh->prepare("delete from treffer where sessionid='$sessionID' and dbname='$loeschdb' and singleidn=$loeschidn") or $logger->error($DBI::errstr);
-	  $idnresult->execute() or $logger->error($DBI::errstr);
+	  my $idnresult=$sessiondbh->prepare("delete from treffer where sessionid = ? and dbname = ? and singleidn = ?") or $logger->error($DBI::errstr);
+	  $idnresult->execute($sessionID,$loeschdb,$loeschidn) or $logger->error($DBI::errstr);
 	  $idnresult->finish();
 	}
 	
@@ -248,12 +248,12 @@ sub handler {
     my $idnresult="";
     
     if ($userid){
-      $idnresult=$userdbh->prepare("select * from treffer where userid=$userid order by dbname") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
+      $idnresult=$userdbh->prepare("select * from treffer where userid = ? order by dbname") or $logger->error($DBI::errstr);
+      $idnresult->execute($userid) or $logger->error($DBI::errstr);
     }
     else {
-      $idnresult=$sessiondbh->prepare("select * from treffer where sessionid='$sessionID' order by dbname") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
+      $idnresult=$sessiondbh->prepare("select * from treffer where sessionid = ? order by dbname") or $logger->error($DBI::errstr);
+      $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
     }
     
     my $ua=new LWP::UserAgent;
@@ -397,12 +397,12 @@ ENDE2
       my $idnresult="";
       
       if ($userid){
-	$idnresult=$userdbh->prepare("select * from treffer where userid=$userid") or $logger->error($DBI::errstr);
-	$idnresult->execute() or $logger->error($DBI::errstr);
+	$idnresult=$userdbh->prepare("select * from treffer where userid = ?") or $logger->error($DBI::errstr);
+	$idnresult->execute($userid) or $logger->error($DBI::errstr);
       }
       else {
-	$idnresult=$sessiondbh->prepare("select * from treffer where sessionid='$sessionID' order by dbname") or $logger->error($DBI::errstr);
-	$idnresult->execute() or $logger->error($DBI::errstr);
+	$idnresult=$sessiondbh->prepare("select * from treffer where sessionid = ? order by dbname") or $logger->error($DBI::errstr);
+	$idnresult->execute($sessionID) or $logger->error($DBI::errstr);
       }  
       
       my $gesamttreffer="";
@@ -446,8 +446,8 @@ ENDE2
 
     # Weg mit der Singleidn - muss spaeter gefixed werden
 
-    my $userresult=$userdbh->prepare("select loginname from user where userid='$userid'") or $logger->error($DBI::errstr);
-    $userresult->execute() or $logger->error($DBI::errstr);
+    my $userresult=$userdbh->prepare("select loginname from user where userid = ?") or $logger->error($DBI::errstr);
+    $userresult->execute($userid) or $logger->error($DBI::errstr);
     
     my $loginname="";
     
@@ -542,12 +542,12 @@ ENDE5
       my $idnresult="";
       
       if ($userid){
-	$idnresult=$userdbh->prepare("select * from treffer where userid=$userid") or $logger->error($DBI::errstr);
-	$idnresult->execute() or $logger->error($DBI::errstr);
+	$idnresult=$userdbh->prepare("select * from treffer where userid = ?") or $logger->error($DBI::errstr);
+	$idnresult->execute($userid) or $logger->error($DBI::errstr);
       }
       else {
-	$idnresult=$sessiondbh->prepare("select * from treffer where sessionid='$sessionID' order by dbname") or $logger->error($DBI::errstr);
-	$idnresult->execute() or $logger->error($DBI::errstr);
+	$idnresult=$sessiondbh->prepare("select * from treffer where sessionid = ? order by dbname") or $logger->error($DBI::errstr);
+	$idnresult->execute($sessionID) or $logger->error($DBI::errstr);
       }
       
       my $gesamttreffer="";

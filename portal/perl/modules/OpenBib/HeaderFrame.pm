@@ -86,12 +86,6 @@ sub handler {
   $idnresult->finish();
 
   my $view=$result->{'viewname'} || '';
-  
-  my $viewdesc="";
-  
-  if ($view ne ""){
-    $viewdesc="<tr><td colspan=3 align=left><img src=\"/images/openbib/views/$view.png\"></td></tr>";
-  }
 
   # Haben wir eine authentifizierte Session?
   
@@ -141,7 +135,6 @@ sub handler {
 	      title      => 'KUG - K&ouml;lner Universit&auml;tsGesamtkatalog',
 	      stylesheet   => $stylesheet,
 	      view         => $view,
-	      viewdesc     => $viewdesc,
 	      sessionID    => $sessionID,
 
 	      userid         => $userid,

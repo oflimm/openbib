@@ -12,7 +12,7 @@ jeweiligen Suchfeld.<br>
 
 <b>+Wort</b> (muss enthalten sein), <b>-Wort</b> (soll nicht enthalten sein), Leerzeichen (darf enthalten sein), <b>"Wort1 Wort2"</b> (m&uuml;ssen in dieser Reihenfolge enthalten sein), <b>Wor*</b> (Abk&uuml;rzung)<br>
 <br>
-Zur Vereinfachung der Suche ist die UND-Verkn&uuml;pfung innerhalb eines Suchfeldes als Standard-Verkn&uuml;pfung aktiviert. Damit muss nicht vor jedes Wort ein <b>+</b> gesetzt werden. Weitere Hinweise finden Sie in der <a href="http://$config{servername}/suchhilfe.html">Hilfe</a>.<br> 
+Zur Vereinfachung der Suche ist die UND-Verkn&uuml;pfung innerhalb eines Suchfeldes als Standard-Verkn&uuml;pfung aktiviert. Damit muss nicht vor jedes Wort ein <b>+</b> gesetzt werden. Weitere Hinweise finden Sie in der <a href="http://[% config.servername %]/suchhilfe.html">Hilfe</a>.<br> 
 <br>
 <b>Und-Verkn&uuml;pfung ist aktiviert (Standard):</b><br>
 <b>"kernighan, brian"</b> (alle Titel von Brian Kernighan, <b>Phrasensuche</b>)<br>
@@ -34,7 +34,7 @@ m&uuml;ssen. Deaktivieren Sie <b>nicht</b> die Suchoption 'Und-Verkn&uuml;pfung 
 <p>
 <b>Komplizierte Suchanfragen</b><br>
 Wenn Sie kompliziertere Suchanfragen stellen m&ouml;chten, so erfahren Sie
-<a href="http://$config{servername}/suchhilfe.html#profisuche">hier</a> alles &uuml;ber die Verwendung m&ouml;glicher Boolscher Suchoperatoren innerhalb eines Eingabefeldes und die angesprochene Suchoption 'Und-Verkn&uuml;pfung innerhalb eines Suchfeldes'.<br>
+<a href="http://[% config.servername %]/suchhilfe.html#profisuche">hier</a> alles &uuml;ber die Verwendung m&ouml;glicher Boolscher Suchoperatoren innerhalb eines Eingabefeldes und die angesprochene Suchoption 'Und-Verkn&uuml;pfung innerhalb eines Suchfeldes'.<br>
 <p>
 <b>Suchlogik bei Verkn&uuml;pfungen mehrerer Suchfelder:</b></br>
 Die einzelnen Suchfelder sind standardm&auml;ssig &uuml;ber eine 

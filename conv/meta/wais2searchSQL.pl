@@ -28,6 +28,8 @@
 #
 #####################################################################   
 
+use OpenBib::Common::Stopwords;
+
 open(OUT,">search.sql");
 
 while (<>){
@@ -38,6 +40,9 @@ while (<>){
     $hststring=~s/¬//g;
     $hststring=~s/\s+$//;
     $hststring=~s/\s+<.*?>//g;
+
+    $hststring=OpenBib::Common::Stopwords::strip_first_stopword($hststring);
+
     print OUT "NULL|$idn|$verf|$hst|$kor|$swt|$notation|$sign|$ejahr|$isbn|$issn|$artinh|$hststring\n";
 
     $idn="";

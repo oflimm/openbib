@@ -46,11 +46,12 @@ use Digest::MD5;
 use DBI;
 use Email::Valid;                           # EMail-Adressen testen
 
-use OpenBib::VirtualSearch::Util();
+use OpenBib::VirtualSearch::Util;
 
-use OpenBib::Common::Util();
+use OpenBib::Common::Util;
+use OpenBib::Common::Stopwords;
 
-use OpenBib::Config();
+use OpenBib::Config;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
@@ -144,6 +145,12 @@ sub handler {
   $verf=OpenBib::VirtualSearch::Util::cleansearchterm($verf);
   $hst=OpenBib::VirtualSearch::Util::cleansearchterm($hst);
   $hststring=OpenBib::VirtualSearch::Util::cleansearchterm($hststring);
+
+  # Bei hststring zusaetzlich normieren durch Weglassung des ersten
+  # Stopwortes
+
+  $hststring=OpenBib::Common::Stopwords::strip_first_stopword($hststring);
+
   $swt=OpenBib::VirtualSearch::Util::cleansearchterm($swt);
   $kor=OpenBib::VirtualSearch::Util::cleansearchterm($kor);
   $sign=OpenBib::VirtualSearch::Util::cleansearchterm($sign);

@@ -463,7 +463,7 @@ ENDE2
 
     </table>
 <hr>
-<FORM method="get" action="http://$config{servername}$config{mailcollection_loc}">
+<FORM method="post" action="http://$config{servername}$config{mailcollection_loc}" enctype="multipart/form-data">
 <INPUT type=hidden name=sessionID value=$sessionID>
 <INPUT type=hidden name=type value=$type>
 <table>

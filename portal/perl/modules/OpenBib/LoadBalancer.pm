@@ -36,6 +36,8 @@ use warnings;
 
 use Apache::Request();      # CGI-Handling (or require)
 
+use Log::Log4perl qw(get_logger :levels);
+
 use LWP::UserAgent;
 use HTTP::Request;
 use HTTP::Response;
@@ -57,6 +59,10 @@ use vars qw(%config);
 sub handler {
 
   my $r=shift;
+
+  # Log4perl logger erzeugen
+
+  my $logger = get_logger();
 
   my $query=Apache::Request->new($r);
 
@@ -89,6 +95,13 @@ sub handler {
     
     my $request=new HTTP::Request POST => "http://$targethost$config{serverload_loc}";
     my $response=$ua->request($request);
+
+    if ($response->is_success) {
+      $logger->debug("Getting ", $response->content);
+    }
+    else {
+      $logger->error("Getting ", $response->status_line);
+    }
     
     my $content=$response->content();
     

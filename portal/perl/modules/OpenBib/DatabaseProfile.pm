@@ -36,6 +36,8 @@ use warnings;
 
 use Apache::Request();      # CGI-Handling (or require)
 
+use Log::Log4perl qw(get_logger :levels);
+
 use DBI;
 
 use OpenBib::Common::Util;
@@ -52,7 +54,11 @@ use vars qw(%config);
 sub handler {
 
   my $r=shift;
-  
+
+  # Log4perl logger erzeugen
+
+  my $logger = get_logger();
+
   my $query=Apache::Request->new($r);
   
   my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
@@ -80,9 +86,9 @@ sub handler {
   #####################################################################
   # Verbindung zur SQL-Datenbank herstellen
   
-  my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or die "could not connect";
+  my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
   
-  my $userdbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd}) or die "could not connect";
+  my $userdbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd}) or $logger->error_die($DBI::errstr);
   
   unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
     OpenBib::Common::Util::print_warning("Ung&uuml;ltige Session",$r);
@@ -115,15 +121,15 @@ sub handler {
       
       # Zuerst Profil-Description zur ID holen
       
-      $idnresult=$userdbh->prepare("select profilename from userdbprofile where profilid=$profilid");
-      $idnresult->execute();
+      $idnresult=$userdbh->prepare("select profilename from userdbprofile where profilid=$profilid") or $logger->error($DBI::errstr);
+      $idnresult->execute() or $logger->error($DBI::errstr);
       
       my $result=$idnresult->fetchrow_hashref();
       
       $profilname=$result->{'profilename'};
       
-      $idnresult=$userdbh->prepare("select dbname from profildb where profilid=$profilid");
-      $idnresult->execute();
+      $idnresult=$userdbh->prepare("select dbname from profildb where profilid=$profilid") or $logger->error($DBI::errstr);
+      $idnresult->execute() or $logger->error($DBI::errstr);
       while (my $result=$idnresult->fetchrow_hashref()){
 	my $dbname=$result->{'dbname'};
 	$checkeddb{$dbname}="checked";    
@@ -134,8 +140,8 @@ sub handler {
     my $profilemanagement="";
     
     my $profilselect="<select title=\"W&auml;hlen Sie ein anzuzeigendes oder zu l&ouml;schendes Profil aus\" name=\"profilid\">";
-    my $profilresult=$userdbh->prepare("select profilid, profilename from userdbprofile where userid=$userid order by profilename");
-    $profilresult->execute();
+    my $profilresult=$userdbh->prepare("select profilid, profilename from userdbprofile where userid=$userid order by profilename") or $logger->error($DBI::errstr);
+    $profilresult->execute() or $logger->error($DBI::errstr);
     while (my $res=$profilresult->fetchrow_hashref()){
       my $profilid=$res->{'profilid'};
       my $profilename=$res->{'profilename'};
@@ -208,8 +214,8 @@ HEAD
     my %stype;
     print "<TR><TD colspan=9 align=left bgcolor=lightblue><input type=\"checkbox\" name=\"fakult\" value=\"inst\" onclick=\"update_fak(this.form, this.checked,'inst')\" /><B>Alle Kataloge</B></TD></TR>\n";
   
-    $idnresult=$sessiondbh->prepare("select * from dbinfo where active=1 order by faculty ASC, description ASC");
-    $idnresult->execute();
+    $idnresult=$sessiondbh->prepare("select * from dbinfo where active=1 order by faculty ASC, description ASC") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
     
     while (my $result=$idnresult->fetchrow_hashref){
       
@@ -318,8 +324,8 @@ ENDE
       return OK;
     }
 
-    my $profilresult=$userdbh->prepare("select profilid from userdbprofile where userid=$userid and profilename='$newprofile'");
-    $profilresult->execute();
+    my $profilresult=$userdbh->prepare("select profilid from userdbprofile where userid=$userid and profilename='$newprofile'") or $logger->error($DBI::errstr);
+    $profilresult->execute() or $logger->error($DBI::errstr);
     
     my $numrows=$profilresult->rows;
     
@@ -330,12 +336,12 @@ ENDE
     
     if ($profilresult->rows <= 0){
       
-      my $profilresult2=$userdbh->prepare("insert into userdbprofile values (NULL,'$newprofile',$userid)");
+      my $profilresult2=$userdbh->prepare("insert into userdbprofile values (NULL,'$newprofile',$userid)") or $logger->error($DBI::errstr);
       
-      $profilresult2->execute();
-      $profilresult2=$userdbh->prepare("select profilid from userdbprofile where userid=$userid and profilename='$newprofile'");
+      $profilresult2->execute() or $logger->error($DBI::errstr);
+      $profilresult2=$userdbh->prepare("select profilid from userdbprofile where userid=$userid and profilename='$newprofile'") or $logger->error($DBI::errstr);
       
-      $profilresult2->execute();
+      $profilresult2->execute() or $logger->error($DBI::errstr);
       my $res=$profilresult2->fetchrow_hashref();
       $profilid=$res->{'profilid'};
       
@@ -352,9 +358,9 @@ ENDE
     
     # Daher erst potentiell loeschen
     
-    $profilresult=$userdbh->prepare("delete from profildb where profilid=$profilid");
+    $profilresult=$userdbh->prepare("delete from profildb where profilid=$profilid") or $logger->error($DBI::errstr);
     
-    $profilresult->execute();
+    $profilresult->execute() or $logger->error($DBI::errstr);
     
 
     my $database;
@@ -362,9 +368,9 @@ ENDE
       
       # ... und dann eintragen
       
-      my $profilresult=$userdbh->prepare("insert into profildb (profilid,dbname) values ($profilid,'$database')");
+      my $profilresult=$userdbh->prepare("insert into profildb (profilid,dbname) values ($profilid,'$database')") or $logger->error($DBI::errstr);
       
-      $profilresult->execute();
+      $profilresult->execute() or $logger->error($DBI::errstr);
       $profilresult->finish();
     }
     
@@ -377,11 +383,11 @@ ENDE
   #####################################################################   
 
   elsif ($action eq "Profil löschen"){
-    my $profilresult=$userdbh->prepare("delete from userdbprofile where userid=$userid and profilid=$profilid");
-    $profilresult->execute();
+    my $profilresult=$userdbh->prepare("delete from userdbprofile where userid=$userid and profilid=$profilid") or $logger->error($DBI::errstr);
+    $profilresult->execute() or $logger->error($DBI::errstr);
     
-    $profilresult=$userdbh->prepare("delete from profildb where profilid=$profilid");
-    $profilresult->execute();
+    $profilresult=$userdbh->prepare("delete from profildb where profilid=$profilid") or $logger->error($DBI::errstr);
+    $profilresult->execute() or $logger->error($DBI::errstr);
     
     $profilresult->finish();
     

@@ -28,6 +28,8 @@ package OpenBib::Login::Util;
 use strict;
 use warnings;
 
+use Log::Log4perl qw(get_logger :levels);
+
 use DBI;
 
 use Socket;
@@ -44,9 +46,13 @@ use vars qw(%config);
 sub authenticate_self_user {
   my ($username,$pin,$userdbh,$sessionID)=@_;
 
-  my $userresult=$userdbh->prepare("select userid from user where loginname='$username' and pin='$pin'") or die "Error -- $DBI::errstr";
+  # Log4perl logger erzeugen
   
-  $userresult->execute();
+  my $logger = get_logger();
+
+  my $userresult=$userdbh->prepare("select userid from user where loginname='$username' and pin='$pin'") or $logger->error($DBI::errstr);
+  
+  $userresult->execute() or $logger->error($DBI::errstr);
 
   my $res=$userresult->fetchrow_hashref();
 
@@ -58,6 +64,10 @@ sub authenticate_self_user {
 sub authenticate_slnp_user {
   my ($username,$pin,$slnptargetname,$slnptargetport,$slnptargetuser,$slnptargetdatabase)=@_;
 
+  # Log4perl logger erzeugen
+  
+  my $logger = get_logger();
+
   my %userinfo=();
 
   #####################################################################
@@ -67,9 +77,9 @@ sub authenticate_slnp_user {
   my $response="";
   my $out=0;
   
-  socket(SERVER, PF_INET, SOCK_STREAM, (getprotobyname('tcp'))[2])||die "keine Verbindung";
-  my $sin=sockaddr_in($slnptargetport,inet_aton($slnptargetname)) || die "Fehler";
-  connect(SERVER,$sin) || die "connect failed";
+  socket(SERVER, PF_INET, SOCK_STREAM, (getprotobyname('tcp'))[2]) or $logger->error_die("Error in socket");
+  my $sin=sockaddr_in($slnptargetport,inet_aton($slnptargetname)) or $logger->error_die("Error in sockaddr_in");
+  connect(SERVER,$sin) or $logger->error_die("Connect failed");
   
   # SERVER wird default filehandle
   
@@ -236,6 +246,10 @@ BENKONTO
 sub get_response {
 
   my ($responsecode,$out)=@_;
+
+  # Log4perl logger erzeugen
+  
+  my $logger = get_logger();
 
   my $debug=0;
 

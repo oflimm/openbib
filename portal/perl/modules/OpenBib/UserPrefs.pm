@@ -36,6 +36,8 @@ use warnings;
 
 use Apache::Request();      # CGI-Handling (or require)
 
+use Log::Log4perl qw(get_logger :levels);
+
 use POSIX;
 use Socket;
 
@@ -59,6 +61,10 @@ use vars qw(%config);
 sub handler {
 
   my $r=shift;
+
+  # Log4perl logger erzeugen
+
+  my $logger = get_logger();
 
   my $query=Apache::Request->new($r);
 
@@ -85,9 +91,9 @@ sub handler {
   my $password2=($query->param('password2'))?$query->param('password2'):'';
   my $sessionID=$query->param('sessionID')||'';
   
-  my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or die "could not connect";
+  my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
   
-  my $userdbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd}) or die "could not connect";
+  my $userdbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd}) or $logger->error_die($DBI::errstr);
   
   unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
 
@@ -111,9 +117,9 @@ sub handler {
   }
   
   if ($action eq "showfields"){
-    my $targetresult=$userdbh->prepare("select * from fieldchoice where userid='$userid'") or die "Error -- $DBI::errstr";
+    my $targetresult=$userdbh->prepare("select * from fieldchoice where userid='$userid'") or $logger->error($DBI::errstr);
     
-    $targetresult->execute();
+    $targetresult->execute() or $logger->error($DBI::errstr);
     
     my $result=$targetresult->fetchrow_hashref();
     
@@ -167,8 +173,8 @@ sub handler {
     
     $targetresult->finish();
     
-    my $userresult=$userdbh->prepare("select * from user where userid=$userid") or die "Error -- $DBI::errstr";
-    $userresult->execute();
+    my $userresult=$userdbh->prepare("select * from user where userid=$userid") or $logger->error($DBI::errstr);
+    $userresult->execute() or $logger->error($DBI::errstr);
     
     my $res=$userresult->fetchrow_hashref();
     
@@ -230,8 +236,8 @@ sub handler {
   }
   elsif ($action eq "changefields"){
     
-    my $targetresult=$userdbh->prepare("update fieldchoice set fs='$showfs', hst='$showhst', hststring='$showhststring', verf='$showverf', kor='$showkor', swt='$showswt', notation='$shownotation', isbn='$showisbn', issn='$showissn', sign='$showsign', mart='$showmart', ejahr='$showejahr' where userid='$userid'") or die "Error -- $DBI::errstr";
-    $targetresult->execute();
+    my $targetresult=$userdbh->prepare("update fieldchoice set fs='$showfs', hst='$showhst', hststring='$showhststring', verf='$showverf', kor='$showkor', swt='$showswt', notation='$shownotation', isbn='$showisbn', issn='$showissn', sign='$showsign', mart='$showmart', ejahr='$showejahr' where userid='$userid'") or $logger->error($DBI::errstr);
+    $targetresult->execute() or $logger->error($DBI::errstr);
     $targetresult->finish();
 
     # TT-Data erzeugen
@@ -271,33 +277,33 @@ sub handler {
   elsif ($action eq "Kennung soll wirklich gelöscht werden"){
     # Zuerst werden die Datenbankprofile geloescht
     
-    my $userresult=$userdbh->prepare("delete from profildb using profildb,userdbprofile where userdbprofile.userid=$userid and userdbprofile.profilid=profildb.profilid") or die "Error -- $DBI::errstr";
-    $userresult->execute();
+    my $userresult=$userdbh->prepare("delete from profildb using profildb,userdbprofile where userdbprofile.userid=$userid and userdbprofile.profilid=profildb.profilid") or $logger->error($DBI::errstr);
+    $userresult->execute() or $logger->error($DBI::errstr);
     
     
-    $userresult=$userdbh->prepare("delete from userdbprofile where userdbprofile.userid=$userid") or die "Error -- $DBI::errstr";
-    $userresult->execute();
+    $userresult=$userdbh->prepare("delete from userdbprofile where userdbprofile.userid=$userid") or $logger->error($DBI::errstr);
+    $userresult->execute() or $logger->error($DBI::errstr);
     
     
     # .. dann die Suchfeldeinstellungen
     
-    $userresult=$userdbh->prepare("delete from fieldchoice where userid=$userid") or die "Error -- $DBI::errstr";
-    $userresult->execute();
+    $userresult=$userdbh->prepare("delete from fieldchoice where userid=$userid") or $logger->error($DBI::errstr);
+    $userresult->execute() or $logger->error($DBI::errstr);
     
     # .. dann die Merkliste
     
-    $userresult=$userdbh->prepare("delete from treffer where userid=$userid") or die "Error -- $DBI::errstr";
-    $userresult->execute();
+    $userresult=$userdbh->prepare("delete from treffer where userid=$userid") or $logger->error($DBI::errstr);
+    $userresult->execute() or $logger->error($DBI::errstr);
     
     # .. dann die Verknuepfung zur Session
     
-    $userresult=$userdbh->prepare("delete from usersession where userid=$userid") or die "Error -- $DBI::errstr";
-    $userresult->execute();
+    $userresult=$userdbh->prepare("delete from usersession where userid=$userid") or $logger->error($DBI::errstr);
+    $userresult->execute() or $logger->error($DBI::errstr);
     
     # und schliesslich der eigentliche Benutzereintrag
     
-    $userresult=$userdbh->prepare("delete from user where userid=$userid") or die "Error -- $DBI::errstr";
-    $userresult->execute();
+    $userresult=$userdbh->prepare("delete from user where userid=$userid") or $logger->error($DBI::errstr);
+    $userresult->execute() or $logger->error($DBI::errstr);
     
     $userresult->finish();
     
@@ -306,17 +312,17 @@ sub handler {
     
     # Zuallererst loeschen der Trefferliste fuer diese sessionID
     
-    my $idnresult=$sessiondbh->prepare("delete from treffer where sessionid='$sessionID'");
-    $idnresult->execute();
+    my $idnresult=$sessiondbh->prepare("delete from treffer where sessionid='$sessionID'") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
     
-    $idnresult=$sessiondbh->prepare("delete from dbchoice where sessionid='$sessionID'");
-    $idnresult->execute();
+    $idnresult=$sessiondbh->prepare("delete from dbchoice where sessionid='$sessionID'") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
     
-    $idnresult=$sessiondbh->prepare("delete from searchresults where sessionid='$sessionID'");
-    $idnresult->execute();
+    $idnresult=$sessiondbh->prepare("delete from searchresults where sessionid='$sessionID'") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
     
-    $idnresult=$sessiondbh->prepare("delete from sessionview where sessionid='$sessionID'");
-    $idnresult->execute();
+    $idnresult=$sessiondbh->prepare("delete from sessionview where sessionid='$sessionID'") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
     
     $idnresult->finish();
 
@@ -348,8 +354,8 @@ sub handler {
     }
     
     
-    my $targetresult=$userdbh->prepare("update user set pin='$password1' where userid='$userid'") or die "Error -- $DBI::errstr";
-    $targetresult->execute();
+    my $targetresult=$userdbh->prepare("update user set pin='$password1' where userid='$userid'") or $logger->error($DBI::errstr);
+    $targetresult->execute() or $logger->error($DBI::errstr);
     $targetresult->finish();
     
     $r->internal_redirect("http://$config{servername}$config{userprefs_loc}?sessionID=$sessionID&action=showfields");

@@ -36,6 +36,8 @@ use warnings;
 
 use Apache::Request();      # CGI-Handling (or require)
 
+use Log::Log4perl qw(get_logger :levels);
+
 use LWP::UserAgent;
 use HTTP::Request;
 use HTTP::Response;
@@ -61,6 +63,10 @@ use vars qw(%config);
 sub handler {
 
   my $r=shift;
+
+  # Log4perl logger erzeugen
+
+  my $logger = get_logger();
 
   my $query=Apache::Request->new($r);
 
@@ -94,9 +100,9 @@ sub handler {
   #####################################################################
   # Verbindung zur SQL-Datenbank herstellen
 
-  my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or die "could not connect";
+  my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
   
-  my $userdbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd}) or die "could not connect";
+  my $userdbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd}) or $logger->error_die($DBI::errstr);
   
   my $sessionID=$query->param('sessionID');
   my $email=($query->param('email'))?$query->param('email'):'';
@@ -161,7 +167,14 @@ FALSCHEMAIL
     my $request=new HTTP::Request GET => "$befehlsurl?$suchstring";
     
     my $response=$ua->request($request);
-    
+
+    if ($response->is_success) {
+      $logger->debug("Getting ", $response->content);
+    }
+    else {
+      $logger->error("Getting ", $response->status_line);
+    }
+
     my $ergebnis=$response->content();
 
     my ($treffer)=$ergebnis=~/^(<!-- Title begins here -->.+?^<!-- Title ends here -->)/ms;
@@ -367,12 +380,12 @@ ANSCHREIBEN
     my $idnresult="";
   
     if ($userid){
-      $idnresult=$userdbh->prepare("select * from treffer where userid=$userid order by dbname");
-      $idnresult->execute();
+      $idnresult=$userdbh->prepare("select * from treffer where userid=$userid order by dbname") or $logger->error($DBI::errstr);
+      $idnresult->execute() or $logger->error($DBI::errstr);
     }
     else {
-      $idnresult=$sessiondbh->prepare("select * from treffer where sessionid='$sessionID' order by dbname");
-      $idnresult->execute();
+      $idnresult=$sessiondbh->prepare("select * from treffer where sessionid='$sessionID' order by dbname") or $logger->error($DBI::errstr);
+      $idnresult->execute() or $logger->error($DBI::errstr);
     }
 
     my $gesamttreffer="";
@@ -389,6 +402,13 @@ ANSCHREIBEN
     
       my $response=$ua->request($request);
     
+      if ($response->is_success) {
+	$logger->debug("Getting ", $response->content);
+      }
+      else {
+	$logger->error("Getting ", $response->status_line);
+      }
+
       my $ergebnis=$response->content();
     
       my ($treffer)=$ergebnis=~/^(<!-- Title begins here -->.+?^<!-- Title ends here -->)/ms;

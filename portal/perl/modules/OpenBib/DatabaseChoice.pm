@@ -2,7 +2,7 @@
 #
 #  OpenBib::DatabaseChoice
 #
-#  Dieses File ist (C) 2001-2004 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2005 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -36,6 +36,8 @@ use warnings;
 
 use Apache::Request();      # CGI-Handling (or require)
 
+use Log::Log4perl qw(get_logger :levels);
+
 use DBI;
 
 use Template;
@@ -54,6 +56,10 @@ use vars qw(%config);
 sub handler {
   my $r=shift;
   
+  # Log4perl logger erzeugen
+
+  my $logger = get_logger();
+
   my $query=Apache::Request->new($r);
 
   my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
@@ -122,9 +128,9 @@ sub handler {
   #####################################################################
   # Verbindung zur SQL-Datenbank herstellen
   
-  my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or die "could not connect";
+  my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
   
-  my $userdbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd}) or die "could not connect";
+  my $userdbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd}) or $logger->error_die($DBI::errstr);
   
   unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
     OpenBib::Common::Util::print_warning("Ung&uuml;ltige Session",$r);
@@ -146,14 +152,14 @@ sub handler {
       
       # Zuerst die bestehende Auswahl loeschen
       
-      $idnresult=$sessiondbh->prepare("delete from dbchoice where sessionid='$sessionID'");
-      $idnresult->execute();
+      $idnresult=$sessiondbh->prepare("delete from dbchoice where sessionid='$sessionID'") or $logger->error($DBI::errstr);
+      $idnresult->execute() or $logger->error($DBI::errstr);
       
       # Wenn es eine neue Auswahl gibt, dann wird diese eingetragen
       my $database;
       foreach $database (@databases){
-	$idnresult=$sessiondbh->prepare("insert into dbchoice (sessionid,dbname) values ('$sessionID','$database')");
-	$idnresult->execute();
+	$idnresult=$sessiondbh->prepare("insert into dbchoice (sessionid,dbname) values ('$sessionID','$database')") or $logger->error($DBI::errstr);
+	$idnresult->execute() or $logger->error($DBI::errstr);
       }
       
       $idnresult->finish();
@@ -164,8 +170,8 @@ sub handler {
     
     # ... sonst anzeigen
     else {
-      $idnresult=$sessiondbh->prepare("select dbname from dbchoice where sessionid='$sessionID'");
-      $idnresult->execute();
+      $idnresult=$sessiondbh->prepare("select dbname from dbchoice where sessionid='$sessionID'") or $logger->error($DBI::errstr);
+      $idnresult->execute() or $logger->error($DBI::errstr);
       while (my $result=$idnresult->fetchrow_hashref()){
 	my $dbname=$result->{'dbname'};
 	$checkeddb{$dbname}="checked=\"checked\"";
@@ -179,8 +185,8 @@ sub handler {
       
       my %stype;
 	    
-      $idnresult=$sessiondbh->prepare("select * from dbinfo where active=1 order by faculty ASC, description ASC");
-      $idnresult->execute();
+      $idnresult=$sessiondbh->prepare("select * from dbinfo where active=1 order by faculty ASC, description ASC") or $logger->error($DBI::errstr);
+      $idnresult->execute() or $logger->error($DBI::errstr);
 
       my @catdb=();
 

@@ -36,6 +36,8 @@ use warnings;
 
 use Apache::Request();      # CGI-Handling (or require)
 
+use Log::Log4perl qw(get_logger :levels);
+
 use LWP::UserAgent;
 use HTTP::Request;
 use HTTP::Response;
@@ -59,6 +61,10 @@ use vars qw(%config);
 sub handler {
 
   my $r=shift;
+
+  # Log4perl logger erzeugen
+
+  my $logger = get_logger();
 
   my $query=Apache::Request->new($r);
 
@@ -95,7 +101,7 @@ sub handler {
   #####################################################################
   # Verbindung zur SQL-Datenbank herstellen
 
-  my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or die "could not connect";
+  my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
 
   my $sessionID=$query->param('sessionID') || '';
   my $database=$query->param('database') || '';
@@ -104,7 +110,7 @@ sub handler {
   my $action=($query->param('action'))?$query->param('action'):'none';
   my $type=($query->param('type'))?$query->param('type'):'HTML';
   
-  my $userdbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd}) or die "could not connect";
+  my $userdbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd}) or $logger->error_die($DBI::errstr);
   
   
   # Haben wir eine authentifizierte Session?
@@ -116,8 +122,8 @@ sub handler {
 
   # Verweis: Datenbankname -> Informationen zum zugeh"origen Institut/Seminar
 
-  my $dbinforesult=$sessiondbh->prepare("select dbname,url,description from dbinfo") or die "Error -- $DBI::errstr";
-  $dbinforesult->execute();
+  my $dbinforesult=$sessiondbh->prepare("select dbname,url,description from dbinfo") or $logger->error($DBI::errstr);
+  $dbinforesult->execute() or $logger->error($DBI::errstr);
 
   my %dbases=();
   my %dbnames=();
@@ -143,8 +149,8 @@ sub handler {
 
   # Assoziierten View zur Session aus Datenbank holen
 
-  my $idnresult=$sessiondbh->prepare("select viewname from sessionview where sessionid='$sessionID'");
-  $idnresult->execute();
+  my $idnresult=$sessiondbh->prepare("select viewname from sessionview where sessionid='$sessionID'") or $logger->error($DBI::errstr);
+  $idnresult->execute() or $logger->error($DBI::errstr);
 
   my $result=$idnresult->fetchrow_hashref();
   
@@ -166,16 +172,16 @@ sub handler {
     if ($userid){
       # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
       
-      my $idnresult=$userdbh->prepare("select * from treffer where userid=$userid and dbname='$database' and singleidn=$singleidn");
-      $idnresult->execute();
+      my $idnresult=$userdbh->prepare("select * from treffer where userid=$userid and dbname='$database' and singleidn=$singleidn") or $logger->error($DBI::errstr);
+      $idnresult->execute() or $logger->error($DBI::errstr);
       my $anzahl=$idnresult->rows();
       $idnresult->finish();
       
       if ($anzahl == 0){
 	# Zuerst Eintragen der Informationen
 	
-	my $idnresult=$userdbh->prepare("insert into treffer values ($userid,'$database',$singleidn)");
-	$idnresult->execute();
+	my $idnresult=$userdbh->prepare("insert into treffer values ($userid,'$database',$singleidn)") or $logger->error($DBI::errstr);
+	$idnresult->execute() or $logger->error($DBI::errstr);
 	$idnresult->finish();
 	
       }
@@ -185,16 +191,16 @@ sub handler {
       
       # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
       
-      my $idnresult=$sessiondbh->prepare("select * from treffer where sessionid='$sessionID' and dbname='$database' and singleidn=$singleidn");
-      $idnresult->execute();
+      my $idnresult=$sessiondbh->prepare("select * from treffer where sessionid='$sessionID' and dbname='$database' and singleidn=$singleidn") or $logger->error($DBI::errstr);
+      $idnresult->execute() or $logger->error($DBI::errstr);
       my $anzahl=$idnresult->rows();
       $idnresult->finish();
       
       if ($anzahl == 0){
 	# Zuerst Eintragen der Informationen
 	
-	my $idnresult=$sessiondbh->prepare("insert into treffer values ('$sessionID','$database',$singleidn)");
-	$idnresult->execute();
+	my $idnresult=$sessiondbh->prepare("insert into treffer values ('$sessionID','$database',$singleidn)") or $logger->error($DBI::errstr);
+	$idnresult->execute() or $logger->error($DBI::errstr);
 	$idnresult->finish();
 	
       }
@@ -221,13 +227,13 @@ sub handler {
 	my ($loeschdb,$loeschidn)=split(":",$loeschtit);
 	
 	if ($userid){
-	  my $idnresult=$userdbh->prepare("delete from treffer where userid=$userid and dbname='$loeschdb' and singleidn=$loeschidn");
-	  $idnresult->execute();
+	  my $idnresult=$userdbh->prepare("delete from treffer where userid=$userid and dbname='$loeschdb' and singleidn=$loeschidn") or $logger->error($DBI::errstr);
+	  $idnresult->execute() or $logger->error($DBI::errstr);
 	  $idnresult->finish();
 	}
 	else {
-	  my $idnresult=$sessiondbh->prepare("delete from treffer where sessionid='$sessionID' and dbname='$loeschdb' and singleidn=$loeschidn");
-	  $idnresult->execute();
+	  my $idnresult=$sessiondbh->prepare("delete from treffer where sessionid='$sessionID' and dbname='$loeschdb' and singleidn=$loeschidn") or $logger->error($DBI::errstr);
+	  $idnresult->execute() or $logger->error($DBI::errstr);
 	  $idnresult->finish();
 	}
 	
@@ -242,12 +248,12 @@ sub handler {
     my $idnresult="";
     
     if ($userid){
-      $idnresult=$userdbh->prepare("select * from treffer where userid=$userid order by dbname");
-      $idnresult->execute();
+      $idnresult=$userdbh->prepare("select * from treffer where userid=$userid order by dbname") or $logger->error($DBI::errstr);
+      $idnresult->execute() or $logger->error($DBI::errstr);
     }
     else {
-      $idnresult=$sessiondbh->prepare("select * from treffer where sessionid='$sessionID' order by dbname");
-      $idnresult->execute();
+      $idnresult=$sessiondbh->prepare("select * from treffer where sessionid='$sessionID' order by dbname") or $logger->error($DBI::errstr);
+      $idnresult->execute() or $logger->error($DBI::errstr);
     }
     
     my $ua=new LWP::UserAgent;
@@ -354,6 +360,13 @@ ENDE2
       my $request=new HTTP::Request GET => "$befehlsurl?$suchstring";
       
       my $response=$ua->request($request);
+
+      if ($response->is_success) {
+	$logger->debug("Getting ", $response->content);
+      }
+      else {
+	$logger->error("Getting ", $response->status_line);
+      }
       
       my $ergebnis=$response->content();
       
@@ -384,12 +397,12 @@ ENDE2
       my $idnresult="";
       
       if ($userid){
-	$idnresult=$userdbh->prepare("select * from treffer where userid=$userid");
-	$idnresult->execute();
+	$idnresult=$userdbh->prepare("select * from treffer where userid=$userid") or $logger->error($DBI::errstr);
+	$idnresult->execute() or $logger->error($DBI::errstr);
       }
       else {
-	$idnresult=$sessiondbh->prepare("select * from treffer where sessionid='$sessionID' order by dbname");
-	$idnresult->execute();
+	$idnresult=$sessiondbh->prepare("select * from treffer where sessionid='$sessionID' order by dbname") or $logger->error($DBI::errstr);
+	$idnresult->execute() or $logger->error($DBI::errstr);
       }  
       
       my $gesamttreffer="";
@@ -433,8 +446,8 @@ ENDE2
 
     # Weg mit der Singleidn - muss spaeter gefixed werden
 
-    my $userresult=$userdbh->prepare("select loginname from user where userid='$userid'") or die "Error -- $DBI::errstr";
-    $userresult->execute();
+    my $userresult=$userdbh->prepare("select loginname from user where userid='$userid'") or $logger->error($DBI::errstr);
+    $userresult->execute() or $logger->error($DBI::errstr);
     
     my $loginname="";
     
@@ -496,6 +509,13 @@ ENDE5
       my $request=new HTTP::Request GET => "$befehlsurl?$suchstring";
       
       my $response=$ua->request($request);
+
+      if ($response->is_success) {
+	$logger->debug("Getting ", $response->content);
+      }
+      else {
+	$logger->error("Getting ", $response->status_line);
+      }
       
       my $ergebnis=$response->content();
       
@@ -522,12 +542,12 @@ ENDE5
       my $idnresult="";
       
       if ($userid){
-	$idnresult=$userdbh->prepare("select * from treffer where userid=$userid");
-	$idnresult->execute();
+	$idnresult=$userdbh->prepare("select * from treffer where userid=$userid") or $logger->error($DBI::errstr);
+	$idnresult->execute() or $logger->error($DBI::errstr);
       }
       else {
-	$idnresult=$sessiondbh->prepare("select * from treffer where sessionid='$sessionID' order by dbname");
-	$idnresult->execute();
+	$idnresult=$sessiondbh->prepare("select * from treffer where sessionid='$sessionID' order by dbname") or $logger->error($DBI::errstr);
+	$idnresult->execute() or $logger->error($DBI::errstr);
       }
       
       my $gesamttreffer="";
@@ -595,6 +615,10 @@ ENDE6
 sub getTitleByType {
   my ($gesamttreffer,$ua,$befehlsurl,$sessionID,$database,$singleidn,$type,$endnoteref,$dbasesref,$checkbox)=@_;
 
+  # Log4perl logger erzeugen
+
+  my $logger = get_logger();
+
   my %endnote=%$endnoteref;
   my %dbases=%$dbasesref; 
 
@@ -603,6 +627,13 @@ sub getTitleByType {
   my $request=new HTTP::Request GET => "$befehlsurl?$suchstring";
   
   my $response=$ua->request($request);
+
+  if ($response->is_success) {
+    $logger->debug("Getting ", $response->content);
+  }
+  else {
+    $logger->error("Getting ", $response->status_line);
+  }
   
   my $ergebnis=$response->content();
   

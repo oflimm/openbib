@@ -31,15 +31,21 @@ package OpenBib::ServerLoad;
 
 use Apache::Constants qw(:common);
 
+use Log::Log4perl qw(get_logger :levels);
+
 use strict;
 use warnings;
 
 sub handler {
   my $r=shift;
 
+  # Log4perl logger erzeugen
+
+  my $logger = get_logger();
+
   print $r->send_http_header("text/plain");
 
-  open(LOADAVG,"/proc/loadavg");
+  open(LOADAVG,"/proc/loadavg") or $logger->error_die($DBI::errstr);
 
   print <LOADAVG>;
   

@@ -453,7 +453,7 @@ sub handler {
     
     print $r->send_http_header("text/html");
     my $fullpoolname=$sigel{$dbases{$database}};
-    #    print $query->start_html(-title=>"Such-Client zur Datenbank: $fullpoolname -- Schlagwortindex '$swtindex'",-BGCOLOR=>"white",-style=>{"src"=>"/styles/kvik.css"});
+    #    print $query->start_html(-title=>"Such-Client zur Datenbank: $fullpoolname -- Schlagwortindex '$swtindex'",-BGCOLOR=>"white",-style=>{"src"=>"/styles/openbib.css"});
     
     print << "HEAD3";
 <html>
@@ -528,7 +528,7 @@ HEAD3
   if ($swtindexall eq "Schlagwortindex"){
     print $r->send_http_header("text/html");
     my $fullpoolname=$sigel{$dbases{$database}};
-    #    print $query->start_html(-title=>"Such-Client zur Datenbank: $fullpoolname -- Schlagwortindex",-BGCOLOR=>"white",-style=>{"src"=>"/styles/kvik.css"});
+    #    print $query->start_html(-title=>"Such-Client zur Datenbank: $fullpoolname -- Schlagwortindex",-BGCOLOR=>"white",-style=>{"src"=>"/styles/openbib.css"});
     
     print << "HEAD2";
 <html>

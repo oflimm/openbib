@@ -86,7 +86,7 @@ sub handler {
   my $viewdesc="";
   
   if ($view ne ""){
-    $viewdesc="<tr><td colspan=3 align=left><img src=\"/images/kvik/views/$view.png\"></td></tr>";
+    $viewdesc="<tr><td colspan=3 align=left><img src=\"/images/openbib/views/$view.png\"></td></tr>";
   }
 
   # Haben wir eine authentifizierte Session?
@@ -137,14 +137,14 @@ sub handler {
     <table  BORDER=0 CELLSPACING=0 CELLPADDING=0 width="100%">
 	<tr>
 	  <td ALIGN=LEFT>
-	    <table><tr><td rowspan=2 valign=bottom><a target="_blank" href="http://kug.ub.uni-koeln.de/projekt/"><img SRC="/images/kvik/kvik-80pix.png" BORDER=0></a></td><td valign=bottom><img SRC="/images/kvik/koelner.virtueller-20pix.png" BORDER=0></td></tr><tr><td valign=top><img SRC="/images/kvik/institutsgesamtkatalog-20pix.png" BORDER=0></td></tr></table>
+	    <table><tr><td rowspan=2 valign=bottom><a target="_blank" href="http://kug.ub.uni-koeln.de/projekt/"><img SRC="/images/openbib/openbib-80pix.png" BORDER=0></a></td><td valign=bottom><img SRC="/images/openbib/koelner.virtueller-20pix.png" BORDER=0></td></tr><tr><td valign=top><img SRC="/images/openbib/institutsgesamtkatalog-20pix.png" BORDER=0></td></tr></table>
 	    
 	  </td>
 	  
 	  <td> &nbsp;&nbsp;</td>
 	  
 	  <td ALIGN=RIGHT>
-	    <a target="_top" HREF="http://www.uni-koeln.de/"><img SRC="/images/kvik/gold.gif" height=95 BORDER=0></a>
+	    <a target="_top" HREF="http://www.uni-koeln.de/"><img SRC="/images/openbib/gold.gif" height=95 BORDER=0></a>
 	  </td>
 	  
 	</tr>

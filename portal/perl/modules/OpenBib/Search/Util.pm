@@ -1256,7 +1256,7 @@ sub get_tit_by_idn {
 		    $showerschjahr=$titres1->{anserschjahr};
 		  }
 
-		    $retval.="<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;showvbu=$showvbu&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchsingletit=$titres1->{idn}\"><strong>$tithst[0] ; $gtmzus[0]</strong></a>, $titres1->{verlag} $showerschjahr</td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><span id=\"rlmerken\"><img src=\"/images/kvik/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></span></a></td><td align=left><b>$signaturstring</b>";
+		    $retval.="<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;showvbu=$showvbu&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchsingletit=$titres1->{idn}\"><strong>$tithst[0] ; $gtmzus[0]</strong></a>, $titres1->{verlag} $showerschjahr</td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><span id=\"rlmerken\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></span></a></td><td align=left><b>$signaturstring</b>";
 
 
 		}
@@ -1305,7 +1305,7 @@ sub get_tit_by_idn {
 		    $showerschjahr=$titres1->{anserschjahr};
 		  }
 		    
-		    $retval.="<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;showvbu=$showvbu&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchsingletit=$titres1->{idn}\"><strong>$tithst[0] ; $gtfzus[0]</strong></a>, $titres1->{verlag} $showerschjahr</td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/kvik/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>$signaturstring</b>";
+		    $retval.="<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;showvbu=$showvbu&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchsingletit=$titres1->{idn}\"><strong>$tithst[0] ; $gtfzus[0]</strong></a>, $titres1->{verlag} $showerschjahr</td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>$signaturstring</b>";
 
 
 		}		    
@@ -1336,7 +1336,7 @@ sub get_tit_by_idn {
 
 		    my @requests=("select zus from titgtf where verwidn=$hint and titidn=$titidn");
 		    my @gtfzus=OpenBib::Common::Util::get_sql_result(\@requests,$dbh,$benchmark);
-		    $retval.="<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;showvbu=$showvbu&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchsingletit=$titres1->{idn}\"><strong>$tithst[0] ; $gtfzus[0]</strong></a>, $titres1->{verlag} $showerschjahr</td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/kvik/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>$signaturstring</b>";		
+		    $retval.="<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;showvbu=$showvbu&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchsingletit=$titres1->{idn}\"><strong>$tithst[0] ; $gtfzus[0]</strong></a>, $titres1->{verlag} $showerschjahr</td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>$signaturstring</b>";		
 		}
 		if ($mode == 7){
 		  my $showerschjahr=$titres1->{erschjahr};
@@ -1347,7 +1347,7 @@ sub get_tit_by_idn {
 
 		    my @requests=("select zus from titgtm where verwidn=$hint and titidn=$titidn");
 		  my @gtmzus=OpenBib::Common::Util::get_sql_result(\@requests,$dbh,$benchmark);
-		  $retval.="<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;showvbu=$showvbu&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchsingletit=$titres1->{idn}\"><strong>$tithst[0] ; $gtmzus[0]</strong></a>, $titres1->{verlag} $showerschjahr</td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/kvik/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>$signaturstring</b>";		
+		  $retval.="<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;showvbu=$showvbu&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchsingletit=$titres1->{idn}\"><strong>$tithst[0] ; $gtmzus[0]</strong></a>, $titres1->{verlag} $showerschjahr</td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>$signaturstring</b>";		
 
 		}			     
 		if ($mode == 8){
@@ -1359,7 +1359,7 @@ sub get_tit_by_idn {
 
 		  my @requests=("select zus from titinverkn where titverw=$hint and titidn=$titidn");
 		  my @invkzus=OpenBib::Common::Util::get_sql_result(\@requests,$dbh,$benchmark);
-		  $retval.="<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;showvbu=$showvbu&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchsingletit=$titres1->{idn}\"><strong>$tithst[0] ; $invkzus[0]</strong></a>, $titres1->{verlag} $showerschjahr</td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/kvik/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>$signaturstring</b>";		
+		  $retval.="<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;showvbu=$showvbu&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchsingletit=$titres1->{idn}\"><strong>$tithst[0] ; $invkzus[0]</strong></a>, $titres1->{verlag} $showerschjahr</td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>$signaturstring</b>";		
 		}			     
 	    }
 	  }
@@ -1398,7 +1398,7 @@ sub get_tit_by_idn {
 		  $titstring=$titres1->{sachlben};
 		}
 
-		$retval.="<strong><span id=\"rltitle\">$titstring</span></strong></a>, <span id=\"rlpublisher\">$titres1->{verlag}</span> <span id=\"rlyearofpub\">$showerschjahr</span></td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/kvik/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>$signaturstring</b>";
+		$retval.="<strong><span id=\"rltitle\">$titstring</span></strong></a>, <span id=\"rlpublisher\">$titres1->{verlag}</span> <span id=\"rlyearofpub\">$showerschjahr</span></td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>$signaturstring</b>";
 		
 	      }
 	$retval.="</td></tr>\n";
@@ -3071,7 +3071,7 @@ sub print_inst_head {
     print << "INSTHEAD";
 <table BORDER=0 CELLSPACING=0 CELLPADDING=0 width="100%">
   <tr bgcolor="lightblue">
-    <td  width="20">&nbsp;</td><td valign="middle" ALIGN=left height="32"><img src="/images/kvik/$database.png"></td>
+    <td  width="20">&nbsp;</td><td valign="middle" ALIGN=left height="32"><img src="/images/openbib/$database.png"></td>
   </tr>
 </table>
 INSTHEAD
@@ -3081,13 +3081,13 @@ INSTHEAD
 <table  BORDER=0 CELLSPACING=0 CELLPADDING=0 width="100%">
   <tr bgcolor="lightblue">
     <td width="20">&nbsp;</td>
-    <td valign="middle" ALIGN=left height="32"><img src="/images/kvik/$database.png"></td>
+    <td valign="middle" ALIGN=left height="32"><img src="/images/openbib/$database.png"></td>
       <td>&nbsp;</td>
       <td bgcolor=white align=right width=180>
-	<a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src="/images/kvik/3d-file-blue-clipboard.png" height="29" alt="In die Merkliste" border=0></a>&nbsp;
-        <a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=mail&database=$database&singleidn=$titidn\" target=\"mail\" title=\"Als Mail verschicken\"><img src="/images/kvik/3d-file-blue-mailbox.png" height="29" alt="Als Mail verschicken" border=0></a>&nbsp;
-        <a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=save&database=$database&singleidn=$titidn\" target=\"save\" title=\"Abspeichern\"><img src="/images/kvik/3d-file-blue-disk35.png" height="29" alt="Abspeichern" border=0></a>&nbsp;
-        <a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=print&database=$database&singleidn=$titidn\" target=\"print\" title=\"Ausdrucken\"><img src="/images/kvik/3d-file-blue-printer.png" height="29" alt="Ausdrucken" border=0></a>&nbsp;
+	<a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="In die Merkliste" border=0></a>&nbsp;
+        <a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=mail&database=$database&singleidn=$titidn\" target=\"mail\" title=\"Als Mail verschicken\"><img src="/images/openbib/3d-file-blue-mailbox.png" height="29" alt="Als Mail verschicken" border=0></a>&nbsp;
+        <a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=save&database=$database&singleidn=$titidn\" target=\"save\" title=\"Abspeichern\"><img src="/images/openbib/3d-file-blue-disk35.png" height="29" alt="Abspeichern" border=0></a>&nbsp;
+        <a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=print&database=$database&singleidn=$titidn\" target=\"print\" title=\"Ausdrucken\"><img src="/images/openbib/3d-file-blue-printer.png" height="29" alt="Ausdrucken" border=0></a>&nbsp;
        </td>
   </tr>
 </table>

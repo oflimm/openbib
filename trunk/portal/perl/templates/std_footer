@@ -1,0 +1,8 @@
+<table width="100%">
+[% IF show_foot_banner %]
+<!-- <tr><td class="boxedfull"><b>KUG</b> powered by <strong><a href=\"http://www.openbib.org/\">OpenBib</a></strong> - Dem OpenSource Suchportal</td></tr> -->
+<tr><td class="boxedfull"><b>KUG</b> ist ein Dienst der Universit&auml;ts- und Stadbibliothek K&ouml;ln</td></tr>
+</table>
+[% END %]
+</BODY>
+</HTML>

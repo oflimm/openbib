@@ -1,0 +1,7 @@
+<HTML>
+ <link href="/images/kvik/favicon.ico" rel="shortcut icon">
+ <frameset rows="[% toprows %],*" frameborder=0>
+ <frame name="header" src="[% headerframeurl %]" noresize >
+ <frame name="body" src="[% searchframeurl %]">
+ </frameset>
+</HTML>

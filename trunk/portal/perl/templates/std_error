@@ -1,0 +1,10 @@
+[% PROCESS std_header %]
+
+[% IF show_corporate_banner %]
+[% PROCESS corporate_banner %] 
+[% END %]
+
+<h1>[% errmsg %]</h1>
+
+[% PROCESS std_footer %]
+

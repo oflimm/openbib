@@ -1,0 +1,9 @@
+[% PROCESS std_header %]
+
+[% IF show_corporate_banner %]
+[% PROCESS corporate_banner %] 
+[% END %]
+
+<br><br>Die Einstellung Ihrer Suchfelder wurde erfolgreich vorgenommen. Klicken Sie nun bitte auf 'Recherche' in der Navigationsleiste, um die neuen Suchfeldauswahl zu verwenden.<p>
+
+[% PROCESS std_footer %]

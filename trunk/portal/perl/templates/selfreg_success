@@ -1,0 +1,16 @@
+[% PROCESS std_header %]
+
+[% IF show_corporate_banner %]
+[% PROCESS corporate_banner %] 
+[% END %]
+
+<table BORDER=0 CELLSPACING=0 CELLPADDING=0 width="100%">
+  <tr bgcolor="lightblue">
+    <td  width="20">&nbsp;</td><td valign="middle" ALIGN=left height="32"><img src="/images/kvik/selbstregistrierung-30px.png" alt="Login"></td>
+  </tr>
+</table>
+<h1>Sie sind erfolgreich registriert</h1>
+<p>
+Klicken Sie nun <a href="http://[% config.servername %][% config.login_loc %]?sessionID=[% sessionID %]&action=login&loginname=[% loginname %]">hier</a>, um sich anzumelden.
+
+[% PROCESS std_footer %]

@@ -1,0 +1,115 @@
+-------------------------------------------------
+--------------- T A B E L L E N -----------------
+-------------------------------------------------
+
+create table session (
+ sessionid VARCHAR(255) NOT NULL PRIMARY KEY,
+ createtime datetime,
+ lastresultset blob,
+ benutzernr text,
+ benutzerpin text
+);
+
+create table treffer (
+ sessionid VARCHAR(255) NOT NULL,
+ dbname TEXT,
+ singleidn bigint
+);
+
+create table lastresultlist (
+ sessionid VARCHAR(255) NOT NULL,
+ dbname TEXT,
+ singleidn bigint,
+ index(sessionid)
+);
+
+create table sessionlog (
+ sessionid VARCHAR(255) NOT NULL,
+ query TEXT,
+ createtime datetime,
+ endtime datetime
+);
+
+create table queries (
+ queryid BIGINT AUTO_INCREMENT PRIMARY KEY,
+ sessionid VARCHAR(255) NOT NULL,
+ query TEXT,
+ hits INT,
+ dbases TEXT,
+ INDEX (sessionid)
+);
+
+create table dbchoice (
+ sessionid VARCHAR(255) NOT NULL,
+ dbname TEXT,
+ INDEX (sessionid)
+);
+
+create table dbinfo (
+ dbid BIGINT AUTO_INCREMENT PRIMARY KEY,
+ faculty VARCHAR(20),
+ description TEXT,
+ system TEXT, 
+ dbname VARCHAR(255),
+ sigel VARCHAR(20),
+ url text,
+ active BOOL,
+ INDEX (faculty),
+ INDEX (dbname)
+);
+
+create table dboptions (
+ dbname VARCHAR(255),
+ host VARCHAR(255),
+ protocol VARCHAR(255),
+ remotepath TEXT,
+ remoteuser VARCHAR(255),
+ remotepasswd VARCHAR(255),
+ filename VARCHAR(255),
+ titfilename VARCHAR(255),
+ autfilename VARCHAR(255),
+ korfilename VARCHAR(255),
+ swtfilename VARCHAR(255),
+ notfilename VARCHAR(255),
+ mexfilename VARCHAR(255),
+ INDEX(dbname)
+);
+
+create table titcount (
+ dbname VARCHAR(255),
+ count  BIGINT
+);
+
+create table searchresults (
+ sessionid VARCHAR(255) NOT NULL,
+ dbname VARCHAR(255) NOT NULL,
+ searchresult LONGTEXT,
+ hits INT,
+ queryid BIGINT,
+ INDEX (sessionid),
+ INDEX (dbname),
+ INDEX (queryid)
+);
+
+create table viewinfo (
+ viewid BIGINT AUTO_INCREMENT PRIMARY KEY,
+ viewname VARCHAR(20),
+ description TEXT,
+ active BOOL,
+ INDEX (viewname)
+);
+
+create table viewdbs (
+ viewname VARCHAR(20),
+ dbname VARCHAR(255),
+ INDEX(viewname),
+ INDEX(dbname)
+);
+
+create table sessionview (
+ sessionid VARCHAR(255) NOT NULL,
+ viewname VARCHAR(20) NOT NULL,
+ INDEX (sessionid),
+ INDEX (viewname)
+);
+

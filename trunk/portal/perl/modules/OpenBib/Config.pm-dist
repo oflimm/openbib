@@ -1,0 +1,147 @@
+#####################################################################
+#
+#  OpenBib::Config
+#
+#  Dieses File ist (C) 2004 Oliver Flimm <flimm@openbib.org>
+#
+#  Dieses Programm ist freie Software. Sie koennen es unter
+#  den Bedingungen der GNU General Public License, wie von der
+#  Free Software Foundation herausgegeben, weitergeben und/oder
+#  modifizieren, entweder unter Version 2 der Lizenz oder (wenn
+#  Sie es wuenschen) jeder spaeteren Version.
+#
+#  Die Veroeffentlichung dieses Programms erfolgt in der
+#  Hoffnung, dass es Ihnen von Nutzen sein wird, aber OHNE JEDE
+#  GEWAEHRLEISTUNG - sogar ohne die implizite Gewaehrleistung
+#  der MARKTREIFE oder der EIGNUNG FUER EINEN BESTIMMTEN ZWECK.
+#  Details finden Sie in der GNU General Public License.
+#
+#  Sie sollten eine Kopie der GNU General Public License zusammen
+#  mit diesem Programm erhalten haben. Falls nicht, schreiben Sie
+#  an die Free Software Foundation, Inc., 675 Mass Ave, Cambridge,
+#  MA 02139, USA.
+#
+#####################################################################   
+
+package OpenBib::Config;
+
+use strict;
+use vars qw(%config);
+  
+%config = (
+	   
+	   # Unter diesem Namen wird der lokale Server angesprochen
+	   
+	   servername => 'server.openbib.org',
+	   
+	   # Unter diesem Name wird der Servers, der die Lastverteilung
+	   # vornimmt, angesprochen
+
+	   loadbalancerservername => 'balancer.openbib.org',
+
+	   # Name des Datenbanksystems und des verwendeten DBI/DBD-Moduls
+
+	   dbms      => 'mysql',
+	   dbimodule => 'mysql',
+
+	   # Einstellungen fuer den Zugriff auf die Katalog-Datenbanken
+
+	   dbhost    => 'localhost',
+	   dbport    => '3306',
+	   dbuser    => 'root',
+	   dbpasswd  => 'StrengGeheim',
+
+	   # Einstellungen fuer den Zugriff auf die Session-Datenbank
+
+	   sessiondbhost    => 'localhost',
+	   sessiondbport    => '3306',
+	   sessiondbname    => 'session',
+	   sessiondbuser    => 'root',
+	   sessiondbpasswd  => 'StrengGeheim',
+
+	   # Einstellungen fuer den Zugriff auf die UserProfile-Datenbank
+
+	   userdbhost    => 'zentraler.rechner',
+	   userdbport    => '3306',
+	   userdbname    => 'userprofile',
+	   userdbuser    => 'root',
+	   userdbpasswd  => 'StrengGeheim',
+
+	   # Mapping der einzelnen Kompontenten zu ihren Zugriffs-URI's
+
+	   databasechoice_loc   => '/portal/katalogauswahl',
+	   databaseprofile_loc  => '/portal/katalogprofile',
+	   headerframe_loc      => '/portal/kopf',
+	   leave_loc            => '/portal/beenden',
+	   loadbalancer_loc     => '/portal/lastverteilung',
+	   login_loc            => '/portal/login',
+	   mailcollection_loc   => '/portal/merklistemailen',
+	   mailpassword_loc     => '/portal/passwortmailen',
+	   managecollection_loc => '/portal/merkliste',
+	   search_loc           => '/portal/recherche',
+	   searchframe_loc      => '/portal/eingabe',
+	   selfreg_loc          => '/portal/selbstregistrierung',
+	   serverload_loc       => '/portal/getload',
+	   startopac_loc        => '/portal/opac',
+	   userprefs_loc        => '/portal/benutzereinstellungen',
+	   virtualsearch_loc    => '/portal/virtuellerecherche',
+
+	   # Programm zum Versenden von Mails
+
+	   mail_prog             => '/bin/mailx',
+
+	   # Email-Adressen fuer den Admin und generellen Kontakt
+
+	   admin_email          => 'admin\@openbib.org',
+	   contact_email        => 'contact\@openbib.org',
+
+	   # Externe Links zum direkten Einsprung in die Digitale
+	   # Bibliothek NRW: In die Funktionen Monographien-Fernleihe 
+	   # sowie elektr. Aufsatz/Zeitschriftenlieferungen (Medea) 
+	   # fuer den entsprechenden Standort (hier 038)
+
+	   hbzmonofernleih_exturl  => 'http://rechner.der.digibib/Digibib?SERVICE=TEMPLATE&SUBSERVICE=JUMPTO&DEST_SERVICE=TEMPLATE&DEST_SUBSERVICE=ILL_FRAME&DEST_MAINFRAMESUBSERVICE=MSEARCH_ILLSEARCH_MONO&LOCATION=038',
+	   hbzzeitfernleih_exturl  => 'http://rechner.der.digibib/Digibib?SERVICE=TEMPLATE&SUBSERVICE=JUMPTO&DEST_SERVICE=TEMPLATE&DEST_SUBSERVICE=ILL_FRAME&DEST_MAINFRAMESUBSERVICE=MSEARCH_ILLSEARCH_ARTICLE&LOCATION=038',
+
+	   # Externer Link zur Elektronischen ZeitschriftenBibliothek (EZB)
+	   # fuer den entsprechenden Standort (hier USBK)
+
+	   ezb_exturl              => 'http://rzblx1.uni-regensburg.de/ezeit/fl.phtml?notation=&colors=7&bibid=USBK',
+
+	   # Externer Link zum DatenBankInfoSystem (DBIS)
+ 
+	   dbis_exturl             => '',
+
+	   # Pfad zu den Portal-Templates (Template Toolkit)
+
+	   tt_include_path         => '/pfad/zu/openbib/template',
+
+	   # Mapping der einzelnen Kompontenten zu ihren Templates
+
+	   tt_leave_tname          => 'leave',
+
+	   tt_searchframe_tname    => 'searchframe',
+
+	   tt_startopac_tname      => 'startopac',
+
+	   tt_login_tname          => 'login',
+
+	   tt_userprefs_tname              => 'userprefs',
+	   tt_userprefs_ask_delete_tname   => 'userprefs_ask_delete',
+	   tt_userprefs_changefields_tname => 'userprefs_changefields',
+
+	   tt_selfreg_tname         => 'selfreg',
+	   tt_selfreg_success_tname => 'selfreg_success',
+
+	   tt_mailpassword_tname          => 'mailpassword',
+	   tt_mailpassword_success_tname  => 'mailpassword_success',
+
+	   tt_error_tname          => 'error',
+	   tt_info_message_tname   => 'info_message',
+
+	   # Sollen Performance-Benchmarks durchgefuehrt werden
+
+	   benchmark               => 0,
+);
+
+1;

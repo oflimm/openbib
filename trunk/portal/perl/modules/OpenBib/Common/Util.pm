@@ -135,12 +135,12 @@ sub get_css_by_browsertype {
 
   if ( $useragent=~/Mozilla.5.0/ || $useragent=~/MSIE 5/ || $useragent=~/MSIE 6/ || $useragent=~/Konqueror"/ ){
     $stylesheet= << "CSS";
-<link rel=stylesheet type="text/css" href="/styles/kvik.css">
+<link rel=stylesheet type="text/css" href="/styles/openbib.css">
 CSS
   }
   else {
     $stylesheet= << "CSS";
-<link rel=stylesheet type="text/css" href="/styles/kvik-simple.css">
+<link rel=stylesheet type="text/css" href="/styles/openbib-simple.css">
 CSS
   }
 
@@ -216,7 +216,7 @@ sub print_simple_header {
 <HEAD>
   <meta http-equiv="pragma" content="no-cache">
   $stylesheet
-  <link href="/images/kvik/favicon.ico" rel="shortcut icon">
+  <link href="/images/openbib/favicon.ico" rel="shortcut icon">
   <TITLE>$title</title>
 </HEAD>
 <BODY BGCOLOR="#ffffff">
@@ -233,14 +233,14 @@ sub print_extended_header {
     <table  BORDER=0 CELLSPACING=0 CELLPADDING=0 width="100%">
 	<tr>
 	  <td WIDTH=140 ALIGN=LEFT>
-	    <table><tr><td rowspan=2 valign=bottom><img SRC="/images/kvik/kvik-80pix.png" BORDER=0></td><td valign=bottom><img SRC="/images/kvik/koelner.virtueller-20pix.png" BORDER=0></td></tr><tr><td valign=top><img SRC="/images/kvik/institutsgesamtkatalog-20pix.png" BORDER=0></td></tr></table>
+	    <table><tr><td rowspan=2 valign=bottom><img SRC="/images/openbib/openbib-80pix.png" BORDER=0></td><td valign=bottom><img SRC="/images/openbib/koelner.virtueller-20pix.png" BORDER=0></td></tr><tr><td valign=top><img SRC="/images/openbib/institutsgesamtkatalog-20pix.png" BORDER=0></td></tr></table>
 	    
 	  </td>
 	  
 	  <td height="42" valign="middle" WIDTH=40> &nbsp;&nbsp;</td>
 	  
 	  <td WIDTH=170 ALIGN=RIGHT>
-	    <a target="_top" HREF="http://www.uni-koeln.de/"><img SRC="/images/kvik/gold.gif" height=95 BORDER=0></a>
+	    <a target="_top" HREF="http://www.uni-koeln.de/"><img SRC="/images/openbib/gold.gif" height=95 BORDER=0></a>
 	  </td>
 	</tr>
     </table>
@@ -252,9 +252,10 @@ HEADER
 sub print_footer {
   
   my $footer=<< "FOOTER";
-<table width="100%">
-<!-- <tr><td class="boxedfull"><b>KUG</b> powered by <strong><a href=\"http://www.openbib.org/\">OpenBib</a></strong> - Dem OpenSource Suchportal</td></tr> -->
-<tr><td class="boxedfull"><b>KUG</b> ist ein Dienst der Universit&auml;ts- und Stadbibliothek K&ouml;ln</td></tr>
+<table BORDER=0 CELLSPACING=0 CELLPADDING=0 width="100%">
+<tr><td class="boxedfull" align="left"><table BORDER=0 CELLSPACING=0 CELLPADDING=0 width=100%><tr><td
+align="left"><b>KUG</b> ist ein Dienst der Universit&auml;ts- und
+Stadbibliothek K&ouml;ln</td><td>&nbsp;</td><td align="right"><img src="/images/openbib/openbib-powered.png" alt="" /></td></tr></table></td></tr>
 </table>
 </BODY>
 </HTML>

@@ -1,8 +1,8 @@
 #####################################################################
 #
-#  OpenBib::Search.pm 
+#  OpenBib::Search.pm
 #
-#  Copyright 1997-2004 Oliver Flimm <flimm@openbib.org>
+#  Copyright 1997-2005 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -38,14 +38,11 @@ use Apache::Request();      # CGI-Handling (or require)
 
 use Log::Log4perl qw(get_logger :levels);
 
+use SOAP::Lite;
+
 use DBI;
 
 use POSIX;
-
-# LWP fuer Buchstatus
-use LWP::UserAgent;
-use HTTP::Request;
-use HTTP::Response;
 
 use OpenBib::Search::Util;
 
@@ -110,20 +107,6 @@ sub handler {
   ##               2 - Standardrecherche (Mix aus 0 und 1)
   
   my $searchmode=($query->param('searchmode'))?$query->param('searchmode'):0;
-  
-  #####################################################################
-  ## Casesensitive: Unterscheidung Gro"s/Kleinschreibung bei SQL-Suche
-  ##                0 - nein
-  ##                1 - ja
-  
-  my $casesensitive=($query->param('casesensitive'))?$query->param('casesensitive'):0;
-  
-  #####################################################################
-  ## Showmexintit: Anzeige der Exemplardaten (Bibliothek, Signatur, ...)
-  ##               0 - Verweis auf die Exemplardaten in der Titelaufnahme
-  ##               1 - Exemplardaten direkt in der Titelaufnahme
-  
-  my $showmexintit=($query->param('showmexintit'))?$query->param('showmexintit'):0;
   
   #####################################################################
   ## Mask: Eingabemaske ausgeben
@@ -310,20 +293,17 @@ sub handler {
   my $searchsingleswt=$query->param('searchsingleswt') || '';
   my $searchsinglenot=$query->param('searchsinglenot') || '';
   my $searchsinglekor=$query->param('searchsinglekor') || '';
-  my $searchsinglemex=$query->param('searchsinglemex') || '';
   my $searchmultipleaut=$query->param('searchmultipleaut') || '';
   my $searchmultipletit=$query->param('searchmultipletit') || '';
   my $searchmultiplekor=$query->param('searchmultiplekor') || '';
   my $searchmultiplenot=$query->param('searchmultiplenot') || '';
   my $searchmultipleswt=$query->param('searchmultipleswt') || '';
-  my $searchmultiplemex=$query->param('searchmultiplemex') || '';
   my $searchtitofaut=$query->param('searchtitofaut') || '';
   my $searchtitofswt=$query->param('searchtitofswt') || '';
   my $searchtitofkor=$query->param('searchtitofkor') || '';
   my $searchtitofnot=$query->param('searchtitofnot') || '';
   my $searchtitofurh=$query->param('searchtitofurh') || '';
   my $searchtitofurhkor=$query->param('searchtitofurhkor') || '';
-  my $searchtitofmex=$query->param('searchtitofmex') || '';
   my $searchgtmtit=$query->param('gtmtit') || '';
   my $searchgtftit=$query->param('gtftit') || '';
   my $searchinvktit=$query->param('invktit') || '';
@@ -519,15 +499,15 @@ HEAD3
       @requests=("select titidn from titswtlok where swtverw=".$swtidns[0]);
       my $swtanzahl=OpenBib::Search::Util::get_number(\@requests,$dbh);
       if ($swtcount%3 == 0){
-	print "<tr><td><a href=\"$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchtitofswt=".$swtidns[0]."\">";
+	print "<tr><td><a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;database=$database;searchtitofswt=".$swtidns[0]."\">";
 	print "$schlagw</a></td><td>$swtanzahl</td>";
       }
       elsif ($swtcount%3 == 1) {
-	print "<td><a href=\"$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchtitofswt=".$swtidns[0]."\">";
+	print "<td><a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;database=$database;searchtitofswt=".$swtidns[0]."\">";
 	print "$schlagw</a></td><td>$swtanzahl</td>";
       }
       elsif ($swtcount%3 == 2){
-	print "<td><a href=\"$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchtitofswt=".$swtidns[0]."\">";
+	print "<td><a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;database=$database;searchtitofswt=".$swtidns[0]."\">";
 	print "$schlagw</a></td><td>$swtanzahl</td></tr>\n";
       }
       $swtcount++;
@@ -575,15 +555,15 @@ HEAD2
       @requests=("select titidn from titswtlok where swtverw=".$swtidns[0]);
       my $swtanzahl=OpenBib::Search::Util::get_number(\@requests,$dbh);
       if ($swtcount%3 == 0){
-	print "<tr><td><a href=\"$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchtitofswt=".$swtidns[0]."\">";
+	print "<tr><td><a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;database=$database;searchtitofswt=".$swtidns[0]."\">";
 	print "$schlagw</a></td><td>$swtanzahl</td>";
       }
       elsif ($swtcount%3 == 1) {
-	print "<td><a href=\"$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchtitofswt=".$swtidns[0]."\">";
+	print "<td><a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;database=$database;searchtitofswt=".$swtidns[0]."\">";
 	print "$schlagw</a></td><td>$swtanzahl</td>";
       }
       elsif ($swtcount%3 == 2){
-	print "<td><a href=\"$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchtitofswt=".$swtidns[0]."\">";
+	print "<td><a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;database=$database;searchtitofswt=".$swtidns[0]."\">";
 	print "$schlagw</a></td><td>$swtanzahl</td></tr>\n";
       }
       $swtcount++;
@@ -835,7 +815,7 @@ HEAD1
     
     # Genau ein Treffer
     if ($#tidns == 0){
-      OpenBib::Search::Util::get_tit_by_idn("$tidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmultiplemex,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+      OpenBib::Search::Util::get_tit_by_idn("$tidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
     }
     
     # Mehr als ein Treffer
@@ -878,12 +858,12 @@ HEAD1
 	my $navigate;
 	
 	if ($nextstarthit-$hitrange-1 > 0){
-	  print "<a href=\"$config{search_loc}?sessionID=$sessionID&searchall=1&searchmode=$searchmode&casesensitive=$casesensitive&hitrange=$hitrange&maxhits=$maxhits&rating=$rating&starthit=".($starthit-$hitrange)."&showmexintit=$showmexintit&database=$database&verf=$verf&hst=$hst&swt=$swt&kor=$kor&notation=$notation&ejahr=$ejahr&ejahrop=$ejahrop&bool1=$boolhst&bool2=$boolswt&bool3=$boolkor&bool4=$boolnotation&bool5=$boolisbn&bool6=$boolsign&bool7=$boolejahr\">Vorige ".$hitrange." Treffer</a>\n";
+	  print "<a href=\"$config{search_loc}?sessionID=$sessionID;searchall=1;searchmode=$searchmode;hitrange=$hitrange;maxhits=$maxhits;rating=$rating;starthit=".($starthit-$hitrange).";database=$database;verf=$verf;hst=$hst;swt=$swt;kor=$kor;notation=$notation;ejahr=$ejahr;ejahrop=$ejahrop;bool1=$boolhst;bool2=$boolswt;bool3=$boolkor;bool4=$boolnotation;bool5=$boolisbn;bool6=$boolsign;bool7=$boolejahr\">Vorige ".$hitrange." Treffer</a>\n";
 	  $navigate=1;
 	}
 	
 	if (($nextstarthit+$nextrange-1 <= $treffer)&&($nextrange>0)){
-	  print "<a href=\"$config{search_loc}?sessionID=$sessionID&searchall=1&searchmode=$searchmode&casesensitive=$casesensitive&hitrange=$hitrange&maxhits=$maxhits&rating=$rating&starthit=$nextstarthit&showmexintit=$showmexintit&database=$database&verf=$verf&hst=$hst&swt=$swt&kor=$kor&notation=$notation&ejahr=$ejahr&ejahrop=$ejahrop&bool1=$boolhst&bool2=$boolswt&bool3=$boolkor&bool4=$boolnotation&bool5=$boolisbn&bool6=$boolsign&bool7=$boolejahr\">N&auml;chste ".$nextrange." Treffer</a>\n";
+	  print "<a href=\"$config{search_loc}?sessionID=$sessionID;searchall=1;searchmode=$searchmode;hitrange=$hitrange;maxhits=$maxhits;rating=$rating;starthit=$nextstarthit;database=$database;verf=$verf;hst=$hst;swt=$swt;kor=$kor;notation=$notation;ejahr=$ejahr;ejahrop=$ejahrop;bool1=$boolhst;bool2=$boolswt;bool3=$boolkor;bool4=$boolnotation;bool5=$boolisbn;bool6=$boolsign;bool7=$boolejahr\">N&auml;chste ".$nextrange." Treffer</a>\n";
 	  $navigate=1;
 	}
 	print "<hr>\n" if ($navigate);
@@ -894,7 +874,7 @@ HEAD1
 #	OpenBib::Search::Util::print_sort_nav_updown($r);
 	OpenBib::Common::Util::print_sort_nav($r,'',0);        
 	
-	OpenBib::Search::Util::print_mult_sel_form($searchmode,$casesensitive,$hitrange,$rating,$bookinfo,$showmexintit,$database,$dbmode,$sessionID);
+	OpenBib::Search::Util::print_mult_sel_form($searchmode,$hitrange,$rating,$bookinfo,$database,$dbmode,$sessionID);
 	
       }
       
@@ -927,7 +907,7 @@ HEAD1
 	
 	my $omode=($dbmode == 2)?8:5;
 	if (length($idn)>0){
-	  $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","none",$omode,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmultiplemex,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+	  $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","none",$omode,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
 	  $maxcount++;		
 	}
 	
@@ -987,7 +967,7 @@ HEAD1
       }
       else {		
 	my $verfidn=$query->param("$generalsearch");
-	OpenBib::Search::Util::get_aut_set_by_idn("$verfidn",$dbh,$searchmultipleaut,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID);
+	OpenBib::Search::Util::get_aut_set_by_idn("$verfidn",$dbh,$searchmultipleaut,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID);
 	goto LEAVEPROG;
       }
     } 
@@ -998,7 +978,7 @@ HEAD1
       }
       else {		
 	my $koridn=$query->param("$generalsearch");
-	OpenBib::Search::Util::get_kor_set_by_idn("$koridn",$dbh,$searchmultiplekor,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID);
+	OpenBib::Search::Util::get_kor_set_by_idn("$koridn",$dbh,$searchmultiplekor,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID);
 	goto LEAVEPROG;
       }
     } 
@@ -1009,7 +989,7 @@ HEAD1
       }
       else {		
 	my $koridn=$query->param("$generalsearch");
-	OpenBib::Search::Util::get_kor_set_by_idn("$koridn",$dbh,$searchmultiplekor,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID);
+	OpenBib::Search::Util::get_kor_set_by_idn("$koridn",$dbh,$searchmultiplekor,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID);
 	goto LEAVEPROG;
       }
     } 
@@ -1024,7 +1004,7 @@ HEAD1
       }
       
       if ($#gtfidns == 0){
-	OpenBib::Search::Util::get_tit_by_idn($gtfidns[0],"none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmultiplemex,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+	OpenBib::Search::Util::get_tit_by_idn($gtfidns[0],"none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
       }
       
       if ($#gtfidns > 0){
@@ -1043,12 +1023,12 @@ HEAD1
 	  
 	  my $navigate;
 	  if ($nextstarthit-$hitrange-1 > 0){
-	    print "<a href=\"$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&generalsearch=gtftit&searchmode=$searchmode&casesensitive=$casesensitive&hitrange=$hitrange&maxhits=$maxhits&rating=$rating&starthit=".($starthit-$hitrange)."&showmexintit=$showmexintit&database=$database&gtftit=$gtftit\">Vorige ".$hitrange." Treffer</a>\n";
+	    print "<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;generalsearch=gtftit;searchmode=$searchmode;hitrange=$hitrange;maxhits=$maxhits;rating=$rating;starthit=".($starthit-$hitrange).";database=$database;gtftit=$gtftit\">Vorige ".$hitrange." Treffer</a>\n";
 	    $navigate=1;
 	  }
 	  
 	  if (($nextstarthit+$nextrange-1 <= $treffer)&&($nextrange>0)){
-	    print "<a href=\"$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&generalsearch=gtftit&searchmode=$searchmode&casesensitive=$casesensitive&hitrange=$hitrange&maxhits=$maxhits&rating=$rating&starthit=$nextstarthit&showmexintit=$showmexintit&database=$database&gtftit=$gtftit\">N&auml;chste ".$nextrange." Treffer</a>\n";
+	    print "<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;generalsearch=gtftit;searchmode=$searchmode;hitrange=$hitrange;maxhits=$maxhits;rating=$rating;starthit=$nextstarthit;database=$database;gtftit=$gtftit\">N&auml;chste ".$nextrange." Treffer</a>\n";
 	    $navigate=1;
 	  }
 	  print "<hr>\n" if ($navigate);
@@ -1058,7 +1038,7 @@ HEAD1
 	  OpenBib::Search::Util::print_inst_head($database,"base");
 #	  OpenBib::Search::Util::print_sort_nav_updown($r);
 	  OpenBib::Common::Util::print_sort_nav($r,'',0);        
-	  OpenBib::Search::Util::print_mult_sel_form($searchmode,$casesensitive,$hitrange,$rating,$bookinfo,$showmexintit,$database,$dbmode,$sessionID);
+	  OpenBib::Search::Util::print_mult_sel_form($searchmode,$hitrange,$rating,$bookinfo,$database,$dbmode,$sessionID);
 	  
 	}
 	
@@ -1081,7 +1061,7 @@ HEAD1
 	  }
 	  
 	  if (length($gtfidn)>0){
-	    $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$gtfidn","$gtftit",6,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmultiplemex,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+	    $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$gtfidn","$gtftit",6,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
 	    $maxcount++;		
 	  }
 	  
@@ -1138,7 +1118,7 @@ HEAD1
       }
       
       if ($#gtmidns == 0){
-	OpenBib::Search::Util::get_tit_by_idn("$gtmidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmultiplemex,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+	OpenBib::Search::Util::get_tit_by_idn("$gtmidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
       }
       
       if ($#gtmidns > 0){
@@ -1157,12 +1137,12 @@ HEAD1
 	  
 	  my $navigate;
 	  if ($nextstarthit-$hitrange-1 > 0){
-	    print "<a href=\"$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&generalsearch=gtmtit&searchmode=$searchmode&casesensitive=$casesensitive&hitrange=$hitrange&maxhits=$maxhits&rating=$rating&starthit=".($starthit-$hitrange)."&showmexintit=$showmexintit&database=$database&gtmtit=$gtmtit\">Vorige ".$hitrange." Treffer</a>\n";
+	    print "<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;generalsearch=gtmtit;searchmode=$searchmode;hitrange=$hitrange;maxhits=$maxhits;rating=$rating;starthit=".($starthit-$hitrange).";database=$database;gtmtit=$gtmtit\">Vorige ".$hitrange." Treffer</a>\n";
 	    $navigate=1;
 	  }
 	  
 	  if (($nextstarthit+$nextrange-1 <= $treffer)&&($nextrange>0)){
-	    print "<a href=\"$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&generalsearch=gtmtit&searchmode=$searchmode&casesensitive=$casesensitive&hitrange=$hitrange&maxhits=$maxhits&rating=$rating&starthit=$nextstarthit&showmexintit=$showmexintit&database=$database&gtmtit=$gtmtit\">N&auml;chste ".$nextrange." Treffer</a>\n";
+	    print "<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;generalsearch=gtmtit;searchmode=$searchmode;hitrange=$hitrange;maxhits=$maxhits;rating=$rating;starthit=$nextstarthit;database=$database;gtmtit=$gtmtit\">N&auml;chste ".$nextrange." Treffer</a>\n";
 	    $navigate=1;
 	  }
 	  print "<hr>\n" if ($navigate);
@@ -1171,7 +1151,7 @@ HEAD1
 	  OpenBib::Search::Util::print_inst_head($database,"base");
 #	  OpenBib::Search::Util::print_sort_nav_updown($r);
 	  OpenBib::Common::Util::print_sort_nav($r,'',0);        
-	  OpenBib::Search::Util::print_mult_sel_form($searchmode,$casesensitive,$hitrange,$rating,$bookinfo,$showmexintit,$database,$dbmode,$sessionID);
+	  OpenBib::Search::Util::print_mult_sel_form($searchmode,$hitrange,$rating,$bookinfo,$database,$dbmode,$sessionID);
 	}
 	my $maxcount;
 	if ($hitrange <= 0){
@@ -1191,7 +1171,7 @@ HEAD1
 	  }
 	  
 	  if (length($idn)>0){
-	    $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","$gtmtit",7,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmultiplemex,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+	    $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","$gtmtit",7,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
 	    $maxcount++;		
 	  }
 	  
@@ -1248,7 +1228,7 @@ HEAD1
       }
       
       if ($#invkidns == 0){
-	OpenBib::Search::Util::get_tit_by_idn("$invkidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmultiplemex,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+	OpenBib::Search::Util::get_tit_by_idn("$invkidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
       }
       
       if ($#invkidns > 0){
@@ -1266,12 +1246,12 @@ HEAD1
 	  
 	  my $navigate;
 	  if ($nextstarthit-$hitrange-1 > 0){
-	    print "<a href=\"$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&generalsearch=invktit&searchmode=$searchmode&casesensitive=$casesensitive&hitrange=$hitrange&maxhits=$maxhits&rating=$rating&starthit=".($starthit-$hitrange)."&showmexintit=$showmexintit&database=$database&invktit=$invktit\">Vorige ".$hitrange." Treffer</a>\n";
+	    print "<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;generalsearch=invktit;searchmode=$searchmode;hitrange=$hitrange;maxhits=$maxhits;rating=$rating;starthit=".($starthit-$hitrange).";database=$database;invktit=$invktit\">Vorige ".$hitrange." Treffer</a>\n";
 	    $navigate=1;
 	  }
 	  
 	  if (($nextstarthit+$nextrange-1 <= $treffer)&&($nextrange>0)){
-	    print "<a href=\"$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&generalsearch=invktit&searchmode=$searchmode&casesensitive=$casesensitive&hitrange=$hitrange&maxhits=$maxhits&rating=$rating&starthit=$nextstarthit&showmexintit=$showmexintit&database=$database&invktit=$invktit\">N&auml;chste ".$nextrange." Treffer</a>\n";
+	    print "<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;generalsearch=invktit;searchmode=$searchmode;hitrange=$hitrange;maxhits=$maxhits;rating=$rating;starthit=$nextstarthit;database=$database;invktit=$invktit\">N&auml;chste ".$nextrange." Treffer</a>\n";
 	    $navigate=1;
 	  }
 	  print "<hr>\n" if ($navigate);
@@ -1280,7 +1260,7 @@ HEAD1
 	  OpenBib::Search::Util::print_inst_head($database,"base");
 #	  OpenBib::Search::Util::print_sort_nav_updown($r);
 	  OpenBib::Common::Util::print_sort_nav($r,'',0);        
-	  OpenBib::Search::Util::print_mult_sel_form($searchmode,$casesensitive,$hitrange,$rating,$bookinfo,$showmexintit,$database,$dbmode,$sessionID);
+	  OpenBib::Search::Util::print_mult_sel_form($searchmode,$hitrange,$rating,$bookinfo,$database,$dbmode,$sessionID);
 	}
 	
 	my $maxcount;
@@ -1301,7 +1281,7 @@ HEAD1
 	  }
 	  
 	  if (length($idn)>0){
-	    $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","$invktit",8,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmultiplemex,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+	    $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","$invktit",8,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
 	    $maxcount++;		
 	  }
 	  
@@ -1347,39 +1327,10 @@ HEAD1
       }
       goto LEAVEPROG;
     }
-    
-    if ($generalsearch=~/^mextit/){
-      my $mextit=$query->param("$generalsearch");
-      my @requests=("select idn from mex where titidn=$mextit");
-      my @mexidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh,$benchmark);
-      
-      if ($#mexidns == -1){
-	OpenBib::Search::Util::no_result();
-      }
-      
-      if ($#mexidns == 0){
-	OpenBib::Search::Util::get_mex_by_idn("$mexidns[0]",3,$dbh,$benchmark,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%sigel,\%dbases,\%bibinfo,$searchmultiplemex,$sessionID);
-      }
-      
-      if ($#mexidns > 0){
-	print "<table cellpadding=2>";
-	print "<tr><td>Suche</td><td>Besitzende Bibliothek, Signatur(en)</td></tr>\n";
-	my $idn;
-	foreach $idn (@mexidns){
-	  if (length($idn)>0){
-	    OpenBib::Search::Util::get_mex_by_idn("$idn",5,$dbh,$benchmark,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%sigel,\%dbases,\%bibinfo,$searchmultiplemex,$sessionID);
-	  }
-	}
-	print "\n";
-	print "</table>";
-	print "<table><tr><td><input type=submit name=search value=Mehrfachauswahl></td></tr></table>\n";;  
-      }
-      goto LEAVEPROG;
-    }
-    
+        
     if ($generalsearch=~/^hst/){
       my $titidn=$query->param("$generalsearch");
-      OpenBib::Search::Util::get_tit_by_idn("$titidn","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmultiplemex,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+      OpenBib::Search::Util::get_tit_by_idn("$titidn","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
       goto LEAVEPROG;
     }
     
@@ -1389,7 +1340,7 @@ HEAD1
       }
       else {
 	my $swtidn=$query->param("$generalsearch");
-	OpenBib::Search::Util::get_swt_by_idn("$swtidn",3,$dbh,$benchmark,$searchmultipleswt,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,$sessionID);
+	OpenBib::Search::Util::get_swt_by_idn("$swtidn",3,$dbh,$benchmark,$searchmultipleswt,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,$sessionID);
 	goto LEAVEPROG;
       }
     } 
@@ -1400,20 +1351,20 @@ HEAD1
       }
       else {
 	my $notidn=$query->param("notation");
-	OpenBib::Search::Util::get_not_by_idn("$notidn",3,$dbh,$benchmark,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID);
+	OpenBib::Search::Util::get_not_by_idn("$notidn",3,$dbh,$benchmark,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID);
 	goto LEAVEPROG;
       }
     } 
     
     if ($generalsearch=~/^singlegtm/){
       my $titidn=$query->param("$generalsearch");
-      OpenBib::Search::Util::get_tit_by_idn("$titidn","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmultiplemex,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+      OpenBib::Search::Util::get_tit_by_idn("$titidn","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
       goto LEAVEPROG;
     } 
     
     if ($generalsearch=~/^singlegtf/){
       my $titidn=$query->param("$generalsearch");
-      OpenBib::Search::Util::get_tit_by_idn("$titidn","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmultiplemex,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+      OpenBib::Search::Util::get_tit_by_idn("$titidn","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
       goto LEAVEPROG;
     } 
   }
@@ -1426,7 +1377,7 @@ HEAD1
     
     my $mtit;
     foreach $mtit (@mtitidns){
-      OpenBib::Search::Util::get_tit_by_idn("$mtit","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmultiplemex,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+      OpenBib::Search::Util::get_tit_by_idn("$mtit","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
     }
     goto LEAVEPROG;	
   }    
@@ -1439,7 +1390,7 @@ HEAD1
     
     my $maut;
     foreach $maut (@mautidns){
-      OpenBib::Search::Util::get_aut_set_by_idn("$maut",$dbh,$searchmultipleaut,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID);
+      OpenBib::Search::Util::get_aut_set_by_idn("$maut",$dbh,$searchmultipleaut,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID);
     }
     goto LEAVEPROG;	
   }    
@@ -1452,7 +1403,7 @@ HEAD1
     
     my $mkor;
     foreach $mkor (@mkoridns){
-      OpenBib::Search::Util::get_kor_set_by_idn("$mkor",$dbh,$searchmultiplekor,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID);
+      OpenBib::Search::Util::get_kor_set_by_idn("$mkor",$dbh,$searchmultiplekor,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID);
     }
     goto LEAVEPROG;	
   }    
@@ -1465,7 +1416,7 @@ HEAD1
     
     my $mtit;
     foreach $mtit (@mtitidns){
-      OpenBib::Search::Util::get_tit_by_idn("$mtit","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmultiplemex,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+      OpenBib::Search::Util::get_tit_by_idn("$mtit","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
     }
     goto LEAVEPROG;	
   }    
@@ -1478,20 +1429,7 @@ HEAD1
     
     my $mswt;
     foreach $mswt (@mswtidns){
-      OpenBib::Search::Util::get_swt_by_idn("$mswt",3,$dbh,$benchmark,$searchmultipleswt,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,$sessionID);
-    }
-    goto LEAVEPROG;	
-  }    
-  
-  #####################################################################
-  
-  if ($searchmultiplemex){
-    my @mmexidns=$query->param('searchmultiplemex');
-    print "<h1>Ausgew&auml;hlte Exemplardaten</h1>\n";
-    
-    my $mmex;
-    foreach $mmex (@mmexidns){
-      OpenBib::Search::Util::get_mex_by_idn("$mmex",3,$dbh,$benchmark,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%sigel,\%dbases,\%bibinfo,$searchmultiplemex,$sessionID);
+      OpenBib::Search::Util::get_swt_by_idn("$mswt",3,$dbh,$benchmark,$searchmultipleswt,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,$sessionID);
     }
     goto LEAVEPROG;	
   }    
@@ -1499,7 +1437,7 @@ HEAD1
   #####################################################################
   
   if ($searchsingletit){
-    OpenBib::Search::Util::get_tit_by_idn("$searchsingletit","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmultiplemex,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+    OpenBib::Search::Util::get_tit_by_idn("$searchsingletit","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
     goto LEAVEPROG;	
   }    
   
@@ -1510,7 +1448,7 @@ HEAD1
       $searchtitofswt=$searchsingleswt;
     }
     else {		
-      OpenBib::Search::Util::get_swt_by_idn("$searchsingleswt",3,$dbh,$benchmark,$searchmultipleswt,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,$sessionID);
+      OpenBib::Search::Util::get_swt_by_idn("$searchsingleswt",3,$dbh,$benchmark,$searchmultipleswt,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,$sessionID);
       goto LEAVEPROG;	
     }
   }    
@@ -1522,7 +1460,7 @@ HEAD1
       $searchtitofkor=$searchsinglekor;
     }
     else {		
-      OpenBib::Search::Util::get_kor_set_by_idn("$searchsinglekor",$dbh,$searchmultiplekor,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID);
+      OpenBib::Search::Util::get_kor_set_by_idn("$searchsinglekor",$dbh,$searchmultiplekor,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID);
       goto LEAVEPROG;	
     }
   }    
@@ -1534,7 +1472,7 @@ HEAD1
       $searchtitofnot=$searchsinglenot;
     }
     else {		
-      OpenBib::Search::Util::get_not_by_idn("$searchsinglenot",3,$dbh,$benchmark,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID);
+      OpenBib::Search::Util::get_not_by_idn("$searchsinglenot",3,$dbh,$benchmark,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID);
       goto LEAVEPROG;	
     }
   }    
@@ -1546,19 +1484,10 @@ HEAD1
       $searchtitofaut=$searchsingleaut;
     }
     else {		
-      OpenBib::Search::Util::get_aut_set_by_idn("$searchsingleaut",$dbh,$searchmultipleaut,$searchmode,$showmexintit,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID);
+      OpenBib::Search::Util::get_aut_set_by_idn("$searchsingleaut",$dbh,$searchmultipleaut,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID);
       goto LEAVEPROG;	
     }
   }    
-  
-  #####################################################################
-  
-  if ($searchsinglemex){
-    OpenBib::Search::Util::get_mex_by_idn("$searchsinglemex",3,$dbh,$benchmark,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%sigel,\%dbases,\%bibinfo,$searchmultiplemex,$sessionID);
-    goto LEAVEPROG;	
-  }    
-  
-  #####################################################################
   
   if ($searchtitofaut){
     my @requests=("select titidn from titverf where verfverw=$searchtitofaut","select titidn from titpers where persverw=$searchtitofaut","select titidn from titgpers where persverw=$searchtitofaut");
@@ -1569,7 +1498,7 @@ HEAD1
     }
     
     if ($#titelidns == 0){
-      OpenBib::Search::Util::get_tit_by_idn("$titelidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmultiplemex,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+      OpenBib::Search::Util::get_tit_by_idn("$titelidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
     }
     
     if ($#titelidns > 0){
@@ -1587,12 +1516,12 @@ HEAD1
 	
 	my $navigate;
 	if ($nextstarthit-$hitrange-1 > 0){
-	  print "<a href=\"$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&casesensitive=$casesensitive&hitrange=$hitrange&maxhits=$maxhits&rating=$rating&starthit=".($starthit-$hitrange)."&showmexintit=$showmexintit&database=$database&searchtitofaut=$searchtitofaut\">Vorige ".$hitrange." Treffer</a>\n";
+	  print "<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;hitrange=$hitrange;maxhits=$maxhits;rating=$rating;starthit=".($starthit-$hitrange).";database=$database;searchtitofaut=$searchtitofaut\">Vorige ".$hitrange." Treffer</a>\n";
 	  $navigate=1;
 	}
 	
 	if (($nextstarthit+$nextrange-1 <= $treffer)&&($nextrange>0)){
-	  print "<a href=\"$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&casesensitive=$casesensitive&hitrange=$hitrange&maxhits=$maxhits&rating=$rating&starthit=$nextstarthit&showmexintit=$showmexintit&database=$database&searchtitofaut=$searchtitofaut\">N&auml;chste ".$nextrange." Treffer</a>\n";
+	  print "<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;hitrange=$hitrange;maxhits=$maxhits;rating=$rating;starthit=$nextstarthit;database=$database;searchtitofaut=$searchtitofaut\">N&auml;chste ".$nextrange." Treffer</a>\n";
 	  $navigate=1;
 	}
 	print "<hr>\n" if ($navigate);
@@ -1601,7 +1530,7 @@ HEAD1
 	OpenBib::Search::Util::print_inst_head($database,"base");
 #	OpenBib::Search::Util::print_sort_nav_updown($r);
 	OpenBib::Common::Util::print_sort_nav($r,'',0);        
-	OpenBib::Search::Util::print_mult_sel_form($searchmode,$casesensitive,$hitrange,$rating,$bookinfo,$showmexintit,$database,$dbmode,$sessionID);
+	OpenBib::Search::Util::print_mult_sel_form($searchmode,$hitrange,$rating,$bookinfo,$database,$dbmode,$sessionID);
       }
       
       my $maxcount;
@@ -1622,7 +1551,7 @@ HEAD1
 	}
 	
 	if (length($idn)>0){
-	  $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","none",5,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmultiplemex,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+	  $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","none",5,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
 	  $maxcount++;		
 	}
 	
@@ -1675,7 +1604,7 @@ HEAD1
     my @requests=("select titidn from titurh where urhverw=$searchtitofurhkor","select titidn from titkor where korverw=$searchtitofurhkor");
     my @titelidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh,$benchmark);
     if ($#titelidns == 0){
-      OpenBib::Search::Util::get_tit_by_idn("$titelidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmultiplemex,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+      OpenBib::Search::Util::get_tit_by_idn("$titelidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
     }
     if ($#titelidns > 0){
       my $treffer=$#titelidns+1;
@@ -1693,12 +1622,12 @@ HEAD1
 	
 	my $navigate;
 	if ($nextstarthit-$hitrange-1 > 0){
-	  print "<a href=\"$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&casesensitive=$casesensitive&hitrange=$hitrange&maxhits=$maxhits&rating=$rating&starthit=".($starthit-$hitrange)."&showmexintit=$showmexintit&database=$database&searchtitofurhkor=$searchtitofurhkor\">Vorige ".$hitrange." Treffer</a>\n";
+	  print "<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;hitrange=$hitrange;maxhits=$maxhits;rating=$rating;starthit=".($starthit-$hitrange).";database=$database;searchtitofurhkor=$searchtitofurhkor\">Vorige ".$hitrange." Treffer</a>\n";
 	  $navigate=1;
 	}
 	
 	if (($nextstarthit+$nextrange-1 <= $treffer)&&($nextrange>0)){
-	  print "<a href=\"$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&casesensitive=$casesensitive&hitrange=$hitrange&maxhits=$maxhits&rating=$rating&starthit=$nextstarthit&showmexintit=$showmexintit&database=$database&searchtitofurhkor=$searchtitofurhkor\">N&auml;chste ".$nextrange." Treffer</a>\n";
+	  print "<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;hitrange=$hitrange;maxhits=$maxhits;rating=$rating;starthit=$nextstarthit;database=$database;searchtitofurhkor=$searchtitofurhkor\">N&auml;chste ".$nextrange." Treffer</a>\n";
 	  $navigate=1;
 	}
 	print "<hr>\n" if ($navigate);
@@ -1707,7 +1636,7 @@ HEAD1
 	OpenBib::Search::Util::print_inst_head($database,"base");
 #	OpenBib::Search::Util::print_sort_nav_updown($r);
 	OpenBib::Common::Util::print_sort_nav($r,'',0);        
-	OpenBib::Search::Util::print_mult_sel_form($searchmode,$casesensitive,$hitrange,$rating,$bookinfo,$showmexintit,$database,$dbmode,$sessionID);
+	OpenBib::Search::Util::print_mult_sel_form($searchmode,$hitrange,$rating,$bookinfo,$database,$dbmode,$sessionID);
       }
       
       my $maxcount;
@@ -1729,7 +1658,7 @@ HEAD1
 	}
 	
 	if (length($idn)>0){
-	  $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","none",5,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmultiplemex,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+	  $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","none",5,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
 	  $maxcount++;		
 	}
 	
@@ -1782,7 +1711,7 @@ HEAD1
     my @requests=("select titidn from titurh where urhverw=$searchtitofurh");
     my @titelidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh,$benchmark);
     if ($#titelidns == 0){
-      OpenBib::Search::Util::get_tit_by_idn("$titelidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmultiplemex,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+      OpenBib::Search::Util::get_tit_by_idn("$titelidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
     }
     if ($#titelidns > 0){
       my $treffer=$#titelidns+1;
@@ -1799,12 +1728,12 @@ HEAD1
 	
 	my $navigate;
 	if ($nextstarthit-$hitrange-1 > 0){
-	  print "<a href=\"$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&casesensitive=$casesensitive&hitrange=$hitrange&maxhits=$maxhits&rating=$rating&starthit=".($starthit-$hitrange)."&showmexintit=$showmexintit&database=$database&searchtitofurh=$searchtitofurh\">Vorige ".$hitrange." Treffer</a>\n";
+	  print "<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;hitrange=$hitrange;maxhits=$maxhits;rating=$rating;starthit=".($starthit-$hitrange).";database=$database;searchtitofurh=$searchtitofurh\">Vorige ".$hitrange." Treffer</a>\n";
 	  $navigate=1;
 	}
 	
 	if (($nextstarthit+$nextrange-1 <= $treffer)&&($nextrange>0)){
-	  print "<a href=\"$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&casesensitive=$casesensitive&hitrange=$hitrange&maxhits=$maxhits&rating=$rating&starthit=$nextstarthit&showmexintit=$showmexintit&database=$database&searchtitofurh=$searchtitofurh\">N&auml;chste ".$nextrange." Treffer</a>\n";
+	  print "<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;hitrange=$hitrange;maxhits=$maxhits;rating=$rating;starthit=$nextstarthit;database=$database;searchtitofurh=$searchtitofurh\">N&auml;chste ".$nextrange." Treffer</a>\n";
 	  $navigate=1;
 	}
 	print "<hr>\n" if ($navigate);
@@ -1813,7 +1742,7 @@ HEAD1
 	OpenBib::Search::Util::print_inst_head($database,"base");
 #	OpenBib::Search::Util::print_sort_nav_updown($r);
 	OpenBib::Common::Util::print_sort_nav($r,'',0);        
-	OpenBib::Search::Util::print_mult_sel_form($searchmode,$casesensitive,$hitrange,$rating,$bookinfo,$showmexintit,$database,$dbmode,$sessionID);
+	OpenBib::Search::Util::print_mult_sel_form($searchmode,$hitrange,$rating,$bookinfo,$database,$dbmode,$sessionID);
       }
       
       my $maxcount;
@@ -1834,7 +1763,7 @@ HEAD1
 	}
 	
 	if (length($idn)>0){
-	  $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","none",5,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmultiplemex,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+	  $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","none",5,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
 	  $maxcount++;		
 	}
 	
@@ -1887,7 +1816,7 @@ HEAD1
     my @requests=("select titidn from titkor where korverw=$searchtitofkor");
     my @titelidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh,$benchmark);	
     if ($#titelidns == 0){
-      OpenBib::Search::Util::get_tit_by_idn("$titelidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmultiplemex,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+      OpenBib::Search::Util::get_tit_by_idn("$titelidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
     }
     if ($#titelidns > 0){
       my $treffer=$#titelidns+1;
@@ -1904,12 +1833,12 @@ HEAD1
 	
 	my $navigate;
 	if ($nextstarthit-$hitrange-1 > 0){
-	  print "<a href=\"$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&casesensitive=$casesensitive&hitrange=$hitrange&maxhits=$maxhits&rating=$rating&starthit=".($starthit-$hitrange)."&showmexintit=$showmexintit&database=$database&searchtitofkor=$searchtitofkor\">Vorige ".$hitrange." Treffer</a>\n";
+	  print "<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;hitrange=$hitrange;maxhits=$maxhits;rating=$rating;starthit=".($starthit-$hitrange).";database=$database;searchtitofkor=$searchtitofkor\">Vorige ".$hitrange." Treffer</a>\n";
 	  $navigate=1;
 	}
 	
 	if (($nextstarthit+$nextrange-1 <= $treffer)&&($nextrange>0)){
-	  print "<a href=\"$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&casesensitive=$casesensitive&hitrange=$hitrange&maxhits=$maxhits&rating=$rating&starthit=$nextstarthit&showmexintit=$showmexintit&database=$database&searchtitofkor=$searchtitofkor\">N&auml;chste ".$nextrange." Treffer</a>\n";
+	  print "<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;hitrange=$hitrange;maxhits=$maxhits;rating=$rating;starthit=$nextstarthit;database=$database;searchtitofkor=$searchtitofkor\">N&auml;chste ".$nextrange." Treffer</a>\n";
 	  $navigate=1;
 	}
 	print "<hr>\n" if ($navigate);
@@ -1918,7 +1847,7 @@ HEAD1
 	OpenBib::Search::Util::print_inst_head($database,"base");
 #	OpenBib::Search::Util::print_sort_nav_updown($r);
 	OpenBib::Common::Util::print_sort_nav($r,'',0);        
-	OpenBib::Search::Util::print_mult_sel_form($searchmode,$casesensitive,$hitrange,$rating,$bookinfo,$showmexintit,$database,$dbmode,$sessionID);
+	OpenBib::Search::Util::print_mult_sel_form($searchmode,$hitrange,$rating,$bookinfo,$database,$dbmode,$sessionID);
       }
       
       my $maxcount;
@@ -1939,7 +1868,7 @@ HEAD1
 	}
 	
 	if (length($idn)>0){
-	  $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","none",5,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmultiplemex,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+	  $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","none",5,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
 	  $maxcount++;		
 	}
 	
@@ -1995,7 +1924,7 @@ HEAD1
       OpenBib::Search::Util::no_result();
     }
     if ($#titelidns == 0){
-      OpenBib::Search::Util::get_tit_by_idn("$titelidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmultiplemex,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+      OpenBib::Search::Util::get_tit_by_idn("$titelidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
     }
     if ($#titelidns > 0){
       my $treffer=$#titelidns+1;
@@ -2012,12 +1941,12 @@ HEAD1
 	
 	my $navigate;
 	if ($nextstarthit-$hitrange-1 > 0){
-	  print "<a href=\"$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&casesensitive=$casesensitive&hitrange=$hitrange&maxhits=$maxhits&rating=$rating&starthit=".($starthit-$hitrange)."&showmexintit=$showmexintit&database=$database&searchtitofswt=$searchtitofswt\">Vorige ".$hitrange." Treffer</a>\n";
+	  print "<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;hitrange=$hitrange;maxhits=$maxhits;rating=$rating;starthit=".($starthit-$hitrange).";database=$database;searchtitofswt=$searchtitofswt\">Vorige ".$hitrange." Treffer</a>\n";
 	  $navigate=1;
 	}
 	
 	if (($nextstarthit+$nextrange-1 <= $treffer)&&($nextrange>0)){
-	  print "<a href=\"$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&casesensitive=$casesensitive&hitrange=$hitrange&maxhits=$maxhits&rating=$rating&starthit=$nextstarthit&showmexintit=$showmexintit&database=$database&searchtitofswt=$searchtitofswt\">N&auml;chste ".$nextrange." Treffer</a>\n";
+	  print "<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;hitrange=$hitrange;maxhits=$maxhits;rating=$rating;starthit=$nextstarthit;database=$database;searchtitofswt=$searchtitofswt\">N&auml;chste ".$nextrange." Treffer</a>\n";
 	  $navigate=1;
 	}
 	print "<hr>\n" if ($navigate);
@@ -2026,7 +1955,7 @@ HEAD1
 	OpenBib::Search::Util::print_inst_head($database,"base");
 #	OpenBib::Search::Util::print_sort_nav_updown($r);
 	OpenBib::Common::Util::print_sort_nav($r,'',0);        
-	OpenBib::Search::Util::print_mult_sel_form($searchmode,$casesensitive,$hitrange,$rating,$bookinfo,$showmexintit,$database,$dbmode,$sessionID);
+	OpenBib::Search::Util::print_mult_sel_form($searchmode,$hitrange,$rating,$bookinfo,$database,$dbmode,$sessionID);
       }
       
       my $maxcount;
@@ -2048,7 +1977,7 @@ HEAD1
 	}
 	
 	if (length($idn)>0){
-	  $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","none",5,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmultiplemex,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+	  $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","none",5,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
 	  $maxcount++;		
 	}
 	
@@ -2106,7 +2035,7 @@ HEAD1
     }
     
     if ($#titelidns == 0){
-      OpenBib::Search::Util::get_tit_by_idn("$titelidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmultiplemex,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+      OpenBib::Search::Util::get_tit_by_idn("$titelidns[0]","none",1,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
     }
     
     if ($#titelidns > 0){
@@ -2124,12 +2053,12 @@ HEAD1
 	
 	my $navigate;
 	if ($nextstarthit-$hitrange-1 > 0){
-	  print "<a href=\"$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&casesensitive=$casesensitive&hitrange=$hitrange&maxhits=$maxhits&rating=$rating&starthit=".($starthit-$hitrange)."&showmexintit=$showmexintit&database=$database&searchtitofnot=$searchtitofnot\">Vorige ".$hitrange." Treffer</a>\n";
+	  print "<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;hitrange=$hitrange;maxhits=$maxhits;rating=$rating;starthit=".($starthit-$hitrange).";database=$database;searchtitofnot=$searchtitofnot\">Vorige ".$hitrange." Treffer</a>\n";
 	  $navigate=1;
 	}
 	
 	if (($nextstarthit+$nextrange-1 <= $treffer)&&($nextrange>0)){
-	  print "<a href=\"$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&casesensitive=$casesensitive&hitrange=$hitrange&maxhits=$maxhits&rating=$rating&starthit=$nextstarthit&showmexintit=$showmexintit&database=$database&searchtitofnot=$searchtitofnot\">N&auml;chste ".$nextrange." Treffer</a>\n";
+	  print "<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;hitrange=$hitrange;maxhits=$maxhits;rating=$rating;starthit=$nextstarthit;database=$database;searchtitofnot=$searchtitofnot\">N&auml;chste ".$nextrange." Treffer</a>\n";
 	  $navigate=1;
 	}
 	print "<hr>\n" if ($navigate);
@@ -2138,7 +2067,7 @@ HEAD1
 	OpenBib::Search::Util::print_inst_head($database,"base");
 #	OpenBib::Search::Util::print_sort_nav_updown($r);
 	OpenBib::Common::Util::print_sort_nav($r,'',0);        
-	OpenBib::Search::Util::print_mult_sel_form($searchmode,$casesensitive,$hitrange,$rating,$bookinfo,$showmexintit,$database,$dbmode,$sessionID);
+	OpenBib::Search::Util::print_mult_sel_form($searchmode,$hitrange,$rating,$bookinfo,$database,$dbmode,$sessionID);
       }
       
       my $maxcount;
@@ -2159,7 +2088,7 @@ HEAD1
 	}
 	
 	if (length($idn)>0){
-	  $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","none",5,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmultiplemex,$searchmode,$showmexintit,$circ,$circurl,$circcheckurl,$casesensitive,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+	  $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_by_idn("$idn","none",5,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
 	  $maxcount++;		
 	}
 	
@@ -2226,9 +2155,7 @@ LEAVEPROG:
 <input type="hidden" name="searchmode" value="$searchmode">
 <input type="hidden" name="rating" value="$rating">
 <input type="hidden" name="bookinfo" value="$bookinfo">
-<input type="hidden" name="casesensitive" value="$casesensitive">
 <input type="hidden" name="hitrange" value="$hitrange">
-<input type="hidden" name="showmexintit" value="$showmexintit">
 <input type="hidden" name="database" value="$database">
 &nbsp;
 <input type="text" name="swtindex" value="$swtindex" size="4" maxlength="50" title="Geben Sie hier den Schlagwortanfang ein">

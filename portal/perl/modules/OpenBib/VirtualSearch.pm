@@ -86,7 +86,6 @@ sub handler {
   my $befehlsurl="http://$config{servername}$config{search_loc}";
   
   my $searchmode=2;
-  my $showmexintit=1;
   my $searchall=1;
   my $search="Suche";
   my $dbmode=1;
@@ -749,7 +748,7 @@ HEADER
       my $ergidx;
       
       foreach $database (@databases){
-	my $suchstring="swtindexall=Schlagwortindex&fs=$fs&verf=$verf&hst=$hst&hststring=$hststring&swt=$swt&kor=$kor&isbn=$isbn&issn=$issn&mart=$mart&sign=$sign&verknuepfung=$verknuepfung&ejahr=$ejahr&ejahrop=$ejahrop&searchmode=$searchmode&showmexintit=$showmexintit&maxhits=$maxhits&hitrange=-1&searchall=$searchall&dbmode=$dbmode&database=$database";
+	my $suchstring="swtindexall=Schlagwortindex&fs=$fs&verf=$verf&hst=$hst&hststring=$hststring&swt=$swt&kor=$kor&isbn=$isbn&issn=$issn&mart=$mart&sign=$sign&verknuepfung=$verknuepfung&ejahr=$ejahr&ejahrop=$ejahrop&searchmode=$searchmode&maxhits=$maxhits&hitrange=-1&searchall=$searchall&dbmode=$dbmode&database=$database";
 	
 	my $request=new HTTP::Request GET => "$befehlsurl?$suchstring";
 
@@ -1002,7 +1001,7 @@ HEADER
   foreach $database (@databases){
 
 
-    my $suchstring="sessionID=$sessionID&search=$search&fs=$fs&verf=$verf&hst=$hst&hststring=$hststring&swt=$swt&kor=$kor&sign=$sign&isbn=$isbn&issn=$issn&mart=$mart&notation=$notation&verknuepfung=$verknuepfung&ejahr=$ejahr&ejahrop=$ejahrop&searchmode=$searchmode&showmexintit=$showmexintit&maxhits=$maxhits&hitrange=-1&searchall=$searchall&dbmode=$dbmode&bool1=$bool1&bool2=$bool2&bool3=$bool3&bool4=$bool4&bool5=$bool5&bool6=$bool6&bool7=$bool7&bool8=$bool8&bool9=$bool9&bool10=$bool10&bool11=$bool11&bool12=$bool12&sorttype=$sorttype&database=$database";
+    my $suchstring="sessionID=$sessionID&search=$search&fs=$fs&verf=$verf&hst=$hst&hststring=$hststring&swt=$swt&kor=$kor&sign=$sign&isbn=$isbn&issn=$issn&mart=$mart&notation=$notation&verknuepfung=$verknuepfung&ejahr=$ejahr&ejahrop=$ejahrop&searchmode=$searchmode&maxhits=$maxhits&hitrange=-1&searchall=$searchall&dbmode=$dbmode&bool1=$bool1&bool2=$bool2&bool3=$bool3&bool4=$bool4&bool5=$bool5&bool6=$bool6&bool7=$bool7&bool8=$bool8&bool9=$bool9&bool10=$bool10&bool11=$bool11&bool12=$bool12&sorttype=$sorttype&database=$database";
 
     my $request=new HTTP::Request GET => "$befehlsurl?$suchstring";
     

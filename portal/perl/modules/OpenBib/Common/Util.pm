@@ -135,12 +135,12 @@ sub get_css_by_browsertype {
 
   if ( $useragent=~/Mozilla.5.0/ || $useragent=~/MSIE 5/ || $useragent=~/MSIE 6/ || $useragent=~/Konqueror"/ ){
     $stylesheet= << "CSS";
-<link rel=stylesheet type="text/css" href="/styles/openbib.css">
+<link rel="stylesheet" type="text/css" href="/styles/openbib.css" />
 CSS
   }
   else {
     $stylesheet= << "CSS";
-<link rel=stylesheet type="text/css" href="/styles/openbib-simple.css">
+<link rel="stylesheet" type="text/css" href="/styles/openbib-simple.css" />
 CSS
   }
 
@@ -255,7 +255,7 @@ sub print_footer {
 <table BORDER=0 CELLSPACING=0 CELLPADDING=0 width="100%">
 <tr><td class="boxedfull" align="left"><table BORDER=0 CELLSPACING=0 CELLPADDING=0 width=100%><tr><td
 align="left"><b>KUG</b> ist ein Dienst der Universit&auml;ts- und
-Stadbibliothek K&ouml;ln</td><td>&nbsp;</td><td align="right"><img src="/images/openbib/openbib-powered.png" alt="" /></td></tr></table></td></tr>
+Stadbibliothek K&ouml;ln</td><td>&nbsp;</td><td align="right"><a class="invisible" href="http://www.openbib.org/" target="_blank"><img src="/images/openbib/openbib-powered.png" alt="Powered by OpenBib" /></a></td></tr></table></td></tr>
 </table>
 </BODY>
 </HTML>

@@ -1,0 +1,11 @@
+[% PROCESS std_header %]
+
+[% IF show_corporate_banner %]
+[% PROCESS corporate_banner %] 
+[% END %]
+
+<h1>Ihre Kennung samt aktueller Sitzungsdaten wurden gel&ouml;scht</h1>
+
+Wenn Sie weiter im KUG recherchieren m&ouml;chten, so klicken Sie bitte <a href="http://[% config.loadbalancerservername %][% config.loadbalancer_loc %]?view=[% view %]"><b>hier</b>, um eine neue Sitzung zu beginnen.</a>.
+
+[% PROCESS std_footer %]

@@ -17,7 +17,7 @@
   </tr>
 </table>
 
-[% IF show_testsystem_info %]
+[% IF config.testsystem %]
 [% PROCESS testsystem_info %]
 [% END %]
 

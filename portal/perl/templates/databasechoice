@@ -5,7 +5,7 @@
 
 function update_fak(yourform, checked, fak) {
     for (var i = 0; i < yourform.elements.length; i++) {
-         if (yourform.elements[i].id.indexOf(fak) != -1) {
+         if (yourform.elements[i].title.indexOf(fak) != -1) {
               yourform.elements[i].checked = checked;
          }
     }
@@ -31,35 +31,40 @@ Auf dieser Seite k&ouml;nnen Sie einzelne Kataloge als Suchziel ausw&auml;hlen. 
 Nachdem Sie Ihre Auswahl getroffen haben aktivieren Sie bitte <b>Kataloge ausw&auml;hlen</b>. Sie springen dann auf die Rechercheseite und k&ouml;nnen Ihre Suchbegriffe eingeben. Ihre gerade getroffene Datenbankauswahl ist unter <b>Suchprofil</b> vorausgew&auml;hlt. Nun m&uuml;ssen Sie nur noch auf <b>In ausgew&auml;hlten Katalogen suchen</b> klicken, um in den ausgew&auml;hlten Datenbanken zu recherchieren.
 </td></tr>
 </table>
-<p>
+<p />
 <input type="submit" name="action" value="Kataloge ausw&auml;hlen" />&nbsp;<input type="reset" value="Urspr&uuml;ngliche Auswahl wiederherstellen" />
 <p />
 <table>
-<tr><td colspan="9" align="left" bgcolor="lightblue"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /><b>Alle Kataloge</b></td></tr>
+<tr><td colspan="[% colspan %]" align="left" bgcolor="lightblue"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /><b>Alle Kataloge</b></td></tr>
 
 [%- FOREACH category = categories -%]
-<tr><td colspan="9"></td></tr>
-<tr><td colspan="9" align="left" bgcolor="lightblue"><input type="checkbox" name="fakult" value="inst[% category.nr %]" onclick="update_fak(this.form, this.checked,'inst[% category.nr %]')" id="inst" /><b>[% category.full %]</b></td></tr>
-<tr><td colspan="9"></td></tr>
+[%- IF category.nr >= 1 -%]
+<tr><td colspan="[% colspan %]">&nbsp;</td></tr>
+[%- END -%]
+<tr><td colspan="[% colspan %]" align="left" bgcolor="lightblue"><input type="checkbox" name="fakult" value="inst[% category.nr %]" onclick="update_fak(this.form, this.checked,'inst[% category.nr %]')" title="inst" /><b>[% category.full %]</b></td></tr>
+
 [%- FOREACH db = catdb -%]
 [%- IF db.category == category.short -%]
 [%- IF db.column == 1 -%]
-<tr><td><input type="checkbox" name="database" value="[% db.db %]" id="inst[% category.nr %]" [% db.checked %] /><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% db.url %]" target="_blank">[% db.name %]</a></td>
+<tr><td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% db.checked %] /></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% db.url %]" target="_blank">[% db.name %]</a></td>
 [%- END -%]
 [%- IF db.column > 1 && db.column < maxcolumn -%]
-<td>
 [%- IF db.db -%]
-<input type="checkbox" name="database" value="[% db.db %]" id="inst[% category.nr %]" [% db.checked %] /><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% db.url %]" target="_blank">[% db.name %]</a>
+<td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% db.checked %] /></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% db.url %]" target="_blank">[% db.name %]</a></td>
+[%- ELSE -%]
+<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
 [%- END -%]
-</td>
+
 [%- END -%]
 [%- IF db.column == maxcolumn -%]
 [%- IF db.column != 1 -%]
-<td>
+
 [%- IF db.db -%]
-<input type="checkbox" name="database" value="[% db.db %]" id="inst[% category.nr %]" [% db.checked %] /><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% db.url %]" target="_blank">[% db.name %]</a>
+<td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% db.checked %] /></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% db.url %]" target="_blank">[% db.name %]</a></td>
+[%- ELSE -%]
+<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
 [%- END -%]
-</td>
+
 [%- END -%]
 </tr>
 [%- END -%]

@@ -119,47 +119,47 @@ my $showissn=($query->param('showissn'))?$query->param('showissn'):'0';
     
     my $showfs=$result->{'fs'};
     my $fschecked="";
-    $fschecked="checked" if ($showfs);
+    $fschecked="checked=\"checked\"" if ($showfs);
     
     my $showhst=$result->{'hst'};
     my $hstchecked="";
-    $hstchecked="checked" if ($showhst);
+    $hstchecked="checked=\"checked\"" if ($showhst);
     
     my $showverf=$result->{'verf'};
     my $verfchecked="";
-    $verfchecked="checked" if ($showverf);
+    $verfchecked="checked=\"checked\"" if ($showverf);
     
     my $showkor=$result->{'kor'};
     my $korchecked="";
-    $korchecked="checked" if ($showkor);
+    $korchecked="checked=\"checked\"" if ($showkor);
     
     my $showswt=$result->{'swt'};
     my $swtchecked="";
-    $swtchecked="checked" if ($showswt);
+    $swtchecked="checked=\"checked\"" if ($showswt);
     
     my $shownotation=$result->{'notation'};
     my $notationchecked="";
-    $notationchecked="checked" if ($shownotation);
+    $notationchecked="checked=\"checked\"" if ($shownotation);
     
     my $showisbn=$result->{'isbn'};
     my $isbnchecked="";
-    $isbnchecked="checked" if ($showisbn);
+    $isbnchecked="checked=\"checked\"" if ($showisbn);
     
     my $showissn=$result->{'issn'};
     my $issnchecked="";
-    $issnchecked="checked" if ($showissn);
+    $issnchecked="checked=\"checked\"" if ($showissn);
     
     my $showsign=$result->{'sign'};
     my $signchecked="";
-    $signchecked="checked" if ($showsign);
+    $signchecked="checked=\"checked\"" if ($showsign);
     
     my $showmart=$result->{'mart'};
     my $martchecked="";
-    $martchecked="checked" if ($showmart);
+    $martchecked="checked=\"checked\"" if ($showmart);
     
     my $showejahr=$result->{'ejahr'};
     my $ejahrchecked="";
-    $ejahrchecked="checked" if ($showejahr);
+    $ejahrchecked="checked=\"checked\"" if ($showejahr);
     
     $targetresult->finish();
     
@@ -203,8 +203,8 @@ my $showissn=($query->param('showissn'))?$query->param('showissn'):'0';
 		martchecked => $martchecked,
 		ejahrchecked => $ejahrchecked,
 
-		show_corporate_banner => 1,
-		show_foot_banner => 0,
+		show_corporate_banner => 0,
+		show_foot_banner => 1,
 		config     => \%config,
 	       };
 

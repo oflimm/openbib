@@ -39,6 +39,13 @@ use vars qw(%config);
 
 *config=\%OpenBib::Config::config;
 
+my $benchmark;
+
+if ($OpenBib::Config::config{benchmark}){
+  use Benchmark ':hireswallclock';
+}
+
+
 #####################################################################
 ## get_aut_by_idn(autidn,mode,...): Gebe zu autidn geh"oerenden
 ##                                  Autorenstammsatz aus
@@ -91,7 +98,7 @@ sub get_aut_by_idn {
     if ($benchmark){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $autstatement1 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $autstatement1 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
@@ -148,7 +155,7 @@ sub get_aut_by_idn {
 	if ($benchmark){
 	    $btime=new Benchmark;
 	    $timeall=timediff($btime,$atime);
-	    print "Zeit fuer : $autstatement2 : ist ".timestr($timeall)."<p>\n";
+	    $logger->info("Zeit fuer : $autstatement2 : ist ".timestr($timeall));
 	    undef $atime;
 	    undef $btime;
 	    undef $timeall;
@@ -207,7 +214,7 @@ sub get_aut_ans_by_idn {
     if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $autstatement1 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $autstatement1 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
@@ -248,7 +255,7 @@ sub get_aut_set_by_idn {
     if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $autstatement1 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $autstatement1 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
@@ -297,7 +304,7 @@ sub get_aut_set_by_idn {
     if ($config{benchmark}){
       $btime=new Benchmark;
       $timeall=timediff($btime,$atime);
-      print "Zeit fuer : $autstatement2 : ist ".timestr($timeall)."<p>\n";
+      $logger->info("Zeit fuer : $autstatement2 : ist ".timestr($timeall));
       undef $atime;
       undef $btime;
       undef $timeall;
@@ -367,7 +374,7 @@ sub get_kor_by_idn {
     if ($benchmark){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $korstatement1 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $korstatement1 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
@@ -421,7 +428,7 @@ sub get_kor_by_idn {
 	if ($benchmark){
 	    $btime=new Benchmark;
 	    $timeall=timediff($btime,$atime);
-	    print "Zeit fuer : $korstatement2 : ist ".timestr($timeall)."<p>\n";
+	    $logger->info("Zeit fuer : $korstatement2 : ist ".timestr($timeall));
 	    undef $atime;
 	    undef $btime;
 	    undef $timeall;
@@ -446,7 +453,7 @@ sub get_kor_by_idn {
 	if ($benchmark){
 	    $btime=new Benchmark;
 	    $timeall=timediff($btime,$atime);
-	    print "Zeit fuer : $korstatement3 : ist ".timestr($timeall)."<p>\n";
+	    $logger->info("Zeit fuer : $korstatement3 : ist ".timestr($timeall));
 	    undef $atime;
 	    undef $btime;
 	    undef $timeall;
@@ -470,7 +477,7 @@ sub get_kor_by_idn {
 	if ($benchmark){
 	    $btime=new Benchmark;
 	    $timeall=timediff($btime,$atime);
-	    print "Zeit fuer : $korstatement4 : ist ".timestr($timeall)."<p>\n";
+	    $logger->info("Zeit fuer : $korstatement4 : ist ".timestr($timeall));
 	    undef $atime;
 	    undef $btime;
 	    undef $timeall;
@@ -524,7 +531,7 @@ sub get_kor_ans_by_idn {
   if ($config{benchmark}){
     $btime=new Benchmark;
     $timeall=timediff($btime,$atime);
-    print "Zeit fuer : $korstatement1 : ist ".timestr($timeall)."<p>\n";
+    $logger->info("Zeit fuer : $korstatement1 : ist ".timestr($timeall));
     undef $atime;
     undef $btime;
     undef $timeall;
@@ -565,7 +572,7 @@ sub get_kor_set_by_idn {
   if ($config{benchmark}){
     $btime=new Benchmark;
     $timeall=timediff($btime,$atime);
-    print "Zeit fuer : $korstatement1 : ist ".timestr($timeall)."<p>\n";
+    $logger->info("Zeit fuer : $korstatement1 : ist ".timestr($timeall));
     undef $atime;
     undef $btime;
     undef $timeall;
@@ -611,7 +618,7 @@ sub get_kor_set_by_idn {
   if ($config{benchmark}){
     $btime=new Benchmark;
     $timeall=timediff($btime,$atime);
-    print "Zeit fuer : $korstatement2 : ist ".timestr($timeall)."<p>\n";
+    $logger->info("Zeit fuer : $korstatement2 : ist ".timestr($timeall));
     undef $atime;
     undef $btime;
     undef $timeall;
@@ -636,7 +643,7 @@ sub get_kor_set_by_idn {
   if ($config{benchmark}){
     $btime=new Benchmark;
     $timeall=timediff($btime,$atime);
-    print "Zeit fuer : $korstatement3 : ist ".timestr($timeall)."<p>\n";
+    $logger->info("Zeit fuer : $korstatement3 : ist ".timestr($timeall));
     undef $atime;
     undef $btime;
     undef $timeall;
@@ -660,7 +667,7 @@ sub get_kor_set_by_idn {
   if ($config{benchmark}){
     $btime=new Benchmark;
     $timeall=timediff($btime,$atime);
-    print "Zeit fuer : $korstatement4 : ist ".timestr($timeall)."<p>\n";
+    $logger->info("Zeit fuer : $korstatement4 : ist ".timestr($timeall));
     undef $atime;
     undef $btime;
     undef $timeall;
@@ -740,7 +747,7 @@ sub get_swt_by_idn {
     if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $swtstatement1 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $swtstatement1 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
@@ -786,7 +793,7 @@ sub get_swt_by_idn {
       if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $swtstatement2 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $swtstatement2 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
@@ -810,7 +817,7 @@ sub get_swt_by_idn {
       if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $swtstatement3 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $swtstatement3 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
@@ -834,7 +841,7 @@ sub get_swt_by_idn {
       if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $swtstatement4 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $swtstatement4 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
@@ -858,7 +865,7 @@ sub get_swt_by_idn {
       if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $swtstatement5 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $swtstatement5 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
@@ -882,7 +889,7 @@ sub get_swt_by_idn {
       if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $swtstatement6 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $swtstatement6 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
@@ -967,7 +974,7 @@ sub get_swt_set_by_idn {
   if ($config{benchmark}){
     $btime=new Benchmark;
     $timeall=timediff($btime,$atime);
-    print "Zeit fuer : $swtstatement1 : ist ".timestr($timeall)."<p>\n";
+    $logger->info("Zeit fuer : $swtstatement1 : ist ".timestr($timeall));
     undef $atime;
     undef $btime;
     undef $timeall;
@@ -1012,7 +1019,7 @@ sub get_swt_set_by_idn {
   if ($config{benchmark}){
     $btime=new Benchmark;
     $timeall=timediff($btime,$atime);
-    print "Zeit fuer : $swtstatement2 : ist ".timestr($timeall)."<p>\n";
+    $logger->info("Zeit fuer : $swtstatement2 : ist ".timestr($timeall));
     undef $atime;
     undef $btime;
     undef $timeall;
@@ -1078,7 +1085,7 @@ sub get_not_by_idn {
     if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $notstatement1 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $notstatement1 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
@@ -1119,7 +1126,7 @@ sub get_not_by_idn {
 	if ($config{benchmark}){
 	    $btime=new Benchmark;
 	    $timeall=timediff($btime,$atime);
-	    print "Zeit fuer : $notstatement2 : ist ".timestr($timeall)."<p>\n";
+	    $logger->info("Zeit fuer : $notstatement2 : ist ".timestr($timeall));
 	    undef $atime;
 	    undef $btime;
 	    undef $timeall;
@@ -1143,7 +1150,7 @@ sub get_not_by_idn {
 	if ($config{benchmark}){
 	    $btime=new Benchmark;
 	    $timeall=timediff($btime,$atime);
-	    print "Zeit fuer : $notstatement3 : ist ".timestr($timeall)."<p>\n";
+	    $logger->info("Zeit fuer : $notstatement3 : ist ".timestr($timeall));
 	    undef $atime;
 	    undef $btime;
 	    undef $timeall;
@@ -1266,7 +1273,7 @@ sub get_tit_by_idn {
     if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $titstatement1 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $titstatement1 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
@@ -1750,6 +1757,10 @@ LASTNEXT
 
     # Ausgabe der Sammlungsvermerke
 
+    if ($config{benchmark}){
+	$atime=new Benchmark;
+    }
+
     my $titresult19=$dbh->prepare("$titstatement19") or $logger->error($DBI::errstr);
     $titresult19->execute() or $logger->error($DBI::errstr);
 
@@ -1762,7 +1773,7 @@ LASTNEXT
     if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $titstatement19 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $titstatement19 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
@@ -1770,6 +1781,10 @@ LASTNEXT
 
 
     # Ausgabe der WST's
+
+    if ($config{benchmark}){
+	$atime=new Benchmark;
+    }
 
     my $titresult14=$dbh->prepare("$titstatement14") or $logger->error($DBI::errstr);
     $titresult14->execute() or $logger->error($DBI::errstr);
@@ -1783,13 +1798,17 @@ LASTNEXT
     if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $titstatement14 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $titstatement14 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
     }
 
     # Ausgabe der PSTHTS
+
+    if ($config{benchmark}){
+	$atime=new Benchmark;
+    }
 
     my $titresult16=$dbh->prepare("$titstatement16") or $logger->error($DBI::errstr);
     $titresult16->execute() or $logger->error($DBI::errstr);
@@ -1803,13 +1822,17 @@ LASTNEXT
     if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $titstatement16 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $titstatement16 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
     }
 
     # Ausgabe der Beigefuegten Werke
+
+    if ($config{benchmark}){
+	$atime=new Benchmark;
+    }
 
     my $titresult17=$dbh->prepare("$titstatement17") or $logger->error($DBI::errstr);
     $titresult17->execute() or $logger->error($DBI::errstr);
@@ -1823,13 +1846,17 @@ LASTNEXT
     if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $titstatement17 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $titstatement17 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
     }
 
     # Ausgabe der URL's
+
+    if ($config{benchmark}){
+	$atime=new Benchmark;
+    }
 
     my $titresult15=$dbh->prepare("$titstatement15") or $logger->error($DBI::errstr);
     $titresult15->execute() or $logger->error($DBI::errstr);
@@ -1843,7 +1870,7 @@ LASTNEXT
     if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $titstatement15 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $titstatement15 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
@@ -1872,6 +1899,10 @@ LASTNEXT
 
     # Ausgabe der Illustrationsangaben
 
+    if ($config{benchmark}){
+	$atime=new Benchmark;
+    }
+
     my $titresult29=$dbh->prepare("$titstatement29") or $logger->error($DBI::errstr);
     $titresult29->execute() or $logger->error($DBI::errstr);
 
@@ -1884,7 +1915,7 @@ LASTNEXT
     if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $titstatement29 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $titstatement29 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
@@ -1897,6 +1928,10 @@ LASTNEXT
     }
 
     # Ausgabe GTM
+
+    if ($config{benchmark}){
+	$atime=new Benchmark;
+    }
 
     my $titresult4=$dbh->prepare("$titstatement4") or $logger->error($DBI::errstr);
     $titresult4->execute() or $logger->error($DBI::errstr);
@@ -1916,7 +1951,7 @@ LASTNEXT
     if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $titstatement4 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $titstatement4 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
@@ -1927,6 +1962,10 @@ LASTNEXT
     }
 
     # Augabe GTF
+
+    if ($config{benchmark}){
+	$atime=new Benchmark;
+    }
 
     my $titresult5=$dbh->prepare("$titstatement5") or $logger->error($DBI::errstr);
     $titresult5->execute() or $logger->error($DBI::errstr);
@@ -1969,7 +2008,7 @@ LASTNEXT
     if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $titstatement5 ++ : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $titstatement5 ++ : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
@@ -1981,12 +2020,18 @@ LASTNEXT
 
     # Ausgabe IN Verkn.
 
+    if ($config{benchmark}){
+	$atime=new Benchmark;
+    }
+
     my $titresult6=$dbh->prepare("$titstatement6") or $logger->error($DBI::errstr);
     $titresult6->execute() or $logger->error($DBI::errstr);
 
     my $titres6;
     while ($titres6=$titresult6->fetchrow_hashref){
-	my $titstatement="select hst,sachlben from tit where idn=$titres6->{titverw}";
+        my $titverw=$titres6->{titverw};
+
+	my $titstatement="select hst,sachlben from tit where idn=$titverw";
 	my $titresult=$dbh->prepare("$titstatement") or $logger->error($DBI::errstr);
 	$titresult->execute() or $logger->error($DBI::errstr);
 	my $titres=$titresult->fetchrow_hashref;
@@ -1994,8 +2039,6 @@ LASTNEXT
 	# Wenn HST vorhanden, dann nimm ihn, sonst Sachlben.
 
 	my $verkn=($titres->{hst})?$titres->{hst}:$titres->{sachlben};
-	my $verkntempidn=$titres6->{titverw};
-	$titresult6->finish();	
 
 	# Wenn weder HST, noch Sachlben vorhanden, dann haben wir
 	# einen Titeltyp4 ohne irgendeine weitere Information und wir m"ussen
@@ -2003,7 +2046,7 @@ LASTNEXT
 	# hangeln :-(
 
 	if (!$verkn){
-	  my $gtmidnresult1=$dbh->prepare("select verwidn from titgtm where titidn=$verkntempidn") or $logger->error($DBI::errstr);
+	  my $gtmidnresult1=$dbh->prepare("select verwidn from titgtm where titidn=$titverw") or $logger->error($DBI::errstr);
 	  $gtmidnresult1->execute() or $logger->error($DBI::errstr);
 	  my $gtmidnres1=$gtmidnresult1->fetchrow_hashref;
 	  my $gtmidn=$gtmidnres1->{verwidn};
@@ -2019,7 +2062,7 @@ LASTNEXT
 	}
 
 	if (!$verkn){
-	  my $gtfidnresult1=$dbh->prepare("select verwidn, zus from titgtf where titidn=$verkntempidn") or $logger->error($DBI::errstr);
+	  my $gtfidnresult1=$dbh->prepare("select verwidn, zus from titgtf where titidn=$titverw") or $logger->error($DBI::errstr);
 	  $gtfidnresult1->execute() or $logger->error($DBI::errstr);
 	  my $gtfidnres1=$gtfidnresult1->fetchrow_hashref;
 	  my $gtfidn=$gtfidnres1->{verwidn};
@@ -2052,15 +2095,17 @@ LASTNEXT
 	  $zusatz=~s/^.+? \; (.+?)$/$1/;
 	}
 
-	print_url_category("IN verkn","$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&rating=$rating&bookinfo=$bookinfo&showmexintit=$showmexintit&casesensitive=$casesensitive&hitrange=$hitrange&sorttype=$sorttype&sortorder=$sortorder&database=$database&singlegtf=$titres6->{titverw}&generalsearch=singlegtf","$verkn</a> ; $zusatz ");
+	print_url_category("IN verkn","$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=$searchmode&rating=$rating&bookinfo=$bookinfo&showmexintit=$showmexintit&casesensitive=$casesensitive&hitrange=$hitrange&sorttype=$sorttype&sortorder=$sortorder&database=$database&singlegtf=$titverw&generalsearch=singlegtf","$verkn</a> ; $zusatz ");
 
     }
+
+    $titresult6->finish();	
 
 
     if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $titstatement6 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $titstatement6 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
@@ -2071,6 +2116,10 @@ LASTNEXT
     }
 
     # Ausgabe GT unverkn.
+
+    if ($config{benchmark}){
+	$atime=new Benchmark;
+    }
 
     my $titresult2=$dbh->prepare("$titstatement2") or $logger->error($DBI::errstr);
     $titresult2->execute() or $logger->error($DBI::errstr);
@@ -2084,7 +2133,7 @@ LASTNEXT
     if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $titstatement2 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $titstatement2 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
@@ -2101,6 +2150,10 @@ LASTNEXT
 
     # Ausgabe der AngabenHST
 
+    if ($config{benchmark}){
+	$atime=new Benchmark;
+    }
+
     my $titresult20=$dbh->prepare("$titstatement20") or $logger->error($DBI::errstr);
     $titresult20->execute() or $logger->error($DBI::errstr);
 
@@ -2113,7 +2166,7 @@ LASTNEXT
     if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $titstatement20 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $titstatement20 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
@@ -2121,6 +2174,10 @@ LASTNEXT
 
 
     # Ausgabe der ParallelAusgabe
+
+    if ($config{benchmark}){
+	$atime=new Benchmark;
+    }
 
     my $titresult21=$dbh->prepare("$titstatement21") or $logger->error($DBI::errstr);
     $titresult21->execute() or $logger->error($DBI::errstr);
@@ -2134,13 +2191,17 @@ LASTNEXT
     if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $titstatement21 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $titstatement21 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
     }
 
     # Ausgabe der TitBeilage
+
+    if ($config{benchmark}){
+	$atime=new Benchmark;
+    }
 
     my $titresult22=$dbh->prepare("$titstatement22") or $logger->error($DBI::errstr);
     $titresult22->execute() or $logger->error($DBI::errstr);
@@ -2154,13 +2215,17 @@ LASTNEXT
     if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $titstatement22 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $titstatement22 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
     }
 
     # Ausgabe der Bezugswerk
+
+    if ($config{benchmark}){
+	$atime=new Benchmark;
+    }
 
     my $titresult23=$dbh->prepare("$titstatement23") or $logger->error($DBI::errstr);
     $titresult23->execute() or $logger->error($DBI::errstr);
@@ -2174,13 +2239,17 @@ LASTNEXT
     if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $titstatement23 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $titstatement23 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
     }
 
     # Ausgabe der FruehAusg
+
+    if ($config{benchmark}){
+	$atime=new Benchmark;
+    }
 
     my $titresult24=$dbh->prepare("$titstatement24") or $logger->error($DBI::errstr);
     $titresult24->execute() or $logger->error($DBI::errstr);
@@ -2194,13 +2263,17 @@ LASTNEXT
     if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $titstatement24 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $titstatement24 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
     }
 
     # Ausgabe des FruehTit
+
+    if ($config{benchmark}){
+	$atime=new Benchmark;
+    }
 
     my $titresult25=$dbh->prepare("$titstatement25") or $logger->error($DBI::errstr);
     $titresult25->execute() or $logger->error($DBI::errstr);
@@ -2214,13 +2287,17 @@ LASTNEXT
     if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $titstatement25 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $titstatement25 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
     }
 
     # Ausgabe der SpaetAusg
+
+    if ($config{benchmark}){
+	$atime=new Benchmark;
+    }
 
     my $titresult26=$dbh->prepare("$titstatement26") or $logger->error($DBI::errstr);
     $titresult26->execute() or $logger->error($DBI::errstr);
@@ -2234,7 +2311,7 @@ LASTNEXT
     if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $titstatement26 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $titstatement26 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
@@ -2246,6 +2323,10 @@ LASTNEXT
 
 
     # Ausgabe der Abstracts
+
+    if ($config{benchmark}){
+	$atime=new Benchmark;
+    }
 
     my $titresult27=$dbh->prepare("$titstatement27") or $logger->error($DBI::errstr);
     $titresult27->execute() or $logger->error($DBI::errstr);
@@ -2259,7 +2340,7 @@ LASTNEXT
     if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $titstatement27 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $titstatement27 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
@@ -2271,6 +2352,10 @@ LASTNEXT
 #    print_simple_category("Bemerkung","$titres1->{bemerk}") if ($titres1->{bemerk});    
 
     # Ausgabe der NER
+
+    if ($config{benchmark}){
+	$atime=new Benchmark;
+    }
 
     my $titresult28=$dbh->prepare("$titstatement28") or $logger->error($DBI::errstr);
     $titresult28->execute() or $logger->error($DBI::errstr);
@@ -2284,13 +2369,17 @@ LASTNEXT
     if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $titstatement28 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $titstatement28 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
     }
 
     # Ausgabe der Medienart/Art-Inhalt
+
+    if ($config{benchmark}){
+	$atime=new Benchmark;
+    }
 
     my $titresult18=$dbh->prepare("$titstatement18") or $logger->error($DBI::errstr);
     $titresult18->execute() or $logger->error($DBI::errstr);
@@ -2304,7 +2393,7 @@ LASTNEXT
     if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $titstatement18 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $titstatement18 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
@@ -2338,6 +2427,10 @@ LASTNEXT
 
     # Ausgabe der ISBN's
 
+    if ($config{benchmark}){
+	$atime=new Benchmark;
+    }
+
     my $titresult3=$dbh->prepare("$titstatement3") or $logger->error($DBI::errstr);
     $titresult3->execute() or $logger->error($DBI::errstr);
 
@@ -2354,7 +2447,7 @@ LASTNEXT
     if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $titstatement3 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $titstatement3 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
@@ -2365,6 +2458,10 @@ LASTNEXT
     }
 
     # Ausgabe der ISSN's
+
+    if ($config{benchmark}){
+	$atime=new Benchmark;
+    }
 
     my $titresult13=$dbh->prepare("$titstatement13") or $logger->error($DBI::errstr);
     $titresult13->execute() or $logger->error($DBI::errstr);
@@ -2378,7 +2475,7 @@ LASTNEXT
     if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $titstatement13 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $titstatement13 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
@@ -2606,13 +2703,12 @@ sub get_mex_by_idn {
     my %dbases=%$rdbases;
     my %bibinfo=%$rbibinfo;
 
+    my @requests=("select titidn from mex where idn=$mexidn");
+    my @verkntit=OpenBib::Common::Util::get_sql_result(\@requests,$dbh,$benchmark);
+
     if ($config{benchmark}){
 	$atime=new Benchmark;
     }
-
-
-    my @requests=("select titidn from mex where idn=$mexidn");
-    my @verkntit=OpenBib::Common::Util::get_sql_result(\@requests,$dbh,$benchmark);
 
     my $mexresult1=$dbh->prepare("$mexstatement1") or $logger->error($DBI::errstr);
     $mexresult1->execute() or $logger->error($DBI::errstr);
@@ -2634,7 +2730,7 @@ sub get_mex_by_idn {
     if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
-	print "Zeit fuer : $mexstatement1 : ist ".timestr($timeall)."<p>\n";
+	$logger->info("Zeit fuer : $mexstatement1 : ist ".timestr($timeall));
 	undef $atime;
 	undef $btime;
 	undef $timeall;
@@ -2681,7 +2777,7 @@ sub get_mex_by_idn {
 	if ($config{benchmark}){
 	    $btime=new Benchmark;
 	    $timeall=timediff($btime,$atime);
-	    print "Zeit fuer : $mexstatement2 : ist ".timestr($timeall)."<p>\n";
+	    $logger->info("Zeit fuer : $mexstatement2 : ist ".timestr($timeall));
 	    undef $atime;
 	    undef $btime;
 	    undef $timeall;
@@ -2948,7 +3044,7 @@ sub get_mex_by_idn {
 	if ($config{benchmark}){
 	    $btime=new Benchmark;
 	    $timeall=timediff($btime,$atime);
-	    print "Zeit fuer : $mexstatement2 : ist ".timestr($timeall)."<p>\n";
+	    $logger->info("Zeit fuer : $mexstatement2 : ist ".timestr($timeall));
 	    undef $atime;
 	    undef $btime;
 	    undef $timeall;
@@ -3017,7 +3113,7 @@ sub get_number {
 	if ($config{benchmark}){
 	    $btime=new Benchmark;
 	    $timeall=timediff($btime,$atime);
-	    print "Zeit fuer Nummer zu : $numberrequest : ist ".timestr($timeall)."<p>\n";
+	    $logger->info("Zeit fuer Nummer zu : $numberrequest : ist ".timestr($timeall));
 	}
 	
     }

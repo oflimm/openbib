@@ -7,7 +7,7 @@
 <table width="100%">
 <tr>
   <td align="left"><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showcat"><b>Kataloge</b></a>&nbsp;&nbsp;&nbsp;<a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showviews">Views</a>&nbsp;&nbsp;&nbsp;<a href="http://[% config.servername %][%
-config.admin_loc %]?sessionID=[% sessionID %]&action=showsession">Sessions</a></td><td>&nbsp;&nbsp;&nbsp;</td><td>&nbsp;</td><td
+config.admin_loc %]?sessionID=[% sessionID %]&action=showsession">Sessions</a>&nbsp;&nbsp;&nbsp;<a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showimx">Import</a></td><td>&nbsp;&nbsp;&nbsp;</td><td>&nbsp;</td><td
 align="right"><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=logout"><b>Logout</b></a>&nbsp;</td>
 </tr>
 </table>
@@ -92,7 +92,7 @@ selected
 [% IF katalog.imxconfig.protocol == 'http' %]
 selected
 [% END %]
->Web</option><option value="lokal" 
+>HTTP</option><option value="lokal" 
 [% IF katalog.imxconfig.protocol == 'lokal' %]
 selected
 [% END %]

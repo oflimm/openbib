@@ -87,7 +87,7 @@ sub handler {
 	       '14' => '%X', # Abstract. This is not normally printed in a reference
 	       '15' => '%W', # Where the item can be found (physical location of item)
 	       'Kollation' => '%Z', # Pages in the entire document. Tib reserves this for special use
-	       '16' => '%7', # Edition 
+	       'Ausgabe' => '%7', # Edition 
 	       '17' => '%Y' # Series Editor 
 	       );
 
@@ -153,7 +153,7 @@ FALSCHEMAIL
   if ($singleidn){
     my $befehlsurl="http://$config{servername}$config{search_loc}";
     
-    my $suchstring="sessionID=$sessionID&search=Mehrfachauswahl&searchmode=2&rating=0&bookinfo=0&showmexintit=1&showvbu=0&casesensitive=0&hitrange=-1&sorttype=author&database=$database&dbms=mysql&searchsingletit=$singleidn";
+    my $suchstring="sessionID=$sessionID&search=Mehrfachauswahl&searchmode=2&rating=0&bookinfo=0&showmexintit=1&casesensitive=0&hitrange=-1&sorttype=author&database=$database&dbms=mysql&searchsingletit=$singleidn";
     
     my $gesamttreffer="";
     my $ua=new LWP::UserAgent;
@@ -382,7 +382,7 @@ ANSCHREIBEN
       $database=$result->{'dbname'};
       $singleidn=$result->{'singleidn'};
     
-      my $suchstring="sessionID=$sessionID&search=Mehrfachauswahl&searchmode=2&rating=0&bookinfo=0&showmexintit=1&showvbu=0&casesensitive=0&hitrange=-1&sorttype=author&database=$database&dbms=mysql&searchsingletit=$singleidn";
+      my $suchstring="sessionID=$sessionID&search=Mehrfachauswahl&searchmode=2&rating=0&bookinfo=0&showmexintit=1&casesensitive=0&hitrange=-1&sorttype=author&database=$database&dbms=mysql&searchsingletit=$singleidn";
     
     
       my $request=new HTTP::Request GET => "$befehlsurl?$suchstring";

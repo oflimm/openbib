@@ -87,8 +87,9 @@ sub handler {
 	       '14' => '%X', # Abstract. This is not normally printed in a reference
 	       '15' => '%W', # Where the item can be found (physical location of item)
 	       'Kollation' => '%Z', # Pages in the entire document. Tib reserves this for special use
-	       '16' => '%7', # Edition 
-	       '17' => '%Y' # Series Editor 
+	       'Ausgabe' => '%7', # Edition 
+	       '17' => '%Y', # Series Editor 
+	       
 	       );
 
   #####################################################################
@@ -345,7 +346,7 @@ ENDE2
   elsif ($action eq "save"){
     
     if ($singleidn){
-      my $suchstring="sessionID=$sessionID&search=Mehrfachauswahl&searchmode=2&rating=0&bookinfo=0&showmexintit=1&showvbu=0&casesensitive=0&hitrange=-1&sorttype=author&database=$database&dbms=mysql&searchsingletit=$singleidn";
+      my $suchstring="sessionID=$sessionID&search=Mehrfachauswahl&searchmode=2&rating=0&bookinfo=0&showmexintit=1&casesensitive=0&hitrange=-1&sorttype=author&database=$database&dbms=mysql&searchsingletit=$singleidn";
       
       my $gesamttreffer="";
       my $ua=new LWP::UserAgent;
@@ -432,7 +433,7 @@ ENDE2
 
     # Weg mit der Singleidn - muss spaeter gefixed werden
 
-    my $userresult=$userdbh->prepare("select loginname from user where userid=$userid") or die "Error -- $DBI::errstr";
+    my $userresult=$userdbh->prepare("select loginname from user where userid='$userid'") or die "Error -- $DBI::errstr";
     $userresult->execute();
     
     my $loginname="";
@@ -487,7 +488,7 @@ ENDE5
     
     if ($singleidn){
       
-      my $suchstring="sessionID=$sessionID&search=Mehrfachauswahl&searchmode=2&rating=0&bookinfo=0&showmexintit=1&showvbu=0&casesensitive=0&hitrange=-1&sorttype=author&database=$database&dbms=mysql&searchsingletit=$singleidn";
+      my $suchstring="sessionID=$sessionID&search=Mehrfachauswahl&searchmode=2&rating=0&bookinfo=0&showmexintit=1&casesensitive=0&hitrange=-1&sorttype=author&database=$database&dbms=mysql&searchsingletit=$singleidn";
       
       my $gesamttreffer="";
       my $ua=new LWP::UserAgent;
@@ -597,7 +598,7 @@ sub getTitleByType {
   my %endnote=%$endnoteref;
   my %dbases=%$dbasesref; 
 
-  my $suchstring="sessionID=$sessionID&search=Mehrfachauswahl&searchmode=2&rating=0&bookinfo=0&showmexintit=1&showvbu=0&casesensitive=0&hitrange=-1&sorttype=author&database=$database&dbms=mysql&searchsingletit=$singleidn";
+  my $suchstring="sessionID=$sessionID&search=Mehrfachauswahl&searchmode=2&rating=0&bookinfo=0&showmexintit=1&casesensitive=0&hitrange=-1&sorttype=author&database=$database&dbms=mysql&searchsingletit=$singleidn";
   
   my $request=new HTTP::Request GET => "$befehlsurl?$suchstring";
   

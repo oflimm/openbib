@@ -254,7 +254,29 @@ sub handler {
       
     }
     elsif ($cataction eq "Neu"){
-      my $idnresult=$sessiondbh->prepare("insert into dbinfo values (NULL,'$faculty','$description','$system','$dbname','$sigel','$url','$active')") or $logger->error($DBI::errstr);
+
+      if ($dbname eq "" || $description eq ""){
+
+	OpenBib::Common::Util::print_warning("Sie m&uuml;ssen mindestens einen Katalognamen und eine Beschreibung eingeben.",$r);
+
+	$idnresult->finish();
+	$sessiondbh->disconnect();
+	return OK;
+      }
+
+      my $idnresult=$sessiondbh->prepare("select dbid from dbinfo where dbname='$dbname'") or $logger->error($DBI::errstr);
+      $idnresult->execute() or $logger->error($DBI::errstr);
+
+      if ($idnresult->rows > 0){
+
+	OpenBib::Common::Util::print_warning("Es existiert bereits ein Katalog unter diesem Namen",$r);
+
+	$idnresult->finish();
+	$sessiondbh->disconnect();
+	return OK;
+      }
+
+      $idnresult=$sessiondbh->prepare("insert into dbinfo values (NULL,'$faculty','$description','$system','$dbname','$sigel','$url','$active')") or $logger->error($DBI::errstr);
       $idnresult->execute() or $logger->error($DBI::errstr);
       $idnresult=$sessiondbh->prepare("insert into titcount values ('$dbname','0')") or $logger->error($DBI::errstr);
       $idnresult->execute() or $logger->error($DBI::errstr);
@@ -536,7 +558,7 @@ sub handler {
 
       if ($viewname eq "" || $description eq ""){
 
-	OpenBib::Common::Util::print_warning("Sie m&uuml;ssen einen Viewnamen und eine Beschreibung eingeben.",$r);
+	OpenBib::Common::Util::print_warning("Sie m&uuml;ssen mindestens einen Viewnamen und eine Beschreibung eingeben.",$r);
 
 	$idnresult->finish();
 	$sessiondbh->disconnect();

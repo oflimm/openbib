@@ -62,13 +62,14 @@ create table fieldchoice (
 );
 
 create table logintarget (
- loginid BIGINT AUTO_INCREMENT PRIMARY KEY,
+ targetid BIGINT AUTO_INCREMENT PRIMARY KEY,
  hostname text,
  port     text,
  user     text,
  db       text,
  description text,
- INDEX(loginid)
+ type     text,
+ INDEX(targetid)
 );
 
 create table treffer (

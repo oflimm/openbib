@@ -133,6 +133,8 @@ use vars qw(%config);
 
 	   tt_startopac_tname      => 'startopac',
 
+	   tt_databasechoice_tname => 'databasechoice',
+
 	   tt_login_tname          => 'login',
 
 	   tt_userprefs_tname              => 'userprefs',
@@ -151,6 +153,10 @@ use vars qw(%config);
 	   # Geheimer String zur Generierung der Web-Passworte
 
 	   web_seed                => 'Geheim',
+
+	   # Anzahl der Spalten bei der Datenbankauswahlseite
+
+	   databasechoice_maxcolumn => 3,
 
 	   # Verschiedene Pfadangaben
 

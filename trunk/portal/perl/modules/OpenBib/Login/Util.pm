@@ -62,19 +62,17 @@ sub authenticate_self_user {
 }
 
 sub authenticate_olws_user {
-  my ($username,$pin,$targethost,$targetdb)=@_;
+  my ($username,$pin,$circcheckurl,$circdb)=@_;
 
   # Log4perl logger erzeugen
   
   my $logger = get_logger();
 
-  my $endpoint="http://$targethost/cgi-bin/olws.pl";
-
   my $soap = SOAP::Lite
-  -> uri("http://$targethost/Authentication")
-  -> proxy($endpoint);
+  -> uri("urn:/Authentication")
+  -> proxy($circcheckurl);
 
-  my $result = $soap->authenticate_user($username,$pin,$targetdb);
+  my $result = $soap->authenticate_user($username,$pin,$circdb);
 
   my %userinfo=();
 

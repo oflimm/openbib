@@ -173,14 +173,6 @@ sub handler {
     $hitrange=-1;
   }
   
-  my %ausleihe=('informatik'=> 'yea',
-		'inst001' => 'yea',
-		#'inst132' => 'yea',
-		#'inst420' => 'yea',
-		#'inst431' => 'yea',
-		'poetica' => 'yea',
-		'khm' => 'yea');
-  
   # Verweis: Datenbankname -> Informationen zum zugeh"origen Institut/Seminar
   
   my $dbinforesult=$sessiondbh->prepare("select dbname,url,description from dbinfo") or die "Error -- $DBI::errstr";
@@ -959,12 +951,8 @@ HEADER
   my @resultset=();
   
   foreach $database (@databases){
-    my $showvbu;
-    $showvbu=0;
-    if (defined($ausleihe{"$database"}) && $ausleihe{"$database"} eq "yea"){
-      $showvbu=1;
-    }  
-    my $suchstring="sessionID=$sessionID&search=$search&fs=$fs&verf=$verf&hst=$hst&hststring=$hststring&swt=$swt&kor=$kor&sign=$sign&isbn=$isbn&issn=$issn&mart=$mart&notation=$notation&verknuepfung=$verknuepfung&ejahr=$ejahr&ejahrop=$ejahrop&searchmode=$searchmode&showmexintit=$showmexintit&maxhits=$maxhits&hitrange=-1&searchall=$searchall&showvbu=$showvbu&dbmode=$dbmode&bool1=$bool1&bool2=$bool2&bool3=$bool3&bool4=$bool4&bool5=$bool5&bool6=$bool6&bool7=$bool7&bool8=$bool8&bool9=$bool9&bool10=$bool10&bool11=$bool11&bool12=$bool12&sorttype=$sorttype&database=$database";
+
+    my $suchstring="sessionID=$sessionID&search=$search&fs=$fs&verf=$verf&hst=$hst&hststring=$hststring&swt=$swt&kor=$kor&sign=$sign&isbn=$isbn&issn=$issn&mart=$mart&notation=$notation&verknuepfung=$verknuepfung&ejahr=$ejahr&ejahrop=$ejahrop&searchmode=$searchmode&showmexintit=$showmexintit&maxhits=$maxhits&hitrange=-1&searchall=$searchall&dbmode=$dbmode&bool1=$bool1&bool2=$bool2&bool3=$bool3&bool4=$bool4&bool5=$bool5&bool6=$bool6&bool7=$bool7&bool8=$bool8&bool9=$bool9&bool10=$bool10&bool11=$bool11&bool12=$bool12&sorttype=$sorttype&database=$database";
 
     my $request=new HTTP::Request GET => "$befehlsurl?$suchstring";
     

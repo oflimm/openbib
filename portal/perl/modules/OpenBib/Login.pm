@@ -164,6 +164,9 @@ sub handler {
       
       # Gegebenenfalls Benutzer lokal eintragen
       else {
+
+	my $userid;
+
 	my $userresult=$userdbh->prepare("select userid from user where loginname='$loginname'") or die "Error -- $DBI::errstr";
 	
 	$userresult->execute();
@@ -171,16 +174,24 @@ sub handler {
 	# Eintragen, wenn noch nicht existent
 	
 	if ($userresult->rows <= 0){
-	  $userresult=$userdbh->prepare("insert into user values (NULL,'','$loginname','$password','')") or die "Error -- $DBI::errstr";
+
+	  # Neuen Satz eintragen
+	  $userresult=$userdbh->prepare("insert into user values (NULL,'','$loginname','$password','','','','','','','','','')") or die "Error -- $DBI::errstr";
 	  
 	  $userresult->execute();
-	  
+
 	}
+	else {
+	  $userid=$userresult->{'userid'};
+	}
+
+
+	# Benuzerinformationen eintragen
+
+	$userresult=$userdbh->prepare("update user set nachname='".$userinfo{'Nachname'}."', vorname='".$userinfo{'Vorname'}."', soll='".$userinfo{'Soll'}."', gut='".$userinfo{'Guthaben'}."', avanz='".$userinfo{'Avanz'}."', bsanz='".$userinfo{'Bsanz'}."', vmanz='".$userinfo{'Vmanz'}."', gebdatum='".$userinfo{'Geburtsdatum'}."' where loginname='$loginname'") or die "Error -- $DBI::errstr";
 	
-	#      my $res=$userresult->fetchrow_hashref();
-	
-	#      $userid=$res->{'userid'};
-	
+	$userresult->execute();
+	$userresult->finish();
       }
     }
     elsif ($type eq "self"){
@@ -221,7 +232,7 @@ sub handler {
       
       # Falls noch keins da ist, eintragen
       if ($userresult->rows <= 0){
-	$userresult=$userdbh->prepare("insert into fieldchoice values ($userid,1,1,1,1,1,1,1,1,1,1,1)") or die "Error -- $DBI::errstr";
+	$userresult=$userdbh->prepare("insert into fieldchoice values ($userid,1,1,1,1,1,1,1,1,1,1,0,1)") or die "Error -- $DBI::errstr";
 	$userresult->execute();
 	
       }
@@ -294,7 +305,7 @@ sub handler {
       OpenBib::Common::Util::print_warning('Sie haben entweder kein Passwort oder keinen Loginnamen eingegeben',$r);
     }
     elsif ($code eq "2"){
-      OpenBib::Common::Util::print_warning('Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht erfolgreicht authentifiziert werden',$r);
+      OpenBib::Common::Util::print_warning('Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht erfolgreich authentifiziert werden',$r);
     }
     else {
     OpenBib::Common::Util::print_warning('Falscher Fehler-Code',$r);

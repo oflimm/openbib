@@ -142,7 +142,7 @@ elsif ($action eq "auth"){
 
   # Jetzt eintragen und session mit dem Benutzer assoziieren;
 
-  $userresult=$userdbh->prepare("insert into user values (NULL,'','$loginname','$password1','$loginname')") or die "Error -- $DBI::errstr";
+  $userresult=$userdbh->prepare("insert into user values (NULL,'','$loginname','$password1','','','','','','','','','$loginname')") or die "Error -- $DBI::errstr";
   
   $userresult->execute();
 

@@ -72,11 +72,10 @@ sub handler {
   my $showswt=($query->param('showswt'))?$query->param('showswt'):'0';
   my $shownotation=($query->param('shownotation'))?$query->param('shownotation'):'0';
   my $showisbn=($query->param('showisbn'))?$query->param('showisbn'):'0';
-my $showissn=($query->param('showissn'))?$query->param('showissn'):'0';
+  my $showissn=($query->param('showissn'))?$query->param('showissn'):'0';
   my $showsign=($query->param('showsign'))?$query->param('showsign'):'0';
   my $showmart=($query->param('showmart'))?$query->param('showmart'):'0';
   my $showejahr=($query->param('showejahr'))?$query->param('showejahr'):'0';
-
   
   my $action=($query->param('action'))?$query->param('action'):'none';
   my $targetid=($query->param('targetid'))?$query->param('targetid'):'none';
@@ -168,11 +167,22 @@ my $showissn=($query->param('showissn'))?$query->param('showissn'):'0';
     
     $targetresult->finish();
     
-    my $userresult=$userdbh->prepare("select loginname,pin from user where userid=$userid") or die "Error -- $DBI::errstr";
+    my $userresult=$userdbh->prepare("select * from user where userid=$userid") or die "Error -- $DBI::errstr";
     $userresult->execute();
     
     my $res=$userresult->fetchrow_hashref();
     
+    my %userinfo=();
+
+    $userinfo{'nachname'}=$res->{'nachname'};
+    $userinfo{'vorname'}=$res->{'vorname'};
+    $userinfo{'soll'}=$res->{'soll'};
+    $userinfo{'gut'}=$res->{'gut'};
+    $userinfo{'avanz'}=$res->{'avanz'};
+    $userinfo{'bsanz'}=$res->{'bsanz'};
+    $userinfo{'vmanz'}=$res->{'vmanz'};
+    $userinfo{'gebdatum'}=$res->{'gebdatum'};
+
     my $loginname=$res->{'loginname'};
     my $password=$res->{'pin'};
     
@@ -208,6 +218,7 @@ my $showissn=($query->param('showissn'))?$query->param('showissn'):'0';
 		signchecked => $signchecked,
 		martchecked => $martchecked,
 		ejahrchecked => $ejahrchecked,
+		userinfo => \%userinfo,
 
 		show_corporate_banner => 0,
 		show_foot_banner => 1,

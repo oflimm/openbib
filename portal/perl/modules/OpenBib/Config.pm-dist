@@ -120,6 +120,8 @@ use vars qw(%config);
 
 	   tt_leave_tname          => 'leave',
 
+	   tt_headerframe_tname    => 'headerframe',
+
 	   tt_searchframe_tname    => 'searchframe',
 
 	   tt_startopac_tname      => 'startopac',

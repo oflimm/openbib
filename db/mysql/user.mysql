@@ -17,8 +17,12 @@ create table user (
  soll     text,
  gut      text,
  avanz    text,
- bsanz    text,
+ branz    text,
  vmanz    text,
+ maanz    text,
+ vlanz    text,
+ sperre   text,
+ sperrdatum text,
  gebdatum text,
 
  email text,

@@ -395,6 +395,7 @@ if (($tit)||($all)){
     $titnotcount=0;
     $titwstcount=0;
     $titurlcount=0;
+    $titillangcount=0;
     
 # Limits
     
@@ -922,7 +923,7 @@ $/);
 $/);
 	$swtueberbuf[$swtueberidx++]=$ueber;
     }
-    if ($line=~/^652[0-9] (.*)/){
+    if ($line=~/^656[0-9] (.*)/){
 	$assoz=$1;
 	chop $assoz if ($assoz=~m/
 $/);
@@ -1331,6 +1332,11 @@ $/);
 	chop $erschjahr if ($erschjahr=~m/
 $/);
     }
+    if ($line=~/^8070 (.*)/){
+	$anserschjahr=$1;
+	chop $anserschjahr if ($anserschjahr=~m/
+$/);
+    }
     if ($line=~/^4102 (.*)/){
 	$kollation=$1;
 	chop $kollation if ($kollation=~m/
@@ -1519,6 +1525,94 @@ $/);
 	print SQLTITL "insert into titissn values ($idn,\'$issn\');\n" if ($sql);
 	$titissncount++;
     }
+
+    if ($line=~/^4700 (.*)/){
+	$ner=$1;
+	chop $ner if ($ner=~m/
+$/);
+	print MYSQLTITNERL "$idn|$ner\n" if ($mysql);
+	$titnercount++;
+    }
+
+    if ($line=~/^9000 (.*)/){
+	$abstract=$1;
+	chop $abstract if ($abstract=~m/
+$/);
+	print MYSQLTITABSTRACTL "$idn|$abstract\n" if ($mysql);
+	$titabstractcount++;
+    }
+
+
+    if ($line=~/^8060 (.*)/){
+	$sammelverm=$1;
+	chop $sammelverm if ($sammelverm=~m/
+$/);
+	print MYSQLTITSAMMELVERML "$idn|$sammelverm\n" if ($mysql);
+	$titsammelvermcount++;
+    }
+
+    if ($line=~/^8080 (.*)/){
+	$anghst=$1;
+	chop $anghst if ($anghst=~m/
+$/);
+	print MYSQLTITANGHSTL "$idn|$anghst\n" if ($mysql);
+	$titanghstcount++;
+    }
+
+    if ($line=~/^8081 (.*)/){
+	$pausg=$1;
+	chop $pausg if ($pausg=~m/
+$/);
+	print MYSQLTITPAUSGL "$idn|$pausg\n" if ($mysql);
+	$titpausgcount++;
+    }
+
+    if ($line=~/^8082 (.*)/){
+	$titbeil=$1;
+	chop $titbeil if ($titbeil=~m/
+$/);
+	print MYSQLTITTITBEILL "$idn|$titbeil\n" if ($mysql);
+	$tittitbeilcount++;
+    }
+
+    if ($line=~/^8083 (.*)/){
+	$bezwerk=$1;
+	chop $bezwerk if ($bezwerk=~m/
+$/);
+	print MYSQLTITBEZWERKL "$idn|$bezwerk\n" if ($mysql);
+	$titbezwerkcount++;
+    }
+
+    if ($line=~/^8084 (.*)/){
+	$fruehausg=$1;
+	chop $fruehausg if ($fruehausg=~m/
+$/);
+	print MYSQLTITFRUEHAUSGL "$idn|$fruehausg\n" if ($mysql);
+	$titfruehausgcount++;
+    }
+
+    if ($line=~/^8085 (.*)/){
+	$fruehtit=$1;
+	chop $fruehtit if ($fruehtit=~m/
+$/);
+	print MYSQLTITFRUEHTITL "$idn|$fruehtit\n" if ($mysql);
+	$titfruehtitcount++;
+    }
+
+    if ($line=~/^8086 (.*)/){
+	$spaetausg=$1;
+	chop $spaetausg if ($spaetausg=~m/
+$/);
+	print MYSQLTITSPAETAUSGL "$idn|$spaetausg\n" if ($mysql);
+	$titspaetausgcount++;
+    }
+
+    if ($line=~/^8090 (.*)/){
+	$erscheinungsverlauf=$1;
+	chop $erscheinungsverlauf if ($erscheinungsverlauf=~m/
+$/);
+    }
+
     if ($line=~/^2700 (.*)/){
 	$wst=$1;
 	chop $wst if ($wst=~m/
@@ -1533,11 +1627,39 @@ $/);
 	print MYSQLTITURLL "$idn|$url\n" if ($mysql);
 	$titurlcount++;
     }
+
+    if ($line=~/^8100 (.*)/){
+	$illang=$1;
+	chop $illang if ($illang=~m/
+$/);
+	print MYSQLTITILLANGL "$idn|$illang\n" if ($mysql);
+	$titillangcount++;
+    }
+
+    if ($line=~/^8110 (.*)/){
+	$verfquelle=$1;
+	chop $verfquelle if ($verfquelle=~m/
+$/);
+    }
+
+    if ($line=~/^8111 (.*)/){
+	$eortquelle=$1;
+	chop $eortquelle if ($eortquelle=~m/
+$/);
+    }
+
+    if ($line=~/^8112 (.*)/){
+	$ejahrquelle=$1;
+	chop $ejahrquelle if ($ejahrquelle=~m/
+$/);
+    }
+
     if ($line=~/^5050 (.*)/){
 	$sachlben=$1;
 	chop $sachlben if ($sachlben=~m/
 $/);
     }
+
     if ($line=~/^5246.(.*)/){
 	$sprache=$1;
 	chop $sprache if ($sprache=~m/
@@ -1606,7 +1728,7 @@ $/);
 $/);
     }
     if ($line=~/^ENDE/){
-	print MYSQLTITL "$idn|0|$titeltyp|0|$ast|$esthe|$estfn|$hst|$zuergurh|".substr($titzusatz,0,$lzusatz)."|$vorlbeigwerk|$gemeinsang|$sachlben|".substr($vorlverf,0,$lvorlverf)."|$vorlunter|".substr($ausg,0,$lausg)."|$verlagsort|$verlag|$weitereort|$aufnahmeort|$aufnahmejahr|$erschjahr|$kollation|$matbenennung|$sonstmatben|$sonstang|$begleitmat|".substr($fussnote,0,$lfussnote)."|$bindpreis|$hsfn|$sprache|$mass||$uebershst|$inunverkn|0|$rem|$bemerk\n" if ($mysql);
+	print MYSQLTITL "$idn|0|$titeltyp|0|$ast|$esthe|$estfn|$hst|$zuergurh|".substr($titzusatz,0,$lzusatz)."|$vorlbeigwerk|$gemeinsang|$sachlben|".substr($vorlverf,0,$lvorlverf)."|$vorlunter|".substr($ausg,0,$lausg)."|$verlagsort|$verlag|$weitereort|$aufnahmeort|$aufnahmejahr|$erschjahr|$anserschjahr|$erscheinungsverlauf|$verfquelle|$eortquelle|$ejahrquelle|$kollation|$matbenennung|$sonstmatben|$sonstang|$begleitmat|".substr($fussnote,0,$lfussnote)."|$bindpreis|$hsfn|$sprache|$mass||$uebershst|$inunverkn|0|$rem|$bemerk\n" if ($mysql);
 	print PGTITL "$idn|0|$titeltyp|0|$ast|$esthe|$estfn|$hst|$zuergurh|".substr($titzusatz,0,$lzusatz)."|$vorlbeigwerk|$gemeinsang|$sachlben|".substr($vorlverf,0,$lvorlverf)."|$vorlunter|".substr($ausg,0,$lausg)."|$verlagsort|$verlag|$weitereort|$aufnahmeort|$aufnahmejahr|$erschjahr|$kollation|$matbenennung|$sonstmatben|$sonstang|$begleitmat|".substr($fussnote,0,$lfussnote)."|$bindpreis|$hsfn|$sprache|$mass||$uebershst|$inunverkn|0|$rem|$bemerk\n" if ($pg);
 	    print ADTITL "$idn|0|$titeltyp|0|$stringsep".substr($ast,0,$last-1)."$stringsep|$stringsep".substr($esthe,0,$lesthe-1)."$stringsep|$stringsep".substr($estfn,0,$lestfn-1)."$stringsep|$stringsep".substr($hst,0,$lhst-1)."$stringsep|$stringsep".substr($zuergurh,0,$lzuergurh-1)."$stringsep|$stringsep".substr($titzusatz,0,$lzusatz-1)."$stringsep|$stringsep".substr($vorlbeigwerk,0,$lvorlbeigwerk-1)."$stringsep|$stringsep".substr($gemeinsang,0,$lgemeinsang-1)."$stringsep|$stringsep".substr($sachlben,0,$lsachlben-1)."$stringsep|$stringsep".substr($vorlverf,0,$lvorlverf)."$stringsep|$stringsep".substr($vorlunter,0,$lvorlunter-1)."$stringsep|$stringsep".substr($ausg,0,$lausg-1)."$stringsep|$stringsep".substr($verlagsort,0,$lverlagsort-1)."$stringsep|$stringsep".substr($verlag,0,$lverlag-1)."$stringsep|$stringsep".substr($weitereort,0,$lweitereort-1)."$stringsep|$stringsep$aufnahmeort$stringsep|$stringsep$aufnahmejahr$stringsep|$stringsep".substr($erschjahr,0,$lerschjahr-1)."$stringsep|$stringsep".substr($kollation,0,$lkollation-1)."$stringsep|$stringsep".substr($matbenennung,0,$lmatbenennung-1)."$stringsep|$stringsep".substr($sonstmatben,0,$lsonstmatben-1)."$stringsep|$stringsep".substr($sonstang,0,$lsonstang-1)."$stringsep|$stringsep".substr($begleitmat,0,$lbegleitmat-1)."$stringsep|$stringsep".substr($fussnote,0,$lfussnote-1)."$stringsep|$stringsep".substr($bindpreis,0,$lbindpreis-1)."$stringsep|$stringsep".substr($hsfn,0,$lhsfn-1)."$stringsep|$stringsep".substr($sprache,0,$lsprache-1)."$stringsep|$stringsep".substr($mass,0,$lmass-1)."$stringsep|$stringsep$stringsep|$stringsep".substr($uebershst,0,$luebershst-1)."$stringsep|$stringsep".substr($inunverkn,0,$linunverkn-1)."$stringsep|0|$stringsep".substr($rem,0,$lrem-1)."$stringsep|$stringsep".substr($bemerk,0,$lbemerk-1)."$stringsep\n" if ($ad);
 	print SQLTITL "insert into tit values ($idn,0,$titeltyp,0,\'$ast\',\'$esthe\',\'$estfn\',\'$hst\',\'$zuergurh\',\'$zusatz\',\'$vorlbeigwerk\',\'$gemeinsang\',\'$sachlben\',\'$vorlverf\',\'$vorlunter\',\'$ausg\',\'$verlagsort\',\'$verlag\',\'$weitereort\',\'$aufnahmeort\',\'$aufnahmejahr\',\'$erschjahr\',\'$kollation\',\'$matbenennung\',\'$sonstmatben\',\'$sonstang\',\'$begleitmat\',\'$fussnote\',\'$bindpreis\',\'$hsfn\',\'$sprache\',\'$mass\','',\'$uebershst\',\'$inunverkn\',0,\'$rem\',\'$bemerk\');\n" if ($sql);
@@ -1619,6 +1741,11 @@ $/);
         undef $verlagsort;
         undef $verlag;
         undef $erschjahr;
+        undef $anserschjahr;
+        undef $erscheinungsverlauf;
+	undef $eortquelle;
+	undef $ejahrquelle;
+	undef $verfquelle;
         undef $kollation;
         undef $bindpreis;
         undef $uebershst;
@@ -1758,6 +1885,7 @@ $/);
         undef $lokfn;
         undef $medienart;
         undef $standort;        
+        undef $erschverl;        
     }
 
 }
@@ -1951,6 +2079,18 @@ sub mysql_not_cleanup {
 
 sub mysql_tit_init {
     $mysqltitl="tit.mysql";
+
+    $mysqltitabstractl="titabstract.mysql";
+    $mysqltitsammelverml="titsammelverm.mysql";
+    $mysqltitanghstl="titanghst.mysql";
+    $mysqltitpausgl="titpausg.mysql";
+    $mysqltittitbeill="tittitbeil.mysql";
+    $mysqltitbezwerkl="titbezwerk.mysql";
+    $mysqltitfruehausgl="titfruehausg.mysql";
+    $mysqltitfruehtitl="titfruehtit.mysql";
+    $mysqltitspaetausgl="titspaetausg.mysql";
+    $mysqltitillangl="titillang.mysql";
+
     $mysqltitpsthtsl="titpsthts.mysql";
     $mysqltitbeigwerkl="titbeigwerk.mysql";
     $mysqltitgtunvl="titgtunv.mysql";
@@ -1976,9 +2116,22 @@ sub mysql_tit_init {
     $mysqltitwstl="titwst.mysql";
     $mysqltiturll="titurl.mysql";
 
+
     open(MYSQLTITL,">".$mysqltitl);
     
     print MYSQLCONTROL "load data infile \'$dir/$mysqltitl\' into table tit fields terminated by \'|\';\n";
+
+    open(MYSQLTITABSTRACTL,">".$mysqltitabstractl);
+    open(MYSQLTITSAMMELVERML,">".$mysqltitsammelverml);
+    open(MYSQLTITANGHSTL,">".$mysqltitanghstl);
+    open(MYSQLTITPAUSGL,">".$mysqltitpausgl);
+    open(MYSQLTITTITBEILL,">".$mysqltittitbeill);
+    open(MYSQLTITBEZWERKL,">".$mysqltitbezwerkl);
+    open(MYSQLTITFRUEHAUSGL,">".$mysqltitfruehausgl);
+    open(MYSQLTITFRUEHTITL,">".$mysqltitfruehtitl);
+    open(MYSQLTITSPAETAUSGL,">".$mysqltitspaetausgl);
+    open(MYSQLTITURLL,">".$mysqltiturll);
+    open(MYSQLTITILLANGL,">".$mysqltitillangl);
 
     open(MYSQLTITPSTHTSL,">".$mysqltitpsthtsl);
     open(MYSQLTITBEIGWERKL,">".$mysqltitbeigwerkl);
@@ -2003,11 +2156,22 @@ sub mysql_tit_init {
     open(MYSQLTITKORL,">".$mysqltitkorl);
     open(MYSQLTITNOTL,">".$mysqltitnotl);
     open(MYSQLTITWSTL,">".$mysqltitwstl);
-    open(MYSQLTITURLL,">".$mysqltiturll);
 }
 
 sub mysql_tit_cleanup {
     close(MYSQLTITL);
+
+    close(MYSQLTITABSTRACTL);
+    close(MYSQLTITSAMMELVERML);
+    close(MYSQLTITANGHSTL);
+    close(MYSQLTITPAUSGL);
+    close(MYSQLTITTITBEILL);
+    close(MYSQLTITBEZWERKL);
+    close(MYSQLTITFRUEHAUSGL);
+    close(MYSQLTITFRUEHTITL);
+    close(MYSQLTITSPAETAUSGL);
+    close(MYSQLTITILLANGL);
+
     close(MYSQLTITPSTHTSL);
     close(MYSQLTITBEIGWERKL);
     close(MYSQLTITGTUNVL);
@@ -2032,6 +2196,41 @@ sub mysql_tit_cleanup {
     close(MYSQLTITNOTL);
     close(MYSQLTITWSTL);
     close(MYSQLTITURLL);
+
+    if($titabstractcount!=0){
+	print MYSQLCONTROL "load data infile \'$dir/$mysqltitabstractl\' into table titabstract fields terminated by \'|\';\n";
+    }
+
+    if($titsammelvermcount!=0){
+	print MYSQLCONTROL "load data infile \'$dir/$mysqltitsammelverml\' into table titsammelverm fields terminated by \'|\';\n";
+    }
+    if($titanghstcount!=0){
+	print MYSQLCONTROL "load data infile \'$dir/$mysqltitanghstl\' into table titanghst fields terminated by \'|\';\n";
+    }
+    if($titpausgcount!=0){
+	print MYSQLCONTROL "load data infile \'$dir/$mysqltitpausgl\' into table titpausg fields terminated by \'|\';\n";
+    }
+    if($tittitbeilcount!=0){
+	print MYSQLCONTROL "load data infile \'$dir/$mysqltittitbeill\' into table tittitbeil fields terminated by \'|\';\n";
+    }
+    if($titbezwerkcount!=0){
+	print MYSQLCONTROL "load data infile \'$dir/$mysqltitbezwerkl\' into table titbezwerk fields terminated by \'|\';\n";
+    }
+    if($titfruehausgcount!=0){
+	print MYSQLCONTROL "load data infile \'$dir/$mysqltitfruehausgl\' into table titfruehausg fields terminated by \'|\';\n";
+    }
+    if($titfruehtitcount!=0){
+	print MYSQLCONTROL "load data infile \'$dir/$mysqltitfruehtitl\' into table titfruehtit fields terminated by \'|\';\n";
+    }
+
+    if($titspaetausgcount!=0){
+	print MYSQLCONTROL "load data infile \'$dir/$mysqltitspaetausgl\' into table titspaetausg fields terminated by \'|\';\n";
+    }
+
+    if($titillangcount!=0){
+	print MYSQLCONTROL "load data infile \'$dir/$mysqltitillangl\' into table titillang fields terminated by \'|\';\n";
+    }    
+
     
     if($titpsthtscount!=0){
 	print MYSQLCONTROL "load data infile \'$dir/$mysqltitpsthtsl\' into table titpsthts fields terminated by \'|\';\n";
@@ -2105,6 +2304,7 @@ sub mysql_tit_cleanup {
     if($titurlcount!=0){
 	print MYSQLCONTROL "load data infile \'$dir/$mysqltiturll\' into table titurl fields terminated by \'|\';\n";
     }    
+
 }
 
 sub mysql_mex_init {

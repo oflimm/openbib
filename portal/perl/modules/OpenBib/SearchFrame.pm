@@ -330,6 +330,13 @@ sub handler {
   }
 
   $idnresult->finish();
+
+  my $viewtemplate="";
+
+  if ($view && -e "$config{tt_include_path}/views/$view/$config{tt_searchframe_tname}"){
+    $viewtemplate="views/$view/$config{tt_searchframe_tname}";
+  }
+
   my $template = Template->new({ 
 				INCLUDE_PATH  => $config{tt_include_path},
 				#    	    PRE_PROCESS   => 'config',
@@ -343,6 +350,7 @@ sub handler {
 		stylesheet   => $stylesheet,
 		view         => $view,
                 viewdesc     => $viewdesc,
+		viewtemplate => $viewtemplate,
                 sessionID    => $sessionID,
                 dbinputtags  => $dbinputtags,
                 show_testsystem_info => 1,

@@ -210,38 +210,39 @@ sub handler {
   my $boolejahr=($query->param('bool7'))?$query->param('bool7'):"AND";
   my $boolfs=($query->param('bool10'))?$query->param('bool10'):"AND";
   my $boolmart=($query->param('bool11'))?$query->param('bool11'):"AND";
-  
-  
+  my $boolhststring=($query->param('bool12'))?$query->param('bool12'):"AND";
+
+
   # Sicherheits-Checks
-  
+
   if ($boolverf ne "AND" && $boolverf ne "OR" && $boolverf ne "NOT"){
     $boolverf="AND";
   }
-  
+
   if ($boolhst ne "AND" && $boolhst ne "OR" && $boolhst ne "NOT"){
     $boolhst="AND";
   }
-  
+
   if ($boolswt ne "AND" && $boolswt ne "OR" && $boolswt ne "NOT"){
     $boolswt="AND";
   }
-  
+
   if ($boolkor ne "AND" && $boolkor ne "OR" && $boolkor ne "NOT"){
     $boolkor="AND";
   }
-  
+
   if ($boolnotation ne "AND" && $boolnotation ne "OR" && $boolnotation ne "NOT"){
     $boolnotation="AND";
   }
-  
+
   if ($boolisbn ne "AND" && $boolisbn ne "OR" && $boolisbn ne "NOT"){
     $boolisbn="AND";
   }
-  
+
   if ($boolissn ne "AND" && $boolissn ne "OR" && $boolissn ne "NOT"){
     $boolissn="AND";
   }
-  
+
   if ($boolsign ne "AND" && $boolsign ne "OR" && $boolsign ne "NOT"){
     $boolsign="AND";
   }
@@ -249,15 +250,19 @@ sub handler {
   if ($boolejahr ne "AND"){
     $boolejahr="AND";
   }
-  
+
   if ($boolfs ne "AND" && $boolfs ne "OR" && $boolfs ne "NOT"){
     $boolfs="AND";
   }
-  
+
   if ($boolmart ne "AND" && $boolmart ne "OR" && $boolmart ne "NOT"){
     $boolmart="AND";
   }
-  
+
+  if ($boolhststring ne "AND" && $boolhststring ne "OR" && $boolhststring ne "NOT"){
+    $boolhststring="AND";
+  }
+
   $boolverf="AND NOT" if ($boolverf eq "NOT");
   $boolhst="AND NOT" if ($boolhst eq "NOT");
   $boolswt="AND NOT" if ($boolswt eq "NOT");
@@ -268,6 +273,7 @@ sub handler {
   $boolsign="AND NOT" if ($boolsign eq "NOT");
   $boolfs="AND NOT" if ($boolfs eq "NOT");
   $boolmart="AND NOT" if ($boolmart eq "NOT");
+  $boolhststring="AND NOT" if ($boolhststring eq "NOT");
   
   #####################################################################
   ## Debug schlie"st Benchmarking ein
@@ -327,6 +333,7 @@ sub handler {
   my $mart=$query->param('mart') || ''; # MedienArt
   my $verf=$query->param('verf') || ''; 
   my $hst=$query->param('hst') || '';
+  my $hststring=$query->param('hststring') || '';
   my $swt=$query->param('swt') || '';
   my $kor=$query->param('kor') || '';
   my $sign=$query->param('sign') || '';
@@ -690,7 +697,13 @@ HEAD1
       $mart="match (artinh) against ('$mart' IN BOOLEAN MODE)";
     }
     
+    my @hststringidns;
     
+    if ($hststring){
+      $hststring=OpenBib::Search::Util::input2sgml($hststring,1,$withumlaut);
+      $hststring="(search.hststring = '$hststring')";
+    }
+
     my $ejtest;
     
     ($ejtest)=$ejahr=~/.*(\d\d\d\d).*/;
@@ -783,7 +796,14 @@ HEAD1
       $notfirstsql=1;
       $sqlquerystring.=$mart;
     }
-    
+    if ($hststring){
+      if ($notfirstsql){
+        $sqlquerystring.=" $boolhststring ";
+      }
+      $notfirstsql=1;
+      $sqlquerystring.=$hststring;
+    }
+   
     if ($ejahr){
       if ($sqlquerystring eq ""){
 	OpenBib::Search::Util::print_warning("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&ouml;glich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Ihr Verst&auml;ndnis f&uuml;r diese Ma&szlig;nahme");
@@ -795,7 +815,7 @@ HEAD1
     }
     
     $sqlquerystring="select verwidn from search$signfrom$notfrom where $sqlquerystring limit $maxhits";
-    
+   
     my @requests=($sqlquerystring);
     
     @tidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh,$benchmark);

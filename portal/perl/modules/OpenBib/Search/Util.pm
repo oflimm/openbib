@@ -677,6 +677,10 @@ sub get_swt_by_idn {
 
     my $swtstatement1="select * from swt where idn=$swtidn";
     my $swtstatement2="select * from swtverw where swtidn=$swtidn";
+    my $swtstatement3="select * from swtueber where swtidn=$swtidn";
+    my $swtstatement4="select * from swtassoz where swtidn=$swtidn";
+    my $swtstatement5="select * from swtfrueh where swtidn=$swtidn";
+    my $swtstatement6="select * from swtspaet where swtidn=$swtidn";
 
     my $atime;
     my $btime;
@@ -753,10 +757,104 @@ sub get_swt_by_idn {
 	undef $btime;
 	undef $timeall;
       }
+
+      # 
+
+      if ($config{benchmark}){
+	$atime=new Benchmark;
+      }
       
+      my $swtresult3=$dbh->prepare("$swtstatement3") or die "Error -- $DBI::errstr";   
+      $swtresult3->execute();
       
-	
-	
+      my $swtres3;
+      while ($swtres3=$swtresult3->fetchrow_hashref){
+	print_simple_category("&Uuml;berordnung","$swtres2->{ueber}") if ($swtres3->{ueber});
+      }    
+      $swtresult3->finish();
+      
+      if ($config{benchmark}){
+	$btime=new Benchmark;
+	$timeall=timediff($btime,$atime);
+	print "Zeit fuer : $swtstatement3 : ist ".timestr($timeall)."<p>\n";
+	undef $atime;
+	undef $btime;
+	undef $timeall;
+      }
+
+      #
+
+      if ($config{benchmark}){
+	$atime=new Benchmark;
+      }
+      
+      my $swtresult4=$dbh->prepare("$swtstatement4") or die "Error -- $DBI::errstr";   
+      $swtresult4->execute();
+      
+      my $swtres4;
+      while ($swtres2=$swtresult2->fetchrow_hashref){
+	print_simple_category("Assoz.","$swtres4->{assoz}") if ($swtres4->{assoz});
+      }    
+      $swtresult4->finish();
+      
+      if ($config{benchmark}){
+	$btime=new Benchmark;
+	$timeall=timediff($btime,$atime);
+	print "Zeit fuer : $swtstatement4 : ist ".timestr($timeall)."<p>\n";
+	undef $atime;
+	undef $btime;
+	undef $timeall;
+      }
+
+      #
+
+      if ($config{benchmark}){
+	$atime=new Benchmark;
+      }
+      
+      my $swtresult5=$dbh->prepare("$swtstatement5") or die "Error -- $DBI::errstr";   
+      $swtresult5->execute();
+      
+      my $swtres5;
+      while ($swtres5=$swtresult5->fetchrow_hashref){
+	print_simple_category("Fr&uuml;her","$swtres5->{frueher}") if ($swtres5->{frueher});
+      }    
+      $swtresult5->finish();
+      
+      if ($config{benchmark}){
+	$btime=new Benchmark;
+	$timeall=timediff($btime,$atime);
+	print "Zeit fuer : $swtstatement5 : ist ".timestr($timeall)."<p>\n";
+	undef $atime;
+	undef $btime;
+	undef $timeall;
+      }
+
+      #
+
+      if ($config{benchmark}){
+	$atime=new Benchmark;
+      }
+      
+      my $swtresult6=$dbh->prepare("$swtstatement6") or die "Error -- $DBI::errstr";   
+      $swtresult6->execute();
+      
+      my $swtres6;
+      while ($swtres6=$swtresult6->fetchrow_hashref){
+	print_simple_category("Sp&auml;ter","$swtres6->{spaeter}") if ($swtres6->{spaeter});
+      }    
+      $swtresult6->finish();
+      
+      if ($config{benchmark}){
+	$btime=new Benchmark;
+	$timeall=timediff($btime,$atime);
+	print "Zeit fuer : $swtstatement6 : ist ".timestr($timeall)."<p>\n";
+	undef $atime;
+	undef $btime;
+	undef $timeall;
+      }
+      
+		
       if ($mode == 3){	
 	my @requests=("select titidn from titswtlok where swtverw=$swtres1->{idn}");
 	my $swtanzahl=get_number(\@requests,$dbh);
@@ -1438,6 +1536,7 @@ sub get_tit_by_idn {
     my $titstatement26="select * from titspaetausg  where titidn=$titidn";
     my $titstatement27="select * from titabstract  where titidn=$titidn";
     my $titstatement28="select * from titner where titidn=$titidn";
+    my $titstatement29="select * from titillang where titidn=$titidn";
 
     # Bestimmen des vorigen und naechsten Treffer einer
     # vorausgegangenen Kurztitelliste
@@ -1709,6 +1808,29 @@ LASTNEXT
     print_simple_category("Ans. Ersch. Jahr","$titres1->{anserschjahr}") if ($titres1->{anserschjahr});    
     print_simple_category("Ersch. Verlauf","$titres1->{erschverlauf}") if ($titres1->{erschverlauf});    
 
+    print_simple_category("Verfasser Quelle","$titres1->{verfquelle}") if ($titres1->{verfquelle});    
+    print_simple_category("Ersch.Ort Quelle","$titres1->{eortquelle}") if ($titres1->{eortquelle});    
+    print_simple_category("Ersch.Jahr Quelle","$titres1->{ejahrquelle}") if ($titres1->{ejahrquelle});    
+
+    # Ausgabe der Illustrationsangaben
+
+    my $titresult29=$dbh->prepare("$titstatement29") or die "Error -- $DBI::errstr";   
+    $titresult29->execute();
+
+    my $titres29;
+    while ($titres29=$titresult29->fetchrow_hashref){
+      print_simple_category("Ill.Angaben",$titres29->{'illang'});
+    }
+    $titresult29->finish();
+
+    if ($config{benchmark}){
+	$btime=new Benchmark;
+	$timeall=timediff($btime,$atime);
+	print "Zeit fuer : $titstatement29 : ist ".timestr($timeall)."<p>\n";
+	undef $atime;
+	undef $btime;
+	undef $timeall;
+    }
 
     print_simple_category("Kollation","$titres1->{kollation}") if ($titres1->{kollation});    
     

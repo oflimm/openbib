@@ -1,0 +1,21 @@
+[% PROCESS std_header %]
+
+[% IF show_corporate_banner %]
+[% PROCESS corporate_banner %] 
+[% END %]
+
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+  <tr bgcolor="lightblue">
+    <td width="20">&nbsp;</td><td valign="middle" align="left" height="32"><img src="/images/openbib/fehler.png" alt="Es ist ein Fehler aufgetreten" /></td>
+  </tr>
+</table>
+<p />
+<table width="100%">
+<tr><th>Fehlerbeschreibung</th></tr>
+<tr><td class="boxedclear" style="font-size:12pt">
+[% errmsg %]
+</td></tr>
+</table>
+
+[% PROCESS std_footer %]
+

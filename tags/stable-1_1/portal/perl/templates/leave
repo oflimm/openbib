@@ -1,0 +1,26 @@
+[% PROCESS std_header %]
+
+[% IF show_corporate_banner %]
+[% PROCESS corporate_banner %]
+[% END %]
+
+<br />
+  <br />
+  <center>
+    <p style="font-size:16pt">
+      Ihre Sitzung wurde beendet.<br />
+        <br />Vielen Dank f&uuml;r Ihren Besuch beim K&ouml;lner Universit&auml;tsGesamtkatalog.
+
+    </p>
+  </center>
+
+  <center>
+    <p>
+      <a class="invisible" href="http://[% config.loadbalancerservername %][% config.loadbalancer_loc %]?view=[% view %]" target="_parent"><img src="/images/openbib/neue.sitzung-30pix.png" alt="Neue Sitzung beginnen?" /></a>
+    </p>
+  </center>
+<br />
+<br />
+<br />
+<br />
+[% PROCESS std_footer %]

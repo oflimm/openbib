@@ -18,8 +18,8 @@
 #  Programm, Konvertierungsroutinen in das Metaformat
 #  und generelle Optimierung auf Bulk-Konvertierungen
 #
-#  Copyright 2003 Oliver Flimm
-#                 <flimm@openbib.rog>
+#  Copyright 2003-2005 Oliver Flimm
+#                      <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -350,6 +350,11 @@ my %swtkonv=(
 	   "0710.157" => "5650.207 ", # Schlagwort
 	   "0710.158" => "5650.208 ", # Schlagwort
 	   "0710.159" => "5650.209 ", # Schlagwort
+	   "0750.001" => "9000.001 ", # Abstract
+	   "0750.002" => "9000.002 ", # Abstract
+	   "0750.003" => "9000.003 ", # Abstract
+	   "0750.004" => "9000.004 ", # Abstract
+	   "0750.005" => "9000.005 ", # Abstract
 	   "0800.001" => "5260 ", # Art/Inhalt MedienArt
 	   "0800.002" => "5260 ", # Art/Inhalt MedienArt
 	   "0800.003" => "5260 ", # Art/Inhalt MedienArt
@@ -434,6 +439,18 @@ while (<FSTAB>){
   }
 }
 close(FSTAB);
+
+###
+## titel_exclude Daten auswerten
+#
+
+open(TEXCL,"$bcppath/titel_exclude.bcp");
+while(<TEXCL>){
+  ($junk,$titidn)=split("",$_);
+  chomp($titidn);
+  $titelexclude{"$titidn"}="excluded";
+}
+close(TEXCL);
 
 ###
 ## Normdateien einlesen
@@ -812,6 +829,8 @@ open(TIT,"| gzip >./tit.exp.gz");
 open(TITSIK,"| gzip >./unload.TIT.gz");
 while (($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split ("",<TITEL>)){
   next if ($aktion ne "0");
+  next if ($titelexclude{"$katkey"} eq "excluded");
+
   $BLOB = $daten;
   undef %SATZ;
   $j = length($BLOB);
@@ -971,7 +990,7 @@ while (($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split ("
 	  print STDERR "VERWCOUNT $verwcount - VERKNCOUNT $verkncount - INHALT $inhalt \n";
 
 	  if ($verwcount > $verkncount){
-	    if ($inhalt=~/^.*?[:\/;](.+)$/){
+	    if ($inhalt=~/^.*?[.:\/;](.+)$/){
 	      $zusatz=$1;
 	    }
 	    else {

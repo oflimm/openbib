@@ -1,14 +1,14 @@
 [% PROCESS std_header %]
 
 [% PROCESS corporate_banner %]
-<table  border="0" cellspacing="0" cellpadding="0" width="100%">
-<tr><td align="left">&nbsp;&nbsp;<a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %]&view=[% view %]" target="body">Katalogauswahl</a>&nbsp;&nbsp;<a href="[% config.searchframe_loc %]?sessionID=[% sessionID %]&view=[% view %]" target="body">Recherche</a>&nbsp;&nbsp;<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %]&trefferliste=choice&view=[% view %]" target="body">Trefferliste</a>&nbsp;&nbsp;<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %]&action=show&view=[% view %]" target="merkliste">Merkliste</a> [[% anzahl %]]</td><td height="25">&nbsp;</td><td align="right">
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+<tr><td align="left">&nbsp;&nbsp;<a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">Katalogauswahl</a>&nbsp;&nbsp;<a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">Recherche</a>&nbsp;&nbsp;<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];trefferliste=choice;view=[% view %]" target="body">Trefferliste</a>&nbsp;&nbsp;<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;view=[% view %]" target="merkliste">Merkliste</a> [[% anzahl %]]</td><td height="25">&nbsp;</td><td align="right">
 [% IF userid %]
-<a href="[% config.userprefs_loc %]?sessionID=[% sessionID %]&view=[% view %]&action=showfields" target="body">Einstellungen</a>&nbsp;
+<a href="[% config.userprefs_loc %]?sessionID=[% sessionID %];view=[% view %];action=showfields" target="body">Einstellungen</a>&nbsp;
 [% ELSE %]
-<a href="[% config.login_loc %]?sessionID=[% sessionID %]&view=[% view %]&action=login" target="body">Login</a>&nbsp;
+<a href="[% config.login_loc %]?sessionID=[% sessionID %];view=[% view %];action=login" target="body">Login</a>&nbsp;
 [% END %]
-<a href="/suchhilfe.html" target="body">Hilfe</a>&nbsp;&nbsp;<a href="[% config.leave_loc %]?sessionID=[% sessionID %]&view=[% view %]" target="_parent">Sitzung beenden</a>&nbsp;</td></tr>
+<a href="/suchhilfe.html" target="body">Hilfe</a>&nbsp;&nbsp;<a href="[% config.leave_loc %]?sessionID=[% sessionID %];view=[% view %]" target="_parent">Sitzung beenden</a>&nbsp;</td></tr>
 </table>
 
 [% PROCESS std_footer %]

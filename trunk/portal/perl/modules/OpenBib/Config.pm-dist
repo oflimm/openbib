@@ -154,6 +154,10 @@ use vars qw(%config);
  
 	   dbis_exturl             => '',
 
+	   # Pfad zur Konfigurationsdatei von Log4Perl
+
+           log4perl_path           => '/pfad/zu/portal.log4perl',
+
 	   # Pfad zu den Portal-Templates (Template Toolkit)
 
 	   tt_include_path         => '/pfad/zu/openbib/template',

@@ -43,6 +43,8 @@ use POSIX;
 use Digest::MD5;
 use DBI;
 
+use Template;
+
 use OpenBib::Common::Util;
 
 use OpenBib::Config;
@@ -81,6 +83,8 @@ sub handler {
   
   my $result=$idnresult->fetchrow_hashref();
   
+  $idnresult->finish();
+
   my $view=$result->{'viewname'} || '';
   
   my $viewdesc="";
@@ -99,17 +103,11 @@ sub handler {
 
   # Dementsprechend einen LoginLink oder ein ProfilLink ausgeben
 
-  my $loginpreflink="<a href=\"$config{login_loc}?sessionID=$sessionID&view=$view&action=login\" target=\"body\">Login</a>&nbsp;&nbsp;";
-
   my $anzahl="";
 
   # Wenn wir authentifiziert sind, dann
 
   if ($userid){
-    # Benutzerprofil-Link setzen
-    
-    $loginpreflink="<a href=\"$config{userprefs_loc}?sessionID=$sessionID&view=$view&action=showfields\" target=\"body\">Einstellungen</a>&nbsp;&nbsp;";
-    
     # Anzahl Eintraege der privaten Merkliste bestimmen
     
     # Zuallererst Suchen, wieviele Titel in der Merkliste vorhanden sind.
@@ -128,38 +126,40 @@ sub handler {
     $idnresult->finish();
   }
 
-
-  # Dann Ausgabe des neuen Headers
-  
-  OpenBib::Common::Util::print_simple_header("KUG - K&ouml;lner Universit&auml;tsGesamtkatalog",$r);
-
-  print << "ENDE";
-    <table  BORDER=0 CELLSPACING=0 CELLPADDING=0 width="100%">
-	<tr>
-	  <td ALIGN=LEFT>
-	    <table><tr><td rowspan=2 valign=bottom><a target="_blank" href="http://kug.ub.uni-koeln.de/projekt/"><img SRC="/images/openbib/openbib-80pix.png" BORDER=0></a></td><td valign=bottom><img SRC="/images/openbib/koelner.virtueller-20pix.png" BORDER=0></td></tr><tr><td valign=top><img SRC="/images/openbib/institutsgesamtkatalog-20pix.png" BORDER=0></td></tr></table>
-	    
-	  </td>
-	  
-	  <td> &nbsp;&nbsp;</td>
-	  
-	  <td ALIGN=RIGHT>
-	    <a target="_top" HREF="http://www.uni-koeln.de/"><img SRC="/images/openbib/gold.gif" height=95 BORDER=0></a>
-	  </td>
-	  
-	</tr>
-
-        $viewdesc
-
-<tr><td align=left>&nbsp;&nbsp;<a href="$config{databasechoice_loc}?sessionID=$sessionID&view=$view" target="body">Katalogauswahl</a>&nbsp;&nbsp;<a href="$config{searchframe_loc}?sessionID=$sessionID&view=$view" target="body">Recherche</a>&nbsp;&nbsp;<a href="$config{virtualsearch_loc}?sessionID=$sessionID&trefferliste=choice&view=$view" target="body">Trefferliste</a>&nbsp;&nbsp;<a href="$config{managecollection_loc}?sessionID=$sessionID&action=show&view=$view" target="merkliste">Merkliste</a> [$anzahl]</td><td height=25>&nbsp;</td><td align=right>$loginpreflink<a href="/suchhilfe.html" target="body">Hilfe</a>&nbsp;&nbsp;<a href="$config{leave_loc}?sessionID=$sessionID&view=$view" target="_parent">Sitzung beenden</a>&nbsp;</td></tr>
-    </table>
-  </body>
-</html>
-
-ENDE
-
   $sessiondbh->disconnect();
   $userdbh->disconnect();
+
+  my $template = Template->new({ 
+				INCLUDE_PATH  => $config{tt_include_path},
+				#    	    PRE_PROCESS   => 'config',
+				OUTPUT        => $r,     # Output geht direkt an Apache Request
+			       });
+
+  # TT-Data erzeugen
+
+  my $ttdata={
+	      title      => 'KUG - K&ouml;lner Universit&auml;tsGesamtkatalog',
+	      stylesheet   => $stylesheet,
+	      view         => $view,
+	      viewdesc     => $viewdesc,
+	      sessionID    => $sessionID,
+
+	      userid         => $userid,
+	      anzahl       => $anzahl,
+
+	      show_foot_banner      => 0,
+
+	      config       => \%config,
+	     };
+  
+  # Dann Ausgabe des neuen Headers
+  
+  print $r->send_http_header("text/html");
+  
+  $template->process($config{tt_headerframe_tname}, $ttdata) || do { 
+    $r->log_reason($template->error(), $r->filename);
+    return SERVER_ERROR;
+  };
 
   return OK;
 }

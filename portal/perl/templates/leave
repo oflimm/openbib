@@ -16,7 +16,7 @@
 
   <center>
     <p>
-      <a href="http://[% config.loadbalancerservername %][% config.loadbalancer_loc %]?view=[% view %]" target="_parent"><img src="/images/openbib/neue.sitzung-30pix.png" alt="Neue Sitzung beginnen?" /></a>
+      <a class="invisible" href="http://[% config.loadbalancerservername %][% config.loadbalancer_loc %]?view=[% view %]" target="_parent"><img src="/images/openbib/neue.sitzung-30pix.png" alt="Neue Sitzung beginnen?" /></a>
     </p>
   </center>
 <br />

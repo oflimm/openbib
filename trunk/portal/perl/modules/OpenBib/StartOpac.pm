@@ -149,7 +149,7 @@ sub handler {
   }
   
   if ($searchsingletit ne '' && $database ne ''){
-    $searchframeurl="$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=2&rating=0&bookinfo=0&showmexintit=1&showvbu=0&casesensitive=0&hitrange=-1&database=$database&dbms=mysql&searchsingletit=$searchsingletit";
+    $searchframeurl="$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=2&rating=0&bookinfo=0&showmexintit=1&casesensitive=0&hitrange=-1&database=$database&dbms=mysql&searchsingletit=$searchsingletit";
   }
   
   if ($fs ne ""){

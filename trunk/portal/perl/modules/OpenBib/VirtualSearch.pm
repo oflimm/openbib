@@ -127,13 +127,15 @@ sub handler {
   my $autoplus=$query->param('autoplus') || '';
   my $queryid=$query->param('queryid') || '';
   
-  # Filter: Freie Suche
+  # Filter: ISBN und ISSN
   
   # Entfernung der Minus-Zeichen bei der ISBN
   $fs=~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10/g;
+  $isbn=~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10/g;
   
   # Entfernung der Minus-Zeichen bei der ISSN
   $fs=~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)/$1$2$3$4$5$6$7$8/g;
+  $issn=~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)/$1$2$3$4$5$6$7$8/g;
   
   $fs=OpenBib::VirtualSearch::Util::cleansearchterm($fs);
   

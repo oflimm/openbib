@@ -4,16 +4,16 @@
 [% PROCESS corporate_banner %] 
 [% END %]
 
-<FORM method="get" id="openbib" action="http://[% config.servername %][% config.virtualsearch_loc %]">
-<INPUT type="hidden" name="hitrange" value=-1>
-<INPUT type="hidden" name="view" value="[% view %]">
-<INPUT type="hidden" name="sessionID" value="[% sessionID %]">
+<form method="get" id="openbib" action="http://[% config.servername %][% config.virtualsearch_loc %]">
+<input type="hidden" name="hitrange" value="-1" />
+<input type="hidden" name="view" value="[% view %]" />
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
 
 [% dbinputtags %]
 
-<table BORDER=0 CELLSPACING=0 CELLPADDING=0 width="100%">
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
   <tr bgcolor="lightblue">
-    <td  width="20">&nbsp;</td><td valign="middle" ALIGN=left height="32"><img src="/images/openbib/recherche2.png" alt="Recherche"></td>
+    <td  width="20">&nbsp;</td><td valign="middle" align="left" height="32"><img src="/images/openbib/recherche2.png" alt="Recherche" /></td>
   </tr>
 </table>
 
@@ -21,76 +21,76 @@
 [% PROCESS testsystem_info %]
 [% END %]
 
-<p>
-<p>
+<p />
+<p />
 
 [% IF view %]
 Sie k&ouml;nnen entweder direkt im vorausgew&auml;hlten Katalog <b>[% viewdesc %]</b> recherchieren, oder die Suche auf weitere <a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %]" target="body">Kataloge</a> ausdehnen";
-<p>
-<TABLE>
-  <TR><TD><INPUT type=submit title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="tosearch" value="In ausgewählten Katalogen suchen">&nbsp;<INPUT type=reset title="Hier l&ouml;schen Sie die Eingabefelder" value="Lösche Eingabemaske"></TD></TR>
-</TABLE>
+<p />
+<table>
+  <tr><td><input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="tosearch" value="In ausgewählten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="Lösche Eingabemaske"></td></tr>
+</table>
 [% ELSE %]
 Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs %] <b>einzelnen</b> <a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %]" target="body">Katalogen</a> recherchieren oder auch sofort in <b>allen</b> zusammen.
-<p>
-<TABLE>
-  <TR><TD><INPUT type="submit" title="Hier suchen Sie in allen Katalogen auf einmal" name=tosearch value="In allen Katalogen suchen">&nbsp;<INPUT type=submit title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="tosearch" value="In ausgewählten Katalogen suchen">&nbsp;<INPUT type=reset title="Hier l&ouml;schen Sie die Eingabefelder" value="Lösche Eingabemaske"></TD></TR>
-</TABLE>
+<p />
+<table>
+  <tr><td><input type="submit" title="Hier suchen Sie in allen Katalogen auf einmal" name="tosearch" value="In allen Katalogen suchen" />&nbsp;<input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="tosearch" value="In ausgewählten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="Lösche Eingabemaske" /></td></tr>
+</table>
 [% END %]
 
-<p>
+<p />
 <table width="100%">
-<tr><th>Suchbegriffe</th><td width="25">&nbsp</td><th>Suchhinweise</th></tr>
+<tr><th>Suchbegriffe</th><td width="25">&nbsp;</td><th>Suchhinweise</th></tr>
 <tr><td class="boxed" valign="top">
-<TABLE>
-<TR><TD>Kategorie</TD><TD>Verkn&uuml;pfung</TD><TD>Ihre Eingabe</TD><TD></TD></TR>
+<table>
+<tr><td>Kategorie</td><td>Verkn&uuml;pfung</td><td>Ihre Eingabe</td><td></td></tr>
 
 [% IF showfs %]
-<TR><TD BGCOLOR="#ADD8E6"><B>Freie Suche</B></TD><TD BGCOLOR="#ADD8E6"></TD><TD><INPUT TYPE="text" NAME="fs" VALUE="[% fs %]" SIZE=30 MAXLENGTH=200></TD><TD></TD></TR>
+<tr><td bgcolor="#ADD8E6"><b>Freie Suche</b></td><td bgcolor="#ADD8E6"></td><td><input type="text" name="fs" value="[% fs %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
 [% IF showhst %]
-<TR><TD BGCOLOR="#ADD8E6"><B>Titel</B></TD><TD BGCOLOR="#ADD8E6"><select Name="bool1"><option value="AND" selected>und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></TD><TD><INPUT TYPE="text" NAME="hst" VALUE="[% hst %]" SIZE=30 MAXLENGTH=200></TD><TD></TD></TR>
+<tr><td bgcolor="#ADD8E6"><b>Titel</b></td><td bgcolor="#ADD8E6"><select name="bool1"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="hst" value="[% hst %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
 [% IF showverf %]
-<TR><TD BGCOLOR="#ADD8E6"><B>Verfasser</B></TD><TD BGCOLOR="#ADD8E6"><select Name="bool9"><option value="AND" selected>und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></TD><TD><INPUT TYPE="text" NAME="verf" VALUE="[% verf %]" SIZE=30 MAXLENGTH=200></TD><TD></TD></TR>
+<tr><td bgcolor="#ADD8E6"><b>Verfasser</b></td><td bgcolor="#ADD8E6"><select name="bool9"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="verf" value="[% verf %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
 [% IF showkor %]
-<TR><TD BGCOLOR="#ADD8E6"><B>K&ouml;rperschaft</B></TD><TD BGCOLOR="#ADD8E6"><select Name="bool3"><option value="AND" selected>und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></TD><TD><INPUT TYPE="text" NAME="kor" VALUE="[% kor %]" SIZE=30 MAXLENGTH=200></TD><TD></TD></TR>
+<tr><td bgcolor="#ADD8E6"><b>K&ouml;rperschaft</b></td><td bgcolor="#ADD8E6"><select name="bool3"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="kor" value="[% kor %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
 [% IF showswt %]
-<TR><TD BGCOLOR="#ADD8E6"><B>Schlagwort</B></TD><TD BGCOLOR="#ADD8E6"><select Name="bool2"><option value="AND" selected>und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></TD><TD><INPUT TYPE="text" NAME="swt" VALUE="[% swt %]" SIZE=30 MAXLENGTH=200></TD><TD></TD></TR>
+<tr><td bgcolor="#ADD8E6"><b>Schlagwort</b></td><td bgcolor="#ADD8E6"><select name="bool2"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="swt" value="[% swt %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
 [% IF shownotation %]
-<TR><TD BGCOLOR="#ADD8E6"><B>Notation</B></TD><TD BGCOLOR="#ADD8E6"><select Name="bool4"><option value="AND" selected>und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></TD><TD><INPUT TYPE="text" NAME="notation" VALUE="[% notation %]" SIZE=30 MAXLENGTH=200></TD><TD><span style="color:red">*</span></TD></TR>
+<tr><td bgcolor="#ADD8E6"><b>Notation</b></td><td bgcolor="#ADD8E6"><select name="bool4"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="notation" value="[% notation %]" size="30" maxlength="200" /></td><td><span style="color:red">*</span></td></tr>
 [% END %]
 
 [% IF showisbn %]
-<TR><TD BGCOLOR="#ADD8E6"><B>ISBN</B></TD><TD BGCOLOR="#ADD8E6"><select Name="bool5"><option value="AND" selected>und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></TD><TD><INPUT TYPE="text" NAME="isbn" VALUE="[% isbn %]" SIZE=30 MAXLENGTH=200></TD><TD></TD></TR>
+<tr><td bgcolor="#ADD8E6"><b>ISBN</b></td><td bgcolor="#ADD8E6"><select name="bool5"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="isbn" value="[% isbn %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
 [% IF showissn %]
-<TR><TD BGCOLOR="#ADD8E6"><B>ISSN</B></TD><TD BGCOLOR="#ADD8E6"><select Name="bool8"><option value="AND" selected>und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></TD><TD><INPUT TYPE="text" NAME="issn" VALUE="[% issn %]" SIZE=30 MAXLENGTH=200></TD><TD></TD></TR>
+<tr><td bgcolor="#ADD8E6"><b>ISSN</b></td><td bgcolor="#ADD8E6"><select name="bool8"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="issn" value="[% issn %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
 [% IF showsign %]
-<TR><TD BGCOLOR="#ADD8E6"><B>Signatur</B></TD><TD BGCOLOR="#ADD8E6"><select Name="bool6"><option value="AND" selected>und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></TD><TD><INPUT TYPE="text" NAME="sign" VALUE="[% sign %]" SIZE=30 MAXLENGTH=200></TD><TD><span style="color:red">*</span></TD></TR>
+<tr><td bgcolor="#ADD8E6"><b>Signatur</b></td><td bgcolor="#ADD8E6"><select name="bool6"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="sign" value="[% sign %]" size="30" maxlength="200" /></td><td><span style="color:red">*</span></td></tr>
 [% END %]
 
 [% IF showhststring %]
-<TR><TD BGCOLOR="#ADD8E6"><B>Titel-String</B></TD><TD BGCOLOR="#ADD8E6"><select Name="bool12"><option value="AND" selected>und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></TD><TD><INPUT TYPE="text" NAME="hststring" VALUE="[% hststring %]" SIZE=30 MAXLENGTH=200></TD><TD></TD></TR>
+<tr><td bgcolor="#ADD8E6"><b>Titel-String</b></td><td bgcolor="#ADD8E6"><select name="bool12"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="hststring" value="[% hststring %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
 [% IF showmart %]
-<TR><TD BGCOLOR="#ADD8E6"><B>Medienart</B></TD><TD BGCOLOR="#ADD8E6"><select Name="bool11"><option value="AND" selected>und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></TD><TD><select name="mart"><option value="" selected>Keine ausgew&auml;hlt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option><option value="Audio CD">Audio-CD</option><option value="%22Audio Mitschnitt%22">Audio Mitschnitt</option><option value="%22audiovisuelle Materialien%22">Audiovisuelle Materialien</option><option value="Aufsatz">Aufsatz</option><option value="%22Aufsatz-Fotokopie%22">Aufsatz-Fotokopie</option><option value="%22CD-ROM%22">CD-ROM</option><option value="Diskette">Diskette</option><option value="Dissertation">Dissertation</option><option value="DVD">DVD</option><option value="Festschrift">Festschrift</option><option value="Fotokopie">Fotokopie</option><option value="Geschaeftsbericht">Gesch&auml;ftsbericht</option><option value="Kassette">Kassette</option><option value="Loseblattsammlung">Loseblattsammlung</option><option value="%22masch.Schr.%22">Masch.Schr.</option><option value="Medienkombination">Medienkombination</option><option value="Musikdruck Noten">Musikdruck / Noten</option><option value="Original">Original</option><option value="%22Reisefuehrer, Karte oder Atlas%22">Reisef&uuml;hrer, Karte oder Atlas</option><option value="Sprachkassette">Sprachkassette</option><option value="Standardmonographie">Standardmonographie</option><option value="Video">Video</option><option value="Zeitschrift">Zeitschrift</option><option value="Zeitung">Zeitung</option></select>&nbsp;</TD><TD></TD></TR>
+<tr><td bgcolor="#ADD8E6"><b>Medienart</b></td><td bgcolor="#ADD8E6"><select name="bool11"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><select name="mart"><option value="" selected="selected">Keine ausgew&auml;hlt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option><option value="Audio CD">Audio-CD</option><option value="%22Audio Mitschnitt%22">Audio Mitschnitt</option><option value="%22audiovisuelle Materialien%22">Audiovisuelle Materialien</option><option value="Aufsatz">Aufsatz</option><option value="%22Aufsatz-Fotokopie%22">Aufsatz-Fotokopie</option><option value="%22CD-ROM%22">CD-ROM</option><option value="Diskette">Diskette</option><option value="Dissertation">Dissertation</option><option value="DVD">DVD</option><option value="Festschrift">Festschrift</option><option value="Fotokopie">Fotokopie</option><option value="Geschaeftsbericht">Gesch&auml;ftsbericht</option><option value="Kassette">Kassette</option><option value="Loseblattsammlung">Loseblattsammlung</option><option value="%22masch.Schr.%22">Masch.Schr.</option><option value="Medienkombination">Medienkombination</option><option value="Musikdruck Noten">Musikdruck / Noten</option><option value="Original">Original</option><option value="%22Reisefuehrer, Karte oder Atlas%22">Reisef&uuml;hrer, Karte oder Atlas</option><option value="Sprachkassette">Sprachkassette</option><option value="Standardmonographie">Standardmonographie</option><option value="Video">Video</option><option value="Zeitschrift">Zeitschrift</option><option value="Zeitung">Zeitung</option></select>&nbsp;</td><td></td></tr>
 [% END %]
 
 [% IF showejahr %]
-<TR><TD BGCOLOR="#ADD8E6"><B>Jahr</B></TD><TD BGCOLOR="#ADD8E6">und<input type=hidden Name="bool7" value="AND"></TD><TD><INPUT type="text" name="ejahr" value="[% ejahr %]" size=4 maxlength=4>&nbsp;<select name=ejahrop><OPTION value="=" selected>genau<OPTION value=">" >j&uuml;nger<OPTION value="<" >&auml;lter</SELECT></TD><TD></TD></TR>
+<tr><td bgcolor="#ADD8E6"><b>Jahr</b></td><td bgcolor="#ADD8E6">und<input type="hidden" name="bool7" value="AND" /></td><td><input type="text" name="ejahr" value="[% ejahr %]" size="4" maxlength="4" />&nbsp;<select name="ejahrop"><option value="%3D" selected="selected">genau</option><option value="%3E">j&uuml;nger</option><option value="%3C">&auml;lter</option></select></td><td></td></tr>
 [% END %]
 
 </table></td>
@@ -105,57 +105,61 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
 </td></tr>
 </table>
 
-<p>
+<p />
 <table width="100%">
 <tr><th>Suchoptionen</th></tr>
 <tr><td class="boxed">
 <table>
-<TR><TD BGCOLOR="#ADD8E6"><B>Maximale Trefferzahl pro Katalog</B></TD><TD colspan=3><SELECT name=maxhits><OPTION selected>200<OPTION>500<OPTION>1000<OPTION value="9999999">alle</SELECT></TR>
-<TR><TD BGCOLOR="#ADD8E6"><B>Sortierung nach</B></TD><TD colspan=2><SELECT name=sorttype><OPTION value="author" selected>Autor/Körperschaft<OPTION value="title">Titel<OPTION value="yearofpub">Erscheinungsjahr</SELECT><select name="sortorder"><option value="up">aufsteigend</option><option value="down">absteigend</option></select>&nbsp;pro Katalog</TD><TD></TD></TR>
-<TR><TD BGCOLOR="#ADD8E6"><B>Suchprofil</B></TD><TD colspan=3><SELECT name=profil>[% dbcount %] [% userprofiles %]<OPTION value="">Fakult&auml;ten:<OPTION value=""><OPTION value="0ungeb">- Fakult&auml;tsunabh&auml;ngige Bibliotheken<OPTION value="1wiso">- Wirtschafts- u. Sozialwissenschaftliche Fakult&auml;t<OPTION value="2recht">- Rechtswissenschaftliche Fakult&auml;t<OPTION value="3ezwheil">- Erziehungswissenschaftliche u. Heilp&auml;dagogische Fakult&auml;t<OPTION value="4phil">- Philosophische Fakult&auml;t<OPTION value="5matnat">- Mathematisch-Naturwissenschaftliche Fakult&auml;t<OPTION value=""></SELECT></TD></TR>
-<TR><TD BGCOLOR="#ADD8E6"><b>Und-Verkn&uuml;pfung innerhalb eines Suchfeldes</b></TD><TD colspan="3"><INPUT type="radio" name="autoplus" value="1" checked>ja&nbsp;<INPUT type="radio" name="autoplus" value="0">nein</TD></TR>
-</TABLE>
+<tr><td bgcolor="#ADD8E6"><b>Maximale Trefferzahl pro Katalog</b></td><td colspan="3"><select name="maxhits"><option selected="selected">200</option><option>500</option><option>1000</option><option value="9999999">alle</option></select></td></tr>
+<tr><td bgcolor="#ADD8E6"><b>Sortierung nach</b></td><td colspan="2"><select name="sorttype"><option value="author" selected="selected">Autor/Körperschaft</option><option value="title">Titel</option><option value="yearofpub">Erscheinungsjahr</option></select><select name="sortorder"><option value="up">aufsteigend</option><option value="down">absteigend</option></select>&nbsp;pro Katalog</td><td></td></tr>
+<tr><td bgcolor="#ADD8E6"><b>Suchprofil</b></td><td colspan="3"><select name="profil">[% dbcount %] [% userprofiles %]<option value="">Fakult&auml;ten:</option><option value=""></option><option value="0ungeb">- Fakult&auml;tsunabh&auml;ngige Bibliotheken</option><option value="1wiso">- Wirtschafts- u. Sozialwissenschaftliche Fakult&auml;t</option><option value="2recht">- Rechtswissenschaftliche Fakult&auml;t</option><option value="3ezwheil">- Erziehungswissenschaftliche u. Heilp&auml;dagogische Fakult&auml;t</option><option value="4phil">- Philosophische Fakult&auml;t</option><option value="5matnat">- Mathematisch-Naturwissenschaftliche Fakult&auml;t</option><option value=""></option></select></td></tr>
+<tr><td bgcolor="#ADD8E6"><b>Und-Verkn&uuml;pfung innerhalb eines Suchfeldes</b></td><td colspan="3"><input type="radio" name="autoplus" value="1" checked="checked" />ja&nbsp;<input type="radio" name="autoplus" value="0" />nein</td></tr>
+</table>
 </td></tr>
 </table>
-<p>
+<p />
 
 [% IF view %]
 Sie k&ouml;nnen entweder direkt im vorausgew&auml;hlten Katalog <b>[% viewdesc %]</b> recherchieren, oder die Suche auf weitere <a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %]" target="body">Kataloge</a> ausdehnen";
-<p>
-<TABLE>
-  <TR><TD><INPUT type=submit title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="tosearch" value="In ausgewählten Katalogen suchen">&nbsp;<INPUT type=reset title="Hier l&ouml;schen Sie die Eingabefelder" value="Lösche Eingabemaske"></TD></TR>
-</TABLE>
+<p />
+<table>
+  <tr><td><input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="tosearch" value="In ausgewählten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="Lösche Eingabemaske" /></td></tr>
+</table>
 [% ELSE %]
 Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs %] <b>einzelnen</b> <a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %]" target="body">Katalogen</a> recherchieren oder auch sofort in <b>allen</b> zusammen.
-<p>
-<TABLE>
-  <TR><TD><INPUT type="submit" title="Hier suchen Sie in allen Katalogen auf einmal" name=tosearch value="In allen Katalogen suchen">&nbsp;<INPUT type=submit title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="tosearch" value="In ausgewählten Katalogen suchen">&nbsp;<INPUT type=reset title="Hier l&ouml;schen Sie die Eingabefelder" value="Lösche Eingabemaske"></TD></TR>
-</TABLE>
+<p />
+<table>
+  <tr><td><input type="submit" title="Hier suchen Sie in allen Katalogen auf einmal" name="tosearch" value="In allen Katalogen suchen" />&nbsp;<input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="tosearch" value="In ausgewählten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="Lösche Eingabemaske" /></td></tr>
+</table>
 [% END %]
 
-<P>
-</FORM>
+<p />
+</form>
 
 
-<FORM method="get" id="queries" action="http://[% config.servername %][% config.searchframe_loc %]">
+<form method="get" id="queries" action="http://[% config.servername %][% config.searchframe_loc %]">
 <table width="100%">
 <tr><th>Suchhistorie</th></tr>
 <tr><td class="boxed">
-<INPUT type="hidden" name="sessionID" value="[% sessionID %]">
-<SELECT name=queryid>
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<select name="queryid">
+[% IF prevqueries %]
 [% prevqueries %]
-</SELECT>
-<INPUT type=submit value="Als Suchvorlage">
+[% ELSE %]
+<option value="">Keine Anfragen</option>
+[% END %]
+</select>
+<input type="submit" value="Als Suchvorlage" />
 </td></tr>
 </table>
-</FORM>
+</form>
 
-<p>
+<p />
 <b>Insgesamt sind im KUG derzeit [% alldbcount %] Titel nachgewiesen.</b>
-<p>
-<hr>
-<p>
-F&uuml;r Verbesserungsvorschl&auml;ge oder bei technischen Problemen k&ouml;nnen Sie uns unter <a href="http://www.ub.uni-koeln.de/usb-cgi/makeEmailPage.pl?adr0=kug" target=_blank>kug@ub.uni-koeln.de</a> erreichen.
-<p>
+<p />
+<hr />
+<p />
+F&uuml;r Verbesserungsvorschl&auml;ge oder bei technischen Problemen k&ouml;nnen Sie uns unter <a href="http://www.ub.uni-koeln.de/usb-cgi/makeEmailPage.pl?adr0=kug" target="_blank">kug@ub.uni-koeln.de</a> erreichen.
+<p />
 
 [% PROCESS std_footer %]

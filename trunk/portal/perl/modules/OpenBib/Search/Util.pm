@@ -1415,7 +1415,9 @@ sub get_tit_by_idn {
 		    $showerschjahr=$titres1->{anserschjahr};
 		  }
 
-		    $retval.="<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchsingletit=$titres1->{idn}\"><strong>$tithst[0] ; $gtmzus[0]</strong></a>, $titres1->{verlag} $showerschjahr</td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><span id=\"rlmerken\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></span></a></td><td align=left><b>$signaturstring</b>";
+		  $retval.="<strong><span id=\"rlauthor\">$verfasserstring</span></strong><br>";
+
+		  $retval.="<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchsingletit=$titres1->{idn}\"><strong><span id=\"rltitle\">$tithst[0] ; $gtmzus[0]</span></strong></a>, <span id=\"rlpublisher\">$titres1->{verlag}</span> <span id=\"rlyearofpub\">$showerschjahr</span></td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><span id=\"rlmerken\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></span></a></td><td align=left><b>$signaturstring</b>";
 
 
 		}
@@ -1463,8 +1465,10 @@ sub get_tit_by_idn {
 		  if ($showerschjahr eq ""){
 		    $showerschjahr=$titres1->{anserschjahr};
 		  }
-		    
-		    $retval.="<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchsingletit=$titres1->{idn}\"><strong>$tithst[0] ; $gtfzus[0]</strong></a>, $titres1->{verlag} $showerschjahr</td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>$signaturstring</b>";
+		  
+		  $retval.="<strong><span id=\"rlauthor\">$verfasserstring</span></strong><br>";
+  
+		  $retval.="<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchsingletit=$titres1->{idn}\"><strong><span id=\"rltitle\">$tithst[0] ; $gtfzus[0]</span></strong></a>, <span id=\"rlpublisher\">$titres1->{verlag}</span> <span id=\"rlyearofpub\">$showerschjahr</span></td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>$signaturstring</b>";
 
 
 		}		    
@@ -1495,7 +1499,10 @@ sub get_tit_by_idn {
 
 		    my @requests=("select zus from titgtf where verwidn=$hint and titidn=$titidn");
 		    my @gtfzus=OpenBib::Common::Util::get_sql_result(\@requests,$dbh,$benchmark);
-		    $retval.="<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchsingletit=$titres1->{idn}\"><strong>$tithst[0] ; $gtfzus[0]</strong></a>, $titres1->{verlag} $showerschjahr</td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>$signaturstring</b>";		
+
+		  $retval.="<strong><span id=\"rlauthor\">$verfasserstring</span></strong><br>";
+
+		  $retval.="<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchsingletit=$titres1->{idn}\"><strong><span id=\"rltitle\">$tithst[0] ; $gtfzus[0]</span></strong></a>, <span id=\"rlpublisher\">$titres1->{verlag}</span> <span id=\"rlyearofpub\">$showerschjahr</span></td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>$signaturstring</b>";		
 		}
 		if ($mode == 7){
 		  my $showerschjahr=$titres1->{erschjahr};
@@ -1506,7 +1513,9 @@ sub get_tit_by_idn {
 
 		    my @requests=("select zus from titgtm where verwidn=$hint and titidn=$titidn");
 		  my @gtmzus=OpenBib::Common::Util::get_sql_result(\@requests,$dbh,$benchmark);
-		  $retval.="<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchsingletit=$titres1->{idn}\"><strong>$tithst[0] ; $gtmzus[0]</strong></a>, $titres1->{verlag} $showerschjahr</td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>$signaturstring</b>";		
+
+		$retval.="<strong><span id=\"rlauthor\">$verfasserstring</span></strong><br>";
+		$retval.="<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchsingletit=$titres1->{idn}\"><strong><span id=\"rltitle\">$tithst[0] ; $gtmzus[0]</span></strong></a>, <span id=\"rlpublisher\">$titres1->{verlag}</span> <span id=\"rlyearofpub\">$showerschjahr</span></td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>$signaturstring</b>";		
 
 		}			     
 		if ($mode == 8){
@@ -1518,7 +1527,9 @@ sub get_tit_by_idn {
 
 		  my @requests=("select zus from titinverkn where titverw=$hint and titidn=$titidn");
 		  my @invkzus=OpenBib::Common::Util::get_sql_result(\@requests,$dbh,$benchmark);
-		  $retval.="<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchsingletit=$titres1->{idn}\"><strong>$tithst[0] ; $invkzus[0]</strong></a>, $titres1->{verlag} $showerschjahr</td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>$signaturstring</b>";		
+ 		$retval.="<strong><span id=\"rlauthor\">$verfasserstring</span></strong><br>";
+
+		$retval.="<a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;database=$database&amp;searchsingletit=$titres1->{idn}\"><strong><span id=\"rltitle\">$tithst[0] ; $invkzus[0]</span></strong></a>, <span id=\"rlpublisher\">$titres1->{verlag}</span> <span id=\"rlyearofpub\">$showerschjahr</span></td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>$signaturstring</b>";		
 		}			     
 	    }
 	  }
@@ -1539,7 +1550,6 @@ sub get_tit_by_idn {
 		}
 
 		$retval.="<strong><span id=\"rlauthor\">$verfasserstring</span></strong><br>";
-#		$retval.="<strong><span id=\"rlauthor\">$verfasserstring</span></strong><br>" if ($verfasserstring ne "");
 		$retval.=" <a href=\"$config{search_loc}?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=$searchmode&amp;rating=$rating&amp;bookinfo=$bookinfo&amp;showmexintit=$showmexintit&amp;casesensitive=$casesensitive&amp;hitrange=$hitrange&amp;sorttype=$sorttype&amp;sortorder=$sortorder&amp;database=$database&amp;searchsingletit=$titres1->{idn}\">";
 
 		  my $showerschjahr=$titres1->{erschjahr};

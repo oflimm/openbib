@@ -66,3 +66,25 @@ td.boxed {
   border-bottom-color: lightblue;
   border-bottom-width: 2px;
 }
+
+a:link.invisible {
+  color:white;
+  font-family:helvetica,arial;
+  font-weight:lighter;
+  font-size:10pti
+} /* unvisited link */
+
+a:visited.invisible {
+  color:white;
+  font-family:helvetica,arial;
+  font-weight:lighter;
+  font-size:10pt
+} /* visited links */
+
+a:active.invisible {
+  color:white;
+  font-family:helvetica,arial;
+  font-weight:lighter;
+  font-size:10pt
+} /* active links */
+

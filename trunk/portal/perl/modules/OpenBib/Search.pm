@@ -433,8 +433,8 @@ sub handler {
   #####################################################################
   ## Ausleihkonfiguration fuer den Katalog einlesen
 
-  $dbinforesult=$sessiondbh->prepare("select circ,circurl,circcheckurl from dboptions where dbname='$database'") or $logger->error($DBI::errstr);
-  $dbinforesult->execute() or $logger->error($DBI::errstr);;
+  $dbinforesult=$sessiondbh->prepare("select circ,circurl,circcheckurl from dboptions where dbname = ?") or $logger->error($DBI::errstr);
+  $dbinforesult->execute($database) or $logger->error($DBI::errstr);;
 
   my $circ=0;
   my $circurl="";

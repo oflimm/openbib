@@ -323,9 +323,10 @@ sub print_recherche_hinweis {
  my $loginname="";
  my $password="";
 
- my $userresult=$userdbh->prepare("select user.loginname,user.pin from usersession,user where usersession.sessionid='$config{servername}:$sessionID' and user.userid=usersession.userid") or die "Error -- $DBI::errstr";
+ my $globalsessionID="$config{servername}:$sessionID";
+ my $userresult=$userdbh->prepare("select user.loginname,user.pin from usersession,user where usersession.sessionid = ? and user.userid=usersession.userid") or die "Error -- $DBI::errstr";
  
- $userresult->execute();
+ $userresult->execute($globalsessionID);
   
  if ($userresult->rows > 0){
    my $res=$userresult->fetchrow_hashref();

@@ -92,8 +92,8 @@ sub handler {
     
     # 1. Gibt es diesen View?
     
-    my $idnresult=$sessiondbh->prepare("select viewname from viewinfo where viewname='$view'") or $logger->error($DBI::errstr);
-    $idnresult->execute() or $logger->error($DBI::errstr);
+    my $idnresult=$sessiondbh->prepare("select viewname from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($view) or $logger->error($DBI::errstr);
     my $anzahl=$idnresult->rows();
     
     if ($anzahl > 0){
@@ -101,21 +101,21 @@ sub handler {
       # 2. Datenbankauswahl setzen, aber nur, wenn der Benutzer selbst noch
       #    keine Auswahl getroffen hat
       
-      $idnresult=$sessiondbh->prepare("select dbname from dbchoice where sessionid='$sessionID'") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
+      $idnresult=$sessiondbh->prepare("select dbname from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
+      $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
       my $anzahl=$idnresult->rows();
       
       # Wenn noch keine Datenbank ausgewaehlt wurde, dann setze die
       # Auswahl auf die zum View gehoerenden Datenbanken
       
       if ($anzahl == 0){
-	$idnresult=$sessiondbh->prepare("select dbname from  viewdbs where viewname='$view'") or $logger->error($DBI::errstr);
-	$idnresult->execute() or $logger->error($DBI::errstr);
+	$idnresult=$sessiondbh->prepare("select dbname from  viewdbs where viewname = ?") or $logger->error($DBI::errstr);
+	$idnresult->execute($view) or $logger->error($DBI::errstr);
 	
 	while (my $result=$idnresult->fetchrow_hashref()){
 	  my $dbname=$result->{'dbname'};
-	  my $idnresult2=$sessiondbh->prepare("insert into dbchoice (sessionid,dbname) values ('$sessionID','$dbname')") or $logger->error($DBI::errstr);
-	  $idnresult2->execute() or $logger->error($DBI::errstr);
+	  my $idnresult2=$sessiondbh->prepare("insert into dbchoice (sessionid,dbname) values (?,?)") or $logger->error($DBI::errstr);
+	  $idnresult2->execute($sessionID,$dbname) or $logger->error($DBI::errstr);
 	  $idnresult2->finish();
 	}
 	
@@ -124,9 +124,8 @@ sub handler {
       
       # 3. Assoziiere den View mit der Session (fuer Headframe/Merkliste);
       
-      $idnresult=$sessiondbh->prepare("insert into sessionview values ('$sessionID','$view')") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
-      
+      $idnresult=$sessiondbh->prepare("insert into sessionview values (?,?)") or $logger->error($DBI::errstr);
+      $idnresult->execute($sessionID,$view) or $logger->error($DBI::errstr);
       
     }
     

@@ -125,9 +125,9 @@ sub handler {
   my $userprofiles="";
   
   if ($userid){
-    my $targetresult=$userdbh->prepare("select * from fieldchoice where userid='$userid'") or $logger->error($DBI::errstr);
+    my $targetresult=$userdbh->prepare("select * from fieldchoice where userid = ?") or $logger->error($DBI::errstr);
     
-    $targetresult->execute() or $logger->error($DBI::errstr);
+    $targetresult->execute($userid) or $logger->error($DBI::errstr);
     
     my $result=$targetresult->fetchrow_hashref();
     
@@ -146,8 +146,8 @@ sub handler {
     $targetresult->finish();
 
     
-    $targetresult=$userdbh->prepare("select profilid, profilename from userdbprofile where userid=$userid order by profilename") or $logger->error($DBI::errstr);
-    $targetresult->execute() or $logger->error($DBI::errstr);
+    $targetresult=$userdbh->prepare("select profilid, profilename from userdbprofile where userid = ? order by profilename") or $logger->error($DBI::errstr);
+    $targetresult->execute($userid) or $logger->error($DBI::errstr);
     
     if ($targetresult->rows > 0){
       $userprofiles.="<option value=\"\">Gespeicherte Katalogprofile:</option><option value=\"\">&nbsp;</option>";
@@ -163,9 +163,9 @@ sub handler {
       $userprofiles.="<option value=\"\">&nbsp;</option>"
     }
     
-    $targetresult=$userdbh->prepare("select * from fieldchoice where userid='$userid'") or $logger->error($DBI::errstr);
+    $targetresult=$userdbh->prepare("select * from fieldchoice where userid = ?") or $logger->error($DBI::errstr);
     
-    $targetresult->execute() or $logger->error($DBI::errstr);
+    $targetresult->execute($userid) or $logger->error($DBI::errstr);
     
     $result=$targetresult->fetchrow_hashref();
     
@@ -213,8 +213,8 @@ sub handler {
   
   # Assoziierten View zur Session aus Datenbank holen
   
-  my $idnresult=$sessiondbh->prepare("select viewinfo.description from sessionview,viewinfo where sessionview.sessionid='$sessionID' and sessionview.viewname=viewinfo.viewname") or $logger->error($DBI::errstr);
-  $idnresult->execute() or $logger->error($DBI::errstr);
+  my $idnresult=$sessiondbh->prepare("select viewinfo.description from sessionview,viewinfo where sessionview.sessionid = ? and sessionview.viewname=viewinfo.viewname") or $logger->error($DBI::errstr);
+  $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
   my $result=$idnresult->fetchrow_hashref();
   
   my $viewdesc=$result->{'description'} if (defined($result->{'description'}));
@@ -224,8 +224,8 @@ sub handler {
   my $hits;
   
   if ($queryid ne ""){
-    my $idnresult=$sessiondbh->prepare("select query,hits from queries where queryid='$queryid'") or $logger->error($DBI::errstr);
-    $idnresult->execute() or $logger->error($DBI::errstr);
+    my $idnresult=$sessiondbh->prepare("select query,hits from queries where queryid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($queryid) or $logger->error($DBI::errstr);
     
     my $result=$idnresult->fetchrow_hashref();
     my $query=$result->{'query'};
@@ -242,12 +242,12 @@ sub handler {
 
   if ($#databases >= 0){
     my $thisdb="";
-    my $idnresult=$sessiondbh->prepare("delete from dbchoice where sessionid='$sessionID'") or $logger->error($DBI::errstr);
-    $idnresult->execute() or $logger->error($DBI::errstr);
+    my $idnresult=$sessiondbh->prepare("delete from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
 
     foreach $thisdb (@databases){
-      $idnresult=$sessiondbh->prepare("insert into dbchoice values ('$sessionID','$thisdb')") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
+      $idnresult=$sessiondbh->prepare("insert into dbchoice values (?,?)") or $logger->error($DBI::errstr);
+      $idnresult->execute($sessionID,$thisdb) or $logger->error($DBI::errstr);
     }
     $idnresult->finish;
   }
@@ -258,8 +258,8 @@ sub handler {
 
   my $dbinputtags="";
 
-  $idnresult=$sessiondbh->prepare("select dbname from dbchoice where sessionid='$sessionID'") or $logger->error($DBI::errstr);
-  $idnresult->execute() or $logger->error($DBI::errstr);
+  $idnresult=$sessiondbh->prepare("select dbname from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
+  $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
 
   my $dbcount=0;
   while (my $result=$idnresult->fetchrow_hashref()){
@@ -291,8 +291,8 @@ sub handler {
 
   # Ausgabe der vorhandenen queries
 
-  $idnresult=$sessiondbh->prepare("select * from queries where sessionid='$sessionID'") or $logger->error($DBI::errstr);
-  $idnresult->execute() or $logger->error($DBI::errstr);
+  $idnresult=$sessiondbh->prepare("select * from queries where sessionid = ?") or $logger->error($DBI::errstr);
+  $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
   my $anzahl=$idnresult->rows();
 
   my $prevqueries="";

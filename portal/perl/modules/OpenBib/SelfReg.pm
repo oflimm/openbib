@@ -131,9 +131,9 @@ elsif ($action eq "auth"){
     return OK;
   } 
 
-  my $userresult=$userdbh->prepare("select * from user where loginname='$loginname'") or $logger->error($DBI::errstr);
+  my $userresult=$userdbh->prepare("select * from user where loginname = ?") or $logger->error($DBI::errstr);
   
-  $userresult->execute() or $logger->error($DBI::errstr);
+  $userresult->execute($loginname) or $logger->error($DBI::errstr);
 
   if ($userresult->rows > 0){
     OpenBib::Common::Util::print_warning("Ein Benutzer mit dem Namen $loginname existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte <a href=\"http://$config{servername}$config{login_loc}?sessionID=$sessionID?action=login\">zur&uuml;ck</a> und lassen es sich zumailen.",$r);
@@ -148,13 +148,13 @@ elsif ($action eq "auth"){
 
   # Jetzt eintragen und session mit dem Benutzer assoziieren;
 
-  $userresult=$userdbh->prepare("insert into user values (NULL,'','$loginname','$password1','','','','','','','','','$loginname')") or $logger->error($DBI::errstr);
+  $userresult=$userdbh->prepare("insert into user values (NULL,'',?,?,'','','','','','','','',?)") or $logger->error($DBI::errstr);
   
-  $userresult->execute() or $logger->error($DBI::errstr);
+  $userresult->execute($loginname,$password1,$loginname) or $logger->error($DBI::errstr);
 
-  $userresult=$userdbh->prepare("select userid from user where loginname='$loginname'") or $logger->error($DBI::errstr);
+  $userresult=$userdbh->prepare("select userid from user where loginname = ?") or $logger->error($DBI::errstr);
   
-  $userresult->execute() or $logger->error($DBI::errstr);
+  $userresult->execute($loginname) or $logger->error($DBI::errstr);
 
   my $res=$userresult->fetchrow_hashref();
 
@@ -162,13 +162,13 @@ elsif ($action eq "auth"){
     
   # Es darf keine Session assoziiert sein. Daher stumpf loeschen
 
-  $userresult=$userdbh->prepare("delete from usersession where sessionid='$sessionID'") or $logger->error($DBI::errstr);
+  $userresult=$userdbh->prepare("delete from usersession where sessionid = ?") or $logger->error($DBI::errstr);
 
-  $userresult->execute() or $logger->error($DBI::errstr);
+  $userresult->execute($sessionID) or $logger->error($DBI::errstr);
 
-  $userresult=$userdbh->prepare("insert into usersession values ('$sessionID','$userid')") or $logger->error($DBI::errstr);
+  $userresult=$userdbh->prepare("insert into usersession values (?,?)") or $logger->error($DBI::errstr);
 
-  $userresult->execute() or $logger->error($DBI::errstr);
+  $userresult->execute($sessionID,$userid) or $logger->error($DBI::errstr);
 
   $userresult->finish();
 

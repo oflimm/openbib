@@ -64,7 +64,14 @@
 <td class="boxedclear" style="font-size:12pt" valign="bottom">
 <table>
 <tr><td><b>Guthaben:</b></td><td align="left">&nbsp;[% userinfo.gut %]</td><td>&nbsp;&nbsp;</td><td><b>Soll:</b></td><td><span style="color:red">[% userinfo.soll %]</span></td><td></td><td></td><td></td></tr>
-<tr><td><b>Ausgeliehen:</b></td><td align="left">&nbsp;[% userinfo.avanz %]</td><td>&nbsp;&nbsp;</td><td><b>Vorgemerkt:</b></td><td>[% userinfo.vmanz %]</td><td>&nbsp;&nbsp;</td><td><b>Bestellt:</b></td><td><span style="color:red">[% userinfo.bsanz %]</span></td></tr>
+<tr><td><b>Ausgeliehen:</b></td><td align="left">&nbsp;
+
+[% IF userinfo.avanz > 0 %]
+<a href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc">[% userinfo.avanz %]</a>
+[% ELSE %]
+[% userinfo.avanz %]
+[% END %]
+</td><td>&nbsp;&nbsp;</td><td><b>Vorgemerkt:</b></td><td>[% userinfo.vmanz %]</td><td>&nbsp;&nbsp;</td><td><b>Bestellt:</b></td><td><span style="color:red">[% userinfo.bsanz %]</span></td></tr>
 </table>
 </td>
 </tr>

@@ -74,8 +74,43 @@ use vars qw(%config);
 	   userdbuser    => 'root',
 	   userdbpasswd  => 'StrengGeheim',
 
+	   # Benutzer und Passwort fuer die Administration
+
+	   adminuser     => 'adminuser',
+	   adminpasswd   => 'StrengGeheim',
+
+	   # Organisationseinheiten der Kataloge (z.B. Fakultaeten)
+	
+	   units => [
+		     {
+		      "short","0ungeb",
+		      "desc","Fakult&auml;tsungebunden",
+		     },
+		     {
+		      "short","1wiso",
+		      "desc","Wirtschafts- u. Sozialwissenschaftliche Fakult&auml;t",
+		     },
+		     {
+		      "short","2recht",
+		      "desc","Rechtswissenschaftliche Fakult&auml;t",
+		     },
+		     {
+		      "short","3ezwheil",
+		      "desc","Erziehungswissenschaftliche u. Heilp&auml;dagogische Fakult&auml;t",
+		     },
+		     {
+		      "short","4phil",
+		      "desc","Philosophische Fakult&auml;t",
+		     },
+		     {
+		      "short","5matnat",
+		      "desc","Mathematisch-Naturwissenschaftliche Fakult&auml;t",
+		     },
+		    ],
+
 	   # Mapping der einzelnen Kompontenten zu ihren Zugriffs-URI's
 
+	   admin_loc            => '/portal/admin',
 	   databasechoice_loc   => '/portal/katalogauswahl',
 	   databaseprofile_loc  => '/portal/katalogprofile',
 	   headerframe_loc      => '/portal/kopf',
@@ -124,6 +159,11 @@ use vars qw(%config);
 	   tt_include_path         => '/pfad/zu/openbib/template',
 
 	   # Mapping der einzelnen Kompontenten zu ihren Templates
+
+	   tt_admin_login_tname          => 'admin_login',
+	   tt_admin_loggedin_tname       => 'admin_loggedin',
+	   tt_admin_showcat_tname        => 'admin_showcat',
+	   tt_admin_editcat_tname        => 'admin_editcat',
 
 	   tt_leave_tname          => 'leave',
 

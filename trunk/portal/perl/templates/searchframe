@@ -25,7 +25,7 @@
 <p />
 
 [% IF view %]
-Sie k&ouml;nnen entweder direkt im vorausgew&auml;hlten Katalog <b>[% viewdesc %]</b> recherchieren, oder die Suche auf weitere <a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %]" target="body">Kataloge</a> ausdehnen";
+Sie k&ouml;nnen entweder direkt im vorausgew&auml;hlten Katalog <b>[% viewdesc %]</b> recherchieren, oder die Suche auf weitere <a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %]" target="body">Kataloge</a> ausdehnen.
 <p />
 <table>
   <tr><td><input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="tosearch" value="In ausgewählten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="Lösche Eingabemaske"></td></tr>
@@ -120,14 +120,10 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
 <p />
 
 [% IF view %]
-Sie k&ouml;nnen entweder direkt im vorausgew&auml;hlten Katalog <b>[% viewdesc %]</b> recherchieren, oder die Suche auf weitere <a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %]" target="body">Kataloge</a> ausdehnen";
-<p />
 <table>
   <tr><td><input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="tosearch" value="In ausgewählten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="Lösche Eingabemaske" /></td></tr>
 </table>
 [% ELSE %]
-Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs %] <b>einzelnen</b> <a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %]" target="body">Katalogen</a> recherchieren oder auch sofort in <b>allen</b> zusammen.
-<p />
 <table>
   <tr><td><input type="submit" title="Hier suchen Sie in allen Katalogen auf einmal" name="tosearch" value="In allen Katalogen suchen" />&nbsp;<input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="tosearch" value="In ausgewählten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="Lösche Eingabemaske" /></td></tr>
 </table>

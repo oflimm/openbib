@@ -1,0 +1,58 @@
+[% SET title='KUG Administration - Views anzeigen' %]
+[% SET show_foot_banner = 1 %]
+[% PROCESS std_header %]
+
+[% PROCESS corporate_banner %]
+
+<table width="100%">
+<tr>
+  <td align="left"><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showcat">Kataloge</a>&nbsp;&nbsp;&nbsp;<a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showviews"><b>Views</b></a>&nbsp;&nbsp;&nbsp;<a href="http://[% config.servername %][%
+config.admin_loc %]?sessionID=[% sessionID %]&action=showsession">Sessions</a></td><td>&nbsp;&nbsp;&nbsp;</td><td>&nbsp;</td><td
+align="right"><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=logout"><b>Logout</b></a>&nbsp;</td>
+</tr>
+</table>
+
+<hr />
+
+<form method="get" action="http://[% config.servername %][%config.admin_loc %]">
+<input type="hidden" name="action" value="editview" />
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+
+<table width="100%">
+<tr><th>Neuen View anlegen</th></tr>
+<tr><td class="boxedclear" style="font-size:12pt">
+<table>
+<tr><td><b>Viewname</b></td><td><b>Beschreibung</b></td><td><b>Aktiv</b></td><td></td></tr>
+<tr><td><input type="text" name="viewname"></td><td><input type="text" name="description" size="20" />
+</td><td><select name=active><option value="1">Ja</option><option value="0" selected>Nein</option></select></td><td><input type="submit" name="viewaction" value="Neu" /></td></tr>
+</table>
+<p />
+Geben Sie bitte die zu diesem View geh&ouml;renden Datenbanknamen getrennt mit <b>;</b> in das entsprechende Feld ein.
+</td></tr>
+</table>
+
+</form>
+
+<p />
+
+<table width="100%">
+<tr><th>Bereits existierende Views</th></tr>
+<tr><td class="boxedclear" style="font-size:12pt">
+Um einen bereits existierenden View zu bearbeiten klicken Sie bitte auf den Viewnamen.
+<p />
+
+<table>
+<tr><td><b>Viewname</b></td><td><b>Beschreibung</b></td><td><b>Datenbanken</b></td><td><b>Aktiv</b></td></tr>
+
+[% FOREACH view IN views %]
+
+<tr><td>[% view.viewname %]</td><td><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=editview&viewid=[% view.viewid %]&viewaction=Bearbeiten">[% view.description %]</a></td><td>[% view.viewdb %]</td><td>[% view.active %]</td></tr>
+[% END %]
+
+</table>
+</td></tr>
+</table>
+
+<p />
+
+[% PROCESS std_footer %]

@@ -1,7 +1,0 @@
-<!-- Begin Template: invisible_links_css -->
-<style type='text/css'>
-    A:link { color:white;font-family:helvetica,arial;font-weight:lighter;font-size:10pt}/* unvisited link */
-    A:visited { color:white;font-family:helvetica,arial;font-weight:lighter;font-size:10pt }/* visited links */
-    A:active { color:white;font-family:helvetica,arial;font-weight:lighter;font-size:10pt }/* active links */
-</style>
-<!-- End Template: invisible_links_css -->

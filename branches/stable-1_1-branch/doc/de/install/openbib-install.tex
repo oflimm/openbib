@@ -1,0 +1,877 @@
+%\documentclass[11pt]{scrartcl}
+\documentclass[11pt, twoside, a4paper, BCOR8mm, DIV12, bibtotoc,idxtotoc]{scrbook}
+\usepackage{german}
+\usepackage{typearea}
+\usepackage{longtable}
+\usepackage{hyperref}
+\usepackage{graphicx}
+
+% Zusaetzliche Picture-Umgebungen (z.B. shadowenv)
+\usepackage{picins}
+
+% Header anpassbar
+\usepackage{fancyhdr}
+
+% Headings umdefinieren
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[RO]{\nouppercase{\rightmark}}
+\fancyhead[LE]{\nouppercase{\leftmark}}
+\fancyfoot[RO, LE]{\thepage}
+
+%\addtolength{\headwidth}{\marginparsep}
+%\addtolength{\headwidth}{\marginparwidth}
+\addtolength{\headwidth}{1cm}
+
+\parindent0.0mm
+\parskip0.3cm    
+\typearea{13}
+
+\begin{document}
+
+\frontmatter
+
+\begin{titlepage}
+
+\begin{center}
+\rule[-.1in]{16cm}{1mm}\\[3mm]
+{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{20}{20pt}\selectfont
+  www.openbib.org $\bullet$ OpenBib Rechercheportal}\\[-2mm]
+\rule[-.1in]{16cm}{1mm}
+
+\vspace{5cm}
+
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{30}{30pt}\selectfont OpenBib Recherche-Portal\\[3mm] Installations-Handbuch}
+
+  \vspace{2cm}
+
+  Oliver Flimm \texttt{<flimm@openbib.de>}\\
+  Stand: \today
+
+  \vspace{8cm}
+
+\rule[-.1in]{16cm}{1mm}\\[3mm]
+{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{20}{20pt}\selectfont
+  www.openbib.org $\bullet$ OpenBib Rechercheportal}\\[-2mm]
+\rule[-.1in]{16cm}{1mm}
+
+\end{center}
+
+\end{titlepage}
+
+%\thispagestyle{empty}
+
+%\begin{verbatim}
+
+
+%Copyright (c) 2004 Oliver Flimm <flimm@openbib.org>
+
+%Es wird die Erlaubnis gegeben dieses Dokument zu kopieren, verteilen 
+%und/oder zu veraendern unter den Bedingungen der GNU Free
+%Documentation License, Version 1.1 oder einer spaeteren, von der Free 
+%Software Foundation veroeffentlichten Version; mit den
+%Unveraenderlichen Abschnitten DEREN TITEL AUFGEZAEHLT sind, mit den 
+%Vorderseitentexten die AUFGEZAEHLT sind, und mit den Rueckseitentexten
+%die AUFGEZAEHLT sind. Eine Kopie dieser Lizenz ist in dem Abschnitt 
+%enthalten, der mit "GNU Free Documentation License"
+%\end{verbatim}
+
+\tableofcontents
+
+\mainmatter
+
+\chapter{Einleitung}
+
+Das OpenBib-Rechercheportal besteht aus verschiedenen Komponenten. Es
+sind dies
+
+\begin{itemize}
+\item das eigentliche Recherche-Portal als Web-Anwendung
+\item die darunterliegenden Katalog-, Session und Benutzer-Datenbanken
+  sowie
+\item die Konvertierungsprogramme, um die Katalog-Datenbanken 
+  automatisiert aus den externen Daten verschiedener
+  (Bibliotheks)Systeme zu f"ullen.
+\end{itemize}
+
+Alle Komponenten setzen eine Infrastruktur voraus. Konkret besteht
+diese aus einem Rechner mit Betriebssystem, Webserver, Datenbanksystem
+sowie einer Programmierumgebung. Entwickelt wird OpenBib mit dem
+Betriebssystem Linux (Debian 'sarge'), dem Webserver Apache (mit
+mod\_perl), dem DBMS MySQL sowie verschiedenen externen Perl-Modulen.
+
+
+Um das Recherche-Portal zu installieren sind folgende Schritte n"otig:
+\begin{enumerate}
+\item Download der OpenBib-Software
+\item Installation der notwendigen Infrastruktur
+\item Installation von OpenBib und seinen Komponenten
+\end{enumerate}
+
+Die Installation wird in diesem Handbuch beispielhaft mit folgenden
+Festlegungen durchgef"uhrt:
+
+\begin{itemize}
+\item Das verwendete Betriebssystem ist Linux und die verwendete
+  Distribution ist Debian 3.1 ('sarge').
+\item Es wird lediglich ein Server f"ur OpenBib verwendet. Als Name
+  wird in der Dokumentation \texttt{openbib.foo.bar} verwendet.
+\item Die Perl-Module der OpenBib-Webanwendung werden unter
+\begin{verbatim}
+/usr/local/lib/site_perl/
+\end{verbatim}
+  installiert.
+\item Sonstige Skripte, Datenbankdefinitionen oder Templates werden
+  unter
+\begin{verbatim}
+/opt/openbib/
+\end{verbatim}
+  installiert.
+\end{itemize}
+
+\chapter{Download der OpenBib-Software}
+
+Die aktuellste Version der OpenBib-Software k"onnen Sie "uber den
+CVS-Server von BerliOS erhalten. Dazu w"ahlen Sie sich ein lokales
+Verzeichnis aus, in welches die Dateien abgelegt werden sollen. Zur
+Veranschaulichung w"ahlen wir hier das Verzeichnis \texttt{/opt/store}.
+
+Sie wechseln nun in dieses Verzeichnis und f"uhren folgende Befehle
+aus: 
+
+\begin{verbatim}
+cvs -d:pserver:anonymous@cvs.openbib.berlios.de:/cvsroot/openbib login
+\end{verbatim}
+
+Wenn Sie nun nach einen Passwort gefragt werden dr"ucken Sie einfach
+die Return-Taste.
+
+\begin{verbatim}
+cvs -z3 -d:pserver:anonymous@cvs.openbib.berlios.de:/cvsroot/openbib co openbib
+\end{verbatim}
+
+Im Verzeichnis \texttt{/opt/store/openbib} finden Sie nun die gesamte
+OpenBib-Distribution. Wenn von nun an einzelne Dateien der
+Distribution angesprochen werden, beziehen sie sich jeweils auf dieses
+OpenBibRoot-Verzeichnis, also z.B.~\texttt{LICENCE} auf \texttt{/opt/store/openbib/LICENCE}.
+
+Der CVS-Baum ist entsprechend der einzelnen Komponenten in
+Verzeichnissen organisiert:
+
+\begin{description}
+\item[conv] In diesem Verzeichnis befinden sich die Programme, die bei
+  der automatischen Migration in die OpenBib-Katalog-Datenbanken
+  ben"otigt werden. Grunds"atzlich sind die Programme wiederum
+  entsprechend der Quell-Systeme (sikis, oai etc.) in
+  Unterverzeichnissen zusammengefasst. In jedem dieser
+  Unterverzeichnisse sind die ben"otigten Programme, um die Daten aus
+  dem Quell-System in ein Meta-Format umzuwandeln. Die
+  Umwandlungsprogramme, um aus dem Meta-Format die Einladedateien f"ur
+  die OpenBib-Katalog-Datenbanken zu erzeugen, befinden sich im
+  zus"atzlichen Unterverzeichnisses \texttt{meta}.
+\item[db] In diesem Verzeichnis befinden sich die Definitionen f"ur
+  die Tabellenstruktur der einzelnen OpenBib-Datenbanktypen bezogen
+  auf ein DBMS. Derzeit wird nur \texttt{mysql} unterst"utzt. Die
+  Datenbanktypen sind \texttt{pool} f"ur die Katalog-Datenbanken,
+  \texttt{session} f"ur die Session-Datenbanken sowie \texttt{user}
+  f"ur die Benutzer-Datenbank.
+\item[doc] In diesem Verzeichnis befindet sich die Dokumentation zu
+  Openbib in Form von LaTeX-Dokumenten.
+\item[portal] In diesem Verzeichnis befinden sich alles, was f"ur die
+  Web-Anwendung OpenBib ben"otigt wird. Es sind dies
+  \begin{itemize}
+  \item Konfigurationen f"ur den Apache-Webserver unter
+    \texttt{apache}
+  \item Statische Elemente wie Bilder, CSS etc. unter \texttt{htdocs} sowie
+  \item Perl-Module und Templates unter \texttt{perl}.
+  \end{itemize}
+\end{description}
+
+\chapter{Installation der notwendigen Infrastruktur}
+Das Recherche-Portal, die zugeh"origen Datenbanken sowie die
+Migrations-Skripte setzen eine bestimmte Infrastruktur voraus. Diese
+besteht aus Betriebssystem, Server-Prozessen, Programmen und
+verschiedenen Perl-Modulen. Bevor daher mit der eigentlichen
+Installation von OpenBib begonnen werden kann, m"ussen diese
+Komponenten installiert werden.
+
+Die Beispielhafte Installation der Komponenten erfolgt am Beispiel
+eines Debian Linux Systems in der Version 3.1 (Codename: Sarge).
+
+
+\section{Installation des Betriebssystems}
+OpenBib setzt ein Unix-artiges Betriebssystem, idealerweise Linux,
+voraus. Auf die Installation wird hier nicht weiter eingegangen.
+
+
+\section{Installation des Apache-Webservers}
+Aus Performance-Gr"unden ist die Installation von zwei
+Apache-Webservern angeraten. Einen leichtgewichtigen mit
+mod\_proxy-Support auf Port 80 und einen gro"sen mit mod\_perl-Support
+z.B. auf Port 8008. 
+
+Der erste Webserver (Port 80) ist f"ur das Liefern statischer
+HTML-Seiten zust"andig sowie als Accelerator-Proxy f"ur den zweiten
+Webserver (Port 8008). Die eigentliche Portal-Anwendung l"auft dann
+nur noch auf dem zweiten Webserver unter mod\_perl.
+
+
+\subsection{Installation des ersten Webservers}
+
+Den ersten Webserver installieren Sie mit dem Kommando
+
+\begin{verbatim}
+apt-get install apache
+\end{verbatim}
+
+Danach wird der Webserver automatisch gestartet und sie finden das
+ServerRoot-Verzeichnis unter \texttt{/etc/apache} mit den Konfigurationsdateien
+\texttt{httpd.conf} und \texttt{modules.conf} sowie das \texttt{DocumentRoot}-Verzeichnis unter
+\texttt{/var/www}.
+
+Deaktivieren Sie in \texttt{/etc/apache/modules.conf} den eventuell
+dort aktivierten mod\_perl Support:
+
+\begin{verbatim}
+#LoadModule perl\_module /usr/lib/apache/1.3/mod\_perl.so
+\end{verbatim}
+
+Aktiviert werden mu"s hingegen das Modul f"ur den Proxy-Support
+
+\begin{verbatim}
+LoadModule proxy\_module /usr/lib/apache/1.3/libproxy.so
+\end{verbatim}
+
+
+Nun k"onnen Sie den Accelerator-Proxy in der Konfigurationsdatei
+\texttt{/etc/apache/httpd.conf} eintragen.
+
+Tragen Sie dort unter \texttt{<IfModule mod\_proxy.c>} folgendes f"ur die
+Weiterleitung auf den zweiten Webserver ein:
+
+\begin{verbatim}
+<IfModule mod\_proxy.c>
+# Proxy f"ur Dynamischen Content
+ProxyPass        /portal/ http://vollqualifizierter.rechnername:8008/portal/
+ProxyPassReverse /portal/ http://vollqualifizierter.rechnername:8008/portal/
+
+ProxyReceiveBufferSize 16384
+
+# Einrichtung eines Caches
+CacheRoot /usr/db/apache-cache
+CacheSize 50000
+CacheGcInterval 1
+CacheMaxExpire 72
+CacheLastModifiedFactor 0.1
+CacheDefaultExpire 24
+
+</IfModule>
+\end{verbatim}
+
+Als 'vollqualifizierter.rechnername' tragen Sie den DNS-Namen Ihres
+Rechners ein, unter dem das Recherche-Portal laufen soll.
+
+Ebenso m"ussen Sie ein CacheRoot-Verzeichnis anlegen, das vom Proxy
+verwendet wird und ihm die Ownership des WWW-Benutzers (www-data)
+geben. Die geschieht f"ur den o.g. Pfad z.B. mit:
+
+\begin{verbatim}
+mkdir -p /usr/db/apache-cache
+chown www-data.www-data /usr/db/apache-cache
+\end{verbatim}
+
+Die beiden ProxyPass*-Direktiven sorgen daf"ur, da"s alle Anfragen,
+die unter dem Basis-URL \texttt{/portal} liegen an den zweiten Webserver
+weitergeleitet werden.
+
+Nach einem Restart des ersten Webservers ist dieser eingerichtet.
+
+\begin{verbatim}
+/etc/init.d/apache restart
+\end{verbatim}
+
+
+Hinweis: Falls Sie VirtualHosts verwenden, so k"onnen Sie dort auch
+den Abschnitt mit \texttt{<IfModule mod\_proxy.c>} f"ur die jeweiligen Hosts
+unterbringen.
+
+
+\subsection{Installation des zweiten Webservers}
+
+Den zweiten Webserver installieren Sie mit dem Kommando
+
+\begin{verbatim}
+apt-get install apache-perl
+\end{verbatim}
+
+Danach wird der Webserver automatisch gestartet und sie finden das
+Server-Root-Verzeichnis unter \texttt{/etc/apache-perl} mit der
+Konfigurationsdatei \texttt{httpd.conf} sowie das
+\texttt{DocumentRoot}-Verzeichnis ebenfalls unter \texttt{/var/www}.
+
+"Andern Sie nun in \texttt{/etc/apache-perl/httpd.conf} den Port auf
+8008:
+
+\begin{verbatim}
+Port 8008
+\end{verbatim}
+
+Tragen Sie nun folgende Direktive in \texttt{/etc/apache-perl/httpd.conf} ein:
+
+\begin{verbatim}
+Include /etc/apache-perl/openbib.conf
+\end{verbatim}
+
+Gegebenenfalls mu"s diese Direktive im entsprechenden
+\texttt{VirtualHosts}-Block eingetragen werden.
+
+Mit dem Include werden die Konfigurationen f"ur das Recherche-Portal
+eingeladen. Kopieren sie daf"ur nun die Datei
+\texttt{portal/apache/openbib.conf} aus der OpenBib-Distribution in
+das Verzeichnis \texttt{/etc/apache-perl}.
+
+\begin{verbatim}
+cp /opt/store/openbib/portal/apache/openbib.conf /etc/apache-perl/
+\end{verbatim}
+
+
+\section{Installation des MySQL-DBMS}
+\label{sec:instmysql}
+
+OpenBib verwendet verschiedene Datenbanken. So gibt es auf jedem
+Rechner eine session-Datenbank, in die Sitzung-Informationen sowie
+generelle Informationen zur Konfiguration gespeichert werden. Auf
+genau einem Rechner (wenn man die Lastverteilung verwendet) existiert
+eine user-Datenbank, in der Benutzer-Daten und Einstellungen
+abgespeichert werden. Und schlie"slich gibt es auf jedem Rechner
+mindestens eine, normalerweise aber unz"ahlige, pool-Datenbanken, in
+denen die eigentlichen Kataloge untergebracht werden in der Form: eine
+Datenbank f"ur einen Katalog.
+
+Alle diese Datenbanken werden mit dem DBMS MySQL verwaltet. MySQL
+installieren Sie mit:
+
+\begin{verbatim}
+apt-get install mysql-server
+\end{verbatim}
+
+Mit diesem Paket werden verschiedene andere Pakete, die noch ben"otigt
+werden, automatisch mitinstalliert, z.B. die Perl-Module, um auf die
+MySQL-Datenbanken zugreifen zu k"onnen.
+
+Nach der Installation wird der MySQL-Server automatisch gestartet.
+
+Setzen Sie nun ein Passwort \texttt{<Passwort>} f"ur den Benutzer root mit
+
+\begin{verbatim}
+mysqladmin -u root -h localhost password <Passwort>
+\end{verbatim}
+
+Falls Sie sich 'ausgesperrt' haben sollten, so k"onnen Sie den
+\texttt{mysqld} mit der Option
+\begin{verbatim}
+--skip-grant-tables
+\end{verbatim}
+neu starten, den Eintrag f"ur root l"oschen, \texttt{mysqld} restarten
+und dann das Passwort wie beschrieben neu setzen.
+
+F"ur die verschiedenen Datenbanken von OpenBib ist es am einfachsten,
+diesen Benutzer \texttt{root} und das zugeh"orige Passwort
+\texttt{<Passwort>} f"ur den Zugriff zu verwenden. Aus
+Sicherheitsgr"unden -- insbesondere wenn weitere
+Produktionsdatenbanken auf dem lokalen Rechner unter MySQL betrieben
+werden -- kann es jedoch empfehlenswert sein, einen weniger
+privilegierten Benutzer, z.B. \texttt{openbib}, hierf"ur zu verwenden.
+Als Beispielpasswort verwenden wir im Folgenden \texttt{TopSecret}.
+
+
+\begin{verbatim}
+openbib:/opt/store/openbib/tools# mysql -u root -p mysql
+Enter password:
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 2857 to server version: 4.0.22_Debian-6-log
+
+Type 'help;' or '\h' for help. Type '\c' to clear the buffer.
+
+
+mysql> grant usage on *.* to openbib@localhost identified by 'TopSecret';
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> flush privileges;
+Query OK, 0 rows affected (0.04 sec)
+\end{verbatim}
+
+Mit diesem \texttt{grant}-Befehl in Mysql wird in der
+\texttt{user}-Tabelle der Datenbank \texttt{mysql} der Benutzer
+\texttt{openbib} f"ur \texttt{localhost} angelegt, jedoch zun"achst
+ohne weitere Rechte. Diese m"ussen nun h"andisch gesetzt werden:
+
+\begin{verbatim}
+mysql> update user set Select_priv='Y', Insert_priv='Y',
+ Update_priv='Y', Delete_priv='Y', Create_priv='Y', Drop_priv='Y', 
+ Index_priv='Y', Alter_priv='Y' whereUser='openbib';
+\end{verbatim}
+
+Die Privilegien \texttt{Reload\_priv}, \texttt{Shutdown\_priv},
+\texttt{Process\_priv} sowie \texttt{File\_priv}, \texttt{Grant\_priv}
+und \texttt{References\_priv} werden nicht ben"otigt uns sollten auch
+aus Sicherheitsgr"unden nicht vergeben werden.
+
+Prinzipiell ist es in OpenBib m"oglich f"ur alle drei
+Datenbank-Klassen (pool, session und user) einen verschiedenen
+Benutzerzugang zu konfigurieren. Der Einfachheit halber wird im
+Folgenden jeweils nur einer, konkret der gerade eingerichtete Benutzer
+\texttt{openbib} verwendet.
+
+\chapter{Installation von OpenBib}
+
+Die Installation von OpenBib besteht aus
+
+\begin{itemize}
+\item Installation und Konfiguration der Perl-Module des Web-Portals
+\item Installation der Konvertierungs-Infrastruktur
+\item Anlegen und Konfiguration der Datenbanken
+\end{itemize}
+
+\section{Installation der Perl-Module des Web-Portals}
+
+Erzeugen Sie zun"achst das Verzeichnis \texttt{/usr/local/lib/site\_perl}, das
+zum Standard-Include-Pfad von Perl geh"ort, falls dies noch nicht
+existiert:
+
+\begin{verbatim}
+mkdir /usr/local/lib/site_perl
+\end{verbatim}
+
+Kopieren Sie nun aus dem CVS-Baum unter \texttt{/opt/store/openbib}
+das Verzeichnis 
+
+\begin{verbatim}
+portal/perl/modules/OpenBib
+\end{verbatim}
+
+in das gerade angelegte Verzeichnis:
+
+\begin{verbatim}
+cp -a /opt/store/openbib/portal/perl/modules/OpenBib /usr/local/lib/site_perl/
+\end{verbatim}
+
+Diese Perl-Module ben"otigen weitere Perl-Module, die als
+Debian-Pakete nachinstalliert werden m"ussen:
+
+\begin{itemize}
+\item Das Perl Template Toolkit inkl. Dokumentation
+\begin{verbatim}
+apt-get install libtemplate-perl libtemplate-perl-doc
+\end{verbatim}
+  Zus"atzlich wird das hierzu ben"otigte Paket libappconfig-perl mit
+  installiert.
+\item Apache::Reload
+\begin{verbatim}
+apt-get install libapache-reload-perl
+\end{verbatim}
+\item DBI und DBD::Mysql
+\begin{verbatim}
+apt-get install libdbi-perl libdbd-mysql-perl
+\end{verbatim}
+\item LWP
+\begin{verbatim}
+apt-get install libdbi-perl libdbd-mysql-perl
+\end{verbatim}
+\item Email::Valid
+\begin{verbatim}
+apt-get install libemail-valid-perl
+\end{verbatim}
+\end{itemize}
+
+\section{Konfiguration des Web-Portals}
+\label{sec:confportal}
+
+Die zentrale Konfigurationsdatei in OpenBib ist das Modul
+OpenBib::Config. Die zugeh"orige Datei befindet sich in Form einer
+anzupassenden Beispielkonfiguration unter 
+
+\begin{verbatim}
+/usr/local/lib/site_perl/OpenBib/Config.pm-dist
+\end{verbatim}
+
+Sie mu"s nun nach Config.pm kopiert 
+
+\begin{verbatim}
+cd /usr/local/lib/site_perl/OpenBib/
+cp -a Config.pm-dist Config.pm
+\end{verbatim}
+
+und angepa"st werden.
+
+
+\subsection{Server-Einstellungen}
+
+\begin{description}
+\item[servername] Geben Sie hier den Namen des lokalen Rechners
+  ein. 
+\begin{verbatim}
+servername => 'openbib.foo.bar',
+\end{verbatim}
+
+\item[loadbalancerservername] Geben Sie hier den Namen des Rechners
+  ein, der die Lastverteilung "ubernimmt. Falls insgesamt nur ein
+  Rechner zur Verf"ugung steht, dann entspricht der Eintrag dem von
+  \texttt{servername}.
+\begin{verbatim}
+loadbalancerservername => 'openbib.foo.bar',
+\end{verbatim}
+
+\item[loadbalancertargets] Geben Sie hier die Namen der Rechner ein,
+  auf die "uber die die Last verteilt werden soll. Falls insgesamt nur
+  ein Rechner zur Verf"ugung steht, dann entspricht der Eintrag dem
+  von \texttt{servername}.
+\begin{verbatim}
+loadbalancertargets => [
+                        'openbib.foo.bar',
+                       ],
+\end{verbatim}
+\end{description}
+
+
+\subsection{Datenbank-Einstellungen}
+
+
+\begin{description}
+\item[dbms] An dieser Stelle wird das verwendete DBMS
+  konfiguriert. Derzeit kann dort nur \texttt{mysql} verwendet
+  werden. Daher mu"s dieser Eintrag nicht ge"andert werden.
+\begin{verbatim}
+dbms      => 'mysql',
+\end{verbatim}
+
+\item[dbimodule] An dieser Stelle wird der Name des verwendeten
+  DBI-Modules konfiguriert. Derzeit kann dort nur \texttt{mysql}
+  verwendet werden. Daher mu"s dieser Eintrag nicht ge"andert werden.
+\begin{verbatim}
+dbimodule => 'mysql',
+\end{verbatim}
+\item[dbhost] An dieser Stelle wird der Name des Rechners
+  konfiguriert, auf dem die Katalog-Datenbanken liegen. Dies sollte
+  immer der lokale Rechner sein. Daher mu"s dieser Eintrag nicht
+  ge"andert werden.
+\begin{verbatim}
+dbhost    => 'localhost',
+\end{verbatim}
+\item[dbport] An dieser Stelle wird der Port festgelegt, "uber den auf
+  die Katalog-Datenbanken auf dem Server \texttt{dbhost} zugegriffen
+  werden kann. Mysql verwendet standardm"a"sig \texttt{3306}. Daher
+  mu"s dieser Eintrag nicht ge"andert werden.
+\begin{verbatim}
+dbport    => '3306',
+\end{verbatim}
+\item[dbuser] "Uber diesen Benutzer wird auf die Katalog-Datenbanken
+  zugegriffen. Verwenden Sie aus Sicherheitsgr"unden einen Benutzer,
+  der nicht identisch mit dem \texttt{root}-Benutzer ist, da dieser
+  die volle Kontrolle "uber das Mysql-DBMS besitzt (s.o.). Verwenden
+  Sie hier entsprechend \ref{sec:instmysql} den Benutzer
+  \texttt{openbib}. Daher mu"s dieser Eintrag entsprechend ge"andert
+  werden.
+\begin{verbatim}
+dbuser    => 'openbib',
+\end{verbatim}
+\item[dbpasswd] Tragen Sie hier das Passwort f"ur den \texttt{dbuser}
+  ein. Entsprechend \ref{sec:instmysql} ist dies beispielhaft
+  \texttt{TopSecret}. Daher mu"s dieser Eintrag entsprechend ge"andert
+  werden.
+\begin{verbatim}
+dbpasswd  => 'TopSecret',
+\end{verbatim}
+\end{description}
+
+Entsprechend \texttt{dbuser} und \texttt{dbpasswd} werden nun die
+Parameter \texttt{sessiondbuser}, \texttt{sessiondbpasswd} sowie
+\texttt{userdbuser} und \texttt{userdbpasswd} gesetzt. Bei den
+Parametern f"ur \texttt{*host}, \texttt{*port} und \texttt{*name}
+k"onnen die Standardwerte "ubernommen werden.
+
+
+
+\subsection{Administrations-Einstellungen}
+
+\begin{description}
+\item[adminuser] Mit diesem Benutzernamen greifen Sie sp"ater auf das
+  Web-Administrations-Interface zu. "Andern Sie diesen z.B. auf
+  \texttt{admin}.
+\begin{verbatim}
+adminuser     => 'admin',
+\end{verbatim}
+\item[adminpasswd] Mit diesem Passwort authentifizieren Sie sich
+  sp"ater als \texttt{adminuser}.
+\begin{verbatim}
+adminpasswd   => 'NochGeheimer',
+\end{verbatim}
+\end{description}
+
+
+\subsection{Organisationsstruktur der Kataloge}
+
+\begin{description}
+\item[units] Mit dem Parameter \texttt{units} legen Sie die
+  Organisationsstruktur Ihrer Kataloge fest. Traditionell werden an
+  einer Universit"at z.B. die Kataloge nach Fakult"aten
+  organisiert. F"ur jede Organisationseinheit definieren Sie hier
+  einen Kurz-Eintrag \texttt{short}, in den z.B. durch vorgestellte
+  Zahlen eine Reihenfolge gebracht werden kann, und eine Beschreibung
+  \texttt{desc}. 
+\begin{verbatim}
+units => [
+          {
+           "short","0ungeb",
+           "desc","Fakult&auml;tsungebunden",
+          },
+          {
+           "short","1wiso",
+           "desc","Wirtschafts- u. Sozialwissenschaftliche Fakult&auml;t",
+          },
+          {
+           "short","2recht",
+           "desc","Rechtswissenschaftliche Fakult&auml;t",
+          },
+          {
+           "short","3ezwheil",
+           "desc","Erziehungswiss. u. Heilp&auml;d. Fakult&auml;t",
+          },
+          {
+           "short","4phil",
+           "desc","Philosophische Fakult&auml;t",
+          },
+          {
+           "short","5matnat",
+           "desc","Mathematisch-Naturwissenschaftliche Fakult&auml;t"
+,
+          },
+         ],
+\end{verbatim}
+\end{description}
+
+Dieser Parameter wird leider noch nicht in allen Modulen verwendet, so
+da"s Sie diese h"andisch entsprechend "andern m"ussen.
+ 
+\subsection{URI-Konfiguration}
+
+In OpenBib k"onnen Sie f"ur jede Web-Komponente festlegen, unter
+welchem URI sie angesprochen werden soll. Die OpenBib-interne
+Verlinkung ist damit entsprechend konsistent. Alle zugeh"origen
+Parameter enden auf \texttt{\_loc}. Im Normalfall brauchen Sie diese
+nicht zu "andern. Standardm"a"sig beginnen die URI's mit \texttt{/portal/}.
+
+
+
+\subsection{Verschiedene Konfigurationsparameter}
+
+\begin{description}
+\item[mail\_prog] Hier geben Sie den Pfad zu dem Program an, mit dem
+  das System Mails verschickt.
+\item[admin\_email] Hier geben Sie die E-Mail-Adresse an, die bei Mails
+  an den Administrator, also Sie, verwendet werden soll.
+\item[contact\_email] Hier geben Sie die E-Mail-Adressen an, die als
+  generelle Kontakt-Adresse auf den Web-Seiten genannt werden soll.
+\item[hbzmonofernleih\_exturl] Hier geben Sie den Basis-URL an, der bei
+  einem Sprung in die Mono\-graphien-Fernleihe der Digitalen Bibliothek
+  NRW verwendet werden soll.
+\item[hbzzeitfernleih\_exturl] Hier geben Sie den Basis-URL an, der bei
+  einem Sprung in die Aufsatz-Fernleihe der Digitalen Bibliothek
+  NRW verwendet werden soll.
+\item[ezb\_exturl] Hier geben Sie den Basis-URL an, der bei
+  einem Sprung in die Elektronische Zeitschriftenbibliothek (EZB) in
+  Regensburg verwendet werden soll.
+\item[dbis\_exturl] Hier geben Sie den Basis-URL an, der bei einem
+  Sprung in das DatenBankInformationsSystem (DBIS)  in Regensburg
+  verwendet werden soll. 
+\item[databasechoice\_maxcolumn] Hier legen Sie fest, auf wieviele
+  Spalten die Kataloge in der Datenbankauswahlseite verteilt werden
+  sollen. 
+\item[web\_seed] Hier legen sie ein 'geheimes' Wort fest, welches
+  zusammen mit dem Katalog-Datenbanknamen per MD5 ein
+  Web-Zugriffspasswort ergibt, mit dem automatisiert auf entfernt
+  exportierte Katalogdaten per HTTP zugegriffen werden kann. Dieser
+  Parameter wird bald obsolet, da die Zugriffsinformationen in naher
+  Zukunft direkt aus der session-Datenbank geholt werden.
+\item[benchmark] Hier legen Sie fest, ob Benchmark-Informationen
+  ausgegeben werden sollen. Derzeit f"uhrt dies zu Fehlern und sollte
+  daher deaktiviert werden. Das ist auch die Standardeinstellung.
+\item[testsystem] Hier legen Sie fest, ob es sich bei dem Rechner um
+  ein Testsystem handelt. Es wird dann zus"atzlich eine entsprechende
+  Informationsmeldung in die Basis-Webseite eingeblendet.
+\end{description}
+
+
+\subsection{Template-Konfiguration}
+
+In OpenBib werden bei fast allen Modulen Templates zur Trennung von
+Programm- und HTML-Code verwendet. An dieser Stelle ist von Ihnen nur
+der Pfad zu dem Verzeichnis zu setzen, in dem Sie die Templates
+ablegen.
+
+\begin{description}
+\item[tt\_include\_path] Setzen Sie diesen Pfad, z.B. auf
+  \texttt{/opt/openbib/templates}.
+\end{description}
+
+Alle zugeh"origen Parameter zur Namensdeklaration einzelner Templates
+enden auf \texttt{\_ttname}. Im Normalfall brauchen Sie diese nicht
+"andern.
+
+
+\subsection{Generelle Pfad-Konfiguration}
+
+Mit den auf \texttt{\_dir} endenden Parameter wird die generelle
+Pfad-Struktur definiert. Bei einer Installation unter
+\texttt{/opt/openbib} brauche Sie hier nichts "andern.
+
+\begin{description}
+\item[base\_dir] Dies ist das Basis-Verzeichnis von OpenBib.
+\item[conv\_dir] In diesem Verzeichnis befinden sich die Programme zur
+  Konvertierung.
+\item[autoconv\_dir] In diesem Verzeichnis befindet sich die
+  Infrastruktur, um automatisiert Kataloge in OpenBib
+  einzuspielen. Dazu geh"ort ein Unterverzeichnis \texttt{bin} f"ur
+  die Steuer-Programme, ein Unterverzeichnis \texttt{pools} f"ur eine
+  lokale Kopie der jeweiligen Katalogdaten und ein Unterverzeichnis
+  \texttt{data} f"ur tempor"are Dateien, die beim Einspielen erzeugt
+  werden.
+\item[dbdesc\_dir] In diesem Verzeichnis befinden sich die
+  Datenbankdefinitionen nach Datenbanksystem getrennt. Derzeit
+  existieren nur Definitionen f"ur MySQL.
+\item[tool\_dir] In diesem Verzeichnis befinden sich Hilfs-Skripte,
+  z.B. zum Anlegen einer Datenbank.
+\end{description}
+
+
+\section{Anlegen der Verzeichnis-Struktur}
+
+Als n"achstes wird die in \ref{sec:confportal} definierte Verzeichnis
+struktur erzeugt.
+
+\begin{verbatim}
+mkdir /opt/openbib
+mkdir /opt/openbib/bin
+mkdir /opt/openbib/autoconv
+mkdir /opt/openbib/autoconv/bin
+mkdir /opt/openbib/autoconv/data
+mkdir /opt/openbib/autoconv/pools
+mkdir /opt/openbib/conv
+mkdir /opt/openbib/db
+mkdir /opt/openbib/templates
+\end{verbatim}
+
+Alle diese Verzeichnisse m"ussen f"ur den Prozess des Web-Servers
+les- und schreibbar sein. Daher m"ussen Sie Ihre Besitzer entsprechend
+"andern.
+
+\begin{verbatim}
+chown -R www-data.www-data /opt/openbib
+\end{verbatim}
+
+\section{Installation der Templates des Web-Portals}
+
+Um Programm-Code und HTML-Code des Web-Portals zu trennen, wurde in
+vielen OpenBib-mod\_perl-Modulen das Perl Template
+Toolkit\footnote{\texttt{http://www.template-toolkit.org/}}
+eingesetzt.
+
+Die Templates werden entsprechend der Konfiguration in
+\ref{sec:confportal} unter \texttt{/opt/openbib/templates} abgelegt.
+
+\begin{verbatim}
+cp /opt/store/openbib/portal/perl/templates/* /opt/openbib/templates/
+\end{verbatim}
+
+\section{Installation der Datenbankdefinitionen}
+
+Die Datenbankdefinitionen werden entsprechend der Konfiguration in
+\ref{sec:confportal} unter \texttt{/opt/openbib/db} abgelegt.
+
+\begin{verbatim}
+cp -r /opt/store/openbib/db/mysql /opt/openbib/db/
+\end{verbatim}
+
+\section{Installation verschiedener Hilfs-Skripte}
+
+F"ur verschiedene Aufgaben stehen Hilfs-Skript bereit, die
+entsprechend der Konfiguration von \texttt{tool\_dir} in
+\ref{sec:confportal} unter \texttt{/opt/openbib/bin} abgelegt werden.
+So z.B. zum Anlegen der Benutzerdatenbank, Sessiondatenbank usw. Im
+CVS-Baum finden Sie diese Skripte unter \texttt{tools}.
+
+\begin{verbatim}
+cp /opt/store/openbib/tools/* /opt/openbib/bin/
+\end{verbatim}
+
+\section{Vorbereiten des Web-Bereichs}
+
+Im \texttt{DocumentRoot}-Verzeichnis muss die notwendige Infrastruktur
+installiert werden. Es sind dies
+
+\begin{itemize}
+\item die Stylesheets
+\item die Bilder und
+\item die Hilfeseite
+\end{itemize}
+
+Beispiele finden Sie im CVS-Baum unter
+\texttt{portal/htdocs/}. Kopieren Sie diese Verzeichnisse in Ihr
+\texttt{DocumentRoot}-Verzeichnis.
+
+\begin{verbatim}
+cp -r /opt/store/openbib/portal/htdocs/* /var/www/
+\end{verbatim}
+
+
+\section{Installation der Konvertierungsprogramme}
+
+Die ben"otigten Konvertierungsprogramme m"ussen nun aus dem CVS-Baum
+unter \texttt{conv} in die zugeh"origen Verzeichnisse unter
+\texttt{/opt/openbib} kopiert werden.
+
+\begin{verbatim}
+cp /opt/store/openbib/conv/meta/* /opt/openbib/conv/
+cp /opt/store/openbib/conv/sikis/autoconv-sikis.pl /opt/openbib/autoconv/bin/
+\end{verbatim}
+
+\section{Anlegen der Benutzer- und Session-Datenbanken}
+
+Grundlage f"ur den Betrieb des Web-Portals ist die Existenz der
+Benutzer- und Session-Datenbanken. Diese werden nun mit den
+Hils-Skripten \texttt{createuser.pl} und \texttt{createsession.pl} aus
+\texttt{/opt/openbib/bin} erzeugt.
+
+\begin{verbatim}
+openbib:/opt/openbib/bin# ./createuser.pl
+openbib:/opt/openbib/bin# ./createsession.pl
+\end{verbatim}
+
+Re-Starten Sie nun die Webserver. Es werden dann entsprechend der
+Konfiguration in \texttt{openbib.conf} die Module des Portals in den
+Webserver eingeladen.
+
+Damit sind alle Vorarbeiten f"ur den Betrieb des Portal vollzogen --
+bis auf die Existenz der eigentlichen Kataloge -- und "uber den
+Web-Browser kann nun bereits darauf zugegriffen werden. Die
+erfolgreiche Installation des Portals dokumentiert Abbildung
+\ref{bild:fertig} mit derzeit 0 Katalog-Datenbanken.
+
+\begin{figure}
+\begin{shadowenv}
+  \vspace{4mm}
+    \centering \begin{minipage}[b]{1.0\textwidth}
+      \centering \includegraphics[width=14cm]{fertig1.eps}
+    \end{minipage}
+    \caption{Nach Anlegen der Benutzer- und Session-Datenbank und
+      Restart des Web-Servers erscheint das Portal in seiner Standardkonfiguration}
+  \label{bild:fertig}
+  \vspace{3mm}
+\end{shadowenv}
+\end{figure}
+
+
+\end{document}

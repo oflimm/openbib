@@ -1,0 +1,9 @@
+[% PROCESS std_header %]
+
+[% IF show_corporate_banner %]
+[% PROCESS corporate_banner %] 
+[% END %]
+
+[% info_msg %]
+
+[% PROCESS std_footer %]

@@ -271,7 +271,7 @@ sub handler {
   elsif ($action eq "Kennung soll wirklich gelöscht werden"){
     # Zuerst werden die Datenbankprofile geloescht
     
-    my $userresult=$userdbh->prepare("delete from profildb using profildb,userdbprofil where userdbprofile.userid=$userid and userdbprofile.profilid=profildb.profilid") or die "Error -- $DBI::errstr";
+    my $userresult=$userdbh->prepare("delete from profildb using profildb,userdbprofile where userdbprofile.userid=$userid and userdbprofile.profilid=profildb.profilid") or die "Error -- $DBI::errstr";
     $userresult->execute();
     
     

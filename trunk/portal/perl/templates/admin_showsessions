@@ -1,0 +1,41 @@
+[% SET title='KUG Administration - Bestehende Sessions anzeigen' %]
+[% SET show_foot_banner = 1 %]
+[% PROCESS std_header %]
+
+[% PROCESS corporate_banner %]
+
+<table width="100%">
+<tr>
+  <td align="left"><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showcat">Kataloge</a>&nbsp;&nbsp;&nbsp;<a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showviews">Views</a>&nbsp;&nbsp;&nbsp;<a href="http://[% config.servername %][%
+config.admin_loc %]?sessionID=[% sessionID %]&action=showsession"><b>Sessions</b></a></td><td>&nbsp;&nbsp;&nbsp;</td><td>&nbsp;</td><td
+align="right"><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=logout"><b>Logout</b></a>&nbsp;</td>
+</tr>
+</table>
+
+<hr />
+
+<form method="get" action="http://[% config.servername %][%config.admin_loc %]">
+<input type="hidden" name="action" value="editsession">
+<input type="hidden" name="sessionID" value="[% sessionID %]">
+
+<table width="100%">
+<tr><th>Bestehende Sessions</th></tr>
+<tr><td class="boxedclear" style="font-size:12pt">
+
+<table cellpadding="2">
+<tr><td><b>Session-ID</b></td><td><b>Beginn</b></td><td align="middle"><b>Benutzer</b></td><td align="middle">
+<b>Initiale Suchen</b></td></tr>
+
+[% FOREACH session IN sessions %]
+
+<tr><td><a href="http://[% config.servername %][%config.admin_loc %]?sessionID=[% sessionID %];action=editsession;sessionaction=Anzeigen;singlesessionid=[% session.singlesessionid %]">[% session.singlesessionid %]</a></td><td>[% session.createtime %]</td><td align="middle">[% session.benutzernr %]</td><td align="middle">[% session.numqueries %]</td></tr>
+
+[% END %]
+
+</table>
+</td></tr>
+</table>
+
+<p />
+
+[% PROCESS std_footer %]

@@ -39,6 +39,13 @@ use vars qw(%config);
 
 	   loadbalancerservername => 'balancer.openbib.org',
 
+	   # Auf folgende Server werden die Benutzer verteilt
+
+	   loadbalancertargets => [
+				   'target1.openbib.org',
+				   'target2.openbib.org',
+				   ],
+
 	   # Name des Datenbanksystems und des verwendeten DBI/DBD-Moduls
 
 	   dbms      => 'mysql',

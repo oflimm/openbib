@@ -69,22 +69,25 @@ sub handler {
   $urlquery=~s/^.+?\?//;
   
   # Aktuellen Load der Server holen zur dynamischen Lastverteilung
+
+  my @servertab=@{$config{loadbalancertargets}}; 
+
+  my %serverload=();
+
+  my $target;
+  foreach $target (@servertab){
+    $serverload{"$target"}=-1.0;
+  }
   
-  my @servertab=('server1.openbib.org','server2.openbib.org');
-  my %serverload=(
-		  'server1.openbib.org' => -1.0,
-		  'server2.openbib.org' => -1.0,
-		 );
-  
-  my $biblioserver;
+  my $targethost;
   my $problem=0;
   
   # Fuer jeden Server, auf den verteilt werden soll, wird nun
   # per LWP der Load bestimmt.
   
-  foreach $biblioserver (@servertab){
+  foreach $targethost (@servertab){
     
-    my $request=new HTTP::Request POST => "http://$biblioserver$config{serverload_loc}";
+    my $request=new HTTP::Request POST => "http://$targethost$config{serverload_loc}";
     my $response=$ua->request($request);
     
     my $content=$response->content();
@@ -94,14 +97,14 @@ sub handler {
     }
     elsif ($content=~m/^(\d+\.\d+)/m){
       my $load=$1;
-      $serverload{$biblioserver}=$load;
+      $serverload{$targethost}=$load;
     }
     
     # Wenn der Load fuer einen Server nicht bestimmt werden kann,
     # dann wird der Admin darueber benachrichtigt
     
     if ($problem == 1){
-      OpenBib::LoadBalancer::Util::benachrichtigung("Es ist der Server $biblioserver ausgefallen");
+      OpenBib::LoadBalancer::Util::benachrichtigung("Es ist der Server $targethost ausgefallen");
       $problem=0;
       next;
     } 
@@ -112,10 +115,10 @@ sub handler {
 
   # Nun wird der Server bestimmt, der den geringsten Load hat
 
-  foreach $biblioserver (@servertab){
-    if ($serverload{$biblioserver} > -1.0 && $serverload{$biblioserver} <= $minload){
-      $bestserver=$biblioserver;
-      $minload=$serverload{$biblioserver};
+  foreach $targethost (@servertab){
+    if ($serverload{$targethost} > -1.0 && $serverload{$targethost} <= $minload){
+      $bestserver=$targethost;
+      $minload=$serverload{$targethost};
     }
   }
 

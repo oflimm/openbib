@@ -25,7 +25,12 @@
 <p />
 
 [% IF view %]
+
+[% IF viewtemplate %]
+[% PROCESS $viewtemplate %]
+[% ELSE %]
 Sie k&ouml;nnen entweder direkt im vorausgew&auml;hlten Katalog <b>[% viewdesc %]</b> recherchieren, oder die Suche auf weitere <a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %]" target="body">Kataloge</a> ausdehnen.
+[% END %]
 <p />
 <table>
   <tr><td><input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="tosearch" value="In ausgewählten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="Lösche Eingabemaske"></td></tr>

@@ -186,6 +186,7 @@ use vars qw(%config);
 	   tt_userprefs_tname              => 'userprefs',
 	   tt_userprefs_ask_delete_tname   => 'userprefs_ask_delete',
 	   tt_userprefs_changefields_tname => 'userprefs_changefields',
+	   tt_userprefs_userdeleted_tname => 'userprefs_userdeleted',
 
 	   tt_selfreg_tname         => 'selfreg',
 	   tt_selfreg_success_tname => 'selfreg_success',

@@ -76,6 +76,7 @@ create table dboptions (
  circ        BOOL,
  circurl     TEXT,
  circcheckurl     TEXT,
+ circdb      TEXT,
  INDEX(dbname)
 );
 

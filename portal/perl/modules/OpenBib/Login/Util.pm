@@ -68,9 +68,11 @@ sub authenticate_olws_user {
   
   my $logger = get_logger();
 
+  my $endpoint="http://$targethost/cgi-bin/olws.pl";
+
   my $soap = SOAP::Lite
   -> uri("http://$targethost/Authentication")
-  -> proxy("http://$targethost/cgi-bin/openbib-ws.pl");
+  -> proxy($endpoint);
 
   my $result = $soap->authenticate_user($username,$pin,$targetdb);
 

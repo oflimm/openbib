@@ -168,6 +168,7 @@ use vars qw(%config);
 	   tt_admin_editview_tname       => 'admin_editview',
 	   tt_admin_showsessions_tname   => 'admin_showsessions',
 	   tt_admin_editsession_tname    => 'admin_editsession',
+	   tt_admin_showimx_tname        => 'admin_showimx',
 	   tt_admin_logout_tname         => 'admin_logout',
 
 	   tt_leave_tname          => 'leave',

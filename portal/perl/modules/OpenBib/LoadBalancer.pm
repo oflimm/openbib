@@ -29,7 +29,7 @@
 
 package OpenBib::LoadBalancer;
 
-use Apache::Constants qw(:common);
+use Apache::Constants qw(:common REDIRECT);
 
 use strict;
 use warnings;
@@ -141,8 +141,10 @@ MAINTENANCE
     return OK;
     
   }
-  
-  print $r->internal_redirect("http://$bestserver$config{startopac_loc}?$urlquery");
+
+  $r->header_out(Location => "http://$bestserver$config{startopac_loc}?$urlquery");
+  $r->status(REDIRECT);
+  $r->send_http_header; 
   
   return OK;
 }

@@ -166,7 +166,7 @@ function update_fak(yourform, checked, fak) {
 
 <table BORDER=0 CELLSPACING=0 CELLPADDING=0 width="100%">
   <tr bgcolor="lightblue">
-    <td  width="20">&nbsp;</td><td valign="middle" ALIGN=left height="32"><img src="/images/kvik/katalogauswahl.png" alt="Katalogauswahl"></td>
+    <td  width="20">&nbsp;</td><td valign="middle" ALIGN=left height="32"><img src="/images/openbib/katalogauswahl.png" alt="Katalogauswahl"></td>
   </tr>
 </table>
 <p>

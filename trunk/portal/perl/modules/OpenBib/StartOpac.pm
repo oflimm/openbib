@@ -41,9 +41,9 @@ use POSIX;
 use Digest::MD5;
 use DBI;
 
-use OpenBib::Common::Util;
+use OpenBib::Common::Util();
 
-use OpenBib::Config;
+use OpenBib::Config();
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
@@ -160,7 +160,7 @@ sub handler {
 
   print << "ENDE";
 <HTML>
-<link href="/images/kvik/favicon.ico" rel="shortcut icon">
+<link href="/images/openbib/favicon.ico" rel="shortcut icon">
 <frameset rows="$toprows,*" frameborder=0>
 <frame name="header" src="$headerframeurl" noresize >
 <frame name="body" src="$searchframeurl">

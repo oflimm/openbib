@@ -8,7 +8,7 @@
 [% ELSE %]
 <a href="[% config.login_loc %]?sessionID=[% sessionID %];view=[% view %];action=login" target="body">Login</a>&nbsp;
 [% END %]
-<a href="/suchhilfe.html" target="body">Hilfe</a>&nbsp;&nbsp;<a href="[% config.leave_loc %]?sessionID=[% sessionID %];view=[% view %]" target="_parent">Sitzung beenden</a>&nbsp;</td></tr>
+<a href="/suchhilfe.html" target="body">Hilfe</a>&nbsp;&nbsp;<a href="[% config.leave_loc %]?sessionID=[% sessionID %];view=[% view %]" target="_parent"><b>Sitzung beenden</b></a>&nbsp;</td></tr>
 </table>
 
 [% PROCESS std_footer %]

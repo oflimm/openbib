@@ -353,7 +353,7 @@ sub print_recherche_hinweis {
 
  print << "DIGIBIB";
 <table width="100%">
-<tr><th>Weitergehende Suchhinweise <span style="font-size:9pt">(Achtung: Testbetrieb der Digibib - Derzeit kann dort nicht bestellt werden!)</span></th></tr>
+<tr><th>Weitergehende Suchhinweise</th></tr>
 <tr><td class="boxedclear" style="font-size:9pt">
 Konnten Sie das von Ihnen gesuchte Buch oder den von Ihnen gesuchten Zeitschriftenartikel nicht im KUG finden?<br><br>
 <b>B&uuml;cher</b>

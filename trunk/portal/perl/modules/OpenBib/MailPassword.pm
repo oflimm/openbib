@@ -37,6 +37,8 @@ use warnings;
 
 use Apache::Request();      # CGI-Handling (or require)
 
+use Log::Log4perl qw(get_logger :levels);
+
 use POSIX;
 use Socket;
 
@@ -58,6 +60,10 @@ sub handler {
 
   my $r=shift;
 
+  # Log4perl logger erzeugen
+
+  my $logger = get_logger();
+
   my $query=Apache::Request->new($r);
 
   my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
@@ -70,9 +76,9 @@ sub handler {
   my $sessionID=$query->param('sessionID');
   my $view=$query->param('view')||'';
   
-  my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or die "could not connect";
+  my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
   
-  my $userdbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd}) or die "could not connect";
+  my $userdbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd}) or $logger->error_die($DBI::errstr);
   
   unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
     OpenBib::Common::Util::print_warning("Ung&uuml;ltige Session",$r);
@@ -113,9 +119,9 @@ sub handler {
       return OK;
     }
     
-    my $targetresult=$userdbh->prepare("select pin from user where loginname='$loginname'") or die "Error -- $DBI::errstr";
+    my $targetresult=$userdbh->prepare("select pin from user where loginname='$loginname'") or $logger->error($DBI::errstr);
     
-    $targetresult->execute();
+    $targetresult->execute() or $logger->error($DBI::errstr);
     
     my $result=$targetresult->fetchrow_hashref();
     my $password=$result->{'pin'};

@@ -36,6 +36,8 @@ use warnings;
 
 use Apache::Request();      # CGI-Handling (or require)
 
+use Log::Log4perl qw(get_logger :levels);
+
 use DBI;
 
 use Template;
@@ -55,6 +57,10 @@ sub handler {
 
   my $r=shift;
 
+  # Log4perl logger erzeugen
+
+  my $logger = get_logger();
+
   my $query=Apache::Request->new($r);
   
   my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
@@ -63,11 +69,11 @@ sub handler {
   #####################################################################
   # Verbindung zur SQL-Datenbank herstellen
   
-  my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or die "could not connect";
+  my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
   
   my $sessionID=$query->param('sessionID');
   
-  my $userdbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd}) or die "could not connect";
+  my $userdbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd}) or $logger->error_die($DBI::errstr);
   
   # Haben wir eine authentifizierte Session?
   
@@ -75,8 +81,8 @@ sub handler {
   
   # Assoziierten View zur Session aus Datenbank holen
   
-  my $idnresult=$sessiondbh->prepare("select viewname from sessionview where sessionid='$sessionID'");
-  $idnresult->execute();
+  my $idnresult=$sessiondbh->prepare("select viewname from sessionview where sessionid='$sessionID'") or $logger->error($DBI::errstr);
+  $idnresult->execute() or $logger->error($DBI::errstr);
   
   my $result=$idnresult->fetchrow_hashref();
 
@@ -90,43 +96,43 @@ sub handler {
     
     if ($userid){
       
-      my $userresult=$userdbh->prepare("delete from usersession where userid=$userid") or die "Error -- $DBI::errstr";
-      $userresult->execute();
+      my $userresult=$userdbh->prepare("delete from usersession where userid=$userid") or $logger->error($DBI::errstr);
+      $userresult->execute() or $logger->error($DBI::errstr);
       $userresult->finish();
     }
     
     # Zuallererst loeschen der Trefferliste fuer diese sessionID
     
-    my $idnresult=$sessiondbh->prepare("delete from treffer where sessionid='$sessionID'");
-    $idnresult->execute();
+    my $idnresult=$sessiondbh->prepare("delete from treffer where sessionid='$sessionID'") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
     
-    $idnresult=$sessiondbh->prepare("delete from dbchoice where sessionid='$sessionID'");
-    $idnresult->execute();
+    $idnresult=$sessiondbh->prepare("delete from dbchoice where sessionid='$sessionID'") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
     
-    $idnresult=$sessiondbh->prepare("delete from searchresults where sessionid='$sessionID'");
-    $idnresult->execute();
+    $idnresult=$sessiondbh->prepare("delete from searchresults where sessionid='$sessionID'") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
     
-    $idnresult=$sessiondbh->prepare("delete from sessionview where sessionid='$sessionID'");
-    $idnresult->execute();
+    $idnresult=$sessiondbh->prepare("delete from sessionview where sessionid='$sessionID'") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
     
     $idnresult->finish();
     
     # Kopieren ins sessionlog
     
-    #  $idnresult=$sessiondbh->prepare("insert into sessionlog (sessionid,query,createtime) select session.sessionid,session.query,session.createtime from session where sessionid='$sessionID')");
-    #  $idnresult->execute();
+    #  $idnresult=$sessiondbh->prepare("insert into sessionlog (sessionid,query,createtime) select session.sessionid,session.query,session.createtime from session where sessionid='$sessionID')") or $logger->error($DBI::errstr);
+    #  $idnresult->execute() or $logger->error($DBI::errstr);
     
     #  my $endtime = POSIX::strftime('%Y-%m-%d% %H:%M:%S', localtime());
     
-    #  $idnresult=$sessiondbh->prepare("insert into sessionlog (endtime) values ('$endtime')  where sessionid='$sessionID')");
-    #  $idnresult->execute();
+    #  $idnresult=$sessiondbh->prepare("insert into sessionlog (endtime) values ('$endtime')  where sessionid='$sessionID')") or $logger->error($DBI::errstr);
+    #  $idnresult->execute() or $logger->error($DBI::errstr);
     
     #  $idnresult->finish();
     
     # Dann loeschen der Session in der Datenbank
     
-    my $anzahlresult=$sessiondbh->prepare("delete from session where sessionid='$sessionID'");
-    $anzahlresult->execute();
+    my $anzahlresult=$sessiondbh->prepare("delete from session where sessionid='$sessionID'") or $logger->error($DBI::errstr);
+    $anzahlresult->execute() or $logger->error($DBI::errstr);
     $anzahlresult->finish();
 
     my $template = Template->new({ 

@@ -36,6 +36,8 @@ use warnings;
 
 use Apache::Request();      # CGI-Handling (or require)
 
+use Log::Log4perl qw(get_logger :levels);
+
 use POSIX;
 
 use Digest::MD5;
@@ -56,6 +58,10 @@ sub handler {
 
   my $r=shift;
 
+  # Log4perl logger erzeugen
+
+  my $logger = get_logger();
+    
   my $query=Apache::Request->new($r);
 
   my $fs=$query->param('fs') || '';
@@ -63,7 +69,7 @@ sub handler {
   #####################################################################
   # Verbindung zur SQL-Datenbank herstellen
   
-  my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or die "could not connect";
+  my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
   
   my $database=($query->param('database'))?$query->param('database'):'';
   my $view=($query->param('view'))?$query->param('view'):'';
@@ -86,8 +92,8 @@ sub handler {
     
     # 1. Gibt es diesen View?
     
-    my $idnresult=$sessiondbh->prepare("select viewname from viewinfo where viewname='$view'");
-    $idnresult->execute();
+    my $idnresult=$sessiondbh->prepare("select viewname from viewinfo where viewname='$view'") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
     my $anzahl=$idnresult->rows();
     
     if ($anzahl > 0){
@@ -95,21 +101,21 @@ sub handler {
       # 2. Datenbankauswahl setzen, aber nur, wenn der Benutzer selbst noch
       #    keine Auswahl getroffen hat
       
-      $idnresult=$sessiondbh->prepare("select dbname from dbchoice where sessionid='$sessionID'");
-      $idnresult->execute();
+      $idnresult=$sessiondbh->prepare("select dbname from dbchoice where sessionid='$sessionID'") or $logger->error($DBI::errstr);
+      $idnresult->execute() or $logger->error($DBI::errstr);
       my $anzahl=$idnresult->rows();
       
       # Wenn noch keine Datenbank ausgewaehlt wurde, dann setze die
       # Auswahl auf die zum View gehoerenden Datenbanken
       
       if ($anzahl == 0){
-	$idnresult=$sessiondbh->prepare("select dbname from  viewdbs where viewname='$view'");
-	$idnresult->execute();
+	$idnresult=$sessiondbh->prepare("select dbname from  viewdbs where viewname='$view'") or $logger->error($DBI::errstr);
+	$idnresult->execute() or $logger->error($DBI::errstr);
 	
 	while (my $result=$idnresult->fetchrow_hashref()){
 	  my $dbname=$result->{'dbname'};
-	  my $idnresult2=$sessiondbh->prepare("insert into dbchoice (sessionid,dbname) values ('$sessionID','$dbname')");
-	  $idnresult2->execute();
+	  my $idnresult2=$sessiondbh->prepare("insert into dbchoice (sessionid,dbname) values ('$sessionID','$dbname')") or $logger->error($DBI::errstr);
+	  $idnresult2->execute() or $logger->error($DBI::errstr);
 	  $idnresult2->finish();
 	}
 	
@@ -118,8 +124,8 @@ sub handler {
       
       # 3. Assoziiere den View mit der Session (fuer Headframe/Merkliste);
       
-      $idnresult=$sessiondbh->prepare("insert into sessionview values ('$sessionID','$view')");
-      $idnresult->execute();
+      $idnresult=$sessiondbh->prepare("insert into sessionview values ('$sessionID','$view')") or $logger->error($DBI::errstr);
+      $idnresult->execute() or $logger->error($DBI::errstr);
       
       
     }

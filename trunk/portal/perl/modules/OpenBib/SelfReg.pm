@@ -36,6 +36,8 @@ use warnings;
 
 use Apache::Request();      # CGI-Handling (or require)
 
+use Log::Log4perl qw(get_logger :levels);
+
 use POSIX;
 use Socket;
 
@@ -58,6 +60,10 @@ sub handler {
 
   my $r=shift;
 
+  # Log4perl logger erzeugen
+
+  my $logger = get_logger();
+
   my $query=Apache::Request->new($r);
 
   my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
@@ -69,9 +75,9 @@ sub handler {
   my $password2=($query->param('password2'))?$query->param('password2'):'';
   my $sessionID=$query->param('sessionID');
   
-  my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or die "could not connect";
+  my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
   
-  my $userdbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd}) or die "could not connect";
+  my $userdbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd}) or $logger->error_die($DBI::errstr);
   
   unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
     OpenBib::Common::Util::print_warning("Ung&uuml;ltige Session",$r);
@@ -125,9 +131,9 @@ elsif ($action eq "auth"){
     return OK;
   } 
 
-  my $userresult=$userdbh->prepare("select * from user where loginname='$loginname'") or die "Error -- $DBI::errstr";
+  my $userresult=$userdbh->prepare("select * from user where loginname='$loginname'") or $logger->error($DBI::errstr);
   
-  $userresult->execute();
+  $userresult->execute() or $logger->error($DBI::errstr);
 
   if ($userresult->rows > 0){
     OpenBib::Common::Util::print_warning("Ein Benutzer mit dem Namen $loginname existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte <a href=\"http://$config{servername}$config{login_loc}?sessionID=$sessionID?action=login\">zur&uuml;ck</a> und lassen es sich zumailen.",$r);
@@ -142,13 +148,13 @@ elsif ($action eq "auth"){
 
   # Jetzt eintragen und session mit dem Benutzer assoziieren;
 
-  $userresult=$userdbh->prepare("insert into user values (NULL,'','$loginname','$password1','','','','','','','','','$loginname')") or die "Error -- $DBI::errstr";
+  $userresult=$userdbh->prepare("insert into user values (NULL,'','$loginname','$password1','','','','','','','','','$loginname')") or $logger->error($DBI::errstr);
   
-  $userresult->execute();
+  $userresult->execute() or $logger->error($DBI::errstr);
 
-  $userresult=$userdbh->prepare("select userid from user where loginname='$loginname'") or die "Error -- $DBI::errstr";
+  $userresult=$userdbh->prepare("select userid from user where loginname='$loginname'") or $logger->error($DBI::errstr);
   
-  $userresult->execute();
+  $userresult->execute() or $logger->error($DBI::errstr);
 
   my $res=$userresult->fetchrow_hashref();
 
@@ -156,13 +162,13 @@ elsif ($action eq "auth"){
     
   # Es darf keine Session assoziiert sein. Daher stumpf loeschen
 
-  $userresult=$userdbh->prepare("delete from usersession where sessionid='$sessionID'") or die "Error -- $DBI::errstr";
+  $userresult=$userdbh->prepare("delete from usersession where sessionid='$sessionID'") or $logger->error($DBI::errstr);
 
-  $userresult->execute();
+  $userresult->execute() or $logger->error($DBI::errstr);
 
-  $userresult=$userdbh->prepare("insert into usersession values ('$sessionID','$userid')") or die "Error -- $DBI::errstr";
+  $userresult=$userdbh->prepare("insert into usersession values ('$sessionID','$userid')") or $logger->error($DBI::errstr);
 
-  $userresult->execute();
+  $userresult->execute() or $logger->error($DBI::errstr);
 
   $userresult->finish();
 

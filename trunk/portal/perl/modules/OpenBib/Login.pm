@@ -36,6 +36,8 @@ use warnings;
 
 use Apache::Request();      # CGI-Handling (or require)
 
+use Log::Log4perl qw(get_logger :levels);
+
 use POSIX;
 use Socket;
 
@@ -60,6 +62,10 @@ sub handler {
 
   my $r=shift;
 
+  # Log4perl logger erzeugen
+
+  my $logger = get_logger();
+
   my $query=Apache::Request->new($r);
 
   my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
@@ -74,12 +80,12 @@ sub handler {
   my $sessionID=$query->param('sessionID');
   my $view=$query->param('view')||'';
   
-  my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or die "could not connect";
+  my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
   
-  my $userdbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd}) or die "could not connect";
+  my $userdbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd}) or $logger->error_die($DBI::errstr);
   
-  my $idnresult=$sessiondbh->prepare("select sessionid from session where sessionid='$sessionID'") or die "Error -- $DBI::errstr";
-  $idnresult->execute();
+  my $idnresult=$sessiondbh->prepare("select sessionid from session where sessionid='$sessionID'") or $logger->error($DBI::errstr);
+  $idnresult->execute() or $logger->error($DBI::errstr);
   
   # Wenn wir nichts gefunden haben, dann ist etwas faul
   
@@ -96,9 +102,9 @@ sub handler {
   
   if ($action eq "login"){
     
-    my $targetresult=$userdbh->prepare("select * from logintarget order by type,description") or die "Error -- $DBI::errstr";
+    my $targetresult=$userdbh->prepare("select * from logintarget order by type,description") or $logger->error($DBI::errstr);
     
-    $targetresult->execute();
+    $targetresult->execute() or $logger->error($DBI::errstr);
     
     my $targetselect="<select name=\"targetid\">";
     while (my $result=$targetresult->fetchrow_hashref()){
@@ -137,9 +143,9 @@ sub handler {
       $loginfailed=1;
     }
     
-    my $targetresult=$userdbh->prepare("select * from logintarget where targetid='$targetid'") or die "Error -- $DBI::errstr";
+    my $targetresult=$userdbh->prepare("select * from logintarget where targetid='$targetid'") or $logger->error($DBI::errstr);
     
-    $targetresult->execute();
+    $targetresult->execute() or $logger->error($DBI::errstr);
     
     my $hostname="";
     my $port="";
@@ -174,18 +180,18 @@ sub handler {
 
 	my $userid;
 
-	my $userresult=$userdbh->prepare("select userid from user where loginname='$loginname'") or die "Error -- $DBI::errstr";
+	my $userresult=$userdbh->prepare("select userid from user where loginname='$loginname'") or $logger->error($DBI::errstr);
 	
-	$userresult->execute();
+	$userresult->execute() or $logger->error($DBI::errstr);
 	
 	# Eintragen, wenn noch nicht existent
 	
 	if ($userresult->rows <= 0){
 
 	  # Neuen Satz eintragen
-	  $userresult=$userdbh->prepare("insert into user values (NULL,'','$loginname','$password','','','','','','','','','')") or die "Error -- $DBI::errstr";
+	  $userresult=$userdbh->prepare("insert into user values (NULL,'','$loginname','$password','','','','','','','','','')") or $logger->error($DBI::errstr);
 	  
-	  $userresult->execute();
+	  $userresult->execute() or $logger->error($DBI::errstr);
 
 	}
 	else {
@@ -195,9 +201,9 @@ sub handler {
 
 	# Benuzerinformationen eintragen
 
-	$userresult=$userdbh->prepare("update user set nachname='".$userinfo{'Nachname'}."', vorname='".$userinfo{'Vorname'}."', soll='".$userinfo{'Soll'}."', gut='".$userinfo{'Guthaben'}."', avanz='".$userinfo{'Avanz'}."', bsanz='".$userinfo{'Bsanz'}."', vmanz='".$userinfo{'Vmanz'}."', gebdatum='".$userinfo{'Geburtsdatum'}."' where loginname='$loginname'") or die "Error -- $DBI::errstr";
+	$userresult=$userdbh->prepare("update user set nachname='".$userinfo{'Nachname'}."', vorname='".$userinfo{'Vorname'}."', soll='".$userinfo{'Soll'}."', gut='".$userinfo{'Guthaben'}."', avanz='".$userinfo{'Avanz'}."', bsanz='".$userinfo{'Bsanz'}."', vmanz='".$userinfo{'Vmanz'}."', gebdatum='".$userinfo{'Geburtsdatum'}."' where loginname='$loginname'") or $logger->error($DBI::errstr);
 	
-	$userresult->execute();
+	$userresult->execute() or $logger->error($DBI::errstr);
 	$userresult->finish();
       }
     }
@@ -213,9 +219,9 @@ sub handler {
     if (!$loginfailed){
       # Jetzt wird die Session mit der Benutzerid assoziiert
       
-      my $userresult=$userdbh->prepare("select userid from user where loginname='$loginname'") or die "Error -- $DBI::errstr";
+      my $userresult=$userdbh->prepare("select userid from user where loginname='$loginname'") or $logger->error($DBI::errstr);
       
-      $userresult->execute();
+      $userresult->execute() or $logger->error($DBI::errstr);
       
       my $res=$userresult->fetchrow_hashref();
       
@@ -223,24 +229,24 @@ sub handler {
       
       # Es darf keine Session assoziiert sein. Daher stumpf loeschen
       
-      $userresult=$userdbh->prepare("delete from usersession where sessionid='$config{servername}:$sessionID'") or die "Error -- $DBI::errstr";
+      $userresult=$userdbh->prepare("delete from usersession where sessionid='$config{servername}:$sessionID'") or $logger->error($DBI::errstr);
       
-      $userresult->execute();
+      $userresult->execute() or $logger->error($DBI::errstr);
       
-      $userresult=$userdbh->prepare("insert into usersession values ('$config{servername}:$sessionID','$userid')") or die "Error -- $DBI::errstr";
+      $userresult=$userdbh->prepare("insert into usersession values ('$config{servername}:$sessionID','$userid')") or $logger->error($DBI::errstr);
       
-      $userresult->execute();
+      $userresult->execute() or $logger->error($DBI::errstr);
       
       # Ueberpruefen, ob der Benutzer schon ein Suchprofil hat
       
-      $userresult=$userdbh->prepare("select userid from fieldchoice  where userid=$userid") or die "Error -- $DBI::errstr";
+      $userresult=$userdbh->prepare("select userid from fieldchoice  where userid=$userid") or $logger->error($DBI::errstr);
       
-      $userresult->execute();
+      $userresult->execute() or $logger->error($DBI::errstr);
       
       # Falls noch keins da ist, eintragen
       if ($userresult->rows <= 0){
-	$userresult=$userdbh->prepare("insert into fieldchoice values ($userid,1,1,1,1,1,1,1,1,1,1,0,1)") or die "Error -- $DBI::errstr";
-	$userresult->execute();
+	$userresult=$userdbh->prepare("insert into fieldchoice values ($userid,1,1,1,1,1,1,1,1,1,1,0,1)") or $logger->error($DBI::errstr);
+	$userresult->execute() or $logger->error($DBI::errstr);
 	
       }
       
@@ -248,8 +254,8 @@ sub handler {
       
       # Gehe ueber alle Eintraege der Trefferliste
       
-      my $idnresult=$sessiondbh->prepare("select * from treffer where sessionid='$sessionID'");
-      $idnresult->execute();
+      my $idnresult=$sessiondbh->prepare("select * from treffer where sessionid='$sessionID'") or $logger->error($DBI::errstr);
+      $idnresult->execute() or $logger->error($DBI::errstr);
       
       # Es gibt etwas zu uebertragen
       
@@ -261,15 +267,15 @@ sub handler {
 	  
 	  # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
 	  
-	  $userresult=$userdbh->prepare("select userid from treffer where userid=$userid and dbname='$dbname' and singleidn=$singleidn");
+	  $userresult=$userdbh->prepare("select userid from treffer where userid=$userid and dbname='$dbname' and singleidn=$singleidn") or $logger->error($DBI::errstr);
 	  
-	  $userresult->execute();
+	  $userresult->execute() or $logger->error($DBI::errstr);
 	  
 	  if ($userresult->rows <= 0){
 	    
-	    $userresult=$userdbh->prepare("insert into treffer values ($userid,'$dbname',$singleidn)");
+	    $userresult=$userdbh->prepare("insert into treffer values ($userid,'$dbname',$singleidn)") or $logger->error($DBI::errstr);
 	    
-	    $userresult->execute();
+	    $userresult->execute() or $logger->error($DBI::errstr);
 	  }
 	}
       }

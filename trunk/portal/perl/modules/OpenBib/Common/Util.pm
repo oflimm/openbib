@@ -25,10 +25,12 @@
 
 package OpenBib::Common::Util;
 
-use Apache::Constants qw(:common);
-
 use strict;
 use warnings;
+
+use Apache::Constants qw(:common);
+
+use Log::Log4perl qw(get_logger :levels);
 
 use POSIX();
 
@@ -49,6 +51,10 @@ use vars qw(%config);
 sub init_new_session {
   my ($sessiondbh)=@_;
 
+  # Log4perl logger erzeugen
+  
+  my $logger = get_logger();
+
   my $sessionID="";
 
   my $havenewsessionID=0;
@@ -63,8 +69,8 @@ sub init_new_session {
     
     # Nachschauen, ob es diese ID schon gibt
     
-    my $idnresult=$sessiondbh->prepare("select count(sessionid) from session where sessionid='$sessionID'") or die "Error -- $DBI::errstr";
-    $idnresult->execute();
+    my $idnresult=$sessiondbh->prepare("select count(sessionid) from session where sessionid='$sessionID'") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
 
     my @idn=$idnresult->fetchrow_array();
     my $anzahl=$idn[0];
@@ -77,8 +83,8 @@ sub init_new_session {
       
       # Eintrag in die Datenbank
       
-      $idnresult=$sessiondbh->prepare("insert into session (sessionid,createtime) values ('$sessionID','$createtime')") or die "Error -- $DBI::errstr";
-      $idnresult->execute();
+      $idnresult=$sessiondbh->prepare("insert into session (sessionid,createtime) values ('$sessionID','$createtime')") or $logger->error($DBI::errstr);
+      $idnresult->execute() or $logger->error($DBI::errstr);
     }
     
     $idnresult->finish();
@@ -90,12 +96,16 @@ sub init_new_session {
 sub session_is_valid {
   my ($sessiondbh,$sessionID)=@_;
 
+  # Log4perl logger erzeugen
+  
+  my $logger = get_logger();
+
   if ($sessionID eq "-1"){
     return 1;
   }
 
-  my $idnresult=$sessiondbh->prepare("select count(sessionid) from session where sessionid='$sessionID'") or die "Error -- $DBI::errstr";
-  $idnresult->execute();
+  my $idnresult=$sessiondbh->prepare("select count(sessionid) from session where sessionid='$sessionID'") or $logger->error($DBI::errstr);
+  $idnresult->execute() or $logger->error($DBI::errstr);
 
   my @idn=$idnresult->fetchrow_array();
   my $anzahl=$idn[0];
@@ -112,9 +122,13 @@ sub session_is_valid {
 sub get_userid_of_session {
   my ($userdbh,$sessionID)=@_;
 
-  my $userresult=$userdbh->prepare("select userid from usersession where sessionid='$config{servername}:$sessionID'") or die "Error -- $DBI::errstr";
+  # Log4perl logger erzeugen
+  
+  my $logger = get_logger();
 
-  $userresult->execute();
+  my $userresult=$userdbh->prepare("select userid from usersession where sessionid='$config{servername}:$sessionID'") or $logger->error($DBI::errstr);
+
+  $userresult->execute() or $logger->error($DBI::errstr);
   
   my $userid="";
   
@@ -128,6 +142,10 @@ sub get_userid_of_session {
 
 sub get_css_by_browsertype {
   my ($r)=@_;
+
+  # Log4perl logger erzeugen
+  
+  my $logger = get_logger();
 
   my $useragent=$r->subprocess_env('HTTP_USER_AGENT');
 
@@ -159,6 +177,11 @@ CSS
 
 sub get_sql_result {
   my ($rreqarray,$dbh,$benchmark)=@_;
+
+  # Log4perl logger erzeugen
+  
+  my $logger = get_logger();
+
   my %metaidns;
   my @midns=();
   my $atime;
@@ -177,8 +200,8 @@ sub get_sql_result {
       $atime=new Benchmark;
     }
     
-    my $idnresult=$dbh->prepare("$idnrequest") or die "Error -- $DBI::errstr";
-    $idnresult->execute();
+    my $idnresult=$dbh->prepare("$idnrequest") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
     
     my @idnres;
     while (@idnres=$idnresult->fetchrow){	    
@@ -270,6 +293,10 @@ FOOTER
 
 sub print_warning {
   my ($warning,$r)=@_;
+
+  # Log4perl logger erzeugen
+  
+  my $logger = get_logger();
   
   my $stylesheet=get_css_by_browsertype($r);
   
@@ -307,6 +334,10 @@ sub print_warning {
 
 sub print_page {
   my ($templatename,$ttdata,$r)=@_;
+
+  # Log4perl logger erzeugen
+  
+  my $logger = get_logger();
   
   my $stylesheet=get_css_by_browsertype($r);
   
@@ -638,12 +669,16 @@ sub cleanrl {
 sub updatelastresultset {
   my ($sessiondbh,$sessionID,$rresultset)=@_;
 
+  # Log4perl logger erzeugen
+  
+  my $logger = get_logger();
+
   my @resultset=@$rresultset;
 
   my $resultsetstring=join("|",@resultset);
 
-  my $sessionresult=$sessiondbh->prepare("update session set lastresultset='$resultsetstring' where sessionid='$sessionID'") or die "Error -- $DBI::errstr";
-  $sessionresult->execute();
+  my $sessionresult=$sessiondbh->prepare("update session set lastresultset='$resultsetstring' where sessionid='$sessionID'") or $logger->error($DBI::errstr);
+  $sessionresult->execute() or $logger->error($DBI::errstr);
   $sessionresult->finish();
 
   return;

@@ -38,6 +38,8 @@ use warnings;
 
 use Apache::Request();      # CGI-Handling (or require)
 
+use Log::Log4perl qw(get_logger :levels);
+
 use POSIX;
 
 use Digest::MD5;
@@ -59,6 +61,10 @@ use vars qw(%config);
 sub handler {
   my $r=shift;
   
+  # Log4perl logger erzeugen
+
+  my $logger = get_logger();
+
   my $query=Apache::Request->new($r);
   
   my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
@@ -72,14 +78,14 @@ sub handler {
   #####################################################################
   # Verbindung zur SQL-Datenbank herstellen
 
-  my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or die "could not connect";
+  my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
   
-  my $userdbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd}) or die "could not connect";
+  my $userdbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd}) or $logger->error_die($DBI::errstr);
   
   # Assoziierten View zur Session aus Datenbank holen
   
-  my $idnresult=$sessiondbh->prepare("select viewname from sessionview where sessionid='$sessionID'");
-  $idnresult->execute();
+  my $idnresult=$sessiondbh->prepare("select viewname from sessionview where sessionid='$sessionID'") or $logger->error($DBI::errstr);
+  $idnresult->execute() or $logger->error($DBI::errstr);
   
   my $result=$idnresult->fetchrow_hashref();
   
@@ -106,16 +112,16 @@ sub handler {
     
     # Zuallererst Suchen, wieviele Titel in der Merkliste vorhanden sind.
     
-    my $idnresult=$userdbh->prepare("select * from treffer where userid=$userid");
-    $idnresult->execute();
+    my $idnresult=$userdbh->prepare("select * from treffer where userid=$userid") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
     $anzahl=$idnresult->rows();
     $idnresult->finish();
   }
   else {
     #  Zuallererst Suchen, wieviele Titel in der Merkliste vorhanden sind.
   
-    my $idnresult=$sessiondbh->prepare("select * from treffer where sessionid='$sessionID'");
-    $idnresult->execute();
+    my $idnresult=$sessiondbh->prepare("select * from treffer where sessionid='$sessionID'") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
     $anzahl=$idnresult->rows();
     $idnresult->finish();
   }

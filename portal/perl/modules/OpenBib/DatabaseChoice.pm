@@ -61,6 +61,7 @@ sub handler {
   my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
   my @databases=($query->param('database'))?$query->param('database'):();
   my $singleidn=$query->param('singleidn') || '';
+  my $view=$query->param('view') || '';
   my $action=($query->param('action'))?$query->param('action'):'';
   
   # CGI-Uebergabe
@@ -157,7 +158,7 @@ sub handler {
       
       $idnresult->finish();
       
-      $r->internal_redirect("http://$config{servername}$config{searchframe_loc}?sessionID=$sessionID");
+      $r->internal_redirect("http://$config{servername}$config{searchframe_loc}?sessionID=$sessionID&view=$view");
       
     }
     
@@ -258,13 +259,14 @@ sub handler {
       my $ttdata={
 		  title      => 'KUG: Katalogauswahl',
 		  stylesheet => $stylesheet,
+		  view       => $view,
 		  sessionID  => $sessionID,
 		  show_corporate_banner => 0,
-		  show_foot_banner => 1,
-		  show_testsystem_info => 0,
-		  categories    => $categories,
-		  maxcolumn => $maxcolumn,
-		  colspan => $colspan,
+		  show_foot_banner      => 1,
+		  show_testsystem_info  => 0,
+		  categories => $categories,
+		  maxcolumn  => $maxcolumn,
+		  colspan    => $colspan,
 		  catdb      => \@catdb,
 		  config     => \%config,
 		 };

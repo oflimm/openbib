@@ -117,6 +117,7 @@ sub handler {
   my $showissn="1";
   my $showsign="1";
   my $showmart="1";
+  my $showhststring="1";
   my $showejahr="1";
   
   my $userprofiles="";
@@ -138,6 +139,7 @@ sub handler {
     $showissn=$result->{'issn'};
     $showsign=$result->{'sign'};
     $showmart=$result->{'mart'};
+    $showhststring=$result->{'hststring'};
     $showejahr=$result->{'ejahr'};
     $targetresult->finish();
 
@@ -173,6 +175,7 @@ sub handler {
   my $fs=$query->param('fs') || ''; # Freie Suche
   my $verf=$query->param('verf') || '';
   my $hst=$query->param('hst') || '';
+  my $hststring=$query->param('hststring') || '';
   my $swt=$query->param('swt') || '';
   my $kor=$query->param('kor') || '';
   my $sign=$query->param('sign') || '';
@@ -192,6 +195,7 @@ sub handler {
   my $bool9=$query->param('bool9') || '';
   my $bool10=$query->param('bool10') || '';
   my $bool11=$query->param('bool11') || '';
+  my $bool12=$query->param('bool12') || '';
   
   my $benchmark=0;
   
@@ -230,7 +234,7 @@ sub handler {
     $hits=$result->{'hits'};
 
     # TODO: Vervollstaendigen in alter Version
-    ($fs,$verf,$hst,$swt,$kor,$sign,$isbn,$issn,$notation,$mart,$ejahr,$bool1,$bool2,$bool3,$bool4,$bool5,$bool6,$bool7,$bool8,$bool9,$bool10,$bool11)=split('\|\|',$query);
+    ($fs,$verf,$hst,$swt,$kor,$sign,$isbn,$issn,$notation,$mart,$ejahr,$hststring,$bool1,$bool2,$bool3,$bool4,$bool5,$bool6,$bool7,$bool8,$bool9,$bool10,$bool11,$bool12)=split('\|\|',$query);
     $idnresult->finish();
   }
 
@@ -299,7 +303,7 @@ sub handler {
       my $query=$result->{'query'};
       my $hits=$result->{'hits'};
 
-      my ($fs,$verf,$hst,$swt,$kor,$sign,$isbn,$issn,$notation,$mart,$ejahr,$bool1,$bool2,$bool3,$bool4,$bool5,$bool6,$bool7,$bool8,$bool9,$bool10,$bool11)=split('\|\|',$query);
+      my ($fs,$verf,$hst,$swt,$kor,$sign,$isbn,$issn,$notation,$mart,$ejahr,$hststring,$bool1,$bool2,$bool3,$bool4,$bool5,$bool6,$bool7,$bool8,$bool9,$bool10,$bool11,$bool12)=split('\|\|',$query);
 
       $prevqueries.="<OPTION value=\"$queryid\">";
 
@@ -314,6 +318,7 @@ sub handler {
       $prevqueries.="ISBN: $isbn " if ($isbn);
       $prevqueries.="ISSN: $issn " if ($issn);
       $prevqueries.="MART: $mart " if ($mart);
+      $prevqueries.="HSTR: $hststring " if ($hststring);
       $prevqueries.="= Treffer: $hits" if ($hits);
       $prevqueries.="</OPTION>"; 
 
@@ -351,10 +356,12 @@ sub handler {
                 showissn     => $showissn,
                 showsign     => $showsign,
                 showmart     => $showmart,
+                showhststring => $showhststring,
                 showejahr    => $showejahr,
 
                 fs           => $fs,
                 hst          => $hst,
+                hststring    => $hststring,
                 verf         => $verf,
                 kor          => $kor,
                 swt          => $swt,

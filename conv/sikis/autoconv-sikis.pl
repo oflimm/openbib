@@ -154,7 +154,7 @@ system("cd $rootdir/data/$singlepool ; $meta2sqlexe -all -mysql");
 # Konvertierung Exportdateien -> WAIS
 
 print "### $singlepool: Konvertierung Exportdateien -> WAIS\n";
-system("cd $rootdir/data/$singlepool ; $meta2waisexe -combined ; $wais2sqlexe < data.wais ");
+system("cd $rootdir/data/$singlepool ; $meta2waisexe -encoding -combined ; rm *.exp ; $wais2sqlexe < data.wais ; rm data.wais");
 
 print "### $singlepool: Loeschen der Daten in Biblio\n";
 
@@ -175,6 +175,9 @@ if ($singlepool ne "instzs"){
   my $thispoolsigel=$sigel;
   $thispoolsigel=~s/^99/00/;
   system("$mysqlexe -e \"update mex set sigel=\\\"".$thispoolsigel."\\\" where idn < 99999999 \" ".$singlepool."");
+}
+else {
+  system("$mysqlexe -e \"update mex set standort='' where standort='USB-Magazin'\" ");
 }
 
   
@@ -204,6 +207,7 @@ print "### $singlepool: Updating Titcount\n";
 system("$config{'base_dir'}/bin/updatetitcount.pl --single-pool=$singlepool");
 
 print "### $singlepool: Cleanup\n";
+system("rm $rootdir/data/$singlepool/*");
   
 sub print_help {
     print "autoconv-sikis.pl - Automatische Konvertierung von SIKIS-Daten\n\n";

@@ -34,7 +34,11 @@ while (<>){
   chomp($_);
 
   if (/^/){
-    print OUT "NULL|$idn|$verf|$hst|$kor|$swt|$notation|$sign|$ejahr|$isbn|$issn|$artinh\n";
+    # Sonderbehandlung fuer hststring
+    $hststring=~s/¬//g;
+    $hststring=~s/\s+$//;
+    $hststring=~s/\s+<.*?>//g;
+    print OUT "NULL|$idn|$verf|$hst|$kor|$swt|$notation|$sign|$ejahr|$isbn|$issn|$artinh|$hststring\n";
 
     $idn="";
     $verf="";
@@ -47,6 +51,7 @@ while (<>){
     $issn="";
     $artinh="";
     $ejahr="";
+    $hststring="";
   }
   else {
 
@@ -205,6 +210,7 @@ while (<>){
       }
       else {
         $hst="$_";
+	$hststring="$_";
       }
     }
 

@@ -978,6 +978,10 @@ while (($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split ("
 	    }
 	  }
 	}
+
+	if ($line=~/^0089\.001:(.+?)$/) {
+	  $bandangvorl=$1;
+	}
       
 	if ($line=~/^0590\....:(.+)/) {
 	  my $inhalt=$1;
@@ -1031,6 +1035,17 @@ while (($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split ("
 	    $maxmex=$zaehlung;
 	  }
         }
+
+	# Zeitschriftensignaturen USB Koeln
+
+	if ($line=~/^1203\.(\d\d\d):(.*$)/){
+          $zaehlung=$1;
+          $inhalt=$2;
+          $signaturbuf{$zaehlung}=$inhalt;
+          if ($maxmex <= $zaehlung) {
+	    $maxmex=$zaehlung;
+	  }
+        }
 		
         if ($line=~/^1204\.(\d\d\d):(.*$)/){
       	  $zaehlung=$1;
@@ -1063,6 +1078,12 @@ while (($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split ("
       }
     }
   } # Ende foreach
+
+  # 089er verwenden, wenn genau eine 004 besetzt, aber keine 455/590
+
+  if ($bandangvorl && $maxpos < 1 && $verwidn[0][3] eq ""){
+    $verwidn[0][3]=$bandangvorl;
+  }
 
   # Exemplardaten abarbeiten Anfang
 
@@ -1182,7 +1203,7 @@ while (($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split ("
   undef $inventar;
   undef $maxmex;
   undef $maxpos;
-
+  undef $bandangvorl;
 
 } # Ende einzelner Satz in while
 

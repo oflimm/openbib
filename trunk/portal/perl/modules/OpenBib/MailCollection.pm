@@ -380,12 +380,12 @@ ANSCHREIBEN
     my $idnresult="";
   
     if ($userid){
-      $idnresult=$userdbh->prepare("select * from treffer where userid=$userid order by dbname") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
+      $idnresult=$userdbh->prepare("select * from treffer where userid = ? order by dbname") or $logger->error($DBI::errstr);
+      $idnresult->execute($userid) or $logger->error($DBI::errstr);
     }
     else {
-      $idnresult=$sessiondbh->prepare("select * from treffer where sessionid='$sessionID' order by dbname") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
+      $idnresult=$sessiondbh->prepare("select * from treffer where sessionid = ? order by dbname") or $logger->error($DBI::errstr);
+      $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
     }
 
     my $gesamttreffer="";

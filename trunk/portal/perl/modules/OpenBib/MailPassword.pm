@@ -119,9 +119,9 @@ sub handler {
       return OK;
     }
     
-    my $targetresult=$userdbh->prepare("select pin from user where loginname='$loginname'") or $logger->error($DBI::errstr);
+    my $targetresult=$userdbh->prepare("select pin from user where loginname = ?") or $logger->error($DBI::errstr);
     
-    $targetresult->execute() or $logger->error($DBI::errstr);
+    $targetresult->execute($loginname) or $logger->error($DBI::errstr);
     
     my $result=$targetresult->fetchrow_hashref();
     my $password=$result->{'pin'};

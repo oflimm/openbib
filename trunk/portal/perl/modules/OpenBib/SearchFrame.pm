@@ -116,7 +116,7 @@ sub handler {
   my $showisbn="1";
   my $showissn="1";
   my $showsign="1";
-  my $showmart="1";
+  my $showmart="0";
   my $showhststring="1";
   my $showejahr="1";
   
@@ -215,7 +215,6 @@ sub handler {
   $idnresult->execute();
   my $result=$idnresult->fetchrow_hashref();
   
-  # TODO $view muss in $viewdesc abgeaendert werden in altem Skript
   my $viewdesc=$result->{'description'} if (defined($result->{'description'}));
   
   $idnresult->finish();
@@ -233,7 +232,6 @@ sub handler {
 
     $hits=$result->{'hits'};
 
-    # TODO: Vervollstaendigen in alter Version
     ($fs,$verf,$hst,$swt,$kor,$sign,$isbn,$issn,$notation,$mart,$ejahr,$hststring,$bool1,$bool2,$bool3,$bool4,$bool5,$bool6,$bool7,$bool8,$bool9,$bool10,$bool11,$bool12)=split('\|\|',$query);
     $idnresult->finish();
   }
@@ -265,7 +263,7 @@ sub handler {
   while (my $result=$idnresult->fetchrow_hashref()){
   
     my $dbname=$result->{'dbname'};
-    $dbinputtags.="<INPUT type=hidden name=database value=$dbname>\n";
+    $dbinputtags.="<input type=\"hidden\" name=\"database\" value=\"$dbname\" />\n";
     $dbcount++; 
   }
 
@@ -284,6 +282,9 @@ sub handler {
 
   if ($dbcount != 0){
     $dbcount="<OPTION value=\"dbauswahl\">Aktuelle Katalogauswahl ($dbcount Datenbanken)<OPTION value=\"\">";
+  }
+  else {
+    $dbcount="";
   }
 
   # Ausgabe der vorhandenen queries
@@ -344,6 +345,7 @@ sub handler {
                 dbinputtags  => $dbinputtags,
                 show_testsystem_info => 1,
                 alldbs       => $alldbs,
+                dbcount      => $dbcount,
                 alldbcount   => $alldbcount,
                 userprofiles => $userprofiles,
                 showfs       => $showfs,
@@ -377,7 +379,6 @@ sub handler {
                 useragent    => $useragent,                
 		show_corporate_banner => 0,
 		show_foot_banner      => 1,
-                invisible_links       => 0,
 		config       => \%config,
 	       };
     

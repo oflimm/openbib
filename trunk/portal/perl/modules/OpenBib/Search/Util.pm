@@ -47,145 +47,12 @@ if ($OpenBib::Config::config{benchmark}){
   use Benchmark ':hireswallclock';
 }
 
-
 #####################################################################
-## get_aut_by_idn(autidn,mode,...): Gebe zu autidn geh"oerenden
-##                                  Autorenstammsatz aus
+## get_aut_ans_by_idn(autidn,...): Gebe zu autidn geh"oerende
+##                                 Ansetzungsform aus Autorenstammsatz 
+##                                 aus
 ##
 ## autidn: IDN des Autorenstammsatzes
-## mode:   1 - Nur Ansetzungsform wird ausgegeben
-##         2 - Gesamter Autorenstammsatz ausgeben
-##         3 - Gesamter Autorenstammsatz + Anzahl verkn"upfter Titeldaten 
-##             ausgeben
-##         5 - Autor in Listenform ausgeben
-##
-## Und nun jede Menge Variablen, damit mod_perl keine Probleme macht
-##
-## $dbh
-## $benchmark
-## $searchmultipleaut
-## $searchmode
-## $showmexintit
-## $hitrange
-## $sorttype
-## $database
-
-sub get_aut_by_idn {
-
-    my ($autidn,$mode,$dbh,$benchmark,$searchmultipleaut,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID)=@_;
-
-    # Log4perl logger erzeugen
-    
-    my $logger = get_logger();
-
-    my $autstatement1="select * from aut where idn = ?";
-    my $autstatement2="select * from autverw where autidn = ?";
-
-    my $atime;
-    my $btime;
-    my $timeall;
-
-    if ($benchmark){
-	$atime=new Benchmark;
-    }
-
-    my $autresult1=$dbh->prepare("$autstatement1") or $logger->error($DBI::errstr);
-    $autresult1->execute($autidn) or $logger->error($DBI::errstr);
-
-    my $autres1=$autresult1->fetchrow_hashref;
-
-    $autresult1->finish();
-
-    if ($benchmark){
-	$btime=new Benchmark;
-	$timeall=timediff($btime,$atime);
-	$logger->info("Zeit fuer : $autstatement1 : ist ".timestr($timeall));
-	undef $atime;
-	undef $btime;
-	undef $timeall;
-    }
-
-    if ($mode == 1){
-	if ($autres1->{ans}){
-	    return $autres1->{ans};
-	}
-	return;
-    }
-
-    if (($mode == 2)||($mode == 3)){
-      print_inst_head($database,"base");
-
-      print_mult_sel_form($searchmode,$hitrange,$rating,$bookinfo,$database,$dbmode,$sessionID);
-      
-	if ($searchmultipleaut){
-	    print "\n<hr>\n";
-	}
-	else {
-#	    print "<h1>Gefundener Autor</h1>\n";
-	}
-
-	print "<table cellpadding=2>\n";
-	print "<tr><td>Kategorie</td><td>Inhalt</td></tr>\n";
-#	print "<tr bgcolor=\"lightblue\"><td>&nbsp;</td><td>".$dbinfo{"$database"}."</td></tr>\n";
-	
-	# Ausgabe diverser Informationen
-
-	print_simple_category("Ident-Nr","$autres1->{idn}");
-	print_simple_category("Ident-Alt","$autres1->{ida}") if ($autres1->{ida});
-	print_simple_category("Versnr","$autres1->{versnr}") if ($autres1->{versnr});
-	print_simple_category("Ansetzung","$autres1->{ans}") if ($autres1->{ans});
-	print_simple_category("Pndnr","$autres1->{pndnr}") if ($autres1->{pndnr});
-	print_simple_category("Verbnr","$autres1->{verbnr}") if ($autres1->{verbnr});
-
-	if ($benchmark){
-	    $atime=new Benchmark;
-	}
-
-	# Ausgabe der Verweisformen
-
-	my $autresult2=$dbh->prepare("$autstatement2") or $logger->error($DBI::errstr);
-	$autresult2->execute($autidn) or $logger->error($DBI::errstr);
-
-	my $autres2;
-	while ($autres2=$autresult2->fetchrow_hashref){
-	  print_simple_category("Verweis","$autres2->{verw}");
-	}    
-
-	$autresult2->finish();
-
-	if ($benchmark){
-	    $btime=new Benchmark;
-	    $timeall=timediff($btime,$atime);
-	    $logger->info("Zeit fuer : $autstatement2 : ist ".timestr($timeall));
-	    undef $atime;
-	    undef $btime;
-	    undef $timeall;
-	}
-
-    }
-
-    if ($mode == 3){
-
-      # Ausgabe der Anzahl verk"upfter Titel
-
-	my @requests=("select titidn from titverf where verfverw=$autres1->{idn}","select titidn from titpers where persverw=$autres1->{idn}","select titidn from titgpers where persverw=$autres1->{idn}");
-	my $titelnr=get_number(\@requests,$dbh);
-
-	print_url_category("Anzahl Titel","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;searchtitofaut=$autres1->{idn}","$titelnr</a>");
-
-    }
-
-    if ($mode == 5){
-
-	print "<tr><td><input type=checkbox name=searchmultipleaut value=$autres1->{idn} ";
-	print "></td><td>";
-	print "<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;searchsingleaut=$autres1->{idn};generalsearch=searchsingleaut\">";
-	print "<strong>$autres1->{ans}</strong></a></td></tr>\n";
-	return;
-    }
-    print "</table>";
-    return;
-}
 
 sub get_aut_ans_by_idn {
 
@@ -221,11 +88,21 @@ sub get_aut_ans_by_idn {
 	undef $timeall;
     }
 
+    my $autans;
+
     if ($autres1->{ans}){
-      return $autres1->{ans};
+      $autans=$autres1->{ans};
     }
-    return;
+
+    return $autans;
 }
+
+#####################################################################
+## get_aut_set_by_idn(autidn,...): Gebe zu autidn geh"oerenden
+##                                 Autorenstammsatz aus inkl.
+##                                 Anzahl verkn. Titeldaten
+##
+## autidn: IDN des Autorenstammsatzes
 
 sub get_aut_set_by_idn {
 
@@ -250,8 +127,6 @@ sub get_aut_set_by_idn {
     $autresult1->execute($autidn);
 
     my $autres1=$autresult1->fetchrow_hashref;
-
-    $autresult1->finish();
 
     if ($config{benchmark}){
 	$btime=new Benchmark;
@@ -320,190 +195,18 @@ sub get_aut_set_by_idn {
     print_url_category("Anzahl Titel","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;searchtitofaut=$autres1->{idn}","$titelnr</a>");
 
     print "</table>";
+
+    $autresult1->finish();
+
     return;
 }
 
 #####################################################################
-## get_kor_by_idn(koridn,mode,...): Gebe zu koridn geh"oerenden 
-##                              K"orperschaftsstammsatz aus
+## get_kor_ans_by_idn(koridn,dbh): Gebe zu koridn gehoerende 
+##                                 Ansetzungsform in
+##                                 Koerperschaftsstammsatz aus
 ##
-## koridn: IDN des K"orperschaftsstammsatzes
-## mode:   1 - Nur Ansetzungsform wird ausgegeben
-##         2 - Gesamten K"orperschaftsstammsatz ausgeben
-##         3 - Gesamter K"orperschaftsstammsatz + Anzahl verkn"upfter 
-##             Titeldaten ausgeben
-##         5 - Ansetzungsform in Suchzeile ausgeben
-##
-## Und nun jede Menge Variablen, damit mod_perl keine Probleme macht
-##
-## $dbh
-## $benchmark
-## $searchmultiplekor
-## $searchmode
-## $showmexintit
-## $hitrange
-## $sorttype
-## $database
-
-sub get_kor_by_idn {
-
-    my ($koridn,$mode,$dbh,$benchmark,$searchmultiplekor,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID)=@_;
-
-    # Log4perl logger erzeugen
-    
-    my $logger = get_logger();
-
-    my $korstatement1="select * from kor where idn = ?";
-    my $korstatement2="select * from korverw where koridn = ?";
-    my $korstatement3="select * from korfrueh where koridn = ?";
-    my $korstatement4="select * from korspaet where koridn = ?";
-    my $atime;
-    my $btime;
-    my $timeall;
-
-    if ($benchmark){
-	$atime=new Benchmark;
-    }
-
-    my $korresult1=$dbh->prepare("$korstatement1") or $logger->error($DBI::errstr);
-    $korresult1->execute($koridn) or $logger->error($DBI::errstr);
-
-    my $korres1=$korresult1->fetchrow_hashref;
-    $korresult1->finish();
-
-    if ($benchmark){
-	$btime=new Benchmark;
-	$timeall=timediff($btime,$atime);
-	$logger->info("Zeit fuer : $korstatement1 : ist ".timestr($timeall));
-	undef $atime;
-	undef $btime;
-	undef $timeall;
-    }
-
-
-    if ($mode == 1){
-	if ($korres1->{korans}){
-	    return $korres1->{korans};
-	}
-	return;
-    }
-
-    if (($mode == 2)||($mode == 3)){
-      print_inst_head($database,"base");
-
-      print_mult_sel_form($searchmode,$hitrange,$rating,$bookinfo,$database,$dbmode,$sessionID);
-
-	if ($searchmultiplekor){
-	    print "\n<hr>\n";
-	}
-	else{
-#	    print "<h1>Gefundene K&ouml;rperschaft</h1>\n";
-	}
-	print "<table cellpadding=2>\n";
-	print "<tr><td>Kategorie</td><td>Inhalt</td></tr>\n";
-#	print "<tr bgcolor=\"lightblue\"><td>&nbsp;</td><td>".$dbinfo{"$database"}."</td></tr>\n";
-
-	print_simple_category("Ident-Nr","$korres1->{idn}");
-
-	print_simple_category("Ident-Alt","$korres1->{ida}") if ($korres1->{ida});
-	print_simple_category("Ansetzung","$korres1->{korans}") if ($korres1->{korans});
-	print_simple_category("GK-Ident","$korres1->{kgdident}") if ($korres1->{gkdident});
-	
-        # Verweisungsformen ausgeben
-
-	if ($benchmark){
-	    $atime=new Benchmark;
-	}
-
-	my $korresult2=$dbh->prepare("$korstatement2") or $logger->error($DBI::errstr);
-	$korresult2->execute($koridn) or $logger->error($DBI::errstr);
-
-	my $korres2;
-	while ($korres2=$korresult2->fetchrow_hashref){
-	  print_simple_category("Verweis","$korres2->{verw}");
-	}    
-
-	$korresult2->finish();
-
-	if ($benchmark){
-	    $btime=new Benchmark;
-	    $timeall=timediff($btime,$atime);
-	    $logger->info("Zeit fuer : $korstatement2 : ist ".timestr($timeall));
-	    undef $atime;
-	    undef $btime;
-	    undef $timeall;
-	}
-
-        # Fruehere Form ausgeben
-
-	if ($benchmark){
-	    $atime=new Benchmark;
-	}
-
-	my $korresult3=$dbh->prepare("$korstatement3") or $logger->error($DBI::errstr);
-	$korresult3->execute($koridn) or $logger->error($DBI::errstr);
-
-	my $korres3;
-	while ($korres3=$korresult3->fetchrow_hashref){
-	  print_simple_category("Fr&uuml;her","$korres3->{frueher}");
-	}    
-
-	$korresult3->finish();
-
-	if ($benchmark){
-	    $btime=new Benchmark;
-	    $timeall=timediff($btime,$atime);
-	    $logger->info("Zeit fuer : $korstatement3 : ist ".timestr($timeall));
-	    undef $atime;
-	    undef $btime;
-	    undef $timeall;
-	}
-        # Form fuer Spaeter ausgeben
-
-	if ($benchmark){
-	    $atime=new Benchmark;
-	}
-
-	my $korresult4=$dbh->prepare("$korstatement4") or $logger->error($DBI::errstr);
-	$korresult4->execute($koridn) or $logger->error($DBI::errstr);
-
-	my $korres4;
-	while ($korres4=$korresult4->fetchrow_hashref){
-	  print_simple_category("Sp&auml;ter","$korres4->{spaeter}");
-	}    
-
-	$korresult4->finish();
-
-	if ($benchmark){
-	    $btime=new Benchmark;
-	    $timeall=timediff($btime,$atime);
-	    $logger->info("Zeit fuer : $korstatement4 : ist ".timestr($timeall));
-	    undef $atime;
-	    undef $btime;
-	    undef $timeall;
-	}
-
-
-    }
-
-    if ($mode == 3){
-
-	my @requests=("select titidn from titurh where urhverw=$korres1->{idn}","select titidn from titkor where korverw=$korres1->{idn}");
-	my $titelnr=get_number(\@requests,$dbh);
-
-	print_url_category("Anzahl Titel","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;searchtitofurhkor=$korres1->{idn}","$titelnr</a>");
-    }
-
-    if ($mode == 5){
-	print "<tr><td><input type=checkbox name=searchmultiplekor value=$korres1->{idn} ";
-	print "></td><td>";
-	print "<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;searchsinglekor=$korres1->{idn}\">";
-	print "<strong>$korres1->{korans}</strong></a></td></tr>\n";
-	return;
-    }
-    print "</table>";
-    return;
-}
+## koridn: IDN des Koerperschaftsstammsatzes
 
 sub get_kor_ans_by_idn {
 
@@ -526,7 +229,6 @@ sub get_kor_ans_by_idn {
   my $korresult1=$dbh->prepare("$korstatement1") or $logger->error($DBI::errstr);
   $korresult1->execute($koridn) or $logger->error($DBI::errstr);
   my $korres1=$korresult1->fetchrow_hashref;
-  $korresult1->finish();
   
   if ($config{benchmark}){
     $btime=new Benchmark;
@@ -537,12 +239,25 @@ sub get_kor_ans_by_idn {
     undef $timeall;
   }
   
-  
+
+  my $korans;
+
   if ($korres1->{korans}){
-    return $korres1->{korans};
+    $korans=$korres1->{korans};
   }
-  return;
+
+  $korresult1->finish();
+
+  return $korans;
 }
+
+#####################################################################
+## get_kor_set_by_idn(koridn,...): Gebe zu koridn gehoerenden 
+##                                 Koerperschaftsstammsatz +
+##                                 Anzahl verknuepfter Titeldaten 
+##                                 aus
+##
+## koridn: IDN des Koerperschaftsstammsatzes
 
 sub get_kor_set_by_idn {
   my ($koridn,$dbh,$searchmultiplekor,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID)=@_;
@@ -567,7 +282,6 @@ sub get_kor_set_by_idn {
   $korresult1->execute($koridn) or $logger->error($DBI::errstr);
 
   my $korres1=$korresult1->fetchrow_hashref;
-  $korresult1->finish();
   
   if ($config{benchmark}){
     $btime=new Benchmark;
@@ -597,7 +311,7 @@ sub get_kor_set_by_idn {
   
   print_simple_category("Ident-Alt","$korres1->{ida}") if ($korres1->{ida});
   print_simple_category("Ansetzung","$korres1->{korans}") if ($korres1->{korans});
-  print_simple_category("GK-Ident","$korres1->{kgdident}") if ($korres1->{gkdident});
+  print_simple_category("GK-Ident","$korres1->{gkdident}") if ($korres1->{gkdident});
   
   # Verweisungsformen ausgeben
   
@@ -679,269 +393,58 @@ sub get_kor_set_by_idn {
   print_url_category("Anzahl Titel","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;searchtitofurhkor=$korres1->{idn}","$titelnr</a>");
 
   print "</table>";
+
+  $korresult1->finish();
+
   return;
 }
 
 #####################################################################
-## get_swt_by_idn(swtidn,mode,...): Gebe zu swtidn geh"oerenden 
-##                                  Schlagwortstammsatz aus
+## get_swt_ans_by_idn(swtidn,dbh): Gebe zu swtidn gehoerendes Schlagwort
+##                                 in Schlagwortstammsatz aus
 ##
 ## swtidn: IDN des Schlagwortstammsatzes
-## mode:   1 - Nur Ansetzungsform wird ausgegeben
-##         2 - Gesamter Autorenstammsatz ausgeben
-##         3 - Gesamter Autorenstammsatz + Anzahl verkn"upfter Titeldaten
-##             ausgeben
-##         5 - Ansetzungsform in Suchzeile ausgeben
-##
-## Und nun jede Menge Variablen, damit mod_perl keine Probleme macht
-##
-## $dbh
-## $benchmark
-## $searchmultipleswt
-## $searchmode
-## $showmexintit
-## $hitrange
-## $sorttype
-## $database
-
-sub get_swt_by_idn {
-
-    my ($swtidn,$mode,$dbh,$benchmark,$searchmultipleswt,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$rdbinfo,$sessionID)=@_;
-
-    # Log4perl logger erzeugen
-    
-    my $logger = get_logger();
-
-    my %dbinfo=%$rdbinfo;
-
-    my $swtstatement1="select * from swt where idn = ?";
-    my $swtstatement2="select * from swtverw where swtidn = ?";
-    my $swtstatement3="select * from swtueber where swtidn = ?";
-    my $swtstatement4="select * from swtassoz where swtidn = ?";
-    my $swtstatement5="select * from swtfrueh where swtidn = ?";
-    my $swtstatement6="select * from swtspaet where swtidn = ?";
-
-    my $atime;
-    my $btime;
-    my $timeall;
-
-    if ($config{benchmark}){
-	$atime=new Benchmark;
-    }
-
-    my $swtresult1=$dbh->prepare("$swtstatement1") or $logger->error($DBI::errstr);
-    $swtresult1->execute($swtidn) or $logger->error($DBI::errstr);
-
-    my $swtres1=$swtresult1->fetchrow_hashref;
-    $swtresult1->finish();
-
-    if ($mode == 1){
-      if ($swtres1->{schlagw}){
-	return $swtres1->{schlagw};
-      }
-      return;
-    }
-
-
-    if ($config{benchmark}){
-	$btime=new Benchmark;
-	$timeall=timediff($btime,$atime);
-	$logger->info("Zeit fuer : $swtstatement1 : ist ".timestr($timeall));
-	undef $atime;
-	undef $btime;
-	undef $timeall;
-    }
-
-    if (($mode == 2)||($mode == 3)){
-      print_inst_head($database,"base");
-
-      print_mult_sel_form($searchmode,$hitrange,$rating,$bookinfo,$database,$dbmode,$sessionID);
-
-      if ($searchmultipleswt){
-	print "\n<hr>\n";
-      }
-      else {
-#	print "<h1>Gefundenes Schlagwort</h1>\n";
-      }
-      
-      print "<table cellpadding=2>";
-      print "<tr><td>Kategorie</td><td>Inhalt</td></tr>\n";
-#      print "<tr bgcolor=\"lightblue\"><td>&nbsp;</td><td>".$dbinfo{"$database"}."</td></tr>\n";
-      
-      # Ausgabe diverser Informationen
-      
-      print_simple_category("Ident-Nr","$swtres1->{idn}");
-      print_simple_category("Ident-Alt","$swtres1->{ida}") if ($swtres1->{ida});
-      print_simple_category("Schlagwort","$swtres1->{schlagw}") if ($swtres1->{schlagw});
-      print_simple_category("Erlaeut","$swtres1->{erlaeut}") if ($swtres1->{erlaeut});
-      print_simple_category("Verbidn","$swtres1->{verbidn}") if ($swtres1->{verbidn});
-      
-      if ($config{benchmark}){
-	$atime=new Benchmark;
-      }
-      
-      my $swtresult2=$dbh->prepare("$swtstatement2") or $logger->error($DBI::errstr);
-      $swtresult2->execute($swtidn) or $logger->error($DBI::errstr);
-      
-      my $swtres2;
-      while ($swtres2=$swtresult2->fetchrow_hashref){
-	print_simple_category("Verweis","$swtres2->{verw}") if ($swtres2->{verw});
-      }    
-      $swtresult2->finish();
-      
-      if ($config{benchmark}){
-	$btime=new Benchmark;
-	$timeall=timediff($btime,$atime);
-	$logger->info("Zeit fuer : $swtstatement2 : ist ".timestr($timeall));
-	undef $atime;
-	undef $btime;
-	undef $timeall;
-      }
-
-      # 
-
-      if ($config{benchmark}){
-	$atime=new Benchmark;
-      }
-      
-      my $swtresult3=$dbh->prepare("$swtstatement3") or $logger->error($DBI::errstr);
-      $swtresult3->execute($swtidn) or $logger->error($DBI::errstr);
-      
-      my $swtres3;
-      while ($swtres3=$swtresult3->fetchrow_hashref){
-	print_simple_category("&Uuml;berordnung","$swtres3->{ueber}") if ($swtres3->{ueber});
-      }    
-      $swtresult3->finish();
-      
-      if ($config{benchmark}){
-	$btime=new Benchmark;
-	$timeall=timediff($btime,$atime);
-	$logger->info("Zeit fuer : $swtstatement3 : ist ".timestr($timeall));
-	undef $atime;
-	undef $btime;
-	undef $timeall;
-      }
-
-      #
-
-      if ($config{benchmark}){
-	$atime=new Benchmark;
-      }
-      
-      my $swtresult4=$dbh->prepare("$swtstatement4") or $logger->error($DBI::errstr);
-      $swtresult4->execute($swtidn) or $logger->error($DBI::errstr);
-      
-      my $swtres4;
-      while ($swtres4=$swtresult4->fetchrow_hashref){
-	print_simple_category("Assoz.","$swtres4->{assoz}") if ($swtres4->{assoz});
-      }    
-      $swtresult4->finish();
-      
-      if ($config{benchmark}){
-	$btime=new Benchmark;
-	$timeall=timediff($btime,$atime);
-	$logger->info("Zeit fuer : $swtstatement4 : ist ".timestr($timeall));
-	undef $atime;
-	undef $btime;
-	undef $timeall;
-      }
-
-      #
-
-      if ($config{benchmark}){
-	$atime=new Benchmark;
-      }
-      
-      my $swtresult5=$dbh->prepare("$swtstatement5") or $logger->error($DBI::errstr);
-      $swtresult5->execute($swtidn) or $logger->error($DBI::errstr);
-      
-      my $swtres5;
-      while ($swtres5=$swtresult5->fetchrow_hashref){
-	print_simple_category("Fr&uuml;her","$swtres5->{frueher}") if ($swtres5->{frueher});
-      }    
-      $swtresult5->finish();
-      
-      if ($config{benchmark}){
-	$btime=new Benchmark;
-	$timeall=timediff($btime,$atime);
-	$logger->info("Zeit fuer : $swtstatement5 : ist ".timestr($timeall));
-	undef $atime;
-	undef $btime;
-	undef $timeall;
-      }
-
-      #
-
-      if ($config{benchmark}){
-	$atime=new Benchmark;
-      }
-      
-      my $swtresult6=$dbh->prepare("$swtstatement6") or $logger->error($DBI::errstr);
-      $swtresult6->execute($swtidn) or $logger->error($DBI::errstr);
-      
-      my $swtres6;
-      while ($swtres6=$swtresult6->fetchrow_hashref){
-	print_simple_category("Sp&auml;ter","$swtres6->{spaeter}") if ($swtres6->{spaeter});
-      }    
-      $swtresult6->finish();
-      
-      if ($config{benchmark}){
-	$btime=new Benchmark;
-	$timeall=timediff($btime,$atime);
-	$logger->info("Zeit fuer : $swtstatement6 : ist ".timestr($timeall));
-	undef $atime;
-	undef $btime;
-	undef $timeall;
-      }
-      
-		
-      if ($mode == 3){	
-	my @requests=("select titidn from titswtlok where swtverw=$swtres1->{idn}");
-	my $swtanzahl=get_number(\@requests,$dbh);
-	
-	print_url_category("Anzahl Titel","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;searchtitofswt=$swtres1->{idn}","$swtanzahl</a>");
-	
-      }
-      print "</table>";
-    }
-    if ($mode == 5){
-      print "<tr><td><input type=checkbox name=searchmultipleswt value=$swtres1->{idn} ";
-      print "></td><td><strong>";
-      print "<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;searchsingleswt=$swtres1->{idn}\">";
-      print "$swtres1->{schlagw}</strong></a></td>";
-    }
-    return;
-  }
 
 sub get_swt_ans_by_idn {
 
-    my ($swtidn,$dbh)=@_;
-
-    # Log4perl logger erzeugen
-    
-    my $logger = get_logger();
-
-    my $swtstatement1="select * from swt where idn = ?";
-
-    my $atime;
-    my $btime;
-    my $timeall;
-
-    if ($config{benchmark}){
-	$atime=new Benchmark;
-    }
-
-    my $swtresult1=$dbh->prepare("$swtstatement1") or $logger->error($DBI::errstr);
-    $swtresult1->execute($swtidn) or $logger->error($DBI::errstr);
-
-    my $swtres1=$swtresult1->fetchrow_hashref;
-    $swtresult1->finish();
-
-    if ($swtres1->{schlagw}){
-      return $swtres1->{schlagw};
-    }
-    return;
+  my ($swtidn,$dbh)=@_;
+  
+  # Log4perl logger erzeugen
+  
+  my $logger = get_logger();
+  
+  my $swtstatement1="select * from swt where idn = ?";
+  
+  my $atime;
+  my $btime;
+  my $timeall;
+  
+  if ($config{benchmark}){
+    $atime=new Benchmark;
   }
+  
+  my $swtresult1=$dbh->prepare("$swtstatement1") or $logger->error($DBI::errstr);
+  $swtresult1->execute($swtidn) or $logger->error($DBI::errstr);
+  
+  my $swtres1=$swtresult1->fetchrow_hashref;
+  
+  my $schlagwort;
+  
+  if ($swtres1->{schlagw}){
+    $schlagwort=$swtres1->{schlagw};
+  }
+  
+  $swtresult1->finish();
+  
+  return $schlagwort;
+}
+
+#####################################################################
+## get_swt_set_by_idn(swtidn,...): Gebe zu swtidn gehoerenden
+##                                 Schlagwortstammsatz + Anzahl
+##                                 verknuepfter Titel aus
+##
+## swtidn: IDN des Schlagwortstammsatzes
 
 sub get_swt_set_by_idn {
   
@@ -966,9 +469,8 @@ sub get_swt_set_by_idn {
   
   my $swtresult1=$dbh->prepare("$swtstatement1") or $logger->error($DBI::errstr);
   $swtresult1->execute($swtidn) or $logger->error($DBI::errstr);
-
+  
   my $swtres1=$swtresult1->fetchrow_hashref;
-  $swtresult1->finish();
 
   if ($config{benchmark}){
     $btime=new Benchmark;
@@ -1031,34 +533,73 @@ sub get_swt_set_by_idn {
   print_url_category("Anzahl Titel","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;searchtitofswt=$swtres1->{idn}","$swtanzahl</a>");
   
   print "</table>";
+
+  $swtresult1->finish();
+
   return;
 }
 
 #####################################################################
-## get_not_by_idn(notidn,mode,...): Gebe zu notidn geh"oerenden 
-##                                  Notationsstammsatz aus
+## get_not_ans_by_idn(notidn,dbh): Gebe zu notidn gehoerende Notation in
+##                                Notationsstammsatz aus
 ##
 ## notidn: IDN des Notationsstammsatzes
-## mode:   1 - Nur Ansetzungsform wird ausgegeben
-##         2 - Gesamter Notationsstammsatz ausgeben
-##         3 - Gesamter Notationsstammsatz + Anzahl verkn"upfter Titeldaten
-##             ausgeben
-##         5 - Ansetzungsform in Suchzeile ausgeben
-##
-## Und nun jede Menge Variablen, damit mod_perl keine Probleme macht
-##
-## $dbh
-## $benchmark
-## $searchmultiplenot
-## $searchmode
-## $showmexintit
-## $hitrange
-## $sorttype
-## $database
 
-sub get_not_by_idn {
+sub get_not_ans_by_idn {
 
-    my ($notidn,$mode,$dbh,$benchmark,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID)=@_;
+    my ($notidn,$dbh)=@_;
+
+    # Log4perl logger erzeugen
+    
+    my $logger = get_logger();
+
+    my $notstatement1="select * from notation where idn = ?";
+
+    my $atime;
+    my $btime;
+    my $timeall;
+    
+    if ($config{benchmark}){
+	$atime=new Benchmark;
+    }
+
+    my $notresult1=$dbh->prepare("$notstatement1") or $logger->error($DBI::errstr);
+    $notresult1->execute($notidn) or $logger->error($DBI::errstr);
+
+    my $notres1=$notresult1->fetchrow_hashref;
+
+    if ($config{benchmark}){
+	$btime=new Benchmark;
+	$timeall=timediff($btime,$atime);
+	$logger->info("Zeit fuer : $notstatement1 : ist ".timestr($timeall));
+	undef $atime;
+	undef $btime;
+	undef $timeall;
+    }
+    
+    # Zur"ucklieferung der Notation
+
+    my $notation;
+    
+    if ($notres1->{notation}){
+      $notation=$notres1->{notation};
+    }
+
+    $notresult1->finish();
+
+    return $notation;
+}
+
+#####################################################################
+## get_not_set_by_idn(notidn,...): Gebe zu notidn gehoerenden
+##                                 Notationsstammsatz + Anzahl
+##                                 verknuepfter Titel aus
+##
+## notidn: IDN des Notationsstammsatzes
+
+sub get_not_set_by_idn {
+
+    my ($notidn,$dbh,$benchmark,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$sessionID)=@_;
 
     # Log4perl logger erzeugen
     
@@ -1079,7 +620,7 @@ sub get_not_by_idn {
     $notresult1->execute($notidn) or $logger->error($DBI::errstr);
 
     my $notres1=$notresult1->fetchrow_hashref;
-    $notresult1->finish();
+
     if ($config{benchmark}){
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
@@ -1089,77 +630,76 @@ sub get_not_by_idn {
 	undef $timeall;
     }
     
-    if (($mode == 2)||($mode == 3)){
-      print_inst_head($database,"base");
-      print_mult_sel_form($searchmode,$hitrange,$rating,$bookinfo,$database,$dbmode,$sessionID);
-
-#	print "<h1>Gefundene Notation</h1>\n";
+    print_inst_head($database,"base");
+    print_mult_sel_form($searchmode,$hitrange,$rating,$bookinfo,$database,$dbmode,$sessionID);
+    
+    #	print "<h1>Gefundene Notation</h1>\n";
 	print "<table cellpadding=2>";
 	print "<tr><td>Kategorie</td><td>Inhalt</td></tr>\n";
-#	print "<tr bgcolor=\"lightblue\"><td>&nbsp;</td><td>".$dbinfo{"$database"}."</td></tr>\n";
+    #	print "<tr bgcolor=\"lightblue\"><td>&nbsp;</td><td>".$dbinfo{"$database"}."</td></tr>\n";
 
-	# Ausgabe verschiedener Informationen
+    # Ausgabe verschiedener Informationen
 
-	print_simple_category("Ident-Nr","$notres1->{idn}");
-	print_simple_category("Ident-Alt","$notres1->{ida}") if ($notres1->{ida});
-	print_simple_category("Vers-Nr","$notres1->{versnr}") if ($notres1->{versnr});
-	print_simple_category("Notation","$notres1->{notation}") if ($notres1->{notation});
-	print_simple_category("Benennung","$notres1->{benennung}") if ($notres1->{benennung});
+    print_simple_category("Ident-Nr","$notres1->{idn}");
+    print_simple_category("Ident-Alt","$notres1->{ida}") if ($notres1->{ida});
+    print_simple_category("Vers-Nr","$notres1->{versnr}") if ($notres1->{versnr});
+    print_simple_category("Notation","$notres1->{notation}") if ($notres1->{notation});
+    print_simple_category("Benennung","$notres1->{benennung}") if ($notres1->{benennung});
+    
+    if ($config{benchmark}){
+      $atime=new Benchmark;
+    }
+    
+    # Ausgabe der Verweise
+    
+    my $notresult2=$dbh->prepare("$notstatement2") or $logger->error($DBI::errstr);
+    $notresult2->execute($notidn) or $logger->error($DBI::errstr);
+    
+    my $notres2;
+    while ($notres2=$notresult2->fetchrow_hashref){
+      print_simple_category("Verweis","$notres2->{verw}");
+    }
+    $notresult2->finish();
 
-	if ($config{benchmark}){
-	    $atime=new Benchmark;
-	}
-
-	# Ausgabe der Verweise
-
-	my $notresult2=$dbh->prepare("$notstatement2") or $logger->error($DBI::errstr);
-	$notresult2->execute($notidn) or $logger->error($DBI::errstr);
-
-	my $notres2;
-	while ($notres2=$notresult2->fetchrow_hashref){
-	  print_simple_category("Verweis","$notres2->{verw}");
-	}    
-	$notresult2->finish();
-
-	if ($config{benchmark}){
-	    $btime=new Benchmark;
-	    $timeall=timediff($btime,$atime);
-	    $logger->info("Zeit fuer : $notstatement2 : ist ".timestr($timeall));
-	    undef $atime;
-	    undef $btime;
-	    undef $timeall;
-	}
-
-	if ($config{benchmark}){
-	    $atime=new Benchmark;
-	}
-
-	# Ausgabe von Benverw
-
-	my $notresult3=$dbh->prepare("$notstatement3") or $logger->error($DBI::errstr);
-	$notresult3->execute($notidn) or $logger->error($DBI::errstr);
-
-	my $notres3;
-	while ($notres3=$notresult3->fetchrow_hashref){
-	  print_simple_category("Ben.Verweis","$notres3->{benverw}");
-	}    
-	$notresult3->finish();
-
-	if ($config{benchmark}){
-	    $btime=new Benchmark;
-	    $timeall=timediff($btime,$atime);
-	    $logger->info("Zeit fuer : $notstatement3 : ist ".timestr($timeall));
-	    undef $atime;
-	    undef $btime;
-	    undef $timeall;
-	}
-
-	# Ausgabe diverser Informationen
-
-	print_simple_category("Abrufzeichen","$notres1->{abrufzeichen}") if ($notres1->{abrufzeichen});
-	print_simple_category("Beschr-Not.","$notres1->{beschrnot}") if ($notres1->{beschrnot});
-	print_simple_category("Abrufr","$notres1->{abrufr}") if ($notres1->{abrufr});
-
+    if ($config{benchmark}){
+      $btime=new Benchmark;
+      $timeall=timediff($btime,$atime);
+      $logger->info("Zeit fuer : $notstatement2 : ist ".timestr($timeall));
+      undef $atime;
+      undef $btime;
+      undef $timeall;
+    }
+    
+    if ($config{benchmark}){
+      $atime=new Benchmark;
+    }
+    
+    # Ausgabe von Benverw
+    
+    my $notresult3=$dbh->prepare("$notstatement3") or $logger->error($DBI::errstr);
+    $notresult3->execute($notidn) or $logger->error($DBI::errstr);
+    
+    my $notres3;
+    while ($notres3=$notresult3->fetchrow_hashref){
+      print_simple_category("Ben.Verweis","$notres3->{benverw}");
+    }    
+    $notresult3->finish();
+    
+    if ($config{benchmark}){
+      $btime=new Benchmark;
+      $timeall=timediff($btime,$atime);
+      $logger->info("Zeit fuer : $notstatement3 : ist ".timestr($timeall));
+      undef $atime;
+      undef $btime;
+      undef $timeall;
+    }
+    
+    # Ausgabe diverser Informationen
+    
+    print_simple_category("Abrufzeichen","$notres1->{abrufzeichen}") if ($notres1->{abrufzeichen});
+    print_simple_category("Beschr-Not.","$notres1->{beschrnot}") if ($notres1->{beschrnot});
+    print_simple_category("Abrufr","$notres1->{abrufr}") if ($notres1->{abrufr});
+    
 # 	if ($notres1[8]){
 # 	    print "<tr><td bgcolor=\"lightblue\"><strong>Oberbegriff</strong></td>\n";
 # 	    print "<td>$notres1[8]";
@@ -1172,36 +712,18 @@ sub get_not_by_idn {
 # 	    print "></td></tr>";
 # 	}    
 
-	if ($mode == 3){	
+    # Ausgabe der Anzahl verkn"upfter Titel
+    
+    my @requests=("select titidn from titnot where notidn=$notres1->{idn}");
+    my $anzahl=get_number(\@requests,$dbh);
+    
+    print_url_category("Anzahl Titel","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;searchtitofnot=$notres1->{idn}","$anzahl</a>");
+    
+    
+    print "</table>";
 
-	  # Ausgabe der Anzahl verkn"upfter Titel
-	  
-	  my @requests=("select titidn from titnot where notidn=$notres1->{idn}");
-	  my $anzahl=get_number(\@requests,$dbh);
-	  
-	  print_url_category("Anzahl Titel","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;searchtitofnot=$notres1->{idn}","$anzahl</a>");
+    $notresult1->finish();
 
-	}
-	print "</table>";
-    }
-    if ($mode == 1){
-
-      # Zur"ucklieferung der Notation
-
-      if ($notres1->{notation}){
-	return $notres1->{notation};
-      }
-      return;
-
-    }
-
-    if ($mode == 5){
-	print "<tr><td><input type=checkbox name=searchsinglenot value=$notres1->{idn} ";
-	print "></td><td>";
-	print "<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;searchsinglenot=$notres1->{idn}\">";
-	print "<strong>$notres1->{notation}</strong></a></td>";
-	return;
-    }
     return;
 }
 
@@ -1238,7 +760,7 @@ sub get_not_by_idn {
 
 sub get_tit_by_idn { 
 
-    my ($titidn,$hint,$mode,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$rdbinfo,$rtiteltyp,$rsigel,$rdbases,$rbibinfo,$sessionID)=@_;
+    my ($titidn,$hint,$mode,$dbh,$sessiondbh,$benchmark,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$dbmode,$rdbinfo,$rtiteltyp,$rsigel,$rdbases,$rbibinfo,$sessionID)=@_;
 
     # Log4perl logger erzeugen
     
@@ -1346,7 +868,7 @@ sub get_tit_by_idn {
       my $titidn10;
       foreach $titidn10 (@titres10){
 	
-	push @verfasserarray, get_kor_by_idn("$titidn10",1,$dbh,$benchmark,$searchmultiplekor,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$sessionID);
+	push @verfasserarray, get_kor_ans_by_idn("$titidn10",$dbh);
       }
       
       # Ausgabe der K"orperschaften
@@ -1356,7 +878,7 @@ sub get_tit_by_idn {
       my $titidn11;
       foreach $titidn11 (@titres11){
 	
-	push @verfasserarray, get_kor_by_idn("$titidn11",1,$dbh,$benchmark,$searchmultiplekor,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$sessionID);
+	push @verfasserarray, get_kor_ans_by_idn("$titidn11",$dbh);
 	
       }
 
@@ -1686,6 +1208,14 @@ LASTNEXT
 
     print "<p>\n";
 
+      print << "TITHEAD";
+</table>
+<p>
+<table width="100%">
+<tr><th>Titelaufnahme</th></tr>
+<tr><td class="boxedclear" style="font-size:12pt">
+TITHEAD
+
     print "<!-- Title begins here -->\n";
     print "<table cellpadding=2>\n";
     print "<tr><td>Kategorie</td><td>Inhalt</td></tr>\n";
@@ -1739,7 +1269,7 @@ LASTNEXT
     my $titidn10;
     foreach $titidn10 (@titres10){
 
-      print_url_category_global("Urheber","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;urh=$titidn10;generalsearch=urh",get_kor_by_idn("$titidn10",1,$dbh,$benchmark,$searchmultiplekor,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$sessionID)."</a>","kor",$sorttype,$sessionID);
+      print_url_category_global("Urheber","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;urh=$titidn10;generalsearch=urh",get_kor_ans_by_idn("$titidn10",$dbh)."</a>","kor",$sorttype,$sessionID);
     }
 
     # Ausgabe der K"orperschaften
@@ -1749,7 +1279,7 @@ LASTNEXT
     my $titidn11;
     foreach $titidn11 (@titres11){
 
-      print_url_category_global("K&ouml;rperschaft","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;kor=$titidn11;generalsearch=kor",get_kor_by_idn("$titidn11",1,$dbh,$benchmark,$searchmultiplekor,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$sessionID)."</a>","kor",$sorttype,$sessionID);
+      print_url_category_global("K&ouml;rperschaft","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;kor=$titidn11;generalsearch=kor",get_kor_ans_by_idn("$titidn11",$dbh)."</a>","kor",$sorttype,$sessionID);
 
     }
 
@@ -2423,7 +1953,7 @@ LASTNEXT
     my $titidn12;
     foreach $titidn12 (@titres12){
 
-      print_url_category("Notation","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;notation=$titidn12;generalsearch=not",get_not_by_idn("$titidn12",1,$dbh,$benchmark,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$sessionID)."</a>");
+      print_url_category("Notation","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;notation=$titidn12;generalsearch=not",get_not_ans_by_idn("$titidn12",$dbh)."</a>");
 
     }
 
@@ -2514,6 +2044,31 @@ LASTNEXT
       print_url_category("Teil. UW","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;invktit=$titres1->{idn};generalsearch=invktit","$verkntit</a>");
 
     }
+
+
+	@requests=("select idn from mex where titidn=$titres1->{idn}");
+	my @verknmex=OpenBib::Common::Util::get_sql_result(\@requests,$dbh,$benchmark);
+	
+	print "</table>\n";
+	if ($#verknmex >= 0){
+	  print "<p>\n";
+	  print "<table>\n";
+	  print "<tr align=center><td bgcolor=\"lightblue\" width=\"225\">Besitzende Bibliothek</td><td bgcolor=\"lightblue\" width=\"250\">Standort</td><td bgcolor=\"lightblue\" width=\"120\">Lokale Signatur</td>";
+	  
+	  print "<td bgcolor=\"lightblue\" width=\"230\">Bestandsverlauf</td>";
+
+	  print "</tr>\n";
+	  
+	  my $mexsatz;
+	  foreach $mexsatz (@verknmex){
+	    get_mex_by_idn($mexsatz,$dbh,$benchmark,$searchmode,$circ,$circurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%sigel,\%dbases,\%bibinfo,$sessionID);
+	  }
+	  print "</table>\n";
+	}
+	
+    print "</td></tr></table>\n";
+    print "<p>\n<!-- Title ends here -->\n";
+
     
     # Gegebenenfalls bestimmung der Ausleihinfo fuer Exemplare
 
@@ -2521,12 +2076,10 @@ LASTNEXT
 
     if ($circ){
 
-      my $endpoint="http://arwen.sigtrap.de:9000";
-#      my $endpoint="http://arwen.sigtrap.de/cgi-bin/openbib-ws.pl";
       my $soap = SOAP::Lite
-	-> uri("http://arwen.sigtrap.de/MediaStatus")
-	  -> proxy($endpoint);
-      my $result = $soap->get_mediastatus($titres1->{idn},'sisis');
+	-> uri("urn:/MediaStatus")
+	    -> proxy($circcheckurl);
+      my $result = $soap->get_mediastatus($titres1->{idn},$circdb);
       
       unless ($result->fault) {
 	$circexlist=$result->result;
@@ -2540,14 +2093,23 @@ LASTNEXT
     # in den Ausleihdaten vorhanden sind -- diese Vorrange ueber die
     # titelbasierten Exemplardaten
 
-    my @circexemplarliste = @{$circexlist};
+    my @circexemplarliste = "";
+
+    if (defined($circexlist)){
+      @circexemplarliste = @{$circexlist};
+    }
 
     if ($circ && $#circexemplarliste >= 0){
-      print "</table>\n";
+      print << "CIRCHEAD";
+</table>
+<p>
+<table width="100%">
+<tr><th>Ausleihe/Exemplare</th></tr>
+<tr><td class="boxedclear" style="font-size:12pt">
+<table>
+CIRCHEAD
 
-      print "<p>\n";
-      print "<table>\n";
-      print "<tr align=center><td bgcolor=\"lightblue\">Besitzende Bibliothek</td><td bgcolor=\"lightblue\">Standort</td><td bgcolor=\"lightblue\">Lokale Signatur</td><td bgcolor=\"lightblue\">Bestandsverlauf</td><td bgcolor=\"lightblue\">Ausleihstatus</td><td bgcolor=\"lightblue\">Aktion</td></tr>\n";
+      print "<tr align=center><td bgcolor=\"lightblue\" width=\"225\">Besitzende Bibliothek</td><td bgcolor=\"lightblue\" width=\"250\">Standort</td><td bgcolor=\"lightblue\" width=\"120\">Lokale Signatur</td><td bgcolor=\"lightblue\" width=\"120\">Ausleihstatus</td><td bgcolor=\"lightblue\" width=\"110\">Aktion</td></tr>\n";
       
       foreach my $singleex (@circexemplarliste) {
 	my $standort=$singleex->{'Standort'};
@@ -2555,6 +2117,10 @@ LASTNEXT
 	my $ausleihstatus=$singleex->{'Status'};
 	my $rueckgabe=$singleex->{'Rueckgabe'};
 	my $exemplar=$singleex->{'Exemplar'};
+
+	# Zusammensetzung von Signatur und Exemplar
+
+	$signatur=$signatur.$exemplar;
 
 	# Ein im Exemplar-Datensatz gefundenes Sigel geht vor
 
@@ -2582,11 +2148,9 @@ LASTNEXT
 	
 	my $bibinfourl=$bibinfo{$dbases{$database}};
 
-	print "<tr align=center><td><a href=\"$bibinfourl\"><strong>$bibliothek</strong></a></td><td>$standort</td><td><strong><span id=\"rlsignature\">$signatur</span></strong></td>";
+	print "<tr align=center><td><a href=\"$bibinfourl\"><strong>$bibliothek</strong></a></td>";
+	print "<td>$standort</td><td><strong>$signatur</strong></td>";
 	
-	print "<td>-</td>";
-
-
 	my $ausleihstring;
 	if ($ausleihstatus eq "bestellbar"){
 	  $ausleihstring="ausleihen?";
@@ -2604,50 +2168,22 @@ LASTNEXT
 	  $ausleihstring="WebOPAC?";
 	}
 	if ($standort=~/Erziehungswiss/ || $standort=~/Heilp.*?dagogik-Magazin/){
-	  print "<td><strong>$ausleihstatus</strong></td><td bgcolor=\"yellow\"><a TARGET=_blank href=\"$circurl;branch=4;KatKeySearch=$titidn\">$ausleihstring</a></td>";
+	  print "<td><strong>$ausleihstatus</strong></td><td bgcolor=\"yellow\"><a TARGET=_blank href=\"$circurl&branch=4&KatKeySearch=$titidn\">$ausleihstring</a></td>";
 	}
 	else {
 	  if ($database eq "inst001" || $database eq "poetica"){
-	    print "<td><strong>$ausleihstatus</strong></td><td bgcolor=\"yellow\"><a TARGET=_blank href=\"$circurl;branch=0;KatKeySearch=$titidn\">$ausleihstring</a></td>";
+	    print "<td><strong>$ausleihstatus</strong></td><td bgcolor=\"yellow\"><a TARGET=_blank href=\"$circurl&branch=0&KatKeySearch=$titidn\">$ausleihstring</a></td>";
 	  }
 	  else {
-	    print "<td><strong>$ausleihstatus</strong></td><td bgcolor=\"yellow\"><a TARGET=_blank href=\"$circurl;KatKeySearch=$titidn\">$ausleihstring</a></td>";
+	    print "<td><strong>$ausleihstatus</strong></td><td bgcolor=\"yellow\"><a TARGET=_blank href=\"$circurl&KatKeySearch=$titidn\">$ausleihstring</a></td>";
 	  }
 	}
 
 
       }
 
-      print "</table>\n";
+      print "</table></td></tr></table>\n";
     }
-      else {
-
-	@requests=("select idn from mex where titidn=$titres1->{idn}");
-	my @verknmex=OpenBib::Common::Util::get_sql_result(\@requests,$dbh,$benchmark);
-	
-	print "</table>\n";
-	if ($#verknmex >= 0){
-	  print "<p>\n";
-	  print "<table>\n";
-	  print "<tr align=center><td bgcolor=\"lightblue\">Besitzende Bibliothek</td><td bgcolor=\"lightblue\">Standort</td><td bgcolor=\"lightblue\">Lokale Signatur</td>";
-	  
-	  print "<td bgcolor=\"lightblue\">Bestandsverlauf</td>";
-
-      if ($circ){
-       print "<td bgcolor=\"lightblue\">Ausleihstatus</td><td bgcolor=\"lightblue\">Aktion</td>";
-       }
-
-	  
-	  print "</tr>\n";
-	  
-	  my $mexsatz;
-	  foreach $mexsatz (@verknmex){
-	    get_mex_by_idn($mexsatz,$dbh,$benchmark,$searchmode,$circ,$circurl,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%sigel,\%dbases,\%bibinfo,$sessionID);
-	  }
-	  print "</table>\n";
-	}
-	
-      }
       # Ausgabe der Buchinformationen anhand der ISBN
       
       if ($bookinfo){
@@ -2755,8 +2291,6 @@ LASTNEXT
       print "Wenn Sie ihre Meinung zu diesem Buch abgeben wollen, so klicken sie bitte <a href=\"/cgi-bin/biblio-rating.pl?titidn=$titres1->{idn};database=$database;action=mask\"><b>hier</b></a>\n";
 
     }
-
-    print "<p>\n<!-- Title ends here -->\n";
 
     return;
 }	    
@@ -2875,10 +2409,6 @@ sub get_mex_by_idn {
       
       print "<td>$erschverl</td>";
 
-      if ($circ){
-	print "<td></td>";
-      }
-      
       print "</tr>\n";
     }
     else {
@@ -2891,13 +2421,6 @@ sub get_mex_by_idn {
 	
 	print "<td>$erschverl</td>";
 	
-	if ($circ){
-
-	  my $ausleihstatus="unbekannt";
-	  my $ausleihstring="WebOPAC?";
-
-	  print "<td><strong>$ausleihstatus</strong></td><td bgcolor=\"yellow\"><a TARGET=_blank href=\"$circurl;KatKeySearch=$titidn\">$ausleihstring</a></td>";
-	}
 	print "</tr>\n";
       }    
     }
@@ -3163,7 +2686,7 @@ sub print_simple_category {
   # Sonderbehandlung fuer bestimmte Kategorien
   
   if ($name eq "ISSN"){
-    my $ezbquerystring="http://www.bibliothek.uni-regensburg.de/ezeit/searchres.phtml?bibid=USBK;frames=;colors=7;offset=0;KT=;KT_bool=OR;KW=;Notations[]=all;selected_colors[]=1;selected_colors[]=2;selected_colors[]=4;input_date=;PU=;IS=".$contents.";howmany=25;=Suchen";
+    my $ezbquerystring=$config{ezb_exturl}."&jq_term1=".$contents;
 
     $contents="$contents (<a href=\"$ezbquerystring\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB)\" target=ezb>Verf&uuml;gbarkeit EZB</a>)";
   }

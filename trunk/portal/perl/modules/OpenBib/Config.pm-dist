@@ -29,6 +29,10 @@ use strict;
 use vars qw(%config);
   
 %config = (
+
+	   # Versionnummer
+
+	   version => 'OpenBib v1.0',
 	   
 	   # Unter diesem Namen wird der lokale Server angesprochen
 	   

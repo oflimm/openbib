@@ -80,6 +80,7 @@ sub handler {
   
   my $cataction=$query->param('cataction') || '';
   my $confaction=$query->param('confaction') || '';
+  my $sessionaction=$query->param('sessionaction') || '';
   my $dbid=$query->param('dbid') || '';
   my $faculty=$query->param('faculty') || '';
   my $description=$query->param('description') || '';
@@ -88,6 +89,14 @@ sub handler {
   my $sigel=$query->param('sigel') || '';
   my $url=$query->param('url') || '';
   my $active=$query->param('active') || '';
+
+  my $viewaction=$query->param('viewaction') || '';
+  my $viewname=$query->param('viewname') || '';
+  my @viewdb=$query->param('viewdb');
+  my $viewid=$query->param('viewid') || '';
+
+  my $imxaction=$query->param('imxaction') || '';
+
   my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
   
   my $host=$query->param('host') || '';
@@ -104,9 +113,34 @@ sub handler {
   my $mexfilename=$query->param('mexfilename') || '';
   my $autoconvert=$query->param('autoconvert') || '';
 
+  my $singlesessionid=$query->param('singlesessionid') || '';
+
   # Neue SessionID erzeugen, falls keine vorhanden
 
   $sessionID=OpenBib::Common::Util::init_new_session($sessiondbh) if ($sessionID eq "");
+
+
+  # Verweis: Datenbankname -> Informationen zum zugeh"origen Institut/Seminar
+  
+  my $dbinforesult=$sessiondbh->prepare("select dbname,description from dbinfo where active=1 order by description") or die "Error -- $DBI::errstr";
+  $dbinforesult->execute();
+  
+  my @dbnames=();
+  
+  my $singledbname="";
+  while (my $result=$dbinforesult->fetchrow_hashref()){
+    my $dbname=$result->{'dbname'};
+    my $description=$result->{'description'};
+    
+    $singledbname={
+		   dbname => $dbname,
+		   description => $description,
+		  };
+    
+    push @dbnames, $singledbname;
+  }
+  
+  $dbinforesult->finish();
 
   if ($action eq "login" || $action eq ""){
     
@@ -200,6 +234,10 @@ sub handler {
       $idnresult->execute();
       $idnresult->finish();
 
+      my $idnresult=$sessiondbh->prepare("update dboptions set protocol='$protocol', host='$host', remotepath='$remotepath', remoteuser='$remoteuser', remotepasswd='$remotepasswd', titfilename='$titfilename', autfilename='$autfilename', korfilename='$korfilename', swtfilename='$swtfilename', notfilename='$notfilename', mexfilename='$mexfilename', filename='$filename', autoconvert='$autoconvert' where dbname='$dbname'");
+      $idnresult->execute();
+      $idnresult->finish();
+
       $r->internal_redirect("http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showcat");
       return OK;
       
@@ -238,6 +276,24 @@ sub handler {
       my $sigel=$result->{'sigel'};
       my $url=$result->{'url'};
       my $active=$result->{'active'};
+
+      $idnresult=$sessiondbh->prepare("select * from dboptions where dbname='$dbname'");
+      $idnresult->execute();
+      $result=$idnresult->fetchrow_hashref();
+      my $host=$result->{'host'};
+      my $protocol=$result->{'protocol'};
+      my $remotepath=$result->{'remotepath'};
+      my $remoteuser=$result->{'remoteuser'};
+      my $remotepasswd=$result->{'remotepasswd'};
+      my $filename=$result->{'filename'};
+      my $titfilename=$result->{'titfilename'};
+      my $autfilename=$result->{'autfilename'};
+      my $korfilename=$result->{'korfilename'};
+      my $swtfilename=$result->{'swtfilename'};
+      my $notfilename=$result->{'notfilename'};
+      my $mexfilename=$result->{'mexfilename'};
+      my $autoconvert=$result->{'autoconvert'};
+
       
       my $katalog={
 		   dbid => $dbid,
@@ -248,6 +304,22 @@ sub handler {
 		   sigel => $sigel,
 		   active => $active,
 		   url => $url,
+
+		   imxconfig => {
+				 host => $host,
+				 prococol => $protocol,
+				 remotepath => $remotepath,
+				 remoteuser => $remoteuser,
+				 remotepasswd => $remotepasswd,
+				 filename => $filename,
+				 titfilename => $titfilename,
+				 autfilename => $autfilename,
+				 korfilename => $korfilename,
+				 swtfilename => $swtfilename,
+				 notfilename => $notfilename,
+				 mexfilename => $mexfilename,
+				 autoconvert => $autoconvert,
+				},
 		   
 		  };
       
@@ -338,26 +410,15 @@ sub handler {
 
   }
   elsif ($action eq "showviews"){
-    OpenBib::Common::Util::print_simple_header("Biblio-Administration: Views anzeigen",$r);
-    
-    print << "MASKE3";
-<table>
-<tr><td><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showcat">Kataloge</a></td><td>&nbsp;&nbsp;&nbsp;</td><td align="left"><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showviews"><b>Views</b></a></td><td>&nbsp;&nbsp;&nbsp;</td><td><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showsession">Sessions</a></td><td>&nbsp;&nbsp;&nbsp;</td><td><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=logout"><b>Logout</b></a></td></tr>
-</table>
-<hr>
-<table>
-<tr><td><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showviews"><b>Anzeigen</b></a></td><td>&nbsp;&nbsp;&nbsp;</td><td><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=editviews">Bearbeiten</a></td><td>&nbsp;&nbsp;&nbsp;</td></tr>
-</table>
-<hr>
-<table>
-<tr><td><b>Viewname</b></td><td><b>Beschreibung</b></td><td><b>Aktiv</b></td><td><b>Datenbanken</b></td></tr>
-MASKE3
-    
-    my $linecolor="aliceblue";
-    
+
+    my @views=();
+
+    my $view="";
+
     my $idnresult=$sessiondbh->prepare("select * from viewinfo order by viewname");
     $idnresult->execute();
     while (my $result=$idnresult->fetchrow_hashref()){
+      my $viewid=$result->{'viewid'};
       my $viewname=$result->{'viewname'};
       my $description=$result->{'description'};
       my $active=$result->{'active'};
@@ -377,186 +438,176 @@ MASKE3
 
       my $viewdb=join " ; ", @viewdbs;
 
-      print << "POOL2";
-<tr bgcolor="$linecolor"><td>$viewname</td><td>$description</td><td>$active</td><td>$viewdb</td></tr>
-POOL2
+      $view={
+		viewid => $viewid,
+		viewname => $viewname,
+		description => $description,
+		active => $active,
+		viewdb => $viewdb,
+	       };
 
-      if ($linecolor eq "white"){
-	$linecolor="aliceblue";
-      }
-      else {
-	$linecolor="white";
-      }
-      
+      push @views, $view;
       
     }
+
+    my $ttdata={
+		stylesheet => $stylesheet,
+		sessionID => $sessionID,
+		views => \@views,
+		config     => \%config,
+	       };
+    
+    OpenBib::Common::Util::print_page($config{tt_admin_showviews_tname},$ttdata,$r);
     
     $idnresult->finish();
     
-    print "</table>\n";
-    OpenBib::Common::Util::print_footer();
-    
   }
-  ##############
-#   elsif ($action eq "editviewsxxx"){
-    
-#     # Zuerst schauen, ob Aktionen gefordert sind
-    
-#     if ($viewaction eq "Löschen"){
-#       my $idnresult=$sessiondbh->prepare("delete from viewinfo where viewname='$viewname'");
-#       $idnresult->execute();
-#       $idnresult=$sessiondbh->prepare("delete from viewdbs where viewname='$viewname'");
-#       $idnresult->execute();
-#       $idnresult->finish();
-      
-#     }
-#     elsif ($viewaction eq "Ändern"){
-#       my $idnresult=$sessiondbh->prepare("update viewinfo set faculty='$faculty', description='$description', system='$system', dbname='$dbname', sigel='$sigel', active='$active' where dbid='$dbid'");
-#       $idnresult->execute();
-#       $idnresult->finish();
-      
-#     }
-#     elsif ($viewaction eq "Neu"){
-#       my $idnresult=$sessiondbh->prepare("insert into dbinfo values (NULL,'$faculty','$description','$system','$dbname','$sigel','$active')");
-#       $idnresult->execute();
-#       $idnresult=$sessiondbh->prepare("insert into titcount values ('$dbname','0')");
-#       $idnresult->execute();
-#       $idnresult->finish();
-      
-#       # Und nun auch die Datenbank zuerst komplett loeschen (falls vorhanden)
-      
-#       system("sudo $config{tool_dir}/destroypool.pl $dbname > /dev/null 2>&1");
-      
-#       # ... und dann wieder anlegen
-      
-#       system("sudo $config{tool_dir}/createpool.pl $dbname > /dev/null 2>&1");
-      
-#     }
-    
-#     OpenBib::Common::Util::print_header("Biblio-Administration: Kataloge bearbeiten",$r);
-    
-#     print << "MASKE3";
-# <table>
-# <tr><td><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showcat"><b>Kataloge</b></a></td><td>&nbsp;&nbsp;&nbsp;</td><td align="left"><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showviews">Views</a></td><td>&nbsp;&nbsp;&nbsp;</td><td><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showsession">Sessions</a></td><td>&nbsp;&nbsp;&nbsp;</td><td><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=logout"><b>Logout</b></a></td></tr>
-# </table>
-# <hr>
-# <table>
-# <tr><td><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showcat">Anzeigen</a></td><td>&nbsp;&nbsp;&nbsp;</td><td><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=editcat"><b>Bearbeiten</b></a></td><td>&nbsp;&nbsp;&nbsp;</td><td><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=imxcat">Import</a></td></tr>
-# </table>
-# <hr>
-# <table>
-# <tr><td><b>Fakult&auml;t</b></td><td><b>Beschreibung</b></td><td><b>System</b></td><td>
-# <b>DB-Name</b></td><td><b>Sigel</b></td><td><b>Aktiv</b></td><td><b>Aktion</b></td></tr>
-# <form method="get" action="http://$config{servername}$config{admin_loc}"><input type="hidden" name="action" value="editcat"><input type="hidden" name="sessionID" value="$sessionID"><tr bgcolor="$linecolor"><td><select name="faculty"><option value="0ungeb" selected>Fakult&auml;tsungebunden</option><option value="1wiso">Wirtschafts- u. Sozialwissenschaftliche</option><option value="2recht">Rechtswissenschaftliche</option><option value="3ezwheil">Erziehungswissenschaftliche u. Heilp&auml;dagogische</option><option value="4phil">Philosophische</option><option value="5matnat">Mathematisch-Naturwissenschaftliche</option></select></td><td><input type="text" name="description"></td><td><select name="system"><option value="l">Lars</option><option value="a">Allegro</option><option value="b">Bislok</option><option value="s" selected>Sisis</option></select></td><td>
-# <input type="text" name="dbname" size="8"></td><td><input type="text" name="sigel" size="3"></td><td><input type="text" name="url" size="20"></td><td><select name=active><option value="1">Ja</option><option value="0" selected>Nein</option></select></td><td><input type="submit" name="cataction" value="Neu"></td></tr></form>
-# <tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
-# MASKE3
 
-
-
-#     my %fak=(
-# 	     "1wiso", "Wirtschafts- u. Sozialwissenschaftliche Fakult&auml;t",
-# 	     "2recht","Rechtswissenschaftliche Fakult&auml;t",
-# 	     "3ezwheil","Erziehungswissenschaftliche u. Heilp&auml;dagogische Fakult&auml;t",
-# 	     "4phil","Philosophische Fakult&auml;t",
-# 	     "5matnat","Mathematisch-Naturwissenschaftliche Fakult&auml;t",
-# 	     "0ungeb","Fakult&auml;tsungebunden"
-# 	    );
-    
-#     my $idnresult=$sessiondbh->prepare("select dbinfo.*,titcount.count from dbinfo,titcount where dbinfo.dbname=titcount.dbname order by faculty,dbname");
-#     $idnresult->execute();
-#     while (my $result=$idnresult->fetchrow_hashref()){
-#       my $dbid=$result->{'dbid'};
-#       my $faculty=$result->{'faculty'};
-#       my $description=$result->{'description'};
-#       my $system=$result->{'system'};
-#       my $dbname=$result->{'dbname'};
-#       my $sigel=$result->{'sigel'};
-#       my $url=$result->{'url'};
-#       my $active=$result->{'active'};
-#       my $count=$result->{'count'};
-      
-      
-#       my $activechecked0="";
-#       my $activechecked1="";
-      
-#       if ($active eq "1"){
-# 	$activechecked1="selected";
-#       }
-#       elsif ($active eq "0"){
-# 	$activechecked0="selected";
-#       }
-      
-      
-#       my $systemcheckedsisis="";
-#       my $systemcheckedallegro="";
-#       my $systemcheckedlars="";
-#       my $systemcheckedbislok="";
-      
-#       if ($system eq "s"){
-# 	$systemcheckedsisis="selected";
-#       }
-#       elsif ($system eq "a"){
-# 	$systemcheckedallegro="selected";
-#       }
-#       elsif ($system eq "l"){
-# 	$systemcheckedlars="selected";
-#       }
-#       elsif ($system eq "b"){
-# 	$systemcheckedbislok="selected";
-#       }
-
-
-#       my $facultychecked0ungeb="";
-#       my $facultychecked1wiso="";
-#       my $facultychecked2recht="";
-#       my $facultychecked3ezwheil="";
-#       my $facultychecked4phil="";
-#       my $facultychecked5matnat="";
-
-#       if ($faculty eq "0ungeb"){
-# 	$facultychecked0ungeb="selected";
-#       }
-#       elsif ($faculty eq "1wiso"){
-# 	$facultychecked1wiso="selected";
-#       }
-#       elsif ($faculty eq "2recht"){
-# 	$facultychecked2recht="selected";
-#       }
-#       elsif ($faculty eq "3ezwheil"){
-# 	$facultychecked3ezwheil="selected";
-#       }
-#       elsif ($faculty eq "4phil"){
-# 	$facultychecked4phil="selected";
-#       }
-#       elsif ($faculty eq "5matnat"){
-# 	$facultychecked5matnat="selected";
-#       }
-
-#       print << "POOL";
-# <form method="get" action="http://$config{servername}$config{admin_loc}"><input type="hidden" name="sessionID" value="$sessionID"><input type="hidden" name="dbid" value="$dbid"><input type="hidden" name="action" value="editcat"><tr bgcolor="$linecolor"><td><select name="faculty"><option value="0ungeb" $facultychecked0ungeb>Fakult&auml;tsungebunden</option><option value="1wiso" $facultychecked1wiso>Wirtschafts- u. Sozialwissenschaftliche</option><option value="2recht" $facultychecked2recht>Rechtswissenschaftliche</option><option value="3ezwheil" $facultychecked3ezwheil>Erziehungswissenschaftliche u. Heilp&auml;dagogische</option><option value="4phil" $facultychecked4phil>Philosophische</option><option value="5matnat" $facultychecked5matnat>Mathematisch-Naturwissenschaftliche</option></select></td><td><input type="text" name="description" value="$description"></td><td><select name="system"><option value="l" $systemcheckedlars>Lars</option><option value="a" $systemcheckedallegro>Allegro</option><option value="b" $systemcheckedbislok>Bislok</option><option value="s" $systemcheckedsisis>Sisis</option></select></td><td>
-# <input type="text" name="dbname" value="$dbname" size="8"></td><td><input type="text" name="sigel" value="$sigel" size="3"></td><td><input type="text" name="url" value="$url" size="20"></td><td><select name=active><option value="1" $activechecked1>Ja</option><option value="0" $activechecked0>Nein</option></select></td><td><input type="submit" name="cataction" value="&Auml;ndern">&nbsp;<input type="submit" name="cataction" value="L&ouml;schen"></td></tr></form>
-# POOL
-      
-#     }
-    
-#     $idnresult->finish();
-    
-#     print "</table>\n";
-#     OpenBib::Common::Util::print_footer();
-    
-#   }
-  elsif ($action eq "imxcat"){
+  elsif ($action eq "editview"){
     
     # Zuerst schauen, ob Aktionen gefordert sind
     
-    if ($cataction eq "Alle importieren"){
+    if ($viewaction eq "Löschen"){
+      my $idnresult=$sessiondbh->prepare("delete from viewinfo where viewid='$viewid'");
+      $idnresult->execute();
+      $idnresult=$sessiondbh->prepare("delete from viewdbs where viewname='$viewname'");
+      $idnresult->execute();
+      $idnresult->finish();
+      
+    }
+    elsif ($viewaction eq "Ändern"){
+
+      # Zuerst die Aenderungen in der Tabelle Viewinfo vornehmen
+
+      my $idnresult=$sessiondbh->prepare("update viewinfo set viewname='$viewname', description='$description', active='$active' where viewid='$viewid'");
+      $idnresult->execute();
+
+      # Datenbanken zunaechst loeschen
+
+      $idnresult=$sessiondbh->prepare("delete from viewdbs where viewname='$viewname'");
+      $idnresult->execute();
+
+      
+      # Dann die zugehoerigen Datenbanken eintragen
+
+
+      my $singleviewdb="";
+
+      foreach $singleviewdb (@viewdb){
+	$idnresult=$sessiondbh->prepare("insert into viewdbs values ('$viewname','$singleviewdb')");
+	$idnresult->execute();
+      }
+
+      $idnresult->finish();
+
+      $r->internal_redirect("http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showviews");
+      
+      return OK;
+    }
+    elsif ($viewaction eq "Neu"){
+
+      if ($viewname eq "" || $description eq ""){
+
+	OpenBib::Common::Util::print_warning("Sie m&uuml;ssen einen Viewnamen und eine Beschreibung eingeben.",$r);
+
+	$idnresult->finish();
+	$sessiondbh->disconnect();
+	return OK;
+      }
+
+
+      my $idnresult=$sessiondbh->prepare("select * from viewinfo where viewname='$viewname'");
+      $idnresult->execute();
+
+      if ($idnresult->rows > 0){
+
+	OpenBib::Common::Util::print_warning("Es existiert bereits ein View unter diesem Namen",$r);
+
+	$idnresult->finish();
+	$sessiondbh->disconnect();
+	return OK;
+      }
+      
+      $idnresult=$sessiondbh->prepare("insert into viewinfo values (NULL,'$viewname','$description','$active')");
+      $idnresult->execute();
+
+
+
+      $idnresult=$sessiondbh->prepare("select viewid from viewinfo where viewname='$viewname'");
+      $idnresult->execute();
+
+
+      my $res=$idnresult->fetchrow_hashref();
+
+      my $viewid=$res->{viewid};
+      
+
+      $r->internal_redirect("http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=editview&viewaction=Bearbeiten&viewid=$viewid");
+     
+
+      $sessiondbh->disconnect();
+
+      return OK;
+    }
+    elsif ($viewaction eq "Bearbeiten"){
+
+
+      my $idnresult=$sessiondbh->prepare("select * from viewinfo where viewid='$viewid'");
+      $idnresult->execute();
+      
+      my $result=$idnresult->fetchrow_hashref();
+
+      my $viewid=$result->{'viewid'};
+      my $viewname=$result->{'viewname'};
+      my $description=$result->{'description'};
+      my $active=$result->{'active'};
+
+      my $idnresult2=$sessiondbh->prepare("select * from viewdbs where viewname='$viewname' order by dbname");
+      $idnresult2->execute();
+      
+      my @viewdbs=();
+      while (my $result2=$idnresult2->fetchrow_hashref()){
+	my $dbname=$result2->{'dbname'};
+	push @viewdbs, $dbname;
+      }
+
+      $idnresult2->finish();
+
+      my $view={
+		viewid => $viewid,
+		viewname => $viewname,
+		description => $description,
+		active => $active,
+		viewdbs => \@viewdbs,
+	       };
+
+      my $ttdata={
+		  stylesheet => $stylesheet,
+		  sessionID => $sessionID,
+		  
+		  dbnames => \@dbnames,
+
+		  view => $view,
+		  
+		  config     => \%config,
+		 };
+      
+      OpenBib::Common::Util::print_page($config{tt_admin_editview_tname},$ttdata,$r);
+      
+    }
+    
+  }
+  elsif ($action eq "imx"){
+    
+    # Zuerst schauen, ob Aktionen gefordert sind
+    
+    if ($imxaction eq "Alle importieren"){
       OpenBib::Common::Util::print_warning('',$r);
       print_warning("Diese Funktion ist noch nicht implementiert",$query,$stylesheet);
       $sessiondbh->disconnect;
       return OK;
     }
-    elsif ($cataction eq "Import"){
+    elsif ($imxaction eq "Import"){
       if ($system eq "s"){
 	if ($dbname eq "inst001"){
 	  system("nohup sudo $config{autoconv_dir}/bin/autoconvert-sikis-usb.pl --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
@@ -591,122 +642,134 @@ POOL2
       
       
     }
-    
-    OpenBib::Common::Util::print_simple_header("Biblio-Administration: Kataloge importieren",$r);
-
-    my $linecolor="aliceblue";
-    
-    print << "MASKE3";
-<table>
-<tr><td><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showcat"><b>Kataloge</b></a></td><td>&nbsp;&nbsp;&nbsp;</td><td align="left"><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showviews">Views</a></td><td>&nbsp;&nbsp;&nbsp;</td><td><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showsession">Sessions</a></td><td>&nbsp;&nbsp;&nbsp;</td><td><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=logout"><b>Logout</b></a></td></tr>
-</table>
-<hr>
-<table>
-<tr><td><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showcat">Anzeigen</a></td><td>&nbsp;&nbsp;&nbsp;</td><td><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=editcat">Bearbeiten</a></td><td>&nbsp;&nbsp;&nbsp;</td><td><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=imxcat"><b>Import</b></a></td></tr>
-</table>
-<hr>
-<table>
-<tr><td><b>Beschreibung</b></td><td><b>System</b></td><td><b>DB-Name</b></td><td><b>Titel-Anzahl</b></td><td colspan="2"><b>Aktion</b></td></tr>
-<form method="get" action="http://$config{servername}$config{admin_loc}"><input type="hidden" name="sessionID" value="$sessionID"><input type="hidden" name="action" value="imxcat"><tr bgcolor="$linecolor"><td>Alle Datenpools</td><td></td><td></td><td></td><td colspan="2"><input type="submit" name="cataction" value="Alle importieren"></td></tr></form>
-<tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr>
-MASKE3
-
-
-    my %fak=(
-	     "1wiso", "Wirtschafts- u. Sozialwissenschaftliche Fakult&auml;t",
-	     "2recht","Rechtswissenschaftliche Fakult&auml;t",
-	     "3ezwheil","Erziehungswissenschaftliche u. Heilp&auml;dagogische Fakult&auml;t",
-	     "4phil","Philosophische Fakult&auml;t",
-	     "5matnat","Mathematisch-Naturwissenschaftliche Fakult&auml;t",
-	     "0ungeb","Fakult&auml;tsungebunden"
-	    );
-    
-    $linecolor="aliceblue";
-    
-    my $idnresult=$sessiondbh->prepare("select dbinfo.*,titcount.count from dbinfo,titcount where dbinfo.dbname=titcount.dbname order by faculty,dbname");
-    $idnresult->execute();
-    while (my $result=$idnresult->fetchrow_hashref()){
-      my $dbid=$result->{'dbid'};
-      my $faculty=$result->{'faculty'};
-      my $description=$result->{'description'};
-      my $system=$result->{'system'};
-      my $descsystem="";
-      $descsystem="Sisis" if ($system eq "s");
-      $descsystem="Lars" if ($system eq "l");
-      $descsystem="Allegro" if ($system eq "a");
-      $descsystem="Bislok" if ($system eq "b");
-      
-      my $dbname=$result->{'dbname'};
-      my $sigel=$result->{'sigel'};
-      my $url=$result->{'url'};
-      my $active=$result->{'active'};
-      my $count=$result->{'count'};
-      
-      
-      print << "POOL";
-<tr bgcolor="$linecolor"><td>$description</td><td>$descsystem</td><td>$dbname</td><td>$count</td><td><form method="get" action="http://$config{servername}$config{admin_loc}"><input type="hidden" name="sessionID" value="$sessionID"><input type="hidden" name="system" value="$system"><input type="hidden" name="dbname" value="$dbname"><input type="hidden" name="action" value="imxcat"><input type="submit" name="cataction" value="Import"></form></td><td><form method="get" action="http://$config{servername}$config{admin_loc}"><input type="hidden" name="sessionID" value="$sessionID"><input type="hidden" name="system" value="$system"><input type="hidden" name="dbname" value="$dbname"><input type="hidden" name="action" value="config"><input type="submit" name="confaction" value="Import-Optionen"></form></td></tr>
-POOL
-      
-      if ($linecolor eq "white"){
-	$linecolor="aliceblue";
-      }
-      else {
-	$linecolor="white";
-      }
-      
-    }
-    
-    $idnresult->finish();
-    
-    print "</table>\n";
-    OpenBib::Common::Util::print_footer();
-    
   }
   elsif ($action eq "showsession"){
-    OpenBib::Common::Util::print_simple_header("Biblio-Administration: Sessions anzeigen",$r);
-    
-    print << "MASKE4";
-<table>
-<tr><td><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showcat">Kataloge</a></td><td>&nbsp;&nbsp;&nbsp;</td><td align="left"><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showviews">Views</a></td><td>&nbsp;&nbsp;&nbsp;</td><td><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showsession"><b>Sessions</b></a></td><td>&nbsp;&nbsp;&nbsp;</td><td><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=logout"><b>Logout</b></a></td></tr>
-</table>
-<hr>
-<table>
-<tr><td><a href="http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showsession">Anzeigen</a></td><td>&nbsp;&nbsp;&nbsp;</td></tr>
-</table>
-<hr>
-<table>
-<tr><td><b>Session-ID</b></td><td><b>Beginn</b></td><td align="middle"><b>Benutzer</b></td><td align="middle">
-<b>Initiale Suchen</b></td></tr>
-MASKE4
 
-
-    my $idnresult=$sessiondbh->prepare("select * from session");
+    my $idnresult=$sessiondbh->prepare("select * from session order by createtime");
     $idnresult->execute();
+    my $session="";
+    my @sessions=();
+
     while (my $result=$idnresult->fetchrow_hashref()){
-      my $sessionid=$result->{'sessionid'};
+      my $singlesessionid=$result->{'sessionid'};
       my $createtime=$result->{'createtime'};
       my $benutzernr=$result->{'benutzernr'};
 
-      my $idnresult2=$sessiondbh->prepare("select * from queries where sessionid='$sessionid'");
+      my $idnresult2=$sessiondbh->prepare("select * from queries where sessionid='$singlesessionid'");
       $idnresult2->execute();
       my $numqueries=$idnresult2->rows;
 
       if ($benutzernr eq ""){
 	$benutzernr="Anonym";
       }
-      
-      print << "SESSION";
-<tr><td>$sessionid</td><td>$createtime</td><td align="middle">$benutzernr</td><td align="middle">$numqueries</td></tr>
-SESSION
-      
+
+      $session={
+                singlesessionid => $singlesessionid,
+                createtime      => $createtime,
+                benutzernr      => $benutzernr,
+                numqueries      => $numqueries,
+               };
+      push @sessions, $session;
     }
     
+
+    my $ttdata={
+	        stylesheet => $stylesheet,
+	        sessionID => $sessionID,
+	         
+	        sessions => \@sessions,
+
+	        config     => \%config,
+	       };
+
+    OpenBib::Common::Util::print_page($config{tt_admin_showsessions_tname},$ttdata,$r);
     
-    print "</table>";
-    
-    OpenBib::Common::Util::print_footer();
     $sessiondbh->disconnect;
     return OK;
+  }
+  elsif ($action eq "editsession"){
+
+    if ($sessionaction eq "Anzeigen"){
+      my $idnresult=$sessiondbh->prepare("select * from session where sessionID='$singlesessionid'");
+      $idnresult->execute();
+
+      my $result=$idnresult->fetchrow_hashref();
+      my $createtime=$result->{'createtime'};
+      my $benutzernr=$result->{'benutzernr'};
+
+      my $idnresult2=$sessiondbh->prepare("select * from queries where sessionid='$singlesessionid'");
+      $idnresult2->execute();
+
+      my $numqueries=$idnresult2->rows;
+
+      my @queries=();
+      my $singlequery="";
+      while (my $result2=$idnresult2->fetchrow_hashref()){
+         my $query=$result2->{'query'};
+         my $hits=$result2->{'hits'};
+         my $dbases=$result2->{'dbases'};
+
+
+	 my ($fs,$verf,$hst,$swt,$kor,$sign,$isbn,$issn,$notation,$mart,$ejahr,$hststring,$bool1,$bool2,$bool3,$bool4,$bool5,$bool6,$bool7,$bool8,$bool9,$bool10,$bool11,$bool12)=split('\|\|',$query);
+
+         # Aufbereitung der Suchanfrage fuer die Ausgabe
+
+         $query="";
+         $query.="(FS: $fs) " if ($fs);
+         $query.="$bool1 (AUT: $verf) " if ($verf);
+         $query.="$bool2 (HST: $hst) " if ($hst);
+         $query.="$bool3 (SWT: $swt) " if ($swt);
+         $query.="$bool4 (KOR: $kor) " if ($kor);
+         $query.="$bool5 (NOT: $notation) " if ($notation);
+         $query.="$bool6 (SIG: $sign) " if ($sign);
+         $query.="$bool7 (EJAHR: $ejahr) " if ($ejahr);
+         $query.="$bool8 (ISBN: $isbn) " if ($isbn);
+         $query.="$bool9 (ISSN: $issn) " if ($issn);
+         $query.="$bool10 (MART: $mart) " if ($mart);
+         $query.="$bool11 (HSTR: $hststring) " if ($hststring);
+
+	 # Bereinigen fuer die Ausgabe
+
+	 $query=~s/^.*?\(/(/;
+	 $dbases=~s/\|\|/ ; /g;
+
+         my $singlequery={
+                           query => $query,
+                           hits  => $hits,
+                           dbases => $dbases,
+                         };
+
+         push @queries, $singlequery;
+      }    
+
+
+      if ($benutzernr eq ""){
+	$benutzernr="Anonym";
+      }
+
+      my $session={
+                singlesessionid => $singlesessionid,
+                createtime      => $createtime,
+                benutzernr      => $benutzernr,
+                numqueries      => $numqueries,
+               };
+
+      my $ttdata={
+	          stylesheet => $stylesheet,
+	          sessionID => $sessionID,
+	         
+	          session => $session,
+
+                  queries => \@queries,
+
+	          config     => \%config,
+	         };
+
+      OpenBib::Common::Util::print_page($config{tt_admin_editsession_tname},$ttdata,$r);
+    
+      $sessiondbh->disconnect;
+      return OK;
+    }
   }
   elsif ($action eq "config"){
     
@@ -720,9 +783,6 @@ SESSION
       $idnresult->finish();
             
     }
-    
-    
-    
     
     OpenBib::Common::Util::print_simple_header("Biblio-Administration: Import-Konfiguration",$r);
     
@@ -844,20 +904,23 @@ FOOT
     goto LEAVEPROG;
   }
   elsif ($action eq "logout"){
-    OpenBib::Common::Util::print_simple_header("Biblio-Administration: Logout",$r);
-    
-    my $idnresult=$sessiondbh->prepare("delete from session where sessionid='$sessionID'");
+
+    my $ttdata={
+		  stylesheet => $stylesheet,
+		  sessionID => $sessionID,
+		  
+		  config     => \%config,
+		 };
+      
+    OpenBib::Common::Util::print_page($config{tt_admin_logout_tname},$ttdata,$r);
+
+    my $idnresult=$sessiondbh->prepare("delete from session where benutzernr='$adminuser' and sessionid='$sessionID'") or die "Error -- $DBI::errstr";
     $idnresult->execute();
-    $idnresult->finish();
-    
-    print "<h1>Sie sind nun ausgeloggt</h1>";
-    print "Nochmaliges Einloggen k&ouml;nnen Sie <a href=\"http://$config{servername}$config{admin_loc}?action=login\">hier</a>\n";
-    
-    OpenBib::Common::Util::print_footer();
+
+
   }
   else {
-    OpenBib::Common::Util::print_warning('',$r);
-    print_warning("Keine g&uuml;ltige Aktion oder Session",$query,$stylesheet);
+    OpenBib::Common::Util::print_warning('Keine g&uuml;ltige Aktion oder Session',$r);
   }
   
  LEAVEPROG: sleep 0;

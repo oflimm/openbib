@@ -1069,6 +1069,7 @@ sub bearbeite_titline {
     $isbnidx=0;
     $issnidx=0;
     $wstidx=0;
+    $abstractidx=0;
     $psthtsidx=0;
     $beigwerkidx=0;
     $artinhidx=0;
@@ -1211,6 +1212,11 @@ sub bearbeite_titline {
   if ($line=~/^5801.(.*)/){
     $rem=$1;
   }
+
+  if ($line=~/^9000.(.*)/){
+    $abstract[$abstractidx++]=$1;
+  }
+
   if ($line=~/^ENDE/){
     if ($combined){
 
@@ -1283,6 +1289,14 @@ sub bearbeite_titline {
 	  print COMBI "$singlewst\n";
 	}
       }
+
+
+      if ($abstractidx != 0){
+        foreach $singleabstract (@abstract){
+          print COMBI "$singleabstract\n";
+        }
+      }
+
 
       if ($psthtsidx != 0){
 	foreach $singlepsthts (@psthts){
@@ -1383,6 +1397,7 @@ sub bearbeite_titline {
     undef $isbnidx;
     undef $issnidx;
     undef $wstidx;
+    undef $abstractidx;
     undef $psthtsidx;
     undef $beigwerkidx;
     undef $artinhidx;
@@ -1398,9 +1413,11 @@ sub bearbeite_titline {
     undef @isbn;
     undef @issn;
     undef @wst;
+    undef @abstract;
     undef @psthts;
     undef @beigwerk;
     undef $singlewst;
+    undef $singleabstract;
     undef $singlepsthts;
     undef $singlebeigwerk;
     undef $hst;

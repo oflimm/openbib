@@ -141,6 +141,9 @@ aufnahmejahr text,
 erschjahr text,
 anserschjahr text,
 erschverlauf text,
+verfquelle text,
+eortquelle text,
+ejahrquelle text,
 kollation text,
 matbenennung text,
 sonstmatben text,
@@ -291,6 +294,14 @@ index (titidn)
 create table titphysform (
 titidn int not null,
 physform text,
+index (titidn)
+);
+
+# Illustrationsangabe (MAB 434)
+
+create table titillang (
+titidn int not null,
+illang text,
 index (titidn)
 );
 

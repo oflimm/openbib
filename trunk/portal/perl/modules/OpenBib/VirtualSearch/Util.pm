@@ -224,7 +224,7 @@ sub is_single_tit {
     $retval.="<strong><span id=\"rlauthor\">$verfasserstring</span></strong><br>" if ($verfasserstring ne "");
 
 
-    $retval.="<a href=\"$befehlsurl?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=2&amp;showmexintit=1&amp;casesensitive=0&amp;maxhits=500&amp;hitrange=$hitrange&amp;sorttype=$sorttype&amp;database=$database&amp;searchsingletit=$idn\">";
+    $retval.="<a href=\"$befehlsurl?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=2&amp;casesensitive=0&amp;maxhits=500&amp;hitrange=$hitrange&amp;sorttype=$sorttype&amp;database=$database&amp;searchsingletit=$idn\">";
 
     # Wenn wir einen AST haben, dann hat er hoehere Prioritaet als ein der HST
 

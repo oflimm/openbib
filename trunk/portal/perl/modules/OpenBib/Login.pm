@@ -85,7 +85,13 @@ sub handler {
   
   if ($idnresult->rows <= 0 || $sessionID eq ""){
     OpenBib::Common::Util::print_warning("SessionID ist ung&uuml;lltig",$r);
-    exit;
+
+    $idnresult->finish();
+    
+    $sessiondbh->disconnect();
+    $userdbh->disconnect();
+
+    return OK;
   }
   
   if ($action eq "login"){
@@ -150,6 +156,7 @@ sub handler {
       $description=$result->{'description'};
       $type=$result->{'type'};
     }
+
     $targetresult->finish();
     
     if ($type eq "slnp"){
@@ -266,11 +273,12 @@ sub handler {
 	  }
 	}
       }
-      
-      
+
       $idnresult->finish();
+      $userresult->finish();
     }
     
+
     # Und nun wird ein komplett neue Frameset aufgebaut
     
     my $headerframeurl="http://$config{servername}$config{headerframe_loc}?sessionID=$sessionID";
@@ -308,11 +316,13 @@ sub handler {
       OpenBib::Common::Util::print_warning('Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht erfolgreich authentifiziert werden',$r);
     }
     else {
-    OpenBib::Common::Util::print_warning('Falscher Fehler-Code',$r);
-  }
+      OpenBib::Common::Util::print_warning('Falscher Fehler-Code',$r);
+    }
     
   }
 
+  $idnresult->finish();
+  
   $sessiondbh->disconnect();
   $userdbh->disconnect();
 

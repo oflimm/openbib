@@ -4,13 +4,18 @@
 [% PROCESS corporate_banner %] 
 [% END %]
 
-<table BORDER=0 CELLSPACING=0 CELLPADDING=0 width="100%">
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
   <tr bgcolor="lightblue">
-    <td  width="20">&nbsp;</td><td valign="middle" ALIGN=left height="32"><img src="/images/openbib/fehler.png"></td>
+    <td width="20">&nbsp;</td><td valign="middle" align="left" height="32"><img src="/images/openbib/fehler.png" alt="Es ist ein Fehler aufgetreten" /></td>
   </tr>
 </table>
-
-<h1>[% errmsg %]</h1>
+<p />
+<table width="100%">
+<tr><th>Fehlerbeschreibung</th></tr>
+<tr><td class="boxedclear" style="font-size:12pt">
+[% errmsg %]
+</td></tr>
+</table>
 
 [% PROCESS std_footer %]
 

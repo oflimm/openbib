@@ -66,6 +66,7 @@ sub handler {
 
   my $showfs=($query->param('showfs'))?$query->param('showfs'):'0';
   my $showhst=($query->param('showhst'))?$query->param('showhst'):'0';
+  my $showhststring=($query->param('showhststring'))?$query->param('showhststring'):'0';
   my $showverf=($query->param('showverf'))?$query->param('showverf'):'0';
   my $showkor=($query->param('showkor'))?$query->param('showkor'):'0';
   my $showswt=($query->param('showswt'))?$query->param('showswt'):'0';
@@ -124,6 +125,10 @@ my $showissn=($query->param('showissn'))?$query->param('showissn'):'0';
     my $showhst=$result->{'hst'};
     my $hstchecked="";
     $hstchecked="checked=\"checked\"" if ($showhst);
+
+    my $showhststring=$result->{'hststring'};
+    my $hststringchecked="";
+    $hststringchecked="checked=\"checked\"" if ($showhststring);
     
     my $showverf=$result->{'verf'};
     my $verfchecked="";
@@ -193,6 +198,7 @@ my $showissn=($query->param('showissn'))?$query->param('showissn'):'0';
 		email_valid => $email_valid,
 		fschecked => $fschecked,
 		hstchecked => $hstchecked,
+		hststringchecked => $hststringchecked,
 		verfchecked => $verfchecked,
 		korchecked => $korchecked,
 		swtchecked => $swtchecked,
@@ -213,7 +219,7 @@ my $showissn=($query->param('showissn'))?$query->param('showissn'):'0';
   }
   elsif ($action eq "changefields"){
     
-    my $targetresult=$userdbh->prepare("update fieldchoice set fs='$showfs', hst='$showhst', verf='$showverf', kor='$showkor', swt='$showswt', notation='$shownotation', isbn='$showisbn', issn='$showissn', sign='$showsign', mart='$showmart', ejahr='$showejahr' where userid='$userid'") or die "Error -- $DBI::errstr";
+    my $targetresult=$userdbh->prepare("update fieldchoice set fs='$showfs', hst='$showhst', hststring='$showhststring', verf='$showverf', kor='$showkor', swt='$showswt', notation='$shownotation', isbn='$showisbn', issn='$showissn', sign='$showsign', mart='$showmart', ejahr='$showejahr' where userid='$userid'") or die "Error -- $DBI::errstr";
     $targetresult->execute();
     $targetresult->finish();
 

@@ -45,6 +45,7 @@ use POSIX;
 use Digest::MD5;
 use DBI;
 use Email::Valid;                           # EMail-Adressen testen
+use MIME::Lite;                             # MIME-Mails verschicken
 
 use OpenBib::Common::Util;
 
@@ -292,7 +293,6 @@ ENDE
       $gesamttreffer.="<hr>\n$treffer";
     }
 
-    open(MAIL,"| /usr/lib/sendmail -t -f$config{contact_email}");
 
     my $stylesheet=get_css_by_browsertype($r);
 
@@ -313,26 +313,51 @@ HTMLPRE
 </HTML>
 HTMLPOST
 
+    my $mimetype="text/html";
+    my $filename="kug-merkliste";
+
     if ($type ne "HTML"){
       $htmlpre="";
-    }
-
-    if ($type ne "HTML"){
       $htmlpost="";
+      $mimetype="text/plain";
+      $filename.=".txt";
+    }
+    else {
+      $filename.=".html";
     }
 
-    print MAIL << "MAILSEND";
-From: $config{contact_email}
-To: $email
-Subject: $subject
+    my $anschreiben = << "ANSCHREIBEN";
+Sehr geehrte Damen und Herren,
+
+anbei Ihre Merkliste aus dem KUG.
+
+Mit freundlichen Grüßen
+
+Ihr KUG Team
+ANSCHREIBEN
+
+    my $msg = MIME::Lite->new(
+			      From            => $config{contact_email},
+			      To              => $email,
+			      Subject         => $subject,
+			      Type            => 'multipart/mixed'
+			     );
 
 
-$htmlpre
-$gesamttreffer;
-$htmlpost
+    $msg->attach(
+		 Type            => 'TEXT',
+		 Encoding        => '8bit',
+		 Data            => $anschreiben
+		);
 
-MAILSEND
-    close(MAIL);
+    $msg->attach(
+		 Type            => $mimetype,
+		 Encoding        => '8bit',
+                 Filename        => $filename,
+		 Data            => $htmlpre.$gesamttreffer.$htmlpost,
+		);
+
+    $msg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config{contact_email}")
   }
   else {
     my $befehlsurl="http://$config{servername}$config{search_loc}";
@@ -515,28 +540,51 @@ HTMLPRE
 </HTML>
 HTMLPOST
 
+    my $mimetype="text/html";
+    my $filename="kug-merkliste";
+
     if ($type ne "HTML"){
       $htmlpre="";
-    }
-
-    if ($type ne "HTML"){
       $htmlpost="";
+      $mimetype="text/plain";
+      $filename.=".txt";
+    }
+    else {
+      $filename.=".html";
     }
 
-    open(MAIL,"| /usr/lib/sendmail -t -f$config{contact_email}");
+    my $anschreiben = << "ANSCHREIBEN";
+Sehr geehrte Damen und Herren,
 
-    print MAIL << "MAILSEND";
-From: $config{contact_email}
-To: $email
-Subject: $subject
+anbei Ihre Merkliste aus dem KUG.
+
+Mit freundlichen Grüßen
+
+Ihr KUG Team
+ANSCHREIBEN
+
+    my $msg = MIME::Lite->new(
+			      From            => $config{contact_email},
+			      To              => $email,
+			      Subject         => $subject,
+			      Type            => 'multipart/mixed'
+			     );
 
 
-$htmlpre
-$gesamttreffer;
-$htmlpost
+    $msg->attach(
+		 Type            => 'TEXT',
+		 Encoding        => '8bit',
+		 Data            => $anschreiben
+		);
 
-MAILSEND
-    close(MAIL);
+    $msg->attach(
+		 Type            => $mimetype,
+		 Encoding        => '8bit',
+                 Filename        => $filename,
+		 Data            => $htmlpre.$gesamttreffer.$htmlpost,
+		);
+
+    $msg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config{contact_email}")
   }
 
   print << "ENDE6";

@@ -162,22 +162,22 @@ sub is_single_tit {
     }
 
     # Extrahiere die Verfasser aus dem einen Titelsatz
-    if ($line=~m/^.+?Verfasser.+?\<a href.*?\>(.*?)\<.a\>/){
+    if ($line=~m/^.+?Verfasser.+?\<a href.*?\>.*?\<.a\>.*?\<a href.*?\>(.*?)\<.a\>/){
       push @verfasserarray, $1;
     }
 
     # Extrahiere die Person aus dem einen Titelsatz
-    if ($line=~m/^.+?>Person.+?\<a href.*?\>(.*)\<.a\>/){
+    if ($line=~m/^.+?>Person.+?\<a href.*?\>.*?\<.a\>.*?\<a href.*?\>(.*)\<.a\>/){
       push @verfasserarray, $1;
     }
 
     # Extrahiere den Urheber aus dem einen Titelsatz
-    if ($line=~m/^.+?Urheber.+?\<a href.*?\>(.*)\<.a\>/){
+    if ($line=~m/^.+?Urheber.+?\<a href.*?\>.*?\<.a\>.*?\<a href.*?\>(.*)\<.a\>/){
       push @verfasserarray, $1;
     }
 
     # Extrahiere die Koerperschaft aus dem einen Titelsatz
-    if ($line=~m/^.+?K.+?rperschaft.+?\<a href.*?\>(.*)\<.a\>/){
+    if ($line=~m/^.+?K.+?rperschaft.+?\<a href.*?\>.*?\<.a\>.*?\<a href.*?\>(.*)\<.a\>/){
       push @verfasserarray, $1;
     }
     
@@ -247,7 +247,7 @@ sub is_single_tit {
     if ($erschjahr){
       $retval.="<span id=\"rlyearofpub\">$erschjahr</span>";
     }
-    $retval.="</td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$idn\" target=\"header\"><span id=\"rlmerken\"><img src=\"/images/kvik/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In Merkliste\" border=0></span></a></td><td><b>$signaturstring</b>";
+    $retval.="</td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$idn\" target=\"header\"><span id=\"rlmerken\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In Merkliste\" border=0></span></a></td><td><b>$signaturstring</b>";
     return $retval;
   }
   else {

@@ -335,8 +335,11 @@ cp /opt/store/openbib/portal/apache/openbib.conf /etc/apache-perl/
 \end{verbatim}
 
 
-\section{Installation des MySQL-DBMS}
+\section{Installation und Konfiguration des MySQL-DBMS}
 \label{sec:instmysql}
+
+
+\subsection{Installation}
 
 OpenBib verwendet verschiedene Datenbanken. So gibt es auf jedem
 Rechner eine session-Datenbank, in die Sitzung-Informationen sowie
@@ -412,11 +415,13 @@ ohne weitere Rechte. Diese m"ussen nun h"andisch gesetzt werden:
 \begin{verbatim}
 mysql> update user set Select_priv='Y', Insert_priv='Y',
  Update_priv='Y', Delete_priv='Y', Create_priv='Y', Drop_priv='Y', 
- Index_priv='Y', Alter_priv='Y' whereUser='openbib';
+ Index_priv='Y', Alter_priv='Y', File_priv='Y', Reload_priv='Y' 
+ Lock_tables_priv='Y', Create_tmp_table_priv='Y' where User='openbib';
+mysql> flush privileges;
 \end{verbatim}
 
-Die Privilegien \texttt{Reload\_priv}, \texttt{Shutdown\_priv},
-\texttt{Process\_priv} sowie \texttt{File\_priv}, \texttt{Grant\_priv}
+Die Privilegien \texttt{Shutdown\_priv},
+\texttt{Process\_priv} sowie \texttt{Grant\_priv}
 und \texttt{References\_priv} werden nicht ben"otigt uns sollten auch
 aus Sicherheitsgr"unden nicht vergeben werden.
 
@@ -426,7 +431,36 @@ Benutzerzugang zu konfigurieren. Der Einfachheit halber wird im
 Folgenden jeweils nur einer, konkret der gerade eingerichtete Benutzer
 \texttt{openbib} verwendet.
 
-\chapter{Installation von OpenBib}
+
+\subsection{Konfiguration}
+
+Die Konfiguration bezieht sich im Wesentlichen auf die Datei
+\texttt{/etc/mysql/my.cnf}. Dort m"ussen verschiedene Einstellungen
+vorgenommen werden.
+
+F"ur die Volltextsuche sind dies:
+
+\begin{description}
+\item[ft\_min\_word\_len] In den Sektionen \texttt{[mysqld]} und
+  \texttt{[myisamchk]} mu"s die minimale L"ange der zu indizierenden
+  Worte angegeben werden. Der Standardwert bei Weglassung der
+  Einstellung ist 3. Oft ist es jedoch sinnvoll diesen Wert auf 2 oder
+  1 herunterzusetzen, damit weitere Kurzw"orter -- dann jedoch auf
+  Kosten eines wachsenden Index -- recherchierbar werden.
+\begin{verbatim}
+# Minimale Wortlaenge fuer Volltextsuche
+ft_min_word_len = 2
+\end{verbatim}
+\item[ft\_stopword\_file] In der Sektion \texttt{[mysqld]} sollte
+  durch Angabe dieses Parameters \textbf{ohne Wert} die
+  Ber"ucksichtigung von Stopwortlisten unterdr"uckt werden.
+\begin{verbatim}
+# Stoppworte deaktivieren
+ft_stopword_file =
+\end{verbatim}
+\end{description}
+
+\chapter{Installation des OpenBib Web-Portals}
 
 Die Installation von OpenBib besteht aus
 
@@ -469,9 +503,17 @@ apt-get install libtemplate-perl libtemplate-perl-doc
 \end{verbatim}
   Zus"atzlich wird das hierzu ben"otigte Paket libappconfig-perl mit
   installiert.
+\item Apache::Request
+\begin{verbatim}
+apt-get install libapache-request-perl
+\end{verbatim}
 \item Apache::Reload
 \begin{verbatim}
 apt-get install libapache-reload-perl
+\end{verbatim}
+\item LWP
+\begin{verbatim}
+apt-get install libwww-perl
 \end{verbatim}
 \item DBI und DBD::Mysql
 \begin{verbatim}
@@ -481,10 +523,17 @@ apt-get install libdbi-perl libdbd-mysql-perl
 \begin{verbatim}
 apt-get install libdbi-perl libdbd-mysql-perl
 \end{verbatim}
+\item MIME::Lite
+\begin{verbatim}
+apt-get install libmime-lite-perl
+\end{verbatim}
 \item Email::Valid
 \begin{verbatim}
 apt-get install libemail-valid-perl
 \end{verbatim}
+\item oai-perl 2.15
+Dieses Modul muss h"andisch von
+\texttt{http://oai-perl.sourceforge.net/} installiert werden.
 \end{itemize}
 
 \section{Konfiguration des Web-Portals}
@@ -596,6 +645,7 @@ k"onnen die Standardwerte "ubernommen werden.
 
 
 \subsection{Administrations-Einstellungen}
+\label{ssec:admineinstellung}
 
 \begin{description}
 \item[adminuser] Mit diesem Benutzernamen greifen Sie sp"ater auf das
@@ -873,5 +923,74 @@ erfolgreiche Installation des Portals dokumentiert Abbildung
 \end{shadowenv}
 \end{figure}
 
+
+\chapter{Installation von Katalogen und automatischer Konvertierung}
+
+Nachdem nun das Web-Portal installiert und konfiguriert ist, k"onnen
+Kataloge definiert werden.
+
+Generell wird davon ausgegangen, dass die Katalogdaten aus externen
+(Bibliotheks-)Systemen stammen, wie z.B. aus SunRise der Firma
+Sisis\footnote{Sisis und Sunrise sind eingetragene Marken der Firma
+  Sisis Informationssysteme GmbH, M"unchen.} oder OAI-Datenquellen.
+
+Daher gestaltet sich die Installation eines Kataloges typischerweise
+aus mehreren Schritten:
+
+\begin{enumerate}
+\item Der Katalog wird mit Meta-Daten "uber das
+  Administrations-Interface des Web-Portals erfasst und
+  angelegt. Ebenso wird die Quelle der (exportierten) Daten definiert.
+\item Auf dem Rechner des Bibliothekssystem wird gegebenenfalls eine
+  regelm"a"sige Entlade- und/oder Konvertierungsroutine installiert,
+  die die Bibliotheksdaten z.B. in einem (mit Passwort gesch"utzten)
+  Web-Bereich ablegt.
+\end{enumerate}
+
+Welche der Schritte in welchem Umfang vollzogen werden, h"angt
+ma"sgeblich von der Art des Kataloges ab.
+
+Im Folgenden werden diese Schritte anhand eines Beispielkataloges
+durchgef"uhrt, dessen exportierte Daten bereits auf der
+OpenBib-Website vorliegen. Auf diese Weise kann anhand dieses
+Beispielkataloges bereits das Web-Portal evaluiert werden.
+
+\section{Aufnahme eines Katalogs "uber das Administrations-Interface}
+
+Um einen neuen Katalog mit seinen Meta-Daten zu erfassen wird das
+Administrations-Interface des Web-Portals genutzt.
+
+Rufen Sie daher den folgenden URL entsprechend der bereits erfolgten
+Installation und Konfiguration auf:
+
+\begin{verbatim}
+http://openbib.foo.bar/portal/admin
+\end{verbatim}
+
+In der Eingabemaske authentifizieren Sie sich mit dem unter
+\ref{ssec:admineinstellung} definierten \texttt{adminuser} 'admin' und
+dem \texttt{adminpasswd} 'NochGeheimer'.
+
+Nach erfolgreicher Authentifikation erscheint die Erfolgsmeldung
+\emph{Sie sind nun als Administrator eingeloggt.} sowie ein Menu mit
+den Eintr"agen \texttt{Kataloge}, \texttt{Views},
+\texttt{Sessions} und \texttt{Import}.
+
+\begin{description}
+\item[Kataloge] Hier werden neue Kataloge mit Ihren Meta-Daten
+  aufgenommen, ge"andert und gel"oscht. Speziell werden hier auch die
+  Quellen der Katalogdaten konfiguriert.
+\item[Views] Hier k"onnen Katalog/Instituts-Sichten (Views) definiert
+  werden. Auf diese Weise k"onnen aus allen Katalogen des
+  Recherche-Portals Untermengen, z.B. thematisch, mit eigenem Namen
+  und Beschreibung definiert werden, so da"s direkt in diese
+  Vorauswahl an Katalogen in das Portal hereingesprungen werden kann.
+\item[Sessions] Hier finden Sie eine Aufstellung der existierenden
+  Sessions. Zu jeder Session k"onnen Sie sich weitergehende
+  Informationen anzeigen lassen, z.B. welche Recherchen mit welchen
+  Suchbegriffen in der betreffenden Session get"atigt wurden.
+\item[Import] Hier k"onnen Sie automatische Importe f"ur einzelne
+  Kataloge veranlassen.
+\end{description}
 
 \end{document}

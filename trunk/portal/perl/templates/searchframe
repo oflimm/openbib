@@ -82,7 +82,7 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
 [% END %]
 
 [% IF showhststring %]
-<tr><td bgcolor="#ADD8E6"><b>Titel-String</b></td><td bgcolor="#ADD8E6"><select name="bool12"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="hststring" value="[% hststring %]" size="30" maxlength="200" /></td><td></td></tr>
+<tr><td bgcolor="#ADD8E6"><b>Titel-String</b></td><td bgcolor="#ADD8E6"><select name="bool12"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="hststring" value="[% hststring %]" size="30" maxlength="200" /></td><td><span style="color:red">*</span></td></tr>
 [% END %]
 
 [% IF showmart %]

@@ -9,6 +9,15 @@ create table user (
  loginname text,
  pin text,
 
+ nachname text,
+ vorname  text,
+ soll     text,
+ gut      text,
+ avanz    text,
+ bsanz    text,
+ vmanz    text,
+ gebdatum text,
+
  email text,
  INDEX(userid)
 );
@@ -36,17 +45,18 @@ create table profildb (
 
 create table fieldchoice (
  userid BIGINT NOT NULL,
- fs       bool,
- hst      bool,
- verf     bool,
- kor      bool,
- swt      bool,
- notation bool,
- isbn     bool,
- issn     bool,
- sign     bool,
- mart     bool,
- ejahr    bool,
+ fs        bool,
+ hst       bool,
+ verf      bool,
+ kor       bool,
+ swt       bool,
+ notation  bool,
+ isbn      bool,
+ issn      bool,
+ sign      bool,
+ mart      bool,
+ hststring bool,
+ ejahr     bool,
  
  INDEX (userid)
 );

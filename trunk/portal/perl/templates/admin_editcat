@@ -132,6 +132,31 @@ selected
 </td></tr>
 </table>
 
+<p />
+
+<table width="100%">
+<tr><th>Ausleih-Einstellungen</th></tr>
+<tr><td class="boxedclear" style="font-size:12pt">
+<table>
+<tr><td><b>Sprung in WebOPAC</b></td><td><select name="circ"><option value="0"
+
+[% IF katalog.circconfig.circ == '0' %]
+selected
+[% END %]
+
+>Nein</option><option value="1" 
+
+[% IF katalog.circconfig.circ == '1' %]
+selected
+[% END %]
+
+>Ja</option></td></tr>
+<tr><td><b>WebOPAC-URL</b></td><td><input type="text" size="50" name="circurl" value="[% katalog.circconfig.circurl %]"></td></tr>
+<tr><td><b>Bestands-&Uuml;berpr&uuml;fungs-URL</b></td><td><input type="text" size="50" name="circcheckurl" value="[% katalog.circconfig.circcheckurl %]"></td></tr>
+</table>
+</td></tr>
+</table>
+
 
 <p />
 <table width="100%">

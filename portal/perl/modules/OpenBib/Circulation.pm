@@ -142,7 +142,7 @@ sub handler {
     else {
       $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
     }
-    
+
     # TT-Data erzeugen
 
     my $ttdata={
@@ -153,6 +153,12 @@ sub handler {
 		password => $password,
 
 		borrows => $circexlist,
+
+		utf2iso => sub { 
+		                  my $string=shift;
+				  $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
+				  return $string;
+	 			},
 
 		show_corporate_banner => 0,
 		show_foot_banner => 1,

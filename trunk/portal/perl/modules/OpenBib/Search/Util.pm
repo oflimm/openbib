@@ -1211,12 +1211,12 @@ LASTNEXT
       print << "TITHEAD";
 </table>
 <p>
+<!-- Title begins here -->
 <table width="100%">
 <tr><th>Titelaufnahme</th></tr>
 <tr><td class="boxedclear" style="font-size:12pt">
 TITHEAD
 
-    print "<!-- Title begins here -->\n";
     print "<table cellpadding=2>\n";
     print "<tr><td>Kategorie</td><td>Inhalt</td></tr>\n";
 #    print "<tr bgcolor=\"lightblue\"><td>&nbsp;</td><td>".$dbinfo{"$database"}."</td></tr>\n";
@@ -2053,7 +2053,7 @@ TITHEAD
 	if ($#verknmex >= 0){
 	  print "<p>\n";
 	  print "<table>\n";
-	  print "<tr align=center><td bgcolor=\"lightblue\" width=\"225\">Besitzende Bibliothek</td><td bgcolor=\"lightblue\" width=\"250\">Standort</td><td bgcolor=\"lightblue\" width=\"120\">Lokale Signatur</td>";
+	  print "<tr align=center><td bgcolor=\"lightblue\" width=\"225\">Besitzende Bibliothek</td><td bgcolor=\"lightblue\" width=\"250\">Standort</td><td bgcolor=\"lightblue\" width=\"250\">Inventarnummer</td><td bgcolor=\"lightblue\" width=\"120\">Lokale Signatur</td>";
 	  
 	  print "<td bgcolor=\"lightblue\" width=\"230\">Bestandsverlauf</td>";
 
@@ -2067,9 +2067,7 @@ TITHEAD
 	}
 	
     print "</td></tr></table>\n";
-    print "<p>\n<!-- Title ends here -->\n";
 
-    
     # Gegebenenfalls bestimmung der Ausleihinfo fuer Exemplare
 
     my $circexlist=undef;
@@ -2101,7 +2099,6 @@ TITHEAD
 
     if ($circ && $#circexemplarliste >= 0){
       print << "CIRCHEAD";
-</table>
 <p>
 <table width="100%">
 <tr><th>Ausleihe/Exemplare</th></tr>
@@ -2113,10 +2110,19 @@ CIRCHEAD
       
       foreach my $singleex (@circexemplarliste) {
 	my $standort=$singleex->{'Standort'};
+	$standort=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
+	
 	my $signatur=$singleex->{'Signatur'};
+	$signatur=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
+	
 	my $ausleihstatus=$singleex->{'Status'};
+	$ausleihstatus=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
+
 	my $rueckgabe=$singleex->{'Rueckgabe'};
+	$rueckgabe=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
+
 	my $exemplar=$singleex->{'Exemplar'};
+	$exemplar=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
 
 	# Zusammensetzung von Signatur und Exemplar
 
@@ -2128,26 +2134,26 @@ CIRCHEAD
 
 	my $sigel=$dbases{$database};
 
-    if (length($sigel)>0){
-      
-      if (exists $sigel{$sigel}){
-	$bibliothek=$sigel{$sigel};
-      }
-      else{
-	$bibliothek="Unbekannt (38/$sigel)";
-      }
-    }
-    else {
-      if (exists $sigel{$dbases{$database}}){
-	$bibliothek=$sigel{$dbases{$database}};
-      }
-      else{
-	$bibliothek="Unbekannt (38/$sigel)";
-      }
-    }
+	if (length($sigel)>0){
+	  
+	  if (exists $sigel{$sigel}){
+	    $bibliothek=$sigel{$sigel};
+	  }
+	  else{
+	    $bibliothek="Unbekannt (38/$sigel)";
+	  }
+	}
+	else {
+	  if (exists $sigel{$dbases{$database}}){
+	    $bibliothek=$sigel{$dbases{$database}};
+	  }
+	  else{
+	    $bibliothek="Unbekannt (38/$sigel)";
+	  }
+	}
 	
 	my $bibinfourl=$bibinfo{$dbases{$database}};
-
+	
 	print "<tr align=center><td><a href=\"$bibinfourl\"><strong>$bibliothek</strong></a></td>";
 	print "<td>$standort</td><td><strong>$signatur</strong></td>";
 	
@@ -2178,12 +2184,13 @@ CIRCHEAD
 	    print "<td><strong>$ausleihstatus</strong></td><td bgcolor=\"yellow\"><a TARGET=_blank href=\"$circurl&KatKeySearch=$titidn\">$ausleihstring</a></td>";
 	  }
 	}
-
-
       }
 
       print "</table></td></tr></table>\n";
     }
+
+    print "<p>\n<!-- Title ends here -->\n";
+
       # Ausgabe der Buchinformationen anhand der ISBN
       
       if ($bookinfo){
@@ -2404,8 +2411,8 @@ sub get_mex_by_idn {
     
     if ($mexresult2->rows == 0){
       
-      #print "<tr align=center><td><a href=\"$bibinfourl\"><strong>$bibliothek</strong></a></td><td>$standort</td><td>$inventarnummer</td><td> - </td>";
-      print "<tr align=center><td><a href=\"$bibinfourl\"><strong>$bibliothek</strong></a></td><td>$standort</td><td> - </td>";
+      print "<tr align=center><td><a href=\"$bibinfourl\"><strong>$bibliothek</strong></a></td><td>$standort</td><td>$inventarnummer</td><td> - </td>";
+      #print "<tr align=center><td><a href=\"$bibinfourl\"><strong>$bibliothek</strong></a></td><td>$standort</td><td> - </td>";
       
       print "<td>$erschverl</td>";
 
@@ -2416,8 +2423,8 @@ sub get_mex_by_idn {
       while (@mexres2=$mexresult2->fetchrow){
 	my $signatur=$mexres2[1];
 	my $titidn=$verkntit[0];
-	#print "<tr align=center><td><a href=\"$bibinfourl\"><strong>$bibliothek</strong></a></td><td>$standort</td><td>$inventarnummer</td><td><strong><span id=\"rlsignature\">$signatur</span></strong></td>";
-	print "<tr align=center><td><a href=\"$bibinfourl\"><strong>$bibliothek</strong></a></td><td>$standort</td><td><strong><span id=\"rlsignature\">$signatur</span></strong></td>";
+	print "<tr align=center><td><a href=\"$bibinfourl\"><strong>$bibliothek</strong></a></td><td>$standort</td><td>$inventarnummer</td><td><strong><span id=\"rlsignature\">$signatur</span></strong></td>";
+	#print "<tr align=center><td><a href=\"$bibinfourl\"><strong>$bibliothek</strong></a></td><td>$standort</td><td><strong><span id=\"rlsignature\">$signatur</span></strong></td>";
 	
 	print "<td>$erschverl</td>";
 	

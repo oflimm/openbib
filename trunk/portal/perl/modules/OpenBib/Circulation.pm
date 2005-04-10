@@ -211,6 +211,45 @@ sub handler {
       
       OpenBib::Common::Util::print_page($config{tt_circulation_remind_tname},$ttdata,$r);
     }
+    elsif ($circaction eq "orders"){
+      my $circexlist=undef;
+      
+      my $soap = SOAP::Lite
+	-> uri("urn:/Circulation")
+	  -> proxy($circcheckurl);
+      my $result = $soap->get_orders($loginname,$password,$circdb);
+      
+      unless ($result->fault) {
+	$circexlist=$result->result;
+      }
+      else {
+	$logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+      }
+      
+      # TT-Data erzeugen
+      
+      my $ttdata={
+		  stylesheet => $stylesheet,
+		  
+		  sessionID  => $sessionID,
+		  loginname => $loginname,
+		  password => $password,
+		  
+		  orders => $circexlist,
+		  
+		  utf2iso => sub { 
+		    my $string=shift;
+		    $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
+		    return $string;
+		  },
+		  
+		  show_corporate_banner => 0,
+		  show_foot_banner => 1,
+		  config     => \%config,
+		 };
+      
+      OpenBib::Common::Util::print_page($config{tt_circulation_orders_tname},$ttdata,$r);
+    }
     else {
       my $circexlist=undef;
       

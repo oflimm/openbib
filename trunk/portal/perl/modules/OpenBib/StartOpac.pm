@@ -150,7 +150,7 @@ sub handler {
   if ($view ne ""){
     $headerframeurl.="&view=$view";
     $searchframeurl.="&view=$view";
-    $toprows="175";
+    $toprows="170";
   }
   
   if ($searchsingletit ne '' && $database ne ''){
@@ -164,13 +164,13 @@ sub handler {
   print $r->send_http_header("text/html");
 
   print << "ENDE";
-<HTML>
+<html>
 <link href="/images/openbib/favicon.ico" rel="shortcut icon">
-<frameset rows="$toprows,*" frameborder=0>
+<frameset rows="$toprows,*" framespacing="0" frameborder="0" border="0">
 <frame name="header" src="$headerframeurl" noresize >
 <frame name="body" src="$searchframeurl">
 </frameset>
-</HTML>
+</html>
 ENDE
 
   $sessiondbh->disconnect();

@@ -803,6 +803,8 @@ HEAD1
     }
     
     $sqlquerystring="select verwidn from search$signfrom$notfrom where $sqlquerystring limit $maxhits";
+    
+    $logger->debug("Fulltext-Query: $sqlquerystring");
    
     my @requests=($sqlquerystring);
     

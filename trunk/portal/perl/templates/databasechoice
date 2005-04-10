@@ -1,5 +1,7 @@
 [% PROCESS std_header %]
 
+  <body bgcolor="#FFFFFF">
+
 <script language="JavaScript" type="text/javascript">
 <!--
 

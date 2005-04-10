@@ -1,5 +1,7 @@
 [% PROCESS std_header %]
 
+  <body bgcolor="#FFFFFF">
+
 <table width="100%">
 <tr><th>Erfolgsmeldung</th></tr>
 <tr><td class="boxedclear" style="font-size:12pt">

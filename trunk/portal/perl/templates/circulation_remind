@@ -1,5 +1,7 @@
 [% PROCESS std_header %]
 
+  <body bgcolor="#FFFFFF">
+
 [% IF show_corporate_banner %]
 [% PROCESS corporate_banner %] 
 [% END %]
@@ -17,44 +19,52 @@
 <tr><th>Anzeige</th></tr>
 <tr><td class="boxedclear">
 
-<select name="circaction"><option value="borrows">Ausleihen</option><option value="reservations">Vormerkungen</option><option value="reminders" selected="selected">&Uuml;berziehungen</option></select>&nbsp<input type="submit" value="Los">
+<select name="circaction"><option value="borrows">Ausleihen</option><option value="reservations">Vormerkungen</option><option value="orders">Bestellungen</option><option value="reminders" selected="selected">&Uuml;berziehungen / Geb&uuml;hren</option></select>&nbsp<input type="submit" value="Los">
 
 </td></td></table>
 
 <p />
 
 <table width="100%">
-<tr><th>&Uuml;berziehungen</th></tr>
+<tr><th>&Uuml;berziehungen / Geb&uuml;hren</th></tr>
 <tr><td class="boxedclear">
 
-[% IF reservations.size == 0 %]
+[% IF reminders.size == 0 %]
 <b>Sie haben keine Medien &uuml;berzogen.</b>
 [% ELSE  %]
 
 <table cellpadding="5">
-<tr><td><b>Titelangaben</b></td><td><b>Signatur</b></td><td><b>Leihfristende</b></td><td><b>Mahngeb&uuml;hr</b></td></tr>
+<tr><td><b>Titelangaben</b></td><td><b>Signatur</b></td><td><b>Ausleih-/Buchungsdatum</b></td><td><b>Leihfristende</b></td><td><b>Geb&uuml;hr</b></td></tr>
 [% color = 'white' %]
 
 [%- FOREACH reminder = reminders -%]
 
 <tr
 bgcolor="[% color %]"
-[% IF color == 'white' %]
-[% color = 'aliceblue' %] 
-[% ELSE %]
-[% color = 'white' %] 
-[% END %]
+[%- IF color == 'white' -%]
+[%- color = 'aliceblue' -%] 
+[%- ELSE -%]
+[%- color = 'white' -%] 
+[%- END -%]
 ><td><i>[% utf2iso(reminder.Verfasser) %]</i><br>[% utf2iso(reminder.Titel) %]
 
-[% IF reminder.EJahr %]
+[%- IF reminder.EJahr -%]
 , [% utf2iso(reminder.EJahr) %]
-[% END %]
+[%- END -%]
 
-</td><td>[% utf2iso(reminder.Mediennummer) %]</td><td><span style="color:red">[% reminder.Leihfristende %]</span></td><td><span style="color:red">[% reminder.Mahngebuehr %] EUR</span></td></tr>
-[% END %]
+</td><td>[% utf2iso(reminder.Mediennummer) %]</td>
+<td>[% reminder.AusleihDatum %]</td>
+<td><span style="color:red">[% reminder.Leihfristende %]</span></td><td><span style="color:red">
+[%- IF reminder.MTyp != 99 -%]
+[%- reminder.Mahngebuehr -%] 
+[%- ELSE -%]
+[%- reminder.Saeumnisgebuehr -%] 
+[%- END -%]
+&nbsp;EUR</span></td></tr>
+[%- END -%]
 </table>
 
-[% END %]
+[%- END -%]
 </td></tr>
 </table>
 

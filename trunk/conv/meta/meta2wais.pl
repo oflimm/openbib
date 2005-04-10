@@ -467,283 +467,55 @@ sub speziellegrundform {
     # Doublequotes haben in WAIS nichts zu suchen
 
     $line=~s/\"//g;
+    $line=~s/'/ /g;
+
+    $line=~s/&#228;/ae/g;
+    $line=~s/&#252;/ue/g;
+    $line=~s/&#246;/oe/g;
+    $line=~s/&#223;/ss/g;
+    $line=~s/&#214;/Oe/g;
+    $line=~s/&#220;/Ue/g;
+    $line=~s/&#196;/Ae/g;
     
-    if ($dos){
-	if ($withumlaut){
-	    $line=~s//ü/g;
-	    $line=~s/„/ä/g;
-	    $line=~s/”/ö/g;
-	    $line=~s/š/Ü/g;
-	    $line=~s/™/Ö/g;
-	    $line=~s//Ä/g;
-	    $line=~s/á/ß/g;
-	    $line=~s/ª//g;
-	}
-	else {
-	    $line=~s//ue/g;
-	    $line=~s/„/ae/g;
-	    $line=~s/”/oe/g;
-	    $line=~s/š/Ue/g;
-	    $line=~s/™/Oe/g;
-	    $line=~s//Ae/g;
-	    $line=~s/á/ss/g;
-	    $line=~s/ª//g;
-	}
-    }
-    else {
-	if ($withumlaut){
-	    $line=~s/\}/ü/g;
-	    $line=~s/\{/ä/g;
-	    $line=~s/\[/Ä/g;
-	    $line=~s/\]/Ü/g;
-	    $line=~s/\|/ö/g;
-	    $line=~s/\\/Ö/g;
-	    $line=~s/\~/ß/g;
-	}
-	else {
-	    $line=~s/\}/ue/g;
-	    $line=~s/\{/ae/g;
-	    $line=~s/\[/Ae/g;
-	    $line=~s/\]/Ue/g;
-	    $line=~s/\|/oe/g;
-	    $line=~s/\\/Oe/g;
-	    $line=~s/\~/ss/g;	    
-	}
-    }
-    
-    if ($withumlaut){
-	$line=~s/#193e/è/g;
-	$line=~s/#193a/à/g;
-	$line=~s/#193o/ò/g;
-	$line=~s/#193u/ù/g;
-	$line=~s/#193E/È/g;
-	$line=~s/#193A/À/g;
-	$line=~s/#193O/Ò/g;
-	$line=~s/#193U/Ù/g;
-	$line=~s/#194e/é/g;
-	$line=~s/#194a/á/g;
-	$line=~s/#194o/ó/g;
-	$line=~s/#194u/ú/g;
-	$line=~s/#194E/É/g;
-	$line=~s/#194A/Á/g;
-	$line=~s/#194O/Ó/g;
-	$line=~s/#194U/Ú/g;
-	
-	$line=~s/#208c/c/g;
-	
-	$line=~s/#193//g;
-	$line=~s/#208//g;
-	
-	$line=~s/#091/\[/g;
-	$line=~s/#093/\]/g;
-	
-	$line=~s/¬//g;
-	$line=~s/#123/ä/g;
-	$line=~s/#124/ö/g;
-	$line=~s/#125/ü/g;
-	
-	$line=~s/#163//g; # Pound
-	$line=~s/#168//g; # Degree
-	$line=~s/#203/\'/g;
-	$line=~s/#189//g; # ????
-	$line=~s/#236/Th/g; # 'grosses' Thorn
-	$line=~s/#252/th/g; # 'kleines' Thorn
-	
-	$line=~s/#196n/ñ/g;
-	$line=~s/#196o/õ/g;
-	$line=~s/#196a/ã/g;
-	
-	$line=~s/#223n/ñ/g;
-	$line=~s/#223o/õ/g;
-	$line=~s/#223a/ã/g;
-	
-	$line=~s/#171//g;
-	$line=~s/#187//g;
-	$line=~s/#175//g;
-	$line=~s/#209(.)/\1/g;
-	$line=~s/#187(.)//g;
-	$line=~s/#206(.)/\1/g; # Rechts angesetztes H"ackchen
-	$line=~s/#202(.)/\1/g;
-	$line=~s/#249/oe/g; # daenisches o strichdurch
-	$line=~s/#191//g; # inv. Questionmark
-	$line=~s/#183//g; # inv. Questionmark
-	$line=~s/#245//g; # Paragraph (tuerkisches i???)
-	$line=~s/#250//g; # OE ligatur
-	$line=~s/#215//g; # Querstrich
-	$line=~s/#216//g; # Unterstreichung
-	$line=~s/#205//g; # Doppelacute
-	$line=~s/#233/Oe/g; # daenisches O strichdurch
-	$line=~s/#197//g; # Makron (Balken)
-	$line=~s/#207//g; # Hacek???
-	$line=~s/#251/y/g; # Yr-Kapitaelchen
-	$line=~s/#213//g; # Halbkreis untergesetzt
-	$line=~s/#198//g; # Halbkreis uebergesetzt
-	$line=~s/#214//g; # Punkt untergesetzt
-	$line=~s/#177//g; # Hamcah
-	$line=~s/#210//g; # Sedilla, unten
-	$line=~s/#232/L/g; # Polnisches L (durchgestrichen)
-	$line=~s/#248/l/g; # Polnisches l (durchgestrichen)
-	$line=~s/#182/ /g; # Trennzeichen
-	$line=~s/#195(.)/\1/g;
-	$line=~s/#234//g; # oe ligatur
-    }
-    else {
-	$line=~s/è/e/g;
-	$line=~s/à/a/g;
-	$line=~s/ò/o/g;
-	$line=~s/ù/u/g;
-	$line=~s/È/e/g;
-	$line=~s/À/a/g;
-	$line=~s/Ò/o/g;
-	$line=~s/Ù/u/g;
-	$line=~s/é/e/g;
-	$line=~s/É/E/g;
-	$line=~s/á/a/g;
-	$line=~s/Á/a/g;
-	$line=~s/í/i/g;
-	$line=~s/Í/I/g;
-	$line=~s/ó/o/g;
-	$line=~s/Ó/O/g;
-	$line=~s/ú/u/g;
-	$line=~s/Ú/U/g;
-	$line=~s/ı/y/g;
-	$line=~s/İ/Y/g;
-	$line=~s/#241/ae/g; # ae
- 	$line=~s/æ/ae/g; # ae
-	$line=~s/#225/ae/g; # ae
-	$line=~s/#249/oe/g;
-	$line=~s/#233/Oe/g;
-	$line=~s/#243/d/g;
-	$line=~s/#226/d/g;
-	$line=~s/#236/Th/g;
-	$line=~s/#252/th/g;
+    $line=~s/ü/ue/g;
+    $line=~s/ä/ae/g;
+    $line=~s/ö/oe/g;
+    $line=~s/Ü/Ue/g;
+    $line=~s/Ö/Oe/g;
+    $line=~s/Ä/Ae/g;
+    $line=~s/ß/ss/g;
+    $line=~s/ª//g;
 
-	$line=~s/#193(.)/\1/g;
-	$line=~s/#194(.)/\1/g;
-	$line=~s/#195(.)/\1/g;
-	$line=~s/#196(.)/\1/g;
-	$line=~s/#223(.)/\1/g;
-	$line=~s/#208c/c/g;
-	$line=~s/#091//g;
-	$line=~s/#093//g;
-	
-	$line=~s/#193//g;
-	$line=~s/#208//g;
-	
-  	$line=~s/¬//g;
-  	$line=~s/>//g;
-  	$line=~s/<//g;
-	$line=~s/#123/ae/g;
-	$line=~s/#124/oe/g;
-	$line=~s/#125/ue/g;
-	
-	$line=~s/#163//g; # Pound
-	$line=~s/#168//g; # Degree
-	$line=~s/#203//g;
-	$line=~s/#189//g; # ????
-	$line=~s/#236/Th/g; # 'grosses' Thorn
-	$line=~s/#252/th/g; # 'kleines' Thorn
-	
-	$line=~s/#171//g;
-	$line=~s/#187//g;
-	$line=~s/#175//g;
-	$line=~s/#209(.)/\1/g;
-	$line=~s/#187(.)//g;
-	$line=~s/#206(.)/\1/g; # Rechts angesetztes H"ackchen
-	$line=~s/#202(.)/\1/g;
-	$line=~s/#200(.)/\1/g;
-	$line=~s/#249/o/g;
-	$line=~s/#191//g; # inv. Questionmark
-	$line=~s/#183//g; # inv. Questionmark
-	$line=~s/#245//g; # Paragraph (tuerkisches i???)
-	$line=~s/#215//g; # Querstrich
-	$line=~s/#216//g; # Unterstreichung
-	$line=~s/#205//g; # Doppelacute
-	$line=~s/#233/o/g; # daenisches OE ligatur
-	$line=~s/#197//g; # Makron (Balken)
-	$line=~s/#207//g; # Hacek???
-	$line=~s/#251/y/g; # Yr-Kapitaelchen
-	$line=~s/#213//g; # Halbkreis untergesetzt
-	$line=~s/#198//g; # Halbkreis uebergesetzt
-	$line=~s/#214//g; # Punkt untergesetzt
-	$line=~s/#177//g; # Hamcah
-	$line=~s/#210//g; # Sedilla, unten
-	$line=~s/#232/L/g; # Polnisches L (durchgestrichen)
-	$line=~s/#248/l/g; # Polnisches l (durchgestrichen)
-	$line=~s/#182/ /g; # Trennzeichen
-
-        $line=~s/\$403A/A/g; # A mit Unterpunkt
-        $line=~s/\$403a/a/g; # a mit Unterpunkt
-        $line=~s/\$409A/A/g; # A mit Unterhaken rechts offen
-        $line=~s/\$409a/a/g; # a mit Unterhaken rechts offen   
-        $line=~s/\$409E/E/g; # E mit Unterhaken rechts offen
-        $line=~s/\$409e/e/g; # e mit Unterhaken rechts offen
-        $line=~s/\$410A/A/g; # A mit Balken oben
-        $line=~s/\$410a/a/g; # a mit Balken oben 
-        $line=~s/\$410E/E/g; # E mit Balken oben
-        $line=~s/\$410e/e/g; # e mit Balken oben
-        $line=~s/\$410I/I/g; # I mit Balken oben
-        $line=~s/\$410i/i/g; # i mit Balken oben
-        $line=~s/\$410O/O/g; # O mit Balken oben
-        $line=~s/\$410o/o/g; # o mit Balken oben
-        $line=~s/\$411A/A/g; # A mit Halbkreis oben
-        $line=~s/\$411a/a/g; # a mit Halbkreis oben
-        $line=~s/\$411U/U/g; # U mit Halbkreis oben
-        $line=~s/\$411u/u/g; # u mit Halbkreis oben
-        $line=~s/\$400C/C/g; # C mit Accent aigue  
-        $line=~s/\$400c/c/g; # c mit Accent aigue
-        $line=~s/\$400G/G/g; # G mit Accent aigue
-        $line=~s/\$400g/g/g; # g mit Accent aigue
-        $line=~s/\$400N/N/g; # N mit Accent aigue
-        $line=~s/\$400n/n/g; # n mit Accent aigue
-        $line=~s/\$400S/S/g; # S mit Accent aigue
-        $line=~s/\$400s/s/g; # s mit Accent aigue
-        $line=~s/\$400Z/Z/g; # Z mit Accent aigue
-        $line=~s/\$400z/z/g; # z mit Accent aigue
-        $line=~s/\$401C/C/g; # C mit Hacek       
-        $line=~s/\$401c/c/g; # c mit Hacek
-        $line=~s/\$401N/N/g; # N mit Hacek
-        $line=~s/\$401n/n/g; # n mit Hacek
-        $line=~s/\$401D/D/g; # D mit Hacek
-        $line=~s/\$401d/d/g; # d mit Hacek
-        $line=~s/\$401E/E/g; # E mit Hacek
-        $line=~s/\$401e/e/g; # e mit Hacek
-        $line=~s/\$401G/G/g; # G mit Hacek
-        $line=~s/\$401g/g/g; # g mit Hacek
-        $line=~s/\$401I/I/g; # T mit Hacek
-        $line=~s/\$401i/i/g; # t mit Hacek
-        $line=~s/\$401R/R/g; # R mit Hacek
-        $line=~s/\$401r/r/g; # r mit Hacek
-        $line=~s/\$401S/S/g; # S mit Hacek
-        $line=~s/\$401s/s/g; # s mit Hacek
-        $line=~s/\$401T/T/g; # T mit Hacek
-        $line=~s/\$401t/t/g; # t mit Hacek
-        $line=~s/\$401Z/Z/g; # Z mit Hacek
-        $line=~s/\$401z/z/g; # z mit Hacek
-        $line=~s/\$402E/E/g; # E mit Punkt oben
-        $line=~s/\$402e/e/g; # e mit Punkt oben
-        $line=~s/\$413E/E/g; # E mit Punkt unten
-        $line=~s/\$413e/e/g; # e mit Punkt unten
-        $line=~s/\$406O/O/g; # O mit Doppelakut 
-        $line=~s/\$406o/o/g; # o mit Doppelakut
-        $line=~s/\$406U/U/g; # U mit Doppelakut
-        $line=~s/\$406u/u/g; # u mit Doppelakut
-        $line=~s/\$412S/S/g; # S mit Haken in der Mitte unten
-        $line=~s/\$412s/s/g; # s mit Haken in der Mitte unten
-        $line=~s/\$412T/T/g; # T mit Haken in der Mitte unten
-        $line=~s/\$412t/t/g; # t mit Haken in der Mitte unten
-        $line=~s/\$407U/U/g; # U mit Ringel oben
-        $line=~s/\$407u/u/g; # u mit Ringel oben
-        $line=~s/\$402Z/Z/g; # Z mit einem Punkt oben
-        $line=~s/\$402z/z/g; # z mit einem Punkt oben
-        $line=~s/\$415/d/g; # d oben durchgestrichen 
-        $line=~s/\$416/Oe/g; # OE Ligatur
-        $line=~s/\$417/oe/g; # oe Ligatur
-
-    }
+    $line=~s/è/e/g;
+    $line=~s/à/a/g;
+    $line=~s/ò/o/g;
+    $line=~s/ù/u/g;
+    $line=~s/È/e/g;
+    $line=~s/À/a/g;
+    $line=~s/Ò/o/g;
+    $line=~s/Ù/u/g;
+    $line=~s/é/e/g;
+    $line=~s/É/E/g;
+    $line=~s/á/a/g;
+    $line=~s/Á/a/g;
+    $line=~s/í/i/g;
+    $line=~s/Í/I/g;
+    $line=~s/ó/o/g;
+    $line=~s/Ó/O/g;
+    $line=~s/ú/u/g;
+    $line=~s/Ú/U/g;
+    $line=~s/ı/y/g;
+    $line=~s/İ/Y/g;
+    $line=~s/æ/ae/g; # ae
+    $line=~s/¬//g;
+    $line=~s/&gt;//g;
+    $line=~s/&lt;//g;
+    $line=~s/>//g;
+    $line=~s/<//g;
 
     return $line;
 }
+
 
 sub bearbeite_autline {
     ($line)=@_;

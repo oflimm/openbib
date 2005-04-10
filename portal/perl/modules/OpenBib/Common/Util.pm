@@ -200,14 +200,29 @@ sub get_css_by_browsertype {
   my $stylesheet="";
 
   if ( $useragent=~/Mozilla.5.0/ || $useragent=~/MSIE 5/ || $useragent=~/MSIE 6/ || $useragent=~/Konqueror"/ ){
-    $stylesheet= << "CSS";
+    if ($useragent=~/MSIE/){
+      $stylesheet= << "CSS";
+<link rel="stylesheet" type="text/css" href="/styles/openbib-ie.css" />
+CSS
+    }
+    else {
+      $stylesheet= << "CSS";
 <link rel="stylesheet" type="text/css" href="/styles/openbib.css" />
 CSS
+    }
+
   }
   else {
-    $stylesheet= << "CSS";
+    if ($useragent=~/MSIE/){
+      $stylesheet= << "CSS";
+<link rel="stylesheet" type="text/css" href="/styles/openbib-simple-ie.css" />
+CSS
+    }
+    else {
+      $stylesheet= << "CSS";
 <link rel="stylesheet" type="text/css" href="/styles/openbib-simple.css" />
 CSS
+    }
   }
 
   return $stylesheet;
@@ -413,7 +428,7 @@ sub print_sort_nav {
   my $myself=$r->uri;
 
   my $hostself="http://".$r->hostname.$r->uri;
-  my $argself=$r->args;
+  my @argself=$r->args;
 
 
   print "<p><form method=\"get\" action=\"$hostself\">\n";
@@ -426,9 +441,11 @@ sub print_sort_nav {
   my $queryid="";
 
   my $fullargstring="";
-  my $arg;
-  foreach $arg (split ("&",$argself)){
-    my ($key,$value)=split("=",$arg);
+
+  for (my $i = 0; $i < $#argself; $i += 2) {
+    my $key=$argself[$i];
+    my $value=$argself[$i+1];
+
     if ($key ne "sortorder" && $key ne "sorttype" && $key ne "trefferliste" && $key ne "sortall" && $key ne "sessionID" && $key ne "queryid"){
       $fullargstring.="<input type=\"hidden\" name=\"$key\" value=\"$value\">\n";
     }

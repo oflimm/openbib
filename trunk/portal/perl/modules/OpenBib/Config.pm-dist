@@ -185,6 +185,7 @@ use vars qw(%config);
 	   tt_circulation_tname          => 'circulation',
 	   tt_circulation_reserv_tname   => 'circulation_reserv',
 	   tt_circulation_remind_tname   => 'circulation_remind',
+	   tt_circulation_orders_tname   => 'circulation_orders',
 
 	   tt_headerframe_tname    => 'headerframe',
 

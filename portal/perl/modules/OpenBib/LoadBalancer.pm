@@ -105,10 +105,10 @@ sub handler {
     
     my $content=$response->content();
     
-    if ($content eq ""){
+    if ($content eq "" || $content=~m/SessionDB: offline/m){
       $problem=1;
     }
-    elsif ($content=~m/^(\d+\.\d+)/m){
+    elsif ($content=~m/^Load: (\d+\.\d+)/m){
       my $load=$1;
       $serverload{$targethost}=$load;
     }

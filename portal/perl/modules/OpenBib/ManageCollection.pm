@@ -655,7 +655,6 @@ sub getTitleByType {
     # Treffer muss in Text umgewandelt werden
     
     $treffer=~s/^<.*?>$//g;
-
   
     my @trefferbuf=split("\n",$treffer);
     my $i=0;
@@ -680,23 +679,20 @@ sub getTitleByType {
       
       # Bestandsinformationen
       
-      elsif ($trefferbuf[$i]=~/<tr.*?><td>(.+?)<\/td><td.*?>(.+?)<\/td><td.*?>(.+?)<\/td><td.*?>(.+?)<\/td><td.*?>(.+?)<\/td><\/tr>/){
+      elsif ($trefferbuf[$i]=~/<tr.*?><td>(.+?)<\/td><td.*?>(.+?)<\/td><td.*?rlsignature.*?>(.+?)<\/td><td.*?>(.+?)<\/td><\/tr>/){
 	
 	my $bibliothek=$1;
 	my $standort=$2;
-	my $invnr=$3;
-	my $signatur=$4;
-	my $erschverl=$5;
+	my $signatur=$3;
+	my $erschverl=$4;
 	
 	$bibliothek=~s/<.+?>//g;
 	$standort=~s/<.+?>//g;
-	$invnr=~s/<.+?>//g;
 	$signatur=~s/<.+?>//g;
 	$erschverl=~s/<.+?>//g;
 	my $bestandsinfo= << "ENDE";
 Besitzende Bibliothek $j : $bibliothek
 Standort              $j : $standort
-Inventarnummer        $j : $invnr
 Lokale Signatur       $j : $signatur
 Erscheinungsverlauf   $j : $erschverl
 ENDE
@@ -737,18 +733,16 @@ ENDE
       }
       
       # Bestandsinformationen
-      
-      elsif ($trefferbuf[$i]=~/<tr.*?><td>(.+?)<\/td><td.*?>(.+?)<\/td><td.*?>(.+?)<\/td><td.*?>(.+?)<\/td><td.*?>(.+?)<\/td><\/tr>/){
+
+      elsif ($trefferbuf[$i]=~/<tr.*?><td>(.+?)<\/td><td.*?>(.+?)<\/td><td.*?rlsignature.*?>(.+?)<\/td><td.*?>(.+?)<\/td><\/tr>/){      
 	
 	my $bibliothek=$1;
 	my $standort=$2;
-	my $invnr=$3;
-	my $signatur=$4;
-	my $erschverl=$5;
+	my $signatur=$3;
+	my $erschverl=$4;
 	
 	$bibliothek=~s/<.+?>//g;
 	$standort=~s/<.+?>//g;
-	$invnr=~s/<.+?>//g;
 	$signatur=~s/<.+?>//g;
 	$erschverl=~s/<.+?>//g;
 	my $bestandsinfo="%W $bibliothek / $standort / $signatur / $erschverl";

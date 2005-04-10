@@ -212,7 +212,7 @@ sub handler {
 	if ($userresult->rows <= 0){
 
 	  # Neuen Satz eintragen
-	  $userresult=$userdbh->prepare("insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','')") or $logger->error($DBI::errstr);
+	  $userresult=$userdbh->prepare("insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','','')") or $logger->error($DBI::errstr);
 	  
 	  $userresult->execute($loginname,$password) or $logger->error($DBI::errstr);
 
@@ -230,9 +230,9 @@ sub handler {
 
 	# Benuzerinformationen eintragen
 
-	$userresult=$userdbh->prepare("update user set nachname = ?, vorname = ?, strasse = ?, ort = ?, plz = ?, soll = ?, gut = ?, avanz = ?, branz = ?, vmanz = ?, maanz = ?, vlanz = ?, sperre = ?, sperrdatum = ?, gebdatum = ? where loginname = ?") or $logger->error($DBI::errstr);
+	$userresult=$userdbh->prepare("update user set nachname = ?, vorname = ?, strasse = ?, ort = ?, plz = ?, soll = ?, gut = ?, avanz = ?, branz = ?, bsanz = ?, vmanz = ?, maanz = ?, vlanz = ?, sperre = ?, sperrdatum = ?, gebdatum = ? where loginname = ?") or $logger->error($DBI::errstr);
 	
-	$userresult->execute($userinfo{'Nachname'},$userinfo{'Vorname'},$userinfo{'Strasse'},$userinfo{'Ort'},$userinfo{'PLZ'},$userinfo{'Soll'},$userinfo{'Guthaben'},$userinfo{'Avanz'},$userinfo{'Branz'},$userinfo{'Vmanz'},$userinfo{'Maanz'},$userinfo{'Vlanz'},$userinfo{'Sperre'},$userinfo{'Sperrdatum'},$userinfo{'Geburtsdatum'},$loginname) or $logger->error($DBI::errstr);
+	$userresult->execute($userinfo{'Nachname'},$userinfo{'Vorname'},$userinfo{'Strasse'},$userinfo{'Ort'},$userinfo{'PLZ'},$userinfo{'Soll'},$userinfo{'Guthaben'},$userinfo{'Avanz'},$userinfo{'Branz'},$userinfo{'Bsanz'},$userinfo{'Vmanz'},$userinfo{'Maanz'},$userinfo{'Vlanz'},$userinfo{'Sperre'},$userinfo{'Sperrdatum'},$userinfo{'Geburtsdatum'},$loginname) or $logger->error($DBI::errstr);
 	$userresult->finish();
       }
     }

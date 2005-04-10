@@ -187,11 +187,12 @@ sub handler {
     $userinfo{'plz'}=$res->{'plz'};
     $userinfo{'soll'}=$res->{'soll'};
     $userinfo{'gut'}=$res->{'gut'};
-    $userinfo{'avanz'}=$res->{'avanz'};
-    $userinfo{'branz'}=$res->{'branz'};
-    $userinfo{'vmanz'}=$res->{'vmanz'};
-    $userinfo{'maanz'}=$res->{'maanz'};
-    $userinfo{'vlanz'}=$res->{'vlanz'};
+    $userinfo{'avanz'}=$res->{'avanz'}; # Ausgeliehene Medien
+    $userinfo{'branz'}=$res->{'branz'}; # Buchrueckforderungen
+    $userinfo{'bsanz'}=$res->{'bsanz'}; # Bestellte Medien
+    $userinfo{'vmanz'}=$res->{'vmanz'}; # Vormerkungen
+    $userinfo{'maanz'}=$res->{'maanz'}; # ueberzogene Medien
+    $userinfo{'vlanz'}=$res->{'vlanz'}; # Verlaengerte Medien
     $userinfo{'sperre'}=$res->{'sperre'};
     $userinfo{'sperrdatum'}=$res->{'sperrdatum'};
     $userinfo{'email'}=$res->{'email'};

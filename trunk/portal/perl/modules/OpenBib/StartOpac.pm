@@ -150,7 +150,7 @@ sub handler {
   if ($view ne ""){
     $headerframeurl.="&view=$view";
     $searchframeurl.="&view=$view";
-    $toprows="170";
+    $toprows="175";
   }
   
   if ($searchsingletit ne '' && $database ne ''){

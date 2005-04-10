@@ -188,6 +188,28 @@ sub get_targetdb_of_session {
   return $targetdb;
 }
 
+sub get_targettype_of_session {
+  my ($userdbh,$sessionID)=@_;
+
+  # Log4perl logger erzeugen
+  
+  my $logger = get_logger();
+
+  my $globalsessionID="$config{servername}:$sessionID";
+  my $userresult=$userdbh->prepare("select type from usersession,logintarget where usersession.sessionid = ? and usersession.targetid = logintarget.targetid") or $logger->error($DBI::errstr);
+
+  $userresult->execute($globalsessionID) or $logger->error($DBI::errstr);
+  
+  my $targettype="";
+  
+  if ($userresult->rows > 0){
+    my $res=$userresult->fetchrow_hashref();
+    $targettype=$res->{'type'};
+  }
+
+  return $targettype;
+}
+
 sub get_css_by_browsertype {
   my ($r)=@_;
 

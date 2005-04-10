@@ -210,6 +210,8 @@ sub handler {
     
     my $email_valid=Email::Valid->address($loginname);
 
+    my $targettype=OpenBib::Common::Util::get_targettype_of_session($userdbh,$sessionID);
+
     # TT-Data erzeugen
 
     my $ttdata={
@@ -221,6 +223,7 @@ sub handler {
 		loginname => $loginname,
 		password => $password,
 		email_valid => $email_valid,
+		targettype => $targettype,
 		fschecked => $fschecked,
 		hstchecked => $hstchecked,
 		hststringchecked => $hststringchecked,

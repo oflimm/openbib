@@ -169,9 +169,17 @@ PROFIL
 
     OpenBib::Common::Util::print_simple_header("KUG: Datenbank-Profile",$r,$stylesheet);
 
+    my $targettype=OpenBib::Common::Util::get_targettype_of_session($userdbh,$sessionID);
+
+    my $useraccountstring="";
+
+    if ($targettype ne "self"){
+      $useraccountstring="&nbsp;&nbsp;<a href=\"http://$config{servername}$config{circulation_loc}?sessionID=$sessionID;action=showcirc\" target=\"body\">Benutzerkonto</a>";
+    }
+
     print << "NAVI";
 <table>
-<tr valign=top><td align=left>&gt;&gt;&nbsp;<a href="http://$config{servername}$config{userprefs_loc}?sessionID=$sessionID&action=showfields" target="body">Grundeinstellungen</a>&nbsp;&nbsp;<a href="http://$config{servername}$config{databaseprofile_loc}?sessionID=$sessionID&action=show" target="body"><b>Katalogprofile</b></a></td></tr>
+<tr valign=top><td align=left>&gt;&gt;&nbsp;<a href="http://$config{servername}$config{userprefs_loc}?sessionID=$sessionID&action=showfields" target="body">Grundeinstellungen</a>$useraccountstring&nbsp;&nbsp;<a href="http://$config{servername}$config{databaseprofile_loc}?sessionID=$sessionID&action=show" target="body"><b>Katalogprofile</b></a></td></tr>
 </table>
 <p>
 <p>

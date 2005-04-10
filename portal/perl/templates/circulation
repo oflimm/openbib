@@ -1,5 +1,7 @@
 [% PROCESS std_header %]
 
+  <body bgcolor="#FFFFFF">
+
 [% IF show_corporate_banner %]
 [% PROCESS corporate_banner %] 
 [% END %]
@@ -17,7 +19,7 @@
 <tr><th>Anzeige</th></tr>
 <tr><td class="boxedclear">
 
-<select name="circaction"><option value="borrows" selected="selected">Ausleihen</option><option value="reservations">Vormerkungen</option><option value="reminders">&Uuml;berziehungen</option></select>&nbsp<input type="submit" value="Los">
+<select name="circaction"><option value="borrows" selected="selected">Ausleihen</option><option value="reservations">Vormerkungen</option><option value="orders">Bestellungen</option><option value="reminders">&Uuml;berziehungen / Geb&uuml;hren</option></select>&nbsp<input type="submit" value="Los">
 
 </td></td></table>
 

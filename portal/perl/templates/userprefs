@@ -1,5 +1,7 @@
 [% PROCESS std_header %]
 
+  <body bgcolor="#FFFFFF">
+
 [% IF show_corporate_banner %]
 [% PROCESS corporate_banner %] 
 [% END %]
@@ -62,7 +64,7 @@
 [% END %]
 <tr><td><b>Sperre:</b></td><td align="left">&nbsp;
 [%- IF userinfo.sperre -%]
-ja, seit [% userinfo.sperrdatum %]
+ja, seit [% userinfo.sperrdatum %] mit Grund <em>[% userinfo.sperre %]</em>
 [%- ELSE -%]
 nein
 [%- END -%]
@@ -103,6 +105,15 @@ nein
 [% END %]
 
 </span></td></tr>
+
+
+<tr><td><b>Bestellungen:</b></td><td align="left">&nbsp;
+[%- IF userinfo.bsanz > 0 -%]
+<a href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc;circaction=orders">[% userinfo.bsanz %]</a>
+[%- ELSE -%]
+[%- userinfo.bsanz -%]
+[%- END -%]
+</td><td>&nbsp;&nbsp;</td><td></td><td></td><td></td><td></td></tr>
 </table>
 </td>
 </tr>

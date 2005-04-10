@@ -2,6 +2,8 @@
 
 [% PROCESS std_header %]
 
+  <body bgcolor="#FFFFFF">
+
 [% PROCESS corporate_banner %]
 
 <table width="100%">

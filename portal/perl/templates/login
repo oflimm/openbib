@@ -1,5 +1,7 @@
 [% PROCESS std_header %]
 
+  <body bgcolor="#FFFFFF">
+
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
   <tr bgcolor="lightblue">
     <td  width="20">&nbsp;</td><td valign="middle" align="left" height="32"><img src="/images/openbib/login-30px.png" alt="Login" /></td>

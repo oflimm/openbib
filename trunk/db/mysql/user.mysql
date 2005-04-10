@@ -18,6 +18,7 @@ create table user (
  gut      text,
  avanz    text,
  branz    text,
+ bsanz    text,
  vmanz    text,
  maanz    text,
  vlanz    text,

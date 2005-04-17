@@ -170,8 +170,10 @@ print "### $singlepool: Einladen der Daten nach Biblio\n";
 system("$mysqlexe $singlepool < $rootdir/data/$singlepool/control.mysql");
 print "### $singlepool: Fixen der Sigel\n";
 
-if ($singlepool ne "instzs"){
-  
+if ($singlepool eq "instzs"){
+  system("$mysqlexe -e \"update mex set standort='' where standort='USB-Magazin'\" instzs");
+}
+elsif ($singlepool ne "richter"){
   my $thispoolsigel=$sigel;
   $thispoolsigel=~s/^99/00/;
   system("$mysqlexe -e \"update mex set sigel=\\\"".$thispoolsigel."\\\" where idn < 99999999 \" ".$singlepool."");

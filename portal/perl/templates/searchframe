@@ -139,23 +139,21 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
 <p />
 </form>
 
-
-<form method="get" id="queries" action="http://[% config.servername %][% config.searchframe_loc %]">
+[% IF prevqueries %]
+<form method="get" id="queries" action="http://[% config.servername %][% config.dispatchquery_loc %]">
 <table width="100%">
 <tr><th>Suchhistorie</th></tr>
 <tr><td class="boxed">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <select name="queryid">
-[% IF prevqueries %]
 [% prevqueries %]
-[% ELSE %]
-<option value="">Keine Anfragen</option>
-[% END %]
 </select>
-<input type="submit" value="Als Suchvorlage" />
+<input type="submit" name="action" value="Als Suchvorlage" />&nbsp;&nbsp;<input type="submit" name="action" value="Zur Trefferliste" />&nbsp;&nbsp;<input type="submit" name="action" value="Weiter als externe Recherche" style="background-color:#99CCFF" />
+</form>
+[% END %]
+
 </td></tr>
 </table>
-</form>
 
 <p />
 <b>Insgesamt sind im KUG derzeit [% alldbcount %] Titel nachgewiesen.</b>

@@ -118,6 +118,10 @@ use vars qw(%config);
 	   circulation_loc      => '/portal/benutzerkonto',
 	   databasechoice_loc   => '/portal/katalogauswahl',
 	   databaseprofile_loc  => '/portal/katalogprofile',
+
+	   dispatchquery_loc    => '/portal/anfrageverteilen',
+
+	   externaljump_loc     => '/portal/externersprung',
 	   headerframe_loc      => '/portal/kopf',
 	   leave_loc            => '/portal/beenden',
 	   loadbalancer_loc     => '/portal/lastverteilung',
@@ -153,7 +157,7 @@ use vars qw(%config);
 	   # Externer Link zur Elektronischen ZeitschriftenBibliothek (EZB)
 	   # fuer den entsprechenden Standort (hier USBK)
 
-	   ezb_exturl              => 'http://rzblx1.uni-regensburg.de/ezeit/fl.phtml?notation=&colors=7&bibid=USBK',
+	   ezb_exturl              => 'http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?bibid=USBK&colors=7&lang=de&jq_type1=IS&jq_bool2=AND&jq_not2=+&jq_type2=KT&jq_bool3=AND&jq_not3=+&jq_type3=PU&jq_term3=&offset=-1&hits_per_page=50&search_journal=Suche+starten&Notations%5B%5D=all&selected_colors%5B%5D=1&selected_colors%5B%5D=2&selected_colors%5B%5D=4',
 
 	   # Externer Link zum DatenBankInfoSystem (DBIS)
  
@@ -186,6 +190,8 @@ use vars qw(%config);
 	   tt_circulation_reserv_tname   => 'circulation_reserv',
 	   tt_circulation_remind_tname   => 'circulation_remind',
 	   tt_circulation_orders_tname   => 'circulation_orders',
+
+	   tt_externaljump_tname   => 'externaljump',
 
 	   tt_headerframe_tname    => 'headerframe',
 

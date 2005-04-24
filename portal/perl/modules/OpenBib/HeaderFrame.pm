@@ -107,7 +107,11 @@ sub handler {
 
   # Wenn wir authentifiziert sind, dann
 
+  my $username="";
+
   if ($userid){
+    $username=OpenBib::Common::Util::get_username_for_userid($userdbh,$userid);
+
     # Anzahl Eintraege der privaten Merkliste bestimmen
     
     # Zuallererst Suchen, wieviele Titel in der Merkliste vorhanden sind.
@@ -143,7 +147,7 @@ sub handler {
 	      view         => $view,
 	      sessionID    => $sessionID,
 
-	      userid         => $userid,
+	      username         => $username,
 	      anzahl       => $anzahl,
 
 	      show_foot_banner      => 0,

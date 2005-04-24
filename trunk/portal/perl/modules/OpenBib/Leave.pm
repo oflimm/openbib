@@ -65,15 +65,24 @@ sub handler {
   
   my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
+  my $sessionID=$query->param('sessionID');
   
   #####################################################################
   # Verbindung zur SQL-Datenbank herstellen
   
   my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
   
-  my $sessionID=$query->param('sessionID');
-  
   my $userdbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd}) or $logger->error_die($DBI::errstr);
+
+  unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
+    OpenBib::Common::Util::print_warning("Ung&uuml;ltige Session",$r);
+      
+    $sessiondbh->disconnect();
+    $userdbh->disconnect();
+      
+    return OK;
+  }
+
   
   # Haben wir eine authentifizierte Session?
   
@@ -92,13 +101,23 @@ sub handler {
   
   if ($sessionID ne ""){
     
-    # Authentifiziert-Status der Session loeschen
     
     if ($userid){
+
+      # Authentifiziert-Status der Session loeschen
       
       my $userresult=$userdbh->prepare("delete from usersession where userid = ?") or $logger->error($DBI::errstr);
       $userresult->execute($userid) or $logger->error($DBI::errstr);
+
+
+      # Zwischengespeicherte Benutzerinformationen loeschen
+
+      $userresult=$userdbh->prepare("update user set nachname = '', vorname = '', strasse = '', ort = '', plz = '', soll = '', gut = '', avanz = '', branz = '', bsanz = '', vmanz = '', maanz = '', vlanz = '', sperre = '', sperrdatum = '', gebdatum = '' where userid = ?") or $logger->error($DBI::errstr);
+      $userresult->execute($userid) or $logger->error($DBI::errstr);
+
+
       $userresult->finish();
+
     }
     
     # Zuallererst loeschen der Trefferliste fuer diese sessionID
@@ -114,7 +133,13 @@ sub handler {
     
     $idnresult=$sessiondbh->prepare("delete from sessionview where sessionid = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+
+    $idnresult=$sessiondbh->prepare("delete from sessionmask where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
     
+    $idnresult=$sessiondbh->prepare("delete from sessionprofile where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+
     $idnresult->finish();
     
     # Kopieren ins sessionlog
@@ -134,6 +159,7 @@ sub handler {
     my $anzahlresult=$sessiondbh->prepare("delete from session where sessionid = ?") or $logger->error($DBI::errstr);
     $anzahlresult->execute($sessionID) or $logger->error($DBI::errstr);
     $anzahlresult->finish();
+
 
     my $template = Template->new({ 
 				INCLUDE_PATH  => $config{tt_include_path},

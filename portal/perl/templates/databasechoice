@@ -21,11 +21,12 @@ function update_fak(yourform, checked, fak) {
 <input type="hidden" name="view" value="[% view %]" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 
-<table border="0" cellspacing="0" cellpadding="0" width="100%">
-  <tr bgcolor="lightblue">
-    <td  width="20">&nbsp;</td><td valign="middle" align="left" height="32"><img src="/images/openbib/katalogauswahl.png" alt="Katalogauswahl" /></td>
-  </tr>
-</table>
+<ul id="tabbingmenu">
+   <li><a class="active" href="[% config.databasechoice_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">Katalogauswahl</a></li>
+</ul>
+
+<div id="content">
+
 <p />
 <table width="100%">
 <tr><th>Hinweis</th></tr>
@@ -78,6 +79,10 @@ Nachdem Sie Ihre Auswahl getroffen haben aktivieren Sie bitte <b>Kataloge ausw&a
 <p />
 <input type="submit" name="action" value="Kataloge ausw&auml;hlen" />&nbsp;<input type="reset" value="Urspr&uuml;ngliche Auswahl wiederherstellen" />
 </form>
+<p />
+
+</div>
+
 <p />
 
 [% PROCESS std_footer %]

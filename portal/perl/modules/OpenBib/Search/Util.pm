@@ -2645,17 +2645,17 @@ sub print_url_category_global {
   $globalcontents=~s/¬//g;
   $globalcontents=~s/\"//g;
 
-  if ($type eq "swt"){
-    $globalcontents=~s/&lt;/</g;
-    $globalcontents=~s/&gt;/>/g;
+#  if ($type eq "swt"){
+#    $globalcontents=~s/&lt;/</g;
+#    $globalcontents=~s/&gt;/>/g;
     
-  }
-  else {
+#  }
+#  else {
     $globalcontents=~s/&lt;//g;
     $globalcontents=~s/&gt;//g;
     $globalcontents=~s/<//g;
     $globalcontents=~s/>//g;
-  }
+#  }
 
 
   #$globalcontents=~s/ /\+/g;
@@ -2695,7 +2695,7 @@ sub print_simple_category {
   if ($name eq "ISSN"){
     my $ezbquerystring=$config{ezb_exturl}."&jq_term1=".$contents;
 
-    $contents="$contents (<a href=\"$ezbquerystring\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB)\" target=ezb>Verf&uuml;gbarkeit EZB</a>)";
+    $contents="$contents (<a href=\"$ezbquerystring\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=ezb>als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
   }
 
   # Ausgabe
@@ -2729,7 +2729,7 @@ INSTHEAD
       <td>&nbsp;</td>
       <td bgcolor=white align=right width=180>
 	<a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=insert;database=$database;singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="In die Merkliste" border=0></a>&nbsp;
-        <a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=mail;database=$database;singleidn=$titidn\" target=\"mail\" title=\"Als Mail verschicken\"><img src="/images/openbib/3d-file-blue-mailbox.png" height="29" alt="Als Mail verschicken" border=0></a>&nbsp;
+        <a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=mail;database=$database;singleidn=$titidn\" target=\"body\" title=\"Als Mail verschicken\"><img src="/images/openbib/3d-file-blue-mailbox.png" height="29" alt="Als Mail verschicken" border=0></a>&nbsp;
         <a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=save;database=$database;singleidn=$titidn\" target=\"save\" title=\"Abspeichern\"><img src="/images/openbib/3d-file-blue-disk35.png" height="29" alt="Abspeichern" border=0></a>&nbsp;
         <a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=print;database=$database;singleidn=$titidn\" target=\"print\" title=\"Ausdrucken\"><img src="/images/openbib/3d-file-blue-printer.png" height="29" alt="Ausdrucken" border=0></a>&nbsp;
        </td>

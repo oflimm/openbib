@@ -174,13 +174,18 @@ PROFIL
     my $useraccountstring="";
 
     if ($targettype ne "self"){
-      $useraccountstring="&nbsp;&nbsp;<a href=\"http://$config{servername}$config{circulation_loc}?sessionID=$sessionID;action=showcirc\" target=\"body\">Benutzerkonto</a>";
+      $useraccountstring="<li><a href=\"http://$config{servername}$config{circulation_loc}?sessionID=$sessionID;action=showcirc\">Benutzerkonto</a></li>";
     }
 
     print << "NAVI";
-<table>
-<tr valign=top><td align=left>&gt;&gt;&nbsp;<a href="http://$config{servername}$config{userprefs_loc}?sessionID=$sessionID&action=showfields" target="body">Grundeinstellungen</a>$useraccountstring&nbsp;&nbsp;<a href="http://$config{servername}$config{databaseprofile_loc}?sessionID=$sessionID&action=show" target="body"><b>Katalogprofile</b></a></td></tr>
-</table>
+<ul id="tabbingmenu">
+   <li><a href="http://$config{servername}$config{userprefs_loc}?sessionID=$sessionID&action=showfields" target="body">Grundeinstellungen</a></li>
+   $useraccountstring
+   <li><a class="active" href="http://$config{servername}$config{databaseprofile_loc}?sessionID=$sessionID&action=show" target="body">Katalogprofile</a></li>
+</ul>
+
+<div id="content">
+
 <p>
 <p>
 NAVI
@@ -313,7 +318,9 @@ HEAD
     print << "ENDE";
 </TABLE>
 </FORM>
+</div>
 <p>
+
 ENDE
     OpenBib::Common::Util::print_footer();
 

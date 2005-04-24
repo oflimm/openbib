@@ -82,6 +82,8 @@ sub handler {
   my $showsign=($query->param('showsign'))?$query->param('showsign'):'0';
   my $showmart=($query->param('showmart'))?$query->param('showmart'):'0';
   my $showejahr=($query->param('showejahr'))?$query->param('showejahr'):'0';
+
+  my $setmask=($query->param('setmask'))?$query->param('setmask'):'';
   
   my $action=($query->param('action'))?$query->param('action'):'none';
   my $targetid=($query->param('targetid'))?$query->param('targetid'):'none';
@@ -197,6 +199,8 @@ sub handler {
     $userinfo{'sperrdatum'}=$res->{'sperrdatum'};
     $userinfo{'email'}=$res->{'email'};
     $userinfo{'gebdatum'}=$res->{'gebdatum'};
+
+    $userinfo{'masktype'}=$res->{'masktype'};
 
     my $loginname=$res->{'loginname'};
     my $password=$res->{'pin'};
@@ -369,6 +373,31 @@ sub handler {
     my $targetresult=$userdbh->prepare("update user set pin = ? where userid = ?") or $logger->error($DBI::errstr);
     $targetresult->execute($password1,$userid) or $logger->error($DBI::errstr);
     $targetresult->finish();
+    
+    $r->internal_redirect("http://$config{servername}$config{userprefs_loc}?sessionID=$sessionID&action=showfields");
+    
+  }
+  elsif ($action eq "changemask"){
+    
+    if ($setmask eq ""){
+
+      OpenBib::Common::Util::print_warning("Es wurde keine Standard-Recherchemaske ausgew&auml;hlt",$r);
+      
+      $sessiondbh->disconnect();
+      $userdbh->disconnect();
+      return OK;
+    }
+    
+    
+    my $targetresult=$userdbh->prepare("update user set masktype = ? where userid = ?") or $logger->error($DBI::errstr);
+    $targetresult->execute($setmask,$userid) or $logger->error($DBI::errstr);
+    $targetresult->finish();
+
+    my $idnresult=$sessiondbh->prepare("update sessionmask set masktype = ? where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($setmask,$sessionID) or $logger->error($DBI::errstr);
+    
+    $idnresult->finish();
+
     
     $r->internal_redirect("http://$config{servername}$config{userprefs_loc}?sessionID=$sessionID&action=showfields");
     

@@ -212,7 +212,7 @@ sub handler {
 	if ($userresult->rows <= 0){
 
 	  # Neuen Satz eintragen
-	  $userresult=$userdbh->prepare("insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','','')") or $logger->error($DBI::errstr);
+	  $userresult=$userdbh->prepare("insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','','','')") or $logger->error($DBI::errstr);
 	  
 	  $userresult->execute($loginname,$password) or $logger->error($DBI::errstr);
 
@@ -312,6 +312,24 @@ sub handler {
 	  }
 	}
       }
+
+      # Bestimmen des Recherchemasken-Typs
+
+      $userresult=$userdbh->prepare("select masktype from user where userid = ?") or $logger->error($DBI::errstr);
+      $userresult->execute($userid) or $logger->error($DBI::errstr);
+      
+      my $maskresult=$userresult->fetchrow_hashref();
+
+      my $setmask=$maskresult->{'masktype'};
+
+      # Assoziieren des Recherchemasken-Typs mit der Session
+
+      if ($setmask ne "simple" && $setmask ne "advanced"){
+	$setmask="simple";
+      }
+
+      $idnresult=$sessiondbh->prepare("update sessionmask set masktype = ? where sessionid = ?") or $logger->error($DBI::errstr);
+      $idnresult->execute($setmask,$sessionID) or $logger->error($DBI::errstr);
 
       $idnresult->finish();
       $userresult->finish();

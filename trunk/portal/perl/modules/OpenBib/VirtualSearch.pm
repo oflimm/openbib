@@ -299,7 +299,13 @@ sub handler {
       
       print << "HEADER";
 <FORM METHOD="GET">
-<h1>Trefferliste</h1>
+
+<ul id="tabbingmenu">
+   <li><a class="active" href="$config{virtualsearch_loc}?sessionID=$sessionID;trefferliste=choice;view=$view">Trefferliste</a></li>
+</ul>
+
+<div id="content">
+
 <p>
 HEADER
       
@@ -411,7 +417,7 @@ HEADER
 	  print "<input type=submit value=\"Auswahl\"></td></tr></table></form>";
 	}
       }
-      print "</table><p>";
+      print "</table></div><p />";
       OpenBib::Common::Util::print_footer();
       
       goto LEAVEPROG;
@@ -449,8 +455,14 @@ HEADER
       OpenBib::Common::Util::print_simple_header("Such-Client des Virtuellen Katalogs",$r);
       
       print << "HEADER";
+
+<ul id="tabbingmenu">
+   <li><a class="active" href="$config{virtualsearch_loc}?sessionID=$sessionID;trefferliste=choice;view=$view">Trefferliste</a></li>
+</ul>
+
+<div id="content">
+
 <FORM METHOD="GET">
-<h1>Trefferliste</h1>
 <p>
 HEADER
       
@@ -606,7 +618,7 @@ HEADER
       
       $idnresult->finish();
       
-      print "</table><p>";    
+      print "</table></div><p>";    
       OpenBib::Common::Util::print_footer();
       
       goto LEAVEPROG;
@@ -630,8 +642,14 @@ HEADER
       OpenBib::Common::Util::print_simple_header("Such-Client des Virtuellen Katalogs",$r);
       
       print << "HEADER";
+<ul id="tabbingmenu">
+   <li><a class="active" href="$config{virtualsearch_loc}?sessionID=$sessionID;trefferliste=choice;view=$view">Trefferliste</a></li>
+</ul>
+
+<div id="content">
+
 <FORM METHOD="GET">
-<h1>Trefferliste</h1>
+
 <p>
 HEADER
       
@@ -710,7 +728,7 @@ HEADER
       
       $idnresult->finish();
       
-      print "</table><p>";    
+      print "</table></div><p>";    
       OpenBib::Common::Util::print_footer();
       
       goto LEAVEPROG;
@@ -868,6 +886,18 @@ HEADER
     }
   }
   
+  # Wenn Profil aufgerufen wurde, dann abspeichern fuer Recherchemaske
+
+  if ($profil){
+      my $idnresult=$sessiondbh->prepare("delete from sessionprofile where sessionid = ? ") or $logger->error($DBI::errstr);
+      $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+
+      $idnresult=$sessiondbh->prepare("insert into sessionprofile values (?,?) ") or $logger->error($DBI::errstr);
+      $idnresult->execute($sessionID,$profil) or $logger->error($DBI::errstr);
+    
+      $idnresult->finish();
+  }
+
   # Folgende nicht erlaubte Anfragen werden sofort ausgesondert 
   
   my $firstsql;
@@ -955,8 +985,13 @@ UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&oum
   OpenBib::Common::Util::print_simple_header("Such-Client des Virtuellen Katalogs",$r);
   
   print << "HEADER";
+<ul id="tabbingmenu">
+   <li><a class="active" href="$config{virtualsearch_loc}?sessionID=$sessionID;trefferliste=choice;view=$view">Trefferliste</a></li>
+</ul>
+
+<div id="content">
+
 <FORM METHOD="GET">
-<h1>Kurztitelliste</h1>
 <p>
 HEADER
   
@@ -1172,7 +1207,7 @@ HEADER
     
   }
   
-  print "</table><p>";
+  print "</table></div><p>";
   OpenBib::Common::Util::print_footer();
   
 LEAVEPROG: sleep 0;

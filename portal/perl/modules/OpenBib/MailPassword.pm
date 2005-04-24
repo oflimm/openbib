@@ -102,7 +102,7 @@ sub handler {
 		loginname => $loginname,
 
 		show_corporate_banner => 0,
-		show_foot_banner => 0,
+		show_foot_banner => 1,
 		config     => \%config,
 	       };
 
@@ -161,7 +161,7 @@ MAILSEND
 		view       => '',
 
 		show_corporate_banner => 0,
-		show_foot_banner => 0,
+		show_foot_banner => 1,
 		config     => \%config,
 	       };
 

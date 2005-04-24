@@ -195,6 +195,7 @@ use vars qw(%config);
 
 	   tt_headerframe_tname    => 'headerframe',
 
+	   tt_searchframe_simple_tname  => 'searchframe_simple',
 	   tt_searchframe_tname    => 'searchframe',
 
 	   tt_startopac_tname      => 'startopac',

@@ -2,7 +2,11 @@
 
   <body bgcolor="#FFFFFF">
 
-<h1>Sprung in externe Recherchequellen</h1>
+<ul id="tabbingmenu">
+   <li><a class="active" href="http://[% config.servername %][% config.externaljump_loc %]?sessionID=[% sessionID %];queryid=[% queryid %];action=action=Weiter+als+externe+Recherche" target="body">Sprung in externe Recherchequellen</a></li>
+</ul>
+
+<div id="content">
 
 <p />
 
@@ -39,14 +43,12 @@ An dieser Stelle k&ouml;nnen Sie ausgehend von Ihrer (eventuell erfolglosen) Suc
 <tr><td><b>Elektronische Zeitschriftendatenbank (EZB)</b></td><td>=&gt;</td><td><a href="[% config.ezb_exturl %]&jq_term1=[% issn %]&jq_term2=[% hst %]" target="_blank">Sprung in externe Recherche</a></td><td>[ &Uuml;bernommene Felder: Titel, ISSN ]</td></tr>
 <tr><td></td><td></td><td></td><td></td></tr>
 <tr><td><b>MedPilot</td><td>=&gt;</td><td><a href="http://www.medpilot.de/medptools/cgi-bin/mpsearch.pl?q=[% hst %]&Suche=Suchen" target="_blank">Sprung in externe Recherche</a></td><td>[ &Uuml;bernommene Felder: Titel als Freie Suche ]</td></tr>
-<tr><td></td><td></td><td></td><td></td></tr>
-<tr><td><b>EconBiz-Portal</b></td><td>=&gt;</td><td><a href="http://134.95.52.11:8080/servlet/Search?search_mask.type=frames/searchentryframe&Timeout=30&Presentation=self&Hits=10&search_full=search&Anf0_Attribut=5015&SearchType=simple&profile_name=Elektra&Anfrage0=[% hst %]" target="_blank">Sprung in externe Recherche</a></td><td>[ &Uuml;bernommene Felder: Titel als Freie Suche ]</td></tr>
 </table>
-
 
 </td></tr>
 </table>
 
+</div>
 <p />
 
 [% PROCESS std_footer %]

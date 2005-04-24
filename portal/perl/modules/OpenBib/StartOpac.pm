@@ -75,10 +75,23 @@ sub handler {
   my $view=($query->param('view'))?$query->param('view'):'';
   my $singleidn=$query->param('singleidn') || '';
   my $action=$query->param('action') || '';
+  my $setmask=$query->param('setmask') || '';
   my $searchsingletit=$query->param('searchsingletit') || '';
   
   my $sessionID=OpenBib::Common::Util::init_new_session($sessiondbh);
 
+  #
+  if ($setmask){
+    my $idnresult=$sessiondbh->prepare("insert into sessionmask values (?,?)") or $logger->error($DBI::errstr);
+    $idnresult->execute($sessionID,$setmask) or $logger->error($DBI::errstr);
+    $idnresult->finish();
+  }
+  # Standard ist 'einfache Suche'
+  else {
+    my $idnresult=$sessiondbh->prepare("insert into sessionmask values (?,'simple')") or $logger->error($DBI::errstr);
+    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+    $idnresult->finish();
+  }
   
   # BEGIN View (Institutssicht)
   #

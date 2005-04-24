@@ -31,9 +31,14 @@
 # Einladen der benoetigten Perl-Module 
 #####################################################################
 
+use strict;
+use warnings;
+
 use DBI;
 
 use OpenBib::Config;
+
+use OpenBib::Common::Util;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
@@ -46,6 +51,8 @@ use vars qw(%config);
 # Verbindung zur SQL-Datenbank herstellen
 
 my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or die "could not connect";
+
+my $userdbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd}) or die "$DBI::errstr";
 
 my $validtimespan=84000; # in Sek. = 24 Std.
 
@@ -63,51 +70,76 @@ while (my $result=$idnresult->fetchrow_hashref()){
   $createtime{$sessionID}=$result->{'createtime'};
 }
 
-foreach $sessionID (@delsessionids){
+foreach my $sessionID (@delsessionids){
 
   print "Purging SessionID $sessionID from ".$createtime{$sessionID};
 
   # Tabelle session
 
-  $idnresult=$sessiondbh->prepare("delete from session where sessionid='$sessionID'");
-  $idnresult->execute();
+  $idnresult=$sessiondbh->prepare("delete from session where sessionid = ?");
+  $idnresult->execute($sessionID);
 
   print ".";
 
   # Tabelle treffer
 
-  $idnresult=$sessiondbh->prepare("delete from treffer where sessionid='$sessionID'");
-  $idnresult->execute();
+  $idnresult=$sessiondbh->prepare("delete from treffer where sessionid = ?");
+  $idnresult->execute($sessionID);
 
   print ".";
 
   # Tabelle sessionlog
 
-  $idnresult=$sessiondbh->prepare("delete from sessionlog where sessionid='$sessionID'");
-  $idnresult->execute();
+  $idnresult=$sessiondbh->prepare("delete from sessionlog where sessionid = ?");
+  $idnresult->execute($sessionID);
 
   print ".";
 
   # Tabelle queries
 
-  $idnresult=$sessiondbh->prepare("delete from queries where sessionid='$sessionID'");
-  $idnresult->execute();
+  $idnresult=$sessiondbh->prepare("delete from queries where sessionid = ?");
+  $idnresult->execute($sessionID);
 
   print ".";
 
   # Tabelle dbchoice
 
-  $idnresult=$sessiondbh->prepare("delete from dbchoice where sessionid='$sessionID'");
-  $idnresult->execute();
+  $idnresult=$sessiondbh->prepare("delete from dbchoice where sessionid = ?");
+  $idnresult->execute($sessionID);
 
   print ".";
 
   # Tabelle searchresults
 
-  $idnresult=$sessiondbh->prepare("delete from searchresults where sessionid='$sessionID'");
-  $idnresult->execute();
+  $idnresult=$sessiondbh->prepare("delete from searchresults where sessionid = ?");
+  $idnresult->execute($sessionID);
 
-    print ". done\n";
+  print ".";
+
+  # Tabelle sessionmask
+
+  $idnresult=$sessiondbh->prepare("delete from sessionmask where sessionid = ?") or die "$DBI::errstr";
+  $idnresult->execute($sessionID) or die "$DBI::errstr";
+
+  print ".";
+
+  # Tabelle sessionprofile
+
+  $idnresult=$sessiondbh->prepare("delete from sessionprofile where sessionid = ?") or die "$DBI::errstr";
+  $idnresult->execute($sessionID) or die "$DBI::errstr";
+
+  print ".";
+
+  # Zwischengespeicherte Benutzerinformationen
+
+  my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
+  
+  my $userresult=$userdbh->prepare("update user set nachname = '', vorname = '', strasse = '', ort = '', plz = '', soll = '', gut = '', avanz = '', branz = '', bsanz = '', vmanz = '', maanz = '', vlanz = '', sperre = '', sperrdatum = '', gebdatum = '' where userid = ?") or die "$DBI::errstr";
+  $userresult->execute($userid) or die "$DBI::errstr";
+  
+  $userresult->finish();
+
+  print ". done\n";
 }
 
 $idnresult->finish;

@@ -161,7 +161,15 @@ sub handler {
 	$idnresult=$sessiondbh->prepare("insert into dbchoice (sessionid,dbname) values (?,?)") or $logger->error($DBI::errstr);
 	$idnresult->execute($sessionID,$database) or $logger->error($DBI::errstr);
       }
-      
+
+      # Neue Datenbankauswahl ist voreingestellt
+
+      $idnresult=$sessiondbh->prepare("delete from sessionprofile where sessionid = ? ") or $logger->error($DBI::errstr);
+      $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+
+      $idnresult=$sessiondbh->prepare("insert into sessionprofile values (?,'dbauswahl') ") or $logger->error($DBI::errstr);
+      $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+    
       $idnresult->finish();
       
       $r->internal_redirect("http://$config{servername}$config{searchframe_loc}?sessionID=$sessionID&view=$view");

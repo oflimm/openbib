@@ -27,6 +27,9 @@ create table user (
  gebdatum text,
 
  email text,
+
+ masktype text,
+
  INDEX(userid)
 );
 

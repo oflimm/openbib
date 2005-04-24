@@ -118,3 +118,16 @@ create table sessionview (
  INDEX (viewname)
 );
 
+create table sessionmask (
+ sessionid VARCHAR(255) NOT NULL,
+ masktype  VARCHAR(20) NOT NULL,
+ INDEX (sessionid),
+ INDEX (masktype)
+);
+
+create table sessionprofile (
+ sessionid VARCHAR(255) NOT NULL,
+ profile text NOT NULL,
+ INDEX (sessionid)
+);
+

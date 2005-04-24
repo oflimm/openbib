@@ -361,6 +361,7 @@ Konnten Sie das von Ihnen gesuchte Buch oder den von Ihnen gesuchten Zeitschrift
 <b>B&uuml;cher</b>
 <ul>
 <li>Suchen Sie im Kartenkatalog einer infrage kommende Institutsbibliothek. Leider sind noch nicht alle B&uuml;cher elektronisch erfasst und damit &uuml;ber den KUG recherchierbar.</li>
+<li>F&uuml;r verschiedene Institute und Seminare der Philosophischen Fakult&auml;t besteht die M&ouml;glichkeit der Suche in einem <a href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/" target="_blank">Online-Kartenkatalog</a>.</li>
 <li>Versuchen Sie das Buch in NRW oder deutschlandweit im Rahmen der <a href="$hbzmonofernleihbaseurl&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_HBZ=on&D_PARAM_QUERY_bzAU=$verf&D_PARAM_QUERY_azTI=$hst&D_PARAM_QUERY_czCO=$kor&D_PARAM_QUERY_fzIB=$isbn&D_PARAM_QUERY_gzIS=$issn&D_PARAM_QUERY_hzYR=$ejahr$authurl" target="_blank">zentralen Fernleihe</a> in der Digitalen Bibliothek zu finden.</li>
 </ul>
 <b>Zeitschriftenartikel</b>

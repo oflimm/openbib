@@ -6,15 +6,16 @@
 [% PROCESS corporate_banner %] 
 [% END %]
 
-<table>
-<tr valign="top"><td align="left">&gt;&gt;&nbsp;<a href="http://[% config.servername %][% config.userprefs_loc %]?sessionID=[% sessionID %];action=showfields" target="body"><b>Grundeinstellungen</b></a>
-
+<ul id="tabbingmenu">
+   <li><a class="active" href="http://[% config.servername %][% config.userprefs_loc %]?sessionID=[% sessionID %];action=showfields" target="body">Grundeinstellungen</a></li>
 [% IF targettype != 'self' %]
-&nbsp;&nbsp;<a href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc" target="body">Benutzerkonto</a>
+   <li><a href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc" target="body">Benutzerkonto</a></li>
 [% END %]
+   <li><a href="http://[% config.servername %][% config.databaseprofile_loc %]?sessionID=[% sessionID %];action=show" target="body">Katalogprofile</a></li>
+</ul>
 
-&nbsp;&nbsp;<a href="http://[% config.servername %][% config.databaseprofile_loc %]?sessionID=[% sessionID %];action=show" target="body">Katalogprofile</a></td></tr>
-</table>
+<div id="content">
+
 <p />
 
 <form method="post" action="http://[% config.servername %][% config.userprefs_loc %]" enctype="application/x-www-form-urlencoded">
@@ -122,11 +123,35 @@ nein
 <p />
 [% END %]
 
+<table>
+<tr><td valign="top">
+<form method="post" action="http://[% config.servername %][% config.userprefs_loc %]" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="action" value="changemask" />
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<table>
+<tr><td colspan="2"><b>Welche Recherchemaske soll verwendet werden?</b></td></tr>
+<tr><td colspan="2">&nbsp;</td></tr>
+<tr><td align="left"><select name="setmask"><option value="simple"
+[%- IF userinfo.masktype == 'simple' -%]
+ selected="selected"
+[%- END -%]
+>Einfache Recherchemaske</option><option value="advanced"
+[%- IF userinfo.masktype == 'advanced' -%]
+ selected="selected"
+[%- END -%]
+>Erweitere Recherchemaske</option></select>&nbsp;&nbsp;<input type="submit" value="Recherchemaske festlegen" /></td></tr>
+</table>
+</form>
+</td>
+
+<td>&nbsp;&nbsp;&nbsp;</td>
+
+<td valign="top">
 <form method="post" action="http://[% config.servername %][% config.userprefs_loc %]" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="action" value="changefields" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <table>
-<tr><td colspan="2"><b>Welche Suchfelder sollen angezeigt werden?</b></td></tr>
+<tr><td colspan="2"><b>Welche Suchfelder sollen in der erweiterten<br>Recherchemaske angezeigt werden?</b></td></tr>
 <tr><td colspan="2">&nbsp;</td></tr>
 <tr><td align="right"><input type="checkbox" name="showfs" value="1" [% fschecked %] /></td><td>Freie Suche</td></tr>
 <tr><td align="right"><input type="checkbox" name="showhst" value="1" [% hstchecked %] /></td><td>Hauptsachtitel (HST)</td></tr>
@@ -144,10 +169,12 @@ nein
 <tr><td colspan="2"><input type="submit" value="Suchfelder &auml;ndern" /></td></tr>
 </table>
 </form>
-<br />
-<br />
-<br />
-<br />
-<br />
+</td></tr>
+
+</table>
+
+</div>
+
+<p />
 
 [% PROCESS std_footer %]

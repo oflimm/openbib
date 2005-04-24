@@ -92,6 +92,7 @@ sub handler {
   my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
   my @databases=($query->param('database'))?$query->param('database'):();
   my $singleidn=$query->param('singleidn') || '';
+  my $setmask=$query->param('setmask') || '';
   my $action=($query->param('action'))?$query->param('action'):'';
   
   # TODO: $query statt query in alter Version
@@ -123,6 +124,19 @@ sub handler {
   my $showejahr="1";
   
   my $userprofiles="";
+
+
+  # Wurde bereits ein Profil bei einer vorangegangenen Suche ausgewaehlt?
+  
+  my $idnresult=$sessiondbh->prepare("select profile from sessionprofile where sessionid = ?") or $logger->error($DBI::errstr);
+  $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+  my $result=$idnresult->fetchrow_hashref();
+  
+  my $prevprofile="";
+  
+  if (defined($result->{'profile'})){
+    $prevprofile=$result->{'profile'};
+  }
   
   if ($userid){
     my $targetresult=$userdbh->prepare("select * from fieldchoice where userid = ?") or $logger->error($DBI::errstr);
@@ -145,7 +159,6 @@ sub handler {
     $showejahr=$result->{'ejahr'};
     $targetresult->finish();
 
-    
     $targetresult=$userdbh->prepare("select profilid, profilename from userdbprofile where userid = ? order by profilename") or $logger->error($DBI::errstr);
     $targetresult->execute($userid) or $logger->error($DBI::errstr);
     
@@ -156,7 +169,13 @@ sub handler {
     while (my $res=$targetresult->fetchrow_hashref()){
       my $profilid=$res->{'profilid'};
       my $profilename=$res->{'profilename'};
-      $userprofiles.="<option value=\"user$profilid\">- $profilename</option>";
+
+      my $profselected="";
+      if ($prevprofile eq "user$profilid"){
+	$profselected="selected=\"selected\"";
+      }
+
+      $userprofiles.="<option value=\"user$profilid\" $profselected>- $profilename</option>";
     } 
     
     if ($targetresult->rows > 0){
@@ -199,27 +218,33 @@ sub handler {
   my $bool11=$query->param('bool11') || '';
   my $bool12=$query->param('bool12') || '';
   
-  my $benchmark=0;
-  
   my $queryid=$query->param('queryid') || '';
-  
-  unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
-    OpenBib::Common::Util::print_warning("Ung&uuml;ltige Session",$r);
-    $sessiondbh->disconnect();
-    $userdbh->disconnect();
-    
-    return OK;
-  }
   
   # Assoziierten View zur Session aus Datenbank holen
   
-  my $idnresult=$sessiondbh->prepare("select viewinfo.description from sessionview,viewinfo where sessionview.sessionid = ? and sessionview.viewname=viewinfo.viewname") or $logger->error($DBI::errstr);
+  $idnresult=$sessiondbh->prepare("select viewinfo.description from sessionview,viewinfo where sessionview.sessionid = ? and sessionview.viewname=viewinfo.viewname") or $logger->error($DBI::errstr);
   $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-  my $result=$idnresult->fetchrow_hashref();
+  $result=$idnresult->fetchrow_hashref();
   
   my $viewdesc=$result->{'description'} if (defined($result->{'description'}));
-  
+
   $idnresult->finish();
+  
+
+  if ($setmask){
+    my $idnresult=$sessiondbh->prepare("update sessionmask set masktype = ? where sessionid = ?") or $logger->error($DBI::errstr);
+  $idnresult->execute($setmask,$sessionID) or $logger->error($DBI::errstr);
+    $idnresult->finish();
+  }
+  else {
+    my $idnresult=$sessiondbh->prepare("select masktype from sessionmask where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+    my $result=$idnresult->fetchrow_hashref();
+    $setmask=$result->{'masktype'};
+    
+    $idnresult->finish();
+  }
+
   
   my $hits;
   
@@ -252,8 +277,6 @@ sub handler {
     $idnresult->finish;
   }
 
-
-
   # Erzeugung der database-Input Tags fuer die suche
 
   my $dbinputtags="";
@@ -283,7 +306,13 @@ sub handler {
   $idnresult->finish();
 
   if ($dbcount != 0){
-    $dbcount="<OPTION value=\"dbauswahl\">Aktuelle Katalogauswahl ($dbcount Datenbanken)<OPTION value=\"\">";
+
+    my $profselected="";
+    if ($prevprofile eq "dbauswahl"){
+      $profselected="selected=\"selected\"";
+    }
+
+    $dbcount="<option value=\"dbauswahl\" $profselected>Aktuelle Katalogauswahl ($dbcount Datenbanken)</option><option value=\"\">&nbsp;</option>";
   }
   else {
     $dbcount="";
@@ -322,7 +351,7 @@ sub handler {
       $prevqueries.="ISSN: $issn " if ($issn);
       $prevqueries.="MART: $mart " if ($mart);
       $prevqueries.="HSTR: $hststring " if ($hststring);
-      $prevqueries.="= Treffer: $hits" if ($hits);
+      $prevqueries.="= Treffer: $hits";
       $prevqueries.="</OPTION>"; 
 
     }
@@ -358,6 +387,7 @@ sub handler {
                 dbcount      => $dbcount,
                 alldbcount   => $alldbcount,
                 userprofiles => $userprofiles,
+                prevprofile  => $prevprofile,
                 showfs       => $showfs,
                 showhst      => $showhst,
                 showverf     => $showverf,
@@ -395,11 +425,19 @@ sub handler {
     # Dann Ausgabe des neuen Headers
     
     print $r->send_http_header("text/html");
-    
-    $template->process($config{tt_searchframe_tname}, $ttdata) || do { 
-      $r->log_reason($template->error(), $r->filename);
-      return SERVER_ERROR;
-    };
+
+    if ($setmask eq "simple"){    
+      $template->process($config{tt_searchframe_simple_tname}, $ttdata) || do { 
+	$r->log_reason($template->error(), $r->filename);
+	return SERVER_ERROR;
+      };
+    }
+    else {
+      $template->process($config{tt_searchframe_tname}, $ttdata) || do { 
+	$r->log_reason($template->error(), $r->filename);
+	return SERVER_ERROR;
+      };
+    }
 
   $sessiondbh->disconnect();
   $userdbh->disconnect();

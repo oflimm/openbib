@@ -99,7 +99,7 @@ sub handler {
 		sessionID  => $sessionID,
 
 		show_corporate_banner => 0,
-		show_foot_banner => 0,
+		show_foot_banner => 1,
 		config     => \%config,
 	       };
 
@@ -148,7 +148,7 @@ elsif ($action eq "auth"){
 
   # Jetzt eintragen und session mit dem Benutzer assoziieren;
 
-  $userresult=$userdbh->prepare("insert into user values (NULL,'',?,?,'','','','','','','','',?)") or $logger->error($DBI::errstr);
+  $userresult=$userdbh->prepare("insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','',?,'',)") or $logger->error($DBI::errstr);
   
   $userresult->execute($loginname,$password1,$loginname) or $logger->error($DBI::errstr);
 
@@ -183,7 +183,7 @@ elsif ($action eq "auth"){
 	      loginname  => $loginname,
 	      
 	      show_corporate_banner => 0,
-	      show_foot_banner => 0,
+	      show_foot_banner => 1,
 	      config     => \%config,
 	     };
   

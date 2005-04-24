@@ -281,7 +281,24 @@ sub handler {
     
     my $loeschauswahl="";
     if ($type eq "HTML"){
-      $loeschauswahl="...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp<b>Ausgew&auml;hlte Titel l&ouml;schen</b>&nbsp;<input type=submit name=\"loeschen\" value=\"Los\">";
+      $loeschauswahl="<b>Ausgew&auml;hlte Titel l&ouml;schen</b>&nbsp;<input type=submit name=\"loeschen\" value=\"Los\">";
+    }
+    else {
+      $loeschauswahl="<b>Eine Bearbeitung ist nur bei 'HTML' m&ouml;glich</b>";
+    }
+
+    my $activehtml="";
+    my $activetext="";
+    my $activeendnote="";
+
+    if ($type eq "HTML"){
+      $activehtml="class=\"active\"";
+    }
+    elsif ($type eq "Text"){
+      $activetext="class=\"active\"";
+    }
+    elsif ($type eq "EndNote"){
+      $activeendnote="class=\"active\"";
     }
     
     print << "ENDE2";
@@ -294,52 +311,49 @@ sub handler {
     <TITLE>KUG - K&ouml;lner Universit&auml;tsGesamtkatalog</TITLE>
   </HEAD>
   <BODY BGCOLOR="#FFFFFF">
-    <table  BORDER=0 CELLSPACING=0 CELLPADDING=0 width="100%">
-	<tr>
-	  <td ALIGN=LEFT>
-	    <table><tr><td rowspan=2 valign=bottom><a target="_blank" href="http://kug.ub.uni-koeln.de/projekt/"><img SRC="/images/openbib/logo.png" BORDER=0></a></td><td valign=bottom><img SRC="/images/openbib/logozeile1.png" BORDER=0></td></tr><tr><td valign=top><img SRC="/images/openbib/logozeile2.png" BORDER=0></td></tr></table>
-	    
-	  </td>
-	  
-	  <td> &nbsp;&nbsp;</td>
-	  
-	  <td ALIGN=RIGHT>
-	    <a target="_top" HREF="http://www.uni-koeln.de/"><img SRC="/images/openbib/logorechts.png" height=95 BORDER=0></a>
-	  </td>
-	</tr>
-
-        $viewdesc
-
-    </table>
-<hr>
 
 <form method="get" action="http://$config{servername}$config{managecollection_loc}">
 <input type="hidden" name="sessionID" value="$sessionID">
 <input type="hidden" name="action" value="show">
 
-<table  BORDER=0 CELLSPACING=0 CELLPADDING=0 width="100%">
-  <tr bgcolor="lightblue">
-    <td width="20">&nbsp;</td>
-    <td valign="middle" ALIGN=left height="32"><img src="/images/openbib/merkliste.png"></td>
-      <td>&nbsp;</td>
-      <td bgcolor=white align=right width=80>
-        <a href=\"http://$config{servername}$config{managecollection_loc}?sessionID=$sessionID&action=mail$typetarget\" target=\"mail\" title=\"Als Mail verschicken\"><img src="/images/openbib/3d-file-blue-mailbox.png" height="29" alt="Als Mail verschicken" border=0></a>&nbsp;
-        <a href=\"http://$config{servername}$config{managecollection_loc}?sessionID=$sessionID&action=save$typetarget\" target=\"save\" title=\"Abspeichern\"><img src="/images/openbib/3d-file-blue-disk35.png" height="29" alt="Abspeichern" border=0></a>&nbsp;
-       </td>
-  </tr>
-</table>
+<ul id="tabbingmenu">
+   <li><a class="active" href="http://$config{servername}$config{managecollection_loc}?sessionID=$sessionID;action=show;type=HTML">Merkliste</a></li>
+</ul>
+
+<div id="content">
+
 <p>
+
+<ul id="tabbingmenu">
+   <li><a $activehtml href="http://$config{servername}$config{managecollection_loc}?sessionID=$sessionID;action=show;type=HTML">HTML</a></li>
+   <li><a $activetext href="http://$config{servername}$config{managecollection_loc}?sessionID=$sessionID;action=show;type=Text">Text</a></li>
+   <li><a $activeendnote href="http://$config{servername}$config{managecollection_loc}?sessionID=$sessionID;action=show;type=EndNote">EndNote</a></li>
+
+</ul>
+
+<div id="content">
+
 <table width="100%">
 <tr><th>Optionen</th></tr>
 <tr><td class="boxed">
-<b>Format:</b> <select name=type><option value="HTML">HTML</option><option value="Text">Text</option><option value="EndNote">EndNote</option></select>&nbsp;<input type=submit value="Los">&nbsp;&nbsp;&nbsp;&nbsp;<b>derzeit: $type</b>&nbsp;&nbsp;&nbsp;$loeschauswahl
+<table  BORDER=0 CELLSPACING=0 CELLPADDING=0 width="100%">
+<tr>
+<td>$loeschauswahl</td>
+      <td>&nbsp;</td>
+      <td bgcolor=white align=right width=80>
+        <a href=\"http://$config{servername}$config{managecollection_loc}?sessionID=$sessionID&action=mail$typetarget\" target=\"body\" title=\"Als Mail verschicken\"><img src="/images/openbib/3d-file-blue-mailbox.png" height="29" alt="Als Mail verschicken" border=0></a>&nbsp;
+        <a href=\"http://$config{servername}$config{managecollection_loc}?sessionID=$sessionID&action=save$typetarget\" target=\"save\" title=\"Abspeichern\"><img src="/images/openbib/3d-file-blue-disk35.png" height="29" alt="Abspeichern" border=0></a>&nbsp;
+       </td></tr>
+</table>
 </td><tr>
 </table>
+
 <p>
 <table>
 $gesamttreffer
 </table>
-<hr>
+</div>
+</div>
   </body>
 </html>
 
@@ -372,7 +386,7 @@ ENDE2
       
       my ($treffer)=$ergebnis=~/^(<!-- Title begins here -->.+?^<!-- Title ends here -->)/ms;
       
-      $gesamttreffer.="<hr>\n$treffer";
+      $gesamttreffer.="\n$treffer";
       
       # Herausfiltern der HTML-Tags der Titel
       
@@ -459,33 +473,29 @@ ENDE2
     OpenBib::Common::Util::print_simple_header("KUG - K&ouml;lner Universit&auml;tsGesamtkatalog",$r);
 
     print << "ENDE5";
-    <table  BORDER=0 CELLSPACING=0 CELLPADDING=0 width="100%">
-	<tr>
-	  <td ALIGN=LEFT>
-	    <table><tr><td rowspan=2 valign=bottom><a target="_blank" href="http://kug.ub.uni-koeln.de/projekt/"><img SRC="/images/openbib/logo.png" BORDER=0></a></td><td valign=bottom><img SRC="/images/openbib/logozeile1.png" BORDER=0></td></tr><tr><td valign=top><img SRC="/images/openbib/logozeile2.png" BORDER=0></td></tr></table>
-	    
-	  </td>
-	  
-	  <td> &nbsp;&nbsp;</td>
-	  
-	  <td ALIGN=RIGHT>
-	    <a target="_top" HREF="http://www.uni-koeln.de/"><img SRC="/images/openbib/logorechts.png" height=95 BORDER=0></a>
-	  </td>
-	</tr>
 
-        $viewdesc
+<ul id="tabbingmenu">
+   <li><a class="active" href="http://$config{servername}$config{managecollection_loc}?sessionID=$sessionID;action=mail;type=$type">Titel/Merkliste via Mail verschicken</a></li>
+</ul>
 
-    </table>
-<hr>
+<div id="content">
+
 <FORM method="post" action="http://$config{servername}$config{mailcollection_loc}" enctype="multipart/form-data">
 <INPUT type=hidden name=sessionID value=$sessionID>
 <INPUT type=hidden name=type value=$type>
+
+<table width="100%">
+<tr><th>Ihre Eingabe</th></tr>
+<tr><td class="boxed">
 <table>
 <tr><td bgcolor="lightblue"><strong>Ihre Mailadresse</strong></td><td><input type=text name="email" VALUE="$loginname" SIZE=30 MAXLENGTH=200></td></tr>
 <tr><td bgcolor="lightblue"><strong>Betreff</strong></td><td><input type=text name="subject" VALUE="" SIZE=30 MAXLENGTH=200></td></tr>
 </table>
 <p>
 <input type=submit name=mail VALUE="Abschicken">&nbsp;<input type=reset value="Felder leeren">
+</td><tr>
+</table>
+
 <p>
 ENDE5
 
@@ -523,7 +533,7 @@ ENDE5
       
       #  ($treffer)=$ergebnis=~/^<table cellpadding=2>\n^<tr><td>(Kategorie)/ms;
       
-      $gesamttreffer.="<hr>\n$treffer";
+      $gesamttreffer.="\n$treffer";
       
       # Herausfiltern der HTML-Tags der Titel
       
@@ -571,6 +581,7 @@ ENDE5
     
     print << "ENDE6";
 </form>
+</div>
 </body>
 </html>
 ENDE6
@@ -589,10 +600,18 @@ ENDE6
       
       $gesamttreffer=getTitleByType($gesamttreffer,$ua,$befehlsurl,$sessionID,$database,$singleidn,$type,\%endnote,\%dbases,0);
       
-      OpenBib::Common::Util::print_simple_header("KUG - K&ouml;lner Universit&auml;tsGesamtkatalog",$r);
+      OpenBib::Common::Util::print_extended_header("KUG - K&ouml;lner Universit&auml;tsGesamtkatalog",$r);
       
-      print "<h1>Auszudruckender Titel</h1>\n";
-      print $gesamttreffer;
+      print << "PRINTOUT";
+<ul id="tabbingmenu">
+   <li><a class="active" href="http://$config{servername}$config{managecollection_loc}?sessionID=$sessionID;action=print;singleidn=$singleidn">Auszudruckender Titel</a></li>
+</ul>
+
+<div id="content">
+$gesamttreffer
+</div>
+<p />
+PRINTOUT
       
       OpenBib::Common::Util::print_footer();
       

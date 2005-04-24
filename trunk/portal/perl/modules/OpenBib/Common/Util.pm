@@ -144,6 +144,30 @@ sub get_cred_for_userid {
 
 }
 
+sub get_username_for_userid {
+  my ($userdbh,$userid)=@_;
+
+  # Log4perl logger erzeugen
+  
+  my $logger = get_logger();
+
+  my $userresult=$userdbh->prepare("select loginname from user where userid = ?") or $logger->error($DBI::errstr);
+
+  $userresult->execute($userid) or $logger->error($DBI::errstr);
+  
+  my $username="";
+  
+  if ($userresult->rows > 0){
+    my $res=$userresult->fetchrow_hashref();
+    $username=$res->{loginname};
+  }
+
+  $userresult->finish();
+
+  return $username;
+
+}
+
 sub get_userid_of_session {
   my ($userdbh,$sessionID)=@_;
 
@@ -352,7 +376,7 @@ sub print_extended_header {
 	  </td>
 	</tr>
     </table>
-<hr>
+<p />
 HEADER
   return;
 }
@@ -466,7 +490,12 @@ sub print_sort_nav {
 
   for (my $i = 0; $i < $#argself; $i += 2) {
     my $key=$argself[$i];
-    my $value=$argself[$i+1];
+
+    my $value="";
+
+    if (defined($argself[$i+1])){
+      $value=$argself[$i+1];
+    }
 
     if ($key ne "sortorder" && $key ne "sorttype" && $key ne "trefferliste" && $key ne "sortall" && $key ne "sessionID" && $key ne "queryid"){
       $fullargstring.="<input type=\"hidden\" name=\"$key\" value=\"$value\">\n";

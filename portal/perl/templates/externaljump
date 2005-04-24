@@ -35,14 +35,53 @@ An dieser Stelle k&ouml;nnen Sie ausgehend von Ihrer (eventuell erfolglosen) Suc
 <tr><td class="boxedclear" style="font-size:11pt">
 
 <table>
-<tr><td><b>Digitale Bibliothek / Monographien (Fernleihe)</b></td><td>=&gt;</td><td><a href="[% config.hbzmonofernleih_exturl %]&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_HBZ=on&D_PARAM_QUERY_bzAU=[% verf %]&D_PARAM_QUERY_azTI=[% hst %]&D_PARAM_QUERY_czCO=[% kor %]&D_PARAM_QUERY_fzIB=[% isbn %]&D_PARAM_QUERY_gzIS=[% issn %]&D_PARAM_QUERY_hzYR=[% ejahr %][% authurl %]" target="_blank">Sprung in externe Recherche</a</td><td>[ &Uuml;bernommene Felder: Titel, Verfasser, K&ouml;rperschaft, ISBN, ISSN, Erscheinungsjahr ]</td></tr>
-<tr><td><b>Digitale Bibliothek / Zeitschriften (Aufsatzlieferung)</b></td><td>=&gt;</td><td><a href="[% config.hbzzeitfernleih_exturl %]&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_ZDB=on&D_PARAM_QUERY_azTI=[% hst %]&D_PARAM_QUERY_czCO=[% kor %]&D_PARAM_QUERY_gzIS=[% issn %][% authurl %]" target="_blank">Sprung in externe Recherche</a></td><td>[ &Uuml;bernommene Felder: Titel, K&ouml;rperschaft, ISSN ]</td></tr>
+<tr><td><b>Digitale Bibliothek / Monographien (Fernleihe)</b></td><td>=&gt;</td><td>
+
+[% IF verf != '' || hst != '' || kor != '' || isbn != '' || issn != '' %]
+<a href="[% config.hbzmonofernleih_exturl %]&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_HBZ=on&D_PARAM_QUERY_bzAU=[% verf %]&D_PARAM_QUERY_azTI=[% hst %]&D_PARAM_QUERY_czCO=[% kor %]&D_PARAM_QUERY_fzIB=[% isbn %]&D_PARAM_QUERY_gzIS=[% issn %]&D_PARAM_QUERY_hzYR=[% ejahr %][% authurl %]" target="_blank">Sprung in externe Recherche</a>
+[% ELSE %]
+Ungeeignete Suchfelder
+[% END %]
+
+</td><td>[ &Uuml;bernommene Felder: Titel, Verfasser, K&ouml;rperschaft, ISBN, ISSN, Erscheinungsjahr ]</td></tr>
+<tr><td><b>Digitale Bibliothek / Zeitschriften (Aufsatzlieferung)</b></td><td>=&gt;</td><td>
+
+[% IF hst != '' || kor != '' || issn != '' %]
+<a href="[% config.hbzzeitfernleih_exturl %]&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_ZDB=on&D_PARAM_QUERY_azTI=[% hst %]&D_PARAM_QUERY_czCO=[% kor %]&D_PARAM_QUERY_gzIS=[% issn %][% authurl %]" target="_blank">Sprung in externe Recherche</a>
+[% ELSE %]
+Ungeeignete Suchfelder
+[% END %]
+
+</td><td>[ &Uuml;bernommene Felder: Titel, K&ouml;rperschaft, ISSN ]</td></tr>
 <tr><td></td><td></td><td></td><td></td></tr>
-<tr><td><b>Datenbankinformationssystem (DBIS)</b></td><td>=&gt;</td><td><a href="http://www.bibliothek.uni-regensburg.de/dbinfo/suche.phtml?bib_id=usb_k&colors=63&Suchwort=[% hst %]&lett=fs" target="_blank">Sprung in externe Recherche</a></td><td>[ &Uuml;bernommene Felder: Titel ]</td></tr>
+<tr><td><b>Datenbankinformationssystem (DBIS)</b></td><td>=&gt;</td><td>
+
+[% IF hst != '' %]
+<a href="http://www.bibliothek.uni-regensburg.de/dbinfo/suche.phtml?bib_id=usb_k&colors=63&Suchwort=[% hst %]&lett=fs" target="_blank">Sprung in externe Recherche</a>
+[% ELSE %]
+Ungeeignete Suchfelder
+[% END %]
+
+</td><td>[ &Uuml;bernommene Felder: Titel ]</td></tr>
 <tr><td></td><td></td><td></td><td></td></tr>
-<tr><td><b>Elektronische Zeitschriftendatenbank (EZB)</b></td><td>=&gt;</td><td><a href="[% config.ezb_exturl %]&jq_term1=[% issn %]&jq_term2=[% hst %]" target="_blank">Sprung in externe Recherche</a></td><td>[ &Uuml;bernommene Felder: Titel, ISSN ]</td></tr>
+<tr><td><b>Elektronische Zeitschriftendatenbank (EZB)</b></td><td>=&gt;</td><td>
+
+[% IF hst != '' || issn != '' %]
+<a href="[% config.ezb_exturl %]&jq_term1=[% issn %]&jq_term2=[% hst %]" target="_blank">Sprung in externe Recherche</a></td>
+[% ELSE %]
+Ungeeignete Suchfelder
+[% END %]
+
+<td>[ &Uuml;bernommene Felder: Titel, ISSN ]</td></tr>
 <tr><td></td><td></td><td></td><td></td></tr>
-<tr><td><b>MedPilot</td><td>=&gt;</td><td><a href="http://www.medpilot.de/medptools/cgi-bin/mpsearch.pl?q=[% hst %]&Suche=Suchen" target="_blank">Sprung in externe Recherche</a></td><td>[ &Uuml;bernommene Felder: Titel als Freie Suche ]</td></tr>
+<tr><td><b>MedPilot</td><td>=&gt;</td><td>
+
+[% IF hst != '' %]
+<a href="http://www.medpilot.de/medptools/cgi-bin/mpsearch.pl?q=[% hst %]&Suche=Suchen" target="_blank">Sprung in externe Recherche</a>
+[% ELSE %]
+Ungeeignete Suchfelder
+[% END %]
+</td><td>[ &Uuml;bernommene Felder: Titel ]</td></tr>
 </table>
 
 </td></tr>

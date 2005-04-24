@@ -120,7 +120,7 @@ sub handler {
   # Ab hier ist in $userid entweder die gueltige Userid oder nichts, wenn
   # die Session nicht authentifiziert ist
 
-  OpenBib::Common::Util::print_extended_header("KUG - K&ouml;lner Universit&auml;tsGesamtkatalog",$r);
+  OpenBib::Common::Util::print_simple_header("KUG - K&ouml;lner Universit&auml;tsGesamtkatalog",$r);
   
   if ($email eq ""){
     print << "KEINEMAIL";

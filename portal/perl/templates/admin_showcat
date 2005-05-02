@@ -6,15 +6,14 @@
 
 [% PROCESS corporate_banner %]
 
-<table width="100%">
-<tr>
-  <td align="left"><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showcat"><b>Kataloge</b></a>&nbsp;&nbsp;&nbsp;<a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showviews">Views</a>&nbsp;&nbsp;&nbsp;<a href="http://[% config.servername %][%
-config.admin_loc %]?sessionID=[% sessionID %]&action=showsession">Sessions</a>&nbsp;&nbsp;&nbsp;<a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showimx">Import</a></td><td>&nbsp;&nbsp;&nbsp;</td><td>&nbsp;</td><td
-align="right"><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=logout"><b>Logout</b></a>&nbsp;</td>
-</tr>
-</table>
+<ul id="tabbingmenu">
+   <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showcat">Kataloge</a></li>
+   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showviews">Views</a></li>
+   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showsession">Sessions</a></li>
+   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=logout">Logout</a></li>
+</ul>
 
-<hr />
+<div id="content">
 
 <form method="get" action="http://[% config.servername %][%config.admin_loc %]">
 <input type="hidden" name="action" value="editcat">
@@ -80,6 +79,8 @@ Nein
 
 </td></tr>
 </table>
+
+</div>
 
 <p />
 

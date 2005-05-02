@@ -585,7 +585,7 @@ $/);
 #####################################################################   
 #####################################################################   
 
-sub umlaut2html {
+sub bisumlaut2html {
     my $line=shift @_;
 
     $line=~s/\&/\&amp\;/g;
@@ -742,13 +742,60 @@ sub umlaut2html {
     $line=~s/\$404/l/g; #
     $line=~s/\$408/t/g; #
 
+    $line=~s/·s/\&#353\;/g; # s hacek
+
+    return $line;
+}
+
+sub sisisumlaut2html {
+    my $line=shift @_;
+
+    # Caron
+    
+    $line=~s/·s/\&#353\;/g; # s hacek
+    $line=~s/·S/\&#352\;/g; # S hacek
+    $line=~s/·c/\&#269\;/g; # c hacek
+    $line=~s/·C/\&#268\;/g; # C hacek
+    $line=~s/·d/\&#271\;/g; # d hacek
+    $line=~s/·D/\&#270\;/g; # D hacek
+    $line=~s/·e/\&#283\;/g; # d hacek
+    $line=~s/·E/\&#282\;/g; # D hacek
+    $line=~s/·l/\&#318\;/g; # l hacek
+    $line=~s/·L/\&#317\;/g; # L hacek
+    $line=~s/·n/\&#328\;/g; # n hacek
+    $line=~s/·N/\&#327\;/g; # N hacek
+    $line=~s/·r/\&#345\;/g; # r hacek
+    $line=~s/·R/\&#344\;/g; # R hacek
+    $line=~s/·t/\&#357\;/g; # t hacek
+    $line=~s/·T/\&#356\;/g; # T hacek
+    $line=~s/·z/\&#382\;/g; # n hacek
+    $line=~s/·Z/\&#381\;/g; # N hacek
+
+    # Macron
+
+    $line=~s/¯e/\&#275\;/g; # e oberstrich
+    $line=~s/¯E/\&#274\;/g; # e oberstrich
+    $line=~s/¯a/\&#257\;/g; # a oberstrich
+    $line=~s/¯A/\&#256\;/g; # A oberstrich
+    $line=~s/¯i/\&#299\;/g; # i oberstrich
+    $line=~s/¯I/\&#298\;/g; # I oberstrich
+    $line=~s/¯o/\&#333\;/g; # o oberstrich
+    $line=~s/¯O/\&#332\;/g; # O oberstrich
+    $line=~s/¯u/\&#363\;/g; # u oberstrich
+    $line=~s/¯U/\&#362\;/g; # U oberstrich
+
     return $line;
 }
 
 sub bearbeite_autline {
     ($line)=@_;
 
-    $line=umlaut2html("$line") if ($encoding);
+    if ($encoding){
+      $line=bisumlaut2html("$line");
+    }
+    else {
+      $line=sisisumlaut2html("$line");
+    }
 
     if ($line=~/^IDN  (\d+)/){
 	$idn=$1;	
@@ -797,7 +844,13 @@ $/);
 sub bearbeite_korline {
     ($line)=@_;
 
-    $line=umlaut2html("$line") if ($encoding);
+    if ($encoding){
+      $line=bisumlaut2html("$line");
+    }
+    else {
+      $line=sisisumlaut2html("$line");
+    }
+
     if ($line=~/^IDN  (\d+)/){
 	$idn=$1;	
 	if (($idnmode eq "offset")&&($offset)) {
@@ -886,7 +939,13 @@ $/);
 sub bearbeite_swtline {
     ($line)=@_;
 
-    $line=umlaut2html("$line") if ($encoding);
+    if ($encoding){
+      $line=bisumlaut2html("$line");
+    }
+    else {
+      $line=sisisumlaut2html("$line");
+    }
+
     if ($line=~/^IDN  (\d+)/){
 	$idn=$1;	
 	if (($idnmode eq "offset")&&($offset)) {
@@ -1016,7 +1075,12 @@ $/);
 sub bearbeite_notline {
     ($line)=@_;
 
-    $line=umlaut2html("$line") if ($encoding);
+    if ($encoding){
+      $line=bisumlaut2html("$line");
+    }
+    else {
+      $line=sisisumlaut2html("$line");
+    }
 
     if ($line=~/^IDN  (\d+)/){
 	$idn=$1;	
@@ -1118,7 +1182,13 @@ $/);
 sub bearbeite_titline {
     ($line)=@_;
 
-    $line=umlaut2html("$line") if ($encoding);
+    if ($encoding){
+      $line=bisumlaut2html("$line");
+    }
+    else {
+      $line=sisisumlaut2html("$line");
+    }
+
     if ($line=~/^IDN  (\d+)/){
 	$idn=$1;	
 	if (($idnmode eq "offset")&&($offset)) {
@@ -1792,7 +1862,13 @@ $/);
 sub bearbeite_mexline {
     ($line)=@_;
 
-    $line=umlaut2html("$line") if ($encoding);
+    if ($encoding){
+      $line=bisumlaut2html("$line");
+    }
+    else {
+      $line=sisisumlaut2html("$line");
+    }
+
     if ($line=~/^IDN  (\d+)/){
 	$idn=$1;	
 	if (($idnmode eq "offset")&&($offset)) {
@@ -1893,7 +1969,13 @@ $/);
 sub bearbeite_vbuline {
     ($line)=@_;
 
-    $line=umlaut2html("$line") if ($encoding);
+    if ($encoding){
+      $line=bisumlaut2html("$line");
+    }
+    else {
+      $line=sisisumlaut2html("$line");
+    }
+
     if ($line=~/^9210 IDN: (\d+)/){
 	$mexidn=$1;	
 	if (($idnmode eq "offset")&&($offset)) {

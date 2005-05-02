@@ -1,0 +1,29 @@
+[% SET title='KUG Administration - Funktionsmenu' %]
+
+[% PROCESS std_header %]
+
+  <body bgcolor="#FFFFFF">
+
+[% PROCESS corporate_banner %]
+
+<ul id="tabbingmenu">
+   <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showcat">Kataloge</a></li>
+   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showviews">Views</a></li>
+   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showsession">Sessions</a></li>
+   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=logout">Logout</a></li>
+</ul>
+
+<div id="content">
+
+<table width="100%">
+<tr><th>Erfolgsmeldung</th></tr>
+<tr><td class="boxedclear" style="font-size:12pt">
+Sie sind nun als Administrator eingeloggt.
+</td></tr>
+</table>
+
+</div>
+
+<p />
+
+[% PROCESS std_footer %]

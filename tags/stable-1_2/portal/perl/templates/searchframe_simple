@@ -1,0 +1,156 @@
+[% PROCESS std_header %]
+
+  <body bgcolor="#FFFFFF">
+
+[% IF show_corporate_banner %]
+[% PROCESS corporate_banner %] 
+[% END %]
+
+<form method="get" id="openbib" action="http://[% config.servername %][% config.virtualsearch_loc %]">
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<input type="hidden" name="hitrange" value="-1" />
+<input type="hidden" name="view" value="[% view %]" />
+<input type="hidden" name="maxhits" value="50" />
+<input type="hidden" name="sorttype" value="author" />
+<input type="hidden" name="sortorder" value="up" />
+<input type="hidden" name="autoplus" value="1" />
+
+[% dbinputtags %]
+
+<!--
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+  <tr bgcolor="lightblue">
+    <td  width="20">&nbsp;</td><td valign="middle" align="left" height="32"><img src="/images/openbib/recherche.png" alt="Recherche" /></td>
+  </tr>
+</table>
+-->
+
+[% IF config.testsystem %]
+[% PROCESS testsystem_info %]
+[% END %]
+
+<ul id="tabbingmenu">
+   <li><a class="active" href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">Einfache Recherche</a></li>
+   <li><a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">Komplexe Recherche</a></li>
+</ul>
+
+<div id="content">
+<p />
+<p />
+
+[% IF view %]
+
+[% IF viewtemplate %]
+<center>
+[% PROCESS $viewtemplate %]
+</center>
+[% ELSE %]
+<center>Sie k&ouml;nnen entweder direkt im vorausgew&auml;hlten Katalog <b>[% viewdesc %]</b> recherchieren, oder die Suche auf weitere <a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %]" target="body">Kataloge</a> ausdehnen.</center>
+[% END %]
+
+<p />
+<p />
+[% ELSE %]
+<center>
+Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs %] einzelnen <a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %]" target="body">Katalogen</a> recherchieren oder auch sofort in allen zusammen.
+</center>
+<p />
+[% END %]
+
+<p />
+<table width="100%">
+<tr><th style="text-align: center">Geben Sie hier bitte Ihre Suchbegriffe ein</th></tr>
+<tr><td class="boxed" valign="top" align="center">
+<input type="text" name="fs" value="[% fs %]" size="80" maxlength="200" />
+</td></tr>
+</table>
+
+<table width="100%">
+<tr><th style="text-align: center">W&auml;hlen Sie hier bitte Ihr Suchprofil aus</th></tr>
+<tr><td class="boxed" valign="top" align="center">
+<select name="profil">
+[%- IF dbcount || userprofiles -%]
+[% dbcount %] [% userprofiles %]
+[%- ELSE -%]
+<option value="">Kein Suchprofil ausgew&auml;hlt</option><option value="">&nbsp;</option>
+[%- END -%]
+<option value="">Fakult&auml;ten:</option><option value=""></option><option value="0ungeb"
+[%- IF prevprofile == '0ungeb' -%]
+ selected="selected"
+[%- END -%]
+>- Fakult&auml;tsunabh&auml;ngige Bibliotheken</option><option value="1wiso"
+[%- IF prevprofile == '1wiso' -%]
+ selected="selected"
+[%- END -%]
+>- Wirtschafts- u. Sozialwissenschaftliche Fakult&auml;t</option><option value="2recht"
+[%- IF prevprofile == '2recht' -%]
+ selected="selected"
+[%- END -%]
+>- Rechtswissenschaftliche Fakult&auml;t</option><option value="3ezwheil"
+[%- IF prevprofile == '3ezwheil' -%]
+ selected="selected"
+[%- END -%]
+>- Erziehungswissenschaftliche u. Heilp&auml;dagogische Fakult&auml;t</option><option value="4phil"
+[%- IF prevprofile == '4phil' -%]
+ selected="selected"
+[%- END -%]
+>- Philosophische Fakult&auml;t</option><option value="5matnat"
+[%- IF prevprofile == '5matnat' -%]
+ selected="selected"
+[%- END -%]
+>- Mathematisch-Naturwissenschaftliche Fakult&auml;t</option><option value=""></option></select>
+</td></tr>
+</table>
+
+<p />
+
+<p />
+
+[% IF view %]
+<center>
+<table>
+  <tr><td><input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="tosearch" value="In ausgewählten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="Lösche Eingabemaske" /></td></tr>
+</table>
+</center>
+[% ELSE %]
+<center>
+<table>
+  <tr><td><input type="submit" title="Hier suchen Sie in allen Katalogen auf einmal" name="tosearch" value="In allen Katalogen suchen" />&nbsp;<input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="tosearch" value="In ausgewählten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="Lösche Eingabemaske" /></td></tr>
+</table>
+</center>
+[% END %]
+
+<p />
+</form>
+
+[% IF prevqueries %]
+<form method="get" id="queries" action="http://[% config.servername %][% config.dispatchquery_loc %]">
+<table width="100%">
+<tr><th style="text-align: center">Rufen Sie hier die Ergebnisse fr&uuml;hrerer Recherchen auf</th></tr>
+<tr><td align="center" class="boxed">
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<select name="queryid">
+[% prevqueries %]
+</select>
+<input type="submit" name="action" value="Zur Trefferliste" />
+</form>
+[% END %]
+
+</td></tr>
+</table>
+
+<p />
+
+<center>
+<b>Insgesamt sind im KUG derzeit [% alldbcount %] Titel nachgewiesen.</b>
+
+<p />
+F&uuml;r Verbesserungsvorschl&auml;ge oder bei technischen Problemen k&ouml;nnen Sie uns unter <a href="http://www.ub.uni-koeln.de/usb-cgi/makeEmailPage.pl?adr0=kug" target="_blank">kug@ub.uni-koeln.de</a> erreichen.
+<p />
+</center>
+
+</div>
+
+<p />
+
+[% PROCESS std_footer %]

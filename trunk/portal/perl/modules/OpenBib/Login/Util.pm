@@ -27,6 +27,7 @@ package OpenBib::Login::Util;
 
 use strict;
 use warnings;
+no warnings 'redefine';
 
 use Log::Log4perl qw(get_logger :levels);
 

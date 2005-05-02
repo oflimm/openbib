@@ -6,13 +6,23 @@
 [% PROCESS corporate_banner %] 
 [% END %]
 
-<table BORDER=0 CELLSPACING=0 CELLPADDING=0 width="100%">
-  <tr bgcolor="lightblue">
-    <td  width="20">&nbsp;</td><td valign="middle" ALIGN=left height="32"><img src="/images/kvik/selbstregistrierung-30px.png" alt="Login"></td>
-  </tr>
-</table>
-<h1>Sie sind erfolgreich registriert</h1>
-<p>
+<ul id="tabbingmenu">
+   <li><a href="[% config.login_loc %]?sessionID=[% sessionID %];view=[% view %];action=login" target="body">Login</a></li>
+   <li><a class="active" href="http://[% config.servername %][% config.selfreg_loc %]?sessionID=[% sessionID %];action=show" target="body">Selbstregistrierung</a></li>
+   <li><a href="http://[% config.servername %][% config.mailpassword_loc %]?sessionID=[% sessionID %];action=show" target="body">Passwort vergessen?</a></li>
+</ul>
+
+<div id="content">
+
+<table width="100%">
+<tr><th>Sie sind erfolgreich registriert</th></tr>
+<tr><td class="boxedclear" style="font-size:9pt">
 Klicken Sie nun <a href="http://[% config.servername %][% config.login_loc %]?sessionID=[% sessionID %]&action=login&loginname=[% loginname %]">hier</a>, um sich anzumelden.
+</td></tr>
+</table>
+
+</div>
+
+<p />
 
 [% PROCESS std_footer %]

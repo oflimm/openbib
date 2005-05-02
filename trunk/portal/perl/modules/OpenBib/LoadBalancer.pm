@@ -33,6 +33,7 @@ use Apache::Constants qw(:common REDIRECT);
 
 use strict;
 use warnings;
+no warnings 'redefine';
 
 use Apache::Request();      # CGI-Handling (or require)
 
@@ -67,8 +68,6 @@ sub handler {
   my $query=Apache::Request->new($r);
 
   my $ua=new LWP::UserAgent(timeout => 5);
-  
-  my $view=($query->param('view'))?$query->param('view'):'';
   
   my $urlquery=$r->args; #query->url(-query=>1);
   

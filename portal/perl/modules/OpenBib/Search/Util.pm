@@ -27,6 +27,7 @@ package OpenBib::Search::Util;
 
 use strict;
 use warnings;
+no warnings 'redefine';
 
 use Log::Log4perl qw(get_logger :levels);
 
@@ -2053,7 +2054,7 @@ TITHEAD
 	if ($#verknmex >= 0){
 	  print "<p>\n";
 	  print "<table>\n";
-	  print "<tr align=center><td bgcolor=\"lightblue\" width=\"225\">Besitzende Bibliothek</td><td bgcolor=\"lightblue\" width=\"250\">Standort</td><td bgcolor=\"lightblue\" width=\"250\">Inventarnummer</td><td bgcolor=\"lightblue\" width=\"120\">Lokale Signatur</td>";
+	  print "<tr align=center><td bgcolor=\"lightblue\" width=\"225\">Besitzende Bibliothek</td><td bgcolor=\"lightblue\" width=\"250\">Standort</td><td bgcolor=\"lightblue\" width=\"120\">Inventarnummer</td><td bgcolor=\"lightblue\" width=\"250\">Lokale Signatur</td>";
 	  
 	  print "<td bgcolor=\"lightblue\" width=\"230\">Bestandsverlauf</td>";
 
@@ -2466,7 +2467,7 @@ sub get_number {
 	}
     
 	my $numberresult=$dbh->prepare("$numberrequest") or $logger->error($DBI::errstr);
-	$numberresult->execute() or $logger->error($DBI::errstr);
+	$numberresult->execute() or $logger->error("Request: $numberrequest - ".$DBI::errstr);
 
 	my @numberres;
 	while (@numberres=$numberresult->fetchrow){
@@ -2657,7 +2658,42 @@ sub print_url_category_global {
     $globalcontents=~s/>//g;
 #  }
 
+  # Sonderzeichen
 
+  # Caron
+
+  $globalcontents=~s/\&#353\;/s/g; # s hacek
+  $globalcontents=~s/\&#352\;/S/g; # S hacek
+  $globalcontents=~s/\&#269\;/c/g; # c hacek
+  $globalcontents=~s/\&#268\;/C/g; # C hacek
+  $globalcontents=~s/\&#271\;/d/g; # d hacek
+  $globalcontents=~s/\&#270\;/D/g; # D hacek
+  $globalcontents=~s/\&#283\;/e/g; # e hacek
+  $globalcontents=~s/\&#282\;/E/g; # E hacek
+  $globalcontents=~s/\&#318\;/l/g; # l hacek
+  $globalcontents=~s/\&#317\;/L/g; # L hacek
+  $globalcontents=~s/\&#328\;/n/g; # n hacek
+  $globalcontents=~s/\&#327\;/N/g; # N hacek
+  $globalcontents=~s/\&#345\;/r/g; # r hacek
+  $globalcontents=~s/\&#344\;/R/g; # R hacek
+  $globalcontents=~s/\&#357\;/t/g; # t hacek
+  $globalcontents=~s/\&#356\;/T/g; # T hacek
+  $globalcontents=~s/\&#382\;/n/g; # n hacek
+  $globalcontents=~s/\&#381\;/N/g; # N hacek
+  
+  # Macron
+  
+  $globalcontents=~s/\&#275\;/e/g; # e oberstrich
+  $globalcontents=~s/\&#274\;/E/g; # e oberstrich
+  $globalcontents=~s/\&#257\;/a/g; # a oberstrich
+  $globalcontents=~s/\&#256\;/A/g; # A oberstrich
+  $globalcontents=~s/\&#299\;/i/g; # i oberstrich
+  $globalcontents=~s/\&#298\;/I/g; # I oberstrich
+  $globalcontents=~s/\&#333\;/o/g; # o oberstrich
+  $globalcontents=~s/\&#332\;/O/g; # O oberstrich
+  $globalcontents=~s/\&#363\;/u/g; # u oberstrich
+  $globalcontents=~s/\&#362\;/U/g; # U oberstrich
+  
   #$globalcontents=~s/ /\+/g;
   $globalcontents=~s/,/%2C/g;
   $globalcontents=~s/\[.+?\]//;

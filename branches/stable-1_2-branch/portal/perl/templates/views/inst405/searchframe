@@ -1,0 +1,12 @@
+Sie k&ouml;nnen entweder direkt im vorausgew&auml;hlten Katalog <b>[% viewdesc %]</b> recherchieren, oder die Suche auf weitere <a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %]" target="body">Kataloge</a> ausdehnen.
+<p />
+Dar&uuml;berhinaus finden Sie weitere Best&auml;nde dieses Katalogs in den 
+zugeh&ouml;rigen digitalisierten Image-Katalogen
+
+<ul>
+<li><a href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=405c" target="_blank">Deutsche Sprache und Literatur</a>. </li>
+<li><a href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=405a" target="_blank">Deutsche Sprache und Literatur; mittelalterliches Drama; geistl. und weltl. Spiele</a>. </li>
+<li><a href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=405b" target="_blank">Deutsche Sprache und Literatur; mittelalterliches Drama; Sekundrliteratur</a>. </li>
+</ul>
+
+

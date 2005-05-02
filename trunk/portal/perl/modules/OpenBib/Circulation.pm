@@ -33,6 +33,7 @@ use Apache::Constants qw(:common);
 
 use strict;
 use warnings;
+no warnings 'redefine';
 
 use Apache::Request();      # CGI-Handling (or require)
 
@@ -73,7 +74,7 @@ sub handler {
   my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
   my $action=($query->param('action'))?$query->param('action'):'none';
-  my $circaction=($query->param('action'))?$query->param('circaction'):'none';
+  my $circaction=($query->param('circaction'))?$query->param('circaction'):'none';
   my $offset=($query->param('offset'))?$query->param('offset'):0;
   my $listlength=($query->param('listlength'))?$query->param('listlength'):10;
   my $sessionID=$query->param('sessionID')||'';
@@ -105,9 +106,6 @@ sub handler {
   my ($loginname,$password)=OpenBib::Common::Util::get_cred_for_userid($userdbh,$userid);
 
   my $database=OpenBib::Common::Util::get_targetdb_of_session($userdbh,$sessionID);
-
-  $logger->error("Database: $database");
-
 
   #####################################################################
   ## Ausleihkonfiguration fuer den Katalog einlesen

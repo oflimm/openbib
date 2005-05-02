@@ -27,6 +27,7 @@ package OpenBib::Common::Util;
 
 use strict;
 use warnings;
+no warnings 'redefine';
 
 use Apache::Constants qw(:common);
 
@@ -310,7 +311,7 @@ sub get_sql_result {
     }
     
     my $idnresult=$dbh->prepare("$idnrequest") or $logger->error($DBI::errstr);
-    $idnresult->execute() or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error("Request: $idnrequest - ".$DBI::errstr);
     
     my @idnres;
     while (@idnres=$idnresult->fetchrow){	    

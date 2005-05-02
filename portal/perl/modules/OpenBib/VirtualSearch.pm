@@ -33,6 +33,7 @@ use Apache::Constants qw(:common);
 
 use strict;
 use warnings;
+no warnings 'redefine';
 
 use Apache::Request();      # CGI-Handling (or require)
 
@@ -104,7 +105,7 @@ sub handler {
   my $mart=$query->param('mart') || '';
   my $notation=$query->param('notation') || '';
   my $ejahr=$query->param('ejahr') || '';
-  my $ejahrop=$query->param('ejahrop') || '';
+  my $ejahrop=$query->param('ejahrop') || '=';
   my $verknuepfung=$query->param('verknuepfung') || '';
   my $bool1=$query->param('bool1') || '';
   my $bool2=$query->param('bool2') || '';

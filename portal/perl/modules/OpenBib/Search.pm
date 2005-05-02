@@ -34,6 +34,7 @@ use Apache::Constants qw(:common);
 
 use strict;
 use warnings;
+no warnings 'redefine';
 
 use Apache::Request();      # CGI-Handling (or require)
 
@@ -322,7 +323,7 @@ sub handler {
   my $issn=$query->param('issn') || '';
   my $notation=$query->param('notation') || '';
   my $ejahr=$query->param('ejahr') || '';
-  my $ejahrop=$query->param('ejahrop') || '';
+  my $ejahrop=$query->param('ejahrop') || '=';
   my $freequery=$query->param('freequery') || '';
   
   my $withumlaut=0;

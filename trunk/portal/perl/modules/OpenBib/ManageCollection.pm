@@ -33,6 +33,7 @@ use Apache::Constants qw(:common M_GET);
 
 use strict;
 use warnings;
+no warnings 'redefine';
 
 use Apache::Request();      # CGI-Handling (or require)
 
@@ -395,8 +396,8 @@ ENDE2
       $gesamttreffer=~s/<\/a.*?>//g;
       $gesamttreffer=~s/<span.*?>G<\/span.*?>//g;
       
-      print $r->header_out("Attachment" => "kugliste.html");
       print $r->header_out("Content-Type" => "text/html");
+      print $r->header_out("Content-Disposition" => "attachment;filename=\"kugtreffer.html\"");
       print $r->send_http_header;
       
       print "<HTML>\n<HEAD><TITLE>Abgespeicherte Treffer</TITLE></HEAD>\n<BODY><h1>KUG-Trefferliste</h1><TABLE>\n";
@@ -431,9 +432,10 @@ ENDE2
       }
       
       if ($type eq "HTML"){
-	
-	print $r->header_out("Attachment" => "kugliste.html");
+
 	print $r->header_out("Content-Type" => "text/html");
+	print $r->header_out("Content-Disposition" => "attachment;filename=\"kugliste.html\"");
+	
 	print $r->send_http_header;
 	
 	print "<HTML>\n<HEAD><TITLE>Abgespeicherte Treffer</TITLE></HEAD>\n<BODY><h1>KUG-Trefferliste</h1><TABLE>\n";
@@ -443,8 +445,9 @@ ENDE2
 	OpenBib::Common::Util::print_footer();
       }
       else {
-	print $r->header_out("Attachment" => "kugliste.txt");
 	print $r->header_out("Content-Type" => "text/plain");
+	print $r->header_out("Content-Disposition" => "attachment;filename=\"kugliste.txt\"");
+
 	print $r->send_http_header;
 	
 	print $gesamttreffer;

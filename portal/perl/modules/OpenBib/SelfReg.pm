@@ -149,7 +149,7 @@ elsif ($action eq "auth"){
 
   # Jetzt eintragen und session mit dem Benutzer assoziieren;
 
-  $userresult=$userdbh->prepare("insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','',?,'',)") or $logger->error($DBI::errstr);
+  $userresult=$userdbh->prepare("insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','',?,'')") or $logger->error($DBI::errstr);
   
   $userresult->execute($loginname,$password1,$loginname) or $logger->error($DBI::errstr);
 
@@ -160,6 +160,14 @@ elsif ($action eq "auth"){
   my $res=$userresult->fetchrow_hashref();
 
   my $userid=$res->{'userid'};
+
+  $userresult=$userdbh->prepare("select targetid from logintarget where type = 'self'") or $logger->error($DBI::errstr);
+  
+  $userresult->execute($loginname) or $logger->error($DBI::errstr);
+
+  $res=$userresult->fetchrow_hashref();
+
+  my $targetid=$res->{'targetid'};
     
   # Es darf keine Session assoziiert sein. Daher stumpf loeschen
 
@@ -167,9 +175,9 @@ elsif ($action eq "auth"){
 
   $userresult->execute($sessionID) or $logger->error($DBI::errstr);
 
-  $userresult=$userdbh->prepare("insert into usersession values (?,?)") or $logger->error($DBI::errstr);
+  $userresult=$userdbh->prepare("insert into usersession values (?,?,?)") or $logger->error($DBI::errstr);
 
-  $userresult->execute($sessionID,$userid) or $logger->error($DBI::errstr);
+  $userresult->execute($sessionID,$userid,$targetid) or $logger->error($DBI::errstr);
 
   $userresult->finish();
 

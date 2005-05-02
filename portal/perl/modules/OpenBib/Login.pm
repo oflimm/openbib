@@ -33,6 +33,7 @@ use Apache::Constants qw(:common);
 
 use strict;
 use warnings;
+no warnings 'redefine';
 
 use Apache::Request();      # CGI-Handling (or require)
 
@@ -103,7 +104,7 @@ sub handler {
   
   if ($action eq "login"){
     
-    my $targetresult=$userdbh->prepare("select * from logintarget order by type,description") or $logger->error($DBI::errstr);
+    my $targetresult=$userdbh->prepare("select * from logintarget order by type DESC,description") or $logger->error($DBI::errstr);
     
     $targetresult->execute() or $logger->error($DBI::errstr);
     

@@ -35,6 +35,7 @@ use Log::Log4perl qw(get_logger :levels);
 
 use strict;
 use warnings;
+no warnings 'redefine';
 
 use DBI;
 

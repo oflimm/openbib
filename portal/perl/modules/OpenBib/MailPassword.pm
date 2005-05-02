@@ -34,6 +34,7 @@ use Apache::Constants qw(:common);
 
 use strict;
 use warnings;
+no warnings 'redefine';
 
 use Apache::Request();      # CGI-Handling (or require)
 

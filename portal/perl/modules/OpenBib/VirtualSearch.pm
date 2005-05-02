@@ -133,7 +133,8 @@ sub handler {
   my $autoplus=$query->param('autoplus') || '';
   my $queryid=$query->param('queryid') || '';
   my $view=$query->param('view') || '';
-  
+
+
   # Filter: ISBN und ISSN
   
   # Entfernung der Minus-Zeichen bei der ISBN
@@ -1037,7 +1038,7 @@ HEADER
   foreach $database (@databases){
 
 
-    my $suchstring="sessionID=$sessionID&search=$search&fs=$fs&verf=$verf&hst=$hst&hststring=$hststring&swt=$swt&kor=$kor&sign=$sign&isbn=$isbn&issn=$issn&mart=$mart&notation=$notation&verknuepfung=$verknuepfung&ejahr=$ejahr&ejahrop=$ejahrop&searchmode=$searchmode&maxhits=$maxhits&hitrange=-1&searchall=$searchall&dbmode=$dbmode&bool1=$bool1&bool2=$bool2&bool3=$bool3&bool4=$bool4&bool5=$bool5&bool6=$bool6&bool7=$bool7&bool8=$bool8&bool9=$bool9&bool10=$bool10&bool11=$bool11&bool12=$bool12&sorttype=$sorttype&database=$database";
+    my $suchstring="sessionID=$sessionID&search=$search&fs=$fs&verf=$verf&hst=$hst&hststring=$hststring&swt=$swt&kor=$kor&sign=$sign&isbn=$isbn&issn=$issn&mart=$mart&notation=$notation&verknuepfung=$verknuepfung&ejahr=$ejahr&ejahrop=$ejahrop&searchmode=$searchmode&maxhits=$maxhits&hitrange=-1&searchall=$searchall&dbmode=$dbmode&bool1=$bool1&bool2=$bool2&bool3=$bool3&bool4=$bool4&bool5=$bool5&bool6=$bool6&bool7=$bool7&bool8=$bool8&bool9=$bool9&bool10=$bool10&bool11=$bool11&bool12=$bool12&sorttype=$sorttype&sortorder=$sortorder&database=$database";
 
     my $request=new HTTP::Request GET => "$befehlsurl?$suchstring";
     

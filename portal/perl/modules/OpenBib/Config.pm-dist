@@ -151,8 +151,8 @@ use vars qw(%config);
 	   # sowie elektr. Aufsatz/Zeitschriftenlieferungen (Medea) 
 	   # fuer den entsprechenden Standort (hier 038)
 
-	   hbzmonofernleih_exturl  => 'http://rechner.der.digibib/Digibib?SERVICE=TEMPLATE&SUBSERVICE=JUMPTO&DEST_SERVICE=TEMPLATE&DEST_SUBSERVICE=ILL_FRAME&DEST_MAINFRAMESUBSERVICE=MSEARCH_ILLSEARCH_MONO&LOCATION=038',
-	   hbzzeitfernleih_exturl  => 'http://rechner.der.digibib/Digibib?SERVICE=TEMPLATE&SUBSERVICE=JUMPTO&DEST_SERVICE=TEMPLATE&DEST_SUBSERVICE=ILL_FRAME&DEST_MAINFRAMESUBSERVICE=MSEARCH_ILLSEARCH_ARTICLE&LOCATION=038',
+	   hbzmonofernleih_exturl  => 'http://www.digibib.net/Digibib?SERVICE=TEMPLATE&SUBSERVICE=JUMPTO&DEST_SERVICE=TEMPLATE&DEST_SUBSERVICE=ILL_FRAME&DEST_MAINFRAMESUBSERVICE=MSEARCH_ILLSEARCH_MONO&LOCATION=038',
+	   hbzzeitfernleih_exturl  => 'http://www.digibib.net/Digibib?SERVICE=TEMPLATE&SUBSERVICE=JUMPTO&DEST_SERVICE=TEMPLATE&DEST_SUBSERVICE=ILL_FRAME&DEST_MAINFRAMESUBSERVICE=MSEARCH_ILLSEARCH_ARTICLE&LOCATION=038',
 
 	   # Externer Link zur Elektronischen ZeitschriftenBibliothek (EZB)
 	   # fuer den entsprechenden Standort (hier USBK)
@@ -160,8 +160,8 @@ use vars qw(%config);
 	   ezb_exturl              => 'http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?bibid=USBK&colors=7&lang=de&jq_type1=IS&jq_bool2=AND&jq_not2=+&jq_type2=KT&jq_bool3=AND&jq_not3=+&jq_type3=PU&jq_term3=&offset=-1&hits_per_page=50&search_journal=Suche+starten&Notations%5B%5D=all&selected_colors%5B%5D=1&selected_colors%5B%5D=2&selected_colors%5B%5D=4',
 
 	   # Externer Link zum DatenBankInfoSystem (DBIS)
- 
-	   dbis_exturl             => '',
+
+	   dbis_exturl             => 'http://www.bibliothek.uni-regensburg.de/dbinfo/?bib_id=usb_k',
 
 	   # Pfad zur Konfigurationsdatei von Log4Perl
 
@@ -218,10 +218,6 @@ use vars qw(%config);
 	   tt_error_tname          => 'error',
 	   tt_info_message_tname   => 'info_message',
 
-	   # Geheimer String zur Generierung der Web-Passworte
-
-	   web_seed                => 'Geheim',
-
 	   # Anzahl der Spalten bei der Datenbankauswahlseite
 
 	   databasechoice_maxcolumn => 3,
@@ -232,6 +228,11 @@ use vars qw(%config);
 	   conv_dir                => '/opt/openbib/conv',
 	   autoconv_dir            => '/opt/openbib/autoconv',
 	   dbdesc_dir              => '/opt/openbib/db',
+           tool_dir                => '/opt/openbib/bin',
+
+	   # Aktivierung verschiedener Funktionalitaeten
+
+	   login_active            => 1,
 
 	   # Sollen Performance-Benchmarks durchgefuehrt werden
 

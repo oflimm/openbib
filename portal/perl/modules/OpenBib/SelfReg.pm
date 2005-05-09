@@ -163,7 +163,7 @@ elsif ($action eq "auth"){
 
   $userresult=$userdbh->prepare("select targetid from logintarget where type = 'self'") or $logger->error($DBI::errstr);
   
-  $userresult->execute($loginname) or $logger->error($DBI::errstr);
+  $userresult->execute() or $logger->error($DBI::errstr);
 
   $res=$userresult->fetchrow_hashref();
 

@@ -334,7 +334,32 @@ das Verzeichnis \texttt{/etc/apache-perl}.
 cp /opt/store/openbib/portal/apache/openbib.conf /etc/apache-perl/
 \end{verbatim}
 
+Um den Apache-Perl Server gegen "Uberlastung abzusichern, muss nun das
+Modul \texttt{Apache:GTopLimit} installiert werden.
 
+Hierzu wird zun"achst die zugrundeliegende Bibliothek libgtop
+mit ihren Header-Dateien installiet:
+
+\begin{verbatim}
+apt-get install libgtop2-dev
+\end{verbatim}
+
+Danach wird manuell das Modul aus CPAN installiert:
+
+\begin{verbatim}
+openbib:~# perl -MCPAN -e shell
+
+cpan shell -- CPAN exploration and modules installation (v1.7601)
+ReadLine support available (try 'install Bundle::CPAN')
+
+cpan> install Apache::GTopLimit
+[...]
+Installing /usr/local/share/perl/5.8.4/Apache/GTopLimit.pm
+Installing /usr/local/man/man3/Apache::GTopLimit.3pm
+Writing /usr/local/lib/perl/5.8.4/auto/Apache/GTopLimit/.packlist
+Appending installation info to /usr/local/lib/perl/5.8.4/perllocal.pod
+  /usr/bin/make install  -- OK
+\end{verbatim}
 \section{Installation und Konfiguration des MySQL-DBMS}
 \label{sec:instmysql}
 
@@ -458,6 +483,67 @@ ft_min_word_len = 2
 # Stoppworte deaktivieren
 ft_stopword_file =
 \end{verbatim}
+\end{description}
+
+\subsection{Performance-Tuning}
+
+Zum Performance-Tuning der OpenBib zugrundeliegenden Datenbank MySQL
+sollten folgende Ma"snahmen durchgef"uhrt werden:
+
+\begin{description}
+\item[mount option 'noatime'] Die Partitionen, auf denen sich die
+  Datenbanken befinden sollte in der \texttt{fstab} direkt mit
+  \texttt{noatime} gemounted werden, um unn"otige FS-Lookups zu
+  vermeiden. Konkret wird mit dieser Option die Aktualisierung der
+  letzten Zugriffszeit in den Inodes übersprungen.
+\item[key\_buffer\_size] Der Wert von
+  \texttt{key\_buffer\_size} sollte auf einen sinnvollen Wert erh"oht
+  werden. Dieser Buffer wird von allen \texttt{mysqld}-Instanzen
+  geteilt und wird derzeit auf \texttt{128M} bis \texttt{512M} bei
+  einer \texttt{4GB}-Maschine gesetzt.
+\item[max\_allowed\_packet] Der Wert von
+  \texttt{max\_allowed\_packet} sollte auf einen sinnvollen Wert
+  erh"oht werden. Ist dieser zu klein gew"ahlt, kann es passieren,
+  dass bei der zur"ucklieferung gro"ser Datenmengen
+  \textit{mittendrin} abgebrochen wird. Dieser Wert wird derzeit auf
+  \texttt{32M} gesetzt.
+\item[query\_cache\_size] Mit \texttt{query\_cache\_size}
+  wird ein Query-Cache installiert, in den die Anfrageergebnisse
+  zwischengespeichert werden und bei sp"aterer gleicher Anfrage direkt
+  aus dem Cache geliefert werden k"onnen. Dieser Cache ist derzeit auf
+  \texttt{64M} gesetzt.
+  \item[table\_cache] Der Wert gleichzeitig ge"offneter Tabellen
+    sollte erh"oht werden. Derzeit liegt er bei \texttt{512}. Eine
+    weitere Erh"ohung kann sinnvoll sein.
+\end{description}
+
+Zu "uberlegen w"are dar"uberhinaus:
+
+\begin{description}
+\item[DNS-Lookups disablen] Ausschalten der DNS-Lookups mit
+  \texttt{--skip-name-resolve}. Dann m"ussen in den Zugriffstabellen
+  \texttt{hosts} etc. jedoch IP-Adressen anstelle von Hostnamen
+  verwendet werden.
+\item[Performanteres FS] Derzeit wird z.B. aus Stabilit"atsgr"unden
+  \texttt{ext3} verwendet. Es stellt sich die Frage einer besseren
+  Performanz mit der Verwendung von \texttt{xfs} oder
+  \texttt{reiser3/4} f"ur die Partition der Datenbank. Dies gilt es
+  weiter zu untersuchen.
+\item[Verbindungsspez. Parameter] Die Parameter \texttt{thread\_stack},
+  \texttt{net\_buffer\_length} k"onnte ver\-gr"o\-"sert werden.
+\item[Optimierte Kompilation] Der Server kann optimiert kompiliert
+  werden. Verbesserungen sind wie folgt zu erwarten\footnote{Laut
+    \texttt{http://dufo.tugraz.at/mirror/mysql-de/manual.de\_MySQL\_Optimisation.html}}:
+
+  \begin{itemize}
+    \item Kompilation mit \texttt{-static} (13 Prozent schneller)
+    \item Entfernen von \texttt{--with-debug=full} (20-35 Prozent
+      schneller). Generell sollte auf die Verwendung von \texttt{--with-debug} verzichtet
+      werden.
+    \item Kompilation ohne Frame-Pointer (also mit
+      \texttt{-fomit-frame-pointer}) (1-4 Prozent schneller)
+    \item Nur mit den Charakter-Sets kompilieren, die wirklich ben"otigt werden. 
+  \end{itemize}
 \end{description}
 
 \chapter{Installation des OpenBib Web-Portals}

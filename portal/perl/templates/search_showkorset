@@ -1,0 +1,38 @@
+<html>
+<head>
+  [% stylesheet %]
+  <title>K&ouml;rperschaftsaufnahme</title>
+</head>
+<body bgcolor="white">
+<table BORDER="0" CELLSPACING="0" CELLPADDING="0" width="100%">
+  <tr bgcolor="lightblue">
+    <td  width="20">&nbsp;</td><td valign="middle" ALIGN="left" height="32"><img src="/images/openbib/[% database %].png"></td>
+  </tr>
+</table>
+
+<form method="get" action="[% config.search_loc %]">
+<input type="hidden" name="searchmode" value="[% searchmode %]" />
+<input type="hidden" name="hitrange" value="[% hitrange %]" />
+<input type="hidden" name="rating" value="[% rating %]" />
+<input type="hidden" name="bookinfo" value="[% bookinfo %]" />
+<input type="hidden" name="database" value="[% database %]" />
+<input type="hidden" name="dbmode" value="[% dbmode %]" />
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+
+<table cellpadding=2>
+<tr><td>Kategorie</td><td>Inhalt</td></tr>
+
+[% FOREACH normkat IN normset %]
+[% IF normkat.type == 'simple_category' %]
+<tr><td bgcolor="lightblue"><strong>[% normkat.desc %]</strong></td><td>[% normkat.contents %]</td></tr>
+[% ELSIF normkat.type == 'url_category' %]
+<tr><td bgcolor="lightblue"><strong>[% normkat.desc %]</strong></td><td><a href="[% normkat.url %]">[% normkat.contents %]</td></tr>
+[% END %]
+[% END %]
+</table>
+
+</div>
+
+<p />
+
+[% PROCESS std_footer %]

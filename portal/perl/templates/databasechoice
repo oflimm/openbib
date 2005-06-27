@@ -41,11 +41,11 @@ Nachdem Sie Ihre Auswahl getroffen haben aktivieren Sie bitte <b>Kataloge ausw&a
 <table>
 <tr><td colspan="[% colspan %]" align="left" bgcolor="lightblue"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /><b>Alle Kataloge</b></td></tr>
 
-[%- FOREACH category = categories -%]
+[%- FOREACH category = config.units -%]
 [%- IF category.nr >= 1 -%]
 <tr><td colspan="[% colspan %]">&nbsp;</td></tr>
 [%- END -%]
-<tr><td colspan="[% colspan %]" align="left" bgcolor="lightblue"><input type="checkbox" name="fakult" value="inst[% category.nr %]" onclick="update_fak(this.form, this.checked,'inst[% category.nr %]')" title="inst" /><b>[% category.full %]</b></td></tr>
+<tr><td colspan="[% colspan %]" align="left" bgcolor="lightblue"><input type="checkbox" name="fakult" value="inst[% category.nr %]" onclick="update_fak(this.form, this.checked,'inst[% category.nr %]')" title="inst" /><b>[% category.desc %]</b></td></tr>
 
 [%- FOREACH db = catdb -%]
 [%- IF db.category == category.short -%]

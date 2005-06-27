@@ -1,0 +1,34 @@
+[% SET show_corporate_banner = 1 %]
+[% PROCESS std_header %]
+  <BODY BGCOLOR="#FFFFFF">
+    
+[% PROCESS corporate_banner %]
+
+      <ul id="tabbingmenu">
+	<li><a class="active" href="http://[% config.servername %][% config.managecollection_loc %]?sessionID=[% sessionID %];action=print
+[%- IF singleidn -%]
+;singleidn=[% singleidn %]
+[%- END -%]
+">Druckansicht Titel</a></li>
+      </ul>
+      
+      <div id="content">
+	  <p>
+[% IF type == 'HTML' %]
+	  <table>
+[% PROCESS managecollection_tit_as_html_simple %]
+	  </table>
+[% ELSIF type == 'Text' %]
+	  <pre>
+[% PROCESS managecollection_tit_as_text %]
+          </pre>
+[% ELSIF type == 'EndNote' %]
+          <pre>
+[% PROCESS managecollection_tit_as_endnote %]
+          </pre>
+[% END %]
+
+      </div>
+
+<p />
+[% PROCESS std_footer %]

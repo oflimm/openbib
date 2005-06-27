@@ -1,0 +1,84 @@
+<html>
+<head>
+  [% stylesheet %]
+  <title>Such-Client zur Datenbank: [% poolname %]</title>
+</head>
+<body bgcolor="white">
+<table BORDER="0" CELLSPACING="0" CELLPADDING="0" width="100%">
+  <tr bgcolor="lightblue">
+    <td  width="20">&nbsp;</td><td valign="middle" ALIGN="left" height="32"><img src="/images/openbib/[% database %].png"></td>
+  </tr>
+</table>
+
+<p />
+
+<table width="100%">
+<tr><th>Schlagwortindex</th></tr>
+<tr><td class="boxedclear" style="font-size:12pt">
+
+[% IF swtindex.size > 0 %]
+
+Es wurde
+[%- IF swtindex.size > 1 -%]
+n
+[%- END -%]
+ [% swtindex.size %] Schlagwort
+[%- IF swtindex.size > 1 -%]
+e
+[%- END -%]
+ beginnend mit <b>'[% swt %]'</b> in diesem Katalog gefunden
+<p />
+
+<table cellpadding="2">
+<tr><td bgcolor="lightblue">Schlagwort</td><td bgcolor="lightblue">Titelzahl</td><td bgcolor="lightblue">Schlagwort</td><td bgcolor="lightblue">Titelzahl</td><td bgcolor="lightblue">Schlagwort</td><td bgcolor="lightblue">Titelzahl</td></tr>
+
+[% FOREACH item IN swtindex %]
+[% IF loop.index % 3 == 0 %]
+<tr><td><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;searchmode=[% searchmode %];rating=[% rating %];bookinfo=[% bookinfo %];hitrange=[% hitrange %];database=[% database %];searchtitofswt=[% item.swtidn%]">[% item.swt %]</a></td><td>[% item.titanzahl %]</td>
+[% END %]
+[% IF loop.index % 3 == 1 %]
+<td><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;searchmode=[% searchmode %];rating=[% rating %];bookinfo=[% bookinfo %];hitrange=[% hitrange %];database=[% database %];searchtitofswt=[% item.swtidn%]">[% item.swt %]</a></td><td>[% item.titanzahl %]</td>
+[% END %]
+[% IF loop.index % 3 == 2 %]
+<td><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;searchmode=[% searchmode %];rating=[% rating %];bookinfo=[% bookinfo %];hitrange=[% hitrange %];database=[% database %];searchtitofswt=[% item.swtidn%]">[% item.swt %]</a></td><td>[% item.titanzahl %]</td></tr>
+[% END %]
+
+[% END %]
+
+[% IF swtindex.size % 3 == 1 %]
+<td>-</td><td>-</td><td>-</td><td>-</td></tr>
+[% ELSIF swtindex.size % 3 == 2 %]
+<td>-</td><td>-</td></tr>
+[% END %]
+
+</table>
+[% ELSE %]
+In diesem Katalog konnte leider kein Schlagwort beginnend mit <b>'[% swt %]'</b> gefunden werden.
+[% END %]
+
+</td></tr>
+</table>
+
+<p />
+
+<hr>
+<table>
+<tr><td bgcolor="lightblue">Schlagwortindex dieses Katalogs&nbsp;</td><td>
+<form method="get" action="[% config.search_loc %]">
+<input type="hidden" name="sessionID" value="[% sessionID %]">
+<input type="hidden" name="searchmode" value="[% searchmode %]">
+<input type="hidden" name="rating" value="[% rating %]">
+<input type="hidden" name="bookinfo" value="[% bookinfo %]">
+<input type="hidden" name="hitrange" value="[% hitrange %]">
+<input type="hidden" name="database" value="[% database %]">
+&nbsp;
+<input type="text" name="swtindex" value="[% swt %]" size="4" maxlength="50" title="Geben Sie hier den Schlagwortanfang ein">
+&nbsp;
+<input type="submit" value="Suchen">
+&nbsp;</td>
+</tr>
+</table>
+</form>
+<p />
+
+[% PROCESS std_footer %]

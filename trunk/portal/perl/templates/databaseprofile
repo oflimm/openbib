@@ -1,0 +1,114 @@
+[% PROCESS std_header %]
+
+  <body bgcolor="#FFFFFF">
+
+<script language="JavaScript" type="text/javascript">
+<!--
+
+function update_fak(yourform, checked, fak) {
+    for (var i = 0; i < yourform.elements.length; i++) {
+         if (yourform.elements[i].title.indexOf(fak) != -1) {
+              yourform.elements[i].checked = checked;
+         }
+    }
+}
+
+// -->
+</script>
+
+<form method="get" action="http://[% config.servername %][% config.databaseprofile_loc %]">
+<input type="hidden" name="hitrange" value="-1" />
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+
+<ul id="tabbingmenu">
+   <li><a href="http://[% config.servername %][% config.userprefs_loc %]?sessionID=[% sessionID %]&action=showfields" target="body">Grundeinstellungen</a></li>
+[% IF targettype != 'self' %]
+<li><a href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc">Benutzerkonto</a></li>
+[% END %]
+   <li><a class="active" href="http://[% config.servername %][% config.databaseprofile_loc %]?sessionID=[% sessionID %]&action=show" target="body">Katalogprofile</a></li>
+</ul>
+
+<div id="content">
+
+<p />
+<p />
+
+<p>
+<table width="100%">
+<tr><th>Profilmanagement</th></tr>
+<tr><td class="boxed">
+<table>
+<tr><td align=left><input type="text" title="Falls leer, so geben Sie hier bitte einen neuen Profilnamen ein" name="newprofile" value="[% profilname %]" SIZE=30 MAXLENGTH=200></td><td align=left><INPUT type=submit title="Abspeicherung eines neuen oder bestehenden Profils" name="action" value="Profil speichern"></td><td></td><td width="90%">&nbsp;</td></tr>
+<tr><td align=left><select title="W&auml;hlen Sie ein anzuzeigendes oder zu l&ouml;schendes Profil aus" name="profilid">
+[%- FOREACH userdbprofile IN userdbprofiles -%]
+<option value="[% userdbprofile.profilid %]">[% userdbprofile.profilename %]</option>
+[%- END -%]
+</select></td><td align=left><INPUT type=submit title="Anzeige des ausgew&auml;hlten Profils" name="action" value="Profil anzeigen"></td><td><INPUT type=submit title="L&ouml;schung des ausgew&auml;hlten Profils " name="action" value="Profil l&ouml;schen"></td><td></td></tr>
+<tr><td colspan="4"></td></tr>
+<tr><td colspan="4" align=left>Definieren Sie oder bearbeiten Sie hier Ihre individuellen Katalogprofile. Diese werden gespeichert und stehen daher auch beim n&auml;chten Anmelden wieder zu Ihrer Verf&uuml;gung. Um ein hier definiertes Katalogprofil zu nutzen, w&auml;hlen Sie es in der Recherchemaske einfach unter <b>Suchprofil</b> aus und aktivieren zur Suche dann <b>In ausgew&auml;hlten Katalogen suchen</b>.
+</td></tr>
+</table>
+</td></tr>
+</table>
+
+[% IF profilname %]
+<p />
+Derzeit angezeigtes Profil: <b>[% profilname %]</b>
+<p />
+[% END %]
+
+<p />
+<input type="submit" name="action" value="Kataloge ausw&auml;hlen" />&nbsp;<input type="reset" value="Urspr&uuml;ngliche Auswahl wiederherstellen" />
+<p />
+
+
+
+<table>
+<tr><td colspan="[% colspan %]" align="left" bgcolor="lightblue"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /><b>Alle Kataloge</b></td></tr>
+
+[%- FOREACH category = config.units -%]
+[%- IF category.nr >= 1 -%]
+<tr><td colspan="[% colspan %]">&nbsp;</td></tr>
+[%- END -%]
+<tr><td colspan="[% colspan %]" align="left" bgcolor="lightblue"><input type="checkbox" name="fakult" value="inst[% category.nr %]" onclick="update_fak(this.form, this.checked,'inst[% category.nr %]')" title="inst" /><b>[% category.desc %]</b></td></tr>
+
+[%- FOREACH db = catdb -%]
+[%- IF db.category == category.short -%]
+[%- IF db.column == 1 -%]
+<tr><td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% db.checked %] /></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% db.url %]" target="_blank">[% db.name %]</a></td>
+[%- END -%]
+[%- IF db.column > 1 && db.column < maxcolumn -%]
+[%- IF db.db -%]
+<td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% db.checked %] /></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% db.url %]" target="_blank">[% db.name %]</a></td>
+[%- ELSE -%]
+<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+[%- END -%]
+
+[%- END -%]
+[%- IF db.column == maxcolumn -%]
+[%- IF db.column != 1 -%]
+
+[%- IF db.db -%]
+<td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% db.checked %] /></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% db.url %]" target="_blank">[% db.name %]</a></td>
+[%- ELSE -%]
+<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+[%- END -%]
+
+[%- END -%]
+</tr>
+[%- END -%]
+[%- END -%]
+[%- END -%]
+[%- END -%]
+</table>
+<p />
+<input type="submit" name="action" value="Kataloge ausw&auml;hlen" />&nbsp;<input type="reset" value="Urspr&uuml;ngliche Auswahl wiederherstellen" />
+</form>
+<p />
+
+</div>
+
+<p />
+
+[% PROCESS std_footer %]
+

@@ -1,0 +1,5 @@
+[% IF type == 'Text' %]
+[% PROCESS managecollection_tit_as_text %]
+[% ELSIF type == 'EndNote' %]
+[% PROCESS managecollection_tit_as_endnote %]
+[% END %]

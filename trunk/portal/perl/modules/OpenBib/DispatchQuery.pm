@@ -76,7 +76,7 @@ sub handler {
       return OK;
   }
   elsif ($action eq "Zur Trefferliste"){
-      $r->internal_redirect("http://$config{servername}$config{virtualsearch_loc}?sessionID=$sessionID&view=$view&trefferliste=choice&queryid=$queryid");
+      $r->internal_redirect("http://$config{servername}$config{resultlists_loc}?sessionID=$sessionID&view=$view&trefferliste=choice&queryid=$queryid");
       return OK;
   }
   elsif ($action eq "Weiter als externe Recherche"){

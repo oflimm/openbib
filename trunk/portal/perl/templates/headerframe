@@ -5,7 +5,7 @@
 [% PROCESS corporate_banner %]
 <div id="mainnavigation">
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
-<tr><td align="left">&nbsp;&nbsp;<a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">Katalogauswahl</a>&nbsp;&nbsp;<a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">Recherche</a>&nbsp;&nbsp;<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];trefferliste=choice;view=[% view %]" target="body">Trefferliste</a>&nbsp;&nbsp;<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;view=[% view %]" target="body">Merkliste [[% anzahl %]]</a></td><td height="25">&nbsp;</td><td align="right">
+<tr><td align="left">&nbsp;&nbsp;<a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">Katalogauswahl</a>&nbsp;&nbsp;<a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">Recherche</a>&nbsp;&nbsp;<a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];trefferliste=choice;view=[% view %]" target="body">Trefferliste</a>&nbsp;&nbsp;<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;view=[% view %]" target="body">Merkliste [[% anzahl %]]</a></td><td height="25">&nbsp;</td><td align="right">
 [% IF config.login_active == 1 %]
 [% IF username %]
 <a href="[% config.userprefs_loc %]?sessionID=[% sessionID %];view=[% view %];action=showfields" target="body">Mein KUG</a>&nbsp;

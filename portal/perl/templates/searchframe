@@ -85,15 +85,15 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
 [% END %]
 
 [% IF showverf %]
-<tr><td bgcolor="#ADD8E6"><b>Verfasser</b></td><td bgcolor="#ADD8E6"><select name="bool9"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="verf" value="[% verf %]" size="30" maxlength="200" /></td><td></td></tr>
+<tr><td bgcolor="#ADD8E6"><b>Verfasser</b></td><td bgcolor="#ADD8E6"><select name="bool9"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="verf" value="[% verf %]" size="30" maxlength="200" /></td><td><input type="submit" name="verfindex" value="Index"></td></tr>
 [% END %]
 
 [% IF showkor %]
-<tr><td bgcolor="#ADD8E6"><b>K&ouml;rperschaft</b></td><td bgcolor="#ADD8E6"><select name="bool3"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="kor" value="[% kor %]" size="30" maxlength="200" /></td><td></td></tr>
+<tr><td bgcolor="#ADD8E6"><b>K&ouml;rperschaft</b></td><td bgcolor="#ADD8E6"><select name="bool3"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="kor" value="[% kor %]" size="30" maxlength="200" /></td><td><input type="submit" name="korindex" value="Index"></td></tr>
 [% END %]
 
 [% IF showswt %]
-<tr><td bgcolor="#ADD8E6"><b>Schlagwort</b></td><td bgcolor="#ADD8E6"><select name="bool2"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="swt" value="[% swt %]" size="30" maxlength="200" /></td><td></td></tr>
+<tr><td bgcolor="#ADD8E6"><b>Schlagwort</b></td><td bgcolor="#ADD8E6"><select name="bool2"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="swt" value="[% swt %]" size="30" maxlength="200" /></td><td><input type="submit" name="swtindex" value="Index"></td></tr>
 [% END %]
 
 [% IF shownotation %]

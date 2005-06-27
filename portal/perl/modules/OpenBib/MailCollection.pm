@@ -2,7 +2,7 @@
 #
 #  OpenBib::MailCollection
 #
-#  Dieses File ist (C) 2001-2004 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2005 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -47,6 +47,8 @@ use POSIX;
 
 use Digest::MD5;
 use DBI;
+use Template;
+
 use Email::Valid;                           # EMail-Adressen testen
 use MIME::Lite;                             # MIME-Mails verschicken
 
@@ -121,505 +123,288 @@ sub handler {
   # Ab hier ist in $userid entweder die gueltige Userid oder nichts, wenn
   # die Session nicht authentifiziert ist
 
-  OpenBib::Common::Util::print_simple_header("KUG - K&ouml;lner Universit&auml;tsGesamtkatalog",$r);
-  
   if ($email eq ""){
-    print << "KEINEMAIL";
-<table width="100%">
-<tr><th>Fehlerbeschreibung</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
-Sie haben keine Mailadresse eingegeben.
-</td></tr>
-</table>
-<p />
-KEINEMAIL
-    OpenBib::Common::Util::print_footer();
-
+    OpenBib::Common::Util::print_warning("Sie haben keine Mailadresse eingegeben.",$r);
+  
     $sessiondbh->disconnect();
     $userdbh->disconnect();
     return OK;
   }
 
   unless (Email::Valid->address($email)) {
-    print << "FALSCHEMAIL";
-<table width="100%">
-<tr><th>Fehlerbeschreibung</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
-Sie haben eine ung&uuml;ltige Mailadresse eingegeben.
-</td></tr>
-</table>
-<p />
-FALSCHEMAIL
-    OpenBib::Common::Util::print_footer();
-
+    OpenBib::Common::Util::print_warning("Sie haben eine ung&uuml;ltige Mailadresse eingegeben.",$r);
+    
     $sessiondbh->disconnect();
     $userdbh->disconnect();
     return OK;
   }	
 
-  if ($singleidn){
-    my $befehlsurl="http://$config{servername}$config{search_loc}";
+
+    my %titeltyp=(
+		'1' => 'Einb&auml;ndige Werke und St&uuml;cktitel',
+		'2' => 'Gesamtaufnahme fortlaufender Sammelwerke',
+		'3' => 'Gesamtaufnahme mehrb&auml;ndig begrenzter Werke',
+		'4' => 'Bandauff&uuml;hrung',
+		'5' => 'Unselbst&auml;ndiges Werk',
+		'6' => 'Allegro-Daten',
+		'7' => 'Lars-Daten',
+		'8' => 'Sisis-Daten',
+		'9' => 'Sonstige Daten'  
+	       );
+  
+  # Dynamische Definition diverser Variablen
+
+  my %sigel=();
+  my %bibinfo=();
+  my %dbinfo=();
+  my %dbases=();
+  my %dbnames=();
+
+  {  
+    my $dbinforesult=$sessiondbh->prepare("select dbname,sigel,url,description from dbinfo") or $logger->error($DBI::errstr);
+    $dbinforesult->execute() or $logger->error($DBI::errstr);;
     
-    my $suchstring="sessionID=$sessionID&search=Mehrfachauswahl&searchmode=2&rating=0&bookinfo=0&showmexintit=1&casesensitive=0&hitrange=-1&sorttype=author&database=$database&dbms=mysql&searchsingletit=$singleidn";
     
-    my $gesamttreffer="";
-    my $ua=new LWP::UserAgent;
+    while (my $result=$dbinforesult->fetchrow_hashref()){
+      my $dbname=$result->{'dbname'};
+      my $sigel=$result->{'sigel'};
+      my $url=$result->{'url'};
+      my $description=$result->{'description'};
       
-    my $request=new HTTP::Request GET => "$befehlsurl?$suchstring";
-    
-    my $response=$ua->request($request);
-
-    if ($response->is_success) {
-      $logger->debug("Getting ", $response->content);
-    }
-    else {
-      $logger->error("Getting ", $response->status_line);
-    }
-
-    my $ergebnis=$response->content();
-
-    my ($treffer)=$ergebnis=~/^(<!-- Title begins here -->.+?^<!-- Title ends here -->)/ms;
-    
-    # Herausfiltern der HTML-Tags der Titel
-    
-    $treffer=~s/<a .*?">//g;
-    $treffer=~s/<.a>//g;
-    $treffer=~s/<span .*?>G<.span>//g;
-    $treffer=~s/<td>&nbsp;/<td>/g;
+      ##################################################################### 
+      ## Wandlungstabelle Bibliothekssigel <-> Bibliotheksname
       
+      $sigel{"$sigel"}="$description";
       
-    if ($type eq "Text"){
-      my @titelbuf=();
-	
-      # Treffer muss in Text umgewandelt werden
-	
-      $treffer=~s/^<.*?>$//g;
-      $treffer=~s/&lt;/</g;
-      $treffer=~s/&gt;/>/g;
-	
-      my @trefferbuf=split("\n",$treffer);
-      my $i=0;
-      my $j=1;
-      while ($i < $#trefferbuf){
-	  
-        # Titelinformationen
-	  
-        if ($trefferbuf[$i]=~/<tr><td.*?>(.+?)<.td><td>(.+?)<.td><.tr>/){
-          my $kategorie=$1;
-          my $inhalt=$2;
-	    
-          $kategorie=~s/<.+?>//g;
-          $inhalt=~s/<.+?>//g;
-          while (length($kategorie) < 24){
-            $kategorie.=" ";
-          }
-          push @titelbuf, "$kategorie: $inhalt";
-        }
-        
-        # Bestandsinformationen
-	  
-        elsif ($trefferbuf[$i]=~/<tr.*?><td>(.+?)<\/td><td.*?>(.+?)<\/td><td.*?>(.+?)<\/td><td.*?>(.+?)<\/td><td.*?>(.+?)<\/td><\/tr>/){
-	    
-          my $bibliothek=$1;
-          my $standort=$2;
-          my $invnr=$3;
-          my $signatur=$4;
-          my $erschverl=$5;
-	    
-          $bibliothek=~s/<.+?>//g;
-          $standort=~s/<.+?>//g;
-          $invnr=~s/<.+?>//g;
-          $signatur=~s/<.+?>//g;
-          $erschverl=~s/<.+?>//g;
-          my $bestandsinfo= << "ENDE";
-Besitzende Bibliothek $j : $bibliothek
-Standort              $j : $standort
-Inventarnummer        $j : $invnr
-Lokale Signatur       $j : $signatur
-Erscheinungsverlauf   $j : $erschverl
-ENDE
-          push @titelbuf, $bestandsinfo;
-          $j++;
-        }
-        
-        $i++;
-      } 
-	
-      $treffer=join ("\n", @titelbuf);
-      $gesamttreffer.="------------------------------------------\n$treffer";
-    }
-    elsif ($type eq "EndNote"){
-      # Treffer muss in Text umgewandelt werden
-	
-      my @titelbuf=();
-	
-      $treffer=~s/^<.*?>$//g;
-      $treffer=~s/&lt;/</g;
-      $treffer=~s/&gt;/>/g;
+      #####################################################################
+      ## Wandlungstabelle Bibliothekssigel <-> Informations-URL
       
-      my @trefferbuf=split("\n",$treffer);
-      my $i=0;
-      my $j=1;
-      while ($i < $#trefferbuf){
-	  
-        # Titelinformationen
-	  
-        if ($trefferbuf[$i]=~/<tr><td.*?>(.+?)<.td><td>(.+?)<.td><.tr>/){
-          my $kategorie=$1;
-          my $inhalt=$2;
-	    
-          $kategorie=~s/<.+?>//g;
-          $inhalt=~s/<.+?>//g;
-
-          if (defined($endnote{$kategorie})){
-            push @titelbuf, $endnote{$kategorie}." $inhalt";
-          }
-
-        }
-	  
-        # Bestandsinformationen
-	  
-        elsif ($trefferbuf[$i]=~/<tr.*?><td>(.+?)<\/td><td.*?>(.+?)<\/td><td.*?>(.+?)<\/td><td.*?>(.+?)<\/td><td.*?>(.+?)<\/td><\/tr>/){
-	    
-          my $bibliothek=$1;
-          my $standort=$2;
-          my $invnr=$3;
-          my $signatur=$4;
-          my $erschverl=$5;
-	    
-          $bibliothek=~s/<.+?>//g;
-          $standort=~s/<.+?>//g;
-          $invnr=~s/<.+?>//g;
-          $signatur=~s/<.+?>//g;
-          $erschverl=~s/<.+?>//g;
-          my $bestandsinfo="%W $bibliothek / $standort / $signatur / $erschverl";
-          push @titelbuf, $bestandsinfo;
-          $j++;
-        }
-	  
-        $i++;
-      } 
-	
-      $treffer=join ("\n", @titelbuf);
-      $gesamttreffer.="\n\n$treffer";
+      $bibinfo{"$sigel"}="$url";
+      
+      #####################################################################
+      ## Wandlungstabelle  Name SQL-Datenbank <-> Datenbankinfo
+      
+      # Wenn ein URL fuer die Datenbankinformation definiert ist, dann wird
+      # damit verlinkt
+      
+      if ($url ne ""){
+	$dbinfo{"$dbname"}="<a href=\"$url\" target=_blank>$description</a>";
+      }
+      else {
+	$dbinfo{"$dbname"}="$description";
+      }
+      
+      #####################################################################
+      ## Wandlungstabelle  Name SQL-Datenbank <-> Beschreibung (ohne URL)
+      
+      $dbnames{"$dbname"}=$description;
+      
+      #####################################################################
+      ## Wandlungstabelle  Name SQL-Datenbank <-> Bibliothekssigel
+      
+      $dbases{"$dbname"}="$sigel";
+      
     }
-    else {
-      $gesamttreffer.="<hr>\n$treffer";
-    }
-
-
-    my $stylesheet=get_css_by_browsertype($r);
-
-    my $htmlpre= << "HTMLPRE";
-<HTML>
-<HEAD>
-  <meta http-equiv="pragma" content="no-cache">
-  $stylesheet
-  <TITLE>Zugemailte Merkliste</TITLE>
-</HEAD>
-<BODY>
-
-<h1>Zugemailte Merkliste</h1>
-HTMLPRE
-
-    my $htmlpost= << "HTMLPOST";
-</BODY>
-</HTML>
-HTMLPOST
-
-    my $mimetype="text/html";
-    my $filename="kug-merkliste";
-
-    if ($type ne "HTML"){
-      $htmlpre="";
-      $htmlpost="";
-      $mimetype="text/plain";
-      $filename.=".txt";
-    }
-    else {
-      $filename.=".html";
-    }
-
-    my $anschreiben = << "ANSCHREIBEN";
-Sehr geehrte Damen und Herren,
-
-anbei Ihre Merkliste aus dem KUG.
-
-Mit freundlichen Grüßen
-
-Ihr KUG Team
-ANSCHREIBEN
-
-    my $msg = MIME::Lite->new(
-			      From            => $config{contact_email},
-			      To              => $email,
-			      Subject         => $subject,
-			      Type            => 'multipart/mixed'
-			     );
-
-
-    $msg->attach(
-		 Type            => 'TEXT',
-		 Encoding        => '8bit',
-		 Data            => $anschreiben
-		);
-
-    $msg->attach(
-		 Type            => $mimetype,
-		 Encoding        => '8bit',
-                 Filename        => $filename,
-		 Data            => $htmlpre.$gesamttreffer.$htmlpost,
-		);
-
-    $msg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config{contact_email}")
+    
+    $sigel{''}="Unbekannt";
+    $bibinfo{''}="http://www.ub.uni-koeln.de/dezkat/bibinfo/noinfo.html";
+    $dbases{''}="Unbekannt";
+    
+    $dbinforesult->finish();
   }
-  else {
-    my $befehlsurl="http://$config{servername}$config{search_loc}";
-  
-    # Schleife ueber alle Treffer
 
+
+  my @dbidnlist=();
+    
+  if ($singleidn && $database) {
+    push @dbidnlist, {
+		      database => $database,
+		      singleidn => $singleidn,
+		     };
+  } 
+  else {
+
+    # Schleife ueber alle Treffer
+    
     my $idnresult="";
-  
-    if ($userid){
+      
+    if ($userid) {
       $idnresult=$userdbh->prepare("select * from treffer where userid = ? order by dbname") or $logger->error($DBI::errstr);
       $idnresult->execute($userid) or $logger->error($DBI::errstr);
-    }
-    else {
+    } else {
       $idnresult=$sessiondbh->prepare("select * from treffer where sessionid = ? order by dbname") or $logger->error($DBI::errstr);
       $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
     }
+            
+    while (my $result=$idnresult->fetchrow_hashref()) {
+      my $database=$result->{'dbname'};
+      my $singleidn=$result->{'singleidn'};
+	
+      push @dbidnlist, {
+			database => $database,
+			singleidn => $singleidn,
+		       };
+    }
 
-    my $gesamttreffer="";
-    my $ua=new LWP::UserAgent;
-  
-    while (my $result=$idnresult->fetchrow_hashref()){
-      $database=$result->{'dbname'};
-      $singleidn=$result->{'singleidn'};
-    
-      my $suchstring="sessionID=$sessionID&search=Mehrfachauswahl&searchmode=2&rating=0&bookinfo=0&showmexintit=1&casesensitive=0&hitrange=-1&sorttype=author&database=$database&dbms=mysql&searchsingletit=$singleidn";
-    
-    
-      my $request=new HTTP::Request GET => "$befehlsurl?$suchstring";
-    
-      my $response=$ua->request($request);
-    
-      if ($response->is_success) {
-	$logger->debug("Getting ", $response->content);
-      }
-      else {
-	$logger->error("Getting ", $response->status_line);
-      }
+    $idnresult->finish();
+  }      
 
-      my $ergebnis=$response->content();
+  my @collection=();
     
-      my ($treffer)=$ergebnis=~/^(<!-- Title begins here -->.+?^<!-- Title ends here -->)/ms;
-    
-      # Herausfiltern der HTML-Tags der Titel
-
-
-      $treffer=~s/<a .*?">//g;
-      $treffer=~s/<.a>//g;
-      $treffer=~s/<span .*?>G<.span>//g;
-      $treffer=~s/<td>&nbsp;/<td>/g;
+  foreach my $dbidn (@dbidnlist) {
+    my $database=@{$dbidn}{database};
+    my $singleidn=@{$dbidn}{singleidn};
       
-      if ($type eq "Text"){
-	
-	my @titelbuf=();
-	
-	# Treffer muss in Text umgewandelt werden
-	
-	$treffer=~s/^<.*?>$//g;
-	$treffer=~s/&lt;/</g;
-	$treffer=~s/&gt;/>/g;
-	
-	my @trefferbuf=split("\n",$treffer);
-	my $i=0;
-	my $j=1;
-	while ($i < $#trefferbuf){
-	  
-	  # Titelinformationen
-	  
-	  if ($trefferbuf[$i]=~/<tr><td.*?>(.+?)<.td><td>(.+?)<.td><.tr>/){
-	    my $kategorie=$1;
-	    my $inhalt=$2;
-	    
-	    $kategorie=~s/<.+?>//g;
-	    $inhalt=~s/<.+?>//g;
-	    while (length($kategorie) < 24){
-	      $kategorie.=" ";
-	    }
-	    push @titelbuf, "$kategorie: $inhalt";
-	  }
-	  
-	  # Bestandsinformationen
-	  
-	  elsif ($trefferbuf[$i]=~/<tr.*?><td>(.+?)<\/td><td.*?>(.+?)<\/td><td.*?>(.+?)<\/td><td.*?>(.+?)<\/td><td.*?>(.+?)<\/td><\/tr>/){
-	    
-	    my $bibliothek=$1;
-	    my $standort=$2;
-	    my $invnr=$3;
-	    my $signatur=$4;
-	    my $erschverl=$5;
-	    
-	    $bibliothek=~s/<.+?>//g;
-	    $standort=~s/<.+?>//g;
-	    $invnr=~s/<.+?>//g;
-	    $signatur=~s/<.+?>//g;
-	    $erschverl=~s/<.+?>//g;
-	    my $bestandsinfo= << "ENDE";
-Besitzende Bibliothek $j : $bibliothek
-Standort              $j : $standort
-Inventarnummer        $j : $invnr
-Lokale Signatur       $j : $signatur
-Erscheinungsverlauf   $j : $erschverl
-ENDE
-            push @titelbuf, $bestandsinfo;
-	    $j++;
-	  }
-	  
-	  $i++;
-	} 
-	
-	$treffer=join ("\n", @titelbuf);
-	$gesamttreffer.="------------------------------------------\n$treffer";
-      }
-      elsif ($type eq "EndNote"){
-	# Treffer muss in Text umgewandelt werden
-	
-	my @titelbuf=();
-	
-	$treffer=~s/^<.*?>$//g;
-	$treffer=~s/&lt;/</g;
-	$treffer=~s/&gt;/>/g;
-	
-	my @trefferbuf=split("\n",$treffer);
-	my $i=0;
-	my $j=1;
-	while ($i < $#trefferbuf){
-	  
-	  # Titelinformationen
-	  
-	  if ($trefferbuf[$i]=~/<tr><td.*?>(.+?)<.td><td>(.+?)<.td><.tr>/){
-	    my $kategorie=$1;
-	    my $inhalt=$2;
-	    
-	    $kategorie=~s/<.+?>//g;
-	    $inhalt=~s/<.+?>//g;
-	    
-	    if (defined($endnote{$kategorie})){
-	      push @titelbuf, $endnote{$kategorie}." $inhalt";
-	    }
-	  }
-	  
-	  # Bestandsinformationen
-	  
-	  elsif ($trefferbuf[$i]=~/<tr.*?><td>(.+?)<\/td><td.*?>(.+?)<\/td><td.*?>(.+?)<\/td><td.*?>(.+?)<\/td><td.*?>(.+?)<\/td><\/tr>/){
-	    
-	    my $bibliothek=$1;
-	    my $standort=$2;
-	    my $invnr=$3;
-	    my $signatur=$4;
-	    my $erschverl=$5;
-	    
-	    $bibliothek=~s/<.+?>//g;
-	    $standort=~s/<.+?>//g;
-	    $invnr=~s/<.+?>//g;
-	    $signatur=~s/<.+?>//g;
-	    $erschverl=~s/<.+?>//g;
-	    my $bestandsinfo="%W $bibliothek / $standort / $signatur / $erschverl";
-	    push @titelbuf, $bestandsinfo;
-	    $j++;
-	  }
-	  
-	  $i++;
-	} 
-	
-	$treffer=join ("\n", @titelbuf);
-	$gesamttreffer.="\n\n$treffer";
-      }
-      else {
-	$gesamttreffer.="<hr>\n$treffer";
-      }
+    my $dbh=DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd}) or $logger->error_die($DBI::errstr);
+      
+    my $hint="none";
+    my $searchmultipleaut=0;
+    my $searchmultiplekor=0;
+    my $searchmultipleswt=0;
+    my $searchmultipletit=0;
+    my $searchmode=2;
+    my $hitrange=-1;
+    my $rating="";
+    my $bookinfo="";
+    #      my $circ="";
+    #      my $circurl="";
+    #      my $circcheckurl="";
+    #      my $circdb="";
+    my $sorttype="";
+    my $sortorder="";
+      
+    #####################################################################
+    ## Ausleihkonfiguration fuer den Katalog einlesen
+      
+    my $dbinforesult=$sessiondbh->prepare("select circ,circurl,circcheckurl,circdb from dboptions where dbname = ?") or $logger->error($DBI::errstr);
+    $dbinforesult->execute($database) or $logger->error($DBI::errstr);;
+      
+    my $circ=0;
+    my $circurl="";
+    my $circcheckurl="";
+    my $circdb="";
+      
+    while (my $result=$dbinforesult->fetchrow_hashref()) {
+      $circ=$result->{'circ'};
+      $circurl=$result->{'circurl'};
+      $circcheckurl=$result->{'circcheckurl'};
+      $circdb=$result->{'circdb'};
     }
-
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    my $htmlpre= << "HTMLPRE";
-<HTML>
-<HEAD>
-  <meta http-equiv="pragma" content="no-cache">
-  $stylesheet
-  <TITLE>Zugemailte Merkliste</TITLE>
-</HEAD>
-<BODY>
-
-<h1>Zugemailte Merkliste</h1>
-HTMLPRE
-
-    my $htmlpost= << "HTMLPOST";
-</BODY>
-</HTML>
-HTMLPOST
-
-    my $mimetype="text/html";
-    my $filename="kug-merkliste";
-
-    if ($type ne "HTML"){
-      $htmlpre="";
-      $htmlpost="";
-      $mimetype="text/plain";
-      $filename.=".txt";
+      
+    $dbinforesult->finish();
+      
+    my ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn($singleidn,$hint,$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+      
+      
+    if ($type eq "Text") {
+      $normset=OpenBib::ManageCollection::Util::titset_to_text($normset);
+    } elsif ($type eq "EndNote") {
+      $normset=OpenBib::ManageCollection::Util::titset_to_endnote($normset);
     }
-    else {
-      $filename.=".html";
-    }
+      
+    $dbh->disconnect();
+      
+    $logger->info("Merklistensatz geholt");
+      
+    push @collection, { 
+		       database => $database,
+		       dbdesc   => $dbinfo{$database},
+		       titidn   => $singleidn,
+		       tit => $normset, 
+		       mex => $mexnormset, 
+		       circ => $circset 
+		      };
+  }
+    
+  # TT-Data erzeugen
+    
+  my $ttdata={
+	      stylesheet => $stylesheet,
+		
+	      sessionID  => $sessionID,
+		
+	      type => $type,
+		
+	      collection => \@collection,
+		
+	      utf2iso => sub {
+		my $string=shift;
+		$string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
+		return $string;
+	      },
+		
+	      show_corporate_banner => 0,
+	      show_foot_banner => 1,
+	      config     => \%config,
+	     };
 
-    my $anschreiben = << "ANSCHREIBEN";
-Sehr geehrte Damen und Herren,
+  my $maildata="";
 
-anbei Ihre Merkliste aus dem KUG.
+  my $datatemplate = Template->new({ 
+				    INCLUDE_PATH  => $config{tt_include_path},
+				    #    	    PRE_PROCESS   => 'config',
+				    OUTPUT        => $maildata,
+				   });
+  
 
-Mit freundlichen Grüßen
+  my $mimetype="text/html";
+  my $filename="kug-merkliste";
+  my $datatemplatename=$config{tt_mailcollection_mail_html_tname};
 
-Ihr KUG Team
-ANSCHREIBEN
-
-    my $msg = MIME::Lite->new(
-			      From            => $config{contact_email},
-			      To              => $email,
-			      Subject         => $subject,
-			      Type            => 'multipart/mixed'
-			     );
-
-
-    $msg->attach(
-		 Type            => 'TEXT',
-		 Encoding        => '8bit',
-		 Data            => $anschreiben
-		);
-
-    $msg->attach(
-		 Type            => $mimetype,
-		 Encoding        => '8bit',
-                 Filename        => $filename,
-		 Data            => $htmlpre.$gesamttreffer.$htmlpost,
-		);
-
-    $msg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config{contact_email}")
+  if ($type eq "HTML"){
+    $filename.=".html";
+  }
+  else {
+    $mimetype="text/plain";
+    $filename.=".txt";
+    $datatemplatename=$config{tt_mailcollection_mail_plain_tname};
   }
 
-  print << "ENDE6";
-<table width="100%">
-<tr><th>Erfolgreiche Aktion</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
-Ihre Merkliste wurde an Sie per Mail versendet.
-</td></tr>
-</table>
-<p />
-ENDE6
+  $datatemplate->process($datatemplatename, $ttdata) || do { 
+    $r->log_reason($datatemplate->error(), $r->filename);
+    return SERVER_ERROR;
+  };
+  
+  my $anschreiben="";
 
-  OpenBib::Common::Util::print_footer();
+  my $maintemplate = Template->new({ 
+				    INCLUDE_PATH  => $config{tt_include_path},
+				    #    	    PRE_PROCESS   => 'config',
+				    OUTPUT        => $anschreiben,
+				   });
 
+
+  $maintemplate->process($config{tt_mailcollection_mail_main_tname}, {}) || do { 
+    $r->log_reason($maintemplate->error(), $r->filename);
+    return SERVER_ERROR;
+  };
+  
+
+  my $msg = MIME::Lite->new(
+			    From            => $config{contact_email},
+			    To              => $email,
+			    Subject         => $subject,
+			    Type            => 'multipart/mixed'
+			   );
+  
+  
+  $msg->attach(
+	       Type            => 'TEXT',
+	       Encoding        => '8bit',
+	       Data            => $anschreiben,
+	      );
+  
+  $msg->attach(
+	       Type            => $mimetype,
+	       Encoding        => '8bit',
+	       Filename        => $filename,
+	       Data            => $maildata,
+	      );
+  
+  $msg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config{contact_email}");
+    
+  OpenBib::Common::Util::print_page($config{tt_mailcollection_success_tname},$ttdata,$r);
+    
   $sessiondbh->disconnect();
   $userdbh->disconnect();
 

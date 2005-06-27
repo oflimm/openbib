@@ -2,7 +2,7 @@
 #
 #  OpenBib::DatabaseProfile
 #
-#  Dieses File ist (C) 2004 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -41,6 +41,8 @@ use Log::Log4perl qw(get_logger :levels);
 
 use DBI;
 
+use Template;
+
 use OpenBib::Common::Util;
 
 use OpenBib::Config;
@@ -72,18 +74,9 @@ sub handler {
   
   my $newprofile=$query->param('newprofile') || '';
   my $profilid=$query->param('profilid') || '';
-  
+
   my %checkeddb;
   
-  my %fak=(
-	   "1wiso", "Wirtschafts- u. Sozialwissenschaftliche Fakult&auml;t",
-	   "2recht","Rechtswissenschaftliche Fakult&auml;t",
-	   "3ezwheil","Erziehungswissenschaftliche u. Heilp&auml;dagogische Fakult&auml;t",
-	   "4phil","Philosophische Fakult&auml;t",
-	   "5matnat","Mathematisch-Naturwissenschaftliche Fakult&auml;t",
-	   "0ungeb","Fakult&auml;tsungebunden"
-	   );
-
   #####################################################################
   # Verbindung zur SQL-Datenbank herstellen
   
@@ -138,117 +131,51 @@ sub handler {
       $idnresult->finish();
     }
     
-    my $profilemanagement="";
-    
-    my $profilselect="<select title=\"W&auml;hlen Sie ein anzuzeigendes oder zu l&ouml;schendes Profil aus\" name=\"profilid\">";
-    my $profilresult=$userdbh->prepare("select profilid, profilename from userdbprofile where userid = ? order by profilename") or $logger->error($DBI::errstr);
-    $profilresult->execute($userid) or $logger->error($DBI::errstr);
-    while (my $res=$profilresult->fetchrow_hashref()){
-      my $profilid=$res->{'profilid'};
-      my $profilename=$res->{'profilename'};
-      $profilselect.="<option value=\"$profilid\">$profilename</option>";
-    } 
-    $profilresult->finish();
-    $profilselect.="</select>";
-    
-    
-    $profilemanagement=<< "PROFIL";
-<p>
-<table width="100%">
-<tr><th>Profilmanagement</th></tr>
-<tr><td class="boxed">
-<table>
-<tr><td align=left><input type="text" title="Falls leer, so geben Sie hier bitte einen neuen Profilnamen ein" name="newprofile" value="$profilname" SIZE=30 MAXLENGTH=200></td><td align=left><INPUT type=submit title="Abspeicherung eines neuen oder bestehenden Profils" name="action" value="Profil speichern"></td><td></td><td width="90%">&nbsp;</td></tr>
-<tr><td align=left>$profilselect</td><td align=left><INPUT type=submit title="Anzeige des ausgew&auml;hlten Profils" name="action" value="Profil anzeigen"></td><td><INPUT type=submit title="L&ouml;schung des ausgew&auml;hlten Profils " name="action" value="Profil l&ouml;schen"></td><td></td></tr>
-<tr><td colspan="4"></td></tr>
-<tr><td colspan="4" align=left>Definieren Sie oder bearbeiten Sie hier Ihre individuellen Katalogprofile. Diese werden gespeichert und stehen daher auch beim n&auml;chten Anmelden wieder zu Ihrer Verf&uuml;gung. Um ein hier definiertes Katalogprofil zu nutzen, w&auml;hlen Sie es in der Recherchemaske einfach unter <b>Suchprofil</b> aus und aktivieren zur Suche dann <b>In ausgew&auml;hlten Katalogen suchen</b>.
-</td></tr>
-</table>
-</td></tr>
-</table>
-PROFIL
+    my @userdbprofiles=();
 
-    OpenBib::Common::Util::print_simple_header("KUG: Datenbank-Profile",$r,$stylesheet);
+    {
+      my $profilresult=$userdbh->prepare("select profilid, profilename from userdbprofile where userid = ? order by profilename") or $logger->error($DBI::errstr);
+      $profilresult->execute($userid) or $logger->error($DBI::errstr);
+      while (my $res=$profilresult->fetchrow_hashref()){
+	push @userdbprofiles, {
+			       profilid => $res->{'profilid'},
+			       profilename => $res->{'profilename'},
+			      };
+      } 
+      $profilresult->finish();
+    }
 
     my $targettype=OpenBib::Common::Util::get_targettype_of_session($userdbh,$sessionID);
 
-    my $useraccountstring="";
-
-    if ($targettype ne "self"){
-      $useraccountstring="<li><a href=\"http://$config{servername}$config{circulation_loc}?sessionID=$sessionID;action=showcirc\">Benutzerkonto</a></li>";
+    $idnresult=$sessiondbh->prepare("select dbname from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+    while (my $result=$idnresult->fetchrow_hashref()){
+      my $dbname=$result->{'dbname'};
+      $checkeddb{$dbname}="checked=\"checked\"";
     }
-
-    print << "NAVI";
-<ul id="tabbingmenu">
-   <li><a href="http://$config{servername}$config{userprefs_loc}?sessionID=$sessionID&action=showfields" target="body">Grundeinstellungen</a></li>
-   $useraccountstring
-   <li><a class="active" href="http://$config{servername}$config{databaseprofile_loc}?sessionID=$sessionID&action=show" target="body">Katalogprofile</a></li>
-</ul>
-
-<div id="content">
-
-<p>
-<p>
-NAVI
-
-
-
-    if ($profilname){
-      $profilemanagement.="<p>\nDerzeit angezeigtes Profil: <b>$profilname</b>\n<p>\n";
-    }
-
-    print << "HEAD";
-<script language="JavaScript">
-<!--
-
-function update_fak(yourform, checked, fak) {
-    for (var i = 0; i < yourform.elements.length; i++) {
-         if (yourform.elements[i].id.indexOf(fak) != -1) {
-              yourform.elements[i].checked = checked;
-         }
-    }
-}
-
-// -->
-</script>
-
-<FORM method="get" action="http://$config{servername}$config{databaseprofile_loc}">
-<INPUT type=hidden name=hitrange value=-1>
-<INPUT type=hidden name=sessionID value=$sessionID>
-
-$profilemanagement
-<p>
-<table>
-
-HEAD
-
-    my $lastfakult="";
+    $idnresult->finish();
+    
+    my $lastcategory="";
     my $count=0;
     
+    my $maxcolumn=$config{databasechoice_maxcolumn};
+    
     my %stype;
-    print "<TR><TD colspan=9 align=left bgcolor=lightblue><input type=\"checkbox\" name=\"fakult\" value=\"inst\" onclick=\"update_fak(this.form, this.checked,'inst')\" /><B>Alle Kataloge</B></TD></TR>\n";
-  
+    
     $idnresult=$sessiondbh->prepare("select * from dbinfo where active=1 order by faculty ASC, description ASC") or $logger->error($DBI::errstr);
     $idnresult->execute() or $logger->error($DBI::errstr);
     
+    my @catdb=();
+    
     while (my $result=$idnresult->fetchrow_hashref){
-      
-      my $fakult=$result->{'faculty'};
+      my $category=$result->{'faculty'};
       my $name=$result->{'description'};
       my $systemtype=$result->{'system'};
       my $pool=$result->{'dbname'};
+      my $url=$result->{'url'};
       my $sigel=$result->{'sigel'};
       
-      # Spezielle Sigel umbiegen - Spaeter Eintrag des URLs in die DB geplant
-      if ($sigel eq "301"){
-	$sigel="ezw";
-      }
-      elsif ($sigel eq "998"){
-	$sigel="bibfuehrer";
-      }
-      
-      #    my ($dbid,$fakult,$name,$systemtype,$pool,$sigel)=@result;  
-    
+      my $rcolumn;
       
       if ($systemtype eq "a"){
 	$stype{$pool}="yellow";
@@ -263,68 +190,77 @@ HEAD
 	$stype{$pool}="blue";
       }
       
-      
-      my $fakultpools="inst".substr($fakult,0,1);
-      
-      if ($fakult ne $lastfakult){
-	
-	# Tabelle aus vorherigen Durchgang muss geschlossen werden.
-	
-	if ($count%3 == 1){
-	  print "  <TD></TD><TD></TD>\n  <TD></TD><TD></TD>\n</TR>\n";
+      if ($category ne $lastcategory){
+	while ($count % $maxcolumn != 0){
+	  
+	  $rcolumn=($count % $maxcolumn)+1;
+	  # 'Leereintrag erzeugen'
+	  push @catdb, { 
+			column => $rcolumn, 
+			category => $lastcategory,
+			db => '',
+			name => '',
+			systemtype => '',
+			sigel => '',
+			url => '',
+		       };
+	  
+	  $count++;
 	}
-	elsif ($count%3 == 2){
-	  print "  <TD></TD><TD></TD>\n</TR>\n";
-	}
-	# Ueberschriftszeilt mit Fakultaet ausgeben
-	print "<TR><TD colspan=9></TD></TR>\n";
-	print "<TR><TD colspan=9 align=left bgcolor=lightblue><input type=\"checkbox\" name=\"fakult\" value=\"$fakultpools\" onclick=\"update_fak(this.form, this.checked,'$fakultpools')\" id=\"inst\"/><B>".$fak{$fakult}."</B></TD></TR>\n";
-	print "<TR><TD colspan=9></TD></TR>\n";
-	# Wieder links mit Tabelle anfangen.
 	
 	$count=0;
       }
-    
-      $lastfakult=$fakult;
+
+      $lastcategory=$category;
+      
+      $rcolumn=($count % $maxcolumn)+1;
       
       my $checked="";
-      
       if (defined $checkeddb{$pool}){
-	$checked="checked";
+	$checked="checked=\"checked\"";
       }
-      if ($count%3 == 0){
-	print "<TR>\n  <TD><INPUT type=checkbox name=database value=$pool id=\"$fakultpools\" $checked><TD bgcolor=".$stype{$pool}.">&nbsp;</TD><TD><a href=\"http://www.ub.uni-koeln.de/dezkat/bibinfo/$sigel.html\" target=_blank>$name</a></TD>\n";
-      }
-      elsif ($count%3 == 1) {
-	print "  <TD><INPUT type=checkbox name=database value=$pool id=\"$fakultpools\" $checked><TD bgcolor=".$stype{$pool}.">&nbsp;</TD><TD><a href=\"http://www.ub.uni-koeln.de/dezkat/bibinfo/$sigel.html\" target=_blank>$name</a></TD>\n";
-      }
-      elsif ($count%3 == 2){
-	print "  <TD><INPUT type=checkbox name=database value=$pool id=\"$fakultpools\" $checked><TD bgcolor=".$stype{$pool}.">&nbsp;</TD><TD><a href=\"http://www.ub.uni-koeln.de/dezkat/bibinfo/$sigel.html\" target=_blank>$name</a></TD>\n</TR>\n";
-      }
+      
+      push @catdb, { 
+		    column => $rcolumn,
+		    category => $category,
+		    db => $pool,
+		    name => $name,
+		    systemtype => $stype{$pool},
+		    sigel => $sigel,
+		    url => $url,
+		    checked => $checked,
+		   };
+      
+      
       $count++;
     }
     
-    $idnresult->finish();
-    
-    $sessiondbh->disconnect();
-  
-    
-    if ($count%3 == 1){
-      print "<TD></TD><TD></TD></TR>\n";
-    }
-    elsif ($count%3 == 2){
-      print "<TD></TD></TR>\n";
-    }
-    
-    print << "ENDE";
-</TABLE>
-</FORM>
-</div>
-<p>
 
-ENDE
-    OpenBib::Common::Util::print_footer();
+    # TT-Data erzeugen
+    
+    my $colspan=$maxcolumn*3;
+    
+    my $ttdata={
+		title      => 'KUG: Katalogauswahl',
+		stylesheet => $stylesheet,
+		sessionID  => $sessionID,
+		show_corporate_banner => 0,
 
+		targettype => $targettype,
+		profilname => $profilname,
+		userdbprofiles => \@userdbprofiles,
+
+		show_foot_banner      => 1,
+		show_testsystem_info  => 0,
+		maxcolumn  => $maxcolumn,
+		colspan    => $colspan,
+		catdb      => \@catdb,
+		config     => \%config,
+	       };
+    
+    OpenBib::Common::Util::print_page($config{tt_databaseprofile_tname},$ttdata,$r);
+    
+    return OK;
   }
 
   #####################################################################   

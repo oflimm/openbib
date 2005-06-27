@@ -49,6 +49,12 @@ use vars qw(%config);
 
 *config=\%OpenBib::Config::config;
 
+my $benchmark;
+
+if ($OpenBib::Config::config{benchmark}){
+  use Benchmark ':hireswallclock';
+}
+
 sub init_new_session {
   my ($sessiondbh)=@_;
 
@@ -283,10 +289,9 @@ CSS
 ## Und nun jede Menge Variablen, damit mod_perl keine Probleme macht
 ##
 ## $dbh
-## $benchmark
 
 sub get_sql_result {
-  my ($rreqarray,$dbh,$benchmark)=@_;
+  my ($rreqarray,$dbh)=@_;
 
   # Log4perl logger erzeugen
   
@@ -306,7 +311,7 @@ sub get_sql_result {
   
   foreach $idnrequest (@reqarray){
     
-    if ($benchmark){
+    if ($config{benchmark}){
       $atime=new Benchmark;
     }
     
@@ -323,10 +328,10 @@ sub get_sql_result {
     }
     $idnresult->finish();
     
-    if ($benchmark){
+    if ($config{benchmark}){
       $btime=new Benchmark;
       $timeall=timediff($btime,$atime);
-      print "Zeit fuer Idns zu : $idnrequest : ist ".timestr($timeall)."<p>\n";
+      $logger->info("Zeit fuer Idns zu : $idnrequest : ist ".timestr($timeall));
       undef $atime;
       undef $btime;
       undef $timeall;
@@ -469,6 +474,151 @@ sub print_page {
   return;
 }   
 
+sub get_sort_nav {
+  my ($r,$nav,$usequerycache)=@_;
+
+  my @argself=$r->args;
+
+  my $sorttype="";
+  my $sortorder="";
+  my $trefferliste="";
+  my $sortall="";
+  my $sessionID="";
+  my $queryid="";
+
+  my $fullargstring="";
+
+  my %fullargs=();
+
+  for (my $i = 0; $i < $#argself; $i += 2) {
+    my $key=$argself[$i];
+
+    my $value="";
+
+    if (defined($argself[$i+1])){
+      $value=$argself[$i+1];
+    }
+
+    if ($key ne "sortorder" && $key ne "sorttype" && $key ne "trefferliste" && $key ne "sortall" && $key ne "sessionID" && $key ne "queryid"){
+      $fullargs{$key}=$value;
+    }
+    elsif ($key eq "sortorder"){
+      $sortorder=$value;
+    }
+    elsif ($key eq "sorttype"){
+      $sorttype=$value;
+    }
+    elsif ($key eq "trefferliste"){
+      $fullargs{$key}=$value;
+      $trefferliste=$value;
+    }
+    elsif ($key eq "sortall"){
+      $fullargs{$key}=$value;
+      $sortall=$value;
+    }
+    elsif ($key eq "sessionID"){
+      $fullargs{$key}=$value;
+      $sessionID=$value;
+    }
+    elsif ($key eq "queryid"){
+      $fullargs{$key}=$value;
+      $queryid=$value;
+    }
+
+  }
+
+  #Defaults setzen, falls Parameter nicht uebergeben
+
+  $sortorder="up" unless ($sortorder);
+  $sorttype="author" unless ($sorttype);
+
+  # Bei der ersten Suche kann der 'trefferliste'-Parameter nicht
+  # uebergeben werden. Daher wird er jetzt hier nachtraeglich gesetzt.
+
+  if ($trefferliste eq ""){
+    $trefferliste="all";
+  }
+
+  my %cacheargs=();
+
+  $cacheargs{trefferliste}=$trefferliste;
+  $cacheargs{sessionID}=$sessionID;
+  $cacheargs{queryid}=$queryid;
+
+  my $queryargs="";
+
+  if ($usequerycache){
+    $queryargs=\%cacheargs;
+  }
+  else {
+    $queryargs=\%fullargs;
+  }
+
+#  my $navclick= << "NAVCLICK";
+#<table width="100%">
+#<tr><th>Optionen</th></tr>
+#<tr><td class="boxed">
+#<b>Sortierung:<b>&nbsp;<select name=sorttype><option value="author">nach Autor</option><option value="title">nach Titel</option><option value="yearofpub">nach Jahr</option><option value="publisher">nach Verlag</option><option value="signature">nach Signatur</option></select>&nbsp;<select name=sortorder><option value="up">aufsteigend</option><option value="down">absteigend</option></select>
+#NAVCLICK
+
+
+  my %fullstring=('up','aufsteigend',
+		  'down','absteigend',
+		  'author','nach Autor/K&ouml;rperschaft',
+		  'publisher','nach Verlag',
+		  'signature','nach Signatur',
+		  'title','nach Titel',
+		  'yearofpub','nach Erscheinungsjahr'
+		  );
+
+  my $katalogtyp="pro Katalog";
+
+  if ($sortall eq "1"){
+    $katalogtyp="katalog&uuml;bergreifend";
+  }
+
+  my $thissortstring=$fullstring{$sorttype}." / ".$fullstring{$sortorder};
+
+  $thissortstring=$thissortstring." / $katalogtyp" if ($nav);
+
+  my @sortselect=();
+
+  if ($nav eq 'sortsingle'){
+    
+    my %thisselect=();
+    $thisselect{'name'}="sortall";
+    $thisselect{'value'}=0;
+    $thisselect{'desc'}="pro Katalog";
+    push @sortselect,\%thisselect;
+#    print $navclick."<select name=\"sortall\"><option value=\"0\">pro Katalog</option></select>".$sortend;
+  }
+  elsif ($nav eq 'sortall'){
+    my %thisselect=();
+    $thisselect{'name'}="sortall";
+    $thisselect{'value'}=1;
+    $thisselect{'desc'}="katalog&uuml;bergreifend";
+    push @sortselect,\%thisselect;
+#    print $navclick."<select name=\"sortall\"><option value=\"1\">katalog&uuml;bergreifend</option></select>".$sortend;
+  }
+
+  elsif ($nav eq 'sortboth'){
+    my %thisselect=();
+    $thisselect{'name'}="sortall";
+    $thisselect{'value'}=0;
+    $thisselect{'desc'}="pro Katalog";
+    push @sortselect,\%thisselect;
+
+    $thisselect{'name'}="sortall";
+    $thisselect{'value'}=1;
+    $thisselect{'desc'}="katalog&uuml;bergreifend";
+    push @sortselect,\%thisselect;
+
+#    print $navclick."<select name=\"sortall\"><option value=\"0\">pro Katalog</option><option value=\"1\">katalog&uuml;bergreifend</option></select>".$sortend;
+  }
+
+  return ($queryargs,\@sortselect,$thissortstring);
+}
+
 sub print_sort_nav {
   my ($r,$nav,$usequerycache)=@_;
 
@@ -478,7 +628,7 @@ sub print_sort_nav {
   my @argself=$r->args;
 
 
-  print "<p><form method=\"get\" action=\"$hostself\">\n";
+#  print "<p><form method=\"get\" action=\"$hostself\">\n";
 
   my $sorttype="";
   my $sortorder="";
@@ -597,138 +747,120 @@ NAVCLICK
 }
 
 sub by_yearofpub {
-  my $line1=0;
-  my $line2=0;
+  my %line1=%$a;
+  my %line2=%$b;
 
-  ($line1)=$a=~m!<span id=.rlyearofpub.>.*?(\d\d\d\d).*?</span>!;
-  ($line2)=$b=~m!<span id=.rlyearofpub.>.*?(\d\d\d\d).*?</span>!;
+  $line1{erschjahr}=0 if ($line1{erschjahr} eq "");
+  $line2{erschjahr}=0 if ($line2{erschjahr} eq "");
 
-  $line1=0 if ($line1 eq "");
-  $line2=0 if ($line2 eq "");
-
-  $line1 <=> $line2;
+  $line1{erschjahr} <=> $line2{erschjahr};
 }
 
 sub by_yearofpub_down {
-  my $line1=0;
-  my $line2=0;
+  my %line1=%$a;
+  my %line2=%$b;
 
-  ($line1)=$a=~m!<span id=.rlyearofpub.>.*?(\d\d\d\d).*?</span>!;
-  ($line2)=$b=~m!<span id=.rlyearofpub.>.*?(\d\d\d\d).*?</span>!;
+  $line1{erschjahr}=0 if ($line1{erschjahr} eq "");
+  $line2{erschjahr}=0 if ($line2{erschjahr} eq "");
 
-  $line1=0 if ($line1 eq "");
-  $line2=0 if ($line2 eq "");
-
-  $line2 <=> $line1;
+  $line2{erschjahr} <=> $line1{erschjahr};
 }
 
 
 sub by_publisher {
-  my $line1="";
-  my $line2="";
+  my %line1=%$a;
+  my %line2=%$b;
 
-  ($line1)=$a=~m!<span id=.rlpublisher.>(.+?)</span>!;
-  ($line2)=$b=~m!<span id=.rlpublisher.>(.+?)</span>!;
+  $line1{publisher}=cleanrl($line1{publisher}) if ($line1{publisher});
+  $line2{publisher}=cleanrl($line2{publisher}) if ($line2{publisher});
 
-  $line1=cleanrl($line1) if ($line1);
-  $line2=cleanrl($line2) if ($line2);
-
-  $line1 cmp $line2;
+  $line1{publisher} cmp $line2{publisher};
 }
 
 sub by_publisher_down {
-  my $line1="";
-  my $line2="";
+  my %line1=%$a;
+  my %line2=%$b;
 
-  ($line1)=$a=~m!<span id=.rlpublisher.>(.+?)</span>!;
-  ($line2)=$b=~m!<span id=.rlpublisher.>(.+?)</span>!;
+  $line1{publisher}=cleanrl($line1{publisher}) if ($line1{publisher});
+  $line2{publisher}=cleanrl($line2{publisher}) if ($line2{publisher});
 
-  $line1=cleanrl($line1) if ($line1);
-  $line2=cleanrl($line2) if ($line2);
-
-  $line2 cmp $line1;
+  $line2{publisher} cmp $line1{publisher};
 }
 
 sub by_signature {
-  my $line1="";
-  my $line2="";
+  my %line1=%$a;
+  my %line2=%$b;
 
-  ($line1)=$a=~m!<span id=.rlsignature.>(.+?)</span>!;
-  ($line2)=$b=~m!<span id=.rlsignature.>(.+?)</span>!;
+  $line1{signatur}=cleanrl($line1{signatur}) if ($line1{signatur});
+  $line2{signatur}=cleanrl($line2{signatur}) if ($line2{signatur});
 
-  $line1=cleanrl($line1) if ($line1);
-  $line2=cleanrl($line2) if ($line2);
-
-  $line1 cmp $line2;
+  $line1{signatur} cmp $line2{signatur};
 }
 
 sub by_signature_down {
-  my $line1="";
-  my $line2="";
+  my %line1=%$a;
+  my %line2=%$b;
 
-  ($line1)=$a=~m!<span id=.rlsignature.>(.+?)</span>!;
-  ($line2)=$b=~m!<span id=.rlsignature.>(.+?)</span>!;
+  $line1{signatur}=cleanrl($line1{signatur}) if ($line1{signatur});
+  $line2{signatur}=cleanrl($line2{signatur}) if ($line2{signatur});
 
-  $line1=cleanrl($line1) if ($line1);
-  $line2=cleanrl($line2) if ($line2);
-
-  $line2 cmp $line1;
+  $line2{signatur} cmp $line1{signatur};
 }
 
 sub by_author {
-  my $line1="";
-  my $line2="";
+  my %line1=%$a;
+  my %line2=%$b;
 
-  ($line1)=$a=~m!<span id=.rlauthor.>(.*?)</span>!;
-  ($line2)=$b=~m!<span id=.rlauthor.>(.*?)</span>!;
+  $line1{verfasser}=cleanrl($line1{verfasser}) if ($line1{verfasser});
+  $line2{verfasser}=cleanrl($line2{verfasser}) if ($line2{verfasser});
 
-  $line1=cleanrl($line1) if ($line1);
-  $line2=cleanrl($line2) if ($line2);
-
-  $line1 cmp $line2;
+  $line1{verfasser} cmp $line2{verfasser};
 }
 
 sub by_author_down {
-  my $line1="";
-  my $line2="";
+  my %line1=%$a;
+  my %line2=%$b;
 
-  ($line1)=$a=~m!<span id=.rlauthor.>(.+?)</span>!;
-  ($line2)=$b=~m!<span id=.rlauthor.>(.+?)</span>!;
+  $line1{verfasser}=cleanrl($line1{verfasser}) if ($line1{verfasser});
+  $line2{verfasser}=cleanrl($line2{verfasser}) if ($line2{verfasser});
 
-  $line1=cleanrl($line1) if ($line1);
-  $line2=cleanrl($line2) if ($line2);
-
-  $line2 cmp $line1;
+  $line2{verfasser} cmp $line1{verfasser};
 }
 
 sub by_title {
-  my $line1="";
-  my $line2="";
+  my %line1=%$a;
+  my %line2=%$b;
 
-  ($line1)=$a=~m!<span id=.rltitle.>(.+?)</span>!;
-  ($line2)=$b=~m!<span id=.rltitle.>(.+?)</span>!;
+  $line1{title}=cleanrl($line1{title}) if ($line1{title});
+  $line2{title}=cleanrl($line2{title}) if ($line2{title});
 
-  $line1=cleanrl($line1) if ($line1);
-  $line2=cleanrl($line2) if ($line2);
-
-  $line1 cmp $line2;
+  $line1{title} cmp $line2{title};
 }
 
 sub by_title_down {
-  my $line1="";
-  my $line2="";
+  my %line1=%$a;
+  my %line2=%$b;
 
-  ($line1)=$a=~m!<span id=.rltitle.>(.+?)</span>!;
-  ($line2)=$b=~m!<span id=.rltitle.>(.+?)</span>!;
+  $line1{title}=cleanrl($line1{title}) if ($line1{title});
+  $line2{title}=cleanrl($line2{title}) if ($line2{title});
 
-  $line1=cleanrl($line1) if ($line1);
-  $line2=cleanrl($line2) if ($line2);
-
-  $line2 cmp $line1;
+  $line2{title} cmp $line1{title};
 }
 
 sub sort_buffer {
   my ($sorttype,$sortorder,$routputbuffer,$rsortedoutputbuffer)=@_;
+
+  # Log4perl logger erzeugen
+  
+  my $logger = get_logger();
+
+  my $atime;
+  my $btime;
+  my $timeall;
+  
+  if ($config{benchmark}){
+    $atime=new Benchmark;
+  }
 
   if ($sorttype eq "author" && $sortorder eq "up"){
     @$rsortedoutputbuffer=sort by_author @$routputbuffer;
@@ -764,6 +896,15 @@ sub sort_buffer {
     @$rsortedoutputbuffer=@$routputbuffer;
   }
 
+  if ($config{benchmark}){
+    $btime=new Benchmark;
+    $timeall=timediff($btime,$atime);
+    $logger->info("Zeit fuer : sort by $sorttype / $sortorder : ist ".timestr($timeall));
+    undef $atime;
+    undef $btime;
+    undef $timeall;
+  }
+
   return;
 }
 
@@ -792,7 +933,20 @@ sub updatelastresultset {
 
   my @resultset=@$rresultset;
 
-  my $resultsetstring=join("|",@resultset);
+  my @nresultset=();
+
+  foreach my $outidx (@resultset){
+    
+    my %outidx=%$outidx;
+
+    # Eintraege merken fuer Lastresultset
+    
+    my $katkey=$outidx{idn};
+    my $resdatabase=$outidx{database};
+    push @nresultset, "$resdatabase:$katkey";
+  }
+
+  my $resultsetstring=join("|",@nresultset);
 
   my $sessionresult=$sessiondbh->prepare("update session set lastresultset = ? where sessionid = ?") or $logger->error($DBI::errstr);
   $sessionresult->execute($resultsetstring,$sessionID) or $logger->error($DBI::errstr);
@@ -838,7 +992,7 @@ __END__
  my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
 
  # Ergebnisarray zu SQL-Anfragen (@requests) an DB-Handle $dbh fuellen
- my @resarr=OpenBib::Common::Util::get_sql_result(\@requests,$dbh,$benchmark);
+ my @resarr=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
 
  # Navigationsselement zwecks Sortierung einer Trefferliste ausgeben
  OpenBib::Common::Util::print_sort_nav($r,'',0);

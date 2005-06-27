@@ -32,7 +32,7 @@ use vars qw(%config);
 
 	   # Versionnummer
 
-	   version => 'OpenBib v1.0',
+	   version => 'OpenBib v1.2.1',
 	   
 	   # Unter diesem Namen wird der lokale Server angesprochen
 	   
@@ -87,28 +87,34 @@ use vars qw(%config);
 	
 	   units => [
 		     {
-		      "short","0ungeb",
-		      "desc","Fakult&auml;tsungebunden",
+		      short => '0ungeb',
+		      desc => 'Fakult&auml;tsungebunden',
+		      nr => '0',
 		     },
 		     {
-		      "short","1wiso",
-		      "desc","Wirtschafts- u. Sozialwissenschaftliche Fakult&auml;t",
+		      short => '1wiso',
+		      desc => 'Wirtschafts- u. Sozialwissenschaftliche Fakult&auml;t',
+		      nr => '1',
 		     },
 		     {
-		      "short","2recht",
-		      "desc","Rechtswissenschaftliche Fakult&auml;t",
+		      short => '2recht',
+		      desc => 'Rechtswissenschaftliche Fakult&auml;t',
+		      nr => '2',
 		     },
 		     {
-		      "short","3ezwheil",
-		      "desc","Erziehungswissenschaftliche u. Heilp&auml;dagogische Fakult&auml;t",
+		      short => '3ezwheil',
+		      desc => 'Erziehungswissenschaftliche u. Heilp&auml;dagogische Fakult&auml;t',
+		      nr => '3',
 		     },
 		     {
-		      "short","4phil",
-		      "desc","Philosophische Fakult&auml;t",
+		      short => '4phil',
+		      desc => 'Philosophische Fakult&auml;t',
+		      nr => '4',
 		     },
 		     {
-		      "short","5matnat",
-		      "desc","Mathematisch-Naturwissenschaftliche Fakult&auml;t",
+		      short => '5matnat',
+		      desc => 'Mathematisch-Naturwissenschaftliche Fakult&auml;t',
+		      nr => '5',
 		     },
 		    ],
 
@@ -129,6 +135,7 @@ use vars qw(%config);
 	   mailcollection_loc   => '/portal/merklistemailen',
 	   mailpassword_loc     => '/portal/passwortmailen',
 	   managecollection_loc => '/portal/merkliste',
+	   resultlists_loc      => '/portal/trefferlisten',
 	   search_loc           => '/portal/recherche',
 	   searchframe_loc      => '/portal/eingabe',
 	   selfreg_loc          => '/portal/selbstregistrierung',
@@ -165,11 +172,11 @@ use vars qw(%config);
 
 	   # Pfad zur Konfigurationsdatei von Log4Perl
 
-           log4perl_path           => '/pfad/zu/portal.log4perl',
+           log4perl_path           => '/opt/openbib/conf/portal.log4perl',
 
 	   # Pfad zu den Portal-Templates (Template Toolkit)
 
-	   tt_include_path         => '/pfad/zu/openbib/template',
+	   tt_include_path         => '/opt/openbib/templates',
 
 	   # Mapping der einzelnen Kompontenten zu ihren Templates
 
@@ -191,6 +198,8 @@ use vars qw(%config);
 	   tt_circulation_remind_tname   => 'circulation_remind',
 	   tt_circulation_orders_tname   => 'circulation_orders',
 
+	   tt_databaseprofile_tname   => 'databaseprofile',
+
 	   tt_externaljump_tname   => 'externaljump',
 
 	   tt_headerframe_tname    => 'headerframe',
@@ -204,6 +213,31 @@ use vars qw(%config);
 
 	   tt_login_tname          => 'login',
 
+	   tt_mailcollection_mail_html_tname  => 'mailcollection_mail_html',
+	   tt_mailcollection_mail_plain_tname  => 'mailcollection_mail_plain',
+	   tt_mailcollection_mail_main_tname  => 'mailcollection_mail_main',
+	   tt_mailcollection_success_tname  => 'mailcollection_success',
+
+	   tt_managecollection_mail_tname  => 'managecollection_mail',
+	   tt_managecollection_print_tname  => 'managecollection_print',
+	   tt_managecollection_save_html_tname  => 'managecollection_save_html',
+	   tt_managecollection_save_plain_tname => 'managecollection_save_plain',
+	   tt_managecollection_show_tname  => 'managecollection_show',
+
+	   tt_search_showautset_tname => 'search_showautset',
+	   tt_search_showkorset_tname => 'search_showkorset',
+	   tt_search_showswtset_tname => 'search_showswtset',
+	   tt_search_shownotset_tname => 'search_shownotset',
+	   tt_search_showtitset_tname => 'search_showtitset',
+	   tt_search_showmulttitset_tname => 'search_showmulttitset',
+	   tt_search_showtitlist_tname => 'search_showtitlist',
+
+	   tt_search_showswtindex_tname => 'search_showswtindex',
+
+	   tt_virtualsearch_showverfindex_tname => 'virtualsearch_showverfindex',
+	   tt_virtualsearch_showkorindex_tname => 'virtualsearch_showkorindex',
+	   tt_virtualsearch_showswtindex_tname => 'virtualsearch_showswtindex',
+	   
 	   tt_userprefs_tname              => 'userprefs',
 	   tt_userprefs_ask_delete_tname   => 'userprefs_ask_delete',
 	   tt_userprefs_changefields_tname => 'userprefs_changefields',
@@ -242,6 +276,30 @@ use vars qw(%config);
 
 	   testsystem              => 0,
 
-);
+	   # Katalogabhaengige Kategorie-Mappings
+
+	   categorymapping => {
+			       einbaende => {
+					     'HST'           => 'Titel',          # M0331
+					     'Zusatz'        => 'Untertitel',     # M0335
+					     'Beig.Werke'    => 'Beibaende',      # M0361
+					     'Ausgabe'       => 'Auflage',        # M0403
+					     '0413'          => 'Drucker',        # M0413
+					     'Ersch. Jahr'   => 'E-Jahr',         # M0425
+					     'Verlagsort'    => 'Ersch-Ort',      # M0410
+					     '0370'          => 'Provenienz',     # M0370
+					     '0424'          => 'Fert.-Jahr',     # M0424
+					     '0035'          => 'Fert.-Ort',      # M0035
+					     '0435'          => 'Ma&szlig;e',     # M0435
+					     'Schlagwort'    => 'Jahrhundert',    # M0710
+					     'Urheber'       => 'Region',         # M0200
+					     'Notation'      => 'Einband',        # M0700
+					     'Abstract'      => 'Beschreibung',   # M0750
+					     'Fu&szlig;note' => 'Quellen',        # M0501
+					     '0508'          => 'Bibl. Nachweis', # M0508
+					    },
+			      },
+	   
+	  );
 
 1;

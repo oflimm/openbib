@@ -403,19 +403,6 @@ sub handler {
     $r->internal_redirect("http://$config{servername}$config{userprefs_loc}?sessionID=$sessionID&action=showfields");
     
   }
-#   elsif ($action eq "showuserinfo"){
-#     OpenBib::Common::Util::print_simple_header("KUG: Benutzer-Informationen",$r);
-    
-#     # TODO Fehler im alten KUG userprefs?sessionID
-
-#     # Aber: Diese Funktion gibt es noch garnicht ;-)
-
-#     print << "USERMASK";
-# <table>
-# <tr><td align=left>&gt;&gt;&nbsp;<a href="http://$config{servername}$config{userprefs_loc}?sessionID=$sessionID&action=showfields" target="body">Suchfelder</a>&nbsp;&nbsp;<a href="http://$config{servername}$config{userprefs_loc}?sessionID=$sessionID&action=showuserinfo" target="body">Benutzerinformationen</a></td></tr>
-# </table>
-# USERMASK
-#   }
   else {
 
     OpenBib::Common::Util::print_warning("Unerlaubte Aktion",$r);

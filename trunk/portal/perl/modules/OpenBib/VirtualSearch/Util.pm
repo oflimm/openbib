@@ -84,7 +84,7 @@ sub is_multiple_tit {
   foreach $line (@rst){
     
     # Wir haben mehrere Treffer, wenn eine Auswahlliste erscheint
-    if ($line=~m/^.h1.Auswahlliste:.*Titel..h1./){
+    if ($line=~m/^Titlelist begins here/){
       return "yes";
     }
   }
@@ -102,7 +102,7 @@ sub extract_singletit_from_multiple {
 
     # Extrahiere wichtige Titelinformationen und konstruiere daraus eigene
     # Eintr"age
-    if ($line=~m/^(.tr bgcolor=.+?.).td..input type=checkbox name=searchmultipletit.*?..td..td.(.+?)database=(\w+)(.*..td...tr.)/){
+    if ($line=~m/^(.tr bgcolor=.+?.).td..input type=.checkbox. name=.searchmultipletit.*?..td..td.(.+?)database=(\w+)(.*..td...tr.)/){
       
       $line="<td colspan=2>".$2."sorttype=$sorttype&database=".$3.$4;
       if ($hitrange > 0){

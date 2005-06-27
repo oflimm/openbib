@@ -93,39 +93,6 @@ sub handler {
   
   my %checkeddb;
   
-  my $categories=[
-	   {
-	    full => 'Fakult&auml;tsungebunden',
-	    short => '0ungeb',
-	    nr => '0',
-	   },
-	   {
-	    full => 'Wirtschafts- u. Sozialwissenschaftliche Fakult&auml;t',
-	    short => '1wiso',
-	    nr   => '1',
-	   },
-	   {
-	    full => 'Rechtswissenschaftliche Fakult&auml;t',
-	    short => '2recht',
-	    nr   => '2',
-	   },
-	   {
-	    full => 'Erziehungswissenschaftliche u. Heilp&auml;dagogische Fakult&auml;t',
-	    short => '3ezwheil',
-	    nr => '3',
-	   },
-	   {
-	    full => 'Philosophische Fakult&auml;t',
-	    short => '4phil',
-	    nr => '4',
-	   },
-	   {
-	    full => 'Mathematisch-Naturwissenschaftliche Fakult&auml;t',
-	    short => '5matnat',
-	    nr => '5',
-	   },
-	   ];
-  
   #####################################################################
   # Verbindung zur SQL-Datenbank herstellen
   
@@ -279,7 +246,6 @@ sub handler {
 		  show_corporate_banner => 0,
 		  show_foot_banner      => 1,
 		  show_testsystem_info  => 0,
-		  categories => $categories,
 		  maxcolumn  => $maxcolumn,
 		  colspan    => $colspan,
 		  catdb      => \@catdb,

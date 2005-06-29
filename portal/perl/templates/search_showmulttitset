@@ -30,7 +30,7 @@
 [% IF normkat.type == 'simple_category' %]
 <tr><td bgcolor="lightblue"><strong>[% normkat.desc %]</strong></td><td>[% normkat.contents %]</td></tr>
 [% ELSIF normkat.type == 'url_category' %]
-<tr><td bgcolor="lightblue"><strong>[% normkat.desc %]</strong></td><td><a href="[% normkat.url %]">[% normkat.contents %]</td></tr>
+<tr><td bgcolor="lightblue"><strong>[% normkat.desc %]</strong></td><td><a href="[% normkat.url %]">[% normkat.contents %]</a> [% normkat.supplement %]</td></tr>
 [% ELSIF normkat.type == 'url_category_global' %]
 <tr><td bgcolor="lightblue"><strong>[% normkat.desc %]</strong></td><td><a href="[% normkat.globalurl %]" title="Begriff in allen Katalogen suchen"><span style="font-family:Arial,helv,Helvetica,Verdana; font-size:135%; color=blue;">G</span></a>&nbsp;<a href="[% normkat.url %]" title="Begriff in diesem Katalog suchen">[% normkat.contents %]</td></tr>
 [% END %]

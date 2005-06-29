@@ -63,34 +63,22 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
 <select name="profil">
 [%- IF dbcount || userprofiles -%]
 [% dbcount %] [% userprofiles %]
-[%- ELSE -%]
-<option value="">Kein Suchprofil ausgew&auml;hlt</option><option value="">&nbsp;</option>
 [%- END -%]
-<option value="">Fakult&auml;ten:</option><option value=""></option><option value="0ungeb"
-[%- IF prevprofile == '0ungeb' -%]
+<option value="alldbs"
+[%- IF prevprofile == 'alldbs' -%]
  selected="selected"
 [%- END -%]
->- Fakult&auml;tsunabh&auml;ngige Bibliotheken</option><option value="1wiso"
-[%- IF prevprofile == '1wiso' -%]
+>Alle Kataloge</option><option value=""></option>
+<option value="">Fakult&auml;ten:</option><option value=""></option>
+
+[% FOREACH unit IN config.units %]
+<option value="[% unit.short %]"
+[%- IF prevprofile == unit.short -%]
  selected="selected"
 [%- END -%]
->- Wirtschafts- u. Sozialwissenschaftliche Fakult&auml;t</option><option value="2recht"
-[%- IF prevprofile == '2recht' -%]
- selected="selected"
-[%- END -%]
->- Rechtswissenschaftliche Fakult&auml;t</option><option value="3ezwheil"
-[%- IF prevprofile == '3ezwheil' -%]
- selected="selected"
-[%- END -%]
->- Erziehungswissenschaftliche u. Heilp&auml;dagogische Fakult&auml;t</option><option value="4phil"
-[%- IF prevprofile == '4phil' -%]
- selected="selected"
-[%- END -%]
->- Philosophische Fakult&auml;t</option><option value="5matnat"
-[%- IF prevprofile == '5matnat' -%]
- selected="selected"
-[%- END -%]
->- Mathematisch-Naturwissenschaftliche Fakult&auml;t</option><option value=""></option></select>
+>- [% unit.desc %]</option>
+[% END %]
+</select>
 </td></tr>
 </table>
 

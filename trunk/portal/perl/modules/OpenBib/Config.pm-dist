@@ -224,6 +224,8 @@ use vars qw(%config);
 	   tt_managecollection_save_plain_tname => 'managecollection_save_plain',
 	   tt_managecollection_show_tname  => 'managecollection_show',
 
+           tt_resultlists_choice_tname => 'resultlists_choice',
+
 	   tt_search_showautset_tname => 'search_showautset',
 	   tt_search_showkorset_tname => 'search_showkorset',
 	   tt_search_showswtset_tname => 'search_showswtset',

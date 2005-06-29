@@ -41,6 +41,10 @@ use Log::Log4perl qw(get_logger :levels);
 
 use DBI;
 
+use Template;
+
+use YAML;
+
 use OpenBib::Common::Util;
 use OpenBib::ResultLists::Util;
 use OpenBib::Common::Stopwords;
@@ -88,32 +92,74 @@ sub handler {
     goto LEAVEPROG;
   }
 
+  my %titeltyp=(
+		'1' => 'Einb&auml;ndige Werke und St&uuml;cktitel',
+		'2' => 'Gesamtaufnahme fortlaufender Sammelwerke',
+		'3' => 'Gesamtaufnahme mehrb&auml;ndig begrenzter Werke',
+		'4' => 'Bandauff&uuml;hrung',
+		'5' => 'Unselbst&auml;ndiges Werk',
+		'6' => 'Allegro-Daten',
+		'7' => 'Lars-Daten',
+		'8' => 'Sisis-Daten',
+		'9' => 'Sonstige Daten'  
+	       );
+
+  
+  #####################################################################
+  # Dynamische Definition diverser Variablen
+  
   # Verweis: Datenbankname -> Informationen zum zugeh"origen Institut/Seminar
   
-  my $dbinforesult=$sessiondbh->prepare("select dbname,url,description from dbinfo") or $logger->error($DBI::errstr);
-  $dbinforesult->execute() or $logger->error($DBI::errstr);
+  my $dbinforesult=$sessiondbh->prepare("select dbname,sigel,url,description from dbinfo") or $logger->error($DBI::errstr);
+  $dbinforesult->execute() or $logger->error($DBI::errstr);;
   
+  my %sigel=();
+  my %bibinfo=();
+  my %dbinfo=();
   my %dbases=();
   my %dbnames=();
-  
+
   while (my $result=$dbinforesult->fetchrow_hashref()){
     my $dbname=$result->{'dbname'};
+    my $sigel=$result->{'sigel'};
     my $url=$result->{'url'};
     my $description=$result->{'description'};
+    
+    ##################################################################### 
+    ## Wandlungstabelle Bibliothekssigel <-> Bibliotheksname
+    
+    $sigel{"$sigel"}="$description";
+    
+    #####################################################################
+    ## Wandlungstabelle Bibliothekssigel <-> Informations-URL
+    
+    $bibinfo{"$sigel"}="$url";
+    
+    #####################################################################
+    ## Wandlungstabelle  Name SQL-Datenbank <-> Datenbankinfo
     
     # Wenn ein URL fuer die Datenbankinformation definiert ist, dann wird
     # damit verlinkt
     
     if ($url ne ""){
-      $dbases{"$dbname"}="<a href=\"$url\" target=_blank>$description</a>";
+      $dbinfo{"$dbname"}="<a href=\"$url\" target=_blank>$description</a>";
     }
     else {
-      $dbases{"$dbname"}="$description";
+      $dbinfo{"$dbname"}="$description";
     }
+    
+    #####################################################################
+    ## Wandlungstabelle  Name SQL-Datenbank <-> Bibliothekssigel
+    
+    $dbases{"$dbname"}="$sigel";
+
     $dbnames{"$dbname"}=$description;
   }
   
-  $dbinforesult->finish();
+  $sigel{''}="Unbekannt";
+  $bibinfo{''}="http://www.ub.uni-koeln.de/dezkat/bibinfo/noinfo.html";
+  $dbases{''}="Unbekannt";
+
 
   # BEGIN Trefferliste
   #
@@ -144,162 +190,102 @@ sub handler {
       $idnresult=$sessiondbh->prepare("select distinct searchresults.queryid,queries.query,queries.hits from searchresults,queries where searchresults.sessionid = ? and searchresults.queryid=queries.queryid order by queryid desc") or $logger->error($DBI::errstr);
       $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
       
+      my @queries=();
+
       while (my @res=$idnresult->fetchrow){
-	push @queryids, $res[0];
-	push @querystrings, $res[1];
-	push @queryhits, $res[2];
+
+	my ($fs,$verf,$hst,$swt,$kor,$sign,$isbn,$issn,$notation,$mart,$ejahr,$hststring,$bool1,$bool2,$bool3,$bool4,$bool5,$bool6,$bool7,$bool8,$bool9,$bool10,$bool11,$bool12)=split('\|\|',$res[1]);
+
+	push @queries, {
+			id => $res[0],
+
+			fs => $fs,
+			verf => $verf,
+			hst => $hst,
+			swt => $swt,
+			kor => $kor,
+			notation => $notation,
+			sign => $sign,
+			ejahr => $ejahr,
+			isbn => $isbn,
+			issn => $issn,
+			mart => $mart,
+			hststring => $hststring,
+			
+			hits => $res[2],
+		       };
+	
       }
       
-      my $thisqueryid="";
-      my $thisqueryidx=0;
-      
+      # Finde den aktuellen Query
+
+      my $thisquery={};
+
+
+      # Wenn keine Queryid angegeben wurde, dann nehme den ersten Eintrag,
+      # da dieser der aktuellste ist
       if ($queryid eq ""){
-	$thisqueryid=$queryids[0];
+	$thisquery=$queries[0];
       }
+      # ansonsten nehmen den ausgewaehlten
       else{
-	my $i=0;
-	while ($i <= $#queryids){
-	  if ($queryids[$i] eq "$queryid"){
-	    $thisqueryidx=$i;
+	foreach my $query (@queries){
+	  if (@{$query}{id} eq "$queryid"){
+	    $thisquery=$query;
 	  }
-	  $i++
-	}	
-	$thisqueryid=$queryid;
+	  
+	}
       }
       
-      my ($fs,$verf,$hst,$swt,$kor,$sign,$isbn,$issn,$notation,$mart,$ejahr,$hststring,$bool1,$bool2,$bool3,$bool4,$bool5,$bool6,$bool7,$bool8,$bool9,$bool10,$bool11,$bool12)=split('\|\|',$querystrings[$thisqueryidx]);
       
       $idnresult=$sessiondbh->prepare("select dbname,hits from searchresults where sessionid = ? and queryid = ? order by hits desc") or $logger->error($DBI::errstr);
-      $idnresult->execute($sessionID,$thisqueryid) or $logger->error($DBI::errstr);
-      
-      # Header mit allen Elementen ausgeben
-      
-      OpenBib::Common::Util::print_simple_header("Such-Client des Virtuellen Katalogs",$r);
-      
-      print << "HEADER";
-<FORM METHOD="GET">
+      $idnresult->execute($sessionID,@{$thisquery}{id}) or $logger->error($DBI::errstr);
 
-<ul id="tabbingmenu">
-   <li><a class="active" href="$config{resultlists_loc}?sessionID=$sessionID;trefferliste=choice;view=$view">Trefferliste</a></li>
-</ul>
 
-<div id="content">
-
-<p>
-HEADER
-      
-      #      print "<h1>Direkt aus dem Cache</h1>";
-      
-      print "<table width=\"100%\"><tr>";
-      
-      #    print "Lastqueryid: $lastqueryid<p>";
-      if ($queryid eq ""){
-	print "<th>Aktuelle Recherche</th>";
-      }   
-      else {
-	print "<th>Ausgew&auml;hlte Recherche</th>";
-      }
-      
-      print "</tr><td class=\"boxedclear\"><table><tr><td colspan=\"2\">";
-      
-      print "(";
-      print "&nbsp;FS: $fs " if ($fs);
-      print "&nbsp;AUT: $verf " if ($verf);
-      print "&nbsp;HST: $hst " if ($hst);
-      print "&nbsp;SWT: $swt " if ($swt);
-      print "&nbsp;KOR: $kor " if ($kor);
-      print "&nbsp;NOT: $notation " if ($notation);
-      print "&nbsp;SIG: $sign " if ($sign);
-      print "&nbsp;EJAHR: $ejahr " if ($ejahr);
-      print "&nbsp;ISBN: $isbn " if ($isbn);
-      print "&nbsp;ISSN: $issn " if ($issn);
-      print "&nbsp;MART: $mart " if ($mart);
-      print "&nbsp;HSTR: $hststring " if ($hststring);
-      
-      #    print "= Treffer: $hits" if ($hits);
-      print ")</td></tr><tr><td colspan=\"2\"></td></tr>";
-      
-      
-      my $linecolor="aliceblue";
       my $hitcount=0;
       
-      my $resultrow="";
+      my @resultdbs=();
+
       while (my @res=$idnresult->fetchrow){
+	push @resultdbs, {
+			  trefferdb => $res[0],
+			  trefferdbdesc => $dbnames{$res[0]},
+			  trefferzahl => $res[1],
+			 };
 	
-	$resultrow.="<tr><td bgcolor=\"$linecolor\"><a href=\"$config{resultlists_loc}?sessionID=$sessionID&trefferliste=$res[0]&queryid=$thisqueryid\"><b>$dbnames{$res[0]}</b></a></td><td align=right>$res[1]</td></tr>\n";
-	
-	if ($linecolor eq "white"){
-	  $linecolor="aliceblue";
-	}
-	else {
-	  $linecolor="white";
-	}
 	$hitcount+=$res[1];
       }
-      
-      
-      print "<tr><td>Katalog</td><td>Treffer</td></tr>\n";
-      
-      print "<tr><td bgcolor=\"aliceblue\"><a href=\"$config{resultlists_loc}?sessionID=$sessionID&trefferliste=all&sortall=0&sorttype=author&queryid=$thisqueryid\"><b>Alle Treffer</b></a></td><td align=right>$hitcount</td></tr>\n";
-      
-      print "<tr><td bgcolor=\"white\">&nbsp;</td><td align=right>&nbsp;</td></tr>\n";
-      
-      print $resultrow;
-      
-      print "</table></td></tr></table>\n";
-      
-      $idnresult->finish();
-      
-      
-      if ($queryid eq ""){
 
-	# Weitere Trefferlisten zu alten Recherchen vorhanden?
-	
-	if ($#queryids > 0){
-	  
-	  
-	  print "<form method=\"get\" action=\"$config{virtualsearch_loc}\">";
-	  print "<input type=\"hidden\" name=\"sessionID\" value=\"$sessionID\">";
-	  print "<input type=\"hidden\" name=\"trefferliste\" value=\"choice\">";
-	  
-	  print "<p><table width=\"100%\"><tr>";
-	  print "<th>&Auml;ltere Recherchen</th></tr><tr><td class=\"boxedclear\">";
-	  
-	  print "<select name=\"queryid\">";
-	  
-	  my $i=1;
-	  
-	  while ($i <= $#queryids){
-	    
-	    my ($fs,$verf,$hst,$swt,$kor,$sign,$isbn,$issn,$notation,$mart,$ejahr,$hststring,$bool1,$bool2,$bool3,$bool4,$bool5,$bool6,$bool7,$bool8,$bool9,$bool10,$bool11,$bool12)=split('\|\|',$querystrings[$i]);
-	    
-	    print "<OPTION value=\"".$queryids[$i]."\">";
-	    print "(";
-	    print "&nbsp;FS: $fs " if ($fs);
-	    print "&nbsp;AUT: $verf " if ($verf);
-	    print "&nbsp;HST: $hst " if ($hst);
-	    print "&nbsp;SWT: $swt " if ($swt);
-	    print "&nbsp;KOR: $kor " if ($kor);
-	    print "&nbsp;NOT: $notation " if ($notation);
-	    print "&nbsp;SIG: $sign " if ($sign);
-	    print "&nbsp;EJAHR: $ejahr " if ($ejahr);
-	    print "&nbsp;ISBN: $isbn " if ($isbn);
-	    print "&nbsp;ISSN: $issn " if ($issn);
-	    print "&nbsp;MART: $mart " if ($mart);
-	    print "&nbsp;HSTR: $hststring " if ($hststring);
-	    print "= Treffer: $queryhits[$i])" if ($queryhits[$i]);
-	    print "</OPTION>\n";
-	    
-	    $i++;
-	  }
-	  print "</select>\n";
-	  print "<input type=submit value=\"Auswahl\"></td></tr></table></form>";
-	}
-      }
-      print "</table></div><p />";
-      OpenBib::Common::Util::print_footer();
+
+      # TT-Data erzeugen
       
-      goto LEAVEPROG;
+      my $ttdata={
+		  title      => 'KUG - K&ouml;lner Universit&auml;tsGesamtkatalog',
+		  stylesheet   => $stylesheet,
+		  view         => $view,
+		  sessionID    => $sessionID,
+
+
+		  thisquery => $thisquery,
+		  
+		  queryid => $queryid,
+
+		  hitcount => $hitcount,
+	
+		  resultdbs => \@resultdbs,
+
+		  queries => \@queries,
+
+		  show_foot_banner      => 1,
+		  
+		  config       => \%config,
+		 };
+      
+
+      
+      OpenBib::Common::Util::print_page($config{tt_resultlists_choice_tname},$ttdata,$r);
+      
+      return OK;
       
     }
     
@@ -326,7 +312,7 @@ HEADER
       }
       
       
-      $idnresult=$sessiondbh->prepare("select searchresults.searchresult from searchresults, dbinfo where searchresults.dbname=dbinfo.dbname and sessionid = ? and queryid = ? order by dbinfo.faculty,searchresults.dbname") or $logger->error($DBI::errstr);
+      $idnresult=$sessiondbh->prepare("select searchresults.searchresult,searchresults.dbname from searchresults, dbinfo where searchresults.dbname=dbinfo.dbname and sessionid = ? and queryid = ? order by dbinfo.faculty,searchresults.dbname") or $logger->error($DBI::errstr);
       $idnresult->execute($sessionID,$queryid) or $logger->error($DBI::errstr);
       
       # Header mit allen Elementen ausgeben
@@ -356,139 +342,132 @@ HEADER
       my @resultset=();
       
       if ($sortall == 1){
-	
-	my $idx=0;
+
 	my @outputbuffer=();
+
+	#      open(RES,">/tmp/res.dat");
 	while (my @res=$idnresult->fetchrow){
-	  my @splitresult=split("\n",$res[0]);
-	  my $j=0;
-	  
-	  my $institut="";
-	  
-	  while ($j <= $#splitresult){
-	    my $thisline=$splitresult[$j];
-	    
-	    if ($thisline =~/<tr bgcolor="lightblue"><td>&nbsp;<\/td><td>(<a.+?>.+?<\/a>)<\/td>/){
-	      $institut=$1;
-	    }
-	    elsif ($thisline =~/<tr bgcolor="lightblue"><td>&nbsp;<\/td><td>(.+?)<\/td>/){
-	      $institut=$1;
-	    }
-	    elsif ($thisline =~/<tr bgcolor="white"><td bgcolor="lightblue"><strong>\d+<\/strong><\/td><td colspan=2>(.+<\/td><\/tr>)/){
-	      my $line=$1;
-	      $outputbuffer[$idx++]="<td bgcolor=\"lightblue\">".$institut."</td><td>".$line; 	  
-	      #print RES $outputbuffer[$idx-1];
-	    }
-	    elsif ($thisline =~/<tr bgcolor="aliceblue"><td bgcolor="lightblue"><strong>\d+<\/strong><\/td><td colspan=2>(.+<\/td><\/tr>)/){
-	      my $line=$1;
-	      $outputbuffer[$idx++]="<td bgcolor=\"lightblue\">".$institut."</td><td>".$line; 	  
-	      #print RES $outputbuffer[$idx-1];
-	    }
-	    else {
-	      #print RES $thisline."\n"; 
-	    }
-	    
-	    $j++;
-	  }
-	  
+	  my $yamlres=YAML::Load($res[0]);
+
+	  push @outputbuffer, @$yamlres;
 	}
+
+	my $treffer=$#outputbuffer+1;
+
+	# Sortierung
 	
 	my @sortedoutputbuffer=();
 	
-	OpenBib::ResultLists::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
+	OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
+	  
+	my $linecolor="aliceblue";
 	
-	my $i=0;
-	my $bgcolor="white";
-	while ($i <= $#sortedoutputbuffer){
-	  print "<tr bgcolor=\"$bgcolor\"><td bgcolor=\"lightblue\"><strong>".($i+1)."</strong></td>".$sortedoutputbuffer[$i]."\n";
+	my $count=1;
+
+	foreach my $item (@sortedoutputbuffer){
+	  
+	  my $author=@{$item}{verfasser};
+	  my $titidn=@{$item}{idn};
+	  my $title=@{$item}{title};
+	  my $publisher=@{$item}{publisher};
+	  my $signature=@{$item}{signatur};
+	  my $yearofpub=@{$item}{erschjahr};
+	  my $thisdatabase=@{$item}{database};
+	  
+	  my $searchmode=2;
+	  my $bookinfo=0;
+	  my $rating=0;
+	  print << "TITITEM";
+
+<tr bgcolor="$linecolor"><td bgcolor="lightblue"><strong>$count</strong></td><td>$dbinfo{$thisdatabase}</td><td colspan=2><strong><span id="rlauthor">$author</span></strong><br /><a href="$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=;sorttype=$sorttype&database=$thisdatabase;searchsingletit=$titidn"><strong><span id="rltitle">$title</span></strong></a>, <span id="rlpublisher">$publisher</span> <span id="rlyearofpub">$yearofpub</span></td><td><a href="/portal/merkliste?sessionID=$sessionID;action=insert;database=$thisdatabase;singleidn=$titidn" target="header"><span id="rlmerken"><a href="/portal/merkliste?sessionID=$sessionID;action=insert;database=$thisdatabase;singleidn=$titidn" target="header" title="In die Merkliste"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="In die Merkliste" border=0></a></span></a></td><td align=left><b>$signature</b></td></tr>
+TITITEM
+
+          if ($linecolor eq "white"){
+	    $linecolor="aliceblue";
+	  }
+	  else {
+	    $linecolor="white";
+	  }
 	  
 	  # Eintraege merken fuer Lastresultset
 	  
-	  my ($katkey)=$sortedoutputbuffer[$i]=~/searchsingletit=(\d+)/;
-	  my ($resdatabase)=$sortedoutputbuffer[$i]=~/database=(\w+)/;
-	  push @resultset, { 'database' => $resdatabase,
-			     'idn' => $katkey
+	  push @resultset, { 'database' => $thisdatabase,
+			     'idn' => $titidn,
 			   };
 	  
-	  $i++;
 	  
-	  if ($bgcolor eq "white"){
-	    $bgcolor="aliceblue";
-	  }
-	  else {
-	    $bgcolor="white";
-	  }
-	  
+	  $count++;
+	    
 	}
-	#close(RES);
+
+
 	
       }
       elsif ($sortall == 0) {
 	
 	# Katalogoriertierte Sortierung
-	
+
+
 	#      open(RES,">/tmp/res.dat");
 	while (my @res=$idnresult->fetchrow){
-	  my @splitresult=split("\n",$res[0]);
-	  my $j=0;
-	  my $idx=0;
-	  my @outputbuffer=();
-	  while ($j <= $#splitresult){
-	    my $thisline=$splitresult[$j];
+	  my $yamlres=YAML::Load($res[0]);
+
+          my $database=$res[1];
+
+	  my @outputbuffer=@$yamlres;
+
+	  my $treffer=$#outputbuffer+1;
+
+	# Sortierung
+	
+	my @sortedoutputbuffer=();
+	
+	OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
+	  
+	  print "<tr bgcolor=\"lightblue\"><td>&nbsp;</td><td>".$dbinfo{"$database"}."</td><td align=right colspan=3><strong>$treffer Treffer</strong></td></tr>\n";
+	  
+	  my $linecolor="aliceblue";
+	  
+	  my $count=1;
+	  foreach my $item (@sortedoutputbuffer){
 	    
-	    if ($thisline =~/<tr bgcolor="white"><td bgcolor="lightblue"><strong>\d+<\/strong><\/td>(<td colspan=2>.+<\/td><\/tr>)/){
-	      my $line=$1;
-	      $outputbuffer[$idx++]=$line; 	  
-	      #	    print RES $outputbuffer[$idx-1];
-	    }
-	    elsif ($thisline =~/<tr bgcolor="aliceblue"><td bgcolor="lightblue"><strong>\d+<\/strong><\/td>(<td colspan=2>.+<\/td><\/tr>)/){
-	      my $line=$1;
-	      $outputbuffer[$idx++]=$line; 	  
-	      #	    print RES $outputbuffer[$idx-1];
-	    }
-	    elsif ($thisline =~/<tr bgcolor="lightblue"><td>&nbsp;/){
-	      print $thisline;
+	    my $author=@{$item}{verfasser};
+	    my $titidn=@{$item}{idn};
+	    my $title=@{$item}{title};
+	    my $publisher=@{$item}{publisher};
+	    my $signature=@{$item}{signatur};
+	    my $yearofpub=@{$item}{erschjahr};
+	    my $thisdatabase=@{$item}{database};
+	    
+            my $searchmode=2;
+            my $bookinfo=0;
+            my $rating=0;
+	    print << "TITITEM";
+
+<tr bgcolor="$linecolor"><td bgcolor="lightblue"><strong>$count</strong></td><td colspan=2><strong><span id="rlauthor">$author</span></strong><br /><a href="$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=;sorttype=$sorttype&database=$thisdatabase;searchsingletit=$titidn"><strong><span id="rltitle">$title</span></strong></a>, <span id="rlpublisher">$publisher</span> <span id="rlyearofpub">$yearofpub</span></td><td><a href="/portal/merkliste?sessionID=$sessionID;action=insert;database=$thisdatabase;singleidn=$titidn" target="header"><span id="rlmerken"><a href="/portal/merkliste?sessionID=$sessionID;action=insert;database=$thisdatabase;singleidn=$titidn" target="header" title="In die Merkliste"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="In die Merkliste" border=0></a></span></a></td><td align=left><b>$signature</b></td></tr>
+TITITEM
+
+	    if ($linecolor eq "white"){
+	      $linecolor="aliceblue";
 	    }
 	    else {
-	      #	    print RES $thisline."\n"; 
+	      $linecolor="white";
 	    }
-	    
-	    
-	    $j++;
-	  }
-	  
-	  # Sortierung
-	  
-	  my @sortedoutputbuffer=();
-	  
-	  OpenBib::ResultLists::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
-	  
-	  my $i=0;
-	  my $bgcolor="white";
-	  while ($i <= $#sortedoutputbuffer){
-	    print "<tr bgcolor=\"$bgcolor\"><td bgcolor=\"lightblue\"><strong>".($i+1)."</strong></td>".$sortedoutputbuffer[$i]."\n";
-	    
+
 	    # Eintraege merken fuer Lastresultset
 	    
-	    my ($katkey)=$sortedoutputbuffer[$i]=~/searchsingletit=(\d+)/;
-	    my ($resdatabase)=$sortedoutputbuffer[$i]=~/database=(\w+)/;
-	    push @resultset, { 'database' => $resdatabase,
-			       'idn' => $katkey
+	    push @resultset, { 'database' => $thisdatabase,
+			       'idn' => $titidn,
 			     };
+
 	    
-	    $i++;
-	    
-	    if ($bgcolor eq "white"){
-	      $bgcolor="aliceblue";
-	    }
-	    else {
-	      $bgcolor="white";
-	    }
+	    $count++;
 	    
 	  }
-	  
-	  print "<tr><td colspan=3>&nbsp;<td></tr>\n";
-	  
+
+	  print "<tr>\n<td colspan=3>&nbsp;<td></tr>\n";      
+
+
 	}
 	
 	#      close(RES);
@@ -543,70 +522,65 @@ HEADER
       # Katalogoriertierte Sortierung
       
       while (my @res=$idnresult->fetchrow){
-	my @splitresult=split("\n",$res[0]);
-	my $j=0;
-	my $idx=0;
-	my @outputbuffer=();
-	while ($j <= $#splitresult){
-	  my $thisline=$splitresult[$j];
-	  
-	  if ($thisline =~/<tr bgcolor="white"><td bgcolor="lightblue"><strong>\d+<\/strong><\/td>(<td colspan=2>.+<\/td><\/tr>)/){
-	    my $line=$1;
-	    $outputbuffer[$idx++]=$line; 	  
-	    #	    print RES $outputbuffer[$idx-1];
-	  }
-	  elsif ($thisline =~/<tr bgcolor="aliceblue"><td bgcolor="lightblue"><strong>\d+<\/strong><\/td>(<td colspan=2>.+<\/td><\/tr>)/){
-	    my $line=$1;
-	    $outputbuffer[$idx++]=$line; 	  
-	    #	    print RES $outputbuffer[$idx-1];
-	  }
-	  elsif ($thisline =~/<tr bgcolor="lightblue"><td>&nbsp;/){
-	    print $thisline;
-	  }
-	  else {
-	    #	    print RES $thisline."\n"; 
-	  }
-	  
-	  
-	  $j++;
-	}
-	
+	my $yamlres=YAML::Load($res[0]);
+
+	my @outputbuffer=@$yamlres;
+
+	my $treffer=$#outputbuffer+1;
+
+
 	# Sortierung
 	
 	my @sortedoutputbuffer=();
 	
-	OpenBib::ResultLists::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
-	
-	my $i=0;
-	my $bgcolor="white";
-	while ($i <= $#sortedoutputbuffer){
-	  print "<tr bgcolor=\"$bgcolor\"><td bgcolor=\"lightblue\"><strong>".($i+1)."</strong></td>".$sortedoutputbuffer[$i]."\n";
+	OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
+
 	  
-	  # Eintraege merken fuer Lastresultset
+	print "<tr bgcolor=\"lightblue\"><td>&nbsp;</td><td>".$dbinfo{"$trefferliste"}."</td><td align=right colspan=3><strong>$treffer Treffer</strong></td></tr>\n";
 	  
-	  my ($katkey)=$sortedoutputbuffer[$i]=~/searchsingletit=(\d+)/;
-	  my ($resdatabase)=$sortedoutputbuffer[$i]=~/database=(\w+)/;
-	  push @resultset, { 'database' => $resdatabase,
-			     'idn' => $katkey
-			   };
-	    	  
-	  $i++;
-	  if ($bgcolor eq "white"){
-	    $bgcolor="aliceblue";
+	  my $linecolor="aliceblue";
+	  
+	  my $count=1;
+	  foreach my $item (@sortedoutputbuffer){
+	    
+	    my $author=@{$item}{verfasser};
+	    my $titidn=@{$item}{idn};
+	    my $title=@{$item}{title};
+	    my $publisher=@{$item}{publisher};
+	    my $signature=@{$item}{signatur};
+	    my $yearofpub=@{$item}{erschjahr};
+	    my $thisdatabase=@{$item}{database};
+
+            my $searchmode=2;
+            my $bookinfo=0;
+            my $rating=0;
+	    
+	    print << "TITITEM";
+<tr bgcolor="$linecolor"><td bgcolor="lightblue"><strong>$count</strong></td><td colspan=2><strong><span id="rlauthor">$author</span></strong><br /><a href="$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=;sorttype=$sorttype&database=$thisdatabase;searchsingletit=$titidn"><strong><span id="rltitle">$title</span></strong></a>, <span id="rlpublisher">$publisher</span> <span id="rlyearofpub">$yearofpub</span></td><td><a href="/portal/merkliste?sessionID=$sessionID;action=insert;database=$thisdatabase;singleidn=$titidn" target="header"><span id="rlmerken"><a href="/portal/merkliste?sessionID=$sessionID;action=insert;database=$thisdatabase;singleidn=$titidn" target="header" title="In die Merkliste"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="In die Merkliste" border=0></a></span></a></td><td align=left><b>$signature</b></td></tr>
+TITITEM
+
+	    if ($linecolor eq "white"){
+	      $linecolor="aliceblue";
+	    }
+	    else {
+	      $linecolor="white";
+	    }
+	    
+
+	    # Eintraege merken fuer Lastresultset
+	    
+	    push @resultset, { 'database' => $thisdatabase,
+			       'idn' => $titidn,
+			     };
+
+	    $count++;
+	    
 	  }
-	  else {
-	    $bgcolor="white";
-	  }
-	  
-	}
-	
-	print "<tr><td colspan=3>&nbsp;<td></tr>\n";
-	
+
+	  print "<tr>\n<td colspan=3>&nbsp;<td></tr>\n";      
+
+
       }
-      
-      #    while (my @res=$idnresult->fetchrow){
-      #      print $res[0]; 
-      #    }
       
       OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@resultset);
       

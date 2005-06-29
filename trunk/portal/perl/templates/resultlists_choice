@@ -1,0 +1,154 @@
+[% PROCESS std_header %]
+
+<FORM METHOD="GET">
+
+<ul id="tabbingmenu">
+   <li><a class="active" href="[% config.resultlists_loc %]?sessionID=[% sessionID %];trefferliste=choice;view=[% view %]">Trefferliste</a></li>
+</ul>
+
+<div id="content">
+
+<p>
+
+
+
+<table width="100%">
+<tr>
+[% IF queryid %]
+<th>Ausgew&auml;hlte Recherche</th>
+[% ELSE %]
+<th>Aktuelle Recherche</th>
+[% END %]
+</tr>
+
+<tr><td class="boxedclear">
+
+<table>
+
+<tr><td colspan="2">(
+[%- IF thisquery.fs -%]
+&nbsp;FS: [% thisquery.fs %] 
+[%- END -%]
+[%- IF thisquery.verf -%]
+&nbsp;AUT: [% thisquery.verf %]
+[%- END -%]
+[%- IF thisquery.hst -%]
+&nbsp;HST: [% thisquery.hst %]
+[%- END -%]
+[%- IF thisquery.swt -%]
+&nbsp;SWT: [% thisquery.swt %]
+[%- END -%]
+[%- IF thisquery.kor -%]
+&nbsp;KOR: [% thisquery.kor %]
+[%- END -%]
+[%- IF thisquery.notation -%]
+&nbsp;NOT: [% thisquery.notation %] 
+[%- END -%]
+[%- IF thisquery.sign -%]
+&nbsp;SIG: [% thisquery.sign %]
+[%- END -%]
+[%- IF thisquery.ejahr -%]
+&nbsp;EJAHR: [% thisquery.ejahr %]
+[%- END -%]
+[%- IF thisquery.isbn -%]
+&nbsp;ISBN: [% thisquery.isbn %]
+[%- END -%]
+[%- IF thisquery.issn -%]
+&nbsp;ISSN: [% thisquery.issn %]
+[%- END -%]
+[%- IF thisquery.mart -%]
+&nbsp;MART: [% thisquery.mart %]
+[%- END -%]
+[%- IF thisquery.hststring -%]
+&nbsp;HSTR: [% thisquery.hststring %] 
+[%- END -%]
+)</td></tr>
+<tr><td colspan="2"></td></tr>
+
+<tr><td>Katalog</td><td>Treffer</td></tr>
+<tr><td bgcolor="aliceblue"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %]&trefferliste=all&sortall=0&sorttype=author&queryid=[% thisqueryid %]"><b>Alle Treffer</b></a></td><td align=right>[% hitcount %]</td></tr>
+      
+<tr><td bgcolor="white">&nbsp;</td><td align=right>&nbsp;</td></tr>
+
+      
+[% bgcolor = 'aliceblue' %]
+[% FOREACH resultdb IN resultdbs %]
+<tr><td bgcolor="[% bgcolor %]"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %]&trefferliste=[% resultdb.trefferdb %]&queryid=[% thisqueryid %]"><b>[% resultdb.trefferdbdesc %]</b></a></td><td align=right>[% resultdb.trefferzahl %]</td></tr>
+[% IF bgcolor == 'white' %]
+[% bgcolor = 'aliceblue' %]
+[% ELSE %]
+[% bgcolor = 'white' %]
+[% END %]
+
+[% END %]
+
+
+      
+</table>
+
+</td></tr>
+
+</table>
+<p />
+
+[% IF queryids.size > 0 %]
+<form method="get" action="[% config.virtualsearch_loc %]">
+<input type="hidden" name="sessionID" value="[% sessionID %]">
+<input type="hidden" name="trefferliste" value="choice">
+	  
+<p><table width=\"100%\"><tr>
+<th>Alle bisherigen Recherchen</th></tr>
+<tr><td class="boxedclear">
+<select name="queryid">
+
+[% FOREACH query IN queries %]	  
+<OPTION value="[% query.id %]">(
+[%- IF query.fs -%]
+&nbsp;FS: [% query.fs %] 
+[%- END -%]
+[%- IF query.verf -%]
+&nbsp;AUT: [% query.verf %]
+[%- END -%]
+[%- IF query.hst -%]
+&nbsp;HST: [% query.hst %]
+[%- END -%]
+[%- IF query.swt -%]
+&nbsp;SWT: [% query.swt %]
+[%- END -%]
+[%- IF query.kor -%]
+&nbsp;KOR: [% query.kor %]
+[%- END -%]
+[%- IF query.notation -%]
+&nbsp;NOT: [% query.notation %] 
+[%- END -%]
+[%- IF query.sign -%]
+&nbsp;SIG: [% query.sign %]
+[%- END -%]
+[%- IF query.ejahr -%]
+&nbsp;EJAHR: [% query.ejahr %]
+[%- END -%]
+[%- IF query.isbn -%]
+&nbsp;ISBN: [% query.isbn %]
+[%- END -%]
+[%- IF query.issn -%]
+&nbsp;ISSN: [% query.issn %]
+[%- END -%]
+[%- IF query.mart -%]
+&nbsp;MART: [% query.mart %]
+[%- END -%]
+[%- IF query.hststring -%]
+&nbsp;HSTR: [% query.hststring %] 
+[%- END -%]
+= Treffer: [% query.hits %])
+</OPTION>
+[% END %]	    
+</select>
+<input type=submit value="Auswahl"></td></tr></table></form>
+
+[% END %]
+
+</div>
+<p />
+
+
+[% PROCESS std_footer %]

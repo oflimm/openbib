@@ -43,6 +43,8 @@ use LWP::UserAgent;
 use HTTP::Request;
 use HTTP::Response;
 
+use YAML ();
+
 use POSIX;
 
 use Digest::MD5;
@@ -108,18 +110,6 @@ sub handler {
   my $ejahr=$query->param('ejahr') || '';
   my $ejahrop=$query->param('ejahrop') || '=';
   my $verknuepfung=$query->param('verknuepfung') || '';
-  my $bool1=$query->param('bool1') || '';
-  my $bool2=$query->param('bool2') || '';
-  my $bool3=$query->param('bool3') || '';
-  my $bool4=$query->param('bool4') || '';
-  my $bool5=$query->param('bool5') || '';
-  my $bool6=$query->param('bool6') || '';
-  my $bool7=$query->param('bool7') || '';
-  my $bool8=$query->param('bool8') || '';
-  my $bool9=$query->param('bool9') || '';
-  my $bool10=$query->param('bool10') || '';
-  my $bool11=$query->param('bool11') || '';
-  my $bool12=$query->param('bool12') || '';
   my @databases=($query->param('database'))?$query->param('database'):();
   my $starthit=($query->param('starthit'))?$query->param('starthit'):1;
   my $hitrange=($query->param('hitrange'))?$query->param('hitrange'):20;
@@ -136,6 +126,88 @@ sub handler {
   my $autoplus=$query->param('autoplus') || '';
   my $queryid=$query->param('queryid') || '';
   my $view=$query->param('view') || '';
+
+  #####################################################################
+  ## boolX: Verkn"upfung der Eingabefelder (leere Felder werden ignoriert)
+  ##        AND  - Und-Verkn"upfung
+  ##        OR   - Oder-Verkn"upfung
+  ##        NOT  - Und Nicht-Verknuepfung
+  
+  my $boolverf=($query->param('bool9'))?$query->param('bool9'):"AND";
+  my $boolhst=($query->param('bool1'))?$query->param('bool1'):"AND";
+  my $boolswt=($query->param('bool2'))?$query->param('bool2'):"AND";
+  my $boolkor=($query->param('bool3'))?$query->param('bool3'):"AND";
+  my $boolnotation=($query->param('bool4'))?$query->param('bool4'):"AND";
+  my $boolisbn=($query->param('bool5'))?$query->param('bool5'):"AND";
+  my $boolissn=($query->param('bool8'))?$query->param('bool8'):"AND";
+  my $boolsign=($query->param('bool6'))?$query->param('bool6'):"AND";
+  my $boolejahr=($query->param('bool7'))?$query->param('bool7'):"AND";
+  my $boolfs=($query->param('bool10'))?$query->param('bool10'):"AND";
+  my $boolmart=($query->param('bool11'))?$query->param('bool11'):"AND";
+  my $boolhststring=($query->param('bool12'))?$query->param('bool12'):"AND";
+
+
+  # Sicherheits-Checks
+
+  if ($boolverf ne "AND" && $boolverf ne "OR" && $boolverf ne "NOT"){
+    $boolverf="AND";
+  }
+
+  if ($boolhst ne "AND" && $boolhst ne "OR" && $boolhst ne "NOT"){
+    $boolhst="AND";
+  }
+
+  if ($boolswt ne "AND" && $boolswt ne "OR" && $boolswt ne "NOT"){
+    $boolswt="AND";
+  }
+
+  if ($boolkor ne "AND" && $boolkor ne "OR" && $boolkor ne "NOT"){
+    $boolkor="AND";
+  }
+
+  if ($boolnotation ne "AND" && $boolnotation ne "OR" && $boolnotation ne "NOT"){
+    $boolnotation="AND";
+  }
+
+  if ($boolisbn ne "AND" && $boolisbn ne "OR" && $boolisbn ne "NOT"){
+    $boolisbn="AND";
+  }
+
+  if ($boolissn ne "AND" && $boolissn ne "OR" && $boolissn ne "NOT"){
+    $boolissn="AND";
+  }
+
+  if ($boolsign ne "AND" && $boolsign ne "OR" && $boolsign ne "NOT"){
+    $boolsign="AND";
+  }
+
+  if ($boolejahr ne "AND"){
+    $boolejahr="AND";
+  }
+
+  if ($boolfs ne "AND" && $boolfs ne "OR" && $boolfs ne "NOT"){
+    $boolfs="AND";
+  }
+
+  if ($boolmart ne "AND" && $boolmart ne "OR" && $boolmart ne "NOT"){
+    $boolmart="AND";
+  }
+
+  if ($boolhststring ne "AND" && $boolhststring ne "OR" && $boolhststring ne "NOT"){
+    $boolhststring="AND";
+  }
+
+  $boolverf="AND NOT" if ($boolverf eq "NOT");
+  $boolhst="AND NOT" if ($boolhst eq "NOT");
+  $boolswt="AND NOT" if ($boolswt eq "NOT");
+  $boolkor="AND NOT" if ($boolkor eq "NOT");
+  $boolnotation="AND NOT" if ($boolnotation eq "NOT");
+  $boolisbn="AND NOT" if ($boolisbn eq "NOT");
+  $boolissn="AND NOT" if ($boolissn eq "NOT");
+  $boolsign="AND NOT" if ($boolsign eq "NOT");
+  $boolfs="AND NOT" if ($boolfs eq "NOT");
+  $boolmart="AND NOT" if ($boolmart eq "NOT");
+  $boolhststring="AND NOT" if ($boolhststring eq "NOT");
 
 
   # Filter: ISBN und ISSN
@@ -190,43 +262,76 @@ sub handler {
     $hitrange=-1;
   }
 
+  my %titeltyp=(
+		'1' => 'Einb&auml;ndige Werke und St&uuml;cktitel',
+		'2' => 'Gesamtaufnahme fortlaufender Sammelwerke',
+		'3' => 'Gesamtaufnahme mehrb&auml;ndig begrenzter Werke',
+		'4' => 'Bandauff&uuml;hrung',
+		'5' => 'Unselbst&auml;ndiges Werk',
+		'6' => 'Allegro-Daten',
+		'7' => 'Lars-Daten',
+		'8' => 'Sisis-Daten',
+		'9' => 'Sonstige Daten'  
+	       );
+
+  
+  #####################################################################
+  # Dynamische Definition diverser Variablen
+  
   # Verweis: Datenbankname -> Informationen zum zugeh"origen Institut/Seminar
   
-  my $dbinforesult=$sessiondbh->prepare("select dbname,url,description from dbinfo") or $logger->error($DBI::errstr);
-  $dbinforesult->execute() or $logger->error($DBI::errstr);
+  my $dbinforesult=$sessiondbh->prepare("select dbname,sigel,url,description from dbinfo") or $logger->error($DBI::errstr);
+  $dbinforesult->execute() or $logger->error($DBI::errstr);;
   
+  my %sigel=();
+  my %bibinfo=();
+  my %dbinfo=();
   my %dbases=();
   my %dbnames=();
-  
+
   while (my $result=$dbinforesult->fetchrow_hashref()){
     my $dbname=$result->{'dbname'};
+    my $sigel=$result->{'sigel'};
     my $url=$result->{'url'};
     my $description=$result->{'description'};
+    
+    ##################################################################### 
+    ## Wandlungstabelle Bibliothekssigel <-> Bibliotheksname
+    
+    $sigel{"$sigel"}="$description";
+    
+    #####################################################################
+    ## Wandlungstabelle Bibliothekssigel <-> Informations-URL
+    
+    $bibinfo{"$sigel"}="$url";
+    
+    #####################################################################
+    ## Wandlungstabelle  Name SQL-Datenbank <-> Datenbankinfo
     
     # Wenn ein URL fuer die Datenbankinformation definiert ist, dann wird
     # damit verlinkt
     
     if ($url ne ""){
-      $dbases{"$dbname"}="<a href=\"$url\" target=_blank>$description</a>";
+      $dbinfo{"$dbname"}="<a href=\"$url\" target=_blank>$description</a>";
     }
     else {
-      $dbases{"$dbname"}="$description";
+      $dbinfo{"$dbname"}="$description";
     }
+    
+    #####################################################################
+    ## Wandlungstabelle  Name SQL-Datenbank <-> Bibliothekssigel
+    
+    $dbases{"$dbname"}="$sigel";
+
     $dbnames{"$dbname"}=$description;
   }
   
-  $dbinforesult->finish();
-  
-  my %fakultaeten=(
-		   '0ungeb' => '1',
-		   '1wiso' => '1',
-		   '2recht' => '1',
-		   '3ezwheil' => '1',
-		   '4phil' => '1',
-		   '5matnat' => '1'
-		  );
-  
-  $profil="" if ((!defined $fakultaeten{$profil}) && $profil ne "dbauswahl" && !$profil=~/^user/);
+  $sigel{''}="Unbekannt";
+  $bibinfo{''}="http://www.ub.uni-koeln.de/dezkat/bibinfo/noinfo.html";
+  $dbases{''}="Unbekannt";
+
+
+  $profil="" if ((!exists $config{units}{$profil}) && $profil ne "dbauswahl" && !$profil=~/^user/ && $profil ne "alldbs");
   
   my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
   
@@ -298,7 +403,17 @@ sub handler {
       $profilresult->finish();
       
     }
-    # Fakultaetsspezifische Datenbankprofile
+    elsif ($profil eq "alldbs"){
+    # Alle Datenbanken
+      my $idnresult=$sessiondbh->prepare("select dbname from dbinfo where active=1 order by faculty,dbname") or $logger->error($DBI::errstr);
+      $idnresult->execute() or $logger->error($DBI::errstr);
+      
+      my @idnres;
+      while (@idnres=$idnresult->fetchrow){	    
+	push @databases, $idnres[0];
+      }
+      $idnresult->finish();
+    }
     else {
       my $idnresult=$sessiondbh->prepare("select dbname from dbinfo where active=1 and faculty = ? order by faculty,dbname") or $logger->error($DBI::errstr);
       $idnresult->execute($profil) or $logger->error($DBI::errstr);
@@ -613,7 +728,7 @@ sub handler {
     }        
   }
   
-  if ($bool7 eq "OR"){
+  if ($boolejahr eq "OR"){
     if ($ejahr){
       OpenBib::Common::Util::print_warning("Das Suchkriterium Jahr ist nur in Verbindung mit der
 UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&ouml;glich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verst&auml;ndnis f&uuml;r diese Einschr&auml;nkung.",$r);
@@ -621,7 +736,7 @@ UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&oum
     }
   }
   
-  if ($bool7 eq "AND"){
+  if ($boolejahr eq "AND"){
     if ($ejahr){
       if (!$firstsql){
 	OpenBib::Common::Util::print_warning("Das Suchkriterium Jahr ist nur in Verbindung mit der
@@ -672,130 +787,146 @@ HEADER
   
   print"<table>\n";
   
-  # Plus-Zeichen nicht verlieren...!
-  
-  $fs=~s/\+/%2B/g;
-  $verf=~s/\+/%2B/g;
-  $hst=~s/\+/%2B/g;
-  $swt=~s/\+/%2B/g;
-  $kor=~s/\+/%2B/g;
-  $notation=~s/\+/%2B/g;
-  $sign=~s/\+/%2B/g;
-  $isbn=~s/\+/%2B/g;
-  $issn=~s/\+/%2B/g;
-  $ejahr=~s/\+/%2B/g;
-  
-  
   my $gesamttreffer=0;
-  my $database;
   
   # BEGIN Anfrage an Datenbanken schicken und Ergebnisse einsammeln
   #
   ######################################################################
   # Schleife ueber alle Datenbanken 
   ######################################################################
-  
+
+
   my @resultset=();
   
-  foreach $database (@databases){
+  foreach my $database (@databases){
 
-
-    my $suchstring="sessionID=$sessionID&search=$search&fs=$fs&verf=$verf&hst=$hst&hststring=$hststring&swt=$swt&kor=$kor&sign=$sign&isbn=$isbn&issn=$issn&mart=$mart&notation=$notation&verknuepfung=$verknuepfung&ejahr=$ejahr&ejahrop=$ejahrop&searchmode=$searchmode&maxhits=$maxhits&hitrange=-1&searchall=$searchall&dbmode=$dbmode&bool1=$bool1&bool2=$bool2&bool3=$bool3&bool4=$bool4&bool5=$bool5&bool6=$bool6&bool7=$bool7&bool8=$bool8&bool9=$bool9&bool10=$bool10&bool11=$bool11&bool12=$bool12&sorttype=$sorttype&sortorder=$sortorder&database=$database";
-
-    my $request=new HTTP::Request GET => "$befehlsurl?$suchstring";
+    #####################################################################
+    ## Ausleihkonfiguration fuer den Katalog einlesen
     
-    $logger->debug("Sending ",$suchstring," to ",$befehlsurl);
+    my $dbinforesult=$sessiondbh->prepare("select circ,circurl,circcheckurl,circdb from dboptions where dbname = ?") or $logger->error($DBI::errstr);
+    $dbinforesult->execute($database) or $logger->error($DBI::errstr);;
     
-    my $response=$ua->request($request);
+    my $circ=0;
+    my $circurl="";
+    my $circcheckurl="";
+    my $circdb="";
     
-    if ($response->is_success) {
-      $logger->debug("Getting ", $response->content);
+    while (my $result=$dbinforesult->fetchrow_hashref()){
+      $circ=$result->{'circ'};
+      $circurl=$result->{'circurl'};
+      $circcheckurl=$result->{'circcheckurl'};
+      $circdb=$result->{'circdb'};
     }
-    else {
-      $logger->error("Getting ", $response->status_line);
-    }
     
-    my $ergebnis=$response->content();
+    $dbinforesult->finish();
     
-    my $multiple=OpenBib::VirtualSearch::Util::is_multiple_tit($ergebnis);
-    my $single=OpenBib::VirtualSearch::Util::is_single_tit($ergebnis,$befehlsurl,$database,$hitrange,$sessionID,$sorttype);
-    
-    my $outputbuffer="";
-    my $treffer=0;
-    
-    my $linecolor="aliceblue";
-    
-    if ($multiple){
-      my @titel=OpenBib::VirtualSearch::Util::extract_singletit_from_multiple($ergebnis,$hitrange,\%dbases,$sorttype);
-      my $tit;
-      foreach $tit (@titel){
+
+    my $dbh=DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd}) or $logger->error_die($DBI::errstr);
+
+    my @tidns=OpenBib::Search::Util::initital_search_for_titidns($fs,$verf,$hst,$hststring,$swt,$kor,$notation,$isbn,$issn,$sign,$ejahr,$ejahrop,$mart,$boolfs,$boolverf,$boolhst,$boolhststring,$boolswt,$boolkor,$boolnotation,$boolisbn,$boolissn,$boolsign,$boolejahr,$boolmart,$dbh,$maxhits);
+
+
+    # Wenn mindestens ein Treffer gefunden wurde
+
+    if ($#tidns >= 0){
+      my @outputbuffer=();
+      my $outidx=0;
+      
+      my $atime;
+      my $btime;
+      my $timeall;
+      
+      if ($config{benchmark}){
+	$atime=new Benchmark;
+      }
+      
+      my $searchmultipleaut=0;
+      my $searchmultiplekor=0;
+      my $searchmultipleswt=0;
+      my $searchmultipletit=0;
+      my $rating=0;
+      my $bookinfo=0;
+
+      foreach my $idn (@tidns){
+
+	# Zuerst in Resultset eintragen zur spaeteren Navigation
 	
-	# Wenn wir keinen leeren Titel in der Trefferzeile haben, dann...
-	if (!($tit=~/<span id=.rltitle.> <.span>/)){
-	  $treffer++;
-	  $outputbuffer.="<tr bgcolor=\"$linecolor\"><td bgcolor=\"lightblue\"><strong>$treffer</strong></td>".$tit."\n";
-	  
-	  my $katkey="";
-	  
-	  ($katkey)=$tit=~/searchsingletit=(\d+)/;
-	  push @resultset, { 'database' => $database,
-			     'idn' => $katkey
-			   };
-	    	  
-	  
-	}
-	# .. ansonsten wird ein generischer Text als HST gesetzt
-	else {
-	  $treffer++;
-	  $tit=~s/<span id=.rltitle.> <.span>/<strong>&lt;Kein HST\/AST\/EST vorhanden&gt;<\/strong>/;
-	  $outputbuffer.="<tr bgcolor=\"$linecolor\"><td bgcolor=\"lightblue\"><strong>$treffer</strong></td>".$tit."\n";
-	  
-	}
+	push @resultset, { 'database' => $database,
+			   'idn' => $idn
+			 };
 	
+	
+	if (length($idn)>0){
+	  $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_listitem_by_idn("$idn","none",5,$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
+	}
+      }	    
+
+      if ($config{benchmark}){
+	$btime=new Benchmark;
+	$timeall=timediff($btime,$atime);
+	$logger->info("Zeit fuer : $outidx Titel : ist ".timestr($timeall));
+	undef $atime;
+	undef $btime;
+	undef $timeall;
+      }
+      
+      my @sortedoutputbuffer=();
+      
+      
+      OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
+
+      my $treffer=$#sortedoutputbuffer+1;
+
+      print "<tr bgcolor=\"lightblue\"><td>&nbsp;</td><td>".$dbinfo{"$database"}."</td><td align=right colspan=3><strong>$treffer Treffer</strong></td></tr>\n";
+
+      my $linecolor="aliceblue";
+      
+      my $count=1;
+      foreach my $item (@sortedoutputbuffer){
+
+	my $author=@{$item}{verfasser};
+	my $titidn=@{$item}{idn};
+	my $title=@{$item}{title};
+	my $publisher=@{$item}{publisher};
+	my $signature=@{$item}{signatur};
+	my $yearofpub=@{$item}{erschjahr};
+	my $thisdatabase=@{$item}{database};
+
+	print << "TITITEM";
+<tr bgcolor="$linecolor"><td bgcolor="lightblue"><strong>$count</strong></td><td colspan=2><strong><span id="rlauthor">$author</span></strong><br /><a href="$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=;sorttype=$sorttype&database=$thisdatabase;searchsingletit=$titidn"><strong><span id="rltitle">$title</span></strong></a>, <span id="rlpublisher">$publisher</span> <span id="rlyearofpub">$yearofpub</span></td><td><a href="/portal/merkliste?sessionID=$sessionID;action=insert;database=$thisdatabase;singleidn=$titidn" target="header"><span id="rlmerken"><a href="/portal/merkliste?sessionID=$sessionID;action=insert;database=$thisdatabase;singleidn=$titidn" target="header" title="In die Merkliste"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="In die Merkliste" border=0></a></span></a></td><td align=left><b>$signature</b></td></tr>
+TITITEM
+
 	if ($linecolor eq "white"){
 	  $linecolor="aliceblue";
 	}
 	else {
 	  $linecolor="white";
 	}
-      } 
-    }
-    
-    if ($single ne "none"){
-      if (!($single=~/<strong> <.strong><.a>,/)){
-	$treffer++;
-	$outputbuffer.="<tr bgcolor=\"aliceblue\"><td bgcolor=\"lightblue\"><strong>$treffer</strong></td>".$single."</td></tr>\n";
-	my ($katkey)=$single=~/searchsingletit=(\d+)/;
-	
-	push @resultset, { 'database' => $database,
-			   'idn' => $katkey
-			 };
+
+        $count++;
+
       }
-      else {
-	$treffer++;
-	$single=~s/<strong> <.strong>/<strong>&lt;Kein HST\/AST\/EST vorhanden&gt;<\/strong>/;
-	$outputbuffer.="<tr bgcolor=\"aliceblue\"><td bgcolor=\"lightblue\"><strong>$treffer</strong></td>".$single."</td></tr>\n";
-      }
-    }
-    
-    
-    if ($treffer != 0){
-      my $tmp="<tr bgcolor=\"lightblue\"><td>&nbsp;</td><td>".$dbases{"$database"}."</td><td align=right colspan=3><strong>$treffer Treffer</strong></td></tr>\n$outputbuffer<tr>\n<td colspan=3>&nbsp;<td></tr>\n";
-      print $tmp;
-      $r->rflush();
-      $trefferpage{$database}=$tmp;
+
+      print "<tr>\n<td colspan=3>&nbsp;<td></tr>\n";      
+      $trefferpage{$database}=\@sortedoutputbuffer;
       $dbhits{$database}=$treffer;
+      $gesamttreffer=$gesamttreffer+$treffer;
+
+
     }
+
+    $dbh->disconnect;
+
+    $r->rflush();
+
     
-    $gesamttreffer+=$treffer;
-    $ergidx++;
   }
   
   ######################################################################
   #
   # ENDE Anfrage an Datenbanken schicken und Ergebnisse einsammeln
 
-  $logger->info("InitialSearch: ", $sessionID, " ", $gesamttreffer, " fs=(", $fs, ") verf=(", $bool9, "#", $verf, ") hst=(", $bool1, "#", $hst, ") hststring=(", $bool12, "#", $hststring, ") swt=(", $bool2, "#", $swt, ") kor=(", $bool3, "#", $kor, ") sign=(", $bool6, "#", $sign, ") isbn=(", $bool5, "#", $isbn, ") issn=(", $bool8, "#", $issn, ") mart=(", $bool11, "#", $mart, ") notation=(", $bool4, "#", $notation, ") ejahr=(", $bool7, "#", $ejahr, ") ejahrop=(", $ejahrop, ") databases=(",join(' ',sort @databases),") ");
+  $logger->info("InitialSearch: ", $sessionID, " ", $gesamttreffer, " fs=(", $fs, ") verf=(", $boolverf, "#", $verf, ") hst=(", $boolhst, "#", $hst, ") hststring=(", $boolhststring, "#", $hststring, ") swt=(", $boolswt, "#", $swt, ") kor=(", $boolkor, "#", $kor, ") sign=(", $boolsign, "#", $sign, ") isbn=(", $boolisbn, "#", $isbn, ") issn=(", $boolissn, "#", $issn, ") mart=(", $boolmart, "#", $mart, ") notation=(", $boolnotation, "#", $notation, ") ejahr=(", $boolejahr, "#", $ejahr, ") ejahrop=(", $ejahrop, ") databases=(",join(' ',sort @databases),") ");
 
   # Wenn nichts gefunden wurde, dann entsprechende Information
   
@@ -831,7 +962,7 @@ HEADER
     
     my $dbasesstring=join("||",@databases);
 
-    my $thisquerystring="$fs||$verf||$hst||$swt||$kor||$sign||$isbn||$issn||$notation||$mart||$ejahr||$hststring||$bool1||$bool2||$bool3||$bool4||$bool5||$bool6||$bool7||$bool8||$bool9||$bool10||$bool11||$bool12";
+    my $thisquerystring="$fs||$verf||$hst||$swt||$kor||$sign||$isbn||$issn||$notation||$mart||$ejahr||$hststring||$boolhst||$boolswt||$boolkor||$boolnotation||$boolisbn||$boolsign||$boolejahr||$boolissn||$boolverf||$boolfs||$boolmart||$boolhststring";
     my $idnresult=$sessiondbh->prepare("select * from queries where query = ? and sessionid = ? and dbases = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($thisquerystring,$sessionID,$dbasesstring) or $logger->error($DBI::errstr);
     
@@ -866,8 +997,13 @@ HEADER
       
       foreach $db (keys %trefferpage){
 	my $res=$trefferpage{$db};
+
+	my $yamlres=YAML::Dump($res);
+
+
+	$logger->info("YAML-Dumped: $yamlres");
 	my $num=$dbhits{$db};
-	$idnresult->execute($sessionID,$db,$res,$num,$queryid) or $logger->error($DBI::errstr);
+	$idnresult->execute($sessionID,$db,$yamlres,$num,$queryid) or $logger->error($DBI::errstr);
       }
     }
     

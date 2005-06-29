@@ -28,6 +28,8 @@ package OpenBib::VirtualSearch::Util;
 use strict;
 use warnings;
 
+use Log::Log4perl qw(get_logger :levels);
+
 use OpenBib::Config;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
@@ -259,6 +261,12 @@ sub conv2autoplus {
 
   my ($eingabe)=@_;
 
+  # Log4perl logger erzeugen
+  
+  my $logger = get_logger();
+
+  $logger->info("Original: $eingabe");
+
   my @phrasenbuf=();
 
   chomp($eingabe);
@@ -292,6 +300,10 @@ sub conv2autoplus {
   # Kombination -+ wird nun eliminiert
   $eingabe=~s/-%2B/-/gi;
 
+  # URL-Code fuer + in richtiges Plus umwandeln
+  $eingabe=~s/%2B/+/g;
+
+
   push @phrasenbuf, $eingabe;
 
   # Gemerkte Phrase werden wieder hinzugefuegt
@@ -299,6 +311,8 @@ sub conv2autoplus {
   if ($#phrasenbuf >= 0){
      $eingabe=join(" ",@phrasenbuf);
    }
+
+  $logger->info("Gewandelt: $eingabe");
 
   return $eingabe;
 

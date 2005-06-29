@@ -3279,7 +3279,7 @@ sub get_tit_set_by_idn {
     $titresult->execute($titres4->{verwidn}) or $logger->error($DBI::errstr);
     my $titres=$titresult->fetchrow_hashref;
     
-    push @normset, set_url_category("GTM","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;singlegtm=$titres4->{verwidn};generalsearch=singlegtm",$titres->{hst}," ; $titres4->{zus}");
+    push @normset, set_url_category("Gesamttitel","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;singlegtm=$titres4->{verwidn};generalsearch=singlegtm",$titres->{hst}," ; $titres4->{zus}");
     
   }
   $titresult4->finish();
@@ -3336,7 +3336,7 @@ sub get_tit_set_by_idn {
       $asthst=$asthst." / ".$verfurh;
     }
     
-    push @normset, set_url_category("GTF","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;singlegtf=$titres5->{verwidn};generalsearch=singlegtf",$asthst," ; $titres5->{zus}");
+    push @normset, set_url_category("Gesamttitel","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;singlegtf=$titres5->{verwidn};generalsearch=singlegtf",$asthst," ; $titres5->{zus}");
     
   }
   $titresult5->finish();
@@ -3431,7 +3431,7 @@ sub get_tit_set_by_idn {
       $zusatz=~s/^.+? \; (.+?)$/$1/;
     }
     
-    push @normset, set_url_category("IN verkn","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;singlegtf=$titverw;generalsearch=singlegtf",$verkn," ; $zusatz ");
+    push @normset, set_url_category("In:","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;singlegtf=$titverw;generalsearch=singlegtf",$verkn," ; $zusatz ");
     
   }
   
@@ -3841,7 +3841,7 @@ sub get_tit_set_by_idn {
   $verkntit=get_number(\@requests,$dbh);
   if ($verkntit > 0){
     
-    push @normset, set_url_category("Teil. UW","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;invktit=$titres1->{idn};generalsearch=invktit",$verkntit);
+    push @normset, set_url_category("Teile","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;invktit=$titres1->{idn};generalsearch=invktit",$verkntit);
     
   }
   
@@ -5388,6 +5388,8 @@ sub initital_search_for_titidns {
   my @requests=($sqlquerystring);
   
   @tidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
+
+  $logger->info("Treffer: ".$#tidns);
 
   if ($config{benchmark}){
     $btime=new Benchmark;

@@ -6,36 +6,26 @@
 <body bgcolor="white">
 
 <table width="100%">
-<tr><th>Virtueller K&ouml;rperschaftsindex: [% kor %]</b></th></tr>
+<tr><th>Virtueller K&ouml;rperschaftsindex: [% kor %]</b> / <b>Treffer: [% korindex.size %]</b></th></tr>
 <tr><td class="boxedclear" style="font-size:12pt">
 
-<table cellpadding=2>
-    
+[% PROCESS common/navitembar %]
+
 [% FOREACH item IN korindex %]
 
-<table border="0" cellspacing="0" cellpadding="0" width="100%">
-<tr><td class="boxedfull" align="left">
+[% IF offset >= 0 && hitrange > 0 %]
+[% IF loop.count >= offset && loop.count < offset+hitrange %]
 
-<table border="0" cellspacing="0" cellpadding="0" width="100%">
-<tr bgcolor="lightblue"><td align="left">[% item.key %]</td><td align="right">[% item.value.titanzahl %]</td></tr>
-[% bgcolor = 'white' %]
-[% FOREACH dbitem IN item.value.databases %]
-<tr bgcolor="[% bgcolor %]"><td align="left"><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;searchmode=[% searchmode %];rating=[% rating %];bookinfo=[% bookinfo %];hitrange=[% hitrange %];database=[% dbitem.dbname %];searchtitofurhkor=[% dbitem.koridn %]" target="body">[% dbitem.dbdesc %]</a></td><td align="right">[% dbitem.titanzahl %]</td></tr>
-[% IF bgcolor == 'white' %]
-[% bgcolor = 'aliceblue' %]
+[% PROCESS virtualsearch_showkorindex_item %]
+
+[% END %]
+
 [% ELSE %]
-[% bgcolor = 'white' %]
-[% END %]
-[% END %]
-</table>
 
-</td></tr>
-</table>
-<p />
+[% PROCESS virtualsearch_showkorindex_item %]
 
 [% END %]
-
-</table>
+[% END %]
 
 </td></tr>
 </table>
@@ -45,17 +35,14 @@
 <tr><td bgcolor="lightblue">K&ouml;rperschaft&nbsp;</td><td>
 <form method="get" action="[% config.virtualsearch_loc %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]">
-<input type="hidden" name="searchmode" value="[% searchmode %]">
 <input type="hidden" name="rating" value="[% rating %]">
 <input type="hidden" name="bookinfo" value="[% bookinfo %]">
-<input type="hidden" name="hitrange" value="[% hitrange %]">
-[% FOREACH database IN databases %]
-<input type="hidden" name="database" value="[% database %]">
-[% END %]
+<input type="hidden" name="hitrange" value="-1">
+<input type="hidden" name="profil" value="[% profil %]">
 &nbsp;
 <input type="text" name="kor" value="[% kor %]" size="4" maxlength="50" title="Geben Sie hier den Körperschaftsanfang ein">
 &nbsp;
-<input type="submit" action="korindex" value="Index">
+<input type="submit" name="korindex" value="Index">
 &nbsp;</td>
 </tr>
 </table>

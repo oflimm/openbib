@@ -42,6 +42,7 @@ use Log::Log4perl qw(get_logger :levels);
 use LWP::UserAgent;
 use HTTP::Request;
 use HTTP::Response;
+use Benchmark; 
 
 use YAML ();
 
@@ -113,6 +114,7 @@ sub handler {
   my @databases=($query->param('database'))?$query->param('database'):();
   my $starthit=($query->param('starthit'))?$query->param('starthit'):1;
   my $hitrange=($query->param('hitrange'))?$query->param('hitrange'):20;
+  my $offset=($query->param('offset'))?$query->param('offset'):1;
   my $maxhits=($query->param('maxhits'))?$query->param('maxhits'):500;
   my $sorttype=($query->param('sorttype'))?$query->param('sorttype'):"author";
   my $sortall=($query->param('sortall'))?$query->param('sortall'):'0';
@@ -337,7 +339,11 @@ sub handler {
   
   unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
     OpenBib::Common::Util::print_warning("Ung&uuml;ltige Session",$r);
-    goto LEAVEPROG;
+
+    $sessiondbh->disconnect();
+    $userdbh->disconnect();
+    
+    return OK;
   }
   
   # Authorisierter user?
@@ -382,11 +388,34 @@ sub handler {
   }
   elsif (($tosearch eq "In ausgewählten Katalogen suchen")&&(($#databases == -1) && ($profil eq ""))){
     OpenBib::Common::Util::print_warning("Sie haben \"In ausgew&auml;hlten Katalogen suchen\" angeklickt, obwohl sie keine <a href=\"$config{databasechoice_loc}?sessionID=$sessionID\" target=\"body\">Kataloge</a> oder Suchprofile ausgew&auml;hlt haben. Bitte w&auml;hlen Sie die gew&uuml;nschten Kataloge/Suchprofile aus oder bet&auml;tigen Sie \"In allen Katalogen suchen\".",$r);
-    goto LEAVEPROG;
+
+    $sessiondbh->disconnect();
+    $userdbh->disconnect();
+    
+    return OK;
+  }
+
+  if ($profil eq "dbauswahl"){
+    # Eventuell bestehende Auswahl zuruecksetzen
+
+    @databases=();
+
+    my $idnresult=$sessiondbh->prepare("select dbname from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+
+    while (my $result=$idnresult->fetchrow_hashref()){
+      my $dbname=$result->{'dbname'};
+      push @databases, $dbname;
+    }
+    $idnresult->finish();
+
   }
 
   # Wenn ein anderes Profil als 'dbauswahl' ausgewaehlt wuerde
-  if ($profil ne "" && $profil ne "dbauswahl"){
+  elsif ($profil){
+
+    # Eventuell bestehende Auswahl zuruecksetzen
+
     @databases=();
     
     # Benutzerspezifische Datenbankprofile
@@ -447,22 +476,27 @@ sub handler {
   if ($verfindex){
     $verf=~s/\+//g;
     $verf=~s/%2B//g;
+    $verf=~s/%//g;
 
     if (!$verf){
       OpenBib::Common::Util::print_warning("Sie haben keinen Verfasser eingegeben",$r);
-    return OK;
+      return OK;
     }
 
-    # TODO: Einbeziehung der Datenbankauswahl, Umorganisierug der
-    # Daten (Schlagwort mit all seinen Datenbanken und Treffern)
+    if ($#databases > 0 && length($verf) < 3 ){
+      OpenBib::Common::Util::print_warning("Der Verfasseranfang muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche ausgew&auml;hlt wurde.",$r);
+      return OK;
+    }
 
     my %verfindex=();
+
+    my @sortedindex=();
 
     foreach my $database (@databases){
       my $dbh=DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd}) or $logger->error_die($DBI::errstr);
       my $thisindex=OpenBib::Search::Util::get_index_by_verf($verf,$dbh);
 
-      # Umorganisierung der Daten
+      # Umorganisierung der Daten Teil 1
 
       foreach my $item (@$thisindex){
 	my %item=%$item;
@@ -487,6 +521,46 @@ sub handler {
       $dbh->disconnect;
     }
 
+    # Umorganisierung der Daten Teil 2
+    
+    foreach my $singleverf (sort { uc($a) cmp uc($b) } keys %verfindex){
+      push @sortedindex, { verf => $singleverf,
+			   titanzahl => $verfindex{$singleverf}{titanzahl},
+			   databases => $verfindex{$singleverf}{databases},
+			   };
+    }
+
+    my $hits=$#sortedindex;
+
+    if ($hits > 200){
+      $hitrange=200;
+    }
+    
+    my $baseurl="http://$config{servername}$config{virtualsearch_loc}?sessionID=$sessionID;view=$view;verf=$verf;verfindex=Index;profil=$profil;maxhits=$maxhits;sorttype=$sorttype;sortorder=$sortorder";
+    
+    my @nav=();
+    
+    if ($hitrange > 0){
+      $logger->debug("Navigation wird erzeugt: Hitrange: $hitrange Hits: $hits");
+
+      for (my $i=1; $i <= $hits; $i+=$hitrange){
+	my $active=0;
+	
+	if ($i == $offset){
+	  $active=1;
+	}
+	
+	my $item={
+		  start  => $i,
+		  end    => ($i+$hitrange>$hits)?$hits+1:$i+$hitrange-1,
+		  url    => $baseurl.";hitrange=$hitrange;offset=$i",
+		  active => $active,
+		 };
+	push @nav,$item;
+      }
+      
+    }
+
     # TT-Data erzeugen
     
     my $ttdata={
@@ -497,9 +571,16 @@ sub handler {
 		searchmode => $searchmode,
 	
 		verf      => $verf,
-		verfindex => \%verfindex,
-		databases => \@databases,
-		
+		verfindex => \@sortedindex,
+
+		nav => \@nav,
+		offset => $offset,
+		hitrange => $hitrange,
+
+		baseurl => $baseurl,
+
+		profil => $profil,
+
 		utf2iso => sub {
 		  my $string=shift;
 		  $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
@@ -524,22 +605,27 @@ sub handler {
   if ($korindex){
     $kor=~s/\+//g;
     $kor=~s/%2B//g;
+    $kor=~s/%//g;
 
     if (!$kor){
       OpenBib::Common::Util::print_warning("Sie haben keine K&ouml;rperschaft eingegeben",$r);
-    return OK;
+      return OK;
     }
 
-    # TODO: Einbeziehung der Datenbankauswahl, Umorganisierug der
-    # Daten (Schlagwort mit all seinen Datenbanken und Treffern)
+    if ($#databases > 0 && length($kor) <3 ){
+      OpenBib::Common::Util::print_warning("Der K&ouml;rperschaftsanfang muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche ausgew&auml;hlt wurde.",$r);
+      return OK;
+    }
 
     my %korindex=();
+
+    my @sortedindex=();
 
     foreach my $database (@databases){
       my $dbh=DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd}) or $logger->error_die($DBI::errstr);
       my $thisindex=OpenBib::Search::Util::get_index_by_kor($kor,$dbh);
 
-      # Umorganisierung der Daten
+      # Umorganisierung der Daten Teil 1
 
       foreach my $item (@$thisindex){
 	my %item=%$item;
@@ -564,6 +650,46 @@ sub handler {
       $dbh->disconnect;
     }
 
+    # Umorganisierung der Daten Teil 2
+    
+    foreach my $singlekor (sort { uc($a) cmp uc($b) } keys %korindex){
+      push @sortedindex, { kor => $singlekor,
+			   titanzahl => $korindex{$singlekor}{titanzahl},
+			   databases => $korindex{$singlekor}{databases},
+			   };
+    }
+
+    my $hits=$#sortedindex;
+
+    if ($hits > 200){
+      $hitrange=200;
+    }
+    
+    my $baseurl="http://$config{servername}$config{virtualsearch_loc}?sessionID=$sessionID;view=$view;kor=$kor;korindex=Index;profil=$profil;maxhits=$maxhits;sorttype=$sorttype;sortorder=$sortorder";
+    
+    my @nav=();
+    
+    if ($hitrange > 0){
+      $logger->debug("Navigation wird erzeugt: Hitrange: $hitrange Hits: $hits");
+
+      for (my $i=1; $i <= $hits; $i+=$hitrange){
+	my $active=0;
+	
+	if ($i == $offset){
+	  $active=1;
+	}
+	
+	my $item={
+		  start  => $i,
+		  end    => ($i+$hitrange>$hits)?$hits+1:$i+$hitrange-1,
+		  url    => $baseurl.";hitrange=$hitrange;offset=$i",
+		  active => $active,
+		 };
+	push @nav,$item;
+      }
+      
+    }
+
     # TT-Data erzeugen
     
     my $ttdata={
@@ -574,8 +700,15 @@ sub handler {
 		searchmode => $searchmode,
 	
 		kor      => $kor,
-		korindex => \%korindex,
-		databases => \@databases,
+		korindex => \@sortedindex,
+
+		nav => \@nav,
+		offset => $offset,
+		hitrange => $hitrange,
+
+		baseurl => $baseurl,
+
+		profil => $profil,
 
 		utf2iso => sub {
 		  my $string=shift;
@@ -603,22 +736,27 @@ sub handler {
   if ($swtindex){
     $swt=~s/\+//g;
     $swt=~s/%2B//g;
+    $swt=~s/%//g;
 
     if (!$swt){
       OpenBib::Common::Util::print_warning("Sie haben kein Schlagwort eingegeben",$r);
-    return OK;
+      return OK;
     }
 
-    # TODO: Einbeziehung der Datenbankauswahl, Umorganisierug der
-    # Daten (Schlagwort mit all seinen Datenbanken und Treffern)
+    if ($#databases > 0 && length($swt) <3 ){
+      OpenBib::Common::Util::print_warning("Der Schlagwortanfang muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche ausgew&auml;hlt wurde.",$r);
+      return OK;
+    }
 
     my %swtindex=();
+
+    my @sortedindex=();
 
     foreach my $database (@databases){
       my $dbh=DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd}) or $logger->error_die($DBI::errstr);
       my $thisindex=OpenBib::Search::Util::get_index_by_swt($swt,$dbh);
 
-      # Umorganisierung der Daten
+      # Umorganisierung der Daten Teil 1
 
       foreach my $item (@$thisindex){
 	my %item=%$item;
@@ -643,6 +781,46 @@ sub handler {
       $dbh->disconnect;
     }
 
+    # Umorganisierung der Daten Teil 2
+    
+    foreach my $singleswt (sort { uc($a) cmp uc($b) } keys %swtindex){
+      push @sortedindex, { swt => $singleswt,
+			   titanzahl => $swtindex{$singleswt}{titanzahl},
+			   databases => $swtindex{$singleswt}{databases},
+			   };
+    }
+
+    my $hits=$#sortedindex;
+
+    if ($hits > 200){
+      $hitrange=200;
+    }
+    
+    my $baseurl="http://$config{servername}$config{virtualsearch_loc}?sessionID=$sessionID;view=$view;swt=$swt;swtindex=Index;profil=$profil;maxhits=$maxhits;sorttype=$sorttype;sortorder=$sortorder";
+    
+    my @nav=();
+    
+    if ($hitrange > 0){
+      $logger->debug("Navigation wird erzeugt: Hitrange: $hitrange Hits: $hits");
+
+      for (my $i=1; $i <= $hits; $i+=$hitrange){
+	my $active=0;
+	
+	if ($i == $offset){
+	  $active=1;
+	}
+	
+	my $item={
+		  start  => $i,
+		  end    => ($i+$hitrange>$hits)?$hits+1:$i+$hitrange-1,
+		  url    => $baseurl.";hitrange=$hitrange;offset=$i",
+		  active => $active,
+		 };
+	push @nav,$item;
+      }
+      
+    }
+
     # TT-Data erzeugen
     
     my $ttdata={
@@ -653,9 +831,16 @@ sub handler {
 		searchmode => $searchmode,
 	
 		swt      => $swt,
-		swtindex => \%swtindex,
-		databases => \@databases,
-		
+		swtindex => \@sortedindex,
+
+		nav => \@nav,
+		offset => $offset,
+		hitrange => $hitrange,
+
+		baseurl => $baseurl,
+
+		profil => $profil,
+
 		utf2iso => sub {
 		  my $string=shift;
 		  $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
@@ -723,8 +908,11 @@ sub handler {
     my ($ejtest)=$ejahr=~/.*(\d\d\d\d).*/;
     if (!$ejtest){
       OpenBib::Common::Util::print_warning("Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein.",$r);
-      goto LEAVEPROG;
+
+      $sessiondbh->disconnect();
+      $userdbh->disconnect();
       
+      return OK;
     }        
   }
   
@@ -732,7 +920,11 @@ sub handler {
     if ($ejahr){
       OpenBib::Common::Util::print_warning("Das Suchkriterium Jahr ist nur in Verbindung mit der
 UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&ouml;glich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verst&auml;ndnis f&uuml;r diese Einschr&auml;nkung.",$r);
-      goto LEAVEPROG;
+
+      $sessiondbh->disconnect();
+      $userdbh->disconnect();
+      
+      return OK;
     }
   }
   
@@ -741,14 +933,22 @@ UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&oum
       if (!$firstsql){
 	OpenBib::Common::Util::print_warning("Das Suchkriterium Jahr ist nur in Verbindung mit der
 UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&ouml;glich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verst&auml;ndnis f&uuml;r diese Einschr&auml;nkung.",$r);
-	goto LEAVEPROG;
+
+	$sessiondbh->disconnect();
+	$userdbh->disconnect();
+	
+	return OK;
       }
     }
   }
   
   if (!$firstsql){
     OpenBib::Common::Util::print_warning("Es wurde kein Suchkriterium eingegeben.",$r);
-    goto LEAVEPROG;
+
+    $sessiondbh->disconnect();
+    $userdbh->disconnect();
+    
+    return OK;
   }
   
   
@@ -758,34 +958,82 @@ UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&oum
   
   my %trefferpage=();
   my %dbhits=();
-  
-  # Header mit allen Elementen ausgeben
-  
-  OpenBib::Common::Util::print_simple_header("Such-Client des Virtuellen Katalogs",$r);
-  
-  print << "HEADER";
-<ul id="tabbingmenu">
-   <li><a class="active" href="$config{virtualsearch_loc}?sessionID=$sessionID;trefferliste=choice;view=$view">Trefferliste</a></li>
-</ul>
 
-<div id="content">
+  my $loginname="";
+  my $password="";
 
-<FORM METHOD="GET">
-<p>
-HEADER
+  ($loginname,$password)=get_cred_for_userid($userdbh,$userid) if ($userid && OpenBib::Common::Util::get_targettype_of_session($userdbh,$sessionID) ne "self");
   
-  # Suchhinweis Digibib
+  # Hash im Loginname ersetzen
+
+  $loginname=~s/#/\%23/;
+
+  $verf=~s/%2B(\w+)/$1/g;
+  $hst=~s/%2B(\w+)/$1/g;
+  $kor=~s/%2B(\w+)/$1/g;
+  $ejahr=~s/%2B(\w+)/$1/g;
+  $isbn=~s/%2B(\w+)/$1/g;
+  $issn=~s/%2B(\w+)/$1/g;
+
+  my $hostself="http://".$r->hostname.$r->uri;
+
+  my ($queryargs,$sortselect,$thissortstring)=OpenBib::Common::Util::get_sort_nav($r,'sortboth',1);
+
+
+  # Start der Ausgabe mit korrektem Header
+
+  print $r->send_http_header("text/html");
+
+  # Ausgabe des ersten HTML-Bereichs
+
+  my $starttemplate = Template->new({ 
+				     INCLUDE_PATH  => $config{tt_include_path},
+				     OUTPUT        => $r,
+				    });
   
-  OpenBib::VirtualSearch::Util::print_recherche_hinweis($hst,$verf,$kor,$ejahr,$issn,$isbn,$userdbh,$sessionID);
   
-  OpenBib::Common::Util::print_sort_nav($r,'sortboth',1);        
+  # TT-Data erzeugen
   
-  # Bisherigen Header ausgeben
+  my $startttdata={
+		   stylesheet => $stylesheet,
+
+		   sessionID  => $sessionID,
+
+		   loginname => $loginname,
+		   password => $password,
+
+		   verf => OpenBib::VirtualSearch::Util::externalsearchterm($verf),
+		   hst => OpenBib::VirtualSearch::Util::externalsearchterm($hst),
+		   kor => OpenBib::VirtualSearch::Util::externalsearchterm($kor),
+		   ejahr => OpenBib::VirtualSearch::Util::externalsearchterm($ejahr),
+		   isbn => OpenBib::VirtualSearch::Util::externalsearchterm($isbn),
+		   issn => OpenBib::VirtualSearch::Util::externalsearchterm($issn),
+		   queryargs => $queryargs,
+		   sortselect => $sortselect,
+		   thissortstring => $thissortstring,
+		   
+		   utf2iso => sub {
+		     my $string=shift;
+		     $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
+		     return $string;
+		   },
+		   
+		   show_corporate_banner => 0,
+		   show_foot_banner => 1,
+		   config     => \%config,
+		  };
+  
+  
+  $starttemplate->process($config{tt_virtualsearch_result_start_tname}, $startttdata) || do { 
+    $r->log_reason($starttemplate->error(), $r->filename);
+    return SERVER_ERROR;
+  };
+
+
+  # Ausgabe flushen
   
   $r->rflush();
-  
-  
-  print"<table>\n";
+
   
   my $gesamttreffer=0;
   
@@ -836,9 +1084,7 @@ HEADER
       my $btime;
       my $timeall;
       
-      if ($config{benchmark}){
-	$atime=new Benchmark;
-      }
+      $atime=new Benchmark;
       
       my $searchmultipleaut=0;
       my $searchmultiplekor=0;
@@ -861,13 +1107,11 @@ HEADER
 	}
       }	    
 
+      $btime=new Benchmark;
+      $timeall=timediff($btime,$atime);
+
       if ($config{benchmark}){
-	$btime=new Benchmark;
-	$timeall=timediff($btime,$atime);
 	$logger->info("Zeit fuer : $outidx Titel : ist ".timestr($timeall));
-	undef $atime;
-	undef $btime;
-	undef $timeall;
       }
       
       my @sortedoutputbuffer=();
@@ -877,41 +1121,58 @@ HEADER
 
       my $treffer=$#sortedoutputbuffer+1;
 
-      print "<tr bgcolor=\"lightblue\"><td>&nbsp;</td><td>".$dbinfo{"$database"}."</td><td align=right colspan=3><strong>$treffer Treffer</strong></td></tr>\n";
+      my $resulttime=timestr($timeall,"nop");
+      $resulttime=~s/(\d+\.\d+) .*/$1/;
 
-      my $linecolor="aliceblue";
+      my $itemtemplate = Template->new({ 
+					INCLUDE_PATH  => $config{tt_include_path},
+					OUTPUT        => $r,
+				       });
+
+
+      # TT-Data erzeugen
       
-      my $count=1;
-      foreach my $item (@sortedoutputbuffer){
+      my $ttdata={
+		  sessionID  => $sessionID,
+		  
+		  dbinfo => $dbinfo{$database},
 
-	my $author=@{$item}{verfasser};
-	my $titidn=@{$item}{idn};
-	my $title=@{$item}{title};
-	my $publisher=@{$item}{publisher};
-	my $signature=@{$item}{signatur};
-	my $yearofpub=@{$item}{erschjahr};
-	my $thisdatabase=@{$item}{database};
+		  treffer => $treffer,
 
-	print << "TITITEM";
-<tr bgcolor="$linecolor"><td bgcolor="lightblue"><strong>$count</strong></td><td colspan=2><strong><span id="rlauthor">$author</span></strong><br /><a href="$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=;sorttype=$sorttype&database=$thisdatabase;searchsingletit=$titidn"><strong><span id="rltitle">$title</span></strong></a>, <span id="rlpublisher">$publisher</span> <span id="rlyearofpub">$yearofpub</span></td><td><a href="/portal/merkliste?sessionID=$sessionID;action=insert;database=$thisdatabase;singleidn=$titidn" target="header"><span id="rlmerken"><a href="/portal/merkliste?sessionID=$sessionID;action=insert;database=$thisdatabase;singleidn=$titidn" target="header" title="In die Merkliste"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="In die Merkliste" border=0></a></span></a></td><td align=left><b>$signature</b></td></tr>
-TITITEM
+		  resultlist => \@sortedoutputbuffer,
 
-	if ($linecolor eq "white"){
-	  $linecolor="aliceblue";
-	}
-	else {
-	  $linecolor="white";
-	}
+		  searchmode => $searchmode,
+		  rating => $rating,
+		  bookinfo => $bookinfo,
+		  sorttype => $sorttype,
+		  sortorder => $sortorder,
 
-        $count++;
+		  resulttime => $resulttime, 
 
-      }
+		  utf2iso => sub {
+		    my $string=shift;
+		    $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
+		    return $string;
+		  },
+		  
+		  show_corporate_banner => 0,
+		  show_foot_banner => 1,
+		  config     => \%config,
+		 };
+      
 
-      print "<tr>\n<td colspan=3>&nbsp;<td></tr>\n";      
+      $itemtemplate->process($config{tt_virtualsearch_result_item_tname}, $ttdata) || do { 
+	$r->log_reason($itemtemplate->error(), $r->filename);
+	return SERVER_ERROR;
+      };
+
       $trefferpage{$database}=\@sortedoutputbuffer;
       $dbhits{$database}=$treffer;
       $gesamttreffer=$gesamttreffer+$treffer;
 
+      undef $atime;
+      undef $btime;
+      undef $timeall;
 
     }
 
@@ -931,13 +1192,14 @@ TITITEM
   # Wenn nichts gefunden wurde, dann entsprechende Information
   
   if ($gesamttreffer == 0) {
-    my $tmp="<tr><td colspan=3><strong>Es wurden keine Treffer gefunden</strong></td></tr>\n";
+    my $tmp="<tr><td colspan=3><span style=\"font-size:2em;font-face:bold\">Es wurden keine Treffer gefunden</span></td></tr>\n";
     print $tmp;
   }
   # Ansonsten kann ein Resultset eingetragen werden
   else {
     OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@resultset);
   }
+
   ######################################################################
   # Bei einer SessionID von -1 wird effektiv keine Session verwendet
   ######################################################################
@@ -1010,11 +1272,36 @@ TITITEM
     $idnresult->finish();
     
   }
+
+  # Ausgabe des letzten HTML-Bereichs
+
+  my $endtemplate = Template->new({ 
+				     INCLUDE_PATH  => $config{tt_include_path},
+				     OUTPUT        => $r,
+				    });
   
-  print "</table></div><p>";
-  OpenBib::Common::Util::print_footer();
   
-LEAVEPROG: sleep 0;
+  # TT-Data erzeugen
+  
+  my $endttdata={
+		   
+		   utf2iso => sub {
+		     my $string=shift;
+		     $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
+		     return $string;
+		   },
+		   
+		   show_corporate_banner => 0,
+		   show_foot_banner => 1,
+		   config     => \%config,
+		  };
+  
+  
+  $endtemplate->process($config{tt_virtualsearch_result_end_tname}, $startttdata) || do { 
+    $r->log_reason($endtemplate->error(), $r->filename);
+    return SERVER_ERROR;
+  };
+
   
   $sessiondbh->disconnect();
   $userdbh->disconnect();

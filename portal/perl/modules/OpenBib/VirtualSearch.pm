@@ -39,9 +39,6 @@ use Apache::Request();      # CGI-Handling (or require)
 
 use Log::Log4perl qw(get_logger :levels);
 
-use LWP::UserAgent;
-use HTTP::Request;
-use HTTP::Response;
 use Benchmark; 
 
 use YAML ();
@@ -352,7 +349,6 @@ sub handler {
 
   $logger->info("Authorization: ", $sessionID, " ", ($userid)?$userid:'none');
   
-   my $ua=new LWP::UserAgent;
    my $item;
    my $alldbs;
   
@@ -1189,14 +1185,9 @@ UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&oum
 
   $logger->info("InitialSearch: ", $sessionID, " ", $gesamttreffer, " fs=(", $fs, ") verf=(", $boolverf, "#", $verf, ") hst=(", $boolhst, "#", $hst, ") hststring=(", $boolhststring, "#", $hststring, ") swt=(", $boolswt, "#", $swt, ") kor=(", $boolkor, "#", $kor, ") sign=(", $boolsign, "#", $sign, ") isbn=(", $boolisbn, "#", $isbn, ") issn=(", $boolissn, "#", $issn, ") mart=(", $boolmart, "#", $mart, ") notation=(", $boolnotation, "#", $notation, ") ejahr=(", $boolejahr, "#", $ejahr, ") ejahrop=(", $ejahrop, ") databases=(",join(' ',sort @databases),") ");
 
-  # Wenn nichts gefunden wurde, dann entsprechende Information
-  
-  if ($gesamttreffer == 0) {
-    my $tmp="<tr><td colspan=3><span style=\"font-size:2em;font-face:bold\">Es wurden keine Treffer gefunden</span></td></tr>\n";
-    print $tmp;
-  }
-  # Ansonsten kann ein Resultset eingetragen werden
-  else {
+  # Wenn etwas gefunden wurde, dann kann ein Resultset geschrieben werden.
+
+  if ($gesamttreffer > 0) {
     OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@resultset);
   }
 
@@ -1284,17 +1275,19 @@ UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&oum
   # TT-Data erzeugen
   
   my $endttdata={
-		   
-		   utf2iso => sub {
-		     my $string=shift;
-		     $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
-		     return $string;
-		   },
-		   
-		   show_corporate_banner => 0,
-		   show_foot_banner => 1,
-		   config     => \%config,
-		  };
+
+		 gesamttreffer => $gesamttreffer,
+
+		 utf2iso => sub {
+		   my $string=shift;
+		   $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
+		   return $string;
+		 },
+		 
+		 show_corporate_banner => 0,
+		 show_foot_banner => 1,
+		 config     => \%config,
+		};
   
   
   $endtemplate->process($config{tt_virtualsearch_result_end_tname}, $startttdata) || do { 

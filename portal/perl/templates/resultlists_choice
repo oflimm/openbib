@@ -66,14 +66,14 @@
 <tr><td colspan="2"></td></tr>
 
 <tr><td>Katalog</td><td>Treffer</td></tr>
-<tr><td bgcolor="aliceblue"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %]&trefferliste=all&sortall=0&sorttype=author&queryid=[% thisqueryid %]"><b>Alle Treffer</b></a></td><td align=right>[% hitcount %]</td></tr>
+<tr><td bgcolor="aliceblue"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %]&trefferliste=all&sortall=0&sorttype=author&queryid=[% thisquery.id %]"><b>Alle Treffer</b></a></td><td align=right>[% hitcount %]</td></tr>
       
 <tr><td bgcolor="white">&nbsp;</td><td align=right>&nbsp;</td></tr>
 
       
 [% bgcolor = 'aliceblue' %]
 [% FOREACH resultdb IN resultdbs %]
-<tr><td bgcolor="[% bgcolor %]"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %]&trefferliste=[% resultdb.trefferdb %]&queryid=[% thisqueryid %]"><b>[% resultdb.trefferdbdesc %]</b></a></td><td align=right>[% resultdb.trefferzahl %]</td></tr>
+<tr><td bgcolor="[% bgcolor %]"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %]&trefferliste=[% resultdb.trefferdb %]&queryid=[% thisquery.id %]"><b>[% resultdb.trefferdbdesc %]</b></a></td><td align=right>[% resultdb.trefferzahl %]</td></tr>
 [% IF bgcolor == 'white' %]
 [% bgcolor = 'aliceblue' %]
 [% ELSE %]

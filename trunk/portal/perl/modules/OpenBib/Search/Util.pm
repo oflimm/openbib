@@ -3913,7 +3913,7 @@ sub get_tit_set_by_idn {
 #      print "<tr align=center><td bgcolor=\"lightblue\" width=\"225\">Besitzende Bibliothek</td><td bgcolor=\"lightblue\" width=\"250\">Standort</td><td bgcolor=\"lightblue\" width=\"120\">Lokale Signatur</td><td bgcolor=\"lightblue\" width=\"120\">Ausleihstatus</td><td bgcolor=\"lightblue\" width=\"110\">Aktion</td></tr>\n";
       
 #      foreach my $singleex (@circexemplarliste) {
-      for (my $i=0; $i < $#circexemplarliste; $i++) {
+      for (my $i=0; $i <= $#circexemplarliste; $i++) {
 	$circexemplarliste[$i]{'Standort'}=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
 	$circexemplarliste[$i]{'Signatur'}=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
 	$circexemplarliste[$i]{'Status'}=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
@@ -4800,6 +4800,12 @@ sub set_simple_category {
 
   my ($desc,$contents)=@_;
 
+  # UTF8-Behandlung
+
+  $desc=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
+  $contents=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
+
+
   # Sonderbehandlung fuer bestimmte Kategorien
   
   if ($desc eq "ISSN"){
@@ -4820,6 +4826,14 @@ sub set_url_category {
 
   my ($desc,$url,$contents,$supplement)=@_;
 
+
+  # UTF8-Behandlung
+
+  $desc=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
+  $url=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
+  $contents=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
+  $supplement=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
+
   my %kat=();
   $kat{'type'}="url_category";
   $kat{'desc'}=$desc;
@@ -4833,6 +4847,12 @@ sub set_url_category {
 sub set_url_category_global {
 
   my ($desc,$url,$contents,$type,$sorttype,$sessionID)=@_;
+
+  # UTF8-Behandlung
+
+  $desc=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
+  $url=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
+  $contents=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
 
   my $globalcontents=$contents;
 

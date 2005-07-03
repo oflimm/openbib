@@ -584,36 +584,28 @@ sub get_sort_nav {
   my @sortselect=();
 
   if ($nav eq 'sortsingle'){
-    
-    my %thisselect=();
-    $thisselect{'name'}="sortall";
-    $thisselect{'value'}=0;
-    $thisselect{'desc'}="pro Katalog";
-    push @sortselect,\%thisselect;
-#    print $navclick."<select name=\"sortall\"><option value=\"0\">pro Katalog</option></select>".$sortend;
+    push @sortselect, {
+		       val => 0,
+		       desc => "pro Katalog",
+		      };
   }
   elsif ($nav eq 'sortall'){
-    my %thisselect=();
-    $thisselect{'name'}="sortall";
-    $thisselect{'value'}=1;
-    $thisselect{'desc'}="katalog&uuml;bergreifend";
-    push @sortselect,\%thisselect;
-#    print $navclick."<select name=\"sortall\"><option value=\"1\">katalog&uuml;bergreifend</option></select>".$sortend;
+    push @sortselect, {
+		       val => 1,
+		       desc => "katalog&uuml;bergreifend",
+		      };
   }
 
   elsif ($nav eq 'sortboth'){
-    my %thisselect=();
-    $thisselect{'name'}="sortall";
-    $thisselect{'value'}=0;
-    $thisselect{'desc'}="pro Katalog";
-    push @sortselect,\%thisselect;
+    push @sortselect, {
+		       val => 0,
+		       desc => "pro Katalog",
+		      };
 
-    $thisselect{'name'}="sortall";
-    $thisselect{'value'}=1;
-    $thisselect{'desc'}="katalog&uuml;bergreifend";
-    push @sortselect,\%thisselect;
-
-#    print $navclick."<select name=\"sortall\"><option value=\"0\">pro Katalog</option><option value=\"1\">katalog&uuml;bergreifend</option></select>".$sortend;
+    push @sortselect, {
+		       val => 1,
+		       desc => "katalog&uuml;bergreifend",
+		      };
   }
 
   return ($queryargs,\@sortselect,$thissortstring);

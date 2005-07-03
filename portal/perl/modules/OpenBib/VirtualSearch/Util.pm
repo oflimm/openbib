@@ -368,20 +368,20 @@ sub print_recherche_hinweis {
  my $dbisexturl=$config{dbis_exturl};
 
  print << "DIGIBIB";
-<table width="100%">
+<table id="Suchhinweise" width="100%">
 <tr><th>Weitergehende Suchhinweise</th></tr>
-<tr><td class="boxedclear" style="font-size:9pt">
+<tr><td class="boxedclear" style="font-size:0.8em">
 Konnten Sie das von Ihnen gesuchte Buch oder den von Ihnen gesuchten Zeitschriftenartikel nicht im KUG finden?<br><br>
-<b>B&uuml;cher</b>
+<b><span style="font-size:1.2em">B&uuml;cher</span></b>
 <ul>
 <li>Suchen Sie im Kartenkatalog einer infrage kommende Institutsbibliothek. Leider sind noch nicht alle B&uuml;cher elektronisch erfasst und damit &uuml;ber den KUG recherchierbar.</li>
-<li>F&uuml;r verschiedene Institute und Seminare der Philosophischen Fakult&auml;t besteht die M&ouml;glichkeit der Suche in einem <a href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/" target="_blank">Online-Kartenkatalog</a>.</li>
-<li>Versuchen Sie das Buch in NRW oder deutschlandweit im Rahmen der <a href="$hbzmonofernleihbaseurl&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_HBZ=on&D_PARAM_QUERY_bzAU=$verf&D_PARAM_QUERY_azTI=$hst&D_PARAM_QUERY_czCO=$kor&D_PARAM_QUERY_fzIB=$isbn&D_PARAM_QUERY_gzIS=$issn&D_PARAM_QUERY_hzYR=$ejahr$authurl" target="_blank">zentralen Fernleihe</a> in der Digitalen Bibliothek zu finden.</li>
+<li>F&uuml;r verschiedene Institute und Seminare der Philosophischen Fakult&auml;t besteht die M&ouml;glichkeit der Suche in einem <a href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/" target="_blank"><span style="font-size:1.2em">Online-Kartenkatalog</span></a>.</li>
+<li>Versuchen Sie das Buch in NRW oder deutschlandweit im Rahmen der <a href="$hbzmonofernleihbaseurl&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_HBZ=on&D_PARAM_QUERY_bzAU=$verf&D_PARAM_QUERY_azTI=$hst&D_PARAM_QUERY_czCO=$kor&D_PARAM_QUERY_fzIB=$isbn&D_PARAM_QUERY_gzIS=$issn&D_PARAM_QUERY_hzYR=$ejahr$authurl" target="_blank"><span style="font-size:1.2em">zentralen Fernleihe</span></a> in der Digitalen Bibliothek zu finden.</li>
 </ul>
-<b>Zeitschriftenartikel</b>
+<b><span style="font-size:1.2em">Zeitschriftenartikel</span></b>
 <ul>
-<li>Suchen Sie in den elektronischen <a href="$dbisexturl" target="_blank">Fachdatenbanken</a> und den <a href="$config{ezb_exturl}" target="_blank">elektronisch verf&uuml;gbaren Zeitschriften</a> der Universit&auml;tsbibliothek.</a>
-<li>Versuchen Sie den Artikel in NRW im Rahmen der <a href="$hbzzeitfernleihbaseurl&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_ZDB=on&D_PARAM_QUERY_azTI=$hst&D_PARAM_QUERY_czCO=$kor&D_PARAM_QUERY_gzIS=$issn$authurl" target="_blank">Online-Zeitschriftenlieferung</a> in der Digitalen Bibliothek zu finden.</li>
+<li>Suchen Sie in den elektronischen <a href="$dbisexturl" target="_blank"><span style="font-size:1.2em">Fachdatenbanken</span></a> und den <a href="$config{ezb_exturl}" target="_blank"><span style="font-size:1.2em">elektronisch verf&uuml;gbaren Zeitschriften</span></a> der Universit&auml;tsbibliothek.</a>
+<li>Versuchen Sie den Artikel in NRW im Rahmen der <a href="$hbzzeitfernleihbaseurl&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_ZDB=on&D_PARAM_QUERY_azTI=$hst&D_PARAM_QUERY_czCO=$kor&D_PARAM_QUERY_gzIS=$issn$authurl" target="_blank"><span style="font-size:1.2em">Online-Zeitschriftenlieferung</span></a> in der Digitalen Bibliothek zu finden.</li>
 </ul>
 </td></tr>
 </table>
@@ -397,5 +397,14 @@ sub cleansearchterm {
 
   return $term;
 }
+
+sub externalsearchterm {
+  my ($term)=@_;
+
+  $term=~s/%2B(\w+)/$1/g;
+
+  return $term;
+}
+
 
 1;

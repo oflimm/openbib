@@ -239,6 +239,10 @@ use vars qw(%config);
 	   tt_virtualsearch_showverfindex_tname => 'virtualsearch_showverfindex',
 	   tt_virtualsearch_showkorindex_tname => 'virtualsearch_showkorindex',
 	   tt_virtualsearch_showswtindex_tname => 'virtualsearch_showswtindex',
+
+	   tt_virtualsearch_result_start_tname => 'virtualsearch_result_start',
+	   tt_virtualsearch_result_item_tname  => 'virtualsearch_result_item',
+	   tt_virtualsearch_result_end_tname   => 'virtualsearch_result_end',
 	   
 	   tt_userprefs_tname              => 'userprefs',
 	   tt_userprefs_ask_delete_tname   => 'userprefs_ask_delete',

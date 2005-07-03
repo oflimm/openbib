@@ -1,3 +1,6 @@
+[% IF NOT gesamttreffer %]
+<tr><td colspan="5"><span style="font-size:2em;font-face:bold">Es wurden keine Treffer gefunden</span></td></tr>
+[% END %]
 <tr><td colspan="5"><span style="font-size:1.2em">Beachten Sie bitte auch unserere <a href="#Suchhinweise">weitergehenden Suchhinweise</a>.</span></td></tr>
 </table>
 

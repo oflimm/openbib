@@ -1,0 +1,23 @@
+<!-- Beginn Koerperschaft -->
+
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+<tr><td class="boxedfull" align="left">
+
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+<tr bgcolor="lightblue"><td align="left">&nbsp;<b>[% loop.count %]</b>&nbsp;&nbsp;[% item.kor %]</td><td align="right">[% item.titanzahl %]</td></tr>
+[% bgcolor = 'white' %]
+[% FOREACH dbitem IN item.databases %]
+<tr bgcolor="[% bgcolor %]"><td align="left"><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;searchmode=[% searchmode %];rating=[% rating %];bookinfo=[% bookinfo %];database=[% dbitem.dbname %];searchtitofurhkor=[% dbitem.koridn %]" target="body">[% dbitem.dbdesc %]</a></td><td align="right">[% dbitem.titanzahl %]</td></tr>
+[% IF bgcolor == 'white' %]
+[% bgcolor = 'aliceblue' %]
+[% ELSE %]
+[% bgcolor = 'white' %]
+[% END %]
+[% END %]
+</table>
+
+</td></tr>
+</table>
+<p />
+
+<!-- Ende Koerperschaft -->

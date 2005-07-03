@@ -1,0 +1,23 @@
+<!-- Beginn Verfasser -->
+
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+<tr><td class="boxedfull" align="left">
+
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+<tr bgcolor="lightblue"><td align="left">&nbsp;<b>[% loop.count %]</b>&nbsp;&nbsp;[% item.key %]</td><td align="right">[% item.value.titanzahl %]</td></tr>
+[% bgcolor = 'white' %]
+[% FOREACH dbitem IN item.value.databases %]
+<tr bgcolor="[% bgcolor %]"><td align="left"><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;searchmode=[% searchmode %];rating=[% rating %];bookinfo=[% bookinfo %];database=[% dbitem.dbname %];searchtitofaut=[% dbitem.verfidn %]" target="body">[% dbitem.dbdesc %]</a></td><td align="right">[% dbitem.titanzahl %]</td></tr>
+[% IF bgcolor == 'white' %]
+[% bgcolor = 'aliceblue' %]
+[% ELSE %]
+[% bgcolor = 'white' %]
+[% END %]
+[% END %]
+</table>
+
+</td></tr>
+</table>
+<p />
+
+<!-- Ende Verfasser -->

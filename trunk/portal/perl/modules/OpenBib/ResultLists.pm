@@ -74,6 +74,8 @@ sub handler {
   # Verbindung zur SQL-Datenbank herstellen
   
   my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
+
+  my $userdbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd}) or $logger->error_die($DBI::errstr);
   
   # CGI-Input auslesen
   
@@ -89,7 +91,11 @@ sub handler {
   
   unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
     OpenBib::Common::Util::print_warning("Ung&uuml;ltige Session",$r);
-    goto LEAVEPROG;
+
+    $sessiondbh->disconnect();
+    $userdbh->disconnect();
+  
+    return OK;  
   }
 
   my %titeltyp=(
@@ -174,7 +180,11 @@ sub handler {
     if ($idnresult->rows <= 0){
       OpenBib::Common::Util::print_warning("Derzeit existiert (noch) keine Trefferliste",$r);
       $idnresult->finish();
-      goto LEAVEPROG;
+
+      $sessiondbh->disconnect();
+      $userdbh->disconnect();
+      
+      return OK;
     }
     
     ####################################################################
@@ -314,38 +324,13 @@ sub handler {
       
       $idnresult=$sessiondbh->prepare("select searchresults.searchresult,searchresults.dbname from searchresults, dbinfo where searchresults.dbname=dbinfo.dbname and sessionid = ? and queryid = ? order by dbinfo.faculty,searchresults.dbname") or $logger->error($DBI::errstr);
       $idnresult->execute($sessionID,$queryid) or $logger->error($DBI::errstr);
-      
-      # Header mit allen Elementen ausgeben
-      
-      OpenBib::Common::Util::print_simple_header("Such-Client des Virtuellen Katalogs",$r);
-      
-      print << "HEADER";
 
-<ul id="tabbingmenu">
-   <li><a class="active" href="$config{resultlists_loc}?sessionID=$sessionID;trefferliste=choice;view=$view">Trefferliste</a></li>
-</ul>
-
-<div id="content">
-
-<FORM METHOD="GET">
-<p>
-HEADER
-      
-      OpenBib::Common::Util::print_sort_nav($r,'sortboth',1);      
-      
-      
-      #print "<h1>Direkt aus dem Cache</h1>";
-      print "<table>";
-      
-      #open(RES,">/tmp/res.dat");
-      
       my @resultset=();
       
       if ($sortall == 1){
 
 	my @outputbuffer=();
 
-	#      open(RES,">/tmp/res.dat");
 	while (my @res=$idnresult->fetchrow){
 	  my $yamlres=YAML::Load($res[0]);
 
@@ -359,56 +344,74 @@ HEADER
 	my @sortedoutputbuffer=();
 	
 	OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
-	  
-	my $linecolor="aliceblue";
+
+
+	my $loginname="";
+	my $password="";
+
+	my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
 	
-	my $count=1;
+	($loginname,$password)=get_cred_for_userid($userdbh,$userid) if ($userid && OpenBib::Common::Util::get_targettype_of_session($userdbh,$sessionID) ne "self");
+	
+	# Hash im Loginname ersetzen
+	
+	$loginname=~s/#/\%23/;
+
+	my $hostself="http://".$r->hostname.$r->uri;
+	
+	my ($queryargs,$sortselect,$thissortstring)=OpenBib::Common::Util::get_sort_nav($r,'sortboth',1);
+	
+
+	# TT-Data erzeugen
+	
+	my $ttdata={
+		    title      => 'KUG - K&ouml;lner Universit&auml;tsGesamtkatalog',
+		    stylesheet   => $stylesheet,
+		    view         => $view,
+		    sessionID    => $sessionID,
+
+		    searchmode => 2,
+		    bookinfo => 0,
+		    rating => 0,
+		    
+		    resultlist => \@sortedoutputbuffer,
+		    dbinfo     => \%dbinfo,
+		    
+		    loginname => $loginname,
+		    password => $password,
+		    
+		    queryargs => $queryargs,
+		    sortselect => $sortselect,
+		    thissortstring => $thissortstring,
+		    
+		    show_foot_banner      => 1,
+		    
+		    config       => \%config,
+		   };
+      
+
+      
+      OpenBib::Common::Util::print_page($config{tt_resultlists_showall_sortall_tname},$ttdata,$r);
+
+	# Eintraege merken fuer Lastresultset
 
 	foreach my $item (@sortedoutputbuffer){
-	  
-	  my $author=@{$item}{verfasser};
-	  my $titidn=@{$item}{idn};
-	  my $title=@{$item}{title};
-	  my $publisher=@{$item}{publisher};
-	  my $signature=@{$item}{signatur};
-	  my $yearofpub=@{$item}{erschjahr};
-	  my $thisdatabase=@{$item}{database};
-	  
-	  my $searchmode=2;
-	  my $bookinfo=0;
-	  my $rating=0;
-	  print << "TITITEM";
-
-<tr bgcolor="$linecolor"><td bgcolor="lightblue"><strong>$count</strong></td><td>$dbinfo{$thisdatabase}</td><td colspan=2><strong><span id="rlauthor">$author</span></strong><br /><a href="$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=;sorttype=$sorttype&database=$thisdatabase;searchsingletit=$titidn"><strong><span id="rltitle">$title</span></strong></a>, <span id="rlpublisher">$publisher</span> <span id="rlyearofpub">$yearofpub</span></td><td><a href="/portal/merkliste?sessionID=$sessionID;action=insert;database=$thisdatabase;singleidn=$titidn" target="header"><span id="rlmerken"><a href="/portal/merkliste?sessionID=$sessionID;action=insert;database=$thisdatabase;singleidn=$titidn" target="header" title="In die Merkliste"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="In die Merkliste" border=0></a></span></a></td><td align=left><b>$signature</b></td></tr>
-TITITEM
-
-          if ($linecolor eq "white"){
-	    $linecolor="aliceblue";
-	  }
-	  else {
-	    $linecolor="white";
-	  }
-	  
-	  # Eintraege merken fuer Lastresultset
-	  
-	  push @resultset, { 'database' => $thisdatabase,
-			     'idn' => $titidn,
+	  push @resultset, { 'database' => @{$item}{database},
+			     'idn' => @{$item}{idn},
 			   };
-	  
-	  
-	  $count++;
-	    
 	}
 
 
-	
+	OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@resultset);
+	$idnresult->finish();
+
       }
       elsif ($sortall == 0) {
 	
 	# Katalogoriertierte Sortierung
 
+	my @resultlists=();
 
-	#      open(RES,">/tmp/res.dat");
 	while (my @res=$idnresult->fetchrow){
 	  my $yamlres=YAML::Load($res[0]);
 
@@ -418,72 +421,85 @@ TITITEM
 
 	  my $treffer=$#outputbuffer+1;
 
-	# Sortierung
-	
-	my @sortedoutputbuffer=();
-	
-	OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
+	  # Sortierung
 	  
-	  print "<tr bgcolor=\"lightblue\"><td>&nbsp;</td><td>".$dbinfo{"$database"}."</td><td align=right colspan=3><strong>$treffer Treffer</strong></td></tr>\n";
+	  my @sortedoutputbuffer=();
 	  
-	  my $linecolor="aliceblue";
-	  
-	  my $count=1;
-	  foreach my $item (@sortedoutputbuffer){
-	    
-	    my $author=@{$item}{verfasser};
-	    my $titidn=@{$item}{idn};
-	    my $title=@{$item}{title};
-	    my $publisher=@{$item}{publisher};
-	    my $signature=@{$item}{signatur};
-	    my $yearofpub=@{$item}{erschjahr};
-	    my $thisdatabase=@{$item}{database};
-	    
-            my $searchmode=2;
-            my $bookinfo=0;
-            my $rating=0;
-	    print << "TITITEM";
+	  OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
 
-<tr bgcolor="$linecolor"><td bgcolor="lightblue"><strong>$count</strong></td><td colspan=2><strong><span id="rlauthor">$author</span></strong><br /><a href="$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=;sorttype=$sorttype&database=$thisdatabase;searchsingletit=$titidn"><strong><span id="rltitle">$title</span></strong></a>, <span id="rlpublisher">$publisher</span> <span id="rlyearofpub">$yearofpub</span></td><td><a href="/portal/merkliste?sessionID=$sessionID;action=insert;database=$thisdatabase;singleidn=$titidn" target="header"><span id="rlmerken"><a href="/portal/merkliste?sessionID=$sessionID;action=insert;database=$thisdatabase;singleidn=$titidn" target="header" title="In die Merkliste"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="In die Merkliste" border=0></a></span></a></td><td align=left><b>$signature</b></td></tr>
-TITITEM
-
-	    if ($linecolor eq "white"){
-	      $linecolor="aliceblue";
-	    }
-	    else {
-	      $linecolor="white";
-	    }
-
-	    # Eintraege merken fuer Lastresultset
-	    
-	    push @resultset, { 'database' => $thisdatabase,
-			       'idn' => $titidn,
+	  push @resultlists, {
+			      database => $database,
+			      resultlist => \@sortedoutputbuffer,
 			     };
+	  
 
-	    
-	    $count++;
-	    
+
+	  # Eintraege merken fuer Lastresultset
+	  
+	  foreach my $item (@sortedoutputbuffer){
+	    push @resultset, { 'database' => @{$item}{database},
+			       'idn' => @{$item}{idn},
+			     };
 	  }
-
-	  print "<tr>\n<td colspan=3>&nbsp;<td></tr>\n";      
-
-
 	}
 	
-	#      close(RES);
+	my $loginname="";
+	my $password="";
 	
+	my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
+	
+	($loginname,$password)=get_cred_for_userid($userdbh,$userid) if ($userid && OpenBib::Common::Util::get_targettype_of_session($userdbh,$sessionID) ne "self");
+	
+	# Hash im Loginname ersetzen
+	
+	$loginname=~s/#/\%23/;
+
+	my $hostself="http://".$r->hostname.$r->uri;
+	
+	my ($queryargs,$sortselect,$thissortstring)=OpenBib::Common::Util::get_sort_nav($r,'sortboth',1);
+	
+
+	# TT-Data erzeugen
+	
+	my $ttdata={
+		    title      => 'KUG - K&ouml;lner Universit&auml;tsGesamtkatalog',
+		    stylesheet   => $stylesheet,
+		    view         => $view,
+		    sessionID    => $sessionID,
+
+		    searchmode => 2,
+		    bookinfo   => 0,
+		    rating     => 0,
+		    
+		    resultlists => \@resultlists,
+		    dbinfo      => \%dbinfo,
+		    
+		    loginname => $loginname,
+		    password  => $password,
+		    
+		    queryargs  => $queryargs,
+		    sortselect => $sortselect,
+		    thissortstring => $thissortstring,
+		    
+		    show_foot_banner      => 1,
+		    
+		    config       => \%config,
+		   };
+      
+	OpenBib::Common::Util::print_page($config{tt_resultlists_showall_tname},$ttdata,$r);
+
+
+	OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@resultset);
+	$idnresult->finish();
+
       }
-      
-      OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@resultset);
-      
       
       $idnresult->finish();
       
-      print "</table></div><p>";    
-      OpenBib::Common::Util::print_footer();
+      $sessiondbh->disconnect();
+      $userdbh->disconnect();
       
-      goto LEAVEPROG;
-      
+      return OK;
     }
     
     ####################################################################
@@ -498,98 +514,96 @@ TITITEM
       $idnresult=$sessiondbh->prepare("select searchresult from searchresults where sessionid = ? and dbname = ? and queryid = ?") or $logger->error($DBI::errstr);
       $idnresult->execute($sessionID,$trefferliste,$queryid) or $logger->error($DBI::errstr);
       
-      # Header mit allen Elementen ausgeben
       
-      OpenBib::Common::Util::print_simple_header("Such-Client des Virtuellen Katalogs",$r);
-      
-      print << "HEADER";
-<ul id="tabbingmenu">
-   <li><a class="active" href="$config{resultlists_loc}?sessionID=$sessionID;trefferliste=choice;view=$view">Trefferliste</a></li>
-</ul>
+      my @resultlists=();
 
-<div id="content">
-
-<FORM METHOD="GET">
-
-<p>
-HEADER
-      
-      OpenBib::Common::Util::print_sort_nav($r,'sortsingle',1);
-      
-      #  print "<h1>Direkt aus dem Cache</h1>";
-      print "<table>";
-      
-      # Katalogoriertierte Sortierung
-      
       while (my @res=$idnresult->fetchrow){
 	my $yamlres=YAML::Load($res[0]);
-
+	
 	my @outputbuffer=@$yamlres;
-
+	
 	my $treffer=$#outputbuffer+1;
-
-
+	
 	# Sortierung
 	
 	my @sortedoutputbuffer=();
 	
 	OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
-
-	  
-	print "<tr bgcolor=\"lightblue\"><td>&nbsp;</td><td>".$dbinfo{"$trefferliste"}."</td><td align=right colspan=3><strong>$treffer Treffer</strong></td></tr>\n";
-	  
-	  my $linecolor="aliceblue";
-	  
-	  my $count=1;
-	  foreach my $item (@sortedoutputbuffer){
-	    
-	    my $author=@{$item}{verfasser};
-	    my $titidn=@{$item}{idn};
-	    my $title=@{$item}{title};
-	    my $publisher=@{$item}{publisher};
-	    my $signature=@{$item}{signatur};
-	    my $yearofpub=@{$item}{erschjahr};
-	    my $thisdatabase=@{$item}{database};
-
-            my $searchmode=2;
-            my $bookinfo=0;
-            my $rating=0;
-	    
-	    print << "TITITEM";
-<tr bgcolor="$linecolor"><td bgcolor="lightblue"><strong>$count</strong></td><td colspan=2><strong><span id="rlauthor">$author</span></strong><br /><a href="$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=;sorttype=$sorttype&database=$thisdatabase;searchsingletit=$titidn"><strong><span id="rltitle">$title</span></strong></a>, <span id="rlpublisher">$publisher</span> <span id="rlyearofpub">$yearofpub</span></td><td><a href="/portal/merkliste?sessionID=$sessionID;action=insert;database=$thisdatabase;singleidn=$titidn" target="header"><span id="rlmerken"><a href="/portal/merkliste?sessionID=$sessionID;action=insert;database=$thisdatabase;singleidn=$titidn" target="header" title="In die Merkliste"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="In die Merkliste" border=0></a></span></a></td><td align=left><b>$signature</b></td></tr>
-TITITEM
-
-	    if ($linecolor eq "white"){
-	      $linecolor="aliceblue";
-	    }
-	    else {
-	      $linecolor="white";
-	    }
-	    
-
-	    # Eintraege merken fuer Lastresultset
-	    
-	    push @resultset, { 'database' => $thisdatabase,
-			       'idn' => $titidn,
-			     };
-
-	    $count++;
-	    
-	  }
-
-	  print "<tr>\n<td colspan=3>&nbsp;<td></tr>\n";      
-
-
+	
+	push @resultlists, {
+			    database => $trefferliste,
+			    resultlist => \@sortedoutputbuffer,
+			   };
+	
+	
+	
+	# Eintraege merken fuer Lastresultset
+	
+	foreach my $item (@sortedoutputbuffer){
+	  push @resultset, { 'database' => $trefferliste,
+			     'idn' => @{$item}{idn},
+			   };
+	}
+	
+	
+	
       }
       
+      my $loginname="";
+      my $password="";
+      
+      my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
+      
+      ($loginname,$password)=get_cred_for_userid($userdbh,$userid) if ($userid && OpenBib::Common::Util::get_targettype_of_session($userdbh,$sessionID) ne "self");
+      
+      # Hash im Loginname ersetzen
+      
+      $loginname=~s/#/\%23/;
+      
+      my $hostself="http://".$r->hostname.$r->uri;
+      
+      my ($queryargs,$sortselect,$thissortstring)=OpenBib::Common::Util::get_sort_nav($r,'sortsingle',1);
+      
+      
+      # TT-Data erzeugen
+      
+      my $ttdata={
+		  title      => 'KUG - K&ouml;lner Universit&auml;tsGesamtkatalog',
+		  stylesheet   => $stylesheet,
+		  view         => $view,
+		  sessionID    => $sessionID,
+		  
+		  searchmode => 2,
+		  bookinfo   => 0,
+		  rating     => 0,
+		  
+		  resultlists => \@resultlists,
+		  dbinfo      => \%dbinfo,
+		  
+		  loginname => $loginname,
+		  password  => $password,
+		  
+		  queryargs  => $queryargs,
+		  sortselect => $sortselect,
+		  thissortstring => $thissortstring,
+		  
+		  show_foot_banner      => 1,
+		  
+		  config       => \%config,
+		 };
+      
+      
+      
+      OpenBib::Common::Util::print_page($config{tt_resultlists_showsinglepool_tname},$ttdata,$r);
+      
+
       OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@resultset);
-      
       $idnresult->finish();
+
+      $sessiondbh->disconnect();
+      $userdbh->disconnect();
       
-      print "</table></div><p>";    
-      OpenBib::Common::Util::print_footer();
-      
-      goto LEAVEPROG;
+      return OK;
     }
     
   }
@@ -598,9 +612,8 @@ TITITEM
   # ENDE Trefferliste
   #
 
-LEAVEPROG: sleep 0;
-
   $sessiondbh->disconnect();
+  $userdbh->disconnect();
   
   return OK;
 }

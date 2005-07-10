@@ -152,40 +152,16 @@ sub handler {
     $idnresult->finish();
   }
   
-  
-  
-  # Dann Ausgabe des neuen Headers
-  
-  my $headerframeurl="$config{headerframe_loc}?sessionID=$sessionID";
-  my $searchframeurl="$config{searchframe_loc}?sessionID=$sessionID";
-  
-  my $toprows="140";
-  
-  if ($view ne ""){
-    $headerframeurl.="&view=$view";
-    $searchframeurl.="&view=$view";
-    $toprows="175";
-  }
-  
-  if ($searchsingletit ne '' && $database ne ''){
-    $searchframeurl="$config{search_loc}?sessionID=$sessionID&search=Mehrfachauswahl&searchmode=2&rating=0&bookinfo=0&showmexintit=1&casesensitive=0&hitrange=-1&database=$database&dbms=mysql&searchsingletit=$searchsingletit";
-  }
-  
-  if ($fs ne ""){
-    $searchframeurl="$config{virtualsearch_loc}?hitrange=-1&view=&sessionID=$sessionID&tosearch=In+allen+Katalogen+suchen&fs=$fs&bool9=AND&verf=&bool1=AND&hst=&bool2=AND&swt=&bool3=AND&kor=&bool4=AND&notation=&bool5=AND&isbn=&bool8=AND&issn=&bool6=AND&sign=&bool7=AND&ejahr=&ejahrop=%3D&maxhits=200&sorttype=author&sortorder=up&profil=";
-  }
+  my $ttdata={
+	      title      => 'KUG - K&ouml;lner Universit&auml;tsGesamtkatalog',
+	      view         => $view,
+	      sessionID    => $sessionID,
+	      fs           => $fs,
+	      searchsingletit => $searchsingletit,
+	      config       => \%config,
+	     };
 
-  print $r->send_http_header("text/html");
-
-  print << "ENDE";
-<html>
-<link href="/images/openbib/favicon.ico" rel="shortcut icon">
-<frameset rows="$toprows,*" framespacing="0" frameborder="0" border="0">
-<frame name="header" src="$headerframeurl" noresize >
-<frame name="body" src="$searchframeurl">
-</frameset>
-</html>
-ENDE
+  OpenBib::Common::Util::print_page($config{tt_startopac_tname},$ttdata,$r);
 
   $sessiondbh->disconnect();
 

@@ -361,85 +361,61 @@ sub handler {
 
   $idnresult->finish();
 
-  my $viewtemplate="";
+  # TT-Data erzeugen
 
-  if ($view && -e "$config{tt_include_path}/views/$view/$config{tt_searchframe_tname}"){
-    $viewtemplate="views/$view/$config{tt_searchframe_tname}";
+  my $ttdata={
+	      title      => 'KUG - K&ouml;lner Universit&auml;tsGesamtkatalog',
+	      stylesheet   => $stylesheet,
+	      view         => $view,
+	      viewdesc     => $viewdesc,
+	      sessionID    => $sessionID,
+	      dbinputtags  => $dbinputtags,
+	      alldbs       => $alldbs,
+	      dbcount      => $dbcount,
+	      alldbcount   => $alldbcount,
+	      userprofiles => $userprofiles,
+	      prevprofile  => $prevprofile,
+	      showfs       => $showfs,
+	      showhst      => $showhst,
+	      showverf     => $showverf,
+	      showkor      => $showkor,
+	      showswt      => $showswt,
+	      shownotation => $shownotation,
+	      showisbn     => $showisbn,
+	      showissn     => $showissn,
+	      showsign     => $showsign,
+	      showmart     => $showmart,
+	      showhststring => $showhststring,
+	      showejahr    => $showejahr,
+	      
+	      fs           => $fs,
+	      hst          => $hst,
+	      hststring    => $hststring,
+	      verf         => $verf,
+	      kor          => $kor,
+	      swt          => $swt,
+	      notation     => $notation,
+	      isbn         => $isbn,
+	      issn         => $issn,
+	      sign         => $sign,
+	      mart         => $mart,
+	      ejahr        => $ejahr,
+	      
+	      anzahl       => $anzahl,
+	      prevqueries  => $prevqueries,
+	      useragent    => $useragent,                
+	      show_corporate_banner => 0,
+	      show_foot_banner      => 1,
+	      config       => \%config,
+	     };
+  
+  if ($setmask eq "simple"){    
+    OpenBib::Common::Util::print_page($config{tt_searchframe_simple_tname},$ttdata,$r);
   }
-
-  my $template = Template->new({ 
-				INCLUDE_PATH  => $config{tt_include_path},
-				#    	    PRE_PROCESS   => 'config',
-				OUTPUT        => $r,     # Output geht direkt an Apache Request
-			       });
-
-    # TT-Data erzeugen
-
-    my $ttdata={
-		title      => 'KUG - K&ouml;lner Universit&auml;tsGesamtkatalog',
-		stylesheet   => $stylesheet,
-		view         => $view,
-                viewdesc     => $viewdesc,
-		viewtemplate => $viewtemplate,
-                sessionID    => $sessionID,
-                dbinputtags  => $dbinputtags,
-                show_testsystem_info => 1,
-                alldbs       => $alldbs,
-                dbcount      => $dbcount,
-                alldbcount   => $alldbcount,
-                userprofiles => $userprofiles,
-                prevprofile  => $prevprofile,
-                showfs       => $showfs,
-                showhst      => $showhst,
-                showverf     => $showverf,
-                showkor      => $showkor,
-                showswt      => $showswt,
-                shownotation => $shownotation,
-                showisbn     => $showisbn,
-                showissn     => $showissn,
-                showsign     => $showsign,
-                showmart     => $showmart,
-                showhststring => $showhststring,
-                showejahr    => $showejahr,
-
-                fs           => $fs,
-                hst          => $hst,
-                hststring    => $hststring,
-                verf         => $verf,
-                kor          => $kor,
-                swt          => $swt,
-                notation     => $notation,
-                isbn         => $isbn,
-                issn         => $issn,
-                sign         => $sign,
-                mart         => $mart,
-                ejahr        => $ejahr,
-
-                anzahl       => $anzahl,
-                prevqueries  => $prevqueries,
-                useragent    => $useragent,                
-		show_corporate_banner => 0,
-		show_foot_banner      => 1,
-		config       => \%config,
-	       };
-    
-    # Dann Ausgabe des neuen Headers
-    
-    print $r->send_http_header("text/html");
-
-    if ($setmask eq "simple"){    
-      $template->process($config{tt_searchframe_simple_tname}, $ttdata) || do { 
-	$r->log_reason($template->error(), $r->filename);
-	return SERVER_ERROR;
-      };
-    }
-    else {
-      $template->process($config{tt_searchframe_tname}, $ttdata) || do { 
-	$r->log_reason($template->error(), $r->filename);
-	return SERVER_ERROR;
-      };
-    }
-
+  else {
+    OpenBib::Common::Util::print_page($config{tt_searchframe_tname},$ttdata,$r);
+  }
+  
   $sessiondbh->disconnect();
   $userdbh->disconnect();
   return OK;

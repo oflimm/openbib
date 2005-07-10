@@ -1,12 +1,210 @@
+[% PROCESS std_header %]
+
+  <body bgcolor="#FFFFFF">
+
+[% IF show_corporate_banner %]
+[% PROCESS corporate_banner %] 
+[% END %]
+
+[% IF config.testsystem %]
+[% PROCESS testsystem_info %]
+[% END %]
+
+<ul id="tabbingmenu">
+   <li><a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">Einfache Recherche</a></li>
+   <li><a class="active" href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">Komplexe Recherche</a></li>
+</ul>
+
+<div id="content">
+
+<p />
+<p />
+
+[% IF prevqueries %]
+
+<form method="get" id="queries" action="http://[% config.servername %][% config.dispatchquery_loc %]">
+<table width="100%">
+<tr><th>Suchhistorie</th></tr>
+<tr><td class="boxed">
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<input type="hidden" name="view" value="[% view %]" />
+<select name="queryid">
+[% prevqueries %]
+</select>
+<input type="submit" name="action" value="Als Suchvorlage" />&nbsp;&nbsp;<input type="submit" name="action" value="Zur Trefferliste" />&nbsp;&nbsp;<input type="submit" name="action" value="Weiter als externe Recherche" style="background-color:#99CCFF" />
+</td></tr>
+</table>
+</form>
+[% END %]
+
+<p />
+<p />
+
+<form method="get" id="openbib" action="http://[% config.servername %][% config.virtualsearch_loc %]">
+<input type="hidden" name="hitrange" value="-1" />
+<input type="hidden" name="view" value="[% view %]" />
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+
+[% dbinputtags %]
+
+[% IF view %]
+
 Sie k&ouml;nnen entweder direkt im vorausgew&auml;hlten Katalog <b>[% viewdesc %]</b> recherchieren, oder die Suche auf weitere <a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %]" target="body">Kataloge</a> ausdehnen.
 <p />
 Dar&uuml;berhinaus finden Sie weitere Best&auml;nde dieses Katalogs in den 
-zugeh&ouml;rigen digitalisierten Image-Katalogen
+zugeh&ouml;rigen digitalisierten Karten-Katalogen
 
+<table>
+<tr>
+<td>
+<img src="/images/openbib/views/logophilfak.gif">
+</td>
+<td>
 <ul>
 <li><a href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=405c" target="_blank">Deutsche Sprache und Literatur</a>. </li>
 <li><a href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=405a" target="_blank">Deutsche Sprache und Literatur; mittelalterliches Drama; geistl. und weltl. Spiele</a>. </li>
-<li><a href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=405b" target="_blank">Deutsche Sprache und Literatur; mittelalterliches Drama; Sekundrliteratur</a>. </li>
+<li><a href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=405b" target="_blank">Deutsche Sprache und Literatur; mittelalterliches Drama; Sekund&auml;rliteratur</a>. </li>
 </ul>
+</td>
+</tr>
+</table>
+
+<p />
 
 
+<p />
+<p />
+
+<table>
+  <tr><td><input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="tosearch" value="In ausgewählten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="Lösche Eingabemaske"></td></tr>
+</table>
+[% ELSE %]
+Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs %] einzelnen <a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">Katalogen</a> recherchieren oder auch sofort in allen zusammen.
+<p />
+<table>
+  <tr><td><input type="submit" title="Hier suchen Sie in allen Katalogen auf einmal" name="tosearch" value="In allen Katalogen suchen" />&nbsp;<input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="tosearch" value="In ausgewählten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="Lösche Eingabemaske" /></td></tr>
+</table>
+[% END %]
+
+<p />
+<table width="100%">
+<tr><th>Suchbegriffe</th><td width="25">&nbsp;</td><th>Suchhinweise</th></tr>
+<tr><td class="boxed" valign="top">
+<table>
+<tr><td>Kategorie</td><td>Verkn&uuml;pfung</td><td>Ihre Eingabe</td><td></td></tr>
+
+[% IF showfs %]
+<tr><td bgcolor="#ADD8E6"><b>Freie Suche</b></td><td bgcolor="#ADD8E6"></td><td><input type="text" name="fs" value="[% fs %]" size="30" maxlength="200" /></td><td></td></tr>
+[% END %]
+
+[% IF showhst %]
+<tr><td bgcolor="#ADD8E6"><b>Titel</b></td><td bgcolor="#ADD8E6"><select name="bool1"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="hst" value="[% hst %]" size="30" maxlength="200" /></td><td></td></tr>
+[% END %]
+
+[% IF showverf %]
+<tr><td bgcolor="#ADD8E6"><b>Verfasser</b></td><td bgcolor="#ADD8E6"><select name="bool9"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="verf" value="[% verf %]" size="30" maxlength="200" /></td><td><input type="submit" name="verfindex" value="Index"></td></tr>
+[% END %]
+
+[% IF showkor %]
+<tr><td bgcolor="#ADD8E6"><b>K&ouml;rperschaft</b></td><td bgcolor="#ADD8E6"><select name="bool3"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="kor" value="[% kor %]" size="30" maxlength="200" /></td><td><input type="submit" name="korindex" value="Index"></td></tr>
+[% END %]
+
+[% IF showswt %]
+<tr><td bgcolor="#ADD8E6"><b>Schlagwort</b></td><td bgcolor="#ADD8E6"><select name="bool2"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="swt" value="[% swt %]" size="30" maxlength="200" /></td><td><input type="submit" name="swtindex" value="Index"></td></tr>
+[% END %]
+
+[% IF shownotation %]
+<tr><td bgcolor="#ADD8E6"><b>Notation</b></td><td bgcolor="#ADD8E6"><select name="bool4"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="notation" value="[% notation %]" size="30" maxlength="200" /></td><td><span style="color:red">*</span></td></tr>
+[% END %]
+
+[% IF showisbn %]
+<tr><td bgcolor="#ADD8E6"><b>ISBN</b></td><td bgcolor="#ADD8E6"><select name="bool5"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="isbn" value="[% isbn %]" size="30" maxlength="200" /></td><td></td></tr>
+[% END %]
+
+[% IF showissn %]
+<tr><td bgcolor="#ADD8E6"><b>ISSN</b></td><td bgcolor="#ADD8E6"><select name="bool8"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="issn" value="[% issn %]" size="30" maxlength="200" /></td><td></td></tr>
+[% END %]
+
+[% IF showsign %]
+<tr><td bgcolor="#ADD8E6"><b>Signatur</b></td><td bgcolor="#ADD8E6"><select name="bool6"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="sign" value="[% sign %]" size="30" maxlength="200" /></td><td><span style="color:red">*</span></td></tr>
+[% END %]
+
+[% IF showhststring %]
+<tr><td bgcolor="#ADD8E6"><b>Titel-String</b></td><td bgcolor="#ADD8E6"><select name="bool12"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="hststring" value="[% hststring %]" size="30" maxlength="200" /></td><td><span style="color:red">*</span></td></tr>
+[% END %]
+
+[% IF showmart %]
+<tr><td bgcolor="#ADD8E6"><b>Medienart</b></td><td bgcolor="#ADD8E6"><select name="bool11"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><select name="mart"><option value="" selected="selected">Keine ausgew&auml;hlt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option><option value="Audio CD">Audio-CD</option><option value="%22Audio Mitschnitt%22">Audio Mitschnitt</option><option value="%22audiovisuelle Materialien%22">Audiovisuelle Materialien</option><option value="Aufsatz">Aufsatz</option><option value="%22Aufsatz-Fotokopie%22">Aufsatz-Fotokopie</option><option value="%22CD-ROM%22">CD-ROM</option><option value="Diskette">Diskette</option><option value="Dissertation">Dissertation</option><option value="DVD">DVD</option><option value="Festschrift">Festschrift</option><option value="Fotokopie">Fotokopie</option><option value="Geschaeftsbericht">Gesch&auml;ftsbericht</option><option value="Kassette">Kassette</option><option value="Loseblattsammlung">Loseblattsammlung</option><option value="%22masch.Schr.%22">Masch.Schr.</option><option value="Medienkombination">Medienkombination</option><option value="Musikdruck Noten">Musikdruck / Noten</option><option value="Original">Original</option><option value="%22Reisefuehrer, Karte oder Atlas%22">Reisef&uuml;hrer, Karte oder Atlas</option><option value="Sprachkassette">Sprachkassette</option><option value="Standardmonographie">Standardmonographie</option><option value="Video">Video</option><option value="Zeitschrift">Zeitschrift</option><option value="Zeitung">Zeitung</option></select>&nbsp;</td><td></td></tr>
+[% END %]
+
+[% IF showejahr %]
+<tr><td bgcolor="#ADD8E6"><b>Jahr</b></td><td bgcolor="#ADD8E6">und<input type="hidden" name="bool7" value="AND" /></td><td><input type="text" name="ejahr" value="[% ejahr %]" size="4" maxlength="4" />&nbsp;<select name="ejahrop"><option value="%3D" selected="selected">genau</option><option value="%3E">j&uuml;nger</option><option value="%3C">&auml;lter</option></select></td><td></td></tr>
+[% END %]
+
+</table></td>
+<td>
+<table>
+<tr><td>&nbsp;</td></tr>
+</table></td>
+<td class="boxed" valign="top" style="font-size:0.8em">
+<table>
+<tr><td>[% PROCESS search_info %]</td></tr>
+</table>
+</td></tr>
+</table>
+
+<p />
+<table width="100%">
+<tr><th>Suchoptionen</th></tr>
+<tr><td class="boxed">
+<table>
+<tr><td bgcolor="#ADD8E6"><b>Maximale Trefferzahl pro Katalog</b></td><td colspan="3"><select name="maxhits"><option selected="selected">200</option><option>500</option><option>1000</option><option value="9999999">alle</option></select></td></tr>
+<tr><td bgcolor="#ADD8E6"><b>Sortierung nach</b></td><td colspan="2"><select name="sorttype"><option value="author" selected="selected">Autor/Körperschaft</option><option value="title">Titel</option><option value="yearofpub">Erscheinungsjahr</option></select><select name="sortorder"><option value="up">aufsteigend</option><option value="down">absteigend</option></select>&nbsp;pro Katalog</td><td></td></tr>
+<tr><td bgcolor="#ADD8E6"><b>Suchprofil</b></td><td colspan="3"><select name="profil">
+[%- IF dbcount || userprofiles -%]
+[% dbcount %] [% userprofiles %]
+[% END %]
+<option value="alldbs"
+[%- IF prevprofile == 'alldbs' -%]
+ selected="selected"
+[%- END -%]
+>Alle Kataloge</option><option value=""></option>
+<option value="">Fakult&auml;ten:</option><option value=""></option>
+
+[% FOREACH unit IN config.units %]
+<option value="[% unit.short %]"
+[%- IF prevprofile == unit.short -%]
+ selected="selected"
+[%- END -%]
+>- [% unit.desc %]</option>
+[% END %]
+<option value=""></option></select></td></tr>
+<tr><td bgcolor="#ADD8E6"><b>Und-Verkn&uuml;pfung innerhalb eines Suchfeldes</b></td><td colspan="3"><input type="radio" name="autoplus" value="1" checked="checked" />ja&nbsp;<input type="radio" name="autoplus" value="0" />nein</td></tr>
+</table>
+</td></tr>
+</table>
+<p />
+
+[% IF view %]
+<table>
+  <tr><td><input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="tosearch" value="In ausgewählten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="Lösche Eingabemaske" /></td></tr>
+</table>
+[% ELSE %]
+<table>
+  <tr><td><input type="submit" title="Hier suchen Sie in allen Katalogen auf einmal" name="tosearch" value="In allen Katalogen suchen" />&nbsp;<input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="tosearch" value="In ausgewählten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="Lösche Eingabemaske" /></td></tr>
+</table>
+[% END %]
+
+</form>
+
+<p />
+
+<b>Insgesamt sind im KUG derzeit [% alldbcount %] Titel nachgewiesen.</b>
+<p />
+F&uuml;r Verbesserungsvorschl&auml;ge oder bei technischen Problemen k&ouml;nnen Sie uns unter <a href="http://www.ub.uni-koeln.de/usb-cgi/makeEmailPage.pl?adr0=kug" target="_blank">kug@ub.uni-koeln.de</a> erreichen.
+
+</div>
+
+<p />
+
+[% PROCESS std_footer %]

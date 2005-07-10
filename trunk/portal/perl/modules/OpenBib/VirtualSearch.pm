@@ -526,6 +526,8 @@ sub handler {
 			   };
     }
 
+    $logger->debug("Verfasserindex".YAML::Dump(\@sortedindex));
+
     my $hits=$#sortedindex;
 
     if ($hits > 200){
@@ -1290,7 +1292,7 @@ UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&oum
 		};
   
   
-  $endtemplate->process($config{tt_virtualsearch_result_end_tname}, $startttdata) || do { 
+  $endtemplate->process($config{tt_virtualsearch_result_end_tname}, $endttdata) || do { 
     $r->log_reason($endtemplate->error(), $r->filename);
     return SERVER_ERROR;
   };

@@ -129,7 +129,7 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
 <table>
 <tr><td>&nbsp;</td></tr>
 </table></td>
-<td class="boxed" valign="top" style="font-size:9pt">
+<td class="boxed" valign="top" style="font-size:0.8em">
 <table>
 <tr><td>[% PROCESS search_info %]</td></tr>
 </table>

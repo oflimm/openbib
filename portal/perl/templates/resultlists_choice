@@ -11,7 +11,6 @@
 <p>
 
 
-
 <table width="100%">
 <tr>
 [% IF queryid %]
@@ -91,7 +90,7 @@
 </table>
 <p />
 
-[% IF queryids.size > 0 %]
+[% IF queryids.size >= 0 %]
 <form method="get" action="[% config.virtualsearch_loc %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]">
 <input type="hidden" name="trefferliste" value="choice">

@@ -455,6 +455,23 @@ sub print_page {
   my $logger = get_logger();
   
   my $stylesheet=get_css_by_browsertype($r);
+
+
+  # View- und Datenbank-spezifisches Templating
+
+  my $query=Apache::Request->new($r);
+  my $view=($query->param('view'))?$query->param('view'):undef;
+  my $database=($query->param('database'))?$query->param('database'):undef;
+
+  if ($view && -e "$config{tt_include_path}/views/$view/$templatename"){
+    $templatename="views/$view/$templatename";
+  }
+
+  # Database-Template ist spezifischer als View-Template und geht vor
+
+  if ($database && -e "$config{tt_include_path}/database/$database/$templatename"){
+    $templatename="database/$database/$templatename";
+  }
   
   my $template = Template->new({ 
 				INCLUDE_PATH  => $config{tt_include_path},

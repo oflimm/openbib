@@ -3,7 +3,7 @@
 <body>
 
 <ul id="tabbingmenu">
-   <li><a class="active" href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];trefferliste=choice;view=[% view %]">Trefferliste</a></li>
+   <li><a class="active" href="[% config.resultlists_loc %]?sessionID=[% sessionID %];trefferliste=choice;view=[% view %]">Trefferliste</a></li>
 </ul>
 
 <div id="content">

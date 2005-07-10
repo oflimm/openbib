@@ -138,17 +138,18 @@ sub handler {
   # ausgefallen, dem Benutzer wird eine 'Hinweisseite' ausgegeben
 
   if ($bestserver eq ""){
-    OpenBib::Common::Util::print_simple_header("Wartungsarbeiten",$r);
-    print << "MAINTENANCE";
-<h1>Wartungsarbeiten</h1>
 
-Wegen eines unerwarteten Problems kann der KUG in den n&auml;chsten Minuten
-leider nicht genutzt werden.
-<p>
-Wir bitten um Ihr Verst&auml;ndnis. Vielen Dank.
-MAINTENANCE
-    OpenBib::Common::Util::print_footer();
+    # TT-Data erzeugen
     
+    my $ttdata={
+		title      => 'KUG - Wartungsarbeiten',
+		show_corporate_banner => 0,
+		show_foot_banner      => 1,
+		config       => \%config,
+	       };
+
+    OpenBib::Common::Util::print_page($config{tt_loadbalancer_tname},$ttdata,$r);
+
     OpenBib::LoadBalancer::Util::benachrichtigung("Achtung: Es sind *alle* Server ausgefallen");
     return OK;
     
@@ -161,3 +162,4 @@ MAINTENANCE
   return OK;
 }
 
+1;

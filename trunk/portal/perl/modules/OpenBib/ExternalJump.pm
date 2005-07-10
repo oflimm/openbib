@@ -253,50 +253,39 @@ sub handler {
 
   $idnresult->finish();
 
-  my $template = Template->new({ 
-				INCLUDE_PATH  => $config{tt_include_path},
-				#    	    PRE_PROCESS   => 'config',
-				OUTPUT        => $r,     # Output geht direkt an Apache Request
-			       });
 
-    # TT-Data erzeugen
+  # TT-Data erzeugen
 
-    my $ttdata={
-		title      => 'KUG - K&ouml;lner Universit&auml;tsGesamtkatalog',
-		stylesheet   => $stylesheet,
-		view         => $view,
-                viewdesc     => $viewdesc,
-                sessionID    => $sessionID,
-		queryid      => $queryid,
-
-                fs           => $fs,
-                hst          => $hst,
-                hststring    => $hststring,
-                verf         => $verf,
-                kor          => $kor,
-                swt          => $swt,
-                notation     => $notation,
-                isbn         => $isbn,
-                issn         => $issn,
-                sign         => $sign,
-                mart         => $mart,
-                ejahr        => $ejahr,
-		thisquery    => $thisquery,
-		authurl      => $authurl,
-
-		show_corporate_banner => 0,
-		show_foot_banner      => 1,
-		config       => \%config,
-	       };
-    
-    # Dann Ausgabe des neuen Headers
-    
-    print $r->send_http_header("text/html");
-    
-    $template->process($config{tt_externaljump_tname}, $ttdata) || do { 
-      $r->log_reason($template->error(), $r->filename);
-      return SERVER_ERROR;
-    };
+  my $ttdata={
+	      title      => 'KUG - K&ouml;lner Universit&auml;tsGesamtkatalog',
+	      stylesheet   => $stylesheet,
+	      view         => $view,
+	      viewdesc     => $viewdesc,
+	      sessionID    => $sessionID,
+	      queryid      => $queryid,
+	      
+	      fs           => $fs,
+	      hst          => $hst,
+	      hststring    => $hststring,
+	      verf         => $verf,
+	      kor          => $kor,
+	      swt          => $swt,
+	      notation     => $notation,
+	      isbn         => $isbn,
+	      issn         => $issn,
+	      sign         => $sign,
+	      mart         => $mart,
+	      ejahr        => $ejahr,
+	      thisquery    => $thisquery,
+	      authurl      => $authurl,
+	      
+	      show_corporate_banner => 0,
+	      show_foot_banner      => 1,
+	      config       => \%config,
+	     };
+  
+  
+  OpenBib::Common::Util::print_page($config{tt_externaljump_tname},$ttdata,$r);
 
   $sessiondbh->disconnect();
   $userdbh->disconnect();

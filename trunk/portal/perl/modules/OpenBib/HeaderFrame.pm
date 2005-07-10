@@ -134,12 +134,6 @@ sub handler {
   $sessiondbh->disconnect();
   $userdbh->disconnect();
 
-  my $template = Template->new({ 
-				INCLUDE_PATH  => $config{tt_include_path},
-				#    	    PRE_PROCESS   => 'config',
-				OUTPUT        => $r,     # Output geht direkt an Apache Request
-			       });
-
   # TT-Data erzeugen
 
   my $ttdata={
@@ -155,15 +149,8 @@ sub handler {
 
 	      config       => \%config,
 	     };
-  
-  # Dann Ausgabe des neuen Headers
-  
-  print $r->send_http_header("text/html");
-  
-  $template->process($config{tt_headerframe_tname}, $ttdata) || do { 
-    $r->log_reason($template->error(), $r->filename);
-    return SERVER_ERROR;
-  };
+
+  OpenBib::Common::Util::print_page($config{tt_headerframe_tname},$ttdata,$r);
 
   return OK;
 }

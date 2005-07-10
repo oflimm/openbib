@@ -100,127 +100,76 @@ sub handler {
 
   my $view=$result->{'viewname'} || '';
   
-  if ($sessionID ne ""){
+  if ($userid){
+    
+    # Authentifiziert-Status der Session loeschen
+    
+    my $userresult=$userdbh->prepare("delete from usersession where userid = ?") or $logger->error($DBI::errstr);
+    $userresult->execute($userid) or $logger->error($DBI::errstr);
     
     
-    if ($userid){
-
-      # Authentifiziert-Status der Session loeschen
-      
-      my $userresult=$userdbh->prepare("delete from usersession where userid = ?") or $logger->error($DBI::errstr);
-      $userresult->execute($userid) or $logger->error($DBI::errstr);
-
-
-      # Zwischengespeicherte Benutzerinformationen loeschen
-
-      $userresult=$userdbh->prepare("update user set nachname = '', vorname = '', strasse = '', ort = '', plz = '', soll = '', gut = '', avanz = '', branz = '', bsanz = '', vmanz = '', maanz = '', vlanz = '', sperre = '', sperrdatum = '', gebdatum = '' where userid = ?") or $logger->error($DBI::errstr);
-      $userresult->execute($userid) or $logger->error($DBI::errstr);
-
-
-      $userresult->finish();
-
-    }
+    # Zwischengespeicherte Benutzerinformationen loeschen
     
-    # Zuallererst loeschen der Trefferliste fuer diese sessionID
+    $userresult=$userdbh->prepare("update user set nachname = '', vorname = '', strasse = '', ort = '', plz = '', soll = '', gut = '', avanz = '', branz = '', bsanz = '', vmanz = '', maanz = '', vlanz = '', sperre = '', sperrdatum = '', gebdatum = '' where userid = ?") or $logger->error($DBI::errstr);
+    $userresult->execute($userid) or $logger->error($DBI::errstr);
     
-    my $idnresult=$sessiondbh->prepare("delete from treffer where sessionid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
     
-    $idnresult=$sessiondbh->prepare("delete from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-    
-    $idnresult=$sessiondbh->prepare("delete from searchresults where sessionid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-    
-    $idnresult=$sessiondbh->prepare("delete from sessionview where sessionid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-
-    $idnresult=$sessiondbh->prepare("delete from sessionmask where sessionid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-    
-    $idnresult=$sessiondbh->prepare("delete from sessionprofile where sessionid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-
-    $idnresult->finish();
-    
-    # Kopieren ins sessionlog
-    
-    #  $idnresult=$sessiondbh->prepare("insert into sessionlog (sessionid,query,createtime) select session.sessionid,session.query,session.createtime from session where sessionid = ?)") or $logger->error($DBI::errstr);
-    #  $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-    
-    #  my $endtime = POSIX::strftime('%Y-%m-%d% %H:%M:%S', localtime());
-    
-    #  $idnresult=$sessiondbh->prepare("insert into sessionlog (endtime) values (?)  where sessionid = ?)") or $logger->error($DBI::errstr);
-    #  $idnresult->execute($endtime,$sessionID) or $logger->error($DBI::errstr);
-    
-    #  $idnresult->finish();
-    
-    # Dann loeschen der Session in der Datenbank
-    
-    my $anzahlresult=$sessiondbh->prepare("delete from session where sessionid = ?") or $logger->error($DBI::errstr);
-    $anzahlresult->execute($sessionID) or $logger->error($DBI::errstr);
-    $anzahlresult->finish();
-
-
-    my $template = Template->new({ 
-				INCLUDE_PATH  => $config{tt_include_path},
-				#    	    PRE_PROCESS   => 'config',
-				OUTPUT        => $r,     # Output geht direkt an Apache Request
-			       });
-
-    # TT-Data erzeugen
-
-    my $ttdata={
-		title      => 'KUG - K&ouml;lner Universit&auml;tsGesamtkatalog',
-		stylesheet => $stylesheet,
-		view       => $view,
-		show_corporate_banner => 1,
-		show_foot_banner => 0,
-		config     => \%config,
-	       };
-    
-    # Dann Ausgabe des neuen Headers
-    
-    print $r->send_http_header("text/html");
-    
-    $template->process($config{tt_leave_tname}, $ttdata) || do { 
-      $r->log_reason($template->error(), $r->filename);
-      return SERVER_ERROR;
-    };
-
-  }
-  else {
-    my $template = Template->new({ 
-				  INCLUDE_PATH  => $config{tt_include_path},
-				  #    	    PRE_PROCESS   => 'config',
-				  OUTPUT        => $r,     # Output geht direkt an Apache Request
-				 });
-    
-    # TT-Data erzeugen
-
-    my $ttdata={
-		title      => 'Fehler: KUG - K&ouml;lner Universit&auml;tsGesamtkatalog',
-		stylesheet => $stylesheet,
-
-		show_corporate_banner => 1,
-		show_foot_banner => 0,
-		invisible_links => 0,
-
-		errmsg     => 'Session nicht korrekt',
-		config     => \%config,
-	       };
-    
-    # Dann Ausgabe des neuen Headers
-    
-    print $r->send_http_header("text/html");
-    
-    $template->process($config{tt_error_tname}, $ttdata) || do { 
-      $r->log_reason($template->error(), $r->filename);
-      return SERVER_ERROR;
-    };
-
+    $userresult->finish();
     
   }
+  
+  # Zuallererst loeschen der Trefferliste fuer diese sessionID
+  
+  my $idnresult=$sessiondbh->prepare("delete from treffer where sessionid = ?") or $logger->error($DBI::errstr);
+  $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+  
+  $idnresult=$sessiondbh->prepare("delete from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
+  $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+  
+  $idnresult=$sessiondbh->prepare("delete from searchresults where sessionid = ?") or $logger->error($DBI::errstr);
+  $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+  
+  $idnresult=$sessiondbh->prepare("delete from sessionview where sessionid = ?") or $logger->error($DBI::errstr);
+  $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+  
+  $idnresult=$sessiondbh->prepare("delete from sessionmask where sessionid = ?") or $logger->error($DBI::errstr);
+  $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+  
+  $idnresult=$sessiondbh->prepare("delete from sessionprofile where sessionid = ?") or $logger->error($DBI::errstr);
+  $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+  
+  $idnresult->finish();
+  
+  # Kopieren ins sessionlog
+  
+  #  $idnresult=$sessiondbh->prepare("insert into sessionlog (sessionid,query,createtime) select session.sessionid,session.query,session.createtime from session where sessionid = ?)") or $logger->error($DBI::errstr);
+  #  $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+  
+  #  my $endtime = POSIX::strftime('%Y-%m-%d% %H:%M:%S', localtime());
+  
+  #  $idnresult=$sessiondbh->prepare("insert into sessionlog (endtime) values (?)  where sessionid = ?)") or $logger->error($DBI::errstr);
+  #  $idnresult->execute($endtime,$sessionID) or $logger->error($DBI::errstr);
+  
+  #  $idnresult->finish();
+  
+  # Dann loeschen der Session in der Datenbank
+  
+  my $anzahlresult=$sessiondbh->prepare("delete from session where sessionid = ?") or $logger->error($DBI::errstr);
+  $anzahlresult->execute($sessionID) or $logger->error($DBI::errstr);
+  $anzahlresult->finish();
+  
+  # TT-Data erzeugen
+  
+  my $ttdata={
+	      title      => 'KUG - K&ouml;lner Universit&auml;tsGesamtkatalog',
+	      stylesheet => $stylesheet,
+	      view       => $view,
+	      show_corporate_banner => 1,
+	      show_foot_banner => 0,
+	      config     => \%config,
+	     };
+  
+  OpenBib::Common::Util::print_page($config{tt_leave_tname},$ttdata,$r);
   
   $sessiondbh->disconnect();
   $userdbh->disconnect();

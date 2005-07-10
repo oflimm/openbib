@@ -211,6 +211,8 @@ use vars qw(%config);
 
 	   tt_databasechoice_tname => 'databasechoice',
 
+	   tt_loadbalancer_tname   => 'loadbalancer',
+
 	   tt_login_tname          => 'login',
 
 	   tt_mailcollection_mail_html_tname  => 'mailcollection_mail_html',
@@ -224,7 +226,10 @@ use vars qw(%config);
 	   tt_managecollection_save_plain_tname => 'managecollection_save_plain',
 	   tt_managecollection_show_tname  => 'managecollection_show',
 
-           tt_resultlists_choice_tname => 'resultlists_choice',
+           tt_resultlists_choice_tname          => 'resultlists_choice',
+	   tt_resultlists_showall_tname         => 'resultlists_showall',
+	   tt_resultlists_showall_sortall_tname => 'resultlists_showall_sortall',
+	   tt_resultlists_showsinglepool_tname  => 'resultlists_showsinglepool',
 
 	   tt_search_showautset_tname => 'search_showautset',
 	   tt_search_showkorset_tname => 'search_showkorset',
@@ -236,18 +241,19 @@ use vars qw(%config);
 
 	   tt_search_showswtindex_tname => 'search_showswtindex',
 
+	   tt_virtualsearch_result_start_tname => 'virtualsearch_result_start',
+	   tt_virtualsearch_result_item_tname  => 'virtualsearch_result_item',
+	   tt_virtualsearch_result_end_tname   => 'virtualsearch_result_end',
+
 	   tt_virtualsearch_showverfindex_tname => 'virtualsearch_showverfindex',
 	   tt_virtualsearch_showkorindex_tname => 'virtualsearch_showkorindex',
 	   tt_virtualsearch_showswtindex_tname => 'virtualsearch_showswtindex',
 
-	   tt_virtualsearch_result_start_tname => 'virtualsearch_result_start',
-	   tt_virtualsearch_result_item_tname  => 'virtualsearch_result_item',
-	   tt_virtualsearch_result_end_tname   => 'virtualsearch_result_end',
 	   
 	   tt_userprefs_tname              => 'userprefs',
 	   tt_userprefs_ask_delete_tname   => 'userprefs_ask_delete',
 	   tt_userprefs_changefields_tname => 'userprefs_changefields',
-	   tt_userprefs_userdeleted_tname => 'userprefs_userdeleted',
+	   tt_userprefs_userdeleted_tname  => 'userprefs_userdeleted',
 
 	   tt_selfreg_tname         => 'selfreg',
 	   tt_selfreg_success_tname => 'selfreg_success',
@@ -286,16 +292,18 @@ use vars qw(%config);
 
 	   categorymapping => {
 			       einbaende => {
+					     'Verfasser'     => 'Person',
+					     'Person'        => 'Buchbinder/Werkst&auml;tten',
 					     'HST'           => 'Titel',          # M0331
+					     'WST'           => 'Provinienz',     # M0370
 					     'Zusatz'        => 'Untertitel',     # M0335
-					     'Beig.Werke'    => 'Beibaende',      # M0361
+					     'Beig.Werke'    => 'Beib&auml;nde',  # M0361
 					     'Ausgabe'       => 'Auflage',        # M0403
 					     '0413'          => 'Drucker',        # M0413
 					     'Ersch. Jahr'   => 'E-Jahr',         # M0425
 					     'Verlagsort'    => 'Ersch-Ort',      # M0410
-					     '0370'          => 'Provenienz',     # M0370
-					     '0424'          => 'Fert.-Jahr',     # M0424
-					     '0035'          => 'Fert.-Ort',      # M0035
+					     'Ans. Ersch. Jahr' => 'Fert.-Jahr',  # M0424
+					     '0035'          => 'Fert.-Land/Ort', # M0035
 					     '0435'          => 'Ma&szlig;e',     # M0435
 					     'Schlagwort'    => 'Jahrhundert',    # M0710
 					     'Urheber'       => 'Region',         # M0200
@@ -304,8 +312,11 @@ use vars qw(%config);
 					     'Fu&szlig;note' => 'Quellen',        # M0501
 					     '0508'          => 'Bibl. Nachweis', # M0508
 					    },
+			       
+			       inst501 => {
+					   'Notation'     => 'Klassifikation',
+					  },
 			      },
-	   
 	  );
 
 1;

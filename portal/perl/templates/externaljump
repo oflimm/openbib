@@ -12,7 +12,7 @@
 
 <table width="100%">
 <tr><th>Hinweis</th></tr>
-<tr><td class="boxedclear" style="font-size:9pt">
+<tr><td class="boxedclear" style="font-size:0.8em">
 An dieser Stelle k&ouml;nnen Sie ausgehend von Ihrer (eventuell erfolglosen) Suchanfrage im KUG Recherche-Portal diese auf weitere externe Kataloge ausdehnen. 
 </td></tr>
 </table>
@@ -21,9 +21,9 @@ An dieser Stelle k&ouml;nnen Sie ausgehend von Ihrer (eventuell erfolglosen) Suc
 
 <table width="100%">
 <tr><th>Ihre Suchanfrage im KUG Recherche-Portal</th></tr>
-<tr><td class="boxedclear" style="font-size:11pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 <table>
-<tr><td>[% thisquery %]</td><td>=&gt;</td><td><a href="http://[% config.servername %][% config.virtualsearch_loc %]?sessionID=[% sessionID %]&trefferliste=choice&queryid=[% queryid %]" target="body">Sprung zur Trefferliste im KUG</a></td></tr>
+<tr><td>[% thisquery %]</td><td>=&gt;</td><td><a href="http://[% config.servername %][% config.resultlists_loc %]?sessionID=[% sessionID %]&trefferliste=choice&queryid=[% queryid %]" target="body">Sprung zur Trefferliste im KUG</a></td></tr>
 </table>
 </td></tr>
 </table>
@@ -32,7 +32,7 @@ An dieser Stelle k&ouml;nnen Sie ausgehend von Ihrer (eventuell erfolglosen) Suc
 
 <table width="100%">
 <tr><th>&Uuml;bernahme der Anfrage in externe Recherchequellen</th></tr>
-<tr><td class="boxedclear" style="font-size:11pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 
 <table>
 <tr><td><b>Digitale Bibliothek / Monographien (Fernleihe)</b></td><td>=&gt;</td><td>

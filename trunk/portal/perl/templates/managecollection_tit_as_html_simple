@@ -1,5 +1,5 @@
 [% FOREACH titset IN collection %]
-<tr><td bgcolor="aliceblue">Titel [% loop.count %] aus: [% titset.dbdesc %]<td></tr><tr><td>
+<tr><td bgcolor="aliceblue">Titel [% loop.count %] aus: [% utf2iso(titset.dbdesc) %]<td></tr><tr><td>
 [% normset = titset.tit %]
 [% mexnormset = titset.mex %]
 [% circset = titset.circ %]
@@ -13,7 +13,7 @@
 <tr><td>Kategorie</td><td>Inhalt</td></tr>
 
 [%- FOREACH normkat IN normset -%]
-<tr><td bgcolor="lightblue"><strong>[% normkat.desc %]</strong></td><td>[% normkat.contents %]</td></tr>
+<tr><td bgcolor="lightblue"><strong>[% utf2iso(normkat.desc) %]</strong></td><td>[% utf2iso(normkat.contents) %]</td></tr>
 [%- END -%]
 </table>
 
@@ -23,7 +23,7 @@
 <tr align=center><td bgcolor="lightblue" width="225">Besitzende Bibliothek</td><td bgcolor="lightblue" width="250">Standort</td><td bgcolor="lightblue" width="120">Inventarnummer</td><td bgcolor="lightblue" width="250">Lokale Signatur</td><td bgcolor="lightblue" width="230">Bestandsverlauf</td></tr>
 
 [% FOREACH mex IN mexnormset %]
-<tr align=center><td><a href="[% mex.bibinfourl %]"><strong>[% mex.bibliothek %]</strong></a></td><td>[% mex.standort %]</td><td>[% mex.inventarnummer %]</td><td><strong><span id="rlsignature">[% mex.signatur %]</span></strong></td><td>[% mex.erschverl %]</td></tr>
+<tr align=center><td><a href="[% utf2iso(mex.bibinfourl) %]"><strong>[% utf2iso(mex.bibliothek) %]</strong></a></td><td>[% utf2iso(mex.standort) %]</td><td>[% utf2iso(mex.inventarnummer) %]</td><td><strong><span id="rlsignature">[% utf2iso(mex.signatur) %]</span></strong></td><td>[% utf2iso(mex.erschverl) %]</td></tr>
 [% END %]
 </table>
 [% END %]
@@ -40,7 +40,7 @@
 <table>
 <tr align="center"><td bgcolor="lightblue" width="225">Besitzende Bibliothek</td><td bgcolor="lightblue" width="250">Standort</td><td bgcolor="lightblue" width="120">Lokale Signatur</td><td bgcolor="lightblue" width="120">Ausleihstatus</td><td bgcolor="lightblue" width="110">Aktion</td></tr>
 [% FOREACH mex IN circset %]
-<tr align="center"><td><a href="[% mex.Bibinfourl %]"><strong>[% mex.Bibliothek %]</strong></a></td><td>[% mex.Standort %]</td><td><strong>[% mex.Signatur %]</strong></td><td><strong>[% mex.Ausleihstatus %]</strong></td><td bgcolor="yellow"><a TARGET=_blank href="[% mex.Ausleihurl %]">[% mex.Ausleihstring %]</a></td></tr>
+<tr align="center"><td><a href="[% utf2iso(mex.Bibinfourl) %]"><strong>[% utf2iso(mex.Bibliothek) %]</strong></a></td><td>[% utf2iso(mex.Standort) %]</td><td><strong>[% utf2iso(mex.Signatur) %]</strong></td><td><strong>[% utf2iso(mex.Ausleihstatus) %]</strong></td><td bgcolor="yellow"><a TARGET=_blank href="[% utf2iso(mex.Ausleihurl) %]">[% utf2iso(mex.Ausleihstring) %]</a></td></tr>
 [% END %]
 </table>
 </td></tr>

@@ -144,7 +144,7 @@ sub handler {
     if ($loginname eq "" || $password eq ""){
       $loginfailed=1;
     }
-    
+   
     my $targetresult=$userdbh->prepare("select * from logintarget where targetid = ?") or $logger->error($DBI::errstr);
     
     $targetresult->execute($targetid) or $logger->error($DBI::errstr);
@@ -338,29 +338,27 @@ sub handler {
     
 
     # Und nun wird ein komplett neue Frameset aufgebaut
-    
+
     my $headerframeurl="http://$config{servername}$config{headerframe_loc}?sessionID=$sessionID";
-    my $searchframeurl="http://$config{servername}$config{userprefs_loc}?sessionID=$sessionID&action=showfields";
-    
-    my $toprows="140";
+    my $bodyframeurl="http://$config{servername}$config{userprefs_loc}?sessionID=$sessionID&action=showfields";
     
     if ($view ne ""){
       $headerframeurl.="&view=$view";
-      $searchframeurl.="&view=$view";
-      $toprows="175";
+      $bodyframeurl.="&view=$view";
     }
-    
+
     # Fehlerbehandlung
     
     if ($loginfailed){
-      $searchframeurl="http://$config{servername}$config{login_loc}?sessionID=$sessionID&action=loginfailed&code=$loginfailed";
+      $bodyframeurl="http://$config{servername}$config{login_loc}?sessionID=$sessionID&action=loginfailed&code=$loginfailed";
     }
     
     my $ttdata={
-		toprows    => $toprows,
-		headerframeurl => $headerframeurl,
-		searchframeurl => $searchframeurl,
-		config     => \%config,
+		headerframeurl  => $headerframeurl,
+		bodyframeurl    => $bodyframeurl,
+		view            => $view,
+		sessionID       => $sessionID,
+		config          => \%config,
 	       };
     
     OpenBib::Common::Util::print_page($config{tt_startopac_tname},$ttdata,$r);

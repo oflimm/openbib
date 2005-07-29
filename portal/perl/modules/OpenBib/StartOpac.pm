@@ -152,13 +152,24 @@ sub handler {
     $idnresult->finish();
   }
   
+
+  my $headerframeurl="$config{headerframe_loc}?sessionID=$sessionID";
+  my $bodyframeurl="$config{searchframe_loc}?sessionID=$sessionID";
+
+  if ($view ne ""){
+    $headerframeurl.="&view=$view";
+    $bodyframeurl.="&view=$view";
+  }
+
   my $ttdata={
-	      title      => 'KUG - K&ouml;lner Universit&auml;tsGesamtkatalog',
-	      view         => $view,
-	      sessionID    => $sessionID,
-	      fs           => $fs,
+	      title           => 'KUG - K&ouml;lner Universit&auml;tsGesamtkatalog',
+	      headerframeurl  => $headerframeurl,
+	      bodyframeurl    => $bodyframeurl,
+	      view            => $view,
+	      sessionID       => $sessionID,
+	      fs              => $fs,
 	      searchsingletit => $searchsingletit,
-	      config       => \%config,
+	      config          => \%config,
 	     };
 
   OpenBib::Common::Util::print_page($config{tt_startopac_tname},$ttdata,$r);

@@ -88,9 +88,6 @@ sub handler {
   my $befehlsurl="http://$config{servername}$config{search_loc}";
   
   my $searchmode=2;
-  my $searchall=1;
-  my $search="Suche";
-  my $dbmode=1;
   
   # CGI-Input auslesen
   
@@ -353,6 +350,12 @@ sub handler {
    my $alldbs;
   
 
+  # BEGIN DB-Bestimmung
+  ####################################################################
+  # Bestimmung der Datenbanken, in denen gesucht werden soll
+  ####################################################################
+
+
   # Ueber view koennen bei Direkteinsprung in VirtualSearch die
   # entsprechenden Kataloge vorausgewaehlt werden
 
@@ -382,85 +385,92 @@ sub handler {
     $idnresult->finish();
     
   }
-  elsif (($tosearch eq "In ausgewählten Katalogen suchen")&&(($#databases == -1) && ($profil eq ""))){
-    OpenBib::Common::Util::print_warning("Sie haben \"In ausgew&auml;hlten Katalogen suchen\" angeklickt, obwohl sie keine <a href=\"$config{databasechoice_loc}?sessionID=$sessionID\" target=\"body\">Kataloge</a> oder Suchprofile ausgew&auml;hlt haben. Bitte w&auml;hlen Sie die gew&uuml;nschten Kataloge/Suchprofile aus oder bet&auml;tigen Sie \"In allen Katalogen suchen\".",$r);
+  elsif ($tosearch eq "In ausgewählten Katalogen suchen" || $verfindex || $korindex || $swtindex ){
 
-    $sessiondbh->disconnect();
-    $userdbh->disconnect();
-    
-    return OK;
-  }
-
-  if ($profil eq "dbauswahl"){
-    # Eventuell bestehende Auswahl zuruecksetzen
-
-    @databases=();
-
-    my $idnresult=$sessiondbh->prepare("select dbname from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-
-    while (my $result=$idnresult->fetchrow_hashref()){
-      my $dbname=$result->{'dbname'};
-      push @databases, $dbname;
-    }
-    $idnresult->finish();
-
-  }
-
-  # Wenn ein anderes Profil als 'dbauswahl' ausgewaehlt wuerde
-  elsif ($profil){
-
-    # Eventuell bestehende Auswahl zuruecksetzen
-
-    @databases=();
-    
-    # Benutzerspezifische Datenbankprofile
-    if ($profil=~/^user(\d+)/){
-      my $profilid=$1;
+    if ($profil eq "dbauswahl"){
+      # Eventuell bestehende Auswahl zuruecksetzen
       
-      my $profilresult=$userdbh->prepare("select profildb.dbname from profildb,userdbprofile where userdbprofile.userid = ? and userdbprofile.profilid = ? and userdbprofile.profilid=profildb.profilid order by dbname") or $logger->error($DBI::errstr);
-      $profilresult->execute($userid,$profilid) or $logger->error($DBI::errstr);
+      @databases=();
       
-      my @poolres;
-      while (@poolres=$profilresult->fetchrow){	    
-	push @databases, $poolres[0];
-      }
-      $profilresult->finish();
+      my $idnresult=$sessiondbh->prepare("select dbname from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
+      $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
       
-    }
-    elsif ($profil eq "alldbs"){
-    # Alle Datenbanken
-      my $idnresult=$sessiondbh->prepare("select dbname from dbinfo where active=1 order by faculty,dbname") or $logger->error($DBI::errstr);
-      $idnresult->execute() or $logger->error($DBI::errstr);
-      
-      my @idnres;
-      while (@idnres=$idnresult->fetchrow){	    
-	push @databases, $idnres[0];
+      while (my $result=$idnresult->fetchrow_hashref()){
+	my $dbname=$result->{'dbname'};
+	push @databases, $dbname;
       }
       $idnresult->finish();
+      
     }
+    
+    # Wenn ein anderes Profil als 'dbauswahl' ausgewaehlt wuerde
+    elsif ($profil){
+      
+      # Eventuell bestehende Auswahl zuruecksetzen
+      
+      @databases=();
+      
+      # Benutzerspezifische Datenbankprofile
+      if ($profil=~/^user(\d+)/){
+	my $profilid=$1;
+	
+	my $profilresult=$userdbh->prepare("select profildb.dbname from profildb,userdbprofile where userdbprofile.userid = ? and userdbprofile.profilid = ? and userdbprofile.profilid=profildb.profilid order by dbname") or $logger->error($DBI::errstr);
+	$profilresult->execute($userid,$profilid) or $logger->error($DBI::errstr);
+	
+	my @poolres;
+	while (@poolres=$profilresult->fetchrow){	    
+	  push @databases, $poolres[0];
+	}
+	$profilresult->finish();
+	
+      }
+      elsif ($profil eq "alldbs"){
+	# Alle Datenbanken
+	my $idnresult=$sessiondbh->prepare("select dbname from dbinfo where active=1 order by faculty,dbname") or $logger->error($DBI::errstr);
+	$idnresult->execute() or $logger->error($DBI::errstr);
+	
+	my @idnres;
+	while (@idnres=$idnresult->fetchrow){	    
+	  push @databases, $idnres[0];
+	}
+	$idnresult->finish();
+      }
+      else {
+	my $idnresult=$sessiondbh->prepare("select dbname from dbinfo where active=1 and faculty = ? order by faculty,dbname") or $logger->error($DBI::errstr);
+	$idnresult->execute($profil) or $logger->error($DBI::errstr);
+	
+	my @idnres;
+	while (@idnres=$idnresult->fetchrow){	    
+	  push @databases, $idnres[0];
+	}
+	$idnresult->finish();
+      }
+    }
+    
+    # Kein Profil
     else {
-      my $idnresult=$sessiondbh->prepare("select dbname from dbinfo where active=1 and faculty = ? order by faculty,dbname") or $logger->error($DBI::errstr);
-      $idnresult->execute($profil) or $logger->error($DBI::errstr);
+      OpenBib::Common::Util::print_warning("Sie haben \"In ausgew&auml;hlten Katalogen suchen\" angeklickt, obwohl sie keine <a href=\"$config{databasechoice_loc}?sessionID=$sessionID\" target=\"body\">Kataloge</a> oder Suchprofile ausgew&auml;hlt haben. Bitte w&auml;hlen Sie die gew&uuml;nschten Kataloge/Suchprofile aus oder bet&auml;tigen Sie \"In allen Katalogen suchen\".",$r);
       
-      my @idnres;
-      while (@idnres=$idnresult->fetchrow){	    
-	push @databases, $idnres[0];
-      }
-      $idnresult->finish();
-    }
-  }
-  
-  # Wenn Profil aufgerufen wurde, dann abspeichern fuer Recherchemaske
+      $sessiondbh->disconnect();
+      $userdbh->disconnect();
+      
+      return OK;
 
-  if ($profil){
+    }
+    
+    # Wenn Profil aufgerufen wurde, dann abspeichern fuer Recherchemaske
+    
+    if ($profil){
       my $idnresult=$sessiondbh->prepare("delete from sessionprofile where sessionid = ? ") or $logger->error($DBI::errstr);
       $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-
+      
       $idnresult=$sessiondbh->prepare("insert into sessionprofile values (?,?) ") or $logger->error($DBI::errstr);
       $idnresult->execute($sessionID,$profil) or $logger->error($DBI::errstr);
-    
+      
       $idnresult->finish();
+    }
+    
+    
   }
 
 
@@ -960,7 +970,7 @@ UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&oum
   my $loginname="";
   my $password="";
 
-  ($loginname,$password)=get_cred_for_userid($userdbh,$userid) if ($userid && OpenBib::Common::Util::get_targettype_of_session($userdbh,$sessionID) ne "self");
+  ($loginname,$password)=OpenBib::Common::Util::get_cred_for_userid($userdbh,$userid) if ($userid && OpenBib::Common::Util::get_targettype_of_session($userdbh,$sessionID) ne "self");
   
   # Hash im Loginname ersetzen
 

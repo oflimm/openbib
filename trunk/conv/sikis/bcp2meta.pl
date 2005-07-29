@@ -148,6 +148,7 @@ my %swtkonv=(
 
 %titkonv=(
 #	   "0000" => "IDN  ", # IDN
+	   "0001" => "1110 ", # Sias-Ausleihnummer/ID Ausleihe/IDA
 	   "0002" => "SDN  ", # SDN
 	   "0003" => "SDU  ", # SDU
 #	   "0016" => "7600 ", # Standort
@@ -340,6 +341,17 @@ my %swtkonv=(
 	   "0710.017" => "5650.017 ", # Schlagwort
 	   "0710.018" => "5650.018 ", # Schlagwort
 	   "0710.019" => "5650.019 ", # Schlagwort
+	   "0710.020" => "5650.020 ", # Schlagwort
+	   "0710.021" => "5650.021 ", # Schlagwort
+	   "0710.022" => "5650.022 ", # Schlagwort
+	   "0710.023" => "5650.023 ", # Schlagwort
+	   "0710.024" => "5650.024 ", # Schlagwort
+	   "0710.025" => "5650.025 ", # Schlagwort
+	   "0710.026" => "5650.026 ", # Schlagwort
+	   "0710.027" => "5650.027 ", # Schlagwort
+	   "0710.028" => "5650.028 ", # Schlagwort
+	   "0710.029" => "5650.029 ", # Schlagwort
+	   "0710.030" => "5650.030 ", # Schlagwort
 	   "0710.150" => "5650.200 ", # Schlagwort
 	   "0710.151" => "5650.201 ", # Schlagwort
 	   "0710.152" => "5650.202 ", # Schlagwort
@@ -903,7 +915,7 @@ while (($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split ("
 #  print  TIT "SDN  %sdn\n";
 
   foreach $key (sort keys %SATZ){
-    if ($key !~/^000[01]/){
+    if ($key !~/^0000/){
       $newkat=$titkonv{$key};
       $newkat=~s/^(\d\d\d\d)\.\d\d\d/$1/;
 
@@ -928,17 +940,7 @@ while (($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split ("
 
       else {
 	$line=$key.":".konv($SATZ{$key});
-	
 
-	if ($line=~/^SDN  .(\d\d)\.(\d\d)\.(\d\d\d\d)/) {
-	  $sdn="$3$2$1";
-	}
-
-	if ($line=~/^SDU  .(\d\d)\.(\d\d)\.(\d\d\d\d)/) {
-	  $sdu="$3$2$1";
-	}
-
-      
 	if ($line=~/^0501\.(...):(.*)$/) {
 	  my $fussn=$2;
 	  $fussn=~s/\n//;
@@ -984,18 +986,28 @@ while (($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split ("
 	if ($line=~/^0089\.001:(.+?)$/) {
 	  $bandangvorl=$1;
 	}
-      
+
 	if ($line=~/^0590\....:(.+)/) {
 	  my $inhalt=$1;
 	  my $restinhalt="";
 
-	  # Wenn es ein verknuepfter Satz ist
-	  # (erkennbar daran, dass es noch eine 'freie' Verknuepfung gibt)
-	  # Nur dann wird $restinhalt bestueckt.
+	  # Wenn 590 besetzt ist, dann handelt es sich um einen
+	  # Aufsatz und 451er werden gar nicht ausgewertet. Eine
+	  # 004 wird dann immer mit der 590 assoziiert.
 
-	  print STDERR "VERWCOUNT $verwcount - VERKNCOUNT $verkncount - INHALT $inhalt \n";
+	  # Daher erst einmal eine etwaige Verknuepfung sichern
 
-	  if ($verwcount > $verkncount){
+	  my $verknidn=$verwidn[0][0];
+
+	  # Dann alle bestehenden (falschen) Verknuepfungen loeschen
+
+	  @verwidn=();
+
+	  # und wieder eintragen
+
+	  $verwidn[0][0]=$verknidn;
+
+	  if ($verwidn[0][0]){
 	    if ($inhalt=~/^.*?[.:\/;](.+)$/){
 	      $zusatz=$1;
 	    }
@@ -1004,20 +1016,20 @@ while (($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split ("
 	    }
 
 
-	    $verwidn[$maxpos][1]="5";
-	    $verwidn[$maxpos][2]="";
-	    $verwidn[$maxpos][3]="$zusatz";
+	    $verwidn[0][1]="5";
+	    $verwidn[0][2]="";
+	    $verwidn[0][3]="$zusatz";
 	  }
 	  else {
 
 	    print STDERR "590NORMAL - $inhalt\n";
-	    # Die 590er werden via maxpos hinten drangehaengt
-	    $verwidn[$maxpos][0]="";
-	    $verwidn[$maxpos][1]="5";
-	    $verwidn[$maxpos][2]="$inhalt";
-	    $verwidn[$maxpos][3]="";
+
+	    $verwidn[0][0]="";
+	    $verwidn[0][1]="5";
+	    $verwidn[0][2]="$inhalt";
+	    $verwidn[0][3]="";
 	  }
-	  $maxpos++;
+#	  $maxpos++;
 	}
       
 	if ($line=~/^0016.(\d\d\d):(.*$)/){
@@ -1236,6 +1248,8 @@ sub konv {
   $line=~s/\&/&amp;/g;
   $line=~s/>/&gt;/g;
   $line=~s/</&lt;/g;
+
+  $line=~s/½s/s/g; # s cedille
 
   return $line;
 }

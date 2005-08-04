@@ -305,6 +305,30 @@ illang text,
 index (titidn)
 );
 
+create table titdrucker (
+titidn int not null,
+drucker text,
+index (titidn)
+);
+
+create table titerschland (
+titidn int not null,
+erschland text,
+index (titidn)
+);
+
+create table titformat (
+titidn int not null,
+format text,
+index (titidn)
+);
+
+create table titquelle (
+titidn int not null,
+quelle text,
+index (titidn)
+);
+
 
 ---------------------Verweise--------------------	
 

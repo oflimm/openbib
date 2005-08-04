@@ -2975,6 +2975,10 @@ sub get_tit_set_by_idn {
   my $titstatement27="select * from titabstract  where titidn = ?";
   my $titstatement28="select * from titner where titidn = ?";
   my $titstatement29="select * from titillang where titidn = ?";
+  my $titstatement30="select * from titdrucker where titidn = ?";
+  my $titstatement31="select * from titerschland where titidn = ?";
+  my $titstatement32="select * from titformat where titidn = ?";
+  my $titstatement33="select * from titquelle where titidn = ?";
   
   my $atime;
   my $btime;
@@ -3252,6 +3256,102 @@ sub get_tit_set_by_idn {
     $btime=new Benchmark;
     $timeall=timediff($btime,$atime);
     $logger->info("Zeit fuer : $titstatement29 : ist ".timestr($timeall));
+    undef $atime;
+    undef $btime;
+    undef $timeall;
+  }
+
+  # Ausgabe des Druckers
+  
+  if ($config{benchmark}){
+    $atime=new Benchmark;
+  }
+  
+  my $titresult30=$dbh->prepare("$titstatement30") or $logger->error($DBI::errstr);
+  $titresult30->execute($titidn) or $logger->error($DBI::errstr);
+  
+  my $titres30;
+  while ($titres30=$titresult30->fetchrow_hashref){
+    push @normset, set_simple_category("Drucker",$titres30->{'drucker'});
+  }
+  $titresult30->finish();
+  
+  if ($config{benchmark}){
+    $btime=new Benchmark;
+    $timeall=timediff($btime,$atime);
+    $logger->info("Zeit fuer : $titstatement30 : ist ".timestr($timeall));
+    undef $atime;
+    undef $btime;
+    undef $timeall;
+  }
+
+  # Ausgabe des Erscheinungslandes
+  
+  if ($config{benchmark}){
+    $atime=new Benchmark;
+  }
+  
+  my $titresult31=$dbh->prepare("$titstatement31") or $logger->error($DBI::errstr);
+  $titresult31->execute($titidn) or $logger->error($DBI::errstr);
+  
+  my $titres31;
+  while ($titres31=$titresult31->fetchrow_hashref){
+    push @normset, set_simple_category("Ersch.Land",$titres31->{'erschland'});
+  }
+  $titresult31->finish();
+  
+  if ($config{benchmark}){
+    $btime=new Benchmark;
+    $timeall=timediff($btime,$atime);
+    $logger->info("Zeit fuer : $titstatement31 : ist ".timestr($timeall));
+    undef $atime;
+    undef $btime;
+    undef $timeall;
+  }
+
+  # Ausgabe des Formats
+  
+  if ($config{benchmark}){
+    $atime=new Benchmark;
+  }
+  
+  my $titresult32=$dbh->prepare("$titstatement32") or $logger->error($DBI::errstr);
+  $titresult32->execute($titidn) or $logger->error($DBI::errstr);
+  
+  my $titres32;
+  while ($titres32=$titresult32->fetchrow_hashref){
+    push @normset, set_simple_category("Format",$titres32->{'format'});
+  }
+  $titresult32->finish();
+  
+  if ($config{benchmark}){
+    $btime=new Benchmark;
+    $timeall=timediff($btime,$atime);
+    $logger->info("Zeit fuer : $titstatement32 : ist ".timestr($timeall));
+    undef $atime;
+    undef $btime;
+    undef $timeall;
+  }
+
+  # Ausgabe der Quelle
+  
+  if ($config{benchmark}){
+    $atime=new Benchmark;
+  }
+  
+  my $titresult33=$dbh->prepare("$titstatement33") or $logger->error($DBI::errstr);
+  $titresult33->execute($titidn) or $logger->error($DBI::errstr);
+  
+  my $titres33;
+  while ($titres33=$titresult33->fetchrow_hashref){
+    push @normset, set_simple_category("Quelle",$titres33->{'quelle'});
+  }
+  $titresult33->finish();
+  
+  if ($config{benchmark}){
+    $btime=new Benchmark;
+    $timeall=timediff($btime,$atime);
+    $logger->info("Zeit fuer : $titstatement33 : ist ".timestr($timeall));
     undef $atime;
     undef $btime;
     undef $timeall;

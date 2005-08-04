@@ -6,7 +6,7 @@
 #
 #  Generierung von SQL-Einladedateien aus dem Meta-Format
 #
-#  Dieses File ist (C) 1997-2004 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2005 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -396,6 +396,10 @@ if (($tit)||($all)){
     $titwstcount=0;
     $titurlcount=0;
     $titillangcount=0;
+    $titdruckercount=0;
+    $titerschlandcount=0;
+    $titformatcount=0;
+    $titquellecount=0;
     
 # Limits
     
@@ -1709,6 +1713,38 @@ $/);
 	$titillangcount++;
     }
 
+    if ($line=~/^8200 (.*)/){
+	$erschland=$1;
+	chop $erschland if ($erschland=~m/
+$/);
+	print MYSQLTITERSCHLANDL "$idn|$erschland\n" if ($mysql);
+	$titerschlandcount++;
+    }
+
+    if ($line=~/^8201 (.*)/){
+	$drucker=$1;
+	chop $drucker if ($drucker=~m/
+$/);
+	print MYSQLTITDRUCKERL "$idn|$drucker\n" if ($mysql);
+	$titdruckercount++;
+    }
+
+    if ($line=~/^8202 (.*)/){
+	$format=$1;
+	chop $format if ($format=~m/
+$/);
+	print MYSQLTITFORMATL "$idn|$format\n" if ($mysql);
+	$titformatcount++;
+    }
+
+    if ($line=~/^8203 (.*)/){
+	$quelle=$1;
+	chop $quelle if ($quelle=~m/
+$/);
+	print MYSQLTITQUELLEL "$idn|$quelle\n" if ($mysql);
+	$titquellecount++;
+    }
+
     if ($line=~/^8110 (.*)/){
 	$verfquelle=$1;
 	chop $verfquelle if ($verfquelle=~m/
@@ -2176,6 +2212,10 @@ sub mysql_tit_init {
     $mysqltitfruehtitl="titfruehtit.mysql";
     $mysqltitspaetausgl="titspaetausg.mysql";
     $mysqltitillangl="titillang.mysql";
+    $mysqltitdruckerl="titdrucker.mysql";
+    $mysqltiterschlandl="titerschland.mysql";
+    $mysqltitformatl="titformat.mysql";
+    $mysqltitquellel="titquelle.mysql";
 
     $mysqltitpsthtsl="titpsthts.mysql";
     $mysqltitbeigwerkl="titbeigwerk.mysql";
@@ -2218,6 +2258,10 @@ sub mysql_tit_init {
     open(MYSQLTITSPAETAUSGL,">".$mysqltitspaetausgl);
     open(MYSQLTITURLL,">".$mysqltiturll);
     open(MYSQLTITILLANGL,">".$mysqltitillangl);
+    open(MYSQLTITDRUCKERL,">".$mysqltitdruckerl);
+    open(MYSQLTITERSCHLANDL,">".$mysqltiterschlandl);
+    open(MYSQLTITFORMATL,">".$mysqltitformatl);
+    open(MYSQLTITQUELLEL,">".$mysqltitquellel);
 
     open(MYSQLTITPSTHTSL,">".$mysqltitpsthtsl);
     open(MYSQLTITBEIGWERKL,">".$mysqltitbeigwerkl);
@@ -2257,6 +2301,10 @@ sub mysql_tit_cleanup {
     close(MYSQLTITFRUEHTITL);
     close(MYSQLTITSPAETAUSGL);
     close(MYSQLTITILLANGL);
+    close(MYSQLTITDRUCKERL);
+    close(MYSQLTITERSCHLANDL);
+    close(MYSQLTITFORMATL);
+    close(MYSQLTITQUELLEL);
 
     close(MYSQLTITPSTHTSL);
     close(MYSQLTITBEIGWERKL);
@@ -2315,6 +2363,22 @@ sub mysql_tit_cleanup {
 
     if($titillangcount!=0){
 	print MYSQLCONTROL "load data infile \'$dir/$mysqltitillangl\' into table titillang fields terminated by \'|\';\n";
+    }    
+
+    if($titdruckercount!=0){
+	print MYSQLCONTROL "load data infile \'$dir/$mysqltitdruckerl\' into table titdrucker fields terminated by \'|\';\n";
+    }    
+
+    if($titerschlandcount!=0){
+	print MYSQLCONTROL "load data infile \'$dir/$mysqltiterschlandl\' into table titerschland fields terminated by \'|\';\n";
+    }    
+
+    if($titformatcount!=0){
+	print MYSQLCONTROL "load data infile \'$dir/$mysqltitformatl\' into table titformat fields terminated by \'|\';\n";
+    }    
+
+    if($titquellecount!=0){
+	print MYSQLCONTROL "load data infile \'$dir/$mysqltitquellel\' into table titquelle fields terminated by \'|\';\n";
     }    
 
     

@@ -387,7 +387,7 @@ index (verfverw)
 create table titpers (
 titidn int not null,
 persverw int not null,
-bez int,
+bez text,
 index (titidn),
 index (persverw)
 );
@@ -396,7 +396,7 @@ index (persverw)
 create table titgpers (
 titidn int not null,
 persverw int not null,
-bez int,
+bez text,
 index (titidn),
 index (persverw)
 );

@@ -65,6 +65,12 @@ sub handler {
     
   my $query=Apache::Request->new($r);
 
+  my $status=$query->parse;
+
+  if ($status){
+    $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+  }
+
   my $fs=$query->param('fs') || '';
 
   #####################################################################
@@ -73,13 +79,21 @@ sub handler {
   my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
   
   my $database=($query->param('database'))?$query->param('database'):'';
-  my $view=($query->param('view'))?$query->param('view'):'';
   my $singleidn=$query->param('singleidn') || '';
   my $action=$query->param('action') || '';
   my $setmask=$query->param('setmask') || '';
   my $searchsingletit=$query->param('searchsingletit') || '';
   
   my $sessionID=OpenBib::Common::Util::init_new_session($sessiondbh);
+
+  my $view="";
+
+  if ($query->param('view')){
+    $view=$query->param('view');
+  }
+  else {
+    $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
+  }
 
   #
   if ($setmask){
@@ -151,8 +165,16 @@ sub handler {
     
     $idnresult->finish();
   }
-  
 
+  # Wenn effektiv kein valider View uebergeben wurde, dann wird
+  # ein 'leerer' View mit der Session assoziiert.
+
+  if ($view eq ""){
+    my $idnresult=$sessiondbh->prepare("insert into sessionview values (?,?)") or $logger->error($DBI::errstr);
+    $idnresult->execute($sessionID,$view) or $logger->error($DBI::errstr);
+    $idnresult->finish();
+  }
+  
   my $headerframeurl="$config{headerframe_loc}?sessionID=$sessionID";
   my $bodyframeurl="$config{searchframe_loc}?sessionID=$sessionID";
 
@@ -161,8 +183,9 @@ sub handler {
     $bodyframeurl.="&view=$view";
   }
 
+  $logger->info("StartOpac-sID: $sessionID");
+
   my $ttdata={
-	      title           => 'KUG - K&ouml;lner Universit&auml;tsGesamtkatalog',
 	      headerframeurl  => $headerframeurl,
 	      bodyframeurl    => $bodyframeurl,
 	      view            => $view,

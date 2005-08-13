@@ -1,12 +1,6 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML>
-  <HEAD>
-    <meta http-equiv="pragma" content="no-cache">
-    [% stylesheet %]
-    <link href="/images/openbib/favicon.ico" rel="shortcut icon">
-    <TITLE>KUG - K&ouml;lner Universit&auml;tsGesamtkatalog</TITLE>
-  </HEAD>
-  <BODY BGCOLOR="#FFFFFF">
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <BODY>
     
     <form method="get" action="http://[% config.servername %][% config.managecollection_loc %]">
       <input type="hidden" name="sessionID" value="[% sessionID %]">
@@ -55,9 +49,9 @@
 [%- END -%]
                        </td>
 			<td>&nbsp;</td>
-			<td bgcolor=white align=right width=80>
+			<td class="fbuttonarea" align="center" width=80>
 			  <a href="http://[% config.servername %][% config.managecollection_loc %]?sessionID=[% sessionID %]&action=mail&type=[% type %]" target="body" title="Als Mail verschicken"><img src="/images/openbib/3d-file-blue-mailbox.png" height="29" alt="Als Mail verschicken" border=0></a>&nbsp;
-			  <a href="http://[% config.servername %][% config.managecollection_loc %]?sessionID=[% sessionID %]&action=save&type=[% type %]" target="save" title="Abspeichern"><img src="/images/openbib/3d-file-blue-disk35.png" height="29" alt="Abspeichern" border=0></a>&nbsp;
+			  <a href="http://[% config.servername %][% config.managecollection_loc %]?sessionID=[% sessionID %]&action=save&type=[% type %]" target="save" title="Abspeichern"><img src="/images/openbib/3d-file-blue-disk35.png" height="29" alt="Abspeichern" border=0></a>
 			</td></tr>
 		  </table>
 		</td><tr>
@@ -66,15 +60,18 @@
 	  <p>
 [% IF type == 'HTML' %]
 	  <table>
-[% PROCESS managecollection_tit_as_html %]
+[%- FOREACH titset IN collection -%]
+  [%- PROCESS common/subtemplate name="managecollection_tit_as_html" database="${titset.database}" -%]
+[%- END -%]
 	  </table>
+
 [% ELSIF type == 'Text' %]
 	  <pre>
-[% PROCESS managecollection_tit_as_text %]
+  [%- PROCESS common/subtemplate name="managecollection_tit_as_text" database="${titset.database}" -%]
           </pre>
 [% ELSIF type == 'EndNote' %]
           <pre>
-[% PROCESS managecollection_tit_as_endnote %]
+  [%- PROCESS common/subtemplate name="managecollection_tit_as_endnote" database="${titset.database}" -%]
           </pre>
 [% END %]
 
@@ -82,4 +79,4 @@
       </div>
 
 <p />
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]

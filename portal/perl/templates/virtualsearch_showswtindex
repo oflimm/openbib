@@ -3,13 +3,13 @@
   [% stylesheet %]
   <title>Virtueller Schlagwortindex</title>
 </head>
-<body bgcolor="white">
+<body>
 
 <table width="100%">
 <tr><th align="left">Virtueller Schlagwortindex: [% swt %]</b> / <b>Treffer: [% swtindex.size %]</b></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear">
 
-[% PROCESS common/navitembar %]
+[% PROCESS common/subtemplate name="common/navitembar" %]
 
 [% FOREACH item IN swtindex %]
 
@@ -17,13 +17,13 @@
 [% IF loop.count >= offset && loop.count < offset+hitrange %]
 
 
-[% PROCESS virtualsearch_showswtindex_item %]
+[% PROCESS common/subtemplate name="virtualsearch_showswtindex_item" %]
 
 [% END %]
 
 [% ELSE %]
 
-[% PROCESS virtualsearch_showswtindex_item %]
+[% PROCESS common/subtemplate name="virtualsearch_showswtindex_item" %]
 
 [% END %]
 [% END %]
@@ -32,22 +32,19 @@
 </table>
 
 <hr>
-<table>
-<tr><td bgcolor="lightblue">Schlagwort&nbsp;</td><td>
+
 <form method="get" action="[% config.virtualsearch_loc %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]">
 <input type="hidden" name="rating" value="[% rating %]">
 <input type="hidden" name="bookinfo" value="[% bookinfo %]">
 <input type="hidden" name="hitrange" value="-1">
 <input type="hidden" name="profil" value="[% profil %]">
-&nbsp;
-<input type="text" name="swt" value="[% swt %]" size="4" maxlength="50" title="Geben Sie hier den Schlagwortanfang ein">
-&nbsp;
-<input type="submit" name="swtindex" value="Index">
-&nbsp;</td>
-</tr>
+
+<table>
+<tr><td class="category">Schlagwort&nbsp;</td><td>&nbsp;<input type="text" name="swt" value="[% swt %]" size="4" maxlength="50" title="Geben Sie hier den Schlagwortanfang ein">&nbsp;<input type="submit" name="swtindex" value="Index">&nbsp;</td></tr>
 </table>
+
 </form>
 <p />
 
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]

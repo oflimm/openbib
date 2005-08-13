@@ -1,14 +1,14 @@
-[% PROCESS std_header %]
+[% PROCESS common/subtemplate name="std_header" %]
 
-  <body bgcolor="#FFFFFF">
+  <body>
 
 <table width="100%">
 <tr><th>Erfolgsmeldung</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear">
 Ihre Kennung samt aktueller Sitzungsdaten wurden gel&ouml;scht
 <p />
 Wenn Sie weiter im KUG recherchieren m&ouml;chten, so klicken Sie bitte <a href="http://[% config.loadbalancerservername %][% config.loadbalancer_loc %]?view=[% view %]"><b>hier</b></a>, um eine neue Sitzung zu beginnen.
 </td></tr>
 </table>
 
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]

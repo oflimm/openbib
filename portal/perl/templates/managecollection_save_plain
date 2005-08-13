@@ -1,9 +1,9 @@
 [% IF type == 'HTML' %]
 	  <table>
-[% PROCESS managecollection_tit_as_html %]
+[% PROCESS common/subtemplate name="managecollection_tit_as_html" %]
 	  </table>
 [% ELSIF type == 'Text' %]
-[% PROCESS managecollection_tit_as_text %]
+[% PROCESS common/subtemplate name="managecollection_tit_as_text" %]
 [% ELSIF type == 'EndNote' %]
-[% PROCESS managecollection_tit_as_endnote %]
+[% PROCESS common/subtemplate name="managecollection_tit_as_endnote" %]
 [% END %]

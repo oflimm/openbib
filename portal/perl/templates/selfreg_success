@@ -1,9 +1,9 @@
-[% PROCESS std_header %]
+[% PROCESS common/subtemplate name="std_header" %]
 
-  <body bgcolor="#FFFFFF">
+  <body>
 
 [% IF show_corporate_banner %]
-[% PROCESS corporate_banner %] 
+[% PROCESS common/subtemplate name="corporate_banner" %] 
 [% END %]
 
 <ul id="tabbingmenu">
@@ -16,7 +16,7 @@
 
 <table width="100%">
 <tr><th>Sie sind erfolgreich registriert</th></tr>
-<tr><td class="boxedclear" style="font-size:9pt">
+<tr><td class="boxedclear" style="font-size:0.8em">
 Klicken Sie nun <a href="http://[% config.servername %][% config.login_loc %]?sessionID=[% sessionID %]&action=login&loginname=[% loginname %]">hier</a>, um sich anzumelden.
 </td></tr>
 </table>
@@ -25,4 +25,4 @@ Klicken Sie nun <a href="http://[% config.servername %][% config.login_loc %]?se
 
 <p />
 
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]

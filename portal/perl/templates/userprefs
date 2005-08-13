@@ -1,9 +1,9 @@
-[% PROCESS std_header %]
+[% PROCESS common/subtemplate name="std_header" %]
 
-  <body bgcolor="#FFFFFF">
+  <body>
 
 [% IF show_corporate_banner %]
-[% PROCESS corporate_banner %] 
+[% PROCESS common/subtemplate name="corporate_banner" %] 
 [% END %]
 
 <ul id="tabbingmenu">
@@ -49,7 +49,7 @@
 [% IF targettype != 'self' %]
 <table width="100%">
 <tr><th>Personendaten</th><td></td><th>Ausleihinformationen</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear">
 <table>
 <tr><td><b>Nachname:</b></td><td align="left">&nbsp;[% userinfo.nachname %]</td></tr>
 <tr><td><b>Vorname:</b></td><td align="left">&nbsp;[% userinfo.vorname %]</td></tr>
@@ -72,15 +72,15 @@ nein
 </td></tr>
 </table>
 <br />
-<span style="font-size:9pt">&nbsp;Bitte wenden Sie sich bei Unstimmigkeiten in Ihren Personendaten an die Auskunft der Bibliothek.</span>
+<span style="font-size:0.8em">&nbsp;Bitte wenden Sie sich bei Unstimmigkeiten in Ihren Personendaten an die Auskunft der Bibliothek.</span>
 </td>
 <td>
 &nbsp;&nbsp;
 </td>
-<td class="boxedclear" style="font-size:12pt" valign="bottom">
+<td class="boxedclear" valign="bottom">
 <table>
 <tr><td><b>Guthaben:</b></td><td align="right">[% userinfo.gut %] </td><td>&nbsp;EUR</td></tr>
-<tr><td><b>Soll:</b></td><td align="right"><span style="color:red">[% userinfo.soll %] </td><td>&nbsp;EUR</span></td></tr>
+<tr><td><b>Soll:</b></td><td align="right"><span class="warning">[% userinfo.soll %] </td><td>&nbsp;EUR</span></td></tr>
 </table>
 <table>
 <tr><td><b>Ausgeliehen:</b></td><td align="left">&nbsp;
@@ -97,7 +97,7 @@ nein
 [%- userinfo.vmanz -%]
 [%- END -%]
 
-</td><td>&nbsp;&nbsp;</td><td><b>&Uuml;berzogen:</b></td><td><span style="color:red">
+</td><td>&nbsp;&nbsp;</td><td><b>&Uuml;berzogen:</b></td><td><span class="warning">
 
 [% IF userinfo.maanz > 0 %]
 <a href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc;circaction=reminders">[% userinfo.maanz %]</a>
@@ -177,4 +177,4 @@ nein
 
 <p />
 
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]

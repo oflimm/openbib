@@ -1,16 +1,14 @@
-<html>
-<head>
-  [% stylesheet %]
-  <title>Such-Client zur Datenbank: [% poolname %]</title>
-</head>
-<body bgcolor="white">
+[%- title = "Recherche in Katalog: $poolname" -%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+<body>
 
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
-  <tr bgcolor="lightblue">
+  <tr class="titlerow">
     <td width="20">&nbsp;</td>
     <td valign="middle" align="left" height="32"><img src="/images/openbib/[% database %].png"></td>
       <td>&nbsp;</td>
-      <td bgcolor="white" align="right" width="180">
+      <td class="fbuttonarea" align="right" width="180">
 	<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% database %];singleidn=[% titidn %]" target="header" title="In die Merkliste"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="In die Merkliste" border="0" /></a>&nbsp;
         <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=mail;database=[% database %];singleidn=[% titidn %]" target="body" title="Als Mail verschicken"><img src="/images/openbib/3d-file-blue-mailbox.png" height="29" alt="Als Mail verschicken" border="0" /></a>&nbsp;
         <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=save;database=[% database %];singleidn=[% titidn %]" target="save" title="Abspeichern"><img src="/images/openbib/3d-file-blue-disk35.png" height="29" alt="Abspeichern" border="0" /></a>&nbsp;
@@ -39,18 +37,18 @@
 <!-- Title begins here -->
 <table width="100%">
 <tr><th>Titelaufnahme</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear">
 
 <table cellpadding=2>
 <tr><td>Kategorie</td><td>Inhalt</td></tr>
 
 [%- FOREACH normkat IN normset -%]
 [% IF normkat.type == 'simple_category' %]
-<tr><td bgcolor="lightblue"><strong>[% normkat.desc %]</strong></td><td>[% normkat.contents %]</td></tr>
+<tr><td class="category">[% utf2iso(normkat.desc) %]</td><td>[% utf2iso(normkat.contents) %]</td></tr>
 [% ELSIF normkat.type == 'url_category' %]
-<tr><td bgcolor="lightblue"><strong>[% normkat.desc %]</strong></td><td><a href="[% normkat.url %]">[% normkat.contents %]</a> [% normkat.supplement %]</td></tr>
+<tr><td class="category">[% utf2iso(normkat.desc) %]</td><td><a href="[% utf2iso(normkat.url) %]">[% utf2iso(normkat.contents) %]</a> [% utf2iso(normkat.supplement) %]</td></tr>
 [% ELSIF normkat.type == 'url_category_global' %]
-<tr><td bgcolor="lightblue"><strong>[% normkat.desc %]</strong></td><td><a href="[% normkat.globalurl %]" title="Begriff in allen Katalogen suchen"><span style="font-family:Arial,helv,Helvetica,Verdana; font-size:135%; color=blue;">G</span></a>&nbsp;<a href="[% normkat.url %]" title="Begriff in diesem Katalog suchen">[% normkat.contents %]</td></tr>
+<tr><td class="category">[% utf2iso(normkat.desc) %]</td><td><a href="[% utf2iso(normkat.globalurl) %]" title="Begriff in allen Katalogen suchen"><span class="globalsearch">G</span></a>&nbsp;<a href="[% utf2iso(normkat.url) %]" title="Begriff in diesem Katalog suchen">[% utf2iso(normkat.contents) %]</a>&nbsp;[% utf2iso(normkat.supplement) %]</td></tr>
 [% END %]
 [%- END -%]
 </table>
@@ -58,10 +56,10 @@
 [% IF mexnormset.size > 0 %]
 <p>
 <table width="100%">
-<tr align=center><td bgcolor="lightblue" width="225">Besitzende Bibliothek</td><td bgcolor="lightblue" width="250">Standort</td><td bgcolor="lightblue" width="120">Inventarnummer</td><td bgcolor="lightblue" width="250">Lokale Signatur</td><td bgcolor="lightblue" width="230">Bestandsverlauf</td></tr>
+<tr class="titlerow" align=center><td width="225">Besitzende Bibliothek</td><td width="250">Standort</td><td width="120">Inventarnummer</td><td width="250">Lokale Signatur</td><td width="230">Bestandsverlauf</td></tr>
 
 [% FOREACH mex IN mexnormset %]
-<tr align=center><td><a href="[% mex.bibinfourl %]"><strong>[% mex.bibliothek %]</strong></a></td><td>[% mex.standort %]</td><td>[% mex.inventarnummer %]</td><td><strong><span id="rlsignature">[% mex.signatur %]</span></strong></td><td>[% mex.erschverl %]</td></tr>
+<tr align=center><td><a href="[% utf2iso(mex.bibinfourl) %]"><strong>[% utf2iso(mex.bibliothek) %]</strong></a></td><td>[% utf2iso(mex.standort) %]</td><td>[% utf2iso(mex.inventarnummer) %]</td><td><strong><span id="rlsignature">[% utf2iso(mex.signatur) %]</span></strong></td><td>[% utf2iso(mex.erschverl) %]</td></tr>
 [% END %]
 </table>
 [% END %]
@@ -76,9 +74,9 @@
 <tr><td class="boxedclear" style="font-size:12pt">
 
 <table>
-<tr align="center"><td bgcolor="lightblue" width="225">Besitzende Bibliothek</td><td bgcolor="lightblue" width="250">Standort</td><td bgcolor="lightblue" width="120">Lokale Signatur</td><td bgcolor="lightblue" width="120">Ausleihstatus</td><td bgcolor="lightblue" width="110">Aktion</td></tr>
+<tr class="titlerow" align="center"><td width="225">Besitzende Bibliothek</td><td width="250">Standort</td><td width="120">Lokale Signatur</td><td width="120">Ausleihstatus</td><td width="110">Aktion</td></tr>
 [% FOREACH mex IN circset %]
-<tr align="center"><td><a href="[% mex.Bibinfourl %]"><strong>[% mex.Bibliothek %]</strong></a></td><td>[% mex.Standort %]</td><td><strong>[% mex.Signatur %]</strong></td><td><strong>[% mex.Ausleihstatus %]</strong></td><td bgcolor="yellow"><a TARGET=_blank href="[% mex.Ausleihurl %]">[% mex.Ausleihstring %]</a></td></tr>
+<tr align="center"><td><a href="[% utf2iso(mex.Bibinfourl) %]"><strong>[% utf2iso(mex.Bibliothek) %]</strong></a></td><td>[% utf2iso(mex.Standort) %]</td><td><strong>[% utf2iso(mex.Signatur) %]</strong></td><td><strong>[% utf2iso(mex.Status) %]</strong></td><td class="circurl"><a TARGET=_blank href="[% utf2iso(mex.Ausleihurl) %]">[% utf2iso(mex.Ausleihstring) %]</a></td></tr>
 [% END %]
 
 </table>
@@ -95,8 +93,7 @@
 <p />
 
 <hr>
-<table>
-<tr><td bgcolor="lightblue">Schlagwortindex dieses Katalogs&nbsp;</td><td>
+
 <form method="get" action="[% config.search_loc %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]">
 <input type="hidden" name="searchmode" value="[% searchmode %]">
@@ -104,14 +101,12 @@
 <input type="hidden" name="bookinfo" value="[% bookinfo %]">
 <input type="hidden" name="hitrange" value="[% hitrange %]">
 <input type="hidden" name="database" value="[% database %]">
-&nbsp;
-<input type="text" name="swtindex" value="" size="4" maxlength="50" title="Geben Sie hier den Schlagwortanfang ein">
-&nbsp;
-<input type="submit" value="Suchen">
-&nbsp;</td>
-</tr>
+
+<table>
+<tr><td class="category">Schlagwortindex dieses Katalogs</td><td>&nbsp;<input type="text" name="swtindex" value="" size="4" maxlength="50" title="Geben Sie hier den Schlagwortanfang ein">&nbsp;<input type="submit" value="Suchen">&nbsp;</td></tr>
 </table>
+
 </form>
 <p />
 
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]

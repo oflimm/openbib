@@ -15,6 +15,6 @@ k&ouml;nnen die Suchfelder auch &uuml;ber eine "Oder"- sowie eine
 entsprechende Verkn&uuml;pfungsart aus dem Pull-Down-Men&uuml; vor dem 
 jeweiligen Texteingabefeld.<br />
 <br />
-<b>Besonderheit bei <span style="color:red">*</span>:</b><br />
+<b>Besonderheit bei <span class="warning">*</span>:</b><br />
 - Keine <b>logische</b> Kombination mehrerer Worte im Eingabefeld m&ouml;glich<br />
 - <b>aber</b> exakte Phrasensuche

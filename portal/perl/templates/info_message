@@ -1,11 +1,11 @@
-[% PROCESS std_header %]
+[% PROCESS common/subtemplate name="std_header" %]
 
-  <body bgcolor="#FFFFFF">
+  <body>
 
 [% IF show_corporate_banner %]
-[% PROCESS corporate_banner %] 
+[% PROCESS common/subtemplate name="corporate_banner" %] 
 [% END %]
 
 [% info_msg %]
 
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]

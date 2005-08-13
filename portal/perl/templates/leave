@@ -1,15 +1,15 @@
-[% PROCESS std_header %]
+[% PROCESS common/subtemplate name="std_header" %]
 
-  <body bgcolor="#FFFFFF">
+  <body>
 
 [% IF show_corporate_banner %]
-[% PROCESS corporate_banner %]
+[% PROCESS common/subtemplate name="corporate_banner" %]
 [% END %]
 
 <br />
   <br />
   <center>
-    <p style="font-size:16pt">
+    <p style="font-size:1.5em">
       Ihre Sitzung wurde beendet.<br />
         <br />Vielen Dank f&uuml;r Ihren Besuch beim K&ouml;lner Universit&auml;tsGesamtkatalog.
 
@@ -25,4 +25,4 @@
 <br />
 <br />
 <br />
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]

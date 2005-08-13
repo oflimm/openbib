@@ -1,9 +1,9 @@
-[% PROCESS std_header %]
+[% PROCESS common/subtemplate name="std_header" %]
 
-  <body bgcolor="#FFFFFF">
+  <body>
 
 [% IF show_corporate_banner %]
-[% PROCESS corporate_banner %] 
+[% PROCESS common/subtemplate name="corporate_banner" %] 
 [% END %]
 
 <ul id="tabbingmenu">
@@ -33,17 +33,17 @@
 
 <table cellpadding="5">
 <tr><td><b>Titelangaben</b></td><td><b>Signatur</b></td><td><b>Vormerkungsfrist</b></td><td><b>Stelle</b></td></tr>
-[% color = 'white' %]
+[%- listrow = 'listrow1' -%]
 
 [%- FOREACH reservation = reservations -%]
 
 <tr
-bgcolor="[% color %]"
-[% IF color == 'white' %]
-[% color = 'aliceblue' %] 
-[% ELSE %]
-[% color = 'white' %] 
-[% END %]
+class="[% listrow %]"
+[%- IF listrow == 'listrow1' -%]
+[%- listrow = 'listrow2' -%] 
+[%- ELSE -%]
+[%- listrow = 'listrow1' -%] 
+[%- END -%]
 ><td><i>[% utf2iso(reservation.Verfasser) %]</i><br>[% utf2iso(reservation.Titel) %]
 
 [% IF reservation.EJahr %]
@@ -60,4 +60,4 @@ bgcolor="[% color %]"
 
 <p />
 
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]

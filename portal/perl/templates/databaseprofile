@@ -1,6 +1,6 @@
-[% PROCESS std_header %]
+[% PROCESS common/subtemplate name="std_header" %]
 
-  <body bgcolor="#FFFFFF">
+  <body>
 
 <script language="JavaScript" type="text/javascript">
 <!--
@@ -64,13 +64,13 @@ Derzeit angezeigtes Profil: <b>[% profilname %]</b>
 
 
 <table>
-<tr><td colspan="[% colspan %]" align="left" bgcolor="lightblue"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /><b>Alle Kataloge</b></td></tr>
+<tr class="titlerow"><td colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /><b>Alle Kataloge</b></td></tr>
 
 [%- FOREACH category = config.units -%]
 [%- IF category.nr >= 1 -%]
 <tr><td colspan="[% colspan %]">&nbsp;</td></tr>
 [%- END -%]
-<tr><td colspan="[% colspan %]" align="left" bgcolor="lightblue"><input type="checkbox" name="fakult" value="inst[% category.nr %]" onclick="update_fak(this.form, this.checked,'inst[% category.nr %]')" title="inst" /><b>[% category.desc %]</b></td></tr>
+<tr class="titlerow"><td colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst[% category.nr %]" onclick="update_fak(this.form, this.checked,'inst[% category.nr %]')" title="inst" /><b>[% category.desc %]</b></td></tr>
 
 [%- FOREACH db = catdb -%]
 [%- IF db.category == category.short -%]
@@ -110,5 +110,5 @@ Derzeit angezeigtes Profil: <b>[% profilname %]</b>
 
 <p />
 
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]
 

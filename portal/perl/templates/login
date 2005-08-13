@@ -1,6 +1,6 @@
-[% PROCESS std_header %]
+[% PROCESS common/subtemplate name="std_header" %]
 
-  <body bgcolor="#FFFFFF">
+  <body>
 
 <ul id="tabbingmenu">
    <li><a class="active" href="[% config.login_loc %]?sessionID=[% sessionID %];view=[% view %];action=login" target="body">Login</a></li>
@@ -42,4 +42,4 @@ Haben Sie Ihr Passwort vergessen, das Sie bei der Selbstregistrierung angegeben 
 
 <p />
 
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]

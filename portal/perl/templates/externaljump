@@ -1,6 +1,6 @@
-[% PROCESS std_header %]
+[% PROCESS common/subtemplate name="std_header" %]
 
-  <body bgcolor="#FFFFFF">
+  <body>
 
 <ul id="tabbingmenu">
    <li><a class="active" href="http://[% config.servername %][% config.externaljump_loc %]?sessionID=[% sessionID %];queryid=[% queryid %];action=action=Weiter+als+externe+Recherche" target="body">Sprung in externe Recherchequellen</a></li>
@@ -40,7 +40,7 @@ An dieser Stelle k&ouml;nnen Sie ausgehend von Ihrer (eventuell erfolglosen) Suc
 [% IF verf != '' || hst != '' || kor != '' || isbn != '' %]
 <a href="[% config.hbzmonofernleih_exturl %]&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_HBZ=on&D_PARAM_QUERY_bzAU=[% verf %]&D_PARAM_QUERY_azTI=[% hst %]&D_PARAM_QUERY_czCO=[% kor %]&D_PARAM_QUERY_fzIB=[% isbn %]&D_PARAM_QUERY_hzYR=[% ejahr %][% authurl %]" target="_blank">Sprung in externe Recherche</a>
 [% ELSE %]
-<span style="color:red">Ungeeignete Suchfelder</span>
+<span class="warning">Ungeeignete Suchfelder</span>
 [% END %]
 
 </td><td>[ &Uuml;bernommene Felder: Titel, Verfasser, K&ouml;rperschaft, ISBN, Erscheinungsjahr ]</td></tr>
@@ -49,7 +49,7 @@ An dieser Stelle k&ouml;nnen Sie ausgehend von Ihrer (eventuell erfolglosen) Suc
 [% IF hst != '' || kor != '' || issn != '' %]
 <a href="[% config.hbzzeitfernleih_exturl %]&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_ZDB=on&D_PARAM_QUERY_azTI=[% hst %]&D_PARAM_QUERY_czCO=[% kor %]&D_PARAM_QUERY_gzIS=[% issn %][% authurl %]" target="_blank">Sprung in externe Recherche</a>
 [% ELSE %]
-<span style="color:red">Ungeeignete Suchfelder</span>
+<span class="warning">Ungeeignete Suchfelder</span>
 [% END %]
 
 </td><td>[ &Uuml;bernommene Felder: Titel, K&ouml;rperschaft, ISSN ]</td></tr>
@@ -59,7 +59,7 @@ An dieser Stelle k&ouml;nnen Sie ausgehend von Ihrer (eventuell erfolglosen) Suc
 [% IF hst != '' %]
 <a href="http://www.bibliothek.uni-regensburg.de/dbinfo/suche.phtml?bib_id=usb_k&colors=63&Suchwort=[% hst %]&lett=fs" target="_blank">Sprung in externe Recherche</a>
 [% ELSE %]
-<span style="color:red">Ungeeignete Suchfelder</span>
+<span class="warning">Ungeeignete Suchfelder</span>
 [% END %]
 
 </td><td>[ &Uuml;bernommene Felder: Titel ]</td></tr>
@@ -69,7 +69,7 @@ An dieser Stelle k&ouml;nnen Sie ausgehend von Ihrer (eventuell erfolglosen) Suc
 [% IF hst != '' || issn != '' %]
 <a href="[% config.ezb_exturl %]&jq_term1=[% issn %]&jq_term2=[% hst %]" target="_blank">Sprung in externe Recherche</a></td>
 [% ELSE %]
-<span style="color:red">Ungeeignete Suchfelder</span>
+<span class="warning">Ungeeignete Suchfelder</span>
 [% END %]
 
 <td>[ &Uuml;bernommene Felder: Titel, ISSN ]</td></tr>
@@ -79,7 +79,7 @@ An dieser Stelle k&ouml;nnen Sie ausgehend von Ihrer (eventuell erfolglosen) Suc
 [% IF hst != '' %]
 <a href="http://www.medpilot.de/medptools/cgi-bin/mpsearch.pl?q=[% hst %]&Suche=Suchen" target="_blank">Sprung in externe Recherche</a>
 [% ELSE %]
-<span style="color:red">Ungeeignete Suchfelder</span>
+<span class="warning">Ungeeignete Suchfelder</span>
 [% END %]
 </td><td>[ &Uuml;bernommene Felder: Titel ]</td></tr>
 </table>
@@ -90,4 +90,4 @@ An dieser Stelle k&ouml;nnen Sie ausgehend von Ihrer (eventuell erfolglosen) Suc
 </div>
 <p />
 
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]

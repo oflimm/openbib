@@ -65,6 +65,12 @@ sub handler {
   my $logger = get_logger();
 
   my $query=Apache::Request->new($r);
+
+  my $status=$query->parse;
+
+  if ($status){
+    $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+  }
   
   my $useragent=$r->subprocess_env('HTTP_USER_AGENT');
   
@@ -95,15 +101,20 @@ sub handler {
   my $singleidn=$query->param('singleidn') || '';
   my $action=($query->param('action'))?$query->param('action'):'';
   
-  # TODO: $query statt query in alter Version
-  
-  my $view=($query->param('view'))?$query->param('view'):'';
-  
   unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
     OpenBib::Common::Util::print_warning("Ung&uuml;ltige Session",$r);
     $sessiondbh->disconnect();
     $userdbh->disconnect();
     return OK;
+  }
+
+  my $view="";
+
+  if ($query->param('view')){
+    $view=$query->param('view');
+  }
+  else {
+    $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
   }
 
   # Authorisierte Session?
@@ -149,7 +160,7 @@ sub handler {
     return OK;
   }
   
-  # Assoziierten View zur Session aus Datenbank holen
+  # Beschreibung des assoziierten Views zur Session aus Datenbank holen
   
   my $idnresult=$sessiondbh->prepare("select viewinfo.description from sessionview,viewinfo where sessionview.sessionid = ? and sessionview.viewname=viewinfo.viewname") or $logger->error($DBI::errstr);
   $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
@@ -257,9 +268,8 @@ sub handler {
   # TT-Data erzeugen
 
   my $ttdata={
-	      title      => 'KUG - K&ouml;lner Universit&auml;tsGesamtkatalog',
-	      stylesheet   => $stylesheet,
 	      view         => $view,
+	      stylesheet   => $stylesheet,
 	      viewdesc     => $viewdesc,
 	      sessionID    => $sessionID,
 	      queryid      => $queryid,

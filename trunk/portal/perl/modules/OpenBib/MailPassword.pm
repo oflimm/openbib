@@ -67,6 +67,12 @@ sub handler {
 
   my $query=Apache::Request->new($r);
 
+  my $status=$query->parse;
+
+  if ($status){
+    $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+  }
+
   my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
   my $action=($query->param('action'))?$query->param('action'):'none';
@@ -74,8 +80,7 @@ sub handler {
   my $targetid=($query->param('targetid'))?$query->param('targetid'):'none';
   my $loginname=($query->param('loginname'))?$query->param('loginname'):'';
   my $password=($query->param('password'))?$query->param('password'):'';
-  my $sessionID=$query->param('sessionID');
-  my $view=$query->param('view')||'';
+  my $sessionID=$query->param('sessionID')||'';
   
   my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
   
@@ -89,15 +94,24 @@ sub handler {
     
     return OK;
   }
+
+  my $view="";
+
+  if ($query->param('view')){
+    $view=$query->param('view');
+  }
+  else {
+    $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
+  }
   
   if ($action eq "show"){
 
     # TT-Data erzeugen
 
     my $ttdata={
-		title      => 'KUG: Zusendung vergessener Passworte',
+		view       => $view,
 		stylesheet => $stylesheet,
-		view       => '',
+
 
 		sessionID  => $sessionID,
 		loginname => $loginname,
@@ -157,9 +171,8 @@ Ihr KUG-Team
 MAILSEND
 
     my $ttdata={
-		title      => 'Versendung des Passwortes erfolgreich',
+		view       => $view,
 		stylesheet => $stylesheet,
-		view       => '',
 
 		show_corporate_banner => 0,
 		show_foot_banner => 1,

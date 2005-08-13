@@ -63,6 +63,12 @@ sub handler {
   my $logger = get_logger();
 
   my $query=Apache::Request->new($r);
+
+  my $status=$query->parse;
+
+  if ($status){
+    $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+  }
   
   my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
@@ -89,6 +95,15 @@ sub handler {
     $sessiondbh->disconnect();
     $userdbh->disconnect();
     return OK;
+  }
+
+  my $view="";
+
+  if ($query->param('view')){
+    $view=$query->param('view');
+  }
+  else {
+    $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
   }
 
   # Authorisierte Session?
@@ -241,7 +256,7 @@ sub handler {
     my $colspan=$maxcolumn*3;
     
     my $ttdata={
-		title      => 'KUG: Katalogauswahl',
+		view       => $view,
 		stylesheet => $stylesheet,
 		sessionID  => $sessionID,
 		show_corporate_banner => 0,

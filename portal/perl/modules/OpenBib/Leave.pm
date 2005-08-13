@@ -63,6 +63,12 @@ sub handler {
   my $logger = get_logger();
 
   my $query=Apache::Request->new($r);
+
+  my $status=$query->parse;
+
+  if ($status){
+    $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+  }
   
   my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
@@ -84,21 +90,18 @@ sub handler {
     return OK;
   }
 
+  my $view="";
+
+  if ($query->param('view')){
+      $view=$query->param('view');
+  }
+  else {
+    $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
+  }
   
   # Haben wir eine authentifizierte Session?
   
   my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
-  
-  # Assoziierten View zur Session aus Datenbank holen
-  
-  my $idnresult=$sessiondbh->prepare("select viewname from sessionview where sessionid = ?") or $logger->error($DBI::errstr);
-  $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-  
-  my $result=$idnresult->fetchrow_hashref();
-
-  $idnresult->finish();
-
-  my $view=$result->{'viewname'} || '';
   
   if ($userid){
     
@@ -161,9 +164,8 @@ sub handler {
   # TT-Data erzeugen
   
   my $ttdata={
-	      title      => 'KUG - K&ouml;lner Universit&auml;tsGesamtkatalog',
-	      stylesheet => $stylesheet,
 	      view       => $view,
+	      stylesheet => $stylesheet,
 	      show_corporate_banner => 1,
 	      show_foot_banner => 0,
 	      config     => \%config,

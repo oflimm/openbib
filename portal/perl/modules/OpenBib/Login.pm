@@ -69,6 +69,12 @@ sub handler {
 
   my $query=Apache::Request->new($r);
 
+  my $status=$query->parse;
+
+  if ($status){
+    $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+  }
+
   my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
   # Standardwerte festlegen
@@ -79,7 +85,6 @@ sub handler {
   my $loginname=($query->param('loginname'))?$query->param('loginname'):'';
   my $password=($query->param('password'))?$query->param('password'):'';
   my $sessionID=$query->param('sessionID');
-  my $view=$query->param('view')||'';
   
   my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
   
@@ -101,6 +106,14 @@ sub handler {
     return OK;
   }
 
+  my $view="";
+
+  if ($query->param('view')){
+      $view=$query->param('view');
+  }
+  else {
+    $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
+  }
   
   if ($action eq "login"){
     
@@ -122,10 +135,9 @@ sub handler {
     # TT-Data erzeugen
     
     my $ttdata={
-		title      => 'KUG: Authentifizierung',
+		view       => $view,
 		stylesheet => $stylesheet,
                 sessionID  => $sessionID,
-		view       => $view,
 		targetselect => $targetselect,
 		loginname  => $loginname,
 		show_corporate_banner => 0,

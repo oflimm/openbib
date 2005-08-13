@@ -67,6 +67,12 @@ sub handler {
   my $logger = get_logger();
     
   my $query=Apache::Request->new($r);
+
+  my $status=$query->parse;
+
+  if ($status){
+    $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+  }
   
   my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
@@ -85,7 +91,6 @@ sub handler {
   my $trefferliste=$query->param('trefferliste') || '';
   my $autoplus=$query->param('autoplus') || '';
   my $queryid=$query->param('queryid') || '';
-  my $view=$query->param('view') || '';
 
   my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
   
@@ -96,6 +101,15 @@ sub handler {
     $userdbh->disconnect();
   
     return OK;  
+  }
+
+  my $view="";
+
+  if ($query->param('view')){
+      $view=$query->param('view');
+  }
+  else {
+    $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
   }
 
   my %titeltyp=(
@@ -270,9 +284,8 @@ sub handler {
       # TT-Data erzeugen
       
       my $ttdata={
-		  title      => 'KUG - K&ouml;lner Universit&auml;tsGesamtkatalog',
-		  stylesheet   => $stylesheet,
 		  view         => $view,
+		  stylesheet   => $stylesheet,
 		  sessionID    => $sessionID,
 
 
@@ -365,9 +378,8 @@ sub handler {
 	# TT-Data erzeugen
 	
 	my $ttdata={
-		    title      => 'KUG - K&ouml;lner Universit&auml;tsGesamtkatalog',
-		    stylesheet   => $stylesheet,
 		    view         => $view,
+		    stylesheet   => $stylesheet,
 		    sessionID    => $sessionID,
 
 		    searchmode => 2,
@@ -462,9 +474,8 @@ sub handler {
 	# TT-Data erzeugen
 	
 	my $ttdata={
-		    title      => 'KUG - K&ouml;lner Universit&auml;tsGesamtkatalog',
-		    stylesheet   => $stylesheet,
 		    view         => $view,
+		    stylesheet   => $stylesheet,
 		    sessionID    => $sessionID,
 
 		    searchmode => 2,
@@ -568,9 +579,8 @@ sub handler {
       # TT-Data erzeugen
       
       my $ttdata={
-		  title      => 'KUG - K&ouml;lner Universit&auml;tsGesamtkatalog',
-		  stylesheet   => $stylesheet,
 		  view         => $view,
+		  stylesheet   => $stylesheet,
 		  sessionID    => $sessionID,
 		  
 		  searchmode => 2,

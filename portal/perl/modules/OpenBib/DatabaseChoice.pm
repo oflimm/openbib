@@ -63,12 +63,18 @@ sub handler {
 
   my $query=Apache::Request->new($r);
 
+  my $status=$query->parse;
+
+  if ($status){
+    $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+  }
+
   my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
   my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
   my @databases=($query->param('database'))?$query->param('database'):();
   my $singleidn=$query->param('singleidn') || '';
-  my $view=$query->param('view') || '';
+
   my $action=($query->param('action'))?$query->param('action'):'';
   
   # CGI-Uebergabe
@@ -107,6 +113,15 @@ sub handler {
     $userdbh->disconnect();
       
     return OK;
+  }
+
+  my $view="";
+
+  if ($query->param('view')){
+      $view=$query->param('view');
+  }
+  else {
+    $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
   }
     
   my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
@@ -239,9 +254,8 @@ sub handler {
       my $colspan=$maxcolumn*3;
 
       my $ttdata={
-		  title      => 'KUG: Katalogauswahl',
-		  stylesheet => $stylesheet,
 		  view       => $view,
+		  stylesheet => $stylesheet,
 		  sessionID  => $sessionID,
 		  show_corporate_banner => 0,
 		  show_foot_banner      => 1,

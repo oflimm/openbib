@@ -4,14 +4,14 @@
 <tr><td class="boxedfull" align="left">
 
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
-<tr bgcolor="lightblue"><td align="left">&nbsp;<b>[% loop.count %]</b>&nbsp;&nbsp;[% item.swt %]</td><td align="right">[% item.titanzahl %]</td></tr>
-[% bgcolor = 'white' %]
+<tr class="titlerow"><td align="left">&nbsp;<b>[% loop.count %]</b>&nbsp;&nbsp;[% item.swt %]</td><td align="right">[% item.titanzahl %]</td></tr>
+[% listrow = 'listrow1' %]
 [% FOREACH dbitem IN item.databases %]
-<tr bgcolor="[% bgcolor %]"><td align="left"><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;searchmode=[% searchmode %];rating=[% rating %];bookinfo=[% bookinfo %];database=[% dbitem.dbname %];searchtitofswt=[% dbitem.swtidn%]" target="body">[% dbitem.dbdesc %]</a></td><td align="right">[% dbitem.titanzahl %]</td></tr>
-[% IF bgcolor == 'white' %]
-[% bgcolor = 'aliceblue' %]
+<tr class="[% listrow %]"><td align="left"><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;searchmode=[% searchmode %];rating=[% rating %];bookinfo=[% bookinfo %];database=[% dbitem.dbname %];searchtitofswt=[% dbitem.swtidn%]" target="body">[% dbitem.dbdesc %]</a></td><td align="right">[% dbitem.titanzahl %]</td></tr>
+[% IF listrow == 'listrow1' %]
+[% listrow = 'listrow2' %]
 [% ELSE %]
-[% bgcolor = 'white' %]
+[% listrow = 'listrow1' %]
 [% END %]
 [% END %]
 </table>

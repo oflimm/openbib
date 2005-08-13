@@ -1,16 +1,10 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML>
-  <HEAD>
-    <meta http-equiv="pragma" content="no-cache">
-    [% stylesheet %]
-    <link href="/images/openbib/favicon.ico" rel="shortcut icon">
-    <TITLE>KUG - K&ouml;lner Universit&auml;tsGesamtkatalog</TITLE>
-  </HEAD>
-  <BODY BGCOLOR="#FFFFFF">
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <BODY>
 
 <h1>Zugemailte Merkliste</h1>
 <table>
-[% PROCESS managecollection_tit_as_html %]
+[% PROCESS common/subtemplate name="managecollection_tit_as_html" %]
 </table>
 <p />
 </body>

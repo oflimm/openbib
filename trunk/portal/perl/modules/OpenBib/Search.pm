@@ -95,6 +95,12 @@ sub handler {
 	   );
   
   my $query=Apache::Request->new($r);
+
+  my $status=$query->parse;
+
+  if ($status){
+    $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+  }
   
   my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
@@ -413,6 +419,15 @@ sub handler {
     goto LEAVEPROG;
   }
 
+  my $view="";
+
+  if ($query->param('view')){
+      $view=$query->param('view');
+  }
+  else {
+    $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
+  }
+
   
   #####################################################################
   ## Eigentliche Suche (default) 
@@ -422,7 +437,7 @@ sub handler {
   
   if ($swtindex ne ""){
     
-    OpenBib::Search::Util::print_index_by_swt($swtindex,$dbh,$sessiondbh,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet);
+    OpenBib::Search::Util::print_index_by_swt($swtindex,$dbh,$sessiondbh,$searchmode,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet,$view);
 
     return OK;    
   }
@@ -453,7 +468,7 @@ sub handler {
     # Genau ein Treffer
     if ($#tidns == 0){
       
-      OpenBib::Search::Util::print_tit_set_by_idn("$tidns[0]","none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet);
+      OpenBib::Search::Util::print_tit_set_by_idn("$tidns[0]","none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet,$view);
 
       return OK;
     }
@@ -494,7 +509,7 @@ sub handler {
       
       OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@sortedoutputbuffer);
  
-      OpenBib::Search::Util::print_tit_list_by_idn(\@sortedoutputbuffer,\%dbinfo,$searchmode,$hitrange,$rating,$bookinfo,$database,$sessionID,$r,$stylesheet);
+      OpenBib::Search::Util::print_tit_list_by_idn(\@sortedoutputbuffer,\%dbinfo,$searchmode,$rating,$bookinfo,$database,$sessionID,$r,$stylesheet,$hitrange,$offset,$view);
 
       return OK;
     }	
@@ -517,8 +532,8 @@ sub handler {
 	# TT-Data erzeugen
 	
 	my $ttdata={
+		    view       => $view,
 		    stylesheet => $stylesheet,
-		    
 		    sessionID  => $sessionID,
 
 		    database => $database,
@@ -559,8 +574,8 @@ sub handler {
 	# TT-Data erzeugen
 	
 	my $ttdata={
+		    view       => $view,
 		    stylesheet => $stylesheet,
-		    
 		    sessionID  => $sessionID,
 		    
 		    database => $database,
@@ -601,8 +616,8 @@ sub handler {
 	# TT-Data erzeugen
 	
 	my $ttdata={
+		    view       => $view,
 		    stylesheet => $stylesheet,
-		    
 		    sessionID  => $sessionID,
 		    
 		    database => $database,
@@ -643,7 +658,7 @@ sub handler {
       }
       
       if ($#gtfidns == 0){
-	OpenBib::Search::Util::print_tit_set_by_idn($gtfidns[0],"none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet);
+	OpenBib::Search::Util::print_tit_set_by_idn($gtfidns[0],"none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet,$view);
 	return OK;
 
       }
@@ -711,7 +726,7 @@ sub handler {
 
 	OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@sortedoutputbuffer);
 	
-	OpenBib::Search::Util::print_tit_list_by_idn(\@sortedoutputbuffer,\%dbinfo,$searchmode,$hitrange,$rating,$bookinfo,$database,$sessionID,$r,$stylesheet);
+	OpenBib::Search::Util::print_tit_list_by_idn(\@sortedoutputbuffer,\%dbinfo,$searchmode,$rating,$bookinfo,$database,$sessionID,$r,$stylesheet,$hitrange,$offset,$view);
 
 	return OK;
       }
@@ -728,7 +743,7 @@ sub handler {
       }
       
       if ($#gtmidns == 0){
-	OpenBib::Search::Util::print_tit_set_by_idn("$gtmidns[0]","none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet);
+	OpenBib::Search::Util::print_tit_set_by_idn("$gtmidns[0]","none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet,$view);
 	return OK;
       }
       
@@ -794,7 +809,7 @@ sub handler {
 
 	OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@sortedoutputbuffer);
 
-	OpenBib::Search::Util::print_tit_list_by_idn(\@sortedoutputbuffer,\%dbinfo,$searchmode,$hitrange,$rating,$bookinfo,$database,$sessionID,$r,$stylesheet);
+	OpenBib::Search::Util::print_tit_list_by_idn(\@sortedoutputbuffer,\%dbinfo,$searchmode,$rating,$bookinfo,$database,$sessionID,$r,$stylesheet,$hitrange,$offset,$view);
 	
 	return OK;
       }
@@ -811,7 +826,7 @@ sub handler {
       }
       
       if ($#invkidns == 0){
-	OpenBib::Search::Util::print_tit_set_by_idn("$invkidns[0]","none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet);
+	OpenBib::Search::Util::print_tit_set_by_idn("$invkidns[0]","none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet,$view);
 	return OK;
       }
       
@@ -875,7 +890,7 @@ sub handler {
 	OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
 
 	OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@sortedoutputbuffer);
-	OpenBib::Search::Util::print_tit_list_by_idn(\@sortedoutputbuffer,\%dbinfo,$searchmode,$hitrange,$rating,$bookinfo,$database,$sessionID,$r,$stylesheet);
+	OpenBib::Search::Util::print_tit_list_by_idn(\@sortedoutputbuffer,\%dbinfo,$searchmode,$rating,$bookinfo,$database,$sessionID,$r,$stylesheet,$hitrange,$offset,$view);
 	
 	return OK;
      }
@@ -884,7 +899,7 @@ sub handler {
     if ($generalsearch=~/^hst/){
       my $titidn=$query->param("$generalsearch");
 
-      OpenBib::Search::Util::print_tit_set_by_idn("$titidn","none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet);
+      OpenBib::Search::Util::print_tit_set_by_idn("$titidn","none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet,$view);
       return OK;
     }
     
@@ -899,8 +914,8 @@ sub handler {
 	# TT-Data erzeugen
 	
 	my $ttdata={
+		    view       => $view,
 		    stylesheet => $stylesheet,
-		    
 		    sessionID  => $sessionID,
 
 		    database => $database,
@@ -941,8 +956,8 @@ sub handler {
 	# TT-Data erzeugen
 	
 	my $ttdata={
+		    view       => $view,
 		    stylesheet => $stylesheet,
-		    
 		    sessionID  => $sessionID,
 
 		    database => $database,
@@ -975,14 +990,14 @@ sub handler {
     if ($generalsearch=~/^singlegtm/){
       my $titidn=$query->param("$generalsearch");
 
-      OpenBib::Search::Util::print_tit_set_by_idn("$titidn","none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet);
+      OpenBib::Search::Util::print_tit_set_by_idn("$titidn","none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet,$view);
       return OK;
     } 
     
     if ($generalsearch=~/^singlegtf/){
       my $titidn=$query->param("$generalsearch");
 
-      OpenBib::Search::Util::print_tit_set_by_idn("$titidn","none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet);
+      OpenBib::Search::Util::print_tit_set_by_idn("$titidn","none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet,$view);
       return OK;
 
     } 
@@ -993,7 +1008,7 @@ sub handler {
   if ($searchmultipletit){
     my @mtitidns=$query->param('searchmultipletit');
 
-    OpenBib::Search::Util::print_mult_tit_set_by_idn(\@mtitidns,"none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet);
+    OpenBib::Search::Util::print_mult_tit_set_by_idn(\@mtitidns,"none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet,$view);
     return OK;
   }
   
@@ -1057,7 +1072,7 @@ sub handler {
   
   if ($searchsingletit){
 
-    OpenBib::Search::Util::print_tit_set_by_idn("$searchsingletit","none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet);
+    OpenBib::Search::Util::print_tit_set_by_idn("$searchsingletit","none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet,$view);
     return OK;
 	
   }    
@@ -1074,8 +1089,8 @@ sub handler {
       # TT-Data erzeugen
 	
       my $ttdata={
+		  view       => $view,
 		  stylesheet => $stylesheet,
-		  
 		  sessionID  => $sessionID,
 		  
 		  database => $database,
@@ -1117,8 +1132,8 @@ sub handler {
       # TT-Data erzeugen
       
       my $ttdata={
+		  view       => $view,
 		  stylesheet => $stylesheet,
-		  
 		  sessionID  => $sessionID,
 		  
 		  database => $database,
@@ -1160,8 +1175,8 @@ sub handler {
       # TT-Data erzeugen
       
       my $ttdata={
+		  view       => $view,
 		  stylesheet => $stylesheet,
-		  
 		  sessionID  => $sessionID,
 		  
 		  database => $database,
@@ -1203,8 +1218,8 @@ sub handler {
       # TT-Data erzeugen
       
       my $ttdata={
+		  view       => $view,
 		  stylesheet => $stylesheet,
-		  
 		  sessionID  => $sessionID,
 		  
 		  database => $database,
@@ -1245,7 +1260,7 @@ sub handler {
     
     if ($#titelidns == 0){
 
-      OpenBib::Search::Util::print_tit_set_by_idn("$titelidns[0]","none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet);
+      OpenBib::Search::Util::print_tit_set_by_idn("$titelidns[0]","none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet,$view);
       return OK;
 
     }
@@ -1284,7 +1299,7 @@ sub handler {
       OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
 
       OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@sortedoutputbuffer);
-      OpenBib::Search::Util::print_tit_list_by_idn(\@sortedoutputbuffer,\%dbinfo,$searchmode,$hitrange,$rating,$bookinfo,$database,$sessionID,$r,$stylesheet);
+      OpenBib::Search::Util::print_tit_list_by_idn(\@sortedoutputbuffer,\%dbinfo,$searchmode,$rating,$bookinfo,$database,$sessionID,$r,$stylesheet,$hitrange,$offset,$view);
       
       return OK;
     }	
@@ -1303,7 +1318,7 @@ sub handler {
 
     if ($#titelidns == 0){
 
-      OpenBib::Search::Util::print_tit_set_by_idn("$titelidns[0]","none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet);
+      OpenBib::Search::Util::print_tit_set_by_idn("$titelidns[0]","none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet,$view);
       return OK;
 
     }
@@ -1341,7 +1356,7 @@ sub handler {
       OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
       
       OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@sortedoutputbuffer);
-      OpenBib::Search::Util::print_tit_list_by_idn(\@sortedoutputbuffer,\%dbinfo,$searchmode,$hitrange,$rating,$bookinfo,$database,$sessionID,$r,$stylesheet);
+      OpenBib::Search::Util::print_tit_list_by_idn(\@sortedoutputbuffer,\%dbinfo,$searchmode,$rating,$bookinfo,$database,$sessionID,$r,$stylesheet,$hitrange,$offset,$view);
       
       return OK;
     }	
@@ -1359,7 +1374,7 @@ sub handler {
 
     if ($#titelidns == 0){
 
-      OpenBib::Search::Util::print_tit_set_by_idn("$titelidns[0]","none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet);
+      OpenBib::Search::Util::print_tit_set_by_idn("$titelidns[0]","none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet,$view);
       return OK;
 
     }
@@ -1397,7 +1412,7 @@ sub handler {
       OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
       
       OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@sortedoutputbuffer);
-      OpenBib::Search::Util::print_tit_list_by_idn(\@sortedoutputbuffer,\%dbinfo,$searchmode,$hitrange,$rating,$bookinfo,$database,$sessionID,$r,$stylesheet);
+      OpenBib::Search::Util::print_tit_list_by_idn(\@sortedoutputbuffer,\%dbinfo,$searchmode,$rating,$bookinfo,$database,$sessionID,$r,$stylesheet,$hitrange,$offset,$view);
       
 
       return OK;
@@ -1415,7 +1430,7 @@ sub handler {
     }
 
     if ($#titelidns == 0){
-      OpenBib::Search::Util::print_tit_set_by_idn("$titelidns[0]","none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet);
+      OpenBib::Search::Util::print_tit_set_by_idn("$titelidns[0]","none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet,$view);
       return OK;
 
     }
@@ -1453,7 +1468,7 @@ sub handler {
       OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
       
       OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@sortedoutputbuffer);
-      OpenBib::Search::Util::print_tit_list_by_idn(\@sortedoutputbuffer,\%dbinfo,$searchmode,$hitrange,$rating,$bookinfo,$database,$sessionID,$r,$stylesheet);
+      OpenBib::Search::Util::print_tit_list_by_idn(\@sortedoutputbuffer,\%dbinfo,$searchmode,$rating,$bookinfo,$database,$sessionID,$r,$stylesheet,$hitrange,$offset,$view);
       
       return OK;
     }	
@@ -1471,7 +1486,7 @@ sub handler {
     }
     if ($#titelidns == 0){
 
-      OpenBib::Search::Util::print_tit_set_by_idn("$titelidns[0]","none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet);
+      OpenBib::Search::Util::print_tit_set_by_idn("$titelidns[0]","none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet,$view);
       return OK;
     }
     if ($#titelidns > 0){
@@ -1508,7 +1523,7 @@ sub handler {
       OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
       
       OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@sortedoutputbuffer);
-      OpenBib::Search::Util::print_tit_list_by_idn(\@sortedoutputbuffer,\%dbinfo,$searchmode,$hitrange,$rating,$bookinfo,$database,$sessionID,$r,$stylesheet,$hitrange,$offset);
+      OpenBib::Search::Util::print_tit_list_by_idn(\@sortedoutputbuffer,\%dbinfo,$searchmode,$rating,$bookinfo,$database,$sessionID,$r,$stylesheet,$hitrange,$offset,$hitrange,$offset,$view);
       
       return OK;
     }	
@@ -1528,7 +1543,7 @@ sub handler {
     
     if ($#titelidns == 0){
 
-      OpenBib::Search::Util::print_tit_set_by_idn("$titelidns[0]","none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet);
+      OpenBib::Search::Util::print_tit_set_by_idn("$titelidns[0]","none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID,$r,$stylesheet,$view);
       return OK;
     }
     
@@ -1567,7 +1582,7 @@ sub handler {
       
       OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@sortedoutputbuffer);
 
-      OpenBib::Search::Util::print_tit_list_by_idn(\@sortedoutputbuffer,\%dbinfo,$searchmode,$hitrange,$rating,$bookinfo,$database,$sessionID,$r,$stylesheet);
+      OpenBib::Search::Util::print_tit_list_by_idn(\@sortedoutputbuffer,\%dbinfo,$searchmode,$rating,$bookinfo,$database,$sessionID,$r,$stylesheet,$hitrange,$offset,$view);
       
       return OK;
     }	

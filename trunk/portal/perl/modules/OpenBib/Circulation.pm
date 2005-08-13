@@ -71,6 +71,12 @@ sub handler {
 
   my $query=Apache::Request->new($r);
 
+  my $status=$query->parse;
+
+  if ($status){
+    $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+  }
+
   my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
   my $action=($query->param('action'))?$query->param('action'):'none';
@@ -91,6 +97,15 @@ sub handler {
     $userdbh->disconnect();
     return OK;
   }  
+
+  my $view="";
+
+  if ($query->param('view')){
+      $view=$query->param('view');
+  }
+  else {
+    $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
+  }
   
   my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
   
@@ -148,6 +163,7 @@ sub handler {
       # TT-Data erzeugen
       
       my $ttdata={
+		  view       => $view,
 		  stylesheet => $stylesheet,
 		  
 		  sessionID  => $sessionID,
@@ -188,6 +204,7 @@ sub handler {
       # TT-Data erzeugen
       
       my $ttdata={
+		  view       => $view,
 		  stylesheet => $stylesheet,
 		  
 		  sessionID  => $sessionID,
@@ -227,6 +244,7 @@ sub handler {
       # TT-Data erzeugen
       
       my $ttdata={
+		  view       => $view,
 		  stylesheet => $stylesheet,
 		  
 		  sessionID  => $sessionID,
@@ -266,6 +284,7 @@ sub handler {
       # TT-Data erzeugen
       
       my $ttdata={
+		  view       => $view,
 		  stylesheet => $stylesheet,
 		  
 		  sessionID  => $sessionID,

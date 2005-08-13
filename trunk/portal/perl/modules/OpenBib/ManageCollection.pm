@@ -70,6 +70,12 @@ sub handler {
 
   my $query=Apache::Request->new($r);
 
+  my $status=$query->parse;
+
+  if ($status){
+    $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+  }
+
   my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
   #####################################################################
@@ -167,15 +173,17 @@ sub handler {
     $dbinforesult->finish();
   }
 
-  # Assoziierten View zur Session aus Datenbank holen
-  
-  my $idnresult=$sessiondbh->prepare("select viewname from sessionview where sessionid = ?") or $logger->error($DBI::errstr);
-  $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-  
-  my $result=$idnresult->fetchrow_hashref();
-  
-  $idnresult->finish();
-  
+  my $view="";
+
+  if ($query->param('view')){
+      $view=$query->param('view');
+  }
+  else {
+    $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
+  }
+
+  my $idnresult="";
+
   #####################################################################
   # Einfuegen eines Titels ind die Merkliste
 
@@ -278,6 +286,8 @@ sub handler {
 		       };
     }
 
+    $idnresult->finish();
+    
     foreach my $dbidn (@dbidnlist){
       my $database=@{$dbidn}{database};
       my $singleidn=@{$dbidn}{singleidn};
@@ -344,13 +354,11 @@ sub handler {
 			};
     }
     
-    $idnresult->finish();
-    
     # TT-Data erzeugen
     
     my $ttdata={
+		view       => $view,
 		stylesheet => $stylesheet,
-		
 		sessionID  => $sessionID,
 		
 		type => $type,
@@ -410,6 +418,8 @@ sub handler {
 			 };
       }
 
+      $idnresult->finish();
+    
     }      
 
     my @collection=();
@@ -480,13 +490,11 @@ sub handler {
 			};
     }
     
-    $idnresult->finish();
-    
     # TT-Data erzeugen
     
     my $ttdata={
+		view       => $view,
 		stylesheet => $stylesheet,
-		
 		sessionID  => $sessionID,
 		
 		type => $type,
@@ -569,6 +577,8 @@ sub handler {
 			 };
       }
 
+      $idnresult->finish();
+    
     }      
 
     my @collection=();
@@ -639,13 +649,11 @@ sub handler {
 			};
     }
     
-    $idnresult->finish();
-    
     # TT-Data erzeugen
     
     my $ttdata={
+		view       => $view,
 		stylesheet => $stylesheet,
-		
 		sessionID  => $sessionID,
 		
 		type => $type,
@@ -720,7 +728,8 @@ sub handler {
 			  singleidn => $singleidn,
 			 };
       }
-      
+
+      $idnresult->finish();
     }      
     
     my @collection=();
@@ -791,13 +800,11 @@ sub handler {
 			};
     }
     
-    $idnresult->finish();
-    
     # TT-Data erzeugen
     
     my $ttdata={
-		stylesheet => $stylesheet,
-		
+		view       => $view,
+		stylesheet => $stylesheet,		
 		sessionID  => $sessionID,
 		
 		type => $type,

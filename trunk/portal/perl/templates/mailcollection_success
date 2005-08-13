@@ -1,17 +1,17 @@
-[% PROCESS std_header %]
+[% PROCESS common/subtemplate name="std_header" %]
 
-  <body bgcolor="#FFFFFF">
+  <body>
 
 [% IF show_corporate_banner %]
-[% PROCESS corporate_banner %] 
+[% PROCESS common/subtemplate name="corporate_banner" %] 
 [% END %]
 
 <table width="100%">
 <tr><th>Erfolgreiche Aktion</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.8em">
 Ihre Merkliste wurde an Sie per Mail versendet.
 </td></tr>
 </table>
 <p />
 
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]

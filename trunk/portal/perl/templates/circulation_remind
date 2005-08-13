@@ -1,9 +1,9 @@
-[% PROCESS std_header %]
+[% PROCESS common/subtemplate name="std_header" %]
 
-  <body bgcolor="#FFFFFF">
+  <body>
 
 [% IF show_corporate_banner %]
-[% PROCESS corporate_banner %] 
+[% PROCESS common/subtemplate name="corporate_banner" %] 
 [% END %]
 
 <ul id="tabbingmenu">
@@ -33,16 +33,16 @@
 
 <table cellpadding="5">
 <tr><td><b>Titelangaben</b></td><td><b>Signatur</b></td><td><b>Ausleih-/Buchungsdatum</b></td><td><b>Leihfristende</b></td><td><b>Geb&uuml;hr</b></td></tr>
-[% color = 'white' %]
+[%- listrow = 'listrow1' -%]
 
 [%- FOREACH reminder = reminders -%]
 
 <tr
-bgcolor="[% color %]"
-[%- IF color == 'white' -%]
-[%- color = 'aliceblue' -%] 
+class="[% listrow %]"
+[%- IF listrow == 'listrow1' -%]
+[%- listrow = 'listrow2' -%] 
 [%- ELSE -%]
-[%- color = 'white' -%] 
+[%- listrow = 'listrow1' -%] 
 [%- END -%]
 ><td><i>[% utf2iso(reminder.Verfasser) %]</i><br>[% utf2iso(reminder.Titel) %]
 
@@ -68,4 +68,4 @@ bgcolor="[% color %]"
 
 <p />
 
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]

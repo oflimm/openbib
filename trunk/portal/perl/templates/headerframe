@@ -1,8 +1,9 @@
-[% PROCESS std_header %]
+[% PROCESS common/subtemplate name="std_header" %]
 
-  <body bgcolor="#FFFFFF">
+  <body>
 
-[% PROCESS corporate_banner %]
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
 <div id="mainnavigation">
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
 <tr><td align="left">&nbsp;&nbsp;<a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">Katalogauswahl</a>&nbsp;&nbsp;<a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">Recherche</a>&nbsp;&nbsp;<a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];trefferliste=choice;view=[% view %]" target="body">Trefferliste</a>&nbsp;&nbsp;<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;view=[% view %]" target="body">Merkliste [[% anzahl %]]</a></td><td height="25">&nbsp;</td><td align="right">
@@ -13,7 +14,7 @@
 <a href="[% config.login_loc %]?sessionID=[% sessionID %];view=[% view %];action=login" target="body">Login</a>&nbsp;
 [% END %]
 [% END %]
-<a href="/suchhilfe.html" target="body">Hilfe</a>&nbsp;&nbsp;<a href="[% config.leave_loc %]?sessionID=[% sessionID %];view=[% view %]" target="_parent"><b><span style="color:red">Sitzung beenden
+<a href="/suchhilfe.html" target="body">Hilfe</a>&nbsp;&nbsp;<a href="[% config.leave_loc %]?sessionID=[% sessionID %];view=[% view %]" target="_parent"><b><span class="warning">Sitzung beenden
 [%- IF username -%]
  [[% username %]]
 [%- END -%]
@@ -21,4 +22,4 @@
 </table>
 </div>
 
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]

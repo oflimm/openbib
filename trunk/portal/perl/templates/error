@@ -1,9 +1,9 @@
-[% PROCESS std_header %]
+[% PROCESS common/subtemplate name="std_header" %]
 
-  <body bgcolor="#FFFFFF">
+  <body>
 
 [% IF show_corporate_banner %]
-[% PROCESS corporate_banner %] 
+[% PROCESS common/subtemplate name="corporate_banner" %] 
 [% END %]
 
 <ul id="tabbingmenu">
@@ -15,7 +15,7 @@
 <p />
 <table width="100%">
 <tr><th>Fehlerbeschreibung</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear">
 [% errmsg %]
 </td></tr>
 </table>
@@ -24,5 +24,5 @@
 
 <p />
 
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]
 

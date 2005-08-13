@@ -30,6 +30,7 @@ use warnings;
 no warnings 'redefine';
 
 use Apache::Constants qw(:common);
+use Apache::Request ();
 
 use Log::Log4perl qw(get_logger :levels);
 
@@ -197,6 +198,30 @@ sub get_userid_of_session {
   return $userid;
 }
 
+sub get_viewname_of_session  {
+  my ($sessiondbh,$sessionID)=@_;
+
+  # Log4perl logger erzeugen
+  
+  my $logger = get_logger();
+
+  # Assoziierten View zur Session aus Datenbank holen
+  
+  my $idnresult=$sessiondbh->prepare("select viewname from sessionview where sessionid = ?") or $logger->error($DBI::errstr);
+  $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+  
+  my $result=$idnresult->fetchrow_hashref();
+  
+  # Entweder wurde ein 'echter' View gefunden oder es wird
+  # kein spezieller View verwendet (view='')
+
+  my $view=$result->{'viewname'} || '';
+
+  $idnresult->finish();
+
+  return $view;
+}
+
 sub get_targetdb_of_session {
   my ($userdbh,$sessionID)=@_;
 
@@ -250,31 +275,25 @@ sub get_css_by_browsertype {
 
   my $useragent=$r->subprocess_env('HTTP_USER_AGENT');
 
-  my $stylesheet="";
+  my $query=Apache::Request->new($r);
+  my $view=($query->param('view'))?$query->param('view'):undef;
 
+  my $stylesheet="";
+  
   if ( $useragent=~/Mozilla.5.0/ || $useragent=~/MSIE 5/ || $useragent=~/MSIE 6/ || $useragent=~/Konqueror"/ ){
     if ($useragent=~/MSIE/){
-      $stylesheet= << "CSS";
-<link rel="stylesheet" type="text/css" href="/styles/openbib-ie.css" />
-CSS
+      $stylesheet="openbib-ie.css";
     }
     else {
-      $stylesheet= << "CSS";
-<link rel="stylesheet" type="text/css" href="/styles/openbib.css" />
-CSS
+      $stylesheet="openbib.css";
     }
-
   }
   else {
     if ($useragent=~/MSIE/){
-      $stylesheet= << "CSS";
-<link rel="stylesheet" type="text/css" href="/styles/openbib-simple-ie.css" />
-CSS
+      $stylesheet="openbib-simple-ie.css";
     }
     else {
-      $stylesheet= << "CSS";
-<link rel="stylesheet" type="text/css" href="/styles/openbib-simple.css" />
-CSS
+      $stylesheet="openbib-simple.css";
     }
   }
 
@@ -414,8 +433,17 @@ sub print_warning {
   my $logger = get_logger();
   
   my $stylesheet=get_css_by_browsertype($r);
-  
-  my $template = Template->new({ 
+
+  my $query=Apache::Request->new($r);
+
+  my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
+
+  my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
+
+  my $view=get_viewname_of_session($sessiondbh,$sessionID);
+ 
+  my $template = Template->new({
+				ABSOLUTE      => 1,
 				INCLUDE_PATH  => $config{tt_include_path},
 				#    	    PRE_PROCESS   => 'config',
 				OUTPUT        => $r,     # Output geht direkt an Apache Request
@@ -424,7 +452,7 @@ sub print_warning {
   # TT-Data erzeugen
   
   my $ttdata={
-	      title      => 'Fehler: KUG - K&ouml;lner Universit&auml;tsGesamtkatalog',
+	      view       => $view,
 	      stylesheet => $stylesheet,
 	      
 	      show_corporate_banner => 0,
@@ -457,11 +485,11 @@ sub print_page {
   my $stylesheet=get_css_by_browsertype($r);
 
 
+  #####################################################################
   # View- und Datenbank-spezifisches Templating
 
-  my $query=Apache::Request->new($r);
-  my $view=($query->param('view'))?$query->param('view'):undef;
-  my $database=($query->param('database'))?$query->param('database'):undef;
+  my $database=$ttdata->{'view'};
+  my $view=$ttdata->{'view'};
 
   if ($view && -e "$config{tt_include_path}/views/$view/$templatename"){
     $templatename="views/$view/$templatename";
@@ -472,8 +500,11 @@ sub print_page {
   if ($database && -e "$config{tt_include_path}/database/$database/$templatename"){
     $templatename="database/$database/$templatename";
   }
+
+  $logger->info("Using Template $templatename");
   
   my $template = Template->new({ 
+				ABSOLUTE      => 1, # Notwendig fuer Kaskadierung
 				INCLUDE_PATH  => $config{tt_include_path},
 				#    	    PRE_PROCESS   => 'config',
 				OUTPUT        => $r,     # Output geht direkt an Apache Request

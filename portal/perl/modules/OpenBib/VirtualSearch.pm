@@ -73,6 +73,12 @@ sub handler {
   my $logger = get_logger();
     
   my $query=Apache::Request->new($r);
+
+  my $status=$query->parse;
+
+  if ($status){
+    $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+  }
   
   my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
@@ -121,8 +127,7 @@ sub handler {
   my $trefferliste=$query->param('trefferliste') || '';
   my $autoplus=$query->param('autoplus') || '';
   my $queryid=$query->param('queryid') || '';
-  my $view=$query->param('view') || '';
-
+  
   #####################################################################
   ## boolX: Verkn"upfung der Eingabefelder (leere Felder werden ignoriert)
   ##        AND  - Und-Verkn"upfung
@@ -340,6 +345,15 @@ sub handler {
     return OK;
   }
   
+  my $view="";
+
+  if ($query->param('view')){
+    $view=$query->param('view');
+  }
+  else {
+    $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
+  }
+
   # Authorisierter user?
   
   my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
@@ -354,7 +368,6 @@ sub handler {
   ####################################################################
   # Bestimmung der Datenbanken, in denen gesucht werden soll
   ####################################################################
-
 
   # Ueber view koennen bei Direkteinsprung in VirtualSearch die
   # entsprechenden Kataloge vorausgewaehlt werden
@@ -572,8 +585,8 @@ sub handler {
     # TT-Data erzeugen
     
     my $ttdata={
+		view       => $view,
 		stylesheet => $stylesheet,
-		
 		sessionID  => $sessionID,
 		
 		searchmode => $searchmode,
@@ -701,8 +714,8 @@ sub handler {
     # TT-Data erzeugen
     
     my $ttdata={
-		stylesheet => $stylesheet,
-		
+		view       => $view,
+		stylesheet => $stylesheet,		
 		sessionID  => $sessionID,
 		
 		searchmode => $searchmode,
@@ -832,8 +845,8 @@ sub handler {
     # TT-Data erzeugen
     
     my $ttdata={
-		stylesheet => $stylesheet,
-		
+		view       => $view,
+		stylesheet => $stylesheet,		
 		sessionID  => $sessionID,
 		
 		searchmode => $searchmode,
@@ -988,6 +1001,12 @@ UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&oum
   my ($queryargs,$sortselect,$thissortstring)=OpenBib::Common::Util::get_sort_nav($r,'sortboth',1);
 
 
+  my $starttemplatename=$config{tt_virtualsearch_result_start_tname};
+
+  if ($view && -e "$config{tt_include_path}/views/$view/$starttemplatename"){
+    $starttemplatename="views/$view/$starttemplatename";
+  }
+
   # Start der Ausgabe mit korrektem Header
 
   print $r->send_http_header("text/html");
@@ -995,6 +1014,7 @@ UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&oum
   # Ausgabe des ersten HTML-Bereichs
 
   my $starttemplate = Template->new({ 
+				     ABSOLUTE      => 1,
 				     INCLUDE_PATH  => $config{tt_include_path},
 				     OUTPUT        => $r,
 				    });
@@ -1003,8 +1023,8 @@ UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&oum
   # TT-Data erzeugen
   
   my $startttdata={
+		   view       => $view,
 		   stylesheet => $stylesheet,
-
 		   sessionID  => $sessionID,
 
 		   loginname => $loginname,
@@ -1032,7 +1052,7 @@ UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&oum
 		  };
   
   
-  $starttemplate->process($config{tt_virtualsearch_result_start_tname}, $startttdata) || do { 
+  $starttemplate->process($starttemplatename, $startttdata) || do { 
     $r->log_reason($starttemplate->error(), $r->filename);
     return SERVER_ERROR;
   };
@@ -1132,7 +1152,15 @@ UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&oum
       my $resulttime=timestr($timeall,"nop");
       $resulttime=~s/(\d+\.\d+) .*/$1/;
 
+      my $itemtemplatename=$config{tt_virtualsearch_result_item_tname};
+      
+      if ($view && -e "$config{tt_include_path}/views/$view/$itemtemplatename"){
+	$itemtemplatename="views/$view/$itemtemplatename";
+      }
+
+
       my $itemtemplate = Template->new({ 
+					ABSOLUTE      => 1,
 					INCLUDE_PATH  => $config{tt_include_path},
 					OUTPUT        => $r,
 				       });
@@ -1141,6 +1169,7 @@ UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&oum
       # TT-Data erzeugen
       
       my $ttdata={
+		  view       => $view,
 		  sessionID  => $sessionID,
 		  
 		  dbinfo => $dbinfo{$database},
@@ -1169,7 +1198,7 @@ UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&oum
 		 };
       
 
-      $itemtemplate->process($config{tt_virtualsearch_result_item_tname}, $ttdata) || do { 
+      $itemtemplate->process($itemtemplatename, $ttdata) || do { 
 	$r->log_reason($itemtemplate->error(), $r->filename);
 	return SERVER_ERROR;
       };
@@ -1278,15 +1307,23 @@ UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&oum
 
   # Ausgabe des letzten HTML-Bereichs
 
+  my $endtemplatename=$config{tt_virtualsearch_result_end_tname};
+  
+  if ($view && -e "$config{tt_include_path}/views/$view/$endtemplatename"){
+    $endtemplatename="views/$view/$endtemplatename";
+  }
+
   my $endtemplate = Template->new({ 
-				     INCLUDE_PATH  => $config{tt_include_path},
-				     OUTPUT        => $r,
-				    });
-  
-  
+				   ABSOLUTE      => 1,
+				   INCLUDE_PATH  => $config{tt_include_path},
+				   OUTPUT        => $r,
+				  });
+    
   # TT-Data erzeugen
   
   my $endttdata={
+		 view       => $view,
+		 sessionID  => $sessionID,
 
 		 gesamttreffer => $gesamttreffer,
 
@@ -1302,7 +1339,7 @@ UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&oum
 		};
   
   
-  $endtemplate->process($config{tt_virtualsearch_result_end_tname}, $endttdata) || do { 
+  $endtemplate->process($endtemplatename, $endttdata) || do { 
     $r->log_reason($endtemplate->error(), $r->filename);
     return SERVER_ERROR;
   };

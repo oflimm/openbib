@@ -901,8 +901,15 @@ while (($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split ("
 	if ( $ulen > 0 ){
 	  $inh = substr($outBLOB,$k+2,$ulen);
 	  if ( $FLDTYP[$fnr] eq "V" ){
-	    $inh = hex(substr($BLOB,$kdup+4,8));
-	    $inh="IDN: $inh";
+             $verwnr = hex(substr($BLOB,$kdup+4,8));
+	     my $zusatz="";
+             if ($ulen > 4){
+                $zusatz=substr($inh,4,$ulen);
+                $inh="IDN: $verwnr ;$zusatz";
+             }
+             else {
+                $inh="IDN: $verwnr";
+             }
 	  }
 	  $uKAT = sprintf "%04d.%03d", $kateg, $ukat;
 	  if ( substr($inh,0,1) eq " " ){

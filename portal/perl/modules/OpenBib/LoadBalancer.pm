@@ -67,6 +67,12 @@ sub handler {
 
   my $query=Apache::Request->new($r);
 
+  my $status=$query->parse;
+
+  if ($status){
+    $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+  }
+
   my $ua=new LWP::UserAgent(timeout => 5);
   
   my $urlquery=$r->args; #query->url(-query=>1);
@@ -162,4 +168,3 @@ sub handler {
   return OK;
 }
 
-1;

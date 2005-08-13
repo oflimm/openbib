@@ -65,6 +65,12 @@ sub handler {
   my $logger = get_logger();
 
   my $query=Apache::Request->new($r);
+
+  my $status=$query->parse;
+
+  if ($status){
+    $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+  }
   
   my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
   my $action=($query->param('action'))?$query->param('action'):'';

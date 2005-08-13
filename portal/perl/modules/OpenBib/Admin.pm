@@ -67,6 +67,12 @@ sub handler {
 
   my $query=Apache::Request->new($r);
 
+  my $status=$query->parse;
+
+  if ($status){
+    $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+  }
+
   my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
   #####################################################################
@@ -84,6 +90,9 @@ sub handler {
   my $user=$query->param('user') || '';
   my $passwd=$query->param('passwd') || '';
   my $action=$query->param('action') || '';
+
+  $logger->info("Parameter: $adminuser");
+
   
   my $cataction=$query->param('cataction') || '';
   my $confaction=$query->param('confaction') || '';
@@ -128,8 +137,9 @@ sub handler {
 
   # Neue SessionID erzeugen, falls keine vorhanden
 
-  $sessionID=OpenBib::Common::Util::init_new_session($sessiondbh) if ($sessionID eq "");
-
+  unless ($sessionID){
+    $sessionID=OpenBib::Common::Util::init_new_session($sessiondbh);
+  }
 
   # Verweis: Datenbankname -> Informationen zum zugeh"origen Institut/Seminar
   

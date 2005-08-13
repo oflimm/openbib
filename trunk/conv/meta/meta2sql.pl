@@ -1223,7 +1223,22 @@ sub bearbeite_titline {
 	print SQLTITL "insert into titverf values ($idn,$verfverw);\n" if ($sql);
 	$titverfcount++;
     }
-    if ($line=~/^2003(.)IDN: (\d+)/){
+    if ($line=~/^2003.IDN: (\d+) ; (.*)$/){
+	$pers=$1;	
+	$bez=$2;
+	if (($idnmode eq "offset")&&($offset)) {
+	    $pers=$pers+$offset;
+	}
+	if (($idnmode eq "sigel")&&($sigel)){
+	    $pers="$sigel$pers";
+	}
+
+	print MYSQLTITPERSL "$idn|$pers|$bez\n" if ($mysql);
+	print PGTITPERSL "$idn|$pers|$bez\n" if ($pg);
+
+	$titperscount++;
+    }
+    elsif ($line=~/^2003(.)IDN: (\d+)$/){
 	$bez=$1;	
 	$pers=$2;
 	if (($idnmode eq "offset")&&($offset)) {
@@ -1247,6 +1262,7 @@ sub bearbeite_titline {
         }
 	$titperscount++;
     }
+
     if ($line=~/^2004(.)IDN: (\d+)/){
 	$bez=$1;	
 	$pers=$2;

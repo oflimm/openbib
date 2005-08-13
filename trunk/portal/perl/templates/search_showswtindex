@@ -1,11 +1,9 @@
-<html>
-<head>
-  [% stylesheet %]
-  <title>Such-Client zur Datenbank: [% poolname %]</title>
-</head>
-<body bgcolor="white">
+[%- title = 'Schlagwortindex' -%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+<body>
 <table BORDER="0" CELLSPACING="0" CELLPADDING="0" width="100%">
-  <tr bgcolor="lightblue">
+  <tr class="titlerow">
     <td  width="20">&nbsp;</td><td valign="middle" ALIGN="left" height="32"><img src="/images/openbib/[% database %].png"></td>
   </tr>
 </table>
@@ -14,7 +12,7 @@
 
 <table width="100%">
 <tr><th>Schlagwortindex</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear">
 
 [% IF swtindex.size > 0 %]
 
@@ -30,7 +28,7 @@ e
 <p />
 
 <table cellpadding="2">
-<tr><td bgcolor="lightblue">Schlagwort</td><td bgcolor="lightblue">Titelzahl</td><td bgcolor="lightblue">Schlagwort</td><td bgcolor="lightblue">Titelzahl</td><td bgcolor="lightblue">Schlagwort</td><td bgcolor="lightblue">Titelzahl</td></tr>
+<tr class="titlerow"><td>Schlagwort</td><td>Titelzahl</td><td>Schlagwort</td><td>Titelzahl</td><td>Schlagwort</td><td>Titelzahl</td></tr>
 
 [% FOREACH item IN swtindex %]
 [% IF loop.index % 3 == 0 %]
@@ -62,8 +60,7 @@ In diesem Katalog konnte leider kein Schlagwort beginnend mit <b>'[% swt %]'</b>
 <p />
 
 <hr>
-<table>
-<tr><td bgcolor="lightblue">Schlagwortindex dieses Katalogs&nbsp;</td><td>
+
 <form method="get" action="[% config.search_loc %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]">
 <input type="hidden" name="searchmode" value="[% searchmode %]">
@@ -71,14 +68,12 @@ In diesem Katalog konnte leider kein Schlagwort beginnend mit <b>'[% swt %]'</b>
 <input type="hidden" name="bookinfo" value="[% bookinfo %]">
 <input type="hidden" name="hitrange" value="[% hitrange %]">
 <input type="hidden" name="database" value="[% database %]">
-&nbsp;
-<input type="text" name="swtindex" value="[% swt %]" size="4" maxlength="50" title="Geben Sie hier den Schlagwortanfang ein">
-&nbsp;
-<input type="submit" value="Suchen">
-&nbsp;</td>
-</tr>
+
+<table>
+<tr><td class="category">Schlagwortindex dieses Katalogs&nbsp;</td><td>&nbsp;<input type="text" name="swtindex" value="[% swt %]" size="4" maxlength="50" title="Geben Sie hier den Schlagwortanfang ein">&nbsp;<input type="submit" value="Suchen">&nbsp;</td></tr>
 </table>
+
 </form>
 <p />
 
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]

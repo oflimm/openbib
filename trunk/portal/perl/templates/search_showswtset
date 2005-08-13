@@ -1,11 +1,9 @@
-<html>
-<head>
-  [% stylesheet %]
-  <title>Schlagwortaufnahme</title>
-</head>
-<body bgcolor="white">
+[%- title = 'Schlagwortaufnahme' -%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+<body>
 <table BORDER="0" CELLSPACING="0" CELLPADDING="0" width="100%">
-  <tr bgcolor="lightblue">
+  <tr class="titlerow">
     <td  width="20">&nbsp;</td><td valign="middle" ALIGN="left" height="32"><img src="/images/openbib/[% database %].png"></td>
   </tr>
 </table>
@@ -24,9 +22,9 @@
 
 [% FOREACH normkat IN normset %]
 [% IF normkat.type == 'simple_category' %]
-<tr><td bgcolor="lightblue"><strong>[% normkat.desc %]</strong></td><td>[% normkat.contents %]</td></tr>
+<tr><td class="category">[% normkat.desc %]</td><td>[% normkat.contents %]</td></tr>
 [% ELSIF normkat.type == 'url_category' %]
-<tr><td bgcolor="lightblue"><strong>[% normkat.desc %]</strong></td><td><a href="[% normkat.url %]">[% normkat.contents %]</td></tr>
+<tr><td class="category">[% normkat.desc %]</td><td><a href="[% normkat.url %]">[% normkat.contents %]</td></tr>
 [% END %]
 [% END %]
 </table>
@@ -35,4 +33,4 @@
 
 <p />
 
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]

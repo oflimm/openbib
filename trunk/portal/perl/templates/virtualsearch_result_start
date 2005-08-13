@@ -1,4 +1,4 @@
-[% PROCESS std_header %]
+[% PROCESS common/subtemplate name="std_header" %]
 
 <body>
 
@@ -11,7 +11,7 @@
 <FORM METHOD="GET" action="[% config.resultlists_loc %]">
 <p>
 
-[% PROCESS virtualsearch_more_search_tips %]
+[% PROCESS common/subtemplate name="virtualsearch_more_search_tips" %]
 
 <p><form method="get" action="[% hostself %]">
 [%- FOREACH i IN queryargs -%]

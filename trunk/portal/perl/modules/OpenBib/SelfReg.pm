@@ -67,6 +67,12 @@ sub handler {
 
   my $query=Apache::Request->new($r);
 
+  my $status=$query->parse;
+
+  if ($status){
+    $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+  }
+
   my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
   my $action=($query->param('action'))?$query->param('action'):'none';
@@ -87,16 +93,22 @@ sub handler {
     return OK;
   }
   
+  my $view="";
+
+  if ($query->param('view')){
+    $view=$query->param('view');
+  }
+  else {
+    $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
+  }
   
   if ($action eq "show"){
     
     # TT-Data erzeugen
 
     my $ttdata={
-		title      => 'KUG: Selbstregistrierung',
+		view       => $view,
 		stylesheet => $stylesheet,
-		view       => '',
-
 		sessionID  => $sessionID,
 
 		show_corporate_banner => 0,
@@ -184,11 +196,10 @@ elsif ($action eq "auth"){
   # TT-Data erzeugen
   
   my $ttdata={
-	      title      => 'KUG: Sie sind erfolgreich registriert',
+	      view       => $view,
 	      stylesheet => $stylesheet,
-	      view       => '',
-	      
 	      sessionID  => $sessionID,
+
 	      loginname  => $loginname,
 	      
 	      show_corporate_banner => 0,

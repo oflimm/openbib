@@ -122,6 +122,9 @@ use vars qw(%config);
 
 	   admin_loc            => '/portal/admin',
 	   circulation_loc      => '/portal/benutzerkonto',
+
+	   connector_digibib_loc => '/portal/connector/digibib',
+
 	   databasechoice_loc   => '/portal/katalogauswahl',
 	   databaseprofile_loc  => '/portal/katalogprofile',
 
@@ -143,6 +146,8 @@ use vars qw(%config);
 	   startopac_loc        => '/portal/opac',
 	   userprefs_loc        => '/portal/benutzereinstellungen',
 	   virtualsearch_loc    => '/portal/virtuellerecherche',
+
+	   css_loc              => '/styles',
 
 	   # Programm zum Versenden von Mails
 
@@ -177,6 +182,10 @@ use vars qw(%config);
 	   # Pfad zu den Portal-Templates (Template Toolkit)
 
 	   tt_include_path         => '/opt/openbib/templates',
+
+	   # Pfad zum Document Root
+
+	   document_root_path       => '/usr/db/www/documents',
 
 	   # Mapping der einzelnen Kompontenten zu ihren Templates
 
@@ -226,7 +235,7 @@ use vars qw(%config);
 	   tt_managecollection_save_plain_tname => 'managecollection_save_plain',
 	   tt_managecollection_show_tname  => 'managecollection_show',
 
-           tt_resultlists_choice_tname          => 'resultlists_choice',
+	   tt_resultlists_choice_tname          => 'resultlists_choice',
 	   tt_resultlists_showall_tname         => 'resultlists_showall',
 	   tt_resultlists_showall_sortall_tname => 'resultlists_showall_sortall',
 	   tt_resultlists_showsinglepool_tname  => 'resultlists_showsinglepool',
@@ -248,12 +257,11 @@ use vars qw(%config);
 	   tt_virtualsearch_showverfindex_tname => 'virtualsearch_showverfindex',
 	   tt_virtualsearch_showkorindex_tname => 'virtualsearch_showkorindex',
 	   tt_virtualsearch_showswtindex_tname => 'virtualsearch_showswtindex',
-
 	   
 	   tt_userprefs_tname              => 'userprefs',
 	   tt_userprefs_ask_delete_tname   => 'userprefs_ask_delete',
 	   tt_userprefs_changefields_tname => 'userprefs_changefields',
-	   tt_userprefs_userdeleted_tname  => 'userprefs_userdeleted',
+	   tt_userprefs_userdeleted_tname => 'userprefs_userdeleted',
 
 	   tt_selfreg_tname         => 'selfreg',
 	   tt_selfreg_success_tname => 'selfreg_success',
@@ -292,31 +300,29 @@ use vars qw(%config);
 
 	   categorymapping => {
 			       einbaende => {
-					     'Verfasser'     => 'Person',
-					     'Person'        => 'Buchbinder/Werkst&auml;tten',
+					     'Verfasser'     => 'Person',         # M0100
+					     'Person'        => 'Buchbinder/Werkst&auml;tten', #M0101
 					     'HST'           => 'Titel',          # M0331
-					     'WST'           => 'Provinienz',     # M0370
+					     'WST'           => 'Provenienz',     # M0370
 					     'Zusatz'        => 'Untertitel',     # M0335
 					     'Beig.Werke'    => 'Beib&auml;nde',  # M0361
 					     'Ausgabe'       => 'Auflage',        # M0403
-					     '0413'          => 'Drucker',        # M0413
+					     'Drucker'       => 'Drucker',        # M0413
 					     'Ersch. Jahr'   => 'E-Jahr',         # M0425
 					     'Verlagsort'    => 'Ersch-Ort',      # M0410
 					     'Ans. Ersch. Jahr' => 'Fert.-Jahr',  # M0424
-					     '0035'          => 'Fert.-Land/Ort', # M0035
-					     '0435'          => 'Ma&szlig;e',     # M0435
+					     'Ersch.Land'    => 'Fert.-Land/Ort', # M0035
+					     'Format'        => 'Ma&szlig;e',     # M0435
 					     'Schlagwort'    => 'Jahrhundert',    # M0710
 					     'Urheber'       => 'Region',         # M0200
 					     'Notation'      => 'Einband',        # M0700
 					     'Abstract'      => 'Beschreibung',   # M0750
 					     'Fu&szlig;note' => 'Quellen',        # M0501
-					     '0508'          => 'Bibl. Nachweis', # M0508
+					     'Quelle'        => 'Bibl. Nachweis', # M0508
 					    },
-			       
-			       inst501 => {
-					   'Notation'     => 'Klassifikation',
-					  },
+
 			      },
+	   
 	  );
 
 1;

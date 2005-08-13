@@ -7,20 +7,25 @@ create table session (
  createtime datetime,
  lastresultset blob,
  benutzernr text,
- benutzerpin text
+ benutzerpin text,
+ INDEX (sessionid),
+ INDEX (benutzernr(255)),
 );
 
 create table treffer (
  sessionid VARCHAR(255) NOT NULL,
  dbname TEXT,
- singleidn bigint
+ singleidn bigint,
+ INDEX (sessionid),
+ INDEX (dbname(255)),
+ INDEX (singleidn),
 );
 
 create table lastresultlist (
  sessionid VARCHAR(255) NOT NULL,
  dbname TEXT,
  singleidn bigint,
- index(sessionid)
+ index(sessionid),
 );
 
 create table sessionlog (
@@ -36,7 +41,10 @@ create table queries (
  query TEXT,
  hits INT,
  dbases TEXT,
- INDEX (sessionid)
+ INDEX (queryid),
+ INDEX (sessionid),
+ INDEX (query(255)),
+ INDEX (dbases(255)),
 );
 
 create table dbchoice (
@@ -55,7 +63,10 @@ create table dbinfo (
  url text,
  active BOOL,
  INDEX (faculty),
- INDEX (dbname)
+ INDEX (dbid),
+ INDEX (dbname),
+ INDEX (active),
+ INDEX (description(255)),
 );
 
 create table dboptions (
@@ -82,7 +93,8 @@ create table dboptions (
 
 create table titcount (
  dbname VARCHAR(255),
- count  BIGINT
+ count  BIGINT,
+ INDEX (dbname),
 );
 
 create table searchresults (
@@ -101,7 +113,8 @@ create table viewinfo (
  viewname VARCHAR(20),
  description TEXT,
  active BOOL,
- INDEX (viewname)
+ INDEX (viewid)
+ INDEX (viewname),
 );
 
 create table viewdbs (

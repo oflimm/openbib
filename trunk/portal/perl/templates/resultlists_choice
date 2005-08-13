@@ -1,4 +1,4 @@
-[% PROCESS std_header %]
+[% PROCESS common/subtemplate name="std_header" %]
 
 <FORM METHOD="GET">
 
@@ -65,18 +65,18 @@
 <tr><td colspan="2"></td></tr>
 
 <tr><td>Katalog</td><td>Treffer</td></tr>
-<tr><td bgcolor="aliceblue"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %]&trefferliste=all&sortall=0&sorttype=author&queryid=[% thisquery.id %]"><b>Alle Treffer</b></a></td><td align=right>[% hitcount %]</td></tr>
+<tr><td class="listrow2"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %]&trefferliste=all&sortall=0&sorttype=author&queryid=[% thisquery.id %]&view=[% view %]"><b>Alle Treffer</b></a></td><td align=right>[% hitcount %]</td></tr>
       
-<tr><td bgcolor="white">&nbsp;</td><td align=right>&nbsp;</td></tr>
+<tr><td class="listrow1">&nbsp;</td><td align=right>&nbsp;</td></tr>
 
       
-[% bgcolor = 'aliceblue' %]
+[% listrow = 'listrow2' %]
 [% FOREACH resultdb IN resultdbs %]
-<tr><td bgcolor="[% bgcolor %]"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %]&trefferliste=[% resultdb.trefferdb %]&queryid=[% thisquery.id %]"><b>[% resultdb.trefferdbdesc %]</b></a></td><td align=right>[% resultdb.trefferzahl %]</td></tr>
-[% IF bgcolor == 'white' %]
-[% bgcolor = 'aliceblue' %]
+<tr><td class="[% listrow %]"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %]&trefferliste=[% resultdb.trefferdb %]&queryid=[% thisquery.id %]&view=[% view %]"><b>[% resultdb.trefferdbdesc %]</b></a></td><td align=right>[% resultdb.trefferzahl %]</td></tr>
+[% IF listrow == 'listrow1' %]
+[% listrow = 'listrow2' %]
 [% ELSE %]
-[% bgcolor = 'white' %]
+[% listrow = 'listrow1' %]
 [% END %]
 
 [% END %]
@@ -94,6 +94,7 @@
 <form method="get" action="[% config.virtualsearch_loc %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]">
 <input type="hidden" name="trefferliste" value="choice">
+<input type="hidden" name="view" value="[% view %]">
 	  
 <p><table width=\"100%\"><tr>
 <th>Alle bisherigen Recherchen</th></tr>
@@ -150,4 +151,4 @@
 <p />
 
 
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]

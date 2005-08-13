@@ -1,9 +1,9 @@
-[% PROCESS std_header %]
+[% PROCESS common/subtemplate name="std_header" %]
 
-  <body bgcolor="#FFFFFF">
+  <body>
 
 [% IF show_corporate_banner %]
-[% PROCESS corporate_banner %] 
+[% PROCESS common/subtemplate name="corporate_banner" %] 
 [% END %]
 
 <ul id="tabbingmenu">
@@ -17,7 +17,7 @@
 <p />
 <table width="100%">
 <tr><th>Hinweis</th></tr>
-<tr><td class="boxedclear" style="font-size:9pt">
+<tr><td class="boxedclear" style="font-size:0.8em">
 Geben Sie f&uuml;r die Selbstregistrierung bitte als Benutzername Ihre g&uuml;ltige Email-Adresse ein und danach zwei Mal Ihr selbst gew&auml;hltes Passwort. Danach best&auml;tigen Sie bitte mit <b>Registrieren</b>.
 </td></tr>
 </table>
@@ -39,4 +39,4 @@ Geben Sie f&uuml;r die Selbstregistrierung bitte als Benutzername Ihre g&uuml;lt
 
 <p />
 
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]

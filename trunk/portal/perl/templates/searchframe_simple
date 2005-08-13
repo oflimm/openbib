@@ -1,9 +1,9 @@
-[% PROCESS std_header %]
+[% PROCESS common/subtemplate name="std_header" %]
 
-  <body bgcolor="#FFFFFF">
+  <body>
 
 [% IF show_corporate_banner %]
-[% PROCESS corporate_banner %] 
+[% PROCESS common/subtemplate name="corporate_banner" %] 
 [% END %]
 
 <form method="get" id="openbib" action="http://[% config.servername %][% config.virtualsearch_loc %]">
@@ -18,7 +18,7 @@
 [% dbinputtags %]
 
 [% IF config.testsystem %]
-[% PROCESS testsystem_info %]
+[% PROCESS common/subtemplate name="testsystem_info" %]
 [% END %]
 
 <ul id="tabbingmenu">
@@ -133,4 +133,4 @@ F&uuml;r Verbesserungsvorschl&auml;ge oder bei technischen Problemen k&ouml;nnen
 
 <p />
 
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]

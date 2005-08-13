@@ -2,11 +2,25 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta http-equiv="pragma" content="no-cache" />
-    [% stylesheet %]
+    <style>
+
+  [%- TRY -%]
+    [%- USE File "${config.document_root_path}${config.css_loc}/views/$view/openbib_generic.css" -%]
+      @import url([% "${config.css_loc}/views/$view/openbib_generic.css" %]);
+  [%- CATCH -%]
+      @import url([% "${config.css_loc}/openbib_generic.css" %]);
+  [%- END -%]
+
+  [% TRY -%]
+    [%- USE File "${config.document_root_path}${config.css_loc}/views/$view/$stylesheet" -%]
+    @import url([% "${config.css_loc}/views/$view/$stylesheet" %]);
+  [%- CATCH -%]
+    @import url([% "${config.css_loc}/$stylesheet" %]);
+  [%- END -%]
+
+    </style>
+
     <link href="/images/openbib/favicon.ico" rel="shortcut icon" />
 
-    [% IF invisible_links %]
-    [% PROCESS invisible_links_css %]
-    [% END %]
     <title>[% title %]</title>
   </head>

@@ -1,9 +1,9 @@
-[% PROCESS std_header %]
+[% PROCESS common/subtemplate name="std_header" %]
 
-  <body bgcolor="#FFFFFF">
+  <body>
 
 [% IF show_corporate_banner %]
-[% PROCESS corporate_banner %] 
+[% PROCESS common/subtemplate name="corporate_banner" %] 
 [% END %]
 
 <h1>Soll die Kennung wirklich gel&ouml;scht werden?</h1>
@@ -19,4 +19,4 @@ Wenn Sie wirklich Ihre KUG-Kennung l&ouml;schen wollen, so klicken Sie auf die u
 <br>
 <br>
 
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]

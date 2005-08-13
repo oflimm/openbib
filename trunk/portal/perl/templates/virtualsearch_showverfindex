@@ -3,13 +3,13 @@
   [% stylesheet %]
   <title>Virtueller Verfasserindex</title>
 </head>
-<body bgcolor="white">
+<body>
 
 <table width="100%">
 <tr><th>Virtueller Verfasserindex: [% verf %]</b> / <b>Treffer: [% verfindex.size %]</b></th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear">
 
-[% PROCESS common/navitembar %]
+[% PROCESS common/subtemplate name="common/navitembar" %]
     
 [% FOREACH item IN verfindex %]
 
@@ -17,13 +17,13 @@
 
 [% IF loop.count >= offset && loop.count < offset+hitrange %]
 
-[% PROCESS virtualsearch_showverfindex_item %]
+[% PROCESS common/subtemplate name="virtualsearch_showverfindex_item" %]
 
 [% END %]
 
 [% ELSE %]
 
-[% PROCESS virtualsearch_showverfindex_item %]
+[% PROCESS common/subtemplate name="virtualsearch_showverfindex_item" %]
 
 [% END %]
 [% END %]
@@ -32,22 +32,19 @@
 </table>
 
 <hr>
-<table>
-<tr><td bgcolor="lightblue">Verfasser&nbsp;</td><td>
+
 <form method="get" action="[% config.virtualsearch_loc %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]">
 <input type="hidden" name="rating" value="[% rating %]">
 <input type="hidden" name="bookinfo" value="[% bookinfo %]">
 <input type="hidden" name="hitrange" value="-1">
 <input type="hidden" name="profil" value="[% profil %]">
-&nbsp;
-<input type="text" name="verf" value="[% verf %]" size="4" maxlength="50" title="Geben Sie hier den Verfasseranfang ein">
-&nbsp;
-<input type="submit" name="verfindex" value="Index">
-&nbsp;</td>
-</tr>
+
+<table>
+<tr><td class="category">Verfasser&nbsp;</td><td>&nbsp;<input type="text" name="verf" value="[% verf %]" size="4" maxlength="50" title="Geben Sie hier den Verfasseranfang ein">&nbsp;<input type="submit" name="verfindex" value="Index">&nbsp;</td></tr>
 </table>
+
 </form>
 <p />
 
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]

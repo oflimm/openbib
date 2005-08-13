@@ -6,4 +6,4 @@
 
 </div><p>
 
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]

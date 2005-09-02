@@ -144,21 +144,6 @@ sub get_aut_set_by_idn {
 	undef $timeall;
     }
 
-#    print_inst_head($database,"base");
-    
-#    print_mult_sel_form($searchmode,$hitrange,$rating,$bookinfo,$database,$sessionID);
-    
-#    if ($searchmultipleaut){
-#      print "\n<hr>\n";
-#    }
-#    else {
-#      #	    print "<h1>Gefundener Autor</h1>\n";
-#    }
-    
-#    print "<table cellpadding=2>\n";
-#    print "<tr><td>Kategorie</td><td>Inhalt</td></tr>\n";
-#    #	print "<tr bgcolor=\"lightblue\"><td>&nbsp;</td><td>".$dbinfo{"$database"}."</td></tr>\n";
-    
     # Ausgabe diverser Informationen
     
     push @normset, set_simple_category("Ident-Nr","$autres1->{idn}");
@@ -200,8 +185,6 @@ sub get_aut_set_by_idn {
     my $titelnr=get_number(\@requests,$dbh);
     
     push @normset, set_url_category("Anzahl Titel","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;searchtitofaut=$autres1->{idn}",$titelnr);
-
-#   print "</table>";
 
     $autresult1->finish();
 
@@ -315,22 +298,6 @@ sub get_kor_set_by_idn {
     undef $timeall;
   }
   
-  
-#  print_inst_head($database,"base");
-  
-#  print_mult_sel_form($searchmode,$hitrange,$rating,$bookinfo,$database,$sessionID);
-  
-#  if ($searchmultiplekor){
-#    print "\n<hr>\n";
-#  }
-#  else{
-#    #	    print "<h1>Gefundene K&ouml;rperschaft</h1>\n";
-#  }
-#  print "<table cellpadding=2>\n";
-#  print "<tr><td>Kategorie</td><td>Inhalt</td></tr>\n";
-#  #	print "<tr bgcolor=\"lightblue\"><td>&nbsp;</td><td>".$dbinfo{"$database"}."</td></tr>\n";
-  
-
   push @normset, set_simple_category("Ident-Nr","$korres1->{idn}");
   
   push @normset, set_simple_category("Ident-Alt","$korres1->{ida}") if ($korres1->{ida});
@@ -386,6 +353,7 @@ sub get_kor_set_by_idn {
     undef $btime;
     undef $timeall;
   }
+
   # Form fuer Spaeter ausgeben
   
   if ($config{benchmark}){
@@ -415,8 +383,6 @@ sub get_kor_set_by_idn {
   my $titelnr=get_number(\@requests,$dbh);
 
   push @normset, set_url_category("Anzahl Titel","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;searchtitofurhkor=$korres1->{idn}",$titelnr);
-
-#  print "</table>";
 
   $korresult1->finish();
 
@@ -522,21 +488,6 @@ sub get_swt_set_by_idn {
     undef $timeall;
   }
   
-#  print_inst_head($database,"base");
-  
-#  print_mult_sel_form($searchmode,$hitrange,$rating,$bookinfo,$database,$sessionID);
-  
-#  if ($searchmultipleswt){
-#    print "\n<hr>\n";
-#  }
-#  else {
-#    #	print "<h1>Gefundenes Schlagwort</h1>\n";
-#  }
-  
-#  print "<table cellpadding=2>";
-#  print "<tr><td>Kategorie</td><td>Inhalt</td></tr>\n";
-#  #      print "<tr bgcolor=\"lightblue\"><td>&nbsp;</td><td>".$dbinfo{"$database"}."</td></tr>\n";
-  
   # Ausgabe diverser Informationen
   
   push @normset, set_simple_category("Ident-Nr","$swtres1->{idn}");
@@ -573,8 +524,6 @@ sub get_swt_set_by_idn {
 
   push @normset, set_url_category("Anzahl Titel","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;searchtitofswt=$swtres1->{idn}",$titelnr);
   
-#  print "</table>";
-
   $swtresult1->finish();
 
   # Wenn ein Kategoriemapping fuer diesen Katalog existiert, dann muss 
@@ -687,17 +636,7 @@ sub get_not_set_by_idn {
 	undef $timeall;
     }
     
-#    print_inst_head($database,"base");
-#    print_mult_sel_form($searchmode,$hitrange,$rating,$bookinfo,$database,$sessionID);
-    
-#    #	print "<h1>Gefundene Notation</h1>\n";
-#	print "<table cellpadding=2>";
-#	print "<tr><td>Kategorie</td><td>Inhalt</td></tr>\n";
-#    #	print "<tr bgcolor=\"lightblue\"><td>&nbsp;</td><td>".$dbinfo{"$database"}."</td></tr>\n";
-
-#    # Ausgabe verschiedener Informationen
-
-  # Ausgabe diverser Informationen
+    # Ausgabe diverser Informationen
   
     push @normset, set_simple_category("Ident-Nr","$notres1->{idn}");
     push @normset, set_simple_category("Ident-Alt","$notres1->{ida}") if ($notres1->{ida});
@@ -778,9 +717,6 @@ sub get_not_set_by_idn {
     
     push @normset, set_url_category("Anzahl Titel","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;searchtitofnot=$notres1->{idn}",$titelnr);
     
-    
-#    print "</table>";
-
     $notresult1->finish();
 
     # Wenn ein Kategoriemapping fuer diesen Katalog existiert, dann muss 
@@ -952,9 +888,6 @@ sub get_tit_listitem_by_idn {
 
   # Ab jetzt hochhangeln zum uebergeordneten Titel, wenn im lokalen keine
   # Sachl. Ben. bzw. HST vorhanden
-  # GILT NUR FUER BISLOK TTYP4 - Bei Sisis macht das keinen Sinn
-  
-  #	if (($titres1->{titeltyp} == 4)&&($titres1->{sachlben} eq "")&&($titres1->{hst} eq "")){
   
   if (($titres1->{sachlben} eq "")&&($titres1->{hst} eq "")){
     
@@ -964,6 +897,7 @@ sub get_tit_listitem_by_idn {
     # den Zusatz/Laufende Z"ahlung
     
     if ($hint eq "none"){
+
       # Finde anhand GTM
       
       my @requests=("select verwidn from titgtm where titidn=$titidn limit 1");
@@ -990,11 +924,6 @@ sub get_tit_listitem_by_idn {
 	@requests=("select zus from titgtm where verwidn=$tempgtmidn");
 	my @gtmzus=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
 	
-#	$retval.="<tr><td><input type=checkbox name=searchmultipletit value=$titres1->{idn}></td><td>"; 
-	
-#	$retval.="<strong><span id=\"rlauthor\">verfasserstring</span></strong><br>";
-	
-#	$retval.="<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;database=$database;searchsingletit=$titres1->{idn}\"><strong><span id=\"rltitle\">$tithst[0] ; $gtmzus[0]</span></strong></a>, <span id=\"rlpublisher\">$titres1->{verlag}</span> <span id=\"rlyearofpub\">$erschjahr</span></td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=insert;database=$database;singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><span id=\"rlmerken\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></span></a></td><td align=left><b>signaturstring</b>";
 	$listitem{hst}=$tithst[0];
 	$listitem{zus}=$gtmzus[0];
 	$listitem{title}="$listitem{hst} ; $listitem{zus}";
@@ -1010,6 +939,7 @@ sub get_tit_listitem_by_idn {
       
       if ($#tempgtfidns >= 0){
 	$tempgtfidn=$tempgtfidns[0];
+
 	# Problem: Mehrfachausgabe in Kurztrefferausgabe eines Titels...
 	# Loesung: Nur der erste wird ausgegeben
 	#		foreach $tempgtfidn (@tempgtfidns){
@@ -1028,20 +958,10 @@ sub get_tit_listitem_by_idn {
 	  $tithst[0]=$titast[0];
 	}
 	
-	
-	
 	@requests=("select zus from titgtf where verwidn=$tempgtfidn");
-	
 	
 	my @gtfzus=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
 	
-	
-#	$retval.="<tr><td><input type=checkbox name=searchmultipletit value=$titres1->{idn}></td><td>"; 
-	
-	
-#	$retval.="<strong><span id=\"rlauthor\">verfasserstring</span></strong><br>";
-	
-#	$retval.="<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;database=$database;searchsingletit=$titres1->{idn}\"><strong><span id=\"rltitle\">$tithst[0] ; $gtfzus[0]</span></strong></a>, <span id=\"rlpublisher\">$titres1->{verlag}</span> <span id=\"rlyearofpub\">$erschjahr</span></td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=insert;database=$database;singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=insert;database=$database;singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>signaturstring</b>";
 	$listitem{hst}=$tithst[0];
 	$listitem{zus}=$gtfzus[0];
 	$listitem{title}="$listitem{hst} ; $listitem{zus}";	
@@ -1061,16 +981,11 @@ sub get_tit_listitem_by_idn {
 	$tithst[0]=$titast[0];
       }
       
-#      $retval.="<tr><td><input type=checkbox name=searchmultipletit value=$titres1->{idn}></td><td>"; 
-      
       if ($mode == 6){
 	
 	my @requests=("select zus from titgtf where verwidn=$hint and titidn=$titidn");
 	my @gtfzus=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
 	
-#	$retval.="<strong><span id=\"rlauthor\">verfasserstring</span></strong><br>";
-	
-#	$retval.="<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;database=$database;searchsingletit=$titres1->{idn}\"><strong><span id=\"rltitle\">$tithst[0] ; $gtfzus[0]</span></strong></a>, <span id=\"rlpublisher\">$titres1->{verlag}</span> <span id=\"rlyearofpub\">$showerschjahr</span></td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=insert;database=$database;singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=insert;database=$database;singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>signaturstring</b>";		
 	$listitem{hst}=$tithst[0];
 	$listitem{zus}=$gtfzus[0];
 	$listitem{title}="$listitem{hst} ; $listitem{zus}";	
@@ -1085,8 +1000,6 @@ sub get_tit_listitem_by_idn {
 	my @requests=("select zus from titgtm where verwidn=$hint and titidn=$titidn");
 	my @gtmzus=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
 	
-#	$retval.="<strong><span id=\"rlauthor\">verfasserstring</span></strong><br>";
-#	$retval.="<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;database=$database;searchsingletit=$titres1->{idn}\"><strong><span id=\"rltitle\">$tithst[0] ; $gtmzus[0]</span></strong></a>, <span id=\"rlpublisher\">$titres1->{verlag}</span> <span id=\"rlyearofpub\">$showerschjahr</span></td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=insert;database=$database;singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=insert;database=$database;singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>signaturstring</b>";		
 	$listitem{hst}=$tithst[0];
 	$listitem{zus}=$gtmzus[0];
 	$listitem{title}="$listitem{hst} ; $listitem{zus}";
@@ -1100,9 +1013,7 @@ sub get_tit_listitem_by_idn {
 	
 	my @requests=("select zus from titinverkn where titverw=$hint and titidn=$titidn");
 	my @invkzus=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-#	$retval.="<strong><span id=\"rlauthor\">verfasserstring</span></strong><br>";
-	
-#	$retval.="<a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;database=$database;searchsingletit=$titres1->{idn}\"><strong><span id=\"rltitle\">$tithst[0] ; $invkzus[0]</span></strong></a>, <span id=\"rlpublisher\">$titres1->{verlag}</span> <span id=\"rlyearofpub\">$showerschjahr</span></td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=insert;database=$database;singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=insert;database=$database;singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>signaturstring</b>";		
+
 	$listitem{hst}=$tithst[0];
 	$listitem{zus}=$invkzus[0];
 	$listitem{title}="$listitem{hst} ; $listitem{zus}";
@@ -1113,7 +1024,6 @@ sub get_tit_listitem_by_idn {
   # Falls HST oder Sachlben existieren, dann gebe ganz normal aus:
   
   else {
-#    $retval.="<tr><td><input type=checkbox name=searchmultipletit value=$titres1->{idn}></td><td>";
     
     # Der AST hat Vorrang ueber den HST
     
@@ -1125,9 +1035,6 @@ sub get_tit_listitem_by_idn {
       $titres1->{hst}="Kein HST/AST vorhanden";
     }
     
- #   $retval.="<strong><span id=\"rlauthor\">verfasserstring</span></strong><br>";
- #   $retval.=" <a href=\"$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;searchsingletit=$titres1->{idn}\">";
-    
     my $titstring="";
     
     if ($titres1->{hst}){
@@ -1137,13 +1044,11 @@ sub get_tit_listitem_by_idn {
       $titstring=$titres1->{sachlben};
     }
     
-#    $retval.="<strong><span id=\"rltitle\">$titstring</span></strong></a>, <span id=\"rlpublisher\">$titres1->{verlag}</span> <span id=\"rlyearofpub\">$showerschjahr</span></td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=insert;database=$database;singleidn=$titidn\" target=\"header\"><span id=\"rlmerken\"><a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=insert;database=$database;singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In die Merkliste\" border=0></a></span></a></td><td align=left><b>signaturstring</b>";
- 
     $listitem{hst}=$titstring;
     $listitem{zus}="";
     $listitem{title}=$titstring;
   }
-#  $retval.="</td></tr>\n";
+
   return \%listitem;
 }
 
@@ -1495,33 +1400,8 @@ sub get_tit_set_by_idn {
     undef $timeall;
   }
 
-#    print_inst_head($database,"extended",$sessionID,$titidn);
-#    print_mult_sel_form($searchmode,$hitrange,$rating,$bookinfo,$database,$sessionID);
-
-  if ($searchmultipletit){
-#	print "\n<hr>\n";
-  }
-  else {
-##	print "<h1>Gefundener Titel</h1>\n";
-
-  }
-
-
   # Ausgabe der Toolzeile fuer Merkliste
 
-
-##    print "<a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=insert;database=$database;singleidn=$titidn\" target=\"header\">In Merkliste</a><hr>\n";
-
-#    print "<p>\n";
-
-#      print << "TITHEAD";
-#</table>
-#<p>
-#<!-- Title begins here -->
-#<table width="100%">
-#<tr><th>Titelaufnahme</th></tr>
-#<tr><td class="boxedclear" style="font-size:12pt">
-#TITHEAD
 
 #    print "<table cellpadding=2>\n";
 #    print "<tr><td>Kategorie</td><td>Inhalt</td></tr>\n";
@@ -3278,15 +3158,15 @@ sub print_url_category_global {
   my $globalurl="";
 
   if ($type eq "swt"){
-    $globalurl="$config{virtualsearch_loc}?sessionID=$sessionID;hitrange=-1;swtindexall=;verf=;hst=;swt=%22$globalcontents%22;kor=;sign=;isbn=;notation=;verknuepfung=und;ejahr=;ejahrop=genau;maxhits=200;sorttype=$sorttype;tosearch=In+allen+Katalogen+suchen";
+    $globalurl="$config{virtualsearch_loc}?sessionID=$sessionID;hitrange=-1;swtindexall=;verf=;hst=;swt=%22$globalcontents%22;kor=;sign=;isbn=;notation=;verknuepfung=und;ejahr=;ejahrop=genau;maxhits=200;sorttype=$sorttype;searchall=In+allen+Katalogen+suchen";
   }
 
   if ($type eq "kor"){
-    $globalurl="$config{virtualsearch_loc}?sessionID=$sessionID;hitrange=-1;swtindexall=;verf=;hst=;swt=;kor=%22$globalcontents%22;sign=;isbn=;notation=;verknuepfung=und;ejahr=;ejahrop=genau;maxhits=200;sorttype=$sorttype;tosearch=In%20allen%20Katalogen%20suchen";
+    $globalurl="$config{virtualsearch_loc}?sessionID=$sessionID;hitrange=-1;swtindexall=;verf=;hst=;swt=;kor=%22$globalcontents%22;sign=;isbn=;notation=;verknuepfung=und;ejahr=;ejahrop=genau;maxhits=200;sorttype=$sorttype;searchall=In%20allen%20Katalogen%20suchen";
   }
 
   if ($type eq "verf"){
-    $globalurl="$config{virtualsearch_loc}?sessionID=$sessionID;hitrange=-1;swtindexall=;verf=%22$globalcontents%22;hst=;swt=;kor=;sign=;isbn=;notation=;verknuepfung=und;ejahr=;ejahrop=genau;maxhits=200;sorttype=$sorttype;tosearch=In+allen+Katalogen+suchen";
+    $globalurl="$config{virtualsearch_loc}?sessionID=$sessionID;hitrange=-1;swtindexall=;verf=%22$globalcontents%22;hst=;swt=;kor=;sign=;isbn=;notation=;verknuepfung=und;ejahr=;ejahrop=genau;maxhits=200;sorttype=$sorttype;searchall=In+allen+Katalogen+suchen";
   }
 
   print << "CATEGORY";
@@ -3547,15 +3427,15 @@ sub set_url_category_global {
   my $globalurl="";
 
   if ($type eq "swt"){
-    $globalurl="$config{virtualsearch_loc}?sessionID=$sessionID;hitrange=-1;swtindexall=;verf=;hst=;swt=%22$globalcontents%22;kor=;sign=;isbn=;notation=;verknuepfung=und;ejahr=;ejahrop=genau;maxhits=200;sorttype=$sorttype;tosearch=In+allen+Katalogen+suchen";
+    $globalurl="$config{virtualsearch_loc}?sessionID=$sessionID;hitrange=-1;swtindexall=;verf=;hst=;swt=%22$globalcontents%22;kor=;sign=;isbn=;notation=;verknuepfung=und;ejahr=;ejahrop=genau;maxhits=200;sorttype=$sorttype;searchall=In+allen+Katalogen+suchen";
   }
 
   if ($type eq "kor"){
-    $globalurl="$config{virtualsearch_loc}?sessionID=$sessionID;hitrange=-1;swtindexall=;verf=;hst=;swt=;kor=%22$globalcontents%22;sign=;isbn=;notation=;verknuepfung=und;ejahr=;ejahrop=genau;maxhits=200;sorttype=$sorttype;tosearch=In%20allen%20Katalogen%20suchen";
+    $globalurl="$config{virtualsearch_loc}?sessionID=$sessionID;hitrange=-1;swtindexall=;verf=;hst=;swt=;kor=%22$globalcontents%22;sign=;isbn=;notation=;verknuepfung=und;ejahr=;ejahrop=genau;maxhits=200;sorttype=$sorttype;searchall=In%20allen%20Katalogen%20suchen";
   }
 
   if ($type eq "verf"){
-    $globalurl="$config{virtualsearch_loc}?sessionID=$sessionID;hitrange=-1;swtindexall=;verf=%22$globalcontents%22;hst=;swt=;kor=;sign=;isbn=;notation=;verknuepfung=und;ejahr=;ejahrop=genau;maxhits=200;sorttype=$sorttype;tosearch=In+allen+Katalogen+suchen";
+    $globalurl="$config{virtualsearch_loc}?sessionID=$sessionID;hitrange=-1;swtindexall=;verf=%22$globalcontents%22;hst=;swt=;kor=;sign=;isbn=;notation=;verknuepfung=und;ejahr=;ejahrop=genau;maxhits=200;sorttype=$sorttype;searchall=In+allen+Katalogen+suchen";
   }
 
   my %kat=();

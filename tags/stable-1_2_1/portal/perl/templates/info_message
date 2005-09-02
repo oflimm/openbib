@@ -1,0 +1,11 @@
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+[% IF show_corporate_banner %]
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+[% END %]
+
+[% info_msg %]
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -1,0 +1,12 @@
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <BODY>
+
+<h1>Zugemailte Merkliste</h1>
+<table>
+[% PROCESS common/subtemplate name="managecollection_tit_as_html" %]
+</table>
+<p />
+</body>
+</html>
+

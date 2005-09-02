@@ -119,7 +119,10 @@ sub handler {
   my $sorttype=($query->param('sorttype'))?$query->param('sorttype'):"author";
   my $sortall=($query->param('sortall'))?$query->param('sortall'):'0';
   my $sortorder=($query->param('sortorder'))?$query->param('sortorder'):'up';
-  my $tosearch=$query->param('tosearch') || '';
+
+  my $searchall=$query->param('searchall') || '';
+  my $searchprofile=$query->param('searchprofile') || '';
+
   my $verfindex=$query->param('verfindex') || '';
   my $korindex=$query->param('korindex') || '';
   my $swtindex=$query->param('swtindex') || '';
@@ -385,7 +388,7 @@ sub handler {
 
   }
 
-  if ($tosearch eq "In allen Katalogen suchen"){
+  if ($searchall){
     
     my $idnresult=$sessiondbh->prepare("select dbname,description from dbinfo where active=1 order by faculty,description") or $logger->error($DBI::errstr);
     $idnresult->execute() or $logger->error($DBI::errstr);
@@ -398,7 +401,7 @@ sub handler {
     $idnresult->finish();
     
   }
-  elsif ($tosearch eq "In ausgewählten Katalogen suchen" || $verfindex || $korindex || $swtindex ){
+  elsif ($searchprofile || $verfindex || $korindex || $swtindex ){
 
     if ($profil eq "dbauswahl"){
       # Eventuell bestehende Auswahl zuruecksetzen

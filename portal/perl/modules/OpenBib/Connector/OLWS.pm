@@ -48,7 +48,6 @@ use vars qw(%config);
 my $server = SOAP::Transport::HTTP::Apache
     -> dispatch_with({
         'urn:/Search'         => 'OpenBib::Connector::OLWS::Search',
-        'urn:/Media'          => 'OpenBib::Connector::OLWS::Media',
     });
 
 sub handler {

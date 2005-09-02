@@ -1,0 +1,91 @@
+-------------------------------------------------
+--------------- T A B E L L E N -----------------
+-------------------------------------------------
+
+create table user (
+ userid BIGINT AUTO_INCREMENT PRIMARY KEY,
+ lastlogin datetime,
+
+ loginname text,
+ pin text,
+
+ nachname text,
+ vorname  text,
+ strasse  text,
+ ort      text,
+ plz      int,
+ soll     text,
+ gut      text,
+ avanz    text,
+ branz    text,
+ bsanz    text,
+ vmanz    text,
+ maanz    text,
+ vlanz    text,
+ sperre   text,
+ sperrdatum text,
+ gebdatum text,
+
+ email text,
+
+ masktype text,
+
+ INDEX(userid)
+);
+
+create table usersession (
+  sessionid VARCHAR(255) NOT NULL,
+  userid BIGINT NOT NULL,
+  targetid BIGINT NOT NULL,
+  INDEX(sessionid),
+  INDEX(userid)
+);
+
+create table userdbprofile (
+ profilid BIGINT AUTO_INCREMENT PRIMARY KEY,
+ profilename TEXT,
+ userid BIGINT NOT NULL,
+ INDEX (profilid),
+ INDEX (userid)
+);
+
+create table profildb (
+ profilid BIGINT NOT NULL,
+ dbname TEXT,
+ INDEX (profilid)
+);
+
+create table fieldchoice (
+ userid BIGINT NOT NULL,
+ fs        bool,
+ hst       bool,
+ verf      bool,
+ kor       bool,
+ swt       bool,
+ notation  bool,
+ isbn      bool,
+ issn      bool,
+ sign      bool,
+ mart      bool,
+ hststring bool,
+ ejahr     bool,
+ 
+ INDEX (userid)
+);
+
+create table logintarget (
+ targetid BIGINT AUTO_INCREMENT PRIMARY KEY,
+ hostname text,
+ port     text,
+ user     text,
+ db       text,
+ description text,
+ type     text,
+ INDEX(targetid)
+);
+
+create table treffer (
+ userid BIGINT NOT NULL,
+ dbname TEXT,
+ singleidn bigint
+);

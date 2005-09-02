@@ -1,0 +1,13 @@
+[%- FOREACH titset IN collection -%]
+[%- normset = titset.tit -%]
+[%- mexnormset = titset.mex -%]
+[%- FOREACH normkat IN normset -%]
+[% normkat.desc %] [% normkat.contents %]
+[% END %]
+[%- IF mexnormset.size > 0 -%]
+[%- FOREACH mex IN mexnormset -%]
+%W [% mex.bibliothek %] / [% mex.standort %] / [% mex.signatur %] / [% mex.erschverl %]
+[% END %]
+[%- END -%]
+
+[% END %]

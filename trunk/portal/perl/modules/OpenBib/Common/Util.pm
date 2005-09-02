@@ -790,8 +790,12 @@ sub by_yearofpub {
   my %line1=%$a;
   my %line2=%$b;
 
+  
   $line1{erschjahr}=0 if ($line1{erschjahr} eq "");
   $line2{erschjahr}=0 if ($line2{erschjahr} eq "");
+
+  ($line1{erschjahr})=$line1{erschjahr}=~m/(\d\d\d\d)/;
+  ($line2{erschjahr})=$line2{erschjahr}=~m/(\d\d\d\d)/;
 
   $line1{erschjahr} <=> $line2{erschjahr};
 }

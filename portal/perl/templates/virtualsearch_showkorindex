@@ -1,8 +1,5 @@
-<html>
-<head>
-  [% stylesheet %]
-  <title>Virtueller K&ouml;rperschaftsindex</title>
-</head>
+[% PROCESS common/subtemplate name="std_header" %]
+
 <body>
 
 <table width="100%">

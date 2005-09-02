@@ -71,9 +71,9 @@
 <p>
 <table width="100%">
 <tr><th>Ausleihe/Exemplare</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear">
 
-<table>
+<table width=100%">
 <tr class="titlerow" align="center"><td width="225">Besitzende Bibliothek</td><td width="250">Standort</td><td width="120">Lokale Signatur</td><td width="120">Ausleihstatus</td><td width="110">Aktion</td></tr>
 [% FOREACH mex IN circset %]
 <tr align="center"><td><a href="[% utf2iso(mex.Bibinfourl) %]"><strong>[% utf2iso(mex.Bibliothek) %]</strong></a></td><td>[% utf2iso(mex.Standort) %]</td><td><strong>[% utf2iso(mex.Signatur) %]</strong></td><td><strong>[% utf2iso(mex.Status) %]</strong></td><td class="circurl"><a TARGET=_blank href="[% utf2iso(mex.Ausleihurl) %]">[% utf2iso(mex.Ausleihstring) %]</a></td></tr>

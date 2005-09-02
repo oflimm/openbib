@@ -89,13 +89,13 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
 [% IF view %]
 <center>
 <table>
-  <tr><td><input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="tosearch" value="In ausgewählten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="Lösche Eingabemaske" /></td></tr>
+  <tr><td><input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="searchprofile" value="In ausgewählten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="Lösche Eingabemaske" /></td></tr>
 </table>
 </center>
 [% ELSE %]
 <center>
 <table>
-  <tr><td><input type="submit" title="Hier suchen Sie in allen Katalogen auf einmal" name="tosearch" value="In allen Katalogen suchen" />&nbsp;<input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="tosearch" value="In ausgewählten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="Lösche Eingabemaske" /></td></tr>
+  <tr><td><input type="submit" title="Hier suchen Sie in allen Katalogen auf einmal" name="searchall" value="In allen Katalogen suchen" />&nbsp;<input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="searchprofile" value="In ausgewählten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="Lösche Eingabemaske" /></td></tr>
 </table>
 </center>
 [% END %]

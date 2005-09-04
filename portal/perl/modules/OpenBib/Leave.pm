@@ -29,153 +29,138 @@
 
 package OpenBib::Leave;
 
-use Apache::Constants qw(:common);
-
 use strict;
 use warnings;
 no warnings 'redefine';
 
-use Apache::Request();      # CGI-Handling (or require)
-
-use Log::Log4perl qw(get_logger :levels);
-
+use Apache::Constants qw(:common);
+use Apache::Request ();
 use DBI;
-
+use Log::Log4perl qw(get_logger :levels);
 use Template;
 
 use OpenBib::Common::Util;
-
 use OpenBib::Config;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
-
 use vars qw(%config);
 
 *config=\%OpenBib::Config::config;
 
 sub handler {
+    my $r=shift;
 
-  my $r=shift;
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
 
-  # Log4perl logger erzeugen
+    my $query=Apache::Request->new($r);
 
-  my $logger = get_logger();
+    my $status=$query->parse;
 
-  my $query=Apache::Request->new($r);
+    if ($status) {
+        $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+    }
 
-  my $status=$query->parse;
+    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
+    my $sessionID=$query->param('sessionID');
 
-  if ($status){
-    $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
-  }
-  
-  my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
+    # Verbindung zur SQL-Datenbank herstellen
+    my $sessiondbh
+        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
+            or $logger->error_die($DBI::errstr);
 
-  my $sessionID=$query->param('sessionID');
-  
-  #####################################################################
-  # Verbindung zur SQL-Datenbank herstellen
-  
-  my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
-  
-  my $userdbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd}) or $logger->error_die($DBI::errstr);
+    my $userdbh
+        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd})
+            or $logger->error_die($DBI::errstr);
 
-  unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
-    OpenBib::Common::Util::print_warning("Ung&uuml;ltige Session",$r);
+    unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
+        OpenBib::Common::Util::print_warning("Ung&uuml;ltige Session",$r);
       
+        $sessiondbh->disconnect();
+        $userdbh->disconnect();
+      
+        return OK;
+    }
+
+    my $view="";
+
+    if ($query->param('view')) {
+        $view=$query->param('view');
+    }
+    else {
+        $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
+    }
+  
+    # Haben wir eine authentifizierte Session?
+    my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
+  
+    if ($userid) {
+        # Authentifiziert-Status der Session loeschen
+        my $userresult=$userdbh->prepare("delete from usersession where userid = ?") or $logger->error($DBI::errstr);
+        $userresult->execute($userid) or $logger->error($DBI::errstr);
+    
+        # Zwischengespeicherte Benutzerinformationen loeschen
+        $userresult=$userdbh->prepare("update user set nachname = '', vorname = '', strasse = '', ort = '', plz = '', soll = '', gut = '', avanz = '', branz = '', bsanz = '', vmanz = '', maanz = '', vlanz = '', sperre = '', sperrdatum = '', gebdatum = '' where userid = ?") or $logger->error($DBI::errstr);
+        $userresult->execute($userid) or $logger->error($DBI::errstr);
+    
+        $userresult->finish();
+    }
+  
+    # Zuallererst loeschen der Trefferliste fuer diese sessionID
+    my $idnresult;
+    $idnresult=$sessiondbh->prepare("delete from treffer where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+  
+    $idnresult=$sessiondbh->prepare("delete from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+  
+    $idnresult=$sessiondbh->prepare("delete from searchresults where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+  
+    $idnresult=$sessiondbh->prepare("delete from sessionview where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+  
+    $idnresult=$sessiondbh->prepare("delete from sessionmask where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+  
+    $idnresult=$sessiondbh->prepare("delete from sessionprofile where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+  
+    $idnresult->finish();
+  
+    # Kopieren ins sessionlog
+  
+    #  $idnresult=$sessiondbh->prepare("insert into sessionlog (sessionid,query,createtime) select session.sessionid,session.query,session.createtime from session where sessionid = ?)") or $logger->error($DBI::errstr);
+    #  $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+  
+    #  my $endtime = POSIX::strftime('%Y-%m-%d% %H:%M:%S', localtime());
+  
+    #  $idnresult=$sessiondbh->prepare("insert into sessionlog (endtime) values (?)  where sessionid = ?)") or $logger->error($DBI::errstr);
+    #  $idnresult->execute($endtime,$sessionID) or $logger->error($DBI::errstr);
+  
+    #  $idnresult->finish();
+  
+    # Dann loeschen der Session in der Datenbank
+  
+    my $anzahlresult=$sessiondbh->prepare("delete from session where sessionid = ?") or $logger->error($DBI::errstr);
+    $anzahlresult->execute($sessionID) or $logger->error($DBI::errstr);
+    $anzahlresult->finish();
+  
+    # TT-Data erzeugen
+    my $ttdata={
+        view       => $view,
+        stylesheet => $stylesheet,
+        show_corporate_banner => 1,
+        show_foot_banner => 0,
+        config     => \%config,
+    };
+  
+    OpenBib::Common::Util::print_page($config{tt_leave_tname},$ttdata,$r);
+  
     $sessiondbh->disconnect();
     $userdbh->disconnect();
-      
     return OK;
-  }
-
-  my $view="";
-
-  if ($query->param('view')){
-      $view=$query->param('view');
-  }
-  else {
-    $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
-  }
-  
-  # Haben wir eine authentifizierte Session?
-  
-  my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
-  
-  if ($userid){
-    
-    # Authentifiziert-Status der Session loeschen
-    
-    my $userresult=$userdbh->prepare("delete from usersession where userid = ?") or $logger->error($DBI::errstr);
-    $userresult->execute($userid) or $logger->error($DBI::errstr);
-    
-    
-    # Zwischengespeicherte Benutzerinformationen loeschen
-    
-    $userresult=$userdbh->prepare("update user set nachname = '', vorname = '', strasse = '', ort = '', plz = '', soll = '', gut = '', avanz = '', branz = '', bsanz = '', vmanz = '', maanz = '', vlanz = '', sperre = '', sperrdatum = '', gebdatum = '' where userid = ?") or $logger->error($DBI::errstr);
-    $userresult->execute($userid) or $logger->error($DBI::errstr);
-    
-    
-    $userresult->finish();
-    
-  }
-  
-  # Zuallererst loeschen der Trefferliste fuer diese sessionID
-  
-  my $idnresult=$sessiondbh->prepare("delete from treffer where sessionid = ?") or $logger->error($DBI::errstr);
-  $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-  
-  $idnresult=$sessiondbh->prepare("delete from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
-  $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-  
-  $idnresult=$sessiondbh->prepare("delete from searchresults where sessionid = ?") or $logger->error($DBI::errstr);
-  $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-  
-  $idnresult=$sessiondbh->prepare("delete from sessionview where sessionid = ?") or $logger->error($DBI::errstr);
-  $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-  
-  $idnresult=$sessiondbh->prepare("delete from sessionmask where sessionid = ?") or $logger->error($DBI::errstr);
-  $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-  
-  $idnresult=$sessiondbh->prepare("delete from sessionprofile where sessionid = ?") or $logger->error($DBI::errstr);
-  $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-  
-  $idnresult->finish();
-  
-  # Kopieren ins sessionlog
-  
-  #  $idnresult=$sessiondbh->prepare("insert into sessionlog (sessionid,query,createtime) select session.sessionid,session.query,session.createtime from session where sessionid = ?)") or $logger->error($DBI::errstr);
-  #  $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-  
-  #  my $endtime = POSIX::strftime('%Y-%m-%d% %H:%M:%S', localtime());
-  
-  #  $idnresult=$sessiondbh->prepare("insert into sessionlog (endtime) values (?)  where sessionid = ?)") or $logger->error($DBI::errstr);
-  #  $idnresult->execute($endtime,$sessionID) or $logger->error($DBI::errstr);
-  
-  #  $idnresult->finish();
-  
-  # Dann loeschen der Session in der Datenbank
-  
-  my $anzahlresult=$sessiondbh->prepare("delete from session where sessionid = ?") or $logger->error($DBI::errstr);
-  $anzahlresult->execute($sessionID) or $logger->error($DBI::errstr);
-  $anzahlresult->finish();
-  
-  # TT-Data erzeugen
-  
-  my $ttdata={
-	      view       => $view,
-	      stylesheet => $stylesheet,
-	      show_corporate_banner => 1,
-	      show_foot_banner => 0,
-	      config     => \%config,
-	     };
-  
-  OpenBib::Common::Util::print_page($config{tt_leave_tname},$ttdata,$r);
-  
-  $sessiondbh->disconnect();
-  $userdbh->disconnect();
-  return OK;
 }
 
 1;

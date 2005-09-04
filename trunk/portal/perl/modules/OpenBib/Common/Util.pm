@@ -31,17 +31,13 @@ no warnings 'redefine';
 
 use Apache::Constants qw(:common);
 use Apache::Request ();
-
-use Log::Log4perl qw(get_logger :levels);
-
-use POSIX();
-
-use Digest::MD5();
 use DBI;
+use Digest::MD5();
+use Log::Log4perl qw(get_logger :levels);
+use POSIX();
+use Template;
 
 use OpenBib::Config;
-
-use Template;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace

@@ -29,142 +29,126 @@
 
 package OpenBib::LoadBalancer;
 
-use Apache::Constants qw(:common REDIRECT);
-
 use strict;
 use warnings;
 no warnings 'redefine';
 
-use Apache::Request();      # CGI-Handling (or require)
-
-use Log::Log4perl qw(get_logger :levels);
-
-use LWP::UserAgent;
+use Apache::Constants qw(:common REDIRECT);
+use Apache::Request ();
 use HTTP::Request;
 use HTTP::Response;
 use IO::Socket;
+use LWP::UserAgent;
+use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::LoadBalancer::Util();
-
 use OpenBib::Common::Util();
-
 use OpenBib::Config();
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
-
 use vars qw(%config);
 
 *config=\%OpenBib::Config::config;
 
 sub handler {
+    my $r=shift;
 
-  my $r=shift;
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
 
-  # Log4perl logger erzeugen
+    my $query=Apache::Request->new($r);
 
-  my $logger = get_logger();
+    my $status=$query->parse;
 
-  my $query=Apache::Request->new($r);
-
-  my $status=$query->parse;
-
-  if ($status){
-    $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
-  }
-
-  my $ua=new LWP::UserAgent(timeout => 5);
-  
-  my $urlquery=$r->args; #query->url(-query=>1);
-  
-  $urlquery=~s/^.+?\?//;
-  
-  # Aktuellen Load der Server holen zur dynamischen Lastverteilung
-
-  my @servertab=@{$config{loadbalancertargets}}; 
-
-  my %serverload=();
-
-  my $target;
-  foreach $target (@servertab){
-    $serverload{"$target"}=-1.0;
-  }
-  
-  my $targethost;
-  my $problem=0;
-  
-  # Fuer jeden Server, auf den verteilt werden soll, wird nun
-  # per LWP der Load bestimmt.
-  
-  foreach $targethost (@servertab){
-    
-    my $request=new HTTP::Request POST => "http://$targethost$config{serverload_loc}";
-    my $response=$ua->request($request);
-
-    if ($response->is_success) {
-      $logger->debug("Getting ", $response->content);
+    if ($status) {
+        $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
-    else {
-      $logger->error("Getting ", $response->status_line);
+
+    my $ua=new LWP::UserAgent(timeout => 5);
+    my $urlquery=$r->args;      #query->url(-query=>1);
+
+    $urlquery=~s/^.+?\?//;
+
+    # Aktuellen Load der Server holen zur dynamischen Lastverteilung
+    my @servertab=@{$config{loadbalancertargets}};
+
+    my %serverload=();
+
+    foreach my $target (@servertab) {
+        $serverload{"$target"}=-1.0;
     }
-    
-    my $content=$response->content();
-    
-    if ($content eq "" || $content=~m/SessionDB: offline/m){
-      $problem=1;
-    }
-    elsif ($content=~m/^Load: (\d+\.\d+)/m){
-      my $load=$1;
-      $serverload{$targethost}=$load;
-    }
-    
-    # Wenn der Load fuer einen Server nicht bestimmt werden kann,
-    # dann wird der Admin darueber benachrichtigt
-    
-    if ($problem == 1){
-      OpenBib::LoadBalancer::Util::benachrichtigung("Es ist der Server $targethost ausgefallen");
-      $problem=0;
-      next;
-    } 
-  }
   
-  my $minload="1000.0";
-  my $bestserver="";
+    my $problem=0;
+  
+    # Fuer jeden Server, auf den verteilt werden soll, wird nun
+    # per LWP der Load bestimmt.
+    foreach my $targethost (@servertab) {
+        my $request  = new HTTP::Request POST => "http://$targethost$config{serverload_loc}";
+        my $response = $ua->request($request);
 
-  # Nun wird der Server bestimmt, der den geringsten Load hat
-
-  foreach $targethost (@servertab){
-    if ($serverload{$targethost} > -1.0 && $serverload{$targethost} <= $minload){
-      $bestserver=$targethost;
-      $minload=$serverload{$targethost};
-    }
-  }
-
-  # Wenn wir keinen 'besten Server' bestimmen konnten, dann sind alle
-  # ausgefallen, dem Benutzer wird eine 'Hinweisseite' ausgegeben
-
-  if ($bestserver eq ""){
-
-    # TT-Data erzeugen
+        if ($response->is_success) {
+            $logger->debug("Getting ", $response->content);
+        }
+        else {
+            $logger->error("Getting ", $response->status_line);
+        }
     
-    my $ttdata={
-		title      => 'KUG - Wartungsarbeiten',
-		show_corporate_banner => 0,
-		show_foot_banner      => 1,
-		config       => \%config,
-	       };
+        my $content=$response->content();
+    
+        if ($content eq "" || $content=~m/SessionDB: offline/m) {
+            $problem=1;
+        }
+        elsif ($content=~m/^Load: (\d+\.\d+)/m) {
+            my $load=$1;
+            $serverload{$targethost}=$load;
+        }
+    
+        # Wenn der Load fuer einen Server nicht bestimmt werden kann,
+        # dann wird der Admin darueber benachrichtigt
+    
+        if ($problem == 1) {
+            OpenBib::LoadBalancer::Util::benachrichtigung("Es ist der Server $targethost ausgefallen");
+            $problem=0;
+            next;
+        }
+    }
+  
+    my $minload="1000.0";
+    my $bestserver="";
 
-    OpenBib::Common::Util::print_page($config{tt_loadbalancer_tname},$ttdata,$r);
+    # Nun wird der Server bestimmt, der den geringsten Load hat
 
-    OpenBib::LoadBalancer::Util::benachrichtigung("Achtung: Es sind *alle* Server ausgefallen");
+    foreach my $targethost (@servertab) {
+        if ($serverload{$targethost} > -1.0 && $serverload{$targethost} <= $minload) {
+            $bestserver=$targethost;
+            $minload=$serverload{$targethost};
+        }
+    }
+
+    # Wenn wir keinen 'besten Server' bestimmen konnten, dann sind alle
+    # ausgefallen, dem Benutzer wird eine 'Hinweisseite' ausgegeben
+    if ($bestserver eq "") {
+
+        # TT-Data erzeugen
+        my $ttdata={
+            title        => 'KUG - Wartungsarbeiten',
+            show_corporate_banner => 0,
+            show_foot_banner      => 1,
+            config       => \%config,
+        };
+
+        OpenBib::Common::Util::print_page($config{tt_loadbalancer_tname},$ttdata,$r);
+        OpenBib::LoadBalancer::Util::benachrichtigung("Achtung: Es sind *alle* Server ausgefallen");
+
+        return OK;
+    }
+
+    $r->header_out(Location => "http://$bestserver$config{startopac_loc}?$urlquery");
+    $r->status(REDIRECT);
+    $r->send_http_header;
+  
     return OK;
-    
-  }
-
-  $r->header_out(Location => "http://$bestserver$config{startopac_loc}?$urlquery");
-  $r->status(REDIRECT);
-  $r->send_http_header; 
-  
-  return OK;
 }
 
+1;

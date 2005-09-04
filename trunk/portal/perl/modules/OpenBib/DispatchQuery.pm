@@ -29,25 +29,19 @@
 
 package OpenBib::DispatchQuery;
 
-use Apache::Constants qw(:common);
-
 use strict;
 use warnings;
 no warnings 'redefine';
 
-use Apache::Request();      # CGI-Handling (or require)
-
-use Log::Log4perl qw(get_logger :levels);
-
-use POSIX;
-
-use Digest::MD5;
+use Apache::Constants qw(:common);
+use Apache::Request();
 use DBI;
-
+use Digest::MD5;
+use Log::Log4perl qw(get_logger :levels);
+use POSIX;
 use Template;
 
 use OpenBib::Common::Util;
-
 use OpenBib::Config;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
@@ -58,43 +52,42 @@ use vars qw(%config);
 *config=\%OpenBib::Config::config;
 
 sub handler {
-  my $r=shift;
+    my $r=shift;
 
-  # Log4perl logger erzeugen
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
 
-  my $logger = get_logger();
+    my $query=Apache::Request->new($r);
 
-  my $query=Apache::Request->new($r);
+    my $status=$query->parse;
 
-  my $status=$query->parse;
-
-  if ($status){
-    $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
-  }
+    if ($status) {
+        $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+    }
   
-  my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
-  my $action=($query->param('action'))?$query->param('action'):'';
-  my $view=($query->param('view'))?$query->param('view'):'';
-  my $queryid=$query->param('queryid') || '';
+    my $sessionID = ($query->param('sessionID'))?$query->param('sessionID'):'';
+    my $action    = ($query->param('action'))?$query->param('action'):'';
+    my $view      = ($query->param('view'))?$query->param('view'):'';
+    my $queryid   = $query->param('queryid') || '';
 
-  if ($action eq "Als Suchvorlage"){
-      $r->internal_redirect("http://$config{servername}$config{searchframe_loc}?sessionID=$sessionID&queryid=$queryid&view=$view");
-      return OK;
-  }
-  elsif ($action eq "Zur Trefferliste"){
-      $r->internal_redirect("http://$config{servername}$config{resultlists_loc}?sessionID=$sessionID&view=$view&trefferliste=choice&queryid=$queryid");
-      return OK;
-  }
-  elsif ($action eq "Weiter als externe Recherche"){
-      $r->internal_redirect("http://$config{servername}$config{externaljump_loc}?sessionID=$sessionID&view=$view&queryid=$queryid");
-      return OK;
-  }
-  else {
-    OpenBib::Common::Util::print_warning("Ung&uuml;ltige Aktion",$r);
+    if ($action eq "Als Suchvorlage") {
+        $r->internal_redirect("http://$config{servername}$config{searchframe_loc}?sessionID=$sessionID&queryid=$queryid&view=$view");
+        return OK;
+    }
+    elsif ($action eq "Zur Trefferliste") {
+        $r->internal_redirect("http://$config{servername}$config{resultlists_loc}?sessionID=$sessionID&view=$view&trefferliste=choice&queryid=$queryid");
+        return OK;
+    }
+    elsif ($action eq "Weiter als externe Recherche") {
+        $r->internal_redirect("http://$config{servername}$config{externaljump_loc}?sessionID=$sessionID&view=$view&queryid=$queryid");
+        return OK;
+    }
+    else {
+        OpenBib::Common::Util::print_warning("Ung&uuml;ltige Aktion",$r);
+        return OK;
+    }
+  
     return OK;
-  }
-  
-  return OK;
 }
 
 1;

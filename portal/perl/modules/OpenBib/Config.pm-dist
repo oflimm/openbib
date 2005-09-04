@@ -120,34 +120,31 @@ use vars qw(%config);
 
 	   # Mapping der einzelnen Kompontenten zu ihren Zugriffs-URI's
 
-	   admin_loc            => '/portal/admin',
-	   circulation_loc      => '/portal/benutzerkonto',
-
+	   admin_loc             => '/portal/admin',
+	   circulation_loc       => '/portal/benutzerkonto',
 	   connector_digibib_loc => '/portal/connector/digibib',
+	   connector_olws_loc    => '/portal/connector/olws',
+	   databasechoice_loc    => '/portal/katalogauswahl',
+	   databaseprofile_loc   => '/portal/katalogprofile',
+	   dispatchquery_loc     => '/portal/anfrageverteilen',
+	   externaljump_loc      => '/portal/externersprung',
+	   headerframe_loc       => '/portal/kopf',
+	   leave_loc             => '/portal/beenden',
+	   loadbalancer_loc      => '/portal/lastverteilung',
+	   login_loc             => '/portal/login',
+	   mailcollection_loc    => '/portal/merklistemailen',
+	   mailpassword_loc      => '/portal/passwortmailen',
+	   managecollection_loc  => '/portal/merkliste',
+	   resultlists_loc       => '/portal/trefferlisten',
+	   search_loc            => '/portal/recherche',
+	   searchframe_loc       => '/portal/eingabe',
+	   selfreg_loc           => '/portal/selbstregistrierung',
+	   serverload_loc        => '/portal/getload',
+	   startopac_loc         => '/portal/opac',
+	   userprefs_loc         => '/portal/benutzereinstellungen',
+	   virtualsearch_loc     => '/portal/virtuellerecherche',
 
-	   databasechoice_loc   => '/portal/katalogauswahl',
-	   databaseprofile_loc  => '/portal/katalogprofile',
-
-	   dispatchquery_loc    => '/portal/anfrageverteilen',
-
-	   externaljump_loc     => '/portal/externersprung',
-	   headerframe_loc      => '/portal/kopf',
-	   leave_loc            => '/portal/beenden',
-	   loadbalancer_loc     => '/portal/lastverteilung',
-	   login_loc            => '/portal/login',
-	   mailcollection_loc   => '/portal/merklistemailen',
-	   mailpassword_loc     => '/portal/passwortmailen',
-	   managecollection_loc => '/portal/merkliste',
-	   resultlists_loc      => '/portal/trefferlisten',
-	   search_loc           => '/portal/recherche',
-	   searchframe_loc      => '/portal/eingabe',
-	   selfreg_loc          => '/portal/selbstregistrierung',
-	   serverload_loc       => '/portal/getload',
-	   startopac_loc        => '/portal/opac',
-	   userprefs_loc        => '/portal/benutzereinstellungen',
-	   virtualsearch_loc    => '/portal/virtuellerecherche',
-
-	   css_loc              => '/styles',
+	   css_loc               => '/styles',
 
 	   # Programm zum Versenden von Mails
 

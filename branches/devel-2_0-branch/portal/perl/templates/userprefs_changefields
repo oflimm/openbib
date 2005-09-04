@@ -1,0 +1,16 @@
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+[% IF show_corporate_banner %]
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+[% END %]
+
+<table width="100%">
+<tr><th>Erfolgsmeldung</th></tr>
+<tr><td class="boxedclear">
+Die Einstellung Ihrer Suchfelder wurde erfolgreich vorgenommen. Klicken Sie nun bitte auf 'Recherche' in der Navigationsleiste, um die neuen Suchfeldauswahl zu verwenden.
+</td></tr>
+</table>
+
+[% PROCESS common/subtemplate name="std_footer" %]

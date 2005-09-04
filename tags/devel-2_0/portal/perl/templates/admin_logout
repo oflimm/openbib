@@ -1,0 +1,20 @@
+[% SET title='KUG Administration - Abmeldung' %]
+[% SET show_foot_banner = 1 %]
+[% PROCESS std_header %]
+
+  <body bgcolor="#FFFFFF">
+
+[% PROCESS corporate_banner %]
+
+<table width="100%">
+<tr><th>Logout erfolgreich</th></tr>
+<tr><td class="boxedclear" style="font-size:12pt">
+
+Um sich wieder einzuloggen folgen Sie bitte <a href="http://[% config.servername %][% config.admin_loc %]?action=login">diesem Link</a>.
+
+</td></tr>
+</table>
+
+<p />
+
+[% PROCESS std_footer %]

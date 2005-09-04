@@ -29,25 +29,19 @@
 
 package OpenBib::Admin;
 
-use Apache::Constants qw(:common);
-
 use strict;
 use warnings;
 no warnings 'redefine';
 
-use Apache::Request();          # CGI-Handling (or require)
-
-use Log::Log4perl qw(get_logger :levels);
-
-use POSIX;
-
-use Digest::MD5;
+use Apache::Constants qw(:common);
+use Apache::Request ();
 use DBI;
-
+use Digest::MD5;
+use Log::Log4perl qw(get_logger :levels);
+use POSIX;
 use Template;
 
 use OpenBib::Common::Util;
-
 use OpenBib::Config;
 
 # Importieren der Konfigurationsdaten als Globale Variablen

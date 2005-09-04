@@ -21,62 +21,57 @@
 #  an die Free Software Foundation, Inc., 675 Mass Ave, Cambridge,
 #  MA 02139, USA.
 #
-#####################################################################   
+#####################################################################
 
 #####################################################################
-# Einladen der benoetigten Perl-Module 
+# Einladen der benoetigten Perl-Module
 #####################################################################
 
 package OpenBib::ServerLoad;
-
-use Apache::Constants qw(:common);
-
-use Log::Log4perl qw(get_logger :levels);
 
 use strict;
 use warnings;
 no warnings 'redefine';
 
+use Apache::Constants qw(:common);
 use DBI;
+use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Config;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
-
 use vars qw(%config);
 
 *config=\%OpenBib::Config::config;
 
 sub handler {
-  my $r=shift;
+    my $r=shift;
 
-  # Log4perl logger erzeugen
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
 
-  my $logger = get_logger();
+    my $sessiondbstatus="offline";
 
-  my $sessiondbstatus="offline";
+    # Test-Verbindung zur SQL-Datenbank herstellen
+    my $sessiondbh
+        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
+            and $sessiondbstatus="online";
 
-  #####################################################################
-  # Test-Verbindung zur SQL-Datenbank herstellen
-  
-  my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) and $sessiondbstatus="online";
+    if ($sessiondbstatus eq "online") {
+        $sessiondbh->disconnect();
+    }
 
-  if ($sessiondbstatus eq "online"){
-    $sessiondbh->disconnect();
-  }
+    print $r->send_http_header("text/plain");
 
-  print $r->send_http_header("text/plain");
+    print "SessionDB: $sessiondbstatus\n";
 
-  print "SessionDB: $sessiondbstatus\n";
+    open(LOADAVG,"/proc/loadavg") or $logger->error_die($DBI::errstr);
+    print "Load: ".<LOADAVG>;
+    close(LOADAVG);
 
-  open(LOADAVG,"/proc/loadavg") or $logger->error_die($DBI::errstr);
-
-  print "Load: ".<LOADAVG>;
-  
-  close(LOADAVG);
-
-  return OK;
+    return OK;
 }
 
 1;
+

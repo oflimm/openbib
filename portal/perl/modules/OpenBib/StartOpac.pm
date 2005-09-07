@@ -192,6 +192,7 @@ sub handler {
 	      sessionID       => $sessionID,
 	      fs              => $fs,
 	      searchsingletit => $searchsingletit,
+	      database        => $database,
 	      config          => \%config,
 	     };
 

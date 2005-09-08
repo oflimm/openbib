@@ -70,7 +70,7 @@ In diesem Katalog konnte leider kein Schlagwort beginnend mit <b>'[% swt %]'</b>
 <input type="hidden" name="database" value="[% database %]">
 
 <table>
-<tr><td class="category">Schlagwortindex dieses Katalogs&nbsp;</td><td>&nbsp;<input type="text" name="swtindex" value="[% swt %]" size="4" maxlength="50" title="Geben Sie hier den Schlagwortanfang ein">&nbsp;<input type="submit" value="Suchen">&nbsp;</td></tr>
+<tr><td class="category">Schlagwortindex dieses Katalogs&nbsp;</td><td>&nbsp;<input type="text" name="swtindex" value="[% swt %]" size="20" maxlength="50" title="Geben Sie hier den Schlagwortanfang ein">&nbsp;<input type="submit" value="Suchen">&nbsp;</td></tr>
 </table>
 
 </form>

@@ -415,7 +415,7 @@ sub handler {
   my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
   
   unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
-    OpenBib::Search::Util::print_warning("Ung&uuml;ltige Session",$r);
+    OpenBib::Common::Util::print_warning("Ung&uuml;ltige Session",$r);
     goto LEAVEPROG;
   }
 
@@ -461,7 +461,7 @@ sub handler {
     
     # Kein Treffer
     if ($#tidns == -1){
-      OpenBib::Search::Util::no_result();
+      OpenBib::Common::Util::print_warning("Zu Ihrer Anfrage wurden keine Treffer gefunden",$r);
       return OK;
     }
     
@@ -653,7 +653,7 @@ sub handler {
       my @gtfidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
       
       if ($#gtfidns == -1){
-	OpenBib::Search::Util::no_result();
+	OpenBib::Common::Util::print_warning("Zu Ihrer Anfrage wurden keine Treffer gefunden",$r);
 	return OK;
       }
       
@@ -738,7 +738,7 @@ sub handler {
       my @gtmidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
       
       if ($#gtmidns == -1){
-	OpenBib::Search::Util::no_result();
+	OpenBib::Common::Util::print_warning("Zu Ihrer Anfrage wurden keine Treffer gefunden",$r);
 	return OK;
       }
       
@@ -821,7 +821,7 @@ sub handler {
       my @invkidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
       
       if ($#invkidns == -1){
-	OpenBib::Search::Util::no_result();
+	OpenBib::Common::Util::print_warning("Zu Ihrer Anfrage wurden keine Treffer gefunden",$r);
 	return OK;
       }
       
@@ -1254,7 +1254,7 @@ sub handler {
     my @titelidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);	
     
     if ($#titelidns == -1){
-      OpenBib::Search::Util::no_result();
+      OpenBib::Common::Util::print_warning("Zu Ihrer Anfrage wurden keine Treffer gefunden",$r);
       return OK;
     }
     
@@ -1312,7 +1312,7 @@ sub handler {
     my @titelidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
 
     if ($#titelidns == -1){
-      OpenBib::Search::Util::no_result();
+      OpenBib::Common::Util::print_warning("Zu Ihrer Anfrage wurden keine Treffer gefunden",$r);
       return OK;
     }
 
@@ -1368,7 +1368,7 @@ sub handler {
     my @requests=("select titidn from titurh where urhverw=$searchtitofurh");
     my @titelidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
     if ($#titelidns == -1){
-      OpenBib::Search::Util::no_result();
+      OpenBib::Common::Util::print_warning("Zu Ihrer Anfrage wurden keine Treffer gefunden",$r);
       return OK;
     }
 
@@ -1425,7 +1425,7 @@ sub handler {
     my @requests=("select titidn from titkor where korverw=$searchtitofkor");
     my @titelidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);	
     if ($#titelidns == -1){
-      OpenBib::Search::Util::no_result();
+      OpenBib::Common::Util::print_warning("Zu Ihrer Anfrage wurden keine Treffer gefunden",$r);
       return OK;
     }
 
@@ -1481,7 +1481,7 @@ sub handler {
     my @titelidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);	
     
     if ($#titelidns == -1){
-      OpenBib::Search::Util::no_result();
+      OpenBib::Common::Util::print_warning("Zu Ihrer Anfrage wurden keine Treffer gefunden",$r);
       return OK;
     }
     if ($#titelidns == 0){
@@ -1537,7 +1537,7 @@ sub handler {
     my @titelidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);	
     
     if ($#titelidns == -1){
-      OpenBib::Search::Util::no_result();
+      OpenBib::Common::Util::print_warning("Zu Ihrer Anfrage wurden keine Treffer gefunden",$r);
       return OK;
     }
     
@@ -1590,8 +1590,7 @@ sub handler {
   
   # Falls bis hierhin noch nicht abgearbeitet, dann wirds wohl nichts mehr geben
   
-  print "<p>\n";
-  OpenBib::Search::Util::no_result();
+  OpenBib::Common::Util::print_warning("Zu Ihrer Anfrage wurden keine Treffer gefunden",$r);
   $logger->error("Unerlaubt das Ende erreicht");
   
   # Keine Verwendung von exit, da sonst Probleme mit mod_perl. Stattdessen 
@@ -1599,31 +1598,6 @@ sub handler {
   
 LEAVEPROG: 
 
-  print << "SWTIDX";
-</form>
-<hr>
-<table>
-<tr><td bgcolor="lightblue">Schlagwortindex dieses Katalogs&nbsp;</td><td>
-<form method="get" action="$config{search_loc}">
-<input type="hidden" name="sessionID" value="$sessionID">
-<input type="hidden" name="searchmode" value="$searchmode">
-<input type="hidden" name="rating" value="$rating">
-<input type="hidden" name="bookinfo" value="$bookinfo">
-<input type="hidden" name="hitrange" value="$hitrange">
-<input type="hidden" name="database" value="$database">
-&nbsp;
-<input type="text" name="swtindex" value="$swtindex" size="4" maxlength="50" title="Geben Sie hier den Schlagwortanfang ein">
-&nbsp;
-<input type="submit" value="Suchen">
-&nbsp;</td>
-</tr>
-</table>
-</form>
-<p>
-SWTIDX
-  
-  OpenBib::Common::Util::print_footer();
-  
   $dbh->disconnect;
   $sessiondbh->disconnect;
   return OK;

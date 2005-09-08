@@ -3505,7 +3505,9 @@ sub get_index_by_swt {
     $atime=new Benchmark;
   }
 
-  my @requests=("select schlagw from swt where schlagw like '$swt%' order by schlagw");
+  $swt=OpenBib::Search::Util::input2sgml($swt,1,0);
+
+  my @requests=("select schlagw from swt where schlagwnorm like '$swt%' order by schlagw");
   my @temp=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
   
   my @schlagwte=sort @temp;
@@ -3516,16 +3518,18 @@ sub get_index_by_swt {
     my $schlagw=$schlagwte[$i];
     @requests=("select idn from swt where schlagw = '$schlagw'");
     my @swtidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-    @requests=("select titidn from titswtlok where swtverw=".$swtidns[0]);
-    my $titanzahl=OpenBib::Search::Util::get_number(\@requests,$dbh);
-    
-    my $swtitem={
-		 swt       => $schlagw,
-		 swtidn    => $swtidns[0],
-		 titanzahl => $titanzahl, 
-		};
-    
-    push @swtindex, $swtitem;
+    foreach my $swtidn (@swtidns){
+      @requests=("select titidn from titswtlok where swtverw=$swtidn");
+      my $titanzahl=OpenBib::Search::Util::get_number(\@requests,$dbh);
+      
+      my $swtitem={
+		   swt       => $schlagw,
+		   swtidn    => $swtidn,
+		   titanzahl => $titanzahl, 
+		  };
+      
+      push @swtindex, $swtitem;
+    }
   }
 
   if ($config{benchmark}){
@@ -3607,7 +3611,9 @@ sub get_index_by_verf {
     $atime=new Benchmark;
   }
 
-  my @requests=("select ans from aut where ans like '$verf%' order by ans");
+  $verf=OpenBib::Search::Util::input2sgml($verf,1,0);
+
+  my @requests=("select ans from aut where ansnorm like '$verf%' order by ans");
   my @temp=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
   
   my @verfasser=sort @temp;
@@ -3618,16 +3624,19 @@ sub get_index_by_verf {
     my $verfasser=$verfasser[$i];
     @requests=("select idn from aut where ans = '$verfasser'");
     my @verfidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-    @requests=("select titidn from titverf where verfverw=".$verfidns[0],"select titidn from titpers where persverw=".$verfidns[0],"select titidn from titgpers where persverw=".$verfidns[0]);
-    my $titanzahl=OpenBib::Search::Util::get_number(\@requests,$dbh);
-    
-    my $verfitem={
-		 verf       => $verfasser,
-		 verfidn    => $verfidns[0],
-		 titanzahl  => $titanzahl, 
-		};
-    
-    push @verfindex, $verfitem;
+
+    foreach my $verfidn (@verfidns){
+      @requests=("select titidn from titverf where verfverw=$verfidn","select titidn from titpers where persverw=$verfidn","select titidn from titgpers where persverw=$verfidn");
+      my $titanzahl=OpenBib::Search::Util::get_number(\@requests,$dbh);
+      
+      my $verfitem={
+		    verf       => $verfasser,
+		    verfidn    => $verfidn,
+		    titanzahl  => $titanzahl, 
+		   };
+      
+      push @verfindex, $verfitem;
+    }
   }
 
   if ($config{benchmark}){
@@ -3657,7 +3666,9 @@ sub get_index_by_kor {
     $atime=new Benchmark;
   }
 
-  my @requests=("select korans from kor where korans like '$kor%'");
+  $kor=OpenBib::Search::Util::input2sgml($kor,1,0);
+
+  my @requests=("select korans from kor where koransnorm like '$kor%'");
   my @temp=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
   
   my @koerperschaft=sort @temp;
@@ -3668,16 +3679,18 @@ sub get_index_by_kor {
     my $koerperschaft=$koerperschaft[$i];
     @requests=("select idn from kor where korans = '$koerperschaft'");
     my @koridns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-    @requests=("select titidn from titkor where korverw=".$koridns[0],"select titidn from titurh where urhverw=".$koridns[0]);
-    my $titanzahl=OpenBib::Search::Util::get_number(\@requests,$dbh);
-    
-    my $koritem={
-		 kor       => $koerperschaft,
-		 koridn    => $koridns[0],
-		 titanzahl  => $titanzahl, 
-		};
-    
-    push @korindex, $koritem;
+    foreach my $koridn (@koridns){
+      @requests=("select titidn from titkor where korverw=$koridn","select titidn from titurh where urhverw=$koridn");
+      my $titanzahl=OpenBib::Search::Util::get_number(\@requests,$dbh);
+      
+      my $koritem={
+		   kor       => $koerperschaft,
+		   koridn    => $koridn,
+		   titanzahl  => $titanzahl, 
+		  };
+      
+      push @korindex, $koritem;
+    }
   }
 
   if ($config{benchmark}){

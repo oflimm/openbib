@@ -71,6 +71,13 @@ sub handler {
   # Log4perl logger erzeugen
 
   my $logger = get_logger();
+
+  ## Wandlungstabelle Erscheinungsjahroperator
+  my $ejahrop_ref={
+		   'eq' => '=',
+		   'gt' => '>',
+		   'lt' => '<',
+		  };
     
   my $query=Apache::Request->new($r);
 
@@ -109,7 +116,7 @@ sub handler {
   my $mart=$query->param('mart') || '';
   my $notation=$query->param('notation') || '';
   my $ejahr=$query->param('ejahr') || '';
-  my $ejahrop=$query->param('ejahrop') || '=';
+  my $ejahrop=$query->param('ejahrop') || 'eq';
   my $verknuepfung=$query->param('verknuepfung') || '';
   my @databases=($query->param('database'))?$query->param('database'):();
   my $starthit=($query->param('starthit'))?$query->param('starthit'):1;
@@ -130,7 +137,7 @@ sub handler {
   my $trefferliste=$query->param('trefferliste') || '';
   my $autoplus=$query->param('autoplus') || '';
   my $queryid=$query->param('queryid') || '';
-  
+
   #####################################################################
   ## boolX: Verkn"upfung der Eingabefelder (leere Felder werden ignoriert)
   ##        AND  - Und-Verkn"upfung
@@ -213,6 +220,13 @@ sub handler {
   $boolmart="AND NOT" if ($boolmart eq "NOT");
   $boolhststring="AND NOT" if ($boolhststring eq "NOT");
 
+  # Setzen der arithmetischen Ejahrop-Operatoren
+  if (exists $ejahrop_ref->{$ejahrop}){
+    $ejahrop=$ejahrop_ref->{$ejahrop};
+  }
+  else {
+    $ejahrop="=";
+  }
 
   # Filter: ISBN und ISSN
   
@@ -362,7 +376,19 @@ sub handler {
   my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
 
   $logger->info("Authorization: ", $sessionID, " ", ($userid)?$userid:'none');
-  
+
+
+  # Fix broken submit-handling from M$-IE
+
+  if (!$searchall && !$searchprofile){
+    if ($view){
+      $searchprofile=1;
+    }
+    else {
+      $searchall=1;
+    }
+  }
+    
    my $item;
    my $alldbs;
   

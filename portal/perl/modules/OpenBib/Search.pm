@@ -88,11 +88,11 @@ sub handler {
   #####################################################################
   ## Wandlungstabelle Erscheinungsjahroperator
   
-  my %ejop=(
-	    'genau' => '=',
-	    'jünger' => '>',
-	    'älter' => '<'
-	   );
+  my $ejahrop_ref={
+		   'eq' => '=',
+		   'gt' => '>',
+		   'lt' => '<',
+		  };
   
   my $query=Apache::Request->new($r);
 
@@ -219,7 +219,7 @@ sub handler {
   my $issn=$query->param('issn') || '';           # ISSN
   my $notation=$query->param('notation') || '';   # Notation
   my $ejahr=$query->param('ejahr') || '';         # Erscheinungsjahr
-  my $ejahrop=$query->param('ejahrop') || '=';    # Vergleichsoperator ejahr
+  my $ejahrop=$query->param('ejahrop') || 'eq';    # Vergleichsoperator ejahr
   my $mart=$query->param('mart') || '';           # Medienart
 
   #####################################################################
@@ -303,6 +303,15 @@ sub handler {
   $boolfs="AND NOT" if ($boolfs eq "NOT");
   $boolmart="AND NOT" if ($boolmart eq "NOT");
   $boolhststring="AND NOT" if ($boolhststring eq "NOT");
+
+
+  # Setzen der arithmetischen Ejahrop-Operatoren
+  if (exists $ejahrop_ref->{$ejahrop}){
+    $ejahrop=$ejahrop_ref->{$ejahrop};
+  }
+  else {
+    $ejahrop="=";
+  }
   
   my $withumlaut=0;
   

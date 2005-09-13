@@ -73,6 +73,9 @@ sub handler {
 
   my $fs=$query->param('fs') || '';
 
+  # UTF-8 nach ISO8859-1
+  $fs=~s/([\xC2\xC3])([\x80-\xBF])/chr(ord($1)<<6&0xC0|ord($2)&0x3F)/eg;
+
   #####################################################################
   # Verbindung zur SQL-Datenbank herstellen
   

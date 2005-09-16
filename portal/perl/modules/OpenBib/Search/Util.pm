@@ -3770,7 +3770,6 @@ sub initital_search_for_titidns {
   # TODO: SQL-Statement fuer Notationssuche optimieren
   
   if ($notation){
-    $notation=OpenBib::Search::Util::input2sgml($notation,1,$withumlaut);
     $notation="((notation.notation like '$notation%' or notation.benennung like '$notation%') and search.verwidn=titnot.titidn and notation.idn=titnot.notidn)";
     $notfrom=", notation, titnot";
   }
@@ -3779,7 +3778,6 @@ sub initital_search_for_titidns {
   my @signidns;
   
   if ($sign){
-    $sign=OpenBib::Search::Util::input2sgml($sign,1,$withumlaut);
     $sign="(search.verwidn=mex.titidn and mex.idn=mexsign.mexidn and mexsign.signlok like '$sign%')";
     $signfrom=", mex, mexsign";
   }

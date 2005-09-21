@@ -433,16 +433,30 @@ sub handler {
       # Eventuell bestehende Auswahl zuruecksetzen
       
       @databases=();
-      
-      my $idnresult=$sessiondbh->prepare("select dbname from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
-      $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-      
-      while (my $result=$idnresult->fetchrow_hashref()){
-	my $dbname=$result->{'dbname'};
-	push @databases, $dbname;
+
+      # Bei Einsprung ohne SessionID werden die Standard-DB's des Views
+      # verwendet
+      if ($sessionID == -1){
+	my $idnresult=$sessiondbh->prepare("select dbname from viewdbs where viewname = ?") or $logger->error($DBI::errstr);
+	$idnresult->execute($view) or $logger->error($DBI::errstr);
+	
+	while (my $result=$idnresult->fetchrow_hashref()){
+	  my $dbname=$result->{'dbname'};
+	  push @databases, $dbname;
+	}
+	$idnresult->finish();
       }
-      $idnresult->finish();
-      
+      # Ansonsten die in der Session konkret ausgewaehlten DB's
+      else {
+	my $idnresult=$sessiondbh->prepare("select dbname from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
+	$idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+	
+	while (my $result=$idnresult->fetchrow_hashref()){
+	  my $dbname=$result->{'dbname'};
+	  push @databases, $dbname;
+	}
+	$idnresult->finish();
+      }
     }
     
     # Wenn ein anderes Profil als 'dbauswahl' ausgewaehlt wuerde

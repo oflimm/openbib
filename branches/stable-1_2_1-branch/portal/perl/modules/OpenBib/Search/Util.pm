@@ -2374,7 +2374,7 @@ sub get_tit_set_by_idn {
   # Ausgabe der Anzahl verkn"upfter Unterordnungen
   
   @requests=("select titidn from tittit where verwidn=$titres1->{idn}");
-  my $verkntit=get_number(\@requests,$dbh);
+  $verkntit=get_number(\@requests,$dbh);
   if ($verkntit > 0){
     
     push @normset, set_url_category("Unterordnungen","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;subtit=$titres1->{idn};generalsearch=subtit",$verkntit);

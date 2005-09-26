@@ -1377,6 +1377,9 @@ sub get_tit_set_by_idn {
   my $titstatement31="select * from titerschland where titidn = ?";
   my $titstatement32="select * from titformat where titidn = ?";
   my $titstatement33="select * from titquelle where titidn = ?";
+  my $titstatement34="select * from tittit where titidn = ?";
+  my $titstatement35="select * from titgt  where titidn = ?";
+  my $titstatement36="select * from titaus where titidn = ?";
   
   my $atime;
   my $btime;
@@ -1751,226 +1754,274 @@ sub get_tit_set_by_idn {
   }
   
   push @normset, set_simple_category("Kollation","$titres1->{kollation}") if ($titres1->{kollation});    
+
+
+  # Ausgabe GT
   
   if ($config{benchmark}){
     $atime=new Benchmark;
   }
   
-  # Ausgabe GTM
+  my $titresult35=$dbh->prepare("$titstatement35") or $logger->error($DBI::errstr);
+  $titresult35->execute($titidn) or $logger->error($DBI::errstr);
   
-  if ($config{benchmark}){
-    $atime=new Benchmark;
-  }
-  
-  my $titresult4=$dbh->prepare("$titstatement4") or $logger->error($DBI::errstr);
-  $titresult4->execute($titidn) or $logger->error($DBI::errstr);
-  
-  my $titres4;
-  while ($titres4=$titresult4->fetchrow_hashref){
-    my $titstatement="select hst from tit where idn = ?";
-    my $titresult=$dbh->prepare("$titstatement") or $logger->error($DBI::errstr);
-    $titresult->execute($titres4->{verwidn}) or $logger->error($DBI::errstr);
-    my $titres=$titresult->fetchrow_hashref;
-    
-    push @normset, set_url_category("Gesamttitel","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;singlegtm=$titres4->{verwidn};generalsearch=singlegtm",$titres->{hst}," ; $titres4->{zus}");
+  my $titres35;
+  while ($titres35=$titresult35->fetchrow_hashref){
+    push @normset, set_simple_category("Gesamttitel",$titres35->{gt});
     
   }
-  $titresult4->finish();
+  $titresult35->finish();
   
   if ($config{benchmark}){
     $btime=new Benchmark;
     $timeall=timediff($btime,$atime);
-    $logger->info("Zeit fuer : $titstatement4 : ist ".timestr($timeall));
+    $logger->info("Zeit fuer : $titstatement35 : ist ".timestr($timeall));
     undef $atime;
     undef $btime;
     undef $timeall;
   }
+
+  # Ausgabe aus:
   
   if ($config{benchmark}){
     $atime=new Benchmark;
   }
+  
+  my $titresult36=$dbh->prepare("$titstatement36") or $logger->error($DBI::errstr);
+  $titresult36->execute($titidn) or $logger->error($DBI::errstr);
+  
+  my $titres36;
+  while ($titres36=$titresult36->fetchrow_hashref){
+    push @normset, set_simple_category("In:",$titres36->{aus});
+    
+  }
+  $titresult36->finish();
+  
+  if ($config{benchmark}){
+    $btime=new Benchmark;
+    $timeall=timediff($btime,$atime);
+    $logger->info("Zeit fuer : $titstatement36 : ist ".timestr($timeall));
+    undef $atime;
+    undef $btime;
+    undef $timeall;
+  }
+
+  
+#   # Ausgabe GTM
+  
+#   if ($config{benchmark}){
+#     $atime=new Benchmark;
+#   }
+  
+#   my $titresult4=$dbh->prepare("$titstatement4") or $logger->error($DBI::errstr);
+#   $titresult4->execute($titidn) or $logger->error($DBI::errstr);
+  
+#   my $titres4;
+#   while ($titres4=$titresult4->fetchrow_hashref){
+#     my $titstatement="select hst from tit where idn = ?";
+#     my $titresult=$dbh->prepare("$titstatement") or $logger->error($DBI::errstr);
+#     $titresult->execute($titres4->{verwidn}) or $logger->error($DBI::errstr);
+#     my $titres=$titresult->fetchrow_hashref;
+    
+#     push @normset, set_url_category("Gesamttitel","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;singlegtm=$titres4->{verwidn};generalsearch=singlegtm",$titres->{hst}," ; $titres4->{zus}");
+    
+#   }
+#   $titresult4->finish();
+  
+#   if ($config{benchmark}){
+#     $btime=new Benchmark;
+#     $timeall=timediff($btime,$atime);
+#     $logger->info("Zeit fuer : $titstatement4 : ist ".timestr($timeall));
+#     undef $atime;
+#     undef $btime;
+#     undef $timeall;
+#   }
+  
+#   if ($config{benchmark}){
+#     $atime=new Benchmark;
+#   }
   
   # Augabe GTF
   
-  if ($config{benchmark}){
-    $atime=new Benchmark;
-  }
+#   if ($config{benchmark}){
+#     $atime=new Benchmark;
+#   }
   
-  my $titresult5=$dbh->prepare("$titstatement5") or $logger->error($DBI::errstr);
-  $titresult5->execute($titidn) or $logger->error($DBI::errstr);
+#   my $titresult5=$dbh->prepare("$titstatement5") or $logger->error($DBI::errstr);
+#   $titresult5->execute($titidn) or $logger->error($DBI::errstr);
   
-  my $titres5;
-  while ($titres5=$titresult5->fetchrow_hashref){
-    my $titstatement="select hst,ast,vorlverf,zuergurh,vorlunter from tit where idn = ?";
-    my $titresult=$dbh->prepare("$titstatement") or $logger->error($DBI::errstr);
-    $titresult->execute($titres5->{verwidn}) or $logger->error($DBI::errstr);
-    my $titres=$titresult->fetchrow_hashref;
+#   my $titres5;
+#   while ($titres5=$titresult5->fetchrow_hashref){
+#     my $titstatement="select hst,ast,vorlverf,zuergurh,vorlunter from tit where idn = ?";
+#     my $titresult=$dbh->prepare("$titstatement") or $logger->error($DBI::errstr);
+#     $titresult->execute($titres5->{verwidn}) or $logger->error($DBI::errstr);
+#     my $titres=$titresult->fetchrow_hashref;
     
-    my $asthst=$titres->{hst};
+#     my $asthst=$titres->{hst};
     
-    my $verfurh=$titres->{zuergurh};
+#     my $verfurh=$titres->{zuergurh};
     
-    if ($titres->{vorlverf}){
-      $verfurh=$titres->{vorlverf};
-    }
+#     if ($titres->{vorlverf}){
+#       $verfurh=$titres->{vorlverf};
+#     }
     
-    if (!$asthst && $titres->{ast}){
-      $asthst=$titres->{ast};
-    }
+#     if (!$asthst && $titres->{ast}){
+#       $asthst=$titres->{ast};
+#     }
     
-    my $vorlunter=$titres->{vorlunter};
+#     my $vorlunter=$titres->{vorlunter};
     
-    if ($vorlunter){
-      $asthst="$asthst : $vorlunter";
-    }
+#     if ($vorlunter){
+#       $asthst="$asthst : $vorlunter";
+#     }
     
     
-    if ($verfurh){
-      $asthst=$asthst." / ".$verfurh;
-    }
+#     if ($verfurh){
+#       $asthst=$asthst." / ".$verfurh;
+#     }
     
-    push @normset, set_url_category("Gesamttitel","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;singlegtf=$titres5->{verwidn};generalsearch=singlegtf",$asthst," ; $titres5->{zus}");
+#     push @normset, set_url_category("Gesamttitel","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;singlegtf=$titres5->{verwidn};generalsearch=singlegtf",$asthst," ; $titres5->{zus}");
     
-  }
-  $titresult5->finish();
+#   }
+#   $titresult5->finish();
   
-  if ($config{benchmark}){
-    $btime=new Benchmark;
-    $timeall=timediff($btime,$atime);
-    $logger->info("Zeit fuer : $titstatement5 ++ : ist ".timestr($timeall));
-    undef $atime;
-    undef $btime;
-    undef $timeall;
-  }
+#   if ($config{benchmark}){
+#     $btime=new Benchmark;
+#     $timeall=timediff($btime,$atime);
+#     $logger->info("Zeit fuer : $titstatement5 ++ : ist ".timestr($timeall));
+#     undef $atime;
+#     undef $btime;
+#     undef $timeall;
+#   }
   
-  if ($config{benchmark}){
-    $atime=new Benchmark;
-  }
+#   if ($config{benchmark}){
+#     $atime=new Benchmark;
+#   }
   
-  # Ausgabe IN Verkn.
+#   # Ausgabe IN Verkn.
   
-  if ($config{benchmark}){
-    $atime=new Benchmark;
-  }
+#   if ($config{benchmark}){
+#     $atime=new Benchmark;
+#   }
   
-  my $titresult6=$dbh->prepare("$titstatement6") or $logger->error($DBI::errstr);
-  $titresult6->execute($titidn) or $logger->error($DBI::errstr);
+#   my $titresult6=$dbh->prepare("$titstatement6") or $logger->error($DBI::errstr);
+#   $titresult6->execute($titidn) or $logger->error($DBI::errstr);
   
-  my $titres6;
-  while ($titres6=$titresult6->fetchrow_hashref){
-    my $titverw=$titres6->{titverw};
+#   my $titres6;
+#   while ($titres6=$titresult6->fetchrow_hashref){
+#     my $titverw=$titres6->{titverw};
     
-    my $titstatement="select hst,sachlben from tit where idn = ?";
-    my $titresult=$dbh->prepare("$titstatement") or $logger->error($DBI::errstr);
-    $titresult->execute($titverw) or $logger->error($DBI::errstr);
-    my $titres=$titresult->fetchrow_hashref;
+#     my $titstatement="select hst,sachlben from tit where idn = ?";
+#     my $titresult=$dbh->prepare("$titstatement") or $logger->error($DBI::errstr);
+#     $titresult->execute($titverw) or $logger->error($DBI::errstr);
+#     my $titres=$titresult->fetchrow_hashref;
     
-    # Wenn HST vorhanden, dann nimm ihn, sonst Sachlben.
+#     # Wenn HST vorhanden, dann nimm ihn, sonst Sachlben.
     
-    my $verkn=($titres->{hst})?$titres->{hst}:$titres->{sachlben};
+#     my $verkn=($titres->{hst})?$titres->{hst}:$titres->{sachlben};
     
-    # Wenn weder HST, noch Sachlben vorhanden, dann haben wir
-    # einen Titeltyp4 ohne irgendeine weitere Information und wir m"ussen
-    # uns f"ur HST/Sachlben-Informationen eine Suchebene tiefer 
-    # hangeln :-(
+#     # Wenn weder HST, noch Sachlben vorhanden, dann haben wir
+#     # einen Titeltyp4 ohne irgendeine weitere Information und wir m"ussen
+#     # uns f"ur HST/Sachlben-Informationen eine Suchebene tiefer 
+#     # hangeln :-(
     
-    if (!$verkn){
-      my $gtmidnresult1=$dbh->prepare("select verwidn from titgtm where titidn = ?") or $logger->error($DBI::errstr);
-      $gtmidnresult1->execute($titverw) or $logger->error($DBI::errstr);
-      my $gtmidnres1=$gtmidnresult1->fetchrow_hashref;
-      my $gtmidn=$gtmidnres1->{verwidn};
-      $gtmidnresult1->finish();
+#     if (!$verkn){
+#       my $gtmidnresult1=$dbh->prepare("select verwidn from titgtm where titidn = ?") or $logger->error($DBI::errstr);
+#       $gtmidnresult1->execute($titverw) or $logger->error($DBI::errstr);
+#       my $gtmidnres1=$gtmidnresult1->fetchrow_hashref;
+#       my $gtmidn=$gtmidnres1->{verwidn};
+#       $gtmidnresult1->finish();
       
-      if ($gtmidn){
-	my $gtmidnresult2=$dbh->prepare("select hst,sachlben from tit where idn = ?") or $logger->error($DBI::errstr);
-	$gtmidnresult2->execute($gtmidn) or $logger->error($DBI::errstr);
-	my $gtmidnres2=$gtmidnresult2->fetchrow_hashref;
-	$verkn=($gtmidnres2->{hst})?$gtmidnres2->{hst}:$gtmidnres2->{sachlben};
-	$gtmidnresult2->finish();
-      }
-    }
+#       if ($gtmidn){
+# 	my $gtmidnresult2=$dbh->prepare("select hst,sachlben from tit where idn = ?") or $logger->error($DBI::errstr);
+# 	$gtmidnresult2->execute($gtmidn) or $logger->error($DBI::errstr);
+# 	my $gtmidnres2=$gtmidnresult2->fetchrow_hashref;
+# 	$verkn=($gtmidnres2->{hst})?$gtmidnres2->{hst}:$gtmidnres2->{sachlben};
+# 	$gtmidnresult2->finish();
+#       }
+#     }
     
-    if (!$verkn){
-      my $gtfidnresult1=$dbh->prepare("select verwidn, zus from titgtf where titidn = ?") or $logger->error($DBI::errstr);
-      $gtfidnresult1->execute($titverw) or $logger->error($DBI::errstr);
-      my $gtfidnres1=$gtfidnresult1->fetchrow_hashref;
-      my $gtfidn=$gtfidnres1->{verwidn};
-      my $gtfzus=$gtfidnres1->{zus};
-      $gtfidnresult1->finish();
+#     if (!$verkn){
+#       my $gtfidnresult1=$dbh->prepare("select verwidn, zus from titgtf where titidn = ?") or $logger->error($DBI::errstr);
+#       $gtfidnresult1->execute($titverw) or $logger->error($DBI::errstr);
+#       my $gtfidnres1=$gtfidnresult1->fetchrow_hashref;
+#       my $gtfidn=$gtfidnres1->{verwidn};
+#       my $gtfzus=$gtfidnres1->{zus};
+#       $gtfidnresult1->finish();
       
-      if ($gtfidn){
-	my $gtfidnresult2=$dbh->prepare("select hst,sachlben from tit where idn = ?") or $logger->error($DBI::errstr);
-	$gtfidnresult2->execute($gtfidn) or $logger->error($DBI::errstr);
-	my $gtfidnres2=$gtfidnresult2->fetchrow_hashref;
-	$verkn=($gtfidnres2->{hst})?$gtfidnres2->{hst}:$gtfidnres2->{sachlben};
-	$gtfidnresult2->finish();
-      }
-      if ($gtfzus){
-	$verkn="$verkn ; $gtfzus";
-      }
-    }
+#       if ($gtfidn){
+# 	my $gtfidnresult2=$dbh->prepare("select hst,sachlben from tit where idn = ?") or $logger->error($DBI::errstr);
+# 	$gtfidnresult2->execute($gtfidn) or $logger->error($DBI::errstr);
+# 	my $gtfidnres2=$gtfidnresult2->fetchrow_hashref;
+# 	$verkn=($gtfidnres2->{hst})?$gtfidnres2->{hst}:$gtfidnres2->{sachlben};
+# 	$gtfidnresult2->finish();
+#       }
+#       if ($gtfzus){
+# 	$verkn="$verkn ; $gtfzus";
+#       }
+#     }
     
-    # Der Zusatz wird doppelt ausgegeben. In der Verknuepfung und
-    # auch im Zusatz. Es wird nun ueberprueft, ob doppelte Information
-    # bis/vom Semikolon vorhanden ist und gegebenenfalls geloescht.
+#     # Der Zusatz wird doppelt ausgegeben. In der Verknuepfung und
+#     # auch im Zusatz. Es wird nun ueberprueft, ob doppelte Information
+#     # bis/vom Semikolon vorhanden ist und gegebenenfalls geloescht.
     
-    my ($check1)=$titres6->{zus}=~/^(.+?) \;/;
-    my ($check2)=$verkn=~/^.+\;(.+)$/;
+#     my ($check1)=$titres6->{zus}=~/^(.+?) \;/;
+#     my ($check2)=$verkn=~/^.+\;(.+)$/;
     
-    my $zusatz=$titres6->{zus};
+#     my $zusatz=$titres6->{zus};
     
-    # Doppelte Information ist vorhanden, dann ...
-    if ($check1 eq $check2){
-      $zusatz=~s/^.+? \; (.+?)$/$1/;
-    }
+#     # Doppelte Information ist vorhanden, dann ...
+#     if ($check1 eq $check2){
+#       $zusatz=~s/^.+? \; (.+?)$/$1/;
+#     }
     
-    push @normset, set_url_category("In:","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;singlegtf=$titverw;generalsearch=singlegtf",$verkn," ; $zusatz ");
+#     push @normset, set_url_category("In:","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;singlegtf=$titverw;generalsearch=singlegtf",$verkn," ; $zusatz ");
     
-  }
+#   }
   
-  $titresult6->finish();	
+#   $titresult6->finish();	
   
   
-  if ($config{benchmark}){
-    $btime=new Benchmark;
-    $timeall=timediff($btime,$atime);
-    $logger->info("Zeit fuer : $titstatement6 : ist ".timestr($timeall));
-    undef $atime;
-    undef $btime;
-    undef $timeall;
-  }
+#   if ($config{benchmark}){
+#     $btime=new Benchmark;
+#     $timeall=timediff($btime,$atime);
+#     $logger->info("Zeit fuer : $titstatement6 : ist ".timestr($timeall));
+#     undef $atime;
+#     undef $btime;
+#     undef $timeall;
+#   }
   
-  if ($config{benchmark}){
-    $atime=new Benchmark;
-  }
+#   if ($config{benchmark}){
+#     $atime=new Benchmark;
+#   }
   
-  # Ausgabe GT unverkn.
+#   # Ausgabe GT unverkn.
   
-  if ($config{benchmark}){
-    $atime=new Benchmark;
-  }
+#   if ($config{benchmark}){
+#     $atime=new Benchmark;
+#   }
   
-  my $titresult2=$dbh->prepare("$titstatement2") or $logger->error($DBI::errstr);
-  $titresult2->execute($titidn) or $logger->error($DBI::errstr);
+#   my $titresult2=$dbh->prepare("$titstatement2") or $logger->error($DBI::errstr);
+#   $titresult2->execute($titidn) or $logger->error($DBI::errstr);
   
-  my $titres2;
-  while ($titres2=$titresult2->fetchrow_hashref){
-    push @normset, set_simple_category("GT unverkn","$titres2->{gtunv}");
-  }
-  $titresult2->finish();
+#   my $titres2;
+#   while ($titres2=$titresult2->fetchrow_hashref){
+#     push @normset, set_simple_category("GT unverkn","$titres2->{gtunv}");
+#   }
+#   $titresult2->finish();
   
-  if ($config{benchmark}){
-    $btime=new Benchmark;
-    $timeall=timediff($btime,$atime);
-    $logger->info("Zeit fuer : $titstatement2 : ist ".timestr($timeall));
-    undef $atime;
-    undef $btime;
-    undef $timeall;
-  }
+#   if ($config{benchmark}){
+#     $btime=new Benchmark;
+#     $timeall=timediff($btime,$atime);
+#     $logger->info("Zeit fuer : $titstatement2 : ist ".timestr($timeall));
+#     undef $atime;
+#     undef $btime;
+#     undef $timeall;
+#   }
   
   # Ausgabe diverser Informationen
   
-  push @normset, set_simple_category("IN unverkn","$titres1->{inunverkn}") if ($titres1->{inunverkn});    
+#  push @normset, set_simple_category("IN unverkn","$titres1->{inunverkn}") if ($titres1->{inunverkn});    
   push @normset, set_simple_category("Mat.Benennung","$titres1->{matbenennung}") if ($titres1->{matbenennung});    
   push @normset, set_simple_category("Sonst.Mat.ben","$titres1->{sonstmatben}") if ($titres1->{sonstmatben});    
   push @normset, set_simple_category("Sonst.Angaben","$titres1->{sonstang}") if ($titres1->{sonstang});    
@@ -2309,34 +2360,55 @@ sub get_tit_set_by_idn {
     undef $btime;
     undef $timeall;
   }
+
+  # Ausgabe der Anzahl verkn"upfter Ueberordnungen
   
-  # Ausgabe der Anzahl verkn"upfter GTM
-  
-  @requests=("select titidn from titgtm where verwidn=$titres1->{idn}");
+  @requests=("select verwidn from tittit where titidn=$titres1->{idn}");
   my $verkntit=get_number(\@requests,$dbh);
   if ($verkntit > 0){
     
-    push @normset, set_url_category("B&auml;nde","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;gtmtit=$titres1->{idn};generalsearch=gtmtit",$verkntit);
+    push @normset, set_url_category("&Uuml;berordnungen","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;supertit=$titres1->{idn};generalsearch=supertit",$verkntit);
     
   }
+
+  # Ausgabe der Anzahl verkn"upfter Unterordnungen
   
-  # Ausgabe der Anzahl verkn"upfter GTF
-  
-  @requests=("select titidn from titgtf where verwidn=$titres1->{idn}");
-  $verkntit=get_number(\@requests,$dbh);
-  if ($verkntit > 0){
-    push @normset, set_url_category("St&uuml;cktitel","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;gtftit=$titres1->{idn};generalsearch=gtftit",$verkntit);
-  }
-  
-  # Ausgabe der Anzahl verkn"upfter IN verkn.
-  
-  @requests=("select titidn from titinverkn where titverw=$titres1->{idn}");
-  $verkntit=get_number(\@requests,$dbh);
+  @requests=("select titidn from tittit where verwidn=$titres1->{idn}");
+  my $verkntit=get_number(\@requests,$dbh);
   if ($verkntit > 0){
     
-    push @normset, set_url_category("Teile","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;invktit=$titres1->{idn};generalsearch=invktit",$verkntit);
+    push @normset, set_url_category("Unterordnungen","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;subtit=$titres1->{idn};generalsearch=subtit",$verkntit);
     
   }
+
+  
+  # Ausgabe der Anzahl verkn"upfter GTM
+  
+#   @requests=("select titidn from titgtm where verwidn=$titres1->{idn}");
+#   my $verkntit=get_number(\@requests,$dbh);
+#   if ($verkntit > 0){
+    
+#     push @normset, set_url_category("B&auml;nde","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;gtmtit=$titres1->{idn};generalsearch=gtmtit",$verkntit);
+    
+#   }
+  
+#   # Ausgabe der Anzahl verkn"upfter GTF
+  
+#   @requests=("select titidn from titgtf where verwidn=$titres1->{idn}");
+#   $verkntit=get_number(\@requests,$dbh);
+#   if ($verkntit > 0){
+#     push @normset, set_url_category("St&uuml;cktitel","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;gtftit=$titres1->{idn};generalsearch=gtftit",$verkntit);
+#   }
+  
+#   # Ausgabe der Anzahl verkn"upfter IN verkn.
+  
+#   @requests=("select titidn from titinverkn where titverw=$titres1->{idn}");
+#   $verkntit=get_number(\@requests,$dbh);
+#   if ($verkntit > 0){
+    
+#     push @normset, set_url_category("Teile","$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$database;invktit=$titres1->{idn};generalsearch=invktit",$verkntit);
+    
+#   }
   
   
   @requests=("select idn from mex where titidn=$titres1->{idn}");

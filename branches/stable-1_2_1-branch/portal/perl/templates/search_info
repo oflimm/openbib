@@ -16,5 +16,8 @@ entsprechende Verkn&uuml;pfungsart aus dem Pull-Down-Men&uuml; vor dem
 jeweiligen Texteingabefeld.<br />
 <br />
 <b>Besonderheit bei <span class="warning">*</span>:</b><br />
-- Keine <b>logische</b> Kombination mehrerer Worte im Eingabefeld m&ouml;glich<br />
-- <b>aber</b> exakte Phrasensuche
+<ul>
+<li>Keine <b>logische</b> Kombination mehrerer Worte im Eingabefeld m&ouml;glich</li>
+<li> <b>aber</b> exakte Phrasensuche</li>
+<li>Die Eingabe wird automatisch rechts trunkiert. Die Eingabe eines Sterns zur Trunkierung entfaellt</li>
+</ul>

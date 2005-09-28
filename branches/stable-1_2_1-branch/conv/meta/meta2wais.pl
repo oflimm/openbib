@@ -510,8 +510,8 @@ sub speziellegrundform {
     $line=~s/·//g; # Hacek
     $line=~s/¯//g; # Macron / Oberstrich
     $line=~s/¬//g;
-    $line=~s/&gt;//g;
-    $line=~s/&lt;//g;
+    #$line=~s/&gt;//g;
+    #$line=~s/&lt;//g;
     $line=~s/>//g;
     $line=~s/<//g;
 

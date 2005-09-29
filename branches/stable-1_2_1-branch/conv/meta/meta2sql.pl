@@ -400,6 +400,9 @@ if (($tit)||($all)){
     $titerschlandcount=0;
     $titformatcount=0;
     $titquellecount=0;
+    $tittitcount=0;
+    $titgtcount=0;
+    $titauscount=0;
     
 # Limits
     
@@ -824,7 +827,8 @@ $/);
     }
     
     if ($line=~/^ENDE/){
-	print MYSQLAUTL "$idn|0|0|$autans|0|0\n" if ($mysql);
+      my $autansnorm=grundform($autans);
+	print MYSQLAUTL "$idn|0|0|$autans|0|0|$autansnorm\n" if ($mysql);
 	print PGAUTL "$idn|0|0|$autans|0|0\n" if ($pg);
 	print ADAUTL "$idn|0|0|$stringsep$autans$stringsep|0|0\n" if ($ad);
 	print SQLAUTL "insert into aut values ($idn,0,0,\'$autans\',0,0);\n" if ($sql);
@@ -893,7 +897,8 @@ $/);
     }
     
     if ($line=~/^ENDE/){
-	print MYSQLKORL "$idn|0|$korans|0\n" if ($mysql);
+      my $koransnorm=grundform($korans);
+	print MYSQLKORL "$idn|0|$korans|0|$koransnorm\n" if ($mysql);
 	print PGKORL "$idn|0|$korans|0\n" if ($pg);
 	print ADKORL "$idn|0|$stringsep$korans$stringsep|0\n" if ($ad);
 	print SQLKORL "insert into kor values ($idn,0,\'$korans\',0);\n" if ($sql);
@@ -1006,7 +1011,8 @@ $/);
     }
     
     if ($line=~/^ENDE/){
-	print MYSQLSWTL "$idn|0|$schlagw|$erlaeut|0\n" if ($mysql);
+      my $schlagwnorm=grundform($schlagw);
+	print MYSQLSWTL "$idn|0|$schlagw|$erlaeut|0|$schlagwnorm\n" if ($mysql);
 	print PGSWTL "$idn|0|$schlagw|$erlaeut|0\n" if ($pg);
 	print ADSWTL "$idn|0|$stringsep$schlagw$stringsep|$stringsep$erlaeut$stringsep|0\n" if ($ad);	
 	print SQLSWTL "insert into swt values ($idn,0,\'$schlagw\',\'$erlaeut\',0);\n" if ($sql);
@@ -1142,7 +1148,8 @@ $/);
             $oberbegriff=0;
         }
 	if ($idn){
-	    print MYSQLNOTL "$idn|0|0|$notation|$benennung|$abrufzeichen|$beschrnot|$abrufnr|$oberbegriff\n" if ($mysql);
+	  my $notationnorm=grundform($notation);
+	    print MYSQLNOTL "$idn|0|0|$notation|$benennung|$abrufzeichen|$beschrnot|$abrufnr|$oberbegriff|$notationnorm\n" if ($mysql);
 	    print PGNOTL "$idn|0|0|$notation|$benennung|$abrufzeichen|$beschrnot|$abrufnr|$oberbegriff\n" if ($pg);
 	    print ADNOTL "$idn|0|0|$stringsep$notation$stringsep|$stringsep$benennung$stringsep|$stringsep$abrufzeichen$stringsep|$stringsep$beschrnot$stringsep|$stringsep$abrufr$stringsep|$oberbegriff\n" if ($ad);
 	    print SQLNOTL "insert into notation values ($idn,0,0,\'$notation\',\'$benennung\',\'$abrufzeiche\',\'$beschrnot\',\'$abrufr\',$oberbegriff);\n" if ($sql);
@@ -1207,6 +1214,41 @@ sub bearbeite_titline {
     }
     if ($line=~/^1110 0*(\d+)/){
 	$idausleihe=$1;
+    }
+    if ($line=~/^0004.IDN: (\d+)/){
+	$titverw=$1;
+	if (($idnmode eq "offset")&&($offset)) {
+	    $titverw=$titverw+$offset;
+	}
+	if (($idnmode eq "sigel")&&($sigel)){
+	    $titverw="$sigel$titverw";
+	}
+
+	print MYSQLTITTITL "$idn|$titverw\n" if ($mysql);
+	print PGTITTITL "$idn|$titverw\n" if ($pg);
+	print ADTITTITL "$idn|$titverw\n" if ($ad);
+	print SQLTITL "insert into tittit values ($idn,$titverw);\n" if ($sql);
+	$tittitcount++;
+    }
+    if ($line=~/^0451 (.*)/){
+	$gt=$1;
+	chop $gt if ($gt=~m/
+$/);
+	print MYSQLTITGTL "$idn|$gt\n" if ($mysql);
+	print PGTITGTL "$idn|$gt\n" if ($pg);
+	print ADTITGTL "$idn|$gt\n" if ($ad);
+	print SQLTITL "insert into titgt values ($idn,\'$gt\');\n" if ($sql);
+	$titgtcount++;
+    }
+    if ($line=~/^0590 (.*)/){
+	$aus=$1;
+	chop $aus if ($aus=~m/
+$/);
+	print MYSQLTITAUSL "$idn|$aus\n" if ($mysql);
+	print PGTITAUSL "$idn|$aus\n" if ($pg);
+	print ADTITAUSL "$idn|$aus\n" if ($ad);
+	print SQLTITL "insert into titaus values ($idn,\'$aus\');\n" if ($sql);
+	$titauscount++;
     }
     if ($line=~/^2000.IDN: (\d+)/){
 	$verfverw=$1;
@@ -1853,7 +1895,7 @@ $/);
 $/);
     }
     if ($line=~/^ENDE/){
-	print MYSQLTITL "$idn|$idausleihe|$titeltyp|0|$ast|$esthe|$estfn|$hst|$zuergurh|".substr($titzusatz,0,$lzusatz)."|$vorlbeigwerk|$gemeinsang|$sachlben|".substr($vorlverf,0,$lvorlverf)."|$vorlunter|".substr($ausg,0,$lausg)."|$verlagsort|$verlag|$weitereort|$aufnahmeort|$aufnahmejahr|$erschjahr|$anserschjahr|$erscheinungsverlauf|$verfquelle|$eortquelle|$ejahrquelle|$kollation|$matbenennung|$sonstmatben|$sonstang|$begleitmat|".substr($fussnote,0,$lfussnote)."|$bindpreis|$hsfn|$sprache|$mass||$uebershst|$inunverkn|0|$rem|$bemerk\n" if ($mysql);
+	print MYSQLTITL "$idn|$idausleihe|$titeltyp|0|$ast|$esthe|$estfn|$hst|$zuergurh|$titzusatz|$vorlbeigwerk|$gemeinsang|$sachlben|$vorlverf|$vorlunter|$ausg|$verlagsort|$verlag|$weitereort|$aufnahmeort|$aufnahmejahr|$erschjahr|$anserschjahr|$erscheinungsverlauf|$verfquelle|$eortquelle|$ejahrquelle|$kollation|$matbenennung|$sonstmatben|$sonstang|$begleitmat|$fussnote|$bindpreis|$hsfn|$sprache|$mass||$uebershst|$inunverkn|0|$rem|$bemerk\n" if ($mysql);
 	print PGTITL "$idn|$idausleihe|$titeltyp|0|$ast|$esthe|$estfn|$hst|$zuergurh|".substr($titzusatz,0,$lzusatz)."|$vorlbeigwerk|$gemeinsang|$sachlben|".substr($vorlverf,0,$lvorlverf)."|$vorlunter|".substr($ausg,0,$lausg)."|$verlagsort|$verlag|$weitereort|$aufnahmeort|$aufnahmejahr|$erschjahr|$kollation|$matbenennung|$sonstmatben|$sonstang|$begleitmat|".substr($fussnote,0,$lfussnote)."|$bindpreis|$hsfn|$sprache|$mass||$uebershst|$inunverkn|0|$rem|$bemerk\n" if ($pg);
 	    print ADTITL "$idn|$idausleihe|$titeltyp|0|$stringsep".substr($ast,0,$last-1)."$stringsep|$stringsep".substr($esthe,0,$lesthe-1)."$stringsep|$stringsep".substr($estfn,0,$lestfn-1)."$stringsep|$stringsep".substr($hst,0,$lhst-1)."$stringsep|$stringsep".substr($zuergurh,0,$lzuergurh-1)."$stringsep|$stringsep".substr($titzusatz,0,$lzusatz-1)."$stringsep|$stringsep".substr($vorlbeigwerk,0,$lvorlbeigwerk-1)."$stringsep|$stringsep".substr($gemeinsang,0,$lgemeinsang-1)."$stringsep|$stringsep".substr($sachlben,0,$lsachlben-1)."$stringsep|$stringsep".substr($vorlverf,0,$lvorlverf)."$stringsep|$stringsep".substr($vorlunter,0,$lvorlunter-1)."$stringsep|$stringsep".substr($ausg,0,$lausg-1)."$stringsep|$stringsep".substr($verlagsort,0,$lverlagsort-1)."$stringsep|$stringsep".substr($verlag,0,$lverlag-1)."$stringsep|$stringsep".substr($weitereort,0,$lweitereort-1)."$stringsep|$stringsep$aufnahmeort$stringsep|$stringsep$aufnahmejahr$stringsep|$stringsep".substr($erschjahr,0,$lerschjahr-1)."$stringsep|$stringsep".substr($kollation,0,$lkollation-1)."$stringsep|$stringsep".substr($matbenennung,0,$lmatbenennung-1)."$stringsep|$stringsep".substr($sonstmatben,0,$lsonstmatben-1)."$stringsep|$stringsep".substr($sonstang,0,$lsonstang-1)."$stringsep|$stringsep".substr($begleitmat,0,$lbegleitmat-1)."$stringsep|$stringsep".substr($fussnote,0,$lfussnote-1)."$stringsep|$stringsep".substr($bindpreis,0,$lbindpreis-1)."$stringsep|$stringsep".substr($hsfn,0,$lhsfn-1)."$stringsep|$stringsep".substr($sprache,0,$lsprache-1)."$stringsep|$stringsep".substr($mass,0,$lmass-1)."$stringsep|$stringsep$stringsep|$stringsep".substr($uebershst,0,$luebershst-1)."$stringsep|$stringsep".substr($inunverkn,0,$linunverkn-1)."$stringsep|0|$stringsep".substr($rem,0,$lrem-1)."$stringsep|$stringsep".substr($bemerk,0,$lbemerk-1)."$stringsep\n" if ($ad);
 	print SQLTITL "insert into tit values ($idn,$idausleihe,$titeltyp,0,\'$ast\',\'$esthe\',\'$estfn\',\'$hst\',\'$zuergurh\',\'$zusatz\',\'$vorlbeigwerk\',\'$gemeinsang\',\'$sachlben\',\'$vorlverf\',\'$vorlunter\',\'$ausg\',\'$verlagsort\',\'$verlag\',\'$weitereort\',\'$aufnahmeort\',\'$aufnahmejahr\',\'$erschjahr\',\'$kollation\',\'$matbenennung\',\'$sonstmatben\',\'$sonstang\',\'$begleitmat\',\'$fussnote\',\'$bindpreis\',\'$hsfn\',\'$sprache\',\'$mass\','',\'$uebershst\',\'$inunverkn\',0,\'$rem\',\'$bemerk\');\n" if ($sql);
@@ -2257,6 +2299,9 @@ sub mysql_tit_init {
     $mysqltitnotl="titnot.mysql";
     $mysqltitwstl="titwst.mysql";
     $mysqltiturll="titurl.mysql";
+    $mysqltittitl="tittit.mysql";
+    $mysqltitgtl="titgt.mysql";
+    $mysqltitausl="titaus.mysql";
 
 
     open(MYSQLTITL,">".$mysqltitl);
@@ -2302,6 +2347,9 @@ sub mysql_tit_init {
     open(MYSQLTITKORL,">".$mysqltitkorl);
     open(MYSQLTITNOTL,">".$mysqltitnotl);
     open(MYSQLTITWSTL,">".$mysqltitwstl);
+    open(MYSQLTITTITL,">".$mysqltittitl);
+    open(MYSQLTITGTL,">".$mysqltitgtl);
+    open(MYSQLTITAUSL,">".$mysqltitausl);
 }
 
 sub mysql_tit_cleanup {
@@ -2346,6 +2394,9 @@ sub mysql_tit_cleanup {
     close(MYSQLTITNOTL);
     close(MYSQLTITWSTL);
     close(MYSQLTITURLL);
+    close(MYSQLTITTITL);
+    close(MYSQLTITGTL);
+    close(MYSQLTITAUSL);
 
     if($titabstractcount!=0){
 	print MYSQLCONTROL "load data infile \'$dir/$mysqltitabstractl\' into table titabstract fields terminated by \'|\';\n";
@@ -2469,6 +2520,15 @@ sub mysql_tit_cleanup {
     }    
     if($titurlcount!=0){
 	print MYSQLCONTROL "load data infile \'$dir/$mysqltiturll\' into table titurl fields terminated by \'|\';\n";
+    }    
+    if($tittitcount!=0){
+	print MYSQLCONTROL "load data infile \'$dir/$mysqltittitl\' into table tittit fields terminated by \'|\';\n";
+    }    
+    if($titgtcount!=0){
+	print MYSQLCONTROL "load data infile \'$dir/$mysqltitgtl\' into table titgt fields terminated by \'|\';\n";
+    }    
+    if($titauscount!=0){
+	print MYSQLCONTROL "load data infile \'$dir/$mysqltitausl\' into table titaus fields terminated by \'|\';\n";
     }    
 
 }
@@ -3746,4 +3806,61 @@ sub print_help {
     print "  -dos                    : DOS Encoding\n";
     print "  -encoding               : Generelles Encoding\n";
     exit;
+}
+
+sub grundform {
+    my $line=shift @_;
+
+    # Doublequotes haben in WAIS nichts zu suchen
+
+    $line=~s/\"//g;
+    $line=~s/'/ /g;
+
+    $line=~s/&#228;/ae/g;
+    $line=~s/&#252;/ue/g;
+    $line=~s/&#246;/oe/g;
+    $line=~s/&#223;/ss/g;
+    $line=~s/&#214;/Oe/g;
+    $line=~s/&#220;/Ue/g;
+    $line=~s/&#196;/Ae/g;
+    
+    $line=~s/ü/ue/g;
+    $line=~s/ä/ae/g;
+    $line=~s/ö/oe/g;
+    $line=~s/Ü/Ue/g;
+    $line=~s/Ö/Oe/g;
+    $line=~s/Ä/Ae/g;
+    $line=~s/ß/ss/g;
+    $line=~s/ª//g;
+
+    $line=~s/è/e/g;
+    $line=~s/à/a/g;
+    $line=~s/ò/o/g;
+    $line=~s/ù/u/g;
+    $line=~s/È/e/g;
+    $line=~s/À/a/g;
+    $line=~s/Ò/o/g;
+    $line=~s/Ù/u/g;
+    $line=~s/é/e/g;
+    $line=~s/É/E/g;
+    $line=~s/á/a/g;
+    $line=~s/Á/a/g;
+    $line=~s/í/i/g;
+    $line=~s/Í/I/g;
+    $line=~s/ó/o/g;
+    $line=~s/Ó/O/g;
+    $line=~s/ú/u/g;
+    $line=~s/Ú/U/g;
+    $line=~s/ı/y/g;
+    $line=~s/İ/Y/g;
+    $line=~s/æ/ae/g; # ae
+    $line=~s/·//g; # Hacek
+    $line=~s/¯//g; # Macron / Oberstrich
+    $line=~s/¬//g;
+    $line=~s/&gt;/>/g;
+    $line=~s/&lt;/</g;
+    $line=~s/>//g;
+    $line=~s/<//g;
+
+    return $line;
 }

@@ -1163,7 +1163,7 @@ while (($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split ("
   # 089er verwenden, wenn genau eine 004 besetzt, aber keine 455/590
 
   if ($bandangvorl && $maxpos < 1 && $verwidn[0][3] eq ""){
-    print TIT "0451 $1\n";
+    print TIT "0451 $bandangvorl\n";
 
     $verwidn[0][3]=$bandangvorl;
   }

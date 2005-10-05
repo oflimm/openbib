@@ -1708,7 +1708,7 @@ sub handler {
       OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
       
       OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@sortedoutputbuffer);
-      OpenBib::Search::Util::print_tit_list_by_idn(\@sortedoutputbuffer,\%dbinfo,$searchmode,$rating,$bookinfo,$database,$sessionID,$r,$stylesheet,$hitrange,$offset,$hitrange,$offset,$view);
+      OpenBib::Search::Util::print_tit_list_by_idn(\@sortedoutputbuffer,\%dbinfo,$searchmode,$rating,$bookinfo,$database,$sessionID,$r,$stylesheet,$hitrange,$offset,$view);
       
       return OK;
     }	

@@ -895,130 +895,157 @@ sub get_tit_listitem_by_idn {
     # Sachliche Benennung und HST nicht besetzt sind, dann verwende als
     # Ausgabetext stattdessen den HST des *ersten* "ubergeordneten Werkes und
     # den Zusatz/Laufende Z"ahlung
+
+    my ($gt,$aus,$titstring)=("","","");
+
+    my $gtresult=$dbh->prepare("select gt from titgt where titidn=? limit 1") or $logger->error($DBI::errstr);
+    $gtresult->execute($titidn);
+
+    my $gtall_ref=$gtresult->fetchall_arrayref;
+
+    $logger->info($gtresult);
+    $titstring=($gtall_ref->[0][0])?$gtall_ref->[0][0]:'';
     
-    if ($hint eq "none"){
+    if (!$titstring){
+      my $ausresult=$dbh->prepare("select aus from titaus where titidn=? limit 1") or $logger->error($DBI::errstr);
+      $ausresult->execute($titidn);
 
-      # Finde anhand GTM
-      
-      my @requests=("select verwidn from titgtm where titidn=$titidn limit 1");
-      my @tempgtmidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-      
-      # in @tempgtmidns sind die IDNs der "ubergeordneten Werke
-      
-      my $tempgtmidn;
-      
-      foreach $tempgtmidn (@tempgtmidns){
-	
-	my @requests=("select hst from tit where idn=$tempgtmidn"); 
-	my @tithst=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-	
-	@requests=("select ast from tit where idn=$tempgtmidn"); 
-	my @titast=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-	
-	# Der AST hat Vorrang ueber den HST
-	
-	if ($titast[0]){
-	  $tithst[0]=$titast[0];
-	}
-	
-	@requests=("select zus from titgtm where verwidn=$tempgtmidn");
-	my @gtmzus=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-	
-	$listitem{hst}=$tithst[0];
-	$listitem{zus}=$gtmzus[0];
-	$listitem{title}="$listitem{hst} ; $listitem{zus}";
-      }
-      
-      
-      # obsolete ?????
-      
-      @requests=("select verwidn from titgtf where titidn=$titidn");
-      my @tempgtfidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-      
-      my $tempgtfidn;
-      
-      if ($#tempgtfidns >= 0){
-	$tempgtfidn=$tempgtfidns[0];
-
-	# Problem: Mehrfachausgabe in Kurztrefferausgabe eines Titels...
-	# Loesung: Nur der erste wird ausgegeben
-	#		foreach $tempgtfidn (@tempgtfidns){
-	
-	my @requests=("select hst from tit where idn=$tempgtfidn");
-	
-	my @tithst=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-	
-	@requests=("select ast from tit where idn=$tempgtfidn");
-	
-	my @titast=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-	
-	# Der AST hat Vorrang ueber den HST
-	
-	if ($titast[0]){
-	  $tithst[0]=$titast[0];
-	}
-	
-	@requests=("select zus from titgtf where verwidn=$tempgtfidn");
-	
-	my @gtfzus=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-	
-	$listitem{hst}=$tithst[0];
-	$listitem{zus}=$gtfzus[0];
-	$listitem{title}="$listitem{hst} ; $listitem{zus}";	
-      }		    
-      
+      my $ausall_ref=$ausresult->fetchall_arrayref;
+      $titstring=($ausall_ref->[0][0])?$ausall_ref->[0][0]:'';
     }
-    else {
-      my @requests=("select hst from tit where idn=$hint");
-      my @tithst=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-      
-      @requests=("select ast from tit where idn=$hint");
-      my @titast=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-      
-      # Der AST hat Vorrang ueber den HST
-      
-      if ($titast[0]){
-	$tithst[0]=$titast[0];
-      }
-      
-      if ($mode == 6){
-	
-	my @requests=("select zus from titgtf where verwidn=$hint and titidn=$titidn");
-	my @gtfzus=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-	
-	$listitem{hst}=$tithst[0];
-	$listitem{zus}=$gtfzus[0];
-	$listitem{title}="$listitem{hst} ; $listitem{zus}";	
-     }
-      if ($mode == 7){
-	my $showerschjahr=$titres1->{erschjahr};
-	
-	if ($showerschjahr eq ""){
-	  $showerschjahr=$titres1->{anserschjahr};
-	}
-	
-	my @requests=("select zus from titgtm where verwidn=$hint and titidn=$titidn");
-	my @gtmzus=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-	
-	$listitem{hst}=$tithst[0];
-	$listitem{zus}=$gtmzus[0];
-	$listitem{title}="$listitem{hst} ; $listitem{zus}";
-      }			     
-      if ($mode == 8){
-	my $showerschjahr=$titres1->{erschjahr};
-	
-	if ($showerschjahr eq ""){
-	  $showerschjahr=$titres1->{anserschjahr};
-	}
-	
-	my @requests=("select zus from titinverkn where titverw=$hint and titidn=$titidn");
-	my @invkzus=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
 
-	$listitem{hst}=$tithst[0];
-	$listitem{zus}=$invkzus[0];
-	$listitem{title}="$listitem{hst} ; $listitem{zus}";
-     }			     
+    if (!$titstring){
+      $titstring="Kein HST/AST vorhanden";
     }
+
+    $listitem{hst}=$titstring;
+    $listitem{zus}="";
+    $listitem{title}=$titstring;
+
+    
+#     if ($hint eq "none"){
+
+#       # Finde anhand GTM
+      
+#       my @requests=("select verwidn from titgtm where titidn=$titidn limit 1");
+#       my @tempgtmidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
+      
+#       # in @tempgtmidns sind die IDNs der "ubergeordneten Werke
+      
+#       my $tempgtmidn;
+      
+#       foreach $tempgtmidn (@tempgtmidns){
+	
+# 	my @requests=("select hst from tit where idn=$tempgtmidn"); 
+# 	my @tithst=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
+	
+# 	@requests=("select ast from tit where idn=$tempgtmidn"); 
+# 	my @titast=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
+	
+# 	# Der AST hat Vorrang ueber den HST
+	
+# 	if ($titast[0]){
+# 	  $tithst[0]=$titast[0];
+# 	}
+	
+# 	@requests=("select zus from titgtm where verwidn=$tempgtmidn");
+# 	my @gtmzus=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
+	
+# 	$listitem{hst}=$tithst[0];
+# 	$listitem{zus}=$gtmzus[0];
+# 	$listitem{title}="$listitem{hst} ; $listitem{zus}";
+#       }
+      
+      
+#       # obsolete ?????
+      
+#       @requests=("select verwidn from titgtf where titidn=$titidn");
+#       my @tempgtfidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
+      
+#       my $tempgtfidn;
+      
+#       if ($#tempgtfidns >= 0){
+# 	$tempgtfidn=$tempgtfidns[0];
+
+# 	# Problem: Mehrfachausgabe in Kurztrefferausgabe eines Titels...
+# 	# Loesung: Nur der erste wird ausgegeben
+# 	#		foreach $tempgtfidn (@tempgtfidns){
+	
+# 	my @requests=("select hst from tit where idn=$tempgtfidn");
+	
+# 	my @tithst=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
+	
+# 	@requests=("select ast from tit where idn=$tempgtfidn");
+	
+# 	my @titast=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
+	
+# 	# Der AST hat Vorrang ueber den HST
+	
+# 	if ($titast[0]){
+# 	  $tithst[0]=$titast[0];
+# 	}
+	
+# 	@requests=("select zus from titgtf where verwidn=$tempgtfidn");
+	
+# 	my @gtfzus=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
+	
+# 	$listitem{hst}=$tithst[0];
+# 	$listitem{zus}=$gtfzus[0];
+# 	$listitem{title}="$listitem{hst} ; $listitem{zus}";	
+#       }		    
+      
+#     }
+#     else {
+#       my @requests=("select hst from tit where idn=$hint");
+#       my @tithst=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
+      
+#       @requests=("select ast from tit where idn=$hint");
+#       my @titast=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
+      
+#       # Der AST hat Vorrang ueber den HST
+      
+#       if ($titast[0]){
+# 	$tithst[0]=$titast[0];
+#       }
+      
+#       if ($mode == 6){
+	
+# 	my @requests=("select zus from titgtf where verwidn=$hint and titidn=$titidn");
+# 	my @gtfzus=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
+	
+# 	$listitem{hst}=$tithst[0];
+# 	$listitem{zus}=$gtfzus[0];
+# 	$listitem{title}="$listitem{hst} ; $listitem{zus}";	
+#      }
+#       if ($mode == 7){
+# 	my $showerschjahr=$titres1->{erschjahr};
+	
+# 	if ($showerschjahr eq ""){
+# 	  $showerschjahr=$titres1->{anserschjahr};
+# 	}
+	
+# 	my @requests=("select zus from titgtm where verwidn=$hint and titidn=$titidn");
+# 	my @gtmzus=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
+	
+# 	$listitem{hst}=$tithst[0];
+# 	$listitem{zus}=$gtmzus[0];
+# 	$listitem{title}="$listitem{hst} ; $listitem{zus}";
+#       }			     
+#       if ($mode == 8){
+# 	my $showerschjahr=$titres1->{erschjahr};
+	
+# 	if ($showerschjahr eq ""){
+# 	  $showerschjahr=$titres1->{anserschjahr};
+# 	}
+	
+# 	my @requests=("select zus from titinverkn where titverw=$hint and titidn=$titidn");
+# 	my @invkzus=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
+
+# 	$listitem{hst}=$tithst[0];
+# 	$listitem{zus}=$invkzus[0];
+# 	$listitem{title}="$listitem{hst} ; $listitem{zus}";
+#      }			     
+#     }
   }
   
   # Falls HST oder Sachlben existieren, dann gebe ganz normal aus:
@@ -1612,7 +1639,7 @@ sub get_tit_set_by_idn {
     undef $timeall;
   }
   
-  push @normset, set_simple_category("Zuerg. Urh","$titres1->{zuergurh}") if ($titres1->{zuergurh});
+  push @normset, set_simple_category("Zu erg. Urh","$titres1->{zuergurh}") if ($titres1->{zuergurh});
   push @normset, set_simple_category("Zusatz","$titres1->{zusatz}") if ($titres1->{zusatz});
   push @normset, set_simple_category("Vorl.beig.Werk","$titres1->{vorlbeigwerk}") if ($titres1->{vorlbeigwerk});
   push @normset, set_simple_category("Gemeins.Angaben","$titres1->{gemeinsang}") if ($titres1->{gemeinsang});
@@ -3842,6 +3869,7 @@ sub initital_search_for_titidns {
   # TODO: SQL-Statement fuer Notationssuche optimieren
   
   if ($notation){
+    $notation=~s/\'/\\\'/g;
     $notation="((notation.notation like '$notation%' or notation.benennung like '$notation%') and search.verwidn=titnot.titidn and notation.idn=titnot.notidn)";
     $notfrom=", notation, titnot";
   }

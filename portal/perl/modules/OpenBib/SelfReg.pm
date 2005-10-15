@@ -32,6 +32,7 @@ package OpenBib::SelfReg;
 use strict;
 use warnings;
 no warnings 'redefine';
+use utf8;
 
 use Apache::Constants qw(:common);
 use Apache::Request();          # CGI-Handling (or require)
@@ -81,7 +82,7 @@ sub handler {
             or $logger->error_die($DBI::errstr);
   
     unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
-        OpenBib::Common::Util::print_warning("Ung&uuml;ltige Session",$r);
+        OpenBib::Common::Util::print_warning("Ungültige Session",$r);
         $sessiondbh->disconnect();
         $userdbh->disconnect();
         return OK;
@@ -118,7 +119,7 @@ sub handler {
         }
 
         if ($password1 ne $password2) {
-            OpenBib::Common::Util::print_warning("Die beiden eingegebenen Passworte stimmen nicht &uuml;berein.",$r);
+            OpenBib::Common::Util::print_warning("Die beiden eingegebenen Passworte stimmen nicht überein.",$r);
             $sessiondbh->disconnect();
             $userdbh->disconnect();
             return OK;
@@ -126,7 +127,7 @@ sub handler {
 
         # Ueberpruefen, ob es eine gueltige Mailadresse angegeben wurde.
         unless (Email::Valid->address($loginname)){
-            OpenBib::Common::Util::print_warning("Sie haben keine g&uuml;tige Mailadresse eingegeben. Gehen Sie bitte <a href=\"http://$config{servername}$config{selfreg_loc}?sessionID=$sessionID&action=show\">zur&uuml;ck</a> und korrigieren Sie Ihre Eingabe",$r);
+            OpenBib::Common::Util::print_warning("Sie haben keine gütige Mailadresse eingegeben. Gehen Sie bitte <a href=\"http://$config{servername}$config{selfreg_loc}?sessionID=$sessionID&action=show\">zurück</a> und korrigieren Sie Ihre Eingabe",$r);
             $sessiondbh->disconnect();
             $userdbh->disconnect();
             return OK;
@@ -136,7 +137,7 @@ sub handler {
         $userresult->execute($loginname) or $logger->error($DBI::errstr);
 
         if ($userresult->rows > 0) {
-            OpenBib::Common::Util::print_warning("Ein Benutzer mit dem Namen $loginname existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte <a href=\"http://$config{servername}$config{login_loc}?sessionID=$sessionID?action=login\">zur&uuml;ck</a> und lassen es sich zumailen.",$r);
+            OpenBib::Common::Util::print_warning("Ein Benutzer mit dem Namen $loginname existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte <a href=\"http://$config{servername}$config{login_loc}?sessionID=$sessionID?action=login\">zurück</a> und lassen es sich zumailen.",$r);
             $userresult->finish();
 
             $sessiondbh->disconnect();

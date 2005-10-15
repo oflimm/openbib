@@ -32,6 +32,7 @@ package OpenBib::UserPrefs;
 use strict;
 use warnings;
 no warnings 'redefine';
+use utf8;
 
 use Apache::Constants qw(:common);
 use Apache::Request ();
@@ -97,7 +98,7 @@ sub handler {
             or $logger->error_die($DBI::errstr);
   
     unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
-        OpenBib::Common::Util::print_warning("Ung&uuml;ltige Session",$r);
+        OpenBib::Common::Util::print_warning("Ungültige Session",$r);
 
         $sessiondbh->disconnect();
         $userdbh->disconnect();
@@ -265,7 +266,7 @@ sub handler {
         };
         OpenBib::Common::Util::print_page($config{tt_userprefs_changefields_tname},$ttdata,$r);
     }
-    elsif ($action eq "Kennung l�schen") {
+    elsif ($action eq "Kennung löschen") {
         # TT-Data erzeugen
         my $ttdata={
             view       => $view,
@@ -278,7 +279,7 @@ sub handler {
         };
         OpenBib::Common::Util::print_page($config{tt_userprefs_ask_delete_tname},$ttdata,$r);
     }
-    elsif ($action eq "Kennung soll wirklich gel�scht werden") {
+    elsif ($action eq "Kennung soll wirklich gelöscht werden") {
         # Zuerst werden die Datenbankprofile geloescht
         my $userresult;
         $userresult=$userdbh->prepare("delete from profildb using profildb,userdbprofile where userdbprofile.userid = ? and userdbprofile.profilid=profildb.profilid") or $logger->error($DBI::errstr);
@@ -334,9 +335,9 @@ sub handler {
         };
         OpenBib::Common::Util::print_page($config{tt_userprefs_userdeleted_tname},$ttdata,$r);
     }
-    elsif ($action eq "Password �ndern") {
+    elsif ($action eq "Password ändern") {
         if ($password1 eq "" || $password1 ne $password2) {
-            OpenBib::Common::Util::print_warning("Sie haben entweder kein Passwort eingegeben oder die beiden Passworte stimmen nicht &uuml;berein",$r);
+            OpenBib::Common::Util::print_warning("Sie haben entweder kein Passwort eingegeben oder die beiden Passworte stimmen nicht überein",$r);
       
             $sessiondbh->disconnect();
             $userdbh->disconnect();
@@ -351,7 +352,7 @@ sub handler {
     }
     elsif ($action eq "changemask") {
         if ($setmask eq "") {
-            OpenBib::Common::Util::print_warning("Es wurde keine Standard-Recherchemaske ausgew&auml;hlt",$r);
+            OpenBib::Common::Util::print_warning("Es wurde keine Standard-Recherchemaske ausgewählt",$r);
       
             $sessiondbh->disconnect();
             $userdbh->disconnect();

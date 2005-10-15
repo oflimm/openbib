@@ -32,6 +32,7 @@ package OpenBib::VirtualSearch;
 use strict;
 use warnings;
 no warnings 'redefine';
+use utf8;
 
 use Apache::Constants qw(:common);
 use Apache::Request ();
@@ -46,6 +47,7 @@ use OpenBib::VirtualSearch::Util;
 use OpenBib::Common::Util;
 use OpenBib::Common::Stopwords;
 use OpenBib::Config;
+use OpenBib::Template::Provider;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
@@ -106,6 +108,7 @@ sub handler {
     my $sortorder     = ($query->param('sortorder'))?$query->param('sortorder'):'up';
     my $searchall     = $query->param('searchall')     || '';
     my $searchprofile = $query->param('searchprofile') || '';
+    my $lang          = $query->param('l')             || 'de';
 
     my $verfindex     = $query->param('verfindex')     || '';
     my $korindex      = $query->param('korindex')      || '';
@@ -120,27 +123,27 @@ sub handler {
     ##        AND  - Und-Verkn"upfung
     ##        OR   - Oder-Verkn"upfung
     ##        NOT  - Und Nicht-Verknuepfung
-    my $boolverf      = ($query->param('boolverf')) ?$query->param('boolverf')
+    my $boolverf      = ($query->param('boolverf'))     ?$query->param('boolverf')
         :"AND";
-    my $boolhst       = ($query->param('boolhst')) ?$query->param('boolhst')
+    my $boolhst       = ($query->param('boolhst'))      ?$query->param('boolhst')
         :"AND";
-    my $boolswt       = ($query->param('boolswt')) ?$query->param('boolswt')
+    my $boolswt       = ($query->param('boolswt'))      ?$query->param('boolswt')
         :"AND";
-    my $boolkor       = ($query->param('boolkor')) ?$query->param('boolkor')
+    my $boolkor       = ($query->param('boolkor'))      ?$query->param('boolkor')
         :"AND";
     my $boolnotation  = ($query->param('boolnotation')) ?$query->param('boolnotation')
         :"AND";
-    my $boolisbn      = ($query->param('boolisbn')) ?$query->param('boolisbn')
+    my $boolisbn      = ($query->param('boolisbn'))     ?$query->param('boolisbn')
         :"AND";
-    my $boolissn      = ($query->param('boolissn')) ?$query->param('boolissn')
+    my $boolissn      = ($query->param('boolissn'))     ?$query->param('boolissn')
         :"AND";
-    my $boolsign      = ($query->param('boolsign')) ?$query->param('boolsign')
+    my $boolsign      = ($query->param('boolsign'))     ?$query->param('boolsign')
         :"AND";
-    my $boolejahr     = ($query->param('boolejahr')) ?$query->param('boolejahr')
+    my $boolejahr     = ($query->param('boolejahr'))    ?$query->param('boolejahr')
+        :"AND" ;
+    my $boolfs        = ($query->param('boolfs'))       ?$query->param('boolfs')
         :"AND";
-    my $boolfs        = ($query->param('boolfs'))?$query->param('boolfs')
-        :"AND";
-    my $boolmart      = ($query->param('boolmart'))?$query->param('boolmart')
+    my $boolmart      = ($query->param('boolmart'))     ?$query->param('boolmart')
         :"AND";
     my $boolhststring = ($query->param('boolhststring'))?$query->param('boolhststring')
         :"AND";
@@ -253,11 +256,11 @@ sub handler {
     }
 
     my %titeltyp=(
-        '1' => 'Einb&auml;ndige Werke und St&uuml;cktitel',
+        '1' => 'Einbändige Werke und Stücktitel',
         '2' => 'Gesamtaufnahme fortlaufender Sammelwerke',
-        '3' => 'Gesamtaufnahme mehrb&auml;ndig begrenzter Werke',
-        '4' => 'Bandauff&uuml;hrung',
-        '5' => 'Unselbst&auml;ndiges Werk',
+        '3' => 'Gesamtaufnahme mehrbändig begrenzter Werke',
+        '4' => 'Bandaufführung',
+        '5' => 'Unselbständiges Werk',
         '6' => 'Allegro-Daten',
         '7' => 'Lars-Daten',
         '8' => 'Sisis-Daten',
@@ -272,7 +275,7 @@ sub handler {
     my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
 
     unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
-        OpenBib::Common::Util::print_warning("Ung&uuml;ltige Session",$r);
+        OpenBib::Common::Util::print_warning("Ungültige Session",$r);
 
         $sessiondbh->disconnect();
         $userdbh->disconnect();
@@ -381,7 +384,7 @@ sub handler {
         }
         # Kein Profil
         else {
-            OpenBib::Common::Util::print_warning("Sie haben \"In ausgew&auml;hlten Katalogen suchen\" angeklickt, obwohl sie keine <a href=\"$config{databasechoice_loc}?sessionID=$sessionID\" target=\"body\">Kataloge</a> oder Suchprofile ausgew&auml;hlt haben. Bitte w&auml;hlen Sie die gew&uuml;nschten Kataloge/Suchprofile aus oder bet&auml;tigen Sie \"In allen Katalogen suchen\".",$r);
+            OpenBib::Common::Util::print_warning("Sie haben \"In ausgewählten Katalogen suchen\" angeklickt, obwohl sie keine <a href=\"$config{databasechoice_loc}?sessionID=$sessionID\" target=\"body\">Kataloge</a> oder Suchprofile ausgewählt haben. Bitte wählen Sie die gewünschten Kataloge/Suchprofile aus oder betätigen Sie \"In allen Katalogen suchen\".",$r);
 
             $sessiondbh->disconnect();
             $userdbh->disconnect();
@@ -417,7 +420,7 @@ sub handler {
         }
 
         if ($#databases > 0 && length($verf) < 3 ) {
-            OpenBib::Common::Util::print_warning("Der Verfasseranfang muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche ausgew&auml;hlt wurde.",$r);
+            OpenBib::Common::Util::print_warning("Der Verfasseranfang muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche ausgewählt wurde.",$r);
             return OK;
         }
 
@@ -493,6 +496,7 @@ sub handler {
 
         # TT-Data erzeugen
         my $ttdata={
+            lang       => $lang,
             view       => $view,
             stylesheet => $stylesheet,
             sessionID  => $sessionID,
@@ -537,12 +541,12 @@ sub handler {
         $kor=~s/%//g;
 
         if (!$kor) {
-            OpenBib::Common::Util::print_warning("Sie haben keine K&ouml;rperschaft eingegeben",$r);
+            OpenBib::Common::Util::print_warning("Sie haben keine Körperschaft eingegeben",$r);
             return OK;
         }
 
         if ($#databases > 0 && length($kor) < 3 ) {
-            OpenBib::Common::Util::print_warning("Der K&ouml;rperschaftsanfang muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche ausgew&auml;hlt wurde.",$r);
+            OpenBib::Common::Util::print_warning("Der Körperschaftsanfang muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche ausgewählt wurde.",$r);
             return OK;
         }
 
@@ -617,6 +621,7 @@ sub handler {
 
         # TT-Data erzeugen
         my $ttdata={
+            lang       => $lang,
             view       => $view,
             stylesheet => $stylesheet,		
             sessionID  => $sessionID,
@@ -668,7 +673,7 @@ sub handler {
         }
 
         if ($#databases > 0 && length($swt) < 3) {
-            OpenBib::Common::Util::print_warning("Der Schlagwortanfang muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche ausgew&auml;hlt wurde.",$r);
+            OpenBib::Common::Util::print_warning("Der Schlagwortanfang muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche ausgewählt wurde.",$r);
             return OK;
         }
 
@@ -742,6 +747,7 @@ sub handler {
 
         # TT-Data erzeugen
         my $ttdata={
+            lang       => $lang,
             view       => $view,
             stylesheet => $stylesheet,		
             sessionID  => $sessionID,
@@ -842,7 +848,7 @@ sub handler {
 
     if ($boolejahr eq "OR") {
         if ($ejahr) {
-            OpenBib::Common::Util::print_warning("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&ouml;glich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verst&auml;ndnis f&uuml;r diese Einschr&auml;nkung.",$r);
+            OpenBib::Common::Util::print_warning("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung.",$r);
 
             $sessiondbh->disconnect();
             $userdbh->disconnect();
@@ -855,7 +861,7 @@ sub handler {
         if ($ejahr) {
             if (!$firstsql) {
                 OpenBib::Common::Util::print_warning("Das Suchkriterium Jahr ist nur in Verbindung mit der
-UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&ouml;glich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verst&auml;ndnis f&uuml;r diese Einschr&auml;nkung.",$r);
+UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung.",$r);
 
                 $sessiondbh->disconnect();
                 $userdbh->disconnect();
@@ -908,13 +914,17 @@ UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&oum
 
     # Ausgabe des ersten HTML-Bereichs
     my $starttemplate = Template->new({
-        ABSOLUTE      => 1,
-        INCLUDE_PATH  => $config{tt_include_path},
-        OUTPUT        => $r,
+        LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+            INCLUDE_PATH   => $config{tt_include_path},
+        }) ],
+#        INCLUDE_PATH   => $config{tt_include_path},
+        ABSOLUTE       => 1,
+        OUTPUT         => $r,
     });
 
     # TT-Data erzeugen
     my $startttdata={
+        lang           => $lang,
         view           => $view,
         stylesheet     => $stylesheet,
         sessionID      => $sessionID,
@@ -1030,6 +1040,7 @@ UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&oum
                     sortorder         => $sortorder,
                     database          => $database,
                     sessionID         => $sessionID,
+                    targetdbinfo_ref  => $targetdbinfo_ref,
                 });
             }
 
@@ -1042,9 +1053,10 @@ UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&oum
                 $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel : ist ".timestr($timeall));
             }
 
-            my @sortedoutputbuffer=();
+#            my @sortedoutputbuffer=();
+            my @sortedoutputbuffer=@outputbuffer;
 
-            OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
+#            OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
 
             my $treffer=$#sortedoutputbuffer+1;
 
@@ -1054,14 +1066,18 @@ UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&oum
             }
 
             my $itemtemplate = Template->new({
-                ABSOLUTE      => 1,
-                INCLUDE_PATH  => $config{tt_include_path},
-                OUTPUT        => $r,
+                LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+                    INCLUDE_PATH   => $config{tt_include_path},
+                }) ],
+#                INCLUDE_PATH   => $config{tt_include_path},
+                ABSOLUTE       => 1,
+                OUTPUT         => $r,
             });
 
 
             # TT-Data erzeugen
             my $ttdata={
+                lang       => $lang,
                 view       => $view,
                 sessionID  => $sessionID,
 		  
@@ -1189,13 +1205,17 @@ UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&oum
     }
 
     my $endtemplate = Template->new({
-        ABSOLUTE      => 1,
-        INCLUDE_PATH  => $config{tt_include_path},
-        OUTPUT        => $r,
+        LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+            INCLUDE_PATH   => $config{tt_include_path},
+        }) ],
+#        INCLUDE_PATH   => $config{tt_include_path},
+        ABSOLUTE       => 1,
+        OUTPUT         => $r,
     });
 
     # TT-Data erzeugen
     my $endttdata={
+        lang          => $lang,
         view          => $view,
         sessionID     => $sessionID,
 

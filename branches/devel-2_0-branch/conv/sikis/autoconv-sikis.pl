@@ -6,7 +6,7 @@
 #
 #  Automatische Konvertierung von SIKIS-Daten
 #
-#  Dieses File ist (C) 1997-2004 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2005 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -44,32 +44,33 @@ use vars qw(%config);
 *config=\%OpenBib::Config::config;
 
 &GetOptions("single-pool=s" => \$singlepool,
-	    "get-via-wget" => \$getviawget,
-	    "fastload" => \$fastload,
-	    "help" => \$help
+	    "get-via-wget"  => \$getviawget,
+	    "fastload"      => \$fastload,
+	    "help"          => \$help
 	    );
 
 if ($help){
     print_help();
 }
 
-$rootdir=$config{'autoconv_dir'};
-$pooldir=$rootdir."/pools";
+$rootdir       = $config{'autoconv_dir'};
+$pooldir       = $rootdir."/pools";
 
-$wgetexe="/usr/bin/wget -nH --cut-dirs=3";
-$meta2sqlexe="$config{'conv_dir'}/meta2sql.pl";
-$meta2waisexe="$config{'conv_dir'}/meta2wais.pl";
-$wais2sqlexe="$config{'conv_dir'}/wais2searchSQL.pl";
-$mysqlexe="/usr/bin/mysql -u $config{'dbuser'} --password=$config{'dbpasswd'} -f";
-$mysqladminexe="/usr/bin/mysqladmin -u $config{'dbuser'} --password=$config{'dbpasswd'} -f";
-$myisamchkexe="/usr/bin/myisamchk --tmpdir=$config{'base_dir'}/tmp";
+$wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
+$meta2sqlexe   = "$config{'conv_dir'}/meta2sql.pl";
+$meta2mexexe   = "$config{'conv_dir'}/meta2mex.pl";
+$meta2waisexe  = "$config{'conv_dir'}/meta2wais.pl";
+$wais2sqlexe   = "$config{'conv_dir'}/wais2searchSQL.pl";
+$mysqlexe      = "/usr/bin/mysql -u $config{'dbuser'} --password=$config{'dbpasswd'} -f";
+$mysqladminexe = "/usr/bin/mysqladmin -u $config{'dbuser'} --password=$config{'dbpasswd'} -f";
+$myisamchkexe  = "/usr/bin/myisamchk --tmpdir=$config{'base_dir'}/tmp";
 
 if (!$singlepool){
   print STDERR "Kein Pool mit --single-pool= ausgewaehlt\n";
   exit;
 }
 
-my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or die "could not connect";
+my $sessiondbh = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or die "could not connect";
 
 # Verweis: Datenbankname -> Sigel
 
@@ -78,8 +79,8 @@ $dbinforesult->execute();
 
 my %poolsigel=();
 
-my $result=$dbinforesult->fetchrow_hashref();
-my $sigel=$result->{'sigel'};
+my $result = $dbinforesult->fetchrow_hashref();
+my $sigel  = $result->{'sigel'};
 
 if ($sigel eq ""){
   print STDERR "Kein Sigel zu Pool $singlepool auffindbar\n";
@@ -90,24 +91,23 @@ $dbinforesult=$sessiondbh->prepare("select * from dboptions where dbname='$singl
 $dbinforesult->execute();
 $result=$dbinforesult->fetchrow_hashref();
 
-my $host=$result->{'host'};
-my $protocol=$result->{'protocol'};
-my $remotepath=$result->{'remotepath'};
-my $remoteuser=$result->{'remoteuser'};
-my $remotepasswd=$result->{'remotepasswd'};
-my $filename=$result->{'filename'};
-my $titfilename=$result->{'titfilename'};
-my $autfilename=$result->{'autfilename'};
-my $korfilename=$result->{'korfilename'};
-my $swtfilename=$result->{'swtfilename'};
-my $notfilename=$result->{'notfilename'};
-my $mexfilename=$result->{'mexfilename'};
-my $autoconvert=$result->{'autoconvert'};
+my $host          = $result->{'host'};
+my $protocol      = $result->{'protocol'};
+my $remotepath    = $result->{'remotepath'};
+my $remoteuser    = $result->{'remoteuser'};
+my $remotepasswd  = $result->{'remotepasswd'};
+my $filename      = $result->{'filename'};
+my $titfilename   = $result->{'titfilename'};
+my $autfilename   = $result->{'autfilename'};
+my $korfilename   = $result->{'korfilename'};
+my $swtfilename   = $result->{'swtfilename'};
+my $notfilename   = $result->{'notfilename'};
+my $mexfilename   = $result->{'mexfilename'};
+my $autoconvert   = $result->{'autoconvert'};
 
 $dbinforesult->finish();
 
 $sessiondbh->disconnect();
-
 
 print "### POOL $singlepool\n";
 
@@ -123,7 +123,7 @@ if ($getviawget){
     $httpauthstring=" --http-user=$remoteuser --http-passwd=$remotepasswd";
   }
   
-  system("cd $pooldir/$singlepool ; rm *.exp.gz");
+  system("cd $pooldir/$singlepool ; rm unload.*");
   system("$wgetexe $httpauthstring -P $pooldir/$singlepool/ $protocol://$host/$remotepath/$titfilename > /dev/null 2>&1 ");
   system("$wgetexe $httpauthstring -P $pooldir/$singlepool/ $protocol://$host/$remotepath/$autfilename > /dev/null 2>&1 ");
   system("$wgetexe $httpauthstring -P $pooldir/$singlepool/ $protocol://$host/$remotepath/$korfilename > /dev/null 2>&1 ");
@@ -136,6 +136,9 @@ if ($getviawget){
 if (! -d "$rootdir/data/$singlepool"){
   system("mkdir $rootdir/data/$singlepool");
 }
+
+system("cd $pooldir/$singlepool/ ; zcat $titfilename | $meta2mexexe");
+
 
 system("rm $rootdir/data/$singlepool/*");
 system("/bin/gzip -dc $pooldir/$singlepool/$titfilename > $rootdir/data/$singlepool/tit.exp");
@@ -150,63 +153,59 @@ system("/bin/gzip -dc $pooldir/$singlepool/$mexfilename > $rootdir/data/$singlep
 print "### $singlepool: Konvertierung Exportdateien -> SQL\n";
 
 system("cd $rootdir/data/$singlepool ; $meta2sqlexe -all -mysql");
-  
+
 # Konvertierung Exportdateien -> WAIS
 
-print "### $singlepool: Konvertierung Exportdateien -> WAIS\n";
-system("cd $rootdir/data/$singlepool ; $meta2waisexe -encoding -combined ; rm *.exp ; $wais2sqlexe < data.wais ; rm data.wais");
+#print "### $singlepool: Konvertierung Exportdateien -> WAIS\n";
+#system("cd $rootdir/data/$singlepool ; $meta2waisexe -encoding -combined ; rm *.exp ; $wais2sqlexe < data.wais ; rm data.wais");
 
 print "### $singlepool: Loeschen der Daten in Biblio\n";
 
 # Fuer das Einladen externer SQL-Daten mit 'load' wird das File_priv
 # fuer den Benutzer dbuser benoetigt
 
-system("$mysqlexe $singlepool < $config{'dbdesc_dir'}/mysql/poolflush.mysql");
 system("$mysqlexe $singlepool < $config{'dbdesc_dir'}/mysql/pool.mysql");
 
 # Einladen der Daten nach Biblio
-
 print "### $singlepool: Einladen der Daten nach Biblio\n";
 system("$mysqlexe $singlepool < $rootdir/data/$singlepool/control.mysql");
-print "### $singlepool: Fixen der Sigel\n";
 
-if ($singlepool eq "instzs"){
-  system("$mysqlexe -e \"update mex set standort='' where standort='USB-Magazin'\" instzs");
-}
-elsif ($singlepool ne "richter"){
-  my $thispoolsigel=$sigel;
-  $thispoolsigel=~s/^99/00/;
-  system("$mysqlexe -e \"update mex set sigel=\\\"".$thispoolsigel."\\\" where idn < 99999999 \" ".$singlepool."");
-}
-else {
-  system("$mysqlexe -e \"update mex set standort='' where standort='USB-Magazin'\" instzs");
-}
+#if ($singlepool eq "instzs"){
+#  system("$mysqlexe -e \"update mex set standort='' where standort='USB-Magazin'\" instzs");
+#}
+#elsif ($singlepool ne "richter"){
+#  my $thispoolsigel=$sigel;
+#  $thispoolsigel=~s/^99/00/;
+#  system("$mysqlexe -e \"update mex set sigel=\\\"".$thispoolsigel."\\\" where idn < 99999999 \" ".$singlepool."");
+#}
+#else {
+#  system("$mysqlexe -e \"update mex set standort='' where standort='USB-Magazin'\" instzs");
+#}
 
-  
 # Kopieren der WAIS-Daten
 
-print "### $singlepool: Einladen der Search-Daten\n";
+#print "### $singlepool: Einladen der Search-Daten\n";
 
-if ($fastload){
-  system("$mysqlexe $singlepool -e \"truncate table search\"");
+#if ($fastload){
+#  system("$mysqlexe $singlepool -e \"truncate table search\"");
 
   # Fuer flush-tables wird das Reload_priv fuer den Benutzer
   # dbuser benoetigt
   
-  system("$mysqladminexe flush-tables");
-  system("$myisamchkexe --keys-used=0 -rq /var/lib/mysql/$singlepool/search");
-  system("$mysqlexe $singlepool -e \"load data infile '$rootdir/data/$singlepool/search.sql' into table search fields terminated by '|' \" ");
-  system("$myisamchkexe -r -q /var/lib/mysql/$singlepool/search");
-  system("$mysqladminexe flush-tables");
-}
-else {
-  system("cd $rootdir/data/$singlepool ; $mysqlexe $singlepool -e \"load data infile '$rootdir/data/$singlepool/search.sql' into table search fields terminated by '|'\" ");
-}
+#  system("$mysqladminexe flush-tables");
+#  system("$myisamchkexe --keys-used=0 -rq /var/lib/mysql/$singlepool/search");
+#  system("$mysqlexe $singlepool -e \"load data infile '$rootdir/data/$singlepool/search.sql' into table search fields terminated by '|' \" ");
+#  system("$myisamchkexe -r -q /var/lib/mysql/$singlepool/search");
+#  system("$mysqladminexe flush-tables");
+#}
+#else {
+#  system("cd $rootdir/data/$singlepool ; $mysqlexe $singlepool -e \"load data infile '$rootdir/data/$singlepool/search.sql' into table search fields terminated by '|'\" ");
+#}
 
 
 print "### $singlepool: Updating Titcount\n";
 
-system("$config{'base_dir'}/bin/updatetitcount.pl --single-pool=$singlepool");
+#system("$config{'base_dir'}/bin/updatetitcount.pl --single-pool=$singlepool");
 
 print "### $singlepool: Cleanup\n";
 system("rm $rootdir/data/$singlepool/*");

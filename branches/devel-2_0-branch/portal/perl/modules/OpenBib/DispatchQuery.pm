@@ -21,10 +21,10 @@
 #  an die Free Software Foundation, Inc., 675 Mass Ave, Cambridge,
 #  MA 02139, USA.
 #
-#####################################################################   
+#####################################################################
 
 #####################################################################
-# Einladen der benoetigten Perl-Module 
+# Einladen der benoetigten Perl-Module
 #####################################################################
 
 package OpenBib::DispatchQuery;
@@ -32,6 +32,7 @@ package OpenBib::DispatchQuery;
 use strict;
 use warnings;
 no warnings 'redefine';
+use utf8;
 
 use Apache::Constants qw(:common);
 use Apache::Request();
@@ -83,7 +84,7 @@ sub handler {
         return OK;
     }
     else {
-        OpenBib::Common::Util::print_warning("Ung&uuml;ltige Aktion",$r);
+        OpenBib::Common::Util::print_warning("Ungültige Aktion",$r);
         return OK;
     }
   

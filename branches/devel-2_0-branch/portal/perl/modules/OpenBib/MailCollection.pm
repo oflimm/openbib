@@ -32,6 +32,7 @@ package OpenBib::MailCollection;
 use strict;
 use warnings;
 no warnings 'redefine';
+use utf8;
 
 use Apache::Constants qw(:common);
 use Apache::Request ();
@@ -135,7 +136,7 @@ sub handler {
     }
 
     unless (Email::Valid->address($email)) {
-        OpenBib::Common::Util::print_warning("Sie haben eine ung&uuml;ltige Mailadresse eingegeben.",$r);
+        OpenBib::Common::Util::print_warning("Sie haben eine ungültige Mailadresse eingegeben.",$r);
     
         $sessiondbh->disconnect();
         $userdbh->disconnect();
@@ -143,11 +144,11 @@ sub handler {
     }	
 
     my $titeltyp_ref = {
-        '1' => 'Einb&auml;ndige Werke und St&uuml;cktitel',
+        '1' => 'Einbändige Werke und Stücktitel',
         '2' => 'Gesamtaufnahme fortlaufender Sammelwerke',
-        '3' => 'Gesamtaufnahme mehrb&auml;ndig begrenzter Werke',
-        '4' => 'Bandauff&uuml;hrung',
-        '5' => 'Unselbst&auml;ndiges Werk',
+        '3' => 'Gesamtaufnahme mehrbändig begrenzter Werke',
+        '4' => 'Bandaufführung',
+        '5' => 'Unselbständiges Werk',
         '6' => 'Allegro-Daten',
         '7' => 'Lars-Daten',
         '8' => 'Sisis-Daten',

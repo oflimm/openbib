@@ -32,6 +32,7 @@ package OpenBib::Admin;
 use strict;
 use warnings;
 no warnings 'redefine';
+use utf8;
 
 use Apache::Constants qw(:common);
 use Apache::Request ();
@@ -215,7 +216,7 @@ sub handler {
     if ($action eq "editcat") {
     
         # Zuerst schauen, ob Aktionen gefordert sind
-        if ($cataction eq "Lˆschen") {
+        if ($cataction eq "L√∂schen") {
             my $idnresult=$sessiondbh->prepare("delete from dbinfo where dbname = ?") or $logger->error($DBI::errstr);
             $idnresult->execute($dbname) or $logger->error($DBI::errstr);
             $idnresult=$sessiondbh->prepare("delete from titcount where dbname = ?") or $logger->error($DBI::errstr);
@@ -230,7 +231,7 @@ sub handler {
             return OK;
 
         }
-        elsif ($cataction eq "ƒndern") {
+        elsif ($cataction eq "√Ñndern") {
             my $idnresult=$sessiondbh->prepare("update dbinfo set faculty = ?, description = ?, system = ?, dbname = ?, sigel = ?, url = ?, active = ? where dbid = ?") or $logger->error($DBI::errstr);
             $idnresult->execute($faculty,$description,$system,$dbname,$sigel,$url,$active,$dbid) or $logger->error($DBI::errstr);
             $idnresult->finish();
@@ -246,7 +247,7 @@ sub handler {
 
             if ($dbname eq "" || $description eq "") {
 
-                OpenBib::Common::Util::print_warning("Sie m&uuml;ssen mindestens einen Katalognamen und eine Beschreibung eingeben.",$r);
+                OpenBib::Common::Util::print_warning("Sie m√ºssen mindestens einen Katalognamen und eine Beschreibung eingeben.",$r);
 
                 $idnresult->finish();
                 $sessiondbh->disconnect();
@@ -489,7 +490,7 @@ sub handler {
     
         # Zuerst schauen, ob Aktionen gefordert sind
     
-        if ($viewaction eq "Lˆschen") {
+        if ($viewaction eq "L√∂schen") {
             my $idnresult=$sessiondbh->prepare("delete from viewinfo where viewid = ?") or $logger->error($DBI::errstr);
             $idnresult->execute($viewid) or $logger->error($DBI::errstr);
             $idnresult=$sessiondbh->prepare("delete from viewdbs where viewname = ?") or $logger->error($DBI::errstr);
@@ -499,7 +500,7 @@ sub handler {
             return OK;
       
         }
-        elsif ($viewaction eq "ƒndern") {
+        elsif ($viewaction eq "√Ñndern") {
 
             # Zuerst die Aenderungen in der Tabelle Viewinfo vornehmen
 
@@ -528,7 +529,7 @@ sub handler {
 
             if ($viewname eq "" || $description eq "") {
 
-                OpenBib::Common::Util::print_warning("Sie m&uuml;ssen mindestens einen Viewnamen und eine Beschreibung eingeben.",$r);
+                OpenBib::Common::Util::print_warning("Sie m√ºssen mindestens einen Viewnamen und eine Beschreibung eingeben.",$r);
 
                 $idnresult->finish();
                 $sessiondbh->disconnect();
@@ -873,7 +874,7 @@ sub handler {
 
     }
     else {
-        OpenBib::Common::Util::print_warning('Keine g&uuml;ltige Aktion oder Session',$r);
+        OpenBib::Common::Util::print_warning('Keine g√ºltige Aktion oder Session',$r);
     }
   
   LEAVEPROG: sleep 0;

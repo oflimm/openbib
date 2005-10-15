@@ -6,186 +6,544 @@
 -------------- Autorenstammdatei ----------------
 -------------------------------------------------
 
-drop table IF EXISTS aut;
+
 create table aut (
- id            INT  NOT NULL,
- category      TEXT NOT NULL,
- indicator     TEXT,
- content       TEXT NOT NULL,
- contentnorm   TEXT,
- contentnormft TEXT,
- INDEX         (id),
- INDEX         (category  (10)),
- INDEX         (indicator (5)),
- INDEX         (contentnorm (10)),
- FULLTEXT      (contentnormft)
-)
-DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-;
+ idn int not null,
+ ida int,
+ versnr int,
+ ans text not null,
+ pndnr int,
+ verbnr int,
+ primary key (idn),
+ index (idn),
+ index (ans(255))
+);
+
+create table autverw (
+ autidn int not null,
+ verw text not null,
+ index (autidn),
+ index (verw(255))
+);
 
 -------------------------------------------------
 ------------Koerperschaftsstammdatei ------------
 -------------------------------------------------
 
-drop table IF EXISTS kor;
 create table kor (
- id            INT  NOT NULL,
- category      TEXT NOT NULL,
- indicator     TEXT,
- content       TEXT NOT NULL,
- contentnorm   TEXT,
- contentnormft TEXT,
- INDEX         (id),
- INDEX         (category  (10)),
- INDEX         (indicator (5)),
- INDEX         (contentnorm (10)),
- FULLTEXT      (contentnormft)
-)
-DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-;
+ idn int not null,
+ ida int,
+ korans text not null,
+ gkdident int,
+ primary key (idn),
+ index (idn),
+ index (korans(255))
+);
+
+create table korverw (
+koridn int not null,
+verw text not null,
+index (koridn),
+index (verw(255))
+);
+
+create table korfrueh (
+koridn int not null,
+frueher text,
+index (koridn),
+index (frueher(255))
+);
+
+create table korspaet (
+koridn int not null,
+spaeter text,
+index (koridn),
+index (spaeter(255))
+);
 
 -------------------------------------------------
 ------------ Schlagwortstammdatei ---------------
 -------------------------------------------------
 
-drop table IF EXISTS swt;
 create table swt (
- id            INT  NOT NULL,
- category      TEXT NOT NULL,
- indicator     TEXT,
- content       TEXT NOT NULL,
- contentnorm   TEXT,
- contentnormft TEXT,
- INDEX         (id),
- INDEX         (category    (10)),
- INDEX         (indicator   (5)),
- INDEX         (contentnorm (10)),
- FULLTEXT      (contentnormft)
-)
-DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-;
+idn int not null,
+ida int,
+schlagw text not null,
+erlaeut text,
+verbidn int,
+primary key (idn),
+index (idn),
+index (schlagw(255))
+);
 
--------------------------------------------------
--------------- Notationstammdatei ---------------
--------------------------------------------------
+create table swtverw (
+swtidn int not null,
+verw text,
+index (swtidn),
+index (verw(255))
+);
 
-drop table IF EXISTS notation;
-create table notation (
- id            INT  NOT NULL,
- category      TEXT NOT NULL,
- indicator     TEXT,
- content       TEXT NOT NULL,
- contentnorm   TEXT,
- contentnormft TEXT,
- INDEX         (id),
- INDEX         (category    (10)),
- INDEX         (indicator   (5)),
- INDEX         (contentnorm (10)),
- FULLTEXT      (contentnormft)
-)
-DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-;
+create table swtueber (
+swtidn int not null,
+ueber text,
+index (swtidn),
+index (ueber(255))
+);
+
+create table swtassoz (
+swtidn int not null,
+assoz text,
+index (swtidn),
+index (assoz(255))
+);
+
+create table swtfrueh (
+swtidn int not null,
+frueher text,
+index (swtidn),
+index (frueher(255))
+);
+
+create table swtspaet (
+swtidn int not null,
+spaeter text,
+index (swtidn),
+index (spaeter(255))
+);
+	
 
 -------------------------------------------------
 --------------- Titelstammdatei -----------------
 -------------------------------------------------
 
-drop table IF EXISTS tit;
 create table tit (
- id            INT  NOT NULL,
- category      TEXT NOT NULL,
- indicator     TEXT,
- content       TEXT NOT NULL,
- contentnorm   TEXT,
- contentnormft TEXT,
- INDEX         (id),
- INDEX         (category  (10)),
- INDEX         (indicator (5)),
- INDEX         (contentnorm (10)),
- FULLTEXT      (contentnormft)
-)
-DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-;
+idn int not null,
+ida int,
+titeltyp int,
+versnr int,
+ast text,
+esthe text,
+estfn text,
+hst text,
+zuergurh text,
+zusatz text,
+vorlbeigwerk text,
+gemeinsang text,
+sachlben text,
+vorlverf text,
+vorlunter text,
+ausg text,
+verlagsort text,
+verlag text,
+weitereort text,
+aufnahmeort text,
+aufnahmejahr text,
+erschjahr text,
+anserschjahr text,
+erschverlauf text,
+verfquelle text,
+eortquelle text,
+ejahrquelle text,
+kollation text,
+matbenennung text,
+sonstmatben text,
+sonstang text,
+begleitmat text,
+fussnote blob,
+bindpreis text,
+hsfn text,
+sprache text,
+mass text,
+biblid text,
+uebershst text,
+inunverkn text,
+verbidn int,
+rem text,
+bemerk text,
+primary key (idn),
+index (idn)
+);
+
+create table titabstract (
+titidn int not null,
+abstract text,
+lang text,
+index (titidn)
+);	
+
+create table titsammelverm (
+titidn int not null,
+sammelverm text,
+index (titidn)
+);	
+
+create table titanghst (
+titidn int not null,
+anghst text,
+index (titidn)
+);	
+
+create table titpausg (
+titidn int not null,
+pausg text,
+index (titidn)
+);	
+
+create table tittitbeil (
+titidn int not null,
+titbeil text,
+index (titidn)
+);	
+
+create table titbezwerk (
+titidn int not null,
+bezwerk text,
+index (titidn)
+);	
+
+create table titfruehausg (
+titidn int not null,
+fruehausg text,
+index (titidn)
+);	
+
+create table titfruehtit (
+titidn int not null,
+fruehtit text,
+index (titidn)
+);	
+
+create table titspaetausg (
+titidn int not null,
+spaetausg text,
+index (titidn)
+);	
+
+create table titpsthts (
+titidn int not null,
+psthts text,
+index (titidn)
+);	
+
+create table titbeigwerk (
+titidn int not null,
+beigwerk text,
+index (titidn)
+);	
+
+create table titgtunv (
+titidn int not null,
+gtunv text,
+index (titidn)
+);
+
+create table titisbn (
+titidn int not null,
+isbn text,
+index (titidn)
+);
+
+create table titissn (
+titidn int not null,
+issn text,
+index (titidn)
+);
+
+create table titner (
+titidn int not null,
+ner text,
+index (titidn)
+);
+
+create table titteiluw (
+titidn int not null,
+teiluw text,
+index (titidn)
+);
+
+create table titstichw (
+titidn int not null,
+stichwort text,
+index (titidn)
+);
+
+create table titwst (
+titidn int not null,
+wst text,
+index (titidn)
+);
+
+create table titurl (
+titidn int not null,
+url text,
+index (titidn)
+);
+
+create table titnr (
+titidn int not null,
+nr text,
+index (titidn)
+);
+
+create table titartinh (
+titidn int not null,
+artinhalt text,
+index (titidn)
+);
+
+create table titphysform (
+titidn int not null,
+physform text,
+index (titidn)
+);
+
+# Illustrationsangabe (MAB 434)
+
+create table titillang (
+titidn int not null,
+illang text,
+index (titidn)
+);
+
+create table titdrucker (
+titidn int not null,
+drucker text,
+index (titidn)
+);
+
+create table titerschland (
+titidn int not null,
+erschland text,
+index (titidn)
+);
+
+create table titformat (
+titidn int not null,
+format text,
+index (titidn)
+);
+
+create table titquelle (
+titidn int not null,
+quelle text,
+index (titidn)
+);
+
+
+---------------------Verweise--------------------	
+
+-------GTM
+create table titgtm (
+titidn int not null,
+verwidn int not null,
+zus text,
+index (titidn),
+index (verwidn)
+);
+
+-------GTF
+create table titgtf (
+titidn int not null,
+verwidn int not null,
+zus text,
+index (titidn),
+index (verwidn)
+);
+
+-------IN verknuepft
+create table titinverkn (
+titidn int not null,
+titverw int not null,
+zus text,
+index (titidn),
+index (titverw)
+);
+
+-------Schlagwort lok
+create table titswtlok (
+titidn int not null,
+swtverw int not null,
+index (titidn),
+index (swtverw)
+);
+
+-------Schlagwort reg
+create table titswtreg (
+titidn int not null,
+swtverw int not null,
+index (titidn),
+index (swtverw)
+);
+
+-------Verfasser
+create table titverf (
+titidn int not null,
+verfverw int not null,
+index (titidn),
+index (verfverw)
+);
+
+-------Person
+create table titpers (
+titidn int not null,
+persverw int not null,
+bez text,
+index (titidn),
+index (persverw)
+);
+
+-------Gefeierte Person
+create table titgpers (
+titidn int not null,
+persverw int not null,
+bez text,
+index (titidn),
+index (persverw)
+);
+
+-------Urheber
+create table titurh (
+titidn int not null,
+urhverw int not null,
+index (titidn),
+index (urhverw)
+);
+
+-------Koerperschaft
+create table titkor (
+titidn int not null,
+korverw int not null,
+index (titidn),
+index (korverw)
+);
+
+-------Notation
+create table titnot (
+titidn int not null,
+notidn int not null,
+index (titidn),
+index (notidn)
+);
 
 -------------------------------------------------
--------------- Exemplarstammdatei ---------------
+----------- Exemplardatenstammdatei -------------
 -------------------------------------------------
 
-drop table IF EXISTS mex;
 create table mex (
- id            INT  NOT NULL,
- category      TEXT NOT NULL,
- indicator     TEXT,
- content       TEXT NOT NULL,
- contentnorm   TEXT,
- contentnormft TEXT,
- INDEX         (id),
- INDEX         (category    (10)),
- INDEX         (indicator   (5)),
- INDEX         (contentnorm (10)),
- FULLTEXT      (contentnormft)
-)
-DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-;
+idn int not null,
+ida int,
+titidn int not null,
+sigel text,
+verbnr int,
+standort text,
+invnr text,
+lokfn text,
+ausleihstat text,
+medienart text,
+verbundidn int,
+buchung text,
+faellig text,
+erschverl text,
+primary key (idn),
+index (idn),
+index (titidn)
+);
 
--------Genereller Connector
+create table mexsign (
+mexidn int not null,
+signlok text not null,
+index (mexidn),
+index (signlok(255))
+);
 
-drop table IF EXISTS connection;
-create table connection (
-category   VARCHAR(20),
-sourceid   INT         NOT NULL,
-sourcetype VARCHAR(20),
-targetid   INT         NOT NULL,
-targettype VARCHAR(20),
-supplement TEXT,
-index      (category),
-index      (sourceid),
-index      (sourcetype),
-index      (targetid),
-index      (targettype)
-)
-DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-;
+-------------------------------------------------
+------------ Bibliotheksstammdatei --------------
+-------------------------------------------------
 
+create table bib (
+idn int not null,
+instname text,
+kurzbez text,
+sigel text,
+anschrift text,
+strasse text,
+oeffnzeit text,
+kopierer text,
+ansprech text,
+telefon text,
+ausleihe text,
+bemerk text,
+fachbereiche text,
+primary key (idn)
+);
+
+-------------------------------------------------
+------------- Notationsstammdatei ---------------
+-------------------------------------------------
+
+create table notation (
+idn int not null,
+ida int,
+versnr int,
+notation text not null,
+benennung text,
+abrufzeichen text,
+beschrnot text,
+abrufr text,
+oberbegriff int,
+primary key (idn),
+index (idn),
+index (notation(255))
+);
+
+create table notbenverw (
+notidn int not null,
+benverw text not null,
+index (notidn),
+index (benverw(255))
+);
+
+create table notverw (
+notidn int not null,
+verw text not null,
+index (notidn),
+index (verw(255))
+);
 
 -------------------------------------------------
 ----------------- Initiale Suche ----------------
 -------------------------------------------------
 
-drop table IF EXISTS search;
 create table search (
-idn       INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
-verwidn   INT NOT NULL,
-verf      TEXT,
-hst       TEXT,
-kor       TEXT,
-swt       TEXT,
-notation  TEXT,
-sign      TEXT,
-ejahr     INT,
-isbn      TEXT,
-issn      TEXT,
-artinh    TEXT,
-hststring VARCHAR(255),
-FULLTEXT  (verf),
-FULLTEXT  (hst),
-FULLTEXT  (kor),
-FULLTEXT  (swt),
-FULLTEXT  (notation),
-FULLTEXT  (sign),
-INDEX     (ejahr),
-FULLTEXT  (isbn),
-FULLTEXT  (issn),
-FULLTEXT  (artinh),
-index     (hststring(50)),
-FULLTEXT  (verf,hst,kor,swt,notation,sign,isbn,issn)
-)
-DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-;
+idn INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
+verwidn int not null,
+verf text,
+hst  text,
+kor  text,
+swt  text,
+notation text,
+sign text,
+ejahr int,
+isbn text,
+issn text,
+artinh text,
+hststring varchar(255),
+FULLTEXT (verf),
+FULLTEXT (hst),
+FULLTEXT (kor),
+FULLTEXT (swt),
+FULLTEXT (notation),
+FULLTEXT (sign),
+INDEX    (ejahr),
+FULLTEXT (isbn),
+FULLTEXT (issn),
+FULLTEXT (artinh),
+index    (hststring),
+FULLTEXT (verf,hst,kor,swt,notation,sign,isbn,issn)
+);
 
-drop table IF EXISTS lastresultlist;
 create table lastresultlist (
- sessionid VARCHAR(50) NOT NULL,
- singleidn BIGINT,
- index     (sessionid)
+ sessionid VARCHAR(255) NOT NULL,
+ singleidn bigint,
+ index(sessionid)
 );

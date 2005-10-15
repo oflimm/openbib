@@ -2,7 +2,7 @@
 #
 #  OpenBib::Common::Util
 #
-#  Dieses File ist (C) 2004 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2005 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -21,13 +21,14 @@
 #  an die Free Software Foundation, Inc., 675 Mass Ave, Cambridge,
 #  MA 02139, USA.
 #
-#####################################################################   
+#####################################################################
 
 package OpenBib::Common::Util;
 
 use strict;
 use warnings;
 no warnings 'redefine';
+use utf8;
 
 use Apache::Constants qw(:common);
 use Apache::Request ();
@@ -38,6 +39,7 @@ use POSIX();
 use Template;
 
 use OpenBib::Config;
+use OpenBib::Template::Provider;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
@@ -352,9 +354,12 @@ sub print_warning {
     my $view=get_viewname_of_session($sessiondbh,$sessionID);
  
     my $template = Template->new({
-        ABSOLUTE      => 1,
-        INCLUDE_PATH  => $config{tt_include_path},
-        OUTPUT        => $r,    # Output geht direkt an Apache Request
+        LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+            INCLUDE_PATH   => $config{tt_include_path},
+        }) ],
+#        INCLUDE_PATH   => $config{tt_include_path},
+        ABSOLUTE       => 1,
+        OUTPUT         => $r,    # Output geht direkt an Apache Request
     });
   
     # TT-Data erzeugen
@@ -398,9 +403,12 @@ sub print_info {
     my $view=get_viewname_of_session($sessiondbh,$sessionID);
  
     my $template = Template->new({
-        ABSOLUTE      => 1,
-        INCLUDE_PATH  => $config{tt_include_path},
-        OUTPUT        => $r,    # Output geht direkt an Apache Request
+        LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+            INCLUDE_PATH   => $config{tt_include_path},
+        }) ],
+#        INCLUDE_PATH   => $config{tt_include_path},
+        ABSOLUTE       => 1,
+        OUTPUT         => $r,    # Output geht direkt an Apache Request
     });
   
     # TT-Data erzeugen
@@ -451,9 +459,12 @@ sub print_page {
     $logger->debug("Using Template $templatename");
   
     my $template = Template->new({ 
-        ABSOLUTE      => 1,     # Notwendig fuer Kaskadierung
-        INCLUDE_PATH  => $config{tt_include_path},
-        OUTPUT        => $r,    # Output geht direkt an Apache Request
+        LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+            INCLUDE_PATH   => $config{tt_include_path},
+        }) ],
+#        INCLUDE_PATH   => $config{tt_include_path},
+        ABSOLUTE       => 1,     # Notwendig fuer Kaskadierung
+        OUTPUT         => $r,    # Output geht direkt an Apache Request
     });
   
     # Dann Ausgabe des neuen Headers
@@ -548,7 +559,7 @@ sub get_sort_nav {
 
     my %fullstring=('up'        => 'aufsteigend',
                     'down'      => 'absteigend',
-                    'author'    => 'nach Autor/K&ouml;rperschaft',
+                    'author'    => 'nach Autor/Körperschaft',
                     'publisher' => 'nach Verlag',
                     'signature' => 'nach Signatur',
                     'title'     => 'nach Titel',
@@ -558,7 +569,7 @@ sub get_sort_nav {
     my $katalogtyp="pro Katalog";
 
     if ($sortall eq "1") {
-        $katalogtyp="katalog&uuml;bergreifend";
+        $katalogtyp="katalogübergreifend";
     }
 
     my $thissortstring=$fullstring{$sorttype}." / ".$fullstring{$sortorder};
@@ -576,7 +587,7 @@ sub get_sort_nav {
     elsif ($nav eq 'sortall') {
         push @sortselect, {
             val  => 1,
-            desc => "katalog&uuml;bergreifend",
+            desc => "katalogübergreifend",
         };
     }
     elsif ($nav eq 'sortboth') {
@@ -587,7 +598,7 @@ sub get_sort_nav {
 
         push @sortselect, {
             val  => 1,
-            desc => "katalog&uuml;bergreifend",
+            desc => "katalogübergreifend",
         };
     }
 
@@ -764,13 +775,13 @@ sub sort_buffer {
 sub cleanrl {
     my ($line)=@_;
 
-    $line=~s/�/Ue/g;
-    $line=~s/�/Ae/g;
-    $line=~s/�/Oe/g;
+    $line=~s/Ü/Ue/g;
+    $line=~s/Ä/Ae/g;
+    $line=~s/Ö/Oe/g;
     $line=lc($line);
     $line=~s/&(.)uml;/$1e/g;
     $line=~s/^ +//g;
-    $line=~s/^�//g;
+    $line=~s/^¬//g;
     $line=~s/^"//g;
     $line=~s/^'//g;
 
@@ -848,7 +859,7 @@ sub get_targetdbinfo {
         # damit verlinkt
     
         if ($url ne "") {
-            $dbinfo{"$dbname"}="<a href=\"$url\" target=_blank>$description</a>";
+            $dbinfo{"$dbname"}="<a href=\"$url\" target=\"_blank\">$description</a>";
         } else {
             $dbinfo{"$dbname"}="$description";
         }
@@ -861,10 +872,6 @@ sub get_targetdbinfo {
         $dbnames{"$dbname"}=$description;
     }
   
-    $sigel  {''}="Unbekannt";
-    $bibinfo{''}="http://www.ub.uni-koeln.de/dezkat/bibinfo/noinfo.html";
-    $dbases {''}="Unbekannt";
-
     $dbinforesult->finish;
     
     return {

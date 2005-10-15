@@ -32,6 +32,7 @@ package OpenBib::SearchFrame;
 use strict;
 use warnings;
 no warnings 'redefine';
+use utf8;
 
 use Apache::Constants qw(:common);
 use Apache::Request ();
@@ -83,7 +84,7 @@ sub handler {
     my $action    = ($query->param('action'))?$query->param('action'):'';
   
     unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
-        OpenBib::Common::Util::print_warning("Ung&uuml;ltige Session",$r);
+        OpenBib::Common::Util::print_warning("Ungültige Session",$r);
         $sessiondbh->disconnect();
         $userdbh->disconnect();
         return OK;

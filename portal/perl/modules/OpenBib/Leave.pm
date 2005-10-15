@@ -2,7 +2,7 @@
 #
 #  OpenBib::Leave
 #
-#  Dieses File ist (C) 2001-2004 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2005 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -21,10 +21,10 @@
 #  an die Free Software Foundation, Inc., 675 Mass Ave, Cambridge,
 #  MA 02139, USA.
 #
-#####################################################################   
+#####################################################################
 
 #####################################################################
-# Einladen der benoetigten Perl-Module 
+# Einladen der benoetigten Perl-Module
 #####################################################################
 
 package OpenBib::Leave;
@@ -32,6 +32,7 @@ package OpenBib::Leave;
 use strict;
 use warnings;
 no warnings 'redefine';
+use utf8;
 
 use Apache::Constants qw(:common);
 use Apache::Request ();
@@ -75,7 +76,7 @@ sub handler {
             or $logger->error_die($DBI::errstr);
 
     unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
-        OpenBib::Common::Util::print_warning("Ung&uuml;ltige Session",$r);
+        OpenBib::Common::Util::print_warning("Ungültige Session",$r);
       
         $sessiondbh->disconnect();
         $userdbh->disconnect();

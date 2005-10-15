@@ -32,6 +32,7 @@ package OpenBib::Login;
 use strict;
 use warnings;
 no warnings 'redefine';
+use utf8;
 
 use Apache::Constants qw(:common);
 use Apache::Request ();
@@ -89,7 +90,7 @@ sub handler {
   
     # Wenn wir nichts gefunden haben, dann ist etwas faul
     if ($idnresult->rows <= 0 || $sessionID eq "") {
-        OpenBib::Common::Util::print_warning("SessionID ist ung&uuml;lltig",$r);
+        OpenBib::Common::Util::print_warning("SessionID ist ungülltig",$r);
 
         $idnresult->finish();
         $sessiondbh->disconnect();

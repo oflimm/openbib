@@ -32,6 +32,7 @@ package OpenBib::DatabaseProfile;
 use strict;
 use warnings;
 no warnings 'redefine';
+use utf8;
 
 use Apache::Constants qw(:common);
 use Apache::Request ();
@@ -86,7 +87,7 @@ sub handler {
             or $logger->error_die($DBI::errstr);
   
     unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
-        OpenBib::Common::Util::print_warning("Ung&uuml;ltige Session",$r);
+        OpenBib::Common::Util::print_warning("Ungültige Session",$r);
         $sessiondbh->disconnect();
         $userdbh->disconnect();
         return OK;
@@ -317,7 +318,7 @@ sub handler {
         $r->internal_redirect("http://$config{servername}$config{databaseprofile_loc}?sessionID=$sessionID&action=show");
     }
     # Loeschen eines Profils
-    elsif ($action eq "Profil l�schen") {
+    elsif ($action eq "Profil löschen") {
         my $profilresult=$userdbh->prepare("delete from userdbprofile where userid = ? and profilid = ?") or $logger->error($DBI::errstr);
         $profilresult->execute($userid,$profilid) or $logger->error($DBI::errstr);
     
@@ -330,7 +331,7 @@ sub handler {
     }
     # ... andere Aktionen sind nicht erlaubt
     else {
-        OpenBib::Common::Util::print_warning("Keine g&uuml;ltige Aktion",$r);
+        OpenBib::Common::Util::print_warning("Keine gültige Aktion",$r);
     }
 
     $sessiondbh->disconnect();

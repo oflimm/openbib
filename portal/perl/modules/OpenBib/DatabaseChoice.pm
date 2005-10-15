@@ -21,10 +21,10 @@
 #  an die Free Software Foundation, Inc., 675 Mass Ave, Cambridge,
 #  MA 02139, USA.
 #
-#####################################################################   
+#####################################################################
 
 #####################################################################
-# Einladen der benoetigten Perl-Module 
+# Einladen der benoetigten Perl-Module
 #####################################################################
 
 package OpenBib::DatabaseChoice;
@@ -32,6 +32,7 @@ package OpenBib::DatabaseChoice;
 use strict;
 use warnings;
 no warnings 'redefine';
+use utf8;
 
 use Apache::Constants qw(:common);
 use Apache::Request ();
@@ -95,7 +96,7 @@ sub handler {
             or $logger->error_die($DBI::errstr);
   
     unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
-        OpenBib::Common::Util::print_warning("Ung&uuml;ltige Session",$r);
+        OpenBib::Common::Util::print_warning("Ungültige Session",$r);
       
         $sessiondbh->disconnect();
         $userdbh->disconnect();
@@ -117,7 +118,7 @@ sub handler {
     my $idnresult="";
   
     # Wenn Kataloge ausgewaehlt wurden
-    if ($action eq "Kataloge ausw�hlen") {
+    if ($action eq "Kataloge auswählen") {
         # Zuerst die bestehende Auswahl loeschen
       
         $idnresult=$sessiondbh->prepare("delete from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);

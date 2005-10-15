@@ -2,8 +2,6 @@
 #
 #  OpenBib::HeaderFrame
 #
-#  Dies ist die Merkliste zum Katalog der BIBLIO-Distribution.
-#
 #  Dieses File ist (C) 2001-2004 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
@@ -23,10 +21,10 @@
 #  an die Free Software Foundation, Inc., 675 Mass Ave, Cambridge,
 #  MA 02139, USA.
 #
-#####################################################################   
+#####################################################################
 
 #####################################################################
-# Einladen der benoetigten Perl-Module 
+# Einladen der benoetigten Perl-Module
 #####################################################################
 
 package OpenBib::HeaderFrame;
@@ -34,6 +32,7 @@ package OpenBib::HeaderFrame;
 use strict;
 use warnings;
 no warnings 'redefine';
+use utf8;
 
 use Apache::Constants qw(:common);
 use Apache::Request ();

@@ -32,6 +32,7 @@ package OpenBib::Search;
 use strict;
 use warnings;
 no warnings 'redefine';
+use utf8;
 
 use Apache::Constants qw(:common);
 use Apache::Request ();
@@ -65,8 +66,8 @@ sub handler {
     ## Wandlungstabelle Erscheinungsjahroperator
     my %ejop=(
         'genau' => '=',
-        'j�nger' => '>',
-        '�lter' => '<'
+        'jünger' => '>',
+        'älter' => '<'
     );
   
     my $query=Apache::Request->new($r);
@@ -197,6 +198,8 @@ sub handler {
     my $ejahrop           = $query->param('ejahrop')           || '=';
     my $mart              = $query->param('mart')              || '';
 
+    my $lang              = $query->param('l')                 || 'de';
+
     #####################################################################
     ## boolX: Verkn"upfung der Eingabefelder (leere Felder werden ignoriert)
     ##        AND  - Und-Verkn"upfung
@@ -221,11 +224,11 @@ sub handler {
     #####################################################################
   
     my %titeltyp=(
-        '1' => 'Einb&auml;ndige Werke und St&uuml;cktitel',
+        '1' => 'Einbändige Werke und Stücktitel',
         '2' => 'Gesamtaufnahme fortlaufender Sammelwerke',
-        '3' => 'Gesamtaufnahme mehrb&auml;ndig begrenzter Werke',
-        '4' => 'Bandauff&uuml;hrung',
-        '5' => 'Unselbst&auml;ndiges Werk',
+        '3' => 'Gesamtaufnahme mehrbändig begrenzter Werke',
+        '4' => 'Bandaufführung',
+        '5' => 'Unselbständiges Werk',
         '6' => 'Allegro-Daten',
         '7' => 'Lars-Daten',
         '8' => 'Sisis-Daten',
@@ -260,7 +263,7 @@ sub handler {
     my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
 
     unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
-        OpenBib::Common::Util::print_warning("Ung&uuml;ltige Session",$r);
+        OpenBib::Common::Util::print_warning("Ungültige Session",$r);
       
         $sessiondbh->disconnect();
         $dbh->disconnect();
@@ -302,6 +305,7 @@ sub handler {
             apachereq        => $r,
             stylesheet       => $stylesheet,
             view             => $view,
+            lang             => $lang,
         });
         return OK;
     }
@@ -382,7 +386,8 @@ sub handler {
                 sessionID          => $sessionID,
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
-                view               => $view
+                view               => $view,
+                lang               => $lang,
             });
 
             return OK;
@@ -417,6 +422,7 @@ sub handler {
                     sortorder         => $sortorder,
                     database          => $database,
                     sessionID         => $sessionID,
+                    targetdbinfo_ref  => $targetdbinfo_ref,
                 });
             }
             
@@ -445,6 +451,7 @@ sub handler {
                 hitrange         => $hitrange,
                 offset           => $offset,
                 view             => $view,
+                lang             => $lang,
             });
             return OK;
         }	
@@ -478,6 +485,7 @@ sub handler {
 
                 # TT-Data erzeugen
                 my $ttdata={
+                    lang       => $lang,
 		    view       => $view,
 		    stylesheet => $stylesheet,
 		    sessionID  => $sessionID,
@@ -529,6 +537,7 @@ sub handler {
                 
                 # TT-Data erzeugen
                 my $ttdata={
+                    lang       => $lang,
 		    view       => $view,
 		    stylesheet => $stylesheet,
 		    sessionID  => $sessionID,
@@ -580,6 +589,7 @@ sub handler {
 
                 # TT-Data erzeugen
                 my $ttdata={
+                    lang       => $lang,
 		    view       => $view,
 		    stylesheet => $stylesheet,
 		    sessionID  => $sessionID,
@@ -643,7 +653,8 @@ sub handler {
                     sessionID          => $sessionID,
                     apachereq          => $r,
                     stylesheet         => $stylesheet,
-                    view               => $view
+                    view               => $view,
+                    lang               => $lang,
                 });
                 return OK;
 
@@ -676,7 +687,8 @@ sub handler {
                         sorttype          => $sorttype,
                         sortorder         => $sortorder,
                         database          => $database,
-                        sessionID         => $sessionID
+                        sessionID         => $sessionID,
+                        targetdbinfo_ref  => $targetdbinfo_ref,
                     });
                 }
 
@@ -705,6 +717,7 @@ sub handler {
                     hitrange         => $hitrange,
                     offset           => $offset,
                     view             => $view,
+                    lang             => $lang,
                 });
                 return OK;
             }
@@ -744,7 +757,8 @@ sub handler {
                     sessionID          => $sessionID,
                     apachereq          => $r,
                     stylesheet         => $stylesheet,
-                    view               => $view
+                    view               => $view,
+                    lang               => $lang,
                 });
                 return OK;
             }
@@ -776,7 +790,8 @@ sub handler {
                         sorttype          => $sorttype,
                         sortorder         => $sortorder,
                         database          => $database,
-                        sessionID         => $sessionID
+                        sessionID         => $sessionID,
+                        targetdbinfo_ref  => $targetdbinfo_ref,
                     });
                 }
 
@@ -805,6 +820,7 @@ sub handler {
                     hitrange         => $hitrange,
                     offset           => $offset,
                     view             => $view,
+                    lang             => $lang,
                 });
                 return OK;
             }
@@ -844,7 +860,8 @@ sub handler {
                     sessionID          => $sessionID,
                     apachereq          => $r,
                     stylesheet         => $stylesheet,
-                    view               => $view
+                    view               => $view,
+                    lang               => $lang,
                 });
                 return OK;
             }
@@ -876,7 +893,8 @@ sub handler {
                         sorttype          => $sorttype,
                         sortorder         => $sortorder,
                         database          => $database,
-                        sessionID         => $sessionID
+                        sessionID         => $sessionID,
+                        targetdbinfo_ref  => $targetdbinfo_ref,
                     });
                 }
 
@@ -905,6 +923,7 @@ sub handler {
                     hitrange         => $hitrange,
                     offset           => $offset,
                     view             => $view,
+                    lang             => $lang,
                 });
                 return OK;
             }
@@ -936,7 +955,8 @@ sub handler {
                 sessionID          => $sessionID,
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
-                view               => $view
+                view               => $view,
+                lang               => $lang,
             });
             return OK;
         }
@@ -963,6 +983,7 @@ sub handler {
 	
                 # TT-Data erzeugen
                 my $ttdata={
+                    lang       => $lang,
 		    view       => $view,
 		    stylesheet => $stylesheet,
 		    sessionID  => $sessionID,
@@ -1014,6 +1035,7 @@ sub handler {
 	
                 # TT-Data erzeugen
                 my $ttdata={
+                    lang       => $lang,
 		    view       => $view,
 		    stylesheet => $stylesheet,
 		    sessionID  => $sessionID,
@@ -1069,7 +1091,8 @@ sub handler {
                 sessionID          => $sessionID,
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
-                view               => $view
+                view               => $view,
+                lang               => $lang,
             });
             return OK;
         }
@@ -1100,7 +1123,8 @@ sub handler {
                 sessionID          => $sessionID,
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
-                view               => $view
+                view               => $view,
+                lang               => $lang,
             });
             return OK;
         }
@@ -1134,6 +1158,7 @@ sub handler {
             apachereq          => $r,
             stylesheet         => $stylesheet,
             view               => $view,
+            lang               => $lang,
         });
         return OK;
     }
@@ -1275,7 +1300,8 @@ sub handler {
             sessionID          => $sessionID,
             apachereq          => $r,
             stylesheet         => $stylesheet,
-            view               => $view
+            view               => $view,
+            lang               => $lang,
         });
         return OK;
     }
@@ -1302,6 +1328,7 @@ sub handler {
             
             # TT-Data erzeugen
             my $ttdata={
+                lang       => $lang,
                 view       => $view,
                 stylesheet => $stylesheet,
                 sessionID  => $sessionID,
@@ -1353,6 +1380,7 @@ sub handler {
 
             # TT-Data erzeugen
             my $ttdata={
+                lang       => $lang,
                 view       => $view,
                 stylesheet => $stylesheet,
                 sessionID  => $sessionID,
@@ -1404,6 +1432,7 @@ sub handler {
 	
             # TT-Data erzeugen
             my $ttdata={
+                lang       => $lang,
                 view       => $view,
                 stylesheet => $stylesheet,
                 sessionID  => $sessionID,
@@ -1455,6 +1484,7 @@ sub handler {
       
             # TT-Data erzeugen
             my $ttdata={
+                lang       => $lang,
                 view       => $view,
                 stylesheet => $stylesheet,
                 sessionID  => $sessionID,
@@ -1517,7 +1547,8 @@ sub handler {
                 sessionID          => $sessionID,
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
-                view               => $view
+                view               => $view,
+                lang               => $lang,
             });
             return OK;
         }
@@ -1549,7 +1580,8 @@ sub handler {
                     sorttype          => $sorttype,
                     sortorder         => $sortorder,
                     database          => $database,
-                    sessionID         => $sessionID
+                    sessionID         => $sessionID,
+                    targetdbinfo_ref  => $targetdbinfo_ref,
                 });
             }
             
@@ -1578,6 +1610,7 @@ sub handler {
                 hitrange         => $hitrange,
                 offset           => $offset,
                 view             => $view,
+                lang             => $lang,
             });
             return OK;
         }	
@@ -1617,7 +1650,8 @@ sub handler {
                 sessionID          => $sessionID,
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
-                view               => $view
+                view               => $view,
+                lang               => $lang,
             });
             return OK;
 
@@ -1649,7 +1683,8 @@ sub handler {
                     sorttype          => $sorttype,
                     sortorder         => $sortorder,
                     database          => $database,
-                    sessionID         => $sessionID
+                    sessionID         => $sessionID,
+                    targetdbinfo_ref  => $targetdbinfo_ref,
                 });
             }
 
@@ -1678,6 +1713,7 @@ sub handler {
                 hitrange         => $hitrange,
                 offset           => $offset,
                 view             => $view,
+                lang             => $lang,
             });
             return OK;
         }	
@@ -1716,7 +1752,8 @@ sub handler {
                 sessionID          => $sessionID,
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
-                view               => $view
+                view               => $view,
+                lang               => $lang,
             });
             return OK;
         }
@@ -1748,6 +1785,7 @@ sub handler {
                     sortorder         => $sortorder,
                     database          => $database,
                     sessionID         => $sessionID,
+                    targetdbinfo_ref  => $targetdbinfo_ref,
                 });
             }
 
@@ -1776,6 +1814,7 @@ sub handler {
                 hitrange         => $hitrange,
                 offset           => $offset,
                 view             => $view,
+                lang             => $lang,
             });
             return OK;
         }	
@@ -1814,7 +1853,8 @@ sub handler {
                 sessionID          => $sessionID,
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
-                view               => $view
+                view               => $view,
+                lang               => $lang,
             });
             return OK;
         }
@@ -1845,7 +1885,8 @@ sub handler {
                     sorttype          => $sorttype,
                     sortorder         => $sortorder,
                     database          => $database,
-                    sessionID         => $sessionID
+                    sessionID         => $sessionID,
+                    targetdbinfo_ref  => $targetdbinfo_ref,
                 });
             }
 
@@ -1874,6 +1915,7 @@ sub handler {
                 hitrange         => $hitrange,
                 offset           => $offset,
                 view             => $view,
+                lang             => $lang,
             });
             return OK;
         }	
@@ -1912,7 +1954,8 @@ sub handler {
                 sessionID          => $sessionID,
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
-                view               => $view
+                view               => $view,
+                lang               => $lang,
             });
             return OK;
         }
@@ -1943,7 +1986,8 @@ sub handler {
                     sorttype          => $sorttype,
                     sortorder         => $sortorder,
                     database          => $database,
-                    sessionID         => $sessionID
+                    sessionID         => $sessionID,
+                    targetdbinfo_ref  => $targetdbinfo_ref,
                 });
             }
 
@@ -1972,6 +2016,7 @@ sub handler {
                 hitrange         => $hitrange,
                 offset           => $offset,
                 view             => $view,
+                lang             => $lang,
             });
             return OK;
         }	
@@ -2011,7 +2056,8 @@ sub handler {
                 sessionID          => $sessionID,
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
-                view               => $view
+                view               => $view,
+                lang               => $lang,
             });
             return OK;
         }
@@ -2044,6 +2090,7 @@ sub handler {
                     sortorder         => $sortorder,
                     database          => $database,
                     sessionID         => $sessionID,
+                    targetdbinfo_ref  => $targetdbinfo_ref,
                 });
             }
 
@@ -2072,6 +2119,7 @@ sub handler {
                 hitrange         => $hitrange,
                 offset           => $offset,
                 view             => $view,
+                lang             => $lang,
             });
             return OK;
         }	

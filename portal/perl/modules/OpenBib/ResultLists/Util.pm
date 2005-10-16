@@ -28,6 +28,7 @@ package OpenBib::ResultLists::Util;
 use strict;
 use warnings;
 no warnings 'redefine';
+use utf8;
 
 use Apache::Constants qw(:common);
 use DBI;

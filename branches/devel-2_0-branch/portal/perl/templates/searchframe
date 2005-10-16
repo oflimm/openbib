@@ -52,20 +52,20 @@
 [% IF viewtemplate %]
 [% PROCESS $viewtemplate %]
 [% ELSE %]
-Sie k&ouml;nnen entweder direkt im vorausgew&auml;hlten Katalog <b>[% viewdesc %]</b> recherchieren, oder die Suche auf weitere <a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">Kataloge</a> ausdehnen.
+Sie können entweder direkt im vorausgewählten Katalog <b>[% viewdesc %]</b> recherchieren, oder die Suche auf weitere <a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">Kataloge</a> ausdehnen.
 [% END %]
 
 <p />
 <p />
 
 <table>
-  <tr><td><input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="searchprofile" value="In ausgew�hlten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="L�sche Eingabemaske"></td></tr>
+  <tr><td><input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="searchprofile" value="In ausgewählten Katalogen suchen" />&nbsp;<input type="reset" title="Hier löschen Sie die Eingabefelder" value="Lösche Eingabemaske"></td></tr>
 </table>
 [% ELSE %]
-Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs %] einzelnen <a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">Katalogen</a> recherchieren oder auch sofort in allen zusammen.
+Sie können entweder durch entsprechende Auswahl in den insgesamt [% alldbs %] einzelnen <a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">Katalogen</a> recherchieren oder auch sofort in allen zusammen.
 <p />
 <table>
-  <tr><td><input type="submit" title="Hier suchen Sie in allen Katalogen auf einmal" name="searchall" value="In allen Katalogen suchen" />&nbsp;<input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="searchprofile" value="In ausgew�hlten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="L�sche Eingabemaske" /></td></tr>
+  <tr><td><input type="submit" title="Hier suchen Sie in allen Katalogen auf einmal" name="searchall" value="In allen Katalogen suchen" />&nbsp;<input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="searchprofile" value="In ausgewählten Katalogen suchen" />&nbsp;<input type="reset" title="Hier löschen Sie die Eingabefelder" value="Lösche Eingabemaske" /></td></tr>
 </table>
 [% END %]
 
@@ -74,7 +74,7 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
 <tr><th>Suchbegriffe</th><td width="25">&nbsp;</td><th>Suchhinweise</th></tr>
 <tr><td class="boxed" valign="top">
 <table>
-<tr><td>Kategorie</td><td>Verkn&uuml;pfung</td><td>Ihre Eingabe</td><td></td></tr>
+<tr><td>Kategorie</td><td>Verknüpfung</td><td>Ihre Eingabe</td><td></td></tr>
 
 [% IF showfs %]
 <tr><td class="category">Freie Suche</td><td class="category"></td><td><input type="text" name="fs" value="[% fs %]" size="30" maxlength="200" /></td><td></td></tr>
@@ -89,7 +89,7 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
 [% END %]
 
 [% IF showkor %]
-<tr><td class="category">K&ouml;rperschaft</td><td class="category"><select name="bool3"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="kor" value="[% kor %]" size="30" maxlength="200" /></td><td><input type="submit" name="korindex" value="Index"></td></tr>
+<tr><td class="category">Körperschaft</td><td class="category"><select name="bool3"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="kor" value="[% kor %]" size="30" maxlength="200" /></td><td><input type="submit" name="korindex" value="Index"></td></tr>
 [% END %]
 
 [% IF showswt %]
@@ -117,11 +117,11 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
 [% END %]
 
 [% IF showmart %]
-<tr><td class="category">Medienart</td><td class="category"><select name="bool11"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><select name="mart"><option value="" selected="selected">Keine ausgew&auml;hlt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option><option value="Hochschulangehoerige">Hochschulangeh&ouml;rige(r)</option><option value="Audio CD">Audio-CD</option><option value="%22Audio Mitschnitt%22">Audio Mitschnitt</option><option value="%22audiovisuelle Materialien%22">Audiovisuelle Materialien</option><option value="Aufsatz">Aufsatz</option><option value="%22Aufsatz-Fotokopie%22">Aufsatz-Fotokopie</option><option value="%22CD-ROM%22">CD-ROM</option><option value="Diskette">Diskette</option><option value="Dissertation">Dissertation</option><option value="DVD">DVD</option><option value="Festschrift">Festschrift</option><option value="Fotokopie">Fotokopie</option><option value="Geschaeftsbericht">Gesch&auml;ftsbericht</option><option value="Kassette">Kassette</option><option value="Loseblattsammlung">Loseblattsammlung</option><option value="%22masch.Schr.%22">Masch.Schr.</option><option value="Medienkombination">Medienkombination</option><option value="Musikdruck Noten">Musikdruck / Noten</option><option value="Original">Original</option><option value="%22Reisefuehrer, Karte oder Atlas%22">Reisef&uuml;hrer, Karte oder Atlas</option><option value="Sprachkassette">Sprachkassette</option><option value="Standardmonographie">Standardmonographie</option><option value="Video">Video</option><option value="Zeitschrift">Zeitschrift</option><option value="Zeitung">Zeitung</option></select>&nbsp;</td><td></td></tr>
+<tr><td class="category">Medienart</td><td class="category"><select name="bool11"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><select name="mart"><option value="" selected="selected">Keine ausgewählt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option><option value="Hochschulangehoerige">Hochschulangehörige(r)</option><option value="Audio CD">Audio-CD</option><option value="%22Audio Mitschnitt%22">Audio Mitschnitt</option><option value="%22audiovisuelle Materialien%22">Audiovisuelle Materialien</option><option value="Aufsatz">Aufsatz</option><option value="%22Aufsatz-Fotokopie%22">Aufsatz-Fotokopie</option><option value="%22CD-ROM%22">CD-ROM</option><option value="Diskette">Diskette</option><option value="Dissertation">Dissertation</option><option value="DVD">DVD</option><option value="Festschrift">Festschrift</option><option value="Fotokopie">Fotokopie</option><option value="Geschaeftsbericht">Geschäftsbericht</option><option value="Kassette">Kassette</option><option value="Loseblattsammlung">Loseblattsammlung</option><option value="%22masch.Schr.%22">Masch.Schr.</option><option value="Medienkombination">Medienkombination</option><option value="Musikdruck Noten">Musikdruck / Noten</option><option value="Original">Original</option><option value="%22Reisefuehrer, Karte oder Atlas%22">Reiseführer, Karte oder Atlas</option><option value="Sprachkassette">Sprachkassette</option><option value="Standardmonographie">Standardmonographie</option><option value="Video">Video</option><option value="Zeitschrift">Zeitschrift</option><option value="Zeitung">Zeitung</option></select>&nbsp;</td><td></td></tr>
 [% END %]
 
 [% IF showejahr %]
-<tr><td class="category">Jahr</td><td class="category">und<input type="hidden" name="bool7" value="AND" /></td><td><input type="text" name="ejahr" value="[% ejahr %]" size="4" maxlength="4" />&nbsp;<select name="ejahrop"><option value="%3D" selected="selected">genau</option><option value="%3E">j&uuml;nger</option><option value="%3C">&auml;lter</option></select></td><td></td></tr>
+<tr><td class="category">Jahr</td><td class="category">und<input type="hidden" name="bool7" value="AND" /></td><td><input type="text" name="ejahr" value="[% ejahr %]" size="4" maxlength="4" />&nbsp;<select name="ejahrop"><option value="%3D" selected="selected">genau</option><option value="%3E">jünger</option><option value="%3C">älter</option></select></td><td></td></tr>
 [% END %]
 
 </table></td>
@@ -142,7 +142,7 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
 <tr><td class="boxed">
 <table>
 <tr><td class="category">Maximale Trefferzahl pro Katalog</td><td colspan="3"><select name="maxhits"><option selected="selected">200</option><option>500</option><option>1000</option><option value="9999999">alle</option></select></td></tr>
-<tr><td class="category">Sortierung nach</td><td colspan="2"><select name="sorttype"><option value="author" selected="selected">Autor/K�rperschaft</option><option value="title">Titel</option><option value="yearofpub">Erscheinungsjahr</option></select><select name="sortorder"><option value="up">aufsteigend</option><option value="down">absteigend</option></select>&nbsp;pro Katalog</td><td></td></tr>
+<tr><td class="category">Sortierung nach</td><td colspan="2"><select name="sorttype"><option value="author" selected="selected">Autor/Körperschaft</option><option value="title">Titel</option><option value="yearofpub">Erscheinungsjahr</option></select><select name="sortorder"><option value="up">aufsteigend</option><option value="down">absteigend</option></select>&nbsp;pro Katalog</td><td></td></tr>
 <tr><td class="category">Suchprofil</td><td colspan="3"><select name="profil">
 [%- IF dbcount || userprofiles -%]
 [% dbcount %] [% userprofiles %]
@@ -152,7 +152,7 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
  selected="selected"
 [%- END -%]
 >Alle Kataloge</option><option value=""></option>
-<option value="">Fakult&auml;ten:</option><option value=""></option>
+<option value="">Fakultäten:</option><option value=""></option>
 
 [% FOREACH unit IN config.units %]
 <option value="[% unit.short %]"
@@ -162,7 +162,7 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
 >- [% unit.desc %]</option>
 [% END %]
 <option value=""></option></select></td></tr>
-<tr><td class="category">Und-Verkn&uuml;pfung innerhalb eines Suchfeldes</td><td colspan="3"><input type="radio" name="autoplus" value="1" checked="checked" />ja&nbsp;<input type="radio" name="autoplus" value="0" />nein</td></tr>
+<tr><td class="category">Und-Verknüpfung innerhalb eines Suchfeldes</td><td colspan="3"><input type="radio" name="autoplus" value="1" checked="checked" />ja&nbsp;<input type="radio" name="autoplus" value="0" />nein</td></tr>
 </table>
 </td></tr>
 </table>
@@ -170,11 +170,11 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
 
 [% IF view %]
 <table>
-  <tr><td><input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="searchprofile" value="In ausgew�hlten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="L�sche Eingabemaske" /></td></tr>
+  <tr><td><input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="searchprofile" value="In ausgewählten Katalogen suchen" />&nbsp;<input type="reset" title="Hier löschen Sie die Eingabefelder" value="Lösche Eingabemaske" /></td></tr>
 </table>
 [% ELSE %]
 <table>
-  <tr><td><input type="submit" title="Hier suchen Sie in allen Katalogen auf einmal" name="searchall" value="In allen Katalogen suchen" />&nbsp;<input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="searchprofile" value="In ausgew�hlten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="L�sche Eingabemaske" /></td></tr>
+  <tr><td><input type="submit" title="Hier suchen Sie in allen Katalogen auf einmal" name="searchall" value="In allen Katalogen suchen" />&nbsp;<input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="searchprofile" value="In ausgewählten Katalogen suchen" />&nbsp;<input type="reset" title="Hier löschen Sie die Eingabefelder" value="Lösche Eingabemaske" /></td></tr>
 </table>
 [% END %]
 
@@ -184,7 +184,7 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
 
 <b>Insgesamt sind im KUG derzeit [% alldbcount %] Titel nachgewiesen.</b>
 <p />
-F&uuml;r Verbesserungsvorschl&auml;ge oder bei technischen Problemen k&ouml;nnen Sie uns unter <a href="http://www.ub.uni-koeln.de/usb-cgi/makeEmailPage.pl?adr0=kug" target="_blank">kug@ub.uni-koeln.de</a> erreichen.
+Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter <a href="http://www.ub.uni-koeln.de/usb-cgi/makeEmailPage.pl?adr0=kug" target="_blank">kug@ub.uni-koeln.de</a> erreichen.
 
 </div>
 

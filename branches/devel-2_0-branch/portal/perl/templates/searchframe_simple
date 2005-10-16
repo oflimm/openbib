@@ -37,14 +37,14 @@
 [% PROCESS $viewtemplate %]
 </center>
 [% ELSE %]
-<center>Sie k&ouml;nnen entweder direkt im vorausgew&auml;hlten Katalog <b>[% viewdesc %]</b> recherchieren, oder die Suche auf weitere <a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">Kataloge</a> ausdehnen.</center>
+<center>Sie können entweder direkt im vorausgewählten Katalog <b>[% viewdesc %]</b> recherchieren, oder die Suche auf weitere <a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">Kataloge</a> ausdehnen.</center>
 [% END %]
 
 <p />
 <p />
 [% ELSE %]
 <center>
-Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs %] einzelnen <a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">Katalogen</a> recherchieren oder auch sofort in allen zusammen.
+Sie können entweder durch entsprechende Auswahl in den insgesamt [% alldbs %] einzelnen <a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">Katalogen</a> recherchieren oder auch sofort in allen zusammen.
 </center>
 <p />
 [% END %]
@@ -58,7 +58,7 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
 </table>
 
 <table width="100%">
-<tr><th style="text-align: center">W&auml;hlen Sie hier bitte Ihr Suchprofil aus</th></tr>
+<tr><th style="text-align: center">Wählen Sie hier bitte Ihr Suchprofil aus</th></tr>
 <tr><td class="boxed" valign="top" align="center">
 <select name="profil">
 [%- IF dbcount || userprofiles -%]
@@ -69,7 +69,7 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
  selected="selected"
 [%- END -%]
 >Alle Kataloge</option><option value=""></option>
-<option value="">Fakult&auml;ten:</option><option value=""></option>
+<option value="">Fakultäten:</option><option value=""></option>
 
 [% FOREACH unit IN config.units %]
 <option value="[% unit.short %]"
@@ -89,13 +89,13 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
 [% IF view %]
 <center>
 <table>
-  <tr><td><input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="searchprofile" value="In ausgew�hlten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="L�sche Eingabemaske" /></td></tr>
+  <tr><td><input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="searchprofile" value="In ausgewählten Katalogen suchen" />&nbsp;<input type="reset" title="Hier löschen Sie die Eingabefelder" value="Lösche Eingabemaske" /></td></tr>
 </table>
 </center>
 [% ELSE %]
 <center>
 <table>
-  <tr><td><input type="submit" title="Hier suchen Sie in allen Katalogen auf einmal" name="searchall" value="In allen Katalogen suchen" />&nbsp;<input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="searchprofile" value="In ausgew�hlten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="L�sche Eingabemaske" /></td></tr>
+  <tr><td><input type="submit" title="Hier suchen Sie in allen Katalogen auf einmal" name="searchall" value="In allen Katalogen suchen" />&nbsp;<input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="searchprofile" value="In ausgewählten Katalogen suchen" />&nbsp;<input type="reset" title="Hier löschen Sie die Eingabefelder" value="Lösche Eingabemaske" /></td></tr>
 </table>
 </center>
 [% END %]
@@ -106,7 +106,7 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
 [% IF prevqueries %]
 <form method="get" id="queries" action="http://[% config.servername %][% config.dispatchquery_loc %]">
 <table width="100%">
-<tr><th style="text-align: center">Rufen Sie hier die Ergebnisse fr&uuml;hrerer Recherchen auf</th></tr>
+<tr><th style="text-align: center">Rufen Sie hier die Ergebnisse frührerer Recherchen auf</th></tr>
 <tr><td align="center" class="boxed">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <select name="queryid">
@@ -125,7 +125,7 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
 <b>Insgesamt sind im KUG derzeit [% alldbcount %] Titel nachgewiesen.</b>
 
 <p />
-F&uuml;r Verbesserungsvorschl&auml;ge oder bei technischen Problemen k&ouml;nnen Sie uns unter <a href="http://www.ub.uni-koeln.de/usb-cgi/makeEmailPage.pl?adr0=kug" target="_blank">kug@ub.uni-koeln.de</a> erreichen.
+Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter <a href="http://www.ub.uni-koeln.de/usb-cgi/makeEmailPage.pl?adr0=kug" target="_blank">kug@ub.uni-koeln.de</a> erreichen.
 <p />
 </center>
 

@@ -1,32 +1,51 @@
-[%- title = 'Schlagwortaufnahme' -%]
+[%- i18nmsg = msg.${lang} -%]
+[%- title = "KUG Recherche" -%]
 [% PROCESS common/subtemplate name="std_header" %]
 
 <body>
+
 <table BORDER="0" CELLSPACING="0" CELLPADDING="0" width="100%">
   <tr class="titlerow">
     <td  width="20">&nbsp;</td><td valign="middle" ALIGN="left" height="32"><img src="/images/openbib/[% database %].png"></td>
   </tr>
 </table>
 
-<form method="get" action="[% config.search_loc %]">
-<input type="hidden" name="searchmode" value="[% searchmode %]" />
-<input type="hidden" name="hitrange" value="[% hitrange %]" />
-<input type="hidden" name="rating" value="[% rating %]" />
-<input type="hidden" name="bookinfo" value="[% bookinfo %]" />
-<input type="hidden" name="database" value="[% database %]" />
-<input type="hidden" name="dbmode" value="[% dbmode %]" />
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<!--
+[% USE dumper;
+   dumper.dump(normset);
+   dumper.dump(i18nmsg);
+%]
+-->
 
 <table cellpadding=2>
-<tr><td>Kategorie</td><td>Inhalt</td></tr>
+<tr><td>[% i18nmsg.${"M0101"} %]</td><td>[% i18nmsg.${"M0102"} %]</td></tr>
 
-[% FOREACH normkat IN normset %]
-[% IF normkat.type == 'simple_category' %]
-<tr><td class="category">[% normkat.desc %]</td><td>[% normkat.contents %]</td></tr>
-[% ELSIF normkat.type == 'url_category' %]
-<tr><td class="category">[% normkat.desc %]</td><td><a href="[% normkat.url %]">[% normkat.contents %]</td></tr>
-[% END %]
-[% END %]
+[%# Ausgabekategorien %]
+[%- categories = [
+                 'S0001',
+                 'S0102',
+                 'S0113',
+                 'S0115',
+                 'S0117',
+                 'S0119',
+                 'S5000',
+                 ];
+
+FOREACH category IN categories;
+    FOREACH item IN normset.$category;
+    content = item.content;
+
+    SWITCH category;
+
+    CASE "S5000";
+         content   = "<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchtitofswt=${normset.id}\">${content}</a>";
+    END;
+-%]
+<tr><td class="category">[% i18nmsg.$category %]</td><td>[% content %]</td></tr>
+[%-
+   END;
+END;
+-%]
 </table>
 
 </div>

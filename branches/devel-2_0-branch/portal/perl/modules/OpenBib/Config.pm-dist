@@ -2,7 +2,7 @@
 #
 #  OpenBib::Config
 #
-#  Dieses File ist (C) 2004 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2005 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -26,13 +26,20 @@
 package OpenBib::Config;
 
 use strict;
+use warnings;
+no warnings 'redefine';
+use utf8;
+
+use Config::Std qw(read_config);
+use Log::Log4perl qw(get_logger :levels);
+
 use vars qw(%config);
   
 %config = (
 
 	   # Versionnummer
 
-	   version => 'OpenBib v1.2.1',
+	   version => 'OpenBib v2.0',
 	   
 	   # Unter diesem Namen wird der lokale Server angesprochen
 	   
@@ -88,32 +95,32 @@ use vars qw(%config);
 	   units => [
 		     {
 		      short => '0ungeb',
-		      desc => 'Fakult&auml;tsungebunden',
+		      desc => 'Fakultätsungebunden',
 		      nr => '0',
 		     },
 		     {
 		      short => '1wiso',
-		      desc => 'Wirtschafts- u. Sozialwissenschaftliche Fakult&auml;t',
+		      desc => 'Wirtschafts- u. Sozialwissenschaftliche Fakultät',
 		      nr => '1',
 		     },
 		     {
 		      short => '2recht',
-		      desc => 'Rechtswissenschaftliche Fakult&auml;t',
+		      desc => 'Rechtswissenschaftliche Fakultät',
 		      nr => '2',
 		     },
 		     {
 		      short => '3ezwheil',
-		      desc => 'Erziehungswissenschaftliche u. Heilp&auml;dagogische Fakult&auml;t',
+		      desc => 'Erziehungswissenschaftliche u. Heilpädagogische Fakultät',
 		      nr => '3',
 		     },
 		     {
 		      short => '4phil',
-		      desc => 'Philosophische Fakult&auml;t',
+		      desc => 'Philosophische Fakultät',
 		      nr => '4',
 		     },
 		     {
 		      short => '5matnat',
-		      desc => 'Mathematisch-Naturwissenschaftliche Fakult&auml;t',
+		      desc => 'Mathematisch-Naturwissenschaftliche Fakultät',
 		      nr => '5',
 		     },
 		    ],
@@ -175,6 +182,10 @@ use vars qw(%config);
 	   # Pfad zur Konfigurationsdatei von Log4Perl
 
            log4perl_path           => '/opt/openbib/conf/portal.log4perl',
+
+           # Pfad zur Message-Datei
+
+           msg_path                => '/opt/openbib/conf/messages.conf',
 
 	   # Pfad zu den Portal-Templates (Template Toolkit)
 
@@ -296,30 +307,43 @@ use vars qw(%config);
 	   # Katalogabhaengige Kategorie-Mappings
 
 	   categorymapping => {
-			       einbaende => {
-					     'Verfasser'     => 'Person',         # M0100
-					     'Person'        => 'Buchbinder/Werkst&auml;tten', #M0101
-					     'HST'           => 'Titel',          # M0331
-					     'WST'           => 'Provenienz',     # M0370
-					     'Zusatz'        => 'Untertitel',     # M0335
-					     'Beig.Werke'    => 'Beib&auml;nde',  # M0361
-					     'Ausgabe'       => 'Auflage',        # M0403
-					     'Drucker'       => 'Drucker',        # M0413
-					     'Ersch. Jahr'   => 'E-Jahr',         # M0425
-					     'Verlagsort'    => 'Ersch-Ort',      # M0410
-					     'Ans. Ersch. Jahr' => 'Fert.-Jahr',  # M0424
-					     'Ersch.Land'    => 'Fert.-Land/Ort', # M0035
-					     'Format'        => 'Ma&szlig;e',     # M0435
-					     'Schlagwort'    => 'Jahrhundert',    # M0710
-					     'Urheber'       => 'Region',         # M0200
-					     'Notation'      => 'Einband',        # M0700
-					     'Abstract'      => 'Beschreibung',   # M0750
-					     'Fu&szlig;note' => 'Quellen',        # M0501
-					     'Quelle'        => 'Bibl. Nachweis', # M0508
-					    },
+               einbaende => {
+                   'Verfasser'        => 'Person',         # 
+                   'Person'           => 'Buchbinder/Werkstätten', # 
+                   'HST'              => 'Titel',          # M0331
+                   'WST'              => 'Provenienz',     # M0370
+                   'Zusatz'           => 'Untertitel',     # M0335
+                   'Beig.Werke'       => 'Beibände',       # M0361
+                   'Ausgabe'          => 'Auflage',        # M0403
+                   'Drucker'          => 'Drucker',        # M0413
+                   'Ersch. Jahr'      => 'Fert.-Jahr',     # M0425
+                   'Verlagsort'       => 'Ersch-Ort',      # M0410
+                   'Ans. Ersch. Jahr' => 'E-Jahr',         # M0424
+                   'Ersch.Land'       => 'Fert.-Land/Ort', # M0035
+                   'Format'           => 'Ma&szlig;e',     # M0435
+                   'Schlagwort'       => 'Jahrhundert',    # M0710
+                   'Urheber'          => 'Region',         # M0200
+                   'Notation'         => 'Einband',        # M0700
+                   'Abstract'         => 'Beschreibung',   # M0750
+                   'Fu&szlig;note'    => 'Quellen',        # M0501
+                   'Quelle'           => 'Bibl. Nachweis', # M0508
+               },
+               
 
-			      },
+           },
 	   
-	  );
+       );
+
+sub get_msgs {
+    my ($msgpath)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my %msg;
+    read_config($msgpath => %msg);
+
+    return \%msg;
+}
 
 1;

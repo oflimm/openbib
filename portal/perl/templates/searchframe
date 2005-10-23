@@ -121,7 +121,7 @@ Sie können entweder durch entsprechende Auswahl in den insgesamt [% alldbs %] e
 [% END %]
 
 [% IF showejahr %]
-<tr><td class="category">Jahr</td><td class="category">und<input type="hidden" name="bool7" value="AND" /></td><td><input type="text" name="ejahr" value="[% ejahr %]" size="4" maxlength="4" />&nbsp;<select name="ejahrop"><option value="%3D" selected="selected">genau</option><option value="%3E">jünger</option><option value="%3C">älter</option></select></td><td></td></tr>
+<tr><td class="category">Jahr</td><td class="category">und<input type="hidden" name="bool7" value="AND" /></td><td><input type="text" name="ejahr" value="[% ejahr %]" size="4" maxlength="4" />&nbsp;<select name="ejahrop"><option value="eq" selected="selected">genau</option><option value="gt">jünger</option><option value="lt">älter</option></select></td><td></td></tr>
 [% END %]
 
 </table></td>

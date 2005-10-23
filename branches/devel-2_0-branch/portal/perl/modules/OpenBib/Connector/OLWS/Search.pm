@@ -264,18 +264,6 @@ sub search {
         $hitrange=-1;
     }
 
-    my $titeltyp_ref = {
-        '1' => 'Einb&auml;ndige Werke und St&uuml;cktitel',
-        '2' => 'Gesamtaufnahme fortlaufender Sammelwerke',
-        '3' => 'Gesamtaufnahme mehrb&auml;ndig begrenzter Werke',
-        '4' => 'Bandauff&uuml;hrung',
-        '5' => 'Unselbst&auml;ndiges Werk',
-        '6' => 'Allegro-Daten',
-        '7' => 'Lars-Daten',
-        '8' => 'Sisis-Daten',
-        '9' => 'Sonstige Daten',
-    };
-
     my $targetdbinfo_ref   = OpenBib::Common::Util::get_targetdbinfo($sessiondbh);
     my $targetcircinfo_ref = OpenBib::Common::Util::get_targetcircinfo($sessiondbh);
 
@@ -402,7 +390,6 @@ sub search {
             sorttype           => $sorttype,
             sortorder          => $sortorder,
             database           => $database,
-            titeltyp_ref       => $titeltyp_ref,
             sessionID          => $sessionID
         });
 

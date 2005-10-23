@@ -35,7 +35,7 @@ use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use SOAP::Lite;
-use YAML;
+use YAML ();
 
 use OpenBib::Config;
 
@@ -248,6 +248,9 @@ sub get_kor_set_by_idn {
 
     my $normset_ref={};
 
+    $normset_ref->{id      } = $koridn;
+    $normset_ref->{database} = $database;
+
     my ($atime,$btime,$timeall);
   
     if ($config{benchmark}) {
@@ -379,6 +382,9 @@ sub get_swt_set_by_idn {
     my $logger = get_logger();
 
     my $normset_ref={};
+
+    $normset_ref->{id      } = $swtidn;
+    $normset_ref->{database} = $database;
 
     my ($atime,$btime,$timeall);
   
@@ -518,6 +524,9 @@ sub get_not_set_by_idn {
 
     my $normset_ref={};
 
+    $normset_ref->{id      } = $notidn;
+    $normset_ref->{database} = $database;
+
     my ($atime,$btime,$timeall);
     
     if ($config{benchmark}) {
@@ -637,6 +646,8 @@ sub get_tit_listitem_by_idn {
         };
     }
 
+    my @autkor=();
+    
     # Bestimmung der Verfasser, Personen
     $request=$dbh->prepare("select targetid,category,supplement from connection where sourceid=? and sourcetype='tit' and targettype='aut'") or $logger->error($DBI::errstr);
     $request->execute($titidn);
@@ -650,13 +661,23 @@ sub get_tit_listitem_by_idn {
         if ($res->{supplement}){
             $supplement.=" ".decode_utf8($res->{supplement});
         }
+
+        my $content=get_aut_ans_by_idn($targetid,$dbh).$supplement;
+
+        # Kategorieweise Abspeichern
         push @{$listitem_ref->{$category}}, {
             id      => $targetid,
             type    => 'aut',
-            content => get_aut_ans_by_idn($targetid,$dbh).$supplement,
-        }
+            content => $content,
+        };
+
+        # Gemeinsam Abspeichern
+        push @autkor, $content;
+            
     }
 
+    
+    
     # Bestimmung der Urheber, Koerperschaften
     $request=$dbh->prepare("select targetid,category,supplement from connection where sourceid=? and sourcetype='tit' and targettype='kor'") or $logger->error($DBI::errstr);
     $request->execute($titidn);
@@ -670,13 +691,27 @@ sub get_tit_listitem_by_idn {
         if ($res->{supplement}){
             $supplement.=" ".decode_utf8($res->{supplement});
         }
+
+        my $content=get_kor_ans_by_idn($targetid,$dbh).$supplement;
+
+        # Kategorieweise Abspeichern
         push @{$listitem_ref->{$category}}, {
             id      => $targetid,
             type    => 'kor',
-            content => get_kor_ans_by_idn($targetid,$dbh).$supplement,
-        }
+            content => $content,
+        };
+
+        # Gemeinsam Abspeichern
+        push @autkor, $content;
     }
 
+    # Zusammenfassen von autkor
+
+    push @{$listitem_ref->{'PC0001'}}, {
+        content   => join(" ; ",@autkor),
+    };
+
+    
     # Bestimmung der Exemplardaten
     $request=$dbh->prepare("select distinct id from mex where category='0004' and content=?") or $logger->error($DBI::errstr);
     $request->execute($titidn);
@@ -702,10 +737,11 @@ sub get_tit_listitem_by_idn {
 
     foreach my $mexitem_ref (@mexnormset){
        foreach my $category (keys %$mexitem_ref){
-           $logger->info($category."::".$mexitem_ref->{$category}{content});
+           my $content=(exists $mexitem_ref->{$category}{content})?$mexitem_ref->{$category}{content}:'';
+           $logger->info($category."::".$content);
            
            push @{$listitem_ref->{$category}}, {
-               content => $mexitem_ref->{$category}{content},
+               content => $content,
            };
         }
     }

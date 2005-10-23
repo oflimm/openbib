@@ -145,8 +145,6 @@ Mex:
 
 [%-
 
-#dumper.dump(i18nmsg);
-
 FOREACH category IN categories;
     FOREACH item IN normset.$category;
     content = item.content;

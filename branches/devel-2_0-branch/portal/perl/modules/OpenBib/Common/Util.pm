@@ -37,6 +37,7 @@ use Digest::MD5();
 use Log::Log4perl qw(get_logger :levels);
 use POSIX();
 use Template;
+use YAML ();
 
 use OpenBib::Config;
 use OpenBib::Template::Provider;
@@ -84,10 +85,22 @@ sub init_new_session {
             $havenewsessionID=1;
       
             my $createtime = POSIX::strftime('%Y-%m-%d% %H:%M:%S', localtime());
-      
+
+
+            my $queryoptions_ref={
+                sorttype  => undef,
+                sortorder => undef,
+                hitrange  => undef,
+                offset    => undef,
+                maxhits   => undef,
+                lang      => undef,
+                profil    => undef,
+                autoplus  => undef,
+            };
+
             # Eintrag in die Datenbank
-            $idnresult=$sessiondbh->prepare("insert into session (sessionid,createtime) values (?,?)") or $logger->error($DBI::errstr);
-            $idnresult->execute($sessionID,$createtime) or $logger->error($DBI::errstr);
+            $idnresult=$sessiondbh->prepare("insert into session (sessionid,createtime,queryoptions) values (?,?,?)") or $logger->error($DBI::errstr);
+            $idnresult->execute($sessionID,$createtime,YAML::dump($queryoptions_ref)) or $logger->error($DBI::errstr);
         }
         $idnresult->finish();
     }
@@ -281,6 +294,55 @@ sub get_css_by_browsertype {
 
     return $stylesheet;
 }
+
+sub get_queryoptions {
+    my ($sessiondbh,$sessionID)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$sessiondbh->prepare("select queryoptions from session where sessionid = ?") or $logger->error($DBI::errstr);
+
+    $request->execute($sessionID) or $logger->error($DBI::errstr);
+  
+    my $res=$request->fetchrow_hashref();
+
+    $request->finish();
+
+    return YAML::Load($res->{queryoptions});
+}
+
+sub set_queryoptions {
+    my ($sessiondbh,$sessionID,$queryoptions_ref)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$sessiondbh->prepare("update session set queryoptions=? where sessionid = ?") or $logger->error($DBI::errstr);
+
+    $request->execute(YAML::Dump($queryoptions_ref),$sessionID) or $logger->error($DBI::errstr);
+
+    $request->finish();
+
+    return;
+}
+
+sub merge_queryoptions {
+    my ($options1_ref,$options2_ref)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Eintragungen in options1_ref werden, wenn sie in options2_ref
+    # gesetzt sind, von diesen ueberschrieben
+    
+    foreach my $key (keys %$options1_ref){
+        if (exists $options2_ref->{$key}){
+            $options1_ref->{$key}=$options2_ref->{$key};
+        }
+    }
+}
+
 
 #####################################################################
 ## get_sql_result(rreqarray,...): Suche anhand der in reqarray enthaltenen
@@ -609,26 +671,26 @@ sub by_yearofpub {
     my %line1=%$a;
     my %line2=%$b;
 
-    ($line1{erschjahr})=$line1{erschjahr}=~m/(\d\d\d\d)/;
-    ($line2{erschjahr})=$line2{erschjahr}=~m/(\d\d\d\d)/;
+    my ($line1)=$line1{T0425}[0]{content}=~m/(\d\d\d\d)/;
+    my ($line2)=$line2{T0425}[0]{content}=~m/(\d\d\d\d)/;
   
-    $line1{erschjahr}=0 if (!$line1{erschjahr});
-    $line2{erschjahr}=0 if (!$line2{erschjahr});
+    $line1=0 if (!$line1{T0425}[0]{content});
+    $line2=0 if (!$line2{T0425}[0]{content});
 
-    $line1{erschjahr} <=> $line2{erschjahr};
+    $line1 <=> $line2;
 }
 
 sub by_yearofpub_down {
     my %line1=%$a;
     my %line2=%$b;
 
-    ($line1{erschjahr})=$line1{erschjahr}=~m/(\d\d\d\d)/;
-    ($line2{erschjahr})=$line2{erschjahr}=~m/(\d\d\d\d)/;
+    my ($line1)=$line1{T0425}[0]{content}=~m/(\d\d\d\d)/;
+    my ($line2)=$line2{T0425}[0]{content}=~m/(\d\d\d\d)/;
 
-    $line1{erschjahr}=0 if (!$line1{erschjahr});
-    $line2{erschjahr}=0 if (!$line2{erschjahr});
+    $line1=0 if (!$line1{T0425}[0]{content});
+    $line2=0 if (!$line2{T0425}[0]{content});
 
-    $line2{erschjahr} <=> $line1{erschjahr};
+    $line2 <=> $line1;
 }
 
 
@@ -636,80 +698,82 @@ sub by_publisher {
     my %line1=%$a;
     my %line2=%$b;
 
-    $line1{publisher}=cleanrl($line1{publisher}) if ($line1{publisher});
-    $line2{publisher}=cleanrl($line2{publisher}) if ($line2{publisher});
+    my $line1=cleanrl($line1{T0412}[0]{content}) if ($line1{T0412}[0]{content});
+    my $line2=cleanrl($line2{T0412}[0]{content}) if ($line2{T0412}[0]{content});
 
-    $line1{publisher} cmp $line2{publisher};
+    $line1 cmp $line2;
 }
 
 sub by_publisher_down {
     my %line1=%$a;
     my %line2=%$b;
 
-    $line1{publisher}=cleanrl($line1{publisher}) if ($line1{publisher});
-    $line2{publisher}=cleanrl($line2{publisher}) if ($line2{publisher});
+    my $line1=cleanrl($line1{T0412}[0]{content}) if ($line1{T0412}[0]{content});
+    my $line2=cleanrl($line2{T0412}[0]{content}) if ($line2{T0412}[0]{content});
 
-    $line2{publisher} cmp $line1{publisher};
+    $line2 cmp $line1;
 }
 
 sub by_signature {
     my %line1=%$a;
     my %line2=%$b;
 
-    $line1{signatur}=cleanrl($line1{signatur}) if ($line1{signatur});
-    $line2{signatur}=cleanrl($line2{signatur}) if ($line2{signatur});
+    # Sortierung anhand erster Signatur
+    my $line1=cleanrl($line1{X0014}[0]{content}) if ($line1{X0014}[0]{content});
+    my $line2=cleanrl($line2{X0014}[0]{content}) if ($line2{X0014}[0]{content});
 
-    $line1{signatur} cmp $line2{signatur};
+    $line1 cmp $line2;
 }
 
 sub by_signature_down {
     my %line1=%$a;
     my %line2=%$b;
 
-    $line1{signatur}=cleanrl($line1{signatur}) if ($line1{signatur});
-    $line2{signatur}=cleanrl($line2{signatur}) if ($line2{signatur});
+    # Sortierung anhand erster Signatur
+    my $line1=cleanrl($line1{X0014}[0]{content}) if ($line1{X0014}[0]{content});
+    my $line2=cleanrl($line2{X0014}[0]{content}) if ($line2{X0014}[0]{content});
 
-    $line2{signatur} cmp $line1{signatur};
+    $line2 cmp $line1;
 }
 
 sub by_author {
     my %line1=%$a;
     my %line2=%$b;
 
-    $line1{verfasser}=cleanrl($line1{verfasser}) if ($line1{verfasser});
-    $line2{verfasser}=cleanrl($line2{verfasser}) if ($line2{verfasser});
+    my $line1=cleanrl($line1{PC0001}[0]{content}) if ($line1{PC0001}[0]{content});
+    my $line2=cleanrl($line2{PC0001}[0]{content}) if ($line2{PC0001}[0]{content});
 
-    $line1{verfasser} cmp $line2{verfasser};
+    $line1 cmp $line2;
 }
 
 sub by_author_down {
     my %line1=%$a;
     my %line2=%$b;
 
-    $line1{verfasser}=cleanrl($line1{verfasser}) if ($line1{verfasser});
-    $line2{verfasser}=cleanrl($line2{verfasser}) if ($line2{verfasser});
+    my $line1=cleanrl($line1{PC0001}[0]{content}) if ($line1{PC0001}[0]{content});
+    my $line2=cleanrl($line2{PC0001}[0]{content}) if ($line2{PC0001}[0]{content});
 
-    $line2{verfasser} cmp $line1{verfasser};
+    $line2 cmp $line1;
 }
 
 sub by_title {
     my %line1=%$a;
     my %line2=%$b;
 
-    $line1{title}=cleanrl($line1{title}) if ($line1{title});
-    $line2{title}=cleanrl($line2{title}) if ($line2{title});
+    my $line1=cleanrl($line1{T0331}[0]{content}) if ($line1{T0331}[0]{content});
+    my $line2=cleanrl($line2{T0331}[0]{content}) if ($line2{T0331}[0]{content});
 
-    $line1{title} cmp $line2{title};
+    $line1 cmp $line2;
 }
 
 sub by_title_down {
     my %line1=%$a;
     my %line2=%$b;
 
-    $line1{title}=cleanrl($line1{title}) if ($line1{title});
-    $line2{title}=cleanrl($line2{title}) if ($line2{title});
+    my $line1=cleanrl($line1{T0331}[0]{content}) if ($line1{T0331}[0]{content});
+    my $line2=cleanrl($line2{T0331}[0]{content}) if ($line2{T0331}[0]{content});
 
-    $line2{title} cmp $line1{title};
+    $line2 cmp $line1;
 }
 
 sub sort_buffer {

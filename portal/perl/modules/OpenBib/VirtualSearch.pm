@@ -97,26 +97,29 @@ sub handler {
     my $notation      = $query->param('notation')      || '';
     my $ejahr         = $query->param('ejahr')         || '';
     my $ejahrop       = $query->param('ejahrop')       || '=';
-    my $verknuepfung  = $query->param('verknuepfung')  || '';
     my @databases     = ($query->param('database'))?$query->param('database'):();
-    my $starthit      = ($query->param('starthit'))?$query->param('starthit'):1;
+
     my $hitrange      = ($query->param('hitrange'))?$query->param('hitrange'):20;
     my $offset        = ($query->param('offset'))?$query->param('offset'):1;
     my $maxhits       = ($query->param('maxhits'))?$query->param('maxhits'):500;
     my $sorttype      = ($query->param('sorttype'))?$query->param('sorttype'):"author";
-    my $sortall       = ($query->param('sortall'))?$query->param('sortall'):'0';
     my $sortorder     = ($query->param('sortorder'))?$query->param('sortorder'):'up';
+    my $autoplus      = $query->param('autoplus')      || '';
+    my $lang          = $query->param('l')             || 'de';
+
+    my $sortall       = ($query->param('sortall'))?$query->param('sortall'):'0';
+
     my $searchall     = $query->param('searchall')     || '';
     my $searchprofile = $query->param('searchprofile') || '';
-    my $lang          = $query->param('l')             || 'de';
 
     my $verfindex     = $query->param('verfindex')     || '';
     my $korindex      = $query->param('korindex')      || '';
     my $swtindex      = $query->param('swtindex')      || '';
     my $profil        = $query->param('profil')        || '';
     my $trefferliste  = $query->param('trefferliste')  || '';
-    my $autoplus      = $query->param('autoplus')      || '';
     my $queryid       = $query->param('queryid')       || '';
+
+    my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
 
     #####################################################################
     ## boolX: Verkn"upfung der Eingabefelder (leere Felder werden ignoriert)
@@ -211,6 +214,42 @@ sub handler {
     $boolmart      = "AND NOT" if ($boolmart      eq "NOT");
     $boolhststring = "AND NOT" if ($boolhststring eq "NOT");
 
+    # Queryoptions zur Session einladen (default: alles undef)
+    my $queryoptions_ref
+        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$sessionID);
+
+    my $default_queryoptions_ref={
+        sorttype  => 'author',
+        sortorder => 'up',
+        hitrange  => 20,
+        offset    => 1,
+        maxhits   => 500,
+        lang      => 'de',
+        profil    => '',
+        autoplus  => '',
+    };
+
+    # Abgleich mit uebergebenen Parametern
+    # Uebergene Parameter 'ueberschreiben' bestehende werden
+    # (undef oder gesetzt)
+    foreach my $option (keys %$queryoptions_ref){
+        if (defined $query->param($option)){
+            $queryoptions_ref->{$option}=$query->param($option);
+        }
+    }
+
+    # Abgleich mit Default-Werten:
+    # Verbliebene undef-Werte werden mit Standard-Werten belegt
+    foreach my $option (keys %$queryoptions_ref){
+        if (!defined $queryoptions_ref->{$option}){
+            $queryoptions_ref->{$option}=$default_queryoptions_ref->{$option};
+        }
+    }
+
+    OpenBib::Common::Util::set_queryoptions($sessiondbh,$sessionID,$queryoptions_ref);
+    
+
+    
     # Filter: ISBN und ISSN
 
     # Entfernung der Minus-Zeichen bei der ISBN
@@ -255,24 +294,10 @@ sub handler {
         $hitrange=-1;
     }
 
-    my %titeltyp=(
-        '1' => 'Einbändige Werke und Stücktitel',
-        '2' => 'Gesamtaufnahme fortlaufender Sammelwerke',
-        '3' => 'Gesamtaufnahme mehrbändig begrenzter Werke',
-        '4' => 'Bandaufführung',
-        '5' => 'Unselbständiges Werk',
-        '6' => 'Allegro-Daten',
-        '7' => 'Lars-Daten',
-        '8' => 'Sisis-Daten',
-        '9' => 'Sonstige Daten',
-    );
-
     my $targetdbinfo_ref   = OpenBib::Common::Util::get_targetdbinfo($sessiondbh);
     my $targetcircinfo_ref = OpenBib::Common::Util::get_targetcircinfo($sessiondbh);
 
     $profil="" if ((!exists $config{units}{$profil}) && $profil ne "dbauswahl" && !$profil=~/^user/ && $profil ne "alldbs");
-
-    my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
 
     unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
         OpenBib::Common::Util::print_warning("Ungültige Session",$r);

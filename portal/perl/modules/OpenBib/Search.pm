@@ -47,9 +47,10 @@ use OpenBib::Config;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
-use vars qw(%config);
+use vars qw(%config %msg);
 
-*config=\%OpenBib::Config::config;
+*config = \%OpenBib::Config::config;
+*msg    = OpenBib::Config::get_msgs($config{msg_path});
 
 my $benchmark;
 
@@ -173,11 +174,9 @@ sub handler {
     my $searchmultiplenot = $query->param('searchmultiplenot') || '';
     my $searchmultipleswt = $query->param('searchmultipleswt') || '';
     my $searchtitofaut    = $query->param('searchtitofaut')    || '';
-    my $searchtitofswt    = $query->param('searchtitofswt')    || '';
-    my $searchtitofkor    = $query->param('searchtitofkor')    || '';
-    my $searchtitofnot    = $query->param('searchtitofnot')    || '';
-    my $searchtitofurh    = $query->param('searchtitofurh')    || '';
     my $searchtitofurhkor = $query->param('searchtitofurhkor') || '';
+    my $searchtitofnot    = $query->param('searchtitofnot')    || '';
+    my $searchtitofswt    = $query->param('searchtitofswt')    || '';
     my $searchgtmtit      = $query->param('gtmtit')            || '';
     my $searchgtftit      = $query->param('gtftit')            || '';
     my $searchinvktit     = $query->param('invktit')           || '';
@@ -219,22 +218,6 @@ sub handler {
     my $boolmart      = ($query->param('boolmart'))?$query->param('boolmart'):"AND";
     my $boolhststring = ($query->param('boolhststring'))?$query->param('boolhststring'):"AND";
 
-    #####################################################################
-    # Sonstige Variablen 
-    #####################################################################
-  
-    my %titeltyp=(
-        '1' => 'Einbändige Werke und Stücktitel',
-        '2' => 'Gesamtaufnahme fortlaufender Sammelwerke',
-        '3' => 'Gesamtaufnahme mehrbändig begrenzter Werke',
-        '4' => 'Bandaufführung',
-        '5' => 'Unselbständiges Werk',
-        '6' => 'Allegro-Daten',
-        '7' => 'Lars-Daten',
-        '8' => 'Sisis-Daten',
-        '9' => 'Sonstige Daten',
-    );
-  
     #####                                                          ######
     ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########
     #####                                                          ######
@@ -382,7 +365,6 @@ sub handler {
                 sorttype           => $sorttype,
                 sortorder          => $sortorder,
                 database           => $database,
-                titeltyp_ref       => \%titeltyp,
                 sessionID          => $sessionID,
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
@@ -509,116 +491,237 @@ sub handler {
 		    show_corporate_banner => 0,
 		    show_foot_banner      => 1,
 		    config     => \%config,
+                    msg        => \%msg,
                 };
                 OpenBib::Common::Util::print_page($config{tt_search_showautset_tname},$ttdata,$r);
                 return OK;
             }
         }
+    
+        if ($generalsearch=~/^supertit/) {
+            my $supertitidn=$query->param("$generalsearch");
 
-        if ($generalsearch=~/^kor/) {
-            if ($searchmode == 1) {
-                $searchtitofkor=$query->param("$generalsearch");
+            my $reqstring="select distinct targetid from connection where sourceid=? and sourcetype='tit' and targettype='tit'";
+            my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
+            $request->execute($supertitidn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+
+            my @titidns=();
+            
+            while (my $res=$request->fetchrow_hashref) {
+                push @titidns, $res->{targetid};
             }
-            else {		
-                my $koridn=$query->param("$generalsearch");
-                my $normset=OpenBib::Search::Util::get_kor_set_by_idn({
-                    koridn            => $koridn,
-                    dbh               => $dbh,
-                    searchmultiplekor => $searchmultiplekor,
-                    searchmode        => $searchmode,
-                    hitrange          => $hitrange,
-                    rating            => $rating,
-                    bookinfo          => $bookinfo,
-                    sorttype          => $sorttype,
-                    sortorder         => $sortorder,
-                    database          => $database,
-                    sessionID         => $sessionID,
+
+            $request->finish();
+            
+            if ($#titidns == -1) {
+                OpenBib::Common::Util::print_info("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden",$r);;
+                return OK;
+            }
+      
+            if ($#titidns == 0) {
+                OpenBib::Search::Util::print_tit_set_by_idn({
+                    titidn             => $titidns[0],
+                    hint               => "none",
+                    dbh                => $dbh,
+                    sessiondbh         => $sessiondbh,
+                    searchmultipleaut  => $searchmultipleaut,
+                    searchmultiplekor  => $searchmultiplekor,
+                    searchmultipleswt  => $searchmultipleswt,
+                    searchmultiplenot  => $searchmultiplenot,
+                    searchmultipletit  => $searchmultipletit,
+                    searchmode         => $searchmode,
+                    targetdbinfo_ref   => $targetdbinfo_ref,
+                    targetcircinfo_ref => $targetcircinfo_ref,
+                    hitrange           => $hitrange,
+                    rating             => $rating,
+                    bookinfo           => $bookinfo,
+                    sorttype           => $sorttype,
+                    sortorder          => $sortorder,
+                    database           => $database,
+                    sessionID          => $sessionID,
+                    apachereq          => $r,
+                    stylesheet         => $stylesheet,
+                    view               => $view,
+                    lang               => $lang,
                 });
+                return OK;
+
+            }
+      
+            if ($#titidns > 0) {
+                my @outputbuffer=();
+                my ($atime,$btime,$timeall);
                 
-                # TT-Data erzeugen
-                my $ttdata={
-                    lang       => $lang,
-		    view       => $view,
-		    stylesheet => $stylesheet,
-		    sessionID  => $sessionID,
-		    
-		    database   => $database,
-		    
-		    searchmode => $searchmode,
-		    hitrange   => $hitrange,
-		    rating     => $rating,
-		    bookinfo   => $bookinfo,
-		    sessionID  => $sessionID,
-		    
-		    normset    => $normset,
-		    
-		    utf2iso    => sub {
-                        my $string=shift;
-                        $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-                        return $string;
-		    },
-		    
-		    show_corporate_banner => 0,
-		    show_foot_banner      => 1,
-		    config     => \%config,
-                };
-                OpenBib::Common::Util::print_page($config{tt_search_showkorset_tname},$ttdata,$r);
-                return OK;
-            }
-        }
-    
-        if ($generalsearch=~/^urh/) {
-            if ($searchmode == 1) {
-                $searchtitofurh=$query->param("$generalsearch");
-            }
-            else {		
-                my $koridn=$query->param("$generalsearch");
-                my $normset=OpenBib::Search::Util::get_kor_set_by_idn({
-                    koridn            => $koridn,
-                    dbh               => $dbh,
-                    searchmultiplekor => $searchmultiplekor,
-                    searchmode        => $searchmode,
-                    hitrange          => $hitrange,
-                    rating            => $rating,
-                    bookinfo          => $bookinfo,
-                    sorttype          => $sorttype,
-                    sortorder         => $sortorder,
-                    database          => $database,
-                    sessionID         => $sessionID,
-                });
+                if ($config{benchmark}) {
+                    $atime=new Benchmark;
+                }
+	
+                foreach my $idn (@titidns) {
+                    push @outputbuffer, OpenBib::Search::Util::get_tit_listitem_by_idn({
+                        titidn            => $idn,
+                        dbh               => $dbh,
+                        sessiondbh        => $sessiondbh,
+                        searchmultipleaut => $searchmultipleaut,
+                        searchmultiplekor => $searchmultiplekor,
+                        searchmultipleswt => $searchmultipleswt,
+                        searchmultiplenot => $searchmultiplenot,
+                        searchmultipletit => $searchmultipletit,
+                        searchmode        => $searchmode,
+                        hitrange          => $hitrange,
+                        rating            => $rating,
+                        bookinfo          => $bookinfo,
+                        sorttype          => $sorttype,
+                        sortorder         => $sortorder,
+                        database          => $database,
+                        sessionID         => $sessionID,
+                        targetdbinfo_ref  => $targetdbinfo_ref,
+                    });
+                }
 
-                # TT-Data erzeugen
-                my $ttdata={
-                    lang       => $lang,
-		    view       => $view,
-		    stylesheet => $stylesheet,
-		    sessionID  => $sessionID,
-		    
-		    database   => $database,
-		    
-		    searchmode => $searchmode,
-		    hitrange   => $hitrange,
-		    rating     => $rating,
-		    bookinfo   => $bookinfo,
-		    sessionID  => $sessionID,
-		    
-		    normset    => $normset,
-		    
-		    utf2iso    => sub {
-                        my $string=shift;
-                        $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-                        return $string;
-		    },
-		    
-		    show_corporate_banner => 0,
-		    show_foot_banner      => 1,
-		    config     => \%config,
-                };
-                OpenBib::Common::Util::print_page($config{tt_search_showkorset_tname},$ttdata,$r);
+                if ($config{benchmark}) {
+                    $btime   = new Benchmark;
+                    $timeall = timediff($btime,$atime);
+                    $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel : ist ".timestr($timeall));
+                    undef $atime;
+                    undef $btime;
+                    undef $timeall;
+                }
+	
+                my @sortedoutputbuffer=();
+                OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
+                OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@sortedoutputbuffer);
+                OpenBib::Search::Util::print_tit_list_by_idn({
+                    itemlist_ref     => \@sortedoutputbuffer,
+                    targetdbinfo_ref => $targetdbinfo_ref,
+                    searchmode       => $searchmode,
+                    rating           => $rating,
+                    bookinfo         => $bookinfo,
+                    database         => $database,
+                    sessionID        => $sessionID,
+                    apachereq        => $r,
+                    stylesheet       => $stylesheet,
+                    hitrange         => $hitrange,
+                    offset           => $offset,
+                    view             => $view,
+                    lang             => $lang,
+                });
                 return OK;
             }
         }
-    
+
+        if ($generalsearch=~/^subtit/) {
+            my $subtitidn=$query->param("$generalsearch");
+
+            my $reqstring="select distinct sourceid from connection where targetid=? and sourcetype='tit' and targettype='tit'";
+            my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
+            $request->execute($subtitidn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+
+            my @titidns=();
+            
+            while (my $res=$request->fetchrow_hashref) {
+                push @titidns, $res->{sourceid};
+            }
+
+            $request->finish();
+            
+            if ($#titidns == -1) {
+                OpenBib::Common::Util::print_info("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden",$r);;
+                return OK;
+            }
+      
+            if ($#titidns == 0) {
+                OpenBib::Search::Util::print_tit_set_by_idn({
+                    titidn             => $titidns[0],
+                    dbh                => $dbh,
+                    sessiondbh         => $sessiondbh,
+                    searchmultipleaut  => $searchmultipleaut,
+                    searchmultiplekor  => $searchmultiplekor,
+                    searchmultipleswt  => $searchmultipleswt,
+                    searchmultiplenot  => $searchmultiplenot,
+                    searchmultipletit  => $searchmultipletit,
+                    searchmode         => $searchmode,
+                    targetdbinfo_ref   => $targetdbinfo_ref,
+                    targetcircinfo_ref => $targetcircinfo_ref,
+                    hitrange           => $hitrange,
+                    rating             => $rating,
+                    bookinfo           => $bookinfo,
+                    sorttype           => $sorttype,
+                    sortorder          => $sortorder,
+                    database           => $database,
+                    sessionID          => $sessionID,
+                    apachereq          => $r,
+                    stylesheet         => $stylesheet,
+                    view               => $view,
+                    lang               => $lang,
+                });
+                return OK;
+
+            }
+      
+            if ($#titidns > 0) {
+                my @outputbuffer=();
+                my ($atime,$btime,$timeall);
+                
+                if ($config{benchmark}) {
+                    $atime=new Benchmark;
+                }
+	
+                foreach my $idn (@titidns) {
+                    push @outputbuffer, OpenBib::Search::Util::get_tit_listitem_by_idn({
+                        titidn            => $idn,
+                        dbh               => $dbh,
+                        sessiondbh        => $sessiondbh,
+                        searchmultipleaut => $searchmultipleaut,
+                        searchmultiplekor => $searchmultiplekor,
+                        searchmultipleswt => $searchmultipleswt,
+                        searchmultiplenot => $searchmultiplenot,
+                        searchmultipletit => $searchmultipletit,
+                        searchmode        => $searchmode,
+                        hitrange          => $hitrange,
+                        rating            => $rating,
+                        bookinfo          => $bookinfo,
+                        sorttype          => $sorttype,
+                        sortorder         => $sortorder,
+                        database          => $database,
+                        sessionID         => $sessionID,
+                        targetdbinfo_ref  => $targetdbinfo_ref,
+                    });
+                }
+
+                if ($config{benchmark}) {
+                    $btime   = new Benchmark;
+                    $timeall = timediff($btime,$atime);
+                    $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel : ist ".timestr($timeall));
+                    undef $atime;
+                    undef $btime;
+                    undef $timeall;
+                }
+	
+                my @sortedoutputbuffer=();
+                OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
+                OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@sortedoutputbuffer);
+                OpenBib::Search::Util::print_tit_list_by_idn({
+                    itemlist_ref     => \@sortedoutputbuffer,
+                    targetdbinfo_ref => $targetdbinfo_ref,
+                    searchmode       => $searchmode,
+                    rating           => $rating,
+                    bookinfo         => $bookinfo,
+                    database         => $database,
+                    sessionID        => $sessionID,
+                    apachereq        => $r,
+                    stylesheet       => $stylesheet,
+                    hitrange         => $hitrange,
+                    offset           => $offset,
+                    view             => $view,
+                    lang             => $lang,
+                });
+                return OK;
+            }
+        }
+
+
+
+        
         if ($generalsearch=~/^gtftit/) {
             my $gtftit=$query->param("$generalsearch");
             my @requests=("select titidn from titgtf where verwidn=$gtftit");
@@ -649,7 +752,6 @@ sub handler {
                     sorttype           => $sorttype,
                     sortorder          => $sortorder,
                     database           => $database,
-                    titeltyp_ref       => \%titeltyp,
                     sessionID          => $sessionID,
                     apachereq          => $r,
                     stylesheet         => $stylesheet,
@@ -722,7 +824,7 @@ sub handler {
                 return OK;
             }
         }
-    
+
         if ($generalsearch=~/^gtmtit/) {
             my $gtmtit=$query->param("$generalsearch");
             my @requests=("select titidn from titgtm where verwidn=$gtmtit");
@@ -753,7 +855,6 @@ sub handler {
                     sorttype           => $sorttype,
                     sortorder          => $sortorder,
                     database           => $database,
-                    titeltyp_ref       => \%titeltyp,
                     sessionID          => $sessionID,
                     apachereq          => $r,
                     stylesheet         => $stylesheet,
@@ -856,7 +957,6 @@ sub handler {
                     sorttype           => $sorttype,
                     sortorder          => $sortorder,
                     database           => $database,
-                    titeltyp_ref       => \%titeltyp,
                     sessionID          => $sessionID,
                     apachereq          => $r,
                     stylesheet         => $stylesheet,
@@ -951,7 +1051,6 @@ sub handler {
                 sorttype           => $sorttype,
                 sortorder          => $sortorder,
                 database           => $database,
-                titeltyp_ref       => \%titeltyp,
                 sessionID          => $sessionID,
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
@@ -1007,6 +1106,7 @@ sub handler {
 		    show_corporate_banner => 0,
 		    show_foot_banner      => 1,
 		    config     => \%config,
+                    msg        => \%msg,
                 };
                 OpenBib::Common::Util::print_page($config{tt_search_showswtset_tname},$ttdata,$r);
                 return OK;
@@ -1059,6 +1159,7 @@ sub handler {
 		    show_corporate_banner => 0,
 		    show_foot_banner      => 1,
 		    config     => \%config,
+                    msg        => \%msg,
                 };
                 OpenBib::Common::Util::print_page($config{tt_search_shownotset_tname},$ttdata,$r);
                 return OK;
@@ -1087,7 +1188,6 @@ sub handler {
                 sorttype           => $sorttype,
                 sortorder          => $sortorder,
                 database           => $database,
-                titeltyp_ref       => \%titeltyp,
                 sessionID          => $sessionID,
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
@@ -1119,7 +1219,6 @@ sub handler {
                 sorttype           => $sorttype,
                 sortorder          => $sortorder,
                 database           => $database,
-                titeltyp_ref       => \%titeltyp,
                 sessionID          => $sessionID,
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
@@ -1153,7 +1252,6 @@ sub handler {
             sorttype           => $sorttype,
             sortorder          => $sortorder,
             database           => $database,
-            titeltyp_ref       => \%titeltyp,
             sessionID          => $sessionID,
             apachereq          => $r,
             stylesheet         => $stylesheet,
@@ -1182,7 +1280,6 @@ sub handler {
 #             sorttype           => $sorttype,
 #             sortorder          => $sortorder,
 #             database           => $database,
-#             titeltyp_ref       => \%titeltyp,
 #             sessionID          => $sessionID,
 #             apachereq          => $r,
 #             stylesheet         => $stylesheet,
@@ -1210,7 +1307,6 @@ sub handler {
 #             sorttype           => $sorttype,
 #             sortorder          => $sortorder,
 #             database           => $database,
-#             titeltyp_ref       => \%titeltyp,
 #             sessionID          => $sessionID,
 #             apachereq          => $r,
 #             stylesheet         => $stylesheet,
@@ -1238,7 +1334,6 @@ sub handler {
 #             sorttype           => $sorttype,
 #             sortorder          => $sortorder,
 #             database           => $database,
-#             titeltyp_ref       => \%titeltyp,
 #             sessionID          => $sessionID,
 #             apachereq          => $r,
 #             stylesheet         => $stylesheet,
@@ -1265,7 +1360,6 @@ sub handler {
 #             sorttype           => $sorttype,
 #             sortorder          => $sortorder,
 #             database           => $database,
-#             titeltyp_ref       => \%titeltyp,
 #             sessionID          => $sessionID,
 #             apachereq          => $r,
 #             stylesheet         => $stylesheet,
@@ -1296,7 +1390,6 @@ sub handler {
             sorttype           => $sorttype,
             sortorder          => $sortorder,
             database           => $database,
-            titeltyp_ref       => \%titeltyp,
             sessionID          => $sessionID,
             apachereq          => $r,
             stylesheet         => $stylesheet,
@@ -1352,6 +1445,7 @@ sub handler {
                 show_corporate_banner => 0,
                 show_foot_banner      => 1,
                 config     => \%config,
+                msg        => \%msg,
             };
             OpenBib::Common::Util::print_page($config{tt_search_showswtset_tname},$ttdata,$r);
             return OK;
@@ -1361,7 +1455,7 @@ sub handler {
     ######################################################################
     if ($searchsinglekor) {
         if ($searchmode == 1) {
-            $searchtitofkor=$searchsinglekor;
+            $searchtitofurhkor=$searchsinglekor;
         }
         else {		
             my $normset=OpenBib::Search::Util::get_kor_set_by_idn({
@@ -1404,6 +1498,7 @@ sub handler {
                 show_corporate_banner => 0,
                 show_foot_banner      => 1,
                 config     => \%config,
+                msg        => \%msg,
             };
             OpenBib::Common::Util::print_page($config{tt_search_showkorset_tname},$ttdata,$r);
             return OK;
@@ -1456,6 +1551,7 @@ sub handler {
                 show_corporate_banner => 0,
                 show_foot_banner      => 1,
                 config     => \%config,
+                msg        => \%msg,
             };
             OpenBib::Common::Util::print_page($config{tt_search_shownotset_tname},$ttdata,$r);
             return OK;
@@ -1508,6 +1604,7 @@ sub handler {
                 show_corporate_banner => 0,
                 show_foot_banner      => 1,
                 config     => \%config,
+                msg        => \%msg,
             };
             OpenBib::Common::Util::print_page($config{tt_search_showautset_tname},$ttdata,$r);
             return OK;
@@ -1515,9 +1612,15 @@ sub handler {
     }
   
     if ($searchtitofaut) {
-        my @requests=("select titidn from titverf where verfverw=$searchtitofaut","select titidn from titpers where persverw=$searchtitofaut","select titidn from titgpers where persverw=$searchtitofaut");
-        my @titelidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);	
-    
+        # Bestimmung der Titel
+        my $request=$dbh->prepare("select distinct sourceid from connection where targetid=? and sourcetype='tit' and targettype='aut'") or $logger->error($DBI::errstr);
+        $request->execute($searchtitofaut);
+
+        my @titelidns=();
+        while (my $res=$request->fetchrow_hashref){
+            push @titelidns, $res->{sourceid};
+        }
+
         if ($#titelidns == -1) {
             OpenBib::Common::Util::print_info("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden",$r);;
             return OK;
@@ -1543,7 +1646,6 @@ sub handler {
                 sorttype           => $sorttype,
                 sortorder          => $sortorder,
                 database           => $database,
-                titeltyp_ref       => \%titeltyp,
                 sessionID          => $sessionID,
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
@@ -1618,8 +1720,14 @@ sub handler {
   
     #####################################################################
     if ($searchtitofurhkor) {
-        my @requests=("select titidn from titurh where urhverw=$searchtitofurhkor","select titidn from titkor where korverw=$searchtitofurhkor");
-        my @titelidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
+        # Bestimmung der Titel
+        my $request=$dbh->prepare("select distinct sourceid from connection where targetid=? and sourcetype='tit' and targettype='kor'") or $logger->error($DBI::errstr);
+        $request->execute($searchtitofurhkor);
+
+        my @titelidns=();
+        while (my $res=$request->fetchrow_hashref){
+            push @titelidns, $res->{sourceid};
+        }
 
         if ($#titelidns == -1) {
             OpenBib::Common::Util::print_info("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden",$r);;
@@ -1646,7 +1754,6 @@ sub handler {
                 sorttype           => $sorttype,
                 sortorder          => $sortorder,
                 database           => $database,
-                titeltyp_ref       => \%titeltyp,
                 sessionID          => $sessionID,
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
@@ -1655,208 +1762,6 @@ sub handler {
             });
             return OK;
 
-        }
-        if ($#titelidns > 0) {
-            my @outputbuffer=();
-            my ($atime,$btime,$timeall);
-      
-            if ($config{benchmark}) {
-                $atime=new Benchmark;
-            }
-
-            foreach my $titelidn (@titelidns) {
-                push @outputbuffer, OpenBib::Search::Util::get_tit_listitem_by_idn({
-                    titidn            => $titelidn,
-                    hint              => "none",
-                    mode              => 5,
-                    dbh               => $dbh,
-                    sessiondbh        => $sessiondbh,
-                    searchmultipleaut => $searchmultipleaut,
-                    searchmultiplekor => $searchmultiplekor,
-                    searchmultipleswt => $searchmultipleswt,
-                    searchmultiplenot => $searchmultiplenot,
-                    searchmultipletit => $searchmultipletit,
-                    searchmode        => $searchmode,
-                    hitrange          => $hitrange,
-                    rating            => $rating,
-                    bookinfo          => $bookinfo,
-                    sorttype          => $sorttype,
-                    sortorder         => $sortorder,
-                    database          => $database,
-                    sessionID         => $sessionID,
-                    targetdbinfo_ref  => $targetdbinfo_ref,
-                });
-            }
-
-            if ($config{benchmark}) {
-                $btime   = new Benchmark;
-                $timeall = timediff($btime,$atime);
-                $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel : ist ".timestr($timeall));
-                undef $atime;
-                undef $btime;
-                undef $timeall;
-            }
-
-            my @sortedoutputbuffer=();
-            OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
-            OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@sortedoutputbuffer);
-            OpenBib::Search::Util::print_tit_list_by_idn({
-                itemlist_ref     => \@sortedoutputbuffer,
-                targetdbinfo_ref => $targetdbinfo_ref,
-                searchmode       => $searchmode,
-                rating           => $rating,
-                bookinfo         => $bookinfo,
-                database         => $database,
-                sessionID        => $sessionID,
-                apachereq        => $r,
-                stylesheet       => $stylesheet,
-                hitrange         => $hitrange,
-                offset           => $offset,
-                view             => $view,
-                lang             => $lang,
-            });
-            return OK;
-        }	
-    }
-  
-    #####################################################################
-    if ($searchtitofurh) {
-        my @requests=("select titidn from titurh where urhverw=$searchtitofurh");
-        my @titelidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-        if ($#titelidns == -1) {
-            OpenBib::Common::Util::print_info("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden",$r);;
-            return OK;
-        }
-
-        if ($#titelidns == 0) {
-            OpenBib::Search::Util::print_tit_set_by_idn({
-                titidn             => $titelidns[0],
-                hint               => "none",
-                dbh                => $dbh,
-                sessiondbh         => $sessiondbh,
-                searchmultipleaut  => $searchmultipleaut,
-                searchmultiplekor  => $searchmultiplekor,
-                searchmultipleswt  => $searchmultipleswt,
-                searchmultiplenot  => $searchmultiplenot,
-                searchmultipletit  => $searchmultipletit,
-                searchmode         => $searchmode,
-                targetdbinfo_ref   => $targetdbinfo_ref,
-                targetcircinfo_ref => $targetcircinfo_ref,
-                hitrange           => $hitrange,
-                rating             => $rating,
-                bookinfo           => $bookinfo,
-                sorttype           => $sorttype,
-                sortorder          => $sortorder,
-                database           => $database,
-                titeltyp_ref       => \%titeltyp,
-                sessionID          => $sessionID,
-                apachereq          => $r,
-                stylesheet         => $stylesheet,
-                view               => $view,
-                lang               => $lang,
-            });
-            return OK;
-        }
-        if ($#titelidns > 0) {
-            my @outputbuffer=();
-            my ($atime,$btime,$timeall);
-      
-            if ($config{benchmark}) {
-                $atime=new Benchmark;
-            }
-
-            foreach my $titelidn (@titelidns) {
-                push @outputbuffer, OpenBib::Search::Util::get_tit_listitem_by_idn({
-                    titidn            => "$titelidn",
-                    hint              => "none",
-                    mode              => 5,
-                    dbh               => $dbh,
-                    sessiondbh        => $sessiondbh,
-                    searchmultipleaut => $searchmultipleaut,
-                    searchmultiplekor => $searchmultiplekor,
-                    searchmultipleswt => $searchmultipleswt,
-                    searchmultiplenot => $searchmultiplenot,
-                    searchmultipletit => $searchmultipletit,
-                    searchmode        => $searchmode,
-                    hitrange          => $hitrange,
-                    rating            => $rating,
-                    bookinfo          => $bookinfo,
-                    sorttype          => $sorttype,
-                    sortorder         => $sortorder,
-                    database          => $database,
-                    sessionID         => $sessionID,
-                    targetdbinfo_ref  => $targetdbinfo_ref,
-                });
-            }
-
-            if ($config{benchmark}) {
-                $btime   = new Benchmark;
-                $timeall = timediff($btime,$atime);
-                $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel : ist ".timestr($timeall));
-                undef $atime;
-                undef $btime;
-                undef $timeall;
-            }
-
-            my @sortedoutputbuffer=();
-            OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
-            OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@sortedoutputbuffer);
-            OpenBib::Search::Util::print_tit_list_by_idn({
-                itemlist_ref     => \@sortedoutputbuffer,
-                targetdbinfo_ref => $targetdbinfo_ref,
-                searchmode       => $searchmode,
-                rating           => $rating,
-                bookinfo         => $bookinfo,
-                database         => $database,
-                sessionID        => $sessionID,
-                apachereq        => $r,
-                stylesheet       => $stylesheet,
-                hitrange         => $hitrange,
-                offset           => $offset,
-                view             => $view,
-                lang             => $lang,
-            });
-            return OK;
-        }	
-    }
-  
-    #######################################################################
-    if ($searchtitofkor) {
-        my @requests=("select titidn from titkor where korverw=$searchtitofkor");
-        my @titelidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);	
-        if ($#titelidns == -1) {
-            OpenBib::Common::Util::print_info("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden",$r);;
-            return OK;
-        }
-
-        if ($#titelidns == 0) {
-            OpenBib::Search::Util::print_tit_set_by_idn({
-                titidn             => $titelidns[0],
-                hint               => "none",
-                dbh                => $dbh,
-                sessiondbh         => $sessiondbh,
-                searchmultipleaut  => $searchmultipleaut,
-                searchmultiplekor  => $searchmultiplekor,
-                searchmultipleswt  => $searchmultipleswt,
-                searchmultiplenot  => $searchmultiplenot,
-                searchmultipletit  => $searchmultipletit,
-                searchmode         => $searchmode,
-                targetdbinfo_ref   => $targetdbinfo_ref,
-                targetcircinfo_ref => $targetcircinfo_ref,
-                hitrange           => $hitrange,
-                rating             => $rating,
-                bookinfo           => $bookinfo,
-                sorttype           => $sorttype,
-                sortorder          => $sortorder,
-                database           => $database,
-                titeltyp_ref       => \%titeltyp,
-                sessionID          => $sessionID,
-                apachereq          => $r,
-                stylesheet         => $stylesheet,
-                view               => $view,
-                lang               => $lang,
-            });
-            return OK;
         }
         if ($#titelidns > 0) {
             my @outputbuffer=();
@@ -1923,8 +1828,14 @@ sub handler {
   
     #######################################################################
     if ($searchtitofswt) {
-        my @requests=("select titidn from titswtlok where swtverw=$searchtitofswt");
-        my @titelidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);	
+        # Bestimmung der Titel
+        my $request=$dbh->prepare("select distinct sourceid from connection where targetid=? and sourcetype='tit' and targettype='swt'") or $logger->error($DBI::errstr);
+        $request->execute($searchtitofswt);
+
+        my @titelidns=();
+        while (my $res=$request->fetchrow_hashref){
+            push @titelidns, $res->{sourceid};
+        }
     
         if ($#titelidns == -1) {
             OpenBib::Common::Util::print_info("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden",$r);;
@@ -1950,7 +1861,6 @@ sub handler {
                 sorttype           => $sorttype,
                 sortorder          => $sortorder,
                 database           => $database,
-                titeltyp_ref       => \%titeltyp,
                 sessionID          => $sessionID,
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
@@ -2024,9 +1934,15 @@ sub handler {
   
     #######################################################################
     if ($searchtitofnot) {
-        my @requests=("select titidn from titnot where notidn=$searchtitofnot");
-        my @titelidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);	
-    
+        # Bestimmung der Titel
+        my $request=$dbh->prepare("select distinct sourceid from connection where targetid=? and sourcetype='tit' and targettype='not'") or $logger->error($DBI::errstr);
+        $request->execute($searchtitofnot);
+
+        my @titelidns=();
+        while (my $res=$request->fetchrow_hashref){
+            push @titelidns, $res->{sourceid};
+        }
+
         if ($#titelidns == -1) {
             OpenBib::Common::Util::print_info("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden",$r);;
             return OK;
@@ -2052,7 +1968,6 @@ sub handler {
                 sorttype           => $sorttype,
                 sortorder          => $sortorder,
                 database           => $database,
-                titeltyp_ref       => \%titeltyp,
                 sessionID          => $sessionID,
                 apachereq          => $r,
                 stylesheet         => $stylesheet,

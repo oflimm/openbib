@@ -1,8 +1,10 @@
 <!-- Beginn Result Item -->
 <tr class="titlerow"><td>&nbsp;</td><td>[% dbinfo %]</td><td align="right" colspan="3"><strong>[% treffer %] Treffer</strong></td></tr>
 
-[%# USE dumper %]
-[%# dumper.dump(resultlist) %]
+<!--
+[% USE dumper %]
+[% dumper.dump(resultlist) %]
+-->
 
 [% listrow = 'listrow2' %]
 [%- FOREACH item IN resultlist -%]

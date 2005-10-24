@@ -214,42 +214,6 @@ sub handler {
     $boolmart      = "AND NOT" if ($boolmart      eq "NOT");
     $boolhststring = "AND NOT" if ($boolhststring eq "NOT");
 
-    # Queryoptions zur Session einladen (default: alles undef)
-    my $queryoptions_ref
-        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$sessionID);
-
-    my $default_queryoptions_ref={
-        sorttype  => 'author',
-        sortorder => 'up',
-        hitrange  => 20,
-        offset    => 1,
-        maxhits   => 500,
-        lang      => 'de',
-        profil    => '',
-        autoplus  => '',
-    };
-
-    # Abgleich mit uebergebenen Parametern
-    # Uebergene Parameter 'ueberschreiben' bestehende werden
-    # (undef oder gesetzt)
-    foreach my $option (keys %$queryoptions_ref){
-        if (defined $query->param($option)){
-            $queryoptions_ref->{$option}=$query->param($option);
-        }
-    }
-
-    # Abgleich mit Default-Werten:
-    # Verbliebene undef-Werte werden mit Standard-Werten belegt
-    foreach my $option (keys %$queryoptions_ref){
-        if (!defined $queryoptions_ref->{$option}){
-            $queryoptions_ref->{$option}=$default_queryoptions_ref->{$option};
-        }
-    }
-
-    OpenBib::Common::Util::set_queryoptions($sessiondbh,$sessionID,$queryoptions_ref);
-    
-
-    
     # Filter: ISBN und ISSN
 
     # Entfernung der Minus-Zeichen bei der ISBN
@@ -294,8 +258,14 @@ sub handler {
         $hitrange=-1;
     }
 
-    my $targetdbinfo_ref   = OpenBib::Common::Util::get_targetdbinfo($sessiondbh);
-    my $targetcircinfo_ref = OpenBib::Common::Util::get_targetcircinfo($sessiondbh);
+    my $queryoptions_ref
+        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$r);
+
+    my $targetdbinfo_ref
+        = OpenBib::Common::Util::get_targetdbinfo($sessiondbh);
+
+    my $targetcircinfo_ref
+        = OpenBib::Common::Util::get_targetcircinfo($sessiondbh);
 
     $profil="" if ((!exists $config{units}{$profil}) && $profil ne "dbauswahl" && !$profil=~/^user/ && $profil ne "alldbs");
 

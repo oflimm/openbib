@@ -606,16 +606,14 @@ sub get_tit_listitem_by_idn {
     # Set defaults
     my $titidn            = exists $arg_ref->{titidn}
         ? $arg_ref->{titidn}            : undef;
-    my $hint              = exists $arg_ref->{hint}
-        ? $arg_ref->{hint}               : undef;
-    my $mode              = exists $arg_ref->{mode}
-        ? $arg_ref->{mode}               : undef;
     my $dbh               = exists $arg_ref->{dbh}
         ? $arg_ref->{dbh}               : undef;
     my $sessiondbh        = exists $arg_ref->{sessiondbh}
         ? $arg_ref->{sessiondbh}        : undef;
     my $targetdbinfo_ref  = exists $arg_ref->{targetdbinfo_ref}
         ? $arg_ref->{targetdbinfo_ref}  : undef;
+    my $queryoptions_ref  = exists $arg_ref->{queryoptions_ref}
+        ? $arg_ref->{queryoptions_ref}  : undef;
     my $database          = exists $arg_ref->{database}
         ? $arg_ref->{database}          : undef;
     my $sessionID         = exists $arg_ref->{sessionID}
@@ -1066,38 +1064,16 @@ sub print_tit_set_by_idn {
     # Set defaults
     my $titidn             = exists $arg_ref->{titidn}
         ? $arg_ref->{titidn}             : undef;
-    my $hint               = exists $arg_ref->{hint}
-        ? $arg_ref->{hint}               : undef;
     my $dbh                = exists $arg_ref->{dbh}
         ? $arg_ref->{dbh}                : undef;
     my $sessiondbh         = exists $arg_ref->{sessiondbh}
         ? $arg_ref->{sessiondbh}         : undef;
-    my $searchmultipleaut  = exists $arg_ref->{searchmultipleaut}
-        ? $arg_ref->{searchmultipleaut}  : undef;
-    my $searchmultiplekor  = exists $arg_ref->{searchmultiplekor}
-        ? $arg_ref->{searchmultiplekor}  : undef;
-    my $searchmultipleswt  = exists $arg_ref->{searchmultipleswt}
-        ? $arg_ref->{searchmultipleswt}  : undef;
-    my $searchmultiplenot  = exists $arg_ref->{searchmultiplenot}
-        ? $arg_ref->{searchmultiplenot}  : undef;
-    my $searchmultipletit  = exists $arg_ref->{searchmultipletit}
-        ? $arg_ref->{searchmultipletit}  : undef;
-    my $searchmode         = exists $arg_ref->{searchmode}
-        ? $arg_ref->{searchmode}         : undef;
     my $targetdbinfo_ref   = exists $arg_ref->{targetdbinfo_ref}
         ? $arg_ref->{targetdbinfo_ref}   : undef;
     my $targetcircinfo_ref = exists $arg_ref->{targetcircinfo_ref}
         ? $arg_ref->{targetcircinfo_ref} : undef;
-    my $hitrange           = exists $arg_ref->{hitrange}
-        ? $arg_ref->{hitrange}           : undef;
-    my $rating             = exists $arg_ref->{rating}
-        ? $arg_ref->{rating}             : undef;
-    my $bookinfo           = exists $arg_ref->{bookinfo}
-        ? $arg_ref->{bookinfo}           : undef;
-    my $sorttype           = exists $arg_ref->{sorttype}
-        ? $arg_ref->{sorttype}           : undef;
-    my $sortorder          = exists $arg_ref->{sortorder}
-        ? $arg_ref->{sortorder}          : undef;
+    my $queryoptions_ref   = exists $arg_ref->{queryoptions_ref}
+        ? $arg_ref->{queryoptions_ref}  : undef;
     my $database           = exists $arg_ref->{database}
         ? $arg_ref->{database}           : undef;
     my $sessionID          = exists $arg_ref->{sessionID}
@@ -1108,8 +1084,6 @@ sub print_tit_set_by_idn {
         ? $arg_ref->{stylesheet}         : undef;
     my $view               = exists $arg_ref->{view}
         ? $arg_ref->{view}               : undef;
-    my $lang               = exists $arg_ref->{lang}
-        ? $arg_ref->{lang}               : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -1127,12 +1101,6 @@ sub print_tit_set_by_idn {
         database   => $database,
         titidn     => $titidn,
         sessionID  => $sessionID,
-        searchmode => $searchmode,
-        rating     => $rating,
-        bookinfo   => $bookinfo,
-        hitrange   => $hitrange,
-        sortorder  => $sortorder,
-        sorttype   => $sorttype
     });
 
     my $poolname=$targetdbinfo_ref->{sigel}{
@@ -1140,24 +1108,14 @@ sub print_tit_set_by_idn {
 
     # TT-Data erzeugen
     my $ttdata={
-        lang       => $lang,
         view       => $view,
         stylesheet => $stylesheet,
-        sessionID  => $sessionID,
-	      
         database   => $database,
-	  
         poolname   => $poolname,
-
         prevurl    => $prevurl,
         nexturl    => $nexturl,
-
-        searchmode => $searchmode,
-        hitrange   => $hitrange,
-        rating     => $rating,
-        bookinfo   => $bookinfo,
+        qopts      => $queryoptions_ref,
         sessionID  => $sessionID,
-	
         titidn     => $titidn,
         normset    => $normset,
         mexnormset => $mexnormset,
@@ -1168,9 +1126,6 @@ sub print_tit_set_by_idn {
             $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
             return $string;
         },
-	      
-        show_corporate_banner => 0,
-        show_foot_banner => 1,
 
         config     => \%config,
         msg        => \%msg,
@@ -1187,38 +1142,16 @@ sub print_mult_tit_set_by_idn {
     # Set defaults
     my $titidns_ref        = exists $arg_ref->{titidns_ref}
         ? $arg_ref->{titidns_ref}        : undef;
-    my $hint               = exists $arg_ref->{hint}
-        ? $arg_ref->{hint}               : undef;
     my $dbh                = exists $arg_ref->{dbh}
         ? $arg_ref->{dbh}                : undef;
     my $sessiondbh         = exists $arg_ref->{sessiondbh}
         ? $arg_ref->{sessiondbh}         : undef;
-    my $searchmultipleaut  = exists $arg_ref->{searchmultipleaut}
-        ? $arg_ref->{searchmultipleaut}  : undef;
-    my $searchmultiplekor  = exists $arg_ref->{searchmultiplekor}
-        ? $arg_ref->{searchmultiplekor}  : undef;
-    my $searchmultipleswt  = exists $arg_ref->{searchmultipleswt}
-        ? $arg_ref->{searchmultipleswt}  : undef;
-    my $searchmultiplenot  = exists $arg_ref->{searchmultiplenot}
-        ? $arg_ref->{searchmultiplenot}  : undef;
-    my $searchmultipletit  = exists $arg_ref->{searchmultipletit}
-        ? $arg_ref->{searchmultipletit}  : undef;
-    my $searchmode         = exists $arg_ref->{searchmode}
-        ? $arg_ref->{searchmode}         : undef;
     my $targetdbinfo_ref = exists $arg_ref->{targetdbinfo_ref}
         ? $arg_ref->{targetdbinfo_ref} : undef;
     my $targetcircinfo_ref = exists $arg_ref->{targetcircinfo_ref}
         ? $arg_ref->{targetcircinfo_ref} : undef;
-    my $hitrange           = exists $arg_ref->{hitrange}
-        ? $arg_ref->{hitrange}           : undef;
-    my $rating             = exists $arg_ref->{rating}
-        ? $arg_ref->{rating}             : undef;
-    my $bookinfo           = exists $arg_ref->{bookinfo}
-        ? $arg_ref->{bookinfo}           : undef;
-    my $sorttype           = exists $arg_ref->{sorttype}
-        ? $arg_ref->{sorttype}           : undef;
-    my $sortorder          = exists $arg_ref->{sortorder}
-        ? $arg_ref->{sortorder}          : undef;
+    my $queryoptions_ref   = exists $arg_ref->{queryoptions_ref}
+        ? $arg_ref->{queryoptions_ref}  : undef;
     my $database           = exists $arg_ref->{database}
         ? $arg_ref->{database}           : undef;
     my $sessionID          = exists $arg_ref->{sessionID}
@@ -1229,8 +1162,6 @@ sub print_mult_tit_set_by_idn {
         ? $arg_ref->{stylesheet}         : undef;
     my $view               = exists $arg_ref->{view}
         ? $arg_ref->{view}               : undef;
-    my $lang               = exists $arg_ref->{lang}
-        ? $arg_ref->{lang}               : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -1261,21 +1192,12 @@ sub print_mult_tit_set_by_idn {
 
     # TT-Data erzeugen
     my $ttdata={
-        lang       => $lang,
         view       => $view,
         stylesheet => $stylesheet,
-        sessionID  => $sessionID,
-	      
         database   => $database,
-	  
         poolname   => $poolname,
-
-        searchmode => $searchmode,
-        hitrange   => $hitrange,
-        rating     => $rating,
-        bookinfo   => $bookinfo,
+        qopts      => $queryoptions_ref,
         sessionID  => $sessionID,
-	
         titsets    => \@titsets,
 
         utf2iso    => sub {
@@ -1283,10 +1205,9 @@ sub print_mult_tit_set_by_idn {
             $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
             return $string;
         },
-	      
-        show_corporate_banner => 0,
-        show_foot_banner      => 1,
+
         config     => \%config,
+        msg        => \%msg,
     };
   
     OpenBib::Common::Util::print_page($config{tt_search_showmulttitset_tname},$ttdata,$r);
@@ -2167,22 +2088,12 @@ sub print_index_by_swt {
         ? $arg_ref->{dbh}               : undef;
     my $sessiondbh        = exists $arg_ref->{sessiondbh}
         ? $arg_ref->{sessiondbh}        : undef;
-    my $searchmode        = exists $arg_ref->{searchmode}
-        ? $arg_ref->{searchmode}        : undef;
-    my $hitrange          = exists $arg_ref->{hitrange}
-        ? $arg_ref->{hitrange}          : undef;
-    my $rating            = exists $arg_ref->{rating}
-        ? $arg_ref->{rating}            : undef;
-    my $bookinfo          = exists $arg_ref->{bookinfo}
-        ? $arg_ref->{bookinfo}          : undef;
-    my $sorttype          = exists $arg_ref->{sorttype}
-        ? $arg_ref->{sorttype}          : undef;
-    my $sortorder         = exists $arg_ref->{sortorder}
-        ? $arg_ref->{sortorder}         : undef;
     my $database          = exists $arg_ref->{database}
         ? $arg_ref->{database}          : undef;
     my $targetdbinfo_ref   = exists $arg_ref->{targetdbinfo_ref}
         ? $arg_ref->{targetdbinfo_ref}  : undef;
+    my $queryoptions_ref   = exists $arg_ref->{queryoptions_ref}
+        ? $arg_ref->{queryoptions_ref}  : undef;
     my $sessionID         = exists $arg_ref->{sessionID}
         ? $arg_ref->{sessionID}         : undef;
     my $r                 = exists $arg_ref->{apachereq}
@@ -2191,8 +2102,6 @@ sub print_index_by_swt {
         ? $arg_ref->{stylesheet}        : undef;
     my $view              = exists $arg_ref->{view}
         ? $arg_ref->{view}              : undef;
-    my $lang              = exists $arg_ref->{lang}
-        ? $arg_ref->{lang}              : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -2203,32 +2112,21 @@ sub print_index_by_swt {
 
     # TT-Data erzeugen
     my $ttdata={
-        lang       => $lang,
         view       => $view,
         stylesheet => $stylesheet,
-        sessionID  => $sessionID,
-	      
         database   => $database,
-	  
         poolname   => $poolname,
-
-        searchmode => $searchmode,
-        hitrange   => $hitrange,
-        rating     => $rating,
-        bookinfo   => $bookinfo,
+        qopts      => $queryoptions_ref,
         sessionID  => $sessionID,
-	
         swt        => $swt,
         swtindex   => $swtindex,
 
         utf2iso    => sub {
             my $string=shift;
-            $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
+            $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
             return $string;
         },
-	      
-        show_corporate_banner => 0,
-        show_foot_banner      => 1,
+
         config     => \%config,
     };
   

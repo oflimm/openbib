@@ -100,7 +100,7 @@ sub init_new_session {
 
             # Eintrag in die Datenbank
             $idnresult=$sessiondbh->prepare("insert into session (sessionid,createtime,queryoptions) values (?,?,?)") or $logger->error($DBI::errstr);
-            $idnresult->execute($sessionID,$createtime,YAML::dump($queryoptions_ref)) or $logger->error($DBI::errstr);
+            $idnresult->execute($sessionID,$createtime,YAML::Dump($queryoptions_ref)) or $logger->error($DBI::errstr);
         }
         $idnresult->finish();
     }
@@ -295,7 +295,7 @@ sub get_css_by_browsertype {
     return $stylesheet;
 }
 
-sub get_queryoptions {
+sub load_queryoptions {
     my ($sessiondbh,$sessionID)=@_;
 
     # Log4perl logger erzeugen
@@ -312,7 +312,7 @@ sub get_queryoptions {
     return YAML::Load($res->{queryoptions});
 }
 
-sub set_queryoptions {
+sub dump_queryoptions {
     my ($sessiondbh,$sessionID,$queryoptions_ref)=@_;
 
     # Log4perl logger erzeugen
@@ -343,6 +343,51 @@ sub merge_queryoptions {
     }
 }
 
+sub get_queryoptions {
+    my ($sessiondbh,$r) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $query=Apache::Request->new($r);
+
+    my $sessionID=$query->param('sessionID');
+    
+    # Queryoptions zur Session einladen (default: alles undef)
+    my $queryoptions_ref = load_queryoptions($sessiondbh,$sessionID);
+
+    my $default_queryoptions_ref={
+        sorttype  => 'author',
+        sortorder => 'up',
+        hitrange  => 20,
+        offset    => 1,
+        maxhits   => 500,
+        lang      => 'de',
+        profil    => '',
+        autoplus  => '',
+    };
+
+    # Abgleich mit uebergebenen Parametern
+    # Uebergene Parameter 'ueberschreiben' bestehende werden
+    # (undef oder gesetzt)
+    foreach my $option (keys %$queryoptions_ref){
+        if (defined $query->param($option)){
+            $queryoptions_ref->{$option}=$query->param($option);
+        }
+    }
+
+    # Abgleich mit Default-Werten:
+    # Verbliebene "undefined"-Werte werden mit Standard-Werten belegt
+    foreach my $option (keys %$queryoptions_ref){
+        if (!defined $queryoptions_ref->{$option}){
+            $queryoptions_ref->{$option}=$default_queryoptions_ref->{$option};
+        }
+    }
+
+    dump_queryoptions($sessiondbh,$sessionID,$queryoptions_ref);
+    
+    return $queryoptions_ref;
+}
 
 #####################################################################
 ## get_sql_result(rreqarray,...): Suche anhand der in reqarray enthaltenen

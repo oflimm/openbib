@@ -1,4 +1,5 @@
-[%- i18nmsg = msg.${lang} -%]
+[%- i18nmsg = msg.${qopts.lang} -%]
+[%- show_foot_banner = 1 -%]
 [%- title = "KUG Recherche" -%]
 [% PROCESS common/subtemplate name="std_header" %]
 

@@ -1,3 +1,4 @@
+[%- show_foot_banner = 1 -%]
 [%- title = 'Schlagwortindex' -%]
 [% PROCESS common/subtemplate name="std_header" %]
 

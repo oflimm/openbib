@@ -1,4 +1,5 @@
-[%- i18nmsg = msg.${lang} -%]
+[%- i18nmsg = msg.${qopts.lang} -%]
+[%- show_foot_banner = 1 -%]
 [%- title = "Recherche in Katalog: $poolname" -%]
 [% PROCESS common/subtemplate name="std_header" %]
 
@@ -39,6 +40,11 @@ Messages:
 
 [% USE dumper %]
 [% dumper.dump(msg) %]
+
+<p />
+
+Query-Options
+[% dumper.dump(qopts) %]
 
 <p />
 

@@ -141,32 +141,27 @@ sub handler {
     #####################################################################
     ## Initialsearch:
   
-    my $initialsearch     = $query->param('initialsearch')     || '';
     my $generalsearch     = $query->param('generalsearch')     || '';
-    my $stammsearch       = $query->param('stammsearch')       || '';
-    my $stammvalue        = $query->param('stammvalue')        || '';
     my $searchall         = $query->param('searchall')         || '';
     my $swtindex          = $query->param('swtindex')          || '';
     my $swtindexall       = $query->param('swtindexall')       || '';
+
     my $searchsingletit   = $query->param('searchsingletit')   || '';
     my $searchsingleaut   = $query->param('searchsingleaut')   || '';
     my $searchsingleswt   = $query->param('searchsingleswt')   || '';
     my $searchsinglenot   = $query->param('searchsinglenot')   || '';
     my $searchsinglekor   = $query->param('searchsinglekor')   || '';
+
     my $searchmultipleaut = $query->param('searchmultipleaut') || '';
     my $searchmultipletit = $query->param('searchmultipletit') || '';
     my $searchmultiplekor = $query->param('searchmultiplekor') || '';
     my $searchmultiplenot = $query->param('searchmultiplenot') || '';
     my $searchmultipleswt = $query->param('searchmultipleswt') || '';
+
     my $searchtitofaut    = $query->param('searchtitofaut')    || '';
     my $searchtitofurhkor = $query->param('searchtitofurhkor') || '';
     my $searchtitofnot    = $query->param('searchtitofnot')    || '';
     my $searchtitofswt    = $query->param('searchtitofswt')    || '';
-    my $searchgtmtit      = $query->param('gtmtit')            || '';
-    my $searchgtftit      = $query->param('gtftit')            || '';
-    my $searchinvktit     = $query->param('invktit')           || '';
-    my $searchgtf         = $query->param('gtf')               || '';
-    my $searchinvk        = $query->param('invk')              || '';
 
     my $fs                = $query->param('fs')                || '';
     my $verf              = $query->param('verf')              || '';
@@ -277,16 +272,6 @@ sub handler {
         return OK;
     }
 
-    # Standard Ergebnisbehandlung bei Suchanfragen
-    #####################################################################
-  
-    my $suchbegriff;
-  
-    if ($stammsearch) {
-        $initialsearch = $stammsearch;
-        $suchbegriff   = OpenBib::Search::Util::input2sgml($stammvalue,1);
-    }
-  
     #####################################################################
   
     if ($searchall) {           # Standardsuche

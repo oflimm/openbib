@@ -612,8 +612,6 @@ sub get_tit_listitem_by_idn {
         ? $arg_ref->{sessiondbh}        : undef;
     my $targetdbinfo_ref  = exists $arg_ref->{targetdbinfo_ref}
         ? $arg_ref->{targetdbinfo_ref}  : undef;
-    my $queryoptions_ref  = exists $arg_ref->{queryoptions_ref}
-        ? $arg_ref->{queryoptions_ref}  : undef;
     my $database          = exists $arg_ref->{database}
         ? $arg_ref->{database}          : undef;
     my $sessionID         = exists $arg_ref->{sessionID}

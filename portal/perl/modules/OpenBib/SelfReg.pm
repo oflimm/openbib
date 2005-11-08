@@ -38,6 +38,7 @@ use Apache::Constants qw(:common);
 use Apache::Request();          # CGI-Handling (or require)
 use DBI;
 use Email::Valid;               # EMail-Adressen testen
+use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 
@@ -156,14 +157,14 @@ sub handler {
 
         my $res=$userresult->fetchrow_hashref();
 
-        my $userid=$res->{'userid'};
+        my $userid = decode_utf8($res->{'userid'});
 
         $userresult=$userdbh->prepare("select targetid from logintarget where type = 'self'") or $logger->error($DBI::errstr);
         $userresult->execute() or $logger->error($DBI::errstr);
 
         $res=$userresult->fetchrow_hashref();
 
-        my $targetid=$res->{'targetid'};
+        my $targetid = $res->{'targetid'};
     
         # Es darf keine Session assoziiert sein. Daher stumpf loeschen
         $userresult=$userdbh->prepare("delete from usersession where sessionid = ?") or $logger->error($DBI::errstr);

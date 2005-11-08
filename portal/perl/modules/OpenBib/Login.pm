@@ -38,6 +38,7 @@ use Apache::Constants qw(:common);
 use Apache::Request ();
 use DBI;
 use Digest::MD5;
+use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Socket;
@@ -114,8 +115,8 @@ sub handler {
     
         my $targetselect="<select name=\"targetid\">";
         while (my $result=$targetresult->fetchrow_hashref()) {
-            my $targetid    = $result->{'targetid'};
-            my $description = $result->{'description'};
+            my $targetid    = decode_utf8($result->{'targetid'});
+            my $description = decode_utf8($result->{'description'});
 
             $targetselect.="<option value=\"$targetid\">$description</option>";
         }
@@ -156,12 +157,12 @@ sub handler {
         my $type        = "";
   
         while (my $result=$targetresult->fetchrow_hashref()) {
-            $hostname    = $result->{'hostname'};
-            $port        = $result->{'port'};
-            $user        = $result->{'user'};
-            $db          = $result->{'db'};
-            $description = $result->{'description'};
-            $type        = $result->{'type'};
+            $hostname    = decode_utf8($result->{'hostname'});
+            $port        = decode_utf8($result->{'port'});
+            $user        = decode_utf8($result->{'user'});
+            $db          = decode_utf8($result->{'db'});
+            $description = decode_utf8($result->{'description'});
+            $type        = decode_utf8($result->{'type'});
         }
 
         $targetresult->finish();
@@ -202,8 +203,6 @@ sub handler {
                     # Neuen Satz eintragen
                     $userresult=$userdbh->prepare("update user set pin = ? where loginname = ?") or $logger->error($DBI::errstr);
                     $userresult->execute($password,$loginname) or $logger->error($DBI::errstr);
-
-                    $userid=$userresult->{'userid'};
                 }
 
                 # Benuzerinformationen eintragen
@@ -234,7 +233,7 @@ sub handler {
             $userresult->execute($loginname) or $logger->error($DBI::errstr);
       
             my $res=$userresult->fetchrow_hashref();
-            my $userid=$res->{'userid'};
+            my $userid = decode_utf8($res->{'userid'});
 
             # Es darf keine Session assoziiert sein. Daher stumpf loeschen
             my $globalsessionID="$config{servername}:$sessionID";
@@ -262,8 +261,8 @@ sub handler {
             # Es gibt etwas zu uebertragen
             if ($idnresult->rows > 0) {
                 while (my $res=$idnresult->fetchrow_hashref()) {
-                    my $dbname    = $res->{'dbname'};
-                    my $singleidn = $res->{'singleidn'};
+                    my $dbname    = decode_utf8($res->{'dbname'});
+                    my $singleidn = decode_utf8($res->{'singleidn'});
 
                     # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
                     $userresult=$userdbh->prepare("select userid from treffer where userid = ? and dbname = ? and singleidn = ?") or $logger->error($DBI::errstr);
@@ -281,7 +280,7 @@ sub handler {
             $userresult->execute($userid) or $logger->error($DBI::errstr);
       
             my $maskresult=$userresult->fetchrow_hashref();
-            my $setmask=$maskresult->{'masktype'};
+            my $setmask = decode_utf8($maskresult->{'masktype'});
 
             # Assoziieren des Recherchemasken-Typs mit der Session
             if ($setmask ne "simple" && $setmask ne "advanced") {

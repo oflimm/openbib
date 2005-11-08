@@ -37,6 +37,7 @@ use utf8;
 use Apache::Constants qw(:common);
 use Apache::Request ();
 use DBI;
+use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use Template;
 use YAML;
@@ -146,10 +147,10 @@ sub handler {
 
             while (my @res=$idnresult->fetchrow) {
 
-                my ($fs,$verf,$hst,$swt,$kor,$sign,$isbn,$issn,$notation,$mart,$ejahr,$hststring,$boolhst,$boolswt,$boolkor,$boolnotation,$boolisbn,$boolsign,$boolejahr,$boolissn,$boolverf,$boolfs,$boolmart,$boolhststring)=split('\|\|',$res[1]);
+                my ($fs,$verf,$hst,$swt,$kor,$sign,$isbn,$issn,$notation,$mart,$ejahr,$hststring,$boolhst,$boolswt,$boolkor,$boolnotation,$boolisbn,$boolsign,$boolejahr,$boolissn,$boolverf,$boolfs,$boolmart,$boolhststring)=split('\|\|',decode_utf8($res[1]));
 
                 push @queries, {
-                    id        => $res[0],
+                    id        => decode_utf8($res[0]),
 
                     fs        => $fs,
                     verf      => $verf,
@@ -164,7 +165,7 @@ sub handler {
                     mart      => $mart,
                     hststring => $hststring,
 			
-                    hits      => $res[2],
+                    hits      => decode_utf8($res[2]),
                 };
 	
             }
@@ -194,12 +195,12 @@ sub handler {
 
             while (my @res=$idnresult->fetchrow) {
                 push @resultdbs, {
-                    trefferdb     => $res[0],
-                    trefferdbdesc => $targetdbinfo_ref->{dbnames}{$res[0]},
-                    trefferzahl   => $res[1],
+                    trefferdb     => decode_utf8($res[0]),
+                    trefferdbdesc => $targetdbinfo_ref->{dbnames}{decode_utf8($res[0])},
+                    trefferzahl   => decode_utf8($res[1]),
                 };
 	
-                $hitcount+=$res[1];
+                $hitcount+=decode_utf8($res[1]);
             }
 
             # TT-Data erzeugen
@@ -235,7 +236,7 @@ sub handler {
                 $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
 	
                 my @res=$idnresult->fetchrow;
-                $queryid=$res[0];
+                $queryid = decode_utf8($res[0]);
             }
 
             $idnresult=$sessiondbh->prepare("select searchresults.searchresult,searchresults.dbname from searchresults, dbinfo where searchresults.dbname=dbinfo.dbname and sessionid = ? and queryid = ? order by dbinfo.faculty,searchresults.dbname") or $logger->error($DBI::errstr);

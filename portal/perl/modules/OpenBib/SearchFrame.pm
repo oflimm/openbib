@@ -37,6 +37,7 @@ use utf8;
 use Apache::Constants qw(:common);
 use Apache::Request ();
 use DBI;
+use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Template;
@@ -125,7 +126,7 @@ sub handler {
     my $prevprofile="";
   
     if (defined($result->{'profile'})) {
-        $prevprofile=$result->{'profile'};
+        $prevprofile = decode_utf8($result->{'profile'});
     }
   
     if ($userid) {
@@ -134,18 +135,18 @@ sub handler {
     
         my $result=$targetresult->fetchrow_hashref();
     
-        $showfs        = $result->{'fs'};
-        $showhst       = $result->{'hst'};
-        $showverf      = $result->{'verf'};
-        $showkor       = $result->{'kor'};
-        $showswt       = $result->{'swt'};
-        $shownotation  = $result->{'notation'};
-        $showisbn      = $result->{'isbn'};
-        $showissn      = $result->{'issn'};
-        $showsign      = $result->{'sign'};
-        $showmart      = $result->{'mart'};
-        $showhststring = $result->{'hststring'};
-        $showejahr     = $result->{'ejahr'};
+        $showfs        = decode_utf8($result->{'fs'});
+        $showhst       = decode_utf8($result->{'hst'});
+        $showverf      = decode_utf8($result->{'verf'});
+        $showkor       = decode_utf8($result->{'kor'});
+        $showswt       = decode_utf8($result->{'swt'});
+        $shownotation  = decode_utf8($result->{'notation'});
+        $showisbn      = decode_utf8($result->{'isbn'});
+        $showissn      = decode_utf8($result->{'issn'});
+        $showsign      = decode_utf8($result->{'sign'});
+        $showmart      = decode_utf8($result->{'mart'});
+        $showhststring = decode_utf8($result->{'hststring'});
+        $showejahr     = decode_utf8($result->{'ejahr'});
 
         $targetresult->finish();
 
@@ -157,8 +158,8 @@ sub handler {
         }
     
         while (my $res=$targetresult->fetchrow_hashref()) {
-            my $profilid    = $res->{'profilid'};
-            my $profilename = $res->{'profilename'};
+            my $profilid    = decode_utf8($res->{'profilid'});
+            my $profilename = decode_utf8($res->{'profilename'});
 
             my $profselected="";
             if ($prevprofile eq "user$profilid") {
@@ -215,7 +216,7 @@ sub handler {
     $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
     $result=$idnresult->fetchrow_hashref();
   
-    my $viewdesc=$result->{'description'} if (defined($result->{'description'}));
+    my $viewdesc = decode_utf8($result->{'description'}) if (defined($result->{'description'}));
 
     $idnresult->finish();
   
@@ -229,7 +230,7 @@ sub handler {
         my $idnresult=$sessiondbh->prepare("select masktype from sessionmask where sessionid = ?") or $logger->error($DBI::errstr);
         $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
         my $result=$idnresult->fetchrow_hashref();
-        $setmask=$result->{'masktype'};
+        $setmask = decode_utf8($result->{'masktype'});
     
         $idnresult->finish();
     }
@@ -240,11 +241,11 @@ sub handler {
         $idnresult->execute($queryid) or $logger->error($DBI::errstr);
     
         my $result=$idnresult->fetchrow_hashref();
-        my $query=$result->{'query'};
+        my $query = decode_utf8($result->{'query'});
     
         $query=~s/"/&quot;/g;
 
-        $hits=$result->{'hits'};
+        $hits = decode_utf8($result->{'hits'});
 
         ($fs,$verf,$hst,$swt,$kor,$sign,$isbn,$issn,$notation,$mart,$ejahr,$hststring,$boolhst,$boolswt,$boolkor,$boolnotation,$boolisbn,$boolsign,$boolejahr,$boolissn,$boolverf,$boolfs,$boolmart,$boolhststring)=split('\|\|',$query);
 
@@ -271,7 +272,7 @@ sub handler {
 
     my $dbcount=0;
     while (my $result=$idnresult->fetchrow_hashref()) {
-        my $dbname=$result->{'dbname'};
+        my $dbname = decode_utf8($result->{'dbname'});
         $dbinputtags.="<input type=\"hidden\" name=\"database\" value=\"$dbname\" />\n";
         $dbcount++; 
     }
@@ -308,9 +309,9 @@ sub handler {
 
     if ($anzahl > 0) {
         while (my $result=$idnresult->fetchrow_hashref()) {
-            my $queryid = $result->{'queryid'};
-            my $query   = $result->{'query'};
-            my $hits    = $result->{'hits'};
+            my $queryid = decode_utf8($result->{'queryid'});
+            my $query   = decode_utf8($result->{'query'});
+            my $hits    = decode_utf8($result->{'hits'});
 
             my ($fs,$verf,$hst,$swt,$kor,$sign,$isbn,$issn,$notation,$mart,$ejahr,$hststring,$boolhst,$boolswt,$boolkor,$boolnotation,$boolisbn,$boolsign,$boolejahr,$boolissn,$boolverf,$boolfs,$boolmart,$boolhststring)=split('\|\|',$query);
 

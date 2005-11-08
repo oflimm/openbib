@@ -38,6 +38,7 @@ use Apache::Constants qw(:common);
 use Apache::Request ();
 use DBI;
 use Digest::MD5;
+use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Template;
@@ -143,7 +144,7 @@ sub handler {
     $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
     my $result=$idnresult->fetchrow_hashref();
   
-    my $viewdesc=$result->{'description'} if (defined($result->{'description'}));
+    my $viewdesc= decode_utf8($result->{'description'}) if (defined($result->{'description'}));
   
     $idnresult->finish();
   
@@ -155,11 +156,11 @@ sub handler {
         $idnresult->execute($queryid) or $logger->error($DBI::errstr);
     
         my $result=$idnresult->fetchrow_hashref();
-        my $query=$result->{'query'};
+        my $query = decode_utf8($result->{'query'});
     
         $query=~s/"/&quot;/g;
 
-        $hits=$result->{'hits'};
+        $hits = decode_utf8($result->{'hits'});
 
         ($fs,$verf,$hst,$swt,$kor,$sign,$isbn,$issn,$notation,$mart,$ejahr,$hststring,$boolhst,$boolswt,$boolkor,$boolnotation,$boolisbn,$boolsign,$boolejahr,$boolissn,$boolverf,$boolfs,$boolmart,$boolhststring)=split('\|\|',$query);
         $idnresult->finish();
@@ -216,8 +217,8 @@ sub handler {
     if ($userresult->rows > 0) {
         my $res=$userresult->fetchrow_hashref();
    
-        $loginname = $res->{'loginname'};
-        $password  = $res->{'pin'};
+        $loginname = decode_utf8($res->{'loginname'});
+        $password  = decode_utf8($res->{'pin'});
     }
     $userresult->finish();
 

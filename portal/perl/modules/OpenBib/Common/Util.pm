@@ -34,6 +34,7 @@ use Apache::Constants qw(:common);
 use Apache::Request ();
 use DBI;
 use Digest::MD5();
+use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use POSIX();
 use Template;
@@ -146,8 +147,8 @@ sub get_cred_for_userid {
   
     if ($userresult->rows > 0) {
         my $res=$userresult->fetchrow_hashref();
-        $cred[0]=$res->{loginname};
-        $cred[1]=$res->{pin};
+        $cred[0] = decode_utf8($res->{loginname});
+        $cred[1] = decode_utf8($res->{pin});
     }
 
     $userresult->finish();
@@ -170,7 +171,7 @@ sub get_username_for_userid {
   
     if ($userresult->rows > 0) {
         my $res=$userresult->fetchrow_hashref();
-        $username=$res->{loginname};
+        $username = decode_utf8($res->{loginname});
     }
 
     $userresult->finish();
@@ -193,7 +194,7 @@ sub get_userid_of_session {
   
     if ($userresult->rows > 0) {
         my $res=$userresult->fetchrow_hashref();
-        $userid=$res->{'userid'};
+        $userid = decode_utf8($res->{'userid'});
     }
 
     return $userid;
@@ -213,7 +214,7 @@ sub get_viewname_of_session  {
   
     # Entweder wurde ein 'echter' View gefunden oder es wird
     # kein spezieller View verwendet (view='')
-    my $view=$result->{'viewname'} || '';
+    my $view = decode_utf8($result->{'viewname'}) || '';
 
     $idnresult->finish();
 
@@ -235,7 +236,7 @@ sub get_targetdb_of_session {
   
     if ($userresult->rows > 0) {
         my $res=$userresult->fetchrow_hashref();
-        $targetdb=$res->{'db'};
+        $targetdb = decode_utf8($res->{'db'});
     }
 
     return $targetdb;
@@ -256,7 +257,7 @@ sub get_targettype_of_session {
   
     if ($userresult->rows > 0) {
         my $res=$userresult->fetchrow_hashref();
-        $targettype=$res->{'type'};
+        $targettype = decode_utf8($res->{'type'});
     }
 
     return $targettype;
@@ -946,10 +947,10 @@ sub get_targetdbinfo {
     my %dbnames =();
 
     while (my $result=$dbinforesult->fetchrow_hashref()) {
-        my $dbname=$result->{'dbname'};
-        my $sigel=$result->{'sigel'};
-        my $url=$result->{'url'};
-        my $description=$result->{'description'};
+        my $dbname      = decode_utf8($result->{'dbname'});
+        my $sigel       = decode_utf8($result->{'sigel'});
+        my $url         = decode_utf8($result->{'url'});
+        my $description = decode_utf8($result->{'description'});
     
         ##################################################################### 
         ## Wandlungstabelle Bibliothekssigel <-> Bibliotheksname
@@ -1007,12 +1008,12 @@ sub get_targetcircinfo {
     my %targetcircinfo=();
     
     while (my $result=$dbinforesult->fetchrow_hashref()) {
-        my $dbname                             = $result->{'dbname'};
+        my $dbname                             = decode_utf8($result->{'dbname'});
 
-        $targetcircinfo{$dbname}{circ}         = $result->{'circ'};
-        $targetcircinfo{$dbname}{circurl}      = $result->{'circurl'};
-        $targetcircinfo{$dbname}{circcheckurl} = $result->{'circcheckurl'};
-        $targetcircinfo{$dbname}{circdb}       = $result->{'circdb'};
+        $targetcircinfo{$dbname}{circ}         = decode_utf8($result->{'circ'});
+        $targetcircinfo{$dbname}{circurl}      = decode_utf8($result->{'circurl'});
+        $targetcircinfo{$dbname}{circcheckurl} = decode_utf8($result->{'circcheckurl'});
+        $targetcircinfo{$dbname}{circdb}       = decode_utf8($result->{'circdb'});
     }
 
     $dbinforesult->finish();

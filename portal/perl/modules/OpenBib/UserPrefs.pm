@@ -38,6 +38,7 @@ use Apache::Constants qw(:common);
 use Apache::Request ();
 use DBI;
 use Email::Valid;
+use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Template;
@@ -130,51 +131,51 @@ sub handler {
     
         my $result=$targetresult->fetchrow_hashref();
     
-        my $showfs=$result->{'fs'};
+        my $showfs = decode_utf8($result->{'fs'});
         my $fschecked="";
         $fschecked="checked=\"checked\"" if ($showfs);
     
-        my $showhst=$result->{'hst'};
+        my $showhst = decode_utf8($result->{'hst'});
         my $hstchecked="";
         $hstchecked="checked=\"checked\"" if ($showhst);
 
-        my $showhststring=$result->{'hststring'};
+        my $showhststring = decode_utf8($result->{'hststring'});
         my $hststringchecked="";
         $hststringchecked="checked=\"checked\"" if ($showhststring);
     
-        my $showverf=$result->{'verf'};
+        my $showverf = decode_utf8($result->{'verf'});
         my $verfchecked="";
         $verfchecked="checked=\"checked\"" if ($showverf);
     
-        my $showkor=$result->{'kor'};
+        my $showkor = decode_utf8($result->{'kor'});
         my $korchecked="";
         $korchecked="checked=\"checked\"" if ($showkor);
     
-        my $showswt=$result->{'swt'};
+        my $showswt = decode_utf8($result->{'swt'});
         my $swtchecked="";
         $swtchecked="checked=\"checked\"" if ($showswt);
     
-        my $shownotation=$result->{'notation'};
+        my $shownotation = decode_utf8($result->{'notation'});
         my $notationchecked="";
         $notationchecked="checked=\"checked\"" if ($shownotation);
     
-        my $showisbn=$result->{'isbn'};
+        my $showisbn = decode_utf8($result->{'isbn'});
         my $isbnchecked="";
         $isbnchecked="checked=\"checked\"" if ($showisbn);
     
-        my $showissn=$result->{'issn'};
+        my $showissn = decode_utf8($result->{'issn'});
         my $issnchecked="";
         $issnchecked="checked=\"checked\"" if ($showissn);
     
-        my $showsign=$result->{'sign'};
+        my $showsign = decode_utf8($result->{'sign'});
         my $signchecked="";
         $signchecked="checked=\"checked\"" if ($showsign);
     
-        my $showmart=$result->{'mart'};
+        my $showmart = decode_utf8($result->{'mart'});
         my $martchecked="";
         $martchecked="checked=\"checked\"" if ($showmart);
     
-        my $showejahr=$result->{'ejahr'};
+        my $showejahr = decode_utf8($result->{'ejahr'});
         my $ejahrchecked="";
         $ejahrchecked="checked=\"checked\"" if ($showejahr);
     
@@ -187,27 +188,27 @@ sub handler {
     
         my %userinfo=();
 
-        $userinfo{'nachname'}   = $res->{'nachname'};
-        $userinfo{'vorname'}    = $res->{'vorname'};
-        $userinfo{'strasse'}    = $res->{'strasse'};
-        $userinfo{'ort'}        = $res->{'ort'};
-        $userinfo{'plz'}        = $res->{'plz'};
-        $userinfo{'soll'}       = $res->{'soll'};
-        $userinfo{'gut'}        = $res->{'gut'};
-        $userinfo{'avanz'}      = $res->{'avanz'}; # Ausgeliehene Medien
-        $userinfo{'branz'}      = $res->{'branz'}; # Buchrueckforderungen
-        $userinfo{'bsanz'}      = $res->{'bsanz'}; # Bestellte Medien
-        $userinfo{'vmanz'}      = $res->{'vmanz'}; # Vormerkungen
-        $userinfo{'maanz'}      = $res->{'maanz'}; # ueberzogene Medien
-        $userinfo{'vlanz'}      = $res->{'vlanz'}; # Verlaengerte Medien
-        $userinfo{'sperre'}     = $res->{'sperre'};
-        $userinfo{'sperrdatum'} = $res->{'sperrdatum'};
-        $userinfo{'email'}      = $res->{'email'};
-        $userinfo{'gebdatum'}   = $res->{'gebdatum'};
-        $userinfo{'masktype'}   = $res->{'masktype'};
+        $userinfo{'nachname'}   = decode_utf8($res->{'nachname'});
+        $userinfo{'vorname'}    = decode_utf8($res->{'vorname'});
+        $userinfo{'strasse'}    = decode_utf8($res->{'strasse'});
+        $userinfo{'ort'}        = decode_utf8($res->{'ort'});
+        $userinfo{'plz'}        = decode_utf8($res->{'plz'});
+        $userinfo{'soll'}       = decode_utf8($res->{'soll'});
+        $userinfo{'gut'}        = decode_utf8($res->{'gut'});
+        $userinfo{'avanz'}      = decode_utf8($res->{'avanz'}); # Ausgeliehene Medien
+        $userinfo{'branz'}      = decode_utf8($res->{'branz'}); # Buchrueckforderungen
+        $userinfo{'bsanz'}      = decode_utf8($res->{'bsanz'}); # Bestellte Medien
+        $userinfo{'vmanz'}      = decode_utf8($res->{'vmanz'}); # Vormerkungen
+        $userinfo{'maanz'}      = decode_utf8($res->{'maanz'}); # ueberzogene Medien
+        $userinfo{'vlanz'}      = decode_utf8($res->{'vlanz'}); # Verlaengerte Medien
+        $userinfo{'sperre'}     = decode_utf8($res->{'sperre'});
+        $userinfo{'sperrdatum'} = decode_utf8($res->{'sperrdatum'});
+        $userinfo{'email'}      = decode_utf8($res->{'email'});
+        $userinfo{'gebdatum'}   = decode_utf8($res->{'gebdatum'});
+        $userinfo{'masktype'}   = decode_utf8($res->{'masktype'});
 
-        my $loginname = $res->{'loginname'};
-        my $password  = $res->{'pin'};
+        my $loginname           = decode_utf8($res->{'loginname'});
+        my $password            = decode_utf8($res->{'pin'});
     
         my $passwortaenderung = "";
         my $loeschekennung    = "";

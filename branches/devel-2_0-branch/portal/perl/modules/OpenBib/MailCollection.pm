@@ -38,6 +38,7 @@ use Apache::Constants qw(:common);
 use Apache::Request ();
 use DBI;
 use Email::Valid;
+use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use MIME::Lite;
 use POSIX;
@@ -171,8 +172,8 @@ sub handler {
         }
 
         while (my $result=$idnresult->fetchrow_hashref()) {
-            my $database  = $result->{'dbname'};
-            my $singleidn = $result->{'singleidn'};
+            my $database  = decode_utf8($result->{'dbname'});
+            my $singleidn = decode_utf8($result->{'singleidn'});
 	
             push @dbidnlist, {
                 database  => $database,

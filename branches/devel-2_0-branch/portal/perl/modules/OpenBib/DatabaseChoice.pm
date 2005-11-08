@@ -37,6 +37,7 @@ use utf8;
 use Apache::Constants qw(:common);
 use Apache::Request ();
 use DBI;
+use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use Template;
 
@@ -146,7 +147,7 @@ sub handler {
         $idnresult=$sessiondbh->prepare("select dbname from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
         $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
         while (my $result=$idnresult->fetchrow_hashref()) {
-            my $dbname=$result->{'dbname'};
+            my $dbname = decode_utf8($result->{'dbname'});
             $checkeddb{$dbname}="checked=\"checked\"";
         }
         $idnresult->finish();
@@ -164,12 +165,12 @@ sub handler {
         my @catdb=();
 
         while (my $result=$idnresult->fetchrow_hashref) {
-            my $category   = $result->{'faculty'};
-            my $name       = $result->{'description'};
-            my $systemtype = $result->{'system'};
-            my $pool       = $result->{'dbname'};
-            my $url        = $result->{'url'};
-            my $sigel      = $result->{'sigel'};
+            my $category   = decode_utf8($result->{'faculty'});
+            my $name       = decode_utf8($result->{'description'});
+            my $systemtype = decode_utf8($result->{'system'});
+            my $pool       = decode_utf8($result->{'dbname'});
+            my $url        = decode_utf8($result->{'url'});
+            my $sigel      = decode_utf8($result->{'sigel'});
 	
             my $rcolumn;
 

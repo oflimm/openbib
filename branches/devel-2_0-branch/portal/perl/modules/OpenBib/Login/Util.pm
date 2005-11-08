@@ -31,6 +31,7 @@ no warnings 'redefine';
 use utf8;
 
 use DBI;
+use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use SOAP::Lite;
 
@@ -65,7 +66,7 @@ sub authenticate_self_user {
 
     my $res=$userresult->fetchrow_hashref();
 
-    my $userid=$res->{'userid'};
+    my $userid = decode_utf8($res->{'userid'});
   
     return $userid;
 }

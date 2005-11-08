@@ -88,7 +88,7 @@ sub get_aut_ans_by_idn {
 
     my $ans;
     if ($res->{content}) {
-        $ans=$res->{content};
+        $ans = decode_utf8($res->{content});
     }
 
     $request->finish();
@@ -222,7 +222,7 @@ sub get_kor_ans_by_idn {
 
     my $ans;
     if ($res->{content}) {
-        $ans=$res->{content};
+        $ans=decode_utf8($res->{content});
     }
 
     $request->finish();
@@ -357,7 +357,7 @@ sub get_swt_ans_by_idn {
     my $schlagwort;
   
     if ($res->{content}) {
-        $schlagwort=$res->{content};
+        $schlagwort = decode_utf8($res->{content});
     }
   
     $request->finish();
@@ -491,7 +491,7 @@ sub get_not_ans_by_idn {
     my $notation;
     
     if ($res->{content}) {
-        $notation=$res->{content};
+        $notation = decode_utf8($res->{content});
     }
 
     $request->finish();
@@ -651,7 +651,7 @@ sub get_tit_listitem_by_idn {
     while (my $res=$request->fetchrow_hashref){
         my $category  = "P".decode_utf8($res->{category });
         my $indicator =     decode_utf8($res->{indicator});
-        my $targetid  =     $res->{targetid};
+        my $targetid  =     decode_utf8($res->{targetid});
 
         my $supplement="";
         if ($res->{supplement}){
@@ -681,7 +681,7 @@ sub get_tit_listitem_by_idn {
     while (my $res=$request->fetchrow_hashref){
         my $category  = "C".decode_utf8($res->{category });
         my $indicator =     decode_utf8($res->{indicator});
-        my $targetid  =     $res->{targetid};
+        my $targetid  =     decode_utf8($res->{targetid});
 
         my $supplement="";
         if ($res->{supplement}){
@@ -714,7 +714,7 @@ sub get_tit_listitem_by_idn {
 
     my @verknmex=();
     while (my $res=$request->fetchrow_hashref){
-        push @verknmex, $res->{id};
+        push @verknmex, decode_utf8($res->{id});
     }
 
     my @mexnormset=();
@@ -756,7 +756,7 @@ sub get_tit_listitem_by_idn {
         $request->execute($titidn);
         
         while (my $res=$request->fetchrow_hashref){
-            push @superids, $res->{targetid};
+            push @superids, decode_utf8($res->{targetid});
         }
 
       HSTSEARCH:
@@ -1381,7 +1381,7 @@ sub get_tit_set_by_idn {
 
         my @verknmex=();
         while (my $res=$request->fetchrow_hashref){
-            push @verknmex, $res->{id};
+            push @verknmex, decode_utf8($res->{id});
         }
         $request->finish();
 
@@ -2007,7 +2007,7 @@ sub get_result_navigation {
     my $lastresultstring="";
   
     if ($result->{'lastresultset'}) {
-        $lastresultstring=$result->{'lastresultset'};
+        $lastresultstring = decode_utf8($result->{'lastresultset'});
     }
   
     $sessionresult->finish();

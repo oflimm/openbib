@@ -37,6 +37,7 @@ use utf8;
 use Apache::Constants qw(:common M_GET);
 use Apache::Request ();
 use DBI;
+use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 
@@ -178,8 +179,8 @@ sub handler {
 
         my @dbidnlist=();
         while (my $result=$idnresult->fetchrow_hashref()) {
-            my $database  = $result->{'dbname'};
-            my $singleidn = $result->{'singleidn'};
+            my $database  = decode_utf8($result->{'dbname'});
+            my $singleidn = decode_utf8($result->{'singleidn'});
 
             push @dbidnlist, {
                 database  => $database,
@@ -288,8 +289,8 @@ sub handler {
             }
             
             while (my $result=$idnresult->fetchrow_hashref()) {
-                my $database  = $result->{'dbname'};
-                my $singleidn = $result->{'singleidn'};
+                my $database  = decode_utf8($result->{'dbname'});
+                my $singleidn = decode_utf8($result->{'singleidn'});
 	
                 push @dbidnlist, {
                     database  => $database,
@@ -397,7 +398,7 @@ sub handler {
     
         if ($userresult->rows > 0) {
             my $res=$userresult->fetchrow_hashref();
-            $loginname=$res->{'loginname'};
+            $loginname = decode_utf8($res->{'loginname'});
         }
 
         my @dbidnlist=();
@@ -421,8 +422,8 @@ sub handler {
             }
 
             while (my $result=$idnresult->fetchrow_hashref()) {
-                my $database  = $result->{'dbname'};
-                my $singleidn = $result->{'singleidn'};
+                my $database  = decode_utf8($result->{'dbname'});
+                my $singleidn = decode_utf8($result->{'singleidn'});
 	
                 push @dbidnlist, {
                     database  => $database,
@@ -524,7 +525,7 @@ sub handler {
     
         if ($userresult->rows > 0) {
             my $res=$userresult->fetchrow_hashref();
-            $loginname=$res->{'loginname'};
+            $loginname = decode_utf8($res->{'loginname'});
         }
     
         my @dbidnlist=();
@@ -548,8 +549,8 @@ sub handler {
             }
       
             while (my $result=$idnresult->fetchrow_hashref()) {
-                my $database  = $result->{'dbname'};
-                my $singleidn = $result->{'singleidn'};
+                my $database  = decode_utf8($result->{'dbname'});
+                my $singleidn = decode_utf8($result->{'singleidn'});
 	
                 push @dbidnlist, {
                     database  => $database,

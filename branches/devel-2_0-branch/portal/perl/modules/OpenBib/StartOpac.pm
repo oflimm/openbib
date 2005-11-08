@@ -37,6 +37,7 @@ use utf8;
 use Apache::Constants qw(:common);
 use Apache::Request ();
 use DBI;
+use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 
@@ -127,7 +128,7 @@ sub handler {
                 $idnresult->execute($view) or $logger->error($DBI::errstr);
 	
                 while (my $result=$idnresult->fetchrow_hashref()) {
-                    my $dbname=$result->{'dbname'};
+                    my $dbname = decode_utf8($result->{'dbname'});
                     my $idnresult2=$sessiondbh->prepare("insert into dbchoice (sessionid,dbname) values (?,?)") or $logger->error($DBI::errstr);
                     $idnresult2->execute($sessionID,$dbname) or $logger->error($DBI::errstr);
                     $idnresult2->finish();

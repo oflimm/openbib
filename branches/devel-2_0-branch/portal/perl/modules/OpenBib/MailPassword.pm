@@ -38,6 +38,7 @@ use utf8;
 use Apache::Constants qw(:common);
 use Apache::Request ();
 use DBI;
+use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 
@@ -132,7 +133,7 @@ sub handler {
         $targetresult->execute($loginname) or $logger->error($DBI::errstr);
     
         my $result=$targetresult->fetchrow_hashref();
-        my $password=$result->{'pin'};
+        my $password = decode_utf8($result->{'pin'});
         $targetresult->finish();
     
         if (!$password) {

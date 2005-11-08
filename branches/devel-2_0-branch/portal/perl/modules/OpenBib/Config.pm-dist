@@ -39,7 +39,7 @@ use vars qw(%config);
 
 	   # Versionnummer
 
-	   version => 'OpenBib v2.0',
+	   version => 'OpenBib v2.0-pre1',
 	   
 	   # Unter diesem Namen wird der lokale Server angesprochen
 	   
@@ -91,39 +91,39 @@ use vars qw(%config);
 	   adminpasswd   => 'StrengGeheim',
 
 	   # Organisationseinheiten der Kataloge (z.B. Fakultaeten)
-	
-	   units => [
-		     {
-		      short => '0ungeb',
-		      desc => 'Fakultätsungebunden',
-		      nr => '0',
-		     },
-		     {
-		      short => '1wiso',
-		      desc => 'Wirtschafts- u. Sozialwissenschaftliche Fakultät',
-		      nr => '1',
-		     },
-		     {
-		      short => '2recht',
-		      desc => 'Rechtswissenschaftliche Fakultät',
-		      nr => '2',
-		     },
-		     {
-		      short => '3ezwheil',
-		      desc => 'Erziehungswissenschaftliche u. Heilpädagogische Fakultät',
-		      nr => '3',
-		     },
-		     {
-		      short => '4phil',
-		      desc => 'Philosophische Fakultät',
-		      nr => '4',
-		     },
-		     {
-		      short => '5matnat',
-		      desc => 'Mathematisch-Naturwissenschaftliche Fakultät',
-		      nr => '5',
-		     },
-		    ],
+
+	   orgunits => [
+               {
+                   short => '0ungeb',
+                   desc  => 'Fakultätsungebunden',
+                   nr    => '0',
+               },
+               {
+                   short => '1wiso',
+                   desc  => 'Wirtschafts- u. Sozialwissenschaftliche Fakultät',
+                   nr    => '1',
+               },
+               {
+                   short => '2recht',
+                   desc  => 'Rechtswissenschaftliche Fakultät',
+                   nr    => '2',
+               },
+               {
+                   short => '3ezwheil',
+                   desc  => 'Erziehungswissenschaftliche u. Heilpädagogische Fakultät',
+                   nr    => '3',
+               },
+               {
+                   short => '4phil',
+                   desc  => 'Philosophische Fakultät',
+                   nr    => '4',
+               },
+               {
+                   short => '5matnat',
+                   desc  => 'Mathematisch-Naturwissenschaftliche Fakultät',
+                   nr    => '5',
+               },
+           ],
 
 	   # Mapping der einzelnen Kompontenten zu ihren Zugriffs-URI's
 
@@ -320,7 +320,7 @@ use vars qw(%config);
                    'Verlagsort'       => 'Ersch-Ort',      # M0410
                    'Ans. Ersch. Jahr' => 'E-Jahr',         # M0424
                    'Ersch.Land'       => 'Fert.-Land/Ort', # M0035
-                   'Format'           => 'Ma&szlig;e',     # M0435
+                   'Format'           => 'Maße',           # M0435
                    'Schlagwort'       => 'Jahrhundert',    # M0710
                    'Urheber'          => 'Region',         # M0200
                    'Notation'         => 'Einband',        # M0700

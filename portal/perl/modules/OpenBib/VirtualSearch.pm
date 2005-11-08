@@ -38,6 +38,7 @@ use Apache::Constants qw(:common);
 use Apache::Request ();
 use Benchmark ':hireswallclock';
 use DBI;
+use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use YAML ();
@@ -267,7 +268,17 @@ sub handler {
     my $targetcircinfo_ref
         = OpenBib::Common::Util::get_targetcircinfo($sessiondbh);
 
-    $profil="" if ((!exists $config{units}{$profil}) && $profil ne "dbauswahl" && !$profil=~/^user/ && $profil ne "alldbs");
+    my $is_orgunit=0;
+
+  ORGUNIT_SEARCH:
+    foreach my $orgunit_ref (@{$config{orgunits}}){
+        if ($orgunit_ref->{short} eq $profil){
+            $is_orgunit=1;
+            last ORGUNIT_SEARCH;
+        }
+    }
+    
+    $profil="" if (!$is_orgunit && $profil ne "dbauswahl" && !$profil=~/^user/ && $profil ne "alldbs");
 
     unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
         OpenBib::Common::Util::print_warning("Ungültige Session",$r);
@@ -305,7 +316,7 @@ sub handler {
         @databases=();
         my @idnres;
         while (@idnres=$idnresult->fetchrow) {
-            push @databases, $idnres[0];
+            push @databases, decode_utf8($idnres[0]);
         }
         $idnresult->finish();
 
@@ -318,7 +329,7 @@ sub handler {
         @databases=();
         my @idnres;
         while (@idnres=$idnresult->fetchrow) {
-            push @databases, $idnres[0];
+            push @databases, decode_utf8($idnres[0]);
         }
         $idnresult->finish();
     }
@@ -331,7 +342,7 @@ sub handler {
             $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
 
             while (my $result=$idnresult->fetchrow_hashref()) {
-                my $dbname=$result->{'dbname'};
+                my $dbname = decode_utf8($result->{'dbname'});
                 push @databases, $dbname;
             }
             $idnresult->finish();
@@ -350,7 +361,7 @@ sub handler {
 	
                 my @poolres;
                 while (@poolres=$profilresult->fetchrow) {
-                    push @databases, $poolres[0];
+                    push @databases, decode_utf8($poolres[0]);
                 }
                 $profilresult->finish();
 	
@@ -362,7 +373,7 @@ sub handler {
 	
                 my @idnres;
                 while (@idnres=$idnresult->fetchrow) {
-                    push @databases, $idnres[0];
+                    push @databases, decode_utf8($idnres[0]);
                 }
                 $idnresult->finish();
             }
@@ -372,7 +383,7 @@ sub handler {
 	
                 my @idnres;
                 while (@idnres=$idnresult->fetchrow) {
-                    push @databases, $idnres[0];
+                    push @databases, decode_utf8($idnres[0]);
                 }
                 $idnresult->finish();
             }
@@ -1173,7 +1184,7 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
 
         my $queryid;
         while (my @idnres=$idnresult->fetchrow) {
-            $queryid=$idnres[0];
+            $queryid = decode_utf8($idnres[0]);
         }
 
         if ($queryalreadyexists == 0) {

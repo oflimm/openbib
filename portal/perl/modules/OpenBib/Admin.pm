@@ -38,6 +38,7 @@ use Apache::Constants qw(:common);
 use Apache::Request ();
 use DBI;
 use Digest::MD5;
+use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Template;
@@ -136,8 +137,8 @@ sub handler {
   
     my $singledbname="";
     while (my $result=$dbinforesult->fetchrow_hashref()) {
-        my $dbname      = $result->{'dbname'};
-        my $description = $result->{'description'};
+        my $dbname      = decode_utf8($result->{'dbname'});
+        my $description = decode_utf8($result->{'description'});
     
         $singledbname={
             dbname      => $dbname,
@@ -289,35 +290,36 @@ sub handler {
       
             my $result=$idnresult->fetchrow_hashref();
       
-            my $dbid=$result->{'dbid'};
-            my $faculty=$result->{'faculty'};
-            my $description=$result->{'description'};
-            my $system=$result->{'system'};
-            my $dbname=$result->{'dbname'};
-            my $sigel=$result->{'sigel'};
-            my $url=$result->{'url'};
-            my $active=$result->{'active'};
+            my $dbid        = decode_utf8($result->{'dbid'});
+            my $faculty     = decode_utf8($result->{'faculty'});
+            my $description = decode_utf8($result->{'description'});
+            my $system      = decode_utf8($result->{'system'});
+            my $dbname      = decode_utf8($result->{'dbname'});
+            my $sigel       = decode_utf8($result->{'sigel'});
+            my $url         = decode_utf8($result->{'url'});
+            my $active      = decode_utf8($result->{'active'});
 
             $idnresult=$sessiondbh->prepare("select * from dboptions where dbname = ?") or $logger->error($DBI::errstr);
             $idnresult->execute($dbname) or $logger->error($DBI::errstr);
             $result=$idnresult->fetchrow_hashref();
-            my $host         = $result->{'host'};
-            my $protocol     = $result->{'protocol'};
-            my $remotepath   = $result->{'remotepath'};
-            my $remoteuser   = $result->{'remoteuser'};
-            my $remotepasswd = $result->{'remotepasswd'};
-            my $filename     = $result->{'filename'};
-            my $titfilename  = $result->{'titfilename'};
-            my $autfilename  = $result->{'autfilename'};
-            my $korfilename  = $result->{'korfilename'};
-            my $swtfilename  = $result->{'swtfilename'};
-            my $notfilename  = $result->{'notfilename'};
-            my $mexfilename  = $result->{'mexfilename'};
-            my $autoconvert  = $result->{'autoconvert'};
-            my $circ         = $result->{'circ'};
-            my $circurl      = $result->{'circurl'};
-            my $circcheckurl = $result->{'circcheckurl'};
-            my $circdb       = $result->{'circdb'};
+
+            my $host         = decode_utf8($result->{'host'});
+            my $protocol     = decode_utf8($result->{'protocol'});
+            my $remotepath   = decode_utf8($result->{'remotepath'});
+            my $remoteuser   = decode_utf8($result->{'remoteuser'});
+            my $remotepasswd = decode_utf8($result->{'remotepasswd'});
+            my $filename     = decode_utf8($result->{'filename'});
+            my $titfilename  = decode_utf8($result->{'titfilename'});
+            my $autfilename  = decode_utf8($result->{'autfilename'});
+            my $korfilename  = decode_utf8($result->{'korfilename'});
+            my $swtfilename  = decode_utf8($result->{'swtfilename'});
+            my $notfilename  = decode_utf8($result->{'notfilename'});
+            my $mexfilename  = decode_utf8($result->{'mexfilename'});
+            my $autoconvert  = decode_utf8($result->{'autoconvert'});
+            my $circ         = decode_utf8($result->{'circ'});
+            my $circurl      = decode_utf8($result->{'circurl'});
+            my $circcheckurl = decode_utf8($result->{'circcheckurl'});
+            my $circdb       = decode_utf8($result->{'circdb'});
 
             my $katalog={
                 dbid        => $dbid,
@@ -374,15 +376,15 @@ sub handler {
 
         my $katalog;
         while (my $result=$idnresult->fetchrow_hashref()) {
-            my $dbid        = $result->{'dbid'};
-            my $faculty     = $result->{'faculty'};
-            my $autoconvert = $result->{'autoconvert'};
+            my $dbid        = decode_utf8($result->{'dbid'});
+            my $faculty     = decode_utf8($result->{'faculty'});
+            my $autoconvert = decode_utf8($result->{'autoconvert'});
 
-            my $units_ref=$config{units};
+            my $orgunits_ref=$config{orgunits};
 
-            my @units=@$units_ref;
+            my @orgunits=@$orgunits_ref;
 
-            foreach my $unit_ref (@units) {
+            foreach my $unit_ref (@orgunits) {
                 my %unit=%$unit_ref;
                 if ($unit{short} eq $faculty) {
                     $faculty=$unit{desc};
@@ -391,11 +393,6 @@ sub handler {
 
             my $description = $result->{'description'};
             my $system      = $result->{'system'};
-            $system="Sisis" if ($system eq "s");
-            $system="Lars" if ($system eq "l");
-            $system="Allegro" if ($system eq "a");
-            $system="Bislok" if ($system eq "b");
-
             my $dbname      = $result->{'dbname'};
             my $sigel       = $result->{'sigel'};
             my $url         = $result->{'url'};
@@ -442,10 +439,11 @@ sub handler {
         my $idnresult=$sessiondbh->prepare("select * from viewinfo order by viewname") or $logger->error($DBI::errstr);
         $idnresult->execute() or $logger->error($DBI::errstr);
         while (my $result=$idnresult->fetchrow_hashref()) {
-            my $viewid=$result->{'viewid'};
-            my $viewname=$result->{'viewname'};
-            my $description=$result->{'description'};
-            my $active=$result->{'active'};
+            my $viewid      = decode_utf8($result->{'viewid'});
+            my $viewname    = decode_utf8($result->{'viewname'});
+            my $description = decode_utf8($result->{'description'});
+            my $active      = decode_utf8($result->{'active'});
+
             $active="Ja" if ($active eq "1");
             $active="Nein" if ($active eq "0");
       
@@ -454,7 +452,7 @@ sub handler {
       
             my @viewdbs=();
             while (my $result2=$idnresult2->fetchrow_hashref()) {
-                my $dbname=$result2->{'dbname'};
+                my $dbname = decode_utf8($result2->{'dbname'});
                 push @viewdbs, $dbname;
             }
 
@@ -558,13 +556,10 @@ sub handler {
             $idnresult->execute($viewname);
 
 
-            my $res=$idnresult->fetchrow_hashref();
-
-            my $viewid=$res->{viewid};
-      
+            my $res    = $idnresult->fetchrow_hashref();
+            my $viewid = decode_utf8($res->{viewid});
 
             $r->internal_redirect("http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=editview&viewaction=Bearbeiten&viewid=$viewid");
-     
 
             $sessiondbh->disconnect();
 
@@ -578,17 +573,17 @@ sub handler {
       
             my $result=$idnresult->fetchrow_hashref();
 
-            my $viewid=$result->{'viewid'};
-            my $viewname=$result->{'viewname'};
-            my $description=$result->{'description'};
-            my $active=$result->{'active'};
+            my $viewid      = decode_utf8($result->{'viewid'});
+            my $viewname    = decode_utf8($result->{'viewname'});
+            my $description = decode_utf8($result->{'description'});
+            my $active      = decode_utf8($result->{'active'});
 
             my $idnresult2=$sessiondbh->prepare("select * from viewdbs where viewname = ? order by dbname") or $logger->error($DBI::errstr);
             $idnresult2->execute($viewname) or $logger->error($DBI::errstr);
       
             my @viewdbs=();
             while (my $result2=$idnresult2->fetchrow_hashref()) {
-                my $dbname=$result2->{'dbname'};
+                my $dbname = decode_utf8($result2->{'dbname'});
                 push @viewdbs, $dbname;
             }
 
@@ -627,45 +622,42 @@ sub handler {
 
         my $katalog;
         while (my $result=$idnresult->fetchrow_hashref()) {
-            my $dbid=$result->{'dbid'};
-            my $faculty=$result->{'faculty'};
+            my $dbid    = decode_utf8($result->{'dbid'});
+            my $faculty = decode_utf8($result->{'faculty'});
 
-            my $units_ref=$config{units};
+            my $orgunits_ref=$config{orgunits};
 
-            my @units=@$units_ref;
+            my @orgunits=@$orgunits_ref;
 
-            foreach my $unit_ref (@units) {
+            foreach my $unit_ref (@orgunits) {
                 my %unit=%$unit_ref;
                 if ($unit{short} eq $faculty) {
                     $faculty=$unit{desc};
                 }
             }
 
-            my $description=$result->{'description'};
-            my $system=$result->{'system'};
-            $system="Sisis" if ($system eq "s");
-            $system="Lars" if ($system eq "l");
-            $system="Allegro" if ($system eq "a");
-            $system="Bislok" if ($system eq "b");
+            my $description = decode_utf8($result->{'description'});
+            my $system      = decode_utf8($result->{'system'});
+            my $dbname      = decode_utf8($result->{'dbname'});
+            my $sigel       = decode_utf8($result->{'sigel'});
+            my $url         = decode_utf8($result->{'url'});
+            my $active      = decode_utf8($result->{'active'});
 
-            my $dbname=$result->{'dbname'};
-            my $sigel=$result->{'sigel'};
-            my $url=$result->{'url'};
-            my $active=$result->{'active'};
-            $active="Ja" if ($active eq "1");
+            $active="Ja"   if ($active eq "1");
             $active="Nein" if ($active eq "0");
-            my $count=$result->{'count'};
+
+            my $count       = decode_utf8($result->{'count'});
 
             $katalog={
-		dbid => $dbid,
-		faculty => $faculty,
+		dbid        => $dbid,
+		faculty     => $faculty,
 		description => $description,
-		system => $system,
-		dbname => $dbname,
-		sigel => $sigel,
-		active => $active,
-		url => $url,
-		count => $count,
+		system      => $system,
+		dbname      => $dbname,
+		sigel       => $sigel,
+		active      => $active,
+		url         => $url,
+		count       => $count,
             };
 
             push @kataloge, $katalog;
@@ -736,9 +728,9 @@ sub handler {
         my @sessions=();
 
         while (my $result=$idnresult->fetchrow_hashref()) {
-            my $singlesessionid=$result->{'sessionid'};
-            my $createtime=$result->{'createtime'};
-            my $benutzernr=$result->{'benutzernr'};
+            my $singlesessionid = decode_utf8($result->{'sessionid'});
+            my $createtime      = decode_utf8($result->{'createtime'});
+            my $benutzernr      = decode_utf8($result->{'benutzernr'});
 
             my $idnresult2=$sessiondbh->prepare("select * from queries where sessionid = ?") or $logger->error($DBI::errstr);
             $idnresult2->execute($singlesessionid) or $logger->error($DBI::errstr);
@@ -760,9 +752,9 @@ sub handler {
 
         my $ttdata={
             stylesheet => $stylesheet,
-            sessionID => $sessionID,
+            sessionID  => $sessionID,
 	         
-            sessions => \@sessions,
+            sessions   => \@sessions,
 
             config     => \%config,
         };
@@ -779,8 +771,8 @@ sub handler {
             $idnresult->execute($singlesessionid) or $logger->error($DBI::errstr);
 
             my $result=$idnresult->fetchrow_hashref();
-            my $createtime=$result->{'createtime'};
-            my $benutzernr=$result->{'benutzernr'};
+            my $createtime = decode_utf8($result->{'createtime'});
+            my $benutzernr = decode_utf8($result->{'benutzernr'});
 
             my $idnresult2=$sessiondbh->prepare("select * from queries where sessionid = ?") or $logger->error($DBI::errstr);
             $idnresult2->execute($singlesessionid) or $logger->error($DBI::errstr);
@@ -790,10 +782,9 @@ sub handler {
             my @queries=();
             my $singlequery="";
             while (my $result2=$idnresult2->fetchrow_hashref()) {
-                my $query=$result2->{'query'};
-                my $hits=$result2->{'hits'};
-                my $dbases=$result2->{'dbases'};
-
+                my $query  = decode_utf8($result2->{'query'});
+                my $hits   = decode_utf8($result2->{'hits'});
+                my $dbases = decode_utf8($result2->{'dbases'});
 
                 my ($fs,$verf,$hst,$swt,$kor,$sign,$isbn,$issn,$notation,$mart,$ejahr,$hststring,$boolhst,$boolswt,$boolkor,$boolnotation,$boolisbn,$boolsign,$boolejahr,$boolissn,$boolverf,$boolfs,$boolmart,$boolhststring)=split('\|\|',$query);
 

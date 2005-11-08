@@ -71,7 +71,7 @@ Sie können entweder durch entsprechende Auswahl in den insgesamt [% alldbs %] e
 >Alle Kataloge</option><option value=""></option>
 <option value="">Fakultäten:</option><option value=""></option>
 
-[% FOREACH unit IN config.units %]
+[% FOREACH unit IN config.orgunits %]
 <option value="[% unit.short %]"
 [%- IF prevprofile == unit.short -%]
  selected="selected"

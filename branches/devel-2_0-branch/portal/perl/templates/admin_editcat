@@ -32,7 +32,7 @@
 <tr><td>
 
 <select name="faculty">
-[% FOREACH item IN config.units %]
+[% FOREACH item IN config.orgunits %]
 <option value="[% item.short %]"
 [% IF katalog.faculty == item.short %]
  selected

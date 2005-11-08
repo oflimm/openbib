@@ -26,7 +26,7 @@
 <tr><td><b>Fakult&auml;t</b></td><td><b>Beschreibung</b></td><td><b>System</b></td><td>
 <b>DB-Name</b></td><td><b>Sigel</b></td><td>URL</td><td><b>Aktiv</b></td><td></td></tr>
 <tr><td><select name="faculty">
-[% FOREACH item IN config.units %]
+[% FOREACH item IN config.orgunits %]
 <option value="[% item.short %]">[% item.desc %]</option>
 [% END %]
 </select></td><td><input type="text" name="description"></td><td><select name="system"><option value="l">Lars</option><option value="a">Allegro</option><option value="b">Bislok</option><option value="s" selected>Sisis</option></select></td><td>

@@ -109,20 +109,22 @@ sub handler {
   
     if ($view ne "") {
         # 1. Gibt es diesen View?
-        my $idnresult=$sessiondbh->prepare("select viewname from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
+        my $idnresult=$sessiondbh->prepare("select count(viewname) as rowcount from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
         $idnresult->execute($view) or $logger->error($DBI::errstr);
-        my $anzahl=$idnresult->rows();
+        my $res    = $idnresult->fetchrow_hashref;
+        my $anzahl = $res->{rowcount};
     
         if ($anzahl > 0) {
             # 2. Datenbankauswahl setzen, aber nur, wenn der Benutzer selbst noch
             #    keine Auswahl getroffen hat
       
-            $idnresult=$sessiondbh->prepare("select dbname from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
+            $idnresult=$sessiondbh->prepare("select count(dbname) as rowcount from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
             $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
 
             # Wenn noch keine Datenbank ausgewaehlt wurde, dann setze die
             # Auswahl auf die zum View gehoerenden Datenbanken
-            my $anzahl=$idnresult->rows();
+            $res=$idnresult->fetchrow_hashref;
+            my $anzahl=$res->{rowcount};
             if ($anzahl == 0) {
                 $idnresult=$sessiondbh->prepare("select dbname from  viewdbs where viewname = ?") or $logger->error($DBI::errstr);
                 $idnresult->execute($view) or $logger->error($DBI::errstr);

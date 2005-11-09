@@ -145,8 +145,7 @@ sub get_cred_for_userid {
   
     my @cred=();
   
-    if ($userresult->rows > 0) {
-        my $res=$userresult->fetchrow_hashref();
+    while(my $res=$userresult->fetchrow_hashref()){
         $cred[0] = decode_utf8($res->{loginname});
         $cred[1] = decode_utf8($res->{pin});
     }
@@ -169,8 +168,7 @@ sub get_username_for_userid {
   
     my $username="";
   
-    if ($userresult->rows > 0) {
-        my $res=$userresult->fetchrow_hashref();
+    while (my $res=$userresult->fetchrow_hashref()){
         $username = decode_utf8($res->{loginname});
     }
 
@@ -192,8 +190,7 @@ sub get_userid_of_session {
   
     my $userid="";
   
-    if ($userresult->rows > 0) {
-        my $res=$userresult->fetchrow_hashref();
+    while(my $res=$userresult->fetchrow_hashref()){
         $userid = decode_utf8($res->{'userid'});
     }
 
@@ -234,8 +231,7 @@ sub get_targetdb_of_session {
   
     my $targetdb="";
   
-    if ($userresult->rows > 0) {
-        my $res=$userresult->fetchrow_hashref();
+    while(my $res=$userresult->fetchrow_hashref()){
         $targetdb = decode_utf8($res->{'db'});
     }
 
@@ -255,8 +251,7 @@ sub get_targettype_of_session {
   
     my $targettype="";
   
-    if ($userresult->rows > 0) {
-        my $res=$userresult->fetchrow_hashref();
+    while(my $res=$userresult->fetchrow_hashref()){
         $targettype = decode_utf8($res->{'type'});
     }
 

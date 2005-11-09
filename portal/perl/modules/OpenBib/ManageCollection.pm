@@ -112,10 +112,11 @@ sub handler {
     if ($action eq "insert") {
         if ($userid) {
             # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
-            my $idnresult=$userdbh->prepare("select * from treffer where userid = ? and dbname = ? and singleidn = ?") or $logger->error($DBI::errstr);
+            my $idnresult=$userdbh->prepare("select count(*) as rowcount from treffer where userid = ? and dbname = ? and singleidn = ?") or $logger->error($DBI::errstr);
             $idnresult->execute($userid,$database,$singleidn) or $logger->error($DBI::errstr);
+            my $res    = $idnresult->fetchrow_hashref;
+            my $anzahl = $res->{rowcount};
 
-            my $anzahl=$idnresult->rows();
             $idnresult->finish();
 
             if ($anzahl == 0) {
@@ -128,9 +129,10 @@ sub handler {
         # Anonyme Session
         else {
             # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
-            my $idnresult=$sessiondbh->prepare("select * from treffer where sessionid = ? and dbname = ? and singleidn = ?") or $logger->error($DBI::errstr);
+            my $idnresult=$sessiondbh->prepare("select count(*) as rowcount from treffer where sessionid = ? and dbname = ? and singleidn = ?") or $logger->error($DBI::errstr);
             $idnresult->execute($sessionID,$database,$singleidn) or $logger->error($DBI::errstr);
-            my $anzahl=$idnresult->rows();
+            my $res    = $idnresult->fetchrow_hashref;
+            my $anzahl = $res->{rowcount};
             $idnresult->finish();
       
             if ($anzahl == 0) {
@@ -396,8 +398,7 @@ sub handler {
     
         my $loginname="";
     
-        if ($userresult->rows > 0) {
-            my $res=$userresult->fetchrow_hashref();
+        while(my $res=$userresult->fetchrow_hashref()){
             $loginname = decode_utf8($res->{'loginname'});
         }
 
@@ -523,8 +524,7 @@ sub handler {
     
         my $loginname="";
     
-        if ($userresult->rows > 0) {
-            my $res=$userresult->fetchrow_hashref();
+        while(my $res=$userresult->fetchrow_hashref()){
             $loginname = decode_utf8($res->{'loginname'});
         }
     

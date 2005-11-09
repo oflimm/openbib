@@ -134,10 +134,12 @@ sub handler {
             return OK;
         }
 
-        my $userresult=$userdbh->prepare("select * from user where loginname = ?") or $logger->error($DBI::errstr);
+        my $userresult=$userdbh->prepare("select count(*) as rowcount from user where loginname = ?") or $logger->error($DBI::errstr);
         $userresult->execute($loginname) or $logger->error($DBI::errstr);
+        my $res  = $userresult->fetchrow_hashref;
+        my $rows = $res->{rowcount};
 
-        if ($userresult->rows > 0) {
+        if ($rows > 0) {
             OpenBib::Common::Util::print_warning("Ein Benutzer mit dem Namen $loginname existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte <a href=\"http://$config{servername}$config{login_loc}?sessionID=$sessionID?action=login\">zurück</a> und lassen es sich zumailen.",$r);
             $userresult->finish();
 

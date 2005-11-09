@@ -153,10 +153,6 @@ sub handler {
         $targetresult=$userdbh->prepare("select profilid, profilename from userdbprofile where userid = ? order by profilename") or $logger->error($DBI::errstr);
         $targetresult->execute($userid) or $logger->error($DBI::errstr);
     
-        if ($targetresult->rows > 0) {
-            $userprofiles.="<option value=\"\">Gespeicherte Katalogprofile:</option><option value=\"\">&nbsp;</option>";
-        }
-    
         while (my $res=$targetresult->fetchrow_hashref()) {
             my $profilid    = decode_utf8($res->{'profilid'});
             my $profilename = decode_utf8($res->{'profilename'});
@@ -168,9 +164,9 @@ sub handler {
 
             $userprofiles.="<option value=\"user$profilid\" $profselected>- $profilename</option>";
         }
-    
-        if ($targetresult->rows > 0) {
-            $userprofiles.="<option value=\"\">&nbsp;</option>"
+
+        if ($userprofiles){
+            $userprofiles="<option value=\"\">Gespeicherte Katalogprofile:</option><option value=\"\">&nbsp;</option>".$userprofiles."<option value=\"\">&nbsp;</option>";
         }
     
         $targetresult=$userdbh->prepare("select * from fieldchoice where userid = ?") or $logger->error($DBI::errstr);
@@ -277,10 +273,10 @@ sub handler {
         $dbcount++; 
     }
 
-    $idnresult=$sessiondbh->prepare("select dbname from dbinfo where active=1") or $logger->error($DBI::errstr);
+    $idnresult=$sessiondbh->prepare("select count(dbname) as rowcount from dbinfo where active=1") or $logger->error($DBI::errstr);
     $idnresult->execute() or $logger->error($DBI::errstr);
-
-    my $alldbs=$idnresult->rows;
+    my $res    = $idnresult->fetchrow_hashref;
+    my $alldbs = $res->{rowcount};
 
     $idnresult=$sessiondbh->prepare("select sum(count) from titcount,dbinfo where  titcount.dbname=dbinfo.dbname and dbinfo.active=1") or $logger->error($DBI::errstr);
     $idnresult->execute() or $logger->error($DBI::errstr);
@@ -307,31 +303,29 @@ sub handler {
 
     my $prevqueries="";
 
-    if ($anzahl > 0) {
-        while (my $result=$idnresult->fetchrow_hashref()) {
-            my $queryid = decode_utf8($result->{'queryid'});
-            my $query   = decode_utf8($result->{'query'});
-            my $hits    = decode_utf8($result->{'hits'});
-
-            my ($fs,$verf,$hst,$swt,$kor,$sign,$isbn,$issn,$notation,$mart,$ejahr,$hststring,$boolhst,$boolswt,$boolkor,$boolnotation,$boolisbn,$boolsign,$boolejahr,$boolissn,$boolverf,$boolfs,$boolmart,$boolhststring)=split('\|\|',$query);
-
-            $prevqueries.="<OPTION value=\"$queryid\">";
-
-            $prevqueries.="FS: $fs " if ($fs);
-            $prevqueries.="AUT: $verf " if ($verf);
-            $prevqueries.="HST: $hst " if ($hst);
-            $prevqueries.="SWT: $swt " if ($swt);
-            $prevqueries.="KOR: $kor " if ($kor);
-            $prevqueries.="NOT: $notation " if ($notation);
-            $prevqueries.="SIG: $sign " if ($sign);
-            $prevqueries.="EJAHR: $ejahr " if ($ejahr);
-            $prevqueries.="ISBN: $isbn " if ($isbn);
-            $prevqueries.="ISSN: $issn " if ($issn);
-            $prevqueries.="MART: $mart " if ($mart);
-            $prevqueries.="HSTR: $hststring " if ($hststring);
-            $prevqueries.="= Treffer: $hits";
-            $prevqueries.="</OPTION>";
-        }
+    while (my $result=$idnresult->fetchrow_hashref()) {
+        my $queryid = decode_utf8($result->{'queryid'});
+        my $query   = decode_utf8($result->{'query'});
+        my $hits    = decode_utf8($result->{'hits'});
+        
+        my ($fs,$verf,$hst,$swt,$kor,$sign,$isbn,$issn,$notation,$mart,$ejahr,$hststring,$boolhst,$boolswt,$boolkor,$boolnotation,$boolisbn,$boolsign,$boolejahr,$boolissn,$boolverf,$boolfs,$boolmart,$boolhststring)=split('\|\|',$query);
+        
+        $prevqueries.="<OPTION value=\"$queryid\">";
+        
+        $prevqueries.="FS: $fs " if ($fs);
+        $prevqueries.="AUT: $verf " if ($verf);
+        $prevqueries.="HST: $hst " if ($hst);
+        $prevqueries.="SWT: $swt " if ($swt);
+        $prevqueries.="KOR: $kor " if ($kor);
+        $prevqueries.="NOT: $notation " if ($notation);
+        $prevqueries.="SIG: $sign " if ($sign);
+        $prevqueries.="EJAHR: $ejahr " if ($ejahr);
+        $prevqueries.="ISBN: $isbn " if ($isbn);
+        $prevqueries.="ISSN: $issn " if ($issn);
+        $prevqueries.="MART: $mart " if ($mart);
+        $prevqueries.="HSTR: $hststring " if ($hststring);
+        $prevqueries.="= Treffer: $hits";
+        $prevqueries.="</OPTION>";
     }
 
     $idnresult->finish();

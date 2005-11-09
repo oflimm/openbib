@@ -1164,13 +1164,15 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
         my $dbasesstring=join("||",@databases);
 
         my $thisquerystring="$fs||$verf||$hst||$swt||$kor||$sign||$isbn||$issn||$notation||$mart||$ejahr||$hststring||$boolhst||$boolswt||$boolkor||$boolnotation||$boolisbn||$boolsign||$boolejahr||$boolissn||$boolverf||$boolfs||$boolmart||$boolhststring";
-        my $idnresult=$sessiondbh->prepare("select * from queries where query = ? and sessionid = ? and dbases = ?") or $logger->error($DBI::errstr);
+        my $idnresult=$sessiondbh->prepare("select count(*) as rowcount from queries where query = ? and sessionid = ? and dbases = ?") or $logger->error($DBI::errstr);
         $idnresult->execute($thisquerystring,$sessionID,$dbasesstring) or $logger->error($DBI::errstr);
+        my $res  = $idnresult->fetchrow_hashref;
+        my $rows = $res->{rowcount};
 
         my $queryalreadyexists=0;
 
         # Neuer Query
-        if ($idnresult->rows <= 0) {
+        if ($rows <= 0) {
             $idnresult=$sessiondbh->prepare("insert into queries (queryid,sessionid,query,hits,dbases) values (NULL,?,?,?,?)") or $logger->error($DBI::errstr);
             $idnresult->execute($sessionID,$thisquerystring,$gesamttreffer,$dbasesstring) or $logger->error($DBI::errstr);
         }

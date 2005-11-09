@@ -202,9 +202,12 @@ sub handler {
     # Ab hier gehts nur weiter mit korrekter SessionID
   
     # Admin-SessionID ueberpruefen
-    my $idnresult=$sessiondbh->prepare("select * from session where benutzernr = ? and sessionid = ?") or $logger->error($DBI::errstr);
+    my $idnresult=$sessiondbh->prepare("select count(*) as rowcount from session where benutzernr = ? and sessionid = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($adminuser,$sessionID) or $logger->error($DBI::errstr);
-    my $rows=$idnresult->rows;
+    my $res=$idnresult->fetchrow_hashref;
+
+    my $rows=$res->{rowcount};
+
     $idnresult->finish;
   
     if ($rows <= 0) {
@@ -255,10 +258,13 @@ sub handler {
                 return OK;
             }
 
-            my $idnresult=$sessiondbh->prepare("select dbid from dbinfo where dbname = ?") or $logger->error($DBI::errstr);
+            my $idnresult=$sessiondbh->prepare("select count(dbid) as rowcount from dbinfo where dbname = ?") or $logger->error($DBI::errstr);
             $idnresult->execute($dbname) or $logger->error($DBI::errstr);
 
-            if ($idnresult->rows > 0) {
+            my $res=$idnresult->fetchrow_hashref;
+            my $rows=$res->{rowcount};
+            
+            if ($rows > 0) {
 
                 OpenBib::Common::Util::print_warning("Es existiert bereits ein Katalog unter diesem Namen",$r);
 
@@ -535,10 +541,12 @@ sub handler {
             }
 
 
-            my $idnresult=$sessiondbh->prepare("select * from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
+            my $idnresult=$sessiondbh->prepare("select count(*) as rowcount from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
             $idnresult->execute($viewname) or $logger->error($DBI::errstr);
+            my $res=$idnresult->fetchrow_hashref;
+            my $rows=$res->{rowcount};
 
-            if ($idnresult->rows > 0) {
+            if ($rows > 0) {
 
                 OpenBib::Common::Util::print_warning("Es existiert bereits ein View unter diesem Namen",$r);
 
@@ -556,7 +564,7 @@ sub handler {
             $idnresult->execute($viewname);
 
 
-            my $res    = $idnresult->fetchrow_hashref();
+            $res       = $idnresult->fetchrow_hashref();
             my $viewid = decode_utf8($res->{viewid});
 
             $r->internal_redirect("http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=editview&viewaction=Bearbeiten&viewid=$viewid");
@@ -732,9 +740,11 @@ sub handler {
             my $createtime      = decode_utf8($result->{'createtime'});
             my $benutzernr      = decode_utf8($result->{'benutzernr'});
 
-            my $idnresult2=$sessiondbh->prepare("select * from queries where sessionid = ?") or $logger->error($DBI::errstr);
+            my $idnresult2=$sessiondbh->prepare("select count(*) as rowcount from queries where sessionid = ?") or $logger->error($DBI::errstr);
             $idnresult2->execute($singlesessionid) or $logger->error($DBI::errstr);
-            my $numqueries=$idnresult2->rows;
+
+            my $res2=$idnresult2->fetchrow_hashref;
+            my $numqueries=$res2->{rowcount};
 
             if (!$benutzernr) {
                 $benutzernr="Anonym";
@@ -777,7 +787,7 @@ sub handler {
             my $idnresult2=$sessiondbh->prepare("select * from queries where sessionid = ?") or $logger->error($DBI::errstr);
             $idnresult2->execute($singlesessionid) or $logger->error($DBI::errstr);
 
-            my $numqueries=$idnresult2->rows;
+            my $numqueries=0;
 
             my @queries=();
             my $singlequery="";
@@ -816,6 +826,8 @@ sub handler {
                 };
 
                 push @queries, $singlequery;
+
+                $numqueries++;
             }    
 
 

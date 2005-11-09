@@ -397,13 +397,13 @@ sub handler {
                 }
             }
 
-            my $description = $result->{'description'};
-            my $system      = $result->{'system'};
-            my $dbname      = $result->{'dbname'};
-            my $sigel       = $result->{'sigel'};
-            my $url         = $result->{'url'};
-            my $active      = $result->{'active'};
-            my $count       = $result->{'count'};
+            my $description = decode_utf8($result->{'description'});
+            my $system      = decode_utf8($result->{'system'});
+            my $dbname      = decode_utf8($result->{'dbname'});
+            my $sigel       = decode_utf8($result->{'sigel'});
+            my $url         = decode_utf8($result->{'url'});
+            my $active      = decode_utf8($result->{'active'});
+            my $count       = decode_utf8($result->{'count'});
 
             if (!$description) {
                 $description="Keine Bezeichnung";

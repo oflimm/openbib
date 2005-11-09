@@ -86,11 +86,14 @@ sub handler {
         = DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd})
             or $logger->error_die($DBI::errstr);
   
-    my $idnresult=$sessiondbh->prepare("select sessionid from session where sessionid = ?") or $logger->error($DBI::errstr);
+    my $idnresult=$sessiondbh->prepare("select count(sessionid) as rowcount from session where sessionid = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-  
+    my $res=$idnresult->fetchrow_hashref;
+
+    my $rows=$res->{rowcount};
+
     # Wenn wir nichts gefunden haben, dann ist etwas faul
-    if ($idnresult->rows <= 0 || $sessionID eq "") {
+    if ($rows <= 0 || $sessionID eq "") {
         OpenBib::Common::Util::print_warning("SessionID ist ungülltig",$r);
 
         $idnresult->finish();
@@ -190,11 +193,13 @@ sub handler {
             else {
                 my $userid;
 
-                my $userresult=$userdbh->prepare("select userid from user where loginname = ?") or $logger->error($DBI::errstr);
+                my $userresult=$userdbh->prepare("select count(userid) as rowcount from user where loginname = ?") or $logger->error($DBI::errstr);
                 $userresult->execute($loginname) or $logger->error($DBI::errstr);
-	
+                my $res=$userresult->fetchrow_hashref;
+                my $rows=$res->{rowcount};
+
                 # Eintragen, wenn noch nicht existent
-                if ($userresult->rows <= 0) {
+                if ($rows <= 0) {
                     # Neuen Satz eintragen
                     $userresult=$userdbh->prepare("insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','','','')") or $logger->error($DBI::errstr);
                     $userresult->execute($loginname,$password) or $logger->error($DBI::errstr);
@@ -244,37 +249,38 @@ sub handler {
             $userresult->execute($globalsessionID,$userid,$targetid) or $logger->error($DBI::errstr);
       
             # Ueberpruefen, ob der Benutzer schon ein Suchprofil hat
-            $userresult=$userdbh->prepare("select userid from fieldchoice where userid = ?") or $logger->error($DBI::errstr);
+            $userresult=$userdbh->prepare("select count(userid) as rowcount from fieldchoice where userid = ?") or $logger->error($DBI::errstr);
             $userresult->execute($userid) or $logger->error($DBI::errstr);
-      
+            $res=$userresult->fetchrow_hashref;
+
+            my $rows=$res->{rowcount};
+
             # Falls noch keins da ist, eintragen
-            if ($userresult->rows <= 0) {
+            if ($rows <= 0) {
                 $userresult=$userdbh->prepare("insert into fieldchoice values (?,1,1,1,1,1,1,1,1,1,1,0,1)") or $logger->error($DBI::errstr);
                 $userresult->execute($userid) or $logger->error($DBI::errstr);
             }
       
             # Jetzt wird die bestehende Trefferliste uebernommen.
             # Gehe ueber alle Eintraege der Trefferliste
-            my $idnresult=$sessiondbh->prepare("select * from treffer where sessionid = ?") or $logger->error($DBI::errstr);
+            my $idnresult=$sessiondbh->prepare("select dbname,singleidn from treffer where sessionid = ?") or $logger->error($DBI::errstr);
             $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
       
-            # Es gibt etwas zu uebertragen
-            if ($idnresult->rows > 0) {
-                while (my $res=$idnresult->fetchrow_hashref()) {
-                    my $dbname    = decode_utf8($res->{'dbname'});
-                    my $singleidn = decode_utf8($res->{'singleidn'});
-
-                    # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
-                    $userresult=$userdbh->prepare("select userid from treffer where userid = ? and dbname = ? and singleidn = ?") or $logger->error($DBI::errstr);
+            while (my $res=$idnresult->fetchrow_hashref()) {
+                my $dbname    = decode_utf8($res->{'dbname'});
+                my $singleidn = decode_utf8($res->{'singleidn'});
+                
+                # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
+                $userresult=$userdbh->prepare("select count(userid) as rowcount from treffer where userid = ? and dbname = ? and singleidn = ?") or $logger->error($DBI::errstr);
+                $userresult->execute($userid,$dbname,$singleidn) or $logger->error($DBI::errstr);
+                my $res  = $userresult->fetchrow_hashref;
+                my $rows = $res->{rowcount};
+                if ($rows <= 0) {
+                    $userresult=$userdbh->prepare("insert into treffer values (?,?,?)") or $logger->error($DBI::errstr);
                     $userresult->execute($userid,$dbname,$singleidn) or $logger->error($DBI::errstr);
-
-                    if ($userresult->rows <= 0) {
-                        $userresult=$userdbh->prepare("insert into treffer values (?,?,?)") or $logger->error($DBI::errstr);
-                        $userresult->execute($userid,$dbname,$singleidn) or $logger->error($DBI::errstr);
-                    }
                 }
             }
-
+            
             # Bestimmen des Recherchemasken-Typs
             $userresult=$userdbh->prepare("select masktype from user where userid = ?") or $logger->error($DBI::errstr);
             $userresult->execute($userid) or $logger->error($DBI::errstr);

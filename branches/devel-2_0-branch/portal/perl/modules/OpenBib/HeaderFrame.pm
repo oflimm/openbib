@@ -107,16 +107,20 @@ sub handler {
 
         # Anzahl Eintraege der privaten Merkliste bestimmen
         # Zuallererst Suchen, wieviele Titel in der Merkliste vorhanden sind.
-        my $idnresult=$userdbh->prepare("select * from treffer where userid = ?") or $logger->error($DBI::errstr);
+        my $idnresult=$userdbh->prepare("select count(*) as rowcount from treffer where userid = ?") or $logger->error($DBI::errstr);
         $idnresult->execute($userid) or $logger->error($DBI::errstr);
-        $anzahl=$idnresult->rows();
+        my $res=$idnresult->fetchrow_hashref;
+        
+        $anzahl=$res->{rowcount};
         $idnresult->finish();
     }
     else {
         #  Zuallererst Suchen, wieviele Titel in der Merkliste vorhanden sind.
-        my $idnresult=$sessiondbh->prepare("select * from treffer where sessionid = ?") or $logger->error($DBI::errstr);
+        my $idnresult=$sessiondbh->prepare("select count(*) from treffer where sessionid = ?") or $logger->error($DBI::errstr);
         $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-        $anzahl=$idnresult->rows();
+        my $res=$idnresult->fetchrow_hashref;
+        
+        $anzahl=$res->{rowcount};
         $idnresult->finish();
     }
 

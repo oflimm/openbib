@@ -210,13 +210,13 @@ sub handler {
     my $password="";
 
     my $globalsessionID="$config{servername}:$sessionID";
-    my $userresult=$userdbh->prepare("select user.loginname,user.pin from usersession,user where usersession.sessionid = ? and user.userid=usersession.userid") or die "Error -- $DBI::errstr";
+    my $userresult=$userdbh->prepare("select user.loginname,user.pin,count(user.loginname) as rowcount from usersession,user where usersession.sessionid = ? and user.userid=usersession.userid") or die "Error -- $DBI::errstr";
  
     $userresult->execute($globalsessionID);
-  
-    if ($userresult->rows > 0) {
-        my $res=$userresult->fetchrow_hashref();
-   
+    my $res=$userresult->fetchrow_hashref();
+    my $rows=$res->{rowcount};
+
+    if ($rows > 0) {
         $loginname = decode_utf8($res->{'loginname'});
         $password  = decode_utf8($res->{'pin'});
     }

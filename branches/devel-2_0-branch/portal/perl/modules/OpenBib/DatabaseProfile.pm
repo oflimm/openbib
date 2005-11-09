@@ -277,16 +277,20 @@ sub handler {
             return OK;
         }
 
-        my $profilresult=$userdbh->prepare("select profilid from userdbprofile where userid = ? and profilename = ?") or $logger->error($DBI::errstr);
+        my $profilresult=$userdbh->prepare("select profilid,count(profilid) as rowcount from userdbprofile where userid = ? and profilename = ?") or $logger->error($DBI::errstr);
         $profilresult->execute($userid,$newprofile) or $logger->error($DBI::errstr);
-    
-        my $numrows=$profilresult->rows;
+        my $res=$profilresult->fetchrow_hashref();
+        
+        my $numrows=$res->{rowcount};
     
         my $profilid="";
-    
+
+        if ($numrows > 0){
+            $profilid = decode_utf8($res->{'profilid'});
+        }
         # Wenn noch keine Profilid (=kein Profil diesen Namens)
         # existiert, dann wird eins erzeugt.
-        if ($profilresult->rows <= 0) {
+        else {
             my $profilresult2=$userdbh->prepare("insert into userdbprofile values (NULL,?,?)") or $logger->error($DBI::errstr);
       
             $profilresult2->execute($newprofile,$userid) or $logger->error($DBI::errstr);
@@ -297,10 +301,6 @@ sub handler {
             $profilid = decode_utf8($res->{'profilid'});
       
             $profilresult2->finish();
-        }
-        else {
-            my $res=$profilresult->fetchrow_hashref();
-            $profilid = decode_utf8($res->{'profilid'});
         }
     
         # Jetzt habe ich eine profilid und kann Eintragen

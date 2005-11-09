@@ -117,10 +117,12 @@ sub handler {
     ####################################################################
   
     if ($trefferliste) {
-        my $idnresult=$sessiondbh->prepare("select sessionid from searchresults where sessionid = ?") or $logger->error($DBI::errstr);
+        my $idnresult=$sessiondbh->prepare("select count(sessionid) as rowcount from searchresults where sessionid = ?") or $logger->error($DBI::errstr);
         $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-    
-        if ($idnresult->rows <= 0) {
+        my $res=$idnresult->fetchrow_hashref;
+        my $rows=$res->{rowcount};
+        
+        if ($rows <= 0) {
             OpenBib::Common::Util::print_warning("Derzeit existiert (noch) keine Trefferliste",$r);
             $idnresult->finish();
 

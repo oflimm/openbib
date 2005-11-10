@@ -170,8 +170,6 @@ sub handler {
     
         my $maxcolumn=$config{databasechoice_maxcolumn};
     
-        my %stype;
-    
         $idnresult=$sessiondbh->prepare("select * from dbinfo where active=1 order by orgunit ASC, description ASC") or $logger->error($DBI::errstr);
         $idnresult->execute() or $logger->error($DBI::errstr);
     
@@ -186,19 +184,6 @@ sub handler {
             my $sigel      = decode_utf8($result->{'sigel'});
       
             my $rcolumn;
-      
-            if ($systemtype eq "a") {
-                $stype{$pool}="yellow";
-            }
-            elsif ($systemtype eq "b") {
-                $stype{$pool}="red";
-            }
-            elsif ($systemtype eq "l") {
-                $stype{$pool}="green";
-            }
-            elsif ($systemtype eq "s") {
-                $stype{$pool}="blue";
-            }
       
             if ($category ne $lastcategory) {
                 while ($count % $maxcolumn != 0) {
@@ -234,7 +219,7 @@ sub handler {
                 category   => $category,
                 db         => $pool,
                 name       => $name,
-                systemtype => $stype{$pool},
+                systemtype => $systemtype,
                 sigel      => $sigel,
                 url        => $url,
                 checked    => $checked,

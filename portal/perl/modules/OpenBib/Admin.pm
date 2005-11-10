@@ -693,7 +693,7 @@ sub handler {
             return OK;
         }
         elsif ($imxaction eq "Import") {
-            if ($system eq "s") {
+            if ($system eq "Sisis") {
                 if ($dbname eq "inst001") {
                     system("nohup $config{autoconv_dir}/bin/autoconvert-sikis-usb.pl --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
                 }
@@ -704,7 +704,7 @@ sub handler {
                     system("nohup $config{autoconv_dir}/bin/autoconvert-sikis.pl -get-via-wget --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
                 }	
             }
-            elsif ($system eq "l") {
+            elsif ($system eq "Lars") {
                 if ($dbname eq "inst900") {
                     system("nohup $config{autoconv_dir}/bin/autoconvert-colonia.pl --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
 	  
@@ -713,7 +713,7 @@ sub handler {
                     system("nohup $config{autoconv_dir}/bin/autoconvert-lars.pl --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
                 }
             }
-            elsif ($system eq "a") {
+            elsif ($system eq "Allegro") {
                 if ($dbname eq "inst127") {
                     system("nohup $config{autoconv_dir}/bin/autoconvert-ald.pl -get-via-ftp --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
                 }
@@ -721,7 +721,7 @@ sub handler {
                     system("nohup $config{autoconv_dir}/bin/autoconvert-mld.pl -get-via-ftp --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
                 }
             }
-            elsif ($system eq "b") {
+            elsif ($system eq "Bis-lok") {
                 system("nohup $config{autoconv_dir}/bin/biblio-autoconvert.pl -get-via-ftp --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
             }
       

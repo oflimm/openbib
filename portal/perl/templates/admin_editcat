@@ -44,20 +44,20 @@
 </td><td><input
 type="text" name="description" value="[% katalog.description
 %]"></td><td><select name="system">
-<option value="l" 
-[% IF katalog.system == 'l' %]
+<option value="Lars" 
+[% IF katalog.system == 'Lars' %]
 selected
 [% END %]
->Lars</option><option value="a"
-[% IF katalog.system == 'a' %]
+>Lars</option><option value="Allegro"
+[% IF katalog.system == 'Allegro' %]
 selected
 [% END %]
->Allegro</option><option value="b" 
-[% IF katalog.system == 'b' %]
+>Allegro</option><option value="Bis-lok" 
+[% IF katalog.system == 'Bis-lok' %]
 selected
 [% END %]
->Bislok</option><option value="s"
-[% IF katalog.system == 's' %]
+>Bis-lok</option><option value="Sisis"
+[% IF katalog.system == 'Sisis' %]
 selected
 [% END %]
 >Sisis</option></select></td><td>

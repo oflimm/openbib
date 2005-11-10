@@ -29,7 +29,7 @@
 [% FOREACH item IN config.orgunits %]
 <option value="[% item.short %]">[% item.desc %]</option>
 [% END %]
-</select></td><td><input type="text" name="description"></td><td><select name="system"><option value="l">Lars</option><option value="a">Allegro</option><option value="b">Bislok</option><option value="s" selected>Sisis</option></select></td><td>
+</select></td><td><input type="text" name="description"></td><td><select name="system"><option value="Lars">Lars</option><option value="Allegro">Allegro</option><option value="Bis-lok">Bis-lok</option><option value="Sisis" selected>Sisis</option></select></td><td>
 <input type="text" name="dbname" size="8"></td><td><input type="text" name="sigel" size="3"></td><td><input type="text" name="url" size="20"></td><td><select name=active><option value="1">Ja</option><option value="0"
 selected>Nein</option></select></td><td><input type="submit" name="cataction" value="Neu" /></td></tr>
 </table>

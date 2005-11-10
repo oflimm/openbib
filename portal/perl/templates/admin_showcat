@@ -25,7 +25,7 @@
 <table>
 <tr><td><b>Fakult&auml;t</b></td><td><b>Beschreibung</b></td><td><b>System</b></td><td>
 <b>DB-Name</b></td><td><b>Sigel</b></td><td>URL</td><td><b>Aktiv</b></td><td></td></tr>
-<tr><td><select name="faculty">
+<tr><td><select name="orgunit">
 [% FOREACH item IN config.orgunits %]
 <option value="[% item.short %]">[% item.desc %]</option>
 [% END %]
@@ -54,7 +54,7 @@ selected>Nein</option></select></td><td><input type="submit" name="cataction" va
 [% IF katalog.active == 1%]
  bgcolor="aliceblue"
 [% END %]
-><td>[% katalog.faculty %]</td><td><a href="http://[%
+><td>[% katalog.orgunit %]</td><td><a href="http://[%
 config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=editcat&dbid=[% katalog.dbid %]&cataction=Bearbeiten">[% katalog.description %]</a></td><td>[% katalog.system %]</td><td>[% katalog.dbname %]</td><td>[% katalog.sigel %]</td><td>[%katalog.url %]</td><td align="center">
 
 [% IF katalog.active == 1 %]

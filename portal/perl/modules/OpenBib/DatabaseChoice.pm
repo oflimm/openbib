@@ -159,13 +159,13 @@ sub handler {
       
         my %stype;
 	    
-        $idnresult=$sessiondbh->prepare("select * from dbinfo where active=1 order by faculty ASC, description ASC") or $logger->error($DBI::errstr);
+        $idnresult=$sessiondbh->prepare("select * from dbinfo where active=1 order by orgunit ASC, description ASC") or $logger->error($DBI::errstr);
         $idnresult->execute() or $logger->error($DBI::errstr);
 
         my @catdb=();
 
         while (my $result=$idnresult->fetchrow_hashref) {
-            my $category   = decode_utf8($result->{'faculty'});
+            my $category   = decode_utf8($result->{'orgunit'});
             my $name       = decode_utf8($result->{'description'});
             my $systemtype = decode_utf8($result->{'system'});
             my $pool       = decode_utf8($result->{'dbname'});

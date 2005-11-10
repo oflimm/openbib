@@ -61,7 +61,7 @@ CREATE TABLE dbchoice (
 
 CREATE TABLE dbinfo (
  dbid        BIGINT AUTO_INCREMENT PRIMARY KEY,
- faculty     VARCHAR(20),
+ orgunit     VARCHAR(20),
  description TEXT,
  system      TEXT, 
  dbname      VARCHAR(255),
@@ -69,7 +69,7 @@ CREATE TABLE dbinfo (
  url         TEXT,
  active      BOOL,
 
- INDEX (faculty),
+ INDEX (orgunit),
  INDEX (dbid),
  INDEX (dbname),
  INDEX (active),

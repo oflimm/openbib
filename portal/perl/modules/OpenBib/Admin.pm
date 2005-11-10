@@ -85,7 +85,7 @@ sub handler {
     my $confaction      = $query->param('confaction')      || '';
     my $sessionaction   = $query->param('sessionaction')   || '';
     my $dbid            = $query->param('dbid')            || '';
-    my $faculty         = $query->param('faculty')         || '';
+    my $orgunit         = $query->param('orgunit')         || '';
     my $description     = $query->param('description')     || '';
     my $system          = $query->param('system')          || '';
     my $dbname          = $query->param('dbname')          || '';
@@ -236,8 +236,8 @@ sub handler {
 
         }
         elsif ($cataction eq "Ändern") {
-            my $idnresult=$sessiondbh->prepare("update dbinfo set faculty = ?, description = ?, system = ?, dbname = ?, sigel = ?, url = ?, active = ? where dbid = ?") or $logger->error($DBI::errstr);
-            $idnresult->execute($faculty,$description,$system,$dbname,$sigel,$url,$active,$dbid) or $logger->error($DBI::errstr);
+            my $idnresult=$sessiondbh->prepare("update dbinfo set orgunit = ?, description = ?, system = ?, dbname = ?, sigel = ?, url = ?, active = ? where dbid = ?") or $logger->error($DBI::errstr);
+            $idnresult->execute($orgunit,$description,$system,$dbname,$sigel,$url,$active,$dbid) or $logger->error($DBI::errstr);
             $idnresult->finish();
 
             $idnresult=$sessiondbh->prepare("update dboptions set protocol = ?, host = ?, remotepath = ?, remoteuser = ?, remotepasswd = ?, titfilename = ?, autfilename = ?, korfilename = ?, swtfilename = ?, notfilename = ?, mexfilename = ?, filename = ?, autoconvert = ?, circ = ?, circurl = ?, circcheckurl = ?, circdb = ? where dbname= ?") or $logger->error($DBI::errstr);
@@ -274,7 +274,7 @@ sub handler {
             }
 
             $idnresult=$sessiondbh->prepare("insert into dbinfo values (NULL,?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
-            $idnresult->execute($faculty,$description,$system,$dbname,$sigel,$url,$active) or $logger->error($DBI::errstr);
+            $idnresult->execute($orgunit,$description,$system,$dbname,$sigel,$url,$active) or $logger->error($DBI::errstr);
             $idnresult=$sessiondbh->prepare("insert into titcount values (?,'0')") or $logger->error($DBI::errstr);
             $idnresult->execute($dbname) or $logger->error($DBI::errstr);
             $idnresult=$sessiondbh->prepare("insert into dboptions values (?,'','','','','','','','','','','','',0,0,'','','')") or $logger->error($DBI::errstr);
@@ -297,7 +297,7 @@ sub handler {
             my $result=$idnresult->fetchrow_hashref();
       
             my $dbid        = decode_utf8($result->{'dbid'});
-            my $faculty     = decode_utf8($result->{'faculty'});
+            my $orgunit     = decode_utf8($result->{'orgunit'});
             my $description = decode_utf8($result->{'description'});
             my $system      = decode_utf8($result->{'system'});
             my $dbname      = decode_utf8($result->{'dbname'});
@@ -329,7 +329,7 @@ sub handler {
 
             my $katalog={
                 dbid        => $dbid,
-                faculty     => $faculty,
+                orgunit     => $orgunit,
                 description => $description,
                 system      => $system,
                 dbname      => $dbname,
@@ -377,13 +377,13 @@ sub handler {
     elsif ($action eq "showcat") {
         my @kataloge=();
 
-        my $idnresult=$sessiondbh->prepare("select dbinfo.*,titcount.count,dboptions.autoconvert from dbinfo,titcount,dboptions where dbinfo.dbname=titcount.dbname and titcount.dbname=dboptions.dbname order by faculty,dbname") or $logger->error($DBI::errstr);
+        my $idnresult=$sessiondbh->prepare("select dbinfo.*,titcount.count,dboptions.autoconvert from dbinfo,titcount,dboptions where dbinfo.dbname=titcount.dbname and titcount.dbname=dboptions.dbname order by orgunit,dbname") or $logger->error($DBI::errstr);
         $idnresult->execute() or $logger->error($DBI::errstr);
 
         my $katalog;
         while (my $result=$idnresult->fetchrow_hashref()) {
             my $dbid        = decode_utf8($result->{'dbid'});
-            my $faculty     = decode_utf8($result->{'faculty'});
+            my $orgunit     = decode_utf8($result->{'orgunit'});
             my $autoconvert = decode_utf8($result->{'autoconvert'});
 
             my $orgunits_ref=$config{orgunits};
@@ -392,8 +392,8 @@ sub handler {
 
             foreach my $unit_ref (@orgunits) {
                 my %unit=%$unit_ref;
-                if ($unit{short} eq $faculty) {
-                    $faculty=$unit{desc};
+                if ($unit{short} eq $orgunit) {
+                    $orgunit=$unit{desc};
                 }
             }
 
@@ -411,7 +411,7 @@ sub handler {
 
             $katalog={
 		dbid        => $dbid,
-		faculty     => $faculty,
+		orgunit     => $orgunit,
 		description => $description,
 		system      => $system,
 		dbname      => $dbname,
@@ -625,13 +625,13 @@ sub handler {
 
         my @kataloge=();
 
-        my $idnresult=$sessiondbh->prepare("select dbinfo.*,titcount.count from dbinfo,titcount where dbinfo.dbname=titcount.dbname order by faculty,dbname") or $logger->error($DBI::errstr);
+        my $idnresult=$sessiondbh->prepare("select dbinfo.*,titcount.count from dbinfo,titcount where dbinfo.dbname=titcount.dbname order by orgunit,dbname") or $logger->error($DBI::errstr);
         $idnresult->execute() or $logger->error($DBI::errstr);
 
         my $katalog;
         while (my $result=$idnresult->fetchrow_hashref()) {
             my $dbid    = decode_utf8($result->{'dbid'});
-            my $faculty = decode_utf8($result->{'faculty'});
+            my $orgunit = decode_utf8($result->{'orgunit'});
 
             my $orgunits_ref=$config{orgunits};
 
@@ -639,8 +639,8 @@ sub handler {
 
             foreach my $unit_ref (@orgunits) {
                 my %unit=%$unit_ref;
-                if ($unit{short} eq $faculty) {
-                    $faculty=$unit{desc};
+                if ($unit{short} eq $orgunit) {
+                    $orgunit=$unit{desc};
                 }
             }
 
@@ -658,7 +658,7 @@ sub handler {
 
             $katalog={
 		dbid        => $dbid,
-		faculty     => $faculty,
+		orgunit     => $orgunit,
 		description => $description,
 		system      => $system,
 		dbname      => $dbname,

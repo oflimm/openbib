@@ -323,7 +323,7 @@ sub handler {
     }
 
     if ($searchall) {
-        my $idnresult=$sessiondbh->prepare("select dbname,description from dbinfo where active=1 order by faculty,description") or $logger->error($DBI::errstr);
+        my $idnresult=$sessiondbh->prepare("select dbname,description from dbinfo where active=1 order by orgunit,description") or $logger->error($DBI::errstr);
         $idnresult->execute() or $logger->error($DBI::errstr);
 
         @databases=();
@@ -368,7 +368,7 @@ sub handler {
             }
             elsif ($profil eq "alldbs") {
                 # Alle Datenbanken
-                my $idnresult=$sessiondbh->prepare("select dbname from dbinfo where active=1 order by faculty,dbname") or $logger->error($DBI::errstr);
+                my $idnresult=$sessiondbh->prepare("select dbname from dbinfo where active=1 order by orgunit,dbname") or $logger->error($DBI::errstr);
                 $idnresult->execute() or $logger->error($DBI::errstr);
 	
                 my @idnres;
@@ -378,7 +378,7 @@ sub handler {
                 $idnresult->finish();
             }
             else {
-                my $idnresult=$sessiondbh->prepare("select dbname from dbinfo where active=1 and faculty = ? order by faculty,dbname") or $logger->error($DBI::errstr);
+                my $idnresult=$sessiondbh->prepare("select dbname from dbinfo where active=1 and orgunit = ? order by orgunit,dbname") or $logger->error($DBI::errstr);
                 $idnresult->execute($profil) or $logger->error($DBI::errstr);
 	
                 my @idnres;

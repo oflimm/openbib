@@ -31,10 +31,10 @@
 
 <tr><td>
 
-<select name="faculty">
+<select name="orgunit">
 [% FOREACH item IN config.orgunits %]
 <option value="[% item.short %]"
-[% IF katalog.faculty == item.short %]
+[% IF katalog.orgunit == item.short %]
  selected
 [% END %]
 >[% item.desc %]</option>

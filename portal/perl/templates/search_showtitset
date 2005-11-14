@@ -1,5 +1,4 @@
 [%- i18nmsg = msg.${qopts.lang} -%]
-[%- show_foot_banner = 1 -%]
 [%- title = "Recherche in Katalog: $poolname" -%]
 [% PROCESS common/subtemplate name="std_header" %]
 

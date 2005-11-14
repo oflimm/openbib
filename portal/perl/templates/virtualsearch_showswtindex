@@ -8,7 +8,7 @@
 
 [% PROCESS common/subtemplate name="common/navitembar" %]
 
-[% FOREACH item IN swtindex %]
+[% FOREACH item IN index %]
 
 [% IF offset >= 0 && hitrange > 0 %]
 [% IF loop.count >= offset && loop.count < offset+hitrange %]

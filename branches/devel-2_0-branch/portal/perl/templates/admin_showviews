@@ -7,16 +7,16 @@
 [% PROCESS corporate_banner %]
 
 <ul id="tabbingmenu">
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showcat">Kataloge</a></li>
-   <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showviews">Views</a></li>
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showsession">Sessions</a></li>
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=logout">Logout</a></li>
+   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">Kataloge</a></li>
+   <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">Views</a></li>
+   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">Sessions</a></li>
+   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">Logout</a></li>
 </ul>
 
 <div id="content">
 
 <form method="get" action="http://[% config.servername %][%config.admin_loc %]">
-<input type="hidden" name="action" value="editview" />
+<input type="hidden" name="do_editview" value="1" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 
 <table width="100%">
@@ -25,7 +25,7 @@
 <table>
 <tr><td><b>Viewname</b></td><td><b>Beschreibung</b></td><td><b>Aktiv</b></td><td></td></tr>
 <tr><td><input type="text" name="viewname"></td><td><input type="text" name="description" size="20" />
-</td><td><select name=active><option value="1">Ja</option><option value="0" selected>Nein</option></select></td><td><input type="submit" name="viewaction" value="Neu" /></td></tr>
+</td><td><select name=active><option value="1">Ja</option><option value="0" selected>Nein</option></select></td><td><input type="submit" name="do_new" value="Neu" /></td></tr>
 </table>
 </td></tr>
 </table>
@@ -47,7 +47,7 @@ Um einen bereits existierenden View zu bearbeiten klicken Sie bitte auf den View
 
 [% FOREACH view IN views %]
 
-<tr><td>[% view.viewname %]</td><td><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=editview&viewid=[% view.viewid %]&viewaction=Bearbeiten">[% view.description %]</a></td><td>[% view.viewdb %]</td><td>[% view.active %]</td></tr>
+<tr><td>[% view.viewname %]</td><td><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&do_editview=1&viewid=[% view.viewid %]&do_edit=1">[% view.description %]</a></td><td>[% view.viewdb %]</td><td>[% view.active %]</td></tr>
 [% END %]
 
 </table>

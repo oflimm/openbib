@@ -7,10 +7,10 @@
 [% PROCESS corporate_banner %]
 
 <ul id="tabbingmenu">
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showcat">Kataloge</a></li>
-   <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showviews">Views</a></li>
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showsession">Sessions</a></li>
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=logout">Logout</a></li>
+   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">Kataloge</a></li>
+   <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">Views</a></li>
+   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">Sessions</a></li>
+   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">Logout</a></li>
 </ul>
 
 <div id="content">
@@ -19,7 +19,7 @@
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="viewid" value="[% view.viewid %]" />
 <input type="hidden" name="viewname" value="[% view.viewname %]" />
-<input type="hidden" name="action" value="editview" />
+<input type="hidden" name="do_editview" value="1" />
 
 <table width="100%">
 <tr><th>View bearbeiten</th></tr>
@@ -67,8 +67,8 @@ selected="selected"
 
 <p />
 <table width="100%">
-<tr><td align="left"><input type="submit" name="viewaction"
-value="&Auml;ndern" /></td><td>&nbsp;</td><td align="right"><input type="submit" name="viewaction" value="L&ouml;schen" /></td></tr>
+<tr><td align="left"><input type="submit" name="do_change"
+value="Ändern" /></td><td>&nbsp;</td><td align="right"><input type="submit" name="do_del" value="Löschen" /></td></tr>
 </table>
 </td></tr>
 </table>

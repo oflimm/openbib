@@ -1,3 +1,4 @@
+[%- i18nmsg = msg.${lang} -%]
 [% SET title='KUG Administration - Katalog bearbeiten' %]
 
 [% SET show_foot_banner = 1 %]
@@ -8,19 +9,25 @@
 [% PROCESS corporate_banner %]
 
 <ul id="tabbingmenu">
-   <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showcat">Kataloge</a></li>
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showviews">Views</a></li>
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showsession">Sessions</a></li>
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=logout">Logout</a></li>
+   <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">Kataloge</a></li>
+   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">Views</a></li>
+   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">Sessions</a></li>
+   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">Logout</a></li>
 </ul>
 
 <div id="content">
+
+<!--
+[% USE dumper;
+   dumper.dump(msg);
+%]
+-->
 
 <form method="get" action="http://[% config.servername %][% config.admin_loc %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="dbid" value="[% katalog.dbid %]" />
 <input type="hidden" name="dbname" value="[% katalog.dbname %]" />
-<input type="hidden" name="action" value="editcat" />
+<input type="hidden" name="do_editcat" value="1" />
 
 <table width="100%">
 <tr><th>Katalog bearbeiten</th></tr>
@@ -68,11 +75,11 @@ name=active><option value="1"
 [% IF katalog.active == 1 %]
 selected
 [% END %]
->Ja</option><option value="0" 
+>[% i18nmsg.${"M0304"} %]</option><option value="0" 
 [% IF katalog.active == 0 %]
 selected
 [% END %]
->Nein</option></select>
+>[% i18nmsg.${"M0305"} %]</option></select>
 </td></tr>
 </table>
 <p />
@@ -123,13 +130,13 @@ selected
 selected
 [% END %]
 
->Nein</option><option value="1" 
+>[% i18nmsg.${"M0305"} %]</option><option value="1" 
 
 [% IF katalog.imxconfig.autoconvert == '1' %]
 selected
 [% END %]
 
->Ja</option></td></tr>
+>[% i18nmsg.${"M0304"} %]</option></td></tr>
 </table>
 </td></tr>
 </table>
@@ -146,13 +153,13 @@ selected
 selected
 [% END %]
 
->Nein</option><option value="1" 
+>[% i18nmsg.${"M0305"} %]</option><option value="1" 
 
 [% IF katalog.circconfig.circ == '1' %]
 selected
 [% END %]
 
->Ja</option></td></tr>
+>[% i18nmsg.${"M0304"} %]</option></td></tr>
 <tr><td><b>DB-Name im Lokalsystem</b></td><td><input type="text" size="50" name="circdb" value="[% katalog.circconfig.circdb %]"></td></tr>
 <tr><td><b>WebOPAC-URL</b></td><td><input type="text" size="50" name="circurl" value="[% katalog.circconfig.circurl %]"></td></tr>
 <tr><td><b>Bestands-&Uuml;berpr&uuml;fungs-URL</b></td><td><input type="text" size="50" name="circcheckurl" value="[% katalog.circconfig.circcheckurl %]"></td></tr>
@@ -163,8 +170,8 @@ selected
 
 <p />
 <table width="100%">
-<tr><td align="left"><input type="submit" name="cataction"
-value="&Auml;ndern"></td><td>&nbsp;</td><td align="right"><input type="submit" name="cataction" value="L&ouml;schen"></td></tr>
+<tr><td align="left"><input type="submit" name="do_change"
+value="[% i18nmsg.${"M0300"} %]"></td><td>&nbsp;</td><td align="right"><input type="submit" name="do_del" value="[% i18nmsg.${"M0303"} %]"></td></tr>
 </table>
 
 </form>

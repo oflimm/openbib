@@ -10,7 +10,7 @@
 <tr><th>Logout erfolgreich</th></tr>
 <tr><td class="boxedclear" style="font-size:12pt">
 
-Um sich wieder einzuloggen folgen Sie bitte <a href="http://[% config.servername %][% config.admin_loc %]?action=login">diesem Link</a>.
+Um sich wieder einzuloggen folgen Sie bitte <a href="http://[% config.servername %][% config.admin_loc %]?do_loginmask=1">diesem Link</a>.
 
 </td></tr>
 </table>

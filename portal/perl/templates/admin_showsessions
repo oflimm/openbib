@@ -1,5 +1,4 @@
 [% SET title='KUG Administration - Bestehende Sessions anzeigen' %]
-[% SET show_foot_banner = 1 %]
 [% PROCESS std_header %]
 
   <body bgcolor="#FFFFFF">
@@ -7,16 +6,16 @@
 [% PROCESS corporate_banner %]
 
 <ul id="tabbingmenu">
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showcat">Kataloge</a></li>
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showviews">Views</a></li>
-   <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showsession">Sessions</a></li>
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=logout">Logout</a></li>
+   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">Kataloge</a></li>
+   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">Views</a></li>
+   <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">Sessions</a></li>
+   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">Logout</a></li>
 </ul>
 
 <div id="content">
 
 <form method="get" action="http://[% config.servername %][%config.admin_loc %]">
-<input type="hidden" name="action" value="editsession">
+<input type="hidden" name="do_editsession" value="1">
 <input type="hidden" name="sessionID" value="[% sessionID %]">
 
 <table width="100%">
@@ -29,7 +28,7 @@
 
 [% FOREACH session IN sessions %]
 
-<tr><td><a href="http://[% config.servername %][%config.admin_loc %]?sessionID=[% sessionID %];action=editsession;sessionaction=Anzeigen;singlesessionid=[% session.singlesessionid %]">[% session.singlesessionid %]</a></td><td>[% session.createtime %]</td><td align="middle">[% session.benutzernr %]</td><td align="middle">[% session.numqueries %]</td></tr>
+<tr><td><a href="http://[% config.servername %][%config.admin_loc %]?sessionID=[% sessionID %];do_editsession=1;do_show=1;singlesessionid=[% session.singlesessionid %]">[% session.singlesessionid %]</a></td><td>[% session.createtime %]</td><td align="middle">[% session.benutzernr %]</td><td align="middle">[% session.numqueries %]</td></tr>
 
 [% END %]
 

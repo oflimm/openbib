@@ -19,7 +19,7 @@ Administrator anmelden.
 <table>
 <tr><td align="right"><b>Benutzername:</b></td><td><input type="text" name="user" /></td></tr>
 <tr><td align="right"><b>Passwort:</b></td><td><input type="password" name="passwd" /></td></tr>
-<tr><td></td><td><input type="submit" name="action" value="Einloggen"></td></tr>
+<tr><td></td><td><input type="submit" name="do_login" value="Einloggen"></td></tr>
 </table>
 </form>
 

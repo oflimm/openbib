@@ -52,9 +52,10 @@ use OpenBib::Template::Provider;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
-use vars qw(%config);
+use vars qw(%config %msg);
 
-*config=\%OpenBib::Config::config;
+*config = \%OpenBib::Config::config;
+*msg    = OpenBib::Config::get_msgs($config{msg_path});
 
 sub handler {
     my $r=shift;
@@ -430,7 +431,7 @@ sub handler {
             return OK;
         }
 
-        my %verfindex=();
+        my %index=();
 
         my @sortedindex=();
 
@@ -438,37 +439,43 @@ sub handler {
             my $dbh
                 = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
                     or $logger->error_die($DBI::errstr);
-            my $thisindex_ref=OpenBib::Search::Util::get_index_by_verf($verf,$dbh);
+
+            my $thisindex_ref=OpenBib::Search::Util::get_index({
+                type       => 'aut',
+                category   => '0001',
+                contentreq => $verf,
+                dbh        => $dbh,
+            });
 
             # Umorganisierung der Daten Teil 1
             foreach my $item_ref (@$thisindex_ref) {
                 # Korrekte Initialisierung mit 0
-                if (! $verfindex{$item_ref->{verf}}{titanzahl}) {
-                    $verfindex{$item_ref->{verf}}{titanzahl}=0;
+                if (! $index{$item_ref->{content}}{titcount}) {
+                    $index{$item_ref->{content}}{titcount}=0;
                 }
-	
-                my $verfdb={
+
+                push @{$index{$item_ref->{content}}{databases}}, {
                     'dbname'    => $database,
                     'dbdesc'    => $targetdbinfo_ref->{dbnames}{$database},
-                    'verfidn'   => $item_ref->{verfidn},
-                    'titanzahl' => $item_ref->{titanzahl},
+                    'id'        => $item_ref->{id},
+                    'titcount'  => $item_ref->{titcount},
                 };
-
-                push @{$verfindex{$item_ref->{verf}}{databases}}, $verfdb;
-                $verfindex{$item_ref->{verf}}{titanzahl}=$verfindex{$item_ref->{verf}}{titanzahl}+$item_ref->{titanzahl};
+                $index{$item_ref->{content}}{titcount}=$index{$item_ref->{content}}{titcount}+$item_ref->{titcount};
             }
             $dbh->disconnect;
         }
 
+        $logger->info("Verfasserindex 1".YAML::Dump(\%index));
+        
         # Umorganisierung der Daten Teil 2
-        foreach my $singleverf (sort { uc($a) cmp uc($b) } keys %verfindex) {
-            push @sortedindex, { verf      => $singleverf,
-                                 titanzahl => $verfindex{$singleverf}{titanzahl},
-                                 databases => $verfindex{$singleverf}{databases},
+        foreach my $singlecontent (sort { uc($a) cmp uc($b) } keys %index) {
+            push @sortedindex, { content   => $singlecontent,
+                                 titcount  => $index{$singlecontent}{titcount},
+                                 databases => $index{$singlecontent}{databases},
                              };
         }
 
-        $logger->debug("Verfasserindex".YAML::Dump(\@sortedindex));
+        $logger->info("Verfasserindex 2".YAML::Dump(\@sortedindex));
 
         my $hits=$#sortedindex;
 
@@ -506,29 +513,15 @@ sub handler {
             view       => $view,
             stylesheet => $stylesheet,
             sessionID  => $sessionID,
-		
-            searchmode => $searchmode,
-	
             verf       => $verf,
-            verfindex  => \@sortedindex,
-
+            index      => \@sortedindex,
             nav        => \@nav,
             offset     => $offset,
             hitrange   => $hitrange,
-
             baseurl    => $baseurl,
-
             profil     => $profil,
-
-            utf2iso    => sub {
-                my $string=shift;
-                $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-                return $string;
-            },
-		
-            show_corporate_banner => 0,
-            show_foot_banner      => 1,
             config     => \%config,
+            msg        => \%msg,
         };
 
         OpenBib::Common::Util::print_page($config{tt_virtualsearch_showverfindex_tname},$ttdata,$r);
@@ -564,7 +557,13 @@ sub handler {
             my $dbh
                 = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
                     or $logger->error_die($DBI::errstr);
-            my $thisindex_ref=OpenBib::Search::Util::get_index_by_kor($kor,$dbh);
+
+            my $thisindex_ref=OpenBib::Search::Util::get_index({
+                type       => 'kor',
+                category   => '0001',
+                contentreq => $kor,
+                dbh        => $dbh,
+            });
 
             # Umorganisierung der Daten Teil 1
 
@@ -631,29 +630,15 @@ sub handler {
             view       => $view,
             stylesheet => $stylesheet,		
             sessionID  => $sessionID,
-		
-            searchmode => $searchmode,
-	
             kor        => $kor,
             korindex   => \@sortedindex,
-
             nav        => \@nav,
             offset     => $offset,
             hitrange   => $hitrange,
-
             baseurl    => $baseurl,
-
             profil     => $profil,
-
-            utf2iso    => sub {
-                my $string=shift;
-                $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-                return $string;
-            },
-		
-            show_corporate_banner => 0,
-            show_foot_banner      => 1,
             config     => \%config,
+            msg        => \%msg,
         };
 
         OpenBib::Common::Util::print_page($config{tt_virtualsearch_showkorindex_tname},$ttdata,$r);
@@ -691,7 +676,13 @@ sub handler {
             my $dbh
                 = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
                     or $logger->error_die($DBI::errstr);
-            my $thisindex_ref=OpenBib::Search::Util::get_index_by_swt($swt,$dbh);
+
+            my $thisindex_ref=OpenBib::Search::Util::get_index({
+                type       => 'swt',
+                category   => '0001',
+                contentreq => $swt,
+                dbh        => $dbh,
+            });
 
             # Umorganisierung der Daten Teil 1
             foreach my $item_ref (@$thisindex_ref) {
@@ -757,29 +748,15 @@ sub handler {
             view       => $view,
             stylesheet => $stylesheet,		
             sessionID  => $sessionID,
-		
-            searchmode => $searchmode,
-	
             swt        => $swt,
             swtindex   => \@sortedindex,
-
             nav        => \@nav,
             offset     => $offset,
             hitrange   => $hitrange,
-
             baseurl    => $baseurl,
-
             profil     => $profil,
-
-            utf2iso    => sub {
-                my $string=shift;
-                $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-                return $string;
-            },
-		
-            show_corporate_banner => 0,
-            show_foot_banner => 1,
             config     => \%config,
+            msg        => \%msg,
         };
 
         OpenBib::Common::Util::print_page($config{tt_virtualsearch_showswtindex_tname},$ttdata,$r);
@@ -947,16 +924,8 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
         queryargs      => $queryargs,
         sortselect     => $sortselect,
         thissortstring => $thissortstring,
-
-        utf2iso        => sub {
-            my $string=shift;
-            $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-            return $string;
-        },
-
-        show_corporate_banner => 0,
-        show_foot_banner      => 1,
         config         => \%config,
+        msg            => \%msg,
     };
 
     $starttemplate->process($starttemplatename, $startttdata) || do { 
@@ -1092,24 +1061,14 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
                 treffer    => $treffer,
 
                 resultlist => \@sortedoutputbuffer,
-
                 searchmode => $searchmode,
                 rating     => '',
                 bookinfo   => '',
                 sorttype   => $sorttype,
                 sortorder  => $sortorder,
-
                 resulttime => $resulttime,
-
-                utf2iso    => sub {
-		    my $string=shift;
-		    $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-		    return $string;
-                },
-		  
-                show_corporate_banner => 0,
-                show_foot_banner      => 1,
                 config     => \%config,
+                msg        => \%msg,
             };
 
             $itemtemplate->process($itemtemplatename, $ttdata) || do {
@@ -1229,15 +1188,8 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
 
         gesamttreffer => $gesamttreffer,
 
-        utf2iso       => sub {
-            my $string=shift;
-            $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-            return $string;
-        },
-
-        show_corporate_banner => 0,
-        show_foot_banner      => 1,
         config        => \%config,
+        msg           => \%msg,
     };
 
     $endtemplate->process($endtemplatename, $endttdata) || do {

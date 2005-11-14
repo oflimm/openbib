@@ -157,7 +157,7 @@ sub handler {
         $userresult=$userdbh->prepare("select userid from user where loginname = ?") or $logger->error($DBI::errstr);
         $userresult->execute($loginname) or $logger->error($DBI::errstr);
 
-        my $res=$userresult->fetchrow_hashref();
+        $res=$userresult->fetchrow_hashref();
 
         my $userid = decode_utf8($res->{'userid'});
 

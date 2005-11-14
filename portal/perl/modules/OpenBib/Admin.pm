@@ -49,9 +49,10 @@ use OpenBib::Config;
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
 
-use vars qw(%config);
+use vars qw(%config %msg);
 
-*config=\%OpenBib::Config::config;
+*config = \%OpenBib::Config::config;
+*msg    = OpenBib::Config::get_msgs($config{msg_path});
 
 sub handler {
 
@@ -77,13 +78,29 @@ sub handler {
   
     my $adminuser   = $config{adminuser};
     my $adminpasswd = $config{adminpasswd};
-  
+
+    # Main-Actions
+    my $do_login        = $query->param('do_login')        || '';
+    my $do_loginmask    = $query->param('do_loginmask')    || '';
+    my $do_showcat      = $query->param('do_showcat')      || '';
+    my $do_editcat      = $query->param('do_editcat')      || '';
+    my $do_showviews    = $query->param('do_showviews')    || '';
+    my $do_editview     = $query->param('do_editview')     || '';
+    my $do_showimx      = $query->param('do_showimx')      || '';
+    my $do_showsessions = $query->param('do_showsessions') || '';
+    my $do_editsession  = $query->param('do_editsession')  || '';
+    my $do_logout       = $query->param('do_logout')       || '';
+
+    # Sub-Actions
+    my $do_new          = $query->param('do_new')          || '';
+    my $do_del          = $query->param('do_del')          || '';
+    my $do_change       = $query->param('do_change')       || '';
+    my $do_edit         = $query->param('do_edit')         || '';
+    my $do_show         = $query->param('do_show')         || '';
+
+    my $lang            = $query->param('l')               || 'de';
     my $user            = $query->param('user')            || '';
     my $passwd          = $query->param('passwd')          || '';
-    my $action          = $query->param('action')          || '';
-    my $cataction       = $query->param('cataction')       || '';
-    my $confaction      = $query->param('confaction')      || '';
-    my $sessionaction   = $query->param('sessionaction')   || '';
     my $dbid            = $query->param('dbid')            || '';
     my $orgunit         = $query->param('orgunit')         || '';
     my $description     = $query->param('description')     || '';
@@ -93,12 +110,9 @@ sub handler {
     my $url             = $query->param('url')             || '';
     my $active          = $query->param('active')          || '';
 
-    my $viewaction      = $query->param('viewaction')      || '';
     my $viewname        = $query->param('viewname')        || '';
     my @viewdb          = ($query->param('viewdb'))?$query->param('viewdb'):();
     my $viewid          = $query->param('viewid')          || '';
-
-    my $imxaction       = $query->param('imxaction')       || '';
 
     my $sessionID       = ($query->param('sessionID'))?$query->param('sessionID'):'';
   
@@ -150,13 +164,16 @@ sub handler {
   
     $dbinforesult->finish();
 
-    if ($action eq "login" || $action eq "") {
+    # Expliziter aufruf und default bei keiner Parameteruebergabe
+    if ($do_loginmask || ($r->method eq "GET" && ! scalar $r->args) ) {
     
         # TT-Data erzeugen
     
         my $ttdata={
+            lang       => $lang,
             stylesheet => $stylesheet,
             config     => \%config,
+            msg        => \%msg,
         };
     
         OpenBib::Common::Util::print_page($config{tt_admin_login_tname},$ttdata,$r);
@@ -166,7 +183,7 @@ sub handler {
     }
   
     ###########################################################################
-    elsif ($action eq "Einloggen") {
+    elsif ($do_login) {
     
         # Sessionid erzeugen
         if ($user ne $adminuser) {
@@ -188,9 +205,11 @@ sub handler {
 
         # TT-Data erzeugen
         my $ttdata={
+            lang       => $lang,
             stylesheet => $stylesheet,
             sessionID  => $sessionID,
             config     => \%config,
+            msg        => \%msg,
         };
     
         OpenBib::Common::Util::print_page($config{tt_admin_loggedin_tname},$ttdata,$r);
@@ -217,10 +236,10 @@ sub handler {
     }
   
     ###########################################################################
-    if ($action eq "editcat") {
+    if ($do_editcat) {
     
         # Zuerst schauen, ob Aktionen gefordert sind
-        if ($cataction eq "Löschen") {
+        if ($do_del) {
             my $idnresult=$sessiondbh->prepare("delete from dbinfo where dbname = ?") or $logger->error($DBI::errstr);
             $idnresult->execute($dbname) or $logger->error($DBI::errstr);
             $idnresult=$sessiondbh->prepare("delete from titcount where dbname = ?") or $logger->error($DBI::errstr);
@@ -231,12 +250,12 @@ sub handler {
       
             # Und nun auch die Datenbank komplett loeschen
             system("$config{tool_dir}/destroypool.pl $dbname > /dev/null 2>&1");
-            $r->internal_redirect("http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showcat");
+            $r->internal_redirect("http://$config{servername}$config{admin_loc}?sessionID=$sessionID&do_showcat=1");
             return OK;
 
         }
-        elsif ($cataction eq "Ändern") {
-            my $idnresult=$sessiondbh->prepare("update dbinfo set orgunit = ?, description = ?, system = ?, dbname = ?, sigel = ?, url = ?, active = ? where dbid = ?") or $logger->error($DBI::errstr);
+        elsif ($do_change) {
+            my $idnresult=$sessiondbh->prepare("update dbinfo set orgunit = ?, description = ?, system = ?, dbname = ?, sigel = ?, url = ?, active = ? where dbid = ?") or $logger->error($DBI::errstr); # 
             $idnresult->execute($orgunit,$description,$system,$dbname,$sigel,$url,$active,$dbid) or $logger->error($DBI::errstr);
             $idnresult->finish();
 
@@ -244,10 +263,10 @@ sub handler {
             $idnresult->execute($protocol,$host,$remotepath,$remoteuser,$remotepasswd,$titfilename,$autfilename,$korfilename,$swtfilename,$notfilename,$mexfilename,$filename,$autoconvert,$circ,$circurl,$circcheckurl,$circdb,$dbname) or $logger->error($DBI::errstr);
             $idnresult->finish();
 
-            $r->internal_redirect("http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showcat");
+            $r->internal_redirect("http://$config{servername}$config{admin_loc}?sessionID=$sessionID&do_showcat=1");
             return OK;
         }
-        elsif ($cataction eq "Neu") {
+        elsif ($do_new) {
 
             if ($dbname eq "" || $description eq "") {
 
@@ -287,10 +306,10 @@ sub handler {
             # ... und dann wieder anlegen
             system("$config{tool_dir}/createpool.pl $dbname > /dev/null 2>&1");
 
-            $r->internal_redirect("http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showcat");
+            $r->internal_redirect("http://$config{servername}$config{admin_loc}?sessionID=$sessionID&do_showcat=1");
             return OK;
         }
-        elsif ($cataction eq "Bearbeiten") {
+        elsif ($do_edit) {
             my $idnresult=$sessiondbh->prepare("select * from dbinfo where dbid = ?") or $logger->error($DBI::errstr);
             $idnresult->execute($dbid) or $logger->error($DBI::errstr);
       
@@ -363,18 +382,20 @@ sub handler {
       
       
             my $ttdata={
+                lang       => $lang,
                 stylesheet => $stylesheet,
                 sessionID  => $sessionID,
 		  
                 katalog    => $katalog,
 		  
                 config     => \%config,
+                msg        => \%msg,
             };
       
             OpenBib::Common::Util::print_page($config{tt_admin_editcat_tname},$ttdata,$r);
         }
     }
-    elsif ($action eq "showcat") {
+    elsif ($do_showcat) {
         my @kataloge=();
 
         my $idnresult=$sessiondbh->prepare("select dbinfo.*,titcount.count,dboptions.autoconvert from dbinfo,titcount,dboptions where dbinfo.dbname=titcount.dbname and titcount.dbname=dboptions.dbname order by orgunit,dbname") or $logger->error($DBI::errstr);
@@ -426,18 +447,20 @@ sub handler {
         }
 
         my $ttdata={
+            lang       => $lang,
             stylesheet => $stylesheet,
             sessionID  => $sessionID,
             kataloge   => \@kataloge,
 
             config     => \%config,
+            msg        => \%msg,
         };
     
         OpenBib::Common::Util::print_page($config{tt_admin_showcat_tname},$ttdata,$r);
 
         $idnresult->finish();
     }
-    elsif ($action eq "showviews") {
+    elsif ($do_showviews) {
         my @views=();
 
         my $view="";
@@ -479,10 +502,12 @@ sub handler {
         }
 
         my $ttdata={
+            lang       => $lang,
             stylesheet => $stylesheet,
-            sessionID => $sessionID,
-            views => \@views,
+            sessionID  => $sessionID,
+            views      => \@views,
             config     => \%config,
+            msg        => \%msg,
         };
     
         OpenBib::Common::Util::print_page($config{tt_admin_showviews_tname},$ttdata,$r);
@@ -490,21 +515,21 @@ sub handler {
         $idnresult->finish();
     
     }
-    elsif ($action eq "editview") {
+    elsif ($do_editview) {
     
         # Zuerst schauen, ob Aktionen gefordert sind
     
-        if ($viewaction eq "Löschen") {
+        if ($do_del) {
             my $idnresult=$sessiondbh->prepare("delete from viewinfo where viewid = ?") or $logger->error($DBI::errstr);
             $idnresult->execute($viewid) or $logger->error($DBI::errstr);
             $idnresult=$sessiondbh->prepare("delete from viewdbs where viewname = ?") or $logger->error($DBI::errstr);
             $idnresult->execute($viewname) or $logger->error($DBI::errstr);
             $idnresult->finish();
-            $r->internal_redirect("http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showviews");
+            $r->internal_redirect("http://$config{servername}$config{admin_loc}?sessionID=$sessionID&do_showviews=1");
             return OK;
       
         }
-        elsif ($viewaction eq "Ändern") {
+        elsif ($do_change) {
 
             # Zuerst die Aenderungen in der Tabelle Viewinfo vornehmen
 
@@ -525,11 +550,11 @@ sub handler {
 
             $idnresult->finish();
 
-            $r->internal_redirect("http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=showviews");
+            $r->internal_redirect("http://$config{servername}$config{admin_loc}?sessionID=$sessionID&do_showviews=1");
       
             return OK;
         }
-        elsif ($viewaction eq "Neu") {
+        elsif ($do_new) {
 
             if ($viewname eq "" || $description eq "") {
 
@@ -567,13 +592,13 @@ sub handler {
             $res       = $idnresult->fetchrow_hashref();
             my $viewid = decode_utf8($res->{viewid});
 
-            $r->internal_redirect("http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=editview&viewaction=Bearbeiten&viewid=$viewid");
+            $r->internal_redirect("http://$config{servername}$config{admin_loc}?sessionID=$sessionID&do_editview=1&do_edit=1&viewid=$viewid");
 
             $sessiondbh->disconnect();
 
             return OK;
         }
-        elsif ($viewaction eq "Bearbeiten") {
+        elsif ($do_edit) {
 
 
             my $idnresult=$sessiondbh->prepare("select * from viewinfo where viewid = ?") or $logger->error($DBI::errstr);
@@ -606,14 +631,16 @@ sub handler {
             };
 
             my $ttdata={
+                lang       => $lang,
                 stylesheet => $stylesheet,
-                sessionID => $sessionID,
+                sessionID  => $sessionID,
 		  
-                dbnames => \@dbnames,
+                dbnames    => \@dbnames,
 
-                view => $view,
+                view       => $view,
 		  
                 config     => \%config,
+                msg        => \%msg,
             };
       
             OpenBib::Common::Util::print_page($config{tt_admin_editview_tname},$ttdata,$r);
@@ -621,7 +648,7 @@ sub handler {
         }
     
     }
-    elsif ($action eq "showimx") {
+    elsif ($do_showimx) {
 
         my @kataloge=();
 
@@ -672,63 +699,20 @@ sub handler {
         }
 
         my $ttdata={
+            lang       => $lang,
             stylesheet => $stylesheet,
-            sessionID => $sessionID,
-            kataloge => \@kataloge,
+            sessionID  => $sessionID,
+            kataloge   => \@kataloge,
 
             config     => \%config,
+            msg        => \%msg,
         };
     
         OpenBib::Common::Util::print_page($config{tt_admin_showimx_tname},$ttdata,$r);
 
         $idnresult->finish();
     }
-    elsif ($action eq "bla") {
-        # Zuerst schauen, ob Aktionen gefordert sind
-    
-        if ($imxaction eq "Alle importieren") {
-            OpenBib::Common::Util::print_warning('',$r);
-            print_warning("Diese Funktion ist noch nicht implementiert",$query,$stylesheet);
-            $sessiondbh->disconnect;
-            return OK;
-        }
-        elsif ($imxaction eq "Import") {
-            if ($system eq "Sisis") {
-                if ($dbname eq "inst001") {
-                    system("nohup $config{autoconv_dir}/bin/autoconvert-sikis-usb.pl --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
-                }
-                elsif ($dbname eq "lehrbuchsmlg") {
-                    system("nohup $config{autoconv_dir}/bin/autoconvert-sisis.pl --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
-                }
-                else {
-                    system("nohup $config{autoconv_dir}/bin/autoconvert-sikis.pl -get-via-wget --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
-                }	
-            }
-            elsif ($system eq "Lars") {
-                if ($dbname eq "inst900") {
-                    system("nohup $config{autoconv_dir}/bin/autoconvert-colonia.pl --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
-	  
-                }
-                else {
-                    system("nohup $config{autoconv_dir}/bin/autoconvert-lars.pl --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
-                }
-            }
-            elsif ($system eq "Allegro") {
-                if ($dbname eq "inst127") {
-                    system("nohup $config{autoconv_dir}/bin/autoconvert-ald.pl -get-via-ftp --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
-                }
-                else {
-                    system("nohup $config{autoconv_dir}/bin/autoconvert-mld.pl -get-via-ftp --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
-                }
-            }
-            elsif ($system eq "Bis-lok") {
-                system("nohup $config{autoconv_dir}/bin/biblio-autoconvert.pl -get-via-ftp --single-pool=$dbname > /tmp/wwwimx$dbname.log 2>&1 &");
-            }
-      
-      
-        }
-    }
-    elsif ($action eq "showsession") {
+    elsif ($do_showsessions) {
 
         my $idnresult=$sessiondbh->prepare("select * from session order by createtime") or $logger->error($DBI::errstr);
         $idnresult->execute() or $logger->error($DBI::errstr);
@@ -761,12 +745,14 @@ sub handler {
     
 
         my $ttdata={
+            lang       => $lang,
             stylesheet => $stylesheet,
             sessionID  => $sessionID,
 	         
             sessions   => \@sessions,
 
             config     => \%config,
+            msg        => \%msg,
         };
 
         OpenBib::Common::Util::print_page($config{tt_admin_showsessions_tname},$ttdata,$r);
@@ -774,9 +760,9 @@ sub handler {
         $sessiondbh->disconnect;
         return OK;
     }
-    elsif ($action eq "editsession") {
+    elsif ($do_editsession) {
 
-        if ($sessionaction eq "Anzeigen") {
+        if ($do_show) {
             my $idnresult=$sessiondbh->prepare("select * from session where sessionID = ?") or $logger->error($DBI::errstr);
             $idnresult->execute($singlesessionid) or $logger->error($DBI::errstr);
 
@@ -843,14 +829,16 @@ sub handler {
             };
 
             my $ttdata={
+                lang       => $lang,
                 stylesheet => $stylesheet,
-                sessionID => $sessionID,
+                sessionID  => $sessionID,
 	         
-                session => $session,
+                session    => $session,
 
-                queries => \@queries,
+                queries    => \@queries,
 
                 config     => \%config,
+                msg        => \%msg,
             };
 
             OpenBib::Common::Util::print_page($config{tt_admin_editsession_tname},$ttdata,$r);
@@ -861,13 +849,15 @@ sub handler {
             return OK;
         }
     }
-    elsif ($action eq "logout") {
+    elsif ($do_logout) {
 
         my $ttdata={
+            lang       => $lang,
             stylesheet => $stylesheet,
-            sessionID => $sessionID,
-		  
+            sessionID  => $sessionID,
+            
             config     => \%config,
+            msg        => \%msg,
         };
       
         OpenBib::Common::Util::print_page($config{tt_admin_logout_tname},$ttdata,$r);

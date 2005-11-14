@@ -8,7 +8,7 @@
 
 [% PROCESS common/subtemplate name="common/navitembar" %]
 
-[% FOREACH item IN korindex %]
+[% FOREACH item IN index %]
 
 [% IF offset >= 0 && hitrange > 0 %]
 [% IF loop.count >= offset && loop.count < offset+hitrange %]
@@ -37,7 +37,7 @@
 <input type="hidden" name="profil" value="[% profil %]">
 
 <table>
-<tr><td class="category">K&ouml;rperschaft&nbsp;</td><td>&nbsp;<input type="text" name="kor" value="[% kor %]" size="4" maxlength="50" title="Geben Sie hier den Körperschaftsanfang ein">&nbsp;<input type="submit" name="korindex" value="Index">&nbsp;</td></tr>
+<tr><td class="category">K&ouml;rperschaft&nbsp;</td><td>&nbsp;<input type="text" name="kor" value="[% kor %]" size="4" maxlength="50" title="Geben Sie hier den KÃ¶rperschaftsanfang ein">&nbsp;<input type="submit" name="korindex" value="Index">&nbsp;</td></tr>
 </table>
 
 </form>

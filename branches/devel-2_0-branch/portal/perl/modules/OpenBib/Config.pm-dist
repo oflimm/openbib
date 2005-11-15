@@ -343,6 +343,13 @@ sub get_msgs {
     my %msg;
     read_config($msgpath => %msg);
 
+    # Kenntlichmachung der Inhalte als utf8
+    foreach my $lang (keys %msg){
+        foreach my $msgcode (keys %{$msg{$lang}}){
+            $msg{$lang}{$msgcode}=decode_utf8($msg{$lang}{$msgcode});
+        }       
+    }
+
     return \%msg;
 }
 

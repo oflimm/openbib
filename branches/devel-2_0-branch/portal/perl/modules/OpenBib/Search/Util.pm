@@ -2030,8 +2030,18 @@ sub get_result_navigation {
     return ($lasttiturl,$nexttiturl);
 }
 
-sub get_index_by_swt {
-    my ($swt,$dbh)=@_;
+sub get_index {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $type              = exists $arg_ref->{type}
+        ? $arg_ref->{type}              : undef;
+    my $category          = exists $arg_ref->{category}
+        ? $arg_ref->{category}          : undef;
+    my $contentreq        = exists $arg_ref->{contentreq}
+        ? $arg_ref->{contentreq}        : undef;
+    my $dbh               = exists $arg_ref->{dbh}
+        ? $arg_ref->{dbh}               : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -2042,38 +2052,68 @@ sub get_index_by_swt {
         $atime=new Benchmark;
     }
 
-    my @requests=("select schlagw from swt where schlagw like '$swt%' order by schlagw");
-    my @temp=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-  
-    my @schlagwte=sort @temp;
+    $contentreq=$contentreq."%";
     
-    my @swtindex=();
+    my @contents=();
+    {
+        my $sqlrequest="select distinct content from $type where category = ? and content like ? order by content";
 
-    for (my $i=0; $i <= $#schlagwte; $i++) {
-        my $schlagw=$schlagwte[$i];
-        @requests=("select idn from swt where schlagw = '$schlagw'");
-        my @swtidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-        @requests=("select titidn from titswtlok where swtverw=".$swtidns[0]);
-        my $titanzahl=OpenBib::Search::Util::get_number(\@requests,$dbh);
-    
-        my $swtitem={
-            swt       => $schlagw,
-            swtidn    => $swtidns[0],
-            titanzahl => $titanzahl,
-        };
-        push @swtindex, $swtitem;
+        $logger->info($sqlrequest." - $category, $contentreq");
+        my $request=$dbh->prepare($sqlrequest);
+        $request->execute($category,$contentreq);
+
+        while (my $res=$request->fetchrow_hashref){
+            push @contents, $res->{content};
+        }
+        $request->finish();
+        
     }
+    
+    my @index=();
 
+    foreach my $content (@contents){
+
+        my @ids=();
+        {
+            my $sqlrequest="select distinct id from $type where category = ? and content = ?";
+            my $request=$dbh->prepare($sqlrequest);
+            $request->execute($category,$content);
+
+            while (my $res=$request->fetchrow_hashref){
+                push @ids, $res->{id};
+            }
+            $request->finish();
+        }
+
+        {
+            my $sqlrequest="select count(distinct sourceid) as conncount from connection where targetid=? and sourcetype='tit' and targettype='$type'";
+            my $request=$dbh->prepare($sqlrequest);
+            
+            foreach my $id (@ids){
+                $request->execute($id);
+                my $res=$request->fetchrow_hashref;
+                my $titcount=$res->{conncount};
+
+                push @index, {
+                    content   => $content,
+                    id        => $id,
+                    titcount  => $titcount,
+                };
+            }
+            $request->finish();
+        }
+    }
+    
     if ($config{benchmark}) {
         $btime=new Benchmark;
         $timeall=timediff($btime,$atime);
-        $logger->info("Zeit fuer : $#swtindex Schlagworte : ist ".timestr($timeall));
+        $logger->info("Zeit fuer : $#index Begriffe : ist ".timestr($timeall));
         undef $atime;
         undef $btime;
         undef $timeall;
     }
 
-    return \@swtindex;
+    return \@index;
 }
 
 sub print_index_by_swt {
@@ -2104,7 +2144,12 @@ sub print_index_by_swt {
     # Log4perl logger erzeugen
     my $logger = get_logger();
   
-    my $swtindex=OpenBib::Search::Util::get_index_by_swt($swt,$dbh);
+    my $swtindex=OpenBib::Search::Util::get_index({
+        type       => 'swt',
+        category   => '0001',
+        contentreq => $swt,
+        dbh        => $dbh,
+    });
 
     my $poolname=$targetdbinfo_ref->{sigel}{$targetdbinfo_ref->{dbases}{$database}};
 
@@ -2131,98 +2176,6 @@ sub print_index_by_swt {
     OpenBib::Common::Util::print_page($config{tt_search_showswtindex_tname},$ttdata,$r);
 
     return;
-}
-
-sub get_index_by_verf {
-    my ($verf,$dbh)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my ($atime,$btime,$timeall);
-  
-    if ($config{benchmark}) {
-        $atime=new Benchmark;
-    }
-
-    my @requests=("select ans from aut where ans like '$verf%' order by ans");
-    my @temp=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-  
-    my @verfasser=sort @temp;
-    
-    my @verfindex=();
-
-    for (my $i=0; $i <= $#verfasser; $i++) {
-        my $verfasser=$verfasser[$i];
-        @requests=("select idn from aut where ans = '$verfasser'");
-        my @verfidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-        @requests=("select titidn from titverf where verfverw=".$verfidns[0],"select titidn from titpers where persverw=".$verfidns[0],"select titidn from titgpers where persverw=".$verfidns[0]);
-        my $titanzahl=OpenBib::Search::Util::get_number(\@requests,$dbh);
-    
-        my $verfitem={
-            verf       => $verfasser,
-            verfidn    => $verfidns[0],
-            titanzahl  => $titanzahl,
-        };
-        push @verfindex, $verfitem;
-    }
-
-    if ($config{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Zeit fuer : $#verfindex Verfasser : ist ".timestr($timeall));
-        undef $atime;
-        undef $btime;
-        undef $timeall;
-    }
-
-    return \@verfindex;
-}
-
-sub get_index_by_kor {
-    my ($kor,$dbh)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my ($atime,$btime,$timeall);
-  
-    if ($config{benchmark}) {
-        $atime=new Benchmark;
-    }
-
-    my @requests=("select korans from kor where korans like '$kor%'");
-    my @temp=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-  
-    my @koerperschaft=sort @temp;
-    
-    my @korindex=();
-
-    for (my $i=0; $i <= $#koerperschaft; $i++) {
-        my $koerperschaft=$koerperschaft[$i];
-        @requests=("select idn from kor where korans = '$koerperschaft'");
-        my @koridns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-        @requests=("select titidn from titkor where korverw=".$koridns[0],"select titidn from titurh where urhverw=".$koridns[0]);
-        my $titanzahl=OpenBib::Search::Util::get_number(\@requests,$dbh);
-    
-        my $koritem={
-            kor       => $koerperschaft,
-            koridn    => $koridns[0],
-            titanzahl => $titanzahl,
-        };
-        push @korindex, $koritem;
-    }
-
-    if ($config{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Zeit fuer : $#korindex Koerperschaften : ist ".timestr($timeall));
-        undef $atime;
-        undef $btime;
-        undef $timeall;
-    }
-
-    return \@korindex;
 }
 
 sub initial_search_for_titidns {

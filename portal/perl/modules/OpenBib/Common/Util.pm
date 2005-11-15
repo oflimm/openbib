@@ -547,8 +547,8 @@ sub print_page {
     my $stylesheet=get_css_by_browsertype($r);
 
     # View- und Datenbank-spezifisches Templating
-    my $database=$ttdata->{'view'};
-    my $view=$ttdata->{'view'};
+    my $database = $ttdata->{'view'};
+    my $view     = $ttdata->{'view'};
 
     if ($view && -e "$config{tt_include_path}/views/$view/$templatename") {
         $templatename="views/$view/$templatename";

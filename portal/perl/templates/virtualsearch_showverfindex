@@ -8,7 +8,7 @@
 
 [% PROCESS common/subtemplate name="common/navitembar" %]
     
-[% FOREACH item IN verfindex %]
+[% FOREACH item IN index %]
 
 [% IF offset >= 0 && hitrange > 0 %]
 

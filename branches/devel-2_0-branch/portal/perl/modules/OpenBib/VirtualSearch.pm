@@ -62,7 +62,7 @@ sub handler {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
+    
     my $query=Apache::Request->new($r);
 
     my $status=$query->parse;
@@ -82,9 +82,13 @@ sub handler {
         = DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    # Standardwerte festlegen
-    my $searchmode=2;
-
+    # Wandlungstabelle Erscheinungsjahroperator
+    my $ejahrop_ref={
+        'eq' => '=',
+        'gt' => '>',
+        'lt' => '<',
+    };
+    
     # CGI-Input auslesen
     my $fs            = $query->param('fs')            || '';
     my $verf          = $query->param('verf')          || '';
@@ -98,7 +102,7 @@ sub handler {
     my $mart          = $query->param('mart')          || '';
     my $notation      = $query->param('notation')      || '';
     my $ejahr         = $query->param('ejahr')         || '';
-    my $ejahrop       = $query->param('ejahrop')       || '=';
+    my $ejahrop       = $query->param('ejahrop')       || 'eq';
     my @databases     = ($query->param('database'))?$query->param('database'):();
 
     my $hitrange      = ($query->param('hitrange'))?$query->param('hitrange'):20;
@@ -216,6 +220,14 @@ sub handler {
     $boolmart      = "AND NOT" if ($boolmart      eq "NOT");
     $boolhststring = "AND NOT" if ($boolhststring eq "NOT");
 
+    # Setzen der arithmetischen Ejahrop-Operatoren
+    if (exists $ejahrop_ref->{$ejahrop}){
+        $ejahrop=$ejahrop_ref->{$ejahrop};
+    }
+    else {
+        $ejahrop="=";
+    }
+    
     # Filter: ISBN und ISSN
 
     # Entfernung der Minus-Zeichen bei der ISBN
@@ -247,11 +259,11 @@ sub handler {
 
     # Umwandlung impliziter ODER-Verknuepfung in UND-Verknuepfung
     if ($autoplus eq "1") {
-        $fs   = OpenBib::VirtualSearch::Util::conv2autoplus($fs) if ($fs);
+        $fs   = OpenBib::VirtualSearch::Util::conv2autoplus($fs)   if ($fs);
         $verf = OpenBib::VirtualSearch::Util::conv2autoplus($verf) if ($verf);
-        $hst  = OpenBib::VirtualSearch::Util::conv2autoplus($hst) if ($hst);
-        $kor  = OpenBib::VirtualSearch::Util::conv2autoplus($kor) if ($kor);
-        $swt  = OpenBib::VirtualSearch::Util::conv2autoplus($swt) if ($swt);
+        $hst  = OpenBib::VirtualSearch::Util::conv2autoplus($hst)  if ($hst);
+        $kor  = OpenBib::VirtualSearch::Util::conv2autoplus($kor)  if ($kor);
+        $swt  = OpenBib::VirtualSearch::Util::conv2autoplus($swt)  if ($swt);
         $isbn = OpenBib::VirtualSearch::Util::conv2autoplus($isbn) if ($isbn);
         $issn = OpenBib::VirtualSearch::Util::conv2autoplus($issn) if ($issn);
     }
@@ -631,7 +643,7 @@ sub handler {
             stylesheet => $stylesheet,		
             sessionID  => $sessionID,
             kor        => $kor,
-            korindex   => \@sortedindex,
+            index      => \@sortedindex,
             nav        => \@nav,
             offset     => $offset,
             hitrange   => $hitrange,
@@ -749,7 +761,7 @@ sub handler {
             stylesheet => $stylesheet,		
             sessionID  => $sessionID,
             swt        => $swt,
-            swtindex   => \@sortedindex,
+            index      => \@sortedindex,
             nav        => \@nav,
             offset     => $offset,
             hitrange   => $hitrange,
@@ -817,6 +829,10 @@ sub handler {
         $firstsql=1;
     }
 
+    if ($ejahr){
+        $firstsql=1;
+    }
+    
     if ($ejahr) {
         my ($ejtest)=$ejahr=~/.*(\d\d\d\d).*/;
         if (!$ejtest) {

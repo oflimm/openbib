@@ -174,7 +174,7 @@ sub handler {
     my $issn              = $query->param('issn')              || '';
     my $notation          = $query->param('notation')          || '';
     my $ejahr             = $query->param('ejahr')             || '';
-    my $ejahrop           = $query->param('ejahrop')           || '=';
+    my $ejahrop           = $query->param('ejahrop')           || 'eq';
     my $mart              = $query->param('mart')              || '';
 
     my $lang              = $query->param('l')                 || undef;
@@ -216,6 +216,21 @@ sub handler {
     my $sessiondbh
         = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
+
+    # Wandlungstabelle Erscheinungsjahroperator
+    my $ejahrop_ref={
+        'eq' => '=',
+        'gt' => '>',
+        'lt' => '<',
+    };
+
+    # Setzen der arithmetischen Ejahrop-Operatoren
+    if (exists $ejahrop_ref->{$ejahrop}){
+        $ejahrop=$ejahrop_ref->{$ejahrop};
+    }
+    else {
+        $ejahrop="=";
+    }
 
     my $queryoptions_ref
         = OpenBib::Common::Util::get_queryoptions($sessiondbh,$r);

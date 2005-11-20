@@ -767,9 +767,9 @@ sub get_tit_listitem_by_idn {
 
             my $superitem_ref={};
             while (my $superres=$superrequest->fetchrow_hashref){
-                my $category  = $superres->{category };
-                my $indicator = $superres->{indicator};
-                my $content   = $superres->{content  };
+                my $category  = "T".decode_utf8($superres->{category });
+                my $indicator = "T".decode_utf8($superres->{indicator});
+                my $content   = "T".decode_utf8($superres->{content  });
                 
                 push @{$superitem_ref->{$category}}, {
                     indicator => $indicator,
@@ -777,163 +777,20 @@ sub get_tit_listitem_by_idn {
                 };
             }
 
-            if (exists $superitem_ref->{0331}){
-                $listitem_ref->{0331}=$superitem_ref->{0331};
+            if (exists $superitem_ref->{T0331}){
+                $listitem_ref->{T0331}=$superitem_ref->{T0331};
                 last HSTSEARCH;
             }
-            elsif (exists $superitem_ref->{0310}){
-                $listitem_ref->{0331}=$superitem_ref->{0310};
+            elsif (exists $superitem_ref->{T0310}){
+                $listitem_ref->{T0331}=$superitem_ref->{T0310};
                 last HSTSEARCH;
             }
         }
 
-        if (! exists $listitem_ref->{0331}){
-            $listitem_ref->{0331}{content}="Kein HST/AST vorhanden";
+        if (! exists $listitem_ref->{T0331}){
+            $listitem_ref->{T0331}{content}="Kein HST/AST vorhanden";
         }
     }
-
-
-#     if (($titres->{sachlben} eq "")&&($titres->{hst} eq "")) {
-#         # Wenn bei Titeln des Typs 4 (Bandauff"uhrungen) die Kategorien 
-#         # Sachliche Benennung und HST nicht besetzt sind, dann verwende als
-#         # Ausgabetext stattdessen den HST des *ersten* "ubergeordneten Werkes und
-#         # den Zusatz/Laufende Z"ahlung
-#         if ($hint eq "none") {
-#             # Finde anhand GTM
-#             my @requests=("select verwidn from titgtm where titidn=$titidn limit 1");
-#             my @tempgtmidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-      
-#             # in @tempgtmidns sind die IDNs der "ubergeordneten Werke
-#             foreach my $tempgtmidn (@tempgtmidns) {
-	
-#                 my @requests=("select hst from tit where idn=$tempgtmidn"); 
-#                 my @tithst=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-	
-#                 @requests=("select ast from tit where idn=$tempgtmidn"); 
-#                 my @titast=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-	
-#                 # Der AST hat Vorrang ueber den HST
-#                 if ($titast[0]) {
-#                     $tithst[0]=$titast[0];
-#                 }
-	
-#                 @requests=("select zus from titgtm where verwidn=$tempgtmidn");
-#                 my @gtmzus=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-	
-#                 $listitem{hst}   = $tithst[0];
-#                 $listitem{zus}   = $gtmzus[0];
-#                 $listitem{title} = "$listitem{hst} ; $listitem{zus}";
-#             }
-#             # obsolete ?????
-      
-#             @requests=("select verwidn from titgtf where titidn=$titidn");
-#             my @tempgtfidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-      
-#             my $tempgtfidn;
-      
-#             if ($#tempgtfidns >= 0) {
-#                 $tempgtfidn=$tempgtfidns[0];
-#                 # Problem: Mehrfachausgabe in Kurztrefferausgabe eines Titels...
-#                 # Loesung: Nur der erste wird ausgegeben
-#                 #		foreach $tempgtfidn (@tempgtfidns){
-	
-#                 my @requests=("select hst from tit where idn=$tempgtfidn");
-	
-#                 my @tithst=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-	
-#                 @requests=("select ast from tit where idn=$tempgtfidn");
-	
-#                 my @titast=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-	
-#                 # Der AST hat Vorrang ueber den HST
-	
-#                 if ($titast[0]) {
-#                     $tithst[0]=$titast[0];
-#                 }
-	
-#                 @requests=("select zus from titgtf where verwidn=$tempgtfidn");
-	
-#                 my @gtfzus=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-	
-#                 $listitem{hst}   = $tithst[0];
-#                 $listitem{zus}   = $gtfzus[0];
-#                 $listitem{title} = "$listitem{hst} ; $listitem{zus}";	
-#             }
-#         }
-#         else {
-#             my @requests=("select hst from tit where idn=$hint");
-#             my @tithst=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-            
-#             @requests=("select ast from tit where idn=$hint");
-#             my @titast=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-      
-#             # Der AST hat Vorrang ueber den HST
-#             if ($titast[0]) {
-#                 $tithst[0]=$titast[0];
-#             }
-      
-#             if ($mode == 6) {
-#                 my @requests=("select zus from titgtf where verwidn=$hint and titidn=$titidn");
-#                 my @gtfzus=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-	
-#                 $listitem{hst}   = $tithst[0];
-#                 $listitem{zus}   = $gtfzus[0];
-#                 $listitem{title} = "$listitem{hst} ; $listitem{zus}";	
-#             }
-#             if ($mode == 7) {
-#                 my $showerschjahr=$titres->{erschjahr};
-	
-#                 if ($showerschjahr eq "") {
-#                     $showerschjahr=$titres->{anserschjahr};
-#                 }
-	
-#                 my @requests=("select zus from titgtm where verwidn=$hint and titidn=$titidn");
-#                 my @gtmzus=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-	
-#                 $listitem{hst}   = $tithst[0];
-#                 $listitem{zus}   = $gtmzus[0];
-#                 $listitem{title} = "$listitem{hst} ; $listitem{zus}";
-#             }
-#             if ($mode == 8) {
-#                 my $showerschjahr=$titres->{erschjahr};
-	
-#                 if ($showerschjahr eq "") {
-#                     $showerschjahr=$titres->{anserschjahr};
-#                 }
-	
-#                 my @requests=("select zus from titinverkn where titverw=$hint and titidn=$titidn");
-#                 my @invkzus=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
-
-#                 $listitem{hst}   = $tithst[0];
-#                 $listitem{zus}   = $invkzus[0];
-#                 $listitem{title} = "$listitem{hst} ; $listitem{zus}";
-#             }
-#         }
-#     }
-#     # Falls HST oder Sachlben existieren, dann gebe ganz normal aus:
-#     else {
-#         # Der AST hat Vorrang ueber den HST
-#         if ($titres->{ast}) {
-#             $titres->{hst}=$titres->{ast};
-#         }
-    
-#         if ($titres->{hst} eq "") {
-#             $titres->{hst}="Kein HST/AST vorhanden";
-#         }
-    
-#         my $titstring="";
-    
-#         if ($titres->{hst}) {
-#             $titstring=$titres->{hst};
-#         }
-#         elsif ($titres->{sachlben}) {
-#             $titstring=$titres->{sachlben};
-#         }
-    
-#         $listitem{hst}   = $titstring;
-#         $listitem{zus}   = "";
-#         $listitem{title} = $titstring;
-#     }
 
     $logger->info(YAML::Dump($listitem_ref));
     return $listitem_ref;
@@ -2307,74 +2164,102 @@ sub initial_search_for_titidns {
         $atime=new Benchmark;
     }
 
+    # Abfangen der eingeschraenkten Suche mit Erscheinungsjahr (noch notwendig, oder
+    # duch limit entschaerft?)
+  
+    if (($ejahr) && ($boolejahr eq "OR")) {
+        OpenBib::Search::Util::print_warning("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Ihr Verständnis für diese Ma&szlig;nahme");
+        goto LEAVEPROG;
+    }
+    
     # Aufbau des sqlquerystrings
     my $sqlselect = "";
     my $sqlfrom   = "";
     my $sqlwhere  = "";
-  
-  
+
+    my @sqlwhere = ();
+    my @sqlfrom  = ('search');
+    my @sqlargs  = ();
+
+    my $notfirstsql=0;
+    
     if ($fs) {	
         $fs=OpenBib::Search::Util::input2sgml($fs,1);
-        $fs="match (verf,hst,kor,swt,notation,sign,isbn,issn) against ('$fs' IN BOOLEAN MODE)";
+        push @sqlwhere, "$boolfs match (verf,hst,kor,swt,notation,sign,isbn,issn) against (? IN BOOLEAN MODE)";
+        push @sqlargs,  $fs;
     }
-  
+
+   
     if ($verf) {	
         $verf=OpenBib::Search::Util::input2sgml($verf,1);
-        $verf="match (verf) against ('$verf' IN BOOLEAN MODE)";
+        push @sqlwhere, "$boolverf match (verf) against (? IN BOOLEAN MODE)";
+        push @sqlargs,  $verf;
     }
   
     if ($hst) {
         $hst=OpenBib::Search::Util::input2sgml($hst,1);
-        $hst="match (hst) against ('$hst' IN BOOLEAN MODE)";
+        push @sqlwhere, "$boolhst match (hst) against (? IN BOOLEAN MODE)";
+        push @sqlargs,  $hst;
     }
   
     if ($swt) {
         $swt=OpenBib::Search::Util::input2sgml($swt,1);
-        $swt="match (swt) against ('$swt' IN BOOLEAN MODE)";
+        push @sqlwhere, "$boolswt match (swt) against (? IN BOOLEAN MODE)";
+        push @sqlargs,  $swt;
     }
   
     if ($kor) {
         $kor=OpenBib::Search::Util::input2sgml($kor,1);
-        $kor="match (kor) against ('$kor' IN BOOLEAN MODE)";
+        push @sqlwhere, "boolkor match (kor) against (? IN BOOLEAN MODE)";
+        push @sqlargs,  $kor;
     }
   
     my $notfrom="";
   
-    # TODO: SQL-Statement fuer Notationssuche optimieren
+    # TODO: SQL-Statement fuer Notationssuche optimieren und an neues
+    #       Kategorienschema anpassen!!!
     if ($notation) {
         $notation=OpenBib::Search::Util::input2sgml($notation,1);
-        $notation="((notation.notation like '$notation%' or notation.benennung like '$notation%') and search.verwidn=titnot.titidn and notation.idn=titnot.notidn)";
-        $notfrom=", notation, titnot";
+        push @sqlfrom,  "notation";
+        push @sqlfrom,  "titnot";
+        push @sqlwhere, "$boolnotation ((notation.notation like ? or notation.benennung like '$notation%') and search.verwidn=titnot.titidn and notation.idn=titnot.notidn)";
+        push @sqlargs,  $notation."%";
     }
   
     my $signfrom="";
   
     if ($sign) {
         $sign=OpenBib::Search::Util::input2sgml($sign,1);
-        $sign="(search.verwidn=mex.titidn and mex.idn=mexsign.mexidn and mexsign.signlok like '$sign%')";
-        $signfrom=", mex, mexsign";
+        push @sqlfrom,  "mex";
+        push @sqlfrom,  "mexsign";
+        push @sqlwhere, "$boolsign (search.verwidn=mex.titidn and mex.idn=mexsign.mexidn and mexsign.signlok like ?)";
+        push @sqlargs,  $sign."%";
     }
   
     if ($isbn) {
         $isbn=OpenBib::Search::Util::input2sgml($isbn,1);
         $isbn=~s/-//g;
-        $isbn="match (isbn) against ('$isbn' IN BOOLEAN MODE)";
+        push @sqlwhere, "$boolisbn match (isbn) against (? IN BOOLEAN MODE)";
+        push @sqlargs,  $isbn;
     }
   
     if ($issn) {
         $issn=OpenBib::Search::Util::input2sgml($issn,1);
         $issn=~s/-//g;
-        $issn="match (issn) against ('$issn' IN BOOLEAN MODE)";
+        push @sqlwhere, "$boolissn match (issn) against (? IN BOOLEAN MODE)";
+        push @sqlargs,  $issn;
     }
   
     if ($mart) {
         $mart=OpenBib::Search::Util::input2sgml($mart,1);
-        $mart="match (artinh) against ('$mart' IN BOOLEAN MODE)";
+        push @sqlwhere, "match (artinh) against (? IN BOOLEAN MODE)";
+        push @sqlargs,  $mart;
     }
   
     if ($hststring) {
         $hststring=OpenBib::Search::Util::input2sgml($hststring,1);
-        $hststring="(search.hststring = '$hststring')";
+        push @sqlwhere, "$boolhststring (search.hststring = ?)";
+        push @sqlargs,  $hststring;
     }
   
     my $ejtest;
@@ -2385,114 +2270,37 @@ sub initial_search_for_titidns {
     }                           # alles andere wird ignoriert...
   
     if ($ejahr) {	   
-        $ejahr="$boolejahr ejahr".$ejahrop."$ejahr";
+        push @sqlwhere, "$boolejahr ejahr $ejahrop ?";
+        push @sqlargs,  $ejahr;
     }
-  
-    # Einfuegen der Boolschen Verknuepfungsoperatoren in die SQL-Queries
-  
-    if (($ejahr) && ($boolejahr eq "OR")) {
-        OpenBib::Search::Util::print_warning("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Ihr Verständnis für diese Ma&szlig;nahme");
-        goto LEAVEPROG;
-    }
-  
-    # SQL-Search
-  
-    my $notfirstsql=0;
-    my $sqlquerystring="";
-  
-    if ($fs) {
-        $notfirstsql=1;
-        $sqlquerystring=$fs;
-    }
-    if ($hst) {
-        if ($notfirstsql) {
-            $sqlquerystring.=" $boolhst ";
-        }
-        $notfirstsql=1;
-        $sqlquerystring.=$hst;
-    }
-    if ($verf) {
-        if ($notfirstsql) {
-            $sqlquerystring.=" $boolverf ";
-        }
-        $notfirstsql=1;
-        $sqlquerystring.=$verf;
-    }
-    if ($kor) {
-        if ($notfirstsql) {
-            $sqlquerystring.=" $boolkor ";
-        }
-        $notfirstsql=1;
-        $sqlquerystring.=$kor;
-    }
-    if ($swt) {
-        if ($notfirstsql) {
-            $sqlquerystring.=" $boolswt ";
-        }
-        $notfirstsql=1;
-        $sqlquerystring.=$swt;
-    }
-    if ($notation) {
-        if ($notfirstsql) {
-            $sqlquerystring.=" $boolnotation ";
-        }
-        $notfirstsql=1;
-        $sqlquerystring.=$notation;
-    }
-    if ($isbn) {
-        if ($notfirstsql) {
-            $sqlquerystring.=" $boolisbn ";
-        }
-        $notfirstsql=1;
-        $sqlquerystring.=$isbn;
-    }
-    if ($issn) {
-        if ($notfirstsql) {
-            $sqlquerystring.=" $boolissn ";
-        }
-        $notfirstsql=1;
-        $sqlquerystring.=$issn;
-    }
-    if ($sign) {
-        if ($notfirstsql) {
-            $sqlquerystring.=" $boolsign ";
-        }
-        $notfirstsql=1;
-        $sqlquerystring.=$sign;
-    }
-    if ($mart) {
-        if ($notfirstsql) {
-            $sqlquerystring.=" $boolmart ";
-        }
-        $notfirstsql=1;
-        $sqlquerystring.=$mart;
-    }
-    if ($hststring) {
-        if ($notfirstsql) {
-            $sqlquerystring.=" $boolhststring ";
-        }
-        $notfirstsql=1;
-        $sqlquerystring.=$hststring;
-    }
-  
-    if ($ejahr) {
-        if ($sqlquerystring eq "") {
-            OpenBib::Search::Util::print_warning("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Ihr Verständnis für diese Ma&szlig;nahme");
-            goto LEAVEPROG;
-        }
-        else {
-            $sqlquerystring="$sqlquerystring $ejahr";
-        }
-    }
-  
-    $sqlquerystring="select verwidn from search$signfrom$notfrom where $sqlquerystring limit $maxhits";
-  
-    $logger->debug("Fulltext-Query: $sqlquerystring");
-  
-    my @requests=($sqlquerystring);
-  
-    my @tidns=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
 
+
+    # TODO...
+#     if ($ejahr) {
+#         if ($sqlquerystring eq "") {
+#             OpenBib::Search::Util::print_warning("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Ihr Verständnis für diese Ma&szlig;nahme");
+#             goto LEAVEPROG;
+#         }
+#         else {
+#             $sqlquerystring="$sqlquerystring $ejahr";
+#         }
+#     }
+
+    my $sqlwherestring = join(" ",@sqlwhere);
+    $sqlwherestring    =~s/^(?:AND|OR|NOT) //;
+    my $sqlfromstring  = join(", ",@sqlfrom);
+    my $sqlquerystring = "select verwidn from $sqlfromstring where $sqlwherestring limit $maxhits";
+    my $request        = $dbh->prepare($sqlquerystring);
+
+    $request->execute(@sqlargs);
+
+    my @tidns=();
+    while (my $res=$request->fetchrow_hashref){
+        push @tidns, $res->{verwidn};
+    }
+
+    $logger->info("Fulltext-Query: $sqlquerystring");
+  
     $logger->info("Treffer: ".$#tidns);
 
     if ($config{benchmark}) {

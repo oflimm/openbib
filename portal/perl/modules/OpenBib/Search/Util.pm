@@ -768,8 +768,8 @@ sub get_tit_listitem_by_idn {
             my $superitem_ref={};
             while (my $superres=$superrequest->fetchrow_hashref){
                 my $category  = "T".decode_utf8($superres->{category });
-                my $indicator = "T".decode_utf8($superres->{indicator});
-                my $content   = "T".decode_utf8($superres->{content  });
+                my $indicator =     decode_utf8($superres->{indicator});
+                my $content   =     decode_utf8($superres->{content  });
                 
                 push @{$superitem_ref->{$category}}, {
                     indicator => $indicator,

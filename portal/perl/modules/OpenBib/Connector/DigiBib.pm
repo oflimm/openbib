@@ -34,6 +34,7 @@ use warnings;
 no warnings 'redefine';
 
 use Apache::Constants qw(:common);
+use Apache::Reload;
 use Apache::Request ();
 use Benchmark;
 use DBI;

@@ -31,6 +31,7 @@ no warnings 'redefine';
 use utf8;
 
 use Apache::Constants qw(:common);
+use Apache::Reload;
 
 use OpenBib::Config;
 

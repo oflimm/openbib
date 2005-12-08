@@ -30,6 +30,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
+use Apache::Reload;
 use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Config;

@@ -31,6 +31,7 @@ no warnings 'redefine';
 use utf8;
 
 use Apache::Constants qw(:common);
+use Apache::Reload;
 use Apache::Request ();
 use DBI;
 use Digest::MD5();
@@ -907,7 +908,7 @@ sub updatelastresultset {
         my %outidx=%$outidx_ref;
 
         # Eintraege merken fuer Lastresultset
-        my $katkey      = $outidx{idn};
+        my $katkey      = $outidx{id};
         my $resdatabase = $outidx{database};
         push @nresultset, "$resdatabase:$katkey";
     }

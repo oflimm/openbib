@@ -1,3 +1,4 @@
+[%- i18nmsg = msg.${qopts.lang} -%]
 <!-- Beginn Result Item -->
 <tr class="titlerow"><td>&nbsp;</td><td>[% dbinfo %]</td><td align="right" colspan="3"><strong>[% treffer %] Treffer</strong></td></tr>
 

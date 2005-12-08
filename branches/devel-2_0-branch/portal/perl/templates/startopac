@@ -1,3 +1,4 @@
+[%- i18nmsg = msg.${qopts.lang} -%]
 [%-
 # Aufruf der Frames mit den gewuenschten Inhalten
 

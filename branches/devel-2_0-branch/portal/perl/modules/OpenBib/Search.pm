@@ -35,6 +35,7 @@ no warnings 'redefine';
 use utf8;
 
 use Apache::Constants qw(:common);
+use Apache::Reload;
 use Apache::Request ();
 use DBI;
 use Log::Log4perl qw(get_logger :levels);
@@ -235,7 +236,7 @@ sub handler {
     my $queryoptions_ref
         = OpenBib::Common::Util::get_queryoptions($sessiondbh,$r);
 
-    $logger->info(YAML::Dump($queryoptions_ref));
+    $logger->debug(YAML::Dump($queryoptions_ref));
     
     my $targetdbinfo_ref
         = OpenBib::Common::Util::get_targetdbinfo($sessiondbh);

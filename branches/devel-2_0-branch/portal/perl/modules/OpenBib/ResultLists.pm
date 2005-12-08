@@ -35,6 +35,7 @@ no warnings 'redefine';
 use utf8;
 
 use Apache::Constants qw(:common);
+use Apache::Reload;
 use Apache::Request ();
 use DBI;
 use Encode 'decode_utf8';
@@ -241,7 +242,7 @@ sub handler {
                 $queryid = decode_utf8($res[0]);
             }
 
-            $idnresult=$sessiondbh->prepare("select searchresults.searchresult,searchresults.dbname from searchresults, dbinfo where searchresults.dbname=dbinfo.dbname and sessionid = ? and queryid = ? order by dbinfo.faculty,searchresults.dbname") or $logger->error($DBI::errstr);
+            $idnresult=$sessiondbh->prepare("select searchresults.searchresult,searchresults.dbname from searchresults, dbinfo where searchresults.dbname=dbinfo.dbname and sessionid = ? and queryid = ? order by dbinfo.orgunit,searchresults.dbname") or $logger->error($DBI::errstr);
             $idnresult->execute($sessionID,$queryid) or $logger->error($DBI::errstr);
 
             my @resultset=();
@@ -251,7 +252,7 @@ sub handler {
                 my @outputbuffer=();
 
                 while (my @res=$idnresult->fetchrow) {
-                    my $yamlres=YAML::Load($res[0]);
+                    my $yamlres=YAML::Load(decode_utf8($res[0]));
 
                     push @outputbuffer, @$yamlres;
                 }
@@ -320,9 +321,9 @@ sub handler {
                 my @resultlists=();
 
                 while (my @res=$idnresult->fetchrow) {
-                    my $yamlres=YAML::Load($res[0]);
+                    my $yamlres=YAML::Load(decode_utf8($res[0]));
 
-                    my $database=$res[1];
+                    my $database=decode_utf8($res[1]);
 
                     my @outputbuffer=@$yamlres;
 
@@ -409,7 +410,7 @@ sub handler {
             my @resultlists=();
 
             while (my @res=$idnresult->fetchrow) {
-                my $yamlres=YAML::Load($res[0]);
+                my $yamlres=YAML::Load(decode_utf8($res[0]));
 	
                 my @outputbuffer=@$yamlres;
 	

@@ -35,6 +35,7 @@ no warnings 'redefine';
 use utf8;
 
 use Apache::Constants qw(:common M_GET);
+use Apache::Reload;
 use Apache::Request ();
 use DBI;
 use Encode 'decode_utf8';
@@ -48,9 +49,10 @@ use OpenBib::ManageCollection::Util;
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
 
-use vars qw(%config);
+use vars qw(%config %msg);
 
-*config=\%OpenBib::Config::config;
+*config = \%OpenBib::Config::config;
+*msg    = OpenBib::Config::get_msgs($config{msg_path});
 
 sub handler {
     my $r=shift;
@@ -78,18 +80,25 @@ sub handler {
         = DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd})
             or $logger->error_die($DBI::errstr);
 
+    my $lang      = $query->param('l')         || 'de';
     my $sessionID = $query->param('sessionID') || '';
     my $database  = $query->param('database')  || '';
     my $singleidn = $query->param('singleidn') || '';
     my $loeschen  = $query->param('loeschen')  || '';
     my $action    = ($query->param('action'))?$query->param('action'):'none';
     my $type      = ($query->param('type'))?$query->param('type'):'HTML';
-  
+
+    
     # Haben wir eine authentifizierte Session?
     my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
   
     # Ab hier ist in $userid entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
+
+    my $queryoptions_ref
+        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$r);
+
+    $logger->debug(YAML::Dump($queryoptions_ref));
 
     my $targetdbinfo_ref
         = OpenBib::Common::Util::get_targetdbinfo($sessiondbh);
@@ -248,20 +257,11 @@ sub handler {
             view       => $view,
             stylesheet => $stylesheet,
             sessionID  => $sessionID,
-		
+            qopts      => $queryoptions_ref,
             type       => $type,
-		
             collection => \@collection,
-		
-            utf2iso    => sub {
-                my $string=shift;
-                $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
-                return $string;
-            },
-		
-            show_corporate_banner => 0,
-            show_foot_banner      => 1,
             config     => \%config,
+            msg        => \%msg,
         };
     
         OpenBib::Common::Util::print_page($config{tt_managecollection_show_tname},$ttdata,$r);
@@ -361,20 +361,11 @@ sub handler {
             view       => $view,
             stylesheet => $stylesheet,
             sessionID  => $sessionID,
-		
+            qopts      => $queryoptions_ref,		
             type       => $type,
-		
             collection => \@collection,
-		
-            utf2iso    => sub {
-                my $string=shift;
-                $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
-                return $string;
-            },
-		
-            show_corporate_banner => 0,
-            show_foot_banner      => 1,
             config     => \%config,
+            msg        => \%msg,
         };
     
         if ($type eq "HTML") {
@@ -493,24 +484,14 @@ sub handler {
             view       => $view,
             stylesheet => $stylesheet,
             sessionID  => $sessionID,
-		
+            qopts      => $queryoptions_ref,				
             type       => $type,
-	
             loginname  => $loginname,
             singleidn  => $singleidn,
             database   => $database,
-
             collection => \@collection,
-		
-            utf2iso    => sub {
-                my $string=shift;
-                $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
-                return $string;
-            },
-		
-            show_corporate_banner => 0,
-            show_foot_banner      => 1,
             config     => \%config,
+            msg        => \%msg,
         };
     
         OpenBib::Common::Util::print_page($config{tt_managecollection_mail_tname},$ttdata,$r);
@@ -618,24 +599,14 @@ sub handler {
             view       => $view,
             stylesheet => $stylesheet,		
             sessionID  => $sessionID,
-		
+            qopts      => $queryoptions_ref,		
             type       => $type,
-	
             loginname  => $loginname,
             singleidn  => $singleidn,
             database   => $database,
-
             collection => \@collection,
-		
-            utf2iso    => sub {
-                my $string=shift;
-                $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
-                return $string;
-            },
-		
-            show_corporate_banner => 0,
-            show_foot_banner      => 1,
             config     => \%config,
+            msg        => \%msg,
         };
     
         OpenBib::Common::Util::print_page($config{tt_managecollection_print_tname},$ttdata,$r);

@@ -1,3 +1,4 @@
+[%- i18nmsg = msg.${qopts.lang} -%]
 [% IF type == 'Text' %]
 [% PROCESS common/subtemplate name="managecollection_tit_as_text" %]
 [% ELSIF type == 'EndNote' %]

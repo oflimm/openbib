@@ -36,6 +36,7 @@ no warnings 'redefine';
 use utf8;
 
 use Apache::Constants qw(:common);
+use Apache::Reload;
 use Apache::Request ();
 use DBI;
 use Encode 'decode_utf8';

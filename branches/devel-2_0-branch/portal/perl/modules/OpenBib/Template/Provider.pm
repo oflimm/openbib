@@ -35,6 +35,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
+use Apache::Reload;
 use base qw(Template::Provider);
 
 sub _load {

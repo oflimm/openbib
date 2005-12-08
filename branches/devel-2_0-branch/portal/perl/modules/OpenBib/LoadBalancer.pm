@@ -35,6 +35,7 @@ no warnings 'redefine';
 use utf8;
 
 use Apache::Constants qw(:common REDIRECT);
+use Apache::Reload;
 use Apache::Request ();
 use HTTP::Request;
 use HTTP::Response;

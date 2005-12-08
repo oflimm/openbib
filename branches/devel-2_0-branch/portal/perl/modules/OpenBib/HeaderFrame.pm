@@ -35,6 +35,7 @@ no warnings 'redefine';
 use utf8;
 
 use Apache::Constants qw(:common);
+use Apache::Reload;
 use Apache::Request ();
 use DBI;
 use Log::Log4perl qw(get_logger :levels);
@@ -116,7 +117,7 @@ sub handler {
     }
     else {
         #  Zuallererst Suchen, wieviele Titel in der Merkliste vorhanden sind.
-        my $idnresult=$sessiondbh->prepare("select count(*) from treffer where sessionid = ?") or $logger->error($DBI::errstr);
+        my $idnresult=$sessiondbh->prepare("select count(*) as rowcount from treffer where sessionid = ?") or $logger->error($DBI::errstr);
         $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
         my $res=$idnresult->fetchrow_hashref;
         

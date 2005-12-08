@@ -34,6 +34,7 @@ use warnings;
 no warnings 'redefine';
 
 use Apache::Constants qw(:common);
+use Apache::Reload;
 use Apache::Request ();
 use Benchmark ':hireswallclock';
 use Log::Log4perl qw(get_logger :levels);

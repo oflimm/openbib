@@ -178,16 +178,13 @@ sub get_aut_set_by_idn {
 
     # Wenn ein Kategoriemapping fuer diesen Katalog existiert, dann muss 
     # dieses angewendet werden
-#     if (exists $config{categorymapping}{$database}) {
-#         for (my $i=0; $i<=$#normset; $i++) {
-#             my $normdesc=$normset[$i]{desc};
-      
-#             # Wenn fuer diese Kategorie ein Mapping existiert, dann anwenden
-#             if (exists $config{categorymapping}{$database}{$normdesc}) {
-#                 $normset[$i]{desc}=$config{categorymapping}{$database}{$normdesc};
-#             }
-#         }
-#     }
+    if (exists $config{categorymapping}{$database}) {
+        foreach my $oldmsgcode (keys %{$config{categorymapping}{$database}}){
+            my $newmsgcode=$config{categorymapping}{$database}{$oldmsgcode};
+            $normset_ref->{$newmsgcode}=$normset_ref->{$oldmsgcode};
+            delete $normset_ref->{$oldmsgcode};
+        }
+    }
 
     return $normset_ref;
 }
@@ -312,18 +309,15 @@ sub get_kor_set_by_idn {
 
     # Wenn ein Kategoriemapping fuer diesen Katalog existiert, dann muss 
     # dieses angewendet werden
-#     if (exists $config{categorymapping}{$database}) {
-#         for (my $i=0; $i<=$#normset; $i++) {
-#             my $normdesc=$normset[$i]{desc};
-      
-#             # Wenn fuer diese Kategorie ein Mapping existiert, dann anwenden
-#             if (exists $config{categorymapping}{$database}{$normdesc}) {
-#                 $normset[$i]{desc}=$config{categorymapping}{$database}{$normdesc};
-#             }
-#         }
-#     }
-  
-     return $normset_ref;
+    if (exists $config{categorymapping}{$database}) {
+        foreach my $oldmsgcode (keys %{$config{categorymapping}{$database}}){
+            my $newmsgcode=$config{categorymapping}{$database}{$oldmsgcode};
+            $normset_ref->{$newmsgcode}=$normset_ref->{$oldmsgcode};
+            delete $normset_ref->{$oldmsgcode};
+        }
+    }
+
+    return $normset_ref;
 }
 
 sub get_swt_ans_by_idn {
@@ -446,17 +440,14 @@ sub get_swt_set_by_idn {
 
     # Wenn ein Kategoriemapping fuer diesen Katalog existiert, dann muss
     # dieses angewendet werden
-#     if (exists $config{categorymapping}{$database}) {
-#         for (my $i=0; $i<=$#normset; $i++) {
-#             my $normdesc=$normset[$i]{desc};
-      
-#             # Wenn fuer diese Kategorie ein Mapping existiert, dann anwenden
-#             if (exists $config{categorymapping}{$database}{$normdesc}) {
-#                 $normset[$i]{desc}=$config{categorymapping}{$database}{$normdesc};
-#             }
-#         }
-#     }
-    
+    if (exists $config{categorymapping}{$database}) {
+        foreach my $oldmsgcode (keys %{$config{categorymapping}{$database}}){
+            my $newmsgcode=$config{categorymapping}{$database}{$oldmsgcode};
+            $normset_ref->{$newmsgcode}=$normset_ref->{$oldmsgcode};
+            delete $normset_ref->{$oldmsgcode};
+        }
+    }
+
     return $normset_ref;
 }
 
@@ -587,16 +578,13 @@ sub get_not_set_by_idn {
 
     # Wenn ein Kategoriemapping fuer diesen Katalog existiert, dann muss 
     # dieses angewendet werden
-#     if (exists $config{categorymapping}{$database}) {
-#         for (my $i=0; $i<=$#normset; $i++) {
-#             my $normdesc=$normset[$i]{desc};
-      
-#             # Wenn fuer diese Kategorie ein Mapping existiert, dann anwenden
-#             if (exists $config{categorymapping}{$database}{$normdesc}) {
-#                 $normset[$i]{desc}=$config{categorymapping}{$database}{$normdesc};
-#             }
-#         }
-#     }
+    if (exists $config{categorymapping}{$database}) {
+        foreach my $oldmsgcode (keys %{$config{categorymapping}{$database}}){
+            my $newmsgcode=$config{categorymapping}{$database}{$oldmsgcode};
+            $normset_ref->{$newmsgcode}=$normset_ref->{$oldmsgcode};
+            delete $normset_ref->{$oldmsgcode};
+        }
+    }
 
     return $normset_ref;
 }
@@ -1364,18 +1352,16 @@ sub get_tit_set_by_idn {
         }
     }
     
-#     # Wenn ein Kategoriemapping fuer diesen Katalog existiert, dann muss 
-#     # dieses angewendet werden
-#     if (exists $config{categorymapping}{$database}) {
-#         for (my $i=0; $i<=$#normset; $i++) {
-#             my $normdesc=$normset[$i]{desc};
+    # Wenn ein Kategoriemapping fuer diesen Katalog existiert, dann muss 
+    # dieses angewendet werden
+    if (exists $config{categorymapping}{$database}) {
+        foreach my $oldmsgcode (keys %{$config{categorymapping}{$database}}){
+            my $newmsgcode=$config{categorymapping}{$database}{$oldmsgcode};
+            $normset_ref->{$newmsgcode}=$normset_ref->{$oldmsgcode};
+            delete $normset_ref->{$oldmsgcode};
+        }
+    }
 
-#             # Wenn fuer diese Kategorie ein Mapping existiert, dann anwenden
-#             if (exists $config{categorymapping}{$database}{$normdesc}) {
-#                 $normset[$i]{desc}=$config{categorymapping}{$database}{$normdesc};
-#             }
-#         }
-#     }
     return ($normset_ref,\@mexnormset,\@circexemplarliste);
 }
 

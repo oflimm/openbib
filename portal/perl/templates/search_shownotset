@@ -11,14 +11,7 @@
   </tr>
 </table>
 
-<!--
-[% USE dumper;
-   dumper.dump(normset);
-   dumper.dump(i18nmsg);
-%]
--->
-
-<table cellpadding=2>
+<table cellpadding="2">
 <tr><td>[% i18nmsg.${"M0101"} %]</td><td>[% i18nmsg.${"M0102"} %]</td></tr>
 
 [%# Ausgabekategorien %]

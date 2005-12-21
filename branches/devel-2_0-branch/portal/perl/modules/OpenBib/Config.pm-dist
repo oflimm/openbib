@@ -124,6 +124,11 @@ use vars qw(%config);
                    desc  => 'Mathematisch-Naturwissenschaftliche Fakultät',
                    nr    => '5',
                },
+               {
+                   short => '6spezial',
+                   desc  => 'Spezialkataloge',
+                   nr    => '6',
+               },
            ],
 
 	   # Mapping der einzelnen Kompontenten zu ihren Zugriffs-URI's

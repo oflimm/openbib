@@ -113,7 +113,7 @@ selected
 <tr><td><b></b></td><td></td></tr>
 
     
-[% IF katalog.system == 's' %]
+[% IF katalog.system == 'Sisis' %]
 <tr><td><b>Tit-Datei</b></td><td><input type="text" size="20" name="titfilename" value="[% katalog.imxconfig.titfilename %]"></td></tr>
 <tr><td><b>Aut-Datei</b></td><td><input type="text" size="20" name="autfilename" value="[% katalog.imxconfig.autfilename %]"></td></tr>
 <tr><td><b>Kor-Datei</b></td><td><input type="text" size="20" name="korfilename" value="[% katalog.imxconfig.korfilename %]"></td></tr>

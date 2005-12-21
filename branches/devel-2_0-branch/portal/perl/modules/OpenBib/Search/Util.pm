@@ -87,7 +87,7 @@ sub get_aut_ans_by_idn {
 	undef $timeall;
     }
 
-    my $ans;
+    my $ans="Unbekannt";
     if ($res->{content}) {
         $ans = decode_utf8($res->{content});
     }
@@ -556,7 +556,7 @@ sub get_not_set_by_idn {
     }
 
     # Ausgabe der Anzahl verk"upfter Titel
-    $sqlrequest="select count(distinct sourceid) as conncount from connection where targetid=? and sourcetype='tit' and targettype='not'";
+    $sqlrequest="select count(distinct sourceid) as conncount from connection where targetid=? and sourcetype='tit' and targettype='notation'";
     $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($notidn);
     my $res=$request->fetchrow_hashref;
@@ -615,9 +615,15 @@ sub get_tit_listitem_by_idn {
 
     $listitem_ref->{id      } = $titidn;
     $listitem_ref->{database} = $database;
+
+    my ($atime,$btime,$timeall)=(0,0,0);
+    
+    if ($config{benchmark}) {
+      $atime=new Benchmark;
+    }
     
     # Bestimmung der Titelinformationen
-    my $request=$dbh->prepare("select category,indicator,content from tit where id = ? and category in ('0014','0310','0331','0412','0424','0425','1203')") or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare("select category,indicator,content from tit where id = ? and category in ('0310','0331','0412','0424','0425','1203')") or $logger->error($DBI::errstr);
     $request->execute($titidn);
 
     while (my $res=$request->fetchrow_hashref){
@@ -629,6 +635,33 @@ sub get_tit_listitem_by_idn {
             indicator => $indicator,
             content   => $content,
         };
+    }
+
+    # Bestimmung der Exemplarinformationen
+    $request=$dbh->prepare("select mex.category,mex.indicator,mex.content from mex,connection where connection.sourceid = ? and connection.targetid=mex.id and connection.sourcetype='tit' and connection.targettype='mex' and mex.category='0014'") or $logger->error($DBI::errstr);
+    $request->execute($titidn);
+
+    while (my $res=$request->fetchrow_hashref){
+        my $category  = "X".decode_utf8($res->{category });
+        my $indicator =     decode_utf8($res->{indicator});
+        my $content   =     decode_utf8($res->{content  });
+
+        push @{$listitem_ref->{$category}}, {
+            indicator => $indicator,
+            content   => $content,
+        };
+    }
+
+
+    if ($config{benchmark}) {
+      $btime=new Benchmark;
+      $timeall=timediff($btime,$atime);
+      $logger->info("Zeit fuer : Bestimmung der Titelinformationen : ist ".timestr($timeall));
+    }
+
+
+    if ($config{benchmark}) {
+      $atime=new Benchmark;
     }
 
     my @autkor=();
@@ -661,7 +694,16 @@ sub get_tit_listitem_by_idn {
             
     }
 
-    
+
+    if ($config{benchmark}) {
+      $btime=new Benchmark;
+      $timeall=timediff($btime,$atime);
+      $logger->info("Zeit fuer : Bestimmung der Verfasserinformationen : ist ".timestr($timeall));
+    }
+
+    if ($config{benchmark}) {
+      $atime=new Benchmark;
+    }    
     
     # Bestimmung der Urheber, Koerperschaften
     $request=$dbh->prepare("select targetid,category,supplement from connection where sourceid=? and sourcetype='tit' and targettype='kor'") or $logger->error($DBI::errstr);
@@ -690,47 +732,21 @@ sub get_tit_listitem_by_idn {
         push @autkor, $content;
     }
 
+    if ($config{benchmark}) {
+      $btime=new Benchmark;
+      $timeall=timediff($btime,$atime);
+      $logger->info("Zeit fuer : Bestimmung der Koerperschaftsinformationen : ist ".timestr($timeall));
+    }
+
     # Zusammenfassen von autkor
 
     push @{$listitem_ref->{'PC0001'}}, {
         content   => join(" ; ",@autkor),
     };
 
-    
-    # Bestimmung der Exemplardaten
-    $request=$dbh->prepare("select distinct id from mex where category='0004' and content=?") or $logger->error($DBI::errstr);
-    $request->execute($titidn);
-
-    my @verknmex=();
-    while (my $res=$request->fetchrow_hashref){
-        push @verknmex, decode_utf8($res->{id});
-    }
-
-    my @mexnormset=();
-
-    if ($#verknmex >= 0) {
-        foreach my $mexsatz (@verknmex) {
-            push @mexnormset, get_mex_set_by_idn({
-                mexidn             => $mexsatz,
-                dbh                => $dbh,
-                targetdbinfo_ref   => $targetdbinfo_ref,
-                database           => $database,
-                sessionID          => $sessionID,
-            });
-        }
-    }
-
-    foreach my $mexitem_ref (@mexnormset){
-       foreach my $category (keys %$mexitem_ref){
-           my $content=(exists $mexitem_ref->{$category}{content})?$mexitem_ref->{$category}{content}:'';
-           $logger->info($category."::".$content);
-           
-           push @{$listitem_ref->{$category}}, {
-               content => $content,
-           };
-        }
-    }
-    
+    if ($config{benchmark}) {
+      $atime=new Benchmark;
+    }    
 
 
     $request->finish();
@@ -779,9 +795,15 @@ sub get_tit_listitem_by_idn {
         if (! exists $listitem_ref->{T0331}){
             $listitem_ref->{T0331}{content}="Kein HST/AST vorhanden";
         }
+      }
+
+    if ($config{benchmark}) {
+      $btime=new Benchmark;
+      $timeall=timediff($btime,$atime);
+      $logger->info("Zeit fuer : Bestimmung der HST-Ueberordnungsinformationen : ist ".timestr($timeall));
     }
 
-    $logger->info(YAML::Dump($listitem_ref));
+    $logger->debug(YAML::Dump($listitem_ref));
     return $listitem_ref;
 }
 
@@ -808,7 +830,7 @@ sub print_tit_list_by_idn {
     my $stylesheet        = exists $arg_ref->{stylesheet}
         ? $arg_ref->{stylesheet}        : undef;
     my $hitrange          = exists $arg_ref->{hitrange}
-        ? $arg_ref->{hitrange}          : undef;
+        ? $arg_ref->{hitrange}          : -1;
     my $offset            = exists $arg_ref->{offset}
         ? $arg_ref->{offset}            : undef;
     my $view              = exists $arg_ref->{view}
@@ -1126,7 +1148,7 @@ sub get_tit_set_by_idn {
             $atime=new Benchmark;
         }
 
-        my $reqstring="select category,targetid,targettype,supplement from connection where sourceid=? and sourcetype='tit' and targettype IN ('aut','kor','not','swt')";
+        my $reqstring="select category,targetid,targettype,supplement from connection where sourceid=? and sourcetype='tit' and targettype IN ('aut','kor','notation','swt')";
         my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
         $request->execute($titidn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
         
@@ -1136,13 +1158,14 @@ sub get_tit_set_by_idn {
             my $targettype =     decode_utf8($res->{targettype});
             my $supplement =     decode_utf8($res->{supplement});
 
-            my $content    =
-                ($targettype eq 'aut')?get_aut_ans_by_idn($targetid,$dbh):
-                ($targettype eq 'kor')?get_kor_ans_by_idn($targetid,$dbh):
-                ($targettype eq 'swt')?get_swt_ans_by_idn($targetid,$dbh):
-                ($targettype eq 'not')?get_not_ans_by_idn($targetid,$dbh):'Error';
+	    # Korrektes UTF-8 Encoding Flag wird in get_*_ans_*
+	    # vorgenommen
 
-            $content       = decode_utf8($content);
+            my $content    =
+                ($targettype eq 'aut'     )?get_aut_ans_by_idn($targetid,$dbh):
+                ($targettype eq 'kor'     )?get_kor_ans_by_idn($targetid,$dbh):
+                ($targettype eq 'swt'     )?get_swt_ans_by_idn($targetid,$dbh):
+                ($targettype eq 'notation')?get_not_ans_by_idn($targetid,$dbh):'Error';
 
             push @{$normset_ref->{$category}}, {
                 id         => $targetid,
@@ -1862,13 +1885,16 @@ sub get_result_navigation {
     if ($lastresultstring=~m/(\w+:\d+)\|$database:$titidn/) {
         $lasttiturl=$1;
         my ($lastdatabase,$lastkatkey)=split(":",$lasttiturl);
-        $lasttiturl="$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$lastdatabase;searchsingletit=$lastkatkey";
+        $lasttiturl="$config{search_loc}?sessionID=$sessionID;database=$lastdatabase;searchsingletit=$lastkatkey";
     }
     
     if ($lastresultstring=~m/$database:$titidn\|(\w+:\d+)/) {
         $nexttiturl=$1;
         my ($nextdatabase,$nextkatkey)=split(":",$nexttiturl);
-        $nexttiturl="$config{search_loc}?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=$searchmode;rating=$rating;bookinfo=$bookinfo;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder;database=$nextdatabase;searchsingletit=$nextkatkey";
+
+	$logger->debug("NextDB: $nextdatabase - NextKatkey: $nextkatkey");
+
+        $nexttiturl="$config{search_loc}?sessionID=$sessionID;database=$nextdatabase;searchsingletit=$nextkatkey";
     }
 
     return ($lasttiturl,$nexttiturl);
@@ -2197,7 +2223,7 @@ sub initial_search_for_titidns {
   
     if ($kor) {
         $kor=OpenBib::Search::Util::input2sgml($kor,1);
-        push @sqlwhere, "boolkor match (kor) against (? IN BOOLEAN MODE)";
+        push @sqlwhere, "$boolkor match (kor) against (? IN BOOLEAN MODE)";
         push @sqlargs,  $kor;
     }
   

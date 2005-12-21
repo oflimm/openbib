@@ -111,10 +111,14 @@ sub handler {
   
     # Zuallererst loeschen der Trefferliste fuer diese sessionID
     my $idnresult;
+
     $idnresult=$sessiondbh->prepare("delete from treffer where sessionid = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
   
     $idnresult=$sessiondbh->prepare("delete from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+  
+    $idnresult=$sessiondbh->prepare("delete from queries where sessionid = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
   
     $idnresult=$sessiondbh->prepare("delete from searchresults where sessionid = ?") or $logger->error($DBI::errstr);

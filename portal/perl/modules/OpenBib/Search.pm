@@ -1186,7 +1186,7 @@ sub handler {
     #######################################################################
     if ($searchtitofnot) {
         # Bestimmung der Titel
-        my $request=$dbh->prepare("select distinct sourceid from connection where targetid=? and sourcetype='tit' and targettype='not'") or $logger->error($DBI::errstr);
+        my $request=$dbh->prepare("select distinct sourceid from connection where targetid=? and sourcetype='tit' and targettype='notation'") or $logger->error($DBI::errstr);
         $request->execute($searchtitofnot);
 
         my @titelidns=();

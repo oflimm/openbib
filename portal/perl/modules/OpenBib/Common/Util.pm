@@ -713,26 +713,32 @@ sub by_yearofpub {
     my %line1=%$a;
     my %line2=%$b;
 
-    my ($line1)=$line1{T0425}[0]{content}=~m/(\d\d\d\d)/;
-    my ($line2)=$line2{T0425}[0]{content}=~m/(\d\d\d\d)/;
-  
-    $line1=0 if (!$line1{T0425}[0]{content});
-    $line2=0 if (!$line2{T0425}[0]{content});
+    my $line1=(exists $line1{T0425}[0]{content} && defined $line1{T0425}[0]{content})?cleanrl($line1{T0425}[0]{content}):"";
+    my $line2=(exists $line2{T0425}[0]{content} && defined $line2{T0425}[0]{content})?cleanrl($line2{T0425}[0]{content}):"";
 
-    $line1 <=> $line2;
+    my ($yline1)=$line1=~m/(\d\d\d\d)/;
+    my ($yline2)=$line2=~m/(\d\d\d\d)/;
+
+    $yline1=0 if (!defined $yline1);
+    $yline2=0 if (!defined $yline2);
+
+    $yline1 <=> $yline2;
 }
 
 sub by_yearofpub_down {
     my %line1=%$a;
     my %line2=%$b;
 
-    my ($line1)=$line1{T0425}[0]{content}=~m/(\d\d\d\d)/;
-    my ($line2)=$line2{T0425}[0]{content}=~m/(\d\d\d\d)/;
+    my $line1=(exists $line1{T0425}[0]{content} && defined $line1{T0425}[0]{content})?cleanrl($line1{T0425}[0]{content}):"";
+    my $line2=(exists $line2{T0425}[0]{content} && defined $line2{T0425}[0]{content})?cleanrl($line2{T0425}[0]{content}):"";
 
-    $line1=0 if (!$line1{T0425}[0]{content});
-    $line2=0 if (!$line2{T0425}[0]{content});
+    my ($yline1)=$line1=~m/(\d\d\d\d)/;
+    my ($yline2)=$line2=~m/(\d\d\d\d)/;
 
-    $line2 <=> $line1;
+    $yline1=0 if (!defined $yline1);
+    $yline2=0 if (!defined $yline2);
+
+    $yline2 <=> $yline1;
 }
 
 
@@ -740,8 +746,8 @@ sub by_publisher {
     my %line1=%$a;
     my %line2=%$b;
 
-    my $line1=cleanrl($line1{T0412}[0]{content}) if ($line1{T0412}[0]{content});
-    my $line2=cleanrl($line2{T0412}[0]{content}) if ($line2{T0412}[0]{content});
+    my $line1=(exists $line1{T0412}[0]{content} && defined $line1{T0412}[0]{content})?cleanrl($line1{T0412}[0]{content}):"";
+    my $line2=(exists $line2{T0412}[0]{content} && defined $line2{T0412}[0]{content})?cleanrl($line2{T0412}[0]{content}):"";
 
     $line1 cmp $line2;
 }
@@ -750,8 +756,8 @@ sub by_publisher_down {
     my %line1=%$a;
     my %line2=%$b;
 
-    my $line1=cleanrl($line1{T0412}[0]{content}) if ($line1{T0412}[0]{content});
-    my $line2=cleanrl($line2{T0412}[0]{content}) if ($line2{T0412}[0]{content});
+    my $line1=(exists $line1{T0412}[0]{content} && defined $line1{T0412}[0]{content})?cleanrl($line1{T0412}[0]{content}):"";
+    my $line2=(exists $line2{T0412}[0]{content} && defined $line2{T0412}[0]{content})?cleanrl($line2{T0412}[0]{content}):"";
 
     $line2 cmp $line1;
 }
@@ -761,8 +767,8 @@ sub by_signature {
     my %line2=%$b;
 
     # Sortierung anhand erster Signatur
-    my $line1=cleanrl($line1{X0014}[0]{content}) if ($line1{X0014}[0]{content});
-    my $line2=cleanrl($line2{X0014}[0]{content}) if ($line2{X0014}[0]{content});
+    my $line1=(exists $line1{X0014}[0]{content} && defined $line1{X0014}[0]{content})?cleanrl($line1{X0014}[0]{content}):"0";
+    my $line2=(exists $line2{X0014}[0]{content} && defined $line2{X0014}[0]{content})?cleanrl($line2{X0014}[0]{content}):"0";
 
     $line1 cmp $line2;
 }
@@ -772,8 +778,8 @@ sub by_signature_down {
     my %line2=%$b;
 
     # Sortierung anhand erster Signatur
-    my $line1=cleanrl($line1{X0014}[0]{content}) if ($line1{X0014}[0]{content});
-    my $line2=cleanrl($line2{X0014}[0]{content}) if ($line2{X0014}[0]{content});
+    my $line1=(exists $line1{X0014}[0]{content} && defined $line1{X0014}[0]{content})?cleanrl($line1{X0014}[0]{content}):"";
+    my $line2=(exists $line2{X0014}[0]{content} && defined $line2{X0014}[0]{content})?cleanrl($line2{X0014}[0]{content}):"";
 
     $line2 cmp $line1;
 }
@@ -782,8 +788,8 @@ sub by_author {
     my %line1=%$a;
     my %line2=%$b;
 
-    my $line1=cleanrl($line1{PC0001}[0]{content}) if ($line1{PC0001}[0]{content});
-    my $line2=cleanrl($line2{PC0001}[0]{content}) if ($line2{PC0001}[0]{content});
+    my $line1=(exists $line1{PC0001}[0]{content} && defined $line1{PC0001}[0]{content})?cleanrl($line1{PC0001}[0]{content}):"";
+    my $line2=(exists $line2{PC0001}[0]{content} && defined $line2{PC0001}[0]{content})?cleanrl($line2{PC0001}[0]{content}):"";
 
     $line1 cmp $line2;
 }
@@ -792,8 +798,8 @@ sub by_author_down {
     my %line1=%$a;
     my %line2=%$b;
 
-    my $line1=cleanrl($line1{PC0001}[0]{content}) if ($line1{PC0001}[0]{content});
-    my $line2=cleanrl($line2{PC0001}[0]{content}) if ($line2{PC0001}[0]{content});
+    my $line1=(exists $line1{PC0001}[0]{content} && defined $line1{PC0001}[0]{content})?cleanrl($line1{PC0001}[0]{content}):"";
+    my $line2=(exists $line2{PC0001}[0]{content} && defined $line2{PC0001}[0]{content})?cleanrl($line2{PC0001}[0]{content}):"";
 
     $line2 cmp $line1;
 }
@@ -802,8 +808,8 @@ sub by_title {
     my %line1=%$a;
     my %line2=%$b;
 
-    my $line1=cleanrl($line1{T0331}[0]{content}) if ($line1{T0331}[0]{content});
-    my $line2=cleanrl($line2{T0331}[0]{content}) if ($line2{T0331}[0]{content});
+    my $line1=(exists $line1{T0331}[0]{content} && defined $line1{T0331}[0]{content})?cleanrl($line1{T0331}[0]{content}):"";
+    my $line2=(exists $line2{T0331}[0]{content} && defined $line2{T0331}[0]{content})?cleanrl($line2{T0331}[0]{content}):"";
 
     $line1 cmp $line2;
 }
@@ -812,8 +818,8 @@ sub by_title_down {
     my %line1=%$a;
     my %line2=%$b;
 
-    my $line1=cleanrl($line1{T0331}[0]{content}) if ($line1{T0331}[0]{content});
-    my $line2=cleanrl($line2{T0331}[0]{content}) if ($line2{T0331}[0]{content});
+    my $line1=(exists $line1{T0331}[0]{content} && defined $line1{T0331}[0]{content})?cleanrl($line1{T0331}[0]{content}):"";
+    my $line2=(exists $line2{T0331}[0]{content} && defined $line2{T0331}[0]{content})?cleanrl($line2{T0331}[0]{content}):"";
 
     $line2 cmp $line1;
 }
@@ -910,6 +916,9 @@ sub updatelastresultset {
         # Eintraege merken fuer Lastresultset
         my $katkey      = $outidx{id};
         my $resdatabase = $outidx{database};
+
+	$logger->debug("Katkey: $katkey - Database: $resdatabase");
+
         push @nresultset, "$resdatabase:$katkey";
     }
 

@@ -29,6 +29,8 @@
 
 use 5.008001;
 
+#use warnings;
+
 my $dir=`pwd`;
 chop $dir;
 
@@ -40,11 +42,15 @@ my $inverted_aut_ref={
 my $inverted_kor_ref={
     '0001' => 1, # Ansetzung
     '0102' => 1, # Verweisform
+    '0103' => 1, # Abkuerzung der Verweisform
+    '0110' => 1, # Abkuerzung der Ansetzung
+    '0111' => 1, # Frueherer/Spaeterer Name
 };
 
 my $inverted_not_ref={
     '0001' => 1, # Ansetzung
     '0002' => 1, # Ansetzung
+    '0102' => 1, # Stichwort
     '0103' => 1, # Verweisform
 };
 
@@ -176,6 +182,69 @@ foreach my $type (keys %{$stammdateien_ref}){
   close(IN);
 }
 
+
+#######################3
+
+$stammdateien_ref->{mex} = {
+    infile  => "mex.exp",
+    outfile => "mex.mysql",
+    inverted_ref => $inverted_mex_ref,
+};
+
+print STDERR "Bearbeite mex.exp\n";
+
+open(IN , "<"     ,"mex.exp"  ) || die "IN konnte nicht geoeffnet werden";
+open(OUT, ">:utf8","mex.mysql") || die "OUT konnte nicht geoeffnet werden";
+open(OUTCONNECTION, ">:utf8","connection.mysql"   )  || die "OUTCONNECTION konnte nicht geoeffnet werden";
+
+my $id;
+CATLINE:
+while (my $line=<IN>){
+    my ($category,$indicator,$content);
+    if ($line=~m/^0000:(\d+)$/){
+        $id=$1;
+        next CATLINE;
+    }
+    elsif ($line=~m/^9999:/){
+        next CATLINE;
+    }
+    elsif ($line=~m/^(\d+)\.(\d+):(.*$)/){
+        ($category,$indicator,$content)=($1,$2,$3);
+    }
+    elsif ($line=~m/^(\d+):(.*$)/){
+        ($category,$content)=($1,$2);
+    }
+    
+    my $contentnorm   = "";
+    my $contentnormft = "";
+
+    if ($category && $content){
+
+        if (exists $stammdateien_ref->{mex}{inverted_ref}->{$category}){
+	    $contentnorm   = grundform($content);
+	    $contentnormft = $contentnorm;
+
+	    push @{$stammdateien_ref->{mex}{data}{$id}}, $contentnormft;
+	}
+
+        # Verknupefungen
+        if ($category=~m/^0004/){
+            my ($sourceid)=$content=~m/^(\d+)/;
+            my $sourcetype="tit";
+            my $targettype="mex";
+            my $targetid=$id;
+            my $supplement="";
+            my $category="";
+            print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+        }
+    
+        print OUT "$id$category$indicator$content$contentnorm$contentnormft\n";
+    }
+}
+
+close(OUT);
+close(IN);
+
 $stammdateien_ref->{tit} = {
     infile  => "tit.exp",
     outfile => "tit.mysql",
@@ -184,10 +253,9 @@ $stammdateien_ref->{tit} = {
 
 print STDERR "Bearbeite tit.exp\n";
 
-open(IN , "<","tit.exp" ) || die "IN konnte nicht geoeffnet werden";
-open(OUT,           ">:utf8","tit.mysql"          )  || die "OUT konnte nicht geoeffnet werden";
-open(OUTCONNECTION, ">:utf8","connection.mysql"   )  || die "OUT konnte nicht geoeffnet werden";
-open(OUTSEARCH,     ">:utf8","search.mysql"   )      || die "OUT konnte nicht geoeffnet werden";
+open(IN ,           "<"     ,"tit.exp"      ) || die "IN konnte nicht geoeffnet werden";
+open(OUT,           ">:utf8","tit.mysql"    ) || die "OUT konnte nicht geoeffnet werden";
+open(OUTSEARCH,     ">:utf8","search.mysql" ) || die "OUT konnte nicht geoeffnet werden";
 
 my @verf      = ();
 my @kor       = ();
@@ -201,7 +269,6 @@ my @issn      = ();
 my @artinh    = ();
 my @ejahr     = ();
 
-my $id;
 CATLINE:
 while (my $line=<IN>){
     my ($category,$indicator,$content);
@@ -232,23 +299,27 @@ while (my $line=<IN>){
         }
         my $verf      = join(" ",@temp);
 
-        my @temp=();
+        @temp=();
         foreach my $item (@kor){
             push @temp, join(" ",@{$stammdateien_ref->{kor}{data}{$item}});
         }
         my $kor      = join(" ",@temp);
 
-        my @temp=();
+        @temp=();
         foreach my $item (@swt){
             push @temp, join(" ",@{$stammdateien_ref->{swt}{data}{$item}});
         }
         my $swt      = join(" ",@temp);
 
-        my @temp=();
+        @temp=();
         foreach my $item (@notation){
             push @temp, join(" ",@{$stammdateien_ref->{notation}{data}{$item}});
         }
         my $notation = join(" ",@temp);
+
+        @temp=();
+	push @temp, join(" ",@{$stammdateien_ref->{mex}{data}{$id}});
+        my $mex = join(" ",@temp);
         
 #        my $verf      = join(" ",@{$stammdateien_ref->{aut}{data}{$id}});
 #        my $kor       = join(" ",@{$stammdateien_ref->{kor}{data}{$id}});
@@ -256,13 +327,12 @@ while (my $line=<IN>){
 #        my $notation  = join(" ",@{$stammdateien_ref->{notation}{data}{$id}});
         my $hst       = join(" ",@hst);
         my $hststring = join(" ",@hststring);
-        my $sign      = join(" ",@sign);
         my $isbn      = join(" ",@isbn);
         my $issn      = join(" ",@issn);
         my $artinh    = join(" ",@artinh);
         my $ejahr     = join(" ",@ejahr);
         
-        print OUTSEARCH "NULL$id$verf$hst$kor$swt$notation$sign$ejahr$isbn$issn$artinh$hststring\n";
+        print OUTSEARCH "NULL$id$verf$hst$kor$swt$notation$mex$ejahr$isbn$issn$artinh$hststring\n";
 
         next CATLINE;
     }
@@ -527,9 +597,6 @@ while (my $line=<IN>){
             elsif (exists $search_category_ref->{artinh   }{$category}){
                 push @artinh, grundform($content);
             }
-            elsif (exists $search_category_ref->{sign     }{$category}){
-                push @sign, grundform($content);
-            }
 
             print OUT "$id$category$indicator$content$contentnorm$contentnormft\n";
         }	
@@ -540,52 +607,6 @@ close(OUTCONNECTION);
 close(OUTSEARCH);
 close(IN);
 
-#######################3
-
-$stammdateien_ref->{mex} = {
-    infile  => "mex.exp",
-    outfile => "mex.mysql",
-    inverted_ref => $inverted_mex_ref,
-};
-
-print STDERR "Bearbeite mex.exp\n";
-
-open(IN , "<"     ,"mex.exp"  ) || die "IN konnte nicht geoeffnet werden";
-open(OUT, ">:utf8","mex.mysql") || die "OUT konnte nicht geoeffnet werden";
-
-my $id;
-CATLINE:
-while (my $line=<IN>){
-    my ($category,$indicator,$content);
-    if ($line=~m/^0000:(\d+)$/){
-        $id=$1;
-        next CATLINE;
-    }
-    elsif ($line=~m/^9999:/){
-        next CATLINE;
-    }
-    elsif ($line=~m/^(\d+)\.(\d+):(.*$)/){
-        ($category,$indicator,$content)=($1,$2,$3);
-    }
-    elsif ($line=~m/^(\d+):(.*$)/){
-        ($category,$content)=($1,$2);
-    }
-    
-    my $contentnorm   = "";
-    my $contentnormft = "";
-    if (exists $stammdateien_ref->{mex}{inverted_ref}->{$category}){
-        $contentnorm   = grundform($content);
-        $contentnormft = $contentnorm;
-        
-        push @{$stammdateien_ref->{mex}{data}{$id}}, $contentnormft;
-    }
-    
-    if ($category && $content){
-        print OUT "$id$category$indicator$content$contentnorm$contentnormft\n";
-    }
-}
-close(OUT);
-close(IN);
 
 #######################
 

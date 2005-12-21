@@ -80,7 +80,6 @@ Mex:
                 'T0370', # WST
                 'T0341', # PSTVorlage
                 'T0361', # Beig.Werke
-                'T0662', # EDVurl
                 'T0333', # Zu erg. Urheber/HST Urheber
                 'T0335', # Zusatz zum HST
                 'Txxx1', # Vorlage beigef. Werk
@@ -106,6 +105,8 @@ Mex:
                 'T0435', # Format
                 'T0508', # Quelle
                 'T0433', # Kollation
+                'T0334', # Material
+                'T0662', # EDVurl
                 'T0451', # GesTit Vorl
                 'T0590', # HSTQuelle
                 'Txxx8', # Mat.Benennung
@@ -166,6 +167,9 @@ FOREACH category IN categories;
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsinglekor=${item.id}";
          content   = "<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
+    CASE "T0662";
+         content   = "<a href=\"${content}\" target=\"_blank\">${content}</a>";
+
     CASE [ "T0710" "T0902" "T0907" "T0912" "T0917" "T0922" "T0927" "T0932" "T0937" "T0942" "T0947" ];
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;swt=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsingleswt=${item.id}";
@@ -173,7 +177,7 @@ FOREACH category IN categories;
 
     CASE "T0700";
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;swt=%22${item.content}%22";
-         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsingleswt=${item.id}";
+         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsinglenot=${item.id}";
          content   = "<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE "T5001";
@@ -181,6 +185,7 @@ FOREACH category IN categories;
 
     CASE "T5002";
          content   = "<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};subtit=${normset.id};generalsearch=subtit\">${content}</a>";
+
     END;
 -%]
 <tr><td class="category">[% i18nmsg.$category %]</td><td>[% content %]</td></tr>

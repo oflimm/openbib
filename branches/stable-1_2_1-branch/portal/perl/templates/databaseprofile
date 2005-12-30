@@ -58,8 +58,6 @@ Derzeit angezeigtes Profil: <b>[% profilname %]</b>
 [% END %]
 
 <p />
-<input type="submit" name="action" value="Kataloge ausw&auml;hlen" />&nbsp;<input type="reset" value="Urspr&uuml;ngliche Auswahl wiederherstellen" />
-<p />
 
 
 
@@ -101,8 +99,6 @@ Derzeit angezeigtes Profil: <b>[% profilname %]</b>
 [%- END -%]
 [%- END -%]
 </table>
-<p />
-<input type="submit" name="action" value="Kataloge ausw&auml;hlen" />&nbsp;<input type="reset" value="Urspr&uuml;ngliche Auswahl wiederherstellen" />
 </form>
 <p />
 

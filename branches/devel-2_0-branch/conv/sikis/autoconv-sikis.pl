@@ -31,8 +31,8 @@
 # Einladen der benoetigten Perl-Module 
 #####################################################################
 
-use Getopt::Long;
 use DBI;
+use Getopt::Long;
 
 use OpenBib::Config;
 
@@ -45,7 +45,6 @@ use vars qw(%config);
 
 &GetOptions("single-pool=s" => \$singlepool,
 	    "get-via-wget"  => \$getviawget,
-	    "fastload"      => \$fastload,
 	    "help"          => \$help
 	    );
 
@@ -63,7 +62,6 @@ $meta2waisexe  = "$config{'conv_dir'}/meta2wais.pl";
 $wais2sqlexe   = "$config{'conv_dir'}/wais2searchSQL.pl";
 $mysqlexe      = "/usr/bin/mysql -u $config{'dbuser'} --password=$config{'dbpasswd'} -f";
 $mysqladminexe = "/usr/bin/mysqladmin -u $config{'dbuser'} --password=$config{'dbpasswd'} -f";
-$myisamchkexe  = "/usr/bin/myisamchk --tmpdir=$config{'base_dir'}/tmp";
 
 if (!$singlepool){
   print STDERR "Kein Pool mit --single-pool= ausgewaehlt\n";
@@ -152,22 +150,17 @@ system("/bin/gzip -dc $pooldir/$singlepool/$mexfilename > $rootdir/data/$singlep
 
 print "### $singlepool: Konvertierung Exportdateien -> SQL\n";
 
-system("cd $rootdir/data/$singlepool ; $meta2sqlexe -all -mysql");
+system("cd $rootdir/data/$singlepool ; $meta2sqlexe -utf8 ");
 
-# Konvertierung Exportdateien -> WAIS
-
-#print "### $singlepool: Konvertierung Exportdateien -> WAIS\n";
-#system("cd $rootdir/data/$singlepool ; $meta2waisexe -encoding -combined ; rm *.exp ; $wais2sqlexe < data.wais ; rm data.wais");
-
-print "### $singlepool: Loeschen der Daten in Biblio\n";
+print "### $singlepool: Loeschen der Daten\n";
 
 # Fuer das Einladen externer SQL-Daten mit 'load' wird das File_priv
 # fuer den Benutzer dbuser benoetigt
 
 system("$mysqlexe $singlepool < $config{'dbdesc_dir'}/mysql/pool.mysql");
 
-# Einladen der Daten nach Biblio
-print "### $singlepool: Einladen der Daten nach Biblio\n";
+# Einladen der Daten
+print "### $singlepool: Einladen der Daten\n";
 system("$mysqlexe $singlepool < $rootdir/data/$singlepool/control.mysql");
 
 #if ($singlepool eq "instzs"){
@@ -182,30 +175,9 @@ system("$mysqlexe $singlepool < $rootdir/data/$singlepool/control.mysql");
 #  system("$mysqlexe -e \"update mex set standort='' where standort='USB-Magazin'\" instzs");
 #}
 
-# Kopieren der WAIS-Daten
-
-#print "### $singlepool: Einladen der Search-Daten\n";
-
-#if ($fastload){
-#  system("$mysqlexe $singlepool -e \"truncate table search\"");
-
-  # Fuer flush-tables wird das Reload_priv fuer den Benutzer
-  # dbuser benoetigt
-  
-#  system("$mysqladminexe flush-tables");
-#  system("$myisamchkexe --keys-used=0 -rq /var/lib/mysql/$singlepool/search");
-#  system("$mysqlexe $singlepool -e \"load data infile '$rootdir/data/$singlepool/search.sql' into table search fields terminated by '|' \" ");
-#  system("$myisamchkexe -r -q /var/lib/mysql/$singlepool/search");
-#  system("$mysqladminexe flush-tables");
-#}
-#else {
-#  system("cd $rootdir/data/$singlepool ; $mysqlexe $singlepool -e \"load data infile '$rootdir/data/$singlepool/search.sql' into table search fields terminated by '|'\" ");
-#}
-
-
 print "### $singlepool: Updating Titcount\n";
 
-#system("$config{'base_dir'}/bin/updatetitcount.pl --single-pool=$singlepool");
+system("$config{'base_dir'}/bin/updatetitcount.pl --single-pool=$singlepool");
 
 print "### $singlepool: Cleanup\n";
 system("rm $rootdir/data/$singlepool/*");
@@ -215,7 +187,6 @@ sub print_help {
     print "Optionen: \n";
     print "  -help                 : Diese Informationsseite\n\n";
     print "  -get-via-wget         : Hole Pool automatisch mit wget\n";
-    print "  -fastload             : Beschleunigtes Einladen via myisamchk\n";
     print "  --single-pool=...     : Angegebenen Datenpool verwenden\n";
     exit;
 }

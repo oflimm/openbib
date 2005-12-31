@@ -71,7 +71,12 @@ sub handler {
     # CGI-Uebergabe
     my $sessionID  = ($query->param('sessionID'))?$query->param('sessionID'):'';
     my @databases  = ($query->param('database'))?$query->param('database'):();
-    my $action     = ($query->param('action'))?$query->param('action'):'';
+
+    # Main-Actions
+    my $do_showprofile = $query->param('do_showprofile') || '';
+    my $do_saveprofile = $query->param('do_saveprofile') || '';
+    my $do_delprofile  = $query->param('do_delprofile' ) || '';
+
     my $newprofile = $query->param('newprofile') || '';
     my $profilid   = $query->param('profilid')   || '';
 
@@ -120,7 +125,7 @@ sub handler {
     # Anzeigen der Profilmanagement-Seite
     #####################################################################   
 
-    if ($action eq "show" || $action eq "Profil anzeigen") {
+    if ($do_showprofile) {
         my $profilname="";
     
         if ($profilid) {
@@ -255,7 +260,7 @@ sub handler {
     # Abspeichern eines Profils
     #####################################################################   
 
-    elsif ($action eq "Profil speichern") {
+    elsif ($do_saveprofile) {
     
         # Wurde ueberhaupt ein Profilname eingegeben?
         if (!$newprofile) {
@@ -302,10 +307,10 @@ sub handler {
             $profilresult->execute($profilid,$database) or $logger->error($DBI::errstr);
             $profilresult->finish();
         }
-        $r->internal_redirect("http://$config{servername}$config{databaseprofile_loc}?sessionID=$sessionID&action=show");
+        $r->internal_redirect("http://$config{servername}$config{databaseprofile_loc}?sessionID=$sessionID&do_showprofile=1");
     }
     # Loeschen eines Profils
-    elsif ($action eq "Profil löschen") {
+    elsif ($do_delprofile) {
         my $profilresult=$userdbh->prepare("delete from userdbprofile where userid = ? and profilid = ?") or $logger->error($DBI::errstr);
         $profilresult->execute($userid,$profilid) or $logger->error($DBI::errstr);
     
@@ -314,7 +319,7 @@ sub handler {
     
         $profilresult->finish();
 
-        $r->internal_redirect("http://$config{servername}$config{databaseprofile_loc}?sessionID=$sessionID&action=show");
+        $r->internal_redirect("http://$config{servername}$config{databaseprofile_loc}?sessionID=$sessionID&do_showprofile=1");
     }
     # ... andere Aktionen sind nicht erlaubt
     else {

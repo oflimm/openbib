@@ -37,7 +37,7 @@ Nachdem Sie Ihre Auswahl getroffen haben aktivieren Sie bitte <b>Kataloge ausw&a
 </td></tr>
 </table>
 <p />
-<input type="submit" name="action" value="Kataloge ausw&auml;hlen" />&nbsp;<input type="reset" value="Urspr&uuml;ngliche Auswahl wiederherstellen" />
+<input type="submit" name="do_choose" value="Kataloge auswählen" />&nbsp;<input type="reset" value="Urspr&uuml;ngliche Auswahl wiederherstellen" />
 <p />
 <table>
 <tr class="titlerow"><td colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /><b>Alle Kataloge</b></td></tr>
@@ -78,7 +78,7 @@ Nachdem Sie Ihre Auswahl getroffen haben aktivieren Sie bitte <b>Kataloge ausw&a
 [%- END -%]
 </table>
 <p />
-<input type="submit" name="action" value="Kataloge ausw&auml;hlen" />&nbsp;<input type="reset" value="Urspr&uuml;ngliche Auswahl wiederherstellen" />
+<input type="submit" name="do_choose" value="Kataloge auswählen" />&nbsp;<input type="reset" value="Urspr&uuml;ngliche Auswahl wiederherstellen" />
 </form>
 <p />
 

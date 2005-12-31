@@ -32,7 +32,7 @@
 <select name="queryid">
 [% prevqueries %]
 </select>
-<input type="submit" name="action" value="Als Suchvorlage" />&nbsp;&nbsp;<input type="submit" name="action" value="Zur Trefferliste" />&nbsp;&nbsp;<input type="submit" name="action" value="Weiter als externe Recherche" style="background-color:#99CCFF" />
+<input type="submit" name="do_newquery" value="Als Suchvorlage" />&nbsp;&nbsp;<input type="submit" name="do_resultlist" value="Zur Trefferliste" />&nbsp;&nbsp;<input type="submit" name="do_externalquery" value="Weiter als externe Recherche" style="background-color:#99CCFF" />
 </td></tr>
 </table>
 </form>

@@ -68,19 +68,23 @@ sub handler {
     }
   
     my $sessionID = ($query->param('sessionID'))?$query->param('sessionID'):'';
-    my $action    = ($query->param('action'))?$query->param('action'):'';
     my $view      = ($query->param('view'))?$query->param('view'):'';
     my $queryid   = $query->param('queryid') || '';
 
-    if ($action eq "Als Suchvorlage") {
+    # Main-Actions
+    my $do_newquery      = $query->param('do_newquery')      || '';
+    my $do_resultlist    = $query->param('do_resultlist')    || '';
+    my $do_externalquery = $query->param('do_externalquery') || '';
+    
+    if    ($do_newquery) {
         $r->internal_redirect("http://$config{servername}$config{searchframe_loc}?sessionID=$sessionID&queryid=$queryid&view=$view");
         return OK;
     }
-    elsif ($action eq "Zur Trefferliste") {
+    elsif ($do_resultlist) {
         $r->internal_redirect("http://$config{servername}$config{resultlists_loc}?sessionID=$sessionID&view=$view&trefferliste=choice&queryid=$queryid");
         return OK;
     }
-    elsif ($action eq "Weiter als externe Recherche") {
+    elsif ($do_externalquery) {
         $r->internal_redirect("http://$config{servername}$config{externaljump_loc}?sessionID=$sessionID&view=$view&queryid=$queryid");
         return OK;
     }

@@ -78,7 +78,12 @@ sub handler {
     my $loginname = ($query->param('loginname'))?$query->param('loginname'):'';
     my $password  = ($query->param('password'))?$query->param('password'):'';
     my $sessionID = $query->param('sessionID');
-  
+
+    # Main-Actions
+    my $do_login       = $query->param('do_login')        || '';
+    my $do_auth        = $query->param('do_auth' )        || '';
+    my $do_loginfailed = $query->param('do_loginfailed')  || '';
+    
     my $sessiondbh
         = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
@@ -113,7 +118,7 @@ sub handler {
         $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
     }
   
-    if ($action eq "login") {
+    if ($do_login) {
         my $targetresult=$userdbh->prepare("select * from logintarget order by type DESC,description") or $logger->error($DBI::errstr);
         $targetresult->execute() or $logger->error($DBI::errstr);
     
@@ -143,7 +148,7 @@ sub handler {
     
         OpenBib::Common::Util::print_page($config{tt_login_tname},$ttdata,$r);
     }
-    elsif ($action eq "auth") {
+    elsif ($do_auth) {
         my $loginfailed=0;
     
         if ($loginname eq "" || $password eq "") {
@@ -327,8 +332,8 @@ sub handler {
     
         OpenBib::Common::Util::print_page($config{tt_startopac_tname},$ttdata,$r);
     }
-    elsif ($action eq "loginfailed") {
-        if ($code eq "1") {
+    elsif ($do_loginfailed) {
+        if    ($code eq "1") {
             OpenBib::Common::Util::print_warning('Sie haben entweder kein Passwort oder keinen Loginnamen eingegeben',$r);
         }
         elsif ($code eq "2") {

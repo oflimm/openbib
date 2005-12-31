@@ -113,7 +113,7 @@ Sie können entweder durch entsprechende Auswahl in den insgesamt [% alldbs %] e
 <select name="queryid">
 [% prevqueries %]
 </select>
-<input type="submit" name="action" value="Zur Trefferliste" />
+<input type="submit" name="do_resultlist" value="Zur Trefferliste" />
 </form>
 [% END %]
 

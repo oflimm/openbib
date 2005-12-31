@@ -12,7 +12,7 @@
 [% IF targettype != 'self' %]
    <li><a href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc" target="body">Benutzerkonto</a></li>
 [% END %]
-   <li><a href="http://[% config.servername %][% config.databaseprofile_loc %]?sessionID=[% sessionID %];action=show" target="body">Katalogprofile</a></li>
+   <li><a href="http://[% config.servername %][% config.databaseprofile_loc %]?sessionID=[% sessionID %];do_showprofile=1" target="body">Katalogprofile</a></li>
 </ul>
 
 <div id="content">

@@ -623,7 +623,8 @@ sub get_tit_listitem_by_idn {
     }
     
     # Bestimmung der Titelinformationen
-    my $request=$dbh->prepare("select category,indicator,content from tit where id = ? and category in ('0310','0331','0412','0424','0425','1203')") or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare("select category,indicator,content from tit where id = ? and category in ('0310','0331','0412','0424','0425','0451','0455','1203')") or $logger->error($DBI::errstr);
+#    my $request=$dbh->prepare("select category,indicator,content from tit where id = ? ") or $logger->error($DBI::errstr);
     $request->execute($titidn);
 
     while (my $res=$request->fetchrow_hashref){
@@ -637,6 +638,8 @@ sub get_tit_listitem_by_idn {
         };
     }
 
+    $logger->debug("Titel: ".$listitem_ref);
+    
     # Bestimmung der Exemplarinformationen
     $request=$dbh->prepare("select mex.category,mex.indicator,mex.content from mex,connection where connection.sourceid = ? and connection.targetid=mex.id and connection.sourcetype='tit' and connection.targettype='mex' and mex.category='0014'") or $logger->error($DBI::errstr);
     $request->execute($titidn);
@@ -753,9 +756,9 @@ sub get_tit_listitem_by_idn {
 
     # Ab jetzt hochhangeln zum uebergeordneten Titel, wenn im lokalen keine
     # AST bzw. HST vorhanden
-    if ((!exists $listitem_ref->{0310}{content}) && (!exists $listitem_ref->{0331}{content})){
+    if ((!exists $listitem_ref->{T0310}{content}) && (!exists $listitem_ref->{T0331}{content}) && (!exists $listitem_ref->{T0451}{content})){
         my @superids=();
-
+        
         # Bestimmung der uebergeordneten Titel
         $request=$dbh->prepare("select targetid,category,supplement from connection where sourceid=? and sourcetype='tit' and targettype='tit'") or $logger->error($DBI::errstr);
         $request->execute($titidn);
@@ -763,12 +766,12 @@ sub get_tit_listitem_by_idn {
         while (my $res=$request->fetchrow_hashref){
             push @superids, decode_utf8($res->{targetid});
         }
-
+        
       HSTSEARCH:
         foreach my $superid (@superids){
             # Bestimmung der Titelinformationen
             my $superrequest=$dbh->prepare("select * from tit where id = ? and category in ('0331','0310')") or $logger->error($DBI::errstr);
-            $superrequest->execute($titidn);
+            $superrequest->execute($superid);
 
             my $superitem_ref={};
             while (my $superres=$superrequest->fetchrow_hashref){
@@ -791,11 +794,15 @@ sub get_tit_listitem_by_idn {
                 last HSTSEARCH;
             }
         }
-
-        if (! exists $listitem_ref->{T0331}){
-            $listitem_ref->{T0331}{content}="Kein HST/AST vorhanden";
-        }
-      }
+        
+    }
+    elsif (exists $listitem_ref->{T0451}{content}){
+        $listitem_ref->{T0331}=$listitem_ref->{T0451};
+    }
+    
+    if (! exists $listitem_ref->{T0331}){
+        $listitem_ref->{T0331}{content}="Kein HST/AST vorhanden";
+    }
 
     if ($config{benchmark}) {
       $btime=new Benchmark;
@@ -1336,19 +1343,19 @@ sub get_tit_set_by_idn {
                 
                 $circexemplarliste[$i]{'Bibinfourl'}=$bibinfourl;
                 
-                my $ausleihstatus=$circexemplarliste[$i]{'Ausleihstatus'};
+                my $ausleihstatus=(exists $circexemplarliste[$i]{'Ausleihstatus'})?$circexemplarliste[$i]{'Ausleihstatus'}:"";
                 
-                my $ausleihstring;
-                if ($circexemplarliste[$i]{'Ausleihstatus'} eq "bestellbar") {
+                my $ausleihstring="";
+                if ($ausleihstatus eq "bestellbar") {
                     $ausleihstring="ausleihen?";
                 }
-                elsif ($circexemplarliste[$i]{'Ausleihstatus'} eq "bestellt") {
+                elsif ($ausleihstatus eq "bestellt") {
                     $ausleihstring="vormerken?";
                 }
-                elsif ($circexemplarliste[$i]{'Ausleihstatus'} eq "entliehen") {
+                elsif ($ausleihstatus eq "entliehen") {
                     $ausleihstring="vormerken/verlängern?";
                 }
-                elsif ($circexemplarliste[$i]{'Ausleihstatus'} eq "bestellbar") {
+                elsif ($ausleihstatus eq "bestellbar") {
                     $ausleihstring="ausleihen?";
                 }
                 else {
@@ -1358,11 +1365,11 @@ sub get_tit_set_by_idn {
                 $circexemplarliste[$i]{'Ausleihstring'}=$ausleihstring;
                 
                 if ($circexemplarliste[$i]{'Standort'}=~/Erziehungswiss/ || $circexemplarliste[$i]{'Standort'}=~/Heilp.*?dagogik-Magazin/) {
-                    $circexemplarliste[$i]{'Ausleihurl'}=$targetcircinfo_ref->{$database}{circurl}."&branch=4&KatKeySearch=$titidn";
+                    $circexemplarliste[$i]{'Ausleihurl'}=$targetcircinfo_ref->{$database}{circurl}."?Login=ewa&Query=0000=$titidn";
                 }
                 else {
                     if ($database eq "inst001" || $database eq "poetica") {
-                        $circexemplarliste[$i]{'Ausleihurl'}=$targetcircinfo_ref->{$database}{circurl}."&branch=0&KatKeySearch=$titidn";
+                        $circexemplarliste[$i]{'Ausleihurl'}=$targetcircinfo_ref->{$database}{circurl}."?Login=sisis&Query=0000=$titidn";
                     }
                     else {
                         $circexemplarliste[$i]{'Ausleihurl'}=$targetcircinfo_ref->{$database}{circurl}."&KatKeySearch=$titidn";

@@ -73,6 +73,7 @@ sub handler {
     my @databases = ($query->param('database'))?$query->param('database'):();
     my $singleidn = $query->param('singleidn') || '';
     my $action    = ($query->param('action'))?$query->param('action'):'';
+    my $do_choose = $query->param('do_choose') || '';
     my $verf      = $query->param('verf')      || '';
     my $hst       = $query->param('hst')       || '';
     my $swt       = $query->param('swt')       || '';
@@ -120,7 +121,7 @@ sub handler {
     my $idnresult="";
   
     # Wenn Kataloge ausgewaehlt wurden
-    if ($action eq "Kataloge auswählen") {
+    if ($do_choose) {
         # Zuerst die bestehende Auswahl loeschen
       
         $idnresult=$sessiondbh->prepare("delete from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);

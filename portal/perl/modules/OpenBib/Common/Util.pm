@@ -914,8 +914,8 @@ sub updatelastresultset {
         my %outidx=%$outidx_ref;
 
         # Eintraege merken fuer Lastresultset
-        my $katkey      = $outidx{id};
-        my $resdatabase = $outidx{database};
+        my $katkey      = (exists $outidx{id})?$outidx{id}:"";
+        my $resdatabase = (exists $outidx{database})?$outidx{database}:"";
 
 	$logger->debug("Katkey: $katkey - Database: $resdatabase");
 

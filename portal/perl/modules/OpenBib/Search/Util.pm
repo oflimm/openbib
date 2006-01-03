@@ -2470,10 +2470,12 @@ sub get_tit_set_by_idn {
 
     if ($circ){
 
+      my $circidn=(exists $titres1->{idn} && exists $titres1->{ida} && $titres1->{idn} != $titres1->{ida})?$titres1->{ida}:$titres1->{idn};
+
       my $soap = SOAP::Lite
 	-> uri("urn:/MediaStatus")
 	    -> proxy($circcheckurl);
-      my $result = $soap->get_mediastatus($titres1->{idn},$circdb);
+      my $result = $soap->get_mediastatus($circidn,$circdb);
       
       unless ($result->fault) {
 	$circexlist=$result->result;
@@ -2571,13 +2573,14 @@ sub get_tit_set_by_idn {
 	$circexemplarliste[$i]{'Ausleihstring'}=$ausleihstring;
 
 	if ($circexemplarliste[$i]{'Standort'}=~/Erziehungswiss/ || $circexemplarliste[$i]{'Standort'}=~/Heilp.*?dagogik-Magazin/){
-	  $circexemplarliste[$i]{'Ausleihurl'}="$circurl&branch=4&KatKeySearch=$titidn";
+	  $circexemplarliste[$i]{'Ausleihurl'}="$circurl?Login=ewa&Query=0000=$titidn";
 
 #	  print "<td><strong>$ausleihstatus</strong></td><td bgcolor=\"yellow\"><a TARGET=_blank href=\"$circurl&branch=4&KatKeySearch=$titidn\">$ausleihstring</a></td>";
 	}
 	else {
 	  if ($database eq "inst001" || $database eq "poetica"){
-	    $circexemplarliste[$i]{'Ausleihurl'}="$circurl&branch=0&KatKeySearch=$titidn";
+	    $circexemplarliste[$i]{'Ausleihurl'}="$circurl?Login=sisis&Query=0000=$titidn
+";
 #	    print "<td><strong>$ausleihstatus</strong></td><td bgcolor=\"yellow\"><a TARGET=_blank href=\"$circurl&branch=0&KatKeySearch=$titidn\">$ausleihstring</a></td>";
 	  }
 	  else {

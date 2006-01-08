@@ -73,7 +73,8 @@ Mex:
                 'T0103', # Gefeierte Person
                 'T0200', # Urheber
                 'T0201', # Koerperschaft
-                'T0310', # AST
+                'T0089', # Bandangabe  
+                'T0310', # AST  
                 'T0304', # EST 
                 'T0331', # HST
                 'T0300', # Sammlungsvermerk
@@ -82,20 +83,17 @@ Mex:
                 'T0361', # Beig.Werke
                 'T0333', # Zu erg. Urheber/HST Urheber
                 'T0335', # Zusatz zum HST
-                'Txxx1', # Vorlage beigef. Werk
-                'Txxx2', # Gemeins. Angaben
-                'Txxx3', # Sachl.Ben.
+                'T0361', # Vorlage beigef. Werk
+                'T0365', # Gemeins. Angaben
                 'T0359', # Vorl. Verfasser/Koerperschaft
-                'Txxx4', # Vorl. Unterreihe
+                'T0360', # Vorl. Unterreihe
                 'T0403', # Auflage
                 'T0410', # Verlagsort
                 'T0412', # Verlag
-                'Txxx5', # Weitere Orte
-                'Txxx6', # Aufnahmeort
-                'Txxx7', # Aufnahmejahr
                 'T0425', # ErschJahr
                 'T0424', # ErschJahr/Ansetzung
                 'T0405', # Erscheinungsverlauf
+                'T0523', # Erscheinungsweise
                 'T0591', # Verfasser Quelle
                 'T0594', # ErschOrt Quelle
                 'T0595', # ErschJahr Quelle
@@ -107,26 +105,42 @@ Mex:
                 'T0433', # Kollation
                 'T0334', # Material
                 'T0662', # EDVurl
+                'T2662', # USB EDVurl
+                'T2663', # USB URLInfo
+                'T0652', # EDV Material
+                'T0655', # EDV Adress
                 'T0451', # GesTit Vorl
                 'T0590', # HSTQuelle
-                'Txxx8', # Mat.Benennung
-                'Txxx9', # Sonst Mat.Benennung
-                'Txx10', # Sonst. Ang.
-                'Txx11', # Begleitmat.
+                'T0407', # Massstab
+                'T0434', # Sonst. Angaben
+                'T0437', # Begleitmat.
                 'T0501', # Fussnoten
-                'Txx12', # Ang. HST
+                'T0504', # PST Fussnote
+                'T0505', # WST Fussnote
+                'T0507', # Ang. HST
+                'T0509', # Verfasser Fussnote
+                'T0510', # Ausgabe Fussnote
+                'T0511', # Erschverm. Fussnote
+                'T0512', # Koll. Fussnote
+                'T0513', # Impress. Aend.
+                'T0515', # Ergaenzt. GesamtTitel
+                'T0522', # Teilungsvermerk
+                'T0525', # Herkunft Fussnote
+                'T0534', # Titelkonk.
+                'T0535', # Anz. Ex.
+                'T0536', # Vorr. Erschtermin
                 'T0527', # Parallel Ausg.
                 'T0529', # Titbeilage
                 'T0530', # Bezugswerk
                 'T0531', # FruehAusgabe
                 'T0532', # FruehTit
                 'T0533', # SpaetAusgabe
-                'Txx13', # BindPreis
                 'T0519', # HSSVermerk
-                'Txx14', # Sprache
+                'T0619', # Jahr Vorlage
+                'T0646', # Filmbesitz
+                'T0516', # Sprache
                 'T0750', # Abstract
-                'Txx15', # Mass.
-                'Txx16', # Uebers. HST
+                'T0503', # Uebers. HST
                 'T0026', # NE/R
                 'T0800', # Art/Inhalt Medienart
                 'T0710', # Schlagwort
@@ -167,7 +181,7 @@ FOREACH category IN categories;
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsinglekor=${item.id}";
          content   = "<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
-    CASE "T0662";
+    CASE [ "T0662" "T2662" ];
          content   = "<a href=\"${content}\" target=\"_blank\">${content}</a>";
 
     CASE [ "T0710" "T0902" "T0907" "T0912" "T0917" "T0922" "T0927" "T0932" "T0937" "T0942" "T0947" ];

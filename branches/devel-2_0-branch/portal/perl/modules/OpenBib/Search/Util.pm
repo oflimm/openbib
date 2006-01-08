@@ -623,7 +623,7 @@ sub get_tit_listitem_by_idn {
     }
     
     # Bestimmung der Titelinformationen
-    my $request=$dbh->prepare("select category,indicator,content from tit where id = ? and category in ('0310','0331','0412','0424','0425','0451','0455','1203')") or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare("select category,indicator,content from tit where id = ? and category in ('0310','0331','0412','0424','0425','0451','0455','1203','0089')") or $logger->error($DBI::errstr);
 #    my $request=$dbh->prepare("select category,indicator,content from tit where id = ? ") or $logger->error($DBI::errstr);
     $request->execute($titidn);
 
@@ -754,55 +754,126 @@ sub get_tit_listitem_by_idn {
 
     $request->finish();
 
-    # Ab jetzt hochhangeln zum uebergeordneten Titel, wenn im lokalen keine
-    # AST bzw. HST vorhanden
-    if ((!exists $listitem_ref->{T0310}{content}) && (!exists $listitem_ref->{T0331}{content}) && (!exists $listitem_ref->{T0451}{content})){
-        my @superids=();
-        
-        # Bestimmung der uebergeordneten Titel
-        $request=$dbh->prepare("select targetid,category,supplement from connection where sourceid=? and sourcetype='tit' and targettype='tit'") or $logger->error($DBI::errstr);
-        $request->execute($titidn);
-        
-        while (my $res=$request->fetchrow_hashref){
-            push @superids, decode_utf8($res->{targetid});
-        }
-        
-      HSTSEARCH:
-        foreach my $superid (@superids){
-            # Bestimmung der Titelinformationen
-            my $superrequest=$dbh->prepare("select * from tit where id = ? and category in ('0331','0310')") or $logger->error($DBI::errstr);
-            $superrequest->execute($superid);
+    $logger->debug("Vor Sonderbehandlung: ".YAML::Dump($listitem_ref));
 
-            my $superitem_ref={};
-            while (my $superres=$superrequest->fetchrow_hashref){
-                my $category  = "T".decode_utf8($superres->{category });
-                my $indicator =     decode_utf8($superres->{indicator});
-                my $content   =     decode_utf8($superres->{content  });
+    # Konzeptionelle Vorgehensweise fuer die korrekte Anzeige eines Titel in
+    # der Kurztitelliste:
+    #
+    # 1. Fall: Es existiert kein HST(331)
+    #
+    # Dann:
+    #
+    # Unterfall 1.1: Es existiert eine (erste) Bandzahl(089)
+    #
+    # Dann: Verwende diese Bandzahl
+    #
+    # Unterfall 1.2: Es existiert keine Bandzahl(089), aber eine (erste)
+    #                Bandzahl(455)
+    #
+    # Dann: Verwende diese Bandzahl
+    #
+    # Unterfall 1.3: Es existieren keine Bandzahlen, aber ein (erster)
+    #                Gesamttitel(451)
+    #
+    # Dann: Verwende diesen GT
+    #
+    # Unterfall 1.4: Es existieren keine Bandzahlen, kein Gesamttitel(451),
+    #                aber eine Zeitschriftensignatur(1203/USB-spezifisch)
+    #
+    # Dann: Verwende diese Zeitschriftensignatur
+    #
+    # 2. Fall: Es existiert ein HST
+    #
+    # Dann:
+    #
+    # Unterfall 2.1: Es existiert eine (erste) Bandzahl(089)
+    #
+    # Dann: Setze diese Bandzahl vor den AST/HST
+    #
+    # Unterfall 2.2: Es existiert keine Bandzahl(089), aber eine (erste)
+    #                Bandzahl(455)
+    #
+    # Dann: Setze diese Bandzahl vor den AST/HST
+    #
+    if (!exists $listitem_ref->{T0331}[0]{content}){
+
+        # UnterFall 1.1:
+        if (exists $listitem_ref->{'T0089'}[0]{content}){
+            $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0089}[0]{content};
+        }
+        # Unterfall 1.2:
+        elsif (exists $listitem_ref->{T0455}[0]{content}){
+            $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0455}[0]{content};
+        }
+        # Unterfall 1.3:
+        elsif (exists $listitem_ref->{T0451}[0]{content}){
+            $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0451}[0]{content};
+        }
+        # Unterfall 1.4:
+        elsif (exists $listitem_ref->{T1203}[0]{content}){
+            $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T1203}[0]{content};
+        }
+        else {
+            $listitem_ref->{T0331}[0]{content}="Kein HST/AST vorhanden";
+        }
+
+    }
+    else {
+        # UnterFall 1.1:
+        if (exists $listitem_ref->{'T0089'}[0]{content}){
+            $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0089}[0]{content}.". ".$listitem_ref->{T0331}[0]{content};
+        }
+        # Unterfall 1.2:
+        elsif (exists $listitem_ref->{T0455}[0]{content}){
+            $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0455}[0]{content}.". ".$listitem_ref->{T0331}[0]{content};
+        }
+    }
+        #         my @superids=();
+        
+#         # Bestimmung der uebergeordneten Titel
+#         $request=$dbh->prepare("select targetid,category,supplement from connection where sourceid=? and sourcetype='tit' and targettype='tit'") or $logger->error($DBI::errstr);
+#         $request->execute($titidn);
+        
+#         while (my $res=$request->fetchrow_hashref){
+#             push @superids, decode_utf8($res->{targetid});
+#         }
+        
+#       HSTSEARCH:
+#         foreach my $superid (@superids){
+#             # Bestimmung der Titelinformationen
+#             my $superrequest=$dbh->prepare("select * from tit where id = ? and category in ('0331','0310')") or $logger->error($DBI::errstr);
+#             $superrequest->execute($superid);
+
+#             my $superitem_ref={};
+#             while (my $superres=$superrequest->fetchrow_hashref){
+#                 my $category  = "T".decode_utf8($superres->{category });
+#                 my $indicator =     decode_utf8($superres->{indicator});
+#                 my $content   =     decode_utf8($superres->{content  });
                 
-                push @{$superitem_ref->{$category}}, {
-                    indicator => $indicator,
-                    content   => $content,
-                };
-            }
+#                 push @{$superitem_ref->{$category}}, {
+#                     indicator => $indicator,
+#                     content   => $content,
+#                 };
+#             }
 
-            if (exists $superitem_ref->{T0331}){
-                $listitem_ref->{T0331}=$superitem_ref->{T0331};
-                last HSTSEARCH;
-            }
-            elsif (exists $superitem_ref->{T0310}){
-                $listitem_ref->{T0331}=$superitem_ref->{T0310};
-                last HSTSEARCH;
-            }
-        }
+#             if (exists $superitem_ref->{T0331}[0]{content}){
+#                 $listitem_ref->{T0331}[0]{content}=$superitem_ref->{T0331}[0]{content};
+#                 last HSTSEARCH;
+#             }
+#             elsif (exists $superitem_ref->{T0310}[0]{content}){
+#                 $listitem_ref->{T0331}[0]{content}=$superitem_ref->{T0310}[0]{content};
+#                 last HSTSEARCH;
+#             }
+#         }
         
-    }
-    elsif (exists $listitem_ref->{T0451}{content}){
-        $listitem_ref->{T0331}=$listitem_ref->{T0451};
-    }
+#     }
+#     elsif ((!exists $listitem_ref->{T0310}[0]{content}) && (!exists $listitem_ref->{T0331}[0]{content}) && (exists $listitem_ref->{T0451}[0]{content})){
+#         $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0451}[0]{content};
+#     }
     
-    if (! exists $listitem_ref->{T0331}){
-        $listitem_ref->{T0331}{content}="Kein HST/AST vorhanden";
-    }
+#     if (! exists $listitem_ref->{T0331}[0]{content}){
+#         $listitem_ref->{T0331}[0]{content}="Kein HST/AST vorhanden";
+#     }
 
     if ($config{benchmark}) {
       $btime=new Benchmark;
@@ -1277,18 +1348,21 @@ sub get_tit_set_by_idn {
     }
 
     # Ausleihinformationen der Exemplare
-
     my @circexemplarliste = ();
     {
         my $circexlist=undef;
         
         if (exists $targetcircinfo_ref->{$database}{circ}) {
-            
+
+            my $circid=(exists $normset_ref->{'T0001'}[0]{content} && $normset_ref->{'T0001'}[0]{content} > 0 && $normset_ref->{'T0001'}[0]{content} != $titidn )?$normset_ref->{'T0001'}[0]{content}:$titidn;
+
+            $logger->debug("Katkey: $titidn - Circ-ID: $circid");
+
             my $soap = SOAP::Lite
                 -> uri("urn:/MediaStatus")
                     -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
             my $result = $soap->get_mediastatus(
-                $titidn,$targetcircinfo_ref->{$database}{circdb});
+                $circid,$targetcircinfo_ref->{$database}{circdb});
             
             unless ($result->fault) {
                 $circexlist=$result->result;
@@ -1309,14 +1383,8 @@ sub get_tit_set_by_idn {
         if (exists $targetcircinfo_ref->{$database}{circ}
                 && $#circexemplarliste >= 0) {
             for (my $i=0; $i <= $#circexemplarliste; $i++) {
-#             $circexemplarliste[$i]{'Standort' }=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
-#             $circexemplarliste[$i]{'Signatur' }=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
-#             $circexemplarliste[$i]{'Status'   }=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
-#             $circexemplarliste[$i]{'Rueckgabe'}=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
-#             $circexemplarliste[$i]{'Exemplar' }=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
-	
+
                 # Zusammensetzung von Signatur und Exemplar
-                
                 $circexemplarliste[$i]{'Signatur'}=$circexemplarliste[$i]{'Signatur'}.$circexemplarliste[$i]{'Exemplar'};
                 
                 my $bibliothek="-";
@@ -1435,6 +1503,9 @@ sub get_mex_set_by_idn {
         my $indicator =     decode_utf8($res->{indicator});
         my $content   =     decode_utf8($res->{content  });
         
+        # Exemplar-Normdaten werden als nicht multipel angenommen
+        # und dementsprechend vereinfacht in einer Datenstruktur
+        # abgelegt
         $normset_ref->{$category} = {
             indicator => $indicator,
             content   => $content,

@@ -18,7 +18,7 @@
 <table width="100%">
 <tr><th>Optionen</th></tr>
 <tr><td class="boxed">
-<b>Sortierung:<b>&nbsp;<select name=sorttype><option value="author">nach Autor</option><option value="title">nach Titel</option><option value="yearofpub">nach Jahr</option><option value="publisher">nach Verlag</option><option value="signature">nach Signatur</option></select>&nbsp;<select name=sortorder><option value="up">aufsteigend</option><option value="down">absteigend</option></select>&nbsp;<input type="submit" value="Los"></form>&nbsp;&nbsp;&nbsp;[% thissortstring %]</td></tr></table><p>
+<b>Sortierung:<b>&nbsp;<select name=sorttype><option value="author">nach Autor</option><option value="title">nach Titel/Z&auml;hlung</option><option value="yearofpub">nach Jahr</option><option value="publisher">nach Verlag</option><option value="signature">nach Signatur</option></select>&nbsp;<select name=sortorder><option value="up">aufsteigend</option><option value="down">absteigend</option></select>&nbsp;<input type="submit" value="Los"></form>&nbsp;&nbsp;&nbsp;[% thissortstring %]</td></tr></table><p>
 
 </form>
 
@@ -90,6 +90,11 @@
 [%- IF item.${'T0310'}.first.content -%]
 [%- title = item.${'T0310'}.first.content -%]
 [%- END -%]
+
+[%- IF NOT title && item.${'T0089'}.first.content -%]
+[%- title = item.${'T0089'}.first.content -%]
+[%- END -%]
+
 
 [%# Verlage konstruieren %]
 [%- publisher = item.${'T0412'}.first.content -%]

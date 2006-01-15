@@ -1010,7 +1010,7 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
                 # Zuerst in Resultset eintragen zur spaeteren Navigation
 	
                 push @resultset, { 'database' => $database,
-                                   'idn'      => $idn
+                                   'id'       => $idn
                                };
 	
                 push @outputbuffer, OpenBib::Search::Util::get_tit_listitem_by_idn({

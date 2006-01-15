@@ -74,7 +74,24 @@ my $inverted_mex_ref={
     '0014' => 1, # Signatur
 };
 
+# In die initiale Volltextsuche werden neben den bereits definierten
+# Normdateikategorien inverted_*_ref folgende weitere Kategorien aus dem
+# Titelbereich einbezogen. So koennen z.B. bestimmte im Titelbereich
+# angesiedelte Kategorien in den anderen Normdaten-Klassen verf, kor oder
+# swt recherchierbar gemacht werden.
+
 my $search_category_ref={
+
+    verf => {
+        '0413' => 1, # Drucker
+    },
+
+    kor => {
+    },
+
+    swt => {
+    },
+    
     hst => {
         '0304' => 1, # EST
         '0310' => 1, # AST
@@ -273,6 +290,9 @@ my @isbn      = ();
 my @issn      = ();
 my @artinh    = ();
 my @ejahr     = ();
+my @titverf   = ();
+my @titkor    = ();
+my @titswt    = ();
 
 CATLINE:
 while (my $line=<IN>){
@@ -293,6 +313,9 @@ while (my $line=<IN>){
         @issn      = ();
         @artinh    = ();
         @ejahr     = ();
+        @titverf   = ();
+        @titkor    = ();
+        @titswt    = ();
         
         next CATLINE;
     }
@@ -302,18 +325,21 @@ while (my $line=<IN>){
         foreach my $item (@verf){
             push @temp, join(" ",@{$stammdateien_ref->{aut}{data}{$item}});
         }
+        push @temp, join(" ",@titverf);
         my $verf      = join(" ",@temp);
 
         @temp=();
         foreach my $item (@kor){
             push @temp, join(" ",@{$stammdateien_ref->{kor}{data}{$item}});
         }
+        push @temp, join(" ",@titkor);
         my $kor      = join(" ",@temp);
 
         @temp=();
         foreach my $item (@swt){
             push @temp, join(" ",@{$stammdateien_ref->{swt}{data}{$item}});
         }
+        push @temp, join(" ",@titswt);
         my $swt      = join(" ",@temp);
 
         @temp=();
@@ -623,7 +649,25 @@ while (my $line=<IN>){
                     content  => $content,
                 });
             }
-
+            elsif (exists $search_category_ref->{verf     }{$category}){
+                push @titverf, grundform({
+                    category => $category,
+                    content  => $content,
+                });
+            }
+            elsif (exists $search_category_ref->{kor      }{$category}){
+                push @titkor, grundform({
+                    category => $category,
+                    content  => $content,
+                });
+            }
+            elsif (exists $search_category_ref->{swt      }{$category}){
+                push @titswt, grundform({
+                    category => $category,
+                    content  => $content,
+                });
+            }
+            
             print OUT "$id$category$indicator$content$contentnorm$contentnormft\n";
         }	
     }
@@ -694,8 +738,13 @@ sub grundform {
         $content=~s/(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)/$1$2$3$4$5$6$7$8/g;
     }
 
+    # Ausfiltern spezieller HTML-Tags
+    $content=~s/&[gl]t;//g;
+    $content=~s/&quot;//g;
+    $content=~s/&amp;//g;
+    
     # Ausfiltern nicht akzeptierter Zeichen
-    $content=~s/[^-+[:alnum:]\/: ']//g;
+    $content=~s/[^-+\p{Alphabetic}0-9\/: ']//g;
     
     # Zeichenersetzungen
     $content=~s/\"//g;

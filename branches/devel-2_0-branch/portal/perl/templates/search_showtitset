@@ -181,6 +181,9 @@ FOREACH category IN categories;
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsinglekor=${item.id}";
          content   = "<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
+    CASE "T0331";
+         content   = "<b>${content}</b>";
+
     CASE [ "T0662" "T2662" ];
          content   = "<a href=\"${content}\" target=\"_blank\">${content}</a>";
 
@@ -237,7 +240,7 @@ END;
 <tr><td class="boxedclear">
 
 <table width=100%">
-<tr class="titlerow" align="center"><td width="225">[% i18nmsg.${"X4000"} %]</td><td width="250">[% i18nmsg.${"X0016"} %]</td><td width="120">[% i18nmsg.${"X0014"} %]</td><td width="120">[% i18nmsg.${"M0151"} %]</td><td width="110">[% i18nmsg.${"M0151"} %]</td></tr>
+<tr class="titlerow" align="center"><td width="225">[% i18nmsg.${"X4000"} %]</td><td width="250">[% i18nmsg.${"X0016"} %]</td><td width="120">[% i18nmsg.${"X0014"} %]</td><td width="120">[% i18nmsg.${"M0151"} %]</td><td width="110">[% i18nmsg.${"M0152"} %]</td></tr>
 [% FOREACH mex IN circset %]
 <tr align="center"><td><a href="[% utf2iso(mex.Bibinfourl) %]"><strong>[% utf2iso(mex.Bibliothek) %]</strong></a></td><td>[% utf2iso(mex.Standort) %]</td><td><strong>[% utf2iso(mex.Signatur) %]</strong></td><td><strong>[% utf2iso(mex.Status) %]</strong></td><td class="circurl"><a TARGET=_blank href="[% utf2iso(mex.Ausleihurl) %]">[% utf2iso(mex.Ausleihstring) %]</a></td></tr>
 [% END %]

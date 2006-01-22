@@ -92,12 +92,12 @@
 <p />
 
 [% IF queryids.size >= 0 %]
-<form method="get" action="[% config.virtualsearch_loc %]">
+<form method="get" action="[% config.resultlists_loc %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]">
 <input type="hidden" name="trefferliste" value="choice">
 <input type="hidden" name="view" value="[% view %]">
 	  
-<p><table width=\"100%\"><tr>
+<p><table width="100%"><tr>
 <th>Alle bisherigen Recherchen</th></tr>
 <tr><td class="boxedclear">
 <select name="queryid">

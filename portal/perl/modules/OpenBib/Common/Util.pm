@@ -1026,6 +1026,145 @@ sub get_targetcircinfo {
     return \%targetcircinfo;
 }
 
+sub grundform {
+    my ($arg_ref) = @_;
+    
+    # Set defaults
+    my $content   = exists $arg_ref->{content}
+        ? $arg_ref->{content}             : "";
+
+    my $category  = exists $arg_ref->{category}
+        ? $arg_ref->{category}            : "";
+
+    my $searchreq = exists $arg_ref->{searchreq}
+        ? $arg_ref->{searchreq}           : undef;
+    
+    # Sonderbehandlung verschiedener Kategorien
+
+    # ISBN filtern
+    if ($category eq "0540"){
+        $content=~s/(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?([0-9xX])/$1$2$3$4$5$6$7$8$9$10/g;
+    }
+
+    # ISSN filtern
+    if ($category eq "0543"){
+        $content=~s/(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)/$1$2$3$4$5$6$7$8/g;
+    }
+
+    # Stopwoerter fuer versch. Kategorien ausfiltern
+
+    if ($category eq "0304" || $category eq "0310" || $category eq "0331"
+            || $category eq "0341" || $category eq "0370"){
+        $content=OpenBib::Common::Stopwords::strip_first_stopword($content);
+    }
+    
+    # Ausfiltern spezieller HTML-Tags
+    $content=~s/&[gl]t;//g;
+    $content=~s/&quot;//g;
+    $content=~s/&amp;//g;
+
+    if ($searchreq){
+        # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
+        $content=~s/[^-+\p{Alphabetic}0-9\/: '()"^*]//g;
+    }
+    else {
+        # Ausfiltern nicht akzeptierter Zeichen (Postitivliste)
+        $content=~s/[^-+\p{Alphabetic}0-9\/: ']//g;
+    }
+    
+    # Zeichenersetzungen
+    $content=~s/'/ /g;
+    $content=~s/\// /g;
+    $content=~s/:/ /g;
+    $content=~s/  / /g;
+
+    # Buchstabenersetzungen
+    $content=~s/ü/ue/g;
+    $content=~s/ä/ae/g;
+    $content=~s/ö/oe/g;
+    $content=~s/Ü/Ue/g;
+    $content=~s/Ö/Oe/g;
+    $content=~s/Ü/Ae/g;
+    $content=~s/ß/ss/g;
+
+    $content=~s/é/e/g;
+    $content=~s/è/e/g;
+    $content=~s/ê/e/g;
+    $content=~s/É/E/g;
+    $content=~s/È/E/g;
+    $content=~s/Ê/E/g;
+
+    $content=~s/á/a/g;
+    $content=~s/à/a/g;
+    $content=~s/â/a/g;
+    $content=~s/Á/A/g;
+    $content=~s/À/A/g;
+    $content=~s/Â/A/g;
+
+    $content=~s/ó/o/g;
+    $content=~s/ò/o/g;
+    $content=~s/ô/o/g;
+    $content=~s/Ó/O/g;
+    $content=~s/Ò/o/g;
+    $content=~s/Ô/o/g;
+
+    $content=~s/í/i/g;
+    $content=~s/ì/i/g;
+    $content=~s/î/i/g;
+    $content=~s/Í/I/g;
+    $content=~s/Ì/I/g;
+    $content=~s/Î/I/g;
+
+    $content=~s/ø/o/g;
+    $content=~s/Ø/o/g;
+    $content=~s/ñ/n/g;
+    $content=~s/Ñ/N/g;
+#     $content=~s///g;
+#     $content=~s///g;
+#     $content=~s///g;
+#     $content=~s///g;
+
+#     $content=~s///g;
+#     $content=~s///g;
+#     $content=~s///g;
+#     $content=~s///g;
+#     $content=~s///g;
+#     $content=~s///g;
+
+#    $line=~s/?/g;
+
+#     $line=~s/该/g;
+#     $line=~s/?/g;
+#     $line=~s/?g;
+#     $line=~s/?;
+#     $line=~s/?e/g;
+#     $line=~s//a/g;
+#     $line=~s/?o/g;
+#     $line=~s/?u/g;
+#     $line=~s/鯥/g;
+#     $line=~s/ɯE/g;
+#     $line=~s/?/g;
+#     $line=~s/oa/g;
+#     $line=~s/?/g;
+#     $line=~s/?I/g;
+#     $line=~s/?g;
+#     $line=~s/?O/g;
+#     $line=~s/?;
+#     $line=~s/?U/g;
+#     $line=~s/ /y/g;
+#     $line=~s/?Y/g;
+#     $line=~s/毡e/g; # ae
+#     $line=~s/?/g; # Hacek
+#     $line=~s/?/g; # Macron / Oberstrich
+#     $line=~s/?/g;
+#     $line=~s/&gt;//g;
+#     $line=~s/&lt;//g;
+#     $line=~s/>//g;
+#     $line=~s/<//g;
+
+    return $content;
+}
+
 1;
 __END__
 

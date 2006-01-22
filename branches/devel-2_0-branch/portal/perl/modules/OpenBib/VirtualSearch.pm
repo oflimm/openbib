@@ -91,19 +91,19 @@ sub handler {
     };
     
     # CGI-Input auslesen
-    my $fs            = $query->param('fs')            || '';
-    my $verf          = $query->param('verf')          || '';
-    my $hst           = $query->param('hst')           || '';
-    my $hststring     = $query->param('hststring')     || '';
-    my $swt           = $query->param('swt')           || '';
-    my $kor           = $query->param('kor')           || '';
-    my $sign          = $query->param('sign')          || '';
-    my $isbn          = $query->param('isbn')          || '';
-    my $issn          = $query->param('issn')          || '';
-    my $mart          = $query->param('mart')          || '';
-    my $notation      = $query->param('notation')      || '';
-    my $ejahr         = $query->param('ejahr')         || '';
-    my $ejahrop       = $query->param('ejahrop')       || 'eq';
+    my $fs            = decode_utf8($query->param('fs'))            || '';
+    my $verf          = decode_utf8($query->param('verf'))          || '';
+    my $hst           = decode_utf8($query->param('hst'))           || '';
+    my $hststring     = decode_utf8($query->param('hststring'))     || '';
+    my $swt           = decode_utf8($query->param('swt'))           || '';
+    my $kor           = decode_utf8($query->param('kor'))           || '';
+    my $sign          = decode_utf8($query->param('sign'))          || '';
+    my $isbn          = decode_utf8($query->param('isbn'))          || '';
+    my $issn          = decode_utf8($query->param('issn'))          || '';
+    my $mart          = decode_utf8($query->param('mart'))          || '';
+    my $notation      = decode_utf8($query->param('notation'))      || '';
+    my $ejahr         = decode_utf8($query->param('ejahr'))         || '';
+    my $ejahrop       = decode_utf8($query->param('ejahrop'))       || 'eq';
     my @databases     = ($query->param('database'))?$query->param('database'):();
 
     my $hitrange      = ($query->param('hitrange'))?$query->param('hitrange'):20;
@@ -240,26 +240,76 @@ sub handler {
     $issn =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)/$1$2$3$4$5$6$7$8/g;
 
     # Filter Rest
-    $fs        = OpenBib::VirtualSearch::Util::cleansearchterm($fs);
-    $verf      = OpenBib::VirtualSearch::Util::cleansearchterm($verf);
-    $hst       = OpenBib::VirtualSearch::Util::cleansearchterm($hst);
-    $hststring = OpenBib::VirtualSearch::Util::cleansearchterm($hststring);
+    $fs        = OpenBib::Common::Util::grundform({
+        content   => $fs,
+        searchreq => 1,
+    });
 
+    $verf      = OpenBib::Common::Util::grundform({
+        content   => $verf,
+        searchreq => 1,
+    });
+
+    $hst       = OpenBib::Common::Util::grundform({
+        content   => $hst,
+        searchreq => 1,
+    });
+
+    $hststring = OpenBib::Common::Util::grundform({
+        content   => $hststring,
+        searchreq => 1,
+    });
+
+    $logger->debug("Vor: $swt");
+    $swt       = OpenBib::Common::Util::grundform({
+        content   => $swt,
+        searchreq => 1,
+    });
+    $logger->debug("Nach: $swt");
+
+    $kor       = OpenBib::Common::Util::grundform({
+        content   => $kor,
+        searchreq => 1,
+    });
+
+    $sign      = OpenBib::Common::Util::grundform({
+        content   => $sign,
+        searchreq => 1,
+    });
+
+    $isbn      = OpenBib::Common::Util::grundform({
+        category  => '0540',
+        content   => $isbn,
+        searchreq => 1,
+    });
+
+    $issn      = OpenBib::Common::Util::grundform({
+        category  => '0543',
+        content   => $issn,
+        searchreq => 1,
+    });
+    
+    $mart      = OpenBib::Common::Util::grundform({
+        content   => $mart,
+        searchreq => 1,
+    });
+
+    $notation  = OpenBib::Common::Util::grundform({
+        content   => $notation,
+        searchreq => 1,
+    });
+
+    $ejahr      = OpenBib::Common::Util::grundform({
+        content   => $ejahr,
+        searchreq => 1,
+    });
+    
     # Bei hststring zusaetzlich normieren durch Weglassung des ersten
     # Stopwortes
     $hststring = OpenBib::Common::Stopwords::strip_first_stopword($hststring);
-    $swt       = OpenBib::VirtualSearch::Util::cleansearchterm($swt);
-    $kor       = OpenBib::VirtualSearch::Util::cleansearchterm($kor);
-    $sign      = OpenBib::VirtualSearch::Util::cleansearchterm($sign);
-    $isbn      = OpenBib::VirtualSearch::Util::cleansearchterm($isbn);
-    $issn      = OpenBib::VirtualSearch::Util::cleansearchterm($issn);
-    $mart      = OpenBib::VirtualSearch::Util::cleansearchterm($mart);
-    $notation  = OpenBib::VirtualSearch::Util::cleansearchterm($notation);
-    $ejahr     = OpenBib::VirtualSearch::Util::cleansearchterm($ejahr);
-    $ejahrop   = OpenBib::VirtualSearch::Util::cleansearchterm($ejahrop);
 
     # Umwandlung impliziter ODER-Verknuepfung in UND-Verknuepfung
-    if ($autoplus eq "1") {
+    if ($autoplus eq "1" && !$verfindex && !$korindex && !$swtindex) {
         $fs   = OpenBib::VirtualSearch::Util::conv2autoplus($fs)   if ($fs);
         $verf = OpenBib::VirtualSearch::Util::conv2autoplus($verf) if ($verf);
         $hst  = OpenBib::VirtualSearch::Util::conv2autoplus($hst)  if ($hst);
@@ -424,23 +474,43 @@ sub handler {
         }
     }
 
-    # BEGIN Indizes
+    # BEGIN Index
     ####################################################################
-    # Wenn ein kataloguebergreifender Verfasserindex ausgewaehlt wurde
+    # Wenn ein kataloguebergreifender Index ausgewaehlt wurde
     ####################################################################
 
-    if ($verfindex) {
-        $verf=~s/\+//g;
-        $verf=~s/%2B//g;
-        $verf=~s/%//g;
+    if ($verfindex || $korindex || $swtindex) {
+        my $contentreq =
+            ($verfindex)?$verf:
+            ($korindex )?$kor:
+            ($swtindex )?$swt:undef;
 
-        if (!$verf) {
-            OpenBib::Common::Util::print_warning("Sie haben keinen Verfasser eingegeben",$r);
+        my $type =
+            ($verfindex)?'aut':
+            ($korindex )?'kor':
+            ($swtindex )?'swt':undef;
+
+        my $urlpart =
+            ($verfindex)?"verf=$contentreq;verfindex=Index":
+            ($korindex )?"kor=$contentreq;korindex=Index":
+            ($swtindex )?"swt=$contentreq;swtindex=Index":undef;
+
+        my $template =
+            ($verfindex)?$config{"tt_virtualsearch_showverfindex_tname"}:
+            ($korindex )?$config{"tt_virtualsearch_showkorindex_tname"}:
+            ($swtindex )?$config{"tt_virtualsearch_showswtindex_tname"}:undef;
+            
+        $contentreq=~s/\+//g;
+        $contentreq=~s/%2B//g;
+        $contentreq=~s/%//g;
+
+        if (!$contentreq) {
+            OpenBib::Common::Util::print_warning("Sie haben keinen Begriff eingegeben",$r);
             return OK;
         }
 
-        if ($#databases > 0 && length($verf) < 3 ) {
-            OpenBib::Common::Util::print_warning("Der Verfasseranfang muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche ausgewählt wurde.",$r);
+        if ($#databases > 0 && length($contentreq) < 3) {
+            OpenBib::Common::Util::print_warning("Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche ausgewählt wurde.",$r);
             return OK;
         }
 
@@ -448,39 +518,59 @@ sub handler {
 
         my @sortedindex=();
 
+        my $atime=new Benchmark;
+
         foreach my $database (@databases) {
             my $dbh
                 = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
                     or $logger->error_die($DBI::errstr);
 
             my $thisindex_ref=OpenBib::Search::Util::get_index({
-                type       => 'aut',
+                type       => $type,
                 category   => '0001',
-                contentreq => $verf,
+                contentreq => $contentreq,
                 dbh        => $dbh,
             });
 
+            $logger->debug("Index Ursprung ($database)".YAML::Dump($thisindex_ref));
+            
             # Umorganisierung der Daten Teil 1
+            #
+            # Hier werden die fuer eine Datenbank mit get_index ermittelten
+            # Index-Items (AoH content,id,titcount) in einen Gesamt-Index
+            # uebertragen (HoHoAoH) mit folgenden Schluesseln pro 'Ebene'
+            # (1) <Indexbegriff>
+            # {2} databases(Array), titcount(Skalar)
+            # (3) dbname,dbdesc,id,titcount in Array databases
             foreach my $item_ref (@$thisindex_ref) {
                 # Korrekte Initialisierung mit 0
-                if (! $index{$item_ref->{content}}{titcount}) {
+                if (! exists $index{$item_ref->{content}}{titcount}) {
                     $index{$item_ref->{content}}{titcount}=0;
                 }
 
                 push @{$index{$item_ref->{content}}{databases}}, {
-                    'dbname'    => $database,
-                    'dbdesc'    => $targetdbinfo_ref->{dbnames}{$database},
-                    'id'        => $item_ref->{id},
-                    'titcount'  => $item_ref->{titcount},
+                    'dbname'   => $database,
+                    'dbdesc'   => $targetdbinfo_ref->{dbnames}{$database},
+                    'id'       => $item_ref->{id},
+                    'titcount' => $item_ref->{titcount},
                 };
+
                 $index{$item_ref->{content}}{titcount}=$index{$item_ref->{content}}{titcount}+$item_ref->{titcount};
             }
             $dbh->disconnect;
         }
 
-        $logger->info("Verfasserindex 1".YAML::Dump(\%index));
-        
+        $logger->debug("Index 1".YAML::Dump(\%index));
+
         # Umorganisierung der Daten Teil 2
+        #
+        # Um die Begriffe sortieren zu koennen muss der HoHoAoH in ein
+        # AoHoAoH umgewandelt werden.
+        # Es werden folgende Schluessel pro 'Ebene' verwendet
+        # {1} content(Skalar), databases(Array), titcount(Skalar)
+        # (2) dbname,dbdesc,id,titcount in Array databases
+        #
+        # Ueber die Reihenfolge des ersten Arrays erfolgt die Sortierung
         foreach my $singlecontent (sort { uc($a) cmp uc($b) } keys %index) {
             push @sortedindex, { content   => $singlecontent,
                                  titcount  => $index{$singlecontent}{titcount},
@@ -488,15 +578,15 @@ sub handler {
                              };
         }
 
-        $logger->info("Verfasserindex 2".YAML::Dump(\@sortedindex));
-
+        $logger->debug("Index 2".YAML::Dump(\@sortedindex));
+        
         my $hits=$#sortedindex;
 
         if ($hits > 200) {
             $hitrange=200;
         }
 
-        my $baseurl="http://$config{servername}$config{virtualsearch_loc}?sessionID=$sessionID;view=$view;verf=$verf;verfindex=Index;profil=$profil;maxhits=$maxhits;sorttype=$sorttype;sortorder=$sortorder";
+        my $baseurl="http://$config{servername}$config{virtualsearch_loc}?sessionID=$sessionID;view=$view;$urlpart;profil=$profil;maxhits=$maxhits;sorttype=$sorttype;sortorder=$sortorder";
 
         my @nav=();
 
@@ -520,130 +610,20 @@ sub handler {
             }
         }
 
-        # TT-Data erzeugen
-        my $ttdata={
-            lang       => $lang,
-            view       => $view,
-            stylesheet => $stylesheet,
-            sessionID  => $sessionID,
-            verf       => $verf,
-            index      => \@sortedindex,
-            nav        => \@nav,
-            offset     => $offset,
-            hitrange   => $hitrange,
-            baseurl    => $baseurl,
-            profil     => $profil,
-            config     => \%config,
-            msg        => \%msg,
-        };
 
-        OpenBib::Common::Util::print_page($config{tt_virtualsearch_showverfindex_tname},$ttdata,$r);
-
-        return OK;
-    }
-
-    # BEGIN Koerperschaften
-    ####################################################################
-    # Wenn ein kataloguebergreifender Koerperschaftsindex ausgewaehlt wurde
-    ####################################################################
-
-    if ($korindex) {
-        $kor=~s/\+//g;
-        $kor=~s/%2B//g;
-        $kor=~s/%//g;
-
-        if (!$kor) {
-            OpenBib::Common::Util::print_warning("Sie haben keine Körperschaft eingegeben",$r);
-            return OK;
-        }
-
-        if ($#databases > 0 && length($kor) < 3 ) {
-            OpenBib::Common::Util::print_warning("Der Körperschaftsanfang muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche ausgewählt wurde.",$r);
-            return OK;
-        }
-
-        my %korindex=();
-
-        my @sortedindex=();
-
-        foreach my $database (@databases) {
-            my $dbh
-                = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
-                    or $logger->error_die($DBI::errstr);
-
-            my $thisindex_ref=OpenBib::Search::Util::get_index({
-                type       => 'kor',
-                category   => '0001',
-                contentreq => $kor,
-                dbh        => $dbh,
-            });
-
-            # Umorganisierung der Daten Teil 1
-
-            foreach my $item_ref (@$thisindex_ref) {
-                # Korrekte Initialisierung mit 0
-                if (! $korindex{$item_ref->{kor}}{titanzahl}) {
-                    $korindex{$item_ref->{kor}}{titanzahl}=0;
-                }
-	
-                my $kordb={
-                    'dbname'    => $database,
-                    'dbdesc'    => $targetdbinfo_ref->{dbnames}{$database},
-                    'koridn'    => $item_ref->{koridn},
-                    'titanzahl' => $item_ref->{titanzahl},
-                };
-
-                push @{$korindex{$item_ref->{kor}}{databases}}, $kordb;
-                $korindex{$item_ref->{kor}}{titanzahl}=$korindex{$item_ref->{kor}}{titanzahl}+$item_ref->{titanzahl};
-            }
-            $dbh->disconnect;
-        }
-
-        # Umorganisierung der Daten Teil 2
-        foreach my $singlekor (sort { uc($a) cmp uc($b) } keys %korindex) {
-            push @sortedindex, { kor       => $singlekor,
-                                 titanzahl => $korindex{$singlekor}{titanzahl},
-                                 databases => $korindex{$singlekor}{databases},
-                             };
-        }
-
-        my $hits=$#sortedindex;
-
-        if ($hits > 200) {
-            $hitrange=200;
-        }
-
-        my $baseurl="http://$config{servername}$config{virtualsearch_loc}?sessionID=$sessionID;view=$view;kor=$kor;korindex=Index;profil=$profil;maxhits=$maxhits;sorttype=$sorttype;sortorder=$sortorder";
-
-        my @nav=();
-
-        if ($hitrange > 0) {
-            $logger->debug("Navigation wird erzeugt: Hitrange: $hitrange Hits: $hits");
-
-            for (my $i=1; $i <= $hits; $i+=$hitrange) {
-                my $active=0;
-	
-                if ($i == $offset) {
-                    $active=1;
-                }
-	
-                my $item={
-                    start  => $i,
-                    end    => ($i+$hitrange>$hits)?$hits+1:$i+$hitrange-1,
-                    url    => $baseurl.";hitrange=$hitrange;offset=$i",
-                    active => $active,
-                };
-                push @nav,$item;
-            }
-        }
-
+        my $btime      = new Benchmark;
+        my $timeall    = timediff($btime,$atime);
+        my $resulttime = timestr($timeall,"nop");
+        $resulttime    =~s/(\d+\.\d+) .*/$1/;
+        
         # TT-Data erzeugen
         my $ttdata={
             lang       => $lang,
             view       => $view,
             stylesheet => $stylesheet,		
             sessionID  => $sessionID,
-            kor        => $kor,
+            resulttime => $resulttime,
+            contentreq => $contentreq,
             index      => \@sortedindex,
             nav        => \@nav,
             offset     => $offset,
@@ -654,125 +634,7 @@ sub handler {
             msg        => \%msg,
         };
 
-        OpenBib::Common::Util::print_page($config{tt_virtualsearch_showkorindex_tname},$ttdata,$r);
-
-        return OK;
-    }
-
-
-    # BEGIN Schlagworte
-    # (derzeit nicht unterstuetzt)
-    ####################################################################
-    # Wenn ein kataloguebergreifender Schlagwortindex ausgewaehlt wurde
-    ####################################################################
-
-    if ($swtindex) {
-        $swt=~s/\+//g;
-        $swt=~s/%2B//g;
-        $swt=~s/%//g;
-
-        if (!$swt) {
-            OpenBib::Common::Util::print_warning("Sie haben kein Schlagwort eingegeben",$r);
-            return OK;
-        }
-
-        if ($#databases > 0 && length($swt) < 3) {
-            OpenBib::Common::Util::print_warning("Der Schlagwortanfang muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche ausgewählt wurde.",$r);
-            return OK;
-        }
-
-        my %swtindex=();
-
-        my @sortedindex=();
-
-        foreach my $database (@databases) {
-            my $dbh
-                = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
-                    or $logger->error_die($DBI::errstr);
-
-            my $thisindex_ref=OpenBib::Search::Util::get_index({
-                type       => 'swt',
-                category   => '0001',
-                contentreq => $swt,
-                dbh        => $dbh,
-            });
-
-            # Umorganisierung der Daten Teil 1
-            foreach my $item_ref (@$thisindex_ref) {
-                # Korrekte Initialisierung mit 0
-                if (! $swtindex{$item_ref->{swt}}{titanzahl}) {
-                    $swtindex{$item_ref->{swt}}{titanzahl}=0;
-                }
-
-                my $swtdb={
-                    'dbname'    => $database,
-                    'dbdesc'    => $targetdbinfo_ref->{dbnames}{$database},
-                    'swtidn'    => $item_ref->{swtidn},
-                    'titanzahl' => $item_ref->{titanzahl},
-                };
-
-                push @{$swtindex{$item_ref->{swt}}{databases}}, $swtdb;
-                $swtindex{$item_ref->{swt}}{titanzahl}=$swtindex{$item_ref->{swt}}{titanzahl}+$item_ref->{titanzahl};
-            }
-            $dbh->disconnect;
-        }
-
-        # Umorganisierung der Daten Teil 2
-        foreach my $singleswt (sort { uc($a) cmp uc($b) } keys %swtindex) {
-            push @sortedindex, { swt       => $singleswt,
-                                 titanzahl => $swtindex{$singleswt}{titanzahl},
-                                 databases => $swtindex{$singleswt}{databases},
-                             };
-        }
-
-        my $hits=$#sortedindex;
-
-        if ($hits > 200) {
-            $hitrange=200;
-        }
-
-        my $baseurl="http://$config{servername}$config{virtualsearch_loc}?sessionID=$sessionID;view=$view;swt=$swt;swtindex=Index;profil=$profil;maxhits=$maxhits;sorttype=$sorttype;sortorder=$sortorder";
-
-        my @nav=();
-
-        if ($hitrange > 0) {
-            $logger->debug("Navigation wird erzeugt: Hitrange: $hitrange Hits: $hits");
-
-            for (my $i=1; $i <= $hits; $i+=$hitrange) {
-                my $active=0;
-	
-                if ($i == $offset) {
-                    $active=1;
-                }
-	
-                my $item={
-                    start  => $i,
-                    end    => ($i+$hitrange>$hits)?$hits+1:$i+$hitrange-1,
-                    url    => $baseurl.";hitrange=$hitrange;offset=$i",
-                    active => $active,
-                };
-                push @nav,$item;
-            }
-        }
-
-        # TT-Data erzeugen
-        my $ttdata={
-            lang       => $lang,
-            view       => $view,
-            stylesheet => $stylesheet,		
-            sessionID  => $sessionID,
-            swt        => $swt,
-            index      => \@sortedindex,
-            nav        => \@nav,
-            offset     => $offset,
-            hitrange   => $hitrange,
-            baseurl    => $baseurl,
-            profil     => $profil,
-            config     => \%config,
-            msg        => \%msg,
-        };
-
-        OpenBib::Common::Util::print_page($config{tt_virtualsearch_showswtindex_tname},$ttdata,$r);
+        OpenBib::Common::Util::print_page($template,$ttdata,$r);
 
         return OK;
     }
@@ -880,7 +742,7 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
         return OK;
     }
 
-    my %trefferpage = ();
+    my %trefferpage  = ();
     my %dbhits      = ();
 
     my $loginname = "";

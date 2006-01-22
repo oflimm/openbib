@@ -88,7 +88,7 @@ sub get_aut_ans_by_idn {
     }
 
     my $ans="Unbekannt";
-    if ($res->{content}) {
+    if (defined $res->{content}) {
         $ans = decode_utf8($res->{content});
     }
 
@@ -680,7 +680,7 @@ sub get_tit_listitem_by_idn {
 
         my $supplement="";
         if ($res->{supplement}){
-            $supplement.=" ".decode_utf8($res->{supplement});
+            $supplement=" ".decode_utf8($res->{supplement});
         }
 
         my $content=get_aut_ans_by_idn($targetid,$dbh).$supplement;
@@ -1552,53 +1552,6 @@ sub get_mex_set_by_idn {
 }
 
 #####################################################################
-## get_number(rreqarray): Suche anhand der in reqarray enthaltenen
-##                       SQL-Statements, fasse die Ergebnisse zusammen
-##                       und liefere deren Anzahl zur"uck
-##
-
-sub get_number {
-    my ($rreqarray,$dbh)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my %metaidns;
-    my @idns;
-
-    my ($atime,$btime,$timeall);
-    
-    my @reqarray=@$rreqarray;
-
-    foreach my $numberrequest (@reqarray) {
-	if ($config{benchmark}) {
-	    $atime=new Benchmark;
-	}
-
-	my $numberresult=$dbh->prepare("$numberrequest") or $logger->error($DBI::errstr);
-	$numberresult->execute() or $logger->error("Request: $numberrequest - ".$DBI::errstr);
-
-	while (my @numberres=$numberresult->fetchrow) {
-	    $metaidns{$numberres[0]}=1;
-	}
-	$numberresult->execute();
-	$numberresult->finish();
-	if ($config{benchmark}) {
-	    $btime   = new Benchmark;
-	    $timeall = timediff($btime,$atime);
-	    $logger->info("Zeit fuer Nummer zu : $numberrequest : ist ".timestr($timeall));
-	}
-	
-    }
-    my $i=0;
-    while (my ($key,$value)=each %metaidns) {
-	$idns[$i++]=$key;
-    }
-    
-    return $#idns+1;
-}
-
-#####################################################################
 ## input2sgml(line,initialsearch): Wandle die Eingabe line
 ##                   nach SGML um.Wwenn die
 ##                   Anfangs-Suche via SQL-Datenbank stattfindet
@@ -1708,213 +1661,6 @@ sub input2sgml {
     return $line;
 }
 
-sub get_global_contents {
-    my ($globalcontents)=@_;
-
-    $globalcontents=~s/<\/a>//;
-    $globalcontents=~s/¬//g;
-    $globalcontents=~s/\"//g;
-
-    $globalcontents=~s/&lt;//g;
-    $globalcontents=~s/&gt;//g;
-    $globalcontents=~s/<//g;
-    $globalcontents=~s/>//g;
-
-    # Caron
-    $globalcontents=~s/\&#353\;/s/g;  # s hacek
-    $globalcontents=~s/\&#352\;/S/g;  # S hacek
-    $globalcontents=~s/\&#269\;/c/g;  # c hacek
-    $globalcontents=~s/\&#268\;/C/g;  # C hacek
-    $globalcontents=~s/\&#271\;/d/g;  # d hacek
-    $globalcontents=~s/\&#270\;/D/g;  # D hacek
-    $globalcontents=~s/\&#283\;/e/g;  # e hacek
-    $globalcontents=~s/\&#282\;/E/g;  # E hacek
-    $globalcontents=~s/\&#318\;/l/g;  # l hacek
-    $globalcontents=~s/\&#317\;/L/g;  # L hacek
-    $globalcontents=~s/\&#328\;/n/g;  # n hacek
-    $globalcontents=~s/\&#327\;/N/g;  # N hacek
-    $globalcontents=~s/\&#345\;/r/g;  # r hacek
-    $globalcontents=~s/\&#344\;/R/g;  # R hacek
-    $globalcontents=~s/\&#357\;/t/g;  # t hacek
-    $globalcontents=~s/\&#356\;/T/g;  # T hacek
-    $globalcontents=~s/\&#382\;/n/g;  # n hacek
-    $globalcontents=~s/\&#381\;/N/g;  # N hacek
-  
-    # Macron
-    $globalcontents=~s/\&#275\;/e/g;  # e oberstrich
-    $globalcontents=~s/\&#274\;/E/g;  # e oberstrich
-    $globalcontents=~s/\&#257\;/a/g;  # a oberstrich
-    $globalcontents=~s/\&#256\;/A/g;  # A oberstrich
-    $globalcontents=~s/\&#299\;/i/g;  # i oberstrich
-    $globalcontents=~s/\&#298\;/I/g;  # I oberstrich
-    $globalcontents=~s/\&#333\;/o/g;  # o oberstrich
-    $globalcontents=~s/\&#332\;/O/g;  # O oberstrich
-    $globalcontents=~s/\&#363\;/u/g;  # u oberstrich
-    $globalcontents=~s/\&#362\;/U/g;  # U oberstrich
-  
-    #$globalcontents=~s/ /\+/g;
-    $globalcontents=~s/,/%2C/g;
-    $globalcontents=~s/\[.+?\]//;
-    $globalcontents=~s/ $//g;
-    #$globalcontents=~s/ /\+/g;
-    $globalcontents=~s/ /%20/g;
-
-    return $globalcontents;
-}
-
-sub set_simple_category {
-    my ($desc,$contents)=@_;
-
-    # UTF8-Behandlung
-    $desc     =~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-    $contents =~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-
-    # Sonderbehandlung fuer bestimmte Kategorien
-    if ($desc eq "ISSN") {
-        my $ezbquerystring=$config{ezb_exturl}."&jq_term1=".$contents;
-
-        $contents="$contents (<a href=\"$ezbquerystring\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) überprüfen\" target=ezb>als E-Journal der Uni-Köln verfügbar?</a>)";
-    }
-
-    my %kat=();
-    $kat{'type'}     = "simple_category";
-    $kat{'desc'}     = $desc;
-    $kat{'contents'} = $contents;
-  
-    return \%kat;
-}
-
-sub set_url_category {
-    my ($arg_ref) = @_;
-
-    # Set defaults
-    my $desc            = exists $arg_ref->{desc}
-        ? $arg_ref->{desc}            : undef;
-    my $url             = exists $arg_ref->{url}
-        ? $arg_ref->{url}             : undef;
-    my $contents        = exists $arg_ref->{contents}
-        ? $arg_ref->{contents}        : undef;
-    my $supplement      = exists $arg_ref->{supplement}
-        ? $arg_ref->{supplement}      : undef;
-
-    # UTF8-Behandlung
-    $desc       =~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-    $url        =~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-    $contents   =~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-    $supplement =~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-
-    my %kat=();
-    $kat{'type'}       = "url_category";
-    $kat{'desc'}       = $desc;
-    $kat{'url'}        = $url;
-    $kat{'contents'}   = $contents;
-    $kat{'supplement'} = $supplement;
-
-    return \%kat;
-}
-
-sub set_url_category_global {
-    my ($arg_ref) = @_;
-
-    # Set defaults
-    my $desc            = exists $arg_ref->{desc}
-        ? $arg_ref->{desc}            : undef;
-    my $url             = exists $arg_ref->{url}
-        ? $arg_ref->{url}             : undef;
-    my $contents        = exists $arg_ref->{contents}
-        ? $arg_ref->{contents}        : undef;
-    my $supplement      = exists $arg_ref->{supplement}
-        ? $arg_ref->{supplement}      : '';
-    my $type            = exists $arg_ref->{type}
-        ? $arg_ref->{type}            : undef;
-    my $sorttype        = exists $arg_ref->{sorttype}
-        ? $arg_ref->{sorttype}        : undef;
-    my $sessionID       = exists $arg_ref->{sessionID}
-        ? $arg_ref->{sessionID}       : undef;
-
-    # UTF8-Behandlung
-
-    $desc       =~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-    $url        =~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-    $contents   =~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-    $supplement =~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-
-    my $globalcontents=$contents;
-
-    $globalcontents=~s/<\/a>//;
-    $globalcontents=~s/¬//g;
-    $globalcontents=~s/\"//g;
-    $globalcontents=~s/&lt;//g;
-    $globalcontents=~s/&gt;//g;
-    $globalcontents=~s/<//g;
-    $globalcontents=~s/>//g;
-
-    # Sonderzeichen
-
-    # Caron
-    $globalcontents=~s/\&#353\;/s/g;  # s hacek
-    $globalcontents=~s/\&#352\;/S/g;  # S hacek
-    $globalcontents=~s/\&#269\;/c/g;  # c hacek
-    $globalcontents=~s/\&#268\;/C/g;  # C hacek
-    $globalcontents=~s/\&#271\;/d/g;  # d hacek
-    $globalcontents=~s/\&#270\;/D/g;  # D hacek
-    $globalcontents=~s/\&#283\;/e/g;  # e hacek
-    $globalcontents=~s/\&#282\;/E/g;  # E hacek
-    $globalcontents=~s/\&#318\;/l/g;  # l hacek
-    $globalcontents=~s/\&#317\;/L/g;  # L hacek
-    $globalcontents=~s/\&#328\;/n/g;  # n hacek
-    $globalcontents=~s/\&#327\;/N/g;  # N hacek
-    $globalcontents=~s/\&#345\;/r/g;  # r hacek
-    $globalcontents=~s/\&#344\;/R/g;  # R hacek
-    $globalcontents=~s/\&#357\;/t/g;  # t hacek
-    $globalcontents=~s/\&#356\;/T/g;  # T hacek
-    $globalcontents=~s/\&#382\;/n/g;  # n hacek
-    $globalcontents=~s/\&#381\;/N/g;  # N hacek
-  
-    # Macron
-    $globalcontents=~s/\&#275\;/e/g;  # e oberstrich
-    $globalcontents=~s/\&#274\;/E/g;  # e oberstrich
-    $globalcontents=~s/\&#257\;/a/g;  # a oberstrich
-    $globalcontents=~s/\&#256\;/A/g;  # A oberstrich
-    $globalcontents=~s/\&#299\;/i/g;  # i oberstrich
-    $globalcontents=~s/\&#298\;/I/g;  # I oberstrich
-    $globalcontents=~s/\&#333\;/o/g;  # o oberstrich
-    $globalcontents=~s/\&#332\;/O/g;  # O oberstrich
-    $globalcontents=~s/\&#363\;/u/g;  # u oberstrich
-    $globalcontents=~s/\&#362\;/U/g;  # U oberstrich
-  
-    #$globalcontents=~s/ /\+/g;
-    $globalcontents=~s/,/%2C/g;
-    $globalcontents=~s/\[.+?\]//;
-    $globalcontents=~s/ $//g;
-    #$globalcontents=~s/ /\+/g;
-    $globalcontents=~s/ /%20/g;
-
-    my $globalurl="";
-
-    if ($type eq "swt") {
-        $globalurl="$config{virtualsearch_loc}?sessionID=$sessionID;hitrange=-1;swtindexall=;verf=;hst=;swt=%22$globalcontents%22;kor=;sign=;isbn=;notation=;verknuepfung=und;ejahr=;ejahrop=genau;maxhits=200;sorttype=$sorttype;searchall=In+allen+Katalogen+suchen";
-    }
-
-    if ($type eq "kor") {
-        $globalurl="$config{virtualsearch_loc}?sessionID=$sessionID;hitrange=-1;swtindexall=;verf=;hst=;swt=;kor=%22$globalcontents%22;sign=;isbn=;notation=;verknuepfung=und;ejahr=;ejahrop=genau;maxhits=200;sorttype=$sorttype;searchall=In%20allen%20Katalogen%20suchen";
-    }
-
-    if ($type eq "verf") {
-        $globalurl="$config{virtualsearch_loc}?sessionID=$sessionID;hitrange=-1;swtindexall=;verf=%22$globalcontents%22;hst=;swt=;kor=;sign=;isbn=;notation=;verknuepfung=und;ejahr=;ejahrop=genau;maxhits=200;sorttype=$sorttype;searchall=In+allen+Katalogen+suchen";
-    }
-
-    my %kat=();
-    $kat{'type'}       = "url_category_global";
-    $kat{'desc'}       = $desc;
-    $kat{'url'}        = $url;
-    $kat{'globalurl'}  = $globalurl;
-    $kat{'contents'}   = $contents;
-    $kat{'supplement'} = $supplement;
-
-    return \%kat;
-}
-
 sub get_result_navigation {
     my ($arg_ref) = @_;
 
@@ -2000,32 +1746,61 @@ sub get_index {
         $atime=new Benchmark;
     }
 
-    $contentreq=$contentreq."%";
-    
     my @contents=();
     {
-        my $sqlrequest="select distinct content from $type where category = ? and content like ? order by content";
-
+        my $sqlrequest;
+        if ($contentreq=~/^\^/){
+            substr($contentreq,0,1)="";
+            $contentreq=~s/\*$/\%/;
+            $sqlrequest="select distinct content,contentnorm from $type where category = ? and contentnorm like ? order by content";
+        }
+        else {
+            $sqlrequest="select distinct content,contentnorm from $type where category = ? and match (contentnormft) against (? IN BOOLEAN MODE) order by content";
+        }
         $logger->info($sqlrequest." - $category, $contentreq");
         my $request=$dbh->prepare($sqlrequest);
         $request->execute($category,$contentreq);
 
         while (my $res=$request->fetchrow_hashref){
-            push @contents, $res->{content};
+            push @contents, {
+                content     => decode_utf8($res->{content}),
+                contentnorm => decode_utf8($res->{contentnorm}),
+            };
         }
         $request->finish();
         
     }
+
+    if ($config{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Zeit fuer : ".($#contents+1)." Begriffe (Bestimmung): ist ".timestr($timeall));
+        undef $atime;
+        undef $btime;
+        undef $timeall;
+    }
+
+    $logger->debug("INDEX-Contents (".($#contents+1)." Begriffe): ".YAML::Dump(\@contents));
+
+
+    if ($config{benchmark}) {
+        $atime=new Benchmark;
+    }
     
     my @index=();
 
-    foreach my $content (@contents){
+    foreach my $content_ref (@contents){
+        my ($atime,$btime,$timeall);
 
+        if ($config{benchmark}) {
+            $atime=new Benchmark;
+        }
+        
         my @ids=();
         {
-            my $sqlrequest="select distinct id from $type where category = ? and content = ?";
+            my $sqlrequest="select distinct id from $type where category = ? and contentnorm = ?";
             my $request=$dbh->prepare($sqlrequest);
-            $request->execute($category,$content);
+            $request->execute($category,$content_ref->{contentnorm});
 
             while (my $res=$request->fetchrow_hashref){
                 push @ids, $res->{id};
@@ -2033,29 +1808,52 @@ sub get_index {
             $request->finish();
         }
 
+        if ($config{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : ".($#ids+1)." ID's (Art): ist ".timestr($timeall));
+            undef $atime;
+            undef $btime;
+            undef $timeall;
+        }
+        
+        if ($config{benchmark}) {
+            $atime=new Benchmark;
+        }
+
         {
-            my $sqlrequest="select count(distinct sourceid) as conncount from connection where targetid=? and sourcetype='tit' and targettype='$type'";
+            my $sqlrequest="select count(distinct sourceid) as conncount from connection where targetid=? and sourcetype='tit' and targettype=?";
             my $request=$dbh->prepare($sqlrequest);
             
             foreach my $id (@ids){
-                $request->execute($id);
+                $request->execute($id,$type);
                 my $res=$request->fetchrow_hashref;
                 my $titcount=$res->{conncount};
 
                 push @index, {
-                    content   => $content,
+                    content   => $content_ref->{content},
                     id        => $id,
                     titcount  => $titcount,
                 };
             }
             $request->finish();
         }
+
+        if ($config{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : ".($#ids+1)." ID's (Anzahl): ist ".timestr($timeall));
+            undef $atime;
+            undef $btime;
+            undef $timeall;
+        }
+
     }
     
     if ($config{benchmark}) {
         $btime=new Benchmark;
         $timeall=timediff($btime,$atime);
-        $logger->info("Zeit fuer : $#index Begriffe : ist ".timestr($timeall));
+        $logger->info("Zeit fuer : ".($#index+1)." Begriffe (Vollinformation): ist ".timestr($timeall));
         undef $atime;
         undef $btime;
         undef $timeall;
@@ -2307,24 +2105,24 @@ sub initial_search_for_titidns {
   
     my $notfrom="";
   
-    # TODO: SQL-Statement fuer Notationssuche optimieren und an neues
-    #       Kategorienschema anpassen!!!
     if ($notation) {
+        $notation=~s/\*$/%/;
         $notation=OpenBib::Search::Util::input2sgml($notation,1);
         push @sqlfrom,  "notation";
-        push @sqlfrom,  "titnot";
-        push @sqlwhere, "$boolnotation ((notation.notation like ? or notation.benennung like '$notation%') and search.verwidn=titnot.titidn and notation.idn=titnot.notidn)";
-        push @sqlargs,  $notation."%";
+        push @sqlfrom,  "connection";
+        push @sqlwhere, "$boolnotation (notation.contentnorm like ? and connection.sourcetype='tit' and connection.targettype='notation' and connection.targetid=notation.id and search.verwidn=connection.sourceid)";
+        push @sqlargs,  $notation;
     }
   
     my $signfrom="";
   
     if ($sign) {
+        $sign=~s/\*$/%/;
         $sign=OpenBib::Search::Util::input2sgml($sign,1);
         push @sqlfrom,  "mex";
-        push @sqlfrom,  "mexsign";
-        push @sqlwhere, "$boolsign (search.verwidn=mex.titidn and mex.idn=mexsign.mexidn and mexsign.signlok like ?)";
-        push @sqlargs,  $sign."%";
+        push @sqlfrom,  "connection";
+        push @sqlwhere, "$boolsign (mex.contentnorm like ? and mex.category='0014' and connection.sourcetype='tit' and connection.targettype='mex' and connection.targetid=mex.id and search.verwidn=connection.sourceid)";
+        push @sqlargs,  $sign;
     }
   
     if ($isbn) {
@@ -2343,13 +2141,15 @@ sub initial_search_for_titidns {
   
     if ($mart) {
         $mart=OpenBib::Search::Util::input2sgml($mart,1);
-        push @sqlwhere, "match (artinh) against (? IN BOOLEAN MODE)";
+        push @sqlwhere, "$boolmart match (artinh) against (? IN BOOLEAN MODE)";
         push @sqlargs,  $mart;
     }
   
     if ($hststring) {
+        $hststring=~s/\*$/%/;
+        push @sqlfrom,  "tit";
         $hststring=OpenBib::Search::Util::input2sgml($hststring,1);
-        push @sqlwhere, "$boolhststring (search.hststring = ?)";
+        push @sqlwhere, "$boolhststring (tit.contentnorm like ? and tit.category in ('0331','0310','0304','0370','0341') and search.verwidn=tit.id)";
         push @sqlargs,  $hststring;
     }
   
@@ -2380,7 +2180,7 @@ sub initial_search_for_titidns {
     my $sqlwherestring = join(" ",@sqlwhere);
     $sqlwherestring    =~s/^(?:AND|OR|NOT) //;
     my $sqlfromstring  = join(", ",@sqlfrom);
-    my $sqlquerystring = "select verwidn from $sqlfromstring where $sqlwherestring limit $maxhits";
+    my $sqlquerystring = "select distinct verwidn from $sqlfromstring where $sqlwherestring limit $maxhits";
     my $request        = $dbh->prepare($sqlquerystring);
 
     $request->execute(@sqlargs);

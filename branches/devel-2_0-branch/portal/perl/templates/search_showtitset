@@ -34,28 +34,6 @@
 </tr>
 </table>
 
-<!--
-Messages:
-
-[% USE dumper %]
-[% dumper.dump(msg) %]
-
-<p />
-
-Query-Options
-[% dumper.dump(qopts) %]
-
-<p />
-
-Categories:
-[% dumper.dump(normset) %]
-
-<p />
-
-Mex:
-[% #dumper.dump(mexnormset) %]
--->
-
 <p>
 <!-- Title begins here -->
 <table width="100%">

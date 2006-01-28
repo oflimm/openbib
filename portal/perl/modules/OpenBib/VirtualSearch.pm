@@ -260,12 +260,10 @@ sub handler {
         searchreq => 1,
     });
 
-    $logger->debug("Vor: $swt");
     $swt       = OpenBib::Common::Util::grundform({
         content   => $swt,
         searchreq => 1,
     });
-    $logger->debug("Nach: $swt");
 
     $kor       = OpenBib::Common::Util::grundform({
         content   => $kor,
@@ -829,7 +827,7 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
             = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
                 or $logger->error_die($DBI::errstr);
 
-        my @tidns=OpenBib::Search::Util::initial_search_for_titidns({
+        my $result_ref=OpenBib::Search::Util::initial_search_for_titidns({
             fs            => $fs,
             verf          => $verf,
             hst           => $hst,
@@ -861,6 +859,9 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
             maxhits       => $maxhits,
         });
 
+        my @tidns           = @{$result_ref->{titidns_ref}};
+        my $fullresultcount = $result_ref->{fullresultcount};
+
         # Wenn mindestens ein Treffer gefunden wurde
         if ($#tidns >= 0) {
             my @outputbuffer=();
@@ -877,20 +878,8 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
 	
                 push @outputbuffer, OpenBib::Search::Util::get_tit_listitem_by_idn({
                     titidn            => $idn,
-                    hint              => "none",
-                    mode              => 5,
                     dbh               => $dbh,
                     sessiondbh        => $sessiondbh,
-                    searchmultipleaut => 0,
-                    searchmultiplekor => 0,
-                    searchmultipleswt => 0,
-                    searchmultiplenot => 0,
-                    searchmultipletit => 0,
-                    hitrange          => $hitrange,
-                    rating            => '',
-                    bookinfo          => '',
-                    sorttype          => $sorttype,
-                    sortorder         => $sortorder,
                     database          => $database,
                     sessionID         => $sessionID,
                     targetdbinfo_ref  => $targetdbinfo_ref,
@@ -906,10 +895,9 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
                 $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel : ist ".timestr($timeall));
             }
 
-#            my @sortedoutputbuffer=();
-            my @sortedoutputbuffer=@outputbuffer;
+            my @sortedoutputbuffer=();
 
-#            OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
+            OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
 
             my $treffer=$#sortedoutputbuffer+1;
 
@@ -930,22 +918,23 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
 
             # TT-Data erzeugen
             my $ttdata={
-                lang       => $lang,
-                view       => $view,
-                sessionID  => $sessionID,
+                lang            => $lang,
+                view            => $view,
+                sessionID       => $sessionID,
 		  
-                dbinfo     => $targetdbinfo_ref->{dbinfo}{$database},
+                dbinfo          => $targetdbinfo_ref->{dbinfo}{$database},
 
-                treffer    => $treffer,
+                treffer         => $treffer,
 
-                resultlist => \@sortedoutputbuffer,
-                rating     => '',
-                bookinfo   => '',
-                sorttype   => $sorttype,
-                sortorder  => $sortorder,
-                resulttime => $resulttime,
-                config     => \%config,
-                msg        => \%msg,
+                fullresultcount => $fullresultcount,
+                resultlist      => \@sortedoutputbuffer,
+                rating          => '',
+                bookinfo        => '',
+                sorttype        => $sorttype,
+                sortorder       => $sortorder,
+                resulttime      => $resulttime,
+                config          => \%config,
+                msg             => \%msg,
             };
 
             $itemtemplate->process($itemtemplatename, $ttdata) || do {
@@ -961,9 +950,9 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
             undef $btime;
             undef $timeall;
 
+            $r->rflush();
         }
         $dbh->disconnect;
-        $r->rflush();
     }
 
     ######################################################################

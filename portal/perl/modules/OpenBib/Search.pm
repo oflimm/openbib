@@ -291,7 +291,7 @@ sub handler {
     #####################################################################
   
     if ($searchall) {           # Standardsuche
-        my @tidns=OpenBib::Search::Util::initial_search_for_titidns({
+        my $result_ref=OpenBib::Search::Util::initial_search_for_titidns({
             fs            => $fs,
             verf          => $verf,
             hst           => $hst,
@@ -322,7 +322,10 @@ sub handler {
             dbh           => $dbh,
             maxhits       => $maxhits,
         });
-    
+
+        my @tidns           = @{$result_ref->{titidns_ref}};
+        my $fullresultcount = $result_ref->{fullresultcount};
+        
         # Kein Treffer
         if ($#tidns == -1) {
             OpenBib::Common::Util::print_info("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden",$r);;
@@ -434,7 +437,7 @@ sub handler {
         if ($generalsearch=~/^supertit/) {
             my $supertitidn=$query->param("$generalsearch");
 
-            my $reqstring="select distinct targetid from connection where sourceid=? and sourcetype='tit' and targettype='tit'";
+            my $reqstring="select distinct targetid from connection where sourceid=? and sourcetype=1 and targettype=1";
             my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
             $request->execute($supertitidn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
 
@@ -517,7 +520,7 @@ sub handler {
         if ($generalsearch=~/^subtit/) {
             my $subtitidn=$query->param("$generalsearch");
 
-            my $reqstring="select distinct sourceid from connection where targetid=? and sourcetype='tit' and targettype='tit'";
+            my $reqstring="select distinct sourceid from connection where targetid=? and sourcetype=1 and targettype=1";
             my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
             $request->execute($subtitidn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
 
@@ -954,7 +957,7 @@ sub handler {
   
     if ($searchtitofaut) {
         # Bestimmung der Titel
-        my $request=$dbh->prepare("select distinct sourceid from connection where targetid=? and sourcetype='tit' and targettype='aut'") or $logger->error($DBI::errstr);
+        my $request=$dbh->prepare("select distinct sourceid from connection where targetid=? and sourcetype=1 and targettype=2") or $logger->error($DBI::errstr);
         $request->execute($searchtitofaut);
 
         my @titelidns=();
@@ -1032,7 +1035,7 @@ sub handler {
     #####################################################################
     if ($searchtitofurhkor) {
         # Bestimmung der Titel
-        my $request=$dbh->prepare("select distinct sourceid from connection where targetid=? and sourcetype='tit' and targettype='kor'") or $logger->error($DBI::errstr);
+        my $request=$dbh->prepare("select distinct sourceid from connection where targetid=? and sourcetype=1 and targettype=3") or $logger->error($DBI::errstr);
         $request->execute($searchtitofurhkor);
 
         my @titelidns=();
@@ -1110,7 +1113,7 @@ sub handler {
     #######################################################################
     if ($searchtitofswt) {
         # Bestimmung der Titel
-        my $request=$dbh->prepare("select distinct sourceid from connection where targetid=? and sourcetype='tit' and targettype='swt'") or $logger->error($DBI::errstr);
+        my $request=$dbh->prepare("select distinct sourceid from connection where targetid=? and sourcetype=1 and targettype=4") or $logger->error($DBI::errstr);
         $request->execute($searchtitofswt);
 
         my @titelidns=();
@@ -1186,7 +1189,7 @@ sub handler {
     #######################################################################
     if ($searchtitofnot) {
         # Bestimmung der Titel
-        my $request=$dbh->prepare("select distinct sourceid from connection where targetid=? and sourcetype='tit' and targettype='notation'") or $logger->error($DBI::errstr);
+        my $request=$dbh->prepare("select distinct sourceid from connection where targetid=? and sourcetype=1 and targettype=5") or $logger->error($DBI::errstr);
         $request->execute($searchtitofnot);
 
         my @titelidns=();

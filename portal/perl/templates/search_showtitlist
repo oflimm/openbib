@@ -29,12 +29,6 @@
 
 <p />
 
-<!--
-[% USE dumper %]
-[% dumper.dump(itemlist) %]
--->
-
-
 <!-- Titlelist begins here -->
 <table width="100%">
 <tr><th>Titelliste</th></tr>

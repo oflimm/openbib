@@ -17,12 +17,6 @@
 
 <div id="content">
 
-<!--
-[% USE dumper;
-   dumper.dump(msg);
-%]
--->
-
 <form method="get" action="http://[% config.servername %][% config.admin_loc %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="dbid" value="[% katalog.dbid %]" />

@@ -41,7 +41,7 @@ use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use Template;
-use YAML;
+use YAML();
 
 use OpenBib::Common::Stopwords;
 use OpenBib::Common::Util;

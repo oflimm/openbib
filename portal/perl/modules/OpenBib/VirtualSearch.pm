@@ -104,6 +104,7 @@ sub handler {
     my $notation      = decode_utf8($query->param('notation'))      || '';
     my $ejahr         = decode_utf8($query->param('ejahr'))         || '';
     my $ejahrop       = decode_utf8($query->param('ejahrop'))       || 'eq';
+    my $serien        = decode_utf8($query->param('serien'))        || '';
     my @databases     = ($query->param('database'))?$query->param('database'):();
 
     my $hitrange      = ($query->param('hitrange'))?$query->param('hitrange'):20;
@@ -827,6 +828,8 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
             = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
                 or $logger->error_die($DBI::errstr);
 
+        my $atime=new Benchmark;
+        
         my $result_ref=OpenBib::Search::Util::initial_search_for_titidns({
             fs            => $fs,
             verf          => $verf,
@@ -841,6 +844,7 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
             ejahr         => $ejahr,
             ejahrop       => $ejahrop,
             mart          => $mart,
+            serien        => $serien,
 
             boolfs        => $boolfs,
             boolverf      => $boolverf,
@@ -864,9 +868,14 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
 
         # Wenn mindestens ein Treffer gefunden wurde
         if ($#tidns >= 0) {
-            my @outputbuffer=();
 
-            my $atime=new Benchmark;
+            my $a2time;
+            
+            if ($config{benchmark}) {
+               $a2time=new Benchmark;
+            }
+
+            my @outputbuffer=();
 
             foreach my $idn (@tidns) {
 
@@ -892,7 +901,11 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
             $resulttime    =~s/(\d+\.\d+) .*/$1/;
 
             if ($config{benchmark}) {
-                $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel : ist ".timestr($timeall));
+                my $b2time     = new Benchmark;
+                my $timeall2   = timediff($b2time,$a2time);
+
+                $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel (holen)       : ist ".timestr($timeall2));
+                $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel (suchen+holen): ist ".timestr($timeall));
             }
 
             my @sortedoutputbuffer=();
@@ -946,12 +959,12 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
             $dbhits     {$database} = $treffer;
             $gesamttreffer          = $gesamttreffer+$treffer;
 
-            undef $atime;
             undef $btime;
             undef $timeall;
 
             $r->rflush();
         }
+        undef $atime;
         $dbh->disconnect;
     }
 

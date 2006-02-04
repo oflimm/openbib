@@ -72,7 +72,7 @@ sub get_aut_ans_by_idn {
 
     my $sqlrequest;
 
-    $sqlrequest="select content from aut where id = ? and category='0001'";
+    $sqlrequest="select content from aut where id = ? and category=0001";
     my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($autidn);
     
@@ -156,7 +156,7 @@ sub get_aut_set_by_idn {
     }
 
     # Ausgabe der Anzahl verkuepfter Titel
-    $sqlrequest="select count(distinct sourceid) as conncount from connection where targetid=? and sourcetype=1 and targettype=2";
+    $sqlrequest="select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=2";
     $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($autidn);
     my $res=$request->fetchrow_hashref;
@@ -203,7 +203,7 @@ sub get_kor_ans_by_idn {
 
     my $sqlrequest;
 
-    $sqlrequest="select content from kor where id = ? and category='0001'";
+    $sqlrequest="select content from kor where id = ? and category=0001";
     my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($koridn);
     
@@ -286,7 +286,7 @@ sub get_kor_set_by_idn {
     }
 
     # Ausgabe der Anzahl verk"upfter Titel
-    $sqlrequest="select count(distinct sourceid) as conncount from connection where targetid=? and sourcetype=1 and targettype=3";
+    $sqlrequest="select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=3";
     $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($koridn);
     my $res=$request->fetchrow_hashref;
@@ -334,7 +334,7 @@ sub get_swt_ans_by_idn {
 
     my $sqlrequest;
 
-    $sqlrequest="select content from swt where id = ? and category='0001'";
+    $sqlrequest="select content from swt where id = ? and category=0001";
     my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($swtidn);
     
@@ -418,7 +418,7 @@ sub get_swt_set_by_idn {
     }
 
     # Ausgabe der Anzahl verk"upfter Titel
-    $sqlrequest="select count(distinct sourceid) as conncount from connection where targetid=? and sourcetype=1 and targettype=4";
+    $sqlrequest="select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=4";
     $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($swtidn);
     my $res=$request->fetchrow_hashref;
@@ -465,7 +465,7 @@ sub get_not_ans_by_idn {
 
     my $sqlrequest;
 
-    $sqlrequest="select content from notation where id = ? and category='0001'";
+    $sqlrequest="select content from notation where id = ? and category=0001";
     my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($notidn);
     
@@ -556,7 +556,7 @@ sub get_not_set_by_idn {
     }
 
     # Ausgabe der Anzahl verk"upfter Titel
-    $sqlrequest="select count(distinct sourceid) as conncount from connection where targetid=? and sourcetype=1 and targettype=5";
+    $sqlrequest="select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=5";
     $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($notidn);
     my $res=$request->fetchrow_hashref;
@@ -608,229 +608,276 @@ sub get_tit_listitem_by_idn {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-  
+
+
+    my $use_titlistitem_table=0;
+
+    if ($database eq "inst006"){
+        $use_titlistitem_table=1;
+    }
+    
     my $listitem_ref={};
-
+    
     # Titel-ID und zugehoerige Datenbank setzen
-
+    
     $listitem_ref->{id      } = $titidn;
     $listitem_ref->{database} = $database;
-
+    
     my ($atime,$btime,$timeall)=(0,0,0);
     
     if ($config{benchmark}) {
-      $atime=new Benchmark;
-    }
-    
-    # Bestimmung der Titelinformationen
-    my $request=$dbh->prepare("select category,indicator,content from tit where id = ? and category in ('0310','0331','0412','0424','0425','0451','0455','1203','0089')") or $logger->error($DBI::errstr);
-#    my $request=$dbh->prepare("select category,indicator,content from tit where id = ? ") or $logger->error($DBI::errstr);
-    $request->execute($titidn);
-
-    while (my $res=$request->fetchrow_hashref){
-        my $category  = "T".sprintf "%04d",$res->{category };
-        my $indicator =        decode_utf8($res->{indicator});
-        my $content   =        decode_utf8($res->{content  });
-
-        push @{$listitem_ref->{$category}}, {
-            indicator => $indicator,
-            content   => $content,
-        };
+        $atime  = new Benchmark;
     }
 
-    $logger->debug("Titel: ".YAML::Dump($listitem_ref));
-    
-    # Bestimmung der Exemplarinformationen
-    $request=$dbh->prepare("select mex.category,mex.indicator,mex.content from mex,connection where connection.sourceid = ? and connection.targetid=mex.id and connection.sourcetype=1 and connection.targettype=6 and mex.category='0014'") or $logger->error($DBI::errstr);
-    $request->execute($titidn);
-
-    while (my $res=$request->fetchrow_hashref){
-        my $category  = "X".sprintf "%04d",$res->{category };
-        my $indicator =        decode_utf8($res->{indicator});
-        my $content   =        decode_utf8($res->{content  });
-
-        push @{$listitem_ref->{$category}}, {
-            indicator => $indicator,
-            content   => $content,
-        };
-    }
-
-
-    if ($config{benchmark}) {
-      $btime=new Benchmark;
-      $timeall=timediff($btime,$atime);
-      $logger->info("Zeit fuer : Bestimmung der Titelinformationen : ist ".timestr($timeall));
-    }
-
-
-    if ($config{benchmark}) {
-      $atime=new Benchmark;
-    }
-
-    my @autkor=();
-    
-    # Bestimmung der Verfasser, Personen
-    $request=$dbh->prepare("select connection.targetid as targetid, connection.category as category, aut.content as content, connection.supplement as supplement from connection,aut where connection.sourceid=? and connection.sourcetype=1 and connection.targettype=2 and connection.targetid=aut.id and aut.category=1") or $logger->error($DBI::errstr);
-    $request->execute($titidn);
-
-    while (my $res=$request->fetchrow_hashref){
-        my $category  = "P".sprintf "%04d",$res->{category };
-#        my $indicator =        decode_utf8($res->{indicator});
-        my $targetid  =        decode_utf8($res->{targetid});
-        my $content   =        decode_utf8($res->{content});
-
-        my $supplement="";
-        if ($res->{supplement}){
-            $supplement=" ".decode_utf8($res->{supplement});
-        }
-
-        # Kategorieweise Abspeichern
-        push @{$listitem_ref->{$category}}, {
-            id        => $targetid,
-            type      => 'aut',
-#            indicator => $indicator,
-            content   => $content,
-        };
-
-        # Gemeinsam Abspeichern fuer die Sortierung (!)
-        push @autkor, $content;
-            
-    }
-
-
-    if ($config{benchmark}) {
-      $btime=new Benchmark;
-      $timeall=timediff($btime,$atime);
-      $logger->info("Zeit fuer : Bestimmung der Verfasserinformationen : ist ".timestr($timeall));
-    }
-
-    if ($config{benchmark}) {
-      $atime=new Benchmark;
-    }    
-    
-    # Bestimmung der Urheber, Koerperschaften
-    $request=$dbh->prepare("select connection.targetid as targetid, connection.category as category, kor.content as content, connection.supplement as supplement from connection,kor where connection.sourceid=? and connection.sourcetype=1 and connection.targettype=3 and connection.targetid=kor.id and kor.category=1") or $logger->error($DBI::errstr);
-    $request->execute($titidn);
-
-    while (my $res=$request->fetchrow_hashref){
-        my $category  = "C".sprintf "%04d",$res->{category };
-#        my $indicator =        decode_utf8($res->{indicator});
-        my $targetid  =        decode_utf8($res->{targetid});
-        my $content   =        decode_utf8($res->{content});
-
-        my $supplement="";
-        if ($res->{supplement}){
-            $supplement.=" ".decode_utf8($res->{supplement});
-        }
-
-        # Kategorieweise Abspeichern
-        push @{$listitem_ref->{$category}}, {
-            id      => $targetid,
-            type    => 'kor',
-            content => $content,
-        };
-
-        # Gemeinsam Abspeichern
-        push @autkor, $content;
-    }
-
-    if ($config{benchmark}) {
-      $btime=new Benchmark;
-      $timeall=timediff($btime,$atime);
-      $logger->info("Zeit fuer : Bestimmung der Koerperschaftsinformationen : ist ".timestr($timeall));
-    }
-
-    # Zusammenfassen von autkor
-
-    push @{$listitem_ref->{'PC0001'}}, {
-        content   => join(" ; ",@autkor),
-    };
-
-    if ($config{benchmark}) {
-      $atime=new Benchmark;
-    }    
-
-
-    $request->finish();
-
-    $logger->debug("Vor Sonderbehandlung: ".YAML::Dump($listitem_ref));
-
-    # Konzeptionelle Vorgehensweise fuer die korrekte Anzeige eines Titel in
-    # der Kurztitelliste:
-    #
-    # 1. Fall: Es existiert ein HST
-    #
-    # Dann:
-    #
-    # Unterfall 1.1: Es existiert eine (erste) Bandzahl(089)
-    #
-    # Dann: Setze diese Bandzahl vor den AST/HST
-    #
-    # Unterfall 1.2: Es existiert keine Bandzahl(089), aber eine (erste)
-    #                Bandzahl(455)
-    #
-    # Dann: Setze diese Bandzahl vor den AST/HST
-    #
-    # 2. Fall: Es existiert kein HST(331)
-    #
-    # Dann:
-    #
-    # Unterfall 2.1: Es existiert eine (erste) Bandzahl(089)
-    #
-    # Dann: Verwende diese Bandzahl
-    #
-    # Unterfall 2.2: Es existiert keine Bandzahl(089), aber eine (erste)
-    #                Bandzahl(455)
-    #
-    # Dann: Verwende diese Bandzahl
-    #
-    # Unterfall 2.3: Es existieren keine Bandzahlen, aber ein (erster)
-    #                Gesamttitel(451)
-    #
-    # Dann: Verwende diesen GT
-    #
-    # Unterfall 2.4: Es existieren keine Bandzahlen, kein Gesamttitel(451),
-    #                aber eine Zeitschriftensignatur(1203/USB-spezifisch)
-    #
-    # Dann: Verwende diese Zeitschriftensignatur
-    #
-    if (exists $listitem_ref->{T0331}){
-        $logger->debug("1. Fall: HST existiert");
-        # UnterFall 1.1:
-        if (exists $listitem_ref->{'T0089'}){
-            $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0089}[0]{content}.". ".$listitem_ref->{T0331}[0]{content};
-        }
-        # Unterfall 1.2:
-        elsif (exists $listitem_ref->{T0455}){
-            $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0455}[0]{content}.". ".$listitem_ref->{T0331}[0]{content};
+    if ($use_titlistitem_table) {
+        # Bestimmung des Satzes
+        my $request=$dbh->prepare("select listitem from titlistitem where id = ?") or $logger->error($DBI::errstr);
+        $request->execute($titidn);
+        
+        if (my $res=$request->fetchrow_hashref){
+            my $titlistitem     = decode_utf8($res->{listitem});
+            my $titlistitem_ref = YAML::Load($titlistitem);
+            %$listitem_ref=(%$listitem_ref,%$titlistitem_ref);
         }
     }
     else {
-        # UnterFall 1.1:
-        if (exists $listitem_ref->{'T0089'}){
-            $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0089}[0]{content};
+        my ($atime,$btime,$timeall)=(0,0,0);
+        
+        if ($config{benchmark}) {
+            $atime  = new Benchmark;
         }
-        # Unterfall 1.2:
-        elsif (exists $listitem_ref->{T0455}){
-            $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0455}[0]{content};
+
+        # Bestimmung der Titelinformationen
+        my $request=$dbh->prepare("select category,indicator,content from tit where id = ? and category in (0310,0331,0412,0424,0425,0451,0455,1203,0089)") or $logger->error($DBI::errstr);
+        #    my $request=$dbh->prepare("select category,indicator,content from tit where id = ? ") or $logger->error($DBI::errstr);
+        $request->execute($titidn);
+        
+        while (my $res=$request->fetchrow_hashref){
+            my $category  = "T".sprintf "%04d",$res->{category };
+            my $indicator =        decode_utf8($res->{indicator});
+            my $content   =        decode_utf8($res->{content  });
+            
+            push @{$listitem_ref->{$category}}, {
+                indicator => $indicator,
+                content   => $content,
+            };
         }
-        # Unterfall 1.3:
-        elsif (exists $listitem_ref->{T0451}){
-            $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0451}[0]{content};
+        
+        $logger->debug("Titel: ".YAML::Dump($listitem_ref));
+        
+        if ($config{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : Bestimmung der Titelinformationen : ist ".timestr($timeall));
         }
-        # Unterfall 1.4:
-        elsif (exists $listitem_ref->{T1203}){
-            $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T1203}[0]{content};
+        
+        
+        if ($config{benchmark}) {
+            $atime=new Benchmark;
         }
-        else {
-            $listitem_ref->{T0331}[0]{content}="Kein HST/AST vorhanden";
+        
+        # Bestimmung der Exemplarinformationen
+        $request=$dbh->prepare("select mex.category,mex.indicator,mex.content from mex,conn where conn.sourceid = ? and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6 and mex.category=0014") or $logger->error($DBI::errstr);
+        $request->execute($titidn);
+        
+        while (my $res=$request->fetchrow_hashref){
+            my $category  = "X".sprintf "%04d",$res->{category };
+            my $indicator =        decode_utf8($res->{indicator});
+            my $content   =        decode_utf8($res->{content  });
+            
+            push @{$listitem_ref->{$category}}, {
+                indicator => $indicator,
+                content   => $content,
+            };
         }
+        
+        
+        if ($config{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : Bestimmung der Exemplarinformationen : ist ".timestr($timeall));
+        }
+        
+        
+        if ($config{benchmark}) {
+            $atime=new Benchmark;
+        }
+        
+        my @autkor=();
+        
+        # Bestimmung der Verfasser, Personen
+        #
+        # Bemerkung zur Performance: Mit Profiling (Devel::SmallProf) wurde
+        # festgestellt, dass die Bestimmung der Information ueber conn
+        # und get_*_ans_by_idn durchschnittlich ungefaehr um den Faktor 30-50
+        # schneller ist als ein join ueber conn und aut (!)
+        $request=$dbh->prepare("select targetid,category,supplement from conn where sourceid=? and sourcetype=1 and targettype=2") or $logger->error($DBI::errstr);
+        $request->execute($titidn);
+        
+        while (my $res=$request->fetchrow_hashref){
+            my $category  = "P".sprintf "%04d",$res->{category };
+            my $indicator =        decode_utf8($res->{indicator});
+            my $targetid  =        decode_utf8($res->{targetid});
+            
+            my $supplement="";
+            if ($res->{supplement}){
+                $supplement=" ".decode_utf8($res->{supplement});
+            }
+            
+            my $content=get_aut_ans_by_idn($targetid,$dbh).$supplement;
+            
+            # Kategorieweise Abspeichern
+            push @{$listitem_ref->{$category}}, {
+                id      => $targetid,
+                type    => 'aut',
+                content => $content,
+            };
+            
+            # Gemeinsam Abspeichern
+            push @autkor, $content;
+        }
+        
+        if ($config{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : Bestimmung der Verfasserinformationen : ist ".timestr($timeall));
+        }
+        
+        if ($config{benchmark}) {
+            $atime=new Benchmark;
+        }    
+        
+        # Bestimmung der Urheber, Koerperschaften
+        $request=$dbh->prepare("select targetid,category,supplement from conn where sourceid=? and sourcetype=1 and targettype=3") or $logger->error($DBI::errstr);
+        $request->execute($titidn);
+        
+        while (my $res=$request->fetchrow_hashref){
+            my $category  = "C".sprintf "%04d",$res->{category };
+            my $indicator =        decode_utf8($res->{indicator});
+            my $targetid  =        decode_utf8($res->{targetid});
+            
+            my $supplement="";
+            if ($res->{supplement}){
+                $supplement.=" ".decode_utf8($res->{supplement});
+            }
+            
+            my $content=get_kor_ans_by_idn($targetid,$dbh).$supplement;
+            
+            # Kategorieweise Abspeichern
+            push @{$listitem_ref->{$category}}, {
+                id      => $targetid,
+                type    => 'kor',
+                content => $content,
+            };
+            
+            # Gemeinsam Abspeichern
+            push @autkor, $content;
+        }
+        
+        if ($config{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : Bestimmung der Koerperschaftsinformationen : ist ".timestr($timeall));
+        }
+        
+        # Zusammenfassen von autkor fuer die Sortierung
+        
+        push @{$listitem_ref->{'PC0001'}}, {
+            content   => join(" ; ",@autkor),
+        };
+        
+        if ($config{benchmark}) {
+            $atime=new Benchmark;
+        }    
+        
+        
+        $request->finish();
+        
+        $logger->debug("Vor Sonderbehandlung: ".YAML::Dump($listitem_ref));
+
+        # Konzeptionelle Vorgehensweise fuer die korrekte Anzeige eines Titel in
+        # der Kurztitelliste:
+        #
+        # 1. Fall: Es existiert ein HST
+        #
+        # Dann:
+        #
+        # Unterfall 1.1: Es existiert eine (erste) Bandzahl(089)
+        #
+        # Dann: Setze diese Bandzahl vor den AST/HST
+        #
+        # Unterfall 1.2: Es existiert keine Bandzahl(089), aber eine (erste)
+        #                Bandzahl(455)
+        #
+        # Dann: Setze diese Bandzahl vor den AST/HST
+        #
+        # 2. Fall: Es existiert kein HST(331)
+        #
+        # Dann:
+        #
+        # Unterfall 2.1: Es existiert eine (erste) Bandzahl(089)
+        #
+        # Dann: Verwende diese Bandzahl
+        #
+        # Unterfall 2.2: Es existiert keine Bandzahl(089), aber eine (erste)
+        #                Bandzahl(455)
+        #
+        # Dann: Verwende diese Bandzahl
+        #
+        # Unterfall 2.3: Es existieren keine Bandzahlen, aber ein (erster)
+        #                Gesamttitel(451)
+        #
+        # Dann: Verwende diesen GT
+        #
+        # Unterfall 2.4: Es existieren keine Bandzahlen, kein Gesamttitel(451),
+        #                aber eine Zeitschriftensignatur(1203/USB-spezifisch)
+        #
+        # Dann: Verwende diese Zeitschriftensignatur
+        #
+        if (exists $listitem_ref->{T0331}) {
+            $logger->debug("1. Fall: HST existiert");
+            # UnterFall 1.1:
+            if (exists $listitem_ref->{'T0089'}) {
+                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0089}[0]{content}.". ".$listitem_ref->{T0331}[0]{content};
+            }
+            # Unterfall 1.2:
+            elsif (exists $listitem_ref->{T0455}) {
+                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0455}[0]{content}.". ".$listitem_ref->{T0331}[0]{content};
+            }
+        } else {
+            # UnterFall 1.1:
+            if (exists $listitem_ref->{'T0089'}) {
+                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0089}[0]{content};
+            }
+            # Unterfall 1.2:
+            elsif (exists $listitem_ref->{T0455}) {
+                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0455}[0]{content};
+            }
+            # Unterfall 1.3:
+            elsif (exists $listitem_ref->{T0451}) {
+                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0451}[0]{content};
+            }
+            # Unterfall 1.4:
+            elsif (exists $listitem_ref->{T1203}) {
+                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T1203}[0]{content};
+            } else {
+                $listitem_ref->{T0331}[0]{content}="Kein HST/AST vorhanden";
+            }
+        }
+
+        if ($config{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : Bestimmung der HST-Ueberordnungsinformationen : ist ".timestr($timeall));
+        }
+
     }
 
     if ($config{benchmark}) {
-      $btime=new Benchmark;
-      $timeall=timediff($btime,$atime);
-      $logger->info("Zeit fuer : Bestimmung der HST-Ueberordnungsinformationen : ist ".timestr($timeall));
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        my $timeall=timediff($btime,$atime);
+        $logger->info("Zeit fuer : Bestimmung der gesamten Informationen         : ist ".timestr($timeall));
     }
 
     $logger->debug(YAML::Dump($listitem_ref));
@@ -1178,7 +1225,7 @@ sub get_tit_set_by_idn {
             $atime=new Benchmark;
         }
 
-        my $reqstring="select category,targetid,targettype,supplement from connection where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)";
+        my $reqstring="select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)";
         my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
         $request->execute($titidn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
         
@@ -1225,7 +1272,7 @@ sub get_tit_set_by_idn {
             $atime=new Benchmark;
         }
 
-        $reqstring="select count(distinct targetid) as conncount from connection where sourceid=? and sourcetype=1 and targettype=1";
+        $reqstring="select count(distinct targetid) as conncount from conn where sourceid=? and sourcetype=1 and targettype=1";
         $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
         $request->execute($titidn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
 
@@ -1248,7 +1295,7 @@ sub get_tit_set_by_idn {
             $atime=new Benchmark;
         }
 
-        $reqstring="select count(distinct sourceid) as conncount from connection where targetid=? and sourcetype=1 and targettype=1";
+        $reqstring="select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=1";
         $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
         $request->execute($titidn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
 
@@ -1274,7 +1321,7 @@ sub get_tit_set_by_idn {
     my @mexnormset=();
     {
 
-        my $reqstring="select distinct targetid from connection where sourceid= ? and sourcetype=1 and targettype=6";
+        my $reqstring="select distinct targetid from conn where sourceid= ? and sourcetype=1 and targettype=6";
         my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
         $request->execute($titidn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
 
@@ -1783,7 +1830,7 @@ sub get_index {
         }
 
         {
-            my $sqlrequest="select count(distinct sourceid) as conncount from connection where targetid=? and sourcetype=1 and targettype=?";
+            my $sqlrequest="select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=?";
             my $request=$dbh->prepare($sqlrequest);
             
             foreach my $id (@ids){
@@ -1915,6 +1962,8 @@ sub initial_search_for_titidns {
         ? $arg_ref->{ejahrop}       : undef;
     my $mart              = exists $arg_ref->{mart}
         ? $arg_ref->{mart}          : undef;
+    my $serien            = exists $arg_ref->{serien}
+        ? $arg_ref->{serien}        : undef;
     my $boolfs            = exists $arg_ref->{boolfs}
         ? $arg_ref->{boolfs}        : 'AND';
     my $boolverf          = exists $arg_ref->{boolverf}
@@ -2070,8 +2119,8 @@ sub initial_search_for_titidns {
         $notation=~s/\*$/%/;
         $notation=OpenBib::Search::Util::input2sgml($notation,1);
         push @sqlfrom,  "notation";
-        push @sqlfrom,  "connection";
-        push @sqlwhere, "$boolnotation (notation.contentnorm like ? and connection.sourcetype=1 and connection.targettype=5 and connection.targetid=notation.id and search.verwidn=connection.sourceid)";
+        push @sqlfrom,  "conn";
+        push @sqlwhere, "$boolnotation (notation.contentnorm like ? and conn.sourcetype=1 and conn.targettype=5 and conn.targetid=notation.id and search.verwidn=conn.sourceid)";
         push @sqlargs,  $notation;
     }
   
@@ -2081,8 +2130,8 @@ sub initial_search_for_titidns {
         $sign=~s/\*$/%/;
         $sign=OpenBib::Search::Util::input2sgml($sign,1);
         push @sqlfrom,  "mex";
-        push @sqlfrom,  "connection";
-        push @sqlwhere, "$boolsign (mex.contentnorm like ? and mex.category='0014' and connection.sourcetype=1 and connection.targettype=6 and connection.targetid=mex.id and search.verwidn=connection.sourceid)";
+        push @sqlfrom,  "conn";
+        push @sqlwhere, "$boolsign (mex.contentnorm like ? and mex.category='0014' and conn.sourcetype=1 and conn.targettype=6 and conn.targetid=mex.id and search.verwidn=conn.sourceid)";
         push @sqlargs,  $sign;
     }
   
@@ -2126,6 +2175,10 @@ sub initial_search_for_titidns {
         push @sqlargs,  $ejahr;
     }
 
+    if ($serien){
+        push @sqlfrom,  "conn";
+        push @sqlwhere, "and (conn.targetid=search.verwidn and conn.targettype=1 and conn.sourcetype=1)";
+    }
 
     # TODO...
 #     if ($ejahr) {
@@ -2142,7 +2195,7 @@ sub initial_search_for_titidns {
     $sqlwherestring     =~s/^(?:AND|OR|NOT) //;
     my $sqlfromstring   = join(", ",@sqlfrom);
 
-    my $sqlquerystring  = "select distinct verwidn from $sqlfromstring where $sqlwherestring limit $maxhits";
+    my $sqlquerystring  = "select verwidn from $sqlfromstring where $sqlwherestring limit $maxhits";
     my $request         = $dbh->prepare($sqlquerystring);
 
     $request->execute(@sqlargs);
@@ -2172,13 +2225,15 @@ sub initial_search_for_titidns {
     # Diese wird daher getrennt bestimmt, damit sie dem Benutzer als
     # Hilfestellung fuer eine Praezisierung seiner Suchanfrage
     # ausgegeben werden kann
-    if ($#tidns+1 == $maxhits){
+    if ($#tidns+1 > $maxhits){ # ueberspringen
+    #    if ($#tidns+1 == $maxhits){
 
         if ($config{benchmark}) {
             $atime=new Benchmark;
         }
         
-        my $sqlresultcount = "select count(distinct verwidn) as resultcount from $sqlfromstring where $sqlwherestring limit $maxhits";
+        my $sqlresultcount = "select count(verwidn) as resultcount from $sqlfromstring where $sqlwherestring";
+#        my $sqlresultcount = "select verwidn from $sqlfromstring where $sqlwherestring";
         $request         = $dbh->prepare($sqlresultcount);
         
         $request->execute(@sqlargs);
@@ -2186,6 +2241,12 @@ sub initial_search_for_titidns {
         my $fullres         = $request->fetchrow_hashref;
         $fullresultcount = $fullres->{resultcount};
 
+#        $fullresultcount = 0;
+
+#        while ($request->fetchrow_array){
+#            $fullresultcount++;
+#        }
+        
         if ($config{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);

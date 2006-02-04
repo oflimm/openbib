@@ -8,19 +8,46 @@
 
 drop table IF EXISTS aut;
 create table aut (
- id            INT  NOT NULL,
- category      TEXT NOT NULL,
- indicator     TEXT,
+ id            MEDIUMINT NOT NULL,
+ category      SMALLINT  NOT NULL,
+ indicator     SMALLINT,
  content       TEXT NOT NULL,
- contentnorm   TEXT,
- contentnormft TEXT,
  INDEX         (id),
- INDEX         (category  (10)),
- INDEX         (indicator (5)),
- INDEX         (contentnorm (10)),
- FULLTEXT      (contentnormft)
+ INDEX         (category),
+ INDEX         (indicator),
+ INDEX         (id,category)
 )
-DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+;
+
+drop table IF EXISTS aut_ft;
+create table aut_ft (
+ id            MEDIUMINT  NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ FULLTEXT      (content)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+;
+
+drop table IF EXISTS aut_string;
+create table aut_string (
+ id            MEDIUMINT  NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT ,
+ INDEX         (id),
+ INDEX         (category),
+ INDEX         (content(10))
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
 ;
 
 -------------------------------------------------
@@ -29,19 +56,46 @@ DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 drop table IF EXISTS kor;
 create table kor (
- id            INT  NOT NULL,
- category      TEXT NOT NULL,
- indicator     TEXT,
+ id            MEDIUMINT NOT NULL,
+ category      SMALLINT  NOT NULL,
+ indicator     SMALLINT,
  content       TEXT NOT NULL,
- contentnorm   TEXT,
- contentnormft TEXT,
  INDEX         (id),
- INDEX         (category  (10)),
- INDEX         (indicator (5)),
- INDEX         (contentnorm (10)),
- FULLTEXT      (contentnormft)
+ INDEX         (category),
+ INDEX         (indicator),
+ INDEX         (id,category)
 )
-DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+;
+
+drop table IF EXISTS kor_ft;
+create table kor_ft (
+ id            MEDIUMINT NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ FULLTEXT      (content)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+;
+
+drop table IF EXISTS kor_string;
+create table kor_string (
+ id            MEDIUMINT NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ INDEX         (content (10))
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
 ;
 
 -------------------------------------------------
@@ -50,19 +104,46 @@ DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 drop table IF EXISTS swt;
 create table swt (
- id            INT  NOT NULL,
- category      TEXT NOT NULL,
- indicator     TEXT,
+ id            MEDIUMINT NOT NULL,
+ category      SMALLINT  NOT NULL,
+ indicator     SMALLINT,
  content       TEXT NOT NULL,
- contentnorm   TEXT,
- contentnormft TEXT,
  INDEX         (id),
- INDEX         (category    (10)),
- INDEX         (indicator   (5)),
- INDEX         (contentnorm (10)),
- FULLTEXT      (contentnormft)
+ INDEX         (category),
+ INDEX         (indicator),
+ INDEX         (id,category)
 )
-DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+;
+
+drop table IF EXISTS swt_ft;
+create table swt_ft (
+ id            MEDIUMINT NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ FULLTEXT      (content)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+;
+
+drop table IF EXISTS swt_string;
+create table swt_string (
+ id            MEDIUMINT NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ INDEX         (content (10))
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
 ;
 
 -------------------------------------------------
@@ -71,20 +152,46 @@ DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 drop table IF EXISTS notation;
 create table notation (
- id            INT  NOT NULL,
- category      TEXT NOT NULL,
- indicator     TEXT,
+ id            MEDIUMINT NOT NULL,
+ category      SMALLINT  NOT NULL,
+ indicator     SMALLINT,
  content       TEXT NOT NULL,
- contentnorm   TEXT,
- contentnormft TEXT,
  INDEX         (id),
- INDEX         (category    (10)),
- INDEX         (indicator   (5)),
- INDEX         (contentnorm (10)),
- FULLTEXT      (contentnormft)
+ INDEX         (category),
+ INDEX         (indicator),
+ INDEX         (id,category)
 )
-DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
 ;
+
+drop table IF EXISTS notation_ft;
+create table notation_ft (
+ id            MEDIUMINT NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ FULLTEXT      (content)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+;
+
+drop table IF EXISTS notation_string;
+create table notation_string (
+ id            MEDIUMINT NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ INDEX         (content (10))
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
 
 -------------------------------------------------
 --------------- Titelstammdatei -----------------
@@ -92,20 +199,43 @@ DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 drop table IF EXISTS tit;
 create table tit (
- id            INT  NOT NULL,
- category      TEXT NOT NULL,
- indicator     TEXT,
+ id            MEDIUMINT NOT NULL,
+ category      SMALLINT  NOT NULL,
+ indicator     SMALLINT,
  content       TEXT NOT NULL,
- contentnorm   TEXT,
- contentnormft TEXT,
  INDEX         (id),
- INDEX         (category  (10)),
- INDEX         (indicator (5)),
- INDEX         (contentnorm (10)),
- FULLTEXT      (contentnormft)
+ INDEX         (category),
+ INDEX         (indicator)
 )
-DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-;
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+drop table IF EXISTS tit_ft;
+create table tit_ft (
+ id            MEDIUMINT NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ FULLTEXT      (content)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+drop table IF EXISTS tit_string;
+create table tit_string (
+ id            MEDIUMINT NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ INDEX         (content (10))
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
 
 -------------------------------------------------
 -------------- Exemplarstammdatei ---------------
@@ -113,40 +243,61 @@ DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 drop table IF EXISTS mex;
 create table mex (
- id            INT  NOT NULL,
- category      TEXT NOT NULL,
- indicator     TEXT,
+ id            MEDIUMINT NOT NULL,
+ category      SMALLINT  NOT NULL,
+ indicator     SMALLINT,
  content       TEXT NOT NULL,
- contentnorm   TEXT,
- contentnormft TEXT,
  INDEX         (id),
- INDEX         (category    (10)),
- INDEX         (indicator   (5)),
- INDEX         (contentnorm (10)),
- FULLTEXT      (contentnormft)
+ INDEX         (category),
+ INDEX         (indicator),
+ INDEX         (id,category)
 )
-DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-;
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+drop table IF EXISTS mex_ft;
+create table mex_ft (
+ id            MEDIUMINT NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ FULLTEXT      (content)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+drop table IF EXISTS mex_string;
+create table mex_string (
+ id            MEDIUMINT NOT NULL,
+ category      SMALLINT  NOT NULL,
+ content       TEXT NOT NULL,
+ INDEX         (id),
+ INDEX         (category),
+ INDEX         (content (10))
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
 
 -------Genereller Connector
 
-drop table IF EXISTS connection;
-create table connection (
-category   VARCHAR(20),
-sourceid   INT         NOT NULL,
-sourcetype VARCHAR(20),
-targetid   INT         NOT NULL,
-targettype VARCHAR(20),
+drop table IF EXISTS conn;
+create table conn (
+category   SMALLINT,
+sourceid   MEDIUMINT NOT NULL,
+sourcetype TINYINT   NOT NULL,
+targetid   MEDIUMINT NOT NULL,
+targettype TINYINT   NOT NULL,
 supplement TEXT,
-index      (category),
-index      (sourceid),
-index      (sourcetype),
-index      (targetid),
-index      (targettype)
+index      (targetid,sourcetype,targettype),
+index      (sourceid,sourcetype,targettype)
 )
-DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-;
-
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
 
 -------------------------------------------------
 ----------------- Initiale Suche ----------------
@@ -154,19 +305,18 @@ DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 drop table IF EXISTS search;
 create table search (
-idn       INT UNSIGNED AUTO_INCREMENT NOT NULL PRIMARY KEY,
-verwidn   INT NOT NULL,
+verwidn   MEDIUMINT NOT NULL,
 verf      TEXT,
 hst       TEXT,
 kor       TEXT,
 swt       TEXT,
 notation  TEXT,
 sign      TEXT,
-ejahr     INT,
+ejahr     SMALLINT,
 isbn      TEXT,
 issn      TEXT,
 artinh    TEXT,
-hststring VARCHAR(255),
+INDEX     (verwidn),
 FULLTEXT  (verf),
 FULLTEXT  (hst),
 FULLTEXT  (kor),
@@ -177,15 +327,17 @@ INDEX     (ejahr),
 FULLTEXT  (isbn),
 FULLTEXT  (issn),
 FULLTEXT  (artinh),
-index     (hststring(50)),
 FULLTEXT  (verf,hst,kor,swt,notation,sign,isbn,issn)
 )
-DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-;
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
 
-drop table IF EXISTS lastresultlist;
-create table lastresultlist (
- sessionid VARCHAR(50) NOT NULL,
- singleidn BIGINT,
- index     (sessionid)
-);
+drop table IF EXISTS titlistitem;
+create table titlistitem (
+id       MEDIUMINT NOT NULL,
+listitem TEXT,
+PRIMARY KEY (id)
+)
+DEFAULT CHARACTER SET utf8
+PACK_KEYS=1;

@@ -437,7 +437,7 @@ sub handler {
         if ($generalsearch=~/^supertit/) {
             my $supertitidn=$query->param("$generalsearch");
 
-            my $reqstring="select distinct targetid from connection where sourceid=? and sourcetype=1 and targettype=1";
+            my $reqstring="select distinct targetid from conn where sourceid=? and sourcetype=1 and targettype=1";
             my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
             $request->execute($supertitidn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
 
@@ -520,7 +520,7 @@ sub handler {
         if ($generalsearch=~/^subtit/) {
             my $subtitidn=$query->param("$generalsearch");
 
-            my $reqstring="select distinct sourceid from connection where targetid=? and sourcetype=1 and targettype=1";
+            my $reqstring="select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=1";
             my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
             $request->execute($subtitidn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
 
@@ -957,7 +957,7 @@ sub handler {
   
     if ($searchtitofaut) {
         # Bestimmung der Titel
-        my $request=$dbh->prepare("select distinct sourceid from connection where targetid=? and sourcetype=1 and targettype=2") or $logger->error($DBI::errstr);
+        my $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=2") or $logger->error($DBI::errstr);
         $request->execute($searchtitofaut);
 
         my @titelidns=();
@@ -1035,7 +1035,7 @@ sub handler {
     #####################################################################
     if ($searchtitofurhkor) {
         # Bestimmung der Titel
-        my $request=$dbh->prepare("select distinct sourceid from connection where targetid=? and sourcetype=1 and targettype=3") or $logger->error($DBI::errstr);
+        my $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=3") or $logger->error($DBI::errstr);
         $request->execute($searchtitofurhkor);
 
         my @titelidns=();
@@ -1113,7 +1113,7 @@ sub handler {
     #######################################################################
     if ($searchtitofswt) {
         # Bestimmung der Titel
-        my $request=$dbh->prepare("select distinct sourceid from connection where targetid=? and sourcetype=1 and targettype=4") or $logger->error($DBI::errstr);
+        my $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=4") or $logger->error($DBI::errstr);
         $request->execute($searchtitofswt);
 
         my @titelidns=();
@@ -1189,7 +1189,7 @@ sub handler {
     #######################################################################
     if ($searchtitofnot) {
         # Bestimmung der Titel
-        my $request=$dbh->prepare("select distinct sourceid from connection where targetid=? and sourcetype=1 and targettype=5") or $logger->error($DBI::errstr);
+        my $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=5") or $logger->error($DBI::errstr);
         $request->execute($searchtitofnot);
 
         my @titelidns=();

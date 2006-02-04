@@ -32,9 +32,22 @@ use utf8;
 
 use OpenBib::Common::Util;
 use OpenBib::Common::Stopwords;
+use YAML();
 
 my $dir=`pwd`;
 chop $dir;
+
+my $listitemcat_ref={
+    '0089' => 1,
+    '0310' => 1,
+    '0331' => 1,
+    '0412' => 1,
+    '0424' => 1,
+    '0425' => 1,
+    '0451' => 1,
+    '0455' => 1,
+    '1203' => 1,
+};
 
 my $inverted_aut_ref={
     '0001' => {  # Ansetzung
@@ -196,10 +209,6 @@ my $search_category_ref={
         '0750' => 1, # Abstract
     },
     
-    hststring => {
-        '0331' => 1, # HSTString
-    },
-
     isbn => {
         '0540' => 1, # ISBN
     },
@@ -344,32 +353,40 @@ my $blacklist_tit_ref = {
 
 my $stammdateien_ref = {
     aut => {
-        type          => "aut",
-        infile        => "aut.exp",
-        outfile       => "aut.mysql",
-        inverted_ref  => $inverted_aut_ref,
-        blacklist_ref => $blacklist_aut_ref,
+        type           => "aut",
+        infile         => "aut.exp",
+        outfile        => "aut.mysql",
+        outfile_ft     => "aut_ft.mysql",
+        outfile_string => "aut_string.mysql",
+        inverted_ref   => $inverted_aut_ref,
+        blacklist_ref  => $blacklist_aut_ref,
     },
     
     kor => {
-        infile        => "kor.exp",
-        outfile       => "kor.mysql",
-        inverted_ref  => $inverted_kor_ref,
-        blacklist_ref => $blacklist_kor_ref,
+        infile         => "kor.exp",
+        outfile        => "kor.mysql",
+        outfile_ft     => "kor_ft.mysql",
+        outfile_string => "kor_string.mysql",
+        inverted_ref   => $inverted_kor_ref,
+        blacklist_ref  => $blacklist_kor_ref,
     },
     
     swt => {
-        infile        => "swt.exp",
-        outfile       => "swt.mysql",
-        inverted_ref  => $inverted_swt_ref,
-        blacklist_ref => $blacklist_swt_ref,
+        infile         => "swt.exp",
+        outfile        => "swt.mysql",
+        outfile_ft     => "swt_ft.mysql",
+        outfile_string => "swt_string.mysql",
+        inverted_ref   => $inverted_swt_ref,
+        blacklist_ref  => $blacklist_swt_ref,
     },
     
     notation => {
-        infile        => "not.exp",
-        outfile       => "not.mysql",
-        inverted_ref  => $inverted_not_ref,
-        blacklist_ref => $blacklist_not_ref,
+        infile         => "not.exp",
+        outfile        => "not.mysql",
+        outfile_ft     => "not_ft.mysql",
+        outfile_string => "not_string.mysql",
+        inverted_ref   => $inverted_not_ref,
+        blacklist_ref  => $blacklist_not_ref,
     },
 };
 
@@ -377,8 +394,10 @@ my $stammdateien_ref = {
 foreach my $type (keys %{$stammdateien_ref}){
   print STDERR "Bearbeite $stammdateien_ref->{$type}{infile} / $stammdateien_ref->{$type}{outfile}\n";
 
-  open(IN , "<:utf8",$stammdateien_ref->{$type}{infile} )  || die "IN konnte nicht geoeffnet werden";
-  open(OUT, ">:utf8",$stammdateien_ref->{$type}{outfile})  || die "OUT konnte nicht geoeffnet werden";
+  open(IN ,       "<:utf8",$stammdateien_ref->{$type}{infile} )        || die "IN konnte nicht geoeffnet werden";
+  open(OUT,       ">:utf8",$stammdateien_ref->{$type}{outfile})        || die "OUT konnte nicht geoeffnet werden";
+  open(OUTFT,     ">:utf8",$stammdateien_ref->{$type}{outfile_ft})     || die "OUTFT konnte nicht geoeffnet werden";
+  open(OUTSTRING, ">:utf8",$stammdateien_ref->{$type}{outfile_string}) || die "OUTSTRING konnte nicht geoeffnet werden";
 
   my $id;
  CATLINE:
@@ -399,6 +418,15 @@ foreach my $type (keys %{$stammdateien_ref}){
     }
 
     next CATLINE if (exists $stammdateien_ref->{$type}{blacklist_ref}->{$category});
+
+    # Ansetzungsformen fuer Kurztitelliste merken
+    if ($category == 1 && ($type eq "aut" || $type eq "kor")){
+        $prefix =
+            ($type eq "aut")?"P":
+            ($type eq "kor")?"C":undef;
+        
+        $stammdateien_ref->{$type}{listitem}{$id}{$prefix.$category}=$content;
+    }
     
     my $contentnorm   = "";
     my $contentnormft = "";
@@ -422,10 +450,18 @@ foreach my $type (keys %{$stammdateien_ref}){
    }
 
     if ($category && $content){
-      print OUT "$id$category$indicator$content$contentnorm$contentnormft\n";
+      print OUT       "$id$category$indicator$content\n";
+    }
+    if ($category && $contentnorm){
+      print OUTSTRING "$id$category$contentnorm\n";
+    }
+    if ($category && $contentnormft){
+      print OUTFT     "$id$category$contentnormft\n";
     }
   }
   close(OUT);
+  close(OUTFT);
+  close(OUTSTRING);
   close(IN);
 }
 
@@ -433,23 +469,29 @@ foreach my $type (keys %{$stammdateien_ref}){
 #######################
 
 $stammdateien_ref->{mex} = {
-    infile       => "mex.exp",
-    outfile      => "mex.mysql",
-    inverted_ref => $inverted_mex_ref,
+    infile         => "mex.exp",
+    outfile        => "mex.mysql",
+    outfile_ft     => "mex_ft.mysql",
+    outfile_string => "mex_string.mysql",
+    inverted_ref   => $inverted_mex_ref,
 };
 
 print STDERR "Bearbeite mex.exp\n";
 
 open(IN ,          "<:utf8","mex.exp"         ) || die "IN konnte nicht geoeffnet werden";
 open(OUT,          ">:utf8","mex.mysql"       ) || die "OUT konnte nicht geoeffnet werden";
-open(OUTCONNECTION,">:utf8","connection.mysql") || die "OUTCONNECTION konnte nicht geoeffnet werden";
+open(OUTFT,        ">:utf8","mex_ft.mysql"    ) || die "OUTFT konnte nicht geoeffnet werden";
+open(OUTSTRING,    ">:utf8","mex_string.mysql") || die "OUTSTRING konnte nicht geoeffnet werden";
+open(OUTCONNECTION,">:utf8","conn.mysql")       || die "OUTCONNECTION konnte nicht geoeffnet werden";
 
 my $id;
+my $titid;
 CATLINE:
 while (my $line=<IN>){
     my ($category,$indicator,$content);
     if ($line=~m/^0000:(\d+)$/){
         $id=$1;
+        $titid=0;
         next CATLINE;
     }
     elsif ($line=~m/^9999:/){
@@ -460,6 +502,14 @@ while (my $line=<IN>){
     }
     elsif ($line=~m/^(\d+):(.*$)/){
         ($category,$content)=($1,$2);
+    }
+
+    # Signatur fuer Kurztitelliste merken
+    if ($category == 14 && $titid){
+        push @{$stammdateien_ref->{mex}{listitem}{$titid}{"X".$category}}, {
+            indicator => $indicator,
+            content   => $content,
+        };
     }
     
     my $contentnorm   = "";
@@ -482,7 +532,7 @@ while (my $line=<IN>){
             }
 
             if ($stammdateien_ref->{mex}{inverted_ref}->{$category}->{init}){
-                push @{$stammdateien_ref->{mex}{data}{$id}}, $contentnormtmp;
+                push @{$stammdateien_ref->{mex}{data}{$titid}}, $contentnormtmp;
             }
 	}
 
@@ -494,35 +544,51 @@ while (my $line=<IN>){
             my $targetid   = $id;
             my $supplement = "";
             my $category   = "";
+            $titid         = $sourceid;
+
             print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
         }
     
-        print OUT "$id$category$indicator$content$contentnorm$contentnormft\n";
+        if ($category && $content){
+            print OUT       "$id$category$indicator$content\n";
+        }
+        if ($category && $contentnorm){
+            print OUTSTRING "$id$category$contentnorm\n";
+        }
+        if ($category && $contentnormft){
+            print OUTFT     "$id$category$contentnormft\n";
+        }
     }
 }
 
 close(OUT);
+close(OUTFT);
+close(OUTSTRING);
 close(IN);
 
 $stammdateien_ref->{tit} = {
-    infile        => "tit.exp",
-    outfile       => "tit.mysql",
-    inverted_ref  => $inverted_tit_ref,
-    blacklist_ref => $blacklist_tit_ref,
+    infile         => "tit.exp",
+    outfile        => "tit.mysql",
+    outfile_ft     => "tit_ft.mysql",
+    outfile_string => "tit_string.mysql",
+    inverted_ref   => $inverted_tit_ref,
+    blacklist_ref  => $blacklist_tit_ref,
 };
 
 print STDERR "Bearbeite tit.exp\n";
 
-open(IN ,           "<:utf8","tit.exp"      ) || die "IN konnte nicht geoeffnet werden";
-open(OUT,           ">:utf8","tit.mysql"    ) || die "OUT konnte nicht geoeffnet werden";
-open(OUTSEARCH,     ">:utf8","search.mysql" ) || die "OUT konnte nicht geoeffnet werden";
+open(IN ,           "<:utf8","tit.exp"         ) || die "IN konnte nicht geoeffnet werden";
+open(OUT,           ">:utf8","tit.mysql"       ) || die "OUT konnte nicht geoeffnet werden";
+open(OUTFT,         ">:utf8","tit_ft.mysql"    ) || die "OUTFT konnte nicht geoeffnet werden";
+open(OUTSTRING,     ">:utf8","tit_string.mysql") || die "OUTSTRING konnte nicht geoeffnet werden";
+open(OUTSEARCH,     ">:utf8","search.mysql"    ) || die "OUT konnte nicht geoeffnet werden";
+open(TITLISTITEM,   ">:utf8","titlistitem.mysql") || die "TITLISTITEM konnte nicht goeffnet werden";
 
 my @verf      = ();
 my @kor       = ();
 my @swt       = ();
 my @notation  = ();
 my @hst       = ();
-my @hststring = ();
 my @sign      = ();
 my @isbn      = ();
 my @issn      = ();
@@ -531,11 +597,14 @@ my @ejahr     = ();
 my @titverf   = ();
 my @titkor    = ();
 my @titswt    = ();
+my @autkor    = ();
+
+my $listitem_ref={};
 
 CATLINE:
 while (my $line=<IN>){
     my ($category,$indicator,$content);
-    my ($ejahr,$sign,$isbn,$issn,$artinh,$hststring);
+    my ($ejahr,$sign,$isbn,$issn,$artinh);
 
     if ($line=~m/^0000:(\d+)$/){
         $id=$1;
@@ -545,7 +614,6 @@ while (my $line=<IN>){
         @swt       = ();
         @notation  = ();
         @hst       = ();
-        @hststring = ();
         @sign      = ();
         @isbn      = ();
         @issn      = ();
@@ -554,7 +622,10 @@ while (my $line=<IN>){
         @titverf   = ();
         @titkor    = ();
         @titswt    = ();
-        
+        @autkor    = ();
+
+        $listitem_ref={};
+
         next CATLINE;
     }
     elsif ($line=~m/^9999:/){
@@ -591,14 +662,97 @@ while (my $line=<IN>){
         my $mex = join(" ",@temp);
         
         my $hst       = join(" ",@hst);
-        my $hststring = join(" ",@hststring);
         my $isbn      = join(" ",@isbn);
         my $issn      = join(" ",@issn);
         my $artinh    = join(" ",@artinh);
         my $ejahr     = join(" ",@ejahr);
         
-        print OUTSEARCH "$id$verf$hst$kor$swt$notation$mex$ejahr$isbn$issn$artinh$hststring\n";
+        print OUTSEARCH "$id$verf$hst$kor$swt$notation$mex$ejahr$isbn$issn$artinh\n";
 
+        # Listitem zusammensetzen
+
+        # Konzeptionelle Vorgehensweise fuer die korrekte Anzeige eines Titel in
+        # der Kurztitelliste:
+        #
+        # 1. Fall: Es existiert ein HST
+        #
+        # Dann:
+        #
+        # Unterfall 1.1: Es existiert eine (erste) Bandzahl(089)
+        #
+        # Dann: Setze diese Bandzahl vor den AST/HST
+        #
+        # Unterfall 1.2: Es existiert keine Bandzahl(089), aber eine (erste)
+        #                Bandzahl(455)
+        #
+        # Dann: Setze diese Bandzahl vor den AST/HST
+        #
+        # 2. Fall: Es existiert kein HST(331)
+        #
+        # Dann:
+        #
+        # Unterfall 2.1: Es existiert eine (erste) Bandzahl(089)
+        #
+        # Dann: Verwende diese Bandzahl
+        #
+        # Unterfall 2.2: Es existiert keine Bandzahl(089), aber eine (erste)
+        #                Bandzahl(455)
+        #
+        # Dann: Verwende diese Bandzahl
+        #
+        # Unterfall 2.3: Es existieren keine Bandzahlen, aber ein (erster)
+        #                Gesamttitel(451)
+        #
+        # Dann: Verwende diesen GT
+        #
+        # Unterfall 2.4: Es existieren keine Bandzahlen, kein Gesamttitel(451),
+        #                aber eine Zeitschriftensignatur(1203/USB-spezifisch)
+        #
+        # Dann: Verwende diese Zeitschriftensignatur
+        #
+        if (exists $listitem_ref->{T0331}){
+            # UnterFall 1.1:
+            if (exists $listitem_ref->{'T0089'}){
+                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0089}[0]{content}.". ".$listitem_ref->{T0331}[0]{content};
+            }
+            # Unterfall 1.2:
+            elsif (exists $listitem_ref->{T0455}){
+                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0455}[0]{content}.". ".$listitem_ref->{T0331}[0]{content};
+            }
+        }
+        else {
+            # UnterFall 2.1:
+            if (exists $listitem_ref->{'T0089'}){
+                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0089}[0]{content};
+            }
+            # Unterfall 2.2:
+            elsif (exists $listitem_ref->{T0455}){
+                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0455}[0]{content};
+            }
+            # Unterfall 2.3:
+            elsif (exists $listitem_ref->{T0451}){
+                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0451}[0]{content};
+            }
+            # Unterfall 2.4:
+            elsif (exists $listitem_ref->{T1203}){
+                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T1203}[0]{content};
+            }
+            else {
+                $listitem_ref->{T0331}[0]{content}="Kein HST/AST vorhanden";
+            }
+        }
+
+        # Exemplardaten-Hash zu listitem-Hash hinzufuegen
+        %$listitem_ref=(%$listitem_ref,%{$stammdateien_ref->{mex}{listitem}{$id}});
+
+        # Kombinierte Verfasser/Koerperschaft hinzufuegen fuer Sortierung
+        push @{$listitem_ref->{'PC0001'}}, {
+            content   => join(" ; ",@autkor),
+        };
+
+        my $listitem = YAML::Dump($listitem_ref);
+        $listitem=~s/\n/\\n/g;
+        print TITLISTITEM "$id$listitem\n";
         next CATLINE;
     }
     elsif ($line=~m/^(\d+)\.(\d+):(.*$)/){
@@ -612,6 +766,14 @@ while (my $line=<IN>){
 
         next CATLINE if (exists $stammdateien_ref->{tit}{blacklist_ref}->{$category});
 
+        if (exists $listitemcat_ref->{$category}){
+            push @{$listitem_ref->{"T".$category}}, {
+                indicator => $indicator,
+                content   => $content,
+            };
+    
+        };
+        
         my $contentnorm   = "";
         my $contentnormft = "";
 
@@ -649,7 +811,15 @@ while (my $line=<IN>){
             my $category   = "0100";
 
             push @verf, $targetid;
-            
+
+            push @{$listitem_ref->{P0100}}, {
+                id      => $targetid,
+                type    => 'aut',
+                content => $stammdateien_ref->{aut}{listitem}{$targetid}{P0001},
+            };
+
+            push @autkor, $stammdateien_ref->{aut}{listitem}{$targetid}{P0001};
+
             print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
         }
         elsif ($category=~m/^0101/){
@@ -666,6 +836,15 @@ while (my $line=<IN>){
             my $category="0101";
 
             push @verf, $targetid;
+            
+            push @{$listitem_ref->{P0101}}, {
+                id         => $targetid,
+                type       => 'aut',
+                content    => $stammdateien_ref->{aut}{listitem}{$targetid}{P0001},
+                supplement => $supplement,
+            };
+
+            push @autkor, $stammdateien_ref->{aut}{listitem}{$targetid}{P0001};
             
             print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
         }
@@ -684,6 +863,15 @@ while (my $line=<IN>){
 
             push @verf, $targetid;
             
+            push @{$listitem_ref->{P0103}}, {
+                id         => $targetid,
+                type       => 'aut',
+                content    => $stammdateien_ref->{aut}{listitem}{$targetid}{P0001},
+                supplement => $supplement,
+            };
+
+            push @autkor, $stammdateien_ref->{aut}{listitem}{$targetid}{P0001};
+            
             print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
         }
         elsif ($category=~m/^0200/){
@@ -695,6 +883,14 @@ while (my $line=<IN>){
             my $category   = "0200";
 
             push @kor, $targetid;
+
+            push @{$listitem_ref->{C0200}}, {
+                id         => $targetid,
+                type       => 'kor',
+                content    => $stammdateien_ref->{kor}{listitem}{$targetid}{C0001},
+            };
+
+            push @autkor, $stammdateien_ref->{kor}{listitem}{$targetid}{C0001};
             
             print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
         }
@@ -707,6 +903,14 @@ while (my $line=<IN>){
             my $category   = "0201";
 
             push @kor, $targetid;
+
+            push @{$listitem_ref->{C0201}}, {
+                id         => $targetid,
+                type       => 'kor',
+                content    => $stammdateien_ref->{kor}{listitem}{$targetid}{C0001},
+            };
+
+            push @autkor, $stammdateien_ref->{kor}{listitem}{$targetid}{C0001};
             
             print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
         }
@@ -868,12 +1072,6 @@ while (my $line=<IN>){
                     content  => $content,
                 });
             }
-            elsif (exists $search_category_ref->{hststring}{$category}){
-                push @hststring, OpenBib::Common::Util::grundform({
-                    category => $category,
-                    content  => $content,
-                });
-            }
             elsif (exists $search_category_ref->{isbn     }{$category}){
                 push @isbn,      OpenBib::Common::Util::grundform({
                     category => $category,
@@ -910,52 +1108,76 @@ while (my $line=<IN>){
                     content  => $content,
                 });
             }
-            
-            print OUT "$id$category$indicator$content$contentnorm$contentnormft\n";
+
+            if ($category && $content){
+                print OUT       "$id$category$indicator$content\n";
+            }
+            if ($category && $contentnorm){
+                print OUTSTRING "$id$category$contentnorm\n";
+            }
+            if ($category && $contentnormft){
+                print OUTFT     "$id$category$contentnormft\n";
+            }
         }	
     }
 }
 close(OUT);
+close(OUTFT);
+close(OUTSTRING);
 close(OUTCONNECTION);
 close(OUTSEARCH);
+close(TITLISTITEM);
 close(IN);
 
 
 #######################
 
 
-open(CONTROL,">control.mysql");
+open(CONTROL,        ">control.mysql");
+open(CONTROLINDEXOFF,">control_index_off.mysql");
+open(CONTROLINDEXON, ">control_index_on.mysql");
 
 foreach my $type (keys %{$stammdateien_ref}){
-    print CONTROL << "DISABLEKEYS";
-alter table $type disable keys;
+    print CONTROLINDEXOFF << "DISABLEKEYS";
+alter table $type        disable keys;
+alter table ${type}_ft     disable keys;
+alter table ${type}_string disable keys;
 DISABLEKEYS
 }
 
-print CONTROL "alter table connection disable keys;\n";
-print CONTROL "alter table search     disable keys;\n";
+print CONTROLINDEXOFF "alter table conn        disable keys;\n";
+print CONTROLINDEXOFF "alter table search      disable keys;\n";
+print CONTROLINDEXOFF "alter table titlistitem disable keys;\n";
 
 foreach my $type (keys %{$stammdateien_ref}){
     print CONTROL << "ITEM";
-load data infile '$dir/$stammdateien_ref->{$type}{outfile}' into table $type fields terminated by '' ;
+load data infile '$dir/$stammdateien_ref->{$type}{outfile}'        into table $type        fields terminated by '' ;
+load data infile '$dir/$stammdateien_ref->{$type}{outfile_ft}'     into table ${type}_ft     fields terminated by '' ;
+load data infile '$dir/$stammdateien_ref->{$type}{outfile_string}' into table ${type}_string fields terminated by '' ;
 ITEM
 }
 
 print CONTROL << "TITITEM";
-load data infile '$dir/connection.mysql' into table connection fields terminated by '' ;
-load data infile '$dir/search.mysql'     into table search     fields terminated by '' ;
+load data infile '$dir/conn.mysql'        into table conn   fields terminated by '' ;
+load data infile '$dir/search.mysql'      into table search fields terminated by '' ;
+load data infile '$dir/titlistitem.mysql' into table titlistitem fields terminated by '' ;
 TITITEM
 
 foreach my $type (keys %{$stammdateien_ref}){
-    print CONTROL << "ENABLEKEYS";
-alter table $type enable keys;
+    print CONTROLINDEXON << "ENABLEKEYS";
+alter table $type          enable keys;
+alter table ${type}_ft     enable keys;
+alter table ${type}_string enable keys;
 ENABLEKEYS
 }
 
-print CONTROL "alter table connection enable keys;\n";
-print CONTROL "alter table search     enable keys;\n";
+print CONTROLINDEXON "alter table conn        enable keys;\n";
+print CONTROLINDEXON "alter table search      enable keys;\n";
+print CONTROLINDEXON "alter table titlistitem enable keys;\n";
 
 close(CONTROL);
+close(CONTROLINDEXOFF);
+close(CONTROLINDEXON);
 
 1;
 
@@ -989,7 +1211,7 @@ __END__
 
 
  Die numerische Entsprechung wird bei der Verknuepfung einzelner Saetze
- zwischen den Normdaten in der Tabelle connection verwendet.
+ zwischen den Normdaten in der Tabelle conn verwendet.
 
 =head1 AUTHOR
 

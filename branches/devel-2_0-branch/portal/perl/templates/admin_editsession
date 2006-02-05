@@ -1,16 +1,29 @@
-[% SET title='KUG Administration - Bestehende Session bearbeiten' %]
-[% SET show_foot_banner = 1 %]
-[% PROCESS std_header %]
+[%#-
+#######################################################################
+#
+# Templatename: admin_editsession
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Meta-Informationen einer einzelnen Session, z.B.
+# die getaetigten Suchanfragen etc.
+#
+#######################################################################
+-%]
+[%- i18nmsg = msg.${lang} -%]
+[% PROCESS std_header title='KUG Administration - Bestehende Session bearbeiten' %]
 
   <body bgcolor="#FFFFFF">
 
 [% PROCESS corporate_banner %]
 
 <ul id="tabbingmenu">
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">Kataloge</a></li>
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">Views</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">Kataloge</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">Views</a></li>
    <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions">Sessions</a></li>
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">Logout</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">Logout</a></li>
 </ul>
 
 <div id="content">

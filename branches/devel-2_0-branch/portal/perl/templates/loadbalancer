@@ -1,3 +1,17 @@
+[%#-
+#######################################################################
+#
+# Templatename: loadbalancer
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Fehlermeldung, wenn die Lastverteilung keinen
+# geeigneten Server fuer den neuen Benutzer erreichen konnte
+#
+#######################################################################
+-%]
 [% PROCESS common/subtemplate name="std_header" %]
 
 <h1>Wartungsarbeiten</h1>

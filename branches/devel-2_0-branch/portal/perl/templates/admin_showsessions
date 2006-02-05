@@ -1,5 +1,19 @@
-[% SET title='KUG Administration - Bestehende Sessions anzeigen' %]
-[% PROCESS std_header %]
+[%#-
+#######################################################################
+#
+# Templatename: admin_showsessions
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller aktuell bestehenden Sessions
+# mit ihren wichtigsten Informationen
+#
+#######################################################################
+-%]
+[%- i18nmsg = msg.${lang} -%]
+[% PROCESS std_header title='KUG Administration - Bestehende Sessions anzeigen' %]
 
   <body bgcolor="#FFFFFF">
 

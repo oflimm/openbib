@@ -1,16 +1,29 @@
-[% SET title='KUG Administration - Views anzeigen' %]
-[% SET show_foot_banner = 1 %]
-[% PROCESS std_header %]
+[%#-
+#######################################################################
+#
+# Templatename: admin_showviews
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller eingerichteten Views
+# mit ihren wichtigsten Informationen
+#
+#######################################################################
+-%]
+[%- i18nmsg = msg.${lang} -%]
+[% PROCESS std_header title='KUG Administration - Views anzeigen' %]
 
   <body bgcolor="#FFFFFF">
 
 [% PROCESS corporate_banner %]
 
 <ul id="tabbingmenu">
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">Kataloge</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">Kataloge</a></li>
    <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">Views</a></li>
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">Sessions</a></li>
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">Logout</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">Sessions</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">Logout</a></li>
 </ul>
 
 <div id="content">

@@ -1,3 +1,16 @@
+[%#-
+#######################################################################
+#
+# Templatename: databasechoice
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Katalogauswahlliste/-tabelle
+#
+#######################################################################
+-%]
 [%- i18nmsg = msg.${qopts.lang} -%]
 [% PROCESS common/subtemplate name="std_header" %]
 

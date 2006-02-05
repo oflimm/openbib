@@ -1,5 +1,21 @@
-[% SET title='KUG Administration - Kataloge anzeigen' %]
-[% PROCESS std_header %]
+[%#-
+#######################################################################
+#
+# Templatename: admin_showcat
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller eingerichteten Kataloge
+# mit ihren wichtigsten Informationen
+#
+# Einrichtung eines neuen Kataloges
+#
+#######################################################################
+-%]
+[%- i18nmsg = msg.${lang} -%]
+[% PROCESS std_header title='KUG Administration - Kataloge anzeigen' %]
 
   <body bgcolor="#FFFFFF">
 

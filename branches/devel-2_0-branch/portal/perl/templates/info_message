@@ -1,3 +1,16 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_message
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Informations-Meldung
+#
+#######################################################################
+-%]
 [% PROCESS common/subtemplate name="std_header" %]
 
   <body>

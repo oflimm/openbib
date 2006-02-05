@@ -1,6 +1,18 @@
-[% SET title='KUG Administration - Abmeldung' %]
-[% SET show_foot_banner = 1 %]
-[% PROCESS std_header %]
+[%#-
+#######################################################################
+#
+# Templatename: admin_logout
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Meldung beim erfolgreichen Verlassen der Administration
+#
+#######################################################################
+-%]
+[%- i18nmsg = msg.${lang} -%]
+[% PROCESS std_header title='KUG Administration - Abmeldung' %]
 
   <body bgcolor="#FFFFFF">
 

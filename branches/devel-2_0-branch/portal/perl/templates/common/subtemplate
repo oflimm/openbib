@@ -1,3 +1,17 @@
+[%#-
+#######################################################################
+#
+# Templatename: subtemplate
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# View- und datenbankspezifische Kaskadierung von Templates
+# Uebergabeparameter ist der Templatename name
+#
+#######################################################################
+-%]
 [% ttname = '' %]
 [%- IF view -%]
   [%- TRY -%]

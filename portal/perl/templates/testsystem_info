@@ -1,3 +1,16 @@
+[%#-
+#######################################################################
+#
+# Templatename: testsystem_info
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Informationen ueber den Status als Testsystem
+#
+#######################################################################
+-%]
 <table width="100%">
 <tr><th>Testsystem - Nicht f&uuml;r den produktiven Einsatz bestimmt</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">

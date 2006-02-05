@@ -1,3 +1,16 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_info
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines kurzen Hilfetextes fuer die Formulierung von Anfragen
+#
+#######################################################################
+-%]
 <b>Normale Suchanfragen</b><br />
 Zur Suche tragen Sie in die einzelnen Eingabefelder alle Begriffe mit
 Leerzeichen getrennt ein, die in Ihrem gesuchten Titel enthalten sein

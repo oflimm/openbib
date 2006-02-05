@@ -1,3 +1,16 @@
+[%#-
+#######################################################################
+#
+# Templatename: std_footer
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe des Seiten-Footers
+#
+#######################################################################
+-%]
 [% IF NOT hide_foot_banner %]
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
 <tr><td class="boxedfull" align="left"><table border="0" cellspacing="0" cellpadding="0" width="100%"><tr><td

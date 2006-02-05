@@ -1,3 +1,18 @@
+[%#-
+#######################################################################
+#
+# Templatename: resultlists_choice
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe des Ergebnisses der letzten oder einer ausgewaehlten
+# zurueckliegenden Recherche sowie einer Auswahl-Uebersicht
+# aller bisheriger Recherchen
+#
+#######################################################################
+-%]
 [%- i18nmsg = msg.${qopts.lang} -%]
 [% PROCESS common/subtemplate name="std_header" %]
 
@@ -93,9 +108,9 @@
 
 [% IF queryids.size >= 0 %]
 <form method="get" action="[% config.resultlists_loc %]">
-<input type="hidden" name="sessionID" value="[% sessionID %]">
+<input type="hidden" name="sessionID"    value="[% sessionID %]">
 <input type="hidden" name="trefferliste" value="choice">
-<input type="hidden" name="view" value="[% view %]">
+<input type="hidden" name="view"         value="[% view %]">
 	  
 <p><table width="100%"><tr>
 <th>Alle bisherigen Recherchen</th></tr>

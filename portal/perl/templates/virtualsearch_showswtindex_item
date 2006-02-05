@@ -1,3 +1,16 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_showswtindex_item
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines *einzelnen* Eintrags im Schlagwortindex
+#
+#######################################################################
+-%]
 <!-- Beginn Schlagwort -->
 
 <table border="0" cellspacing="0" cellpadding="0" width="100%">

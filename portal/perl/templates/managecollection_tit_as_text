@@ -1,3 +1,17 @@
+[%#-
+#######################################################################
+#
+# Templatename: managecollection_tit_as_text
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe *aller* Merklisten-Items im Text-Format *ohne* Funktions-
+# elemente
+#
+#######################################################################
+-%]
 [%- FOREACH titset IN collection -%]
 [%- normset = titset.tit -%]
 [%- mexnormset = titset.mex -%]

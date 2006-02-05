@@ -1,3 +1,17 @@
+[%#-
+#######################################################################
+#
+# Templatename: userprefs_change_fields
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe einer Erfolgsmeldung bei Aenderungen in den benutzer-
+# spezifischen Einstellungen
+#
+#######################################################################
+-%]
 [%- i18nmsg = msg.${qopts.lang} -%]
 [% PROCESS common/subtemplate name="std_header" %]
 

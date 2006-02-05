@@ -1,7 +1,18 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showmulttitset
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe *mehrerer* Titel-Normdatensaetze
+#
+#######################################################################
+-%]
 [%- i18nmsg = msg.${qopts.lang} -%]
-[%- show_foot_banner = 1 -%]
-[%- title = "Recherche in Datenbank: $poolname " -%]
-[% PROCESS common/subtemplate name="std_header" %]
+[% PROCESS common/subtemplate name="std_header" title = "Recherche in Datenbank: $poolname " %]
 
 <body>
 

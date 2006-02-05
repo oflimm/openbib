@@ -1,3 +1,16 @@
+[%#-
+#######################################################################
+#
+# Templatename: managecollection_save_plain
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Abspeichern der Merkliste in eine Datei im Plain-Format
+#
+#######################################################################
+-%]
 [%- i18nmsg = msg.${qopts.lang} -%]
 [% IF type == 'Text' %]
 [% PROCESS common/subtemplate name="managecollection_tit_as_text" %]

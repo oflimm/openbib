@@ -1,3 +1,16 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showswtset
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Schlagwort-Normdatensatzes
+#
+#######################################################################
+-%]
 [%- i18nmsg = msg.${qopts.lang} -%]
 [%- show_foot_banner = 1 -%]
 [%- title = "KUG Recherche" -%]
@@ -10,13 +23,6 @@
     <td  width="20">&nbsp;</td><td valign="middle" ALIGN="left" height="32"><img src="/images/openbib/[% database %].png"></td>
   </tr>
 </table>
-
-<!--
-[% USE dumper;
-   dumper.dump(normset);
-   dumper.dump(i18nmsg);
-%]
--->
 
 <table cellpadding=2>
 <tr><td>[% i18nmsg.${"M0101"} %]</td><td>[% i18nmsg.${"M0102"} %]</td></tr>

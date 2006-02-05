@@ -1,3 +1,17 @@
+[%#-
+#######################################################################
+#
+# Templatename: resultlists_showsinglepool
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe einer ausgewaehlten abgespeicherten Trefferliste eines
+# sortierten *einzelnen* Katalogs
+#
+#######################################################################
+-%]
 [%- i18nmsg = msg.${qopts.lang} -%]
 [% PROCESS common/subtemplate name="std_header" %]
 

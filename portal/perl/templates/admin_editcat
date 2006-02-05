@@ -1,8 +1,18 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editcat
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Kataloges
+#
+#######################################################################
+-%]
 [%- i18nmsg = msg.${lang} -%]
-[% SET title='KUG Administration - Katalog bearbeiten' %]
-
-[% SET show_foot_banner = 1 %]
-[% PROCESS std_header %]
+[% PROCESS std_header title='KUG Administration - Katalog bearbeiten' %]
 
   <body bgcolor="#FFFFFF">
 
@@ -10,17 +20,17 @@
 
 <ul id="tabbingmenu">
    <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">Kataloge</a></li>
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">Views</a></li>
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">Sessions</a></li>
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">Logout</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">Views</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">Sessions</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">Logout</a></li>
 </ul>
 
 <div id="content">
 
 <form method="get" action="http://[% config.servername %][% config.admin_loc %]">
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
-<input type="hidden" name="dbid" value="[% katalog.dbid %]" />
-<input type="hidden" name="dbname" value="[% katalog.dbname %]" />
+<input type="hidden" name="sessionID"  value="[% sessionID %]" />
+<input type="hidden" name="dbid"       value="[% katalog.dbid %]" />
+<input type="hidden" name="dbname"     value="[% katalog.dbname %]" />
 <input type="hidden" name="do_editcat" value="1" />
 
 <table width="100%">

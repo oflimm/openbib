@@ -1,3 +1,19 @@
+[%#-
+#######################################################################
+#
+# Templatename: externaljump
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer intelligenten Linkliste mit weiteren Katalogen, in die
+# entsprechend der ausgewaehlten Suchanfrage gesprungen werden kann.
+# Hierbei werden auch etwaige Authentifizierungsinformationen des
+# OpenBib-Portals zur Anmeldung in den entfernten Systemen verwendet
+#
+#######################################################################
+-%]
 [%- i18nmsg = msg.${qopts.lang} -%]
 [% PROCESS common/subtemplate name="std_header" %]
 

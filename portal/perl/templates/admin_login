@@ -1,6 +1,18 @@
-[% SET title='KUG Administration - Authentifizierung' %]
-
-[% PROCESS std_header %]
+[%#-
+#######################################################################
+#
+# Templatename: admin_login
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Anmeldemaske fuer die Administration
+#
+#######################################################################
+-%]
+[%- i18nmsg = msg.${lang} -%]
+[% PROCESS std_header title='KUG Administration - Authentifizierung' %]
 
   <body bgcolor="#FFFFFF">
 

@@ -1,3 +1,16 @@
+[%#-
+#######################################################################
+#
+# Templatename: userprefs
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Informationen ueber den Benutzer
+#
+#######################################################################
+-%]
 [%- i18nmsg = msg.${qopts.lang} -%]
 [% PROCESS common/subtemplate name="std_header" %]
 

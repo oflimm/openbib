@@ -1,3 +1,25 @@
+[%#-
+#######################################################################
+#
+# Templatename: startopac
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe des view-spezifischen initialen Framesets beim Aufruf des Katalogs
+# mit parameterabhaengigem Sprung in verschiedene Funktionsbereiche
+# des Portals,
+#
+# derzeit z.B. 
+#
+# - Sprung zu einem einzelnen Titel in einer einzelnen Datenbank
+#   anhand der Titel-ID und des Datenbanknamens
+#
+# - Sprung in eine Suchanfrage (Freie Suche)
+#
+#######################################################################
+-%]
 [%- i18nmsg = msg.${qopts.lang} -%]
 [%-
 # Aufruf der Frames mit den gewuenschten Inhalten

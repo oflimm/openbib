@@ -1,7 +1,19 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showtitlist
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe einer Titel-Kurztrefferliste
+#
+#######################################################################
+-%]
 [%- i18nmsg = msg.${qopts.lang} -%]
-[%- show_foot_banner = 1 -%]
-[%- title = 'Trefferliste' -%]
-[% PROCESS common/subtemplate name="std_header" %]
+[% PROCESS common/subtemplate name="std_header" title = 'Trefferliste'
+%]
 
 <body>
 <table BORDER="0" CELLSPACING="0" CELLPADDING="0" width="100%">

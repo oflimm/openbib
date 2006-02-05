@@ -1,3 +1,17 @@
+[%#-
+#######################################################################
+#
+# Templatename: managecollection_tit_as_html_simple
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe *aller* Merklisten-Items im HTML-Format fuer Mail und Druck
+# *ohne* Funktionselemente
+#
+#######################################################################
+-%]
 [% FOREACH titset IN collection %]
 <tr class="titlerow"><td>Titel [% loop.count %] aus: [% utf2iso(titset.dbdesc) %]<td></tr>
 <tr><td>

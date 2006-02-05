@@ -1,3 +1,16 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_end
+#
+# Typ         : Mastertemplate (3/3)
+#
+# Aufgabe:
+#
+# Ausgabe das unteren Teils der initialen Trefferliste
+#
+#######################################################################
+-%]
 [%- i18nmsg = msg.${qopts.lang} -%]
 [% IF gesamttreffer == 0 %]
 <tr><td colspan="5"><span style="font-size:2em;font-face:bold">Es wurden keine Treffer gefunden</span></td></tr>

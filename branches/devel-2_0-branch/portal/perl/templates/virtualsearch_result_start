@@ -1,3 +1,16 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_start
+#
+# Typ         : Mastertemplate (1/3)
+#
+# Aufgabe:
+#
+# Ausgabe des Anfangs der initialen Trefferliste
+#
+#######################################################################
+-%]
 [%- i18nmsg = msg.${qopts.lang} -%]
 [% PROCESS common/subtemplate name="std_header" %]
 

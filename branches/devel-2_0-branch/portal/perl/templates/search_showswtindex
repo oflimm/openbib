@@ -1,7 +1,18 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showswtindex
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Schlagwortindex
+#
+#######################################################################
+-%]
 [%- i18nmsg = msg.${qopts.lang} -%]
-[%- show_foot_banner = 1 -%]
-[%- title = 'Schlagwortindex' -%]
-[% PROCESS common/subtemplate name="std_header" %]
+[% PROCESS common/subtemplate name="std_header" title = 'Schlagwortindex' %]
 
 <body>
 <table BORDER="0" CELLSPACING="0" CELLPADDING="0" width="100%">

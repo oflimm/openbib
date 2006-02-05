@@ -1,3 +1,16 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_item
+#
+# Typ         : Mastertemplate (2/3)
+#
+# Aufgabe:
+#
+# Ausgabe der Suchergebnisse *eines* Katalogs
+#
+#######################################################################
+-%]
 [%- i18nmsg = msg.${qopts.lang} -%]
 <!-- Beginn Result Item -->
 <tr class="titlerow"><td>&nbsp;</td><td>[% dbinfo %]</td><td

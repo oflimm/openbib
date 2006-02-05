@@ -1,3 +1,16 @@
+[%#-
+#######################################################################
+#
+# Templatename: managecollection_print
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Merkliste fuer einen Ausdruck ueber den Web-Browser
+#
+#######################################################################
+-%]
 [%- i18nmsg = msg.${qopts.lang} -%]
 [%- SET show_corporate_banner = 0 -%]
 [% PROCESS common/subtemplate name="std_header" %]

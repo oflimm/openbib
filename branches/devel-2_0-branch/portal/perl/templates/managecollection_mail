@@ -1,3 +1,18 @@
+[%#-
+#######################################################################
+#
+# Templatename: managecollection_mail
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Merkliste mit einer Eingabemaske fuer die
+# E-Mail-Adresse, an die die Merkliste verschickt werden
+# soll
+#
+#######################################################################
+-%]
 [%- i18nmsg = msg.${qopts.lang} -%]
 [% PROCESS common/subtemplate name="std_header" %]
 

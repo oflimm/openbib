@@ -1,3 +1,16 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_more_search_tips
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe weiterer Suchhinweise mit intelligenten Einsprung-URL's
+#
+#######################################################################
+-%]
 <table id="Suchhinweise" width="100%">
 <tr><th>Weitergehende Suchhinweise</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">

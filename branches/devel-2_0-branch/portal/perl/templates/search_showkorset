@@ -1,7 +1,18 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showkorset
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Koerperschafts-Normdatensatzes
+#
+#######################################################################
+-%]
 [%- i18nmsg = msg.${qopts.lang} -%]
-[%- show_foot_banner = 1 -%]
-[%- title = "KUG Recherche" -%]
-[% PROCESS common/subtemplate name="std_header" %]
+[% PROCESS common/subtemplate name="std_header" title = "KUG Recherche" %]
 
 <body>
 

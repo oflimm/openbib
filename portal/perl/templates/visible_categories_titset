@@ -1,0 +1,109 @@
+[%#-
+#######################################################################
+#
+# Templatename: visible_categories_titset
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabekategorien fuer einen einzelnen Titelsatz
+#
+#######################################################################
+-%]
+[%# Ausgabekategorien %]
+[% categories = [
+                'T0100', # Verfasser
+                'T0101', # Person
+                'T0103', # Gefeierte Person
+                'T0200', # Urheber
+                'T0201', # Koerperschaft
+                'T0089', # Bandangabe  
+                'T0310', # AST  
+                'T0304', # EST 
+                'T0331', # HST
+                'T0300', # Sammlungsvermerk
+                'T0370', # WST
+                'T0341', # PSTVorlage
+                'T0361', # Beig.Werke
+                'T0333', # Zu erg. Urheber/HST Urheber
+                'T0335', # Zusatz zum HST
+                'T0361', # Vorlage beigef. Werk
+                'T0365', # Gemeins. Angaben
+                'T0359', # Vorl. Verfasser/Koerperschaft
+                'T0360', # Vorl. Unterreihe
+                'T0403', # Auflage
+                'T0410', # Verlagsort
+                'T0412', # Verlag
+                'T0425', # ErschJahr
+                'T0424', # ErschJahr/Ansetzung
+                'T0405', # Erscheinungsverlauf
+                'T0523', # Erscheinungsweise
+                'T0591', # Verfasser Quelle
+                'T0594', # ErschOrt Quelle
+                'T0595', # ErschJahr Quelle
+                'T0434', # Ill_Angabe
+                'T0413', # Drucker
+                'T0035', # ErschLand
+                'T0435', # Format
+                'T0508', # Quelle
+                'T0433', # Kollation
+                'T0334', # Material
+                'T0662', # EDVurl
+                'T2662', # USB EDVurl
+                'T2663', # USB URLInfo
+                'T0652', # EDV Material
+                'T0655', # EDV Adress
+                'T0451', # GesTit Vorl
+                'T0590', # HSTQuelle
+                'T0407', # Massstab
+                'T0434', # Sonst. Angaben
+                'T0437', # Begleitmat.
+                'T0501', # Fussnoten
+                'T0504', # PST Fussnote
+                'T0505', # WST Fussnote
+                'T0507', # Ang. HST
+                'T0509', # Verfasser Fussnote
+                'T0510', # Ausgabe Fussnote
+                'T0511', # Erschverm. Fussnote
+                'T0512', # Koll. Fussnote
+                'T0513', # Impress. Aend.
+                'T0515', # Ergaenzt. GesamtTitel
+                'T0522', # Teilungsvermerk
+                'T0525', # Herkunft Fussnote
+                'T0534', # Titelkonk.
+                'T0535', # Anz. Ex.
+                'T0536', # Vorr. Erschtermin
+                'T0527', # Parallel Ausg.
+                'T0529', # Titbeilage
+                'T0530', # Bezugswerk
+                'T0531', # FruehAusgabe
+                'T0532', # FruehTit
+                'T0533', # SpaetAusgabe
+                'T0519', # HSSVermerk
+                'T0619', # Jahr Vorlage
+                'T0646', # Filmbesitz
+                'T0516', # Sprache
+                'T0750', # Abstract
+                'T0503', # Uebers. HST
+                'T0026', # NE/R
+                'T0800', # Art/Inhalt Medienart
+                'T0710', # Schlagwort
+                'T0902', # Schlagwort
+                'T0907', # Schlagwort
+                'T0912', # Schlagwort
+                'T0917', # Schlagwort
+                'T0922', # Schlagwort
+                'T0927', # Schlagwort
+                'T0932', # Schlagwort
+                'T0937', # Schlagwort
+                'T0942', # Schlagwort
+                'T0947', # Schlagwort
+                'T0700', # Notation
+                'T0540', # ISBN
+                'T0543', # ISSN
+                'T5001', # Anzahl uebergeordn. Werke
+                'T5002', # Anzahl untergeordn. Werke
+                ]
+
+%]

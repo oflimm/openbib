@@ -1,3 +1,16 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der erweiterten Suchmaske
+#
+#######################################################################
+-%]
 [%- i18nmsg = msg.${qopts.lang} -%]
 [% PROCESS common/subtemplate name="std_header" %]
 
@@ -124,6 +137,9 @@ Sie können entweder durch entsprechende Auswahl in den insgesamt [% alldbs %] e
 [% IF showejahr %]
 <tr><td class="category">Jahr</td><td class="category">und<input type="hidden" name="bool7" value="AND" /></td><td><input type="text" name="ejahr" value="[% ejahr %]" size="4" maxlength="4" />&nbsp;<select name="ejahrop"><option value="eq" selected="selected">genau</option><option value="gt">jünger</option><option value="lt">älter</option></select></td><td></td></tr>
 [% END %]
+
+<tr><td class="category">Eingrenzung auf Gesamttitel&nbsp;(Serien)</td><td class="category">und</td><td><input type="checkbox" name="serien" /></td><td></td></tr>
+
 
 </table></td>
 <td>

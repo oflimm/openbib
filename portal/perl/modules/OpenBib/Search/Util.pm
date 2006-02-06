@@ -1964,6 +1964,8 @@ sub initial_search_for_titidns {
         ? $arg_ref->{mart}          : undef;
     my $serien            = exists $arg_ref->{serien}
         ? $arg_ref->{serien}        : undef;
+    my $enrich            = exists $arg_ref->{enrich}
+        ? $arg_ref->{enrich}        : undef;
     my $boolfs            = exists $arg_ref->{boolfs}
         ? $arg_ref->{boolfs}        : 'AND';
     my $boolverf          = exists $arg_ref->{boolverf}
@@ -2118,9 +2120,9 @@ sub initial_search_for_titidns {
     if ($notation) {
         $notation=~s/\*$/%/;
         $notation=OpenBib::Search::Util::input2sgml($notation,1);
-        push @sqlfrom,  "notation";
+        push @sqlfrom,  "notation_string";
         push @sqlfrom,  "conn";
-        push @sqlwhere, "$boolnotation (notation.contentnorm like ? and conn.sourcetype=1 and conn.targettype=5 and conn.targetid=notation.id and search.verwidn=conn.sourceid)";
+        push @sqlwhere, "$boolnotation (notation_string.content like ? and conn.sourcetype=1 and conn.targettype=5 and conn.targetid=notation_string.id and search.verwidn=conn.sourceid)";
         push @sqlargs,  $notation;
     }
   
@@ -2129,9 +2131,9 @@ sub initial_search_for_titidns {
     if ($sign) {
         $sign=~s/\*$/%/;
         $sign=OpenBib::Search::Util::input2sgml($sign,1);
-        push @sqlfrom,  "mex";
+        push @sqlfrom,  "mex_string";
         push @sqlfrom,  "conn";
-        push @sqlwhere, "$boolsign (mex.contentnorm like ? and mex.category='0014' and conn.sourcetype=1 and conn.targettype=6 and conn.targetid=mex.id and search.verwidn=conn.sourceid)";
+        push @sqlwhere, "$boolsign (mex_string.content like ? and mex_string.category=0014 and conn.sourcetype=1 and conn.targettype=6 and conn.targetid=mex_string.id and search.verwidn=conn.sourceid)";
         push @sqlargs,  $sign;
     }
   
@@ -2157,9 +2159,9 @@ sub initial_search_for_titidns {
   
     if ($hststring) {
         $hststring=~s/\*$/%/;
-        push @sqlfrom,  "tit";
+        push @sqlfrom,  "tit_string";
         $hststring=OpenBib::Search::Util::input2sgml($hststring,1);
-        push @sqlwhere, "$boolhststring (tit.contentnorm like ? and tit.category in ('0331','0310','0304','0370','0341') and search.verwidn=tit.id)";
+        push @sqlwhere, "$boolhststring (tit_string.content like ? and tit_string.category in (0331,0310,0304,0370,0341) and search.verwidn=tit_string.id)";
         push @sqlargs,  $hststring;
     }
   
@@ -2191,10 +2193,43 @@ sub initial_search_for_titidns {
 #         }
 #     }
 
+    # Etwaige ISBN's aus der enrichmnt-DB bestimmen
+
+    $enrich=1;
+    if ($enrich){
+    
+        # Verbindung zur SQL-Datenbank herstellen
+        my $enrichdbh
+            = DBI->connect("DBI:$config{dbimodule}:dbname=$config{enrichmntdbname};host=$config{enrichmntdbhost};port=$config{enrichmntdbport}", $config{enrichmntdbuser}, $config{enrichmntdbpasswd})
+                or $logger->error_die($DBI::errstr);
+
+        my $sqlquerystring  = "select isbn from search where match (content) against (? in boolean mode)";
+        my $enrichrequest   = $enrichdbh->prepare($sqlquerystring);
+        $enrichrequest->execute("$hst $fs");
+        my @enrichisbns=();
+        while (my $res=$enrichrequest->fetchrow_hashref){
+            push @enrichisbns, $res->{isbn};
+        }
+
+        $logger->debug("Enrich: ".join(" ",@enrichisbns));
+        my $request=$dbh->prepare("create temporary table enrich (isbn CHAR(14), index(isbn)) DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci");
+        $request->execute();
+        
+        $request=$dbh->prepare("insert into enrich (isbn) values (?)");
+        foreach my $enrichisbn (@enrichisbns){
+            $request->execute($enrichisbn);
+        }
+
+        $enrichdbh->disconnect();
+
+        push @sqlwhere, "union select verwidn from search, tit_string, enrich where enrich.isbn = tit_string.content and tit_string.id=search.verwidn";
+
+    }
+
     my $sqlwherestring  = join(" ",@sqlwhere);
     $sqlwherestring     =~s/^(?:AND|OR|NOT) //;
     my $sqlfromstring   = join(", ",@sqlfrom);
-
+    
     my $sqlquerystring  = "select verwidn from $sqlfromstring where $sqlwherestring limit $maxhits";
     my $request         = $dbh->prepare($sqlquerystring);
 

@@ -1,0 +1,12 @@
+-------------------------------------------------
+--------------- T A B E L L E N -----------------
+-------------------------------------------------
+
+drop table IF EXISTS search;
+create table search (
+isbn      VARCHAR(20) NOT NULL,
+content   TEXT,
+FULLTEXT  (content)
+)
+DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+;

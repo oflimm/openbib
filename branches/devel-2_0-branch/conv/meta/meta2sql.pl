@@ -25,14 +25,20 @@
 #  an die Free Software Foundation, Inc., 675 Mass Ave, Cambridge,
 #  MA 02139, USA.
 #
-#####################################################################   
+#####################################################################
 
 use 5.008001;
 use utf8;
 
+use Getopt::Long;
+use MLDBM qw(DB_File Storable);
+use YAML();
+
 use OpenBib::Common::Util;
 use OpenBib::Common::Stopwords;
-use YAML();
+
+&GetOptions("reduce-mem"   => \$reducemem,
+	    );
 
 my $dir=`pwd`;
 chop $dir;
@@ -167,6 +173,10 @@ my $inverted_tit_ref={
     '0370' => { # WST
         string => 1,
         ft     => 1,
+    },
+
+    '0540' => { # ISBN
+        string => 1,
     },
 
 };
@@ -351,6 +361,22 @@ my $blacklist_tit_ref = {
 #    '1673' => 1, # Veranstaltungsort (TODO)
 };
 
+my %listitemdata_aut=();
+my %listitemdata_kor=();
+my %listitemdata_mex=();
+
+
+if ($reducemem){
+    tie %listitemdata_aut, 'MLDBM', "./listitemdata_aut.db"
+        or die "Could not tie listitemdata_aut.\n";
+    
+    tie %listitemdata_kor, 'MLDBM', "./listitemdata_kor.db"
+        or die "Could not tie listitemdata_kor.\n";
+    
+    tie %listitemdata_mex, 'MLDBM', "./listitemdata_mex.db"
+        or die "Could not tie listitemdata_mex.\n";
+}
+
 my $stammdateien_ref = {
     aut => {
         type           => "aut",
@@ -420,12 +446,13 @@ foreach my $type (keys %{$stammdateien_ref}){
     next CATLINE if (exists $stammdateien_ref->{$type}{blacklist_ref}->{$category});
 
     # Ansetzungsformen fuer Kurztitelliste merken
-    if ($category == 1 && ($type eq "aut" || $type eq "kor")){
-        $prefix =
-            ($type eq "aut")?"P":
-            ($type eq "kor")?"C":undef;
-        
-        $stammdateien_ref->{$type}{listitem}{$id}{$prefix.$category}=$content;
+    if ($category == 1){
+        if ($type eq "aut"){
+            $listitemdata_aut{$id}=$content;
+        }
+        elsif ($type eq "kor"){
+            $listitemdata_kor{$id}=$content;
+        }
     }
     
     my $contentnorm   = "";
@@ -445,7 +472,7 @@ foreach my $type (keys %{$stammdateien_ref}){
        }
        
        if ($stammdateien_ref->{$type}{inverted_ref}->{$category}->{init}){
-           push @{$stammdateien_ref->{$type}{data}{$id}}, $contentnormtmp;
+           push @{$stammdateien_ref->{$type}{data}[$id]}, $contentnormtmp;
        }
    }
 
@@ -506,10 +533,9 @@ while (my $line=<IN>){
 
     # Signatur fuer Kurztitelliste merken
     if ($category == 14 && $titid){
-        push @{$stammdateien_ref->{mex}{listitem}{$titid}{"X".$category}}, {
-            indicator => $indicator,
-            content   => $content,
-        };
+        my $array_ref=exists $listitemdata_mex{$titid}?$listitemdata_mex{$titid}:[];
+        push @$array_ref, $content;
+        $listitemdata_mex{$titid}=$array_ref;
     }
     
     my $contentnorm   = "";
@@ -532,7 +558,7 @@ while (my $line=<IN>){
             }
 
             if ($stammdateien_ref->{mex}{inverted_ref}->{$category}->{init}){
-                push @{$stammdateien_ref->{mex}{data}{$titid}}, $contentnormtmp;
+                push @{$stammdateien_ref->{mex}{data}[$titid]}, $contentnormtmp;
             }
 	}
 
@@ -632,33 +658,33 @@ while (my $line=<IN>){
 
         my @temp=();
         foreach my $item (@verf){
-            push @temp, join(" ",@{$stammdateien_ref->{aut}{data}{$item}});
+            push @temp, join(" ",@{$stammdateien_ref->{aut}{data}[$item]});
         }
         push @temp, join(" ",@titverf);
         my $verf     = join(" ",@temp);
 
         @temp=();
         foreach my $item (@kor){
-            push @temp, join(" ",@{$stammdateien_ref->{kor}{data}{$item}});
+            push @temp, join(" ",@{$stammdateien_ref->{kor}{data}[$item]});
         }
         push @temp, join(" ",@titkor);
         my $kor      = join(" ",@temp);
 
         @temp=();
         foreach my $item (@swt){
-            push @temp, join(" ",@{$stammdateien_ref->{swt}{data}{$item}});
+            push @temp, join(" ",@{$stammdateien_ref->{swt}{data}[$item]});
         }
         push @temp, join(" ",@titswt);
         my $swt      = join(" ",@temp);
 
         @temp=();
         foreach my $item (@notation){
-            push @temp, join(" ",@{$stammdateien_ref->{notation}{data}{$item}});
+            push @temp, join(" ",@{$stammdateien_ref->{notation}{data}[$item]});
         }
         my $notation = join(" ",@temp);
 
         @temp=();
-	push @temp, join(" ",@{$stammdateien_ref->{mex}{data}{$id}});
+	push @temp, join(" ",@{$stammdateien_ref->{mex}{data}[$id]});
         my $mex = join(" ",@temp);
         
         my $hst       = join(" ",@hst);
@@ -741,10 +767,15 @@ while (my $line=<IN>){
                 $listitem_ref->{T0331}[0]{content}="Kein HST/AST vorhanden";
             }
         }
-
+        
         # Exemplardaten-Hash zu listitem-Hash hinzufuegen
-        %$listitem_ref=(%$listitem_ref,%{$stammdateien_ref->{mex}{listitem}{$id}});
 
+        foreach my $content (@{$listitemdata_mex{$id}}){
+            push @{$listitem_ref->{X0014}}, {
+                content => $content,
+            };
+        }
+        
         # Kombinierte Verfasser/Koerperschaft hinzufuegen fuer Sortierung
         push @{$listitem_ref->{'PC0001'}}, {
             content   => join(" ; ",@autkor),
@@ -812,13 +843,15 @@ while (my $line=<IN>){
 
             push @verf, $targetid;
 
+            my $content = $listitemdata_aut{$targetid};
+
             push @{$listitem_ref->{P0100}}, {
                 id      => $targetid,
                 type    => 'aut',
-                content => $stammdateien_ref->{aut}{listitem}{$targetid}{P0001},
+                content => $content,
             };
 
-            push @autkor, $stammdateien_ref->{aut}{listitem}{$targetid}{P0001};
+            push @autkor, $content;
 
             print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
         }
@@ -836,15 +869,17 @@ while (my $line=<IN>){
             my $category="0101";
 
             push @verf, $targetid;
+
+            my $content = $listitemdata_aut{$targetid};
             
             push @{$listitem_ref->{P0101}}, {
                 id         => $targetid,
                 type       => 'aut',
-                content    => $stammdateien_ref->{aut}{listitem}{$targetid}{P0001},
+                content    => $content,
                 supplement => $supplement,
             };
 
-            push @autkor, $stammdateien_ref->{aut}{listitem}{$targetid}{P0001};
+            push @autkor, $content;
             
             print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
         }
@@ -862,15 +897,17 @@ while (my $line=<IN>){
             my $category="0103";
 
             push @verf, $targetid;
+
+            my $content = $listitemdata_aut{$targetid};
             
             push @{$listitem_ref->{P0103}}, {
                 id         => $targetid,
                 type       => 'aut',
-                content    => $stammdateien_ref->{aut}{listitem}{$targetid}{P0001},
+                content    => $content,
                 supplement => $supplement,
             };
 
-            push @autkor, $stammdateien_ref->{aut}{listitem}{$targetid}{P0001};
+            push @autkor, $content;
             
             print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
         }
@@ -884,13 +921,15 @@ while (my $line=<IN>){
 
             push @kor, $targetid;
 
+            my $content = $listitemdata_kor{$targetid};
+            
             push @{$listitem_ref->{C0200}}, {
                 id         => $targetid,
                 type       => 'kor',
-                content    => $stammdateien_ref->{kor}{listitem}{$targetid}{C0001},
+                content    => $content,
             };
 
-            push @autkor, $stammdateien_ref->{kor}{listitem}{$targetid}{C0001};
+            push @autkor, $content;
             
             print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
         }
@@ -904,13 +943,15 @@ while (my $line=<IN>){
 
             push @kor, $targetid;
 
+            my $content = $listitemdata_kor{$targetid};
+
             push @{$listitem_ref->{C0201}}, {
                 id         => $targetid,
                 type       => 'kor',
-                content    => $stammdateien_ref->{kor}{listitem}{$targetid}{C0001},
+                content    => $content,
             };
 
-            push @autkor, $stammdateien_ref->{kor}{listitem}{$targetid}{C0001};
+            push @autkor, $content;
             
             print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
         }
@@ -1179,6 +1220,12 @@ close(CONTROL);
 close(CONTROLINDEXOFF);
 close(CONTROLINDEXON);
 
+if ($reducemem){
+    untie %listitemdata_aut;
+    untie %listitemdata_kor;
+    untie %listitemdata_mex;
+}
+
 1;
 
 __END__
@@ -1212,6 +1259,10 @@ __END__
 
  Die numerische Entsprechung wird bei der Verknuepfung einzelner Saetze
  zwischen den Normdaten in der Tabelle conn verwendet.
+
+ Der Speicherverbrauch kann ueber die Option -reduce-mem durch
+ Auslagerung der fuer den Aufbau der Kurztitel-Tabelle benoetigten
+ Informationen reduziert werden.
 
 =head1 AUTHOR
 

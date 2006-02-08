@@ -610,7 +610,7 @@ sub get_tit_listitem_by_idn {
     my $logger = get_logger();
 
 
-    my $use_titlistitem_table=0;
+    my $use_titlistitem_table=1;
 
     if ($database eq "inst006"){
         $use_titlistitem_table=1;
@@ -1448,6 +1448,55 @@ sub get_tit_set_by_idn {
             @circexemplarliste=();
         }
     }
+
+    # Anreicherung mit zentralen Enrichmentdaten
+    {
+        my ($atime,$btime,$timeall);
+        
+        if ($config{benchmark}) {
+            $atime=new Benchmark;
+        }
+        
+        # Verbindung zur SQL-Datenbank herstellen
+        my $enrichdbh
+            = DBI->connect("DBI:$config{dbimodule}:dbname=$config{enrichmntdbname};host=$config{enrichmntdbhost};port=$config{enrichmntdbport}", $config{enrichmntdbuser}, $config{enrichmntdbpasswd})
+                or $logger->error_die($DBI::errstr);
+        
+        foreach my $isbn_ref (@{$normset_ref->{T0540}}){
+
+            my $isbn=$isbn_ref->{content};
+            
+            $isbn =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10/g;
+            
+            my $reqstring="select category,content from normdata where isbn=?";
+            my $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
+            $request->execute($isbn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+            
+            while (my $res=$request->fetchrow_hashref) {
+                my $category   = "T".sprintf "%04d",$res->{category };
+                my $content    =        decode_utf8($res->{content});
+                
+                push @{$normset_ref->{$category}}, {
+                    content    => $content,
+                };
+            }
+            $request->finish();
+            $logger->debug("Enrich: $isbn -> $reqstring");
+        }
+        
+        $enrichdbh->disconnect();
+
+        if ($config{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : Bestimmung von Enrich-Normdateninformationen ist ".timestr($timeall));
+            undef $atime;
+            undef $btime;
+            undef $timeall;
+        }
+
+
+    }
     
     # Wenn ein Kategoriemapping fuer diesen Katalog existiert, dann muss 
     # dieses angewendet werden
@@ -1990,6 +2039,8 @@ sub initial_search_for_titidns {
         ? $arg_ref->{boolejahr}     : 'AND';
     my $boolmart          = exists $arg_ref->{boolmart}
         ? $arg_ref->{boolmart}      : 'AND';
+    my $enrichkeys_ref    = exists $arg_ref->{enrichkeys_ref}
+        ? $arg_ref->{enrichkeys_ref}: undef;
     my $dbh               = exists $arg_ref->{dbh}
         ? $arg_ref->{dbh}           : undef;
     my $maxhits           = exists $arg_ref->{maxhits}
@@ -2193,37 +2244,18 @@ sub initial_search_for_titidns {
 #         }
 #     }
 
-    # Etwaige ISBN's aus der enrichmnt-DB bestimmen
-
-    $enrich=1;
     if ($enrich){
-    
-        # Verbindung zur SQL-Datenbank herstellen
-        my $enrichdbh
-            = DBI->connect("DBI:$config{dbimodule}:dbname=$config{enrichmntdbname};host=$config{enrichmntdbhost};port=$config{enrichmntdbport}", $config{enrichmntdbuser}, $config{enrichmntdbpasswd})
-                or $logger->error_die($DBI::errstr);
-
-        my $sqlquerystring  = "select isbn from search where match (content) against (? in boolean mode)";
-        my $enrichrequest   = $enrichdbh->prepare($sqlquerystring);
-        $enrichrequest->execute("$hst $fs");
-        my @enrichisbns=();
-        while (my $res=$enrichrequest->fetchrow_hashref){
-            push @enrichisbns, $res->{isbn};
-        }
-
-        $logger->debug("Enrich: ".join(" ",@enrichisbns));
         my $request=$dbh->prepare("create temporary table enrich (isbn CHAR(14), index(isbn)) DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci");
         $request->execute();
         
         $request=$dbh->prepare("insert into enrich (isbn) values (?)");
-        foreach my $enrichisbn (@enrichisbns){
-            $request->execute($enrichisbn);
+        foreach my $enrichkey (@$enrichkeys_ref){
+            $request->execute($enrichkey);
         }
 
-        $enrichdbh->disconnect();
+        $request->finish();
 
         push @sqlwhere, "union select verwidn from search, tit_string, enrich where enrich.isbn = tit_string.content and tit_string.id=search.verwidn";
-
     }
 
     my $sqlwherestring  = join(" ",@sqlwhere);

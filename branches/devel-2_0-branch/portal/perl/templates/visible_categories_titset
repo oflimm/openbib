@@ -102,6 +102,9 @@
                 'T0700', # Notation
                 'T0540', # ISBN
                 'T0543', # ISSN
+                'T3001', # TOC-URL / HTML
+                'T3002', # TOC-URL / TIFF
+                'T3003', # TOC-URL / PDF
                 'T5001', # Anzahl uebergeordn. Werke
                 'T5002', # Anzahl untergeordn. Werke
                 ]

@@ -72,6 +72,8 @@ if (!$singlepool){
   exit;
 }
 
+my $singlepooltmp=$singlepool."tmp";
+
 my $sessiondbh = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or die "could not connect";
 
 # Verweis: Datenbankname -> Sigel
@@ -175,34 +177,91 @@ if ($singlepool && -e "$config{autoconv_dir}/filter/$singlepool/pre_conv.pl"){
 
 print "### $singlepool: Konvertierung Exportdateien -> SQL\n";
 
-system("cd $rootdir/data/$singlepool ; $meta2sqlexe -utf8 ");
+if ($singlepool && -e "$config{autoconv_dir}/filter/$singlepool/alt_conv.pl"){
+    print "### $singlepool: Verwende Plugin alt_conv.pl\n";
+    system("$config{autoconv_dir}/filter/$singlepool/alt_conv.pl $singlepool");
+}
+else {
+    system("cd $rootdir/data/$singlepool ; $meta2sqlexe ");
+}
 
 if ($singlepool && -e "$config{autoconv_dir}/filter/$singlepool/post_conv.pl"){
     print "### $singlepool: Verwende Plugin post_conv.pl\n";
     system("$config{autoconv_dir}/filter/$singlepool/post_conv.pl $singlepool");
 }
 
-print "### $singlepool: Loeschen der Daten\n";
+print "### $singlepool: Temporaere Datenbank erzeugen\n";
 
 # Fuer das Einladen externer SQL-Daten mit 'load' wird das File_priv
 # fuer den Benutzer dbuser benoetigt
 
-system("$mysqlexe $singlepool < $config{'dbdesc_dir'}/mysql/pool.mysql");
+system("$mysqladminexe drop   $singlepooltmp");
+system("$mysqladminexe create $singlepooltmp");
+
+print "### $singlepool: Datendefinition einlesen\n";
+
+system("$mysqlexe $singlepooltmp < $config{'dbdesc_dir'}/mysql/pool.mysql");
+
+# Index entfernen
+print "### $singlepool: Index in temporaerer Datenbank entfernen\n";
+system("$mysqlexe $singlepooltmp < $rootdir/data/$singlepool/control_index_off.mysql");
+
+if ($singlepool && -e "$config{autoconv_dir}/filter/$singlepool/post_index_off.pl"){
+    print "### $singlepool: Verwende Plugin post_index_off.pl\n";
+    system("$config{autoconv_dir}/filter/$singlepool/post_index_off.pl $singlepooltmp");
+}
 
 # Einladen der Daten
-print "### $singlepool: Einladen der Daten\n";
-system("$mysqlexe $singlepool < $rootdir/data/$singlepool/control.mysql");
+print "### $singlepool: Einladen der Daten in temporaere Datenbank\n";
+system("$mysqlexe $singlepooltmp < $rootdir/data/$singlepool/control.mysql");
 
 if ($singlepool && -e "$config{autoconv_dir}/filter/$singlepool/post_dbload.pl"){
     print "### $singlepool: Verwende Plugin post_dbload.pl\n";
-    system("$config{autoconv_dir}/filter/$singlepool/post_dbload.pl $singlepool");
+    system("$config{autoconv_dir}/filter/$singlepool/post_dbload.pl $singlepooltmp");
 }
+
+# Index setzen
+print "### $singlepool: Index in temporaerer Datenbank aufbauen\n";
+system("$mysqlexe $singlepooltmp < $rootdir/data/$singlepool/control_index_on.mysql");
+
+if ($singlepool && -e "$config{autoconv_dir}/filter/$singlepool/post_index_on.pl"){
+    print "### $singlepool: Verwende Plugin post_index_on.pl\n";
+    system("$config{autoconv_dir}/filter/$singlepool/post_index_on.pl $singlepooltmp");
+}
+
+# Tabellen Packen
+system("$config{autoconv_dir}/filter/common/pack_data.pl $singlepooltmp");
+
+# Tabellen aus temporaerer Datenbank in finale Datenbank verschieben
+print "### $singlepool: Tabellen aus temporaerer Datenbank in finale Datenbank verschieben\n";
+
+system("$mysqladminexe drop $singlepool ");
+system("$mysqladminexe create $singlepool ");
+#system("mv /var/lib/mysql/$singlepooltmp /var/lib/mysql/$singlepool");
+
+
+open(COPYIN, "echo \"show tables;\" | $mysqlexe -s $singlepooltmp |");
+open(COPYOUT,"| $mysqlexe -s $singlepooltmp |");
+
+while (<COPYIN>){
+    chomp();
+    print COPYOUT <<"ENDE";
+rename table $singlepooltmp.$_ to $singlepool.$_ ;
+ENDE
+}
+
+close(COPYIN);
+close(COPYOUT);
+
+system("$config{autoconv_dir}/filter/$singlepool/post_index_on.pl $singlepool");
 
 print "### $singlepool: Updating Titcount\n";
 
 system("$config{'base_dir'}/bin/updatetitcount.pl --single-pool=$singlepool");
 
 print "### $singlepool: Cleanup\n";
+
+#system("$mysqladminexe drop   $singlepooltmp");
 #system("rm $rootdir/data/$singlepool/*");
   
 sub print_help {
@@ -224,6 +283,8 @@ autoconv-sikis.pl - Automatische Konvertierung von SIKIS-Daten
    pre_conv.pl
    post_conv.pl
    post_dbload.pl
+   post_index_off.pl
+   post_index_on.pl
 
 ENDHELP
     exit;

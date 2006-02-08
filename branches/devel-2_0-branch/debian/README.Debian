@@ -1,0 +1,8 @@
+openbib for Debian
+------------------
+
+Due to the circumstance that german libraries with their german-specific meta-data 
+formats (MAB) and bibliographic standards (RAK) are the primary target of this
+application this will be a german-only package.
+
+ -- Oliver Flimm <flimm@openbib.org>, Wed,  8 Feb 2006 20:20:59 +0200

@@ -104,13 +104,14 @@ sub handler {
     my $notation      = decode_utf8($query->param('notation'))      || '';
     my $ejahr         = decode_utf8($query->param('ejahr'))         || '';
     my $ejahrop       = decode_utf8($query->param('ejahrop'))       || 'eq';
-    my $serien        = decode_utf8($query->param('serien'))        || '';
+    my $serien        = decode_utf8($query->param('serien'))        || 0;
+    my $enrich        = decode_utf8($query->param('enrich'))        || 1;
     my @databases     = ($query->param('database'))?$query->param('database'):();
 
-    my $hitrange      = ($query->param('hitrange'))?$query->param('hitrange'):20;
-    my $offset        = ($query->param('offset'))?$query->param('offset'):1;
-    my $maxhits       = ($query->param('maxhits'))?$query->param('maxhits'):500;
-    my $sorttype      = ($query->param('sorttype'))?$query->param('sorttype'):"author";
+    my $hitrange      = ($query->param('hitrange' ))?$query->param('hitrange'):20;
+    my $offset        = ($query->param('offset'   ))?$query->param('offset'):1;
+    my $maxhits       = ($query->param('maxhits'  ))?$query->param('maxhits'):500;
+    my $sorttype      = ($query->param('sorttype' ))?$query->param('sorttype'):"author";
     my $sortorder     = ($query->param('sortorder'))?$query->param('sortorder'):'up';
     my $autoplus      = $query->param('autoplus')      || '';
     my $lang          = $query->param('l')             || 'de';
@@ -806,7 +807,7 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
         msg            => \%msg,
     };
 
-    $starttemplate->process($starttemplatename, $startttdata) || do { 
+    $starttemplate->process($starttemplatename, $startttdata) || do {
         $r->log_reason($starttemplate->error(), $r->filename);
         return SERVER_ERROR;
     };
@@ -814,6 +815,43 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
     # Ausgabe flushen
     $r->rflush();
 
+    my $enrichkeys_ref=[];
+    
+    # Vorangestellte Recherche in der Datenbank zur Suchanreicherung
+    if ($enrich){
+        my ($atime,$btime,$timeall);
+        
+        if ($config{benchmark}) {
+            $atime=new Benchmark;
+        }
+
+        # Verbindung zur SQL-Datenbank herstellen
+        my $enrichdbh
+            = DBI->connect("DBI:$config{dbimodule}:dbname=$config{enrichmntdbname};host=$config{enrichmntdbhost};port=$config{enrichmntdbport}", $config{enrichmntdbuser}, $config{enrichmntdbpasswd})
+                or $logger->error_die($DBI::errstr);
+
+        my $sqlquerystring  = "select isbn from search where match (content) against (? in boolean mode)";
+        my $request         = $enrichdbh->prepare($sqlquerystring);
+        $request->execute("$hst $fs");
+        while (my $res=$request->fetchrow_hashref){
+            push @{$enrichkeys_ref}, $res->{isbn};
+        }
+
+        $request->finish();
+        $enrichdbh->disconnect();
+
+        if ($config{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : Bestimmung von enrichkeys ist ".timestr($timeall));
+            undef $atime;
+            undef $btime;
+            undef $timeall;
+        }
+
+        $logger->debug("Enrich-Keys: ".join(" ",@{$enrichkeys_ref}));
+    }
+    
     my $gesamttreffer=0;
 
     # BEGIN Anfrage an Datenbanken schicken und Ergebnisse einsammeln
@@ -861,6 +899,9 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
 
             dbh           => $dbh,
             maxhits       => $maxhits,
+
+            enrich         => $enrich,
+            enrichkeys_ref => $enrichkeys_ref,
         });
 
         my @tidns           = @{$result_ref->{titidns_ref}};
@@ -962,10 +1003,10 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
             undef $btime;
             undef $timeall;
 
-            $r->rflush();
         }
         undef $atime;
         $dbh->disconnect;
+        $r->rflush();
     }
 
     ######################################################################

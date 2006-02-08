@@ -86,7 +86,15 @@ use vars qw(%config);
 	   userdbuser    => 'root',
 	   userdbpasswd  => 'StrengGeheim',
 
-	   # Benutzer und Passwort fuer die Administration
+	   # Einstellungen fuer den Zugriff auf die Enrichmnt-Datenbank
+
+	   enrichmntdbhost    => 'localhost',
+	   enrichmntdbport    => '3306',
+	   enrichmntdbname    => 'enrichmnt',
+	   enrichmntdbuser    => 'root',
+	   enrichmntdbpasswd  => 'StrengGeheim',
+
+           # Benutzer und Passwort fuer die Administration
 
 	   adminuser     => 'adminuser',
 	   adminpasswd   => 'StrengGeheim',

@@ -32,7 +32,7 @@ use utf8;
 
 use Getopt::Long;
 use MLDBM qw(DB_File Storable);
-use YAML();
+use Storable();
 
 use OpenBib::Common::Util;
 use OpenBib::Common::Stopwords;
@@ -145,6 +145,10 @@ my $inverted_swt_ref={
 };
 
 my $inverted_tit_ref={
+    '0002' => { # Aufnahmedatum
+        string => 1,
+    },
+    
     '0304' => { # EST
         string => 1,
         ft     => 1,
@@ -262,7 +266,7 @@ my $blacklist_swt_ref = {
 };
 
 my $blacklist_tit_ref = {
-    '0002' => 1, # Aufnahmedatum
+#    '0002' => 1, # Aufnahmedatum
     '0003' => 1, # Aenderungsdatum
     '0005' => 1, # Inventarnummer (in mex vorhanden)
     '0009' => 1, # Herkunft
@@ -436,13 +440,15 @@ foreach my $type (keys %{$stammdateien_ref}){
     elsif ($line=~m/^9999:/){
       next CATLINE;
     }
-    elsif ($line=~m/^(\d+)\.(\d+):(.*$)/){
+    elsif ($line=~m/^(\d+)\.(\d+):(.*?)$/){
       ($category,$indicator,$content)=($1,$2,$3);
     }
-    elsif ($line=~m/^(\d+):(.*$)/){
+    elsif ($line=~m/^(\d+):(.*?)$/){
       ($category,$content)=($1,$2);
     }
 
+    chomp($content);
+    
     next CATLINE if (exists $stammdateien_ref->{$type}{blacklist_ref}->{$category});
 
     # Ansetzungsformen fuer Kurztitelliste merken
@@ -524,13 +530,15 @@ while (my $line=<IN>){
     elsif ($line=~m/^9999:/){
         next CATLINE;
     }
-    elsif ($line=~m/^(\d+)\.(\d+):(.*$)/){
+    elsif ($line=~m/^(\d+)\.(\d+):(.*?)$/){
         ($category,$indicator,$content)=($1,$2,$3);
     }
-    elsif ($line=~m/^(\d+):(.*$)/){
+    elsif ($line=~m/^(\d+):(.*?)$/){
         ($category,$content)=($1,$2);
     }
 
+    chomp($content);
+    
     # Signatur fuer Kurztitelliste merken
     if ($category == 14 && $titid){
         my $array_ref=exists $listitemdata_mex{$titid}?$listitemdata_mex{$titid}:[];
@@ -781,20 +789,23 @@ while (my $line=<IN>){
             content   => join(" ; ",@autkor),
         };
 
-        my $listitem = YAML::Dump($listitem_ref);
+        my $listitem = Storable::freeze($listitem_ref);
         $listitem=~s/\n/\\n/g;
-        print TITLISTITEM "$id$listitem\n";
+#        $listitem=~s/"/&quot;/g;
+        print TITLISTITEM "$id|$listitem\n";
         next CATLINE;
     }
-    elsif ($line=~m/^(\d+)\.(\d+):(.*$)/){
+    elsif ($line=~m/^(\d+)\.(\d+):(.*?)$/){
         ($category,$indicator,$content)=($1,$2,$3);
     }
-    elsif ($line=~m/^(\d+):(.*$)/){
+    elsif ($line=~m/^(\d+):(.*?)$/){
         ($category,$content)=($1,$2);
     }
+
+    chomp($content);
     
     if ($category && $content){
-
+        
         next CATLINE if (exists $stammdateien_ref->{tit}{blacklist_ref}->{$category});
 
         if (exists $listitemcat_ref->{$category}){
@@ -1201,7 +1212,7 @@ ITEM
 print CONTROL << "TITITEM";
 load data infile '$dir/conn.mysql'        into table conn   fields terminated by '' ;
 load data infile '$dir/search.mysql'      into table search fields terminated by '' ;
-load data infile '$dir/titlistitem.mysql' into table titlistitem fields terminated by '' ;
+load data infile '$dir/titlistitem.mysql' into table titlistitem fields terminated by '|' ;
 TITITEM
 
 foreach my $type (keys %{$stammdateien_ref}){

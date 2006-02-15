@@ -2,7 +2,7 @@
 #
 #  OpenBib::VirtualSearch.pm
 #
-#  Dieses File ist (C) 1997-2005 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -830,11 +830,11 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
             = DBI->connect("DBI:$config{dbimodule}:dbname=$config{enrichmntdbname};host=$config{enrichmntdbhost};port=$config{enrichmntdbport}", $config{enrichmntdbuser}, $config{enrichmntdbpasswd})
                 or $logger->error_die($DBI::errstr);
 
-        my $sqlquerystring  = "select isbn from search where match (content) against (? in boolean mode)";
+        my $sqlquerystring  = "select isbn from search where match (content) against (? in boolean mode) limit 2000";
         my $request         = $enrichdbh->prepare($sqlquerystring);
         $request->execute("$hst $fs");
-        while (my $res=$request->fetchrow_hashref){
-            push @{$enrichkeys_ref}, $res->{isbn};
+        while (my $res=$request->fetchrow_arrayref){
+            push @{$enrichkeys_ref}, $res->[0];
         }
 
         $request->finish();

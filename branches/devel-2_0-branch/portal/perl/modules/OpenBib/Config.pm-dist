@@ -145,7 +145,8 @@ use vars qw(%config);
 	   circulation_loc       => '/portal/benutzerkonto',
 	   connector_digibib_loc => '/portal/connector/digibib',
 	   connector_olws_loc    => '/portal/connector/olws',
-	   databasechoice_loc    => '/portal/katalogauswahl',
+           connector_rss_loc     => '/portal/connector/rss',
+           databasechoice_loc    => '/portal/katalogauswahl',
 	   databaseprofile_loc   => '/portal/katalogprofile',
 	   dispatchquery_loc     => '/portal/anfrageverteilen',
 	   externaljump_loc      => '/portal/externersprung',
@@ -157,7 +158,8 @@ use vars qw(%config);
 	   mailpassword_loc      => '/portal/passwortmailen',
 	   managecollection_loc  => '/portal/merkliste',
 	   resultlists_loc       => '/portal/trefferlisten',
-	   search_loc            => '/portal/recherche',
+           rssframe_loc          => '/portal/rssfeeds',
+           search_loc            => '/portal/recherche',
 	   searchframe_loc       => '/portal/eingabe',
 	   selfreg_loc           => '/portal/selbstregistrierung',
 	   serverload_loc        => '/portal/getload',
@@ -229,7 +231,9 @@ use vars qw(%config);
 	   tt_circulation_remind_tname   => 'circulation_remind',
 	   tt_circulation_orders_tname   => 'circulation_orders',
 
-	   tt_databaseprofile_tname   => 'databaseprofile',
+           tt_connector_rss_item_tname   => 'connector_rss_item',
+
+           tt_databaseprofile_tname   => 'databaseprofile',
 
 	   tt_externaljump_tname   => 'externaljump',
 
@@ -261,6 +265,8 @@ use vars qw(%config);
 	   tt_resultlists_showall_tname         => 'resultlists_showall',
 	   tt_resultlists_showall_sortall_tname => 'resultlists_showall_sortall',
 	   tt_resultlists_showsinglepool_tname  => 'resultlists_showsinglepool',
+
+           tt_rssframe_tname          => 'rssframe',
 
 	   tt_search_showautset_tname => 'search_showautset',
 	   tt_search_showkorset_tname => 'search_showkorset',

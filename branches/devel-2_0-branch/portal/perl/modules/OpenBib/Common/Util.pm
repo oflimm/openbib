@@ -1041,6 +1041,14 @@ sub grundform {
     
     # Sonderbehandlung verschiedener Kategorien
 
+    # Datum normalisieren
+
+    if ($category eq '0002'){
+        if ($content =~ /^(\d\d)\.(\d\d)\.(\d\d\d\d)$/){
+            $content=$3.$2.$1;
+        }
+    }
+    
     # ISBN filtern
     if ($category eq "0540"){
         $content=~s/(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?([0-9xX])/$1$2$3$4$5$6$7$8$9$10/g;

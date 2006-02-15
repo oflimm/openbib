@@ -1,0 +1,61 @@
+[%#-
+#######################################################################
+#
+# Templatename: connector_rss_item
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Beschreibung eines RSS-Feed-Items
+#
+#######################################################################
+-%]
+[%# Verfasser konstruieren %]
+[%- persons = [] -%]
+[%- FOREACH part IN item.${'P0100'}  -%]
+[%- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.${'P0101'}  -%]
+[%- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.${'C0200'}  -%]
+[%- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.${'C0201'}  -%]
+[%- persons.push("${part.content}") -%]
+
+[%- END -%]
+[%- person = persons.join(' ; ') -%]
+
+[%# Titel konstruieren %]
+[%- title = item.${'T0331'}.first.content -%]
+[%- IF item.${'T0310'}.first.content -%]
+[%- title = item.${'T0310'}.first.content -%]
+[%- END -%]
+
+[%# Verlage konstruieren %]
+[%- publisher = item.${'T0412'}.first.content -%]
+
+[%# Ejahr konstruieren %]
+[%- yearofpub = item.${'T0425'}.first.content -%]
+
+[%# Signaturen konstruieren %]
+[%- signaturen = [] -%]
+[%- FOREACH part IN item.${'X0014'} -%]
+[%- signaturen.push("${part.content}") -%]
+[%- END -%]
+[%- signatur = signaturen.join(' ; ') -%]
+[%- IF person -%]
+[% person %] :
+[%- END -%]
+[%- IF title -%]
+<b>[% title %]</b>
+[%- END -%]
+[%- IF publisher -%]
+ - [% publisher %]
+[%- END -%]
+[%- IF yearofpub -%]
+ , [% yearofpub %]
+[%- END -%]
+ (Zugangsdatum: [% date %])

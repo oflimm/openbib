@@ -36,6 +36,7 @@ use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use SOAP::Lite;
+use Storable;
 use YAML ();
 
 use OpenBib::Config;
@@ -610,11 +611,13 @@ sub get_tit_listitem_by_idn {
     my $logger = get_logger();
 
 
-    my $use_titlistitem_table=1;
+    my $use_titlistitem_table=0;
 
-    if ($database eq "inst006"){
-        $use_titlistitem_table=1;
-    }
+#    if ($database eq "inst006"){
+#        $use_titlistitem_table=1;
+#    }
+
+    $logger->debug("Getting ID $titidn");
     
     my $listitem_ref={};
     
@@ -635,9 +638,12 @@ sub get_tit_listitem_by_idn {
         $request->execute($titidn);
         
         if (my $res=$request->fetchrow_hashref){
-            my $titlistitem     = decode_utf8($res->{listitem});
-            my $titlistitem_ref = YAML::Load($titlistitem);
-            %$listitem_ref=(%$listitem_ref,%$titlistitem_ref);
+            my $titlistitem     = $res->{listitem};
+            $logger->debug("Storable::listitem: $titlistitem");
+#            $titlistitem=~s/\\n/\n/g;
+            my %titlistitem = %{ Storable::thaw($titlistitem) };
+            $logger->debug("TitlistitemYAML: ".YAML::Load(\%titlistitem));
+            %$listitem_ref=(%$listitem_ref,%titlistitem);
         }
     }
     else {
@@ -2244,20 +2250,8 @@ sub initial_search_for_titidns {
 #         }
 #     }
 
-    if ($enrich){
-        my $request=$dbh->prepare("create temporary table enrich (isbn CHAR(14), index(isbn)) DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci");
-        $request->execute();
-        
-        $request=$dbh->prepare("insert into enrich (isbn) values (?)");
-        foreach my $enrichkey (@$enrichkeys_ref){
-            $request->execute($enrichkey);
-        }
-
-        $request->finish();
-
-        push @sqlwhere, "union select verwidn from search, tit_string, enrich where enrich.isbn = tit_string.content and tit_string.id=search.verwidn";
-    }
-
+    my @tempidns=();    
+    
     my $sqlwherestring  = join(" ",@sqlwhere);
     $sqlwherestring     =~s/^(?:AND|OR|NOT) //;
     my $sqlfromstring   = join(", ",@sqlfrom);
@@ -2267,25 +2261,59 @@ sub initial_search_for_titidns {
 
     $request->execute(@sqlargs);
 
-    my @tidns=();
-    while (my $res=$request->fetchrow_hashref){
-        push @tidns, $res->{verwidn};
+    while (my $res=$request->fetchrow_arrayref){
+        push @tempidns, $res->[0];
     }
 
+    if ($config{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        $logger->info("Zeit fuer : initital_search_for_titidns / $sqlquerystring -> ".($#tempidns+1)." : ist ".timestr($timeall));
+        undef $atime;
+        undef $btime;
+        undef $timeall;
+    }
+
+    if ($enrich){
+        my ($atime,$btime,$timeall);
+        
+        if ($config{benchmark}) {
+            $atime=new Benchmark;
+        }
+        
+        my $request=$dbh->prepare("select id as verwidn from tit_string where tit_string.content = ?");
+        foreach my $enrichkey (@$enrichkeys_ref){
+            $request->execute($enrichkey);
+            while(my $res=$request->fetchrow_arrayref){
+                push @tempidns, $res->[0];
+            }
+        }
+
+        $request->finish();
+
+        if ($config{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : enrich -> ".($#tempidns+1)."/".(scalar @$enrichkeys_ref)." : ist ".timestr($timeall));
+            undef $atime;
+            undef $btime;
+            undef $timeall;
+        }
+
+    }
+
+    # Entfernen mehrfacher verwidn's unter Beruecksichtigung von $maxhits
+    my %schon_da=();
+    my $count=0;
+    my @tidns=grep {! $schon_da{$_}++ } @tempidns;
+    @tidns=splice(@tidns,0,$maxhits);
+    
+    
     my $fullresultcount=$#tidns+1;
     
     $logger->info("Fulltext-Query: $sqlquerystring");
   
     $logger->info("Treffer: ".($#tidns+1)." von ".$fullresultcount);
-
-    if ($config{benchmark}) {
-        $btime=new Benchmark;
-        $timeall=timediff($btime,$atime);
-        $logger->info("Zeit fuer : initital_search_for_titidns / $sqlquerystring -> ".($#tidns+1)." : ist ".timestr($timeall));
-        undef $atime;
-        undef $btime;
-        undef $timeall;
-    }
 
     # Wenn maxhits Treffer gefunden wurden, ist es wahrscheinlich, dass
     # die wirkliche Trefferzahl groesser ist.

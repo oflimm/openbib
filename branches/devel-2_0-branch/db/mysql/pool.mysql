@@ -341,16 +341,3 @@ PRIMARY KEY (id)
 )
 DEFAULT CHARACTER SET utf8
 PACK_KEYS=1;
-
-drop table IF EXISTS rss_cache;
-create table rss_cache (
-tstamp  TIMESTAMP,
-type    TINYINT  NOT NULL,
-acqgrp  SMALLINT,
-content TEXT,
-PRIMARY KEY (tstamp),
-INDEX   (type),
-INDEX   (acqgrp)
-)
-DEFAULT CHARACTER SET utf8
-PACK_KEYS=1;

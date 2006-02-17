@@ -145,6 +145,11 @@ sub parse_titset {
         $titbuffer[$titidx++]="0331:".$titset->first_child('dc:title')->text();
     }
 
+    # Datum
+    if($titset->first_child('dc:date')->text()){
+        $titbuffer[$titidx++]="0002:".$titset->first_child('dc:date')->text();
+    }
+    
     # HSFN
     if($titset->first_child('dc:type')->text()){
         my $type=$titset->first_child('dc:type')->text();

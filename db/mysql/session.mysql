@@ -2,6 +2,7 @@
 --------------- T A B E L L E N -----------------
 -------------------------------------------------
 
+drop table IF EXISTS session;
 CREATE TABLE session (
  sessionid     VARCHAR(255) NOT NULL PRIMARY KEY,
  createtime    DATETIME,
@@ -14,6 +15,7 @@ CREATE TABLE session (
  INDEX (benutzernr(255))
 );
 
+drop table IF EXISTS treffer;
 CREATE TABLE treffer (
  sessionid VARCHAR(255) NOT NULL,
  dbname    TEXT,
@@ -24,6 +26,7 @@ CREATE TABLE treffer (
  INDEX (singleidn)
 );
 
+drop table IF EXISTS lastresultitem;
 CREATE TABLE lastresultlist (
  sessionid VARCHAR(255) NOT NULL,
  dbname    TEXT,
@@ -32,6 +35,7 @@ CREATE TABLE lastresultlist (
  INDEX (sessionid)
 );
 
+drop table IF EXISTS sessionlog;
 CREATE TABLE sessionlog (
  sessionid  VARCHAR(255) NOT NULL,
  query      TEXT,
@@ -39,6 +43,7 @@ CREATE TABLE sessionlog (
  endtime    DATETIME
 );
 
+drop table IF EXISTS queries;
 CREATE TABLE queries (
  queryid   BIGINT AUTO_INCREMENT PRIMARY KEY,
  sessionid VARCHAR(255) NOT NULL,
@@ -52,6 +57,7 @@ CREATE TABLE queries (
  INDEX (dbases(255))
 );
 
+drop table IF EXISTS dbchoice;
 CREATE TABLE dbchoice (
  sessionid VARCHAR(255) NOT NULL,
  dbname    TEXT,
@@ -59,6 +65,7 @@ CREATE TABLE dbchoice (
  INDEX (sessionid)
 );
 
+drop table IF EXISTS dbinfo;
 CREATE TABLE dbinfo (
  dbid        BIGINT AUTO_INCREMENT PRIMARY KEY,
  orgunit     VARCHAR(20),
@@ -76,6 +83,7 @@ CREATE TABLE dbinfo (
  INDEX (description(255))
 );
 
+drop table IF EXISTS dboptions;
 CREATE TABLE dboptions (
  dbname       VARCHAR(255),
  host         VARCHAR(255),
@@ -95,10 +103,10 @@ CREATE TABLE dboptions (
  circurl      TEXT,
  circcheckurl TEXT,
  circdb       TEXT,
-
  INDEX(dbname)
 );
 
+drop table IF EXISTS titcount;
 create table titcount (
  dbname VARCHAR(255),
  count  BIGINT,
@@ -106,6 +114,7 @@ create table titcount (
  INDEX (dbname)
 );
 
+drop table IF EXISTS searchresults;
 CREATE TABLE searchresults (
  sessionid    VARCHAR(255) NOT NULL,
  dbname       VARCHAR(255) NOT NULL,
@@ -118,16 +127,19 @@ CREATE TABLE searchresults (
  INDEX (queryid)
 );
 
+drop table IF EXISTS viewinfo;
 CREATE TABLE viewinfo (
  viewid      BIGINT AUTO_INCREMENT PRIMARY KEY,
  viewname    VARCHAR(20),
  description TEXT,
+ rssfeed     BIGINT,
  active      BOOL,
 
  INDEX (viewid),
  INDEX (viewname)
 );
 
+drop table IF EXISTS viewdbs;
 CREATE TABLE viewdbs (
  viewname VARCHAR(20),
  dbname   VARCHAR(255),
@@ -136,6 +148,16 @@ CREATE TABLE viewdbs (
  INDEX(dbname)
 );
 
+drop table IF EXISTS viewrssfeeds;
+CREATE TABLE viewrssfeeds (
+ viewname VARCHAR(20),
+ rssfeed   BIGINT NOT NULL,
+
+ INDEX(viewname),
+ INDEX(rssfeed)
+);
+
+drop table IF EXISTS sessionview;
 CREATE TABLE sessionview (
  sessionid VARCHAR(255) NOT NULL,
  viewname  VARCHAR(20)  NOT NULL,
@@ -144,6 +166,7 @@ CREATE TABLE sessionview (
  INDEX (viewname)
 );
 
+drop table IF EXISTS sessionmask;
 CREATE TABLE sessionmask (
  sessionid VARCHAR(255) NOT NULL,
  masktype  VARCHAR(20)  NOT NULL,
@@ -152,10 +175,40 @@ CREATE TABLE sessionmask (
  INDEX (masktype)
 );
 
+drop table IF EXISTS sessionprofile;
 create table sessionprofile (
  sessionid VARCHAR(255) NOT NULL,
  profile   TEXT         NOT NULL,
 
  INDEX (sessionid)
 );
+
+drop table IF EXISTS rssfeeds;
+create table rssfeeds (
+ id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+ dbname      VARCHAR(255) NOT NULL,
+ type        SMALLINT,
+ subtype     SMALLINT,
+ subtypedesc TEXT,
+ active      TINYINT,
+
+ INDEX (dbname),
+ INDEX (type),
+ INDEX (subtype)
+);
+
+drop table IF EXISTS rsscache;
+create table rsscache (
+dbname  VARCHAR(255) NOT NULL,
+tstamp  TIMESTAMP,
+type    TINYINT  NOT NULL,
+subtype SMALLINT,
+content TEXT,
+INDEX   (dbname),
+INDEX   (tstamp),
+INDEX   (type),
+INDEX   (subtype)
+)
+DEFAULT CHARACTER SET utf8
+PACK_KEYS=1;
 

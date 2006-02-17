@@ -18,7 +18,10 @@
     <meta http-equiv="Pragma"        content="no-cache" />
     <meta http-equiv="Cache-Control" content="private,no-cache,no-store" />
     <meta http-equiv="Expires"       content="Thu, 01 Dec 1970 12:00:00 GMT" />
-    <link href="/images/openbib/favicon.ico" rel="shortcut icon" />
+  <link href="/images/openbib/favicon.ico" rel="shortcut icon" />
+[%- IF view && primrssfeed -%]
+<link rel="alternate" type="application/rss+xml" title="RDF-Datei" href="[% primrssfeed %]">
+[%- END -%]
   <style>
 
   [%- TRY -%]

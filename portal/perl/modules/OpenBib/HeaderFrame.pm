@@ -93,6 +93,12 @@ sub handler {
         $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
     }
 
+    my $primrssfeed="";
+
+    if ($view){
+        $primrssfeed=OpenBib::Common::Util::get_primary_rssfeed_of_view($sessiondbh,$view);
+    }
+    
     # Haben wir eine authentifizierte Session?
     my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
   
@@ -130,13 +136,13 @@ sub handler {
 
     # TT-Data erzeugen
     my $ttdata={
-        view       => $view,
-        stylesheet => $stylesheet,
-        sessionID  => $sessionID,
-        username   => $username,
-        anzahl     => $anzahl,
-        show_foot_banner      => 0,
-        config     => \%config,
+        view        => $view,
+        primrssfeed => $primrssfeed,
+        stylesheet  => $stylesheet,
+        sessionID   => $sessionID,
+        username    => $username,
+        anzahl      => $anzahl,
+        config      => \%config,
     };
 
     OpenBib::Common::Util::print_page($config{tt_headerframe_tname},$ttdata,$r);

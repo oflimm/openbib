@@ -219,6 +219,40 @@ sub get_viewname_of_session  {
     return $view;
 }
 
+sub get_primary_rssfeed_of_view  {
+    my ($sessiondbh,$viewname)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Assoziierten View zur Session aus Datenbank holen
+    my $idnresult=$sessiondbh->prepare("select rssfeeds.dbname as dbname,rssfeeds.type as type, rssfeeds.subtype as subtype from rssfeeds,viewinfo where viewname = ? and rssfeeds.id = viewinfo.primrssfeed and rssfeeds.active = 1") or $logger->error($DBI::errstr);
+    $idnresult->execute($viewname) or $logger->error($DBI::errstr);
+  
+    my $result=$idnresult->fetchrow_hashref();
+  
+    my $dbname  = decode_utf8($result->{'dbname'}) || '';
+    my $type    = $result->{'type'}    || 0;
+    my $subtype = $result->{'subtype'} || 0;
+
+    foreach my $typename (keys %{$config{rss_types}}){
+        if ($config{rss_types}{$typename} eq $type){
+            $type=$typename;
+            last;
+        }
+    }
+    
+    $idnresult->finish();
+
+    my $primrssfeedurl="";
+
+    if ($dbname && $type){
+        $primrssfeedurl="http://".$config{loadbalancerservername}.$config{connector_rss_loc}."/$type/$dbname.rdf";
+    }
+    
+    return $primrssfeedurl;
+}
+
 sub get_targetdb_of_session {
     my ($userdbh,$sessionID)=@_;
 

@@ -76,7 +76,6 @@ my %formattab={
 #######################################################################
 # Umwandeln
 
-$titidn=1;
 $titidx=0;
 
 $autidn=1;
@@ -108,7 +107,17 @@ while (my $res=$result->fetchrow_hashref){
     chomp($hst );
     chomp($lang);
 
-    $titbuffer[$titidx++]="0000:".$titidn;
+    $titbuffer[$titidx++]="0000:".$pid;
+
+
+    my $cdateresult=$dbh->prepare("select cnt from dc_dat_cre where pid=?");
+    $cdateresult->execute($pid);
+    
+    while (my $cdateres=$cdateresult->fetchrow_hashref){
+        my $cdate=$cdateres->{'cnt'};
+        chomp($cdate);
+        $titbuffer[$titidx++]="0002:".$cdate;
+    }
     
     my $urhresult=$dbh->prepare("select cnt from dc_cre_per_nam where pid=?");
     $urhresult->execute($pid);
@@ -360,7 +369,6 @@ while (my $res=$result->fetchrow_hashref){
     
     $titbuffer[$titidx++]="9999:";
 
-    $titidn++;
 }
 
 $result->finish();

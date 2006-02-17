@@ -75,9 +75,64 @@ selected="selected"
 [% END %]
 
 
-<select>
+</select>
+
 
 <p />
+
+<b>RSS-Feed zu diesem View</b><br /><br />
+
+<select name="rssfeeds" multiple="multiple">
+
+[% FOREACH singlefeed IN view.allrssfeeds %]
+[% feedid = singlefeed.feedid %]
+
+<option value="[% feedid %]"
+
+[% IF view.viewrssfeed.${feedid} %]
+selected="selected"
+[% END %]
+
+
+>[% singlefeed.dbname %] / [% singlefeed.type %] /
+[%singlefeed.subtype %]</option>
+
+[% END %]
+
+
+</select>
+
+
+<p />
+
+<p />
+
+<b>Welcher RSS-Feed soll der prim&auml;re Feed f&uuml;r das Browser
+Auto-Discovery sein</b><br /><br />
+
+<select name="primrssfeed">
+
+[% FOREACH singlefeed IN view.allrssfeeds %]
+[% feedid = singlefeed.feedid %]
+
+<option value="[% feedid %]"
+
+[% IF view.primrssfeed.${feedid} %]
+selected="selected"
+[% END %]
+
+
+>[% singlefeed.dbname %] / [% singlefeed.type %] /
+[%singlefeed.subtype %]</option>
+
+[% END %]
+
+
+</select>
+
+
+<p />
+
 <table width="100%">
 <tr><td align="left"><input type="submit" name="do_change"
 value="Ändern" /></td><td>&nbsp;</td><td align="right"><input type="submit" name="do_del" value="Löschen" /></td></tr>

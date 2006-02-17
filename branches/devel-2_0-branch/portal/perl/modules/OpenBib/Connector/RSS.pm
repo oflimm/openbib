@@ -70,12 +70,12 @@ sub handler {
     $path=~s/$basepath//;
 
     # RSS-Feedparameter aus URI bestimmen
-    my ($type,$acqgrp,$database);
+    my ($type,$subtype,$database);
     if ($path=~m/^\/(\w+?)\/(\w+?).rdf$/){
-        ($type,$acqgrp,$database)=($1,"-1",$2);
+        ($type,$subtype,$database)=($1,"-1",$2);
     }
     elsif ($path=~m/^\/(\w+?)\/(\w+?)\/(\w+?).rdf$/){
-        ($type,$acqgrp,$database)=($1,$2,$3);
+        ($type,$subtype,$database)=($1,$2,$3);
     }
 
     #####################################################################
@@ -89,18 +89,13 @@ sub handler {
         = OpenBib::Common::Util::get_targetdbinfo($sessiondbh);
 
 
-    my %rss_types=(
-        neuzugang => 1,
-        erwerbung => 2,
-    );
-    
     # Check
 
-    if (! exists $rss_types{$type} || ! exists $targetdbinfo_ref->{dbnames}{$database}){
+    if (! exists $config{rss_types}{$type} || ! exists $targetdbinfo_ref->{dbnames}{$database}){
         OpenBib::Common::Util::print_warning("RSS-Feed ungueltig",$r);
     }
 
-    my $rss_type = $rss_types{$type};
+    my $rss_type = $config{rss_types}{$type};
 
     my $thistimedate   = Date::Manip::ParseDate("today");
     my $expiretimedate = Date::Manip::DateCalc($thistimedate,"-12hours");
@@ -110,18 +105,17 @@ sub handler {
     
     $logger->debug("ExpireTimeDate: $expiretimedate");
 
-    my $dbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
-            or $logger->error_die($DBI::errstr);
-
     # Bestimmung, ob ein valider Cacheeintrag existiert
-    my $request=$dbh->prepare("select content from rss_cache where type=? and acqgrp = ? and tstamp > ?");
-    $request->execute($type,$acqgrp,$expiretimedate);
+    my $request=$sessiondbh->prepare("select content from rsscache where dbname=? and type=? and subtype = ? and tstamp > ?");
+    $request->execute($database,$type,$subtype,$expiretimedate);
 
     my $res=$request->fetchrow_arrayref;
     my $rss_content=(exists $res->[0])?$res->[0]:undef;
 
     if (! $rss_content ){
+        my $dbh
+            = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+                or $logger->error_die($DBI::errstr);
 
         $logger->debug("Update des RSS-Caches");
         
@@ -192,14 +186,14 @@ sub handler {
         $rss_content=$rss->as_string;
         
         # Etwaig vorhandenen Eintrag loeschen
-        $request=$dbh->prepare("delete from rss_cache where type=? and acqgrp = ?");
-        $request->execute($type,$acqgrp);
+        $request=$sessiondbh->prepare("delete from rsscache where dbname=? and type=? and subtype = ?");
+        $request->execute($database,$type,$subtype);
 
-        $request=$dbh->prepare("insert into rss_cache values (NULL,?,?,?)");
-        $request->execute($type,$acqgrp,$rss_content);
+        $request=$sessiondbh->prepare("insert into rsscache values (?,NULL,?,?,?)");
+        $request->execute($database,$type,$subtype,$rss_content);
 
-        
-        $request->execute();
+        $request->finish();
+        $dbh->disconnect;
     }
     else {
         $logger->debug("Verwende Eintrag aus RSS-Cache");
@@ -207,8 +201,11 @@ sub handler {
     print $r->send_http_header("application/rdf+xml");
 
     print $rss_content;
-    
-    $dbh->disconnect;
+
+
+    $request->finish();
+
+    $sessiondbh->disconnect;
     
     return OK;
 }

@@ -70,6 +70,9 @@ sub handler {
     $path=~s/$basepath//;
 
     # RSS-Feedparameter aus URI bestimmen
+    #
+    # 
+
     my ($type,$subtype,$database);
     if ($path=~m/^\/(\w+?)\/(\w+?).rdf$/){
         ($type,$subtype,$database)=($1,"-1",$2);
@@ -95,7 +98,10 @@ sub handler {
         OpenBib::Common::Util::print_warning("RSS-Feed ungueltig",$r);
     }
 
-    my $rss_type = $config{rss_types}{$type};
+    # Wenn Aliases fuer den Typ existieren, dann loese ihn zur entsprechenden
+    # Type-Nr auf, ansonsten nehme den uebergebenen Typ (der einer Nr sein
+    # sollte...)
+    $type=(exists $config{rss_types}{$type})?$config{rss_types}{$type}:$type;
 
     my $thistimedate   = Date::Manip::ParseDate("today");
     my $expiretimedate = Date::Manip::DateCalc($thistimedate,"-12hours");
@@ -103,7 +109,7 @@ sub handler {
 
     $expiretimedate = Date::Manip::UnixDate($expiretimedate,"%Y-%m-%d %H:%M:%S");
     
-    $logger->debug("ExpireTimeDate: $expiretimedate");
+#    $logger->debug("ExpireTimeDate: $expiretimedate");
 
     # Bestimmung, ob ein valider Cacheeintrag existiert
     my $request=$sessiondbh->prepare("select content from rsscache where dbname=? and type=? and subtype = ? and tstamp > ?");
@@ -117,6 +123,47 @@ sub handler {
             = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
                 or $logger->error_die($DBI::errstr);
 
+        my $rssfeedinfo_ref = {
+            1 => {
+                channel_title => "Neue Katalogisate",
+                channel_desc  => "Hier finden Sie die 50 zuletzt katalogisierten Medien des Kataloges",
+            },
+            2 => {
+                channel_title => "Neue Katalogisate zu Verfasser/Person",
+                channel_desc  => "Hier finden Sie die 50 zuletzt katalogisierten Medien des Kataloges zu Verfasser/Person ",
+            },
+            3 => {
+                channel_title => "Neue Katalogisate zu K&ouml;rperschaft/Urheber",
+                channel_desc  => "Hier finden Sie die 50 zuletzt katalogisierten Medien des Kataloges zu K&ouml;rperschaft/Urheber ",
+            },
+            4 => {
+                channel_title => "Neue Katalogisate zum Schlagwort",
+                channel_desc  => "Hier finden Sie die 50 zuletzt katalogisierten Medien des Kataloges zum Schlagwort ",
+            },
+            5 => {
+                channel_title => "Neue Katalogisate zur Systematik",
+                channel_desc  => "Hier finden Sie die 50 zuletzt katalogisierten Medien des Kataloges zur Systematik ",
+            },
+
+            99 => {
+                channel_title => 'Neuerwerbungen',
+                channel_desc  => 'Hier finden Sie die 50 zuletzt erworbenen Medien des Kataloges',
+            },
+        };
+
+        if    ($type == 2){
+            $rssfeedinfo_ref->{2}->{channel_title}.=" '".OpenBib::Search::Util::get_aut_ans_by_idn($subtype,$dbh)."'";
+        }
+        elsif ($type == 3){
+            $rssfeedinfo_ref->{3}->{channel_title}.=" '".OpenBib::Search::Util::get_kor_ans_by_idn($subtype,$dbh)."'";
+        }
+        elsif ($type == 4){
+            $rssfeedinfo_ref->{4}->{channel_title}.=" '".OpenBib::Search::Util::get_swt_ans_by_idn($subtype,$dbh)."'";
+        }
+        elsif ($type == 5){
+            $rssfeedinfo_ref->{5}->{channel_title}.=" '".OpenBib::Search::Util::get_not_ans_by_idn($subtype,$dbh)."'";
+        }
+        
         $logger->debug("Update des RSS-Caches");
         
         my $dbdesc=$targetdbinfo_ref->{dbnames}{$database};
@@ -124,28 +171,90 @@ sub handler {
         my $rss = new XML::RSS ( version => '1.0' );
         
         $rss->channel(
-            title         => "$dbdesc: Neue Katalogisate",
+            title         => "$dbdesc: ".$rssfeedinfo_ref->{$type}{channel_title},
             link          => "http://kug.ub.uni-koeln.de/portal/lastverteilung?view=$database",
             language      => "de",
-            description   => "Hier finden sie die 50 zuletzt katalogisierten Medien des Kataloges '$dbdesc'",
+            description   => $rssfeedinfo_ref->{$type}{channel_desc}." '$dbdesc'",
         );
+
+        $logger->debug("DB: $database Type: $type Subtype: $subtype");
         
-        $request=$dbh->prepare("select id,content from tit_string where category=2 order by content desc limit 50");
-        $request->execute();
-        
-        while (my $res=$request->fetchrow_hashref()){
-            my $idn  = $res->{id};
-            my $date = $res->{content};
+        my @titlist=();
+
+        # Letzte 50 Neuaufnahmen
+        if ($type == 1){
+            $request=$dbh->prepare("select id,content from tit_string where category=2 order by content desc limit 50");
+            $request->execute();
             
+            while (my $res=$request->fetchrow_hashref()){
+                push @titlist, {
+                    id   => $res->{id},
+                    date => $res->{content},
+                };
+            }
+        }
+        # Letzte 50 Neuaufnahmen zu Verfasser/Person mit Id subtypeid
+        elsif ($type == 2 && $subtype){
+            $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 2 order by content desc limit 50");
+            $request->execute($subtype);
+
+            while (my $res=$request->fetchrow_hashref()){
+                push @titlist, {
+                    id   => $res->{id},
+                    date => $res->{content},
+                };
+            }
+        }
+        # Letzte 50 Neuaufnahmen zu Koerperschaft/Urheber mit Id subtypeid
+        elsif ($type == 3 && $subtype){
+            $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 3 order by content desc limit 50");
+            $request->execute($subtype);
+
+            while (my $res=$request->fetchrow_hashref()){
+                push @titlist, {
+                    id   => $res->{id},
+                    date => $res->{content},
+                };
+            }
+        }
+        # Letzte 50 Neuaufnahmen zu Schlagwort mit Id subtypeid
+        elsif ($type == 4 && $subtype){
+            $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 4 order by content desc limit 50");
+            $request->execute($subtype);
+
+            while (my $res=$request->fetchrow_hashref()){
+                push @titlist, {
+                    id   => $res->{id},
+                    date => $res->{content},
+                };
+            }
+        }
+        # Letzte 50 Neuaufnahmen zu Systematik mit Id subtypeid
+        elsif ($type == 5 && $subtype){
+            $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 5 order by content desc limit 50");
+            $request->execute($subtype);
+
+            while (my $res=$request->fetchrow_hashref()){
+                push @titlist, {
+                    id   => $res->{id},
+                    date => $res->{content},
+                };
+            }
+        }
+
+
+        $logger->debug("Titel-ID's".YAML::Dump(\@titlist));
+        
+        foreach my $title_ref (@titlist){
             my $tititem_ref=OpenBib::Search::Util::get_tit_listitem_by_idn({
-                titidn            => $idn,
+                titidn            => $title_ref->{id},
                 dbh               => $dbh,
                 sessiondbh        => $sessiondbh,
                 database          => $database,
                 sessionID         => '-1',
                 targetdbinfo_ref  => $targetdbinfo_ref,
             });
-
+            
             my $desc  = "";
             my $title = $tititem_ref->{'T0331'}[0]{content};
             
@@ -158,25 +267,25 @@ sub handler {
                 ABSOLUTE       => 1,
                 OUTPUT         => \$desc,
             });
-
-
+            
+            
             # TT-Data erzeugen
             my $ttdata={
                 item            => $tititem_ref,
-                date            => $date,
+                date            => $title_ref->{date},
             };
-
+            
             $itemtemplate->process($itemtemplatename, $ttdata) || do {
                 $r->log_reason($itemtemplate->error(), $r->filename);
                 return SERVER_ERROR;
             };
-
+            
             $logger->debug("Desc: $desc");
             
             $logger->debug("Adding $title / $desc");
             $rss->add_item(
                 title       => $title,
-                link        => "http://kug.ub.uni-koeln.de/portal/lastverteilung?view=$database;database=$database;searchsingletit=$idn",
+                link        => "$config{loadbalancerservername}$config{loadbalancer_loc}?view=$database;database=$database;searchsingletit=".$title_ref->{id},
                 description => $desc
             );
         }
@@ -198,7 +307,8 @@ sub handler {
     else {
         $logger->debug("Verwende Eintrag aus RSS-Cache");
     }
-    print $r->send_http_header("application/rdf+xml");
+    #print $r->send_http_header("application/rdf+xml");
+    print $r->send_http_header("application/xml");
 
     print $rss_content;
 

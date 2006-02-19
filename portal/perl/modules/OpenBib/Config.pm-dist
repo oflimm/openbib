@@ -139,6 +139,15 @@ use vars qw(%config);
                },
            ],
 
+           rss_types => {
+               'neuzugang'             => 1,
+               'neuzugang_nach_aut'    => 2,
+               'neuzugang_nach_kor'    => 3,
+               'neuzugang_nach_swt'    => 4,
+               'neuzugang_nach_sys'    => 5,
+               'neuerwerbung'          => 99,
+           },
+           
 	   # Mapping der einzelnen Kompontenten zu ihren Zugriffs-URI's
 
 	   admin_loc             => '/portal/admin',

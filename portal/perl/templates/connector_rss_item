@@ -11,6 +11,7 @@
 #
 #######################################################################
 -%]
+<![CDATA[
 [%# Verfasser konstruieren %]
 [%- persons = [] -%]
 [%- FOREACH part IN item.${'P0100'}  -%]
@@ -47,15 +48,16 @@
 [%- END -%]
 [%- signatur = signaturen.join(' ; ') -%]
 [%- IF person -%]
-[% person %] :
+[% person %]<br />
 [%- END -%]
 [%- IF title -%]
-<b>[% title %]</b>
+<b>[% title %]</b><br />
 [%- END -%]
 [%- IF publisher -%]
- - [% publisher %]
+[% publisher %]<br />
 [%- END -%]
 [%- IF yearofpub -%]
- , [% yearofpub %]
+[% yearofpub %]
 [%- END -%]
- (Zugangsdatum: [% date %])
+<br />(Zugangsdatum: [% date %])<br />
+]]>

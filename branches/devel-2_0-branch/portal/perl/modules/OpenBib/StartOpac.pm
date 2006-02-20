@@ -156,22 +156,14 @@ sub handler {
         $idnresult->finish();
     }
   
-    my $headerframeurl = "$config{headerframe_loc}?sessionID=$sessionID";
-    my $bodyframeurl   = "$config{searchframe_loc}?sessionID=$sessionID";
-
-    if ($view ne "") {
-        $headerframeurl.="&view=$view";
-        $bodyframeurl.="&view=$view";
-    }
-
     $logger->debug("StartOpac-sID: $sessionID");
 
     my $ttdata={
-        headerframeurl  => $headerframeurl,
-        bodyframeurl    => $bodyframeurl,
         view            => $view,
         sessionID       => $sessionID,
+        setmask         => $setmask,
         fs              => $fs,
+        database        => $database,
         searchsingletit => $searchsingletit,
         config          => \%config,
     };

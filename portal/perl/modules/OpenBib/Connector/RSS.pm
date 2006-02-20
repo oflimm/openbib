@@ -119,8 +119,12 @@ sub handler {
     my $rss_content=(exists $res->[0])?$res->[0]:undef;
 
     if (! $rss_content ){
+        my $bestserver=OpenBib::Common::Util::get_loadbalanced_servername();
+
+        $logger->debug("Getting RSS-Data from Server $bestserver");
+        
         my $dbh
-            = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+            = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$bestserver;port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
                 or $logger->error_die($DBI::errstr);
 
         my $rssfeedinfo_ref = {
@@ -153,15 +157,19 @@ sub handler {
 
         if    ($type == 2){
             $rssfeedinfo_ref->{2}->{channel_title}.=" '".OpenBib::Search::Util::get_aut_ans_by_idn($subtype,$dbh)."'";
+            $rssfeedinfo_ref->{2}->{channel_desc} .=" '".OpenBib::Search::Util::get_aut_ans_by_idn($subtype,$dbh)."'";
         }
         elsif ($type == 3){
             $rssfeedinfo_ref->{3}->{channel_title}.=" '".OpenBib::Search::Util::get_kor_ans_by_idn($subtype,$dbh)."'";
+            $rssfeedinfo_ref->{3}->{channel_desc} .=" '".OpenBib::Search::Util::get_kor_ans_by_idn($subtype,$dbh)."'";
         }
         elsif ($type == 4){
             $rssfeedinfo_ref->{4}->{channel_title}.=" '".OpenBib::Search::Util::get_swt_ans_by_idn($subtype,$dbh)."'";
+            $rssfeedinfo_ref->{4}->{channel_desc} .=" '".OpenBib::Search::Util::get_swt_ans_by_idn($subtype,$dbh)."'";
         }
         elsif ($type == 5){
             $rssfeedinfo_ref->{5}->{channel_title}.=" '".OpenBib::Search::Util::get_not_ans_by_idn($subtype,$dbh)."'";
+            $rssfeedinfo_ref->{5}->{channel_desc} .=" '".OpenBib::Search::Util::get_not_ans_by_idn($subtype,$dbh)."'";
         }
         
         $logger->debug("Update des RSS-Caches");
@@ -172,80 +180,60 @@ sub handler {
         
         $rss->channel(
             title         => "$dbdesc: ".$rssfeedinfo_ref->{$type}{channel_title},
-            link          => "http://kug.ub.uni-koeln.de/portal/lastverteilung?view=$database",
+            link          => "http://".$config{loadbalancerservername}.$config{loadbalancer_loc}."?view=$database",
             language      => "de",
             description   => $rssfeedinfo_ref->{$type}{channel_desc}." '$dbdesc'",
         );
 
         $logger->debug("DB: $database Type: $type Subtype: $subtype");
         
-        my @titlist=();
+        my $titlist_ref=();
 
         # Letzte 50 Neuaufnahmen
         if ($type == 1){
-            $request=$dbh->prepare("select id,content from tit_string where category=2 order by content desc limit 50");
-            $request->execute();
-            
-            while (my $res=$request->fetchrow_hashref()){
-                push @titlist, {
-                    id   => $res->{id},
-                    date => $res->{content},
-                };
-            }
+            $titlist_ref=OpenBib::Search::Util::get_recent_titids({
+                dbh   => $dbh,
+                id    => $subtype,
+                limit => 50,
+            });
         }
         # Letzte 50 Neuaufnahmen zu Verfasser/Person mit Id subtypeid
         elsif ($type == 2 && $subtype){
-            $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 2 order by content desc limit 50");
-            $request->execute($subtype);
-
-            while (my $res=$request->fetchrow_hashref()){
-                push @titlist, {
-                    id   => $res->{id},
-                    date => $res->{content},
-                };
-            }
+            $titlist_ref=OpenBib::Search::Util::get_recent_titids_by_aut({
+                dbh   => $dbh,
+                id    => $subtype,
+                limit => 50,
+            });
         }
         # Letzte 50 Neuaufnahmen zu Koerperschaft/Urheber mit Id subtypeid
         elsif ($type == 3 && $subtype){
-            $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 3 order by content desc limit 50");
-            $request->execute($subtype);
-
-            while (my $res=$request->fetchrow_hashref()){
-                push @titlist, {
-                    id   => $res->{id},
-                    date => $res->{content},
-                };
-            }
+            $titlist_ref=OpenBib::Search::Util::get_recent_titids_by_kor({
+                dbh   => $dbh,
+                id    => $subtype,
+                limit => 50,
+            });
         }
         # Letzte 50 Neuaufnahmen zu Schlagwort mit Id subtypeid
         elsif ($type == 4 && $subtype){
-            $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 4 order by content desc limit 50");
-            $request->execute($subtype);
-
-            while (my $res=$request->fetchrow_hashref()){
-                push @titlist, {
-                    id   => $res->{id},
-                    date => $res->{content},
-                };
-            }
+            $titlist_ref=OpenBib::Search::Util::get_recent_titids_by_swt({
+                dbh   => $dbh,
+                id    => $subtype,
+                limit => 50,
+            });
         }
         # Letzte 50 Neuaufnahmen zu Systematik mit Id subtypeid
         elsif ($type == 5 && $subtype){
-            $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 5 order by content desc limit 50");
-            $request->execute($subtype);
-
-            while (my $res=$request->fetchrow_hashref()){
-                push @titlist, {
-                    id   => $res->{id},
-                    date => $res->{content},
-                };
-            }
+            $titlist_ref=OpenBib::Search::Util::get_recent_titids_by_not({
+                dbh   => $dbh,
+                id    => $subtype,
+                limit => 50,
+            });
         }
 
 
-        $logger->debug("Titel-ID's".YAML::Dump(\@titlist));
+        $logger->debug("Titel-ID's".YAML::Dump($titlist_ref));
         
-        foreach my $title_ref (@titlist){
+        foreach my $title_ref (@$titlist_ref){
             my $tititem_ref=OpenBib::Search::Util::get_tit_listitem_by_idn({
                 titidn            => $title_ref->{id},
                 dbh               => $dbh,
@@ -285,7 +273,7 @@ sub handler {
             $logger->debug("Adding $title / $desc");
             $rss->add_item(
                 title       => $title,
-                link        => "$config{loadbalancerservername}$config{loadbalancer_loc}?view=$database;database=$database;searchsingletit=".$title_ref->{id},
+                link        => "http://".$config{loadbalancerservername}.$config{loadbalancer_loc}."?view=$database;database=$database;searchsingletit=".$title_ref->{id},
                 description => $desc
             );
         }

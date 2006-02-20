@@ -654,7 +654,7 @@ sub get_tit_listitem_by_idn {
         }
 
         # Bestimmung der Titelinformationen
-        my $request=$dbh->prepare("select category,indicator,content from tit where id = ? and category in (0310,0331,0412,0424,0425,0451,0455,1203,0089)") or $logger->error($DBI::errstr);
+        my $request=$dbh->prepare("select category,indicator,content from tit where id = ? and category in (0310,0331,0403,0412,0424,0425,0451,0455,1203,0089)") or $logger->error($DBI::errstr);
         #    my $request=$dbh->prepare("select category,indicator,content from tit where id = ? ") or $logger->error($DBI::errstr);
         $request->execute($titidn);
         
@@ -2359,6 +2359,161 @@ sub initial_search_for_titidns {
         fullresultcount => $fullresultcount,
         titidns_ref     => \@tidns
     };
+}
+
+sub get_recent_titids {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $dbh                    = exists $arg_ref->{dbh}
+        ? $arg_ref->{dbh}                 : undef;
+    my $id                     = exists $arg_ref->{id}
+        ? $arg_ref->{id}                  : undef;
+    my $limit                  = exists $arg_ref->{limit}
+        ? $arg_ref->{limit}               : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$dbh->prepare("select id,content from tit_string where category=2 order by content desc limit $limit");
+    $request->execute();
+
+    my @titlist=();
+    
+    while (my $res=$request->fetchrow_hashref()){
+        push @titlist, {
+            id   => $res->{id},
+            date => $res->{content},
+        };
+    }
+    
+    $dbh->disconnect;
+
+    return \@titlist;
+}
+
+sub get_recent_titids_by_aut {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $dbh                    = exists $arg_ref->{dbh}
+        ? $arg_ref->{dbh}                 : undef;
+    my $id                     = exists $arg_ref->{id}
+        ? $arg_ref->{id}                  : undef;
+    my $limit                  = exists $arg_ref->{limit}
+        ? $arg_ref->{limit}               : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 2 order by content desc limit $limit");
+    $request->execute($id);
+
+    my @titlist=();
+    
+    while (my $res=$request->fetchrow_hashref()){
+        push @titlist, {
+            id   => $res->{id},
+            date => $res->{content},
+        };
+    }
+    
+    $dbh->disconnect;
+
+    return \@titlist;
+}
+
+sub get_recent_titids_by_kor {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $dbh                    = exists $arg_ref->{dbh}
+        ? $arg_ref->{dbh}                 : undef;
+    my $id                     = exists $arg_ref->{id}
+        ? $arg_ref->{id}                  : undef;
+    my $limit                  = exists $arg_ref->{limit}
+        ? $arg_ref->{limit}               : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 3 order by content desc limit $limit");
+    $request->execute($id);
+
+    my @titlist=();
+    
+    while (my $res=$request->fetchrow_hashref()){
+        push @titlist, {
+            id   => $res->{id},
+            date => $res->{content},
+        };
+    }
+    
+    $dbh->disconnect;
+
+    return \@titlist;
+}
+
+sub get_recent_titids_by_swt {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $dbh                    = exists $arg_ref->{dbh}
+        ? $arg_ref->{dbh}                 : undef;
+    my $id                     = exists $arg_ref->{id}
+        ? $arg_ref->{id}                  : undef;
+    my $limit                  = exists $arg_ref->{limit}
+        ? $arg_ref->{limit}               : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 4 order by content desc limit $limit");
+    $request->execute($id);
+
+    my @titlist=();
+    
+    while (my $res=$request->fetchrow_hashref()){
+        push @titlist, {
+            id   => $res->{id},
+            date => $res->{content},
+        };
+    }
+    
+    $dbh->disconnect;
+
+    return \@titlist;
+}
+
+sub get_recent_titids_by_not {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $dbh                    = exists $arg_ref->{dbh}
+        ? $arg_ref->{dbh}                 : undef;
+    my $id                     = exists $arg_ref->{id}
+        ? $arg_ref->{id}                  : undef;
+    my $limit                  = exists $arg_ref->{limit}
+        ? $arg_ref->{limit}               : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 5 order by content desc limit $limit");
+    $request->execute($id);
+
+    my @titlist=();
+    
+    while (my $res=$request->fetchrow_hashref()){
+        push @titlist, {
+            id   => $res->{id},
+            date => $res->{content},
+        };
+    }
+    
+    $dbh->disconnect;
+
+    return \@titlist;
 }
 
 1;

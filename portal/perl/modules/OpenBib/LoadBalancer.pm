@@ -67,67 +67,12 @@ sub handler {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
 
-    my $ua=new LWP::UserAgent(timeout => 5);
     my $urlquery=$r->args;      #query->url(-query=>1);
 
     $urlquery=~s/^.+?\?//;
 
-    # Aktuellen Load der Server holen zur dynamischen Lastverteilung
-    my @servertab=@{$config{loadbalancertargets}};
-
-    my %serverload=();
-
-    foreach my $target (@servertab) {
-        $serverload{"$target"}=-1.0;
-    }
-  
-    my $problem=0;
-  
-    # Fuer jeden Server, auf den verteilt werden soll, wird nun
-    # per LWP der Load bestimmt.
-    foreach my $targethost (@servertab) {
-        my $request  = new HTTP::Request POST => "http://$targethost$config{serverload_loc}";
-        my $response = $ua->request($request);
-
-        if ($response->is_success) {
-            $logger->debug("Getting ", $response->content);
-        }
-        else {
-            $logger->error("Getting ", $response->status_line);
-        }
+    my $bestserver=OpenBib::Common::Util::get_loadbalanced_servername();
     
-        my $content=$response->content();
-    
-        if ($content eq "" || $content=~m/SessionDB: offline/m) {
-            $problem=1;
-        }
-        elsif ($content=~m/^Load: (\d+\.\d+)/m) {
-            my $load=$1;
-            $serverload{$targethost}=$load;
-        }
-    
-        # Wenn der Load fuer einen Server nicht bestimmt werden kann,
-        # dann wird der Admin darueber benachrichtigt
-    
-        if ($problem == 1) {
-            OpenBib::LoadBalancer::Util::benachrichtigung("Es ist der Server $targethost ausgefallen");
-            $problem=0;
-            next;
-        }
-    }
-  
-    my $minload="1000.0";
-    my $bestserver="";
-
-    # Nun wird der Server bestimmt, der den geringsten Load hat
-
-    foreach my $targethost (@servertab) {
-        if ($serverload{$targethost} > -1.0 && $serverload{$targethost} <= $minload) {
-            $bestserver=$targethost;
-            $minload=$serverload{$targethost};
-        }
-    }
-
     # Wenn wir keinen 'besten Server' bestimmen konnten, dann sind alle
     # ausgefallen, dem Benutzer wird eine 'Hinweisseite' ausgegeben
     if ($bestserver eq "") {

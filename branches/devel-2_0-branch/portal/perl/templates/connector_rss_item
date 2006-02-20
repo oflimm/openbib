@@ -41,6 +41,12 @@
 [%# Ejahr konstruieren %]
 [%- yearofpub = item.${'T0425'}.first.content -%]
 
+[%# Ausgabe konstruieren %]
+[%- ausgabe   = item.${'T0403'}.first.content -%]
+
+[%# GT konstruieren %]
+[%- gt        = item.${'T0451'}.first.content -%]
+
 [%# Signaturen konstruieren %]
 [%- signaturen = [] -%]
 [%- FOREACH part IN item.${'X0014'} -%]
@@ -56,8 +62,14 @@
 [%- IF publisher -%]
 [% publisher %]<br />
 [%- END -%]
-[%- IF yearofpub -%]
-[% yearofpub %]
+[%- IF ausgabe -%]
+[% ausgabe %]<br />
 [%- END -%]
-<br />(Zugangsdatum: [% date %])<br />
+[%- IF yearofpub -%]
+[% yearofpub %]<br />
+[%- END -%]
+[%- IF gt -%]
+aus: [% gt %]<br />
+[%- END -%]
+(Zugangsdatum: [% date %])<br />
 ]]>

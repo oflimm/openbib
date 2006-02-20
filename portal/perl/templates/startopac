@@ -24,6 +24,9 @@
 [%-
 # Aufruf der Frames mit den gewuenschten Inhalten
 
+headerframeurl = "${config.headerframe_loc}?sessionID=${sessionID};view=${view}" ;
+bodyframeurl   = "${config.searchframe_loc}?sessionID=${sessionID};view=${view};setmask=${setmask}" ;
+
 toprows = 140;
 
 IF view;
@@ -52,4 +55,5 @@ END;
    <frame name="header" src="[% headerframeurl %]" noresize >
    <frame name="body"   src="[% bodyframeurl %]">
  </frameset>
+ [% meldung %]
 </html>

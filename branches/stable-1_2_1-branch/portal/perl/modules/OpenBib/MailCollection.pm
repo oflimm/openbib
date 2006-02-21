@@ -354,11 +354,14 @@ sub handler {
 	     };
 
   my $maildata="";
+  my $ofile="ml." . $$;
 
   my $datatemplate = Template->new({ 
 				    INCLUDE_PATH  => $config{tt_include_path},
 				    #    	    PRE_PROCESS   => 'config',
-				    OUTPUT        => $maildata,
+				    #OUTPUT        => $maildata,
+				    OUTPUT_PATH   => '/tmp',
+                                    OUTPUT        => $ofile,
 				   });
   
 
@@ -381,11 +384,14 @@ sub handler {
   };
   
   my $anschreiben="";
+  my $afile = "an." . $$;
 
   my $maintemplate = Template->new({ 
 				    INCLUDE_PATH  => $config{tt_include_path},
 				    #    	    PRE_PROCESS   => 'config',
-				    OUTPUT        => $anschreiben,
+				    #OUTPUT        => $anschreiben,
+				    OUTPUT_PATH        => '/tmp',
+                                    OUTPUT        => $afile,
 				   });
 
 
@@ -403,17 +409,21 @@ sub handler {
 			   );
   
   
+  my $anschfile="/tmp/" . $afile;
   $msg->attach(
 	       Type            => 'TEXT',
 	       Encoding        => '8bit',
-	       Data            => $anschreiben,
+	       #Data            => $anschreiben,
+	       Path            => $anschfile,
 	      );
   
+  my $mailfile="/tmp/" . $ofile;
   $msg->attach(
 	       Type            => $mimetype,
 	       Encoding        => '8bit',
 	       Filename        => $filename,
-	       Data            => $maildata,
+	       #Data            => $maildata,
+	       Path            => $mailfile,
 	      );
   
   $msg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config{contact_email}");
@@ -422,6 +432,9 @@ sub handler {
     
   $sessiondbh->disconnect();
   $userdbh->disconnect();
+
+  unlink $anschfile;
+  unlink $mailfile;
 
   return OK;
 }

@@ -32,6 +32,7 @@ use utf8;
 
 use Apache::Reload;
 use Config::Std qw(read_config);
+use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 
 use vars qw(%config);

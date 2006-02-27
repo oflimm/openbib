@@ -37,6 +37,10 @@ b {
   color: #000000;
 }
 
+img {
+  border: 0;
+}
+
 table {
   padding: 0px;
 }

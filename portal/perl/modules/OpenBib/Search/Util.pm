@@ -35,6 +35,7 @@ use Apache::Request ();
 use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
+use MIME::Base64 ();
 use SOAP::Lite;
 use Storable;
 use YAML ();
@@ -613,9 +614,9 @@ sub get_tit_listitem_by_idn {
 
     my $use_titlistitem_table=0;
 
-#    if ($database eq "inst006"){
-#        $use_titlistitem_table=1;
-#    }
+    if ($database eq "inst105"){
+        $use_titlistitem_table=1;
+    }
 
     $logger->debug("Getting ID $titidn");
     
@@ -640,9 +641,18 @@ sub get_tit_listitem_by_idn {
         if (my $res=$request->fetchrow_hashref){
             my $titlistitem     = $res->{listitem};
             $logger->debug("Storable::listitem: $titlistitem");
-#            $titlistitem=~s/\\n/\n/g;
+
+            my $encoding_type="base64";
+
+            if    ($encoding_type eq "base64"){
+                $titlistitem = MIME::Base64::decode($titlistitem);
+            }
+            elsif ($encoding_type eq "uu"){
+                $titlistitem = unpack "u",$titlistitem;
+            }
+
             my %titlistitem = %{ Storable::thaw($titlistitem) };
-            $logger->debug("TitlistitemYAML: ".YAML::Load(\%titlistitem));
+            $logger->debug("TitlistitemYAML: ".YAML::Dump(\%titlistitem));
             %$listitem_ref=(%$listitem_ref,%titlistitem);
         }
     }

@@ -31,8 +31,9 @@ use 5.008001;
 use utf8;
 
 use Getopt::Long;
+use MIME::Base64 ();
 use MLDBM qw(DB_File Storable);
-use Storable();
+use Storable ();
 
 use OpenBib::Common::Util;
 use OpenBib::Common::Stopwords;
@@ -611,12 +612,12 @@ $stammdateien_ref->{tit} = {
 
 print STDERR "Bearbeite tit.exp\n";
 
-open(IN ,           "<:utf8","tit.exp"         ) || die "IN konnte nicht geoeffnet werden";
-open(OUT,           ">:utf8","tit.mysql"       ) || die "OUT konnte nicht geoeffnet werden";
-open(OUTFT,         ">:utf8","tit_ft.mysql"    ) || die "OUTFT konnte nicht geoeffnet werden";
-open(OUTSTRING,     ">:utf8","tit_string.mysql") || die "OUTSTRING konnte nicht geoeffnet werden";
-open(OUTSEARCH,     ">:utf8","search.mysql"    ) || die "OUT konnte nicht geoeffnet werden";
-open(TITLISTITEM,   ">:utf8","titlistitem.mysql") || die "TITLISTITEM konnte nicht goeffnet werden";
+open(IN ,           "<:utf8","tit.exp"          ) || die "IN konnte nicht geoeffnet werden";
+open(OUT,           ">:utf8","tit.mysql"        ) || die "OUT konnte nicht geoeffnet werden";
+open(OUTFT,         ">:utf8","tit_ft.mysql"     ) || die "OUTFT konnte nicht geoeffnet werden";
+open(OUTSTRING,     ">:utf8","tit_string.mysql" ) || die "OUTSTRING konnte nicht geoeffnet werden";
+open(OUTSEARCH,     ">:utf8","search.mysql"     ) || die "OUT konnte nicht geoeffnet werden";
+open(TITLISTITEM,   ">"     ,"titlistitem.mysql") || die "TITLISTITEM konnte nicht goeffnet werden";
 
 my @verf      = ();
 my @kor       = ();
@@ -788,11 +789,30 @@ while (my $line=<IN>){
         push @{$listitem_ref->{'PC0001'}}, {
             content   => join(" ; ",@autkor),
         };
+        # Hinweis: Weder das verpacken via pack "u" noch Base64 koennten
+        # eventuell fuer die Recherche schnell genug sein. Allerdings
+        # funktioniert es sehr gut.
+        # Moegliche Alternativen
+        # - Binaere Daten mit load data behandeln koennen
+        # - Data::Dumper verwenden, da hier ASCII herauskommt
+        # - in MLDB auslagern
+        # - Kategorien als eigene Spalten
 
+        
         my $listitem = Storable::freeze($listitem_ref);
-        $listitem=~s/\n/\\n/g;
-#        $listitem=~s/"/&quot;/g;
-        print TITLISTITEM "$id|$listitem\n";
+
+        my $encoding_type="base64";
+        
+        if    ($encoding_type eq "base64"){
+            $listitem = MIME::Base64::encode_base64($listitem);
+        }
+        elsif ($encoding_type eq "uu"){
+            $listitem =~s/\\/\\\\/g;
+            $listitem =~s/\n/\\n/g;
+            $listitem = pack "u",$tit;
+        }
+
+        print TITLISTITEM "$id$listitem\n";
         next CATLINE;
     }
     elsif ($line=~m/^(\d+)\.(\d+):(.*?)$/){
@@ -1203,16 +1223,22 @@ print CONTROLINDEXOFF "alter table titlistitem disable keys;\n";
 
 foreach my $type (keys %{$stammdateien_ref}){
     print CONTROL << "ITEM";
+truncate table $type;
 load data infile '$dir/$stammdateien_ref->{$type}{outfile}'        into table $type        fields terminated by '' ;
+truncate table ${type}_ft;
 load data infile '$dir/$stammdateien_ref->{$type}{outfile_ft}'     into table ${type}_ft     fields terminated by '' ;
+truncate table ${type}_string;
 load data infile '$dir/$stammdateien_ref->{$type}{outfile_string}' into table ${type}_string fields terminated by '' ;
 ITEM
 }
 
 print CONTROL << "TITITEM";
+truncate table conn;
+truncate table search;
+truncate table titlistitem;
 load data infile '$dir/conn.mysql'        into table conn   fields terminated by '' ;
 load data infile '$dir/search.mysql'      into table search fields terminated by '' ;
-load data infile '$dir/titlistitem.mysql' into table titlistitem fields terminated by '|' ;
+load data infile '$dir/titlistitem.mysql' into table titlistitem fields terminated by '' ;
 TITITEM
 
 foreach my $type (keys %{$stammdateien_ref}){

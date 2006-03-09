@@ -1,0 +1,23 @@
+<!-- Beginn Schlagwort -->
+
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+<tr><td class="boxedfull" align="left">
+
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+<tr class="titlerow"><td align="left">&nbsp;<b>[% loop.count %]</b>&nbsp;&nbsp;[% item.swt %]</td><td align="right">[% item.titanzahl %]</td></tr>
+[% listrow = 'listrow1' %]
+[% FOREACH dbitem IN item.databases %]
+<tr class="[% listrow %]"><td align="left"><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;searchmode=[% searchmode %];rating=[% rating %];bookinfo=[% bookinfo %];database=[% dbitem.dbname %];searchtitofswt=[% dbitem.swtidn%]" target="body">[% dbitem.dbdesc %]</a></td><td align="right">[% dbitem.titanzahl %]</td></tr>
+[% IF listrow == 'listrow1' %]
+[% listrow = 'listrow2' %]
+[% ELSE %]
+[% listrow = 'listrow1' %]
+[% END %]
+[% END %]
+</table>
+
+</td></tr>
+</table>
+<p />
+
+<!-- Ende Schlagwort -->

@@ -1,0 +1,11 @@
+[% PROCESS common/subtemplate name="std_header" %]
+
+<h1>Wartungsarbeiten</h1>
+
+Wegen eines unerwarteten Problems kann der KUG in den n&auml;chsten Minuten
+leider nicht genutzt werden.
+<p>
+Wir bitten um Ihr Verst&auml;ndnis. Vielen Dank.
+
+
+[% PROCESS common/subtemplate name="std_footer" %]

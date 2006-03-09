@@ -1,0 +1,54 @@
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <BODY>
+    
+      <ul id="tabbingmenu">
+	<li><a class="active" href="http://[% config.servername %][% config.managecollection_loc %]?sessionID=[% sessionID %];action=mail;type=[% type%]">Titel/Merkliste via Mail verschicken</a></li>
+      </ul>
+      
+      <div id="content">
+	
+<FORM method="post" action="http://[% config.servername %][% config.mailcollection_loc %]" enctype="multipart/form-data">
+<INPUT type="hidden" name="sessionID" value="[% sessionID %]">
+<INPUT type="hidden" name="type" value="[% type %]">
+
+<table width="100%">
+<tr><th>Ihre Eingabe</th></tr>
+<tr><td class="boxed">
+<table>
+<tr><td class="category">Ihre Mailadresse</td><td><input type="text" name="email" VALUE="[% loginname %]" SIZE="30" MAXLENGTH="200"></td></tr>
+<tr><td class="category">Betreff</td><td><input type="text" name="subject" VALUE="" SIZE="30" MAXLENGTH="200"></td></tr>
+</table>
+<p>
+<input type="submit" name="mail" VALUE="Abschicken">&nbsp;<input type="reset" value="Felder leeren">
+</td><tr>
+</table>
+</form>
+<p>
+
+[% IF singleidn %]
+<INPUT type="hidden" name="singleidn" value="[% singleidn %]">
+[% END %]
+[% IF database %]
+<INPUT type="hidden" name="database" value="[% database %]">
+[% END %]	
+
+	  <p>
+[% IF type == 'HTML' %]
+	  <table>
+[% PROCESS common/subtemplate name="managecollection_tit_as_html_simple" %]
+	  </table>
+[% ELSIF type == 'Text' %]
+	  <pre>
+[% PROCESS common/subtemplate name="managecollection_tit_as_text" %]
+          </pre>
+[% ELSIF type == 'EndNote' %]
+          <pre>
+[% PROCESS common/subtemplate name="managecollection_tit_as_endnote" %]
+          </pre>
+[% END %]
+
+      </div>
+
+<p />
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -390,7 +390,7 @@ sub handler {
 				    INCLUDE_PATH  => $config{tt_include_path},
 				    #    	    PRE_PROCESS   => 'config',
 				    #OUTPUT        => $anschreiben,
-				    OUTPUT_PATH        => '/tmp',
+                                    OUTPUT_PATH        => '/tmp',
                                     OUTPUT        => $afile,
 				   });
 
@@ -414,7 +414,7 @@ sub handler {
 	       Type            => 'TEXT',
 	       Encoding        => '8bit',
 	       #Data            => $anschreiben,
-	       Path            => $anschfile,
+		Path            => $anschfile,
 	      );
   
   my $mailfile="/tmp/" . $ofile;

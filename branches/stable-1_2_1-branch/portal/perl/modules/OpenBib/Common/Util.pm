@@ -222,6 +222,64 @@ sub get_viewname_of_session  {
   return $view;
 }
 
+sub get_primary_rssfeed_of_view  {
+    my ($sessiondbh,$viewname)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Assoziierten View zur Session aus Datenbank holen
+    my $idnresult=$sessiondbh->prepare("select rssfeeds.dbname as dbname,rssfeeds.type as type, rssfeeds.subtype as subtype from rssfeeds,viewinfo where viewname = ? and rssfeeds.id = viewinfo.rssfeed and rssfeeds.active = 1") or $logger->error($DBI::errstr);
+    $idnresult->execute($viewname) or $logger->error($DBI::errstr);
+  
+    my $result=$idnresult->fetchrow_hashref();
+  
+    my $dbname  = $result->{'dbname'}  || '';
+    my $type    = $result->{'type'}    || 0;
+    my $subtype = $result->{'subtype'} || 0;
+
+    foreach my $typename (keys %{$config{rss_types}}){
+        if ($config{rss_types}{$typename} eq $type){
+            $type=$typename;
+            last;
+        }
+    }
+    
+    $idnresult->finish();
+
+    my $primrssfeedurl="";
+
+    if ($dbname && $type){
+        $primrssfeedurl="http://".$config{loadbalancerservername}.$config{connector_rss_loc}."/$type/$dbname.rdf";
+    }
+    
+    return $primrssfeedurl;
+}
+
+sub get_activefeeds_of_db  {
+    my ($sessiondbh,$dbname)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+
+    my $activefeeds_ref = {};
+    
+    my $idnresult=$sessiondbh->prepare("select type from rssfeeds where dbname = ? and active = 1") or $logger->error($DBI::errstr);
+    $idnresult->execute($dbname) or $logger->error($DBI::errstr);
+  
+    while (my $result=$idnresult->fetchrow_hashref()){
+        my $type    = $result->{'type'}    || 0;
+
+        $activefeeds_ref->{$type} = 1;
+    }
+
+    
+    $idnresult->finish();
+
+    return $activefeeds_ref;
+}
+
 sub get_targetdb_of_session {
   my ($userdbh,$sessionID)=@_;
 
@@ -264,6 +322,73 @@ sub get_targettype_of_session {
   }
 
   return $targettype;
+}
+
+sub get_targetdbinfo {
+    my ($sessiondbh)=@_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    #####################################################################
+    # Dynamische Definition diverser Variablen
+  
+    # Verweis: Datenbankname -> Informationen zum zugeh"origen Institut/Seminar
+  
+    my $dbinforesult=$sessiondbh->prepare("select dbname,sigel,url,description from dbinfo") or $logger->error($DBI::errstr);
+    $dbinforesult->execute() or $logger->error($DBI::errstr);;
+  
+    my %sigel   =();
+    my %bibinfo =();
+    my %dbinfo  =();
+    my %dbases  =();
+    my %dbnames =();
+
+    while (my $result=$dbinforesult->fetchrow_hashref()) {
+        my $dbname      = $result->{'dbname'};
+        my $sigel       = $result->{'sigel'};
+        my $url         = $result->{'url'};
+        my $description = $result->{'description'};
+    
+        ##################################################################### 
+        ## Wandlungstabelle Bibliothekssigel <-> Bibliotheksname
+    
+        $sigel{"$sigel"}="$description";
+    
+        #####################################################################
+        ## Wandlungstabelle Bibliothekssigel <-> Informations-URL
+    
+        $bibinfo{"$sigel"}="$url";
+    
+        #####################################################################
+        ## Wandlungstabelle  Name SQL-Datenbank <-> Datenbankinfo
+    
+        # Wenn ein URL fuer die Datenbankinformation definiert ist, dann wird
+        # damit verlinkt
+    
+        if ($url ne "") {
+            $dbinfo{"$dbname"}="<a href=\"$url\" target=\"_blank\">$description</a>";
+        } else {
+            $dbinfo{"$dbname"}="$description";
+        }
+    
+        #####################################################################
+        ## Wandlungstabelle  Name SQL-Datenbank <-> Bibliothekssigel
+    
+        $dbases{"$dbname"}="$sigel";
+
+        $dbnames{"$dbname"}=$description;
+    }
+  
+    $dbinforesult->finish;
+    
+    return {
+        sigel   => \%sigel,
+        bibinfo => \%bibinfo,
+        dbinfo  => \%dbinfo,
+        dbases  => \%dbases,
+        dbnames => \%dbnames,
+    };
 }
 
 sub get_css_by_browsertype {
@@ -1002,6 +1127,218 @@ sub updatelastresultset {
   return;
 }
 
+sub get_loadbalanced_servername {
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $ua=new LWP::UserAgent(timeout => 5);
+
+    # Aktuellen Load der Server holen zur dynamischen Lastverteilung
+    my @servertab=@{$config{loadbalancertargets}};
+
+    my %serverload=();
+
+    foreach my $target (@servertab) {
+        $serverload{"$target"}=-1.0;
+    }
+  
+    my $problem=0;
+  
+    # Fuer jeden Server, auf den verteilt werden soll, wird nun
+    # per LWP der Load bestimmt.
+    foreach my $targethost (@servertab) {
+        my $request  = new HTTP::Request POST => "http://$targethost$config{serverload_loc}";
+        my $response = $ua->request($request);
+
+        if ($response->is_success) {
+            $logger->debug("Getting ", $response->content);
+        }
+        else {
+            $logger->error("Getting ", $response->status_line);
+        }
+    
+        my $content=$response->content();
+    
+        if ($content eq "" || $content=~m/SessionDB: offline/m) {
+            $problem=1;
+        }
+        elsif ($content=~m/^Load: (\d+\.\d+)/m) {
+            my $load=$1;
+            $serverload{$targethost}=$load;
+        }
+    
+        # Wenn der Load fuer einen Server nicht bestimmt werden kann,
+        # dann wird der Admin darueber benachrichtigt
+    
+        if ($problem == 1) {
+            OpenBib::LoadBalancer::Util::benachrichtigung("Es ist der Server $targethost ausgefallen");
+            $problem=0;
+            next;
+        }
+    }
+  
+    my $minload="1000.0";
+    my $bestserver="";
+
+    # Nun wird der Server bestimmt, der den geringsten Load hat
+
+    foreach my $targethost (@servertab) {
+        if ($serverload{$targethost} > -1.0 && $serverload{$targethost} <= $minload) {
+            $bestserver=$targethost;
+            $minload=$serverload{$targethost};
+        }
+    }
+
+    return $bestserver;
+}
+
+sub grundform {
+    my ($arg_ref) = @_;
+    
+    # Set defaults
+    my $content   = exists $arg_ref->{content}
+        ? $arg_ref->{content}             : "";
+
+    my $category  = exists $arg_ref->{category}
+        ? $arg_ref->{category}            : "";
+
+    my $searchreq = exists $arg_ref->{searchreq}
+        ? $arg_ref->{searchreq}           : undef;
+    
+    # Sonderbehandlung verschiedener Kategorien
+
+    # Datum normalisieren
+
+    if ($category eq '0002'){
+        if ($content =~ /^(\d\d)\.(\d\d)\.(\d\d\d\d)$/){
+            $content=$3.$2.$1;
+        }
+    }
+    
+    # ISBN filtern
+    if ($category eq "0540"){
+        $content=~s/(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?([0-9xX])/$1$2$3$4$5$6$7$8$9$10/g;
+    }
+
+    # ISSN filtern
+    if ($category eq "0543"){
+        $content=~s/(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)/$1$2$3$4$5$6$7$8/g;
+    }
+
+    # Stopwoerter fuer versch. Kategorien ausfiltern
+
+    if ($category eq "0304" || $category eq "0310" || $category eq "0331"
+            || $category eq "0341" || $category eq "0370"){
+        $content=OpenBib::Common::Stopwords::strip_first_stopword($content);
+    }
+    
+    # Ausfiltern spezieller HTML-Tags
+    $content=~s/&[gl]t;//g;
+    $content=~s/&quot;//g;
+    $content=~s/&amp;//g;
+
+    if ($searchreq){
+        # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
+        $content=~s/[^-+\p{Alphabetic}0-9\/: '()"^*]//g;
+    }
+    else {
+        # Ausfiltern nicht akzeptierter Zeichen (Postitivliste)
+        $content=~s/[^-+\p{Alphabetic}0-9\/: ']//g;
+    }
+    
+    # Zeichenersetzungen
+    $content=~s/'/ /g;
+    $content=~s/\// /g;
+    $content=~s/:/ /g;
+    $content=~s/  / /g;
+
+    # Buchstabenersetzungen
+    $content=~s/ü/ue/g;
+    $content=~s/ä/ae/g;
+    $content=~s/ö/oe/g;
+    $content=~s/Ü/Ue/g;
+    $content=~s/Ö/Oe/g;
+    $content=~s/Ü/Ae/g;
+    $content=~s/ß/ss/g;
+
+    $content=~s/é/e/g;
+    $content=~s/è/e/g;
+    $content=~s/ê/e/g;
+    $content=~s/É/E/g;
+    $content=~s/È/E/g;
+    $content=~s/Ê/E/g;
+
+    $content=~s/á/a/g;
+    $content=~s/à/a/g;
+    $content=~s/â/a/g;
+    $content=~s/Á/A/g;
+    $content=~s/À/A/g;
+    $content=~s/Â/A/g;
+
+    $content=~s/ó/o/g;
+    $content=~s/ò/o/g;
+    $content=~s/ô/o/g;
+    $content=~s/Ó/O/g;
+    $content=~s/Ò/o/g;
+    $content=~s/Ô/o/g;
+
+    $content=~s/í/i/g;
+    $content=~s/ì/i/g;
+    $content=~s/î/i/g;
+    $content=~s/Í/I/g;
+    $content=~s/Ì/I/g;
+    $content=~s/Î/I/g;
+
+    $content=~s/ø/o/g;
+    $content=~s/Ø/o/g;
+    $content=~s/ñ/n/g;
+    $content=~s/Ñ/N/g;
+#     $content=~s///g;
+#     $content=~s///g;
+#     $content=~s///g;
+#     $content=~s///g;
+
+#     $content=~s///g;
+#     $content=~s///g;
+#     $content=~s///g;
+#     $content=~s///g;
+#     $content=~s///g;
+#     $content=~s///g;
+
+#    $line=~s/?/g;
+
+#     $line=~s/该/g;
+#     $line=~s/?/g;
+#     $line=~s/?g;
+#     $line=~s/?;
+#     $line=~s/?e/g;
+#     $line=~s//a/g;
+#     $line=~s/?o/g;
+#     $line=~s/?u/g;
+#     $line=~s/鯥/g;
+#     $line=~s/ɯE/g;
+#     $line=~s/?/g;
+#     $line=~s/oa/g;
+#     $line=~s/?/g;
+#     $line=~s/?I/g;
+#     $line=~s/?g;
+#     $line=~s/?O/g;
+#     $line=~s/?;
+#     $line=~s/?U/g;
+#     $line=~s/ /y/g;
+#     $line=~s/?Y/g;
+#     $line=~s/毡e/g; # ae
+#     $line=~s/?/g; # Hacek
+#     $line=~s/?/g; # Macron / Oberstrich
+#     $line=~s/?/g;
+#     $line=~s/&gt;//g;
+#     $line=~s/&lt;//g;
+#     $line=~s/>//g;
+#     $line=~s/<//g;
+
+    return $content;
+}
 
 1;
 __END__

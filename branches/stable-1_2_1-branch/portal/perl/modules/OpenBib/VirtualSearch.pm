@@ -348,8 +348,17 @@ sub handler {
   $bibinfo{''}="http://www.ub.uni-koeln.de/dezkat/bibinfo/noinfo.html";
   $dbases{''}="Unbekannt";
 
+  my $is_orgunit=0;
 
-  $profil="" if ((!exists $config{units}{$profil}) && $profil ne "dbauswahl" && !$profil=~/^user/ && $profil ne "alldbs");
+  ORGUNIT_SEARCH:
+  foreach my $orgunit_ref (@{$config{units}}){
+      if ($orgunit_ref->{short} eq $profil){
+            $is_orgunit=1;
+            last ORGUNIT_SEARCH;
+        }
+  }
+  
+  $profil="" if (!$is_orgunit && $profil ne "dbauswahl" && !$profil=~/^user/ && $profil ne "alldbs");
   
   my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
   
@@ -1215,7 +1224,7 @@ UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&oum
 		  dbinfo => $dbinfo{$database},
 
 		  treffer => $treffer,
-
+                  maxhits => $maxhits,
 		  resultlist => \@sortedoutputbuffer,
 
 		  searchmode => $searchmode,

@@ -124,6 +124,7 @@ use vars qw(%config);
 	   circulation_loc      => '/portal/benutzerkonto',
 
 	   connector_digibib_loc => '/portal/connector/digibib',
+	   connector_olws_loc   => '/portal/connector/olws',
 
 	   databasechoice_loc   => '/portal/katalogauswahl',
 	   databaseprofile_loc  => '/portal/katalogprofile',

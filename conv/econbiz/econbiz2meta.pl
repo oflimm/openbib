@@ -142,11 +142,16 @@ $dbh->disconnect();
 
 sub stripjunk {
   my ($item)=@_;
+  $item=~s/<br>/\n/g;
+  $item=~s/>/&gt;/g;
+  $item=~s/</&lt;/g;
   $item=~s/ +$//;
   $item=~s/ *; .{5,11}$//;
   $item=~s/\n/<br>/g;
 #  $item=~s/\[/#093/g;
 #  $item=~s/\]/#094/g;
+  $item=~s/\[/&#91;/g;
+  $item=~s/\]/&#93;/g;
   $item=~s/“/"/g;
   $item=~s/”/"/g;
 

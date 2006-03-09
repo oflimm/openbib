@@ -2,7 +2,7 @@
 #
 #  OpenBib::Config
 #
-#  Dieses File ist (C) 2004 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -32,7 +32,7 @@ use vars qw(%config);
 
 	   # Versionnummer
 
-	   version => 'OpenBib v1.2.1',
+	   version => 'OpenBib v1.2.2',
 	   
 	   # Unter diesem Namen wird der lokale Server angesprochen
 	   
@@ -78,6 +78,14 @@ use vars qw(%config);
 	   userdbuser    => 'root',
 	   userdbpasswd  => 'StrengGeheim',
 
+           # Einstellungen fuer den Zugriff auf die Anreicherungs-Datenbank
+
+           enrichmntdbhost    => 'localhost',
+           enrichmntdbport    => '3306',
+           enrichmntdbname    => 'enrichmnt',
+           enrichmntdbuser    => 'root',
+           enrichmntdbpasswd  => 'StrengGeheim',
+
 	   # Benutzer und Passwort fuer die Administration
 
 	   adminuser     => 'adminuser',
@@ -116,7 +124,21 @@ use vars qw(%config);
 		      desc => 'Mathematisch-Naturwissenschaftliche Fakult&auml;t',
 		      nr => '5',
 		     },
+		     {
+		      short => '6spezial',
+		      desc => 'Spezialkataloge',
+		      nr => '6',
+		     },
 		    ],
+
+           rss_types => {
+               'neuzugang'             => 1,
+               'neuzugang_nach_aut'    => 2,
+               'neuzugang_nach_kor'    => 3,
+               'neuzugang_nach_swt'    => 4,
+               'neuzugang_nach_sys'    => 5,
+               'neuerwerbung'          => 99,
+           },
 
 	   # Mapping der einzelnen Kompontenten zu ihren Zugriffs-URI's
 
@@ -124,7 +146,8 @@ use vars qw(%config);
 	   circulation_loc      => '/portal/benutzerkonto',
 
 	   connector_digibib_loc => '/portal/connector/digibib',
-	   connector_olws_loc   => '/portal/connector/olws',
+	   connector_olws_loc    => '/portal/connector/olws',
+	   connector_rss_loc     => '/portal/connector/rss',
 
 	   databasechoice_loc   => '/portal/katalogauswahl',
 	   databaseprofile_loc  => '/portal/katalogprofile',
@@ -140,6 +163,7 @@ use vars qw(%config);
 	   mailpassword_loc     => '/portal/passwortmailen',
 	   managecollection_loc => '/portal/merkliste',
 	   resultlists_loc      => '/portal/trefferlisten',
+	   rssframe_loc         => '/portal/rssfeeds',
 	   search_loc           => '/portal/recherche',
 	   searchframe_loc      => '/portal/eingabe',
 	   selfreg_loc          => '/portal/selbstregistrierung',
@@ -152,7 +176,7 @@ use vars qw(%config);
 
 	   # Programm zum Versenden von Mails
 
-	   mail_prog             => '/bin/mailx',
+	   mail_prog             => '/usr/bin/mailx',
 
 	   # Email-Adressen fuer den Admin und generellen Kontakt
 
@@ -194,8 +218,10 @@ use vars qw(%config);
 	   tt_admin_loggedin_tname       => 'admin_loggedin',
 	   tt_admin_showcat_tname        => 'admin_showcat',
 	   tt_admin_editcat_tname        => 'admin_editcat',
+	   tt_admin_editcat_rss_tname    => 'admin_editcat_rss',
 	   tt_admin_showviews_tname      => 'admin_showviews',
 	   tt_admin_editview_tname       => 'admin_editview',
+	   tt_admin_editview_rss_tname   => 'admin_editview_rss',
 	   tt_admin_showsessions_tname   => 'admin_showsessions',
 	   tt_admin_editsession_tname    => 'admin_editsession',
 	   tt_admin_showimx_tname        => 'admin_showimx',
@@ -207,6 +233,8 @@ use vars qw(%config);
 	   tt_circulation_reserv_tname   => 'circulation_reserv',
 	   tt_circulation_remind_tname   => 'circulation_remind',
 	   tt_circulation_orders_tname   => 'circulation_orders',
+
+           tt_connector_rss_item_tname   => 'connector_rss_item',
 
 	   tt_databaseprofile_tname   => 'databaseprofile',
 
@@ -240,6 +268,8 @@ use vars qw(%config);
 	   tt_resultlists_showall_tname         => 'resultlists_showall',
 	   tt_resultlists_showall_sortall_tname => 'resultlists_showall_sortall',
 	   tt_resultlists_showsinglepool_tname  => 'resultlists_showsinglepool',
+
+           tt_rssframe_tname          => 'rssframe',
 
 	   tt_search_showautset_tname => 'search_showautset',
 	   tt_search_showkorset_tname => 'search_showkorset',

@@ -14,9 +14,11 @@ create table aut (
  ans text not null,
  pndnr int,
  verbnr int,
+ ansnorm text,
  primary key (idn),
  index (idn),
- index (ans(255))
+ index (ans(255)),
+ fulltext (ansnorm)
 );
 
 create table autverw (
@@ -35,9 +37,11 @@ create table kor (
  ida int,
  korans text not null,
  gkdident int,
+ koransnorm text,
  primary key (idn),
  index (idn),
- index (korans(255))
+ index (korans(255)),
+ fulltext (koransnorm)
 );
 
 create table korverw (
@@ -71,9 +75,11 @@ ida int,
 schlagw text not null,
 erlaeut text,
 verbidn int,
+schlagwnorm text,
 primary key (idn),
 index (idn),
-index (schlagw(255))
+index (schlagw(255)),
+fulltext (schlagwnorm)
 );
 
 create table swtverw (
@@ -329,10 +335,31 @@ quelle text,
 index (titidn)
 );
 
+create table titgt (
+titidn int not null,
+gt     text,
+index (titidn)
+);
+
+create table titaus (
+titidn int not null,
+aus    text,
+index (titidn)
+);
+
 
 ---------------------Verweise--------------------	
 
--------GTM
+-------allg. Titelverknuepfungen (neu)
+create table tittit (
+titidn int not null,
+verwidn int not null,
+index (titidn),
+index (verwidn)
+);
+
+
+-------GTM (obsolet)
 create table titgtm (
 titidn int not null,
 verwidn int not null,
@@ -341,7 +368,7 @@ index (titidn),
 index (verwidn)
 );
 
--------GTF
+-------GTF (obsolet)
 create table titgtf (
 titidn int not null,
 verwidn int not null,
@@ -350,7 +377,7 @@ index (titidn),
 index (verwidn)
 );
 
--------IN verknuepft
+-------IN verknuepft (obsolet)
 create table titinverkn (
 titidn int not null,
 titverw int not null,
@@ -491,9 +518,11 @@ abrufzeichen text,
 beschrnot text,
 abrufr text,
 oberbegriff int,
+notationnorm text,
 primary key (idn),
 index (idn),
-index (notation(255))
+index (notation(255)),
+fulltext (notationnorm)
 );
 
 create table notbenverw (

@@ -882,6 +882,8 @@ sub get_tit_listitem_by_idn {
 
   $listitem{idn}=$titres1->{idn};
 
+  $listitem{auflage}=$titres1->{aug};
+
   $listitem{publisher}=$titres1->{verlag};
 
   $listitem{database}=$database;
@@ -1233,6 +1235,8 @@ sub print_tit_set_by_idn {
 	      mexnormset => $mexnormset,
 	      circset => $circset,
 
+              activefeed => OpenBib::Common::Util::get_activefeeds_of_db($sessiondbh,$database),
+
 	      utf2iso => sub {
 		my $string=shift;
 		$string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
@@ -1249,7 +1253,7 @@ sub print_tit_set_by_idn {
   return;
 }
 
-sub print_mult_tit_set_by_idn { 
+sub print_mult_tit_set_by_idn {
 
   my ($rtitidns,$hint,$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,$rdbinfo,$rtiteltyp,$rsigel,$rdbases,$rbibinfo,$sessionID,$r,$stylesheet,$view)=@_;
 
@@ -2343,11 +2347,13 @@ sub get_tit_set_by_idn {
   
   my $titres3;
   my $isbn;
+
+  my @isbns=();
   while ($titres3=$titresult3->fetchrow_hashref){
-    
-    push @normset, set_simple_category("ISBN","$titres3->{isbn}");
     $isbn=$titres3->{isbn};
-    
+    push @normset, set_simple_category("ISBN",$isbn);
+
+    push @isbns, $isbn;
   }
   $titresult3->finish();
   
@@ -2388,6 +2394,71 @@ sub get_tit_set_by_idn {
     undef $timeall;
   }
 
+  # Anreicherung mit zentralen Enrichmentdaten
+  {
+      my ($atime,$btime,$timeall);
+      
+      if ($config{benchmark}) {
+          $atime=new Benchmark;
+      }
+      
+      # Verbindung zur SQL-Datenbank herstellen
+      my $enrichdbh
+          = DBI->connect("DBI:$config{dbimodule}:dbname=$config{enrichmntdbname};host=$config{enrichmntdbhost};port=$config{enrichmntdbport}", $config{enrichmntdbuser}, $config{enrichmntdbpasswd})
+              or $logger->error_die($DBI::errstr);
+      
+      foreach my $isbn (@isbns){
+          
+          $isbn =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10/g;
+          
+          my $reqstring="select category,content from normdata where isbn=?";
+          my $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
+          $request->execute($isbn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+
+          my $categorynames_ref = {
+              T3001 => { type => "url",
+                         desc => "TOC-URL / HTML",
+                     },
+              T3002 => { type => "url",
+                         desc => "TOC-URL / TIFF",
+                     },
+              T3003 => { type => "url",
+                         desc => "TOC-URL / PDF",
+                     },
+          };
+
+          while (my $res=$request->fetchrow_hashref) {
+              my $category   = "T".sprintf "%04d",$res->{category };
+              my $content    =                    $res->{content  };
+
+              if (exists $categorynames_ref->{$category}){
+                  if ($categorynames_ref->{$category}->{type} eq "url"){
+                      push @normset, set_url_category($categorynames_ref->{$category}->{desc},$content,$content);
+                  }
+              }
+              else {
+                  $logger->debug("Enrich: $isbn nicht gefunden");
+              }
+          }
+          $request->finish();
+          $logger->debug("Enrich: $isbn -> $reqstring");
+      }
+
+      $enrichdbh->disconnect();
+
+      if ($config{benchmark}) {
+          $btime=new Benchmark;
+          $timeall=timediff($btime,$atime);
+          $logger->info("Zeit fuer : Bestimmung von Enrich-Normdateninformationen ist ".timestr($timeall));
+          undef $atime;
+          undef $btime;
+          undef $timeall;
+      }
+      
+      
+  }
+
+  
   # Ausgabe der Anzahl verkn"upfter Ueberordnungen
   
   @requests=("select verwidn from tittit where titidn=$titres1->{idn}");
@@ -2554,22 +2625,27 @@ sub get_tit_set_by_idn {
 #	print "<td>$standort</td><td><strong>$signatur</strong></td>";
 	
 	my $ausleihstring;
-	if ($circexemplarliste[$i]{'Ausleihstatus'} eq "bestellbar"){
-	  $ausleihstring="ausleihen?";
-	}
-	elsif ($circexemplarliste[$i]{'Ausleihstatus'} eq "bestellt"){
-	  $ausleihstring="vormerken?";
-	}
-	elsif ($circexemplarliste[$i]{'Ausleihstatus'} eq "entliehen"){
-	  $ausleihstring="vormerken/verl&auml;ngern?";
-	}
-	elsif ($circexemplarliste[$i]{'Ausleihstatus'} eq "bestellbar"){
-	  $ausleihstring="ausleihen?";
-	}
-	else {
-	  $ausleihstring="WebOPAC?";
-	}
-
+        if (exists $circexemplarliste[$i]{'Ausleihstatus'}){
+            if ($circexemplarliste[$i]{'Ausleihstatus'} eq "bestellbar"){
+                $ausleihstring="ausleihen?";
+            }
+            elsif ($circexemplarliste[$i]{'Ausleihstatus'} eq "bestellt"){
+                $ausleihstring="vormerken?";
+            }
+            elsif ($circexemplarliste[$i]{'Ausleihstatus'} eq "entliehen"){
+                $ausleihstring="vormerken/verl&auml;ngern?";
+            }
+            elsif ($circexemplarliste[$i]{'Ausleihstatus'} eq "bestellbar"){
+                $ausleihstring="ausleihen?";
+            }
+            else {
+                $ausleihstring="WebOPAC?";
+            }
+        }
+        else {
+            $ausleihstring="WebOPAC?";
+        }
+        
 	$circexemplarliste[$i]{'Ausleihstring'}=$ausleihstring;
 
 	if ($circexemplarliste[$i]{'Standort'}=~/Erziehungswiss/ || $circexemplarliste[$i]{'Standort'}=~/Heilp.*?dagogik-Magazin/){
@@ -3436,12 +3512,13 @@ sub set_url_category {
 
   my ($desc,$url,$contents,$supplement)=@_;
 
-
+  $supplement="" unless defined ($supplement);
+  
   # UTF8-Behandlung
 
-  $desc=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
-  $url=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
-  $contents=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
+  $desc      =~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
+  $url       =~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
+  $contents  =~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
   $supplement=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
 
   my %kat=();
@@ -3458,6 +3535,8 @@ sub set_url_category_global {
 
   my ($desc,$url,$contents,$supplement,$type,$sorttype,$sessionID)=@_;
 
+  $supplement="" unless defined ($supplement);
+  
   # UTF8-Behandlung
 
   $desc=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
@@ -3872,8 +3951,9 @@ sub initital_search_for_titidns {
   # TODO: SQL-Statement fuer Notationssuche optimieren
   
   if ($notation){
+    $notation=~s/\*$/%/;
     $notation=~s/\'/\\\'/g;
-    $notation="((notation.notation like '$notation%' or notation.benennung like '$notation%') and search.verwidn=titnot.titidn and notation.idn=titnot.notidn)";
+    $notation="((notation.notation like '$notation' or notation.benennung like '$notation') and search.verwidn=titnot.titidn and notation.idn=titnot.notidn)";
     $notfrom=", notation, titnot";
   }
   
@@ -3881,7 +3961,8 @@ sub initital_search_for_titidns {
   my @signidns;
   
   if ($sign){
-    $sign="(search.verwidn=mex.titidn and mex.idn=mexsign.mexidn and mexsign.signlok like '$sign%')";
+    $sign=~s/\*$/%/;
+    $sign="(search.verwidn=mex.titidn and mex.idn=mexsign.mexidn and mexsign.signlok like '$sign')";
     $signfrom=", mex, mexsign";
   }
   
@@ -4045,6 +4126,180 @@ sub initital_search_for_titidns {
   }
   
   return @tidns;
+}
+
+sub get_recent_titids {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $dbh                    = exists $arg_ref->{dbh}
+        ? $arg_ref->{dbh}                 : undef;
+    my $id                     = exists $arg_ref->{id}
+        ? $arg_ref->{id}                  : undef;
+    my $limit                  = exists $arg_ref->{limit}
+        ? $arg_ref->{limit}               : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$dbh->prepare("select idn as id,sdn as content from tit order by content desc limit $limit");
+    $request->execute();
+
+    my @titlist=();
+    
+    while (my $res=$request->fetchrow_hashref()){
+        push @titlist, {
+            id   => $res->{id},
+            date => $res->{content},
+        };
+    }
+    
+    $dbh->disconnect;
+
+    return \@titlist;
+}
+
+sub get_recent_titids_by_aut {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $dbh                    = exists $arg_ref->{dbh}
+        ? $arg_ref->{dbh}                 : undef;
+    my $id                     = exists $arg_ref->{id}
+        ? $arg_ref->{id}                  : undef;
+    my $limit                  = exists $arg_ref->{limit}
+        ? $arg_ref->{limit}               : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+
+    $dbh->do("create temporary table autids (id int, index (id))");
+
+    my $request=$dbh->prepare("insert into autids select titidn from titverf where verfverw = ? union select titidn from titpers where persverw = ? union select titidn from titgpers where persverw = ?");
+    $request->execute($id,$id,$id);
+
+    $request=$dbh->prepare("select tit.idn as id,tit.sdn as content from tit,autids where tit.idn=autids.id order by tit.sdn desc limit $limit");
+    $request->execute();
+    
+#    my $request=$dbh->prepare("select tit.idn as id,tit.sdn as content from tit where tit.idn IN ( select titidn from titverf where verfverw = ? union select titidn from titpers where persverw = ? union select titidn from titgpers where persverw = ?) order by tit.sdn desc limit $limit");
+#    $request->execute($id,$id,$id);
+
+#    my $request=$dbh->prepare("select tit.idn as id,tit.sdn as content from tit,titverf,titpers,titgpers where (titverf.verfverw = ? and titverf.titidn = tit.idn) or (titpers.persverw = ? and titpers.titidn = tit.idn) or (titgpers.persverw = ? and titgpers.titidn=tit.idn) order by tit.sdn desc limit $limit");
+#    my $request=$dbh->prepare("select tit.idn as id,tit.sdn as content from tit right join titverf ON (titverf.verfverw = ? and titverf.titidn = tit.idn) right join titpers on (titpers.persverw = ? and titpers.titidn = tit.idn) right join titgpers on (titgpers.persverw = ? and titgpers.titidn = tit.idn )  order by tit.sdn desc limit $limit");
+#    $request->execute($id,$id,$id);
+
+
+
+    my @titlist=();
+    
+    while (my $res=$request->fetchrow_hashref()){
+        push @titlist, {
+            id   => $res->{id},
+            date => $res->{content},
+        };
+    }
+
+    $dbh->do("drop table autids");
+
+    return \@titlist;
+}
+
+sub get_recent_titids_by_kor {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $dbh                    = exists $arg_ref->{dbh}
+        ? $arg_ref->{dbh}                 : undef;
+    my $id                     = exists $arg_ref->{id}
+        ? $arg_ref->{id}                  : undef;
+    my $limit                  = exists $arg_ref->{limit}
+        ? $arg_ref->{limit}               : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $dbh->do("create temporary table korids (id int, index (id))");
+
+    my $request=$dbh->prepare("insert into korids select titidn from titkor where korverw = ? union select titidn from titurh where urhverw = ?");
+    $request->execute($id,$id);
+
+    $request=$dbh->prepare("select tit.idn as id,tit.sdn as content from tit,korids where tit.idn=korids.id order by tit.sdn desc limit $limit");
+    $request->execute();
+    
+#    my $request=$dbh->prepare("select tit.idn as id,tit.sdn as content from tit where tit.idn IN ( select titidn from titkor where korverw = ? union select titidn from titurh where urhverw = ?) order by tit.sdn desc limit $limit");
+#    $request->execute($id,$id);
+
+    my @titlist=();
+    
+    while (my $res=$request->fetchrow_hashref()){
+        push @titlist, {
+            id   => $res->{id},
+            date => $res->{content},
+        };
+    }
+
+    $dbh->do("drop table korids");
+    
+    return \@titlist;
+}
+
+sub get_recent_titids_by_swt {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $dbh                    = exists $arg_ref->{dbh}
+        ? $arg_ref->{dbh}                 : undef;
+    my $id                     = exists $arg_ref->{id}
+        ? $arg_ref->{id}                  : undef;
+    my $limit                  = exists $arg_ref->{limit}
+        ? $arg_ref->{limit}               : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$dbh->prepare("select tit.idn as id,tit.sdn as content from tit,titswtlok where titswtlok.swtverw = ? and tit.idn = titswtlok.titidn  order by tit.sdn desc limit $limit");
+    $request->execute($id);
+
+    my @titlist=();
+    
+    while (my $res=$request->fetchrow_hashref()){
+        push @titlist, {
+            id   => $res->{id},
+            date => $res->{content},
+        };
+    }
+    
+    return \@titlist;
+}
+
+sub get_recent_titids_by_not {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $dbh                    = exists $arg_ref->{dbh}
+        ? $arg_ref->{dbh}                 : undef;
+    my $id                     = exists $arg_ref->{id}
+        ? $arg_ref->{id}                  : undef;
+    my $limit                  = exists $arg_ref->{limit}
+        ? $arg_ref->{limit}               : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$dbh->prepare("select tit.idn as id,tit.sdn as content from tit,titnot where titnot.notidn = ? and tit.idn = titnot.titidn  order by tit.sdn desc limit $limit");
+    $request->execute($id);
+
+    my @titlist=();
+    
+    while (my $res=$request->fetchrow_hashref()){
+        push @titlist, {
+            id   => $res->{id},
+            date => $res->{content},
+        };
+    }
+    
+    return \@titlist;
 }
 
 1;

@@ -8,16 +8,16 @@
 #
 #  Dieses File ist (C) 2004  Oliver Flimm <flimm@openbib.org>
 #
-#  Dieses Programm ist freie Software. Sie koennen es unter
+#  Dieses Programm ist freie Software. Sie k"onnen es unter
 #  den Bedingungen der GNU General Public License, wie von der
 #  Free Software Foundation herausgegeben, weitergeben und/oder
 #  modifizieren, entweder unter Version 2 der Lizenz oder (wenn
-#  Sie es wuenschen) jeder spaeteren Version.
+#  Sie es w"unschen) jeder sp"ateren Version.
 #
-#  Die Veroeffentlichung dieses Programms erfolgt in der
-#  Hoffnung, dass es Ihnen von Nutzen sein wird, aber OHNE JEDE
-#  GEWAEHRLEISTUNG - sogar ohne die implizite Gewaehrleistung
-#  der MARKTREIFE oder der EIGNUNG FUER EINEN BESTIMMTEN ZWECK.
+#  Die Ver"offentlichung dieses Programms erfolgt in der
+#  Hoffnung, da"s es Ihnen von Nutzen sein wird, aber OHNE JEDE
+#  GEW"AHRLEISTUNG - sogar ohne die implizite Gew"ahrleistung
+#  der MARKTREIFE oder der EIGNUNG F"UR EINEN BESTIMMTEN ZWECK.
 #  Details finden Sie in der GNU General Public License.
 #
 #  Sie sollten eine Kopie der GNU General Public License zusammen
@@ -140,9 +140,9 @@ system("cd $rootdir/data/$singlepool ; $meta2sqlexe -all -mysql");
 # Konvertierung Exportdateien -> WAIS
 
 print "### $singlepool: Konvertierung Exportdateien -> WAIS\n";
-system("cd $rootdir/data/$singlepool ; $meta2waisexe -combined ; $wais2sqlexe < data.wais ");
+system("cd $rootdir/data/$singlepool ; $meta2waisexe -encoding -combined ; $wais2sqlexe < data.wais ");
   
-# Loeschen der Daten in Biblio
+# L"oschen der Daten in Biblio
 
 print "### $singlepool: Loeschen der Daten in Biblio\n";
 
@@ -174,6 +174,7 @@ print "### $singlepool: Updating Titcount\n";
 system("$config{'base_dir'}/bin/updatetitcount.pl --single-pool=$singlepool");
 
 print "### $singlepool: Cleanup\n";
+system("rm -f $rootdir/data/$singlepool/*");
   
 sub print_help {
     print "autoconv-econbiz.pl - Automatische Konvertierung von Econbiz-Daten\n\n";

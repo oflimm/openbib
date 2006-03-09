@@ -510,6 +510,9 @@ while (($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<PER>)){
       if ( substr($inh,0,1) eq " " ){
 	$inh =~ s/^ //;
       }
+      
+      # Schmutzzeichen weg
+      $inh=~s/^ //;
 
       $KAT = sprintf "%04d", $kateg;
       $KATn = $autkonv{$KAT};
@@ -534,6 +537,10 @@ while (($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<PER>)){
 	  if ( substr($inh,0,1) eq " " ){
 	    $inh =~ s/^ //;
 	  }
+
+	  # Schmutzzeichen weg
+	  $inh=~s/^ //;
+
 	  if ($inh ne ""){
 	    $SATZn{$uKATn} = $inh if ($uKATn ne "");
 	    $SATZ{$uKAT} = $inh;
@@ -591,6 +598,9 @@ while (($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<KOE>)){
 	$inh =~ s/^ //;
       }
 
+      # Schmutzzeichen weg
+      $inh=~s/^ //;
+
       $KAT = sprintf "%04d", $kateg;
       $KATn = $korkonv{$KAT};
       if ($inh ne ""){
@@ -614,6 +624,10 @@ while (($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<KOE>)){
 	  if ( substr($inh,0,1) eq " " ){
 	    $inh =~ s/^ //;
 	  }
+
+	  # Schmutzzeichen weg
+	  $inh=~s/^ //;
+
 	  if ($inh ne ""){
 	    $SATZ{$uKAT} = $inh;
 	    $SATZn{$uKATn} = $inh if ($uKATn ne "");
@@ -689,6 +703,9 @@ while (($katkey,$aktion,$reserv,$ansetzung,$daten) = split ("",<SYS>)){
 	$inh =~ s/^ //;
       }
 
+      # Schmutzzeichen weg
+      $inh=~s/^ //;
+
       $KAT = sprintf "%04d", $kateg;
       $KATn = $notkonv{$KAT};
       if ($inh ne ""){
@@ -712,6 +729,10 @@ while (($katkey,$aktion,$reserv,$ansetzung,$daten) = split ("",<SYS>)){
 	  if ( substr($inh,0,1) eq " " ){
 	    $inh =~ s/^ //;
 	  }
+
+	  # Schmutzzeichen weg
+	  $inh=~s/^ //;
+
 	  if ($inh ne ""){
 	    $SATZ{$uKAT} = $inh;
 	    $SATZn{$uKATn} = $inh if ($uKATn ne "");
@@ -770,6 +791,9 @@ while (($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<SWD>)){
 	$inh =~ s/^ //;
       }
 
+      # Schmutzzeichen weg
+      $inh=~s/^ //;
+
       $KAT = sprintf "%04d", $kateg;
       $KATn = $swtkonv{$KAT};
       if ($inh ne ""){
@@ -794,6 +818,10 @@ while (($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<SWD>)){
 	  if ( substr($inh,0,1) eq " " ){
 	    $inh =~ s/^ //;
 	  }
+
+	  # Schmutzzeichen weg
+	  $inh=~s/^ //;
+
 	  if ($inh ne ""){
 	    $SATZ{$uKAT} = $inh;
 	    $SATZn{$uKATn} = $inh if ($uKATn ne "");
@@ -886,6 +914,9 @@ while (($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split ("
 	$inh =~ s/^ //;
       }
 
+      # Schmutzzeichen weg
+      $inh=~s/^ //;
+
       $KAT = sprintf "%04d", $kateg;
       $SATZ{$KAT} = $inh;
       $i = $i + 4 + $len;
@@ -915,6 +946,10 @@ while (($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split ("
 	  if ( substr($inh,0,1) eq " " ){
 	    $inh =~ s/^ //;
 	  }
+
+	  # Schmutzzeichen weg
+	  $inh=~s/^ //;
+
 	  if ($inh ne ""){
 	    $SATZ{$uKAT} = $inh;
 	  }
@@ -974,11 +1009,15 @@ while (($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split ("
 	}
 
 	if ($line=~/^0004\.(...):(\d+)/) {
+	  print TIT "0004 IDN: $2\n";
+
 	  $verwidn[$1-1][0]=$2;
 	  $verwcount++;
 	}
       
         if ($line=~/^0451\.(\d\d\d):(.+?)$/) {
+	  print TIT "0451 $2\n";
+
 	  $position=int($1/4);
 	  $verwidn[$position][2]=$2;
 
@@ -1014,6 +1053,8 @@ while (($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split ("
 	}
 
 	if ($line=~/^0590\....:(.+)/) {
+	  print TIT "0590 $1\n";
+
 	  my $inhalt=$1;
 	  my $restinhalt="";
 
@@ -1122,6 +1163,8 @@ while (($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split ("
   # 089er verwenden, wenn genau eine 004 besetzt, aber keine 455/590
 
   if ($bandangvorl && $maxpos < 1 && $verwidn[0][3] eq ""){
+    print TIT "0451 $bandangvorl\n";
+
     $verwidn[0][3]=$bandangvorl;
   }
 

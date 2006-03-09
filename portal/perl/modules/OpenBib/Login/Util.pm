@@ -2,7 +2,7 @@
 #
 #  OpenBib::Login::Util
 #
-#  Dieses File ist (C) 2004-2005 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -21,7 +21,7 @@
 #  an die Free Software Foundation, Inc., 675 Mass Ave, Cambridge,
 #  MA 02139, USA.
 #
-#####################################################################
+#####################################################################   
 
 package OpenBib::Login::Util;
 
@@ -29,84 +29,67 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-use DBI;
 use Log::Log4perl qw(get_logger :levels);
+
+use DBI;
+
 use SOAP::Lite;
 
 use OpenBib::Config;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
+
 use vars qw(%config);
 
 *config=\%OpenBib::Config::config;
 
 sub authenticate_self_user {
-    my ($arg_ref) = @_;
+  my ($username,$pin,$userdbh,$sessionID)=@_;
 
-    # Set defaults
-    my $username            = exists $arg_ref->{username}
-        ? $arg_ref->{username}            : undef;
-    my $pin                 = exists $arg_ref->{pin}
-        ? $arg_ref->{pin}                 : undef;
-    my $userdbh             = exists $arg_ref->{userdbh}
-        ? $arg_ref->{userdbh}             : undef;
-    my $sessionID           = exists $arg_ref->{sessionID}
-        ? $arg_ref->{sessionID}           : undef;
-
-    # Log4perl logger erzeugen
+  # Log4perl logger erzeugen
   
-    my $logger = get_logger();
+  my $logger = get_logger();
 
-    my $userresult=$userdbh->prepare("select userid from user where loginname = ? and pin = ?") or $logger->error($DBI::errstr);
+  my $userresult=$userdbh->prepare("select userid from user where loginname = ? and pin = ?") or $logger->error($DBI::errstr);
   
-    $userresult->execute($username,$pin) or $logger->error($DBI::errstr);
+  $userresult->execute($username,$pin) or $logger->error($DBI::errstr);
 
-    my $res=$userresult->fetchrow_hashref();
+  my $res=$userresult->fetchrow_hashref();
 
-    my $userid=$res->{'userid'};
+  my $userid=$res->{'userid'};
   
-    return $userid;
+  return $userid;
 }
 
 sub authenticate_olws_user {
-    my ($arg_ref) = @_;
+  my ($username,$pin,$circcheckurl,$circdb)=@_;
 
-    # Set defaults
-    my $username            = exists $arg_ref->{username}
-        ? $arg_ref->{username}            : undef;
-    my $pin                 = exists $arg_ref->{pin}
-        ? $arg_ref->{pin}                 : undef;
-    my $circcheckurl        = exists $arg_ref->{circcheckurl}
-        ? $arg_ref->{circcheckurl}        : undef;
-    my $circdb              = exists $arg_ref->{circdb}
-        ? $arg_ref->{circdb}              : undef;
+  # Log4perl logger erzeugen
+  
+  my $logger = get_logger();
 
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
+  my $soap = SOAP::Lite
+  -> uri("urn:/Authentication")
+  -> proxy($circcheckurl);
 
-    my $soap = SOAP::Lite
-        -> uri("urn:/Authentication")
-            -> proxy($circcheckurl);
+  my $result = $soap->authenticate_user($username,$pin,$circdb);
 
-    my $result = $soap->authenticate_user($username,$pin,$circdb);
+  my %userinfo=();
 
-    my %userinfo=();
-
-    unless ($result->fault) {
-        if (defined $result->result) {
-            %userinfo = %{$result->result};
-            $userinfo{'erfolgreich'}="1";
-        }
-        else {
-            $userinfo{'erfolgreich'}="0";
-        }
+  unless ($result->fault) {
+    
+    if (defined $result->result){
+      %userinfo = %{$result->result};
+      $userinfo{'erfolgreich'}="1";
     }
     else {
-        $logger->error("SOAP Authentication Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+      $userinfo{'erfolgreich'}="0";
     }
+  } 
+  else {
+    $logger->error("SOAP Authentication Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+  }
   
-    return \%userinfo;
+  return \%userinfo;
 }
-
-1;

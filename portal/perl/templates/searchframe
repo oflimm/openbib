@@ -121,7 +121,7 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
 [% END %]
 
 [% IF showejahr %]
-<tr><td class="category">Jahr</td><td class="category">und<input type="hidden" name="bool7" value="AND" /></td><td><input type="text" name="ejahr" value="[% ejahr %]" size="4" maxlength="4" />&nbsp;<select name="ejahrop"><option value="%3D" selected="selected">genau</option><option value="%3E">j&uuml;nger</option><option value="%3C">&auml;lter</option></select></td><td></td></tr>
+<tr><td class="category">Jahr</td><td class="category">und<input type="hidden" name="bool7" value="AND" /></td><td><input type="text" name="ejahr" value="[% ejahr %]" size="4" maxlength="4" />&nbsp;<select name="ejahrop"><option value="eq" selected="selected">genau</option><option value="gt">j&uuml;nger</option><option value="lt">&auml;lter</option></select></td><td></td></tr>
 [% END %]
 
 </table></td>
@@ -184,7 +184,7 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
 
 <b>Insgesamt sind im KUG derzeit [% alldbcount %] Titel nachgewiesen.</b>
 <p />
-F&uuml;r Verbesserungsvorschl&auml;ge oder bei technischen Problemen k&ouml;nnen Sie uns unter <a href="http://www.ub.uni-koeln.de/usb-cgi/makeEmailPage.pl?adr0=kug" target="_blank">kug@ub.uni-koeln.de</a> erreichen.
+F&uuml;r Verbesserungsvorschl&auml;ge oder bei technischen Problemen k&ouml;nnen Sie uns unter <a href="http://www.ub.uni-koeln.de/usb-cgi/zms_makeEmail.pl?adr0=kug" target="_blank">kug@ub.uni-koeln.de</a> erreichen.
 
 </div>
 

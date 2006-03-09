@@ -9,7 +9,7 @@ create table session (
  benutzernr text,
  benutzerpin text,
  INDEX (sessionid),
- INDEX (benutzernr(255)),
+ INDEX (benutzernr(255))
 );
 
 create table treffer (
@@ -18,14 +18,14 @@ create table treffer (
  singleidn bigint,
  INDEX (sessionid),
  INDEX (dbname(255)),
- INDEX (singleidn),
+ INDEX (singleidn)
 );
 
 create table lastresultlist (
  sessionid VARCHAR(255) NOT NULL,
  dbname TEXT,
  singleidn bigint,
- index(sessionid),
+ index(sessionid)
 );
 
 create table sessionlog (
@@ -44,7 +44,7 @@ create table queries (
  INDEX (queryid),
  INDEX (sessionid),
  INDEX (query(255)),
- INDEX (dbases(255)),
+ INDEX (dbases(255))
 );
 
 create table dbchoice (
@@ -66,7 +66,7 @@ create table dbinfo (
  INDEX (dbid),
  INDEX (dbname),
  INDEX (active),
- INDEX (description(255)),
+ INDEX (description(255))
 );
 
 create table dboptions (
@@ -94,7 +94,7 @@ create table dboptions (
 create table titcount (
  dbname VARCHAR(255),
  count  BIGINT,
- INDEX (dbname),
+ INDEX (dbname)
 );
 
 create table searchresults (
@@ -114,7 +114,7 @@ create table viewinfo (
  description TEXT,
  active BOOL,
  INDEX (viewid)
- INDEX (viewname),
+ INDEX (viewname)
 );
 
 create table viewdbs (

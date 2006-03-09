@@ -15,7 +15,7 @@ Administrator anmelden.
 </table>
 
 <p />
-<form method="post" action="http://[% config.servername %][% config.admin_loc %]" enctype="application/x-www-form-urlencoded">
+<form method="post" action="http://[% config.servername %][% config.admin_loc %]">
 <table>
 <tr><td align="right"><b>Benutzername:</b></td><td><input type="text" name="user" /></td></tr>
 <tr><td align="right"><b>Passwort:</b></td><td><input type="password" name="passwd" /></td></tr>

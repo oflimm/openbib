@@ -257,7 +257,7 @@ sub handler {
   $isbn=OpenBib::VirtualSearch::Util::cleansearchterm($isbn);
   $issn=OpenBib::VirtualSearch::Util::cleansearchterm($issn);
   $mart=OpenBib::VirtualSearch::Util::cleansearchterm($mart);
-  $notation=OpenBib::VirtualSearch::Util::cleansearchterm($notation);
+  #$notation=OpenBib::VirtualSearch::Util::cleansearchterm($notation);
   $ejahr=OpenBib::VirtualSearch::Util::cleansearchterm($ejahr);
   $ejahrop=OpenBib::VirtualSearch::Util::cleansearchterm($ejahrop);
   
@@ -433,30 +433,16 @@ sub handler {
       # Eventuell bestehende Auswahl zuruecksetzen
       
       @databases=();
-
-      # Bei Einsprung ohne SessionID werden die Standard-DB's des Views
-      # verwendet
-      if ($sessionID == -1){
-	my $idnresult=$sessiondbh->prepare("select dbname from viewdbs where viewname = ?") or $logger->error($DBI::errstr);
-	$idnresult->execute($view) or $logger->error($DBI::errstr);
-	
-	while (my $result=$idnresult->fetchrow_hashref()){
-	  my $dbname=$result->{'dbname'};
-	  push @databases, $dbname;
-	}
-	$idnresult->finish();
+      
+      my $idnresult=$sessiondbh->prepare("select dbname from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
+      $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+      
+      while (my $result=$idnresult->fetchrow_hashref()){
+	my $dbname=$result->{'dbname'};
+	push @databases, $dbname;
       }
-      # Ansonsten die in der Session konkret ausgewaehlten DB's
-      else {
-	my $idnresult=$sessiondbh->prepare("select dbname from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
-	$idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-	
-	while (my $result=$idnresult->fetchrow_hashref()){
-	  my $dbname=$result->{'dbname'};
-	  push @databases, $dbname;
-	}
-	$idnresult->finish();
-      }
+      $idnresult->finish();
+      
     }
     
     # Wenn ein anderes Profil als 'dbauswahl' ausgewaehlt wuerde
@@ -490,6 +476,17 @@ sub handler {
 	  push @databases, $idnres[0];
 	}
 	$idnresult->finish();
+      }
+      elsif ($profil eq "viewdbs"){
+        # Datenbanken des Views
+        my $idnresult=$sessiondbh->prepare("select dbname from viewdbs where viewname = ?"
+					  ) or $logger->error($DBI::errstr);
+        $idnresult->execute($view) or $logger->error($DBI::errstr);
+
+        while (my @idnres=$idnresult->fetchrow){
+          push @databases, $idnres[0];
+        }
+        $idnresult->finish();
       }
       else {
 	my $idnresult=$sessiondbh->prepare("select dbname from dbinfo where active=1 and faculty = ? order by faculty,dbname") or $logger->error($DBI::errstr);
@@ -1338,7 +1335,7 @@ UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&oum
 	my $yamlres=YAML::Dump($res);
 
 
-	$logger->info("YAML-Dumped: $yamlres");
+	$logger->debug("YAML-Dumped: $yamlres");
 	my $num=$dbhits{$db};
 	$idnresult->execute($sessionID,$db,$yamlres,$num,$queryid) or $logger->error($DBI::errstr);
       }

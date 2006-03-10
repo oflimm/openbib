@@ -46,9 +46,90 @@
 [% IF normkat.type == 'simple_category' %]
 <tr><td class="category">[% utf2iso(normkat.desc) %]</td><td>[% utf2iso(normkat.contents) %]</td></tr>
 [% ELSIF normkat.type == 'url_category' %]
+[% IF normkat.desc == 'Notation' ;
+   rssid = normkat.url.match('notation=(\d+)').0 ;
+%]
+<tr><td class="category">[% utf2iso(normkat.desc) %]</td><td>
+[% IF activefeed.5 %]
+<a
+href="[% config.connector_rss_loc %]/neuzugang_nach_sys/[% rssid %]/[%
+database %].rdf" target="_blank"><img
+src="/images/openbib/rssfeed.png"></a>&nbsp;
+[% END %]
+<a href="[% utf2iso(normkat.globalurl) %]" title="Begriff in allen Katalogen suchen"><span class="globalsearch">G</span></a>&nbsp;<a href="[% utf2iso(normkat.url) %]" title="Begriff in diesem Katalog suchen">[% utf2iso(normkat.contents) %]</a>&nbsp;[% utf2iso(normkat.supplement) %]</td></tr>
+[% ELSE %]
 <tr><td class="category">[% utf2iso(normkat.desc) %]</td><td><a href="[% utf2iso(normkat.url) %]">[% utf2iso(normkat.contents) %]</a> [% utf2iso(normkat.supplement) %]</td></tr>
+[% END %]
 [% ELSIF normkat.type == 'url_category_global' %]
+[% IF normkat.desc == 'Verfasser' ;
+   rssid = normkat.url.match('verf=(\d+)').0 ;
+%]
+<tr><td class="category">[% utf2iso(normkat.desc) %]</td><td>
+[% IF activefeed.2 %]
+<a
+href="[% config.connector_rss_loc %]/neuzugang_nach_aut/[% rssid %]/[%
+database %].rdf" target="_blank"><img
+src="/images/openbib/rssfeed.png"></a>&nbsp;
+[% END %]
+<a href="[% utf2iso(normkat.globalurl) %]" title="Begriff in allen Katalogen suchen"><span class="globalsearch">G</span></a>&nbsp;<a href="[% utf2iso(normkat.url) %]" title="Begriff in diesem Katalog suchen">[% utf2iso(normkat.contents) %]</a>&nbsp;[% utf2iso(normkat.supplement) %]</td></tr>
+[% ELSIF normkat.desc == 'Person' ;
+   rssid = normkat.url.match('pers=(\d+)').0 ;
+%]
+<tr><td class="category">[% utf2iso(normkat.desc) %]</td><td>
+[% IF activefeed.2 %]
+<a
+href="[% config.connector_rss_loc %]/neuzugang_nach_aut/[% rssid %]/[%
+database %].rdf" target="_blank"><img
+src="/images/openbib/rssfeed.png"></a>&nbsp;
+[% END %]
+<a href="[% utf2iso(normkat.globalurl) %]" title="Begriff in allen Katalogen suchen"><span class="globalsearch">G</span></a>&nbsp;<a href="[% utf2iso(normkat.url) %]" title="Begriff in diesem Katalog suchen">[% utf2iso(normkat.contents) %]</a>&nbsp;[% utf2iso(normkat.supplement) %]</td></tr>
+[% ELSIF normkat.desc == 'Gefeierte Person' ;
+   rssid = normkat.url.match('pers=(\d+)').0 ;
+%]
+<tr><td class="category">[% utf2iso(normkat.desc) %]</td><td>
+[% IF activefeed.2 %]
+<a
+href="[% config.connector_rss_loc %]/neuzugang_nach_aut/[% rssid %]/[%
+database %].rdf" target="_blank"><img
+src="/images/openbib/rssfeed.png"></a>&nbsp;
+[% END %]
+<a href="[% utf2iso(normkat.globalurl) %]" title="Begriff in allen Katalogen suchen"><span class="globalsearch">G</span></a>&nbsp;<a href="[% utf2iso(normkat.url) %]" title="Begriff in diesem Katalog suchen">[% utf2iso(normkat.contents) %]</a>&nbsp;[% utf2iso(normkat.supplement) %]</td></tr>
+[% ELSIF normkat.desc == 'K&ouml;rperschaft' ;
+   rssid = normkat.url.match('kor=(\d+)').0 ;
+%]
+<tr><td class="category">[% utf2iso(normkat.desc) %]</td><td>
+[% IF activefeed.3 %]
+<a
+href="[% config.connector_rss_loc %]/neuzugang_nach_kor/[% rssid %]/[%
+database %].rdf" target="_blank"><img
+src="/images/openbib/rssfeed.png"></a>&nbsp;
+[% END %]
+<a href="[% utf2iso(normkat.globalurl) %]" title="Begriff in allen Katalogen suchen"><span class="globalsearch">G</span></a>&nbsp;<a href="[% utf2iso(normkat.url) %]" title="Begriff in diesem Katalog suchen">[% utf2iso(normkat.contents) %]</a>&nbsp;[% utf2iso(normkat.supplement) %]</td></tr>
+[% ELSIF normkat.desc == 'Urheber' ;
+   rssid = normkat.url.match('urh=(\d+)').0 ;
+%]
+<tr><td class="category">[% utf2iso(normkat.desc) %]</td><td>
+[% IF activefeed.3 %]
+<a
+href="[% config.connector_rss_loc %]/neuzugang_nach_kor/[% rssid %]/[%
+database %].rdf" target="_blank"><img
+src="/images/openbib/rssfeed.png"></a>&nbsp;
+[% END %]
+<a href="[% utf2iso(normkat.globalurl) %]" title="Begriff in allen Katalogen suchen"><span class="globalsearch">G</span></a>&nbsp;<a href="[% utf2iso(normkat.url) %]" title="Begriff in diesem Katalog suchen">[% utf2iso(normkat.contents) %]</a>&nbsp;[% utf2iso(normkat.supplement) %]</td></tr>
+[% ELSIF normkat.desc == 'Schlagwort' ;
+   rssid = normkat.url.match('swt=(\d+)').0 ;
+%]
+<tr><td class="category">[% utf2iso(normkat.desc) %]</td><td>
+[% IF activefeed.4 %]
+<a
+href="[% config.connector_rss_loc %]/neuzugang_nach_swt/[% rssid %]/[%
+database %].rdf" target="_blank"><img
+src="/images/openbib/rssfeed.png"></a>&nbsp;
+[% END %]
+<a href="[% utf2iso(normkat.globalurl) %]" title="Begriff in allen Katalogen suchen"><span class="globalsearch">G</span></a>&nbsp;<a href="[% utf2iso(normkat.url) %]" title="Begriff in diesem Katalog suchen">[% utf2iso(normkat.contents) %]</a>&nbsp;[% utf2iso(normkat.supplement) %]</td></tr>
+[% ELSE %]
 <tr><td class="category">[% utf2iso(normkat.desc) %]</td><td><a href="[% utf2iso(normkat.globalurl) %]" title="Begriff in allen Katalogen suchen"><span class="globalsearch">G</span></a>&nbsp;<a href="[% utf2iso(normkat.url) %]" title="Begriff in diesem Katalog suchen">[% utf2iso(normkat.contents) %]</a>&nbsp;[% utf2iso(normkat.supplement) %]</td></tr>
+[% END %]
 [% END %]
 [%- END -%]
 </table>

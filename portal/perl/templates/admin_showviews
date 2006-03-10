@@ -43,11 +43,12 @@ Um einen bereits existierenden View zu bearbeiten klicken Sie bitte auf den View
 <p />
 
 <table>
-<tr><td><b>Viewname</b></td><td><b>Beschreibung</b></td><td><b>Datenbanken</b></td><td><b>Aktiv</b></td></tr>
+<tr><td><b>Viewname</b></td><td><b>RSS</b></td><td><b>Beschreibung</b></td><td><b>Datenbanken</b></td><td><b>Aktiv</b></td></tr>
 
 [% FOREACH view IN views %]
 
-<tr><td>[% view.viewname %]</td><td><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=editview&viewid=[% view.viewid %]&viewaction=Bearbeiten">[% view.description %]</a></td><td>[% view.viewdb %]</td><td>[% view.active %]</td></tr>
+<tr><td>[% view.viewname %]</td><td align="center"><a href="http://[%
+config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=editviewrss&viewid=[% view.viewid %];viewrssaction=Bearbeiten"><img src="/images/openbib/rssfeed.png"></a></td><td><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=editview&viewid=[% view.viewid %]&viewaction=Bearbeiten">[% view.description %]</a></td><td>[% view.viewdb %]</td><td>[% view.active %]</td></tr>
 [% END %]
 
 </table>

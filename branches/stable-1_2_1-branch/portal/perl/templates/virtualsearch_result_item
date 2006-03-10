@@ -1,5 +1,7 @@
 <!-- Beginn Result Item -->
-<tr class="titlerow"><td>&nbsp;</td><td>[% dbinfo %]</td><td align="right" colspan="3"><strong>[% treffer %] Treffer</strong></td></tr>
+<tr class="titlerow"><td>&nbsp;</td><td>[% dbinfo %]</td><td
+align="right" colspan="3"><strong>[%- IF treffer == maxhits
+-%]<a href="/suchhilfe.html#recherche">mind.&nbsp;[% treffer %] Treffer</a>[% ELSE %][% treffer %] Treffer[%- END -%]</strong></td></tr>
 
 [% listrow = 'listrow2' %]
 [%- FOREACH item IN resultlist -%]

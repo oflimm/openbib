@@ -37,6 +37,11 @@ b {
   color: #000000;
 }
 
+dt {
+  font-size: 1.1em;  
+  padding: 2px;
+}
+
 img {
   border: 0;
 }

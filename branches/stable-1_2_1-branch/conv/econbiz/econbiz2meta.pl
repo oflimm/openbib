@@ -7,7 +7,7 @@
 #  Konverierung von Econbiz-Daten in das Meta-Format
 #  ueber die Zwischenstation des OAI-Formats
 #
-#  Dieses File ist (C) 2004 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -54,6 +54,15 @@ while (my $res=$result->fetchrow_hashref){
    chomp($pid);
    chomp($hst);
    chomp($lang);
+
+   my $datecre=$dbh->prepare("select dc_dat_met_cre from ppg where pid=$pid");
+   $datecre->execute();
+
+   while (my $res=$datecre->fetchrow_hashref){
+     my $date=$res->{'dc_dat_met_cre'};
+     chomp($date);
+     print "CD==$date\n";
+   }
 
    my $urhresult=$dbh->prepare("select cnt from dc_cre_per_nam where pid=$pid");
    $urhresult->execute();

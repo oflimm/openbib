@@ -18,7 +18,7 @@
 #  Programm, Konvertierungsroutinen in das Metaformat
 #  und generelle Optimierung auf Bulk-Konvertierungen
 #
-#  Copyright 2003-2005 Oliver Flimm
+#  Copyright 2003-2006 Oliver Flimm
 #                      <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
@@ -371,6 +371,46 @@ my %swtkonv=(
 	   "0710.028" => "5650.028 ", # Schlagwort
 	   "0710.029" => "5650.029 ", # Schlagwort
 	   "0710.030" => "5650.030 ", # Schlagwort
+	   "0710.031" => "5650.031 ", # Schlagwort
+	   "0710.032" => "5650.032 ", # Schlagwort
+	   "0710.033" => "5650.033 ", # Schlagwort
+	   "0710.034" => "5650.034 ", # Schlagwort
+	   "0710.035" => "5650.035 ", # Schlagwort
+	   "0710.036" => "5650.036 ", # Schlagwort
+	   "0710.037" => "5650.037 ", # Schlagwort
+	   "0710.038" => "5650.038 ", # Schlagwort
+	   "0710.039" => "5650.039 ", # Schlagwort
+	   "0710.040" => "5650.040 ", # Schlagwort
+	   "0710.041" => "5650.041 ", # Schlagwort
+	   "0710.042" => "5650.042 ", # Schlagwort
+	   "0710.043" => "5650.043 ", # Schlagwort
+	   "0710.044" => "5650.044 ", # Schlagwort
+	   "0710.045" => "5650.045 ", # Schlagwort
+	   "0710.046" => "5650.046 ", # Schlagwort
+	   "0710.047" => "5650.047 ", # Schlagwort
+	   "0710.048" => "5650.048 ", # Schlagwort
+	   "0710.049" => "5650.049 ", # Schlagwort
+	   "0710.050" => "5650.050 ", # Schlagwort
+	   "0710.051" => "5650.051 ", # Schlagwort
+	   "0710.052" => "5650.052 ", # Schlagwort
+	   "0710.053" => "5650.053 ", # Schlagwort
+	   "0710.054" => "5650.054 ", # Schlagwort
+	   "0710.055" => "5650.055 ", # Schlagwort
+	   "0710.056" => "5650.056 ", # Schlagwort
+	   "0710.057" => "5650.057 ", # Schlagwort
+	   "0710.058" => "5650.058 ", # Schlagwort
+	   "0710.059" => "5650.059 ", # Schlagwort
+	   "0710.060" => "5650.060 ", # Schlagwort
+	   "0710.061" => "5650.061 ", # Schlagwort
+	   "0710.062" => "5650.062 ", # Schlagwort
+	   "0710.063" => "5650.063 ", # Schlagwort
+	   "0710.064" => "5650.064 ", # Schlagwort
+	   "0710.065" => "5650.065 ", # Schlagwort
+	   "0710.066" => "5650.066 ", # Schlagwort
+	   "0710.067" => "5650.067 ", # Schlagwort
+	   "0710.068" => "5650.068 ", # Schlagwort
+	   "0710.069" => "5650.069 ", # Schlagwort
+	   "0710.070" => "5650.070 ", # Schlagwort
 	   "0710.150" => "5650.200 ", # Schlagwort
 	   "0710.151" => "5650.201 ", # Schlagwort
 	   "0710.152" => "5650.202 ", # Schlagwort
@@ -490,6 +530,8 @@ close(TEXCL);
 open(PER,"$bcppath/per_daten.bcp");
 open(AUT,"|gzip >./aut.exp.gz");
 open(PERSIK,"|gzip > ./unload.PER.gz");
+binmode(PERSIK, ":utf8");
+
 while (($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<PER>)){
   next if ($aktion ne "0");
   $BLOB = $daten;
@@ -577,6 +619,8 @@ close(PER);
 open(KOE,"$bcppath/koe_daten.bcp");
 open(KOR,"| gzip >./kor.exp.gz");
 open(KOESIK,"| gzip >./unload.KOE.gz");
+binmode(KOESIK, ":utf8");
+
 while (($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<KOE>)){
   next if ($aktion ne "0");
   $BLOB = $daten;
@@ -682,6 +726,8 @@ close(KOE);
 open(SYS,"$bcppath/sys_daten.bcp");
 open(NOTA,"| gzip >./not.exp.gz");
 open(SYSSIK,"| gzip >./unload.SYS.gz");
+binmode(SYSSIK, ":utf8");
+
 while (($katkey,$aktion,$reserv,$ansetzung,$daten) = split ("",<SYS>)){
   next if ($aktion ne "0");
   $BLOB = $daten;
@@ -769,6 +815,8 @@ close(SYS);
 open(SWD,"$bcppath/swd_daten.bcp");
 open(SWT,"| gzip >./swt.exp.gz");
 open(SWDSIK,"| gzip >./unload.SWD.gz");
+binmode(SWDSIK, ":utf8");
+
 while (($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<SWD>)){
   next if ($aktion ne "0");
   $BLOB = $daten;
@@ -860,6 +908,26 @@ while (($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<SWD>)){
   printf SWT "6510 $schlagw\n" if ($schlagw !~ /idn:/);
 
 
+  # Schlagwortsonderbehandlung SIKIS
+
+  @swtkette=();
+  foreach $key (sort {$b cmp $a} keys %SATZ){
+    if ($key =~/^0001/){
+       $SATZ{$key}=~s/^[a-z]([A-Z0-9¬])/$1/;
+      push @swtkette, konv($SATZ{$key});
+    }
+  }
+
+  if ($#swtkette > 0){
+    $schlagw=join (" / ",reverse @swtkette);
+
+  }
+  else {
+    $schlagw=$swtkette[0];
+  }
+
+  printf SWDSIK "0001.001:$schlagw\n" if ($schlagw !~ /idn:/);
+
   # Jetzt den Rest ausgeben.
 
   foreach $key (sort {$b cmp $a} keys %SATZn){
@@ -872,6 +940,9 @@ while (($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<SWD>)){
   }
 
   foreach $key (sort {$b cmp $a} keys %SATZ){
+    next if ($key=~/^0001/); # Sonderbehandlung (s.o.)
+    # etwaige Indikatoren ausfiltern
+    $SATZ{$key}=~s/^[a-z]([A-Z0-9¬])/$1/;
     printf SWDSIK $key.":".konv($SATZ{$key})."\n" if ($SATZ{$key} !~ /idn:/);
   }
 
@@ -888,6 +959,8 @@ close(SWD);
 open(TITEL,"$bcppath/titel_daten.bcp");
 open(TIT,"| gzip >./tit.exp.gz");
 open(TITSIK,"| gzip >./unload.TIT.gz");
+binmode(TITSIK, ":utf8");
+
 while (($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split ("",<TITEL>)){
   next if ($aktion ne "0");
   next if ($titelexclude{"$katkey"} eq "excluded");

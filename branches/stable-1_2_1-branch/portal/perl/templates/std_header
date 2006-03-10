@@ -21,6 +21,9 @@
     </style>
 
     <link href="/images/openbib/favicon.ico" rel="shortcut icon" />
+[%- IF view && primrssfeed -%]
+    <link rel="alternate" type="application/rss+xml" title="RDF-Datei" href="[% primrssfeed %]">
+[%- END -%]
 
     <title>[% title %]</title>
   </head>

@@ -1,0 +1,31 @@
+[%#-
+#######################################################################
+#
+# Templatename: connector_rss_item
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Beschreibung eines RSS-Feed-Items
+#
+#######################################################################
+-%]
+<![CDATA[
+[%- IF item.verfasser -%]
+[% item.verfasser %]<br />
+[%- END -%]
+[%- IF item.title -%]
+<b>[% item.title %]</b><br />
+[%- END -%]
+[%- IF item.publisher -%]
+[% item.publisher %]<br />
+[%- END -%]
+[%- IF item.ausg -%]
+[% item.ausg %]<br />
+[%- END -%]
+[%- IF item.erschjahr -%]
+[% item.erschjahr %]<br />
+[%- END -%]
+(Zugangsdatum: [% date %])<br />
+]]>

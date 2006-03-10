@@ -112,6 +112,7 @@ create table viewinfo (
  viewid BIGINT AUTO_INCREMENT PRIMARY KEY,
  viewname VARCHAR(20),
  description TEXT,
+ rssfeed     BIGINT,
  active BOOL,
  INDEX (viewid)
  INDEX (viewname)
@@ -143,4 +144,42 @@ create table sessionprofile (
  profile text NOT NULL,
  INDEX (sessionid)
 );
+
+drop table IF EXISTS viewrssfeeds;
+CREATE TABLE viewrssfeeds (
+ viewname VARCHAR(20),
+ rssfeed   BIGINT NOT NULL,
+
+ INDEX(viewname),
+ INDEX(rssfeed)
+);
+
+drop table IF EXISTS rssfeeds;
+create table rssfeeds (
+ id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+ dbname      VARCHAR(255) NOT NULL,
+ type        SMALLINT,
+ subtype     SMALLINT,
+ subtypedesc TEXT,
+ active      TINYINT,
+
+ INDEX (dbname),
+ INDEX (type),
+ INDEX (subtype)
+);
+
+drop table IF EXISTS rsscache;
+create table rsscache (
+dbname  VARCHAR(255) NOT NULL,
+tstamp  TIMESTAMP,
+type    TINYINT  NOT NULL,
+subtype SMALLINT,
+content TEXT,
+INDEX   (dbname),
+INDEX   (tstamp),
+INDEX   (type),
+INDEX   (subtype)
+);
+
+
 

@@ -46,7 +46,7 @@ selected>Nein</option></select></td><td><input type="submit" name="cataction" va
 <tr><th>Bereits existierende Kataloge</th></tr>
 <tr><td class="boxedclear" style="font-size:12pt">
 <table>
-<tr><td><b>Fakult&auml;t</b></td><td><b>Beschreibung</b></td><td><b>System</b></td><td>
+<tr><td><b>Fakult&auml;t</b></td><td><b>RSS</b></td><td><b>Beschreibung</b></td><td><b>System</b></td><td>
 <b>DB-Name</b></td><td><b>Sigel</b></td><td>URL</td><td><b>Aktiv</b></td><td><b>Auto-Konv</b></td><td><b>Titel-Anzahl</b></td></tr>
 
 [% FOREACH katalog IN kataloge %]
@@ -54,7 +54,9 @@ selected>Nein</option></select></td><td><input type="submit" name="cataction" va
 [% IF katalog.active == 1%]
  bgcolor="aliceblue"
 [% END %]
-><td>[% katalog.faculty %]</td><td><a href="http://[%
+><td>[% katalog.faculty %]</td><td align="center"><a href="http://[%
+config.servername %][% config.admin_loc %]?sessionID=[% sessionID
+%]&action=editcatrss&dbid=[% katalog.dbid %];catrssaction=Bearbeiten"><img src="/images/openbib/rssfeed.png"></a></td><td><a href="http://[%
 config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=editcat&dbid=[% katalog.dbid %]&cataction=Bearbeiten">[% katalog.description %]</a></td><td>[% katalog.system %]</td><td>[% katalog.dbname %]</td><td>[% katalog.sigel %]</td><td>[%katalog.url %]</td><td align="center">
 
 [% IF katalog.active == 1 %]

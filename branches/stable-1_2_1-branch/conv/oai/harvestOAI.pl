@@ -6,7 +6,7 @@
 #
 #  Abzug eines OAI-Repositories
 #
-#  Dieses File ist (C) 2003-2004 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2003-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -34,6 +34,7 @@
 use Getopt::Long;
 
 use OAI2::Harvester;
+use XML::DOM;
 
 use OpenBib::Config;
 
@@ -85,6 +86,20 @@ while( my $rec = $response->next ) {
 
 #  print $dom->toString;
 
+  # Datum
+
+  my $dates=$dom->getElementsByTagName("dc:date");
+
+  for (my $i=0; $i < $dates->getLength; $i++){
+    my $date=$dates->item($i)->getFirstChild();
+
+    if ($date){
+      $date=$date->getData();
+      
+      print "CD==$date\n";
+    }
+  }
+  
   # Author -> Verfasser
 
   my $authors=$dom->getElementsByTagName("dc:creator");

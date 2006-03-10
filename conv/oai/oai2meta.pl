@@ -6,7 +6,7 @@
 #
 #  Konverierung von OAI-Daten in das Meta-Format
 #
-#  Dieses File ist (C) 2003-2004 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2003-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -52,8 +52,8 @@ $bufferidx=0;
 
 $viaidn=1;
 
-$date=`date '+%Y%m%d'`;
-chop $date;
+#$date=`date '+%Y%m%d'`;
+#chop $date;
 
 $starttitidn=1;
 $startautidn=1;
@@ -66,6 +66,7 @@ $startmexidn=1;
 	 '50 ','8050 ',    # URL
 	 '51 ','4500 ',    # HSFN
 	 '74 ','4000 ',
+	 'cd ','SDN  ',         
 	 '75 ','4002 ',
 	 '76 ','4040 ',
 	 '87 ','4600 ',
@@ -101,6 +102,7 @@ convert_reorgbuffer();
 
 sub kategorien {
     my $line=shift @_;
+    $line=~s/^CD==/cd /;    
     $line=~s/^AU==/40 /;
     $line=~s/^TI==/20 /;
     $line=~s/^WT==/21 /; # Weitere Titel
@@ -271,6 +273,10 @@ sub convert_reorgbuffer {
         if ($kennung eq "85 ")
 	  {
             $serie=1;
+	  }
+        if ($kennung eq "cd ")
+	  {
+            $date=substr($reorgbuf[$i],3,length($reorgbuf[$i])-3);
 	  }
         if ($kennung eq "90 ")
 	  {

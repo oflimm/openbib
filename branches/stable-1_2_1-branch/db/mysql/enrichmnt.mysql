@@ -1,0 +1,25 @@
+-------------------------------------------------
+--------------- T A B E L L E N -----------------
+-------------------------------------------------
+
+drop table IF EXISTS search;
+create table search (
+isbn      CHAR(14) NOT NULL,
+origin    SMALLINT,
+content   TEXT,
+index     (isbn),
+index     (origin),
+FULLTEXT  (content)
+);
+
+drop table IF EXISTS normdata;
+create table normdata (
+ isbn          CHAR(14) NOT NULL,
+ origin        SMALLINT,
+ category      SMALLINT NOT NULL,
+ indicator     SMALLINT,
+ content       TEXT NOT NULL,
+ index         (isbn),
+ index         (origin)
+);
+

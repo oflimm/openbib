@@ -287,6 +287,15 @@ sub handler {
     }
 
     $idnresult->finish();
+
+    if ($#dbidnlist < 0){
+      OpenBib::Common::Util::print_warning("Derzeit ist Ihre Merkliste leer",$r);
+
+      $sessiondbh->disconnect();
+      $userdbh->disconnect();
+      
+      return OK;
+    }
     
     foreach my $dbidn (@dbidnlist){
       my $database=@{$dbidn}{database};

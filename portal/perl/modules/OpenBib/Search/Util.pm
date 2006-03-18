@@ -2411,19 +2411,22 @@ sub get_tit_set_by_idn {
           
           $isbn =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10/g;
           
-          my $reqstring="select category,content from normdata where isbn=?";
+          my $reqstring="select category,content from normdata where isbn=? order by category ASC";
           my $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
           $request->execute($isbn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
 
           my $categorynames_ref = {
-              T3001 => { type => "url",
-                         desc => "TOC-URL / HTML",
+              T3001 => { type    => "url",
+                         desc    => "TOC / &Uuml;bersicht",
+                         content => "<img src=\"/images/openbib/html.png\">&nbsp;Digitalisiertes Inhaltsverzeichnis (&Uuml;bersicht)",
                      },
-              T3002 => { type => "url",
-                         desc => "TOC-URL / TIFF",
-                     },
+#              T3002 => { type => "url",
+#                         desc => "TOC / TIFF",
+#                         content => "<img src=\"/images/openbib/image.png\">&nbsp;Digitalisiertes Inhaltsverzeichnis (Tiff-Format)",
+#                     },
               T3003 => { type => "url",
-                         desc => "TOC-URL / PDF",
+                         desc => "TOC / PDF",
+                         content => "<img src=\"/images/openbib/pdf-document.png\">&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)",
                      },
           };
 
@@ -2433,7 +2436,7 @@ sub get_tit_set_by_idn {
 
               if (exists $categorynames_ref->{$category}){
                   if ($categorynames_ref->{$category}->{type} eq "url"){
-                      push @normset, set_url_category($categorynames_ref->{$category}->{desc},$content,$content);
+                      push @normset, set_url_category($categorynames_ref->{$category}->{desc},$content,$categorynames_ref->{$category}->{content});
                   }
               }
               else {
@@ -3992,8 +3995,9 @@ sub initital_search_for_titidns {
   my @hststringidns;
   
   if ($hststring){
+    $hststring=~s/\*$/%/;
     $hststring=OpenBib::Search::Util::input2sgml($hststring,1,$withumlaut);
-    $hststring="(search.hststring = '$hststring')";
+    $hststring="(search.hststring like '$hststring')";
   }
   
   my $ejtest;

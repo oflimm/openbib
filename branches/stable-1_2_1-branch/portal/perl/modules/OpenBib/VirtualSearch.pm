@@ -253,7 +253,7 @@ sub handler {
 
   $swt=OpenBib::VirtualSearch::Util::cleansearchterm($swt);
   $kor=OpenBib::VirtualSearch::Util::cleansearchterm($kor);
-  $sign=OpenBib::VirtualSearch::Util::cleansearchterm($sign);
+  #$sign=OpenBib::VirtualSearch::Util::cleansearchterm($sign);
   $isbn=OpenBib::VirtualSearch::Util::cleansearchterm($isbn);
   $issn=OpenBib::VirtualSearch::Util::cleansearchterm($issn);
   $mart=OpenBib::VirtualSearch::Util::cleansearchterm($mart);

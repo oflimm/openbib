@@ -395,6 +395,12 @@ sub cleansearchterm {
 
   $term=~s/\'/ /g;
 
+  # Fall: C++, C# und .Net
+  $term=~s/(?<=(\w|\+))\+/plus/g;
+  $term=~s/(c)\#/$1sharp/ig;
+  $term=~s/\.(net)\#/dot$1/ig;
+
+
   return $term;
 }
 

@@ -466,6 +466,11 @@ sub speziellegrundform {
 
     # Doublequotes haben in WAIS nichts zu suchen
 
+    # Fall C++, C# und .net
+    $line=~s/(?<=(\w|\+))\+/plus/g;
+    $line=~s/(c)\#/$1sharp/ig;
+    $line=~s/\.(net)\#/dot$1/ig;
+    
     $line=~s/\"//g;
     $line=~s/'/ /g;
 

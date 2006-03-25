@@ -41,6 +41,7 @@ use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
+use Storable ();
 use Template;
 
 use OpenBib::Common::Util;
@@ -278,9 +279,9 @@ sub handler {
 
     while (my $result=$idnresult->fetchrow_hashref()) {
         push @queries, {
-            id          => decode_utf8($res->{queryid}),
-            searchquery => Storable::thaw(pack "H*",$res->{query}),
-            hits        => decode_utf8($res->{hits}),
+            id          => decode_utf8($result->{queryid}),
+            searchquery => Storable::thaw(pack "H*",$result->{query}),
+            hits        => decode_utf8($result->{hits}),
         };
     }
 

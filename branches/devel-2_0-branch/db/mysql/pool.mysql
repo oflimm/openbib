@@ -336,8 +336,8 @@ PACK_KEYS=1;
 drop table IF EXISTS titlistitem;
 create table titlistitem (
 id       MEDIUMINT NOT NULL,
-listitem TEXT,
+listitem BLOB,
 PRIMARY KEY (id)
 )
-DEFAULT CHARACTER SET utf8
+DEFAULT CHARACTER SET latin1
 PACK_KEYS=1;

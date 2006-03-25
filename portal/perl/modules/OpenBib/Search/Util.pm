@@ -2,7 +2,7 @@
 #
 #  OpenBib::Search::Util
 #
-#  Dieses File ist (C) 2004-2005 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -614,7 +614,7 @@ sub get_tit_listitem_by_idn {
 
     my $use_titlistitem_table=0;
 
-    if ($database eq "inst105"){
+    if ($database eq "inst006"){
         $use_titlistitem_table=1;
     }
 
@@ -642,10 +642,13 @@ sub get_tit_listitem_by_idn {
             my $titlistitem     = $res->{listitem};
             $logger->debug("Storable::listitem: $titlistitem");
 
-            my $encoding_type="base64";
+            my $encoding_type="hex";
 
             if    ($encoding_type eq "base64"){
                 $titlistitem = MIME::Base64::decode($titlistitem);
+            }
+            elsif ($encoding_type eq "hex"){
+                $titlistitem = pack "H*",$titlistitem;
             }
             elsif ($encoding_type eq "uu"){
                 $titlistitem = unpack "u",$titlistitem;
@@ -1615,116 +1618,6 @@ sub get_mex_set_by_idn {
     return $normset_ref;
 }
 
-#####################################################################
-## input2sgml(line,initialsearch): Wandle die Eingabe line
-##                   nach SGML um.Wwenn die
-##                   Anfangs-Suche via SQL-Datenbank stattfindet
-##                   Keine Umwandlung bei Anfangs-Suche
-
-sub input2sgml {
-    my ($line,$initialsearch)=@_;
-
-    # Bei der initialen Suche via Volltext wird eine Normierung auf
-    # ausgeschriebene Umlaute und den Grundbuchstaben bei Diakritika
-    # vorgenommen
-    if ($initialsearch) {
-        $line=~s/ü/ue/g;
-        $line=~s/ä/ae/g;
-        $line=~s/ö/oe/g;
-        $line=~s/Ü/Ue/g;
-        $line=~s/Ä/Ae/g;
-        $line=~s/Ö/Oe/g;
-        $line=~s/ß/ss/g;
-    
-        # Weitere Diakritika
-        $line=~s/è/e/g;
-        $line=~s/à/a/g;
-        $line=~s/ò/o/g;
-        $line=~s/ù/u/g;
-        $line=~s/È/e/g;
-        $line=~s/À/a/g;
-        $line=~s/Ò/o/g;
-        $line=~s/Ù/u/g;
-        $line=~s/é/e/g;
-        $line=~s/É/E/g;
-        $line=~s/á/a/g;
-        $line=~s/Á/a/g;
-        $line=~s/í/i/g;
-        $line=~s/Í/I/g;
-        $line=~s/ó/o/g;
-        $line=~s/Ó/O/g;
-        $line=~s/ú/u/g;
-        $line=~s/Ú/U/g;
-        $line=~s/ý/y/g;
-        $line=~s/Ý/Y/g;
-    
-        if ($line=~/\"/) {
-            $line=~s/`/ /g;
-        }
-        else {
-            $line=~s/`/ +/g;
-        }
-        return $line;
-    }
-  
-    $line=~s/ü/\&uuml\;/g;	
-    $line=~s/ä/\&auml\;/g;
-    $line=~s/ö/\&ouml\;/g;
-    $line=~s/Ü/\&Uuml\;/g;
-    $line=~s/Ä/\&Auml\;/g;
-    $line=~s/Ö/\&Ouml\;/g;
-    $line=~s/ß/\&szlig\;/g;
-  
-    $line=~s/É/\&Eacute\;/g;	
-    $line=~s/È/\&Egrave\;/g;	
-    $line=~s/Ê/\&Ecirc\;/g;	
-    $line=~s/Á/\&Aacute\;/g;	
-    $line=~s/À/\&Agrave\;/g;	
-    $line=~s/Â/\&Acirc\;/g;	
-    $line=~s/Ó/\&Oacute\;/g;	
-    $line=~s/Ò/\&Ograve\;/g;	
-    $line=~s/Ô/\&Ocirc\;/g;	
-    $line=~s/Ú/\&Uacute\;/g;	
-    $line=~s/Ù/\&Ugrave\;/g;	
-    $line=~s/Û/\&Ucirc\;/g;	
-    $line=~s/Í/\&Iacute\;/g;
-    $line=~s/Ì/\&Igrave\;/g;	
-    $line=~s/Î/\&Icirc\;/g;	
-    $line=~s/Ñ/\&Ntilde\;/g;	
-    $line=~s/Õ/\&Otilde\;/g;	
-    $line=~s/Ã/\&Atilde\;/g;	
-  
-    $line=~s/é/\&eacute\;/g;	
-    $line=~s/è/\&egrave\;/g;	
-    $line=~s/ê/\&ecirc\;/g;	
-    $line=~s/á/\&aacute\;/g;	
-    $line=~s/à/\&agrave\;/g;	
-    $line=~s/â/\&acirc\;/g;	
-    $line=~s/ó/\&oacute\;/g;	
-    $line=~s/ò/\&ograve\;/g;	
-    $line=~s/ô/\&ocirc\;/g;	
-    $line=~s/ú/\&uacute\;/g;	
-    $line=~s/ù/\&ugrave\;/g;	
-    $line=~s/û/\&ucirc\;/g;	
-    $line=~s/í/\&iacute\;/g;
-    $line=~s/ì/\&igrave\;/g;	
-    $line=~s/î/\&icirc\;/g;	
-    $line=~s/ñ/\&ntilde\;/g;	
-    $line=~s/õ/\&otilde\;/g;	
-    $line=~s/ã/\&atilde\;/g;	
-  
-    $line=~s/\"u/\&uuml\;/g;
-    $line=~s/\"a/\&auml\;/g;
-    $line=~s/\"o/\&ouml\;/g;
-    $line=~s/\"U/\&Uuml\;/g;
-    $line=~s/\"A/\&Auml\;/g;
-    $line=~s/\"O/\&Ouml\;/g;
-    $line=~s/\"s/\&szlig\;/g;
-    $line=~s/\'/\\'/g;
-    $line=~s/\*/\%/g;
-    return $line;
-}
-
 sub get_result_navigation {
     my ($arg_ref) = @_;
 
@@ -1825,14 +1718,14 @@ sub get_index {
         if ($contentreq=~/^\^/){
             substr($contentreq,0,1)="";
             $contentreq=~s/\*$/\%/;
-            $sqlrequest="select distinct content,contentnorm from $type where category = ? and contentnorm like ? order by content";
+            $sqlrequest="select distinct ${type}.content as content,${type}_string.content as contentnorm from $type, ${type}_string where ${type}.category = ? and ${type}_string.category = ? and ${type}_string.content like ? and ${type}.id=${type}_string.id order by ${type}.content";
         }
         else {
-            $sqlrequest="select distinct content,contentnorm from $type where category = ? and match (contentnormft) against (? IN BOOLEAN MODE) order by content";
+            $sqlrequest="select distinct ${type}.content as content,${type}_string.content as contentnorm from $type, ${type}_string, ${type}_ft, where ${type}.category = ? and ${type}_string.category = ? and ${type}_ft.category = ? and match (${type}_ft.content) against (? IN BOOLEAN MODE) and ${type}.id=${type}_ft.id and ${type}_string.id=${type}.id order by ${type}.content";
         }
         $logger->info($sqlrequest." - $category, $contentreq");
         my $request=$dbh->prepare($sqlrequest);
-        $request->execute($category,$contentreq);
+        $request->execute($category,$category,$category,$contentreq);
 
         while (my $res=$request->fetchrow_hashref){
             push @contents, {
@@ -1871,7 +1764,7 @@ sub get_index {
         
         my @ids=();
         {
-            my $sqlrequest="select distinct id from $type where category = ? and contentnorm = ?";
+            my $sqlrequest="select distinct id from ${type}_string where category = ? and content = ?";
             my $request=$dbh->prepare($sqlrequest);
             $request->execute($category,$content_ref->{contentnorm});
 
@@ -2001,60 +1894,12 @@ sub initial_search_for_titidns {
     my ($arg_ref) = @_;
 
     # Set defaults
-    my $fs                = exists $arg_ref->{fs}
-        ? $arg_ref->{fs}            : undef;
-    my $verf              = exists $arg_ref->{verf}
-        ? $arg_ref->{verf}          : undef;
-    my $hst               = exists $arg_ref->{hst}
-        ? $arg_ref->{hst}           : undef;
-    my $hststring         = exists $arg_ref->{hststring}
-        ? $arg_ref->{hststring}     : undef;
-    my $swt               = exists $arg_ref->{swt}
-        ? $arg_ref->{swt}           : undef;
-    my $kor               = exists $arg_ref->{kor}
-        ? $arg_ref->{kor}           : undef;
-    my $notation          = exists $arg_ref->{notation}
-        ? $arg_ref->{notation}      : undef;
-    my $isbn              = exists $arg_ref->{isbn}
-        ? $arg_ref->{isbn}          : undef;
-    my $issn              = exists $arg_ref->{issn}
-        ? $arg_ref->{issn}          : undef;
-    my $sign              = exists $arg_ref->{sign}
-        ? $arg_ref->{sign}          : undef;
-    my $ejahr             = exists $arg_ref->{ejahr}
-        ? $arg_ref->{ejahr}         : undef;
-    my $ejahrop           = exists $arg_ref->{ejahrop}
-        ? $arg_ref->{ejahrop}       : undef;
-    my $mart              = exists $arg_ref->{mart}
-        ? $arg_ref->{mart}          : undef;
+    my $searchquery_ref   = exists $arg_ref->{searchquery_ref}
+        ? $arg_ref->{searchquery_ref} : undef;
     my $serien            = exists $arg_ref->{serien}
         ? $arg_ref->{serien}        : undef;
     my $enrich            = exists $arg_ref->{enrich}
         ? $arg_ref->{enrich}        : undef;
-    my $boolfs            = exists $arg_ref->{boolfs}
-        ? $arg_ref->{boolfs}        : 'AND';
-    my $boolverf          = exists $arg_ref->{boolverf}
-        ? $arg_ref->{boolverf}      : 'AND';
-    my $boolhst           = exists $arg_ref->{boolhst}
-        ? $arg_ref->{boolhst}       : 'AND';
-    my $boolhststring     = exists $arg_ref->{boolhststring}
-        ? $arg_ref->{boolhststring} : 'AND';
-    my $boolswt           = exists $arg_ref->{boolswt}
-        ? $arg_ref->{boolswt}       : 'AND';
-    my $boolkor           = exists $arg_ref->{boolkor}
-        ? $arg_ref->{boolkor}       : 'AND';
-    my $boolnotation      = exists $arg_ref->{boolnotation}
-        ? $arg_ref->{boolnotation}  : 'AND';
-    my $boolisbn          = exists $arg_ref->{boolisbn}
-        ? $arg_ref->{boolisbn}      : 'AND';
-    my $boolissn          = exists $arg_ref->{boolissn}
-        ? $arg_ref->{boolissn}      : 'AND';
-    my $boolsign          = exists $arg_ref->{boolsign}
-        ? $arg_ref->{boolsign}      : 'AND';
-    my $boolejahr         = exists $arg_ref->{boolejahr}
-        ? $arg_ref->{boolejahr}     : 'AND';
-    my $boolmart          = exists $arg_ref->{boolmart}
-        ? $arg_ref->{boolmart}      : 'AND';
     my $enrichkeys_ref    = exists $arg_ref->{enrichkeys_ref}
         ? $arg_ref->{enrichkeys_ref}: undef;
     my $dbh               = exists $arg_ref->{dbh}
@@ -2065,79 +1910,10 @@ sub initial_search_for_titidns {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    # Sicherheits-Checks
-    if ($boolverf ne "AND" && $boolverf ne "OR" && $boolverf ne "NOT") {
-        $boolverf="AND";
-    }
-
-    if ($boolhst ne "AND" && $boolhst ne "OR" && $boolhst ne "NOT") {
-        $boolhst="AND";
-    }
-
-    if ($boolswt ne "AND" && $boolswt ne "OR" && $boolswt ne "NOT") {
-        $boolswt="AND";
-    }
-
-    if ($boolkor ne "AND" && $boolkor ne "OR" && $boolkor ne "NOT") {
-        $boolkor="AND";
-    }
-
-    if ($boolnotation ne "AND" && $boolnotation ne "OR" && $boolnotation ne "NOT") {
-        $boolnotation="AND";
-    }
-
-    if ($boolisbn ne "AND" && $boolisbn ne "OR" && $boolisbn ne "NOT") {
-        $boolisbn="AND";
-    }
-
-    if ($boolissn ne "AND" && $boolissn ne "OR" && $boolissn ne "NOT") {
-        $boolissn="AND";
-    }
-
-    if ($boolsign ne "AND" && $boolsign ne "OR" && $boolsign ne "NOT") {
-        $boolsign="AND";
-    }
-
-    if ($boolejahr ne "AND") {
-        $boolejahr="AND";
-    }
-
-    if ($boolfs ne "AND" && $boolfs ne "OR" && $boolfs ne "NOT") {
-        $boolfs="AND";
-    }
-
-    if ($boolmart ne "AND" && $boolmart ne "OR" && $boolmart ne "NOT") {
-        $boolmart="AND";
-    }
-
-    if ($boolhststring ne "AND" && $boolhststring ne "OR" && $boolhststring ne "NOT") {
-        $boolhststring="AND";
-    }
-
-    $boolverf      = "AND NOT" if ($boolverf      eq "NOT");
-    $boolhst       = "AND NOT" if ($boolhst       eq "NOT");
-    $boolswt       = "AND NOT" if ($boolswt       eq "NOT");
-    $boolkor       = "AND NOT" if ($boolkor       eq "NOT");
-    $boolnotation  = "AND NOT" if ($boolnotation  eq "NOT");
-    $boolisbn      = "AND NOT" if ($boolisbn      eq "NOT");
-    $boolissn      = "AND NOT" if ($boolissn      eq "NOT");
-    $boolsign      = "AND NOT" if ($boolsign      eq "NOT");
-    $boolfs        = "AND NOT" if ($boolfs        eq "NOT");
-    $boolmart      = "AND NOT" if ($boolmart      eq "NOT");
-    $boolhststring = "AND NOT" if ($boolhststring eq "NOT");
-  
     my ($atime,$btime,$timeall);
   
     if ($config{benchmark}) {
         $atime=new Benchmark;
-    }
-
-    # Abfangen der eingeschraenkten Suche mit Erscheinungsjahr (noch notwendig, oder
-    # duch limit entschaerft?)
-  
-    if (($ejahr) && ($boolejahr eq "OR")) {
-        OpenBib::Search::Util::print_warning("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Ihr Verständnis für diese Ma&szlig;nahme");
-        goto LEAVEPROG;
     }
     
     # Aufbau des sqlquerystrings
@@ -2151,97 +1927,75 @@ sub initial_search_for_titidns {
 
     my $notfirstsql=0;
     
-    if ($fs) {	
-        $fs=OpenBib::Search::Util::input2sgml($fs,1);
-        push @sqlwhere, "$boolfs match (verf,hst,kor,swt,notation,sign,isbn,issn) against (? IN BOOLEAN MODE)";
-        push @sqlargs,  $fs;
+    if ($searchquery_ref->{fs}{norm}) {	
+        push @sqlwhere, $searchquery_ref->{fs}{bool}." match (verf,hst,kor,swt,notation,sign,isbn,issn) against (? IN BOOLEAN MODE)";
+        push @sqlargs, $searchquery_ref->{fs}{norm};
     }
 
    
-    if ($verf) {	
-        $verf=OpenBib::Search::Util::input2sgml($verf,1);
-        push @sqlwhere, "$boolverf match (verf) against (? IN BOOLEAN MODE)";
-        push @sqlargs,  $verf;
+    if ($searchquery_ref->{verf}{norm}) {	
+        push @sqlwhere, $searchquery_ref->{verf}{bool}." match (verf) against (? IN BOOLEAN MODE)";
+        push @sqlargs,  $searchquery_ref->{verf}{norm};
     }
   
-    if ($hst) {
-        $hst=OpenBib::Search::Util::input2sgml($hst,1);
-        push @sqlwhere, "$boolhst match (hst) against (? IN BOOLEAN MODE)";
-        push @sqlargs,  $hst;
+    if ($searchquery_ref->{hst}{norm}) {
+        push @sqlwhere, $searchquery_ref->{hst}{bool}." match (hst) against (? IN BOOLEAN MODE)";
+        push @sqlargs,  $searchquery_ref->{hst}{norm};
     }
   
-    if ($swt) {
-        $swt=OpenBib::Search::Util::input2sgml($swt,1);
-        push @sqlwhere, "$boolswt match (swt) against (? IN BOOLEAN MODE)";
-        push @sqlargs,  $swt;
+    if ($searchquery_ref->{swt}{norm}) {
+        push @sqlwhere, $searchquery_ref->{swt}{bool}." match (swt) against (? IN BOOLEAN MODE)";
+        push @sqlargs,  $searchquery_ref->{swt}{norm};
     }
   
-    if ($kor) {
-        $kor=OpenBib::Search::Util::input2sgml($kor,1);
-        push @sqlwhere, "$boolkor match (kor) against (? IN BOOLEAN MODE)";
-        push @sqlargs,  $kor;
+    if ($searchquery_ref->{kor}{norm}) {
+        push @sqlwhere, $searchquery_ref->{kor}{bool}." match (kor) against (? IN BOOLEAN MODE)";
+        push @sqlargs,  $searchquery_ref->{kor}{norm};
     }
   
     my $notfrom="";
   
-    if ($notation) {
-        $notation=~s/\*$/%/;
-        $notation=OpenBib::Search::Util::input2sgml($notation,1);
+    if ($searchquery_ref->{notation}{norm}) {
         push @sqlfrom,  "notation_string";
         push @sqlfrom,  "conn";
-        push @sqlwhere, "$boolnotation (notation_string.content like ? and conn.sourcetype=1 and conn.targettype=5 and conn.targetid=notation_string.id and search.verwidn=conn.sourceid)";
-        push @sqlargs,  $notation;
+        push @sqlwhere, $searchquery_ref->{notation}{bool}." (notation_string.content like ? and conn.sourcetype=1 and conn.targettype=5 and conn.targetid=notation_string.id and search.verwidn=conn.sourceid)";
+        push @sqlargs,  $searchquery_ref->{notation}{norm};
     }
   
     my $signfrom="";
   
-    if ($sign) {
-        $sign=~s/\*$/%/;
-        $sign=OpenBib::Search::Util::input2sgml($sign,1);
+    if ($searchquery_ref->{sign}{norm}) {
         push @sqlfrom,  "mex_string";
         push @sqlfrom,  "conn";
-        push @sqlwhere, "$boolsign (mex_string.content like ? and mex_string.category=0014 and conn.sourcetype=1 and conn.targettype=6 and conn.targetid=mex_string.id and search.verwidn=conn.sourceid)";
-        push @sqlargs,  $sign;
+        push @sqlwhere, $searchquery_ref->{sign}{bool}." (mex_string.content like ? and mex_string.category=0014 and conn.sourcetype=1 and conn.targettype=6 and conn.targetid=mex_string.id and search.verwidn=conn.sourceid)";
+        push @sqlargs,  $searchquery_ref->{sign}{norm};
     }
   
-    if ($isbn) {
-        $isbn=OpenBib::Search::Util::input2sgml($isbn,1);
-        $isbn=~s/-//g;
-        push @sqlwhere, "$boolisbn match (isbn) against (? IN BOOLEAN MODE)";
-        push @sqlargs,  $isbn;
+    if ($searchquery_ref->{isbn}{norm}) {
+        push @sqlwhere, $searchquery_ref->{isbn}{bool}." match (isbn) against (? IN BOOLEAN MODE)";
+        push @sqlargs,  $searchquery_ref->{isbn}{norm};
     }
   
-    if ($issn) {
-        $issn=OpenBib::Search::Util::input2sgml($issn,1);
-        $issn=~s/-//g;
-        push @sqlwhere, "$boolissn match (issn) against (? IN BOOLEAN MODE)";
-        push @sqlargs,  $issn;
+    if ($searchquery_ref->{issn}{norm}) {
+        push @sqlwhere, $searchquery_ref->{issn}{bool}." match (issn) against (? IN BOOLEAN MODE)";
+        push @sqlargs,  $searchquery_ref->{issn}{norm};
     }
   
-    if ($mart) {
-        $mart=OpenBib::Search::Util::input2sgml($mart,1);
-        push @sqlwhere, "$boolmart match (artinh) against (? IN BOOLEAN MODE)";
-        push @sqlargs,  $mart;
+    if ($searchquery_ref->{mart}{norm}) {
+        push @sqlwhere, $searchquery_ref->{mart}{bool}."  match (artinh) against (? IN BOOLEAN MODE)";
+        push @sqlargs,  $searchquery_ref->{mart}{norm};
     }
   
-    if ($hststring) {
-        $hststring=~s/\*$/%/;
+    if ($searchquery_ref->{hststring}{norm}) {
         push @sqlfrom,  "tit_string";
-        $hststring=OpenBib::Search::Util::input2sgml($hststring,1);
-        push @sqlwhere, "$boolhststring (tit_string.content like ? and tit_string.category in (0331,0310,0304,0370,0341) and search.verwidn=tit_string.id)";
-        push @sqlargs,  $hststring;
+        push @sqlwhere, $searchquery_ref->{hststring}{bool}." (tit_string.content like ? and tit_string.category in (0331,0310,0304,0370,0341) and search.verwidn=tit_string.id)";
+        push @sqlargs,  $searchquery_ref->{hststring}{norm};
     }
   
-    my $ejtest;
   
-    ($ejtest)=$ejahr=~/.*(\d\d\d\d).*/;
-    if (!$ejtest) {
-        $ejahr="";              # Nur korrekte Jahresangaben werden verarbeitet
-    }                           # alles andere wird ignoriert...
-  
-    if ($ejahr) {	   
-        push @sqlwhere, "$boolejahr ejahr $ejahrop ?";
-        push @sqlargs,  $ejahr;
+    if ($searchquery_ref->{ejahr}{norm}) {
+        push @sqlwhere, $searchquery_ref->{ejahr}{bool}." ejahr ".$searchquery_ref->{ejahr}{arg}." ?";
+        push @sqlargs,  $searchquery_ref->{ejahr}{norm};
     }
 
     if ($serien){
@@ -2249,24 +2003,15 @@ sub initial_search_for_titidns {
         push @sqlwhere, "and (conn.targetid=search.verwidn and conn.targettype=1 and conn.sourcetype=1)";
     }
 
-    # TODO...
-#     if ($ejahr) {
-#         if ($sqlquerystring eq "") {
-#             OpenBib::Search::Util::print_warning("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Ihr Verständnis für diese Ma&szlig;nahme");
-#             goto LEAVEPROG;
-#         }
-#         else {
-#             $sqlquerystring="$sqlquerystring $ejahr";
-#         }
-#     }
-
-    my @tempidns=();    
+    my @tempidns=();
     
     my $sqlwherestring  = join(" ",@sqlwhere);
     $sqlwherestring     =~s/^(?:AND|OR|NOT) //;
     my $sqlfromstring   = join(", ",@sqlfrom);
     
     my $sqlquerystring  = "select verwidn from $sqlfromstring where $sqlwherestring limit $maxhits";
+
+    $logger->debug("QueryString: ".$sqlquerystring);
     my $request         = $dbh->prepare($sqlquerystring);
 
     $request->execute(@sqlargs);

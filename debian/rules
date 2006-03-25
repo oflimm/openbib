@@ -3,6 +3,7 @@
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
+export DH_ALWAYS_EXCLUDE=CVS
 
 configure: configure-stamp
 configure-stamp:
@@ -16,8 +17,8 @@ build-stamp: configure-stamp
 	dh_testdir
 
 	# Erzeugung der Manualpages zu den Modulen
-	pod2man portal/perl/modules/OpenBib/Common/Util.pm >| OpenBib::Common::Util.3
-	pod2man portal/perl/modules/OpenBib/UserPrefs.pm   >| OpenBib::UserPrefs.3
+#	pod2man portal/perl/modules/OpenBib/Common/Util.pm >| OpenBib::Common::Util.3
+#	pod2man portal/perl/modules/OpenBib/UserPrefs.pm   >| OpenBib::UserPrefs.3
 
 	touch build-stamp
 
@@ -38,34 +39,7 @@ install: build
 	dh_clean -k 
 	dh_installdirs
 
-	# Add here commands to install the package into debian/openbib
-	install  -d -m 0755 -o root -g root $(CURDIR)/debian/openbib/etc/apache-perl
-	install  -d -m 0755 -o root -g root $(CURDIR)/debian/openbib/usr/share/doc/openbib
-	install  -d -m 0755 -o root -g root $(CURDIR)/debian/openbib/var/www
-	install  -d -m 0755 -o root -g root $(CURDIR)/debian/openbib/opt/openbib
-	install  -d -m 0755 -o root -g root $(CURDIR)/debian/openbib/opt/openbib/autoconv
-	install  -d -m 0755 -o root -g root $(CURDIR)/debian/openbib/opt/openbib/autoconv/bin
-	install  -d -m 0755 -o root -g root $(CURDIR)/debian/openbib/opt/openbib/autoconv/data
-	install  -d -m 0755 -o root -g root $(CURDIR)/debian/openbib/opt/openbib/autoconv/pools
-	install  -d -m 0755 -o root -g root $(CURDIR)/debian/openbib/opt/openbib/bin
-	install  -d -m 0755 -o root -g root $(CURDIR)/debian/openbib/opt/openbib/conf
-	install  -d -m 0755 -o root -g root $(CURDIR)/debian/openbib/opt/openbib/conv
-	install  -d -m 0755 -o root -g root $(CURDIR)/debian/openbib/opt/openbib/db/mysql
-	install  -d -m 0755 -o root -g root $(CURDIR)/debian/openbib/opt/openbib/templates
-	install  -d -m 0755 -o root -g root $(CURDIR)/debian/openbib/usr/lib/perl5/OpenBib
-	cp -a portal/perl/modules/OpenBib/* $(CURDIR)/debian/openbib/usr/lib/perl5/OpenBib
-	cp -a portal/perl/templates/*       $(CURDIR)/debian/openbib/opt/openbib/templates
-	cp -a portal/perl/conf/portal.log4perl $(CURDIR)/debian/openbib/opt/openbib/conf
-	cp -a portal/htdocs/*                  $(CURDIR)/debian/openbib/var/www
-	cp    portal/apache/openbib.conf       $(CURDIR)/debian/openbib/etc/apache-perl
-	cp -a db/mysql/*                $(CURDIR)/debian/openbib/opt/openbib/db/mysql
-	cp -a tools/*                   $(CURDIR)/debian/openbib/opt/openbib/bin
-	cp -a conv/meta/*               $(CURDIR)/debian/openbib/opt/openbib/conv
-	cp    conv/sikis/autoconv-sikis.pl  $(CURDIR)/debian/openbib/opt/openbib/autoconv/bin
-	cp    conv/sikis/bcp2meta.pl    $(CURDIR)/debian/openbib/usr/share/doc/openbib
-	cp    conv/sikis/startsikis2meta.sh   $(CURDIR)/debian/openbib/usr/share/doc/openbib
-	cp -a doc/*                           $(CURDIR)/debian/openbib/usr/share/doc/openbib
-
+	cp -a portal/perl/modules/OpenBib/Config.pm-dist portal/perl/modules/OpenBib/Config.pm
 # Build architecture-dependent files here.
 binary-arch: build install
 
@@ -75,10 +49,10 @@ binary-indep: build install
 	dh_testroot
 	dh_installchangelogs 
 	dh_installdocs
-	dh_installexamples
-	dh_install --autodest --sourcedir=debian/openbib
+#	dh_installexamples
+	dh_install
 #	dh_installmenu
-#	dh_installdebconf	
+	dh_installdebconf	
 #	dh_installlogrotate
 #	dh_installemacsen
 #	dh_installpam
@@ -86,16 +60,16 @@ binary-indep: build install
 #	dh_installinit
 #	dh_installcron
 #	dh_installinfo
-	dh_installman
+#	dh_installman
 	dh_link
-	dh_strip
+#	dh_strip
 	dh_compress
 	dh_fixperms
-#	dh_perl
+	dh_perl
 #	dh_python
 #	dh_makeshlibs
 	dh_installdeb
-	dh_shlibdeps
+#	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb

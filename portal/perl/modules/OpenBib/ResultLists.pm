@@ -144,55 +144,40 @@ sub handler {
             my @querystrings = ();
             my @queryhits    = ();
       
-            $idnresult=$sessiondbh->prepare("select distinct searchresults.queryid,queries.query,queries.hits from searchresults,queries where searchresults.sessionid = ? and searchresults.queryid=queries.queryid order by queryid desc") or $logger->error($DBI::errstr);
+            $idnresult=$sessiondbh->prepare("select distinct searchresults.queryid as queryid,queries.query as query,queries.hits as hits from searchresults,queries where searchresults.sessionid = ? and searchresults.queryid=queries.queryid order by queryid desc") or $logger->error($DBI::errstr);
             $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
       
             my @queries=();
 
-            while (my @res=$idnresult->fetchrow) {
-
-                my ($fs,$verf,$hst,$swt,$kor,$sign,$isbn,$issn,$notation,$mart,$ejahr,$hststring,$boolhst,$boolswt,$boolkor,$boolnotation,$boolisbn,$boolsign,$boolejahr,$boolissn,$boolverf,$boolfs,$boolmart,$boolhststring)=split('\|\|',decode_utf8($res[1]));
+            while (my $res=$idnresult->fetchrow_hashref) {
 
                 push @queries, {
-                    id        => decode_utf8($res[0]),
-
-                    fs        => $fs,
-                    verf      => $verf,
-                    hst       => $hst,
-                    swt       => $swt,
-                    kor       => $kor,
-                    notation  => $notation,
-                    sign      => $sign,
-                    ejahr     => $ejahr,
-                    isbn      => $isbn,
-                    issn      => $issn,
-                    mart      => $mart,
-                    hststring => $hststring,
-			
-                    hits      => decode_utf8($res[2]),
+                    id          => decode_utf8($res->{queryid}),
+                    searchquery => Storable::thaw(pack "H*",$res->{query}),
+                    hits        => decode_utf8($res->{hits}),
                 };
 	
             }
       
             # Finde den aktuellen Query
-            my $thisquery={};
+            my $thisquery_ref={};
 
             # Wenn keine Queryid angegeben wurde, dann nehme den ersten Eintrag,
             # da dieser der aktuellste ist
             if ($queryid eq "") {
-                $thisquery=$queries[0];
+                $thisquery_ref=$queries[0];
             }
             # ansonsten nehmen den ausgewaehlten
             else {
-                foreach my $query (@queries) {
-                    if (@{$query}{id} eq "$queryid") {
-                        $thisquery=$query;
+                foreach my $query_ref (@queries) {
+                    if (@{$query_ref}{id} eq "$queryid") {
+                        $thisquery_ref=$query_ref;
                     }
                 }
             }
 
             $idnresult=$sessiondbh->prepare("select dbname,hits from searchresults where sessionid = ? and queryid = ? order by hits desc") or $logger->error($DBI::errstr);
-            $idnresult->execute($sessionID,@{$thisquery}{id}) or $logger->error($DBI::errstr);
+            $idnresult->execute($sessionID,@{$thisquery_ref}{id}) or $logger->error($DBI::errstr);
 
             my $hitcount=0;
             my @resultdbs=();
@@ -213,7 +198,7 @@ sub handler {
                 stylesheet => $stylesheet,
                 sessionID  => $sessionID,
 
-                thisquery  => $thisquery,
+                thisquery  => $thisquery_ref,
                 queryid    => $queryid,
                 hitcount   => $hitcount,
                 resultdbs  => \@resultdbs,

@@ -115,50 +115,9 @@
 <p><table width="100%"><tr>
 <th>Alle bisherigen Recherchen</th></tr>
 <tr><td class="boxedclear">
-<select name="queryid">
 
-[% FOREACH query IN queries %]	  
-<OPTION value="[% query.id %]">(
-[%- IF query.fs -%]
-&nbsp;FS: [% query.fs %] 
-[%- END -%]
-[%- IF query.verf -%]
-&nbsp;AUT: [% query.verf %]
-[%- END -%]
-[%- IF query.hst -%]
-&nbsp;HST: [% query.hst %]
-[%- END -%]
-[%- IF query.swt -%]
-&nbsp;SWT: [% query.swt %]
-[%- END -%]
-[%- IF query.kor -%]
-&nbsp;KOR: [% query.kor %]
-[%- END -%]
-[%- IF query.notation -%]
-&nbsp;NOT: [% query.notation %] 
-[%- END -%]
-[%- IF query.sign -%]
-&nbsp;SIG: [% query.sign %]
-[%- END -%]
-[%- IF query.ejahr -%]
-&nbsp;EJAHR: [% query.ejahr %]
-[%- END -%]
-[%- IF query.isbn -%]
-&nbsp;ISBN: [% query.isbn %]
-[%- END -%]
-[%- IF query.issn -%]
-&nbsp;ISSN: [% query.issn %]
-[%- END -%]
-[%- IF query.mart -%]
-&nbsp;MART: [% query.mart %]
-[%- END -%]
-[%- IF query.hststring -%]
-&nbsp;HSTR: [% query.hststring %] 
-[%- END -%]
-= Treffer: [% query.hits %])
-</OPTION>
-[% END %]	    
-</select>
+[% PROCESS common/subtemplate name="select_queries" %]
+
 <input type=submit value="Auswahl"></td></tr></table></form>
 
 [% END %]

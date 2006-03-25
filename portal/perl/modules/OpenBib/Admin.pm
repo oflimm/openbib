@@ -2,7 +2,7 @@
 #
 #  OpenBib::Admin
 #
-#  Dieses File ist (C) 2004-2005 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -88,6 +88,7 @@ sub handler {
     my $do_editcat_rss  = $query->param('do_editcat_rss')  || '';
     my $do_showviews    = $query->param('do_showviews')    || '';
     my $do_editview     = $query->param('do_editview')     || '';
+    my $do_editview_rss = $query->param('do_editview_rss') || '';
     my $do_showimx      = $query->param('do_showimx')      || '';
     my $do_showsessions = $query->param('do_showsessions') || '';
     my $do_editsession  = $query->param('do_editsession')  || '';
@@ -138,26 +139,14 @@ sub handler {
 
     my @rssfeeds        = ($query->param('rssfeeds'))?$query->param('rssfeeds'):();
 
+    
     my $primrssfeed     = $query->param('primrssfeed')     || '';
     my $rsstype         = $query->param('rss_type')        || '';
-    
+
     my $singlesessionid = $query->param('singlesessionid') || '';
 
-    my @allparams       = $query->param;
-    my %rss_active = ();
-
-    my $rss_id          = 0;
-
-    $logger->debug(YAML::Dump(\@allparams));
-
-    foreach my $thisparam (@allparams){
-        if ($thisparam=~/^rss_active_(\d+)/){
-            $rss_id=$1;
-            $rss_active{$rss_id}=$query->param($thisparam) || 0;
-
-            $logger->debug("Active-RSSID: $rss_id Param: $thisparam Active: ".$rss_active{$rss_id});
-        }
-    }
+    my $rssid           = $query->param('rssid') || '';
+    my @rssids          = ($query->param('rssids'))?$query->param('rssids'):();
 
     # Neue SessionID erzeugen, falls keine vorhanden
 
@@ -437,42 +426,42 @@ sub handler {
         }
     }
     elsif ($do_editcat_rss){
-
-        if ($rsstype eq "1"){
-            if ($do_change) {
-                my $idnresult=$sessiondbh->prepare("update rssfeeds set dbname = ?, type = 1, active = ? where id = ?") or $logger->error($DBI::errstr);
-                $idnresult->execute($dbname,$rss_active{$rss_id},$rss_id) or $logger->error($DBI::errstr);
-                $idnresult->finish();
-                $r->internal_redirect("http://$config{servername}$config{admin_loc}?sessionID=$sessionID&do_showcat=1");
-                return OK;
-                
-            }
+        
+        if ($do_change) {
+            my $request=$sessiondbh->prepare("update rssfeeds set dbname = ?, type = ?, active = ? where id = ?") or $logger->error($DBI::errstr);
+            $request->execute($dbname,$rsstype,$active,$rssid) or $logger->error($DBI::errstr);
+            $request->finish();
+            $r->internal_redirect("http://$config{servername}$config{admin_loc}?sessionID=$sessionID&do_editcat_rss=1&dbid=$dbid&dbname=$dbname&do_edit=1");
+            return OK;
         }
-        elsif ($rsstype eq "2"){
-                $r->internal_redirect("http://$config{servername}$config{admin_loc}?sessionID=$sessionID&do_showcat=1");
-                return OK;
+        elsif ($do_new){
+            my $request=$sessiondbh->prepare("insert into rssfeeds values (NULL,?,?,-1,'',0)") or $logger->error($DBI::errstr);
+            $request->execute($dbname,$rsstype) or $logger->error($DBI::errstr);
+            $request->finish();
+            $r->internal_redirect("http://$config{servername}$config{admin_loc}?sessionID=$sessionID&do_editcat_rss=1&dbid=$dbid&dbname=$dbname&do_edit=1");
+            return OK;              
         }
-
+        
         if ($do_edit) {
-            my $idnresult=$sessiondbh->prepare("select * from dbinfo where dbid = ?") or $logger->error($DBI::errstr);
-            $idnresult->execute($dbid) or $logger->error($DBI::errstr);
-      
-            my $result=$idnresult->fetchrow_hashref();
-      
+            my $request=$sessiondbh->prepare("select * from dbinfo where dbid = ?") or $logger->error($DBI::errstr);
+            $request->execute($dbid) or $logger->error($DBI::errstr);
+            
+            my $result=$request->fetchrow_hashref();
+            
             my $dbid        = decode_utf8($result->{'dbid'});
             my $dbname      = decode_utf8($result->{'dbname'});
             
             my $rssfeed_ref=[];
-
-            $idnresult=$sessiondbh->prepare("select * from rssfeeds where dbname = ? order by type,subtype") or $logger->error($DBI::errstr);
-            $idnresult->execute($dbname) or $logger->error($DBI::errstr);
-            while (my $result=$idnresult->fetchrow_hashref()){
-                my $id           = $result->{'id'};
-                my $type         = $result->{'type'};
-                my $subtype      = $result->{'subtype'};
-                my $subtypedesc  = $result->{'subtypedesc'};
-                my $active       = $result->{'active'};
-
+            
+            $request=$sessiondbh->prepare("select * from rssfeeds where dbname = ? order by type,subtype") or $logger->error($DBI::errstr);
+            $request->execute($dbname) or $logger->error($DBI::errstr);
+            while (my $result=$request->fetchrow_hashref()){
+                my $id           = decode_utf8($result->{'id'});
+                my $type         = decode_utf8($result->{'type'});
+                my $subtype      = decode_utf8($result->{'subtype'});
+                my $subtypedesc  = decode_utf8($result->{'subtypedesc'});
+                my $active       = decode_utf8($result->{'active'});
+                
                 push @$rssfeed_ref, {
                     id          => $id,
                     type        => $type,
@@ -481,25 +470,27 @@ sub handler {
                     active      => $active
                 };
             }
+
+            $request->finish();
             
             my $katalog={
                 dbid        => $dbid,
                 dbname      => $dbname,
                 rssfeeds    => $rssfeed_ref,
             };
-      
-      
+            
+            
             my $ttdata={
                 lang       => $lang,
                 stylesheet => $stylesheet,
                 sessionID  => $sessionID,
-		  
+                
                 katalog    => $katalog,
-		  
+                
                 config     => \%config,
                 msg        => \%msg,
             };
-      
+            
             OpenBib::Common::Util::print_page($config{tt_admin_editcat_rss_tname},$ttdata,$r);
         }
     }
@@ -802,6 +793,106 @@ sub handler {
         }
     
     }
+    elsif ($do_editview_rss){
+
+      if ($do_change) {
+          if ($rsstype eq "primary"){
+              my $request=$sessiondbh->prepare("update viewinfo set rssfeed = ? where viewid = ?") or $logger->error($DBI::errstr);
+              $request->execute($rssid,$viewid) or $logger->error($DBI::errstr);
+              $request->finish();
+              $r->internal_redirect("http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=editviewrss&viewid=$viewid&viewrssaction=Bearbeiten");
+              return OK;
+          }
+          elsif ($rsstype eq "all") {
+              my $request=$sessiondbh->prepare("delete from viewrssfeeds where viewname = ?");
+              $request->execute($viewname);
+
+              $request=$sessiondbh->prepare("insert into viewrssfeeds values (?,?)") or $logger->error($DBI::errstr);
+              foreach my $rssid (@rssids){
+                  $request->execute($viewname,$rssid) or $logger->error($DBI::errstr);
+              }
+              $request->finish();
+              $r->internal_redirect("http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=editviewrss&viewid=$viewid&viewrssaction=Bearbeiten");
+              return OK;
+          }
+      }
+      elsif ($do_new){
+          my $request=$sessiondbh->prepare("insert into rssfeeds values (NULL,?,?,-1,'',0)") or $logger->error($DBI::errstr);
+          $request->execute($dbname,$rsstype) or $logger->error($DBI::errstr);
+          $request->finish();
+          $r->internal_redirect("http://$config{servername}$config{admin_loc}?sessionID=$sessionID&action=editcatrss&dbid=$dbid&dbname=$dbname&catrssaction=Bearbeiten");
+          return OK;
+      }
+      elsif ($do_edit) {
+          my $request=$sessiondbh->prepare("select * from viewinfo where viewid=?") or $logger->error($DBI::errstr);
+          $request->execute($viewid) or $logger->error($DBI::errstr);
+          
+          my $result=$request->fetchrow_hashref();
+          
+          my $viewid        = decode_utf8($result->{'viewid'});
+          my $viewname      = decode_utf8($result->{'viewname'});
+          my $viewdesc      = decode_utf8($result->{'description'});
+          my $primrssfeed   = decode_utf8($result->{'rssfeed'});
+          
+          my $allrssfeed_ref=[];
+          
+          $request=$sessiondbh->prepare("select rssfeeds.id, rssfeeds.dbname, dbinfo.description, rssfeeds.type, rssfeeds.active  from rssfeeds,dbinfo where rssfeeds.dbname=dbinfo.dbname order by dbinfo.description,rssfeeds.type,rssfeeds.subtype") or $logger->error($DBI::errstr);
+          $request->execute() or $logger->error($DBI::errstr);
+          while (my $result=$request->fetchrow_hashref()){
+              my $id           = decode_utf8($result->{'id'});
+              my $dbname       = decode_utf8($result->{'dbname'});
+              my $description  = decode_utf8($result->{'description'});
+              my $type         = decode_utf8($result->{'type'});
+              my $subtype      = decode_utf8($result->{'subtype'});
+              my $subtypedesc  = decode_utf8($result->{'subtypedesc'});
+              my $active       = decode_utf8($result->{'active'});
+              
+              push @$allrssfeed_ref, {
+                  id          => $id,
+                  dbname      => $dbname,
+                  description => $description,
+                  type        => $type,
+                  subtype     => $subtype,
+                  subtypedesc => $subtypedesc,
+                  active      => $active
+              };
+          }
+
+          my $viewrssfeeds_ref={};
+          
+          $request=$sessiondbh->prepare("select * from viewrssfeeds where viewname = ?") or $logger->error($DBI::errstr);
+          $request->execute($viewname) or $logger->error($DBI::errstr);
+          while (my $result=$request->fetchrow_hashref()){
+              my $rssfeedid        = decode_utf8($result->{'rssfeed'});
+              $viewrssfeeds_ref->{$rssfeedid}=1;
+          }
+
+
+          my $view={
+              id          => $viewid,
+              name        => $viewname,
+              description => $viewdesc,
+              primrssfeed => $primrssfeed,
+              rssfeeds    => $viewrssfeeds_ref,
+          };
+          
+          
+          my $ttdata={
+              lang       => $lang,
+              stylesheet  => $stylesheet,
+              sessionID   => $sessionID,
+              
+              view        => $view,
+
+              allrssfeeds => $allrssfeed_ref,
+
+              config      => \%config,
+              msg         => \%msg,
+          };
+          
+          OpenBib::Common::Util::print_page($config{tt_admin_editview_rss_tname},$ttdata,$r);
+      }
+  }
     elsif ($do_showimx) {
 
         my @kataloge=();

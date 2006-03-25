@@ -801,10 +801,13 @@ while (my $line=<IN>){
         
         my $listitem = Storable::freeze($listitem_ref);
 
-        my $encoding_type="base64";
+        my $encoding_type="hex";
         
         if    ($encoding_type eq "base64"){
             $listitem = MIME::Base64::encode_base64($listitem);
+        }
+        elsif ($encoding_type eq "hex"){
+            $listitem = unpack "H*",$listitem;
         }
         elsif ($encoding_type eq "uu"){
             $listitem =~s/\\/\\\\/g;

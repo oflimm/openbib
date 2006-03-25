@@ -1023,43 +1023,18 @@ sub handler {
             my @queries=();
             my $singlequery="";
             while (my $result2=$idnresult2->fetchrow_hashref()) {
-                my $query  = decode_utf8($result2->{'query'});
-                my $hits   = decode_utf8($result2->{'hits'});
                 my $dbases = decode_utf8($result2->{'dbases'});
-
-                my ($fs,$verf,$hst,$swt,$kor,$sign,$isbn,$issn,$notation,$mart,$ejahr,$hststring,$boolhst,$boolswt,$boolkor,$boolnotation,$boolisbn,$boolsign,$boolejahr,$boolissn,$boolverf,$boolfs,$boolmart,$boolhststring)=split('\|\|',$query);
-
-                # Aufbereitung der Suchanfrage fuer die Ausgabe
-
-                $query="";
-                $query.="(FS: $fs) "                         if ($fs);
-                $query.="$boolverf (AUT: $verf) "            if ($verf);
-                $query.="$boolhst (HST: $hst) "              if ($hst);
-                $query.="$boolswt (SWT: $swt) "              if ($swt);
-                $query.="$boolkor (KOR: $kor) "              if ($kor);
-                $query.="$boolnotation (NOT: $notation) "    if ($notation);
-                $query.="$boolsign (SIG: $sign) "            if ($sign);
-                $query.="$boolejahr (EJAHR: $ejahr) "        if ($ejahr);
-                $query.="$boolisbn (ISBN: $isbn) "           if ($isbn);
-                $query.="$boolissn (ISSN: $issn) "           if ($issn);
-                $query.="$boolmart (MART: $mart) "           if ($mart);
-                $query.="$boolhststring (HSTR: $hststring) " if ($hststring);
-
-                # Bereinigen fuer die Ausgabe
-
-                $query=~s/^.*?\(/(/;
                 $dbases=~s/\|\|/ ; /g;
-
-                my $singlequery={
-                    query => $query,
-                    hits  => $hits,
-                    dbases => $dbases,
+                
+                push @queries, {
+                    id          => decode_utf8($result2->{queryid}),
+                    searchquery => Storable::thaw(pack "H*",$result2->{query}),
+                    hits        => decode_utf8($result2->{hits}),
+                    dbases      => $dbases,
                 };
 
-                push @queries, $singlequery;
-
                 $numqueries++;
-            }    
+            }
 
 
             if (!$benutzernr) {

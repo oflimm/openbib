@@ -48,9 +48,10 @@ use OpenBib::Config;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
-use vars qw(%config);
+use vars qw(%config %msg);
 
-*config=\%OpenBib::Config::config;
+*config = \%OpenBib::Config::config;
+*msg    = OpenBib::Config::get_msgs($config{msg_path});
 
 sub handler {
     my $r=shift;
@@ -178,34 +179,9 @@ sub handler {
         $targetresult->finish();
     }
   
-    # CGI-Uebergabe
-  
-    my $fs            = $query->param('fs')        || ''; # Freie Suche
-    my $verf          = $query->param('verf')      || '';
-    my $hst           = $query->param('hst')       || '';
-    my $hststring     = $query->param('hststring') || '';
-    my $swt           = $query->param('swt')       || '';
-    my $kor           = $query->param('kor')       || '';
-    my $sign          = $query->param('sign')      || '';
-    my $isbn          = $query->param('isbn')      || '';
-    my $issn          = $query->param('issn')      || '';
-    my $notation      = $query->param('notation')  || '';
-    my $ejahr         = $query->param('ejahr')     || '';
-    my $mart          = $query->param('mart')      || '';
-
-    my $boolverf      = ($query->param('boolverf'))?$query->param('boolverf'):"AND";
-    my $boolhst       = ($query->param('boolhst'))?$query->param('boolhst'):"AND";
-    my $boolswt       = ($query->param('boolswt'))?$query->param('boolswt'):"AND";
-    my $boolkor       = ($query->param('boolkor'))?$query->param('boolkor'):"AND";
-    my $boolnotation  = ($query->param('boolnotation'))?$query->param('boolnotation'):"AND";
-    my $boolisbn      = ($query->param('boolisbn'))?$query->param('boolisbn'):"AND";
-    my $boolissn      = ($query->param('boolissn'))?$query->param('boolissn'):"AND";
-    my $boolsign      = ($query->param('boolsign'))?$query->param('boolsign'):"AND";
-    my $boolejahr     = ($query->param('boolejahr'))?$query->param('boolejahr'):"AND";
-    my $boolfs        = ($query->param('boolfs'))?$query->param('boolfs'):"AND";
-    my $boolmart      = ($query->param('boolmart'))?$query->param('boolmart'):"AND";
-    my $boolhststring = ($query->param('boolhststring'))?$query->param('boolhststring'):"AND";
-  
+    my $searchquery_ref
+        = OpenBib::Common::Util::get_searchquery($r);
+    
     my $queryid       = $query->param('queryid') || '';
   
     # Assoziierten View zur Session aus Datenbank holen
@@ -238,13 +214,9 @@ sub handler {
         $idnresult->execute($queryid) or $logger->error($DBI::errstr);
     
         my $result=$idnresult->fetchrow_hashref();
-        my $query = decode_utf8($result->{'query'});
-    
-        $query=~s/"/&quot;/g;
-
-        $hits = decode_utf8($result->{'hits'});
-
-        ($fs,$verf,$hst,$swt,$kor,$sign,$isbn,$issn,$notation,$mart,$ejahr,$hststring,$boolhst,$boolswt,$boolkor,$boolnotation,$boolisbn,$boolsign,$boolejahr,$boolissn,$boolverf,$boolfs,$boolmart,$boolhststring)=split('\|\|',$query);
+        $searchquery_ref = Storable::thaw(pack "H*",$result->{'query'});
+        $hits            = decode_utf8($result->{'hits'});
+#        $query=~s/"/&quot;/g;
 
         $idnresult->finish();
     }
@@ -302,31 +274,14 @@ sub handler {
     $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
     my $anzahl=$idnresult->rows();
 
-    my $prevqueries="";
+    my @queries=();
 
     while (my $result=$idnresult->fetchrow_hashref()) {
-        my $queryid = decode_utf8($result->{'queryid'});
-        my $query   = decode_utf8($result->{'query'});
-        my $hits    = decode_utf8($result->{'hits'});
-        
-        my ($fs,$verf,$hst,$swt,$kor,$sign,$isbn,$issn,$notation,$mart,$ejahr,$hststring,$boolhst,$boolswt,$boolkor,$boolnotation,$boolisbn,$boolsign,$boolejahr,$boolissn,$boolverf,$boolfs,$boolmart,$boolhststring)=split('\|\|',$query);
-        
-        $prevqueries.="<OPTION value=\"$queryid\">";
-        
-        $prevqueries.="FS: $fs " if ($fs);
-        $prevqueries.="AUT: $verf " if ($verf);
-        $prevqueries.="HST: $hst " if ($hst);
-        $prevqueries.="SWT: $swt " if ($swt);
-        $prevqueries.="KOR: $kor " if ($kor);
-        $prevqueries.="NOT: $notation " if ($notation);
-        $prevqueries.="SIG: $sign " if ($sign);
-        $prevqueries.="EJAHR: $ejahr " if ($ejahr);
-        $prevqueries.="ISBN: $isbn " if ($isbn);
-        $prevqueries.="ISSN: $issn " if ($issn);
-        $prevqueries.="MART: $mart " if ($mart);
-        $prevqueries.="HSTR: $hststring " if ($hststring);
-        $prevqueries.="= Treffer: $hits";
-        $prevqueries.="</OPTION>";
+        push @queries, {
+            id          => decode_utf8($res->{queryid}),
+            searchquery => Storable::thaw(pack "H*",$res->{query}),
+            hits        => decode_utf8($res->{hits}),
+        };
     }
 
     $idnresult->finish();
@@ -355,26 +310,14 @@ sub handler {
         showmart      => $showmart,
         showhststring => $showhststring,
         showejahr     => $showejahr,
-	      
-        fs            => $fs,
-        hst           => $hst,
-        hststring     => $hststring,
-        verf          => $verf,
-        kor           => $kor,
-        swt           => $swt,
-        notation      => $notation,
-        isbn          => $isbn,
-        issn          => $issn,
-        sign          => $sign,
-        mart          => $mart,
-        ejahr         => $ejahr,
+
+        searchquery   => $searchquery_ref,
 	       
         anzahl        => $anzahl,
-        prevqueries   => $prevqueries,
+        queries       => \@queries,
         useragent     => $useragent,
-        show_corporate_banner => 0,
-        show_foot_banner      => 1,
         config        => \%config,
+        msg           => \%msg,
     };
   
     if ($setmask eq "simple") {

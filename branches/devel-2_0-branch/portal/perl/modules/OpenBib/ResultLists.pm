@@ -40,6 +40,7 @@ use Apache::Request ();
 use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
+use Storable ();
 use Template;
 use YAML();
 
@@ -252,9 +253,9 @@ sub handler {
                 my @outputbuffer=();
 
                 while (my @res=$idnresult->fetchrow) {
-                    my $yamlres=YAML::Load(decode_utf8($res[0]));
+                    my $storableres=Storable::thaw(pack "H*", $res[0]);
 
-                    push @outputbuffer, @$yamlres;
+                    push @outputbuffer, @$storableres;
                 }
 
                 my $treffer=$#outputbuffer+1;
@@ -321,11 +322,11 @@ sub handler {
                 my @resultlists=();
 
                 while (my @res=$idnresult->fetchrow) {
-                    my $yamlres=YAML::Load(decode_utf8($res[0]));
+                    my $storableres=Storable::thaw(pack "H*", $res[0]);
 
                     my $database=decode_utf8($res[1]);
 
-                    my @outputbuffer=@$yamlres;
+                    my @outputbuffer=@$storableres;
 
                     my $treffer=$#outputbuffer+1;
 
@@ -410,9 +411,9 @@ sub handler {
             my @resultlists=();
 
             while (my @res=$idnresult->fetchrow) {
-                my $yamlres=YAML::Load(decode_utf8($res[0]));
+                my $storableres=Storable::thaw(pack "H*", $res[0]);
 	
-                my @outputbuffer=@$yamlres;
+                my @outputbuffer=@$storableres;
 	
                 my $treffer=$#outputbuffer+1;
 	

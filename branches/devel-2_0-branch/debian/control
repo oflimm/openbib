@@ -7,19 +7,13 @@ Standards-Version: 3.6.1
 
 Package: openbib
 Architecture: all
-Depends: ${perl:Depends}, ${misc:Depends}, apache-perl, mysql-server-4.1, libtemplate-perl, libapache-request-perl, libapache-reload-perl, libwww-perl, libdbi-perl, libdbd-mysql-perl, liblog-log4perl-perl, libipc-shareable-perl, libmime-lite-perl, libemail-valid-perl, libyaml-perl
-Description: OpenBib Recherche-Portal
- Bei OpenBib handelt es sich um ein OpenSource Recherche-Portal, mit dem der gemeinsame
- Zugriff auf Daten verschiedener Quellen, insbesondere verschiedener Bibliothekssysteme
- oder OAI-Repositories wie z.B. Hochschulschriftenserver, ermöglicht wird. Neben der
- simultanen Recherche in verschiedenen Datenquellen wird dem Benutzer eine 
- personalisierte Arbeits-Plattform bereitgestellt, die er nach eigenen Vorstellungen
- im Rahmen der angebotenen Funktionen organisieren kann. Dazu gehört z.B. die 
- Organisation eigener Suchprofile, aber auch eine Anbindung an das jeweilige 
- Bibliothekssystem, um über dieses alle ausleihrelevanten Funktionen ausführen und 
- z.B. die Daten seines Benutzerkontos einsehen zu können.  Externe Dienste, wie z.B.
- die Funktionen der Digitalen Bibliothek NRW (DigiBib), werden mit Hilfe der 
- Personalisierungsfunktionalität derart eingebunden werden, dass ohne eine weitere 
- Authentifizierung dorthin gesprungen werden kann. Content-Enrichment kann zentral
- für alle Kataloge sowohl als Recherche- wie auch als Ergebnisanreicherung
- verwaltet werden.
+Depends: ${perl:Depends}, ${misc:Depends}, debconf, apache-perl, mysql-server-4.1, libtemplate-perl, libapache-request-perl, libapache-reload-perl, libwww-perl, libdbi-perl, libdbd-mysql-perl, liblog-log4perl-perl, libipc-shareable-perl, libmime-lite-perl, libemail-valid-perl, libyaml-perl
+Description: open source bibliographic multi-catalogue search-portal
+ Build a search-portal (virtual OPAC) consisting of multiple catalogues
+ using different (integrated) library systems. Currently the following
+ origin catalogues are supported: Sisis, Lidos, Filemaker, OAI among
+ others. The meta-data format is German MAB2-oriented (Maschinelles
+ Austauschformat fuer Bibliotheken) but the database-scheme isn't
+ restricted to any special meta-data format, so a port to MARC21 is
+ possible.
+

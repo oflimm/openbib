@@ -143,7 +143,6 @@ sub handler {
     ## Initialsearch:
   
     my $generalsearch     = $query->param('generalsearch')     || '';
-    my $searchall         = $query->param('searchall')         || '';
     my $swtindex          = $query->param('swtindex')          || '';
     my $swtindexall       = $query->param('swtindexall')       || '';
 
@@ -164,40 +163,7 @@ sub handler {
     my $searchtitofnot    = $query->param('searchtitofnot')    || '';
     my $searchtitofswt    = $query->param('searchtitofswt')    || '';
 
-    my $fs                = $query->param('fs')                || '';
-    my $verf              = $query->param('verf')              || '';
-    my $hst               = $query->param('hst')               || '';
-    my $hststring         = $query->param('hststring')         || '';
-    my $swt               = $query->param('swt')               || '';
-    my $kor               = $query->param('kor')               || '';
-    my $sign              = $query->param('sign')              || '';
-    my $isbn              = $query->param('isbn')              || '';
-    my $issn              = $query->param('issn')              || '';
-    my $notation          = $query->param('notation')          || '';
-    my $ejahr             = $query->param('ejahr')             || '';
-    my $ejahrop           = $query->param('ejahrop')           || 'eq';
-    my $mart              = $query->param('mart')              || '';
-
     my $lang              = $query->param('l')                 || undef;
-
-    #####################################################################
-    ## boolX: Verkn"upfung der Eingabefelder (leere Felder werden ignoriert)
-    ##        AND  - Und-Verkn"upfung
-    ##        OR   - Oder-Verkn"upfung
-    ##        NOT  - Und Nicht-Verknuepfung
-  
-    my $boolverf      = ($query->param('boolverf'))?$query->param('boolverf'):"AND";
-    my $boolhst       = ($query->param('boolhst'))?$query->param('boolhst'):"AND";
-    my $boolswt       = ($query->param('boolswt'))?$query->param('boolswt'):"AND";
-    my $boolkor       = ($query->param('boolkor'))?$query->param('boolkor'):"AND";
-    my $boolnotation  = ($query->param('boolnotation'))?$query->param('boolnotation'):"AND";
-    my $boolisbn      = ($query->param('boolisbn'))?$query->param('boolisbn'):"AND";
-    my $boolissn      = ($query->param('boolissn'))?$query->param('boolissn'):"AND";
-    my $boolsign      = ($query->param('boolsign'))?$query->param('boolsign'):"AND";
-    my $boolejahr     = ($query->param('boolejahr'))?$query->param('boolejahr'):"AND";
-    my $boolfs        = ($query->param('boolfs'))?$query->param('boolfs'):"AND";
-    my $boolmart      = ($query->param('boolmart'))?$query->param('boolmart'):"AND";
-    my $boolhststring = ($query->param('boolhststring'))?$query->param('boolhststring'):"AND";
 
     #####                                                          ######
     ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########
@@ -218,25 +184,8 @@ sub handler {
         = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    # Wandlungstabelle Erscheinungsjahroperator
-    my $ejahrop_ref={
-        'eq' => '=',
-        'gt' => '>',
-        'lt' => '<',
-    };
-
-    # Setzen der arithmetischen Ejahrop-Operatoren
-    if (exists $ejahrop_ref->{$ejahrop}){
-        $ejahrop=$ejahrop_ref->{$ejahrop};
-    }
-    else {
-        $ejahrop="=";
-    }
-
     my $queryoptions_ref
         = OpenBib::Common::Util::get_queryoptions($sessiondbh,$r);
-
-    $logger->debug(YAML::Dump($queryoptions_ref));
     
     my $targetdbinfo_ref
         = OpenBib::Common::Util::get_targetdbinfo($sessiondbh);
@@ -288,115 +237,6 @@ sub handler {
         return OK;
     }
 
-    #####################################################################
-  
-    if ($searchall) {           # Standardsuche
-        my $result_ref=OpenBib::Search::Util::initial_search_for_titidns({
-            fs            => $fs,
-            verf          => $verf,
-            hst           => $hst,
-            hststring     => $hststring,
-            swt           => $swt,
-            kor           => $kor,
-            notation      => $notation,
-            isbn          => $isbn,
-            issn          => $issn,
-            sign          => $sign,
-            ejahr         => $ejahr,
-            ejahrop       => $ejahrop,
-            mart          => $mart,
-            
-            boolfs        => $boolfs,
-            boolverf      => $boolverf,
-            boolhst       => $boolhst,
-            boolhststring => $boolhststring,
-            boolswt       => $boolswt,
-            boolkor       => $boolkor,
-            boolnotation  => $boolnotation,
-            boolisbn      => $boolisbn,
-            boolissn      => $boolissn,
-            boolsign      => $boolsign,
-            boolejahr     => $boolejahr,
-            boolmart      => $boolmart,
-
-            dbh           => $dbh,
-            maxhits       => $maxhits,
-        });
-
-        my @tidns           = @{$result_ref->{titidns_ref}};
-        my $fullresultcount = $result_ref->{fullresultcount};
-        
-        # Kein Treffer
-        if ($#tidns == -1) {
-            OpenBib::Common::Util::print_info("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden",$r);;
-            return OK;
-        }
-    
-        # Genau ein Treffer
-        if ($#tidns == 0) {
-            OpenBib::Search::Util::print_tit_set_by_idn({
-                titidn             => $tidns[0],
-                dbh                => $dbh,
-                sessiondbh         => $sessiondbh,
-                targetdbinfo_ref   => $targetdbinfo_ref,
-                targetcircinfo_ref => $targetcircinfo_ref,
-                queryoptions_ref   => $queryoptions_ref,
-                database           => $database,
-                sessionID          => $sessionID,
-                apachereq          => $r,
-                stylesheet         => $stylesheet,
-                view               => $view,
-            });
-
-            return OK;
-        }
-    
-        # Mehr als ein Treffer
-        if ($#tidns > 0) {
-            my @outputbuffer=();
-            my ($atime,$btime,$timeall);
-      
-            if ($config{benchmark}) {
-                $atime=new Benchmark;
-            }
-
-            foreach my $tidn (@tidns) {
-                push @outputbuffer, OpenBib::Search::Util::get_tit_listitem_by_idn({
-                    titidn            => $tidn,
-                    dbh               => $dbh,
-                    sessiondbh        => $sessiondbh,
-                    targetdbinfo_ref  => $targetdbinfo_ref,
-                    database          => $database,
-                    sessionID         => $sessionID,
-                });
-            }
-            
-            if ($config{benchmark}) {
-                $btime   = new Benchmark;
-                $timeall = timediff($btime,$atime);
-                $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel : ist ".timestr($timeall));
-                undef $atime;
-                undef $btime;
-                undef $timeall;
-            }
-      
-            my @sortedoutputbuffer=();
-            OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
-            OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@sortedoutputbuffer);
-            OpenBib::Search::Util::print_tit_list_by_idn({
-                itemlist_ref     => \@sortedoutputbuffer,
-                targetdbinfo_ref => $targetdbinfo_ref,
-                queryoptions_ref => $queryoptions_ref,
-                database         => $database,
-                sessionID        => $sessionID,
-                apachereq        => $r,
-                stylesheet       => $stylesheet,
-                view             => $view,
-            });
-            return OK;
-        }	
-    }
-  
     #######################################################################
     # Nachdem initial per SQL nach den Usereingaben eine Treffermenge 
     # gefunden wurde, geht es nun exklusiv in der SQL-DB weiter
@@ -420,12 +260,6 @@ sub handler {
                 queryoptions_ref => $queryoptions_ref,
                 sessionID        => $sessionID,
                 normset          => $normset,
-                
-                utf2iso          => sub {
-                    my $string=shift;
-                    $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-                    return $string;
-                },
                 
                 config     => \%config,
                 msg        => \%msg,
@@ -637,12 +471,6 @@ sub handler {
                 sessionID  => $sessionID,
                 normset    => $normset,
                 
-                utf2iso    => sub {
-                    my $string=shift;
-                    $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-                    return $string;
-                },
-                
                 show_corporate_banner => 0,
                 show_foot_banner      => 1,
                 config     => \%config,
@@ -669,12 +497,6 @@ sub handler {
                 qopts      => $queryoptions_ref,
                 sessionID  => $sessionID,
                 normset    => $normset,
-                
-                utf2iso    => sub {
-                    my $string=shift;
-                    $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-                    return $string;
-                },
                 
                 config     => \%config,
                 msg        => \%msg,
@@ -849,12 +671,6 @@ sub handler {
             sessionID  => $sessionID,
             normset    => $normset,
             
-            utf2iso    => sub {
-                my $string=shift;
-                $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
-                return $string;
-            },
-            
             config     => \%config,
             msg        => \%msg,
         };
@@ -880,12 +696,6 @@ sub handler {
             sessionID  => $sessionID,
             normset    => $normset,
             
-            utf2iso    => sub {
-                my $string=shift;
-                $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-                return $string;
-            },
-
             config     => \%config,
             msg        => \%msg,
         };
@@ -911,12 +721,6 @@ sub handler {
             sessionID  => $sessionID,
             normset    => $normset,
             
-            utf2iso    => sub {
-                my $string=shift;
-                $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-                return $string;
-            },
-            
             config     => \%config,
             msg        => \%msg,
         };
@@ -941,12 +745,6 @@ sub handler {
             qopts      => $queryoptions_ref,
             sessionID  => $sessionID,
             normset    => $normset,
-            
-            utf2iso    => sub {
-                my $string=shift;
-                $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-                return $string;
-            },
             
             config     => \%config,
             msg        => \%msg,

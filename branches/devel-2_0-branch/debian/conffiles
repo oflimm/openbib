@@ -1,1 +1,4 @@
-/usr/lib/perl5/OpenBib/Config.pm-dist
+/etc/openbib/messages.conf
+/etc/openbib/openbib.conf
+/etc/openbib/portal.log4perl
+/etc/openbib/Config.pm

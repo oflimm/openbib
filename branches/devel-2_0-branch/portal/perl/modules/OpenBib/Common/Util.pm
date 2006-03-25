@@ -226,7 +226,7 @@ sub get_primary_rssfeed_of_view  {
     my $logger = get_logger();
 
     # Assoziierten View zur Session aus Datenbank holen
-    my $idnresult=$sessiondbh->prepare("select rssfeeds.dbname as dbname,rssfeeds.type as type, rssfeeds.subtype as subtype from rssfeeds,viewinfo where viewname = ? and rssfeeds.id = viewinfo.primrssfeed and rssfeeds.active = 1") or $logger->error($DBI::errstr);
+    my $idnresult=$sessiondbh->prepare("select rssfeeds.dbname as dbname,rssfeeds.type as type, rssfeeds.subtype as subtype from rssfeeds,viewinfo where viewname = ? and rssfeeds.id = viewinfo.rssfeed and rssfeeds.active = 1") or $logger->error($DBI::errstr);
     $idnresult->execute($viewname) or $logger->error($DBI::errstr);
   
     my $result=$idnresult->fetchrow_hashref();
@@ -1060,6 +1060,312 @@ sub get_targetcircinfo {
     return \%targetcircinfo;
 }
 
+sub get_searchquery {
+    my ($r)=@_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $query=Apache::Request->new($r);
+
+    # Wandlungstabelle Erscheinungsjahroperator
+    my $ejahrop_ref={
+        'eq' => '=',
+        'gt' => '>',
+        'lt' => '<',
+    };
+
+    my ($fs, $verf, $hst, $hststring, $swt, $kor, $sign, $isbn, $issn, $mart,$notation,$ejahr,$ejahrop);
+
+    my ($fsnorm, $verfnorm, $hstnorm, $hststringnorm, $swtnorm, $kornorm, $signnorm, $isbnnorm, $issnnorm, $martnorm,$notationnorm,$ejahrnorm);
+    
+    $fs        = $fsnorm        = decode_utf8($query->param('fs'))            || '';
+    $verf      = $verfnorm      = decode_utf8($query->param('verf'))          || '';
+    $hst       = $hstnorm       = decode_utf8($query->param('hst'))           || '';
+    $hststring = $hststringnorm = decode_utf8($query->param('hststring'))     || '';
+    $swt       = $swtnorm       = decode_utf8($query->param('swt'))           || '';
+    $kor       = $kornorm       = decode_utf8($query->param('kor'))           || '';
+    $sign      = $signnorm      = decode_utf8($query->param('sign'))          || '';
+    $isbn      = $isbnnorm      = decode_utf8($query->param('isbn'))          || '';
+    $issn      = $issnnorm      = decode_utf8($query->param('issn'))          || '';
+    $mart      = $martnorm      = decode_utf8($query->param('mart'))          || '';
+    $notation  = $notationnorm  = decode_utf8($query->param('notation'))      || '';
+    $ejahr     = $ejahrnorm     = decode_utf8($query->param('ejahr'))         || '';
+    $ejahrop   = decode_utf8($query->param('ejahrop'))       || 'eq';
+
+    my $autoplus      = $query->param('autoplus')      || '';
+    my $verfindex     = $query->param('verfindex')     || '';
+    my $korindex      = $query->param('korindex')      || '';
+    my $swtindex      = $query->param('swtindex')      || '';
+
+    #####################################################################
+    ## boolX: Verknuepfung der Eingabefelder (leere Felder werden ignoriert)
+    ##        AND  - Und-Verknuepfung
+    ##        OR   - Oder-Verknuepfung
+    ##        NOT  - Und Nicht-Verknuepfung
+    my $boolverf      = ($query->param('boolverf'))     ?$query->param('boolverf')
+        :"AND";
+    my $boolhst       = ($query->param('boolhst'))      ?$query->param('boolhst')
+        :"AND";
+    my $boolswt       = ($query->param('boolswt'))      ?$query->param('boolswt')
+        :"AND";
+    my $boolkor       = ($query->param('boolkor'))      ?$query->param('boolkor')
+        :"AND";
+    my $boolnotation  = ($query->param('boolnotation')) ?$query->param('boolnotation')
+        :"AND";
+    my $boolisbn      = ($query->param('boolisbn'))     ?$query->param('boolisbn')
+        :"AND";
+    my $boolissn      = ($query->param('boolissn'))     ?$query->param('boolissn')
+        :"AND";
+    my $boolsign      = ($query->param('boolsign'))     ?$query->param('boolsign')
+        :"AND";
+    my $boolejahr     = ($query->param('boolejahr'))    ?$query->param('boolejahr')
+        :"AND" ;
+    my $boolfs        = ($query->param('boolfs'))       ?$query->param('boolfs')
+        :"AND";
+    my $boolmart      = ($query->param('boolmart'))     ?$query->param('boolmart')
+        :"AND";
+    my $boolhststring = ($query->param('boolhststring'))?$query->param('boolhststring')
+        :"AND";
+
+    # Sicherheits-Checks
+
+    if ($boolverf ne "AND" && $boolverf ne "OR" && $boolverf ne "NOT") {
+        $boolverf      = "AND";
+    }
+
+    if ($boolhst ne "AND" && $boolhst ne "OR" && $boolhst ne "NOT") {
+        $boolhst       = "AND";
+    }
+
+    if ($boolswt ne "AND" && $boolswt ne "OR" && $boolswt ne "NOT") {
+        $boolswt       = "AND";
+    }
+
+    if ($boolkor ne "AND" && $boolkor ne "OR" && $boolkor ne "NOT") {
+        $boolkor       = "AND";
+    }
+
+    if ($boolnotation ne "AND" && $boolnotation ne "OR" && $boolnotation ne "NOT") {
+        $boolnotation  = "AND";
+    }
+
+    if ($boolisbn ne "AND" && $boolisbn ne "OR" && $boolisbn ne "NOT") {
+        $boolisbn      = "AND";
+    }
+
+    if ($boolissn ne "AND" && $boolissn ne "OR" && $boolissn ne "NOT") {
+        $boolissn      = "AND";
+    }
+
+    if ($boolsign ne "AND" && $boolsign ne "OR" && $boolsign ne "NOT") {
+        $boolsign      = "AND";
+    }
+
+    if ($boolejahr ne "AND") {
+        $boolejahr     = "AND";
+    }
+
+    if ($boolfs ne "AND" && $boolfs ne "OR" && $boolfs ne "NOT") {
+        $boolfs        = "AND";
+    }
+
+    if ($boolmart ne "AND" && $boolmart ne "OR" && $boolmart ne "NOT") {
+        $boolmart      = "AND";
+    }
+
+    if ($boolhststring ne "AND" && $boolhststring ne "OR" && $boolhststring ne "NOT") {
+        $boolhststring = "AND";
+    }
+
+    $boolverf      = "AND NOT" if ($boolverf      eq "NOT");
+    $boolhst       = "AND NOT" if ($boolhst       eq "NOT");
+    $boolswt       = "AND NOT" if ($boolswt       eq "NOT");
+    $boolkor       = "AND NOT" if ($boolkor       eq "NOT");
+    $boolnotation  = "AND NOT" if ($boolnotation  eq "NOT");
+    $boolisbn      = "AND NOT" if ($boolisbn      eq "NOT");
+    $boolissn      = "AND NOT" if ($boolissn      eq "NOT");
+    $boolsign      = "AND NOT" if ($boolsign      eq "NOT");
+    $boolfs        = "AND NOT" if ($boolfs        eq "NOT");
+    $boolmart      = "AND NOT" if ($boolmart      eq "NOT");
+    $boolhststring = "AND NOT" if ($boolhststring eq "NOT");
+
+    # Setzen der arithmetischen Ejahrop-Operatoren
+    if (exists $ejahrop_ref->{$ejahrop}){
+        $ejahrop=$ejahrop_ref->{$ejahrop};
+    }
+    else {
+        $ejahrop="=";
+    }
+    
+    # Filter: ISBN und ISSN
+
+    # Entfernung der Minus-Zeichen bei der ISBN
+    $fsnorm   =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10/g;
+    $isbnnorm =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10/g;
+
+    # Entfernung der Minus-Zeichen bei der ISSN
+    $fsnorm   =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)/$1$2$3$4$5$6$7$8/g;
+    $issnnorm =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)/$1$2$3$4$5$6$7$8/g;
+
+    my $ejtest;
+  
+    ($ejtest)=$ejahrnorm=~/.*(\d\d\d\d).*/;
+    if (!$ejtest) {
+        $ejahrnorm="";              # Nur korrekte Jahresangaben werden verarbeitet
+    }                           # alles andere wird ignoriert...
+    
+    # Filter Rest
+    $fsnorm        = OpenBib::Common::Util::grundform({
+        content   => $fsnorm,
+        searchreq => 1,
+    });
+
+    $verfnorm      = OpenBib::Common::Util::grundform({
+        content   => $verfnorm,
+        searchreq => 1,
+    });
+
+    $hstnorm       = OpenBib::Common::Util::grundform({
+        content   => $hstnorm,
+        searchreq => 1,
+    });
+
+    $hststringnorm = OpenBib::Common::Util::grundform({
+        content   => $hststringnorm,
+        searchreq => 1,
+    });
+
+    $swtnorm       = OpenBib::Common::Util::grundform({
+        content   => $swtnorm,
+        searchreq => 1,
+    });
+
+    $kornorm       = OpenBib::Common::Util::grundform({
+        content   => $kornorm,
+        searchreq => 1,
+    });
+
+    $signnorm      = OpenBib::Common::Util::grundform({
+        content   => $signnorm,
+        searchreq => 1,
+    });
+
+    $isbnnorm      = OpenBib::Common::Util::grundform({
+        category  => '0540',
+        content   => $isbnnorm,
+        searchreq => 1,
+    });
+
+    $issnnorm      = OpenBib::Common::Util::grundform({
+        category  => '0543',
+        content   => $issnnorm,
+        searchreq => 1,
+    });
+    
+    $martnorm      = OpenBib::Common::Util::grundform({
+        content   => $martnorm,
+        searchreq => 1,
+    });
+
+    $notationnorm  = OpenBib::Common::Util::grundform({
+        content   => $notationnorm,
+        searchreq => 1,
+    });
+
+    $ejahrnorm      = OpenBib::Common::Util::grundform({
+        content   => $ejahrnorm,
+        searchreq => 1,
+    });
+    
+    # Bei hststring zusaetzlich normieren durch Weglassung des ersten
+    # Stopwortes
+    $hststringnorm = OpenBib::Common::Stopwords::strip_first_stopword($hststringnorm);
+
+    # Umwandlung impliziter ODER-Verknuepfung in UND-Verknuepfung
+    if ($autoplus eq "1" && !$verfindex && !$korindex && !$swtindex) {
+        $fsnorm   = OpenBib::VirtualSearch::Util::conv2autoplus($fsnorm)   if ($fs);
+        $verfnorm = OpenBib::VirtualSearch::Util::conv2autoplus($verfnorm) if ($verf);
+        $hstnorm  = OpenBib::VirtualSearch::Util::conv2autoplus($hstnorm)  if ($hst);
+        $kornorm  = OpenBib::VirtualSearch::Util::conv2autoplus($kornorm)  if ($kor);
+        $swtnorm  = OpenBib::VirtualSearch::Util::conv2autoplus($swtnorm)  if ($swt);
+        $isbnnorm = OpenBib::VirtualSearch::Util::conv2autoplus($isbnnorm) if ($isbn);
+        $issnnorm = OpenBib::VirtualSearch::Util::conv2autoplus($issnnorm) if ($issn);
+    }
+
+    # Spezielle Trunkierungen
+
+    $signnorm      =~s/\*$/%/;
+    $notationnorm  =~s/\*$/%/;
+    $hststringnorm =~s/\*$/%/;
+    
+    my $searchquery_ref={
+        fs => {
+            val   => $fs,
+            norm  => $fsnorm,
+            bool  => '',
+        },
+        verf => {
+            val   => $verf,
+            norm  => $verfnorm,
+            bool  => $boolverf,
+        },
+        hst => {
+            val   => $hst,
+            norm  => $hstnorm,
+            bool  => $boolhst,
+        },
+        hststring => {
+            val   => $hststring,
+            norm  => $hststringnorm,
+            bool  => $boolhststring,
+        },
+        swt => {
+            val   => $swt,
+            norm  => $swtnorm,
+            bool  => $boolswt,
+        },
+        kor => {
+            val   => $kor,
+            norm  => $kornorm,
+            bool  => $boolkor,
+        },
+        sign => {
+            val   => $sign,
+            norm  => $signnorm,
+            bool  => $boolsign,
+        },
+        isbn => {
+            val   => $isbn,
+            norm  => $isbnnorm,
+            bool  => $boolisbn,
+        },
+        issn => {
+            val   => $issn,
+            norm  => $issnnorm,
+            bool  => $boolissn,
+        },
+        mart => {
+            val   => $mart,
+            norm  => $martnorm,
+            bool  => $boolmart,
+        },
+        notation => {
+            val   => $notation,
+            norm  => $notationnorm,
+            bool  => $boolnotation,
+        },
+        ejahr => {
+            val   => $ejahr,
+            norm  => $ejahrnorm,
+            bool  => $boolejahr,
+            arg   => $ejahrop,
+        },
+    };
+    
+    return $searchquery_ref;
+}
+
 sub grundform {
     my ($arg_ref) = @_;
     
@@ -1272,6 +1578,7 @@ sub get_loadbalanced_servername {
 
     return $bestserver;
 }
+
 
 1;
 __END__

@@ -117,15 +117,15 @@ Sie können entweder durch entsprechende Auswahl in den insgesamt [% alldbs %] e
 <p />
 </form>
 
-[% IF prevqueries %]
+[% IF queries %]
 <form method="get" id="queries" action="http://[% config.servername %][% config.dispatchquery_loc %]">
 <table width="100%">
 <tr><th style="text-align: center">Rufen Sie hier die Ergebnisse frührerer Recherchen auf</th></tr>
 <tr><td align="center" class="boxed">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
-<select name="queryid">
-[% prevqueries %]
-</select>
+
+[% PROCESS common/subtemplate name="select_queries" %]
+
 <input type="submit" name="do_resultlist" value="Zur Trefferliste" />
 </form>
 [% END %]

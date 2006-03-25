@@ -1,0 +1,164 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_editview_rss
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Kataloges
+#
+#######################################################################
+-%]
+[%- i18nmsg = msg.${lang} -%]
+[% PROCESS std_header title='KUG Administration - Katalog bearbeiten' %]
+
+  <body bgcolor="#FFFFFF">
+
+[% PROCESS corporate_banner %]
+
+<ul id="tabbingmenu">
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">Kataloge</a></li>
+   <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">Views</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">Sessions</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">Logout</a></li>
+</ul>
+
+<div id="content">
+
+<table width="100%">
+<tr><th>RSS-Einstellungen f&uuml;r View [% view.description%]</th></tr>
+<tr><td class="boxedclear" style="font-size:12pt">
+
+<!-- Anfang: Primaerer RSS Feed fuer diesen View -->
+<form method="get" action="http://[% config.servername %][% config.admin_loc %]">
+<input type="hidden" name="sessionID"       value="[% sessionID %]" />
+<input type="hidden" name="viewid"          value="[% view.id %]" />
+<input type="hidden" name="viewname"        value="[% view.name %]" />
+<input type="hidden" name="do_editview_rss" value="1" />
+<input type="hidden" name="rss_type"        value="primary" />
+
+<table width="100%">
+<tr><th>Prim&auml;rer RSS-Feed f&uuml;r diesen View (Browser Auto-Discovery)</th></tr>
+
+<tr><td class="boxedclear" style="font-size:10pt">
+
+[%
+
+rsstypes = [
+"",
+"Neuzugang (generell)",
+"Neuzugang nach Verfasser",
+"Neuzugang nach K&ouml;rperschaft",
+"Neuzugang nach Schlagwort",
+"Neuzugang nach Systematik",
+];
+
+neinja = ["Nein","Ja"];
+
+%]
+
+[% IF view.primrssfeed < 0 %]
+Es existiert noch kein prim&auml;rer RSS-Feed f&uuml;r diesen View
+<p />
+W&auml;hlen Sie bitte einen View aus:
+[% ELSE %]
+Es existiert bereits ein prim&auml;rer RSS-Feed f&uuml;r diesen View
+<p />
+M&ouml;chten Sie diesen &auml;ndern?
+[% END %]
+
+<p />
+
+<select name="rssid">
+
+<option value="-1">Kein prim&auml;rer RSS-Feed ausgew&auml;hlt</option>
+
+[% FOREACH singlefeed IN allrssfeeds %]
+
+[% IF singlefeed.type == 1  %]
+[% feedid   = singlefeed.id %]
+
+<option value="[% feedid %]"
+
+[% IF view.primrssfeed == feedid %]
+selected="selected"
+[% END %]
+
+>[% singlefeed.description %] / [% rsstypes.${singlefeed.type} %]
+(Aktiv: [% neinja.${singlefeed.active} %])
+</option>
+
+[% END %]
+
+[% END %]
+
+
+</select>
+<p />
+
+<input type="submit" name="do_change" value="[% i18nmsg.${"M0300"} %]">
+
+</td></tr>
+</table>
+
+</form>
+
+<!-- Ende: Primaerer RSS Feed fuer diesen View -->
+
+<!-- Anfang: Alle RSS Feeds fuer diesen View -->
+<form method="get" action="http://[% config.servername %][% config.admin_loc %]">
+<input type="hidden" name="sessionID"       value="[% sessionID %]" />
+<input type="hidden" name="viewid"          value="[% view.id %]" />
+<input type="hidden" name="viewname"        value="[% view.name %]" />
+<input type="hidden" name="do_editview_rss" value="1" />
+<input type="hidden" name="rss_type"        value="all" />
+
+<table width="100%">
+<tr><th>S&auml;mtliche zugeordnete RSS-Feeds f&uuml;r diesen View</th></tr>
+<tr><td class="boxedclear" style="font-size:10pt">
+
+<p />
+
+<select name="rssids" multiple="multiple">
+
+[% FOREACH singlefeed IN allrssfeeds %]
+[% feedid   = singlefeed.id %]
+
+<option value="[% feedid %]"
+
+[% IF view.rssfeeds.${feedid} %]
+selected="selected"
+[% END %]
+
+>[% singlefeed.description %] / [% rsstypes.${singlefeed.type} %]
+(Aktiv: [% neinja.${singlefeed.active} %])
+</option>
+
+[% END %]
+
+
+</select>
+<p />
+
+<input type="submit" name="do_change" value="[% i18nmsg.${"M0300"} %]">
+
+</td></tr>
+</table>
+
+</form>
+
+<!-- Ende: Alle RSS Feeds fuer diesen View -->
+
+
+</td></tr>
+</table>
+
+
+
+</div>
+
+<p />
+
+[% PROCESS std_footer %]

@@ -34,17 +34,17 @@
 <p />
 <p />
 
-[% IF prevqueries %]
+[% IF queries %]
 
 <form method="get" id="queries" action="http://[% config.servername %][% config.dispatchquery_loc %]">
 <table width="100%">
 <tr><th>Suchhistorie</th></tr>
 <tr><td class="boxed">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
-<input type="hidden" name="view" value="[% view %]" />
-<select name="queryid">
-[% prevqueries %]
-</select>
+<input type="hidden" name="view"      value="[% view %]" />
+
+[% PROCESS common/subtemplate name="select_queries" %]
+
 <input type="submit" name="do_newquery" value="Als Suchvorlage" />&nbsp;&nbsp;<input type="submit" name="do_resultlist" value="Zur Trefferliste" />&nbsp;&nbsp;<input type="submit" name="do_externalquery" value="Weiter als externe Recherche" style="background-color:#99CCFF" />
 </td></tr>
 </table>

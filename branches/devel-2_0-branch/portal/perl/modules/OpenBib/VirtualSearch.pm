@@ -41,7 +41,7 @@ use Benchmark ':hireswallclock';
 use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
-use POSIX;
+use Storable ();
 use YAML ();
 
 use OpenBib::Search::Util;
@@ -83,29 +83,10 @@ sub handler {
         = DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    # Wandlungstabelle Erscheinungsjahroperator
-    my $ejahrop_ref={
-        'eq' => '=',
-        'gt' => '>',
-        'lt' => '<',
-    };
-    
     # CGI-Input auslesen
-    my $fs            = decode_utf8($query->param('fs'))            || '';
-    my $verf          = decode_utf8($query->param('verf'))          || '';
-    my $hst           = decode_utf8($query->param('hst'))           || '';
-    my $hststring     = decode_utf8($query->param('hststring'))     || '';
-    my $swt           = decode_utf8($query->param('swt'))           || '';
-    my $kor           = decode_utf8($query->param('kor'))           || '';
-    my $sign          = decode_utf8($query->param('sign'))          || '';
-    my $isbn          = decode_utf8($query->param('isbn'))          || '';
-    my $issn          = decode_utf8($query->param('issn'))          || '';
-    my $mart          = decode_utf8($query->param('mart'))          || '';
-    my $notation      = decode_utf8($query->param('notation'))      || '';
-    my $ejahr         = decode_utf8($query->param('ejahr'))         || '';
-    my $ejahrop       = decode_utf8($query->param('ejahrop'))       || 'eq';
     my $serien        = decode_utf8($query->param('serien'))        || 0;
     my $enrich        = decode_utf8($query->param('enrich'))        || 1;
+
     my @databases     = ($query->param('database'))?$query->param('database'):();
 
     my $hitrange      = ($query->param('hitrange' ))?$query->param('hitrange'):20;
@@ -130,207 +111,21 @@ sub handler {
 
     my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
 
-    #####################################################################
-    ## boolX: Verkn"upfung der Eingabefelder (leere Felder werden ignoriert)
-    ##        AND  - Und-Verkn"upfung
-    ##        OR   - Oder-Verkn"upfung
-    ##        NOT  - Und Nicht-Verknuepfung
-    my $boolverf      = ($query->param('boolverf'))     ?$query->param('boolverf')
-        :"AND";
-    my $boolhst       = ($query->param('boolhst'))      ?$query->param('boolhst')
-        :"AND";
-    my $boolswt       = ($query->param('boolswt'))      ?$query->param('boolswt')
-        :"AND";
-    my $boolkor       = ($query->param('boolkor'))      ?$query->param('boolkor')
-        :"AND";
-    my $boolnotation  = ($query->param('boolnotation')) ?$query->param('boolnotation')
-        :"AND";
-    my $boolisbn      = ($query->param('boolisbn'))     ?$query->param('boolisbn')
-        :"AND";
-    my $boolissn      = ($query->param('boolissn'))     ?$query->param('boolissn')
-        :"AND";
-    my $boolsign      = ($query->param('boolsign'))     ?$query->param('boolsign')
-        :"AND";
-    my $boolejahr     = ($query->param('boolejahr'))    ?$query->param('boolejahr')
-        :"AND" ;
-    my $boolfs        = ($query->param('boolfs'))       ?$query->param('boolfs')
-        :"AND";
-    my $boolmart      = ($query->param('boolmart'))     ?$query->param('boolmart')
-        :"AND";
-    my $boolhststring = ($query->param('boolhststring'))?$query->param('boolhststring')
-        :"AND";
-
-
-    # Sicherheits-Checks
-
-    if ($boolverf ne "AND" && $boolverf ne "OR" && $boolverf ne "NOT") {
-        $boolverf      = "AND";
-    }
-
-    if ($boolhst ne "AND" && $boolhst ne "OR" && $boolhst ne "NOT") {
-        $boolhst       = "AND";
-    }
-
-    if ($boolswt ne "AND" && $boolswt ne "OR" && $boolswt ne "NOT") {
-        $boolswt       = "AND";
-    }
-
-    if ($boolkor ne "AND" && $boolkor ne "OR" && $boolkor ne "NOT") {
-        $boolkor       = "AND";
-    }
-
-    if ($boolnotation ne "AND" && $boolnotation ne "OR" && $boolnotation ne "NOT") {
-        $boolnotation  = "AND";
-    }
-
-    if ($boolisbn ne "AND" && $boolisbn ne "OR" && $boolisbn ne "NOT") {
-        $boolisbn      = "AND";
-    }
-
-    if ($boolissn ne "AND" && $boolissn ne "OR" && $boolissn ne "NOT") {
-        $boolissn      = "AND";
-    }
-
-    if ($boolsign ne "AND" && $boolsign ne "OR" && $boolsign ne "NOT") {
-        $boolsign      = "AND";
-    }
-
-    if ($boolejahr ne "AND") {
-        $boolejahr     = "AND";
-    }
-
-    if ($boolfs ne "AND" && $boolfs ne "OR" && $boolfs ne "NOT") {
-        $boolfs        = "AND";
-    }
-
-    if ($boolmart ne "AND" && $boolmart ne "OR" && $boolmart ne "NOT") {
-        $boolmart      = "AND";
-    }
-
-    if ($boolhststring ne "AND" && $boolhststring ne "OR" && $boolhststring ne "NOT") {
-        $boolhststring = "AND";
-    }
-
-    $boolverf      = "AND NOT" if ($boolverf      eq "NOT");
-    $boolhst       = "AND NOT" if ($boolhst       eq "NOT");
-    $boolswt       = "AND NOT" if ($boolswt       eq "NOT");
-    $boolkor       = "AND NOT" if ($boolkor       eq "NOT");
-    $boolnotation  = "AND NOT" if ($boolnotation  eq "NOT");
-    $boolisbn      = "AND NOT" if ($boolisbn      eq "NOT");
-    $boolissn      = "AND NOT" if ($boolissn      eq "NOT");
-    $boolsign      = "AND NOT" if ($boolsign      eq "NOT");
-    $boolfs        = "AND NOT" if ($boolfs        eq "NOT");
-    $boolmart      = "AND NOT" if ($boolmart      eq "NOT");
-    $boolhststring = "AND NOT" if ($boolhststring eq "NOT");
-
-    # Setzen der arithmetischen Ejahrop-Operatoren
-    if (exists $ejahrop_ref->{$ejahrop}){
-        $ejahrop=$ejahrop_ref->{$ejahrop};
-    }
-    else {
-        $ejahrop="=";
-    }
-    
-    # Filter: ISBN und ISSN
-
-    # Entfernung der Minus-Zeichen bei der ISBN
-    $fs   =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10/g;
-    $isbn =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10/g;
-
-    # Entfernung der Minus-Zeichen bei der ISSN
-    $fs   =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)/$1$2$3$4$5$6$7$8/g;
-    $issn =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)/$1$2$3$4$5$6$7$8/g;
-
-    # Filter Rest
-    $fs        = OpenBib::Common::Util::grundform({
-        content   => $fs,
-        searchreq => 1,
-    });
-
-    $verf      = OpenBib::Common::Util::grundform({
-        content   => $verf,
-        searchreq => 1,
-    });
-
-    $hst       = OpenBib::Common::Util::grundform({
-        content   => $hst,
-        searchreq => 1,
-    });
-
-    $hststring = OpenBib::Common::Util::grundform({
-        content   => $hststring,
-        searchreq => 1,
-    });
-
-    $swt       = OpenBib::Common::Util::grundform({
-        content   => $swt,
-        searchreq => 1,
-    });
-
-    $kor       = OpenBib::Common::Util::grundform({
-        content   => $kor,
-        searchreq => 1,
-    });
-
-    $sign      = OpenBib::Common::Util::grundform({
-        content   => $sign,
-        searchreq => 1,
-    });
-
-    $isbn      = OpenBib::Common::Util::grundform({
-        category  => '0540',
-        content   => $isbn,
-        searchreq => 1,
-    });
-
-    $issn      = OpenBib::Common::Util::grundform({
-        category  => '0543',
-        content   => $issn,
-        searchreq => 1,
-    });
-    
-    $mart      = OpenBib::Common::Util::grundform({
-        content   => $mart,
-        searchreq => 1,
-    });
-
-    $notation  = OpenBib::Common::Util::grundform({
-        content   => $notation,
-        searchreq => 1,
-    });
-
-    $ejahr      = OpenBib::Common::Util::grundform({
-        content   => $ejahr,
-        searchreq => 1,
-    });
-    
-    # Bei hststring zusaetzlich normieren durch Weglassung des ersten
-    # Stopwortes
-    $hststring = OpenBib::Common::Stopwords::strip_first_stopword($hststring);
-
-    # Umwandlung impliziter ODER-Verknuepfung in UND-Verknuepfung
-    if ($autoplus eq "1" && !$verfindex && !$korindex && !$swtindex) {
-        $fs   = OpenBib::VirtualSearch::Util::conv2autoplus($fs)   if ($fs);
-        $verf = OpenBib::VirtualSearch::Util::conv2autoplus($verf) if ($verf);
-        $hst  = OpenBib::VirtualSearch::Util::conv2autoplus($hst)  if ($hst);
-        $kor  = OpenBib::VirtualSearch::Util::conv2autoplus($kor)  if ($kor);
-        $swt  = OpenBib::VirtualSearch::Util::conv2autoplus($swt)  if ($swt);
-        $isbn = OpenBib::VirtualSearch::Util::conv2autoplus($isbn) if ($isbn);
-        $issn = OpenBib::VirtualSearch::Util::conv2autoplus($issn) if ($issn);
-    }
-
     if ($hitrange eq "alles") {
         $hitrange=-1;
     }
 
     my $queryoptions_ref
         = OpenBib::Common::Util::get_queryoptions($sessiondbh,$r);
-
+    
     my $targetdbinfo_ref
         = OpenBib::Common::Util::get_targetdbinfo($sessiondbh);
 
     my $targetcircinfo_ref
         = OpenBib::Common::Util::get_targetcircinfo($sessiondbh);
+
+    my $searchquery_ref
+        = OpenBib::Common::Util::get_searchquery($r);
 
     my $is_orgunit=0;
 
@@ -481,9 +276,9 @@ sub handler {
 
     if ($verfindex || $korindex || $swtindex) {
         my $contentreq =
-            ($verfindex)?$verf:
-            ($korindex )?$kor:
-            ($swtindex )?$swt:undef;
+            ($verfindex)?$searchquery_ref->{verf}{norm}:
+            ($korindex )?$searchquery_ref->{kor }{norm}:
+            ($swtindex )?$searchquery_ref->{swt }{norm}:undef;
 
         my $type =
             ($verfindex)?'aut':
@@ -648,56 +443,56 @@ sub handler {
 
     my $firstsql;
 
-    if ($fs) {
+    if ($searchquery_ref->{fs  }{norm}) {
         $firstsql=1;
     }
 
-    if ($verf) {
+    if ($searchquery_ref->{verf}{norm}) {
         $firstsql=1;
     }
 
-    if ($kor) {
+    if ($searchquery_ref->{kor }{norm}) {
         $firstsql=1;
     }
 
-    if ($hst) {
+    if ($searchquery_ref->{hst }{norm}) {
         $firstsql=1;
     }
 
-    if ($swt) {
+    if ($searchquery_ref->{swt}{norm}) {
         $firstsql=1;
     }
 
-    if ($notation) {
+    if ($searchquery_ref->{notation}{norm}) {
         $firstsql=1;
     }
 
-    if ($sign) {
+    if ($searchquery_ref->{sign}{norm}) {
         $firstsql=1;
     }
 
-    if ($isbn) {
+    if ($searchquery_ref->{isbn}{norm}) {
         $firstsql=1;
     }
 
-    if ($issn) {
+    if ($searchquery_ref->{issn}{norm}) {
         $firstsql=1;
     }
 
-    if ($mart) {
+    if ($searchquery_ref->{mart}{norm}) {
         $firstsql=1;
     }
 
-    if ($hststring) {
+    if ($searchquery_ref->{hststring}{norm}) {
         $firstsql=1;
     }
 
-    if ($ejahr){
+    if ($searchquery_ref->{ejahr}{norm}){
         $firstsql=1;
     }
     
-    if ($ejahr) {
-        my ($ejtest)=$ejahr=~/.*(\d\d\d\d).*/;
+    if ($searchquery_ref->{ejahr}{norm}) {
+        my ($ejtest)=$searchquery_ref->{ejahr}{norm}=~/.*(\d\d\d\d).*/;
         if (!$ejtest) {
             OpenBib::Common::Util::print_warning("Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein.",$r);
 
@@ -708,8 +503,8 @@ sub handler {
         }
     }
 
-    if ($boolejahr eq "OR") {
-        if ($ejahr) {
+    if ($searchquery_ref->{ejahr}{bool} eq "OR") {
+        if ($searchquery_ref->{ejahr}{norm}) {
             OpenBib::Common::Util::print_warning("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung.",$r);
 
             $sessiondbh->disconnect();
@@ -719,8 +514,8 @@ sub handler {
     }
 
 
-    if ($boolejahr eq "AND") {
-        if ($ejahr) {
+    if ($searchquery_ref->{ejahr}{bool} eq "AND") {
+        if ($searchquery_ref->{ejahr}{norm}) {
             if (!$firstsql) {
                 OpenBib::Common::Util::print_warning("Das Suchkriterium Jahr ist nur in Verbindung mit der
 UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung.",$r);
@@ -743,7 +538,7 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
     }
 
     my %trefferpage  = ();
-    my %dbhits      = ();
+    my %dbhits       = ();
 
     my $loginname = "";
     my $password  = "";
@@ -754,13 +549,6 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
 
     # Hash im Loginname ersetzen
     $loginname =~s/#/\%23/;
-
-    $verf      =~s/%2B(\w+)/$1/g;
-    $hst       =~s/%2B(\w+)/$1/g;
-    $kor       =~s/%2B(\w+)/$1/g;
-    $ejahr     =~s/%2B(\w+)/$1/g;
-    $isbn      =~s/%2B(\w+)/$1/g;
-    $issn      =~s/%2B(\w+)/$1/g;
 
     my $hostself="http://".$r->hostname.$r->uri;
 
@@ -785,6 +573,7 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
     });
 
     # TT-Data erzeugen
+
     my $startttdata={
         lang           => $lang,
         view           => $view,
@@ -794,12 +583,7 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
         loginname      => $loginname,
         password       => $password,
 
-        verf           => OpenBib::VirtualSearch::Util::externalsearchterm($verf),
-        hst            => OpenBib::VirtualSearch::Util::externalsearchterm($hst),
-        kor            => OpenBib::VirtualSearch::Util::externalsearchterm($kor),
-        ejahr          => OpenBib::VirtualSearch::Util::externalsearchterm($ejahr),
-        isbn           => OpenBib::VirtualSearch::Util::externalsearchterm($isbn),
-        issn           => OpenBib::VirtualSearch::Util::externalsearchterm($issn),
+        searchquery    => $searchquery_ref,
         queryargs      => $queryargs,
         sortselect     => $sortselect,
         thissortstring => $thissortstring,
@@ -832,7 +616,7 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
 
         my $sqlquerystring  = "select isbn from search where match (content) against (? in boolean mode) limit 2000";
         my $request         = $enrichdbh->prepare($sqlquerystring);
-        $request->execute("$hst $fs");
+        $request->execute($searchquery_ref->{hst}{norm}." ".$searchquery_ref->{fs}{norm});
         while (my $res=$request->fetchrow_arrayref){
             push @{$enrichkeys_ref}, $res->[0];
         }
@@ -869,39 +653,14 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
         my $atime=new Benchmark;
         
         my $result_ref=OpenBib::Search::Util::initial_search_for_titidns({
-            fs            => $fs,
-            verf          => $verf,
-            hst           => $hst,
-            hststring     => $hststring,
-            swt           => $swt,
-            kor           => $kor,
-            notation      => $notation,
-            isbn          => $isbn,
-            issn          => $issn,
-            sign          => $sign,
-            ejahr         => $ejahr,
-            ejahrop       => $ejahrop,
-            mart          => $mart,
-            serien        => $serien,
+            searchquery_ref => $searchquery_ref,
 
-            boolfs        => $boolfs,
-            boolverf      => $boolverf,
-            boolhst       => $boolhst,
-            boolhststring => $boolhststring,
-            boolswt       => $boolswt,
-            boolkor       => $boolkor,
-            boolnotation  => $boolnotation,
-            boolisbn      => $boolisbn,
-            boolissn      => $boolissn,
-            boolsign      => $boolsign,
-            boolejahr     => $boolejahr,
-            boolmart      => $boolmart,
+            serien          => $serien,
+            dbh             => $dbh,
+            maxhits         => $maxhits,
 
-            dbh           => $dbh,
-            maxhits       => $maxhits,
-
-            enrich         => $enrich,
-            enrichkeys_ref => $enrichkeys_ref,
+            enrich          => $enrich,
+            enrichkeys_ref  => $enrichkeys_ref,
         });
 
         my @tidns           = @{$result_ref->{titidns_ref}};
@@ -1013,7 +772,7 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
     #
     # ENDE Anfrage an Datenbanken schicken und Ergebnisse einsammeln
 
-    $logger->info("InitialSearch: ", $sessionID, " ", $gesamttreffer, " fs=(", $fs, ") verf=(", $boolverf, "#", $verf, ") hst=(", $boolhst, "#", $hst, ") hststring=(", $boolhststring, "#", $hststring, ") swt=(", $boolswt, "#", $swt, ") kor=(", $boolkor, "#", $kor, ") sign=(", $boolsign, "#", $sign, ") isbn=(", $boolisbn, "#", $isbn, ") issn=(", $boolissn, "#", $issn, ") mart=(", $boolmart, "#", $mart, ") notation=(", $boolnotation, "#", $notation, ") ejahr=(", $boolejahr, "#", $ejahr, ") ejahrop=(", $ejahrop, ") databases=(",join(' ',sort @databases),") ");
+#    $logger->info("InitialSearch: ", $sessionID, " ", $gesamttreffer, " fs=(", $fs, ") verf=(", $boolverf, "#", $verf, ") hst=(", $boolhst, "#", $hst, ") hststring=(", $boolhststring, "#", $hststring, ") swt=(", $boolswt, "#", $swt, ") kor=(", $boolkor, "#", $kor, ") sign=(", $boolsign, "#", $sign, ") isbn=(", $boolisbn, "#", $isbn, ") issn=(", $boolissn, "#", $issn, ") mart=(", $boolmart, "#", $mart, ") notation=(", $boolnotation, "#", $notation, ") ejahr=(", $boolejahr, "#", $ejahr, ") ejahrop=(", $ejahrop, ") databases=(",join(' ',sort @databases),") ");
 
     # Wenn etwas gefunden wurde, dann kann ein Resultset geschrieben werden.
 
@@ -1028,21 +787,9 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
     if ($sessionID ne "-1") {
         # Jetzt update der Trefferinformationen
 
-        # Plus-Zeichen fuer Abspeicherung wieder hinzufuegen...!
-        $fs       =~s/%2B/\+/g;
-        $verf     =~s/%2B/\+/g;
-        $hst      =~s/%2B/\+/g;
-        $swt      =~s/%2B/\+/g;
-        $kor      =~s/%2B/\+/g;
-        $notation =~s/%2B/\+/g;
-        $sign     =~s/%2B/\+/g;
-        $isbn     =~s/%2B/\+/g;
-        $issn     =~s/%2B/\+/g;
-        $ejahr    =~s/%2B/\+/g;
-
         my $dbasesstring=join("||",@databases);
 
-        my $thisquerystring="$fs||$verf||$hst||$swt||$kor||$sign||$isbn||$issn||$notation||$mart||$ejahr||$hststring||$boolhst||$boolswt||$boolkor||$boolnotation||$boolisbn||$boolsign||$boolejahr||$boolissn||$boolverf||$boolfs||$boolmart||$boolhststring";
+        my $thisquerystring=unpack "H*", Storable::freeze($searchquery_ref);
         my $idnresult=$sessiondbh->prepare("select count(*) as rowcount from queries where query = ? and sessionid = ? and dbases = ?") or $logger->error($DBI::errstr);
         $idnresult->execute($thisquerystring,$sessionID,$dbasesstring) or $logger->error($DBI::errstr);
         my $res  = $idnresult->fetchrow_hashref;
@@ -1074,11 +821,11 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
             foreach my $db (keys %trefferpage) {
                 my $res=$trefferpage{$db};
 
-                my $yamlres=YAML::Dump($res);
+                my $storableres=unpack "H*",Storable::freeze($res);
 
-                $logger->debug("YAML-Dumped: $yamlres");
+                $logger->debug("YAML-Dumped: ".YAML::Dump($res));
                 my $num=$dbhits{$db};
-                $idnresult->execute($sessionID,$db,$yamlres,$num,$queryid) or $logger->error($DBI::errstr);
+                $idnresult->execute($sessionID,$db,$storableres,$num,$queryid) or $logger->error($DBI::errstr);
             }
         }
 

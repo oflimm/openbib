@@ -3691,6 +3691,8 @@ sub get_index_by_swt {
 
   $swt=OpenBib::Search::Util::input2sgml($swt,1,0);
 
+  $swt=~s/\*$//;
+
   my @requests=("select schlagw from swt where schlagwnorm like '$swt%' order by schlagw");
   my @temp=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
   
@@ -3797,6 +3799,8 @@ sub get_index_by_verf {
 
   $verf=OpenBib::Search::Util::input2sgml($verf,1,0);
 
+  $verf=~s/\*$//;
+  
   my @requests=("select ans from aut where ansnorm like '$verf%' order by ans");
   my @temp=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
   
@@ -3852,6 +3856,8 @@ sub get_index_by_kor {
 
   $kor=OpenBib::Search::Util::input2sgml($kor,1,0);
 
+  $kor=~s/\*$//;
+  
   my @requests=("select korans from kor where koransnorm like '$kor%'");
   my @temp=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
   

@@ -149,7 +149,7 @@ elsif ($action eq "auth"){
   $userresult->execute($loginname) or $logger->error($DBI::errstr);
 
   if ($userresult->rows > 0){
-    OpenBib::Common::Util::print_warning("Ein Benutzer mit dem Namen $loginname existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte <a href=\"http://$config{servername}$config{login_loc}?sessionID=$sessionID?action=login\">zur&uuml;ck</a> und lassen es sich zumailen.",$r);
+    OpenBib::Common::Util::print_warning("Ein Benutzer mit dem Namen $loginname existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte <a href=\"http://$config{servername}$config{login_loc}?sessionID=$sessionID;view=$view;action=login\">zur&uuml;ck</a> und lassen es sich zumailen.",$r);
     $userresult->finish();
 
     $sessiondbh->disconnect();

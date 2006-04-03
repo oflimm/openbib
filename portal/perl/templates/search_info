@@ -19,5 +19,7 @@ jeweiligen Texteingabefeld.<br />
 <ul>
 <li>Keine <b>logische</b> Kombination mehrerer Worte im Eingabefeld m&ouml;glich</li>
 <li> <b>aber</b> exakte Phrasensuche</li>
-<li>Die Eingabe wird automatisch rechts trunkiert. Die Eingabe eines Sterns zur Trunkierung entfaellt</li>
+<li>Die Eingabe wird <b>nicht</b> automatisch rechts trunkiert. Falls
+Sie den jeweiligen Begriff trunkieren m&ouml;chten, dann m&uuml;ssen
+Sie zwingend einen Stern am Ende Ihrer Eingabe hinzuf&uuml;gen.</li>
 </ul>

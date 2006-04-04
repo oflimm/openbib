@@ -445,6 +445,7 @@ sub handler {
           
           my $dbid        = $result->{'dbid'};
           my $dbname      = $result->{'dbname'};
+          my $dbdesc      = $result->{'description'};
           
           my $rssfeed_ref=[];
           
@@ -469,6 +470,7 @@ sub handler {
           my $katalog={
               dbid        => $dbid,
               dbname      => $dbname,
+              dbdesc      => $dbdesc,
               rssfeeds    => $rssfeed_ref,
           };
           

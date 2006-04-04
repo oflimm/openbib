@@ -27,7 +27,7 @@
 <div id="content">
 
 <table width="100%">
-<tr><th>RSS-Einstellungen</th></tr>
+<tr><th>RSS-Einstellungen: [% katalog.dbdesc %]</th></tr>
 <tr><td class="boxedclear" style="font-size:12pt">
 
 <!-- Anfang: RSS Feed fuer Neuaufnahmen (generell) -->

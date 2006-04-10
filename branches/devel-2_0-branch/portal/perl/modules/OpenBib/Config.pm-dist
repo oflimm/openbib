@@ -213,6 +213,10 @@ use vars qw(%config);
 
            msg_path                => '/opt/openbib/conf/messages.conf',
 
+           # Pfad zu den lokalisierten Message-Dateien
+
+           locale_base_path        => '/opt/openbib/locales',
+
 	   # Pfad zu den Portal-Templates (Template Toolkit)
 
 	   tt_include_path         => '/opt/openbib/templates',

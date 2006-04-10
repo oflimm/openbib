@@ -46,14 +46,14 @@ use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::L10N;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
 
-use vars qw(%config %msg);
+use vars qw(%config);
 
 *config = \%OpenBib::Config::config;
-*msg    = OpenBib::Config::get_msgs($config{msg_path});
 
 sub handler {
 
@@ -148,6 +148,10 @@ sub handler {
     my $rssid           = $query->param('rssid') || '';
     my @rssids          = ($query->param('rssids'))?$query->param('rssids'):();
 
+    # Message Katalog laden
+
+    my $msg = OpenBib::L10N->get_handle($lang);
+        
     # Neue SessionID erzeugen, falls keine vorhanden
 
     unless ($sessionID){
@@ -185,7 +189,7 @@ sub handler {
             lang       => $lang,
             stylesheet => $stylesheet,
             config     => \%config,
-            msg        => \%msg,
+            msg        => $msg,
         };
     
         OpenBib::Common::Util::print_page($config{tt_admin_login_tname},$ttdata,$r);
@@ -221,7 +225,7 @@ sub handler {
             stylesheet => $stylesheet,
             sessionID  => $sessionID,
             config     => \%config,
-            msg        => \%msg,
+            msg        => $msg,
         };
     
         OpenBib::Common::Util::print_page($config{tt_admin_loggedin_tname},$ttdata,$r);
@@ -419,7 +423,7 @@ sub handler {
                 katalog    => $katalog,
 		  
                 config     => \%config,
-                msg        => \%msg,
+                msg        => $msg,
             };
       
             OpenBib::Common::Util::print_page($config{tt_admin_editcat_tname},$ttdata,$r);
@@ -488,7 +492,7 @@ sub handler {
                 katalog    => $katalog,
                 
                 config     => \%config,
-                msg        => \%msg,
+                msg        => $msg,
             };
             
             OpenBib::Common::Util::print_page($config{tt_admin_editcat_rss_tname},$ttdata,$r);
@@ -552,7 +556,7 @@ sub handler {
             kataloge   => \@kataloge,
 
             config     => \%config,
-            msg        => \%msg,
+            msg        => $msg,
         };
     
         OpenBib::Common::Util::print_page($config{tt_admin_showcat_tname},$ttdata,$r);
@@ -606,7 +610,7 @@ sub handler {
             sessionID  => $sessionID,
             views      => \@views,
             config     => \%config,
-            msg        => \%msg,
+            msg        => $msg,
         };
     
         OpenBib::Common::Util::print_page($config{tt_admin_showviews_tname},$ttdata,$r);
@@ -785,7 +789,7 @@ sub handler {
                 view       => $view,
 		  
                 config     => \%config,
-                msg        => \%msg,
+                msg        => $msg,
             };
       
             OpenBib::Common::Util::print_page($config{tt_admin_editview_tname},$ttdata,$r);
@@ -887,7 +891,7 @@ sub handler {
               allrssfeeds => $allrssfeed_ref,
 
               config      => \%config,
-              msg         => \%msg,
+              msg         => $msg,
           };
           
           OpenBib::Common::Util::print_page($config{tt_admin_editview_rss_tname},$ttdata,$r);
@@ -950,7 +954,7 @@ sub handler {
             kataloge   => \@kataloge,
 
             config     => \%config,
-            msg        => \%msg,
+            msg        => $msg,
         };
     
         OpenBib::Common::Util::print_page($config{tt_admin_showimx_tname},$ttdata,$r);
@@ -997,7 +1001,7 @@ sub handler {
             sessions   => \@sessions,
 
             config     => \%config,
-            msg        => \%msg,
+            msg        => $msg,
         };
 
         OpenBib::Common::Util::print_page($config{tt_admin_showsessions_tname},$ttdata,$r);
@@ -1058,7 +1062,7 @@ sub handler {
                 queries    => \@queries,
 
                 config     => \%config,
-                msg        => \%msg,
+                msg        => $msg,
             };
 
             OpenBib::Common::Util::print_page($config{tt_admin_editsession_tname},$ttdata,$r);
@@ -1077,7 +1081,7 @@ sub handler {
             sessionID  => $sessionID,
             
             config     => \%config,
-            msg        => \%msg,
+            msg        => $msg,
         };
       
         OpenBib::Common::Util::print_page($config{tt_admin_logout_tname},$ttdata,$r);

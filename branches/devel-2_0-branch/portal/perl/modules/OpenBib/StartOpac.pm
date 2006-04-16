@@ -44,6 +44,7 @@ use POSIX;
 
 use OpenBib::Common::Util();
 use OpenBib::Config();
+use OpenBib::L10N;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
@@ -65,7 +66,12 @@ sub handler {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
 
-    my $fs=$query->param('fs') || '';
+    my $fs   = $query->param('fs') || '';
+    my $lang = $query->param('l')  || 'de';
+
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     # Verbindung zur SQL-Datenbank herstellen
     my $sessiondbh
@@ -166,6 +172,7 @@ sub handler {
         database        => $database,
         searchsingletit => $searchsingletit,
         config          => \%config,
+        msg             => $msg,
     };
 
     OpenBib::Common::Util::print_page($config{tt_startopac_tname},$ttdata,$r);

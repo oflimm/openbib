@@ -45,6 +45,7 @@ use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::L10N;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
@@ -75,6 +76,11 @@ sub handler {
     my $do_newquery      = $query->param('do_newquery')      || '';
     my $do_resultlist    = $query->param('do_resultlist')    || '';
     my $do_externalquery = $query->param('do_externalquery') || '';
+    my $lang             = $query->param('l')         || 'de';
+
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
     
     if    ($do_newquery) {
         $r->internal_redirect("http://$config{servername}$config{searchframe_loc}?sessionID=$sessionID&queryid=$queryid&view=$view");

@@ -2,7 +2,7 @@
 #
 #  OpenBib::SearchFrame
 #
-#  Dieses File ist (C) 2001-2005 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -46,13 +46,13 @@ use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::L10N;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
-use vars qw(%config %msg);
+use vars qw(%config);
 
 *config = \%OpenBib::Config::config;
-*msg    = OpenBib::Config::get_msgs($config{msg_path});
 
 sub handler {
     my $r=shift;
@@ -86,7 +86,12 @@ sub handler {
     my $singleidn = $query->param('singleidn') || '';
     my $setmask   = $query->param('setmask') || '';
     my $action    = ($query->param('action'))?$query->param('action'):'';
-  
+    my $lang      = $query->param('l')               || 'de';
+
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+
     unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
         OpenBib::Common::Util::print_warning("Ungültige Session",$r);
         $sessiondbh->disconnect();
@@ -318,7 +323,7 @@ sub handler {
         queries       => \@queries,
         useragent     => $useragent,
         config        => \%config,
-        msg           => \%msg,
+        msg           => $msg,
     };
   
     if ($setmask eq "simple") {

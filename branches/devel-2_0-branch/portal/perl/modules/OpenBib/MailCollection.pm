@@ -47,6 +47,7 @@ use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::L10N;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
@@ -113,6 +114,11 @@ sub handler {
     my $mail      = $query->param('mail');
     my $database  = $query->param('database');
     my $type      = $query->param('type')||'HTML';
+    my $lang       = $query->param('l')         || 'de';
+
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     my $view="";
 
@@ -247,15 +253,8 @@ sub handler {
 		
         collection => \@collection,
 		
-        utf2iso    => sub {
-            my $string=shift;
-            $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
-            return $string;
-        },
-		
-        show_corporate_banner => 0,
-        show_foot_banner      => 1,
         config     => \%config,
+        msg        => $msg,
     };
 
     my $maildata="";
@@ -298,27 +297,27 @@ sub handler {
         return SERVER_ERROR;
     };
 
-    my $msg = MIME::Lite->new(
+    my $mailmsg = MIME::Lite->new(
         From            => $config{contact_email},
         To              => $email,
         Subject         => $subject,
         Type            => 'multipart/mixed'
     );
 
-    $msg->attach(
+    $mailmsg->attach(
         Type            => 'TEXT',
         Encoding        => '8bit',
         Data            => $anschreiben,
     );
   
-    $msg->attach(
+    $mailmsg->attach(
         Type            => $mimetype,
         Encoding        => '8bit',
         Filename        => $filename,
         Data            => $maildata,
     );
   
-    $msg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config{contact_email}");
+    $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config{contact_email}");
     
     OpenBib::Common::Util::print_page($config{tt_mailcollection_success_tname},$ttdata,$r);
     

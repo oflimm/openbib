@@ -44,15 +44,15 @@ use POSIX;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::L10N;
 use OpenBib::ManageCollection::Util;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
 
-use vars qw(%config %msg);
+use vars qw(%config);
 
 *config = \%OpenBib::Config::config;
-*msg    = OpenBib::Config::get_msgs($config{msg_path});
 
 sub handler {
     my $r=shift;
@@ -80,14 +80,17 @@ sub handler {
         = DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $lang      = $query->param('l')         || 'de';
     my $sessionID = $query->param('sessionID') || '';
     my $database  = $query->param('database')  || '';
     my $singleidn = $query->param('singleidn') || '';
     my $loeschen  = $query->param('loeschen')  || '';
     my $action    = ($query->param('action'))?$query->param('action'):'none';
     my $type      = ($query->param('type'))?$query->param('type'):'HTML';
+    my $lang      = $query->param('l')        || 'de';
 
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
     
     # Haben wir eine authentifizierte Session?
     my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
@@ -261,7 +264,7 @@ sub handler {
             type       => $type,
             collection => \@collection,
             config     => \%config,
-            msg        => \%msg,
+            msg        => $msg,
         };
     
         OpenBib::Common::Util::print_page($config{tt_managecollection_show_tname},$ttdata,$r);
@@ -365,7 +368,7 @@ sub handler {
             type       => $type,
             collection => \@collection,
             config     => \%config,
-            msg        => \%msg,
+            msg        => $msg,
         };
     
         if ($type eq "HTML") {
@@ -491,7 +494,7 @@ sub handler {
             database   => $database,
             collection => \@collection,
             config     => \%config,
-            msg        => \%msg,
+            msg        => $msg,
         };
     
         OpenBib::Common::Util::print_page($config{tt_managecollection_mail_tname},$ttdata,$r);
@@ -606,7 +609,7 @@ sub handler {
             database   => $database,
             collection => \@collection,
             config     => \%config,
-            msg        => \%msg,
+            msg        => $msg,
         };
     
         OpenBib::Common::Util::print_page($config{tt_managecollection_print_tname},$ttdata,$r);

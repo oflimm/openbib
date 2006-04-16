@@ -49,14 +49,14 @@ use OpenBib::VirtualSearch::Util;
 use OpenBib::Common::Util;
 use OpenBib::Common::Stopwords;
 use OpenBib::Config;
+use OpenBib::L10N;
 use OpenBib::Template::Provider;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
-use vars qw(%config %msg);
+use vars qw(%config);
 
 *config = \%OpenBib::Config::config;
-*msg    = OpenBib::Config::get_msgs($config{msg_path});
 
 sub handler {
     my $r=shift;
@@ -95,7 +95,6 @@ sub handler {
     my $sorttype      = ($query->param('sorttype' ))?$query->param('sorttype'):"author";
     my $sortorder     = ($query->param('sortorder'))?$query->param('sortorder'):'up';
     my $autoplus      = $query->param('autoplus')      || '';
-    my $lang          = $query->param('l')             || 'de';
 
     my $sortall       = ($query->param('sortall'))?$query->param('sortall'):'0';
 
@@ -110,6 +109,11 @@ sub handler {
     my $queryid       = $query->param('queryid')       || '';
 
     my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
+    my $lang          = $query->param('l')         || 'de';
+
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     if ($hitrange eq "alles") {
         $hitrange=-1;
@@ -426,7 +430,7 @@ sub handler {
             baseurl    => $baseurl,
             profil     => $profil,
             config     => \%config,
-            msg        => \%msg,
+            msg        => $msg,
         };
 
         OpenBib::Common::Util::print_page($template,$ttdata,$r);
@@ -588,7 +592,7 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
         sortselect     => $sortselect,
         thissortstring => $thissortstring,
         config         => \%config,
-        msg            => \%msg,
+        msg            => $msg,
     };
 
     $starttemplate->process($starttemplatename, $startttdata) || do {
@@ -747,7 +751,7 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
                 sortorder       => $sortorder,
                 resulttime      => $resulttime,
                 config          => \%config,
-                msg             => \%msg,
+                msg             => $msg,
             };
 
             $itemtemplate->process($itemtemplatename, $ttdata) || do {
@@ -856,7 +860,7 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
         gesamttreffer => $gesamttreffer,
 
         config        => \%config,
-        msg           => \%msg,
+        msg           => $msg,
     };
 
     $endtemplate->process($endtemplatename, $endttdata) || do {

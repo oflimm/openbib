@@ -46,6 +46,7 @@ use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::L10N;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
@@ -89,7 +90,12 @@ sub handler {
     my $password      = ($query->param('password'))?$query->param('password'):'';
     my $password1     = ($query->param('password1'))?$query->param('password1'):'';
     my $password2     = ($query->param('password2'))?$query->param('password2'):'';
-    my $sessionID     = $query->param('sessionID')||'';
+    my $sessionID     = $query->param('sessionID') || '';
+    my $lang          = $query->param('l')         || 'de';
+
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
   
     my $sessiondbh
         = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
@@ -245,9 +251,8 @@ sub handler {
             ejahrchecked     => $ejahrchecked,
             userinfo         => \%userinfo,
 
-            show_corporate_banner => 0,
-            show_foot_banner      => 1,
             config           => \%config,
+            msg              => $msg,
         };
         OpenBib::Common::Util::print_page($config{tt_userprefs_tname},$ttdata,$r);
     }
@@ -262,9 +267,8 @@ sub handler {
             stylesheet => $stylesheet,
             sessionID  => $sessionID,
 
-            show_corporate_banner => 0,
-            show_foot_banner      => 0,
             config     => \%config,
+            msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config{tt_userprefs_changefields_tname},$ttdata,$r);
     }
@@ -275,9 +279,8 @@ sub handler {
             stylesheet => $stylesheet,
             sessionID  => $sessionID,
 
-            show_corporate_banner => 0,
-            show_foot_banner      => 0,
             config     => \%config,
+            msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config{tt_userprefs_ask_delete_tname},$ttdata,$r);
     }
@@ -331,9 +334,8 @@ sub handler {
             stylesheet => $stylesheet,
             sessionID  => $sessionID,
 
-            show_corporate_banner => 1,
-            show_foot_banner      => 0,
             config     => \%config,
+            msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config{tt_userprefs_userdeleted_tname},$ttdata,$r);
     }

@@ -45,13 +45,13 @@ use Template;
 use OpenBib::Search::Util;
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::L10N;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
-use vars qw(%config %msg);
+use vars qw(%config);
 
 *config = \%OpenBib::Config::config;
-*msg    = OpenBib::Config::get_msgs($config{msg_path});
 
 my $benchmark;
 
@@ -163,7 +163,11 @@ sub handler {
     my $searchtitofnot    = $query->param('searchtitofnot')    || '';
     my $searchtitofswt    = $query->param('searchtitofswt')    || '';
 
-    my $lang              = $query->param('l')                 || undef;
+    my $lang              = $query->param('l')                 || 'de';
+
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     #####                                                          ######
     ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########
@@ -262,7 +266,7 @@ sub handler {
                 normset          => $normset,
                 
                 config     => \%config,
-                msg        => \%msg,
+                msg        => $msg,
             };
             OpenBib::Common::Util::print_page($config{tt_search_showautset_tname},$ttdata,$r);
             return OK;
@@ -470,11 +474,9 @@ sub handler {
                 qopts      => $queryoptions_ref,
                 sessionID  => $sessionID,
                 normset    => $normset,
-                
-                show_corporate_banner => 0,
-                show_foot_banner      => 1,
+
                 config     => \%config,
-                msg        => \%msg,
+                msg        => $msg,
             };
             OpenBib::Common::Util::print_page($config{tt_search_showswtset_tname},$ttdata,$r);
             return OK;
@@ -499,7 +501,7 @@ sub handler {
                 normset    => $normset,
                 
                 config     => \%config,
-                msg        => \%msg,
+                msg        => $msg,
             };
             OpenBib::Common::Util::print_page($config{tt_search_shownotset_tname},$ttdata,$r);
             return OK;
@@ -672,7 +674,7 @@ sub handler {
             normset    => $normset,
             
             config     => \%config,
-            msg        => \%msg,
+            msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config{tt_search_showswtset_tname},$ttdata,$r);
         return OK;
@@ -697,7 +699,7 @@ sub handler {
             normset    => $normset,
             
             config     => \%config,
-            msg        => \%msg,
+            msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config{tt_search_showkorset_tname},$ttdata,$r);
         return OK;
@@ -722,7 +724,7 @@ sub handler {
             normset    => $normset,
             
             config     => \%config,
-            msg        => \%msg,
+            msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config{tt_search_shownotset_tname},$ttdata,$r);
         return OK;
@@ -747,7 +749,7 @@ sub handler {
             normset    => $normset,
             
             config     => \%config,
-            msg        => \%msg,
+            msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config{tt_search_showautset_tname},$ttdata,$r);
         return OK;

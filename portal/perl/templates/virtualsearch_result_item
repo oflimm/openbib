@@ -11,10 +11,9 @@
 #
 #######################################################################
 -%]
-[%- i18nmsg = msg.${qopts.lang} -%]
 <!-- Beginn Result Item -->
 <tr class="titlerow"><td>&nbsp;</td><td>[% dbinfo %]</td><td
-align="right" colspan="3"><strong>[% treffer %] von [% fullresultcount %] Treffer</strong></td></tr>
+align="right" colspan="3"><strong>[% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %]</strong></td></tr>
 
 [% listrow = 'listrow2' %]
 [%- FOREACH item IN resultlist -%]
@@ -62,14 +61,14 @@ align="right" colspan="3"><strong>[% treffer %] von [% fullresultcount %] Treffe
 %]</span><br /><a href="[% config.search_loc %]?sessionID=[%
 sessionID %];database=[% item.database %];searchsingletit=[% item.id
 %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
-class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></td><td><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="header"><span class="rlcollect"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="header" title="In die Merkliste"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="In die Merkliste" border=0></a></span></a></td><td align=left><b>[% signatur %]</b></td></tr>
+class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></td><td><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="header"><span class="rlcollect"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="header" title="[% msg.maketext("In die Merkliste") %]"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="[% msg.maketext("In die Merkliste") %]" border=0></a></span></a></td><td align=left><b>[% signatur %]</b></td></tr>
 [%- IF listrow == 'listrow1' -%]
 [%- listrow = 'listrow2' -%]
 [%- ELSE -%]
 [%- listrow = 'listrow1' -%]
 [%- END -%]
 [% END %]
-<tr><td class="listnr"></td><td colspan="4"><span style="font-size:0.8em">in: [% resulttime %] Sekunden</span></b></td></tr>
+<tr><td class="listnr"></td><td colspan="4"><span style="font-size:0.8em">in: [% resulttime %] [% msg.maketext("Sekunden") %]</span></b></td></tr>
 <tr><td colspan="4">&nbsp;<td></tr>
 <!-- Ende Result Item -->
 

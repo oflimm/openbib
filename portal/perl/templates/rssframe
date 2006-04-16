@@ -11,17 +11,16 @@
 #
 #######################################################################
 -%]
-[%- i18nmsg = msg.${qopts.lang} -%]
 [% PROCESS common/subtemplate name="std_header" %]
 
   <body>
 
 <table width="100%">
-<tr><th>Hinweis</th></tr>
+<tr><th>[% msg.maketext("Hinweis") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
-Auf dieser Seite k&ouml;nnen Sie f&uuml;r einige Kataloge des KUG
+[% msg.maketext("Auf dieser Seite k&ouml;nnen Sie f&uuml;r einige Kataloge des KUG
 RSS-Feeds abonnieren. Dazu kopieren Sie bitte den jeweiligen URL von
-dieser Seite und kopieren ihn in Ihr RSS-Leseprogramm.
+dieser Seite und kopieren ihn in Ihr RSS-Leseprogramm.") %]
 </td></tr>
 </table>
 
@@ -30,7 +29,7 @@ dieser Seite und kopieren ihn in Ihr RSS-Leseprogramm.
 [%- FOREACH category = config.orgunits -%]
 
 <table width="100%">
-<tr><th style="font-size:1.2em">RSS-Feeds: [% category.desc %]</th></tr>
+<tr><th style="font-size:1.2em">[% msg.maketext("RSS-Feeds") %]: [% category.desc %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
 [% IF NOT rssfeedinfo.${category.short} %]
 Keine
@@ -43,7 +42,7 @@ Keine
 <tr><td class="boxed" valign="top" align="left">
 <table>
 [% IF item.type == 'neuzugang' %]
-<tr><td><img src="/images/openbib/rssfeed.png"></td><td>Letzte 50 Neuaufnahmen (<a
+<tr><td><img src="/images/openbib/rssfeed.png"></td><td>[% msg.maketext("Letzte 50 Neuaufnahmen") %](<a
 href="[% config.connector_rss_loc %]/[% item.type %]/[% item.pool
 %].rdf" target="_blank">http://kugtest.ub.uni-koeln.de[% config.connector_rss_loc %]/[% item.type %]/[% item.pool %].rdf</a>)</td></tr>
 [% END %]

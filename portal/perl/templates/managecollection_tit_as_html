@@ -12,18 +12,18 @@
 #
 #######################################################################
 -%]
-<tr class="titlerow"><td><input type="checkbox" name="loeschtit" value="[% titset.database %]:[% titset.titidn %]"></td><td>aus: [% titset.dbdesc %]<td></tr><tr><td>&nbsp;</td><td>
+<tr class="titlerow"><td><input type="checkbox" name="loeschtit" value="[% titset.database %]:[% titset.titidn %]"></td><td>[% msg.maketext("aus:") %] [% titset.dbdesc %]<td></tr><tr><td>&nbsp;</td><td>
 [% normset    = titset.tit %]
 [% mexnormset = titset.mex %]
 [% circset    = titset.circ %]
 
 <!-- Title begins here -->
 <table width="100%">
-<tr><th>Titelaufnahme</th></tr>
+<tr><th>[% msg.maketext("Titelaufnahme") %]</th></tr>
 <tr><td class="boxedclear">
 
 <table cellpadding=2>
-<tr><td>[% i18nmsg.${"M0101"} %]</td><td>[% i18nmsg.${"M0102"} %]</td></tr>
+<tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
 <tr><td class="category">id</td><td>[% normset.id %]</td></tr>
 
 [% PROCESS common/subtemplate name="visible_categories_titset" %]
@@ -34,7 +34,7 @@ FOREACH category IN categories;
     FOREACH item IN normset.$category;
     content = item.content;
 -%]
-<tr><td class="category">[% i18nmsg.$category %]</td><td>[% content %]</td></tr>
+<tr><td class="category">[% msg.maketext("${category}") %]</td><td>[% content %]</td></tr>
 [%-
    END;
 END;
@@ -44,7 +44,7 @@ END;
 [% IF mexnormset.size > 0 %]
 <p>
 <table width="100%">
-<tr class="titlerow" align=center><td width="225">[% i18nmsg.${"X4000"} %]</td><td width="250">[% i18nmsg.${"X0016"} %]</td><td width="120">[% i18nmsg.${"X0005"} %]</td><td width="250">[% i18nmsg.${"X0014"} %]</td><td width="230">[% i18nmsg.${"X1204"} %]</td></tr>
+<tr class="titlerow" align=center><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="250">[% msg.maketext("Standort") %]</td><td width="120">[% msg.maketext("Inventarnummer") %]</td><td width="250">[% msg.maketext("Signatur") %]</td><td width="230">[% msg.maketext("Bestandsverlauf") %]</td></tr>
 
 [% FOREACH mex IN mexnormset %]
 <tr align=center><td><strong>[% mex.${"X4000"}.content %]</strong>
@@ -59,11 +59,11 @@ END;
 [% IF circset.size > 0 %]
 <p>
 <table width="100%">
-<tr><th>Ausleihe/Exemplare</th></tr>
+<tr><th>[% msg.maketext("Ausleihe/Exemplare") %]</th></tr>
 <tr><td class="boxedclear">
 
 <table>
-<tr class="titlerow" align="center"><td width="225">Besitzende Bibliothek</td><td width="250">Standort</td><td width="120">Lokale Signatur</td><td width="120">Ausleihstatus</td><td width="110">Aktion</td></tr>
+<tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="250">[% msg.maketext("Standort") %]</td><td width="120">[% msg.maketext("Lokale Signatur") %]</td><td width="120">[% msg.maketext("Ausleihstatus") %]</td><td width="110">[% msg.maketext("Aktion") %]</td></tr>
 [% FOREACH mex IN circset %]
 <tr align="center"><td><a href="[% mex.Bibinfourl %]"><strong>[% mex.Bibliothek %]</strong></a></td><td>[% mex.Standort %]</td><td><strong>[% mex.Signatur %]</strong></td><td><strong>[% mex.Status %]</strong></td><td class="circurl"><a TARGET=_blank href="[% mex.Ausleihurl %]">[% mex.Ausleihstring %]</a></td></tr>
 [% END %]

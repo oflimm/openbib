@@ -12,7 +12,6 @@
 #
 #######################################################################
 -%]
-[%- i18nmsg = msg.${lang} -%]
 [% PROCESS std_header title='KUG Administration - Views anzeigen' %]
 
   <body bgcolor="#FFFFFF">
@@ -20,10 +19,10 @@
 [% PROCESS corporate_banner %]
 
 <ul id="tabbingmenu">
-   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">Kataloge</a></li>
-   <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">Views</a></li>
-   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">Sessions</a></li>
-   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">Logout</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">[% msg.maketext("Kataloge") %]</a></li>
+   <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">[% msg.maketext("Views") %]</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">[% msg.maketext("Sessions") %]</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">[% msg.maketext("Logout") %]</a></li>
 </ul>
 
 <div id="content">
@@ -33,12 +32,12 @@
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 
 <table width="100%">
-<tr><th>Neuen View anlegen</th></tr>
+<tr><th>[% msg.maketext("Neuen View anlegen") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:12pt">
 <table>
-<tr><td><b>Viewname</b></td><td><b>Beschreibung</b></td><td><b>Aktiv</b></td><td></td></tr>
+<tr><td><b>[% msg.maketext("Viewname") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td><td></td></tr>
 <tr><td><input type="text" name="viewname"></td><td><input type="text" name="description" size="20" />
-</td><td><select name=active><option value="1">Ja</option><option value="0" selected>Nein</option></select></td><td><input type="submit" name="do_new" value="Neu" /></td></tr>
+</td><td><select name=active><option value="1">[% msg.maketext("Ja") %]</option><option value="0" selected>[% msg.maketext("Nein") %]</option></select></td><td><input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></td></tr>
 </table>
 </td></tr>
 </table>
@@ -50,13 +49,13 @@
 [% IF views.size > 0 %]
 
 <table width="100%">
-<tr><th>Bereits existierende Views</th></tr>
+<tr><th>[% msg.maketext("Bereits existierende Views") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:12pt">
-Um einen bereits existierenden View zu bearbeiten klicken Sie bitte auf den Viewnamen.
+[% msg.maketext("Um einen bereits existierenden View zu bearbeiten klicken Sie bitte auf den Viewnamen.") %]
 <p />
 
 <table>
-<tr><td><b>Viewname</b></td><td><b>RSS</b></td><td><b>Beschreibung</b></td><td><b>Datenbanken</b></td><td><b>Aktiv</b></td></tr>
+<tr><td><b>[% msg.maketext("Viewname") %]</b></td><td><b>[% msg.maketext("RSS") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Datenbanken") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td></tr>
 
 [% FOREACH view IN views %]
 

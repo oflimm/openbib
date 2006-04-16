@@ -13,13 +13,12 @@
 #
 #######################################################################
 -%]
-[%- i18nmsg = msg.${qopts.lang} -%]
 [% PROCESS common/subtemplate name="std_header" %]
 
 <FORM METHOD="GET">
 
 <ul id="tabbingmenu">
-   <li><a class="active" href="[% config.resultlists_loc %]?sessionID=[% sessionID %];trefferliste=choice;view=[% view %]">Trefferliste</a></li>
+   <li><a class="active" href="[% config.resultlists_loc %]?sessionID=[% sessionID %];trefferliste=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a></li>
 </ul>
 
 <div id="content">
@@ -30,9 +29,9 @@
 <table width="100%">
 <tr>
 [% IF queryid %]
-<th>Ausgew&auml;hlte Recherche</th>
+<th>[% msg.maketext("Ausgew&auml;hlte Recherche") %]</th>
 [% ELSE %]
-<th>Aktuelle Recherche</th>
+<th>[% msg.maketext("Aktuelle Recherche") %]</th>
 [% END %]
 </tr>
 
@@ -80,8 +79,8 @@
 )</td></tr>
 <tr><td colspan="2"></td></tr>
 
-<tr><td>Katalog</td><td>Treffer</td></tr>
-<tr><td class="listrow2"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %]&trefferliste=all&sortall=0&sorttype=author&queryid=[% thisquery.id %]&view=[% view %]"><b>Alle Treffer</b></a></td><td align=right>[% hitcount %]</td></tr>
+<tr><td>[% msg.maketext("Katalog") %]</td><td>[% msg.maketext("Treffer") %]</td></tr>
+<tr><td class="listrow2"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %]&trefferliste=all&sortall=0&sorttype=author&queryid=[% thisquery.id %]&view=[% view %]"><b>[% msg.maketext("Alle Treffer") %]</b></a></td><td align=right>[% hitcount %]</td></tr>
       
 <tr><td class="listrow1">&nbsp;</td><td align=right>&nbsp;</td></tr>
 

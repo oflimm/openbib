@@ -20,7 +20,6 @@
 #
 #######################################################################
 -%]
-[%- i18nmsg = msg.${qopts.lang} -%]
 [%-
 # Aufruf der Frames mit den gewuenschten Inhalten
 
@@ -50,7 +49,7 @@ END;
 </head>
  <frameset rows="[% toprows %],*" border="0" frameborder="0">
    <noframes>
-        <p> Sie brauchen einen Browser, der Frames darstellen kann, um diese Seiten mit ihren Inhalten wie geplant zu sehen. </p>
+        <p>[% msg.maketext("Sie brauchen einen Browser, der Frames darstellen kann, um diese Seiten mit ihren Inhalten wie geplant zu sehen.") %]</p>
    </noframes>
    <frame name="header" src="[% headerframeurl %]" noresize >
    <frame name="body"   src="[% bodyframeurl %]">

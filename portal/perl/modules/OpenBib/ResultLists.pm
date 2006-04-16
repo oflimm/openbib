@@ -47,6 +47,7 @@ use YAML();
 use OpenBib::Common::Stopwords;
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::L10N;
 use OpenBib::ResultLists::Util;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
@@ -90,6 +91,11 @@ sub handler {
     my $queryid      = $query->param('queryid') || '';
 
     my $sessionID    = ($query->param('sessionID'))?$query->param('sessionID'):'';
+    my $lang         = $query->param('l')        || 'de';
+
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
   
     unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
         OpenBib::Common::Util::print_warning("Ungültige Session",$r);
@@ -203,8 +209,8 @@ sub handler {
                 hitcount   => $hitcount,
                 resultdbs  => \@resultdbs,
                 queries    => \@queries,
-                show_foot_banner      => 1,
                 config     => \%config,
+                msg        => $msg,
             };
             OpenBib::Common::Util::print_page($config{tt_resultlists_choice_tname},$ttdata,$r);
 
@@ -283,9 +289,8 @@ sub handler {
 		    sortselect     => $sortselect,
 		    thissortstring => $thissortstring,
 		    
-		    show_foot_banner      => 1,
-		    
 		    config         => \%config,
+                    msg            => $msg,
                 };
 
                 OpenBib::Common::Util::print_page($config{tt_resultlists_showall_sortall_tname},$ttdata,$r);
@@ -366,9 +371,8 @@ sub handler {
 		    sortselect     => $sortselect,
 		    thissortstring => $thissortstring,
 		    
-		    show_foot_banner      => 1,
-		    
 		    config         => \%config,
+                    msg            => $msg,
                 };
       
                 OpenBib::Common::Util::print_page($config{tt_resultlists_showall_tname},$ttdata,$r);
@@ -454,9 +458,8 @@ sub handler {
                 sortselect     => $sortselect,
                 thissortstring => $thissortstring,
 		  
-                show_foot_banner      => 1,
-		  
                 config         => \%config,
+                msg            => $msg,
             };
       
       

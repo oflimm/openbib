@@ -21,10 +21,10 @@
 #  an die Free Software Foundation, Inc., 675 Mass Ave, Cambridge,
 #  MA 02139, USA.
 #
-#####################################################################   
+#####################################################################
 
 #####################################################################
-# Einladen der benoetigten Perl-Module 
+# Einladen der benoetigten Perl-Module
 #####################################################################
 
 package OpenBib::Admin;
@@ -149,8 +149,8 @@ sub handler {
     my @rssids          = ($query->param('rssids'))?$query->param('rssids'):();
 
     # Message Katalog laden
-
-    my $msg = OpenBib::L10N->get_handle($lang);
+    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
         
     # Neue SessionID erzeugen, falls keine vorhanden
 
@@ -166,7 +166,7 @@ sub handler {
     my @dbnames=();
   
     my $singledbname="";
-    while (my $result=$dbinforesult->fetchrow_hashref()) {
+   while (my $result=$dbinforesult->fetchrow_hashref()) {
         my $dbname      = decode_utf8($result->{'dbname'});
         my $description = decode_utf8($result->{'description'});
     

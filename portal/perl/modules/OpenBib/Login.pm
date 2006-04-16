@@ -48,6 +48,7 @@ use Template;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Login::Util;
+use OpenBib::L10N;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
@@ -83,6 +84,11 @@ sub handler {
     my $do_login       = $query->param('do_login')        || '';
     my $do_auth        = $query->param('do_auth' )        || '';
     my $do_loginfailed = $query->param('do_loginfailed')  || '';
+    my $lang       = $query->param('l')         || 'de';
+
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
     
     my $sessiondbh
         = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
@@ -139,11 +145,8 @@ sub handler {
             sessionID    => $sessionID,
             targetselect => $targetselect,
             loginname    => $loginname,
-            show_corporate_banner => 0,
-            show_foot_banner      => 1,
-            show_testsystem_info  => 0,
-            invisible_links       => 0,
             config       => \%config,
+            msg          => $msg,
         };
     
         OpenBib::Common::Util::print_page($config{tt_login_tname},$ttdata,$r);
@@ -328,6 +331,7 @@ sub handler {
             view            => $view,
             sessionID       => $sessionID,
             config          => \%config,
+            msg             => $msg,
         };
     
         OpenBib::Common::Util::print_page($config{tt_startopac_tname},$ttdata,$r);

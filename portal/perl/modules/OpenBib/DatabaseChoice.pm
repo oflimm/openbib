@@ -44,6 +44,7 @@ use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::L10N;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
@@ -84,6 +85,11 @@ sub handler {
     my $notation  = $query->param('notation')  || '';
     my $ejahr     = $query->param('ejahr')     || '';
     my $queryid   = $query->param('queryid')   || '';
+    my $lang      = $query->param('l')         || 'de';
+
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
   
     my %checkeddb;
   
@@ -231,6 +237,7 @@ sub handler {
             show_foot_banner      => 1,
             show_testsystem_info  => 0,
             config     => \%config,
+            msg        => $msg,
         };
     
         OpenBib::Common::Util::print_page($config{tt_databasechoice_tname},$ttdata,$r);

@@ -45,6 +45,7 @@ use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::L10N;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
@@ -71,6 +72,11 @@ sub handler {
   
     # CGI-Uebergabe
     my $sessionID = ($query->param('sessionID'))?$query->param('sessionID'):'';
+    my $lang         = $query->param('l')        || 'de';
+
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     # Verbindung zur SQL-Datenbank herstellen
     my $sessiondbh
@@ -115,6 +121,7 @@ sub handler {
         rssfeedinfo => $rssfeedinfo_ref,
         stylesheet  => $stylesheet,
         config      => \%config,
+        msg         => $msg,
     };
 
     OpenBib::Common::Util::print_page($config{tt_rssframe_tname},$ttdata,$r);

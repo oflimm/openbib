@@ -46,6 +46,7 @@ use Log::Log4perl qw(get_logger :levels);
 use OpenBib::LoadBalancer::Util();
 use OpenBib::Common::Util();
 use OpenBib::Config();
+use OpenBib::L10N;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
@@ -67,6 +68,12 @@ sub handler {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
 
+    my $lang       = $query->param('l')         || 'de';
+
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+
     my $urlquery=$r->args;      #query->url(-query=>1);
 
     $urlquery=~s/^.+?\?//;
@@ -80,9 +87,8 @@ sub handler {
         # TT-Data erzeugen
         my $ttdata={
             title        => 'KUG - Wartungsarbeiten',
-            show_corporate_banner => 0,
-            show_foot_banner      => 1,
             config       => \%config,
+            msg          => $msg,
         };
 
         OpenBib::Common::Util::print_page($config{tt_loadbalancer_tname},$ttdata,$r);

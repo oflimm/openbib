@@ -44,6 +44,7 @@ use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::L10N;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
@@ -79,6 +80,11 @@ sub handler {
 
     my $newprofile = $query->param('newprofile') || '';
     my $profilid   = $query->param('profilid')   || '';
+    my $lang      = $query->param('l')           || 'de';
+
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     my %checkeddb;
   
@@ -250,6 +256,7 @@ sub handler {
             show_corporate_banner => 0,
             show_testsystem_info  => 0,
             config         => \%config,
+            msg            => $msg,
         };
     
         OpenBib::Common::Util::print_page($config{tt_databaseprofile_tname},$ttdata,$r);

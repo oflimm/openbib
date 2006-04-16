@@ -44,6 +44,7 @@ use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::L10N;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
@@ -73,7 +74,11 @@ sub handler {
     my $singleidn = $query->param('singleidn') || '';
     my $action    = ($query->param('action'))?$query->param('action'):'none';
     my $type      = ($query->param('type'))?$query->param('type'):'HTML';
-  
+    my $lang      = $query->param('l')         || 'de';
+
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     # Verbindung zur SQL-Datenbank herstellen
     my $sessiondbh
@@ -143,6 +148,7 @@ sub handler {
         username    => $username,
         anzahl      => $anzahl,
         config      => \%config,
+        msg         => $msg,
     };
 
     OpenBib::Common::Util::print_page($config{tt_headerframe_tname},$ttdata,$r);

@@ -22,9 +22,9 @@ m&uuml;ssen. Deaktivieren Sie <b>nicht</b> die Suchoption 'Und-Verkn&uuml;pfung 
 <p />
 <b>[% msg.maketext("Suchlogik bei Verkn&uuml;pfungen mehrerer Suchfelder:") %]</b><br />
 [% msg.maketext("Die einzelnen Suchfelder sind standardm&auml;ssig &uuml;ber eine 
-"Und-Verkn&uuml;pfung" verbunden. Zur Einschr&auml;nkung des Suchergebnisses 
-k&ouml;nnen die Suchfelder auch &uuml;ber eine "Oder"- sowie eine 
-"Und Nicht-Verkn&uuml;pfung" verbunden werden. W&auml;hlen Sie hierzu die 
+<b>Und</b>-Verkn&uuml;pfung verbunden. Zur Einschr&auml;nkung des Suchergebnisses 
+k&ouml;nnen die Suchfelder auch &uuml;ber eine <b>Oder</b>- sowie eine 
+<b>Und Nicht</b>-Verkn&uuml;pfung verbunden werden. W&auml;hlen Sie hierzu die 
 entsprechende Verkn&uuml;pfungsart aus dem Pull-Down-Men&uuml; vor dem 
 jeweiligen Texteingabefeld.") %]<br />
 <br />

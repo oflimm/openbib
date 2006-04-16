@@ -34,6 +34,8 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
+use Log::Log4perl qw(get_logger :levels);
+
 use OpenBib::Config;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
@@ -44,9 +46,20 @@ use vars qw(%config);
 
 use base 'Locale::Maketext';
 use Locale::Maketext::Lexicon {
-    '*'    => [Gettext => "$OpenBib::Config::config{locale_base_path}/*/LC_MESSAGES/openbib.po"],
-    _auto  => 1,
-    _style => 'gettext',
+    '*'     => [Gettext => "$OpenBib::Config::config{locale_base_path}/*/LC_MESSAGES/openbib.po"],
+    _style  => 'gettext',
+    _decode => 1,
+#    _use_fuzzy => 1,
 };
+
+sub failure_handler {
+    my($failing_msg, $key, $params) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->info(ref($failing_msg), $key);
+    return "L10N Message Error";
+}
 
 1;

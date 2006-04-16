@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2006-04-16 22:52+0200\n"
+"PO-Revision-Date: 2006-04-16 23:05+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team:  <l10n@openbib.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,16 +16,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.10.2\n"
 
-#: /opt/openbib/templates/managecollection_tit_as_html:37
-#: /opt/openbib/templates/search_showautset:44
-#: /opt/openbib/templates/search_showkorset:47
-#: /opt/openbib/templates/search_shownotset:45
-#: /opt/openbib/templates/search_showswtset:50
-#: /opt/openbib/templates/search_showtitset:108
+#: ../templates/managecollection_tit_as_html:37
+#: ../templates/search_showautset:44 ../templates/search_showkorset:47
+#: ../templates/search_shownotset:45 ../templates/search_showswtset:50
+#: ../templates/search_showtitset:108
 msgid "${category}"
 msgstr "${category}"
 
-#: /opt/openbib/templates/admin_login:23
+#: ../templates/admin_login:23
 msgid ""
 "&Uuml;ber diese Authentifizierungsseite k&ouml;nnen Sie sich als "
 "Administrator anmelden."
@@ -33,28 +31,27 @@ msgstr ""
 "&Uuml;ber diese Authentifizierungsseite k&ouml;nnen Sie sich als "
 "Administrator anmelden."
 
-#: /opt/openbib/templates/externaljump:50
+#: ../templates/externaljump:50
 msgid "&Uuml;bernahme der Anfrage in externe Recherchequellen"
 msgstr "&Uuml;bernahme der Anfrage in externe Recherchequellen"
 
-#: /opt/openbib/templates/admin_editcat_rss:341
+#: ../templates/admin_editcat_rss:341
 msgid "&Uuml;bernahme der F&auml;cherstruktur der Erwerbung"
 msgstr "&Uuml;bernahme der F&auml;cherstruktur der Erwerbung"
 
-#: /opt/openbib/templates/externaljump:100
-#: /opt/openbib/templates/externaljump:81
+#: ../templates/externaljump:100 ../templates/externaljump:81
 msgid "&Uuml;bernommene Felder: Titel"
 msgstr "&Uuml;bernommene Felder: Titel"
 
-#: /opt/openbib/templates/externaljump:91
+#: ../templates/externaljump:91
 msgid "&Uuml;bernommene Felder: Titel, ISSN"
 msgstr "&Uuml;bernommene Felder: Titel, ISSN"
 
-#: /opt/openbib/templates/externaljump:71
+#: ../templates/externaljump:71
 msgid "&Uuml;bernommene Felder: Titel, K&ouml;rperschaft, ISSN"
 msgstr "&Uuml;bernommene Felder: Titel, K&ouml;rperschaft, ISSN"
 
-#: /opt/openbib/templates/externaljump:62
+#: ../templates/externaljump:62
 msgid ""
 "&Uuml;bernommene Felder: Titel, Verfasser, K&ouml;rperschaft, ISBN, "
 "Erscheinungsjahr"
@@ -62,87 +59,76 @@ msgstr ""
 "&Uuml;bernommene Felder: Titel, Verfasser, K&ouml;rperschaft, ISBN, "
 "Erscheinungsjahr"
 
-#: /opt/openbib/templates/userprefs:113
+#: ../templates/userprefs:113
 msgid "&Uuml;berzogen"
 msgstr "&Uuml;berzogen"
 
-#: /opt/openbib/templates/search_info:33
+#: ../templates/search_info:33
 msgid "<b>aber</b> exakte Phrasensuche"
 msgstr "<b>aber</b> exakte Phrasensuche"
 
-#: /opt/openbib/templates/managecollection_mail:38
+#: ../templates/managecollection_mail:38
 msgid "Abschicken"
 msgstr "Abschicken"
 
-#: /opt/openbib/templates/managecollection_show:67
-#: /opt/openbib/templates/search_showtitset:26
+#: ../templates/managecollection_show:67 ../templates/search_showtitset:26
 msgid "Abspeichern"
 msgstr "Abspeichern"
 
-#: /opt/openbib/templates/databaseprofile:56
+#: ../templates/databaseprofile:56
 msgid "Abspeicherung eines neuen oder bestehenden Profils"
 msgstr "Abspeicherung eines neuen oder bestehenden Profils"
 
-#: /opt/openbib/templates/admin_login:21
+#: ../templates/admin_login:21
 msgid "Administrations-Login"
 msgstr "Administrations-Login"
 
-#: /opt/openbib/templates/managecollection_tit_as_html:66
-#: /opt/openbib/templates/managecollection_tit_as_html_simple:56
-#: /opt/openbib/templates/search_showmulttitset:70
-#: /opt/openbib/templates/search_showtitset:143
+#: ../templates/managecollection_tit_as_html:66
+#: ../templates/managecollection_tit_as_html_simple:56
+#: ../templates/search_showmulttitset:70 ../templates/search_showtitset:143
 msgid "Aktion"
 msgstr "Aktion"
 
-#: /opt/openbib/templates/admin_editcat:40
-#: /opt/openbib/templates/admin_editcat_rss:123
-#: /opt/openbib/templates/admin_editcat_rss:182
-#: /opt/openbib/templates/admin_editcat_rss:241
-#: /opt/openbib/templates/admin_editcat_rss:300
-#: /opt/openbib/templates/admin_editcat_rss:64
-#: /opt/openbib/templates/admin_editview:39
-#: /opt/openbib/templates/admin_editview_rss:135
-#: /opt/openbib/templates/admin_editview_rss:89
-#: /opt/openbib/templates/admin_showcat:43
-#: /opt/openbib/templates/admin_showcat:74
-#: /opt/openbib/templates/admin_showviews:38
-#: /opt/openbib/templates/admin_showviews:58
+#: ../templates/admin_editcat:40 ../templates/admin_editcat_rss:123
+#: ../templates/admin_editcat_rss:182 ../templates/admin_editcat_rss:241
+#: ../templates/admin_editcat_rss:300 ../templates/admin_editcat_rss:64
+#: ../templates/admin_editview:39 ../templates/admin_editview_rss:135
+#: ../templates/admin_editview_rss:89 ../templates/admin_showcat:43
+#: ../templates/admin_showcat:74 ../templates/admin_showviews:38
+#: ../templates/admin_showviews:58
 msgid "Aktiv"
 msgstr "Aktiv"
 
-#: /opt/openbib/templates/resultlists_choice:34
+#: ../templates/resultlists_choice:34
 msgid "Aktuelle Recherche"
 msgstr "Aktuelle Recherche"
 
-#: /opt/openbib/templates/databasechoice:57
-#: /opt/openbib/templates/databaseprofile:76
-#: /opt/openbib/templates/searchframe:175
-#: /opt/openbib/templates/searchframe_simple:82
+#: ../templates/databasechoice:57 ../templates/databaseprofile:76
+#: ../templates/searchframe:175 ../templates/searchframe_simple:82
 msgid "Alle Kataloge"
 msgstr "Alle Kataloge"
 
-#: /opt/openbib/templates/resultlists_choice:83
+#: ../templates/resultlists_choice:83
 msgid "Alle Treffer"
 msgstr "Alle Treffer"
 
-#: /opt/openbib/templates/admin_editsession:35
+#: ../templates/admin_editsession:35
 msgid "Allgemeine Informationen"
 msgstr "Allgemeine Informationen"
 
-#: /opt/openbib/templates/managecollection_show:66
-#: /opt/openbib/templates/search_showtitset:25
+#: ../templates/managecollection_show:66 ../templates/search_showtitset:25
 msgid "Als Mail verschicken"
 msgstr "Als Mail verschicken"
 
-#: /opt/openbib/templates/searchframe:47
+#: ../templates/searchframe:47
 msgid "Als Suchvorlage"
 msgstr "Als Suchvorlage"
 
-#: /opt/openbib/templates/testsystem_info:18
+#: ../templates/testsystem_info:18
 msgid "Als User-Agent verwenden Sie"
 msgstr "Als User-Agent verwenden Sie"
 
-#: /opt/openbib/templates/externaljump:32
+#: ../templates/externaljump:32
 msgid ""
 "An dieser Stelle k&ouml;nnen Sie ausgehend von Ihrer (eventuell erfolglosen) "
 "Suchanfrage im KUG Recherche-Portal diese auf weitere externe Kataloge "
@@ -152,19 +138,19 @@ msgstr ""
 "Suchanfrage im KUG Recherche-Portal diese auf weitere externe Kataloge "
 "ausdehnen."
 
-#: /opt/openbib/templates/login:41
+#: ../templates/login:41
 msgid "Anmeldeziel"
 msgstr "Anmeldeziel"
 
-#: /opt/openbib/templates/admin_editsession:41
+#: ../templates/admin_editsession:41
 msgid "Anzahl Recherchen"
 msgstr "Anzahl Recherchen"
 
-#: /opt/openbib/templates/databaseprofile:61
+#: ../templates/databaseprofile:61
 msgid "Anzeige des ausgew&auml;hlten Profils"
 msgstr "Anzeige des ausgew&auml;hlten Profils"
 
-#: /opt/openbib/templates/databasechoice:47
+#: ../templates/databasechoice:47
 msgid ""
 "Auf dieser Seite k&ouml;nnen Sie einzelne Kataloge als Suchziel auswählen. "
 "Bei aktiviertem JavaScript reicht ein Klick auf das Schaltelement einer "
@@ -190,7 +176,7 @@ msgstr ""
 "in den ausgewählten\n"
 "Datenbanken zu recherchieren."
 
-#: /opt/openbib/templates/rssframe:21
+#: ../templates/rssframe:21
 msgid ""
 "Auf dieser Seite k&ouml;nnen Sie f&uuml;r einige Kataloge des KUG\n"
 "RSS-Feeds abonnieren. Dazu kopieren Sie bitte den jeweiligen URL von\n"
@@ -200,167 +186,152 @@ msgstr ""
 "RSS-Feeds abonnieren. Dazu kopieren Sie bitte den jeweiligen URL von\n"
 "dieser Seite und kopieren ihn in Ihr RSS-Leseprogramm."
 
-#: /opt/openbib/templates/search_showtitset:27
+#: ../templates/search_showtitset:27
 msgid "Ausdrucken"
 msgstr "Ausdrucken"
 
-#: /opt/openbib/templates/userprefs:99
+#: ../templates/userprefs:99
 msgid "Ausgeliehen"
 msgstr "Ausgeliehen"
 
-#: /opt/openbib/templates/resultlists_choice:32
+#: ../templates/resultlists_choice:32
 msgid "Ausgew&auml;hlte Recherche"
 msgstr "Ausgew&auml;hlte Recherche"
 
-#: /opt/openbib/templates/managecollection_show:59
+#: ../templates/managecollection_show:59
 msgid "Ausgew&auml;hlte Titel l&ouml;schen"
 msgstr "Ausgew&auml;hlte Titel l&ouml;schen"
 
-#: /opt/openbib/templates/circulation_remind:48
+#: ../templates/circulation_remind:48
 msgid "Ausleih-/Buchungsdatum"
 msgstr "Ausleih-/Buchungsdatum"
 
-#: /opt/openbib/templates/admin_editcat:150
+#: ../templates/admin_editcat:150
 msgid "Ausleih-Einstellungen"
 msgstr "Ausleih-Einstellungen"
 
-#: /opt/openbib/templates/managecollection_tit_as_html:62
-#: /opt/openbib/templates/managecollection_tit_as_html_simple:52
-#: /opt/openbib/templates/search_showmulttitset:66
-#: /opt/openbib/templates/search_showtitset:139
+#: ../templates/managecollection_tit_as_html:62
+#: ../templates/managecollection_tit_as_html_simple:52
+#: ../templates/search_showmulttitset:66 ../templates/search_showtitset:139
 msgid "Ausleihe/Exemplare"
 msgstr "Ausleihe/Exemplare"
 
-#: /opt/openbib/templates/circulation:33
-#: /opt/openbib/templates/circulation_orders:33
-#: /opt/openbib/templates/circulation_remind:33
-#: /opt/openbib/templates/circulation_reserv:33
+#: ../templates/circulation:33 ../templates/circulation_orders:33
+#: ../templates/circulation_remind:33 ../templates/circulation_reserv:33
 msgid "Ausleihen"
 msgstr "Ausleihen"
 
-#: /opt/openbib/templates/circulation:48
+#: ../templates/circulation:48
 msgid "Ausleihfrist"
 msgstr "Ausleihfrist"
 
-#: /opt/openbib/templates/userprefs:64
+#: ../templates/userprefs:64
 msgid "Ausleihinformationen"
 msgstr "Ausleihinformationen"
 
-#: /opt/openbib/templates/managecollection_tit_as_html:66
-#: /opt/openbib/templates/managecollection_tit_as_html_simple:56
-#: /opt/openbib/templates/search_showmulttitset:70
-#: /opt/openbib/templates/search_showtitset:143
+#: ../templates/managecollection_tit_as_html:66
+#: ../templates/managecollection_tit_as_html_simple:56
+#: ../templates/search_showmulttitset:70 ../templates/search_showtitset:143
 msgid "Ausleihstatus"
 msgstr "Ausleihstatus"
 
-#: /opt/openbib/templates/admin_editcat:121
+#: ../templates/admin_editcat:121
 msgid "Aut-Datei"
 msgstr "Aut-Datei"
 
-#: /opt/openbib/templates/admin_editcat:130
+#: ../templates/admin_editcat:130
 msgid "Autokonvertierung (cron)"
 msgstr "Autokonvertierung (cron)"
 
-#: /opt/openbib/templates/searchframe:166
+#: ../templates/searchframe:166
 msgid "Autor/Körperschaft"
 msgstr "Autor/Körperschaft"
 
-#: /opt/openbib/templates/virtualsearch_more_search_tips:18
+#: ../templates/virtualsearch_more_search_tips:18
 msgid "B&uuml;cher"
 msgstr "B&uuml;cher"
 
-#: /opt/openbib/templates/virtualsearch_result_end:17
+#: ../templates/virtualsearch_result_end:17
 msgid "Beachten Sie bitte auch unserere"
 msgstr "Beachten Sie bitte auch unserere"
 
-#: /opt/openbib/templates/admin_showsessions:39
+#: ../templates/admin_showsessions:39
 msgid "Beginn"
 msgstr "Beginn"
 
-#: /opt/openbib/templates/admin_showsessions:39
+#: ../templates/admin_showsessions:39
 msgid "Benutzer"
 msgstr "Benutzer"
 
-#: /opt/openbib/templates/circulation:24
-#: /opt/openbib/templates/circulation_orders:24
-#: /opt/openbib/templates/circulation_remind:24
-#: /opt/openbib/templates/circulation_reserv:24
-#: /opt/openbib/templates/databaseprofile:41
-#: /opt/openbib/templates/userprefs:25
+#: ../templates/circulation:24 ../templates/circulation_orders:24
+#: ../templates/circulation_remind:24 ../templates/circulation_reserv:24
+#: ../templates/databaseprofile:41 ../templates/userprefs:25
 msgid "Benutzerkonto"
 msgstr "Benutzerkonto"
 
-#: /opt/openbib/templates/admin_login:30 /opt/openbib/templates/login:42
-#: /opt/openbib/templates/mailpassword:44 /opt/openbib/templates/selfreg:44
-#: /opt/openbib/templates/userprefs:42
+#: ../templates/admin_login:30 ../templates/login:42
+#: ../templates/mailpassword:44 ../templates/selfreg:44
+#: ../templates/userprefs:42
 msgid "Benutzername"
 msgstr "Benutzername"
 
-#: /opt/openbib/templates/admin_showcat:66
+#: ../templates/admin_showcat:66
 msgid "Bereits existierende Kataloge"
 msgstr "Bereits existierende Kataloge"
 
-#: /opt/openbib/templates/admin_showviews:52
+#: ../templates/admin_showviews:52
 msgid "Bereits existierende Views"
 msgstr "Bereits existierende Views"
 
-#: /opt/openbib/templates/admin_editcat:39
-#: /opt/openbib/templates/admin_editview:39
-#: /opt/openbib/templates/admin_showcat:41
-#: /opt/openbib/templates/admin_showcat:70
-#: /opt/openbib/templates/admin_showviews:38
-#: /opt/openbib/templates/admin_showviews:58
+#: ../templates/admin_editcat:39 ../templates/admin_editview:39
+#: ../templates/admin_showcat:41 ../templates/admin_showcat:70
+#: ../templates/admin_showviews:38 ../templates/admin_showviews:58
 msgid "Beschreibung"
 msgstr "Beschreibung"
 
-#: /opt/openbib/templates/managecollection_tit_as_html:47
-#: /opt/openbib/templates/managecollection_tit_as_html:66
-#: /opt/openbib/templates/managecollection_tit_as_html_simple:38
-#: /opt/openbib/templates/managecollection_tit_as_html_simple:56
-#: /opt/openbib/templates/managecollection_tit_as_text:24
-#: /opt/openbib/templates/search_showmulttitset:52
-#: /opt/openbib/templates/search_showmulttitset:70
-#: /opt/openbib/templates/search_showtitset:118
-#: /opt/openbib/templates/search_showtitset:143
+#: ../templates/managecollection_tit_as_html:47
+#: ../templates/managecollection_tit_as_html:66
+#: ../templates/managecollection_tit_as_html_simple:38
+#: ../templates/managecollection_tit_as_html_simple:56
+#: ../templates/managecollection_tit_as_text:24
+#: ../templates/search_showmulttitset:52 ../templates/search_showmulttitset:70
+#: ../templates/search_showtitset:118 ../templates/search_showtitset:143
 msgid "Besitzende Bibliothek"
 msgstr "Besitzende Bibliothek"
 
-#: /opt/openbib/templates/search_info:31
+#: ../templates/search_info:31
 msgid "Besonderheit bei"
 msgstr "Besonderheit bei"
 
-#: /opt/openbib/templates/admin_editcat:168
+#: ../templates/admin_editcat:168
 msgid "Bestands-&Uuml;berpr&uuml;fungs-URL"
 msgstr "Bestands-&Uuml;berpr&uuml;fungs-URL"
 
-#: /opt/openbib/templates/managecollection_tit_as_html:47
-#: /opt/openbib/templates/managecollection_tit_as_html_simple:38
-#: /opt/openbib/templates/search_showmulttitset:52
-#: /opt/openbib/templates/search_showtitset:118
+#: ../templates/managecollection_tit_as_html:47
+#: ../templates/managecollection_tit_as_html_simple:38
+#: ../templates/search_showmulttitset:52 ../templates/search_showtitset:118
 msgid "Bestandsverlauf"
 msgstr "Bestandsverlauf"
 
-#: /opt/openbib/templates/admin_showsessions:35
+#: ../templates/admin_showsessions:35
 msgid "Bestehende Sessions"
 msgstr "Bestehende Sessions"
 
-#: /opt/openbib/templates/circulation_orders:48
+#: ../templates/circulation_orders:48
 msgid "Bestelldatum"
 msgstr "Bestelldatum"
 
-#: /opt/openbib/templates/circulation:35
-#: /opt/openbib/templates/circulation_orders:35
-#: /opt/openbib/templates/circulation_remind:35
-#: /opt/openbib/templates/circulation_reserv:35
-#: /opt/openbib/templates/userprefs:124
+#: ../templates/circulation:35 ../templates/circulation_orders:35
+#: ../templates/circulation_remind:35 ../templates/circulation_reserv:35
+#: ../templates/userprefs:124
 msgid "Bestellungen"
 msgstr "Bestellungen"
 
-#: /opt/openbib/templates/managecollection_mail:35
+#: ../templates/managecollection_mail:35
 msgid "Betreff"
 msgstr "Betreff"
 
-#: /opt/openbib/templates/userprefs:88
+#: ../templates/userprefs:88
 msgid ""
 "Bitte wenden Sie sich bei Unstimmigkeiten in Ihren Personendaten an die "
 "Auskunft der Bibliothek."
@@ -368,21 +339,20 @@ msgstr ""
 "Bitte wenden Sie sich bei Unstimmigkeiten in Ihren Personendaten an die "
 "Auskunft der Bibliothek."
 
-#: /opt/openbib/templates/admin_editcat:128
+#: ../templates/admin_editcat:128
 msgid "DB-Datei"
 msgstr "DB-Datei"
 
-#: /opt/openbib/templates/admin_editcat:40
-#: /opt/openbib/templates/admin_showcat:42
-#: /opt/openbib/templates/admin_showcat:72
+#: ../templates/admin_editcat:40 ../templates/admin_showcat:42
+#: ../templates/admin_showcat:72
 msgid "DB-Name"
 msgstr "DB-Name"
 
-#: /opt/openbib/templates/admin_editcat:166
+#: ../templates/admin_editcat:166
 msgid "DB-Name im Lokalsystem"
 msgstr "DB-Name im Lokalsystem"
 
-#: /opt/openbib/templates/mailpassword:35
+#: ../templates/mailpassword:35
 msgid ""
 "Damit Ihnen Ihr im Rahmen der Selbstregistrierung vergebenes Passwort per E-"
 "Mail zugeschickt werden kann, geben Sie bitte Ihren Benutzernamen an, der "
@@ -392,16 +362,15 @@ msgstr ""
 "Mail zugeschickt werden kann, geben Sie bitte Ihren Benutzernamen an, der "
 "Ihrer E-Mail-Adresse entspricht."
 
-#: /opt/openbib/templates/admin_editsession:54
-#: /opt/openbib/templates/admin_showviews:58
+#: ../templates/admin_editsession:54 ../templates/admin_showviews:58
 msgid "Datenbanken"
 msgstr "Datenbanken"
 
-#: /opt/openbib/templates/externaljump:73
+#: ../templates/externaljump:73
 msgid "Datenbankinformationssystem (DBIS)"
 msgstr "Datenbankinformationssystem (DBIS)"
 
-#: /opt/openbib/templates/databaseprofile:63
+#: ../templates/databaseprofile:63
 msgid ""
 "Definieren Sie oder bearbeiten Sie hier Ihre individuellen Katalogprofile. "
 "Diese werden gespeichert und stehen daher auch beim n&auml;chten Anmelden "
@@ -417,11 +386,11 @@ msgstr ""
 "<b>Suchprofil</b> aus und aktivieren zur Suche dann <b>In ausgew&auml;hlten "
 "Katalogen suchen</b>."
 
-#: /opt/openbib/templates/databaseprofile:71
+#: ../templates/databaseprofile:71
 msgid "Derzeit angezeigtes Profil"
 msgstr "Derzeit angezeigtes Profil"
 
-#: /opt/openbib/templates/userprefs_changefields:26
+#: ../templates/userprefs_changefields:26
 msgid ""
 "Die Einstellung Ihrer Suchfelder wurde erfolgreich vorgenommen. Klicken Sie "
 "nun bitte auf 'Recherche' in der Navigationsleiste, um die neuen "
@@ -431,124 +400,136 @@ msgstr ""
 "nun bitte auf 'Recherche' in der Navigationsleiste, um die neuen "
 "Suchfeldauswahl zu verwenden."
 
-#. (Und-Verkn&uuml;pfung" verbunden. Zur Einschr&auml;nkung des Suchergebnisses k&ouml;nnen die Suchfelder auch &uuml;ber eine "Oder"- sowie eine "Und Nicht-Verkn&uuml;pfung" verbunden werden. W&auml;hlen Sie hierzu die entsprechende Verkn&uuml;pfungsart aus dem Pull-Down-Men&uuml; vor dem jeweiligen Texteingabefeld.")
-#: /opt/openbib/templates/search_info:28
-msgid "Die einzelnen Suchfelder sind standardm&auml;ssig &uuml;ber eine \n"
-msgstr "Die einzelnen Suchfelder sind standardm&auml;ssig &uuml;ber eine \n"
+#: ../templates/search_info:24
+msgid ""
+"Die einzelnen Suchfelder sind standardm&auml;ssig &uuml;ber eine \n"
+"<b>Und</b>-Verkn&uuml;pfung verbunden. Zur Einschr&auml;nkung des "
+"Suchergebnisses \n"
+"k&ouml;nnen die Suchfelder auch &uuml;ber eine <b>Oder</b>- sowie eine \n"
+"<b>Und Nicht</b>-Verkn&uuml;pfung verbunden werden. W&auml;hlen Sie hierzu "
+"die \n"
+"entsprechende Verkn&uuml;pfungsart aus dem Pull-Down-Men&uuml; vor dem \n"
+"jeweiligen Texteingabefeld."
+msgstr ""
+"Die einzelnen Suchfelder sind standardm&auml;ssig &uuml;ber eine \n"
+"<b>Und</b>-Verkn&uuml;pfung verbunden. Zur Einschr&auml;nkung des "
+"Suchergebnisses \n"
+"k&ouml;nnen die Suchfelder auch &uuml;ber eine <b>Oder</b>- sowie eine \n"
+"<b>Und Nicht</b>-Verkn&uuml;pfung verbunden werden. W&auml;hlen Sie hierzu "
+"die \n"
+"entsprechende Verkn&uuml;pfungsart aus dem Pull-Down-Men&uuml; vor dem \n"
+"jeweiligen Texteingabefeld."
 
-#: /opt/openbib/templates/externaljump:54
+#: ../templates/externaljump:54
 msgid "Digitale Bibliothek / Monographien (Fernleihe)"
 msgstr "Digitale Bibliothek / Monographien (Fernleihe)"
 
-#: /opt/openbib/templates/externaljump:63
+#: ../templates/externaljump:63
 msgid "Digitale Bibliothek / Zeitschriften (Aufsatzlieferung)"
 msgstr "Digitale Bibliothek / Zeitschriften (Aufsatzlieferung)"
 
-#: /opt/openbib/templates/managecollection_print:25
+#: ../templates/managecollection_print:25
 msgid "Druckansicht Titel"
 msgstr "Druckansicht Titel"
 
-#: /opt/openbib/templates/userprefs:77
+#: ../templates/userprefs:77
 msgid "E-Mail"
 msgstr "E-Mail"
 
-#: /opt/openbib/templates/managecollection_show:61
+#: ../templates/managecollection_show:61
 msgid "Eine Bearbeitung ist nur bei 'HTML' m&ouml;glich"
 msgstr "Eine Bearbeitung ist nur bei 'HTML' m&ouml;glich"
 
-#: /opt/openbib/templates/searchframe:27
-#: /opt/openbib/templates/searchframe_simple:34
+#: ../templates/searchframe:27 ../templates/searchframe_simple:34
 msgid "Einfache Recherche"
 msgstr "Einfache Recherche"
 
-#: /opt/openbib/templates/userprefs:151
+#: ../templates/userprefs:151
 msgid "Einfache Recherchemaske"
 msgstr "Einfache Recherchemaske"
 
-#: /opt/openbib/templates/searchframe:144
+#: ../templates/searchframe:144
 msgid "Eingrenzung auf Gesamttitel"
 msgstr "Eingrenzung auf Gesamttitel"
 
-#: /opt/openbib/templates/admin_login:32 /opt/openbib/templates/login:44
+#: ../templates/admin_login:32 ../templates/login:44
 msgid "Einloggen"
 msgstr "Einloggen"
 
-#: /opt/openbib/templates/externaljump:83
+#: ../templates/externaljump:83
 msgid "Elektronische Zeitschriftendatenbank (EZB)"
 msgstr "Elektronische Zeitschriftendatenbank (EZB)"
 
-#: /opt/openbib/templates/admin_editcat:114
+#: ../templates/admin_editcat:114
 msgid "Entfernter Nutzername"
 msgstr "Entfernter Nutzername"
 
-#: /opt/openbib/templates/admin_editcat:112
+#: ../templates/admin_editcat:112
 msgid "Entfernter Rechnername"
 msgstr "Entfernter Rechnername"
 
-#: /opt/openbib/templates/admin_editcat:115
+#: ../templates/admin_editcat:115
 msgid "Entferntes Passwort"
 msgstr "Entferntes Passwort"
 
-#: /opt/openbib/templates/admin_editcat:113
+#: ../templates/admin_editcat:113
 msgid "Entferntes Verz."
 msgstr "Entferntes Verz."
 
-#: /opt/openbib/templates/mailcollection_success:24
+#: ../templates/mailcollection_success:24
 msgid "Erfolgreiche Aktion"
 msgstr "Erfolgreiche Aktion"
 
-#: /opt/openbib/templates/admin_loggedin:30
-#: /opt/openbib/templates/userprefs_changefields:24
-#: /opt/openbib/templates/userprefs_userdeleted:19
+#: ../templates/admin_loggedin:30 ../templates/userprefs_changefields:24
+#: ../templates/userprefs_userdeleted:19
 msgid "Erfolgsmeldung"
 msgstr "Erfolgsmeldung"
 
-#: /opt/openbib/templates/searchframe:166 /opt/openbib/templates/userprefs:180
+#: ../templates/searchframe:166 ../templates/userprefs:180
 msgid "Erscheinungsjahr"
 msgstr "Erscheinungsjahr"
 
-#: /opt/openbib/templates/managecollection_tit_as_text:28
+#: ../templates/managecollection_tit_as_text:28
 msgid "Erscheinungsverlauf  "
 msgstr "Erscheinungsverlauf  "
 
-#: /opt/openbib/templates/userprefs:155
+#: ../templates/userprefs:155
 msgid "Erweitere Recherchemaske"
 msgstr "Erweitere Recherchemaske"
 
-#: /opt/openbib/templates/admin_editview_rss:66
+#: ../templates/admin_editview_rss:66
 msgid "Es existiert bereits ein prim&auml;rer RSS-Feed f&uuml;r diesen View"
 msgstr "Es existiert bereits ein prim&auml;rer RSS-Feed f&uuml;r diesen View"
 
-#: /opt/openbib/templates/admin_editcat_rss:176
+#: ../templates/admin_editcat_rss:176
 msgid "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
 msgstr "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
 
-#: /opt/openbib/templates/admin_editcat_rss:235
+#: ../templates/admin_editcat_rss:235
 msgid "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach Schlagwort"
 msgstr "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach Schlagwort"
 
-#: /opt/openbib/templates/admin_editcat_rss:117
+#: ../templates/admin_editcat_rss:117
 msgid "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach Verfasser"
 msgstr "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach Verfasser"
 
-#: /opt/openbib/templates/admin_editcat_rss:294
-#: /opt/openbib/templates/admin_editcat_rss:58
+#: ../templates/admin_editcat_rss:294 ../templates/admin_editcat_rss:58
 msgid "Es existiert noch kein genereller RSS-Feed f&uuml;r Neuaufnahmen"
 msgstr "Es existiert noch kein genereller RSS-Feed f&uuml;r Neuaufnahmen"
 
-#: /opt/openbib/templates/admin_editview_rss:62
+#: ../templates/admin_editview_rss:62
 msgid "Es existiert noch kein prim&auml;rer RSS-Feed f&uuml;r diesen View"
 msgstr "Es existiert noch kein prim&auml;rer RSS-Feed f&uuml;r diesen View"
 
-#: /opt/openbib/templates/circulation_remind:44
+#: ../templates/circulation_remind:44
 msgid "Es sind keine Gebühren angefallen."
 msgstr "Es sind keine Gebühren angefallen."
 
-#: /opt/openbib/templates/virtualsearch_result_end:15
+#: ../templates/virtualsearch_result_end:15
 msgid "Es wurden keine Treffer gefunden"
 msgstr "Es wurden keine Treffer gefunden"
 
-#: /opt/openbib/templates/virtualsearch_more_search_tips:21
+#: ../templates/virtualsearch_more_search_tips:21
 msgid ""
 "F&uuml;r verschiedene Institute und Seminare der Philosophischen Fakult&auml;"
 "t besteht die M&ouml;glichkeit der Suche in einem"
@@ -556,29 +537,27 @@ msgstr ""
 "F&uuml;r verschiedene Institute und Seminare der Philosophischen Fakult&auml;"
 "t besteht die M&ouml;glichkeit der Suche in einem"
 
-#: /opt/openbib/templates/admin_editcat:103
+#: ../templates/admin_editcat:103
 msgid "FTP"
 msgstr "FTP"
 
-#: /opt/openbib/templates/virtualsearch_more_search_tips:30
+#: ../templates/virtualsearch_more_search_tips:30
 msgid "Fachdatenbanken"
 msgstr "Fachdatenbanken"
 
-#: /opt/openbib/templates/admin_editcat:39
+#: ../templates/admin_editcat:39
 msgid "Fakult&auml;t"
 msgstr "Fakult&auml;t"
 
-#: /opt/openbib/templates/admin_showcat:40
-#: /opt/openbib/templates/admin_showcat:69
+#: ../templates/admin_showcat:40 ../templates/admin_showcat:69
 msgid "Fakultät"
 msgstr "Fakultät"
 
-#: /opt/openbib/templates/searchframe:176
-#: /opt/openbib/templates/searchframe_simple:83
+#: ../templates/searchframe:176 ../templates/searchframe_simple:83
 msgid "Fakultäten"
 msgstr "Fakultäten"
 
-#: /opt/openbib/templates/login:50
+#: ../templates/login:50
 msgid ""
 "Falls Sie bei keinem der Anmeldeziele registriert sind, so k&ouml;nnen Sie "
 "sich"
@@ -586,7 +565,7 @@ msgstr ""
 "Falls Sie bei keinem der Anmeldeziele registriert sind, so k&ouml;nnen Sie "
 "sich"
 
-#: /opt/openbib/templates/login:31
+#: ../templates/login:31
 msgid ""
 "Falls Sie sich bereits hier f&uuml;r den KUG registriert haben oder eine "
 "Kennung in den anderen aufgef&uuml;hrten Anmeldezielen besitzen, so k&ouml;"
@@ -612,32 +591,31 @@ msgstr ""
 "Lieferfunktion der Digitalen Bibliothek (Digibib) springen k&ouml;nnen und "
 "sich nicht sp&auml;ter dort nochmals authentifizieren m&uuml;ssen."
 
-#: /opt/openbib/templates/databaseprofile:56
+#: ../templates/databaseprofile:56
 msgid "Falls leer, so geben Sie hier bitte einen neuen Profilnamen ein"
 msgstr "Falls leer, so geben Sie hier bitte einen neuen Profilnamen ein"
 
-#: /opt/openbib/templates/error:10
+#: ../templates/error:10
 msgid "Fehler"
 msgstr "Fehler"
 
-#: /opt/openbib/templates/error:17
+#: ../templates/error:17
 msgid "Fehlerbeschreibung"
 msgstr "Fehlerbeschreibung"
 
-#: /opt/openbib/templates/managecollection_mail:38
+#: ../templates/managecollection_mail:38
 msgid "Felder leeren"
 msgstr "Felder leeren"
 
-#: /opt/openbib/templates/circulation_orders:68
+#: ../templates/circulation_orders:68
 msgid "Fernleihbestellung"
 msgstr "Fernleihbestellung"
 
-#: /opt/openbib/templates/searchframe:96 /opt/openbib/templates/userprefs:169
+#: ../templates/searchframe:96 ../templates/userprefs:169
 msgid "Freie Suche"
 msgstr "Freie Suche"
 
-#: /opt/openbib/templates/searchframe:208
-#: /opt/openbib/templates/searchframe_simple:140
+#: ../templates/searchframe:208 ../templates/searchframe_simple:140
 msgid ""
 "Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns "
 "unter"
@@ -645,7 +623,7 @@ msgstr ""
 "Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns "
 "unter"
 
-#: /opt/openbib/templates/selfreg:34
+#: ../templates/selfreg:34
 msgid ""
 "Geben Sie f&uuml;r die Selbstregistrierung bitte als Benutzername Ihre "
 "g&uuml;ltige Email-Adresse ein und danach zwei Mal Ihr selbst gew&auml;hltes "
@@ -655,63 +633,59 @@ msgstr ""
 "g&uuml;ltige Email-Adresse ein und danach zwei Mal Ihr selbst gew&auml;hltes "
 "Passwort. Danach best&auml;tigen Sie bitte mit <b>Registrieren</b>."
 
-#: /opt/openbib/templates/login:43
+#: ../templates/login:43
 msgid "Geben Sie hier bitte Ihr Passwort bzw. Ihre OpacPin ein."
 msgstr "Geben Sie hier bitte Ihr Passwort bzw. Ihre OpacPin ein."
 
-#: /opt/openbib/templates/mailpassword:44
+#: ../templates/mailpassword:44
 msgid "Geben Sie hier bitte Ihre E-Mail Adresse ein."
 msgstr "Geben Sie hier bitte Ihre E-Mail Adresse ein."
 
-#: /opt/openbib/templates/searchframe_simple:65
+#: ../templates/searchframe_simple:65
 msgid "Geben Sie hier bitte Ihre Suchbegriffe ein"
 msgstr "Geben Sie hier bitte Ihre Suchbegriffe ein"
 
-#: /opt/openbib/templates/login:42
+#: ../templates/login:42
 msgid "Geben Sie hier bitte Ihren Benutzernamen bzw. Ihre Benutzernummer ein."
 msgstr "Geben Sie hier bitte Ihren Benutzernamen bzw. Ihre Benutzernummer ein."
 
-#: /opt/openbib/templates/virtualsearch_showkorindex:48
+#: ../templates/virtualsearch_showkorindex:48
 msgid "Geben Sie hier den Körperschaftsanfang ein"
 msgstr "Geben Sie hier den Körperschaftsanfang ein"
 
-#: /opt/openbib/templates/search_showswtindex:85
-#: /opt/openbib/templates/search_showtitlist:187
-#: /opt/openbib/templates/search_showtitset:173
-#: /opt/openbib/templates/virtualsearch_showswtindex:48
+#: ../templates/search_showswtindex:85 ../templates/search_showtitlist:187
+#: ../templates/search_showtitset:173
+#: ../templates/virtualsearch_showswtindex:48
 msgid "Geben Sie hier den Schlagwortanfang ein"
 msgstr "Geben Sie hier den Schlagwortanfang ein"
 
-#: /opt/openbib/templates/virtualsearch_showverfindex:48
+#: ../templates/virtualsearch_showverfindex:48
 msgid "Geben Sie hier den Verfasseranfang ein"
 msgstr "Geben Sie hier den Verfasseranfang ein"
 
-#: /opt/openbib/templates/userprefs:69
+#: ../templates/userprefs:69
 msgid "Geburtsdatum"
 msgstr "Geburtsdatum"
 
-#: /opt/openbib/templates/circulation_remind:48
+#: ../templates/circulation_remind:48
 msgid "Gebühr"
 msgstr "Gebühr"
 
-#: /opt/openbib/templates/circulation:23
-#: /opt/openbib/templates/circulation_orders:23
-#: /opt/openbib/templates/circulation_remind:23
-#: /opt/openbib/templates/circulation_reserv:23
-#: /opt/openbib/templates/databaseprofile:39
-#: /opt/openbib/templates/userprefs:23
+#: ../templates/circulation:23 ../templates/circulation_orders:23
+#: ../templates/circulation_remind:23 ../templates/circulation_reserv:23
+#: ../templates/databaseprofile:39 ../templates/userprefs:23
 msgid "Grundeinstellungen"
 msgstr "Grundeinstellungen"
 
-#: /opt/openbib/templates/userprefs:95
+#: ../templates/userprefs:95
 msgid "Guthaben"
 msgstr "Guthaben"
 
-#: /opt/openbib/templates/admin_editcat:107
+#: ../templates/admin_editcat:107
 msgid "HTTP"
 msgstr "HTTP"
 
-#: /opt/openbib/templates/login:53
+#: ../templates/login:53
 msgid ""
 "Haben Sie Ihr Passwort vergessen, das Sie bei der Selbstregistrierung "
 "angegeben haben? Dann klicken Sie"
@@ -719,91 +693,83 @@ msgstr ""
 "Haben Sie Ihr Passwort vergessen, das Sie bei der Selbstregistrierung "
 "angegeben haben? Dann klicken Sie"
 
-#: /opt/openbib/templates/userprefs:170
+#: ../templates/userprefs:170
 msgid "Hauptsachtitel (HST)"
 msgstr "Hauptsachtitel (HST)"
 
-#: /opt/openbib/templates/searchframe:194
-#: /opt/openbib/templates/searchframe:198
-#: /opt/openbib/templates/searchframe:76 /opt/openbib/templates/searchframe:84
-#: /opt/openbib/templates/searchframe_simple:103
-#: /opt/openbib/templates/searchframe_simple:109
+#: ../templates/searchframe:194 ../templates/searchframe:198
+#: ../templates/searchframe:76 ../templates/searchframe:84
+#: ../templates/searchframe_simple:103 ../templates/searchframe_simple:109
 msgid "Hier löschen Sie die Eingabefelder"
 msgstr "Hier löschen Sie die Eingabefelder"
 
-#: /opt/openbib/templates/searchframe:194
-#: /opt/openbib/templates/searchframe:198
-#: /opt/openbib/templates/searchframe:75 /opt/openbib/templates/searchframe:83
-#: /opt/openbib/templates/searchframe_simple:103
-#: /opt/openbib/templates/searchframe_simple:109
+#: ../templates/searchframe:194 ../templates/searchframe:198
+#: ../templates/searchframe:75 ../templates/searchframe:83
+#: ../templates/searchframe_simple:103 ../templates/searchframe_simple:109
 msgid "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
 msgstr "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
 
-#: /opt/openbib/templates/searchframe:198
-#: /opt/openbib/templates/searchframe:82
-#: /opt/openbib/templates/searchframe_simple:109
+#: ../templates/searchframe:198 ../templates/searchframe:82
+#: ../templates/searchframe_simple:109
 msgid "Hier suchen Sie in allen Katalogen auf einmal"
 msgstr "Hier suchen Sie in allen Katalogen auf einmal"
 
-#: /opt/openbib/templates/headerframe:32
+#: ../templates/headerframe:32
 msgid "Hilfe"
 msgstr "Hilfe"
 
-#: /opt/openbib/templates/databasechoice:45
-#: /opt/openbib/templates/externaljump:30 /opt/openbib/templates/login:29
-#: /opt/openbib/templates/mailpassword:33 /opt/openbib/templates/rssframe:19
-#: /opt/openbib/templates/selfreg:32
+#: ../templates/databasechoice:45 ../templates/externaljump:30
+#: ../templates/login:29 ../templates/mailpassword:33 ../templates/rssframe:19
+#: ../templates/selfreg:32
 msgid "Hinweis"
 msgstr "Hinweis"
 
-#: /opt/openbib/templates/searchframe:121 /opt/openbib/templates/userprefs:175
+#: ../templates/searchframe:121 ../templates/userprefs:175
 msgid "ISBN"
 msgstr "ISBN"
 
-#: /opt/openbib/templates/searchframe:125 /opt/openbib/templates/userprefs:176
+#: ../templates/searchframe:125 ../templates/userprefs:176
 msgid "ISSN"
 msgstr "ISSN"
 
-#: /opt/openbib/templates/mailpassword_success:23
+#: ../templates/mailpassword_success:23
 msgid "Ihr Passwort wurde an Sie verschickt."
 msgstr "Ihr Passwort wurde an Sie verschickt."
 
-#: /opt/openbib/templates/managecollection_mail:31
-#: /opt/openbib/templates/searchframe:93
+#: ../templates/managecollection_mail:31 ../templates/searchframe:93
 msgid "Ihre Eingabe"
 msgstr "Ihre Eingabe"
 
-#: /opt/openbib/templates/userprefs_userdeleted:21
+#: ../templates/userprefs_userdeleted:21
 msgid "Ihre Kennung samt aktueller Sitzungsdaten wurden gel&ouml;scht"
 msgstr "Ihre Kennung samt aktueller Sitzungsdaten wurden gel&ouml;scht"
 
-#: /opt/openbib/templates/managecollection_mail:34
+#: ../templates/managecollection_mail:34
 msgid "Ihre Mailadresse"
 msgstr "Ihre Mailadresse"
 
-#: /opt/openbib/templates/mailcollection_success:26
+#: ../templates/mailcollection_success:26
 msgid "Ihre Merkliste wurde an Sie per Mail versendet."
 msgstr "Ihre Merkliste wurde an Sie per Mail versendet."
 
-#: /opt/openbib/templates/leave:27
+#: ../templates/leave:27
 msgid "Ihre Sitzung wurde beendet."
 msgstr "Ihre Sitzung wurde beendet."
 
-#: /opt/openbib/templates/externaljump:39
+#: ../templates/externaljump:39
 msgid "Ihre Suchanfrage im KUG Recherche-Portal"
 msgstr "Ihre Suchanfrage im KUG Recherche-Portal"
 
-#: /opt/openbib/templates/admin_editcat:96
+#: ../templates/admin_editcat:96
 msgid "Import-Einstellungen"
 msgstr "Import-Einstellungen"
 
-#: /opt/openbib/templates/searchframe:198
-#: /opt/openbib/templates/searchframe:82
-#: /opt/openbib/templates/searchframe_simple:109
+#: ../templates/searchframe:198 ../templates/searchframe:82
+#: ../templates/searchframe_simple:109
 msgid "In allen Katalogen suchen"
 msgstr "In allen Katalogen suchen"
 
-#: /opt/openbib/templates/searchframe:75
+#: ../templates/searchframe:75
 msgid ""
 "In ausgewähltem Profil\n"
 "suchen"
@@ -811,192 +777,159 @@ msgstr ""
 "In ausgewähltem Profil\n"
 "suchen"
 
-#: /opt/openbib/templates/searchframe:83
-#: /opt/openbib/templates/searchframe_simple:103
-#: /opt/openbib/templates/searchframe_simple:109
+#: ../templates/searchframe:83 ../templates/searchframe_simple:103
+#: ../templates/searchframe_simple:109
 msgid "In ausgewähltem Profil suchen"
 msgstr "In ausgewähltem Profil suchen"
 
-#: /opt/openbib/templates/searchframe:194
-#: /opt/openbib/templates/searchframe:198
+#: ../templates/searchframe:194 ../templates/searchframe:198
 msgid "In ausgewählten Katalogen suchen"
 msgstr "In ausgewählten Katalogen suchen"
 
-#: /opt/openbib/templates/resultlists_showall:103
-#: /opt/openbib/templates/resultlists_showall:129
-#: /opt/openbib/templates/resultlists_showall:130
-#: /opt/openbib/templates/resultlists_showall_sortall:95
-#: /opt/openbib/templates/resultlists_showsinglepool:104
-#: /opt/openbib/templates/search_showtitlist:122
-#: /opt/openbib/templates/search_showtitset:24
-#: /opt/openbib/templates/virtualsearch_result_item:64
+#: ../templates/resultlists_showall:103 ../templates/resultlists_showall:129
+#: ../templates/resultlists_showall:130
+#: ../templates/resultlists_showall_sortall:95
+#: ../templates/resultlists_showsinglepool:104
+#: ../templates/search_showtitlist:122 ../templates/search_showtitset:24
+#: ../templates/virtualsearch_result_item:64
 msgid "In die Merkliste"
 msgstr "In die Merkliste"
 
-#: /opt/openbib/templates/search_showswtindex:66
+#: ../templates/search_showswtindex:66
 msgid "In diesem Katalog konnte leider kein Schlagwort beginnend mit"
 msgstr "In diesem Katalog konnte leider kein Schlagwort beginnend mit"
 
-#: /opt/openbib/templates/searchframe:105
-#: /opt/openbib/templates/virtualsearch_showkorindex:48
-#: /opt/openbib/templates/virtualsearch_showswtindex:48
-#: /opt/openbib/templates/virtualsearch_showverfindex:48
+#: ../templates/searchframe:105 ../templates/virtualsearch_showkorindex:48
+#: ../templates/virtualsearch_showswtindex:48
+#: ../templates/virtualsearch_showverfindex:48
 msgid "Index"
 msgstr "Index"
 
-#: /opt/openbib/templates/managecollection_tit_as_html:26
-#: /opt/openbib/templates/managecollection_tit_as_html_simple:28
-#: /opt/openbib/templates/search_showautset:25
-#: /opt/openbib/templates/search_showkorset:25
-#: /opt/openbib/templates/search_showmulttitset:36
-#: /opt/openbib/templates/search_shownotset:25
-#: /opt/openbib/templates/search_showswtset:27
-#: /opt/openbib/templates/search_showtitset:55
+#: ../templates/managecollection_tit_as_html:26
+#: ../templates/managecollection_tit_as_html_simple:28
+#: ../templates/search_showautset:25 ../templates/search_showkorset:25
+#: ../templates/search_showmulttitset:36 ../templates/search_shownotset:25
+#: ../templates/search_showswtset:27 ../templates/search_showtitset:55
 msgid "Inhalt"
 msgstr "Inhalt"
 
-#: /opt/openbib/templates/admin_showsessions:40
+#: ../templates/admin_showsessions:40
 msgid "Initiale Suchen"
 msgstr "Initiale Suchen"
 
-#: /opt/openbib/templates/searchframe:206
-#: /opt/openbib/templates/searchframe_simple:137
+#: ../templates/searchframe:206 ../templates/searchframe_simple:137
 msgid "Insgesamt sind im KUG derzeit"
 msgstr "Insgesamt sind im KUG derzeit"
 
-#: /opt/openbib/templates/managecollection_tit_as_html:47
-#: /opt/openbib/templates/managecollection_tit_as_html_simple:38
-#: /opt/openbib/templates/search_showmulttitset:52
-#: /opt/openbib/templates/search_showtitset:118
+#: ../templates/managecollection_tit_as_html:47
+#: ../templates/managecollection_tit_as_html_simple:38
+#: ../templates/search_showmulttitset:52 ../templates/search_showtitset:118
 msgid "Inventarnummer"
 msgstr "Inventarnummer"
 
-#: /opt/openbib/templates/managecollection_tit_as_text:27
+#: ../templates/managecollection_tit_as_text:27
 msgid "Inventarnummer       "
 msgstr "Inventarnummer       "
 
-#: /opt/openbib/templates/admin_editcat:142
-#: /opt/openbib/templates/admin_editcat:165
-#: /opt/openbib/templates/admin_editcat:85
-#: /opt/openbib/templates/admin_editcat_rss:135
-#: /opt/openbib/templates/admin_editcat_rss:194
-#: /opt/openbib/templates/admin_editcat_rss:253
-#: /opt/openbib/templates/admin_editcat_rss:312
-#: /opt/openbib/templates/admin_editcat_rss:76
-#: /opt/openbib/templates/admin_editview:47
-#: /opt/openbib/templates/admin_showcat:52
-#: /opt/openbib/templates/admin_showcat:87
-#: /opt/openbib/templates/admin_showcat:94
-#: /opt/openbib/templates/admin_showviews:40
-#: /opt/openbib/templates/searchframe:186
+#: ../templates/admin_editcat:142 ../templates/admin_editcat:165
+#: ../templates/admin_editcat:85 ../templates/admin_editcat_rss:135
+#: ../templates/admin_editcat_rss:194 ../templates/admin_editcat_rss:253
+#: ../templates/admin_editcat_rss:312 ../templates/admin_editcat_rss:76
+#: ../templates/admin_editview:47 ../templates/admin_showcat:52
+#: ../templates/admin_showcat:87 ../templates/admin_showcat:94
+#: ../templates/admin_showviews:40 ../templates/searchframe:186
 msgid "Ja"
 msgstr "Ja"
 
-#: /opt/openbib/templates/searchframe:141
+#: ../templates/searchframe:141
 msgid "Jahr"
 msgstr "Jahr"
 
-#: /opt/openbib/templates/userprefs:172
-#: /opt/openbib/templates/virtualsearch_showkorindex:48
+#: ../templates/userprefs:172 ../templates/virtualsearch_showkorindex:48
 msgid "K&ouml;rperschaft"
 msgstr "K&ouml;rperschaft"
 
-#: /opt/openbib/templates/userprefs:38
+#: ../templates/userprefs:38
 msgid "KUG Benutzerinformationen"
 msgstr "KUG Benutzerinformationen"
 
-#: /opt/openbib/templates/resultlists_choice:82
+#: ../templates/resultlists_choice:82
 msgid "Katalog"
 msgstr "Katalog"
 
-#: /opt/openbib/templates/admin_editcat:36
+#: ../templates/admin_editcat:36
 msgid "Katalog bearbeiten"
 msgstr "Katalog bearbeiten"
 
-#: /opt/openbib/templates/databasechoice:38
-#: /opt/openbib/templates/headerframe:23
+#: ../templates/databasechoice:38 ../templates/headerframe:23
 msgid "Katalogauswahl"
 msgstr "Katalogauswahl"
 
-#: /opt/openbib/templates/admin_editview:56
+#: ../templates/admin_editview:56
 msgid "Katalogauswahl zu diesem View"
 msgstr "Katalogauswahl zu diesem View"
 
-#: /opt/openbib/templates/admin_editcat:21
-#: /opt/openbib/templates/admin_editcat_rss:22
-#: /opt/openbib/templates/admin_editsession:22
-#: /opt/openbib/templates/admin_editview:21
-#: /opt/openbib/templates/admin_editview_rss:21
-#: /opt/openbib/templates/admin_loggedin:21
-#: /opt/openbib/templates/admin_showcat:24
-#: /opt/openbib/templates/admin_showsessions:22
-#: /opt/openbib/templates/admin_showviews:22
-#: /opt/openbib/templates/searchframe:68
-#: /opt/openbib/templates/searchframe_simple:50
+#: ../templates/admin_editcat:21 ../templates/admin_editcat_rss:22
+#: ../templates/admin_editsession:22 ../templates/admin_editview:21
+#: ../templates/admin_editview_rss:21 ../templates/admin_loggedin:21
+#: ../templates/admin_showcat:24 ../templates/admin_showsessions:22
+#: ../templates/admin_showviews:22 ../templates/searchframe:68
+#: ../templates/searchframe_simple:50
 msgid "Kataloge"
 msgstr "Kataloge"
 
-#: /opt/openbib/templates/databasechoice:54
-#: /opt/openbib/templates/databasechoice:95
+#: ../templates/databasechoice:54 ../templates/databasechoice:95
 msgid "Kataloge auswählen"
 msgstr "Kataloge auswählen"
 
-#: /opt/openbib/templates/searchframe:79
-#: /opt/openbib/templates/searchframe_simple:58
+#: ../templates/searchframe:79 ../templates/searchframe_simple:58
 msgid "Katalogen"
 msgstr "Katalogen"
 
-#: /opt/openbib/templates/circulation:25
-#: /opt/openbib/templates/circulation_orders:25
-#: /opt/openbib/templates/circulation_remind:25
-#: /opt/openbib/templates/circulation_reserv:25
-#: /opt/openbib/templates/databaseprofile:43
-#: /opt/openbib/templates/userprefs:27
+#: ../templates/circulation:25 ../templates/circulation_orders:25
+#: ../templates/circulation_remind:25 ../templates/circulation_reserv:25
+#: ../templates/databaseprofile:43 ../templates/userprefs:27
 msgid "Katalogprofile"
 msgstr "Katalogprofile"
 
-#: /opt/openbib/templates/managecollection_tit_as_html:26
-#: /opt/openbib/templates/managecollection_tit_as_html_simple:28
-#: /opt/openbib/templates/search_showautset:25
-#: /opt/openbib/templates/search_showkorset:25
-#: /opt/openbib/templates/search_showmulttitset:36
-#: /opt/openbib/templates/search_shownotset:25
-#: /opt/openbib/templates/search_showswtset:27
-#: /opt/openbib/templates/search_showtitset:55
-#: /opt/openbib/templates/searchframe:93
+#: ../templates/managecollection_tit_as_html:26
+#: ../templates/managecollection_tit_as_html_simple:28
+#: ../templates/search_showautset:25 ../templates/search_showkorset:25
+#: ../templates/search_showmulttitset:36 ../templates/search_shownotset:25
+#: ../templates/search_showswtset:27 ../templates/search_showtitset:55
+#: ../templates/searchframe:93
 msgid "Kategorie"
 msgstr "Kategorie"
 
-#: /opt/openbib/templates/admin_editview_rss:75
+#: ../templates/admin_editview_rss:75
 msgid "Kein prim&auml;rer RSS-Feed ausgew&auml;hlt"
 msgstr "Kein prim&auml;rer RSS-Feed ausgew&auml;hlt"
 
-#: /opt/openbib/templates/search_info:32
+#: ../templates/search_info:32
 msgid "Keine <b>logische</b> Kombination mehrerer Worte im Eingabefeld m&ouml;glich"
 msgstr "Keine <b>logische</b> Kombination mehrerer Worte im Eingabefeld m&ouml;glich"
 
-#: /opt/openbib/templates/userprefs:45
+#: ../templates/userprefs:45
 msgid "Kennung l&ouml;schen"
 msgstr "Kennung l&ouml;schen"
 
-#: /opt/openbib/templates/userprefs_ask_delete:30
+#: ../templates/userprefs_ask_delete:30
 msgid "Kennung soll wirklich gel&ouml;scht werden"
 msgstr "Kennung soll wirklich gel&ouml;scht werden"
 
-#: /opt/openbib/templates/selfreg_success:33
+#: ../templates/selfreg_success:33
 msgid "Klicken Sie nun"
 msgstr "Klicken Sie nun"
 
-#: /opt/openbib/templates/searchframe:28
-#: /opt/openbib/templates/searchframe_simple:35
+#: ../templates/searchframe:28 ../templates/searchframe_simple:35
 msgid "Komplexe Recherche"
 msgstr "Komplexe Recherche"
 
-#: /opt/openbib/templates/search_info:19
+#: ../templates/search_info:19
 msgid "Komplizierte Suchanfragen"
 msgstr "Komplizierte Suchanfragen"
 
-#: /opt/openbib/templates/virtualsearch_more_search_tips:17
+#: ../templates/virtualsearch_more_search_tips:17
 msgid ""
 "Konnten Sie das von Ihnen gesuchte Buch oder den von Ihnen gesuchten "
 "Zeitschriftenartikel nicht im KUG finden?"
@@ -1004,343 +937,317 @@ msgstr ""
 "Konnten Sie das von Ihnen gesuchte Buch oder den von Ihnen gesuchten "
 "Zeitschriftenartikel nicht im KUG finden?"
 
-#: /opt/openbib/templates/admin_editcat:122
+#: ../templates/admin_editcat:122
 msgid "Kor-Datei"
 msgstr "Kor-Datei"
 
-#: /opt/openbib/templates/searchframe:109
+#: ../templates/searchframe:109
 msgid "Körperschaft"
 msgstr "Körperschaft"
 
-#: /opt/openbib/templates/databaseprofile:61
+#: ../templates/databaseprofile:61
 msgid "L&ouml;schung des ausgew&auml;hlten Profils"
 msgstr "L&ouml;schung des ausgew&auml;hlten Profils"
 
-#: /opt/openbib/templates/circulation_remind:48
+#: ../templates/circulation_remind:48
 msgid "Leihfristende"
 msgstr "Leihfristende"
 
-#: /opt/openbib/templates/rssframe:45
+#: ../templates/rssframe:45
 msgid "Letzte 50 Neuaufnahmen"
 msgstr "Letzte 50 Neuaufnahmen"
 
-#: /opt/openbib/templates/login:20 /opt/openbib/templates/mailpassword:24
-#: /opt/openbib/templates/selfreg:23 /opt/openbib/templates/selfreg_success:23
+#: ../templates/login:20 ../templates/mailpassword:24 ../templates/selfreg:23
+#: ../templates/selfreg_success:23
 msgid "Login"
 msgstr "Login"
 
-#: /opt/openbib/templates/admin_editcat:24
-#: /opt/openbib/templates/admin_editcat_rss:25
-#: /opt/openbib/templates/admin_editsession:25
-#: /opt/openbib/templates/admin_editview:24
-#: /opt/openbib/templates/admin_editview_rss:24
-#: /opt/openbib/templates/admin_loggedin:24
-#: /opt/openbib/templates/admin_showcat:27
-#: /opt/openbib/templates/admin_showsessions:25
-#: /opt/openbib/templates/admin_showviews:25
+#: ../templates/admin_editcat:24 ../templates/admin_editcat_rss:25
+#: ../templates/admin_editsession:25 ../templates/admin_editview:24
+#: ../templates/admin_editview_rss:24 ../templates/admin_loggedin:24
+#: ../templates/admin_showcat:27 ../templates/admin_showsessions:25
+#: ../templates/admin_showviews:25
 msgid "Logout"
 msgstr "Logout"
 
-#: /opt/openbib/templates/admin_logout:21
+#: ../templates/admin_logout:21
 msgid "Logout erfolgreich"
 msgstr "Logout erfolgreich"
 
-#: /opt/openbib/templates/admin_editcat:111
+#: ../templates/admin_editcat:111
 msgid "Lokal"
 msgstr "Lokal"
 
-#: /opt/openbib/templates/managecollection_tit_as_html:66
-#: /opt/openbib/templates/managecollection_tit_as_html_simple:38
-#: /opt/openbib/templates/managecollection_tit_as_html_simple:56
-#: /opt/openbib/templates/search_showmulttitset:52
-#: /opt/openbib/templates/search_showmulttitset:70
+#: ../templates/managecollection_tit_as_html:66
+#: ../templates/managecollection_tit_as_html_simple:38
+#: ../templates/managecollection_tit_as_html_simple:56
+#: ../templates/search_showmulttitset:52 ../templates/search_showmulttitset:70
 msgid "Lokale Signatur"
 msgstr "Lokale Signatur"
 
-#: /opt/openbib/templates/managecollection_tit_as_text:26
+#: ../templates/managecollection_tit_as_text:26
 msgid "Lokale Signatur      "
 msgstr "Lokale Signatur      "
 
-#: /opt/openbib/templates/managecollection_show:59
-#: /opt/openbib/templates/resultlists_showall:45
-#: /opt/openbib/templates/resultlists_showall_sortall:45
-#: /opt/openbib/templates/resultlists_showsinglepool:45
-#: /opt/openbib/templates/search_showtitlist:32
-#: /opt/openbib/templates/virtualsearch_result_start:46
+#: ../templates/managecollection_show:59 ../templates/resultlists_showall:45
+#: ../templates/resultlists_showall_sortall:45
+#: ../templates/resultlists_showsinglepool:45
+#: ../templates/search_showtitlist:32
+#: ../templates/virtualsearch_result_start:46
 msgid "Los"
 msgstr "Los"
 
-#: /opt/openbib/templates/searchframe:194
-#: /opt/openbib/templates/searchframe:198
-#: /opt/openbib/templates/searchframe:76 /opt/openbib/templates/searchframe:84
-#: /opt/openbib/templates/searchframe_simple:103
-#: /opt/openbib/templates/searchframe_simple:109
+#: ../templates/searchframe:194 ../templates/searchframe:198
+#: ../templates/searchframe:76 ../templates/searchframe:84
+#: ../templates/searchframe_simple:103 ../templates/searchframe_simple:109
 msgid "Lösche Eingabemaske"
 msgstr "Lösche Eingabemaske"
 
-#: /opt/openbib/templates/admin_editcat:177
-#: /opt/openbib/templates/admin_editcat_rss:349
-#: /opt/openbib/templates/admin_editview:136
+#: ../templates/admin_editcat:177 ../templates/admin_editcat_rss:349
+#: ../templates/admin_editview:136
 msgid "Löschen"
 msgstr "Löschen"
 
-#: /opt/openbib/templates/searchframe:164
+#: ../templates/searchframe:164
 msgid "Maximale Trefferzahl pro Katalog"
 msgstr "Maximale Trefferzahl pro Katalog"
 
-#: /opt/openbib/templates/externaljump:93
+#: ../templates/externaljump:93
 msgid "MedPilot"
 msgstr "MedPilot"
 
-#: /opt/openbib/templates/searchframe:137 /opt/openbib/templates/userprefs:179
+#: ../templates/searchframe:137 ../templates/userprefs:179
 msgid "Medienart"
 msgstr "Medienart"
 
-#: /opt/openbib/templates/search_showtitlist:165
+#: ../templates/search_showtitlist:165
 msgid "Mehrfachauswahl"
 msgstr "Mehrfachauswahl"
 
-#: /opt/openbib/templates/headerframe:27 /opt/openbib/templates/headerframe:29
+#: ../templates/headerframe:27 ../templates/headerframe:29
 msgid "Mein KUG"
 msgstr "Mein KUG"
 
-#: /opt/openbib/templates/headerframe:23
-#: /opt/openbib/templates/managecollection_save_html:23
-#: /opt/openbib/templates/managecollection_show:23
+#: ../templates/headerframe:23 ../templates/managecollection_save_html:23
+#: ../templates/managecollection_show:23
 msgid "Merkliste"
 msgstr "Merkliste"
 
-#: /opt/openbib/templates/admin_editcat:125
+#: ../templates/admin_editcat:125
 msgid "Mex-Datei"
 msgstr "Mex-Datei"
 
-#: /opt/openbib/templates/admin_editview_rss:68
+#: ../templates/admin_editview_rss:68
 msgid "Möchten Sie diesen ändern?"
 msgstr "Möchten Sie diesen ändern?"
 
-#: /opt/openbib/templates/search_showtitset:41
-#: /opt/openbib/templates/search_showtitset:43
+#: ../templates/search_showtitset:41 ../templates/search_showtitset:43
 msgid "N&auml;chster Titel"
 msgstr "N&auml;chster Titel"
 
-#: /opt/openbib/templates/userprefs:67
+#: ../templates/userprefs:67
 msgid "Nachname"
 msgstr "Nachname"
 
-#: /opt/openbib/templates/admin_editcat:136
-#: /opt/openbib/templates/admin_editcat:159
-#: /opt/openbib/templates/admin_editcat:81
-#: /opt/openbib/templates/admin_editcat_rss:129
-#: /opt/openbib/templates/admin_editcat_rss:188
-#: /opt/openbib/templates/admin_editcat_rss:247
-#: /opt/openbib/templates/admin_editcat_rss:306
-#: /opt/openbib/templates/admin_editcat_rss:70
-#: /opt/openbib/templates/admin_editview:51
-#: /opt/openbib/templates/admin_showcat:53
-#: /opt/openbib/templates/admin_showcat:89
-#: /opt/openbib/templates/admin_showcat:96
-#: /opt/openbib/templates/admin_showviews:40
-#: /opt/openbib/templates/searchframe:186
+#: ../templates/admin_editcat:136 ../templates/admin_editcat:159
+#: ../templates/admin_editcat:81 ../templates/admin_editcat_rss:129
+#: ../templates/admin_editcat_rss:188 ../templates/admin_editcat_rss:247
+#: ../templates/admin_editcat_rss:306 ../templates/admin_editcat_rss:70
+#: ../templates/admin_editview:51 ../templates/admin_showcat:53
+#: ../templates/admin_showcat:89 ../templates/admin_showcat:96
+#: ../templates/admin_showviews:40 ../templates/searchframe:186
 msgid "Nein"
 msgstr "Nein"
 
-#: /opt/openbib/templates/admin_editcat_rss:119
-#: /opt/openbib/templates/admin_editcat_rss:178
-#: /opt/openbib/templates/admin_editcat_rss:237
-#: /opt/openbib/templates/admin_editcat_rss:296
-#: /opt/openbib/templates/admin_editcat_rss:60
-#: /opt/openbib/templates/admin_showcat:54
-#: /opt/openbib/templates/admin_showviews:40
+#: ../templates/admin_editcat_rss:119 ../templates/admin_editcat_rss:178
+#: ../templates/admin_editcat_rss:237 ../templates/admin_editcat_rss:296
+#: ../templates/admin_editcat_rss:60 ../templates/admin_showcat:54
+#: ../templates/admin_showviews:40
 msgid "Neu"
 msgstr "Neu"
 
-#: /opt/openbib/templates/admin_editcat_rss:43
+#: ../templates/admin_editcat_rss:43
 msgid "Neuaufnahmen (generell)"
 msgstr "Neuaufnahmen (generell)"
 
-#: /opt/openbib/templates/admin_editcat_rss:161
+#: ../templates/admin_editcat_rss:161
 msgid "Neuaufnahmen nach K&ouml;rperschaft"
 msgstr "Neuaufnahmen nach K&ouml;rperschaft"
 
-#: /opt/openbib/templates/admin_editcat_rss:220
+#: ../templates/admin_editcat_rss:220
 msgid "Neuaufnahmen nach Schlagwort"
 msgstr "Neuaufnahmen nach Schlagwort"
 
-#: /opt/openbib/templates/admin_editcat_rss:279
+#: ../templates/admin_editcat_rss:279
 msgid "Neuaufnahmen nach Systematik"
 msgstr "Neuaufnahmen nach Systematik"
 
-#: /opt/openbib/templates/admin_editcat_rss:102
+#: ../templates/admin_editcat_rss:102
 msgid "Neuaufnahmen nach Verfasser"
 msgstr "Neuaufnahmen nach Verfasser"
 
-#: /opt/openbib/templates/leave:35
+#: ../templates/leave:35
 msgid "Neue Sitzung beginnen?"
 msgstr "Neue Sitzung beginnen?"
 
-#: /opt/openbib/templates/admin_showcat:37
+#: ../templates/admin_showcat:37
 msgid "Neuen Katalog anlegen"
 msgstr "Neuen Katalog anlegen"
 
-#: /opt/openbib/templates/admin_showviews:35
+#: ../templates/admin_showviews:35
 msgid "Neuen View anlegen"
 msgstr "Neuen View anlegen"
 
-#: /opt/openbib/templates/admin_editcat_rss:339
+#: ../templates/admin_editcat_rss:339
 msgid "Neuerwerbungen"
 msgstr "Neuerwerbungen"
 
-#: /opt/openbib/templates/search_info:14
+#: ../templates/search_info:14
 msgid "Normale Suchanfragen"
 msgstr "Normale Suchanfragen"
 
-#: /opt/openbib/templates/admin_editcat:124
+#: ../templates/admin_editcat:124
 msgid "Not-Datei"
 msgstr "Not-Datei"
 
-#: /opt/openbib/templates/searchframe:117 /opt/openbib/templates/userprefs:174
+#: ../templates/searchframe:117 ../templates/userprefs:174
 msgid "Notation"
 msgstr "Notation"
 
-#: /opt/openbib/templates/virtualsearch_more_search_tips:21
+#: ../templates/virtualsearch_more_search_tips:21
 msgid "Online-Kartenkatalog"
 msgstr "Online-Kartenkatalog"
 
-#: /opt/openbib/templates/virtualsearch_more_search_tips:35
+#: ../templates/virtualsearch_more_search_tips:35
 msgid "Online-Zeitschriftenlieferung"
 msgstr "Online-Zeitschriftenlieferung"
 
-#: /opt/openbib/templates/managecollection_show:53
-#: /opt/openbib/templates/resultlists_showall:34
-#: /opt/openbib/templates/resultlists_showall_sortall:34
-#: /opt/openbib/templates/resultlists_showsinglepool:34
-#: /opt/openbib/templates/search_showtitlist:30
-#: /opt/openbib/templates/virtualsearch_result_start:35
+#: ../templates/managecollection_show:53 ../templates/resultlists_showall:34
+#: ../templates/resultlists_showall_sortall:34
+#: ../templates/resultlists_showsinglepool:34
+#: ../templates/search_showtitlist:30
+#: ../templates/virtualsearch_result_start:35
 msgid "Optionen"
 msgstr "Optionen"
 
-#: /opt/openbib/templates/userprefs:71
+#: ../templates/userprefs:71
 msgid "Ort"
 msgstr "Ort"
 
-#: /opt/openbib/templates/admin_login:31 /opt/openbib/templates/login:43
-#: /opt/openbib/templates/selfreg:45 /opt/openbib/templates/userprefs:51
+#: ../templates/admin_login:31 ../templates/login:43 ../templates/selfreg:45
+#: ../templates/userprefs:51
 msgid "Passwort"
 msgstr "Passwort"
 
-#: /opt/openbib/templates/userprefs:51
+#: ../templates/userprefs:51
 msgid "Passwort &auml;ndern"
 msgstr "Passwort &auml;ndern"
 
-#: /opt/openbib/templates/selfreg:46
+#: ../templates/selfreg:46
 msgid "Passwort (wiederholt)"
 msgstr "Passwort (wiederholt)"
 
-#: /opt/openbib/templates/mailpassword:46
+#: ../templates/mailpassword:46
 msgid "Passwort per Mail schicken"
 msgstr "Passwort per Mail schicken"
 
-#: /opt/openbib/templates/login:22 /opt/openbib/templates/mailpassword:26
-#: /opt/openbib/templates/selfreg:25 /opt/openbib/templates/selfreg_success:25
+#: ../templates/login:22 ../templates/mailpassword:26 ../templates/selfreg:25
+#: ../templates/selfreg_success:25
 msgid "Passwort vergessen?"
 msgstr "Passwort vergessen?"
 
-#: /opt/openbib/templates/userprefs:64
+#: ../templates/userprefs:64
 msgid "Personendaten"
 msgstr "Personendaten"
 
-#: /opt/openbib/templates/admin_editview_rss:42
+#: ../templates/admin_editview_rss:42
 msgid "Prim&auml;rer RSS-Feed f&uuml;r diesen View (Browser Auto-Discovery)"
 msgstr "Prim&auml;rer RSS-Feed f&uuml;r diesen View (Browser Auto-Discovery)"
 
-#: /opt/openbib/templates/databaseprofile:61
+#: ../templates/databaseprofile:61
 msgid "Profil anzeigen"
 msgstr "Profil anzeigen"
 
-#: /opt/openbib/templates/databaseprofile:61
+#: ../templates/databaseprofile:61
 msgid "Profil l&ouml;schen"
 msgstr "Profil l&ouml;schen"
 
-#: /opt/openbib/templates/databaseprofile:56
+#: ../templates/databaseprofile:56
 msgid "Profil speichern"
 msgstr "Profil speichern"
 
-#: /opt/openbib/templates/databaseprofile:53
+#: ../templates/databaseprofile:53
 msgid "Profilmanagement"
 msgstr "Profilmanagement"
 
-#: /opt/openbib/templates/admin_editcat:99
+#: ../templates/admin_editcat:99
 msgid "Protokoll"
 msgstr "Protokoll"
 
-#: /opt/openbib/templates/admin_showcat:70
-#: /opt/openbib/templates/admin_showviews:58
-#: /opt/openbib/templates/headerframe:24
+#: ../templates/admin_showcat:70 ../templates/admin_showviews:58
+#: ../templates/headerframe:24
 msgid "RSS"
 msgstr "RSS"
 
-#: /opt/openbib/templates/admin_editcat_rss:31
+#: ../templates/admin_editcat_rss:31
 msgid "RSS-Einstellungen"
 msgstr "RSS-Einstellungen"
 
-#: /opt/openbib/templates/admin_editview_rss:30
+#: ../templates/admin_editview_rss:30
 msgid "RSS-Einstellungen für View"
 msgstr "RSS-Einstellungen für View"
 
-#: /opt/openbib/templates/admin_editview:82
+#: ../templates/admin_editview:82
 msgid "RSS-Feed zu diesem View"
 msgstr "RSS-Feed zu diesem View"
 
-#: /opt/openbib/templates/rssframe:32
+#: ../templates/rssframe:32
 msgid "RSS-Feeds"
 msgstr "RSS-Feeds"
 
-#: /opt/openbib/templates/admin_editsession:54
-#: /opt/openbib/templates/headerframe:23
+#: ../templates/admin_editsession:54 ../templates/headerframe:23
 msgid "Recherche"
 msgstr "Recherche"
 
-#: /opt/openbib/templates/userprefs:155
+#: ../templates/userprefs:155
 msgid "Recherchemaske festlegen"
 msgstr "Recherchemaske festlegen"
 
-#: /opt/openbib/templates/admin_editsession:50
+#: ../templates/admin_editsession:50
 msgid "Recherchen"
 msgstr "Recherchen"
 
-#: /opt/openbib/templates/selfreg:47
+#: ../templates/selfreg:47
 msgid "Registrieren"
 msgstr "Registrieren"
 
-#: /opt/openbib/templates/searchframe_simple:121
+#: ../templates/searchframe_simple:121
 msgid "Rufen Sie hier die Ergebnisse frührerer Recherchen auf"
 msgstr "Rufen Sie hier die Ergebnisse frührerer Recherchen auf"
 
-#: /opt/openbib/templates/admin_editview_rss:118
+#: ../templates/admin_editview_rss:118
 msgid "S&auml;mtliche zugeordnete RSS-Feeds f&uuml;r diesen View"
 msgstr "S&auml;mtliche zugeordnete RSS-Feeds f&uuml;r diesen View"
 
-#: /opt/openbib/templates/search_showswtindex:35
-#: /opt/openbib/templates/search_showswtindex:43
-#: /opt/openbib/templates/searchframe:113 /opt/openbib/templates/userprefs:173
-#: /opt/openbib/templates/virtualsearch_showswtindex:48
+#: ../templates/search_showswtindex:35 ../templates/search_showswtindex:43
+#: ../templates/searchframe:113 ../templates/userprefs:173
+#: ../templates/virtualsearch_showswtindex:48
 msgid "Schlagwort"
 msgstr "Schlagwort"
 
-#: /opt/openbib/templates/search_showswtindex:26
+#: ../templates/search_showswtindex:26
 msgid "Schlagwortindex"
 msgstr "Schlagwortindex"
 
-#: /opt/openbib/templates/search_showtitset:172
+#: ../templates/search_showtitset:172
 msgid "Schlagwortindex diese Katalogs"
 msgstr "Schlagwortindex diese Katalogs"
 
-#: /opt/openbib/templates/search_showswtindex:85
-#: /opt/openbib/templates/search_showtitlist:187
+#: ../templates/search_showswtindex:85 ../templates/search_showtitlist:187
 msgid "Schlagwortindex dieses Katalogs"
 msgstr "Schlagwortindex dieses Katalogs"
 
-#: /opt/openbib/templates/mailcollection_mail_main:1
+#: ../templates/mailcollection_mail_main:1
 msgid ""
 "Sehr geehrte Damen und Herren,\n"
 "\n"
@@ -1358,47 +1265,43 @@ msgstr ""
 "\n"
 "Ihr KUG Team"
 
-#: /opt/openbib/templates/admin_editsession:40
+#: ../templates/admin_editsession:40
 msgid "Seit"
 msgstr "Seit"
 
-#: /opt/openbib/templates/virtualsearch_result_item:71
-#: /opt/openbib/templates/virtualsearch_showkorindex:32
-#: /opt/openbib/templates/virtualsearch_showswtindex:32
-#: /opt/openbib/templates/virtualsearch_showverfindex:32
+#: ../templates/virtualsearch_result_item:71
+#: ../templates/virtualsearch_showkorindex:32
+#: ../templates/virtualsearch_showswtindex:32
+#: ../templates/virtualsearch_showverfindex:32
 msgid "Sekunden"
 msgstr "Sekunden"
 
-#: /opt/openbib/templates/login:21 /opt/openbib/templates/mailpassword:25
-#: /opt/openbib/templates/selfreg:24 /opt/openbib/templates/selfreg_success:24
+#: ../templates/login:21 ../templates/mailpassword:25 ../templates/selfreg:24
+#: ../templates/selfreg_success:24
 msgid "Selbstregistrierung"
 msgstr "Selbstregistrierung"
 
-#: /opt/openbib/templates/searchframe:144
+#: ../templates/searchframe:144
 msgid "Serien"
 msgstr "Serien"
 
-#: /opt/openbib/templates/admin_editsession:39
+#: ../templates/admin_editsession:39
 msgid "Session"
 msgstr "Session"
 
-#: /opt/openbib/templates/admin_showsessions:39
+#: ../templates/admin_showsessions:39
 msgid "Session-ID"
 msgstr "Session-ID"
 
-#: /opt/openbib/templates/admin_editcat:23
-#: /opt/openbib/templates/admin_editcat_rss:24
-#: /opt/openbib/templates/admin_editsession:24
-#: /opt/openbib/templates/admin_editview:23
-#: /opt/openbib/templates/admin_editview_rss:23
-#: /opt/openbib/templates/admin_loggedin:23
-#: /opt/openbib/templates/admin_showcat:26
-#: /opt/openbib/templates/admin_showsessions:24
-#: /opt/openbib/templates/admin_showviews:24
+#: ../templates/admin_editcat:23 ../templates/admin_editcat_rss:24
+#: ../templates/admin_editsession:24 ../templates/admin_editview:23
+#: ../templates/admin_editview_rss:23 ../templates/admin_loggedin:23
+#: ../templates/admin_showcat:26 ../templates/admin_showsessions:24
+#: ../templates/admin_showviews:24
 msgid "Sessions"
 msgstr "Sessions"
 
-#: /opt/openbib/templates/testsystem_info:17
+#: ../templates/testsystem_info:17
 msgid ""
 "Sie befinden sich derzeit auf einem Testsystem, das nicht f&uuml;r den "
 "produktiven Einsatz gedacht ist. Stattdessen k&ouml;nnen Sie hier die neuen "
@@ -1418,7 +1321,7 @@ msgstr ""
 "aktuelle Version auf diesem System nicht eingefroren und in eine offiziell "
 "bekanntgegebene und &ouml;ffentliche finale Testphase &uuml;bergegangen ist."
 
-#: /opt/openbib/templates/startopac:52
+#: ../templates/startopac:52
 msgid ""
 "Sie brauchen einen Browser, der Frames darstellen kann, um diese Seiten mit "
 "ihren Inhalten wie geplant zu sehen."
@@ -1426,142 +1329,131 @@ msgstr ""
 "Sie brauchen einen Browser, der Frames darstellen kann, um diese Seiten mit "
 "ihren Inhalten wie geplant zu sehen."
 
-#: /opt/openbib/templates/circulation:44
+#: ../templates/circulation:44
 msgid "Sie haben keine Ausleihen getätigt."
 msgstr "Sie haben keine Ausleihen getätigt."
 
-#: /opt/openbib/templates/circulation_orders:44
+#: ../templates/circulation_orders:44
 msgid "Sie haben keine Bestellungen get&auml;tigt."
 msgstr "Sie haben keine Bestellungen get&auml;tigt."
 
-#: /opt/openbib/templates/circulation_reserv:44
+#: ../templates/circulation_reserv:44
 msgid "Sie haben keine Vormerkungen getätigt."
 msgstr "Sie haben keine Vormerkungen getätigt."
 
-#: /opt/openbib/templates/searchframe:68
-#: /opt/openbib/templates/searchframe_simple:50
+#: ../templates/searchframe:68 ../templates/searchframe_simple:50
 msgid "Sie können entweder direkt im vorausgewählten Katalog"
 msgstr "Sie können entweder direkt im vorausgewählten Katalog"
 
-#: /opt/openbib/templates/searchframe:79
-#: /opt/openbib/templates/searchframe_simple:58
+#: ../templates/searchframe:79 ../templates/searchframe_simple:58
 msgid "Sie können entweder durch entsprechende Auswahl in den insgesamt"
 msgstr "Sie können entweder durch entsprechende Auswahl in den insgesamt"
 
-#: /opt/openbib/templates/selfreg_success:31
+#: ../templates/selfreg_success:31
 msgid "Sie sind erfolgreich registriert"
 msgstr "Sie sind erfolgreich registriert"
 
-#: /opt/openbib/templates/admin_loggedin:32
+#: ../templates/admin_loggedin:32
 msgid "Sie sind nun als Administrator eingeloggt."
 msgstr "Sie sind nun als Administrator eingeloggt."
 
-#: /opt/openbib/templates/admin_editcat:40
-#: /opt/openbib/templates/admin_showcat:43
-#: /opt/openbib/templates/admin_showcat:73
+#: ../templates/admin_editcat:40 ../templates/admin_showcat:43
+#: ../templates/admin_showcat:73
 msgid "Sigel"
 msgstr "Sigel"
 
-#: /opt/openbib/templates/circulation:48
-#: /opt/openbib/templates/circulation_orders:48
-#: /opt/openbib/templates/circulation_remind:48
-#: /opt/openbib/templates/circulation_reserv:48
-#: /opt/openbib/templates/managecollection_tit_as_html:47
-#: /opt/openbib/templates/search_showtitset:118
-#: /opt/openbib/templates/search_showtitset:143
-#: /opt/openbib/templates/searchframe:129 /opt/openbib/templates/userprefs:177
+#: ../templates/circulation:48 ../templates/circulation_orders:48
+#: ../templates/circulation_remind:48 ../templates/circulation_reserv:48
+#: ../templates/managecollection_tit_as_html:47
+#: ../templates/search_showtitset:118 ../templates/search_showtitset:143
+#: ../templates/searchframe:129 ../templates/userprefs:177
 msgid "Signatur"
 msgstr "Signatur"
 
-#: /opt/openbib/templates/headerframe:32
+#: ../templates/headerframe:32
 msgid "Sitzung beenden"
 msgstr "Sitzung beenden"
 
-#: /opt/openbib/templates/userprefs:96
+#: ../templates/userprefs:96
 msgid "Soll"
 msgstr "Soll"
 
-#: /opt/openbib/templates/userprefs_ask_delete:23
+#: ../templates/userprefs_ask_delete:23
 msgid "Soll die Kennung wirklich gel&ouml;scht werden?"
 msgstr "Soll die Kennung wirklich gel&ouml;scht werden?"
 
-#: /opt/openbib/templates/search_showtitlist:32
-#: /opt/openbib/templates/virtualsearch_result_start:37
+#: ../templates/search_showtitlist:32
+#: ../templates/virtualsearch_result_start:37
 msgid "Sortierung"
 msgstr "Sortierung"
 
-#: /opt/openbib/templates/searchframe:165
+#: ../templates/searchframe:165
 msgid "Sortierung nach"
 msgstr "Sortierung nach"
 
-#: /opt/openbib/templates/resultlists_showall:36
-#: /opt/openbib/templates/resultlists_showall_sortall:36
-#: /opt/openbib/templates/resultlists_showsinglepool:36
+#: ../templates/resultlists_showall:36
+#: ../templates/resultlists_showall_sortall:36
+#: ../templates/resultlists_showsinglepool:36
 msgid "Sortierung:"
 msgstr "Sortierung:"
 
-#: /opt/openbib/templates/userprefs:79
+#: ../templates/userprefs:79
 msgid "Sperre"
 msgstr "Sperre"
 
-#: /opt/openbib/templates/admin_editcat:153
+#: ../templates/admin_editcat:153
 msgid "Sprung in WebOPAC"
 msgstr "Sprung in WebOPAC"
 
-#: /opt/openbib/templates/externaljump:57
-#: /opt/openbib/templates/externaljump:66
-#: /opt/openbib/templates/externaljump:76
-#: /opt/openbib/templates/externaljump:86
-#: /opt/openbib/templates/externaljump:96
+#: ../templates/externaljump:57 ../templates/externaljump:66
+#: ../templates/externaljump:76 ../templates/externaljump:86
+#: ../templates/externaljump:96
 msgid "Sprung in externe Recherche"
 msgstr "Sprung in externe Recherche"
 
-#: /opt/openbib/templates/externaljump:22
+#: ../templates/externaljump:22
 msgid "Sprung in externe Recherchequellen"
 msgstr "Sprung in externe Recherchequellen"
 
-#: /opt/openbib/templates/externaljump:42
+#: ../templates/externaljump:42
 msgid "Sprung zur Trefferliste im KUG"
 msgstr "Sprung zur Trefferliste im KUG"
 
-#: /opt/openbib/templates/managecollection_tit_as_html:47
-#: /opt/openbib/templates/managecollection_tit_as_html:66
-#: /opt/openbib/templates/managecollection_tit_as_html_simple:38
-#: /opt/openbib/templates/managecollection_tit_as_html_simple:56
-#: /opt/openbib/templates/search_showmulttitset:52
-#: /opt/openbib/templates/search_showmulttitset:70
-#: /opt/openbib/templates/search_showtitset:118
-#: /opt/openbib/templates/search_showtitset:143
+#: ../templates/managecollection_tit_as_html:47
+#: ../templates/managecollection_tit_as_html:66
+#: ../templates/managecollection_tit_as_html_simple:38
+#: ../templates/managecollection_tit_as_html_simple:56
+#: ../templates/search_showmulttitset:52 ../templates/search_showmulttitset:70
+#: ../templates/search_showtitset:118 ../templates/search_showtitset:143
 msgid "Standort"
 msgstr "Standort"
 
-#: /opt/openbib/templates/managecollection_tit_as_text:25
+#: ../templates/managecollection_tit_as_text:25
 msgid "Standort             "
 msgstr "Standort             "
 
-#: /opt/openbib/templates/circulation_orders:48
+#: ../templates/circulation_orders:48
 msgid "Status"
 msgstr "Status"
 
-#: /opt/openbib/templates/circulation_reserv:48
+#: ../templates/circulation_reserv:48
 msgid "Stelle"
 msgstr "Stelle"
 
-#: /opt/openbib/templates/userprefs:70
+#: ../templates/userprefs:70
 msgid "Strasse"
 msgstr "Strasse"
 
-#: /opt/openbib/templates/searchframe:90
+#: ../templates/searchframe:90
 msgid "Suchbegriffe"
 msgstr "Suchbegriffe"
 
-#: /opt/openbib/templates/search_showswtindex:85
-#: /opt/openbib/templates/search_showtitlist:187
-#: /opt/openbib/templates/search_showtitset:173
+#: ../templates/search_showswtindex:85 ../templates/search_showtitlist:187
+#: ../templates/search_showtitset:173
 msgid "Suchen"
 msgstr "Suchen"
 
-#: /opt/openbib/templates/virtualsearch_more_search_tips:20
+#: ../templates/virtualsearch_more_search_tips:20
 msgid ""
 "Suchen Sie im Kartenkatalog einer infrage kommende Institutsbibliothek. "
 "Leider sind noch nicht alle B&uuml;cher elektronisch erfasst und damit &uuml;"
@@ -1571,118 +1463,107 @@ msgstr ""
 "Leider sind noch nicht alle B&uuml;cher elektronisch erfasst und damit &uuml;"
 "ber den KUG recherchierbar."
 
-#: /opt/openbib/templates/virtualsearch_more_search_tips:30
+#: ../templates/virtualsearch_more_search_tips:30
 msgid "Suchen Sie in den elektronischen"
 msgstr "Suchen Sie in den elektronischen"
 
-#: /opt/openbib/templates/userprefs:182
+#: ../templates/userprefs:182
 msgid "Suchfelder &auml;ndern"
 msgstr "Suchfelder &auml;ndern"
 
-#: /opt/openbib/templates/searchframe:90
+#: ../templates/searchframe:90
 msgid "Suchhinweise"
 msgstr "Suchhinweise"
 
-#: /opt/openbib/templates/searchframe:40
+#: ../templates/searchframe:40
 msgid "Suchhistorie"
 msgstr "Suchhistorie"
 
-#: /opt/openbib/templates/search_info:23
+#: ../templates/search_info:23
 msgid "Suchlogik bei Verkn&uuml;pfungen mehrerer Suchfelder:"
 msgstr "Suchlogik bei Verkn&uuml;pfungen mehrerer Suchfelder:"
 
-#: /opt/openbib/templates/searchframe:161
+#: ../templates/searchframe:161
 msgid "Suchoptionen"
 msgstr "Suchoptionen"
 
-#: /opt/openbib/templates/admin_editcat:123
+#: ../templates/admin_editcat:123
 msgid "Swt-Datei"
 msgstr "Swt-Datei"
 
-#: /opt/openbib/templates/admin_editcat:39
-#: /opt/openbib/templates/admin_showcat:42
-#: /opt/openbib/templates/admin_showcat:71
+#: ../templates/admin_editcat:39 ../templates/admin_showcat:42
+#: ../templates/admin_showcat:71
 msgid "System"
 msgstr "System"
 
-#: /opt/openbib/templates/testsystem_info:15
+#: ../templates/testsystem_info:15
 msgid "Testsystem - Nicht f&uuml;r den produktiven Einsatz bestimmt"
 msgstr "Testsystem - Nicht f&uuml;r den produktiven Einsatz bestimmt"
 
-#: /opt/openbib/templates/admin_editcat:120
+#: ../templates/admin_editcat:120
 msgid "Tit-Datei"
 msgstr "Tit-Datei"
 
-#: /opt/openbib/templates/managecollection_tit_as_html_simple:16
-#: /opt/openbib/templates/searchframe:100
-#: /opt/openbib/templates/searchframe:166
+#: ../templates/managecollection_tit_as_html_simple:16
+#: ../templates/searchframe:100 ../templates/searchframe:166
 msgid "Titel"
 msgstr "Titel"
 
-#: /opt/openbib/templates/searchframe:206
-#: /opt/openbib/templates/searchframe_simple:137
+#: ../templates/searchframe:206 ../templates/searchframe_simple:137
 msgid "Titel nachgewiesen."
 msgstr "Titel nachgewiesen."
 
-#: /opt/openbib/templates/searchframe:133 /opt/openbib/templates/userprefs:178
+#: ../templates/searchframe:133 ../templates/userprefs:178
 msgid "Titel-String"
 msgstr "Titel-String"
 
-#: /opt/openbib/templates/managecollection_mail:21
+#: ../templates/managecollection_mail:21
 msgid "Titel/Merkliste via Mail verschicken"
 msgstr "Titel/Merkliste via Mail verschicken"
 
-#: /opt/openbib/templates/circulation:48
-#: /opt/openbib/templates/circulation_orders:48
-#: /opt/openbib/templates/circulation_remind:48
-#: /opt/openbib/templates/circulation_reserv:48
+#: ../templates/circulation:48 ../templates/circulation_orders:48
+#: ../templates/circulation_remind:48 ../templates/circulation_reserv:48
 msgid "Titelangaben"
 msgstr "Titelangaben"
 
-#: /opt/openbib/templates/managecollection_tit_as_html:22
-#: /opt/openbib/templates/managecollection_tit_as_html_simple:24
-#: /opt/openbib/templates/search_showmulttitset:32
-#: /opt/openbib/templates/search_showtitset:51
+#: ../templates/managecollection_tit_as_html:22
+#: ../templates/managecollection_tit_as_html_simple:24
+#: ../templates/search_showmulttitset:32 ../templates/search_showtitset:51
 msgid "Titelaufnahme"
 msgstr "Titelaufnahme"
 
-#: /opt/openbib/templates/search_showtitlist:45
+#: ../templates/search_showtitlist:45
 msgid "Titelliste"
 msgstr "Titelliste"
 
-#: /opt/openbib/templates/search_showswtindex:43
+#: ../templates/search_showswtindex:43
 msgid "Titelzahl"
 msgstr "Titelzahl"
 
-#: /opt/openbib/templates/admin_editsession:54
-#: /opt/openbib/templates/resultlists_choice:82
-#: /opt/openbib/templates/resultlists_showall:52
-#: /opt/openbib/templates/search_showtitlist:50
-#: /opt/openbib/templates/search_showtitlist:65
-#: /opt/openbib/templates/select_queries:54
-#: /opt/openbib/templates/virtualsearch_result_item:16
-#: /opt/openbib/templates/virtualsearch_showkorindex:19
-#: /opt/openbib/templates/virtualsearch_showswtindex:19
-#: /opt/openbib/templates/virtualsearch_showverfindex:19
+#: ../templates/admin_editsession:54 ../templates/resultlists_choice:82
+#: ../templates/resultlists_showall:52 ../templates/search_showtitlist:50
+#: ../templates/search_showtitlist:65 ../templates/select_queries:54
+#: ../templates/virtualsearch_result_item:16
+#: ../templates/virtualsearch_showkorindex:19
+#: ../templates/virtualsearch_showswtindex:19
+#: ../templates/virtualsearch_showverfindex:19
 msgid "Treffer"
 msgstr "Treffer"
 
-#: /opt/openbib/templates/headerframe:23
-#: /opt/openbib/templates/resultlists_choice:21
-#: /opt/openbib/templates/resultlists_showall:20
-#: /opt/openbib/templates/resultlists_showall_sortall:20
-#: /opt/openbib/templates/resultlists_showsinglepool:20
-#: /opt/openbib/templates/virtualsearch_result_start:19
+#: ../templates/headerframe:23 ../templates/resultlists_choice:21
+#: ../templates/resultlists_showall:20
+#: ../templates/resultlists_showall_sortall:20
+#: ../templates/resultlists_showsinglepool:20
+#: ../templates/virtualsearch_result_start:19
 msgid "Trefferliste"
 msgstr "Trefferliste"
 
-#: /opt/openbib/templates/admin_editcat:40
-#: /opt/openbib/templates/admin_showcat:43
-#: /opt/openbib/templates/admin_showcat:73
+#: ../templates/admin_editcat:40 ../templates/admin_showcat:43
+#: ../templates/admin_showcat:73
 msgid "URL"
 msgstr "URL"
 
-#: /opt/openbib/templates/admin_showviews:54
+#: ../templates/admin_showviews:54
 msgid ""
 "Um einen bereits existierenden View zu bearbeiten klicken Sie bitte auf den "
 "Viewnamen."
@@ -1690,45 +1571,42 @@ msgstr ""
 "Um einen bereits existierenden View zu bearbeiten klicken Sie bitte auf den "
 "Viewnamen."
 
-#: /opt/openbib/templates/admin_logout:24
+#: ../templates/admin_logout:24
 msgid "Um sich wieder einzuloggen folgen Sie bitte"
 msgstr "Um sich wieder einzuloggen folgen Sie bitte"
 
-#: /opt/openbib/templates/searchframe:186
+#: ../templates/searchframe:186
 msgid "Und-Verknüpfung innerhalb eines Suchfeldes"
 msgstr "Und-Verknüpfung innerhalb eines Suchfeldes"
 
-#: /opt/openbib/templates/externaljump:59
-#: /opt/openbib/templates/externaljump:68
-#: /opt/openbib/templates/externaljump:78
-#: /opt/openbib/templates/externaljump:88
-#: /opt/openbib/templates/externaljump:98
+#: ../templates/externaljump:59 ../templates/externaljump:68
+#: ../templates/externaljump:78 ../templates/externaljump:88
+#: ../templates/externaljump:98
 msgid "Ungeeignete Suchfelder"
 msgstr "Ungeeignete Suchfelder"
 
-#: /opt/openbib/templates/databasechoice:54
-#: /opt/openbib/templates/databasechoice:95
+#: ../templates/databasechoice:54 ../templates/databasechoice:95
 msgid "Ursprüngliche Auswahl wiederherstellen"
 msgstr "Ursprüngliche Auswahl wiederherstellen"
 
-#: /opt/openbib/templates/searchframe:104 /opt/openbib/templates/userprefs:171
-#: /opt/openbib/templates/virtualsearch_showverfindex:48
+#: ../templates/searchframe:104 ../templates/userprefs:171
+#: ../templates/virtualsearch_showverfindex:48
 msgid "Verfasser"
 msgstr "Verfasser"
 
-#: /opt/openbib/templates/searchframe:93
+#: ../templates/searchframe:93
 msgid "Verknüpfung"
 msgstr "Verknüpfung"
 
-#: /opt/openbib/templates/virtualsearch_more_search_tips:22
+#: ../templates/virtualsearch_more_search_tips:22
 msgid "Versuchen Sie das Buch in NRW oder deutschlandweit im Rahmen der"
 msgstr "Versuchen Sie das Buch in NRW oder deutschlandweit im Rahmen der"
 
-#: /opt/openbib/templates/virtualsearch_more_search_tips:31
+#: ../templates/virtualsearch_more_search_tips:31
 msgid "Versuchen Sie den Artikel in NRW im Rahmen der"
 msgstr "Versuchen Sie den Artikel in NRW im Rahmen der"
 
-#: /opt/openbib/templates/leave:28
+#: ../templates/leave:28
 msgid ""
 "Vielen Dank f&uuml;r Ihren Besuch beim K&ouml;lner Universit&auml;"
 "tsGesamtkatalog."
@@ -1736,77 +1614,69 @@ msgstr ""
 "Vielen Dank f&uuml;r Ihren Besuch beim K&ouml;lner Universit&auml;"
 "tsGesamtkatalog."
 
-#: /opt/openbib/templates/admin_editview:36
+#: ../templates/admin_editview:36
 msgid "View bearbeiten"
 msgstr "View bearbeiten"
 
-#: /opt/openbib/templates/admin_editview:39
-#: /opt/openbib/templates/admin_showviews:38
-#: /opt/openbib/templates/admin_showviews:58
+#: ../templates/admin_editview:39 ../templates/admin_showviews:38
+#: ../templates/admin_showviews:58
 msgid "Viewname"
 msgstr "Viewname"
 
-#: /opt/openbib/templates/admin_editcat:22
-#: /opt/openbib/templates/admin_editcat_rss:23
-#: /opt/openbib/templates/admin_editsession:23
-#: /opt/openbib/templates/admin_editview:22
-#: /opt/openbib/templates/admin_editview_rss:22
-#: /opt/openbib/templates/admin_loggedin:22
-#: /opt/openbib/templates/admin_showcat:25
-#: /opt/openbib/templates/admin_showsessions:23
-#: /opt/openbib/templates/admin_showviews:23
+#: ../templates/admin_editcat:22 ../templates/admin_editcat_rss:23
+#: ../templates/admin_editsession:23 ../templates/admin_editview:22
+#: ../templates/admin_editview_rss:22 ../templates/admin_loggedin:22
+#: ../templates/admin_showcat:25 ../templates/admin_showsessions:23
+#: ../templates/admin_showviews:23
 msgid "Views"
 msgstr "Views"
 
-#: /opt/openbib/templates/virtualsearch_showkorindex:19
+#: ../templates/virtualsearch_showkorindex:19
 msgid "Virtueller K&ouml;rperschaftsindex"
 msgstr "Virtueller K&ouml;rperschaftsindex"
 
-#: /opt/openbib/templates/virtualsearch_showswtindex:19
+#: ../templates/virtualsearch_showswtindex:19
 msgid "Virtueller Schlagwortindex"
 msgstr "Virtueller Schlagwortindex"
 
-#: /opt/openbib/templates/virtualsearch_showverfindex:19
+#: ../templates/virtualsearch_showverfindex:19
 msgid "Virtueller Verfasserindex"
 msgstr "Virtueller Verfasserindex"
 
-#: /opt/openbib/templates/userprefs:105
+#: ../templates/userprefs:105
 msgid "Vorgemerkt"
 msgstr "Vorgemerkt"
 
-#: /opt/openbib/templates/search_showtitset:35
-#: /opt/openbib/templates/search_showtitset:37
+#: ../templates/search_showtitset:35 ../templates/search_showtitset:37
 msgid "Vorheriger Titel"
 msgstr "Vorheriger Titel"
 
-#: /opt/openbib/templates/circulation:34
-#: /opt/openbib/templates/circulation_orders:34
-#: /opt/openbib/templates/circulation_remind:34
-#: /opt/openbib/templates/circulation_reserv:34
+#: ../templates/circulation:34 ../templates/circulation_orders:34
+#: ../templates/circulation_remind:34 ../templates/circulation_reserv:34
 msgid "Vormerkungen"
 msgstr "Vormerkungen"
 
-#: /opt/openbib/templates/circulation_reserv:48
+#: ../templates/circulation_reserv:48
 msgid "Vormerkungsfrist"
 msgstr "Vormerkungsfrist"
 
-#: /opt/openbib/templates/userprefs:68
+#: ../templates/userprefs:68
 msgid "Vorname"
 msgstr "Vorname"
 
-#: /opt/openbib/templates/databaseprofile:57
+#: ../templates/databaseprofile:57
 msgid "W&auml;hlen Sie ein anzuzeigendes oder zu l&ouml;schendes Profil aus"
 msgstr "W&auml;hlen Sie ein anzuzeigendes oder zu l&ouml;schendes Profil aus"
 
-#: /opt/openbib/templates/loadbalancer:17
+#: ../templates/loadbalancer:17
 msgid "Wartungsarbeiten"
 msgstr "Wartungsarbeiten"
 
-#: /opt/openbib/templates/admin_editcat:167
+#: ../templates/admin_editcat:167
 msgid "WebOPAC-URL"
 msgstr "WebOPAC-URL"
 
-#: /opt/openbib/templates/loadbalancer:19
+#: ../templates/loadbalancer:19
 msgid ""
 "Wegen eines unerwarteten Problems kann der KUG in den n&auml;chsten Minuten\n"
 "leider nicht genutzt werden."
@@ -1814,19 +1684,19 @@ msgstr ""
 "Wegen eines unerwarteten Problems kann der KUG in den n&auml;chsten Minuten\n"
 "leider nicht genutzt werden."
 
-#: /opt/openbib/templates/searchframe:47
+#: ../templates/searchframe:47
 msgid "Weiter als externe Recherche"
 msgstr "Weiter als externe Recherche"
 
-#: /opt/openbib/templates/virtualsearch_more_search_tips:15
+#: ../templates/virtualsearch_more_search_tips:15
 msgid "Weitergehende Suchhinweise"
 msgstr "Weitergehende Suchhinweise"
 
-#: /opt/openbib/templates/userprefs:145
+#: ../templates/userprefs:145
 msgid "Welche Recherchemaske soll verwendet werden?"
 msgstr "Welche Recherchemaske soll verwendet werden?"
 
-#: /opt/openbib/templates/userprefs:167
+#: ../templates/userprefs:167
 msgid ""
 "Welche Suchfelder sollen in der erweiterten<br>Recherchemaske angezeigt "
 "werden?"
@@ -1834,7 +1704,7 @@ msgstr ""
 "Welche Suchfelder sollen in der erweiterten<br>Recherchemaske angezeigt "
 "werden?"
 
-#: /opt/openbib/templates/admin_editview:109
+#: ../templates/admin_editview:109
 msgid ""
 "Welcher RSS-Feed soll der prim&auml;re Feed f&uuml;r das Browser Auto-"
 "Discovery sein"
@@ -1842,15 +1712,15 @@ msgstr ""
 "Welcher RSS-Feed soll der prim&auml;re Feed f&uuml;r das Browser Auto-"
 "Discovery sein"
 
-#: /opt/openbib/templates/search_info:20
+#: ../templates/search_info:20
 msgid "Wenn Sie kompliziertere Suchanfragen stellen m&ouml;chten, so erfahren Sie"
 msgstr "Wenn Sie kompliziertere Suchanfragen stellen m&ouml;chten, so erfahren Sie"
 
-#: /opt/openbib/templates/userprefs_userdeleted:23
+#: ../templates/userprefs_userdeleted:23
 msgid "Wenn Sie weiter im KUG recherchieren m&ouml;chten, so klicken Sie bitte"
 msgstr "Wenn Sie weiter im KUG recherchieren m&ouml;chten, so klicken Sie bitte"
 
-#: /opt/openbib/templates/userprefs_ask_delete:27
+#: ../templates/userprefs_ask_delete:27
 msgid ""
 "Wenn Sie wirklich Ihre KUG-Kennung l&ouml;schen wollen, so klicken Sie auf "
 "die untenstehenden Schaltfl&auml;che. Es werden dann auch alle Sitzungsdaten "
@@ -1860,31 +1730,31 @@ msgstr ""
 "die untenstehenden Schaltfl&auml;che. Es werden dann auch alle Sitzungsdaten "
 "gel&ouml;scht."
 
-#: /opt/openbib/templates/loadbalancer:22
+#: ../templates/loadbalancer:22
 msgid "Wir bitten um Ihr Verst&auml;ndnis. Vielen Dank."
 msgstr "Wir bitten um Ihr Verst&auml;ndnis. Vielen Dank."
 
-#: /opt/openbib/templates/admin_editview_rss:64
+#: ../templates/admin_editview_rss:64
 msgid "Wählen Sie bitte einen View aus:"
 msgstr "Wählen Sie bitte einen View aus:"
 
-#: /opt/openbib/templates/searchframe_simple:72
+#: ../templates/searchframe_simple:72
 msgid "Wählen Sie hier bitte Ihr Suchprofil aus"
 msgstr "Wählen Sie hier bitte Ihr Suchprofil aus"
 
-#: /opt/openbib/templates/virtualsearch_more_search_tips:28
+#: ../templates/virtualsearch_more_search_tips:28
 msgid "Zeitschriftenartikel"
 msgstr "Zeitschriftenartikel"
 
-#: /opt/openbib/templates/connector_rss_item:74
+#: ../templates/connector_rss_item:74
 msgid "Zugangsdatum"
 msgstr "Zugangsdatum"
 
-#: /opt/openbib/templates/mailcollection_mail_html:19
+#: ../templates/mailcollection_mail_html:19
 msgid "Zugemailte Merkliste"
 msgstr "Zugemailte Merkliste"
 
-#: /opt/openbib/templates/search_info:15
+#: ../templates/search_info:15
 msgid ""
 "Zur Suche tragen Sie in die einzelnen Eingabefelder alle Begriffe mit\n"
 "Leerzeichen getrennt ein, die in Ihrem gesuchten Titel enthalten sein\n"
@@ -1898,21 +1768,19 @@ msgstr ""
 "pfung innerhalb eines Suchfeldes'. Die Begriffe werden dann automatisch "
 "innerhalb eines Suchfeldes Und-verkn&uuml;pft."
 
-#: /opt/openbib/templates/searchframe:47
-#: /opt/openbib/templates/searchframe_simple:127
+#: ../templates/searchframe:47 ../templates/searchframe_simple:127
 msgid "Zur Trefferliste"
 msgstr "Zur Trefferliste"
 
-#: /opt/openbib/templates/resultlists_showall:37
-#: /opt/openbib/templates/resultlists_showall_sortall:37
-#: /opt/openbib/templates/resultlists_showsinglepool:37
-#: /opt/openbib/templates/search_showtitlist:32
-#: /opt/openbib/templates/searchframe:166
-#: /opt/openbib/templates/virtualsearch_result_start:38
+#: ../templates/resultlists_showall:37
+#: ../templates/resultlists_showall_sortall:37
+#: ../templates/resultlists_showsinglepool:37
+#: ../templates/search_showtitlist:32 ../templates/searchframe:166
+#: ../templates/virtualsearch_result_start:38
 msgid "absteigend"
 msgstr "absteigend"
 
-#: /opt/openbib/templates/search_info:21
+#: ../templates/search_info:21
 msgid ""
 "alles &uuml;ber die Verwendung m&ouml;glicher Boolscher Suchoperatoren "
 "innerhalb eines Eingabefeldes und die angesprochene Suchoption 'Und-"
@@ -1922,201 +1790,186 @@ msgstr ""
 "innerhalb eines Eingabefeldes und die angesprochene Suchoption 'Und-"
 "Verkn&uuml;pfung innerhalb eines Suchfeldes'."
 
-#: /opt/openbib/templates/resultlists_showall:37
-#: /opt/openbib/templates/resultlists_showall_sortall:37
-#: /opt/openbib/templates/resultlists_showsinglepool:37
-#: /opt/openbib/templates/search_showtitlist:32
-#: /opt/openbib/templates/searchframe:166
-#: /opt/openbib/templates/virtualsearch_result_start:38
+#: ../templates/resultlists_showall:37
+#: ../templates/resultlists_showall_sortall:37
+#: ../templates/resultlists_showsinglepool:37
+#: ../templates/search_showtitlist:32 ../templates/searchframe:166
+#: ../templates/virtualsearch_result_start:38
 msgid "aufsteigend"
 msgstr "aufsteigend"
 
-#: /opt/openbib/templates/connector_rss_item:72
+#: ../templates/connector_rss_item:72
 msgid "aus"
 msgstr "aus"
 
-#: /opt/openbib/templates/managecollection_tit_as_html:15
-#: /opt/openbib/templates/managecollection_tit_as_html_simple:16
+#: ../templates/managecollection_tit_as_html:15
+#: ../templates/managecollection_tit_as_html_simple:16
 msgid "aus:"
 msgstr "aus:"
 
-#: /opt/openbib/templates/searchframe:68
-#: /opt/openbib/templates/searchframe_simple:50
+#: ../templates/searchframe:68 ../templates/searchframe_simple:50
 msgid "ausdehnen."
 msgstr "ausdehnen."
 
-#: /opt/openbib/templates/search_showswtindex:39
+#: ../templates/search_showswtindex:39
 msgid "beginnend mit"
 msgstr "beginnend mit"
 
-#: /opt/openbib/templates/virtualsearch_more_search_tips:30
+#: ../templates/virtualsearch_more_search_tips:30
 msgid "der Universit&auml;tsbibliothek."
 msgstr "der Universit&auml;tsbibliothek."
 
-#: /opt/openbib/templates/admin_logout:24
+#: ../templates/admin_logout:24
 msgid "diesem Link"
 msgstr "diesem Link"
 
-#: /opt/openbib/templates/searchframe:79
-#: /opt/openbib/templates/searchframe_simple:58
+#: ../templates/searchframe:79 ../templates/searchframe_simple:58
 msgid "einzelnen"
 msgstr "einzelnen"
 
-#: /opt/openbib/templates/virtualsearch_more_search_tips:30
+#: ../templates/virtualsearch_more_search_tips:30
 msgid "elektronisch verf&uuml;gbaren Zeitschriften"
 msgstr "elektronisch verf&uuml;gbaren Zeitschriften"
 
-#: /opt/openbib/templates/searchframe:208
-#: /opt/openbib/templates/searchframe_simple:140
+#: ../templates/searchframe:208 ../templates/searchframe_simple:140
 msgid "erreichen."
 msgstr "erreichen."
 
-#: /opt/openbib/templates/login:50
+#: ../templates/login:50
 msgid "f&uuml;r das Anmeldeziel Selbstregistierung eine Kennung einrichten."
 msgstr "f&uuml;r das Anmeldeziel Selbstregistierung eine Kennung einrichten."
 
-#: /opt/openbib/templates/search_showswtindex:66
+#: ../templates/search_showswtindex:66
 msgid "gefunden werden."
 msgstr "gefunden werden."
 
-#: /opt/openbib/templates/login:50 /opt/openbib/templates/login:53
-#: /opt/openbib/templates/search_info:21
-#: /opt/openbib/templates/selfreg_success:33
-#: /opt/openbib/templates/userprefs_userdeleted:23
+#: ../templates/login:50 ../templates/login:53 ../templates/search_info:21
+#: ../templates/selfreg_success:33 ../templates/userprefs_userdeleted:23
 msgid "hier"
 msgstr "hier"
 
-#: /opt/openbib/templates/virtualsearch_more_search_tips:26
-#: /opt/openbib/templates/virtualsearch_more_search_tips:35
+#: ../templates/virtualsearch_more_search_tips:26
+#: ../templates/virtualsearch_more_search_tips:35
 msgid "in der Digitalen Bibliothek zu finden."
 msgstr "in der Digitalen Bibliothek zu finden."
 
-#: /opt/openbib/templates/search_showswtindex:39
+#: ../templates/search_showswtindex:39
 msgid "in diesem Katalog gefunden"
 msgstr "in diesem Katalog gefunden"
 
-#: /opt/openbib/templates/std_footer:17
+#: ../templates/std_footer:17
 msgid "ist ein Dienst der Universitäts- und Stadtbibliothek Köln"
 msgstr "ist ein Dienst der Universitäts- und Stadtbibliothek Köln"
 
-#: /opt/openbib/templates/userprefs:81
+#: ../templates/userprefs:81
 msgid "ja, seit"
 msgstr "ja, seit"
 
-#: /opt/openbib/templates/userprefs:81
+#: ../templates/userprefs:81
 msgid "mit Grund"
 msgstr "mit Grund"
 
-#: /opt/openbib/templates/resultlists_showall:37
-#: /opt/openbib/templates/resultlists_showall_sortall:37
-#: /opt/openbib/templates/resultlists_showsinglepool:37
-#: /opt/openbib/templates/search_showtitlist:32
-#: /opt/openbib/templates/virtualsearch_result_start:38
+#: ../templates/resultlists_showall:37
+#: ../templates/resultlists_showall_sortall:37
+#: ../templates/resultlists_showsinglepool:37
+#: ../templates/search_showtitlist:32
+#: ../templates/virtualsearch_result_start:38
 msgid "nach Autor"
 msgstr "nach Autor"
 
-#: /opt/openbib/templates/resultlists_showall:37
-#: /opt/openbib/templates/resultlists_showall_sortall:37
-#: /opt/openbib/templates/resultlists_showsinglepool:37
-#: /opt/openbib/templates/search_showtitlist:32
-#: /opt/openbib/templates/virtualsearch_result_start:38
+#: ../templates/resultlists_showall:37
+#: ../templates/resultlists_showall_sortall:37
+#: ../templates/resultlists_showsinglepool:37
+#: ../templates/search_showtitlist:32
+#: ../templates/virtualsearch_result_start:38
 msgid "nach Jahr"
 msgstr "nach Jahr"
 
-#: /opt/openbib/templates/resultlists_showall:37
-#: /opt/openbib/templates/resultlists_showall_sortall:37
-#: /opt/openbib/templates/resultlists_showsinglepool:37
-#: /opt/openbib/templates/search_showtitlist:32
-#: /opt/openbib/templates/virtualsearch_result_start:38
+#: ../templates/resultlists_showall:37
+#: ../templates/resultlists_showall_sortall:37
+#: ../templates/resultlists_showsinglepool:37
+#: ../templates/search_showtitlist:32
+#: ../templates/virtualsearch_result_start:38
 msgid "nach Signatur"
 msgstr "nach Signatur"
 
-#: /opt/openbib/templates/resultlists_showall:37
-#: /opt/openbib/templates/resultlists_showall_sortall:37
-#: /opt/openbib/templates/resultlists_showsinglepool:37
-#: /opt/openbib/templates/virtualsearch_result_start:38
+#: ../templates/resultlists_showall:37
+#: ../templates/resultlists_showall_sortall:37
+#: ../templates/resultlists_showsinglepool:37
+#: ../templates/virtualsearch_result_start:38
 msgid "nach Titel"
 msgstr "nach Titel"
 
-#: /opt/openbib/templates/search_showtitlist:32
+#: ../templates/search_showtitlist:32
 msgid "nach Titel/Z&auml;hlung"
 msgstr "nach Titel/Z&auml;hlung"
 
-#: /opt/openbib/templates/resultlists_showall:37
-#: /opt/openbib/templates/resultlists_showall_sortall:37
-#: /opt/openbib/templates/resultlists_showsinglepool:37
-#: /opt/openbib/templates/search_showtitlist:32
-#: /opt/openbib/templates/virtualsearch_result_start:38
+#: ../templates/resultlists_showall:37
+#: ../templates/resultlists_showall_sortall:37
+#: ../templates/resultlists_showsinglepool:37
+#: ../templates/search_showtitlist:32
+#: ../templates/virtualsearch_result_start:38
 msgid "nach Verlag"
 msgstr "nach Verlag"
 
-#: /opt/openbib/templates/userprefs:83
+#: ../templates/userprefs:83
 msgid "nein"
 msgstr "nein"
 
-#: /opt/openbib/templates/searchframe:166
+#: ../templates/searchframe:166
 msgid "pro Katalog"
 msgstr "pro Katalog"
 
-#: /opt/openbib/templates/searchframe:79
-#: /opt/openbib/templates/searchframe_simple:58
+#: ../templates/searchframe:79 ../templates/searchframe_simple:58
 msgid "recherchieren oder auch sofort in allen zusammen."
 msgstr "recherchieren oder auch sofort in allen zusammen."
 
-#: /opt/openbib/templates/searchframe:68
-#: /opt/openbib/templates/searchframe_simple:50
+#: ../templates/searchframe:68 ../templates/searchframe_simple:50
 msgid "recherchieren, oder die Suche auf weitere"
 msgstr "recherchieren, oder die Suche auf weitere"
 
-#: /opt/openbib/templates/userprefs_userdeleted:23
+#: ../templates/userprefs_userdeleted:23
 msgid "um eine neue Sitzung zu beginnen."
 msgstr "um eine neue Sitzung zu beginnen."
 
-#: /opt/openbib/templates/selfreg_success:33
+#: ../templates/selfreg_success:33
 msgid "um sich anzumelden."
 msgstr "um sich anzumelden."
 
-#: /opt/openbib/templates/virtualsearch_more_search_tips:30
+#: ../templates/virtualsearch_more_search_tips:30
 msgid "und den"
 msgstr "und den"
 
-#: /opt/openbib/templates/virtualsearch_result_item:16
+#: ../templates/virtualsearch_result_item:16
 msgid "von"
 msgstr "von"
 
-#: /opt/openbib/templates/virtualsearch_result_end:17
+#: ../templates/virtualsearch_result_end:17
 msgid "weitergehenden Suchhinweise"
 msgstr "weitergehenden Suchhinweise"
 
-#: /opt/openbib/templates/userprefs:51
+#: ../templates/userprefs:51
 msgid "wiederholt"
 msgstr "wiederholt"
 
-#: /opt/openbib/templates/virtualsearch_more_search_tips:26
+#: ../templates/virtualsearch_more_search_tips:26
 msgid "zentralen Fernleihe"
 msgstr "zentralen Fernleihe"
 
-#: /opt/openbib/templates/admin_editcat:177
-#: /opt/openbib/templates/admin_editcat_rss:141
-#: /opt/openbib/templates/admin_editcat_rss:200
-#: /opt/openbib/templates/admin_editcat_rss:259
-#: /opt/openbib/templates/admin_editcat_rss:318
-#: /opt/openbib/templates/admin_editcat_rss:349
-#: /opt/openbib/templates/admin_editcat_rss:82
-#: /opt/openbib/templates/admin_editview:136
-#: /opt/openbib/templates/admin_editview_rss:100
-#: /opt/openbib/templates/admin_editview_rss:144
+#: ../templates/admin_editcat:177 ../templates/admin_editcat_rss:141
+#: ../templates/admin_editcat_rss:200 ../templates/admin_editcat_rss:259
+#: ../templates/admin_editcat_rss:318 ../templates/admin_editcat_rss:349
+#: ../templates/admin_editcat_rss:82 ../templates/admin_editview:136
+#: ../templates/admin_editview_rss:100 ../templates/admin_editview_rss:144
 msgid "Ändern"
 msgstr "Ändern"
 
-#: /opt/openbib/templates/admin_editcat_rss:342
+#: ../templates/admin_editcat_rss:342
 msgid "Übernehmen"
 msgstr "Übernehmen"
 
-#: /opt/openbib/templates/circulation:36
-#: /opt/openbib/templates/circulation_orders:36
-#: /opt/openbib/templates/circulation_remind:36
-#: /opt/openbib/templates/circulation_reserv:36
+#: ../templates/circulation:36 ../templates/circulation_orders:36
+#: ../templates/circulation_remind:36 ../templates/circulation_reserv:36
 msgid "Überziehungen / Gebühren"
 msgstr "Überziehungen / Gebühren"
 

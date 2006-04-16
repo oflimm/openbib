@@ -14,7 +14,6 @@
 #
 #######################################################################
 -%]
-[%- i18nmsg = msg.${lang} -%]
 [% PROCESS std_header title='KUG Administration - Kataloge anzeigen' %]
 
   <body bgcolor="#FFFFFF">
@@ -22,10 +21,10 @@
 [% PROCESS corporate_banner %]
 
 <ul id="tabbingmenu">
-   <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">Kataloge</a></li>
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">Views</a></li>
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">Sessions</a></li>
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">Logout</a></li>
+   <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">[% msg.maketext("Kataloge") %]</a></li>
+   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">[% msg.maketext("Views") %]</a></li>
+   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">[% msg.maketext("Sessions") %]</a></li>
+   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">[% msg.maketext("Logout") %]</a></li>
 </ul>
 
 <div id="content">
@@ -35,18 +34,24 @@
 <input type="hidden" name="sessionID"  value="[% sessionID %]">
 
 <table width="100%">
-<tr><th>Neuen Katalog anlegen</th></tr>
+<tr><th>[% msg.maketext("Neuen Katalog anlegen") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:12pt">
 <table>
-<tr><td><b>Fakult&auml;t</b></td><td><b>Beschreibung</b></td><td><b>System</b></td><td>
-<b>DB-Name</b></td><td><b>Sigel</b></td><td>URL</td><td><b>Aktiv</b></td><td></td></tr>
+<tr><td><b>[% msg.maketext("Fakultät") %]</b></td><td><b>[%
+msg.maketext("Beschreibung") %]</b></td><td><b>[%
+msg.maketext("System") %]</b></td><td><b>[% msg.maketext("DB-Name")
+%]</b></td><td><b>[% msg.maketext("Sigel") %]</b></td><td>[% msg.maketext("URL") %]</td><td><b>[% msg.maketext("Aktiv") %]</b></td><td></td></tr>
 <tr><td><select name="orgunit">
 [% FOREACH item IN config.orgunits %]
 <option value="[% item.short %]">[% item.desc %]</option>
 [% END %]
 </select></td><td><input type="text" name="description"></td><td><select name="system"><option value="Lars">Lars</option><option value="Allegro">Allegro</option><option value="Bis-lok">Bis-lok</option><option value="Sisis" selected>Sisis</option></select></td><td>
-<input type="text" name="dbname" size="8"></td><td><input type="text" name="sigel" size="3"></td><td><input type="text" name="url" size="20"></td><td><select name=active><option value="1">Ja</option><option value="0"
-selected>Nein</option></select></td><td><input type="submit" name="do_new" value="Neu" /></td></tr>
+<input type="text" name="dbname" size="8"></td><td><input type="text"
+name="sigel" size="3"></td><td><input type="text" name="url"
+size="20"></td><td><select name=active><option value="1">[%
+msg.maketext("Ja") %]</option><option value="0"
+selected>[% msg.maketext("Nein") %]</option></select></td><td><input
+type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></td></tr>
 </table>
 </td></tr>
 </table>
@@ -58,11 +63,15 @@ selected>Nein</option></select></td><td><input type="submit" name="do_new" value
 [% IF kataloge.size > 0 %]
 
 <table width="100%">
-<tr><th>Bereits existierende Kataloge</th></tr>
+<tr><th>[% msg.maketext("Bereits existierende Kataloge") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:12pt">
 <table>
-<tr><td><b>Fakult&auml;t</b></td><td><b>RSS</b></td><td><b>Beschreibung</b></td><td><b>System</b></td><td>
-<b>DB-Name</b></td><td><b>Sigel</b></td><td>URL</td><td><b>Aktiv</b></td><td><b>Auto-Konv</b></td><td><b>Titel-Anzahl</b></td></tr>
+<tr><td><b>[% msg.maketext("Fakultät") %]</b></td><td><b>[%
+msg.maketext("RSS") %]</b></td><td><b>[% msg.maketext("Beschreibung")
+%]</b></td><td><b>[% msg.maketext("System") %]</b></td><td>
+<b>[% msg.maketext("DB-Name") %]</b></td><td><b>[%
+msg.maketext("Sigel") %]</b></td><td>[% msg.maketext("URL")
+%]</td><td><b>[% msg.maketext("Aktiv") %]</b></td><td><b>Auto-Konv</b></td><td><b>Titel-Anzahl</b></td></tr>
 
 [% FOREACH katalog IN kataloge %]
 <tr
@@ -75,16 +84,16 @@ config.servername %][% config.admin_loc %]?sessionID=[% sessionID
 config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&do_editcat=1&dbid=[% katalog.dbid %];do_edit=1">[% katalog.description %]</a></td><td>[% katalog.system %]</td><td>[% katalog.dbname %]</td><td>[% katalog.sigel %]</td><td>[%katalog.url %]</td><td align="center">
 
 [% IF katalog.active == 1 %]
-<span style="font-weight:bold; color:green;">Ja</span>
+<span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>
 [% ELSE %] 
-<span style="color:red;">Nein</span>
+<span style="color:red;">[% msg.maketext("Nein") %]</span>
 [% END %]
 </td><td align="center">
 
 [% IF katalog.autoconvert == 1 %]
-Ja
+[% msg.maketext("Ja") %]
 [% ELSE %] 
-Nein
+[% msg.maketext("Nein") %]
 [% END %]
 
 </td><td align="right">[% katalog.count %]</td></tr>

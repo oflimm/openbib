@@ -12,7 +12,6 @@
 #
 #######################################################################
 -%]
-[%- i18nmsg = msg.${qopts.lang} -%]
 [% PROCESS common/subtemplate name="std_header" %]
 
   <body>
@@ -25,15 +24,15 @@
   <br />
   <center>
     <p style="font-size:1.5em">
-      Ihre Sitzung wurde beendet.<br />
-        <br />Vielen Dank f&uuml;r Ihren Besuch beim K&ouml;lner Universit&auml;tsGesamtkatalog.
+      [% msg.maketext("Ihre Sitzung wurde beendet.") %]<br />
+        <br />[% msg.maketext("Vielen Dank f&uuml;r Ihren Besuch beim K&ouml;lner Universit&auml;tsGesamtkatalog.") %]
 
     </p>
   </center>
 
   <center>
     <p>
-      <a class="invisible" href="http://[% config.loadbalancerservername %][% config.loadbalancer_loc %]?view=[% view %]" target="_parent"><img src="/images/openbib/neue.sitzung-30pix.png" alt="Neue Sitzung beginnen?" /></a>
+      <a class="invisible" href="http://[% config.loadbalancerservername %][% config.loadbalancer_loc %]?view=[% view %]" target="_parent"><img src="/images/openbib/neue.sitzung-30pix.png" alt="[% msg.maketext("Neue Sitzung beginnen?") %]" /></a>
     </p>
   </center>
 <br />

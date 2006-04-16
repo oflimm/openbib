@@ -12,24 +12,23 @@
 #
 #######################################################################
 -%]
-[%- i18nmsg = msg.${lang} -%]
-[% PROCESS std_header title='KUG Administration - Katalog bearbeiten' %]
+[% PROCESS std_header title='' %]
 
   <body bgcolor="#FFFFFF">
 
 [% PROCESS corporate_banner %]
 
 <ul id="tabbingmenu">
-   <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">Kataloge</a></li>
-   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">Views</a></li>
-   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">Sessions</a></li>
-   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">Logout</a></li>
+   <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">[% msg.maketext("Kataloge") %]</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">[% msg.maketext("Views") %]</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">[% msg.maketext("Sessions") %]</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">[% msg.maketext("Logout") %]</a></li>
 </ul>
 
 <div id="content">
 
 <table width="100%">
-<tr><th>RSS-Einstellungen</th></tr>
+<tr><th>[% msg.maketext("RSS-Einstellungen") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:12pt">
 
 <!-- Anfang: RSS Feed fuer Neuaufnahmen (generell) -->
@@ -41,7 +40,7 @@
 <input type="hidden" name="rss_type"       value="1" />
 
 <table width="100%">
-<tr><th>Neuaufnahmen (generell)</th></tr>
+<tr><th>[% msg.maketext("Neuaufnahmen (generell)") %]</th></tr>
 
 [%
 t1feed = '' ;
@@ -56,31 +55,31 @@ END ;
 <tr><td class="boxedclear" style="font-size:10pt">
 
 [% IF NOT t1feed %]
-Es existiert noch kein genereller RSS-Feed f&uuml;r Neuaufnahmen
+[% msg.maketext("Es existiert noch kein genereller RSS-Feed f&uuml;r Neuaufnahmen") %]
 <p />
-<input type="submit" name="do_new" value="[% i18nmsg.${"M0302"} %]">
+<input type="submit" name="do_new" value="[% msg.maketext("Neu") %]">
 [% ELSE %]
 <input type="hidden" name="rssid" value="[% t1feed.id %]">
 <table>
-<tr><td><b>Aktiv</b></td><td>&nbsp;&nbsp;
+<tr><td><b>[% msg.maketext("Aktiv") %]</b></td><td>&nbsp;&nbsp;
 <select name="active"><option value="0"
 [% IF t1feed.active == '0' %]
 selected
 [% END %]
 
->Nein</option><option value="1" 
+>[% msg.maketext("Nein") %]</option><option value="1" 
 
 [% IF t1feed.active == '1' %]
 selected
 [% END %]
 
->Ja</option></td></tr>
+>[% msg.maketext("Ja") %]</option></td></tr>
 </table>
 
 <p />
 <table width="100%">
 <tr><td align="left"><input type="submit" name="do_change"
-value="[% i18nmsg.${"M0300"} %]"></td><td>&nbsp;</td></tr>
+value="[% msg.maketext("Ändern") %]"></td><td>&nbsp;</td></tr>
 </table>
 [% END %]
 
@@ -100,7 +99,7 @@ value="[% i18nmsg.${"M0300"} %]"></td><td>&nbsp;</td></tr>
 <input type="hidden" name="rss_type"       value="2" />
 
 <table width="100%">
-<tr><th>Neuaufnahmen nach Verfasser</th></tr>
+<tr><th>[% msg.maketext("Neuaufnahmen nach Verfasser") %]</th></tr>
 
 [%
 t2feed = '' ;
@@ -115,31 +114,31 @@ END ;
 <tr><td class="boxedclear" style="font-size:10pt">
 
 [% IF NOT t2feed %]
-Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach Verfasser
+[% msg.maketext("Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach Verfasser") %]
 <p />
-<input type="submit" name="do_new" value="[% i18nmsg.${"M0302"} %]">
+<input type="submit" name="do_new" value="[% msg.maketext("Neu") %]">
 [% ELSE %]
 <input type="hidden" name="rssid" value="[% t2feed.id %]">
 <table>
-<tr><td><b>Aktiv</b></td><td>&nbsp;&nbsp;
+<tr><td><b>[% msg.maketext("Aktiv") %]</b></td><td>&nbsp;&nbsp;
 <select name="active"><option value="0"
 [% IF t2feed.active == '0' %]
 selected
 [% END %]
 
->Nein</option><option value="1" 
+>[% msg.maketext("Nein") %]</option><option value="1" 
 
 [% IF t2feed.active == '1' %]
 selected
 [% END %]
 
->Ja</option></td></tr>
+>[% msg.maketext("Ja") %]</option></td></tr>
 </table>
 
 <p />
 <table width="100%">
 <tr><td align="left"><input type="submit" name="do_change"
-value="[% i18nmsg.${"M0300"} %]"></td><td>&nbsp;</td></tr>
+value="[% msg.maketext("Ändern") %]"></td><td>&nbsp;</td></tr>
 </table>
 [% END %]
 
@@ -159,7 +158,7 @@ value="[% i18nmsg.${"M0300"} %]"></td><td>&nbsp;</td></tr>
 <input type="hidden" name="rss_type"       value="3" />
 
 <table width="100%">
-<tr><th>Neuaufnahmen mach K&ouml;rperschaft</th></tr>
+<tr><th>[% msg.maketext("Neuaufnahmen nach K&ouml;rperschaft") %]</th></tr>
 
 [%
 t3feed = '' ;
@@ -174,31 +173,31 @@ END ;
 <tr><td class="boxedclear" style="font-size:10pt">
 
 [% IF NOT t3feed %]
-Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft
+[% msg.maketext("Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft") %]
 <p />
-<input type="submit" name="do_new" value="[% i18nmsg.${"M0302"} %]">
+<input type="submit" name="do_new" value="[% msg.maketext("Neu") %]">
 [% ELSE %]
 <input type="hidden" name="rssid" value="[% t3feed.id %]">
 <table>
-<tr><td><b>Aktiv</b></td><td>&nbsp;&nbsp;
+<tr><td><b>[% msg.maketext("Aktiv") %]</b></td><td>&nbsp;&nbsp;
 <select name="active"><option value="0"
 [% IF t3feed.active == '0' %]
 selected
 [% END %]
 
->Nein</option><option value="1" 
+>[% msg.maketext("Nein") %]</option><option value="1" 
 
 [% IF t3feed.active == '1' %]
 selected
 [% END %]
 
->Ja</option></td></tr>
+>[% msg.maketext("Ja") %]</option></td></tr>
 </table>
 
 <p />
 <table width="100%">
 <tr><td align="left"><input type="submit" name="do_change"
-value="[% i18nmsg.${"M0300"} %]"></td><td>&nbsp;</td></tr>
+value="[% msg.maketext("Ändern") %]"></td><td>&nbsp;</td></tr>
 </table>
 [% END %]
 
@@ -218,7 +217,7 @@ value="[% i18nmsg.${"M0300"} %]"></td><td>&nbsp;</td></tr>
 <input type="hidden" name="rss_type"       value="4" />
 
 <table width="100%">
-<tr><th>Neuaufnahmen nach Schlagwort</th></tr>
+<tr><th>[% msg.maketext("Neuaufnahmen nach Schlagwort") %]</th></tr>
 
 [%
 t4feed = '' ;
@@ -233,31 +232,31 @@ END ;
 <tr><td class="boxedclear" style="font-size:10pt">
 
 [% IF NOT t4feed %]
-Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach Schlagwort
+[% msg.maketext("Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach Schlagwort") %]
 <p />
-<input type="submit" name="do_new" value="[% i18nmsg.${"M0302"} %]">
+<input type="submit" name="do_new" value="[% msg.maketext("Neu") %]">
 [% ELSE %]
 <input type="hidden" name="rssid" value="[% t4feed.id %]">
 <table>
-<tr><td><b>Aktiv</b></td><td>&nbsp;&nbsp;
+<tr><td><b>[% msg.maketext("Aktiv") %]</b></td><td>&nbsp;&nbsp;
 <select name="active"><option value="0"
 [% IF t4feed.active == '0' %]
 selected
 [% END %]
 
->Nein</option><option value="1" 
+>[% msg.maketext("Nein") %]</option><option value="1" 
 
 [% IF t4feed.active == '1' %]
 selected
 [% END %]
 
->Ja</option></td></tr>
+>[% msg.maketext("Ja") %]</option></td></tr>
 </table>
 
 <p />
 <table width="100%">
 <tr><td align="left"><input type="submit" name="do_change"
-value="[% i18nmsg.${"M0300"} %]"></td><td>&nbsp;</td></tr>
+value="[% msg.maketext("Ändern") %]"></td><td>&nbsp;</td></tr>
 </table>
 [% END %]
 
@@ -277,7 +276,7 @@ value="[% i18nmsg.${"M0300"} %]"></td><td>&nbsp;</td></tr>
 <input type="hidden" name="rss_type"       value="5" />
 
 <table width="100%">
-<tr><th>Neuaufnahmen nach Systematik</th></tr>
+<tr><th>[% msg.maketext("Neuaufnahmen nach Systematik") %]</th></tr>
 
 [%
 t5feed = '' ;
@@ -292,31 +291,31 @@ END ;
 <tr><td class="boxedclear" style="font-size:10pt">
 
 [% IF NOT t5feed %]
-Es existiert noch kein genereller RSS-Feed f&uuml;r Neuaufnahmen
+[% msg.maketext("Es existiert noch kein genereller RSS-Feed f&uuml;r Neuaufnahmen") %]
 <p />
-<input type="submit" name="do_new" value="[% i18nmsg.${"M0302"} %]">
+<input type="submit" name="do_new" value="[% msg.maketext("Neu") %]">
 [% ELSE %]
 <input type="hidden" name="rssid" value="[% t5feed.id %]">
 <table>
-<tr><td><b>Aktiv</b></td><td>&nbsp;&nbsp;
+<tr><td><b>[% msg.maketext("Aktiv") %]</b></td><td>&nbsp;&nbsp;
 <select name="active"><option value="0"
 [% IF t5feed.active == '0' %]
 selected
 [% END %]
 
->Nein</option><option value="1" 
+>[% msg.maketext("Nein") %]</option><option value="1" 
 
 [% IF t5feed.active == '1' %]
 selected
 [% END %]
 
->Ja</option></td></tr>
+>[% msg.maketext("Ja") %]</option></td></tr>
 </table>
 
 <p />
 <table width="100%">
 <tr><td align="left"><input type="submit" name="do_change"
-value="[% i18nmsg.${"M0300"} %]"></td><td>&nbsp;</td></tr>
+value="[% msg.maketext("Ändern") %]"></td><td>&nbsp;</td></tr>
 </table>
 [% END %]
 
@@ -337,17 +336,17 @@ value="[% i18nmsg.${"M0300"} %]"></td><td>&nbsp;</td></tr>
 <input type="hidden" name="rss_type"       value="2" />
 
 <table width="100%">
-<tr><th>Neuerwerbungen</th></tr>
+<tr><th>[% msg.maketext("Neuerwerbungen") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:10pt">
-&Uuml;bernahme der F&auml;cherstruktur der Erwerbung <input
-type="submit" name="do_getacqgrp" value="Übernehmen">
+[% msg.maketext("&Uuml;bernahme der F&auml;cherstruktur der Erwerbung") %]<input
+type="submit" name="do_getacqgrp" value="[% msg.maketext("Übernehmen") %]">
 <p />
 
 
 <p />
 <table width="100%">
 <tr><td align="left"><input type="submit" name="do_change"
-value="[% i18nmsg.${"M0300"} %]"></td><td>&nbsp;</td><td align="right"><input type="submit" name="do_del" value="[% i18nmsg.${"M0303"} %]"></td></tr>
+value="[% msg.maketext("Ändern") %]"></td><td>&nbsp;</td><td align="right"><input type="submit" name="do_del" value="[% msg.maketext("Löschen") %]"></td></tr>
 </table>
 
 </td></tr>

@@ -1,7 +1,7 @@
-Sehr geehrte Damen und Herren,
+[% msg.maketext("Sehr geehrte Damen und Herren,
 
 anbei Ihre Merkliste aus dem KUG.
 
-Mit freundlichen Grüßen
+Mit freundlichen GrÃ¼ÃŸen
 
-Ihr KUG Team
+Ihr KUG Team") %]

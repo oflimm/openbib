@@ -11,17 +11,16 @@
 #
 #######################################################################
 -%]
-[%- i18nmsg = msg.${qopts.lang} -%]
 [% PROCESS common/subtemplate name="std_header" %]
 
   <body>
 
 <table width="100%">
-<tr><th>Erfolgsmeldung</th></tr>
+<tr><th>[% msg.maketext("Erfolgsmeldung") %]</th></tr>
 <tr><td class="boxedclear">
-Ihre Kennung samt aktueller Sitzungsdaten wurden gel&ouml;scht
+[% msg.maketext("Ihre Kennung samt aktueller Sitzungsdaten wurden gel&ouml;scht") %]
 <p />
-Wenn Sie weiter im KUG recherchieren m&ouml;chten, so klicken Sie bitte <a href="http://[% config.loadbalancerservername %][% config.loadbalancer_loc %]?view=[% view %]"><b>hier</b></a>, um eine neue Sitzung zu beginnen.
+[% msg.maketext("Wenn Sie weiter im KUG recherchieren m&ouml;chten, so klicken Sie bitte") %]<a href="http://[% config.loadbalancerservername %][% config.loadbalancer_loc %]?view=[% view %]"><b>[% msg.maketext("hier") %]</b></a>, [% msg.maketext("um eine neue Sitzung zu beginnen.") %]
 </td></tr>
 </table>
 

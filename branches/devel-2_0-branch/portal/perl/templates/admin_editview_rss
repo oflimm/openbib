@@ -11,7 +11,6 @@
 #
 #######################################################################
 -%]
-[%- i18nmsg = msg.${lang} -%]
 [% PROCESS std_header title='KUG Administration - Katalog bearbeiten' %]
 
   <body bgcolor="#FFFFFF">
@@ -19,16 +18,16 @@
 [% PROCESS corporate_banner %]
 
 <ul id="tabbingmenu">
-   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">Kataloge</a></li>
-   <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">Views</a></li>
-   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">Sessions</a></li>
-   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">Logout</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">[% msg.maketext("Kataloge") %]</a></li>
+   <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">[% msg.maketext("Views") %]</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">[% msg.maketext("Sessions") %]</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">[% msg.maketext("Logout") %]</a></li>
 </ul>
 
 <div id="content">
 
 <table width="100%">
-<tr><th>RSS-Einstellungen f&uuml;r View [% view.description%]</th></tr>
+<tr><th>[% msg.maketext("RSS-Einstellungen für View") %] [% view.description%]</th></tr>
 <tr><td class="boxedclear" style="font-size:12pt">
 
 <!-- Anfang: Primaerer RSS Feed fuer diesen View -->
@@ -40,7 +39,7 @@
 <input type="hidden" name="rss_type"        value="primary" />
 
 <table width="100%">
-<tr><th>Prim&auml;rer RSS-Feed f&uuml;r diesen View (Browser Auto-Discovery)</th></tr>
+<tr><th>[% msg.maketext("Prim&auml;rer RSS-Feed f&uuml;r diesen View (Browser Auto-Discovery)") %]</th></tr>
 
 <tr><td class="boxedclear" style="font-size:10pt">
 
@@ -60,20 +59,20 @@ neinja = ["Nein","Ja"];
 %]
 
 [% IF view.primrssfeed < 0 %]
-Es existiert noch kein prim&auml;rer RSS-Feed f&uuml;r diesen View
+[% msg.maketext("Es existiert noch kein prim&auml;rer RSS-Feed f&uuml;r diesen View") %]
 <p />
-W&auml;hlen Sie bitte einen View aus:
+[% msg.maketext("Wählen Sie bitte einen View aus:") %]
 [% ELSE %]
-Es existiert bereits ein prim&auml;rer RSS-Feed f&uuml;r diesen View
+[% msg.maketext("Es existiert bereits ein prim&auml;rer RSS-Feed f&uuml;r diesen View") %]
 <p />
-M&ouml;chten Sie diesen &auml;ndern?
+[% msg.maketext("Möchten Sie diesen ändern?") %]
 [% END %]
 
 <p />
 
 <select name="rssid">
 
-<option value="-1">Kein prim&auml;rer RSS-Feed ausgew&auml;hlt</option>
+<option value="-1">[% msg.maketext("Kein prim&auml;rer RSS-Feed ausgew&auml;hlt") %]</option>
 
 [% FOREACH singlefeed IN allrssfeeds %]
 
@@ -87,7 +86,7 @@ selected="selected"
 [% END %]
 
 >[% singlefeed.description %] / [% rsstypes.${singlefeed.type} %]
-(Aktiv: [% neinja.${singlefeed.active} %])
+([% msg.maketext("Aktiv") %]: [% neinja.${singlefeed.active} %])
 </option>
 
 [% END %]
@@ -98,7 +97,7 @@ selected="selected"
 </select>
 <p />
 
-<input type="submit" name="do_change" value="[% i18nmsg.${"M0300"} %]">
+<input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]">
 
 </td></tr>
 </table>
@@ -116,7 +115,7 @@ selected="selected"
 <input type="hidden" name="rss_type"        value="all" />
 
 <table width="100%">
-<tr><th>S&auml;mtliche zugeordnete RSS-Feeds f&uuml;r diesen View</th></tr>
+<tr><th>[% msg.maketext("S&auml;mtliche zugeordnete RSS-Feeds f&uuml;r diesen View") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:10pt">
 
 <p />
@@ -133,7 +132,7 @@ selected="selected"
 [% END %]
 
 >[% singlefeed.description %] / [% rsstypes.${singlefeed.type} %]
-(Aktiv: [% neinja.${singlefeed.active} %])
+([% msg.maketext("Aktiv") %]: [% neinja.${singlefeed.active} %])
 </option>
 
 [% END %]
@@ -142,7 +141,7 @@ selected="selected"
 </select>
 <p />
 
-<input type="submit" name="do_change" value="[% i18nmsg.${"M0300"} %]">
+<input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]">
 
 </td></tr>
 </table>

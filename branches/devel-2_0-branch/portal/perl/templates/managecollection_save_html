@@ -11,17 +11,16 @@
 #
 #######################################################################
 -%]
-[%- i18nmsg = msg.${qopts.lang} -%]
 [% PROCESS common/subtemplate name="std_header" %]
 
   <BODY>
     
     <form method="get" action="http://[% config.servername %][% config.managecollection_loc %]">
       <input type="hidden" name="sessionID" value="[% sessionID %]">
-      <input type="hidden" name="action" value="show">
+      <input type="hidden" name="action"    value="show">
       
       <ul id="tabbingmenu">
-	<li><a class="active" href="http://[% config.servername %][% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=HTML">Merkliste</a></li>
+	<li><a class="active" href="http://[% config.servername %][% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=HTML">[% msg.maketext("Merkliste") %]</a></li>
       </ul>
       
       <div id="content">

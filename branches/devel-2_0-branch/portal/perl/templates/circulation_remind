@@ -11,7 +11,6 @@
 #
 #######################################################################
 -%]
-[%- i18nmsg = msg.${qopts.lang} -%]
 [% PROCESS common/subtemplate name="std_header" %]
 
   <body>
@@ -21,9 +20,9 @@
 [% END %]
 
 <ul id="tabbingmenu">
-   <li><a                href="http://[% config.servername %][% config.userprefs_loc %]?sessionID=[% sessionID %];action=showfields" target="body">Grundeinstellungen</a></li>
-   <li><a class="active" href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc" target="body">Benutzerkonto</a></li>
-   <li><a                href="http://[% config.servername %][% config.databaseprofile_loc %]?sessionID=[% sessionID %];do_showprofile=1" target="body">Katalogprofile</a></li>
+   <li><a                href="http://[% config.servername %][% config.userprefs_loc %]?sessionID=[% sessionID %];action=showfields" target="body">[% msg.maketext("Grundeinstellungen") %]</a></li>
+   <li><a class="active" href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc" target="body">[% msg.maketext("Benutzerkonto") %]</a></li>
+   <li><a                href="http://[% config.servername %][% config.databaseprofile_loc %]?sessionID=[% sessionID %];do_showprofile=1" target="body">[% msg.maketext("Katalogprofile") %]</a></li>
 </ul>
 
 <div id="content">
@@ -31,10 +30,10 @@
 <p />
 
 <ul id="tabbingmenu">
-   <li><a                href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc;circaction=borrows" target="body">Ausleihen</a></li>
-   <li><a                href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc;circaction=reservations" target="body">Vormerkungen</a></li>
-   <li><a                href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc;circaction=orders" target="body">Bestellungen</a></li>
-   <li><a class="active" href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc;circaction=reminders" target="body">&Uuml;berziehungen / Geb&uuml;hren</a></li>
+   <li><a                href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc;circaction=borrows" target="body">[% msg.maketext("Ausleihen") %]</a></li>
+   <li><a                href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc;circaction=reservations" target="body">[% msg.maketext("Vormerkungen") %]</a></li>
+   <li><a                href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc;circaction=orders" target="body">[% msg.maketext("Bestellungen") %]</a></li>
+   <li><a class="active" href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc;circaction=reminders" target="body">[% msg.maketext("Überziehungen / Gebühren") %]</a></li>
 </ul>
 
 <div id="content">
@@ -42,11 +41,11 @@
 <p />
 
 [% IF reminders.size == 0 %]
-<b>Es sind keine Geb&uuml;hren angefallen.</b>
+<b>[% msg.maketext("Es sind keine Gebühren angefallen.") %]</b>
 [% ELSE  %]
 
 <table cellpadding="5">
-<tr><td><b>Titelangaben</b></td><td><b>Signatur</b></td><td><b>Ausleih-/Buchungsdatum</b></td><td><b>Leihfristende</b></td><td><b>Geb&uuml;hr</b></td></tr>
+<tr><td><b>[% msg.maketext("Titelangaben") %]</b></td><td><b>[% msg.maketext("Signatur") %]</b></td><td><b>[% msg.maketext("Ausleih-/Buchungsdatum") %]</b></td><td><b>[% msg.maketext("Leihfristende") %]</b></td><td><b>[% msg.maketext("Gebühr") %]</b></td></tr>
 [%- listrow = 'listrow1' -%]
 
 [%- FOREACH reminder = reminders -%]

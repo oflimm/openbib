@@ -11,7 +11,6 @@
 #
 #######################################################################
 -%]
-[%- i18nmsg = msg.${qopts.lang} -%]
 [% PROCESS common/subtemplate name="std_header" title = "KUG Recherche" %]
 
 <body>
@@ -23,7 +22,7 @@
 </table>
 
 <table cellpadding=2>
-<tr><td>[% i18nmsg.${"M0101"} %]</td><td>[% i18nmsg.${"M0102"} %]</td></tr>
+<tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
 
 [%# Ausgabekategorien %]
 [%- categories = [
@@ -42,7 +41,7 @@ FOREACH category IN categories;
          content   = "<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchtitofaut=${normset.id}\">${content}</a>";
     END;
 -%]
-<tr><td class="category">[% i18nmsg.$category %]</td><td>[% content %]</td></tr>
+<tr><td class="category">[% msg.maketext("${category}") %]</td><td>[% content %]</td></tr>
 [%-
    END;
 END;

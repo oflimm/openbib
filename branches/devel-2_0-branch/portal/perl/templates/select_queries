@@ -51,7 +51,7 @@
 [%- IF query.searchquery.hststring.val -%]
 &nbsp;HSTR: [% query.searchquery.hststring.val %] 
 [%- END -%]
-= Treffer: [% query.hits %])
+= [% msg.maketext("Treffer") %]: [% query.hits %])
 </OPTION>
 [% END %]	    
 </select>

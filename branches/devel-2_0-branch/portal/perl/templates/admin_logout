@@ -11,7 +11,6 @@
 #
 #######################################################################
 -%]
-[%- i18nmsg = msg.${lang} -%]
 [% PROCESS std_header title='KUG Administration - Abmeldung' %]
 
   <body bgcolor="#FFFFFF">
@@ -19,10 +18,10 @@
 [% PROCESS corporate_banner %]
 
 <table width="100%">
-<tr><th>Logout erfolgreich</th></tr>
+<tr><th>[% msg.maketext("Logout erfolgreich") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:12pt">
 
-Um sich wieder einzuloggen folgen Sie bitte <a href="http://[% config.servername %][% config.admin_loc %]?do_loginmask=1">diesem Link</a>.
+[% msg.maketext("Um sich wieder einzuloggen folgen Sie bitte") %] <a href="http://[% config.servername %][% config.admin_loc %]?do_loginmask=1">[% msg.maketext("diesem Link") %]</a>.
 
 </td></tr>
 </table>

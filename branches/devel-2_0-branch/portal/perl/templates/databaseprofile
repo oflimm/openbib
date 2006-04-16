@@ -13,7 +13,6 @@
 #
 #######################################################################
 -%]
-[%- i18nmsg = msg.${qopts.lang} -%]
 [% PROCESS common/subtemplate name="std_header" %]
 
   <body>
@@ -37,11 +36,11 @@ function update_fak(yourform, checked, fak) {
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 
 <ul id="tabbingmenu">
-   <li><a href="http://[% config.servername %][% config.userprefs_loc %]?sessionID=[% sessionID %]&action=showfields" target="body">Grundeinstellungen</a></li>
+   <li><a href="http://[% config.servername %][% config.userprefs_loc %]?sessionID=[% sessionID %]&action=showfields" target="body">[% msg.maketext("Grundeinstellungen") %]</a></li>
 [% IF targettype != 'self' %]
-<li><a href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc">Benutzerkonto</a></li>
+<li><a href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc">[% msg.maketext("Benutzerkonto") %]</a></li>
 [% END %]
-   <li><a class="active" href="http://[% config.servername %][% config.databaseprofile_loc %]?sessionID=[% sessionID %]&do_showprofile=1" target="body">Katalogprofile</a></li>
+   <li><a class="active" href="http://[% config.servername %][% config.databaseprofile_loc %]?sessionID=[% sessionID %]&do_showprofile=1" target="body">[% msg.maketext("Katalogprofile") %]</a></li>
 </ul>
 
 <div id="content">
@@ -51,17 +50,17 @@ function update_fak(yourform, checked, fak) {
 
 <p>
 <table width="100%">
-<tr><th>Profilmanagement</th></tr>
+<tr><th>[% msg.maketext("Profilmanagement") %]</th></tr>
 <tr><td class="boxed">
 <table>
-<tr><td align=left><input type="text" title="Falls leer, so geben Sie hier bitte einen neuen Profilnamen ein" name="newprofile" value="[% profilname %]" SIZE=30 MAXLENGTH=200></td><td align=left><INPUT type=submit title="Abspeicherung eines neuen oder bestehenden Profils" name="do_saveprofile" value="Profil speichern"></td><td></td><td width="90%">&nbsp;</td></tr>
-<tr><td align=left><select title="W&auml;hlen Sie ein anzuzeigendes oder zu l&ouml;schendes Profil aus" name="profilid">
+<tr><td align=left><input type="text" title="[% msg.maketext("Falls leer, so geben Sie hier bitte einen neuen Profilnamen ein") %]" name="newprofile" value="[% profilname %]" SIZE=30 MAXLENGTH=200></td><td align=left><INPUT type=submit title="[% msg.maketext("Abspeicherung eines neuen oder bestehenden Profils") %]" name="do_saveprofile" value="[% msg.maketext("Profil speichern") %]"></td><td></td><td width="90%">&nbsp;</td></tr>
+<tr><td align=left><select title="[% msg.maketext("W&auml;hlen Sie ein anzuzeigendes oder zu l&ouml;schendes Profil aus") %]" name="profilid">
 [%- FOREACH userdbprofile IN userdbprofiles -%]
 <option value="[% userdbprofile.profilid %]">[% userdbprofile.profilename %]</option>
 [%- END -%]
-</select></td><td align=left><INPUT type=submit title="Anzeige des ausgew&auml;hlten Profils" name="do_showprofile" value="Profil anzeigen"></td><td><INPUT type=submit title="L&ouml;schung des ausgew&auml;hlten Profils " name="do_delprofile" value="Profil l&ouml;schen"></td><td></td></tr>
+</select></td><td align=left><INPUT type=submit title="[% msg.maketext("Anzeige des ausgew&auml;hlten Profils") %]" name="do_showprofile" value="[% msg.maketext("Profil anzeigen") %]"></td><td><INPUT type=submit title="[% msg.maketext("L&ouml;schung des ausgew&auml;hlten Profils") %]" name="do_delprofile" value="[% msg.maketext("Profil l&ouml;schen") %]"></td><td></td></tr>
 <tr><td colspan="4"></td></tr>
-<tr><td colspan="4" align=left>Definieren Sie oder bearbeiten Sie hier Ihre individuellen Katalogprofile. Diese werden gespeichert und stehen daher auch beim n&auml;chten Anmelden wieder zu Ihrer Verf&uuml;gung. Um ein hier definiertes Katalogprofil zu nutzen, w&auml;hlen Sie es in der Recherchemaske einfach unter <b>Suchprofil</b> aus und aktivieren zur Suche dann <b>In ausgew&auml;hlten Katalogen suchen</b>.
+<tr><td colspan="4" align=left>[% msg.maketext("Definieren Sie oder bearbeiten Sie hier Ihre individuellen Katalogprofile. Diese werden gespeichert und stehen daher auch beim n&auml;chten Anmelden wieder zu Ihrer Verf&uuml;gung. Um ein hier definiertes Katalogprofil zu nutzen, w&auml;hlen Sie es in der Recherchemaske einfach unter <b>Suchprofil</b> aus und aktivieren zur Suche dann <b>In ausgew&auml;hlten Katalogen suchen</b>.") %]
 </td></tr>
 </table>
 </td></tr>
@@ -69,12 +68,12 @@ function update_fak(yourform, checked, fak) {
 
 [% IF profilname %]
 <p />
-Derzeit angezeigtes Profil: <b>[% profilname %]</b>
+[% msg.maketext("Derzeit angezeigtes Profil") %]: <b>[% profilname %]</b>
 <p />
 [% END %]
 
 <table>
-<tr class="titlerow"><td colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /><b>Alle Kataloge</b></td></tr>
+<tr class="titlerow"><td colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /><b>[% msg.maketext("Alle Kataloge") %]</b></td></tr>
 
 [%- FOREACH category = config.orgunits -%]
 [%- IF category.nr >= 1 -%]

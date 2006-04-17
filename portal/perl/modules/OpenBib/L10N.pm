@@ -45,11 +45,24 @@ use vars qw(%config);
 *config = \%OpenBib::Config::config;
 
 use base 'Locale::Maketext';
+
+# Locale::Maktetext::Lexicon und Template Toolkit:
+#
+# Hinweise
+#
+# 1) In den Templates muss die Bracket-Notation verwendet werden.
+# 2) Beim extrahieren mit xgettext.pl wird diese automatisch in die
+#    gettext-Notation (%) umgewandelt, die so in die Message-Kataloge
+#    wandert und auch so uebersetzt werden muss
+# 3) Es ist irrelevant, bb _style => 'gettext' gesetzt wird.
+# 4) Argumente muessen in Double-Quotes eingegeben werden, z.B.
+#    "${alldbcount}"
+
 use Locale::Maketext::Lexicon {
-    '*'     => [Gettext => "$OpenBib::Config::config{locale_base_path}/*/LC_MESSAGES/openbib.po"],
-    _style  => 'gettext',
-    _decode => 1,
-#    _use_fuzzy => 1,
+    '*'        => [Gettext => "$OpenBib::Config::config{locale_base_path}/*/LC_MESSAGES/openbib.po"],
+#   _style     => 'gettext', # fuer korrektes TT-handling irrelevant
+    _decode    => 1,         # UTF-8 handling on
+#   _use_fuzzy => 1,         # Fuzzy-Matching off
 };
 
 sub failure_handler {

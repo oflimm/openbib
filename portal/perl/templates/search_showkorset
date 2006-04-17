@@ -26,12 +26,12 @@
 
 [%# Ausgabekategorien %]
 [%- categories = [
-                 'C0001',
-                 'C0102',
-                 'C0103',
-                 'C0110',
-                 'C0111',
-                 'C5000',
+                 'C0001', # msg.maketext("C0001") Ansetzung
+                 'C0102', # msg.maketext("C0102") Verweisung
+                 'C0103', # msg.maketext("C0103") 
+                 'C0110', # msg.maketext("C0110") 
+                 'C0111', # msg.maketext("C0111") Früherer/Späterer Name
+                 'C5000', # msg.maketext("C5000") Anzahl Titel
                  ];
 
 FOREACH category IN categories;

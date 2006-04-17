@@ -26,10 +26,10 @@
 
 [%# Ausgabekategorien %]
 [%- categories = [
-                 'N0001',
-                 'N0002',
-                 'N0103',
-                 'N5000',
+                 'N0001', # msg.maketext("N0001") Ansetzung 
+                 'N0002', # msg.maketext("N0002") Ansetzung
+                 'N0103', # msg.maketext("N0103") Verweisform
+                 'N5000', # msg.maketext("N5000") Anzahl Titel
                  ];
 
 FOREACH category IN categories;

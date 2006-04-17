@@ -44,10 +44,9 @@ use OpenBib::Config;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
-use vars qw(%config %msg);
+use vars qw(%config);
 
 *config = \%OpenBib::Config::config;
-*msg    = OpenBib::Config::get_msgs($config{msg_path});
 
 if ($OpenBib::Config::config{benchmark}){
     use Benchmark ':hireswallclock';
@@ -933,6 +932,8 @@ sub print_tit_list_by_idn {
         ? $arg_ref->{view}              : undef;
     my $lang              = exists $arg_ref->{lang}
         ? $arg_ref->{lang}              : undef;
+    my $msg                = exists $arg_ref->{msg}
+        ? $arg_ref->{msg}                : undef;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -1010,9 +1011,8 @@ sub print_tit_list_by_idn {
             return $string;
         },
 	      
-        show_corporate_banner => 0,
-        show_foot_banner      => 1,
         config         => \%config,
+        msg            => $msg,
     };
   
     OpenBib::Common::Util::print_page($config{tt_search_showtitlist_tname},$ttdata,$r);
@@ -1046,6 +1046,8 @@ sub print_tit_set_by_idn {
         ? $arg_ref->{stylesheet}         : undef;
     my $view               = exists $arg_ref->{view}
         ? $arg_ref->{view}               : undef;
+    my $msg                = exists $arg_ref->{msg}
+        ? $arg_ref->{msg}                : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -1090,7 +1092,7 @@ sub print_tit_set_by_idn {
         },
 
         config     => \%config,
-        msg        => \%msg,
+        msg        => $msg,
     };
   
     OpenBib::Common::Util::print_page($config{tt_search_showtitset_tname},$ttdata,$r);
@@ -1124,6 +1126,8 @@ sub print_mult_tit_set_by_idn {
         ? $arg_ref->{stylesheet}         : undef;
     my $view               = exists $arg_ref->{view}
         ? $arg_ref->{view}               : undef;
+    my $msg                = exists $arg_ref->{msg}
+        ? $arg_ref->{msg}                : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -1169,7 +1173,7 @@ sub print_mult_tit_set_by_idn {
         },
 
         config     => \%config,
-        msg        => \%msg,
+        msg        => $msg,
     };
   
     OpenBib::Common::Util::print_page($config{tt_search_showmulttitset_tname},$ttdata,$r);

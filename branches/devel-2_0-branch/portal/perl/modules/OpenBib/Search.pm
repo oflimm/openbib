@@ -305,6 +305,7 @@ sub handler {
                     apachereq          => $r,
                     stylesheet         => $stylesheet,
                     view               => $view,
+                    msg                => $msg,
                 });
                 return OK;
 
@@ -350,6 +351,7 @@ sub handler {
                     apachereq        => $r,
                     stylesheet       => $stylesheet,
                     view             => $view,
+                    msg              => $msg,
                 });
                 return OK;
             }
@@ -388,6 +390,7 @@ sub handler {
                     apachereq          => $r,
                     stylesheet         => $stylesheet,
                     view               => $view,
+                    msg                => $msg,
                 });
                 return OK;
 
@@ -433,6 +436,7 @@ sub handler {
                     apachereq        => $r,
                     stylesheet       => $stylesheet,
                     view             => $view,
+                    msg              => $msg,
                 });
                 return OK;
             }
@@ -453,6 +457,7 @@ sub handler {
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
                 view               => $view,
+                msg                => $msg,
             });
             return OK;
         }
@@ -525,6 +530,7 @@ sub handler {
             apachereq          => $r,
             stylesheet         => $stylesheet,
             view               => $view,
+            msg                => $msg,
         });
         return OK;
     }
@@ -651,6 +657,7 @@ sub handler {
             apachereq          => $r,
             stylesheet         => $stylesheet,
             view               => $view,
+            msg                => $msg,
         });
         return OK;
     }
@@ -783,6 +790,7 @@ sub handler {
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
                 view               => $view,
+                msg                => $msg,
             });
             return OK;
         }
@@ -827,6 +835,7 @@ sub handler {
                 apachereq        => $r,
                 stylesheet       => $stylesheet,
                 view             => $view,
+                msg              => $msg,
             });
             return OK;
         }	
@@ -861,6 +870,7 @@ sub handler {
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
                 view               => $view,
+                msg                => $msg,
             });
             return OK;
 
@@ -905,6 +915,7 @@ sub handler {
                 apachereq        => $r,
                 stylesheet       => $stylesheet,
                 view             => $view,
+                msg              => $msg,
             });
             return OK;
         }	
@@ -938,6 +949,7 @@ sub handler {
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
                 view               => $view,
+                msg                => $msg,
             });
             return OK;
         }
@@ -981,6 +993,7 @@ sub handler {
                 apachereq        => $r,
                 stylesheet       => $stylesheet,
                 view             => $view,
+                msg              => $msg,
             });
             return OK;
         }	
@@ -1015,6 +1028,7 @@ sub handler {
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
                 view               => $view,
+                msg                => $msg,
             });
             return OK;
         }
@@ -1059,6 +1073,7 @@ sub handler {
                 apachereq        => $r,
                 stylesheet       => $stylesheet,
                 view             => $view,
+                msg              => $msg,
             });
             return OK;
         }	

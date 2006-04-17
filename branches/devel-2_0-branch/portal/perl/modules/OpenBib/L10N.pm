@@ -46,7 +46,7 @@ use vars qw(%config);
 
 use base 'Locale::Maketext';
 
-# Locale::Maktetext::Lexicon und Template Toolkit:
+# Locale::Maketext::Lexicon und Template Toolkit:
 #
 # Hinweise
 #
@@ -54,7 +54,7 @@ use base 'Locale::Maketext';
 # 2) Beim extrahieren mit xgettext.pl wird diese automatisch in die
 #    gettext-Notation (%) umgewandelt, die so in die Message-Kataloge
 #    wandert und auch so uebersetzt werden muss
-# 3) Es ist irrelevant, bb _style => 'gettext' gesetzt wird.
+# 3) Es ist irrelevant, ob _style => 'gettext' gesetzt wird.
 # 4) Argumente muessen in Double-Quotes eingegeben werden, z.B.
 #    "${alldbcount}"
 

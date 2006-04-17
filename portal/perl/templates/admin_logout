@@ -21,7 +21,7 @@
 <tr><th>[% msg.maketext("Logout erfolgreich") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:12pt">
 
-[% msg.maketext("Um sich wieder einzuloggen folgen Sie bitte") %] <a href="http://[% config.servername %][% config.admin_loc %]?do_loginmask=1">[% msg.maketext("diesem Link") %]</a>.
+[% msg.maketext("Um sich wieder einzuloggen folgen Sie bitte [_1]diesem Link[_2].","<a href=\"http://${config.servername}${config.admin_loc}?do_loginmask=1\">","</a>") %]
 
 </td></tr>
 </table>

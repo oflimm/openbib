@@ -30,7 +30,7 @@
 <table width="100%">
 <tr><th>[% msg.maketext("Sie sind erfolgreich registriert") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
-[% msg.maketext("Klicken Sie nun") %] <a href="http://[% config.servername %][% config.login_loc %]?sessionID=[% sessionID %]&action=login&loginname=[% loginname %]">[% msg.maketext("hier") %]</a>, [% msg.maketext("um sich anzumelden.") %]
+[% msg.maketext("Klicken Sie nun [_1]hier[_2], um sich anzumelden.","<a href=\"http://${config.servername}${config.login_loc}?sessionID=${sessionID}&action=login&loginname=${loginname}\">","</a>") %]
 </td></tr>
 </table>
 

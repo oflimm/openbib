@@ -47,10 +47,10 @@
 <br />
 <br />
 <p>
-[% msg.maketext("Falls Sie bei keinem der Anmeldeziele registriert sind, so k&ouml;nnen Sie sich") %] <a href="http://[% config.servername %][% config.selfreg_loc %]?sessionID=[% sessionID %];action=show"><b>[% msg.maketext("hier") %]</b></a> [% msg.maketext("f&uuml;r das Anmeldeziel Selbstregistierung eine Kennung einrichten.") %]
+[% msg.maketext("Falls Sie bei keinem der Anmeldeziele registriert sind, so k&ouml;nnen Sie sich [_1]<b>hier</b>[_2] f&uuml;r das Anmeldeziel Selbstregistierung eine Kennung einrichten.","<a href=\"http://${config.servername}${config.selfreg_loc}?sessionID=${sessionID};action=show\">","</a>") %]
 </p>
 <p>
-[% msg.maketext("Haben Sie Ihr Passwort vergessen, das Sie bei der Selbstregistrierung angegeben haben? Dann klicken Sie") %] <a href="http://[% config.servername %][% config.mailpassword_loc %]?sessionID=[% sessionID %];action=show"><b>[% msg.maketext("hier") %]</b></a>
+[% msg.maketext("Haben Sie Ihr Passwort vergessen, das Sie bei der Selbstregistrierung angegeben haben? Dann klicken Sie [_1]<b>hier</b>[_2]","<a href=\"http://${config.servername}${config.mailpassword_loc}?sessionID=${sessionID};action=show\">","</a>") %]
 </p>
 </div>
 

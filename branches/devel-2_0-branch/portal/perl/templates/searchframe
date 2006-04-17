@@ -65,7 +65,7 @@
 [% IF viewtemplate %]
 [% PROCESS $viewtemplate %]
 [% ELSE %]
-[% msg.maketext("Sie können entweder direkt im vorausgewählten Katalog") %] <b>[% viewdesc %]</b> [% msg.maketext("recherchieren, oder die Suche auf weitere") %] <a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">[% msg.maketext("Kataloge") %]</a> [% msg.maketext("ausdehnen.") %]
+[% msg.maketext("Sie können entweder direkt im vorausgewählten Katalog <b>[_1]</b> recherchieren, oder die Suche auf weitere [_2]Kataloge[_3] ausdehnen.","${viewdesc}","<a href=\"${config.databasechoice_loc}?sessionID=${sessionID};view=${view}\" target=\"body\">","</a>") %]
 [% END %]
 
 <p />
@@ -76,7 +76,7 @@
 suchen") %]" />&nbsp;<input type="reset" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" value="[% msg.maketext("Lösche Eingabemaske") %]"></td></tr>
 </table>
 [% ELSE %]
-[% msg.maketext("Sie können entweder durch entsprechende Auswahl in den insgesamt") %] [% alldbs %] [% msg.maketext("einzelnen") %] <a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">[% msg.maketext("Katalogen") %]</a> [% msg.maketext("recherchieren oder auch sofort in allen zusammen.") %]
+[% msg.maketext("Sie können entweder durch entsprechende Auswahl in den insgesamt [_1] einzelnen [_2]Katalogen[_3] recherchieren oder auch sofort in allen zusammen.","${alldbs}","<a href=\"${config.databasechoice_loc}?sessionID=${sessionID};view=${view}\" target=\"body\">","</a>") %]
 <p />
 <table>
   <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in allen Katalogen auf einmal") %]" name="searchall" value="[% msg.maketext("In allen Katalogen suchen") %]" />&nbsp;<input
@@ -203,9 +203,9 @@ colspan="2"><select name="sorttype"><option value="author" selected="selected">[
 
 <p />
 
-<b>[% msg.maketext("Insgesamt sind im KUG derzeit") %] [% alldbcount %] [% msg.maketext("Titel nachgewiesen.") %]</b>
+<b>[% msg.maketext("Insgesamt sind im KUG derzeit [_1] Titel nachgewiesen.","${alldbcount}") %]</b>
 <p />
-[% msg.maketext("Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter") %]<a href="http://www.ub.uni-koeln.de/usb-cgi/zms_makeEmail.pl?adr0=kug" target="_blank">kug@ub.uni-koeln.de</a> [% msg.maketext("erreichen.") %]
+[% msg.maketext("Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter [_1] kug@ub.uni-koeln.de [_2] erreichen.","<a href=\"http://www.ub.uni-koeln.de/usb-cgi/zms_makeEmail.pl?adr0=kug\" target=\"_blank\">","</a>") %]
 
 </div>
 

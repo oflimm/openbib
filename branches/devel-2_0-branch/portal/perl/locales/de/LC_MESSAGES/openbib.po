@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2006-04-16 23:05+0200\n"
+"PO-Revision-Date: 2006-04-17 16:46+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team:  <l10n@openbib.org>\n"
 "MIME-Version: 1.0\n"
@@ -247,13 +247,14 @@ msgstr "Autokonvertierung (cron)"
 msgid "Autor/Körperschaft"
 msgstr "Autor/Körperschaft"
 
-#: ../templates/virtualsearch_more_search_tips:18
+#: ../templates/virtualsearch_more_search_tips:27
 msgid "B&uuml;cher"
 msgstr "B&uuml;cher"
 
+#. ("<a href=\"#Suchhinweise\">","</a>")
 #: ../templates/virtualsearch_result_end:17
-msgid "Beachten Sie bitte auch unserere"
-msgstr "Beachten Sie bitte auch unserere"
+msgid "Beachten Sie bitte auch unserere %1weitergehenden Suchhinweise%2."
+msgstr "Beachten Sie bitte auch unserere %1weitergehenden Suchhinweise%2."
 
 #: ../templates/admin_showsessions:39
 msgid "Beginn"
@@ -529,21 +530,18 @@ msgstr "Es sind keine Gebühren angefallen."
 msgid "Es wurden keine Treffer gefunden"
 msgstr "Es wurden keine Treffer gefunden"
 
-#: ../templates/virtualsearch_more_search_tips:21
+#. ("<a href=\"http://retro-philfak.ub.uni-koeln.de:8080/catalog/\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>")
+#: ../templates/virtualsearch_more_search_tips:30
 msgid ""
 "F&uuml;r verschiedene Institute und Seminare der Philosophischen Fakult&auml;"
-"t besteht die M&ouml;glichkeit der Suche in einem"
+"t besteht die M&ouml;glichkeit der Suche in einem %1Online-Kartenkatalog%2"
 msgstr ""
 "F&uuml;r verschiedene Institute und Seminare der Philosophischen Fakult&auml;"
-"t besteht die M&ouml;glichkeit der Suche in einem"
+"t besteht die M&ouml;glichkeit der Suche in einem %1Online-Kartenkatalog%2"
 
 #: ../templates/admin_editcat:103
 msgid "FTP"
 msgstr "FTP"
-
-#: ../templates/virtualsearch_more_search_tips:30
-msgid "Fachdatenbanken"
-msgstr "Fachdatenbanken"
 
 #: ../templates/admin_editcat:39
 msgid "Fakult&auml;t"
@@ -557,13 +555,16 @@ msgstr "Fakultät"
 msgid "Fakultäten"
 msgstr "Fakultäten"
 
+#. ("<a href=\"http://${config.servername}${config.selfreg_loc}?sessionID=${sessionID};action=show\">","</a>")
 #: ../templates/login:50
 msgid ""
 "Falls Sie bei keinem der Anmeldeziele registriert sind, so k&ouml;nnen Sie "
-"sich"
+"sich %1<b>hier</b>%2 f&uuml;r das Anmeldeziel Selbstregistierung eine "
+"Kennung einrichten."
 msgstr ""
 "Falls Sie bei keinem der Anmeldeziele registriert sind, so k&ouml;nnen Sie "
-"sich"
+"sich %1<b>hier</b>%2 f&uuml;r das Anmeldeziel Selbstregistierung eine "
+"Kennung einrichten."
 
 #: ../templates/login:31
 msgid ""
@@ -615,13 +616,14 @@ msgstr "Fernleihbestellung"
 msgid "Freie Suche"
 msgstr "Freie Suche"
 
+#. ("<a href=\"http://www.ub.uni-koeln.de/usb-cgi/zms_makeEmail.pl?adr0=kug\" target=\"_blank\">","</a>")
 #: ../templates/searchframe:208 ../templates/searchframe_simple:140
 msgid ""
 "Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns "
-"unter"
+"unter %1 kug@ub.uni-koeln.de %2 erreichen."
 msgstr ""
 "Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns "
-"unter"
+"unter %1 kug@ub.uni-koeln.de %2 erreichen."
 
 #: ../templates/selfreg:34
 msgid ""
@@ -685,13 +687,14 @@ msgstr "Guthaben"
 msgid "HTTP"
 msgstr "HTTP"
 
+#. ("<a href=\"http://${config.servername}${config.mailpassword_loc}?sessionID=${sessionID};action=show\">","</a>")
 #: ../templates/login:53
 msgid ""
 "Haben Sie Ihr Passwort vergessen, das Sie bei der Selbstregistrierung "
-"angegeben haben? Dann klicken Sie"
+"angegeben haben? Dann klicken Sie %1<b>hier</b>%2"
 msgstr ""
 "Haben Sie Ihr Passwort vergessen, das Sie bei der Selbstregistrierung "
-"angegeben haben? Dann klicken Sie"
+"angegeben haben? Dann klicken Sie %1<b>hier</b>%2"
 
 #: ../templates/userprefs:170
 msgid "Hauptsachtitel (HST)"
@@ -817,9 +820,10 @@ msgstr "Inhalt"
 msgid "Initiale Suchen"
 msgstr "Initiale Suchen"
 
+#. ("${alldbcount}")
 #: ../templates/searchframe:206 ../templates/searchframe_simple:137
-msgid "Insgesamt sind im KUG derzeit"
-msgstr "Insgesamt sind im KUG derzeit"
+msgid "Insgesamt sind im KUG derzeit %1 Titel nachgewiesen."
+msgstr "Insgesamt sind im KUG derzeit %1 Titel nachgewiesen."
 
 #: ../templates/managecollection_tit_as_html:47
 #: ../templates/managecollection_tit_as_html_simple:38
@@ -873,18 +877,13 @@ msgstr "Katalogauswahl zu diesem View"
 #: ../templates/admin_editsession:22 ../templates/admin_editview:21
 #: ../templates/admin_editview_rss:21 ../templates/admin_loggedin:21
 #: ../templates/admin_showcat:24 ../templates/admin_showsessions:22
-#: ../templates/admin_showviews:22 ../templates/searchframe:68
-#: ../templates/searchframe_simple:50
+#: ../templates/admin_showviews:22
 msgid "Kataloge"
 msgstr "Kataloge"
 
 #: ../templates/databasechoice:54 ../templates/databasechoice:95
 msgid "Kataloge auswählen"
 msgstr "Kataloge auswählen"
-
-#: ../templates/searchframe:79 ../templates/searchframe_simple:58
-msgid "Katalogen"
-msgstr "Katalogen"
 
 #: ../templates/circulation:25 ../templates/circulation_orders:25
 #: ../templates/circulation_remind:25 ../templates/circulation_reserv:25
@@ -917,9 +916,10 @@ msgstr "Kennung l&ouml;schen"
 msgid "Kennung soll wirklich gel&ouml;scht werden"
 msgstr "Kennung soll wirklich gel&ouml;scht werden"
 
+#. ("<a href=\"http://${config.servername}${config.login_loc}?sessionID=${sessionID}&action=login&loginname=${loginname}\">","</a>")
 #: ../templates/selfreg_success:33
-msgid "Klicken Sie nun"
-msgstr "Klicken Sie nun"
+msgid "Klicken Sie nun %1hier%2, um sich anzumelden."
+msgstr "Klicken Sie nun %1hier%2, um sich anzumelden."
 
 #: ../templates/searchframe:28 ../templates/searchframe_simple:35
 msgid "Komplexe Recherche"
@@ -929,7 +929,7 @@ msgstr "Komplexe Recherche"
 msgid "Komplizierte Suchanfragen"
 msgstr "Komplizierte Suchanfragen"
 
-#: ../templates/virtualsearch_more_search_tips:17
+#: ../templates/virtualsearch_more_search_tips:26
 msgid ""
 "Konnten Sie das von Ihnen gesuchte Buch oder den von Ihnen gesuchten "
 "Zeitschriftenartikel nicht im KUG finden?"
@@ -1113,14 +1113,6 @@ msgstr "Not-Datei"
 #: ../templates/searchframe:117 ../templates/userprefs:174
 msgid "Notation"
 msgstr "Notation"
-
-#: ../templates/virtualsearch_more_search_tips:21
-msgid "Online-Kartenkatalog"
-msgstr "Online-Kartenkatalog"
-
-#: ../templates/virtualsearch_more_search_tips:35
-msgid "Online-Zeitschriftenlieferung"
-msgstr "Online-Zeitschriftenlieferung"
 
 #: ../templates/managecollection_show:53 ../templates/resultlists_showall:34
 #: ../templates/resultlists_showall_sortall:34
@@ -1341,13 +1333,23 @@ msgstr "Sie haben keine Bestellungen get&auml;tigt."
 msgid "Sie haben keine Vormerkungen getätigt."
 msgstr "Sie haben keine Vormerkungen getätigt."
 
+#. ("${viewdesc}","<a href=\"${config.databasechoice_loc}?sessionID=${sessionID};view=${view}\" target=\"body\">","</a>")
 #: ../templates/searchframe:68 ../templates/searchframe_simple:50
-msgid "Sie können entweder direkt im vorausgewählten Katalog"
-msgstr "Sie können entweder direkt im vorausgewählten Katalog"
+msgid ""
+"Sie können entweder direkt im vorausgewählten Katalog <b>%1</b> "
+"recherchieren, oder die Suche auf weitere %2Kataloge%3 ausdehnen."
+msgstr ""
+"Sie können entweder direkt im vorausgewählten Katalog <b>%1</b> "
+"recherchieren, oder die Suche auf weitere %2Kataloge%3 ausdehnen."
 
+#. ("${alldbs}","<a href=\"${config.databasechoice_loc}?sessionID=${sessionID};view=${view}\" target=\"body\">","</a>")
 #: ../templates/searchframe:79 ../templates/searchframe_simple:58
-msgid "Sie können entweder durch entsprechende Auswahl in den insgesamt"
-msgstr "Sie können entweder durch entsprechende Auswahl in den insgesamt"
+msgid ""
+"Sie können entweder durch entsprechende Auswahl in den insgesamt %1 "
+"einzelnen %2Katalogen%3 recherchieren oder auch sofort in allen zusammen."
+msgstr ""
+"Sie können entweder durch entsprechende Auswahl in den insgesamt %1 "
+"einzelnen %2Katalogen%3 recherchieren oder auch sofort in allen zusammen."
 
 #: ../templates/selfreg_success:31
 msgid "Sie sind erfolgreich registriert"
@@ -1453,7 +1455,7 @@ msgstr "Suchbegriffe"
 msgid "Suchen"
 msgstr "Suchen"
 
-#: ../templates/virtualsearch_more_search_tips:20
+#: ../templates/virtualsearch_more_search_tips:29
 msgid ""
 "Suchen Sie im Kartenkatalog einer infrage kommende Institutsbibliothek. "
 "Leider sind noch nicht alle B&uuml;cher elektronisch erfasst und damit &uuml;"
@@ -1463,9 +1465,14 @@ msgstr ""
 "Leider sind noch nicht alle B&uuml;cher elektronisch erfasst und damit &uuml;"
 "ber den KUG recherchierbar."
 
-#: ../templates/virtualsearch_more_search_tips:30
-msgid "Suchen Sie in den elektronischen"
-msgstr "Suchen Sie in den elektronischen"
+#. ("<a href=\"${config.dbis_exturl}\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>","<a href=\"${config.ezb_exturl}\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>")
+#: ../templates/virtualsearch_more_search_tips:35
+msgid ""
+"Suchen Sie in den elektronischen %1Fachdatenbanken%2 und den %3elektronisch "
+"verf&uuml;gbaren Zeitschriften%4 der Universit&auml;tsbibliothek."
+msgstr ""
+"Suchen Sie in den elektronischen %1Fachdatenbanken%2 und den %3elektronisch "
+"verf&uuml;gbaren Zeitschriften%4 der Universit&auml;tsbibliothek."
 
 #: ../templates/userprefs:182
 msgid "Suchfelder &auml;ndern"
@@ -1508,10 +1515,6 @@ msgstr "Tit-Datei"
 #: ../templates/searchframe:100 ../templates/searchframe:166
 msgid "Titel"
 msgstr "Titel"
-
-#: ../templates/searchframe:206 ../templates/searchframe_simple:137
-msgid "Titel nachgewiesen."
-msgstr "Titel nachgewiesen."
 
 #: ../templates/searchframe:133 ../templates/userprefs:178
 msgid "Titel-String"
@@ -1571,9 +1574,10 @@ msgstr ""
 "Um einen bereits existierenden View zu bearbeiten klicken Sie bitte auf den "
 "Viewnamen."
 
+#. ("<a href=\"http://${config.servername}${config.admin_loc}?do_loginmask=1\">","</a>")
 #: ../templates/admin_logout:24
-msgid "Um sich wieder einzuloggen folgen Sie bitte"
-msgstr "Um sich wieder einzuloggen folgen Sie bitte"
+msgid "Um sich wieder einzuloggen folgen Sie bitte %1diesem Link%2."
+msgstr "Um sich wieder einzuloggen folgen Sie bitte %1diesem Link%2."
 
 #: ../templates/searchframe:186
 msgid "Und-Verknüpfung innerhalb eines Suchfeldes"
@@ -1598,13 +1602,23 @@ msgstr "Verfasser"
 msgid "Verknüpfung"
 msgstr "Verknüpfung"
 
-#: ../templates/virtualsearch_more_search_tips:22
-msgid "Versuchen Sie das Buch in NRW oder deutschlandweit im Rahmen der"
-msgstr "Versuchen Sie das Buch in NRW oder deutschlandweit im Rahmen der"
-
+#. ("<a href=\"${hbzmonofernleih_exturl}\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>")
 #: ../templates/virtualsearch_more_search_tips:31
-msgid "Versuchen Sie den Artikel in NRW im Rahmen der"
-msgstr "Versuchen Sie den Artikel in NRW im Rahmen der"
+msgid ""
+"Versuchen Sie das Buch in NRW oder deutschlandweit im Rahmen der %1zentralen "
+"Fernleihe%2 in der Digitalen Bibliothek zu finden."
+msgstr ""
+"Versuchen Sie das Buch in NRW oder deutschlandweit im Rahmen der %1zentralen "
+"Fernleihe%2 in der Digitalen Bibliothek zu finden."
+
+#. ("<a href=\"${hbzzeitfernleih_exturl}\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>")
+#: ../templates/virtualsearch_more_search_tips:36
+msgid ""
+"Versuchen Sie den Artikel in NRW im Rahmen der %1Online-"
+"Zeitschriftenlieferung%2 in der Digitalen Bibliothek zu finden."
+msgstr ""
+"Versuchen Sie den Artikel in NRW im Rahmen der %1Online-"
+"Zeitschriftenlieferung%2 in der Digitalen Bibliothek zu finden."
 
 #: ../templates/leave:28
 msgid ""
@@ -1688,7 +1702,7 @@ msgstr ""
 msgid "Weiter als externe Recherche"
 msgstr "Weiter als externe Recherche"
 
-#: ../templates/virtualsearch_more_search_tips:15
+#: ../templates/virtualsearch_more_search_tips:24
 msgid "Weitergehende Suchhinweise"
 msgstr "Weitergehende Suchhinweise"
 
@@ -1716,9 +1730,14 @@ msgstr ""
 msgid "Wenn Sie kompliziertere Suchanfragen stellen m&ouml;chten, so erfahren Sie"
 msgstr "Wenn Sie kompliziertere Suchanfragen stellen m&ouml;chten, so erfahren Sie"
 
+#. ("<a href=\"http://${config.loadbalancerservername}${config.loadbalancer_loc}?view=${view}\">","</a>")
 #: ../templates/userprefs_userdeleted:23
-msgid "Wenn Sie weiter im KUG recherchieren m&ouml;chten, so klicken Sie bitte"
-msgstr "Wenn Sie weiter im KUG recherchieren m&ouml;chten, so klicken Sie bitte"
+msgid ""
+"Wenn Sie weiter im KUG recherchieren m&ouml;chten, so klicken Sie bitte %"
+"1<b>hier</b>[_2}, um eine neue Sitzung zu beginnen."
+msgstr ""
+"Wenn Sie weiter im KUG recherchieren m&ouml;chten, so klicken Sie bitte %"
+"1<b>hier</b>[_2}, um eine neue Sitzung zu beginnen."
 
 #: ../templates/userprefs_ask_delete:27
 msgid ""
@@ -1742,7 +1761,7 @@ msgstr "Wählen Sie bitte einen View aus:"
 msgid "Wählen Sie hier bitte Ihr Suchprofil aus"
 msgstr "Wählen Sie hier bitte Ihr Suchprofil aus"
 
-#: ../templates/virtualsearch_more_search_tips:28
+#: ../templates/virtualsearch_more_search_tips:33
 msgid "Zeitschriftenartikel"
 msgstr "Zeitschriftenartikel"
 
@@ -1807,51 +1826,17 @@ msgstr "aus"
 msgid "aus:"
 msgstr "aus:"
 
-#: ../templates/searchframe:68 ../templates/searchframe_simple:50
-msgid "ausdehnen."
-msgstr "ausdehnen."
-
 #: ../templates/search_showswtindex:39
 msgid "beginnend mit"
 msgstr "beginnend mit"
-
-#: ../templates/virtualsearch_more_search_tips:30
-msgid "der Universit&auml;tsbibliothek."
-msgstr "der Universit&auml;tsbibliothek."
-
-#: ../templates/admin_logout:24
-msgid "diesem Link"
-msgstr "diesem Link"
-
-#: ../templates/searchframe:79 ../templates/searchframe_simple:58
-msgid "einzelnen"
-msgstr "einzelnen"
-
-#: ../templates/virtualsearch_more_search_tips:30
-msgid "elektronisch verf&uuml;gbaren Zeitschriften"
-msgstr "elektronisch verf&uuml;gbaren Zeitschriften"
-
-#: ../templates/searchframe:208 ../templates/searchframe_simple:140
-msgid "erreichen."
-msgstr "erreichen."
-
-#: ../templates/login:50
-msgid "f&uuml;r das Anmeldeziel Selbstregistierung eine Kennung einrichten."
-msgstr "f&uuml;r das Anmeldeziel Selbstregistierung eine Kennung einrichten."
 
 #: ../templates/search_showswtindex:66
 msgid "gefunden werden."
 msgstr "gefunden werden."
 
-#: ../templates/login:50 ../templates/login:53 ../templates/search_info:21
-#: ../templates/selfreg_success:33 ../templates/userprefs_userdeleted:23
+#: ../templates/search_info:21
 msgid "hier"
 msgstr "hier"
-
-#: ../templates/virtualsearch_more_search_tips:26
-#: ../templates/virtualsearch_more_search_tips:35
-msgid "in der Digitalen Bibliothek zu finden."
-msgstr "in der Digitalen Bibliothek zu finden."
 
 #: ../templates/search_showswtindex:39
 msgid "in diesem Katalog gefunden"
@@ -1920,41 +1905,13 @@ msgstr "nein"
 msgid "pro Katalog"
 msgstr "pro Katalog"
 
-#: ../templates/searchframe:79 ../templates/searchframe_simple:58
-msgid "recherchieren oder auch sofort in allen zusammen."
-msgstr "recherchieren oder auch sofort in allen zusammen."
-
-#: ../templates/searchframe:68 ../templates/searchframe_simple:50
-msgid "recherchieren, oder die Suche auf weitere"
-msgstr "recherchieren, oder die Suche auf weitere"
-
-#: ../templates/userprefs_userdeleted:23
-msgid "um eine neue Sitzung zu beginnen."
-msgstr "um eine neue Sitzung zu beginnen."
-
-#: ../templates/selfreg_success:33
-msgid "um sich anzumelden."
-msgstr "um sich anzumelden."
-
-#: ../templates/virtualsearch_more_search_tips:30
-msgid "und den"
-msgstr "und den"
-
 #: ../templates/virtualsearch_result_item:16
 msgid "von"
 msgstr "von"
 
-#: ../templates/virtualsearch_result_end:17
-msgid "weitergehenden Suchhinweise"
-msgstr "weitergehenden Suchhinweise"
-
 #: ../templates/userprefs:51
 msgid "wiederholt"
 msgstr "wiederholt"
-
-#: ../templates/virtualsearch_more_search_tips:26
-msgid "zentralen Fernleihe"
-msgstr "zentralen Fernleihe"
 
 #: ../templates/admin_editcat:177 ../templates/admin_editcat_rss:141
 #: ../templates/admin_editcat_rss:200 ../templates/admin_editcat_rss:259

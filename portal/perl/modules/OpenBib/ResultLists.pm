@@ -565,7 +565,7 @@ sub handler {
       
       my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
       
-      ($loginname,$password)=get_cred_for_userid($userdbh,$userid) if ($userid && OpenBib::Common::Util::get_targettype_of_session($userdbh,$sessionID) ne "self");
+      ($loginname,$password)=OpenBib::Common::Util::get_cred_for_userid($userdbh,$userid) if ($userid && OpenBib::Common::Util::get_targettype_of_session($userdbh,$sessionID) ne "self");
       
       # Hash im Loginname ersetzen
       

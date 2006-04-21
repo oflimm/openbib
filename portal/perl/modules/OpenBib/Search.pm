@@ -2,7 +2,7 @@
 #
 #  OpenBib::Search.pm
 #
-#  Copyright 1997-2005 Oliver Flimm <flimm@openbib.org>
+#  Copyright 1997-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -200,7 +200,7 @@ sub handler {
     my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
 
     unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
-        OpenBib::Common::Util::print_warning("Ungültige Session",$r);
+        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
       
         $sessiondbh->disconnect();
         $dbh->disconnect();

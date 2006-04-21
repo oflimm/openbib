@@ -2,7 +2,7 @@
 #
 #  OpenBib::SelfReg
 #
-#  Dieses File ist (C) 2004-2005 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -90,7 +90,7 @@ sub handler {
             or $logger->error_die($DBI::errstr);
   
     unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
-        OpenBib::Common::Util::print_warning("Ungültige Session",$r);
+        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
         $sessiondbh->disconnect();
         $userdbh->disconnect();
         return OK;
@@ -119,14 +119,14 @@ sub handler {
     }
     elsif ($action eq "auth") {
         if ($loginname eq "" || $password1 eq "" || $password2 eq "") {
-            OpenBib::Common::Util::print_warning("Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben",$r);
+            OpenBib::Common::Util::print_warning($msg->maketext("Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"),$r,$msg);
             $sessiondbh->disconnect();
             $userdbh->disconnect();
             return OK;
         }
 
         if ($password1 ne $password2) {
-            OpenBib::Common::Util::print_warning("Die beiden eingegebenen Passworte stimmen nicht überein.",$r);
+            OpenBib::Common::Util::print_warning($msg->maketext("Die beiden eingegebenen Passworte stimmen nicht überein."),$r,$msg);
             $sessiondbh->disconnect();
             $userdbh->disconnect();
             return OK;
@@ -134,7 +134,7 @@ sub handler {
 
         # Ueberpruefen, ob es eine gueltige Mailadresse angegeben wurde.
         unless (Email::Valid->address($loginname)){
-            OpenBib::Common::Util::print_warning("Sie haben keine gütige Mailadresse eingegeben. Gehen Sie bitte <a href=\"http://$config{servername}$config{selfreg_loc}?sessionID=$sessionID&action=show\">zurück</a> und korrigieren Sie Ihre Eingabe",$r);
+            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine gütige Mailadresse eingegeben. Gehen Sie bitte [_1]zurück[_2] und korrigieren Sie Ihre Eingabe","<a href=\"http://$config{servername}$config{selfreg_loc}?sessionID=$sessionID&action=show\">","</a>"),$r,$msg);
             $sessiondbh->disconnect();
             $userdbh->disconnect();
             return OK;
@@ -146,7 +146,7 @@ sub handler {
         my $rows = $res->{rowcount};
 
         if ($rows > 0) {
-            OpenBib::Common::Util::print_warning("Ein Benutzer mit dem Namen $loginname existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte <a href=\"http://$config{servername}$config{login_loc}?sessionID=$sessionID?action=login\">zurück</a> und lassen es sich zumailen.",$r);
+            OpenBib::Common::Util::print_warning($msg->maketext("Ein Benutzer mit dem Namen $loginname existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_1]zurück[_2] und lassen es sich zumailen.","<a href=\"http://$config{servername}$config{login_loc}?sessionID=$sessionID?action=login\">","</a>"),$r,$msg);
             $userresult->finish();
 
             $sessiondbh->disconnect();
@@ -197,7 +197,7 @@ sub handler {
         OpenBib::Common::Util::print_page($config{tt_selfreg_success_tname},$ttdata,$r);
     }
     else {
-        OpenBib::Common::Util::print_warning("Unerlaubte Aktion",$r);
+        OpenBib::Common::Util::print_warning($msg->maketext("Unerlaubte Aktion"),$r,$msg);
     }
 
     $sessiondbh->disconnect();

@@ -2,7 +2,7 @@
 #
 #  OpenBib::LoadBalancer
 #
-#  Dieses File ist (C) 1997-2005 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -92,7 +92,7 @@ sub handler {
         };
 
         OpenBib::Common::Util::print_page($config{tt_loadbalancer_tname},$ttdata,$r);
-        OpenBib::LoadBalancer::Util::benachrichtigung("Achtung: Es sind *alle* Server ausgefallen");
+        OpenBib::LoadBalancer::Util::benachrichtigung($msg->maketext("Achtung: Es sind *alle* Server ausgefallen"));
 
         return OK;
     }

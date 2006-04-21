@@ -203,13 +203,13 @@ sub handler {
     
         # Sessionid erzeugen
         if ($user ne $adminuser) {
-            OpenBib::Common::Util::print_warning('Sie haben als Benutzer entweder keinen oder nicht den Admin-Benutzer eingegeben',$r);
+            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben als Benutzer entweder keinen oder nicht den Admin-Benutzer eingegeben"),$r,$msg);
             $sessiondbh->disconnect;
             return OK;
         }
     
         if ($passwd ne $adminpasswd) {
-            OpenBib::Common::Util::print_warning('Sie haben ein falsches Passwort eingegeben',$r);
+            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben ein falsches Passwort eingegeben"),$r,$msg);
             $sessiondbh->disconnect;
             return OK;
         }
@@ -246,7 +246,7 @@ sub handler {
     $idnresult->finish;
   
     if ($rows <= 0) {
-        OpenBib::Common::Util::print_warning('Sie greifen auf eine nicht autorisierte Session zu',$r);
+        OpenBib::Common::Util::print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"),$r,$msg);
         $sessiondbh->disconnect;
         return OK;
     }
@@ -286,7 +286,7 @@ sub handler {
 
             if ($dbname eq "" || $description eq "") {
 
-                OpenBib::Common::Util::print_warning("Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben.",$r);
+                OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."),$r,$msg);
 
                 $idnresult->finish();
                 $sessiondbh->disconnect();
@@ -301,7 +301,7 @@ sub handler {
             
             if ($rows > 0) {
 
-                OpenBib::Common::Util::print_warning("Es existiert bereits ein Katalog unter diesem Namen",$r);
+                OpenBib::Common::Util::print_warning($msg->maketext("Es existiert bereits ein Katalog unter diesem Namen"),$r,$msg);
 
                 $idnresult->finish();
                 $sessiondbh->disconnect();
@@ -678,7 +678,7 @@ sub handler {
 
             if ($viewname eq "" || $description eq "") {
 
-                OpenBib::Common::Util::print_warning("Sie müssen mindestens einen Viewnamen und eine Beschreibung eingeben.",$r);
+                OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen mindestens einen Viewnamen und eine Beschreibung eingeben."),$r,$msg);
 
                 $idnresult->finish();
                 $sessiondbh->disconnect();
@@ -693,7 +693,7 @@ sub handler {
 
             if ($rows > 0) {
 
-                OpenBib::Common::Util::print_warning("Es existiert bereits ein View unter diesem Namen",$r);
+                OpenBib::Common::Util::print_warning($msg->maketext("Es existiert bereits ein View unter diesem Namen"),$r,$msg);
 
                 $idnresult->finish();
                 $sessiondbh->disconnect();
@@ -1091,7 +1091,7 @@ sub handler {
 
     }
     else {
-        OpenBib::Common::Util::print_warning('Keine gültige Aktion oder Session',$r);
+        OpenBib::Common::Util::print_warning($msg->maketext("Keine gültige Aktion oder Session"),$r,$msg);
     }
   
   LEAVEPROG: sleep 0;

@@ -144,7 +144,7 @@ sub handler {
     $profil="" if (!$is_orgunit && $profil ne "dbauswahl" && !$profil=~/^user/ && $profil ne "alldbs");
 
     unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
-        OpenBib::Common::Util::print_warning("Ungültige Session",$r);
+        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
 
         $sessiondbh->disconnect();
         $userdbh->disconnect();
@@ -253,7 +253,7 @@ sub handler {
         }
         # Kein Profil
         else {
-            OpenBib::Common::Util::print_warning("Sie haben \"In ausgewählten Katalogen suchen\" angeklickt, obwohl sie keine <a href=\"$config{databasechoice_loc}?sessionID=$sessionID\" target=\"body\">Kataloge</a> oder Suchprofile ausgewählt haben. Bitte wählen Sie die gewünschten Kataloge/Suchprofile aus oder betätigen Sie \"In allen Katalogen suchen\".",$r);
+            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie keine [_1]Kataloge[_2] oder Suchprofile ausgewählt haben. Bitte wählen Sie die gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen Katalogen suchen</a>.","<a href=\"$config{databasechoice_loc}?sessionID=$sessionID\" target=\"body\">","</a>"),$r,$msg);
 
             $sessiondbh->disconnect();
             $userdbh->disconnect();
@@ -304,12 +304,12 @@ sub handler {
         $contentreq=~s/%//g;
 
         if (!$contentreq) {
-            OpenBib::Common::Util::print_warning("Sie haben keinen Begriff eingegeben",$r);
+            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keinen Begriff eingegeben"),$r,$msg);
             return OK;
         }
 
         if ($#databases > 0 && length($contentreq) < 3) {
-            OpenBib::Common::Util::print_warning("Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche ausgewählt wurde.",$r);
+            OpenBib::Common::Util::print_warning($msg->maketext("Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche ausgewählt wurde."),$r,$msg);
             return OK;
         }
 
@@ -498,7 +498,7 @@ sub handler {
     if ($searchquery_ref->{ejahr}{norm}) {
         my ($ejtest)=$searchquery_ref->{ejahr}{norm}=~/.*(\d\d\d\d).*/;
         if (!$ejtest) {
-            OpenBib::Common::Util::print_warning("Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein.",$r);
+            OpenBib::Common::Util::print_warning($msg->maketext("Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."),$r,$msg);
 
             $sessiondbh->disconnect();
             $userdbh->disconnect();
@@ -509,7 +509,7 @@ sub handler {
 
     if ($searchquery_ref->{ejahr}{bool} eq "OR") {
         if ($searchquery_ref->{ejahr}{norm}) {
-            OpenBib::Common::Util::print_warning("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung.",$r);
+            OpenBib::Common::Util::print_warning($msg->maketext("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."),$r,$msg);
 
             $sessiondbh->disconnect();
             $userdbh->disconnect();
@@ -521,8 +521,7 @@ sub handler {
     if ($searchquery_ref->{ejahr}{bool} eq "AND") {
         if ($searchquery_ref->{ejahr}{norm}) {
             if (!$firstsql) {
-                OpenBib::Common::Util::print_warning("Das Suchkriterium Jahr ist nur in Verbindung mit der
-UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung.",$r);
+                OpenBib::Common::Util::print_warning($msg->maketext("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."),$r,$msg);
 
                 $sessiondbh->disconnect();
                 $userdbh->disconnect();
@@ -533,7 +532,7 @@ UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich,
     }
 
     if (!$firstsql) {
-        OpenBib::Common::Util::print_warning("Es wurde kein Suchkriterium eingegeben.",$r);
+        OpenBib::Common::Util::print_warning($msg->maketext("Es wurde kein Suchkriterium eingegeben."),$r,$msg);
 
         $sessiondbh->disconnect();
         $userdbh->disconnect();

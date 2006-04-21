@@ -3,7 +3,7 @@
 #
 #  OpenBib::MailPassword
 #
-#  Dieses File ist (C) 2004-2005 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -90,7 +90,7 @@ sub handler {
             or $logger->error_die($DBI::errstr);
   
     unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
-        OpenBib::Common::Util::print_warning("Ungültige Session",$r);
+        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
     
         $sessiondbh->disconnect();
         $userdbh->disconnect();
@@ -129,7 +129,7 @@ sub handler {
         my $loginfailed=0;
     
         if ($loginname eq "") {
-            OpenBib::Common::Util::print_warning("Sie haben keine E-Mail Adresse eingegeben",$r);
+            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine E-Mail Adresse eingegeben"),$r,$msg);
             $sessiondbh->disconnect();
             $userdbh->disconnect();
             return OK;
@@ -143,7 +143,7 @@ sub handler {
         $targetresult->finish();
     
         if (!$password) {
-            OpenBib::Common::Util::print_warning("Es existiert kein Passwort für die Kennung $loginname",$r);
+            OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Passwort für die Kennung $loginname"),$r,$msg);
             $sessiondbh->disconnect();
             $userdbh->disconnect();
             return OK;

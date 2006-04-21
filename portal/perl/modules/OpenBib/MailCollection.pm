@@ -2,7 +2,7 @@
 #
 #  OpenBib::MailCollection
 #
-#  Dieses File ist (C) 2001-2005 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -136,7 +136,7 @@ sub handler {
     # Ab hier ist in $userid entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
     if ($email eq "") {
-        OpenBib::Common::Util::print_warning("Sie haben keine Mailadresse eingegeben.",$r);
+        OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine Mailadresse eingegeben."),$r,$msg);
   
         $sessiondbh->disconnect();
         $userdbh->disconnect();
@@ -144,7 +144,7 @@ sub handler {
     }
 
     unless (Email::Valid->address($email)) {
-        OpenBib::Common::Util::print_warning("Sie haben eine ungültige Mailadresse eingegeben.",$r);
+        OpenBib::Common::Util::print_warning($msg->maketext("Sie haben eine ungültige Mailadresse eingegeben."),$r,$msg);
     
         $sessiondbh->disconnect();
         $userdbh->disconnect();

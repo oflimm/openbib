@@ -2,7 +2,7 @@
 #
 #  OpenBib::Common::Util
 #
-#  Dieses File ist (C) 2004-2005 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -476,7 +476,7 @@ sub get_sql_result {
 }
 
 sub print_warning {
-    my ($warning,$r)=@_;
+    my ($warning,$r,$msg)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -511,6 +511,7 @@ sub print_warning {
 	      
         errmsg     => $warning,
         config     => \%config,
+        msg        => $msg,
     };
   
     # Dann Ausgabe des neuen Headers

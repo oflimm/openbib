@@ -2,7 +2,7 @@
 #
 #  OpenBib::Login
 #
-#  Dieses File ist (C) 2004-2005 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -106,7 +106,7 @@ sub handler {
 
     # Wenn wir nichts gefunden haben, dann ist etwas faul
     if ($rows <= 0 || $sessionID eq "") {
-        OpenBib::Common::Util::print_warning("SessionID ist ungülltig",$r);
+        OpenBib::Common::Util::print_warning($msg->maketext("SessionID ist ungülltig"),$r,$msg);
 
         $idnresult->finish();
         $sessiondbh->disconnect();
@@ -338,13 +338,13 @@ sub handler {
     }
     elsif ($do_loginfailed) {
         if    ($code eq "1") {
-            OpenBib::Common::Util::print_warning('Sie haben entweder kein Passwort oder keinen Loginnamen eingegeben',$r);
+            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben entweder kein Passwort oder keinen Loginnamen eingegeben"),$r,$msg);
         }
         elsif ($code eq "2") {
-            OpenBib::Common::Util::print_warning('Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht erfolgreich authentifiziert werden',$r);
+            OpenBib::Common::Util::print_warning($msg->maketext("Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht erfolgreich authentifiziert werden"),$r,$msg);
         }
         else {
-            OpenBib::Common::Util::print_warning('Falscher Fehler-Code',$r);
+            OpenBib::Common::Util::print_warning($msg->maketext("Falscher Fehler-Code"),$r,$msg);
         }
     }
 

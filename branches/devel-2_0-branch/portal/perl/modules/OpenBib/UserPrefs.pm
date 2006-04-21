@@ -2,7 +2,7 @@
 #
 #  OpenBib::UserPrefs
 #
-#  Dieses File ist (C) 2004-2005 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -106,7 +106,7 @@ sub handler {
             or $logger->error_die($DBI::errstr);
   
     unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
-        OpenBib::Common::Util::print_warning("Ungültige Session",$r);
+        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
 
         $sessiondbh->disconnect();
         $userdbh->disconnect();
@@ -125,7 +125,7 @@ sub handler {
     my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
   
     unless($userid){
-        OpenBib::Common::Util::print_warning("Diese Session ist nicht authentifiziert.",$r);
+        OpenBib::Common::Util::print_warning($msg->maketext("Diese Session ist nicht authentifiziert."),$r,$msg);
 
         $sessiondbh->disconnect();
         $userdbh->disconnect();
@@ -341,7 +341,7 @@ sub handler {
     }
     elsif ($action eq "Password ändern") {
         if ($password1 eq "" || $password1 ne $password2) {
-            OpenBib::Common::Util::print_warning("Sie haben entweder kein Passwort eingegeben oder die beiden Passworte stimmen nicht überein",$r);
+            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben entweder kein Passwort eingegeben oder die beiden Passworte stimmen nicht überein"),$r,$msg);
       
             $sessiondbh->disconnect();
             $userdbh->disconnect();
@@ -356,7 +356,7 @@ sub handler {
     }
     elsif ($action eq "changemask") {
         if ($setmask eq "") {
-            OpenBib::Common::Util::print_warning("Es wurde keine Standard-Recherchemaske ausgewählt",$r);
+            OpenBib::Common::Util::print_warning($msg->maketext("Es wurde keine Standard-Recherchemaske ausgewählt"),$r,$msg);
       
             $sessiondbh->disconnect();
             $userdbh->disconnect();
@@ -375,7 +375,7 @@ sub handler {
         $r->internal_redirect("http://$config{servername}$config{userprefs_loc}?sessionID=$sessionID&action=showfields");
     }
     else {
-        OpenBib::Common::Util::print_warning("Unerlaubte Aktion",$r);
+        OpenBib::Common::Util::print_warning($msg->maketext("Unerlaubte Aktion"),$r,$msg);
     }
   
     $sessiondbh->disconnect();

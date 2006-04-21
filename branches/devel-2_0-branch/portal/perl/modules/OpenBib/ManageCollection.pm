@@ -2,7 +2,7 @@
 #
 #  OpenBib::ManageCollection
 #
-#  Dieses File ist (C) 2001-2005 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -204,6 +204,13 @@ sub handler {
 
         $idnresult->finish();
 
+        if ($#dbidnlist < 0){
+            OpenBib::Common::Util::print_warning($msg->maketext("Derzeit ist Ihre Merkliste leer"),$r,$msg);
+            $sessiondbh->disconnect();
+            $userdbh->disconnect();
+            return OK;
+        }
+        
         foreach my $dbidn_ref (@dbidnlist) {
             my $database  = $dbidn_ref->{database};
             my $singleidn = $dbidn_ref->{singleidn};

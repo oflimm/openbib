@@ -93,7 +93,7 @@ sub handler {
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
-        OpenBib::Common::Util::print_warning("Ungültige Session",$r);
+        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
         $sessiondbh->disconnect();
         $userdbh->disconnect();
         return OK;

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2006-04-21 19:46+0200\n"
+"PO-Revision-Date: 2006-04-23 10:01+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team:  <l10n@openbib.org>\n"
 "MIME-Version: 1.0\n"
@@ -626,6 +626,14 @@ msgstr "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben
 msgid "Es wurde kein Suchkriterium eingegeben."
 msgstr "Es wurde kein Suchkriterium eingegeben."
 
+#. ($r,$msg)
+#: ../modules/OpenBib/Search.pm:1014 ../modules/OpenBib/Search.pm:1083
+#: ../modules/OpenBib/Search.pm:291 ../modules/OpenBib/Search.pm:376
+#: ../modules/OpenBib/Search.pm:776 ../modules/OpenBib/Search.pm:856
+#: ../modules/OpenBib/Search.pm:936
+msgid "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
+msgstr "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
+
 #: ../modules/OpenBib/UserPrefs.pm:359
 msgid "Es wurde keine Standard-Recherchemaske ausgewählt"
 msgstr "Es wurde keine Standard-Recherchemaske ausgewählt"
@@ -916,6 +924,10 @@ msgstr "In diesem Katalog konnte leider kein Schlagwort beginnend mit"
 msgid "Index"
 msgstr "Index"
 
+#: ../templates/info_message:23
+msgid "Information"
+msgstr "Information"
+
 #: ../templates/managecollection_tit_as_html:26
 #: ../templates/managecollection_tit_as_html_simple:28
 #: ../templates/search_showautset:25 ../templates/search_showkorset:25
@@ -1147,6 +1159,10 @@ msgstr "Mehrfachauswahl"
 #: ../templates/headerframe:27 ../templates/headerframe:29
 msgid "Mein KUG"
 msgstr "Mein KUG"
+
+#: ../templates/info_message:30
+msgid "Meldung"
+msgstr "Meldung"
 
 #: ../templates/headerframe:23 ../templates/managecollection_save_html:23
 #: ../templates/managecollection_show:23
@@ -2452,7 +2468,7 @@ msgstr ""
 msgid "Zur Trefferliste"
 msgstr "Zur Trefferliste"
 
-#: ../templates/resultlists_showall:37
+#: ../modules/OpenBib/Common/Util.pm:693 ../templates/resultlists_showall:37
 #: ../templates/resultlists_showall_sortall:37
 #: ../templates/resultlists_showsinglepool:37
 #: ../templates/search_showtitlist:32 ../templates/searchframe:166
@@ -2470,7 +2486,7 @@ msgstr ""
 "innerhalb eines Eingabefeldes und die angesprochene Suchoption 'Und-"
 "Verkn&uuml;pfung innerhalb eines Suchfeldes'."
 
-#: ../templates/resultlists_showall:37
+#: ../modules/OpenBib/Common/Util.pm:692 ../templates/resultlists_showall:37
 #: ../templates/resultlists_showall_sortall:37
 #: ../templates/resultlists_showsinglepool:37
 #: ../templates/search_showtitlist:32 ../templates/searchframe:166
@@ -2511,6 +2527,11 @@ msgstr "ist ein Dienst der Universitäts- und Stadtbibliothek Köln"
 msgid "ja, seit"
 msgstr "ja, seit"
 
+#: ../modules/OpenBib/Common/Util.pm:704 ../modules/OpenBib/Common/Util.pm:722
+#: ../modules/OpenBib/Common/Util.pm:733
+msgid "katalogübergreifend"
+msgstr "katalogübergreifend"
+
 #: ../templates/userprefs:81
 msgid "mit Grund"
 msgstr "mit Grund"
@@ -2523,6 +2544,14 @@ msgstr "mit Grund"
 msgid "nach Autor"
 msgstr "nach Autor"
 
+#: ../modules/OpenBib/Common/Util.pm:694
+msgid "nach Autor/Körperschaft"
+msgstr "nach Autor/Körperschaft"
+
+#: ../modules/OpenBib/Common/Util.pm:698
+msgid "nach Erscheinungsjahr"
+msgstr "nach Erscheinungsjahr"
+
 #: ../templates/resultlists_showall:37
 #: ../templates/resultlists_showall_sortall:37
 #: ../templates/resultlists_showsinglepool:37
@@ -2531,7 +2560,7 @@ msgstr "nach Autor"
 msgid "nach Jahr"
 msgstr "nach Jahr"
 
-#: ../templates/resultlists_showall:37
+#: ../modules/OpenBib/Common/Util.pm:696 ../templates/resultlists_showall:37
 #: ../templates/resultlists_showall_sortall:37
 #: ../templates/resultlists_showsinglepool:37
 #: ../templates/search_showtitlist:32
@@ -2539,7 +2568,7 @@ msgstr "nach Jahr"
 msgid "nach Signatur"
 msgstr "nach Signatur"
 
-#: ../templates/resultlists_showall:37
+#: ../modules/OpenBib/Common/Util.pm:697 ../templates/resultlists_showall:37
 #: ../templates/resultlists_showall_sortall:37
 #: ../templates/resultlists_showsinglepool:37
 #: ../templates/virtualsearch_result_start:38
@@ -2550,7 +2579,7 @@ msgstr "nach Titel"
 msgid "nach Titel/Z&auml;hlung"
 msgstr "nach Titel/Z&auml;hlung"
 
-#: ../templates/resultlists_showall:37
+#: ../modules/OpenBib/Common/Util.pm:695 ../templates/resultlists_showall:37
 #: ../templates/resultlists_showall_sortall:37
 #: ../templates/resultlists_showsinglepool:37
 #: ../templates/search_showtitlist:32
@@ -2562,7 +2591,8 @@ msgstr "nach Verlag"
 msgid "nein"
 msgstr "nein"
 
-#: ../templates/searchframe:166
+#: ../modules/OpenBib/Common/Util.pm:701 ../modules/OpenBib/Common/Util.pm:716
+#: ../modules/OpenBib/Common/Util.pm:728 ../templates/searchframe:166
 msgid "pro Katalog"
 msgstr "pro Katalog"
 

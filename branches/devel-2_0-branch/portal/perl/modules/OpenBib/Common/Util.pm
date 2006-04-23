@@ -695,7 +695,7 @@ sub get_sort_nav {
                     'publisher' => $msg->maketext("nach Verlag"),
                     'signature' => $msg->maketext("nach Signatur"),
                     'title'     => $msg->maketext("nach Titel"),
-                    'yearofpub' => $msg->maketext("nach Erscheinungsjahr),
+                    'yearofpub' => $msg->maketext("nach Erscheinungsjahr"),
                 );
 
     my $katalogtyp=$msg->maketext("pro Katalog");

@@ -267,7 +267,7 @@ sub handler {
 
                 my $hostself="http://".$r->hostname.$r->uri;
 	
-                my ($queryargs,$sortselect,$thissortstring)=OpenBib::Common::Util::get_sort_nav($r,'sortboth',1);
+                my ($queryargs,$sortselect,$thissortstring)=OpenBib::Common::Util::get_sort_nav($r,'sortboth',1,$msg);
 	
                 # TT-Data erzeugen
                 my $ttdata={
@@ -349,7 +349,7 @@ sub handler {
 
                 my $hostself="http://".$r->hostname.$r->uri;
 	
-                my ($queryargs,$sortselect,$thissortstring)=OpenBib::Common::Util::get_sort_nav($r,'sortboth',1);
+                my ($queryargs,$sortselect,$thissortstring)=OpenBib::Common::Util::get_sort_nav($r,'sortboth',1,$msg);
 	
                 # TT-Data erzeugen
                 my $ttdata={
@@ -436,7 +436,7 @@ sub handler {
       
             my $hostself="http://".$r->hostname.$r->uri;
       
-            my ($queryargs,$sortselect,$thissortstring)=OpenBib::Common::Util::get_sort_nav($r,'sortsingle',1);
+            my ($queryargs,$sortselect,$thissortstring)=OpenBib::Common::Util::get_sort_nav($r,'sortsingle',1,$msg);
       
             # TT-Data erzeugen
             my $ttdata={

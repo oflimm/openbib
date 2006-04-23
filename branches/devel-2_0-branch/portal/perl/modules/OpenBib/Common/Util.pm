@@ -504,11 +504,7 @@ sub print_warning {
     my $ttdata={
         view       => $view,
         stylesheet => $stylesheet,
-	      
-        show_corporate_banner => 0,
-        show_foot_banner => 0,
-        invisible_links => 0,
-	      
+
         errmsg     => $warning,
         config     => \%config,
         msg        => $msg,
@@ -526,7 +522,7 @@ sub print_warning {
 }
 
 sub print_info {
-    my ($info,$r)=@_;
+    my ($info,$r,$msg)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -554,13 +550,10 @@ sub print_info {
     my $ttdata={
         view       => $view,
         stylesheet => $stylesheet,
-	      
-        show_corporate_banner => 0,
-        show_foot_banner => 0,
-        invisible_links => 0,
-	      
-        info_msg     => $info,
+
+        info_msg   => $info,
         config     => \%config,
+        msg        => $msg,
     };
   
     # Dann Ausgabe des neuen Headers
@@ -618,7 +611,7 @@ sub print_page {
 }   
 
 sub get_sort_nav {
-    my ($r,$nav,$usequerycache)=@_;
+    my ($r,$nav,$usequerycache,$msg)=@_;
 
     my @argself=$r->args;
 
@@ -696,19 +689,19 @@ sub get_sort_nav {
         $queryargs_ref=\%fullargs;
     }
 
-    my %fullstring=('up'        => 'aufsteigend',
-                    'down'      => 'absteigend',
-                    'author'    => 'nach Autor/Körperschaft',
-                    'publisher' => 'nach Verlag',
-                    'signature' => 'nach Signatur',
-                    'title'     => 'nach Titel',
-                    'yearofpub' => 'nach Erscheinungsjahr'
+    my %fullstring=('up'        => $msg->maketext("aufsteigend"),
+                    'down'      => $msg->maketext("absteigend"),
+                    'author'    => $msg->maketext("nach Autor/Körperschaft"),
+                    'publisher' => $msg->maketext("nach Verlag"),
+                    'signature' => $msg->maketext("nach Signatur"),
+                    'title'     => $msg->maketext("nach Titel"),
+                    'yearofpub' => $msg->maketext("nach Erscheinungsjahr),
                 );
 
-    my $katalogtyp="pro Katalog";
+    my $katalogtyp=$msg->maketext("pro Katalog");
 
     if ($sortall eq "1") {
-        $katalogtyp="katalogübergreifend";
+        $katalogtyp=$msg->maketext("katalogübergreifend");
     }
 
     my $thissortstring=$fullstring{$sorttype}." / ".$fullstring{$sortorder};
@@ -720,24 +713,24 @@ sub get_sort_nav {
     if ($nav eq 'sortsingle') {
         push @sortselect, {
             val  => 0,
-            desc => "pro Katalog",
+            desc => $msg->maketext("pro Katalog"),
         };
     }
     elsif ($nav eq 'sortall') {
         push @sortselect, {
             val  => 1,
-            desc => "katalogübergreifend",
+            desc => $msg->maketext("katalogübergreifend"),
         };
     }
     elsif ($nav eq 'sortboth') {
         push @sortselect, {
             val  => 0,
-            desc => "pro Katalog",
+            desc => $msg->maketext("pro Katalog"),
         };
 
         push @sortselect, {
             val  => 1,
-            desc => "katalogübergreifend",
+            desc => $msg->maketext("katalogübergreifend"),
         };
     }
 

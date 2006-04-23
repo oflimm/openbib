@@ -288,7 +288,7 @@ sub handler {
             $request->finish();
             
             if ($#titidns == -1) {
-                OpenBib::Common::Util::print_info("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden",$r);;
+                OpenBib::Common::Util::print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"),$r,$msg);
                 return OK;
             }
       
@@ -373,7 +373,7 @@ sub handler {
             $request->finish();
             
             if ($#titidns == -1) {
-                OpenBib::Common::Util::print_info("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden",$r);;
+                OpenBib::Common::Util::print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"),$r,$msg);
                 return OK;
             }
       
@@ -773,7 +773,7 @@ sub handler {
         }
 
         if ($#titelidns == -1) {
-            OpenBib::Common::Util::print_info("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden",$r);;
+            OpenBib::Common::Util::print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"),$r,$msg);
             return OK;
         }
     
@@ -853,7 +853,7 @@ sub handler {
         }
 
         if ($#titelidns == -1) {
-            OpenBib::Common::Util::print_info("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden",$r);;
+            OpenBib::Common::Util::print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"),$r,$msg);
             return OK;
         }
 
@@ -933,7 +933,7 @@ sub handler {
         }
     
         if ($#titelidns == -1) {
-            OpenBib::Common::Util::print_info("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden",$r);;
+            OpenBib::Common::Util::print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"),$r,$msg);
             return OK;
         }
         if ($#titelidns == 0) {
@@ -1011,7 +1011,7 @@ sub handler {
         }
 
         if ($#titelidns == -1) {
-            OpenBib::Common::Util::print_info("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden",$r);;
+            OpenBib::Common::Util::print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden",$r,$msg);
             return OK;
         }
     
@@ -1080,7 +1080,7 @@ sub handler {
     }
   
     # Falls bis hierhin noch nicht abgearbeitet, dann wirds wohl nichts mehr geben
-    OpenBib::Common::Util::print_info("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden",$r);;
+    OpenBib::Common::Util::print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"),$r,$msg);
     $logger->error("Unerlaubt das Ende erreicht");
   
     $dbh->disconnect;

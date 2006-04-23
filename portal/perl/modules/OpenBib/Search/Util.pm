@@ -975,7 +975,7 @@ sub print_tit_list_by_idn {
 
     my $hostself="http://".$r->hostname.$r->uri;
 
-    my ($queryargs,$sortselect,$thissortstring)=OpenBib::Common::Util::get_sort_nav($r,'',0);
+    my ($queryargs,$sortselect,$thissortstring)=OpenBib::Common::Util::get_sort_nav($r,'',0,$msg);
 
     # TT-Data erzeugen
     my $ttdata={

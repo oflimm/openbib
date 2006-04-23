@@ -555,7 +555,7 @@ sub handler {
 
     my $hostself="http://".$r->hostname.$r->uri;
 
-    my ($queryargs,$sortselect,$thissortstring)=OpenBib::Common::Util::get_sort_nav($r,'sortboth',1);
+    my ($queryargs,$sortselect,$thissortstring)=OpenBib::Common::Util::get_sort_nav($r,'sortboth',1,$msg);
 
     my $starttemplatename=$config{tt_virtualsearch_result_start_tname};
     if ($view && -e "$config{tt_include_path}/views/$view/$starttemplatename") {

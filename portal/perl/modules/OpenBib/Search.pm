@@ -1011,7 +1011,7 @@ sub handler {
         }
 
         if ($#titelidns == -1) {
-            OpenBib::Common::Util::print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden",$r,$msg);
+            OpenBib::Common::Util::print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"),$r,$msg);
             return OK;
         }
     

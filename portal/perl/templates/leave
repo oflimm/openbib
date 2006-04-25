@@ -16,9 +16,7 @@
 
   <body>
 
-[% IF show_corporate_banner %]
 [% PROCESS common/subtemplate name="corporate_banner" %]
-[% END %]
 
 <br />
   <br />

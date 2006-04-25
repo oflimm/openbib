@@ -341,7 +341,16 @@ sub handler {
 	
                 my @sortedoutputbuffer=();
                 OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
-                OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@sortedoutputbuffer);
+
+		my @resultset=();
+		# Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
+		foreach my $item_ref (@sortedoutputbuffer){
+		  push @resultset, { idn      => $item_ref->{idn},
+				     database => $item_ref->{database},
+				   };
+		}
+
+                OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@resultset);
                 OpenBib::Search::Util::print_tit_list_by_idn({
                     itemlist_ref     => \@sortedoutputbuffer,
                     targetdbinfo_ref => $targetdbinfo_ref,
@@ -426,7 +435,16 @@ sub handler {
 	
                 my @sortedoutputbuffer=();
                 OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
-                OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@sortedoutputbuffer);
+
+		my @resultset=();
+		# Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
+		foreach my $item_ref (@sortedoutputbuffer){
+		  push @resultset, { idn      => $item_ref->{idn},
+				     database => $item_ref->{database},
+				   };
+		}
+
+                OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@resultset);
                 OpenBib::Search::Util::print_tit_list_by_idn({
                     itemlist_ref     => \@sortedoutputbuffer,
                     targetdbinfo_ref => $targetdbinfo_ref,
@@ -825,7 +843,16 @@ sub handler {
 
             my @sortedoutputbuffer=();
             OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
-            OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@sortedoutputbuffer);
+
+	    my @resultset=();
+	    # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
+	    foreach my $item_ref (@sortedoutputbuffer){
+	      push @resultset, { idn      => $item_ref->{idn},
+				 database => $item_ref->{database},
+			       };
+	    }
+
+            OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@resultset);
             OpenBib::Search::Util::print_tit_list_by_idn({
                 itemlist_ref     => \@sortedoutputbuffer,
                 targetdbinfo_ref => $targetdbinfo_ref,
@@ -905,7 +932,16 @@ sub handler {
 
             my @sortedoutputbuffer=();
             OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
-            OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@sortedoutputbuffer);
+
+	    my @resultset=();
+	    # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
+	    foreach my $item_ref (@sortedoutputbuffer){
+	      push @resultset, { idn      => $item_ref->{idn},
+				 database => $item_ref->{database},
+			       };
+	    }
+	    
+            OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@resultset);
             OpenBib::Search::Util::print_tit_list_by_idn({
                 itemlist_ref     => \@sortedoutputbuffer,
                 targetdbinfo_ref => $targetdbinfo_ref,
@@ -983,7 +1019,16 @@ sub handler {
 
             my @sortedoutputbuffer=();
             OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
-            OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@sortedoutputbuffer);
+
+	    my @resultset=();
+	    # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
+	    foreach my $item_ref (@sortedoutputbuffer){
+	      push @resultset, { idn      => $item_ref->{idn},
+				 database => $item_ref->{database},
+			       };
+	    }
+	    
+            OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@resultset);
             OpenBib::Search::Util::print_tit_list_by_idn({
                 itemlist_ref     => \@sortedoutputbuffer,
                 targetdbinfo_ref => $targetdbinfo_ref,
@@ -1063,7 +1108,16 @@ sub handler {
 
             my @sortedoutputbuffer=();
             OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
-            OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@sortedoutputbuffer);
+
+	    my @resultset=();
+	    # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
+	    foreach my $item_ref (@sortedoutputbuffer){
+	      push @resultset, { idn      => $item_ref->{idn},
+				 database => $item_ref->{database},
+			       };
+	    }
+
+            OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@resultset);
             OpenBib::Search::Util::print_tit_list_by_idn({
                 itemlist_ref     => \@sortedoutputbuffer,
                 targetdbinfo_ref => $targetdbinfo_ref,

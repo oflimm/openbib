@@ -1174,11 +1174,6 @@ UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&oum
 
 	# Zuerst in Resultset eintragen zur spaeteren Navigation
 	
-	push @resultset, { 'database' => $database,
-			   'idn' => $idn
-			 };
-	
-	
 	if (length($idn)>0){
 	  $outputbuffer[$outidx++]=OpenBib::Search::Util::get_tit_listitem_by_idn("$idn","none",5,$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
 	}
@@ -1193,8 +1188,19 @@ UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&oum
       
       my @sortedoutputbuffer=();
       
-      
       OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
+
+      $logger->debug("Sortedoutputbuffer".YAML::Dump(\@sortedoutputbuffer));
+
+      # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
+      foreach my $sorted_ref (@sortedoutputbuffer){
+          push @resultset, {
+              idn      => $sorted_ref->{idn},
+              database => $sorted_ref->{database},
+          }
+      }
+
+      $logger->debug("Resultset".YAML::Dump(\@resultset));
 
       my $treffer=$#sortedoutputbuffer+1;
 

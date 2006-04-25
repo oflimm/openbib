@@ -345,7 +345,7 @@ sub handler {
 		my @resultset=();
 		# Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
 		foreach my $item_ref (@sortedoutputbuffer){
-		  push @resultset, { idn      => $item_ref->{idn},
+		  push @resultset, { id       => $item_ref->{id},
 				     database => $item_ref->{database},
 				   };
 		}
@@ -439,7 +439,7 @@ sub handler {
 		my @resultset=();
 		# Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
 		foreach my $item_ref (@sortedoutputbuffer){
-		  push @resultset, { idn      => $item_ref->{idn},
+		  push @resultset, { id       => $item_ref->{id},
 				     database => $item_ref->{database},
 				   };
 		}
@@ -847,7 +847,7 @@ sub handler {
 	    my @resultset=();
 	    # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
 	    foreach my $item_ref (@sortedoutputbuffer){
-	      push @resultset, { idn      => $item_ref->{idn},
+	      push @resultset, { id       => $item_ref->{id},
 				 database => $item_ref->{database},
 			       };
 	    }
@@ -936,7 +936,7 @@ sub handler {
 	    my @resultset=();
 	    # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
 	    foreach my $item_ref (@sortedoutputbuffer){
-	      push @resultset, { idn      => $item_ref->{idn},
+	      push @resultset, { id       => $item_ref->{id},
 				 database => $item_ref->{database},
 			       };
 	    }
@@ -1023,7 +1023,7 @@ sub handler {
 	    my @resultset=();
 	    # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
 	    foreach my $item_ref (@sortedoutputbuffer){
-	      push @resultset, { idn      => $item_ref->{idn},
+	      push @resultset, { id       => $item_ref->{id},
 				 database => $item_ref->{database},
 			       };
 	    }
@@ -1112,7 +1112,7 @@ sub handler {
 	    my @resultset=();
 	    # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
 	    foreach my $item_ref (@sortedoutputbuffer){
-	      push @resultset, { idn      => $item_ref->{idn},
+	      push @resultset, { id       => $item_ref->{id},
 				 database => $item_ref->{database},
 			       };
 	    }

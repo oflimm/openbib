@@ -710,7 +710,7 @@ sub handler {
 
 	    # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
 	    foreach my $item_ref (@sortedoutputbuffer){
-	      push @resultset, { idn      => $item_ref->{idn},
+	      push @resultset, { id       => $item_ref->{id},
 				 database => $item_ref->{database},
 			       };
 	    }
@@ -780,6 +780,7 @@ sub handler {
     # Wenn etwas gefunden wurde, dann kann ein Resultset geschrieben werden.
 
     if ($gesamttreffer > 0) {
+        $logger->debug("Resultset wird geschrieben: ".YAML::Dump(\@resultset));
         OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@resultset);
     }
 

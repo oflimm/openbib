@@ -681,13 +681,6 @@ sub handler {
             my @outputbuffer=();
 
             foreach my $idn (@tidns) {
-
-                # Zuerst in Resultset eintragen zur spaeteren Navigation
-	
-                push @resultset, { 'database' => $database,
-                                   'id'       => $idn
-                               };
-	
                 push @outputbuffer, OpenBib::Search::Util::get_tit_listitem_by_idn({
                     titidn            => $idn,
                     dbh               => $dbh,
@@ -715,6 +708,13 @@ sub handler {
 
             OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
 
+	    # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
+	    foreach my $item_ref (@sortedoutputbuffer){
+	      push @resultset, { idn      => $item_ref->{idn},
+				 database => $item_ref->{database},
+			       };
+	    }
+	    
             my $treffer=$#sortedoutputbuffer+1;
 
             my $itemtemplatename=$config{tt_virtualsearch_result_item_tname};

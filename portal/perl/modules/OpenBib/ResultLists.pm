@@ -297,8 +297,8 @@ sub handler {
 
                 # Eintraege merken fuer Lastresultset
                 foreach my $item_ref (@sortedoutputbuffer) {
-                    push @resultset, { 'database' => $item_ref->{database},
-                                       'idn'      => $item_ref->{idn},
+                    push @resultset, { id       => $item_ref->{id},
+				       database => $item_ref->{database},
                                    };
                 }
 
@@ -331,8 +331,8 @@ sub handler {
 
                     # Eintraege merken fuer Lastresultset
                     foreach my $item_ref (@sortedoutputbuffer) {
-                        push @resultset, { 'database' => $item_ref->{database},
-                                           'idn'      => $item_ref->{idn},
+                        push @resultset, { id       => $item_ref->{id},
+					   database => $item_ref->{database},
                                        };
                     }
                 }
@@ -417,9 +417,8 @@ sub handler {
 	
                 # Eintraege merken fuer Lastresultset
                 foreach my $item_ref (@sortedoutputbuffer) {
-                    push @resultset, {
-                        'database' => $trefferliste,
-                        'idn'      => $item_ref->{idn},
+                    push @resultset, { id       => $item_ref->{id},
+				       database => $trefferliste,
                     };
                 }
             }

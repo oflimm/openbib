@@ -75,11 +75,6 @@ sub handler {
     my $loginname = ($query->param('loginname'))?$query->param('loginname'):'';
     my $password  = ($query->param('password'))?$query->param('password'):'';
     my $sessionID = $query->param('sessionID')||'';
-    my $lang      = $query->param('l')        || 'de';
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
   
     my $sessiondbh
         = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
@@ -88,7 +83,14 @@ sub handler {
     my $userdbh
         = DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd})
             or $logger->error_die($DBI::errstr);
-  
+
+    my $queryoptions_ref
+        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$r);
+
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+    
     unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
     

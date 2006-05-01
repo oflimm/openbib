@@ -86,10 +86,12 @@ sub handler {
     my $loeschen  = $query->param('loeschen')  || '';
     my $action    = ($query->param('action'))?$query->param('action'):'none';
     my $type      = ($query->param('type'))?$query->param('type'):'HTML';
-    my $lang      = $query->param('l')        || 'de';
 
+    my $queryoptions_ref
+        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$r);
+    
     # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
+    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
     
     # Haben wir eine authentifizierte Session?
@@ -97,9 +99,6 @@ sub handler {
   
     # Ab hier ist in $userid entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
-
-    my $queryoptions_ref
-        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$r);
 
     $logger->debug(YAML::Dump($queryoptions_ref));
 

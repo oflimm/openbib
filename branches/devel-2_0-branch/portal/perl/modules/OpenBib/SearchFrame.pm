@@ -86,10 +86,12 @@ sub handler {
     my $singleidn = $query->param('singleidn') || '';
     my $setmask   = $query->param('setmask') || '';
     my $action    = ($query->param('action'))?$query->param('action'):'';
-    my $lang      = $query->param('l')               || 'de';
 
+    my $queryoptions_ref
+        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$r);
+    
     # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
+    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){

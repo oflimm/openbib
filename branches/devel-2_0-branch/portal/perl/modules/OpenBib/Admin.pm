@@ -73,7 +73,8 @@ sub handler {
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
     # Verbindung zur SQL-Datenbank herstellen
-    my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
+    my $sessiondbh
+        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
   
     # Standardwerte festlegen
   
@@ -101,7 +102,6 @@ sub handler {
     my $do_edit         = $query->param('do_edit')         || '';
     my $do_show         = $query->param('do_show')         || '';
 
-    my $lang            = $query->param('l')               || 'de';
     my $user            = $query->param('user')            || '';
     my $passwd          = $query->param('passwd')          || '';
     my $dbid            = $query->param('dbid')            || '';
@@ -148,8 +148,11 @@ sub handler {
     my $rssid           = $query->param('rssid') || '';
     my @rssids          = ($query->param('rssids'))?$query->param('rssids'):();
 
+    my $queryoptions_ref
+        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$r);
+
     # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
+    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
         
     # Neue SessionID erzeugen, falls keine vorhanden
@@ -186,7 +189,6 @@ sub handler {
         # TT-Data erzeugen
     
         my $ttdata={
-            lang       => $lang,
             stylesheet => $stylesheet,
             config     => \%config,
             msg        => $msg,
@@ -221,7 +223,6 @@ sub handler {
 
         # TT-Data erzeugen
         my $ttdata={
-            lang       => $lang,
             stylesheet => $stylesheet,
             sessionID  => $sessionID,
             config     => \%config,
@@ -416,7 +417,6 @@ sub handler {
       
       
             my $ttdata={
-                lang       => $lang,
                 stylesheet => $stylesheet,
                 sessionID  => $sessionID,
 		  
@@ -485,7 +485,6 @@ sub handler {
             
             
             my $ttdata={
-                lang       => $lang,
                 stylesheet => $stylesheet,
                 sessionID  => $sessionID,
                 
@@ -550,7 +549,6 @@ sub handler {
         }
 
         my $ttdata={
-            lang       => $lang,
             stylesheet => $stylesheet,
             sessionID  => $sessionID,
             kataloge   => \@kataloge,
@@ -605,7 +603,6 @@ sub handler {
         }
 
         my $ttdata={
-            lang       => $lang,
             stylesheet => $stylesheet,
             sessionID  => $sessionID,
             views      => \@views,
@@ -780,7 +777,6 @@ sub handler {
             };
 
             my $ttdata={
-                lang       => $lang,
                 stylesheet => $stylesheet,
                 sessionID  => $sessionID,
 		  
@@ -882,7 +878,6 @@ sub handler {
           
           
           my $ttdata={
-              lang       => $lang,
               stylesheet  => $stylesheet,
               sessionID   => $sessionID,
               
@@ -948,7 +943,6 @@ sub handler {
         }
 
         my $ttdata={
-            lang       => $lang,
             stylesheet => $stylesheet,
             sessionID  => $sessionID,
             kataloge   => \@kataloge,
@@ -994,7 +988,6 @@ sub handler {
     
 
         my $ttdata={
-            lang       => $lang,
             stylesheet => $stylesheet,
             sessionID  => $sessionID,
 	         
@@ -1053,7 +1046,6 @@ sub handler {
             };
 
             my $ttdata={
-                lang       => $lang,
                 stylesheet => $stylesheet,
                 sessionID  => $sessionID,
 	         
@@ -1076,7 +1068,6 @@ sub handler {
     elsif ($do_logout) {
 
         my $ttdata={
-            lang       => $lang,
             stylesheet => $stylesheet,
             sessionID  => $sessionID,
             

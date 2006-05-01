@@ -163,12 +163,6 @@ sub handler {
     my $searchtitofnot    = $query->param('searchtitofnot')    || '';
     my $searchtitofswt    = $query->param('searchtitofswt')    || '';
 
-    my $lang              = $query->param('l')                 || 'de';
-
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
     #####                                                          ######
     ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########
     #####                                                          ######
@@ -190,6 +184,10 @@ sub handler {
 
     my $queryoptions_ref
         = OpenBib::Common::Util::get_queryoptions($sessiondbh,$r);
+
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
     
     my $targetdbinfo_ref
         = OpenBib::Common::Util::get_targetdbinfo($sessiondbh);

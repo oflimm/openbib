@@ -109,18 +109,17 @@ sub handler {
     my $queryid       = $query->param('queryid')       || '';
 
     my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
-    my $lang          = $query->param('l')         || 'de';
+
+    my $queryoptions_ref
+        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$r);
 
     # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
+    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     if ($hitrange eq "alles") {
         $hitrange=-1;
     }
-
-    my $queryoptions_ref
-        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$r);
     
     my $targetdbinfo_ref
         = OpenBib::Common::Util::get_targetdbinfo($sessiondbh);
@@ -417,7 +416,6 @@ sub handler {
         
         # TT-Data erzeugen
         my $ttdata={
-            lang       => $lang,
             view       => $view,
             stylesheet => $stylesheet,		
             sessionID  => $sessionID,
@@ -578,7 +576,6 @@ sub handler {
     # TT-Data erzeugen
 
     my $startttdata={
-        lang           => $lang,
         view           => $view,
         stylesheet     => $stylesheet,
         sessionID      => $sessionID,
@@ -734,7 +731,6 @@ sub handler {
 
             # TT-Data erzeugen
             my $ttdata={
-                lang            => $lang,
                 view            => $view,
                 sessionID       => $sessionID,
 		  
@@ -853,7 +849,6 @@ sub handler {
 
     # TT-Data erzeugen
     my $endttdata={
-        lang          => $lang,
         view          => $view,
         sessionID     => $sessionID,
 

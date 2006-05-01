@@ -148,7 +148,12 @@ use vars qw(%config);
                'neuzugang_nach_sys'    => 5,
                'neuerwerbung'          => 99,
            },
-           
+
+           lang => [
+               'de',
+               'en',
+           ],
+
 	   # Mapping der einzelnen Kompontenten zu ihren Zugriffs-URI's
 
 	   admin_loc             => '/portal/admin',
@@ -160,6 +165,7 @@ use vars qw(%config);
 	   databaseprofile_loc   => '/portal/katalogprofile',
 	   dispatchquery_loc     => '/portal/anfrageverteilen',
 	   externaljump_loc      => '/portal/externersprung',
+           frameset_loc          => '/portal/frameset',
 	   headerframe_loc       => '/portal/kopf',
 	   leave_loc             => '/portal/beenden',
 	   loadbalancer_loc      => '/portal/lastverteilung',
@@ -236,7 +242,7 @@ use vars qw(%config);
 	   tt_admin_showimx_tname        => 'admin_showimx',
 	   tt_admin_logout_tname         => 'admin_logout',
 
-	   tt_leave_tname          => 'leave',
+	   tt_leave_tname                => 'leave',
 
 	   tt_circulation_tname          => 'circulation',
 	   tt_circulation_reserv_tname   => 'circulation_reserv',
@@ -245,72 +251,73 @@ use vars qw(%config);
 
            tt_connector_rss_item_tname   => 'connector_rss_item',
 
-           tt_databaseprofile_tname   => 'databaseprofile',
+           tt_databaseprofile_tname      => 'databaseprofile',
 
-	   tt_externaljump_tname   => 'externaljump',
+	   tt_externaljump_tname         => 'externaljump',
 
-	   tt_headerframe_tname    => 'headerframe',
+	   tt_frameset_tname             => 'frameset',
+	   tt_headerframe_tname          => 'headerframe',
 
-	   tt_searchframe_simple_tname  => 'searchframe_simple',
-	   tt_searchframe_tname    => 'searchframe',
+	   tt_searchframe_simple_tname   => 'searchframe_simple',
+	   tt_searchframe_tname          => 'searchframe',
 
-	   tt_startopac_tname      => 'startopac',
+	   tt_startopac_tname            => 'startopac',
 
-	   tt_databasechoice_tname => 'databasechoice',
+	   tt_databasechoice_tname       => 'databasechoice',
 
-	   tt_loadbalancer_tname   => 'loadbalancer',
+	   tt_loadbalancer_tname         => 'loadbalancer',
 
-	   tt_login_tname          => 'login',
+	   tt_login_tname                => 'login',
 
-	   tt_mailcollection_mail_html_tname  => 'mailcollection_mail_html',
-	   tt_mailcollection_mail_plain_tname  => 'mailcollection_mail_plain',
-	   tt_mailcollection_mail_main_tname  => 'mailcollection_mail_main',
-	   tt_mailcollection_success_tname  => 'mailcollection_success',
+	   tt_mailcollection_mail_html_tname    => 'mailcollection_mail_html',
+	   tt_mailcollection_mail_plain_tname   => 'mailcollection_mail_plain',
+	   tt_mailcollection_mail_main_tname    => 'mailcollection_mail_main',
+	   tt_mailcollection_success_tname      => 'mailcollection_success',
 
-	   tt_managecollection_mail_tname  => 'managecollection_mail',
-	   tt_managecollection_print_tname  => 'managecollection_print',
+	   tt_managecollection_mail_tname       => 'managecollection_mail',
+	   tt_managecollection_print_tname      => 'managecollection_print',
 	   tt_managecollection_save_html_tname  => 'managecollection_save_html',
 	   tt_managecollection_save_plain_tname => 'managecollection_save_plain',
-	   tt_managecollection_show_tname  => 'managecollection_show',
+	   tt_managecollection_show_tname       => 'managecollection_show',
 
 	   tt_resultlists_choice_tname          => 'resultlists_choice',
 	   tt_resultlists_showall_tname         => 'resultlists_showall',
 	   tt_resultlists_showall_sortall_tname => 'resultlists_showall_sortall',
 	   tt_resultlists_showsinglepool_tname  => 'resultlists_showsinglepool',
 
-           tt_rssframe_tname          => 'rssframe',
+           tt_rssframe_tname              => 'rssframe',
 
-	   tt_search_showautset_tname => 'search_showautset',
-	   tt_search_showkorset_tname => 'search_showkorset',
-	   tt_search_showswtset_tname => 'search_showswtset',
-	   tt_search_shownotset_tname => 'search_shownotset',
-	   tt_search_showtitset_tname => 'search_showtitset',
+	   tt_search_showautset_tname     => 'search_showautset',
+	   tt_search_showkorset_tname     => 'search_showkorset',
+	   tt_search_showswtset_tname     => 'search_showswtset',
+	   tt_search_shownotset_tname     => 'search_shownotset',
+	   tt_search_showtitset_tname     => 'search_showtitset',
 	   tt_search_showmulttitset_tname => 'search_showmulttitset',
-	   tt_search_showtitlist_tname => 'search_showtitlist',
+	   tt_search_showtitlist_tname    => 'search_showtitlist',
 
-	   tt_search_showswtindex_tname => 'search_showswtindex',
+	   tt_search_showswtindex_tname   => 'search_showswtindex',
 
-	   tt_virtualsearch_result_start_tname => 'virtualsearch_result_start',
-	   tt_virtualsearch_result_item_tname  => 'virtualsearch_result_item',
-	   tt_virtualsearch_result_end_tname   => 'virtualsearch_result_end',
+	   tt_virtualsearch_result_start_tname  => 'virtualsearch_result_start',
+	   tt_virtualsearch_result_item_tname   => 'virtualsearch_result_item',
+	   tt_virtualsearch_result_end_tname    => 'virtualsearch_result_end',
 
 	   tt_virtualsearch_showverfindex_tname => 'virtualsearch_showverfindex',
-	   tt_virtualsearch_showkorindex_tname => 'virtualsearch_showkorindex',
-	   tt_virtualsearch_showswtindex_tname => 'virtualsearch_showswtindex',
+	   tt_virtualsearch_showkorindex_tname  => 'virtualsearch_showkorindex',
+	   tt_virtualsearch_showswtindex_tname  => 'virtualsearch_showswtindex',
 	   
 	   tt_userprefs_tname              => 'userprefs',
 	   tt_userprefs_ask_delete_tname   => 'userprefs_ask_delete',
 	   tt_userprefs_changefields_tname => 'userprefs_changefields',
-	   tt_userprefs_userdeleted_tname => 'userprefs_userdeleted',
+	   tt_userprefs_userdeleted_tname  => 'userprefs_userdeleted',
 
-	   tt_selfreg_tname         => 'selfreg',
-	   tt_selfreg_success_tname => 'selfreg_success',
+	   tt_selfreg_tname                => 'selfreg',
+	   tt_selfreg_success_tname        => 'selfreg_success',
 
-	   tt_mailpassword_tname          => 'mailpassword',
-	   tt_mailpassword_success_tname  => 'mailpassword_success',
+	   tt_mailpassword_tname           => 'mailpassword',
+	   tt_mailpassword_success_tname   => 'mailpassword_success',
 
-	   tt_error_tname          => 'error',
-	   tt_info_message_tname   => 'info_message',
+	   tt_error_tname                  => 'error',
+	   tt_info_message_tname           => 'info_message',
 
 	   # Anzahl der Spalten bei der Datenbankauswahlseite
 

@@ -90,12 +90,10 @@ sub init_new_session {
 
 
             my $queryoptions_ref={
-                sorttype  => undef,
-                sortorder => undef,
                 hitrange  => undef,
                 offset    => undef,
                 maxhits   => undef,
-                lang      => undef,
+                l         => undef,
                 profil    => undef,
                 autoplus  => undef,
             };
@@ -388,19 +386,16 @@ sub get_queryoptions {
     my $queryoptions_ref = load_queryoptions($sessiondbh,$sessionID);
 
     my $default_queryoptions_ref={
-        sorttype  => 'author',
-        sortorder => 'up',
         hitrange  => 20,
         offset    => 1,
         maxhits   => 500,
-        lang      => 'de',
+        l         => 'de',
         profil    => '',
         autoplus  => '',
     };
 
     # Abgleich mit uebergebenen Parametern
-    # Uebergene Parameter 'ueberschreiben' bestehende werden
-    # (undef oder gesetzt)
+    # Uebergebene Parameter 'ueberschreiben' gehen vor
     foreach my $option (keys %$queryoptions_ref){
         if (defined $query->param($option)){
             $queryoptions_ref->{$option}=$query->param($option);

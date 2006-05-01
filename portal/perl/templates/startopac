@@ -23,13 +23,12 @@
 [%-
 # Aufruf der Frames mit den gewuenschten Inhalten
 
+IF NOT headerframeurl;
 headerframeurl = "${config.headerframe_loc}?sessionID=${sessionID};view=${view}" ;
+END;
+
+IF NOT bodyframeurl;
 bodyframeurl   = "${config.searchframe_loc}?sessionID=${sessionID};view=${view};setmask=${setmask}" ;
-
-toprows = 140;
-
-IF view;
-    toprows = 175;
 END;
 
 IF searchsingletit && database;
@@ -40,19 +39,4 @@ IF fs;
     bodyframeurl = "${config.virtualsearch_loc}?hitrange=-1&view=${view}&sessionID=${sessionID}&searchall=In+allen+Katalogen+suchen&fs=${fs}&bool9=AND&verf=&bool1=AND&hst=&bool2=AND&swt=&bool3=AND&kor=&bool4=AND&notation=&bool5=AND&isbn=&bool8=AND&issn=&bool6=AND&sign=&bool7=AND&ejahr=&ejahrop=%3D&maxhits=200&sorttype=author&sortorder=up&profil=&autoplus=1";
 END;
 -%]
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-<title>KUG Recherche-Portal</title>
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<link href="/images/openbib/favicon.ico" rel="shortcut icon">
-</head>
- <frameset rows="[% toprows %],*" border="0" frameborder="0">
-   <noframes>
-        <p>[% msg.maketext("Sie brauchen einen Browser, der Frames darstellen kann, um diese Seiten mit ihren Inhalten wie geplant zu sehen.") %]</p>
-   </noframes>
-   <frame name="header" src="[% headerframeurl %]" noresize >
-   <frame name="body"   src="[% bodyframeurl %]">
- </frameset>
- [% meldung %]
-</html>
+[% PROCESS common/subtemplate name="frameset" %]

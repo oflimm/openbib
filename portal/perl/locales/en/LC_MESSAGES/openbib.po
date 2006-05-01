@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2006-04-30 19:56+0200\n"
+"PO-Revision-Date: 2006-05-01 16:02+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team:  <l10n@openbib.org>\n"
 "MIME-Version: 1.0\n"
@@ -169,11 +169,11 @@ msgid ""
 "Auf dieser Seite k&ouml;nnen Sie f&uuml;r einige Kataloge des KUG\n"
 "RSS-Feeds abonnieren. Dazu kopieren Sie bitte den jeweiligen URL von\n"
 "dieser Seite und kopieren ihn in Ihr RSS-Leseprogramm."
-msgstr ""
+msgstr "At this page you can subscribe to RSS-feeds of several catalogues. To do so, please copy the corresponding URL from this page to your RSS-reader program."
 
 #: ../templates/search_showtitset:27
 msgid "Ausdrucken"
-msgstr ""
+msgstr "Print"
 
 #: ../templates/userprefs:99
 msgid "Ausgeliehen"
@@ -181,15 +181,15 @@ msgstr "Borrowed"
 
 #: ../templates/resultlists_choice:32
 msgid "Ausgew&auml;hlte Recherche"
-msgstr ""
+msgstr "Selected search request"
 
 #: ../templates/managecollection_show:59
 msgid "Ausgew&auml;hlte Titel l&ouml;schen"
-msgstr ""
+msgstr "Delete selected title"
 
 #: ../templates/circulation_remind:48
 msgid "Ausleih-/Buchungsdatum"
-msgstr ""
+msgstr "Date of issue/booking date"
 
 #: ../templates/admin_editcat:150
 msgid "Ausleih-Einstellungen"
@@ -199,7 +199,7 @@ msgstr "Circulation-Options"
 #: ../templates/managecollection_tit_as_html_simple:52
 #: ../templates/search_showmulttitset:66 ../templates/search_showtitset:139
 msgid "Ausleihe/Exemplare"
-msgstr ""
+msgstr "Loan/Copies"
 
 #: ../templates/circulation:33 ../templates/circulation_orders:33
 #: ../templates/circulation_remind:33 ../templates/circulation_reserv:33
@@ -230,16 +230,16 @@ msgstr "Auto-conversion (cron)"
 
 #: ../templates/searchframe:166
 msgid "Autor/Körperschaft"
-msgstr ""
+msgstr "Author/Corporate Body"
 
 #: ../templates/virtualsearch_more_search_tips:27
 msgid "B&uuml;cher"
-msgstr ""
+msgstr "Books"
 
 #. ("<a href=\"#Suchhinweise\">","</a>")
 #: ../templates/virtualsearch_result_end:17
 msgid "Beachten Sie bitte auch unserere %1weitergehenden Suchhinweise%2."
-msgstr ""
+msgstr "Please consider our %1further advices regarding search requests%2, too"
 
 #: ../templates/admin_showsessions:39
 msgid "Beginn"
@@ -283,11 +283,11 @@ msgstr "Description"
 #: ../templates/search_showmulttitset:52 ../templates/search_showmulttitset:70
 #: ../templates/search_showtitset:118 ../templates/search_showtitset:143
 msgid "Besitzende Bibliothek"
-msgstr ""
+msgstr "Owning library"
 
 #: ../templates/search_info:31
 msgid "Besonderheit bei"
-msgstr ""
+msgstr "Characteristics of"
 
 #: ../templates/admin_editcat:168
 msgid "Bestands-&Uuml;berpr&uuml;fungs-URL"
@@ -297,15 +297,15 @@ msgstr "Media-Check-URL"
 #: ../templates/managecollection_tit_as_html_simple:38
 #: ../templates/search_showmulttitset:52 ../templates/search_showtitset:118
 msgid "Bestandsverlauf"
-msgstr ""
+msgstr "History of holdings"
 
 #: ../templates/admin_showsessions:35
 msgid "Bestehende Sessions"
-msgstr ""
+msgstr "Active sessions"
 
 #: ../templates/circulation_orders:48
 msgid "Bestelldatum"
-msgstr ""
+msgstr "Date of order"
 
 #: ../templates/circulation:35 ../templates/circulation_orders:35
 #: ../templates/circulation_remind:35 ../templates/circulation_reserv:35
@@ -315,41 +315,41 @@ msgstr "Orderings"
 
 #: ../templates/managecollection_mail:35
 msgid "Betreff"
-msgstr ""
+msgstr "Subject"
 
 #: ../modules/OpenBib/VirtualSearch.pm:501
 msgid "Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."
-msgstr ""
+msgstr "Please enter a four digit number as the year of publication."
 
 #: ../templates/userprefs:88
 msgid ""
 "Bitte wenden Sie sich bei Unstimmigkeiten in Ihren Personendaten an die "
 "Auskunft der Bibliothek."
-msgstr ""
+msgstr "Please contact the information desk of your library in case of inconsistencies regarding your personal data."
 
 #: ../templates/search_showkorset:29
 msgid "C0001"
-msgstr ""
+msgstr "C0001"
 
 #: ../templates/search_showkorset:30
 msgid "C0102"
-msgstr ""
+msgstr "C0102"
 
 #: ../templates/search_showkorset:31
 msgid "C0103"
-msgstr ""
+msgstr "C0103"
 
 #: ../templates/search_showkorset:32
 msgid "C0110"
-msgstr ""
+msgstr "C0110"
 
 #: ../templates/search_showkorset:33
 msgid "C0111"
-msgstr ""
+msgstr "C0111"
 
 #: ../templates/search_showkorset:34
 msgid "C5000"
-msgstr ""
+msgstr "C5000"
 
 #: ../templates/admin_editcat:128
 msgid "DB-Datei"
@@ -369,7 +369,7 @@ msgid ""
 "Damit Ihnen Ihr im Rahmen der Selbstregistrierung vergebenes Passwort per E-"
 "Mail zugeschickt werden kann, geben Sie bitte Ihren Benutzernamen an, der "
 "Ihrer E-Mail-Adresse entspricht."
-msgstr ""
+msgstr "Please enter your e-mail address as your user name, so we can mail your password regarding the self registration to you."
 
 #: ../modules/OpenBib/VirtualSearch.pm:512
 #: ../modules/OpenBib/VirtualSearch.pm:524
@@ -378,15 +378,15 @@ msgid ""
 "mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die "
 "Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese "
 "Einschränkung."
-msgstr ""
+msgstr "The search term for the year of publication is only considered in combination with the AND-operation and at least another search term. Otherwise the result list can become too big."
 
 #: ../templates/admin_editsession:54 ../templates/admin_showviews:58
 msgid "Datenbanken"
-msgstr ""
+msgstr "Databases"
 
 #: ../templates/externaljump:73
 msgid "Datenbankinformationssystem (DBIS)"
-msgstr ""
+msgstr "DataBaseInformationSystem (DBIS)"
 
 #: ../templates/databaseprofile:63
 msgid ""
@@ -402,30 +402,30 @@ msgstr ""
 msgid ""
 "Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank "
 "zur Suche ausgewählt wurde."
-msgstr ""
+msgstr "This search term has to consist of at least 3 characters, in case more than one catalogue is selected for your search request."
 
 #: ../templates/databaseprofile:71
 msgid "Derzeit angezeigtes Profil"
-msgstr ""
+msgstr "Currently shown profile"
 
 #: ../modules/OpenBib/ResultLists.pm:134
 msgid "Derzeit existiert (noch) keine Trefferliste"
-msgstr ""
+msgstr "At the moment there doesn't exist a result list (yet)"
 
 #: ../modules/OpenBib/ManageCollection.pm:208
 msgid "Derzeit ist Ihre Merkliste leer"
-msgstr ""
+msgstr "At the moment your list of interest is empty"
 
 #: ../templates/userprefs_changefields:26
 msgid ""
 "Die Einstellung Ihrer Suchfelder wurde erfolgreich vorgenommen. Klicken Sie "
 "nun bitte auf 'Recherche' in der Navigationsleiste, um die neuen "
 "Suchfeldauswahl zu verwenden."
-msgstr ""
+msgstr "The configuration of your search categories is successful. Please click on 'Search' in your navigation menu to use the new choice of search categories."
 
 #: ../modules/OpenBib/SelfReg.pm:129
 msgid "Die beiden eingegebenen Passworte stimmen nicht überein."
-msgstr ""
+msgstr "The two passwords are different."
 
 #: ../templates/search_info:24
 msgid ""
@@ -441,23 +441,23 @@ msgstr ""
 
 #: ../modules/OpenBib/Circulation.pm:117 ../modules/OpenBib/UserPrefs.pm:128
 msgid "Diese Session ist nicht authentifiziert."
-msgstr ""
+msgstr "The session is not authenticated."
 
 #: ../templates/externaljump:54
 msgid "Digitale Bibliothek / Monographien (Fernleihe)"
-msgstr ""
+msgstr "Digital library / Monographs (ILL)"
 
 #: ../templates/externaljump:63
 msgid "Digitale Bibliothek / Zeitschriften (Aufsatzlieferung)"
-msgstr ""
+msgstr "Digital library / Journals (Electronic journal delivery)"
 
 #: ../templates/managecollection_print:25
 msgid "Druckansicht Titel"
-msgstr ""
+msgstr "Print view of title"
 
 #: ../templates/userprefs:77
 msgid "E-Mail"
-msgstr ""
+msgstr "E-mail"
 
 #. ("<a href=\"http://$config{servername}$config{login_loc}?sessionID=$sessionID?action=login\">","</a>")
 #: ../modules/OpenBib/SelfReg.pm:149

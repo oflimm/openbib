@@ -223,6 +223,10 @@ a:active.invisible {
   border-bottom: 3px solid #ffffff; 
 }
 
+#langchoice {
+  float: right;
+}
+
 #tabbingmenu a:visited {
   color: #000000; 
   background: #ffffff; 

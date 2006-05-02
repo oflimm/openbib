@@ -282,7 +282,7 @@ sub handler {
 		    rating         => 0,
 		    
 		    resultlist     => \@sortedoutputbuffer,
-		    dbinfo         => $targetdbinfo_ref->{dbinfo},
+		    targetdbinfo   => $targetdbinfo_ref,
 		    
 		    loginname      => $loginname,
 		    password       => $password,
@@ -364,7 +364,7 @@ sub handler {
 		    rating         => 0,
 		    
 		    resultlists    => \@resultlists,
-		    dbinfo         => $targetdbinfo_ref->{dbinfo},
+		    targetdbinfo   => $targetdbinfo_ref,
 		    
 		    loginname      => $loginname,
 		    password       => $password,

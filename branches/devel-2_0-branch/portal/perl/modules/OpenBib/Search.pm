@@ -253,12 +253,16 @@ sub handler {
                 database          => $database,
                 sessionID         => $sessionID,
             });
+
+	    my $poolname=$targetdbinfo_ref->{sigel}{
+	      $targetdbinfo_ref->{dbases}{$database}};
             
             # TT-Data erzeugen
             my $ttdata={
                 view             => $view,
                 stylesheet       => $stylesheet,
                 database         => $database,
+		poolname         => $poolname,
                 queryoptions_ref => $queryoptions_ref,
                 sessionID        => $sessionID,
                 normset          => $normset,
@@ -487,11 +491,15 @@ sub handler {
                 sessionID         => $sessionID,
             });
             
+	    my $poolname=$targetdbinfo_ref->{sigel}{
+	      $targetdbinfo_ref->{dbases}{$database}};
+
             # TT-Data erzeugen
             my $ttdata={
                 view       => $view,
                 stylesheet => $stylesheet,
                 database   => $database,
+	        poolname   => $poolname,
                 qopts      => $queryoptions_ref,
                 sessionID  => $sessionID,
                 normset    => $normset,
@@ -512,11 +520,15 @@ sub handler {
                 sessionID         => $sessionID,
             });
             
+	    my $poolname=$targetdbinfo_ref->{sigel}{
+	      $targetdbinfo_ref->{dbases}{$database}};
+
             # TT-Data erzeugen
             my $ttdata={
                 view       => $view,
                 stylesheet => $stylesheet,
                 database   => $database,
+		poolname   => $poolname,
                 qopts      => $queryoptions_ref,
                 sessionID  => $sessionID,
                 normset    => $normset,
@@ -687,11 +699,15 @@ sub handler {
             sessionID         => $sessionID,
         });
         
+	my $poolname=$targetdbinfo_ref->{sigel}{
+	  $targetdbinfo_ref->{dbases}{$database}};
+
         # TT-Data erzeugen
         my $ttdata={
             view       => $view,
             stylesheet => $stylesheet,
             database   => $database,
+            poolname   => $poolname,
             qopts      => $queryoptions_ref,
             sessionID  => $sessionID,
             normset    => $normset,
@@ -712,11 +728,15 @@ sub handler {
             sessionID         => $sessionID,
         });
         
+	my $poolname=$targetdbinfo_ref->{sigel}{
+	  $targetdbinfo_ref->{dbases}{$database}};
+
         # TT-Data erzeugen
         my $ttdata={
             view       => $view,
             stylesheet => $stylesheet,
             database   => $database,
+	    poolname   => $poolname,
             qopts      => $queryoptions_ref,
             sessionID  => $sessionID,
             normset    => $normset,
@@ -737,11 +757,15 @@ sub handler {
             sessionID         => $sessionID,
         });
 	
+	my $poolname=$targetdbinfo_ref->{sigel}{
+	  $targetdbinfo_ref->{dbases}{$database}};
+
         # TT-Data erzeugen
         my $ttdata={
             view       => $view,
             stylesheet => $stylesheet,
             database   => $database,
+            poolname   => $poolname,
             qopts      => $queryoptions_ref,
             sessionID  => $sessionID,
             normset    => $normset,
@@ -762,11 +786,15 @@ sub handler {
             sessionID         => $sessionID,
         });
         
+	my $poolname=$targetdbinfo_ref->{sigel}{
+	  $targetdbinfo_ref->{dbases}{$database}};
+
         # TT-Data erzeugen
         my $ttdata={
             view       => $view,
             stylesheet => $stylesheet,
             database   => $database,
+	    poolname   => $poolname,
             qopts      => $queryoptions_ref,
             sessionID  => $sessionID,
             normset    => $normset,

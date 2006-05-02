@@ -158,51 +158,44 @@ sub handler {
     $idnresult->finish();
   
     my $hits;
-    my $thisquery="";
+    my $searchquery_ref;
 
     if ($queryid ne "") {
         my $idnresult=$sessiondbh->prepare("select query,hits from queries where queryid = ?") or $logger->error($DBI::errstr);
         $idnresult->execute($queryid) or $logger->error($DBI::errstr);
     
-        my $result=$idnresult->fetchrow_hashref();
-        my $query = decode_utf8($result->{'query'});
-    
-        $query=~s/"/&quot;/g;
+        my $result       = $idnresult->fetchrow_hashref();
+        $searchquery_ref = Storable::thaw(pack "H*",$result->{query});
+        $hits            = decode_utf8($result->{'hits'});
 
-        $hits = decode_utf8($result->{'hits'});
-
-        ($fs,$verf,$hst,$swt,$kor,$sign,$isbn,$issn,$notation,$mart,$ejahr,$hststring,$boolhst,$boolswt,$boolkor,$boolnotation,$boolisbn,$boolsign,$boolejahr,$boolissn,$boolverf,$boolfs,$boolmart,$boolhststring)=split('\|\|',$query);
         $idnresult->finish();
-    
-        $thisquery.="FS: $fs "          if ($fs);
-        $thisquery.="AUT: $verf "       if ($verf);
-        $thisquery.="HST: $hst "        if ($hst);
-        $thisquery.="SWT: $swt "        if ($swt);
-        $thisquery.="KOR: $kor "        if ($kor);
-        $thisquery.="NOT: $notation "   if ($notation);
-        $thisquery.="SIG: $sign "       if ($sign);
-        $thisquery.="EJAHR: $ejahr "    if ($ejahr);
-        $thisquery.="ISBN: $isbn "      if ($isbn);
-        $thisquery.="ISSN: $issn "      if ($issn);
-        $thisquery.="MART: $mart "      if ($mart);
-        $thisquery.="HSTR: $hststring " if ($hststring);
-        $thisquery.="= Treffer: $hits"  if ($hits);
 
-        # Plus-Zeichen entfernen
-    
-        $verf  =~s/%2B(\w+)/$1/g;
-        $hst   =~s/%2B(\w+)/$1/g;
-        $kor   =~s/%2B(\w+)/$1/g;
-        $ejahr =~s/%2B(\w+)/$1/g;
-        $isbn  =~s/%2B(\w+)/$1/g;
-        $issn  =~s/%2B(\w+)/$1/g;
+#         $thisquery.="SWT: $swt "        if ($swt);
+#         $thisquery.="KOR: $kor "        if ($kor);
+#         $thisquery.="NOT: $notation "   if ($notation);
+#         $thisquery.="SIG: $sign "       if ($sign);
+#         $thisquery.="EJAHR: $ejahr "    if ($ejahr);
+#         $thisquery.="ISBN: $isbn "      if ($isbn);
+#         $thisquery.="ISSN: $issn "      if ($issn);
+#         $thisquery.="MART: $mart "      if ($mart);
+#         $thisquery.="HSTR: $hststring " if ($hststring);
+#         $thisquery.="= Treffer: $hits"  if ($hits);
 
-        $verf  =~s/\+(\w+)/$1/g;
-        $hst   =~s/\+(\w+)/$1/g;
-        $kor   =~s/\+(\w+)/$1/g;
-        $ejahr =~s/\+(\w+)/$1/g;
-        $isbn  =~s/\+(\w+)/$1/g;
-        $issn  =~s/\+(\w+)/$1/g;
+#         # Plus-Zeichen entfernen
+    
+#         $verf  =~s/%2B(\w+)/$1/g;
+#         $hst   =~s/%2B(\w+)/$1/g;
+#         $kor   =~s/%2B(\w+)/$1/g;
+#         $ejahr =~s/%2B(\w+)/$1/g;
+#         $isbn  =~s/%2B(\w+)/$1/g;
+#         $issn  =~s/%2B(\w+)/$1/g;
+
+#         $verf  =~s/\+(\w+)/$1/g;
+#         $hst   =~s/\+(\w+)/$1/g;
+#         $kor   =~s/\+(\w+)/$1/g;
+#         $ejahr =~s/\+(\w+)/$1/g;
+#         $isbn  =~s/\+(\w+)/$1/g;
+#         $issn  =~s/\+(\w+)/$1/g;
     
     }
     else {
@@ -215,15 +208,15 @@ sub handler {
 
     # Haben wir eine Benutzernummer? Dann versuchen wir den 
     # Authentifizierten Sprung in die Digibib
-    my $loginname="";
-    my $password="";
+    my $loginname = "";
+    my $password  = "";
 
     my $globalsessionID="$config{servername}:$sessionID";
     my $userresult=$userdbh->prepare("select user.loginname,user.pin,count(user.loginname) as rowcount from usersession,user where usersession.sessionid = ? and user.userid=usersession.userid") or die "Error -- $DBI::errstr";
  
     $userresult->execute($globalsessionID);
-    my $res=$userresult->fetchrow_hashref();
-    my $rows=$res->{rowcount};
+    my $res  = $userresult->fetchrow_hashref();
+    my $rows = $res->{rowcount};
 
     if ($rows > 0) {
         $loginname = decode_utf8($res->{'loginname'});
@@ -242,7 +235,6 @@ sub handler {
         }
     }
 
-
     $idnresult->finish();
 
     # TT-Data erzeugen
@@ -253,23 +245,13 @@ sub handler {
         sessionID    => $sessionID,
         queryid      => $queryid,
 	      
-        fs           => $fs,
-        hst          => $hst,
-        hststring    => $hststring,
-        verf         => $verf,
-        kor          => $kor,
-        swt          => $swt,
-        notation     => $notation,
-        isbn         => $isbn,
-        issn         => $issn,
-        sign         => $sign,
-        mart         => $mart,
-        ejahr        => $ejahr,
-        thisquery    => $thisquery,
+	thisquery    => {
+			 searchquery => $searchquery_ref,
+			 hits        => $hits,
+			},
+
         authurl      => $authurl,
 	      
-        show_corporate_banner => 0,
-        show_foot_banner      => 1,
         config       => \%config,
         msg          => $msg,
     };

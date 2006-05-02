@@ -70,6 +70,7 @@ CREATE TABLE dbinfo (
  dbid        BIGINT AUTO_INCREMENT PRIMARY KEY,
  orgunit     VARCHAR(20),
  description TEXT,
+ shortdesc   TEXT,
  system      TEXT, 
  dbname      VARCHAR(255),
  sigel       VARCHAR(20),

@@ -107,6 +107,7 @@ sub handler {
     my $dbid            = $query->param('dbid')            || '';
     my $orgunit         = $query->param('orgunit')         || '';
     my $description     = $query->param('description')     || '';
+    my $shortdesc       = $query->param('shortdesc')       || '';
     my $system          = $query->param('system')          || '';
     my $dbname          = $query->param('dbname')          || '';
     my $sigel           = $query->param('sigel')           || '';
@@ -272,8 +273,8 @@ sub handler {
 
         }
         elsif ($do_change) {
-            my $idnresult=$sessiondbh->prepare("update dbinfo set orgunit = ?, description = ?, system = ?, dbname = ?, sigel = ?, url = ?, active = ? where dbid = ?") or $logger->error($DBI::errstr); # 
-            $idnresult->execute($orgunit,$description,$system,$dbname,$sigel,$url,$active,$dbid) or $logger->error($DBI::errstr);
+            my $idnresult=$sessiondbh->prepare("update dbinfo set orgunit = ?, description = ?, shortdesc = ?, system = ?, dbname = ?, sigel = ?, url = ?, active = ? where dbid = ?") or $logger->error($DBI::errstr); # 
+            $idnresult->execute($orgunit,$description,$shortdesc,$system,$dbname,$sigel,$url,$active,$dbid) or $logger->error($DBI::errstr);
             $idnresult->finish();
 
             $idnresult=$sessiondbh->prepare("update dboptions set protocol = ?, host = ?, remotepath = ?, remoteuser = ?, remotepasswd = ?, titfilename = ?, autfilename = ?, korfilename = ?, swtfilename = ?, notfilename = ?, mexfilename = ?, filename = ?, autoconvert = ?, circ = ?, circurl = ?, circcheckurl = ?, circdb = ? where dbname= ?") or $logger->error($DBI::errstr);
@@ -309,8 +310,8 @@ sub handler {
                 return OK;
             }
 
-            $idnresult=$sessiondbh->prepare("insert into dbinfo values (NULL,?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
-            $idnresult->execute($orgunit,$description,$system,$dbname,$sigel,$url,$active) or $logger->error($DBI::errstr);
+            $idnresult=$sessiondbh->prepare("insert into dbinfo values (NULL,?,?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
+            $idnresult->execute($orgunit,$description,$shortdesc,$system,$dbname,$sigel,$url,$active) or $logger->error($DBI::errstr);
             $idnresult=$sessiondbh->prepare("insert into titcount values (?,'0')") or $logger->error($DBI::errstr);
             $idnresult->execute($dbname) or $logger->error($DBI::errstr);
             $idnresult=$sessiondbh->prepare("insert into dboptions values (?,'','','','','','','','','','','','',0,0,'','','')") or $logger->error($DBI::errstr);
@@ -335,6 +336,7 @@ sub handler {
             my $dbid        = decode_utf8($result->{'dbid'});
             my $orgunit     = decode_utf8($result->{'orgunit'});
             my $description = decode_utf8($result->{'description'});
+            my $shortdesc   = decode_utf8($result->{'shortdesc'});
             my $system      = decode_utf8($result->{'system'});
             my $dbname      = decode_utf8($result->{'dbname'});
             my $sigel       = decode_utf8($result->{'sigel'});
@@ -383,6 +385,7 @@ sub handler {
                 dbid        => $dbid,
                 orgunit     => $orgunit,
                 description => $description,
+                shortdesc   => $shortdesc,
                 system      => $system,
                 dbname      => $dbname,
                 sigel       => $sigel,

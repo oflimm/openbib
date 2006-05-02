@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 <!-- Beginn Result Item -->
-<tr class="titlerow"><td>&nbsp;</td><td>[% dbinfo %]</td><td
+<tr class="titlerow"><td>&nbsp;</td><td>[% dbinfo.full %]</td><td
 align="right" colspan="3"><strong>[% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %]</strong></td></tr>
 
 [% listrow = 'listrow2' %]

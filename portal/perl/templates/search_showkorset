@@ -17,7 +17,7 @@
 
 <table BORDER="0" CELLSPACING="0" CELLPADDING="0" width="100%">
   <tr class="titlerow">
-    <td  width="20">&nbsp;</td><td valign="middle" ALIGN="left" height="32"><img src="/images/openbib/[% database %].png"></td>
+    <td  width="20">&nbsp;</td><td valign="middle" ALIGN="left" height="32">[% poolname.short %]</td>
   </tr>
 </table>
 

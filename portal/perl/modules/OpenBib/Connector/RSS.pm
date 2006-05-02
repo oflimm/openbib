@@ -94,7 +94,7 @@ sub handler {
 
     # Check
 
-    if (! exists $config{rss_types}{$type} || ! exists $targetdbinfo_ref->{dbnames}{$database}){
+    if (! exists $config{rss_types}{$type} || ! exists $targetdbinfo_ref->{dbnames}{$database}{full}){
         OpenBib::Common::Util::print_warning("RSS-Feed ungueltig",$r);
     }
 
@@ -174,7 +174,7 @@ sub handler {
         
         $logger->debug("Update des RSS-Caches");
         
-        my $dbdesc=$targetdbinfo_ref->{dbnames}{$database};
+        my $dbdesc=$targetdbinfo_ref->{dbnames}{$database}{full};
    
         my $rss = new XML::RSS ( version => '1.0' );
         

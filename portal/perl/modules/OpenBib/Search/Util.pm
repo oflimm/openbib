@@ -993,7 +993,7 @@ sub print_tit_list_by_idn {
         bookinfo       => $bookinfo,
         sessionID      => $sessionID,
 	      
-        dbinfo         => $targetdbinfo_ref->{dbinfo},
+        targetdbinfo   => $targetdbinfo_ref,
         itemlist       => \@itemlist,
         hostself       => $hostself,
         queryargs      => $queryargs,
@@ -1005,12 +1005,6 @@ sub print_tit_list_by_idn {
         offset         => $offset,
         nav            => \@nav,
 
-        utf2iso        => sub {
-            my $string=shift;
-            $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
-            return $string;
-        },
-	      
         config         => \%config,
         msg            => $msg,
     };
@@ -1165,12 +1159,6 @@ sub print_mult_tit_set_by_idn {
         qopts      => $queryoptions_ref,
         sessionID  => $sessionID,
         titsets    => \@titsets,
-
-        utf2iso    => sub {
-            my $string=shift;
-            $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
-            return $string;
-        },
 
         config     => \%config,
         msg        => $msg,
@@ -1601,7 +1589,10 @@ sub get_mex_set_by_idn {
             $normset_ref->{X4000}{content}=$targetdbinfo_ref->{sigel}{$sigel};
         }
         else {
-            $normset_ref->{X4000}{content}="($sigel)";
+            $normset_ref->{X4000}{content}= {
+					     full  => "($sigel)",
+					     short => "($sigel)",
+					    };
         }
     }
     # sonst wird der Datenbankname zur Findung des Sigels herangezogen

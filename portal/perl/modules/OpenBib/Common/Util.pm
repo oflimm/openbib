@@ -965,7 +965,7 @@ sub get_targetdbinfo {
   
     # Verweis: Datenbankname -> Informationen zum zugeh"origen Institut/Seminar
   
-    my $dbinforesult=$sessiondbh->prepare("select dbname,sigel,url,description from dbinfo") or $logger->error($DBI::errstr);
+    my $dbinforesult=$sessiondbh->prepare("select dbname,sigel,url,description,shortdesc from dbinfo") or $logger->error($DBI::errstr);
     $dbinforesult->execute() or $logger->error($DBI::errstr);;
   
     my %sigel   =();
@@ -979,16 +979,20 @@ sub get_targetdbinfo {
         my $sigel       = decode_utf8($result->{'sigel'});
         my $url         = decode_utf8($result->{'url'});
         my $description = decode_utf8($result->{'description'});
+        my $shortdesc   = decode_utf8($result->{'shortdesc'});
     
         ##################################################################### 
         ## Wandlungstabelle Bibliothekssigel <-> Bibliotheksname
     
-        $sigel{"$sigel"}="$description";
+        $sigel{"$sigel"} = {
+			    full  => $description,
+			    short => $shortdesc,
+			   };
     
         #####################################################################
         ## Wandlungstabelle Bibliothekssigel <-> Informations-URL
     
-        $bibinfo{"$sigel"}="$url";
+        $bibinfo{"$sigel"} = "$url";
     
         #####################################################################
         ## Wandlungstabelle  Name SQL-Datenbank <-> Datenbankinfo
@@ -997,17 +1001,26 @@ sub get_targetdbinfo {
         # damit verlinkt
     
         if ($url ne "") {
-            $dbinfo{"$dbname"}="<a href=\"$url\" target=\"_blank\">$description</a>";
+            $dbinfo{"$dbname"} = {
+				  full  => "<a href=\"$url\" target=\"_blank\">$description</a>",
+				  short => "<a href=\"$url\" target=\"_blank\">$shortdesc</a>",
+				 };
         } else {
-            $dbinfo{"$dbname"}="$description";
+            $dbinfo{"$dbname"} = {
+				  full  => "$description",
+				  short => "$shortdesc",
+				 };
         }
     
         #####################################################################
         ## Wandlungstabelle  Name SQL-Datenbank <-> Bibliothekssigel
     
-        $dbases{"$dbname"}="$sigel";
+        $dbases{"$dbname"}       = "$sigel";
 
-        $dbnames{"$dbname"}=$description;
+        $dbnames{"$dbname"}      = {
+				    full => $description,
+				    short => $shortdesc,
+				   };
     }
   
     $dbinforesult->finish;

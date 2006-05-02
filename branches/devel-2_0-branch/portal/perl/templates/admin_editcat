@@ -36,11 +36,7 @@
 <tr><th>[% msg.maketext("Katalog bearbeiten") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:12pt">
 <table>
-<tr><td><b>[% msg.maketext("Fakult&auml;t") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("System") %]</b></td><td>
-<b>[% msg.maketext("DB-Name") %]</b></td><td><b>[% msg.maketext("Sigel") %]</b></td><td>[% msg.maketext("URL") %]</td><td><b>[% msg.maketext("Aktiv") %]</b></td><td></td></tr>
-
-<tr><td>
-
+<tr><td><b>[% msg.maketext("Fakult&auml;t") %]</b></td><td>
 <select name="orgunit">
 [% FOREACH item IN config.orgunits %]
 <option value="[% item.short %]"
@@ -50,10 +46,11 @@
 >[% item.desc %]</option>
 [% END %]
 </select>
-
-</td><td><input
-type="text" name="description" value="[% katalog.description
-%]"></td><td><select name="system">
+</td></tr>
+<tr><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><input type="text" name="description" value="[% katalog.description %]" size="60"></td></tr>
+<tr><td><b>[% msg.maketext("Kurzbeschreibung") %]</b></td><td><input type="text" name="shortdesc" value="[% katalog.shortdesc %]" size="60"></td></tr>
+<tr><td><b>[% msg.maketext("System") %]</b></td><td>
+<select name="system">
 <option value="Lars" 
 [% IF katalog.system == 'Lars' %]
 selected
@@ -70,10 +67,13 @@ selected
 [% IF katalog.system == 'Sisis' %]
 selected
 [% END %]
->Sisis</option></select></td><td>
-[% katalog.dbname %]</td><td><input type="text" name="sigel" value="[%
-katalog.sigel %]" size="3"></td><td><input type="text" name="url"
-value="[% katalog.url %]" size="20"></td><td><select
+>Sisis</option></select>
+</td></tr>
+<tr><td><b>[% msg.maketext("DB-Name") %]</b></td><td>[% katalog.dbname %]</td></tr>
+<tr><td><b>[% msg.maketext("Sigel") %]</b></td><td><input type="text" name="sigel" value="[% katalog.sigel %]" size="3"></td></tr>
+<tr><td><b>[% msg.maketext("URL") %]</b></td><td><input type="text" name="url" value="[% katalog.url %]" size="60"></td></tr>
+<tr><td><b>[% msg.maketext("Aktiv") %]</b></td><td>
+<select
 name=active><option value="1" 
 [% IF katalog.active == 1 %]
 selected

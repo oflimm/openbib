@@ -87,7 +87,7 @@
       
 [% listrow = 'listrow2' %]
 [% FOREACH resultdb IN resultdbs %]
-<tr><td class="[% listrow %]"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %]&trefferliste=[% resultdb.trefferdb %]&queryid=[% thisquery.id %]&view=[% view %]"><b>[% resultdb.trefferdbdesc %]</b></a></td><td align=right>[% resultdb.trefferzahl %]</td></tr>
+<tr><td class="[% listrow %]"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %]&trefferliste=[% resultdb.trefferdb %]&queryid=[% thisquery.id %]&view=[% view %]"><b>[% resultdb.trefferdbdesc.full %]</b></a></td><td align=right>[% resultdb.trefferzahl %]</td></tr>
 [% IF listrow == 'listrow1' %]
 [% listrow = 'listrow2' %]
 [% ELSE %]

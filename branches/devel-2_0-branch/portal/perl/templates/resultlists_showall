@@ -49,7 +49,7 @@
 [% FOREACH result IN resultlists %]
 [% database = result.database %]
 
-<tr class="titlerow"><td>&nbsp;</td><td>[% dbinfo.$database %]</td><td align=right colspan=3><strong>[% result.resultlist.size %] [% msg.maketext("Treffer") %]</strong></td></tr>
+<tr class="titlerow"><td>&nbsp;</td><td>[% targetdbinfo.dbinfo.$database.full %]</td><td align=right colspan=3><strong>[% result.resultlist.size %] [% msg.maketext("Treffer") %]</strong></td></tr>
 
 [% listrow = 'listrow1' %]
 [% FOREACH item IN result.resultlist %]

@@ -72,7 +72,7 @@ sub failure_handler {
     my $logger = get_logger();
 
     $logger->info(ref($failing_msg), $key);
-    return "L10N Message Error";
+    return "No translation available";
 }
 
 1;

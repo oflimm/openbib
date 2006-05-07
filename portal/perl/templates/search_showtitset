@@ -18,7 +18,7 @@
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
   <tr class="titlerow">
     <td width="20">&nbsp;</td>
-    <td valign="middle" align="left" height="32">[% poolname.short %]</td>
+    <td valign="middle" align="left" height="32"><span class="dbdescshort">[% poolname.short %]</span></td>
       <td>&nbsp;</td>
       <td class="fbuttonarea" align="right" width="180">
 	<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% database %];singleidn=[% titidn %]" target="header" title="In die Merkliste"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>&nbsp;

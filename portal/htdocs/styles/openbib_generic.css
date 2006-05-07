@@ -259,3 +259,8 @@ a:active.invisible {
   background: #ffffff;
   text-decoration:underline
 }
+
+.dbdescshort {
+  font-size:1.2em;
+  font-weight:bold;
+}

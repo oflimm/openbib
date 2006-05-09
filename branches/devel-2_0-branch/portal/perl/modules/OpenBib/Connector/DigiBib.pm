@@ -257,9 +257,13 @@ sub handler {
         
         # Ausgabe des ersten HTML-Bereichs
         my $starttemplate = Template->new({
-            ABSOLUTE      => 1,
-            INCLUDE_PATH  => $config{tt_include_path},
-            OUTPUT        => $r,
+            LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+                INCLUDE_PATH   => $config{tt_include_path},
+                ABSOLUTE       => 1,
+            }) ],
+#           INCLUDE_PATH   => $config{tt_include_path},
+#           ABSOLUTE       => 1,
+            OUTPUT         => $r,
         });
         
         # TT-Data erzeugen
@@ -377,8 +381,12 @@ sub handler {
                 }
                 
                 my $itemtemplate = Template->new({
-                    ABSOLUTE      => 1,
-                    INCLUDE_PATH  => $config{tt_include_path},
+                    LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+                        INCLUDE_PATH   => $config{tt_include_path},
+                        ABSOLUTE       => 1,
+                    }) ],
+#                    ABSOLUTE      => 1,
+#                    INCLUDE_PATH  => $config{tt_include_path},
                     OUTPUT        => $r,
                 });
                 

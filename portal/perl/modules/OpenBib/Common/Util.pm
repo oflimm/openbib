@@ -489,9 +489,10 @@ sub print_warning {
     my $template = Template->new({
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
             INCLUDE_PATH   => $config{tt_include_path},
+            ABSOLUTE       => 1,
         }) ],
 #        INCLUDE_PATH   => $config{tt_include_path},
-        ABSOLUTE       => 1,
+#        ABSOLUTE       => 1,
         OUTPUT         => $r,    # Output geht direkt an Apache Request
     });
   
@@ -535,9 +536,10 @@ sub print_info {
     my $template = Template->new({
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
             INCLUDE_PATH   => $config{tt_include_path},
+            ABSOLUTE       => 1,
         }) ],
 #        INCLUDE_PATH   => $config{tt_include_path},
-        ABSOLUTE       => 1,
+#        ABSOLUTE       => 1,
         OUTPUT         => $r,    # Output geht direkt an Apache Request
     });
   
@@ -588,9 +590,10 @@ sub print_page {
     my $template = Template->new({ 
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
             INCLUDE_PATH   => $config{tt_include_path},
+	    ABSOLUTE       => 1,
         }) ],
 #        INCLUDE_PATH   => $config{tt_include_path},
-        ABSOLUTE       => 1,     # Notwendig fuer Kaskadierung
+#        ABSOLUTE       => 1,     # Notwendig fuer Kaskadierung
         OUTPUT         => $r,    # Output geht direkt an Apache Request
     });
   

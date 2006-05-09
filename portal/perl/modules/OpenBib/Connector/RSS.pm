@@ -250,9 +250,10 @@ sub handler {
             my $itemtemplate = Template->new({
                 LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
                     INCLUDE_PATH   => $config{tt_include_path},
+                    ABSOLUTE       => 1,
                 }) ],
-                #                INCLUDE_PATH   => $config{tt_include_path},
-                ABSOLUTE       => 1,
+#                INCLUDE_PATH   => $config{tt_include_path},
+#                ABSOLUTE       => 1,
                 OUTPUT         => \$desc,
             });
             

@@ -567,9 +567,10 @@ sub handler {
     my $starttemplate = Template->new({
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
             INCLUDE_PATH   => $config{tt_include_path},
+            ABSOLUTE       => 1,
         }) ],
 #        INCLUDE_PATH   => $config{tt_include_path},
-        ABSOLUTE       => 1,
+#        ABSOLUTE       => 1,
         OUTPUT         => $r,
     });
 
@@ -722,9 +723,10 @@ sub handler {
             my $itemtemplate = Template->new({
                 LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
                     INCLUDE_PATH   => $config{tt_include_path},
+                    ABSOLUTE       => 1,
                 }) ],
 #                INCLUDE_PATH   => $config{tt_include_path},
-                ABSOLUTE       => 1,
+#                ABSOLUTE       => 1,
                 OUTPUT         => $r,
             });
 
@@ -841,10 +843,11 @@ sub handler {
     my $endtemplate = Template->new({
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
             INCLUDE_PATH   => $config{tt_include_path},
+            ABSOLUTE       => 1,
         }) ],
 #        INCLUDE_PATH   => $config{tt_include_path},
-        ABSOLUTE       => 1,
-        OUTPUT         => $r,
+#        ABSOLUTE       => 1,
+         OUTPUT         => $r,
     });
 
     # TT-Data erzeugen

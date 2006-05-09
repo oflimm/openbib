@@ -262,8 +262,12 @@ sub handler {
     my $maildata="";
 
     my $datatemplate = Template->new({
-        ABSOLUTE      => 1,
-        INCLUDE_PATH  => $config{tt_include_path},
+         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+             INCLUDE_PATH   => $config{tt_include_path},
+             ABSOLUTE       => 1,
+         }) ],
+#        ABSOLUTE      => 1,
+#        INCLUDE_PATH  => $config{tt_include_path},
         OUTPUT        => $maildata,
     });
   
@@ -289,9 +293,13 @@ sub handler {
     my $anschreiben="";
 
     my $maintemplate = Template->new({
-        ABSOLUTE      => 1,
-        INCLUDE_PATH  => $config{tt_include_path},
-        OUTPUT        => $anschreiben,
+         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+             INCLUDE_PATH   => $config{tt_include_path},
+             ABSOLUTE       => 1,
+         }) ],
+#        ABSOLUTE      => 1,
+#        INCLUDE_PATH  => $config{tt_include_path},
+         OUTPUT        => $anschreiben,
     });
 
     $maintemplate->process($config{tt_mailcollection_mail_main_tname}, {}) || do { 

@@ -47,6 +47,7 @@ use XML::RSS;
 
 use OpenBib::Config;
 use OpenBib::Common::Util;
+use OpenBib::L10N;
 use OpenBib::Search::Util;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
@@ -65,6 +66,12 @@ sub handler {
     my $uri  = $r->parsed_uri;
     my $path = $uri->path;
 
+    my $lang = "de"; # TODO: Ausweitung auf andere Sprachen
+
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+    
     # Basisipfad entfernen
     my $basepath = $config{connector_rss_loc};
     $path=~s/$basepath//;
@@ -262,6 +269,7 @@ sub handler {
             my $ttdata={
                 item            => $tititem_ref,
                 date            => $title_ref->{date},
+                msg             => $msg,
             };
             
             $itemtemplate->process($itemtemplatename, $ttdata) || do {

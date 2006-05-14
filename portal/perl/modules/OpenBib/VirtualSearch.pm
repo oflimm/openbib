@@ -325,7 +325,7 @@ sub handler {
 
             my $thisindex_ref=OpenBib::Search::Util::get_index({
                 type       => $type,
-                category   => '0001',
+                category   => 1,
                 contentreq => $contentreq,
                 dbh        => $dbh,
             });

@@ -1710,22 +1710,23 @@ sub get_index {
     my @contents=();
     {
         my $sqlrequest;
+        # Normdaten-String-Recherche
         if ($contentreq=~/^\^/){
             substr($contentreq,0,1)="";
             $contentreq=~s/\*$/\%/;
-            $sqlrequest="select distinct ${type}.content as content,${type}_string.content as contentnorm from $type, ${type}_string where ${type}.category = ? and ${type}_string.category = ? and ${type}_string.content like ? and ${type}.id=${type}_string.id order by ${type}.content";
+            $sqlrequest="select distinct ${type}.content as content from $type, ${type}_string where ${type}.category = ? and ${type}_string.category = ? and ${type}_string.content like ? and ${type}.id=${type}_string.id order by ${type}.content";
         }
+        # Normdaten-Volltext-Recherche
         else {
-            $sqlrequest="select distinct ${type}.content as content,${type}_string.content as contentnorm from $type, ${type}_string, ${type}_ft, where ${type}.category = ? and ${type}_string.category = ? and ${type}_ft.category = ? and match (${type}_ft.content) against (? IN BOOLEAN MODE) and ${type}.id=${type}_ft.id and ${type}_string.id=${type}.id order by ${type}.content";
+            $sqlrequest="select distinct ${type}.content as content from $type, ${type}_ft where ${type}.category = ? and ${type}_ft.category = ? and match (${type}_ft.content) against (? IN BOOLEAN MODE) and ${type}.id=${type}_ft.id order by ${type}.content";
         }
         $logger->info($sqlrequest." - $category, $contentreq");
         my $request=$dbh->prepare($sqlrequest);
-        $request->execute($category,$category,$category,$contentreq);
+        $request->execute($category,$category,$contentreq);
 
         while (my $res=$request->fetchrow_hashref){
             push @contents, {
                 content     => decode_utf8($res->{content}),
-                contentnorm => decode_utf8($res->{contentnorm}),
             };
         }
         $request->finish();
@@ -1759,9 +1760,9 @@ sub get_index {
         
         my @ids=();
         {
-            my $sqlrequest="select distinct id from ${type}_string where category = ? and content = ?";
+            my $sqlrequest="select distinct id from ${type} where category = ? and content = ?";
             my $request=$dbh->prepare($sqlrequest);
-            $request->execute($category,$content_ref->{contentnorm});
+            $request->execute($category,$content_ref->{content});
 
             while (my $res=$request->fetchrow_hashref){
                 push @ids, $res->{id};

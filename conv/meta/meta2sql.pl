@@ -804,7 +804,7 @@ while (my $line=<IN>){
         my $encoding_type="hex";
         
         if    ($encoding_type eq "base64"){
-            $listitem = MIME::Base64::encode_base64($listitem);
+            $listitem = MIME::Base64::encode_base64($listitem,"");
         }
         elsif ($encoding_type eq "hex"){
             $listitem = unpack "H*",$listitem;

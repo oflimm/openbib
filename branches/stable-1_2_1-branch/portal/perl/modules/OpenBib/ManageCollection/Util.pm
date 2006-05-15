@@ -136,6 +136,8 @@ sub titset_to_endnote {
 	       '12' => '%K', # Keywords used by refer to help locate the reference
 	       '13' => '%L', # Label used to number references when the -k flag of refer is used
 	       '14' => '%X', # Abstract. This is not normally printed in a reference
+               'ISBN' => '%X', # Abstract. This is not normally printed in a reference
+               'ISSN' => '%X', # Abstract. This is not normally printed in a reference
 	       '15' => '%W', # Where the item can be found (physical location of item)
 	       'Kollation' => '%Z', # Pages in the entire document. Tib reserves this for special use
 	       'Ausgabe' => '%7', # Edition 

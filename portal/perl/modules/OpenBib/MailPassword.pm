@@ -41,6 +41,7 @@ use Apache::Request ();
 use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
+use MIME::Lite;
 use POSIX;
 
 use OpenBib::Common::Util;
@@ -85,7 +86,7 @@ sub handler {
             or $logger->error_die($DBI::errstr);
 
     my $queryoptions_ref
-        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$r);
+        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
 
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
@@ -150,27 +151,52 @@ sub handler {
             $userdbh->disconnect();
             return OK;
         }
+
+	my $anschreiben="";
+	my $afile = "an." . $$;
+
+	my $mainttdata = {
+                          loginname => $loginname,
+                          password  => $password,
+			  msg       => $msg,
+			 };
+
+	my $maintemplate = Template->new({
+          LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+              INCLUDE_PATH   => $config{tt_include_path},
+              ABSOLUTE       => 1,
+          }) ],
+#         ABSOLUTE      => 1,
+#         INCLUDE_PATH  => $config{tt_include_path},
+          # Es ist wesentlich, dass OUTPUT* hier und nicht im
+          # Template::Provider definiert wird
+          OUTPUT_PATH   => '/tmp',
+          OUTPUT        => $afile,
+        });
+
+        $maintemplate->process($config{tt_mailpassword_mail_main_tname}, $mainttdata ) || do {
+            $r->log_reason($maintemplate->error(), $r->filename);
+            return SERVER_ERROR;
+        };
+
+        my $mailmsg = MIME::Lite->new(
+            From            => $config{contact_email},
+            To              => $loginname,
+            Subject         => $msg->maketext("Ihr vergessenes KUG-Passwort"),
+            Type            => 'multipart/mixed'
+        );
+
+        my $anschfile="/tmp/" . $afile;
+
+        $mailmsg->attach(
+            Type            => 'TEXT',
+            Encoding        => '8bit',
+            #Data            => $anschreiben,
+            Path            => $anschfile,
+        );
+
+        $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config{contact_email}");
     
-        open(MAIL,"| /usr/lib/sendmail -t -f$config{contact_email}");
-        print MAIL << "MAILSEND";
-From: $config{contact_email}
-To: $loginname
-Subject: Ihr vergessenes KUG-Passwort
-
-Sehr geehrte(r) $loginname,
-
-Sie haben sich ueber http://kug.ub.uni-koeln.de/ Ihr vergessenes
-KUG-Passwort zusenden lassen.
-
-Ihre gewuenschten Anmeldeinformationen lauten:
-
-Benutzername : $loginname
-Passwort     : $password
-
-Mit freundlichen Gruessen
-
-Ihr KUG-Team
-MAILSEND
 
         my $ttdata={
             view       => $view,

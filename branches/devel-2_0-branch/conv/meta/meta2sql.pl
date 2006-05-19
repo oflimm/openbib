@@ -37,334 +37,23 @@ use Storable ();
 
 use OpenBib::Common::Util;
 use OpenBib::Common::Stopwords;
+use OpenBib::Config;
 
-&GetOptions("reduce-mem"   => \$reducemem,
+# Importieren der Konfigurationsdaten als Globale Variablen
+# in diesem Namespace
+use vars qw(%config);
+
+*config = \%OpenBib::Config::config;
+
+&GetOptions("reduce-mem"    => \$reducemem,
+	    "single-pool=s" => \$singlepool,
 	    );
+
+my $convtab_ref = (exists $config{convtab}{singlepool})?
+  $config{convtab}{singlepool}:$config{convtab}{default};
 
 my $dir=`pwd`;
 chop $dir;
-
-my $listitemcat_ref={
-    '0089' => 1,
-    '0310' => 1,
-    '0331' => 1,
-    '0412' => 1,
-    '0424' => 1,
-    '0425' => 1,
-    '0451' => 1,
-    '0455' => 1,
-    '1203' => 1,
-};
-
-my $inverted_aut_ref={
-    '0001' => {  # Ansetzung
-        string => 1,
-        ft     => 1,
-        init   => 1,
-    },
-
-    '0102' => {  # Verweisform
-        string => 1,
-        ft     => 1,
-        init   => 1,
-    },
-};
-
-my $inverted_kor_ref={
-    '0001' => {  # Ansetzung
-        string => 1,
-        ft     => 1,
-        init   => 1,
-    },
-
-    '0102' => {  # Verweisform
-        string => 1,
-        ft     => 1,
-        init   => 1,
-    },
-
-    '0103' => {  # Abkuerzung der Verweisform
-        string => 1,
-        ft     => 1,
-        init   => 1,
-    },
-
-    '0110' => {  # Abkuerzung der Ansetzung
-        string => 1,
-        ft     => 1,
-        init   => 1,
-    },
-
-    '0111' => {  # Frueherer/Spaeterer Name
-        string => 1,
-        ft     => 1,
-        init   => 1,
-    },
-
-};
-
-my $inverted_not_ref={
-    '0001' => {  # Ansetzung
-        string => 1,
-        ft     => 1,
-        init   => 1,
-    },
-
-    '0002' => {  # Ansetzung
-        string => 1,
-        ft     => 1,
-        init   => 1,
-    },
-
-    '0102' => {  # Stichwort
-        string => 1,
-        ft     => 1,
-        init   => 1,
-    },
-
-    '0103' => {  # Verweisform
-        string => 1,
-        ft     => 1,
-        init   => 1,
-    },
-
-};
-
-my $inverted_swt_ref={
-    '0001' => {  # Ansetzung
-        string => 1,
-        ft     => 1,
-        init   => 1,
-    },
-
-    '0102' => { # Verweisform
-        string => 1,
-        ft     => 1,
-        init   => 1,
-    },
-
-};
-
-my $inverted_tit_ref={
-    '0002' => { # Aufnahmedatum
-        string => 1,
-    },
-    
-    '0304' => { # EST
-        string => 1,
-        ft     => 1,
-    },
-
-    '0310' => { # AST
-        string => 1,
-        ft     => 1,
-    },
-
-    '0331' => { # HST
-        string => 1,
-        ft     => 1,
-    },
-
-    '0335' => { # Zusatz zum HST
-        string => 0,
-        ft     => 1,
-    },
-
-    '0341' => { # PSTVorlage
-        string => 1,
-        ft     => 1,
-    },
-
-    '0370' => { # WST
-        string => 1,
-        ft     => 1,
-    },
-
-    '0540' => { # ISBN
-        string => 1,
-    },
-
-};
-
-my $inverted_mex_ref={
-    '0014' => {  # Signatur
-        string => 1,
-        ft     => 0,
-        init   => 1,
-    },
-
-};
-
-# In die initiale Volltextsuche werden neben den bereits definierten
-# Normdateikategorien inverted_*_ref folgende weitere Kategorien aus dem
-# Titelbereich einbezogen. So koennen z.B. bestimmte im Titelbereich
-# angesiedelte Kategorien in den anderen Normdaten-Klassen verf, kor oder
-# swt recherchierbar gemacht werden.
-
-my $search_category_ref={
-
-    verf => {
-        '0413' => 1, # Drucker
-    },
-
-    kor => {
-    },
-
-    swt => {
-    },
-    
-    hst => {
-        '0304' => 1, # EST
-        '0310' => 1, # AST
-        '0331' => 1, # HST
-        '0335' => 1, # Zusatz zum HST
-        '0341' => 1, # PSTVorlage
-        '0370' => 1, # WST
-        '0412' => 1, # Verlag
-        '0750' => 1, # Abstract
-    },
-    
-    isbn => {
-        '0540' => 1, # ISBN
-    },
-
-    issn => {
-        '0543' => 1, # ISSN
-    },
-    
-    artinh => {
-        '0800' => 1, # ArtInhalt
-    },
-    
-    sign => {
-        '0014' => 1, # Signatur
-        '1203' => 1, # Zeitschriftensignatur
-    },
-
-    ejahr => {
-        '0425' => 1, # Erschjahr
-    },
-};
-
-my $blacklist_aut_ref = {
-    '0100' => 1, # Aufnahmedatum
-    '0101' => 1, # Aenderungsdatum
-};
-
-my $blacklist_kor_ref = {
-    '0100' => 1, # Aufnahmedatum
-    '0101' => 1, # Aenderungsdatum
-};
-
-my $blacklist_not_ref = {
-    '0100' => 1, # Aufnahmedatum
-    '0101' => 1, # Aenderungsdatum
-};
-
-my $blacklist_swt_ref = {
-    '0100' => 1, # Aufnahmedatum
-    '0101' => 1, # Aenderungsdatum
-};
-
-my $blacklist_tit_ref = {
-#    '0002' => 1, # Aufnahmedatum
-    '0003' => 1, # Aenderungsdatum
-    '0005' => 1, # Inventarnummer (in mex vorhanden)
-    '0009' => 1, # Herkunft
-    '0010' => 1, # Fremdnummer
-    '0011' => 1, # Lokale ID
-    '0014' => 1, # Signatur (in mex vorhanden)
-    '0015' => 1, # Sprache
-    '0016' => 1, # Standort (in mex vorhanden)
-    '0027' => 1, # Art des Werkes (V oder Leer = Verfasser, S=Sachtitelwerk, U=Urheberwerk)
-    '0028' => 1, # Bandkennzeichen (Leer = Stuecktitel, B = Band, G = Gesamtwerk/Ueberordnung)
-    '0036' => 1, # Erscheinungsform
-    '0038' => 1, # Veroeffentlichungsart
-    '0042' => 1, # Publikationsstatus
-    '0150' => 1, # HBZ Personen-ID
-    '0453' => 1, # Id des GT
-    '0454' => 1, # Ansetzungsform GT
-    '0572' => 1, # ZDB-ID
-    '0715' => 1, # Unbekannt
-    '0802' => 1, # Medien-Zustand
-    '0905' => 1, # RSWK-ID
-    '0910' => 1, # RSWK-ID
-    '0915' => 1, # RSWK-ID
-    '0920' => 1, # RSWK-ID
-    '0925' => 1, # RSWK-ID
-    '0930' => 1, # RSWK-ID
-    '0935' => 1, # RSWK-ID    
-    '0940' => 1, # RSWK-ID
-    '0955' => 1, # RSWK-ID    
-    '1000' => 1, # Titel beginnend mit 1000
-    '1014' => 1, # Unbekannt
-    '1025' => 1, # Lokale ZDB-ID
-    '1026' => 1, # ZDB Jason-ID
-    '1042' => 1, # ZDB Prio
-    '1200' => 1, # Bestandzusammenfassung (in mex verwenden wir 1204)
-    '1201' => 1, # Bestandsluecken (in mex verwenden wir 1204)
-    '1202' => 1, # Bemerkungen zum Bestand
-    '1299' => 1, # ZDB Mikro
-    '1527' => 1, # ID der Parallelausgabe
-    '1529' => 1, # Fortlaufende Beilage Titel?
-    '1530' => 1, # ID des Bezugswerkes
-    '1531' => 1, # ID der frueheren Ausgabe
-    '1532' => 1, # ID fruehrer Hinweis
-    '1533' => 1, # ID Titelkonkordanz
-    '1533' => 1, # ID spaeterer Hinweis
-    '1671' => 1, # Verbreitungsort
-    '1672' => 1, # Hochschulort (z.B. Paris)
-    '1674' => 1, # Veranstaltungsjahr (TODO)
-    '1675' => 1, # ID des Hochschulortes
-    '1676' => 1, # ID des Veranstaltungsortes
-    '1677' => 1, # ID des Erscheinungsortes
-    '1679' => 1, # Jahr Orginal
-    '1710' => 1, # MESH-Ketten
-    '1751' => 1, # Nicht mehr existent
-    '1800' => 1, # Nebeneintragung 1. Person
-    '1802' => 1, # Nebeneintragung 2. Koerperschaft
-    '1804' => 1, # Nebeneintragung 1. EST
-    '1805' => 1, # Nebeneintragung 1. Titelansetzung
-    '1806' => 1, # Nebeneintragung 1. Titel in Mischform
-    '1814' => 1, # Nicht mehr existent
-    '1836' => 1, # Nicht mehr existent
-    '1848' => 1, # Nicht mehr existent
-    '1850' => 1, # Nebeneintragung 1. Person ID
-    '1852' => 1, # Nebeneintragung 1. Koerperschaft ID
-    '1978' => 1, # Nicht mehr existent
-    '2000' => 1, # Urheber HBZ
-    '2001' => 1, # HBZ-ID der Sonstig beteiligten Koerperschaft
-    '2010' => 1, # RSWK HBZ
-    '2011' => 1, # RSWK HBZ
-    '2012' => 1, # RSWK HBZ
-    '2013' => 1, # RSWK HBZ
-    '2014' => 1, # RSWK HBZ
-    '2015' => 1, # RSWK HBZ
-    '2016' => 1, # RSWK HBZ
-    '2017' => 1, # RSWK HBZ
-    '2018' => 1, # RSWK HBZ
-    '2019' => 1, # RSWK HBZ
-    '2651' => 1, # URL lokal
-    '2655' => 1, # URL lokal 
-    '3000' => 1, # Erwerbung Intern
-    '3002' => 1, # ZDB TitelID alt
-    '3003' => 1, # ZDB lokaleID alt
-    '3004' => 1, # Kommentar MAB2
-    '3005' => 1, # IntNotEx
-    '3006' => 1, # IntNotLok
-    '3006' => 1, # IntNotLok (z.B. retro)
-    '3007' => 1, # Unbekannt (Standort?)
-    '3750' => 1, # Nicht mehr existent
-    '4711' => 1, # Unbekannt
-    '4712' => 1, # Markierung Econbiz (wi, so, wiso)
-    '4715' => 1, # Markierung EDZ
-    '4717' => 1, # Markierung Fachbibliothek Versicherungswissenschaft
-    '4720' => 1, # Testdaten Inhaltsverzeichnis-Scans
-    '4725' => 1, # Temporaeres Schlagwort
-#    '0800' => 1, # Medianart (TODO: spaeter pro Pool Listen konfigurierbar machen)
-#    '1600' => 1, # Hinweis auf Pseudo-Orte (TODO: Zweigstellen, Lesesaaltheke etc.)
-#    '1673' => 1, # Veranstaltungsort (TODO)
-};
 
 my %listitemdata_aut=();
 my %listitemdata_kor=();
@@ -389,8 +78,8 @@ my $stammdateien_ref = {
         outfile        => "aut.mysql",
         outfile_ft     => "aut_ft.mysql",
         outfile_string => "aut_string.mysql",
-        inverted_ref   => $inverted_aut_ref,
-        blacklist_ref  => $blacklist_aut_ref,
+        inverted_ref   => $convtab_ref->{inverted_aut},
+        blacklist_ref  => $convtab_ref->{blacklist_aut},
     },
     
     kor => {
@@ -398,8 +87,8 @@ my $stammdateien_ref = {
         outfile        => "kor.mysql",
         outfile_ft     => "kor_ft.mysql",
         outfile_string => "kor_string.mysql",
-        inverted_ref   => $inverted_kor_ref,
-        blacklist_ref  => $blacklist_kor_ref,
+        inverted_ref   => $convtab_ref->{inverted_kor},
+        blacklist_ref  => $convtab_ref->{blacklist_kor},
     },
     
     swt => {
@@ -407,8 +96,8 @@ my $stammdateien_ref = {
         outfile        => "swt.mysql",
         outfile_ft     => "swt_ft.mysql",
         outfile_string => "swt_string.mysql",
-        inverted_ref   => $inverted_swt_ref,
-        blacklist_ref  => $blacklist_swt_ref,
+        inverted_ref   => $convtab_ref->{inverted_swt},
+        blacklist_ref  => $convtab_ref->{blacklist_swt},
     },
     
     notation => {
@@ -416,8 +105,8 @@ my $stammdateien_ref = {
         outfile        => "not.mysql",
         outfile_ft     => "not_ft.mysql",
         outfile_string => "not_string.mysql",
-        inverted_ref   => $inverted_not_ref,
-        blacklist_ref  => $blacklist_not_ref,
+        inverted_ref   => $convtab_ref->{inverted_not},
+        blacklist_ref  => $convtab_ref->{blacklist_not},
     },
 };
 
@@ -507,7 +196,7 @@ $stammdateien_ref->{mex} = {
     outfile        => "mex.mysql",
     outfile_ft     => "mex_ft.mysql",
     outfile_string => "mex_string.mysql",
-    inverted_ref   => $inverted_mex_ref,
+    inverted_ref   => $convtab_ref->{inverted_mex},
 };
 
 print STDERR "Bearbeite mex.exp\n";
@@ -606,8 +295,8 @@ $stammdateien_ref->{tit} = {
     outfile        => "tit.mysql",
     outfile_ft     => "tit_ft.mysql",
     outfile_string => "tit_string.mysql",
-    inverted_ref   => $inverted_tit_ref,
-    blacklist_ref  => $blacklist_tit_ref,
+    inverted_ref   => $convtab_ref->{inverted_tit},
+    blacklist_ref  => $convtab_ref->{blacklist_tit},
 };
 
 print STDERR "Bearbeite tit.exp\n";
@@ -831,7 +520,7 @@ while (my $line=<IN>){
         
         next CATLINE if (exists $stammdateien_ref->{tit}{blacklist_ref}->{$category});
 
-        if (exists $listitemcat_ref->{$category}){
+        if (exists $convtab_ref->{listitemcat}{$category}){
             push @{$listitem_ref->{"T".$category}}, {
                 indicator => $indicator,
                 content   => $content,
@@ -1135,49 +824,49 @@ while (my $line=<IN>){
         }
         # Titeldaten
         else {
-            if (   exists $search_category_ref->{ejahr    }{$category}){
+            if (   exists $convtab_ref->{search_category}{ejahr    }{$category}){
                 push @ejahr, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            elsif (exists $search_category_ref->{hst      }{$category}){
+            elsif (exists $convtab_ref->{search_category}{hst      }{$category}){
                 push @hst, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            elsif (exists $search_category_ref->{isbn     }{$category}){
+            elsif (exists $convtab_ref->{search_category}{isbn     }{$category}){
                 push @isbn,      OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            elsif (exists $search_category_ref->{issn     }{$category}){
+            elsif (exists $convtab_ref->{search_category}{issn     }{$category}){
                 push @issn,      OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            elsif (exists $search_category_ref->{artinh   }{$category}){
+            elsif (exists $convtab_ref->{search_category}{artinh   }{$category}){
                 push @artinh, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            elsif (exists $search_category_ref->{verf     }{$category}){
+            elsif (exists $convtab_ref->{search_category}{verf     }{$category}){
                 push @titverf, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            elsif (exists $search_category_ref->{kor      }{$category}){
+            elsif (exists $convtab_ref->{search_category}{kor      }{$category}){
                 push @titkor, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            elsif (exists $search_category_ref->{swt      }{$category}){
+            elsif (exists $convtab_ref->{search_category}{swt      }{$category}){
                 push @titswt, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,

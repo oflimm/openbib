@@ -82,7 +82,7 @@ sub handler {
             or $logger->error_die($DBI::errstr);
     
     my $queryoptions_ref
-        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$r);
+        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
 
     $sessiondbh->disconnect();
     

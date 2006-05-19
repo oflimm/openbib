@@ -16,10 +16,6 @@
 
   <body>
 
-[% IF show_corporate_banner %]
-[% PROCESS common/subtemplate name="corporate_banner" %] 
-[% END %]
-
 <table width="100%">
 <tr><th>[% msg.maketext("Erfolgreiche Aktion") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">

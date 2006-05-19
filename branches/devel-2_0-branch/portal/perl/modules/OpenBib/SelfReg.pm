@@ -85,7 +85,7 @@ sub handler {
             or $logger->error_die($DBI::errstr);
 
     my $queryoptions_ref
-        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$r);
+        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
 
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
@@ -148,7 +148,7 @@ sub handler {
         my $rows = $res->{rowcount};
 
         if ($rows > 0) {
-            OpenBib::Common::Util::print_warning($msg->maketext("Ein Benutzer mit dem Namen $loginname existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_1]zurück[_2] und lassen es sich zumailen.","<a href=\"http://$config{servername}$config{login_loc}?sessionID=$sessionID?action=login\">","</a>"),$r,$msg);
+            OpenBib::Common::Util::print_warning($msg->maketext("Ein Benutzer mit dem Namen $loginname existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_1]zurück[_2] und lassen es sich zumailen.","<a href=\"http://$config{servername}$config{login_loc}?sessionID=$sessionID?do_login=1\">","</a>"),$r,$msg);
             $userresult->finish();
 
             $sessiondbh->disconnect();

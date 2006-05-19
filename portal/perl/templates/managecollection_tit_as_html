@@ -12,7 +12,7 @@
 #
 #######################################################################
 -%]
-<tr class="titlerow"><td><input type="checkbox" name="loeschtit" value="[% titset.database %]:[% titset.titidn %]"></td><td>[% msg.maketext("aus:") %] [% titset.dbdesc %]<td></tr><tr><td>&nbsp;</td><td>
+<tr class="titlerow"><td><input type="checkbox" name="loeschtit" value="[% titset.database %]:[% titset.titidn %]"></td><td>[% msg.maketext("aus:") %] [% titset.dbdesc.full %]<td></tr><tr><td>&nbsp;</td><td>
 [% normset    = titset.tit %]
 [% mexnormset = titset.mex %]
 [% circset    = titset.circ %]
@@ -25,8 +25,6 @@
 <table cellpadding=2>
 <tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
 <tr><td class="category">id</td><td>[% normset.id %]</td></tr>
-
-[% PROCESS common/subtemplate name="visible_categories_titset" %]
 
 [%-
 
@@ -47,7 +45,7 @@ END;
 <tr class="titlerow" align=center><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="250">[% msg.maketext("Standort") %]</td><td width="120">[% msg.maketext("Inventarnummer") %]</td><td width="250">[% msg.maketext("Signatur") %]</td><td width="230">[% msg.maketext("Bestandsverlauf") %]</td></tr>
 
 [% FOREACH mex IN mexnormset %]
-<tr align=center><td><strong>[% mex.${"X4000"}.content %]</strong>
+<tr align=center><td><strong>[% mex.${"X4000"}.content.full %]</strong>
 </td><td>[% mex.${"X0016"}.content %]</td><td>[% mex.${"X0005"}.content %]</td><td><strong><span id="rlsignature">[% mex.${"X0014"}.content %]</span></strong></td><td>[% mex.${"X1204"}.content %]</td></tr>
 [% END %]
 </table>
@@ -65,7 +63,7 @@ END;
 <table>
 <tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="250">[% msg.maketext("Standort") %]</td><td width="120">[% msg.maketext("Lokale Signatur") %]</td><td width="120">[% msg.maketext("Ausleihstatus") %]</td><td width="110">[% msg.maketext("Aktion") %]</td></tr>
 [% FOREACH mex IN circset %]
-<tr align="center"><td><a href="[% mex.Bibinfourl %]"><strong>[% mex.Bibliothek %]</strong></a></td><td>[% mex.Standort %]</td><td><strong>[% mex.Signatur %]</strong></td><td><strong>[% mex.Status %]</strong></td><td class="circurl"><a TARGET=_blank href="[% mex.Ausleihurl %]">[% mex.Ausleihstring %]</a></td></tr>
+<tr align="center"><td><a href="[% mex.Bibinfourl %]"><strong>[% mex.Bibliothek.full %]</strong></a></td><td>[% mex.Standort %]</td><td><strong>[% mex.Signatur %]</strong></td><td><strong>[% mex.Status %]</strong></td><td class="circurl"><a TARGET=_blank href="[% mex.Ausleihurl %]">[% mex.Ausleihstring %]</a></td></tr>
 [% END %]
 </table>
 </td></tr>

@@ -299,8 +299,7 @@ sub get_css_by_browsertype {
 
     my $useragent=$r->subprocess_env('HTTP_USER_AGENT');
 
-    my $query=Apache::Request->new($r);
-    my $view=($query->param('view'))?$query->param('view'):undef;
+    $logger->debug("User-Agent: $useragent");
 
     my $stylesheet="";
   
@@ -330,15 +329,23 @@ sub load_queryoptions {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    if (!$sessionID){
+      $logger->fatal("No SessionID");
+      return {};
+    }	
+
     my $request=$sessiondbh->prepare("select queryoptions from session where sessionid = ?") or $logger->error($DBI::errstr);
 
     $request->execute($sessionID) or $logger->error($DBI::errstr);
   
     my $res=$request->fetchrow_hashref();
 
+    $logger->debug($res->{queryoptions});
+    my $queryoptions_ref = YAML::Load($res->{queryoptions});
+
     $request->finish();
 
-    return YAML::Load($res->{queryoptions});
+    return $queryoptions_ref;
 }
 
 sub dump_queryoptions {
@@ -373,15 +380,27 @@ sub merge_queryoptions {
 }
 
 sub get_queryoptions {
-    my ($sessiondbh,$r) = @_;
+    my ($sessiondbh,$query) = @_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $query=Apache::Request->new($r);
+    # Hinweis: Bisher wuerde statt $query direkt das Request-Objekt $r
+    # uebergeben und an dieser Stelle wieder ein $query-Objekt via
+    # Apache::Request daraus erzeugt. Bei Requests, die via POST
+    # sowohl mit dem enctype multipart/form-data wie auch
+    # multipart/form-data abgesetzt wurden, lassen sich keine
+    # Parameter ala sessionID extrahieren.  Das ist ein grosses
+    # Problem. Andere Informationen lassen sich ueber das $r
+    # aber sehr wohl extrahieren, z.B. der Useragent.
 
     my $sessionID=$query->param('sessionID');
-    
+
+    if (!$sessionID){
+      $logger->fatal("No SessionID");
+      return {};
+    }	
+
     # Queryoptions zur Session einladen (default: alles undef)
     my $queryoptions_ref = load_queryoptions($sessiondbh,$sessionID);
 
@@ -394,11 +413,14 @@ sub get_queryoptions {
         autoplus  => '',
     };
 
+    my $altered=0;
     # Abgleich mit uebergebenen Parametern
-    # Uebergebene Parameter 'ueberschreiben' gehen vor
-    foreach my $option (keys %$queryoptions_ref){
+    # Uebergebene Parameter 'ueberschreiben'und gehen vor
+    foreach my $option (keys %$default_queryoptions_ref){
         if (defined $query->param($option)){
             $queryoptions_ref->{$option}=$query->param($option);
+	    $logger->debug("Option $option received via HTTP");
+	    $altered=1;
         }
     }
 
@@ -407,67 +429,17 @@ sub get_queryoptions {
     foreach my $option (keys %$queryoptions_ref){
         if (!defined $queryoptions_ref->{$option}){
             $queryoptions_ref->{$option}=$default_queryoptions_ref->{$option};
+	    $logger->debug("Option $option got default value");
+	    $altered=1;
         }
     }
 
-    dump_queryoptions($sessiondbh,$sessionID,$queryoptions_ref);
-    
+    if ($altered){
+      dump_queryoptions($sessiondbh,$sessionID,$queryoptions_ref);
+      $logger->debug("Options changed and dumped to DB");
+    }
+
     return $queryoptions_ref;
-}
-
-#####################################################################
-## get_sql_result(rreqarray,...): Suche anhand der in reqarray enthaltenen
-##                                SQL-Statements, fasse die Ergebnisse zusammen
-##                                und liefere sie zur"uck
-##
-## Und nun jede Menge Variablen, damit mod_perl keine Probleme macht
-##
-## $dbh
-
-sub get_sql_result {
-    my ($reqarray_ref,$dbh)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my %metaidns;
-    my @midns=();
-    my $atime;
-    my $btime;
-    my $timeall;
-  
-    my @reqarray=@$reqarray_ref;
-  
-    foreach my $idnrequest (@reqarray) {
-    
-        if ($config{benchmark}) {
-            $atime=new Benchmark;
-        }
-    
-        my $idnresult=$dbh->prepare("$idnrequest") or $logger->error($DBI::errstr);
-        $idnresult->execute() or $logger->error("Request: $idnrequest - ".$DBI::errstr);
-    
-        my @idnres;
-        while (@idnres=$idnresult->fetchrow) {	    
-      
-            if (!$metaidns{$idnres[0]}) {
-                push @midns, $idnres[0];
-            }
-            $metaidns{$idnres[0]}=1;
-        }
-        $idnresult->finish();
-    
-        if ($config{benchmark}) {
-            $btime=new Benchmark;
-            $timeall=timediff($btime,$atime);
-            $logger->info("Zeit fuer Idns zu : $idnrequest : ist ".timestr($timeall));
-            undef $atime;
-            undef $btime;
-            undef $timeall;
-        }
-    }
-  
-    return @midns;
 }
 
 sub print_warning {
@@ -592,9 +564,10 @@ sub print_page {
             INCLUDE_PATH   => $config{tt_include_path},
 	    ABSOLUTE       => 1,
         }) ],
-#        INCLUDE_PATH   => $config{tt_include_path},
-#        ABSOLUTE       => 1,     # Notwendig fuer Kaskadierung
-        OUTPUT         => $r,    # Output geht direkt an Apache Request
+#         INCLUDE_PATH   => $config{tt_include_path},
+#         ABSOLUTE       => 1,     # Notwendig fuer Kaskadierung
+         OUTPUT         => $r,    # Output geht direkt an Apache Request
+#         RECURSION      => 1,
     });
   
     # Dann Ausgabe des neuen Headers
@@ -1619,9 +1592,6 @@ __END__
  # Ist die Session authentifiziert? Ja, dann Rueckgabe der positiven $userid,
  # sonst wird nichts zurueckgegeben 
  my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
-
- # Ergebnisarray zu SQL-Anfragen (@requests) an DB-Handle $dbh fuellen
- my @resarr=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
 
  # Navigationsselement zwecks Sortierung einer Trefferliste erzeugen
  OpenBib::Common::Util::get_sort_nav($r,'',0);

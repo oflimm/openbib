@@ -15,12 +15,8 @@
 
   <body>
 
-[% IF show_corporate_banner %]
-[% PROCESS common/subtemplate name="corporate_banner" %] 
-[% END %]
-
 <ul id="tabbingmenu">
-   <li><a href="[% config.login_loc %]?sessionID=[% sessionID %];view=[% view %];action=login" target="body">[% msg.maketext("Login") %]</a></li>
+   <li><a href="[% config.login_loc %]?sessionID=[% sessionID %];view=[% view %];do_login=1" target="body">[% msg.maketext("Login") %]</a></li>
    <li><a class="active" href="http://[% config.servername %][% config.selfreg_loc %]?sessionID=[% sessionID %];action=show" target="body">[% msg.maketext("Selbstregistrierung") %]</a></li>
    <li><a href="http://[% config.servername %][% config.mailpassword_loc %]?sessionID=[% sessionID %];action=show" target="body">[% msg.maketext("Passwort vergessen?") %]</a></li>
 </ul>
@@ -30,7 +26,7 @@
 <table width="100%">
 <tr><th>[% msg.maketext("Sie sind erfolgreich registriert") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
-[% msg.maketext("Klicken Sie nun [_1]hier[_2], um sich anzumelden.","<a href=\"http://${config.servername}${config.login_loc}?sessionID=${sessionID}&action=login&loginname=${loginname}\">","</a>") %]
+[% msg.maketext("Klicken Sie nun [_1]hier[_2], um sich anzumelden.","<a href=\"http://${config.servername}${config.login_loc}?sessionID=${sessionID}&do_login=1&loginname=${loginname}\">","</a>") %]
 </td></tr>
 </table>
 

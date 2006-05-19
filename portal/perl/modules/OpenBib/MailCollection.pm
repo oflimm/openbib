@@ -48,6 +48,7 @@ use Template;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
+use OpenBib::Search::Util;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
@@ -71,31 +72,6 @@ sub handler {
 
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
-    my %endnote=(
-        'Verfasser'   => '%A', # Author
-        'Urheber'     => '%C', # Corporate Author
-        'HST'         => '%T', # Title of the article or book
-        '1'           => '%S', # Title of the serie
-        '2'           => '%J', # Journal containing the article
-        '3'           => '%B', # Journal Title (refer: Book containing article)
-        '4'           => '%R', # Report, paper, or thesis type
-        '5'           => '%V', # Volume
-        '6'           => '%N', # Number with volume
-        '7'           => '%E', # Editor of book containing article
-        '8'           => '%P', # Page number(s)
-        'Verlag'      => '%I', # Issuer. This is the publisher
-        'Verlagsort'  => '%C', # City where published. This is the publishers address
-        'Ersch. Jahr' => '%D', # Date of publication
-        '11'          => '%O', # Other information which is printed after the reference
-        '12'          => '%K', # Keywords used by refer to help locate the reference
-        '13'          => '%L', # Label used to number references when the -k flag of refer is used
-        '14'          => '%X', # Abstract. This is not normally printed in a reference
-        '15'          => '%W', # Where the item can be found (physical location of item)
-        'Kollation'   => '%Z', # Pages in the entire document. Tib reserves this for special use
-        'Ausgabe'     => '%7', # Edition
-        '17'          => '%Y'  # Series Editor
-    );
-
     #####################################################################
     # Verbindung zur SQL-Datenbank herstellen
 
@@ -115,9 +91,12 @@ sub handler {
     my $database  = $query->param('database');
     my $type      = $query->param('type')||'HTML';
 
+
+    $logger->debug("SessionID: ".$sessionID);
+
     my $queryoptions_ref
-        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$r);
-    
+        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
@@ -203,32 +182,19 @@ sub handler {
       
         my ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn({
             titidn             => $singleidn,
-            hint               => "none",
             dbh                => $dbh,
-            sessiondbh         => $sessiondbh,
-            searchmultipleaut  => 0,
-            searchmultiplekor  => 0,
-            searchmultipleswt  => 0,
-            searchmultiplekor  => 0,
-            searchmultipletit  => 0,
-            searchmode         => 2,
             targetdbinfo_ref   => $targetdbinfo_ref,
             targetcircinfo_ref => $targetcircinfo_ref,
-            hitrange           => -1,
-            rating             => '',
-            bookinfo           => '',
-            sorttype           => '',
-            sortorder          => '',
             database           => $database,
             sessionID          => $sessionID
         });
       
-        if ($type eq "Text") {
-            $normset=OpenBib::ManageCollection::Util::titset_to_text($normset);
-        }
-        elsif ($type eq "EndNote") {
-            $normset=OpenBib::ManageCollection::Util::titset_to_endnote($normset);
-        }
+#         if ($type eq "Text") {
+#             $normset=OpenBib::ManageCollection::Util::titset_to_text($normset);
+#         }
+#         elsif ($type eq "EndNote") {
+#             $normset=OpenBib::ManageCollection::Util::titset_to_endnote($normset);
+#         }
       
         $dbh->disconnect();
       
@@ -250,16 +216,15 @@ sub handler {
         view       => $view,
         stylesheet => $stylesheet,
         sessionID  => $sessionID,
-		
+	qopts      => $queryoptions_ref,
         type       => $type,
-		
         collection => \@collection,
-		
         config     => \%config,
         msg        => $msg,
     };
 
     my $maildata="";
+    my $ofile="ml." . $$;
 
     my $datatemplate = Template->new({
          LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
@@ -268,7 +233,10 @@ sub handler {
          }) ],
 #        ABSOLUTE      => 1,
 #        INCLUDE_PATH  => $config{tt_include_path},
-        OUTPUT        => $maildata,
+        # Es ist wesentlich, dass OUTPUT* hier und nicht im
+        # Template::Provider definiert wird
+        OUTPUT_PATH   => '/tmp',
+        OUTPUT        => $ofile,
     });
   
 
@@ -285,12 +253,17 @@ sub handler {
         $datatemplatename=$config{tt_mailcollection_mail_plain_tname};
     }
 
-    $datatemplate->process($datatemplatename, $ttdata) || do { 
+    $datatemplate->process($datatemplatename, $ttdata) || do {
         $r->log_reason($datatemplate->error(), $r->filename);
         return SERVER_ERROR;
     };
   
     my $anschreiben="";
+    my $afile = "an." . $$;
+
+    my $mainttdata = {
+		      msg => $msg,
+		     };
 
     my $maintemplate = Template->new({
          LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
@@ -299,10 +272,13 @@ sub handler {
          }) ],
 #        ABSOLUTE      => 1,
 #        INCLUDE_PATH  => $config{tt_include_path},
-         OUTPUT        => $anschreiben,
+        # Es ist wesentlich, dass OUTPUT* hier und nicht im
+        # Template::Provider definiert wird
+        OUTPUT_PATH   => '/tmp',
+        OUTPUT        => $afile,
     });
 
-    $maintemplate->process($config{tt_mailcollection_mail_main_tname}, {}) || do { 
+    $maintemplate->process($config{tt_mailcollection_mail_main_tname}, $mainttdata ) || do { 
         $r->log_reason($maintemplate->error(), $r->filename);
         return SERVER_ERROR;
     };
@@ -314,17 +290,23 @@ sub handler {
         Type            => 'multipart/mixed'
     );
 
+    my $anschfile="/tmp/" . $afile;
+
     $mailmsg->attach(
         Type            => 'TEXT',
         Encoding        => '8bit',
-        Data            => $anschreiben,
+        #Data            => $anschreiben,
+	Path            => $anschfile,
     );
   
+    my $mailfile="/tmp/" . $ofile;
+
     $mailmsg->attach(
         Type            => $mimetype,
         Encoding        => '8bit',
         Filename        => $filename,
-        Data            => $maildata,
+        #Data            => $maildata,
+	Path            => $mailfile,
     );
   
     $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config{contact_email}");
@@ -333,6 +315,9 @@ sub handler {
     
     $sessiondbh->disconnect();
     $userdbh->disconnect();
+
+    unlink $anschfile;
+    unlink $mailfile;
 
     return OK;
 }

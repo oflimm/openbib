@@ -32,6 +32,7 @@
 ../templates/mailcollection_mail_plain
 ../templates/mailcollection_success
 ../templates/mailpassword
+../templates/mailpassword_mail_main
 ../templates/mailpassword_success
 ../templates/managecollection_mail
 ../templates/managecollection_print
@@ -113,15 +114,6 @@
 ../modules/OpenBib/UserPrefs.pm
 ../modules/OpenBib/VirtualSearch.pm
 ../modules/OpenBib/VirtualSearch/Util.pm
-../templates/database.ori/einbaende
-../templates/database.ori/einbaende.old
-../templates/database.ori/einbaende.old/managecollection_tit_as_html.v1.2.2
-../templates/database.ori/einbaende.old/search_showautset.v1.2.2
-../templates/database.ori/einbaende.old/search_showkorset.v1.2.2
-../templates/database.ori/einbaende.old/search_shownotset.v1.2.2
-../templates/database.ori/einbaende.old/search_showswtset.v1.2.2
-../templates/database.ori/einbaende.old/search_showtitlist.v1.2.2
-../templates/database.ori/einbaende.old/search_showtitset.v1.2.2
 ../templates/views/einbaende/corporate_banner
 ../templates/views/einbaende/error
 ../templates/views/einbaende/headerframe

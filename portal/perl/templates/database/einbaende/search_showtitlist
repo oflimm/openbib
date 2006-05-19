@@ -52,7 +52,7 @@
 
 <table cellpadding=2>
 [% IF offset >= 0 && hitrange > 0 %]
-<tr class="titlerow"><td>&nbsp;</td><td><span id="rldbase">[% targetdbinfo.dbinfo.$database.full %]</span></td><td align=left colspan=2><span id="rlhits"><strong>[% itemlist.size %] [% msg.maketext("Treffer") %]</strong></span></td></tr>
+<tr class="titlerow"><td><span id="rldbase">[% targetdbinfo.dbinfo.$database.full %]</span></td><td align="right" colspan="4"><span id="rlhits"><strong>[% itemlist.size %]&nbsp;[% msg.maketext("Treffer") %]</strong></span></td></tr>
 <tr><td>&nbsp;</td><td>&nbsp;</td><td>
 [%- FOREACH navitem IN nav -%]
 <a href="[% navitem.url %]">
@@ -67,7 +67,7 @@
 
 </td><td align=left colspan=2></td></tr>
 [% ELSE %]
-<tr class="titlerow"><td><span id="rldbase">[% targetdbinfo.dbinfo.$database.full %]</span></td><td align=left colspan="4"><span id="rlhits"><strong>[% itemlist.size %] [% msg.maketext("Treffer") %]</strong></span></td></tr>
+<tr class="titlerow"><td><span id="rldbase">[% targetdbinfo.dbinfo.$database.full %]</span></td><td align="right" colspan="4"><span id="rlhits"><strong>[% itemlist.size %]&nbsp;[% msg.maketext("Treffer") %]</strong></span></td></tr>
 [% END %]
 
 [% listrow = 'listrow1' %]
@@ -140,23 +140,6 @@ id="rlpublisher">[% publisher %]</span> <span id="rlyearofpub">[% yearofpub %]</
 </table>
 <!-- Titlelist ends here -->
 
-<p />
-
-<hr>
-
-<form method="get" action="[% config.search_loc %]">
-<input type="hidden" name="sessionID"  value="[% sessionID %]">
-<input type="hidden" name="searchmode" value="[% searchmode %]">
-<input type="hidden" name="rating"     value="[% rating %]">
-<input type="hidden" name="bookinfo"   value="[% bookinfo %]">
-<input type="hidden" name="hitrange"   value="[% hitrange %]">
-<input type="hidden" name="database"   value="[% database %]">
-
-<table>
-<tr><td class="category">[% msg.maketext("Schlagwortindex dieses Katalogs") %]</td><td>&nbsp;<input type="text" name="swtindex" value="" size="4" maxlength="50" title="[% msg.maketext("Geben Sie hier den Schlagwortanfang ein") %]">&nbsp;<input type="submit" value="[% msg.maketext("Suchen") %]">&nbsp;</td></tr>
-</table>
-
-</form>
 <p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

@@ -88,7 +88,7 @@ sub handler {
     my $type      = ($query->param('type'))?$query->param('type'):'HTML';
 
     my $queryoptions_ref
-        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$r);
+        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
     
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
@@ -220,32 +220,19 @@ sub handler {
 
             my ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn({
                 titidn             => $singleidn,
-                hint               => "none",
                 dbh                => $dbh,
-                sessiondbh         => $sessiondbh,
-                searchmultipleaut  => 0,
-                searchmultiplekor  => 0,
-                searchmultipleswt  => 0,
-                searchmultiplekor  => 0,
-                searchmultipletit  => 0,
-                searchmode         => 2,
                 targetdbinfo_ref   => $targetdbinfo_ref,
                 targetcircinfo_ref => $targetcircinfo_ref,
-                hitrange           => -1,
-                rating             => '',
-                bookinfo           => '',
-                sorttype           => '',
-                sortorder          => '',
                 database           => $database,
                 sessionID          => $sessionID
             });
 
-            if ($type eq "Text") {
-                $normset=OpenBib::ManageCollection::Util::titset_to_text($normset);
-            }
-            elsif ($type eq "EndNote") {
-                $normset=OpenBib::ManageCollection::Util::titset_to_endnote($normset);
-            }
+#            if ($type eq "Text") {
+#                $normset=OpenBib::ManageCollection::Util::titset_to_text($normset);
+#            }
+#            elsif ($type eq "EndNote") {
+#                $normset=OpenBib::ManageCollection::Util::titset_to_endnote($normset);
+#            }
 
             $dbh->disconnect();
 
@@ -324,32 +311,19 @@ sub handler {
       
             my ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn({
                 titidn             => $singleidn,
-                hint               => "none",
                 dbh                => $dbh,
-                sessiondbh         => $sessiondbh,
-                searchmultipleaut  => 0,
-                searchmultiplekor  => 0,
-                searchmultipleswt  => 0,
-                searchmultiplekor  => 0,
-                searchmultipletit  => 0,
-                searchmode         => 2,
                 targetdbinfo_ref   => $targetdbinfo_ref,
                 targetcircinfo_ref => $targetcircinfo_ref,
-                hitrange           => -1,
-                rating             => '',
-                bookinfo           => '',
-                sorttype           => '',
-                sortorder          => '',
                 database           => $database,
                 sessionID          => $sessionID
             });
       
-            if ($type eq "Text") {
-                $normset=OpenBib::ManageCollection::Util::titset_to_text($normset);
-            }
-            elsif ($type eq "EndNote") {
-                $normset=OpenBib::ManageCollection::Util::titset_to_endnote($normset);
-            }
+#             if ($type eq "Text") {
+#                 $normset=OpenBib::ManageCollection::Util::titset_to_text($normset);
+#             }
+#             elsif ($type eq "EndNote") {
+#                 $normset=OpenBib::ManageCollection::Util::titset_to_endnote($normset);
+#             }
       
             $dbh->disconnect();
       
@@ -447,32 +421,19 @@ sub handler {
       
             my ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn({
                 titidn             => $singleidn,
-                hint               => "none",
                 dbh                => $dbh,
-                sessiondbh         => $sessiondbh,
-                searchmultipleaut  => 0,
-                searchmultiplekor  => 0,
-                searchmultipleswt  => 0,
-                searchmultiplekor  => 0,
-                searchmultipletit  => 0,
-                searchmode         => 2,
                 targetdbinfo_ref   => $targetdbinfo_ref,
                 targetcircinfo_ref => $targetcircinfo_ref,
-                hitrange           => -1,
-                rating             => '',
-                bookinfo           => '',
-                sorttype           => '',
-                sortorder          => '',
                 database           => $database,
                 sessionID          => $sessionID
             });
       
-            if ($type eq "Text") {
-                $normset=OpenBib::ManageCollection::Util::titset_to_text($normset);
-            }
-            elsif ($type eq "EndNote") {
-                $normset=OpenBib::ManageCollection::Util::titset_to_endnote($normset);
-            }
+#             if ($type eq "Text") {
+#                 $normset=OpenBib::ManageCollection::Util::titset_to_text($normset);
+#             }
+#             elsif ($type eq "EndNote") {
+#                 $normset=OpenBib::ManageCollection::Util::titset_to_endnote($normset);
+#             }
       
             $dbh->disconnect();
       
@@ -562,32 +523,19 @@ sub handler {
       
             my ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn({
                 titidn             => $singleidn,
-                hint               => "none",
                 dbh                => $dbh,
-                sessiondbh         => $sessiondbh,
-                searchmultipleaut  => 0,
-                searchmultiplekor  => 0,
-                searchmultipleswt  => 0,
-                searchmultiplekor  => 0,
-                searchmultipletit  => 0,
-                searchmode         => 2,
                 targetdbinfo_ref   => $targetdbinfo_ref,
                 targetcircinfo_ref => $targetcircinfo_ref,
-                hitrange           => -1,
-                rating             => '',
-                bookinfo           => '',
-                sorttype           => '',
-                sortorder          => '',
                 database           => $database,
                 sessionID          => $sessionID
             });
       
-            if ($type eq "Text") {
-                $normset=OpenBib::ManageCollection::Util::titset_to_text($normset);
-            }
-            elsif ($type eq "EndNote") {
-                $normset=OpenBib::ManageCollection::Util::titset_to_endnote($normset);
-            }
+#             if ($type eq "Text") {
+#                 $normset=OpenBib::ManageCollection::Util::titset_to_text($normset);
+#             }
+#             elsif ($type eq "EndNote") {
+#                 $normset=OpenBib::ManageCollection::Util::titset_to_endnote($normset);
+#             }
       
             $dbh->disconnect();
       

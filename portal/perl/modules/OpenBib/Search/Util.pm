@@ -177,16 +177,6 @@ sub get_aut_set_by_idn {
 
     $request->finish();
 
-    # Wenn ein Kategoriemapping fuer diesen Katalog existiert, dann muss 
-    # dieses angewendet werden
-    if (exists $config{categorymapping}{$database}) {
-        foreach my $oldmsgcode (keys %{$config{categorymapping}{$database}}){
-            my $newmsgcode=$config{categorymapping}{$database}{$oldmsgcode};
-            $normset_ref->{$newmsgcode}=$normset_ref->{$oldmsgcode};
-            delete $normset_ref->{$oldmsgcode};
-        }
-    }
-
     return $normset_ref;
 }
 
@@ -308,16 +298,6 @@ sub get_kor_set_by_idn {
     
     $request->finish();
 
-    # Wenn ein Kategoriemapping fuer diesen Katalog existiert, dann muss 
-    # dieses angewendet werden
-    if (exists $config{categorymapping}{$database}) {
-        foreach my $oldmsgcode (keys %{$config{categorymapping}{$database}}){
-            my $newmsgcode=$config{categorymapping}{$database}{$oldmsgcode};
-            $normset_ref->{$newmsgcode}=$normset_ref->{$oldmsgcode};
-            delete $normset_ref->{$oldmsgcode};
-        }
-    }
-
     return $normset_ref;
 }
 
@@ -438,16 +418,6 @@ sub get_swt_set_by_idn {
     }
 
     $request->finish();
-
-    # Wenn ein Kategoriemapping fuer diesen Katalog existiert, dann muss
-    # dieses angewendet werden
-    if (exists $config{categorymapping}{$database}) {
-        foreach my $oldmsgcode (keys %{$config{categorymapping}{$database}}){
-            my $newmsgcode=$config{categorymapping}{$database}{$oldmsgcode};
-            $normset_ref->{$newmsgcode}=$normset_ref->{$oldmsgcode};
-            delete $normset_ref->{$oldmsgcode};
-        }
-    }
 
     return $normset_ref;
 }
@@ -576,16 +546,6 @@ sub get_not_set_by_idn {
     }
 
     $request->finish();
-
-    # Wenn ein Kategoriemapping fuer diesen Katalog existiert, dann muss 
-    # dieses angewendet werden
-    if (exists $config{categorymapping}{$database}) {
-        foreach my $oldmsgcode (keys %{$config{categorymapping}{$database}}){
-            my $newmsgcode=$config{categorymapping}{$database}{$oldmsgcode};
-            $normset_ref->{$newmsgcode}=$normset_ref->{$oldmsgcode};
-            delete $normset_ref->{$oldmsgcode};
-        }
-    }
 
     return $normset_ref;
 }
@@ -1509,16 +1469,6 @@ sub get_tit_set_by_idn {
 
     }
     
-    # Wenn ein Kategoriemapping fuer diesen Katalog existiert, dann muss 
-    # dieses angewendet werden
-    if (exists $config{categorymapping}{$database}) {
-        foreach my $oldmsgcode (keys %{$config{categorymapping}{$database}}){
-            my $newmsgcode=$config{categorymapping}{$database}{$oldmsgcode};
-            $normset_ref->{$newmsgcode}=$normset_ref->{$oldmsgcode};
-            delete $normset_ref->{$oldmsgcode};
-        }
-    }
-
     return ($normset_ref,\@mexnormset,\@circexemplarliste);
 }
 

@@ -14,12 +14,13 @@
 [%-
 # Aufruf der Frames mit den gewuenschten Inhalten
 
-toprows = 140;
+IF NOT toprows ;
+  toprows = 140;
 
-IF view;
+  IF view;
     toprows = 175;
+  END;
 END;
-
 -%]
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">

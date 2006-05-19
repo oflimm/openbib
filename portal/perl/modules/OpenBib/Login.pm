@@ -94,7 +94,7 @@ sub handler {
             or $logger->error_die($DBI::errstr);
 
     my $queryoptions_ref
-        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$r);
+        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
     
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
@@ -324,7 +324,7 @@ sub handler {
 
         # Fehlerbehandlung
         if ($loginfailed) {
-            $bodyframeurl="http://$config{servername}$config{login_loc}?sessionID=$sessionID&action=loginfailed&code=$loginfailed";
+            $bodyframeurl="http://$config{servername}$config{login_loc}?sessionID=$sessionID&do_loginfailed=1&code=$loginfailed";
         }
     
         my $ttdata={

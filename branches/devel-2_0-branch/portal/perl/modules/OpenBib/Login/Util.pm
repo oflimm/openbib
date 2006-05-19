@@ -68,8 +68,10 @@ sub authenticate_self_user {
     my $res=$userresult->fetchrow_hashref();
 
     my $userid = decode_utf8($res->{'userid'});
-  
-    return $userid;
+
+    $userresult->finish();
+
+    return (defined $userid)?$userid:-1;
 }
 
 sub authenticate_olws_user {

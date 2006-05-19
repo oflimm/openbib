@@ -12,6 +12,7 @@
 #######################################################################
 -%]
 [% PROCESS common/subtemplate name="std_header" %]
+[% PROCESS common/subtemplate name="visible_categories_titset" %]
 
   <BODY>
     

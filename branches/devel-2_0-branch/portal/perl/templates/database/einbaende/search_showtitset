@@ -116,8 +116,18 @@ href=\"${config.connector_rss_loc}/neuzugang_nach_sys/${item.id}/${normset.datab
          content   = "<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};subtit=${normset.id};generalsearch=subtit\">${content}</a>";
 
     END;
+
+    # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+    # in Config.pm fuer die entsprechende Datenbank definiert
+    # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+    # kodiert.
+    IF config.categorymapping.$database.$category ;
+      thiscategory = "${category}-${normset.database}" ;
+    ELSE ;
+      thiscategory = ${category} ;
+    END;
 -%]
-<tr><td class="category">[% msg.maketext("${category}") %]</td><td>[% content %]</td></tr>
+<tr><td class="category">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
 [%-
    END;
 END;
@@ -159,7 +169,7 @@ END;
 
 [%-
 
-FOREACH category IN categories;
+FOREACH category IN categories; 
     FOREACH item IN normset.$category;
     content = item.content;
 
@@ -204,8 +214,18 @@ href=\"${config.connector_rss_loc}/neuzugang_nach_sys/${item.id}/${normset.datab
          content   = "<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};subtit=${normset.id};generalsearch=subtit\">${content}</a>";
 
     END;
+
+    # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+    # in Config.pm fuer die entsprechende Datenbank definiert
+    # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+    # kodiert.
+    IF config.categorymapping.$database.$category ;
+      thiscategory = "${category}-${normset.database}" ;
+    ELSE ;
+      thiscategory = ${category} ;
+    END;
 -%]
-<tr><td class="category">[% msg.maketext("${category}") %]</td><td>[% content %]</td></tr>
+<tr><td class="category">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
 [%-
    END;
 END;
@@ -240,22 +260,5 @@ END;
 
 <p />
 
-<hr>
-
-<form method="get" action="[% config.search_loc %]">
-<input type="hidden" name="sessionID"  value="[% sessionID %]">
-<input type="hidden" name="searchmode" value="[% searchmode %]">
-<input type="hidden" name="rating"     value="[% rating %]">
-<input type="hidden" name="bookinfo"   value="[% bookinfo %]">
-<input type="hidden" name="hitrange"   value="[% hitrange %]">
-<input type="hidden" name="database"   value="[% database %]">
-
-<table>
-<tr><td class="category">[% msg.maketext("Schlagwortindex diese Katalogs") %]</td><td>&nbsp;<input
-type="text" name="swtindex" value="" size="4" maxlength="50" title="[% msg.maketext("Geben Sie hier den Schlagwortanfang ein") %]">&nbsp;<input type="submit" value="[% msg.maketext("Suchen") %]">&nbsp;</td></tr>
-</table>
-
-</form>
-<p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

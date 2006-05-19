@@ -27,7 +27,7 @@
   <body>
 
 <ul id="tabbingmenu">
-   <li><a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
+   <li><a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Suchen") %]</a></li>
    <li><a href="http://einbandsammlung.ub.uni-koeln.de/opendia/viewer?collection=einbaende;action=browse;browsecat=M0101;sessionID=[% sessionID %];remoteview=[% view %];remotehost=[% config.servername %];view=kug">[% msg.maketext("Bl&auml;ttern") %]</a></li>
 </ul>
 

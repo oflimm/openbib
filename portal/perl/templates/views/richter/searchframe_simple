@@ -1,0 +1,94 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchframe_simple
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der einfachen Suchmaske
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+<form method="get" id="openbib" action="http://[% config.servername %][% config.virtualsearch_loc %]">
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<input type="hidden" name="hitrange"  value="-1" />
+<input type="hidden" name="view"      value="[% view %]" />
+<input type="hidden" name="sorttype"  value="author" />
+<input type="hidden" name="sortorder" value="up" />
+<input type="hidden" name="autoplus"  value="1" />
+<input type="hidden" name="maxhits"   value="99999" />
+<input type="hidden" name="profil"    value="dbauswahl" />
+
+[% dbinputtags %]
+
+<!--
+<div id="langchoice">
+[% FOREACH l IN config.lang %]
+<a href="[% config.frameset_loc %]?headerframeurl=[% config.headerframe_loc %];bodyframeurl=[% config.searchframe_loc %];sessionID=[% sessionID %];setmask=simple;l=[% l %]" target="_top"><img src="/images/openbib/[% l %].png"></a>&nbsp;
+[% END %]
+</div>
+-->
+<ul id="tabbingmenu">
+   <li><a class="active" href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
+   <li><a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
+</ul>
+
+<div id="content">
+<p />
+<p />
+
+<p />
+<table width="100%">
+<tr><th style="text-align: center">[% msg.maketext("Geben Sie hier bitte Ihre Suchbegriffe ein") %]</th></tr>
+<tr><td class="boxed" valign="top" align="center">
+<input type="text" name="fs" value="[% fs %]" size="80" maxlength="200" />
+</td></tr>
+</table>
+
+<p />
+<center>
+<table>
+ <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In der Virtuellen Bibliothek suchen") %]" />&nbsp;<input type="reset" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" value="[% msg.maketext("Lösche Eingabemaske") %]"></td></tr>
+</table>
+</center>
+
+<p />
+</form>
+
+[% IF queries.size > 0 %]
+
+<form method="get" id="queries" action="http://[% config.servername %][% config.dispatchquery_loc %]">
+<table width="100%">
+<tr><th style="text-align: center">[% msg.maketext("Rufen Sie hier die Ergebnisse frührerer Recherchen auf") %]</th></tr>
+<tr><td align="center" class="boxed">
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+
+[% PROCESS common/subtemplate name="select_queries" %]
+
+<center>
+<input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" />
+</center>
+</form>
+[% END %]
+
+</td></tr>
+</table>
+
+<p />
+
+<center>
+[% msg.maketext("Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter [_1] kug@ub.uni-koeln.de [_2] erreichen.","<a href=\"http://www.ub.uni-koeln.de/usb-cgi/zms_makeEmail.pl?adr0=kug\" target=\"_blank\">","</a>") %]
+<p />
+</center>
+
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

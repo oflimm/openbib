@@ -64,9 +64,7 @@ href="http://[% config.loadbalancerservername %][% config.connector_rss_loc %]/n
 database %].rdf" title="RSS-Feed abonnieren" target="_blank"><img
 src="/images/openbib/rssfeed.png"></a>&nbsp;
 [% END %]
-<a href="[% utf2iso(normkat.globalurl) %]" title="Begriff in allen
-Katalogen suchen"><span class="globalsearch">G</span></a>&nbsp;<a
-href="[% utf2iso(normkat.url) %]" title="Begriff in diesem Katalog suchen">[% utf2iso(normkat.contents) %]</a>&nbsp;[% utf2iso(normkat.supplement) %]</td></tr>
+<a href="[% utf2iso(normkat.url) %]" title="Begriff in diesem Katalog suchen">[% utf2iso(normkat.contents) %]</a>&nbsp;[% utf2iso(normkat.supplement) %]</td></tr>
 [% ELSE %]
 <tr><td class="category">[% utf2iso(normkat.desc) %]</td><td><a
 href="[% utf2iso(normkat.url) %]" [% openextern %] >[% utf2iso(normkat.contents) %]</a> [% utf2iso(normkat.supplement) %]</td></tr>

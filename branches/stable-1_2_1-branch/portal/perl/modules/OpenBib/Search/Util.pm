@@ -3553,17 +3553,17 @@ sub set_url_category_global {
   $globalcontents=~s/¬//g;
   $globalcontents=~s/\"//g;
 
-#  if ($type eq "swt"){
-#    $globalcontents=~s/&lt;/</g;
-#    $globalcontents=~s/&gt;/>/g;
+  if ($type eq "swt"){
+    $globalcontents=~s/&lt;/</g;
+    $globalcontents=~s/&gt;/>/g;
     
-#  }
-#  else {
+  }
+  else {
     $globalcontents=~s/&lt;//g;
     $globalcontents=~s/&gt;//g;
     $globalcontents=~s/<//g;
     $globalcontents=~s/>//g;
-#  }
+  }
 
   # Sonderzeichen
 

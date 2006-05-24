@@ -58,7 +58,7 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
 </table>
 
 <table width="100%">
-<tr><th style="text-align: center">W&auml;hlen Sie hier bitte Ihr Suchprofil aus</th></tr>
+<tr><th style="text-align: center">In welchen Katalogen m&ouml;chten Sie suchen</th></tr>
 <tr><td class="boxed" valign="top" align="center">
 <select name="profil">
 [%- IF dbcount || userprofiles -%]

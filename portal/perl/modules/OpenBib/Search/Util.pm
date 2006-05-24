@@ -2642,11 +2642,11 @@ sub get_tit_set_by_idn {
                 $ausleihstring="ausleihen?";
             }
             else {
-                $ausleihstring="WebOPAC?";
+                $ausleihstring="Weiter";
             }
         }
         else {
-            $ausleihstring="WebOPAC?";
+            $ausleihstring="Weiter";
         }
         
 	$circexemplarliste[$i]{'Ausleihstring'}=$ausleihstring;

@@ -60,7 +60,7 @@ END;
 <tr><td class="category">[% utf2iso(normkat.desc) %]</td><td>
 [% IF activefeed.5 %]
 <a
-href="[% config.connector_rss_loc %]/neuzugang_nach_sys/[% rssid %]/[%
+href="http://[% config.loadbalancerservername %][% config.connector_rss_loc %]/neuzugang_nach_sys/[% rssid %]/[%
 database %].rdf" title="RSS-Feed abonnieren" target="_blank"><img
 src="/images/openbib/rssfeed.png"></a>&nbsp;
 [% END %]
@@ -78,7 +78,7 @@ href="[% utf2iso(normkat.url) %]" [% openextern %] >[% utf2iso(normkat.contents)
 <tr><td class="category">[% utf2iso(normkat.desc) %]</td><td>
 [% IF activefeed.2 %]
 <a
-href="[% config.connector_rss_loc %]/neuzugang_nach_aut/[% rssid %]/[%
+href="http://[% config.loadbalancerservername %][% config.connector_rss_loc %]/neuzugang_nach_aut/[% rssid %]/[%
 database %].rdf" title="RSS-Feed abonnieren" target="_blank"><img
 src="/images/openbib/rssfeed.png"></a>&nbsp;
 [% END %]
@@ -89,7 +89,7 @@ src="/images/openbib/rssfeed.png"></a>&nbsp;
 <tr><td class="category">[% utf2iso(normkat.desc) %]</td><td>
 [% IF activefeed.2 %]
 <a
-href="[% config.connector_rss_loc %]/neuzugang_nach_aut/[% rssid %]/[%
+href="http://[% config.loadbalancerservername %][% config.connector_rss_loc %]/neuzugang_nach_aut/[% rssid %]/[%
 database %].rdf" title="RSS-Feed abonnieren" target="_blank"><img
 src="/images/openbib/rssfeed.png"></a>&nbsp;
 [% END %]
@@ -100,7 +100,7 @@ src="/images/openbib/rssfeed.png"></a>&nbsp;
 <tr><td class="category">[% utf2iso(normkat.desc) %]</td><td>
 [% IF activefeed.2 %]
 <a
-href="[% config.connector_rss_loc %]/neuzugang_nach_aut/[% rssid %]/[%
+href="http://[% config.loadbalancerservername %][% config.connector_rss_loc %]/neuzugang_nach_aut/[% rssid %]/[%
 database %].rdf" title="RSS-Feed abonnieren" target="_blank"><img
 src="/images/openbib/rssfeed.png"></a>&nbsp;
 [% END %]
@@ -111,7 +111,7 @@ src="/images/openbib/rssfeed.png"></a>&nbsp;
 <tr><td class="category">[% utf2iso(normkat.desc) %]</td><td>
 [% IF activefeed.3 %]
 <a
-href="[% config.connector_rss_loc %]/neuzugang_nach_kor/[% rssid %]/[%
+href="http://[% config.loadbalancerservername %][% config.connector_rss_loc %]/neuzugang_nach_kor/[% rssid %]/[%
 database %].rdf" title="RSS-Feed abonnieren" target="_blank"><img
 src="/images/openbib/rssfeed.png"></a>&nbsp;
 [% END %]
@@ -122,7 +122,7 @@ src="/images/openbib/rssfeed.png"></a>&nbsp;
 <tr><td class="category">[% utf2iso(normkat.desc) %]</td><td>
 [% IF activefeed.3 %]
 <a
-href="[% config.connector_rss_loc %]/neuzugang_nach_kor/[% rssid %]/[%
+href="http://[% config.loadbalancerservername %][% config.connector_rss_loc %]/neuzugang_nach_kor/[% rssid %]/[%
 database %].rdf" title="RSS-Feed abonnieren" target="_blank"><img
 src="/images/openbib/rssfeed.png"></a>&nbsp;
 [% END %]
@@ -133,7 +133,7 @@ src="/images/openbib/rssfeed.png"></a>&nbsp;
 <tr><td class="category">[% utf2iso(normkat.desc) %]</td><td>
 [% IF activefeed.4 %]
 <a
-href="[% config.connector_rss_loc %]/neuzugang_nach_swt/[% rssid %]/[%
+href="http://[% config.loadbalancerservername %][% config.connector_rss_loc %]/neuzugang_nach_swt/[% rssid %]/[%
 database %].rdf" title="RSS-Feed abonnieren" target="_blank"><img
 src="/images/openbib/rssfeed.png"></a>&nbsp;
 [% END %]

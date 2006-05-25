@@ -1,3 +1,16 @@
+[%#-
+#######################################################################
+#
+# Templatename: std_error
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe einer Fehlermeldung
+#
+#######################################################################
+-%]
 [% PROCESS common/subtemplate name="std_header" %]
 
   <body>

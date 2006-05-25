@@ -1,8 +1,18 @@
-[% IF type == 'HTML' %]
-	  <table>
-[% PROCESS common/subtemplate name="managecollection_tit_as_html" %]
-	  </table>
-[% ELSIF type == 'Text' %]
+[%#-
+#######################################################################
+#
+# Templatename: managecollection_save_plain
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Abspeichern der Merkliste in eine Datei im Plain-Format
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="visible_categories_titset" %]
+[% IF type == 'Text' %]
 [% PROCESS common/subtemplate name="managecollection_tit_as_text" %]
 [% ELSIF type == 'EndNote' %]
 [% PROCESS common/subtemplate name="managecollection_tit_as_endnote" %]

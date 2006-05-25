@@ -1,0 +1,3046 @@
+# translation of openbib.po to 
+# translation of openbib.po to
+# translation of openbib.po to
+# translation of openbib.po to
+# translation of openbib.po to
+# translation of openbib.po to
+# translation of openbib.po to
+# translation of openbib.po to German
+# translation of openbib.po to
+# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
+# Oliver Flimm <flimm@openbib.org>, 2006.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: openbib\n"
+"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2006-05-22 17:58+0200\n"
+"Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
+"Language-Team:  <l10n@openbib.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.9.1\n"
+
+#: ../templates/database/einbaende/managecollection_tit_as_html:38
+#: ../templates/database/einbaende/managecollection_tit_as_html:77
+#: ../templates/managecollection_tit_as_html:35
+#: ../templates/managecollection_tit_as_html_simple:37
+#: ../templates/managecollection_tit_as_text:35
+#: ../templates/search_showautset:44 ../templates/search_showkorset:47
+#: ../templates/search_showmulttitset:89 ../templates/search_shownotset:45
+#: ../templates/search_showswtset:50 ../templates/search_showtitset:108
+msgid "${category}"
+msgstr "${category}"
+
+#: ../templates/database/einbaende/search_showtitset:130
+#: ../templates/database/einbaende/search_showtitset:228
+msgid "${thiscategory}"
+msgstr "${thiscategory}"
+
+#: ../templates/admin_login:23
+msgid ""
+"&Uuml;ber diese Authentifizierungsseite k&ouml;nnen Sie sich als "
+"Administrator anmelden."
+msgstr ""
+"&Uuml;ber diese Authentifizierungsseite k&ouml;nnen Sie sich als "
+"Administrator anmelden."
+
+#: ../templates/externaljump:90
+msgid "&Uuml;bernahme der Anfrage in externe Recherchequellen"
+msgstr "&Uuml;bernahme der Anfrage in externe Recherchequellen"
+
+#: ../templates/admin_editcat_rss:341
+msgid "&Uuml;bernahme der F&auml;cherstruktur der Erwerbung"
+msgstr "&Uuml;bernahme der F&auml;cherstruktur der Erwerbung"
+
+#: ../templates/externaljump:121 ../templates/externaljump:140
+msgid "&Uuml;bernommene Felder: Titel"
+msgstr "&Uuml;bernommene Felder: Titel"
+
+#: ../templates/externaljump:131
+msgid "&Uuml;bernommene Felder: Titel, ISSN"
+msgstr "&Uuml;bernommene Felder: Titel, ISSN"
+
+#: ../templates/externaljump:111
+msgid "&Uuml;bernommene Felder: Titel, K&ouml;rperschaft, ISSN"
+msgstr "&Uuml;bernommene Felder: Titel, K&ouml;rperschaft, ISSN"
+
+#: ../templates/externaljump:102
+msgid ""
+"&Uuml;bernommene Felder: Titel, Verfasser, K&ouml;rperschaft, ISBN, "
+"Erscheinungsjahr"
+msgstr ""
+"&Uuml;bernommene Felder: Titel, Verfasser, K&ouml;rperschaft, ISBN, "
+"Erscheinungsjahr"
+
+#: ../templates/userprefs:113
+msgid "&Uuml;berzogen"
+msgstr "&Uuml;berzogen"
+
+#: ../templates/views/einbaende/std_footer:17
+msgid ""
+"<b>KUG</b> und <b>Digitale Einband-Sammlung</b> sind Dienste der "
+"Universit&auml;ts- und Stadtbibliothek K&ouml;ln"
+msgstr ""
+"<b>KUG</b> und <b>Digitale Einband-Sammlung</b> sind Dienste der "
+"Universit&auml;ts- und Stadtbibliothek K&ouml;ln"
+
+#: ../templates/search_info:33
+msgid "<b>aber</b> exakte Phrasensuche"
+msgstr "<b>aber</b> exakte Phrasensuche"
+
+#: ../templates/database/einbaende/search_showtitlist:127
+#: ../templates/views/einbaende/resultlists_showall:101
+#: ../templates/views/einbaende/resultlists_showall_sortall:92
+#: ../templates/views/einbaende/resultlists_showsinglepool:101
+#: ../templates/views/einbaende/virtualsearch_result_item:68
+msgid "Abb."
+msgstr "Abb."
+
+#: ../templates/managecollection_mail:39
+msgid "Abschicken"
+msgstr "Abschicken"
+
+#: ../templates/database/einbaende/search_showtitset:30
+#: ../templates/managecollection_show:68 ../templates/search_showtitset:26
+#: ../templates/views/einbaende/managecollection_show:65
+msgid "Abspeichern"
+msgstr "Abspeichern"
+
+#: ../templates/databaseprofile:56
+msgid "Abspeicherung eines neuen oder bestehenden Profils"
+msgstr "Abspeicherung eines neuen oder bestehenden Profils"
+
+#: ../modules/OpenBib/LoadBalancer.pm:102
+msgid "Achtung: Es sind *alle* Server ausgefallen"
+msgstr "Achtung: Es sind *alle* Server ausgefallen"
+
+#: ../templates/admin_login:21
+msgid "Administrations-Login"
+msgstr "Administrations-Login"
+
+#: ../templates/database/einbaende/managecollection_tit_as_html:95
+#: ../templates/database/einbaende/search_showtitset:245
+#: ../templates/managecollection_tit_as_html:64
+#: ../templates/managecollection_tit_as_html_simple:64
+#: ../templates/search_showmulttitset:124 ../templates/search_showtitset:143
+msgid "Aktion"
+msgstr "Aktion"
+
+#: ../templates/admin_editcat:75 ../templates/admin_editcat_rss:123
+#: ../templates/admin_editcat_rss:182 ../templates/admin_editcat_rss:241
+#: ../templates/admin_editcat_rss:300 ../templates/admin_editcat_rss:64
+#: ../templates/admin_editview:39 ../templates/admin_editview_rss:135
+#: ../templates/admin_editview_rss:89 ../templates/admin_showcat:43
+#: ../templates/admin_showcat:74 ../templates/admin_showviews:38
+#: ../templates/admin_showviews:58
+msgid "Aktiv"
+msgstr "Aktiv"
+
+#: ../templates/resultlists_choice:34
+msgid "Aktuelle Recherche"
+msgstr "Aktuelle Recherche"
+
+#: ../templates/databasechoice:57 ../templates/databaseprofile:78
+#: ../templates/searchframe:180 ../templates/searchframe_simple:88
+msgid "Alle Kataloge"
+msgstr "Alle Kataloge"
+
+#: ../templates/resultlists_choice:83
+msgid "Alle Treffer"
+msgstr "Alle Treffer"
+
+#: ../templates/admin_editsession:35
+msgid "Allgemeine Informationen"
+msgstr "Allgemeine Informationen"
+
+#: ../templates/database/einbaende/search_showtitset:29
+#: ../templates/managecollection_show:67 ../templates/search_showtitset:25
+#: ../templates/views/einbaende/managecollection_show:64
+msgid "Als Mail verschicken"
+msgstr "Als Mail verschicken"
+
+#: ../templates/searchframe:53
+#: ../templates/views/einbaende/searchframe_simple:50
+#: ../templates/views/richter/searchframe:47
+msgid "Als Suchvorlage"
+msgstr "Als Suchvorlage"
+
+#: ../templates/testsystem_info:18
+msgid "Als User-Agent verwenden Sie"
+msgstr "Als User-Agent verwenden Sie"
+
+#: ../templates/externaljump:32
+msgid ""
+"An dieser Stelle k&ouml;nnen Sie ausgehend von Ihrer (eventuell erfolglosen) "
+"Suchanfrage im KUG Recherche-Portal diese auf weitere externe Kataloge "
+"ausdehnen."
+msgstr ""
+"An dieser Stelle k&ouml;nnen Sie ausgehend von Ihrer (eventuell erfolglosen) "
+"Suchanfrage im KUG Recherche-Portal diese auf weitere externe Kataloge "
+"ausdehnen."
+
+#: ../templates/login:41
+msgid "Anmeldeziel"
+msgstr "Anmeldeziel"
+
+#: ../templates/admin_editsession:41
+msgid "Anzahl Recherchen"
+msgstr "Anzahl Recherchen"
+
+#: ../templates/databaseprofile:62
+msgid "Anzeige des ausgew&auml;hlten Profils"
+msgstr "Anzeige des ausgew&auml;hlten Profils"
+
+#: ../templates/databasechoice:47
+msgid ""
+"Auf dieser Seite k&ouml;nnen Sie einzelne Kataloge als Suchziel auswählen. "
+"Bei aktiviertem JavaScript reicht ein Klick auf das Schaltelement einer "
+"übergeordneten hellblau hinterlegten Kategorie, um alle zugeh&ouml;rigen "
+"Kataloge automatisch auszuwählen<p />\n"
+"Nachdem Sie Ihre Auswahl getroffen haben aktivieren Sie bitte <b>Kataloge "
+"auswählen</b>. Sie springen dann auf die Rechercheseite und k&ouml;nnen Ihre "
+"Suchbegriffe eingeben. Ihre gerade\n"
+"getroffene Datenbankauswahl ist unter <b>Suchprofil</b> vorausgewählt. Nun "
+"müssen Sie nur noch auf <b>In ausgewählten Katalogen suchen</b> klicken, um "
+"in den ausgewählten\n"
+"Datenbanken zu recherchieren."
+msgstr ""
+"Auf dieser Seite k&ouml;nnen Sie einzelne Kataloge als Suchziel auswählen. "
+"Bei aktiviertem JavaScript reicht ein Klick auf das Schaltelement einer "
+"übergeordneten hellblau hinterlegten Kategorie, um alle zugeh&ouml;rigen "
+"Kataloge automatisch auszuwählen<p />\n"
+"Nachdem Sie Ihre Auswahl getroffen haben aktivieren Sie bitte <b>Kataloge "
+"auswählen</b>. Sie springen dann auf die Rechercheseite und k&ouml;nnen Ihre "
+"Suchbegriffe eingeben. Ihre gerade\n"
+"getroffene Datenbankauswahl ist unter <b>Suchprofil</b> vorausgewählt. Nun "
+"müssen Sie nur noch auf <b>In ausgewählten Katalogen suchen</b> klicken, um "
+"in den ausgewählten\n"
+"Datenbanken zu recherchieren."
+
+#: ../templates/rssframe:21
+msgid ""
+"Auf dieser Seite k&ouml;nnen Sie f&uuml;r einige Kataloge des KUG\n"
+"RSS-Feeds abonnieren. Dazu kopieren Sie bitte den jeweiligen URL von\n"
+"dieser Seite und kopieren ihn in Ihr RSS-Leseprogramm."
+msgstr ""
+"Auf dieser Seite k&ouml;nnen Sie f&uuml;r einige Kataloge des KUG\n"
+"RSS-Feeds abonnieren. Dazu kopieren Sie bitte den jeweiligen URL von\n"
+"dieser Seite und kopieren ihn in Ihr RSS-Leseprogramm."
+
+#: ../templates/database/einbaende/search_showtitset:31
+#: ../templates/search_showtitset:27
+msgid "Ausdrucken"
+msgstr "Ausdrucken"
+
+#: ../templates/userprefs:99
+msgid "Ausgeliehen"
+msgstr "Ausgeliehen"
+
+#: ../templates/resultlists_choice:32
+msgid "Ausgew&auml;hlte Recherche"
+msgstr "Ausgew&auml;hlte Recherche"
+
+#: ../templates/managecollection_show:60
+#: ../templates/views/einbaende/managecollection_show:57
+msgid "Ausgew&auml;hlte Titel l&ouml;schen"
+msgstr "Ausgew&auml;hlte Titel l&ouml;schen"
+
+#: ../templates/circulation_remind:48
+msgid "Ausleih-/Buchungsdatum"
+msgstr "Ausleih-/Buchungsdatum"
+
+#: ../templates/admin_editcat:150
+msgid "Ausleih-Einstellungen"
+msgstr "Ausleih-Einstellungen"
+
+#: ../templates/database/einbaende/managecollection_tit_as_html:91
+#: ../templates/database/einbaende/search_showtitset:241
+#: ../templates/managecollection_tit_as_html:60
+#: ../templates/managecollection_tit_as_html_simple:60
+#: ../templates/search_showmulttitset:120 ../templates/search_showtitset:139
+msgid "Ausleihe/Exemplare"
+msgstr "Ausleihe/Exemplare"
+
+#: ../templates/circulation:33 ../templates/circulation_orders:33
+#: ../templates/circulation_remind:33 ../templates/circulation_reserv:33
+msgid "Ausleihen"
+msgstr "Ausleihen"
+
+#: ../templates/circulation:48
+msgid "Ausleihfrist"
+msgstr "Ausleihfrist"
+
+#: ../templates/userprefs:64
+msgid "Ausleihinformationen"
+msgstr "Ausleihinformationen"
+
+#: ../templates/database/einbaende/managecollection_tit_as_html:95
+#: ../templates/database/einbaende/search_showtitset:245
+#: ../templates/managecollection_tit_as_html:64
+#: ../templates/managecollection_tit_as_html_simple:64
+#: ../templates/search_showmulttitset:124 ../templates/search_showtitset:143
+msgid "Ausleihstatus"
+msgstr "Ausleihstatus"
+
+#: ../templates/admin_editcat:121
+msgid "Aut-Datei"
+msgstr "Aut-Datei"
+
+#: ../templates/admin_editcat:130
+msgid "Autokonvertierung (cron)"
+msgstr "Autokonvertierung (cron)"
+
+#: ../templates/searchframe:171
+msgid "Autor/Körperschaft"
+msgstr "Autor/Körperschaft"
+
+#: ../templates/virtualsearch_more_search_tips:27
+msgid "B&uuml;cher"
+msgstr "B&uuml;cher"
+
+#. ("<a href=\"#Suchhinweise\">","</a>")
+#: ../templates/virtualsearch_result_end:17
+msgid "Beachten Sie bitte auch unserere %1weitergehenden Suchhinweise%2."
+msgstr "Beachten Sie bitte auch unserere %1weitergehenden Suchhinweise%2."
+
+#: ../templates/admin_showsessions:39
+msgid "Beginn"
+msgstr "Beginn"
+
+#: ../templates/admin_showsessions:39
+msgid "Benutzer"
+msgstr "Benutzer"
+
+#: ../templates/circulation:24 ../templates/circulation_orders:24
+#: ../templates/circulation_remind:24 ../templates/circulation_reserv:24
+#: ../templates/databaseprofile:41 ../templates/userprefs:25
+msgid "Benutzerkonto"
+msgstr "Benutzerkonto"
+
+#: ../templates/admin_login:30 ../templates/login:42
+#: ../templates/mailpassword:44 ../templates/selfreg:44
+#: ../templates/userprefs:42
+msgid "Benutzername"
+msgstr "Benutzername"
+
+#: ../templates/admin_showcat:66
+msgid "Bereits existierende Kataloge"
+msgstr "Bereits existierende Kataloge"
+
+#: ../templates/admin_showviews:52
+msgid "Bereits existierende Views"
+msgstr "Bereits existierende Views"
+
+#: ../templates/admin_editcat:50 ../templates/admin_editview:39
+#: ../templates/admin_showcat:41 ../templates/admin_showcat:70
+#: ../templates/admin_showviews:38 ../templates/admin_showviews:58
+msgid "Beschreibung"
+msgstr "Beschreibung"
+
+#: ../templates/database/einbaende/managecollection_tit_as_html:48
+#: ../templates/database/einbaende/managecollection_tit_as_html:95
+#: ../templates/database/einbaende/search_showtitset:140
+#: ../templates/database/einbaende/search_showtitset:245
+#: ../templates/managecollection_tit_as_html:45
+#: ../templates/managecollection_tit_as_html:64
+#: ../templates/managecollection_tit_as_html_simple:45
+#: ../templates/managecollection_tit_as_html_simple:64
+#: ../templates/managecollection_tit_as_text:40
+#: ../templates/search_showmulttitset:124
+#: ../templates/search_showmulttitset:99 ../templates/search_showtitset:118
+#: ../templates/search_showtitset:143
+msgid "Besitzende Bibliothek"
+msgstr "Besitzende Bibliothek"
+
+#: ../templates/search_info:31
+msgid "Besonderheit bei"
+msgstr "Besonderheit bei"
+
+#: ../templates/admin_editcat:168
+msgid "Bestands-&Uuml;berpr&uuml;fungs-URL"
+msgstr "Bestands-&Uuml;berpr&uuml;fungs-URL"
+
+#: ../templates/database/einbaende/managecollection_tit_as_html:48
+#: ../templates/database/einbaende/search_showtitset:140
+#: ../templates/managecollection_tit_as_html:45
+#: ../templates/managecollection_tit_as_html_simple:45
+#: ../templates/search_showmulttitset:99 ../templates/search_showtitset:118
+msgid "Bestandsverlauf"
+msgstr "Bestandsverlauf"
+
+#: ../templates/admin_showsessions:35
+msgid "Bestehende Sessions"
+msgstr "Bestehende Sessions"
+
+#: ../templates/circulation_orders:48
+msgid "Bestelldatum"
+msgstr "Bestelldatum"
+
+#: ../templates/circulation:35 ../templates/circulation_orders:35
+#: ../templates/circulation_remind:35 ../templates/circulation_reserv:35
+#: ../templates/userprefs:124
+msgid "Bestellungen"
+msgstr "Bestellungen"
+
+#: ../templates/managecollection_mail:36
+msgid "Betreff"
+msgstr "Betreff"
+
+#: ../modules/OpenBib/VirtualSearch.pm:499
+msgid "Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."
+msgstr "Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."
+
+#: ../templates/userprefs:88
+msgid ""
+"Bitte wenden Sie sich bei Unstimmigkeiten in Ihren Personendaten an die "
+"Auskunft der Bibliothek."
+msgstr ""
+"Bitte wenden Sie sich bei Unstimmigkeiten in Ihren Personendaten an die "
+"Auskunft der Bibliothek."
+
+#: ../templates/views/einbaende/searchframe_simple:31
+msgid "Bl&auml;ttern"
+msgstr "Bl&auml;ttern"
+
+#: ../templates/search_showkorset:29
+msgid "C0001"
+msgstr "Ansetzung"
+
+#: ../templates/search_showkorset:30
+msgid "C0102"
+msgstr "Verweisung"
+
+#: ../templates/search_showkorset:31
+msgid "C0103"
+msgstr ""
+
+#: ../templates/search_showkorset:32
+msgid "C0110"
+msgstr ""
+
+#: ../templates/search_showkorset:33
+msgid "C0111"
+msgstr "Früherer/Späterer Name"
+
+#: ../templates/search_showkorset:34
+msgid "C5000"
+msgstr "Anzahl Titel"
+
+#: ../templates/admin_editcat:128
+msgid "DB-Datei"
+msgstr "DB-Datei"
+
+#: ../templates/admin_editcat:72 ../templates/admin_showcat:42
+#: ../templates/admin_showcat:72
+msgid "DB-Name"
+msgstr "DB-Name"
+
+#: ../templates/admin_editcat:166
+msgid "DB-Name im Lokalsystem"
+msgstr "DB-Name im Lokalsystem"
+
+#: ../templates/mailpassword:35
+msgid ""
+"Damit Ihnen Ihr im Rahmen der Selbstregistrierung vergebenes Passwort per E-"
+"Mail zugeschickt werden kann, geben Sie bitte Ihren Benutzernamen an, der "
+"Ihrer E-Mail-Adresse entspricht."
+msgstr ""
+"Damit Ihnen Ihr im Rahmen der Selbstregistrierung vergebenes Passwort per E-"
+"Mail zugeschickt werden kann, geben Sie bitte Ihren Benutzernamen an, der "
+"Ihrer E-Mail-Adresse entspricht."
+
+#: ../modules/OpenBib/VirtualSearch.pm:510
+#: ../modules/OpenBib/VirtualSearch.pm:522
+msgid ""
+"Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und "
+"mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die "
+"Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese "
+"Einschränkung."
+msgstr ""
+"Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und "
+"mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die "
+"Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese "
+"Einschränkung."
+
+#: ../templates/admin_editsession:54 ../templates/admin_showviews:58
+msgid "Datenbanken"
+msgstr "Datenbanken"
+
+#: ../templates/externaljump:113
+msgid "Datenbankinformationssystem (DBIS)"
+msgstr "Datenbankinformationssystem (DBIS)"
+
+#: ../templates/databaseprofile:65
+msgid ""
+"Definieren Sie oder bearbeiten Sie hier Ihre individuellen Katalogprofile. "
+"Diese werden gespeichert und stehen daher auch beim n&auml;chten Anmelden "
+"wieder zu Ihrer Verf&uuml;gung. Um ein hier definiertes Katalogprofil zu "
+"nutzen, w&auml;hlen Sie es in der Recherchemaske einfach unter "
+"<b>Suchprofil</b> aus und aktivieren zur Suche dann <b>In ausgew&auml;hlten "
+"Katalogen suchen</b>."
+msgstr ""
+"Definieren Sie oder bearbeiten Sie hier Ihre individuellen Katalogprofile. "
+"Diese werden gespeichert und stehen daher auch beim n&auml;chten Anmelden "
+"wieder zu Ihrer Verf&uuml;gung. Um ein hier definiertes Katalogprofil zu "
+"nutzen, w&auml;hlen Sie es in der Recherchemaske einfach unter "
+"<b>Suchprofil</b> aus und aktivieren zur Suche dann <b>In ausgew&auml;hlten "
+"Katalogen suchen</b>."
+
+#: ../modules/OpenBib/VirtualSearch.pm:311
+msgid ""
+"Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank "
+"zur Suche ausgewählt wurde."
+msgstr ""
+"Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank "
+"zur Suche ausgewählt wurde."
+
+#: ../templates/databaseprofile:73
+msgid "Derzeit angezeigtes Profil"
+msgstr "Derzeit angezeigtes Profil"
+
+#: ../modules/OpenBib/ResultLists.pm:136
+msgid "Derzeit existiert (noch) keine Trefferliste"
+msgstr "Derzeit existiert (noch) keine Trefferliste"
+
+#: ../modules/OpenBib/ManageCollection.pm:207
+msgid "Derzeit ist Ihre Merkliste leer"
+msgstr "Derzeit ist Ihre Merkliste leer"
+
+#: ../templates/views/richter/std_footer:17
+msgid ""
+"Die <b>Virtuelle Bibliothek Elise und Helene Richter</b> ist Teil der NS-"
+"Provenienzforschung in der USB K&ouml;ln"
+msgstr ""
+"Die <b>Virtuelle Bibliothek Elise und Helene Richter</b> ist Teil der NS-"
+"Provenienzforschung in der USB K&ouml;ln"
+
+#: ../templates/userprefs_changefields:26
+msgid ""
+"Die Einstellung Ihrer Suchfelder wurde erfolgreich vorgenommen. Klicken Sie "
+"nun bitte auf 'Recherche' in der Navigationsleiste, um die neuen "
+"Suchfeldauswahl zu verwenden."
+msgstr ""
+"Die Einstellung Ihrer Suchfelder wurde erfolgreich vorgenommen. Klicken Sie "
+"nun bitte auf 'Recherche' in der Navigationsleiste, um die neuen "
+"Suchfeldauswahl zu verwenden."
+
+#: ../templates/views/einbaende/std_footer:20
+#: ../templates/views/richter/std_footer:20
+msgid ""
+"Die USB K&ouml;ln ist nicht f&uuml;r die Inhalte fremder Seiten "
+"verantwortlich, die Sie &uuml;ber einen Link erreichen!"
+msgstr ""
+"Die USB K&ouml;ln ist nicht f&uuml;r die Inhalte fremder Seiten "
+"verantwortlich, die Sie &uuml;ber einen Link erreichen!"
+
+#: ../modules/OpenBib/SelfReg.pm:131
+msgid "Die beiden eingegebenen Passworte stimmen nicht überein."
+msgstr "Die beiden eingegebenen Passworte stimmen nicht überein."
+
+#: ../templates/search_info:24
+msgid ""
+"Die einzelnen Suchfelder sind standardm&auml;ssig &uuml;ber eine \n"
+"<b>Und</b>-Verkn&uuml;pfung verbunden. Zur Einschr&auml;nkung des "
+"Suchergebnisses \n"
+"k&ouml;nnen die Suchfelder auch &uuml;ber eine <b>Oder</b>- sowie eine \n"
+"<b>Und Nicht</b>-Verkn&uuml;pfung verbunden werden. W&auml;hlen Sie hierzu "
+"die \n"
+"entsprechende Verkn&uuml;pfungsart aus dem Pull-Down-Men&uuml; vor dem \n"
+"jeweiligen Texteingabefeld."
+msgstr ""
+"Die einzelnen Suchfelder sind standardm&auml;ssig &uuml;ber eine \n"
+"<b>Und</b>-Verkn&uuml;pfung verbunden. Zur Einschr&auml;nkung des "
+"Suchergebnisses \n"
+"k&ouml;nnen die Suchfelder auch &uuml;ber eine <b>Oder</b>- sowie eine \n"
+"<b>Und Nicht</b>-Verkn&uuml;pfung verbunden werden. W&auml;hlen Sie hierzu "
+"die \n"
+"entsprechende Verkn&uuml;pfungsart aus dem Pull-Down-Men&uuml; vor dem \n"
+"jeweiligen Texteingabefeld."
+
+#: ../modules/OpenBib/Circulation.pm:119 ../modules/OpenBib/UserPrefs.pm:130
+msgid "Diese Session ist nicht authentifiziert."
+msgstr "Diese Session ist nicht authentifiziert."
+
+#: ../templates/externaljump:94
+msgid "Digitale Bibliothek / Monographien (Fernleihe)"
+msgstr "Digitale Bibliothek / Monographien (Fernleihe)"
+
+#: ../templates/externaljump:103
+msgid "Digitale Bibliothek / Zeitschriften (Aufsatzlieferung)"
+msgstr "Digitale Bibliothek / Zeitschriften (Aufsatzlieferung)"
+
+#: ../templates/managecollection_print:24
+msgid "Druckansicht Titel"
+msgstr "Druckansicht Titel"
+
+#: ../templates/userprefs:77
+msgid "E-Mail"
+msgstr "E-Mail"
+
+#. ("<a href=\"http://$config{servername}$config{login_loc}?sessionID=$sessionID?do_login=1\">","</a>")
+#: ../modules/OpenBib/SelfReg.pm:151
+msgid ""
+"Ein Benutzer mit dem Namen $loginname existiert bereits. Haben Sie "
+"vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte %1zurück%2 und "
+"lassen es sich zumailen."
+msgstr ""
+"Ein Benutzer mit dem Namen $loginname existiert bereits. Haben Sie "
+"vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte %1zurück%2 und "
+"lassen es sich zumailen."
+
+#: ../templates/views/einbaende/searchframe_simple:102
+msgid "Einband"
+msgstr "Einband"
+
+#: ../templates/database/einbaende/search_showtitset:54
+msgid "Einband-Abbildungen"
+msgstr "Einband-Abbildungen"
+
+#: ../templates/database/einbaende/managecollection_tit_as_html:62
+#: ../templates/database/einbaende/search_showtitset:161
+msgid "Einband-Daten"
+msgstr "Einband-Daten"
+
+#: ../templates/managecollection_show:62
+#: ../templates/views/einbaende/managecollection_show:59
+msgid "Eine Bearbeitung ist nur bei 'HTML' m&ouml;glich"
+msgstr "Eine Bearbeitung ist nur bei 'HTML' m&ouml;glich"
+
+#: ../templates/searchframe:33 ../templates/searchframe_simple:40
+#: ../templates/views/richter/searchframe:27
+#: ../templates/views/richter/searchframe_simple:38
+msgid "Einfache Recherche"
+msgstr "Einfache Recherche"
+
+#: ../templates/userprefs:151
+msgid "Einfache Recherchemaske"
+msgstr "Einfache Recherchemaske"
+
+#: ../templates/searchframe:149
+msgid "Eingrenzung auf Gesamttitel"
+msgstr "Eingrenzung auf Gesamttitel"
+
+#: ../templates/admin_login:32 ../templates/login:44
+msgid "Einloggen"
+msgstr "Einloggen"
+
+#: ../templates/externaljump:123
+msgid "Elektronische Zeitschriftendatenbank (EZB)"
+msgstr "Elektronische Zeitschriftendatenbank (EZB)"
+
+#: ../templates/admin_editcat:114
+msgid "Entfernter Nutzername"
+msgstr "Entfernter Nutzername"
+
+#: ../templates/admin_editcat:112
+msgid "Entfernter Rechnername"
+msgstr "Entfernter Rechnername"
+
+#: ../templates/admin_editcat:115
+msgid "Entferntes Passwort"
+msgstr "Entferntes Passwort"
+
+#: ../templates/admin_editcat:113
+msgid "Entferntes Verz."
+msgstr "Entferntes Verz."
+
+#: ../templates/mailcollection_success:20 ../templates/mailpassword_success:20
+msgid "Erfolgreiche Aktion"
+msgstr "Erfolgreiche Aktion"
+
+#: ../templates/admin_loggedin:30 ../templates/userprefs_changefields:24
+#: ../templates/userprefs_userdeleted:19
+msgid "Erfolgsmeldung"
+msgstr "Erfolgsmeldung"
+
+#: ../templates/searchframe:171 ../templates/userprefs:180
+msgid "Erscheinungsjahr"
+msgstr "Erscheinungsjahr"
+
+#: ../templates/managecollection_tit_as_text:44
+msgid "Erscheinungsverlauf  "
+msgstr "Erscheinungsverlauf  "
+
+#: ../templates/userprefs:155
+msgid "Erweitere Recherchemaske"
+msgstr "Erweitere Recherchemaske"
+
+#: ../modules/OpenBib/Admin.pm:306
+msgid "Es existiert bereits ein Katalog unter diesem Namen"
+msgstr "Es existiert bereits ein Katalog unter diesem Namen"
+
+#: ../modules/OpenBib/Admin.pm:696
+msgid "Es existiert bereits ein View unter diesem Namen"
+msgstr "Es existiert bereits ein View unter diesem Namen"
+
+#: ../templates/admin_editview_rss:66
+msgid "Es existiert bereits ein prim&auml;rer RSS-Feed f&uuml;r diesen View"
+msgstr "Es existiert bereits ein prim&auml;rer RSS-Feed f&uuml;r diesen View"
+
+#: ../modules/OpenBib/MailPassword.pm:149
+msgid "Es existiert kein Passwort für die Kennung $loginname"
+msgstr "Es existiert kein Passwort für die Kennung $loginname"
+
+#: ../templates/admin_editcat_rss:176
+msgid "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
+msgstr "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
+
+#: ../templates/admin_editcat_rss:235
+msgid "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach Schlagwort"
+msgstr "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach Schlagwort"
+
+#: ../templates/admin_editcat_rss:117
+msgid "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach Verfasser"
+msgstr "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach Verfasser"
+
+#: ../templates/admin_editcat_rss:294 ../templates/admin_editcat_rss:58
+msgid "Es existiert noch kein genereller RSS-Feed f&uuml;r Neuaufnahmen"
+msgstr "Es existiert noch kein genereller RSS-Feed f&uuml;r Neuaufnahmen"
+
+#: ../templates/admin_editview_rss:62
+msgid "Es existiert noch kein prim&auml;rer RSS-Feed f&uuml;r diesen View"
+msgstr "Es existiert noch kein prim&auml;rer RSS-Feed f&uuml;r diesen View"
+
+#: ../templates/circulation_remind:44
+msgid "Es sind keine Gebühren angefallen."
+msgstr "Es sind keine Gebühren angefallen."
+
+#: ../modules/OpenBib/SelfReg.pm:124
+msgid "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
+msgstr "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
+
+#: ../modules/OpenBib/VirtualSearch.pm:533
+msgid "Es wurde kein Suchkriterium eingegeben."
+msgstr "Es wurde kein Suchkriterium eingegeben."
+
+#: ../modules/OpenBib/Search.pm:1085 ../modules/OpenBib/Search.pm:1163
+#: ../modules/OpenBib/Search.pm:293 ../modules/OpenBib/Search.pm:387
+#: ../modules/OpenBib/Search.pm:820 ../modules/OpenBib/Search.pm:909
+#: ../modules/OpenBib/Search.pm:998
+msgid "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
+msgstr "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
+
+#: ../modules/OpenBib/UserPrefs.pm:361
+msgid "Es wurde keine Standard-Recherchemaske ausgewählt"
+msgstr "Es wurde keine Standard-Recherchemaske ausgewählt"
+
+#: ../templates/views/einbaende/virtualsearch_result_end:19
+#: ../templates/virtualsearch_result_end:15
+msgid "Es wurden keine Treffer gefunden"
+msgstr "Es wurden keine Treffer gefunden"
+
+#. ("<a href=\"http://retro-philfak.ub.uni-koeln.de:8080/catalog/\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>")
+#: ../templates/virtualsearch_more_search_tips:30
+msgid ""
+"F&uuml;r verschiedene Institute und Seminare der Philosophischen Fakult&auml;"
+"t besteht die M&ouml;glichkeit der Suche in einem %1Online-Kartenkatalog%2"
+msgstr ""
+"F&uuml;r verschiedene Institute und Seminare der Philosophischen Fakult&auml;"
+"t besteht die M&ouml;glichkeit der Suche in einem %1Online-Kartenkatalog%2"
+
+#: ../templates/admin_editcat:103
+msgid "FTP"
+msgstr "FTP"
+
+#: ../templates/admin_editcat:39
+msgid "Fakult&auml;t"
+msgstr "Fakult&auml;t"
+
+#: ../templates/admin_showcat:40 ../templates/admin_showcat:69
+msgid "Fakultät"
+msgstr "Fakultät"
+
+#: ../templates/searchframe:181 ../templates/searchframe_simple:89
+msgid "Fakultäten"
+msgstr "Fakultäten"
+
+#. ("<a href=\"http://${config.servername}${config.selfreg_loc}?sessionID=${sessionID};action=show\">","</a>")
+#: ../templates/login:50
+msgid ""
+"Falls Sie bei keinem der Anmeldeziele registriert sind, so k&ouml;nnen Sie "
+"sich %1<b>hier</b>%2 f&uuml;r das Anmeldeziel Selbstregistierung eine "
+"Kennung einrichten."
+msgstr ""
+"Falls Sie bei keinem der Anmeldeziele registriert sind, so k&ouml;nnen Sie "
+"sich %1<b>hier</b>%2 f&uuml;r das Anmeldeziel Selbstregistierung eine "
+"Kennung einrichten."
+
+#: ../templates/login:31
+msgid ""
+"Falls Sie sich bereits hier f&uuml;r den KUG registriert haben oder eine "
+"Kennung in den anderen aufgef&uuml;hrten Anmeldezielen besitzen, so k&ouml;"
+"nnen Sie sich hier anmelden. Ihnen stehen dann weitere Nutzungsm&ouml;"
+"glichkeiten des KUG offen. Dazu geh&ouml;rt u.a. die Definition "
+"gespeicherter Katalogprofile. Ebenso steht Ihnen Ihre Merkliste nach dem "
+"n&auml;chsten Anmelden wieder zur Verf&uuml;gung. Wenn Sie sich &uuml;ber "
+"Ihre USB-Kennung anmelden, so bietet dies den Vorteil, da&szlig; Sie unter "
+"'Weitergehende Suchhinweise' in der Ergebnisliste Ihrer Suche automatisch "
+"authentifiziert in die Buch-Fernleih- und Zeitschriftenartikel-"
+"Lieferfunktion der Digitalen Bibliothek (Digibib) springen k&ouml;nnen und "
+"sich nicht sp&auml;ter dort nochmals authentifizieren m&uuml;ssen."
+msgstr ""
+"Falls Sie sich bereits hier f&uuml;r den KUG registriert haben oder eine "
+"Kennung in den anderen aufgef&uuml;hrten Anmeldezielen besitzen, so k&ouml;"
+"nnen Sie sich hier anmelden. Ihnen stehen dann weitere Nutzungsm&ouml;"
+"glichkeiten des KUG offen. Dazu geh&ouml;rt u.a. die Definition "
+"gespeicherter Katalogprofile. Ebenso steht Ihnen Ihre Merkliste nach dem "
+"n&auml;chsten Anmelden wieder zur Verf&uuml;gung. Wenn Sie sich &uuml;ber "
+"Ihre USB-Kennung anmelden, so bietet dies den Vorteil, da&szlig; Sie unter "
+"'Weitergehende Suchhinweise' in der Ergebnisliste Ihrer Suche automatisch "
+"authentifiziert in die Buch-Fernleih- und Zeitschriftenartikel-"
+"Lieferfunktion der Digitalen Bibliothek (Digibib) springen k&ouml;nnen und "
+"sich nicht sp&auml;ter dort nochmals authentifizieren m&uuml;ssen."
+
+#: ../templates/databaseprofile:56
+msgid "Falls leer, so geben Sie hier bitte einen neuen Profilnamen ein"
+msgstr "Falls leer, so geben Sie hier bitte einen neuen Profilnamen ein"
+
+#: ../modules/OpenBib/Login.pm:349
+msgid "Falscher Fehler-Code"
+msgstr "Falscher Fehler-Code"
+
+#: ../templates/error:10 ../templates/views/einbaende/error:10
+msgid "Fehler"
+msgstr "Fehler"
+
+#: ../templates/error:17 ../templates/views/einbaende/error:17
+msgid "Fehlerbeschreibung"
+msgstr "Fehlerbeschreibung"
+
+#: ../templates/managecollection_mail:39
+msgid "Felder leeren"
+msgstr "Felder leeren"
+
+#: ../templates/circulation_orders:68
+msgid "Fernleihbestellung"
+msgstr "Fernleihbestellung"
+
+#: ../templates/searchframe:101 ../templates/userprefs:169
+#: ../templates/views/einbaende/searchframe_simple:81
+#: ../templates/views/richter/searchframe:84
+msgid "Freie Suche"
+msgstr "Freie Suche"
+
+#. ("<a href=\"http://www.ub.uni-koeln.de/usb-cgi/zms_makeEmail.pl?adr0=kug\" target=\"_blank\">","</a>")
+#: ../templates/searchframe:213 ../templates/searchframe_simple:146
+#: ../templates/views/einbaende/searchframe_simple:129
+#: ../templates/views/richter/searchframe:154
+#: ../templates/views/richter/searchframe_simple:86
+msgid ""
+"Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns "
+"unter %1 kug@ub.uni-koeln.de %2 erreichen."
+msgstr ""
+"Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns "
+"unter %1 kug@ub.uni-koeln.de %2 erreichen."
+
+#: ../templates/selfreg:34
+msgid ""
+"Geben Sie f&uuml;r die Selbstregistrierung bitte als Benutzername Ihre "
+"g&uuml;ltige Email-Adresse ein und danach zwei Mal Ihr selbst gew&auml;hltes "
+"Passwort. Danach best&auml;tigen Sie bitte mit <b>Registrieren</b>."
+msgstr ""
+"Geben Sie f&uuml;r die Selbstregistrierung bitte als Benutzername Ihre "
+"g&uuml;ltige Email-Adresse ein und danach zwei Mal Ihr selbst gew&auml;hltes "
+"Passwort. Danach best&auml;tigen Sie bitte mit <b>Registrieren</b>."
+
+#: ../templates/login:43
+msgid "Geben Sie hier bitte Ihr Passwort bzw. Ihre OpacPin ein."
+msgstr "Geben Sie hier bitte Ihr Passwort bzw. Ihre OpacPin ein."
+
+#: ../templates/mailpassword:44
+msgid "Geben Sie hier bitte Ihre E-Mail Adresse ein."
+msgstr "Geben Sie hier bitte Ihre E-Mail Adresse ein."
+
+#: ../templates/searchframe_simple:71
+#: ../templates/views/richter/searchframe_simple:48
+msgid "Geben Sie hier bitte Ihre Suchbegriffe ein"
+msgstr "Geben Sie hier bitte Ihre Suchbegriffe ein"
+
+#: ../templates/login:42
+msgid "Geben Sie hier bitte Ihren Benutzernamen bzw. Ihre Benutzernummer ein."
+msgstr "Geben Sie hier bitte Ihren Benutzernamen bzw. Ihre Benutzernummer ein."
+
+#: ../templates/virtualsearch_showkorindex:48
+msgid "Geben Sie hier den Körperschaftsanfang ein"
+msgstr "Geben Sie hier den Körperschaftsanfang ein"
+
+#: ../templates/search_showswtindex:85 ../templates/search_showtitlist:187
+#: ../templates/search_showtitset:173
+#: ../templates/virtualsearch_showswtindex:48
+msgid "Geben Sie hier den Schlagwortanfang ein"
+msgstr "Geben Sie hier den Schlagwortanfang ein"
+
+#: ../templates/virtualsearch_showverfindex:48
+msgid "Geben Sie hier den Verfasseranfang ein"
+msgstr "Geben Sie hier den Verfasseranfang ein"
+
+#: ../templates/userprefs:69
+msgid "Geburtsdatum"
+msgstr "Geburtsdatum"
+
+#: ../templates/circulation_remind:48
+msgid "Gebühr"
+msgstr "Gebühr"
+
+#: ../templates/circulation:23 ../templates/circulation_orders:23
+#: ../templates/circulation_remind:23 ../templates/circulation_reserv:23
+#: ../templates/databaseprofile:39 ../templates/userprefs:23
+msgid "Grundeinstellungen"
+msgstr "Grundeinstellungen"
+
+#: ../templates/userprefs:95
+msgid "Guthaben"
+msgstr "Guthaben"
+
+#: ../templates/admin_editcat:107
+msgid "HTTP"
+msgstr "HTTP"
+
+#. ("<a href=\"http://${config.servername}${config.mailpassword_loc}?sessionID=${sessionID};action=show\">","</a>")
+#: ../templates/login:53
+msgid ""
+"Haben Sie Ihr Passwort vergessen, das Sie bei der Selbstregistrierung "
+"angegeben haben? Dann klicken Sie %1<b>hier</b>%2"
+msgstr ""
+"Haben Sie Ihr Passwort vergessen, das Sie bei der Selbstregistrierung "
+"angegeben haben? Dann klicken Sie %1<b>hier</b>%2"
+
+#: ../templates/userprefs:170
+msgid "Hauptsachtitel (HST)"
+msgstr "Hauptsachtitel (HST)"
+
+#: ../templates/searchframe:199 ../templates/searchframe:203
+#: ../templates/searchframe:81 ../templates/searchframe:89
+#: ../templates/searchframe_simple:109 ../templates/searchframe_simple:115
+#: ../templates/views/einbaende/searchframe_simple:122
+#: ../templates/views/einbaende/searchframe_simple:70
+#: ../templates/views/richter/searchframe:146
+#: ../templates/views/richter/searchframe:72
+#: ../templates/views/richter/searchframe_simple:57
+msgid "Hier löschen Sie die Eingabefelder"
+msgstr "Hier löschen Sie die Eingabefelder"
+
+#: ../templates/searchframe:199 ../templates/searchframe:203
+#: ../templates/searchframe:81 ../templates/searchframe:88
+#: ../templates/searchframe_simple:109 ../templates/searchframe_simple:115
+#: ../templates/views/einbaende/searchframe_simple:122
+#: ../templates/views/einbaende/searchframe_simple:70
+#: ../templates/views/richter/searchframe:146
+#: ../templates/views/richter/searchframe:72
+#: ../templates/views/richter/searchframe_simple:57
+msgid "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
+msgstr "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
+
+#: ../templates/searchframe:203 ../templates/searchframe:87
+#: ../templates/searchframe_simple:115
+msgid "Hier suchen Sie in allen Katalogen auf einmal"
+msgstr "Hier suchen Sie in allen Katalogen auf einmal"
+
+#: ../templates/headerframe:32 ../templates/views/einbaende/headerframe:26
+#: ../templates/views/richter/headerframe:26
+msgid "Hilfe"
+msgstr "Hilfe"
+
+#: ../templates/databasechoice:45 ../templates/externaljump:30
+#: ../templates/login:29 ../templates/mailpassword:33 ../templates/rssframe:19
+#: ../templates/selfreg:32
+msgid "Hinweis"
+msgstr "Hinweis"
+
+#: ../templates/views/einbaende/headerframe:26
+#: ../templates/views/richter/headerframe:26
+msgid "Home"
+msgstr "Home"
+
+#: ../templates/searchframe:126 ../templates/userprefs:175
+#: ../templates/views/richter/searchframe:108
+msgid "ISBN"
+msgstr "ISBN"
+
+#: ../templates/searchframe:130 ../templates/userprefs:176
+#: ../templates/views/richter/searchframe:112
+msgid "ISSN"
+msgstr "ISSN"
+
+#: ../templates/mailpassword_success:22
+msgid "Ihr Passwort wurde an Sie verschickt."
+msgstr "Ihr Passwort wurde an Sie verschickt."
+
+#: ../modules/OpenBib/MailPassword.pm:185
+msgid "Ihr vergessenes KUG-Passwort"
+msgstr "Ihr vergessenes KUG-Passwort"
+
+#: ../templates/managecollection_mail:32 ../templates/searchframe:98
+#: ../templates/views/einbaende/searchframe_simple:78
+#: ../templates/views/richter/searchframe:80
+msgid "Ihre Eingabe"
+msgstr "Ihre Eingabe"
+
+#: ../templates/userprefs_userdeleted:21
+msgid "Ihre Kennung samt aktueller Sitzungsdaten wurden gel&ouml;scht"
+msgstr "Ihre Kennung samt aktueller Sitzungsdaten wurden gel&ouml;scht"
+
+#: ../templates/managecollection_mail:35
+msgid "Ihre Mailadresse"
+msgstr "Ihre Mailadresse"
+
+#: ../templates/mailcollection_success:22
+msgid "Ihre Merkliste wurde an Sie per Mail versendet."
+msgstr "Ihre Merkliste wurde an Sie per Mail versendet."
+
+#: ../templates/leave:25 ../templates/views/einbaende/leave:25
+#: ../templates/views/richter/leave:25
+msgid "Ihre Sitzung wurde beendet."
+msgstr "Ihre Sitzung wurde beendet."
+
+#: ../templates/externaljump:39
+msgid "Ihre Suchanfrage im KUG Recherche-Portal"
+msgstr "Ihre Suchanfrage im KUG Recherche-Portal"
+
+#: ../templates/admin_editcat:96
+msgid "Import-Einstellungen"
+msgstr "Import-Einstellungen"
+
+#: ../templates/searchframe:203 ../templates/searchframe:87
+#: ../templates/searchframe_simple:115
+msgid "In allen Katalogen suchen"
+msgstr "In allen Katalogen suchen"
+
+#: ../templates/searchframe_simple:109 ../templates/searchframe_simple:115
+msgid "In ausgewähltem Profil suchen"
+msgstr "In ausgewähltem Profil suchen"
+
+#: ../templates/searchframe:199 ../templates/searchframe:203
+#: ../templates/searchframe:81 ../templates/searchframe:88
+msgid "In ausgewählten Katalogen suchen"
+msgstr "In ausgewählten Katalogen suchen"
+
+#: ../templates/views/richter/searchframe:146
+#: ../templates/views/richter/searchframe:72
+#: ../templates/views/richter/searchframe_simple:57
+msgid "In der Virtuellen Bibliothek suchen"
+msgstr "In der Virtuellen Bibliothek suchen"
+
+#: ../templates/database/einbaende/search_showtitlist:127
+#: ../templates/database/einbaende/search_showtitset:28
+#: ../templates/resultlists_showall:103 ../templates/resultlists_showall:129
+#: ../templates/resultlists_showall:130
+#: ../templates/resultlists_showall_sortall:95
+#: ../templates/resultlists_showsinglepool:104
+#: ../templates/search_showtitlist:122 ../templates/search_showtitset:24
+#: ../templates/views/einbaende/resultlists_showall:101
+#: ../templates/views/einbaende/resultlists_showall_sortall:92
+#: ../templates/views/einbaende/resultlists_showsinglepool:101
+#: ../templates/views/einbaende/virtualsearch_result_item:68
+#: ../templates/virtualsearch_result_item:64
+msgid "In die Merkliste"
+msgstr "In die Merkliste"
+
+#: ../templates/search_showswtindex:66
+msgid "In diesem Katalog konnte leider kein Schlagwort beginnend mit"
+msgstr "In diesem Katalog konnte leider kein Schlagwort beginnend mit"
+
+#: ../templates/searchframe:110
+#: ../templates/views/einbaende/searchframe_simple:102
+#: ../templates/views/einbaende/searchframe_simple:90
+#: ../templates/views/einbaende/searchframe_simple:94
+#: ../templates/views/einbaende/searchframe_simple:98
+#: ../templates/views/richter/searchframe:92
+#: ../templates/virtualsearch_showkorindex:48
+#: ../templates/virtualsearch_showswtindex:48
+#: ../templates/virtualsearch_showverfindex:48
+msgid "Index"
+msgstr "Index"
+
+#: ../templates/info_message:23
+msgid "Information"
+msgstr "Information"
+
+#: ../templates/database/einbaende/managecollection_tit_as_html:27
+#: ../templates/database/einbaende/managecollection_tit_as_html:66
+#: ../templates/database/einbaende/search_showtitset:165
+#: ../templates/database/einbaende/search_showtitset:67
+#: ../templates/managecollection_tit_as_html:26
+#: ../templates/managecollection_tit_as_html_simple:28
+#: ../templates/search_showautset:25 ../templates/search_showkorset:25
+#: ../templates/search_showmulttitset:36 ../templates/search_shownotset:25
+#: ../templates/search_showswtset:27 ../templates/search_showtitset:55
+msgid "Inhalt"
+msgstr "Inhalt"
+
+#: ../templates/admin_showsessions:40
+msgid "Initiale Suchen"
+msgstr "Initiale Suchen"
+
+#. ("${alldbcount}")
+#: ../templates/searchframe:211 ../templates/searchframe_simple:143
+msgid "Insgesamt sind im KUG derzeit %1 Titel nachgewiesen."
+msgstr "Insgesamt sind im KUG derzeit %1 Titel nachgewiesen."
+
+#: ../templates/database/einbaende/managecollection_tit_as_html:48
+#: ../templates/database/einbaende/search_showtitset:140
+#: ../templates/managecollection_tit_as_html:45
+#: ../templates/managecollection_tit_as_html_simple:45
+#: ../templates/search_showmulttitset:99 ../templates/search_showtitset:118
+msgid "Inventarnummer"
+msgstr "Inventarnummer"
+
+#: ../templates/managecollection_tit_as_text:43
+msgid "Inventarnummer       "
+msgstr "Inventarnummer       "
+
+#: ../templates/admin_editcat:142 ../templates/admin_editcat:165
+#: ../templates/admin_editcat:85 ../templates/admin_editcat_rss:135
+#: ../templates/admin_editcat_rss:194 ../templates/admin_editcat_rss:253
+#: ../templates/admin_editcat_rss:312 ../templates/admin_editcat_rss:76
+#: ../templates/admin_editview:47 ../templates/admin_showcat:52
+#: ../templates/admin_showcat:87 ../templates/admin_showcat:94
+#: ../templates/admin_showviews:40 ../templates/searchframe:191
+msgid "Ja"
+msgstr "Ja"
+
+#: ../templates/searchframe:146 ../templates/views/richter/searchframe:128
+msgid "Jahr"
+msgstr "Jahr"
+
+#: ../templates/views/einbaende/searchframe_simple:98
+msgid "Jahrhundert"
+msgstr "Jahrhundert"
+
+#: ../templates/userprefs:172 ../templates/virtualsearch_showkorindex:48
+msgid "K&ouml;rperschaft"
+msgstr "K&ouml;rperschaft"
+
+#: ../templates/userprefs:38
+msgid "KUG Benutzerinformationen"
+msgstr "KUG Benutzerinformationen"
+
+#: ../templates/resultlists_choice:82
+msgid "Katalog"
+msgstr "Katalog"
+
+#: ../templates/admin_editcat:36
+msgid "Katalog bearbeiten"
+msgstr "Katalog bearbeiten"
+
+#: ../templates/databasechoice:38 ../templates/headerframe:23
+msgid "Katalogauswahl"
+msgstr "Katalogauswahl"
+
+#: ../templates/admin_editview:56
+msgid "Katalogauswahl zu diesem View"
+msgstr "Katalogauswahl zu diesem View"
+
+#: ../templates/admin_editcat:21 ../templates/admin_editcat_rss:22
+#: ../templates/admin_editsession:22 ../templates/admin_editview:21
+#: ../templates/admin_editview_rss:21 ../templates/admin_loggedin:21
+#: ../templates/admin_showcat:24 ../templates/admin_showsessions:22
+#: ../templates/admin_showviews:22
+msgid "Kataloge"
+msgstr "Kataloge"
+
+#: ../templates/databasechoice:54 ../templates/databasechoice:95
+msgid "Kataloge auswählen"
+msgstr "Kataloge auswählen"
+
+#: ../templates/circulation:25 ../templates/circulation_orders:25
+#: ../templates/circulation_remind:25 ../templates/circulation_reserv:25
+#: ../templates/databaseprofile:43 ../templates/userprefs:27
+msgid "Katalogprofile"
+msgstr "Katalogprofile"
+
+#: ../templates/database/einbaende/managecollection_tit_as_html:27
+#: ../templates/database/einbaende/managecollection_tit_as_html:66
+#: ../templates/database/einbaende/search_showtitset:165
+#: ../templates/database/einbaende/search_showtitset:67
+#: ../templates/managecollection_tit_as_html:26
+#: ../templates/managecollection_tit_as_html_simple:28
+#: ../templates/search_showautset:25 ../templates/search_showkorset:25
+#: ../templates/search_showmulttitset:36 ../templates/search_shownotset:25
+#: ../templates/search_showswtset:27 ../templates/search_showtitset:55
+#: ../templates/searchframe:98
+#: ../templates/views/einbaende/searchframe_simple:78
+#: ../templates/views/richter/searchframe:80
+msgid "Kategorie"
+msgstr "Kategorie"
+
+#: ../templates/admin_editview_rss:75
+msgid "Kein prim&auml;rer RSS-Feed ausgew&auml;hlt"
+msgstr "Kein prim&auml;rer RSS-Feed ausgew&auml;hlt"
+
+#: ../templates/search_info:32
+msgid "Keine <b>logische</b> Kombination mehrerer Worte im Eingabefeld m&ouml;glich"
+msgstr "Keine <b>logische</b> Kombination mehrerer Worte im Eingabefeld m&ouml;glich"
+
+#: ../modules/OpenBib/DatabaseProfile.pm:336
+msgid "Keine gültige Aktion"
+msgstr "Keine gültige Aktion"
+
+#: ../modules/OpenBib/Admin.pm:1088
+msgid "Keine gültige Aktion oder Session"
+msgstr "Keine gültige Aktion oder Session"
+
+#: ../modules/OpenBib/ExternalJump.pm:202
+msgid "Keine gültige Anfrage-ID"
+msgstr "Keine gültige Anfrage-ID"
+
+#: ../templates/userprefs:45
+msgid "Kennung l&ouml;schen"
+msgstr "Kennung l&ouml;schen"
+
+#: ../templates/userprefs_ask_delete:30
+msgid "Kennung soll wirklich gel&ouml;scht werden"
+msgstr "Kennung soll wirklich gel&ouml;scht werden"
+
+#. ("<a href=\"http://${config.servername}${config.login_loc}?sessionID=${sessionID}&do_login=1&loginname=${loginname}\">","</a>")
+#: ../templates/selfreg_success:29
+msgid "Klicken Sie nun %1hier%2, um sich anzumelden."
+msgstr "Klicken Sie nun %1hier%2, um sich anzumelden."
+
+#: ../templates/searchframe:34 ../templates/searchframe_simple:41
+#: ../templates/views/richter/searchframe:28
+#: ../templates/views/richter/searchframe_simple:39
+msgid "Komplexe Recherche"
+msgstr "Komplexe Recherche"
+
+#: ../templates/search_info:19
+msgid "Komplizierte Suchanfragen"
+msgstr "Komplizierte Suchanfragen"
+
+#: ../templates/virtualsearch_more_search_tips:26
+msgid ""
+"Konnten Sie das von Ihnen gesuchte Buch oder den von Ihnen gesuchten "
+"Zeitschriftenartikel nicht im KUG finden?"
+msgstr ""
+"Konnten Sie das von Ihnen gesuchte Buch oder den von Ihnen gesuchten "
+"Zeitschriftenartikel nicht im KUG finden?"
+
+#: ../templates/admin_editcat:122
+msgid "Kor-Datei"
+msgstr "Kor-Datei"
+
+#: ../templates/admin_editcat:51
+msgid "Kurzbeschreibung"
+msgstr "Kurzbeschreibung"
+
+#: ../templates/searchframe:114 ../templates/views/richter/searchframe:96
+msgid "Körperschaft"
+msgstr "Körperschaft"
+
+#: ../templates/databaseprofile:62
+msgid "L&ouml;schung des ausgew&auml;hlten Profils"
+msgstr "L&ouml;schung des ausgew&auml;hlten Profils"
+
+#: ../templates/circulation_remind:48
+msgid "Leihfristende"
+msgstr "Leihfristende"
+
+#: ../templates/rssframe:45
+msgid "Letzte 50 Neuaufnahmen"
+msgstr "Letzte 50 Neuaufnahmen"
+
+#: ../templates/login:20 ../templates/mailpassword:24 ../templates/selfreg:23
+#: ../templates/selfreg_success:19
+msgid "Login"
+msgstr "Login"
+
+#: ../templates/admin_editcat:24 ../templates/admin_editcat_rss:25
+#: ../templates/admin_editsession:25 ../templates/admin_editview:24
+#: ../templates/admin_editview_rss:24 ../templates/admin_loggedin:24
+#: ../templates/admin_showcat:27 ../templates/admin_showsessions:25
+#: ../templates/admin_showviews:25
+msgid "Logout"
+msgstr "Logout"
+
+#: ../templates/admin_logout:21
+msgid "Logout erfolgreich"
+msgstr "Logout erfolgreich"
+
+#: ../templates/admin_editcat:111
+msgid "Lokal"
+msgstr "Lokal"
+
+#: ../templates/database/einbaende/managecollection_tit_as_html:95
+#: ../templates/managecollection_tit_as_html:64
+#: ../templates/managecollection_tit_as_html_simple:45
+#: ../templates/managecollection_tit_as_html_simple:64
+msgid "Lokale Signatur"
+msgstr "Lokale Signatur"
+
+#: ../templates/managecollection_tit_as_text:42
+msgid "Lokale Signatur      "
+msgstr "Lokale Signatur      "
+
+#: ../templates/database/einbaende/search_showtitlist:37
+#: ../templates/managecollection_show:60 ../templates/resultlists_showall:45
+#: ../templates/resultlists_showall_sortall:45
+#: ../templates/resultlists_showsinglepool:45
+#: ../templates/search_showtitlist:32
+#: ../templates/views/einbaende/managecollection_show:57
+#: ../templates/views/einbaende/resultlists_showall:43
+#: ../templates/views/einbaende/resultlists_showall_sortall:42
+#: ../templates/views/einbaende/resultlists_showsinglepool:42
+#: ../templates/views/einbaende/virtualsearch_result_start:43
+#: ../templates/virtualsearch_result_start:46
+msgid "Los"
+msgstr "Los"
+
+#: ../templates/searchframe:199 ../templates/searchframe:203
+#: ../templates/searchframe:81 ../templates/searchframe:89
+#: ../templates/searchframe_simple:109 ../templates/searchframe_simple:115
+#: ../templates/views/einbaende/searchframe_simple:122
+#: ../templates/views/einbaende/searchframe_simple:70
+#: ../templates/views/richter/searchframe:146
+#: ../templates/views/richter/searchframe:72
+#: ../templates/views/richter/searchframe_simple:57
+msgid "Lösche Eingabemaske"
+msgstr "Lösche Eingabemaske"
+
+#: ../templates/admin_editcat:177 ../templates/admin_editcat_rss:349
+#: ../templates/admin_editview:136
+msgid "Löschen"
+msgstr "Löschen"
+
+#: ../templates/searchframe:169
+msgid "Maximale Trefferzahl pro Katalog"
+msgstr "Maximale Trefferzahl pro Katalog"
+
+#: ../templates/externaljump:133
+msgid "MedPilot"
+msgstr "MedPilot"
+
+#: ../templates/searchframe:142 ../templates/userprefs:179
+#: ../templates/views/richter/searchframe:124
+msgid "Medienart"
+msgstr "Medienart"
+
+#: ../templates/search_showtitlist:165
+msgid "Mehrfachauswahl"
+msgstr "Mehrfachauswahl"
+
+#: ../templates/headerframe:27 ../templates/headerframe:29
+msgid "Mein KUG"
+msgstr "Mein KUG"
+
+#: ../templates/info_message:30
+msgid "Meldung"
+msgstr "Meldung"
+
+#: ../templates/headerframe:23 ../templates/managecollection_save_html:24
+#: ../templates/managecollection_show:24
+#: ../templates/views/einbaende/headerframe:25
+#: ../templates/views/einbaende/managecollection_show:27
+#: ../templates/views/richter/headerframe:25
+msgid "Merkliste"
+msgstr "Merkliste"
+
+#: ../templates/admin_editcat:125
+msgid "Mex-Datei"
+msgstr "Mex-Datei"
+
+#: ../templates/admin_editview_rss:68
+msgid "Möchten Sie diesen ändern?"
+msgstr "Möchten Sie diesen ändern?"
+
+#: ../templates/database/einbaende/search_showtitset:45
+#: ../templates/database/einbaende/search_showtitset:47
+#: ../templates/search_showtitset:41 ../templates/search_showtitset:43
+msgid "N&auml;chster Titel"
+msgstr "N&auml;chster Titel"
+
+#: ../templates/search_shownotset:29
+msgid "N0001"
+msgstr "Ansetzung"
+
+#: ../templates/search_shownotset:30
+msgid "N0002"
+msgstr "Ansetzung"
+
+#: ../templates/search_shownotset:31
+msgid "N0103"
+msgstr "Verweisform"
+
+#: ../templates/search_shownotset:32
+msgid "N5000"
+msgstr "Anzahl Titel"
+
+#: ../templates/userprefs:67
+msgid "Nachname"
+msgstr "Nachname"
+
+#: ../templates/admin_editcat:136 ../templates/admin_editcat:159
+#: ../templates/admin_editcat:81 ../templates/admin_editcat_rss:129
+#: ../templates/admin_editcat_rss:188 ../templates/admin_editcat_rss:247
+#: ../templates/admin_editcat_rss:306 ../templates/admin_editcat_rss:70
+#: ../templates/admin_editview:51 ../templates/admin_showcat:53
+#: ../templates/admin_showcat:89 ../templates/admin_showcat:96
+#: ../templates/admin_showviews:40 ../templates/searchframe:191
+msgid "Nein"
+msgstr "Nein"
+
+#: ../templates/admin_editcat_rss:119 ../templates/admin_editcat_rss:178
+#: ../templates/admin_editcat_rss:237 ../templates/admin_editcat_rss:296
+#: ../templates/admin_editcat_rss:60 ../templates/admin_showcat:54
+#: ../templates/admin_showviews:40
+msgid "Neu"
+msgstr "Neu"
+
+#: ../templates/admin_editcat_rss:43
+msgid "Neuaufnahmen (generell)"
+msgstr "Neuaufnahmen (generell)"
+
+#: ../templates/admin_editcat_rss:161
+msgid "Neuaufnahmen nach K&ouml;rperschaft"
+msgstr "Neuaufnahmen nach K&ouml;rperschaft"
+
+#: ../templates/admin_editcat_rss:220
+msgid "Neuaufnahmen nach Schlagwort"
+msgstr "Neuaufnahmen nach Schlagwort"
+
+#: ../templates/admin_editcat_rss:279
+msgid "Neuaufnahmen nach Systematik"
+msgstr "Neuaufnahmen nach Systematik"
+
+#: ../templates/admin_editcat_rss:102
+msgid "Neuaufnahmen nach Verfasser"
+msgstr "Neuaufnahmen nach Verfasser"
+
+#: ../templates/leave:33
+msgid "Neue Sitzung beginnen?"
+msgstr "Neue Sitzung beginnen?"
+
+#: ../templates/views/einbaende/leave:33 ../templates/views/richter/leave:33
+msgid "Neue Sitzung starten"
+msgstr "Neue Sitzung starten"
+
+#: ../templates/admin_showcat:37
+msgid "Neuen Katalog anlegen"
+msgstr "Neuen Katalog anlegen"
+
+#: ../templates/admin_showviews:35
+msgid "Neuen View anlegen"
+msgstr "Neuen View anlegen"
+
+#: ../templates/admin_editcat_rss:339
+msgid "Neuerwerbungen"
+msgstr "Neuerwerbungen"
+
+#: ../templates/search_info:14
+msgid "Normale Suchanfragen"
+msgstr "Normale Suchanfragen"
+
+#: ../templates/admin_editcat:124
+msgid "Not-Datei"
+msgstr "Not-Datei"
+
+#: ../templates/searchframe:122 ../templates/userprefs:174
+#: ../templates/views/richter/searchframe:104
+msgid "Notation"
+msgstr "Notation"
+
+#: ../templates/database/einbaende/search_showtitlist:35
+#: ../templates/managecollection_show:54 ../templates/resultlists_showall:34
+#: ../templates/resultlists_showall_sortall:34
+#: ../templates/resultlists_showsinglepool:34
+#: ../templates/search_showtitlist:30
+#: ../templates/views/einbaende/managecollection_show:51
+#: ../templates/views/einbaende/resultlists_showall:39
+#: ../templates/views/einbaende/resultlists_showall_sortall:38
+#: ../templates/views/einbaende/resultlists_showsinglepool:38
+#: ../templates/views/einbaende/virtualsearch_result_start:39
+#: ../templates/virtualsearch_result_start:35
+msgid "Optionen"
+msgstr "Optionen"
+
+#: ../templates/userprefs:71
+msgid "Ort"
+msgstr "Ort"
+
+#: ../templates/search_showautset:29
+msgid "P0001"
+msgstr "Ansetzung"
+
+#: ../templates/search_showautset:30
+msgid "P0102"
+msgstr "Verweisung"
+
+#: ../templates/search_showautset:31
+msgid "P5000"
+msgstr "Anzahl Titel"
+
+#: ../templates/admin_login:31 ../templates/login:43 ../templates/selfreg:45
+#: ../templates/userprefs:51
+msgid "Passwort"
+msgstr "Passwort"
+
+#: ../templates/userprefs:51
+msgid "Passwort &auml;ndern"
+msgstr "Passwort &auml;ndern"
+
+#: ../templates/selfreg:46
+msgid "Passwort (wiederholt)"
+msgstr "Passwort (wiederholt)"
+
+#: ../templates/mailpassword:46
+msgid "Passwort per Mail schicken"
+msgstr "Passwort per Mail schicken"
+
+#: ../templates/login:22 ../templates/mailpassword:26 ../templates/selfreg:25
+#: ../templates/selfreg_success:21
+msgid "Passwort vergessen?"
+msgstr "Passwort vergessen?"
+
+#: ../templates/views/einbaende/searchframe_simple:89
+msgid "Person"
+msgstr "Person"
+
+#: ../templates/userprefs:64
+msgid "Personendaten"
+msgstr "Personendaten"
+
+#: ../templates/admin_editview_rss:42
+msgid "Prim&auml;rer RSS-Feed f&uuml;r diesen View (Browser Auto-Discovery)"
+msgstr "Prim&auml;rer RSS-Feed f&uuml;r diesen View (Browser Auto-Discovery)"
+
+#: ../templates/databaseprofile:62
+msgid "Profil anzeigen"
+msgstr "Profil anzeigen"
+
+#: ../templates/databaseprofile:62
+msgid "Profil l&ouml;schen"
+msgstr "Profil l&ouml;schen"
+
+#: ../templates/databaseprofile:56
+msgid "Profil speichern"
+msgstr "Profil speichern"
+
+#: ../templates/databaseprofile:53
+msgid "Profilmanagement"
+msgstr "Profilmanagement"
+
+#: ../templates/views/einbaende/headerframe:26
+#: ../templates/views/richter/headerframe:26
+msgid "Projekt"
+msgstr "Projekt"
+
+#: ../templates/admin_editcat:99
+msgid "Protokoll"
+msgstr "Protokoll"
+
+#: ../templates/admin_showcat:70 ../templates/admin_showviews:58
+#: ../templates/headerframe:24 ../templates/views/einbaende/headerframe:26
+#: ../templates/views/richter/headerframe:26
+msgid "RSS"
+msgstr "RSS"
+
+#: ../templates/admin_editcat_rss:31
+msgid "RSS-Einstellungen"
+msgstr "RSS-Einstellungen"
+
+#: ../templates/admin_editview_rss:30
+msgid "RSS-Einstellungen für View"
+msgstr "RSS-Einstellungen für View"
+
+#: ../templates/admin_editview:82
+msgid "RSS-Feed zu diesem View"
+msgstr "RSS-Feed zu diesem View"
+
+#: ../templates/rssframe:32
+msgid "RSS-Feeds"
+msgstr "RSS-Feeds"
+
+#: ../templates/admin_editsession:54 ../templates/headerframe:23
+#: ../templates/views/einbaende/headerframe:25
+#: ../templates/views/richter/headerframe:25
+msgid "Recherche"
+msgstr "Recherche"
+
+#: ../templates/userprefs:155
+msgid "Recherchemaske festlegen"
+msgstr "Recherchemaske festlegen"
+
+#: ../templates/admin_editsession:50
+msgid "Recherchen"
+msgstr "Recherchen"
+
+#: ../templates/views/einbaende/searchframe_simple:94
+msgid "Region"
+msgstr "Region"
+
+#: ../templates/selfreg:47
+msgid "Registrieren"
+msgstr "Registrieren"
+
+#: ../templates/searchframe_simple:127
+#: ../templates/views/richter/searchframe_simple:68
+msgid "Rufen Sie hier die Ergebnisse frührerer Recherchen auf"
+msgstr "Rufen Sie hier die Ergebnisse frührerer Recherchen auf"
+
+#: ../templates/admin_editview_rss:118
+msgid "S&auml;mtliche zugeordnete RSS-Feeds f&uuml;r diesen View"
+msgstr "S&auml;mtliche zugeordnete RSS-Feeds f&uuml;r diesen View"
+
+#: ../templates/search_showswtset:31
+msgid "S0001"
+msgstr "Ansetzung"
+
+#: ../templates/search_showswtset:32
+msgid "S0102"
+msgstr "Verweisung"
+
+#: ../templates/search_showswtset:33
+msgid "S0113"
+msgstr "Übergeordnet"
+
+#: ../templates/search_showswtset:34
+msgid "S0115"
+msgstr "Assoziiert"
+
+#: ../templates/search_showswtset:35
+msgid "S0117"
+msgstr "Früher"
+
+#: ../templates/search_showswtset:36
+msgid "S0119"
+msgstr "Später"
+
+#: ../templates/search_showswtset:37
+msgid "S5000"
+msgstr "Anzahl Titel"
+
+#: ../templates/search_showswtindex:35 ../templates/search_showswtindex:43
+#: ../templates/searchframe:118 ../templates/userprefs:173
+#: ../templates/views/richter/searchframe:100
+#: ../templates/virtualsearch_showswtindex:48
+msgid "Schlagwort"
+msgstr "Schlagwort"
+
+#: ../templates/search_showswtindex:26
+msgid "Schlagwortindex"
+msgstr "Schlagwortindex"
+
+#: ../templates/search_showtitset:172
+msgid "Schlagwortindex diese Katalogs"
+msgstr "Schlagwortindex diese Katalogs"
+
+#: ../templates/search_showswtindex:85 ../templates/search_showtitlist:187
+msgid "Schlagwortindex dieses Katalogs"
+msgstr "Schlagwortindex dieses Katalogs"
+
+#: ../templates/mailcollection_mail_main:1
+msgid ""
+"Sehr geehrte Damen und Herren,\n"
+"\n"
+"anbei Ihre Merkliste aus dem KUG.\n"
+"\n"
+"Mit freundlichen Grüßen\n"
+"\n"
+"Ihr KUG Team"
+msgstr ""
+"Sehr geehrte Damen und Herren,\n"
+"\n"
+"anbei Ihre Merkliste aus dem KUG.\n"
+"\n"
+"Mit freundlichen Grüßen\n"
+"\n"
+"Ihr KUG Team"
+
+#. (loginname,loginname,password)
+#: ../templates/mailpassword_mail_main:1
+msgid ""
+"Sehr geehrte(r) %1,\n"
+"\n"
+"Sie haben sich ueber http://kug.ub.uni-koeln.de/ Ihr vergessenes\n"
+"KUG-Passwort zusenden lassen.\n"
+"\n"
+"Ihre gewuenschten Anmeldeinformationen lauten:\n"
+"\n"
+"Benutzername : %2\n"
+"Passwort     : %3\n"
+"\n"
+"Mit freundlichen Gruessen\n"
+"\n"
+"Ihr KUG-Team"
+msgstr ""
+"Sehr geehrte(r) %1,\n"
+"\n"
+"Sie haben sich ueber http://kug.ub.uni-koeln.de/ Ihr vergessenes\n"
+"KUG-Passwort zusenden lassen.\n"
+"\n"
+"Ihre gewuenschten Anmeldeinformationen lauten:\n"
+"\n"
+"Benutzername : %2\n"
+"Passwort     : %3\n"
+"\n"
+"Mit freundlichen Gruessen\n"
+"\n"
+"Ihr KUG-Team"
+
+#: ../templates/admin_editsession:40
+msgid "Seit"
+msgstr "Seit"
+
+#: ../templates/views/einbaende/virtualsearch_result_item:75
+#: ../templates/virtualsearch_result_item:71
+#: ../templates/virtualsearch_showkorindex:32
+#: ../templates/virtualsearch_showswtindex:32
+#: ../templates/virtualsearch_showverfindex:32
+msgid "Sekunden"
+msgstr "Sekunden"
+
+#: ../templates/login:21 ../templates/mailpassword:25 ../templates/selfreg:24
+#: ../templates/selfreg_success:20
+msgid "Selbstregistrierung"
+msgstr "Selbstregistrierung"
+
+#: ../templates/searchframe:149
+msgid "Serien"
+msgstr "Serien"
+
+#: ../templates/admin_editsession:39
+msgid "Session"
+msgstr "Session"
+
+#: ../templates/admin_showsessions:39
+msgid "Session-ID"
+msgstr "Session-ID"
+
+#: ../modules/OpenBib/Login.pm:111
+msgid "SessionID ist ungülltig"
+msgstr "SessionID ist ungülltig"
+
+#: ../templates/admin_editcat:23 ../templates/admin_editcat_rss:24
+#: ../templates/admin_editsession:24 ../templates/admin_editview:23
+#: ../templates/admin_editview_rss:23 ../templates/admin_loggedin:23
+#: ../templates/admin_showcat:26 ../templates/admin_showsessions:24
+#: ../templates/admin_showviews:24
+msgid "Sessions"
+msgstr "Sessions"
+
+#: ../templates/testsystem_info:17
+msgid ""
+"Sie befinden sich derzeit auf einem Testsystem, das nicht f&uuml;r den "
+"produktiven Einsatz gedacht ist. Stattdessen k&ouml;nnen Sie hier die neuen "
+"in Entwicklung befindlichen Funktionen des KUG austesten. Da der KUG auf "
+"diesem System kontinuierlich verbessert wird, k&ouml;nnen w&auml;hrend "
+"dieser &Auml;nderungen zeitweise sicherlich auch schon einmal 'Internal "
+"Server Errors' beobachtet werden. Dies ist vollkommen normal, solange die "
+"aktuelle Version auf diesem System nicht eingefroren und in eine offiziell "
+"bekanntgegebene und &ouml;ffentliche finale Testphase &uuml;bergegangen ist."
+msgstr ""
+"Sie befinden sich derzeit auf einem Testsystem, das nicht f&uuml;r den "
+"produktiven Einsatz gedacht ist. Stattdessen k&ouml;nnen Sie hier die neuen "
+"in Entwicklung befindlichen Funktionen des KUG austesten. Da der KUG auf "
+"diesem System kontinuierlich verbessert wird, k&ouml;nnen w&auml;hrend "
+"dieser &Auml;nderungen zeitweise sicherlich auch schon einmal 'Internal "
+"Server Errors' beobachtet werden. Dies ist vollkommen normal, solange die "
+"aktuelle Version auf diesem System nicht eingefroren und in eine offiziell "
+"bekanntgegebene und &ouml;ffentliche finale Testphase &uuml;bergegangen ist."
+
+#: ../modules/OpenBib/Admin.pm:251
+msgid "Sie greifen auf eine nicht autorisierte Session zu"
+msgstr "Sie greifen auf eine nicht autorisierte Session zu"
+
+#. ("<a href=\"$config{databasechoice_loc}?sessionID=$sessionID\" target=\"body\">","</a>")
+#: ../modules/OpenBib/VirtualSearch.pm:255
+msgid ""
+"Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie "
+"keine %1Kataloge%2 oder Suchprofile ausgewählt haben. Bitte wählen Sie die "
+"gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen "
+"Katalogen suchen</a>."
+msgstr ""
+"Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie "
+"keine %1Kataloge%2 oder Suchprofile ausgewählt haben. Bitte wählen Sie die "
+"gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen "
+"Katalogen suchen</a>."
+
+#: ../modules/OpenBib/Admin.pm:209
+msgid ""
+"Sie haben als Benutzer entweder keinen oder nicht den Admin-Benutzer "
+"eingegeben"
+msgstr ""
+"Sie haben als Benutzer entweder keinen oder nicht den Admin-Benutzer "
+"eingegeben"
+
+#: ../modules/OpenBib/Admin.pm:215
+msgid "Sie haben ein falsches Passwort eingegeben"
+msgstr "Sie haben ein falsches Passwort eingegeben"
+
+#: ../modules/OpenBib/MailCollection.pm:128
+msgid "Sie haben eine ungültige Mailadresse eingegeben."
+msgstr "Sie haben eine ungültige Mailadresse eingegeben."
+
+#: ../modules/OpenBib/UserPrefs.pm:346
+msgid ""
+"Sie haben entweder kein Passwort eingegeben oder die beiden Passworte "
+"stimmen nicht überein"
+msgstr ""
+"Sie haben entweder kein Passwort eingegeben oder die beiden Passworte "
+"stimmen nicht überein"
+
+#: ../modules/OpenBib/Login.pm:343
+msgid "Sie haben entweder kein Passwort oder keinen Loginnamen eingegeben"
+msgstr "Sie haben entweder kein Passwort oder keinen Loginnamen eingegeben"
+
+#: ../templates/circulation:44
+msgid "Sie haben keine Ausleihen getätigt."
+msgstr "Sie haben keine Ausleihen getätigt."
+
+#: ../templates/circulation_orders:44
+msgid "Sie haben keine Bestellungen get&auml;tigt."
+msgstr "Sie haben keine Bestellungen get&auml;tigt."
+
+#: ../modules/OpenBib/MailPassword.pm:135
+msgid "Sie haben keine E-Mail Adresse eingegeben"
+msgstr "Sie haben keine E-Mail Adresse eingegeben"
+
+#: ../modules/OpenBib/MailCollection.pm:120
+msgid "Sie haben keine Mailadresse eingegeben."
+msgstr "Sie haben keine Mailadresse eingegeben."
+
+#: ../templates/circulation_reserv:44
+msgid "Sie haben keine Vormerkungen getätigt."
+msgstr "Sie haben keine Vormerkungen getätigt."
+
+#. ("<a href=\"http://$config{servername}$config{selfreg_loc}?sessionID=$sessionID&action=show\">","</a>")
+#: ../modules/OpenBib/SelfReg.pm:139
+msgid ""
+"Sie haben keine gütige Mailadresse eingegeben. Gehen Sie bitte %1zurück%2 "
+"und korrigieren Sie Ihre Eingabe"
+msgstr ""
+"Sie haben keine gütige Mailadresse eingegeben. Gehen Sie bitte %1zurück%2 "
+"und korrigieren Sie Ihre Eingabe"
+
+#: ../modules/OpenBib/VirtualSearch.pm:306
+msgid "Sie haben keinen Begriff eingegeben"
+msgstr "Sie haben keinen Begriff eingegeben"
+
+#: ../modules/OpenBib/DatabaseProfile.pm:277
+msgid "Sie haben keinen Profilnamen eingegeben!"
+msgstr "Sie haben keinen Profilnamen eingegeben!"
+
+#: ../modules/OpenBib/DatabaseProfile.pm:125
+msgid "Sie haben sich nicht authentifiziert."
+msgstr "Sie haben sich nicht authentifiziert."
+
+#: ../modules/OpenBib/Login.pm:346
+msgid ""
+"Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht "
+"erfolgreich authentifiziert werden"
+msgstr ""
+"Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht "
+"erfolgreich authentifiziert werden"
+
+#. ("${viewdesc}","<a href=\"${config.databasechoice_loc}?sessionID=${sessionID};view=${view}\" target=\"body\">","</a>")
+#: ../templates/searchframe:74 ../templates/searchframe_simple:56
+msgid ""
+"Sie können entweder direkt im vorausgewählten Katalog <b>%1</b> "
+"recherchieren, oder die Suche auf weitere %2Kataloge%3 ausdehnen."
+msgstr ""
+"Sie können entweder direkt im vorausgewählten Katalog <b>%1</b> "
+"recherchieren, oder die Suche auf weitere %2Kataloge%3 ausdehnen."
+
+#. ("${alldbs}","<a href=\"${config.databasechoice_loc}?sessionID=${sessionID};view=${view}\" target=\"body\">","</a>")
+#: ../templates/searchframe:84 ../templates/searchframe_simple:64
+msgid ""
+"Sie können entweder durch entsprechende Auswahl in den insgesamt %1 "
+"einzelnen %2Katalogen%3 recherchieren oder auch sofort in allen zusammen."
+msgstr ""
+"Sie können entweder durch entsprechende Auswahl in den insgesamt %1 "
+"einzelnen %2Katalogen%3 recherchieren oder auch sofort in allen zusammen."
+
+#: ../modules/OpenBib/Admin.pm:291
+msgid "Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
+msgstr "Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
+
+#: ../modules/OpenBib/Admin.pm:681
+msgid "Sie müssen mindestens einen Viewnamen und eine Beschreibung eingeben."
+msgstr "Sie müssen mindestens einen Viewnamen und eine Beschreibung eingeben."
+
+#: ../templates/selfreg_success:27
+msgid "Sie sind erfolgreich registriert"
+msgstr "Sie sind erfolgreich registriert"
+
+#: ../templates/admin_loggedin:32
+msgid "Sie sind nun als Administrator eingeloggt."
+msgstr "Sie sind nun als Administrator eingeloggt."
+
+#: ../templates/admin_editcat:73 ../templates/admin_showcat:43
+#: ../templates/admin_showcat:73
+msgid "Sigel"
+msgstr "Sigel"
+
+#: ../templates/circulation:48 ../templates/circulation_orders:48
+#: ../templates/circulation_remind:48 ../templates/circulation_reserv:48
+#: ../templates/database/einbaende/managecollection_tit_as_html:48
+#: ../templates/database/einbaende/search_showtitset:140
+#: ../templates/database/einbaende/search_showtitset:245
+#: ../templates/managecollection_tit_as_html:45
+#: ../templates/search_showmulttitset:124
+#: ../templates/search_showmulttitset:99 ../templates/search_showtitset:118
+#: ../templates/search_showtitset:143 ../templates/searchframe:134
+#: ../templates/userprefs:177
+#: ../templates/views/einbaende/searchframe_simple:106
+#: ../templates/views/richter/searchframe:116
+msgid "Signatur"
+msgstr "Signatur"
+
+#: ../templates/headerframe:32 ../templates/views/einbaende/headerframe:26
+#: ../templates/views/richter/headerframe:26
+msgid "Sitzung beenden"
+msgstr "Sitzung beenden"
+
+#: ../templates/userprefs:96
+msgid "Soll"
+msgstr "Soll"
+
+#: ../templates/userprefs_ask_delete:23
+msgid "Soll die Kennung wirklich gel&ouml;scht werden?"
+msgstr "Soll die Kennung wirklich gel&ouml;scht werden?"
+
+#: ../templates/database/einbaende/search_showtitlist:37
+#: ../templates/search_showtitlist:32
+#: ../templates/views/einbaende/virtualsearch_result_start:41
+#: ../templates/virtualsearch_result_start:37
+msgid "Sortierung"
+msgstr "Sortierung"
+
+#: ../templates/searchframe:170
+msgid "Sortierung nach"
+msgstr "Sortierung nach"
+
+#: ../templates/resultlists_showall:36
+#: ../templates/resultlists_showall_sortall:36
+#: ../templates/resultlists_showsinglepool:36
+#: ../templates/views/einbaende/resultlists_showall:41
+#: ../templates/views/einbaende/resultlists_showall_sortall:40
+#: ../templates/views/einbaende/resultlists_showsinglepool:40
+msgid "Sortierung:"
+msgstr "Sortierung:"
+
+#: ../templates/userprefs:79
+msgid "Sperre"
+msgstr "Sperre"
+
+#: ../templates/admin_editcat:153
+msgid "Sprung in WebOPAC"
+msgstr "Sprung in WebOPAC"
+
+#: ../templates/externaljump:106 ../templates/externaljump:116
+#: ../templates/externaljump:126 ../templates/externaljump:136
+#: ../templates/externaljump:97
+msgid "Sprung in externe Recherche"
+msgstr "Sprung in externe Recherche"
+
+#: ../templates/externaljump:22
+msgid "Sprung in externe Recherchequellen"
+msgstr "Sprung in externe Recherchequellen"
+
+#: ../templates/externaljump:82
+msgid "Sprung zur Trefferliste im KUG"
+msgstr "Sprung zur Trefferliste im KUG"
+
+#: ../templates/database/einbaende/managecollection_tit_as_html:48
+#: ../templates/database/einbaende/managecollection_tit_as_html:95
+#: ../templates/database/einbaende/search_showtitset:140
+#: ../templates/database/einbaende/search_showtitset:245
+#: ../templates/managecollection_tit_as_html:45
+#: ../templates/managecollection_tit_as_html:64
+#: ../templates/managecollection_tit_as_html_simple:45
+#: ../templates/managecollection_tit_as_html_simple:64
+#: ../templates/search_showmulttitset:124
+#: ../templates/search_showmulttitset:99 ../templates/search_showtitset:118
+#: ../templates/search_showtitset:143
+msgid "Standort"
+msgstr "Standort"
+
+#: ../templates/managecollection_tit_as_text:41
+msgid "Standort             "
+msgstr "Standort             "
+
+#: ../templates/circulation_orders:48
+msgid "Status"
+msgstr "Status"
+
+#: ../templates/circulation_reserv:48
+msgid "Stelle"
+msgstr "Stelle"
+
+#: ../templates/userprefs:70
+msgid "Strasse"
+msgstr "Strasse"
+
+#: ../templates/searchframe:95
+#: ../templates/views/einbaende/searchframe_simple:75
+#: ../templates/views/richter/searchframe:77
+msgid "Suchbegriffe"
+msgstr "Suchbegriffe"
+
+#: ../templates/views/einbaende/searchframe_simple:122
+#: ../templates/views/einbaende/searchframe_simple:70
+msgid "Suche starten"
+msgstr "Suche starten"
+
+#: ../templates/search_showswtindex:85 ../templates/search_showtitlist:187
+#: ../templates/search_showtitset:173
+#: ../templates/views/einbaende/searchframe_simple:30
+msgid "Suchen"
+msgstr "Suchen"
+
+#: ../templates/virtualsearch_more_search_tips:29
+msgid ""
+"Suchen Sie im Kartenkatalog einer infrage kommende Institutsbibliothek. "
+"Leider sind noch nicht alle B&uuml;cher elektronisch erfasst und damit &uuml;"
+"ber den KUG recherchierbar."
+msgstr ""
+"Suchen Sie im Kartenkatalog einer infrage kommende Institutsbibliothek. "
+"Leider sind noch nicht alle B&uuml;cher elektronisch erfasst und damit &uuml;"
+"ber den KUG recherchierbar."
+
+#. ("<a href=\"${config.dbis_exturl}\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>","<a href=\"${config.ezb_exturl}\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>")
+#: ../templates/virtualsearch_more_search_tips:35
+msgid ""
+"Suchen Sie in den elektronischen %1Fachdatenbanken%2 und den %3elektronisch "
+"verf&uuml;gbaren Zeitschriften%4 der Universit&auml;tsbibliothek."
+msgstr ""
+"Suchen Sie in den elektronischen %1Fachdatenbanken%2 und den %3elektronisch "
+"verf&uuml;gbaren Zeitschriften%4 der Universit&auml;tsbibliothek."
+
+#: ../templates/userprefs:182
+msgid "Suchfelder &auml;ndern"
+msgstr "Suchfelder &auml;ndern"
+
+#: ../templates/searchframe:95 ../templates/views/richter/searchframe:77
+msgid "Suchhinweise"
+msgstr "Suchhinweise"
+
+#: ../templates/searchframe:46
+#: ../templates/views/einbaende/searchframe_simple:43
+#: ../templates/views/richter/searchframe:40
+msgid "Suchhistorie"
+msgstr "Suchhistorie"
+
+#: ../templates/search_info:23
+msgid "Suchlogik bei Verkn&uuml;pfungen mehrerer Suchfelder:"
+msgstr "Suchlogik bei Verkn&uuml;pfungen mehrerer Suchfelder:"
+
+#: ../templates/searchframe:166
+msgid "Suchoptionen"
+msgstr "Suchoptionen"
+
+#: ../templates/admin_editcat:123
+msgid "Swt-Datei"
+msgstr "Swt-Datei"
+
+#: ../templates/admin_editcat:52 ../templates/admin_showcat:42
+#: ../templates/admin_showcat:71
+msgid "System"
+msgstr "System"
+
+#: ../templates/visible_categories_titset:90
+msgid "T0026"
+msgstr "Nebeneintr."
+
+#: ../templates/visible_categories_titset:47
+msgid "T0035"
+msgstr "Ersch.Land"
+
+#: ../templates/visible_categories_titset:21
+msgid "T0089"
+msgstr "Bandangabe"
+
+#: ../templates/visible_categories_titset:16
+msgid "T0100"
+msgstr "Verfasser"
+
+#: ../templates/database/einbaende/visible_categories_titset:16
+msgid "T0100-einbaende"
+msgstr "Person"
+
+#: ../templates/visible_categories_titset:17
+msgid "T0101"
+msgstr "Person"
+
+#: ../templates/database/einbaende/visible_categories_coverset:16
+msgid "T0101-einbaende"
+msgstr "Buchbinder/Werkstätten"
+
+#: ../templates/visible_categories_titset:18
+msgid "T0103"
+msgstr "Gefeierte Person"
+
+#: ../templates/visible_categories_titset:19
+msgid "T0200"
+msgstr "Urheber"
+
+#: ../templates/database/einbaende/visible_categories_coverset:18
+msgid "T0200-einbaende"
+msgstr "Region"
+
+#: ../templates/visible_categories_titset:20
+msgid "T0201"
+msgstr "Körperschaft"
+
+#: ../templates/visible_categories_titset:25
+msgid "T0300"
+msgstr "SammelVermerk"
+
+#: ../templates/visible_categories_titset:23
+msgid "T0304"
+msgstr "EST"
+
+#: ../templates/visible_categories_titset:22
+msgid "T0310"
+msgstr "AST"
+
+#: ../templates/visible_categories_titset:24
+msgid "T0331"
+msgstr "HST"
+
+#: ../templates/database/einbaende/visible_categories_titset:17
+msgid "T0331-einbaende"
+msgstr "Titel"
+
+#: ../templates/visible_categories_titset:29
+msgid "T0333"
+msgstr "Zu erg. Urh."
+
+#: ../templates/visible_categories_titset:51
+msgid "T0334"
+msgstr "Material"
+
+#: ../templates/visible_categories_titset:30
+msgid "T0335"
+msgstr "Zusatz"
+
+#: ../templates/database/einbaende/visible_categories_titset:18
+msgid "T0335-einbaende"
+msgstr "Untertitel"
+
+#: ../templates/visible_categories_titset:27
+msgid "T0341"
+msgstr "PST Vorl."
+
+#: ../templates/visible_categories_titset:33
+msgid "T0359"
+msgstr "Vorl.Verfasser"
+
+#: ../templates/visible_categories_titset:34
+msgid "T0360"
+msgstr "Vorl.Unterreihe"
+
+#: ../templates/visible_categories_titset:28
+#: ../templates/visible_categories_titset:31
+msgid "T0361"
+msgstr "Beigefügte Werke"
+
+#: ../templates/database/einbaende/visible_categories_titset:22
+msgid "T0361-einbaende"
+msgstr "Beibände"
+
+#: ../templates/visible_categories_titset:32
+msgid "T0365"
+msgstr "Gemeins. Angaben"
+
+#: ../templates/visible_categories_titset:26
+msgid "T0370"
+msgstr "WST"
+
+#: ../templates/database/einbaende/visible_categories_titset:23
+msgid "T0370-einbaende"
+msgstr "Provenienz"
+
+#: ../templates/visible_categories_titset:35
+msgid "T0403"
+msgstr "Ausgabe"
+
+#: ../templates/visible_categories_titset:40
+msgid "T0405"
+msgstr "Erscheinungsverlauf"
+
+#: ../templates/visible_categories_titset:60
+msgid "T0407"
+msgstr "Maßstab"
+
+#: ../templates/visible_categories_titset:36
+msgid "T0410"
+msgstr "Verlagsort"
+
+#: ../templates/database/einbaende/visible_categories_titset:19
+msgid "T0410-einbaende"
+msgstr "Ersch-Ort"
+
+#: ../templates/visible_categories_titset:37
+msgid "T0412"
+msgstr "Verlag"
+
+#: ../templates/visible_categories_titset:46
+msgid "T0413"
+msgstr "Drucker"
+
+#: ../templates/database/einbaende/visible_categories_titset:20
+msgid "T0413-einbaende"
+msgstr "Drucker"
+
+#: ../templates/visible_categories_titset:39
+msgid "T0424"
+msgstr "Ans. Ersch. Jahr"
+
+#: ../templates/database/einbaende/visible_categories_titset:21
+msgid "T0424-einbaende"
+msgstr "E-Jahr"
+
+#: ../templates/visible_categories_titset:38
+msgid "T0425"
+msgstr "Ersch. Jahr"
+
+#: ../templates/database/einbaende/visible_categories_coverset:19
+msgid "T0425-einbaende"
+msgstr "Fert.-Jahr"
+
+#: ../templates/visible_categories_titset:50
+msgid "T0433"
+msgstr "Kollation"
+
+#: ../templates/visible_categories_titset:45
+#: ../templates/visible_categories_titset:61
+msgid "T0434"
+msgstr "Sonst.Angaben"
+
+#: ../templates/visible_categories_titset:48
+msgid "T0435"
+msgstr "Format"
+
+#: ../templates/database/einbaende/visible_categories_coverset:21
+msgid "T0435-einbaende"
+msgstr "Maße"
+
+#: ../templates/visible_categories_titset:62
+msgid "T0437"
+msgstr "Begleitmaterial"
+
+#: ../templates/visible_categories_titset:57
+msgid "T0451"
+msgstr "Gesamttitel"
+
+#: ../templates/visible_categories_titset:63
+msgid "T0501"
+msgstr "Fußnote"
+
+#: ../templates/database/einbaende/visible_categories_coverset:23
+msgid "T0501-einbaende"
+msgstr "Quellen"
+
+#: ../templates/visible_categories_titset:89
+msgid "T0503"
+msgstr "Übers. HST"
+
+#: ../templates/visible_categories_titset:64
+msgid "T0504"
+msgstr "PST Fußnote"
+
+#: ../templates/visible_categories_titset:65
+msgid "T0505"
+msgstr "WST Fußnote"
+
+#: ../templates/visible_categories_titset:66
+msgid "T0507"
+msgstr "AngabenHST"
+
+#: ../templates/visible_categories_titset:49
+msgid "T0508"
+msgstr "Quelle"
+
+#: ../templates/database/einbaende/visible_categories_coverset:24
+msgid "T0508-einbaende"
+msgstr "Bibl. Nachweis"
+
+#: ../templates/visible_categories_titset:67
+msgid "T0509"
+msgstr "Verfasser Fußnote"
+
+#: ../templates/visible_categories_titset:68
+msgid "T0510"
+msgstr "Ausgabe Fußnote"
+
+#: ../templates/visible_categories_titset:69
+msgid "T0511"
+msgstr "Erschverm. Fußnote"
+
+#: ../templates/visible_categories_titset:70
+msgid "T0512"
+msgstr "Koll. Fußnote"
+
+#: ../templates/visible_categories_titset:71
+msgid "T0513"
+msgstr "Impress. Änderung"
+
+#: ../templates/visible_categories_titset:72
+msgid "T0515"
+msgstr "Ergänzt. GesamtTitel"
+
+#: ../templates/visible_categories_titset:87
+msgid "T0516"
+msgstr "Sprache"
+
+#: ../templates/visible_categories_titset:84
+msgid "T0519"
+msgstr "Hsfn"
+
+#: ../templates/visible_categories_titset:73
+msgid "T0522"
+msgstr "Teilungsvermerk"
+
+#: ../templates/visible_categories_titset:41
+msgid "T0523"
+msgstr "Erscheinungsweise"
+
+#: ../templates/visible_categories_titset:74
+msgid "T0525"
+msgstr "Herkunft Fußnote"
+
+#: ../templates/visible_categories_titset:78
+msgid "T0527"
+msgstr "Parallele Ausg."
+
+#: ../templates/visible_categories_titset:79
+msgid "T0529"
+msgstr "Titel Beilage"
+
+#: ../templates/visible_categories_titset:80
+msgid "T0530"
+msgstr "Bezugswerk"
+
+#: ../templates/visible_categories_titset:81
+msgid "T0531"
+msgstr "Frühere Ausg."
+
+#: ../templates/visible_categories_titset:82
+msgid "T0532"
+msgstr "Früherer Titel"
+
+#: ../templates/visible_categories_titset:83
+msgid "T0533"
+msgstr "Spätere Ausg."
+
+#: ../templates/visible_categories_titset:75
+msgid "T0534"
+msgstr "Titelkonk."
+
+#: ../templates/visible_categories_titset:76
+msgid "T0535"
+msgstr "Anz. Exemplare"
+
+#: ../templates/visible_categories_titset:77
+msgid "T0536"
+msgstr "Vorr. Erschtermin"
+
+#: ../templates/visible_categories_titset:104
+msgid "T0540"
+msgstr "ISBN"
+
+#: ../templates/visible_categories_titset:105
+msgid "T0543"
+msgstr "ISSN"
+
+#: ../templates/visible_categories_titset:58
+msgid "T0590"
+msgstr "In:"
+
+#: ../templates/visible_categories_titset:42
+msgid "T0591"
+msgstr "Verfasser Quelle"
+
+#: ../templates/visible_categories_titset:43
+msgid "T0594"
+msgstr "Ersch.Ort Quelle"
+
+#: ../templates/visible_categories_titset:44
+msgid "T0595"
+msgstr "Ersch.Jahr Quelle"
+
+#: ../templates/visible_categories_titset:59
+msgid "T0600"
+msgstr "Bemerkung"
+
+#: ../templates/visible_categories_titset:85
+msgid "T0619"
+msgstr "Jahr Vorlage"
+
+#: ../templates/visible_categories_titset:86
+msgid "T0646"
+msgstr "Filmbesitz"
+
+#: ../templates/visible_categories_titset:55
+msgid "T0652"
+msgstr "EDV Material"
+
+#: ../templates/visible_categories_titset:56
+msgid "T0655"
+msgstr "EDV Adress"
+
+#: ../templates/visible_categories_titset:52
+msgid "T0662"
+msgstr "URL"
+
+#: ../templates/visible_categories_titset:103
+msgid "T0700"
+msgstr "Notation"
+
+#: ../templates/database/einbaende/visible_categories_coverset:20
+msgid "T0700-einbaende"
+msgstr "Einband"
+
+#: ../templates/visible_categories_titset:92
+msgid "T0710"
+msgstr "Schlagwort"
+
+#: ../templates/database/einbaende/visible_categories_coverset:17
+msgid "T0710-einbaende"
+msgstr "Jahrhundert"
+
+#: ../templates/visible_categories_titset:88
+msgid "T0750"
+msgstr "Abstract"
+
+#: ../templates/database/einbaende/visible_categories_coverset:22
+msgid "T0750-einbaende"
+msgstr "Beschreibung"
+
+#: ../templates/visible_categories_titset:91
+msgid "T0800"
+msgstr "Medienart"
+
+#: ../templates/visible_categories_titset:93
+msgid "T0902"
+msgstr "Schlagwort RSWK"
+
+#: ../templates/visible_categories_titset:94
+msgid "T0907"
+msgstr "Schlagwort RSWK"
+
+#: ../templates/visible_categories_titset:95
+msgid "T0912"
+msgstr "Schlagwort RSWK"
+
+#: ../templates/visible_categories_titset:96
+msgid "T0917"
+msgstr "Schlagwort RSWK"
+
+#: ../templates/visible_categories_titset:97
+msgid "T0922"
+msgstr "Schlagwort RSWK"
+
+#: ../templates/visible_categories_titset:98
+msgid "T0927"
+msgstr "Schlagwort RSWK"
+
+#: ../templates/visible_categories_titset:99
+msgid "T0932"
+msgstr "Schlagwort RSWK"
+
+#: ../templates/visible_categories_titset:100
+msgid "T0937"
+msgstr "Schlagwort RSWK"
+
+#: ../templates/visible_categories_titset:101
+msgid "T0942"
+msgstr "Schlagwort RSWK"
+
+#: ../templates/visible_categories_titset:102
+msgid "T0947"
+msgstr "Schlagwort RSWK"
+
+#: ../templates/visible_categories_titset:53
+msgid "T2662"
+msgstr "USB URL"
+
+#: ../templates/visible_categories_titset:54
+msgid "T2663"
+msgstr "USB URL-Info"
+
+#: ../templates/visible_categories_titset:106
+msgid "T3001"
+msgstr "TOC / HTML"
+
+#: ../templates/visible_categories_titset:107
+msgid "T3002"
+msgstr "TOC / TIFF"
+
+#: ../templates/visible_categories_titset:108
+msgid "T3003"
+msgstr "TOC / PDF"
+
+#: ../templates/database/einbaende/visible_categories_titset:24
+#: ../templates/visible_categories_titset:109
+msgid "T5001"
+msgstr "Überordnungen"
+
+#: ../templates/database/einbaende/visible_categories_titset:25
+#: ../templates/visible_categories_titset:110
+msgid "T5002"
+msgstr "Unterordnungen"
+
+#: ../templates/testsystem_info:15
+msgid "Testsystem - Nicht f&uuml;r den produktiven Einsatz bestimmt"
+msgstr "Testsystem - Nicht f&uuml;r den produktiven Einsatz bestimmt"
+
+#: ../templates/database/einbaende/search_showtitset:53
+msgid "Textangaben"
+msgstr "Textangaben"
+
+#: ../templates/admin_editcat:120
+msgid "Tit-Datei"
+msgstr "Tit-Datei"
+
+#: ../templates/managecollection_tit_as_html_simple:16
+#: ../templates/searchframe:105 ../templates/searchframe:171
+#: ../templates/views/richter/searchframe:88
+msgid "Titel"
+msgstr "Titel"
+
+#: ../templates/database/einbaende/managecollection_tit_as_html:23
+#: ../templates/database/einbaende/search_showtitset:63
+msgid "Titel-Daten"
+msgstr "Titel-Daten"
+
+#: ../templates/searchframe:138 ../templates/userprefs:178
+#: ../templates/views/richter/searchframe:120
+msgid "Titel-String"
+msgstr "Titel-String"
+
+#: ../templates/managecollection_mail:22
+msgid "Titel/Merkliste via Mail verschicken"
+msgstr "Titel/Merkliste via Mail verschicken"
+
+#: ../templates/views/einbaende/searchframe_simple:85
+msgid "Titel/Provenienz"
+msgstr "Titel/Provenienz"
+
+#: ../templates/circulation:48 ../templates/circulation_orders:48
+#: ../templates/circulation_remind:48 ../templates/circulation_reserv:48
+msgid "Titelangaben"
+msgstr "Titelangaben"
+
+#: ../templates/managecollection_tit_as_html:22
+#: ../templates/managecollection_tit_as_html_simple:24
+#: ../templates/search_showmulttitset:32 ../templates/search_showtitset:51
+msgid "Titelaufnahme"
+msgstr "Titelaufnahme"
+
+#: ../templates/database/einbaende/search_showtitlist:50
+#: ../templates/search_showtitlist:45
+msgid "Titelliste"
+msgstr "Titelliste"
+
+#: ../templates/search_showswtindex:43
+msgid "Titelzahl"
+msgstr "Titelzahl"
+
+#: ../templates/admin_editsession:54
+#: ../templates/database/einbaende/search_showtitlist:55
+#: ../templates/database/einbaende/search_showtitlist:70
+#: ../templates/resultlists_choice:82 ../templates/resultlists_showall:52
+#: ../templates/search_showtitlist:50 ../templates/search_showtitlist:65
+#: ../templates/select_queries:54
+#: ../templates/views/einbaende/resultlists_showall:50
+#: ../templates/views/einbaende/virtualsearch_result_item:20
+#: ../templates/virtualsearch_result_item:16
+#: ../templates/virtualsearch_showkorindex:19
+#: ../templates/virtualsearch_showswtindex:19
+#: ../templates/virtualsearch_showverfindex:19
+msgid "Treffer"
+msgstr "Treffer"
+
+#: ../templates/headerframe:23 ../templates/resultlists_choice:21
+#: ../templates/resultlists_showall:20
+#: ../templates/resultlists_showall_sortall:20
+#: ../templates/resultlists_showsinglepool:20
+#: ../templates/views/einbaende/headerframe:25
+#: ../templates/views/einbaende/resultlists_showall:25
+#: ../templates/views/einbaende/resultlists_showall_sortall:24
+#: ../templates/views/einbaende/resultlists_showsinglepool:24
+#: ../templates/views/einbaende/virtualsearch_result_start:25
+#: ../templates/views/richter/headerframe:25
+#: ../templates/virtualsearch_result_start:19
+msgid "Trefferliste"
+msgstr "Trefferliste"
+
+#: ../templates/admin_editcat:74 ../templates/admin_showcat:43
+#: ../templates/admin_showcat:73
+msgid "URL"
+msgstr "URL"
+
+#: ../templates/admin_showviews:54
+msgid ""
+"Um einen bereits existierenden View zu bearbeiten klicken Sie bitte auf den "
+"Viewnamen."
+msgstr ""
+"Um einen bereits existierenden View zu bearbeiten klicken Sie bitte auf den "
+"Viewnamen."
+
+#. ("<a href=\"http://${config.servername}${config.admin_loc}?do_loginmask=1\">","</a>")
+#: ../templates/admin_logout:24
+msgid "Um sich wieder einzuloggen folgen Sie bitte %1diesem Link%2."
+msgstr "Um sich wieder einzuloggen folgen Sie bitte %1diesem Link%2."
+
+#: ../templates/searchframe:191
+msgid "Und-Verknüpfung innerhalb eines Suchfeldes"
+msgstr "Und-Verknüpfung innerhalb eines Suchfeldes"
+
+#: ../modules/OpenBib/Circulation.pm:301 ../modules/OpenBib/SelfReg.pm:202
+#: ../modules/OpenBib/UserPrefs.pm:380
+msgid "Unerlaubte Aktion"
+msgstr "Unerlaubte Aktion"
+
+#: ../templates/externaljump:108 ../templates/externaljump:118
+#: ../templates/externaljump:128 ../templates/externaljump:138
+#: ../templates/externaljump:99
+msgid "Ungeeignete Suchfelder"
+msgstr "Ungeeignete Suchfelder"
+
+#: ../modules/OpenBib/DispatchQuery.pm:106
+msgid "Ungültige Aktion"
+msgstr "Ungültige Aktion"
+
+#: ../modules/OpenBib/Circulation.pm:99
+#: ../modules/OpenBib/DatabaseChoice.pm:110
+#: ../modules/OpenBib/DatabaseProfile.pm:106
+#: ../modules/OpenBib/ExternalJump.pm:125
+#: ../modules/OpenBib/ExternalJump.pm:144 ../modules/OpenBib/Leave.pm:88
+#: ../modules/OpenBib/MailPassword.pm:96 ../modules/OpenBib/ResultLists.pm:103
+#: ../modules/OpenBib/Search.pm:201 ../modules/OpenBib/SearchFrame.pm:98
+#: ../modules/OpenBib/SelfReg.pm:95 ../modules/OpenBib/UserPrefs.pm:111
+#: ../modules/OpenBib/VirtualSearch.pm:146
+msgid "Ungültige Session"
+msgstr "Ungültige Session"
+
+#: ../templates/databasechoice:54 ../templates/databasechoice:95
+msgid "Ursprüngliche Auswahl wiederherstellen"
+msgstr "Ursprüngliche Auswahl wiederherstellen"
+
+#: ../templates/searchframe:109 ../templates/userprefs:171
+#: ../templates/views/richter/searchframe:92
+#: ../templates/virtualsearch_showverfindex:48
+msgid "Verfasser"
+msgstr "Verfasser"
+
+#: ../templates/searchframe:98
+#: ../templates/views/einbaende/searchframe_simple:78
+#: ../templates/views/richter/searchframe:80
+msgid "Verknüpfung"
+msgstr "Verknüpfung"
+
+#. ("<a href=\"${hbzmonofernleih_exturl}\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>")
+#: ../templates/virtualsearch_more_search_tips:31
+msgid ""
+"Versuchen Sie das Buch in NRW oder deutschlandweit im Rahmen der %1zentralen "
+"Fernleihe%2 in der Digitalen Bibliothek zu finden."
+msgstr ""
+"Versuchen Sie das Buch in NRW oder deutschlandweit im Rahmen der %1zentralen "
+"Fernleihe%2 in der Digitalen Bibliothek zu finden."
+
+#. ("<a href=\"${hbzzeitfernleih_exturl}\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>")
+#: ../templates/virtualsearch_more_search_tips:36
+msgid ""
+"Versuchen Sie den Artikel in NRW im Rahmen der %1Online-"
+"Zeitschriftenlieferung%2 in der Digitalen Bibliothek zu finden."
+msgstr ""
+"Versuchen Sie den Artikel in NRW im Rahmen der %1Online-"
+"Zeitschriftenlieferung%2 in der Digitalen Bibliothek zu finden."
+
+#: ../templates/leave:26
+msgid ""
+"Vielen Dank f&uuml;r Ihren Besuch beim K&ouml;lner Universit&auml;"
+"tsGesamtkatalog."
+msgstr ""
+"Vielen Dank f&uuml;r Ihren Besuch beim K&ouml;lner Universit&auml;"
+"tsGesamtkatalog."
+
+#: ../templates/views/richter/leave:26
+msgid ""
+"Vielen Dank f&uuml;r Ihren Besuch in der Virtuellen Bibliothek Elise und "
+"Helene Richter."
+msgstr ""
+"Vielen Dank f&uuml;r Ihren Besuch in der Virtuellen Bibliothek Elise und "
+"Helene Richter."
+
+#: ../templates/views/einbaende/leave:26
+msgid ""
+"Vielen Dank f&uuml;r Ihren Besuch in der digitalen Einband-Sammlung der USB "
+"K&ouml;ln."
+msgstr ""
+"Vielen Dank f&uuml;r Ihren Besuch in der digitalen Einband-Sammlung der USB "
+"K&ouml;ln."
+
+#: ../templates/admin_editview:36
+msgid "View bearbeiten"
+msgstr "View bearbeiten"
+
+#: ../templates/admin_editview:39 ../templates/admin_showviews:38
+#: ../templates/admin_showviews:58
+msgid "Viewname"
+msgstr "Viewname"
+
+#: ../templates/admin_editcat:22 ../templates/admin_editcat_rss:23
+#: ../templates/admin_editsession:23 ../templates/admin_editview:22
+#: ../templates/admin_editview_rss:22 ../templates/admin_loggedin:22
+#: ../templates/admin_showcat:25 ../templates/admin_showsessions:23
+#: ../templates/admin_showviews:23
+msgid "Views"
+msgstr "Views"
+
+#: ../templates/virtualsearch_showkorindex:19
+msgid "Virtueller K&ouml;rperschaftsindex"
+msgstr "Virtueller K&ouml;rperschaftsindex"
+
+#: ../templates/virtualsearch_showswtindex:19
+msgid "Virtueller Schlagwortindex"
+msgstr "Virtueller Schlagwortindex"
+
+#: ../templates/virtualsearch_showverfindex:19
+msgid "Virtueller Verfasserindex"
+msgstr "Virtueller Verfasserindex"
+
+#: ../templates/userprefs:105
+msgid "Vorgemerkt"
+msgstr "Vorgemerkt"
+
+#: ../templates/database/einbaende/search_showtitset:39
+#: ../templates/database/einbaende/search_showtitset:41
+#: ../templates/search_showtitset:35 ../templates/search_showtitset:37
+msgid "Vorheriger Titel"
+msgstr "Vorheriger Titel"
+
+#: ../templates/circulation:34 ../templates/circulation_orders:34
+#: ../templates/circulation_remind:34 ../templates/circulation_reserv:34
+msgid "Vormerkungen"
+msgstr "Vormerkungen"
+
+#: ../templates/circulation_reserv:48
+msgid "Vormerkungsfrist"
+msgstr "Vormerkungsfrist"
+
+#: ../templates/userprefs:68
+msgid "Vorname"
+msgstr "Vorname"
+
+#: ../templates/databaseprofile:58
+msgid "W&auml;hlen Sie ein anzuzeigendes oder zu l&ouml;schendes Profil aus"
+msgstr "W&auml;hlen Sie ein anzuzeigendes oder zu l&ouml;schendes Profil aus"
+
+#: ../templates/loadbalancer:17
+msgid "Wartungsarbeiten"
+msgstr "Wartungsarbeiten"
+
+#: ../templates/admin_editcat:167
+msgid "WebOPAC-URL"
+msgstr "WebOPAC-URL"
+
+#: ../templates/loadbalancer:19
+msgid ""
+"Wegen eines unerwarteten Problems kann der KUG in den n&auml;chsten Minuten\n"
+"leider nicht genutzt werden."
+msgstr ""
+"Wegen eines unerwarteten Problems kann der KUG in den n&auml;chsten Minuten\n"
+"leider nicht genutzt werden."
+
+#: ../templates/searchframe:53 ../templates/views/richter/searchframe:47
+msgid "Weiter als externe Recherche"
+msgstr "Weiter als externe Recherche"
+
+#: ../templates/virtualsearch_more_search_tips:24
+msgid "Weitergehende Suchhinweise"
+msgstr "Weitergehende Suchhinweise"
+
+#: ../templates/userprefs:145
+msgid "Welche Recherchemaske soll verwendet werden?"
+msgstr "Welche Recherchemaske soll verwendet werden?"
+
+#: ../templates/userprefs:167
+msgid ""
+"Welche Suchfelder sollen in der erweiterten<br>Recherchemaske angezeigt "
+"werden?"
+msgstr ""
+"Welche Suchfelder sollen in der erweiterten<br>Recherchemaske angezeigt "
+"werden?"
+
+#: ../templates/admin_editview:109
+msgid ""
+"Welcher RSS-Feed soll der prim&auml;re Feed f&uuml;r das Browser Auto-"
+"Discovery sein"
+msgstr ""
+"Welcher RSS-Feed soll der prim&auml;re Feed f&uuml;r das Browser Auto-"
+"Discovery sein"
+
+#: ../templates/search_info:20
+msgid "Wenn Sie kompliziertere Suchanfragen stellen m&ouml;chten, so erfahren Sie"
+msgstr "Wenn Sie kompliziertere Suchanfragen stellen m&ouml;chten, so erfahren Sie"
+
+#. ("<a href=\"http://${config.loadbalancerservername}${config.loadbalancer_loc}?view=${view}\">","</a>")
+#: ../templates/userprefs_userdeleted:23
+msgid ""
+"Wenn Sie weiter im KUG recherchieren m&ouml;chten, so klicken Sie bitte %"
+"1<b>hier</b>[_2}, um eine neue Sitzung zu beginnen."
+msgstr ""
+"Wenn Sie weiter im KUG recherchieren m&ouml;chten, so klicken Sie bitte %"
+"1<b>hier</b>[_2}, um eine neue Sitzung zu beginnen."
+
+#: ../templates/userprefs_ask_delete:27
+msgid ""
+"Wenn Sie wirklich Ihre KUG-Kennung l&ouml;schen wollen, so klicken Sie auf "
+"die untenstehenden Schaltfl&auml;che. Es werden dann auch alle Sitzungsdaten "
+"gel&ouml;scht."
+msgstr ""
+"Wenn Sie wirklich Ihre KUG-Kennung l&ouml;schen wollen, so klicken Sie auf "
+"die untenstehenden Schaltfl&auml;che. Es werden dann auch alle Sitzungsdaten "
+"gel&ouml;scht."
+
+#: ../templates/loadbalancer:22
+msgid "Wir bitten um Ihr Verst&auml;ndnis. Vielen Dank."
+msgstr "Wir bitten um Ihr Verst&auml;ndnis. Vielen Dank."
+
+#: ../templates/admin_editview_rss:64
+msgid "Wählen Sie bitte einen View aus:"
+msgstr "Wählen Sie bitte einen View aus:"
+
+#: ../templates/searchframe_simple:78
+msgid "Wählen Sie hier bitte Ihr Suchprofil aus"
+msgstr "Wählen Sie hier bitte Ihr Suchprofil aus"
+
+#: ../templates/virtualsearch_more_search_tips:33
+msgid "Zeitschriftenartikel"
+msgstr "Zeitschriftenartikel"
+
+#: ../templates/connector_rss_item:74
+msgid "Zugangsdatum"
+msgstr "Zugangsdatum"
+
+#: ../templates/mailcollection_mail_html:20
+msgid "Zugemailte Merkliste"
+msgstr "Zugemailte Merkliste"
+
+#: ../templates/search_info:15
+msgid ""
+"Zur Suche tragen Sie in die einzelnen Eingabefelder alle Begriffe mit\n"
+"Leerzeichen getrennt ein, die in Ihrem gesuchten Titel enthalten sein\n"
+"m&uuml;ssen. Deaktivieren Sie <b>nicht</b> die Suchoption 'Und-Verkn&uuml;"
+"pfung innerhalb eines Suchfeldes'. Die Begriffe werden dann automatisch "
+"innerhalb eines Suchfeldes Und-verkn&uuml;pft."
+msgstr ""
+"Zur Suche tragen Sie in die einzelnen Eingabefelder alle Begriffe mit\n"
+"Leerzeichen getrennt ein, die in Ihrem gesuchten Titel enthalten sein\n"
+"m&uuml;ssen. Deaktivieren Sie <b>nicht</b> die Suchoption 'Und-Verkn&uuml;"
+"pfung innerhalb eines Suchfeldes'. Die Begriffe werden dann automatisch "
+"innerhalb eines Suchfeldes Und-verkn&uuml;pft."
+
+#: ../templates/searchframe:53 ../templates/searchframe_simple:133
+#: ../templates/views/einbaende/searchframe_simple:50
+#: ../templates/views/richter/searchframe:47
+#: ../templates/views/richter/searchframe_simple:75
+msgid "Zur Trefferliste"
+msgstr "Zur Trefferliste"
+
+#: ../modules/OpenBib/Common/Util.pm:664
+#: ../templates/database/einbaende/search_showtitlist:37
+#: ../templates/resultlists_showall:37
+#: ../templates/resultlists_showall_sortall:37
+#: ../templates/resultlists_showsinglepool:37
+#: ../templates/search_showtitlist:32 ../templates/searchframe:171
+#: ../templates/views/einbaende/resultlists_showall:42
+#: ../templates/views/einbaende/resultlists_showall_sortall:41
+#: ../templates/views/einbaende/resultlists_showsinglepool:41
+#: ../templates/views/einbaende/virtualsearch_result_start:42
+#: ../templates/virtualsearch_result_start:38
+msgid "absteigend"
+msgstr "absteigend"
+
+#: ../templates/search_info:21
+msgid ""
+"alles &uuml;ber die Verwendung m&ouml;glicher Boolscher Suchoperatoren "
+"innerhalb eines Eingabefeldes und die angesprochene Suchoption 'Und-"
+"Verkn&uuml;pfung innerhalb eines Suchfeldes'."
+msgstr ""
+"alles &uuml;ber die Verwendung m&ouml;glicher Boolscher Suchoperatoren "
+"innerhalb eines Eingabefeldes und die angesprochene Suchoption 'Und-"
+"Verkn&uuml;pfung innerhalb eines Suchfeldes'."
+
+#: ../modules/OpenBib/Common/Util.pm:663
+#: ../templates/database/einbaende/search_showtitlist:37
+#: ../templates/resultlists_showall:37
+#: ../templates/resultlists_showall_sortall:37
+#: ../templates/resultlists_showsinglepool:37
+#: ../templates/search_showtitlist:32 ../templates/searchframe:171
+#: ../templates/views/einbaende/resultlists_showall:42
+#: ../templates/views/einbaende/resultlists_showall_sortall:41
+#: ../templates/views/einbaende/resultlists_showsinglepool:41
+#: ../templates/views/einbaende/virtualsearch_result_start:42
+#: ../templates/virtualsearch_result_start:38
+msgid "aufsteigend"
+msgstr "aufsteigend"
+
+#: ../templates/connector_rss_item:72
+msgid "aus"
+msgstr "aus"
+
+#: ../templates/database/einbaende/managecollection_tit_as_html:16
+#: ../templates/managecollection_tit_as_html:15
+#: ../templates/managecollection_tit_as_html_simple:16
+msgid "aus:"
+msgstr "aus:"
+
+#: ../templates/search_showswtindex:39
+msgid "beginnend mit"
+msgstr "beginnend mit"
+
+#: ../templates/search_showswtindex:66
+msgid "gefunden werden."
+msgstr "gefunden werden."
+
+#: ../templates/search_info:21
+msgid "hier"
+msgstr "hier"
+
+#: ../templates/search_showswtindex:39
+msgid "in diesem Katalog gefunden"
+msgstr "in diesem Katalog gefunden"
+
+#: ../templates/std_footer:17
+msgid "ist ein Dienst der Universitäts- und Stadtbibliothek Köln"
+msgstr "ist ein Dienst der Universitäts- und Stadtbibliothek Köln"
+
+#: ../templates/userprefs:81
+msgid "ja, seit"
+msgstr "ja, seit"
+
+#: ../modules/OpenBib/Common/Util.pm:675 ../modules/OpenBib/Common/Util.pm:693
+#: ../modules/OpenBib/Common/Util.pm:704
+msgid "katalogübergreifend"
+msgstr "katalogübergreifend"
+
+#: ../templates/userprefs:81
+msgid "mit Grund"
+msgstr "mit Grund"
+
+#: ../templates/resultlists_showall:37
+#: ../templates/resultlists_showall_sortall:37
+#: ../templates/resultlists_showsinglepool:37
+#: ../templates/search_showtitlist:32
+#: ../templates/virtualsearch_result_start:38
+msgid "nach Autor"
+msgstr "nach Autor"
+
+#: ../modules/OpenBib/Common/Util.pm:665
+msgid "nach Autor/Körperschaft"
+msgstr "nach Autor/Körperschaft"
+
+#: ../modules/OpenBib/Common/Util.pm:669
+msgid "nach Erscheinungsjahr"
+msgstr "nach Erscheinungsjahr"
+
+#: ../templates/database/einbaende/search_showtitlist:37
+#: ../templates/views/einbaende/resultlists_showall:42
+#: ../templates/views/einbaende/resultlists_showall_sortall:41
+#: ../templates/views/einbaende/resultlists_showsinglepool:41
+#: ../templates/views/einbaende/virtualsearch_result_start:42
+msgid "nach Fert.Jahr"
+msgstr "nach Fert.Jahr"
+
+#: ../templates/resultlists_showall:37
+#: ../templates/resultlists_showall_sortall:37
+#: ../templates/resultlists_showsinglepool:37
+#: ../templates/search_showtitlist:32
+#: ../templates/virtualsearch_result_start:38
+msgid "nach Jahr"
+msgstr "nach Jahr"
+
+#: ../templates/database/einbaende/search_showtitlist:37
+#: ../templates/views/einbaende/resultlists_showall:42
+#: ../templates/views/einbaende/resultlists_showall_sortall:41
+#: ../templates/views/einbaende/resultlists_showsinglepool:41
+#: ../templates/views/einbaende/virtualsearch_result_start:42
+msgid "nach Person/Region"
+msgstr "nach Person/Region"
+
+#: ../modules/OpenBib/Common/Util.pm:667
+#: ../templates/database/einbaende/search_showtitlist:37
+#: ../templates/resultlists_showall:37
+#: ../templates/resultlists_showall_sortall:37
+#: ../templates/resultlists_showsinglepool:37
+#: ../templates/search_showtitlist:32
+#: ../templates/views/einbaende/resultlists_showall:42
+#: ../templates/views/einbaende/resultlists_showall_sortall:41
+#: ../templates/views/einbaende/resultlists_showsinglepool:41
+#: ../templates/views/einbaende/virtualsearch_result_start:42
+#: ../templates/virtualsearch_result_start:38
+msgid "nach Signatur"
+msgstr "nach Signatur"
+
+#: ../modules/OpenBib/Common/Util.pm:668 ../templates/resultlists_showall:37
+#: ../templates/resultlists_showall_sortall:37
+#: ../templates/resultlists_showsinglepool:37
+#: ../templates/views/einbaende/resultlists_showall:42
+#: ../templates/views/einbaende/resultlists_showall_sortall:41
+#: ../templates/views/einbaende/resultlists_showsinglepool:41
+#: ../templates/views/einbaende/virtualsearch_result_start:42
+#: ../templates/virtualsearch_result_start:38
+msgid "nach Titel"
+msgstr "nach Titel"
+
+#: ../templates/database/einbaende/search_showtitlist:37
+#: ../templates/search_showtitlist:32
+msgid "nach Titel/Z&auml;hlung"
+msgstr "nach Titel/Z&auml;hlung"
+
+#: ../modules/OpenBib/Common/Util.pm:666
+#: ../templates/database/einbaende/search_showtitlist:37
+#: ../templates/resultlists_showall:37
+#: ../templates/resultlists_showall_sortall:37
+#: ../templates/resultlists_showsinglepool:37
+#: ../templates/search_showtitlist:32
+#: ../templates/views/einbaende/resultlists_showall:42
+#: ../templates/views/einbaende/resultlists_showall_sortall:41
+#: ../templates/views/einbaende/resultlists_showsinglepool:41
+#: ../templates/views/einbaende/virtualsearch_result_start:42
+#: ../templates/virtualsearch_result_start:38
+msgid "nach Verlag"
+msgstr "nach Verlag"
+
+#: ../templates/userprefs:83
+msgid "nein"
+msgstr "nein"
+
+#: ../modules/OpenBib/Common/Util.pm:672 ../modules/OpenBib/Common/Util.pm:687
+#: ../modules/OpenBib/Common/Util.pm:699 ../templates/searchframe:171
+msgid "pro Katalog"
+msgstr "pro Katalog"
+
+#: ../templates/views/einbaende/virtualsearch_result_item:20
+#: ../templates/virtualsearch_result_item:16
+msgid "von"
+msgstr "von"
+
+#: ../templates/userprefs:51
+msgid "wiederholt"
+msgstr "wiederholt"
+
+#: ../templates/admin_editcat:177 ../templates/admin_editcat_rss:141
+#: ../templates/admin_editcat_rss:200 ../templates/admin_editcat_rss:259
+#: ../templates/admin_editcat_rss:318 ../templates/admin_editcat_rss:349
+#: ../templates/admin_editcat_rss:82 ../templates/admin_editview:136
+#: ../templates/admin_editview_rss:100 ../templates/admin_editview_rss:144
+msgid "Ändern"
+msgstr "Ändern"
+
+#: ../templates/admin_editcat_rss:342
+msgid "Übernehmen"
+msgstr "Übernehmen"
+
+#: ../templates/circulation:36 ../templates/circulation_orders:36
+#: ../templates/circulation_remind:36 ../templates/circulation_reserv:36
+msgid "Überziehungen / Gebühren"
+msgstr "Überziehungen / Gebühren"
+

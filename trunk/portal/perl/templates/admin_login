@@ -1,25 +1,35 @@
-[% SET title='KUG Administration - Authentifizierung' %]
-
-[% PROCESS std_header %]
+[%#-
+#######################################################################
+#
+# Templatename: admin_login
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Anmeldemaske fuer die Administration
+#
+#######################################################################
+-%]
+[% PROCESS std_header title='KUG Administration - Authentifizierung' %]
 
   <body bgcolor="#FFFFFF">
 
 [% PROCESS corporate_banner %]
 
 <table width="100%">
-<tr><th>Administrations-Login</th></tr>
+<tr><th>[% msg.maketext("Administrations-Login") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:12pt">
-&Uuml;ber diese Authentifizierungsseite k&ouml;nnen Sie sich als
-Administrator anmelden.
+[% msg.maketext("&Uuml;ber diese Authentifizierungsseite k&ouml;nnen Sie sich als Administrator anmelden.") %]
 </td></tr>
 </table>
 
 <p />
 <form method="post" action="http://[% config.servername %][% config.admin_loc %]" enctype="application/x-www-form-urlencoded">
 <table>
-<tr><td align="right"><b>Benutzername:</b></td><td><input type="text" name="user" /></td></tr>
-<tr><td align="right"><b>Passwort:</b></td><td><input type="password" name="passwd" /></td></tr>
-<tr><td></td><td><input type="submit" name="action" value="Einloggen"></td></tr>
+<tr><td align="right"><b>[% msg.maketext("Benutzername") %]:</b></td><td><input type="text" name="user" /></td></tr>
+<tr><td align="right"><b>[% msg.maketext("Passwort") %]:</b></td><td><input type="password" name="passwd" /></td></tr>
+<tr><td></td><td><input type="submit" name="do_login" value="[% msg.maketext("Einloggen") %]"></td></tr>
 </table>
 </form>
 

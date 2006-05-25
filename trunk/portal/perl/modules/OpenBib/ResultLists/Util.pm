@@ -28,8 +28,10 @@ package OpenBib::ResultLists::Util;
 use strict;
 use warnings;
 no warnings 'redefine';
+use utf8;
 
 use Apache::Constants qw(:common);
+use Apache::Reload;
 use DBI;
 use Log::Log4perl qw(get_logger :levels);
 use Template;

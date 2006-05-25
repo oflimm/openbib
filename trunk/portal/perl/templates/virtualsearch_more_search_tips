@@ -1,25 +1,39 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_more_search_tips
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe weiterer Suchhinweise mit intelligenten Einsprung-URL's
+#
+#######################################################################
+-%]
+[%-
+   hbzmonofernleih_exturl = "${config.hbzmonofernleih_exturl};D_PARAM_SEARCH_RLBKO=on;D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_HBZ=on;D_PARAM_QUERY_bzAU=${searchquery.verf.val};D_PARAM_QUERY_azTI=${searchquery.hst.val};D_PARAM_QUERY_czCO=${searchquery.kor.val};D_PARAM_QUERY_fzIB=${searchquery.isbn.val};D_PARAM_QUERY_gzIS=${searchquery.issn.val};D_PARAM_QUERY_hzYR=${searchquery.ejahr.val}" ;
+   hbzzeitfernleih_exturl = "${config.hbzzeitfernleih_exturl};D_PARAM_SEARCH_RLBKO=on;D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_ZDB=on;D_PARAM_QUERY_azTI=${searchquery.hst.val};D_PARAM_QUERY_czCO=${searchquery.kor.val};D_PARAM_QUERY_gzIS=${searchquery.issn.val}" ;
+
+   IF loginname && password ;
+      hbzmonofernleih_exturl = "${hbzzeitfernleih_exturl};USERID=${loginname};PASSWORD=${password}" ;
+      hbzzeitfernleih_exturl = "${hbzzeitfernleih_exturl};USERID=${loginname};PASSWORD=${password}" ;
+   END ;
+-%]
 <table id="Suchhinweise" width="100%">
-<tr><th>Weitergehende Suchhinweise</th></tr>
+<tr><th>[% msg.maketext("Weitergehende Suchhinweise") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
-Konnten Sie das von Ihnen gesuchte Buch oder den von Ihnen gesuchten Zeitschriftenartikel nicht im KUG finden?<br><br>
-<b><span style="font-size:1.2em">B&uuml;cher</span></b>
+[% msg.maketext("Konnten Sie das von Ihnen gesuchte Buch oder den von Ihnen gesuchten Zeitschriftenartikel nicht im KUG finden?") %]<br><br>
+<b><span style="font-size:1.2em">[% msg.maketext("B&uuml;cher") %]</span></b>
 <ul>
-<li>Suchen Sie im Kartenkatalog einer infrage kommende Institutsbibliothek. Leider sind noch nicht alle B&uuml;cher elektronisch erfasst und damit &uuml;ber den KUG recherchierbar.</li>
-<li>F&uuml;r verschiedene Institute und Seminare der Philosophischen Fakult&auml;t besteht die M&ouml;glichkeit der Suche in einem <a href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/" target="_blank"><span style="font-size:1.2em">Online-Kartenkatalog</span></a>.</li>
-<li>Versuchen Sie das Buch in NRW oder deutschlandweit im Rahmen der <a href="[% config.hbzmonofernleih_exturl %]&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_HBZ=on&D_PARAM_QUERY_bzAU=[% verf %]&D_PARAM_QUERY_azTI=[% hst %]&D_PARAM_QUERY_czCO=[% kor %]&D_PARAM_QUERY_fzIB=[% isbn %]&D_PARAM_QUERY_gzIS=[% issn %]&D_PARAM_QUERY_hzYR=[% ejahr%]
-[%- IF loginname && password -%]
-&USERID=[% loginname %]&PASSWORD=[% password %]
-[%- END -%]
-" target="_blank"><span style="font-size:1.2em">zentralen Fernleihe</span></a> in der Digitalen Bibliothek zu finden.</li>
+<li>[% msg.maketext("Suchen Sie im Kartenkatalog einer infrage kommende Institutsbibliothek. Leider sind noch nicht alle B&uuml;cher elektronisch erfasst und damit &uuml;ber den KUG recherchierbar.") %]</li>
+<li>[% msg.maketext("F&uuml;r verschiedene Institute und Seminare der Philosophischen Fakult&auml;t besteht die M&ouml;glichkeit der Suche in einem [_1]Online-Kartenkatalog[_2]","<a href=\"http://retro-philfak.ub.uni-koeln.de:8080/catalog/\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>") %].</li>
+<li>[% msg.maketext("Versuchen Sie das Buch in NRW oder deutschlandweit im Rahmen der [_1]zentralen Fernleihe[_2] in der Digitalen Bibliothek zu finden.","<a href=\"${hbzmonofernleih_exturl}\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>") %]</li>
 </ul>
-<b><span style="font-size:1.2em">Zeitschriftenartikel</span></b>
+<b><span style="font-size:1.2em">[% msg.maketext("Zeitschriftenartikel") %]</span></b>
 <ul>
-<li>Suchen Sie in den elektronischen <a href="[% config.dbis_exturl %]" target="_blank"><span style="font-size:1.2em">Fachdatenbanken</span></a> und den <a href="[% config.ezb_exturl %]" target="_blank"><span style="font-size:1.2em">elektronisch verf&uuml;gbaren Zeitschriften</span></a> der Universit&auml;tsbibliothek.</a>
-<li>Versuchen Sie den Artikel in NRW im Rahmen der <a href="[% config.hbzzeitfernleih_exturl %]&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_ZDB=on&D_PARAM_QUERY_azTI=[% hst %]&D_PARAM_QUERY_czCO=[% kor %]&D_PARAM_QUERY_gzIS=[% issn %]
-[%- IF loginname && password -%]
-&USERID=[% loginname %]&PASSWORD=[% password %]
-[%- END -%]
-" target="_blank"><span style="font-size:1.2em">Online-Zeitschriftenlieferung</span></a> in der Digitalen Bibliothek zu finden.</li>
+<li>[% msg.maketext("Suchen Sie in den elektronischen [_1]Fachdatenbanken[_2] und den [_3]elektronisch verf&uuml;gbaren Zeitschriften[_4] der Universit&auml;tsbibliothek.","<a href=\"${config.dbis_exturl}\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>","<a href=\"${config.ezb_exturl}\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>") %]</li>
+<li>[% msg.maketext("Versuchen Sie den Artikel in NRW im Rahmen der [_1]Online-Zeitschriftenlieferung[_2] in der Digitalen Bibliothek zu finden.","<a href=\"${hbzzeitfernleih_exturl}\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>") %]</li>
 </ul>
 </td></tr>
 </table>

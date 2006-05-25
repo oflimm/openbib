@@ -1,10 +1,25 @@
+[%#-
+#######################################################################
+#
+# Templatename: mailcollection_mail_html
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Merkliste im HTML-Format fuer die Versendung via
+# Mail
+#
+#######################################################################
+-%]
 [% PROCESS common/subtemplate name="std_header" %]
+[% PROCESS common/subtemplate name="visible_categories_titset" %]
 
   <BODY>
 
-<h1>Zugemailte Merkliste</h1>
+<h1>[% msg.maketext("Zugemailte Merkliste") %]</h1>
 <table>
-[% PROCESS common/subtemplate name="managecollection_tit_as_html" %]
+[% PROCESS common/subtemplate name="managecollection_tit_as_html_simple" %]
 </table>
 <p />
 </body>

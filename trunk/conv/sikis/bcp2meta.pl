@@ -40,11 +40,18 @@
 #
 #####################################################################
 
+use Getopt::Long;
+
+my $bcppath;
+
+&GetOptions("bcp-path=s" => \$bcppath,
+        );
+
 # Konfiguration:
 
 # Wo liegen die bcp-Dateien
 
-my $bcppath="/tmp";
+$bcppath=($bcppath)?$bcppath:"/tmp";
 
 # 1:1 Konvertierungen bei den Verfassern/Personen
 
@@ -815,7 +822,7 @@ while (($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<SWD>)){
   @swtkette=();
   foreach $key (sort {$b cmp $a} keys %SATZn){
     if ($key =~/^6510/){
-       $SATZn{$key}=~s/^[a-z]([A-Z0-9¬])/$1/;
+       $SATZn{$key}=~s/^[a-z]([A-Z0-9])/$1/;
 #      $SATZn{$key}=~s/^[a-z]//;
       push @swtkette, konv($SATZn{$key});
     }
@@ -838,7 +845,7 @@ while (($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<SWD>)){
     next if ($key=~/^6510/);
     $outkey=$key;
     $outkey=~s/(\d\d\d\d)\.\d\d\d/$1/;
-    $SATZn{$key}=~s/^[a-z]([A-Z0-9¬])/$1/;
+    $SATZn{$key}=~s/^[a-z]([A-Z0-9])/$1/;
  #   $SATZn{$key}=~s/^[a-z]// if ($key=~/^6520/);
     printf SWT $outkey.konv($SATZn{$key})."\n" if ($SATZn{$key} !~ /idn:/);
   }
@@ -1270,12 +1277,9 @@ sub ausgabemexfile {
 sub konv {
   my ($line)=@_;
 
-  $line=~s///g;
   $line=~s/\&/&amp;/g;
   $line=~s/>/&gt;/g;
   $line=~s/</&lt;/g;
-
-  $line=~s/½s/s/g; # s cedille
 
   return $line;
 }

@@ -2,7 +2,7 @@
 #
 #  OpenBib::ManageCollection
 #
-#  Dieses File ist (C) 2001-2005 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -32,15 +32,19 @@ package OpenBib::ManageCollection;
 use strict;
 use warnings;
 no warnings 'redefine';
+use utf8;
 
 use Apache::Constants qw(:common M_GET);
+use Apache::Reload;
 use Apache::Request ();
 use DBI;
+use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::L10N;
 use OpenBib::ManageCollection::Util;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
@@ -48,7 +52,7 @@ use OpenBib::ManageCollection::Util;
 
 use vars qw(%config);
 
-*config=\%OpenBib::Config::config;
+*config = \%OpenBib::Config::config;
 
 sub handler {
     my $r=shift;
@@ -82,24 +86,21 @@ sub handler {
     my $loeschen  = $query->param('loeschen')  || '';
     my $action    = ($query->param('action'))?$query->param('action'):'none';
     my $type      = ($query->param('type'))?$query->param('type'):'HTML';
-  
+
+    my $queryoptions_ref
+        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+    
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+    
     # Haben wir eine authentifizierte Session?
     my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
   
     # Ab hier ist in $userid entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
 
-    my $titeltyp_ref = {
-        '1' => 'Einb&auml;ndige Werke und St&uuml;cktitel',
-        '2' => 'Gesamtaufnahme fortlaufender Sammelwerke',
-        '3' => 'Gesamtaufnahme mehrb&auml;ndig begrenzter Werke',
-        '4' => 'Bandauff&uuml;hrung',
-        '5' => 'Unselbst&auml;ndiges Werk',
-        '6' => 'Allegro-Daten',
-        '7' => 'Lars-Daten',
-        '8' => 'Sisis-Daten',
-        '9' => 'Sonstige Daten',
-    };
+    $logger->debug(YAML::Dump($queryoptions_ref));
 
     my $targetdbinfo_ref
         = OpenBib::Common::Util::get_targetdbinfo($sessiondbh);
@@ -122,10 +123,11 @@ sub handler {
     if ($action eq "insert") {
         if ($userid) {
             # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
-            my $idnresult=$userdbh->prepare("select * from treffer where userid = ? and dbname = ? and singleidn = ?") or $logger->error($DBI::errstr);
+            my $idnresult=$userdbh->prepare("select count(*) as rowcount from treffer where userid = ? and dbname = ? and singleidn = ?") or $logger->error($DBI::errstr);
             $idnresult->execute($userid,$database,$singleidn) or $logger->error($DBI::errstr);
+            my $res    = $idnresult->fetchrow_hashref;
+            my $anzahl = $res->{rowcount};
 
-            my $anzahl=$idnresult->rows();
             $idnresult->finish();
 
             if ($anzahl == 0) {
@@ -138,9 +140,10 @@ sub handler {
         # Anonyme Session
         else {
             # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
-            my $idnresult=$sessiondbh->prepare("select * from treffer where sessionid = ? and dbname = ? and singleidn = ?") or $logger->error($DBI::errstr);
+            my $idnresult=$sessiondbh->prepare("select count(*) as rowcount from treffer where sessionid = ? and dbname = ? and singleidn = ?") or $logger->error($DBI::errstr);
             $idnresult->execute($sessionID,$database,$singleidn) or $logger->error($DBI::errstr);
-            my $anzahl=$idnresult->rows();
+            my $res    = $idnresult->fetchrow_hashref;
+            my $anzahl = $res->{rowcount};
             $idnresult->finish();
       
             if ($anzahl == 0) {
@@ -189,8 +192,8 @@ sub handler {
 
         my @dbidnlist=();
         while (my $result=$idnresult->fetchrow_hashref()) {
-            my $database  = $result->{'dbname'};
-            my $singleidn = $result->{'singleidn'};
+            my $database  = decode_utf8($result->{'dbname'});
+            my $singleidn = decode_utf8($result->{'singleidn'});
 
             push @dbidnlist, {
                 database  => $database,
@@ -200,6 +203,13 @@ sub handler {
 
         $idnresult->finish();
 
+        if ($#dbidnlist < 0){
+            OpenBib::Common::Util::print_warning($msg->maketext("Derzeit ist Ihre Merkliste leer"),$r,$msg);
+            $sessiondbh->disconnect();
+            $userdbh->disconnect();
+            return OK;
+        }
+        
         foreach my $dbidn_ref (@dbidnlist) {
             my $database  = $dbidn_ref->{database};
             my $singleidn = $dbidn_ref->{singleidn};
@@ -210,33 +220,19 @@ sub handler {
 
             my ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn({
                 titidn             => $singleidn,
-                hint               => "none",
                 dbh                => $dbh,
-                sessiondbh         => $sessiondbh,
-                searchmultipleaut  => 0,
-                searchmultiplekor  => 0,
-                searchmultipleswt  => 0,
-                searchmultiplekor  => 0,
-                searchmultipletit  => 0,
-                searchmode         => 2,
                 targetdbinfo_ref   => $targetdbinfo_ref,
                 targetcircinfo_ref => $targetcircinfo_ref,
-                hitrange           => -1,
-                rating             => '',
-                bookinfo           => '',
-                sorttype           => '',
-                sortorder          => '',
                 database           => $database,
-                titeltyp_ref       => $titeltyp_ref,
                 sessionID          => $sessionID
             });
 
-            if ($type eq "Text") {
-                $normset=OpenBib::ManageCollection::Util::titset_to_text($normset);
-            }
-            elsif ($type eq "EndNote") {
-                $normset=OpenBib::ManageCollection::Util::titset_to_endnote($normset);
-            }
+#            if ($type eq "Text") {
+#                $normset=OpenBib::ManageCollection::Util::titset_to_text($normset);
+#            }
+#            elsif ($type eq "EndNote") {
+#                $normset=OpenBib::ManageCollection::Util::titset_to_endnote($normset);
+#            }
 
             $dbh->disconnect();
 
@@ -257,20 +253,11 @@ sub handler {
             view       => $view,
             stylesheet => $stylesheet,
             sessionID  => $sessionID,
-		
+            qopts      => $queryoptions_ref,
             type       => $type,
-		
             collection => \@collection,
-		
-            utf2iso    => sub {
-                my $string=shift;
-                $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
-                return $string;
-            },
-		
-            show_corporate_banner => 0,
-            show_foot_banner      => 1,
             config     => \%config,
+            msg        => $msg,
         };
     
         OpenBib::Common::Util::print_page($config{tt_managecollection_show_tname},$ttdata,$r);
@@ -300,8 +287,8 @@ sub handler {
             }
             
             while (my $result=$idnresult->fetchrow_hashref()) {
-                my $database  = $result->{'dbname'};
-                my $singleidn = $result->{'singleidn'};
+                my $database  = decode_utf8($result->{'dbname'});
+                my $singleidn = decode_utf8($result->{'singleidn'});
 	
                 push @dbidnlist, {
                     database  => $database,
@@ -324,33 +311,19 @@ sub handler {
       
             my ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn({
                 titidn             => $singleidn,
-                hint               => "none",
                 dbh                => $dbh,
-                sessiondbh         => $sessiondbh,
-                searchmultipleaut  => 0,
-                searchmultiplekor  => 0,
-                searchmultipleswt  => 0,
-                searchmultiplekor  => 0,
-                searchmultipletit  => 0,
-                searchmode         => 2,
                 targetdbinfo_ref   => $targetdbinfo_ref,
                 targetcircinfo_ref => $targetcircinfo_ref,
-                hitrange           => -1,
-                rating             => '',
-                bookinfo           => '',
-                sorttype           => '',
-                sortorder          => '',
                 database           => $database,
-                titeltyp_ref       => $titeltyp_ref,
                 sessionID          => $sessionID
             });
       
-            if ($type eq "Text") {
-                $normset=OpenBib::ManageCollection::Util::titset_to_text($normset);
-            }
-            elsif ($type eq "EndNote") {
-                $normset=OpenBib::ManageCollection::Util::titset_to_endnote($normset);
-            }
+#             if ($type eq "Text") {
+#                 $normset=OpenBib::ManageCollection::Util::titset_to_text($normset);
+#             }
+#             elsif ($type eq "EndNote") {
+#                 $normset=OpenBib::ManageCollection::Util::titset_to_endnote($normset);
+#             }
       
             $dbh->disconnect();
       
@@ -371,20 +344,11 @@ sub handler {
             view       => $view,
             stylesheet => $stylesheet,
             sessionID  => $sessionID,
-		
+            qopts      => $queryoptions_ref,		
             type       => $type,
-		
             collection => \@collection,
-		
-            utf2iso    => sub {
-                my $string=shift;
-                $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
-                return $string;
-            },
-		
-            show_corporate_banner => 0,
-            show_foot_banner      => 1,
             config     => \%config,
+            msg        => $msg,
         };
     
         if ($type eq "HTML") {
@@ -408,9 +372,8 @@ sub handler {
     
         my $loginname="";
     
-        if ($userresult->rows > 0) {
-            my $res=$userresult->fetchrow_hashref();
-            $loginname=$res->{'loginname'};
+        while(my $res=$userresult->fetchrow_hashref()){
+            $loginname = decode_utf8($res->{'loginname'});
         }
 
         my @dbidnlist=();
@@ -434,8 +397,8 @@ sub handler {
             }
 
             while (my $result=$idnresult->fetchrow_hashref()) {
-                my $database  = $result->{'dbname'};
-                my $singleidn = $result->{'singleidn'};
+                my $database  = decode_utf8($result->{'dbname'});
+                my $singleidn = decode_utf8($result->{'singleidn'});
 	
                 push @dbidnlist, {
                     database  => $database,
@@ -458,33 +421,19 @@ sub handler {
       
             my ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn({
                 titidn             => $singleidn,
-                hint               => "none",
                 dbh                => $dbh,
-                sessiondbh         => $sessiondbh,
-                searchmultipleaut  => 0,
-                searchmultiplekor  => 0,
-                searchmultipleswt  => 0,
-                searchmultiplekor  => 0,
-                searchmultipletit  => 0,
-                searchmode         => 2,
                 targetdbinfo_ref   => $targetdbinfo_ref,
                 targetcircinfo_ref => $targetcircinfo_ref,
-                hitrange           => -1,
-                rating             => '',
-                bookinfo           => '',
-                sorttype           => '',
-                sortorder          => '',
                 database           => $database,
-                titeltyp_ref       => $titeltyp_ref,
                 sessionID          => $sessionID
             });
       
-            if ($type eq "Text") {
-                $normset=OpenBib::ManageCollection::Util::titset_to_text($normset);
-            }
-            elsif ($type eq "EndNote") {
-                $normset=OpenBib::ManageCollection::Util::titset_to_endnote($normset);
-            }
+#             if ($type eq "Text") {
+#                 $normset=OpenBib::ManageCollection::Util::titset_to_text($normset);
+#             }
+#             elsif ($type eq "EndNote") {
+#                 $normset=OpenBib::ManageCollection::Util::titset_to_endnote($normset);
+#             }
       
             $dbh->disconnect();
       
@@ -505,24 +454,14 @@ sub handler {
             view       => $view,
             stylesheet => $stylesheet,
             sessionID  => $sessionID,
-		
+            qopts      => $queryoptions_ref,				
             type       => $type,
-	
             loginname  => $loginname,
             singleidn  => $singleidn,
             database   => $database,
-
             collection => \@collection,
-		
-            utf2iso    => sub {
-                my $string=shift;
-                $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
-                return $string;
-            },
-		
-            show_corporate_banner => 0,
-            show_foot_banner      => 1,
             config     => \%config,
+            msg        => $msg,
         };
     
         OpenBib::Common::Util::print_page($config{tt_managecollection_mail_tname},$ttdata,$r);
@@ -536,9 +475,8 @@ sub handler {
     
         my $loginname="";
     
-        if ($userresult->rows > 0) {
-            my $res=$userresult->fetchrow_hashref();
-            $loginname=$res->{'loginname'};
+        while(my $res=$userresult->fetchrow_hashref()){
+            $loginname = decode_utf8($res->{'loginname'});
         }
     
         my @dbidnlist=();
@@ -562,8 +500,8 @@ sub handler {
             }
       
             while (my $result=$idnresult->fetchrow_hashref()) {
-                my $database  = $result->{'dbname'};
-                my $singleidn = $result->{'singleidn'};
+                my $database  = decode_utf8($result->{'dbname'});
+                my $singleidn = decode_utf8($result->{'singleidn'});
 	
                 push @dbidnlist, {
                     database  => $database,
@@ -585,33 +523,19 @@ sub handler {
       
             my ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn({
                 titidn             => $singleidn,
-                hint               => "none",
                 dbh                => $dbh,
-                sessiondbh         => $sessiondbh,
-                searchmultipleaut  => 0,
-                searchmultiplekor  => 0,
-                searchmultipleswt  => 0,
-                searchmultiplekor  => 0,
-                searchmultipletit  => 0,
-                searchmode         => 2,
                 targetdbinfo_ref   => $targetdbinfo_ref,
                 targetcircinfo_ref => $targetcircinfo_ref,
-                hitrange           => -1,
-                rating             => '',
-                bookinfo           => '',
-                sorttype           => '',
-                sortorder          => '',
                 database           => $database,
-                titeltyp_ref       => $titeltyp_ref,
                 sessionID          => $sessionID
             });
       
-            if ($type eq "Text") {
-                $normset=OpenBib::ManageCollection::Util::titset_to_text($normset);
-            }
-            elsif ($type eq "EndNote") {
-                $normset=OpenBib::ManageCollection::Util::titset_to_endnote($normset);
-            }
+#             if ($type eq "Text") {
+#                 $normset=OpenBib::ManageCollection::Util::titset_to_text($normset);
+#             }
+#             elsif ($type eq "EndNote") {
+#                 $normset=OpenBib::ManageCollection::Util::titset_to_endnote($normset);
+#             }
       
             $dbh->disconnect();
       
@@ -632,24 +556,14 @@ sub handler {
             view       => $view,
             stylesheet => $stylesheet,		
             sessionID  => $sessionID,
-		
+            qopts      => $queryoptions_ref,		
             type       => $type,
-	
             loginname  => $loginname,
             singleidn  => $singleidn,
             database   => $database,
-
             collection => \@collection,
-		
-            utf2iso    => sub {
-                my $string=shift;
-                $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
-                return $string;
-            },
-		
-            show_corporate_banner => 0,
-            show_foot_banner      => 1,
             config     => \%config,
+            msg        => $msg,
         };
     
         OpenBib::Common::Util::print_page($config{tt_managecollection_print_tname},$ttdata,$r);

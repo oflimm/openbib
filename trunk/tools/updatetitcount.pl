@@ -68,7 +68,7 @@ if ($singlepool ne ""){
 
 else {
 
-  my $idnresult=$sessiondbh->prepare("select dbname from dbinfo where active=1");
+  my $idnresult=$sessiondbh->prepare("select dbname from dbinfo where active=1 order by orgunit,dbname");
   $idnresult->execute();
   
   while (my $dbname=$idnresult->fetchrow){
@@ -82,7 +82,7 @@ my $allidns=0;
 foreach $database (@databases){
   my $dbh=DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd}) or die "could not connect";
     
-  $idnresult=$dbh->prepare("select idn from tit") or die "Error -- $DBI::errstr";
+  $idnresult=$dbh->prepare("select distinct id from tit") or die "Error -- $DBI::errstr";
   $idnresult->execute();
   
   $maxidns=$idnresult->rows;

@@ -35,6 +35,7 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
+use Apache::Reload;
 use Apache::Request();          # CGI-Handling (or require)
 use Log::Log4perl qw(get_logger :levels);
 use SOAP::Transport::HTTP;

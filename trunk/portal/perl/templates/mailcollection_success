@@ -1,15 +1,25 @@
+[%#-
+#######################################################################
+#
+# Templatename: mailcollection_success
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Erfolgsmeldung nach erfolgreicher Versendung der
+# Merkliste via Mail
+#
+#######################################################################
+-%]
 [% PROCESS common/subtemplate name="std_header" %]
 
   <body>
 
-[% IF show_corporate_banner %]
-[% PROCESS common/subtemplate name="corporate_banner" %] 
-[% END %]
-
 <table width="100%">
-<tr><th>Erfolgreiche Aktion</th></tr>
+<tr><th>[% msg.maketext("Erfolgreiche Aktion") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
-Ihre Merkliste wurde an Sie per Mail versendet.
+[% msg.maketext("Ihre Merkliste wurde an Sie per Mail versendet.") %]
 </td></tr>
 </table>
 <p />

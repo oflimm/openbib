@@ -37,6 +37,10 @@ b {
   color: #000000;
 }
 
+img {
+  border: 0;
+}
+
 table {
   padding: 0px;
 }
@@ -77,7 +81,7 @@ table {
 .globalsearch { 
   font-family:Arial,helv,Helvetica,Verdana; 
   font-size:135%; 
-  color=blue;
+  color:blue;
 }
 
 .fbuttonarea { 
@@ -219,6 +223,10 @@ a:active.invisible {
   border-bottom: 3px solid #ffffff; 
 }
 
+#langchoice {
+  float: right;
+}
+
 #tabbingmenu a:visited {
   color: #000000; 
   background: #ffffff; 
@@ -250,4 +258,9 @@ a:active.invisible {
   color:      #000000; 
   background: #ffffff;
   text-decoration:underline
+}
+
+.dbdescshort {
+  font-size:1.2em;
+  font-weight:bold;
 }

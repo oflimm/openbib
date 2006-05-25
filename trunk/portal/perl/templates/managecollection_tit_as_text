@@ -1,17 +1,47 @@
+[%#-
+#######################################################################
+#
+# Templatename: managecollection_tit_as_text
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe *aller* Merklisten-Items im Text-Format *ohne* Funktions-
+# elemente
+#
+#######################################################################
+-%]
 [%- FOREACH titset IN collection -%]
-[%- normset = titset.tit -%]
+[%- normset    = titset.tit -%]
 [%- mexnormset = titset.mex -%]
-[%- circset = titset.circ -%]
-[%- FOREACH normkat IN normset -%]
-[% normkat.desc %]: [% normkat.contents %]
-[% END %]
+[%-
+
+FOREACH category IN categories;
+    FOREACH item IN normset.$category;
+    content = item.content;
+
+    # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+    # in Config.pm fuer die entsprechende Datenbank definiert
+    # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+    # kodiert.
+    IF config.categorymapping.$database.$category ;
+      thiscategory = "${category}-${normset.database}" ;
+    ELSE ;
+      thiscategory = ${category} ;
+    END;
+
+-%]
+[% msg.maketext("${category}") | format("%- 24s") %]: [% content %]
+[% END -%]
+[%- END -%]
 [%- IF mexnormset.size > 0 -%]
 [%- FOREACH mex IN mexnormset -%]
-Besitzende Bibliothek [% loop.count %] : [% mex.bibliothek %]
-Standort              [% loop.count %] : [% mex.standort %]
-Lokale Signatur       [% loop.count %] : [% mex.signatur %]
-Inventarnummer        [% loop.count %] : [% mex.inventarnummer %]
-Erscheinungsverlauf   [% loop.count %] : [% mex.erschverl %]
+[% msg.maketext("Besitzende Bibliothek") %] [% loop.count %] : [% mex.${"X4000"}.content.full %]
+[% msg.maketext("Standort             ") %] [% loop.count %] : [% mex.${"X0016"}.content %]
+[% msg.maketext("Lokale Signatur      ") %] [% loop.count %] : [% mex.${"X0014"}.content %]
+[% msg.maketext("Inventarnummer       ") %] [% loop.count %] : [% mex.${"X0005"}.content %]
+[% msg.maketext("Erscheinungsverlauf  ") %] [% loop.count %] : [% mex.${"X1204"}.content %]
 [% END %]
 [%- END -%]
 ------------------------------------------

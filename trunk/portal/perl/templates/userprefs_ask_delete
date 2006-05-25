@@ -1,3 +1,17 @@
+[%#-
+#######################################################################
+#
+# Templatename: userprefs_ask_delete
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe einer Sicherheitsnachfrage vor dem Loeschen einer Benutzer-
+# kennung
+#
+#######################################################################
+-%]
 [% PROCESS common/subtemplate name="std_header" %]
 
   <body>
@@ -6,14 +20,14 @@
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 [% END %]
 
-<h1>Soll die Kennung wirklich gel&ouml;scht werden?</h1>
+<h1>[% msg.maketext("Soll die Kennung wirklich gel&ouml;scht werden?") %]</h1>
 <form method="POST" action="http://[% config.servername %][% config.userprefs_loc %]" enctype="application/x-www-form-urlencoded" target="_top">
 <input type="hidden" name="sessionID" value="[% sessionID %]">
 
-Wenn Sie wirklich Ihre KUG-Kennung l&ouml;schen wollen, so klicken Sie auf die untenstehenden Schaltfl&auml;che. Es werden dann auch alle Sitzungsdaten gel&ouml;scht.
+[% msg.maketext("Wenn Sie wirklich Ihre KUG-Kennung l&ouml;schen wollen, so klicken Sie auf die untenstehenden Schaltfl&auml;che. Es werden dann auch alle Sitzungsdaten gel&ouml;scht.") %]
 <br>
 <br>
-<input type="submit" name="action" value="Kennung soll wirklich gel&ouml;scht werden">
+<input type="submit" name="action" value="[% msg.maketext("Kennung soll wirklich gel&ouml;scht werden") %]">
 </form>
 <br>
 <br>

@@ -25,10 +25,13 @@
 
 package OpenBib::Common::Stopwords;
 
-use Apache::Constants qw(:common);
-
 use strict;
 use warnings;
+no warnings 'redefine';
+use utf8;
+
+use Apache::Constants qw(:common);
+use Apache::Reload;
 
 use OpenBib::Config;
 

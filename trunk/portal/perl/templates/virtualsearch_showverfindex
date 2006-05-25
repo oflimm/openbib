@@ -1,29 +1,36 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_showverfindex
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe des Verfasserindex
+#
+#######################################################################
+-%]
 [% PROCESS common/subtemplate name="std_header" %]
 
 <body>
 
 <table width="100%">
-<tr><th>Virtueller Verfasserindex: [% verf %]</b> / <b>Treffer: [% verfindex.size %]</b></th></tr>
+<tr><th>[% msg.maketext("Virtueller Verfasserindex") %]: [% contentreq %]</b> / <b>[% msg.maketext("Treffer") %]: [% index.size %]</b></th></tr>
 <tr><td class="boxedclear">
-
-[% PROCESS common/subtemplate name="common/navitembar" %]
-    
-[% FOREACH item IN verfindex %]
-
-[% IF offset >= 0 && hitrange > 0 %]
-
-[% IF loop.count >= offset && loop.count < offset+hitrange %]
-
-[% PROCESS common/subtemplate name="virtualsearch_showverfindex_item" %]
-
-[% END %]
-
-[% ELSE %]
-
-[% PROCESS common/subtemplate name="virtualsearch_showverfindex_item" %]
-
-[% END %]
-[% END %]
+[%- PROCESS common/subtemplate name="common/navitembar" -%]
+[%- FOREACH item IN index -%]
+[%- IF offset >= 0 && hitrange > 0 -%]
+[%- IF loop.count >= offset && loop.count < offset+hitrange -%]
+[%- PROCESS common/subtemplate name="virtualsearch_showverfindex_item" -%]
+[%- END -%]
+[%- ELSE -%]
+[%- PROCESS common/subtemplate name="virtualsearch_showverfindex_item" -%]
+[%- END -%]
+[%- END -%]
+<table>
+<tr><td><span style="font-size:0.8em">in: [% resulttime %] [% msg.maketext("Sekunden") %]</span></td></tr>
+</table>
 
 </td></tr>
 </table>
@@ -32,13 +39,13 @@
 
 <form method="get" action="[% config.virtualsearch_loc %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]">
-<input type="hidden" name="rating" value="[% rating %]">
-<input type="hidden" name="bookinfo" value="[% bookinfo %]">
-<input type="hidden" name="hitrange" value="-1">
-<input type="hidden" name="profil" value="[% profil %]">
+<input type="hidden" name="rating"    value="[% rating %]">
+<input type="hidden" name="bookinfo"  value="[% bookinfo %]">
+<input type="hidden" name="hitrange"  value="-1">
+<input type="hidden" name="profil"    value="[% profil %]">
 
 <table>
-<tr><td class="category">Verfasser&nbsp;</td><td>&nbsp;<input type="text" name="verf" value="[% verf %]" size="4" maxlength="50" title="Geben Sie hier den Verfasseranfang ein">&nbsp;<input type="submit" name="verfindex" value="Index">&nbsp;</td></tr>
+<tr><td class="category">[% msg.maketext("Verfasser") %]&nbsp;</td><td>&nbsp;<input type="text" name="verf" value="[% contentreq %]" size="4" maxlength="50" title="[% msg.maketext("Geben Sie hier den Verfasseranfang ein") %]">&nbsp;<input type="submit" name="verfindex" value="[% msg.maketext("Index") %]">&nbsp;</td></tr>
 </table>
 
 </form>

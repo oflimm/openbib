@@ -3,7 +3,7 @@
 #
 #  OpenBib::MailPassword
 #
-#  Dieses File ist (C) 2004 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -33,15 +33,20 @@ package OpenBib::MailPassword;
 use strict;
 use warnings;
 no warnings 'redefine';
+use utf8;
 
 use Apache::Constants qw(:common);
+use Apache::Reload;
 use Apache::Request ();
 use DBI;
+use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
+use MIME::Lite;
 use POSIX;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::L10N;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
@@ -79,9 +84,16 @@ sub handler {
     my $userdbh
         = DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd})
             or $logger->error_die($DBI::errstr);
-  
+
+    my $queryoptions_ref
+        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+    
     unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
-        OpenBib::Common::Util::print_warning("Ung&uuml;ltige Session",$r);
+        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
     
         $sessiondbh->disconnect();
         $userdbh->disconnect();
@@ -110,9 +122,8 @@ sub handler {
             sessionID  => $sessionID,
             loginname  => $loginname,
 
-            show_corporate_banner => 0,
-            show_foot_banner      => 1,
             config     => \%config,
+            msg        => $msg,
         };
 
         OpenBib::Common::Util::print_page($config{tt_mailpassword_tname},$ttdata,$r);
@@ -121,7 +132,7 @@ sub handler {
         my $loginfailed=0;
     
         if ($loginname eq "") {
-            OpenBib::Common::Util::print_warning("Sie haben keine E-Mail Adresse eingegeben",$r);
+            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine E-Mail Adresse eingegeben"),$r,$msg);
             $sessiondbh->disconnect();
             $userdbh->disconnect();
             return OK;
@@ -131,44 +142,68 @@ sub handler {
         $targetresult->execute($loginname) or $logger->error($DBI::errstr);
     
         my $result=$targetresult->fetchrow_hashref();
-        my $password=$result->{'pin'};
+        my $password = decode_utf8($result->{'pin'});
         $targetresult->finish();
     
         if (!$password) {
-            OpenBib::Common::Util::print_warning("Es existiert kein Passwort f&uuml;r die Kennung $loginname",$r);
+            OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Passwort für die Kennung $loginname"),$r,$msg);
             $sessiondbh->disconnect();
             $userdbh->disconnect();
             return OK;
         }
+
+	my $anschreiben="";
+	my $afile = "an." . $$;
+
+	my $mainttdata = {
+                          loginname => $loginname,
+                          password  => $password,
+			  msg       => $msg,
+			 };
+
+	my $maintemplate = Template->new({
+          LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+              INCLUDE_PATH   => $config{tt_include_path},
+              ABSOLUTE       => 1,
+          }) ],
+#         ABSOLUTE      => 1,
+#         INCLUDE_PATH  => $config{tt_include_path},
+          # Es ist wesentlich, dass OUTPUT* hier und nicht im
+          # Template::Provider definiert wird
+          OUTPUT_PATH   => '/tmp',
+          OUTPUT        => $afile,
+        });
+
+        $maintemplate->process($config{tt_mailpassword_mail_main_tname}, $mainttdata ) || do {
+            $r->log_reason($maintemplate->error(), $r->filename);
+            return SERVER_ERROR;
+        };
+
+        my $mailmsg = MIME::Lite->new(
+            From            => $config{contact_email},
+            To              => $loginname,
+            Subject         => $msg->maketext("Ihr vergessenes KUG-Passwort"),
+            Type            => 'multipart/mixed'
+        );
+
+        my $anschfile="/tmp/" . $afile;
+
+        $mailmsg->attach(
+            Type            => 'TEXT',
+            Encoding        => '8bit',
+            #Data            => $anschreiben,
+            Path            => $anschfile,
+        );
+
+        $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config{contact_email}");
     
-        open(MAIL,"| /usr/lib/sendmail -t -f$config{contact_email}");
-        print MAIL << "MAILSEND";
-From: $config{contact_email}
-To: $loginname
-Subject: Ihr vergessenes KUG-Passwort
-
-Sehr geehrte(r) $loginname,
-
-Sie haben sich ueber http://kug.ub.uni-koeln.de/ Ihr vergessenes
-KUG-Passwort zusenden lassen.
-
-Ihre gewuenschten Anmeldeinformationen lauten:
-
-Benutzername : $loginname
-Passwort     : $password
-
-Mit freundlichen Gruessen
-
-Ihr KUG-Team
-MAILSEND
 
         my $ttdata={
             view       => $view,
             stylesheet => $stylesheet,
 
-            show_corporate_banner => 0,
-            show_foot_banner      => 1,
             config     => \%config,
+            msg        => $msg,
         };
 
         OpenBib::Common::Util::print_page($config{tt_mailpassword_success_tname},$ttdata,$r);

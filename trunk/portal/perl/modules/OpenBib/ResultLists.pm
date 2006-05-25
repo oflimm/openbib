@@ -2,7 +2,7 @@
 #
 #  OpenBib::ResultLists.pm
 #
-#  Dieses File ist (C) 2003-2005 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2003-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -32,17 +32,22 @@ package OpenBib::ResultLists;
 use strict;
 use warnings;
 no warnings 'redefine';
+use utf8;
 
 use Apache::Constants qw(:common);
+use Apache::Reload;
 use Apache::Request ();
 use DBI;
+use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
+use Storable ();
 use Template;
-use YAML;
+use YAML();
 
 use OpenBib::Common::Stopwords;
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::L10N;
 use OpenBib::ResultLists::Util;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
@@ -86,9 +91,16 @@ sub handler {
     my $queryid      = $query->param('queryid') || '';
 
     my $sessionID    = ($query->param('sessionID'))?$query->param('sessionID'):'';
+
+    my $queryoptions_ref
+        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
   
     unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
-        OpenBib::Common::Util::print_warning("Ung&uuml;ltige Session",$r);
+        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
 
         $sessiondbh->disconnect();
         $userdbh->disconnect();
@@ -105,18 +117,6 @@ sub handler {
         $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
     }
 
-    my %titeltyp=(
-        '1' => 'Einb&auml;ndige Werke und St&uuml;cktitel',
-        '2' => 'Gesamtaufnahme fortlaufender Sammelwerke',
-        '3' => 'Gesamtaufnahme mehrb&auml;ndig begrenzter Werke',
-        '4' => 'Bandauff&uuml;hrung',
-        '5' => 'Unselbst&auml;ndiges Werk',
-        '6' => 'Allegro-Daten',
-        '7' => 'Lars-Daten',
-        '8' => 'Sisis-Daten',
-        '9' => 'Sonstige Daten',
-    );
-
     my $targetdbinfo_ref
         = OpenBib::Common::Util::get_targetdbinfo($sessiondbh);
 
@@ -127,11 +127,13 @@ sub handler {
     ####################################################################
   
     if ($trefferliste) {
-        my $idnresult=$sessiondbh->prepare("select sessionid from searchresults where sessionid = ?") or $logger->error($DBI::errstr);
+        my $idnresult=$sessiondbh->prepare("select count(sessionid) as rowcount from searchresults where sessionid = ?") or $logger->error($DBI::errstr);
         $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-    
-        if ($idnresult->rows <= 0) {
-            OpenBib::Common::Util::print_warning("Derzeit existiert (noch) keine Trefferliste",$r);
+        my $res=$idnresult->fetchrow_hashref;
+        my $rows=$res->{rowcount};
+        
+        if ($rows <= 0) {
+            OpenBib::Common::Util::print_warning($msg->maketext("Derzeit existiert (noch) keine Trefferliste"),$r,$msg);
             $idnresult->finish();
 
             $sessiondbh->disconnect();
@@ -150,67 +152,52 @@ sub handler {
             my @querystrings = ();
             my @queryhits    = ();
       
-            $idnresult=$sessiondbh->prepare("select distinct searchresults.queryid,queries.query,queries.hits from searchresults,queries where searchresults.sessionid = ? and searchresults.queryid=queries.queryid order by queryid desc") or $logger->error($DBI::errstr);
+            $idnresult=$sessiondbh->prepare("select distinct searchresults.queryid as queryid,queries.query as query,queries.hits as hits from searchresults,queries where searchresults.sessionid = ? and searchresults.queryid=queries.queryid order by queryid desc") or $logger->error($DBI::errstr);
             $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
       
             my @queries=();
 
-            while (my @res=$idnresult->fetchrow) {
-
-                my ($fs,$verf,$hst,$swt,$kor,$sign,$isbn,$issn,$notation,$mart,$ejahr,$hststring,$boolhst,$boolswt,$boolkor,$boolnotation,$boolisbn,$boolsign,$boolejahr,$boolissn,$boolverf,$boolfs,$boolmart,$boolhststring)=split('\|\|',$res[1]);
+            while (my $res=$idnresult->fetchrow_hashref) {
 
                 push @queries, {
-                    id        => $res[0],
-
-                    fs        => $fs,
-                    verf      => $verf,
-                    hst       => $hst,
-                    swt       => $swt,
-                    kor       => $kor,
-                    notation  => $notation,
-                    sign      => $sign,
-                    ejahr     => $ejahr,
-                    isbn      => $isbn,
-                    issn      => $issn,
-                    mart      => $mart,
-                    hststring => $hststring,
-			
-                    hits      => $res[2],
+                    id          => decode_utf8($res->{queryid}),
+                    searchquery => Storable::thaw(pack "H*",$res->{query}),
+                    hits        => decode_utf8($res->{hits}),
                 };
 	
             }
       
             # Finde den aktuellen Query
-            my $thisquery={};
+            my $thisquery_ref={};
 
             # Wenn keine Queryid angegeben wurde, dann nehme den ersten Eintrag,
             # da dieser der aktuellste ist
             if ($queryid eq "") {
-                $thisquery=$queries[0];
+                $thisquery_ref=$queries[0];
             }
             # ansonsten nehmen den ausgewaehlten
             else {
-                foreach my $query (@queries) {
-                    if (@{$query}{id} eq "$queryid") {
-                        $thisquery=$query;
+                foreach my $query_ref (@queries) {
+                    if (@{$query_ref}{id} eq "$queryid") {
+                        $thisquery_ref=$query_ref;
                     }
                 }
             }
 
             $idnresult=$sessiondbh->prepare("select dbname,hits from searchresults where sessionid = ? and queryid = ? order by hits desc") or $logger->error($DBI::errstr);
-            $idnresult->execute($sessionID,@{$thisquery}{id}) or $logger->error($DBI::errstr);
+            $idnresult->execute($sessionID,@{$thisquery_ref}{id}) or $logger->error($DBI::errstr);
 
             my $hitcount=0;
             my @resultdbs=();
 
             while (my @res=$idnresult->fetchrow) {
                 push @resultdbs, {
-                    trefferdb     => $res[0],
-                    trefferdbdesc => $targetdbinfo_ref->{dbnames}{$res[0]},
-                    trefferzahl   => $res[1],
+                    trefferdb     => decode_utf8($res[0]),
+                    trefferdbdesc => $targetdbinfo_ref->{dbnames}{decode_utf8($res[0])},
+                    trefferzahl   => decode_utf8($res[1]),
                 };
 	
-                $hitcount+=$res[1];
+                $hitcount+=decode_utf8($res[1]);
             }
 
             # TT-Data erzeugen
@@ -219,13 +206,13 @@ sub handler {
                 stylesheet => $stylesheet,
                 sessionID  => $sessionID,
 
-                thisquery  => $thisquery,
+                thisquery  => $thisquery_ref,
                 queryid    => $queryid,
                 hitcount   => $hitcount,
                 resultdbs  => \@resultdbs,
                 queries    => \@queries,
-                show_foot_banner      => 1,
                 config     => \%config,
+                msg        => $msg,
             };
             OpenBib::Common::Util::print_page($config{tt_resultlists_choice_tname},$ttdata,$r);
 
@@ -246,10 +233,10 @@ sub handler {
                 $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
 	
                 my @res=$idnresult->fetchrow;
-                $queryid=$res[0];
+                $queryid = decode_utf8($res[0]);
             }
 
-            $idnresult=$sessiondbh->prepare("select searchresults.searchresult,searchresults.dbname from searchresults, dbinfo where searchresults.dbname=dbinfo.dbname and sessionid = ? and queryid = ? order by dbinfo.faculty,searchresults.dbname") or $logger->error($DBI::errstr);
+            $idnresult=$sessiondbh->prepare("select searchresults.searchresult,searchresults.dbname from searchresults, dbinfo where searchresults.dbname=dbinfo.dbname and sessionid = ? and queryid = ? order by dbinfo.orgunit,searchresults.dbname") or $logger->error($DBI::errstr);
             $idnresult->execute($sessionID,$queryid) or $logger->error($DBI::errstr);
 
             my @resultset=();
@@ -259,9 +246,9 @@ sub handler {
                 my @outputbuffer=();
 
                 while (my @res=$idnresult->fetchrow) {
-                    my $yamlres=YAML::Load($res[0]);
+                    my $storableres=Storable::thaw(pack "H*", $res[0]);
 
-                    push @outputbuffer, @$yamlres;
+                    push @outputbuffer, @$storableres;
                 }
 
                 my $treffer=$#outputbuffer+1;
@@ -275,14 +262,14 @@ sub handler {
 
                 my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
 	
-                ($loginname,$password)=get_cred_for_userid($userdbh,$userid) if ($userid && OpenBib::Common::Util::get_targettype_of_session($userdbh,$sessionID) ne "self");
+                ($loginname,$password)=OpenBib::Common::Util::get_cred_for_userid($userdbh,$userid) if ($userid && OpenBib::Common::Util::get_targettype_of_session($userdbh,$sessionID) ne "self");
 	
                 # Hash im Loginname ersetzen
                 $loginname=~s/#/\%23/;
 
                 my $hostself="http://".$r->hostname.$r->uri;
 	
-                my ($queryargs,$sortselect,$thissortstring)=OpenBib::Common::Util::get_sort_nav($r,'sortboth',1);
+                my ($queryargs,$sortselect,$thissortstring)=OpenBib::Common::Util::get_sort_nav($r,'sortboth',1,$msg);
 	
                 # TT-Data erzeugen
                 my $ttdata={
@@ -295,7 +282,7 @@ sub handler {
 		    rating         => 0,
 		    
 		    resultlist     => \@sortedoutputbuffer,
-		    dbinfo         => $targetdbinfo_ref->{dbinfo},
+		    targetdbinfo   => $targetdbinfo_ref,
 		    
 		    loginname      => $loginname,
 		    password       => $password,
@@ -304,17 +291,16 @@ sub handler {
 		    sortselect     => $sortselect,
 		    thissortstring => $thissortstring,
 		    
-		    show_foot_banner      => 1,
-		    
 		    config         => \%config,
+                    msg            => $msg,
                 };
 
                 OpenBib::Common::Util::print_page($config{tt_resultlists_showall_sortall_tname},$ttdata,$r);
 
                 # Eintraege merken fuer Lastresultset
                 foreach my $item_ref (@sortedoutputbuffer) {
-                    push @resultset, { 'database' => $item_ref->{database},
-                                       'idn'      => $item_ref->{idn},
+                    push @resultset, { id       => $item_ref->{id},
+				       database => $item_ref->{database},
                                    };
                 }
 
@@ -328,11 +314,11 @@ sub handler {
                 my @resultlists=();
 
                 while (my @res=$idnresult->fetchrow) {
-                    my $yamlres=YAML::Load($res[0]);
+                    my $storableres=Storable::thaw(pack "H*", $res[0]);
 
-                    my $database=$res[1];
+                    my $database=decode_utf8($res[1]);
 
-                    my @outputbuffer=@$yamlres;
+                    my @outputbuffer=@$storableres;
 
                     my $treffer=$#outputbuffer+1;
 
@@ -347,8 +333,8 @@ sub handler {
 
                     # Eintraege merken fuer Lastresultset
                     foreach my $item_ref (@sortedoutputbuffer) {
-                        push @resultset, { 'database' => $item_ref->{database},
-                                           'idn'      => $item_ref->{idn},
+                        push @resultset, { id       => $item_ref->{id},
+					   database => $item_ref->{database},
                                        };
                     }
                 }
@@ -358,14 +344,14 @@ sub handler {
 	
                 my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
 	
-                ($loginname,$password)=get_cred_for_userid($userdbh,$userid) if ($userid && OpenBib::Common::Util::get_targettype_of_session($userdbh,$sessionID) ne "self");
+                ($loginname,$password)=OpenBib::Common::Util::get_cred_for_userid($userdbh,$userid) if ($userid && OpenBib::Common::Util::get_targettype_of_session($userdbh,$sessionID) ne "self");
 	
                 # Hash im Loginname ersetzen
                 $loginname=~s/#/\%23/;
 
                 my $hostself="http://".$r->hostname.$r->uri;
 	
-                my ($queryargs,$sortselect,$thissortstring)=OpenBib::Common::Util::get_sort_nav($r,'sortboth',1);
+                my ($queryargs,$sortselect,$thissortstring)=OpenBib::Common::Util::get_sort_nav($r,'sortboth',1,$msg);
 	
                 # TT-Data erzeugen
                 my $ttdata={
@@ -378,7 +364,7 @@ sub handler {
 		    rating         => 0,
 		    
 		    resultlists    => \@resultlists,
-		    dbinfo         => $targetdbinfo_ref->{dbinfo},
+		    targetdbinfo   => $targetdbinfo_ref,
 		    
 		    loginname      => $loginname,
 		    password       => $password,
@@ -387,9 +373,8 @@ sub handler {
 		    sortselect     => $sortselect,
 		    thissortstring => $thissortstring,
 		    
-		    show_foot_banner      => 1,
-		    
 		    config         => \%config,
+                    msg            => $msg,
                 };
       
                 OpenBib::Common::Util::print_page($config{tt_resultlists_showall_tname},$ttdata,$r);
@@ -417,9 +402,9 @@ sub handler {
             my @resultlists=();
 
             while (my @res=$idnresult->fetchrow) {
-                my $yamlres=YAML::Load($res[0]);
+                my $storableres=Storable::thaw(pack "H*", $res[0]);
 	
-                my @outputbuffer=@$yamlres;
+                my @outputbuffer=@$storableres;
 	
                 my $treffer=$#outputbuffer+1;
 	
@@ -434,9 +419,8 @@ sub handler {
 	
                 # Eintraege merken fuer Lastresultset
                 foreach my $item_ref (@sortedoutputbuffer) {
-                    push @resultset, {
-                        'database' => $trefferliste,
-                        'idn'      => $item_ref->{idn},
+                    push @resultset, { id       => $item_ref->{id},
+				       database => $trefferliste,
                     };
                 }
             }
@@ -446,14 +430,14 @@ sub handler {
       
             my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
       
-            ($loginname,$password)=get_cred_for_userid($userdbh,$userid) if ($userid && OpenBib::Common::Util::get_targettype_of_session($userdbh,$sessionID) ne "self");
+            ($loginname,$password)=OpenBib::Common::Util::get_cred_for_userid($userdbh,$userid) if ($userid && OpenBib::Common::Util::get_targettype_of_session($userdbh,$sessionID) ne "self");
       
             # Hash im Loginname ersetzen
             $loginname=~s/#/\%23/;
       
             my $hostself="http://".$r->hostname.$r->uri;
       
-            my ($queryargs,$sortselect,$thissortstring)=OpenBib::Common::Util::get_sort_nav($r,'sortsingle',1);
+            my ($queryargs,$sortselect,$thissortstring)=OpenBib::Common::Util::get_sort_nav($r,'sortsingle',1,$msg);
       
             # TT-Data erzeugen
             my $ttdata={
@@ -475,9 +459,8 @@ sub handler {
                 sortselect     => $sortselect,
                 thissortstring => $thissortstring,
 		  
-                show_foot_banner      => 1,
-		  
                 config         => \%config,
+                msg            => $msg,
             };
       
       

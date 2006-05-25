@@ -64,7 +64,7 @@
 %\begin{verbatim}
 
 
-%Copyright (c) 2004 Oliver Flimm <flimm@openbib.org>
+%Copyright (c) 2004-2006 Oliver Flimm <flimm@openbib.org>
 
 %Es wird die Erlaubnis gegeben dieses Dokument zu kopieren, verteilen 
 %und/oder zu veraendern unter den Bedingungen der GNU Free
@@ -233,13 +233,13 @@ Deaktivieren Sie in \texttt{/etc/apache/modules.conf} den eventuell
 dort aktivierten mod\_perl Support:
 
 \begin{verbatim}
-#LoadModule perl\_module /usr/lib/apache/1.3/mod\_perl.so
+apache-modconf apache disable mod_perl
 \end{verbatim}
 
 Aktiviert werden mu"s hingegen das Modul f"ur den Proxy-Support
 
 \begin{verbatim}
-LoadModule proxy\_module /usr/lib/apache/1.3/libproxy.so
+apache-modconf apache enable libproxy
 \end{verbatim}
 
 
@@ -316,32 +316,26 @@ Konfigurationsdatei \texttt{httpd.conf} sowie das
 Port 8008
 \end{verbatim}
 
-Tragen Sie nun folgende Direktive in \texttt{/etc/apache-perl/httpd.conf} ein:
+Kopieren Sie nun die Konfigurationsdatei
+\texttt{portal/apache/openbib.conf} f"ur das Recherche-Portal aus der
+OpenBib-Distribution in das Verzeichnis
+\texttt{/etc/apache-perl/conf.d/}, damit die Konfigurationsdirektiven
+automatisch von Apache beim Start eingelesen werden.
 
 \begin{verbatim}
-Include /etc/apache-perl/openbib.conf
-\end{verbatim}
-
-Gegebenenfalls mu"s diese Direktive im entsprechenden
-\texttt{VirtualHosts}-Block eingetragen werden.
-
-Mit dem Include werden die Konfigurationen f"ur das Recherche-Portal
-eingeladen. Kopieren sie daf"ur nun die Datei
-\texttt{portal/apache/openbib.conf} aus der OpenBib-Distribution in
-das Verzeichnis \texttt{/etc/apache-perl}.
-
-\begin{verbatim}
-cp /opt/store/openbib/portal/apache/openbib.conf /etc/apache-perl/
+cp /opt/store/openbib/portal/apache/openbib.conf /etc/apache-perl/conf.d/
 \end{verbatim}
 
 Um den Apache-Perl Server gegen "Uberlastung abzusichern, muss nun das
 Modul \texttt{Apache:GTopLimit} installiert werden.
 
-Hierzu wird zun"achst die zugrundeliegende Bibliothek libgtop
-mit ihren Header-Dateien installiet:
+Hierzu wird zun"achst die zugrundeliegende Bibliothek libgtop mit
+ihren Header-Dateien sowie eine "altere Version der libglib
+installiert:
 
 \begin{verbatim}
 apt-get install libgtop2-dev
+apt-get install libglib1.2-dev
 \end{verbatim}
 
 Danach wird manuell das Modul aus CPAN installiert:
@@ -360,6 +354,18 @@ Writing /usr/local/lib/perl/5.8.4/auto/Apache/GTopLimit/.packlist
 Appending installation info to /usr/local/lib/perl/5.8.4/perllocal.pod
   /usr/bin/make install  -- OK
 \end{verbatim}
+
+
+\subsection{Unicode}
+
+Der Webserver muss Unicode zur"uckliefern. Hierzu mu"s folgende
+Eintragung in der \texttt{httpd.conf} vorgenommen bzw. abge"andert
+werden:
+
+\begin{verbatim}
+AddDefaultCharset utf-8
+\end{verbatim}
+
 \section{Installation und Konfiguration des MySQL-DBMS}
 \label{sec:instmysql}
 
@@ -485,6 +491,16 @@ ft_stopword_file =
 \end{verbatim}
 \end{description}
 
+F"ur die Verarbeitung von \texttt{utf8} m"ussen folgende Einstellungen vorgenommen werden:
+
+\begin{description}
+\item[init-connect] Die Auswahl des Zeichensatzes \texttt{utf8 } f"ur die aufzubauenden Verbindungen mu"s explizit gesetzt werden.
+\begin{verbatim}
+init-connect='SET NAMES utf8'
+\end{verbatim}
+
+\end{description}
+
 \subsection{Performance-Tuning}
 
 Zum Performance-Tuning der OpenBib zugrundeliegenden Datenbank MySQL
@@ -495,7 +511,7 @@ sollten folgende Ma"snahmen durchgef"uhrt werden:
   Datenbanken befinden sollte in der \texttt{fstab} direkt mit
   \texttt{noatime} gemounted werden, um unn"otige FS-Lookups zu
   vermeiden. Konkret wird mit dieser Option die Aktualisierung der
-  letzten Zugriffszeit in den Inodes übersprungen.
+  letzten Zugriffszeit in den Inodes Ã¼bersprungen.
 \item[key\_buffer\_size] Der Wert von
   \texttt{key\_buffer\_size} sollte auf einen sinnvollen Wert erh"oht
   werden. Dieser Buffer wird von allen \texttt{mysqld}-Instanzen
@@ -607,7 +623,7 @@ apt-get install libdbi-perl libdbd-mysql-perl
 \end{verbatim}
 \item Log4Perl
 \begin{verbatim}
-apt-get install liblog-log4perl-perl libipc-shareable-perl
+apt-get install liblog-log4perl-perl libipc-shareable-perl liblog-dispatch-perl
 \end{verbatim}
 \item MIME::Lite
 \begin{verbatim}
@@ -617,11 +633,50 @@ apt-get install libmime-lite-perl
 \begin{verbatim}
 apt-get install libemail-valid-perl
 \end{verbatim}
+\item YAML
+\begin{verbatim}
+apt-get install libyaml-perl
+\end{verbatim}
+\item SOAP::Lite
+\begin{verbatim}
+apt-get install libsoap-lite-perl
+\end{verbatim}
+\item XML::DOM (f"ur oai-perl)
+\begin{verbatim}
+apt-get install libxml-dom-perl
+\end{verbatim}
+\item XML::Writer (f"ur oai-perl)
+\begin{verbatim}
+apt-get install libxml-writer-perl
+\end{verbatim}
 \item oai-perl 2.15
 Dieses Modul muss h"andisch von
 \texttt{http://oai-perl.sourceforge.net/} installiert werden.
+\item XML::TWIG (f"ur OAI)
+\begin{verbatim}
+apt-get install libxml-twig-perl
+\end{verbatim}
 \end{itemize}
 
+Dar"uberhinaus werden folgende CPAN-Module ben"otigt, die via
+
+\begin{verbatim}
+perl -MCPAN -e shell
+\end{verbatim}
+
+samt ihrer Abh"angigkeiten installiert werden m"ussen:
+
+\begin{itemize}
+\item Config::Std
+\begin{verbatim}
+cpan> install Config::Std
+\end{verbatim}
+Als Abh"angigkeiten k"onnen die Module \texttt{version}, \texttt{Module::Build}
+\item Class::Std
+\begin{verbatim}
+cpan> install Class::Std
+\end{verbatim}
+\end{itemize}
 \section{Konfiguration des Web-Portals}
 \label{sec:confportal}
 

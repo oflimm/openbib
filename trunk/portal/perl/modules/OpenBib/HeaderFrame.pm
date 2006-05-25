@@ -2,9 +2,7 @@
 #
 #  OpenBib::HeaderFrame
 #
-#  Dies ist die Merkliste zum Katalog der BIBLIO-Distribution.
-#
-#  Dieses File ist (C) 2001-2004 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -23,10 +21,10 @@
 #  an die Free Software Foundation, Inc., 675 Mass Ave, Cambridge,
 #  MA 02139, USA.
 #
-#####################################################################   
+#####################################################################
 
 #####################################################################
-# Einladen der benoetigten Perl-Module 
+# Einladen der benoetigten Perl-Module
 #####################################################################
 
 package OpenBib::HeaderFrame;
@@ -34,8 +32,10 @@ package OpenBib::HeaderFrame;
 use strict;
 use warnings;
 no warnings 'redefine';
+use utf8;
 
 use Apache::Constants qw(:common);
+use Apache::Reload;
 use Apache::Request ();
 use DBI;
 use Log::Log4perl qw(get_logger :levels);
@@ -44,6 +44,7 @@ use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::L10N;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
@@ -73,7 +74,6 @@ sub handler {
     my $singleidn = $query->param('singleidn') || '';
     my $action    = ($query->param('action'))?$query->param('action'):'none';
     my $type      = ($query->param('type'))?$query->param('type'):'HTML';
-  
 
     # Verbindung zur SQL-Datenbank herstellen
     my $sessiondbh
@@ -84,6 +84,13 @@ sub handler {
         = DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd})
             or $logger->error_die($DBI::errstr);
 
+    my $queryoptions_ref
+        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+    
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+
     my $view="";
 
     if ($query->param('view')) {
@@ -93,6 +100,12 @@ sub handler {
         $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
     }
 
+    my $primrssfeed="";
+
+    if ($view){
+        $primrssfeed=OpenBib::Common::Util::get_primary_rssfeed_of_view($sessiondbh,$view);
+    }
+    
     # Haben wir eine authentifizierte Session?
     my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
   
@@ -108,16 +121,20 @@ sub handler {
 
         # Anzahl Eintraege der privaten Merkliste bestimmen
         # Zuallererst Suchen, wieviele Titel in der Merkliste vorhanden sind.
-        my $idnresult=$userdbh->prepare("select * from treffer where userid = ?") or $logger->error($DBI::errstr);
+        my $idnresult=$userdbh->prepare("select count(*) as rowcount from treffer where userid = ?") or $logger->error($DBI::errstr);
         $idnresult->execute($userid) or $logger->error($DBI::errstr);
-        $anzahl=$idnresult->rows();
+        my $res=$idnresult->fetchrow_hashref;
+        
+        $anzahl=$res->{rowcount};
         $idnresult->finish();
     }
     else {
         #  Zuallererst Suchen, wieviele Titel in der Merkliste vorhanden sind.
-        my $idnresult=$sessiondbh->prepare("select * from treffer where sessionid = ?") or $logger->error($DBI::errstr);
+        my $idnresult=$sessiondbh->prepare("select count(*) as rowcount from treffer where sessionid = ?") or $logger->error($DBI::errstr);
         $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-        $anzahl=$idnresult->rows();
+        my $res=$idnresult->fetchrow_hashref;
+        
+        $anzahl=$res->{rowcount};
         $idnresult->finish();
     }
 
@@ -126,13 +143,14 @@ sub handler {
 
     # TT-Data erzeugen
     my $ttdata={
-        view       => $view,
-        stylesheet => $stylesheet,
-        sessionID  => $sessionID,
-        username   => $username,
-        anzahl     => $anzahl,
-        show_foot_banner      => 0,
-        config     => \%config,
+        view        => $view,
+        primrssfeed => $primrssfeed,
+        stylesheet  => $stylesheet,
+        sessionID   => $sessionID,
+        username    => $username,
+        anzahl      => $anzahl,
+        config      => \%config,
+        msg         => $msg,
     };
 
     OpenBib::Common::Util::print_page($config{tt_headerframe_tname},$ttdata,$r);

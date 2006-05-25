@@ -1,7 +1,20 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_end
+#
+# Typ         : Mastertemplate (3/3)
+#
+# Aufgabe:
+#
+# Ausgabe das unteren Teils der initialen Trefferliste
+#
+#######################################################################
+-%]
 [% IF gesamttreffer == 0 %]
-<tr><td colspan="5"><span style="font-size:2em;font-face:bold">Es wurden keine Treffer gefunden</span></td></tr>
+<tr><td colspan="5"><span style="font-size:2em;font-face:bold">[% msg.maketext("Es wurden keine Treffer gefunden") %]</span></td></tr>
 [% END %]
-<tr><td colspan="5"><span style="font-size:1.2em">Beachten Sie bitte auch unserere <a href="#Suchhinweise">weitergehenden Suchhinweise</a>.</span></td></tr>
+<tr><td colspan="5"><span style="font-size:1.2em">[% msg.maketext("Beachten Sie bitte auch unserere [_1]weitergehenden Suchhinweise[_2].","<a href=\"#Suchhinweise\">","</a>") %]</span></td></tr>
 </table>
 
 </div><p>

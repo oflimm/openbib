@@ -1,3 +1,16 @@
+[%#-
+#######################################################################
+#
+# Templatename: corporate_banner
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe eines Banners entsprechend der Corporate Identity
+#
+#######################################################################
+-%]
 <!-- Begin Template: corporate_banner -->
     <table  border="0" cellspacing="0" cellpadding="0" width="100%">
 	<tr>

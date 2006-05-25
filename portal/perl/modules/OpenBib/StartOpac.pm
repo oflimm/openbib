@@ -2,7 +2,7 @@
 #
 #  OpenBib::StartOpac
 #
-#  Dieses File ist (C) 2001-2004 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -32,15 +32,19 @@ package OpenBib::StartOpac;
 use strict;
 use warnings;
 no warnings 'redefine';
+use utf8;
 
 use Apache::Constants qw(:common);
+use Apache::Reload;
 use Apache::Request ();
 use DBI;
+use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 
 use OpenBib::Common::Util();
 use OpenBib::Config();
+use OpenBib::L10N;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
@@ -62,21 +66,28 @@ sub handler {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
 
-    my $fs=$query->param('fs') || '';
+    my $fs   = $query->param('fs') || '';
 
     # Verbindung zur SQL-Datenbank herstellen
     my $sessiondbh
         = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
-  
+
+    my $queryoptions_ref
+        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+    
     my $database        = ($query->param('database'))?$query->param('database'):'';
     my $singleidn       = $query->param('singleidn') || '';
     my $action          = $query->param('action') || '';
     my $setmask         = $query->param('setmask') || '';
     my $searchsingletit = $query->param('searchsingletit') || '';
   
-    my $sessionID=OpenBib::Common::Util::init_new_session($sessiondbh);
-
+    my $sessionID       = OpenBib::Common::Util::init_new_session($sessiondbh);
+    
     my $view="";
 
     if ($query->param('view')) {
@@ -107,26 +118,28 @@ sub handler {
   
     if ($view ne "") {
         # 1. Gibt es diesen View?
-        my $idnresult=$sessiondbh->prepare("select viewname from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
+        my $idnresult=$sessiondbh->prepare("select count(viewname) as rowcount from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
         $idnresult->execute($view) or $logger->error($DBI::errstr);
-        my $anzahl=$idnresult->rows();
+        my $res    = $idnresult->fetchrow_hashref;
+        my $anzahl = $res->{rowcount};
     
         if ($anzahl > 0) {
             # 2. Datenbankauswahl setzen, aber nur, wenn der Benutzer selbst noch
             #    keine Auswahl getroffen hat
       
-            $idnresult=$sessiondbh->prepare("select dbname from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
+            $idnresult=$sessiondbh->prepare("select count(dbname) as rowcount from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
             $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
 
             # Wenn noch keine Datenbank ausgewaehlt wurde, dann setze die
             # Auswahl auf die zum View gehoerenden Datenbanken
-            my $anzahl=$idnresult->rows();
+            $res=$idnresult->fetchrow_hashref;
+            my $anzahl=$res->{rowcount};
             if ($anzahl == 0) {
                 $idnresult=$sessiondbh->prepare("select dbname from  viewdbs where viewname = ?") or $logger->error($DBI::errstr);
                 $idnresult->execute($view) or $logger->error($DBI::errstr);
 	
                 while (my $result=$idnresult->fetchrow_hashref()) {
-                    my $dbname=$result->{'dbname'};
+                    my $dbname = decode_utf8($result->{'dbname'});
                     my $idnresult2=$sessiondbh->prepare("insert into dbchoice (sessionid,dbname) values (?,?)") or $logger->error($DBI::errstr);
                     $idnresult2->execute($sessionID,$dbname) or $logger->error($DBI::errstr);
                     $idnresult2->finish();
@@ -151,24 +164,17 @@ sub handler {
         $idnresult->finish();
     }
   
-    my $headerframeurl = "$config{headerframe_loc}?sessionID=$sessionID";
-    my $bodyframeurl   = "$config{searchframe_loc}?sessionID=$sessionID";
-
-    if ($view ne "") {
-        $headerframeurl.="&view=$view";
-        $bodyframeurl.="&view=$view";
-    }
-
     $logger->debug("StartOpac-sID: $sessionID");
 
     my $ttdata={
-        headerframeurl  => $headerframeurl,
-        bodyframeurl    => $bodyframeurl,
         view            => $view,
         sessionID       => $sessionID,
+        setmask         => $setmask,
         fs              => $fs,
+        database        => $database,
         searchsingletit => $searchsingletit,
         config          => \%config,
+        msg             => $msg,
     };
 
     OpenBib::Common::Util::print_page($config{tt_startopac_tname},$ttdata,$r);

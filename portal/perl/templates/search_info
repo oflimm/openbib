@@ -1,20 +1,33 @@
-<b>Normale Suchanfragen</b><br />
-Zur Suche tragen Sie in die einzelnen Eingabefelder alle Begriffe mit
+[%#-
+#######################################################################
+#
+# Templatename: search_info
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines kurzen Hilfetextes fuer die Formulierung von Anfragen
+#
+#######################################################################
+-%]
+<b>[% msg.maketext("Normale Suchanfragen") %]</b><br />
+[% msg.maketext("Zur Suche tragen Sie in die einzelnen Eingabefelder alle Begriffe mit
 Leerzeichen getrennt ein, die in Ihrem gesuchten Titel enthalten sein
-m&uuml;ssen. Deaktivieren Sie <b>nicht</b> die Suchoption 'Und-Verkn&uuml;pfung innerhalb eines Suchfeldes'. Die Begriffe werden dann automatisch innerhalb eines Suchfeldes Und-verkn&uuml;pft.<br />
+m&uuml;ssen. Deaktivieren Sie <b>nicht</b> die Suchoption 'Und-Verkn&uuml;pfung innerhalb eines Suchfeldes'. Die Begriffe werden dann automatisch innerhalb eines Suchfeldes Und-verkn&uuml;pft.") %]<br />
 <p />
-<b>Komplizierte Suchanfragen</b><br />
-Wenn Sie kompliziertere Suchanfragen stellen m&ouml;chten, so erfahren Sie
-<a href="http://[% config.servername %]/suchhilfe.html#profisuche">hier</a> alles &uuml;ber die Verwendung m&ouml;glicher Boolscher Suchoperatoren innerhalb eines Eingabefeldes und die angesprochene Suchoption 'Und-Verkn&uuml;pfung innerhalb eines Suchfeldes'.<br />
+<b>[% msg.maketext("Komplizierte Suchanfragen") %]</b><br />
+[% msg.maketext("Wenn Sie kompliziertere Suchanfragen stellen m&ouml;chten, so erfahren Sie") %]
+<a href="http://[% config.servername %]/suchhilfe.html#profisuche">[% msg.maketext("hier") %]</a> [% msg.maketext("alles &uuml;ber die Verwendung m&ouml;glicher Boolscher Suchoperatoren innerhalb eines Eingabefeldes und die angesprochene Suchoption 'Und-Verkn&uuml;pfung innerhalb eines Suchfeldes'.") %]<br />
 <p />
-<b>Suchlogik bei Verkn&uuml;pfungen mehrerer Suchfelder:</b><br />
-Die einzelnen Suchfelder sind standardm&auml;ssig &uuml;ber eine 
-"Und-Verkn&uuml;pfung" verbunden. Zur Einschr&auml;nkung des Suchergebnisses 
-k&ouml;nnen die Suchfelder auch &uuml;ber eine "Oder"- sowie eine 
-"Und Nicht-Verkn&uuml;pfung" verbunden werden. W&auml;hlen Sie hierzu die 
+<b>[% msg.maketext("Suchlogik bei Verkn&uuml;pfungen mehrerer Suchfelder:") %]</b><br />
+[% msg.maketext("Die einzelnen Suchfelder sind standardm&auml;ssig &uuml;ber eine 
+<b>Und</b>-Verkn&uuml;pfung verbunden. Zur Einschr&auml;nkung des Suchergebnisses 
+k&ouml;nnen die Suchfelder auch &uuml;ber eine <b>Oder</b>- sowie eine 
+<b>Und Nicht</b>-Verkn&uuml;pfung verbunden werden. W&auml;hlen Sie hierzu die 
 entsprechende Verkn&uuml;pfungsart aus dem Pull-Down-Men&uuml; vor dem 
-jeweiligen Texteingabefeld.<br />
+jeweiligen Texteingabefeld.") %]<br />
 <br />
-<b>Besonderheit bei <span class="warning">*</span>:</b><br />
-- Keine <b>logische</b> Kombination mehrerer Worte im Eingabefeld m&ouml;glich<br />
-- <b>aber</b> exakte Phrasensuche
+<b>[% msg.maketext("Besonderheit bei") %] <span class="warning">*</span>:</b><br />
+- [% msg.maketext("Keine <b>logische</b> Kombination mehrerer Worte im Eingabefeld m&ouml;glich") %]<br />
+- [% msg.maketext("<b>aber</b> exakte Phrasensuche") %]

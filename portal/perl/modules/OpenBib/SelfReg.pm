@@ -2,7 +2,7 @@
 #
 #  OpenBib::SelfReg
 #
-#  Dieses File ist (C) 2004-2005 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -32,16 +32,20 @@ package OpenBib::SelfReg;
 use strict;
 use warnings;
 no warnings 'redefine';
+use utf8;
 
 use Apache::Constants qw(:common);
+use Apache::Reload;
 use Apache::Request();          # CGI-Handling (or require)
 use DBI;
 use Email::Valid;               # EMail-Adressen testen
+use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::L10N;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
@@ -71,7 +75,7 @@ sub handler {
     my $password1 = ($query->param('password1'))?$query->param('password1'):'';
     my $password2 = ($query->param('password2'))?$query->param('password2'):'';
     my $sessionID = $query->param('sessionID');
-  
+
     my $sessiondbh
         = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
@@ -79,9 +83,16 @@ sub handler {
     my $userdbh
         = DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd})
             or $logger->error_die($DBI::errstr);
-  
+
+    my $queryoptions_ref
+        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+
     unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
-        OpenBib::Common::Util::print_warning("Ung&uuml;ltige Session",$r);
+        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
         $sessiondbh->disconnect();
         $userdbh->disconnect();
         return OK;
@@ -103,22 +114,21 @@ sub handler {
             stylesheet => $stylesheet,
             sessionID  => $sessionID,
 
-            show_corporate_banner => 0,
-            show_foot_banner      => 1,
             config     => \%config,
+            msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config{tt_selfreg_tname},$ttdata,$r);
     }
     elsif ($action eq "auth") {
         if ($loginname eq "" || $password1 eq "" || $password2 eq "") {
-            OpenBib::Common::Util::print_warning("Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben",$r);
+            OpenBib::Common::Util::print_warning($msg->maketext("Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"),$r,$msg);
             $sessiondbh->disconnect();
             $userdbh->disconnect();
             return OK;
         }
 
         if ($password1 ne $password2) {
-            OpenBib::Common::Util::print_warning("Die beiden eingegebenen Passworte stimmen nicht &uuml;berein.",$r);
+            OpenBib::Common::Util::print_warning($msg->maketext("Die beiden eingegebenen Passworte stimmen nicht überein."),$r,$msg);
             $sessiondbh->disconnect();
             $userdbh->disconnect();
             return OK;
@@ -126,17 +136,19 @@ sub handler {
 
         # Ueberpruefen, ob es eine gueltige Mailadresse angegeben wurde.
         unless (Email::Valid->address($loginname)){
-            OpenBib::Common::Util::print_warning("Sie haben keine g&uuml;tige Mailadresse eingegeben. Gehen Sie bitte <a href=\"http://$config{servername}$config{selfreg_loc}?sessionID=$sessionID&action=show\">zur&uuml;ck</a> und korrigieren Sie Ihre Eingabe",$r);
+            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine gütige Mailadresse eingegeben. Gehen Sie bitte [_1]zurück[_2] und korrigieren Sie Ihre Eingabe","<a href=\"http://$config{servername}$config{selfreg_loc}?sessionID=$sessionID&action=show\">","</a>"),$r,$msg);
             $sessiondbh->disconnect();
             $userdbh->disconnect();
             return OK;
         }
 
-        my $userresult=$userdbh->prepare("select * from user where loginname = ?") or $logger->error($DBI::errstr);
+        my $userresult=$userdbh->prepare("select count(*) as rowcount from user where loginname = ?") or $logger->error($DBI::errstr);
         $userresult->execute($loginname) or $logger->error($DBI::errstr);
+        my $res  = $userresult->fetchrow_hashref;
+        my $rows = $res->{rowcount};
 
-        if ($userresult->rows > 0) {
-            OpenBib::Common::Util::print_warning("Ein Benutzer mit dem Namen $loginname existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte <a href=\"http://$config{servername}$config{login_loc}?sessionID=$sessionID?action=login\">zur&uuml;ck</a> und lassen es sich zumailen.",$r);
+        if ($rows > 0) {
+            OpenBib::Common::Util::print_warning($msg->maketext("Ein Benutzer mit dem Namen $loginname existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_1]zurück[_2] und lassen es sich zumailen.","<a href=\"http://$config{servername}$config{login_loc}?sessionID=$sessionID?do_login=1\">","</a>"),$r,$msg);
             $userresult->finish();
 
             $sessiondbh->disconnect();
@@ -153,16 +165,16 @@ sub handler {
         $userresult=$userdbh->prepare("select userid from user where loginname = ?") or $logger->error($DBI::errstr);
         $userresult->execute($loginname) or $logger->error($DBI::errstr);
 
-        my $res=$userresult->fetchrow_hashref();
+        $res=$userresult->fetchrow_hashref();
 
-        my $userid=$res->{'userid'};
+        my $userid = decode_utf8($res->{'userid'});
 
         $userresult=$userdbh->prepare("select targetid from logintarget where type = 'self'") or $logger->error($DBI::errstr);
         $userresult->execute() or $logger->error($DBI::errstr);
 
         $res=$userresult->fetchrow_hashref();
 
-        my $targetid=$res->{'targetid'};
+        my $targetid = $res->{'targetid'};
     
         # Es darf keine Session assoziiert sein. Daher stumpf loeschen
         $userresult=$userdbh->prepare("delete from usersession where sessionid = ?") or $logger->error($DBI::errstr);
@@ -181,14 +193,13 @@ sub handler {
 
             loginname  => $loginname,
 	      
-            show_corporate_banner => 0,
-            show_foot_banner      => 1,
             config     => \%config,
+            msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config{tt_selfreg_success_tname},$ttdata,$r);
     }
     else {
-        OpenBib::Common::Util::print_warning("Unerlaubte Aktion",$r);
+        OpenBib::Common::Util::print_warning($msg->maketext("Unerlaubte Aktion"),$r,$msg);
     }
 
     $sessiondbh->disconnect();

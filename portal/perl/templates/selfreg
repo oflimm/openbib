@@ -1,3 +1,16 @@
+[%#-
+#######################################################################
+#
+# Templatename: selfreg
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe einer Eingabemaske fuer die Anmeldung zur Selbstregistrierung
+#
+#######################################################################
+-%]
 [% PROCESS common/subtemplate name="std_header" %]
 
   <body>
@@ -7,31 +20,31 @@
 [% END %]
 
 <ul id="tabbingmenu">
-   <li><a href="[% config.login_loc %]?sessionID=[% sessionID %];view=[% view %];action=login" target="body">Login</a></li>
-   <li><a class="active" href="http://[% config.servername %][% config.selfreg_loc %]?sessionID=[% sessionID %];action=show" target="body">Selbstregistrierung</a></li>
-   <li><a href="http://[% config.servername %][% config.mailpassword_loc %]?sessionID=[% sessionID %];action=show" target="body">Passwort vergessen?</a></li>
+   <li><a href="[% config.login_loc %]?sessionID=[% sessionID %];view=[% view %];do_login=1" target="body">[% msg.maketext("Login") %]</a></li>
+   <li><a class="active" href="http://[% config.servername %][% config.selfreg_loc %]?sessionID=[% sessionID %];action=show" target="body">[% msg.maketext("Selbstregistrierung") %]</a></li>
+   <li><a href="http://[% config.servername %][% config.mailpassword_loc %]?sessionID=[% sessionID %];action=show" target="body">[% msg.maketext("Passwort vergessen?") %]</a></li>
 </ul>
 
 <div id="content">
 
 <p />
 <table width="100%">
-<tr><th>Hinweis</th></tr>
+<tr><th>[% msg.maketext("Hinweis") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
-Geben Sie f&uuml;r die Selbstregistrierung bitte als Benutzername Ihre g&uuml;ltige Email-Adresse ein und danach zwei Mal Ihr selbst gew&auml;hltes Passwort. Danach best&auml;tigen Sie bitte mit <b>Registrieren</b>.
+[% msg.maketext("Geben Sie f&uuml;r die Selbstregistrierung bitte als Benutzername Ihre g&uuml;ltige Email-Adresse ein und danach zwei Mal Ihr selbst gew&auml;hltes Passwort. Danach best&auml;tigen Sie bitte mit <b>Registrieren</b>.") %]
 </td></tr>
 </table>
 <br />
 <br />
 <p />
 <form method="post" action="http://[% config.servername %][% config.selfreg_loc %]" enctype="application/x-www-form-urlencoded">
-<input type="hidden" name="action" value="auth" />
+<input type="hidden" name="action"    value="auth" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <table>
-<tr><td align="right"><b>Benutzername:</b></td><td><input type="text" name="loginname" />&nbsp;<small>&lt;&lt; Geben Sie hier bitte Ihre E-Mail-Adresse ein</small></td></tr>
-<tr><td align="right"><b>Passwort:</b></td><td><input type="password" name="password1" /></td></tr>
-<tr><td align="right"><b>Passwort (wiederholt):</b></td><td><input type="password" name="password2" /></td></tr>
-<tr><td></td><td><input type="submit" value="Registrieren" /></td></tr>
+<tr><td align="right"><b>[% msg.maketext("Benutzername") %]:</b></td><td><input type="text" name="loginname" />&nbsp;<small>&lt;&lt; Geben Sie hier bitte Ihre E-Mail-Adresse ein</small></td></tr>
+<tr><td align="right"><b>[% msg.maketext("Passwort") %]:</b></td><td><input type="password" name="password1" /></td></tr>
+<tr><td align="right"><b>[% msg.maketext("Passwort (wiederholt)") %]:</b></td><td><input type="password" name="password2" /></td></tr>
+<tr><td></td><td><input type="submit" value="[% msg.maketext("Registrieren") %]" /></td></tr>
 </table>
 </form>
 

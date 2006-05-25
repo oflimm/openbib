@@ -6,7 +6,7 @@
 #
 #  Abzug eines OAI-Repositories
 #
-#  Dieses File ist (C) 2003-2004 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2003-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -73,135 +73,12 @@ if( $response->is_error ) {
   exit();
 }
 
+print "<oairesponse>\n";
 while( my $rec = $response->next ) {
-  if( $rec->is_error ) {
-    die $rec->message;
-  }
-
-  my $md=$rec->metadata();
-
-  my $doc = new XML::DOM::Document();
-  my $dom = $md->toDOM($doc); # Clone internal XML
-
-#  print $dom->toString;
-
-  # Author -> Verfasser
-
-  my $authors=$dom->getElementsByTagName("dc:creator");
-
-  for (my $i=0; $i < $authors->getLength; $i++){
-    my $author=$authors->item($i)->getFirstChild();
-
-    if ($author){
-      $author=$author->getData();
+    if( $rec->is_error ) {
+        die $rec->message;
     }
-    print "AU==".$author."\n";
-  }
-
-  # Titel -> HST
-
-  my $titles=$dom->getElementsByTagName("dc:title");
-
-  for (my $i=0; $i < $titles->getLength; $i++){
-    my $title=$titles->item($i)->getFirstChild();
-
-    if ($title){
-      $title=$title->getData();
-      
-      print "TI==$title\n" if ($i==0);
-      print "WT==$title\n" if ($i>0);
-    }
-  }
-
-  # Art -> HSFN
-
-  my $types=$dom->getElementsByTagName("dc:type");
-
-  for (my $i=0; $i < $types->getLength; $i++){
-    my $type=$types->item($i)->getFirstChild();
-
-    if ($type){
-      $type=$type->getData();
-
-      if ($type=~/Text.Thesis.Doctoral/){
-	$type="Dissertation";
-      }
-      elsif ($type=~/Text.Thesis.Habilitation/){
-	$type="Habilitation";
-      }
-      elsif ($cleantype=~/Text.Thesis.Doctoral.Abstract/){
-	$type="Dissertations-Abstract";
-      }
-      
-      print "HS==$type\n";
-    }
-  }
-
-
-  # Subject -> Schlagwort
-
-  my $subjects=$dom->getElementsByTagName("dc:subject");
-
-  for (my $i=0; $i < $subjects->getLength; $i++){
-    my $subject=$subjects->item($i)->getFirstChild();
-
-    if ($subject){
-      $subject=$subject->getData();
-
-      print "SW==$subject\n" if ($subject && $subject ne "no entry");
-    }
-  }
-
-  # Jahr -> Erscheinungsjahr
-
-  my $ejahre=$dom->getElementsByTagName("dc:date");
-
-  for (my $i=0; $i < $ejahre->getLength; $i++){
-    my $ejahr=$ejahre->item($i)->getFirstChild();
-
-    if ($ejahr){
-      $ejahr=$ejahr->getData();
-      
-      print "EJ==$ejahr\n";
-    }
-  }
-
-  # URL -> URL
-
-  my $urls=$dom->getElementsByTagName("dc:identifier");
-
-  for (my $i=0; $i < $urls->getLength; $i++){
-    my $url=$urls->item($i)->getFirstChild();
-
-    if ($url){
-      $url=$url->getData();
-
-      print "UR==$url\n" if ($url =~/http/);
-    }
-  }
-
-  # Abstract -> Abstract
-
-  my $abstracts=$dom->getElementsByTagName("dc:description");
-  
-  for (my $i=0; $i < $abstracts->getLength; $i++){
-    my $abstract=$abstracts->item($i)->getFirstChild();
-
-    if ($abstract){
-      $abstract=$abstract->getData();
-
-      $abstract=~s/&lt;(\S{1,5})&gt;/<$1>/g;
-      $abstract=~s/&amp;(\S{1,8});/&$1;/g;
-      $abstract=~s/\n/<br>/g;
-      $abstract=~s/^Zusammenfassung<br>//g;
-      $abstract=~s/^Summary<br>//g;
-      $abstract=~s/\|/&#124;/g;
-      
-      print "AB==$abstract\n";
-    }
-  }
-
-  print "\n";
-
+    print $rec->metadata, "\n";
 }
+print "</oairesponse>\n";
 

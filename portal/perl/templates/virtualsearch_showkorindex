@@ -1,28 +1,36 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_showkorindex
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe des Koerperschaftsindex
+#
+#######################################################################
+-%]
 [% PROCESS common/subtemplate name="std_header" %]
 
 <body>
 
 <table width="100%">
-<tr><th>Virtueller K&ouml;rperschaftsindex: [% kor %]</b> / <b>Treffer: [% korindex.size %]</b></th></tr>
+<tr><th>[% msg.maketext("Virtueller K&ouml;rperschaftsindex") %]: [% contentreq %]</b> / <b>[% msg.maketext("Treffer") %]: [% index.size %]</b></th></tr>
 <tr><td class="boxedclear">
-
-[% PROCESS common/subtemplate name="common/navitembar" %]
-
-[% FOREACH item IN korindex %]
-
-[% IF offset >= 0 && hitrange > 0 %]
-[% IF loop.count >= offset && loop.count < offset+hitrange %]
-
-[% PROCESS common/subtemplate name="virtualsearch_showkorindex_item" %]
-
-[% END %]
-
-[% ELSE %]
-
-[% PROCESS common/subtemplate name="virtualsearch_showkorindex_item" %]
-
-[% END %]
-[% END %]
+[%- PROCESS common/subtemplate name="common/navitembar" -%]
+[%- FOREACH item IN index -%]
+[%- IF offset >= 0 && hitrange > 0 -%]
+[%- IF loop.count >= offset && loop.count < offset+hitrange -%]
+[%- PROCESS common/subtemplate name="virtualsearch_showkorindex_item" -%]
+[%- END -%]
+[%- ELSE -%]
+[%- PROCESS common/subtemplate name="virtualsearch_showkorindex_item" -%]
+[%- END -%]
+[%- END -%]
+<table>
+<tr><td><span style="font-size:0.8em">in: [% resulttime %] [% msg.maketext("Sekunden") %]</span></td></tr>
+</table>
 
 </td></tr>
 </table>
@@ -31,13 +39,13 @@
 
 <form method="get" action="[% config.virtualsearch_loc %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]">
-<input type="hidden" name="rating" value="[% rating %]">
-<input type="hidden" name="bookinfo" value="[% bookinfo %]">
-<input type="hidden" name="hitrange" value="-1">
-<input type="hidden" name="profil" value="[% profil %]">
+<input type="hidden" name="rating"    value="[% rating %]">
+<input type="hidden" name="bookinfo"  value="[% bookinfo %]">
+<input type="hidden" name="hitrange"  value="-1">
+<input type="hidden" name="profil"    value="[% profil %]">
 
 <table>
-<tr><td class="category">K&ouml;rperschaft&nbsp;</td><td>&nbsp;<input type="text" name="kor" value="[% kor %]" size="4" maxlength="50" title="Geben Sie hier den Körperschaftsanfang ein">&nbsp;<input type="submit" name="korindex" value="Index">&nbsp;</td></tr>
+<tr><td class="category">[% msg.maketext("K&ouml;rperschaft") %]&nbsp;</td><td>&nbsp;<input type="text" name="kor" value="[% contentreq %]" size="4" maxlength="50" title="[% msg.maketext("Geben Sie hier den KÃ¶rperschaftsanfang ein") %]">&nbsp;<input type="submit" name="korindex" value="[% msg.maketext("Index") %]">&nbsp;</td></tr>
 </table>
 
 </form>

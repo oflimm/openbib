@@ -2,7 +2,7 @@
 #
 #  OpenBib::Login
 #
-#  Dieses File ist (C) 2004-2005 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -32,11 +32,14 @@ package OpenBib::Login;
 use strict;
 use warnings;
 no warnings 'redefine';
+use utf8;
 
 use Apache::Constants qw(:common);
+use Apache::Reload;
 use Apache::Request ();
 use DBI;
 use Digest::MD5;
+use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Socket;
@@ -45,6 +48,7 @@ use Template;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Login::Util;
+use OpenBib::L10N;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
@@ -75,7 +79,12 @@ sub handler {
     my $loginname = ($query->param('loginname'))?$query->param('loginname'):'';
     my $password  = ($query->param('password'))?$query->param('password'):'';
     my $sessionID = $query->param('sessionID');
-  
+
+    # Main-Actions
+    my $do_login       = $query->param('do_login')        || '';
+    my $do_auth        = $query->param('do_auth' )        || '';
+    my $do_loginfailed = $query->param('do_loginfailed')  || '';
+    
     my $sessiondbh
         = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
@@ -83,13 +92,23 @@ sub handler {
     my $userdbh
         = DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd})
             or $logger->error_die($DBI::errstr);
-  
-    my $idnresult=$sessiondbh->prepare("select sessionid from session where sessionid = ?") or $logger->error($DBI::errstr);
+
+    my $queryoptions_ref
+        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+    
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+    
+    my $idnresult=$sessiondbh->prepare("select count(sessionid) as rowcount from session where sessionid = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-  
+    my $res=$idnresult->fetchrow_hashref;
+
+    my $rows=$res->{rowcount};
+
     # Wenn wir nichts gefunden haben, dann ist etwas faul
-    if ($idnresult->rows <= 0 || $sessionID eq "") {
-        OpenBib::Common::Util::print_warning("SessionID ist ung&uuml;lltig",$r);
+    if ($rows <= 0 || $sessionID eq "") {
+        OpenBib::Common::Util::print_warning($msg->maketext("SessionID ist ungülltig"),$r,$msg);
 
         $idnresult->finish();
         $sessiondbh->disconnect();
@@ -107,14 +126,14 @@ sub handler {
         $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
     }
   
-    if ($action eq "login") {
+    if ($do_login) {
         my $targetresult=$userdbh->prepare("select * from logintarget order by type DESC,description") or $logger->error($DBI::errstr);
         $targetresult->execute() or $logger->error($DBI::errstr);
     
         my $targetselect="<select name=\"targetid\">";
         while (my $result=$targetresult->fetchrow_hashref()) {
-            my $targetid    = $result->{'targetid'};
-            my $description = $result->{'description'};
+            my $targetid    = decode_utf8($result->{'targetid'});
+            my $description = decode_utf8($result->{'description'});
 
             $targetselect.="<option value=\"$targetid\">$description</option>";
         }
@@ -128,16 +147,13 @@ sub handler {
             sessionID    => $sessionID,
             targetselect => $targetselect,
             loginname    => $loginname,
-            show_corporate_banner => 0,
-            show_foot_banner      => 1,
-            show_testsystem_info  => 0,
-            invisible_links       => 0,
             config       => \%config,
+            msg          => $msg,
         };
     
         OpenBib::Common::Util::print_page($config{tt_login_tname},$ttdata,$r);
     }
-    elsif ($action eq "auth") {
+    elsif ($do_auth) {
         my $loginfailed=0;
     
         if ($loginname eq "" || $password eq "") {
@@ -155,12 +171,12 @@ sub handler {
         my $type        = "";
   
         while (my $result=$targetresult->fetchrow_hashref()) {
-            $hostname    = $result->{'hostname'};
-            $port        = $result->{'port'};
-            $user        = $result->{'user'};
-            $db          = $result->{'db'};
-            $description = $result->{'description'};
-            $type        = $result->{'type'};
+            $hostname    = decode_utf8($result->{'hostname'});
+            $port        = decode_utf8($result->{'port'});
+            $user        = decode_utf8($result->{'user'});
+            $db          = decode_utf8($result->{'db'});
+            $description = decode_utf8($result->{'description'});
+            $type        = decode_utf8($result->{'type'});
         }
 
         $targetresult->finish();
@@ -188,11 +204,13 @@ sub handler {
             else {
                 my $userid;
 
-                my $userresult=$userdbh->prepare("select userid from user where loginname = ?") or $logger->error($DBI::errstr);
+                my $userresult=$userdbh->prepare("select count(userid) as rowcount from user where loginname = ?") or $logger->error($DBI::errstr);
                 $userresult->execute($loginname) or $logger->error($DBI::errstr);
-	
+                my $res=$userresult->fetchrow_hashref;
+                my $rows=$res->{rowcount};
+
                 # Eintragen, wenn noch nicht existent
-                if ($userresult->rows <= 0) {
+                if ($rows <= 0) {
                     # Neuen Satz eintragen
                     $userresult=$userdbh->prepare("insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','','','')") or $logger->error($DBI::errstr);
                     $userresult->execute($loginname,$password) or $logger->error($DBI::errstr);
@@ -201,8 +219,6 @@ sub handler {
                     # Neuen Satz eintragen
                     $userresult=$userdbh->prepare("update user set pin = ? where loginname = ?") or $logger->error($DBI::errstr);
                     $userresult->execute($password,$loginname) or $logger->error($DBI::errstr);
-
-                    $userid=$userresult->{'userid'};
                 }
 
                 # Benuzerinformationen eintragen
@@ -233,7 +249,7 @@ sub handler {
             $userresult->execute($loginname) or $logger->error($DBI::errstr);
       
             my $res=$userresult->fetchrow_hashref();
-            my $userid=$res->{'userid'};
+            my $userid = decode_utf8($res->{'userid'});
 
             # Es darf keine Session assoziiert sein. Daher stumpf loeschen
             my $globalsessionID="$config{servername}:$sessionID";
@@ -244,43 +260,44 @@ sub handler {
             $userresult->execute($globalsessionID,$userid,$targetid) or $logger->error($DBI::errstr);
       
             # Ueberpruefen, ob der Benutzer schon ein Suchprofil hat
-            $userresult=$userdbh->prepare("select userid from fieldchoice where userid = ?") or $logger->error($DBI::errstr);
+            $userresult=$userdbh->prepare("select count(userid) as rowcount from fieldchoice where userid = ?") or $logger->error($DBI::errstr);
             $userresult->execute($userid) or $logger->error($DBI::errstr);
-      
+            $res=$userresult->fetchrow_hashref;
+
+            my $rows=$res->{rowcount};
+
             # Falls noch keins da ist, eintragen
-            if ($userresult->rows <= 0) {
+            if ($rows <= 0) {
                 $userresult=$userdbh->prepare("insert into fieldchoice values (?,1,1,1,1,1,1,1,1,1,1,0,1)") or $logger->error($DBI::errstr);
                 $userresult->execute($userid) or $logger->error($DBI::errstr);
             }
       
             # Jetzt wird die bestehende Trefferliste uebernommen.
             # Gehe ueber alle Eintraege der Trefferliste
-            my $idnresult=$sessiondbh->prepare("select * from treffer where sessionid = ?") or $logger->error($DBI::errstr);
+            my $idnresult=$sessiondbh->prepare("select dbname,singleidn from treffer where sessionid = ?") or $logger->error($DBI::errstr);
             $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
       
-            # Es gibt etwas zu uebertragen
-            if ($idnresult->rows > 0) {
-                while (my $res=$idnresult->fetchrow_hashref()) {
-                    my $dbname    = $res->{'dbname'};
-                    my $singleidn = $res->{'singleidn'};
-
-                    # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
-                    $userresult=$userdbh->prepare("select userid from treffer where userid = ? and dbname = ? and singleidn = ?") or $logger->error($DBI::errstr);
+            while (my $res=$idnresult->fetchrow_hashref()) {
+                my $dbname    = decode_utf8($res->{'dbname'});
+                my $singleidn = decode_utf8($res->{'singleidn'});
+                
+                # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
+                $userresult=$userdbh->prepare("select count(userid) as rowcount from treffer where userid = ? and dbname = ? and singleidn = ?") or $logger->error($DBI::errstr);
+                $userresult->execute($userid,$dbname,$singleidn) or $logger->error($DBI::errstr);
+                my $res  = $userresult->fetchrow_hashref;
+                my $rows = $res->{rowcount};
+                if ($rows <= 0) {
+                    $userresult=$userdbh->prepare("insert into treffer values (?,?,?)") or $logger->error($DBI::errstr);
                     $userresult->execute($userid,$dbname,$singleidn) or $logger->error($DBI::errstr);
-
-                    if ($userresult->rows <= 0) {
-                        $userresult=$userdbh->prepare("insert into treffer values (?,?,?)") or $logger->error($DBI::errstr);
-                        $userresult->execute($userid,$dbname,$singleidn) or $logger->error($DBI::errstr);
-                    }
                 }
             }
-
+            
             # Bestimmen des Recherchemasken-Typs
             $userresult=$userdbh->prepare("select masktype from user where userid = ?") or $logger->error($DBI::errstr);
             $userresult->execute($userid) or $logger->error($DBI::errstr);
       
             my $maskresult=$userresult->fetchrow_hashref();
-            my $setmask=$maskresult->{'masktype'};
+            my $setmask = decode_utf8($maskresult->{'masktype'});
 
             # Assoziieren des Recherchemasken-Typs mit der Session
             if ($setmask ne "simple" && $setmask ne "advanced") {
@@ -307,7 +324,7 @@ sub handler {
 
         # Fehlerbehandlung
         if ($loginfailed) {
-            $bodyframeurl="http://$config{servername}$config{login_loc}?sessionID=$sessionID&action=loginfailed&code=$loginfailed";
+            $bodyframeurl="http://$config{servername}$config{login_loc}?sessionID=$sessionID&do_loginfailed=1&code=$loginfailed";
         }
     
         my $ttdata={
@@ -316,19 +333,20 @@ sub handler {
             view            => $view,
             sessionID       => $sessionID,
             config          => \%config,
+            msg             => $msg,
         };
     
         OpenBib::Common::Util::print_page($config{tt_startopac_tname},$ttdata,$r);
     }
-    elsif ($action eq "loginfailed") {
-        if ($code eq "1") {
-            OpenBib::Common::Util::print_warning('Sie haben entweder kein Passwort oder keinen Loginnamen eingegeben',$r);
+    elsif ($do_loginfailed) {
+        if    ($code eq "1") {
+            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben entweder kein Passwort oder keinen Loginnamen eingegeben"),$r,$msg);
         }
         elsif ($code eq "2") {
-            OpenBib::Common::Util::print_warning('Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht erfolgreich authentifiziert werden',$r);
+            OpenBib::Common::Util::print_warning($msg->maketext("Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht erfolgreich authentifiziert werden"),$r,$msg);
         }
         else {
-            OpenBib::Common::Util::print_warning('Falscher Fehler-Code',$r);
+            OpenBib::Common::Util::print_warning($msg->maketext("Falscher Fehler-Code"),$r,$msg);
         }
     }
 

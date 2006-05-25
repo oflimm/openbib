@@ -1,24 +1,35 @@
-[% SET title='KUG Administration - Funktionsmenu' %]
-
-[% PROCESS std_header %]
+[%#-
+#######################################################################
+#
+# Templatename: admin_loggedin
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Erfolgsmeldung bei korrekter Authentifizierung
+#
+#######################################################################
+-%]
+[% PROCESS std_header title='KUG Administration - Funktionsmenu' %]
 
   <body bgcolor="#FFFFFF">
 
 [% PROCESS corporate_banner %]
 
 <ul id="tabbingmenu">
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showcat">Kataloge</a></li>
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showviews">Views</a></li>
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showsession">Sessions</a></li>
-   <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=logout">Logout</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">[% msg.maketext("Kataloge") %]</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">[% msg.maketext("Views") %]</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">[% msg.maketext("Sessions") %]</a></li>
+   <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">[% msg.maketext("Logout") %]</a></li>
 </ul>
 
 <div id="content">
 
 <table width="100%">
-<tr><th>Erfolgsmeldung</th></tr>
+<tr><th>[% msg.maketext("Erfolgsmeldung") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:12pt">
-Sie sind nun als Administrator eingeloggt.
+[% msg.maketext("Sie sind nun als Administrator eingeloggt.") %]
 </td></tr>
 </table>
 

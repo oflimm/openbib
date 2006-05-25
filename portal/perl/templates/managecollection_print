@@ -1,15 +1,27 @@
-[%- SET show_corporate_banner = 0 -%]
+[%#-
+#######################################################################
+#
+# Templatename: managecollection_print
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Merkliste fuer einen Ausdruck ueber den Web-Browser
+#
+#######################################################################
+-%]
 [% PROCESS common/subtemplate name="std_header" %]
+[% PROCESS common/subtemplate name="visible_categories_titset" %]
+
   <BODY>
     
-[% PROCESS common/subtemplate name="corporate_banner" %]
-
       <ul id="tabbingmenu">
 	<li><a class="active" href="http://[% config.servername %][% config.managecollection_loc %]?sessionID=[% sessionID %];action=print
 [%- IF singleidn -%]
 ;singleidn=[% singleidn %]
 [%- END -%]
-">Druckansicht Titel</a></li>
+">[% msg.maketext("Druckansicht Titel") %]</a></li>
       </ul>
       
       <div id="content">

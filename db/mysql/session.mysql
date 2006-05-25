@@ -2,145 +2,214 @@
 --------------- T A B E L L E N -----------------
 -------------------------------------------------
 
-create table session (
- sessionid VARCHAR(255) NOT NULL PRIMARY KEY,
- createtime datetime,
- lastresultset blob,
- benutzernr text,
- benutzerpin text,
+drop table IF EXISTS session;
+CREATE TABLE session (
+ sessionid     VARCHAR(255) NOT NULL PRIMARY KEY,
+ createtime    DATETIME,
+ lastresultset BLOB,
+ benutzernr    TEXT,
+ benutzerpin   TEXT,
+ queryoptions  TEXT,
+
  INDEX (sessionid),
- INDEX (benutzernr(255)),
+ INDEX (benutzernr(255))
 );
 
-create table treffer (
+drop table IF EXISTS treffer;
+CREATE TABLE treffer (
  sessionid VARCHAR(255) NOT NULL,
- dbname TEXT,
- singleidn bigint,
+ dbname    TEXT,
+ singleidn BIGINT,
+
  INDEX (sessionid),
  INDEX (dbname(255)),
- INDEX (singleidn),
+ INDEX (singleidn)
 );
 
-create table lastresultlist (
+drop table IF EXISTS lastresultitem;
+CREATE TABLE lastresultlist (
  sessionid VARCHAR(255) NOT NULL,
- dbname TEXT,
- singleidn bigint,
- index(sessionid),
-);
+ dbname    TEXT,
+ singleidn BIGINT,
 
-create table sessionlog (
- sessionid VARCHAR(255) NOT NULL,
- query TEXT,
- createtime datetime,
- endtime datetime
-);
-
-create table queries (
- queryid BIGINT AUTO_INCREMENT PRIMARY KEY,
- sessionid VARCHAR(255) NOT NULL,
- query TEXT,
- hits INT,
- dbases TEXT,
- INDEX (queryid),
- INDEX (sessionid),
- INDEX (query(255)),
- INDEX (dbases(255)),
-);
-
-create table dbchoice (
- sessionid VARCHAR(255) NOT NULL,
- dbname TEXT,
  INDEX (sessionid)
 );
 
-create table dbinfo (
- dbid BIGINT AUTO_INCREMENT PRIMARY KEY,
- faculty VARCHAR(20),
+drop table IF EXISTS sessionlog;
+CREATE TABLE sessionlog (
+ sessionid  VARCHAR(255) NOT NULL,
+ query      TEXT,
+ createtime DATETIME,
+ endtime    DATETIME
+);
+
+drop table IF EXISTS queries;
+CREATE TABLE queries (
+ queryid   BIGINT AUTO_INCREMENT PRIMARY KEY,
+ sessionid VARCHAR(255) NOT NULL,
+ query     TEXT,
+ hits      INT,
+ dbases    TEXT,
+
+ INDEX (queryid),
+ INDEX (sessionid),
+ INDEX (query(255)),
+ INDEX (dbases(255))
+);
+
+drop table IF EXISTS dbchoice;
+CREATE TABLE dbchoice (
+ sessionid VARCHAR(255) NOT NULL,
+ dbname    TEXT,
+
+ INDEX (sessionid)
+);
+
+drop table IF EXISTS dbinfo;
+CREATE TABLE dbinfo (
+ dbid        BIGINT AUTO_INCREMENT PRIMARY KEY,
+ orgunit     VARCHAR(20),
  description TEXT,
- system TEXT, 
- dbname VARCHAR(255),
- sigel VARCHAR(20),
- url text,
- active BOOL,
- INDEX (faculty),
+ shortdesc   TEXT,
+ system      TEXT, 
+ dbname      VARCHAR(255),
+ sigel       VARCHAR(20),
+ url         TEXT,
+ active      BOOL,
+
+ INDEX (orgunit),
  INDEX (dbid),
  INDEX (dbname),
  INDEX (active),
- INDEX (description(255)),
+ INDEX (description(255))
 );
 
-create table dboptions (
- dbname VARCHAR(255),
- host VARCHAR(255),
- protocol VARCHAR(255),
- remotepath TEXT,
- remoteuser VARCHAR(255),
+drop table IF EXISTS dboptions;
+CREATE TABLE dboptions (
+ dbname       VARCHAR(255),
+ host         VARCHAR(255),
+ protocol     VARCHAR(255),
+ remotepath   TEXT,
+ remoteuser   VARCHAR(255),
  remotepasswd VARCHAR(255),
- filename VARCHAR(255),
- titfilename VARCHAR(255),
- autfilename VARCHAR(255),
- korfilename VARCHAR(255),
- swtfilename VARCHAR(255),
- notfilename VARCHAR(255),
- mexfilename VARCHAR(255),
- autoconvert BOOL,
- circ        BOOL,
- circurl     TEXT,
- circcheckurl     TEXT,
- circdb      TEXT,
+ filename     VARCHAR(255),
+ titfilename  VARCHAR(255),
+ autfilename  VARCHAR(255),
+ korfilename  VARCHAR(255),
+ swtfilename  VARCHAR(255),
+ notfilename  VARCHAR(255),
+ mexfilename  VARCHAR(255),
+ autoconvert  BOOL,
+ circ         BOOL,
+ circurl      TEXT,
+ circcheckurl TEXT,
+ circdb       TEXT,
  INDEX(dbname)
 );
 
+drop table IF EXISTS titcount;
 create table titcount (
  dbname VARCHAR(255),
  count  BIGINT,
- INDEX (dbname),
+
+ INDEX (dbname)
 );
 
-create table searchresults (
- sessionid VARCHAR(255) NOT NULL,
- dbname VARCHAR(255) NOT NULL,
+drop table IF EXISTS searchresults;
+CREATE TABLE searchresults (
+ sessionid    VARCHAR(255) NOT NULL,
+ dbname       VARCHAR(255) NOT NULL,
  searchresult LONGTEXT,
- hits INT,
- queryid BIGINT,
+ hits         INT,
+ queryid      BIGINT,
+
  INDEX (sessionid),
  INDEX (dbname),
  INDEX (queryid)
 );
 
-create table viewinfo (
- viewid BIGINT AUTO_INCREMENT PRIMARY KEY,
- viewname VARCHAR(20),
+drop table IF EXISTS viewinfo;
+CREATE TABLE viewinfo (
+ viewid      BIGINT AUTO_INCREMENT PRIMARY KEY,
+ viewname    VARCHAR(20),
  description TEXT,
- active BOOL,
- INDEX (viewid)
- INDEX (viewname),
+ rssfeed     BIGINT,
+ active      BOOL,
+
+ INDEX (viewid),
+ INDEX (viewname)
 );
 
-create table viewdbs (
+drop table IF EXISTS viewdbs;
+CREATE TABLE viewdbs (
  viewname VARCHAR(20),
- dbname VARCHAR(255),
+ dbname   VARCHAR(255),
+
  INDEX(viewname),
  INDEX(dbname)
 );
 
-create table sessionview (
+drop table IF EXISTS viewrssfeeds;
+CREATE TABLE viewrssfeeds (
+ viewname VARCHAR(20),
+ rssfeed   BIGINT NOT NULL,
+
+ INDEX(viewname),
+ INDEX(rssfeed)
+);
+
+drop table IF EXISTS sessionview;
+CREATE TABLE sessionview (
  sessionid VARCHAR(255) NOT NULL,
- viewname VARCHAR(20) NOT NULL,
+ viewname  VARCHAR(20)  NOT NULL,
+
  INDEX (sessionid),
  INDEX (viewname)
 );
 
-create table sessionmask (
+drop table IF EXISTS sessionmask;
+CREATE TABLE sessionmask (
  sessionid VARCHAR(255) NOT NULL,
- masktype  VARCHAR(20) NOT NULL,
+ masktype  VARCHAR(20)  NOT NULL,
+
  INDEX (sessionid),
  INDEX (masktype)
 );
 
+drop table IF EXISTS sessionprofile;
 create table sessionprofile (
  sessionid VARCHAR(255) NOT NULL,
- profile text NOT NULL,
+ profile   TEXT         NOT NULL,
+
  INDEX (sessionid)
 );
+
+drop table IF EXISTS rssfeeds;
+create table rssfeeds (
+ id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+ dbname      VARCHAR(255) NOT NULL,
+ type        SMALLINT,
+ subtype     SMALLINT,
+ subtypedesc TEXT,
+ active      TINYINT,
+
+ INDEX (dbname),
+ INDEX (type),
+ INDEX (subtype)
+);
+
+drop table IF EXISTS rsscache;
+create table rsscache (
+dbname  VARCHAR(255) NOT NULL,
+tstamp  TIMESTAMP,
+type    TINYINT  NOT NULL,
+subtype SMALLINT,
+content TEXT,
+INDEX   (dbname),
+INDEX   (tstamp),
+INDEX   (type),
+INDEX   (subtype)
+)
+DEFAULT CHARACTER SET utf8
+PACK_KEYS=1;
 

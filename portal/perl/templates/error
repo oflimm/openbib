@@ -7,14 +7,14 @@
 [% END %]
 
 <ul id="tabbingmenu">
-   <li><a class="active" href="kug.ub.uni-koeln.de/suchhilfe.html" target="_blank">Fehler</a></li>
+   <li><a class="active" href="/suchhilfe.html" target="_blank">[% msg.maketext("Fehler") %]</a></li>
 </ul>
 
 <div id="content">
 
 <p />
 <table width="100%">
-<tr><th>Fehlerbeschreibung</th></tr>
+<tr><th>[% msg.maketext("Fehlerbeschreibung") %]</th></tr>
 <tr><td class="boxedclear">
 [% errmsg %]
 </td></tr>

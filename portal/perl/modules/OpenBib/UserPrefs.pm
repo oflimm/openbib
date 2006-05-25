@@ -2,7 +2,7 @@
 #
 #  OpenBib::UserPrefs
 #
-#  Dieses File ist (C) 2004-2005 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -32,17 +32,21 @@ package OpenBib::UserPrefs;
 use strict;
 use warnings;
 no warnings 'redefine';
+use utf8;
 
 use Apache::Constants qw(:common);
+use Apache::Reload;
 use Apache::Request ();
 use DBI;
 use Email::Valid;
+use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::L10N;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
@@ -86,8 +90,8 @@ sub handler {
     my $password      = ($query->param('password'))?$query->param('password'):'';
     my $password1     = ($query->param('password1'))?$query->param('password1'):'';
     my $password2     = ($query->param('password2'))?$query->param('password2'):'';
-    my $sessionID     = $query->param('sessionID')||'';
-  
+    my $sessionID     = $query->param('sessionID') || '';
+
     my $sessiondbh
         = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
@@ -95,9 +99,16 @@ sub handler {
     my $userdbh
         = DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd})
             or $logger->error_die($DBI::errstr);
-  
+
+    my $queryoptions_ref
+        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+
     unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
-        OpenBib::Common::Util::print_warning("Ung&uuml;ltige Session",$r);
+        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
 
         $sessiondbh->disconnect();
         $userdbh->disconnect();
@@ -116,7 +127,7 @@ sub handler {
     my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
   
     unless($userid){
-        OpenBib::Common::Util::print_warning("Diese Session ist nicht authentifiziert.",$r);
+        OpenBib::Common::Util::print_warning($msg->maketext("Diese Session ist nicht authentifiziert."),$r,$msg);
 
         $sessiondbh->disconnect();
         $userdbh->disconnect();
@@ -129,51 +140,51 @@ sub handler {
     
         my $result=$targetresult->fetchrow_hashref();
     
-        my $showfs=$result->{'fs'};
+        my $showfs = decode_utf8($result->{'fs'});
         my $fschecked="";
         $fschecked="checked=\"checked\"" if ($showfs);
     
-        my $showhst=$result->{'hst'};
+        my $showhst = decode_utf8($result->{'hst'});
         my $hstchecked="";
         $hstchecked="checked=\"checked\"" if ($showhst);
 
-        my $showhststring=$result->{'hststring'};
+        my $showhststring = decode_utf8($result->{'hststring'});
         my $hststringchecked="";
         $hststringchecked="checked=\"checked\"" if ($showhststring);
     
-        my $showverf=$result->{'verf'};
+        my $showverf = decode_utf8($result->{'verf'});
         my $verfchecked="";
         $verfchecked="checked=\"checked\"" if ($showverf);
     
-        my $showkor=$result->{'kor'};
+        my $showkor = decode_utf8($result->{'kor'});
         my $korchecked="";
         $korchecked="checked=\"checked\"" if ($showkor);
     
-        my $showswt=$result->{'swt'};
+        my $showswt = decode_utf8($result->{'swt'});
         my $swtchecked="";
         $swtchecked="checked=\"checked\"" if ($showswt);
     
-        my $shownotation=$result->{'notation'};
+        my $shownotation = decode_utf8($result->{'notation'});
         my $notationchecked="";
         $notationchecked="checked=\"checked\"" if ($shownotation);
     
-        my $showisbn=$result->{'isbn'};
+        my $showisbn = decode_utf8($result->{'isbn'});
         my $isbnchecked="";
         $isbnchecked="checked=\"checked\"" if ($showisbn);
     
-        my $showissn=$result->{'issn'};
+        my $showissn = decode_utf8($result->{'issn'});
         my $issnchecked="";
         $issnchecked="checked=\"checked\"" if ($showissn);
     
-        my $showsign=$result->{'sign'};
+        my $showsign = decode_utf8($result->{'sign'});
         my $signchecked="";
         $signchecked="checked=\"checked\"" if ($showsign);
     
-        my $showmart=$result->{'mart'};
+        my $showmart = decode_utf8($result->{'mart'});
         my $martchecked="";
         $martchecked="checked=\"checked\"" if ($showmart);
     
-        my $showejahr=$result->{'ejahr'};
+        my $showejahr = decode_utf8($result->{'ejahr'});
         my $ejahrchecked="";
         $ejahrchecked="checked=\"checked\"" if ($showejahr);
     
@@ -186,27 +197,27 @@ sub handler {
     
         my %userinfo=();
 
-        $userinfo{'nachname'}   = $res->{'nachname'};
-        $userinfo{'vorname'}    = $res->{'vorname'};
-        $userinfo{'strasse'}    = $res->{'strasse'};
-        $userinfo{'ort'}        = $res->{'ort'};
-        $userinfo{'plz'}        = $res->{'plz'};
-        $userinfo{'soll'}       = $res->{'soll'};
-        $userinfo{'gut'}        = $res->{'gut'};
-        $userinfo{'avanz'}      = $res->{'avanz'}; # Ausgeliehene Medien
-        $userinfo{'branz'}      = $res->{'branz'}; # Buchrueckforderungen
-        $userinfo{'bsanz'}      = $res->{'bsanz'}; # Bestellte Medien
-        $userinfo{'vmanz'}      = $res->{'vmanz'}; # Vormerkungen
-        $userinfo{'maanz'}      = $res->{'maanz'}; # ueberzogene Medien
-        $userinfo{'vlanz'}      = $res->{'vlanz'}; # Verlaengerte Medien
-        $userinfo{'sperre'}     = $res->{'sperre'};
-        $userinfo{'sperrdatum'} = $res->{'sperrdatum'};
-        $userinfo{'email'}      = $res->{'email'};
-        $userinfo{'gebdatum'}   = $res->{'gebdatum'};
-        $userinfo{'masktype'}   = $res->{'masktype'};
+        $userinfo{'nachname'}   = decode_utf8($res->{'nachname'});
+        $userinfo{'vorname'}    = decode_utf8($res->{'vorname'});
+        $userinfo{'strasse'}    = decode_utf8($res->{'strasse'});
+        $userinfo{'ort'}        = decode_utf8($res->{'ort'});
+        $userinfo{'plz'}        = decode_utf8($res->{'plz'});
+        $userinfo{'soll'}       = decode_utf8($res->{'soll'});
+        $userinfo{'gut'}        = decode_utf8($res->{'gut'});
+        $userinfo{'avanz'}      = decode_utf8($res->{'avanz'}); # Ausgeliehene Medien
+        $userinfo{'branz'}      = decode_utf8($res->{'branz'}); # Buchrueckforderungen
+        $userinfo{'bsanz'}      = decode_utf8($res->{'bsanz'}); # Bestellte Medien
+        $userinfo{'vmanz'}      = decode_utf8($res->{'vmanz'}); # Vormerkungen
+        $userinfo{'maanz'}      = decode_utf8($res->{'maanz'}); # ueberzogene Medien
+        $userinfo{'vlanz'}      = decode_utf8($res->{'vlanz'}); # Verlaengerte Medien
+        $userinfo{'sperre'}     = decode_utf8($res->{'sperre'});
+        $userinfo{'sperrdatum'} = decode_utf8($res->{'sperrdatum'});
+        $userinfo{'email'}      = decode_utf8($res->{'email'});
+        $userinfo{'gebdatum'}   = decode_utf8($res->{'gebdatum'});
+        $userinfo{'masktype'}   = decode_utf8($res->{'masktype'});
 
-        my $loginname = $res->{'loginname'};
-        my $password  = $res->{'pin'};
+        my $loginname           = decode_utf8($res->{'loginname'});
+        my $password            = decode_utf8($res->{'pin'});
     
         my $passwortaenderung = "";
         my $loeschekennung    = "";
@@ -242,9 +253,8 @@ sub handler {
             ejahrchecked     => $ejahrchecked,
             userinfo         => \%userinfo,
 
-            show_corporate_banner => 0,
-            show_foot_banner      => 1,
             config           => \%config,
+            msg              => $msg,
         };
         OpenBib::Common::Util::print_page($config{tt_userprefs_tname},$ttdata,$r);
     }
@@ -259,26 +269,24 @@ sub handler {
             stylesheet => $stylesheet,
             sessionID  => $sessionID,
 
-            show_corporate_banner => 0,
-            show_foot_banner      => 0,
             config     => \%config,
+            msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config{tt_userprefs_changefields_tname},$ttdata,$r);
     }
-    elsif ($action eq "Kennung l�schen") {
+    elsif ($action eq "Kennung löschen") {
         # TT-Data erzeugen
         my $ttdata={
             view       => $view,
             stylesheet => $stylesheet,
             sessionID  => $sessionID,
 
-            show_corporate_banner => 0,
-            show_foot_banner      => 0,
             config     => \%config,
+            msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config{tt_userprefs_ask_delete_tname},$ttdata,$r);
     }
-    elsif ($action eq "Kennung soll wirklich gel�scht werden") {
+    elsif ($action eq "Kennung soll wirklich gelöscht werden") {
         # Zuerst werden die Datenbankprofile geloescht
         my $userresult;
         $userresult=$userdbh->prepare("delete from profildb using profildb,userdbprofile where userdbprofile.userid = ? and userdbprofile.profilid=profildb.profilid") or $logger->error($DBI::errstr);
@@ -328,15 +336,14 @@ sub handler {
             stylesheet => $stylesheet,
             sessionID  => $sessionID,
 
-            show_corporate_banner => 1,
-            show_foot_banner      => 0,
             config     => \%config,
+            msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config{tt_userprefs_userdeleted_tname},$ttdata,$r);
     }
-    elsif ($action eq "Password �ndern") {
+    elsif ($action eq "Password ändern") {
         if ($password1 eq "" || $password1 ne $password2) {
-            OpenBib::Common::Util::print_warning("Sie haben entweder kein Passwort eingegeben oder die beiden Passworte stimmen nicht &uuml;berein",$r);
+            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben entweder kein Passwort eingegeben oder die beiden Passworte stimmen nicht überein"),$r,$msg);
       
             $sessiondbh->disconnect();
             $userdbh->disconnect();
@@ -351,7 +358,7 @@ sub handler {
     }
     elsif ($action eq "changemask") {
         if ($setmask eq "") {
-            OpenBib::Common::Util::print_warning("Es wurde keine Standard-Recherchemaske ausgew&auml;hlt",$r);
+            OpenBib::Common::Util::print_warning($msg->maketext("Es wurde keine Standard-Recherchemaske ausgewählt"),$r,$msg);
       
             $sessiondbh->disconnect();
             $userdbh->disconnect();
@@ -370,7 +377,7 @@ sub handler {
         $r->internal_redirect("http://$config{servername}$config{userprefs_loc}?sessionID=$sessionID&action=showfields");
     }
     else {
-        OpenBib::Common::Util::print_warning("Unerlaubte Aktion",$r);
+        OpenBib::Common::Util::print_warning($msg->maketext("Unerlaubte Aktion"),$r,$msg);
     }
   
     $sessiondbh->disconnect();

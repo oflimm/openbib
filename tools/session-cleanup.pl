@@ -88,6 +88,13 @@ foreach my $sessionID (@delsessionids){
 
   print ".";
 
+  # Tabelle queries
+
+  $idnresult=$sessiondbh->prepare("delete from queries where sessionid = ?");
+  $idnresult->execute($sessionID);
+
+  print ".";
+
   # Tabelle sessionlog
 
   $idnresult=$sessiondbh->prepare("delete from sessionlog where sessionid = ?");
@@ -126,6 +133,13 @@ foreach my $sessionID (@delsessionids){
   # Tabelle sessionprofile
 
   $idnresult=$sessiondbh->prepare("delete from sessionprofile where sessionid = ?") or die "$DBI::errstr";
+  $idnresult->execute($sessionID) or die "$DBI::errstr";
+
+  print ".";
+
+  # Tabelle sessionview
+
+  $idnresult=$sessiondbh->prepare("delete from sessionview where sessionid = ?") or die "$DBI::errstr";
   $idnresult->execute($sessionID) or die "$DBI::errstr";
 
   print ".";

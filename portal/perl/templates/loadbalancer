@@ -1,11 +1,25 @@
+[%#-
+#######################################################################
+#
+# Templatename: loadbalancer
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Fehlermeldung, wenn die Lastverteilung keinen
+# geeigneten Server fuer den neuen Benutzer erreichen konnte
+#
+#######################################################################
+-%]
 [% PROCESS common/subtemplate name="std_header" %]
 
-<h1>Wartungsarbeiten</h1>
+<h1>[% msg.maketext("Wartungsarbeiten") %]</h1>
 
-Wegen eines unerwarteten Problems kann der KUG in den n&auml;chsten Minuten
-leider nicht genutzt werden.
+[% msg.maketext("Wegen eines unerwarteten Problems kann der KUG in den n&auml;chsten Minuten
+leider nicht genutzt werden.") %]
 <p>
-Wir bitten um Ihr Verst&auml;ndnis. Vielen Dank.
+[% msg.maketext("Wir bitten um Ihr Verst&auml;ndnis. Vielen Dank.") %]
 
 
 [% PROCESS common/subtemplate name="std_footer" %]

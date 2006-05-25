@@ -1,3 +1,16 @@
+[%#-
+#######################################################################
+#
+# Templatename: userprefs
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Informationen ueber den Benutzer
+#
+#######################################################################
+-%]
 [% PROCESS common/subtemplate name="std_header" %]
 
   <body>
@@ -7,11 +20,11 @@
 [% END %]
 
 <ul id="tabbingmenu">
-   <li><a class="active" href="http://[% config.servername %][% config.userprefs_loc %]?sessionID=[% sessionID %];action=showfields" target="body">Grundeinstellungen</a></li>
+   <li><a class="active" href="http://[% config.servername %][% config.userprefs_loc %]?sessionID=[% sessionID %];action=showfields" target="body">[% msg.maketext("Grundeinstellungen") %]</a></li>
 [% IF targettype != 'self' %]
-   <li><a href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc" target="body">Benutzerkonto</a></li>
+   <li><a href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc" target="body">[% msg.maketext("Benutzerkonto") %]</a></li>
 [% END %]
-   <li><a href="http://[% config.servername %][% config.databaseprofile_loc %]?sessionID=[% sessionID %];action=show" target="body">Katalogprofile</a></li>
+   <li><a href="http://[% config.servername %][% config.databaseprofile_loc %]?sessionID=[% sessionID %];do_showprofile=1" target="body">[% msg.maketext("Katalogprofile") %]</a></li>
 </ul>
 
 <div id="content">
@@ -22,20 +35,20 @@
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 
 <table width="100%">
-<tr><th>KUG Benutzerinformationen</th></tr>
+<tr><th>[% msg.maketext("KUG Benutzerinformationen") %]</th></tr>
 <tr><td class="boxed" 
 >
 <table>
-<tr><td><b>Benutzername:</b></td><td>[% loginname %]</td>
+<tr><td><b>[% msg.maketext("Benutzername") %]:</b></td><td>[% loginname %]</td>
 
 [% IF targettype == 'self' %]
-<td><input type="submit" name="action" value="Kennung l&ouml;schen" /></td>
+<td><input type="submit" name="action" value="[% msg.maketext("Kennung l&ouml;schen") %]" /></td>
 [% END %]
 
 </tr>
 
 [% IF targettype == 'self' %]
-<tr><td><b>Passwort:</b></td><td><input type="password" name="password1" value="[% password %]" />&nbsp;wiederholt:&nbsp;<input type="password" name="password2" value="[% password %]" /></td><td><input type="submit" name="action" value="Passwort &auml;ndern" /></td></tr>
+<tr><td><b>[% msg.maketext("Passwort") %]:</b></td><td><input type="password" name="password1" value="[% password %]" />&nbsp;[% msg.maketext("wiederholt") %]:&nbsp;<input type="password" name="password2" value="[% password %]" /></td><td><input type="submit" name="action" value="[% msg.maketext("Passwort &auml;ndern") %]" /></td></tr>
 [% END %]
 
 </table>
@@ -48,48 +61,48 @@
 
 [% IF targettype != 'self' %]
 <table width="100%">
-<tr><th>Personendaten</th><td></td><th>Ausleihinformationen</th></tr>
+<tr><th>[% msg.maketext("Personendaten") %]</th><td></td><th>[% msg.maketext("Ausleihinformationen") %]</th></tr>
 <tr><td class="boxedclear">
 <table>
-<tr><td><b>Nachname:</b></td><td align="left">&nbsp;[% userinfo.nachname %]</td></tr>
-<tr><td><b>Vorname:</b></td><td align="left">&nbsp;[% userinfo.vorname %]</td></tr>
-<tr><td><b>Geburtsdatum:</b></td><td align="left">&nbsp;[% userinfo.gebdatum %]</td></tr>
-<tr><td><b>Strasse:</b></td><td align="left">&nbsp;[% userinfo.strasse %]</td></tr>
-<tr><td><b>Ort:</b></td><td align="left">
+<tr><td><b>[% msg.maketext("Nachname") %]:</b></td><td align="left">&nbsp;[% userinfo.nachname %]</td></tr>
+<tr><td><b>[% msg.maketext("Vorname") %]:</b></td><td align="left">&nbsp;[% userinfo.vorname %]</td></tr>
+<tr><td><b>[% msg.maketext("Geburtsdatum") %]:</b></td><td align="left">&nbsp;[% userinfo.gebdatum %]</td></tr>
+<tr><td><b>[% msg.maketext("Strasse") %]:</b></td><td align="left">&nbsp;[% userinfo.strasse %]</td></tr>
+<tr><td><b>[% msg.maketext("Ort") %]:</b></td><td align="left">
 [% IF userinfo.plz %]
 &nbsp;[% userinfo.plz %]
 [% END %] 
 &nbsp;[% userinfo.ort %]</td></tr>
 [% IF userinfo.email %]
-<tr><td><b>E-Mail:</b></td><td align="left">&nbsp;[% userinfo.email %]</td></tr>
+<tr><td><b>[% msg.maketext("E-Mail") %]:</b></td><td align="left">&nbsp;[% userinfo.email %]</td></tr>
 [% END %]
-<tr><td><b>Sperre:</b></td><td align="left">&nbsp;
+<tr><td><b>[% msg.maketext("Sperre") %]:</b></td><td align="left">&nbsp;
 [%- IF userinfo.sperre -%]
-ja, seit [% userinfo.sperrdatum %] mit Grund <em>[% userinfo.sperre %]</em>
+[% msg.maketext("ja, seit") %][% userinfo.sperrdatum %] [% msg.maketext("mit Grund") %]<em>[% userinfo.sperre %]</em>
 [%- ELSE -%]
-nein
+[% msg.maketext("nein") %]
 [%- END -%]
 </td></tr>
 </table>
 <br />
-<span style="font-size:0.8em">&nbsp;Bitte wenden Sie sich bei Unstimmigkeiten in Ihren Personendaten an die Auskunft der Bibliothek.</span>
+<span style="font-size:0.8em">&nbsp;[% msg.maketext("Bitte wenden Sie sich bei Unstimmigkeiten in Ihren Personendaten an die Auskunft der Bibliothek.") %]</span>
 </td>
 <td>
 &nbsp;&nbsp;
 </td>
 <td class="boxedclear" valign="bottom">
 <table>
-<tr><td><b>Guthaben:</b></td><td align="right">[% userinfo.gut %] </td><td>&nbsp;EUR</td></tr>
-<tr><td><b>Soll:</b></td><td align="right"><span class="warning">[% userinfo.soll %] </td><td>&nbsp;EUR</span></td></tr>
+<tr><td><b>[% msg.maketext("Guthaben") %]:</b></td><td align="right">[% userinfo.gut %] </td><td>&nbsp;EUR</td></tr>
+<tr><td><b>[% msg.maketext("Soll") %]:</b></td><td align="right"><span class="warning">[% userinfo.soll %] </td><td>&nbsp;EUR</span></td></tr>
 </table>
 <table>
-<tr><td><b>Ausgeliehen:</b></td><td align="left">&nbsp;
+<tr><td><b>[% msg.maketext("Ausgeliehen") %]:</b></td><td align="left">&nbsp;
 [%- IF userinfo.avanz > 0 -%]
 <a href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc;circaction=borrows">[% userinfo.avanz %]</a>
 [%- ELSE -%]
 [%- userinfo.avanz -%]
 [%- END -%]
-</td><td>&nbsp;&nbsp;</td><td><b>Vorgemerkt:</b></td><td>
+</td><td>&nbsp;&nbsp;</td><td><b>[% msg.maketext("Vorgemerkt") %]:</b></td><td>
 
 [%- IF userinfo.vmanz > 0 -%]
 <a href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc;circaction=reservations">[% userinfo.vmanz %]</a>
@@ -97,7 +110,7 @@ nein
 [%- userinfo.vmanz -%]
 [%- END -%]
 
-</td><td>&nbsp;&nbsp;</td><td><b>&Uuml;berzogen:</b></td><td><span class="warning">
+</td><td>&nbsp;&nbsp;</td><td><b>[% msg.maketext("&Uuml;berzogen") %]:</b></td><td><span class="warning">
 
 [% IF userinfo.maanz > 0 %]
 <a href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc;circaction=reminders">[% userinfo.maanz %]</a>
@@ -108,7 +121,7 @@ nein
 </span></td></tr>
 
 
-<tr><td><b>Bestellungen:</b></td><td align="left">&nbsp;
+<tr><td><b>[% msg.maketext("Bestellungen") %]:</b></td><td align="left">&nbsp;
 [%- IF userinfo.bsanz > 0 -%]
 <a href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc;circaction=orders">[% userinfo.bsanz %]</a>
 [%- ELSE -%]
@@ -126,20 +139,20 @@ nein
 <table>
 <tr><td valign="top">
 <form method="post" action="http://[% config.servername %][% config.userprefs_loc %]" enctype="application/x-www-form-urlencoded">
-<input type="hidden" name="action" value="changemask" />
+<input type="hidden" name="action"    value="changemask" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <table>
-<tr><td colspan="2"><b>Welche Recherchemaske soll verwendet werden?</b></td></tr>
+<tr><td colspan="2"><b>[% msg.maketext("Welche Recherchemaske soll verwendet werden?") %]</b></td></tr>
 <tr><td colspan="2">&nbsp;</td></tr>
 <tr><td align="left"><select name="setmask"><option value="simple"
 [%- IF userinfo.masktype == 'simple' -%]
  selected="selected"
 [%- END -%]
->Einfache Recherchemaske</option><option value="advanced"
+>[% msg.maketext("Einfache Recherchemaske") %]</option><option value="advanced"
 [%- IF userinfo.masktype == 'advanced' -%]
  selected="selected"
 [%- END -%]
->Erweitere Recherchemaske</option></select>&nbsp;&nbsp;<input type="submit" value="Recherchemaske festlegen" /></td></tr>
+>[% msg.maketext("Erweitere Recherchemaske") %]</option></select>&nbsp;&nbsp;<input type="submit" value="[% msg.maketext("Recherchemaske festlegen") %]" /></td></tr>
 </table>
 </form>
 </td>
@@ -151,22 +164,22 @@ nein
 <input type="hidden" name="action" value="changefields" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <table>
-<tr><td colspan="2"><b>Welche Suchfelder sollen in der erweiterten<br>Recherchemaske angezeigt werden?</b></td></tr>
+<tr><td colspan="2"><b>[% msg.maketext("Welche Suchfelder sollen in der erweiterten<br>Recherchemaske angezeigt werden?") %]</b></td></tr>
 <tr><td colspan="2">&nbsp;</td></tr>
-<tr><td align="right"><input type="checkbox" name="showfs" value="1" [% fschecked %] /></td><td>Freie Suche</td></tr>
-<tr><td align="right"><input type="checkbox" name="showhst" value="1" [% hstchecked %] /></td><td>Hauptsachtitel (HST)</td></tr>
-<tr><td align="right"><input type="checkbox" name="showverf" value="1" [% verfchecked %] /></td><td>Verfasser</td></tr>
-<tr><td align="right"><input type="checkbox" name="showkor" value="1" [% korchecked %] /></td><td>K&ouml;rperschaft</td></tr>
-<tr><td align="right"><input type="checkbox" name="showswt" value="1" [% swtchecked %] /></td><td>Schlagwort</td></tr>
-<tr><td align="right"><input type="checkbox" name="shownotation" value="1" [% notationchecked %] /></td><td>Notation</td></tr>
-<tr><td align="right"><input type="checkbox" name="showisbn" value="1" [% isbnchecked %] /></td><td>ISBN</td></tr>
-<tr><td align="right"><input type="checkbox" name="showissn" value="1" [% issnchecked %] /></td><td>ISSN</td></tr>
-<tr><td align="right"><input type="checkbox" name="showsign" value="1" [% signchecked %] /></td><td>Signatur</td></tr>
-<tr><td align="right"><input type="checkbox" name="showhststring" value="1" [% hststringchecked %] /></td><td>Titel-String</td></tr>
-<tr><td align="right"><input type="checkbox" name="showmart" value="1" [% martchecked %] /></td><td>Medienart</td></tr>
-<tr><td align="right"><input type="checkbox" name="showejahr" value="1" [% ejahrchecked %] /></td><td>Erscheinungsjahr</td></tr>
+<tr><td align="right"><input type="checkbox" name="showfs" value="1" [% fschecked %] /></td><td>[% msg.maketext("Freie Suche") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="showhst" value="1" [% hstchecked %] /></td><td>[% msg.maketext("Hauptsachtitel (HST)") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="showverf" value="1" [% verfchecked %] /></td><td>[% msg.maketext("Verfasser") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="showkor" value="1" [% korchecked %] /></td><td>[% msg.maketext("K&ouml;rperschaft") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="showswt" value="1" [% swtchecked %] /></td><td>[% msg.maketext("Schlagwort") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="shownotation" value="1" [% notationchecked %] /></td><td>[% msg.maketext("Notation") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="showisbn" value="1" [% isbnchecked %] /></td><td>[% msg.maketext("ISBN") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="showissn" value="1" [% issnchecked %] /></td><td>[% msg.maketext("ISSN") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="showsign" value="1" [% signchecked %] /></td><td>[% msg.maketext("Signatur") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="showhststring" value="1" [% hststringchecked %] /></td><td>[% msg.maketext("Titel-String") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="showmart" value="1" [% martchecked %] /></td><td>[% msg.maketext("Medienart") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="showejahr" value="1" [% ejahrchecked %] /></td><td>[% msg.maketext("Erscheinungsjahr") %]</td></tr>
 <tr><td colspan="2">&nbsp;</td></tr>
-<tr><td colspan="2"><input type="submit" value="Suchfelder &auml;ndern" /></td></tr>
+<tr><td colspan="2"><input type="submit" value="[% msg.maketext("Suchfelder &auml;ndern") %]" /></td></tr>
 </table>
 </form>
 </td></tr>

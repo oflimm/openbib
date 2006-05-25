@@ -1,32 +1,57 @@
-[%- title = 'Schlagwortaufnahme' -%]
+[%#-
+#######################################################################
+#
+# Templatename: search_showswtset
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Schlagwort-Normdatensatzes
+#
+#######################################################################
+-%]
+[%- show_foot_banner = 1 -%]
+[%- title = "KUG Recherche" -%]
 [% PROCESS common/subtemplate name="std_header" %]
 
 <body>
+
 <table BORDER="0" CELLSPACING="0" CELLPADDING="0" width="100%">
   <tr class="titlerow">
-    <td  width="20">&nbsp;</td><td valign="middle" ALIGN="left" height="32"><img src="/images/openbib/[% database %].png"></td>
+    <td  width="20">&nbsp;</td><td valign="middle" ALIGN="left" height="32"><span class="dbdescshort">[% poolname.short %]</span></td>
   </tr>
 </table>
 
-<form method="get" action="[% config.search_loc %]">
-<input type="hidden" name="searchmode" value="[% searchmode %]" />
-<input type="hidden" name="hitrange" value="[% hitrange %]" />
-<input type="hidden" name="rating" value="[% rating %]" />
-<input type="hidden" name="bookinfo" value="[% bookinfo %]" />
-<input type="hidden" name="database" value="[% database %]" />
-<input type="hidden" name="dbmode" value="[% dbmode %]" />
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
-
 <table cellpadding=2>
-<tr><td>Kategorie</td><td>Inhalt</td></tr>
+<tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
 
-[% FOREACH normkat IN normset %]
-[% IF normkat.type == 'simple_category' %]
-<tr><td class="category">[% normkat.desc %]</td><td>[% normkat.contents %]</td></tr>
-[% ELSIF normkat.type == 'url_category' %]
-<tr><td class="category">[% normkat.desc %]</td><td><a href="[% normkat.url %]">[% normkat.contents %]</td></tr>
-[% END %]
-[% END %]
+[%# Ausgabekategorien %]
+[%- categories = [
+                 'S0001', # msg.maketext("S0001") Ansetzung 
+                 'S0102', # msg.maketext("S0102") Verweisung
+                 'S0113', # msg.maketext("S0113") Übergeordnet
+                 'S0115', # msg.maketext("S0115") Assoziiert
+                 'S0117', # msg.maketext("S0117") Früher
+                 'S0119', # msg.maketext("S0119") Später
+                 'S5000', # msg.maketext("S5000") Anzahl Titel 
+                 ];
+
+FOREACH category IN categories;
+    FOREACH item IN normset.$category;
+    content = item.content;
+
+    SWITCH category;
+
+    CASE "S5000";
+         content   = "<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchtitofswt=${normset.id}\">${content}</a>";
+    END;
+-%]
+<tr><td class="category">[% msg.maketext("${category}") %]</td><td>[% content %]</td></tr>
+[%-
+   END;
+END;
+-%]
 </table>
 
 </div>

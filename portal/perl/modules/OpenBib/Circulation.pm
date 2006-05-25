@@ -2,7 +2,7 @@
 #
 #  OpenBib::Circulation
 #
-#  Dieses File ist (C) 2004 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -21,10 +21,10 @@
 #  an die Free Software Foundation, Inc., 675 Mass Ave, Cambridge,
 #  MA 02139, USA.
 #
-#####################################################################   
+#####################################################################
 
 #####################################################################
-# Einladen der benoetigten Perl-Module 
+# Einladen der benoetigten Perl-Module
 #####################################################################
 
 package OpenBib::Circulation;
@@ -32,8 +32,10 @@ package OpenBib::Circulation;
 use strict;
 use warnings;
 no warnings 'redefine';
+use utf8;
 
 use Apache::Constants qw(:common);
+use Apache::Reload;
 use Apache::Request ();
 use DBI;
 use Digest::MD5;
@@ -46,6 +48,7 @@ use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::L10N;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
@@ -75,7 +78,7 @@ sub handler {
     my $offset     = ($query->param('offset'    ))?$query->param('offset'):0;
     my $listlength = ($query->param('listlength'))?$query->param('listlength'):10;
     my $sessionID  = $query->param('sessionID'  )||'';
-  
+
     my $sessiondbh
         = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
@@ -83,10 +86,17 @@ sub handler {
     my $userdbh
         = DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd})
             or $logger->error_die($DBI::errstr);
-  
+
+    my $queryoptions_ref
+        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+    
     unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
 
-        OpenBib::Common::Util::print_warning("Ung&uuml;ltige Session",$r);
+        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
 
         $sessiondbh->disconnect();
         $userdbh->disconnect();
@@ -106,7 +116,7 @@ sub handler {
   
     unless($userid){
 
-        OpenBib::Common::Util::print_warning("Diese Session ist nicht authentifiziert.",$r);
+        OpenBib::Common::Util::print_warning($msg->maketext("Diese Session ist nicht authentifiziert."),$r,$msg);
 
         $sessiondbh->disconnect();
         $userdbh->disconnect();
@@ -157,6 +167,7 @@ sub handler {
                 show_corporate_banner => 0,
                 show_foot_banner      => 1,
                 config       => \%config,
+                msg          => $msg,
             };
       
             OpenBib::Common::Util::print_page($config{tt_circulation_reserv_tname},$ttdata,$r);
@@ -198,6 +209,7 @@ sub handler {
                 show_corporate_banner => 0,
                 show_foot_banner      => 1,
                 config     => \%config,
+                msg        => $msg,
             };
       
             OpenBib::Common::Util::print_page($config{tt_circulation_remind_tname},$ttdata,$r);
@@ -237,6 +249,7 @@ sub handler {
                 show_corporate_banner => 0,
                 show_foot_banner      => 1,
                 config     => \%config,
+                msg        => $msg,
             };
       
             OpenBib::Common::Util::print_page($config{tt_circulation_orders_tname},$ttdata,$r);
@@ -276,6 +289,7 @@ sub handler {
                 show_corporate_banner => 0,
                 show_foot_banner      => 1,
                 config     => \%config,
+                msg        => $msg,
             };
       
             OpenBib::Common::Util::print_page($config{tt_circulation_tname},$ttdata,$r);
@@ -284,7 +298,7 @@ sub handler {
 
     }
     else {
-        OpenBib::Common::Util::print_warning("Unerlaubte Aktion",$r);
+        OpenBib::Common::Util::print_warning($msg->maketext("Unerlaubte Aktion"),$r,$msg);
     }
   
     $sessiondbh->disconnect();

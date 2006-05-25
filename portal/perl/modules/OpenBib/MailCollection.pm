@@ -2,7 +2,7 @@
 #
 #  OpenBib::MailCollection
 #
-#  Dieses File ist (C) 2001-2005 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -32,11 +32,14 @@ package OpenBib::MailCollection;
 use strict;
 use warnings;
 no warnings 'redefine';
+use utf8;
 
 use Apache::Constants qw(:common);
+use Apache::Reload;
 use Apache::Request ();
 use DBI;
 use Email::Valid;
+use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use MIME::Lite;
 use POSIX;
@@ -44,6 +47,8 @@ use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::L10N;
+use OpenBib::Search::Util;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
@@ -67,31 +72,6 @@ sub handler {
 
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
-    my %endnote=(
-        'Verfasser'   => '%A', # Author
-        'Urheber'     => '%C', # Corporate Author
-        'HST'         => '%T', # Title of the article or book
-        '1'           => '%S', # Title of the serie
-        '2'           => '%J', # Journal containing the article
-        '3'           => '%B', # Journal Title (refer: Book containing article)
-        '4'           => '%R', # Report, paper, or thesis type
-        '5'           => '%V', # Volume
-        '6'           => '%N', # Number with volume
-        '7'           => '%E', # Editor of book containing article
-        '8'           => '%P', # Page number(s)
-        'Verlag'      => '%I', # Issuer. This is the publisher
-        'Verlagsort'  => '%C', # City where published. This is the publishers address
-        'Ersch. Jahr' => '%D', # Date of publication
-        '11'          => '%O', # Other information which is printed after the reference
-        '12'          => '%K', # Keywords used by refer to help locate the reference
-        '13'          => '%L', # Label used to number references when the -k flag of refer is used
-        '14'          => '%X', # Abstract. This is not normally printed in a reference
-        '15'          => '%W', # Where the item can be found (physical location of item)
-        'Kollation'   => '%Z', # Pages in the entire document. Tib reserves this for special use
-        'Ausgabe'     => '%7', # Edition
-        '17'          => '%Y'  # Series Editor
-    );
-
     #####################################################################
     # Verbindung zur SQL-Datenbank herstellen
 
@@ -111,6 +91,16 @@ sub handler {
     my $database  = $query->param('database');
     my $type      = $query->param('type')||'HTML';
 
+
+    $logger->debug("SessionID: ".$sessionID);
+
+    my $queryoptions_ref
+        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+
     my $view="";
 
     if ($query->param('view')) {
@@ -127,7 +117,7 @@ sub handler {
     # Ab hier ist in $userid entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
     if ($email eq "") {
-        OpenBib::Common::Util::print_warning("Sie haben keine Mailadresse eingegeben.",$r);
+        OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine Mailadresse eingegeben."),$r,$msg);
   
         $sessiondbh->disconnect();
         $userdbh->disconnect();
@@ -135,24 +125,12 @@ sub handler {
     }
 
     unless (Email::Valid->address($email)) {
-        OpenBib::Common::Util::print_warning("Sie haben eine ung&uuml;ltige Mailadresse eingegeben.",$r);
+        OpenBib::Common::Util::print_warning($msg->maketext("Sie haben eine ungültige Mailadresse eingegeben."),$r,$msg);
     
         $sessiondbh->disconnect();
         $userdbh->disconnect();
         return OK;
     }	
-
-    my $titeltyp_ref = {
-        '1' => 'Einb&auml;ndige Werke und St&uuml;cktitel',
-        '2' => 'Gesamtaufnahme fortlaufender Sammelwerke',
-        '3' => 'Gesamtaufnahme mehrb&auml;ndig begrenzter Werke',
-        '4' => 'Bandauff&uuml;hrung',
-        '5' => 'Unselbst&auml;ndiges Werk',
-        '6' => 'Allegro-Daten',
-        '7' => 'Lars-Daten',
-        '8' => 'Sisis-Daten',
-        '9' => 'Sonstige Daten',
-    };
 
     my $targetdbinfo_ref
         = OpenBib::Common::Util::get_targetdbinfo($sessiondbh);
@@ -182,8 +160,8 @@ sub handler {
         }
 
         while (my $result=$idnresult->fetchrow_hashref()) {
-            my $database  = $result->{'dbname'};
-            my $singleidn = $result->{'singleidn'};
+            my $database  = decode_utf8($result->{'dbname'});
+            my $singleidn = decode_utf8($result->{'singleidn'});
 	
             push @dbidnlist, {
                 database  => $database,
@@ -204,33 +182,19 @@ sub handler {
       
         my ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn({
             titidn             => $singleidn,
-            hint               => "none",
             dbh                => $dbh,
-            sessiondbh         => $sessiondbh,
-            searchmultipleaut  => 0,
-            searchmultiplekor  => 0,
-            searchmultipleswt  => 0,
-            searchmultiplekor  => 0,
-            searchmultipletit  => 0,
-            searchmode         => 2,
             targetdbinfo_ref   => $targetdbinfo_ref,
             targetcircinfo_ref => $targetcircinfo_ref,
-            hitrange           => -1,
-            rating             => '',
-            bookinfo           => '',
-            sorttype           => '',
-            sortorder          => '',
             database           => $database,
-            titeltyp_ref       => $titeltyp_ref,
             sessionID          => $sessionID
         });
       
-        if ($type eq "Text") {
-            $normset=OpenBib::ManageCollection::Util::titset_to_text($normset);
-        }
-        elsif ($type eq "EndNote") {
-            $normset=OpenBib::ManageCollection::Util::titset_to_endnote($normset);
-        }
+#         if ($type eq "Text") {
+#             $normset=OpenBib::ManageCollection::Util::titset_to_text($normset);
+#         }
+#         elsif ($type eq "EndNote") {
+#             $normset=OpenBib::ManageCollection::Util::titset_to_endnote($normset);
+#         }
       
         $dbh->disconnect();
       
@@ -252,28 +216,27 @@ sub handler {
         view       => $view,
         stylesheet => $stylesheet,
         sessionID  => $sessionID,
-		
+	qopts      => $queryoptions_ref,
         type       => $type,
-		
         collection => \@collection,
-		
-        utf2iso    => sub {
-            my $string=shift;
-            $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
-            return $string;
-        },
-		
-        show_corporate_banner => 0,
-        show_foot_banner      => 1,
         config     => \%config,
+        msg        => $msg,
     };
 
     my $maildata="";
+    my $ofile="ml." . $$;
 
     my $datatemplate = Template->new({
-        ABSOLUTE      => 1,
-        INCLUDE_PATH  => $config{tt_include_path},
-        OUTPUT        => $maildata,
+         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+             INCLUDE_PATH   => $config{tt_include_path},
+             ABSOLUTE       => 1,
+         }) ],
+#        ABSOLUTE      => 1,
+#        INCLUDE_PATH  => $config{tt_include_path},
+        # Es ist wesentlich, dass OUTPUT* hier und nicht im
+        # Template::Provider definiert wird
+        OUTPUT_PATH   => '/tmp',
+        OUTPUT        => $ofile,
     });
   
 
@@ -290,50 +253,71 @@ sub handler {
         $datatemplatename=$config{tt_mailcollection_mail_plain_tname};
     }
 
-    $datatemplate->process($datatemplatename, $ttdata) || do { 
+    $datatemplate->process($datatemplatename, $ttdata) || do {
         $r->log_reason($datatemplate->error(), $r->filename);
         return SERVER_ERROR;
     };
   
     my $anschreiben="";
+    my $afile = "an." . $$;
+
+    my $mainttdata = {
+		      msg => $msg,
+		     };
 
     my $maintemplate = Template->new({
-        ABSOLUTE      => 1,
-        INCLUDE_PATH  => $config{tt_include_path},
-        OUTPUT        => $anschreiben,
+         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+             INCLUDE_PATH   => $config{tt_include_path},
+             ABSOLUTE       => 1,
+         }) ],
+#        ABSOLUTE      => 1,
+#        INCLUDE_PATH  => $config{tt_include_path},
+        # Es ist wesentlich, dass OUTPUT* hier und nicht im
+        # Template::Provider definiert wird
+        OUTPUT_PATH   => '/tmp',
+        OUTPUT        => $afile,
     });
 
-    $maintemplate->process($config{tt_mailcollection_mail_main_tname}, {}) || do { 
+    $maintemplate->process($config{tt_mailcollection_mail_main_tname}, $mainttdata ) || do { 
         $r->log_reason($maintemplate->error(), $r->filename);
         return SERVER_ERROR;
     };
 
-    my $msg = MIME::Lite->new(
+    my $mailmsg = MIME::Lite->new(
         From            => $config{contact_email},
         To              => $email,
         Subject         => $subject,
         Type            => 'multipart/mixed'
     );
 
-    $msg->attach(
+    my $anschfile="/tmp/" . $afile;
+
+    $mailmsg->attach(
         Type            => 'TEXT',
         Encoding        => '8bit',
-        Data            => $anschreiben,
+        #Data            => $anschreiben,
+	Path            => $anschfile,
     );
   
-    $msg->attach(
+    my $mailfile="/tmp/" . $ofile;
+
+    $mailmsg->attach(
         Type            => $mimetype,
         Encoding        => '8bit',
         Filename        => $filename,
-        Data            => $maildata,
+        #Data            => $maildata,
+	Path            => $mailfile,
     );
   
-    $msg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config{contact_email}");
+    $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config{contact_email}");
     
     OpenBib::Common::Util::print_page($config{tt_mailcollection_success_tname},$ttdata,$r);
     
     $sessiondbh->disconnect();
     $userdbh->disconnect();
+
+    unlink $anschfile;
+    unlink $mailfile;
 
     return OK;
 }

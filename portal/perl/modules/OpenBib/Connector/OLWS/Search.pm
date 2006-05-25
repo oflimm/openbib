@@ -34,6 +34,7 @@ use warnings;
 no warnings 'redefine';
 
 use Apache::Constants qw(:common);
+use Apache::Reload;
 use Apache::Request ();
 use Benchmark ':hireswallclock';
 use Log::Log4perl qw(get_logger :levels);
@@ -264,18 +265,6 @@ sub search {
         $hitrange=-1;
     }
 
-    my $titeltyp_ref = {
-        '1' => 'Einb&auml;ndige Werke und St&uuml;cktitel',
-        '2' => 'Gesamtaufnahme fortlaufender Sammelwerke',
-        '3' => 'Gesamtaufnahme mehrb&auml;ndig begrenzter Werke',
-        '4' => 'Bandauff&uuml;hrung',
-        '5' => 'Unselbst&auml;ndiges Werk',
-        '6' => 'Allegro-Daten',
-        '7' => 'Lars-Daten',
-        '8' => 'Sisis-Daten',
-        '9' => 'Sonstige Daten',
-    };
-
     my $targetdbinfo_ref   = OpenBib::Common::Util::get_targetdbinfo($sessiondbh);
     my $targetcircinfo_ref = OpenBib::Common::Util::get_targetcircinfo($sessiondbh);
 
@@ -402,7 +391,6 @@ sub search {
             sorttype           => $sorttype,
             sortorder          => $sortorder,
             database           => $database,
-            titeltyp_ref       => $titeltyp_ref,
             sessionID          => $sessionID
         });
 
@@ -591,5 +579,247 @@ sub search {
         };
     }
 }
+
+sub get_aut_ans_by_idn {
+    my ($class, %args) = @_;
+
+    # Log4perl logger erzeugen
+
+    my $logger = get_logger();
+
+    # Suchbegriffe
+    my $id        = $args{ 'id'        } || '';
+    my $database  = $args{ 'database'  } || '';
+
+    my $dbh
+        = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $ans=OpenBib::Search::Util::get_aut_ans_by_idn($id,$dbh);
+
+    $logger->debug("Ans: $ans");
+
+    $dbh->disconnect;
+
+    return SOAP::Data->type(
+        string=> $ans ) ->name('A0001');
+}
+
+sub get_kor_ans_by_idn {
+    my ($class, %args) = @_;
+
+    # Log4perl logger erzeugen
+
+    my $logger = get_logger();
+
+    # Suchbegriffe
+    my $id        = $args{ 'id'        } || '';
+    my $database  = $args{ 'database'  } || '';
+
+    my $dbh
+        = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $ans=OpenBib::Search::Util::get_kor_ans_by_idn($id,$dbh);
+    
+    $dbh->disconnect;
+
+    return SOAP::Data->type(
+        string=> $ans ) ->name('C0001');
+
+}
+
+sub get_swt_ans_by_idn {
+    my ($class, %args) = @_;
+
+    # Log4perl logger erzeugen
+
+    my $logger = get_logger();
+
+    # Suchbegriffe
+    my $id        = $args{ 'id'        } || '';
+    my $database  = $args{ 'database'  } || '';
+
+    my $dbh
+        = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $ans=OpenBib::Search::Util::get_swt_ans_by_idn($id,$dbh);
+    
+    $dbh->disconnect;
+
+    return SOAP::Data->type(
+        string=> $ans ) ->name('S0001');
+}
+
+sub get_not_ans_by_idn {
+    my ($class, %args) = @_;
+
+    # Log4perl logger erzeugen
+
+    my $logger = get_logger();
+
+    # Suchbegriffe
+    my $id        = $args{ 'id'        } || '';
+    my $database  = $args{ 'database'  } || '';
+    
+    my $dbh
+        = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+            or $logger->error_die($DBI::errstr);
+    
+
+    my $ans=OpenBib::Search::Util::get_not_ans_by_idn($id,$dbh);
+    
+    $dbh->disconnect;
+
+    return SOAP::Data->type(
+        string=> $ans ) ->name('N0001');
+
+}
+
+sub get_recent_titids_by_aut {
+    my ($class, %args) = @_;
+
+    # Log4perl logger erzeugen
+
+    my $logger = get_logger();
+
+    # Suchbegriffe
+    my $database  =  $args{ 'database'  } || '';
+    my $id        = ($args{ 'id'        } =~/^\d+$/)?$args{'id'   }:0;
+    my $limit     = ($args{ 'limit'     } =~/^\d+$/)?$args{'limit'}:0;
+
+    my $dbh
+        = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+            or $logger->error_die($DBI::errstr);
+    
+    my $titlist_ref=OpenBib::Search::Util::get_recent_titids_by_aut({
+        dbh   => $dbh,
+        id    => $id,
+        limit => $limit,
+    });
+    
+    $dbh->disconnect;
+
+    return $titlist_ref;
+}
+
+sub get_recent_titids_by_kor {
+    my ($class, %args) = @_;
+
+    # Log4perl logger erzeugen
+
+    my $logger = get_logger();
+
+    # Suchbegriffe
+    my $database  =  $args{ 'database'  } || '';
+    my $id        = ($args{ 'id'        } =~/^\d+$/)?$args{'id'   }:0;
+    my $limit     = ($args{ 'limit'     } =~/^\d+$/)?$args{'limit'}:0;
+
+    my $dbh
+        = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $titlist_ref=OpenBib::Search::Util::get_recent_titids_by_kor({
+        dbh   => $dbh,
+        id    => $id,
+        limit => $limit,
+    });
+    
+    $dbh->disconnect;
+
+    return $titlist_ref;
+}
+
+sub get_recent_titids_by_swt {
+    my ($class, %args) = @_;
+
+    # Log4perl logger erzeugen
+
+    my $logger = get_logger();
+
+    # Suchbegriffe
+    my $database  =  $args{ 'database'  } || '';
+    my $id        = ($args{ 'id'        } =~/^\d+$/)?$args{'id'   }:0;
+    my $limit     = ($args{ 'limit'     } =~/^\d+$/)?$args{'limit'}:0;
+
+    my $dbh
+        = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $titlist_ref=OpenBib::Search::Util::get_recent_titids_by_swt({
+        dbh   => $dbh,
+        id    => $id,
+        limit => $limit,
+    });
+    
+    $dbh->disconnect;
+
+    return $titlist_ref;
+}
+
+sub get_recent_titids_by_not {
+    my ($class, %args) = @_;
+
+    # Log4perl logger erzeugen
+
+    my $logger = get_logger();
+
+    # Suchbegriffe
+    my $database  =  $args{ 'database'  } || '';
+    my $id        = ($args{ 'id'        } =~/^\d+$/)?$args{'id'   }:0;
+    my $limit     = ($args{ 'limit'     } =~/^\d+$/)?$args{'limit'}:0;
+
+    my $dbh
+        = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $titlist_ref=OpenBib::Search::Util::get_recent_titids_by_not({
+        dbh   => $dbh,
+        id    => $id,
+        limit => $limit,
+    });
+    
+    $dbh->disconnect;
+
+    return $titlist_ref;
+}
+
+sub get_tit_listitem_by_idn {
+    my ($class, %args) = @_;
+
+    # Log4perl logger erzeugen
+
+    my $logger = get_logger();
+
+    # Suchbegriffe
+    my $database  =  $args{ 'database'  } || '';
+    my $id        = ($args{ 'id'        } =~/^\d+$/)?$args{'id'   }:0;
+
+    my $dbh
+        = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $sessiondbh
+        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $targetdbinfo_ref
+        = OpenBib::Common::Util::get_targetdbinfo($sessiondbh);
+
+    my $tititem_ref=OpenBib::Search::Util::get_tit_listitem_by_idn({
+        titidn            => $id,
+        dbh               => $dbh,
+        sessiondbh        => $sessiondbh,
+        database          => $database,
+        sessionID         => '-1',
+        targetdbinfo_ref  => $targetdbinfo_ref,
+    });
+
+    $sessiondbh->disconnect;
+    $dbh->disconnect;
+
+    return $tititem_ref;
+};
 
 1;

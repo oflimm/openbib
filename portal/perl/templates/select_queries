@@ -1,0 +1,57 @@
+[%#-
+#######################################################################
+#
+# Templatename: select_queries
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe einer Auswahlliste vorhandener Suchanfragen
+#
+#######################################################################
+-%]
+<select name="queryid">
+
+[% FOREACH query IN queries %]	  
+<OPTION value="[% query.id %]">(
+[%- IF query.searchquery.fs.val -%]
+&nbsp;FS: [% query.searchquery.fs.val %] 
+[%- END -%]
+[%- IF query.searchquery.verf.val -%]
+&nbsp;AUT: [% query.searchquery.verf.val %]
+[%- END -%]
+[%- IF query.searchquery.hst.val -%]
+&nbsp;HST: [% query.searchquery.hst.val %]
+[%- END -%]
+[%- IF query.searchquery.swt.val -%]
+&nbsp;SWT: [% query.searchquery.swt.val %]
+[%- END -%]
+[%- IF query.searchquery.kor.val -%]
+&nbsp;KOR: [% query.searchquery.kor.val %]
+[%- END -%]
+[%- IF query.searchquery.notation.val -%]
+&nbsp;NOT: [% query.searchquery.notation.val %] 
+[%- END -%]
+[%- IF query.searchquery.sign.val -%]
+&nbsp;SIG: [% query.searchquery.sign.val %]
+[%- END -%]
+[%- IF query.searchquery.ejahr.val -%]
+&nbsp;EJAHR: [% query.searchquery.ejahr.val %]
+[%- END -%]
+[%- IF query.searchquery.isbn.val -%]
+&nbsp;ISBN: [% query.searchquery.isbn.val %]
+[%- END -%]
+[%- IF query.searchquery.issn.val -%]
+&nbsp;ISSN: [% query.searchquery.issn.val %]
+[%- END -%]
+[%- IF query.searchquery.mart.val -%]
+&nbsp;MART: [% query.searchquery.mart.val %]
+[%- END -%]
+[%- IF query.searchquery.hststring.val -%]
+&nbsp;HSTR: [% query.searchquery.hststring.val %] 
+[%- END -%]
+= [% msg.maketext("Treffer") %]: [% query.hits %])
+</OPTION>
+[% END %]	    
+</select>

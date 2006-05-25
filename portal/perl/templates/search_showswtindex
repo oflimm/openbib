@@ -1,17 +1,29 @@
-[%- title = 'Schlagwortindex' -%]
-[% PROCESS common/subtemplate name="std_header" %]
+[%#-
+#######################################################################
+#
+# Templatename: search_showswtindex
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Schlagwortindex
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title = 'Schlagwortindex' %]
 
 <body>
 <table BORDER="0" CELLSPACING="0" CELLPADDING="0" width="100%">
   <tr class="titlerow">
-    <td  width="20">&nbsp;</td><td valign="middle" ALIGN="left" height="32"><img src="/images/openbib/[% database %].png"></td>
+    <td  width="20">&nbsp;</td><td valign="middle" ALIGN="left" height="32"><span class="dbdescshort">[% poolname.short %]</span></td>
   </tr>
 </table>
 
 <p />
 
 <table width="100%">
-<tr><th>Schlagwortindex</th></tr>
+<tr><th>[% msg.maketext("Schlagwortindex") %]</th></tr>
 <tr><td class="boxedclear">
 
 [% IF swtindex.size > 0 %]
@@ -20,15 +32,15 @@ Es wurde
 [%- IF swtindex.size > 1 -%]
 n
 [%- END -%]
- [% swtindex.size %] Schlagwort
+ [% swtindex.size %] [% msg.maketext("Schlagwort") %]
 [%- IF swtindex.size > 1 -%]
 e
 [%- END -%]
- beginnend mit <b>'[% swt %]'</b> in diesem Katalog gefunden
+ [% msg.maketext("beginnend mit") %] <b>'[% swt %]'</b> [% msg.maketext("in diesem Katalog gefunden") %]
 <p />
 
 <table cellpadding="2">
-<tr class="titlerow"><td>Schlagwort</td><td>Titelzahl</td><td>Schlagwort</td><td>Titelzahl</td><td>Schlagwort</td><td>Titelzahl</td></tr>
+<tr class="titlerow"><td>[% msg.maketext("Schlagwort") %]</td><td>[% msg.maketext("Titelzahl") %]</td><td>[% msg.maketext("Schlagwort") %]</td><td>[% msg.maketext("Titelzahl") %]</td><td>[% msg.maketext("Schlagwort") %]</td><td>[% msg.maketext("Titelzahl") %]</td></tr>
 
 [% FOREACH item IN swtindex %]
 [% IF loop.index % 3 == 0 %]
@@ -51,7 +63,7 @@ e
 
 </table>
 [% ELSE %]
-In diesem Katalog konnte leider kein Schlagwort beginnend mit <b>'[% swt %]'</b> gefunden werden.
+[% msg.maketext("In diesem Katalog konnte leider kein Schlagwort beginnend mit") %] <b>'[% swt %]'</b> [% msg.maketext("gefunden werden.") %]
 [% END %]
 
 </td></tr>
@@ -62,15 +74,15 @@ In diesem Katalog konnte leider kein Schlagwort beginnend mit <b>'[% swt %]'</b>
 <hr>
 
 <form method="get" action="[% config.search_loc %]">
-<input type="hidden" name="sessionID" value="[% sessionID %]">
+<input type="hidden" name="sessionID"  value="[% sessionID %]">
 <input type="hidden" name="searchmode" value="[% searchmode %]">
-<input type="hidden" name="rating" value="[% rating %]">
-<input type="hidden" name="bookinfo" value="[% bookinfo %]">
-<input type="hidden" name="hitrange" value="[% hitrange %]">
-<input type="hidden" name="database" value="[% database %]">
+<input type="hidden" name="rating"     value="[% rating %]">
+<input type="hidden" name="bookinfo"   value="[% bookinfo %]">
+<input type="hidden" name="hitrange"   value="[% hitrange %]">
+<input type="hidden" name="database"   value="[% database %]">
 
 <table>
-<tr><td class="category">Schlagwortindex dieses Katalogs&nbsp;</td><td>&nbsp;<input type="text" name="swtindex" value="[% swt %]" size="4" maxlength="50" title="Geben Sie hier den Schlagwortanfang ein">&nbsp;<input type="submit" value="Suchen">&nbsp;</td></tr>
+<tr><td class="category">[% msg.maketext("Schlagwortindex dieses Katalogs") %]&nbsp;</td><td>&nbsp;<input type="text" name="swtindex" value="[% swt %]" size="4" maxlength="50" title="[% msg.maketext("Geben Sie hier den Schlagwortanfang ein") %]">&nbsp;<input type="submit" value="[% msg.maketext("Suchen") %]">&nbsp;</td></tr>
 </table>
 
 </form>

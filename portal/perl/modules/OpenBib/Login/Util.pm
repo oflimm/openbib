@@ -28,8 +28,11 @@ package OpenBib::Login::Util;
 use strict;
 use warnings;
 no warnings 'redefine';
+use utf8;
 
+use Apache::Reload;
 use DBI;
+use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use SOAP::Lite;
 
@@ -64,9 +67,11 @@ sub authenticate_self_user {
 
     my $res=$userresult->fetchrow_hashref();
 
-    my $userid=$res->{'userid'};
-  
-    return $userid;
+    my $userid = decode_utf8($res->{'userid'});
+
+    $userresult->finish();
+
+    return (defined $userid)?$userid:-1;
 }
 
 sub authenticate_olws_user {

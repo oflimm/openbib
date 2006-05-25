@@ -1,3 +1,16 @@
+[%#-
+#######################################################################
+#
+# Templatename: databasechoice
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Katalogauswahlliste/-tabelle
+#
+#######################################################################
+-%]
 [% PROCESS common/subtemplate name="std_header" %]
 
   <body>
@@ -22,26 +35,28 @@ function update_fak(yourform, checked, fak) {
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 
 <ul id="tabbingmenu">
-   <li><a class="active" href="[% config.databasechoice_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">Katalogauswahl</a></li>
+   <li><a class="active" href="[% config.databasechoice_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">[% msg.maketext("Katalogauswahl") %]</a></li>
 </ul>
 
 <div id="content">
 
 <p />
 <table width="100%">
-<tr><th>Hinweis</th></tr>
+<tr><th>[% msg.maketext("Hinweis") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
-Auf dieser Seite k&ouml;nnen Sie einzelne Kataloge als Suchziel ausw&auml;hlen. Bei aktiviertem JavaScript reicht ein Klick auf das Schaltelement einer &uuml;bergeordneten hellblau hinterlegten Kategorie, um alle zugeh&ouml;rigen Kataloge automatisch auszuw&auml;hlen<p />
-Nachdem Sie Ihre Auswahl getroffen haben aktivieren Sie bitte <b>Kataloge ausw&auml;hlen</b>. Sie springen dann auf die Rechercheseite und k&ouml;nnen Ihre Suchbegriffe eingeben. Ihre gerade getroffene Datenbankauswahl ist unter <b>Suchprofil</b> vorausgew&auml;hlt. Nun m&uuml;ssen Sie nur noch auf <b>In ausgew&auml;hlten Katalogen suchen</b> klicken, um in den ausgew&auml;hlten Datenbanken zu recherchieren.
+[% msg.maketext("Auf dieser Seite k&ouml;nnen Sie einzelne Kataloge als Suchziel auswählen. Bei aktiviertem JavaScript reicht ein Klick auf das Schaltelement einer übergeordneten hellblau hinterlegten Kategorie, um alle zugeh&ouml;rigen Kataloge automatisch auszuwählen<p />
+Nachdem Sie Ihre Auswahl getroffen haben aktivieren Sie bitte <b>Kataloge auswählen</b>. Sie springen dann auf die Rechercheseite und k&ouml;nnen Ihre Suchbegriffe eingeben. Ihre gerade
+getroffene Datenbankauswahl ist unter <b>Suchprofil</b> vorausgewählt. Nun müssen Sie nur noch auf <b>In ausgewählten Katalogen suchen</b> klicken, um in den ausgewählten
+Datenbanken zu recherchieren.") %]
 </td></tr>
 </table>
 <p />
-<input type="submit" name="action" value="Kataloge ausw&auml;hlen" />&nbsp;<input type="reset" value="Urspr&uuml;ngliche Auswahl wiederherstellen" />
+<input type="submit" name="do_choose" value="[% msg.maketext("Kataloge auswählen") %]" />&nbsp;<input type="reset" value="[% msg.maketext("Ursprüngliche Auswahl wiederherstellen") %]" />
 <p />
 <table>
-<tr class="titlerow"><td colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /><b>Alle Kataloge</b></td></tr>
+<tr class="titlerow"><td colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /><b>[% msg.maketext("Alle Kataloge") %]</b></td></tr>
 
-[%- FOREACH category = config.units -%]
+[%- FOREACH category = config.orgunits -%]
 [%- IF category.nr >= 1 -%]
 <tr><td colspan="[% colspan %]">&nbsp;</td></tr>
 [%- END -%]
@@ -77,7 +92,7 @@ Nachdem Sie Ihre Auswahl getroffen haben aktivieren Sie bitte <b>Kataloge ausw&a
 [%- END -%]
 </table>
 <p />
-<input type="submit" name="action" value="Kataloge ausw&auml;hlen" />&nbsp;<input type="reset" value="Urspr&uuml;ngliche Auswahl wiederherstellen" />
+<input type="submit" name="do_choose" value="[% msg.maketext("Kataloge auswählen") %]" />&nbsp;<input type="reset" value="[% msg.maketext("Ursprüngliche Auswahl wiederherstellen") %]" />
 </form>
 <p />
 

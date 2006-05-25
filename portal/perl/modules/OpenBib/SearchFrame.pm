@@ -2,7 +2,7 @@
 #
 #  OpenBib::SearchFrame
 #
-#  Dieses File ist (C) 2001-2005 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -32,22 +32,27 @@ package OpenBib::SearchFrame;
 use strict;
 use warnings;
 no warnings 'redefine';
+use utf8;
 
 use Apache::Constants qw(:common);
+use Apache::Reload;
 use Apache::Request ();
 use DBI;
+use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
+use Storable ();
 use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::L10N;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
 use vars qw(%config);
 
-*config=\%OpenBib::Config::config;
+*config = \%OpenBib::Config::config;
 
 sub handler {
     my $r=shift;
@@ -81,9 +86,16 @@ sub handler {
     my $singleidn = $query->param('singleidn') || '';
     my $setmask   = $query->param('setmask') || '';
     my $action    = ($query->param('action'))?$query->param('action'):'';
-  
+
+    my $queryoptions_ref
+        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+    
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+
     unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
-        OpenBib::Common::Util::print_warning("Ung&uuml;ltige Session",$r);
+        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
         $sessiondbh->disconnect();
         $userdbh->disconnect();
         return OK;
@@ -124,7 +136,7 @@ sub handler {
     my $prevprofile="";
   
     if (defined($result->{'profile'})) {
-        $prevprofile=$result->{'profile'};
+        $prevprofile = decode_utf8($result->{'profile'});
     }
   
     if ($userid) {
@@ -133,31 +145,27 @@ sub handler {
     
         my $result=$targetresult->fetchrow_hashref();
     
-        $showfs        = $result->{'fs'};
-        $showhst       = $result->{'hst'};
-        $showverf      = $result->{'verf'};
-        $showkor       = $result->{'kor'};
-        $showswt       = $result->{'swt'};
-        $shownotation  = $result->{'notation'};
-        $showisbn      = $result->{'isbn'};
-        $showissn      = $result->{'issn'};
-        $showsign      = $result->{'sign'};
-        $showmart      = $result->{'mart'};
-        $showhststring = $result->{'hststring'};
-        $showejahr     = $result->{'ejahr'};
+        $showfs        = decode_utf8($result->{'fs'});
+        $showhst       = decode_utf8($result->{'hst'});
+        $showverf      = decode_utf8($result->{'verf'});
+        $showkor       = decode_utf8($result->{'kor'});
+        $showswt       = decode_utf8($result->{'swt'});
+        $shownotation  = decode_utf8($result->{'notation'});
+        $showisbn      = decode_utf8($result->{'isbn'});
+        $showissn      = decode_utf8($result->{'issn'});
+        $showsign      = decode_utf8($result->{'sign'});
+        $showmart      = decode_utf8($result->{'mart'});
+        $showhststring = decode_utf8($result->{'hststring'});
+        $showejahr     = decode_utf8($result->{'ejahr'});
 
         $targetresult->finish();
 
         $targetresult=$userdbh->prepare("select profilid, profilename from userdbprofile where userid = ? order by profilename") or $logger->error($DBI::errstr);
         $targetresult->execute($userid) or $logger->error($DBI::errstr);
     
-        if ($targetresult->rows > 0) {
-            $userprofiles.="<option value=\"\">Gespeicherte Katalogprofile:</option><option value=\"\">&nbsp;</option>";
-        }
-    
         while (my $res=$targetresult->fetchrow_hashref()) {
-            my $profilid    = $res->{'profilid'};
-            my $profilename = $res->{'profilename'};
+            my $profilid    = decode_utf8($res->{'profilid'});
+            my $profilename = decode_utf8($res->{'profilename'});
 
             my $profselected="";
             if ($prevprofile eq "user$profilid") {
@@ -166,9 +174,9 @@ sub handler {
 
             $userprofiles.="<option value=\"user$profilid\" $profselected>- $profilename</option>";
         }
-    
-        if ($targetresult->rows > 0) {
-            $userprofiles.="<option value=\"\">&nbsp;</option>"
+
+        if ($userprofiles){
+            $userprofiles="<option value=\"\">Gespeicherte Katalogprofile:</option><option value=\"\">&nbsp;</option>".$userprofiles."<option value=\"\">&nbsp;</option>";
         }
     
         $targetresult=$userdbh->prepare("select * from fieldchoice where userid = ?") or $logger->error($DBI::errstr);
@@ -179,34 +187,9 @@ sub handler {
         $targetresult->finish();
     }
   
-    # CGI-Uebergabe
-  
-    my $fs            = $query->param('fs')        || ''; # Freie Suche
-    my $verf          = $query->param('verf')      || '';
-    my $hst           = $query->param('hst')       || '';
-    my $hststring     = $query->param('hststring') || '';
-    my $swt           = $query->param('swt')       || '';
-    my $kor           = $query->param('kor')       || '';
-    my $sign          = $query->param('sign')      || '';
-    my $isbn          = $query->param('isbn')      || '';
-    my $issn          = $query->param('issn')      || '';
-    my $notation      = $query->param('notation')  || '';
-    my $ejahr         = $query->param('ejahr')     || '';
-    my $mart          = $query->param('mart')      || '';
-
-    my $boolverf      = ($query->param('boolverf'))?$query->param('boolverf'):"AND";
-    my $boolhst       = ($query->param('boolhst'))?$query->param('boolhst'):"AND";
-    my $boolswt       = ($query->param('boolswt'))?$query->param('boolswt'):"AND";
-    my $boolkor       = ($query->param('boolkor'))?$query->param('boolkor'):"AND";
-    my $boolnotation  = ($query->param('boolnotation'))?$query->param('boolnotation'):"AND";
-    my $boolisbn      = ($query->param('boolisbn'))?$query->param('boolisbn'):"AND";
-    my $boolissn      = ($query->param('boolissn'))?$query->param('boolissn'):"AND";
-    my $boolsign      = ($query->param('boolsign'))?$query->param('boolsign'):"AND";
-    my $boolejahr     = ($query->param('boolejahr'))?$query->param('boolejahr'):"AND";
-    my $boolfs        = ($query->param('boolfs'))?$query->param('boolfs'):"AND";
-    my $boolmart      = ($query->param('boolmart'))?$query->param('boolmart'):"AND";
-    my $boolhststring = ($query->param('boolhststring'))?$query->param('boolhststring'):"AND";
-  
+    my $searchquery_ref
+        = OpenBib::Common::Util::get_searchquery($r);
+    
     my $queryid       = $query->param('queryid') || '';
   
     # Assoziierten View zur Session aus Datenbank holen
@@ -214,7 +197,7 @@ sub handler {
     $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
     $result=$idnresult->fetchrow_hashref();
   
-    my $viewdesc=$result->{'description'} if (defined($result->{'description'}));
+    my $viewdesc = decode_utf8($result->{'description'}) if (defined($result->{'description'}));
 
     $idnresult->finish();
   
@@ -228,7 +211,7 @@ sub handler {
         my $idnresult=$sessiondbh->prepare("select masktype from sessionmask where sessionid = ?") or $logger->error($DBI::errstr);
         $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
         my $result=$idnresult->fetchrow_hashref();
-        $setmask=$result->{'masktype'};
+        $setmask = decode_utf8($result->{'masktype'});
     
         $idnresult->finish();
     }
@@ -239,13 +222,9 @@ sub handler {
         $idnresult->execute($queryid) or $logger->error($DBI::errstr);
     
         my $result=$idnresult->fetchrow_hashref();
-        my $query=$result->{'query'};
-    
-        $query=~s/"/&quot;/g;
-
-        $hits=$result->{'hits'};
-
-        ($fs,$verf,$hst,$swt,$kor,$sign,$isbn,$issn,$notation,$mart,$ejahr,$hststring,$boolhst,$boolswt,$boolkor,$boolnotation,$boolisbn,$boolsign,$boolejahr,$boolissn,$boolverf,$boolfs,$boolmart,$boolhststring)=split('\|\|',$query);
+        $searchquery_ref = Storable::thaw(pack "H*",$result->{'query'});
+        $hits            = decode_utf8($result->{'hits'});
+#        $query=~s/"/&quot;/g;
 
         $idnresult->finish();
     }
@@ -270,15 +249,15 @@ sub handler {
 
     my $dbcount=0;
     while (my $result=$idnresult->fetchrow_hashref()) {
-        my $dbname=$result->{'dbname'};
+        my $dbname = decode_utf8($result->{'dbname'});
         $dbinputtags.="<input type=\"hidden\" name=\"database\" value=\"$dbname\" />\n";
         $dbcount++; 
     }
 
-    $idnresult=$sessiondbh->prepare("select dbname from dbinfo where active=1") or $logger->error($DBI::errstr);
+    $idnresult=$sessiondbh->prepare("select count(dbname) as rowcount from dbinfo where active=1") or $logger->error($DBI::errstr);
     $idnresult->execute() or $logger->error($DBI::errstr);
-
-    my $alldbs=$idnresult->rows;
+    my $res    = $idnresult->fetchrow_hashref;
+    my $alldbs = $res->{rowcount};
 
     $idnresult=$sessiondbh->prepare("select sum(count) from titcount,dbinfo where  titcount.dbname=dbinfo.dbname and dbinfo.active=1") or $logger->error($DBI::errstr);
     $idnresult->execute() or $logger->error($DBI::errstr);
@@ -303,33 +282,14 @@ sub handler {
     $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
     my $anzahl=$idnresult->rows();
 
-    my $prevqueries="";
+    my @queries=();
 
-    if ($anzahl > 0) {
-        while (my $result=$idnresult->fetchrow_hashref()) {
-            my $queryid = $result->{'queryid'};
-            my $query   = $result->{'query'};
-            my $hits    = $result->{'hits'};
-
-            my ($fs,$verf,$hst,$swt,$kor,$sign,$isbn,$issn,$notation,$mart,$ejahr,$hststring,$boolhst,$boolswt,$boolkor,$boolnotation,$boolisbn,$boolsign,$boolejahr,$boolissn,$boolverf,$boolfs,$boolmart,$boolhststring)=split('\|\|',$query);
-
-            $prevqueries.="<OPTION value=\"$queryid\">";
-
-            $prevqueries.="FS: $fs " if ($fs);
-            $prevqueries.="AUT: $verf " if ($verf);
-            $prevqueries.="HST: $hst " if ($hst);
-            $prevqueries.="SWT: $swt " if ($swt);
-            $prevqueries.="KOR: $kor " if ($kor);
-            $prevqueries.="NOT: $notation " if ($notation);
-            $prevqueries.="SIG: $sign " if ($sign);
-            $prevqueries.="EJAHR: $ejahr " if ($ejahr);
-            $prevqueries.="ISBN: $isbn " if ($isbn);
-            $prevqueries.="ISSN: $issn " if ($issn);
-            $prevqueries.="MART: $mart " if ($mart);
-            $prevqueries.="HSTR: $hststring " if ($hststring);
-            $prevqueries.="= Treffer: $hits";
-            $prevqueries.="</OPTION>";
-        }
+    while (my $result=$idnresult->fetchrow_hashref()) {
+        push @queries, {
+            id          => decode_utf8($result->{queryid}),
+            searchquery => Storable::thaw(pack "H*",$result->{query}),
+            hits        => decode_utf8($result->{hits}),
+        };
     }
 
     $idnresult->finish();
@@ -358,26 +318,14 @@ sub handler {
         showmart      => $showmart,
         showhststring => $showhststring,
         showejahr     => $showejahr,
-	      
-        fs            => $fs,
-        hst           => $hst,
-        hststring     => $hststring,
-        verf          => $verf,
-        kor           => $kor,
-        swt           => $swt,
-        notation      => $notation,
-        isbn          => $isbn,
-        issn          => $issn,
-        sign          => $sign,
-        mart          => $mart,
-        ejahr         => $ejahr,
+
+        searchquery   => $searchquery_ref,
 	       
         anzahl        => $anzahl,
-        prevqueries   => $prevqueries,
+        queries       => \@queries,
         useragent     => $useragent,
-        show_corporate_banner => 0,
-        show_foot_banner      => 1,
         config        => \%config,
+        msg           => $msg,
     };
   
     if ($setmask eq "simple") {

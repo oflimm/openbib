@@ -1,3 +1,16 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_message
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Informations-Meldung
+#
+#######################################################################
+-%]
 [% PROCESS common/subtemplate name="std_header" %]
 
   <body>
@@ -6,6 +19,22 @@
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 [% END %]
 
+<ul id="tabbingmenu">
+   <li><a class="active" href="/suchhilfe.html" target="_blank">[% msg.maketext("Information") %]</a></li>
+</ul>
+
+<div id="content">
+
+<p />
+<table width="100%">
+<tr><th>[% msg.maketext("Meldung") %]</th></tr>
+<tr><td class="boxedclear">
 [% info_msg %]
+</td></tr>
+</table>
+
+</div>
+
+<p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

@@ -1,29 +1,44 @@
+[%#-
+#######################################################################
+#
+# Templatename: managecollection_mail
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Merkliste mit einer Eingabemaske fuer die
+# E-Mail-Adresse, an die die Merkliste verschickt werden
+# soll
+#
+#######################################################################
+-%]
 [% PROCESS common/subtemplate name="std_header" %]
+[% PROCESS common/subtemplate name="visible_categories_titset" %]
 
   <BODY>
     
       <ul id="tabbingmenu">
-	<li><a class="active" href="http://[% config.servername %][% config.managecollection_loc %]?sessionID=[% sessionID %];action=mail;type=[% type%]">Titel/Merkliste via Mail verschicken</a></li>
+	<li><a class="active" href="http://[% config.servername %][% config.managecollection_loc %]?sessionID=[% sessionID %];action=mail;type=[% type%]">[% msg.maketext("Titel/Merkliste via Mail verschicken") %]</a></li>
       </ul>
       
       <div id="content">
 	
-<FORM method="post" action="http://[% config.servername %][% config.mailcollection_loc %]" enctype="multipart/form-data">
+<FORM method="post" action="http://[% config.servername %][% config.mailcollection_loc %]" enctype="application/x-www-form-urlencoded">
 <INPUT type="hidden" name="sessionID" value="[% sessionID %]">
-<INPUT type="hidden" name="type" value="[% type %]">
+<INPUT type="hidden" name="type"      value="[% type %]">
 
 <table width="100%">
-<tr><th>Ihre Eingabe</th></tr>
+<tr><th>[% msg.maketext("Ihre Eingabe") %]</th></tr>
 <tr><td class="boxed">
 <table>
-<tr><td class="category">Ihre Mailadresse</td><td><input type="text" name="email" VALUE="[% loginname %]" SIZE="30" MAXLENGTH="200"></td></tr>
-<tr><td class="category">Betreff</td><td><input type="text" name="subject" VALUE="" SIZE="30" MAXLENGTH="200"></td></tr>
+<tr><td class="category">[% msg.maketext("Ihre Mailadresse") %]</td><td><input type="text" name="email" VALUE="[% loginname %]" SIZE="30" MAXLENGTH="200"></td></tr>
+<tr><td class="category">[% msg.maketext("Betreff") %]</td><td><input type="text" name="subject" VALUE="" SIZE="30" MAXLENGTH="200"></td></tr>
 </table>
 <p>
-<input type="submit" name="mail" VALUE="Abschicken">&nbsp;<input type="reset" value="Felder leeren">
+<input type="submit" name="mail" VALUE="[% msg.maketext("Abschicken") %]">&nbsp;<input type="reset" value="[% msg.maketext("Felder leeren") %]">
 </td><tr>
 </table>
-</form>
 <p>
 
 [% IF singleidn %]
@@ -32,6 +47,8 @@
 [% IF database %]
 <INPUT type="hidden" name="database" value="[% database %]">
 [% END %]	
+
+</form>
 
 	  <p>
 [% IF type == 'HTML' %]

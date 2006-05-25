@@ -1,13 +1,64 @@
+[%#-
+#######################################################################
+#
+# Templatename: managecollection_tit_as_endnote
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe *aller* Merklisten-Items im Endnote-Format *ohne* Funktions-
+# elemente
+#
+#######################################################################
+-%]
 [%- FOREACH titset IN collection -%]
-[%- normset = titset.tit -%]
+[%- normset    = titset.tit -%]
 [%- mexnormset = titset.mex -%]
-[%- FOREACH normkat IN normset -%]
-[% normkat.desc %] [% normkat.contents %]
-[% END %]
+[%-
+
+endnotecategories = {
+        'T0100' => '%A',    # Author 
+        'T0200' => '%C',    # Corporate Author
+        'T0331' => '%T',    # Title of the article or book
+        '1'     => '%S',    # Title of the serie
+        '2'     => '%J',    # Journal containing the article
+        '3'     => '%B',    # Journal Title (refer: Book containing article)
+        '4'     => '%R',    # Report, paper, or thesis type
+        '5'     => '%V',    # Volume 
+        '6'     => '%N',    # Number with volume
+        '7'     => '%E',    # Editor of book containing article
+        '8'     => '%P',    # Page number(s)
+        'T0412' => '%I',    # Issuer. This is the publisher
+        'T0410' => '%C',    # City where published. This is the publishers address
+        'T0425' => '%D',    # Date of publication
+        'T0424' => '%D',    # Date of publication
+        '11'    => '%O',    # Other information which is printed after the reference
+        '12'    => '%K',    # Keywords used by refer to help locate the reference
+        '13'    => '%L',    # Label used to number references when the -k flag of refer is used
+        'T0540' => '%X',    # Abstract. This is not normally printed in a reference
+        'T0543' => '%X',    # Abstract. This is not normally printed in a reference
+        '15'    => '%W',    # Where the item can be found (physical location of item)
+        'T0433' => '%Z',    # Pages in the entire document. Tib reserves this for special use
+        'T0403' => '%7',    # Edition
+        '17'    => '%Y',    # Series Editor
+};
+
+FOREACH category IN categories;
+    FOREACH item IN normset.$category;
+    content = item.content;
+
+    IF endnotecategories.$category ;
+      thiscategory = endnotecategories.${category} ;
+-%]
+[% thiscategory %] [% content %]
+[% END -%]
+[% END -%]
+[%- END -%]
 [%- IF mexnormset.size > 0 -%]
 [%- FOREACH mex IN mexnormset -%]
-%W [% mex.bibliothek %] / [% mex.standort %] / [% mex.signatur %] / [% mex.erschverl %]
+%W [% mex.${"X4000"}.content.full %] / [% mex.${"X0016"}.content %] / [% mex.${"X0014"}.content %]
 [% END %]
 [%- END -%]
-
+------------------------------------------
 [% END %]

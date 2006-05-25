@@ -1,9 +1,24 @@
+[%#-
+#######################################################################
+#
+# Templatename: resultlists_choice
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe des Ergebnisses der letzten oder einer ausgewaehlten
+# zurueckliegenden Recherche sowie einer Auswahl-Uebersicht
+# aller bisheriger Recherchen
+#
+#######################################################################
+-%]
 [% PROCESS common/subtemplate name="std_header" %]
 
 <FORM METHOD="GET">
 
 <ul id="tabbingmenu">
-   <li><a class="active" href="[% config.resultlists_loc %]?sessionID=[% sessionID %];trefferliste=choice;view=[% view %]">Trefferliste</a></li>
+   <li><a class="active" href="[% config.resultlists_loc %]?sessionID=[% sessionID %];trefferliste=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a></li>
 </ul>
 
 <div id="content">
@@ -14,9 +29,9 @@
 <table width="100%">
 <tr>
 [% IF queryid %]
-<th>Ausgew&auml;hlte Recherche</th>
+<th>[% msg.maketext("Ausgew&auml;hlte Recherche") %]</th>
 [% ELSE %]
-<th>Aktuelle Recherche</th>
+<th>[% msg.maketext("Aktuelle Recherche") %]</th>
 [% END %]
 </tr>
 
@@ -25,54 +40,54 @@
 <table>
 
 <tr><td colspan="2">(
-[%- IF thisquery.fs -%]
-&nbsp;FS: [% thisquery.fs %] 
+[%- IF thisquery.searchquery.fs.val -%]
+&nbsp;FS: [% thisquery.searchquery.fs.val %] 
 [%- END -%]
-[%- IF thisquery.verf -%]
-&nbsp;AUT: [% thisquery.verf %]
+[%- IF thisquery.searchquery.verf.val -%]
+&nbsp;AUT: [% thisquery.searchquery.verf.val %]
 [%- END -%]
-[%- IF thisquery.hst -%]
-&nbsp;HST: [% thisquery.hst %]
+[%- IF thisquery.searchquery.hst.val -%]
+&nbsp;HST: [% thisquery.searchquery.hst.val %]
 [%- END -%]
-[%- IF thisquery.swt -%]
-&nbsp;SWT: [% thisquery.swt %]
+[%- IF thisquery.searchquery.swt.val -%]
+&nbsp;SWT: [% thisquery.searchquery.swt.val %]
 [%- END -%]
-[%- IF thisquery.kor -%]
-&nbsp;KOR: [% thisquery.kor %]
+[%- IF thisquery.searchquery.kor.val -%]
+&nbsp;KOR: [% thisquery.searchquery.kor.val %]
 [%- END -%]
-[%- IF thisquery.notation -%]
-&nbsp;NOT: [% thisquery.notation %] 
+[%- IF thisquery.searchquery.notation.val -%]
+&nbsp;NOT: [% thisquery.searchquery.notation.val %] 
 [%- END -%]
-[%- IF thisquery.sign -%]
-&nbsp;SIG: [% thisquery.sign %]
+[%- IF thisquery.searchquery.sign.val -%]
+&nbsp;SIG: [% thisquery.searchquery.sign.val %]
 [%- END -%]
-[%- IF thisquery.ejahr -%]
-&nbsp;EJAHR: [% thisquery.ejahr %]
+[%- IF thisquery.searchquery.ejahr.val -%]
+&nbsp;EJAHR: [% thisquery.searchquery.ejahr.val %]
 [%- END -%]
-[%- IF thisquery.isbn -%]
-&nbsp;ISBN: [% thisquery.isbn %]
+[%- IF thisquery.searchquery.isbn.val -%]
+&nbsp;ISBN: [% thisquery.searchquery.isbn.val %]
 [%- END -%]
-[%- IF thisquery.issn -%]
-&nbsp;ISSN: [% thisquery.issn %]
+[%- IF thisquery.searchquery.issn.val -%]
+&nbsp;ISSN: [% thisquery.searchquery.issn.val %]
 [%- END -%]
-[%- IF thisquery.mart -%]
-&nbsp;MART: [% thisquery.mart %]
+[%- IF thisquery.searchquery.mart.val -%]
+&nbsp;MART: [% thisquery.searchquery.mart.val %]
 [%- END -%]
-[%- IF thisquery.hststring -%]
-&nbsp;HSTR: [% thisquery.hststring %] 
+[%- IF thisquery.searchquery.hststring.val -%]
+&nbsp;HSTR: [% thisquery.searchquery.hststring.val %] 
 [%- END -%]
 )</td></tr>
 <tr><td colspan="2"></td></tr>
 
-<tr><td>Katalog</td><td>Treffer</td></tr>
-<tr><td class="listrow2"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %]&trefferliste=all&sortall=0&sorttype=author&queryid=[% thisquery.id %]&view=[% view %]"><b>Alle Treffer</b></a></td><td align=right>[% hitcount %]</td></tr>
+<tr><td>[% msg.maketext("Katalog") %]</td><td>[% msg.maketext("Treffer") %]</td></tr>
+<tr><td class="listrow2"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %]&trefferliste=all&sortall=0&sorttype=author&queryid=[% thisquery.id %]&view=[% view %]"><b>[% msg.maketext("Alle Treffer") %]</b></a></td><td align=right>[% hitcount %]</td></tr>
       
 <tr><td class="listrow1">&nbsp;</td><td align=right>&nbsp;</td></tr>
 
       
 [% listrow = 'listrow2' %]
 [% FOREACH resultdb IN resultdbs %]
-<tr><td class="[% listrow %]"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %]&trefferliste=[% resultdb.trefferdb %]&queryid=[% thisquery.id %]&view=[% view %]"><b>[% resultdb.trefferdbdesc %]</b></a></td><td align=right>[% resultdb.trefferzahl %]</td></tr>
+<tr><td class="[% listrow %]"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %]&trefferliste=[% resultdb.trefferdb %]&queryid=[% thisquery.id %]&view=[% view %]"><b>[% resultdb.trefferdbdesc.full %]</b></a></td><td align=right>[% resultdb.trefferzahl %]</td></tr>
 [% IF listrow == 'listrow1' %]
 [% listrow = 'listrow2' %]
 [% ELSE %]
@@ -91,58 +106,17 @@
 <p />
 
 [% IF queryids.size >= 0 %]
-<form method="get" action="[% config.virtualsearch_loc %]">
-<input type="hidden" name="sessionID" value="[% sessionID %]">
+<form method="get" action="[% config.resultlists_loc %]">
+<input type="hidden" name="sessionID"    value="[% sessionID %]">
 <input type="hidden" name="trefferliste" value="choice">
-<input type="hidden" name="view" value="[% view %]">
+<input type="hidden" name="view"         value="[% view %]">
 	  
-<p><table width=\"100%\"><tr>
+<p><table width="100%"><tr>
 <th>Alle bisherigen Recherchen</th></tr>
 <tr><td class="boxedclear">
-<select name="queryid">
 
-[% FOREACH query IN queries %]	  
-<OPTION value="[% query.id %]">(
-[%- IF query.fs -%]
-&nbsp;FS: [% query.fs %] 
-[%- END -%]
-[%- IF query.verf -%]
-&nbsp;AUT: [% query.verf %]
-[%- END -%]
-[%- IF query.hst -%]
-&nbsp;HST: [% query.hst %]
-[%- END -%]
-[%- IF query.swt -%]
-&nbsp;SWT: [% query.swt %]
-[%- END -%]
-[%- IF query.kor -%]
-&nbsp;KOR: [% query.kor %]
-[%- END -%]
-[%- IF query.notation -%]
-&nbsp;NOT: [% query.notation %] 
-[%- END -%]
-[%- IF query.sign -%]
-&nbsp;SIG: [% query.sign %]
-[%- END -%]
-[%- IF query.ejahr -%]
-&nbsp;EJAHR: [% query.ejahr %]
-[%- END -%]
-[%- IF query.isbn -%]
-&nbsp;ISBN: [% query.isbn %]
-[%- END -%]
-[%- IF query.issn -%]
-&nbsp;ISSN: [% query.issn %]
-[%- END -%]
-[%- IF query.mart -%]
-&nbsp;MART: [% query.mart %]
-[%- END -%]
-[%- IF query.hststring -%]
-&nbsp;HSTR: [% query.hststring %] 
-[%- END -%]
-= Treffer: [% query.hits %])
-</OPTION>
-[% END %]	    
-</select>
+[% PROCESS common/subtemplate name="select_queries" %]
+
 <input type=submit value="Auswahl"></td></tr></table></form>
 
 [% END %]

@@ -1,0 +1,28 @@
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+[% IF show_corporate_banner %]
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+[% END %]
+
+<ul id="tabbingmenu">
+   <li><a class="active" href="/views/einbaende/suchhilfe.html" target="_blank">[% msg.maketext("Fehler") %]</a></li>
+</ul>
+
+<div id="content">
+
+<p />
+<table width="100%">
+<tr><th>[% msg.maketext("Fehlerbeschreibung") %]</th></tr>
+<tr><td class="boxedclear">
+[% errmsg %]
+</td></tr>
+</table>
+
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]
+

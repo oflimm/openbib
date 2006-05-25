@@ -2,7 +2,7 @@
 #
 #  OpenBib::LoadBalancer
 #
-#  Dieses File ist (C) 1997-2004 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -21,10 +21,10 @@
 #  an die Free Software Foundation, Inc., 675 Mass Ave, Cambridge,
 #  MA 02139, USA.
 #
-#####################################################################   
+#####################################################################
 
 #####################################################################
-# Einladen der benoetigten Perl-Module 
+# Einladen der benoetigten Perl-Module
 #####################################################################
 
 package OpenBib::LoadBalancer;
@@ -32,8 +32,10 @@ package OpenBib::LoadBalancer;
 use strict;
 use warnings;
 no warnings 'redefine';
+use utf8;
 
 use Apache::Constants qw(:common REDIRECT);
+use Apache::Reload;
 use Apache::Request ();
 use HTTP::Request;
 use HTTP::Response;
@@ -44,6 +46,7 @@ use Log::Log4perl qw(get_logger :levels);
 use OpenBib::LoadBalancer::Util();
 use OpenBib::Common::Util();
 use OpenBib::Config();
+use OpenBib::L10N;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
@@ -65,67 +68,25 @@ sub handler {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
 
-    my $ua=new LWP::UserAgent(timeout => 5);
+    my $sessiondbh
+        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
+            or $logger->error_die($DBI::errstr);
+    
+    my $queryoptions_ref
+        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+
+    $sessiondbh->disconnect();
+    
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+
     my $urlquery=$r->args;      #query->url(-query=>1);
 
     $urlquery=~s/^.+?\?//;
 
-    # Aktuellen Load der Server holen zur dynamischen Lastverteilung
-    my @servertab=@{$config{loadbalancertargets}};
-
-    my %serverload=();
-
-    foreach my $target (@servertab) {
-        $serverload{"$target"}=-1.0;
-    }
-  
-    my $problem=0;
-  
-    # Fuer jeden Server, auf den verteilt werden soll, wird nun
-    # per LWP der Load bestimmt.
-    foreach my $targethost (@servertab) {
-        my $request  = new HTTP::Request POST => "http://$targethost$config{serverload_loc}";
-        my $response = $ua->request($request);
-
-        if ($response->is_success) {
-            $logger->debug("Getting ", $response->content);
-        }
-        else {
-            $logger->error("Getting ", $response->status_line);
-        }
+    my $bestserver=OpenBib::Common::Util::get_loadbalanced_servername();
     
-        my $content=$response->content();
-    
-        if ($content eq "" || $content=~m/SessionDB: offline/m) {
-            $problem=1;
-        }
-        elsif ($content=~m/^Load: (\d+\.\d+)/m) {
-            my $load=$1;
-            $serverload{$targethost}=$load;
-        }
-    
-        # Wenn der Load fuer einen Server nicht bestimmt werden kann,
-        # dann wird der Admin darueber benachrichtigt
-    
-        if ($problem == 1) {
-            OpenBib::LoadBalancer::Util::benachrichtigung("Es ist der Server $targethost ausgefallen");
-            $problem=0;
-            next;
-        }
-    }
-  
-    my $minload="1000.0";
-    my $bestserver="";
-
-    # Nun wird der Server bestimmt, der den geringsten Load hat
-
-    foreach my $targethost (@servertab) {
-        if ($serverload{$targethost} > -1.0 && $serverload{$targethost} <= $minload) {
-            $bestserver=$targethost;
-            $minload=$serverload{$targethost};
-        }
-    }
-
     # Wenn wir keinen 'besten Server' bestimmen konnten, dann sind alle
     # ausgefallen, dem Benutzer wird eine 'Hinweisseite' ausgegeben
     if ($bestserver eq "") {
@@ -133,13 +94,12 @@ sub handler {
         # TT-Data erzeugen
         my $ttdata={
             title        => 'KUG - Wartungsarbeiten',
-            show_corporate_banner => 0,
-            show_foot_banner      => 1,
             config       => \%config,
+            msg          => $msg,
         };
 
         OpenBib::Common::Util::print_page($config{tt_loadbalancer_tname},$ttdata,$r);
-        OpenBib::LoadBalancer::Util::benachrichtigung("Achtung: Es sind *alle* Server ausgefallen");
+        OpenBib::LoadBalancer::Util::benachrichtigung($msg->maketext("Achtung: Es sind *alle* Server ausgefallen"));
 
         return OK;
     }

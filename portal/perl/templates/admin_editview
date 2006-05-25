@@ -1,31 +1,42 @@
-[% SET title='KUG Administration - View bearbeiten' %]
-[% SET show_foot_banner = 1 %]
-[% PROCESS std_header %]
+[%#-
+#######################################################################
+#
+# Templatename: admin_editview
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Eingabemaske fuer die Meta-Informationen eines einzelnen Views
+#
+#######################################################################
+-%]
+[% PROCESS std_header title='KUG Administration - View bearbeiten' %]
 
   <body bgcolor="#FFFFFF">
 
 [% PROCESS corporate_banner %]
 
 <ul id="tabbingmenu">
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showcat">Kataloge</a></li>
-   <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showviews">Views</a></li>
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showsession">Sessions</a></li>
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=logout">Logout</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">[% msg.maketext("Kataloge") %]</a></li>
+   <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">[% msg.maketext("Views") %]</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">[% msg.maketext("Sessions") %]</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">[% msg.maketext("Logout") %]</a></li>
 </ul>
 
 <div id="content">
 
 <form method="get" action="http://[% config.servername %][% config.admin_loc %]">
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
-<input type="hidden" name="viewid" value="[% view.viewid %]" />
-<input type="hidden" name="viewname" value="[% view.viewname %]" />
-<input type="hidden" name="action" value="editview" />
+<input type="hidden" name="sessionID"   value="[% sessionID %]" />
+<input type="hidden" name="viewid"      value="[% view.viewid %]" />
+<input type="hidden" name="viewname"    value="[% view.viewname %]" />
+<input type="hidden" name="do_editview" value="1" />
 
 <table width="100%">
-<tr><th>View bearbeiten</th></tr>
+<tr><th>[% msg.maketext("View bearbeiten") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:12pt">
 <table>
-<tr><td><b>Viewname</b></td><td><b>Beschreibung</b></td><td><b>Aktiv</b></td><td></td></tr>
+<tr><td><b>[% msg.maketext("Viewname") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td><td></td></tr>
 
 <tr><td><span style="color:blue">[% view.viewname %]</span></td><td><input type="text" name="description" value="[% view.description %]" size="40" /></td>
 <td><select
@@ -33,16 +44,16 @@ name=active><option value="1"
 [% IF active == 1 %]
 selected
 [% END %]
->Ja</option><option value="0" 
+>[% msg.maketext("Ja") %]</option><option value="0" 
 [% IF active == 0 %]
 selected
 [% END %]
->Nein</option></select>
+>[% msg.maketext("Nein") %]</option></select>
 </td></tr>
 </table>
 <p />
 
-<b>Katalogauswahl zu diesem View</b><br /><br />
+<b>[% msg.maketext("Katalogauswahl zu diesem View") %]</b><br /><br />
 
 <select name="viewdb" multiple="multiple">
 
@@ -63,12 +74,66 @@ selected="selected"
 [% END %]
 
 
-<select>
+</select>
+
 
 <p />
+
+<b>[% msg.maketext("RSS-Feed zu diesem View") %]</b><br /><br />
+
+<select name="rssfeeds" multiple="multiple">
+
+[% FOREACH singlefeed IN view.allrssfeeds %]
+[% feedid = singlefeed.feedid %]
+
+<option value="[% feedid %]"
+
+[% IF view.viewrssfeed.${feedid} %]
+selected="selected"
+[% END %]
+
+
+>[% singlefeed.dbname %] / [% singlefeed.type %] /
+[%singlefeed.subtype %]</option>
+
+[% END %]
+
+
+</select>
+
+
+<p />
+
+<p />
+
+<b>[% msg.maketext("Welcher RSS-Feed soll der prim&auml;re Feed f&uuml;r das Browser Auto-Discovery sein") %]</b><br /><br />
+
+<select name="primrssfeed">
+
+[% FOREACH singlefeed IN view.allrssfeeds %]
+[% feedid = singlefeed.feedid %]
+
+<option value="[% feedid %]"
+
+[% IF view.primrssfeed.${feedid} %]
+selected="selected"
+[% END %]
+
+
+>[% singlefeed.dbname %] / [% singlefeed.type %] /
+[%singlefeed.subtype %]</option>
+
+[% END %]
+
+
+</select>
+
+
+<p />
+
 <table width="100%">
-<tr><td align="left"><input type="submit" name="viewaction"
-value="&Auml;ndern" /></td><td>&nbsp;</td><td align="right"><input type="submit" name="viewaction" value="L&ouml;schen" /></td></tr>
+<tr><td align="left"><input type="submit" name="do_change"
+value="[% msg.maketext("Ändern") %]" /></td><td>&nbsp;</td><td align="right"><input type="submit" name="do_del" value="[% msg.maketext("Löschen") %]" /></td></tr>
 </table>
 </td></tr>
 </table>

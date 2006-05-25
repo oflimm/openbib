@@ -1377,10 +1377,15 @@ sub grundform {
         $content=~s/(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?([0-9xX])/$1$2$3$4$5$6$7$8/g;
     }
 
-    # Stopwoerter fuer versch. Kategorien ausfiltern
+    # Stopwoerter fuer versch. Kategorien ausfiltern (Titel-String)
 
     if ($category eq "0304" || $category eq "0310" || $category eq "0331"
             || $category eq "0341" || $category eq "0370"){
+
+        $content=~s/¬//g;
+        $content=~s/\s+$//;
+        $content=~s/\s+<.*?>//g;
+
         $content=OpenBib::Common::Stopwords::strip_first_stopword($content);
     }
     

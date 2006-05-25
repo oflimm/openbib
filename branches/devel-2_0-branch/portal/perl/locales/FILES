@@ -133,3 +133,10 @@
 ../templates/database/einbaende/search_showtitset
 ../templates/database/einbaende/visible_categories_coverset
 ../templates/database/einbaende/visible_categories_titset
+../templates/views/richter/searchframe_simple
+../templates/views/richter/corporate_banner
+../templates/views/richter/headerframe
+../templates/views/richter/leave
+../templates/views/richter/searchframe
+../templates/views/richter/startopac
+../templates/views/richter/std_footer

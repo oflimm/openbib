@@ -64,7 +64,7 @@
 %\begin{verbatim}
 
 
-%Copyright (c) 2004 Oliver Flimm <flimm@openbib.org>
+%Copyright (c) 2004-2006 Oliver Flimm <flimm@openbib.org>
 
 %Es wird die Erlaubnis gegeben dieses Dokument zu kopieren, verteilen 
 %und/oder zu veraendern unter den Bedingungen der GNU Free
@@ -109,12 +109,13 @@ Verwendung des OpenBib-Portals in entgegengesetzter Richtung von
 
 \section{Die datenbankabh"angige Schicht 1 -- \texttt{OpenBib::Search}}
 
-In der untersten, der datenbankabh"angigen Schicht greift das Perl-Modul
-\texttt{OpenBib::Search} auf eine feste Datenbank zu. Welche
-Datenbank dies ist, kann als Aufrufparamter dem Programm mitgegeben
-werden. Dadurch ist es m"oglich, das gleiche Programm f"ur Recherchen
-"uber ver\-schie\-de\-ne Daten\-banken zu nutzen. Das Modul selbst -- wie
-auch alle anderen unter \texttt{openbib/portal} angesiedelten -- ist als
+In der untersten, der datenbankabh"angigen Schicht greift das
+Perl-Modul \texttt{OpenBib::Search} auf eine feste Datenbank zu.
+Welche Datenbank dies ist, kann als Aufrufparamter dem Programm
+mitgegeben werden. Dadurch ist es m"oglich, das gleiche Programm f"ur
+Recherchen "uber ver\-schie\-de\-ne Daten\-banken zu nutzen. Das Modul
+selbst -- wie auch alle anderen unter
+\texttt{openbib/portal/perl/modules} angesiedelten -- ist als
 Erweiterung des Apache-Webservers via \texttt{mod\_perl} realisiert.
 Dadurch arbeitet es au"ser\-ordentlich schnell.
 
@@ -124,11 +125,13 @@ Dadurch arbeitet es au"ser\-ordentlich schnell.
 Die datenbank"ubergreifende Recherche geschieht in der "uber
 \texttt{OpenBib::Search} liegenden Schicht 2 (vgl. Abb.
 \ref{bild:architektur}) mit dem Perl-Modul
-\texttt{OpenBib::VirtualSearch}. Aufgabe dieses Programms ist es,
-eine Suchanfrage und eine Anzahl an Recherche-Datenbanken vom Benutzer
-entgegen\-zuneh\-men und genau diese eine Suchanfrage sequentiell an das
-Modul \texttt{OpenBib::Search} f"ur jede der "ubergebenen
-Datenbanken zu schicken. 
+\texttt{OpenBib::VirtualSearch}. Aufgabe dieses Modules ist es, eine
+Suchanfrage und eine Anzahl an Recherche-Datenbanken vom Benutzer
+entgegen\-zuneh\-men und genau diese eine Suchanfrage sequentiell an
+jede der "ubergebenen Datenbanken zu schicken. Zu diesem Zweck werden
+entsprechende Utility-Routinen aus dem im
+\texttt{OpenBib::Search}-Kontext angesiedelten Modul
+\texttt{OpenBib::Search::Util} verwendet.
 
 Die Ergebnisse der einzelnen Recherchen werden entgegengenommen und in
 Listenform auf\-be\-rei\-tet. Die jeweiligen Titel selbst sind in dieser
@@ -151,20 +154,22 @@ m"ochte, oder katalog"ubergreifend Recherchieren m"ochte.
 Da in jedem Katalog die Verkn"upfungen bereits in der Datenbank
 existieren, ist ein 'sich treiben lassen' in einem festen Katalog
 au"ser\-ordentlich schnell, w"ahrend bei einer katalog"ubergreifenden
-Suche ein kleiner Tribut zu zahlen ist, da nun alle Datenbanken mit
-einer 'neuen Suche' abgefragt werden.
+Suche ein kleiner Tribut zu zahlen ist, da nun effektiv wieder alle
+Datenbanken mit einer 'neuen Suche' abgefragt werden.
 
 Da \texttt{OpenBib::VirtualSearch} letztlich f"ur die
-datenbank"ubergreifende Gewinnung der Recherche\-er\-geb\-nisse zust"andig
-ist, werden nach erfolgreicher Recherche die Ergebnisse aufgeteilt
-nach den einzelnen Katalogen in der Session-Datenbank \texttt{session}
-'gecached'. Durch das Caching der Re\-cher\-che\-ergebnisse kann von
-\texttt{OpenBib::VirtualSearch} auch eine Trefferlistenfunktionalit"at
-geleistet werden, in der man "uber die Ergebnisse der letzten
-Recherche hinaus auch noch direkt auf die Ergebnisse jeder zuvor eingegebenen
-Suche in der aktuellen Session zugreifen kann.
+datenbank"ubergreifende Gewinnung der Recherche\-er\-geb\-nisse
+zust"andig ist, werden nach erfolgreicher Recherche die Ergebnisse
+aufgeteilt nach den einzelnen Katalogen in der Session-Datenbank
+\texttt{session} 'gecached'. Durch das Caching der
+Re\-cher\-che\-ergebnisse kann im Kontext von der Portal-Schicht 3
+"ueber das dort angesiedelte Modul \texttt{OpenBib::ResultLists} auch
+eine Trefferlistenfunktionalit"at geleistet werden, in der man "uber
+die Ergebnisse der letzten Recherche hinaus auch noch direkt auf die
+Ergebnisse jeder zuvor eingegebenen Suche in der aktuellen Session
+zugreifen kann.
 
-\section{Die Portal-Schicht 3 mit ihren externen Zugriffmechanismen}
+\section{Die Portal-Schicht 3 mit weiteren externen Zugriffmechanismen}
 
 \subsection{Das Portal mit Session- und Benutzerverwaltung}
 
@@ -175,16 +180,17 @@ geliefert.
 Der Einsprung-URL in das Portal wird durch das Modul
 \texttt{OpenBib::StartOpac} realisiert.
 
-Das Modul \texttt{OpenBib::StartOpac} kann "uber verschiedene Parameter
-gesteuert werden, die z.B. f"ur den direkten Sprung zu einem Treffer
-einer Datenbank oder der Anzeige einer katalogeigenen Sicht des
-Portals Verwendung finden und gegebenenfalls an nachgelagerte Module
-durchgereicht werden. Seine wesentliche Aufgabe ist jedoch, eine
-eindeutige Session-ID zu generieren sowie ein Frameset mit zwei Frames
-bereitzustellen.  Das obere Frame f"ur die Navigation wird durch das Modul
-\texttt{OpenBib::HeaderFrame} gef"ullt, das untere Frame standardm"a"sig
-zuerst durch das Modul \texttt{OpenBib::SearchFrame}, das dem
-Navigations-Element 'Recherche' entspricht.
+Das Modul \texttt{OpenBib::StartOpac} kann "uber verschiedene
+Parameter gesteuert werden, die z.B. f"ur den direkten Sprung zu einem
+einzelnen Treffer einer Datenbank oder der Anzeige einer
+katalogeigenen Sicht des Portals Verwendung finden und gegebenenfalls
+an nachgelagerte Module durchgereicht werden. Seine wesentliche
+Aufgabe ist jedoch, eine eindeutige Session-ID zu generieren sowie ein
+Frameset mit zwei Frames bereitzustellen.  Das obere Frame f"ur die
+Navigation wird durch das Modul \texttt{OpenBib::HeaderFrame}
+gef"ullt, das untere Frame standardm"a"sig zuerst durch das Modul
+\texttt{OpenBib::SearchFrame}, das dem Navigations-Element 'Einfache
+Recherche' bzw. 'Komplexe Recherche' entspricht.
 
 Das Modul \texttt{OpenBib::HeaderFrame} ist f"ur die Navigation im Portal
 inklusive Counter f"ur die Merkliste zust"andig.
@@ -192,13 +198,13 @@ inklusive Counter f"ur die Merkliste zust"andig.
 In der Navigation werden folgende Funktionalit"aten angeboten:
 
 \begin{description}
-\item[Kataloge] Die Auswahl der zu durchsuchenden Kataloge geschieht
+\item[Katalogauswahl] Die Auswahl der zu durchsuchenden Kataloge geschieht
   "uber eine entsprechende Aus\-wahl\-seite, die durch das Modul
   \texttt{OpenBib::DatabaseChoice} generiert wird.
 \item[Recherche] Die Recherche-Maske wird "uber einen Aufruf von
   \texttt{OpenBib::SearchFrame} dargestellt.
 \item[Trefferliste] Ein Zugriff auf Trefferlisten aus vorangegangenen
-  Recherchen geschieht "uber das Modul \texttt{OpenBib::VirtualSearch},
+  Recherchen geschieht "uber das Modul \texttt{OpenBib::ResultLists},
   welches neben der verteilten Recherche auch f"ur ein Caching der
   Ergebnis-Daten zust"andig ist.
 \item[Merkliste] Die Anzeige, Organisation sowie der Mailversand der
@@ -207,7 +213,10 @@ In der Navigation werden folgende Funktionalit"aten angeboten:
   "uber\-nom\-men. Bei Auswahl eines Treffers f"ur die Merkliste wird
   \texttt{OpenBib::HeaderFrame} aktualisiert, und zeigt die neue Zahl
   gemerkter Treffer an.
-\item[Login / Benutzereinstellungen] "Uber das Modul \texttt{OpenBib::Login}
+\item[RSS] "Uber das Modul \texttt{OpenBib::RSSFrame} wird eine zu
+  diesem View zugeordnete Liste an RSS-Feeds f"ur die letzten 50
+  Neuaufnahmen der entsprechenden Kataloge ausgegeben.
+\item[Mein OpenBib] "Uber das Modul \texttt{OpenBib::Login}
   kann sich der Benutzer am Portal authentifizieren und so von
   weiteren personalisierten Funktionalit"aten profitieren. Dazu
   geh"oren neben generellen Benutzereinstellungen
@@ -216,13 +225,15 @@ In der Navigation werden folgende Funktionalit"aten angeboten:
 
   Das Modul gew"ahrt dabei den Zugang auf Grundlage seiner eigenen
   Datenbank, die "uber das Modul \texttt{OpenBib::SelfReg} via
-  Selbstregistierung gef"ullt wird, bzw. von Fremddatenbanken des
-  Bibliothekssystems Sisis SunRise "uber die SLNP-Schnittstelle der
-  gleichnamigen Firma. Falls ein Benutzer sein selbstregistriertes
-  Passwort vergessen hat, so kann er es sich "uber das Modul
-  \texttt{OpenBib::MailPassword} per Mail zusenden lassen.
+  Selbstregistierung gef"ullt wird, bzw. auf Grundlage von lokalen
+  Bibliothekssystemen -- hier wird konkret das Bibliothekssystem Sisis
+  SunRise unterst"utzt --, die "uber eine selbst entwicklte
+  WebServices-Schnittstelle OLWS (Open Library WebServices)
+  angesprochen werden k"onnen. Falls ein Benutzer sein
+  selbstregistriertes Passwort vergessen hat, so kann er es sich "uber
+  das Modul \texttt{OpenBib::MailPassword} per Mail zusenden lassen.
 \item[Hilfe] Die Hilfeseite wird direkt als URL
-  \texttt{/suchhilfe.html} angesprochen
+  \texttt{/suchhilfe.html} angesprochen.
 \item[Sitzung beenden] Beim Ende der Sitzung wird zum Modul
   \texttt{OpenBib::Leave} gesprungen, welches die sessionrelevanten Daten
   entfernt sowie einen URL in die Schicht 4 zur Lastver\-teilungs\-instanz
@@ -235,12 +246,13 @@ In der Navigation werden folgende Funktionalit"aten angeboten:
 \subsection{Externe Anbindung an die DigiBib}
 
 Neben der Bereitstellung einer Recherche- und Arbeitsoberfl"ache f"ur
-den Endbenutzer, besteht auch die M"oglichkeit automatisiert auf den
-Gesamtkatalog zuzugreifen.
+den Endbenutzer, besteht auch die M"oglichkeit "uber eine externe
+Zugriffs-Schnittstelle automatisiert auf den Gesamtkatalog
+zuzugreifen.
 
 Eine solche M"oglichkeit besteht in der Einbindung in das Such-Portal
 \textbf{Digitale Bibliothek NRW} (DigiBib) des
-Hoch\-schul\-bibliotheks\-zentrum NRW. Das Suchinterface besteht aus
+Hoch\-schul\-bibliotheks\-zentrum NRW (hbz). Das Suchinterface besteht aus
 einem fest definierten Such-URL und einem fest definierten
 HTML-basierten Antwortformat f"ur die Treffer. Grunds"atzlich wird auf
 eine Rechercheanfrage, z.B. unter Angabe eines Suchbegriffes f"ur den
@@ -255,7 +267,7 @@ den Einzeltreffer aufzurufen.
 \subsection{Externe Anbindung an UK-Online}
 
 Eine weitere Anbindung besteht in das Universit"atsportal UK-Online
-von Herrn Dr. Lohnstein aus der Philosophischen Fakult"at der
+von Herrn Prof. Lohnstein aus der Philosophischen Fakult"at der
 Universit"at zu K"oln. Hier wird in UK-Online die M"oglichkeit
 angeboten eigenen Bibliographie-Listen zu verwalten. Der Aufbau einer
 solchen Bibliographie-Liste geschieht "uber die Recherche in OpenBib
@@ -272,7 +284,8 @@ Die Lastverteilungs-Schicht ist der erste Anlaufpunkt f"ur die
 Benutzung von OpenBib. Diese Schicht wird f"ur das Portal durch das
 Modul \texttt{OpenBib::LoadBalancer} und \texttt{OpenBib::ServerLoad} gebildet.
 Entscheidungsgrundlage f"ur die Verteilung ist die Auslastung der
-betroffenen Recher bzw. deren generelle Ansprechbarkeit.
+betroffenen Recher, deren generelle Ansprechbarkeit sowie die
+generelle Funktionsf"ahigkeit des MySQL-Datenbanksystems.
 
 Durch diese vorgeschaltete Verteilung der Recherche-Sitzungen auf
 mehrere Rechner ergeben sich mehrere Vorteile:
@@ -280,9 +293,10 @@ mehrere Rechner ergeben sich mehrere Vorteile:
 \begin{enumerate}
 \item Es wird eine Lastverteilung durchgef"uhrt. Wenn also ein Nutzer
   einen dieser URL's aufruft, so wird er auf den Rechner
-  weitergeleitet, der am wenigsten zu tun hat.  Dies ist prim"arer
+  weitergeleitet, der am wenigsten belastet ist.  Dies ist prim"arer
   Zweck dieser Schicht.
-\item Ist ein Rechner defekt (im Sinne von tot), dann wird er bei der
+\item Ist ein Rechner defekt -- im Sinne von 'nicht ansprechbar'
+  bzw. 'DBMS-seitig nicht funktionsfaehig' --, dann wird er bei der
   Verteilung/Weiterleitung nicht mehr ber"ucksichtigt und die Benutzer
   werden nur noch auf die verbliebenen Rechner verteilt. In diesem
   Fall ist bei der Weiterleitung mit einer kurzen Wartezeit von
@@ -292,7 +306,9 @@ mehrere Rechner ergeben sich mehrere Vorteile:
   'Verteilungs\-rech\-ner' selbst, bei dessen Ableben tempor"ar ein
   anderer Rechner unter seiner Identitaet einspringen mu"s. Letzteres
   kann selbstverst"andlich nicht automatisch geschehen und muss
-  manuell konfiguriert werden.
+  manuell konfiguriert werden. In diesem Sinn besteht mit dem
+  Lastverteilungsrechner ein Singe-Point-Of-Failure, der nur "uber
+  HA-Mechanismen ausger"aumt werden kann.
 \item Werden Wartungsarbeiten auf einem der Rechner ausgef"uhrt, so
   kann man ihn selbst tempor"ar aus der Verteilung/Weiterleitung
   herausnehmen. Auf diese Weise "andert sich f"ur die Nutzer nichts,
@@ -306,23 +322,70 @@ mehrere Rechner ergeben sich mehrere Vorteile:
 In diesem Anhang werden die einzelnen Tabellen in der
 Session-Datenbank beschrieben.
 
+Diese Tabellen verteilen sich auf rein session-basierte Aufgaben sowie
+allgemeine Konfigurationseinstellungen des Portals.
+
+
+\section{Tabellen zu session-basierten Aufgaben}
+
 \begin{description}
 \item[session] Dies ist die prim"are Tabelle in der die
   \texttt{sessionid} f"ur eine Nutzersitzung abgespeichert wird.
-  Zus"atzlich wird die Anfangszeit der Session \texttt{createtime}
+  Zus"atzlich werden folgende Informationen gespeichert:
+  \begin{description}
+  \item[createtime] Anfangszeit der Session.
+  \item[lastresultset] Geordnete Liste der Katalog-ID's zur letzten
+    Rechercheanfrage. Mit dieser Liste wird die katalog"ubergreifende
+    Titelnavigation in der Einzeltrefferanzeige realisiert.
+  \item[queryoptions] Allgemeine Suchoptionen. Durch die zentrale Speicherung der
+    Suchoptionen brauchen diese nicht bei den internen URL-Verweisen
+    verwendet werden.
+  \end{description}
+die Anfangszeit der Session \texttt{createtime}
   gespeichert. 
 \item[treffer] Diese Tabelle realisiert sessionabh"angig die
   \textbf{Merkliste}. Es werden zu jeder Session der Datenbankname sowie die
-  Identifikations-Nr des gemerkten Titels abgespeichert.
+  Identifikations-Nr des gemerkten Titels abgespeichert. Anhand dieser
+  Informationen wird die Merkliste bei ihrem Aufruf sekundenaktuell
+  mit dem etwaig vorhandenen Ausleihstatus der entsprechenden
+  Titels"atze aufgebaut.
 \item[sessionlog] Diese Tabelle soll im Betrieb mit relevanten
   Informationen gef"ullt werden, die dann statistisch ausgewertet
   werden k"onnen. Derzeit wird sie nicht verwendet.
 \item[queries] In dieser Tabelle werden sessionabh"angig die
   Suchanfragen inkl. gefundener Treffer ab\-ge\-spei\-chert. Dadurch ist es
-  m"oglich sich "altere Suchanfragen wieder in die Recherchemaske
+  m"oglich, sich "altere Suchanfragen wieder in die Recherchemaske
   eintragen zu lassen.
 \item[dbchoice] In dieser Tabelle wird die vom Benutzer vorgenommene
   Datenbankauswahl session\-ab\-h"angig abgespeichert.
+\item[searchresults] In dieser Tabelle wird session\-ab\-h"an\-gig zu jeder
+  Suchanfrage (\texttt{queryid} der \texttt{queries}-Tabelle) pro
+  Datenbank das Ergebnis gecached. Zus"atzlich wird jeweils auch noch
+  die Anzahl der Treffer in der jeweiligen Datenbank
+  ab\-ge\-spei\-chert. Durch diese Tabelle in Verbindung mit der Tabelle
+  \texttt{queries} wird die \textbf{Trefferliste} realisiert.
+\item[sessionview] "Uber diese Tabelle wird die Nutzung eines Views
+  durch eine Session festgehalten. Diese Information wird ben"otigt,
+  damit im oberen Frame (\texttt{OpenBib::HeaderFrame}) wie auch in der
+  Recherchemaske (\texttt{OpenBib::SearchFrame}) die View-Informationen
+  zus"atzlich angezeigt werden. Derzeit wird in \texttt{OpenBib::HeaderFrame}
+  auf ein Bild mit dem Namen des Views
+\begin{verbatim}
+HTDOCS/images/openbib/views/<viewname>.png
+\end{verbatim}
+
+  verwiesen.
+\item[sessionmask] In dieser Tabelle wird festgehalten, welche
+  Recherchemaske -- Einfache Recherche oder Komplexe Recherche -- der
+  Nutzer zuletzt aktiviert hat. Bei einer Aktivierung des allgemeinen
+  Ober-Menueintrags 'Recherche' wird dann diese konkrete
+  Recherchemaske ausgegeben.
+\item[sessionprofile] \dots
+\end{description}
+
+\section{Tabellen zu allgemeinen Konfigurationseinstellungen des Portals}
+
+\begin{description}
 \item[dbinfo] In dieser Tabelle werden Informationen zu den einzelnen
   Katalogdatenbanken ab\-ge\-spei\-chert. Dazu geh"ort die Fakult"at
   (\texttt{faculty}, derzeit fest in den Modulen einprogrammiert),
@@ -346,13 +409,13 @@ Session-Datenbank beschrieben.
   \texttt{OpenBib::SearchFrame} f"ur den Benutzer ausgegeben. Das Setzen
   dieser Werte geschieht "uber die automatischen
   Konvertierungsskripte.
-\item[searchresults] In dieser Tabelle wird session\-ab\-h"an\-gig zu jeder
-  Suchanfrage (\texttt{queryid} der \texttt{queries}-Tabelle) pro
-  Datenbank das Ergebnis gecached. Zus"atzlich wird jeweils auch noch
-  die Anzahl der Treffer in der jeweiligen Datenbank
-  ab\-ge\-spei\-chert. Durch diese Tabelle in Verbindung mit der Tabelle
-  \texttt{queries} wird die \textbf{Trefferliste} realisiert.
-
+\item[rssfeeds] In dieser Tabelle werden alle verfuegbaren Typen an RSS-Feeds
+  zu den einzelnen Datenbank aus \texttt{dbinfo} definiert. Die
+  RSS-Feeds lassen sich hier nach deren Konfiguration generell
+  aktivieren sowie deaktivieren.
+\item[rsscache] Um die Antwortzeiten bei der Generierung eines
+  RSS-Feeds zu minimieren, wird ein RSS-Cache mit einer
+  Aktivit"atsdauer von 12 Stunden verwendet.
 \item[viewinfo] In dieser Tabelle werden zu einer Recherche-Sicht
   (view) neben dem den View de\-fi\-nier\-enden Viewnamen
   (\texttt{viewname}) auch eine Beschreibung \texttt{description}
@@ -361,21 +424,13 @@ Session-Datenbank beschrieben.
 \item[viewdbs] In dieser Tabelle werden zu dem Viewnamen die Datenbanken
   festgelegt, die mit der konkreten Recherche-Sicht assoziiert
   sind. Hier k"onnen auch mehrere Datenbanken ein\-ge\-tra\-gen werden.
-\item[sessionview] "Uber diese Tabelle wird die Nutzung eines Views
-  durch eine Session festgehalten. Diese Information wird ben"otigt,
-  damit im oberen Frame (\texttt{OpenBib::HeaderFrame}) wie auch in der
-  Recherchemaske (\texttt{OpenBib::SearchFrame}) die View-Informationen
-  zus"atzlich angezeigt werden. Derzeit wird in \texttt{OpenBib::HeaderFrame}
-  auf ein Bild mit dem Namen des Views 
-
-\begin{verbatim}
-HTDOCS/images/kvik/views/<viewname>.png
-\end{verbatim}
-
-  verwiesen sowie in \texttt{OpenBib::SearchFrame} ein fester Satz unter
-  Einbeziehung der Be\-schrei\-bung des Views ausgegeben.
+\item[viewrssfeeds] In dieser Tabellen werden zu einem View die
+  RSS-Feeds konfiguriert, die in diesem View "uber den Menu-Punkt
+  \texttt{RSS} angezeigt werden sollen
 
 \end{description}
+
+
 
 \chapter{Tabellen in \texttt{pool.mysql}}
 

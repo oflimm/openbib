@@ -46,7 +46,7 @@
   \vspace{2cm}
 
   Oliver Flimm \texttt{<flimm@openbib.de>}\\
-  Stand: \today
+  Stand: 17.12.2005
 
   \vspace{8cm}
 
@@ -621,9 +621,21 @@ apt-get install libwww-perl
 \begin{verbatim}
 apt-get install libdbi-perl libdbd-mysql-perl
 \end{verbatim}
+\item DBD::Pg (fuer econbiz)
+\begin{verbatim}
+apt-get install libdbd-pg-perl
+\end{verbatim}
 \item Log4Perl
 \begin{verbatim}
 apt-get install liblog-log4perl-perl libipc-shareable-perl liblog-dispatch-perl
+\end{verbatim}
+\item Date::Manip
+\begin{verbatim}
+apt-get install libdate-manip-perl
+\end{verbatim}
+\item Locale::Maketext::Lexicon
+\begin{verbatim}
+apt-get install liblocale-maketext-lexicon-perl
 \end{verbatim}
 \item MIME::Lite
 \begin{verbatim}
@@ -636,6 +648,10 @@ apt-get install libemail-valid-perl
 \item YAML
 \begin{verbatim}
 apt-get install libyaml-perl
+\end{verbatim}
+\item XML::RSS
+\begin{verbatim}
+apt-get install libxml-rss-perl
 \end{verbatim}
 \item SOAP::Lite
 \begin{verbatim}
@@ -814,7 +830,7 @@ adminpasswd   => 'NochGeheimer',
   Zahlen eine Reihenfolge gebracht werden kann, und eine Beschreibung
   \texttt{desc}. 
 \begin{verbatim}
-units => [
+orgunits => [
           {
            "short","0ungeb",
            "desc","Fakult&auml;tsungebunden",

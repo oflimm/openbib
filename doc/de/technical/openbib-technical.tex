@@ -83,61 +83,61 @@
 
 
 \chapter{Generelle Features}
-Um einen schnellen "Uberblick von den F"ahigkeiten und M"oglichkeiten
-des OpenBib Recherche-Portals in der Version 2.0 und h"oher zu
-bekommen sowie eine Entscheidungshilfe f"ur einen m"oglichen Einsatz
-zu geben, beginnt dieses technische Handbuch mit einer Aufz"ahlung der
+Um einen schnellen Überblick von den Fähigkeiten und Möglichkeiten 
+des OpenBib Recherche-Portals in der Version 2.0 und höher zu
+bekommen sowie eine Entscheidungshilfe für einen möglichen Einsatz
+zu geben, beginnt dieses technische Handbuch mit einer Aufzählung der
 generellen Features des Portals.
 
 \section{OpenBib ist OpenSource}
 Bei dem OpenBib Recherche-Portal handelt es sich um
 OpenSource-Software. Damit ist eine maximale Freiheit bei der
-Anpassung an die individuellen Anforderungen gew"ahrleistet.
-Dar"uber hinaus ist die Eintrittsschwelle in die "Anderung oder
+Anpassung an die individuellen Anforderungen gewährleistet.
+Darüber hinaus ist die Eintrittsschwelle in die Änderung oder
 Erweiterung des Portals durch die Ver\-wen\-dung des DBMS Mysql (Model),
 des Template Toolkits (View), der Programmiersprache Perl (Control\-ler)
-sowie von GNU gettext (I18N/L10N) "au"serst niedrig. Schlie"slich
-fallen selbst\-ver\-st"and\-lich keine (Lizenz-)Kosten an.
+sowie von GNU gettext (I18N/L10N) äußerst niedrig. Schließlich
+fallen selbst\-ver\-ständ\-lich keine (Lizenz-)Kosten an.
 
 
 \section{OpenBib basiert auf Standardkomponenten und bibliothekarischen Standards}
-OpenBib verwendet durchg"angig Standardkomponenten. Es sind dies
+OpenBib verwendet durchgängig Standardkomponenten. Es sind dies
 \begin{description}
 \item[Apache Webserver mit mod\_perl] Durch die Verwendung des
   meistgenutzten OpenSource Web\-servers der Welt mit mod\_perl ist OpenBib als
   Webanwendung direkt in den Web\-server integriert. Damit wird eine
-  schnellstm"ogliche Reaktionszeit f"ur die Webanwendung erreicht.
+  schnellstmögliche Reaktionszeit für die Webanwendung erreicht.
 \item[MySQL DBMS] MySQL ist eines der meist genutzten OpenSource
   Datenbanksysteme. Durch die Verwendung der in MySQL integrierten
-  Volltextsuche ist eine sehr schnelle Indizierung und Recherche m"oglich.
+  Volltextsuche ist eine sehr schnelle Indizierung und Recherche möglich.
 \item[Perl] Die Programmiersprache Perl zeichnet sich durch eine weite
   Verbreitung und eine niedrige Eingangsschwelle aus (Motto: There's
   more than one way to do it).
 \item[Perl Template Toolkit] Durch das Perl Template Toolkit wird die
   gesamte Darstellung im Re\-cher\-che-Portal realisiert. Durch seine
-  Einfachheit aber auch seiner M"achtigkeit kann durch die Abspaltung
+  Einfachheit aber auch seiner Mächtigkeit kann durch die Abspaltung
   der Ansichts-Komponente an Webdesigner oder Nicht-Programmierer sehr
   gut eine Arbeitsteilung erreicht werden. Im Vergleich zu XSLT ist
-  die Learning Curve des Template Toolkits sehr flach, so da"s
-  z.B. eine Auslagerung an einen Bibliothekar problemlos m"oglich ist.
-\item[CSS] F"ur die Darstellung werden in den Templates vielf"altige
-  CSS-Klassen verwendet, die zentral angepasst werden k"onnen.
-\item[GNU gettext] F"ur die Anpassung des Portals an andere Sprachen
+  die Learning Curve des Template Toolkits sehr flach, so daß
+  z.B. eine Auslagerung an einen Bibliothekar problemlos möglich ist.
+\item[CSS] Für die Darstellung werden in den Templates vielfältige
+  CSS-Klassen verwendet, die zentral angepasst werden können.
+\item[GNU gettext] Für die Anpassung des Portals an andere Sprachen
   hat sich in vielen Projekten (z.B. bei KDE mit mehr als 40
   Sprachversionen) GNU gettext mit seinen Werkzeugen
-  bew"ahrt. W"ahrend andere Systeme z.B. numerische Message-Idendifier
+  bewährt. Während andere Systeme z.B. numerische Message-Idendifier
   verwenden und dadurch etwaig verwendete Templates unlesbar machen,
   wird bei GNU gettext die jeweilige Meldung in einer Basissprache
   -- bei OpenBib ist dies Deutsch -- mit einem Methodenaufruf
-  gekapselt (inkl. weiterer m"oglicher Parameter), so da"s die
+  gekapselt (inkl. weiterer möglicher Parameter), so daß die
   Templates durchschaubar bleiben.
-\item[SOAP] F"ur die Kommunikation mit externen Systemen wird das
+\item[SOAP] Für die Kommunikation mit externen Systemen wird das
   Standard-Protokoll SOAP ver\-wen\-det.
-\item[RSS] "Uber RSS-Feeds k"onnen verschiedene Informationen f"ur das
+\item[RSS] Über RSS-Feeds können verschiedene Informationen für das
   Gesamtportal bzw. View-basierte Unter-Portale angeboten werden.
 \item[UTF-8] Die Darstellung und interne Verarbeitung der Daten
-  geschieht im Encoding UTF-8. Damit sind auch Datenbest"ande, die
-  nicht auf ISO-8859-1 basieren, vollst"andig integrierbar.
+  geschieht im Encoding UTF-8. Damit sind auch Datenbestände, die
+  nicht auf ISO-8859-1 basieren, vollständig integrierbar.
 \item[log4Perl] Durch die Verwendung des Logging-Frameworks log4Perl
   (Perl-Pendant zum bekannten log4j aus der Java-Welt) kann zu
   jeder Zeit an jeder Stelle des Portals ein Debugging erfolgen
@@ -145,44 +145,44 @@ OpenBib verwendet durchg"angig Standardkomponenten. Es sind dies
 \end{description}
 
 Das Datenmodell und das zugrundeliegende Meta-Datenformat basieren auf
-dem biblio\-the\-ka\-ri\-schen Standard MAB2. Dar"uber hinaus ist seit der
+dem biblio\-the\-ka\-ri\-schen Standard MAB2. Darüber hinaus ist seit der
 Ur-Version des Recherche-Portals im Jahr 1997 sehr viel
 bibliothekarisches Know-How in die Entwicklung mit eingeflossen.
 
 
-\section{OpenBib ist "uber verschiedene Views bzw. Sichten
+\section{OpenBib ist über verschiedene Views bzw. Sichten
   individualisierbar}
-Mit OpenBib k"onnen "uber das Merkmal \textit{View}
+Mit OpenBib können über das Merkmal \textit{View}
 bzw. \textit{Sicht} ausgehend von einer zentralen In\-stal\-la\-tion mit
 geringstem Aufwand individuell gestaltete andere Portale erstellt
 werden. Hierzu wird ein einfacher Mechanismus kaskadierender Templates
 und Stylesheets verwendet. Dieser Mechanismus funktioniert sowohl
-view- wie auch datenbankabh"angig. 
+view- wie auch datenbankabhängig. 
 
 Wird fuer eine Datenbank oder einen View ein anderer Aufbau eines
-Templates gew"unscht, so reicht es, ein entsprechendes
-Unterverzeichnis anzulegen, das zugeh"orige Standard-Template in das
-Unterverzeichnis zu kopieren und dort zu ver"andern. Damit m"ussen nur
+Templates gewünscht, so reicht es, ein entsprechendes
+Unterverzeichnis anzulegen, das zugehörige Standard-Template in das
+Unterverzeichnis zu kopieren und dort zu verändern. Damit müssen nur
 die Templates kopiert werden, die effektiv auch anzupassen sind. Dies
-gew"ahrleistet eine sehr gute "Ubersicht der get"atigten "Anderungen
-zu verschiedenen Sichten und Datenbanken im Gegensatz zu dem h"aufig
-verwendeten Ansatz in anderen Portalen grunds"atzlich alle Templates
+gewährleistet eine sehr gute Übersicht der getätigten Änderungen
+zu verschiedenen Sichten und Datenbanken im Gegensatz zu dem häufig
+verwendeten Ansatz in anderen Portalen grundsätzlich alle Templates
 zu kopieren.
 
-Neben den Templates werden ebenfalls die Stylesheets "uber diesen
+Neben den Templates werden ebenfalls die Stylesheets über diesen
 Mechanismus individualisierbar gemacht.
 
-"Uber den Mechanismus kaskadierender Templates hinaus k"onnen
-datenbankabh"angige (inter\-nationali\-sier\-bare bzw. lokalisierbare)
-Bezeichner f"ur einzelne Kategorien definiert werden. Damit lassen
+Über den Mechanismus kaskadierender Templates hinaus können
+datenbankabhängige (inter\-nationali\-sier\-bare bzw. lokalisierbare)
+Bezeichner für einzelne Kategorien definiert werden. Damit lassen
 sich einzelne Kategorien unter Beibehaltung ihres Datenbankbezeichners
-f"ur spezielle thematische Datenbanken (siehe unten z.B. Digitale
+für spezielle thematische Datenbanken (siehe unten z.B. Digitale
 Einbandsammlung) 'umetikettieren' -- und dies mehrsprachig.
 
 Konkrete Beispiele sind
 \begin{itemize}
 \item Das KUG Recherche-Portal\newline (\texttt{http://kug.ub.uni-koeln.de/})
-\item Die Digitale Einbandsammlung der USB K"oln\newline (\texttt{http://einbandsammlung.ub.uni-koeln.de/})
+\item Die Digitale Einbandsammlung der USB Köln\newline (\texttt{http://einbandsammlung.ub.uni-koeln.de/})
 \item Die Virtuelle Bibliothek Elise und Helene Richter\newline (\texttt{http://richterbibliothek.ub.uni-koeln.de/})
 \end{itemize}
 
@@ -194,81 +194,81 @@ MVC-Design-Patterns (Trennung von Modell, View, Controller) sowie der
 Auslagerung aller verwendeten Texte in internationalisierbare bzw.
 lokalisierbare GNU gettext Message-Kataloge.
 
-Damit k"onnen -- ganz praktisch gesehen -- entsprechende Arbeiten wie
+Damit können -- ganz praktisch gesehen -- entsprechende Arbeiten wie
 das visuelle Design des Portals (Templates, Stylesheets) oder die
-"Ubersetzung der Texte (GNU gettext) an verschiedene -- nicht im
+Übersetzung der Texte (GNU gettext) an verschiedene -- nicht im
 Programmierumfeld zu suchende -- Mitarbeiter ausgelagert werden.
 
-Dar"uber hinaus k"onnen andere Teile modular ausgewechselt werden --
-wenn dies gew"unscht wird. So l"a"st sich u.a. die anf"angliche Suche
-"uber einen oder alle Kataloge z.B. von der Realisierung "uber eine
+Darüber hinaus können andere Teile modular ausgewechselt werden --
+wenn dies gewünscht wird. So läßt sich u.a. die anfängliche Suche
+über einen oder alle Kataloge z.B. von der Realisierung über eine
 MySQL-Volltext-Datenbank auf andere Volltext-Datenbanken oder gar
-Such\-ma\-schie\-nen\-tech\-no\-lo\-gie "andern. Das neue Verfahren
-mu"s lediglich die 'Einspr"unge' in den Bibliographischen Teil der
+Such\-ma\-schie\-nen\-tech\-no\-lo\-gie ändern. Das neue Verfahren
+muß lediglich die 'Einsprünge' in den Bibliographischen Teil der
 MySQL-Datenbank liefern. Ganz konkret basierten die ersten Versionen
-in den Jahren 1997-2000 f"ur die anf"angliche Suche auf der
+in den Jahren 1997-2000 für die anfängliche Suche auf der
 Volltextdatenbank \texttt{freeWAIS-sf}.
 
 \section{OpenBib ist flexibel im internen Katalog- bzw. Metadaten-Format}
-Das standardm"a"sig verwendete Katalog- bzw. Meta-Datenformat basiert
+Das standardmäßig verwendete Katalog- bzw. Meta-Datenformat basiert
 auf dem deutschen Bibliotheksstandard MAB2. Dennoch ist die
-grunds"atzliche Datenbankstruktur von OpenBib nicht auf MAB2 statisch
-festgelegt. Sie ist so universell, da"s sich auch andere Datenformate
+grundsätzliche Datenbankstruktur von OpenBib nicht auf MAB2 statisch
+festgelegt. Sie ist so universell, daß sich auch andere Datenformate
 wie z.B. das anglo-amerikanische MARC21 anstelle von MAB2 verarbeiten
-und in der Datenbank ablegen lassen. Selbstverst"andlich w"urde ein
-solcher Wechsel verschiedene "Anderungen -- z.B. in den Templates oder
+und in der Datenbank ablegen lassen. Selbstverständlich würde ein
+solcher Wechsel verschiedene Änderungen -- z.B. in den Templates oder
 der Konfiguration -- bedingen, eine Anpassung der Datenbank selbst an
 ein Format ist jedoch nicht notwendig.
 
-\section{OpenBib bietet viel Flexibilit"at f"ur den Datenimport }
+\section{OpenBib bietet viel Flexibilität für den Datenimport }
 \subsection{Parametrisierbare Schnittstelle}
 OpenBib bietet ausgehend vom auf MAB2 basierten Meta-Datenformat eine
-f"ur jede Datenbank individualisierbare und parametrisierbare
+für jede Datenbank individualisierbare und parametrisierbare
 Importschnittstelle.
 
 Es kann definiert werden
 \begin{itemize}
-\item welche Kategorien f"ur die Kurztrefferliste optimierend
+\item welche Kategorien für die Kurztrefferliste optimierend
   aufbereitet werden sollen,
-\item welche Kategorien in den einzelnen Normdatenbereichen f"ur
+\item welche Kategorien in den einzelnen Normdatenbereichen für
   \begin{itemize}
   \item eine Volltextsuche nutzbar sein sollen,
   \item eine String- bzw. Wortanfangs-Suche nutzbar sein sollen,
   \item die Anfangsrecherche nutzbar sein sollen sowie
-  \item grunds"atzlich ignoriert (blacklisted) werden sollen.
+  \item grundsätzlich ignoriert (blacklisted) werden sollen.
   \end{itemize}
 \end{itemize}
 
-Kategorieseitig ist die grunds"atzliche Strategie alles zu
+Kategorieseitig ist die grundsätzliche Strategie alles zu
 importieren, was nicht geblacklisted ist.
 
 Wie schon bei den Templates und den Stylesheets gibt es auch hier
-eine Standardkonfiguration, die f"ur alle Datenbanken gilt, f"ur die
+eine Standardkonfiguration, die für alle Datenbanken gilt, für die
 nicht explizit eine eigene Konfiguration erstellt wurde.
 
-\subsection{Plugin-Mechanismus f"ur verschiedene Quell-Datenbanktypen}
-Ausgehend von einer Standardkonvertierung (Sisis-Format) k"onnen im
-Programm f"ur den auto\-ma\-ti\-sier\-ten Import an verschiedenen Stellen des
+\subsection{Plugin-Mechanismus für verschiedene Quell-Datenbanktypen}
+Ausgehend von einer Standardkonvertierung (Sisis-Format) können im
+Programm für den auto\-ma\-ti\-sier\-ten Import an verschiedenen Stellen des
 Import-Ablaufes datenbankspezifische Plugins eingebracht werden, in die
 man Spezialanpassungen ausgelagern kann. Grundlegende Phasen, in die
 man eingreifen kann sind:
 \begin{description}
-\item[Einsammeln der Daten] An dieser Stelle k"onnen alternative
+\item[Einsammeln der Daten] An dieser Stelle können alternative
   Zugriffsmechanismen -- wie z.B. OAI --
   in externe Plugin-Programme ausgelagert werden.
-\item[Vorbereitung der Daten] An dieser Stelle k"onnen alternative
+\item[Vorbereitung der Daten] An dieser Stelle können alternative
   Vorbereitungsaktionen -- wie z.B. Teilkatalogbildung -- in externe
   Plugin-Programme zwischen\-ge\-schal\-tet werden.
-\item[Konvertierung der Daten] An dieser Stelle k"onnen alternative
+\item[Konvertierung der Daten] An dieser Stelle können alternative
   Konvertierungsroutinen -- z.B. in das MAB2 basierte Meta-Datenformat
   -- zwischen\-ge\-schal\-tet werden.
-\item[Einladen der Daten] An dieser Stelle k"onnen alternative
+\item[Einladen der Daten] An dieser Stelle können alternative
   Behandlungen der Daten zwischen\-ge\-schal\-tet werden.
 \end{description}
 
-\section{OpenBib l"a"st sich "uber WebServices an das Lokalsystem koppeln}
-"Uber das Teilprojekt Open Library WebServices (OLWS) von OpenBib
-k"onnen verschiedene Informationen aus Lokalsystemen (derzeit nur
+\section{OpenBib läßt sich über WebServices an das Lokalsystem koppeln}
+Über das Teilprojekt Open Library WebServices (OLWS) von OpenBib
+können verschiedene Informationen aus Lokalsystemen (derzeit nur
 Sisis SunRise) in das Recherche-Portal eingebunden werden. Es sind
 dies
 \begin{itemize}
@@ -277,85 +277,85 @@ dies
 \item Anzeige der Nutzerdaten (Name, Anschrift, Sperrung, Sperrgrund usw.)
 \item Anzeige des Nutzerkontos mit
   \begin{itemize}
-  \item Geb"uhren
+  \item Gebühren
   \item vorgemerkten Medien
   \item bestellte Medien
   \item ausgeliehene Medien
-  \item "uberzogene Medien
+  \item überzogene Medien
   \end{itemize}
 \item Anzeige der Exemplardaten (Signatur, Standort, ausgeliehen
-  usw.). "Uber diesen Service wird sekundeaktuell der Ausleihstatus zu
+  usw.). Über diesen Service wird sekundeaktuell der Ausleihstatus zu
   einem Medium in OpenBib bestimmt.
 \item Zugriff auf die Katalogdaten ausgehend von
-  Katalogschl"usseln. "Uber diesen Service k"onnen Daten"ubernahmen in
+  Katalogschlüsseln. Über diesen Service können Datenübernahmen in
   externe Systeme realisiert werden.
 \end{itemize}
 
 Aufgrund der Offenheit der Schnittstelle muss sie nicht auf ein
-Lokalsystem beschr"ankt bleiben, sondern kann auf andere ausgedehnt
+Lokalsystem beschränkt bleiben, sondern kann auf andere ausgedehnt
 werden.
 \section{OpenBib bietet externe Zugriffsschnittstellen}
-F"ur die Recherche von au"sen werden verschiedenen
+Für die Recherche von außen werden verschiedenen
 Zugriffsschnittstellen angeboten. Neben einer HTML-basierten
-Zugriffsschnittstelle "uber die die Digitale Bibliothek NRW des hbz
-sowie das Hochschulmanagement-System UK-Online der Universit"at zu
-K"oln angebunden sind, wird eine SOAP-basierte Schnittstelle f"ur die
+Zugriffsschnittstelle über die die Digitale Bibliothek NRW des hbz
+sowie das Hochschulmanagement-System UK-Online der Universität zu
+Köln angebunden sind, wird eine SOAP-basierte Schnittstelle für die
 WebServices-basierte Anbindung bereitgestellt.
 
 Neben dieser Nutzbarkeit von OpenBib durch andere bestehen weitere
 Mechanismen, um eine Integration externer Angebote in OpenBib zu
-realisieren. So k"onnen bereits get"atigte Suchanfragen z.B. an
+realisieren. So können bereits getätigte Suchanfragen z.B. an
 externe Datenbanken und Portale weitergeleitet werden (Digitale
 Bibliothek, Fernleihe, Aufsatzbestellung, EZB, DBIS, MedPilot) -- im
 Falle der Digitalen Bibliothek NRW sogar unter Mitnahme einer etwaig
 in OpenBib erfolgten Authentifizierung.
 
-\section{OpenBib verf"ugt "uber eine intelligente Lastverteilung}
-Beim Aufruf des Portals wird der Nutzer an einen der verf"ugbaren
-OpenBib Portal-Server weitergeleitet. Ma"sgabe f"ur die Weiterleitung
+\section{OpenBib verfügt über eine intelligente Lastverteilung}
+Beim Aufruf des Portals wird der Nutzer an einen der verfügbaren
+OpenBib Portal-Server weitergeleitet. Maßgabe für die Weiterleitung
 ist die generelle Ansprechbarkeit (connect) und Auslastung des Servers
-(load) sowie seine grundlegende Funktionsf"ahigkeit (MySQL).
+(load) sowie seine grundlegende Funktionsfähigkeit (MySQL).
 
-Die f"ur die Lastverteilung verwendeten Server k"onnen zentral
+Die für die Lastverteilung verwendeten Server können zentral
 konfiguriert werden. Damit kann bei Ausfall oder bei
 Wartungsarbeiten der jeweilige Server aus der Verteilung
 herausgenommen werden, um in aller Ruhe entsprechende Arbeiten
 vorzunehmen.
 
 \section{OpenBib realisiert Content- bzw. Catalogue-Enrichment}
-"Uber eine zentrale Anreicherungsdatenbank k"onnen zus"atzliche
-Inhalte katalog"ubergreifend in die vorhandenen Katalogdaten
+Über eine zentrale Anreicherungsdatenbank können zusätzliche
+Inhalte katalogübergreifend in die vorhandenen Katalogdaten
 eingeblendet werden. Grundlage ist eine vorhandene ISBN/ISSN. Hiermit
 ist z.B. die Ergebnisanreicherung mit Inhaltsverzeichnissen
 realisierbar. Die Im\-ple\-men\-ta\-tion der Ergebnisanreicherung in OpenBib
-ist jedoch so allgemein gehalten, da"s sie sich auch mit anderen
-'Zusatz'-Informationen nutzen l"asst. So k"onnen beliebige
-Informationen wie Abstracts, Stichwortverzeichnisse u."a. dort zentral
-abgelegt werden und sind f"ur alle Kataloge des OpenBib-Portals
+ist jedoch so allgemein gehalten, daß sie sich auch mit anderen
+'Zusatz'-Informationen nutzen lässt. So können beliebige
+Informationen wie Abstracts, Stichwortverzeichnisse u.ä. dort zentral
+abgelegt werden und sind für alle Kataloge des OpenBib-Portals
 nutzbar.
 
 \section{OpenBib bietet Neuzugangslisten als RSS-Feeds}
-F"ur jeden Katalog k"onnen Neuzugangslisten bereitgestellt werden.
+Für jeden Katalog können Neuzugangslisten bereitgestellt werden.
 Hierzu bietet sich die XML-basierte RSS-Technologie an. Im Gegensatz
-zu einer gew"ohnlichen Pr"asentaton "uber simple Webseiten bieten
-RSS-Feeds den Nutzern durch die geschickte Verwaltung "uber
-spezialisierte Programme deutlich mehr Nutzungsm"oglichkeiten. So
-k"onnen solche Programme sich um die Sichtung der Daten k"ummern,
+zu einer gewöhnlichen Präsentaton über simple Webseiten bieten
+RSS-Feeds den Nutzern durch die geschickte Verwaltung über
+spezialisierte Programme deutlich mehr Nutzungsmöglichkeiten. So
+können solche Programme sich um die Sichtung der Daten kümmern,
 schon aufgerufene Titel von den noch nicht aufgerufenen farblich
 trennen, Informationen archivieren, Data-Mining in Verbindung mit
 spezialisierter Such\-tech\-no\-lo\-gie einsetzen usw.
 
-Grundlage f"ur die in den RSS-Feeds angezeigten Informationen ist das
+Grundlage für die in den RSS-Feeds angezeigten Informationen ist das
 Neuaufnahmedatum im Katalog. Neben einer allgemeinen Neuzugangsliste
 (unter der Rubrik RSS in OpenBib) stehen in den einzelnen Titeln auf
-Wunsch Verfasser/Personen-, K"orperschafts/Urheber-, Notations- sowie
-Schlagwortspezifische Neuzugangslisten als RSS-Feed zur Verf"ugung.
-Erkennbar sind sie durch ein orangenes RSS-Icon. Damit k"onnen sich
-Nutzer ausgehend von einem gefundenen Titel z.B. "uber thematisch
+Wunsch Verfasser/Personen-, Körperschafts/Urheber-, Notations- sowie
+Schlagwortspezifische Neuzugangslisten als RSS-Feed zur Verfügung.
+Erkennbar sind sie durch ein orangenes RSS-Icon. Damit können sich
+Nutzer ausgehend von einem gefundenen Titel z.B. über thematisch
 verwandte -- z.B. im Fall von Notation oder Schlagwort -- informieren
 lassen.
 
-F"ur einzelne Sichten in OpenBib k"onnen einzelne Feeds auf Wunsch
+Für einzelne Sichten in OpenBib können einzelne Feeds auf Wunsch
 sowohl im Kontext einer automatischen Browsererkennung angeboten
 werden, wie sie z.B. der Browser Firefox ab der Version 1.5 besitzt
 (dynamisches Lesezeichen), oder in Listenform.
@@ -363,27 +363,27 @@ werden, wie sie z.B. der Browser Firefox ab der Version 1.5 besitzt
 \section{OpenBib bietet ein web-basiertes Administrationsinterface}
 Die Einrichtung einzelner Datenbanken, Zusammenfassung von Datenbanken
 in Views, die Kon\-fi\-gu\-ra\-tion der RSS-Feeds sowie eine Beobachtung
-aktiver Sessions (Suchanfragen usw.) kann "uber ein web-basiertes
-Administrationsinterface erfolgen. Damit l"a"st sich auch eine gro"se
+aktiver Sessions (Suchanfragen usw.) kann über ein web-basiertes
+Administrationsinterface erfolgen. Damit läßt sich auch eine große
 Anzahl an Katalogen unproblematisch konfigurieren.
 
 \section{OpenBib respektiert die Sicherheit seiner Nutzer}
 
 OpenBib ist auch ohne die Aktivierung der sicherheitskritischen
-Browser-Sprache JavaScript vollst"andig nutzbar. Ebenso verwendet es
-keine Cookies. Damit wird ein sicherheitsbewu"ster Nutzer nicht dazu
-gezwungen, f"ur die Verwendung von OpenBib JavaScript in seinem
+Browser-Sprache JavaScript vollständig nutzbar. Ebenso verwendet es
+keine Cookies. Damit wird ein sicherheitsbewußter Nutzer nicht dazu
+gezwungen, für die Verwendung von OpenBib JavaScript in seinem
 Browser zu aktivieren.
 
 Ebenso werden Nutzerdaten bei einer Authentifizierung in OpenBib an
-einem Bibliothekssystem nach Ende einer Session selbstverst"andlich
-wieder gel"oscht.
+einem Bibliothekssystem nach Ende einer Session selbstverständlich
+wieder gelöscht.
 
-\chapter{Praxisbeispiel: OpenBib an der USB K"oln}
-Anhand des Einsatzes an der USB K"oln sollen die M"oglichkeiten des
+\chapter{Praxisbeispiel: OpenBib an der USB Köln}
+Anhand des Einsatzes an der USB Köln sollen die Möglichkeiten des
 OpenBib Recherche-Portals illustriert werden.
 
-OpenBib wird an der USB K"oln als KUG Recherche-Portal eingesetzt. Im
+OpenBib wird an der USB Köln als KUG Recherche-Portal eingesetzt. Im
 Projekt 'Kölner UniversitätsGesamtkatalog' (KUG) wird unter Mitwirkung
 der Universitäts- u. Stadtbibliothek (USB), der Institute und Seminare
 sowie der Zentralbibliothek für Medizin (ZBMED) seit Anfang 2002 ein
@@ -397,13 +397,13 @@ Recherche-Portal sichtbar sind.
 
 Neben den Katalogen der Instituts- und Seminarbibliotheken wurden im
 KUG Recherche-Portal weitere Spezialkataloge
-erschlossen bzw. erst verwirklicht. Dazu geh"oren die Digitale
-Einband\-samm\-lung der USB K"oln, die Virtuelle Bibliothek Elise und
+erschlossen bzw. erst verwirklicht. Dazu gehören die Digitale
+Einband\-samm\-lung der USB Köln, die Virtuelle Bibliothek Elise und
 Helene Richter, der Hoch\-schul\-schrif\-ten\-ser\-ver, EconBiz, das Graph
-Drawing Eprint-Archive, die Poetica-Sammlung, die Sammlung K"olner
+Drawing Eprint-Archive, die Poetica-Sammlung, die Sammlung Kölner
 Zeitungsausschnitte, der Katalog der  Bibliothek des Oratoriums
 Kevelaerinense sowie diverse separate Teilkataloge des USB-Bestandes
-(Lehrbuchsammlung, Lesesaal, Europ"aisches Do\-ku\-men\-ta\-tions\-zen\-trum).
+(Lehrbuchsammlung, Lesesaal, Europäisches Do\-ku\-men\-ta\-tions\-zen\-trum).
 
 Insgesamt sind damit im KUG Recherche-Portal 119 verschiedene
 Katalogdatenbanken mit derzeit insgesamt 4942543 Titelaufnahmen
@@ -413,21 +413,21 @@ vertreten.
 Das KUG Recherche-Portal wird mit drei Doppel-Pentium-III Servern
 (1.16 GHZ CPU, 4 GB RAM) im RAID-Level 1 betrieben. Alle Rechner
 werden im Rahmen der Lastverteilung genutzt, wobei einer der drei
-Rechner zus"atzlich die eigentliche Verteilung "ubernimmt.
+Rechner zusätzlich die eigentliche Verteilung übernimmt.
 
-Neben diesen drei Produktions-Servern verf"ugen wir "uber ein Test-
+Neben diesen drei Produktions-Servern verfügen wir über ein Test-
 und Entwicklungssytem (300 EUR Standard-Desktop), auf dem vor einem
 Upgrade unter Beteiligung unserer Kollegen aus dem Haus bzw. aus den
-dezentralen Bibliotheken eine intensive Testphase durchgef"uhrt wird.
+dezentralen Bibliotheken eine intensive Testphase durchgeführt wird.
 Erst wenn keine gravierenden Fehler gemeldet werden erfolgt die
 Umstellung der Produktionssysteme.
 
 \section{Betrieb}
-\subsection{N"achtlicher Aufbau der Datenbanken}
+\subsection{Nächtlicher Aufbau der Datenbanken}
 Alle im Recherche-Portal vorhandenen Daten werden ausgehend von den
 jeweiligen Quell-Sys\-te\-men, auf denen die Katalogisierung stattfindet,
-n"achtlich aktualisiert. Dazu werden die Daten auf den Quell-Systemen
-entladen sowie auf einem gesch"utzten Bereich eines Webservers
+nächtlich aktualisiert. Dazu werden die Daten auf den Quell-Systemen
+entladen sowie auf einem geschützten Bereich eines Webservers
 abgelegt. Von dort sammeln die einzelnen Server des Recherche-Portals
 die Daten automatisiert ein, wandeln sie um und spielen Sie in ihre
 lokalen MySQL-Recherchedatenbanken ein.
@@ -437,60 +437,60 @@ zwischenzeitlich gezeigt, dass Recherchen direkt auf den
 Quell-Systemen die entsprechenden Systeme massiv belasteten -- in den
 Modulen Katalogisierung, Erwerbung sowie Ausleihe waren ganz
 erhebliche Performance-Probleme zu verzeichnen. Die Entkopplung von
-Katalogisierungs- und Recherche-Datenbanken hat sich hier f"ur beide
+Katalogisierungs- und Recherche-Datenbanken hat sich hier für beide
 Seiten als sehr vorteilhaft erwiesen.
 
 
 \subsection{Datenquellen und -formate}
 Neben den Daten der USB, ZBMED sowie der dezentralen Bibliotheken, die
-einheitlich aus Sisis SunRise-Systemen stammen, verarbeiten wir f"ur
+einheitlich aus Sisis SunRise-Systemen stammen, verarbeiten wir für
 unsere Spezialkataloge auch andere Daten. So speisen sich die Kataloge unseres
-Hochschulschriftenservers (KUPS) sowie des am Lehrstuhl f"ur Informatik
-angesiedelten Graph Drawing E-print Archive (GDEA) "uber das
+Hochschulschriftenservers (KUPS) sowie des am Lehrstuhl für Informatik
+angesiedelten Graph Drawing E-print Archive (GDEA) über das
 OAI-Syn\-chro\-ni\-sa\-tions\-pro\-to\-koll.
 
-Zus"atzlich k"onnen wir derzeit automatisiert Quelldaten von Lars,
+Zusätzlich können wir derzeit automatisiert Quelldaten von Lars,
 Allegro, Bislok, LIDOS und FileMaker verarbeiten, dazu kommen
 abgeleitete Datenformate, die z.T. auf einem einfachen Lars-Derivat
 (Kategoriename/Kategorieinhalt) beruhen.
 
-Produktiv setzen wir derzeit jedoch nur ein Lars-Derivat f"ur die
+Produktiv setzen wir derzeit jedoch nur ein Lars-Derivat für die
 Einbindung des Kataloges des Italienischen Kulturinstituts sowie
 unserer Zeitungsausschnitts-Sammlung ein.
 
-%LIDOS und FileMaker sind f"ur UTF-8 Datenbest"ande des Ostasiatischen
+%LIDOS und FileMaker sind für UTF-8 Datenbestände des Ostasiatischen
 %Seminars angedacht, da diese Institute derzeit aufgrund fehlender
-%UTF-8 Unterst"utzung nicht in unserem Lokalystem katalogisieren
-%k"onnen.
+%UTF-8 Unterstützung nicht in unserem Lokalystem katalogisieren
+%können.
 
 Ausgehend von den USB-Katalogdaten bilden wir verschiedene
 abgeschlossene Teilkataloge. Diese basieren entweder auf einem
 spe\-ziel\-len Standort (Lehrbuchsammlung, Lesesaal) oder einem spe\-ziel\-len
-Ausleih-Nutzer (EDZ, realisiert "uber einen entsprechenden OLWS-Dienst
-f"ur das Lokal\-sys\-tem). Zus"atzlich werden im Falle des EDZ-Katalogs
+Ausleih-Nutzer (EDZ, realisiert über einen entsprechenden OLWS-Dienst
+für das Lokal\-sys\-tem). Zusätzlich werden im Falle des EDZ-Katalogs
 dessen Daten mit einer spe\-ziel\-len Sach\-gruppen\-ka\-te\-go\-rie angereichert.
 
-Schlie"slich verwenden wir f"ur die Internetquellen der Virtuellen
+Schließlich verwenden wir für die Internetquellen der Virtuellen
 Fachbibliothek Wirtschafts\-wissen\-schaften (EconBiz) eine
-SQL-Schnittstelle f"ur den Datenabzug.
+SQL-Schnittstelle für den Datenabzug.
 
 Durch die Verwendung eines einheitlichen Meta-Datenformats als
-Grundlage k"onnen neue Daten\-be\-st"an\-de sehr einfach in das Portal
+Grundlage können neue Daten\-be\-stän\-de sehr einfach in das Portal
 integriert werden.
 
 
 \subsection{Flexibler Einsatz in Projekten}
 
-Durch die vielen M"oglichkeiten der Anpassung war die Software des
-Recherche-Portals predestiniert f"ur den Einsatz in weiteren
+Durch die vielen Möglichkeiten der Anpassung war die Software des
+Recherche-Portals predestiniert für den Einsatz in weiteren
 Projekten\cite{FlimmHoffJB:06}.
 
 Hier sind insbesondere zwei Kataloge zu nennen: Die digitale
-Einbandsammlung der USB K"oln sowie die Virtuelle Bibliothek Elise und
+Einbandsammlung der USB Köln sowie die Virtuelle Bibliothek Elise und
 Helene Richter.
 
 
-\subsubsection{Digitale Einbandsammlung der USB K"oln}
+\subsubsection{Digitale Einbandsammlung der USB Köln}
 
 Im Projekt 'Digitale Einbandsammlung' wurde an der USB eine
 Einbanddatenbank, bestehend aus Einbandbeschreibungen und Bildern der
@@ -503,8 +503,8 @@ erfasst, mit Meta-Daten angereichtert und präsentiert werden.
 Ausgehend vom KUG Recherche-Portal (OpenBib) wurden diese Abbildungen
 samt Daten bei Wahrung der Eigenständigkeit beider Kom\-po\-nen\-ten --
 OpenBib und OpenDIA -- visuell zu einem Ganzen zusammen gefügt. Diese
-visuelle Integration wurde durch die Flexibilit"at beider Kom\-po\-nen\-ten
-erst erm"oglicht -- speziell durch die individualisierbaren
+visuelle Integration wurde durch die Flexibilität beider Kom\-po\-nen\-ten
+erst ermöglicht -- speziell durch die individualisierbaren
 Portal-Sichten in OpenBib. 
 
 Durch den pragmatischen Einsatz weitgehend bereits vorhandener,
@@ -515,16 +515,16 @@ Präsentation der 'Digitalen Einbandsammlung' geschah dabei im Rahmen
 der 10.  Jahrestagung des Arbeitskreises für die Erfassung,
 Erschließung und Erhaltung historischer Bucheinbände, die an der USB
 Köln vom 22.-24.  September 2005 stattgefunden hat.  Eine
-ausf"uhrliche Zusammenfassung der Kon\-zep\-tion und der technischen
+ausführliche Zusammenfassung der Kon\-zep\-tion und der technischen
 Realisierung findet sich in \cite{BoeFli:EinbandDB}.
 
 
 \subsubsection{Virtuelle Bibliothek Elise und Helene Richter}
 
 Im Projekt 'Virtuelle Bibliothek Elise und Helene Richter', das Teil
-der NS-Provenienzforschung in der USB Köln ist, wurde f"ur die
-in die von der USB aufgesp"urten Medien aus der ehemaligen Bibliothek
-der Schwestern Richter ein eigenst"andiges Recherche-Portal auf Basis
+der NS-Provenienzforschung in der USB Köln ist, wurde für die
+in die von der USB aufgespürten Medien aus der ehemaligen Bibliothek
+der Schwestern Richter ein eigenständiges Recherche-Portal auf Basis
 indi\-vi\-duali\-sierbarer Portal-Sichten erstellt.
 
 \section{Fazit}
@@ -547,12 +547,12 @@ praktischen Arbeit als sehr vorteilhaft erwiesen:
 
 Die OpenBib-Portalsoftware-Suite ist in logischen Schichten
 organisiert. Ein Schaubild der ge\-ne\-rellen Architektur zeigt Abb.
-\ref{bild:architektur}. Dieses Kapitel soll einen kurzen Abri"s dieser
-Architektur geben, damit die gr"o"seren Zusammenh"ange deutlich
+\ref{bild:architektur}. Dieses Kapitel soll einen kurzen Abriß dieser
+Architektur geben, damit die größeren Zusammenhänge deutlich
 werden. Die Schichten von 'unten' nach 'oben' sind: Die
-datenbankabh"angige Schicht, die datenbank"ubergreifende Schicht, die
+datenbankabhängige Schicht, die datenbankübergreifende Schicht, die
 Portal-Schicht mit weiteren externen Zugriffsmechanismen (DigiBib,
-UK-Online) und schlie"slich die Lastverteilungs-Schicht. Diese
+UK-Online) und schließlich die Lastverteilungs-Schicht. Diese
 Schichten werden bei der Interaktion mit einem Benutzer bei der
 Verwendung des OpenBib-Portals in entgegengesetzter Richtung von
 'oben' nach 'unten' durchlaufen.
@@ -570,67 +570,67 @@ Verwendung des OpenBib-Portals in entgegengesetzter Richtung von
 \end{shadowenv}
 \end{figure}
 
-\section{Die datenbankabh"angige Schicht 1 -- \texttt{OpenBib::Search}}
+\section{Die datenbankabhängige Schicht 1 -- \texttt{OpenBib::Search}}
 
-In der untersten, der datenbankabh"angigen Schicht greift das
+In der untersten, der datenbankabhängigen Schicht greift das
 Perl-Modul \texttt{OpenBib::Search} auf eine feste Datenbank zu.
 Welche Datenbank dies ist, kann als Aufrufparamter dem Programm
-mitgegeben werden. Dadurch ist es m"oglich, das gleiche Programm f"ur
-Recherchen "uber ver\-schie\-de\-ne Daten\-banken zu nutzen. Das Modul
+mitgegeben werden. Dadurch ist es möglich, das gleiche Programm für
+Recherchen über ver\-schie\-de\-ne Daten\-banken zu nutzen. Das Modul
 selbst -- wie auch alle anderen unter
 \begin{verbatim}
 openbib/portal/perl/modules
 \end{verbatim}
 angesiedelten Module -- ist als Erweiterung des Apache-Webservers via
-\texttt{mod\_perl} realisiert.  Dadurch arbeitet es au"ser\-ordentlich
+\texttt{mod\_perl} realisiert.  Dadurch arbeitet es außer\-ordentlich
 schnell.
 
 
-\section{Die datenbank"ubergreifende Recherche-Schicht 2 -- \texttt{OpenBib::VirtualSearch}}
+\section{Die datenbankübergreifende Recherche-Schicht 2 -- \texttt{OpenBib::VirtualSearch}}
 
-Die datenbank"ubergreifende Recherche geschieht in der "uber
+Die datenbankübergreifende Recherche geschieht in der über
 \texttt{OpenBib::Search} liegenden Schicht 2 (vgl. Abb.
 \ref{bild:architektur}) mit dem Perl-Modul
 \texttt{OpenBib::VirtualSearch}. Aufgabe dieses Modules ist es, eine
 Suchanfrage und eine Anzahl an Recherche-Datenbanken vom Benutzer
 entgegen\-zuneh\-men und genau diese eine Suchanfrage sequentiell an
-jede der "ubergebenen Datenbanken zu schicken. Zu diesem Zweck werden
+jede der übergebenen Datenbanken zu schicken. Zu diesem Zweck werden
 entsprechende Utility-Routinen aus dem im
 \texttt{OpenBib::Search}-Kontext angesiedelten Modul
 \texttt{OpenBib::Search::Util} verwendet.
 
 Die Ergebnisse der einzelnen Recherchen werden entgegengenommen und in
 Listenform auf\-be\-rei\-tet. Die jeweiligen Titel selbst sind in dieser
-Gesamttrefferliste via URL mit einer Suchanfrage f"ur genau diesen
-Einzeltreffer mit \texttt{OpenBib::Search} verkn"upft. 
+Gesamttrefferliste via URL mit einer Suchanfrage für genau diesen
+Einzeltreffer mit \texttt{OpenBib::Search} verknüpft. 
 Bei der
 Auswahl eines einzelnen Treffers wird dadurch direkt in die
-zugeh"orige Datenbank via \texttt{OpenBib::Search} gesprungen. 
+zugehörige Datenbank via \texttt{OpenBib::Search} gesprungen. 
 
-Alle 'normalen' Verkn"upfungs-Links (Normdaten, Hierarchien, etc.)
+Alle 'normalen' Verknüpfungs-Links (Normdaten, Hierarchien, etc.)
 beziehen sich -- wir befinden uns nach der Auswahl eines Treffer wieder in
-Schicht 1 -- auf genau diese eine Datenbank. "Uber das gro"se
+Schicht 1 -- auf genau diese eine Datenbank. Über das große
 stilisierte 'G' bei den Normdaten kann jedoch auch an dieser Stelle
-wieder eine datenbank"ubergreifende Recherche nach genau dem
-zugeh"origen Begriff gestartet werden. Der Benutzer hat somit bei
-einem Einzeltreffer immer die M"oglichkeit selbst zu entscheiden, ob
-er sich bzgl. der Normdaten weiter im zugeh"origen Katalog aufhalten
-m"ochte, oder katalog"ubergreifend Recherchieren m"ochte.
+wieder eine datenbankübergreifende Recherche nach genau dem
+zugehörigen Begriff gestartet werden. Der Benutzer hat somit bei
+einem Einzeltreffer immer die Möglichkeit selbst zu entscheiden, ob
+er sich bzgl. der Normdaten weiter im zugehörigen Katalog aufhalten
+möchte, oder katalogübergreifend Recherchieren möchte.
 
-Da in jedem Katalog die Verkn"upfungen bereits in der Datenbank
+Da in jedem Katalog die Verknüpfungen bereits in der Datenbank
 existieren, ist ein 'sich treiben lassen' in einem festen Katalog
-au"ser\-ordentlich schnell, w"ahrend bei einer katalog"ubergreifenden
+außer\-ordentlich schnell, während bei einer katalogübergreifenden
 Suche ein kleiner Tribut zu zahlen ist, da nun effektiv wieder alle
 Datenbanken mit einer 'neuen Suche' abgefragt werden.
 
-Da \texttt{OpenBib::VirtualSearch} letztlich f"ur die
-datenbank"ubergreifende Gewinnung der Recherche\-er\-geb\-nisse
-zust"andig ist, werden nach erfolgreicher Recherche die Ergebnisse
+Da \texttt{OpenBib::VirtualSearch} letztlich für die
+datenbankübergreifende Gewinnung der Recherche\-er\-geb\-nisse
+zuständig ist, werden nach erfolgreicher Recherche die Ergebnisse
 aufgeteilt nach den einzelnen Katalogen in der Session-Datenbank
 \texttt{session} 'gecached'. Durch das Caching der
 Re\-cher\-che\-ergebnisse kann im Kontext von der Portal-Schicht 3
-"ueber das dort angesiedelte Modul \texttt{OpenBib::ResultLists} auch
-eine Trefferlistenfunktionalit"at geleistet werden, in der man "uber
+üeber das dort angesiedelte Modul \texttt{OpenBib::ResultLists} auch
+eine Trefferlistenfunktionalität geleistet werden, in der man über
 die Ergebnisse der letzten Recherche hinaus auch noch direkt auf die
 Ergebnisse jeder zuvor eingegebenen Suche in der aktuellen Session
 zugreifen kann.
@@ -640,63 +640,63 @@ zugreifen kann.
 \subsection{Das Portal mit Session- und Benutzerverwaltung}
 
 In der Portalschicht wird dem Benutzer sessionbasiert in einer aus
-zwei Frames bestehenden Web-Seite eine Arbeits- und Recherche-Oberfl"ache
+zwei Frames bestehenden Web-Seite eine Arbeits- und Recherche-Oberfläche
 geliefert. 
 
 Der Einsprung-URL in das Portal wird durch das Modul
 \texttt{OpenBib::StartOpac} realisiert.
 
-Das Modul \texttt{OpenBib::StartOpac} kann "uber verschiedene
-Parameter gesteuert werden, die z.B. f"ur den direkten Sprung zu einem
+Das Modul \texttt{OpenBib::StartOpac} kann über verschiedene
+Parameter gesteuert werden, die z.B. für den direkten Sprung zu einem
 einzelnen Treffer einer Datenbank oder der Anzeige einer
 katalogeigenen Sicht des Portals Verwendung finden und gegebenenfalls
 an nachgelagerte Module durchgereicht werden. Seine wesentliche
 Aufgabe ist jedoch, eine eindeutige Session-ID zu generieren sowie ein
-Frameset mit zwei Frames bereitzustellen.  Das obere Frame f"ur die
+Frameset mit zwei Frames bereitzustellen.  Das obere Frame für die
 Navigation wird durch das Modul \texttt{OpenBib::HeaderFrame}
-gef"ullt, das untere Frame standardm"a"sig zuerst durch das Modul
+gefüllt, das untere Frame standardmäßig zuerst durch das Modul
 \texttt{OpenBib::SearchFrame}, das dem Navigations-Element 'Einfache
 Recherche' bzw. 'Komplexe Recherche' entspricht.
 
-Das Modul \texttt{OpenBib::HeaderFrame} ist f"ur die Navigation im Portal
-inklusive Counter f"ur die Merkliste zust"andig.
+Das Modul \texttt{OpenBib::HeaderFrame} ist für die Navigation im Portal
+inklusive Counter für die Merkliste zuständig.
 
-In der Navigation werden folgende Funktionalit"aten angeboten:
+In der Navigation werden folgende Funktionalitäten angeboten:
 
 \begin{description}
 \item[Katalogauswahl] Die Auswahl der zu durchsuchenden Kataloge geschieht
-  "uber eine entsprechende Aus\-wahl\-seite, die durch das Modul
+  über eine entsprechende Aus\-wahl\-seite, die durch das Modul
   \texttt{OpenBib::DatabaseChoice} generiert wird.
-\item[Recherche] Die Recherche-Maske wird "uber einen Aufruf von
+\item[Recherche] Die Recherche-Maske wird über einen Aufruf von
   \texttt{OpenBib::SearchFrame} dargestellt.
 \item[Trefferliste] Ein Zugriff auf Trefferlisten aus vorangegangenen
-  Recherchen geschieht "uber das Modul \texttt{OpenBib::ResultLists},
-  welches neben der verteilten Recherche auch f"ur ein Caching der
-  Ergebnis-Daten zust"andig ist.
+  Recherchen geschieht über das Modul \texttt{OpenBib::ResultLists},
+  welches neben der verteilten Recherche auch für ein Caching der
+  Ergebnis-Daten zuständig ist.
 \item[Merkliste] Die Anzeige, Organisation sowie der Mailversand der
   Merkliste wird durch die Module
   \texttt{OpenBib::ManageCollection} und \texttt{OpenBib::MailCollection}
-  "uber\-nom\-men. Bei Auswahl eines Treffers f"ur die Merkliste wird
+  über\-nom\-men. Bei Auswahl eines Treffers für die Merkliste wird
   \texttt{OpenBib::HeaderFrame} aktualisiert, und zeigt die neue Zahl
   gemerkter Treffer an.
-\item[RSS] "Uber das Modul \texttt{OpenBib::RSSFrame} wird eine zu
-  diesem View zugeordnete Liste an RSS-Feeds f"ur die letzten 50
+\item[RSS] Über das Modul \texttt{OpenBib::RSSFrame} wird eine zu
+  diesem View zugeordnete Liste an RSS-Feeds für die letzten 50
   Neuaufnahmen der entsprechenden Kataloge ausgegeben.
-\item[Mein OpenBib] "Uber das Modul \texttt{OpenBib::Login}
+\item[Mein OpenBib] Über das Modul \texttt{OpenBib::Login}
   kann sich der Benutzer am Portal authentifizieren und so von
-  weiteren personalisierten Funktionalit"aten profitieren. Dazu
-  geh"oren neben generellen Benutzereinstellungen
+  weiteren personalisierten Funktionalitäten profitieren. Dazu
+  gehören neben generellen Benutzereinstellungen
   (\texttt{OpenBib::UserPrefs}) u.a. per\-sis\-ten\-te Merklisten sowie
   Datenbankprofile (\texttt{OpenBib::DatabaseProfile}).
 
-  Das Modul gew"ahrt dabei den Zugang auf Grundlage seiner eigenen
-  Datenbank, die "uber das Modul \texttt{OpenBib::SelfReg} via
-  Selbstregistierung gef"ullt wird, bzw. auf Grundlage von lokalen
+  Das Modul gewährt dabei den Zugang auf Grundlage seiner eigenen
+  Datenbank, die über das Modul \texttt{OpenBib::SelfReg} via
+  Selbstregistierung gefüllt wird, bzw. auf Grundlage von lokalen
   Bibliothekssystemen -- hier wird konkret das Bibliothekssystem Sisis
-  SunRise unterst"utzt --, die "uber eine selbst entwicklte
+  SunRise unterstützt --, die über eine selbst entwicklte
   WebServices-Schnittstelle OLWS (Open Library WebServices)
-  angesprochen werden k"onnen. Falls ein Benutzer sein
-  selbstregistriertes Passwort vergessen hat, so kann er es sich "uber
+  angesprochen werden können. Falls ein Benutzer sein
+  selbstregistriertes Passwort vergessen hat, so kann er es sich über
   das Modul \texttt{OpenBib::MailPassword} per Mail zusenden lassen.
 \item[Hilfe] Die Hilfeseite wird direkt als URL
   \texttt{/suchhilfe.html} angesprochen.
@@ -704,80 +704,80 @@ In der Navigation werden folgende Funktionalit"aten angeboten:
   \texttt{OpenBib::Leave} gesprungen, welches die sessionrelevanten Daten
   entfernt sowie einen URL in die Schicht 4 zur Lastver\-teilungs\-instanz
   \texttt{OpenBib::LoadBalancer} mit Angabe eines eventuell aktiven Views
-  (Institutssicht) f"ur einen er\-neu\-ten Einstieg in das Such-Portal
+  (Institutssicht) für einen er\-neu\-ten Einstieg in das Such-Portal
   bereitstellt.
 
 \end{description}
 
 \subsection{Externe Anbindung an die DigiBib}
 
-Neben der Bereitstellung einer Recherche- und Arbeitsoberfl"ache f"ur
-den Endbenutzer, besteht auch die M"oglichkeit "uber eine externe
+Neben der Bereitstellung einer Recherche- und Arbeitsoberfläche für
+den Endbenutzer, besteht auch die Möglichkeit über eine externe
 Zugriffs-Schnittstelle automatisiert auf den Gesamtkatalog
 zuzugreifen.
 
-Eine solche M"oglichkeit besteht in der Einbindung in das Such-Portal
+Eine solche Möglichkeit besteht in der Einbindung in das Such-Portal
 \textbf{Digitale Bibliothek NRW} (DigiBib) des
 Hoch\-schul\-bibliotheks\-zentrum NRW (hbz). Das Suchinterface besteht aus
 einem fest definierten Such-URL und einem fest definierten
-HTML-basierten Antwortformat f"ur die Treffer. Grunds"atzlich wird auf
-eine Rechercheanfrage, z.B. unter Angabe eines Suchbegriffes f"ur den
+HTML-basierten Antwortformat für die Treffer. Grundsätzlich wird auf
+eine Rechercheanfrage, z.B. unter Angabe eines Suchbegriffes für den
 Titel, mit einer Kurztitelliste geantwortet. Es kann bestimmt werden,
 welcher Teil der Kurztitelliste von den OpenBib-Daten\-banken
-angefordert werden darf (Bl"atterfunktion mit frei w"ahlbarem Offset
-und Schrittweite). Dar"uber hinaus wird neben der Kurztitelliste auch
+angefordert werden darf (Blätterfunktion mit frei wählbarem Offset
+und Schrittweite). Darüber hinaus wird neben der Kurztitelliste auch
 die Anzeige eines Einzeltreffers mit weiter\-gehen\-den Kategorien
 angeboten. In der Kurztitelliste sind alle Informationen vorhanden, um
 den Einzeltreffer aufzurufen.
 
 \subsection{Externe Anbindung an UK-Online}
 
-Eine weitere Anbindung besteht in das Universit"atsportal UK-Online
-von Herrn Prof. Lohnstein aus der Philosophischen Fakult"at der
-Universit"at zu K"oln. Hier wird in UK-Online die M"oglichkeit
+Eine weitere Anbindung besteht in das Universitätsportal UK-Online
+von Herrn Prof. Lohnstein aus der Philosophischen Fakultät der
+Universität zu Köln. Hier wird in UK-Online die Möglichkeit
 angeboten eigenen Bibliographie-Listen zu verwalten. Der Aufbau einer
-solchen Bibliographie-Liste geschieht "uber die Recherche in OpenBib
-und anschlie"sende Umwandlung und Ab\-spei\-cherung in ein
+solchen Bibliographie-Liste geschieht über die Recherche in OpenBib
+und anschließende Umwandlung und Ab\-spei\-cherung in ein
 Bibliographie-Listen-Format.
 
 Nach dem derzeitigen Stand sind beide externen Anbindung noch nicht in
-einer lastverteilten Variante verf"ugbar. Diese ist jedoch kurz vor
+einer lastverteilten Variante verfügbar. Diese ist jedoch kurz vor
 der Fertigstellung.
 
 \section{Die Lastverteilungs-Schicht 4}
 
-Die Lastverteilungs-Schicht ist der erste Anlaufpunkt f"ur die
-Benutzung von OpenBib. Diese Schicht wird f"ur das Portal durch das
+Die Lastverteilungs-Schicht ist der erste Anlaufpunkt für die
+Benutzung von OpenBib. Diese Schicht wird für das Portal durch das
 Modul \texttt{OpenBib::LoadBalancer} und \texttt{OpenBib::ServerLoad} gebildet.
-Entscheidungsgrundlage f"ur die Verteilung ist die Auslastung der
+Entscheidungsgrundlage für die Verteilung ist die Auslastung der
 betroffenen Recher, deren generelle Ansprechbarkeit sowie die
-generelle Funktionsf"ahigkeit des MySQL-Daten\-bank\-sys\-tems.
+generelle Funktionsfähigkeit des MySQL-Daten\-bank\-sys\-tems.
 
 Durch diese vorgeschaltete Verteilung der Recherche-Sitzungen auf
 mehrere Rechner ergeben sich mehrere Vorteile:
 
 \begin{enumerate}
-\item Es wird eine Lastverteilung durchgef"uhrt. Wenn also ein Nutzer
+\item Es wird eine Lastverteilung durchgeführt. Wenn also ein Nutzer
   einen dieser URL's aufruft, so wird er auf den Rechner
-  weitergeleitet, der am wenigsten belastet ist.  Dies ist prim"arer
+  weitergeleitet, der am wenigsten belastet ist.  Dies ist primärer
   Zweck dieser Schicht.
 \item Ist ein Rechner defekt -- im Sinne von 'nicht ansprechbar'
-  bzw. 'DBMS-seitig nicht funk\-tions\-f"a\-hig' --, dann wird er bei der
-  Verteilung/Weiterleitung nicht mehr ber"ucksichtigt und die Benutzer
+  bzw. 'DBMS-seitig nicht funk\-tions\-fä\-hig' --, dann wird er bei der
+  Verteilung/Weiterleitung nicht mehr berücksichtigt und die Benutzer
   werden nur noch auf die verbliebenen Rechner verteilt. In diesem
   Fall ist bei der Weiterleitung mit einer kurzen Wartezeit von
   maximal 5 Sekunden (Timeout) zu rechnen.  Automatisch wird
-  zus"atzlich an den Administrator eine Mail ge\-ne\-riert, die ihn
+  zusätzlich an den Administrator eine Mail ge\-ne\-riert, die ihn
   auf den defekten Rechner hinweist. Ein Sonderfall ist natuerlich der
-  'Verteilungs\-rech\-ner' selbst, bei dessen Ableben tempor"ar ein
-  anderer Rechner unter seiner Identit"at einspringen mu"s. Letzteres
-  kann selbstverst"andlich nicht automatisch geschehen und muss
+  'Verteilungs\-rech\-ner' selbst, bei dessen Ableben temporär ein
+  anderer Rechner unter seiner Identität einspringen muß. Letzteres
+  kann selbstverständlich nicht automatisch geschehen und muss
   manuell konfiguriert werden. In diesem Sinn besteht mit dem
-  Lastverteilungsrechner ein Singe-Point-Of-Failure, der nur "uber
-  HA-Mechanismen ausger"aumt werden kann.
-\item Werden Wartungsarbeiten auf einem der Rechner ausgef"uhrt, so
-  kann man ihn selbst tempor"ar aus der Verteilung/Weiterleitung
-  herausnehmen. Auf diese Weise "andert sich f"ur die Nutzer nichts,
+  Lastverteilungsrechner ein Singe-Point-Of-Failure, der nur über
+  HA-Mechanismen ausgeräumt werden kann.
+\item Werden Wartungsarbeiten auf einem der Rechner ausgeführt, so
+  kann man ihn selbst temporär aus der Verteilung/Weiterleitung
+  herausnehmen. Auf diese Weise ändert sich für die Nutzer nichts,
   es werden dann die verbliebenen Rechner verwendet.
 \end{enumerate}
 
@@ -795,13 +795,13 @@ allgemeine Konfigurations\-ein\-stellungen des Portals.
 \section{Tabellen zu session-basierten Aufgaben}
 
 \begin{description}
-\item[session] Dies ist die prim"are Tabelle in der die
-  \texttt{sessionid} f"ur eine Nutzersitzung abgespeichert wird.
-  Zus"atzlich werden folgende Informationen gespeichert:
+\item[session] Dies ist die primäre Tabelle in der die
+  \texttt{sessionid} für eine Nutzersitzung abgespeichert wird.
+  Zusätzlich werden folgende Informationen gespeichert:
   \begin{description}
   \item[createtime] Anfangszeit der Session.
   \item[lastresultset] Geordnete Liste der Katalog-ID's zur letzten
-    Rechercheanfrage. Mit dieser Liste wird die katalog"ubergreifende
+    Rechercheanfrage. Mit dieser Liste wird die katalogübergreifende
     Titelnavigation in der Einzeltrefferanzeige realisiert.
   \item[queryoptions] Allgemeine Suchoptionen. Durch die zentrale Speicherung der
     Suchoptionen brauchen diese nicht bei den internen URL-Verweisen
@@ -809,32 +809,32 @@ allgemeine Konfigurations\-ein\-stellungen des Portals.
   \end{description}
 die Anfangszeit der Session \texttt{createtime}
   gespeichert. 
-\item[treffer] Diese Tabelle realisiert sessionabh"angig die
+\item[treffer] Diese Tabelle realisiert sessionabhängig die
   \textbf{Merkliste}. Es werden zu jeder Session der Datenbankname sowie die
   Identifikations-Nr des gemerkten Titels abgespeichert. Anhand dieser
   Informationen wird die Merkliste bei ihrem Aufruf sekundenaktuell
   mit dem etwaig vorhandenen Ausleihstatus der entsprechenden
-  Titels"atze aufgebaut.
+  Titelsätze aufgebaut.
 \item[sessionlog] Diese Tabelle soll im Betrieb mit relevanten
-  Informationen gef"ullt werden, die dann statistisch ausgewertet
-  werden k"onnen. Derzeit wird sie nicht verwendet.
-\item[queries] In dieser Tabelle werden sessionabh"angig die
+  Informationen gefüllt werden, die dann statistisch ausgewertet
+  werden können. Derzeit wird sie nicht verwendet.
+\item[queries] In dieser Tabelle werden sessionabhängig die
   Suchanfragen inkl. gefundener Treffer ab\-ge\-spei\-chert. Dadurch ist es
-  m"oglich, sich "altere Suchanfragen wieder in die Recherchemaske
+  möglich, sich ältere Suchanfragen wieder in die Recherchemaske
   eintragen zu lassen.
 \item[dbchoice] In dieser Tabelle wird die vom Benutzer vorgenommene
-  Datenbankauswahl session\-ab\-h"angig abgespeichert.
-\item[searchresults] In dieser Tabelle wird session\-ab\-h"an\-gig zu jeder
+  Datenbankauswahl session\-ab\-hängig abgespeichert.
+\item[searchresults] In dieser Tabelle wird session\-ab\-hän\-gig zu jeder
   Suchanfrage (\texttt{queryid} der \texttt{queries}-Tabelle) pro
-  Datenbank das Ergebnis gecached. Zus"atzlich wird jeweils auch noch
+  Datenbank das Ergebnis gecached. Zusätzlich wird jeweils auch noch
   die Anzahl der Treffer in der jeweiligen Datenbank
   ab\-ge\-spei\-chert. Durch diese Tabelle in Verbindung mit der Tabelle
   \texttt{queries} wird die \textbf{Trefferliste} realisiert.
-\item[sessionview] "Uber diese Tabelle wird die Nutzung eines Views
-  durch eine Session festgehalten. Diese Information wird ben"otigt,
+\item[sessionview] Über diese Tabelle wird die Nutzung eines Views
+  durch eine Session festgehalten. Diese Information wird benötigt,
   damit im oberen Frame (\texttt{OpenBib::HeaderFrame}) wie auch in der
   Recherchemaske (\texttt{OpenBib::SearchFrame}) die View-Informationen
-  zus"atzlich angezeigt werden. Derzeit wird in \texttt{OpenBib::HeaderFrame}
+  zusätzlich angezeigt werden. Derzeit wird in \texttt{OpenBib::HeaderFrame}
   auf ein Bild mit dem Namen des Views
 \begin{verbatim}
 HTDOCS/images/openbib/views/<viewname>.png
@@ -853,17 +853,17 @@ HTDOCS/images/openbib/views/<viewname>.png
 
 \begin{description}
 \item[dbinfo] In dieser Tabelle werden Informationen zu den einzelnen
-  Katalogdatenbanken ab\-ge\-spei\-chert. Dazu geh"ort die Fakult"at
+  Katalogdatenbanken ab\-ge\-spei\-chert. Dazu gehört die Fakultät
   (\texttt{faculty}, derzeit fest in den Modulen einprogrammiert),
   eine Beschreibung (\texttt{description}), das Katalogisierungssystem
-  (\texttt{system} anhand K"urzel), der Datenbankname
+  (\texttt{system} anhand Kürzel), der Datenbankname
   (\texttt{dbname}), das Bibliothekssigel (\texttt{sigel}) und
-  schlie"slich die wesentliche Information, ob die Daten\-bank im Portal
-  aktiv ist oder nicht (\texttt{active}). "Uber die letzte Einstellung
+  schließlich die wesentliche Information, ob die Daten\-bank im Portal
+  aktiv ist oder nicht (\texttt{active}). Über die letzte Einstellung
   lassen sich im laufenden Betrieb Daten\-banken ein- und ausblenden.
 \item[dboptions] Zu jeder Daten\-bank werden hier Informationen
   abgelegt, wo die zum Aufbau der Daten\-bank notwendigen Daten liegen
-  und alle zum Heranschaffen der Daten ben"otigten Informationen wie
+  und alle zum Heranschaffen der Daten benötigten Informationen wie
   Rechnername (\texttt{host}), Pfade, Dateinamen, Zugriffsprotokoll
   (\texttt{lokal}, \texttt{http}, \texttt{ftp}) und
   Authentifizierungsinformationen wie Benutzernamen oder Passworte.
@@ -871,9 +871,9 @@ HTDOCS/images/openbib/views/<viewname>.png
   sie werden durch die automatischen Konvertierungsskripte jedoch noch
   nicht verwendet.
 \item[titcount] In dieser Tabelle wird die Anzahl der Titel pro
-  Daten\-bank festgehalten. Diese Information wird "uber das Modul
-  \texttt{OpenBib::SearchFrame} f"ur den Benutzer ausgegeben. Das Setzen
-  dieser Werte geschieht "uber die automatischen
+  Daten\-bank festgehalten. Diese Information wird über das Modul
+  \texttt{OpenBib::SearchFrame} für den Benutzer ausgegeben. Das Setzen
+  dieser Werte geschieht über die automatischen
   Konvertierungsskripte.
 \item[rssfeeds] In dieser Tabelle werden alle verfuegbaren Typen an RSS-Feeds
   zu den einzelnen Daten\-bank aus \texttt{dbinfo} definiert. Die
@@ -881,7 +881,7 @@ HTDOCS/images/openbib/views/<viewname>.png
   aktivieren sowie deaktivieren.
 \item[rsscache] Um die Antwortzeiten bei der Generierung eines
   RSS-Feeds zu minimieren, wird ein RSS-Cache mit einer
-  Aktivit"atsdauer von 12 Stunden verwendet.
+  Aktivitätsdauer von 12 Stunden verwendet.
 \item[viewinfo] In dieser Tabelle werden zu einer Recherche-Sicht
   (view) neben dem den View de\-fi\-nier\-enden Viewnamen
   (\texttt{viewname}) auch eine Beschreibung \texttt{description}
@@ -889,9 +889,9 @@ HTDOCS/images/openbib/views/<viewname>.png
   (\texttt{active}) wird derzeit nicht genutzt.
 \item[viewdbs] In dieser Tabelle werden zu dem Viewnamen die Daten\-banken
   festgelegt, die mit der konkreten Recherche-Sicht assoziiert
-  sind. Hier k"onnen auch mehrere Daten\-banken ein\-ge\-tra\-gen werden.
+  sind. Hier können auch mehrere Daten\-banken ein\-ge\-tra\-gen werden.
 \item[viewrssfeeds] In dieser Tabellen werden zu einem View die
-  RSS-Feeds konfiguriert, die in diesem View "uber den Menu-Punkt
+  RSS-Feeds konfiguriert, die in diesem View über den Menu-Punkt
   \texttt{RSS} angezeigt werden sollen
 
 \end{description}
@@ -902,18 +902,18 @@ HTDOCS/images/openbib/views/<viewname>.png
 
 Die Tabellen in \texttt{pool.mysql} werden nach Norm- bzw.
 Stamm-Dateien geordnet dargestellt. Es sind dies \emph{Titel},
-\emph{Verfasser}, \emph{K"orperschaften}, \emph{Notationen},
-\emph{Schlagworte} sowie \emph{Exemplardaten}. Dar"uber hinaus gibt es eine zus"atzliche
+\emph{Verfasser}, \emph{Körperschaften}, \emph{Notationen},
+\emph{Schlagworte} sowie \emph{Exemplardaten}. Darüber hinaus gibt es eine zusätzliche
 Tabelle \texttt{search} in der in Form einer Volltextsuche
-recherchiert werden kann. Verkn"upfungen zwischen den Norm-Dateien
-werden "uber die Tabelle \texttt{conn} abgebildet.
+recherchiert werden kann. Verknüpfungen zwischen den Norm-Dateien
+werden über die Tabelle \texttt{conn} abgebildet.
 
 \section{Titel-Normdaten}
 
 \begin{description}
-\item[tit] In dieser Tabelle befinden sich die f"ur die Anzeige
-  bestimmten Titeldaten. Grunds"atzlich werden in dieser Tabelle
-  folgende Informationen in einem Metadaten-unabh"angigen Format
+\item[tit] In dieser Tabelle befinden sich die für die Anzeige
+  bestimmten Titeldaten. Grundsätzlich werden in dieser Tabelle
+  folgende Informationen in einem Metadaten-unabhängigen Format
   abgelegt.
   \begin{description}
   \item[id] Identifikationsnummer
@@ -921,14 +921,14 @@ werden "uber die Tabelle \texttt{conn} abgebildet.
   \item[indicator] Indikator -- transformiert von alphabetisch nach numerisch
   \item[content] Eigentlicher Kategorieinhalt
   \end{description}
-\item[tit\_ft] Kategorien, die "uber einen Volltextindex recherchierbar
+\item[tit\_ft] Kategorien, die über einen Volltextindex recherchierbar
   gemacht werden.
   \begin{description}
   \item[id] Identifikationsnummer
   \item[category] Kategoriename -- sie basiert auf auf MAB2-Kategorienummer
   \item[content] Eigentlicher Kategorieinhalt, der suchbar gemacht wird.
   \end{description}
-\item[tit\_string] Kategorien, die "uber eine Wortanfangssuche
+\item[tit\_string] Kategorien, die über eine Wortanfangssuche
   recherchierbar gemacht werden.
   \begin{description}
   \item[id] Identifikationsnummer
@@ -940,25 +940,25 @@ werden "uber die Tabelle \texttt{conn} abgebildet.
 \section{Verfasser-Normdaten}
 
 \begin{description}
-\item[aut] In dieser Tabelle befinden sich die f"ur die Anzeige
-  bestimmten Verfasserinformationen f"ur die Kategorien
-  \textbf{Verfasser} und \textbf{Person}. Grunds"atzlich werden in
+\item[aut] In dieser Tabelle befinden sich die für die Anzeige
+  bestimmten Verfasserinformationen für die Kategorien
+  \textbf{Verfasser} und \textbf{Person}. Grundsätzlich werden in
   dieser Tabelle folgende Informationen in einem
-  Metadaten-unabh"angigen Format abgelegt.
+  Metadaten-unabhängigen Format abgelegt.
   \begin{description}
   \item[id] Identifikationsnummer
   \item[category] Kategoriename -- eigentlich eine interne Kategorienummer
   \item[indicator] Indikator -- transformiert von alphabetisch nach numerisch
   \item[content] Eigentlicher Kategorieinhalt
   \end{description}
-\item[aut\_ft] Kategorien, die "uber einen Volltextindex recherchierbar
+\item[aut\_ft] Kategorien, die über einen Volltextindex recherchierbar
   gemacht werden.
   \begin{description}
   \item[id] Identifikationsnummer
   \item[category] Kategoriename -- eigentlich eine interne Kategorienummer
   \item[content] Eigentlicher Kategorieinhalt, der suchbar gemacht wird.
   \end{description}
-\item[aut\_string] Kategorien, die "uber eine Wortanfangssuche
+\item[aut\_string] Kategorien, die über eine Wortanfangssuche
   recherchierbar gemacht werden.
   \begin{description}
   \item[id] Identifikationsnummer
@@ -967,28 +967,28 @@ werden "uber die Tabelle \texttt{conn} abgebildet.
   \end{description}
 \end{description}
 
-\section{K"orperschafts-Normdaten}
+\section{Körperschafts-Normdaten}
 
 \begin{description}
-\item[kor] In dieser Tabelle befinden sich die f"ur die Anzeige
-  bestimmten K"orperschaftsinformationen f"ur die Kategorien
-  \textbf{K"orperschaft} und \textbf{Urheber}. Grunds"atzlich werden in
+\item[kor] In dieser Tabelle befinden sich die für die Anzeige
+  bestimmten Körperschaftsinformationen für die Kategorien
+  \textbf{Körperschaft} und \textbf{Urheber}. Grundsätzlich werden in
   dieser Tabelle folgende Informationen in einem
-  Metadaten-unabh"angigen Format abgelegt.
+  Metadaten-unabhängigen Format abgelegt.
   \begin{description}
   \item[id] Identifikationsnummer
   \item[category] Kategoriename -- eigentlich eine interne Kategorienummer
   \item[indicator] Indikator -- transformiert von alphabetisch nach numerisch
   \item[content] Eigentlicher Kategorieinhalt
   \end{description}
-\item[kor\_ft] Kategorien, die "uber einen Volltextindex recherchierbar
+\item[kor\_ft] Kategorien, die über einen Volltextindex recherchierbar
   gemacht werden.
   \begin{description}
   \item[id] Identifikationsnummer
   \item[category] Kategoriename -- eigentlich eine interne Kategorienummer
   \item[content] Eigentlicher Kategorieinhalt, der suchbar gemacht wird.
   \end{description}
-\item[kor\_string] Kategorien, die "uber eine Wortanfangssuche
+\item[kor\_string] Kategorien, die über eine Wortanfangssuche
   recherchierbar gemacht werden.
   \begin{description}
   \item[id] Identifikationsnummer
@@ -1000,10 +1000,10 @@ werden "uber die Tabelle \texttt{conn} abgebildet.
 \section{Schlagwort-Normdaten}
 
 \begin{description}
-\item[swt] In dieser Tabelle befinden sich die f"ur die Anzeige
-  bestimmten K"orperschaftsinformationen f"ur die Kategorie
-  \textbf{Schlagwort}. Grunds"atzlich werden in dieser Tabelle
-  folgende Informationen in einem Metadaten-unabh"angigen Format
+\item[swt] In dieser Tabelle befinden sich die für die Anzeige
+  bestimmten Körperschaftsinformationen für die Kategorie
+  \textbf{Schlagwort}. Grundsätzlich werden in dieser Tabelle
+  folgende Informationen in einem Metadaten-unabhängigen Format
   abgelegt.
   \begin{description}
   \item[id] Identifikationsnummer
@@ -1011,14 +1011,14 @@ werden "uber die Tabelle \texttt{conn} abgebildet.
   \item[indicator] Indikator -- transformiert von alphabetisch nach numerisch
   \item[content] Eigentlicher Kategorieinhalt
   \end{description}
-\item[swt\_ft] Kategorien, die "uber einen Volltextindex recherchierbar
+\item[swt\_ft] Kategorien, die über einen Volltextindex recherchierbar
   gemacht werden.
   \begin{description}
   \item[id] Identifikationsnummer
   \item[category] Kategoriename -- eigentlich eine interne Kategorienummer
   \item[content] Eigentlicher Kategorieinhalt, der suchbar gemacht wird.
   \end{description}
-\item[swt\_string] Kategorien, die "uber eine Wortanfangssuche
+\item[swt\_string] Kategorien, die über eine Wortanfangssuche
   recherchierbar gemacht werden.
   \begin{description}
   \item[id] Identifikationsnummer
@@ -1030,10 +1030,10 @@ werden "uber die Tabelle \texttt{conn} abgebildet.
 \section{Notations-Normdaten}
 
 \begin{description}
-\item[notation] In dieser Tabelle befinden sich die f"ur die Anzeige
-  bestimmten Notationsinformationen f"ur die Kategorie
-  \textbf{Notation}. Grunds"atzlich werden in dieser Tabelle
-  folgende Informationen in einem Metadaten-unabh"angigen Format
+\item[notation] In dieser Tabelle befinden sich die für die Anzeige
+  bestimmten Notationsinformationen für die Kategorie
+  \textbf{Notation}. Grundsätzlich werden in dieser Tabelle
+  folgende Informationen in einem Metadaten-unabhängigen Format
   abgelegt.
   \begin{description}
   \item[id] Identifikationsnummer
@@ -1041,14 +1041,14 @@ werden "uber die Tabelle \texttt{conn} abgebildet.
   \item[indicator] Indikator -- transformiert von alphabetisch nach numerisch
   \item[content] Eigentlicher Kategorieinhalt
   \end{description}
-\item[notation\_ft] Kategorien, die "uber einen Volltextindex recherchierbar
+\item[notation\_ft] Kategorien, die über einen Volltextindex recherchierbar
   gemacht werden.
   \begin{description}
   \item[id] Identifikationsnummer
   \item[category] Kategoriename -- eigentlich eine interne Kategorienummer
   \item[content] Eigentlicher Kategorieinhalt, der suchbar gemacht wird.
   \end{description}
-\item[notation\_string] Kategorien, die "uber eine Wortanfangssuche
+\item[notation\_string] Kategorien, die über eine Wortanfangssuche
   recherchierbar gemacht werden.
   \begin{description}
   \item[id] Identifikationsnummer
@@ -1060,24 +1060,24 @@ werden "uber die Tabelle \texttt{conn} abgebildet.
 \section{Exemplar-Daten}
 
 \begin{description}
-\item[mex] In dieser Tabelle befinden sich die f"ur die Anzeige
+\item[mex] In dieser Tabelle befinden sich die für die Anzeige
   bestimmten Exemplarinformationen aus dem Titeldatenbereich.
-  Grunds"atzlich werden in dieser Tabelle folgende Informationen in
-  einem Metadaten-unabh"angigen Format abgelegt.
+  Grundsätzlich werden in dieser Tabelle folgende Informationen in
+  einem Metadaten-unabhängigen Format abgelegt.
   \begin{description}
   \item[id] Identifikationsnummer
   \item[category] Kategoriename -- eigentlich eine interne Kategorienummer
   \item[indicator] Indikator -- transformiert von alphabetisch nach numerisch
   \item[content] Eigentlicher Kategorieinhalt
   \end{description}
-\item[mex\_ft] Kategorien, die "uber einen Volltextindex recherchierbar
+\item[mex\_ft] Kategorien, die über einen Volltextindex recherchierbar
   gemacht werden.
   \begin{description}
   \item[id] Identifikationsnummer
   \item[category] Kategoriename -- eigentlich eine interne Kategorienummer
   \item[content] Eigentlicher Kategorieinhalt, der suchbar gemacht wird.
   \end{description}
-\item[mex\_string] Kategorien, die "uber eine Wortanfangssuche
+\item[mex\_string] Kategorien, die über eine Wortanfangssuche
   recherchierbar gemacht werden.
   \begin{description}
   \item[id] Identifikationsnummer
@@ -1086,21 +1086,21 @@ werden "uber die Tabelle \texttt{conn} abgebildet.
   \end{description}
 \end{description}
 
-\section{Verkn"upfungen zwischen den Normdaten}
+\section{Verknüpfungen zwischen den Normdaten}
 
 \begin{description}
 \item[conn] In dieser Tabelle befinden sich
-  Verkn"upfungsinformationen f"ur die Normdaten. 
-  Grunds"atzlich werden in dieser Tabelle folgende Informationen in
-  einem Metadaten-unabh"angigen Format abgelegt.
+  Verknüpfungsinformationen für die Normdaten. 
+  Grundsätzlich werden in dieser Tabelle folgende Informationen in
+  einem Metadaten-unabhängigen Format abgelegt.
   \begin{description}
-  \item[category] Kategorie(nummer), der die Verkn"upfung zugeordnet
+  \item[category] Kategorie(nummer), der die Verknüpfung zugeordnet
     ist (z.B. Verfasser vs. Person)
-  \item[sourceid] Id des zu verkn"upfenden Satzes
-  \item[sourcetype] Normdatei des zu verkn"upfenden Satzes
-  \item[targetid] Id des verkn"upften Satzes
-  \item[targettype] Normdatei des verkn"upften Satzes
-  \item[supplement] Zusatzinformation, die der Verkn"upfung zugeordnet
+  \item[sourceid] Id des zu verknüpfenden Satzes
+  \item[sourcetype] Normdatei des zu verknüpfenden Satzes
+  \item[targetid] Id des verknüpften Satzes
+  \item[targettype] Normdatei des verknüpften Satzes
+  \item[supplement] Zusatzinformation, die der Verknüpfung zugeordnet
     ist (z.B. [Hrsg.])
   \end{description}
 \end{description}
@@ -1108,18 +1108,18 @@ werden "uber die Tabelle \texttt{conn} abgebildet.
 
 \section{Recherche-Tabelle \texttt{search}}
 
-S"amtliche vom Benutzer eingegebenen Suchbegriffe werden in der Tabelle
+Sämtliche vom Benutzer eingegebenen Suchbegriffe werden in der Tabelle
 \texttt{search} recherchiert. Als Ergebnis der Suche werden
-Identifikationsnummern (IDN's, Katkeys) der gefundenen Titel-S"atze
-zur"uckgeliefert. Mit diesen IDN's wird dann in die Norm- bzw.
-Stammdateien gesprungen, um alle Informationen zu diesen Titel-S"atzen
-zu gewinnen. Diese Funktionalit"at wird allein von dem Modul
+Identifikationsnummern (IDN's, Katkeys) der gefundenen Titel-Sätze
+zurückgeliefert. Mit diesen IDN's wird dann in die Norm- bzw.
+Stammdateien gesprungen, um alle Informationen zu diesen Titel-Sätzen
+zu gewinnen. Diese Funktionalität wird allein von dem Modul
 \texttt{OpenBib::Search} geleistet.
 
 \chapter{Module geordnet nach Funktion bzw. Schicht}
 
 
-\section{Schicht"ubergreifend}
+\section{Schichtübergreifend}
 
 
 \begin{itemize}

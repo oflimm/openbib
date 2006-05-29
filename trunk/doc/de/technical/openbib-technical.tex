@@ -94,10 +94,10 @@ Bei dem OpenBib Recherche-Portal handelt es sich um
 OpenSource-Software. Damit ist eine maximale Freiheit bei der
 Anpassung an die individuellen Anforderungen gew"ahrleistet.
 Dar"uber hinaus ist die Eintrittsschwelle in die "Anderung oder
-Erweiterung des Portals durch die Verwendung des DBMS Mysql (Model),
-des Template Toolkits (View), der Programmiersprache Perl (Controler)
+Erweiterung des Portals durch die Ver\-wen\-dung des DBMS Mysql (Model),
+des Template Toolkits (View), der Programmiersprache Perl (Control\-ler)
 sowie von GNU gettext (I18N/L10N) "au"serst niedrig. Schlie"slich
-fallen selbstverst"andlich keine (Lizenz-)Kosten an.
+fallen selbst\-ver\-st"and\-lich keine (Lizenz-)Kosten an.
 
 
 \section{OpenBib basiert auf Standardkomponenten und bibliothekarischen Standards}
@@ -132,7 +132,7 @@ OpenBib verwendet durchg"angig Standardkomponenten. Es sind dies
   gekapselt (inkl. weiterer m"oglicher Parameter), so da"s die
   Templates durchschaubar bleiben.
 \item[SOAP] F"ur die Kommunikation mit externen Systemen wird das
-  Standard-Protokoll SOAP verwendet.
+  Standard-Protokoll SOAP ver\-wen\-det.
 \item[RSS] "Uber RSS-Feeds k"onnen verschiedene Informationen f"ur das
   Gesamtportal bzw. View-basierte Unter-Portale angeboten werden.
 \item[UTF-8] Die Darstellung und interne Verarbeitung der Daten
@@ -145,7 +145,7 @@ OpenBib verwendet durchg"angig Standardkomponenten. Es sind dies
 \end{description}
 
 Das Datenmodell und das zugrundeliegende Meta-Datenformat basieren auf
-dem bibliothekarischen Standard MAB2. Dar"uber hinaus ist seit der
+dem biblio\-the\-ka\-ri\-schen Standard MAB2. Dar"uber hinaus ist seit der
 Ur-Version des Recherche-Portals im Jahr 1997 sehr viel
 bibliothekarisches Know-How in die Entwicklung mit eingeflossen.
 
@@ -153,7 +153,7 @@ bibliothekarisches Know-How in die Entwicklung mit eingeflossen.
 \section{OpenBib ist "uber verschiedene Views bzw. Sichten
   individualisierbar}
 Mit OpenBib k"onnen "uber das Merkmal \textit{View}
-bzw. \textit{Sicht} ausgehend von einer zentralen Installation mit
+bzw. \textit{Sicht} ausgehend von einer zentralen In\-stal\-la\-tion mit
 geringstem Aufwand individuell gestaltete andere Portale erstellt
 werden. Hierzu wird ein einfacher Mechanismus kaskadierender Templates
 und Stylesheets verwendet. Dieser Mechanismus funktioniert sowohl
@@ -173,7 +173,7 @@ Neben den Templates werden ebenfalls die Stylesheets "uber diesen
 Mechanismus individualisierbar gemacht.
 
 "Uber den Mechanismus kaskadierender Templates hinaus k"onnen
-datenbankabh"angige (international- bzw. lokalisierbare)
+datenbankabh"angige (inter\-nationali\-sier\-bare bzw. lokalisierbare)
 Bezeichner f"ur einzelne Kategorien definiert werden. Damit lassen
 sich einzelne Kategorien unter Beibehaltung ihres Datenbankbezeichners
 f"ur spezielle thematische Datenbanken (siehe unten z.B. Digitale
@@ -184,7 +184,7 @@ Konkrete Beispiele sind
 \item Das KUG Recherche-Portal\newline (\texttt{http://kug.ub.uni-koeln.de/})
 \item Die Digitale Einbandsammlung der USB K"oln\newline (\texttt{http://einbandsammlung.ub.uni-koeln.de/})
 \item Die Virtuelle Bibliothek Elise und Helene Richter\newline (\texttt{http://richterbibliothek.ub.uni-koeln.de/})
-\end{description}
+\end{itemize}
 
 
 \section{OpenBib ist modular aufgebaut}
@@ -203,10 +203,11 @@ Dar"uber hinaus k"onnen andere Teile modular ausgewechselt werden --
 wenn dies gew"unscht wird. So l"a"st sich u.a. die anf"angliche Suche
 "uber einen oder alle Kataloge z.B. von der Realisierung "uber eine
 MySQL-Volltext-Datenbank auf andere Volltext-Datenbanken oder gar
-Suchmaschinentechnologie "andern. Das neue Verfahren mu"s lediglich
-die 'Einspr"unge' in den Bibliographischen Teil der MySQL-Datenbank
-liefern. Ganz konkret basierten die ersten Versionen in den Jahren
-1997-2000 f"ur die anf"angliche Suche auf der Volltextdatenbank \texttt{freeWAIS-sf}.
+Such\-ma\-schie\-nen\-tech\-no\-lo\-gie "andern. Das neue Verfahren
+mu"s lediglich die 'Einspr"unge' in den Bibliographischen Teil der
+MySQL-Datenbank liefern. Ganz konkret basierten die ersten Versionen
+in den Jahren 1997-2000 f"ur die anf"angliche Suche auf der
+Volltextdatenbank \texttt{freeWAIS-sf}.
 
 \section{OpenBib ist flexibel im internen Katalog- bzw. Metadaten-Format}
 Das standardm"a"sig verwendete Katalog- bzw. Meta-Datenformat basiert
@@ -247,7 +248,7 @@ nicht explizit eine eigene Konfiguration erstellt wurde.
 
 \subsection{Plugin-Mechanismus f"ur verschiedene Quell-Datenbanktypen}
 Ausgehend von einer Standardkonvertierung (Sisis-Format) k"onnen im
-Programm f"ur den automatisierten Import an verschiedenen Stellen des
+Programm f"ur den auto\-ma\-ti\-sier\-ten Import an verschiedenen Stellen des
 Import-Ablaufes datenbankspezifische Plugins eingebracht werden, in die
 man Spezialanpassungen ausgelagern kann. Grundlegende Phasen, in die
 man eingreifen kann sind:
@@ -257,12 +258,12 @@ man eingreifen kann sind:
   in externe Plugin-Programme ausgelagert werden.
 \item[Vorbereitung der Daten] An dieser Stelle k"onnen alternative
   Vorbereitungsaktionen -- wie z.B. Teilkatalogbildung -- in externe
-  Plugin-Programme zwischengeschaltet werden.
+  Plugin-Programme zwischen\-ge\-schal\-tet werden.
 \item[Konvertierung der Daten] An dieser Stelle k"onnen alternative
   Konvertierungsroutinen -- z.B. in das MAB2 basierte Meta-Datenformat
-  -- zwischengeschaltet werden.
+  -- zwischen\-ge\-schal\-tet werden.
 \item[Einladen der Daten] An dieser Stelle k"onnen alternative
-  Behandlungen der Daten zwischengeschaltet werden.
+  Behandlungen der Daten zwischen\-ge\-schal\-tet werden.
 \end{description}
 
 \section{OpenBib l"a"st sich "uber WebServices an das Lokalsystem koppeln}
@@ -326,7 +327,7 @@ vorzunehmen.
 Inhalte katalog"ubergreifend in die vorhandenen Katalogdaten
 eingeblendet werden. Grundlage ist eine vorhandene ISBN/ISSN. Hiermit
 ist z.B. die Ergebnisanreicherung mit Inhaltsverzeichnissen
-realisierbar. Die Implementation der Ergebnisanreicherung in OpenBib
+realisierbar. Die Im\-ple\-men\-ta\-tion der Ergebnisanreicherung in OpenBib
 ist jedoch so allgemein gehalten, da"s sie sich auch mit anderen
 'Zusatz'-Informationen nutzen l"asst. So k"onnen beliebige
 Informationen wie Abstracts, Stichwortverzeichnisse u."a. dort zentral
@@ -342,7 +343,7 @@ spezialisierte Programme deutlich mehr Nutzungsm"oglichkeiten. So
 k"onnen solche Programme sich um die Sichtung der Daten k"ummern,
 schon aufgerufene Titel von den noch nicht aufgerufenen farblich
 trennen, Informationen archivieren, Data-Mining in Verbindung mit
-spezialisierter Suchtechnologie einsetzen usw.
+spezialisierter Such\-tech\-no\-lo\-gie einsetzen usw.
 
 Grundlage f"ur die in den RSS-Feeds angezeigten Informationen ist das
 Neuaufnahmedatum im Katalog. Neben einer allgemeinen Neuzugangsliste
@@ -361,7 +362,7 @@ werden, wie sie z.B. der Browser Firefox ab der Version 1.5 besitzt
 
 \section{OpenBib bietet ein web-basiertes Administrationsinterface}
 Die Einrichtung einzelner Datenbanken, Zusammenfassung von Datenbanken
-in Views, die Konfiguration der RSS-Feeds sowie eine Beobachtung
+in Views, die Kon\-fi\-gu\-ra\-tion der RSS-Feeds sowie eine Beobachtung
 aktiver Sessions (Suchanfragen usw.) kann "uber ein web-basiertes
 Administrationsinterface erfolgen. Damit l"a"st sich auch eine gro"se
 Anzahl an Katalogen unproblematisch konfigurieren.
@@ -397,12 +398,12 @@ Recherche-Portal sichtbar sind.
 Neben den Katalogen der Instituts- und Seminarbibliotheken wurden im
 KUG Recherche-Portal weitere Spezialkataloge
 erschlossen bzw. erst verwirklicht. Dazu geh"oren die Digitale
-Einbandsammlung der USB K"oln, die Virtuelle Bibliothek Elise und
-Helene Richter, der Hochschulschriftenserver, EconBiz, das Graph
+Einband\-samm\-lung der USB K"oln, die Virtuelle Bibliothek Elise und
+Helene Richter, der Hoch\-schul\-schrif\-ten\-ser\-ver, EconBiz, das Graph
 Drawing Eprint-Archive, die Poetica-Sammlung, die Sammlung K"olner
 Zeitungsausschnitte, der Katalog der  Bibliothek des Oratoriums
 Kevelaerinense sowie diverse separate Teilkataloge des USB-Bestandes
-(Lehrbuchsammlung, Lesesaal, Europ"aisches Dokumentationszentrum).
+(Lehrbuchsammlung, Lesesaal, Europ"aisches Do\-ku\-men\-ta\-tions\-zen\-trum).
 
 Insgesamt sind damit im KUG Recherche-Portal 119 verschiedene
 Katalogdatenbanken mit derzeit insgesamt 4942543 Titelaufnahmen
@@ -464,17 +465,17 @@ unserer Zeitungsausschnitts-Sammlung ein.
 
 Ausgehend von den USB-Katalogdaten bilden wir verschiedene
 abgeschlossene Teilkataloge. Diese basieren entweder auf einem
-speziellen Standort (Lehrbuchsammlung, Lesesaal) oder einem speziellen
+spe\-ziel\-len Standort (Lehrbuchsammlung, Lesesaal) oder einem spe\-ziel\-len
 Ausleih-Nutzer (EDZ, realisiert "uber einen entsprechenden OLWS-Dienst
-f"ur das Lokalsystem). Zus"atzlich werden im Falle des EDZ-Katalogs
-dessen Daten mit einer speziellen Sachgruppenkategorie angereichert.
+f"ur das Lokal\-sys\-tem). Zus"atzlich werden im Falle des EDZ-Katalogs
+dessen Daten mit einer spe\-ziel\-len Sach\-gruppen\-ka\-te\-go\-rie angereichert.
 
 Schlie"slich verwenden wir f"ur die Internetquellen der Virtuellen
-Fachbibliothek Wirtschaftswissenschaften (EconBiz) eine
+Fachbibliothek Wirtschafts\-wissen\-schaften (EconBiz) eine
 SQL-Schnittstelle f"ur den Datenabzug.
 
 Durch die Verwendung eines einheitlichen Meta-Datenformats als
-Grundlage k"onnen neue Datenbest"ande sehr einfach in das Portal
+Grundlage k"onnen neue Daten\-be\-st"an\-de sehr einfach in das Portal
 integriert werden.
 
 
@@ -495,14 +496,14 @@ Im Projekt 'Digitale Einbandsammlung' wurde an der USB eine
 Einbanddatenbank, bestehend aus Einbandbeschreibungen und Bildern der
 jeweiligen Einbände, konzipiert und realisiert. Dazu wurde ein
 Scan-Workflow erarbeitet und programmtechnisch in einer
-eigenentwickelten Kompontente OpenDIA -- die ein weiteres Teilprojekt
+eigenentwickelten Kom\-po\-nen\-te OpenDIA -- die ein weiteres Teilprojekt
 von OpenBib ist -- umgesetzt, mit dem die eingescannten Einbandbilder
 erfasst, mit Meta-Daten angereichtert und präsentiert werden.
 
 Ausgehend vom KUG Recherche-Portal (OpenBib) wurden diese Abbildungen
-samt Daten bei Wahrung der Eigenständigkeit beider Komponten --
+samt Daten bei Wahrung der Eigenständigkeit beider Kom\-po\-nen\-ten --
 OpenBib und OpenDIA -- visuell zu einem Ganzen zusammen gefügt. Diese
-visuelle Integration wurde durch die Flexibilit"at beider Komponenten
+visuelle Integration wurde durch die Flexibilit"at beider Kom\-po\-nen\-ten
 erst erm"oglicht -- speziell durch die individualisierbaren
 Portal-Sichten in OpenBib. 
 
@@ -514,7 +515,7 @@ Präsentation der 'Digitalen Einbandsammlung' geschah dabei im Rahmen
 der 10.  Jahrestagung des Arbeitskreises für die Erfassung,
 Erschließung und Erhaltung historischer Bucheinbände, die an der USB
 Köln vom 22.-24.  September 2005 stattgefunden hat.  Eine
-ausf"uhrliche Zusammenfassung der Konzeption und der technischen
+ausf"uhrliche Zusammenfassung der Kon\-zep\-tion und der technischen
 Realisierung findet sich in \cite{BoeFli:EinbandDB}.
 
 
@@ -524,7 +525,7 @@ Im Projekt 'Virtuelle Bibliothek Elise und Helene Richter', das Teil
 der NS-Provenienzforschung in der USB Köln ist, wurde f"ur die
 in die von der USB aufgesp"urten Medien aus der ehemaligen Bibliothek
 der Schwestern Richter ein eigenst"andiges Recherche-Portal auf Basis
-individualisierbarer Portal-Sichten erstellt.
+indi\-vi\-duali\-sierbarer Portal-Sichten erstellt.
 
 \section{Fazit}
 
@@ -750,7 +751,7 @@ Benutzung von OpenBib. Diese Schicht wird f"ur das Portal durch das
 Modul \texttt{OpenBib::LoadBalancer} und \texttt{OpenBib::ServerLoad} gebildet.
 Entscheidungsgrundlage f"ur die Verteilung ist die Auslastung der
 betroffenen Recher, deren generelle Ansprechbarkeit sowie die
-generelle Funktionsf"ahigkeit des MySQL-Datenbanksystems.
+generelle Funktionsf"ahigkeit des MySQL-Daten\-bank\-sys\-tems.
 
 Durch diese vorgeschaltete Verteilung der Recherche-Sitzungen auf
 mehrere Rechner ergeben sich mehrere Vorteile:
@@ -761,7 +762,7 @@ mehrere Rechner ergeben sich mehrere Vorteile:
   weitergeleitet, der am wenigsten belastet ist.  Dies ist prim"arer
   Zweck dieser Schicht.
 \item Ist ein Rechner defekt -- im Sinne von 'nicht ansprechbar'
-  bzw. 'DBMS-seitig nicht funktionsf"ahig' --, dann wird er bei der
+  bzw. 'DBMS-seitig nicht funk\-tions\-f"a\-hig' --, dann wird er bei der
   Verteilung/Weiterleitung nicht mehr ber"ucksichtigt und die Benutzer
   werden nur noch auf die verbliebenen Rechner verteilt. In diesem
   Fall ist bei der Weiterleitung mit einer kurzen Wartezeit von
@@ -788,7 +789,7 @@ In diesem Anhang werden die einzelnen Tabellen in der
 Session-Datenbank beschrieben.
 
 Diese Tabellen verteilen sich auf rein session-basierte Aufgaben sowie
-allgemeine Konfigurationseinstellungen des Portals.
+allgemeine Konfigurations\-ein\-stellungen des Portals.
 
 
 \section{Tabellen zu session-basierten Aufgaben}
@@ -844,7 +845,7 @@ HTDOCS/images/openbib/views/<viewname>.png
   Recherchemaske -- Einfache Recherche oder Komplexe Recherche -- der
   Nutzer zuletzt aktiviert hat. Bei einer Aktivierung des allgemeinen
   Ober-Menueintrags 'Recherche' wird dann diese konkrete
-  Recherchemaske ausgegeben.
+  Recherchemaske aus\-ge\-ge\-ben.
 \item[sessionprofile] \dots
 \end{description}
 
@@ -857,11 +858,11 @@ HTDOCS/images/openbib/views/<viewname>.png
   eine Beschreibung (\texttt{description}), das Katalogisierungssystem
   (\texttt{system} anhand K"urzel), der Datenbankname
   (\texttt{dbname}), das Bibliothekssigel (\texttt{sigel}) und
-  schlie"slich die wesentliche Information, ob die Datenbank im Portal
+  schlie"slich die wesentliche Information, ob die Daten\-bank im Portal
   aktiv ist oder nicht (\texttt{active}). "Uber die letzte Einstellung
-  lassen sich im laufenden Betrieb Datenbanken ein- und ausblenden.
-\item[dboptions] Zu jeder Datenbank werden hier Informationen
-  abgelegt, wo die zum Aufbau der Datenbank notwendigen Daten liegen
+  lassen sich im laufenden Betrieb Daten\-banken ein- und ausblenden.
+\item[dboptions] Zu jeder Daten\-bank werden hier Informationen
+  abgelegt, wo die zum Aufbau der Daten\-bank notwendigen Daten liegen
   und alle zum Heranschaffen der Daten ben"otigten Informationen wie
   Rechnername (\texttt{host}), Pfade, Dateinamen, Zugriffsprotokoll
   (\texttt{lokal}, \texttt{http}, \texttt{ftp}) und
@@ -870,12 +871,12 @@ HTDOCS/images/openbib/views/<viewname>.png
   sie werden durch die automatischen Konvertierungsskripte jedoch noch
   nicht verwendet.
 \item[titcount] In dieser Tabelle wird die Anzahl der Titel pro
-  Datenbank festgehalten. Diese Information wird "uber das Modul
+  Daten\-bank festgehalten. Diese Information wird "uber das Modul
   \texttt{OpenBib::SearchFrame} f"ur den Benutzer ausgegeben. Das Setzen
   dieser Werte geschieht "uber die automatischen
   Konvertierungsskripte.
 \item[rssfeeds] In dieser Tabelle werden alle verfuegbaren Typen an RSS-Feeds
-  zu den einzelnen Datenbank aus \texttt{dbinfo} definiert. Die
+  zu den einzelnen Daten\-bank aus \texttt{dbinfo} definiert. Die
   RSS-Feeds lassen sich hier nach deren Konfiguration generell
   aktivieren sowie deaktivieren.
 \item[rsscache] Um die Antwortzeiten bei der Generierung eines
@@ -886,9 +887,9 @@ HTDOCS/images/openbib/views/<viewname>.png
   (\texttt{viewname}) auch eine Beschreibung \texttt{description}
   abgelegt. Die Informatione, ob der View aktiv ist oder nicht
   (\texttt{active}) wird derzeit nicht genutzt.
-\item[viewdbs] In dieser Tabelle werden zu dem Viewnamen die Datenbanken
+\item[viewdbs] In dieser Tabelle werden zu dem Viewnamen die Daten\-banken
   festgelegt, die mit der konkreten Recherche-Sicht assoziiert
-  sind. Hier k"onnen auch mehrere Datenbanken ein\-ge\-tra\-gen werden.
+  sind. Hier k"onnen auch mehrere Daten\-banken ein\-ge\-tra\-gen werden.
 \item[viewrssfeeds] In dieser Tabellen werden zu einem View die
   RSS-Feeds konfiguriert, die in diesem View "uber den Menu-Punkt
   \texttt{RSS} angezeigt werden sollen

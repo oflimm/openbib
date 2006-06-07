@@ -42,6 +42,8 @@ use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use Storable ();
+use String::Tokenizer;
+use Search::Xapian;
 use YAML ();
 
 use OpenBib::Search::Util;
@@ -107,6 +109,7 @@ sub handler {
     my $profil        = $query->param('profil')        || '';
     my $trefferliste  = $query->param('trefferliste')  || '';
     my $queryid       = $query->param('queryid')       || '';
+    my $sb            = $query->param('sb')            || 'sql'; # Search backend
 
     my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
 
@@ -647,125 +650,311 @@ sub handler {
 
     my @resultset=();
     foreach my $database (@databases) {
-        my $dbh
-            = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
-                or $logger->error_die($DBI::errstr);
-
-        my $atime=new Benchmark;
         
-        my $result_ref=OpenBib::Search::Util::initial_search_for_titidns({
-            searchquery_ref => $searchquery_ref,
-
-            serien          => $serien,
-            dbh             => $dbh,
-            maxhits         => $maxhits,
-
-            enrich          => $enrich,
-            enrichkeys_ref  => $enrichkeys_ref,
-        });
-
-        my @tidns           = @{$result_ref->{titidns_ref}};
-        my $fullresultcount = $result_ref->{fullresultcount};
-
-        # Wenn mindestens ein Treffer gefunden wurde
-        if ($#tidns >= 0) {
-
-            my $a2time;
+        if ($sb eq 'xapian'){
+            # Xapian
             
-            if ($config{benchmark}) {
-               $a2time=new Benchmark;
+            my $atime=new Benchmark;
+            
+            my $db = Search::Xapian::Database->new( $config{xapian_index_base_path}."/".$database) || die "Couldn't open/create Xapian DB $!\n";
+            
+            my $querystring=$searchquery_ref->{fs}{norm};
+            $querystring=~s/\+//g;
+            
+            my $tokenizer = String::Tokenizer->new();
+            
+            $logger->info("XapianQuery: $querystring");
+            
+            $tokenizer->tokenize($querystring);
+            
+            my $query;
+            my $isfirst=1;
+            my $i = $tokenizer->iterator();
+            while ($i->hasNextToken()) {
+                my $next = $i->nextToken();
+                if ($isfirst){
+                    $query   = Search::Xapian::Query->new($next);
+                    $isfirst=0;
+                }
+                else {        
+                    $query   = Search::Xapian::Query->new(Search::Xapian::OP_AND, $query, Search::Xapian::Query->new($next));
+                }
             }
-
-            my @outputbuffer=();
-
-            foreach my $idn (@tidns) {
-                push @outputbuffer, OpenBib::Search::Util::get_tit_listitem_by_idn({
-                    titidn            => $idn,
-                    dbh               => $dbh,
-                    sessiondbh        => $sessiondbh,
-                    database          => $database,
-                    sessionID         => $sessionID,
-                    targetdbinfo_ref  => $targetdbinfo_ref,
-                });
-            }
-
+            
+            my $enq     = $db->enquire($query);
+            
+            $logger->info("Running query ".$enq->get_query()->get_description());
+            
+            my @matches = $enq->matches(0,99999);
+            
+            my $fullresultcount = scalar(@matches);
+            
             my $btime      = new Benchmark;
             my $timeall    = timediff($btime,$atime);
             my $resulttime = timestr($timeall,"nop");
             $resulttime    =~s/(\d+\.\d+) .*/$1/;
+            
+            $logger->info(scalar(@matches) . " results found in $resulttime");
+            
+            if (scalar(@matches) >= 1){
+                
+                my @outputbuffer=();
+                
+                my $rset=Search::Xapian::RSet->new();
+                
+                for ($i=0; $i <= $maxhits ; $i++){
+                    my $match=$matches[$i];
+                    
+                    $rset->add_document($match->get_docid);
+                    my $document=$match->get_document();
+                    my $titlistitem_raw=pack "H*", decode_utf8($document->get_data());
+                    my $titlistitem_ref=Storable::thaw($titlistitem_raw);
+                    
+                    push @outputbuffer, $titlistitem_ref;
+                }
+                
+                
+                my $eterms=$enq->get_eset(100,$rset);
+                
+                my $iter=$eterms->begin();
+                
+                my $term_ref = {
+                    aut => [],
+                    kor => [],
+                    hst => [],
+                    all => [],
+                };
+                
+                while ($iter != $eterms->end()){
+                    my $term   = $iter->get_termname();
+                    my $weight = $iter->get_weight();
+                    
+                    if ($term=~/^X1(.+)$/){
+                        push @{$term_ref->{aut}}, {
+                            name   => $1,
+                            weight => $weight,
+                        };
+                    }
+                    elsif ($term=~/^X2(.+)$/){
+                        push @{$term_ref->{hst}}, {
+                            name   => $1,
+                            weight => $weight,
+                        };
+                    } elsif ($term=~/^X3(.+)$/) {
+                        push @{$term_ref->{kor}}, {
+                            name   => $1,
+                            weight => $weight,
+                        };
+                    } elsif ($term=~/^X4(.+)$/) {
+                        push @{$term_ref->{swt}}, {
+                            name   => $1,
+                            weight => $weight,
+                        };
+                    } elsif ($term=~/^X7(.+)$/) {
+                        push @{$term_ref->{ejahr}}, {
+                            name   => $1,
+                            weight => $weight,
+                        };
+                    } else {
+                        push @{$term_ref->{all}}, {
+                            name   => $term,
+                            weight => $weight,
+                        };
+                    }
+                
+                    $iter++;
+                }
+            
+                my @sortedoutputbuffer=();
+            
+                OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
+            
+                # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
+                foreach my $item_ref (@sortedoutputbuffer) {
+                    push @resultset, { id       => $item_ref->{id},
+                                       database => $item_ref->{database},
+                                   };
+                }
+            
+                my $treffer=$#sortedoutputbuffer+1;
+            
+                my $itemtemplatename=$config{tt_virtualsearch_result_item_tname};
+                if ($view && -e "$config{tt_include_path}/views/$view/$itemtemplatename") {
+                    $itemtemplatename="views/$view/$itemtemplatename";
+                }
+            
+                my $itemtemplate = Template->new({
+                    LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+                        INCLUDE_PATH   => $config{tt_include_path},
+                        ABSOLUTE       => 1,
+                    }) ],
+                    #                INCLUDE_PATH   => $config{tt_include_path},
+                    #                ABSOLUTE       => 1,
+                    OUTPUT         => $r,
+                });
+            
+            
+                # TT-Data erzeugen
+                my $ttdata={
+                    view            => $view,
+                    sessionID       => $sessionID,
+		  
+                    dbinfo          => $targetdbinfo_ref->{dbinfo}{$database},
 
-            if ($config{benchmark}) {
-                my $b2time     = new Benchmark;
-                my $timeall2   = timediff($b2time,$a2time);
+                    treffer         => $treffer,
 
-                $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel (holen)       : ist ".timestr($timeall2));
-                $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel (suchen+holen): ist ".timestr($timeall));
-            }
+                    fullresultcount => $fullresultcount,
+                    resultlist      => \@sortedoutputbuffer,
+                    termfeedback    => $term_ref,
+                    rating          => '',
+                    bookinfo        => '',
+                    sorttype        => $sorttype,
+                    sortorder       => $sortorder,
+                    resulttime      => $resulttime,
+                    config          => \%config,
+                    msg             => $msg,
+                };
 
-            my @sortedoutputbuffer=();
+                $itemtemplate->process($itemtemplatename, $ttdata) || do {
+                    $r->log_reason($itemtemplate->error(), $r->filename);
+                    return SERVER_ERROR;
+                };
 
-            OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
+                $trefferpage{$database} = \@sortedoutputbuffer;
+                $dbhits     {$database} = $treffer;
+                $gesamttreffer          = $gesamttreffer+$treffer;
 
-	    # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
-	    foreach my $item_ref (@sortedoutputbuffer){
-	      push @resultset, { id       => $item_ref->{id},
-				 database => $item_ref->{database},
-			       };
-	    }
-	    
-            my $treffer=$#sortedoutputbuffer+1;
+                undef $btime;
+                undef $timeall;
+            
+            
+            } 
+        }
+        elsif ($sb eq 'sql') {
+            # SQL
 
-            my $itemtemplatename=$config{tt_virtualsearch_result_item_tname};
-            if ($view && -e "$config{tt_include_path}/views/$view/$itemtemplatename") {
-                $itemtemplatename="views/$view/$itemtemplatename";
-            }
+            my $dbh
+                = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+                    or $logger->error_die($DBI::errstr);
+            
+            my $atime=new Benchmark;
+            
+            my $result_ref=OpenBib::Search::Util::initial_search_for_titidns({
+                searchquery_ref => $searchquery_ref,
 
-            my $itemtemplate = Template->new({
-                LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-                    INCLUDE_PATH   => $config{tt_include_path},
-                    ABSOLUTE       => 1,
-                }) ],
-#                INCLUDE_PATH   => $config{tt_include_path},
-#                ABSOLUTE       => 1,
-                OUTPUT         => $r,
+                serien          => $serien,
+                dbh             => $dbh,
+                maxhits         => $maxhits,
+
+                enrich          => $enrich,
+                enrichkeys_ref  => $enrichkeys_ref,
             });
 
+            my @tidns           = @{$result_ref->{titidns_ref}};
+            my $fullresultcount = $result_ref->{fullresultcount};
 
-            # TT-Data erzeugen
-            my $ttdata={
-                view            => $view,
-                sessionID       => $sessionID,
+            # Wenn mindestens ein Treffer gefunden wurde
+            if ($#tidns >= 0) {
+
+                my $a2time;
+            
+                if ($config{benchmark}) {
+                    $a2time=new Benchmark;
+                }
+
+                my @outputbuffer=();
+
+                foreach my $idn (@tidns) {
+                    push @outputbuffer, OpenBib::Search::Util::get_tit_listitem_by_idn({
+                        titidn            => $idn,
+                        dbh               => $dbh,
+                        sessiondbh        => $sessiondbh,
+                        database          => $database,
+                        sessionID         => $sessionID,
+                        targetdbinfo_ref  => $targetdbinfo_ref,
+                    });
+                }
+
+                my $btime      = new Benchmark;
+                my $timeall    = timediff($btime,$atime);
+                my $resulttime = timestr($timeall,"nop");
+                $resulttime    =~s/(\d+\.\d+) .*/$1/;
+
+                if ($config{benchmark}) {
+                    my $b2time     = new Benchmark;
+                    my $timeall2   = timediff($b2time,$a2time);
+
+                    $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel (holen)       : ist ".timestr($timeall2));
+                    $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel (suchen+holen): ist ".timestr($timeall));
+                }
+
+                my @sortedoutputbuffer=();
+
+                OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
+
+                # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
+                foreach my $item_ref (@sortedoutputbuffer) {
+                    push @resultset, { id       => $item_ref->{id},
+                                       database => $item_ref->{database},
+                                   };
+                }
+	    
+                my $treffer=$#sortedoutputbuffer+1;
+
+                my $itemtemplatename=$config{tt_virtualsearch_result_item_tname};
+                if ($view && -e "$config{tt_include_path}/views/$view/$itemtemplatename") {
+                    $itemtemplatename="views/$view/$itemtemplatename";
+                }
+
+                my $itemtemplate = Template->new({
+                    LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+                        INCLUDE_PATH   => $config{tt_include_path},
+                        ABSOLUTE       => 1,
+                    }) ],
+                    #                INCLUDE_PATH   => $config{tt_include_path},
+                    #                ABSOLUTE       => 1,
+                    OUTPUT         => $r,
+                });
+
+
+                # TT-Data erzeugen
+                my $ttdata={
+                    view            => $view,
+                    sessionID       => $sessionID,
 		  
-                dbinfo          => $targetdbinfo_ref->{dbinfo}{$database},
+                    dbinfo          => $targetdbinfo_ref->{dbinfo}{$database},
 
-                treffer         => $treffer,
+                    treffer         => $treffer,
 
-                fullresultcount => $fullresultcount,
-                resultlist      => \@sortedoutputbuffer,
-                rating          => '',
-                bookinfo        => '',
-                sorttype        => $sorttype,
-                sortorder       => $sortorder,
-                resulttime      => $resulttime,
-                config          => \%config,
-                msg             => $msg,
-            };
+                    fullresultcount => $fullresultcount,
+                    resultlist      => \@sortedoutputbuffer,
+                    rating          => '',
+                    bookinfo        => '',
+                    sorttype        => $sorttype,
+                    sortorder       => $sortorder,
+                    resulttime      => $resulttime,
+                    config          => \%config,
+                    msg             => $msg,
+                };
 
-            $itemtemplate->process($itemtemplatename, $ttdata) || do {
-                $r->log_reason($itemtemplate->error(), $r->filename);
-                return SERVER_ERROR;
-            };
+                $itemtemplate->process($itemtemplatename, $ttdata) || do {
+                    $r->log_reason($itemtemplate->error(), $r->filename);
+                    return SERVER_ERROR;
+                };
 
-            $trefferpage{$database} = \@sortedoutputbuffer;
-            $dbhits     {$database} = $treffer;
-            $gesamttreffer          = $gesamttreffer+$treffer;
+                $trefferpage{$database} = \@sortedoutputbuffer;
+                $dbhits     {$database} = $treffer;
+                $gesamttreffer          = $gesamttreffer+$treffer;
 
-            undef $btime;
-            undef $timeall;
+                undef $btime;
+                undef $timeall;
 
+            }
+            $dbh->disconnect;
+            undef $atime;
         }
-        undef $atime;
-        $dbh->disconnect;
+
+        # flush output buffer
         $r->rflush();
     }
 

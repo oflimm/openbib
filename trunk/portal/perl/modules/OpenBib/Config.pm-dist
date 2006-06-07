@@ -223,6 +223,10 @@ use vars qw(%config);
 
 	   tt_include_path         => '/opt/openbib/templates',
 
+           # xapian index basepath
+
+           xapian_index_base_path  => '/opt/openbib/xapian/index',
+
 	   # Pfad zum Document Root
 
 	   document_root_path       => '/usr/db/www/documents',

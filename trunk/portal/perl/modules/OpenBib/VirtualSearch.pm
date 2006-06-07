@@ -702,7 +702,7 @@ sub handler {
                 
                 my $rset=Search::Xapian::RSet->new();
                 
-                for ($i=0; $i <= $maxhits ; $i++){
+                for ($i=0; $i < $maxhits && defined $matches[$i]; $i++){
                     my $match=$matches[$i];
                     
                     $rset->add_document($match->get_docid);

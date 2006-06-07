@@ -70,5 +70,45 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 [% END %]
 <tr><td class="listnr"></td><td colspan="4"><span style="font-size:0.8em">in: [% resulttime %] [% msg.maketext("Sekunden") %]</span></b></td></tr>
 <tr><td colspan="4">&nbsp;<td></tr>
+[% IF termfeedback %]
+<tr><td colspan="4">
+[% 
+
+output = [
+    {
+        title => 'Autoren:',
+        cat   => 'aut',
+    },
+    {
+        title => 'Koerperschaften:',
+        cat   => 'kor',
+    },
+    {
+        title => 'Titel:',
+        cat   => 'hst',
+    },
+    {
+        title => 'Schlagworte:',
+        cat   => 'swt',
+    },
+    {
+        title => 'Erscheinungsjahre:',
+        cat   => 'ejahr',
+    },
+    
+];
+
+FOREACH thisoutput IN output ;
+%]
+<b>[% thisoutput.title%]</b><br>
+[% FOREACH item IN termfeedback.${thisoutput.cat} %]
+[% item.name %]<br>
+[% END %]
+
+[% END %]
+
+<td></tr>
+<tr><td colspan="4">&nbsp;<td></tr>
+[% END %]
 <!-- Ende Result Item -->
 

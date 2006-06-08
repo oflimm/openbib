@@ -182,7 +182,7 @@ if ($singlepool && -e "$config{autoconv_dir}/filter/$singlepool/alt_conv.pl"){
     system("$config{autoconv_dir}/filter/$singlepool/alt_conv.pl $singlepool");
 }
 else {
-    system("cd $rootdir/data/$singlepool ; $meta2sqlexe ");
+    system("cd $rootdir/data/$singlepool ; $meta2sqlexe --single-pool=$singlepool");
 }
 
 if ($singlepool && -e "$config{autoconv_dir}/filter/$singlepool/post_conv.pl"){

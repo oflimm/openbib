@@ -350,6 +350,9 @@ while (my $line=<IN>){
 
         $listitem_ref={};
 
+        $listitem_ref->{id}       = $id;
+        $listitem_ref->{database} = $singlepool;
+
         next CATLINE;
     }
     elsif ($line=~m/^9999:/){

@@ -52,6 +52,7 @@ use OpenBib::Common::Util;
 use OpenBib::Common::Stopwords;
 use OpenBib::Config;
 use OpenBib::L10N;
+use OpenBib::Search::Local::Xapian;
 use OpenBib::Template::Provider;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
@@ -658,7 +659,7 @@ sub handler {
             
             my $db = Search::Xapian::Database->new( $config{xapian_index_base_path}."/".$database) || die "Couldn't open/create Xapian DB $!\n";
             
-            my $querystring=$searchquery_ref->{fs}{norm};
+            my $querystring=lc($searchquery_ref->{fs}{norm});
             $querystring=~s/\+//g;
             
             my $tokenizer = String::Tokenizer->new();
@@ -682,8 +683,9 @@ sub handler {
             }
             
             my $enq     = $db->enquire($query);
-            
-            $logger->info("Running query ".$enq->get_query()->get_description());
+
+            my $thisquery = $enq->get_query()->get_description();
+            $logger->info("Running query $thisquery");
             
             my @matches = $enq->matches(0,99999);
             
@@ -764,7 +766,23 @@ sub handler {
                 
                     $iter++;
                 }
-            
+
+                # Relavante Kategorieinhalte bestimmen
+
+                my $relevant_aut_ref = OpenBib::Search::Local::Xapian::get_relevant_terms({
+                    categories     => ['P0100','P0101'],
+                    type           => 'aut',
+                    resultbuffer   => \@outputbuffer,
+                    relevanttokens => $term_ref,
+                });
+
+                my $relevant_kor_ref = OpenBib::Search::Local::Xapian::get_relevant_terms({
+                    categories     => ['C0200','C0201'],
+                    type           => 'kor',
+                    resultbuffer   => \@outputbuffer,
+                    relevanttokens => $term_ref,
+                });
+                
                 my @sortedoutputbuffer=();
             
                 OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
@@ -806,6 +824,10 @@ sub handler {
                     fullresultcount => $fullresultcount,
                     resultlist      => \@sortedoutputbuffer,
                     termfeedback    => $term_ref,
+
+                    relevantaut     => $relevant_aut_ref,
+                    relevantkor     => $relevant_kor_ref,
+                    lastquery       => $querystring,
                     rating          => '',
                     bookinfo        => '',
                     sorttype        => $sorttype,

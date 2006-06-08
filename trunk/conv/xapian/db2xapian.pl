@@ -53,7 +53,11 @@ if (! -d "$thisdbpath"){
     mkdir "$thisdbpath";
 }
 
-print "Building Index for Database $database\n";
+print "Removing prior Index for Database $database\n";
+
+system("rm -f $thisdbpath/*");
+
+print "Building new   Index for Database $database\n";
 
 my $db = Search::Xapian::WritableDatabase->new( $thisdbpath, Search::Xapian::DB_CREATE_OR_OPEN ) || die "Couldn't open/create Xapian DB $!\n";
 

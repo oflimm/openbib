@@ -23,6 +23,7 @@
 <input type="hidden" name="sorttype"  value="author" />
 <input type="hidden" name="sortorder" value="up" />
 <input type="hidden" name="autoplus"  value="1" />
+<input type="hidden" name="sb"        value="xapian" />
 
 [% dbinputtags %]
 

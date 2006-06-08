@@ -88,9 +88,9 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <table width="100%">
 <tr><th>Drill-Down Titel</th></tr>
 <tr><td class="boxedclear">
-[% FOREACH item IN termfeedback.${"hst"} %]
+[% FOREACH termitem IN termfeedback.${"hst"} %]
 <a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID
-%];sb=xapian;fs=[% lastquery %] [% item.name %]">[% item.name %]</a><br>
+%];sb=xapian;fs=[% lastquery %] [% termitem.name %]">[% termitem.name %]</a><br>
 [% END %]
 </td></tr>
 </table>
@@ -100,9 +100,9 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <table width="100%">
 <tr><th>Drill-Down Schlagworte</th></tr>
 <tr><td class="boxedclear">
-[% FOREACH item IN termfeedback.${"swt"} %]
+[% FOREACH termitem IN termfeedback.${"swt"} %]
 <a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID
-%];sb=xapian;fs=[% lastquery %] [% item.name %]">[% item.name %]</a><br>
+%];sb=xapian;fs=[% lastquery %] [% termitem.name %]">[% termitem.name %]</a><br>
 [% END %]
 </td></tr>
 </table>
@@ -112,9 +112,9 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <table width="100%">
 <tr><th>Drill-Down Jahre</th></tr>
 <tr><td class="boxedclear">
-[% FOREACH item IN termfeedback.${"ejahr"} %]
+[% FOREACH termitem IN termfeedback.${"ejahr"} %]
 <a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID
-%];sb=xapian;fs=[% lastquery %] [% item.name %]">[% item.name %]</a><br>
+%];sb=xapian;fs=[% lastquery %] [% termitem.name %]">[% termitem.name %]</a><br>
 [% END %]
 </td></tr>
 </table>
@@ -157,8 +157,8 @@ output = [
 FOREACH thisoutput IN output ;
 %]
 <b>[% thisoutput.title%]</b><br>
-[% FOREACH item IN termfeedback.${thisoutput.cat} %]
-[% item.name %]<br>
+[% FOREACH termitem IN termfeedback.${thisoutput.cat} %]
+[% termitem.name %]<br>
 [% END %]
 
 [% END %]

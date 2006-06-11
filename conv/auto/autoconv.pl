@@ -259,6 +259,10 @@ print "### $singlepool: Updating Titcount\n";
 
 system("$config{'base_dir'}/bin/updatetitcount.pl --single-pool=$singlepool");
 
+print "### $singlepool: Importing data into searchengine\n";
+
+system("$config{'base_dir'}/conv/db2xapian.pl $singlepool");
+
 print "### $singlepool: Cleanup\n";
 
 #system("$mysqladminexe drop   $singlepooltmp");

@@ -70,7 +70,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 [% END %]
 <tr><td class="listnr"></td><td colspan="4"><span style="font-size:0.8em">in: [% resulttime %] [% msg.maketext("Sekunden") %]</span></b></td></tr>
 
-[% IF drilldown %]
+[% IF drilldown && fullresultcount > qopts.maxhits %]
 <tr><td class="listnr"><td colspan="4">
 <table>
 <tr><td valign="top">
@@ -80,7 +80,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <tr><td class="boxedclear">
 [% FOREACH termitem IN relevantaut %]
 <a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID
-%];sb=xapian;fs=[% lastquery %] [% termitem %]">[% termitem %]</a><br>
+%];sb=xapian;drilldown=1;fs=[% lastquery %] [% termitem %]">[% termitem %]</a><br>
 [% END %]
 </td></tr>
 </table>
@@ -92,7 +92,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <tr><td class="boxedclear">
 [% FOREACH termitem IN relevantkor %]
 <a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID
-%];sb=xapian;fs=[% lastquery %] [% termitem %]">[% termitem %]</a><br>
+%];sb=xapian;drilldown=1;fs=[% lastquery %] [% termitem %]">[% termitem %]</a><br>
 [% END %]
 </td></tr>
 </table>
@@ -105,7 +105,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <tr><td class="boxedclear">
 [% FOREACH termitem IN termfeedback.${"hst"} %]
 <a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID
-%];sb=xapian;fs=[% lastquery %] [% termitem.name %]">[% termitem.name %]</a><br>
+%];sb=xapian;drilldown=1;fs=[% lastquery %] [% termitem.name %]">[% termitem.name %]</a><br>
 [% END %]
 </td></tr>
 </table>
@@ -117,7 +117,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <tr><td class="boxedclear">
 [% FOREACH termitem IN relevantswt %]
 <a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID
-%];sb=xapian;fs=[% lastquery %] [% termitem %]">[% termitem %]</a><br>
+%];sb=xapian;drilldown=1;fs=[% lastquery %] [% termitem %]">[% termitem %]</a><br>
 [% END %]
 </td></tr>
 </table>
@@ -129,7 +129,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <tr><td class="boxedclear">
 [% FOREACH termitem IN termfeedback.${"ejahr"} %]
 <a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID
-%];sb=xapian;fs=[% lastquery %] [% termitem.name %]">[% termitem.name %]</a><br>
+%];sb=xapian;drilldown=1;fs=[% lastquery %] [% termitem.name %]">[% termitem.name %]</a><br>
 [% END %]
 </td></tr>
 </table>
@@ -182,5 +182,6 @@ FOREACH thisoutput IN output ;
 <td></tr>
 <tr><td colspan="4">&nbsp;<td></tr>
 [% END %]
+<tr><td colspan="4">&nbsp;<td></tr>
 <!-- Ende Result Item -->
 

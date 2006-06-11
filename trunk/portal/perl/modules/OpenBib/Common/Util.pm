@@ -1394,6 +1394,11 @@ sub grundform {
     $content=~s/&quot;//g;
     $content=~s/&amp;//g;
 
+    # Fall: C++, C# und .Net
+    $content=~s/(?<=(\w|\+))\+/plus/g;
+    $content=~s/(c)\#/$1sharp/ig;
+    $content=~s/\.(net)\#/dot$1/ig;
+    
     if ($searchreq){
         # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
         $content=~s/[^-+\p{Alphabetic}0-9\/: '()"^*]//g;

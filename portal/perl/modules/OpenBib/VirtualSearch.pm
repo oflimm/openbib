@@ -656,7 +656,8 @@ sub handler {
             # Xapian
             
             my $atime=new Benchmark;
-            
+
+            $logger->debug("Creating Xapian DB-Object for database $database");
             my $db = new Search::Xapian::Database ( $config{xapian_index_base_path}."/".$database) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
             my $qp = new Search::Xapian::QueryParser() || $logger->fatal("Couldn't open/create Xapian DB $!\n");
             
@@ -696,12 +697,12 @@ sub handler {
                 
                 my @outputbuffer=();
                 
-                my $rset=Search::Xapian::RSet->new() if ($drilldown);
+                my $rset=Search::Xapian::RSet->new() if ($drilldown && $fullresultcount > $maxhits);
                 
                 for (my $i=0; $i < $maxhits && defined $matches[$i]; $i++){
                     my $match=$matches[$i];
                     
-                    $rset->add_document($match->get_docid) if ($drilldown);
+                    $rset->add_document($match->get_docid) if ($drilldown && $fullresultcount > $maxhits);
                     my $document=$match->get_document();
                     my $titlistitem_raw=pack "H*", decode_utf8($document->get_data());
                     my $titlistitem_ref=Storable::thaw($titlistitem_raw);
@@ -715,7 +716,7 @@ sub handler {
                 my $term_ref;
                 my $drilldowntime;
                 
-                if ($drilldown){
+                if ($drilldown && $fullresultcount > $maxhits ){
                     my $ddatime=new Benchmark;
                     my $eterms=$enq->get_eset(50,$rset);
                     

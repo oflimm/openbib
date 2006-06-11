@@ -57,6 +57,7 @@ chop $dir;
 
 my %listitemdata_aut=();
 my %listitemdata_kor=();
+my %listitemdata_swt=();
 my %listitemdata_mex=();
 
 
@@ -66,7 +67,10 @@ if ($reducemem){
     
     tie %listitemdata_kor, 'MLDBM', "./listitemdata_kor.db"
         or die "Could not tie listitemdata_kor.\n";
-    
+
+    tie %listitemdata_swt, 'MLDBM', "./listitemdata_swt.db"
+        or die "Could not tie listitemdata_swt.\n";
+ 
     tie %listitemdata_mex, 'MLDBM', "./listitemdata_mex.db"
         or die "Could not tie listitemdata_mex.\n";
 }
@@ -149,6 +153,16 @@ foreach my $type (keys %{$stammdateien_ref}){
         elsif ($type eq "kor"){
             $listitemdata_kor{$id}=$content;
         }
+        elsif ($type eq "swt"){
+            $listitemdata_swt{$id}= {
+                content     => $content,
+                 contentnorm => OpenBib::Common::Util::grundform({
+                     category => 'T0710',
+                     content  => $content,
+                 }),
+            };
+        }
+  
     }
     
     my $contentnorm   = "";
@@ -374,6 +388,14 @@ while (my $line=<IN>){
         @temp=();
         foreach my $item (@swt){
             push @temp, join(" ",@{$stammdateien_ref->{swt}{data}[$item]});
+
+            push @{$listitem_ref->{T0710}}, {
+                id          => $item,
+                type        => 'swt',
+                content     => $listitemdata_swt{$item}{content},
+                contentnorm => $listitemdata_swt{$item}{contentnorm},
+            };
+
         }
         push @temp, join(" ",@titswt);
         my $swt      = join(" ",@temp);

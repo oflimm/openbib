@@ -69,24 +69,39 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 [%- END -%]
 [% END %]
 <tr><td class="listnr"></td><td colspan="4"><span style="font-size:0.8em">in: [% resulttime %] [% msg.maketext("Sekunden") %]</span></b></td></tr>
+
+[% IF drilldown %]
 <tr><td class="listnr"><td colspan="4">
 <table>
 <tr><td valign="top">
 
 <table width="100%">
-<tr><th>Drill-Down Verfasser</th></tr>
+<tr><th>Verfasser</th></tr>
 <tr><td class="boxedclear">
-[% FOREACH thisrelevantaut IN relevantaut %]
+[% FOREACH termitem IN relevantaut %]
 <a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID
-%];sb=xapian;fs=[% lastquery %] [% thisrelevantaut %]">[% thisrelevantaut %]</a><br>
+%];sb=xapian;fs=[% lastquery %] [% termitem %]">[% termitem %]</a><br>
 [% END %]
 </td></tr>
 </table>
 
 </td><td valign="top">
+<!--
+<table width="100%">
+<tr><th>K&ouml;rperschaften</th></tr>
+<tr><td class="boxedclear">
+[% FOREACH termitem IN relevantkor %]
+<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID
+%];sb=xapian;fs=[% lastquery %] [% termitem %]">[% termitem %]</a><br>
+[% END %]
+</td></tr>
+</table>
+
+</td><td valign="top">
+-->
 
 <table width="100%">
-<tr><th>Drill-Down Titel</th></tr>
+<tr><th>Titel</th></tr>
 <tr><td class="boxedclear">
 [% FOREACH termitem IN termfeedback.${"hst"} %]
 <a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID
@@ -98,11 +113,11 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 </td><td valign="top">
 
 <table width="100%">
-<tr><th>Drill-Down Schlagworte</th></tr>
+<tr><th>Schlagworte</th></tr>
 <tr><td class="boxedclear">
-[% FOREACH termitem IN termfeedback.${"swt"} %]
+[% FOREACH termitem IN relevantswt %]
 <a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID
-%];sb=xapian;fs=[% lastquery %] [% termitem.name %]">[% termitem.name %]</a><br>
+%];sb=xapian;fs=[% lastquery %] [% termitem %]">[% termitem %]</a><br>
 [% END %]
 </td></tr>
 </table>
@@ -110,7 +125,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 </td><td valign="top">
 
 <table width="100%">
-<tr><th>Drill-Down Jahre</th></tr>
+<tr><th>Jahre</th></tr>
 <tr><td class="boxedclear">
 [% FOREACH termitem IN termfeedback.${"ejahr"} %]
 <a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID
@@ -125,6 +140,8 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 </table>
 
 </td></tr>
+<tr><td class="listnr"></td><td colspan="4"><span style="font-size:0.8em">Drill-Down in: [% drilldowntime %] [% msg.maketext("Sekunden") %]</span></b></td></tr>
+[% END %]
 
 [% IF false %]
 <tr><td colspan="4">

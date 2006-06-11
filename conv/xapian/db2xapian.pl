@@ -141,7 +141,8 @@ while (my $res=$request->fetchrow_hashref){
     ];
     
     my $doc=Search::Xapian::Document->new();
-    
+
+    my $k = 0;
     foreach my $tokinfo_ref (@$tokinfos_ref){
         # Tokenize
         next if (! $tokinfo_ref->{content});
@@ -156,12 +157,13 @@ while (my $res=$request->fetchrow_hashref){
             #next if ($stopword_ref->{$next});
 
             # Token generell einfuegen
-            $doc->add_term($next);
-
+            $doc->add_posting($next,$k);
+            $k++;
+            
             # Token in Feld einfuegen            
             my $fieldtoken=$tokinfo_ref->{prefix}.$next;
-            #print "$fieldtoken\n";
-            $doc->add_term($fieldtoken);
+            $doc->add_posting($fieldtoken,$k);
+            $k++;
         }
     }
     

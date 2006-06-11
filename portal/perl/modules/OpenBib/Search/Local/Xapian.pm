@@ -39,6 +39,7 @@ use String::Tokenizer;
 use YAML ();
 
 use OpenBib::Config;
+use OpenBib::Common::Util;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
@@ -69,16 +70,33 @@ sub get_relevant_terms {
     my $fulltermsem_ref={};
     my $fullterm_ref=[];
 
+    $logger->debug(YAML::Dump($relevanttokens_ref->{$type}));
+
+    my $atime=new Benchmark;
+    
     for (my $i=1; exists $relevanttokens_ref->{$type}[$i-1]{name} ; $i++){
         my $term=$relevanttokens_ref->{$type}[$i-1]{name};
 
+        # Problematische Zeichen fuer Regexp herausfiltern
+        $term=~s/\+//g;
+        
         $logger->debug("Token: $term");
         foreach my $titlistitem_ref (@{$resultbuffer_ref}){
             foreach my $category (@{$category_ref}){
-                $logger->debug("Testing category $category");
+#                $logger->debug("Testing category $category");
                 foreach my $thisterm_ref (@{$titlistitem_ref->{$category}}){
-                    my $thisterm=$thisterm_ref->{content};
-                    if ($thisterm=~/$term/i){
+                    my $thisterm = $thisterm_ref->{content};
+                    my $cmpterm;
+                    if (exists $thisterm_ref->{contentnorm}){
+                        $cmpterm  = $thisterm_ref->{contentnorm};
+                    }
+                    else {
+                        $cmpterm  = OpenBib::Common::Util::grundform({
+                            category => $category,
+                            content  => $thisterm,
+                        });
+                    }
+                    if ($cmpterm=~m/$term/i){
                         next if (exists $fulltermsem_ref->{$thisterm});
                         $fulltermsem_ref->{$thisterm}=1;
                         $logger->debug("Found $thisterm");
@@ -89,6 +107,10 @@ sub get_relevant_terms {
             }
         }
     }
+
+    my $btime       = new Benchmark;
+    my $timeall     = timediff($btime,$atime);
+    $logger->debug("Time: ".timestr($timeall,"nop"));
 
     $logger->debug(YAML::Dump($fullterm_ref));
     return $fullterm_ref;

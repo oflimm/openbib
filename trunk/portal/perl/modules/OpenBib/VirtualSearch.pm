@@ -42,7 +42,6 @@ use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use Storable ();
-use String::Tokenizer;
 use Search::Xapian;
 use YAML ();
 
@@ -111,6 +110,7 @@ sub handler {
     my $trefferliste  = $query->param('trefferliste')  || '';
     my $queryid       = $query->param('queryid')       || '';
     my $sb            = $query->param('sb')            || 'sql'; # Search backend
+    my $drilldown     = $query->param('drilldown')     || 0;     # Drill-Down?
 
     my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
 
@@ -657,32 +657,26 @@ sub handler {
             
             my $atime=new Benchmark;
             
-            my $db = Search::Xapian::Database->new( $config{xapian_index_base_path}."/".$database) || die "Couldn't open/create Xapian DB $!\n";
+            my $db = new Search::Xapian::Database ( $config{xapian_index_base_path}."/".$database) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+            my $qp = new Search::Xapian::QueryParser() || $logger->fatal("Couldn't open/create Xapian DB $!\n");
             
-            my $querystring=lc($searchquery_ref->{fs}{norm});
-            $querystring=~s/\+//g;
+            my $querystring = lc($searchquery_ref->{fs}{norm});
             
-            my $tokenizer = String::Tokenizer->new();
+            $querystring    = OpenBib::Common::Util::grundform({
+                content  => $querystring,
+            }),
+
+            $qp->set_default_op(Search::Xapian::OP_AND);
+            $qp->add_prefix('inauth'   ,'X1');
+            $qp->add_prefix('intitle'  ,'X2');
+            $qp->add_prefix('incorp'   ,'X3');
+            $qp->add_prefix('insubj'   ,'X4');
+            $qp->add_prefix('insys'    ,'X5');
+            $qp->add_prefix('inyear'   ,'X7');
+            $qp->add_prefix('inisbn'   ,'X8');
+            $qp->add_prefix('inissn'   ,'X9');
             
-            $logger->info("XapianQuery: $querystring");
-            
-            $tokenizer->tokenize($querystring);
-            
-            my $query;
-            my $isfirst=1;
-            my $i = $tokenizer->iterator();
-            while ($i->hasNextToken()) {
-                my $next = $i->nextToken();
-                if ($isfirst){
-                    $query   = Search::Xapian::Query->new($next);
-                    $isfirst=0;
-                }
-                else {        
-                    $query   = Search::Xapian::Query->new(Search::Xapian::OP_AND, $query, Search::Xapian::Query->new($next));
-                }
-            }
-            
-            my $enq     = $db->enquire($query);
+            my $enq     = $db->enquire($qp->parse_query($querystring));
 
             my $thisquery = $enq->get_query()->get_description();
             $logger->info("Running query $thisquery");
@@ -702,89 +696,117 @@ sub handler {
                 
                 my @outputbuffer=();
                 
-                my $rset=Search::Xapian::RSet->new();
+                my $rset=Search::Xapian::RSet->new() if ($drilldown);
                 
-                for ($i=0; $i < $maxhits && defined $matches[$i]; $i++){
+                for (my $i=0; $i < $maxhits && defined $matches[$i]; $i++){
                     my $match=$matches[$i];
                     
-                    $rset->add_document($match->get_docid);
+                    $rset->add_document($match->get_docid) if ($drilldown);
                     my $document=$match->get_document();
                     my $titlistitem_raw=pack "H*", decode_utf8($document->get_data());
                     my $titlistitem_ref=Storable::thaw($titlistitem_raw);
                     
                     push @outputbuffer, $titlistitem_ref;
                 }
+
+                my $relevant_aut_ref;
+                my $relevant_kor_ref;
+                my $relevant_swt_ref;
+                my $term_ref;
+                my $drilldowntime;
                 
-                
-                my $eterms=$enq->get_eset(100,$rset);
-                
-                my $iter=$eterms->begin();
-                
-                my $term_ref = {
-                    aut => [],
-                    kor => [],
-                    hst => [],
-                    all => [],
-                };
-                
-                while ($iter != $eterms->end()){
-                    my $term   = $iter->get_termname();
-                    my $weight = $iter->get_weight();
+                if ($drilldown){
+                    my $ddatime=new Benchmark;
+                    my $eterms=$enq->get_eset(50,$rset);
                     
-                    if ($term=~/^X1(.+)$/){
-                        push @{$term_ref->{aut}}, {
-                            name   => $1,
-                            weight => $weight,
-                        };
+                    my $iter=$eterms->begin();
+                    
+                    $term_ref = {
+                        aut => [],
+                        kor => [],
+                        hst => [],
+                        all => [],
+                    };
+                    
+                    while ($iter != $eterms->end()){
+                        my $term   = $iter->get_termname();
+                        my $weight = $iter->get_weight();
+                        
+                        if ($term=~/^X1(.+)$/){
+                            push @{$term_ref->{aut}}, {
+                                name   => $1,
+                                weight => $weight,
+                            };
+                        }
+                        elsif ($term=~/^X2(.+)$/){
+                            push @{$term_ref->{hst}}, {
+                                name   => $1,
+                                weight => $weight,
+                            };
+                        } elsif ($term=~/^X3(.+)$/) {
+                            push @{$term_ref->{kor}}, {
+                                name   => $1,
+                                weight => $weight,
+                            };
+                        } elsif ($term=~/^X4(.+)$/) {
+                            push @{$term_ref->{swt}}, {
+                                name   => $1,
+                                weight => $weight,
+                            };
+                        } elsif ($term=~/^X7(.+)$/) {
+                            push @{$term_ref->{ejahr}}, {
+                                name   => $1,
+                                weight => $weight,
+                            };
+                        } else {
+                            push @{$term_ref->{all}}, {
+                                name   => $term,
+                                weight => $weight,
+                            };
+                        }
+                        
+                        $iter++;
                     }
-                    elsif ($term=~/^X2(.+)$/){
-                        push @{$term_ref->{hst}}, {
-                            name   => $1,
-                            weight => $weight,
-                        };
-                    } elsif ($term=~/^X3(.+)$/) {
-                        push @{$term_ref->{kor}}, {
-                            name   => $1,
-                            weight => $weight,
-                        };
-                    } elsif ($term=~/^X4(.+)$/) {
-                        push @{$term_ref->{swt}}, {
-                            name   => $1,
-                            weight => $weight,
-                        };
-                    } elsif ($term=~/^X7(.+)$/) {
-                        push @{$term_ref->{ejahr}}, {
-                            name   => $1,
-                            weight => $weight,
-                        };
-                    } else {
-                        push @{$term_ref->{all}}, {
-                            name   => $term,
-                            weight => $weight,
-                        };
+
+                    {
+                        my $ddbtime       = new Benchmark;
+                        my $ddtimeall     = timediff($ddbtime,$ddatime);
+                        $logger->debug("ESet-Time: ".timestr($ddtimeall,"nop"));
                     }
-                
-                    $iter++;
+                    
+                    $logger->debug(YAML::Dump(\@outputbuffer));
+                    
+                    # Relavante Kategorieinhalte bestimmen
+                    
+                    $relevant_aut_ref = OpenBib::Search::Local::Xapian::get_relevant_terms({
+                        categories     => ['P0100','P0101'],
+                        type           => 'aut',
+                        resultbuffer   => \@outputbuffer,
+                        relevanttokens => $term_ref,
+                    });
+                    
+                    $relevant_kor_ref = OpenBib::Search::Local::Xapian::get_relevant_terms({
+                        categories     => ['C0200','C0201'],
+                        type           => 'kor',
+                        resultbuffer   => \@outputbuffer,
+                        relevanttokens => $term_ref,
+                    });
+                    
+                    $relevant_swt_ref = OpenBib::Search::Local::Xapian::get_relevant_terms({
+                        categories     => ['T0710'],
+                        type           => 'swt',
+                        resultbuffer   => \@outputbuffer,
+                        relevanttokens => $term_ref,
+                    });
+                    
+                    my $ddbtime       = new Benchmark;
+                    my $ddtimeall     = timediff($ddbtime,$ddatime);
+                    $drilldowntime    = timestr($ddtimeall,"nop");
+                    $drilldowntime    =~s/(\d+\.\d+) .*/$1/;
                 }
-
-                # Relavante Kategorieinhalte bestimmen
-
-                my $relevant_aut_ref = OpenBib::Search::Local::Xapian::get_relevant_terms({
-                    categories     => ['P0100','P0101'],
-                    type           => 'aut',
-                    resultbuffer   => \@outputbuffer,
-                    relevanttokens => $term_ref,
-                });
-
-                my $relevant_kor_ref = OpenBib::Search::Local::Xapian::get_relevant_terms({
-                    categories     => ['C0200','C0201'],
-                    type           => 'kor',
-                    resultbuffer   => \@outputbuffer,
-                    relevanttokens => $term_ref,
-                });
                 
                 my @sortedoutputbuffer=();
-            
+                
                 OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
             
                 # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
@@ -823,16 +845,19 @@ sub handler {
 
                     fullresultcount => $fullresultcount,
                     resultlist      => \@sortedoutputbuffer,
-                    termfeedback    => $term_ref,
 
+                    drilldown       => $drilldown,
+                    termfeedback    => $term_ref,
                     relevantaut     => $relevant_aut_ref,
                     relevantkor     => $relevant_kor_ref,
+                    relevantswt     => $relevant_swt_ref,
                     lastquery       => $querystring,
                     rating          => '',
                     bookinfo        => '',
                     sorttype        => $sorttype,
                     sortorder       => $sortorder,
                     resulttime      => $resulttime,
+                    drilldowntime   => $drilldowntime,
                     config          => \%config,
                     msg             => $msg,
                 };

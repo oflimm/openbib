@@ -29,10 +29,6 @@
 
 # Todo:
 #
-# - mex
-# - UTF8
-# - titlistitem TEST?
-# - search TEST?
 # - Schlagwortketten aufbrechen?
 
 use 5.008001;
@@ -40,7 +36,7 @@ use utf8;
 use strict;
 use warnings;
 
-use Encode qw();
+use Encode qw(decode_utf8 encode_utf8 decode encode);
 use Getopt::Long;
 use MIME::Base64 ();
 use Log::Log4perl qw(get_logger :levels);
@@ -58,7 +54,7 @@ use vars qw(%config);
 
 *config = \%OpenBib::Config::config;
 
-my ($singlepool,$fromdate,$todate);
+my ($singlepool,$fromdate,$todate,$logfile);
 
 &GetOptions(
     "single-pool=s" => \$singlepool,
@@ -66,7 +62,22 @@ my ($singlepool,$fromdate,$todate);
     "to-date=s"     => \$todate,
 );
 
-Log::Log4perl->init_once($OpenBib::Config::config{log4perl_path});
+if (!$singlepool || !$fromdate || !$todate){
+    print_help();
+}
+
+$logfile=($logfile)?$logfile:'/var/log/openbib/olws_updatedb.log';
+
+my $log4Perl_config = << "L4PCONF";
+log4perl.rootLogger=DEBUG, LOGFILE
+log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
+log4perl.appender.LOGFILE.filename=$logfile
+log4perl.appender.LOGFILE.mode=append
+log4perl.appender.LOGFILE.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.LOGFILE.layout.ConversionPattern=[%r] %F %L %c - %m%n
+L4PCONF
+
+Log::Log4perl::init(\$log4Perl_config);
 
 # Log4perl logger erzeugen
 my $logger = get_logger();
@@ -97,7 +108,10 @@ my $relevant_titids_ref= get_relevant_titids({
     targetcircinfo_ref => $targetcircinfo_ref,
 });
 
+my $count=1;
 foreach my $titid (@{$relevant_titids_ref}){
+    printf "%05d - Updating Title-Id %010d\n",$count,$titid;
+
     process_raw_title({
         dbh                => $dbh,
         sessiondbh         => $sessiondbh,
@@ -105,6 +119,7 @@ foreach my $titid (@{$relevant_titids_ref}){
         targetcircinfo_ref => $targetcircinfo_ref,
         titid              => $titid,
     });
+    $count++;
 }
 
 
@@ -245,19 +260,27 @@ sub process_raw_title {
         '3330'  => 1,
     };
 
+    # Zunaechst werden jedoch die vom Titel abhaengigen Exemplarsaetze geloescht.
+    my $request;
 
-    # Loeschen aller Normdatenverknuepfungen zu diesem Titel.
+    $dbh->do("delete from mex        where id in (select targetid from conn where sourceid=? and targettype=6)",undef,
+             $titid);
+    $dbh->do("delete from mex_string where id in (select targetid from conn where sourceid=? and targettype=6)",undef,
+             $titid);
+    $dbh->do("delete from mex_ft     where id in (select targetid from conn where sourceid=? and targettype=6)",undef,
+             $titid);
+
+    # Jetzt alle Normdatenverknuepfungen zu diesem Titel loeschen
+    $dbh->do("delete from conn where sourceid=?",undef,
+             $titid);
+
     # Diese werden im Folgenden wieder aufgebaut
-
-    my $request=$dbh->prepare("delete from conn where sourceid=?");
-    $request->execute($titid);
-
-    $request=$dbh->prepare("delete from tit        where id=?");
-    $request->execute($titid);
-    $request=$dbh->prepare("delete from tit_string where id=?");
-    $request->execute($titid);
-    $request=$dbh->prepare("delete from tit_ft     where id=?");
-    $request->execute($titid);
+    $dbh->do("delete from tit        where id=?",undef,
+             $titid);
+    $dbh->do("delete from tit_string where id=?",undef,
+             $titid);
+    $dbh->do("delete from tit_ft     where id=?",undef,
+             $titid);
 
   CATLINE:
     foreach my $multcategory (keys %{$raw_title_ref}){
@@ -270,8 +293,8 @@ sub process_raw_title {
             ($category,$indicator)=($1,"");
         }
 
-        $content = $raw_title_ref->{$multcategory};
-
+        $content = decode("iso-8859-1", $raw_title_ref->{$multcategory});
+        
         next CATLINE if (exists $convtab_ref->{blacklist_tit}{$category});
 
         if (exists $convtab_ref->{listitemcat}{$category}){
@@ -282,7 +305,7 @@ sub process_raw_title {
             
         };
         
-        print "Mult: $multcategory Cat $category - Mult $indicator\n";
+        $logger->debug("Mult: $multcategory Cat $category - Mult $indicator");
 
         # Verfasser
         if    (exists $categories_aut_ref->{$category}){
@@ -305,10 +328,11 @@ sub process_raw_title {
 
             %listitemdata_aut=%{$listitemdata_aut_ref};
             
-            $request=$dbh->prepare("insert into conn (category,sourceid,sourcetype,targetid,targettype,supplement) values (?,?,1,?,2,?)");
-            $request->execute($category,$titid,$id,$supplement);
+            $dbh->do("insert into conn (category,sourceid,sourcetype,targetid,targettype,supplement) values (?,?,1,?,2,?)",undef,
+                     $category,$titid,$id,$supplement);
 
             push @verf, $id;
+            push @autkor, $listitemdata_aut{$id}{content};
         }
 
         # Koerperschaften
@@ -332,10 +356,11 @@ sub process_raw_title {
 
             %listitemdata_kor=%{$listitemdata_kor_ref};
 
-            $request=$dbh->prepare("insert into conn (category,sourceid,sourcetype,targetid,targettype,supplement) values (?,?,1,?,3,?)");
-            $request->execute($category,$titid,$id,$supplement);
+            $dbh->do("insert into conn (category,sourceid,sourcetype,targetid,targettype,supplement) values (?,?,1,?,3,?)",undef,
+                     $category,$titid,$id,$supplement);
             
             push @kor, $id;
+            push @autkor, $listitemdata_kor{$id}{content};
         }
 
         # Notationen
@@ -351,8 +376,8 @@ sub process_raw_title {
 
             %listitemdata_not=%{$listitemdata_not_ref};
             
-            $request=$dbh->prepare("insert into conn (category,sourceid,sourcetype,targetid,targettype,supplement) values (?,?,1,?,5,'')");
-            $request->execute($category,$titid,$content);
+            $dbh->do("insert into conn (category,sourceid,sourcetype,targetid,targettype,supplement) values (?,?,1,?,5,'')",undef,
+                     $category,$titid,$content);
 
             push @notation, $content;
         }       
@@ -370,26 +395,29 @@ sub process_raw_title {
 
             %listitemdata_swt=%{$listitemdata_swt_ref};
             
-            $request=$dbh->prepare("insert into conn (category,sourceid,sourcetype,targetid,targettype,supplement) values (?,?,1,?,4,'')");
-            $request->execute($category,$titid,$content);
+            $dbh->do("insert into conn (category,sourceid,sourcetype,targetid,targettype,supplement) values (?,?,1,?,4,'')",undef,
+                     $category,$titid,$content);
 
             push @notation, $content;
         }       
 
         # Exemplardaten
         elsif (exists $categories_mex_ref->{$category}){
-            process_raw_mex();
 
-            $request=$dbh->prepare("insert into conn (category,sourceid,sourcetype,targetid,targettype,supplement) values (?,?,1,?,6,'')");
-            $request->execute($category,$titid,$content);
-
+            $logger->debug("Mex: $category - $content");
+            # Einsammeln der Exemplardaten (Kategorieweise pro Indikator/Exemplar)
+            push @{$listitemdata_mex{$titid}{set}{$indicator}}, {
+                category  => $category,
+                indicator => $indicator,
+                content   => $content,
+            };
         }
 
         # Titeldaten
         else {
             if ($category eq "0004"){
-                $request=$dbh->prepare("insert into conn (category,sourceid,sourcetype,targetid,targettype,supplement) values (?,?,1,?,1,'')");
-                $request->execute($category,$titid,$content);
+                $dbh->do("insert into conn (category,sourceid,sourcetype,targetid,targettype,supplement) values (?,?,1,?,1,'')",undef,
+                         $category,$titid,$content);
             }   
             else {
                 my $contentnorm   = "";
@@ -460,23 +488,41 @@ sub process_raw_title {
                     });
                 }
                 
-                $request=$dbh->prepare("insert into tit (id,category,indicator,content) values (?,?,?,?)");
-                $request->execute($titid,$category,$indicator,$content);
+                $dbh->do("insert into tit (id,category,indicator,content) values (?,?,?,?)",undef,
+                         $titid,$category,$indicator,encode_utf8($content));
                 
                 if ($contentnorm){
-                    $request=$dbh->prepare("insert into tit_string (id,category,content) values (?,?,?)");
-                    $request->execute($titid,$category,$contentnorm);
+                    $dbh->do("insert into tit_string (id,category,content) values (?,?,?)",undef,
+                             $titid,$category,encode_utf8($contentnorm));
                 }
                 
                 if ($contentnormft){
-                    $request=$dbh->prepare("insert into tit_ft (id,category,content) values (?,?,?)");
-                    $request->execute($titid,$category,$contentnormft);
+                    $dbh->do("insert into tit_ft (id,category,content) values (?,?,?)",undef,
+                             $titid,$category,encode_utf8($contentnormft));
                 }
             }
         }
         
     }   
 
+    $logger->debug("Mexall",YAML::Dump(\%listitemdata_mex));
+
+    if (exists $listitemdata_mex{$titid} && exists $listitemdata_mex{$titid}{set}){
+        my $listitemdata_mex_ref= process_raw_mex({
+            dbh                => $dbh,
+            sessiondbh         => $sessiondbh,
+            database           => $database,
+            targetcircinfo_ref => $targetcircinfo_ref,
+            listitemdata_mex   => \%listitemdata_mex,
+            titid              => $titid,
+        });
+
+        %listitemdata_mex=%{$listitemdata_mex_ref};
+    }
+    else {
+        $logger->debug("Kein Mex-Satz vorhanden zu TitelID $titid");
+    }
+    
     my @temp=();
     foreach my $item (@verf){
         push @temp, join(" ",@{$listitemdata_aut{$item}{data}});
@@ -503,12 +549,10 @@ sub process_raw_title {
         push @temp, join(" ",@{$listitemdata_not{$item}{data}});
     }
     my $notation = join(" ",@temp);
-    
-#    @temp=();
-#    push @temp, join(" ",@{$listitemdata_mex{$titid}{data}});
-#    my $mex = join(" ",@temp);
 
-    my $mex ="TODO";
+    @temp=();
+
+    my $mex       = join(" ",@{$listitemdata_mex{$titid}{data}}) if (exists $listitemdata_mex{$titid}{data});
     
     my $hst       = join(" ",@hst);
     my $isbn      = join(" ",@isbn);
@@ -517,11 +561,11 @@ sub process_raw_title {
     my $ejahr     = join(" ",@ejahr);
 
     # Loeschen und Zurueckschreiben der Search-Tabelle
-    $request=$dbh->prepare("delete from search where verwidn=?");
-    $request->execute($titid);
+    $dbh->do("delete from search where verwidn=?",undef,
+             $titid);
     
-    $request=$dbh->prepare("insert into search values (?,?,?,?,?,?,?,?,?,?,?)");
-    $request->execute($titid,$verf,$hst,$kor,$swt,$notation,$mex,$ejahr,$isbn,$issn,$artinh);
+    $dbh->do("insert into search values (?,?,?,?,?,?,?,?,?,?,?)",undef,
+             $titid,encode_utf8($verf),encode_utf8($hst),encode_utf8($kor),encode_utf8($swt),encode_utf8($notation),encode_utf8($mex),encode_utf8($ejahr),encode_utf8($isbn),encode_utf8($issn),encode_utf8($artinh));
     
     # Listitem zusammensetzen
     
@@ -598,10 +642,16 @@ sub process_raw_title {
     
     # Exemplardaten-Hash zu listitem-Hash hinzufuegen
     
-    foreach my $content (@{$listitemdata_mex{$titid}}){
-        push @{$listitem_ref->{X0014}}, {
-            content => $content,
-        };
+    foreach my $mexsetkey (sort keys %{$listitemdata_mex{$titid}{set}}){
+        my $mexset_ref=$listitemdata_mex{$titid}{set}{$mexsetkey};
+
+        foreach my $item_ref (@{$mexset_ref}){
+            if ($item_ref->{category} eq "0014"){
+                push @{$listitem_ref->{X0014}}, {
+                    content => $item_ref->{content},
+                }
+            }
+        }
     }
     
     # Kombinierte Verfasser/Koerperschaft hinzufuegen fuer Sortierung
@@ -619,6 +669,8 @@ sub process_raw_title {
     
     
     my $listitem = Storable::freeze($listitem_ref);
+
+    $logger->debug("Writing Listitem:".YAML::Dump($listitem_ref));
     
     my $encoding_type="hex";
     
@@ -631,13 +683,12 @@ sub process_raw_title {
 
     # Listitem loeschen und schreiben
 
-    $request=$dbh->prepare("delete from titlistitem where id=?");
-    $request->execute($titid);
-
-    $request=$dbh->prepare("insert into titlistitem values (?,?)");
-    $request->execute($titid,$listitem);
+    $dbh->do("delete from titlistitem where id=?",undef,
+             $titid);
+    $dbh->do("insert into titlistitem values (?,?)",undef,
+             $titid,$listitem);
     
-    print YAML::Dump($raw_title_ref);
+    $logger->debug(YAML::Dump($raw_title_ref));
     return;
 }
 
@@ -681,12 +732,12 @@ sub process_raw_aut {
     # Zuerst loeschen
     my $request;
 
-    $request=$dbh->prepare("delete from aut        where id=?");
-    $request->execute($id);
-    $request=$dbh->prepare("delete from aut_string where id=?");
-    $request->execute($id);
-    $request=$dbh->prepare("delete from aut_ft     where id=?");
-    $request->execute($id);
+    $dbh->do("delete from aut        where id=?",undef,
+             $id);
+    $dbh->do("delete from aut_string where id=?",undef,
+             $id);
+    $dbh->do("delete from aut_ft     where id=?",undef,
+             $id);
 
     # Dann einfuegen
 
@@ -731,26 +782,26 @@ sub process_raw_aut {
             }
         }
         
-        print "Mult: $multcategory Cat $category - Mult $indicator\n";
+        $logger->debug("Mult: $multcategory Cat $category - Mult $indicator");
         
-        $request=$dbh->prepare("insert into aut (id,category,indicator,content) values (?,?,?,?)");
-        $request->execute($id,$category,$indicator,$content);
+        $dbh->do("insert into aut (id,category,indicator,content) values (?,?,?,?)",undef,
+                 $id,$category,$indicator,encode_utf8($content));
 
         if ($contentnorm){
-            $request=$dbh->prepare("insert into aut_string (id,category,content) values (?,?,?)");
-            $request->execute($id,$category,$contentnorm);
+            $dbh->do("insert into aut_string (id,category,content) values (?,?,?)",undef,
+                     $id,$category,encode_utf8($contentnorm));
         }
 
         if ($contentnormft){
-            $request=$dbh->prepare("insert into aut_ft (id,category,content) values (?,?,?)");
-            $request->execute($id,$category,$contentnormft);
+            $dbh->do("insert into aut_ft (id,category,content) values (?,?,?)",undef,
+                     $id,$category,encode_utf8($contentnormft));
         }
         
 
     }        
 
-    print "Got Aut\n";
-    print YAML::Dump($raw_aut_ref),"\n";
+    $logger->debug("Got Aut");
+    $logger->debug(YAML::Dump($raw_aut_ref));
     
     return $listitemdata_aut_ref;
 }
@@ -795,12 +846,12 @@ sub process_raw_kor {
     # Zuerst loeschen
     my $request;
 
-    $request=$dbh->prepare("delete from kor        where id=?");
-    $request->execute($id);
-    $request=$dbh->prepare("delete from kor_string where id=?");
-    $request->execute($id);
-    $request=$dbh->prepare("delete from kor_ft     where id=?");
-    $request->execute($id);
+    $dbh->do("delete from kor        where id=?",undef,
+             $id);
+    $dbh->do("delete from kor_string where id=?",undef,
+             $id);
+    $dbh->do("delete from kor_ft     where id=?",undef,
+             $id);
 
     # Dann einfuegen
 
@@ -845,26 +896,24 @@ sub process_raw_kor {
             }
         }
         
-        print "Mult: $multcategory Cat $category - Mult $indicator\n";
+        $logger->debug("Mult: $multcategory Cat $category - Mult $indicator");
         
-        $request=$dbh->prepare("insert into kor (id,category,indicator,content) values (?,?,?,?)");
-        $request->execute($id,$category,$indicator,$content);
+        $dbh->do("insert into kor (id,category,indicator,content) values (?,?,?,?)",undef,
+                 $id,$category,$indicator,encode_utf8($content));
 
         if ($contentnorm){
-            $request=$dbh->prepare("insert into kor_string (id,category,content) values (?,?,?)");
-            $request->execute($id,$category,$contentnorm);
+            $dbh->do("insert into kor_string (id,category,content) values (?,?,?)",undef,
+                     $id,$category,encode_utf8($contentnorm));
         }
 
         if ($contentnormft){
-            $request=$dbh->prepare("insert into kor_ft (id,category,content) values (?,?,?)");
-            $request->execute($id,$category,$contentnormft);
+            $dbh->do("insert into kor_ft (id,category,content) values (?,?,?)",undef,
+                     $id,$category,encode_utf8($contentnormft));
         }
-        
-
     }        
     
-    print "Got Kor\n";
-    print YAML::Dump($raw_kor_ref),"\n";
+    $logger->debug("Got Kor");
+    $logger->debug(YAML::Dump($raw_kor_ref));
 
     return $listitemdata_kor_ref;
 }
@@ -910,12 +959,12 @@ sub process_raw_sys {
     # Zuerst loeschen
     my $request;
 
-    $request=$dbh->prepare("delete from notation        where id=?");
-    $request->execute($id);
-    $request=$dbh->prepare("delete from notation_string where id=?");
-    $request->execute($id);
-    $request=$dbh->prepare("delete from notation_ft     where id=?");
-    $request->execute($id);
+    $dbh->do("delete from notation        where id=?",undef,
+             $id);
+    $dbh->do("delete from notation_string where id=?",undef,
+             $id);
+    $dbh->do("delete from notation_ft     where id=?",undef,
+             $id);
 
     # Dann einfuegen
 
@@ -956,26 +1005,24 @@ sub process_raw_sys {
 
         }
         
-        print "Mult: $multcategory Cat $category - Mult $indicator\n";
+        $logger->debug("Mult: $multcategory Cat $category - Mult $indicator");
         
-        $request=$dbh->prepare("insert into notation (id,category,indicator,content) values (?,?,?,?)");
-        $request->execute($id,$category,$indicator,$content);
+        $dbh->do("insert into notation (id,category,indicator,content) values (?,?,?,?)",undef,
+                 $id,$category,$indicator,encode_utf8($content));
 
         if ($contentnorm){
-            $request=$dbh->prepare("insert into notation_string (id,category,content) values (?,?,?)");
-            $request->execute($id,$category,$contentnorm);
+            $dbh->do("insert into notation_string (id,category,content) values (?,?,?)",undef,
+                     $id,$category,encode_utf8($contentnorm));
         }
 
         if ($contentnormft){
-            $request=$dbh->prepare("insert into notation_ft (id,category,content) values (?,?,?)");
-            $request->execute($id,$category,$contentnormft);
+            $dbh->do("insert into notation_ft (id,category,content) values (?,?,?)",undef,
+                     $id,$category,encode_utf8($contentnormft));
         }
-        
-
     }        
     
-    print "Got Sys\n";
-    print YAML::Dump($raw_sys_ref),"\n";
+    $logger->debug("Got Sys");
+    $logger->debug(YAML::Dump($raw_sys_ref));
 
     return $listitemdata_not_ref;
 }
@@ -1020,12 +1067,12 @@ sub process_raw_swt {
     # Zuerst loeschen
     my $request;
 
-    $request=$dbh->prepare("delete from swt        where id=?");
-    $request->execute($id);
-    $request=$dbh->prepare("delete from swt_string where id=?");
-    $request->execute($id);
-    $request=$dbh->prepare("delete from swt_ft     where id=?");
-    $request->execute($id);
+    $dbh->do("delete from swt        where id=?",undef,
+             $id);
+    $dbh->do("delete from swt_string where id=?",undef,
+             $id);
+    $dbh->do("delete from swt_ft     where id=?",undef,
+             $id);
 
     # Dann einfuegen
 
@@ -1071,26 +1118,24 @@ sub process_raw_swt {
 
         }
         
-        print "Mult: $multcategory Cat $category - Mult $indicator\n";
+        $logger->debug("Mult: $multcategory Cat $category - Mult $indicator");
         
-        $request=$dbh->prepare("insert into swt (id,category,indicator,content) values (?,?,?,?)");
-        $request->execute($id,$category,$indicator,$content);
+        $dbh->do("insert into swt (id,category,indicator,content) values (?,?,?,?)",undef,
+                 $id,$category,$indicator,encode_utf8($content));
 
         if ($contentnorm){
-            $request=$dbh->prepare("insert into swt_string (id,category,content) values (?,?,?)");
-            $request->execute($id,$category,$contentnorm);
+            $dbh->do("insert into swt_string (id,category,content) values (?,?,?)",undef,
+                     $id,$category,encode_utf8($contentnorm));
         }
 
         if ($contentnormft){
-            $request=$dbh->prepare("insert into swt_ft (id,category,content) values (?,?,?)");
-            $request->execute($id,$category,$contentnormft);
+            $dbh->do("insert into swt_ft (id,category,content) values (?,?,?)",undef,
+                     $id,$category,encode_utf8($contentnormft));
         }
-        
-
     }        
 
-    print "Got Swt\n";
-    print YAML::Dump($raw_swt_ref),"\n";
+    $logger->debug("Got Swt");
+    $logger->debug(YAML::Dump($raw_swt_ref));
     
     return $listitemdata_swt_ref;
 }
@@ -1099,19 +1144,152 @@ sub process_raw_mex {
     my ($arg_ref) = @_;
     
     # Set defaults
-    my $targetcircinfo_ref = exists $arg_ref->{targetcircinfo_ref}
+    my $targetcircinfo_ref   = exists $arg_ref->{targetcircinfo_ref}
         ? $arg_ref->{targetcircinfo_ref} : undef;
-    my $database           = exists $arg_ref->{database}
+    my $database             = exists $arg_ref->{database}
         ? $arg_ref->{database}           : undef;
-    my $sessiondbh         = exists $arg_ref->{sessiondbh}
+    my $sessiondbh           = exists $arg_ref->{sessiondbh}
         ? $arg_ref->{sessiondbh}         : undef;
-    my $titid              = exists $arg_ref->{titid}
+    my $titid                = exists $arg_ref->{titid}
         ? $arg_ref->{titid}              : undef;
-    my $dbh                = exists $arg_ref->{dbh}
+    my $dbh                  = exists $arg_ref->{dbh}
         ? $arg_ref->{dbh}                : undef;
+    my $listitemdata_mex_ref = exists $arg_ref->{listitemdata_mex}
+        ? $arg_ref->{listitemdata_mex}   : undef;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    return;
+    $logger->debug("Entering process_mex");
+
+    $logger->debug("Mex: ".YAML::Dump($listitemdata_mex_ref));
+    $logger->debug("Titid: $titid ".YAML::Dump($listitemdata_mex_ref->{$titid}));
+
+    # Loop ueber Exemplare (entsprechend Indicator)
+    foreach my $mexsetkey (sort keys %{$listitemdata_mex_ref->{$titid}{set}}){
+        my $mexset_ref=$listitemdata_mex_ref->{$titid}{set}{$mexsetkey};
+
+        $logger->debug("Mex: Key: $mexsetkey - ".YAML::Dump($mexset_ref));
+        
+        my $request=$dbh->prepare("select max(id) as maxid from mex");
+        $request->execute();
+        
+        my $res=$request->fetchrow_hashref();
+        
+        my $maxid=$res->{maxid};
+        $maxid=($maxid eq "NULL")?1:++$maxid;
+
+        $logger->debug("Got MaxID: $maxid");
+        # Eintragen der Verknuepfung in conn
+        
+        $dbh->do("insert into conn (category,sourceid,sourcetype,targetid,targettype,supplement) values (0,?,1,?,6,'')",undef,
+                 $titid,$maxid);
+
+        # Loop ueber Kategorien
+        foreach my $item_ref (@{$mexset_ref}){
+
+            $logger->debug(YAML::Dump($item_ref));
+
+            my $contentnorm   = "";
+            my $contentnormft = "";
+            
+            if (exists $convtab_ref->{inverted_mex}{$item_ref->{category}}){
+                my $contentnormtmp = OpenBib::Common::Util::grundform({
+                    category => $item_ref->{category},
+                    content  => $item_ref->{content},
+                });
+                
+                if ($convtab_ref->{inverted_mex}{$item_ref->{category}}{string}){
+                    $contentnorm   = $contentnormtmp;
+                }
+                
+                if ($convtab_ref->{inverted_mex}{$item_ref->{category}}{ft}){
+                    $contentnormft = $contentnormtmp;
+                }
+
+                if ($convtab_ref->{inverted_mex}{$item_ref->{category}}{init}){
+                    push @{$listitemdata_mex_ref->{$titid}{data}}, $contentnormtmp;
+                }
+
+            }                
+
+            $dbh->do("insert into mex values (?,?,?,?)",undef,
+                     $maxid,$item_ref->{category},0,encode_utf8($item_ref->{content}));
+            
+            $logger->debug("Inserting $maxid $item_ref->{category},0,$item_ref->{content}");
+                
+            if ($contentnorm){
+                $dbh->do("insert into mex_string (id,category,content) values (?,?,?)",undef,
+                         $maxid,$item_ref->{category},encode_utf8($contentnorm));
+            }
+            
+            if ($contentnormft){
+                $dbh->do("insert into mex_ft (id,category,content) values (?,?,?)",undef,
+                         $maxid,$item_ref->{category},encode_utf8($contentnormft));
+            }
+        }
+    }    
+
+    return $listitemdata_mex_ref;
 }
+
+sub print_help {
+    print << "HELP";
+olws_updatedb.pl - Inkrementelles Update einer Datenbank ueber OLWS
+
+Parameter sind:
+
+ --single-pool : Name der lokalen Datenbank
+ --from-date   : Anfangsdatum des Datumsbereichs zur Aktualisierung
+ --to-date     : Enddatum des Datumsbereichs zur Aktualisierung
+
+Logging erfolgt nach:
+
+  /var/log/openbib/olws_updatedb.log
+      
+Beispiel:
+
+olws_updatedb.pl --single-pool=inst001 --from-date="20060609" --to-date="20060609"
+
+HELP
+    exit;
+}
+
+1;
+
+
+__END__
+
+=head1 NAME
+
+ olws_updatedb.pl - Inkrementelles Update einer Datenbank ueber OLWS
+
+=head1 DESCRIPTION
+
+ Mit dem Programm olws_updatedb.pl werden neue bzw. geaendert Datensaetze
+ von einem Target, das ueber die WebServices OLWS (Open Library WebServices)
+ angesprechbar ist, aggregiert und in der zugehoerigen OpenBib-Datenbank
+ aktualisiert. Damit koennen gezielt Datensaetze aus einem definierten
+ Datumsbereich verarbeitet werden.
+
+=head1 SYNOPSIS
+
+ olws_updatedb.pl --single-pool=inst001 --from-date="20060609" --to-date="20060609"
+
+ Parameter sind:
+
+ --single-pool : Name der lokalen Datenbank
+ --from-date   : Anfangsdatum des Datumsbereichs zur Aktualisierung
+ --to-date     : Enddatum des Datumsbereichs zur Aktualisierung
+ --log-file    : Alternatives Log-File
+
+Logging erfolgt standardmaessig nach:
+
+  /var/log/openbib/olws_updatedb.log
+
+=head1 AUTHOR
+
+ Oliver Flimm <flimm@openbib.org>
+
+=cut
+    

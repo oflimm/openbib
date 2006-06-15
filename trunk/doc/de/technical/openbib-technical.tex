@@ -142,6 +142,10 @@ OpenBib verwendet durchgängig Standardkomponenten. Es sind dies
   (Perl-Pendant zum bekannten log4j aus der Java-Welt) kann zu
   jeder Zeit an jeder Stelle des Portals ein Debugging erfolgen
   bzw. die genaue Abarbeitung verfolgt werden.
+\item[Xapian] Mit der Verwendung von Suchmaschinen-Technologie aus dem
+  OpenSource Projekt Xapian (http://www.xapian.org/) kann alternativ
+  zur herkömmlichen Suche via SQL weitere Funk\-tio\-na\-li\-tät, wie
+  z.B. Drill-Downs für große Treffermengen realisiert werden.
 \end{description}
 
 Das Datenmodell und das zugrundeliegende Meta-Datenformat basieren auf
@@ -184,6 +188,7 @@ Konkrete Beispiele sind
 \item Das KUG Recherche-Portal\newline (\texttt{http://kug.ub.uni-koeln.de/})
 \item Die Digitale Einbandsammlung der USB Köln\newline (\texttt{http://einbandsammlung.ub.uni-koeln.de/})
 \item Die Virtuelle Bibliothek Elise und Helene Richter\newline (\texttt{http://richterbibliothek.ub.uni-koeln.de/})
+\item Die Virtuelle Bibliothek Historische Bestände im Rheinland\newline (\texttt{http://rheinlandbib.ub.uni-koeln.de/})
 \end{itemize}
 
 
@@ -203,11 +208,42 @@ Darüber hinaus können andere Teile modular ausgewechselt werden --
 wenn dies gewünscht wird. So läßt sich u.a. die anfängliche Suche
 über einen oder alle Kataloge z.B. von der Realisierung über eine
 MySQL-Volltext-Datenbank auf andere Volltext-Datenbanken oder gar
-Such\-ma\-schie\-nen\-tech\-no\-lo\-gie ändern. Das neue Verfahren
-muß lediglich die 'Einsprünge' in den Bibliographischen Teil der
-MySQL-Datenbank liefern. Ganz konkret basierten die ersten Versionen
-in den Jahren 1997-2000 für die anfängliche Suche auf der
-Volltextdatenbank \texttt{freeWAIS-sf}.
+Such\-ma\-schie\-nen\-tech\-no\-lo\-gie ändern. Letzteres wurde
+bereits mit der Suchmaschinen-Technologie des OpenSource Projektes
+Xapian realisiert. 
+
+Das neue Verfahren muß als Minimum lediglich die 'Einsprünge'
+(Katalogschlüssel) in den biblio\-gra\-phi\-schen Teil der MySQL-Datenbank
+liefern. Ganz konkret basierten die ersten Versionen in den Jahren
+1997-2000 für die anfängliche Suche auf der Volltextdatenbank
+\texttt{freeWAIS-sf} und wurde im Jahr 2000 auf die integrierte
+Volltextsuche von MySQL umgestellt.
+
+
+\section{OpenBib integriert Suchmaschinen-Technologie}
+In OpenBib ist die Suchmaschinen-Technologie des OpenSource Projektes
+Xapian\footnote{http://www.xapian.org/} in Form eines alternativen
+Such-Backends integriert. Mit dieser Technologie können dem Nutzer bei
+großen Treffermengen sog. Drill-Downs angeboten werden. Drill-Downs
+bestehen aus den in der Treffermenge meistgenutzten Begriffen, die
+kategorisiert (Verfasser, Titelbegriff, Schlagworte, Erscheinungsjahr)
+dargestellt werden und dem Benutzer die Möglichkeit bieten,
+\begin{itemize}
+\item sich einen generellen Überblick von der Treffermenge zu machen
+\item durch Auswahl eines der Begriffe die bisherige Treffermenge
+  weiter zu reduzieren 
+\end{itemize}
+
+Neben Xapian liesse sich auch Lucene verwenden. Es müsste lediglich
+der Zugriff von OpenBib durch eine entsprechende Schnittstelle
+gewährleistet werden. Diese könnte z.B. realisiert werden über
+
+
+\begin{itemize}
+\item ein Servlet, das einen Such-URL entgegennimmt und das Ergebnis
+  als XML-Dokument zurückliefert
+\item einen SOAP-basierten WebServices (z.B. Lucene mit Axis)
+\end{itemize}
 
 \section{OpenBib ist flexibel im internen Katalog- bzw. Metadaten-Format}
 Das standardmäßig verwendete Katalog- bzw. Meta-Datenformat basiert
@@ -485,9 +521,10 @@ Durch die vielen Möglichkeiten der Anpassung war die Software des
 Recherche-Portals predestiniert für den Einsatz in weiteren
 Projekten\cite{FlimmHoffJB:06}.
 
-Hier sind insbesondere zwei Kataloge zu nennen: Die digitale
-Einbandsammlung der USB Köln sowie die Virtuelle Bibliothek Elise und
-Helene Richter.
+Hier sind insbesondere drei Kataloge zu nennen: Die digitale
+Einbandsammlung der USB Köln, die Virtuelle Bibliothek Elise und
+Helene Richter sowie die Virtuelle Bibliothek Historische Bestände im
+Rheinland.
 
 
 \subsubsection{Digitale Einbandsammlung der USB Köln}
@@ -526,6 +563,27 @@ der NS-Provenienzforschung in der USB Köln ist, wurde für die
 in die von der USB aufgespürten Medien aus der ehemaligen Bibliothek
 der Schwestern Richter ein eigenständiges Recherche-Portal auf Basis
 indi\-vi\-duali\-sierbarer Portal-Sichten erstellt.
+
+
+\subsubsection{Virtuelle Bibliothek Historische Bestände im Rheinland}
+
+Für die Arbeitsstelle \emph{Historische Bestände im Rheinland} wurde
+ein Virtuelle Katalog konzipiert, in dem die Bestände kleiner
+historischer Bibliotheken des Rheinlandes zusammengetragen werden
+sollen.
+
+Zum gegenwärtigen Zeitpunkt umfasst dieser virtuelle Katalog die Bestände folgender Bibliotheken:
+
+\begin{itemize}
+\item Bibliotheca Domus Presbyterorum Gaesdonck
+\item Heimatverein Königswinter
+\item Alte Pfarrbibliothek St. Dionysius Hürth-Gleuel
+\item Kreis- und Stadtbibliothek Kempen
+\item Bibliothek des Oratoriums Kevelaeriense
+\end{itemize}
+
+Darüber hinaus ist der Bestand der Rheinischen Abteilung der USB mit
+mehr als 117.000 Titeln integriert.
 
 \section{Fazit}
 

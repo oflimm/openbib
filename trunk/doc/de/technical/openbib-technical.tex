@@ -886,7 +886,7 @@ folgendes aus:
 \end{itemize}
 
 
-\subsection{Beispiel 1}
+\subsection{Beispiel}
 
 Als Beispiel verwenden wir die Titelaufnahme des Hauptaufnahme des
 mehrbändigen Werkes \emph{TCP/IP Illustrated} von \emph{Richard
@@ -912,6 +912,8 @@ Unterordnungen	& 2\\
 \vspace{0.5cm}
 \end{shadowenv}
 
+
+\subsubsection{Verknüpfungen}
 Dieser Titel verteilt sich nun mit seinen Daten auf mehrere
 Normdaten-Tabellen. Es sind dies hier konkret die Titeltabelle
 \texttt{tit}, die Verfassertabelle \texttt{aut}, die Schlagworttabelle
@@ -1003,67 +1005,48 @@ mysql> select * from swt where id in (133,604,571);
 zu
 
 \begin{verbatim}
-+-----+----------+-----------+---------------------------------------------------+
-| id  | category | indicator | content                                           |
-+-----+----------+-----------+---------------------------------------------------+
-| 133 |        1 |         1 | TCP / IP                                          |
-| 133 |      113 |         1 | Kommunikationsprotokoll                           |
-| 133 |      108 |         1 | 30m                                               |
-| 133 |      102 |         1 | Transmission control protocol / Internet protocol |
-| 571 |        1 |         1 | Kommunikationsprotokoll                           |
-| 571 |      108 |         1 | 30                                                |
-| 571 |      102 |         3 | Kommunikationstechnik                             |
++-----+----------+-----------+--------------------------------------------------+
+| id  | category | indicator | content                                          |
++-----+----------+-----------+--------------------------------------------------+
+| 133 |        1 |         1 | TCP / IP                                         |
+| 133 |      113 |         1 | Kommunikationsprotokoll                          |
+| 133 |      108 |         1 | 30m                                              |
+| 133 |      102 |         1 | Transmission control protocol / Internet protocol|
+
+| 571 |        1 |         1 | Kommunikationsprotokoll                          |
+| 571 |      108 |         1 | 30                                               |
+| 571 |      102 |         3 | Kommunikationstechnik                            |
 | 571 |      102 |         2 | Datenübertragung                                 |
 | 571 |      102 |         1 | Übertragungsprotokoll                            |
-| 604 |        1 |         1 | Internet                                          |
-| 604 |      108 |         1 | 30m                                               |
-| 604 |      102 |         2 | TCP / IP / Internetzwerk                          |
-| 604 |      102 |         1 | Internetzwerk / TCP / IP                          |
-+-----+----------+-----------+---------------------------------------------------+
+
+| 604 |        1 |         1 | Internet                                         |
+| 604 |      108 |         1 | 30m                                              |
+| 604 |      102 |         2 | TCP / IP / Internetzwerk                         |
+| 604 |      102 |         1 | Internetzwerk / TCP / IP                         |
++-----+----------+-----------+--------------------------------------------------+
 \end{verbatim}
 
-Die untergeordneten Titel erhält man schließlich mit
+Für die untergeordneten Titel wiederholt sich diese gesamt Prozedur
+mit den zweit Titel-ID's \texttt{5900} und \texttt{5901}.
 
-\begin{verbatim}
-mysql> select * from tit where id in (5900,5901);
-\end{verbatim}
+\subsubsection{Internationalisierung}
 
-zu
+Für die Internationalisierung der Bezeichnungstexte wird für die
+einzelnen Titelkategorien ein Bezeichner durch Vornullen der
+Kategorienummer auf 4 stellen sowie Voranstellen des Normdatenkürzels.
 
-\begin{verbatim}
-+------+----------+-----------+---------------------------------------------+
-| id   | category | indicator | content                                     |
-+------+----------+-----------+---------------------------------------------+
-| 5900 |        1 |         0 | 05900                                       |
-| 5900 |        2 |         0 | 27.05.2003                                  |
-| 5900 |       24 |         1 | 1                                           |
-| 5900 |       89 |         1 | 1                                           |
-| 5900 |      331 |         1 | ¬The¬ protocols                           |
-| 5900 |      359 |         1 | W. Richard Stevens                          |
-| 5900 |      403 |         1 | 2. print.                                   |
-| 5900 |      425 |         1 | 1994                                        |
-| 5900 |      433 |         1 | XIX, 576 S. : graph. Darst.                 |
-| 5900 |      451 |         1 | TCP/IP Illustrated / W. Richard Stevens ; 1 |
-| 5900 |      455 |         1 | 1                                           |
-| 5900 |      501 |         1 | Literaturverz. S. 543 - 553                 |
-| 5900 |      540 |         1 | 0-201-63346-9                               |
-| 5900 |      702 |         1 | 004.62 - dc 20                              |
-| 5901 |        1 |         0 | 05901                                       |
-| 5901 |        2 |         0 | 27.05.2003                                  |
-| 5901 |       24 |         1 | 2                                           |
-| 5901 |       89 |         1 | 2                                           |
-| 5901 |      331 |         1 | ¬The¬ implementation                      |
-| 5901 |      359 |         1 | W. Richard Stevens, Gary R. Wright          |
-| 5901 |      403 |         1 | 1. ed.                                      |
-| 5901 |      425 |         1 | 1995                                        |
-| 5901 |      433 |         1 | XXII, 1174 S. : graph. Darst.               |
-| 5901 |      451 |         1 | TCP/IP Illustrated / W. Richard Stevens ; 2 |
-| 5901 |      455 |         1 | 2                                           |
-| 5901 |      501 |         1 | Literaturverz. S. 1125 - 1131               |
-| 5901 |      540 |         1 | 0-201-63354-X                               |
-+------+----------+-----------+---------------------------------------------+
+Damit erhält man für den Titel folgende Bezeichner
 
-\end{verbatim}
+\begin{description}
+\item[T0100] Aus der Kategorie \texttt{100} von \texttt{conn}
+\item[T0331] Aus der Kategorie \texttt{331} von \texttt{tit}
+\item[T0359] Aus der Kategorie \texttt{359} von \texttt{tit}
+\item[T0410] Aus der Kategorie \texttt{410} von \texttt{tit}
+\item[T0412] Aus der Kategorie \texttt{412} von \texttt{tit}
+\item[T0710] Aus der Kategorie \texttt{710} von \texttt{conn}
+\item[T5000] Aus der Anzahl der Verweise in \texttt{conn}.
+\end{description}
+
 \appendix
 
 \chapter{Tabellen in \texttt{session.mysql}}

@@ -47,7 +47,7 @@
   \vspace{2cm}
 
   Oliver Flimm \texttt{<flimm@openbib.de>}\\
-  Stand: 28.5.2006
+  Stand: 15.6.2006
 
   \vspace{8cm}
 
@@ -849,12 +849,37 @@ mehrere Rechner ergeben sich mehrere Vorteile:
 \end{enumerate}
 
 
-%\chapter{Konzepte und Interna von OpenBib}
+\chapter{Konzepte und Interna von OpenBib}
 
 
-%\section{Internes Kategorienformat}
+\section{Kategorienformat}
 
+Die bibliographische Datenhaltung in der MySQL-Datenbank ist
+grundsätzlich unabhängig vom verwendeten Kategorienschema. Damit
+können dort -- ohne Änderung oder Erweiterung der Datenbank --
+beliebige andere Kategorien, als die aus dem an den MAB2-Standard angelehnte
+Standardkategorien\-schema, abgelegt und verarbeitet werden.
 
+Eine Kategorie in der bibliographischen Datenbank zeichnet sich durch
+folgendes aus:
+
+\begin{itemize}
+\item Eine Kategorie gehört zu einem Normdatentyp. Mögliche
+  Normdatentypen sind Titel (tit, \textbf{T}, \texttt{1}), Verfasser
+  bzw. Person (aut, \textbf{P}, \texttt{2}), Körperschaft bzw. Urheber
+  (kor, \textbf{C}, \texttt{3}), Schlagworte (swt, \textbf{S},
+  \texttt{4}), Systematik bzw. Notation (notaton, \textbf{N},
+  \texttt{5}) und Exemplare (mex, \textbf{X}, \texttt{6}).
+\item Eine Kategorie besteht aus der numerischen Id bezogen auf einen
+  Normdatentyp, einer Kategorienummer, einem numerischen
+  Indikator\footnote{Mit dem numerischen Indikator können entweder
+    alphabetische Indikatoren gemappt werden (a gleich 1, b gleich 2
+    usw.), eine Multiplizität der Kategorie ausgedrückt werden (1.
+    Exemplar gleich 1, 2. Exemplar gleich 2) oder auch beides zusammen
+    über Modulos (a des 1. Exemplars gleich 1, b des 1. Exemplars
+    gleich 2, a des 2. Exemplars gleich 3, b des 2. Exemplars gleich
+    4)}.
+\end{itemize}
 
 
 \appendix

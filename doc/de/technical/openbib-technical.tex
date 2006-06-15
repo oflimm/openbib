@@ -879,9 +879,191 @@ folgendes aus:
     über Modulos (a des 1. Exemplars gleich 1, b des 1. Exemplars
     gleich 2, a des 2. Exemplars gleich 3, b des 2. Exemplars gleich
     4)}.
+\item Jeder Kategorie ist ein abstrakter Bezeichner zugeordnet, dem
+  wiederum pro Sprache ein Beschreibungstext zugeordnet werden
+  kann. Pro Datenbank können bei Bedarf andere Beschreibungstexte
+  zugeordnet werden
 \end{itemize}
 
 
+\subsection{Beispiel 1}
+
+Als Beispiel verwenden wir die Titelaufnahme des Hauptaufnahme des
+mehrbändigen Werkes \emph{TCP/IP Illustrated} von \emph{Richard
+  W. Stevens}. Diese Titelaufnahme sieht wie folgt aus:
+
+\begin{shadowenv}
+\vspace{0.5cm}
+\begin{center}
+  \begin{tabular}{ll}
+id	        & 5899\\
+Verfasser	& Stevens, W. R.\\
+HST	        & TCP/IP Illustrated\\
+Vorl.Verfasser	& W. Richard Stevens\\
+Verlagsort	& Reading, Mass. [u.a.]\\
+Verlag	        & Addison-Wesley\\
+Schlagwort	& TCP / IP\\
+Schlagwort	& Internet\\
+Schlagwort	& Kommunikationsprotokoll\\
+Unterordnungen	& 2\\
+  \end{tabular}
+\end{center}
+  \caption{Beispiel-Titel}
+\vspace{0.5cm}
+\end{shadowenv}
+
+Dieser Titel verteilt sich nun mit seinen Daten auf mehrere
+Normdaten-Tabellen. Es sind dies hier konkret die Titeltabelle
+\texttt{tit}, die Verfassertabelle \texttt{aut}, die Schlagworttabelle
+\texttt{swt} sowie für die Verknüpfungen des Titelsatzes mit den
+anderen Normdaten und die Abhängigkeiten zwischen Titeln
+(Unterordnungen) die Verknüpfungstabelle \texttt{conn}.
+
+Zunächst werden für diesen Titel die Informationen in der
+Titelnormdaten-Tabelle dargestellt mit 
+
+\begin{verbatim}
+mysql> select * from tit where id=5899;
+\end{verbatim}
+
+dargestellt.
+
+\begin{verbatim}
++------+----------+-----------+-----------------------+
+| id   | category | indicator | content               |
++------+----------+-----------+-----------------------+
+| 5899 |        1 |         0 | 05899                 |
+| 5899 |        2 |         0 | 27.05.2003            |
+| 5899 |      331 |         1 | TCP/IP Illustrated    |
+| 5899 |      359 |         1 | W. Richard Stevens    |
+| 5899 |      410 |         1 | Reading, Mass. [u.a.] |
+| 5899 |      412 |         1 | Addison-Wesley        |
++------+----------+-----------+-----------------------+
+6 rows in set (0.30 sec)
+\end{verbatim}
+
+
+Dieser Titelsatz ist mit den anderen Normdaten verknüpft. Die Ids der
+verknüpften Sätze erhält man mit
+
+\begin{verbatim}
+mysql> select * from conn where    (sourceid=5899 and sourcetype=1) 
+                                or (targetid=5899 and targettype=1);
+\end{verbatim}
+
+zu:
+
+\begin{verbatim}
++----------+----------+------------+----------+------------+------------+
+| category | sourceid | sourcetype | targetid | targettype | supplement |
++----------+----------+------------+----------+------------+------------+
+|      100 |     5899 |          1 |      684 |          2 |            |
+|      710 |     5899 |          1 |      133 |          4 |            |
+|      710 |     5899 |          1 |      604 |          4 |            |
+|      710 |     5899 |          1 |      571 |          4 |            |
+|        0 |     5900 |          1 |     5899 |          1 |            |
+|        0 |     5901 |          1 |     5899 |          1 |            |
++----------+----------+------------+----------+------------+------------+
+6 rows in set (0.11 sec)
+\end{verbatim}
+
+Es ist damit ersichtlich, dass 
+
+\begin{itemize}
+\item der Verfasser des Titels (\texttt{category:100}, \texttt{targettype:2}) die Id \texttt{684} hat
+\item die drei Schlagworte des Titels (\texttt{category:710)}) die Ids
+  \texttt{133}, \texttt{604} sowie \texttt{571} haben
+\item Die Unterordnungen des Titels (\texttt{sourceid}) die Titel-Id's
+  \texttt{5900} und \texttt{5901} haben.
+\end{itemize}
+
+Damit ergibt sich der Verfasser mit
+
+\begin{verbatim}
+mysql> select * from aut where id=684;
+\end{verbatim}
+
+zu 
+
+\begin{verbatim}
++-----+----------+-----------+---------------------+
+| id  | category | indicator | content             |
++-----+----------+-----------+---------------------+
+| 684 |        1 |         0 | Stevens, W. R.      |
+| 684 |      102 |         1 | Stevens, W. Richard |
++-----+----------+-----------+---------------------+
+2 rows in set (0.04 sec)
+\end{verbatim}
+
+sowie die Schlagworte mit 
+
+\begin{verbatim}
+mysql> select * from swt where id in (133,604,571);
+\end{verbatim}
+zu
+
+\begin{verbatim}
++-----+----------+-----------+---------------------------------------------------+
+| id  | category | indicator | content                                           |
++-----+----------+-----------+---------------------------------------------------+
+| 133 |        1 |         1 | TCP / IP                                          |
+| 133 |      113 |         1 | Kommunikationsprotokoll                           |
+| 133 |      108 |         1 | 30m                                               |
+| 133 |      102 |         1 | Transmission control protocol / Internet protocol |
+| 571 |        1 |         1 | Kommunikationsprotokoll                           |
+| 571 |      108 |         1 | 30                                                |
+| 571 |      102 |         3 | Kommunikationstechnik                             |
+| 571 |      102 |         2 | Datenübertragung                                 |
+| 571 |      102 |         1 | Übertragungsprotokoll                            |
+| 604 |        1 |         1 | Internet                                          |
+| 604 |      108 |         1 | 30m                                               |
+| 604 |      102 |         2 | TCP / IP / Internetzwerk                          |
+| 604 |      102 |         1 | Internetzwerk / TCP / IP                          |
++-----+----------+-----------+---------------------------------------------------+
+\end{verbatim}
+
+Die untergeordneten Titel erhält man schließlich mit
+
+\begin{verbatim}
+mysql> select * from tit where id in (5900,5901);
+\end{verbatim}
+
+zu
+
+\begin{verbatim}
++------+----------+-----------+---------------------------------------------+
+| id   | category | indicator | content                                     |
++------+----------+-----------+---------------------------------------------+
+| 5900 |        1 |         0 | 05900                                       |
+| 5900 |        2 |         0 | 27.05.2003                                  |
+| 5900 |       24 |         1 | 1                                           |
+| 5900 |       89 |         1 | 1                                           |
+| 5900 |      331 |         1 | ¬The¬ protocols                           |
+| 5900 |      359 |         1 | W. Richard Stevens                          |
+| 5900 |      403 |         1 | 2. print.                                   |
+| 5900 |      425 |         1 | 1994                                        |
+| 5900 |      433 |         1 | XIX, 576 S. : graph. Darst.                 |
+| 5900 |      451 |         1 | TCP/IP Illustrated / W. Richard Stevens ; 1 |
+| 5900 |      455 |         1 | 1                                           |
+| 5900 |      501 |         1 | Literaturverz. S. 543 - 553                 |
+| 5900 |      540 |         1 | 0-201-63346-9                               |
+| 5900 |      702 |         1 | 004.62 - dc 20                              |
+| 5901 |        1 |         0 | 05901                                       |
+| 5901 |        2 |         0 | 27.05.2003                                  |
+| 5901 |       24 |         1 | 2                                           |
+| 5901 |       89 |         1 | 2                                           |
+| 5901 |      331 |         1 | ¬The¬ implementation                      |
+| 5901 |      359 |         1 | W. Richard Stevens, Gary R. Wright          |
+| 5901 |      403 |         1 | 1. ed.                                      |
+| 5901 |      425 |         1 | 1995                                        |
+| 5901 |      433 |         1 | XXII, 1174 S. : graph. Darst.               |
+| 5901 |      451 |         1 | TCP/IP Illustrated / W. Richard Stevens ; 2 |
+| 5901 |      455 |         1 | 2                                           |
+| 5901 |      501 |         1 | Literaturverz. S. 1125 - 1131               |
+| 5901 |      540 |         1 | 0-201-63354-X                               |
++------+----------+-----------+---------------------------------------------+
+
+\end{verbatim}
 \appendix
 
 \chapter{Tabellen in \texttt{session.mysql}}

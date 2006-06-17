@@ -47,7 +47,7 @@
   \vspace{2cm}
 
   Oliver Flimm \texttt{<flimm@openbib.de>}\\
-  Stand: 15.6.2006
+  Stand: 17.6.2006
 
   \vspace{8cm}
 
@@ -223,7 +223,7 @@ Volltextsuche von MySQL umgestellt.
 \section{OpenBib integriert Suchmaschinen-Technologie}
 In OpenBib ist die Suchmaschinen-Technologie des OpenSource Projektes
 Xapian\footnote{http://www.xapian.org/} in Form eines alternativen
-Such-Backends integriert. Mit dieser Technologie können dem Nutzer bei
+Recherche-Backends integriert. Mit dieser Technologie können dem Nutzer bei
 großen Treffermengen sog. Drill-Downs angeboten werden. Drill-Downs
 bestehen aus den in der Treffermenge meistgenutzten Begriffen, die
 kategorisiert (Verfasser, Titelbegriff, Schlagworte, Erscheinungsjahr)
@@ -947,11 +947,11 @@ wie auch \texttt{targettype} gleich 1 (Titel), ist sofort ersichtlich,
 dass
 
 \begin{itemize}
-\item wenn die lokale Titelsatz-Id im \texttt{targettype} auftritt,
-  die Titelsatz-Id im \texttt{sourcetype} demnach die Id des
+\item wenn die lokale Titelsatz-ID im \texttt{targettype} auftritt,
+  die Titelsatz-ID im \texttt{sourcetype} demnach die ID des
   \textbf{untergeordneten} Titelsatzes ist, während
-\item wenn die lokale Titelsatz-Id im \texttt{sourcetype} auftritt,
-  die Titelsatz-Id im \texttt{targettype} demnach die Id des
+\item wenn die lokale Titelsatz-ID im \texttt{sourcetype} auftritt,
+  die Titelsatz-ID im \texttt{targettype} demnach die ID des
   \textbf{übergeordneten} Titelsatzes ist.
 \end{itemize}
 
@@ -970,10 +970,10 @@ direkt zur Verfügung.
 
 Grundsätzlich werden zwei Suchtypen genutzt. Wenn ein Nutzer seine
 Suchanfrage eingibt, dann wird für diese Anfangssuche zunächst in
-einem von zwei Such-Backends recherchiert. Die Backends lassen sich
+einem von zwei Recherche-Backends recherchiert. Die Backends lassen sich
 augrund der moduleren Struktur von OpenBib sehr einfach erweitern.
 
-Mögliche Such-Backends sind 
+Mögliche Recherche-Backends sind 
 
 \begin{description}
 \item[SQL] In der Tabelle \texttt{search} wird entsprechend der
@@ -997,9 +997,9 @@ SQL-Datenbank zu einem vollständigen Treffer in einem spezifischen
 Katalog gesprungen werden kann.
 
 Ist man erst einmal in einem Treffer eines einzelnen Katalogs, dann
-wird dort primär über die Verknüpfungstabelle \texttt{conn} über die
+wird dort primär mit der Verknüpfungstabelle \texttt{conn} über die
 Normdaten navigiert. Darüberhinaus kann von hier aber auch wieder eine
-globale Anfangssuche über eines der beiden Such-Backends angestossen
+globale Anfangssuche über eines der beiden Recherche-Backends angestossen
 werden.
 
 
@@ -1021,7 +1021,7 @@ folgendes aus:
   (kor, \textbf{C}, \texttt{3}), Schlagworte (swt, \textbf{S},
   \texttt{4}), Systematik bzw. Notation (notaton, \textbf{N},
   \texttt{5}) und Exemplare (mex, \textbf{X}, \texttt{6}).
-\item Eine Kategorie besteht aus der numerischen Id bezogen auf einen
+\item Eine Kategorie besteht aus der numerischen ID bezogen auf einen
   Normdatentyp, einer Kategorienummer, einem numerischen
   Indikator\footnote{Mit dem numerischen Indikator können entweder
     alphabetische Indikatoren gemappt werden (a gleich 1, b gleich 2
@@ -1081,6 +1081,8 @@ mysql> select * from tit where id=5899;
 
 dargestellt.
 
+\begin{shadowenv}
+\begin{center}
 \begin{verbatim}
 +------+----------+-----------+-----------------------+
 | id   | category | indicator | content               |
@@ -1094,9 +1096,10 @@ dargestellt.
 +------+----------+-----------+-----------------------+
 6 rows in set (0.30 sec)
 \end{verbatim}
+\end{center}
+\end{shadowenv}
 
-
-Dieser Titelsatz ist mit den anderen Normdaten verknüpft. Die Ids der
+Dieser Titelsatz ist mit den anderen Normdaten verknüpft. Die ID's der
 verknüpften Sätze erhält man mit
 
 \begin{verbatim}
@@ -1106,6 +1109,8 @@ mysql> select * from conn where    (sourceid=5899 and sourcetype=1)
 
 zu:
 
+\begin{shadowenv}
+\begin{center}
 \begin{verbatim}
 +----------+----------+------------+----------+------------+------------+
 | category | sourceid | sourcetype | targetid | targettype | supplement |
@@ -1119,14 +1124,16 @@ zu:
 +----------+----------+------------+----------+------------+------------+
 6 rows in set (0.11 sec)
 \end{verbatim}
+\end{center}
+\end{shadowenv}
 
 Es ist damit ersichtlich, dass 
 
 \begin{itemize}
-\item der Verfasser des Titels (\texttt{category:100}, \texttt{targettype:2}) die Id \texttt{684} hat
-\item die drei Schlagworte des Titels (\texttt{category:710)}) die Ids
+\item der Verfasser des Titels (\texttt{category:100}, \texttt{targettype:2}) die ID \texttt{684} hat
+\item die drei Schlagworte des Titels (\texttt{category:710)}) die ID's
   \texttt{133}, \texttt{604} sowie \texttt{571} haben
-\item Die Unterordnungen des Titels (\texttt{sourceid}) die Titel-Id's
+\item Die Unterordnungen des Titels (\texttt{sourceid}) die Titel-ID's
   \texttt{5900} und \texttt{5901} haben.
 \end{itemize}
 
@@ -1138,6 +1145,8 @@ mysql> select * from aut where id=684;
 
 zu 
 
+\begin{shadowenv}
+\begin{center}
 \begin{verbatim}
 +-----+----------+-----------+---------------------+
 | id  | category | indicator | content             |
@@ -1147,6 +1156,8 @@ zu
 +-----+----------+-----------+---------------------+
 2 rows in set (0.04 sec)
 \end{verbatim}
+\end{center}
+\end{shadowenv}
 
 sowie die Schlagworte mit 
 
@@ -1155,27 +1166,31 @@ mysql> select * from swt where id in (133,604,571);
 \end{verbatim}
 zu
 
+\begin{shadowenv}
+\begin{center}
 \begin{verbatim}
-+-----+----------+-----------+--------------------------------------------------+
-| id  | category | indicator | content                                          |
-+-----+----------+-----------+--------------------------------------------------+
-| 133 |        1 |         1 | TCP / IP                                         |
-| 133 |      113 |         1 | Kommunikationsprotokoll                          |
-| 133 |      108 |         1 | 30m                                              |
-| 133 |      102 |         1 | Transmission control protocol / Internet protocol|
++-----+----------+-----------+-----------------------------------------------+
+| id  | category | indicator | content                                       |
++-----+----------+-----------+-----------------------------------------------+
+| 133 |        1 |         1 | TCP / IP                                      |
+| 133 |      113 |         1 | Kommunikationsprotokoll                       |
+| 133 |      108 |         1 | 30m                                           |
+| 133 |      102 |         1 | Transmission control protocol / Internet pr...|
 
-| 571 |        1 |         1 | Kommunikationsprotokoll                          |
-| 571 |      108 |         1 | 30                                               |
-| 571 |      102 |         3 | Kommunikationstechnik                            |
-| 571 |      102 |         2 | Datenübertragung                                 |
-| 571 |      102 |         1 | Übertragungsprotokoll                            |
+| 571 |        1 |         1 | Kommunikationsprotokoll                       |
+| 571 |      108 |         1 | 30                                            |
+| 571 |      102 |         3 | Kommunikationstechnik                         |
+| 571 |      102 |         2 | Datenübertragung                              |
+| 571 |      102 |         1 | Übertragungsprotokoll                         |
 
-| 604 |        1 |         1 | Internet                                         |
-| 604 |      108 |         1 | 30m                                              |
-| 604 |      102 |         2 | TCP / IP / Internetzwerk                         |
-| 604 |      102 |         1 | Internetzwerk / TCP / IP                         |
-+-----+----------+-----------+--------------------------------------------------+
+| 604 |        1 |         1 | Internet                                      |
+| 604 |      108 |         1 | 30m                                           |
+| 604 |      102 |         2 | TCP / IP / Internetzwerk                      |
+| 604 |      102 |         1 | Internetzwerk / TCP / IP                      |
++-----+----------+-----------+-----------------------------------------------+
 \end{verbatim}
+\end{center}
+\end{shadowenv}
 
 Für die untergeordneten Titel wiederholt sich diese gesamt Prozedur
 mit den zweit Titel-ID's \texttt{5900} und \texttt{5901}.

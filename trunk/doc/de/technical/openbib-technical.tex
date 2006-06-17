@@ -852,6 +852,157 @@ mehrere Rechner ergeben sich mehrere Vorteile:
 \chapter{Konzepte und Interna von OpenBib}
 
 
+\section{Datenbankstruktur}
+
+Die bibliographischen Daten verteilen sich auf eine festgelegte Weise
+auf verschiedene Tabellen. Es sind dies die Tabellen der
+\textbf{Normdaten}, der \textbf{Verknüpfungen}, der \textbf{Anfangssuche}
+sowie der \textbf{zwischengespeicherten Kurztreffer}.
+
+
+\subsection{Normdaten}
+
+Es gibt 6 Normdatenbereiche. Es sind dies
+\begin{enumerate}
+\item Reine Titeldaten
+\item Verfasser bzw. Personen
+\item Körperschaften bzw. Urheber
+\item Schlagworte
+\item Notationen bzw. Systematik
+\item Exemplare
+\end{enumerate}
+
+Intern ist jedem dieser Bereiche ein alphabetisches sowie ein
+numerisches Kürzel zugeordnet. Das alphabetische Kürzel ist Teil des
+Tabellen\-namens, das numerische Kürzel wird zur Kennzeichnung des
+Normdatentyps in der Verknüpfungs\-tabelle \texttt{conn} (s.u.)
+verwendet.
+
+\begin{tabular}[c]{lll}
+  Normdatentyp   & alphabet. Kürzel & numer. Kürzel\\
+  \hline
+  Titel          & tit              & 1\\
+  Verfasser      & aut              & 2\\
+  Körperschaften & kor              & 3\\
+  Schlagworte    & swt              & 4\\
+  Notationen     & notation         & 5\\
+  Exemplare      & mex              & 6\\
+\end{tabular}
+
+Jedem Normdatentyp sind drei Tabellen zugeordnet, deren Grundname
+dem alphabetischen Kürzel entspricht.
+
+\begin{description}
+\item[Darstellung] In der Tabelle, die dem alphabet. Kürzel
+  entspricht, werden die Kategorien mit ihren Inhalten abgelegt. Die
+  Inhalte sind UTF8-kodiert und werden so 1:1 ausgegeben. Diese
+  Tabellen heissen \texttt{tit}, \texttt{aut}, \texttt{kor},
+  \texttt{notation}, \texttt{swt} sowie \texttt{mex}.
+\item[Wortanfangssuche] Der ersten, primär für die Darstellung
+  zuständigen Tabelle, ist eine zweite zugeordnet, über die String-
+  oder Wortanfangssuchen realisiert werden können. Der Tabellen\-name
+  besteht aus dem alphabet. Kürzer, an das \texttt{\_string} angehängt
+  ist. Der Inhalt in diesen Tabellen wurde bereits auf seine Grundform
+  reduziert. Welche Kategorien in diese Tabellen wandern, lässt sich
+  generell sowie für einzelne Katalog konfigurieren. Die Namen dieser
+  Tabellen heissen \texttt{tit\_string}, \texttt{aut\_string},
+  \texttt{kor\_string}, \texttt{notation\_string},
+  \texttt{swt\_string} sowie \texttt{mex\_string}.
+\item[Volltextsuche] Der ersten, primär für die Darstellung
+  zuständigen Tabelle, ist eine weitere dritte zugeordnet, über die
+  Volltextsuchen realisiert werden können. Der Tabellen\-name besteht
+  aus dem alphabet. Kürzer, an das \texttt{\_ft} -- wie fulltext --
+  angehängt ist. Der Inhalt in diesen Tabellen wurde bereits auf seine
+  Grundform reduziert. Welche Kategorien in diese Tabellen wandern,
+  lässt sich generell sowie für einzelne Katalog konfigurieren. Die
+  Namen dieser Tabellen heissen \texttt{tit\_ft}, \texttt{aut\_ft},
+  \texttt{kor\_ft}, \texttt{notation\_ft}, \texttt{swt\_ft} sowie
+  \texttt{mex\_ft}.
+\end{description}
+
+\subsection{Verknüpfungen}
+
+Um einen vollständigen bibliographischen Titelsatz zu erhalten müssen
+die jeweiligen Kategorien aus den einzelnen Normdaten-Tabellen über
+entsprechende Verknüpfungen in der Tabelle \texttt{conn} einander
+zugeordnet werden. Ausgehend von einer ID in einer Normdaten-Tabelle
+-- typischerweise \texttt{tit} -- wird eine ID aus einer anderen (bei
+hierarchischen Titelverknüpfungen auch der gleichen) Normdaten-Tabelle
+zugeordnet.
+
+Über die \emph{Zusammenführung zu einem vollständigen bibliographischen
+Titelsatz} hinaus wird über diese Tabelle die \emph{Navigation zwischen
+  einzelnen Titeln} über die jeweiligen Normdaten-ID's realisiert.
+
+Im Falle der Zusammenführung zu einem bibliographisch vollständigen
+Titelsatz kann in \texttt{conn} zusätzlich definiert werden,
+welche Kategorie der Inhalt aus der jeweilig anderen Normdatei im
+Titelsatz bekommen soll (\texttt{category}) und ob eine
+Zusatzinformation (\texttt{supplement}) -- z.B. \texttt{Hrsg.} --
+bezogen auf den speziellen Titel zu dem verknüpften Normdateninhalt
+(z.B.  \texttt{aut}) hinzugefügt werden soll.
+
+Im Falle hierarchischer Werke -- damit sind sowohl \texttt{sourcetype}
+wie auch \texttt{targettype} gleich 1 (Titel), ist sofort ersichtlich,
+dass
+
+\begin{itemize}
+\item wenn die lokale Titelsatz-Id im \texttt{targettype} auftritt,
+  die Titelsatz-Id im \texttt{sourcetype} demnach die Id des
+  \textbf{untergeordneten} Titelsatzes ist, während
+\item wenn die lokale Titelsatz-Id im \texttt{sourcetype} auftritt,
+  die Titelsatz-Id im \texttt{targettype} demnach die Id des
+  \textbf{übergeordneten} Titelsatzes ist.
+\end{itemize}
+
+
+\subsection{Zwischengespeicherte Kurztreffer}
+
+Zur Beschleunigung der Informationsbestimmung für einen Kurztreffer
+werden in der Tabelle \texttt{titlistitem} die jeweiligen
+Kategorie-Inhalte bereits in der Form eines Caches abgelegt. Damit
+müssen die Informationen nicht aus allen Normdaten-Tabellen unter
+Zuhilfenahme der Ver\-knüp\-fungs\-tabelle bestimmt werden, sondern stehen
+direkt zur Verfügung.
+
+\subsection{Anfangssuche}
+
+
+Grundsätzlich werden zwei Suchtypen genutzt. Wenn ein Nutzer seine
+Suchanfrage eingibt, dann wird für diese Anfangssuche zunächst in
+einem von zwei Such-Backends recherchiert. Die Backends lassen sich
+augrund der moduleren Struktur von OpenBib sehr einfach erweitern.
+
+Mögliche Such-Backends sind 
+
+\begin{description}
+\item[SQL] In der Tabelle \texttt{search} wird entsprechend der
+  \emph{eingegebenen Suchanfrage} recherchiert und eine Liste
+  zutreffender Titel-ID's zurückgeliefert. Mit diesen Titel-ID's
+  wird dann entweder aus den Normdatentabellen oder der Tabelle
+  \texttt{titlistitem} der
+  zwischengespeicherten Kurz\-treffer  eine Liste
+  von Kurzreffern für die Anzeige bestimmt.
+\item[Xapian] Alternativ zur Suche via SQL kann auf die
+  Suchmaschinen-Technologie von Xapian zurückgegriffen werden. Es wird
+  dann die eingegebene Suchanfrage in dem entsprechenden Xapian-Index
+  recherchiert. Zurückgeliefert wird eine Liste der direkt im
+  Xapian-Index abgespeicherter Kurztreffereinträge, die für die
+  Anzeige bestimmt sind
+\end{description}
+
+Nach diesen zwei Varianten der Anfangssuche wurde dem Nutzer eine
+Liste von Kurztitelaufnahmen präsentiert, von denen dann direkt in die
+SQL-Datenbank zu einem vollständigen Treffer in einem spezifischen
+Katalog gesprungen werden kann.
+
+Ist man erst einmal in einem Treffer eines einzelnen Katalogs, dann
+wird dort primär über die Verknüpfungstabelle \texttt{conn} über die
+Normdaten navigiert. Darüberhinaus kann von hier aber auch wieder eine
+globale Anfangssuche über eines der beiden Such-Backends angestossen
+werden.
+
+
 \section{Kategorienformat}
 
 Die bibliographische Datenhaltung in der MySQL-Datenbank ist

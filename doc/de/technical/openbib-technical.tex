@@ -1213,6 +1213,115 @@ Damit erhält man für den Titel folgende Bezeichner
 \item[T5000] Aus der Anzahl der Verweise in \texttt{conn}.
 \end{description}
 
+
+\section{Kaskadierungsmechanismus bei Templates und Stylesheets}
+
+Ein wesentlicher Aspekt bei dem Einsatz und der alltäglichen Arbeit an
+einer Portalsoftware ist der Aufwand, der zu leisten ist, wenn -- auf
+Grundlage einer installierten Portalsoftwarebasis -- viele visuell
+unterschiedliche Einzel-Portale erstellt und betreut werden müssen.
+
+Einige Systeme bieten traditionell für ihr \emph{Standard-Portal} ein
+abgeschlossenes Set an Templates, Stylesheets, Bilder oder JSP's an.
+Beim Aufbau eines neuen \emph{Portals} muß dann selbst bei kleinsten
+Unterschiedieden zum Standard-Set eben jenes vollständig geklont
+werden. müssen, um dann für das neue Portal davon ausgehend
+vereinzelte Änderungen vorzunehmen. Da nun pro Portal unterschiedlich
+geänderte Klones des Standard-Sets existieren ist das Resultat davon,
+dass pro Portal nicht mehr sofort ersichtlich ist, wo genau Änderungen
+und wo der Standard verwendet wurde.
+
+Aus diversen Erfahrungen mit dieser Art an Systemen kann ich
+konstatieren, daß der Aufbau, Betrieb und insbesondere die Updates bei
+einem Versionswechsel in solchen Systemen ein Adminis\-tra\-tions-Albtraum
+sind.
+
+Aus diesen Erfahrungen ist ein alternatives Konzept entstanden, bei
+dem ebenfalls ein Standard-Set definiert wird, dann jedoch durch Klonen
+\emph{einzelner} abweichender Templates und Stylesheets -- und nicht
+aller -- in fest definierte Verzeichnisse im Dateibaum die
+Individualisierung für das jeweilige neue Portal erfolgt.
+
+\emph{Grunsätzlich gilt: Existiert ein spezifischeres Template oder
+Stylesheet gleichen Namens, so wird dieses verwendet und nicht das
+Standard-Template.}
+
+
+\subsection{Templates}
+
+In OpenBib befindet sich der Standard-Set an Templates in dem
+Verzeichnis, das in dem Modul \texttt{OpenBib::Config.pm} unter
+\texttt{tt\_include\_path} definiert ist. Default ist das Verzeichnis
+\begin{verbatim}
+/opt/openbib/templates
+\end{verbatim} 
+
+In diesem Verzeichnis existieren zwei
+spezielle Unterverzeichnisse, die für die Kaskadierung der Templates
+wesentlich sind. Sie heissen \texttt{views} und \texttt{database}.
+
+Eigenständige Portale werden in OpenBib als Views (Sichten)
+definiert. Jeder View erhält einen Namen, unter dem er angesprochen
+werden kann. Jedem View zugeordnet sind ferner verschiedene
+Datenbanken, die beim Aufruf des Views vorausgewählt sind.
+
+Anhand eines Beispiels soll nun demonstriert werden, wie für einen
+neuen View \texttt{rheinlandbib} ein einziges Template --
+\texttt{corporate\_banner} angepasst wird. In diesem Template werden
+Logo-Texte und Graphiken des Views definiert.
+
+Zunächst muß der entsprechende View in der Web-Administration erzeugt
+werden. Dazu wird ihm dort ein Name -- hier \texttt{rheinlandbib} --,
+eine Beschreibung, eine Aktivität (aktiv oder nicht) sowie
+verschiedene Datenbanken zugeordnet.
+
+Um nun unter Beibehaltung aller anderen Templates lediglich das
+Template \texttt{corporate\_banner} für den neuen View zu
+individualisieren, geht man wie folgt vor:
+
+\begin{enumerate}
+\item Man erzeugt im Unterverzeichnis \texttt{views} von
+  \texttt{tt\_include\_path} ein neues Verzeichnis mit dem Namen des neuen
+  Views -- hier \texttt{rheinlandbib}.
+\item Man kopiert die zu ändernden Templates aus
+  \texttt{tt\_include\_path} in das neue Verzeichnis -- hier \texttt{corporate\_banner}.
+\item Man ändert das Template in dem neuen Verzeichnis.
+\end{enumerate}
+
+Damit ist der neue View bis auf das Template
+\texttt{corporate\_banner} identisch mit der Standard-Darstellung des
+Portals.
+
+Diese Vorgehensweise hat neben der Einfachheit den entscheidenen
+Vorteil, daß View-spezifische Template-Änderungen sehr geordnet in den
+einzelnen View-spezifischen Verzeichnissen abgelebt sind. Dies schafft
+Übersicht, Ordnung - und vereinfacht die weitergehende Administration
+-- u.a. bei Updates -- erheblich.
+
+Manchmal kann es auch notwendig werden, dass für eine spezielle
+Datenbank eine vom Standard abweichende Einzeltitel-Darstellung
+benötigt wird -- z.B. wenn Kategorie-Inhalte anders gruppiert werden
+sollen\footnote{An der USB Köln war dies z.B. insbesondere für die
+  Titeldarstellung der Digitalen Einbandsammlung wesentlich, da in
+  dieser speziellen Sicht die Informationen nach Titel und Einband
+  gruppiert werden mussten.}.
+
+Die Vorgehensweise entspricht weitestgehend den bei den Views, nur daß
+das datenbank-spezifische Unterverzeichnis nun \texttt{database} und
+nicht \texttt{views} heisst, und dort die anzulegenden Verzeichnisse
+den Namen der Datenbank tragen, für die entsprechende Templates
+anzupassen waren, also
+
+\begin{enumerate}
+\item Man erzeugt im Unterverzeichnis \texttt{database} von
+  \texttt{tt\_include\_path} ein neues Verzeichnis mit dem Namen der
+  relevanten Datenbank -- hier \texttt{einbaende}.
+\item Man kopiert die zu ändernden Templates aus
+  \texttt{tt\_include\_path} in das neue Verzeichnis -- hier u.a. \texttt{search\_showtitset}.
+\item Man ändert das Template in dem neuen Verzeichnis.
+\end{enumerate}
+
+
 \appendix
 
 \chapter{Tabellen in \texttt{session.mysql}}

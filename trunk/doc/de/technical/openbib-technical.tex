@@ -861,6 +861,7 @@ sowie der \textbf{zwischengespeicherten Kurztreffer}.
 
 
 \subsection{Normdaten}
+\label
 
 Es gibt 6 Normdatenbereiche. Es sind dies
 \begin{enumerate}
@@ -873,21 +874,32 @@ Es gibt 6 Normdatenbereiche. Es sind dies
 \end{enumerate}
 
 Intern ist jedem dieser Bereiche ein alphabetisches sowie ein
-numerisches Kürzel zugeordnet. Das alphabetische Kürzel ist Teil des
-Tabellen\-namens, das numerische Kürzel wird zur Kennzeichnung des
-Normdatentyps in der Verknüpfungs\-tabelle \texttt{conn} (s.u.)
-verwendet.
+numerisches Kürzel zugeordnet. Für die Mehrsprachigkeit
+(Internationalisierung / I18N) wird darüberhinaus vor der vierstelligen
+Kategorienummer ein Prefix verwendet. Das alphabetische Kürzel ist
+Teil des Tabellen\-namens, das numerische Kürzel wird zur
+Kennzeichnung des Normdatentyps in der Verknüpfungs\-tabelle
+\texttt{conn} (s.u.)  verwendet.
 
-\begin{tabular}[c]{lll}
-  Normdatentyp   & alphabet. Kürzel & numer. Kürzel\\
-  \hline
-  Titel          & tit              & 1\\
-  Verfasser      & aut              & 2\\
-  Körperschaften & kor              & 3\\
-  Schlagworte    & swt              & 4\\
-  Notationen     & notation         & 5\\
-  Exemplare      & mex              & 6\\
-\end{tabular}
+\begin{table}
+  \begin{shadowenv}
+    \vspace{3mm}
+    \begin{center}
+      \begin{tabular}[c]{lccc}
+        Normdatentyp   & alphabet. Kürzel & numer. Kürzel & I18N-Prefix\\
+        \hline
+        Titel          & tit              & 1             & T\\
+        Verfasser      & aut              & 2             & P\\
+        Körperschaften & kor              & 3             & C\\
+        Schlagworte    & swt              & 4             & S\\
+        Notationen     & notation         & 5             & N\\
+        Exemplare      & mex              & 6             & X\\
+      \end{tabular}
+    \end{center}
+    \caption{Normdatentypen mit Kürzeln und I18N-Prefix\label{normkuerzprefix}}
+    \vspace{3mm}
+  \end{shadowenv}
+\end{table}
 
 Jedem Normdatentyp sind drei Tabellen zugeordnet, deren Grundname
 dem alphabetischen Kürzel entspricht.
@@ -1037,32 +1049,141 @@ folgendes aus:
 \end{itemize}
 
 
+\subsection{Internationalisierung}
+
+
+\subsubsection{Standardmechanismus}
+
+Um Kategoriebezeichnungen für die Ausgabe mehrsprachig aufbereiten zu
+können, werden aus den Kategoriennummern internationalisierbare
+Kategoriebezeichner für \texttt{GNU gettext} gebildet. Dazu wird der
+auf vier Stellen vorgenullten Kategorienummer der Normdatenprefix
+vorangestellt (vgl. Abb. \ref{normkuerzprefix}).
+
+Das Bezeichner-Format ist damit:
+
+\begin{verbatim}
+<Normdaten I18N-Prefix><4-stellige Kategorienr.>
+\end{verbatim}
+
+Der Bezeichner für die Kategorie \texttt{331} (HST) in den Titelnormdaten
+lautet demnach \texttt{T0331} und der Bezeichner für die Kategorie
+\texttt{1} in den Verfassernormdaten (Ansetzungsform) entsprechend
+\texttt{P0001}.
+
+Damit ergibt sich folgende Abhaengigkeit:
+
+\begin{verbatim}
+Kategorie-Nr. (331) -> Kategorie-Bezeichner (T0331) 
+                    -> Kategorieausgabebezeichnung ('HST')
+\end{verbatim}
+
+\subsubsection{Katalogweise Umbenennung der Kategoriebezeichnungen}
+
+Es gibt Situationen in denen es zwingend notwendig wird für eine
+Kategorie-Nr. in einer ganz speziellen Datenbank eine andere
+Kategorieausgabe\-bezeichung zu verwenden -- und diese
+selbstverständlich mehrsprachig.
+
+Ausgehend von einer Kategorie in der Datenbank -- z.B. 331 -- wird
+dafür ein \emph{Virtueller Kategorie-Bezeichner} gebildet, der
+zusätzlich zum bereits bekannten Bezeichner -- mit Bindestrich
+getrennt -- den Datenbanknamen angehängt hat. Das Bezeicher-Format ist
+dann
+
+\begin{verbatim}
+<Normdaten I18N-Prefix><4-stellige Kategorienr.>-<DB-Name>
+\end{verbatim}
+
+Soll die Kategorieausgabebezeichnung z.B. für die Kategorie
+\texttt{331} in der Datenbank \texttt{test} auf \texttt{Titel}
+geändert werden, so wird hierfür der virtuelle Bezeichner
+\texttt{T0331-test} verwendet, der so in die Message-Kataloge mit der
+Ausgabebezeichnung \texttt{Titel} Eingang findet. Dieses Beispiel wäre
+in der Realität selbstverständlich recht sinnlos.
+
+Vorteil dieses Mechanismus ist, daß unter Beibehaltung des internen --
+sinnvollerweise einheitlichen -- Kategorienschemas für einzelne
+Kataloge die Kategorieausgabebezeichnung individuell angepasst werden
+kann.
+
+Damit dieser Mechanismus greifen kann müssen jedoch folgende
+Vorarbeiten erfolgen:
+
+\begin{description}
+\item[Kennzeichnung der Kategorien] Die Kategorien, die für eine
+  Datenbank 'umettikettiert' werden sollen, müssen für die
+  entsprechende Datenbank in dem Modul \texttt{OpenBib::Config.pm}
+  unter \texttt{categorymapping} definiert werden.
+
+  Im \texttt{Titel}-Beispiel würde dieser Eintrag wie folgt aussehen:
+  
+\begin{verbatim}
+# Katalogabhaengige Kategorie-Mappings
+
+categorymapping => {
+
+      test => {
+                'T0331' => 1,
+              },
+
+},
+\end{verbatim}
+
+
+\item[Anpassung des Templates] Für die Nutzung der neuen virtuellen
+  Kategorie-Bezeichner im Template muß zunächst ein entsprechendes Fragment
+  hinzugefügt werden:
+
+\begin{verbatim}
+# Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+# in Config.pm fuer die entsprechende Datenbank definiert
+# und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+# kodiert.
+IF config.categorymapping.$database.$category ;
+   thiscategory = "${category}-${normset.database}" ;
+ELSE ;
+   thiscategory = ${category} ;
+END;
+\end{verbatim}
+
+  Darüberhinaus sollten für die automatische Extraktion der
+  I18N-Bezeichner via \mathtt{xgettext.pl} in den Kommentaren des
+  Templates \mathtt{visible_categories_titset} die neuen virutellen
+  Kategorie-Bezeichner genannt werden:
+
+\begin{verbatim}
+'T0331', # msg.maketext("T0331-test") Titel
+\end{verbatim}
+
+\end{description}
 \subsection{Beispiel}
 
 Als Beispiel verwenden wir die Titelaufnahme des Hauptaufnahme des
-mehrbändigen Werkes \emph{TCP/IP Illustrated} von \emph{Richard
-  W. Stevens}. Diese Titelaufnahme sieht wie folgt aus:
+mehrbändigen Werkes \emph{TCP/IP Illustrated} von \emph{Richard W.
+  Stevens}. Diese Titelaufnahme sieht wie folgt aus:
 
-\begin{shadowenv}
-\vspace{0.5cm}
-\begin{center}
-  \begin{tabular}{ll}
-id	        & 5899\\
-Verfasser	& Stevens, W. R.\\
-HST	        & TCP/IP Illustrated\\
-Vorl.Verfasser	& W. Richard Stevens\\
-Verlagsort	& Reading, Mass. [u.a.]\\
-Verlag	        & Addison-Wesley\\
-Schlagwort	& TCP / IP\\
-Schlagwort	& Internet\\
-Schlagwort	& Kommunikationsprotokoll\\
-Unterordnungen	& 2\\
-  \end{tabular}
-\end{center}
-  \caption{Beispiel-Titel}
-\vspace{0.5cm}
-\end{shadowenv}
-
+\begin{table}
+  \begin{shadowenv}
+    \vspace{3mm}
+    \begin{center}
+      \begin{tabular}{ll}
+        id	        & 5899\\
+        Verfasser	& Stevens, W. R.\\
+        HST	        & TCP/IP Illustrated\\
+        Vorl.Verfasser	& W. Richard Stevens\\
+        Verlagsort	& Reading, Mass. [u.a.]\\
+        Verlag	        & Addison-Wesley\\
+        Schlagwort	& TCP / IP\\
+        Schlagwort	& Internet\\
+        Schlagwort	& Kommunikationsprotokoll\\
+        Unterordnungen	& 2\\
+      \end{tabular}
+    \end{center}
+    \caption{Beispiel-Titel\label{beispieltitel}}
+    \vspace{3mm}
+  \end{shadowenv}
+\end{table}
 
 \subsubsection{Verknüpfungen}
 Dieser Titel verteilt sich nun mit seinen Daten auf mehrere
@@ -1082,7 +1203,7 @@ mysql> select * from tit where id=5899;
 dargestellt.
 
 \begin{shadowenv}
-\begin{center}
+  \begin{center}
 \begin{verbatim}
 +------+----------+-----------+-----------------------+
 | id   | category | indicator | content               |
@@ -1096,7 +1217,7 @@ dargestellt.
 +------+----------+-----------+-----------------------+
 6 rows in set (0.30 sec)
 \end{verbatim}
-\end{center}
+  \end{center}
 \end{shadowenv}
 
 Dieser Titelsatz ist mit den anderen Normdaten verknüpft. Die ID's der

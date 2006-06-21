@@ -71,7 +71,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <tr><td class="listnr"></td><td colspan="4"><span style="font-size:0.8em">in: [% resulttime %] [% msg.maketext("Sekunden") %]</span></b></td></tr>
 
 [% IF drilldown && fullresultcount > qopts.maxhits %]
-<tr><td class="listnr"><td colspan="4">
+<tr><td class="listnr"><td colspan="4" class="boxedfull">
 <table>
 <tr><td valign="top">
 

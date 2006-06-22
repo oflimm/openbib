@@ -59,7 +59,7 @@ system("rm -f $thisdbpath/*");
 
 print "Building new   Index for Database $database\n";
 
-my $db = Search::Xapian::WritableDatabase->new( $thisdbpath, Search::Xapian::DB_CREATE_OR_OPEN ) || die "Couldn't open/create Xapian DB $!\n";
+my $db = Search::Xapian::WritableDatabase->new( $thisdbpath, Search::Xapian::DB_CREATE_OR_OVERWRITE ) || die "Couldn't open/create Xapian DB $!\n";
 
 # my $stopword_ref={};
 
@@ -169,7 +169,7 @@ while (my $res=$request->fetchrow_hashref){
     
     $doc->set_data(encode_utf8($listitem));
     
-    $db->add_document($doc);
+    my $docid=$db->add_document($doc);
 
     $count++;
 }

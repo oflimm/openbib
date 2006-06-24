@@ -740,8 +740,10 @@ sub handler {
                             };
                         }
                         elsif ($term=~/^X2(.+)$/){
+                            $term=$1;
+                            $term=~s/^(.)(.*)$/\u$1\l$2/;
                             push @{$term_ref->{hst}}, {
-                                name   => $1,
+                                name   => $term,
                                 weight => $weight,
                             };
                         } elsif ($term=~/^X3(.+)$/) {
@@ -760,6 +762,7 @@ sub handler {
                                 weight => $weight,
                             };
                         } else {
+                            $term=~s/^(.)(.*)$/\u$1\l$2/;
                             push @{$term_ref->{all}}, {
                                 name   => $term,
                                 weight => $weight,

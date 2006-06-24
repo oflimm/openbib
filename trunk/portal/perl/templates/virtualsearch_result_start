@@ -24,8 +24,6 @@
 <FORM METHOD="GET" action="[% config.resultlists_loc %]">
 <p>
 
-[% PROCESS common/subtemplate name="virtualsearch_more_search_tips" %]
-
 <p><form method="get" action="[% hostself %]">
 [%- FOREACH i IN queryargs -%]
 <input type="hidden" name="[% i.key %]" value="[% i.value %]">

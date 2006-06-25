@@ -1016,7 +1016,7 @@ werden.
 
 
 \section{Kategorienformat}
-
+\subsection{Allgemeine Informationen}
 Die bibliographische Datenhaltung in der MySQL-Datenbank ist
 grundsätzlich unabhängig vom verwendeten Kategorienschema. Damit
 können dort -- ohne Änderung oder Erweiterung der Datenbank --
@@ -1466,6 +1466,8 @@ anzupassen waren, also
 
 \section{Internationalisierung}
 
+\subsection{Allgemeine Informationen zu GNU gettext}
+
 Zur Unterstützung von verschiedenen Sprachen durch das Portal wurde
 auf \texttt{GNU gettext} zurück gegriffen, das eine \emph{best
   practice} in diesem Bereich darstellt und von unzähligen Projekten
@@ -1488,6 +1490,85 @@ verschiedene Vorteile:
   Templates wissen müssen.
 \end{itemize}
 
+Weitere Vorteile von \texttt{GNU gettext} sind:
+
+\begin{itemize}
+\item Die Möglichkeit der Verwendung von Platzhaltern
+\item Es existiert ein ganzes Toolset, um die Internationalisierung so
+  automatisiert wie möglich durchzuführen. Gerade dies stellt einen
+  hohen Wert dar.
+\end{itemize}
+
+\subsection{Technische Realisierung}
+
+Während \texttt{GNU gettext} seine Wurzeln im Wesentlichen in der
+\texttt{C}- und \texttt{C++}-Welt hat, wird in Perl sehr gerne
+stattdessen \texttt{Maketext} verwendet, welches jedoch zwar
+zusätzlich die gezielte Bildung von Pluralen mit \texttt{quant}
+unterstützt, jedoch nicht über ein vergleichbares Toolset wie
+\texttt{GNU gettext} verfügt.
+
+OpenBib setzt zur Internationalisierung das Modul
+\texttt{Locale::Maketext::Lexicon} von Audrey Tang ein, das sich auf
+Perl-Seit wie \texttt{Maketext} verhält, im Backend jedoch speziell
+\texttt{GNU gettext} einsetzt. Damit verwendet OpenBib das \emph{Beste
+aus beiden Welten}.
+
+Damit wird konkret in den Templates die \texttt{Maketext}-Syntax
+verwendet, während die automatische Message-Tag-Extraktion aus den
+Templates \texttt{GNU gettext}-Syntax liefert.
+
+Um in einem Perl-Programm oder einem Template die
+Text zu Internationalisieren geht man wie folgt vor:
+
+\begin{description}
+\item[Perl-Programm] Der Text wird mit einem Methodenaufruf
+  \texttt{maketext} des Message-Objektes \texttt{\$msg}
+  gekapselt. Letzeres wird in jedem \texttt{mod\_perl}-Handler über
+  \texttt{OpenBib::L10N} instanziiert.
+
+  Beispiel:
+
+\begin{verbatim}
+$msg->maketext("Ungültige Session")
+\end{verbatim}
+
+\item[Template] Der Text wird ebenfalls mit einem entsprechenden
+  Methoden-Aufruf gekapselt -- diesmal jedoch in der
+  Template-Toolkit-Syntax mit dem übergebenen Message-Objekt \texttt{\$msg}.
+
+  Beispiel:
+
+\begin{verbatim}
+[% msg.maketext("Suchhistorie") %]
+\end{verbatim}
+\end{description}
+
+Nachdem neue Begriffe so gekennzeichnet wurden oder andere geändert,
+muß der Message-Katalog aktualisiert werden.
+
+Dazu sind folgende Schritte notwendig:
+
+\begin{enumerate}
+\item Aktualisierung der Datei \texttt{portal/perl/locales/FILES}. Dort
+  sind alle relevanten Datei\-namen aufgeführt, die
+  übersetzt werden sollen.
+\item Aufruf des mitgelieferten Hilfsprogramms
+  \texttt{xgettext.pl}. Es werden damit aus allen in  \texttt{FILES}
+  genannten Dateien die Message-Tags extrahiert und in einer Datei
+  \texttt{message.po} abgelegt.
+\item Abgleich von \texttt{message.po} mit dem bereits existierenden
+  Message-Katalog -- \newline z.B. \texttt{de/LC\_MESSAGES/openbib.po}:
+
+\begin{verbatim}
+msgmerge -U de/LC\_MESSAGES/openbib.po message.po
+\end{verbatim}
+\item Übersetzen der Sprachdatei \texttt{openbib.po} mit einem
+  geeigneten Programm. Sehr zu empfehlen ist hier das KDE-Programm
+  \texttt{kbabel}.
+\end{enumerate}
+
+Nach dem Restart des Apache-Daemons sind die Änderungen aktiv.
 
 \section{Content-Enrichment}
 

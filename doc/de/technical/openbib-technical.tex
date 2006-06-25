@@ -47,7 +47,7 @@
   \vspace{2cm}
 
   Oliver Flimm \texttt{<flimm@openbib.de>}\\
-  Stand: 17.6.2006
+  Stand: 25.6.2006
 
   \vspace{8cm}
 
@@ -875,7 +875,7 @@ Es gibt 6 Normdatenbereiche. Es sind dies
 
 Intern ist jedem dieser Bereiche ein alphabetisches sowie ein
 numerisches Kürzel zugeordnet. Für die Mehrsprachigkeit
-(Internationalisierung / I18N) wird darüberhinaus vor der vierstelligen
+(Internationalisierung / I18N) wird darüber hinaus vor der vierstelligen
 Kategorienummer ein Prefix verwendet. Das alphabetische Kürzel ist
 Teil des Tabellen\-namens, das numerische Kürzel wird zur
 Kennzeichnung des Normdatentyps in der Verknüpfungs\-tabelle
@@ -1010,7 +1010,7 @@ Katalog gesprungen werden kann.
 
 Ist man erst einmal in einem Treffer eines einzelnen Katalogs, dann
 wird dort primär mit der Verknüpfungstabelle \texttt{conn} über die
-Normdaten navigiert. Darüberhinaus kann von hier aber auch wieder eine
+Normdaten navigiert. Darüber hinaus kann von hier aber auch wieder eine
 globale Anfangssuche über eines der beiden Recherche-Backends angestossen
 werden.
 
@@ -1078,12 +1078,41 @@ Kategorie-Nr. (331) -> Kategorie-Bezeichner (T0331)
                     -> Kategorieausgabebezeichnung ('HST')
 \end{verbatim}
 
+Damit die einzelnen Kategorie-Bezeichner automatisiert mit dem
+Programm \texttt{xgettext.pl} erkannt und in die I18N-Message-Kataloge
+übertragen werden können, werden sie in den jeweiligen Templates an
+den Stellen als Kommentar aufgeführt, an denen definiert wird, welche
+Kategorien in welcher Reihenfolge angezeit werden sollen. In diesen
+Kommentaren sind sie in einem \texttt{maketext}-Aufruf gekapselt.
+
+Als Beispiel wird das Template \texttt{visible\_categories\_titset}
+betrachtet:
+
+\begin{verbatim}
+[%# Ausgabekategorien %]
+[% categories = [
+                'T0100', # msg.maketext("T0100") Verfasser
+                'T0101', # msg.maketext("T0101") Person
+                'T0103', # msg.maketext("T0103") Gefeierte Person
+                'T0200', # msg.maketext("T0200") Urheber
+                'T0201', # msg.maketext("T0201") Koerperschaft
+                'T0089', # msg.maketext("T0089") Bandangabe  
+...
+\end{verbatim}
+
+Der für die Internationalisierung wesentliche Teil -- der benötigt
+wird -- ist
+
+\begin{verbatim}
+# msg.maketext("T1234")
+\end{verbatim}
+
 \subsubsection{Katalogweise Umbenennung der Kategoriebezeichnungen}
 
 Es gibt Situationen in denen es zwingend notwendig wird für eine
 Kategorie-Nr. in einer ganz speziellen Datenbank eine andere
 Kategorieausgabe\-bezeichung zu verwenden -- und diese
-selbstverständlich mehrsprachig.
+selbst\-verständlich mehrsprachig.
 
 Ausgehend von einer Kategorie in der Datenbank -- z.B. 331 -- wird
 dafür ein \emph{Virtueller Kategorie-Bezeichner} gebildet, der
@@ -1100,7 +1129,7 @@ Soll die Kategorieausgabebezeichnung z.B. für die Kategorie
 geändert werden, so wird hierfür der virtuelle Bezeichner
 \texttt{T0331-test} verwendet, der so in die Message-Kataloge mit der
 Ausgabebezeichnung \texttt{Titel} Eingang findet. Dieses Beispiel wäre
-in der Realität selbstverständlich recht sinnlos.
+in der Realität selbst\-verständlich recht sinnlos.
 
 Vorteil dieses Mechanismus ist, daß unter Beibehaltung des internen --
 sinnvollerweise einheitlichen -- Kategorienschemas für einzelne
@@ -1147,13 +1176,19 @@ ELSE ;
 END;
 \end{verbatim}
 
-  Darüberhinaus sollten für die automatische Extraktion der
-  I18N-Bezeichner via \mathtt{xgettext.pl} in den Kommentaren des
-  Templates \mathtt{visible_categories_titset} die neuen virutellen
+  Darüber hinaus sollten für die automatische Extraktion der
+  I18N-Bezeichner über das Hilfs\-programm \texttt{xgettext.pl} in den Kommentaren des
+  Templates \texttt{visible\_categories\_titset} die neuen virutellen
   Kategorie-Bezeichner genannt werden:
 
 \begin{verbatim}
 'T0331', # msg.maketext("T0331-test") Titel
+\end{verbatim}
+
+  Auch hier ist der wesentliche Teil des Kommentars:
+
+\begin{verbatim}
+msg.maketext("T0331-test")
 \end{verbatim}
 
 \end{description}
@@ -1202,8 +1237,6 @@ mysql> select * from tit where id=5899;
 
 dargestellt.
 
-\begin{shadowenv}
-  \begin{center}
 \begin{verbatim}
 +------+----------+-----------+-----------------------+
 | id   | category | indicator | content               |
@@ -1217,8 +1250,6 @@ dargestellt.
 +------+----------+-----------+-----------------------+
 6 rows in set (0.30 sec)
 \end{verbatim}
-  \end{center}
-\end{shadowenv}
 
 Dieser Titelsatz ist mit den anderen Normdaten verknüpft. Die ID's der
 verknüpften Sätze erhält man mit
@@ -1230,8 +1261,6 @@ mysql> select * from conn where    (sourceid=5899 and sourcetype=1)
 
 zu:
 
-\begin{shadowenv}
-\begin{center}
 \begin{verbatim}
 +----------+----------+------------+----------+------------+------------+
 | category | sourceid | sourcetype | targetid | targettype | supplement |
@@ -1245,8 +1274,6 @@ zu:
 +----------+----------+------------+----------+------------+------------+
 6 rows in set (0.11 sec)
 \end{verbatim}
-\end{center}
-\end{shadowenv}
 
 Es ist damit ersichtlich, dass 
 
@@ -1266,8 +1293,6 @@ mysql> select * from aut where id=684;
 
 zu 
 
-\begin{shadowenv}
-\begin{center}
 \begin{verbatim}
 +-----+----------+-----------+---------------------+
 | id  | category | indicator | content             |
@@ -1277,8 +1302,6 @@ zu
 +-----+----------+-----------+---------------------+
 2 rows in set (0.04 sec)
 \end{verbatim}
-\end{center}
-\end{shadowenv}
 
 sowie die Schlagworte mit 
 
@@ -1287,8 +1310,6 @@ mysql> select * from swt where id in (133,604,571);
 \end{verbatim}
 zu
 
-\begin{shadowenv}
-\begin{center}
 \begin{verbatim}
 +-----+----------+-----------+-----------------------------------------------+
 | id  | category | indicator | content                                       |
@@ -1310,17 +1331,15 @@ zu
 | 604 |      102 |         1 | Internetzwerk / TCP / IP                      |
 +-----+----------+-----------+-----------------------------------------------+
 \end{verbatim}
-\end{center}
-\end{shadowenv}
 
 Für die untergeordneten Titel wiederholt sich diese gesamt Prozedur
-mit den zweit Titel-ID's \texttt{5900} und \texttt{5901}.
+mit den zwei Titel-ID's \texttt{5900} und \texttt{5901}.
 
 \subsubsection{Internationalisierung}
 
 Für die Internationalisierung der Bezeichnungstexte wird für die
 einzelnen Titelkategorien ein Bezeichner durch Vornullen der
-Kategorienummer auf 4 stellen sowie Voranstellen des Normdatenkürzels.
+Kategorienummer auf 4 Stellen sowie Voranstellen des Normdatenkürzels.
 
 Damit erhält man für den Titel folgende Bezeichner
 
@@ -1331,7 +1350,9 @@ Damit erhält man für den Titel folgende Bezeichner
 \item[T0410] Aus der Kategorie \texttt{410} von \texttt{tit}
 \item[T0412] Aus der Kategorie \texttt{412} von \texttt{tit}
 \item[T0710] Aus der Kategorie \texttt{710} von \texttt{conn}
-\item[T5000] Aus der Anzahl der Verweise in \texttt{conn}.
+\item[T5000] Aus der Anzahl der Verweise in \texttt{conn}. Im
+  Gegensatz zu den vorangegangenen MAB2-Kategorien wurde diese
+  willkürlich zu \texttt{5000} definiert.
 \end{description}
 
 
@@ -1443,7 +1464,257 @@ anzupassen waren, also
 \end{enumerate}
 
 
+\section{Internationalisierung}
+
+Zur Unterstützung von verschiedenen Sprachen durch das Portal wurde
+auf \texttt{GNU gettext} zurück gegriffen, das eine \emph{best
+  practice} in diesem Bereich darstellt und von unzähligen Projekten
+und Programmen verwendet wird, wie z.B. den KDE-Projekt mit mehr als
+40 unterstützten Sprachen.
+
+\texttt{GNU gettext} zeichnet sich im Vergleich zu anderen Mechanismen
+dadurch u.a. dadurch aus, daß in den Templates die einzelnen zu
+übersetzenden Textbezeicher nicht numerisch sind, sondern aus
+gewöhnlichem Text in einer Basis-Sprache -- typischerweise Englisch,
+bei OpenBib bisher Deutsch -- bestehen. Damit ergeben sich
+verschiedene Vorteile:
+
+\begin{itemize}
+\item Die Templates bleiben lesbar und beherrschbar. Bei numerischen
+  Bezeichnern hingegen sieht man in einem Template gar nicht mehr, wo
+  genau welcher Text steht.
+\item Die eigentliche Übersetzung lässt sich an entsprechende
+  Mitarbeiter auslagern, die weder um die Programmierung noch die
+  Templates wissen müssen.
+\end{itemize}
+
+
+\section{Content-Enrichment}
+
+\subsection{Hintergrund}
+
+In NRW werden derzeit Scan-Projekte durchgeführt, in denen die
+Inhaltsverzeichnisse von Büchern digitalisiert werden. Ergebnis der
+Digitalisierung sind einerseits OCR-Text-Daten zur Anreicherung der
+Suche sowie Abbilder der Inhaltsverzeichnisse in Form von (HTML-,)
+TIFF- und PDF-Dateien zur Pr"asentation f"ur den Benutzer.
+
+Geplant ist die Anreicherung der jeweiligen Lokalsystem-Kataloge mit
+diesen Informationen. Hierbei wird im Wesentlichen ein Paket bestehend
+aus OCR-Text-Daten sowie Verweis-URL's auf die (HTML-,) TIFF- und
+PDF-Dateien gebildet und einem einzelnen Katalogsatz entsprechend
+seines Katalogschl"ussels zugeordnet.
+
+Bei der Benutzerrecherche werden dann zus"atzlich diese OCR-Daten
+konsultiert und idealerweise weitere, diesen zugeordnete Katalogs"atze
+gefunden. Beim Aufruf eines solchen Katalogsatzes im WebOPAC des
+Lokalsystems werden dem Benutzer dann Verweise zu den Abbildern der
+Inhaltsverzeichnisse geliefert.
+
+\subsection{Konzept von OpenBib}
+
+Vor dem Hintergrund solcher Scan-Projekte wurde ein ein allgemeineres,
+über deren Ziele hinaus gehendes Konzept für den Einsatz in OpenBib und
+dem Kontext eines viele voneinander un\-ab\-hängige Kataloge umfassenden
+Portals erstellt. Neben der Nutzbarmachung solcher Digitalisate waren
+die Ziele u.a.
+
+\begin{itemize}
+\item Einfachheit (Verstehen, Umsetzen, Warten),
+\item Kostenneutralit"at,
+\item geringer Aufwand bei der Umsetzung,
+\item insbesondere die Ablage beliebiger Informationen -- nicht nur
+  digitalisierter Inhalts\-ver\-zeich\-nisse - zur Kataloganreicherung sowie
+\item eine \emph{automatische} Nutzung durch alle im Portal
+  zusammengefassten Kataloge.
+\end{itemize}
+
+Entsprechend des letzten Zieles kann eine Bindung der
+Digitalisat-Informationen an einen einzelnen Kataloges, wie dies
+typischerweise über eindeutige Katalogschlüssel geschehen ist, nicht
+zum Erfolg f"uhren.  Aus diesem Grund bietet sich als
+katalog"ubergreifender Zuordnungsschl"ussel zu einem Digitalisat
+sinnvollerweise nur die ISBN an.
+
+Aufbauend auf dieser Zuordnung k"onnen nun alle
+Anreicherungsinformationen -- auch jenseits der digitalisierten
+Inhaltsverzeichnisse (z.B. speziell Stichwortverzeichnisse, aber auch
+Rezensionen, Verlagsinformationen usw.) -- zentral in einer separaten
+\emph{Anreicherungsdatenbank} verwaltet werden. Diese Datenbank beinhaltet
+
+\begin{itemize}
+\item einen Bereich f"ur die Recherche -- hier sind z.B. die
+  OCR-Volltexte recherchierbar und liefern eine ISBN als Ergebnis
+  zur"uck -- sowie
+\item einen Bereich f"ur entsprechende Zusatzinformationen, die in
+  einem Titel mit angezeigt werden sollen -- wie z.B. die URL's zu den
+  Abbildern der Inhaltsverzeichnisse -- und ebenfalls "uber die ISBN
+  als Zuordnungskriterium zugreifbar sind.
+\end{itemize}
+
+
+Damit ist die \emph{automatische} Nutzbarkeit der Informationen nunmehr
+lediglich auf die Existenz von ISBN's in den einzelnen Katalogen des
+Portals beschr"ankt. Alle Kataloge des Portals, die einen Titel mit einer
+ISBN besitzen, die in der Digitalisatliste (s.o.) enthalten ist,
+k"onnen diesen "uber Informationen aus dem zugeh"origen
+Inhaltsverzeichnis finden und bei der Ausgabe Verlinkungen zu den
+entsprechenden Abbildern der Inhaltsverzeichnisse pr"asentieren.
+
+Wesentliche Vorteile dieser L"osung sind damit auch
+
+\begin{itemize}
+\item Die Anreicherungsdaten m"ussen nur an einer Stelle -- der
+  Anreicherungsdatenbank -- und nicht in allen Katalogen verwaltet werden.
+\item Alle Titelaufnahmen mit entsprechender ISBN profitieren
+  katalog"ubergreifend \emph{automatisch} von Such- und
+  Inhaltsanreicherung.
+\item Es ist problemlos m"oglich die L"osung um Inhaltsverzeichnisse
+  aus anderen Scan-Projekten innerhalb und außerhalb des Landes NRW
+  f"ur die Kataloge des OpenBib Recherche-Portals nutzbar zu machen.
+\end{itemize}
+
+
+\subsection{Technische Umsetzung}
+
+In OpenBib besteht diese zentrale Anreicherungs-Datenbank --
+standardmäßig \texttt{enrichmnt} genannt -- aus folgenden Tabellen:
+
+\begin{description}
+\item[\texttt{search}] Diese Tabelle soll für die Anreicherung der Recherche
+  durch entsprechende in ihr abgelegte Informationen genutzt
+  werden. Obwohl der Programmcode zur Nutzung dieser Informationen
+  in OpenBib bereits existiert, wird er solange noch nicht genutzt,
+  bis ausreichende Tests die Skalierbarkeit dieser Art der
+  Suchanreicherung untermauert haben.
+
+\item[\texttt{normdata}] Diese Tabelle wird für die Anreicherung der
+  Ergebnisse verwendet. Sie hat den Rang und den Aufbau einer
+  katalog\-übergreifenden Norm-Datei. Damit besitzt sie ebenfalls die
+  Spalten \texttt{category}, \texttt{indicator} sowie
+  \texttt{content}. An die Stelle einer katalog\-spezifischen Id tritt
+  hier jedoch die katalogübergreifend nutzbare ISBN. Darüber hinaus
+  wird zur Organisation der Anreicherungsinformationen der Ursprung
+  der Informationen numerisch in der Spalte \texttt{origin}
+  kodiert. Damit können Informationen verschiedener Herkunft
+  unterschieden und bei Updates entsprechend darauf zugegriffen werden.   
+\end{description}
+
+Entsprechend dieser Tabellen wird bei OpenBib unterschieden zwischen
+der \emph{Suchanreicherung} und der \emph{Ergebnisanreicherung}
+durch externe Daten.
+
+\subsubsection{Suchanreicherung}
+Der programmtechnische Ablauf bei der Suchanreicherung ist wie folgt:
+
+\begin{itemize}
+\item Mit den vom Benutzer eingegebenen Begriffen werden zunächst --
+  \textbf{zentral} -- in der Tabelle \texttt{search} der
+  Anreicherungsdatenbank nach ISBN's als Treffer recherchiert.
+\item Diese ISBN's werden dann für die herkömmliche Recherche --
+  \textbf{pro einzelnem aus\-ge\-wähl\-tem Katalog} -- hinzugenommen und
+  liefern katalogspezifische Titel-ID's.
+\end{itemize}
+
+Derzeitig wird diese Suchanreicherung nicht produktiv
+verwendet. Ebenso ist noch keine Integration mit der Xapian
+Suchmaschinen-Technologie erfolgt.
+
+\subsubsection{Ergebnisanreicherung}
+Der programmtechnische Ablauf bei der Ergebnisanreicherung ist wie folgt:
+
+\begin{itemize}
+\item Bei der Einzeltrefferanzeige wird dessen ISBN bestimmt
+\item Mit der ISBN wird in der Tabelle \texttt{normdata} der
+  Anreicherungs\-datenbank nach Treffern recherchiert.
+\item Die Treffer aus der Anreicherungsdatenbank haben die Form von
+  zusätzlichen Kategorien. Diese Kategorien werden mit den
+  \emph{herkömmlichen} Kategorien der Katalogaufnahme ver\-schmol\-zen
+  und bilden so einen angereicherten Titelsatz.
+\end{itemize}
+
+\section{Suchmaschinen-Technologie von Xapian}
+
+
+\subsection{Allgemeine Informationen zu Xapian}
+
+OpenBib beherrscht neben dem bereits länger vorhandenen SQL-Such-Backend
+zusaetzlich auch ein Suchmaschinen-Backend, das auf der OpenSource
+Suchmaschinen-Technologie von Xapian (www.xapian.org) beruht. Xapian
+wird u.a. auch von der Webpräsenz der Zeitung 'Die Zeit' eingesetzt.
+
+Xapian zeichnet sich durch verschiedene Vorteile aus.
+
+\begin{itemize}
+\item Xapian ist schnell
+\item Obwohl Xapian selbst in C++ programmiert ist, kann mit Perl darauf zugegriffen
+werden. Indexer und Suche sind zusammen weniger als 100 Zeilen Code.
+\item Xapian bietet Relevance Feedback. Damit koennen Drill-Downs realisiert
+werden
+\item Xapian skaliert vernuenftig mit grossen Datenmengen. Bei einer
+Web-Suchmaschine mit 500 Millionen Webseiten (etwa 1.5 Terrabytes an
+Datenbank Dateien), bei der Xapian im Einsatz war, brauchte eine Suche
+trotzdem weniger als 1 Sekunde - natuerlich haengt das auch massgeblich von
+der verwendeten Hardware ab. Eine Suche nach 'Deutschland' im USB-Katalog
+mit knapp 77000 Treffer brauchte knapp 1 Sekunde...
+\end{itemize}
+
+
+\subsection{Strukturelle Integration in OpenBib}
+
+In OpenBib kann derzeit wahlweise die Einfache Suche
+Suchmaschinen-Technologie verwenden und ist somit 'einfach' und
+treffermengenmässig auch für ungeübte Nutzer -- die typischerweise
+unpräzise suchen und damit sehr große Treffermengen produzieren --
+geeignet.
+
+Geübte Such-Experten koennen in der Komplexen Suche wie bisher alle
+bibliothekarisch anspruchsvollen Anfragen über das bereits vorhandene
+SQL-Such-Backend ausfuehren -- hier wird die Suchmaschinen-Technologie
+derzeit noch nicht eingesetzt.  Bei der Komplexen Suche ist im
+Gegensatz zur einfachen damit zu rechnen, daß der Nutzer schon
+sinnvolle Anfragen formuliert -- und dafür ist das erprobte SQL
+Such-Backend weitereaus besser geeignet. Ebenso ist dort ein
+Drill-Down nicht notwendig.
+
+Diese Einfache Suche mit Suchmaschinen-Technologie zeichnet sich durch
+folgendes aus:
+
+\begin{itemize}
+\item Es sind -- in einem gewissen Umfang -- keine komplexen
+  Suchanfragen möglich. Alle eingegebenen Begriffe werden implizit mit
+  UND verknuepft\footnote{Dies kann ohne viel Aufwand auch erweitert
+    werden, da Xapian auch sehr komplexe Abfragen verarbeiten kann --
+    insofern ist das also ein Entscheidung und keine technische
+    Begrenzung}. Damit wird die Einfache Suche sehr Google-artig,
+  lässt sich also so bedienen, wie fast jeder Google verwendet.
+\item Bei den Ergebnissen wird die Zahl aller gefundenen Titel
+  ausgegeben. Nach wie vor ist die Treffermenge begrenzt (derzeit auf
+  50), allerdings sind diese Treffer -- im Gegensatz zur bisherigen
+  Suche ueber SQL -- bereits gewichtet - die \emph{wichtigen} Treffer
+  -- in Sinne von: die Suchbegriffe sind häufiger enthalten --
+  \emph{schwimmen} oben, bei den \emph{unwichtigen} kann man
+  verschmerzen, daß sie abgeschnitten und verworfen werden. Ideal ist
+  dies jedoch immer noch nicht -- aber auf jeden Fall besser als bei
+  unstrukturierten Suchen über das bisherige SQL-Backend.
+\item Mit dem Relevance Feedback werden aus der Treffermenge die Wörter
+bestimmt, die besonders häufig vorkommen -- geordnet nach dem Kategoriekreis
+ihres Vorkommens. Mit diesen wird dem Benutzer eine Drill-Down-Funktion in
+der bisherigen Treffermenge angeboten. Derzeit werden folgende Drill-Downs
+angeboten: Verfasser, Wörter aus dem Titel, Wörter aus den Schlagworten
+sowie Jahreszahlen. Hat der Benutzer also eine Treffermenge bekommen, so
+kann er auf einen der Drill-Down-Begriffe klicken und er erhält als neue
+Trefferliste die Untermenge der bisherigen, die zusätzlich den
+Drill-Down-Begriff enthält. Damit reduziert sich die Treffermenge und wird
+übersichtlicher.
+\item Generell werden die Kurztitel in den Trefferlisten sehr, sehr schnell
+geliefert.
+\end{itemize}
+
+
+
 \appendix
+
 
 \chapter{Tabellen in \texttt{session.mysql}}
 

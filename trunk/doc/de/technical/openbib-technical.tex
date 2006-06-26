@@ -1548,7 +1548,7 @@ Dazu sind folgende Schritte notwendig:
   Message-Katalog -- \newline z.B. \texttt{de/LC\_MESSAGES/openbib.po}:
 
 \begin{verbatim}
-msgmerge -U de/LC\_MESSAGES/openbib.po message.po
+msgmerge -U de/LC_MESSAGES/openbib.po message.po
 \end{verbatim}
 \item Übersetzen der Sprachdatei \texttt{openbib.po} mit einem
   geeigneten Programm. Sehr zu empfehlen ist hier das KDE-Programm
@@ -1727,18 +1727,21 @@ der verwendeten Hardware ab. Eine Suche nach 'Deutschland' im USB-Katalog
 mit knapp 77000 Treffer brauchte knapp 1 Sekunde...
 \end{itemize}
 
-Neben Xapian ließe sich alternativ eine andere
+Neben Xapian ließe sich alternativ auch eine andere
 Suchmaschinen-Technologie, wie speziell die von Lucene verwenden. Es
 müsste lediglich der Zugriff von OpenBib durch eine entsprechende
 Schnittstelle gewährleistet werden. Diese könnte z.B. realisiert
 werden über
-
 
 \begin{itemize}
 \item ein Servlet, das einen Such-URL entgegennimmt und das Ergebnis
   als XML-Dokument zurückliefert
 \item einen SOAP-basierten WebServices (z.B. Lucene mit Axis)
 \end{itemize}
+
+Der Ausschlag bei der Entscheidung für Xapian gaben letztlich die
+bereits vorhandenen Funktionen out-of-the-box, das Perl-API und der fast nicht
+existente Aufwand bei der Integration in OpenBib.
 
 \subsection{Strukturelle Integration in OpenBib}
 
@@ -1757,7 +1760,7 @@ sinnvolle Anfragen formuliert -- und dafür ist das erprobte SQL
 Such-Backend weitereaus besser geeignet. Ebenso ist dort ein
 Drill-Down nicht notwendig.
 
-Diese Einfache Suche mit Such\-maschinen-Technologie zeichnet sich durch
+Diese \emph{Einfache Suche} mit Such\-maschinen-Technologie zeichnet sich durch
 folgendes aus:
 
 \begin{itemize}
@@ -1766,7 +1769,7 @@ folgendes aus:
   UND verknüpft\footnote{Dies kann ohne viel Aufwand auch erweitert
     werden, da Xapian auch sehr komplexe Abfragen verarbeiten kann --
     insofern ist das also ein Entscheidung und keine technische
-    Begrenzung}. Damit wird die Einfache Suche sehr Google-artig,
+    Begrenzung}. Damit wird die \emph{Einfache Suche} sehr Google-artig,
   lässt sich also so bedienen, wie fast jeder Google verwendet.
 \item Bei den Ergebnissen wird die Zahl aller gefundenen Titel
   ausgegeben. Nach wie vor ist die Treffermenge begrenzt (derzeit auf
@@ -1800,7 +1803,7 @@ OpenBib verankert:
 \begin{description}
 \item[Indexierung] bei dem automatischen Aufbau eines Katalog sowie
 \item[Recherche] bei der \emph{Virtuellen Recherche} bezogen auf einen Katalog.
-\end{itemize}
+\end{description}
 
 \subsubsection{Indexierung}
 
@@ -1814,13 +1817,13 @@ Für die Indexierung wird über den Xapian-Datenbank-Konnektor
 \item in den Xapian-Index geladen.
 \end{itemize}
 
-Wesentlich sind hierbei die Tabellen \texttt{search} sowie
-\texttt{titlistitem} für den via \texttt{Storable} serialisierten
-Kurztreffereintrag, der als Data ebenfalls in den Index wandert.
+Wesentlich sind hierbei zwei Tabellen aus der MySQL-Datenbank. Es sind
+dies \texttt{search} sowie \texttt{titlistitem}.
 
-Konkret wird im Xapian-Index entsprechend der Terme in
-\texttt{search} gesucht und der serialisierte Kurztreffer aus
-\texttt{titlistitem} zurückgeliefert.
+Konkret wird im Xapian-Index entsprechend der Terme aus
+\texttt{search} gesucht und via \texttt{Storable} serialisierte
+Kurztreffer aus dem Data-Teil zurückgeliefert, die effektiv aus
+\texttt{titlistitem} stammen.
 
 Die Indizes werden unter dem in \texttt{OpenBib::Config} eingetragenen
 \texttt{xapian\_index\_base\_path} -- standardmäßig ist das
@@ -1868,7 +1871,7 @@ Fall eine etwaige Unübersichtlichkeit gegeben ist und Drill-Downs
 \appendix
 
 
-\chapter{Xapian}
+\chapter{Xapian Perl-API}
 
 An dieser Stelle werden weitergehende Informatinen zum Perl-API für
 den Zugriff auf die Xapian Suchmaschinen-Technologie gegeben.
@@ -2121,7 +2124,7 @@ intitle:perl
 \end{verbatim}
 eingegeben werden.
 \item[Definition der Standardverknüpfung] Die Standardverknüpfung
-  zwischen den eingegebenen Suchbegriffen kann über die Methode
+  zwischen den eingegebenen Such\-be\-griffen kann über die Methode
   \texttt{set\_default\_op} definiert werden.
 
   Beispiel:
@@ -2131,7 +2134,7 @@ $qp->set_default_op(Search::Xapian::OP_AND);
 \end{description}
 
 Ausgehend von diesem QueryParser-Objekt kann nun eine Suchanfrage
-(Enquiry) an die Datenbank gestellt werden. Dazu werden zunächst mit der
+(Enquiry) an die Daten\-bank gestellt werden. Dazu werden zunächst mit der
 Methode \texttt{parse\_query} des QueryParsers die Suchbegriffe
 geparst, um dann über die Methode \texttt{enquire} der Datenbank die
 eigentliche Anfrage zu stellen.
@@ -2151,7 +2154,7 @@ my $thisquery = $enq->get_query()->get_description();
 \end{verbatim}
 
 Als Ergebnis der Anfrage erhält man einen sog. \emph{MSet}
-(Match-Set). In diesem sind die Suchergebnisse zusammengefasst.
+(Match-Set). In diesem sind die Such\-er\-geb\-nisse zusammengefasst.
 
 Mit der Methode \texttt{matches} kann dieser \emph{MSet} aus
 \texttt{\$enq} gebildet werden. Als Parameter dieser Methode kann die Größe des
@@ -2251,6 +2254,7 @@ jedoch nicht abgedeckt und muß selbst realisiert werden.
 
 In diesem Anhang werden die einzelnen Tabellen in der
 Session-Datenbank beschrieben.
+
 
 Diese Tabellen verteilen sich auf rein session-basierte Aufgaben sowie
 allgemeine Konfigurations\-ein\-stellungen des Portals.

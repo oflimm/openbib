@@ -154,8 +154,7 @@ Ur-Version des Recherche-Portals im Jahr 1997 sehr viel
 bibliothekarisches Know-How in die Entwicklung mit eingeflossen.
 
 
-\section{OpenBib ist über verschiedene Views bzw. Sichten
-  individualisierbar}
+\section{OpenBib ist über verschiedene Views bzw. Sichten individualisierbar}
 Mit OpenBib können über das Merkmal \textit{View}
 bzw. \textit{Sicht} ausgehend von einer zentralen In\-stal\-la\-tion mit
 geringstem Aufwand individuell gestaltete andere Portale erstellt
@@ -163,7 +162,7 @@ werden. Hierzu wird ein einfacher Mechanismus kaskadierender Templates
 und Stylesheets verwendet. Dieser Mechanismus funktioniert sowohl
 view- wie auch datenbankabhängig. 
 
-Wird fuer eine Datenbank oder einen View ein anderer Aufbau eines
+Wird für eine Datenbank oder einen View ein anderer Aufbau eines
 Templates gewünscht, so reicht es, ein entsprechendes
 Unterverzeichnis anzulegen, das zugehörige Standard-Template in das
 Unterverzeichnis zu kopieren und dort zu verändern. Damit müssen nur
@@ -232,17 +231,6 @@ dargestellt werden und dem Benutzer die Möglichkeit bieten,
 \item sich einen generellen Überblick von der Treffermenge zu machen
 \item durch Auswahl eines der Begriffe die bisherige Treffermenge
   weiter zu reduzieren 
-\end{itemize}
-
-Neben Xapian liesse sich auch Lucene verwenden. Es müsste lediglich
-der Zugriff von OpenBib durch eine entsprechende Schnittstelle
-gewährleistet werden. Diese könnte z.B. realisiert werden über
-
-
-\begin{itemize}
-\item ein Servlet, das einen Such-URL entgegennimmt und das Ergebnis
-  als XML-Dokument zurückliefert
-\item einen SOAP-basierten WebServices (z.B. Lucene mit Axis)
 \end{itemize}
 
 \section{OpenBib ist flexibel im internen Katalog- bzw. Metadaten-Format}
@@ -835,7 +823,7 @@ mehrere Rechner ergeben sich mehrere Vorteile:
   Fall ist bei der Weiterleitung mit einer kurzen Wartezeit von
   maximal 5 Sekunden (Timeout) zu rechnen.  Automatisch wird
   zusätzlich an den Administrator eine Mail ge\-ne\-riert, die ihn
-  auf den defekten Rechner hinweist. Ein Sonderfall ist natuerlich der
+  auf den defekten Rechner hinweist. Ein Sonderfall ist natürlich der
   'Verteilungs\-rech\-ner' selbst, bei dessen Ableben temporär ein
   anderer Rechner unter seiner Identität einspringen muß. Letzteres
   kann selbstverständlich nicht automatisch geschehen und muss
@@ -861,7 +849,6 @@ sowie der \textbf{zwischengespeicherten Kurztreffer}.
 
 
 \subsection{Normdaten}
-\label
 
 Es gibt 6 Normdatenbereiche. Es sind dies
 \begin{enumerate}
@@ -1071,7 +1058,7 @@ lautet demnach \texttt{T0331} und der Bezeichner für die Kategorie
 \texttt{1} in den Verfassernormdaten (Ansetzungsform) entsprechend
 \texttt{P0001}.
 
-Damit ergibt sich folgende Abhaengigkeit:
+Damit ergibt sich folgende Abhängigkeit:
 
 \begin{verbatim}
 Kategorie-Nr. (331) -> Kategorie-Bezeichner (T0331) 
@@ -1720,7 +1707,7 @@ Der programmtechnische Ablauf bei der Ergebnisanreicherung ist wie folgt:
 \subsection{Allgemeine Informationen zu Xapian}
 
 OpenBib beherrscht neben dem bereits länger vorhandenen SQL-Such-Backend
-zusaetzlich auch ein Suchmaschinen-Backend, das auf der OpenSource
+zusätzlich auch ein Suchmaschinen-Backend, das auf der OpenSource
 Suchmaschinen-Technologie von Xapian (www.xapian.org) beruht. Xapian
 wird u.a. auch von der Webpräsenz der Zeitung 'Die Zeit' eingesetzt.
 
@@ -1730,41 +1717,53 @@ Xapian zeichnet sich durch verschiedene Vorteile aus.
 \item Xapian ist schnell
 \item Obwohl Xapian selbst in C++ programmiert ist, kann mit Perl darauf zugegriffen
 werden. Indexer und Suche sind zusammen weniger als 100 Zeilen Code.
-\item Xapian bietet Relevance Feedback. Damit koennen Drill-Downs realisiert
+\item Xapian bietet Relevance Feedback. Damit können Drill-Downs realisiert
 werden
-\item Xapian skaliert vernuenftig mit grossen Datenmengen. Bei einer
+\item Xapian skaliert vernünftig mit grossen Datenmengen. Bei einer
 Web-Suchmaschine mit 500 Millionen Webseiten (etwa 1.5 Terrabytes an
 Datenbank Dateien), bei der Xapian im Einsatz war, brauchte eine Suche
-trotzdem weniger als 1 Sekunde - natuerlich haengt das auch massgeblich von
+trotzdem weniger als 1 Sekunde - natürlich hängt das auch massgeblich von
 der verwendeten Hardware ab. Eine Suche nach 'Deutschland' im USB-Katalog
 mit knapp 77000 Treffer brauchte knapp 1 Sekunde...
 \end{itemize}
 
+Neben Xapian ließe sich alternativ eine andere
+Suchmaschinen-Technologie, wie speziell die von Lucene verwenden. Es
+müsste lediglich der Zugriff von OpenBib durch eine entsprechende
+Schnittstelle gewährleistet werden. Diese könnte z.B. realisiert
+werden über
+
+
+\begin{itemize}
+\item ein Servlet, das einen Such-URL entgegennimmt und das Ergebnis
+  als XML-Dokument zurückliefert
+\item einen SOAP-basierten WebServices (z.B. Lucene mit Axis)
+\end{itemize}
 
 \subsection{Strukturelle Integration in OpenBib}
 
-In OpenBib kann derzeit wahlweise die Einfache Suche
-Suchmaschinen-Technologie verwenden und ist somit 'einfach' und
+In OpenBib kann derzeit wahlweise die \emph{Einfache Suche}
+Suchmaschinen-Technologie verwenden und ist somit \emph{einfach} und
 treffermengenmässig auch für ungeübte Nutzer -- die typischerweise
 unpräzise suchen und damit sehr große Treffermengen produzieren --
 geeignet.
 
-Geübte Such-Experten können in der Komplexen Suche wie bisher alle
+Geübte Such-Experten können in der \emph{Komplexen Suche} wie bisher alle
 bibliothekarisch anspruchs\-vollen Anfragen über das bereits vorhandene
-SQL-Such-Backend ausfuehren -- hier wird die Suchmaschinen-Technologie
+SQL-Such-Backend ausführen -- hier wird die Such\-ma\-schi\-nen-Technologie
 derzeit noch nicht eingesetzt.  Bei der Komplexen Suche ist im
 Gegen\-satz zur einfachen damit zu rechnen, daß der Nutzer schon
 sinnvolle Anfragen formuliert -- und dafür ist das erprobte SQL
 Such-Backend weitereaus besser geeignet. Ebenso ist dort ein
 Drill-Down nicht notwendig.
 
-Diese Einfache Suche mit Suchmaschinen-Technologie zeichnet sich durch
+Diese Einfache Suche mit Such\-maschinen-Technologie zeichnet sich durch
 folgendes aus:
 
 \begin{itemize}
 \item Es sind -- in einem gewissen Umfang -- keine komplexen
   Suchanfragen möglich. Alle ein\-ge\-ge\-be\-nen Begriffe werden implizit mit
-  UND verknuepft\footnote{Dies kann ohne viel Aufwand auch erweitert
+  UND verknüpft\footnote{Dies kann ohne viel Aufwand auch erweitert
     werden, da Xapian auch sehr komplexe Abfragen verarbeiten kann --
     insofern ist das also ein Entscheidung und keine technische
     Begrenzung}. Damit wird die Einfache Suche sehr Google-artig,
@@ -1772,7 +1771,7 @@ folgendes aus:
 \item Bei den Ergebnissen wird die Zahl aller gefundenen Titel
   ausgegeben. Nach wie vor ist die Treffermenge begrenzt (derzeit auf
   50), allerdings sind diese Treffer -- im Gegen\-satz zur bisherigen
-  Suche ueber SQL -- bereits gewichtet - die \emph{wichtigen} Treffer
+  Suche über SQL -- bereits gewichtet - die \emph{wichtigen} Treffer
   -- in Sinne von: die Suchbegriffe sind häufiger enthalten --
   \emph{schwimmen} oben, bei den \emph{unwichtigen} kann man
   verschmerzen, daß sie abgeschnitten und verworfen werden. Ideal ist
@@ -1788,14 +1787,465 @@ kann er auf einen der Drill-Down-Begriffe klicken und er erhält als neue
 Trefferliste die Untermenge der bisherigen, die zusätzlich den
 Drill-Down-Begriff enthält. Damit reduziert sich die Treffermenge und wird
 übersichtlicher.
-\item Generell werden die Kurztitel in den Trefferlisten sehr, sehr schnell
+\item Generell werden die Kurztitel in den Trefferlisten sehr schnell
 geliefert.
 \end{itemize}
+
+
+\subsection{Technische Informationen}
+
+Die Suchmaschinen-Technologie von Xapian ist an zwei Stellen in
+OpenBib verankert:
+
+\begin{description}
+\item[Indexierung] bei dem automatischen Aufbau eines Katalog sowie
+\item[Recherche] bei der \emph{Virtuellen Recherche} bezogen auf einen Katalog.
+\end{itemize}
+
+\subsubsection{Indexierung}
+
+Für die Indexierung wird über den Xapian-Datenbank-Konnektor
+\texttt{db2xapian.pl} 
+
+\begin{itemize}
+\item eine komplette -- bereits gefüllte -- Katalog-Datenbank angesprochen,
+\item die Inhalte nach Kategorien aufgeteilt,
+\item tokenisiert sowie
+\item in den Xapian-Index geladen.
+\end{itemize}
+
+Wesentlich sind hierbei die Tabellen \texttt{search} sowie
+\texttt{titlistitem} für den via \texttt{Storable} serialisierten
+Kurztreffereintrag, der als Data ebenfalls in den Index wandert.
+
+Konkret wird im Xapian-Index entsprechend der Terme in
+\texttt{search} gesucht und der serialisierte Kurztreffer aus
+\texttt{titlistitem} zurückgeliefert.
+
+Die Indizes werden unter dem in \texttt{OpenBib::Config} eingetragenen
+\texttt{xapian\_index\_base\_path} -- standardmäßig ist das
+\texttt{/opt/openbib/xapian/index} -- in einem Unterverzeichnis
+abgelegt, welches den Namen der indexierten Datenbank trägt.
+
+Besteht bei der Indexierung bereits ein Index, so wird dieser
+überschrieben.
+
+Der Datenbank-Konnektor \texttt{db2xapian.pl} ist vollständig in die
+automatische Konvertierung mit \texttt{autoconv.pl} integriert. Damit
+können automatisiert auch die Suchmaschinen-Indexe aufgebaut werden.
+
+\subsubsection{Recherche}
+
+Bei der Recherche kann zwischen den beiden Such-Backends
+\texttt{xapian} und \texttt{sql} über den übergebenen Parameter
+\texttt{sb} (Search Backend) ausgewählt werden. Standard ist
+\texttt{sql}.
+
+Zusätzlich kann über den Parameter \texttt{drilldown} gesteuert
+werden, ob beim Xapian-Backend Drill-Downs gewünscht werden.
+
+Die Drill-Downs berücksichtigen aus den \texttt{maxhits}-Treffern
+jeweils die 50 häufigsten Wörter. Entsprechend der Kategorisierung
+dieser Wörter in die Bereiche
+
+\begin{itemize}
+\item Verfasser,
+\item Begriffe aus dem Titel,
+\item Schlagworte sowie
+\item Erscheinungsjahre
+\end{itemize}
+
+werden aus den einzelnen Wörtern komplette Verfasser bzw. Schlagworte
+gebildet, die entsprechend ausgegeben werden.
+
+Grundsätlich werden Drill-Down-Informationen nur dann ausgegeben, wenn
+die Treffermenge \texttt{maxhits} überschreitet, da erst in diesem
+Fall eine etwaige Unübersichtlichkeit gegeben ist und Drill-Downs
+überhaupt Sinn machen.
 
 
 
 \appendix
 
+
+\chapter{Xapian}
+
+An dieser Stelle werden weitergehende Informatinen zum Perl-API für
+den Zugriff auf die Xapian Suchmaschinen-Technologie gegeben.
+
+
+\section{Genereller Aufbau eines Index}
+Ein Xapian-Index wird über ein entsprechend instanziiertes
+Datenbank-Objekt angesprochen. Je nachdem, ob der Index neu erzeugt,
+geändert oder lediglich für eine Recherche lesend geöffnet werden
+soll, werden verschiedene Objekte verwendet.
+
+Grundsätzliche Verwaltungseinheit innerhalb eines Xapian-Index ist ein
+\emph{Dokument}, welches sich wiederum aus Untereinheiten wie \emph{Termen},
+\emph{Postings} oder \emph{Data} zusammensetzt.
+
+Xapian bietet in einem Dokument \emph{keine unterschiedlichen
+  Suchfelder}, denen verschiedene Inhalte wie Verfasser, Titel
+usw. zugeordnet werden können. 
+
+Xapian kennt primär nur Text-Token, die indexiert werden sollen.
+
+Dies stellt keine Einschränkung dar, da über die Token-Bildung
+wiederum die Zuordnung zu inhaltlichen Bereichen durch geeignetes
+\textbf{Prefixen} gesteuert werden kann. Alle Tokens aus dem Bereich
+Verfasser können so z.B. den Prefix \texttt{X1}, alle aus dem Bereich
+Titel den Prefix \texttt{X2} usw. bekommen. Bei der Suche müssen die
+Such-Tokens entsprechend geprefixed werden. Xapian stellt für solche
+Prefixe systemseitig \emph{Aliase} bereit, mit denen automatisch in
+Suchanfragen die Recherche in entsprechenden Inhaltsbereichen gesteuert
+werden kann.
+ 
+\section{Erzeugung oder Änderung eines Index}
+
+
+\subsection{Allgemeiner Ablauf einer Indexierung}
+
+Für die Änderung oder die Erzeugung eines neuen Index -- speziell
+also, wenn indexiert werden soll -- wird das Datenbank-Objekt
+\begin{verbatim}
+Search::Xapian::WritableDatabase
+\end{verbatim}
+verwendet. Diesem Objekt wird bei der Erzeugung der Pfad des
+Index-Verzeichnisses übergeben sowie Flags, die den Zugriff genauer
+definieren.
+
+Typische Flags sind
+\begin{itemize}
+\item \texttt{Search::Xapian::DB\_CREATE\_OR\_OVERWRITE} für das
+  Anlegen eines \textbf{neuen} Index und
+\item \texttt{Search::Xapian::DB\_CREATE\_OR\_OPEN} für die Änderung
+  eines bestehenden Index.
+\end{itemize}
+
+Beispiel:
+\begin{verbatim}
+my $db = new Search::Xapian::WritableDatabase ( $dbpath,
+            Search::Xapian::DB_CREATE_OR_OVERWRITE ) 
+         || die "Couldn't open/create Xapian DB $!\n";
+\end{verbatim}
+In diesen Index können nun Dokumente abgelegt werden. Dazu wird ein
+Dokument-Objekt über die Klasse
+\begin{verbatim}
+Search::Xapian::Document
+\end{verbatim}
+erzeugt, in das entsprechende Daten Eingang finden können.
+
+Beispiel:
+\begin{verbatim}
+my $doc = new Search::Xapian::Document();
+\end{verbatim}
+
+Xapian unterscheidet verschiedene Arten von Daten, die einem Dokument
+zugeordnet werden können:
+
+\begin{description}
+\item[term] Terme sind einzelne Token, bei denen \textbf{keine}
+  Informationen über deren Reihenfolge vorliegt.
+
+  Terme werden über die Methode \texttt{add\_term} dem Dokument
+  hinzugefügt, deren Argument der zu indexierende Term ist.
+
+  Beispiel:
+\begin{verbatim}
+$doc->add_term("xapian");
+\end{verbatim}
+\item[postings] Postings sind einzelne Token, bei denen -- im
+  Gegensatz zu Termen -- eine Reihenfolge definiert werden kann. Damit
+  sind über Postings Recherchen nach Phrasen oder genereller
+  Nachbarschaft einzelner Worte bzw. Tokens möglich.
+
+  Postings werden über die Methode \texttt{add\_postings} dem Dokument
+  hinzugefügt, deren erstes Argument das zu indexierende Token und
+  deren zweites Argument die numerische Stelle des Token in einem
+  Zusammenhang beschreibt.
+
+  Beispiel:
+\begin{verbatim}
+$doc->add_posting("die",1);
+$doc->add_posting("xapian",2);
+$doc->add_posting("suchmaschine",3);
+\end{verbatim}
+\item[data] Data stellt einen selbst definierbaren \emph{Ablagekorb}
+  für eigene Daten innerhalb eines Dokuments dar. Bei der Recherche kann
+  in den Ergebnissen direkt darauf zugegriffen werden. Damit bietet es
+  sich an, hier z.B. Informationen abzulegen, die mit keinem oder
+  geringem Aufwand direkt für die Trefferanzeige genutzt werden
+  können, wie z.B. mit \texttt{Storable} serialisierte und
+  \texttt{unpack} hexadezimal kodierte komplexe Datenstrukturen
+  (Hashes von Hashes von Arrays).
+
+  Data wird dem Dokument über die Methode \texttt{set\_data}
+  hinzugefügt, deren Argument das hinzuzufügende Datenpaket enthält.
+
+  Beispiel:
+\begin{verbatim}
+$doc->set_data(encode_utf8($listitem));
+\end{verbatim}
+\end{description}
+Schließlich wird das Dokument dem Index mit der Methode
+\texttt{add\_document} hinzugefügt. Diese Methode liefert eine
+Xapian-interne \emph{Document-Id} zurück.
+
+Beispiel:
+\begin{verbatim}
+my $docid=$db->add_document($doc);
+\end{verbatim}
+
+
+\subsection{Weitere Hinweise}
+Bei der Indexierung haben sich einige Vorgehensweisen als sinnvoll
+erwiesen.
+
+\subsubsection{Verwendung eines Tokenizers}
+Um einen Satz in zu indexierende Bestandteile aufzubrechen bietet sich
+die Verwendung eines Tokenizers an. Ein Beispiel für einen solchen
+Tokenizer stellt das CPAN-Modul \texttt{String::Tokenizer} dar, das
+sehr einfach zu handhaben ist.
+
+Beispiel:
+\begin{verbatim}
+my $tokenizer = String::Tokenizer->new();
+
+$tokenizer->tokenize("die xapian suchmaschine");
+
+my $k = 0;        
+my $i = $tokenizer->iterator();
+
+while ($i->hasNextToken()) {
+   my $next = $i->nextToken();
+   next if (!$next);
+   next if (length($next) < 3);
+
+   # Token als Posting einfuegen
+   $doc->add_posting($next,$k);
+   $k++;
+}
+\end{verbatim}
+
+\subsubsection{Normalisierung der Tokens}
+Xapian indexiert unter Beachtung der Groß-/Kleinschreibung. Aus diesem
+Grund -- und damit z.B. Sonderzeichen geeignet gefunden werden können
+-- empfiehlt sich
+\begin{itemize}
+\item eine Normalisierung der Tokens auf Kleinschreibung sowie
+\item eine Normalisierung der Tokens bzgl. Sonderzeichen (ue anstelle
+  ü usw.).
+\end{itemize}
+
+Diese Normalisierung muß sowohl bei der Indexierung wie auch bei der
+späteren Suchanfrage geschehen.
+
+\subsubsection{Inhaltliche Zuordnung durch Prefixen}
+
+Wie bereits dargestellt wird in Xapian eine inhaltliche Zuordnung
+nicht durch separate Suchfelder -- wie z.B. in einer SQL-Datenbank --
+realisiert, sondern durch Prefixen der Tokens.
+
+Reichen 10 Felder aus, so bieten sich die Prefixe \texttt{X0} bis
+\texttt{X9} an, bis 100 Felder ansonsten \texttt{X00} bis
+\texttt{X99}.
+
+Bei der Wahl der Prefixe sollte darauf geachtet werden, dass
+
+\begin{itemize}
+\item diese nicht irrtümlich Teil eine regulären Wortes sind. Dies kann
+  durch großgeschriebene Prefixe bei ansonsten kleingeschriebenen
+  angehängten Token jedoch generell vermieden werden.
+\item diese nicht übermäßig lang sind, da sonst der Index unnötigerweise
+  vergrößert wird.
+\end{itemize}
+
+Damit von allen Begriffen auch ein allumfassender Suchraum der Token
+gebildet werden kann -- auch Freie Suche genannt -- sollte jedes Token
+auch ungeprefixed Eingang in den Index finden.
+
+\section{Recherche in einem Index}
+
+Für die Recherche in einem Index wird das Datenbank-Objekt
+\begin{verbatim}
+Search::Xapian::Database
+\end{verbatim}
+verwendet. Diesem Objekt wird bei der Erzeugung lediglich der Pfad des
+Index-Verzeichnisses übergeben.
+
+Beispiel:
+
+\begin{verbatim}
+my $db = new Search::Xapian::Database (
+            $config{xapian_index_base_path}."/".$database) 
+         || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+\end{verbatim}
+
+Für die Formulierung der Anfrage bietet sich die Verwendung des
+QueryParsers an. Dazu wird ein QueryParser-Objekt 
+\begin{verbatim}
+Search::Xapian::QueryParser
+\end{verbatim}
+
+erzeugt mit
+
+\begin{verbatim}
+my $qp = new Search::Xapian::QueryParser() 
+         || $logger->fatal("Couldn't create QueryParser $!\n");
+\end{verbatim}
+
+Das Verhalten dieses Objektes kann durch verschiedene Methoden
+beeinflusst werden.
+
+\begin{description}
+\item[Definition von Prefix-Aliases] Prefix-Aliases werden mit der
+  Methode \texttt{add\_prefix} definiert, deren erstes Argument der
+  Alias und deren zweites Argument der Prefix ist.
+
+  Beispiel:
+\begin{verbatim}
+$qp->add_prefix('inauth'   ,'X1');
+$qp->add_prefix('intitle'  ,'X2');
+$qp->add_prefix('incorp'   ,'X3');
+$qp->add_prefix('insubj'   ,'X4');
+$qp->add_prefix('insys'    ,'X5');
+$qp->add_prefix('inyear'   ,'X7');
+$qp->add_prefix('inisbn'   ,'X8');
+$qp->add_prefix('inissn'   ,'X9');
+\end{verbatim}
+
+  Damit braucht in der Suchanfrage dann für die Recherche im
+  Titelfeld nach \emph{perl} lediglich
+\begin{verbatim}
+intitle:perl
+\end{verbatim}
+eingegeben werden.
+\item[Definition der Standardverknüpfung] Die Standardverknüpfung
+  zwischen den eingegebenen Suchbegriffen kann über die Methode
+  \texttt{set\_default\_op} definiert werden.
+
+  Beispiel:
+\begin{verbatim}
+$qp->set_default_op(Search::Xapian::OP_AND);
+\end{verbatim}
+\end{description}
+
+Ausgehend von diesem QueryParser-Objekt kann nun eine Suchanfrage
+(Enquiry) an die Datenbank gestellt werden. Dazu werden zunächst mit der
+Methode \texttt{parse\_query} des QueryParsers die Suchbegriffe
+geparst, um dann über die Methode \texttt{enquire} der Datenbank die
+eigentliche Anfrage zu stellen.
+
+Beispiel:
+\begin{verbatim}
+my $enq     = $db->enquire($qp->parse_query($querystring));
+\end{verbatim}
+
+Mit der Methode \texttt{get\_description} der Methode
+\texttt{get\_query} kann die genaue Suchanfrage aus \texttt{\$enq}
+bestimmt werden.
+
+Beispiel:
+\begin{verbatim}
+my $thisquery = $enq->get_query()->get_description();
+\end{verbatim}
+
+Als Ergebnis der Anfrage erhält man einen sog. \emph{MSet}
+(Match-Set). In diesem sind die Suchergebnisse zusammengefasst.
+
+Mit der Methode \texttt{matches} kann dieser \emph{MSet} aus
+\texttt{\$enq} gebildet werden. Als Parameter dieser Methode kann die Größe des
+\emph{MSet} definiert werden.
+
+Beispiel:
+\begin{verbatim}
+my @matches = $enq->matches(0,99999);
+\end{verbatim}
+
+In diesem Beispiel erhält man Maximal 100000 Treffer.
+
+Die wirkliche Trefferzahl liefert die Auswertung von \texttt{@matches}
+in einem skaleren Kontext.
+
+Beispiel:
+\begin{verbatim}
+my $fullresultcount = scalar(@matches);
+\end{verbatim}
+
+
+Mit einer Iteration über \texttt{@matches} kann nun über die Methoden
+\texttt{get\_document} sowie \texttt{get\_docid} auf den
+entsprechenden Treffer zugegriffen werden.
+
+Beispiel:
+\begin{verbatim}
+my $docid    = $matches[$i]->get_docid;
+my $document = $matches[$i]->get_document();
+\end{verbatim}
+
+Aus diesen Dokument lassen sich nun wiederum die dort als Data
+gespeicherten Informationen mit der Methode \texttt{get\_data} bestimmen.
+
+Beispiel:
+\begin{verbatim}
+my $titlistitem_raw=pack "H*", decode_utf8($document->get_data());
+\end{verbatim}
+
+Damit sind die wesentlichen Aspekte der reinen Suche
+umrissen. Darüber hinaus lassen sich Treffermengen weiter verarbeiten
+für sog. Drill-Downs.
+
+
+\subsection{Drill-Downs - RSets und ESets}
+
+Aus den \texttt{MSets} können über die \emph{DocId} relevante Titel
+definiert werden, die dann einen sog. \emph{RSet} (Relevant Set)
+bilden.
+
+Beispiel:
+\begin{verbatim}
+my $rset=Search::Xapian::RSet->new()
+
+...Anfang Schleife über MSet...
+  $rset->add_document($matches[$i]->get_docid)
+...Ende Schleife über MSet...
+\end{verbatim}
+
+Mit dem \emph{RSet} werden diejenigen Treffer zusammengefasst, die für
+eine weitere Auswertung im Rahmen der sog. \emph{ESets} (Enhanced Set)
+interessant sind.
+
+Ausgehend von einem RSet-Objekt kann nun ein ESet-Objekt auf Grundlage
+der Suchanfrage \texttt{\$enq} mit deren Methode \texttt{get\_eset}
+gebildet werden. Als Parameter der Methode wird die Anzahl der
+relevantesten Token übergeben. Als Ergebnis erhält das ESet-Objekt die
+entsprechenden Token.
+
+Beispiel:
+\begin{verbatim}
+my $eterms=$enq->get_eset(50,$rset);
+\end{verbatim}
+
+Über diese Terme ist nun eine Iteration mit einem entsprechenden
+Iterator möglich, bei der sowohl die Terme wie auch deren Gewichtung
+bestimmt werden könne.
+
+Beispiel:
+\begin{verbatim}
+my $iter=$eterms->begin();
+                    
+while ($iter != $eterms->end()){
+   my $term   = $iter->get_termname();
+   my $weight = $iter->get_weight();
+...
+}
+\end{verbatim}
+
+
+Die Terme/Token können nun in Zusammenhang zu verschiedenen Kategorien der
+Datenbank gesetzt werden, um \emph{sprechendere} Begriffsketten, wie
+z.B. einen vollständigen Verfasser zu erhalten. Dies wird von Xapian
+jedoch nicht abgedeckt und muß selbst realisiert werden.
 
 \chapter{Tabellen in \texttt{session.mysql}}
 
@@ -1889,7 +2339,7 @@ HTDOCS/images/openbib/views/<viewname>.png
   \texttt{OpenBib::SearchFrame} für den Benutzer ausgegeben. Das Setzen
   dieser Werte geschieht über die automatischen
   Konvertierungsskripte.
-\item[rssfeeds] In dieser Tabelle werden alle verfuegbaren Typen an RSS-Feeds
+\item[rssfeeds] In dieser Tabelle werden alle verfügbaren Typen an RSS-Feeds
   zu den einzelnen Daten\-bank aus \texttt{dbinfo} definiert. Die
   RSS-Feeds lassen sich hier nach deren Konfiguration generell
   aktivieren sowie deaktivieren.
@@ -2137,7 +2587,9 @@ zu gewinnen. Diese Funktionalität wird allein von dem Modul
 
 
 \begin{itemize}
+\item \texttt{OpenBib::Admin}
 \item \texttt{OpenBib::Config}
+\item \texttt{OpenBib::L10N}
 \end{itemize}
 
 \section{Schicht 1 - Zugriff auf Katalogdatenbank}
@@ -2155,17 +2607,26 @@ zu gewinnen. Diese Funktionalität wird allein von dem Modul
 \section{Schicht 3 - Rechercheportal}
 
 \begin{itemize}
+\item \texttt{OpenBib::Circulation}
+\item \texttt{OpenBib::Connector::DigiBib}
+\item \texttt{OpenBib::Connector::OLWS}
+\item \texttt{OpenBib::Connector::RSS}
 \item \texttt{OpenBib::DatabaseChoice}
 \item \texttt{OpenBib::DatabaseProfile}
+\item \texttt{OpenBib::DispatchQuery}
+\item \texttt{OpenBib::ExternalJump}
+\item \texttt{OpenBib::FrameSet}
 \item \texttt{OpenBib::HeaderFrame}
 \item \texttt{OpenBib::Leave}
 \item \texttt{OpenBib::Login}
 \item \texttt{OpenBib::MailCollection}
 \item \texttt{OpenBib::MailPassword}
 \item \texttt{OpenBib::ManageCollection}
+\item \texttt{OpenBib::RSSFrame}
 \item \texttt{OpenBib::SearchFrame}
 \item \texttt{OpenBib::SelfReg}
 \item \texttt{OpenBib::StartOpac}
+\item \texttt{OpenBib::Template::Provider}
 \item \texttt{OpenBib::UserPrefs}
 \end{itemize}
 

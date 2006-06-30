@@ -150,6 +150,8 @@ while (my $res=$request->fetchrow_hashref){
         $tokenizer->tokenize($tokinfo_ref->{content});
         
         my $i = $tokenizer->iterator();
+
+        my @saved_tokens=();
         while ($i->hasNextToken()) {
             my $next = $i->nextToken();
             next if (!$next);
@@ -158,10 +160,14 @@ while (my $res=$request->fetchrow_hashref){
 
             # Token generell einfuegen
             $doc->add_posting($next,$k);
+
+            push @saved_tokens, $next;
             $k++;
-            
+        }
+
+        foreach my $token (@saved_tokens){
             # Token in Feld einfuegen            
-            my $fieldtoken=$tokinfo_ref->{prefix}.$next;
+            my $fieldtoken=$tokinfo_ref->{prefix}.$token;
             $doc->add_posting($fieldtoken,$k);
             $k++;
         }

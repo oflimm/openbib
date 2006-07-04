@@ -1,25 +1,35 @@
-<b>Normale Suchanfragen</b><br />
-Zur Suche tragen Sie in die einzelnen Eingabefelder alle Begriffe mit
-Leerzeichen getrennt ein, die in Ihrem gesuchten Titel enthalten sein
-m&uuml;ssen. Deaktivieren Sie <b>nicht</b> die Suchoption 'Und-Verkn&uuml;pfung innerhalb eines Suchfeldes'. Die Begriffe werden dann automatisch innerhalb eines Suchfeldes Und-verkn&uuml;pft.<br />
+<b>Wenn Sie mehrere Suchworte in ein Feld eingetragen haben,</b><br />
+gilt automatisch die <b>UND-Verkn&uuml;pfung</b>: alle Begriffe
+kommen im Titel vor. W&uuml;nschen Sie eine
+<b>ODER-Verkn&uuml;pfung</b>, deaktivieren Sie die Suchoption
+"UND-Verkn&uuml;pfung innerhalb eines Suchfeldes": der eine
+<b>oder</b> der andere Begriff ist enthalten.
 <p />
-<b>Komplizierte Suchanfragen</b><br />
-Wenn Sie kompliziertere Suchanfragen stellen m&ouml;chten, so erfahren Sie
-<a href="http://[% config.servername %]/suchhilfe.html#profisuche">hier</a> alles &uuml;ber die Verwendung m&ouml;glicher Boolscher Suchoperatoren innerhalb eines Eingabefeldes und die angesprochene Suchoption 'Und-Verkn&uuml;pfung innerhalb eines Suchfeldes'.<br />
+<b>Soll ein Begriff beliebig enden,</b><br />
+schreiben Sie als <b>Trunkierungszeichen</b> ein *.
+
 <p />
-<b>Suchlogik bei Verkn&uuml;pfungen mehrerer Suchfelder:</b><br />
-Die einzelnen Suchfelder sind standardm&auml;ssig &uuml;ber eine 
-"Und-Verkn&uuml;pfung" verbunden. Zur Einschr&auml;nkung des Suchergebnisses 
-k&ouml;nnen die Suchfelder auch &uuml;ber eine "Oder"- sowie eine 
-"Und Nicht-Verkn&uuml;pfung" verbunden werden. W&auml;hlen Sie hierzu die 
-entsprechende Verkn&uuml;pfungsart aus dem Pull-Down-Men&uuml; vor dem 
-jeweiligen Texteingabefeld.<br />
-<br />
-<b>Besonderheit bei <span class="warning">*</span>:</b><br />
-<ul>
-<li>Keine <b>logische</b> Kombination mehrerer Worte im Eingabefeld m&ouml;glich</li>
-<li> <b>aber</b> exakte Phrasensuche</li>
-<li>Die Eingabe wird <b>nicht</b> automatisch rechts trunkiert. Falls
-Sie den jeweiligen Begriff trunkieren m&ouml;chten, dann m&uuml;ssen
-Sie zwingend einen Stern am Ende Ihrer Eingabe hinzuf&uuml;gen.</li>
-</ul>
+<b>Wenn Sie mehrere Suchworte in verschiedene Felder eingetragen haben,</b><br />
+k&ouml;nnen Sie &uuml;ber die Spalte <b>Verkn&uuml;pfung</b> festlegen,
+ob die einzelnen Felder <b>UND</b>, <b>ODER</b> bzw. <b>UND NICHT</b>
+verkn&uuml;pft werden sollen.
+
+<p /> <b>Wenn Sie den Index aufrufen m&ouml;chten,</b> <br /> dann
+geben Sie bitte dort einen Begriff ein und klicken auf
+<b>Index</b>. Sie erhalten dann eine Liste der entsprechenden
+Normdaten aus der Datenbank, die mit dem von Ihnen eingegebenen
+Begriff beginnen.
+
+<p />
+
+
+<b>Besonderheit bei Feldern mit <span class="warning">*</span>
+(Notation, Signatur, Titel-String):</b><br />
+Hier gilt automatisch die <b>Phrasensuche</b>. Eine <b>logische</b>
+Kombination mehrerer Worte im Eingabefeld ist <b>nicht</b>
+m&ouml;glich. Sie k&ouml;nnen jedoch das Trunkierungszeichen am Ende
+Ihrer Eingabe hinzuf&uuml;gen (z.B. KA 15*).
+<p />
+<b>Hinweise und Beispiele zu weiteren Suchm&ouml;glichkeiten erhalten Sie
+<a href="http://[% config.servername %]/suchhilfe.html#profisuche">hier</a></b>.
+<p />

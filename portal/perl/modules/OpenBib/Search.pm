@@ -555,6 +555,7 @@ sub handler {
 
 		    database => $database,
 
+                    dbinfo     => \%dbinfo,
 		    searchmode => $searchmode,
 		    hitrange => $hitrange,
 		    rating => $rating,
@@ -596,7 +597,8 @@ sub handler {
 		    sessionID  => $sessionID,
 		    
 		    database => $database,
-		    
+                    
+                    dbinfo     => \%dbinfo,		    
 		    searchmode => $searchmode,
 		    hitrange => $hitrange,
 		    rating => $rating,
@@ -638,7 +640,8 @@ sub handler {
 		    sessionID  => $sessionID,
 		    
 		    database => $database,
-		    
+
+                    dbinfo     => \%dbinfo,
 		    searchmode => $searchmode,
 		    hitrange => $hitrange,
 		    rating => $rating,
@@ -1129,6 +1132,7 @@ sub handler {
 
 		    database => $database,
 
+                    dbinfo     => \%dbinfo,
 		    searchmode => $searchmode,
 		    hitrange => $hitrange,
 		    rating => $rating,
@@ -1171,6 +1175,7 @@ sub handler {
 
 		    database => $database,
 
+                    dbinfo     => \%dbinfo,
 		    searchmode => $searchmode,
 		    hitrange => $hitrange,
 		    rating => $rating,
@@ -1304,6 +1309,7 @@ sub handler {
 		  
 		  database => $database,
 		  
+                  dbinfo     => \%dbinfo,
 		  searchmode => $searchmode,
 		  hitrange => $hitrange,
 		  rating => $rating,
@@ -1346,7 +1352,8 @@ sub handler {
 		  sessionID  => $sessionID,
 		  
 		  database => $database,
-		  
+
+                  dbinfo     => \%dbinfo,
 		  searchmode => $searchmode,
 		  hitrange => $hitrange,
 		  rating => $rating,
@@ -1389,7 +1396,8 @@ sub handler {
 		  sessionID  => $sessionID,
 		  
 		  database => $database,
-		  
+
+                  dbinfo     => \%dbinfo,
 		  searchmode => $searchmode,
 		  hitrange => $hitrange,
 		  rating => $rating,
@@ -1433,6 +1441,7 @@ sub handler {
 		  
 		  database => $database,
 		  
+                  dbinfo     => \%dbinfo,
 		  searchmode => $searchmode,
 		  hitrange => $hitrange,
 		  rating => $rating,

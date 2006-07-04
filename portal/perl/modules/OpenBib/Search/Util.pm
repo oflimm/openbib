@@ -1291,6 +1291,7 @@ sub print_mult_tit_set_by_idn {
 	      database => $database,
 	  
 	      poolname => $poolname,
+	      dbinfo   => $rdbinfo,
 
 	      searchmode => $searchmode,
 	      hitrange => $hitrange,

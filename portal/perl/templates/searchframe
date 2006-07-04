@@ -10,6 +10,10 @@
 [% PROCESS common/subtemplate name="testsystem_info" %]
 [% END %]
 
+[% IF config.userinfo %]
+[% PROCESS common/subtemplate name="user_info" %]
+[% END %]
+
 <ul id="tabbingmenu">
    <li><a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">Einfache Recherche</a></li>
    <li><a class="active" href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">Komplexe Recherche</a></li>

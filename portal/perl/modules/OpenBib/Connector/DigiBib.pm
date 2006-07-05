@@ -39,11 +39,7 @@ use Apache::Request();      # CGI-Handling (or require)
 
 use Log::Log4perl qw(get_logger :levels);
 
-use Benchmark; 
-
-use Digest::MD5;
 use DBI;
-use Email::Valid;                           # EMail-Adressen testen
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
@@ -270,7 +266,7 @@ sub handler {
     }
     
     $sigel{''}="Unbekannt";
-    $bibinfo{''}="http://www.ub.uni-koeln.de/dezkat/bibinfo/noinfo.html";
+    $bibinfo{''}="http://www.ub.uni-koeln.de/";
     $dbases{''}="Unbekannt";
 
     my %titeltyp=(
@@ -485,21 +481,14 @@ HEADTL
         if ($ejahr){
             my ($ejtest)=$ejahr=~/.*(\d\d\d\d).*/;
             if (!$ejtest){
-                OpenBib::Common::Util::print_warning("Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein.",$r);
-                
                 $sessiondbh->disconnect();
-                
                 return OK;
             }        
         }
         
         if ($boolejahr eq "OR"){
             if ($ejahr){
-                OpenBib::Common::Util::print_warning("Das Suchkriterium Jahr ist nur in Verbindung mit der
-UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&ouml;glich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verst&auml;ndnis f&uuml;r diese Einschr&auml;nkung.",$r);
-                
                 $sessiondbh->disconnect();
-                
                 return OK;
             }
         }
@@ -507,28 +496,20 @@ UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&oum
         if ($boolejahr eq "AND"){
             if ($ejahr){
                 if (!$firstsql){
-                    OpenBib::Common::Util::print_warning("Das Suchkriterium Jahr ist nur in Verbindung mit der
-UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&ouml;glich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verst&auml;ndnis f&uuml;r diese Einschr&auml;nkung.",$r);
-                    
                     $sessiondbh->disconnect();
-                    
                     return OK;
                 }
             }
         }
         
         if (!$firstsql){
-            OpenBib::Common::Util::print_warning("Es wurde kein Suchkriterium eingegeben.",$r);
-            
             $sessiondbh->disconnect();
-            
             return OK;
         }
         
         
         my @ergebnisse;
-        
-        
+                
         $verf  =~s/%2B(\w+)/$1/g;
         $hst   =~s/%2B(\w+)/$1/g;
         $kor   =~s/%2B(\w+)/$1/g;
@@ -581,8 +562,11 @@ UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&oum
 </UL>
 
 META
-        
-        foreach my $treffer_ref (@ergebnisse){
+
+        my $liststart = ($offset<= $treffercount)?$offset-1:0;
+        my $listend   = ($offset+$listlength-1 <= $treffercount)?$offset+$listlength-2:$treffercount-1;
+    
+        foreach my $treffer_ref (@ergebnisse[$liststart..$listend]){
             $logger->debug(YAML::Dump($treffer_ref));
 
             my $idn       = $treffer_ref->{idn};
@@ -593,8 +577,12 @@ META
             my $publisher = $treffer_ref->{publisher};
             my $database  = $treffer_ref->{database};
             my $langurl   = "database=$database&idn=$idn&tosearch=Langanzeige";
-            my $location  = $dbinfo{$database}.": $signatur";
+            my $location  = $dbinfo{$database};
 
+            if ($signatur){
+                $location=$location.": $signatur";
+            }
+            
             print << "TITEL";
 <LI><UL>
 <LI> DB=KVIK
@@ -646,18 +634,38 @@ HEADLA
       my $mexcategory_ref = {};
 
       foreach my $normset_ref (@$normset){
-          push @{$category_ref->{$normset_ref->{desc}}}, $normset_ref->{contents}." ".$normset_ref->{supplement};
+          my $supplement = (defined $normset_ref->{supplement})?$normset_ref->{supplement}:"";
+          my $contents   = (defined $normset_ref->{contents}  )?$normset_ref->{contents}  :"";
+          push @{$category_ref->{$normset_ref->{desc}}}, $contents." ".$supplement;
       }
 
       my $hst                = $category_ref->{'HST'}[0];
+      $hst                   = "" if (!defined $hst);
+
       my $verlag             = $category_ref->{'Verlag'}[0];
+      $verlag                = "" if (!defined $verlag);
+
       my $fussnote           = $category_ref->{'Fu&szlig;note'}[0];
+      $fussnote              = "" if (!defined $fussnote);
+
       my $hstzusatz          = $category_ref->{'Zusatz'}[0];
+      $hstzusatz             = "" if (!defined $hstzusatz);
+
       my $vorlverf           = $category_ref->{'Vorl.Verfasser'}[0];
+      $vorlverf              = "" if (!defined $vorlverf);
+
       my $verlagsort         = $category_ref->{'Verlagsort'}[0];
+      $verlagsort            = "" if (!defined $verlagsort);
+      
       my $jahr               = $category_ref->{'Ersch. Jahr'}[0];
+      $jahr                  = "" if (!defined $jahr);
+      
       my $quelle             = $category_ref->{'In:'}[0];
+      $quelle                = "" if (!defined $quelle);
+
       my $zeitschriftentitel = $category_ref->{'IN verkn'}[0];
+      $zeitschriftentitel    = "" if (!defined $zeitschriftentitel);
+
       my $seitenzahl         = "";
 
       my $inverknidn="";
@@ -667,8 +675,14 @@ HEADLA
       }
 
       my $umfang             = $category_ref->{'Kollation'}[0];
+      $umfang                = "" if (!defined $umfang);
+
       my $serie              = $category_ref->{'Gesamttitel'}[0];
+      $serie                 = "" if (!defined $serie);
+
       my $ausgabe            = $category_ref->{'Ausgabe'}[0];
+      $ausgabe               = "" if (!defined $ausgabe);
+
       my $dbname             = ""; #$category_ref->{};;
       my $zusatz             = ""; #$category_ref->{};;
       my $zitatangabe        = ""; #$category_ref->{};;
@@ -713,19 +727,31 @@ HEADLA
           push @signarray, $mexnormset_ref->{signatur};
       }
       
-      my $sigel    = substr($database,4,3);
       my $verf     = join(" ; ",@verfasserarray);
+      $verf        = "" if (!defined $verf);
+
       my $kor      = join(" ; ",@korarray);
+      $kor         = "" if (!defined $kor);
+
       my $swt      = join(" ; ",@swtarray);
+      $swt         = "" if (!defined $swt);
+      
       my $isbn     = join(" ; ",@isbnarray);
+      $isbn        = "" if (!defined $isbn);
+
       my $issn     = join(" ; ",@issnarray);
+      $issn        = "" if (!defined $issn);
       
       my $signatur = join(" ; ",@signarray);
-    
-      if ($signatur ne ""){
-          $signatur="<a href=\"$link\">38/$sigel</a> ($dbname): $signatur";
+      $signatur    = "" if (!defined $signatur);
+      
+      my $location = $dbinfo{$database};
+      $location    = "" if (!defined $location);
+      
+      if ($signatur){
+          $location=$location.": $signatur";
       }
-    
+
       if ($hst && $hstzusatz){
           $hst="$hst: $hstzusatz";
       }
@@ -751,7 +777,7 @@ HEADLA
 <LI> YR=$jahr
 <LI> IB=$isbn
 <LI> IS=$issn
-<LI> LO=$signatur
+<LI> LO=$location
 <LI> FN=$fussnote
 <LI> OLL=$volltexturl
 <LI> AUH=$autorlink
@@ -841,7 +867,6 @@ LANGTITEL
           push @signarray, $mexnormset_ref->{signatur};
       }
       
-      my $sigel    = substr($database,4,3);
       my $verf     = join(" ; ",@verfasserarray);
       my $kor      = join(" ; ",@korarray);
       my $swt      = join(" ; ",@swtarray);
@@ -849,11 +874,13 @@ LANGTITEL
       my $issn     = join(" ; ",@issnarray);
       
       my $signatur = join(" ; ",@signarray);
-    
-      if ($signatur ne ""){
-          $signatur="<a href=\"$link\">38/$sigel</a> ($dbname): $signatur";
+
+      my $location  = $dbinfo{$database};
+      
+      if ($signatur){
+          $location=$location.": $signatur";
       }
-    
+
       if ($hst && $hstzusatz){
           $hst="$hst: $hstzusatz";
       }

@@ -225,7 +225,7 @@ use vars qw(%config);
 
            # xapian index basepath
 
-           xapian_index_base_path  => '/opt/openbib/xapian/index',
+           xapian_index_base_path  => '/opt/openbib/ft/xapian/index',
 
 	   # Pfad zum Document Root
 
@@ -252,6 +252,11 @@ use vars qw(%config);
 	   tt_circulation_reserv_tname   => 'circulation_reserv',
 	   tt_circulation_remind_tname   => 'circulation_remind',
 	   tt_circulation_orders_tname   => 'circulation_orders',
+
+           tt_connector_digibib_result_start_tname  => 'connector_digibib_result_start',
+           tt_connector_digibib_result_item_tname   => 'connector_digibib_result_item',
+           tt_connector_digibib_result_end_tname    => 'connector_digibib_result_end',
+           tt_connector_digibib_showtitset_tname    => 'connector_digibib_showtitset',
 
            tt_connector_rss_item_tname   => 'connector_rss_item',
 

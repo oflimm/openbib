@@ -72,6 +72,12 @@
 [%- publisher = item.${'T0412'}.first.content -%]
 [%# Ejahr konstruieren %]
 [%- yearofpub = item.${'T0425'}.first.content -%]
+[%# URL's konstruieren %]
+[%- urls = [] -%]
+[%- FOREACH part IN item.${'T0662'}  -%]
+[%- urls.push("<a href=\"${part.content}\" target=\"_blank\">${part.content}</a>")-%]
+[%- END -%]
+[%- url  = urls.join(' ; ') -%]
 [%# Signaturen konstruieren %]
 [%- signaturen = [] -%]
 [%- FOREACH singleitemmex IN itemmex -%]
@@ -85,6 +91,11 @@ IF signatur ;
   location = "${location}: ${signatur}";
 END;
 
+%]
+[%
+
+ quelle = item.${'T0590'}.0.content;
+ seitenzahl = quelle.match(' ; (S\. *\d+.*)$');
 %]
 <HTML>
 <HEAD>
@@ -100,6 +111,8 @@ END;
 USE dumper;
 dumper.dump(item);
 dumper.dump(itemmex);
+dumper.dump(sbitem);
+dumper.dump(sbitemmex);
 
 %]
 -->
@@ -120,7 +133,7 @@ dumper.dump(itemmex);
 <LI> SE=[% item.${'T0451'}.0.content  # Serie %]
 <LI> CT=
 <LI> ZT=
-<LI> SZ=
+<LI> SZ=[% seitenzahl.0               # Seitenzahl der Quelle %]
 <LI> SO=[% item.${'T0590'}.0.content  # HSTQuelle %]
 <LI> AB=[% abstract                   # Abstract %]
 <LI> YR=[% item.${'T0425'}.0.content  # ErschJahr %]
@@ -128,19 +141,94 @@ dumper.dump(itemmex);
 <LI> IS=[% issn                       # ISSN %]
 <LI> LO=[% location                   # Location mit Signatur %]
 <LI> FN=[% fussnote                   # Fussnote %]
-<LI> OLL=[% volltexturl %]
+<LI> OLL=[% url                       # URL %]
 <LI> AUH=[% autorlink %]
 <LI> TIH=[% titellink %]
+[% IF has_sb %]
+[%# Verfasser konstruieren %]
+[%- persons = [] -%]
+[%- FOREACH part IN sbitem.${'T0100'}  -%]
+[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN sbitem.${'T0101'}  -%]
+[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- person = persons.join(' ; ') -%]
+[%# Koerperschaften konstruieren %]
+[%- corps = [] -%]
+[%- FOREACH part IN sbitem.${'T0200'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%- corps.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- END -%]
+[%- FOREACH part IN sbitem.${'T0201'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%- corps.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- END -%]
+[%- corp   = corps.join(' ; ') -%]
+[%# Schlagworte konstruieren %]
+[%- subjects = [] -%]
+[%- FOREACH part IN sbitem.${'T0710'}  -%]
+[%- subjects.push("${part.content}")-%]
+[%- END -%]
+[%- subject  = subjects.join(' ; ') -%]
+[%# Abstracts konstruieren %]
+[%- abstracts = [] -%]
+[%- FOREACH part IN sbitem.${'T0750'}  -%]
+[%- abstracts.push("${part.content}")-%]
+[%- END -%]
+[%- abstract  = abstracts.join(' ; ') -%]
+[%# ISBNs konstruieren %]
+[%- isbns = [] -%]
+[%- FOREACH part IN sbitem.${'T0540'}  -%]
+[%- isbns.push("${part.content}")-%]
+[%- END -%]
+[%- isbn  = isbns.join(' ; ') -%]
+[%# ISSNs konstruieren %]
+[%- issns = [] -%]
+[%- FOREACH part IN sbitem.${'T0543'}  -%]
+[%- issns.push("${part.content}")-%]
+[%- END -%]
+[%- issn  = issns.join(' ; ') -%]
+[%# Fussnoten konstruieren %]
+[%- fussnoten = [] -%]
+[%- FOREACH part IN sbitem.${'T0501'}  -%]
+[%- fussnoten.push("${part.content}")-%]
+[%- END -%]
+[%- fussnote  = fussnoten.join(' ; ') -%]
+[%# Titel konstruieren %]
+[%- title = sbitem.${'T0331'}.first.content -%]
+[%- IF item.${'T0310'}.first.content -%]
+[%- title = sbitem.${'T0310'}.first.content -%]
+[%- END -%]
+[%# Verlage konstruieren %]
+[%- publisher = sbitem.${'T0412'}.first.content -%]
+[%# Ejahr konstruieren %]
+[%- yearofpub = sbitem.${'T0425'}.first.content -%]
+[%# Signaturen konstruieren %]
+[%- signaturen = [] -%]
+[%- FOREACH singleitemmex IN sbitemmex -%]
+[%- part = singleitemmex.${'X0014'} -%]
+[%- signaturen.push("${part.content}") -%]
+[%- END -%]
+[%- signatur = signaturen.join(' ; ') -%]
+[%- location = targetdbinfo.dbinfo.${item.database}.short -%]
+[%
+IF signatur ;
+  location = "${location}: ${signatur}";
+END;
 
-<LI> SBAU=[% sbverf %]
-<LI> SBTI=[% sbhst %]
-<LI> SBPB=[% sbverlag %]
-<LI> SBPBO=[% sbverlagsort %]
-<LI> SBSE=[% sbserie %]
-<LI> SBYR=[% sbjahr %]
-<LI> SBIB=[% sbisbn %]
-<LI> SBIS=[% sbissn %]
-
+%]
+<LI> SBAU=[% person                       # Verfasser%]
+<LI> SBTI=[% hst                          # Titel %]
+<LI> SBPB=[% publisher                    # Verlag %]
+<LI> SBPBO=[% sbitem.${'T0410'}.0.content # Verlagsort %]
+<LI> SBSE=[% item.${'T0451'}.0.content    # Serie %]
+<LI> SBYR=[% yearofpub                    # ErschJahr%]
+<LI> SBIB=[% isbn                         # ISBN %]
+<LI> SBIS=[% issn                         # ISSN %]
+[%- END -%]
 </UL>
 </OL>
 

@@ -113,24 +113,7 @@ sub handler {
 
     my $autoplus = 1;
     
-    my $fs       = $query->param('fs') || '';
-    my $verf     = $query->param('verf');
-    my $hst      = $query->param('hst');
-    my $swt      = $query->param('swt');
-    my $kor      = $query->param('kor');
-    my $sign     = $query->param('sign');
-    my $isbn     = $query->param('isbn');
-    my $issn     = $query->param('issn');
-    my $notation = $query->param('notation');
-    my $hststring= $query->param('hststring') || '';
-    my $mart     = $query->param('mart') || '';
-    
     # Umwandlung impliziter ODER-Verknuepfung in UND-Verknuepfung
-    
-  
-    my $ejahr      = $query->param('ejahr');
-    my $ejahrop    = $query->param('ejahrop');
-
     my $hitrange   = 20;
     my $idn        = $query->param('idn');
     my $database   = $query->param('database');
@@ -166,9 +149,7 @@ sub handler {
 
     my $searchquery_ref
         = OpenBib::Common::Util::get_searchquery($r);
-    
-
-            
+                
     if (!$sortorder){
         if ($sorttype eq "ejahr"){
             $sortorder="down";
@@ -177,8 +158,7 @@ sub handler {
             $sortorder="up";
         }
     }
-    
-    
+        
     # Bestimmung der Datenbanken, in denen gesucht werden soll
     
     my @databases=();
@@ -191,21 +171,6 @@ sub handler {
         push @databases, $dbname;
     }
     
-
-    my $searchmultipleaut=0;
-    my $searchmultiplekor=0;
-    my $searchmultipleswt=0;
-    my $searchmultipletit=0;
-    my $rating=0;
-    my $bookinfo=0;
-    my $searchmode=2;
-    
-    my $circ=0;
-    my $circurl="";
-    my $circcheckurl="";
-    my $circdb="";
-    my $sessionID=-1;
-        
     if ($tosearch eq "Trefferliste") {
 
         # Start der Ausgabe mit korrektem Header
@@ -448,230 +413,38 @@ sub handler {
             database           => $database,
         });
         
+
+        # Quelle besetzt?
+
+        my ($sbnormset,$sbmexnormset,$sbcircset);
+        my $has_sb=0;
         
-#         my $category_ref    = {};
-#         my $mexcategory_ref = {};
-        
+        if (exists $normset->{'T0590'}){
 
-#         my $hst                = $category_ref->{'HST'}[0];
-#         $hst                   = "" if (!defined $hst);
-        
-#         my $verlag             = $category_ref->{'Verlag'}[0];
-#         $verlag                = "" if (!defined $verlag);
-        
-#         my $fussnote           = $category_ref->{'Fu&szlig;note'}[0];
-#         $fussnote              = "" if (!defined $fussnote);
-        
-#         my $hstzusatz          = $category_ref->{'Zusatz'}[0];
-#         $hstzusatz             = "" if (!defined $hstzusatz);
-        
-#         my $vorlverf           = $category_ref->{'Vorl.Verfasser'}[0];
-#         $vorlverf              = "" if (!defined $vorlverf);
-        
-#         my $verlagsort         = $category_ref->{'Verlagsort'}[0];
-#         $verlagsort            = "" if (!defined $verlagsort);
-        
-#         my $jahr               = $category_ref->{'Ersch. Jahr'}[0];
-#         $jahr                  = "" if (!defined $jahr);
-        
-#         my $quelle             = $category_ref->{'In:'}[0];
-#         $quelle                = "" if (!defined $quelle);
-        
-#         my $zeitschriftentitel = $category_ref->{'IN verkn'}[0];
-#         $zeitschriftentitel    = "" if (!defined $zeitschriftentitel);
-        
-#         my $seitenzahl         = "";
-        
-#         my $inverknidn="";
+            $logger->debug("Satz hat 590");
+            my $reqstring="select distinct targetid from conn where sourceid=? and sourcetype=1 and targettype=1";
+            my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
+            $request->execute($idn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
 
-#       if ($zeitschriftentitel=~/ ; (S\. *\d+.*)$/){
-# 	  $seitenzahl=$1;
-#       }
+            my $res=$request->fetchrow_hashref;
 
-#       my $umfang             = $category_ref->{'Kollation'}[0];
-#       $umfang                = "" if (!defined $umfang);
+            my $sbid=0;
+            if (exists $res->{targetid}){
+                $sbid=$res->{targetid};
+            }
 
-#       my $serie              = $category_ref->{'Gesamttitel'}[0];
-#       $serie                 = "" if (!defined $serie);
-
-#       my $ausgabe            = $category_ref->{'Ausgabe'}[0];
-#       $ausgabe               = "" if (!defined $ausgabe);
-
-#       my $dbname             = ""; #$category_ref->{};;
-#       my $zusatz             = ""; #$category_ref->{};;
-#       my $zitatangabe        = ""; #$category_ref->{};;
-#       my $abstract           = ""; #$category_ref->{};;
-#       my $volltexturl        = ""; #$category_ref->{};;
-#       my $autorlink          = ""; #$category_ref->{};;
-#       my $titellink          = ""; #$category_ref->{};;
-
-#       my @verfasserarray = ();
-#       my @korarray       = ();
-#       my @swtarray       = ();
-#       my @absarray       = ();
-#       my @isbnarray      = ();
-#       my @issnarray      = ();
-#       my @signarray      = ();
-#       my @urlarray       = ();
-      
-#       push @verfasserarray,  @{$category_ref->{'Verfasser'}} if (exists $category_ref->{'Verfasser'});
-#       push @verfasserarray,  @{$category_ref->{'Person'}} if (exists $category_ref->{'Person'});
-#       push @korarray,        @{$category_ref->{'K&ouml;rperschaft'}} if (exists $category_ref->{'K&ouml;rperschaft'});
-#       push @korarray,        @{$category_ref->{'Urheber'}} if (exists $category_ref->{'Urheber'});
-#       push @swtarray,        @{$category_ref->{'Schlagwort'}} if (exists $category_ref->{'Schlagwort'});
-#       push @absarray,        @{$category_ref->{'Abstract'}} if (exists $category_ref->{'Abstract'});
-#       push @isbnarray,       @{$category_ref->{'ISBN'}} if (exists $category_ref->{'ISBN'});
-#       push @issnarray,       @{$category_ref->{'ISSN'}} if (exists $category_ref->{'ISSN'});
-#       push @urlarray,        @{$category_ref->{'URL'}} if (exists $category_ref->{'URL'});
-      
-      
-# #       if ($seite[$zeile]=~/^<tr align=center><td><a href=.http:..www.ub.uni-koeln.de.dezkat.bibinfo.+?.html.><strong>(.+?)<\/strong>.*?<span id="rlsignature">(.*?)<\/span>/){
-# # 	$dbname=$1;
-# # 	push @signarray, $2;
-# #       }
-
-#       my $link="";
-      
-#       foreach my $mexnormset_ref (@$mexnormset){
-#           if (!$dbname && exists $mexnormset_ref->{bibliothek}){
-#               $dbname = $mexnormset_ref->{bibliothek};
-#               $link   = $mexnormset_ref->{bibinfourl};
-#           }
-
-#           push @signarray, $mexnormset_ref->{signatur};
-#       }
-      
-#       my $verf     = join(" ; ",@verfasserarray);
-#       $verf        = "" if (!defined $verf);
-
-#       my $kor      = join(" ; ",@korarray);
-#       $kor         = "" if (!defined $kor);
-
-#       my $swt      = join(" ; ",@swtarray);
-#       $swt         = "" if (!defined $swt);
-      
-#       my $isbn     = join(" ; ",@isbnarray);
-#       $isbn        = "" if (!defined $isbn);
-
-#       my $issn     = join(" ; ",@issnarray);
-#       $issn        = "" if (!defined $issn);
-      
-#       my $signatur = join(" ; ",@signarray);
-#       $signatur    = "" if (!defined $signatur);
-      
-#       my $location = "";#$dbinfo{$database};
-#       $location    = "" if (!defined $location);
-      
-#       if ($signatur){
-#           $location=$location.": $signatur";
-#       }
-
-#       if ($hst && $hstzusatz){
-#           $hst="$hst: $hstzusatz";
-#       }
-      
-    
-#     # Wenn Quelle besetzt ist, wird nach einer Ueberordnung geforscht.
-#     if ($quelle){
-#         my $request=$dbh->prepare("select verwidn from tittit where titidn=?");
-#         $request->execute($idn);
-
-#         while (my $res=$request->fetchrow_hashref()){
-#            # Quellen duerfen nur max. eine Ueberordnung haben
-#            $inverknidn=$res->{verwidn};
-#         }
-#     }
-
-#     if ($inverknidn && 0 == 1){
-
-#       my ($normset,$mexnormset,$circset)=(0,0,0);#OpenBib::Search::Util::get_tit_set_by_idn($inverknidn,"none",$dbh,$sessiondbh,$searchmultipleaut,$searchmultiplekor,$searchmultipleswt,$searchmultipletit,$searchmode,$circ,$circurl,$circcheckurl,$circdb,$hitrange,$rating,$bookinfo,$sorttype,$sortorder,$database,\%dbinfo,\%titeltyp,\%sigel,\%dbases,\%bibinfo,$sessionID);
-
-
-#       my $category_ref    = {};
-#       my $mexcategory_ref = {};
-
-#       foreach my $normset_ref (@$normset){
-#           push @{$category_ref->{$normset_ref->{desc}}}, $normset_ref->{contents}." ".$normset_ref->{supplement};
-#       }
-
-#       my $hst                = $category_ref->{'HST'}[0];
-#       my $verlag             = $category_ref->{'Verlag'}[0];
-#       my $fussnote           = $category_ref->{'Fu&szlig;note'}[0];
-#       my $hstzusatz          = $category_ref->{'Zusatz'}[0];
-#       my $vorlverf           = $category_ref->{'Vorl.Verfasser'}[0];
-#       my $verlagsort         = $category_ref->{'Verlagsort'}[0];
-#       my $jahr               = $category_ref->{'Ersch. Jahr'}[0];
-#       my $zeitschriftentitel = $category_ref->{'IN unverkn'}[0];
-#       my $inverknidn         = $category_ref->{'IN verkn'}[0];
-#       my $seitenzahl         = "";
-
-
-#       if ($zeitschriftentitel=~/ ; (S\. *\d+.*)$/){
-# 	  $seitenzahl=$1;
-#       }
-
-#       my $umfang             = $category_ref->{'Kollation'}[0];
-#       my $serie              = $category_ref->{'Gesamttitel'}[0];
-#       my $ausgabe            = $category_ref->{'Ausgabe'}[0];
-#       my $dbname             = ""; #$category_ref->{};;
-#       my $zusatz             = ""; #$category_ref->{};;
-#       my $zitatangabe        = ""; #$category_ref->{};;
-#       my $quelle             = ""; #$category_ref->{};;
-#       my $abstract           = ""; #$category_ref->{};;
-#       my $volltexturl        = ""; #$category_ref->{};;
-#       my $autorlink          = ""; #$category_ref->{};;
-#       my $titellink          = ""; #$category_ref->{};;
-
-#       my @verfasserarray = ();
-#       my @korarray       = ();
-#       my @swtarray       = ();
-#       my @absarray       = ();
-#       my @isbnarray      = ();
-#       my @issnarray      = ();
-#       my @signarray      = ();
-#       my @urlarray       = ();
-      
-#       push @verfasserarray,  @{$category_ref->{'Verfasser'}} if (exists $category_ref->{'Verfasser'});
-#       push @verfasserarray,  @{$category_ref->{'Person'}} if (exists $category_ref->{'Person'});
-#       push @korarray,        @{$category_ref->{'K&ouml;rperschaft'}} if (exists $category_ref->{'K&ouml;rperschaft'});
-#       push @korarray,        @{$category_ref->{'Urheber'}} if (exists $category_ref->{'Urheber'});
-#       push @swtarray,        @{$category_ref->{'Schlagwort'}} if (exists $category_ref->{'Schlagwort'});
-#       push @absarray,        @{$category_ref->{'Abstract'}} if (exists $category_ref->{'Abstract'});
-#       push @isbnarray,       @{$category_ref->{'ISBN'}} if (exists $category_ref->{'ISBN'});
-#       push @issnarray,       @{$category_ref->{'ISSN'}} if (exists $category_ref->{'ISSN'});
-#       push @urlarray,        @{$category_ref->{'URL'}} if (exists $category_ref->{'URL'});
-      
-      
-#       my $link="";
-      
-#       foreach my $mexnormset_ref (@$mexnormset){
-#           if (!$dbname && exists $mexnormset_ref->{bibliothek}){
-#               $dbname = $mexnormset_ref->{bibliothek};
-#               $link   = $mexnormset_ref->{bibinfourl};
-#           }
-
-#           push @signarray, $mexnormset_ref->{signatur};
-#       }
-      
-#       my $verf     = join(" ; ",@verfasserarray);
-#       my $kor      = join(" ; ",@korarray);
-#       my $swt      = join(" ; ",@swtarray);
-#       my $isbn     = join(" ; ",@isbnarray);
-#       my $issn     = join(" ; ",@issnarray);
-      
-#       my $signatur = join(" ; ",@signarray);
-
-#       my $location  = ""; #$dbinfo{$database};
-      
-#       if ($signatur){
-#           $location=$location.": $signatur";
-#       }
-
-#       if ($hst && $hstzusatz){
-#           $hst="$hst: $hstzusatz";
-#       }
-      
-#     }
+            $logger->debug("Sbid ist $sbid");
+            if ($sbid){
+                ($sbnormset,$sbmexnormset,$sbcircset)=OpenBib::Search::Util::get_tit_set_by_idn({
+                    titidn             => $sbid,
+                    dbh                => $dbh,
+                    targetdbinfo_ref   => $targetdbinfo_ref,
+                    targetcircinfo_ref => {},
+                    database           => $database,
+                });                
+                $has_sb=1;
+            }
+        }            
 
         # Ausgabe des letzten HTML-Bereichs
         my $templatename=$config{tt_connector_digibib_showtitset_tname};
@@ -693,6 +466,9 @@ sub handler {
         my $ttdata={
             item         => $normset,
             itemmex      => $mexnormset,
+            has_sb       => $has_sb,
+            sbitem       => $sbnormset,
+            sbitemmex    => $sbmexnormset,
             targetdbinfo => $targetdbinfo_ref,
         };
         

@@ -658,49 +658,40 @@ sub handler {
             my $atime=new Benchmark;
 
             $logger->debug("Creating Xapian DB-Object for database $database");
-            my $db = new Search::Xapian::Database ( $config{xapian_index_base_path}."/".$database) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
-            my $qp = new Search::Xapian::QueryParser() || $logger->fatal("Couldn't open/create Xapian DB $!\n");
-            
-            my $querystring = lc($searchquery_ref->{fs}{norm});
-            
-            $querystring    = OpenBib::Common::Util::grundform({
-                content  => $querystring,
-            }),
+            my $dbh = new Search::Xapian::Database ( $config{xapian_index_base_path}."/".$database) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
 
-            $qp->set_default_op(Search::Xapian::OP_AND);
-            $qp->add_prefix('inauth'   ,'X1');
-            $qp->add_prefix('intitle'  ,'X2');
-            $qp->add_prefix('incorp'   ,'X3');
-            $qp->add_prefix('insubj'   ,'X4');
-            $qp->add_prefix('insys'    ,'X5');
-            $qp->add_prefix('inyear'   ,'X7');
-            $qp->add_prefix('inisbn'   ,'X8');
-            $qp->add_prefix('inissn'   ,'X9');
+            my $request = new OpenBib::Search::Local::Xapian();
             
-            my $enq     = $db->enquire($qp->parse_query($querystring));
-
-            my $thisquery = $enq->get_query()->get_description();
-            $logger->info("Running query $thisquery");
+            $request->initial_search({
+                searchquery_ref => $searchquery_ref,
+                
+                serien          => $serien,
+                dbh             => $dbh,
+                database        => $database,
+                maxhits         => $maxhits,
+                
+                enrich          => $enrich,
+                enrichkeys_ref  => $enrichkeys_ref,
+            });
             
-            my @matches = $enq->matches(0,99999);
-            
-            my $fullresultcount = scalar(@matches);
+            my $fullresultcount = scalar($request->matches);
             
             my $btime      = new Benchmark;
             my $timeall    = timediff($btime,$atime);
             my $resulttime = timestr($timeall,"nop");
             $resulttime    =~s/(\d+\.\d+) .*/$1/;
             
-            $logger->info(scalar(@matches) . " results found in $resulttime");
+            $logger->info($fullresultcount . " results found in $resulttime");
             
-            if (scalar(@matches) >= 1){
+            if ($fullresultcount >= 1){
                 
                 my @outputbuffer=();
                 
                 my $rset=Search::Xapian::RSet->new() if ($drilldown && $fullresultcount > $maxhits);
-                
-                for (my $i=0; $i < $maxhits && defined $matches[$i]; $i++){
-                    my $match=$matches[$i];
+
+                my $mcount=0;
+                foreach my $match ($request->matches){
+                    last if ($mcount >= $maxhits);
                     
                     $rset->add_document($match->get_docid) if ($drilldown && $fullresultcount > $maxhits);
                     my $document=$match->get_document();
@@ -708,6 +699,7 @@ sub handler {
                     my $titlistitem_ref=Storable::thaw($titlistitem_raw);
                     
                     push @outputbuffer, $titlistitem_ref;
+                    $mcount++;
                 }
 
                 my $relevant_aut_ref;
@@ -718,7 +710,7 @@ sub handler {
                 
                 if ($drilldown && $fullresultcount > $maxhits ){
                     my $ddatime=new Benchmark;
-                    my $eterms=$enq->get_eset(50,$rset);
+                    my $eterms=$request->enq->get_eset(50,$rset);
                     
                     my $iter=$eterms->begin();
                     
@@ -835,8 +827,7 @@ sub handler {
                     #                INCLUDE_PATH   => $config{tt_include_path},
                     #                ABSOLUTE       => 1,
                     OUTPUT         => $r,
-                });
-            
+                });            
             
                 # TT-Data erzeugen
                 my $ttdata={
@@ -856,7 +847,7 @@ sub handler {
                     relevantaut     => $relevant_aut_ref,
                     relevantkor     => $relevant_kor_ref,
                     relevantswt     => $relevant_swt_ref,
-                    lastquery       => $querystring,
+                    lastquery       => $request->querystring,
                     sorttype        => $sorttype,
                     sortorder       => $sortorder,
                     resulttime      => $resulttime,

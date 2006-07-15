@@ -50,19 +50,14 @@ use OpenBib::Common::Util;
 use OpenBib::L10N;
 use OpenBib::Search::Util;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
-
 sub handler {
     my $r=shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my $uri  = $r->parsed_uri;
     my $path = $uri->path;
 
@@ -73,7 +68,7 @@ sub handler {
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
     
     # Basisipfad entfernen
-    my $basepath = $config{connector_rss_loc};
+    my $basepath = $config->{connector_rss_loc};
     $path=~s/$basepath//;
 
     # RSS-Feedparameter aus URI bestimmen
@@ -92,23 +87,23 @@ sub handler {
     # Verbindung zur SQL-Datenbank herstellen
 
     my $sessiondbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $targetdbinfo_ref
-        = OpenBib::Common::Util::get_targetdbinfo($sessiondbh);
+        = $config->get_targetdbinfo();
 
 
     # Check
 
-    if (! exists $config{rss_types}{$type} || ! exists $targetdbinfo_ref->{dbnames}{$database}{full}){
+    if (! exists $config->{rss_types}{$type} || ! exists $targetdbinfo_ref->{dbnames}{$database}{full}){
         OpenBib::Common::Util::print_warning("RSS-Feed ungueltig",$r);
     }
 
     # Wenn Aliases fuer den Typ existieren, dann loese ihn zur entsprechenden
     # Type-Nr auf, ansonsten nehme den uebergebenen Typ (der einer Nr sein
     # sollte...)
-    $type=(exists $config{rss_types}{$type})?$config{rss_types}{$type}:$type;
+    $type=(exists $config->{rss_types}{$type})?$config->{rss_types}{$type}:$type;
 
     my $thistimedate   = Date::Manip::ParseDate("today");
     my $expiretimedate = Date::Manip::DateCalc($thistimedate,"-12hours");
@@ -118,20 +113,20 @@ sub handler {
     
 #    $logger->debug("ExpireTimeDate: $expiretimedate");
 
-    # Bestimmung, ob ein valider Cacheeintrag existiert
-    my $request=$sessiondbh->prepare("select content from rsscache where dbname=? and type=? and subtype = ? and tstamp > ?");
-    $request->execute($database,$type,$subtype,$expiretimedate);
-
-    my $res=$request->fetchrow_arrayref;
-    my $rss_content=(exists $res->[0])?$res->[0]:undef;
-
+    my $rss_content = $config->get_valid_rsscache_entry({
+        database       => $database,
+        type           => $type,
+        subtype        => $subtype,
+        expiretimedate => $expiretimedate,
+    });
+    
     if (! $rss_content ){
         my $bestserver=OpenBib::Common::Util::get_loadbalanced_servername();
 
         $logger->debug("Getting RSS-Data from Server $bestserver");
         
         my $dbh
-            = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$bestserver;port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+            = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$bestserver;port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
                 or $logger->error_die($DBI::errstr);
 
         my $rssfeedinfo_ref = {
@@ -187,7 +182,7 @@ sub handler {
         
         $rss->channel(
             title         => "$dbdesc: ".$rssfeedinfo_ref->{$type}{channel_title},
-            link          => "http://".$config{loadbalancerservername}.$config{loadbalancer_loc}."?view=$database",
+            link          => "http://".$config->{loadbalancerservername}.$config->{loadbalancer_loc}."?view=$database",
             language      => "de",
             description   => $rssfeedinfo_ref->{$type}{channel_desc}." '$dbdesc'",
         );
@@ -253,13 +248,13 @@ sub handler {
             my $desc  = "";
             my $title = $tititem_ref->{'T0331'}[0]{content};
             
-            my $itemtemplatename = $config{tt_connector_rss_item_tname};
+            my $itemtemplatename = $config->{tt_connector_rss_item_tname};
             my $itemtemplate = Template->new({
                 LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-                    INCLUDE_PATH   => $config{tt_include_path},
+                    INCLUDE_PATH   => $config->{tt_include_path},
                     ABSOLUTE       => 1,
                 }) ],
-#                INCLUDE_PATH   => $config{tt_include_path},
+#                INCLUDE_PATH   => $config->{tt_include_path},
 #                ABSOLUTE       => 1,
                 OUTPUT         => \$desc,
             });
@@ -282,17 +277,15 @@ sub handler {
             $logger->debug("Adding $title / $desc");
             $rss->add_item(
                 title       => $title,
-                link        => "http://".$config{loadbalancerservername}.$config{loadbalancer_loc}."?view=$database;database=$database;searchsingletit=".$title_ref->{id},
+                link        => "http://".$config->{loadbalancerservername}.$config->{loadbalancer_loc}."?view=$database;database=$database;searchsingletit=".$title_ref->{id},
                 description => $desc
             );
         }
         
-        $request->finish;
-
         $rss_content=$rss->as_string;
         
         # Etwaig vorhandenen Eintrag loeschen
-        $request=$sessiondbh->prepare("delete from rsscache where dbname=? and type=? and subtype = ?");
+        my $request=$sessiondbh->prepare("delete from rsscache where dbname=? and type=? and subtype = ?");
         $request->execute($database,$type,$subtype);
 
         $request=$sessiondbh->prepare("insert into rsscache values (?,NULL,?,?,?)");
@@ -309,8 +302,6 @@ sub handler {
 
     print $rss_content;
 
-
-    $request->finish();
 
     $sessiondbh->disconnect;
     

@@ -39,12 +39,6 @@ use Apache::Reload;
 use Apache::Request();          # CGI-Handling (or require)
 use Log::Log4perl qw(get_logger :levels);
 use SOAP::Transport::HTTP;
-use OpenBib::Config;
-
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-use vars qw(%config);
-*config=\%OpenBib::Config::config;
 
 my $server = SOAP::Transport::HTTP::Apache
     -> dispatch_with({

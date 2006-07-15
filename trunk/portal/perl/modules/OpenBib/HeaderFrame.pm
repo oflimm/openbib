@@ -46,19 +46,14 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
-
 sub handler {
     my $r=shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my $query=Apache::Request->new($r);
 
     my $status=$query->parse;
@@ -77,11 +72,11 @@ sub handler {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $sessiondbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
   
     my $userdbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $queryoptions_ref
@@ -103,7 +98,7 @@ sub handler {
     my $primrssfeed="";
 
     if ($view){
-        $primrssfeed=OpenBib::Common::Util::get_primary_rssfeed_of_view($sessiondbh,$view);
+        $primrssfeed=$config->get_primary_rssfeed_of_view($view);
     }
     
     # Haben wir eine authentifizierte Session?
@@ -149,11 +144,11 @@ sub handler {
         sessionID   => $sessionID,
         username    => $username,
         anzahl      => $anzahl,
-        config      => \%config,
+        config      => $config,
         msg         => $msg,
     };
 
-    OpenBib::Common::Util::print_page($config{tt_headerframe_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_headerframe_tname},$ttdata,$r);
 
     return OK;
 }

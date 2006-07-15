@@ -46,19 +46,14 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
-
 sub handler {
     my $r=shift;
   
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my $query=Apache::Request->new($r);
 
     my $status=$query->parse;
@@ -92,11 +87,11 @@ sub handler {
     # Verbindung zur SQL-Datenbank herstellen
   
     my $sessiondbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
   
     my $userdbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $queryoptions_ref
@@ -150,7 +145,7 @@ sub handler {
     
         $idnresult->finish();
       
-        $r->internal_redirect("http://$config{servername}$config{searchframe_loc}?sessionID=$sessionID&view=$view");
+        $r->internal_redirect("http://$config->{servername}$config->{searchframe_loc}?sessionID=$sessionID&view=$view");
     }
     # ... sonst anzeigen
     else {
@@ -165,7 +160,7 @@ sub handler {
         my $lastcategory="";
         my $count=0;
 
-        my $maxcolumn=$config{databasechoice_maxcolumn};
+        my $maxcolumn=$config->{databasechoice_maxcolumn};
       
         $idnresult=$sessiondbh->prepare("select * from dbinfo where active=1 order by orgunit ASC, description ASC") or $logger->error($DBI::errstr);
         $idnresult->execute() or $logger->error($DBI::errstr);
@@ -235,14 +230,11 @@ sub handler {
             maxcolumn  => $maxcolumn,
             colspan    => $colspan,
             catdb      => \@catdb,
-            show_corporate_banner => 0,
-            show_foot_banner      => 1,
-            show_testsystem_info  => 0,
-            config     => \%config,
+            config     => $config,
             msg        => $msg,
         };
     
-        OpenBib::Common::Util::print_page($config{tt_databasechoice_tname},$ttdata,$r);
+        OpenBib::Common::Util::print_page($config->{tt_databasechoice_tname},$ttdata,$r);
         $idnresult->finish();
         $sessiondbh->disconnect();
         return OK;

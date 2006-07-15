@@ -46,21 +46,17 @@ use OpenBib::Common::Util();
 use OpenBib::Config();
 use OpenBib::L10N;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
-
 sub handler {
     my $r=shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $query=Apache::Request->new($r);
 
-    my $status=$query->parse;
+    my $config = new OpenBib::Config();
+    
+    my $query  = Apache::Request->new($r);
+
+    my $status = $query->parse;
 
     if ($status) {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
@@ -70,7 +66,7 @@ sub handler {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $sessiondbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $queryoptions_ref
@@ -118,42 +114,35 @@ sub handler {
   
     if ($view ne "") {
         # 1. Gibt es diesen View?
-        my $idnresult=$sessiondbh->prepare("select count(viewname) as rowcount from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($view) or $logger->error($DBI::errstr);
-        my $res    = $idnresult->fetchrow_hashref;
-        my $anzahl = $res->{rowcount};
-    
-        if ($anzahl > 0) {
+        if ($config->view_exists($view)) {
             # 2. Datenbankauswahl setzen, aber nur, wenn der Benutzer selbst noch
             #    keine Auswahl getroffen hat
       
-            $idnresult=$sessiondbh->prepare("select count(dbname) as rowcount from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
+            my $idnresult=$sessiondbh->prepare("select count(dbname) as rowcount from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
             $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
 
             # Wenn noch keine Datenbank ausgewaehlt wurde, dann setze die
             # Auswahl auf die zum View gehoerenden Datenbanken
-            $res=$idnresult->fetchrow_hashref;
+            my $res=$idnresult->fetchrow_hashref;
             my $anzahl=$res->{rowcount};
             if ($anzahl == 0) {
-                $idnresult=$sessiondbh->prepare("select dbname from  viewdbs where viewname = ?") or $logger->error($DBI::errstr);
-                $idnresult->execute($view) or $logger->error($DBI::errstr);
-	
-                while (my $result=$idnresult->fetchrow_hashref()) {
-                    my $dbname = decode_utf8($result->{'dbname'});
-                    my $idnresult2=$sessiondbh->prepare("insert into dbchoice (sessionid,dbname) values (?,?)") or $logger->error($DBI::errstr);
-                    $idnresult2->execute($sessionID,$dbname) or $logger->error($DBI::errstr);
-                    $idnresult2->finish();
+                my @viewdbs=$config->get_dbs_of_view($view);
+
+                foreach my $dbname (@viewdbs){
+                    my $idnresult=$sessiondbh->prepare("insert into dbchoice (sessionid,dbname) values (?,?)") or $logger->error($DBI::errstr);
+                    $idnresult->execute($sessionID,$dbname) or $logger->error($DBI::errstr);
+                    $idnresult->finish();
                 }
             }
             # 3. Assoziiere den View mit der Session (fuer Headframe/Merkliste);
             $idnresult=$sessiondbh->prepare("insert into sessionview values (?,?)") or $logger->error($DBI::errstr);
             $idnresult->execute($sessionID,$view) or $logger->error($DBI::errstr);
+            $idnresult->finish();
         }
         # Wenn es den View nicht gibt, dann wird gestartet wie ohne view
         else {
             $view="";
         }
-        $idnresult->finish();
     }
 
     # Wenn effektiv kein valider View uebergeben wurde, dann wird
@@ -173,11 +162,11 @@ sub handler {
         fs              => $fs,
         database        => $database,
         searchsingletit => $searchsingletit,
-        config          => \%config,
+        config          => $config,
         msg             => $msg,
     };
 
-    OpenBib::Common::Util::print_page($config{tt_startopac_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_startopac_tname},$ttdata,$r);
 
     $sessiondbh->disconnect();
 

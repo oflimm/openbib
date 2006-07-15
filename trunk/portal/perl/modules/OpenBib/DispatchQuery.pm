@@ -47,19 +47,14 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
-
 sub handler {
     my $r=shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my $query=Apache::Request->new($r);
 
     my $status=$query->parse;
@@ -78,7 +73,7 @@ sub handler {
     my $do_externalquery = $query->param('do_externalquery') || '';
 
     my $sessiondbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
     
     my $queryoptions_ref
@@ -91,15 +86,15 @@ sub handler {
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
     
     if    ($do_newquery) {
-        $r->internal_redirect("http://$config{servername}$config{searchframe_loc}?sessionID=$sessionID&queryid=$queryid&view=$view");
+        $r->internal_redirect("http://$config->{servername}$config->{searchframe_loc}?sessionID=$sessionID&queryid=$queryid&view=$view");
         return OK;
     }
     elsif ($do_resultlist) {
-        $r->internal_redirect("http://$config{servername}$config{resultlists_loc}?sessionID=$sessionID&view=$view&trefferliste=choice&queryid=$queryid");
+        $r->internal_redirect("http://$config->{servername}$config->{resultlists_loc}?sessionID=$sessionID&view=$view&trefferliste=choice&queryid=$queryid");
         return OK;
     }
     elsif ($do_externalquery) {
-        $r->internal_redirect("http://$config{servername}$config{externaljump_loc}?sessionID=$sessionID&view=$view&queryid=$queryid");
+        $r->internal_redirect("http://$config->{servername}$config->{externaljump_loc}?sessionID=$sessionID&view=$view&queryid=$queryid");
         return OK;
     }
     else {

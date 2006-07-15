@@ -769,4 +769,256 @@ sub new {
     return $self;
 }
 
+sub get_number_of_dbs {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$self->{_dbh}->prepare("select count(dbname) as rowcount from dbinfo where active=1") or $logger->error($DBI::errstr);
+    $request->execute() or $logger->error($DBI::errstr);
+    my $res    = $request->fetchrow_hashref;
+    my $alldbs = $res->{rowcount};
+    $request->finish();
+    
+    return $alldbs;
+}
+
+sub get_number_of_titles {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$self->{_dbh}->prepare("select sum(count) as alltitcount from titcount,dbinfo where  titcount.dbname=dbinfo.dbname and dbinfo.active=1") or $logger->error($DBI::errstr);
+    $request->execute() or $logger->error($DBI::errstr);
+    my $res       = $request->fetchrow_hashref;
+    my $alltitles = $res->{alltitcount};
+    $request->finish();
+    
+    return $alltitles;
+}
+
+sub get_viewdesc_from_viewname {
+    my $self     = shift;
+    my $viewname = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$self->{_dbh}->prepare("select description from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
+    $request->execute($viewname) or $logger->error($DBI::errstr);
+    my $res       = $request->fetchrow_hashref;
+    my $desc      = decode_utf8($res->{description}) if (defined($res->{'description'}));
+    $request->finish();
+    
+    return $desc;
+}
+
+sub view_exists {
+    my $self     = shift;
+    my $viewname = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$self->{_dbh}->prepare("select count(viewname) as rowcount from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
+    $request->execute($viewname) or $logger->error($DBI::errstr);
+    my $res       = $request->fetchrow_hashref;
+    my $rowcount  = $res->{rowcount};
+    $request->finish();
+    
+    return $rowcount;
+}
+
+sub get_valid_rsscache_entry {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $database               = exists $arg_ref->{database}
+        ? $arg_ref->{database}            : undef;
+    my $type                   = exists $arg_ref->{type}
+        ? $arg_ref->{type}                : undef;
+    my $subtype                = exists $arg_ref->{subtype}
+        ? $arg_ref->{subtype}             : undef;
+    my $expiretimedate         = exists $arg_ref->{expiretimedate}
+        ? $arg_ref->{expiretimedate}      : undef;
+
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Bestimmung, ob ein valider Cacheeintrag existiert
+    my $request=$self->{_dbh}->prepare("select content from rsscache where dbname=? and type=? and subtype = ? and tstamp > ?");
+    $request->execute($database,$type,$subtype,$expiretimedate);
+
+    my $res=$request->fetchrow_arrayref;
+    my $rss_content=(exists $res->[0])?$res->[0]:undef;
+
+    $request->finish();
+    
+    return $rss_content;
+}
+
+sub get_dbs_of_view {
+    my $self     = shift;
+    my $viewname = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my @viewdbs=();
+    my $request=$self->{_dbh}->prepare("select dbname from  viewdbs where viewname = ? order by dbname") or $logger->error($DBI::errstr);
+    $request->execute($viewname) or $logger->error($DBI::errstr);
+    while (my $res = $request->fetchrow_hashref()){
+        push @viewdbs, decode_utf8($res->{dbname});
+    }
+
+    $request->finish();
+    
+    return @viewdbs;
+}
+
+sub get_primary_rssfeed_of_view  {
+    my ($self,$viewname)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Assoziierten View zur Session aus Datenbank holen
+    my $idnresult=$self->{_dbh}->prepare("select rssfeeds.dbname as dbname,rssfeeds.type as type, rssfeeds.subtype as subtype from rssfeeds,viewinfo where viewname = ? and rssfeeds.id = viewinfo.rssfeed and rssfeeds.active = 1") or $logger->error($DBI::errstr);
+    $idnresult->execute($viewname) or $logger->error($DBI::errstr);
+  
+    my $result=$idnresult->fetchrow_hashref();
+  
+    my $dbname  = decode_utf8($result->{'dbname'}) || '';
+    my $type    = $result->{'type'}    || 0;
+    my $subtype = $result->{'subtype'} || 0;
+
+    foreach my $typename (keys %{$config{rss_types}}){
+        if ($config{rss_types}{$typename} eq $type){
+            $type=$typename;
+            last;
+        }
+    }
+    
+    $idnresult->finish();
+
+    my $primrssfeedurl="";
+
+    if ($dbname && $type){
+        $primrssfeedurl="http://".$config{loadbalancerservername}.$config{connector_rss_loc}."/$type/$dbname.rdf";
+    }
+    
+    return $primrssfeedurl;
+}
+
+sub get_targetdbinfo {
+    my $self = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    #####################################################################
+    # Dynamische Definition diverser Variablen
+  
+    # Verweis: Datenbankname -> Informationen zum zugeh"origen Institut/Seminar
+  
+    my $dbinforesult=$self->{_dbh}->prepare("select dbname,sigel,url,description,shortdesc from dbinfo") or $logger->error($DBI::errstr);
+    $dbinforesult->execute() or $logger->error($DBI::errstr);;
+  
+    my %sigel   =();
+    my %bibinfo =();
+    my %dbinfo  =();
+    my %dbases  =();
+    my %dbnames =();
+
+    while (my $result=$dbinforesult->fetchrow_hashref()) {
+        my $dbname      = decode_utf8($result->{'dbname'});
+        my $sigel       = decode_utf8($result->{'sigel'});
+        my $url         = decode_utf8($result->{'url'});
+        my $description = decode_utf8($result->{'description'});
+        my $shortdesc   = decode_utf8($result->{'shortdesc'});
+    
+        ##################################################################### 
+        ## Wandlungstabelle Bibliothekssigel <-> Bibliotheksname
+    
+        $sigel{"$sigel"} = {
+			    full  => $description,
+			    short => $shortdesc,
+			   };
+    
+        #####################################################################
+        ## Wandlungstabelle Bibliothekssigel <-> Informations-URL
+    
+        $bibinfo{"$sigel"} = "$url";
+    
+        #####################################################################
+        ## Wandlungstabelle  Name SQL-Datenbank <-> Datenbankinfo
+    
+        # Wenn ein URL fuer die Datenbankinformation definiert ist, dann wird
+        # damit verlinkt
+    
+        if ($url ne "") {
+            $dbinfo{"$dbname"} = {
+				  full  => "<a href=\"$url\" target=\"_blank\">$description</a>",
+				  short => "<a href=\"$url\" target=\"_blank\">$shortdesc</a>",
+				 };
+        } else {
+            $dbinfo{"$dbname"} = {
+				  full  => "$description",
+				  short => "$shortdesc",
+				 };
+        }
+    
+        #####################################################################
+        ## Wandlungstabelle  Name SQL-Datenbank <-> Bibliothekssigel
+    
+        $dbases{"$dbname"}       = "$sigel";
+
+        $dbnames{"$dbname"}      = {
+				    full => $description,
+				    short => $shortdesc,
+				   };
+    }
+  
+    $dbinforesult->finish;
+    
+    return {
+        sigel   => \%sigel,
+        bibinfo => \%bibinfo,
+        dbinfo  => \%dbinfo,
+        dbases  => \%dbases,
+        dbnames => \%dbnames,
+    };
+}
+
+sub get_targetcircinfo {
+    my $self = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    #####################################################################
+    ## Ausleihkonfiguration fuer den Katalog einlesen
+
+    my $dbinforesult=$self->{_dbh}->prepare("select dbname,circ,circurl,circcheckurl,circdb from dboptions where circ = 1") or $logger->error($DBI::errstr);
+    $dbinforesult->execute() or $logger->error($DBI::errstr);;
+
+    my %targetcircinfo=();
+    
+    while (my $result=$dbinforesult->fetchrow_hashref()) {
+        my $dbname                             = decode_utf8($result->{'dbname'});
+
+        $targetcircinfo{$dbname}{circ}         = decode_utf8($result->{'circ'});
+        $targetcircinfo{$dbname}{circurl}      = decode_utf8($result->{'circurl'});
+        $targetcircinfo{$dbname}{circcheckurl} = decode_utf8($result->{'circcheckurl'});
+        $targetcircinfo{$dbname}{circdb}       = decode_utf8($result->{'circdb'});
+    }
+
+    $dbinforesult->finish();
+
+    return \%targetcircinfo;
+}
+
 1;

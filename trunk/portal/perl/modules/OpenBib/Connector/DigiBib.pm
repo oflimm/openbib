@@ -45,13 +45,6 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Search::Util;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
-
 sub handler {
     
     my $r=shift;
@@ -59,6 +52,8 @@ sub handler {
     # Log4perl logger erzeugen
     
     my $logger = get_logger();
+
+    my $config = new OpenBib::Config();
     
     my $query=Apache::Request->new($r);
     
@@ -72,7 +67,7 @@ sub handler {
     #####################################################################
     # Verbindung zur SQL-Datenbank herstellen
     
-    my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
+    my $sessiondbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
     
     # CGI-Input auslesen
     
@@ -145,7 +140,7 @@ sub handler {
         = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
 
     my $targetdbinfo_ref
-        = OpenBib::Common::Util::get_targetdbinfo($sessiondbh);
+        = config->get_targetdbinfo();
 
     my $searchquery_ref
         = OpenBib::Common::Util::get_searchquery($r);
@@ -160,16 +155,7 @@ sub handler {
     }
         
     # Bestimmung der Datenbanken, in denen gesucht werden soll
-    
-    my @databases=();
-    
-    my $dbinforesult=$sessiondbh->prepare("select dbname from viewdbs where viewname=? order by dbname") or die "Error -- $DBI::errstr";
-    $dbinforesult->execute($view);
-    
-    while (my $result=$dbinforesult->fetchrow_hashref()){
-        my $dbname=$result->{'dbname'};
-        push @databases, $dbname;
-    }
+    my @databases = $config->get_dbs_of_view($view);
     
     if ($tosearch eq "Trefferliste") {
 
@@ -262,7 +248,7 @@ sub handler {
         my @ergebnisse;
                 
         foreach my $database (@databases){
-            my $dbh   = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd}) or $logger->error_die($DBI::errstr);
+            my $dbh   = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
 
             my $result_ref=OpenBib::Search::Util::initial_search_for_titidns({
                 searchquery_ref => $searchquery_ref,
@@ -309,18 +295,18 @@ sub handler {
         
         my $treffercount=$#ergebnisse+1;
 
-        my $starttemplatename=$config{tt_connector_digibib_result_start_tname};
-        if ($view && -e "$config{tt_include_path}/views/$view/$starttemplatename") {
+        my $starttemplatename=$config->{tt_connector_digibib_result_start_tname};
+        if ($view && -e "$config->{tt_include_path}/views/$view/$starttemplatename") {
             $starttemplatename="views/$view/$starttemplatename";
         }
                 
         # Ausgabe des ersten HTML-Bereichs
         my $starttemplate = Template->new({
             LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-                INCLUDE_PATH   => $config{tt_include_path},
+                INCLUDE_PATH   => $config->{tt_include_path},
                 ABSOLUTE       => 1,
             }) ],
-            #        INCLUDE_PATH   => $config{tt_include_path},
+            #        INCLUDE_PATH   => $config->{tt_include_path},
             #        ABSOLUTE       => 1,
             OUTPUT         => $r,
         });
@@ -345,17 +331,17 @@ sub handler {
         my $liststart = ($offset<= $treffercount)?$offset-1:0;
         my $listend   = ($offset+$listlength-1 <= $treffercount)?$offset+$listlength-2:$treffercount-1;
         
-        my $itemtemplatename=$config{tt_connector_digibib_result_item_tname};
-        if ($view && -e "$config{tt_include_path}/views/$view/$itemtemplatename") {
+        my $itemtemplatename=$config->{tt_connector_digibib_result_item_tname};
+        if ($view && -e "$config->{tt_include_path}/views/$view/$itemtemplatename") {
             $itemtemplatename="views/$view/$itemtemplatename";
         }
         
         my $itemtemplate = Template->new({
             LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-                INCLUDE_PATH   => $config{tt_include_path},
+                INCLUDE_PATH   => $config->{tt_include_path},
                 ABSOLUTE       => 1,
             }) ],
-            #                INCLUDE_PATH   => $config{tt_include_path},
+            #                INCLUDE_PATH   => $config->{tt_include_path},
             #                ABSOLUTE       => 1,
             OUTPUT         => $r,
         });
@@ -365,7 +351,7 @@ sub handler {
         my $ttdata={
             targetdbinfo    => $targetdbinfo_ref,
             resultlist      => \@ergebnisse,#[$liststart..$listend],
-            config          => \%config,
+            config          => $config,
         };
         
         $itemtemplate->process($itemtemplatename, $ttdata) || do {
@@ -374,17 +360,17 @@ sub handler {
         };
         
         # Ausgabe des letzten HTML-Bereichs
-        my $endtemplatename=$config{tt_connector_digibib_result_end_tname};
-        if ($view && -e "$config{tt_include_path}/views/$view/$endtemplatename") {
+        my $endtemplatename=$config->{tt_connector_digibib_result_end_tname};
+        if ($view && -e "$config->{tt_include_path}/views/$view/$endtemplatename") {
             $endtemplatename="views/$view/$endtemplatename";
         }
         
         my $endtemplate = Template->new({
             LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-                INCLUDE_PATH   => $config{tt_include_path},
+                INCLUDE_PATH   => $config->{tt_include_path},
                 ABSOLUTE       => 1,
             }) ],
-            #        INCLUDE_PATH   => $config{tt_include_path},
+            #        INCLUDE_PATH   => $config->{tt_include_path},
             #        ABSOLUTE       => 1,
             OUTPUT         => $r,
         });
@@ -403,7 +389,7 @@ sub handler {
         
         print $r->send_http_header("text/html");
         
-        my $dbh   = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd}) or $logger->error_die($DBI::errstr);
+        my $dbh   = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
         
         my ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn({
             titidn             => $idn,
@@ -447,17 +433,17 @@ sub handler {
         }            
 
         # Ausgabe des letzten HTML-Bereichs
-        my $templatename=$config{tt_connector_digibib_showtitset_tname};
-        if ($view && -e "$config{tt_include_path}/views/$view/$templatename") {
+        my $templatename=$config->{tt_connector_digibib_showtitset_tname};
+        if ($view && -e "$config->{tt_include_path}/views/$view/$templatename") {
             $templatename="views/$view/$templatename";
         }
         
         my $template = Template->new({
             LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-                INCLUDE_PATH   => $config{tt_include_path},
+                INCLUDE_PATH   => $config->{tt_include_path},
                 ABSOLUTE       => 1,
             }) ],
-            #        INCLUDE_PATH   => $config{tt_include_path},
+            #        INCLUDE_PATH   => $config->{tt_include_path},
             #        ABSOLUTE       => 1,
             OUTPUT         => $r,
         });

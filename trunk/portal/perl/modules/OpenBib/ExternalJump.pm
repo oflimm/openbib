@@ -48,19 +48,14 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
-
 sub handler {
     my $r=shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my $query=Apache::Request->new($r);
 
     my $status=$query->parse;
@@ -76,11 +71,11 @@ sub handler {
     # Verbindung zur SQL-Datenbank herstellen
   
     my $sessiondbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
   
     my $userdbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
             or $logger->error_die($DBI::errstr);
   
     # CGI-Uebergabe
@@ -148,14 +143,7 @@ sub handler {
         return OK;
     }
   
-    # Beschreibung des assoziierten Views zur Session aus Datenbank holen
-    my $idnresult=$sessiondbh->prepare("select viewinfo.description from sessionview,viewinfo where sessionview.sessionid = ? and sessionview.viewname=viewinfo.viewname") or $logger->error($DBI::errstr);
-    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-    my $result=$idnresult->fetchrow_hashref();
-  
-    my $viewdesc= decode_utf8($result->{'description'}) if (defined($result->{'description'}));
-  
-    $idnresult->finish();
+    my $viewdesc = $config->get_viewdesc_from_viewname($view);
   
     my $hits;
     my $searchquery_ref;
@@ -211,7 +199,7 @@ sub handler {
     my $loginname = "";
     my $password  = "";
 
-    my $globalsessionID="$config{servername}:$sessionID";
+    my $globalsessionID="$config->{servername}:$sessionID";
     my $userresult=$userdbh->prepare("select user.loginname,user.pin,count(user.loginname) as rowcount from usersession,user where usersession.sessionid = ? and user.userid=usersession.userid") or die "Error -- $DBI::errstr";
  
     $userresult->execute($globalsessionID);
@@ -235,8 +223,6 @@ sub handler {
         }
     }
 
-    $idnresult->finish();
-
     # TT-Data erzeugen
     my $ttdata={
         view         => $view,
@@ -252,11 +238,11 @@ sub handler {
 
         authurl      => $authurl,
 	      
-        config       => \%config,
+        config       => $config,
         msg          => $msg,
     };
 
-    OpenBib::Common::Util::print_page($config{tt_externaljump_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_externaljump_tname},$ttdata,$r);
 
     $sessiondbh->disconnect();
     $userdbh->disconnect();

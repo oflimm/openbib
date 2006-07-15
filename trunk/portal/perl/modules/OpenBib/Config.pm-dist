@@ -79,7 +79,15 @@ use vars qw(%config);
 	   sessiondbuser    => 'root',
 	   sessiondbpasswd  => 'StrengGeheim',
 
-	   # Einstellungen fuer den Zugriff auf die UserProfile-Datenbank
+	   # Einstellungen fuer den Zugriff auf die Config-Datenbank
+
+	   configdbhost    => 'localhost',
+	   configdbport    => '3306',
+	   configdbname    => 'config',
+	   configdbuser    => 'root',
+	   configdbpasswd  => 'StrengGeheim',
+
+           # Einstellungen fuer den Zugriff auf die UserProfile-Datenbank
 
 	   userdbhost    => 'zentraler.rechner',
 	   userdbport    => '3306',
@@ -738,5 +746,27 @@ use vars qw(%config);
 		      },
 
        );
+
+sub new {
+    my $class = shift;
+
+    # Ininitalisierung mit Config-Parametern
+    my $self = \%config;
+
+    bless ($self, $class);
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    # dbh ist private Instance Variable
+    $self->{_dbh}    = $dbh;
+
+    return $self;
+}
 
 1;

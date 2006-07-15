@@ -48,18 +48,14 @@ use OpenBib::Common::Util();
 use OpenBib::Config();
 use OpenBib::L10N;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
-
 sub handler {
     my $r=shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my $query=Apache::Request->new($r);
 
     my $status=$query->parse;
@@ -69,7 +65,7 @@ sub handler {
     }
 
     my $sessiondbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
     
     my $queryoptions_ref
@@ -94,17 +90,17 @@ sub handler {
         # TT-Data erzeugen
         my $ttdata={
             title        => 'KUG - Wartungsarbeiten',
-            config       => \%config,
+            config       => $config,
             msg          => $msg,
         };
 
-        OpenBib::Common::Util::print_page($config{tt_loadbalancer_tname},$ttdata,$r);
+        OpenBib::Common::Util::print_page($config->{tt_loadbalancer_tname},$ttdata,$r);
         OpenBib::LoadBalancer::Util::benachrichtigung($msg->maketext("Achtung: Es sind *alle* Server ausgefallen"));
 
         return OK;
     }
 
-    $r->header_out(Location => "http://$bestserver$config{startopac_loc}?$urlquery");
+    $r->header_out(Location => "http://$bestserver$config->{startopac_loc}?$urlquery");
     $r->status(REDIRECT);
     $r->send_http_header;
   

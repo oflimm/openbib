@@ -48,18 +48,14 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-use vars qw(%config);
-
-*config = \%OpenBib::Config::config;
-
 sub handler {
     my $r=shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my $query=Apache::Request->new($r);
 
     my $status=$query->parse;
@@ -74,11 +70,11 @@ sub handler {
   
     # Verbindung zur SQL-Datenbank herstellen
     my $sessiondbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
   
     my $userdbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
             or $logger->error_die($DBI::errstr);
   
     my $sessionID = ($query->param('sessionID'))?$query->param('sessionID'):'';
@@ -192,12 +188,7 @@ sub handler {
     
     my $queryid       = $query->param('queryid') || '';
   
-    # Assoziierten View zur Session aus Datenbank holen
-    $idnresult=$sessiondbh->prepare("select viewinfo.description from sessionview,viewinfo where sessionview.sessionid = ? and sessionview.viewname=viewinfo.viewname") or $logger->error($DBI::errstr);
-    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-    $result=$idnresult->fetchrow_hashref();
-  
-    my $viewdesc = decode_utf8($result->{'description'}) if (defined($result->{'description'}));
+    my $viewdesc      = $config->get_viewdesc_from_viewname($view);
 
     $idnresult->finish();
   
@@ -254,15 +245,8 @@ sub handler {
         $dbcount++; 
     }
 
-    $idnresult=$sessiondbh->prepare("select count(dbname) as rowcount from dbinfo where active=1") or $logger->error($DBI::errstr);
-    $idnresult->execute() or $logger->error($DBI::errstr);
-    my $res    = $idnresult->fetchrow_hashref;
-    my $alldbs = $res->{rowcount};
-
-    $idnresult=$sessiondbh->prepare("select sum(count) from titcount,dbinfo where  titcount.dbname=dbinfo.dbname and dbinfo.active=1") or $logger->error($DBI::errstr);
-    $idnresult->execute() or $logger->error($DBI::errstr);
-
-    my $alldbcount=$idnresult->fetchrow();
+    my $alldbs     = $config->get_number_of_dbs();
+    my $alldbcount = $config->get_number_of_titles();
 
     $idnresult->finish();
 
@@ -324,15 +308,15 @@ sub handler {
         anzahl        => $anzahl,
         queries       => \@queries,
         useragent     => $useragent,
-        config        => \%config,
+        config        => $config,
         msg           => $msg,
     };
   
     if ($setmask eq "simple") {
-        OpenBib::Common::Util::print_page($config{tt_searchframe_simple_tname},$ttdata,$r);
+        OpenBib::Common::Util::print_page($config->{tt_searchframe_simple_tname},$ttdata,$r);
     }
     else {
-        OpenBib::Common::Util::print_page($config{tt_searchframe_tname},$ttdata,$r);
+        OpenBib::Common::Util::print_page($config->{tt_searchframe_tname},$ttdata,$r);
     }
   
     $sessiondbh->disconnect();

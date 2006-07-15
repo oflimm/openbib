@@ -45,17 +45,13 @@ use OpenBib::Common::Util();
 use OpenBib::Config();
 use OpenBib::L10N;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
-
 sub handler {
     my $r=shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+
+    my $config = new OpenBib::Config();
     
     my $query=Apache::Request->new($r);
 
@@ -67,14 +63,14 @@ sub handler {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $sessiondbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
     
     my $sessionID      = $query->param('sessionID')      || '';
     my $view           = OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
     my $setmask        = $query->param('setmask')        || '';
-    my $headerframeurl = $query->param('headerframeurl') || $config{headerframe_loc};
-    my $bodyframeurl   = $query->param('bodyframeurl')   || $config{searchframe_loc};
+    my $headerframeurl = $query->param('headerframeurl') || $config->{headerframe_loc};
+    my $bodyframeurl   = $query->param('bodyframeurl')   || $config->{searchframe_loc};
 
     my $queryoptions_ref
         = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
@@ -83,7 +79,7 @@ sub handler {
     my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
-    if ($bodyframeurl eq $config{searchframe_loc}){
+    if ($bodyframeurl eq $config->{searchframe_loc}){
         $bodyframeurl="$bodyframeurl?sessionID=$sessionID;view=$view;setmask=$setmask";
     }
     else {
@@ -99,11 +95,11 @@ sub handler {
         headerframeurl  => $headerframeurl,
         bodyframeurl    => $bodyframeurl,
         
-        config          => \%config,
+        config          => $config,
         msg             => $msg,
     };
 
-    OpenBib::Common::Util::print_page($config{tt_frameset_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_frameset_tname},$ttdata,$r);
 
     $sessiondbh->disconnect();
 

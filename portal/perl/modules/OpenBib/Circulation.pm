@@ -50,19 +50,14 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
-
 sub handler {
     my $r=shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my $query=Apache::Request->new($r);
 
     my $status=$query->parse;
@@ -80,11 +75,11 @@ sub handler {
     my $sessionID  = $query->param('sessionID'  )||'';
 
     my $sessiondbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
   
     my $userdbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $queryoptions_ref
@@ -127,7 +122,7 @@ sub handler {
 
     my $database=OpenBib::Common::Util::get_targetdb_of_session($userdbh,$sessionID);
 
-    my $targetcircinfo_ref = OpenBib::Common::Util::get_targetcircinfo($sessiondbh);
+    my $targetcircinfo_ref = $config->get_targetcircinfo();
 
     if ($action eq "showcirc") {
 
@@ -166,11 +161,11 @@ sub handler {
 		  
                 show_corporate_banner => 0,
                 show_foot_banner      => 1,
-                config       => \%config,
+                config       => $config,
                 msg          => $msg,
             };
       
-            OpenBib::Common::Util::print_page($config{tt_circulation_reserv_tname},$ttdata,$r);
+            OpenBib::Common::Util::print_page($config->{tt_circulation_reserv_tname},$ttdata,$r);
 
         }
         elsif ($circaction eq "reminders") {
@@ -208,11 +203,11 @@ sub handler {
 		  
                 show_corporate_banner => 0,
                 show_foot_banner      => 1,
-                config     => \%config,
+                config     => $config,
                 msg        => $msg,
             };
       
-            OpenBib::Common::Util::print_page($config{tt_circulation_remind_tname},$ttdata,$r);
+            OpenBib::Common::Util::print_page($config->{tt_circulation_remind_tname},$ttdata,$r);
         }
         elsif ($circaction eq "orders") {
             my $circexlist=undef;
@@ -248,11 +243,11 @@ sub handler {
 		  
                 show_corporate_banner => 0,
                 show_foot_banner      => 1,
-                config     => \%config,
+                config     => $config,
                 msg        => $msg,
             };
       
-            OpenBib::Common::Util::print_page($config{tt_circulation_orders_tname},$ttdata,$r);
+            OpenBib::Common::Util::print_page($config->{tt_circulation_orders_tname},$ttdata,$r);
         }
         else {
             my $circexlist=undef;
@@ -288,11 +283,11 @@ sub handler {
 		  
                 show_corporate_banner => 0,
                 show_foot_banner      => 1,
-                config     => \%config,
+                config     => $config,
                 msg        => $msg,
             };
       
-            OpenBib::Common::Util::print_page($config{tt_circulation_tname},$ttdata,$r);
+            OpenBib::Common::Util::print_page($config->{tt_circulation_tname},$ttdata,$r);
         }
 
 

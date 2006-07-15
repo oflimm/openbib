@@ -46,19 +46,14 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
-
 sub handler {
     my $r=shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my $query=Apache::Request->new($r);
 
     my $status=$query->parse;
@@ -87,11 +82,15 @@ sub handler {
     # Verbindung zur SQL-Datenbank herstellen
   
     my $sessiondbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
   
+    my $configdbh
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
     my $userdbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $queryoptions_ref
@@ -105,6 +104,7 @@ sub handler {
     unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
         $sessiondbh->disconnect();
+        $configdbh->disconnect();
         $userdbh->disconnect();
         return OK;
     }
@@ -124,6 +124,7 @@ sub handler {
     unless($userid){
         OpenBib::Common::Util::print_warning($msg->maketext("Sie haben sich nicht authentifiziert."),$r,$msg);
         $sessiondbh->disconnect();
+        $configdbh->disconnect();
         $userdbh->disconnect();
         return OK;
     }
@@ -183,9 +184,9 @@ sub handler {
         my $lastcategory="";
         my $count=0;
     
-        my $maxcolumn=$config{databasechoice_maxcolumn};
+        my $maxcolumn=$config->{databasechoice_maxcolumn};
     
-        $idnresult=$sessiondbh->prepare("select * from dbinfo where active=1 order by orgunit ASC, description ASC") or $logger->error($DBI::errstr);
+        $idnresult=$configdbh->prepare("select * from dbinfo where active=1 order by orgunit ASC, description ASC") or $logger->error($DBI::errstr);
         $idnresult->execute() or $logger->error($DBI::errstr);
     
         my @catdb=();
@@ -255,14 +256,11 @@ sub handler {
             maxcolumn      => $maxcolumn,
             colspan        => $colspan,
             catdb          => \@catdb,
-            show_foot_banner      => 1,
-            show_corporate_banner => 0,
-            show_testsystem_info  => 0,
-            config         => \%config,
+            config         => $config,
             msg            => $msg,
         };
     
-        OpenBib::Common::Util::print_page($config{tt_databaseprofile_tname},$ttdata,$r);
+        OpenBib::Common::Util::print_page($config->{tt_databaseprofile_tname},$ttdata,$r);
         return OK;
     }
 
@@ -317,7 +315,7 @@ sub handler {
             $profilresult->execute($profilid,$database) or $logger->error($DBI::errstr);
             $profilresult->finish();
         }
-        $r->internal_redirect("http://$config{servername}$config{databaseprofile_loc}?sessionID=$sessionID&do_showprofile=1");
+        $r->internal_redirect("http://$config->{servername}$config->{databaseprofile_loc}?sessionID=$sessionID&do_showprofile=1");
     }
     # Loeschen eines Profils
     elsif ($do_delprofile) {
@@ -329,13 +327,14 @@ sub handler {
     
         $profilresult->finish();
 
-        $r->internal_redirect("http://$config{servername}$config{databaseprofile_loc}?sessionID=$sessionID&do_showprofile=1");
+        $r->internal_redirect("http://$config->{servername}$config->{databaseprofile_loc}?sessionID=$sessionID&do_showprofile=1");
     }
     # ... andere Aktionen sind nicht erlaubt
     else {
         OpenBib::Common::Util::print_warning($msg->maketext("Keine gültige Aktion"),$r,$msg);
     }
 
+    $configdbh->disconnect();
     $sessiondbh->disconnect();
     $userdbh->disconnect();
   

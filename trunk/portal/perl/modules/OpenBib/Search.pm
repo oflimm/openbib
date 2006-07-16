@@ -47,12 +47,6 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-use vars qw(%config);
-
-*config = \%OpenBib::Config::config;
-
 my $benchmark;
 
 if ($OpenBib::Config::config{benchmark}) {
@@ -64,7 +58,9 @@ sub handler {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-  
+
+    my $config = new OpenBib::Config();
+    
     ## Wandlungstabelle Erscheinungsjahroperator
     my %ejop=(
         'genau' => '=',
@@ -175,11 +171,11 @@ sub handler {
     # Verbindung zur SQL-Datenbank herstellen
   
     my $dbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
             or $logger->error_die($DBI::errstr);
   
     my $sessiondbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $queryoptions_ref
@@ -190,10 +186,10 @@ sub handler {
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
     
     my $targetdbinfo_ref
-        = OpenBib::Common::Util::get_targetdbinfo($sessiondbh);
+        = $config->get_targetdbinfo();
 
     my $targetcircinfo_ref
-        = OpenBib::Common::Util::get_targetcircinfo($sessiondbh);
+        = $config->get_targetcircinfo();
     
     my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
 
@@ -267,10 +263,10 @@ sub handler {
                 sessionID        => $sessionID,
                 normset          => $normset,
                 
-                config     => \%config,
+                config     => $config,
                 msg        => $msg,
             };
-            OpenBib::Common::Util::print_page($config{tt_search_showautset_tname},$ttdata,$r);
+            OpenBib::Common::Util::print_page($config->{tt_search_showautset_tname},$ttdata,$r);
             return OK;
         }
     
@@ -317,7 +313,7 @@ sub handler {
                 my @outputbuffer=();
                 my ($atime,$btime,$timeall);
                 
-                if ($config{benchmark}) {
+                if ($config->{benchmark}) {
                     $atime=new Benchmark;
                 }
 	
@@ -332,7 +328,7 @@ sub handler {
                     });
                 }
 
-                if ($config{benchmark}) {
+                if ($config->{benchmark}) {
                     $btime   = new Benchmark;
                     $timeall = timediff($btime,$atime);
                     $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel : ist ".timestr($timeall));
@@ -411,7 +407,7 @@ sub handler {
                 my @outputbuffer=();
                 my ($atime,$btime,$timeall);
                 
-                if ($config{benchmark}) {
+                if ($config->{benchmark}) {
                     $atime=new Benchmark;
                 }
 	
@@ -426,7 +422,7 @@ sub handler {
                     });
                 }
 
-                if ($config{benchmark}) {
+                if ($config->{benchmark}) {
                     $btime   = new Benchmark;
                     $timeall = timediff($btime,$atime);
                     $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel : ist ".timestr($timeall));
@@ -504,10 +500,10 @@ sub handler {
                 sessionID  => $sessionID,
                 normset    => $normset,
 
-                config     => \%config,
+                config     => $config,
                 msg        => $msg,
             };
-            OpenBib::Common::Util::print_page($config{tt_search_showswtset_tname},$ttdata,$r);
+            OpenBib::Common::Util::print_page($config->{tt_search_showswtset_tname},$ttdata,$r);
             return OK;
         }
     
@@ -533,10 +529,10 @@ sub handler {
                 sessionID  => $sessionID,
                 normset    => $normset,
                 
-                config     => \%config,
+                config     => $config,
                 msg        => $msg,
             };
-            OpenBib::Common::Util::print_page($config{tt_search_shownotset_tname},$ttdata,$r);
+            OpenBib::Common::Util::print_page($config->{tt_search_shownotset_tname},$ttdata,$r);
             return OK;
         }
     
@@ -712,10 +708,10 @@ sub handler {
             sessionID  => $sessionID,
             normset    => $normset,
             
-            config     => \%config,
+            config     => $config,
             msg        => $msg,
         };
-        OpenBib::Common::Util::print_page($config{tt_search_showswtset_tname},$ttdata,$r);
+        OpenBib::Common::Util::print_page($config->{tt_search_showswtset_tname},$ttdata,$r);
         return OK;
     }
   
@@ -741,10 +737,10 @@ sub handler {
             sessionID  => $sessionID,
             normset    => $normset,
             
-            config     => \%config,
+            config     => $config,
             msg        => $msg,
         };
-        OpenBib::Common::Util::print_page($config{tt_search_showkorset_tname},$ttdata,$r);
+        OpenBib::Common::Util::print_page($config->{tt_search_showkorset_tname},$ttdata,$r);
         return OK;
     }
     
@@ -770,10 +766,10 @@ sub handler {
             sessionID  => $sessionID,
             normset    => $normset,
             
-            config     => \%config,
+            config     => $config,
             msg        => $msg,
         };
-        OpenBib::Common::Util::print_page($config{tt_search_shownotset_tname},$ttdata,$r);
+        OpenBib::Common::Util::print_page($config->{tt_search_shownotset_tname},$ttdata,$r);
         return OK;
     }
   
@@ -799,10 +795,10 @@ sub handler {
             sessionID  => $sessionID,
             normset    => $normset,
             
-            config     => \%config,
+            config     => $config,
             msg        => $msg,
         };
-        OpenBib::Common::Util::print_page($config{tt_search_showautset_tname},$ttdata,$r);
+        OpenBib::Common::Util::print_page($config->{tt_search_showautset_tname},$ttdata,$r);
         return OK;
     }
   
@@ -869,7 +865,7 @@ sub handler {
             my @outputbuffer=();
             my ($atime,$btime,$timeall);
       
-            if ($config{benchmark}) {
+            if ($config->{benchmark}) {
                 $atime=new Benchmark;
             }
       
@@ -884,7 +880,7 @@ sub handler {
                 });
             }
             
-            if ($config{benchmark}) {
+            if ($config->{benchmark}) {
                 $btime   = new Benchmark;
                 $timeall = timediff($btime,$atime);
                 $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel : ist ".timestr($timeall));
@@ -984,7 +980,7 @@ sub handler {
             my @outputbuffer=();
             my ($atime,$btime,$timeall);
       
-            if ($config{benchmark}) {
+            if ($config->{benchmark}) {
                 $atime=new Benchmark;
             }
 
@@ -999,7 +995,7 @@ sub handler {
                 });
             }
 
-            if ($config{benchmark}) {
+            if ($config->{benchmark}) {
                 $btime   = new Benchmark;
                 $timeall = timediff($btime,$atime);
                 $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel : ist ".timestr($timeall));
@@ -1095,7 +1091,7 @@ sub handler {
             my @outputbuffer=();
             my ($atime,$btime,$timeall);
       
-            if ($config{benchmark}) {
+            if ($config->{benchmark}) {
                 $atime=new Benchmark;
             }
 
@@ -1110,7 +1106,7 @@ sub handler {
                 });
             }
 
-            if ($config{benchmark}) {
+            if ($config->{benchmark}) {
                 $btime   = new Benchmark;
                 $timeall = timediff($btime,$atime);
                 $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel : ist ".timestr($timeall));
@@ -1207,7 +1203,7 @@ sub handler {
             my @outputbuffer=();
             my ($atime,$btime,$timeall);
       
-            if ($config{benchmark}) {
+            if ($config->{benchmark}) {
                 $atime=new Benchmark;
             }
 
@@ -1222,7 +1218,7 @@ sub handler {
                 });
             }
 
-            if ($config{benchmark}) {
+            if ($config->{benchmark}) {
                 $btime   = new Benchmark;
                 $timeall = timediff($btime,$atime);
                 $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel : ist ".timestr($timeall));

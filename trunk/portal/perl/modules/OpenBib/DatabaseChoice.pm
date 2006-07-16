@@ -162,7 +162,7 @@ sub handler {
 
         my $maxcolumn=$config->{databasechoice_maxcolumn};
       
-        $idnresult=$sessiondbh->prepare("select * from dbinfo where active=1 order by orgunit ASC, description ASC") or $logger->error($DBI::errstr);
+        $idnresult=$config->{dbh}->prepare("select * from dbinfo where active=1 order by orgunit ASC, description ASC") or $logger->error($DBI::errstr);
         $idnresult->execute() or $logger->error($DBI::errstr);
 
         my @catdb=();

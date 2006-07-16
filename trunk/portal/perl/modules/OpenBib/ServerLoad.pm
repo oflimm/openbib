@@ -41,23 +41,19 @@ use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Config;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
-
 sub handler {
     my $r=shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my $sessiondbstatus="offline";
 
     # Test-Verbindung zur SQL-Datenbank herstellen
     my $sessiondbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             and $sessiondbstatus="online";
 
     if ($sessiondbstatus eq "online") {

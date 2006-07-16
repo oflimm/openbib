@@ -54,17 +54,13 @@ use OpenBib::L10N;
 use OpenBib::Search::Local::Xapian;
 use OpenBib::Template::Provider;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-use vars qw(%config);
-
-*config = \%OpenBib::Config::config;
-
 sub handler {
     my $r=shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+
+    my $config = new OpenBib::Config();
     
     my $query=Apache::Request->new($r);
 
@@ -78,11 +74,11 @@ sub handler {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $sessiondbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $userdbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
             or $logger->error_die($DBI::errstr);
 
     # CGI-Input auslesen
@@ -126,10 +122,10 @@ sub handler {
     }
     
     my $targetdbinfo_ref
-        = OpenBib::Common::Util::get_targetdbinfo($sessiondbh);
+        = $config->get_targetdbinfo();
 
     my $targetcircinfo_ref
-        = OpenBib::Common::Util::get_targetcircinfo($sessiondbh);
+        = $config->get_targetcircinfo();
 
     my $searchquery_ref
         = OpenBib::Common::Util::get_searchquery($r);
@@ -137,7 +133,7 @@ sub handler {
     my $is_orgunit=0;
 
   ORGUNIT_SEARCH:
-    foreach my $orgunit_ref (@{$config{orgunits}}){
+    foreach my $orgunit_ref (@{$config->{orgunits}}){
         if ($orgunit_ref->{short} eq $profil){
             $is_orgunit=1;
             last ORGUNIT_SEARCH;
@@ -176,7 +172,7 @@ sub handler {
     # Ueber view koennen bei Direkteinsprung in VirtualSearch die
     # entsprechenden Kataloge vorausgewaehlt werden
     if ($view && $#databases == -1) {
-        my $idnresult=$sessiondbh->prepare("select dbname from viewdbs where viewname = ?") or $logger->error($DBI::errstr);
+        my $idnresult=$config->{dbh}->prepare("select dbname from viewdbs where viewname = ?") or $logger->error($DBI::errstr);
         $idnresult->execute($view) or $logger->error($DBI::errstr);
 
         @databases=();
@@ -189,7 +185,7 @@ sub handler {
     }
 
     if ($searchall) {
-        my $idnresult=$sessiondbh->prepare("select dbname,description from dbinfo where active=1 order by orgunit,description") or $logger->error($DBI::errstr);
+        my $idnresult=$config->{dbh}->prepare("select dbname,description from dbinfo where active=1 order by orgunit,description") or $logger->error($DBI::errstr);
         $idnresult->execute() or $logger->error($DBI::errstr);
 
         @databases=();
@@ -234,7 +230,7 @@ sub handler {
             }
             elsif ($profil eq "alldbs") {
                 # Alle Datenbanken
-                my $idnresult=$sessiondbh->prepare("select dbname from dbinfo where active=1 order by orgunit,dbname") or $logger->error($DBI::errstr);
+                my $idnresult=$config->{config}->prepare("select dbname from dbinfo where active=1 order by orgunit,dbname") or $logger->error($DBI::errstr);
                 $idnresult->execute() or $logger->error($DBI::errstr);
 	
                 my @idnres;
@@ -244,7 +240,7 @@ sub handler {
                 $idnresult->finish();
             }
             else {
-                my $idnresult=$sessiondbh->prepare("select dbname from dbinfo where active=1 and orgunit = ? order by orgunit,dbname") or $logger->error($DBI::errstr);
+                my $idnresult=$config->{dbh}->prepare("select dbname from dbinfo where active=1 and orgunit = ? order by orgunit,dbname") or $logger->error($DBI::errstr);
                 $idnresult->execute($profil) or $logger->error($DBI::errstr);
 	
                 my @idnres;
@@ -256,7 +252,7 @@ sub handler {
         }
         # Kein Profil
         else {
-            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie keine [_1]Kataloge[_2] oder Suchprofile ausgewählt haben. Bitte wählen Sie die gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen Katalogen suchen</a>.","<a href=\"$config{databasechoice_loc}?sessionID=$sessionID\" target=\"body\">","</a>"),$r,$msg);
+            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie keine [_1]Kataloge[_2] oder Suchprofile ausgewählt haben. Bitte wählen Sie die gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen Katalogen suchen</a>.","<a href=\"$config->{databasechoice_loc}?sessionID=$sessionID\" target=\"body\">","</a>"),$r,$msg);
 
             $sessiondbh->disconnect();
             $userdbh->disconnect();
@@ -298,9 +294,9 @@ sub handler {
             ($swtindex )?"swt=$contentreq;swtindex=Index":undef;
 
         my $template =
-            ($verfindex)?$config{"tt_virtualsearch_showverfindex_tname"}:
-            ($korindex )?$config{"tt_virtualsearch_showkorindex_tname"}:
-            ($swtindex )?$config{"tt_virtualsearch_showswtindex_tname"}:undef;
+            ($verfindex)?$config->{"tt_virtualsearch_showverfindex_tname"}:
+            ($korindex )?$config->{"tt_virtualsearch_showkorindex_tname"}:
+            ($swtindex )?$config->{"tt_virtualsearch_showswtindex_tname"}:undef;
             
         $contentreq=~s/\+//g;
         $contentreq=~s/%2B//g;
@@ -324,7 +320,7 @@ sub handler {
 
         foreach my $database (@databases) {
             my $dbh
-                = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+                = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
                     or $logger->error_die($DBI::errstr);
 
             my $thisindex_ref=OpenBib::Search::Util::get_index({
@@ -388,7 +384,7 @@ sub handler {
             $hitrange=200;
         }
 
-        my $baseurl="http://$config{servername}$config{virtualsearch_loc}?sessionID=$sessionID;view=$view;$urlpart;profil=$profil;maxhits=$maxhits;sorttype=$sorttype;sortorder=$sortorder";
+        my $baseurl="http://$config->{servername}$config->{virtualsearch_loc}?sessionID=$sessionID;view=$view;$urlpart;profil=$profil;maxhits=$maxhits;sorttype=$sorttype;sortorder=$sortorder";
 
         my @nav=();
 
@@ -431,7 +427,7 @@ sub handler {
             hitrange   => $hitrange,
             baseurl    => $baseurl,
             profil     => $profil,
-            config     => \%config,
+            config     => $config,
             msg        => $msg,
         };
 
@@ -559,8 +555,8 @@ sub handler {
 
     my ($queryargs,$sortselect,$thissortstring)=OpenBib::Common::Util::get_sort_nav($r,'sortboth',1,$msg);
 
-    my $starttemplatename=$config{tt_virtualsearch_result_start_tname};
-    if ($view && -e "$config{tt_include_path}/views/$view/$starttemplatename") {
+    my $starttemplatename=$config->{tt_virtualsearch_result_start_tname};
+    if ($view && -e "$config->{tt_include_path}/views/$view/$starttemplatename") {
         $starttemplatename="views/$view/$starttemplatename";
     }
 
@@ -570,10 +566,10 @@ sub handler {
     # Ausgabe des ersten HTML-Bereichs
     my $starttemplate = Template->new({
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-            INCLUDE_PATH   => $config{tt_include_path},
+            INCLUDE_PATH   => $config->{tt_include_path},
             ABSOLUTE       => 1,
         }) ],
-#        INCLUDE_PATH   => $config{tt_include_path},
+#        INCLUDE_PATH   => $config->{tt_include_path},
 #        ABSOLUTE       => 1,
         OUTPUT         => $r,
     });
@@ -592,7 +588,7 @@ sub handler {
         queryargs      => $queryargs,
         sortselect     => $sortselect,
         thissortstring => $thissortstring,
-        config         => \%config,
+        config         => $config,
         msg            => $msg,
     };
 
@@ -610,13 +606,13 @@ sub handler {
     if ($enrich){
         my ($atime,$btime,$timeall);
         
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $atime=new Benchmark;
         }
 
         # Verbindung zur SQL-Datenbank herstellen
         my $enrichdbh
-            = DBI->connect("DBI:$config{dbimodule}:dbname=$config{enrichmntdbname};host=$config{enrichmntdbhost};port=$config{enrichmntdbport}", $config{enrichmntdbuser}, $config{enrichmntdbpasswd})
+            = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
                 or $logger->error_die($DBI::errstr);
 
         my $sqlquerystring  = "select isbn from search where match (content) against (? in boolean mode) limit 2000";
@@ -629,7 +625,7 @@ sub handler {
         $request->finish();
         $enrichdbh->disconnect();
 
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : Bestimmung von enrichkeys ist ".timestr($timeall));
@@ -658,7 +654,7 @@ sub handler {
             my $atime=new Benchmark;
 
             $logger->debug("Creating Xapian DB-Object for database $database");
-            my $dbh = new Search::Xapian::Database ( $config{xapian_index_base_path}."/".$database) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+            my $dbh = new Search::Xapian::Database ( $config->{xapian_index_base_path}."/".$database) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
 
             my $request = new OpenBib::Search::Local::Xapian();
             
@@ -814,17 +810,17 @@ sub handler {
             
                 my $treffer=$#sortedoutputbuffer+1;
             
-                my $itemtemplatename=$config{tt_virtualsearch_result_item_tname};
-                if ($view && -e "$config{tt_include_path}/views/$view/$itemtemplatename") {
+                my $itemtemplatename=$config->{tt_virtualsearch_result_item_tname};
+                if ($view && -e "$config->{tt_include_path}/views/$view/$itemtemplatename") {
                     $itemtemplatename="views/$view/$itemtemplatename";
                 }
             
                 my $itemtemplate = Template->new({
                     LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-                        INCLUDE_PATH   => $config{tt_include_path},
+                        INCLUDE_PATH   => $config->{tt_include_path},
                         ABSOLUTE       => 1,
                     }) ],
-                    #                INCLUDE_PATH   => $config{tt_include_path},
+                    #                INCLUDE_PATH   => $config->{tt_include_path},
                     #                ABSOLUTE       => 1,
                     OUTPUT         => $r,
                 });            
@@ -852,7 +848,7 @@ sub handler {
                     sortorder       => $sortorder,
                     resulttime      => $resulttime,
                     drilldowntime   => $drilldowntime,
-                    config          => \%config,
+                    config          => $config,
                     msg             => $msg,
                 };
 
@@ -875,7 +871,7 @@ sub handler {
             # SQL
 
             my $dbh
-                = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+                = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
                     or $logger->error_die($DBI::errstr);
             
             my $atime=new Benchmark;
@@ -899,7 +895,7 @@ sub handler {
 
                 my $a2time;
             
-                if ($config{benchmark}) {
+                if ($config->{benchmark}) {
                     $a2time=new Benchmark;
                 }
 
@@ -921,7 +917,7 @@ sub handler {
                 my $resulttime = timestr($timeall,"nop");
                 $resulttime    =~s/(\d+\.\d+) .*/$1/;
 
-                if ($config{benchmark}) {
+                if ($config->{benchmark}) {
                     my $b2time     = new Benchmark;
                     my $timeall2   = timediff($b2time,$a2time);
 
@@ -942,17 +938,17 @@ sub handler {
 	    
                 my $treffer=$#sortedoutputbuffer+1;
 
-                my $itemtemplatename=$config{tt_virtualsearch_result_item_tname};
-                if ($view && -e "$config{tt_include_path}/views/$view/$itemtemplatename") {
+                my $itemtemplatename=$config->{tt_virtualsearch_result_item_tname};
+                if ($view && -e "$config->{tt_include_path}/views/$view/$itemtemplatename") {
                     $itemtemplatename="views/$view/$itemtemplatename";
                 }
 
                 my $itemtemplate = Template->new({
                     LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-                        INCLUDE_PATH   => $config{tt_include_path},
+                        INCLUDE_PATH   => $config->{tt_include_path},
                         ABSOLUTE       => 1,
                     }) ],
-                    #                INCLUDE_PATH   => $config{tt_include_path},
+                    #                INCLUDE_PATH   => $config->{tt_include_path},
                     #                ABSOLUTE       => 1,
                     OUTPUT         => $r,
                 });
@@ -974,7 +970,7 @@ sub handler {
                     sorttype        => $sorttype,
                     sortorder       => $sortorder,
                     resulttime      => $resulttime,
-                    config          => \%config,
+                    config          => $config,
                     msg             => $msg,
                 };
 
@@ -1065,17 +1061,17 @@ sub handler {
     }
 
     # Ausgabe des letzten HTML-Bereichs
-    my $endtemplatename=$config{tt_virtualsearch_result_end_tname};
-    if ($view && -e "$config{tt_include_path}/views/$view/$endtemplatename") {
+    my $endtemplatename=$config->{tt_virtualsearch_result_end_tname};
+    if ($view && -e "$config->{tt_include_path}/views/$view/$endtemplatename") {
         $endtemplatename="views/$view/$endtemplatename";
     }
 
     my $endtemplate = Template->new({
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-            INCLUDE_PATH   => $config{tt_include_path},
+            INCLUDE_PATH   => $config->{tt_include_path},
             ABSOLUTE       => 1,
         }) ],
-#        INCLUDE_PATH   => $config{tt_include_path},
+#        INCLUDE_PATH   => $config->{tt_include_path},
 #        ABSOLUTE       => 1,
          OUTPUT         => $r,
     });
@@ -1087,7 +1083,7 @@ sub handler {
 
         gesamttreffer => $gesamttreffer,
 
-        config        => \%config,
+        config        => $config,
         msg           => $msg,
     };
 

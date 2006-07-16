@@ -44,19 +44,14 @@ use OpenBib::Config;
 use OpenBib::Search::Util;
 use OpenBib::VirtualSearch::Util;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
-
 sub search {
     my ($class, %args) = @_;
 
     # Log4perl logger erzeugen
 
     my $logger = get_logger();
+
+    my $config = new OpenBib::Config();
 
     # Suchbegriffe
     my $fs        = $args{ 'fs'        } || '';
@@ -104,7 +99,7 @@ sub search {
     #####################################################################
     # Verbindung zur SQL-Datenbank herstellen
   
-    my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
+    my $sessiondbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
 
     # BEGIN DB-Bestimmung
     ####################################################################
@@ -117,7 +112,7 @@ sub search {
     # entsprechenden Kataloge vorausgewaehlt werden
   
     if ($view) {
-        my $idnresult=$sessiondbh->prepare("select dbname from viewdbs where viewname = ? order by dbname") or $logger->error($DBI::errstr);
+        my $idnresult=$config->{dbh}->prepare("select dbname from viewdbs where viewname = ? order by dbname") or $logger->error($DBI::errstr);
         $idnresult->execute($view) or $logger->error($DBI::errstr);
     
         @databases=();
@@ -137,7 +132,7 @@ sub search {
     # in allen Datenbanken
     else {
     
-        my $idnresult=$sessiondbh->prepare("select dbname,description from dbinfo where active=1 order by dbname") or $logger->error($DBI::errstr);
+        my $idnresult=$config->{dbh}->prepare("select dbname,description from dbinfo where active=1 order by dbname") or $logger->error($DBI::errstr);
         $idnresult->execute() or $logger->error($DBI::errstr);
     
         @databases=();
@@ -265,10 +260,10 @@ sub search {
         $hitrange=-1;
     }
 
-    my $targetdbinfo_ref   = OpenBib::Common::Util::get_targetdbinfo($sessiondbh);
-    my $targetcircinfo_ref = OpenBib::Common::Util::get_targetcircinfo($sessiondbh);
+    my $targetdbinfo_ref   = $config->get_targetdbinfo();
+    my $targetcircinfo_ref = $config->get_targetcircinfo();
 
-    # Folgende nicht erlaubte Anfragen werden sofort ausgesondert 
+    # Folgende nicht erlaubte Anfragen werden sofort ausgesondert
   
     my $firstsql;
     if ($fs) {
@@ -357,7 +352,7 @@ sub search {
     my %searchresult=();
 
     if ($database && $singleidn) {
-        my $dbh=DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd}) or $logger->error_die($DBI::errstr);
+        my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
 
         my $atime;
         my $btime;
@@ -403,7 +398,7 @@ sub search {
         $btime=new Benchmark;
         $timeall=timediff($btime,$atime);
     
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $logger->info("Zeit fuer : $treffer Titel : ist ".timestr($timeall));
         }
     
@@ -454,7 +449,7 @@ sub search {
             #####################################################################
             ## Ausleihkonfiguration fuer den Katalog einlesen
       
-            my $dbinforesult=$sessiondbh->prepare("select circ,circurl,circcheckurl,circdb from dboptions where dbname = ?") or $logger->error($DBI::errstr);
+            my $dbinforesult=$config->{dbh}->prepare("select circ,circurl,circcheckurl,circdb from dboptions where dbname = ?") or $logger->error($DBI::errstr);
             $dbinforesult->execute($database) or $logger->error($DBI::errstr);;
     
             my $circ=0;
@@ -472,7 +467,7 @@ sub search {
             $dbinforesult->finish();
       
       
-            my $dbh=DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd}) or $logger->error_die($DBI::errstr);
+            my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
 
             my @tidns=();
             if ($database && $singleidn) {
@@ -546,7 +541,7 @@ sub search {
                 my $btime=new Benchmark;
                 my $timeall=timediff($btime,$atime);
 	
-                if ($config{benchmark}) {
+                if ($config->{benchmark}) {
                     $logger->debug("Zeit fuer : ".($#outputbuffer+1)." : ist ".timestr($timeall));
                 }
 
@@ -587,12 +582,14 @@ sub get_aut_ans_by_idn {
 
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     # Suchbegriffe
     my $id        = $args{ 'id'        } || '';
     my $database  = $args{ 'database'  } || '';
 
     my $dbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $ans=OpenBib::Search::Util::get_aut_ans_by_idn($id,$dbh);
@@ -612,12 +609,14 @@ sub get_kor_ans_by_idn {
 
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     # Suchbegriffe
     my $id        = $args{ 'id'        } || '';
     my $database  = $args{ 'database'  } || '';
 
     my $dbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $ans=OpenBib::Search::Util::get_kor_ans_by_idn($id,$dbh);
@@ -636,12 +635,14 @@ sub get_swt_ans_by_idn {
 
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     # Suchbegriffe
     my $id        = $args{ 'id'        } || '';
     my $database  = $args{ 'database'  } || '';
 
     my $dbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $ans=OpenBib::Search::Util::get_swt_ans_by_idn($id,$dbh);
@@ -659,12 +660,14 @@ sub get_not_ans_by_idn {
 
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     # Suchbegriffe
     my $id        = $args{ 'id'        } || '';
     my $database  = $args{ 'database'  } || '';
     
     my $dbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
             or $logger->error_die($DBI::errstr);
     
 
@@ -684,13 +687,15 @@ sub get_recent_titids_by_aut {
 
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     # Suchbegriffe
     my $database  =  $args{ 'database'  } || '';
     my $id        = ($args{ 'id'        } =~/^\d+$/)?$args{'id'   }:0;
     my $limit     = ($args{ 'limit'     } =~/^\d+$/)?$args{'limit'}:0;
 
     my $dbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
             or $logger->error_die($DBI::errstr);
     
     my $titlist_ref=OpenBib::Search::Util::get_recent_titids_by_aut({
@@ -711,13 +716,15 @@ sub get_recent_titids_by_kor {
 
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     # Suchbegriffe
     my $database  =  $args{ 'database'  } || '';
     my $id        = ($args{ 'id'        } =~/^\d+$/)?$args{'id'   }:0;
     my $limit     = ($args{ 'limit'     } =~/^\d+$/)?$args{'limit'}:0;
 
     my $dbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $titlist_ref=OpenBib::Search::Util::get_recent_titids_by_kor({
@@ -738,13 +745,15 @@ sub get_recent_titids_by_swt {
 
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     # Suchbegriffe
     my $database  =  $args{ 'database'  } || '';
     my $id        = ($args{ 'id'        } =~/^\d+$/)?$args{'id'   }:0;
     my $limit     = ($args{ 'limit'     } =~/^\d+$/)?$args{'limit'}:0;
 
     my $dbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $titlist_ref=OpenBib::Search::Util::get_recent_titids_by_swt({
@@ -765,13 +774,15 @@ sub get_recent_titids_by_not {
 
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     # Suchbegriffe
     my $database  =  $args{ 'database'  } || '';
     my $id        = ($args{ 'id'        } =~/^\d+$/)?$args{'id'   }:0;
     my $limit     = ($args{ 'limit'     } =~/^\d+$/)?$args{'limit'}:0;
 
     my $dbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $titlist_ref=OpenBib::Search::Util::get_recent_titids_by_not({
@@ -792,20 +803,22 @@ sub get_tit_listitem_by_idn {
 
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     # Suchbegriffe
     my $database  =  $args{ 'database'  } || '';
     my $id        = ($args{ 'id'        } =~/^\d+$/)?$args{'id'   }:0;
 
     my $dbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $sessiondbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $targetdbinfo_ref
-        = OpenBib::Common::Util::get_targetdbinfo($sessiondbh);
+        = $config->get_targetdbinfo();
 
     my $tititem_ref=OpenBib::Search::Util::get_tit_listitem_by_idn({
         titidn            => $id,

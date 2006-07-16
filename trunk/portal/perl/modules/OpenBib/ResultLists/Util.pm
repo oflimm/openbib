@@ -38,10 +38,4 @@ use Template;
 
 use OpenBib::Config;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
-
 1;

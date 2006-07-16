@@ -47,18 +47,14 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
-
 sub handler {
     my $r=shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my $query=Apache::Request->new($r);
 
     my $status=$query->parse;
@@ -77,11 +73,11 @@ sub handler {
     my $sessionID = $query->param('sessionID');
 
     my $sessiondbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
   
     my $userdbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $queryoptions_ref
@@ -114,10 +110,10 @@ sub handler {
             stylesheet => $stylesheet,
             sessionID  => $sessionID,
 
-            config     => \%config,
+            config     => $config,
             msg        => $msg,
         };
-        OpenBib::Common::Util::print_page($config{tt_selfreg_tname},$ttdata,$r);
+        OpenBib::Common::Util::print_page($config->{tt_selfreg_tname},$ttdata,$r);
     }
     elsif ($action eq "auth") {
         if ($loginname eq "" || $password1 eq "" || $password2 eq "") {
@@ -136,7 +132,7 @@ sub handler {
 
         # Ueberpruefen, ob es eine gueltige Mailadresse angegeben wurde.
         unless (Email::Valid->address($loginname)){
-            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine gütige Mailadresse eingegeben. Gehen Sie bitte [_1]zurück[_2] und korrigieren Sie Ihre Eingabe","<a href=\"http://$config{servername}$config{selfreg_loc}?sessionID=$sessionID&action=show\">","</a>"),$r,$msg);
+            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine gütige Mailadresse eingegeben. Gehen Sie bitte [_1]zurück[_2] und korrigieren Sie Ihre Eingabe","<a href=\"http://$config->{servername}$config->{selfreg_loc}?sessionID=$sessionID&action=show\">","</a>"),$r,$msg);
             $sessiondbh->disconnect();
             $userdbh->disconnect();
             return OK;
@@ -148,7 +144,7 @@ sub handler {
         my $rows = $res->{rowcount};
 
         if ($rows > 0) {
-            OpenBib::Common::Util::print_warning($msg->maketext("Ein Benutzer mit dem Namen $loginname existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_1]zurück[_2] und lassen es sich zumailen.","<a href=\"http://$config{servername}$config{login_loc}?sessionID=$sessionID?do_login=1\">","</a>"),$r,$msg);
+            OpenBib::Common::Util::print_warning($msg->maketext("Ein Benutzer mit dem Namen $loginname existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_1]zurück[_2] und lassen es sich zumailen.","<a href=\"http://$config->{servername}$config->{login_loc}?sessionID=$sessionID?do_login=1\">","</a>"),$r,$msg);
             $userresult->finish();
 
             $sessiondbh->disconnect();
@@ -193,10 +189,10 @@ sub handler {
 
             loginname  => $loginname,
 	      
-            config     => \%config,
+            config     => $config,
             msg        => $msg,
         };
-        OpenBib::Common::Util::print_page($config{tt_selfreg_success_tname},$ttdata,$r);
+        OpenBib::Common::Util::print_page($config->{tt_selfreg_success_tname},$ttdata,$r);
     }
     else {
         OpenBib::Common::Util::print_warning($msg->maketext("Unerlaubte Aktion"),$r,$msg);

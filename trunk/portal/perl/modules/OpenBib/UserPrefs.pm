@@ -48,18 +48,14 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
-
 sub handler {
     my $r=shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my $query=Apache::Request->new($r);
 
     my $status=$query->parse;
@@ -93,11 +89,11 @@ sub handler {
     my $sessionID     = $query->param('sessionID') || '';
 
     my $sessiondbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
   
     my $userdbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $queryoptions_ref
@@ -253,10 +249,10 @@ sub handler {
             ejahrchecked     => $ejahrchecked,
             userinfo         => \%userinfo,
 
-            config           => \%config,
+            config           => $config,
             msg              => $msg,
         };
-        OpenBib::Common::Util::print_page($config{tt_userprefs_tname},$ttdata,$r);
+        OpenBib::Common::Util::print_page($config->{tt_userprefs_tname},$ttdata,$r);
     }
     elsif ($action eq "changefields") {
         my $targetresult=$userdbh->prepare("update fieldchoice set fs = ?, hst = ?, hststring = ?, verf = ?, kor = ?, swt = ?, notation = ?, isbn = ?, issn = ?, sign = ?, mart = ?, ejahr = ? where userid = ?") or $logger->error($DBI::errstr);
@@ -269,10 +265,10 @@ sub handler {
             stylesheet => $stylesheet,
             sessionID  => $sessionID,
 
-            config     => \%config,
+            config     => $config,
             msg        => $msg,
         };
-        OpenBib::Common::Util::print_page($config{tt_userprefs_changefields_tname},$ttdata,$r);
+        OpenBib::Common::Util::print_page($config->{tt_userprefs_changefields_tname},$ttdata,$r);
     }
     elsif ($action eq "Kennung löschen") {
         # TT-Data erzeugen
@@ -281,10 +277,10 @@ sub handler {
             stylesheet => $stylesheet,
             sessionID  => $sessionID,
 
-            config     => \%config,
+            config     => $config,
             msg        => $msg,
         };
-        OpenBib::Common::Util::print_page($config{tt_userprefs_ask_delete_tname},$ttdata,$r);
+        OpenBib::Common::Util::print_page($config->{tt_userprefs_ask_delete_tname},$ttdata,$r);
     }
     elsif ($action eq "Kennung soll wirklich gelöscht werden") {
         # Zuerst werden die Datenbankprofile geloescht
@@ -336,10 +332,10 @@ sub handler {
             stylesheet => $stylesheet,
             sessionID  => $sessionID,
 
-            config     => \%config,
+            config     => $config,
             msg        => $msg,
         };
-        OpenBib::Common::Util::print_page($config{tt_userprefs_userdeleted_tname},$ttdata,$r);
+        OpenBib::Common::Util::print_page($config->{tt_userprefs_userdeleted_tname},$ttdata,$r);
     }
     elsif ($action eq "Password ändern") {
         if ($password1 eq "" || $password1 ne $password2) {
@@ -354,7 +350,7 @@ sub handler {
         $targetresult->execute($password1,$userid) or $logger->error($DBI::errstr);
         $targetresult->finish();
     
-        $r->internal_redirect("http://$config{servername}$config{userprefs_loc}?sessionID=$sessionID&action=showfields");
+        $r->internal_redirect("http://$config->{servername}$config->{userprefs_loc}?sessionID=$sessionID&action=showfields");
     }
     elsif ($action eq "changemask") {
         if ($setmask eq "") {
@@ -374,7 +370,7 @@ sub handler {
     
         $idnresult->finish();
 
-        $r->internal_redirect("http://$config{servername}$config{userprefs_loc}?sessionID=$sessionID&action=showfields");
+        $r->internal_redirect("http://$config->{servername}$config->{userprefs_loc}?sessionID=$sessionID&action=showfields");
     }
     else {
         OpenBib::Common::Util::print_warning($msg->maketext("Unerlaubte Aktion"),$r,$msg);

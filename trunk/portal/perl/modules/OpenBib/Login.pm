@@ -50,18 +50,14 @@ use OpenBib::Config;
 use OpenBib::Login::Util;
 use OpenBib::L10N;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
-
 sub handler {
     my $r=shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my $query=Apache::Request->new($r);
 
     my $status=$query->parse;
@@ -86,11 +82,11 @@ sub handler {
     my $do_loginfailed = $query->param('do_loginfailed')  || '';
     
     my $sessiondbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
   
     my $userdbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $queryoptions_ref
@@ -147,11 +143,11 @@ sub handler {
             sessionID    => $sessionID,
             targetselect => $targetselect,
             loginname    => $loginname,
-            config       => \%config,
+            config       => $config,
             msg          => $msg,
         };
     
-        OpenBib::Common::Util::print_page($config{tt_login_tname},$ttdata,$r);
+        OpenBib::Common::Util::print_page($config->{tt_login_tname},$ttdata,$r);
     }
     elsif ($do_auth) {
         my $loginfailed=0;
@@ -183,7 +179,7 @@ sub handler {
 
         ## Ausleihkonfiguration fuer den Katalog einlesen
         my $targetcircinfo_ref
-            = OpenBib::Common::Util::get_targetcircinfo($sessiondbh);
+            = $config->get_targetcircinfo();
 
         if ($type eq "olws") {
         
@@ -252,7 +248,7 @@ sub handler {
             my $userid = decode_utf8($res->{'userid'});
 
             # Es darf keine Session assoziiert sein. Daher stumpf loeschen
-            my $globalsessionID="$config{servername}:$sessionID";
+            my $globalsessionID="$config->{servername}:$sessionID";
             $userresult=$userdbh->prepare("delete from usersession where sessionid = ?") or $logger->error($DBI::errstr);
             $userresult->execute($globalsessionID) or $logger->error($DBI::errstr);
       
@@ -313,9 +309,9 @@ sub handler {
 
         # Und nun wird ein komplett neue Frameset aufgebaut
         my $headerframeurl
-            = "http://$config{servername}$config{headerframe_loc}?sessionID=$sessionID";
+            = "http://$config->{servername}$config->{headerframe_loc}?sessionID=$sessionID";
         my $bodyframeurl
-            = "http://$config{servername}$config{userprefs_loc}?sessionID=$sessionID&action=showfields";
+            = "http://$config->{servername}$config->{userprefs_loc}?sessionID=$sessionID&action=showfields";
     
         if ($view ne "") {
             $headerframeurl.="&view=$view";
@@ -324,7 +320,7 @@ sub handler {
 
         # Fehlerbehandlung
         if ($loginfailed) {
-            $bodyframeurl="http://$config{servername}$config{login_loc}?sessionID=$sessionID&do_loginfailed=1&code=$loginfailed";
+            $bodyframeurl="http://$config->{servername}$config->{login_loc}?sessionID=$sessionID&do_loginfailed=1&code=$loginfailed";
         }
     
         my $ttdata={
@@ -332,11 +328,11 @@ sub handler {
             bodyframeurl    => $bodyframeurl,
             view            => $view,
             sessionID       => $sessionID,
-            config          => \%config,
+            config          => $config,
             msg             => $msg,
         };
     
-        OpenBib::Common::Util::print_page($config{tt_startopac_tname},$ttdata,$r);
+        OpenBib::Common::Util::print_page($config->{tt_startopac_tname},$ttdata,$r);
     }
     elsif ($do_loginfailed) {
         if    ($code eq "1") {

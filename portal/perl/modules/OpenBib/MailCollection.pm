@@ -50,18 +50,14 @@ use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::Search::Util;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
-
 sub handler {
     my $r=shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my $query=Apache::Request->new($r);
 
     my $status=$query->parse;
@@ -76,11 +72,11 @@ sub handler {
     # Verbindung zur SQL-Datenbank herstellen
 
     my $sessiondbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
   
     my $userdbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $sessionID = $query->param('sessionID');
@@ -133,10 +129,10 @@ sub handler {
     }	
 
     my $targetdbinfo_ref
-        = OpenBib::Common::Util::get_targetdbinfo($sessiondbh);
+        = $config->get_targetdbinfo();
     
     my $targetcircinfo_ref
-        = OpenBib::Common::Util::get_targetcircinfo($sessiondbh);
+        = $config->get_targetcircinfo();
 
     my @dbidnlist=();
     
@@ -178,7 +174,7 @@ sub handler {
         my $database  = $dbidn_ref->{database};
         my $singleidn = $dbidn_ref->{singleidn};
       
-        my $dbh=DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd}) or $logger->error_die($DBI::errstr);
+        my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
       
         my ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn({
             titidn             => $singleidn,
@@ -219,7 +215,7 @@ sub handler {
 	qopts      => $queryoptions_ref,
         type       => $type,
         collection => \@collection,
-        config     => \%config,
+        config     => $config,
         msg        => $msg,
     };
 
@@ -228,11 +224,11 @@ sub handler {
 
     my $datatemplate = Template->new({
          LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-             INCLUDE_PATH   => $config{tt_include_path},
+             INCLUDE_PATH   => $config->{tt_include_path},
              ABSOLUTE       => 1,
          }) ],
 #        ABSOLUTE      => 1,
-#        INCLUDE_PATH  => $config{tt_include_path},
+#        INCLUDE_PATH  => $config->{tt_include_path},
         # Es ist wesentlich, dass OUTPUT* hier und nicht im
         # Template::Provider definiert wird
         OUTPUT_PATH   => '/tmp',
@@ -242,7 +238,7 @@ sub handler {
 
     my $mimetype="text/html";
     my $filename="kug-merkliste";
-    my $datatemplatename=$config{tt_mailcollection_mail_html_tname};
+    my $datatemplatename=$config->{tt_mailcollection_mail_html_tname};
 
     if ($type eq "HTML") {
         $filename.=".html";
@@ -250,7 +246,7 @@ sub handler {
     else {
         $mimetype="text/plain";
         $filename.=".txt";
-        $datatemplatename=$config{tt_mailcollection_mail_plain_tname};
+        $datatemplatename=$config->{tt_mailcollection_mail_plain_tname};
     }
 
     $datatemplate->process($datatemplatename, $ttdata) || do {
@@ -267,24 +263,24 @@ sub handler {
 
     my $maintemplate = Template->new({
          LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-             INCLUDE_PATH   => $config{tt_include_path},
+             INCLUDE_PATH   => $config->{tt_include_path},
              ABSOLUTE       => 1,
          }) ],
 #        ABSOLUTE      => 1,
-#        INCLUDE_PATH  => $config{tt_include_path},
+#        INCLUDE_PATH  => $config->{tt_include_path},
         # Es ist wesentlich, dass OUTPUT* hier und nicht im
         # Template::Provider definiert wird
         OUTPUT_PATH   => '/tmp',
         OUTPUT        => $afile,
     });
 
-    $maintemplate->process($config{tt_mailcollection_mail_main_tname}, $mainttdata ) || do { 
+    $maintemplate->process($config->{tt_mailcollection_mail_main_tname}, $mainttdata ) || do { 
         $r->log_reason($maintemplate->error(), $r->filename);
         return SERVER_ERROR;
     };
 
     my $mailmsg = MIME::Lite->new(
-        From            => $config{contact_email},
+        From            => $config->{contact_email},
         To              => $email,
         Subject         => $subject,
         Type            => 'multipart/mixed'
@@ -309,9 +305,9 @@ sub handler {
 	Path            => $mailfile,
     );
   
-    $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config{contact_email}");
+    $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config->{contact_email}");
     
-    OpenBib::Common::Util::print_page($config{tt_mailcollection_success_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_mailcollection_success_tname},$ttdata,$r);
     
     $sessiondbh->disconnect();
     $userdbh->disconnect();

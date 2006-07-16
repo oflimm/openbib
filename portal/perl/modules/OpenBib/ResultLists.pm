@@ -50,17 +50,13 @@ use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::ResultLists::Util;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
-
 sub handler {
     my $r=shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+
+    my $config = new OpenBib::Config();
     
     my $query=Apache::Request->new($r);
 
@@ -74,11 +70,11 @@ sub handler {
   
     # Verbindung zur SQL-Datenbank herstellen
     my $sessiondbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $userdbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
             or $logger->error_die($DBI::errstr);
   
     # CGI-Input auslesen
@@ -118,7 +114,7 @@ sub handler {
     }
 
     my $targetdbinfo_ref
-        = OpenBib::Common::Util::get_targetdbinfo($sessiondbh);
+        = $config->get_targetdbinfo();
 
     # BEGIN Trefferliste
     #
@@ -211,10 +207,10 @@ sub handler {
                 hitcount   => $hitcount,
                 resultdbs  => \@resultdbs,
                 queries    => \@queries,
-                config     => \%config,
+                config     => $config,
                 msg        => $msg,
             };
-            OpenBib::Common::Util::print_page($config{tt_resultlists_choice_tname},$ttdata,$r);
+            OpenBib::Common::Util::print_page($config->{tt_resultlists_choice_tname},$ttdata,$r);
 
             return OK;
         }
@@ -236,8 +232,22 @@ sub handler {
                 $queryid = decode_utf8($res[0]);
             }
 
-            $idnresult=$sessiondbh->prepare("select searchresults.searchresult,searchresults.dbname from searchresults, dbinfo where searchresults.dbname=dbinfo.dbname and sessionid = ? and queryid = ? order by dbinfo.orgunit,searchresults.dbname") or $logger->error($DBI::errstr);
+            $idnresult=$sessiondbh->prepare("select searchresult,dbname from searchresults where sessionid = ? and queryid = ?") or $logger->error($DBI::errstr);
             $idnresult->execute($sessionID,$queryid) or $logger->error($DBI::errstr);
+
+            my $searchresult_ref={};
+            while (my $res=$idnresult->fetchrow_hashref){
+                $searchresult_ref->{$res->{dbname}}=$res->{searchresult};
+            }
+
+            my @sortedsearchresults=();
+            # Sortieren von Searchresults gemaess Ordnung der DBnames in ihren OrgUnits
+            foreach my $dbname ($config->get_sorted_list_of_dbnames_by_orgunit()){
+                push @sortedsearchresults, {
+                    dbname       => $dbname,
+                    searchresult => $searchresult_ref->{$dbname},
+                };
+            }
 
             my @resultset=();
       
@@ -245,8 +255,8 @@ sub handler {
 
                 my @outputbuffer=();
 
-                while (my @res=$idnresult->fetchrow) {
-                    my $storableres=Storable::thaw(pack "H*", $res[0]);
+                foreach my $item_ref (@sortedsearchresults) {
+                    my $storableres=Storable::thaw(pack "H*", $item_ref->{searchresult});
 
                     push @outputbuffer, @$storableres;
                 }
@@ -291,11 +301,11 @@ sub handler {
 		    sortselect     => $sortselect,
 		    thissortstring => $thissortstring,
 		    
-		    config         => \%config,
+		    config         => $config,
                     msg            => $msg,
                 };
 
-                OpenBib::Common::Util::print_page($config{tt_resultlists_showall_sortall_tname},$ttdata,$r);
+                OpenBib::Common::Util::print_page($config->{tt_resultlists_showall_sortall_tname},$ttdata,$r);
 
                 # Eintraege merken fuer Lastresultset
                 foreach my $item_ref (@sortedoutputbuffer) {
@@ -313,10 +323,10 @@ sub handler {
 
                 my @resultlists=();
 
-                while (my @res=$idnresult->fetchrow) {
-                    my $storableres=Storable::thaw(pack "H*", $res[0]);
+                foreach my $item_ref (@sortedsearchresults) {
+                    my $storableres=Storable::thaw(pack "H*", $item_ref->{searchresult});
 
-                    my $database=decode_utf8($res[1]);
+                    my $database=$item_ref->{dbname};
 
                     my @outputbuffer=@$storableres;
 
@@ -373,11 +383,11 @@ sub handler {
 		    sortselect     => $sortselect,
 		    thissortstring => $thissortstring,
 		    
-		    config         => \%config,
+		    config         => $config,
                     msg            => $msg,
                 };
       
-                OpenBib::Common::Util::print_page($config{tt_resultlists_showall_tname},$ttdata,$r);
+                OpenBib::Common::Util::print_page($config->{tt_resultlists_showall_tname},$ttdata,$r);
                 OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@resultset);
                 $idnresult->finish();
             }
@@ -459,13 +469,13 @@ sub handler {
                 sortselect     => $sortselect,
                 thissortstring => $thissortstring,
 		  
-                config         => \%config,
+                config         => $config,
                 msg            => $msg,
             };
       
       
       
-            OpenBib::Common::Util::print_page($config{tt_resultlists_showsinglepool_tname},$ttdata,$r);
+            OpenBib::Common::Util::print_page($config->{tt_resultlists_showsinglepool_tname},$ttdata,$r);
             OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@resultset);
             $idnresult->finish();
 

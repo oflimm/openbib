@@ -35,11 +35,5 @@ use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Config;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
-
 
 1;

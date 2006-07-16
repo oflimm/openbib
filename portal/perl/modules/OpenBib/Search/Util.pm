@@ -32,6 +32,7 @@ use utf8;
 
 use Apache::Reload;
 use Apache::Request ();
+use Benchmark ':hireswallclock';
 use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
@@ -42,15 +43,6 @@ use YAML ();
 
 use OpenBib::Config;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-use vars qw(%config);
-
-*config = \%OpenBib::Config::config;
-
-if ($OpenBib::Config::config{benchmark}){
-    use Benchmark ':hireswallclock';
-}
 
 #####################################################################
 ## get_aut_ans_by_idn(autidn,...): Gebe zu autidn geh"oerende
@@ -64,10 +56,12 @@ sub get_aut_ans_by_idn {
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
+
+    my $config = new OpenBib::Config();
     
     my ($atime,$btime,$timeall);
 
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
 	$atime=new Benchmark;
     }
 
@@ -79,7 +73,7 @@ sub get_aut_ans_by_idn {
     
     my $res=$request->fetchrow_hashref;
     
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
 	$logger->info("Benoetigte Zeit fuer '$sqlrequest' ist ".timestr($timeall));
@@ -115,6 +109,8 @@ sub get_aut_set_by_idn {
     
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my $normset_ref={};
 
     $normset_ref->{id      } = $autidn;
@@ -122,7 +118,7 @@ sub get_aut_set_by_idn {
 
     my ($atime,$btime,$timeall);
 
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
 	$atime=new Benchmark;
     }
 
@@ -143,7 +139,7 @@ sub get_aut_set_by_idn {
         };
     }
 
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
 	$logger->info("Benoetigte Zeit fuer '$sqlrequest' ist ".timestr($timeall));
@@ -152,7 +148,7 @@ sub get_aut_set_by_idn {
 	undef $timeall;
     }
 
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
 	$atime=new Benchmark;
     }
 
@@ -166,7 +162,7 @@ sub get_aut_set_by_idn {
         content => $res->{conncount},
     };
 
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
 	$logger->info("Benoetigte Zeit fuer '$sqlrequest' ist ".timestr($timeall));
@@ -186,9 +182,11 @@ sub get_kor_ans_by_idn {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my ($atime,$btime,$timeall);
   
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
         $atime=new Benchmark;
     }
 
@@ -200,7 +198,7 @@ sub get_kor_ans_by_idn {
     
     my $res=$request->fetchrow_hashref;
   
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
         $btime=new Benchmark;
         $timeall=timediff($btime,$atime);
         $logger->info("Benoetigte Zeit fuer '$sqlrequest' ist ".timestr($timeall));
@@ -235,6 +233,8 @@ sub get_kor_set_by_idn {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my $normset_ref={};
 
     $normset_ref->{id      } = $koridn;
@@ -242,7 +242,7 @@ sub get_kor_set_by_idn {
 
     my ($atime,$btime,$timeall);
   
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
         $atime=new Benchmark;
     }
 
@@ -263,7 +263,7 @@ sub get_kor_set_by_idn {
         };
     }
 
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
 	$logger->info("Benoetigte Zeit fuer '$sqlrequest' ist ".timestr($timeall));
@@ -272,7 +272,7 @@ sub get_kor_set_by_idn {
 	undef $timeall;
     }
 
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
         $atime=new Benchmark;
     }
 
@@ -286,7 +286,7 @@ sub get_kor_set_by_idn {
         content => $res->{conncount},
     };
 
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
 	$logger->info("Benoetigte Zeit fuer '$sqlrequest' ist ".timestr($timeall));
@@ -306,10 +306,12 @@ sub get_swt_ans_by_idn {
   
     # Log4perl logger erzeugen
     my $logger = get_logger();
-  
+
+    my $config = new OpenBib::Config();
+    
     my ($atime,$btime,$timeall);
   
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
         $atime=new Benchmark;
     }
 
@@ -321,7 +323,7 @@ sub get_swt_ans_by_idn {
     
     my $res=$request->fetchrow_hashref;
   
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
         $btime=new Benchmark;
         $timeall=timediff($btime,$atime);
         $logger->info("Benoetigte Zeit fuer '$sqlrequest' ist ".timestr($timeall));
@@ -357,6 +359,8 @@ sub get_swt_set_by_idn {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my $normset_ref={};
 
     $normset_ref->{id      } = $swtidn;
@@ -364,7 +368,7 @@ sub get_swt_set_by_idn {
 
     my ($atime,$btime,$timeall);
   
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
         $atime=new Benchmark;
     }
 
@@ -385,7 +389,7 @@ sub get_swt_set_by_idn {
         };
     }
 
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
 	$logger->info("Benoetigte Zeit fuer '$sqlrequest' ist ".timestr($timeall));
@@ -394,7 +398,7 @@ sub get_swt_set_by_idn {
 	undef $timeall;
     }
 
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
         $atime=new Benchmark;
     }
 
@@ -408,7 +412,7 @@ sub get_swt_set_by_idn {
         content => $res->{conncount},
     };
 
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
 	$logger->info("Benoetigte Zeit fuer '$sqlrequest' ist ".timestr($timeall));
@@ -428,9 +432,11 @@ sub get_not_ans_by_idn {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my ($atime,$btime,$timeall);
     
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
 	$atime=new Benchmark;
     }
 
@@ -442,7 +448,7 @@ sub get_not_ans_by_idn {
     
     my $res=$request->fetchrow_hashref;
   
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
         $btime=new Benchmark;
         $timeall=timediff($btime,$atime);
         $logger->info("Benoetigte Zeit fuer '$sqlrequest' ist ".timestr($timeall));
@@ -485,6 +491,8 @@ sub get_not_set_by_idn {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my $normset_ref={};
 
     $normset_ref->{id      } = $notidn;
@@ -492,7 +500,7 @@ sub get_not_set_by_idn {
 
     my ($atime,$btime,$timeall);
     
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
 	$atime=new Benchmark;
     }
 
@@ -513,7 +521,7 @@ sub get_not_set_by_idn {
         };
     }
 
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
 	$logger->info("Benoetigte Zeit fuer '$sqlrequest' ist ".timestr($timeall));
@@ -522,7 +530,7 @@ sub get_not_set_by_idn {
 	undef $timeall;
     }
 
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
         $atime=new Benchmark;
     }
 
@@ -536,7 +544,7 @@ sub get_not_set_by_idn {
         content => $res->{conncount},
     };
 
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
 	$logger->info("Benoetigte Zeit fuer '$sqlrequest' ist ".timestr($timeall));
@@ -570,6 +578,7 @@ sub get_tit_listitem_by_idn {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
 
     my $use_titlistitem_table=0;
 
@@ -588,7 +597,7 @@ sub get_tit_listitem_by_idn {
     
     my ($atime,$btime,$timeall)=(0,0,0);
     
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
         $atime  = new Benchmark;
     }
 
@@ -621,7 +630,7 @@ sub get_tit_listitem_by_idn {
     else {
         my ($atime,$btime,$timeall)=(0,0,0);
         
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $atime  = new Benchmark;
         }
 
@@ -643,14 +652,14 @@ sub get_tit_listitem_by_idn {
         
         $logger->debug("Titel: ".YAML::Dump($listitem_ref));
         
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : Bestimmung der Titelinformationen : ist ".timestr($timeall));
         }
         
         
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $atime=new Benchmark;
         }
         
@@ -670,14 +679,14 @@ sub get_tit_listitem_by_idn {
         }
         
         
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : Bestimmung der Exemplarinformationen : ist ".timestr($timeall));
         }
         
         
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $atime=new Benchmark;
         }
         
@@ -715,13 +724,13 @@ sub get_tit_listitem_by_idn {
             push @autkor, $content;
         }
         
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : Bestimmung der Verfasserinformationen : ist ".timestr($timeall));
         }
         
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $atime=new Benchmark;
         }    
         
@@ -752,7 +761,7 @@ sub get_tit_listitem_by_idn {
             push @autkor, $content;
         }
         
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : Bestimmung der Koerperschaftsinformationen : ist ".timestr($timeall));
@@ -764,7 +773,7 @@ sub get_tit_listitem_by_idn {
             content   => join(" ; ",@autkor),
         };
         
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $atime=new Benchmark;
         }    
         
@@ -843,7 +852,7 @@ sub get_tit_listitem_by_idn {
             }
         }
 
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : Bestimmung der HST-Ueberordnungsinformationen : ist ".timestr($timeall));
@@ -851,7 +860,7 @@ sub get_tit_listitem_by_idn {
 
     }
 
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
         $btime=new Benchmark;
         $timeall=timediff($btime,$atime);
         my $timeall=timediff($btime,$atime);
@@ -898,6 +907,8 @@ sub print_tit_list_by_idn {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my @itemlist=@$itemlist_ref;
 
     my $hits=$#itemlist;
@@ -911,7 +922,7 @@ sub print_tit_list_by_idn {
         push @args,"$key=$value";
     }
 
-    my $baseurl="http://$config{servername}$config{search_loc}?".join(";",@args);
+    my $baseurl="http://$config->{servername}$config->{search_loc}?".join(";",@args);
 
     my @nav=();
 
@@ -965,11 +976,11 @@ sub print_tit_list_by_idn {
         offset         => $offset,
         nav            => \@nav,
 
-        config         => \%config,
+        config         => $config,
         msg            => $msg,
     };
   
-    OpenBib::Common::Util::print_page($config{tt_search_showtitlist_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_search_showtitlist_tname},$ttdata,$r);
 
     return;
 }
@@ -1005,7 +1016,9 @@ sub print_tit_set_by_idn {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-  
+
+    my $config = new OpenBib::Config();
+    
     my ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn({
         titidn             => $titidn,
         dbh                => $dbh,
@@ -1045,11 +1058,11 @@ sub print_tit_set_by_idn {
             return $string;
         },
 
-        config     => \%config,
+        config     => $config,
         msg        => $msg,
     };
   
-    OpenBib::Common::Util::print_page($config{tt_search_showtitset_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_search_showtitset_tname},$ttdata,$r);
 
     return;
 }
@@ -1085,7 +1098,9 @@ sub print_mult_tit_set_by_idn {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-  
+
+    my $config = new OpenBib::Config();
+    
     my @titsets=();
 
     foreach my $titidn (@$titidns_ref) {
@@ -1120,11 +1135,11 @@ sub print_mult_tit_set_by_idn {
         sessionID  => $sessionID,
         titsets    => \@titsets,
 
-        config     => \%config,
+        config     => $config,
         msg        => $msg,
     };
   
-    OpenBib::Common::Util::print_page($config{tt_search_showmulttitset_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_search_showmulttitset_tname},$ttdata,$r);
 
     return;
 }
@@ -1148,7 +1163,9 @@ sub get_tit_set_by_idn {
   
     # Log4perl logger erzeugen
     my $logger = get_logger();
-  
+
+    my $config = new OpenBib::Config();
+    
     my @normset=();
 
     my $normset_ref={};
@@ -1161,7 +1178,7 @@ sub get_tit_set_by_idn {
 
         my ($atime,$btime,$timeall)=(0,0,0);
 
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $atime=new Benchmark;
         }
 
@@ -1181,7 +1198,7 @@ sub get_tit_set_by_idn {
         }
         $request->finish();
 
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : $reqstring : ist ".timestr($timeall));
@@ -1192,7 +1209,7 @@ sub get_tit_set_by_idn {
     {
         my ($atime,$btime,$timeall)=(0,0,0);
 
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $atime=new Benchmark;
         }
 
@@ -1223,7 +1240,7 @@ sub get_tit_set_by_idn {
         }
         $request->finish();
 
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : $reqstring : ist ".timestr($timeall));
@@ -1239,7 +1256,7 @@ sub get_tit_set_by_idn {
         my $res;
         
         # Unterordnungen
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $atime=new Benchmark;
         }
 
@@ -1255,14 +1272,14 @@ sub get_tit_set_by_idn {
             };
         }
         
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : $reqstring : ist ".timestr($timeall));
         }
 
         # Ueberordnungen
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $atime=new Benchmark;
         }
 
@@ -1278,7 +1295,7 @@ sub get_tit_set_by_idn {
             };
         }
         
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : $reqstring : ist ".timestr($timeall));
@@ -1424,13 +1441,13 @@ sub get_tit_set_by_idn {
     {
         my ($atime,$btime,$timeall);
         
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $atime=new Benchmark;
         }
         
         # Verbindung zur SQL-Datenbank herstellen
         my $enrichdbh
-            = DBI->connect("DBI:$config{dbimodule}:dbname=$config{enrichmntdbname};host=$config{enrichmntdbhost};port=$config{enrichmntdbport}", $config{enrichmntdbuser}, $config{enrichmntdbpasswd})
+            = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
                 or $logger->error_die($DBI::errstr);
         
         foreach my $isbn_ref (@{$normset_ref->{T0540}}){
@@ -1457,7 +1474,7 @@ sub get_tit_set_by_idn {
         
         $enrichdbh->disconnect();
 
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : Bestimmung von Enrich-Normdateninformationen ist ".timestr($timeall));
@@ -1487,7 +1504,9 @@ sub get_mex_set_by_idn {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-  
+
+    my $config = new OpenBib::Config();
+    
     my $normset_ref={};
     
     # Defaultwerte setzen
@@ -1499,7 +1518,7 @@ sub get_mex_set_by_idn {
     $normset_ref->{X4001}{content}="";
 
     my ($atime,$btime,$timeall);
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
 	$atime=new Benchmark;
     }
 
@@ -1521,7 +1540,7 @@ sub get_mex_set_by_idn {
         };
     }
 
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
 	$logger->info("Zeit fuer : $sqlrequest : ist ".timestr($timeall));
@@ -1590,7 +1609,9 @@ sub get_result_navigation {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-  
+
+    my $config = new OpenBib::Config();
+    
     # Bestimmen des vorigen und naechsten Treffer einer
     # vorausgegangenen Kurztitelliste
     my $sessionresult=$sessiondbh->prepare("select lastresultset from session where sessionid = ?") or $logger->error($DBI::errstr);
@@ -1611,7 +1632,7 @@ sub get_result_navigation {
     if ($lastresultstring=~m/(\w+:\d+)\|$database:$titidn/) {
         $lasttiturl=$1;
         my ($lastdatabase,$lastkatkey)=split(":",$lasttiturl);
-        $lasttiturl="$config{search_loc}?sessionID=$sessionID;database=$lastdatabase;searchsingletit=$lastkatkey";
+        $lasttiturl="$config->{search_loc}?sessionID=$sessionID;database=$lastdatabase;searchsingletit=$lastkatkey";
     }
     
     if ($lastresultstring=~m/$database:$titidn\|(\w+:\d+)/) {
@@ -1620,7 +1641,7 @@ sub get_result_navigation {
 
 	$logger->debug("NextDB: $nextdatabase - NextKatkey: $nextkatkey");
 
-        $nexttiturl="$config{search_loc}?sessionID=$sessionID;database=$nextdatabase;searchsingletit=$nextkatkey";
+        $nexttiturl="$config->{search_loc}?sessionID=$sessionID;database=$nextdatabase;searchsingletit=$nextkatkey";
     }
 
     return ($lasttiturl,$nexttiturl);
@@ -1642,6 +1663,8 @@ sub get_index {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my $type_ref = {
         tit => 1,
         aut => 2,
@@ -1653,7 +1676,7 @@ sub get_index {
     
     my ($atime,$btime,$timeall);
   
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
         $atime=new Benchmark;
     }
 
@@ -1683,7 +1706,7 @@ sub get_index {
         
     }
 
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
         $btime=new Benchmark;
         $timeall=timediff($btime,$atime);
         $logger->info("Zeit fuer : ".($#contents+1)." Begriffe (Bestimmung): ist ".timestr($timeall));
@@ -1695,7 +1718,7 @@ sub get_index {
     $logger->debug("INDEX-Contents (".($#contents+1)." Begriffe): ".YAML::Dump(\@contents));
 
 
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
         $atime=new Benchmark;
     }
     
@@ -1704,7 +1727,7 @@ sub get_index {
     foreach my $content_ref (@contents){
         my ($atime,$btime,$timeall);
 
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $atime=new Benchmark;
         }
         
@@ -1720,7 +1743,7 @@ sub get_index {
             $request->finish();
         }
 
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : ".($#ids+1)." ID's (Art): ist ".timestr($timeall));
@@ -1729,7 +1752,7 @@ sub get_index {
             undef $timeall;
         }
         
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $atime=new Benchmark;
         }
 
@@ -1751,7 +1774,7 @@ sub get_index {
             $request->finish();
         }
 
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : ".($#ids+1)." ID's (Anzahl): ist ".timestr($timeall));
@@ -1762,7 +1785,7 @@ sub get_index {
 
     }
     
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
         $btime=new Benchmark;
         $timeall=timediff($btime,$atime);
         $logger->info("Zeit fuer : ".($#index+1)." Begriffe (Vollinformation): ist ".timestr($timeall));
@@ -1801,7 +1824,9 @@ sub print_index_by_swt {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-  
+
+    my $config = new OpenBib::Config();
+    
     my $swtindex=OpenBib::Search::Util::get_index({
         type       => 'swt',
         category   => '0001',
@@ -1828,10 +1853,10 @@ sub print_index_by_swt {
             return $string;
         },
 
-        config     => \%config,
+        config     => $config,
     };
   
-    OpenBib::Common::Util::print_page($config{tt_search_showswtindex_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_search_showswtindex_tname},$ttdata,$r);
 
     return;
 }
@@ -1856,9 +1881,11 @@ sub initial_search_for_titidns {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my ($atime,$btime,$timeall);
   
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
         $atime=new Benchmark;
     }
     
@@ -1966,7 +1993,7 @@ sub initial_search_for_titidns {
         push @tempidns, $res->[0];
     }
 
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
         $btime=new Benchmark;
         $timeall=timediff($btime,$atime);
         $logger->info("Zeit fuer : initital_search_for_titidns / $sqlquerystring -> ".($#tempidns+1)." : ist ".timestr($timeall));
@@ -1978,7 +2005,7 @@ sub initial_search_for_titidns {
     if ($enrich){
         my ($atime,$btime,$timeall);
         
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $atime=new Benchmark;
         }
         
@@ -1992,7 +2019,7 @@ sub initial_search_for_titidns {
 
         $request->finish();
 
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : enrich -> ".($#tempidns+1)."/".(scalar @$enrichkeys_ref)." : ist ".timestr($timeall));
@@ -2024,7 +2051,7 @@ sub initial_search_for_titidns {
     if ($#tidns+1 > $maxhits){ # ueberspringen
     #    if ($#tidns+1 == $maxhits){
 
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $atime=new Benchmark;
         }
         
@@ -2043,7 +2070,7 @@ sub initial_search_for_titidns {
 #            $fullresultcount++;
 #        }
         
-        if ($config{benchmark}) {
+        if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : initital_search_for_titidns / $sqlresultcount -> $fullresultcount : ist ".timestr($timeall));
@@ -2076,6 +2103,8 @@ sub get_recent_titids {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my $request=$dbh->prepare("select id,content from tit_string where category=2 order by content desc limit $limit");
     $request->execute();
 
@@ -2107,6 +2136,8 @@ sub get_recent_titids_by_aut {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 2 order by content desc limit $limit");
     $request->execute($id);
 
@@ -2138,6 +2169,8 @@ sub get_recent_titids_by_kor {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 3 order by content desc limit $limit");
     $request->execute($id);
 
@@ -2169,6 +2202,8 @@ sub get_recent_titids_by_swt {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 4 order by content desc limit $limit");
     $request->execute($id);
 
@@ -2200,6 +2235,8 @@ sub get_recent_titids_by_not {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 5 order by content desc limit $limit");
     $request->execute($id);
 

@@ -47,19 +47,14 @@ use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::ManageCollection::Util;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-
-use vars qw(%config);
-
-*config = \%OpenBib::Config::config;
-
 sub handler {
     my $r=shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my $query=Apache::Request->new($r);
 
     my $status=$query->parse;
@@ -73,11 +68,11 @@ sub handler {
 
     # Verbindung zur SQL-Datenbank herstellen
     my $sessiondbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $userdbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $sessionID = $query->param('sessionID') || '';
@@ -103,10 +98,10 @@ sub handler {
     $logger->debug(YAML::Dump($queryoptions_ref));
 
     my $targetdbinfo_ref
-        = OpenBib::Common::Util::get_targetdbinfo($sessiondbh);
+        = $config->get_targetdbinfo();
 
     my $targetcircinfo_ref
-        = OpenBib::Common::Util::get_targetcircinfo($sessiondbh);
+        = $config->get_targetcircinfo();
 
     my $view="";
 
@@ -155,7 +150,7 @@ sub handler {
         }
 
         # Dann Ausgabe des neuen Headers via Redirect
-        $r->internal_redirect("http://$config{servername}$config{headerframe_loc}?sessionID=$sessionID");
+        $r->internal_redirect("http://$config->{servername}$config->{headerframe_loc}?sessionID=$sessionID");
     }
     # Anzeigen des Inhalts der Merkliste
     elsif ($action eq "show") {
@@ -215,7 +210,7 @@ sub handler {
             my $singleidn = $dbidn_ref->{singleidn};
       
             my $dbh
-                = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+                = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
                     or $logger->error_die($DBI::errstr);
 
             my ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn({
@@ -256,11 +251,11 @@ sub handler {
             qopts      => $queryoptions_ref,
             type       => $type,
             collection => \@collection,
-            config     => \%config,
+            config     => $config,
             msg        => $msg,
         };
     
-        OpenBib::Common::Util::print_page($config{tt_managecollection_show_tname},$ttdata,$r);
+        OpenBib::Common::Util::print_page($config->{tt_managecollection_show_tname},$ttdata,$r);
         return OK;
     }
     # Abspeichern der Merkliste
@@ -306,7 +301,7 @@ sub handler {
             my $singleidn = $dbidn_ref->{singleidn};
       
             my $dbh
-                = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+                = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
                     or $logger->error_die($DBI::errstr);
       
             my ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn({
@@ -347,7 +342,7 @@ sub handler {
             qopts      => $queryoptions_ref,		
             type       => $type,
             collection => \@collection,
-            config     => \%config,
+            config     => $config,
             msg        => $msg,
         };
     
@@ -355,12 +350,12 @@ sub handler {
       
             print $r->header_out("Content-Type" => "text/html");
             print $r->header_out("Content-Disposition" => "attachment;filename=\"kugliste.html\"");
-            OpenBib::Common::Util::print_page($config{tt_managecollection_save_html_tname},$ttdata,$r);
+            OpenBib::Common::Util::print_page($config->{tt_managecollection_save_html_tname},$ttdata,$r);
         }
         else {
             print $r->header_out("Content-Type" => "text/plain");
             print $r->header_out("Content-Disposition" => "attachment;filename=\"kugliste.txt\"");
-            OpenBib::Common::Util::print_page($config{tt_managecollection_save_plain_tname},$ttdata,$r);
+            OpenBib::Common::Util::print_page($config->{tt_managecollection_save_plain_tname},$ttdata,$r);
         }
         return OK;
     }
@@ -416,7 +411,7 @@ sub handler {
             my $singleidn = $dbidn_ref->{singleidn};
       
             my $dbh
-                = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+                = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
                     or $logger->error_die($DBI::errstr);
       
             my ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn({
@@ -460,11 +455,11 @@ sub handler {
             singleidn  => $singleidn,
             database   => $database,
             collection => \@collection,
-            config     => \%config,
+            config     => $config,
             msg        => $msg,
         };
     
-        OpenBib::Common::Util::print_page($config{tt_managecollection_mail_tname},$ttdata,$r);
+        OpenBib::Common::Util::print_page($config->{tt_managecollection_mail_tname},$ttdata,$r);
         return OK;
     }
     # Ausdrucken der Merkliste (HTML) ueber Browser
@@ -518,7 +513,7 @@ sub handler {
             my $singleidn = $dbidn_ref->{singleidn};
       
             my $dbh
-                = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+                = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
                     or $logger->error_die($DBI::errstr);
       
             my ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn({
@@ -562,11 +557,11 @@ sub handler {
             singleidn  => $singleidn,
             database   => $database,
             collection => \@collection,
-            config     => \%config,
+            config     => $config,
             msg        => $msg,
         };
     
-        OpenBib::Common::Util::print_page($config{tt_managecollection_print_tname},$ttdata,$r);
+        OpenBib::Common::Util::print_page($config->{tt_managecollection_print_tname},$ttdata,$r);
         return OK;
     }
   

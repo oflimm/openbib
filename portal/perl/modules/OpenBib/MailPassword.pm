@@ -48,18 +48,14 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
-
 sub handler {
     my $r=shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my $query=Apache::Request->new($r);
 
     my $status=$query->parse;
@@ -78,11 +74,11 @@ sub handler {
     my $sessionID = $query->param('sessionID')||'';
   
     my $sessiondbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
   
     my $userdbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd})
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $queryoptions_ref
@@ -122,11 +118,11 @@ sub handler {
             sessionID  => $sessionID,
             loginname  => $loginname,
 
-            config     => \%config,
+            config     => $config,
             msg        => $msg,
         };
 
-        OpenBib::Common::Util::print_page($config{tt_mailpassword_tname},$ttdata,$r);
+        OpenBib::Common::Util::print_page($config->{tt_mailpassword_tname},$ttdata,$r);
     }
     elsif ($action eq "sendpw") {
         my $loginfailed=0;
@@ -163,24 +159,24 @@ sub handler {
 
 	my $maintemplate = Template->new({
           LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-              INCLUDE_PATH   => $config{tt_include_path},
+              INCLUDE_PATH   => $config->{tt_include_path},
               ABSOLUTE       => 1,
           }) ],
 #         ABSOLUTE      => 1,
-#         INCLUDE_PATH  => $config{tt_include_path},
+#         INCLUDE_PATH  => $config->{tt_include_path},
           # Es ist wesentlich, dass OUTPUT* hier und nicht im
           # Template::Provider definiert wird
           OUTPUT_PATH   => '/tmp',
           OUTPUT        => $afile,
         });
 
-        $maintemplate->process($config{tt_mailpassword_mail_main_tname}, $mainttdata ) || do {
+        $maintemplate->process($config->{tt_mailpassword_mail_main_tname}, $mainttdata ) || do {
             $r->log_reason($maintemplate->error(), $r->filename);
             return SERVER_ERROR;
         };
 
         my $mailmsg = MIME::Lite->new(
-            From            => $config{contact_email},
+            From            => $config->{contact_email},
             To              => $loginname,
             Subject         => $msg->maketext("Ihr vergessenes KUG-Passwort"),
             Type            => 'multipart/mixed'
@@ -195,18 +191,18 @@ sub handler {
             Path            => $anschfile,
         );
 
-        $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config{contact_email}");
+        $mailmsg->send('sendmail', "/usr/lib/sendmail -t -oi -f$config->{contact_email}");
     
 
         my $ttdata={
             view       => $view,
             stylesheet => $stylesheet,
 
-            config     => \%config,
+            config     => $config,
             msg        => $msg,
         };
 
-        OpenBib::Common::Util::print_page($config{tt_mailpassword_success_tname},$ttdata,$r);
+        OpenBib::Common::Util::print_page($config->{tt_mailpassword_success_tname},$ttdata,$r);
     }
 
     $sessiondbh->disconnect();

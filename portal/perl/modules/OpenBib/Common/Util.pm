@@ -44,13 +44,6 @@ use YAML ();
 use OpenBib::Config;
 use OpenBib::Template::Provider;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
-
 my $benchmark;
 
 if ($OpenBib::Config::config{benchmark}) {
@@ -182,7 +175,9 @@ sub get_userid_of_session {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $globalsessionID="$config{servername}:$sessionID";
+    my $config = new OpenBib::Config();
+    
+    my $globalsessionID="$config->{servername}:$sessionID";
     my $userresult=$userdbh->prepare("select userid from usersession where sessionid = ?") or $logger->error($DBI::errstr);
 
     $userresult->execute($globalsessionID) or $logger->error($DBI::errstr);
@@ -223,7 +218,9 @@ sub get_targetdb_of_session {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $globalsessionID="$config{servername}:$sessionID";
+    my $config = new OpenBib::Config();
+    
+    my $globalsessionID="$config->{servername}:$sessionID";
     my $userresult=$userdbh->prepare("select db from usersession,logintarget where usersession.sessionid = ? and usersession.targetid = logintarget.targetid") or $logger->error($DBI::errstr);
 
     $userresult->execute($globalsessionID) or $logger->error($DBI::errstr);
@@ -243,7 +240,9 @@ sub get_targettype_of_session {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $globalsessionID="$config{servername}:$sessionID";
+    my $config = new OpenBib::Config();
+    
+    my $globalsessionID="$config->{servername}:$sessionID";
     my $userresult=$userdbh->prepare("select type from usersession,logintarget where usersession.sessionid = ? and usersession.targetid = logintarget.targetid") or $logger->error($DBI::errstr);
 
     $userresult->execute($globalsessionID) or $logger->error($DBI::errstr);
@@ -414,22 +413,24 @@ sub print_warning {
     # Log4perl logger erzeugen
     my $logger = get_logger();
   
+    my $config = new OpenBib::Config();
+    
     my $stylesheet=get_css_by_browsertype($r);
 
     my $query=Apache::Request->new($r);
 
     my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
 
-    my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
+    my $sessiondbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
 
     my $view=get_viewname_of_session($sessiondbh,$sessionID);
  
     my $template = Template->new({
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-            INCLUDE_PATH   => $config{tt_include_path},
+            INCLUDE_PATH   => $config->{tt_include_path},
             ABSOLUTE       => 1,
         }) ],
-#        INCLUDE_PATH   => $config{tt_include_path},
+#        INCLUDE_PATH   => $config->{tt_include_path},
 #        ABSOLUTE       => 1,
         OUTPUT         => $r,    # Output geht direkt an Apache Request
     });
@@ -440,14 +441,14 @@ sub print_warning {
         stylesheet => $stylesheet,
 
         errmsg     => $warning,
-        config     => \%config,
+        config     => $config,
         msg        => $msg,
     };
   
     # Dann Ausgabe des neuen Headers
     print $r->send_http_header("text/html");
   
-    $template->process($config{tt_error_tname}, $ttdata) || do {
+    $template->process($config->{tt_error_tname}, $ttdata) || do {
         $r->log_reason($template->error(), $r->filename);
         return SERVER_ERROR;
     };
@@ -460,23 +461,25 @@ sub print_info {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-  
+
+    my $config = new OpenBib::Config();
+    
     my $stylesheet=get_css_by_browsertype($r);
 
     my $query=Apache::Request->new($r);
 
     my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
 
-    my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
+    my $sessiondbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
 
     my $view=get_viewname_of_session($sessiondbh,$sessionID);
  
     my $template = Template->new({
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-            INCLUDE_PATH   => $config{tt_include_path},
+            INCLUDE_PATH   => $config->{tt_include_path},
             ABSOLUTE       => 1,
         }) ],
-#        INCLUDE_PATH   => $config{tt_include_path},
+#        INCLUDE_PATH   => $config->{tt_include_path},
 #        ABSOLUTE       => 1,
         OUTPUT         => $r,    # Output geht direkt an Apache Request
     });
@@ -487,14 +490,14 @@ sub print_info {
         stylesheet => $stylesheet,
 
         info_msg   => $info,
-        config     => \%config,
+        config     => $config,
         msg        => $msg,
     };
   
     # Dann Ausgabe des neuen Headers
     print $r->send_http_header("text/html");
   
-    $template->process($config{tt_info_message_tname}, $ttdata) || do {
+    $template->process($config->{tt_info_message_tname}, $ttdata) || do {
         $r->log_reason($template->error(), $r->filename);
         return SERVER_ERROR;
     };
@@ -507,19 +510,21 @@ sub print_page {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-  
+
+    my $config = new OpenBib::Config();
+    
     my $stylesheet=get_css_by_browsertype($r);
 
     # View- und Datenbank-spezifisches Templating
     my $database = $ttdata->{'view'};
     my $view     = $ttdata->{'view'};
 
-    if ($view && -e "$config{tt_include_path}/views/$view/$templatename") {
+    if ($view && -e "$config->{tt_include_path}/views/$view/$templatename") {
         $templatename="views/$view/$templatename";
     }
 
     # Database-Template ist spezifischer als View-Template und geht vor
-    if ($database && -e "$config{tt_include_path}/database/$database/$templatename") {
+    if ($database && -e "$config->{tt_include_path}/database/$database/$templatename") {
         $templatename="database/$database/$templatename";
     }
 
@@ -527,10 +532,10 @@ sub print_page {
   
     my $template = Template->new({ 
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-            INCLUDE_PATH   => $config{tt_include_path},
+            INCLUDE_PATH   => $config->{tt_include_path},
 	    ABSOLUTE       => 1,
         }) ],
-#         INCLUDE_PATH   => $config{tt_include_path},
+#         INCLUDE_PATH   => $config->{tt_include_path},
 #         ABSOLUTE       => 1,     # Notwendig fuer Kaskadierung
          OUTPUT         => $r,    # Output geht direkt an Apache Request
 #         RECURSION      => 1,
@@ -798,8 +803,10 @@ sub sort_buffer {
     my $atime;
     my $btime;
     my $timeall;
-  
-    if ($config{benchmark}) {
+
+    my $config = new OpenBib::Config();
+    
+    if ($config->{benchmark}) {
         $atime=new Benchmark;
     }
 
@@ -837,7 +844,7 @@ sub sort_buffer {
         @$sortedoutputbuffer_ref=@$outputbuffer_ref;
     }
 
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
         $btime=new Benchmark;
         $timeall=timediff($btime,$atime);
         $logger->debug("Zeit fuer : sort by $sorttype / $sortorder : ist ".timestr($timeall));
@@ -1364,10 +1371,12 @@ sub get_loadbalanced_servername {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my $ua=new LWP::UserAgent(timeout => 5);
 
     # Aktuellen Load der Server holen zur dynamischen Lastverteilung
-    my @servertab=@{$config{loadbalancertargets}};
+    my @servertab=@{$config->{loadbalancertargets}};
 
     my %serverload=();
 
@@ -1380,7 +1389,7 @@ sub get_loadbalanced_servername {
     # Fuer jeden Server, auf den verteilt werden soll, wird nun
     # per LWP der Load bestimmt.
     foreach my $targethost (@servertab) {
-        my $request  = new HTTP::Request POST => "http://$targethost$config{serverload_loc}";
+        my $request  = new HTTP::Request POST => "http://$targethost$config->{serverload_loc}";
         my $response = $ua->request($request);
 
         if ($response->is_success) {

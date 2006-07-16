@@ -36,14 +36,6 @@ use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use SOAP::Lite;
 
-use OpenBib::Config;
-
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
-
 sub authenticate_self_user {
     my ($arg_ref) = @_;
 

@@ -33,15 +33,6 @@ use utf8;
 use Apache::Constants qw(:common);
 use Apache::Reload;
 
-use OpenBib::Config;
-
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
-
 sub strip_first_stopword {
     my ($content)=@_;
 

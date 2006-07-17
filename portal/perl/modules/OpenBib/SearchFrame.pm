@@ -47,6 +47,7 @@ use Template;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
+use OpenBib::Session;
 
 sub handler {
     my $r=shift;
@@ -55,7 +56,7 @@ sub handler {
     my $logger = get_logger();
 
     my $config = new OpenBib::Config();
-    
+
     my $query=Apache::Request->new($r);
 
     my $status=$query->parse;
@@ -63,36 +64,35 @@ sub handler {
     if ($status) {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
-  
+
+    my $sessionID = $query->param('sessionID');
+    my $session = new OpenBib::Session({
+        sessionID => $sessionID,
+    });
+
     my $useragent=$r->subprocess_env('HTTP_USER_AGENT');
   
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-  
-    # Verbindung zur SQL-Datenbank herstellen
-    my $sessiondbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
-            or $logger->error_die($DBI::errstr);
   
     my $userdbh
         = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
             or $logger->error_die($DBI::errstr);
   
-    my $sessionID = ($query->param('sessionID'))?$query->param('sessionID'):'';
     my @databases = ($query->param('database'))?$query->param('database'):();
     my $singleidn = $query->param('singleidn') || '';
     my $setmask   = $query->param('setmask') || '';
     my $action    = ($query->param('action'))?$query->param('action'):'';
 
     my $queryoptions_ref
-        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
-    
+        = $session->get_queryoptions($query);
+
+    $logger->debug(YAML::Dump($queryoptions_ref));
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
-    unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
+    if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        $sessiondbh->disconnect();
         $userdbh->disconnect();
         return OK;
     }
@@ -103,11 +103,11 @@ sub handler {
         $view=$query->param('view');
     }
     else {
-        $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
+        $view=$session->get_viewname();
     }
 
     # Authorisierte Session?
-    my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
+    my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$session->{ID});
   
     my $showfs        = "1";
     my $showhst       = "1";
@@ -125,16 +125,8 @@ sub handler {
     my $userprofiles  = "";
 
     # Wurde bereits ein Profil bei einer vorangegangenen Suche ausgewaehlt?
-    my $idnresult=$sessiondbh->prepare("select profile from sessionprofile where sessionid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-    my $result=$idnresult->fetchrow_hashref();
-  
-    my $prevprofile="";
-  
-    if (defined($result->{'profile'})) {
-        $prevprofile = decode_utf8($result->{'profile'});
-    }
-  
+    my $prevprofile=$session->get_profile();
+    
     if ($userid) {
         my $targetresult=$userdbh->prepare("select * from fieldchoice where userid = ?") or $logger->error($DBI::errstr);
         $targetresult->execute($userid) or $logger->error($DBI::errstr);
@@ -190,26 +182,16 @@ sub handler {
   
     my $viewdesc      = $config->get_viewdesc_from_viewname($view);
 
-    $idnresult->finish();
-  
-
     if ($setmask) {
-        my $idnresult=$sessiondbh->prepare("update sessionmask set masktype = ? where sessionid = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($setmask,$sessionID) or $logger->error($DBI::errstr);
-        $idnresult->finish();
+        $session->set_mask($setmask);
     }
     else {
-        my $idnresult=$sessiondbh->prepare("select masktype from sessionmask where sessionid = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-        my $result=$idnresult->fetchrow_hashref();
-        $setmask = decode_utf8($result->{'masktype'});
-    
-        $idnresult->finish();
+        $setmask = $session->get_mask();
     }
 
     my $hits;
     if ($queryid ne "") {
-        my $idnresult=$sessiondbh->prepare("select query,hits from queries where queryid = ?") or $logger->error($DBI::errstr);
+        my $idnresult=$session->{dbh}->prepare("select query,hits from queries where queryid = ?") or $logger->error($DBI::errstr);
         $idnresult->execute($queryid) or $logger->error($DBI::errstr);
     
         my $result=$idnresult->fetchrow_hashref();
@@ -222,33 +204,23 @@ sub handler {
 
     # Wenn Datenbanken uebergeben wurden, dann werden diese eingetragen
     if ($#databases >= 0) {
-        my $idnresult=$sessiondbh->prepare("delete from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+        $session->clear_dbchoice();
 
         foreach my $thisdb (@databases) {
-            $idnresult=$sessiondbh->prepare("insert into dbchoice values (?,?)") or $logger->error($DBI::errstr);
-            $idnresult->execute($sessionID,$thisdb) or $logger->error($DBI::errstr);
+            $session->set_dbchoice($thisdb);
         }
-        $idnresult->finish;
     }
 
     # Erzeugung der database-Input Tags fuer die suche
-    my $dbinputtags="";
-
-    $idnresult=$sessiondbh->prepare("select dbname from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-
-    my $dbcount=0;
-    while (my $result=$idnresult->fetchrow_hashref()) {
-        my $dbname = decode_utf8($result->{'dbname'});
+    my $dbinputtags = "";
+    my $dbcount     = 0;
+    foreach my $dbname ($session->get_dbchoice()){
         $dbinputtags.="<input type=\"hidden\" name=\"database\" value=\"$dbname\" />\n";
-        $dbcount++; 
+        $dbcount++;
     }
 
     my $alldbs     = $config->get_number_of_dbs();
     my $alldbcount = $config->get_number_of_titles();
-
-    $idnresult->finish();
 
     if ($dbcount != 0) {
         my $profselected="";
@@ -262,8 +234,8 @@ sub handler {
     }
 
     # Ausgabe der vorhandenen queries
-    $idnresult=$sessiondbh->prepare("select * from queries where sessionid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+    my $idnresult=$session->{dbh}->prepare("select * from queries where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($session->{ID}) or $logger->error($DBI::errstr);
     my $anzahl=$idnresult->rows();
 
     my @queries=();
@@ -283,7 +255,7 @@ sub handler {
         view          => $view,
         stylesheet    => $stylesheet,
         viewdesc      => $viewdesc,
-        sessionID     => $sessionID,
+        sessionID     => $session->{ID},
         dbinputtags   => $dbinputtags,
         alldbs        => $alldbs,
         dbcount       => $dbcount,
@@ -319,7 +291,6 @@ sub handler {
         OpenBib::Common::Util::print_page($config->{tt_searchframe_tname},$ttdata,$r);
     }
   
-    $sessiondbh->disconnect();
     $userdbh->disconnect();
     return OK;
 }

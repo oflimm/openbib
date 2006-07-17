@@ -45,6 +45,7 @@ use POSIX;
 use OpenBib::Common::Util();
 use OpenBib::Config();
 use OpenBib::L10N;
+use OpenBib::Session;
 
 sub handler {
     my $r=shift;
@@ -53,6 +54,8 @@ sub handler {
     my $logger = get_logger();
 
     my $config = new OpenBib::Config();
+
+    my $session = new OpenBib::Session();
     
     my $query  = Apache::Request->new($r);
 
@@ -64,13 +67,8 @@ sub handler {
 
     my $fs   = $query->param('fs') || '';
 
-    # Verbindung zur SQL-Datenbank herstellen
-    my $sessiondbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
-            or $logger->error_die($DBI::errstr);
-
     my $queryoptions_ref
-        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+        = $session->get_queryoptions($query);
 
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
@@ -82,7 +80,7 @@ sub handler {
     my $setmask         = $query->param('setmask') || '';
     my $searchsingletit = $query->param('searchsingletit') || '';
   
-    my $sessionID       = OpenBib::Common::Util::init_new_session($sessiondbh);
+    my $sessionID       = $session->{ID};
     
     my $view="";
 
@@ -90,19 +88,15 @@ sub handler {
         $view=$query->param('view');
     }
     else {
-        $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
+        $view=$session->get_viewname();
     }
 
     if ($setmask) {
-        my $idnresult=$sessiondbh->prepare("insert into sessionmask values (?,?)") or $logger->error($DBI::errstr);
-        $idnresult->execute($sessionID,$setmask) or $logger->error($DBI::errstr);
-        $idnresult->finish();
+        $session->set_mask($setmask);
     }
     # Standard ist 'einfache Suche'
     else {
-        my $idnresult=$sessiondbh->prepare("insert into sessionmask values (?,'simple')") or $logger->error($DBI::errstr);
-        $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-        $idnresult->finish();
+        $session->set_mask('simple');
     }
   
     # BEGIN View (Institutssicht)
@@ -118,26 +112,18 @@ sub handler {
             # 2. Datenbankauswahl setzen, aber nur, wenn der Benutzer selbst noch
             #    keine Auswahl getroffen hat
       
-            my $idnresult=$sessiondbh->prepare("select count(dbname) as rowcount from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
-            $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
 
             # Wenn noch keine Datenbank ausgewaehlt wurde, dann setze die
             # Auswahl auf die zum View gehoerenden Datenbanken
-            my $res=$idnresult->fetchrow_hashref;
-            my $anzahl=$res->{rowcount};
-            if ($anzahl == 0) {
+            if ($session->get_number_of_dbchoice == 0) {
                 my @viewdbs=$config->get_dbs_of_view($view);
 
                 foreach my $dbname (@viewdbs){
-                    my $idnresult=$sessiondbh->prepare("insert into dbchoice (sessionid,dbname) values (?,?)") or $logger->error($DBI::errstr);
-                    $idnresult->execute($sessionID,$dbname) or $logger->error($DBI::errstr);
-                    $idnresult->finish();
+                    $session->set_dbchoice($dbname);
                 }
             }
             # 3. Assoziiere den View mit der Session (fuer Headframe/Merkliste);
-            $idnresult=$sessiondbh->prepare("insert into sessionview values (?,?)") or $logger->error($DBI::errstr);
-            $idnresult->execute($sessionID,$view) or $logger->error($DBI::errstr);
-            $idnresult->finish();
+            $session->set_view($view);
         }
         # Wenn es den View nicht gibt, dann wird gestartet wie ohne view
         else {
@@ -148,16 +134,14 @@ sub handler {
     # Wenn effektiv kein valider View uebergeben wurde, dann wird
     # ein 'leerer' View mit der Session assoziiert.
     if ($view eq "") {
-        my $idnresult=$sessiondbh->prepare("insert into sessionview values (?,?)") or $logger->error($DBI::errstr);
-        $idnresult->execute($sessionID,$view) or $logger->error($DBI::errstr);
-        $idnresult->finish();
+        $session->set_view($view);
     }
   
     $logger->debug("StartOpac-sID: $sessionID");
 
     my $ttdata={
         view            => $view,
-        sessionID       => $sessionID,
+        sessionID       => $session->{ID},
         setmask         => $setmask,
         fs              => $fs,
         database        => $database,
@@ -167,8 +151,6 @@ sub handler {
     };
 
     OpenBib::Common::Util::print_page($config->{tt_startopac_tname},$ttdata,$r);
-
-    $sessiondbh->disconnect();
 
     return OK;
 }

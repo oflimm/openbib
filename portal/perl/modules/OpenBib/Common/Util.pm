@@ -50,81 +50,6 @@ if ($OpenBib::Config::config{benchmark}) {
     use Benchmark ':hireswallclock';
 }
 
-sub init_new_session {
-    my ($sessiondbh)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $sessionID="";
-
-    my $havenewsessionID=0;
-    
-    while ($havenewsessionID == 0) {
-        my $gmtime = localtime(time);
-        my $md5digest=Digest::MD5->new();
-    
-        $md5digest->add($gmtime . rand('1024'). $$);
-    
-        $sessionID=$md5digest->hexdigest;
-    
-        # Nachschauen, ob es diese ID schon gibt
-        my $idnresult=$sessiondbh->prepare("select count(sessionid) from session where sessionid = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-
-        my @idn=$idnresult->fetchrow_array();
-        my $anzahl=$idn[0];
-    
-        # Wenn wir nichts gefunden haben, dann ist alles ok.
-        if ($anzahl == 0 ) {
-            $havenewsessionID=1;
-      
-            my $createtime = POSIX::strftime('%Y-%m-%d% %H:%M:%S', localtime());
-
-
-            my $queryoptions_ref={
-                hitrange  => undef,
-                offset    => undef,
-                maxhits   => undef,
-                l         => undef,
-                profil    => undef,
-                autoplus  => undef,
-            };
-
-            # Eintrag in die Datenbank
-            $idnresult=$sessiondbh->prepare("insert into session (sessionid,createtime,queryoptions) values (?,?,?)") or $logger->error($DBI::errstr);
-            $idnresult->execute($sessionID,$createtime,YAML::Dump($queryoptions_ref)) or $logger->error($DBI::errstr);
-        }
-        $idnresult->finish();
-    }
-    return $sessionID;
-}
-
-sub session_is_valid {
-    my ($sessiondbh,$sessionID)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    if ($sessionID eq "-1") {
-        return 1;
-    }
-
-    my $idnresult=$sessiondbh->prepare("select count(sessionid) from session where sessionid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-
-    my @idn=$idnresult->fetchrow_array();
-    my $anzahl=$idn[0];
-
-    $idnresult->finish();
-
-    if ($anzahl == 1) {
-        return 1;
-    }
-
-    return 0;
-}
-
 sub get_cred_for_userid {
     my ($userdbh,$userid)=@_;
 
@@ -189,27 +114,6 @@ sub get_userid_of_session {
     }
 
     return $userid;
-}
-
-sub get_viewname_of_session  {
-    my ($sessiondbh,$sessionID)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Assoziierten View zur Session aus Datenbank holen
-    my $idnresult=$sessiondbh->prepare("select viewname from sessionview where sessionid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-  
-    my $result=$idnresult->fetchrow_hashref();
-  
-    # Entweder wurde ein 'echter' View gefunden oder es wird
-    # kein spezieller View verwendet (view='')
-    my $view = decode_utf8($result->{'viewname'}) || '';
-
-    $idnresult->finish();
-
-    return $view;
 }
 
 sub get_targetdb_of_session {
@@ -288,124 +192,6 @@ sub get_css_by_browsertype {
     return $stylesheet;
 }
 
-sub load_queryoptions {
-    my ($sessiondbh,$sessionID)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    if (!$sessionID){
-      $logger->fatal("No SessionID");
-      return {};
-    }	
-
-    my $request=$sessiondbh->prepare("select queryoptions from session where sessionid = ?") or $logger->error($DBI::errstr);
-
-    $request->execute($sessionID) or $logger->error($DBI::errstr);
-  
-    my $res=$request->fetchrow_hashref();
-
-    $logger->debug($res->{queryoptions});
-    my $queryoptions_ref = YAML::Load($res->{queryoptions});
-
-    $request->finish();
-
-    return $queryoptions_ref;
-}
-
-sub dump_queryoptions {
-    my ($sessiondbh,$sessionID,$queryoptions_ref)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $request=$sessiondbh->prepare("update session set queryoptions=? where sessionid = ?") or $logger->error($DBI::errstr);
-
-    $request->execute(YAML::Dump($queryoptions_ref),$sessionID) or $logger->error($DBI::errstr);
-
-    $request->finish();
-
-    return;
-}
-
-sub merge_queryoptions {
-    my ($options1_ref,$options2_ref)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Eintragungen in options1_ref werden, wenn sie in options2_ref
-    # gesetzt sind, von diesen ueberschrieben
-    
-    foreach my $key (keys %$options1_ref){
-        if (exists $options2_ref->{$key}){
-            $options1_ref->{$key}=$options2_ref->{$key};
-        }
-    }
-}
-
-sub get_queryoptions {
-    my ($sessiondbh,$query) = @_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    # Hinweis: Bisher wuerde statt $query direkt das Request-Objekt $r
-    # uebergeben und an dieser Stelle wieder ein $query-Objekt via
-    # Apache::Request daraus erzeugt. Bei Requests, die via POST
-    # sowohl mit dem enctype multipart/form-data wie auch
-    # multipart/form-data abgesetzt wurden, lassen sich keine
-    # Parameter ala sessionID extrahieren.  Das ist ein grosses
-    # Problem. Andere Informationen lassen sich ueber das $r
-    # aber sehr wohl extrahieren, z.B. der Useragent.
-
-    my $sessionID=$query->param('sessionID');
-
-    if (!$sessionID){
-      $logger->fatal("No SessionID");
-      return {};
-    }	
-
-    # Queryoptions zur Session einladen (default: alles undef)
-    my $queryoptions_ref = load_queryoptions($sessiondbh,$sessionID);
-
-    my $default_queryoptions_ref={
-        hitrange  => 20,
-        offset    => 1,
-        maxhits   => 500,
-        l         => 'de',
-        profil    => '',
-        autoplus  => '',
-    };
-
-    my $altered=0;
-    # Abgleich mit uebergebenen Parametern
-    # Uebergebene Parameter 'ueberschreiben'und gehen vor
-    foreach my $option (keys %$default_queryoptions_ref){
-        if (defined $query->param($option)){
-            $queryoptions_ref->{$option}=$query->param($option);
-	    $logger->debug("Option $option received via HTTP");
-	    $altered=1;
-        }
-    }
-
-    # Abgleich mit Default-Werten:
-    # Verbliebene "undefined"-Werte werden mit Standard-Werten belegt
-    foreach my $option (keys %$queryoptions_ref){
-        if (!defined $queryoptions_ref->{$option}){
-            $queryoptions_ref->{$option}=$default_queryoptions_ref->{$option};
-	    $logger->debug("Option $option got default value");
-	    $altered=1;
-        }
-    }
-
-    if ($altered){
-      dump_queryoptions($sessiondbh,$sessionID,$queryoptions_ref);
-      $logger->debug("Options changed and dumped to DB");
-    }
-
-    return $queryoptions_ref;
-}
 
 sub print_warning {
     my ($warning,$r,$msg)=@_;
@@ -870,37 +656,6 @@ sub cleanrl {
     $line=~s/^'//g;
 
     return $line;
-}
-
-sub updatelastresultset {
-    my ($sessiondbh,$sessionID,$resultset_ref)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my @resultset=@$resultset_ref;
-
-    my @nresultset=();
-
-    foreach my $outidx_ref (@resultset) {
-        my %outidx=%$outidx_ref;
-
-        # Eintraege merken fuer Lastresultset
-        my $katkey      = (exists $outidx{id})?$outidx{id}:"";
-        my $resdatabase = (exists $outidx{database})?$outidx{database}:"";
-
-	$logger->debug("Katkey: $katkey - Database: $resdatabase");
-
-        push @nresultset, "$resdatabase:$katkey";
-    }
-
-    my $resultsetstring=join("|",@nresultset);
-
-    my $sessionresult=$sessiondbh->prepare("update session set lastresultset = ? where sessionid = ?") or $logger->error($DBI::errstr);
-    $sessionresult->execute($resultsetstring,$sessionID) or $logger->error($DBI::errstr);
-    $sessionresult->finish();
-
-    return;
 }
 
 sub get_searchquery {

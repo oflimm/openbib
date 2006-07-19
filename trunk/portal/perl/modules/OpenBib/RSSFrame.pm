@@ -46,6 +46,7 @@ use Template;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
+use OpenBib::Session;
 
 sub handler {
     my $r=shift;
@@ -63,22 +64,24 @@ sub handler {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
 
+    my $session   = new OpenBib::Session({
+        sessionID => $query->param('sessionID'),
+    });
+    
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
-    # CGI-Uebergabe
-    my $sessionID = ($query->param('sessionID'))?$query->param('sessionID'):'';
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $sessiondbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
-            or $logger->error_die($DBI::errstr);
-
     my $queryoptions_ref
-        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+        = $session->get_queryoptions($query);
 
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
+
+    if (!$session->is_valid()){
+        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
+
+        return OK;
+    }
 
     my $view="";
 
@@ -86,7 +89,7 @@ sub handler {
         $view=$query->param('view');
     }
     else {
-        $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
+        $view=$session->get_viewname_of_session();
     }
 
     my $request=$config->{dbh}->prepare("select * from dbinfo where active=1 order by orgunit ASC, description ASC");
@@ -110,7 +113,6 @@ sub handler {
         };
     }
     
-    $sessiondbh->disconnect();
 
     # TT-Data erzeugen
     my $ttdata={

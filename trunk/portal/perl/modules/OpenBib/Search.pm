@@ -46,6 +46,7 @@ use OpenBib::Search::Util;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
+use OpenBib::Session;
 
 my $benchmark;
 
@@ -75,7 +76,11 @@ sub handler {
     if ($status) {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
-  
+
+    my $session   = new OpenBib::Session({
+        sessionID => $query->param('sessionID'),
+    });
+
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
     #####################################################################
@@ -174,12 +179,8 @@ sub handler {
         = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
             or $logger->error_die($DBI::errstr);
   
-    my $sessiondbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
-            or $logger->error_die($DBI::errstr);
-
     my $queryoptions_ref
-        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+        = $session->get_queryoptions($query);
 
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
@@ -190,25 +191,21 @@ sub handler {
 
     my $targetcircinfo_ref
         = $config->get_targetcircinfo();
-    
-    my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
 
-    unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
+    if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-      
-        $sessiondbh->disconnect();
         $dbh->disconnect();
-      
+
         return OK;
     }
-
+    
     my $view="";
 
     if ($query->param('view')) {
         $view=$query->param('view');
     }
     else {
-        $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
+        $view=$session->get_viewname();
     }
 
   
@@ -223,11 +220,11 @@ sub handler {
         OpenBib::Search::Util::print_index_by_swt({
             swt              => $swtindex,
             dbh              => $dbh,
-            sessiondbh       => $sessiondbh,
+            sessiondbh       => $session->{dbh},
             targetdbinfo_ref => $targetdbinfo_ref,
             queryoptions_ref => $queryoptions_ref,
             database         => $database,
-            sessionID        => $sessionID,
+            sessionID        => $session->{ID},
             apachereq        => $r,
             stylesheet       => $stylesheet,
             view             => $view,
@@ -247,7 +244,7 @@ sub handler {
                 autidn            => $verfidn,
                 dbh               => $dbh,
                 database          => $database,
-                sessionID         => $sessionID,
+                sessionID         => $session->{ID},
             });
 
 	    my $poolname=$targetdbinfo_ref->{sigel}{
@@ -260,7 +257,7 @@ sub handler {
                 database         => $database,
 		poolname         => $poolname,
                 queryoptions_ref => $queryoptions_ref,
-                sessionID        => $sessionID,
+                sessionID        => $session->{ID},
                 normset          => $normset,
                 
                 config     => $config,
@@ -294,12 +291,12 @@ sub handler {
                 OpenBib::Search::Util::print_tit_set_by_idn({
                     titidn             => $titidns[0],
                     dbh                => $dbh,
-                    sessiondbh         => $sessiondbh,
+                    sessiondbh         => $session->{dbh},
                     targetdbinfo_ref   => $targetdbinfo_ref,
                     targetcircinfo_ref => $targetcircinfo_ref,
                     queryoptions_ref   => $queryoptions_ref,
                     database           => $database,
-                    sessionID          => $sessionID,
+                    sessionID          => $session->{ID},
                     apachereq          => $r,
                     stylesheet         => $stylesheet,
                     view               => $view,
@@ -321,10 +318,10 @@ sub handler {
                     push @outputbuffer, OpenBib::Search::Util::get_tit_listitem_by_idn({
                         titidn            => $idn,
                         dbh               => $dbh,
-                        sessiondbh        => $sessiondbh,
+                        sessiondbh        => $session->{dbh},
                         targetdbinfo_ref  => $targetdbinfo_ref,
                         database          => $database,
-                        sessionID         => $sessionID,
+                        sessionID         => $session->{ID},
                     });
                 }
 
@@ -348,13 +345,14 @@ sub handler {
 				   };
 		}
 
-                OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@resultset);
+                $session->updatelastresultset(\@resultset);
+                
                 OpenBib::Search::Util::print_tit_list_by_idn({
                     itemlist_ref     => \@sortedoutputbuffer,
                     targetdbinfo_ref => $targetdbinfo_ref,
                     queryoptions_ref => $queryoptions_ref,
                     database         => $database,
-                    sessionID        => $sessionID,
+                    sessionID        => $session->{ID},
                     apachereq        => $r,
                     stylesheet       => $stylesheet,
                     view             => $view,
@@ -388,12 +386,12 @@ sub handler {
                 OpenBib::Search::Util::print_tit_set_by_idn({
                     titidn             => $titidns[0],
                     dbh                => $dbh,
-                    sessiondbh         => $sessiondbh,
+                    sessiondbh         => $session->{dbh},
                     targetdbinfo_ref   => $targetdbinfo_ref,
                     targetcircinfo_ref => $targetcircinfo_ref,
                     queryoptions_ref   => $queryoptions_ref,
                     database           => $database,
-                    sessionID          => $sessionID,
+                    sessionID          => $session->{ID},
                     apachereq          => $r,
                     stylesheet         => $stylesheet,
                     view               => $view,
@@ -415,10 +413,10 @@ sub handler {
                     push @outputbuffer, OpenBib::Search::Util::get_tit_listitem_by_idn({
                         titidn            => $idn,
                         dbh               => $dbh,
-                        sessiondbh        => $sessiondbh,
+                        sessiondbh        => $session->{dbh},
                         targetdbinfo_ref  => $targetdbinfo_ref,
                         database          => $database,
-                        sessionID         => $sessionID,
+                        sessionID         => $session->{ID},
                     });
                 }
 
@@ -442,13 +440,14 @@ sub handler {
 				   };
 		}
 
-                OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@resultset);
+                $session->updatelastresultset(\@resultset);
+                
                 OpenBib::Search::Util::print_tit_list_by_idn({
                     itemlist_ref     => \@sortedoutputbuffer,
                     targetdbinfo_ref => $targetdbinfo_ref,
                     queryoptions_ref => $queryoptions_ref,
                     database         => $database,
-                    sessionID        => $sessionID,
+                    sessionID        => $session->{ID},
                     apachereq        => $r,
                     stylesheet       => $stylesheet,
                     view             => $view,
@@ -464,12 +463,12 @@ sub handler {
             OpenBib::Search::Util::print_tit_set_by_idn({
                 titidn             => $titidn,
                 dbh                => $dbh,
-                sessiondbh         => $sessiondbh,
+                sessiondbh         => $session->{dbh},
                 targetdbinfo_ref   => $targetdbinfo_ref,
                 targetcircinfo_ref => $targetcircinfo_ref,
                 queryoptions_ref   => $queryoptions_ref,
                 database           => $database,
-                sessionID          => $sessionID,
+                sessionID          => $session->{ID},
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
                 view               => $view,
@@ -484,7 +483,7 @@ sub handler {
                 swtidn            => $swtidn,
                 dbh               => $dbh,
                 database          => $database,
-                sessionID         => $sessionID,
+                sessionID         => $session->{ID},
             });
             
 	    my $poolname=$targetdbinfo_ref->{sigel}{
@@ -497,7 +496,7 @@ sub handler {
                 database   => $database,
 	        poolname   => $poolname,
                 qopts      => $queryoptions_ref,
-                sessionID  => $sessionID,
+                sessionID  => $session->{ID},
                 normset    => $normset,
 
                 config     => $config,
@@ -513,7 +512,7 @@ sub handler {
                 notidn            => $notidn,
                 dbh               => $dbh,
                 database          => $database,
-                sessionID         => $sessionID,
+                sessionID         => $session->{ID},
             });
             
 	    my $poolname=$targetdbinfo_ref->{sigel}{
@@ -526,7 +525,7 @@ sub handler {
                 database   => $database,
 		poolname   => $poolname,
                 qopts      => $queryoptions_ref,
-                sessionID  => $sessionID,
+                sessionID  => $session->{ID},
                 normset    => $normset,
                 
                 config     => $config,
@@ -545,12 +544,12 @@ sub handler {
         OpenBib::Search::Util::print_mult_tit_set_by_idn({
             titidns_ref        => \@mtitidns,
             dbh                => $dbh,
-            sessiondbh         => $sessiondbh,
+            sessiondbh         => $session->{dbh},
             targetdbinfo_ref   => $targetdbinfo_ref,
             targetcircinfo_ref => $targetcircinfo_ref,
             queryoptions_ref   => $queryoptions_ref,
             database           => $database,
-            sessionID          => $sessionID,
+            sessionID          => $session->{ID},
             apachereq          => $r,
             stylesheet         => $stylesheet,
             view               => $view,
@@ -567,7 +566,7 @@ sub handler {
 #         OpenBib::Search::Util::print_mult_aut_set_by_idn({
 #             autidns_ref        => \@mautidns,
 #             dbh                => $dbh,
-#             sessiondbh         => $sessiondbh,
+#             sessiondbh         => $session->{dbh},
 #             searchmultipleaut  => $searchmultipleaut,
 #             searchmode         => $searchmode,
 #             targetdbinfo_ref   => $targetdbinfo_ref,
@@ -578,7 +577,7 @@ sub handler {
 #             sorttype           => $sorttype,
 #             sortorder          => $sortorder,
 #             database           => $database,
-#             sessionID          => $sessionID,
+#             sessionID          => $session->{ID},
 #             apachereq          => $r,
 #             stylesheet         => $stylesheet,
 #             view               => $view,
@@ -594,7 +593,7 @@ sub handler {
 #         OpenBib::Search::Util::print_mult_kor_set_by_idn({
 #             koridns_ref        => \@mkoridns,
 #             dbh                => $dbh,
-#             sessiondbh         => $sessiondbh,
+#             sessiondbh         => $session->{dbh},
 #             searchmultiplekor  => $searchmultiplekor,
 #             searchmode         => $searchmode,
 #             targetdbinfo_ref   => $targetdbinfo_ref,
@@ -605,7 +604,7 @@ sub handler {
 #             sorttype           => $sorttype,
 #             sortorder          => $sortorder,
 #             database           => $database,
-#             sessionID          => $sessionID,
+#             sessionID          => $session->{ID},
 #             apachereq          => $r,
 #             stylesheet         => $stylesheet,
 #             view               => $view,
@@ -621,7 +620,7 @@ sub handler {
 #         OpenBib::Search::Util::print_mult_not_set_by_idn({
 #             notidns_ref        => \@mnotidns,
 #             dbh                => $dbh,
-#             sessiondbh         => $sessiondbh,
+#             sessiondbh         => $session->{dbh},
 #             searchmultiplekor  => $searchmultiplekor,
 #             searchmode         => $searchmode,
 #             targetdbinfo_ref   => $targetdbinfo_ref,
@@ -632,7 +631,7 @@ sub handler {
 #             sorttype           => $sorttype,
 #             sortorder          => $sortorder,
 #             database           => $database,
-#             sessionID          => $sessionID,
+#             sessionID          => $session->{ID},
 #             apachereq          => $r,
 #             stylesheet         => $stylesheet,
 #             view               => $view,
@@ -647,7 +646,7 @@ sub handler {
 #         OpenBib::Search::Util::print_mult_swt_set_by_idn({
 #             swtidns_ref        => \@mswtidns,
 #             dbh                => $dbh,
-#             sessiondbh         => $sessiondbh,
+#             sessiondbh         => $session->{dbh},
 #             searchmultiplekor  => $searchmultiplekor,
 #             searchmode         => $searchmode,
 #             targetdbinfo_ref   => $targetdbinfo_ref,
@@ -658,7 +657,7 @@ sub handler {
 #             sorttype           => $sorttype,
 #             sortorder          => $sortorder,
 #             database           => $database,
-#             sessionID          => $sessionID,
+#             sessionID          => $session->{ID},
 #             apachereq          => $r,
 #             stylesheet         => $stylesheet,
 #             view               => $view,
@@ -672,12 +671,12 @@ sub handler {
         OpenBib::Search::Util::print_tit_set_by_idn({
             titidn             => $searchsingletit,
             dbh                => $dbh,
-            sessiondbh         => $sessiondbh,
+            sessiondbh         => $session->{dbh},
             targetdbinfo_ref   => $targetdbinfo_ref,
             targetcircinfo_ref => $targetcircinfo_ref,
             queryoptions_ref   => $queryoptions_ref,
             database           => $database,
-            sessionID          => $sessionID,
+            sessionID          => $session->{ID},
             apachereq          => $r,
             stylesheet         => $stylesheet,
             view               => $view,
@@ -692,7 +691,7 @@ sub handler {
             swtidn            => $searchsingleswt,
             dbh               => $dbh,
             database          => $database,
-            sessionID         => $sessionID,
+            sessionID         => $session->{ID},
         });
         
 	my $poolname=$targetdbinfo_ref->{sigel}{
@@ -705,7 +704,7 @@ sub handler {
             database   => $database,
             poolname   => $poolname,
             qopts      => $queryoptions_ref,
-            sessionID  => $sessionID,
+            sessionID  => $session->{ID},
             normset    => $normset,
             
             config     => $config,
@@ -721,7 +720,7 @@ sub handler {
             koridn            => $searchsinglekor,
             dbh               => $dbh,
             database          => $database,
-            sessionID         => $sessionID,
+            sessionID         => $session->{ID},
         });
         
 	my $poolname=$targetdbinfo_ref->{sigel}{
@@ -734,7 +733,7 @@ sub handler {
             database   => $database,
 	    poolname   => $poolname,
             qopts      => $queryoptions_ref,
-            sessionID  => $sessionID,
+            sessionID  => $session->{ID},
             normset    => $normset,
             
             config     => $config,
@@ -750,7 +749,7 @@ sub handler {
             notidn            => $searchsinglenot,
             dbh               => $dbh,
             database          => $database,
-            sessionID         => $sessionID,
+            sessionID         => $session->{ID},
         });
 	
 	my $poolname=$targetdbinfo_ref->{sigel}{
@@ -763,7 +762,7 @@ sub handler {
             database   => $database,
             poolname   => $poolname,
             qopts      => $queryoptions_ref,
-            sessionID  => $sessionID,
+            sessionID  => $session->{ID},
             normset    => $normset,
             
             config     => $config,
@@ -779,7 +778,7 @@ sub handler {
             autidn            => "$searchsingleaut",
             dbh               => $dbh,
             database          => $database,
-            sessionID         => $sessionID,
+            sessionID         => $session->{ID},
         });
         
 	my $poolname=$targetdbinfo_ref->{sigel}{
@@ -792,7 +791,7 @@ sub handler {
             database   => $database,
 	    poolname   => $poolname,
             qopts      => $queryoptions_ref,
-            sessionID  => $sessionID,
+            sessionID  => $session->{ID},
             normset    => $normset,
             
             config     => $config,
@@ -847,12 +846,12 @@ sub handler {
             OpenBib::Search::Util::print_tit_set_by_idn({
                 titidn             => $titelidns[0],
                 dbh                => $dbh,
-                sessiondbh         => $sessiondbh,
+                sessiondbh         => $session->{dbh},
                 targetdbinfo_ref   => $targetdbinfo_ref,
                 targetcircinfo_ref => $targetcircinfo_ref,
                 queryoptions_ref   => $queryoptions_ref,
                 database           => $database,
-                sessionID          => $sessionID,
+                sessionID          => $session->{ID},
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
                 view               => $view,
@@ -873,10 +872,10 @@ sub handler {
                 push @outputbuffer, OpenBib::Search::Util::get_tit_listitem_by_idn({
                     titidn            => $titelidn,
                     dbh               => $dbh,
-                    sessiondbh        => $sessiondbh,
+                    sessiondbh        => $session->{dbh},
                     targetdbinfo_ref  => $targetdbinfo_ref,
                     database          => $database,
-                    sessionID         => $sessionID,
+                    sessionID         => $session->{ID},
                 });
             }
             
@@ -900,13 +899,13 @@ sub handler {
 			       };
 	    }
 
-            OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@resultset);
+            $session->updatelastresultset(\@resultset);
             OpenBib::Search::Util::print_tit_list_by_idn({
                 itemlist_ref     => \@sortedoutputbuffer,
                 targetdbinfo_ref => $targetdbinfo_ref,
                 queryoptions_ref => $queryoptions_ref,
                 database         => $database,
-                sessionID        => $sessionID,
+                sessionID        => $session->{ID},
                 apachereq        => $r,
                 stylesheet       => $stylesheet,
                 view             => $view,
@@ -962,12 +961,12 @@ sub handler {
             OpenBib::Search::Util::print_tit_set_by_idn({
                 titidn             => $titelidns[0],
                 dbh                => $dbh,
-                sessiondbh         => $sessiondbh,
+                sessiondbh         => $session->{dbh},
                 targetdbinfo_ref   => $targetdbinfo_ref,
                 targetcircinfo_ref => $targetcircinfo_ref,
                 queryoptions_ref   => $queryoptions_ref,
                 database           => $database,
-                sessionID          => $sessionID,
+                sessionID          => $session->{ID},
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
                 view               => $view,
@@ -988,10 +987,10 @@ sub handler {
                 push @outputbuffer, OpenBib::Search::Util::get_tit_listitem_by_idn({
                     titidn            => $titelidn,
                     dbh               => $dbh,
-                    sessiondbh        => $sessiondbh,
+                    sessiondbh        => $session->{dbh},
                     targetdbinfo_ref  => $targetdbinfo_ref,
                     database          => $database,
-                    sessionID         => $sessionID,
+                    sessionID         => $session->{ID},
                 });
             }
 
@@ -1015,13 +1014,14 @@ sub handler {
 			       };
 	    }
 	    
-            OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@resultset);
+            $session->updatelastresultset(\@resultset);
+            
             OpenBib::Search::Util::print_tit_list_by_idn({
                 itemlist_ref     => \@sortedoutputbuffer,
                 targetdbinfo_ref => $targetdbinfo_ref,
                 queryoptions_ref => $queryoptions_ref,
                 database         => $database,
-                sessionID        => $sessionID,
+                sessionID        => $session->{ID},
                 apachereq        => $r,
                 stylesheet       => $stylesheet,
                 view             => $view,
@@ -1074,12 +1074,12 @@ sub handler {
             OpenBib::Search::Util::print_tit_set_by_idn({
                 titidn             => $titelidns[0],
                 dbh                => $dbh,
-                sessiondbh         => $sessiondbh,
+                sessiondbh         => $session->{dbh},
                 targetdbinfo_ref   => $targetdbinfo_ref,
                 targetcircinfo_ref => $targetcircinfo_ref,
                 queryoptions_ref   => $queryoptions_ref,
                 database           => $database,
-                sessionID          => $sessionID,
+                sessionID          => $session->{ID},
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
                 view               => $view,
@@ -1099,10 +1099,10 @@ sub handler {
                 push @outputbuffer, OpenBib::Search::Util::get_tit_listitem_by_idn({
                     titidn            => $titelidn,
                     dbh               => $dbh,
-                    sessiondbh        => $sessiondbh,
+                    sessiondbh        => $session->{dbh},
                     targetdbinfo_ref  => $targetdbinfo_ref,
                     database          => $database,
-                    sessionID         => $sessionID,
+                    sessionID         => $session->{ID},
                 });
             }
 
@@ -1126,13 +1126,14 @@ sub handler {
 			       };
 	    }
 	    
-            OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@resultset);
+            $session->updatelastresultset(\@resultset);
+            
             OpenBib::Search::Util::print_tit_list_by_idn({
                 itemlist_ref     => \@sortedoutputbuffer,
                 targetdbinfo_ref => $targetdbinfo_ref,
                 queryoptions_ref => $queryoptions_ref,
                 database         => $database,
-                sessionID        => $sessionID,
+                sessionID        => $session->{ID},
                 apachereq        => $r,
                 stylesheet       => $stylesheet,
                 view             => $view,
@@ -1185,12 +1186,12 @@ sub handler {
             OpenBib::Search::Util::print_tit_set_by_idn({
                 titidn             => $titelidns[0],
                 dbh                => $dbh,
-                sessiondbh         => $sessiondbh,
+                sessiondbh         => $session->{dbh},
                 targetdbinfo_ref   => $targetdbinfo_ref,
                 targetcircinfo_ref => $targetcircinfo_ref,
                 queryoptions_ref   => $queryoptions_ref,
                 database           => $database,
-                sessionID          => $sessionID,
+                sessionID          => $session->{ID},
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
                 view               => $view,
@@ -1211,10 +1212,10 @@ sub handler {
                 push @outputbuffer, OpenBib::Search::Util::get_tit_listitem_by_idn({
                     titidn            => $titelidn,
                     dbh               => $dbh,
-                    sessiondbh        => $sessiondbh,
+                    sessiondbh        => $session->{dbh},
                     targetdbinfo_ref  => $targetdbinfo_ref,
                     database          => $database,
-                    sessionID         => $sessionID,
+                    sessionID         => $session->{ID},
                 });
             }
 
@@ -1238,13 +1239,14 @@ sub handler {
 			       };
 	    }
 
-            OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@resultset);
+            $session->updatelastresultset(\@resultset);
+            
             OpenBib::Search::Util::print_tit_list_by_idn({
                 itemlist_ref     => \@sortedoutputbuffer,
                 targetdbinfo_ref => $targetdbinfo_ref,
                 queryoptions_ref => $queryoptions_ref,
                 database         => $database,
-                sessionID        => $sessionID,
+                sessionID        => $session->{ID},
                 apachereq        => $r,
                 stylesheet       => $stylesheet,
                 view             => $view,
@@ -1259,7 +1261,6 @@ sub handler {
     $logger->error("Unerlaubt das Ende erreicht");
   
     $dbh->disconnect;
-    $sessiondbh->disconnect;
     return OK;
 }
 

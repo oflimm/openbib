@@ -46,6 +46,7 @@ use POSIX;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
+use OpenBib::Session;
 
 sub handler {
     my $r=shift;
@@ -63,6 +64,10 @@ sub handler {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
 
+    my $session   = new OpenBib::Session({
+        sessionID => $query->param('sessionID'),
+    });
+
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
     my $action    = ($query->param('action'))?$query->param('action'):'none';
@@ -70,27 +75,22 @@ sub handler {
     my $loginname = ($query->param('loginname'))?$query->param('loginname'):'';
     my $password1 = ($query->param('password1'))?$query->param('password1'):'';
     my $password2 = ($query->param('password2'))?$query->param('password2'):'';
-    my $sessionID = $query->param('sessionID');
-
-    my $sessiondbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
-            or $logger->error_die($DBI::errstr);
   
     my $userdbh
         = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $queryoptions_ref
-        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+        = $session->get_queryoptions($query);
 
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
-    unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
+    if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        $sessiondbh->disconnect();
         $userdbh->disconnect();
+
         return OK;
     }
   
@@ -100,7 +100,7 @@ sub handler {
         $view=$query->param('view');
     }
     else {
-        $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
+        $view=$session->get_viewname();
     }
   
     if ($action eq "show") {
@@ -108,7 +108,7 @@ sub handler {
         my $ttdata={
             view       => $view,
             stylesheet => $stylesheet,
-            sessionID  => $sessionID,
+            sessionID  => $session->{ID},
 
             config     => $config,
             msg        => $msg,
@@ -118,22 +118,19 @@ sub handler {
     elsif ($action eq "auth") {
         if ($loginname eq "" || $password1 eq "" || $password2 eq "") {
             OpenBib::Common::Util::print_warning($msg->maketext("Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"),$r,$msg);
-            $sessiondbh->disconnect();
             $userdbh->disconnect();
             return OK;
         }
 
         if ($password1 ne $password2) {
             OpenBib::Common::Util::print_warning($msg->maketext("Die beiden eingegebenen Passworte stimmen nicht überein."),$r,$msg);
-            $sessiondbh->disconnect();
             $userdbh->disconnect();
             return OK;
         }
 
         # Ueberpruefen, ob es eine gueltige Mailadresse angegeben wurde.
         unless (Email::Valid->address($loginname)){
-            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine gütige Mailadresse eingegeben. Gehen Sie bitte [_1]zurück[_2] und korrigieren Sie Ihre Eingabe","<a href=\"http://$config->{servername}$config->{selfreg_loc}?sessionID=$sessionID&action=show\">","</a>"),$r,$msg);
-            $sessiondbh->disconnect();
+            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine gütige Mailadresse eingegeben. Gehen Sie bitte [_1]zurück[_2] und korrigieren Sie Ihre Eingabe","<a href=\"http://$config->{servername}$config->{selfreg_loc}?sessionID=$session->{ID}&action=show\">","</a>"),$r,$msg);
             $userdbh->disconnect();
             return OK;
         }
@@ -144,10 +141,9 @@ sub handler {
         my $rows = $res->{rowcount};
 
         if ($rows > 0) {
-            OpenBib::Common::Util::print_warning($msg->maketext("Ein Benutzer mit dem Namen $loginname existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_1]zurück[_2] und lassen es sich zumailen.","<a href=\"http://$config->{servername}$config->{login_loc}?sessionID=$sessionID?do_login=1\">","</a>"),$r,$msg);
+            OpenBib::Common::Util::print_warning($msg->maketext("Ein Benutzer mit dem Namen $loginname existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_1]zurück[_2] und lassen es sich zumailen.","<a href=\"http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID}?do_login=1\">","</a>"),$r,$msg);
             $userresult->finish();
 
-            $sessiondbh->disconnect();
             $userdbh->disconnect();
             return OK;
         }
@@ -174,10 +170,10 @@ sub handler {
     
         # Es darf keine Session assoziiert sein. Daher stumpf loeschen
         $userresult=$userdbh->prepare("delete from usersession where sessionid = ?") or $logger->error($DBI::errstr);
-        $userresult->execute($sessionID) or $logger->error($DBI::errstr);
+        $userresult->execute($session->{ID}) or $logger->error($DBI::errstr);
 
         $userresult=$userdbh->prepare("insert into usersession values (?,?,?)") or $logger->error($DBI::errstr);
-        $userresult->execute($sessionID,$userid,$targetid) or $logger->error($DBI::errstr);
+        $userresult->execute($session->{ID},$userid,$targetid) or $logger->error($DBI::errstr);
 
         $userresult->finish();
 
@@ -185,7 +181,7 @@ sub handler {
         my $ttdata={
             view       => $view,
             stylesheet => $stylesheet,
-            sessionID  => $sessionID,
+            sessionID  => $session->{ID},
 
             loginname  => $loginname,
 	      
@@ -198,7 +194,6 @@ sub handler {
         OpenBib::Common::Util::print_warning($msg->maketext("Unerlaubte Aktion"),$r,$msg);
     }
 
-    $sessiondbh->disconnect();
     $userdbh->disconnect();
   
     return OK;

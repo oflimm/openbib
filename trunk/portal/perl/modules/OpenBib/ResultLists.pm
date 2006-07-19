@@ -287,7 +287,7 @@ sub handler {
                 }
 
 
-                OpenBib::Common::Util::updatelastresultset($session->{dbh},$session->{ID},\@resultset);
+                $session->updatelastresultset(\@resultset);
             }
             elsif ($sortall == 0) {
                 # Katalogoriertierte Sortierung
@@ -361,7 +361,7 @@ sub handler {
                 };
       
                 OpenBib::Common::Util::print_page($config->{tt_resultlists_showall_tname},$ttdata,$r);
-                OpenBib::Common::Util::updatelastresultset($session->{dbh},$session->{ID},\@resultset);
+                $session->updatelastresultset(\@resultset);
             }
       
             $userdbh->disconnect();
@@ -445,7 +445,7 @@ sub handler {
       
       
             OpenBib::Common::Util::print_page($config->{tt_resultlists_showsinglepool_tname},$ttdata,$r);
-            OpenBib::Common::Util::updatelastresultset($session->{dbh},$session->{ID},\@resultset);
+            $session->updatelastresultset(\@resultset);
 
             $userdbh->disconnect();
       

@@ -72,7 +72,7 @@ sub handler {
     my $bodyframeurl   = $query->param('bodyframeurl')   || $config->{searchframe_loc};
 
     my $queryoptions_ref
-        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+        = $session->get_queryoptions($query);
     
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
@@ -105,8 +105,6 @@ sub handler {
     };
 
     OpenBib::Common::Util::print_page($config->{tt_frameset_tname},$ttdata,$r);
-
-    $sessiondbh->disconnect();
 
     return OK;
 }

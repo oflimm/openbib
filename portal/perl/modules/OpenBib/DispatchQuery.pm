@@ -85,7 +85,6 @@ sub handler {
 
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        $userdbh->disconnect();
         
         return OK;
     }

@@ -52,6 +52,7 @@ use OpenBib::Common::Stopwords;
 use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::Search::Local::Xapian;
+use OpenBib::Session;
 use OpenBib::Template::Provider;
 
 sub handler {
@@ -70,13 +71,13 @@ sub handler {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
 
+    my $session   = new OpenBib::Session({
+        sessionID => $query->param('sessionID'),
+    });
+    
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
     # Verbindung zur SQL-Datenbank herstellen
-    my $sessiondbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
-            or $logger->error_die($DBI::errstr);
-
     my $userdbh
         = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
             or $logger->error_die($DBI::errstr);
@@ -108,10 +109,8 @@ sub handler {
     my $sb            = $query->param('sb')            || 'sql'; # Search backend
     my $drilldown     = $query->param('drilldown')     || 0;     # Drill-Down?
 
-    my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
-
     my $queryoptions_ref
-        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+        = $session->get_queryoptions($query);
 
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
@@ -142,10 +141,8 @@ sub handler {
     
     $profil="" if (!$is_orgunit && $profil ne "dbauswahl" && !$profil=~/^user/ && $profil ne "alldbs");
 
-    unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
+    if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-
-        $sessiondbh->disconnect();
         $userdbh->disconnect();
 
         return OK;
@@ -157,12 +154,12 @@ sub handler {
         $view=$query->param('view');
     }
     else {
-        $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
+        $view=$session->get_viewname();
     }
 
     # Authorisierter user?
-    my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
-    $logger->info("Authorization: ", $sessionID, " ", ($userid)?$userid:'none');
+    my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$session->{ID});
+    $logger->info("Authorization: ", $session->{ID}, " ", ($userid)?$userid:'none');
 
     # BEGIN DB-Bestimmung
     ####################################################################
@@ -198,16 +195,7 @@ sub handler {
     elsif ($searchprofile || $verfindex || $korindex || $swtindex ) {
         if ($profil eq "dbauswahl") {
             # Eventuell bestehende Auswahl zuruecksetzen
-            @databases=();
-
-            my $idnresult=$sessiondbh->prepare("select dbname from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
-            $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-
-            while (my $result=$idnresult->fetchrow_hashref()) {
-                my $dbname = decode_utf8($result->{'dbname'});
-                push @databases, $dbname;
-            }
-            $idnresult->finish();
+            @databases=$session->get_dbchoice();
         }
         # Wenn ein anderes Profil als 'dbauswahl' ausgewaehlt wuerde
         elsif ($profil) {
@@ -252,9 +240,8 @@ sub handler {
         }
         # Kein Profil
         else {
-            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie keine [_1]Kataloge[_2] oder Suchprofile ausgewählt haben. Bitte wählen Sie die gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen Katalogen suchen</a>.","<a href=\"$config->{databasechoice_loc}?sessionID=$sessionID\" target=\"body\">","</a>"),$r,$msg);
+            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie keine [_1]Kataloge[_2] oder Suchprofile ausgewählt haben. Bitte wählen Sie die gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen Katalogen suchen</a>.","<a href=\"$config->{databasechoice_loc}?sessionID=$session->{ID}\" target=\"body\">","</a>"),$r,$msg);
 
-            $sessiondbh->disconnect();
             $userdbh->disconnect();
 
             return OK;
@@ -263,11 +250,11 @@ sub handler {
 
         # Wenn Profil aufgerufen wurde, dann abspeichern fuer Recherchemaske
         if ($profil) {
-            my $idnresult=$sessiondbh->prepare("delete from sessionprofile where sessionid = ? ") or $logger->error($DBI::errstr);
-            $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+            my $idnresult=$session->{dbh}->prepare("delete from sessionprofile where sessionid = ? ") or $logger->error($DBI::errstr);
+            $idnresult->execute($session->{ID}) or $logger->error($DBI::errstr);
 
-            $idnresult=$sessiondbh->prepare("insert into sessionprofile values (?,?) ") or $logger->error($DBI::errstr);
-            $idnresult->execute($sessionID,$profil) or $logger->error($DBI::errstr);
+            $idnresult=$session->{dbh}->prepare("insert into sessionprofile values (?,?) ") or $logger->error($DBI::errstr);
+            $idnresult->execute($session->{ID},$profil) or $logger->error($DBI::errstr);
             $idnresult->finish();
         }
     }
@@ -384,7 +371,7 @@ sub handler {
             $hitrange=200;
         }
 
-        my $baseurl="http://$config->{servername}$config->{virtualsearch_loc}?sessionID=$sessionID;view=$view;$urlpart;profil=$profil;maxhits=$maxhits;sorttype=$sorttype;sortorder=$sortorder";
+        my $baseurl="http://$config->{servername}$config->{virtualsearch_loc}?sessionID=$session->{ID};view=$view;$urlpart;profil=$profil;maxhits=$maxhits;sorttype=$sorttype;sortorder=$sortorder";
 
         my @nav=();
 
@@ -418,7 +405,7 @@ sub handler {
         my $ttdata={
             view       => $view,
             stylesheet => $stylesheet,		
-            sessionID  => $sessionID,
+            sessionID  => $session->{ID},
             resulttime => $resulttime,
             contentreq => $contentreq,
             index      => \@sortedindex,
@@ -498,7 +485,6 @@ sub handler {
         if (!$ejtest) {
             OpenBib::Common::Util::print_warning($msg->maketext("Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."),$r,$msg);
 
-            $sessiondbh->disconnect();
             $userdbh->disconnect();
 
             return OK;
@@ -509,7 +495,6 @@ sub handler {
         if ($searchquery_ref->{ejahr}{norm}) {
             OpenBib::Common::Util::print_warning($msg->maketext("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."),$r,$msg);
 
-            $sessiondbh->disconnect();
             $userdbh->disconnect();
             return OK;
         }
@@ -521,7 +506,6 @@ sub handler {
             if (!$firstsql) {
                 OpenBib::Common::Util::print_warning($msg->maketext("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."),$r,$msg);
 
-                $sessiondbh->disconnect();
                 $userdbh->disconnect();
 
                 return OK;
@@ -532,7 +516,6 @@ sub handler {
     if (!$firstsql) {
         OpenBib::Common::Util::print_warning($msg->maketext("Es wurde kein Suchkriterium eingegeben."),$r,$msg);
 
-        $sessiondbh->disconnect();
         $userdbh->disconnect();
 
         return OK;
@@ -544,7 +527,7 @@ sub handler {
     my $loginname = "";
     my $password  = "";
 
-    if ($userid && OpenBib::Common::Util::get_targettype_of_session($userdbh,$sessionID) ne "self"){
+    if ($userid && OpenBib::Common::Util::get_targettype_of_session($userdbh,$session->{ID}) ne "self"){
         ($loginname,$password)=OpenBib::Common::Util::get_cred_for_userid($userdbh,$userid);
     }
 
@@ -579,7 +562,7 @@ sub handler {
     my $startttdata={
         view           => $view,
         stylesheet     => $stylesheet,
-        sessionID      => $sessionID,
+        sessionID      => $session->{ID},
 
         loginname      => $loginname,
         password       => $password,
@@ -828,7 +811,7 @@ sub handler {
                 # TT-Data erzeugen
                 my $ttdata={
                     view            => $view,
-                    sessionID       => $sessionID,
+                    sessionID       => $session->{ID},
 		  
                     dbinfo          => $targetdbinfo_ref->{dbinfo}{$database},
 
@@ -905,9 +888,9 @@ sub handler {
                     push @outputbuffer, OpenBib::Search::Util::get_tit_listitem_by_idn({
                         titidn            => $idn,
                         dbh               => $dbh,
-                        sessiondbh        => $sessiondbh,
+                        sessiondbh        => $session->{dbh},
                         database          => $database,
-                        sessionID         => $sessionID,
+                        sessionID         => $session->{ID},
                         targetdbinfo_ref  => $targetdbinfo_ref,
                     });
                 }
@@ -957,7 +940,7 @@ sub handler {
                 # TT-Data erzeugen
                 my $ttdata={
                     view            => $view,
-                    sessionID       => $sessionID,
+                    sessionID       => $session->{ID},
 		  
                     dbinfo          => $targetdbinfo_ref->{dbinfo}{$database},
 
@@ -999,27 +982,27 @@ sub handler {
     #
     # ENDE Anfrage an Datenbanken schicken und Ergebnisse einsammeln
 
-#    $logger->info("InitialSearch: ", $sessionID, " ", $gesamttreffer, " fs=(", $fs, ") verf=(", $boolverf, "#", $verf, ") hst=(", $boolhst, "#", $hst, ") hststring=(", $boolhststring, "#", $hststring, ") swt=(", $boolswt, "#", $swt, ") kor=(", $boolkor, "#", $kor, ") sign=(", $boolsign, "#", $sign, ") isbn=(", $boolisbn, "#", $isbn, ") issn=(", $boolissn, "#", $issn, ") mart=(", $boolmart, "#", $mart, ") notation=(", $boolnotation, "#", $notation, ") ejahr=(", $boolejahr, "#", $ejahr, ") ejahrop=(", $ejahrop, ") databases=(",join(' ',sort @databases),") ");
+#    $logger->info("InitialSearch: ", $session->{ID}, " ", $gesamttreffer, " fs=(", $fs, ") verf=(", $boolverf, "#", $verf, ") hst=(", $boolhst, "#", $hst, ") hststring=(", $boolhststring, "#", $hststring, ") swt=(", $boolswt, "#", $swt, ") kor=(", $boolkor, "#", $kor, ") sign=(", $boolsign, "#", $sign, ") isbn=(", $boolisbn, "#", $isbn, ") issn=(", $boolissn, "#", $issn, ") mart=(", $boolmart, "#", $mart, ") notation=(", $boolnotation, "#", $notation, ") ejahr=(", $boolejahr, "#", $ejahr, ") ejahrop=(", $ejahrop, ") databases=(",join(' ',sort @databases),") ");
 
     # Wenn etwas gefunden wurde, dann kann ein Resultset geschrieben werden.
 
     if ($gesamttreffer > 0) {
         $logger->debug("Resultset wird geschrieben: ".YAML::Dump(\@resultset));
-        OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@resultset);
+        $session->updatelastresultset(\@resultset);
     }
 
     ######################################################################
     # Bei einer SessionID von -1 wird effektiv keine Session verwendet
     ######################################################################
 
-    if ($sessionID ne "-1") {
+    if ($session->{ID} ne "-1") {
         # Jetzt update der Trefferinformationen
 
         my $dbasesstring=join("||",@databases);
 
         my $thisquerystring=unpack "H*", Storable::freeze($searchquery_ref);
-        my $idnresult=$sessiondbh->prepare("select count(*) as rowcount from queries where query = ? and sessionid = ? and dbases = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($thisquerystring,$sessionID,$dbasesstring) or $logger->error($DBI::errstr);
+        my $idnresult=$session->{dbh}->prepare("select count(*) as rowcount from queries where query = ? and sessionid = ? and dbases = ?") or $logger->error($DBI::errstr);
+        $idnresult->execute($thisquerystring,$session->{ID},$dbasesstring) or $logger->error($DBI::errstr);
         my $res  = $idnresult->fetchrow_hashref;
         my $rows = $res->{rowcount};
 
@@ -1027,16 +1010,16 @@ sub handler {
 
         # Neuer Query
         if ($rows <= 0) {
-            $idnresult=$sessiondbh->prepare("insert into queries (queryid,sessionid,query,hits,dbases) values (NULL,?,?,?,?)") or $logger->error($DBI::errstr);
-            $idnresult->execute($sessionID,$thisquerystring,$gesamttreffer,$dbasesstring) or $logger->error($DBI::errstr);
+            $idnresult=$session->{dbh}->prepare("insert into queries (queryid,sessionid,query,hits,dbases) values (NULL,?,?,?,?)") or $logger->error($DBI::errstr);
+            $idnresult->execute($session->{ID},$thisquerystring,$gesamttreffer,$dbasesstring) or $logger->error($DBI::errstr);
         }
         # Query existiert schon
         else {
             $queryalreadyexists=1;
         }
 
-        $idnresult=$sessiondbh->prepare("select queryid from queries where query = ? and sessionid = ? and dbases = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($thisquerystring,$sessionID,$dbasesstring) or $logger->error($DBI::errstr);
+        $idnresult=$session->{dbh}->prepare("select queryid from queries where query = ? and sessionid = ? and dbases = ?") or $logger->error($DBI::errstr);
+        $idnresult->execute($thisquerystring,$session->{ID},$dbasesstring) or $logger->error($DBI::errstr);
 
         my $queryid;
         while (my @idnres=$idnresult->fetchrow) {
@@ -1044,7 +1027,7 @@ sub handler {
         }
 
         if ($queryalreadyexists == 0) {
-            $idnresult=$sessiondbh->prepare("insert into searchresults values (?,?,?,?,?)") or $logger->error($DBI::errstr);
+            $idnresult=$session->{dbh}->prepare("insert into searchresults values (?,?,?,?,?)") or $logger->error($DBI::errstr);
 
             foreach my $db (keys %trefferpage) {
                 my $res=$trefferpage{$db};
@@ -1053,7 +1036,7 @@ sub handler {
 
                 $logger->debug("YAML-Dumped: ".YAML::Dump($res));
                 my $num=$dbhits{$db};
-                $idnresult->execute($sessionID,$db,$storableres,$num,$queryid) or $logger->error($DBI::errstr);
+                $idnresult->execute($session->{ID},$db,$storableres,$num,$queryid) or $logger->error($DBI::errstr);
             }
         }
 
@@ -1079,7 +1062,7 @@ sub handler {
     # TT-Data erzeugen
     my $endttdata={
         view          => $view,
-        sessionID     => $sessionID,
+        sessionID     => $session->{ID},
 
         gesamttreffer => $gesamttreffer,
 
@@ -1092,7 +1075,6 @@ sub handler {
         return SERVER_ERROR;
     };
 
-    $sessiondbh->disconnect();
     $userdbh->disconnect();
 
     return OK;

@@ -98,7 +98,7 @@ sub handler {
     }
   
     # Haben wir eine authentifizierte Session?
-    my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
+    my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$session->{ID});
   
     if ($userid) {
         # Authentifiziert-Status der Session loeschen

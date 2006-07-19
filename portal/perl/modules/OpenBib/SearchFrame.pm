@@ -65,9 +65,8 @@ sub handler {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
 
-    my $sessionID = $query->param('sessionID');
-    my $session = new OpenBib::Session({
-        sessionID => $sessionID,
+    my $session   = new OpenBib::Session({
+        sessionID => $query->param('sessionID'),
     });
 
     my $useragent=$r->subprocess_env('HTTP_USER_AGENT');

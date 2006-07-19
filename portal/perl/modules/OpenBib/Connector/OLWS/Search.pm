@@ -42,6 +42,7 @@ use Log::Log4perl qw(get_logger :levels);
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Search::Util;
+use OpenBib::Session;
 use OpenBib::VirtualSearch::Util;
 
 sub search {
@@ -99,7 +100,7 @@ sub search {
     #####################################################################
     # Verbindung zur SQL-Datenbank herstellen
   
-    my $sessiondbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
+    my $session = new OpenBib::Session();
 
     # BEGIN DB-Bestimmung
     ####################################################################
@@ -371,7 +372,7 @@ sub search {
             titidn             => $singleidn,
             hint               => "none",
             dbh                => $dbh,
-            sessiondbh         => $sessiondbh,
+            sessiondbh         => $session->{dbh},
             searchmultipleaut  => 0,
             searchmultiplekor  => 0,
             searchmultipleswt  => 0,
@@ -521,7 +522,7 @@ sub search {
                         hint              => "none",
                         mode              => 5,
                         dbh               => $dbh,
-                        sessiondbh        => $sessiondbh,
+                        sessiondbh        => $session->{dbh},
                         searchmultipleaut => 0,
                         searchmultiplekor => 0,
                         searchmultipleswt => 0,
@@ -813,9 +814,7 @@ sub get_tit_listitem_by_idn {
         = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $sessiondbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
-            or $logger->error_die($DBI::errstr);
+    my $session = new OpenBib::Session();
 
     my $targetdbinfo_ref
         = $config->get_targetdbinfo();
@@ -823,13 +822,12 @@ sub get_tit_listitem_by_idn {
     my $tititem_ref=OpenBib::Search::Util::get_tit_listitem_by_idn({
         titidn            => $id,
         dbh               => $dbh,
-        sessiondbh        => $sessiondbh,
+        sessiondbh        => $session->{dbh},
         database          => $database,
         sessionID         => '-1',
         targetdbinfo_ref  => $targetdbinfo_ref,
     });
 
-    $sessiondbh->disconnect;
     $dbh->disconnect;
 
     return $tititem_ref;

@@ -44,6 +44,7 @@ use DBI;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Search::Util;
+use OpenBib::Session;
 
 sub handler {
     
@@ -63,11 +64,7 @@ sub handler {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
 
-    
-    #####################################################################
-    # Verbindung zur SQL-Datenbank herstellen
-    
-    my $sessiondbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
+    my $session = new OpenBib::Session();
     
     # CGI-Input auslesen
     
@@ -137,7 +134,7 @@ sub handler {
     
 
     my $queryoptions_ref
-        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+        = $session->get_queryoptions($query);
 
     my $targetdbinfo_ref
         = config->get_targetdbinfo();
@@ -217,14 +214,12 @@ sub handler {
         if ($searchquery_ref->{ejahr}{norm}) {
             my ($ejtest)=$searchquery_ref->{ejahr}{norm}=~/.*(\d\d\d\d).*/;
             if (!$ejtest) {
-                $sessiondbh->disconnect();
                 return OK;
             }
         }
         
         if ($searchquery_ref->{ejahr}{bool} eq "OR") {
             if ($searchquery_ref->{ejahr}{norm}) {
-                $sessiondbh->disconnect();
                 return OK;
             }
         }
@@ -233,14 +228,12 @@ sub handler {
         if ($searchquery_ref->{ejahr}{bool} eq "AND") {
             if ($searchquery_ref->{ejahr}{norm}) {
                 if (!$firstsql) {
-                    $sessiondbh->disconnect();
                     return OK;
                 }
             }
         }
         
         if (!$firstsql) {
-            $sessiondbh->disconnect();
             return OK;
         }
         
@@ -271,7 +264,7 @@ sub handler {
                     push @outputbuffer, OpenBib::Search::Util::get_tit_listitem_by_idn({
                         titidn            => $idn,
                         dbh               => $dbh,
-                        sessiondbh        => $sessiondbh,
+                        sessiondbh        => $session->{dbh},
                         database          => $database,
                         sessionID         => -1,
                         targetdbinfo_ref  => $targetdbinfo_ref,

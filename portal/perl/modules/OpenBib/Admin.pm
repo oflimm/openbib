@@ -47,6 +47,7 @@ use Template;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
+use OpenBib::Session;
 
 sub handler {
 
@@ -67,9 +68,7 @@ sub handler {
 
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
-    # Verbindung zur SQL-Datenbank herstellen
-    my $sessiondbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
+    my $session = new OpenBib::Session();
   
     # Standardwerte festlegen
   
@@ -145,17 +144,11 @@ sub handler {
     my @rssids          = ($query->param('rssids'))?$query->param('rssids'):();
 
     my $queryoptions_ref
-        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+        = $session->get_queryoptions($query);
 
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
-        
-    # Neue SessionID erzeugen, falls keine vorhanden
-
-    unless ($sessionID){
-        $sessionID=OpenBib::Common::Util::init_new_session($sessiondbh);
-    }
 
     # Verweis: Datenbankname -> Informationen zum zugeh"origen Institut/Seminar
   
@@ -191,8 +184,6 @@ sub handler {
         };
     
         OpenBib::Common::Util::print_page($config->{tt_admin_login_tname},$ttdata,$r);
-    
-        $sessiondbh->disconnect;
         return OK;
     }
   
@@ -202,19 +193,17 @@ sub handler {
         # Sessionid erzeugen
         if ($user ne $adminuser) {
             OpenBib::Common::Util::print_warning($msg->maketext("Sie haben als Benutzer entweder keinen oder nicht den Admin-Benutzer eingegeben"),$r,$msg);
-            $sessiondbh->disconnect;
             return OK;
         }
     
         if ($passwd ne $adminpasswd) {
             OpenBib::Common::Util::print_warning($msg->maketext("Sie haben ein falsches Passwort eingegeben"),$r,$msg);
-            $sessiondbh->disconnect;
             return OK;
         }
 
         # Session ist nun authentifiziert und wird mit dem Admin 
         # assoziiert.
-        my $idnresult=$sessiondbh->prepare("update session set benutzernr = ? where sessionID = ?") or $logger->error($DBI::errstr);
+        my $idnresult=$session->{dbh}->prepare("update session set benutzernr = ? where sessionID = ?") or $logger->error($DBI::errstr);
         $idnresult->execute($adminuser,$sessionID) or $logger->error($DBI::errstr);
 
         # TT-Data erzeugen
@@ -226,15 +215,13 @@ sub handler {
         };
     
         OpenBib::Common::Util::print_page($config->{tt_admin_loggedin_tname},$ttdata,$r);
-        
-        $sessiondbh->disconnect;
         return OK;
     }
   
     # Ab hier gehts nur weiter mit korrekter SessionID
   
     # Admin-SessionID ueberpruefen
-    my $idnresult=$sessiondbh->prepare("select count(*) as rowcount from session where benutzernr = ? and sessionid = ?") or $logger->error($DBI::errstr);
+    my $idnresult=$session->{dbh}->prepare("select count(*) as rowcount from session where benutzernr = ? and sessionid = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($adminuser,$sessionID) or $logger->error($DBI::errstr);
     my $res=$idnresult->fetchrow_hashref;
 
@@ -244,7 +231,6 @@ sub handler {
   
     if ($rows <= 0) {
         OpenBib::Common::Util::print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"),$r,$msg);
-        $sessiondbh->disconnect;
         return OK;
     }
   
@@ -286,7 +272,6 @@ sub handler {
                 OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."),$r,$msg);
 
                 $idnresult->finish();
-                $sessiondbh->disconnect();
                 return OK;
             }
 
@@ -301,7 +286,6 @@ sub handler {
                 OpenBib::Common::Util::print_warning($msg->maketext("Es existiert bereits ein Katalog unter diesem Namen"),$r,$msg);
 
                 $idnresult->finish();
-                $sessiondbh->disconnect();
                 return OK;
             }
 
@@ -676,7 +660,6 @@ sub handler {
                 OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen mindestens einen Viewnamen und eine Beschreibung eingeben."),$r,$msg);
 
                 $idnresult->finish();
-                $sessiondbh->disconnect();
                 return OK;
             }
 
@@ -691,7 +674,6 @@ sub handler {
                 OpenBib::Common::Util::print_warning($msg->maketext("Es existiert bereits ein View unter diesem Namen"),$r,$msg);
 
                 $idnresult->finish();
-                $sessiondbh->disconnect();
                 return OK;
             }
       
@@ -708,9 +690,6 @@ sub handler {
             my $viewid = decode_utf8($res->{viewid});
 
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$sessionID&do_editview=1&do_edit=1&viewid=$viewid");
-
-            $sessiondbh->disconnect();
-
             return OK;
         }
         elsif ($do_edit) {
@@ -955,7 +934,7 @@ sub handler {
     }
     elsif ($do_showsessions) {
 
-        my $idnresult=$sessiondbh->prepare("select * from session order by createtime") or $logger->error($DBI::errstr);
+        my $idnresult=$session->{dbh}->prepare("select * from session order by createtime") or $logger->error($DBI::errstr);
         $idnresult->execute() or $logger->error($DBI::errstr);
         my $session="";
         my @sessions=();
@@ -965,7 +944,7 @@ sub handler {
             my $createtime      = decode_utf8($result->{'createtime'});
             my $benutzernr      = decode_utf8($result->{'benutzernr'});
 
-            my $idnresult2=$sessiondbh->prepare("select count(*) as rowcount from queries where sessionid = ?") or $logger->error($DBI::errstr);
+            my $idnresult2=$session->{dbh}->prepare("select count(*) as rowcount from queries where sessionid = ?") or $logger->error($DBI::errstr);
             $idnresult2->execute($singlesessionid) or $logger->error($DBI::errstr);
 
             my $res2=$idnresult2->fetchrow_hashref;
@@ -996,21 +975,19 @@ sub handler {
         };
 
         OpenBib::Common::Util::print_page($config->{tt_admin_showsessions_tname},$ttdata,$r);
-    
-        $sessiondbh->disconnect;
         return OK;
     }
     elsif ($do_editsession) {
 
         if ($do_show) {
-            my $idnresult=$sessiondbh->prepare("select * from session where sessionID = ?") or $logger->error($DBI::errstr);
+            my $idnresult=$session->{dbh}->prepare("select * from session where sessionID = ?") or $logger->error($DBI::errstr);
             $idnresult->execute($singlesessionid) or $logger->error($DBI::errstr);
 
             my $result=$idnresult->fetchrow_hashref();
             my $createtime = decode_utf8($result->{'createtime'});
             my $benutzernr = decode_utf8($result->{'benutzernr'});
 
-            my $idnresult2=$sessiondbh->prepare("select * from queries where sessionid = ?") or $logger->error($DBI::errstr);
+            my $idnresult2=$session->{dbh}->prepare("select * from queries where sessionid = ?") or $logger->error($DBI::errstr);
             $idnresult2->execute($singlesessionid) or $logger->error($DBI::errstr);
 
             my $numqueries=0;
@@ -1059,7 +1036,6 @@ sub handler {
 
             $idnresult->finish;
             $idnresult2->finish;
-            $sessiondbh->disconnect;
             return OK;
         }
     }
@@ -1075,7 +1051,7 @@ sub handler {
       
         OpenBib::Common::Util::print_page($config->{tt_admin_logout_tname},$ttdata,$r);
 
-        my $idnresult=$sessiondbh->prepare("delete from session where benutzernr = ? and sessionid = ?") or $logger->error($DBI::errstr);
+        my $idnresult=$session->{dbh}->prepare("delete from session where benutzernr = ? and sessionid = ?") or $logger->error($DBI::errstr);
         $idnresult->execute($adminuser,$sessionID) or $logger->error($DBI::errstr);
 
     }
@@ -1084,8 +1060,6 @@ sub handler {
     }
   
   LEAVEPROG: sleep 0;
-  
-    $sessiondbh->disconnect;
   
     return OK;
 }

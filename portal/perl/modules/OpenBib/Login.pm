@@ -49,6 +49,7 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Login::Util;
 use OpenBib::L10N;
+use OpenBib::Session;
 
 sub handler {
     my $r=shift;
@@ -66,6 +67,10 @@ sub handler {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
 
+    my $session   = new OpenBib::Session({
+        sessionID => $query->param('sessionID'),
+    });
+
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
     # Standardwerte festlegen
@@ -74,40 +79,25 @@ sub handler {
     my $targetid  = ($query->param('targetid'))?$query->param('targetid'):'none';
     my $loginname = ($query->param('loginname'))?$query->param('loginname'):'';
     my $password  = ($query->param('password'))?$query->param('password'):'';
-    my $sessionID = $query->param('sessionID');
 
     # Main-Actions
     my $do_login       = $query->param('do_login')        || '';
     my $do_auth        = $query->param('do_auth' )        || '';
     my $do_loginfailed = $query->param('do_loginfailed')  || '';
     
-    my $sessiondbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
-            or $logger->error_die($DBI::errstr);
-  
     my $userdbh
         = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $queryoptions_ref
-        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+        = $session->get_queryoptions($query);
     
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
-    my $idnresult=$sessiondbh->prepare("select count(sessionid) as rowcount from session where sessionid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-    my $res=$idnresult->fetchrow_hashref;
 
-    my $rows=$res->{rowcount};
-
-    # Wenn wir nichts gefunden haben, dann ist etwas faul
-    if ($rows <= 0 || $sessionID eq "") {
-        OpenBib::Common::Util::print_warning($msg->maketext("SessionID ist ungülltig"),$r,$msg);
-
-        $idnresult->finish();
-        $sessiondbh->disconnect();
+    if (!$session->is_valid()){
+        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
         $userdbh->disconnect();
 
         return OK;
@@ -119,7 +109,7 @@ sub handler {
         $view=$query->param('view');
     }
     else {
-        $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
+        $view=$session->get_viewname();
     }
   
     if ($do_login) {
@@ -140,7 +130,7 @@ sub handler {
         my $ttdata={
             view         => $view,
             stylesheet   => $stylesheet,
-            sessionID    => $sessionID,
+            sessionID    => $session->{ID},
             targetselect => $targetselect,
             loginname    => $loginname,
             config       => $config,
@@ -228,7 +218,7 @@ sub handler {
                 username  => $loginname,
                 pin       => $password,
                 userdbh   => $userdbh,
-                sessionID => $sessionID,
+                sessionID => $session->{ID},
             });
       
             if ($result <= 0) {
@@ -248,7 +238,7 @@ sub handler {
             my $userid = decode_utf8($res->{'userid'});
 
             # Es darf keine Session assoziiert sein. Daher stumpf loeschen
-            my $globalsessionID="$config->{servername}:$sessionID";
+            my $globalsessionID="$config->{servername}:$session->{ID}";
             $userresult=$userdbh->prepare("delete from usersession where sessionid = ?") or $logger->error($DBI::errstr);
             $userresult->execute($globalsessionID) or $logger->error($DBI::errstr);
       
@@ -270,8 +260,8 @@ sub handler {
       
             # Jetzt wird die bestehende Trefferliste uebernommen.
             # Gehe ueber alle Eintraege der Trefferliste
-            my $idnresult=$sessiondbh->prepare("select dbname,singleidn from treffer where sessionid = ?") or $logger->error($DBI::errstr);
-            $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+            my $idnresult=$session->{dbh}->prepare("select dbname,singleidn from treffer where sessionid = ?") or $logger->error($DBI::errstr);
+            $idnresult->execute($session->{ID}) or $logger->error($DBI::errstr);
       
             while (my $res=$idnresult->fetchrow_hashref()) {
                 my $dbname    = decode_utf8($res->{'dbname'});
@@ -300,8 +290,7 @@ sub handler {
                 $setmask="simple";
             }
 
-            $idnresult=$sessiondbh->prepare("update sessionmask set masktype = ? where sessionid = ?") or $logger->error($DBI::errstr);
-            $idnresult->execute($setmask,$sessionID) or $logger->error($DBI::errstr);
+            $session->set_mask($setmask);
 
             $idnresult->finish();
             $userresult->finish();
@@ -309,9 +298,9 @@ sub handler {
 
         # Und nun wird ein komplett neue Frameset aufgebaut
         my $headerframeurl
-            = "http://$config->{servername}$config->{headerframe_loc}?sessionID=$sessionID";
+            = "http://$config->{servername}$config->{headerframe_loc}?sessionID=$session->{ID}";
         my $bodyframeurl
-            = "http://$config->{servername}$config->{userprefs_loc}?sessionID=$sessionID&action=showfields";
+            = "http://$config->{servername}$config->{userprefs_loc}?sessionID=$session->{ID}&action=showfields";
     
         if ($view ne "") {
             $headerframeurl.="&view=$view";
@@ -320,14 +309,14 @@ sub handler {
 
         # Fehlerbehandlung
         if ($loginfailed) {
-            $bodyframeurl="http://$config->{servername}$config->{login_loc}?sessionID=$sessionID&do_loginfailed=1&code=$loginfailed";
+            $bodyframeurl="http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID}&do_loginfailed=1&code=$loginfailed";
         }
     
         my $ttdata={
             headerframeurl  => $headerframeurl,
             bodyframeurl    => $bodyframeurl,
             view            => $view,
-            sessionID       => $sessionID,
+            sessionID       => $session->{ID},
             config          => $config,
             msg             => $msg,
         };
@@ -346,9 +335,6 @@ sub handler {
         }
     }
 
-    $idnresult->finish();
-
-    $sessiondbh->disconnect();
     $userdbh->disconnect();
 
     return OK;

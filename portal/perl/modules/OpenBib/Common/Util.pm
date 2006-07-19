@@ -43,6 +43,7 @@ use YAML ();
 
 use OpenBib::Config;
 use OpenBib::Template::Provider;
+use OpenBib::Session;
 
 my $benchmark;
 
@@ -207,9 +208,11 @@ sub print_warning {
 
     my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
 
-    my $sessiondbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
-
-    my $view=get_viewname_of_session($sessiondbh,$sessionID);
+    my $session = new OpenBib::Session({
+        sessionID => $sessionID,
+    });
+    
+    my $view=$session->get_viewname();
  
     my $template = Template->new({
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({

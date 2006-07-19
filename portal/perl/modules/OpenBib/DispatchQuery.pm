@@ -46,6 +46,7 @@ use Template;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
+use OpenBib::Session;
 
 sub handler {
     my $r=shift;
@@ -62,8 +63,11 @@ sub handler {
     if ($status) {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
-  
-    my $sessionID = ($query->param('sessionID'))?$query->param('sessionID'):'';
+
+    my $session   = new OpenBib::Session({
+        sessionID => $query->param('sessionID'),
+    });
+    
     my $view      = ($query->param('view'))?$query->param('view'):'';
     my $queryid   = $query->param('queryid') || '';
 
@@ -72,29 +76,30 @@ sub handler {
     my $do_resultlist    = $query->param('do_resultlist')    || '';
     my $do_externalquery = $query->param('do_externalquery') || '';
 
-    my $sessiondbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
-            or $logger->error_die($DBI::errstr);
-    
     my $queryoptions_ref
-        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+        = $session->get_queryoptions($query);
 
-    $sessiondbh->disconnect();
-    
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
+
+    if (!$session->is_valid()){
+        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
+        $userdbh->disconnect();
+        
+        return OK;
+    }
+
     if    ($do_newquery) {
-        $r->internal_redirect("http://$config->{servername}$config->{searchframe_loc}?sessionID=$sessionID&queryid=$queryid&view=$view");
+        $r->internal_redirect("http://$config->{servername}$config->{searchframe_loc}?sessionID=$session->{ID}&queryid=$queryid&view=$view");
         return OK;
     }
     elsif ($do_resultlist) {
-        $r->internal_redirect("http://$config->{servername}$config->{resultlists_loc}?sessionID=$sessionID&view=$view&trefferliste=choice&queryid=$queryid");
+        $r->internal_redirect("http://$config->{servername}$config->{resultlists_loc}?sessionID=$session->{ID}&view=$view&trefferliste=choice&queryid=$queryid");
         return OK;
     }
     elsif ($do_externalquery) {
-        $r->internal_redirect("http://$config->{servername}$config->{externaljump_loc}?sessionID=$sessionID&view=$view&queryid=$queryid");
+        $r->internal_redirect("http://$config->{servername}$config->{externaljump_loc}?sessionID=$session->{ID}&view=$view&queryid=$queryid");
         return OK;
     }
     else {

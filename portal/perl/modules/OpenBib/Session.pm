@@ -61,15 +61,19 @@ sub new {
     # Setzen der Defaults
 
     if (!defined $sessionID){
-        $sessionID = $self->_init_new_session();
+        $self->{ID} = $self->_init_new_session();
+        $logger->debug("Generation of new SessionID $self->{ID} successful");
     }
     else {
-        if (!$self->is_valid($sessionID)){
-            $sessionID = undef;
+        $self->{ID}        = $sessionID;
+        $logger->debug("Examining if SessionID $self->{ID} is valid");
+        if (!$self->is_valid()){
+            $self->{ID} = undef;
+            $logger->debug("SessionID $self->{ID} is NOT valid");
         }
     }
     
-    $self->{ID}        = $sessionID;
+
 
     $logger->debug("Session-Object created: ".YAML::Dump($self));
     return $self;
@@ -131,11 +135,12 @@ sub _init_new_session {
 }
 
 sub is_valid {
-    my ($self)=@_;
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    # Spezielle SessionID -1 ist erlaubt
     if (defined $self->{ID} && $self->{ID} eq "-1") {
         return 1;
     }
@@ -156,7 +161,7 @@ sub is_valid {
 }
 
 sub load_queryoptions {
-    my ($self)=@_;
+    my $self = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -176,7 +181,7 @@ sub load_queryoptions {
 }
 
 sub dump_queryoptions {
-    my ($self,$sessionID,$queryoptions_ref)=@_;
+    my ($self,$queryoptions_ref)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -185,6 +190,7 @@ sub dump_queryoptions {
 
     $request->execute(YAML::Dump($queryoptions_ref),$self->{ID}) or $logger->error($DBI::errstr);
 
+    $logger->debug("Dumped Options: ".YAML::Dump($queryoptions_ref)." for session $self->{ID}");
     $request->finish();
 
     return;
@@ -309,6 +315,22 @@ sub get_profile {
     return $prevprofile;
 }
 
+sub set_profile {
+    my ($self,$profile)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $idnresult=$self->{dbh}->prepare("delete from sessionprofile where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+
+    $idnresult=$self->{dbh}->prepare("insert into sessionprofile values (?,?)") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID},$profile) or $logger->error($DBI::errstr);
+    $idnresult->finish();
+
+    return;
+}
+
 sub get_mask {
     my ($self)=@_;
 
@@ -412,6 +434,191 @@ sub get_number_of_dbchoice {
     return $numofdbs;
 }
 
+sub get_number_of_items_in_resultlist {
+    my ($self,$dbname)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $idnresult=$self->{dbh}->prepare("select count(sessionid) as rowcount from searchresults where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+    my $res = $idnresult->fetchrow_hashref();
+    my $numofitems = $res->{rowcount};
+    $idnresult->finish();
+
+    return $numofitems;
+}
+
+sub get_items_in_resultlist_per_db {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $database  = exists $arg_ref->{database}
+        ? $arg_ref->{database}           : undef;
+    
+    my $queryid   = exists $arg_ref->{queryid}
+        ? $arg_ref->{queryid}            : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my @resultlist=();
+    my $idnresult=$self->{dbh}->prepare("select searchresult from searchresults where sessionid = ? and dbname = ? and queryid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID},$database,$queryid) or $logger->error($DBI::errstr);
+    while (my $res = $idnresult->fetchrow_hashref()){
+        push @resultlist, $res->{searchresult};
+    }
+    $idnresult->finish();
+
+    return @resultlist;
+}
+
+sub get_all_items_in_resultlist {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $queryid   = exists $arg_ref->{queryid}
+        ? $arg_ref->{queryid}            : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = new OpenBib::Config();
+    
+    my $idnresult=$self->{dbh}->prepare("select searchresult,dbname from searchresults where sessionid = ? and queryid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID},$queryid) or $logger->error($DBI::errstr);
+    
+    my $searchresult_ref={};
+    while (my $res=$idnresult->fetchrow_hashref){
+        $searchresult_ref->{$res->{dbname}}=$res->{searchresult};
+    }
+    
+    my @resultlist=();
+
+    # Sortieren von Searchresults gemaess Ordnung der DBnames in ihren OrgUnits
+    foreach my $dbname ($config->get_sorted_list_of_dbnames_by_orgunit()){
+        push @resultlist, {
+            dbname       => $dbname,
+            searchresult => $searchresult_ref->{$dbname},
+        };
+    }
+
+    $idnresult->finish();
+
+    return @resultlist;
+}
+
+sub get_max_queryid {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $idnresult=$self->{dbh}->prepare("select max(queryid) as maxid from queries where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+    my $res = $idnresult->fetchrow_hashref();
+    my $maxid = decode_utf8($res->{maxid});
+    $idnresult->finish();
+
+    return $maxid;
+}
+
+sub get_number_of_items_in_collection {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $idnresult=$self->{dbh}->prepare("select count(*) as rowcount from treffer where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+    my $res = $idnresult->fetchrow_hashref();
+    my $numofitems = $res->{rowcount};
+    $idnresult->finish();
+
+    return $numofitems;
+}
+
+sub get_items_in_collection {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $idnresult=$self->{dbh}->prepare("select * from treffer where sessionid = ? order by dbname") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+
+    my  @items=();
+    
+    while(my $result = $idnresult->fetchrow_hashref){
+        my $database  = decode_utf8($result->{'dbname'});
+        my $singleidn = decode_utf8($result->{'singleidn'});
+        
+        push @items, {
+            database  => $database,
+            singleidn => $singleidn,
+        };
+    }
+    
+    $idnresult->finish();
+    
+    return @items;
+}
+
+sub set_item_in_collection {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $database  = exists $arg_ref->{database}
+        ? $arg_ref->{database}           : undef;
+
+    my $id        = exists $arg_ref->{id}
+        ? $arg_ref->{id}                 : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    if (!$database || !$id){
+        return;
+    }
+    
+    my $idnresult=$self->{dbh}->prepare("select count(*) as rowcount from treffer where sessionid = ? and dbname = ? and singleidn = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID},$database,$id) or $logger->error($DBI::errstr);
+    my $res    = $idnresult->fetchrow_hashref;
+    my $anzahl = $res->{rowcount};
+    $idnresult->finish();
+    
+    if ($anzahl == 0) {
+        my $idnresult=$self->{dbh}->prepare("insert into treffer values (?,?,?)") or $logger->error($DBI::errstr);
+        $idnresult->execute($self->{ID},$database,$id) or $logger->error($DBI::errstr);
+        $idnresult->finish();
+    }
+    
+    return;
+}
+
+sub clear_item_in_collection {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $database  = exists $arg_ref->{database}
+        ? $arg_ref->{database}           : undef;
+
+    my $id        = exists $arg_ref->{id}
+        ? $arg_ref->{id}                 : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    if (!$database || !$id){
+        return;
+    }
+    
+    my $idnresult=$self->{dbh}->prepare("delete from treffer where sessionid = ? and dbname = ? and singleidn = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID},$database,$id) or $logger->error($DBI::errstr);
+    
+    return;
+}
+
 sub updatelastresultset {
     my ($self,$resultset_ref)=@_;
 
@@ -442,6 +649,42 @@ sub updatelastresultset {
 
     return;
 }
+
+sub clear_data {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $idnresult=$self->{dbh}->prepare("delete from treffer where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+  
+    $idnresult=$self->{dbh}->prepare("delete from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+  
+    $idnresult=$self->{dbh}->prepare("delete from queries where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+  
+    $idnresult=$self->{dbh}->prepare("delete from searchresults where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+  
+    $idnresult=$self->{dbh}->prepare("delete from sessionview where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+  
+    $idnresult=$self->{dbh}->prepare("delete from sessionmask where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+  
+    $idnresult=$self->{dbh}->prepare("delete from sessionprofile where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+
+    $idnresult=$self->{dbh}->prepare("delete from session where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+
+    $idnresult->finish();
+
+    return;
+}
+
 
 sub DESTROY {
     my $self = shift;

@@ -47,6 +47,7 @@ use OpenBib::LoadBalancer::Util();
 use OpenBib::Common::Util();
 use OpenBib::Config();
 use OpenBib::L10N;
+use OpenBib::Session;
 
 sub handler {
     my $r=shift;
@@ -64,15 +65,13 @@ sub handler {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
 
-    my $sessiondbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
-            or $logger->error_die($DBI::errstr);
-    
-    my $queryoptions_ref
-        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+    my $session   = new OpenBib::Session({
+        sessionID => -1,
+    });
 
-    $sessiondbh->disconnect();
-    
+    my $queryoptions_ref
+        = $session->get_queryoptions($query);
+
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );

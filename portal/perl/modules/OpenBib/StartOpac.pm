@@ -80,8 +80,6 @@ sub handler {
     my $setmask         = $query->param('setmask') || '';
     my $searchsingletit = $query->param('searchsingletit') || '';
   
-    my $sessionID       = $session->{ID};
-    
     my $view="";
 
     if ($query->param('view')) {
@@ -137,7 +135,7 @@ sub handler {
         $session->set_view($view);
     }
   
-    $logger->debug("StartOpac-sID: $sessionID");
+    $logger->debug("StartOpac-sID: $session->{ID}");
 
     my $ttdata={
         view            => $view,

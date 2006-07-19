@@ -49,6 +49,7 @@ use OpenBib::Config;
 use OpenBib::Common::Util;
 use OpenBib::L10N;
 use OpenBib::Search::Util;
+use OpenBib::Session;
 
 sub handler {
     my $r=shift;
@@ -86,9 +87,7 @@ sub handler {
     #####################################################################
     # Verbindung zur SQL-Datenbank herstellen
 
-    my $sessiondbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
-            or $logger->error_die($DBI::errstr);
+    my $session = new OpenBib::Session();
 
     my $targetdbinfo_ref
         = $config->get_targetdbinfo();
@@ -239,7 +238,7 @@ sub handler {
             my $tititem_ref=OpenBib::Search::Util::get_tit_listitem_by_idn({
                 titidn            => $title_ref->{id},
                 dbh               => $dbh,
-                sessiondbh        => $sessiondbh,
+                sessiondbh        => $session->{dbh},
                 database          => $database,
                 sessionID         => '-1',
                 targetdbinfo_ref  => $targetdbinfo_ref,
@@ -285,10 +284,10 @@ sub handler {
         $rss_content=$rss->as_string;
         
         # Etwaig vorhandenen Eintrag loeschen
-        my $request=$sessiondbh->prepare("delete from rsscache where dbname=? and type=? and subtype = ?");
+        my $request=$session->{dbh}->prepare("delete from rsscache where dbname=? and type=? and subtype = ?");
         $request->execute($database,$type,$subtype);
 
-        $request=$sessiondbh->prepare("insert into rsscache values (?,NULL,?,?,?)");
+        $request=$session->{dbh}->prepare("insert into rsscache values (?,NULL,?,?,?)");
         $request->execute($database,$type,$subtype,$rss_content);
 
         $request->finish();
@@ -302,9 +301,6 @@ sub handler {
 
     print $rss_content;
 
-
-    $sessiondbh->disconnect;
-    
     return OK;
 }
 

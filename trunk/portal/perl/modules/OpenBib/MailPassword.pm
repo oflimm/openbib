@@ -47,6 +47,7 @@ use POSIX;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
+use OpenBib::Session;
 
 sub handler {
     my $r=shift;
@@ -64,6 +65,10 @@ sub handler {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
 
+    my $session   = new OpenBib::Session({
+        sessionID => $query->param('sessionID'),
+    });
+    
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
     my $action    = ($query->param('action'))?$query->param('action'):'none';
@@ -71,27 +76,20 @@ sub handler {
     my $targetid  = ($query->param('targetid'))?$query->param('targetid'):'none';
     my $loginname = ($query->param('loginname'))?$query->param('loginname'):'';
     my $password  = ($query->param('password'))?$query->param('password'):'';
-    my $sessionID = $query->param('sessionID')||'';
-  
-    my $sessiondbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
-            or $logger->error_die($DBI::errstr);
   
     my $userdbh
         = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $queryoptions_ref
-        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+        = $session->get_queryoptions($query);
 
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
     
-    unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
+    if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-    
-        $sessiondbh->disconnect();
         $userdbh->disconnect();
     
         return OK;
@@ -103,7 +101,7 @@ sub handler {
         $view=$query->param('view');
     }
     else {
-        $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
+        $view=$session->get_viewname();
     }
   
     if ($action eq "show") {
@@ -115,7 +113,7 @@ sub handler {
             stylesheet => $stylesheet,
 
 
-            sessionID  => $sessionID,
+            sessionID  => $session->{ID},
             loginname  => $loginname,
 
             config     => $config,
@@ -129,7 +127,6 @@ sub handler {
     
         if ($loginname eq "") {
             OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine E-Mail Adresse eingegeben"),$r,$msg);
-            $sessiondbh->disconnect();
             $userdbh->disconnect();
             return OK;
         }
@@ -143,7 +140,6 @@ sub handler {
     
         if (!$password) {
             OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Passwort für die Kennung $loginname"),$r,$msg);
-            $sessiondbh->disconnect();
             $userdbh->disconnect();
             return OK;
         }
@@ -205,7 +201,6 @@ sub handler {
         OpenBib::Common::Util::print_page($config->{tt_mailpassword_success_tname},$ttdata,$r);
     }
 
-    $sessiondbh->disconnect();
     $userdbh->disconnect();
     return OK;
 }

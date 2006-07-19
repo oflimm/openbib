@@ -44,6 +44,7 @@ use Log::Log4perl qw(get_logger :levels);
 use OpenBib::Common::Util();
 use OpenBib::Config();
 use OpenBib::L10N;
+use OpenBib::Session;
 
 sub handler {
     my $r=shift;
@@ -61,13 +62,11 @@ sub handler {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
 
-    # Verbindung zur SQL-Datenbank herstellen
-    my $sessiondbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
-            or $logger->error_die($DBI::errstr);
-    
-    my $sessionID      = $query->param('sessionID')      || '';
-    my $view           = OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
+    my $session   = new OpenBib::Session({
+        sessionID => $query->param('sessionID'),
+    });
+
+    my $view           = $session->get_viewname();
     my $setmask        = $query->param('setmask')        || '';
     my $headerframeurl = $query->param('headerframeurl') || $config->{headerframe_loc};
     my $bodyframeurl   = $query->param('bodyframeurl')   || $config->{searchframe_loc};
@@ -79,18 +78,24 @@ sub handler {
     my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
-    if ($bodyframeurl eq $config->{searchframe_loc}){
-        $bodyframeurl="$bodyframeurl?sessionID=$sessionID;view=$view;setmask=$setmask";
-    }
-    else {
-        $bodyframeurl="$bodyframeurl?sessionID=$sessionID;view=$view";
+    if (!$session->is_valid()){
+        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
+        return OK;
     }
 
-    $headerframeurl="$headerframeurl?sessionID=$sessionID;view=$view";
+    
+    if ($bodyframeurl eq $config->{searchframe_loc}){
+        $bodyframeurl="$bodyframeurl?sessionID=$session->{ID};view=$view;setmask=$setmask";
+    }
+    else {
+        $bodyframeurl="$bodyframeurl?sessionID=$session->{ID};view=$view";
+    }
+
+    $headerframeurl="$headerframeurl?sessionID=$session->{ID};view=$view";
 
     my $ttdata={
         view            => $view,
-        sessionID       => $sessionID,
+        sessionID       => $session->{ID},
 
         headerframeurl  => $headerframeurl,
         bodyframeurl    => $bodyframeurl,

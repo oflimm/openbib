@@ -45,6 +45,7 @@ use Template;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
+use OpenBib::Session;
 
 sub handler {
     my $r=shift;
@@ -61,11 +62,14 @@ sub handler {
     if ($status) {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
-  
+
+    my $session = new OpenBib::Session({
+        sessionID => $query->param('sessionID'),
+    });
+    
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
     # CGI-Uebergabe
-    my $sessionID  = ($query->param('sessionID'))?$query->param('sessionID'):'';
     my @databases  = ($query->param('database'))?$query->param('database'):();
 
     # Main-Actions
@@ -81,30 +85,20 @@ sub handler {
     #####################################################################
     # Verbindung zur SQL-Datenbank herstellen
   
-    my $sessiondbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
-            or $logger->error_die($DBI::errstr);
-  
-    my $configdbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
     my $userdbh
         = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $queryoptions_ref
-        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+        = $session->get_queryoptions($query);
     
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     
-    unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
+    if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        $sessiondbh->disconnect();
-        $configdbh->disconnect();
         $userdbh->disconnect();
         return OK;
     }
@@ -115,16 +109,14 @@ sub handler {
         $view=$query->param('view');
     }
     else {
-        $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
+        $view=$session->get_viewname();
     }
 
     # Authorisierte Session?
-    my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
+    my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$session->{ID});
   
     unless($userid){
         OpenBib::Common::Util::print_warning($msg->maketext("Sie haben sich nicht authentifiziert."),$r,$msg);
-        $sessiondbh->disconnect();
-        $configdbh->disconnect();
         $userdbh->disconnect();
         return OK;
     }
@@ -171,22 +163,18 @@ sub handler {
             $profilresult->finish();
         }
 
-        my $targettype=OpenBib::Common::Util::get_targettype_of_session($userdbh,$sessionID);
+        my $targettype=OpenBib::Common::Util::get_targettype_of_session($userdbh,$session->{ID});
 
-        $idnresult=$sessiondbh->prepare("select dbname from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-        while (my $result=$idnresult->fetchrow_hashref()) {
-            my $dbname = decode_utf8($result->{'dbname'});
+        foreach my $dbname ($session->get_dbchoice()) {
             $checkeddb{$dbname}="checked=\"checked\"";
         }
-        $idnresult->finish();
     
         my $lastcategory="";
         my $count=0;
     
         my $maxcolumn=$config->{databasechoice_maxcolumn};
     
-        $idnresult=$configdbh->prepare("select * from dbinfo where active=1 order by orgunit ASC, description ASC") or $logger->error($DBI::errstr);
+        $idnresult=$config->{dbh}->prepare("select * from dbinfo where active=1 order by orgunit ASC, description ASC") or $logger->error($DBI::errstr);
         $idnresult->execute() or $logger->error($DBI::errstr);
     
         my @catdb=();
@@ -249,7 +237,7 @@ sub handler {
         my $ttdata={
             view           => $view,
             stylesheet     => $stylesheet,
-            sessionID      => $sessionID,
+            sessionID      => $session->{ID},
             targettype     => $targettype,
             profilname     => $profilname,
             userdbprofiles => \@userdbprofiles,
@@ -315,7 +303,7 @@ sub handler {
             $profilresult->execute($profilid,$database) or $logger->error($DBI::errstr);
             $profilresult->finish();
         }
-        $r->internal_redirect("http://$config->{servername}$config->{databaseprofile_loc}?sessionID=$sessionID&do_showprofile=1");
+        $r->internal_redirect("http://$config->{servername}$config->{databaseprofile_loc}?sessionID=$session->{ID}&do_showprofile=1");
     }
     # Loeschen eines Profils
     elsif ($do_delprofile) {
@@ -327,15 +315,13 @@ sub handler {
     
         $profilresult->finish();
 
-        $r->internal_redirect("http://$config->{servername}$config->{databaseprofile_loc}?sessionID=$sessionID&do_showprofile=1");
+        $r->internal_redirect("http://$config->{servername}$config->{databaseprofile_loc}?sessionID=$session->{ID}&do_showprofile=1");
     }
     # ... andere Aktionen sind nicht erlaubt
     else {
         OpenBib::Common::Util::print_warning($msg->maketext("Keine gültige Aktion"),$r,$msg);
     }
 
-    $configdbh->disconnect();
-    $sessiondbh->disconnect();
     $userdbh->disconnect();
   
     return OK;

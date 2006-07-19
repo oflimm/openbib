@@ -49,6 +49,7 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::Search::Util;
+use OpenBib::Session;
 
 sub handler {
     my $r=shift;
@@ -66,20 +67,19 @@ sub handler {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
 
+    my $session   = new OpenBib::Session({
+        sessionID => $query->param('sessionID'),
+    });
+    
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
     #####################################################################
     # Verbindung zur SQL-Datenbank herstellen
 
-    my $sessiondbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
-            or $logger->error_die($DBI::errstr);
-  
     my $userdbh
         = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $sessionID = $query->param('sessionID');
     my $email     = ($query->param('email'))?$query->param('email'):'';
     my $subject   = ($query->param('subject'))?$query->param('subject'):'Ihre Merkliste';
     my $singleidn = $query->param('singleidn');
@@ -88,34 +88,40 @@ sub handler {
     my $type      = $query->param('type')||'HTML';
 
 
-    $logger->debug("SessionID: ".$sessionID);
+    $logger->debug("SessionID: ".$session->{ID});
 
     my $queryoptions_ref
-        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+        = $session->get_queryoptions($query);
 
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
+    if (!$session->is_valid()){
+        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
+        $userdbh->disconnect();
+
+        return OK;
+    }
+    
     my $view="";
 
     if ($query->param('view')) {
         $view=$query->param('view');
     }
     else {
-        $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
+        $view=$session->get_viewname();
     }
   
     # Haben wir eine authentifizierte Session?
   
-    my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
+    my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$session->{ID});
   
     # Ab hier ist in $userid entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
     if ($email eq "") {
         OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine Mailadresse eingegeben."),$r,$msg);
   
-        $sessiondbh->disconnect();
         $userdbh->disconnect();
         return OK;
     }
@@ -123,7 +129,6 @@ sub handler {
     unless (Email::Valid->address($email)) {
         OpenBib::Common::Util::print_warning($msg->maketext("Sie haben eine ungültige Mailadresse eingegeben."),$r,$msg);
     
-        $sessiondbh->disconnect();
         $userdbh->disconnect();
         return OK;
     }	
@@ -151,8 +156,8 @@ sub handler {
             $idnresult->execute($userid) or $logger->error($DBI::errstr);
         }
         else {
-            $idnresult=$sessiondbh->prepare("select * from treffer where sessionid = ? order by dbname") or $logger->error($DBI::errstr);
-            $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+            $idnresult=$session->{dbh}->prepare("select * from treffer where sessionid = ? order by dbname") or $logger->error($DBI::errstr);
+            $idnresult->execute($session->{ID}) or $logger->error($DBI::errstr);
         }
 
         while (my $result=$idnresult->fetchrow_hashref()) {
@@ -182,7 +187,7 @@ sub handler {
             targetdbinfo_ref   => $targetdbinfo_ref,
             targetcircinfo_ref => $targetcircinfo_ref,
             database           => $database,
-            sessionID          => $sessionID
+            sessionID          => $session->{ID}
         });
       
 #         if ($type eq "Text") {
@@ -211,7 +216,7 @@ sub handler {
     my $ttdata={
         view       => $view,
         stylesheet => $stylesheet,
-        sessionID  => $sessionID,
+        sessionID  => $session->{ID},
 	qopts      => $queryoptions_ref,
         type       => $type,
         collection => \@collection,
@@ -309,7 +314,6 @@ sub handler {
     
     OpenBib::Common::Util::print_page($config->{tt_mailcollection_success_tname},$ttdata,$r);
     
-    $sessiondbh->disconnect();
     $userdbh->disconnect();
 
     unlink $anschfile;

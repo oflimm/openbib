@@ -49,6 +49,7 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::ResultLists::Util;
+use OpenBib::Session;
 
 sub handler {
     my $r=shift;
@@ -65,14 +66,14 @@ sub handler {
     if ($status) {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
-  
+
+    my $session   = new OpenBib::Session({
+        sessionID => $query->param('sessionID'),
+    });
+    
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
     # Verbindung zur SQL-Datenbank herstellen
-    my $sessiondbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
-            or $logger->error_die($DBI::errstr);
-
     my $userdbh
         = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
             or $logger->error_die($DBI::errstr);
@@ -86,19 +87,15 @@ sub handler {
     my $autoplus     = $query->param('autoplus') || '';
     my $queryid      = $query->param('queryid') || '';
 
-    my $sessionID    = ($query->param('sessionID'))?$query->param('sessionID'):'';
-
     my $queryoptions_ref
-        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+        = $session->get_queryoptions($query);
 
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
   
-    unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
+    if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-
-        $sessiondbh->disconnect();
         $userdbh->disconnect();
   
         return OK;
@@ -110,7 +107,7 @@ sub handler {
         $view=$query->param('view');
     }
     else {
-        $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
+        $view=$session->get_viewname();
     }
 
     my $targetdbinfo_ref
@@ -123,16 +120,10 @@ sub handler {
     ####################################################################
   
     if ($trefferliste) {
-        my $idnresult=$sessiondbh->prepare("select count(sessionid) as rowcount from searchresults where sessionid = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-        my $res=$idnresult->fetchrow_hashref;
-        my $rows=$res->{rowcount};
+        my $rows=$session->get_number_of_items_in_resultlist();
         
         if ($rows <= 0) {
             OpenBib::Common::Util::print_warning($msg->maketext("Derzeit existiert (noch) keine Trefferliste"),$r,$msg);
-            $idnresult->finish();
-
-            $sessiondbh->disconnect();
             $userdbh->disconnect();
       
             return OK;
@@ -148,8 +139,8 @@ sub handler {
             my @querystrings = ();
             my @queryhits    = ();
       
-            $idnresult=$sessiondbh->prepare("select distinct searchresults.queryid as queryid,queries.query as query,queries.hits as hits from searchresults,queries where searchresults.sessionid = ? and searchresults.queryid=queries.queryid order by queryid desc") or $logger->error($DBI::errstr);
-            $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+            my $idnresult=$session->{dbh}->prepare("select distinct searchresults.queryid as queryid,queries.query as query,queries.hits as hits from searchresults,queries where searchresults.sessionid = ? and searchresults.queryid=queries.queryid order by queryid desc") or $logger->error($DBI::errstr);
+            $idnresult->execute($session->{ID}) or $logger->error($DBI::errstr);
       
             my @queries=();
 
@@ -180,8 +171,8 @@ sub handler {
                 }
             }
 
-            $idnresult=$sessiondbh->prepare("select dbname,hits from searchresults where sessionid = ? and queryid = ? order by hits desc") or $logger->error($DBI::errstr);
-            $idnresult->execute($sessionID,@{$thisquery_ref}{id}) or $logger->error($DBI::errstr);
+            $idnresult=$session->{dbh}->prepare("select dbname,hits from searchresults where sessionid = ? and queryid = ? order by hits desc") or $logger->error($DBI::errstr);
+            $idnresult->execute($session->{ID},@{$thisquery_ref}{id}) or $logger->error($DBI::errstr);
 
             my $hitcount=0;
             my @resultdbs=();
@@ -200,7 +191,7 @@ sub handler {
             my $ttdata={
                 view       => $view,
                 stylesheet => $stylesheet,
-                sessionID  => $sessionID,
+                sessionID  => $session->{ID},
 
                 thisquery  => $thisquery_ref,
                 queryid    => $queryid,
@@ -225,28 +216,7 @@ sub handler {
             # queryid bestimmt werden. Die betreffende ist die letzte zur aktuellen
             # sessionid
             if ($queryid eq "") {
-                $idnresult=$sessiondbh->prepare("select max(queryid) from queries where sessionid = ?") or $logger->error($DBI::errstr);
-                $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-	
-                my @res=$idnresult->fetchrow;
-                $queryid = decode_utf8($res[0]);
-            }
-
-            $idnresult=$sessiondbh->prepare("select searchresult,dbname from searchresults where sessionid = ? and queryid = ?") or $logger->error($DBI::errstr);
-            $idnresult->execute($sessionID,$queryid) or $logger->error($DBI::errstr);
-
-            my $searchresult_ref={};
-            while (my $res=$idnresult->fetchrow_hashref){
-                $searchresult_ref->{$res->{dbname}}=$res->{searchresult};
-            }
-
-            my @sortedsearchresults=();
-            # Sortieren von Searchresults gemaess Ordnung der DBnames in ihren OrgUnits
-            foreach my $dbname ($config->get_sorted_list_of_dbnames_by_orgunit()){
-                push @sortedsearchresults, {
-                    dbname       => $dbname,
-                    searchresult => $searchresult_ref->{$dbname},
-                };
+                $queryid = $session->get_max_queryid();
             }
 
             my @resultset=();
@@ -255,7 +225,9 @@ sub handler {
 
                 my @outputbuffer=();
 
-                foreach my $item_ref (@sortedsearchresults) {
+                foreach my $item_ref ($session->get_all_items_in_resultlist({
+                    queryid => $queryid,
+                })) {
                     my $storableres=Storable::thaw(pack "H*", $item_ref->{searchresult});
 
                     push @outputbuffer, @$storableres;
@@ -270,9 +242,9 @@ sub handler {
                 my $loginname="";
                 my $password="";
 
-                my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
+                my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$session->{ID});
 	
-                ($loginname,$password)=OpenBib::Common::Util::get_cred_for_userid($userdbh,$userid) if ($userid && OpenBib::Common::Util::get_targettype_of_session($userdbh,$sessionID) ne "self");
+                ($loginname,$password)=OpenBib::Common::Util::get_cred_for_userid($userdbh,$userid) if ($userid && OpenBib::Common::Util::get_targettype_of_session($userdbh,$session->{ID}) ne "self");
 	
                 # Hash im Loginname ersetzen
                 $loginname=~s/#/\%23/;
@@ -285,7 +257,7 @@ sub handler {
                 my $ttdata={
 		    view           => $view,
 		    stylesheet     => $stylesheet,
-		    sessionID      => $sessionID,
+		    sessionID      => $session->{ID},
 
 		    searchmode     => 2,
 		    bookinfo       => 0,
@@ -315,15 +287,16 @@ sub handler {
                 }
 
 
-                OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@resultset);
-                $idnresult->finish();
+                OpenBib::Common::Util::updatelastresultset($session->{dbh},$session->{ID},\@resultset);
             }
             elsif ($sortall == 0) {
                 # Katalogoriertierte Sortierung
 
                 my @resultlists=();
 
-                foreach my $item_ref (@sortedsearchresults) {
+                foreach my $item_ref ($session->get_all_items_in_resultlist({
+                    queryid => $queryid,
+                })) {
                     my $storableres=Storable::thaw(pack "H*", $item_ref->{searchresult});
 
                     my $database=$item_ref->{dbname};
@@ -352,9 +325,9 @@ sub handler {
                 my $loginname="";
                 my $password="";
 	
-                my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
+                my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$session->{ID});
 	
-                ($loginname,$password)=OpenBib::Common::Util::get_cred_for_userid($userdbh,$userid) if ($userid && OpenBib::Common::Util::get_targettype_of_session($userdbh,$sessionID) ne "self");
+                ($loginname,$password)=OpenBib::Common::Util::get_cred_for_userid($userdbh,$userid) if ($userid && OpenBib::Common::Util::get_targettype_of_session($userdbh,$session->{ID}) ne "self");
 	
                 # Hash im Loginname ersetzen
                 $loginname=~s/#/\%23/;
@@ -367,7 +340,7 @@ sub handler {
                 my $ttdata={
 		    view           => $view,
 		    stylesheet     => $stylesheet,
-		    sessionID      => $sessionID,
+		    sessionID      => $session->{ID},
 
 		    searchmode     => 2,
 		    bookinfo       => 0,
@@ -388,13 +361,9 @@ sub handler {
                 };
       
                 OpenBib::Common::Util::print_page($config->{tt_resultlists_showall_tname},$ttdata,$r);
-                OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@resultset);
-                $idnresult->finish();
+                OpenBib::Common::Util::updatelastresultset($session->{dbh},$session->{ID},\@resultset);
             }
       
-            $idnresult->finish();
-      
-            $sessiondbh->disconnect();
             $userdbh->disconnect();
       
             return OK;
@@ -406,13 +375,13 @@ sub handler {
         elsif ($targetdbinfo_ref->{dbases}{$trefferliste} ne "") {
             my @resultset=();
       
-            $idnresult=$sessiondbh->prepare("select searchresult from searchresults where sessionid = ? and dbname = ? and queryid = ?") or $logger->error($DBI::errstr);
-            $idnresult->execute($sessionID,$trefferliste,$queryid) or $logger->error($DBI::errstr);
-      
             my @resultlists=();
 
-            while (my @res=$idnresult->fetchrow) {
-                my $storableres=Storable::thaw(pack "H*", $res[0]);
+            foreach my $searchresult ($session->get_items_in_resultlist_per_db({
+                queryid  => $queryid,
+                database => $trefferliste,
+            })){
+                my $storableres=Storable::thaw(pack "H*", $searchresult);
 	
                 my @outputbuffer=@$storableres;
 	
@@ -438,9 +407,9 @@ sub handler {
             my $loginname="";
             my $password="";
       
-            my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
+            my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$session->{ID});
       
-            ($loginname,$password)=OpenBib::Common::Util::get_cred_for_userid($userdbh,$userid) if ($userid && OpenBib::Common::Util::get_targettype_of_session($userdbh,$sessionID) ne "self");
+            ($loginname,$password)=OpenBib::Common::Util::get_cred_for_userid($userdbh,$userid) if ($userid && OpenBib::Common::Util::get_targettype_of_session($userdbh,$session->{ID}) ne "self");
       
             # Hash im Loginname ersetzen
             $loginname=~s/#/\%23/;
@@ -453,7 +422,7 @@ sub handler {
             my $ttdata={
                 view           => $view,
                 stylesheet     => $stylesheet,
-                sessionID      => $sessionID,
+                sessionID      => $session->{ID},
 		  
                 searchmode     => 2,
                 bookinfo       => 0,
@@ -476,10 +445,8 @@ sub handler {
       
       
             OpenBib::Common::Util::print_page($config->{tt_resultlists_showsinglepool_tname},$ttdata,$r);
-            OpenBib::Common::Util::updatelastresultset($sessiondbh,$sessionID,\@resultset);
-            $idnresult->finish();
+            OpenBib::Common::Util::updatelastresultset($session->{dbh},$session->{ID},\@resultset);
 
-            $sessiondbh->disconnect();
             $userdbh->disconnect();
       
             return OK;
@@ -490,7 +457,6 @@ sub handler {
     # ENDE Trefferliste
     #
 
-    $sessiondbh->disconnect();
     $userdbh->disconnect();
   
     return OK;

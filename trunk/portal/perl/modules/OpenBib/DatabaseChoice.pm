@@ -45,6 +45,7 @@ use Template;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
+use OpenBib::Session;
 
 sub handler {
     my $r=shift;
@@ -62,10 +63,14 @@ sub handler {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
 
+    my $session   = new OpenBib::Session({
+        sessionID => $query->param('sessionID'),
+    });
+    
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
     # CGI-Uebergabe
-    my $sessionID = ($query->param('sessionID'))?$query->param('sessionID'):'';
+
     my @databases = ($query->param('database'))?$query->param('database'):();
     my $singleidn = $query->param('singleidn') || '';
     my $action    = ($query->param('action'))?$query->param('action'):'';
@@ -86,27 +91,21 @@ sub handler {
     #####################################################################
     # Verbindung zur SQL-Datenbank herstellen
   
-    my $sessiondbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
-            or $logger->error_die($DBI::errstr);
-  
     my $userdbh
         = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $queryoptions_ref
-        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+        = $session->get_queryoptions($query);
     
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
-    unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
+    if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-      
-        $sessiondbh->disconnect();
         $userdbh->disconnect();
-      
+
         return OK;
     }
 
@@ -116,46 +115,33 @@ sub handler {
         $view=$query->param('view');
     }
     else {
-        $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
+        $view=$session->get_viewname();
     }
     
-    my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
+    my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$session->{ID});
 
     my $idnresult="";
   
     # Wenn Kataloge ausgewaehlt wurden
     if ($do_choose) {
         # Zuerst die bestehende Auswahl loeschen
-      
-        $idnresult=$sessiondbh->prepare("delete from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
+        $session->clear_dbchoice();
       
         # Wenn es eine neue Auswahl gibt, dann wird diese eingetragen
         foreach my $database (@databases) {
-            $idnresult=$sessiondbh->prepare("insert into dbchoice (sessionid,dbname) values (?,?)") or $logger->error($DBI::errstr);
-            $idnresult->execute($sessionID,$database) or $logger->error($DBI::errstr);
+            $session->set_dbchoice($database);
         }
 
         # Neue Datenbankauswahl ist voreingestellt
-        $idnresult=$sessiondbh->prepare("delete from sessionprofile where sessionid = ? ") or $logger->error($DBI::errstr);
-        $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-
-        $idnresult=$sessiondbh->prepare("insert into sessionprofile values (?,'dbauswahl') ") or $logger->error($DBI::errstr);
-        $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-    
-        $idnresult->finish();
+        $session->set_profile('dbauswahl');
       
-        $r->internal_redirect("http://$config->{servername}$config->{searchframe_loc}?sessionID=$sessionID&view=$view");
+        $r->internal_redirect("http://$config->{servername}$config->{searchframe_loc}?sessionID=$session->{ID}&view=$view");
     }
     # ... sonst anzeigen
     else {
-        $idnresult=$sessiondbh->prepare("select dbname from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($sessionID) or $logger->error($DBI::errstr);
-        while (my $result=$idnresult->fetchrow_hashref()) {
-            my $dbname = decode_utf8($result->{'dbname'});
+        foreach my $dbname ($session->get_dbchoice()){
             $checkeddb{$dbname}="checked=\"checked\"";
         }
-        $idnresult->finish();
 
         my $lastcategory="";
         my $count=0;
@@ -226,7 +212,7 @@ sub handler {
         my $ttdata={
             view       => $view,
             stylesheet => $stylesheet,
-            sessionID  => $sessionID,
+            sessionID  => $session->{ID},
             maxcolumn  => $maxcolumn,
             colspan    => $colspan,
             catdb      => \@catdb,
@@ -236,11 +222,9 @@ sub handler {
     
         OpenBib::Common::Util::print_page($config->{tt_databasechoice_tname},$ttdata,$r);
         $idnresult->finish();
-        $sessiondbh->disconnect();
         return OK;
     }
   
-    $sessiondbh->disconnect();
     $userdbh->disconnect();
   
     return OK;

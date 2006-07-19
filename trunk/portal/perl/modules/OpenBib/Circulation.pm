@@ -49,6 +49,7 @@ use Template;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
+use OpenBib::Session;
 
 sub handler {
     my $r=shift;
@@ -66,34 +67,32 @@ sub handler {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
 
+    my $sessionID  = $query->param('sessionID'  )||'';
+
+    my $session    = new OpenBib::Session({
+        sessionID => $sessionID,
+    });
+    
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
     my $action     = ($query->param('action'    ))?$query->param('action'):'none';
     my $circaction = ($query->param('circaction'))?$query->param('circaction'):'none';
     my $offset     = ($query->param('offset'    ))?$query->param('offset'):0;
     my $listlength = ($query->param('listlength'))?$query->param('listlength'):10;
-    my $sessionID  = $query->param('sessionID'  )||'';
 
-    my $sessiondbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
-            or $logger->error_die($DBI::errstr);
-  
     my $userdbh
         = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
             or $logger->error_die($DBI::errstr);
 
     my $queryoptions_ref
-        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+        = $session->get_queryoptions($query);
 
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
     
-    unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
-
+    if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-
-        $sessiondbh->disconnect();
         $userdbh->disconnect();
         return OK;
     }
@@ -104,7 +103,7 @@ sub handler {
         $view=$query->param('view');
     }
     else {
-        $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
+        $view=$session->get_viewname();
     }
   
     my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
@@ -113,7 +112,6 @@ sub handler {
 
         OpenBib::Common::Util::print_warning($msg->maketext("Diese Session ist nicht authentifiziert."),$r,$msg);
 
-        $sessiondbh->disconnect();
         $userdbh->disconnect();
         return OK;
     }
@@ -296,7 +294,6 @@ sub handler {
         OpenBib::Common::Util::print_warning($msg->maketext("Unerlaubte Aktion"),$r,$msg);
     }
   
-    $sessiondbh->disconnect();
     $userdbh->disconnect();
     return OK;
 }

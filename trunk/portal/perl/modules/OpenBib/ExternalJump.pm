@@ -47,6 +47,7 @@ use Template;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
+use OpenBib::Session;
 
 sub handler {
     my $r=shift;
@@ -63,23 +64,22 @@ sub handler {
     if ($status) {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
-  
+
+    my $session   = new OpenBib::Session({
+        sessionID => $query->param('sessionID'),
+    });
+
     my $useragent=$r->subprocess_env('HTTP_USER_AGENT');
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
     #####################################################################
     # Verbindung zur SQL-Datenbank herstellen
   
-    my $sessiondbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
-            or $logger->error_die($DBI::errstr);
-  
     my $userdbh
         = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
             or $logger->error_die($DBI::errstr);
   
     # CGI-Uebergabe
-    my $sessionID      = ($query->param('sessionID'))?$query->param('sessionID'):'';
     my @databases     = ($query->param('database'))?$query->param('database'):();
     my $singleidn     = $query->param('singleidn')     || '';
     my $action        = ($query->param('action'))?$query->param('action'):'';
@@ -110,15 +110,14 @@ sub handler {
     my $queryid       = $query->param('queryid')       || '';
 
     my $queryoptions_ref
-        = OpenBib::Common::Util::get_queryoptions($sessiondbh,$query);
+        = $session->get_queryoptions($query);
     
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
     
-    unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
+    if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        $sessiondbh->disconnect();
         $userdbh->disconnect();
         return OK;
     }
@@ -129,27 +128,19 @@ sub handler {
         $view=$query->param('view');
     }
     else {
-        $view=OpenBib::Common::Util::get_viewname_of_session($sessiondbh,$sessionID);
+        $view=$session->get_viewname();
     }
 
     # Authorisierte Session?
-    my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
-      
-    unless (OpenBib::Common::Util::session_is_valid($sessiondbh,$sessionID)){
-        OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        $sessiondbh->disconnect();
-        $userdbh->disconnect();
+    my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$session->{ID});
     
-        return OK;
-    }
-  
     my $viewdesc = $config->get_viewdesc_from_viewname($view);
   
     my $hits;
     my $searchquery_ref;
 
     if ($queryid ne "") {
-        my $idnresult=$sessiondbh->prepare("select query,hits from queries where queryid = ?") or $logger->error($DBI::errstr);
+        my $idnresult=$session->{dbh}->prepare("select query,hits from queries where queryid = ?") or $logger->error($DBI::errstr);
         $idnresult->execute($queryid) or $logger->error($DBI::errstr);
     
         my $result       = $idnresult->fetchrow_hashref();
@@ -188,7 +179,6 @@ sub handler {
     }
     else {
         OpenBib::Common::Util::print_warning($msg->maketext("Keine gültige Anfrage-ID"),$r,$msg);
-        $sessiondbh->disconnect();
         $userdbh->disconnect();
     
         return OK;
@@ -199,7 +189,7 @@ sub handler {
     my $loginname = "";
     my $password  = "";
 
-    my $globalsessionID="$config->{servername}:$sessionID";
+    my $globalsessionID="$config->{servername}:$session->{ID}";
     my $userresult=$userdbh->prepare("select user.loginname,user.pin,count(user.loginname) as rowcount from usersession,user where usersession.sessionid = ? and user.userid=usersession.userid") or die "Error -- $DBI::errstr";
  
     $userresult->execute($globalsessionID);
@@ -228,7 +218,7 @@ sub handler {
         view         => $view,
         stylesheet   => $stylesheet,
         viewdesc     => $viewdesc,
-        sessionID    => $sessionID,
+        sessionID    => $session->{ID},
         queryid      => $queryid,
 	      
 	thisquery    => {
@@ -244,7 +234,6 @@ sub handler {
 
     OpenBib::Common::Util::print_page($config->{tt_externaljump_tname},$ttdata,$r);
 
-    $sessiondbh->disconnect();
     $userdbh->disconnect();
     return OK;
 }

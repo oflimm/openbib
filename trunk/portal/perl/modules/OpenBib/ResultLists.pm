@@ -50,6 +50,7 @@ use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::ResultLists::Util;
 use OpenBib::Session;
+use OpenBib::User;
 
 sub handler {
     my $r=shift;
@@ -70,13 +71,10 @@ sub handler {
     my $session   = new OpenBib::Session({
         sessionID => $query->param('sessionID'),
     });
+
+    my $user      = new OpenBib::User();
     
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-  
-    # Verbindung zur SQL-Datenbank herstellen
-    my $userdbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
-            or $logger->error_die($DBI::errstr);
   
     # CGI-Input auslesen
   
@@ -96,8 +94,6 @@ sub handler {
   
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        $userdbh->disconnect();
-  
         return OK;
     }
 
@@ -124,8 +120,6 @@ sub handler {
         
         if ($rows <= 0) {
             OpenBib::Common::Util::print_warning($msg->maketext("Derzeit existiert (noch) keine Trefferliste"),$r,$msg);
-            $userdbh->disconnect();
-      
             return OK;
         }
     
@@ -242,9 +236,9 @@ sub handler {
                 my $loginname="";
                 my $password="";
 
-                my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$session->{ID});
+                my $userid=$user->get_userid_of_session($session->{ID});
 	
-                ($loginname,$password)=OpenBib::Common::Util::get_cred_for_userid($userdbh,$userid) if ($userid && OpenBib::Common::Util::get_targettype_of_session($userdbh,$session->{ID}) ne "self");
+                ($loginname,$password)=$user->get_cred_for_userid($userid) if ($userid && $user->get_targettype_of_session($session->{ID}) ne "self");
 	
                 # Hash im Loginname ersetzen
                 $loginname=~s/#/\%23/;
@@ -325,9 +319,9 @@ sub handler {
                 my $loginname="";
                 my $password="";
 	
-                my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$session->{ID});
+                my $userid=$user->get_userid_of_session($session->{ID});
 	
-                ($loginname,$password)=OpenBib::Common::Util::get_cred_for_userid($userdbh,$userid) if ($userid && OpenBib::Common::Util::get_targettype_of_session($userdbh,$session->{ID}) ne "self");
+                ($loginname,$password)=$user->get_cred_for_userid($userid) if ($userid && $user->get_targettype_of_session($session->{ID}) ne "self");
 	
                 # Hash im Loginname ersetzen
                 $loginname=~s/#/\%23/;
@@ -363,9 +357,6 @@ sub handler {
                 OpenBib::Common::Util::print_page($config->{tt_resultlists_showall_tname},$ttdata,$r);
                 $session->updatelastresultset(\@resultset);
             }
-      
-            $userdbh->disconnect();
-      
             return OK;
         }
         ####################################################################
@@ -407,9 +398,9 @@ sub handler {
             my $loginname="";
             my $password="";
       
-            my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$session->{ID});
+            my $userid=$user->get_userid_of_session($session->{ID});
       
-            ($loginname,$password)=OpenBib::Common::Util::get_cred_for_userid($userdbh,$userid) if ($userid && OpenBib::Common::Util::get_targettype_of_session($userdbh,$session->{ID}) ne "self");
+            ($loginname,$password)=$user->get_cred_for_userid($userid) if ($userid && $user->get_targettype_of_session($session->{ID}) ne "self");
       
             # Hash im Loginname ersetzen
             $loginname=~s/#/\%23/;
@@ -446,9 +437,6 @@ sub handler {
       
             OpenBib::Common::Util::print_page($config->{tt_resultlists_showsinglepool_tname},$ttdata,$r);
             $session->updatelastresultset(\@resultset);
-
-            $userdbh->disconnect();
-      
             return OK;
         }
     }
@@ -456,9 +444,6 @@ sub handler {
     ####################################################################
     # ENDE Trefferliste
     #
-
-    $userdbh->disconnect();
-  
     return OK;
 }
 

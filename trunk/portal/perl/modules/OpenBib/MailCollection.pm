@@ -50,6 +50,7 @@ use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::Search::Util;
 use OpenBib::Session;
+use OpenBib::User;
 
 sub handler {
     my $r=shift;
@@ -70,15 +71,10 @@ sub handler {
     my $session   = new OpenBib::Session({
         sessionID => $query->param('sessionID'),
     });
+
+    my $user      = new OpenBib::User();
     
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    #####################################################################
-    # Verbindung zur SQL-Datenbank herstellen
-
-    my $userdbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
-            or $logger->error_die($DBI::errstr);
 
     my $email     = ($query->param('email'))?$query->param('email'):'';
     my $subject   = ($query->param('subject'))?$query->param('subject'):'Ihre Merkliste';
@@ -99,8 +95,6 @@ sub handler {
 
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        $userdbh->disconnect();
-
         return OK;
     }
     
@@ -115,21 +109,17 @@ sub handler {
   
     # Haben wir eine authentifizierte Session?
   
-    my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$session->{ID});
+    my $userid=$user->get_userid_of_session($session->{ID});
   
     # Ab hier ist in $userid entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
     if ($email eq "") {
         OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine Mailadresse eingegeben."),$r,$msg);
-  
-        $userdbh->disconnect();
         return OK;
     }
 
     unless (Email::Valid->address($email)) {
         OpenBib::Common::Util::print_warning($msg->maketext("Sie haben eine ungültige Mailadresse eingegeben."),$r,$msg);
-    
-        $userdbh->disconnect();
         return OK;
     }	
 
@@ -152,7 +142,7 @@ sub handler {
         my $idnresult="";
 
         if ($userid) {
-            $idnresult=$userdbh->prepare("select * from treffer where userid = ? order by dbname") or $logger->error($DBI::errstr);
+            $idnresult=$user->{dbh}->prepare("select * from treffer where userid = ? order by dbname") or $logger->error($DBI::errstr);
             $idnresult->execute($userid) or $logger->error($DBI::errstr);
         }
         else {
@@ -314,8 +304,6 @@ sub handler {
     
     OpenBib::Common::Util::print_page($config->{tt_mailcollection_success_tname},$ttdata,$r);
     
-    $userdbh->disconnect();
-
     unlink $anschfile;
     unlink $mailfile;
 

@@ -46,6 +46,7 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::Session;
+use OpenBib::User;
 
 sub handler {
     my $r=shift;
@@ -66,6 +67,8 @@ sub handler {
     my $session = new OpenBib::Session({
         sessionID => $query->param('sessionID'),
     });
+
+    my $user    = new OpenBib::User();
     
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
@@ -82,13 +85,6 @@ sub handler {
 
     my %checkeddb;
   
-    #####################################################################
-    # Verbindung zur SQL-Datenbank herstellen
-  
-    my $userdbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
     my $queryoptions_ref
         = $session->get_queryoptions($query);
     
@@ -99,7 +95,6 @@ sub handler {
     
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        $userdbh->disconnect();
         return OK;
     }
 
@@ -113,11 +108,10 @@ sub handler {
     }
 
     # Authorisierte Session?
-    my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$session->{ID});
+    my $userid=$user->get_userid_of_session($session->{ID});
   
     unless($userid){
         OpenBib::Common::Util::print_warning($msg->maketext("Sie haben sich nicht authentifiziert."),$r,$msg);
-        $userdbh->disconnect();
         return OK;
     }
 
@@ -131,39 +125,17 @@ sub handler {
         my $profilname="";
     
         if ($profilid) {
-      
             # Zuerst Profil-Description zur ID holen
-            $idnresult=$userdbh->prepare("select profilename from userdbprofile where profilid = ?") or $logger->error($DBI::errstr);
-            $idnresult->execute($profilid) or $logger->error($DBI::errstr);
-      
-            my $result=$idnresult->fetchrow_hashref();
-      
-            $profilname = decode_utf8($result->{'profilename'});
-      
-            $idnresult=$userdbh->prepare("select dbname from profildb where profilid = ?") or $logger->error($DBI::errstr);
-            $idnresult->execute($profilid) or $logger->error($DBI::errstr);
-            while (my $result=$idnresult->fetchrow_hashref()) {
-                my $dbname = decode_utf8($result->{'dbname'});
+            $profilname = $user->get_profilename_of_profileid($profilid);
+
+            foreach my $dbname ($user->get_profiledbs_of_profileid($profilid)){
                 $checkeddb{$dbname}="checked";
             }
-            $idnresult->finish();
         }
     
-        my @userdbprofiles=();
+        my @userdbprofiles=$user->get_all_profiles;
 
-        {
-            my $profilresult=$userdbh->prepare("select profilid, profilename from userdbprofile where userid = ? order by profilename") or $logger->error($DBI::errstr);
-            $profilresult->execute($userid) or $logger->error($DBI::errstr);
-            while (my $res=$profilresult->fetchrow_hashref()) {
-                push @userdbprofiles, {
-                    profilid    => decode_utf8($res->{'profilid'}),
-                    profilename => decode_utf8($res->{'profilename'}),
-                };
-            } 
-            $profilresult->finish();
-        }
-
-        my $targettype=OpenBib::Common::Util::get_targettype_of_session($userdbh,$session->{ID});
+        my $targettype=$user->get_targettype_of_session($session->{ID});
 
         foreach my $dbname ($session->get_dbchoice()) {
             $checkeddb{$dbname}="checked=\"checked\"";
@@ -264,7 +236,7 @@ sub handler {
             return OK;
         }
 
-        my $profilresult=$userdbh->prepare("select profilid,count(profilid) as rowcount from userdbprofile where userid = ? and profilename = ?") or $logger->error($DBI::errstr);
+        my $profilresult=$user->{dbh}->prepare("select profilid,count(profilid) as rowcount from userdbprofile where userid = ? and profilename = ?") or $logger->error($DBI::errstr);
         $profilresult->execute($userid,$newprofile) or $logger->error($DBI::errstr);
         my $res=$profilresult->fetchrow_hashref();
         
@@ -278,10 +250,10 @@ sub handler {
         # Wenn noch keine Profilid (=kein Profil diesen Namens)
         # existiert, dann wird eins erzeugt.
         else {
-            my $profilresult2=$userdbh->prepare("insert into userdbprofile values (NULL,?,?)") or $logger->error($DBI::errstr);
+            my $profilresult2=$user->{dbh}->prepare("insert into userdbprofile values (NULL,?,?)") or $logger->error($DBI::errstr);
       
             $profilresult2->execute($newprofile,$userid) or $logger->error($DBI::errstr);
-            $profilresult2=$userdbh->prepare("select profilid from userdbprofile where userid = ? and profilename = ?") or $logger->error($DBI::errstr);
+            $profilresult2=$user->{dbh}->prepare("select profilid from userdbprofile where userid = ? and profilename = ?") or $logger->error($DBI::errstr);
       
             $profilresult2->execute($userid,$newprofile) or $logger->error($DBI::errstr);
             my $res=$profilresult2->fetchrow_hashref();
@@ -293,13 +265,13 @@ sub handler {
         # Jetzt habe ich eine profilid und kann Eintragen
         # Auswahl wird immer durch aktuelle ueberschrieben.
         # Daher erst potentiell loeschen
-        $profilresult=$userdbh->prepare("delete from profildb where profilid = ?") or $logger->error($DBI::errstr);
+        $profilresult=$user->{dbh}->prepare("delete from profildb where profilid = ?") or $logger->error($DBI::errstr);
         $profilresult->execute($profilid) or $logger->error($DBI::errstr);
     
         foreach my $database (@databases) {
             # ... und dann eintragen
       
-            my $profilresult=$userdbh->prepare("insert into profildb (profilid,dbname) values (?,?)") or $logger->error($DBI::errstr);
+            my $profilresult=$user->{dbh}->prepare("insert into profildb (profilid,dbname) values (?,?)") or $logger->error($DBI::errstr);
             $profilresult->execute($profilid,$database) or $logger->error($DBI::errstr);
             $profilresult->finish();
         }
@@ -307,10 +279,10 @@ sub handler {
     }
     # Loeschen eines Profils
     elsif ($do_delprofile) {
-        my $profilresult=$userdbh->prepare("delete from userdbprofile where userid = ? and profilid = ?") or $logger->error($DBI::errstr);
+        my $profilresult=$user->{dbh}->prepare("delete from userdbprofile where userid = ? and profilid = ?") or $logger->error($DBI::errstr);
         $profilresult->execute($userid,$profilid) or $logger->error($DBI::errstr);
     
-        $profilresult=$userdbh->prepare("delete from profildb where profilid = ?") or $logger->error($DBI::errstr);
+        $profilresult=$user->{dbh}->prepare("delete from profildb where profilid = ?") or $logger->error($DBI::errstr);
         $profilresult->execute($profilid) or $logger->error($DBI::errstr);
     
         $profilresult->finish();
@@ -321,9 +293,6 @@ sub handler {
     else {
         OpenBib::Common::Util::print_warning($msg->maketext("Keine gültige Aktion"),$r,$msg);
     }
-
-    $userdbh->disconnect();
-  
     return OK;
 }
 

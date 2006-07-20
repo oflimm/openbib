@@ -48,6 +48,7 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::Session;
+use OpenBib::User;
 
 sub handler {
     my $r=shift;
@@ -69,13 +70,11 @@ sub handler {
         sessionID => $query->param('sessionID'),
     });
 
+    my $user      = new OpenBib::User();
+    
     my $useragent=$r->subprocess_env('HTTP_USER_AGENT');
   
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-  
-    my $userdbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
-            or $logger->error_die($DBI::errstr);
   
     my @databases = ($query->param('database'))?$query->param('database'):();
     my $singleidn = $query->param('singleidn') || '';
@@ -92,7 +91,6 @@ sub handler {
 
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        $userdbh->disconnect();
         return OK;
     }
 
@@ -106,7 +104,7 @@ sub handler {
     }
 
     # Authorisierte Session?
-    my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$session->{ID});
+    my $userid=$user->get_userid_of_session($session->{ID});
   
     my $showfs        = "1";
     my $showhst       = "1";
@@ -127,7 +125,7 @@ sub handler {
     my $prevprofile=$session->get_profile();
     
     if ($userid) {
-        my $targetresult=$userdbh->prepare("select * from fieldchoice where userid = ?") or $logger->error($DBI::errstr);
+        my $targetresult=$user->{dbh}->prepare("select * from fieldchoice where userid = ?") or $logger->error($DBI::errstr);
         $targetresult->execute($userid) or $logger->error($DBI::errstr);
     
         my $result=$targetresult->fetchrow_hashref();
@@ -147,7 +145,7 @@ sub handler {
 
         $targetresult->finish();
 
-        $targetresult=$userdbh->prepare("select profilid, profilename from userdbprofile where userid = ? order by profilename") or $logger->error($DBI::errstr);
+        $targetresult=$user->{dbh}->prepare("select profilid, profilename from userdbprofile where userid = ? order by profilename") or $logger->error($DBI::errstr);
         $targetresult->execute($userid) or $logger->error($DBI::errstr);
     
         while (my $res=$targetresult->fetchrow_hashref()) {
@@ -166,7 +164,7 @@ sub handler {
             $userprofiles="<option value=\"\">Gespeicherte Katalogprofile:</option><option value=\"\">&nbsp;</option>".$userprofiles."<option value=\"\">&nbsp;</option>";
         }
     
-        $targetresult=$userdbh->prepare("select * from fieldchoice where userid = ?") or $logger->error($DBI::errstr);
+        $targetresult=$user->{dbh}->prepare("select * from fieldchoice where userid = ?") or $logger->error($DBI::errstr);
         $targetresult->execute($userid) or $logger->error($DBI::errstr);
     
         $result=$targetresult->fetchrow_hashref();
@@ -289,8 +287,6 @@ sub handler {
     else {
         OpenBib::Common::Util::print_page($config->{tt_searchframe_tname},$ttdata,$r);
     }
-  
-    $userdbh->disconnect();
     return OK;
 }
 

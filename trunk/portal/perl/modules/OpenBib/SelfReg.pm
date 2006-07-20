@@ -47,6 +47,7 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::Session;
+use OpenBib::User;
 
 sub handler {
     my $r=shift;
@@ -68,6 +69,8 @@ sub handler {
         sessionID => $query->param('sessionID'),
     });
 
+    my $user      = new OpenBib::User();
+    
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
     my $action    = ($query->param('action'))?$query->param('action'):'none';
@@ -76,10 +79,6 @@ sub handler {
     my $password1 = ($query->param('password1'))?$query->param('password1'):'';
     my $password2 = ($query->param('password2'))?$query->param('password2'):'';
   
-    my $userdbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
     my $queryoptions_ref
         = $session->get_queryoptions($query);
 
@@ -89,8 +88,6 @@ sub handler {
 
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        $userdbh->disconnect();
-
         return OK;
     }
   
@@ -118,24 +115,21 @@ sub handler {
     elsif ($action eq "auth") {
         if ($loginname eq "" || $password1 eq "" || $password2 eq "") {
             OpenBib::Common::Util::print_warning($msg->maketext("Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"),$r,$msg);
-            $userdbh->disconnect();
             return OK;
         }
 
         if ($password1 ne $password2) {
             OpenBib::Common::Util::print_warning($msg->maketext("Die beiden eingegebenen Passworte stimmen nicht überein."),$r,$msg);
-            $userdbh->disconnect();
             return OK;
         }
 
         # Ueberpruefen, ob es eine gueltige Mailadresse angegeben wurde.
         unless (Email::Valid->address($loginname)){
             OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine gütige Mailadresse eingegeben. Gehen Sie bitte [_1]zurück[_2] und korrigieren Sie Ihre Eingabe","<a href=\"http://$config->{servername}$config->{selfreg_loc}?sessionID=$session->{ID}&action=show\">","</a>"),$r,$msg);
-            $userdbh->disconnect();
             return OK;
         }
 
-        my $userresult=$userdbh->prepare("select count(*) as rowcount from user where loginname = ?") or $logger->error($DBI::errstr);
+        my $userresult=$user->{dbh}->prepare("select count(*) as rowcount from user where loginname = ?") or $logger->error($DBI::errstr);
         $userresult->execute($loginname) or $logger->error($DBI::errstr);
         my $res  = $userresult->fetchrow_hashref;
         my $rows = $res->{rowcount};
@@ -143,25 +137,23 @@ sub handler {
         if ($rows > 0) {
             OpenBib::Common::Util::print_warning($msg->maketext("Ein Benutzer mit dem Namen $loginname existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_1]zurück[_2] und lassen es sich zumailen.","<a href=\"http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID}?do_login=1\">","</a>"),$r,$msg);
             $userresult->finish();
-
-            $userdbh->disconnect();
             return OK;
         }
 
         # ab jetzt ist klar, dass es den Benutzer noch nicht gibt.
         # Jetzt eintragen und session mit dem Benutzer assoziieren;
 
-        $userresult=$userdbh->prepare("insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','',?,'')") or $logger->error($DBI::errstr);
+        $userresult=$user->{dbh}->prepare("insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','',?,'')") or $logger->error($DBI::errstr);
         $userresult->execute($loginname,$password1,$loginname) or $logger->error($DBI::errstr);
 
-        $userresult=$userdbh->prepare("select userid from user where loginname = ?") or $logger->error($DBI::errstr);
+        $userresult=$user->{dbh}->prepare("select userid from user where loginname = ?") or $logger->error($DBI::errstr);
         $userresult->execute($loginname) or $logger->error($DBI::errstr);
 
         $res=$userresult->fetchrow_hashref();
 
         my $userid = decode_utf8($res->{'userid'});
 
-        $userresult=$userdbh->prepare("select targetid from logintarget where type = 'self'") or $logger->error($DBI::errstr);
+        $userresult=$user->{dbh}->prepare("select targetid from logintarget where type = 'self'") or $logger->error($DBI::errstr);
         $userresult->execute() or $logger->error($DBI::errstr);
 
         $res=$userresult->fetchrow_hashref();
@@ -169,10 +161,10 @@ sub handler {
         my $targetid = $res->{'targetid'};
     
         # Es darf keine Session assoziiert sein. Daher stumpf loeschen
-        $userresult=$userdbh->prepare("delete from usersession where sessionid = ?") or $logger->error($DBI::errstr);
+        $userresult=$user->{dbh}->prepare("delete from usersession where sessionid = ?") or $logger->error($DBI::errstr);
         $userresult->execute($session->{ID}) or $logger->error($DBI::errstr);
 
-        $userresult=$userdbh->prepare("insert into usersession values (?,?,?)") or $logger->error($DBI::errstr);
+        $userresult=$user->{dbh}->prepare("insert into usersession values (?,?,?)") or $logger->error($DBI::errstr);
         $userresult->execute($session->{ID},$userid,$targetid) or $logger->error($DBI::errstr);
 
         $userresult->finish();
@@ -193,9 +185,6 @@ sub handler {
     else {
         OpenBib::Common::Util::print_warning($msg->maketext("Unerlaubte Aktion"),$r,$msg);
     }
-
-    $userdbh->disconnect();
-  
     return OK;
 }
 

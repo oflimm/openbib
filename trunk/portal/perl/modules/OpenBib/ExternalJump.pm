@@ -48,6 +48,7 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::Session;
+use OpenBib::User;
 
 sub handler {
     my $r=shift;
@@ -69,15 +70,10 @@ sub handler {
         sessionID => $query->param('sessionID'),
     });
 
+    my $user      = new OpenBib::User();
+    
     my $useragent=$r->subprocess_env('HTTP_USER_AGENT');
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-  
-    #####################################################################
-    # Verbindung zur SQL-Datenbank herstellen
-  
-    my $userdbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
-            or $logger->error_die($DBI::errstr);
   
     # CGI-Uebergabe
     my @databases     = ($query->param('database'))?$query->param('database'):();
@@ -118,7 +114,6 @@ sub handler {
     
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        $userdbh->disconnect();
         return OK;
     }
 
@@ -132,7 +127,7 @@ sub handler {
     }
 
     # Authorisierte Session?
-    my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$session->{ID});
+    my $userid=$user->get_userid_of_session($session->{ID});
     
     my $viewdesc = $config->get_viewdesc_from_viewname($view);
   
@@ -179,8 +174,6 @@ sub handler {
     }
     else {
         OpenBib::Common::Util::print_warning($msg->maketext("Keine gültige Anfrage-ID"),$r,$msg);
-        $userdbh->disconnect();
-    
         return OK;
     }
 
@@ -190,7 +183,7 @@ sub handler {
     my $password  = "";
 
     my $globalsessionID="$config->{servername}:$session->{ID}";
-    my $userresult=$userdbh->prepare("select user.loginname,user.pin,count(user.loginname) as rowcount from usersession,user where usersession.sessionid = ? and user.userid=usersession.userid") or die "Error -- $DBI::errstr";
+    my $userresult=$user->{dbh}->prepare("select user.loginname,user.pin,count(user.loginname) as rowcount from usersession,user where usersession.sessionid = ? and user.userid=usersession.userid") or die "Error -- $DBI::errstr";
  
     $userresult->execute($globalsessionID);
     my $res  = $userresult->fetchrow_hashref();
@@ -234,7 +227,6 @@ sub handler {
 
     OpenBib::Common::Util::print_page($config->{tt_externaljump_tname},$ttdata,$r);
 
-    $userdbh->disconnect();
     return OK;
 }
 

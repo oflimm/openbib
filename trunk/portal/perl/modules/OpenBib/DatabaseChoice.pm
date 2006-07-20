@@ -66,7 +66,7 @@ sub handler {
     my $session   = new OpenBib::Session({
         sessionID => $query->param('sessionID'),
     });
-    
+
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
     # CGI-Uebergabe
@@ -88,13 +88,6 @@ sub handler {
   
     my %checkeddb;
   
-    #####################################################################
-    # Verbindung zur SQL-Datenbank herstellen
-  
-    my $userdbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
     my $queryoptions_ref
         = $session->get_queryoptions($query);
     
@@ -104,8 +97,6 @@ sub handler {
 
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        $userdbh->disconnect();
-
         return OK;
     }
 
@@ -118,8 +109,6 @@ sub handler {
         $view=$session->get_viewname();
     }
     
-    my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$session->{ID});
-
     my $idnresult="";
   
     # Wenn Kataloge ausgewaehlt wurden
@@ -224,9 +213,6 @@ sub handler {
         $idnresult->finish();
         return OK;
     }
-  
-    $userdbh->disconnect();
-  
     return OK;
 }
 

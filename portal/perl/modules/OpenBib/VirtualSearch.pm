@@ -54,6 +54,7 @@ use OpenBib::L10N;
 use OpenBib::Search::Local::Xapian;
 use OpenBib::Session;
 use OpenBib::Template::Provider;
+use OpenBib::User;
 
 sub handler {
     my $r=shift;
@@ -74,13 +75,10 @@ sub handler {
     my $session   = new OpenBib::Session({
         sessionID => $query->param('sessionID'),
     });
+
+    my $user      = new OpenBib::User();
     
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $userdbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
-            or $logger->error_die($DBI::errstr);
 
     # CGI-Input auslesen
     my $serien        = decode_utf8($query->param('serien'))        || 0;
@@ -143,8 +141,6 @@ sub handler {
 
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        $userdbh->disconnect();
-
         return OK;
     }
 
@@ -158,7 +154,7 @@ sub handler {
     }
 
     # Authorisierter user?
-    my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$session->{ID});
+    my $userid=$user->get_userid_of_session($session->{ID});
     $logger->info("Authorization: ", $session->{ID}, " ", ($userid)?$userid:'none');
 
     # BEGIN DB-Bestimmung
@@ -206,7 +202,7 @@ sub handler {
             if ($profil=~/^user(\d+)/) {
                 my $profilid=$1;
 	
-                my $profilresult=$userdbh->prepare("select profildb.dbname from profildb,userdbprofile where userdbprofile.userid = ? and userdbprofile.profilid = ? and userdbprofile.profilid=profildb.profilid order by dbname") or $logger->error($DBI::errstr);
+                my $profilresult=$user->{dbh}->prepare("select profildb.dbname from profildb,userdbprofile where userdbprofile.userid = ? and userdbprofile.profilid = ? and userdbprofile.profilid=profildb.profilid order by dbname") or $logger->error($DBI::errstr);
                 $profilresult->execute($userid,$profilid) or $logger->error($DBI::errstr);
 	
                 my @poolres;
@@ -241,11 +237,7 @@ sub handler {
         # Kein Profil
         else {
             OpenBib::Common::Util::print_warning($msg->maketext("Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie keine [_1]Kataloge[_2] oder Suchprofile ausgewählt haben. Bitte wählen Sie die gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen Katalogen suchen</a>.","<a href=\"$config->{databasechoice_loc}?sessionID=$session->{ID}\" target=\"body\">","</a>"),$r,$msg);
-
-            $userdbh->disconnect();
-
             return OK;
-
         }
 
         # Wenn Profil aufgerufen wurde, dann abspeichern fuer Recherchemaske
@@ -484,9 +476,6 @@ sub handler {
         my ($ejtest)=$searchquery_ref->{ejahr}{norm}=~/.*(\d\d\d\d).*/;
         if (!$ejtest) {
             OpenBib::Common::Util::print_warning($msg->maketext("Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."),$r,$msg);
-
-            $userdbh->disconnect();
-
             return OK;
         }
     }
@@ -494,8 +483,6 @@ sub handler {
     if ($searchquery_ref->{ejahr}{bool} eq "OR") {
         if ($searchquery_ref->{ejahr}{norm}) {
             OpenBib::Common::Util::print_warning($msg->maketext("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."),$r,$msg);
-
-            $userdbh->disconnect();
             return OK;
         }
     }
@@ -505,9 +492,6 @@ sub handler {
         if ($searchquery_ref->{ejahr}{norm}) {
             if (!$firstsql) {
                 OpenBib::Common::Util::print_warning($msg->maketext("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."),$r,$msg);
-
-                $userdbh->disconnect();
-
                 return OK;
             }
         }
@@ -515,9 +499,6 @@ sub handler {
 
     if (!$firstsql) {
         OpenBib::Common::Util::print_warning($msg->maketext("Es wurde kein Suchkriterium eingegeben."),$r,$msg);
-
-        $userdbh->disconnect();
-
         return OK;
     }
 
@@ -527,8 +508,8 @@ sub handler {
     my $loginname = "";
     my $password  = "";
 
-    if ($userid && OpenBib::Common::Util::get_targettype_of_session($userdbh,$session->{ID}) ne "self"){
-        ($loginname,$password)=OpenBib::Common::Util::get_cred_for_userid($userdbh,$userid);
+    if ($userid && $user->get_targettype_of_session($session->{ID}) ne "self"){
+        ($loginname,$password)=$user->get_cred_for_userid($userid);
     }
 
     # Hash im Loginname ersetzen
@@ -1074,9 +1055,6 @@ sub handler {
         $r->log_reason($endtemplate->error(), $r->filename);
         return SERVER_ERROR;
     };
-
-    $userdbh->disconnect();
-
     return OK;
 }
 

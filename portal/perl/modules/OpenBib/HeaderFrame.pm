@@ -46,6 +46,7 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::Session;
+use OpenBib::User;
 
 sub handler {
     my $r=shift;
@@ -67,17 +68,14 @@ sub handler {
         sessionID => $query->param('sessionID'),
     });
 
+    my $user    = new OpenBib::User();
+    
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
     
     my $database  = $query->param('database')  || '';
     my $singleidn = $query->param('singleidn') || '';
     my $action    = ($query->param('action'))?$query->param('action'):'none';
     my $type      = ($query->param('type'))?$query->param('type'):'HTML';
-
-  
-    my $userdbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
-            or $logger->error_die($DBI::errstr);
 
     my $queryoptions_ref
         = $session->get_queryoptions($query);
@@ -88,7 +86,6 @@ sub handler {
 
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        $userdbh->disconnect();
         return OK;
     }
     
@@ -108,7 +105,7 @@ sub handler {
     }
     
     # Haben wir eine authentifizierte Session?
-    my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$session->{ID});
+    my $userid=$user->get_userid_of_session($session->{ID});
   
     # Ab hier ist in $userid entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
@@ -118,23 +115,16 @@ sub handler {
     # Wenn wir authentifiziert sind, dann
     my $username="";
     if ($userid) {
-        $username=OpenBib::Common::Util::get_username_for_userid($userdbh,$userid);
+        $username=$user->get_username_for_userid($userid);
 
         # Anzahl Eintraege der privaten Merkliste bestimmen
         # Zuallererst Suchen, wieviele Titel in der Merkliste vorhanden sind.
-        my $idnresult=$userdbh->prepare("select count(*) as rowcount from treffer where userid = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($userid) or $logger->error($DBI::errstr);
-        my $res=$idnresult->fetchrow_hashref;
-        
-        $anzahl=$res->{rowcount};
-        $idnresult->finish();
+        $anzahl =    $user->get_number_of_items_in_collection($userid);
     }
     else {
         #  Zuallererst Suchen, wieviele Titel in der Merkliste vorhanden sind.
-        $anzahl=$session->get_number_of_items_in_collection();
+        $anzahl = $session->get_number_of_items_in_collection();
     }
-
-    $userdbh->disconnect();
 
     # TT-Data erzeugen
     my $ttdata={

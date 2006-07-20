@@ -47,6 +47,7 @@ use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::ManageCollection::Util;
 use OpenBib::Session;
+use OpenBib::User;
 
 sub handler {
     my $r=shift;
@@ -68,13 +69,9 @@ sub handler {
         sessionID => $query->param('sessionID'),
     });
 
+    my $user      = new OpenBib::User();
+    
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
-
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $userdbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
-            or $logger->error_die($DBI::errstr);
 
     my $database  = $query->param('database')  || '';
     my $singleidn = $query->param('singleidn') || '';
@@ -90,7 +87,7 @@ sub handler {
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
     
     # Haben wir eine authentifizierte Session?
-    my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$session->{ID});
+    my $userid=$user->get_userid_of_session($session->{ID});
   
     # Ab hier ist in $userid entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
@@ -105,8 +102,6 @@ sub handler {
 
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        $userdbh->disconnect();
-
         return OK;
     }
 
@@ -125,7 +120,7 @@ sub handler {
     if ($action eq "insert") {
         if ($userid) {
             # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
-            my $idnresult=$userdbh->prepare("select count(*) as rowcount from treffer where userid = ? and dbname = ? and singleidn = ?") or $logger->error($DBI::errstr);
+            my $idnresult=$user->{dbh}->prepare("select count(*) as rowcount from treffer where userid = ? and dbname = ? and singleidn = ?") or $logger->error($DBI::errstr);
             $idnresult->execute($userid,$database,$singleidn) or $logger->error($DBI::errstr);
             my $res    = $idnresult->fetchrow_hashref;
             my $anzahl = $res->{rowcount};
@@ -134,7 +129,7 @@ sub handler {
 
             if ($anzahl == 0) {
                 # Zuerst Eintragen der Informationen
-                my $idnresult=$userdbh->prepare("insert into treffer values (?,?,?)") or $logger->error($DBI::errstr);
+                my $idnresult=$user->{dbh}->prepare("insert into treffer values (?,?,?)") or $logger->error($DBI::errstr);
                 $idnresult->execute($userid,$database,$singleidn) or $logger->error($DBI::errstr);
                 $idnresult->finish();
             }
@@ -157,7 +152,7 @@ sub handler {
                 my ($loeschdb,$loeschidn)=split(":",$loeschtit);
 	
                 if ($userid) {
-                    my $idnresult=$userdbh->prepare("delete from treffer where userid = ? and dbname = ? and singleidn = ?") or $logger->error($DBI::errstr);
+                    my $idnresult=$user->{dbh}->prepare("delete from treffer where userid = ? and dbname = ? and singleidn = ?") or $logger->error($DBI::errstr);
                     $idnresult->execute($userid,$loeschdb,$loeschidn) or $logger->error($DBI::errstr);
                     $idnresult->finish();
                 }
@@ -176,7 +171,7 @@ sub handler {
         my @dbidnlist=();
         
         if ($userid) {
-            $idnresult=$userdbh->prepare("select * from treffer where userid = ? order by dbname") or $logger->error($DBI::errstr);
+            $idnresult=$user->{dbh}->prepare("select * from treffer where userid = ? order by dbname") or $logger->error($DBI::errstr);
             $idnresult->execute($userid) or $logger->error($DBI::errstr);
 
             while (my $result=$idnresult->fetchrow_hashref()) {
@@ -199,7 +194,6 @@ sub handler {
 
         if ($#dbidnlist < 0){
             OpenBib::Common::Util::print_warning($msg->maketext("Derzeit ist Ihre Merkliste leer"),$r,$msg);
-            $userdbh->disconnect();
             return OK;
         }
         
@@ -269,7 +263,7 @@ sub handler {
         else {
             # Schleife ueber alle Treffer
             if ($userid) {
-                my $idnresult=$userdbh->prepare("select * from treffer where userid = ? order by dbname") or $logger->error($DBI::errstr);
+                my $idnresult=$user->{dbh}->prepare("select * from treffer where userid = ? order by dbname") or $logger->error($DBI::errstr);
                 $idnresult->execute($userid) or $logger->error($DBI::errstr);
                 while (my $result=$idnresult->fetchrow_hashref()) {
                     my $database  = decode_utf8($result->{'dbname'});
@@ -355,7 +349,7 @@ sub handler {
     # Verschicken der Merkliste per Mail
     elsif ($action eq "mail") {
         # Weg mit der Singleidn - muss spaeter gefixed werden
-        my $userresult=$userdbh->prepare("select loginname from user where userid = ?") or $logger->error($DBI::errstr);
+        my $userresult=$user->{dbh}->prepare("select loginname from user where userid = ?") or $logger->error($DBI::errstr);
         $userresult->execute($userid) or $logger->error($DBI::errstr);
     
         my $loginname="";
@@ -374,7 +368,7 @@ sub handler {
         else {
             # Schleife ueber alle Treffer
             if ($userid) {
-                my $idnresult=$userdbh->prepare("select * from treffer where userid = ? order by dbname") or $logger->error($DBI::errstr);
+                my $idnresult=$user->{dbh}->prepare("select * from treffer where userid = ? order by dbname") or $logger->error($DBI::errstr);
                 $idnresult->execute($userid) or $logger->error($DBI::errstr);
 
                 while (my $result=$idnresult->fetchrow_hashref()) {
@@ -456,7 +450,7 @@ sub handler {
     # Ausdrucken der Merkliste (HTML) ueber Browser
     elsif ($action eq "print") {
         # Weg mit der Singleidn - muss spaeter gefixed werden
-        my $userresult=$userdbh->prepare("select loginname from user where userid = ?") or $logger->error($DBI::errstr);
+        my $userresult=$user->{dbh}->prepare("select loginname from user where userid = ?") or $logger->error($DBI::errstr);
         $userresult->execute($userid) or $logger->error($DBI::errstr);
     
         my $loginname="";
@@ -475,7 +469,7 @@ sub handler {
         else {
             # Schleife ueber alle Treffer
             if ($userid) {
-                my $idnresult=$userdbh->prepare("select * from treffer where userid = ? order by dbname") or $logger->error($DBI::errstr);
+                my $idnresult=$user->{dbh}->prepare("select * from treffer where userid = ? order by dbname") or $logger->error($DBI::errstr);
                 $idnresult->execute($userid) or $logger->error($DBI::errstr);
                 while (my $result=$idnresult->fetchrow_hashref()) {
                     my $database  = decode_utf8($result->{'dbname'});
@@ -551,8 +545,6 @@ sub handler {
         OpenBib::Common::Util::print_page($config->{tt_managecollection_print_tname},$ttdata,$r);
         return OK;
     }
-  
-    $userdbh->disconnect();
     return OK;
 }
 

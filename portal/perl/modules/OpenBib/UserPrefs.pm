@@ -48,6 +48,7 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::Session;
+use OpenBib::User;
 
 sub handler {
     my $r=shift;
@@ -69,6 +70,8 @@ sub handler {
         sessionID => $query->param('sessionID'),
     });
 
+    my $user      = new OpenBib::User();
+    
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
     my $showfs        = ($query->param('showfs'))?$query->param('showfs'):'0';
@@ -92,10 +95,6 @@ sub handler {
     my $password1     = ($query->param('password1'))?$query->param('password1'):'';
     my $password2     = ($query->param('password2'))?$query->param('password2'):'';
   
-    my $userdbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
     my $queryoptions_ref
         = $session->get_queryoptions($query);
 
@@ -105,8 +104,6 @@ sub handler {
 
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        $userdbh->disconnect();
-
         return OK;
     }
 
@@ -119,17 +116,15 @@ sub handler {
         $view=$session->get_viewname();
     }
 
-    my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$session->{ID});
+    my $userid=$user->get_userid_of_session($session->{ID});
   
     unless($userid){
         OpenBib::Common::Util::print_warning($msg->maketext("Diese Session ist nicht authentifiziert."),$r,$msg);
-
-        $userdbh->disconnect();
         return OK;
     }
   
     if ($action eq "showfields") {
-        my $targetresult=$userdbh->prepare("select * from fieldchoice where userid = ?") or $logger->error($DBI::errstr);
+        my $targetresult=$user->{dbh}->prepare("select * from fieldchoice where userid = ?") or $logger->error($DBI::errstr);
         $targetresult->execute($userid) or $logger->error($DBI::errstr);
     
         my $result=$targetresult->fetchrow_hashref();
@@ -184,7 +179,7 @@ sub handler {
     
         $targetresult->finish();
     
-        my $userresult=$userdbh->prepare("select * from user where userid = ?") or $logger->error($DBI::errstr);
+        my $userresult=$user->{dbh}->prepare("select * from user where userid = ?") or $logger->error($DBI::errstr);
         $userresult->execute($userid) or $logger->error($DBI::errstr);
     
         my $res=$userresult->fetchrow_hashref();
@@ -221,7 +216,7 @@ sub handler {
         # geaendert werden
         my $email_valid=Email::Valid->address($loginname);
 
-        my $targettype=OpenBib::Common::Util::get_targettype_of_session($userdbh,$session->{ID});
+        my $targettype=$user->get_targettype_of_session($session->{ID});
 
         # TT-Data erzeugen
         my $ttdata={
@@ -253,7 +248,7 @@ sub handler {
         OpenBib::Common::Util::print_page($config->{tt_userprefs_tname},$ttdata,$r);
     }
     elsif ($action eq "changefields") {
-        my $targetresult=$userdbh->prepare("update fieldchoice set fs = ?, hst = ?, hststring = ?, verf = ?, kor = ?, swt = ?, notation = ?, isbn = ?, issn = ?, sign = ?, mart = ?, ejahr = ? where userid = ?") or $logger->error($DBI::errstr);
+        my $targetresult=$user->{dbh}->prepare("update fieldchoice set fs = ?, hst = ?, hststring = ?, verf = ?, kor = ?, swt = ?, notation = ?, isbn = ?, issn = ?, sign = ?, mart = ?, ejahr = ? where userid = ?") or $logger->error($DBI::errstr);
         $targetresult->execute($showfs,$showhst,$showhststring,$showverf,$showkor,$showswt,$shownotation,$showisbn,$showissn,$showsign,$showmart,$showejahr, $userid) or $logger->error($DBI::errstr);
         $targetresult->finish();
 
@@ -283,26 +278,26 @@ sub handler {
     elsif ($action eq "Kennung soll wirklich gelöscht werden") {
         # Zuerst werden die Datenbankprofile geloescht
         my $userresult;
-        $userresult=$userdbh->prepare("delete from profildb using profildb,userdbprofile where userdbprofile.userid = ? and userdbprofile.profilid=profildb.profilid") or $logger->error($DBI::errstr);
+        $userresult=$user->{dbh}->prepare("delete from profildb using profildb,userdbprofile where userdbprofile.userid = ? and userdbprofile.profilid=profildb.profilid") or $logger->error($DBI::errstr);
         $userresult->execute($userid) or $logger->error($DBI::errstr);
     
-        $userresult=$userdbh->prepare("delete from userdbprofile where userdbprofile.userid = ?") or $logger->error($DBI::errstr);
+        $userresult=$user->{dbh}->prepare("delete from userdbprofile where userdbprofile.userid = ?") or $logger->error($DBI::errstr);
         $userresult->execute($userid) or $logger->error($DBI::errstr);
     
         # .. dann die Suchfeldeinstellungen
-        $userresult=$userdbh->prepare("delete from fieldchoice where userid = ?") or $logger->error($DBI::errstr);
+        $userresult=$user->{dbh}->prepare("delete from fieldchoice where userid = ?") or $logger->error($DBI::errstr);
         $userresult->execute($userid) or $logger->error($DBI::errstr);
     
         # .. dann die Merkliste
-        $userresult=$userdbh->prepare("delete from treffer where userid = ?") or $logger->error($DBI::errstr);
+        $userresult=$user->{dbh}->prepare("delete from treffer where userid = ?") or $logger->error($DBI::errstr);
         $userresult->execute($userid) or $logger->error($DBI::errstr);
     
         # .. dann die Verknuepfung zur Session
-        $userresult=$userdbh->prepare("delete from usersession where userid = ?") or $logger->error($DBI::errstr);
+        $userresult=$user->{dbh}->prepare("delete from usersession where userid = ?") or $logger->error($DBI::errstr);
         $userresult->execute($userid) or $logger->error($DBI::errstr);
     
         # und schliesslich der eigentliche Benutzereintrag
-        $userresult=$userdbh->prepare("delete from user where userid = ?") or $logger->error($DBI::errstr);
+        $userresult=$user->{dbh}->prepare("delete from user where userid = ?") or $logger->error($DBI::errstr);
         $userresult->execute($userid) or $logger->error($DBI::errstr);
     
         $userresult->finish();
@@ -338,12 +333,10 @@ sub handler {
     elsif ($action eq "Password ändern") {
         if ($password1 eq "" || $password1 ne $password2) {
             OpenBib::Common::Util::print_warning($msg->maketext("Sie haben entweder kein Passwort eingegeben oder die beiden Passworte stimmen nicht überein"),$r,$msg);
-      
-            $userdbh->disconnect();
             return OK;
         }
     
-        my $targetresult=$userdbh->prepare("update user set pin = ? where userid = ?") or $logger->error($DBI::errstr);
+        my $targetresult=$user->{dbh}->prepare("update user set pin = ? where userid = ?") or $logger->error($DBI::errstr);
         $targetresult->execute($password1,$userid) or $logger->error($DBI::errstr);
         $targetresult->finish();
     
@@ -352,12 +345,10 @@ sub handler {
     elsif ($action eq "changemask") {
         if ($setmask eq "") {
             OpenBib::Common::Util::print_warning($msg->maketext("Es wurde keine Standard-Recherchemaske ausgewählt"),$r,$msg);
-      
-            $userdbh->disconnect();
             return OK;
         }
     
-        my $targetresult=$userdbh->prepare("update user set masktype = ? where userid = ?") or $logger->error($DBI::errstr);
+        my $targetresult=$user->{dbh}->prepare("update user set masktype = ? where userid = ?") or $logger->error($DBI::errstr);
         $targetresult->execute($setmask,$userid) or $logger->error($DBI::errstr);
         $targetresult->finish();
 
@@ -368,8 +359,6 @@ sub handler {
     else {
         OpenBib::Common::Util::print_warning($msg->maketext("Unerlaubte Aktion"),$r,$msg);
     }
-  
-    $userdbh->disconnect();
     return OK;
 }
 

@@ -45,6 +45,7 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::Session;
+use OpenBib::User;
 
 sub handler {
     my $r=shift;
@@ -66,13 +67,9 @@ sub handler {
         sessionID => $query->param('sessionID'),
     });
 
+    my $user      = new OpenBib::User();
+    
     my $stylesheet = OpenBib::Common::Util::get_css_by_browsertype($r);
-
-    # Verbindung zur SQL-Datenbank herstellen
-
-    my $userdbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
-            or $logger->error_die($DBI::errstr);
 
     my $queryoptions_ref
         = $session->get_queryoptions($query);
@@ -83,8 +80,6 @@ sub handler {
 
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-      
-        $userdbh->disconnect();
         return OK;
     }
 
@@ -98,15 +93,15 @@ sub handler {
     }
   
     # Haben wir eine authentifizierte Session?
-    my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$session->{ID});
+    my $userid=$user->get_userid_of_session($session->{ID});
   
     if ($userid) {
         # Authentifiziert-Status der Session loeschen
-        my $userresult=$userdbh->prepare("delete from usersession where userid = ?") or $logger->error($DBI::errstr);
+        my $userresult=$user->{dbh}->prepare("delete from usersession where userid = ?") or $logger->error($DBI::errstr);
         $userresult->execute($userid) or $logger->error($DBI::errstr);
     
         # Zwischengespeicherte Benutzerinformationen loeschen
-        $userresult=$userdbh->prepare("update user set nachname = '', vorname = '', strasse = '', ort = '', plz = '', soll = '', gut = '', avanz = '', branz = '', bsanz = '', vmanz = '', maanz = '', vlanz = '', sperre = '', sperrdatum = '', gebdatum = '' where userid = ?") or $logger->error($DBI::errstr);
+        $userresult=$user->{dbh}->prepare("update user set nachname = '', vorname = '', strasse = '', ort = '', plz = '', soll = '', gut = '', avanz = '', branz = '', bsanz = '', vmanz = '', maanz = '', vlanz = '', sperre = '', sperrdatum = '', gebdatum = '' where userid = ?") or $logger->error($DBI::errstr);
         $userresult->execute($userid) or $logger->error($DBI::errstr);
     
         $userresult->finish();
@@ -126,7 +121,6 @@ sub handler {
   
     OpenBib::Common::Util::print_page($config->{tt_leave_tname},$ttdata,$r);
   
-    $userdbh->disconnect();
     return OK;
 }
 

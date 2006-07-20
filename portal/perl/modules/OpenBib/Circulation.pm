@@ -50,6 +50,7 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::Session;
+use OpenBib::User;
 
 sub handler {
     my $r=shift;
@@ -67,11 +68,11 @@ sub handler {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
 
-    my $sessionID  = $query->param('sessionID'  )||'';
-
     my $session    = new OpenBib::Session({
-        sessionID => $sessionID,
+        sessionID => $query->param('sessionID'),
     });
+
+    my $user       = new OpenBib::User();
     
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
@@ -79,10 +80,6 @@ sub handler {
     my $circaction = ($query->param('circaction'))?$query->param('circaction'):'none';
     my $offset     = ($query->param('offset'    ))?$query->param('offset'):0;
     my $listlength = ($query->param('listlength'))?$query->param('listlength'):10;
-
-    my $userdbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
-            or $logger->error_die($DBI::errstr);
 
     my $queryoptions_ref
         = $session->get_queryoptions($query);
@@ -93,7 +90,6 @@ sub handler {
     
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        $userdbh->disconnect();
         return OK;
     }
 
@@ -106,19 +102,16 @@ sub handler {
         $view=$session->get_viewname();
     }
   
-    my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
+    my $userid=$user->get_userid_of_session($session->{ID});
   
     unless($userid){
-
         OpenBib::Common::Util::print_warning($msg->maketext("Diese Session ist nicht authentifiziert."),$r,$msg);
-
-        $userdbh->disconnect();
         return OK;
     }
   
-    my ($loginname,$password)=OpenBib::Common::Util::get_cred_for_userid($userdbh,$userid);
+    my ($loginname,$password)=$user->get_cred_for_userid($userid);
 
-    my $database=OpenBib::Common::Util::get_targetdb_of_session($userdbh,$sessionID);
+    my $database=$user->get_targetdb_of_session($session->{ID});
 
     my $targetcircinfo_ref = $config->get_targetcircinfo();
 
@@ -145,7 +138,7 @@ sub handler {
                 view         => $view,
                 stylesheet   => $stylesheet,
 		  
-                sessionID    => $sessionID,
+                sessionID    => $session->{ID},
                 loginname    => $loginname,
                 password     => $password,
 		  
@@ -187,7 +180,7 @@ sub handler {
                 view       => $view,
                 stylesheet => $stylesheet,
 		  
-                sessionID  => $sessionID,
+                sessionID  => $session->{ID},
                 loginname  => $loginname,
                 password   => $password,
 		  
@@ -227,7 +220,7 @@ sub handler {
                 view       => $view,
                 stylesheet => $stylesheet,
 		  
-                sessionID  => $sessionID,
+                sessionID  => $session->{ID},
                 loginname  => $loginname,
                 password   => $password,
 		  
@@ -267,7 +260,7 @@ sub handler {
                 view       => $view,
                 stylesheet => $stylesheet,
 		  
-                sessionID  => $sessionID,
+                sessionID  => $session->{ID},
                 loginname  => $loginname,
                 password   => $password,
 		  
@@ -293,8 +286,6 @@ sub handler {
     else {
         OpenBib::Common::Util::print_warning($msg->maketext("Unerlaubte Aktion"),$r,$msg);
     }
-  
-    $userdbh->disconnect();
     return OK;
 }
 

@@ -48,6 +48,7 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::Session;
+use OpenBib::User;
 
 sub handler {
     my $r=shift;
@@ -68,6 +69,8 @@ sub handler {
     my $session   = new OpenBib::Session({
         sessionID => $query->param('sessionID'),
     });
+
+    my $user      = new OpenBib::User();
     
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
@@ -77,10 +80,6 @@ sub handler {
     my $loginname = ($query->param('loginname'))?$query->param('loginname'):'';
     my $password  = ($query->param('password'))?$query->param('password'):'';
   
-    my $userdbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
     my $queryoptions_ref
         = $session->get_queryoptions($query);
 
@@ -90,8 +89,6 @@ sub handler {
     
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
-        $userdbh->disconnect();
-    
         return OK;
     }
 
@@ -127,11 +124,10 @@ sub handler {
     
         if ($loginname eq "") {
             OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine E-Mail Adresse eingegeben"),$r,$msg);
-            $userdbh->disconnect();
             return OK;
         }
     
-        my $targetresult=$userdbh->prepare("select pin from user where loginname = ?") or $logger->error($DBI::errstr);
+        my $targetresult=$user->{dbh}->prepare("select pin from user where loginname = ?") or $logger->error($DBI::errstr);
         $targetresult->execute($loginname) or $logger->error($DBI::errstr);
     
         my $result=$targetresult->fetchrow_hashref();
@@ -140,7 +136,6 @@ sub handler {
     
         if (!$password) {
             OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Passwort für die Kennung $loginname"),$r,$msg);
-            $userdbh->disconnect();
             return OK;
         }
 
@@ -201,7 +196,6 @@ sub handler {
         OpenBib::Common::Util::print_page($config->{tt_mailpassword_success_tname},$ttdata,$r);
     }
 
-    $userdbh->disconnect();
     return OK;
 }
 

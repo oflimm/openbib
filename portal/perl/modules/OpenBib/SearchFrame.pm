@@ -145,19 +145,13 @@ sub handler {
 
         $targetresult->finish();
 
-        $targetresult=$user->{dbh}->prepare("select profilid, profilename from userdbprofile where userid = ? order by profilename") or $logger->error($DBI::errstr);
-        $targetresult->execute($userid) or $logger->error($DBI::errstr);
-    
-        while (my $res=$targetresult->fetchrow_hashref()) {
-            my $profilid    = decode_utf8($res->{'profilid'});
-            my $profilename = decode_utf8($res->{'profilename'});
-
+        foreach my $profile_ref ($user->get_all_profiles()){
             my $profselected="";
-            if ($prevprofile eq "user$profilid") {
+            if ($prevprofile eq "user$profile_ref->{profilid}") {
                 $profselected="selected=\"selected\"";
             }
 
-            $userprofiles.="<option value=\"user$profilid\" $profselected>- $profilename</option>";
+            $userprofiles.="<option value=\"user$profile_ref->{profilid}\" $profselected>- $profile_ref->{profilename}</option>";
         }
 
         if ($userprofiles){

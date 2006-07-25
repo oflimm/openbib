@@ -79,7 +79,7 @@ msgstr ""
 msgid "Abspeicherung eines neuen oder bestehenden Profils"
 msgstr ""
 
-#: ../modules/OpenBib/LoadBalancer.pm:102
+#: ../modules/OpenBib/LoadBalancer.pm:97
 msgid "Achtung: Es sind *alle* Server ausgefallen"
 msgstr ""
 
@@ -214,11 +214,6 @@ msgstr ""
 msgid "B&uuml;cher"
 msgstr ""
 
-#: ../templates/virtualsearch_result_end:17
-#. ("<a href=\"#Suchhinweise\">","</a>")
-msgid "Beachten Sie bitte auch unserere %1weitergehenden Suchhinweise%2."
-msgstr ""
-
 #: ../templates/admin_showsessions:39
 msgid "Beginn"
 msgstr ""
@@ -279,7 +274,7 @@ msgstr ""
 msgid "Betreff"
 msgstr ""
 
-#: ../modules/OpenBib/VirtualSearch.pm:503
+#: ../modules/OpenBib/VirtualSearch.pm:510
 msgid "Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."
 msgstr ""
 
@@ -331,7 +326,7 @@ msgstr ""
 msgid "Damit Ihnen Ihr im Rahmen der Selbstregistrierung vergebenes Passwort per E-Mail zugeschickt werden kann, geben Sie bitte Ihren Benutzernamen an, der Ihrer E-Mail-Adresse entspricht."
 msgstr ""
 
-#: ../modules/OpenBib/VirtualSearch.pm:514 ../modules/OpenBib/VirtualSearch.pm:526
+#: ../modules/OpenBib/VirtualSearch.pm:517 ../modules/OpenBib/VirtualSearch.pm:526
 msgid "Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."
 msgstr ""
 
@@ -347,7 +342,7 @@ msgstr ""
 msgid "Definieren Sie oder bearbeiten Sie hier Ihre individuellen Katalogprofile. Diese werden gespeichert und stehen daher auch beim n&auml;chten Anmelden wieder zu Ihrer Verf&uuml;gung. Um ein hier definiertes Katalogprofil zu nutzen, w&auml;hlen Sie es in der Recherchemaske einfach unter <b>Suchprofil</b> aus und aktivieren zur Suche dann <b>In ausgew&auml;hlten Katalogen suchen</b>."
 msgstr ""
 
-#: ../modules/OpenBib/VirtualSearch.pm:315
+#: ../modules/OpenBib/VirtualSearch.pm:322
 msgid "Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche ausgewählt wurde."
 msgstr ""
 
@@ -355,11 +350,11 @@ msgstr ""
 msgid "Derzeit angezeigtes Profil"
 msgstr ""
 
-#: ../modules/OpenBib/ResultLists.pm:136
+#: ../modules/OpenBib/ResultLists.pm:347
 msgid "Derzeit existiert (noch) keine Trefferliste"
 msgstr ""
 
-#: ../modules/OpenBib/ManageCollection.pm:207
+#: ../modules/OpenBib/ManageCollection.pm:196
 msgid "Derzeit ist Ihre Merkliste leer"
 msgstr ""
 
@@ -375,7 +370,7 @@ msgstr ""
 msgid "Die USB K&ouml;ln ist nicht f&uuml;r die Inhalte fremder Seiten verantwortlich, die Sie &uuml;ber einen Link erreichen!"
 msgstr ""
 
-#: ../modules/OpenBib/SelfReg.pm:131
+#: ../modules/OpenBib/SelfReg.pm:122
 msgid "Die beiden eingegebenen Passworte stimmen nicht überein."
 msgstr ""
 
@@ -389,7 +384,7 @@ msgid ""
 "jeweiligen Texteingabefeld."
 msgstr ""
 
-#: ../modules/OpenBib/Circulation.pm:119 ../modules/OpenBib/UserPrefs.pm:130
+#: ../modules/OpenBib/Circulation.pm:108 ../modules/OpenBib/UserPrefs.pm:122
 msgid "Diese Session ist nicht authentifiziert."
 msgstr ""
 
@@ -401,7 +396,7 @@ msgstr ""
 msgid "Digitale Bibliothek / Zeitschriften (Aufsatzlieferung)"
 msgstr ""
 
-#: ../templates/virtualsearch_result_item:147
+#: ../templates/virtualsearch_result_item:149
 msgid "Drill-Down"
 msgstr ""
 
@@ -413,8 +408,8 @@ msgstr ""
 msgid "E-Mail"
 msgstr ""
 
-#: ../modules/OpenBib/SelfReg.pm:151
-#. ("<a href=\"http://$config{servername}$config{login_loc}?sessionID=$sessionID?do_login=1\">","</a>")
+#: ../modules/OpenBib/SelfReg.pm:138
+#. ("<a href=\"http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID}?do_login=1\">","</a>")
 msgid "Ein Benutzer mit dem Namen $loginname existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte %1zurück%2 und lassen es sich zumailen."
 msgstr ""
 
@@ -490,11 +485,11 @@ msgstr ""
 msgid "Erweitere Recherchemaske"
 msgstr ""
 
-#: ../modules/OpenBib/Admin.pm:306
+#: ../modules/OpenBib/Admin.pm:286
 msgid "Es existiert bereits ein Katalog unter diesem Namen"
 msgstr ""
 
-#: ../modules/OpenBib/Admin.pm:696
+#: ../modules/OpenBib/Admin.pm:674
 msgid "Es existiert bereits ein View unter diesem Namen"
 msgstr ""
 
@@ -502,7 +497,7 @@ msgstr ""
 msgid "Es existiert bereits ein prim&auml;rer RSS-Feed f&uuml;r diesen View"
 msgstr ""
 
-#: ../modules/OpenBib/MailPassword.pm:149
+#: ../modules/OpenBib/MailPassword.pm:138
 msgid "Es existiert kein Passwort für die Kennung $loginname"
 msgstr ""
 
@@ -530,19 +525,19 @@ msgstr ""
 msgid "Es sind keine Gebühren angefallen."
 msgstr ""
 
-#: ../modules/OpenBib/SelfReg.pm:124
+#: ../modules/OpenBib/SelfReg.pm:117
 msgid "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
 msgstr ""
 
-#: ../modules/OpenBib/VirtualSearch.pm:537
+#: ../modules/OpenBib/VirtualSearch.pm:533
 msgid "Es wurde kein Suchkriterium eingegeben."
 msgstr ""
 
-#: ../modules/OpenBib/Search.pm:1085 ../modules/OpenBib/Search.pm:1163 ../modules/OpenBib/Search.pm:293 ../modules/OpenBib/Search.pm:387 ../modules/OpenBib/Search.pm:820 ../modules/OpenBib/Search.pm:909 ../modules/OpenBib/Search.pm:998
+#: ../modules/OpenBib/Search.pm:1070 ../modules/OpenBib/Search.pm:1181 ../modules/OpenBib/Search.pm:1260 ../modules/OpenBib/Search.pm:286 ../modules/OpenBib/Search.pm:381 ../modules/OpenBib/Search.pm:841 ../modules/OpenBib/Search.pm:956
 msgid "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
 msgstr ""
 
-#: ../modules/OpenBib/UserPrefs.pm:361
+#: ../modules/OpenBib/UserPrefs.pm:347
 msgid "Es wurde keine Standard-Recherchemaske ausgewählt"
 msgstr ""
 
@@ -584,7 +579,7 @@ msgstr ""
 msgid "Falls leer, so geben Sie hier bitte einen neuen Profilnamen ein"
 msgstr ""
 
-#: ../modules/OpenBib/Login.pm:349
+#: ../modules/OpenBib/Login.pm:331
 msgid "Falscher Fehler-Code"
 msgstr ""
 
@@ -710,7 +705,7 @@ msgstr ""
 msgid "Ihr Passwort wurde an Sie verschickt."
 msgstr ""
 
-#: ../modules/OpenBib/MailPassword.pm:185
+#: ../modules/OpenBib/MailPassword.pm:172
 msgid "Ihr vergessenes KUG-Passwort"
 msgstr ""
 
@@ -758,7 +753,7 @@ msgstr ""
 msgid "In der Virtuellen Bibliothek suchen"
 msgstr ""
 
-#: ../templates/database/einbaende/search_showtitlist:127 ../templates/database/einbaende/search_showtitset:28 ../templates/resultlists_showall:103 ../templates/resultlists_showall:129 ../templates/resultlists_showall:130 ../templates/resultlists_showall_sortall:95 ../templates/resultlists_showsinglepool:104 ../templates/search_showtitlist:122 ../templates/search_showtitset:24 ../templates/views/einbaende/resultlists_showall:101 ../templates/views/einbaende/resultlists_showall_sortall:92 ../templates/views/einbaende/resultlists_showsinglepool:101 ../templates/views/einbaende/virtualsearch_result_item:68 ../templates/virtualsearch_result_item:64
+#: ../templates/database/einbaende/search_showtitlist:127 ../templates/database/einbaende/search_showtitset:28 ../templates/resultlists_showall:103 ../templates/resultlists_showall:129 ../templates/resultlists_showall:130 ../templates/resultlists_showall_sortall:95 ../templates/resultlists_showsinglepool:115 ../templates/search_showtitlist:122 ../templates/search_showtitset:24 ../templates/views/einbaende/resultlists_showall:101 ../templates/views/einbaende/resultlists_showall_sortall:92 ../templates/views/einbaende/resultlists_showsinglepool:101 ../templates/views/einbaende/virtualsearch_result_item:68 ../templates/virtualsearch_result_item:66
 msgid "In die Merkliste"
 msgstr ""
 
@@ -803,7 +798,7 @@ msgstr ""
 msgid "Jahr"
 msgstr ""
 
-#: ../templates/virtualsearch_result_item:130
+#: ../templates/virtualsearch_result_item:132
 msgid "Jahre"
 msgstr ""
 
@@ -815,7 +810,7 @@ msgstr ""
 msgid "K&ouml;rperschaft"
 msgstr ""
 
-#: ../templates/virtualsearch_result_item:93
+#: ../templates/virtualsearch_result_item:95
 msgid "K&ouml;rperschaften"
 msgstr ""
 
@@ -863,15 +858,15 @@ msgstr ""
 msgid "Keine <b>logische</b> Kombination mehrerer Worte im Eingabefeld m&ouml;glich"
 msgstr ""
 
-#: ../modules/OpenBib/DatabaseProfile.pm:336
+#: ../modules/OpenBib/DatabaseProfile.pm:294
 msgid "Keine gültige Aktion"
 msgstr ""
 
-#: ../modules/OpenBib/Admin.pm:1088
+#: ../modules/OpenBib/Admin.pm:1059
 msgid "Keine gültige Aktion oder Session"
 msgstr ""
 
-#: ../modules/OpenBib/ExternalJump.pm:202
+#: ../modules/OpenBib/ExternalJump.pm:176
 msgid "Keine gültige Anfrage-ID"
 msgstr ""
 
@@ -948,7 +943,7 @@ msgstr ""
 msgid "Lokale Signatur      "
 msgstr ""
 
-#: ../templates/database/einbaende/search_showtitlist:37 ../templates/managecollection_show:60 ../templates/resultlists_showall:45 ../templates/resultlists_showall_sortall:45 ../templates/resultlists_showsinglepool:45 ../templates/search_showtitlist:32 ../templates/views/einbaende/managecollection_show:57 ../templates/views/einbaende/resultlists_showall:43 ../templates/views/einbaende/resultlists_showall_sortall:42 ../templates/views/einbaende/resultlists_showsinglepool:42 ../templates/views/einbaende/virtualsearch_result_start:43 ../templates/virtualsearch_result_start:46
+#: ../templates/database/einbaende/search_showtitlist:37 ../templates/managecollection_show:60 ../templates/resultlists_showall:45 ../templates/resultlists_showall_sortall:45 ../templates/resultlists_showsinglepool:43 ../templates/search_showtitlist:32 ../templates/views/einbaende/managecollection_show:57 ../templates/views/einbaende/resultlists_showall:43 ../templates/views/einbaende/resultlists_showall_sortall:42 ../templates/views/einbaende/resultlists_showsinglepool:42 ../templates/views/einbaende/virtualsearch_result_start:43 ../templates/virtualsearch_result_start:44
 msgid "Los"
 msgstr ""
 
@@ -1080,7 +1075,7 @@ msgstr ""
 msgid "Notation"
 msgstr ""
 
-#: ../templates/database/einbaende/search_showtitlist:35 ../templates/managecollection_show:54 ../templates/resultlists_showall:34 ../templates/resultlists_showall_sortall:34 ../templates/resultlists_showsinglepool:34 ../templates/search_showtitlist:30 ../templates/views/einbaende/managecollection_show:51 ../templates/views/einbaende/resultlists_showall:39 ../templates/views/einbaende/resultlists_showall_sortall:38 ../templates/views/einbaende/resultlists_showsinglepool:38 ../templates/views/einbaende/virtualsearch_result_start:39 ../templates/virtualsearch_result_start:35
+#: ../templates/database/einbaende/search_showtitlist:35 ../templates/managecollection_show:54 ../templates/resultlists_showall:34 ../templates/resultlists_showall_sortall:34 ../templates/resultlists_showsinglepool:34 ../templates/search_showtitlist:30 ../templates/views/einbaende/managecollection_show:51 ../templates/views/einbaende/resultlists_showall:39 ../templates/views/einbaende/resultlists_showall_sortall:38 ../templates/views/einbaende/resultlists_showsinglepool:38 ../templates/views/einbaende/virtualsearch_result_start:39 ../templates/virtualsearch_result_start:33
 msgid "Optionen"
 msgstr ""
 
@@ -1236,7 +1231,7 @@ msgstr ""
 msgid "Schlagwort"
 msgstr ""
 
-#: ../templates/virtualsearch_result_item:118
+#: ../templates/virtualsearch_result_item:120
 msgid "Schlagworte"
 msgstr ""
 
@@ -1285,7 +1280,7 @@ msgstr ""
 msgid "Seit"
 msgstr ""
 
-#: ../templates/views/einbaende/virtualsearch_result_item:75 ../templates/virtualsearch_result_item:147 ../templates/virtualsearch_result_item:71 ../templates/virtualsearch_showkorindex:32 ../templates/virtualsearch_showswtindex:32 ../templates/virtualsearch_showverfindex:32
+#: ../templates/views/einbaende/virtualsearch_result_item:75 ../templates/virtualsearch_result_item:149 ../templates/virtualsearch_result_item:73 ../templates/virtualsearch_showkorindex:32 ../templates/virtualsearch_showswtindex:32 ../templates/virtualsearch_showverfindex:32
 msgid "Sekunden"
 msgstr ""
 
@@ -1305,10 +1300,6 @@ msgstr ""
 msgid "Session-ID"
 msgstr ""
 
-#: ../modules/OpenBib/Login.pm:111
-msgid "SessionID ist ungülltig"
-msgstr ""
-
 #: ../templates/admin_editcat:23 ../templates/admin_editcat_rss:24 ../templates/admin_editsession:24 ../templates/admin_editview:23 ../templates/admin_editview_rss:23 ../templates/admin_loggedin:23 ../templates/admin_showcat:26 ../templates/admin_showsessions:24 ../templates/admin_showviews:24
 msgid "Sessions"
 msgstr ""
@@ -1317,32 +1308,32 @@ msgstr ""
 msgid "Sie befinden sich derzeit auf einem Testsystem, das nicht f&uuml;r den produktiven Einsatz gedacht ist. Stattdessen k&ouml;nnen Sie hier die neuen in Entwicklung befindlichen Funktionen des KUG austesten. Da der KUG auf diesem System kontinuierlich verbessert wird, k&ouml;nnen w&auml;hrend dieser &Auml;nderungen zeitweise sicherlich auch schon einmal 'Internal Server Errors' beobachtet werden. Dies ist vollkommen normal, solange die aktuelle Version auf diesem System nicht eingefroren und in eine offiziell bekanntgegebene und &ouml;ffentliche finale Testphase &uuml;bergegangen ist."
 msgstr ""
 
-#: ../modules/OpenBib/Admin.pm:251
+#: ../modules/OpenBib/Admin.pm:233
 msgid "Sie greifen auf eine nicht autorisierte Session zu"
 msgstr ""
 
-#: ../modules/OpenBib/VirtualSearch.pm:259
-#. ("<a href=\"$config{databasechoice_loc}?sessionID=$sessionID\" target=\"body\">","</a>")
+#: ../modules/OpenBib/VirtualSearch.pm:239
+#. ("<a href=\"$config->{databasechoice_loc}?sessionID=$session->{ID}\" target=\"body\">","</a>")
 msgid "Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie keine %1Kataloge%2 oder Suchprofile ausgewählt haben. Bitte wählen Sie die gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen Katalogen suchen</a>."
 msgstr ""
 
-#: ../modules/OpenBib/Admin.pm:209
+#: ../modules/OpenBib/Admin.pm:195
 msgid "Sie haben als Benutzer entweder keinen oder nicht den Admin-Benutzer eingegeben"
 msgstr ""
 
-#: ../modules/OpenBib/Admin.pm:215
+#: ../modules/OpenBib/Admin.pm:200
 msgid "Sie haben ein falsches Passwort eingegeben"
 msgstr ""
 
-#: ../modules/OpenBib/MailCollection.pm:128
+#: ../modules/OpenBib/MailCollection.pm:122
 msgid "Sie haben eine ungültige Mailadresse eingegeben."
 msgstr ""
 
-#: ../modules/OpenBib/UserPrefs.pm:346
+#: ../modules/OpenBib/UserPrefs.pm:335
 msgid "Sie haben entweder kein Passwort eingegeben oder die beiden Passworte stimmen nicht überein"
 msgstr ""
 
-#: ../modules/OpenBib/Login.pm:343
+#: ../modules/OpenBib/Login.pm:325
 msgid "Sie haben entweder kein Passwort oder keinen Loginnamen eingegeben"
 msgstr ""
 
@@ -1354,11 +1345,11 @@ msgstr ""
 msgid "Sie haben keine Bestellungen get&auml;tigt."
 msgstr ""
 
-#: ../modules/OpenBib/MailPassword.pm:135
+#: ../modules/OpenBib/MailPassword.pm:126
 msgid "Sie haben keine E-Mail Adresse eingegeben"
 msgstr ""
 
-#: ../modules/OpenBib/MailCollection.pm:120
+#: ../modules/OpenBib/MailCollection.pm:117
 msgid "Sie haben keine Mailadresse eingegeben."
 msgstr ""
 
@@ -1366,24 +1357,24 @@ msgstr ""
 msgid "Sie haben keine Vormerkungen getätigt."
 msgstr ""
 
-#: ../modules/OpenBib/SelfReg.pm:139
-#. ("<a href=\"http://$config{servername}$config{selfreg_loc}?sessionID=$sessionID&action=show\">","</a>")
+#: ../modules/OpenBib/SelfReg.pm:128
+#. ("<a href=\"http://$config->{servername}$config->{selfreg_loc}?sessionID=$session->{ID}&action=show\">","</a>")
 msgid "Sie haben keine gütige Mailadresse eingegeben. Gehen Sie bitte %1zurück%2 und korrigieren Sie Ihre Eingabe"
 msgstr ""
 
-#: ../modules/OpenBib/VirtualSearch.pm:310
+#: ../modules/OpenBib/VirtualSearch.pm:317
 msgid "Sie haben keinen Begriff eingegeben"
 msgstr ""
 
-#: ../modules/OpenBib/DatabaseProfile.pm:277
+#: ../modules/OpenBib/DatabaseProfile.pm:235
 msgid "Sie haben keinen Profilnamen eingegeben!"
 msgstr ""
 
-#: ../modules/OpenBib/DatabaseProfile.pm:125
+#: ../modules/OpenBib/DatabaseProfile.pm:114
 msgid "Sie haben sich nicht authentifiziert."
 msgstr ""
 
-#: ../modules/OpenBib/Login.pm:346
+#: ../modules/OpenBib/Login.pm:328
 msgid "Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht erfolgreich authentifiziert werden"
 msgstr ""
 
@@ -1397,11 +1388,11 @@ msgstr ""
 msgid "Sie können entweder durch entsprechende Auswahl in den insgesamt %1 einzelnen %2Katalogen%3 recherchieren oder auch sofort in allen zusammen."
 msgstr ""
 
-#: ../modules/OpenBib/Admin.pm:291
+#: ../modules/OpenBib/Admin.pm:272
 msgid "Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
 msgstr ""
 
-#: ../modules/OpenBib/Admin.pm:681
+#: ../modules/OpenBib/Admin.pm:660
 msgid "Sie müssen mindestens einen Viewnamen und eine Beschreibung eingeben."
 msgstr ""
 
@@ -1433,7 +1424,7 @@ msgstr ""
 msgid "Soll die Kennung wirklich gel&ouml;scht werden?"
 msgstr ""
 
-#: ../templates/database/einbaende/search_showtitlist:37 ../templates/search_showtitlist:32 ../templates/views/einbaende/virtualsearch_result_start:41 ../templates/virtualsearch_result_start:37
+#: ../templates/database/einbaende/search_showtitlist:37 ../templates/search_showtitlist:32 ../templates/views/einbaende/virtualsearch_result_start:41 ../templates/virtualsearch_result_start:35
 msgid "Sortierung"
 msgstr ""
 
@@ -1526,7 +1517,7 @@ msgstr ""
 msgid "Suchoptionen"
 msgstr ""
 
-#: ../templates/virtualsearch_result_item:76
+#: ../templates/virtualsearch_result_item:78
 msgid "Suchverfeinerung mit relevanten Begriffen"
 msgstr ""
 
@@ -1990,7 +1981,7 @@ msgstr ""
 msgid "Tit-Datei"
 msgstr ""
 
-#: ../templates/managecollection_tit_as_html_simple:16 ../templates/searchframe:105 ../templates/searchframe:171 ../templates/views/richter/searchframe:88 ../templates/virtualsearch_result_item:106
+#: ../templates/managecollection_tit_as_html_simple:16 ../templates/searchframe:105 ../templates/searchframe:171 ../templates/views/richter/searchframe:88 ../templates/virtualsearch_result_item:108
 msgid "Titel"
 msgstr ""
 
@@ -2051,7 +2042,7 @@ msgstr ""
 msgid "Und-Verknüpfung innerhalb eines Suchfeldes"
 msgstr ""
 
-#: ../modules/OpenBib/Circulation.pm:301 ../modules/OpenBib/SelfReg.pm:202 ../modules/OpenBib/UserPrefs.pm:380
+#: ../modules/OpenBib/Circulation.pm:287 ../modules/OpenBib/SelfReg.pm:186 ../modules/OpenBib/UserPrefs.pm:360
 msgid "Unerlaubte Aktion"
 msgstr ""
 
@@ -2059,11 +2050,11 @@ msgstr ""
 msgid "Ungeeignete Suchfelder"
 msgstr ""
 
-#: ../modules/OpenBib/DispatchQuery.pm:106
+#: ../modules/OpenBib/DispatchQuery.pm:105
 msgid "Ungültige Aktion"
 msgstr ""
 
-#: ../modules/OpenBib/Circulation.pm:99 ../modules/OpenBib/DatabaseChoice.pm:110 ../modules/OpenBib/DatabaseProfile.pm:106 ../modules/OpenBib/ExternalJump.pm:125 ../modules/OpenBib/ExternalJump.pm:144 ../modules/OpenBib/Leave.pm:88 ../modules/OpenBib/MailPassword.pm:96 ../modules/OpenBib/ResultLists.pm:103 ../modules/OpenBib/Search.pm:201 ../modules/OpenBib/SearchFrame.pm:98 ../modules/OpenBib/SelfReg.pm:95 ../modules/OpenBib/UserPrefs.pm:111 ../modules/OpenBib/VirtualSearch.pm:150
+#: ../modules/OpenBib/Circulation.pm:92 ../modules/OpenBib/DatabaseChoice.pm:99 ../modules/OpenBib/DatabaseProfile.pm:97 ../modules/OpenBib/DispatchQuery.pm:87 ../modules/OpenBib/ExternalJump.pm:116 ../modules/OpenBib/HeaderFrame.pm:88 ../modules/OpenBib/Leave.pm:82 ../modules/OpenBib/Login.pm:99 ../modules/OpenBib/MailCollection.pm:97 ../modules/OpenBib/MailPassword.pm:91 ../modules/OpenBib/ManageCollection.pm:104 ../modules/OpenBib/RSSFrame.pm:81 ../modules/OpenBib/ResultLists.pm:103 ../modules/OpenBib/Search.pm:196 ../modules/OpenBib/SearchFrame.pm:93 ../modules/OpenBib/SelfReg.pm:90 ../modules/OpenBib/UserPrefs.pm:106 ../modules/OpenBib/VirtualSearch.pm:143
 msgid "Ungültige Session"
 msgstr ""
 
@@ -2071,7 +2062,7 @@ msgstr ""
 msgid "Ursprüngliche Auswahl wiederherstellen"
 msgstr ""
 
-#: ../templates/searchframe:109 ../templates/userprefs:171 ../templates/views/richter/searchframe:92 ../templates/virtualsearch_result_item:81 ../templates/virtualsearch_showverfindex:48
+#: ../templates/searchframe:109 ../templates/userprefs:171 ../templates/views/richter/searchframe:92 ../templates/virtualsearch_result_item:83 ../templates/virtualsearch_showverfindex:48
 msgid "Verfasser"
 msgstr ""
 
@@ -2231,7 +2222,7 @@ msgstr ""
 msgid "Zur Trefferliste"
 msgstr ""
 
-#: ../modules/OpenBib/Common/Util.pm:664 ../templates/database/einbaende/search_showtitlist:37 ../templates/resultlists_showall:37 ../templates/resultlists_showall_sortall:37 ../templates/resultlists_showsinglepool:37 ../templates/search_showtitlist:32 ../templates/searchframe:171 ../templates/views/einbaende/resultlists_showall:42 ../templates/views/einbaende/resultlists_showall_sortall:41 ../templates/views/einbaende/resultlists_showsinglepool:41 ../templates/views/einbaende/virtualsearch_result_start:42 ../templates/virtualsearch_result_start:38
+#: ../modules/OpenBib/Common/Util.pm:314 ../templates/database/einbaende/search_showtitlist:37 ../templates/resultlists_showall:37 ../templates/resultlists_showall_sortall:37 ../templates/resultlists_showsinglepool:37 ../templates/search_showtitlist:32 ../templates/searchframe:171 ../templates/views/einbaende/resultlists_showall:42 ../templates/views/einbaende/resultlists_showall_sortall:41 ../templates/views/einbaende/resultlists_showsinglepool:41 ../templates/views/einbaende/virtualsearch_result_start:42 ../templates/virtualsearch_result_start:36
 msgid "absteigend"
 msgstr ""
 
@@ -2239,7 +2230,7 @@ msgstr ""
 msgid "alles &uuml;ber die Verwendung m&ouml;glicher Boolscher Suchoperatoren innerhalb eines Eingabefeldes und die angesprochene Suchoption 'Und-Verkn&uuml;pfung innerhalb eines Suchfeldes'."
 msgstr ""
 
-#: ../modules/OpenBib/Common/Util.pm:663 ../templates/database/einbaende/search_showtitlist:37 ../templates/resultlists_showall:37 ../templates/resultlists_showall_sortall:37 ../templates/resultlists_showsinglepool:37 ../templates/search_showtitlist:32 ../templates/searchframe:171 ../templates/views/einbaende/resultlists_showall:42 ../templates/views/einbaende/resultlists_showall_sortall:41 ../templates/views/einbaende/resultlists_showsinglepool:41 ../templates/views/einbaende/virtualsearch_result_start:42 ../templates/virtualsearch_result_start:38
+#: ../modules/OpenBib/Common/Util.pm:313 ../templates/database/einbaende/search_showtitlist:37 ../templates/resultlists_showall:37 ../templates/resultlists_showall_sortall:37 ../templates/resultlists_showsinglepool:37 ../templates/search_showtitlist:32 ../templates/searchframe:171 ../templates/views/einbaende/resultlists_showall:42 ../templates/views/einbaende/resultlists_showall_sortall:41 ../templates/views/einbaende/resultlists_showsinglepool:41 ../templates/views/einbaende/virtualsearch_result_start:42 ../templates/virtualsearch_result_start:36
 msgid "aufsteigend"
 msgstr ""
 
@@ -2275,23 +2266,27 @@ msgstr ""
 msgid "ja, seit"
 msgstr ""
 
-#: ../modules/OpenBib/Common/Util.pm:675 ../modules/OpenBib/Common/Util.pm:693 ../modules/OpenBib/Common/Util.pm:704
+#: ../modules/OpenBib/Common/Util.pm:325 ../modules/OpenBib/Common/Util.pm:343 ../modules/OpenBib/Common/Util.pm:354
 msgid "katalogübergreifend"
+msgstr ""
+
+#: ../templates/virtualsearch_result_item:16
+msgid "mind."
 msgstr ""
 
 #: ../templates/userprefs:81
 msgid "mit Grund"
 msgstr ""
 
-#: ../templates/resultlists_showall:37 ../templates/resultlists_showall_sortall:37 ../templates/resultlists_showsinglepool:37 ../templates/search_showtitlist:32 ../templates/virtualsearch_result_start:38
+#: ../templates/resultlists_showall:37 ../templates/resultlists_showall_sortall:37 ../templates/resultlists_showsinglepool:37 ../templates/search_showtitlist:32 ../templates/virtualsearch_result_start:36
 msgid "nach Autor"
 msgstr ""
 
-#: ../modules/OpenBib/Common/Util.pm:665
+#: ../modules/OpenBib/Common/Util.pm:315
 msgid "nach Autor/Körperschaft"
 msgstr ""
 
-#: ../modules/OpenBib/Common/Util.pm:669
+#: ../modules/OpenBib/Common/Util.pm:319
 msgid "nach Erscheinungsjahr"
 msgstr ""
 
@@ -2299,7 +2294,7 @@ msgstr ""
 msgid "nach Fert.Jahr"
 msgstr ""
 
-#: ../templates/resultlists_showall:37 ../templates/resultlists_showall_sortall:37 ../templates/resultlists_showsinglepool:37 ../templates/search_showtitlist:32 ../templates/virtualsearch_result_start:38
+#: ../templates/resultlists_showall:37 ../templates/resultlists_showall_sortall:37 ../templates/resultlists_showsinglepool:37 ../templates/search_showtitlist:32 ../templates/virtualsearch_result_start:36
 msgid "nach Jahr"
 msgstr ""
 
@@ -2307,11 +2302,11 @@ msgstr ""
 msgid "nach Person/Region"
 msgstr ""
 
-#: ../modules/OpenBib/Common/Util.pm:667 ../templates/database/einbaende/search_showtitlist:37 ../templates/resultlists_showall:37 ../templates/resultlists_showall_sortall:37 ../templates/resultlists_showsinglepool:37 ../templates/search_showtitlist:32 ../templates/views/einbaende/resultlists_showall:42 ../templates/views/einbaende/resultlists_showall_sortall:41 ../templates/views/einbaende/resultlists_showsinglepool:41 ../templates/views/einbaende/virtualsearch_result_start:42 ../templates/virtualsearch_result_start:38
+#: ../modules/OpenBib/Common/Util.pm:317 ../templates/database/einbaende/search_showtitlist:37 ../templates/resultlists_showall:37 ../templates/resultlists_showall_sortall:37 ../templates/resultlists_showsinglepool:37 ../templates/search_showtitlist:32 ../templates/views/einbaende/resultlists_showall:42 ../templates/views/einbaende/resultlists_showall_sortall:41 ../templates/views/einbaende/resultlists_showsinglepool:41 ../templates/views/einbaende/virtualsearch_result_start:42 ../templates/virtualsearch_result_start:36
 msgid "nach Signatur"
 msgstr ""
 
-#: ../modules/OpenBib/Common/Util.pm:668 ../templates/resultlists_showall:37 ../templates/resultlists_showall_sortall:37 ../templates/resultlists_showsinglepool:37 ../templates/views/einbaende/resultlists_showall:42 ../templates/views/einbaende/resultlists_showall_sortall:41 ../templates/views/einbaende/resultlists_showsinglepool:41 ../templates/views/einbaende/virtualsearch_result_start:42 ../templates/virtualsearch_result_start:38
+#: ../modules/OpenBib/Common/Util.pm:318 ../templates/resultlists_showall:37 ../templates/resultlists_showall_sortall:37 ../templates/resultlists_showsinglepool:37 ../templates/views/einbaende/resultlists_showall:42 ../templates/views/einbaende/resultlists_showall_sortall:41 ../templates/views/einbaende/resultlists_showsinglepool:41 ../templates/views/einbaende/virtualsearch_result_start:42 ../templates/virtualsearch_result_start:36
 msgid "nach Titel"
 msgstr ""
 
@@ -2319,7 +2314,7 @@ msgstr ""
 msgid "nach Titel/Z&auml;hlung"
 msgstr ""
 
-#: ../modules/OpenBib/Common/Util.pm:666 ../templates/database/einbaende/search_showtitlist:37 ../templates/resultlists_showall:37 ../templates/resultlists_showall_sortall:37 ../templates/resultlists_showsinglepool:37 ../templates/search_showtitlist:32 ../templates/views/einbaende/resultlists_showall:42 ../templates/views/einbaende/resultlists_showall_sortall:41 ../templates/views/einbaende/resultlists_showsinglepool:41 ../templates/views/einbaende/virtualsearch_result_start:42 ../templates/virtualsearch_result_start:38
+#: ../modules/OpenBib/Common/Util.pm:316 ../templates/database/einbaende/search_showtitlist:37 ../templates/resultlists_showall:37 ../templates/resultlists_showall_sortall:37 ../templates/resultlists_showsinglepool:37 ../templates/search_showtitlist:32 ../templates/views/einbaende/resultlists_showall:42 ../templates/views/einbaende/resultlists_showall_sortall:41 ../templates/views/einbaende/resultlists_showsinglepool:41 ../templates/views/einbaende/virtualsearch_result_start:42 ../templates/virtualsearch_result_start:36
 msgid "nach Verlag"
 msgstr ""
 
@@ -2327,7 +2322,7 @@ msgstr ""
 msgid "nein"
 msgstr ""
 
-#: ../modules/OpenBib/Common/Util.pm:672 ../modules/OpenBib/Common/Util.pm:687 ../modules/OpenBib/Common/Util.pm:699 ../templates/searchframe:171
+#: ../modules/OpenBib/Common/Util.pm:322 ../modules/OpenBib/Common/Util.pm:337 ../modules/OpenBib/Common/Util.pm:349 ../templates/searchframe:171
 msgid "pro Katalog"
 msgstr ""
 

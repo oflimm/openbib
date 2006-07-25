@@ -37,6 +37,7 @@ use utf8;
 use Apache::Constants qw(:common);
 use Apache::Reload;
 use Apache::Request ();
+use Benchmark ':hireswallclock';
 use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
@@ -49,6 +50,7 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::ResultLists::Util;
+use OpenBib::Search::Util;
 use OpenBib::Session;
 use OpenBib::User;
 
@@ -82,8 +84,13 @@ sub handler {
     my $sortall      = ($query->param('sortall'))?$query->param('sortall'):'0';
     my $sortorder    = ($query->param('sortorder'))?$query->param('sortorder'):'up';
     my $trefferliste = $query->param('trefferliste') || '';
-    my $autoplus     = $query->param('autoplus') || '';
-    my $queryid      = $query->param('queryid') || '';
+    my $autoplus     = $query->param('autoplus')     || '';
+    my $queryid      = $query->param('queryid')      || '';
+    my $offset       = $query->param('offset')       || '';
+    my $hitrange     = $query->param('hitrange')     || '';
+    my $database     = $query->param('database')     || '';
+    my $sb           = $query->param('sb')           || 'sql';
+    my $action       = $query->param('action')       || '';
 
     my $queryoptions_ref
         = $session->get_queryoptions($query);
@@ -109,6 +116,294 @@ sub handler {
     my $targetdbinfo_ref
         = $config->get_targetdbinfo();
 
+    # BEGIN Weitere Treffer holen und cachen
+    #
+    ####################################################################
+
+    if ($action eq "getnext"){
+        my $dbh
+            = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+                or $logger->error_die($DBI::errstr);
+        
+        my $atime=new Benchmark;
+
+        my $searchquery_ref = $session->get_searchquery($queryid);
+        
+        my $result_ref=OpenBib::Search::Util::initial_search_for_titidns({
+            searchquery_ref => $searchquery_ref,
+            
+            serien          => 0,
+            dbh             => $dbh,
+            maxhits         => $hitrange,
+            offset          => $offset,
+            
+            enrich          => 0,
+            enrichkeys_ref  => {},
+        });
+        
+        my @tidns           = @{$result_ref->{titidns_ref}};
+        my $fullresultcount = $result_ref->{fullresultcount};
+        
+        # Wenn mindestens ein Treffer gefunden wurde
+        if ($#tidns >= 0) {
+            
+            my $a2time;
+            
+            if ($config->{benchmark}) {
+                $a2time=new Benchmark;
+            }
+            
+            my @outputbuffer=();
+            my @resultset=();
+            my @resultlists=();
+            
+            foreach my $idn (@tidns) {
+                push @outputbuffer, OpenBib::Search::Util::get_tit_listitem_by_idn({
+                    titidn            => $idn,
+                    dbh               => $dbh,
+                    sessiondbh        => $session->{dbh},
+                    database          => $database,
+                    sessionID         => $session->{ID},
+                    targetdbinfo_ref  => $targetdbinfo_ref,
+                });
+            }
+            
+            my $btime      = new Benchmark;
+            my $timeall    = timediff($btime,$atime);
+            my $resulttime = timestr($timeall,"nop");
+            $resulttime    =~s/(\d+\.\d+) .*/$1/;
+            
+            if ($config->{benchmark}) {
+                my $b2time     = new Benchmark;
+                my $timeall2   = timediff($b2time,$a2time);
+                
+                $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel (holen)       : ist ".timestr($timeall2));
+                $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel (suchen+holen): ist ".timestr($timeall));
+            }
+
+            # Weitere Treffer Cachen.
+
+            my $idnresult=$session->{dbh}->prepare("delete from searchresults where sessionid = ? and queryid = ? and dbname = ? and offset = ? and hitrange = ?") or $logger->error($DBI::errstr);
+            $idnresult->execute($session->{ID},$queryid,$database,$offset,$hitrange) or $logger->error($DBI::errstr);
+
+            $idnresult=$session->{dbh}->prepare("insert into searchresults values (?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
+            my $storableres=unpack "H*",Storable::freeze(\@outputbuffer);
+
+            $logger->debug("YAML-Dumped: ".YAML::Dump(\@outputbuffer));
+            my $num=$#outputbuffer+1;
+            $idnresult->execute($session->{ID},$database,$offset,$hitrange,$storableres,$num,$queryid) or $logger->error($DBI::errstr);
+            $idnresult->finish();
+
+            my $loginname="";
+            my $password="";
+      
+            my $userid=$user->get_userid_of_session($session->{ID});
+      
+            ($loginname,$password)=$user->get_cred_for_userid($userid) if ($userid && $user->get_targettype_of_session($session->{ID}) ne "self");
+      
+            # Hash im Loginname ersetzen
+            $loginname=~s/#/\%23/;
+      
+            my $hostself="http://".$r->hostname.$r->uri;
+            
+            # Eintraege merken fuer Lastresultset
+            foreach my $item_ref (@outputbuffer) {
+                push @resultset, { id       => $item_ref->{id},
+                                   database => $item_ref->{database},
+                               };
+            }
+            
+            push @resultlists, {
+                database   => $database,
+                resultlist => \@outputbuffer,
+            };
+
+            my @offsets = $session->get_resultlists_offsets({
+                    database  => $database,
+                    queryid   => $queryid,
+                    hitrange  => $hitrange,
+                });
+            
+            # TT-Data erzeugen
+            my $ttdata={
+                view           => $view,
+                stylesheet     => $stylesheet,
+                sessionID      => $session->{ID},
+		  
+                resultlists    => \@resultlists,
+                dbinfo         => $targetdbinfo_ref->{dbinfo},
+		  
+                loginname      => $loginname,
+                password       => $password,
+
+                database       => $database,
+                queryid        => $queryid,
+                offset         => $offset,
+                hitrange       => $hitrange,
+                offsets        => \@offsets,
+                config         => $config,
+                msg            => $msg,
+            };
+      
+            OpenBib::Common::Util::print_page($config->{tt_resultlists_showsinglepool_tname},$ttdata,$r);
+            $session->updatelastresultset(\@resultset);
+            return OK;
+
+        }
+
+        
+    }
+    elsif ($action eq "showrange"){
+        my $dbh
+            = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+                or $logger->error_die($DBI::errstr);
+        
+        my $atime=new Benchmark;
+
+        foreach my $searchresult ($session->get_items_in_resultlist_per_db({
+            queryid  => $queryid,
+            database => $trefferliste,
+            offset   => $offset,
+            hitrange => $hitrange,
+        })){
+            my $storableres=Storable::thaw(pack "H*", $searchresult);
+            
+            my @outputbuffer=@$storableres;
+            
+            my $treffer=$#outputbuffer+1;
+            
+            # Sortierung
+            my @sortedoutputbuffer=();
+            OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
+            
+            push @resultlists, {
+                database   => $trefferliste,
+                resultlist => \@sortedoutputbuffer,
+            };
+            
+            # Eintraege merken fuer Lastresultset
+            foreach my $item_ref (@sortedoutputbuffer) {
+                push @resultset, { id       => $item_ref->{id},
+                                   database => $trefferliste,
+                               };
+            }
+        }
+      
+
+        
+        my @tidns           = @{$result_ref->{titidns_ref}};
+        my $fullresultcount = $result_ref->{fullresultcount};
+        
+        # Wenn mindestens ein Treffer gefunden wurde
+        if ($#tidns >= 0) {
+            
+            my $a2time;
+            
+            if ($config->{benchmark}) {
+                $a2time=new Benchmark;
+            }
+            
+            my @outputbuffer=();
+            my @resultset=();
+            my @resultlists=();
+            
+            foreach my $idn (@tidns) {
+                push @outputbuffer, OpenBib::Search::Util::get_tit_listitem_by_idn({
+                    titidn            => $idn,
+                    dbh               => $dbh,
+                    sessiondbh        => $session->{dbh},
+                    database          => $database,
+                    sessionID         => $session->{ID},
+                    targetdbinfo_ref  => $targetdbinfo_ref,
+                });
+            }
+            
+            my $btime      = new Benchmark;
+            my $timeall    = timediff($btime,$atime);
+            my $resulttime = timestr($timeall,"nop");
+            $resulttime    =~s/(\d+\.\d+) .*/$1/;
+            
+            if ($config->{benchmark}) {
+                my $b2time     = new Benchmark;
+                my $timeall2   = timediff($b2time,$a2time);
+                
+                $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel (holen)       : ist ".timestr($timeall2));
+                $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel (suchen+holen): ist ".timestr($timeall));
+            }
+
+            # Weitere Treffer Cachen.
+
+            my $idnresult=$session->{dbh}->prepare("delete from searchresults where sessionid = ? and queryid = ? and dbname = ? and offset = ? and hitrange = ?") or $logger->error($DBI::errstr);
+            $idnresult->execute($session->{ID},$queryid,$database,$offset,$hitrange) or $logger->error($DBI::errstr);
+
+            $idnresult=$session->{dbh}->prepare("insert into searchresults values (?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
+            my $storableres=unpack "H*",Storable::freeze(\@outputbuffer);
+
+            $logger->debug("YAML-Dumped: ".YAML::Dump(\@outputbuffer));
+            my $num=$#outputbuffer+1;
+            $idnresult->execute($session->{ID},$database,$offset,$hitrange,$storableres,$num,$queryid) or $logger->error($DBI::errstr);
+            $idnresult->finish();
+
+            my $loginname="";
+            my $password="";
+      
+            my $userid=$user->get_userid_of_session($session->{ID});
+      
+            ($loginname,$password)=$user->get_cred_for_userid($userid) if ($userid && $user->get_targettype_of_session($session->{ID}) ne "self");
+      
+            # Hash im Loginname ersetzen
+            $loginname=~s/#/\%23/;
+      
+            my $hostself="http://".$r->hostname.$r->uri;
+            
+            # Eintraege merken fuer Lastresultset
+            foreach my $item_ref (@outputbuffer) {
+                push @resultset, { id       => $item_ref->{id},
+                                   database => $item_ref->{database},
+                               };
+            }
+            
+            push @resultlists, {
+                database   => $database,
+                resultlist => \@outputbuffer,
+            };
+
+            my @offsets = $session->get_resultlists_offsets({
+                    database  => $database,
+                    queryid   => $queryid,
+                    hitrange  => $hitrange,
+                });
+            
+            # TT-Data erzeugen
+            my $ttdata={
+                view           => $view,
+                stylesheet     => $stylesheet,
+                sessionID      => $session->{ID},
+		  
+                resultlists    => \@resultlists,
+                dbinfo         => $targetdbinfo_ref->{dbinfo},
+		  
+                loginname      => $loginname,
+                password       => $password,
+
+                database       => $database,
+                queryid        => $queryid,
+                offset         => $offset,
+                hitrange       => $hitrange,
+                offsets        => \@offsets,
+                config         => $config,
+                msg            => $msg,
+            };
+      
+            OpenBib::Common::Util::print_page($config->{tt_resultlists_showsinglepool_tname},$ttdata,$r);
+            $session->updatelastresultset(\@resultset);
+            return OK;
+
+        }
+
+        
+    }
+    
     # BEGIN Trefferliste
     #
     ####################################################################
@@ -444,6 +739,7 @@ sub handler {
     ####################################################################
     # ENDE Trefferliste
     #
+
     return OK;
 }
 

@@ -69,6 +69,8 @@ drop table IF EXISTS searchresults;
 CREATE TABLE searchresults (
  sessionid    VARCHAR(255) NOT NULL,
  dbname       VARCHAR(255) NOT NULL,
+ offset       INT,
+ hitrange     INT,
  searchresult LONGTEXT,
  hits         INT,
  queryid      BIGINT,

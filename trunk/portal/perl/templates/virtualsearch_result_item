@@ -13,8 +13,10 @@
 -%]
 <!-- Beginn Result Item -->
 <tr class="titlerow"><td>&nbsp;</td><td>[% dbinfo.full %]</td><td
-align="right" colspan="3"><strong>[% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %]</strong></td></tr>
-
+align="right" colspan="3"><strong>[%- IF treffer == qopts.maxhits && qopts.sb == 'sql' -%]<a href="/suchhilfe.html#recherche">[% msg.maketext("mind.") %]&nbsp;[% treffer %] [% msg.maketext("Treffer") %]</a>[% ELSE %][% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %][%- END -%]</strong></td></tr>
+[%- IF treffer == qopts.maxhits && qopts.sb == 'sql' -%]
+<tr class="titlerow"><td>&nbsp;</td><td colspan="4">[1 - [% qopts.maxhits %]] [<a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];database=[% database %];queryid=[% queryid %];action=getnext;offset=[% qopts.maxhits %];hitrange=[% qopts.maxhits %];sb=[% qopts.sb %]" target="bodyframe">weitere Treffer...</a>]</td></tr>
+[%- END -%]
 [% listrow = 'listrow2' %]
 [%- FOREACH item IN resultlist -%]
 

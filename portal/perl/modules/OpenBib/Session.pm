@@ -118,6 +118,7 @@ sub _init_new_session {
                 l         => undef,
                 profil    => undef,
                 autoplus  => undef,
+                sb        => undef,
             };
 
             # Eintrag in die Datenbank
@@ -242,6 +243,7 @@ sub get_queryoptions {
         l         => 'de',
         profil    => '',
         autoplus  => '',
+        sb        => 'sql',
     };
 
     my $altered=0;
@@ -331,6 +333,56 @@ sub set_profile {
     return;
 }
 
+sub get_resultlists_offsets {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $database  = exists $arg_ref->{database}
+        ? $arg_ref->{database}           : undef;
+    
+    my $queryid   = exists $arg_ref->{queryid}
+        ? $arg_ref->{queryid}            : undef;
+
+    my $hitrange  = exists $arg_ref->{hitrange}
+        ? $arg_ref->{hitrange}            : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $idnresult=$self->{dbh}->prepare("select offset, hits from searchresults where sessionid = ? and queryid = ? and dbname = ? and hitrange = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID},$queryid,$database,$hitrange) or $logger->error($DBI::errstr);
+
+    my @offsets=();
+    my $lasthits   = 0;
+    my $lastoffset = 0;
+    while (my $result=$idnresult->fetchrow_hashref){
+        my $offset = $result->{offset};
+        my $hits   = $result->{hits};
+        push @offsets, {
+            offset => $offset,
+            hits   => $hits,
+            start  => $offset+1,
+            end    => $offset+$hits,
+            type   => 'cached',
+        };
+        $lasthits   = $hits;
+        $lastoffset = $offset;
+    }
+
+    # Eventuell noch mehr Treffer vorhanden?
+    if ($lasthits == $hitrange){
+        push @offsets, {
+            offset => $lastoffset+$lasthits,
+            type   => 'getnext',
+        };
+    }
+            
+    $idnresult->finish();
+
+    $logger->debug("Offsets:\n".YAML::Dump(\@offsets));
+    return @offsets;
+}
+
 sub get_mask {
     my ($self)=@_;
 
@@ -353,7 +405,7 @@ sub set_mask {
     my $logger = get_logger();
 
     my $idnresult=$self->{dbh}->prepare("update sessionmask set masktype = ? where sessionid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($self->{ID},$mask) or $logger->error($DBI::errstr);
+    $idnresult->execute($mask,$self->{ID}) or $logger->error($DBI::errstr);
     $idnresult->finish();
 
     return;
@@ -459,12 +511,28 @@ sub get_items_in_resultlist_per_db {
     my $queryid   = exists $arg_ref->{queryid}
         ? $arg_ref->{queryid}            : undef;
 
+    my $offset    = exists $arg_ref->{offset}
+        ? $arg_ref->{offset}             : undef;
+
+    my $hitrange  = exists $arg_ref->{hitrange}
+        ? $arg_ref->{hitrange}           : undef;
+
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     my @resultlist=();
-    my $idnresult=$self->{dbh}->prepare("select searchresult from searchresults where sessionid = ? and dbname = ? and queryid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($self->{ID},$database,$queryid) or $logger->error($DBI::errstr);
+
+    my $sqlrequest="select searchresult from searchresults where sessionid = ? and dbname = ? and queryid = ?";
+    my @sqlargs=($self->{ID},$database,$queryid);
+
+    if ($offset && $hitrange){
+        $sqlrequest.=" and offset = ? and hitrange = ?";
+        push @sqlargs, $offset;
+        push @sqlargs, $hitrange;
+    }
+    
+    my $idnresult=$self->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
+    $idnresult->execute(@sqlargs) or $logger->error($DBI::errstr);
     while (my $res = $idnresult->fetchrow_hashref()){
         push @resultlist, $res->{searchresult};
     }
@@ -484,7 +552,7 @@ sub get_all_items_in_resultlist {
     my $logger = get_logger();
 
     my $config = new OpenBib::Config();
-    
+
     my $idnresult=$self->{dbh}->prepare("select searchresult,dbname from searchresults where sessionid = ? and queryid = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($self->{ID},$queryid) or $logger->error($DBI::errstr);
     
@@ -522,6 +590,22 @@ sub get_max_queryid {
 
     return $maxid;
 }
+
+sub get_searchquery {
+    my ($self,$queryid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $idnresult=$self->{dbh}->prepare("select query from queries where sessionID = ? and queryid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID},$queryid) or $logger->error($DBI::errstr);
+    my $res = $idnresult->fetchrow_hashref();
+    my $searchquery_ref = Storable::thaw(pack "H*", decode_utf8($res->{query}));
+    $idnresult->finish();
+
+    return $searchquery_ref;
+}
+
 
 sub get_number_of_items_in_collection {
     my ($self)=@_;

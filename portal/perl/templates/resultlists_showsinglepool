@@ -21,7 +21,7 @@
 </ul>
 
 <div id="content">
-
+[% IF sortselect %]
 <FORM METHOD="GET" action="[% config.resultlists_loc %]">
 <p>
 
@@ -44,13 +44,31 @@
 [%- END -%]
 &nbsp;<input type="submit" value="[% msg.maketext("Los") %]"></form>&nbsp;&nbsp;&nbsp;[% thissortstring %]</td></tr></table><p>
 </form>
-
+[% END # sortselect%]
 <table>
 
 [% FOREACH result IN resultlists %]
 [% database = result.database %]
 
-<tr class="titlerow"><td>&nbsp;</td><td>[% dbinfo.$database.full %]</td><td align=right colspan=3><strong>[% result.resultlist.size %]Treffer</strong></td></tr>
+<tr class="titlerow"><td>&nbsp;</td><td>[% dbinfo.$database.full %]</td><td align=right colspan=3><strong>[% result.resultlist.size %] Treffer</strong></td></tr>
+[%- IF offsets -%]
+<tr class="titlerow"><td>&nbsp;</td><td colspan="4">
+[% FOREACH singleoffset IN offsets %]
+[%- IF singleoffset.hits < hitrange -%]
+[%- no_more_titles = 1 -%]
+[%- END -%]
+[%- IF singleoffset.offset == offset -%]
+[[% singleoffset.start %] - [% singleoffset.end %]]&nbsp;
+[%- ELSE -%]
+<a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];queryid=[% queryid %];offset=[% singleoffset.offset %];database=[% database %];hitrange=[% hitrange %];action=showrange" target="bodyframe">[[% singleoffset.start %] - [% singleoffset.end %]]</a>&nbsp;
+[%- END -%]
+[%- END -%]
+[%- IF NOT no_more_titles -%]
+<a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];database=[% database %];queryid=[% queryid %];action=getnext;offset=[% qopts.maxhits %];hitrange=[% qopts.maxhits %];sb=[% qopts.sb %]" target="bodyframe"></a>
+[%- END -%]
+</td></tr>
+[%- END -%]
+
 
 [% listrow = 'listrow1' %]
 [% FOREACH item IN result.resultlist %]

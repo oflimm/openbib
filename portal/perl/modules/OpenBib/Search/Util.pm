@@ -1878,6 +1878,9 @@ sub initial_search_for_titidns {
     my $maxhits           = exists $arg_ref->{maxhits}
         ? $arg_ref->{maxhits}       : 50;
 
+    my $offset            = exists $arg_ref->{offset}
+        ? $arg_ref->{offset}        : undef;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -1981,8 +1984,12 @@ sub initial_search_for_titidns {
     my $sqlwherestring  = join(" ",@sqlwhere);
     $sqlwherestring     =~s/^(?:AND|OR|NOT) //;
     my $sqlfromstring   = join(", ",@sqlfrom);
+
+    if ($offset){
+        $offset=$offset.",";
+    }
     
-    my $sqlquerystring  = "select verwidn from $sqlfromstring where $sqlwherestring limit $maxhits";
+    my $sqlquerystring  = "select verwidn from $sqlfromstring where $sqlwherestring limit $offset$maxhits";
 
     $logger->debug("QueryString: ".$sqlquerystring);
     my $request         = $dbh->prepare($sqlquerystring);

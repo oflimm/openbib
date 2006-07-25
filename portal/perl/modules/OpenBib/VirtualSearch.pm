@@ -251,6 +251,38 @@ sub handler {
         }
     }
 
+    my $queryalreadyexists = 0;
+    
+    # Abspeichern des Query und Generierung der Queryid
+    if ($session->{ID} ne "-1") {
+        my $dbasesstring=join("||",sort @databases);
+        
+        my $thisquerystring=unpack "H*", Storable::freeze($searchquery_ref);
+        my $idnresult=$session->{dbh}->prepare("select count(*) as rowcount from queries where query = ? and sessionid = ? and dbases = ?") or $logger->error($DBI::errstr);
+        $idnresult->execute($thisquerystring,$session->{ID},$dbasesstring) or $logger->error($DBI::errstr);
+        my $res  = $idnresult->fetchrow_hashref;
+        my $rows = $res->{rowcount};
+        
+        # Neuer Query
+        if ($rows <= 0) {
+            # Abspeichern des Queries bis auf die Gesamttrefferzahl
+            $idnresult=$session->{dbh}->prepare("insert into queries (queryid,sessionid,query,dbases) values (NULL,?,?,?)") or $logger->error($DBI::errstr);
+            $idnresult->execute($session->{ID},$thisquerystring,$dbasesstring) or $logger->error($DBI::errstr);
+        }
+        # Query existiert schon
+        else {
+            $queryalreadyexists=1;
+        }
+        
+        $idnresult=$session->{dbh}->prepare("select queryid from queries where query = ? and sessionid = ? and dbases = ?") or $logger->error($DBI::errstr);
+        $idnresult->execute($thisquerystring,$session->{ID},$dbasesstring) or $logger->error($DBI::errstr);
+        
+        while (my @idnres=$idnresult->fetchrow) {
+            $queryid = decode_utf8($idnres[0]);
+        }
+        
+        $idnresult->finish();
+    }
     # BEGIN Index
     ####################################################################
     # Wenn ein kataloguebergreifender Index ausgewaehlt wurde
@@ -609,9 +641,16 @@ sub handler {
     # Schleife ueber alle Datenbanken 
     ######################################################################
 
+    # Array aus DB-Name und Titel-ID zur Navigation
     my @resultset=();
+
+    my $cacherequest=$session->{dbh}->prepare("insert into searchresults values (?,?,?,?,?)") or $logger->error($DBI::errstr);
+
     foreach my $database (@databases) {
-        
+
+        # Trefferliste
+        my @resultlist=();
+
         if ($sb eq 'xapian'){
             # Xapian
             
@@ -761,18 +800,16 @@ sub handler {
                     $drilldowntime    =~s/(\d+\.\d+) .*/$1/;
                 }
                 
-                my @sortedoutputbuffer=();
-                
-                OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
+                OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@resultlist);
             
                 # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
-                foreach my $item_ref (@sortedoutputbuffer) {
+                foreach my $item_ref (@resultlist) {
                     push @resultset, { id       => $item_ref->{id},
                                        database => $item_ref->{database},
                                    };
                 }
             
-                my $treffer=$#sortedoutputbuffer+1;
+                my $treffer=$#resultlist+1;
             
                 my $itemtemplatename=$config->{tt_virtualsearch_result_item_tname};
                 if ($view && -e "$config->{tt_include_path}/views/$view/$itemtemplatename") {
@@ -798,8 +835,10 @@ sub handler {
 
                     treffer         => $treffer,
 
+                    database        => $database,
+                    
                     fullresultcount => $fullresultcount,
-                    resultlist      => \@sortedoutputbuffer,
+                    resultlist      => \@resultlist,
 
                     qopts           => $queryoptions_ref,
                     drilldown       => $drilldown,
@@ -821,7 +860,7 @@ sub handler {
                     return SERVER_ERROR;
                 };
 
-                $trefferpage{$database} = \@sortedoutputbuffer;
+                $trefferpage{$database} = \@resultlist;
                 $dbhits     {$database} = $treffer;
                 $gesamttreffer          = $gesamttreffer+$treffer;
 
@@ -889,18 +928,16 @@ sub handler {
                     $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel (suchen+holen): ist ".timestr($timeall));
                 }
 
-                my @sortedoutputbuffer=();
-
-                OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
+                OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@resultlist);
 
                 # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
-                foreach my $item_ref (@sortedoutputbuffer) {
+                foreach my $item_ref (@resultlist) {
                     push @resultset, { id       => $item_ref->{id},
                                        database => $item_ref->{database},
                                    };
                 }
 	    
-                my $treffer=$#sortedoutputbuffer+1;
+                my $treffer=$#resultlist+1;
 
                 my $itemtemplatename=$config->{tt_virtualsearch_result_item_tname};
                 if ($view && -e "$config->{tt_include_path}/views/$view/$itemtemplatename") {
@@ -927,8 +964,11 @@ sub handler {
 
                     treffer         => $treffer,
 
+                    database        => $database,
+                    queryid         => $queryid,
+                    qopts           => $queryoptions_ref,
                     fullresultcount => $fullresultcount,
-                    resultlist      => \@sortedoutputbuffer,
+                    resultlist      => \@resultlist,
                     rating          => '',
                     bookinfo        => '',
                     sorttype        => $sorttype,
@@ -943,7 +983,7 @@ sub handler {
                     return SERVER_ERROR;
                 };
 
-                $trefferpage{$database} = \@sortedoutputbuffer;
+                $trefferpage{$database} = \@resultlist;
                 $dbhits     {$database} = $treffer;
                 $gesamttreffer          = $gesamttreffer+$treffer;
 
@@ -955,10 +995,18 @@ sub handler {
             undef $atime;
         }
 
+        # Cachen des Ergebnisses
+#        {
+#            my $storableres=unpack "H*",Storable::freeze(\@resultlist);
+#            $logger->debug("YAML-Dumped: ".YAML::Dump($res));
+#            my $num=$#resultlist+1;
+#            $cacherequest->execute($session->{ID},$database,$storableres,$num,$queryid) or $logger->error($DBI::errstr);
+#        }
         # flush output buffer
         $r->rflush();
     }
-
+    $cacherequest->finish();
+    
     ######################################################################
     #
     # ENDE Anfrage an Datenbanken schicken und Ergebnisse einsammeln
@@ -977,38 +1025,16 @@ sub handler {
     ######################################################################
 
     if ($session->{ID} ne "-1") {
-        # Jetzt update der Trefferinformationen
-
-        my $dbasesstring=join("||",@databases);
-
-        my $thisquerystring=unpack "H*", Storable::freeze($searchquery_ref);
-        my $idnresult=$session->{dbh}->prepare("select count(*) as rowcount from queries where query = ? and sessionid = ? and dbases = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($thisquerystring,$session->{ID},$dbasesstring) or $logger->error($DBI::errstr);
-        my $res  = $idnresult->fetchrow_hashref;
-        my $rows = $res->{rowcount};
-
-        my $queryalreadyexists=0;
-
         # Neuer Query
-        if ($rows <= 0) {
-            $idnresult=$session->{dbh}->prepare("insert into queries (queryid,sessionid,query,hits,dbases) values (NULL,?,?,?,?)") or $logger->error($DBI::errstr);
-            $idnresult->execute($session->{ID},$thisquerystring,$gesamttreffer,$dbasesstring) or $logger->error($DBI::errstr);
-        }
-        # Query existiert schon
-        else {
-            $queryalreadyexists=1;
-        }
-
-        $idnresult=$session->{dbh}->prepare("select queryid from queries where query = ? and sessionid = ? and dbases = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($thisquerystring,$session->{ID},$dbasesstring) or $logger->error($DBI::errstr);
-
-        my $queryid;
-        while (my @idnres=$idnresult->fetchrow) {
-            $queryid = decode_utf8($idnres[0]);
-        }
-
-        if ($queryalreadyexists == 0) {
-            $idnresult=$session->{dbh}->prepare("insert into searchresults values (?,?,?,?,?)") or $logger->error($DBI::errstr);
+        if (!$queryalreadyexists) {
+            # Jetzt update der Trefferinformationen
+            my $dbasesstring=join("||",sort @databases);
+            my $thisquerystring=unpack "H*", Storable::freeze($searchquery_ref);
+            
+            my $idnresult=$session->{dbh}->prepare("update queries set hits = ? where queryid = ? and sessionID = ? and query = ? and dbases = ?") or $logger->error($DBI::errstr);
+            $idnresult->execute($gesamttreffer,$queryid,$session->{ID},$thisquerystring,$dbasesstring) or $logger->error($DBI::errstr);
+            
+            $idnresult=$session->{dbh}->prepare("insert into searchresults values (?,?,0,?,?,?,?)") or $logger->error($DBI::errstr);
 
             foreach my $db (keys %trefferpage) {
                 my $res=$trefferpage{$db};
@@ -1017,11 +1043,10 @@ sub handler {
 
                 $logger->debug("YAML-Dumped: ".YAML::Dump($res));
                 my $num=$dbhits{$db};
-                $idnresult->execute($session->{ID},$db,$storableres,$num,$queryid) or $logger->error($DBI::errstr);
+                $idnresult->execute($session->{ID},$db,$maxhits,$storableres,$num,$queryid) or $logger->error($DBI::errstr);
             }
+            $idnresult->finish();
         }
-
-        $idnresult->finish();
     }
 
     # Ausgabe des letzten HTML-Bereichs

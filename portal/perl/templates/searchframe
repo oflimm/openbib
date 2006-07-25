@@ -166,7 +166,7 @@ value="NOT">und nicht</option></select></td><td><input type="text" name="verf" v
 <tr><th>[% msg.maketext("Suchoptionen") %]</th></tr>
 <tr><td class="boxed">
 <table>
-<tr><td class="category">[% msg.maketext("Maximale Trefferzahl pro Katalog") %]</td><td colspan="3"><select name="maxhits"><option selected="selected">200</option><option>500</option><option>1000</option><option value="9999999">alle</option></select></td></tr>
+<tr><td class="category">[% msg.maketext("Maximale Trefferzahl pro Katalog") %]</td><td colspan="3"><select name="maxhits"><option>50</option><option selected="selected">200</option><option>500</option><option>1000</option><option value="9999999">alle</option></select></td></tr>
 <tr><td class="category">[% msg.maketext("Sortierung nach") %]</td><td
 colspan="2"><select name="sorttype"><option value="author" selected="selected">[% msg.maketext("Autor/Körperschaft") %]</option><option value="title">[% msg.maketext("Titel") %]</option><option value="yearofpub">[% msg.maketext("Erscheinungsjahr") %]</option></select><select name="sortorder"><option value="up">[% msg.maketext("aufsteigend") %]</option><option value="down">[% msg.maketext("absteigend") %]</option></select>&nbsp;[% msg.maketext("pro Katalog") %]</td><td></td></tr>
 <tr><td class="category">Suchprofil</td><td colspan="3"><select name="profil">

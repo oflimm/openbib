@@ -525,12 +525,13 @@ sub get_items_in_resultlist_per_db {
     my $sqlrequest="select searchresult from searchresults where sessionid = ? and dbname = ? and queryid = ?";
     my @sqlargs=($self->{ID},$database,$queryid);
 
-    if ($offset && $hitrange){
+    if (defined $offset && defined $hitrange){
         $sqlrequest.=" and offset = ? and hitrange = ?";
         push @sqlargs, $offset;
         push @sqlargs, $hitrange;
     }
-    
+
+    $logger->debug("SQL-Request: $sqlrequest");
     my $idnresult=$self->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $idnresult->execute(@sqlargs) or $logger->error($DBI::errstr);
     while (my $res = $idnresult->fetchrow_hashref()){

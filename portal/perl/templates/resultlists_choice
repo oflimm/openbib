@@ -18,7 +18,7 @@
 <FORM METHOD="GET">
 
 <ul id="tabbingmenu">
-   <li><a class="active" href="[% config.resultlists_loc %]?sessionID=[% sessionID %];trefferliste=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a></li>
+   <li><a class="active" href="[% config.resultlists_loc %]?sessionID=[% sessionID %];action=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a></li>
 </ul>
 
 <div id="content">
@@ -80,14 +80,19 @@
 <tr><td colspan="2"></td></tr>
 
 <tr><td>[% msg.maketext("Katalog") %]</td><td>[% msg.maketext("Treffer") %]</td></tr>
-<tr><td class="listrow2"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %]&trefferliste=all&sortall=0&sorttype=author&queryid=[% thisquery.id %]&view=[% view %]"><b>[% msg.maketext("Alle Treffer") %]</b></a></td><td align=right>[% hitcount %]</td></tr>
+<tr><td class="listrow2"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %]&action=showall&sortall=0&sorttype=author&queryid=[% thisquery.id %]&view=[% view %];offset=0;hitrange=[% qopts.maxhits %]"><b>[% msg.maketext("Alle Treffer") %]</b></a></td><td align=right>[% hitcount %]</td></tr>
       
 <tr><td class="listrow1">&nbsp;</td><td align=right>&nbsp;</td></tr>
 
       
 [% listrow = 'listrow2' %]
 [% FOREACH resultdb IN resultdbs %]
-<tr><td class="[% listrow %]"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %]&trefferliste=[% resultdb.trefferdb %]&queryid=[% thisquery.id %]&view=[% view %]"><b>[% resultdb.trefferdbdesc.full %]</b></a></td><td align=right>[% resultdb.trefferzahl %]</td></tr>
+<tr><td class="[% listrow %]"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];database=[% resultdb.trefferdb %];action=showrange;offset=0;queryid=[% thisquery.id %];hitrange=[% qopts.maxhits %]"><b>[% resultdb.trefferdbdesc.full %]</b></a></td><td align=right>
+[% IF resultdb.trefferzahl == qopts.maxhits %]
+[% msg.maketext("mind.") %]&nbsp;
+[% END %]
+[% resultdb.trefferzahl %]
+</td></tr>
 [% IF listrow == 'listrow1' %]
 [% listrow = 'listrow2' %]
 [% ELSE %]

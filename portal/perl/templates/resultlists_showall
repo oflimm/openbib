@@ -17,7 +17,7 @@
 <body>
 
 <ul id="tabbingmenu">
-   <li><a class="active" href="[% config.resultlists_loc %]?sessionID=[% sessionID %];trefferliste=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a></li>
+   <li><a class="active" href="[% config.resultlists_loc %]?sessionID=[% sessionID %];action=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a></li>
 </ul>
 
 <div id="content">
@@ -25,7 +25,6 @@
 <FORM METHOD="GET" action="[% config.resultlists_loc %]">
 <p>
 
-<p><form method="get" action="[% hostself %]">
 [%- FOREACH i IN queryargs -%]
 <input type="hidden" name="[% i.key %]" value="[% i.value %]">
 [%- END -%]
@@ -46,10 +45,24 @@
 </form>
 
 <table>
-[% FOREACH result IN resultlists %]
-[% database = result.database %]
-
+[%- FOREACH result IN resultlists %]
+[%-     database = result.database %]
 <tr class="titlerow"><td>&nbsp;</td><td>[% targetdbinfo.dbinfo.$database.full %]</td><td align=right colspan=3><strong>[% result.resultlist.size %] [% msg.maketext("Treffer") %]</strong></td></tr>
+[%-     IF result.offsets -%]
+<tr class="titlerow"><td>&nbsp;</td><td colspan="4">
+[%          FOREACH singleoffset IN result.offsets %]
+[%-             IF singleoffset.type == 'getnext' -%]
+<a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];database=[% database %];queryid=[% queryid %];action=getnext;offset=[% singleoffset.offset %];hitrange=[% hitrange %];sb=[% qopts.sb %]">[Weitere Treffer...]</a>
+[%-             ELSE -%]
+[%-                 IF singleoffset.offset == offset -%]
+<b>[[% singleoffset.start %] - [% singleoffset.end %]]</b>&nbsp;
+[%-                 ELSE -%]
+<a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];queryid=[% queryid %];offset=[% singleoffset.offset %];database=[% database %];hitrange=[% hitrange %];action=showrange">[[% singleoffset.start %] - [% singleoffset.end %]]</a>&nbsp;
+[%-                 END -%]
+[%-             END -%]
+[%-         END -%]
+</td></tr>
+[%-     END -%]
 
 [% listrow = 'listrow1' %]
 [% FOREACH item IN result.resultlist %]
@@ -95,7 +108,7 @@
 [%- END -%]
 [%- signatur = signaturen.join(' ; ') -%]
 
-<tr class="[% listrow %]"><td class="listnr"><input type="checkbox" name="searchmultipletit" value="[% item.idn %]" /></td><td colspan="2"><span id="rlauthor">[% person
+<tr class="[% listrow %]"><td class="listnr">[% loop.count+offset %]</td><td colspan="2"><span id="rlauthor">[% person
 %]</span><br /><a href="[% config.search_loc %]?sessionID=[%
 sessionID %];search=Mehrfachauswahl;searchmode=[% searchmode %];rating=[% rating %];bookinfo=[% bookinfo %];hitrange=;sorttype=[%
 sorttype %]&database=[% item.${"database"} %];searchsingletit=[% item.id

@@ -836,6 +836,7 @@ sub handler {
                     treffer         => $treffer,
 
                     database        => $database,
+                    queryid         => $queryid,
                     
                     fullresultcount => $fullresultcount,
                     resultlist      => \@resultlist,
@@ -969,8 +970,7 @@ sub handler {
                     qopts           => $queryoptions_ref,
                     fullresultcount => $fullresultcount,
                     resultlist      => \@resultlist,
-                    rating          => '',
-                    bookinfo        => '',
+
                     sorttype        => $sorttype,
                     sortorder       => $sortorder,
                     resulttime      => $resulttime,

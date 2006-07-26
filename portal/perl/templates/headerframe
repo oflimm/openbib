@@ -20,7 +20,7 @@
 
 <div id="mainnavigation">
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
-<tr><td align="left">&nbsp;&nbsp;<a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">[% msg.maketext("Katalogauswahl") %]</a>&nbsp;&nbsp;<a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">[% msg.maketext("Recherche") %]</a>&nbsp;&nbsp;<a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];trefferliste=choice;view=[% view %]" target="body">[% msg.maketext("Trefferliste") %]</a>&nbsp;&nbsp;<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;view=[% view %]" target="body">[% msg.maketext("Merkliste") %] [[% anzahl %]]</a></td><td height="25">&nbsp;</td><td align="right">
+<tr><td align="left">&nbsp;&nbsp;<a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">[% msg.maketext("Katalogauswahl") %]</a>&nbsp;&nbsp;<a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">[% msg.maketext("Recherche") %]</a>&nbsp;&nbsp;<a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];action=choice;view=[% view %]" target="body">[% msg.maketext("Trefferliste") %]</a>&nbsp;&nbsp;<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;view=[% view %]" target="body">[% msg.maketext("Merkliste") %] [[% anzahl %]]</a></td><td height="25">&nbsp;</td><td align="right">
 <a href="[% config.rssframe_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">[% msg.maketext("RSS") %]</a>&nbsp;
 [% IF config.login_active == 1 %]
 [% IF username %]

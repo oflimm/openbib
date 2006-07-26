@@ -236,17 +236,28 @@ sub get_sort_nav {
 
     my @argself=$r->args;
 
-    my $sorttype="";
-    my $sortorder="";
-    my $trefferliste="";
-    my $sortall="";
-    my $sessionID="";
-    my $queryid="";
-
+    my $sorttype  = "";
+    my $sortorder = "";
+    my $sortall   = "";
+    my $sessionID = "";
+    my $queryid   = "";
+    my $hitrange  = undef;
+    my $offset    = undef;
+    
     my $fullargstring="";
 
-    my %fullargs=();
+    my %fullargs = ();
 
+    my %blacklisted_args = (
+        sortorder => 1,
+        sorttype  => 1,
+        sortall   => 1,
+        sessionID => 1,
+        queryid   => 1,
+        offset    => 1,
+        hitrange  => 1,        
+    );
+    
     for (my $i = 0; $i < $#argself; $i += 2) {
         my $key=$argself[$i];
 
@@ -256,7 +267,7 @@ sub get_sort_nav {
             $value=$argself[$i+1];
         }
 
-        if ($key ne "sortorder" && $key ne "sorttype" && $key ne "trefferliste" && $key ne "sortall" && $key ne "sessionID" && $key ne "queryid") {
+        if (!exists $blacklisted_args{$key}) {
             $fullargs{$key}=$value;
         }
         elsif ($key eq "sortorder") {
@@ -264,10 +275,6 @@ sub get_sort_nav {
         }
         elsif ($key eq "sorttype") {
             $sorttype=$value;
-        }
-        elsif ($key eq "trefferliste") {
-            $fullargs{$key}=$value;
-            $trefferliste=$value;
         }
         elsif ($key eq "sortall") {
             $fullargs{$key}=$value;
@@ -281,6 +288,14 @@ sub get_sort_nav {
             $fullargs{$key}=$value;
             $queryid=$value;
         }
+        elsif ($key eq "hitrange") {
+            $fullargs{$key}=$value;
+            $hitrange=$value;
+        }
+        elsif ($key eq "offset") {
+            $fullargs{$key}=$value;
+            $offset=$value;
+        }
 
     }
 
@@ -288,16 +303,11 @@ sub get_sort_nav {
     $sortorder = "up"     unless ($sortorder);
     $sorttype  = "author" unless ($sorttype);
 
-    # Bei der ersten Suche kann der 'trefferliste'-Parameter nicht
-    # uebergeben werden. Daher wird er jetzt hier nachtraeglich gesetzt.
-
-    if ($trefferliste eq "") {
-        $trefferliste="all";
-    }
-
     my %cacheargs=();
 
-    $cacheargs{trefferliste} = $trefferliste;
+    $cacheargs{offset}       = $offset;
+    $cacheargs{hitrange}     = $hitrange;
+    $cacheargs{action}       = "showall";
     $cacheargs{sessionID}    = $sessionID;
     $cacheargs{queryid}      = $queryid;
 

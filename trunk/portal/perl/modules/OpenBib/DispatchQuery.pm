@@ -94,7 +94,7 @@ sub handler {
         return OK;
     }
     elsif ($do_resultlist) {
-        $r->internal_redirect("http://$config->{servername}$config->{resultlists_loc}?sessionID=$session->{ID}&view=$view&trefferliste=choice&queryid=$queryid");
+        $r->internal_redirect("http://$config->{servername}$config->{resultlists_loc}?sessionID=$session->{ID}&view=$view&action=choice&queryid=$queryid");
         return OK;
     }
     elsif ($do_externalquery) {

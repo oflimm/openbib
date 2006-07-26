@@ -60,9 +60,10 @@
 <p />
 
 <form method="get" id="openbib" action="http://[% config.servername %][% config.virtualsearch_loc %]">
-<input type="hidden" name="hitrange" value="-1" />
-<input type="hidden" name="view" value="[% view %]" />
+<input type="hidden" name="hitrange"  value="-1" />
+<input type="hidden" name="view"      value="[% view %]" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
+<input type="hidden" name="sb"        value="sql" />
 
 [% dbinputtags %]
 

@@ -79,7 +79,7 @@
 [%- IF thisquery.hits -%]
  = [% thisquery.hits %] Treffer
 [%- END -%]
-</td><td>=&gt;</td><td><a href="http://[% config.servername %][% config.resultlists_loc %]?sessionID=[% sessionID %]&trefferliste=choice&queryid=[% queryid %]" target="body">[% msg.maketext("Sprung zur Trefferliste im KUG") %]</a></td></tr>
+</td><td>=&gt;</td><td><a href="http://[% config.servername %][% config.resultlists_loc %]?sessionID=[% sessionID %]&action=choice&queryid=[% queryid %]" target="body">[% msg.maketext("Sprung zur Trefferliste im KUG") %]</a></td></tr>
 </table>
 </td></tr>
 </table>

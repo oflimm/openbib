@@ -349,7 +349,7 @@ sub get_resultlists_offsets {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $idnresult=$self->{dbh}->prepare("select offset, hits from searchresults where sessionid = ? and queryid = ? and dbname = ? and hitrange = ?") or $logger->error($DBI::errstr);
+    my $idnresult=$self->{dbh}->prepare("select offset, hits from searchresults where sessionid = ? and queryid = ? and dbname = ? and hitrange = ? order by offset") or $logger->error($DBI::errstr);
     $idnresult->execute($self->{ID},$queryid,$database,$hitrange) or $logger->error($DBI::errstr);
 
     my @offsets=();
@@ -554,7 +554,7 @@ sub get_all_items_in_resultlist {
 
     my $config = new OpenBib::Config();
 
-    my $idnresult=$self->{dbh}->prepare("select searchresult,dbname from searchresults where sessionid = ? and queryid = ?") or $logger->error($DBI::errstr);
+    my $idnresult=$self->{dbh}->prepare("select searchresult,dbname from searchresults where sessionid = ? and queryid = ? and offset=0") or $logger->error($DBI::errstr);
     $idnresult->execute($self->{ID},$queryid) or $logger->error($DBI::errstr);
     
     my $searchresult_ref={};
@@ -566,10 +566,12 @@ sub get_all_items_in_resultlist {
 
     # Sortieren von Searchresults gemaess Ordnung der DBnames in ihren OrgUnits
     foreach my $dbname ($config->get_sorted_list_of_dbnames_by_orgunit()){
-        push @resultlist, {
-            dbname       => $dbname,
-            searchresult => $searchresult_ref->{$dbname},
-        };
+        if (exists $searchresult_ref->{$dbname}){
+            push @resultlist, {
+                dbname       => $dbname,
+                searchresult => $searchresult_ref->{$dbname},
+            };
+        }
     }
 
     $idnresult->finish();

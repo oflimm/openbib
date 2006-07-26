@@ -68,7 +68,16 @@ sub handler {
 
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
-    my $session = new OpenBib::Session();
+    my $session;
+    
+    if ($query->param('sessionID')){
+        $session   = new OpenBib::Session({
+            sessionID => $query->param('sessionID'),
+        });
+    }
+    else {
+        $session = new OpenBib::Session();
+    }
   
     # Standardwerte festlegen
   
@@ -112,8 +121,6 @@ sub handler {
     my @viewdb          = ($query->param('viewdb'))?$query->param('viewdb'):();
     my $viewid          = $query->param('viewid')          || '';
 
-    my $sessionID       = ($query->param('sessionID'))?$query->param('sessionID'):'';
-  
     my $host            = $query->param('host')            || '';
     my $protocol        = $query->param('protocol')        || '';
     my $remotepath      = $query->param('remotepath')      || '';
@@ -204,12 +211,12 @@ sub handler {
         # Session ist nun authentifiziert und wird mit dem Admin 
         # assoziiert.
         my $idnresult=$session->{dbh}->prepare("update session set benutzernr = ? where sessionID = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($adminuser,$sessionID) or $logger->error($DBI::errstr);
+        $idnresult->execute($adminuser,$session->{ID}) or $logger->error($DBI::errstr);
 
         # TT-Data erzeugen
         my $ttdata={
             stylesheet => $stylesheet,
-            sessionID  => $sessionID,
+            sessionID  => $session->{ID},
             config     => $config,
             msg        => $msg,
         };
@@ -222,7 +229,7 @@ sub handler {
   
     # Admin-SessionID ueberpruefen
     my $idnresult=$session->{dbh}->prepare("select count(*) as rowcount from session where benutzernr = ? and sessionid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($adminuser,$sessionID) or $logger->error($DBI::errstr);
+    $idnresult->execute($adminuser,$session->{ID}) or $logger->error($DBI::errstr);
     my $res=$idnresult->fetchrow_hashref;
 
     my $rows=$res->{rowcount};
@@ -249,7 +256,7 @@ sub handler {
       
             # Und nun auch die Datenbank komplett loeschen
             system("$config->{tool_dir}/destroypool.pl $dbname > /dev/null 2>&1");
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$sessionID&do_showcat=1");
+            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showcat=1");
             return OK;
 
         }
@@ -262,7 +269,7 @@ sub handler {
             $idnresult->execute($protocol,$host,$remotepath,$remoteuser,$remotepasswd,$titfilename,$autfilename,$korfilename,$swtfilename,$notfilename,$mexfilename,$filename,$autoconvert,$circ,$circurl,$circcheckurl,$circdb,$dbname) or $logger->error($DBI::errstr);
             $idnresult->finish();
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$sessionID&do_showcat=1");
+            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showcat=1");
             return OK;
         }
         elsif ($do_new) {
@@ -303,7 +310,7 @@ sub handler {
             # ... und dann wieder anlegen
             system("$config->{tool_dir}/createpool.pl $dbname > /dev/null 2>&1");
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$sessionID&do_showcat=1");
+            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showcat=1");
             return OK;
         }
         elsif ($do_edit) {
@@ -400,7 +407,7 @@ sub handler {
       
             my $ttdata={
                 stylesheet => $stylesheet,
-                sessionID  => $sessionID,
+                sessionID  => $session->{ID},
 		  
                 katalog    => $katalog,
 		  
@@ -417,14 +424,14 @@ sub handler {
             my $request=$config->{dbh}->prepare("update rssfeeds set dbname = ?, type = ?, active = ? where id = ?") or $logger->error($DBI::errstr);
             $request->execute($dbname,$rsstype,$active,$rssid) or $logger->error($DBI::errstr);
             $request->finish();
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$sessionID&do_editcat_rss=1&dbid=$dbid&dbname=$dbname&do_edit=1");
+            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editcat_rss=1&dbid=$dbid&dbname=$dbname&do_edit=1");
             return OK;
         }
         elsif ($do_new){
             my $request=$config->{dbh}->prepare("insert into rssfeeds values (NULL,?,?,-1,'',0)") or $logger->error($DBI::errstr);
             $request->execute($dbname,$rsstype) or $logger->error($DBI::errstr);
             $request->finish();
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$sessionID&do_editcat_rss=1&dbid=$dbid&dbname=$dbname&do_edit=1");
+            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editcat_rss=1&dbid=$dbid&dbname=$dbname&do_edit=1");
             return OK;              
         }
         
@@ -468,7 +475,7 @@ sub handler {
             
             my $ttdata={
                 stylesheet => $stylesheet,
-                sessionID  => $sessionID,
+                sessionID  => $session->{ID},
                 
                 katalog    => $katalog,
                 
@@ -532,7 +539,7 @@ sub handler {
 
         my $ttdata={
             stylesheet => $stylesheet,
-            sessionID  => $sessionID,
+            sessionID  => $session->{ID},
             kataloge   => \@kataloge,
 
             config     => $config,
@@ -586,7 +593,7 @@ sub handler {
 
         my $ttdata={
             stylesheet => $stylesheet,
-            sessionID  => $sessionID,
+            sessionID  => $session->{ID},
             views      => \@views,
             config     => $config,
             msg        => $msg,
@@ -607,7 +614,7 @@ sub handler {
             $idnresult=$config->{dbh}->prepare("delete from viewdbs where viewname = ?") or $logger->error($DBI::errstr);
             $idnresult->execute($viewname) or $logger->error($DBI::errstr);
             $idnresult->finish();
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$sessionID&do_showviews=1");
+            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showviews=1");
             return OK;
       
         }
@@ -649,7 +656,7 @@ sub handler {
             
             $idnresult->finish();
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$sessionID&do_showviews=1");
+            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showviews=1");
       
             return OK;
         }
@@ -689,7 +696,7 @@ sub handler {
             $res       = $idnresult->fetchrow_hashref();
             my $viewid = decode_utf8($res->{viewid});
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$sessionID&do_editview=1&do_edit=1&viewid=$viewid");
+            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editview=1&do_edit=1&viewid=$viewid");
             return OK;
         }
         elsif ($do_edit) {
@@ -755,7 +762,7 @@ sub handler {
 
             my $ttdata={
                 stylesheet => $stylesheet,
-                sessionID  => $sessionID,
+                sessionID  => $session->{ID},
 		  
                 dbnames    => \@dbnames,
 
@@ -777,7 +784,7 @@ sub handler {
               my $request=$config->{dbh}->prepare("update viewinfo set rssfeed = ? where viewid = ?") or $logger->error($DBI::errstr);
               $request->execute($rssid,$viewid) or $logger->error($DBI::errstr);
               $request->finish();
-              $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$sessionID&action=editviewrss&viewid=$viewid&viewrssaction=Bearbeiten");
+              $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&action=editviewrss&viewid=$viewid&viewrssaction=Bearbeiten");
               return OK;
           }
           elsif ($rsstype eq "all") {
@@ -789,7 +796,7 @@ sub handler {
                   $request->execute($viewname,$rssid) or $logger->error($DBI::errstr);
               }
               $request->finish();
-              $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$sessionID&action=editviewrss&viewid=$viewid&viewrssaction=Bearbeiten");
+              $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&action=editviewrss&viewid=$viewid&viewrssaction=Bearbeiten");
               return OK;
           }
       }
@@ -797,7 +804,7 @@ sub handler {
           my $request=$config->{dbh}->prepare("insert into rssfeeds values (NULL,?,?,-1,'',0)") or $logger->error($DBI::errstr);
           $request->execute($dbname,$rsstype) or $logger->error($DBI::errstr);
           $request->finish();
-          $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$sessionID&action=editcatrss&dbid=$dbid&dbname=$dbname&catrssaction=Bearbeiten");
+          $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&action=editcatrss&dbid=$dbid&dbname=$dbname&catrssaction=Bearbeiten");
           return OK;
       }
       elsif ($do_edit) {
@@ -856,7 +863,7 @@ sub handler {
           
           my $ttdata={
               stylesheet  => $stylesheet,
-              sessionID   => $sessionID,
+              sessionID   => $session->{ID},
               
               view        => $view,
 
@@ -921,7 +928,7 @@ sub handler {
 
         my $ttdata={
             stylesheet => $stylesheet,
-            sessionID  => $sessionID,
+            sessionID  => $session->{ID},
             kataloge   => \@kataloge,
 
             config     => $config,
@@ -966,7 +973,7 @@ sub handler {
 
         my $ttdata={
             stylesheet => $stylesheet,
-            sessionID  => $sessionID,
+            sessionID  => $session->{ID},
 	         
             sessions   => \@sessions,
 
@@ -1022,7 +1029,7 @@ sub handler {
 
             my $ttdata={
                 stylesheet => $stylesheet,
-                sessionID  => $sessionID,
+                sessionID  => $session->{ID},
 	         
                 session    => $session,
 
@@ -1043,7 +1050,7 @@ sub handler {
 
         my $ttdata={
             stylesheet => $stylesheet,
-            sessionID  => $sessionID,
+            sessionID  => $session->{ID},
             
             config     => $config,
             msg        => $msg,
@@ -1052,7 +1059,7 @@ sub handler {
         OpenBib::Common::Util::print_page($config->{tt_admin_logout_tname},$ttdata,$r);
 
         my $idnresult=$session->{dbh}->prepare("delete from session where benutzernr = ? and sessionid = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($adminuser,$sessionID) or $logger->error($DBI::errstr);
+        $idnresult->execute($adminuser,$session->{ID}) or $logger->error($DBI::errstr);
 
     }
     else {

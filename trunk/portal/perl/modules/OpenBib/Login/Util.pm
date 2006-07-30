@@ -36,36 +36,6 @@ use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use SOAP::Lite;
 
-sub authenticate_self_user {
-    my ($arg_ref) = @_;
-
-    # Set defaults
-    my $username            = exists $arg_ref->{username}
-        ? $arg_ref->{username}            : undef;
-    my $pin                 = exists $arg_ref->{pin}
-        ? $arg_ref->{pin}                 : undef;
-    my $userdbh             = exists $arg_ref->{userdbh}
-        ? $arg_ref->{userdbh}             : undef;
-    my $sessionID           = exists $arg_ref->{sessionID}
-        ? $arg_ref->{sessionID}           : undef;
-
-    # Log4perl logger erzeugen
-  
-    my $logger = get_logger();
-
-    my $userresult=$userdbh->prepare("select userid from user where loginname = ? and pin = ?") or $logger->error($DBI::errstr);
-  
-    $userresult->execute($username,$pin) or $logger->error($DBI::errstr);
-
-    my $res=$userresult->fetchrow_hashref();
-
-    my $userid = decode_utf8($res->{'userid'});
-
-    $userresult->finish();
-
-    return (defined $userid)?$userid:-1;
-}
-
 sub authenticate_olws_user {
     my ($arg_ref) = @_;
 

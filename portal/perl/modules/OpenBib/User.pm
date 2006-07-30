@@ -250,6 +250,32 @@ sub get_all_profiles {
     return @userdbprofiles;
 }
 
+sub authenticate_self_user {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $username            = exists $arg_ref->{username}
+        ? $arg_ref->{username}            : undef;
+    my $pin                 = exists $arg_ref->{pin}
+        ? $arg_ref->{pin}                 : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $userresult=$self->{dbh}->prepare("select userid from user where loginname = ? and pin = ?") or $logger->error($DBI::errstr);
+  
+    $userresult->execute($username,$pin) or $logger->error($DBI::errstr);
+
+    my $res=$userresult->fetchrow_hashref();
+
+    my $userid = decode_utf8($res->{'userid'});
+
+    $userresult->finish();
+
+    return (defined $userid)?$userid:-1;
+}
+    
 sub DESTROY {
     my $self = shift;
     $self->{dbh}->disconnect();

@@ -133,75 +133,11 @@ sub handler {
             }
         }
     
-        my @userdbprofiles=$user->get_all_profiles;
+        my @userdbprofiles = $user->get_all_profiles;
+        my $targettype     = $user->get_targettype_of_session($session->{ID});
 
-        my $targettype=$user->get_targettype_of_session($session->{ID});
-
-        foreach my $dbname ($session->get_dbchoice()) {
-            $checkeddb{$dbname}="checked=\"checked\"";
-        }
-    
-        my $lastcategory="";
-        my $count=0;
-    
-        my $maxcolumn=$config->{databasechoice_maxcolumn};
-    
-        $idnresult=$config->{dbh}->prepare("select * from dbinfo where active=1 order by orgunit ASC, description ASC") or $logger->error($DBI::errstr);
-        $idnresult->execute() or $logger->error($DBI::errstr);
-    
-        my @catdb=();
-    
-        while (my $result=$idnresult->fetchrow_hashref) {
-            my $category   = decode_utf8($result->{'orgunit'});
-            my $name       = decode_utf8($result->{'description'});
-            my $systemtype = decode_utf8($result->{'system'});
-            my $pool       = decode_utf8($result->{'dbname'});
-            my $url        = decode_utf8($result->{'url'});
-            my $sigel      = decode_utf8($result->{'sigel'});
-      
-            my $rcolumn;
-      
-            if ($category ne $lastcategory) {
-                while ($count % $maxcolumn != 0) {
-                    $rcolumn=($count % $maxcolumn)+1;
-
-                    # 'Leereintrag erzeugen'
-                    push @catdb, {
-			column     => $rcolumn,
-			category   => $lastcategory,
-			db         => '',
-			name       => '',
-			systemtype => '',
-			sigel      => '',
-			url        => '',
-                    };
-                    $count++;
-                }
-	
-                $count=0;
-            }
-
-            $lastcategory=$category;
-      
-            $rcolumn=($count % $maxcolumn)+1;
-      
-            my $checked="";
-            if (defined $checkeddb{$pool}) {
-                $checked="checked=\"checked\"";
-            }
-      
-            push @catdb, { 
-                column     => $rcolumn,
-                category   => $category,
-                db         => $pool,
-                name       => $name,
-                systemtype => $systemtype,
-                sigel      => $sigel,
-                url        => $url,
-                checked    => $checked,
-            };
-            $count++;
-        }
+        my $maxcolumn      = $config->{databasechoice_maxcolumn};
+        my @catdb          = $config->get_infomatrix_of_active_databases($session);
 
         # TT-Data erzeugen
         my $colspan=$maxcolumn*3;

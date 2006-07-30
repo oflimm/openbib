@@ -198,7 +198,7 @@ sub handler {
     elsif ($do_login) {
     
         # Sessionid erzeugen
-        if ($user ne $adminuser) {
+         if ($user ne $adminuser) {
             OpenBib::Common::Util::print_warning($msg->maketext("Sie haben als Benutzer entweder keinen oder nicht den Admin-Benutzer eingegeben"),$r,$msg);
             return OK;
         }

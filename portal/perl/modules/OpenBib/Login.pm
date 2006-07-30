@@ -148,7 +148,7 @@ sub handler {
     
         my $hostname    = "";
         my $port        = "";
-        my $user        = "";
+        my $username    = "";
         my $db          = "";
         my $description = "";
         my $type        = "";
@@ -156,7 +156,7 @@ sub handler {
         while (my $result=$targetresult->fetchrow_hashref()) {
             $hostname    = decode_utf8($result->{'hostname'});
             $port        = decode_utf8($result->{'port'});
-            $user        = decode_utf8($result->{'user'});
+            $username     = decode_utf8($result->{'user'});
             $db          = decode_utf8($result->{'db'});
             $description = decode_utf8($result->{'description'});
             $type        = decode_utf8($result->{'type'});
@@ -211,11 +211,9 @@ sub handler {
             }
         }
         elsif ($type eq "self") {
-            my $result=OpenBib::Login::Util::authenticate_self_user({
+            my $result = $user->authenticate_self_user({
                 username  => $loginname,
                 pin       => $password,
-                userdbh   => $user->{dbh},
-                sessionID => $session->{ID},
             });
       
             if ($result <= 0) {

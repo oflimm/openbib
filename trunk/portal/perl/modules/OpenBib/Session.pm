@@ -455,7 +455,8 @@ sub get_dbchoice {
     }
     $idnresult->finish();
 
-    return @dbchoice;
+    $logger->debug("DB-Choice:\n".YAML::Dump(\@dbchoice));
+    return reverse @dbchoice;
 }
 
 sub clear_dbchoice {
@@ -565,7 +566,7 @@ sub get_all_items_in_resultlist {
     my @resultlist=();
 
     # Sortieren von Searchresults gemaess Ordnung der DBnames in ihren OrgUnits
-    foreach my $dbname ($config->get_sorted_list_of_dbnames_by_orgunit()){
+    foreach my $dbname ($config->get_active_databases()){
         if (exists $searchresult_ref->{$dbname}){
             push @resultlist, {
                 dbname       => $dbname,

@@ -165,33 +165,16 @@ sub handler {
     # Ueber view koennen bei Direkteinsprung in VirtualSearch die
     # entsprechenden Kataloge vorausgewaehlt werden
     if ($view && $#databases == -1) {
-        my $idnresult=$config->{dbh}->prepare("select dbname from viewdbs where viewname = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($view) or $logger->error($DBI::errstr);
-
-        @databases=();
-        my @idnres;
-        while (@idnres=$idnresult->fetchrow) {
-            push @databases, decode_utf8($idnres[0]);
-        }
-        $idnresult->finish();
-
+        @databases = $config->get_dbs_of_view($view);
     }
 
     if ($searchall) {
-        my $idnresult=$config->{dbh}->prepare("select dbname,description from dbinfo where active=1 order by orgunit,description") or $logger->error($DBI::errstr);
-        $idnresult->execute() or $logger->error($DBI::errstr);
-
-        @databases=();
-        my @idnres;
-        while (@idnres=$idnresult->fetchrow) {
-            push @databases, decode_utf8($idnres[0]);
-        }
-        $idnresult->finish();
+        @databases = $config->get_active_databases();
     }
     elsif ($searchprofile || $verfindex || $korindex || $swtindex ) {
         if ($profil eq "dbauswahl") {
             # Eventuell bestehende Auswahl zuruecksetzen
-            @databases=$session->get_dbchoice();
+            @databases = $session->get_dbchoice();
         }
         # Wenn ein anderes Profil als 'dbauswahl' ausgewaehlt wuerde
         elsif ($profil) {
@@ -212,26 +195,14 @@ sub handler {
                 $profilresult->finish();
 	
             }
+            # oder alle
             elsif ($profil eq "alldbs") {
                 # Alle Datenbanken
-                my $idnresult=$config->{config}->prepare("select dbname from dbinfo where active=1 order by orgunit,dbname") or $logger->error($DBI::errstr);
-                $idnresult->execute() or $logger->error($DBI::errstr);
-	
-                my @idnres;
-                while (@idnres=$idnresult->fetchrow) {
-                    push @databases, decode_utf8($idnres[0]);
-                }
-                $idnresult->finish();
+                @databases = $config->get_active_databases();
             }
+            # ansonsten orgunit
             else {
-                my $idnresult=$config->{dbh}->prepare("select dbname from dbinfo where active=1 and orgunit = ? order by orgunit,dbname") or $logger->error($DBI::errstr);
-                $idnresult->execute($profil) or $logger->error($DBI::errstr);
-	
-                my @idnres;
-                while (@idnres=$idnresult->fetchrow) {
-                    push @databases, decode_utf8($idnres[0]);
-                }
-                $idnresult->finish();
+                @databases = $config->get_active_databases_of_orgunit($profil);
             }
         }
         # Kein Profil

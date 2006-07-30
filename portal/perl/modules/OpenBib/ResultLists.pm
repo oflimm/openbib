@@ -304,6 +304,7 @@ sub handler {
             loginname      => $loginname,
             password       => $password,
             
+            qopts          => $queryoptions_ref,
             database       => $database,
             queryid        => $queryid,
             offset         => $offset,

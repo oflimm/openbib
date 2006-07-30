@@ -284,10 +284,10 @@ sub handler {
         $rss_content=$rss->as_string;
         
         # Etwaig vorhandenen Eintrag loeschen
-        my $request=$session->{dbh}->prepare("delete from rsscache where dbname=? and type=? and subtype = ?");
+        my $request=$config->{dbh}->prepare("delete from rsscache where dbname=? and type=? and subtype = ?");
         $request->execute($database,$type,$subtype);
 
-        $request=$session->{dbh}->prepare("insert into rsscache values (?,NULL,?,?,?)");
+        $request=$config->{dbh}->prepare("insert into rsscache values (?,NULL,?,?,?)");
         $request->execute($database,$type,$subtype,$rss_content);
 
         $request->finish();

@@ -861,22 +861,22 @@ sub get_valid_rsscache_entry {
 }
 
 sub get_dbs_of_view {
-    my $self     = shift;
-    my $viewname = shift;
+    my ($self,$view) = @_;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my @viewdbs=();
-    my $request=$self->{dbh}->prepare("select dbname from  viewdbs where viewname = ? order by dbname") or $logger->error($DBI::errstr);
-    $request->execute($viewname) or $logger->error($DBI::errstr);
-    while (my $res = $request->fetchrow_hashref()){
-        push @viewdbs, decode_utf8($res->{dbname});
-    }
+    my @dblist=();
+    my $idnresult=$self->{dbh}->prepare("select viewdbs.dbname from viewdbs,dbinfo where viewdbs.viewname = ? and viewdbs.dbname=dbinfo.dbname and dbinfo.active=1 order by dbinfo.orgunit ASC, viewdbs.dbname ASC") or $logger->error($DBI::errstr);
+    $idnresult->execute($view) or $logger->error($DBI::errstr);
 
-    $request->finish();
-    
-    return @viewdbs;
+    my @idnres;
+    while (@idnres=$idnresult->fetchrow) {
+        push @dblist, decode_utf8($idnres[0]);
+    }
+    $idnresult->finish();
+    $logger->debug("View-Databases:\n".YAML::Dump(\@dblist));
+    return @dblist;
 }
 
 sub get_primary_rssfeed_of_view  {
@@ -1021,14 +1021,14 @@ sub get_targetcircinfo {
     return \%targetcircinfo;
 }
 
-sub get_sorted_list_of_dbnames_by_orgunit {
+sub get_active_databases {
     my $self = shift;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     my @dblist=();
-    my $request=$self->{dbh}->prepare("select dbname from dbinfo where active=1 order by orgunit, dbname") or $logger->error($DBI::errstr);
+    my $request=$self->{dbh}->prepare("select dbname from dbinfo where active=1 order by orgunit ASC, dbname ASC") or $logger->error($DBI::errstr);
     $request->execute() or $logger->error($DBI::errstr);
     while (my $res    = $request->fetchrow_hashref){
         push @dblist, $res->{dbname};
@@ -1036,6 +1036,101 @@ sub get_sorted_list_of_dbnames_by_orgunit {
     $request->finish();
     
     return @dblist;
+}
+
+sub get_active_databases_of_orgunit {
+    my ($self,$orgunit) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my @dblist=();
+    my $request=$self->{dbh}->prepare("select dbname from dbinfo where active=1 and orgunit = ? order by dbname ASC") or $logger->error($DBI::errstr);
+    $request->execute($orgunit) or $logger->error($DBI::errstr);
+    while (my $res    = $request->fetchrow_hashref){
+        push @dblist, $res->{dbname};
+    }
+    $request->finish();
+    
+    return @dblist;
+}
+
+sub get_infomatrix_of_active_databases {
+    my ($self,$session) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Ausgewaehlte Datenbanken bestimmen
+    my %checkeddb = ();
+    foreach my $dbname ($session->get_dbchoice()){
+        $checkeddb{$dbname}="checked=\"checked\"";
+    }
+    
+    my $lastcategory="";
+    my $count=0;
+    
+    my $maxcolumn=$self->{databasechoice_maxcolumn};
+    
+    my $idnresult=$self->{dbh}->prepare("select * from dbinfo where active=1 order by orgunit ASC, description ASC") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
+
+    my @catdb=();
+    
+    while (my $result=$idnresult->fetchrow_hashref) {
+        my $category   = decode_utf8($result->{'orgunit'});
+        my $name       = decode_utf8($result->{'description'});
+        my $systemtype = decode_utf8($result->{'system'});
+        my $pool       = decode_utf8($result->{'dbname'});
+        my $url        = decode_utf8($result->{'url'});
+        my $sigel      = decode_utf8($result->{'sigel'});
+	
+        my $rcolumn;
+        
+        if ($category ne $lastcategory) {
+            while ($count % $maxcolumn != 0) {
+                $rcolumn=($count % $maxcolumn)+1;
+                
+                # 'Leereintrag erzeugen'
+                push @catdb, { 
+                    column     => $rcolumn, 
+                    category   => $lastcategory,
+                    db         => '',
+                    name       => '',
+                    systemtype => '',
+                    sigel      => '',
+                    url        => '',
+                };
+                $count++;
+            }
+            $count=0;
+        }
+        
+        $lastcategory=$category;
+        
+        $rcolumn=($count % $maxcolumn)+1;
+        
+        my $checked="";
+        if (defined $checkeddb{$pool}) {
+            $checked="checked=\"checked\"";
+        }
+        
+        push @catdb, { 
+            column     => $rcolumn,
+            category   => $category,
+            db         => $pool,
+            name       => $name,
+            systemtype => $systemtype,
+            sigel      => $sigel,
+            url        => $url,
+            checked    => $checked,
+        };
+        
+        
+        $count++;
+    }
+    
+    return @catdb;
 }
 
 sub DESTROY {

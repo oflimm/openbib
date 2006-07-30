@@ -55,8 +55,13 @@ if ($OpenBib::Config::config{benchmark}){
 }
 
 sub new {
+    my ($class) = @_;
     # Log4perl logger erzeugen
     my $logger = get_logger();
+
+    my $self = { };
+
+    bless ($self, $class);
 
     my $mgr = new Net::Z3950::Manager();
     
@@ -69,6 +74,10 @@ sub new {
     my $conn = $mgr->connect($z39config{hostname}, $z39config{port}) or $logger->error_die($!);
     $conn->option(querytype => $z39config{querytype});
 
+    $self->{mgr}  = $mgr;
+    $self->{conn} = $conn;
+
+    return $self;
 }
 
 sub search {

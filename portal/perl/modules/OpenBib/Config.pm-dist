@@ -1055,6 +1055,23 @@ sub get_active_databases_of_orgunit {
     return @dblist;
 }
 
+sub get_system_of_db {
+    my ($self,$dbname) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$self->{dbh}->prepare("select system from dbinfo where dbname = ?") or $logger->error($DBI::errstr);
+    $request->execute($dbname) or $logger->error($DBI::errstr);
+    my $systemtype = "";
+    while (my $res    = $request->fetchrow_hashref){
+        $systemtype = $res->{system};
+    }
+    $request->finish();
+    
+    return $systemtype;
+}
+
 sub get_infomatrix_of_active_databases {
     my ($self,$session) = @_;
 

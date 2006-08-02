@@ -27,6 +27,8 @@ package OpenBib::Search::Z3950::USBK;
 
 use strict;
 use warnings;
+use lib '/usr/lib/perl5';
+
 no warnings 'redefine';
 use utf8;
 
@@ -35,7 +37,7 @@ use Apache::Request ();
 use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
-use Net::Z3950;
+use ZOOM;
 use SOAP::Lite;
 use Storable;
 use YAML ();
@@ -66,18 +68,14 @@ sub new {
 
     my $z39config = new OpenBib::Search::Z3950::USBK::Config();
     
-    my $mgr = new Net::Z3950::Manager();
-    
-    $mgr->option(databaseName          => $z39config->{databaseName});
-    $mgr->option(user                  => $z39config->{user});
-    $mgr->option(password              => $z39config->{password});
-    $mgr->option(groupid               => $z39config->{groupid});
-    $mgr->option(preferredRecordSyntax => $z39config->{preferredRecordSyntax});
-
-    my $conn = $mgr->connect($z39config->{hostname}, $z39config->{port}) or $logger->error_die("Connection Error:".$!);
-    $conn->option(querytype => $z39config->{querytype});
-
-    $self->{mgr}  = $mgr;
+    my $conn = new ZOOM::Connection($z39config->{hostname}, $z39config->{port},
+                                    databaseName          => $z39config->{databaseName},
+                                    user                  => $z39config->{user},
+                                    password              => $z39config->{password},
+                                    groupid               => $z39config->{groupid},
+                                    preferredRecordSyntax => $z39config->{preferredRecordSyntax},
+                                    querytype             => $z39config->{querytype},
+                                ) or $logger->error_die("Connection Error:".$!);
     $self->{conn} = $conn;
 
     return $self;
@@ -91,7 +89,7 @@ sub search {
 
     my $querystring = lc($searchquery_ref->{fs}{norm});
 
-    my $resultset = $self->{conn}->search('@attr 1=4 '.$querystring) or $logger->error_die("Search Error: ".$self->{conn}->errmsg());
+    my $resultset = $self->{conn}->search_pqf('@attr 1=4 '.$querystring) or $logger->error_die("Search Error: ".$self->{conn}->errmsg());
 
     $self->{rs} = $resultset;
 }
@@ -104,12 +102,15 @@ sub get_resultlist {
 
     my $start = $offset+1;
     my $end   = $offset+$hitrange;
+
+    # Pre-Cache Results
+    $self->{rs}->records($offset, $hitrange, 0);
     
     my @resultlist=();
     foreach my $i ($start..$end) {
-        my $rec  = $self->{rs}->record($i) or $logger->error_die($self->{rs}->errmsg());
+        my $rec  = $self->{rs}->record($i-1);
         
-        my $rrec = $self->{rs}->record($i)->rawdata();
+        my $rrec = $rec->raw();
 
         push @resultlist, $self->mab2openbib($rrec);
     }
@@ -228,7 +229,7 @@ sub DESTROY {
     my $self = shift;
 
     if (defined $self->{conn}){
-        $self->{conn}->close();
+        $self->{conn}->destroy();
     }
     
     return;

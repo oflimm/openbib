@@ -253,9 +253,11 @@ sub handler {
             $idnresult=$config->{dbh}->prepare("delete from dboptions where dbname = ?") or $logger->error($DBI::errstr);
             $idnresult->execute($dbname) or $logger->error($DBI::errstr);
             $idnresult->finish();
-      
-            # Und nun auch die Datenbank komplett loeschen
-            system("$config->{tool_dir}/destroypool.pl $dbname > /dev/null 2>&1");
+
+            if ($system ne "Z39.50"){
+                # Und nun auch die Datenbank komplett loeschen
+                system("$config->{tool_dir}/destroypool.pl $dbname > /dev/null 2>&1");
+            }
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showcat=1");
             return OK;
 
@@ -303,13 +305,15 @@ sub handler {
             $idnresult=$config->{dbh}->prepare("insert into dboptions values (?,'','','','','','','','','','','','',0,0,'','','')") or $logger->error($DBI::errstr);
             $idnresult->execute($dbname) or $logger->error($DBI::errstr);
             $idnresult->finish();
-      
-            # Und nun auch die Datenbank zuerst komplett loeschen (falls vorhanden)
-            system("$config->{tool_dir}/destroypool.pl $dbname > /dev/null 2>&1");
-      
-            # ... und dann wieder anlegen
-            system("$config->{tool_dir}/createpool.pl $dbname > /dev/null 2>&1");
 
+            if ($system ne "Z39.50"){
+                # Und nun auch die Datenbank zuerst komplett loeschen (falls vorhanden)
+                system("$config->{tool_dir}/destroypool.pl $dbname > /dev/null 2>&1");
+                
+                # ... und dann wieder anlegen
+                system("$config->{tool_dir}/createpool.pl $dbname > /dev/null 2>&1");
+            }
+            
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showcat=1");
             return OK;
         }

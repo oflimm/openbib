@@ -56,6 +56,7 @@ if ($OpenBib::Config::config{benchmark}){
 
 sub new {
     my ($class) = @_;
+
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -63,16 +64,18 @@ sub new {
 
     bless ($self, $class);
 
+    my $z39config = new OpenBib::Search::Z3950::USBK::Config();
+    
     my $mgr = new Net::Z3950::Manager();
     
-    $mgr->option(databaseName          => $z39config{databaseName});
-    $mgr->option(user                  => $z39config{user});
-    $mgr->option(password              => $z39config{password});
-    $mgr->option(groupid               => $z39config{groupid});
-    $mgr->option(preferredRecordSyntax => $z39config{preferredRecordSyntax});
+    $mgr->option(databaseName          => $z39config->{databaseName});
+    $mgr->option(user                  => $z39config->{user});
+    $mgr->option(password              => $z39config->{password});
+    $mgr->option(groupid               => $z39config->{groupid});
+    $mgr->option(preferredRecordSyntax => $z39config->{preferredRecordSyntax});
 
-    my $conn = $mgr->connect($z39config{hostname}, $z39config{port}) or $logger->error_die($!);
-    $conn->option(querytype => $z39config{querytype});
+    my $conn = $mgr->connect($z39config->{hostname}, $z39config->{port}) or $logger->error_die("Connection Error:".$!);
+    $conn->option(querytype => $z39config->{querytype});
 
     $self->{mgr}  = $mgr;
     $self->{conn} = $conn;
@@ -81,16 +84,154 @@ sub new {
 }
 
 sub search {
-    my ()=@_;
+    my ($self,$searchquery_ref)=@_;
 
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $querystring = lc($searchquery_ref->{fs}{norm});
+
+    my $resultset = $self->{conn}->search('@attr 1=4 '.$querystring) or $logger->error_die("Search Error: ".$self->{conn}->errmsg());
+
+    $self->{rs} = $resultset;
 }
 
 sub get_resultlist {
-    my ()=@_;
+    my ($self,$offset,$hitrange)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $start = $offset+1;
+    my $end   = $offset+$hitrange;
+    
+    my @resultlist=();
+    foreach my $i ($start..$end) {
+        my $rec  = $self->{rs}->record($i) or $logger->error_die($self->{rs}->errmsg());
+        
+        my $rrec = $self->{rs}->record($i)->rawdata();
+
+        push @resultlist, $self->mab2openbib($rrec);
+    }
+
+    $logger->debug(YAML::Dump(\@resultlist));
+
+    return @resultlist;
 }
 
 sub get_singletitle {
-    my ()=@_;
+    my ($self)=@_;
+}
+
+sub mab2openbib {
+    my ($self,$resultstring)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $listitem_ref = {};
+    
+    my $config = new OpenBib::Config();
+
+    my $convtab_ref = (exists $config->{convtab}{singlepool})?
+        $config->{convtab}{singlepool}:$config->{convtab}{default};
+
+    my @record=split("",$resultstring);
+
+    my @autkor = ();
+    
+  CATLINE:
+    for (my $i=0;$i<$#record;$i++){
+        my $line = $record[$i];
+
+        $logger->debug("Line: $line");
+
+        if (length($line) > 5){
+            next CATLINE unless ($line=~/^\d\d\d/);
+            my $category  = sprintf "%04d", substr($line,0,3);
+            my $indicator = substr($line,3,1);
+            my $content   = decode_utf8(substr($line,4,length($line)-4));
+#            my $content   = substr($line,4,length($line)-4);
+
+            $logger->debug("Category: $category\nContent: $content\n\n");
+            if ($category && $content){
+                
+                next CATLINE if (exists $convtab_ref->{blacklist_ref}->{$category});
+                
+                if (exists $convtab_ref->{listitemcat}{$category}){
+                    push @{$listitem_ref->{"T".$category}}, {
+                        indicator => $indicator,
+                        content   => $content,
+                    };    
+                };
+
+                $listitem_ref->{database}     = "USBK";
+
+                if ($category=~/0010/){
+                    $listitem_ref->{id}       = $content;
+                }
+                elsif ($category=~m/^0100/){
+                    push @{$listitem_ref->{P0100}}, {
+                        type    => 'aut',
+                        content => $content,
+                    };
+
+                    push @autkor, $content;
+                }
+                elsif ($category=~m/^0101/){
+                    push @{$listitem_ref->{P0101}}, {
+                        type       => 'aut',
+                        content    => $content,
+                    };
+
+                    push @autkor, $content;
+                }
+                elsif ($category=~m/^0103/){
+                    push @{$listitem_ref->{P0103}}, {
+                        type       => 'aut',
+                        content    => $content,
+                    };
+                    push @autkor, $content;
+                }
+                elsif ($category=~m/^0200/){
+                    push @{$listitem_ref->{C0200}}, {
+                        type       => 'kor',
+                        content    => $content,
+                    };
+                    
+                    push @autkor, $content;
+                }
+                elsif ($category=~m/^0201/){
+                    push @{$listitem_ref->{C0201}}, {
+                        type       => 'kor',
+                        content    => $content,
+                    };
+                    push @autkor, $content;
+                }
+            }
+        }
+    }
+    
+    # Kombinierte Verfasser/Koerperschaft hinzufuegen fuer Sortierung
+
+    if (@autkor){
+        push @{$listitem_ref->{'PC0001'}}, {
+            content   => join(" ; ",@autkor),
+        };
+    }
+    
+    $logger->debug("Item ".YAML::Dump($listitem_ref));
+    return $listitem_ref;
+}
+
+sub DESTROY {
+    my $self = shift;
+
+    if (defined $self->{conn}){
+        $self->{conn}->close();
+    }
+    
+    return;
 }
 
 1;

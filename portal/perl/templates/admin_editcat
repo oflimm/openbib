@@ -67,7 +67,11 @@ selected
 [% IF katalog.system == 'Sisis' %]
 selected
 [% END %]
->Sisis</option></select>
+>Sisis</option><option value="Z39.50" 
+[% IF katalog.system == 'Z39.50' %]
+selected
+[% END %]
+>Z39.50</option></select>
 </td></tr>
 <tr><td><b>[% msg.maketext("DB-Name") %]</b></td><td>[% katalog.dbname %]</td></tr>
 <tr><td><b>[% msg.maketext("Sigel") %]</b></td><td><input type="text" name="sigel" value="[% katalog.sigel %]" size="3"></td></tr>

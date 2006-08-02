@@ -45,7 +45,7 @@ msg.maketext("System") %]</b></td><td><b>[% msg.maketext("DB-Name")
 [% FOREACH item IN config.orgunits %]
 <option value="[% item.short %]">[% item.desc %]</option>
 [% END %]
-</select></td><td><input type="text" name="description"></td><td><select name="system"><option value="Lars">Lars</option><option value="Allegro">Allegro</option><option value="Bis-lok">Bis-lok</option><option value="Sisis" selected>Sisis</option></select></td><td>
+</select></td><td><input type="text" name="description"></td><td><select name="system"><option value="Lars">Lars</option><option value="Allegro">Allegro</option><option value="Bis-lok">Bis-lok</option><option value="Sisis" selected>Sisis</option><option value="Z39.50" selected>Z39.50</option></select></td><td>
 <input type="text" name="dbname" size="8"></td><td><input type="text"
 name="sigel" size="3"></td><td><input type="text" name="url"
 size="20"></td><td><select name=active><option value="1">[%

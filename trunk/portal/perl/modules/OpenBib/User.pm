@@ -101,6 +101,27 @@ sub get_username_for_userid {
     return $username;
 }
 
+sub get_userid_for_username {
+    my ($self,$username)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $userresult=$self->{dbh}->prepare("select userid from user where loginname = ?") or $logger->error($DBI::errstr);
+
+    $userresult->execute($username) or $logger->error($DBI::errstr);
+  
+    my $userid="";
+  
+    while (my $res=$userresult->fetchrow_hashref()){
+        $userid = decode_utf8($res->{userid});
+    }
+
+    $userresult->finish();
+
+    return $userid;
+}
+
 sub get_userid_of_session {
     my ($self,$sessionID)=@_;
 

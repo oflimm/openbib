@@ -226,15 +226,11 @@ sub handler {
     
         if (!$loginfailed) {
             # Jetzt wird die Session mit der Benutzerid assoziiert
-            my $userresult=$user->{dbh}->prepare("select userid from user where loginname = ?") or $logger->error($DBI::errstr);
-            $userresult->execute($loginname) or $logger->error($DBI::errstr);
-      
-            my $res=$userresult->fetchrow_hashref();
-            my $userid = decode_utf8($res->{'userid'});
-
+            my $userid = $user->get_userid_for_username($loginname);
+            
             # Es darf keine Session assoziiert sein. Daher stumpf loeschen
             my $globalsessionID="$config->{servername}:$session->{ID}";
-            $userresult=$user->{dbh}->prepare("delete from usersession where sessionid = ?") or $logger->error($DBI::errstr);
+            my $userresult=$user->{dbh}->prepare("delete from usersession where sessionid = ?") or $logger->error($DBI::errstr);
             $userresult->execute($globalsessionID) or $logger->error($DBI::errstr);
       
             $userresult=$user->{dbh}->prepare("insert into usersession values (?,?,?)") or $logger->error($DBI::errstr);
@@ -243,7 +239,7 @@ sub handler {
             # Ueberpruefen, ob der Benutzer schon ein Suchprofil hat
             $userresult=$user->{dbh}->prepare("select count(userid) as rowcount from fieldchoice where userid = ?") or $logger->error($DBI::errstr);
             $userresult->execute($userid) or $logger->error($DBI::errstr);
-            $res=$userresult->fetchrow_hashref;
+            my $res=$userresult->fetchrow_hashref;
 
             my $rows=$res->{rowcount};
 

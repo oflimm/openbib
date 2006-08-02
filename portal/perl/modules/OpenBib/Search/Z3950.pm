@@ -30,27 +30,25 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Reload;
-use Apache::Request ();
-use DBI;
-use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
-use SOAP::Lite;
-use Storable;
-use YAML ();
 
-use OpenBib::Config;
+# Hier folgen alle verfuegbaren Z3950-Module. Der letzte Teil des
+# Methoden-Namens gibt den Datenbanknamen dieses Kataloges in
+# der Web-Administration an
+use OpenBib::Search::Z3950::USBK;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-use vars qw(%config);
+# Dispatcher-Methode
+sub new {
+    my ($class,$subclassname) = @_;
 
-*config = \%OpenBib::Config::config;
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
 
-if ($OpenBib::Config::config{benchmark}){
-    use Benchmark ':hireswallclock';
+    $subclassname = "OpenBib::Search::Z3950::$subclassname";
+    my $subclass = "$subclassname"->new();
+    
+    return $subclass ;
 }
-
 
 1;
 

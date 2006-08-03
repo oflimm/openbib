@@ -668,20 +668,64 @@ sub handler {
     #####################################################################
   
     if ($searchsingletit) {
-        OpenBib::Search::Util::print_tit_set_by_idn({
-            titidn             => $searchsingletit,
-            dbh                => $dbh,
-            sessiondbh         => $session->{dbh},
-            targetdbinfo_ref   => $targetdbinfo_ref,
-            targetcircinfo_ref => $targetcircinfo_ref,
-            queryoptions_ref   => $queryoptions_ref,
-            database           => $database,
-            sessionID          => $session->{ID},
-            apachereq          => $r,
-            stylesheet         => $stylesheet,
-            view               => $view,
-            msg                => $msg,
-        });
+        if ($config->get_system_of_db($database) eq "Z39.50"){
+            my $z3950dbh = new OpenBib::Search::Z3950($database);
+
+            my $normset = $z3950dbh->get_singletitle($searchsingletit);
+            
+            my ($prevurl,$nexturl)=OpenBib::Search::Util::get_result_navigation({
+                sessiondbh => $session->{dbh},
+                database   => $database,
+                titidn     => $searchsingletit,
+                sessionID  => $session->{ID},
+            });
+            
+            my $poolname=$targetdbinfo_ref->{sigel}{
+                $targetdbinfo_ref->{dbases}{$database}};
+            
+            # TT-Data erzeugen
+            my $ttdata={
+                view       => $view,
+                stylesheet => $stylesheet,
+                database   => $database,
+                poolname   => $poolname,
+                prevurl    => $prevurl,
+                nexturl    => $nexturl,
+                qopts      => $queryoptions_ref,
+                sessionID  => $session->{ID},
+                titidn     => $searchsingletit,
+                normset    => $normset,
+                mexnormset => {},
+                circset    => {},
+                
+                utf2iso    => sub {
+                    my $string=shift;
+                    $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
+                    return $string;
+                },
+                
+                config     => $config,
+                msg        => $msg,
+            };
+            
+            OpenBib::Common::Util::print_page($config->{tt_search_showtitset_tname},$ttdata,$r);
+        }
+        else {
+            OpenBib::Search::Util::print_tit_set_by_idn({
+                titidn             => $searchsingletit,
+                dbh                => $dbh,
+                sessiondbh         => $session->{dbh},
+                targetdbinfo_ref   => $targetdbinfo_ref,
+                targetcircinfo_ref => $targetcircinfo_ref,
+                queryoptions_ref   => $queryoptions_ref,
+                database           => $database,
+                sessionID          => $session->{ID},
+                apachereq          => $r,
+                stylesheet         => $stylesheet,
+                view               => $view,
+                msg                => $msg,
+            });
+        }
         return OK;
     }
   

@@ -35,7 +35,7 @@ use utf8;
 use Apache::Reload;
 use Apache::Request ();
 use DBI;
-use Encode 'decode_utf8';
+use Encode; # 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use ZOOM;
 use SOAP::Lite;
@@ -92,6 +92,7 @@ sub search {
     my $resultset = $self->{conn}->search_pqf('@attr 1=4 '.$querystring) or $logger->error_die("Search Error: ".$self->{conn}->errmsg());
 
     $self->{rs} = $resultset;
+
 }
 
 sub get_resultlist {
@@ -109,10 +110,13 @@ sub get_resultlist {
     my @resultlist=();
     foreach my $i ($start..$end) {
         my $rec  = $self->{rs}->record($i-1);
-        
-        my $rrec = $rec->raw();
 
-        push @resultlist, $self->mab2openbib($rrec);
+        my $rrec = $rec->get("raw;charset=latin1,utf8");
+
+        $logger->debug("Raw Record: ".$rrec);
+
+        
+        push @resultlist, $self->mab2openbib_list($rrec);
     }
 
     $logger->debug(YAML::Dump(\@resultlist));
@@ -121,10 +125,25 @@ sub get_resultlist {
 }
 
 sub get_singletitle {
-    my ($self)=@_;
+    my ($self,$id)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $resultset = $self->{conn}->search_pqf('@attr 1=1007 '.$id) or $logger->error_die("Search Error: ".$self->{conn}->errmsg());
+
+    $self->{rs} = $resultset;
+
+    $self->{rs}->option(elementSetName => "F");
+
+    my $rec  = $self->{rs}->record(0);
+    
+    my $rrec = $rec->get("raw;charset=latin1,utf8");
+
+    return $self->mab2openbib_full($rrec)
 }
 
-sub mab2openbib {
+sub mab2openbib_list {
     my ($self,$resultstring)=@_;
 
     # Log4perl logger erzeugen
@@ -140,6 +159,10 @@ sub mab2openbib {
     my @record=split("",$resultstring);
 
     my @autkor = ();
+
+    # id des Satzes bestimmen. Die id ist die letzte Zahl im
+    # Header des MAB-Satzes
+    ($listitem_ref->{id}) = $record[0] =~m/\s+(\d+)$/;
     
   CATLINE:
     for (my $i=0;$i<$#record;$i++){
@@ -168,10 +191,110 @@ sub mab2openbib {
 
                 $listitem_ref->{database}     = "USBK";
 
-                if ($category=~/0010/){
-                    $listitem_ref->{id}       = $content;
+                if ($category=~m/^0100/){
+                    push @{$listitem_ref->{P0100}}, {
+                        type    => 'aut',
+                        content => $content,
+                    };
+
+                    push @autkor, $content;
                 }
-                elsif ($category=~m/^0100/){
+                elsif ($category=~m/^0101/){
+                    push @{$listitem_ref->{P0101}}, {
+                        type       => 'aut',
+                        content    => $content,
+                    };
+
+                    push @autkor, $content;
+                }
+                elsif ($category=~m/^0103/){
+                    push @{$listitem_ref->{P0103}}, {
+                        type       => 'aut',
+                        content    => $content,
+                    };
+                    push @autkor, $content;
+                }
+                elsif ($category=~m/^0200/){
+                    push @{$listitem_ref->{C0200}}, {
+                        type       => 'kor',
+                        content    => $content,
+                    };
+                    
+                    push @autkor, $content;
+                }
+                elsif ($category=~m/^0201/){
+                    push @{$listitem_ref->{C0201}}, {
+                        type       => 'kor',
+                        content    => $content,
+                    };
+                    push @autkor, $content;
+                }
+            }
+        }
+    }
+    
+    # Kombinierte Verfasser/Koerperschaft hinzufuegen fuer Sortierung
+
+    if (@autkor){
+        push @{$listitem_ref->{'PC0001'}}, {
+            content   => join(" ; ",@autkor),
+        };
+    }
+    
+    $logger->debug("Item ".YAML::Dump($listitem_ref));
+    return $listitem_ref;
+}
+
+sub mab2openbib_full {
+    my ($self,$resultstring)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $listitem_ref = {};
+    
+    my $config = new OpenBib::Config();
+
+    my $convtab_ref = (exists $config->{convtab}{singlepool})?
+        $config->{convtab}{singlepool}:$config->{convtab}{default};
+
+    my @record=split("",$resultstring);
+
+    my @autkor = ();
+
+    # id des Satzes bestimmen. Die id ist die letzte Zahl im
+    # Header des MAB-Satzes
+    ($listitem_ref->{id}) = $record[0] =~m/\s+(\d+)$/;
+    
+  CATLINE:
+    for (my $i=0;$i<$#record;$i++){
+        my $line = $record[$i];
+
+        $logger->debug("Line: $line");
+
+        if (length($line) > 5){
+            next CATLINE unless ($line=~/^\d\d\d/);
+            my $category  = sprintf "%04d", substr($line,0,3);
+            my $indicator = substr($line,3,1);
+            my $content   = decode("latin1",substr($line,4,length($line)-4));
+#            my $content   = substr($line,4,length($line)-4);
+
+            # Content filtern
+            $content=~s/^\s*\|//;
+            
+            $logger->debug("Category: $category\nContent: $content\n\n");
+            if ($category && $content){
+                
+                next CATLINE if (exists $convtab_ref->{blacklist_ref}->{$category});
+                
+                push @{$listitem_ref->{"T".$category}}, {
+                    indicator => $indicator,
+                    content   => $content,
+                };
+
+                $listitem_ref->{database}     = "USBK";
+
+                if ($category=~m/^0100/){
                     push @{$listitem_ref->{P0100}}, {
                         type    => 'aut',
                         content => $content,

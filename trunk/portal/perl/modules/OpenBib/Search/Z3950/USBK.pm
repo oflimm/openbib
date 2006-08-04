@@ -105,6 +105,10 @@ sub get_resultlist {
     my $start = $offset+1;
     my $end   = $offset+$hitrange;
 
+    if ($start >= $self->{rs}->size() || $start >= $self->{rs}->size()){
+        return ();
+    }
+    
     # Pre-Cache Results
     $self->{rs}->records($offset, $hitrange, 0);
     
@@ -141,7 +145,7 @@ sub get_singletitle {
     
     my $rrec = $rec->raw();
 
-    return $self->mab2openbib_full($rrec)
+    return $self->mab2openbib_full($rrec);
 }
 
 sub mab2openbib_list {
@@ -164,9 +168,13 @@ sub mab2openbib_list {
     # id des Satzes bestimmen. Die id ist die letzte Zahl im
     # Header des MAB-Satzes
     ($listitem_ref->{id}) = $record[0] =~m/\s+(\d+)$/;
+
+    $logger->debug("Header-Line: $record[0]");
     
+    # Bei der Auswertung der einzelnen Kategorien wird die
+    # Header-Zeile uebersprungen
   CATLINE:
-    for (my $i=0;$i<$#record;$i++){
+    for (my $i=1;$i<$#record;$i++){
         my $line = $record[$i];
 
         $logger->debug("Line: $line");
@@ -234,6 +242,11 @@ sub mab2openbib_list {
                     };
                     push @autkor, $content;
                 }
+                elsif ($category=~m/^0544/){
+                    push @{$listitem_ref->{X0014}}, {
+                        content    => $content,
+                    };
+                }
             }
         }
     }
@@ -256,10 +269,13 @@ sub mab2openbib_full {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $listitem_ref = {};
-    
     my $config = new OpenBib::Config();
-
+    
+    my $listitem_ref    = {};
+    my $mexlistitem_ref = [];
+    
+    my $targetdbinfo_ref =  $config->get_targetdbinfo();
+    
     my $convtab_ref = (exists $config->{convtab}{singlepool})?
         $config->{convtab}{singlepool}:$config->{convtab}{default};
 
@@ -270,9 +286,12 @@ sub mab2openbib_full {
     # id des Satzes bestimmen. Die id ist die letzte Zahl im
     # Header des MAB-Satzes
     ($listitem_ref->{id}) = $record[0] =~m/\s+(\d+)$/;
-    
+
+    $logger->debug("Header-Line: $record[0]");
+    # Bei der Auswertung der einzelnen Kategorien wird die
+    # Header-Zeile uebersprungen
   CATLINE:
-    for (my $i=0;$i<$#record;$i++){
+    for (my $i=1;$i<$#record;$i++){
         my $line = $record[$i];
 
         $logger->debug("Line: $line");
@@ -338,6 +357,37 @@ sub mab2openbib_full {
                     };
                     push @autkor, $content;
                 }
+                elsif ($category=~m/^0544/){
+                    my $thismexlistitem_ref = {};
+
+                    # Defaultwerte setzen
+                    $thismexlistitem_ref->{X0005}{content}="-";
+                    $thismexlistitem_ref->{X0014}{content}="-";
+                    $thismexlistitem_ref->{X0016}{content}="-";
+                    $thismexlistitem_ref->{X1204}{content}="-";
+                    $thismexlistitem_ref->{X4000}{content}="-";
+                    $thismexlistitem_ref->{X4001}{content}="";
+
+                    # Katalogname ist USBK (hardcoded)
+                    $thismexlistitem_ref->{X0014} = {
+                        content => $content
+                    }; 
+
+                    # Es wird der Datenbankname zur Findung des Sigels herangezogen
+                    my $sigel=$targetdbinfo_ref->{dbases}{"USBK"};
+                    if (exists $targetdbinfo_ref->{sigel}{$sigel}) {
+                        $thismexlistitem_ref->{X4000}{content}=$targetdbinfo_ref->{sigel}{$sigel};
+                    }
+                    
+                    my $bibinfourl="";
+                    
+                    # Bestimmung der Bibinfo-Url
+                    if (exists $targetdbinfo_ref->{bibinfo}{$sigel}) {
+                        $thismexlistitem_ref->{X4001}{content}=$targetdbinfo_ref->{bibinfo}{$sigel};
+                    }
+
+                    push @{$mexlistitem_ref}, $thismexlistitem_ref;
+                }
             }
         }
     }
@@ -351,7 +401,7 @@ sub mab2openbib_full {
     }
     
     $logger->debug("Item ".YAML::Dump($listitem_ref));
-    return $listitem_ref;
+    return ($listitem_ref,$mexlistitem_ref);
 }
 
 sub DESTROY {

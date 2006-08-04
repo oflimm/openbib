@@ -37,6 +37,7 @@ use Apache::Request ();
 use DBI;
 use Encode; # 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
+use Encode::MAB2;
 use ZOOM;
 use SOAP::Lite;
 use Storable;
@@ -111,7 +112,7 @@ sub get_resultlist {
     foreach my $i ($start..$end) {
         my $rec  = $self->{rs}->record($i-1);
 
-        my $rrec = $rec->get("raw;charset=latin1,utf8");
+        my $rrec = $rec->raw();
 
         $logger->debug("Raw Record: ".$rrec);
 
@@ -138,7 +139,7 @@ sub get_singletitle {
 
     my $rec  = $self->{rs}->record(0);
     
-    my $rrec = $rec->get("raw;charset=latin1,utf8");
+    my $rrec = $rec->raw();
 
     return $self->mab2openbib_full($rrec)
 }
@@ -174,8 +175,12 @@ sub mab2openbib_list {
             next CATLINE unless ($line=~/^\d\d\d/);
             my $category  = sprintf "%04d", substr($line,0,3);
             my $indicator = substr($line,3,1);
-            my $content   = decode_utf8(substr($line,4,length($line)-4));
-#            my $content   = substr($line,4,length($line)-4);
+            my $content   = Encode::decode('MAB2',substr($line,4,length($line)-4));
+
+            # Content filtern
+            $content=~s/^\s*\|//;
+            $content=~s/>/&gt;/g;
+            $content=~s/</&lt;/g;
 
             $logger->debug("Category: $category\nContent: $content\n\n");
             if ($category && $content){
@@ -276,11 +281,12 @@ sub mab2openbib_full {
             next CATLINE unless ($line=~/^\d\d\d/);
             my $category  = sprintf "%04d", substr($line,0,3);
             my $indicator = substr($line,3,1);
-            my $content   = decode("latin1",substr($line,4,length($line)-4));
-#            my $content   = substr($line,4,length($line)-4);
+            my $content   = Encode::decode('MAB2',substr($line,4,length($line)-4));
 
             # Content filtern
             $content=~s/^\s*\|//;
+            $content=~s/>/&gt;/g;
+            $content=~s/</&lt;/g;
             
             $logger->debug("Category: $category\nContent: $content\n\n");
             if ($category && $content){

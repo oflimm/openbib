@@ -131,8 +131,49 @@ sub handler {
         my @resultlists  = ();
 
         my $searchquery_ref = $session->get_searchquery($queryid);
-        
-        if ($queryoptions_ref->{sb} eq 'xapian'){
+
+        if ($config->get_system_of_db($database) eq "Z39.50"){
+            my $atime=new Benchmark;
+            
+            # Beschraenkung der Treffer pro Datenbank auf 10, da Z39.50-Abragen
+            # sehr langsam sind
+            #            $maxhits = 10;
+            
+            my $z3950dbh = new OpenBib::Search::Z3950($database);
+
+            $z3950dbh->search($searchquery_ref);
+            $z3950dbh->{rs}->option(elementSetName => "B");
+            
+            my $fullresultcount = $z3950dbh->{rs}->size();
+
+            # Wenn mindestens ein Treffer gefunden wurde
+            if ($fullresultcount >= 0) {
+                
+                my $a2time;
+                
+                if ($config->{benchmark}) {
+                    $a2time=new Benchmark;
+                }
+                
+                @outputbuffer = $z3950dbh->get_resultlist($offset,$hitrange);
+                
+                my $btime      = new Benchmark;
+                my $timeall    = timediff($btime,$atime);
+                my $resulttime = timestr($timeall,"nop");
+                $resulttime    =~s/(\d+\.\d+) .*/$1/;
+                
+                if ($config->{benchmark}) {
+                    my $b2time     = new Benchmark;
+                    my $timeall2   = timediff($b2time,$a2time);
+                    
+                    $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel (holen)       : ist ".timestr($timeall2));
+                    $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel (suchen+holen): ist ".timestr($timeall));
+                }
+                
+                
+            }
+        }
+        elsif ($queryoptions_ref->{sb} eq 'xapian'){
             # Xapian
             
             my $atime=new Benchmark;

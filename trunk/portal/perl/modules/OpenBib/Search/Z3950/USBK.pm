@@ -88,9 +88,41 @@ sub search {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $querystring = lc($searchquery_ref->{fs}{norm});
+    my $config =  new OpenBib::Config();
 
-    my $resultset = $self->{conn}->search_pqf('@attr 1=4 '.$querystring) or $logger->error_die("Search Error: ".$self->{conn}->errmsg());
+    my $pqfpath = $config->{base_dir}."/conf/cql/USBK/pqf.properties";
+
+    $self->{conn}->option(cqlfile => $pqfpath);
+
+    $logger->debug("blabla");
+    my @querystrings=();
+    
+    if ($searchquery_ref->{fs}{val}){
+        push @querystrings, "free all \"".$searchquery_ref->{fs}{val}."\"";
+    }
+    if ($searchquery_ref->{verf}{val}){
+        push @querystrings, $searchquery_ref->{verf}{bool}." author all \"".$searchquery_ref->{verf}{val}."\"";
+    }
+    if ($searchquery_ref->{hst}{val}){
+        push @querystrings, $searchquery_ref->{hst}{bool}." title all \"".$searchquery_ref->{hst}{val}."\"";
+    }
+    if ($searchquery_ref->{swt}{val}){
+        push @querystrings, $searchquery_ref->{verf}{bool}." subject all \"".$searchquery_ref->{swt}{val}."\"";
+    }
+    if ($searchquery_ref->{kor}{val}){
+        push @querystrings, $searchquery_ref->{kor}{bool}." corp all \"".$searchquery_ref->{kor}{val}."\"";
+    }
+
+    my $querystring  = join(" ",@querystrings);
+    $querystring     =~s/^(?:AND|OR|NOT) //;
+
+    $logger->debug("Z39.50 CQL-Query: ".$querystring);
+    my $query = new ZOOM::Query::CQL2RPN($querystring, $self->{conn});
+
+    #    my $query = new ZOOM::Query::CQL($querystring);
+#    my $querystring = new ZOOM::Query::CQL(lc($searchquery_ref->{fs}{norm}));
+
+    my $resultset = $self->{conn}->search($query) or $logger->error_die("Search Error: ".$self->{conn}->errmsg());
 
     $self->{rs} = $resultset;
 

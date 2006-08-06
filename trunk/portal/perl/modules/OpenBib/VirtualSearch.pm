@@ -674,7 +674,7 @@ sub handler {
                                    };
                 }
                 
-                my $treffer=$#resultlist+1;
+                my $treffer=$#outputbuffer+1;
                 
                 my $itemtemplatename=$config->{tt_virtualsearch_result_item_tname};
                 if ($view && -e "$config->{tt_include_path}/views/$view/$itemtemplatename") {
@@ -699,7 +699,7 @@ sub handler {
                     
                     dbinfo          => $targetdbinfo_ref->{dbinfo}{$database},
                     
-                    treffer         => $fullresultcount,
+                    treffer         => $treffer,
                     
                     database        => $database,
                     queryid         => $queryid,

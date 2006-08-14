@@ -1,4 +1,5 @@
 %\documentclass[11pt]{scrartcl}
+%\documentclass[11pt, twoside, a4paper, BCOR8mm, DIV12, bibtotoc,idxtotoc]{scrbook}
 \documentclass[11pt, twoside, a4paper, BCOR8mm, DIV12, bibtotoc,idxtotoc]{scrbook}
 \usepackage{german}
 \usepackage{typearea}
@@ -20,13 +21,15 @@
 \fancyhead[LE]{\nouppercase{\leftmark}}
 \fancyfoot[RO, LE]{\thepage}
 
-%\addtolength{\headwidth}{\marginparsep}
-%\addtolength{\headwidth}{\marginparwidth}
-\addtolength{\headwidth}{1cm}
-
 \parindent0.0mm
 \parskip0.3cm    
 \typearea{13}
+
+\addtolength{\headheight}{7mm}
+\addtolength{\headwidth}{1cm}
+
+\addtolength{\oddsidemargin}{11mm}
+\addtolength{\evensidemargin}{-11mm}
 
 \begin{document}
 
@@ -1361,17 +1364,17 @@ unterschiedliche Einzel-Portale erstellt und betreut werden müssen.
 Einige Systeme bieten traditionell für ihr \emph{Standard-Portal} ein
 abgeschlossenes Set an Templates, Stylesheets, Bilder oder JSP's an.
 Beim Aufbau eines neuen \emph{Portals} muß dann selbst bei kleinsten
-Unterschiedieden zum Standard-Set eben jenes vollständig geklont
-werden. müssen, um dann für das neue Portal davon ausgehend
-vereinzelte Änderungen vorzunehmen. Da nun pro Portal unterschiedlich
-geänderte Klones des Standard-Sets existieren ist das Resultat davon,
-dass pro Portal nicht mehr sofort ersichtlich ist, wo genau Änderungen
-und wo der Standard verwendet wurde.
+Unterschieden zum Standard-Set eben jenes vollständig geklont werden,
+um dann für das neue Portal davon ausgehend vereinzelte Änderungen
+vorzunehmen. Da damit dann aber pro Portal unterschiedlich geänderte
+Klones des Standard-Sets existieren, resultiert daraus, dass pro
+Portal nicht mehr sofort ersichtlich ist, wo genau Änderungen
+vorgenommen und wo der Standard verwendet wurde.
 
 Aus diversen Erfahrungen mit dieser Art an Systemen kann ich
 konstatieren, daß der Aufbau, Betrieb und insbesondere die Updates bei
 einem Versionswechsel in solchen Systemen ein Adminis\-tra\-tions-Albtraum
-sind.
+ist.
 
 Aus diesen Erfahrungen ist ein alternatives Konzept entstanden, bei
 dem ebenfalls ein Standard-Set definiert wird, dann jedoch durch Klonen
@@ -1875,6 +1878,163 @@ Fall eine etwaige Unübersichtlichkeit gegeben ist und Drill-Downs
 überhaupt Sinn machen.
 
 
+\section{Konfiguration, Sessions und Benutzer}
+
+Für die Konfiguration des Portals, seiner Datenbanken und Views, für
+das Session-Management sowie für authentifizierte Portal-Nutzer werden
+drei entsprechende Objekte \texttt{OpenBib::Config},
+\texttt{OpenBib::Session} und \texttt{OpenBib::User} verwendet.
+
+\subsection{Konfiguration}
+
+Über das Objekt \texttt{OpenBib::Config} kann überall im Portal auf
+die Konfiguration des Portals als solches sowie der im Portal über die
+Administration eingerichteten Datenbank- View-Informationen
+zugegriffen werden.
+
+Dazu wird üblicherweise in einem \texttt{mod\_perl}-Handler das
+entsprechende Objekt instanziiert:
+
+\begin{verbatim}
+my $config = new OpenBib::Config();
+\end{verbatim}
+
+Danach kann auf die Variablen  
+
+\begin{verbatim}
+my $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;
+                        host=$config->{dbhost};port=$config->{dbport}",
+                        $config->{dbuser}, $config->{dbpasswd});
+\end{verbatim}
+
+oder Methoden
+
+\begin{verbatim}
+my @view_databases   = $config->get_dbs_of_view($view);
+my @active_databases = $config->get_active_databases();
+\end{verbatim}
+
+des Objektes zugegriffen werden.
+
+Intern werden die Informationen für die Variablen der
+Portalkonfiguration in einem Hash abgelegt, auf den das Objekt direkt
+zugreifen kann. Demgegenueber werden die Informationen über die
+Kataloge und Sichten in einer eigenständigen
+Konfigurations-Datenbank\footnote{Die Definition befindet sich in
+  \texttt{\dots/db/mysql/config.mysql}.} abgelegt, auf die über
+entsprechende Methoden des Objektes zugegriffen werden kann.
+
+Ein instanziiertes Objekt besitzt immer einen Datenbank-Handle, über
+den die Kommunikation mit der Datenbank abläuft.
+
+\subsection{Session-Management}
+
+Beim Aufruf des Portals wird eine eindeutige Session-ID generiert,
+mit deren die verbindungslose (stateless) Natur des http-Protokoll
+umgangen wird. Mit dieser ID sind alle Anfragen einer Session einander
+zugeordnet.
+
+Alle Session-Informationen werden mit der Session-ID als zentralem
+Zugriffsschlüssel in der Session-Datenbank gespeichert.
+
+Über die Verwendung der Methoden des Objektes
+\texttt{OpenBib::Session} kann strukturiert auf alle relevanten
+Informationen einer spezifischen Session zugegriffen werden.
+
+Ein Session-Objekt läßt sich auf zwei verschiedene Arten
+instanziieren:
+
+\begin{description}
+\item[Erzeugung einer neuen Session] Beim ersten Aufruf des Portals
+  über den \texttt{mod\_perl}-Handler \texttt{OpenBib::StartOpac} wird
+  zwingend eine neue Session mit zugehöriger ID erzeugt. Dazu wird der
+  Konstruktor \textbf{ohne} Argument aufgerufen:
+
+\begin{verbatim}
+my $session = new OpenBib::Session();
+\end{verbatim}
+
+\item[Zugriff auf eine existierende Session] Existiert bereits eine
+  Session,das ist der Fall bei dem Aufruf aller anderen Handler, so
+  kann über die dann schon vorhandene Session-ID auf die Daten der
+  Session zugegriffen werden. Dazu wird der Konstruktor \textbf{mit}
+  der jeweiligen Session-ID als Argument aufgerufen:
+
+\begin{verbatim}
+my $query  = Apache::Request->new($r);
+
+my $status = $query->parse;
+
+if ($status) {
+    $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
+}
+
+my $session   = new OpenBib::Session({
+    sessionID => $query->param('sessionID'),
+});
+\end{verbatim}
+
+Danach kann über verschiedene Methoden auf die entsprechenden
+Session-Daten abrufend und setzend zugegriffen werden.
+
+\begin{verbatim}
+my $view        = $session->get_viewname();
+my $prevprofile = $session->get_profile();
+$session->set_mask($setmask);
+$session->updatelastresultset(\@resultset);
+\end{verbatim}
+\end{description}
+
+Auf die sehr wichtige Session-ID kann über die Variable \texttt{ID}
+zugegriffen werden:
+
+\begin{verbatim}
+...
+$idnresult->execute($session->{ID}) or $logger->error($DBI::errstr);
+...
+\end{verbatim}
+
+
+\subsection{Benutzer}
+
+Wenn sich ein Benutzer am Portal authentifiziert, dann werden ihm
+weitere Funktionen angeboten:
+
+\begin{itemize}
+\item Seine Merkliste wird dauerhaft gespeichert.
+\item Er kann sich verschiedene Suchprofile anlegen, verwalten und
+  dauerhaft speichern.
+\item Er kann für sich dauerhaft einstellen, welche
+  Recherchekategorien ihm in der Recherchemaske angezeigt werden.
+\item Bei der Authentifizierung an einem Sisis-System werden ihm seine
+  Stammdaten angezeigt -- ebenso eine mögliche Sperre samt Begründung.
+\end{itemize}
+
+Für die Authentifizierung und diese personalisierten Funktionen wird
+intern das Objekt \texttt{OpenBib::User} verwendet.
+
+Dieses Objekt wird ohne Argumente im Konstruktor instanziiert:
+
+\begin{verbatim}
+my $user = new OpenBib::User();
+\end{verbatim}
+
+Danach können über dieses Objekt mit seinen Methoden verschiedene
+Informationen abgerufen werden:
+
+\begin{verbatim}
+# Authorisierte Session?
+my $userid = $user->get_userid_of_session($session->{ID});
+
+foreach my $profile_ref ($user->get_all_profiles()){
+    ...
+}
+
+my $result = $user->authenticate_self_user({
+    username  => $loginname,
+    pin       => $password,
+});
+\end{verbatim}
 
 \appendix
 
@@ -2258,17 +2418,60 @@ Datenbank gesetzt werden, um \emph{sprechendere} Begriffsketten, wie
 z.B. einen vollständigen Verfasser zu erhalten. Dies wird von Xapian
 jedoch nicht abgedeckt und muß selbst realisiert werden.
 
+\chapter{Tabellen in \texttt{config.mysql}}
+
+In diesem Anhang werden die einzelnen Tabellen in der
+Konfigurations-Datenbank beschrieben.
+
+\begin{description}
+\item[dbinfo] In dieser Tabelle werden Informationen zu den einzelnen
+  Katalogdatenbanken ab\-ge\-spei\-chert. Dazu gehört die Fakultät
+  (\texttt{faculty}, derzeit fest in den Modulen einprogrammiert),
+  eine Beschreibung (\texttt{description}), das Katalogisierungssystem
+  (\texttt{system} anhand Kürzel), der Datenbankname
+  (\texttt{dbname}), das Bibliothekssigel (\texttt{sigel}) und
+  schließlich die wesentliche Information, ob die Daten\-bank im Portal
+  aktiv ist oder nicht (\texttt{active}). Über die letzte Einstellung
+  lassen sich im laufenden Betrieb Daten\-banken ein- und ausblenden.
+\item[dboptions] Zu jeder Daten\-bank werden hier Informationen
+  abgelegt, wo die zum Aufbau der Daten\-bank notwendigen Daten liegen
+  und alle zum Heranschaffen der Daten benötigten Informationen wie
+  Rechnername (\texttt{host}), Pfade, Dateinamen, Zugriffsprotokoll
+  (\texttt{lokal}, \texttt{http}, \texttt{ftp}) und
+  Authentifizierungsinformationen wie Benutzernamen oder Passworte.
+  Derzeit sind diese Informationen schon im Wesentlichen vorhanden,
+  sie werden durch die automatischen Konvertierungsskripte jedoch noch
+  nicht verwendet.
+\item[titcount] In dieser Tabelle wird die Anzahl der Titel pro
+  Daten\-bank festgehalten. Diese Information wird über das Modul
+  \texttt{OpenBib::SearchFrame} für den Benutzer ausgegeben. Das Setzen
+  dieser Werte geschieht über die automatischen
+  Konvertierungsskripte.
+\item[rssfeeds] In dieser Tabelle werden alle verfügbaren Typen an RSS-Feeds
+  zu den einzelnen Daten\-bank aus \texttt{dbinfo} definiert. Die
+  RSS-Feeds lassen sich hier nach deren Konfiguration generell
+  aktivieren sowie deaktivieren.
+\item[rsscache] Um die Antwortzeiten bei der Generierung eines
+  RSS-Feeds zu minimieren, wird ein RSS-Cache mit einer
+  Aktivitätsdauer von 12 Stunden verwendet.
+\item[viewinfo] In dieser Tabelle werden zu einer Recherche-Sicht
+  (view) neben dem den View de\-fi\-nier\-enden Viewnamen
+  (\texttt{viewname}) auch eine Beschreibung \texttt{description}
+  abgelegt. Die Informatione, ob der View aktiv ist oder nicht
+  (\texttt{active}) wird derzeit nicht genutzt.
+\item[viewdbs] In dieser Tabelle werden zu dem Viewnamen die Daten\-banken
+  festgelegt, die mit der konkreten Recherche-Sicht assoziiert
+  sind. Hier können auch mehrere Daten\-banken ein\-ge\-tra\-gen werden.
+\item[viewrssfeeds] In dieser Tabellen werden zu einem View die
+  RSS-Feeds konfiguriert, die in diesem View über den Menu-Punkt
+  \texttt{RSS} angezeigt werden sollen
+
+\end{description}
+
 \chapter{Tabellen in \texttt{session.mysql}}
 
 In diesem Anhang werden die einzelnen Tabellen in der
 Session-Datenbank beschrieben.
-
-
-Diese Tabellen verteilen sich auf rein session-basierte Aufgaben sowie
-allgemeine Konfigurations\-ein\-stellungen des Portals.
-
-
-\section{Tabellen zu session-basierten Aufgaben}
 
 \begin{description}
 \item[session] Dies ist die primäre Tabelle in der die
@@ -2324,55 +2527,6 @@ HTDOCS/images/openbib/views/<viewname>.png
   Recherchemaske aus\-ge\-ge\-ben.
 \item[sessionprofile] \dots
 \end{description}
-
-\section{Tabellen zu allgemeinen Konfigurationseinstellungen des Portals}
-
-\begin{description}
-\item[dbinfo] In dieser Tabelle werden Informationen zu den einzelnen
-  Katalogdatenbanken ab\-ge\-spei\-chert. Dazu gehört die Fakultät
-  (\texttt{faculty}, derzeit fest in den Modulen einprogrammiert),
-  eine Beschreibung (\texttt{description}), das Katalogisierungssystem
-  (\texttt{system} anhand Kürzel), der Datenbankname
-  (\texttt{dbname}), das Bibliothekssigel (\texttt{sigel}) und
-  schließlich die wesentliche Information, ob die Daten\-bank im Portal
-  aktiv ist oder nicht (\texttt{active}). Über die letzte Einstellung
-  lassen sich im laufenden Betrieb Daten\-banken ein- und ausblenden.
-\item[dboptions] Zu jeder Daten\-bank werden hier Informationen
-  abgelegt, wo die zum Aufbau der Daten\-bank notwendigen Daten liegen
-  und alle zum Heranschaffen der Daten benötigten Informationen wie
-  Rechnername (\texttt{host}), Pfade, Dateinamen, Zugriffsprotokoll
-  (\texttt{lokal}, \texttt{http}, \texttt{ftp}) und
-  Authentifizierungsinformationen wie Benutzernamen oder Passworte.
-  Derzeit sind diese Informationen schon im Wesentlichen vorhanden,
-  sie werden durch die automatischen Konvertierungsskripte jedoch noch
-  nicht verwendet.
-\item[titcount] In dieser Tabelle wird die Anzahl der Titel pro
-  Daten\-bank festgehalten. Diese Information wird über das Modul
-  \texttt{OpenBib::SearchFrame} für den Benutzer ausgegeben. Das Setzen
-  dieser Werte geschieht über die automatischen
-  Konvertierungsskripte.
-\item[rssfeeds] In dieser Tabelle werden alle verfügbaren Typen an RSS-Feeds
-  zu den einzelnen Daten\-bank aus \texttt{dbinfo} definiert. Die
-  RSS-Feeds lassen sich hier nach deren Konfiguration generell
-  aktivieren sowie deaktivieren.
-\item[rsscache] Um die Antwortzeiten bei der Generierung eines
-  RSS-Feeds zu minimieren, wird ein RSS-Cache mit einer
-  Aktivitätsdauer von 12 Stunden verwendet.
-\item[viewinfo] In dieser Tabelle werden zu einer Recherche-Sicht
-  (view) neben dem den View de\-fi\-nier\-enden Viewnamen
-  (\texttt{viewname}) auch eine Beschreibung \texttt{description}
-  abgelegt. Die Informatione, ob der View aktiv ist oder nicht
-  (\texttt{active}) wird derzeit nicht genutzt.
-\item[viewdbs] In dieser Tabelle werden zu dem Viewnamen die Daten\-banken
-  festgelegt, die mit der konkreten Recherche-Sicht assoziiert
-  sind. Hier können auch mehrere Daten\-banken ein\-ge\-tra\-gen werden.
-\item[viewrssfeeds] In dieser Tabellen werden zu einem View die
-  RSS-Feeds konfiguriert, die in diesem View über den Menu-Punkt
-  \texttt{RSS} angezeigt werden sollen
-
-\end{description}
-
-
 
 \chapter{Tabellen in \texttt{pool.mysql}}
 
@@ -2592,32 +2746,650 @@ Stammdateien gesprungen, um alle Informationen zu diesen Titel-Sätzen
 zu gewinnen. Diese Funktionalität wird allein von dem Modul
 \texttt{OpenBib::Search} geleistet.
 
-\chapter{Module geordnet nach Funktion bzw. Schicht}
 
+\chapter{Objekt-Referenz}
+
+
+\section{OpenBib::Config}
+
+
+\subsection{Methoden}
+
+\subsubsection{new}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{new}\\
+  \hline
+  Argumente     & keine\\
+  R"uckgabe bei Erfolg & Objekt mit Instanzvariablen und
+  Handle zur Config-Datenbank\\
+\end{tabular}
+\end{shadowenv}
+
+\subsubsection{get\_number\_of\_dbs}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_number\_of\_dbs}\\
+  \hline
+  Argumente     & keine\\
+  R"uckgabe bei Erfolg & Gesamtzahl aller aktiven Datenbanken\\
+\end{tabular}
+\end{shadowenv}
+
+\subsubsection{get\_number\_of\_titles}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_number\_of\_titles}\\
+  \hline
+  Argumente     & keine\\
+  R"uckgabe bei Erfolg & Gesamtzahl der Titel aller aktiven Datenbanken\\
+\end{tabular}
+\end{shadowenv}
+
+\subsubsection{get\_viewdesc\_from\_viewname}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_viewdesc\_from\_viewname}\\
+  \hline
+  Argumente     & Name des Views\\
+  R"uckgabe bei Erfolg & Beschreibungstext des Views\\
+\end{tabular}
+\end{shadowenv}
+
+\subsubsection{view\_exists}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{view\_exists}\\
+  \hline
+  Argumente     & Name des Views\\
+  R"uckgabe bei Erfolg & Zahl größer Null, wenn der View existiert\\
+\end{tabular}
+\end{shadowenv}
+
+\subsubsection{get\_valid\_rsscache\_entry}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_valid\_rsscache\_entry}\\
+  \hline
+  Argumente     & Datenbankname, RSS-Typ, RSS-Untertyp, Verfallsdatum\\
+  R"uckgabe bei Erfolg & Gecacheter RSS-Feed-Inhalt, sonst undef\\
+\end{tabular}
+\end{shadowenv}
+
+\subsubsection{get\_dbs\_of\_view}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_dbs\_of\_view}\\
+  \hline
+  Argumente     & Name des Views\\
+  R"uckgabe bei Erfolg & Array aller aktiver Datenbanken, die einem
+  View zugeordnet sind\\
+\end{tabular}
+\end{shadowenv}
+
+\subsubsection{get\_primary\_rssfeed\_of\_view}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_primary\_rssfeed\_of\_view}\\
+  \hline
+  Argumente     & Name des Views\\
+  R"uckgabe bei Erfolg & URL des als primär definierten RSS-Feed zu
+  diesem View\\
+\end{tabular}
+\end{shadowenv}
+
+\subsubsection{get\_targetdbinfo}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_targetdbinfo}\\
+  \hline
+  Argumente     & keine\\
+  R"uckgabe bei Erfolg & HoH verschiedener Datenbankinformationen\\
+\end{tabular}
+\end{shadowenv}
+
+\subsubsection{get\_targetcircinfo}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_targetcircinfo}\\
+  \hline
+  Argumente     & keine\\
+  R"uckgabe bei Erfolg & HoH aller OLWS-Zugriffsinformationen\\
+\end{tabular}
+\end{shadowenv}
+
+\subsubsection{get\_active\_databases}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_active\_databases}\\
+  \hline
+  Argumente     & keine\\
+  R"uckgabe bei Erfolg & Array aller aktiven Datenbanknamen (sortiert
+  nach OrgUnit und Namen)\\
+\end{tabular}
+\end{shadowenv}
+
+\subsubsection{get\_active\_databases\_of\_orgunit}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_active\_databases\_of\_orgunit}\\
+  \hline
+  Argumente     & Name der Organisationseinheit\\
+  R"uckgabe bei Erfolg & Sortiertes Array aller der Organisationseinheit
+  zugeordneten aktiven Datenbanknamen\\
+\end{tabular}
+\end{shadowenv}
+
+\subsubsection{get\_system\_of\_db}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_system\_of\_db}\\
+  \hline
+  Argumente     & Datenbankname\\
+  R"uckgabe bei Erfolg & Der Datenbank zugeordneter Systemtyp\\
+\end{tabular}
+\end{shadowenv}
+
+\subsubsection{get\_infomatrix\_of\_active\_databases}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_infomatrix\_of\_active\_databases}\\
+  \hline
+  Argumente     & keine\\
+  R"uckgabe bei Erfolg & Gefüllte Matrix von Informationen, die ideal
+  formattiert als Datenbankauswahl genutzt werden kann\\
+\end{tabular}
+\end{shadowenv}
+
+\subsubsection{DESTROY}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{DESTROY}\\
+  \hline
+  Argumente     & keine\\
+  R"uckgabe bei Erfolg & Disconnect von der Config-Datenbank\\
+\end{tabular}
+\end{shadowenv}
+
+\section{OpenBib::Session}
+
+\subsection{new}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{new}\\
+  \hline
+  Argumente     & keines oder Session-ID\\
+  R"uckgabe bei Erfolg & Bei Übergabe der Session-ID: Handle auf die
+  Session-Datenbank, Session-ID als Instanz-Variable.\\
+  & Bei Übergabe keiner Session-ID: Initialisierung einer neuen
+  Session-ID in der Session-Datenbank. Dann Rückgabe des Handles auf
+  die Session-Datanbank und der neuen Session-ID als Instanz-Variablen\\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{\_init\_new\_session}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{\_init\_new\_session}\\
+  \hline
+  Argumente     & keine\\
+  R"uckgabe bei Erfolg & Initialisierung einer neuen Session-ID in der
+  Session-Datenbank\\
+  \hline
+  Hinweis  & Dies ist eine private Methode, die \textbf{nur} innerhalb
+  der Klasse verwendet werden darf!\\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{is\_valid}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{is\_valid}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{load\_queryoptions}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{load\_queryoptions}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{dump\_queryoptions}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{dump\_queryoptions}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{merge\_queryoptions}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{merge\_queryoptions}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{get\_queryoptions}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_queryoptions}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{get\_viewname}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_viewname}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{get\_profile}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_profile}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{set\_profile}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{set\_profile}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{get\_resultlists\_offsets}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_resultlists\_offsets}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{get\_mask}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_mask}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{set\_mask}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{set\_mask}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{set\_view}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{set\_view}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{set\_dbchoice}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{set\_dbchoice}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{get\_dbchoice}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_dbchoice}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{clear\_dbchoice}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{clear\_dbchoice}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{get\_number\_of\_dbchoice}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_number\_of\_dbchoice}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{get\_number\_of\_items\_in\_resultlist}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_number\_of\_items\_in\_resultlist}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{get\_items\_in\_resultlist\_per\_db}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_items\_in\_resultlist\_per\_db}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{get\_all\_items\_in\_resultlist}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_all\_items\_in\_resultlist}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{get\_max\_queryid}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_max\_queryid}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{get\_searchquery}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_searchquery}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{get\_number\_of\_items\_in\_collection}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_number\_of\_items\_in\_collection}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{get\_items\_in\_collection}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_items\_in\_collection}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{set\_item\_in\_collection}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{set\_item\_in\_collection}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{clear\_item\_in\_collection}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{clear\_item\_in\_collection}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{updatelastresultset}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{updatelastresultset}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{clear\_data}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{clear\_data}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{DESTROY}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{DESTROY}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\section{OpenBib::User}
+
+
+\subsection{new}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{new}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{get\_cred\_for\_userid}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_cred\_for\_userid}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{get\_username\_for\_userid}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_username\_for\_userid}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{get\_userid\_for\_username}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_userid\_for\_username}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{get\_userid\_of\_session}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_userid\_of\_session}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{get\_targetdb\_of\_session}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_targetdb\_of\_session}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{get\_targettype\_of\_session}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_targettype\_of\_session}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{get\_profilename\_of\_profileid}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_profilename\_of\_profileid}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{get\_profiledbs\_of\_profileid}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_profiledbs\_of\_profileid}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{get\_number\_of\_items\_in\_collection}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_number\_of\_items\_in\_collection}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{get\_all\_profiles}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{get\_all\_profiles}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{authenticate\_self\_user}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{authenticate\_self\_user}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\subsection{DESTROY}
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+  Konstruktor & \texttt{DESTROY}\\
+  \hline
+  Argumente     & \\
+  R"uckgabe bei Erfolg & \\
+\end{tabular}
+\end{shadowenv}
+
+\chapter{Module und Objekte geordnet nach Funktion bzw. Schicht}
 
 \section{Schichtübergreifend}
 
 
+\subsection{Handler}
 \begin{itemize}
 \item \texttt{OpenBib::Admin}
+\end{itemize}
+
+\subsection{Objekte}
+\begin{itemize}
 \item \texttt{OpenBib::Config}
 \item \texttt{OpenBib::L10N}
+\item \texttt{OpenBib::Session}
+\item \texttt{OpenBib::User}
 \end{itemize}
+
 
 \section{Schicht 1 - Zugriff auf Katalogdatenbank}
 
+\subsection{Handler}
 \begin{itemize}
 \item \texttt{OpenBib::Search}
 \end{itemize}
 
 \section{Schicht 2 - Zugriff auf versch. Datenbanken der Schicht 1}
 
+\subsection{Handler}
 \begin{itemize}
 \item \texttt{OpenBib::VirtualSearch}
 \end{itemize}
 
 \section{Schicht 3 - Rechercheportal}
 
+\subsection{Handler}
 \begin{itemize}
 \item \texttt{OpenBib::Circulation}
 \item \texttt{OpenBib::Connector::DigiBib}
@@ -2644,6 +3416,7 @@ zu gewinnen. Diese Funktionalität wird allein von dem Modul
 
 \section{Schicht 4 - Lastverteilung}
 
+\subsection{Handler}
 \begin{itemize}
 \item \texttt{OpenBib::LoadBalancer}
 \item \texttt{OpenBib::ServerLoad}
@@ -2653,6 +3426,11 @@ zu gewinnen. Diese Funktionalität wird allein von dem Modul
 \begin{thebibliography}{ChBr82}
 \originalTeX
 
+\bibitem[FliHof05]{FlimmJB:05} O.~Flimm: \emph{Veränderungen und
+    Erweiterungen im KUG-Projekt}. -- in: Kooperative
+  Informationsverarbeitung an der Universität zu Köln - Bericht für
+  das Jahr 2004: Kölner UniversitätsGesamtkatalog (KUG-Projekt), S.
+  111-115 (2005)
 \bibitem[FliHof06]{FlimmHoffJB:06} O.~Flimm, Chr. Hoffrath: \emph{Der
     Weg des KUG zum umfassenden Recherche-Portal}; erscheint in:
   Kooperative Informationsverarbeitung an der Universität zu Köln -

@@ -1149,6 +1149,12 @@ sub handler {
 
         gesamttreffer => $gesamttreffer,
 
+        loginname     => $loginname,
+        password      => $password,
+        
+        searchquery   => $searchquery_ref,
+        queryargs     => $queryargs,
+
         config        => $config,
         msg           => $msg,
     };

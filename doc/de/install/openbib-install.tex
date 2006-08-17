@@ -733,38 +733,50 @@ apt-get install libxml-dom-perl
 \begin{verbatim}
 apt-get install libxml-writer-perl
 \end{verbatim}
-\item oai-perl 2.15
+\item oai-perl 2.15 (für OAI-Harvester)
+
 Dieses Modul muss händisch von
-\texttt{http://oai-perl.sourceforge.net/} installiert werden.
+\begin{verbatim}
+http://oai-perl.sourceforge.net/
+\end{verbatim}
+installiert werden.
+\item Net-Z3950-ZOOM (für Zugriff auf Z39.50 Datenbanken) 
+
+Zur Installation dieses Moduls muß zunächst die Datei
+  \texttt{sources.list} erweitert werden um den Eintrag
+\begin{verbatim}
+# zoom, libyaz
+deb http://ftp.indexdata.dk/debian indexdata/sarge released
+deb-src http://ftp.indexdata.dk/debian indexdata/sarge released
+\end{verbatim}
+
+Damit kann auf die Debian-Pakete von IndexData zugegriffen werden.
+
+Danach kann das Paket installiert werden:
+\begin{verbatim}
+apt-get update
+apt-get install libnet-z3950-zoom-perl
+\end{verbatim}
+
+Eine neuere benötigte Version der libyaz wird dabei automatisch
+installiert.
 \item XML::TWIG (für OAI)
 \begin{verbatim}
 apt-get install libxml-twig-perl
 \end{verbatim}
 \end{itemize}
 
-Darüberhinaus werden folgende CPAN-Module benötigt, die via
+Die CPAN-Module lassen sich im allgemeinen sehr einfach über die
+CPAN-Shell installieren:
 
 \begin{verbatim}
 perl -MCPAN -e shell
 \end{verbatim}
 
-samt ihrer Abhängigkeiten installiert werden müssen:
-
-\begin{itemize}
-\item Config::Std
-\begin{verbatim}
-cpan> install Config::Std
-\end{verbatim}
-Als Abhängigkeiten können die Module \texttt{version}, \texttt{Module::Build}
-\item Class::Std
-\begin{verbatim}
-cpan> install Class::Std
-\end{verbatim}
-\end{itemize}
 \section{Konfiguration des Web-Portals}
 \label{sec:confportal}
 
-Die zentrale Konfigurationsdatei in OpenBib ist das Modul
+Die zentrale Konfigurationsdatei in OpenBib ist das Objekt
 OpenBib::Config. Die zugehörige Datei befindet sich in Form einer
 anzupassenden Beispielkonfiguration unter 
 
@@ -862,7 +874,8 @@ dbpasswd  => 'TopSecret',
 \end{description}
 
 Entsprechend \texttt{dbuser} und \texttt{dbpasswd} werden nun die
-Parameter \texttt{sessiondbuser}, \texttt{sessiondbpasswd} sowie
+Parameter \texttt{sessiondbuser}, \texttt{sessiondbpasswd},
+\texttt{configdbuser}, \texttt{configdbpasswd} sowie
 \texttt{userdbuser} und \texttt{userdbpasswd} gesetzt. Bei den
 Parametern für \texttt{*host}, \texttt{*port} und \texttt{*name}
 können die Standardwerte übernommen werden.
@@ -890,47 +903,99 @@ adminpasswd   => 'NochGeheimer',
 \subsection{Organisationsstruktur der Kataloge}
 
 \begin{description}
-\item[units] Mit dem Parameter \texttt{units} legen Sie die
+\item[units] Mit dem Parameter \texttt{orgunits} legen Sie die
   Organisationsstruktur Ihrer Kataloge fest. Traditionell werden an
   einer Universität z.B. die Kataloge nach Fakultäten
   organisiert. Für jede Organisationseinheit definieren Sie hier
   einen Kurz-Eintrag \texttt{short}, in den z.B. durch vorgestellte
-  Zahlen eine Reihenfolge gebracht werden kann, und eine Beschreibung
-  \texttt{desc}. 
+  Zahlen eine Reihenfolge gebracht werden kann, eine Beschreibung
+  \texttt{desc}, sowie eine absolute Nummerierung \texttt{nr}.
 \begin{verbatim}
 orgunits => [
-          {
-           ßhort","0ungeb",
-           "desc","Fakult&auml;tsungebunden",
-          },
-          {
-           ßhort","1wiso",
-           "desc","Wirtschafts- u. Sozialwissenschaftliche Fakult&auml;t",
-          },
-          {
-           ßhort","2recht",
-           "desc","Rechtswissenschaftliche Fakult&auml;t",
-          },
-          {
-           ßhort","3ezwheil",
-           "desc","Erziehungswiss. u. Heilp&auml;d. Fakult&auml;t",
-          },
-          {
-           ßhort","4phil",
-           "desc","Philosophische Fakult&auml;t",
-          },
-          {
-           ßhort","5matnat",
-           "desc","Mathematisch-Naturwissenschaftliche Fakult&auml;t"
-,
-          },
-         ],
+     {
+        short => '0ungeb',
+        desc  => 'Fakultätsungebunden',
+        nr    => '0',
+     },
+     {
+        short => '1wiso',
+        desc  => 'Wirtschafts- u. Sozialwissenschaftliche Fakultät',
+        nr    => '1',
+     },
+     {
+        short => '2recht',
+        desc  => 'Rechtswissenschaftliche Fakultät',
+        nr    => '2',
+     },
+     {
+        short => '3ezwheil',
+        desc  => 'Erziehungswissenschaftliche u. Heilpädagogische Fakultät',
+        nr    => '3',
+     },
+     {
+        short => '4phil',
+        desc  => 'Philosophische Fakultät',
+        nr    => '4',
+     },
+     {
+        short => '5matnat',
+        desc  => 'Mathematisch-Naturwissenschaftliche Fakultät',
+        nr    => '5',
+     },
+     {
+        short => '6spezial',
+        desc  => 'Spezialkataloge',
+        nr    => '6',
+     },
+],
 \end{verbatim}
 \end{description}
 
-Dieser Parameter wird leider noch nicht in allen Modulen verwendet, so
-daß Sie diese händisch entsprechend ändern müssen.
- 
+
+\subsection{RSS-Konfiguration}
+
+Für den Zugriff auf Neuzugangslisten, die als RSS-Feed an
+verschiedenen Stellen des Portals verwendet werden sollen, muß eine
+Zuordnung zwischen einem textuellen RSS-Feed-URL-Bestandteil und einer
+numerischen internen Typnummer des Feeds vorgenommen werden.
+
+\begin{verbatim}
+rss_types => {
+               'neuzugang'             => 1,
+               'neuzugang_nach_aut'    => 2,
+               'neuzugang_nach_kor'    => 3,
+               'neuzugang_nach_swt'    => 4,
+               'neuzugang_nach_sys'    => 5,
+               'neuerwerbung'          => 99,
+             },
+\end{verbatim}
+
+Die Standardeinstellungen sollten nicht geändert werden.
+
+
+\subsection{Sprach-Einstellungen}
+
+Über den Konfigurationswert \texttt{lang} können die unterstützten
+Sprachen definiert werden, in denen Meldungstexte ausgegeben werden
+sollen.
+
+\begin{verbatim}
+lang => [
+         'de',
+        ],
+\end{verbatim}
+
+Standardmäßig wird Deutsch als Sprache unterstützt. Eine englische
+Übersetzung (\texttt{en}) ist jedoch in der Entwicklung.
+
+Der Ort der zugehörigen Message-Kataloge im Dateisystem wird über den
+(später aufgeführten) Parameter \texttt{locale\_base\_path} definiert:
+
+\begin{verbatim}
+# Pfad zu den lokalisierten Message-Dateien
+locale_base_path        => '/opt/openbib/locales',
+\end{verbatim}
+
 \subsection{URI-Konfiguration}
 
 In OpenBib können Sie für jede Web-Komponente festlegen, unter
@@ -939,11 +1004,11 @@ Verlinkung ist damit entsprechend konsistent. Alle zugehörigen
 Parameter enden auf \texttt{\_loc}. Im Normalfall brauchen Sie diese
 nicht zu ändern. Standardmäßig beginnen die URI's mit \texttt{/portal/}.
 
-
-
 \subsection{Verschiedene Konfigurationsparameter}
 
 \begin{description}
+\item[css\_loc] Hier geben Sie den absoluten Basis-URI-Pfad an, unter
+  dem vom Webserver Stylesheets ausgeliefert werden.
 \item[mail\_prog] Hier geben Sie den Pfad zu dem Program an, mit dem
   das System Mails verschickt.
 \item[admin\_email] Hier geben Sie die E-Mail-Adresse an, die bei Mails
@@ -965,12 +1030,8 @@ nicht zu ändern. Standardmäßig beginnen die URI's mit \texttt{/portal/}.
 \item[databasechoice\_maxcolumn] Hier legen Sie fest, auf wieviele
   Spalten die Kataloge in der Datenbankauswahlseite verteilt werden
   sollen. 
-\item[web\_seed] Hier legen sie ein 'geheimes' Wort fest, welches
-  zusammen mit dem Katalog-Datenbanknamen per MD5 ein
-  Web-Zugriffspasswort ergibt, mit dem automatisiert auf entfernt
-  exportierte Katalogdaten per HTTP zugegriffen werden kann. Dieser
-  Parameter wird bald obsolet, da die Zugriffsinformationen in naher
-  Zukunft direkt aus der session-Datenbank geholt werden.
+\item[login\_active] Soll der Menüpunkt 'Login' im Portal angezeigt
+  werden.
 \item[benchmark] Hier legen Sie fest, ob Benchmark-Informationen
   ausgegeben werden sollen. Derzeit führt dies zu Fehlern und sollte
   daher deaktiviert werden. Das ist auch die Standardeinstellung.
@@ -999,9 +1060,10 @@ enden auf \texttt{\_ttname}. Im Normalfall brauchen Sie diese nicht
 
 \subsection{Generelle Pfad-Konfiguration}
 
-Mit den auf \texttt{\_dir} endenden Parameter wird die generelle
-Pfad-Struktur definiert. Bei einer Installation unter
-\texttt{/opt/openbib} brauche Sie hier nichts ändern.
+Mit den auf \texttt{\_dir} bzw. \texttt{\_path} endenden Parameter
+wird die generelle Pfad-Struktur definiert. Bei einer Installation
+unter \texttt{/opt/openbib} brauche Sie bei den auf \texttt{\_dir}
+endenden Parametern nichts ändern.
 
 \begin{description}
 \item[base\_dir] Dies ist das Basis-Verzeichnis von OpenBib.
@@ -1019,8 +1081,65 @@ Pfad-Struktur definiert. Bei einer Installation unter
   existieren nur Definitionen für MySQL.
 \item[tool\_dir] In diesem Verzeichnis befinden sich Hilfs-Skripte,
   z.B. zum Anlegen einer Datenbank.
+\item[xapian\_index\_base\_path] In diesem Verzeichnis werden
+  katalogweise die Verzeichnisse der Such\-ma\-schinen-Indizes abgelegt.
+\item[document\_root\_path] Hier wird das Document-Root-Verzeichnis
+  des Web-Servers eingetragen. Zusammen mit \texttt{css\_loc} kann
+  damit z.B. überprüft werden, ob etwaige viewspezifische Stylesheets
+  existieren.
+\item[log4perl\_path] In diesem Verzeichnis wird die
+  Konfigurationsdatei von log4perl abgelegt.
 \end{description}
 
+
+\subsection{Spezielle Kategorie-Mappings}
+
+Für einzelne Katalogdatenbanken können Kategoriebezeichner umbenannt
+werden. Dazu müssen die Bezeichner unter dem Eintrag
+\texttt{categorymapping} für die jeweilige Datenbank als umzubenennen
+definiert werden.
+
+Beispiel:
+
+\begin{verbatim}
+# Katalogabhaengige Kategorie-Mappings
+categorymapping => {
+    einbaende => {
+        'T0100' => 1,
+        'T0101' => 1,
+        'T0200' => 1,
+        'T0331' => 1,
+        'T0335' => 1,
+        'T0361' => 1,
+        'T0370' => 1,
+        'T0410' => 1,
+        'T0413' => 1,
+        'T0424' => 1,
+        'T0425' => 1,
+        'T0435' => 1,
+        'T0501' => 1,
+        'T0508' => 1,
+        'T0700' => 1,
+        'T0710' => 1,
+        'T0750' => 1,
+    },    
+},
+\end{verbatim}
+
+Weitere Informationen zu diesem Mechanismus sowie der notwendigen
+Konfigurierung finden Sie im Technischen Handbuch.
+
+
+\subsection{Parametrisierung der Konvertierung}
+
+Um die Konvertierung aus dem MAB2-basierten Meta-Datenformat in die
+Datenbank zu parametrisieren, können unter der Einstellung
+\texttt{convtab} neben einer Standard-Konfiguration \texttt{default}
+zusätzlich für jede Katalogdatenbank gesonderte Konfigurationen unter
+dem Datenbanknamen hinterlegt werden.
+
+Ausführliche Informationen zu den Parametrisierungen finden Sie im
+Technischen Handbuch.
 
 \section{Anlegen der Verzeichnis-Struktur}
 
@@ -1113,14 +1232,15 @@ cp /opt/store/openbib/conv/meta/* /opt/openbib/conv/
 cp /opt/store/openbib/conv/sikis/autoconv-sikis.pl /opt/openbib/autoconv/bin/
 \end{verbatim}
 
-\section{Anlegen der Benutzer- und Session-Datenbanken}
+\section{Anlegen der Konfigurations-, Benutzer- und Session-Datenbanken}
 
 Grundlage für den Betrieb des Web-Portals ist die Existenz der
 Benutzer- und Session-Datenbanken. Diese werden nun mit den
-Hils-Skripten \texttt{createuser.pl} und \texttt{createsession.pl} aus
-\texttt{/opt/openbib/bin} erzeugt.
+Hilfs-Skripten \texttt{createconfig.pl}, \texttt{createuser.pl} und
+\texttt{createsession.pl} aus \texttt{/opt/openbib/bin} erzeugt.
 
 \begin{verbatim}
+openbib:/opt/openbib/bin# ./createconfig.pl
 openbib:/opt/openbib/bin# ./createuser.pl
 openbib:/opt/openbib/bin# ./createsession.pl
 \end{verbatim}

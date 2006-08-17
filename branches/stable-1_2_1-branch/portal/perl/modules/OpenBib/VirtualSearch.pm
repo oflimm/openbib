@@ -1382,6 +1382,17 @@ UND-Verkn&uuml;pfung und mindestens einem weiteren angegebenen Suchbegriff m&oum
 
 		 gesamttreffer => $gesamttreffer,
 
+		 loginname => $loginname,
+		 password => $password,
+
+		 verf => OpenBib::VirtualSearch::Util::externalsearchterm($verf),
+		 hst => OpenBib::VirtualSearch::Util::externalsearchterm($hst),
+		 kor => OpenBib::VirtualSearch::Util::externalsearchterm($kor),
+		 ejahr => OpenBib::VirtualSearch::Util::externalsearchterm($ejahr),
+		 isbn => OpenBib::VirtualSearch::Util::externalsearchterm($isbn),
+		 issn => OpenBib::VirtualSearch::Util::externalsearchterm($issn),
+		 queryargs => $queryargs,
+
 		 utf2iso => sub {
 		   my $string=shift;
 		   $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 

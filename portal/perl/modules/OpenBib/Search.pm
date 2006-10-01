@@ -671,7 +671,7 @@ sub handler {
         if ($config->get_system_of_db($database) eq "Z39.50"){
             my $z3950dbh = new OpenBib::Search::Z3950($database);
 
-            my $normset = $z3950dbh->get_singletitle($searchsingletit);
+            my ($normset,$mexnormset) = $z3950dbh->get_singletitle($searchsingletit);
             
             my ($prevurl,$nexturl)=OpenBib::Search::Util::get_result_navigation({
                 sessiondbh => $session->{dbh},
@@ -695,14 +695,8 @@ sub handler {
                 sessionID  => $session->{ID},
                 titidn     => $searchsingletit,
                 normset    => $normset,
-                mexnormset => {},
+                mexnormset => $mexnormset,
                 circset    => {},
-                
-                utf2iso    => sub {
-                    my $string=shift;
-                    $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
-                    return $string;
-                },
                 
                 config     => $config,
                 msg        => $msg,
@@ -825,15 +819,15 @@ sub handler {
             sessionID         => $session->{ID},
         });
         
-	my $poolname=$targetdbinfo_ref->{sigel}{
-	  $targetdbinfo_ref->{dbases}{$database}};
-
+        my $poolname=$targetdbinfo_ref->{sigel}{
+            $targetdbinfo_ref->{dbases}{$database}};
+        
         # TT-Data erzeugen
         my $ttdata={
             view       => $view,
             stylesheet => $stylesheet,
             database   => $database,
-	    poolname   => $poolname,
+            poolname   => $poolname,
             qopts      => $queryoptions_ref,
             sessionID  => $session->{ID},
             normset    => $normset,
@@ -844,9 +838,9 @@ sub handler {
         OpenBib::Common::Util::print_page($config->{tt_search_showautset_tname},$ttdata,$r);
         return OK;
     }
-  
+    
     if ($searchtitofaut) {
-
+        
         my @titelidns=();
 
         # Verfasser-Id numerisch, dann Titel zu von entsprechendem Normdaten

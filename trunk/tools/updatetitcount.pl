@@ -37,66 +37,49 @@ use Getopt::Long;
 
 use OpenBib::Config;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
-
 # Definition der Programm-Optionen
 
 &GetOptions("single-pool=s" => \$singlepool
 	    );
 
+my $config = new OpenBib::Config();
 
 my @databases=();
-
-#####################################################################
-# Verbindung zur SQL-Datenbank herstellen
-
-my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or die "could not connect";
 
 # Wenn ein Katalog angegeben wurde, werden nur in ihm die Titel gezaehlt
 # und der Counter aktualisiert
 
 if ($singlepool ne ""){
-  @databases=("$singlepool");
+    @databases=("$singlepool");
 }
-
 # Ansonsten werden alle als Aktiv markierten Kataloge aktualisiert
-
 else {
-
-  my $idnresult=$sessiondbh->prepare("select dbname from dbinfo where active=1 order by orgunit,dbname");
-  $idnresult->execute();
-  
-  while (my $dbname=$idnresult->fetchrow){
-    push @databases, $dbname;
-  }
+    @databases = $config->get_active_databases();
 }
 
 my $maxidns=0;
 my $allidns=0;
 
 foreach $database (@databases){
-  my $dbh=DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd}) or die "could not connect";
+  my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or die "could not connect";
     
-  $idnresult=$dbh->prepare("select distinct id from tit") or die "Error -- $DBI::errstr";
+  $idnresult=$dbh->prepare("select count(distinct id) as rowcount from tit") or die "Error -- $DBI::errstr";
   $idnresult->execute();
+
+  my $result=$idnresult->fetchrow_hashref;
   
-  $maxidns=$idnresult->rows;
+  $maxidns=$result->{rowcount};
 
   $idnresult->finish();
 
   $allidns=$allidns+$maxidns;
 
-  $idnresult=$sessiondbh->prepare("delete from titcount where dbname='$database'") or die "Error -- $DBI::errstr";
+  $idnresult=$config->{dbh}->prepare("delete from titcount where dbname=?") or die "Error -- $DBI::errstr";
 
-  $idnresult->execute();
+  $idnresult->execute($database);
   
-  $idnresult=$sessiondbh->prepare("insert into titcount values ('$database',$maxidns)") or die "Error -- $DBI::errstr";
-  $idnresult->execute();
+  $idnresult=$config->{dbh}->prepare("insert into titcount values (?,?)") or die "Error -- $DBI::errstr";
+  $idnresult->execute($database,$maxidns);
   
   print "$database -> $maxidns\n";
   $idnresult->finish();
@@ -107,12 +90,11 @@ foreach $database (@databases){
 if ($singlepool eq ""){
   my $notexist=0;
   
-  $idnresult=$sessiondbh->prepare("delete from titcount where dbname='alldbs'") or die "Error -- $DBI::errstr";
+  $idnresult=$config->{dbh}->prepare("delete from titcount where dbname='alldbs'") or die "Error -- $DBI::errstr";
   $idnresult->execute();
   
-  $idnresult=$sessiondbh->prepare("insert into titcount values ('alldbs',$allidns)") or die "Error -- $DBI::errstr";
-  $idnresult->execute();
+  $idnresult=$config->{dbh}->prepare("insert into titcount values ('alldbs',?)") or die "Error -- $DBI::errstr";
+  $idnresult->execute($allidns);
 }
 
-$sessiondbh->disconnect();
 

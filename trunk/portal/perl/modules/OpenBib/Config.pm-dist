@@ -175,7 +175,8 @@ use vars qw(%config);
 	   externaljump_loc      => '/portal/externersprung',
            frameset_loc          => '/portal/frameset',
 	   headerframe_loc       => '/portal/kopf',
-	   leave_loc             => '/portal/beenden',
+           helpframe_loc         => '/portal/hilfe',
+           leave_loc             => '/portal/beenden',
 	   loadbalancer_loc      => '/portal/lastverteilung',
 	   login_loc             => '/portal/login',
 	   mailcollection_loc    => '/portal/merklistemailen',
@@ -276,7 +277,12 @@ use vars qw(%config);
 	   tt_headerframe_tname          => 'headerframe',
 
 	   tt_searchframe_simple_tname   => 'searchframe_simple',
-	   tt_searchframe_tname          => 'searchframe',
+	   tt_searchframe_advanced_tname => 'searchframe',
+
+	   tt_helpframe_tname            => 'helpframe',
+           tt_helpframe_1_tname          => 'helpframe_1',
+           tt_helpframe_2_tname          => 'helpframe_2',
+	   tt_helpframe_3_tname          => 'helpframe_3',
 
 	   tt_startopac_tname            => 'startopac',
 

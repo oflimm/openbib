@@ -18,7 +18,7 @@ m&uuml;ssen. Deaktivieren Sie <b>nicht</b> die Suchoption 'Und-Verkn&uuml;pfung 
 <p />
 <b>[% msg.maketext("Komplizierte Suchanfragen") %]</b><br />
 [% msg.maketext("Wenn Sie kompliziertere Suchanfragen stellen m&ouml;chten, so erfahren Sie") %]
-<a href="http://[% config.servername %]/suchhilfe.html#profisuche">[% msg.maketext("hier") %]</a> [% msg.maketext("alles &uuml;ber die Verwendung m&ouml;glicher Boolscher Suchoperatoren innerhalb eines Eingabefeldes und die angesprochene Suchoption 'Und-Verkn&uuml;pfung innerhalb eines Suchfeldes'.") %]<br />
+<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#profisuche">[% msg.maketext("hier") %]</a> [% msg.maketext("alles &uuml;ber die Verwendung m&ouml;glicher Boolscher Suchoperatoren innerhalb eines Eingabefeldes und die angesprochene Suchoption 'Und-Verkn&uuml;pfung innerhalb eines Suchfeldes'.") %]<br />
 <p />
 <b>[% msg.maketext("Suchlogik bei Verkn&uuml;pfungen mehrerer Suchfelder:") %]</b><br />
 [% msg.maketext("Die einzelnen Suchfelder sind standardm&auml;ssig &uuml;ber eine 

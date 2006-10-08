@@ -20,7 +20,7 @@
 [% END %]
 
 <ul id="tabbingmenu">
-   <li><a class="active" href="/suchhilfe.html" target="_blank">[% msg.maketext("Information") %]</a></li>
+   <li><a class="active" href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]" target="_blank">[% msg.maketext("Information") %]</a></li>
 </ul>
 
 <div id="content">

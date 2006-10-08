@@ -29,7 +29,7 @@
 <a href="[% config.login_loc %]?sessionID=[% sessionID %];view=[% view %];do_login=1" target="body">[% msg.maketext("Mein KUG") %]</a>&nbsp;
 [% END %]
 [% END %]
-<a href="/suchhilfe.html" target="body">[% msg.maketext("Hilfe") %]</a>&nbsp;&nbsp;<a href="[% config.leave_loc %]?sessionID=[% sessionID %];view=[% view %]" target="_parent"><b><span class="warning">[% msg.maketext("Sitzung beenden") %]
+<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">[% msg.maketext("Hilfe") %]</a>&nbsp;&nbsp;<a href="[% config.leave_loc %]?sessionID=[% sessionID %];view=[% view %]" target="_parent"><b><span class="warning">[% msg.maketext("Sitzung beenden") %]
 [%- IF username -%]
  [[% username %]]
 [%- END -%]

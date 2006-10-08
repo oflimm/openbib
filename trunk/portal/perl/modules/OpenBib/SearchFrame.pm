@@ -274,13 +274,11 @@ sub handler {
         config        => $config,
         msg           => $msg,
     };
-  
-    if ($setmask eq "simple") {
-        OpenBib::Common::Util::print_page($config->{tt_searchframe_simple_tname},$ttdata,$r);
-    }
-    else {
-        OpenBib::Common::Util::print_page($config->{tt_searchframe_tname},$ttdata,$r);
-    }
+
+    my $templatename = ($setmask)?"tt_searchframe_".$setmask."_tname":"tt_searchframe_tname";
+    
+    OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+
     return OK;
 }
 

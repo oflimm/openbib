@@ -23,6 +23,9 @@
 ../templates/error
 ../templates/externaljump
 ../templates/headerframe
+../templates/helpframe
+../templates/helpframe_1
+../templates/helpframe_2
 ../templates/info_message
 ../templates/leave
 ../templates/loadbalancer
@@ -92,6 +95,7 @@
 ../modules/OpenBib/DispatchQuery.pm
 ../modules/OpenBib/ExternalJump.pm
 ../modules/OpenBib/HeaderFrame.pm
+../modules/OpenBib/HelpFrame.pm
 ../modules/OpenBib/L10N.pm
 ../modules/OpenBib/Leave.pm
 ../modules/OpenBib/LoadBalancer.pm

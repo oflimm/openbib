@@ -10,7 +10,7 @@
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="hitrange" value="-1" />
 <input type="hidden" name="view" value="[% view %]" />
-<input type="hidden" name="maxhits" value="50" />
+<input type="hidden" name="maxhits" value="200" />
 <input type="hidden" name="sorttype" value="author" />
 <input type="hidden" name="sortorder" value="up" />
 <input type="hidden" name="autoplus" value="1" />

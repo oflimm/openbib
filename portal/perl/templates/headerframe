@@ -16,7 +16,7 @@
 %];action=login" target="body">Mein KUG</a>&nbsp;&nbsp;
 [% END %]
 [% END %]
-<a href="/suchhilfe.html" target="body">Hilfe</a>&nbsp;&nbsp;<a href="[% config.leave_loc %]?sessionID=[% sessionID %];view=[% view %]" target="_parent"><b><span class="warning">Sitzung beenden
+<a href="/suchhilfe.html" target="body">Hilfe</a>&nbsp;&nbsp;<a href="http://www.ub.uni-koeln.de/dezkat/content/service/schulm/tutorial/index_ger.html" target="_blank">Tutorien</a>&nbsp;&nbsp;<a href="[% config.leave_loc %]?sessionID=[% sessionID %];view=[% view %]" target="_parent"><b><span class="warning">Sitzung beenden
 [%- IF username -%]
  [[% username %]]
 [%- END -%]

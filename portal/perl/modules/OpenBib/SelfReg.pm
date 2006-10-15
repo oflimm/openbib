@@ -138,7 +138,7 @@ elsif ($action eq "auth"){
   # Ueberpruefen, ob es eine gueltige Mailadresse angegeben wurde.
 
   unless (Email::Valid->address($loginname)){
-    OpenBib::Common::Util::print_warning("Sie haben keine g&uuml;tige Mailadresse eingegeben. Gehen Sie bitte <a href=\"http://$config{servername}$config{selfreg_loc}?sessionID=$sessionID&action=show\">zur&uuml;ck</a> und korrigieren Sie Ihre Eingabe",$r);
+    OpenBib::Common::Util::print_warning("Sie haben keine g&uuml;tige Mailadresse eingegeben. Gehen Sie bitte <a href=\"http://$config{servername}$config{selfreg_loc}?sessionID=$sessionID;action=show\">zur&uuml;ck</a> und korrigieren Sie Ihre Eingabe",$r);
     $sessiondbh->disconnect();
     $userdbh->disconnect();
     return OK;

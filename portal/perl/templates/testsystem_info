@@ -5,7 +5,7 @@ Sie befinden sich derzeit auf einem Testsystem, das nicht f&uuml;r den
 produktiven Einsatz gedacht ist. Stattdessen k&ouml;nnen Sie hier die
 neuen in Entwicklung befindlichen Funktionen des KUG austesten. Das
 Produktivsystem des KUG finden Sie unter dem URL <a
-href="http://kug.ub.uni-koeln.de/" target-"_blank">http://kug.ub.uni-koeln.de/</a><br /><br />
+href="http://kug.ub.uni-koeln.de/" target="_blank">http://kug.ub.uni-koeln.de/</a><br /><br />
 <b>Als User-Agent verwenden Sie:</b>&nbsp; [% useragent %]
 </td></tr>
 </table>

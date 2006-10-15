@@ -54,11 +54,11 @@ table {
 }
 
 .titlerow { 
-  background-color: lightblue;
+  background-color: #ADD8E6;
 }
 
 .listnr { 
-  background-color: lightblue;
+  background-color: #ADD8E6;
   font-weight: bold;
   text-align: right;
   padding: 5px;
@@ -74,7 +74,7 @@ table {
 
 .category { 
   padding: 2px;
-  background-color: lightblue;
+  background-color: #ADD8E6;
   font-weight: bold;
 }
 
@@ -112,7 +112,7 @@ th {
   border-left: none;
   border-right: none;
   border-bottom-style: dashed;
-  border-bottom-color: lightblue;
+  border-bottom-color: #ADD8E6;
   border-bottom-width: 1px;
 }
 
@@ -128,16 +128,16 @@ td.boxedfull {
   padding: 5px;
   background-color: aliceblue;
   border-left-style: solid;
-  border-left-color: lightblue;
+  border-left-color: #ADD8E6;
   border-left-width: 1px;
   border-right-style: solid;
-  border-right-color: lightblue;
+  border-right-color: #ADD8E6;
   border-right-width: 1px;
   border-top-style: solid;
-  border-top-color: lightblue;
+  border-top-color: #ADD8E6;
   border-top-width: 1px;
   border-bottom-style: solid;
-  border-bottom-color: lightblue;
+  border-bottom-color: #ADD8E6;
   border-bottom-width: 1px;
 }
 
@@ -145,13 +145,13 @@ td.boxedclear {
   padding: 5px;
   background-color: white;
   border-left-style: solid;
-  border-left-color: lightblue;
+  border-left-color: #ADD8E6;
   border-left-width: 1px;
   border-right-style: solid;
-  border-right-color: lightblue;
+  border-right-color: #ADD8E6;
   border-right-width: 1px;
   border-bottom-style: solid;
-  border-bottom-color: lightblue;
+  border-bottom-color: #ADD8E6;
   border-bottom-width: 1px;
 }
 
@@ -160,16 +160,16 @@ td.boxedclear {
   background-color: white;
   margin-top: 5px;
   border-top-style: solid;
-  border-top-color: lightblue;
+  border-top-color: #ADD8E6;
   border-top-width: 2px;
   border-left-style: solid;
-  border-left-color: lightblue;
+  border-left-color: #ADD8E6;
   border-left-width: 2px;
   border-right-style: solid;
-  border-right-color: lightblue;
+  border-right-color: #ADD8E6;
   border-right-width: 2px;
   border-bottom-style: solid;
-  border-bottom-color: lightblue;
+  border-bottom-color: #ADD8E6;
   border-bottom-width: 2px;
 }
 
@@ -204,47 +204,47 @@ a:active.invisible {
 } /* active links */
 
 
-#tabbingmenu {
+.tabbingmenu {
   color: #000000;
-  border-bottom: 2px solid lightblue;
+  border-bottom: 2px solid #ADD8E6;
   margin: 12px 0px 0px 0px;
   padding: 0px;
   z-index: 1;
   padding-left: 10px 
 }
 
-#tabbingmenu li {
+.tabbingmenu li {
   display: inline;
   overflow: hidden;
   list-style-type: none; 
 }
 
-#tabbingmenu a, a.active {
+.tabbingmenu a, a.active {
   color: #000000;
   background: #ffffff; /* Hintergrundfarbe Tab 'weiss'*/
   font: bold 1em "Trebuchet MS", Arial, sans-serif;
-  border: 2px solid lightblue;
+  border: 2px solid #ADD8E6;
   padding: 2px 5px 0px 5px;
   margin: 0px;
   text-decoration: none; 
 }
 
-#tabbingmenu a.active {
+.tabbingmenu a.active {
   background: #ffffff;
   border-bottom: 3px solid #ffffff; 
 }
 
-#tabbingmenu a:visited {
+.tabbingmenu a:visited {
   color: #000000; 
   background: #ffffff; 
 }
 
-#content {
+.content {
 
   font-family: Arial,helv,Helvetica,Verdana,sans-serif;
   background: #ffffff;
   padding: 5px;
-  border: 2px solid lightblue;
+  border: 2px solid #ADD8E6;
   border-top: none;
   z-index: 2;	
 }

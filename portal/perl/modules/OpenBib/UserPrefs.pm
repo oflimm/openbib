@@ -387,7 +387,7 @@ sub handler {
     $targetresult->execute($password1,$userid) or $logger->error($DBI::errstr);
     $targetresult->finish();
     
-    $r->internal_redirect("http://$config{servername}$config{userprefs_loc}?sessionID=$sessionID&action=showfields");
+    $r->internal_redirect("http://$config{servername}$config{userprefs_loc}?sessionID=$sessionID;action=showfields");
     
   }
   elsif ($action eq "changemask"){
@@ -412,7 +412,7 @@ sub handler {
     $idnresult->finish();
 
     
-    $r->internal_redirect("http://$config{servername}$config{userprefs_loc}?sessionID=$sessionID&action=showfields");
+    $r->internal_redirect("http://$config{servername}$config{userprefs_loc}?sessionID=$sessionID;action=showfields");
     
   }
   else {

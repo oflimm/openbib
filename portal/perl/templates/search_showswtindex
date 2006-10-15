@@ -2,9 +2,9 @@
 [% PROCESS common/subtemplate name="std_header" %]
 
 <body>
-<table BORDER="0" CELLSPACING="0" CELLPADDING="0" width="100%">
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
   <tr class="titlerow">
-    <td  width="20">&nbsp;</td><td valign="middle" ALIGN="left" height="32"><img src="/images/openbib/[% database %].png"></td>
+    <td  width="20">&nbsp;</td><td valign="middle" align="left" height="32"><img src="/images/openbib/[% database %].png" alt="Schriftzug der DB [% database %]" /></td>
   </tr>
 </table>
 
@@ -59,18 +59,18 @@ In diesem Katalog konnte leider kein Schlagwort beginnend mit <b>'[% swt %]'</b>
 
 <p />
 
-<hr>
+<hr />
 
 <form method="get" action="[% config.search_loc %]">
-<input type="hidden" name="sessionID" value="[% sessionID %]">
-<input type="hidden" name="searchmode" value="[% searchmode %]">
-<input type="hidden" name="rating" value="[% rating %]">
-<input type="hidden" name="bookinfo" value="[% bookinfo %]">
-<input type="hidden" name="hitrange" value="[% hitrange %]">
-<input type="hidden" name="database" value="[% database %]">
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<input type="hidden" name="searchmode" value="[% searchmode %]" />
+<input type="hidden" name="rating" value="[% rating %]" />
+<input type="hidden" name="bookinfo" value="[% bookinfo %]" />
+<input type="hidden" name="hitrange" value="[% hitrange %]" />
+<input type="hidden" name="database" value="[% database %]" />
 
 <table>
-<tr><td class="category">Schlagwortindex dieses Katalogs&nbsp;</td><td>&nbsp;<input type="text" name="swtindex" value="[% swt %]" size="20" maxlength="50" title="Geben Sie hier den Schlagwortanfang ein">&nbsp;<input type="submit" value="Suchen">&nbsp;</td></tr>
+<tr><td class="category">Schlagwortindex dieses Katalogs&nbsp;</td><td>&nbsp;<input type="text" name="swtindex" value="[% swt %]" size="20" maxlength="50" title="Geben Sie hier den Schlagwortanfang ein" />&nbsp;<input type="submit" value="Suchen" />&nbsp;</td></tr>
 </table>
 
 </form>

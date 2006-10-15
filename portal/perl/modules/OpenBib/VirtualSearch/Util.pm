@@ -226,7 +226,7 @@ sub is_single_tit {
     $retval.="<strong><span id=\"rlauthor\">$verfasserstring</span></strong><br>" if ($verfasserstring ne "");
 
 
-    $retval.="<a href=\"$befehlsurl?sessionID=$sessionID&amp;search=Mehrfachauswahl&amp;searchmode=2&amp;casesensitive=0&amp;maxhits=500&amp;hitrange=$hitrange&amp;sorttype=$sorttype&amp;database=$database&amp;searchsingletit=$idn\">";
+    $retval.="<a href=\"$befehlsurl?sessionID=$sessionID;search=Mehrfachauswahl;searchmode=2;casesensitive=0;maxhits=500;hitrange=$hitrange;sorttype=$sorttype;database=$database;searchsingletit=$idn\">";
 
     # Wenn wir einen AST haben, dann hat er hoehere Prioritaet als ein der HST
 
@@ -235,21 +235,21 @@ sub is_single_tit {
     }
 
     if ($hst){
-      $retval.="<strong><span id=\"rltitle\">$hst</span></strong></a>, ";
+      $retval.="<strong><span class=\"rltitle\">$hst</span></strong></a>, ";
     }
     elsif ($sachlben){
-      $retval.="<strong><span id=\"rltitle\">$sachlben</span></strong></a>, ";
+      $retval.="<strong><span class=\"rltitle\">$sachlben</span></strong></a>, ";
     }
     elsif ($hst eq "" && $sachlben eq ""){
-      $retval.="<strong><span id=\"rltitle\">Keine AST/HST vorhanden</span></strong></a>, ";
+      $retval.="<strong><span class=\"rltitle\">Keine AST/HST vorhanden</span></strong></a>, ";
     }
     if ($verlag){
-      $retval.="<span id=\"rlpublisher\">$verlag</span> ";
+      $retval.="<span class=\"rlpublisher\">$verlag</span> ";
     }
     if ($erschjahr){
-      $retval.="<span id=\"rlyearofpub\">$erschjahr</span>";
+      $retval.="<span class=\"rlyearofpub\">$erschjahr</span>";
     }
-    $retval.="</td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID&action=insert&database=$database&singleidn=$idn\" target=\"header\"><span id=\"rlmerken\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In Merkliste\" border=0></span></a></td><td><b>$signaturstring</b>";
+    $retval.="</td><td><a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=insert;database=$database;singleidn=$idn\" target=\"header\"><span class=\"rlmerken\"><img src=\"/images/openbib/3d-file-blue-clipboard.png\" height=\"29\" alt=\"In Merkliste\" border=\"0\" /></span></a></td><td><b>$signaturstring</b>";
     return $retval;
   }
   else {
@@ -376,12 +376,12 @@ Konnten Sie das von Ihnen gesuchte Buch oder den von Ihnen gesuchten Zeitschrift
 <ul>
 <li>Suchen Sie im Kartenkatalog einer infrage kommende Institutsbibliothek. Leider sind noch nicht alle B&uuml;cher elektronisch erfasst und damit &uuml;ber den KUG recherchierbar.</li>
 <li>F&uuml;r verschiedene Institute und Seminare der Philosophischen Fakult&auml;t besteht die M&ouml;glichkeit der Suche in einem <a href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/" target="_blank"><span style="font-size:1.2em">Online-Kartenkatalog</span></a>.</li>
-<li>Versuchen Sie das Buch in NRW oder deutschlandweit im Rahmen der <a href="$hbzmonofernleihbaseurl&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_HBZ=on&D_PARAM_QUERY_bzAU=$verf&D_PARAM_QUERY_azTI=$hst&D_PARAM_QUERY_czCO=$kor&D_PARAM_QUERY_fzIB=$isbn&D_PARAM_QUERY_gzIS=$issn&D_PARAM_QUERY_hzYR=$ejahr$authurl" target="_blank"><span style="font-size:1.2em">zentralen Fernleihe</span></a> in der Digitalen Bibliothek zu finden.</li>
+<li>Versuchen Sie das Buch in NRW oder deutschlandweit im Rahmen der <a href="$hbzmonofernleihbaseurl;D_PARAM_SEARCH_RLBKO=on;D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_HBZ=on;D_PARAM_QUERY_bzAU=$verf;D_PARAM_QUERY_azTI=$hst;D_PARAM_QUERY_czCO=$kor;D_PARAM_QUERY_fzIB=$isbn;D_PARAM_QUERY_gzIS=$issn;D_PARAM_QUERY_hzYR=$ejahr$authurl" target="_blank"><span style="font-size:1.2em">zentralen Fernleihe</span></a> in der Digitalen Bibliothek zu finden.</li>
 </ul>
 <b><span style="font-size:1.2em">Zeitschriftenartikel</span></b>
 <ul>
 <li>Suchen Sie in den elektronischen <a href="$dbisexturl" target="_blank"><span style="font-size:1.2em">Fachdatenbanken</span></a> und den <a href="$config{ezb_exturl}" target="_blank"><span style="font-size:1.2em">elektronisch verf&uuml;gbaren Zeitschriften</span></a> der Universit&auml;tsbibliothek.</a>
-<li>Versuchen Sie den Artikel in NRW im Rahmen der <a href="$hbzzeitfernleihbaseurl&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_ZDB=on&D_PARAM_QUERY_azTI=$hst&D_PARAM_QUERY_czCO=$kor&D_PARAM_QUERY_gzIS=$issn$authurl" target="_blank"><span style="font-size:1.2em">Online-Zeitschriftenlieferung</span></a> in der Digitalen Bibliothek zu finden.</li>
+<li>Versuchen Sie den Artikel in NRW im Rahmen der <a href="$hbzzeitfernleihbaseurl;D_PARAM_SEARCH_RLBKO=on;D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_ZDB=on;D_PARAM_QUERY_azTI=$hst;D_PARAM_QUERY_czCO=$kor;D_PARAM_QUERY_gzIS=$issn$authurl" target="_blank"><span style="font-size:1.2em">Online-Zeitschriftenlieferung</span></a> in der Digitalen Bibliothek zu finden.</li>
 </ul>
 </td></tr>
 </table>

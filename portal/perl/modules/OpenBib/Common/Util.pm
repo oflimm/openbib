@@ -506,50 +506,6 @@ HEADER
   return;
 }
 
-sub print_extended_header {
-  my ($title,$r)=@_;
-
-  print_simple_header($title,$r);
-
-  print << "HEADER";
-    <table  BORDER=0 CELLSPACING=0 CELLPADDING=0 width="100%">
-	<tr>
-	  <td WIDTH=140 ALIGN=LEFT>
-	    <table><tr><td rowspan=2 valign=bottom><img SRC="/images/openbib/logo.png" BORDER=0></td><td valign=bottom><img SRC="/images/openbib/logozeile1.png" BORDER=0></td></tr><tr><td valign=top><img SRC="/images/openbib/logozeile2.png" BORDER=0></td></tr></table>
-	    
-	  </td>
-	  
-	  <td height="42" valign="middle" WIDTH=40> &nbsp;&nbsp;</td>
-	  
-	  <td WIDTH=170 ALIGN=RIGHT>
-	    <a target="_top" HREF="http://www.uni-koeln.de/"><img SRC="/images/openbib/logorechts.png" height=95 BORDER=0></a>
-	  </td>
-	</tr>
-    </table>
-<p />
-HEADER
-  return;
-}
-
-sub print_footer {
-  
-  my $footer=<< "FOOTER";
-<table BORDER=0 CELLSPACING=0 CELLPADDING=0 width="100%">
-<tr><td class="boxedfull" align="left"><table BORDER=0 CELLSPACING=0 CELLPADDING=0 width=100%><tr><td
-align="left"><b>KUG</b> ist ein Dienst der Universit&auml;ts- und
-Stadtbibliothek K&ouml;ln</td><td>&nbsp;</td><td align="right"><a class="invisible" href="http://www.openbib.org/" target="_blank"><img src="/images/openbib/openbib-powered.png" alt="Powered by OpenBib" /></a></td></tr></table></td></tr>
-</table>
-<p />
-<tt>$config{version}</tt>
-</BODY>
-</HTML>
-FOOTER
-
-  print STDOUT $footer;
-
-  return;
-}
-
 sub print_warning {
   my ($warning,$r)=@_;
 
@@ -1384,14 +1340,6 @@ __END__
  # Komplette Seite aus Template $templatename, Template-Daten $ttdata und
  # Request-Objekt $r bilden und ausgeben
  OpenBib::Common::Util::print_page($templatename,$ttdata,$r);
-
- # Einfachen Header mit Titel $title und Request-Objekt $r bilden und
- # ausgeben
- OpenBib::Common::Util::print_simple_header($title,$r);
-
- # Erweiterten Header mit Titel $title und Request-Objekt $r bilden und
- # zusaetzlich dem Bannerlogo ausgeben
- OpenBib::Common::Util::print_extended_header($title,$r);
 
  # Ausgabe des Footers
  OpenBib::Common::Util::print_footer();

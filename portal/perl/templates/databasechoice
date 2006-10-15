@@ -16,16 +16,17 @@ function update_fak(yourform, checked, fak) {
 // -->
 </script>
 
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.databasechoice_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">Katalogauswahl</a></li>
+</ul>
+
+<div class="content">
+
 <form method="get" action="http://[% config.servername %][% config.databasechoice_loc %]">
 <input type="hidden" name="hitrange" value="-1" />
 <input type="hidden" name="view" value="[% view %]" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
-
-<ul id="tabbingmenu">
-   <li><a class="active" href="[% config.databasechoice_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">Katalogauswahl</a></li>
-</ul>
-
-<div id="content">
 
 <p />
 <table width="100%">
@@ -42,38 +43,38 @@ Nachdem Sie Ihre Auswahl getroffen haben aktivieren Sie bitte <b>Kataloge ausw&a
 <tr class="titlerow"><td colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /><b>Alle Kataloge</b></td></tr>
 
 [%- FOREACH category = config.units -%]
-[%- IF category.nr >= 1 -%]
+  [%- IF category.nr >= 1 -%]
 <tr><td colspan="[% colspan %]">&nbsp;</td></tr>
-[%- END -%]
+  [%- END -%]
 <tr class="titlerow"><td colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst[% category.nr %]" onclick="update_fak(this.form, this.checked,'inst[% category.nr %]')" title="inst" /><b>[% category.desc %]</b></td></tr>
 
-[%- FOREACH db = catdb -%]
-[%- IF db.category == category.short -%]
-[%- IF db.column == 1 -%]
+  [%- FOREACH db = catdb -%]
+    [%- IF db.category == category.short -%]
+      [%- IF db.column == 1 -%]
 <tr><td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% db.checked %] /></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% db.url %]" target="_blank">[% db.name %]</a></td>
-[%- END -%]
-[%- IF db.column > 1 && db.column < maxcolumn -%]
-[%- IF db.db -%]
+      [%- END -%]
+      [%- IF db.column > 1 && db.column < maxcolumn -%]
+        [%- IF db.db -%]
 <td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% db.checked %] /></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% db.url %]" target="_blank">[% db.name %]</a></td>
-[%- ELSE -%]
+        [%- ELSE -%]
 <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
-[%- END -%]
+        [%- END -%]
 
-[%- END -%]
-[%- IF db.column == maxcolumn -%]
-[%- IF db.column != 1 -%]
+      [%- END -%]
+      [%- IF db.column == maxcolumn -%]
+        [%- IF db.column != 1 -%]
 
-[%- IF db.db -%]
+          [%- IF db.db -%]
 <td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% db.checked %] /></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% db.url %]" target="_blank">[% db.name %]</a></td>
-[%- ELSE -%]
+          [%- ELSE -%]
 <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
-[%- END -%]
+          [%- END -%]
 
-[%- END -%]
+        [%- END -%]
 </tr>
-[%- END -%]
-[%- END -%]
-[%- END -%]
+      [%- END -%]
+    [%- END -%]
+  [%- END -%]
 [%- END -%]
 </table>
 <p />

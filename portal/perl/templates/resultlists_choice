@@ -1,15 +1,13 @@
 [% PROCESS common/subtemplate name="std_header" %]
 
-<FORM METHOD="GET">
+<body>
 
-<ul id="tabbingmenu">
+<ul class="tabbingmenu">
    <li><a class="active" href="[% config.resultlists_loc %]?sessionID=[% sessionID %];trefferliste=choice;view=[% view %]">Trefferliste</a></li>
 </ul>
 
-<div id="content">
-
-<p>
-
+<div class="content">
+<p />
 
 <table width="100%">
 <tr>
@@ -65,14 +63,14 @@
 <tr><td colspan="2"></td></tr>
 
 <tr><td>Katalog</td><td>Treffer</td></tr>
-<tr><td class="listrow2"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %]&trefferliste=all&sortall=0&sorttype=author&queryid=[% thisquery.id %]&view=[% view %]"><b>Alle Treffer</b></a></td><td align=right>[% hitcount %]</td></tr>
+<tr><td class="listrow2"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];trefferliste=all;sortall=0;sorttype=author;queryid=[% thisquery.id %];view=[% view %]"><b>Alle Treffer</b></a></td><td align="right">[% hitcount %]</td></tr>
       
-<tr><td class="listrow1">&nbsp;</td><td align=right>&nbsp;</td></tr>
+<tr><td class="listrow1">&nbsp;</td><td align="right">&nbsp;</td></tr>
 
       
 [% listrow = 'listrow2' %]
 [% FOREACH resultdb IN resultdbs %]
-<tr><td class="[% listrow %]"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %]&trefferliste=[% resultdb.trefferdb %]&queryid=[% thisquery.id %]&view=[% view %]"><b>[% resultdb.trefferdbdesc %]</b></a></td><td align=right>[% resultdb.trefferzahl %]</td></tr>
+<tr><td class="[% listrow %]"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];trefferliste=[% resultdb.trefferdb %];queryid=[% thisquery.id %];view=[% view %]"><b>[% resultdb.trefferdbdesc %]</b></a></td><td align="right">[% resultdb.trefferzahl %]</td></tr>
 [% IF listrow == 'listrow1' %]
 [% listrow = 'listrow2' %]
 [% ELSE %]
@@ -92,17 +90,19 @@
 
 [% IF queryids.size >= 0 %]
 <form method="get" action="[% config.virtualsearch_loc %]">
-<input type="hidden" name="sessionID" value="[% sessionID %]">
-<input type="hidden" name="trefferliste" value="choice">
-<input type="hidden" name="view" value="[% view %]">
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<input type="hidden" name="trefferliste" value="choice" />
+<input type="hidden" name="view" value="[% view %]" />
 	  
-<p><table width=\"100%\"><tr>
-<th>Alle bisherigen Recherchen</th></tr>
+<p />
+
+<table width="100%">
+<tr><th>Alle bisherigen Recherchen</th></tr>
 <tr><td class="boxedclear">
 <select name="queryid">
 
 [% FOREACH query IN queries %]	  
-<OPTION value="[% query.id %]">(
+<option value="[% query.id %]">(
 [%- IF query.fs -%]
 &nbsp;FS: [% query.fs %] 
 [%- END -%]
@@ -140,10 +140,14 @@
 &nbsp;HSTR: [% query.hststring %] 
 [%- END -%]
 = Treffer: [% query.hits %])
-</OPTION>
+</option>
 [% END %]	    
 </select>
-<input type=submit value="Auswahl"></td></tr></table></form>
+
+<input type="submit" value="Auswahl" />
+ </td></tr>
+ </table>
+</form>
 
 [% END %]
 

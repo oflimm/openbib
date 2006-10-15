@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta http-equiv="pragma" content="no-cache" />
-    <style>
+    <style type="text/css">
 
   [%- TRY -%]
     [%- USE File "${config.document_root_path}${config.css_loc}/views/$view/openbib_generic.css" -%]

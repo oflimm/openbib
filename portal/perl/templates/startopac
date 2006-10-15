@@ -5,21 +5,21 @@
 [% END %]
 
 [% IF searchsingletit && database %]
-[% bodyframeurl = "${config.search_loc}?sessionID=${sessionID}&search=Mehrfachauswahl&searchmode=2&rating=0&bookinfo=0&showmexintit=1&casesensitive=0&hitrange=-1&database=${database}&searchsingletit=${searchsingletit}&view=${view}" %]
+[% bodyframeurl = "${config.search_loc}?sessionID=${sessionID};search=Mehrfachauswahl;searchmode=2;rating=0;bookinfo=0;showmexintit=1;casesensitive=0;hitrange=-1;database=${database};searchsingletit=${searchsingletit};view=${view}" %]
 [% END %]
 
 [% IF fs %]
 [% IF view %]
-[% bodyframeurl = "${config.virtualsearch_loc}?hitrange=-1&view=${view}&sessionID=${sessionID}&profil=dbauswahl&searchprofile=In+ausgew.+Katalogen+suchen&fs=${fs}&bool9=AND&verf=&bool1=AND&hst=&bool2=AND&swt=&bool3=AND&kor=&bool4=AND&notation=&bool5=AND&isbn=&bool8=AND&issn=&bool6=AND&sign=&bool7=AND&ejahr=&ejahrop=eq&maxhits=200&sorttype=author&sortorder=up&profil=&autoplus=1" %]
+[% bodyframeurl = "${config.virtualsearch_loc}?hitrange=-1;view=${view};sessionID=${sessionID};profil=dbauswahl;searchprofile=In+ausgew.+Katalogen+suchen;fs=${fs};bool9=AND;verf=;bool1=AND;hst=;bool2=AND;swt=;bool3=AND;kor=;bool4=AND;notation=;bool5=AND;isbn=;bool8=AND;issn=;bool6=AND;sign=;bool7=AND;ejahr=;ejahrop=eq;maxhits=200;sorttype=author;sortorder=up;profil=;autoplus=1" %]
 [% ELSE %]
-[% bodyframeurl = "${config.virtualsearch_loc}?hitrange=-1&view=${view}&sessionID=${sessionID}&searchall=In+allen+Katalogen+suchen&fs=${fs}&bool9=AND&verf=&bool1=AND&hst=&bool2=AND&swt=&bool3=AND&kor=&bool4=AND&notation=&bool5=AND&isbn=&bool8=AND&issn=&bool6=AND&sign=&bool7=AND&ejahr=&ejahrop=eq&maxhits=200&sorttype=author&sortorder=up&profil=&autoplus=1" %]
+[% bodyframeurl = "${config.virtualsearch_loc}?hitrange=-1;view=${view};sessionID=${sessionID};searchall=In+allen+Katalogen+suchen;fs=${fs};bool9=AND;verf=;bool1=AND;hst=;bool2=AND;swt=;bool3=AND;kor=;bool4=AND;notation=;bool5=AND;isbn=;bool8=AND;issn=;bool6=AND;sign=;bool7=AND;ejahr=;ejahrop=eq;maxhits=200;sorttype=author;sortorder=up;profil=;autoplus=1" %]
 [% END %]
 [% END %]
 
-<HTML>
- <link href="/images/openbib/favicon.ico" rel="shortcut icon">
+<html>
+ <link href="/images/openbib/favicon.ico" rel="shortcut icon" />
  <frameset rows="[% toprows %],*" border="0" frameborder="0">
- <frame name="header" src="[% headerframeurl %]" noresize >
- <frame name="body" src="[% bodyframeurl %]">
+ <frame name="header" src="[% headerframeurl %]" noresize />
+ <frame name="body" src="[% bodyframeurl %]" />
  </frameset>
-</HTML>
+</html>

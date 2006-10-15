@@ -1631,7 +1631,7 @@ sub get_tit_set_by_idn {
   
   my $titres15;
   while ($titres15=$titresult15->fetchrow_hashref){
-    push @normset, set_simple_category("URL","<a href=\"$titres15->{'url'}\" target=_blank>$titres15->{'url'}</a>");
+    push @normset, set_simple_category("URL","<a href=\"$titres15->{'url'}\" target=\"_blank\">$titres15->{'url'}</a>");
   }
   $titresult15->finish();
   
@@ -2419,15 +2419,15 @@ sub get_tit_set_by_idn {
           my $categorynames_ref = {
               T3001 => { type    => "url",
                          desc    => "TOC / &Uuml;bersicht",
-                         content => "<img src=\"/images/openbib/html.png\">&nbsp;Digitalisiertes Inhaltsverzeichnis (&Uuml;bersicht)",
+                         content => "<img src=\"/images/openbib/html.png\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (&Uuml;bersicht)",
                      },
 #              T3002 => { type => "url",
 #                         desc => "TOC / TIFF",
-#                         content => "<img src=\"/images/openbib/image.png\">&nbsp;Digitalisiertes Inhaltsverzeichnis (Tiff-Format)",
+#                         content => "<img src=\"/images/openbib/image.png\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (Tiff-Format)",
 #                     },
               T3003 => { type => "url",
                          desc => "TOC / PDF",
-                         content => "<img src=\"/images/openbib/pdf-document.png\">&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)",
+                         content => "<img src=\"/images/openbib/pdf-document.png\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)",
                      },
           };
 
@@ -2653,18 +2653,18 @@ sub get_tit_set_by_idn {
 	$circexemplarliste[$i]{'Ausleihstring'}=$ausleihstring;
 
 	if ($circexemplarliste[$i]{'Standort'}=~/Erziehungswiss/ || $circexemplarliste[$i]{'Standort'}=~/Heilp.*?dagogik-Magazin/){
-	  $circexemplarliste[$i]{'Ausleihurl'}="$circurl?Login=ewa&Query=0000=$titidn";
+	  $circexemplarliste[$i]{'Ausleihurl'}="$circurl?Login=ewa;Query=0000=$titidn";
 
 #	  print "<td><strong>$ausleihstatus</strong></td><td bgcolor=\"yellow\"><a TARGET=_blank href=\"$circurl&branch=4&KatKeySearch=$titidn\">$ausleihstring</a></td>";
 	}
 	else {
 	  if ($database eq "inst001" || $database eq "poetica"){
-	    $circexemplarliste[$i]{'Ausleihurl'}="$circurl?Login=sisis&Query=0000=$titidn
+	    $circexemplarliste[$i]{'Ausleihurl'}="$circurl?Login=sisis;Query=0000=$titidn
 ";
 #	    print "<td><strong>$ausleihstatus</strong></td><td bgcolor=\"yellow\"><a TARGET=_blank href=\"$circurl&branch=0&KatKeySearch=$titidn\">$ausleihstring</a></td>";
 	  }
 	  else {
-	    $circexemplarliste[$i]{'Ausleihurl'}="$circurl&KatKeySearch=$titidn";
+	    $circexemplarliste[$i]{'Ausleihurl'}="$circurl;KatKeySearch=$titidn";
 #	    print "<td><strong>$ausleihstatus</strong></td><td bgcolor=\"yellow\"><a TARGET=_blank href=\"$circurl&KatKeySearch=$titidn\">$ausleihstring</a></td>";
 	  }
 	}
@@ -2684,7 +2684,7 @@ sub get_tit_set_by_idn {
       my @bookinfobuffer=();
       my $bookinfoidx=0;
       $bookinfobuffer[$bookinfoidx++]="<p>\n<table>\n";
-      $bookinfobuffer[$bookinfoidx++]="<tr><td bgcolor=\"lightblue\" colspan=3><b>Beschreibung dieses Buches</b></td></tr>\n";
+      $bookinfobuffer[$bookinfoidx++]="<tr><td bgcolor=\"lightblue\" colspan=\"3\"><b>Beschreibung dieses Buches</b></td></tr>\n";
       
       my $biquelle;
       my $biisbn=$isbn;
@@ -2711,8 +2711,8 @@ sub get_tit_set_by_idn {
       my $bookcounter;
       while(($biisbn,$biquelle,$biinfo)=$biresult->fetchrow()){
 	
-	$bookinfobuffer[$bookinfoidx++]="<tr><td colspan=3>$biinfo</td></tr>\n";
-	$bookinfobuffer[$bookinfoidx++]="<tr><td bgcolor=\"lightblue\" colspan=3><b>Quelle: $biquelle</b></td></tr>\n";
+	$bookinfobuffer[$bookinfoidx++]="<tr><td colspan=\"3\">$biinfo</td></tr>\n";
+	$bookinfobuffer[$bookinfoidx++]="<tr><td bgcolor=\"lightblue\" colspan=\"3\"><b>Quelle: $biquelle</b></td></tr>\n";
 	
 	$biresult->finish();
 	
@@ -2928,8 +2928,8 @@ sub get_mex_by_idn {
       while (@mexres2=$mexresult2->fetchrow){
 	my $signatur=$mexres2[1];
 	my $titidn=$verkntit[0];
-	print "<tr align=center><td><a href=\"$bibinfourl\"><strong>$bibliothek</strong></a></td><td>$standort</td><td>$inventarnummer</td><td><strong><span id=\"rlsignature\">$signatur</span></strong></td>";
-	#print "<tr align=center><td><a href=\"$bibinfourl\"><strong>$bibliothek</strong></a></td><td>$standort</td><td><strong><span id=\"rlsignature\">$signatur</span></strong></td>";
+	print "<tr align=center><td><a href=\"$bibinfourl\"><strong>$bibliothek</strong></a></td><td>$standort</td><td>$inventarnummer</td><td><strong><span class=\"rlsignature\">$signatur</span></strong></td>";
+	#print "<tr align=center><td><a href=\"$bibinfourl\"><strong>$bibliothek</strong></a></td><td>$standort</td><td><strong><span class=\"rlsignature\">$signatur</span></strong></td>";
 	
 	print "<td>$erschverl</td>";
 	
@@ -3424,7 +3424,7 @@ sub print_simple_category {
   if ($name eq "ISSN"){
     my $ezbquerystring=$config{ezb_exturl}."&jq_term1=".$contents;
 
-    $contents="$contents (<a href=\"$ezbquerystring\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=ezb>als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
+    $contents="$contents (<a href=\"$ezbquerystring\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
   }
 
   # Ausgabe
@@ -3432,56 +3432,6 @@ sub print_simple_category {
   print << "CATEGORY";
 <tr><td bgcolor="lightblue"><strong>$name</strong></td><td>$contents</td></tr>
 CATEGORY
-
-  return;
-}
-
-sub print_inst_head {
-  my ($database,$type,$sessionID,$titidn)=@_;
-
-
-  if ($type eq "base"){
-    print << "INSTHEAD";
-<table BORDER=0 CELLSPACING=0 CELLPADDING=0 width="100%">
-  <tr bgcolor="lightblue">
-    <td  width="20">&nbsp;</td><td valign="middle" ALIGN=left height="32"><img src="/images/openbib/$database.png"></td>
-  </tr>
-</table>
-INSTHEAD
-}
-  elsif ($type eq "extended"){
-    print << "INSTHEAD";
-<table  BORDER=0 CELLSPACING=0 CELLPADDING=0 width="100%">
-  <tr bgcolor="lightblue">
-    <td width="20">&nbsp;</td>
-    <td valign="middle" ALIGN=left height="32"><img src="/images/openbib/$database.png"></td>
-      <td>&nbsp;</td>
-      <td bgcolor=white align=right width=180>
-	<a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=insert;database=$database;singleidn=$titidn\" target=\"header\" title=\"In die Merkliste\"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="In die Merkliste" border=0></a>&nbsp;
-        <a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=mail;database=$database;singleidn=$titidn\" target=\"body\" title=\"Als Mail verschicken\"><img src="/images/openbib/3d-file-blue-mailbox.png" height="29" alt="Als Mail verschicken" border=0></a>&nbsp;
-        <a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=save;database=$database;singleidn=$titidn\" target=\"save\" title=\"Abspeichern\"><img src="/images/openbib/3d-file-blue-disk35.png" height="29" alt="Abspeichern" border=0></a>&nbsp;
-        <a href=\"$config{managecollection_loc}?sessionID=$sessionID;action=print;database=$database;singleidn=$titidn\" target=\"print\" title=\"Ausdrucken\"><img src="/images/openbib/3d-file-blue-printer.png" height="29" alt="Ausdrucken" border=0></a>&nbsp;
-       </td>
-  </tr>
-</table>
-INSTHEAD
-
-  }
-  return;
-}
-
-sub print_mult_sel_form {
-  my ($searchmode,$hitrange,$rating,$bookinfo,$database,$sessionID)=@_;
-
-print << "SEL_FORM_HEAD";
-<form method="get" action="$config{search_loc}">
-<input type=hidden name=searchmode value=$searchmode>
-<input type=hidden name=hitrange value=$hitrange>
-<input type=hidden name=rating value=$rating>
-<input type=hidden name=bookinfo value=$bookinfo>
-<input type=hidden name=database value=$database>
-<input type=hidden name=sessionID value=$sessionID>
-SEL_FORM_HEAD
 
   return;
 }
@@ -3501,7 +3451,7 @@ sub set_simple_category {
   if ($desc eq "ISSN"){
     my $ezbquerystring=$config{ezb_exturl}."&jq_term1=".$contents;
 
-    $contents="$contents (<a href=\"$ezbquerystring\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=ezb>als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
+    $contents="$contents (<a href=\"$ezbquerystring\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
   }
 
   my %kat=();

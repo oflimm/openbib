@@ -6,7 +6,18 @@
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 [% END %]
 
-<form method="get" id="openbib" action="http://[% config.servername %][% config.virtualsearch_loc %]">
+[% IF config.testsystem %]
+[% PROCESS common/subtemplate name="testsystem_info" %]
+[% END %]
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">Einfache Recherche</a></li>
+   <li><a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">Komplexe Recherche</a></li>
+</ul>
+
+<div class="content">
+
+<form method="get" class="openbib" action="http://[% config.servername %][% config.virtualsearch_loc %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="hitrange" value="-1" />
 <input type="hidden" name="view" value="[% view %]" />
@@ -17,16 +28,6 @@
 
 [% dbinputtags %]
 
-[% IF config.testsystem %]
-[% PROCESS common/subtemplate name="testsystem_info" %]
-[% END %]
-
-<ul id="tabbingmenu">
-   <li><a class="active" href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">Einfache Recherche</a></li>
-   <li><a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">Komplexe Recherche</a></li>
-</ul>
-
-<div id="content">
 <p />
 <p />
 
@@ -104,7 +105,7 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
 </form>
 
 [% IF prevqueries %]
-<form method="get" id="queries" action="http://[% config.servername %][% config.dispatchquery_loc %]">
+<form method="get" class="queries" action="http://[% config.servername %][% config.dispatchquery_loc %]">
 <table width="100%">
 <tr><th style="text-align: center">Rufen Sie hier die Ergebnisse fr&uuml;hrerer Recherchen auf</th></tr>
 <tr><td align="center" class="boxed">
@@ -113,11 +114,11 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
 [% prevqueries %]
 </select>
 <input type="submit" name="action" value="Zur Trefferliste" />
+</td></tr>
+</table>
 </form>
 [% END %]
 
-</td></tr>
-</table>
 
 <p />
 

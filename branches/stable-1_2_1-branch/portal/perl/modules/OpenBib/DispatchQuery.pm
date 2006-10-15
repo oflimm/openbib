@@ -78,15 +78,15 @@ sub handler {
   my $queryid=$query->param('queryid') || '';
 
   if ($action eq "Als Suchvorlage"){
-      $r->internal_redirect("http://$config{servername}$config{searchframe_loc}?sessionID=$sessionID&queryid=$queryid&view=$view");
+      $r->internal_redirect("http://$config{servername}$config{searchframe_loc}?sessionID=$sessionID;queryid=$queryid;view=$view");
       return OK;
   }
   elsif ($action eq "Zur Trefferliste"){
-      $r->internal_redirect("http://$config{servername}$config{resultlists_loc}?sessionID=$sessionID&view=$view&trefferliste=choice&queryid=$queryid");
+      $r->internal_redirect("http://$config{servername}$config{resultlists_loc}?sessionID=$sessionID;view=$view;trefferliste=choice;queryid=$queryid");
       return OK;
   }
   elsif ($action eq "Weiter als externe Recherche"){
-      $r->internal_redirect("http://$config{servername}$config{externaljump_loc}?sessionID=$sessionID&view=$view&queryid=$queryid");
+      $r->internal_redirect("http://$config{servername}$config{externaljump_loc}?sessionID=$sessionID;view=$view;queryid=$queryid");
       return OK;
   }
   else {

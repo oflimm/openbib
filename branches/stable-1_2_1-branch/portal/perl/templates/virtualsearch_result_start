@@ -2,26 +2,24 @@
 
 <body>
 
-<ul id="tabbingmenu">
+<ul class="tabbingmenu">
    <li><a class="active" href="[% config.resultlists_loc %]?sessionID=[% sessionID %];trefferliste=choice;view=[% view %]">Trefferliste</a></li>
 </ul>
 
-<div id="content">
+<div class="content">
+<p />
 
-<FORM METHOD="GET" action="[% config.resultlists_loc %]">
-<p>
-
-<p>
+<p />
 <form method="get" action="[% hostself %]">
 [%- FOREACH i IN queryargs -%]
-<input type="hidden" name="[% i.key %]" value="[% i.value %]">
+<input type="hidden" name="[% i.key %]" value="[% i.value %]" />
 [%- END -%]
 
 <table width="100%">
 <tr><th>Optionen</th></tr>
 <tr><td class="boxed">
-<b>Sortierung:<b>&nbsp;
-<select name=sorttype><option value="author">nach Autor</option><option value="title">nach Titel</option><option value="yearofpub">nach Jahr</option><option value="publisher">nach Verlag</option><option value="signature">nach Signatur</option></select>&nbsp;<select name=sortorder><option value="up">aufsteigend</option><option value="down">absteigend</option></select>
+<b>Sortierung:</b>&nbsp;
+<select name="sorttype"><option value="author">nach Autor</option><option value="title">nach Titel</option><option value="yearofpub">nach Jahr</option><option value="publisher">nach Verlag</option><option value="signature">nach Signatur</option></select>&nbsp;<select name="sortorder"><option value="up">aufsteigend</option><option value="down">absteigend</option></select>
 [% IF sortselect %]
 <select name="sortall">
 [%- FOREACH select IN sortselect -%]
@@ -29,7 +27,10 @@
 [%- END -%]
 </select>
 [%- END -%]
-&nbsp;<input type="submit" value="Los"></form>&nbsp;&nbsp;&nbsp;[% thissortstring %]</td></tr></table><p>
+&nbsp;<input type="submit" value="Los" />&nbsp;&nbsp;&nbsp;[% thissortstring %]
+</td></tr>
+</table>
+<p />
 </form>
 
 <table>

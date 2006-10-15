@@ -341,7 +341,7 @@ sub handler {
       $profilresult->finish();
     }
     
-    $r->internal_redirect("http://$config{servername}$config{databaseprofile_loc}?sessionID=$sessionID&action=show");
+    $r->internal_redirect("http://$config{servername}$config{databaseprofile_loc}?sessionID=$sessionID;action=show");
 
   }
 
@@ -358,7 +358,7 @@ sub handler {
     
     $profilresult->finish();
     
-    $r->internal_redirect("http://$config{servername}$config{databaseprofile_loc}?sessionID=$sessionID&action=show");
+    $r->internal_redirect("http://$config{servername}$config{databaseprofile_loc}?sessionID=$sessionID;action=show");
     
   }
 

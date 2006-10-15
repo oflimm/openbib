@@ -155,7 +155,7 @@ sub handler {
     
       $idnresult->finish();
       
-      $r->internal_redirect("http://$config{servername}$config{searchframe_loc}?sessionID=$sessionID&view=$view");
+      $r->internal_redirect("http://$config{servername}$config{searchframe_loc}?sessionID=$sessionID;view=$view");
       
     }
     
@@ -182,71 +182,89 @@ sub handler {
       my @catdb=();
 
       while (my $result=$idnresult->fetchrow_hashref){
-	my $category=$result->{'faculty'};
-	my $name=$result->{'description'};
-	my $systemtype=$result->{'system'};
-	my $pool=$result->{'dbname'};
-	my $url=$result->{'url'};
-	my $sigel=$result->{'sigel'};
-	
-	my $rcolumn;
+          my $category=$result->{'faculty'};
+          my $name=$result->{'description'};
+          my $systemtype=$result->{'system'};
+          my $pool=$result->{'dbname'};
+          my $url=$result->{'url'};
+          my $sigel=$result->{'sigel'};
+          
+          my $rcolumn;
+          
+          if ($systemtype eq "a"){
+              $stype{$pool}="yellow";
+          }
+          elsif ($systemtype eq "b"){
+              $stype{$pool}="red";
+          }
+          elsif ($systemtype eq "l"){
+              $stype{$pool}="green";
+          }
+          elsif ($systemtype eq "s"){
+              $stype{$pool}="blue";
+          }
+          
+          if ($category ne $lastcategory){
+              while ($count % $maxcolumn != 0){
+                  
+                  $rcolumn=($count % $maxcolumn)+1;
+                  # 'Leereintrag erzeugen'
+                  push @catdb, { 
+                      column => $rcolumn, 
+                      category => $lastcategory,
+                      db => '',
+                      name => '',
+                      systemtype => '',
+                      sigel => '',
+                      url => '',
+                  };
+                  
+                  $count++;
+              }
+              
+              $count=0;
+          }
+          $lastcategory=$category;
+          
+          $rcolumn=($count % $maxcolumn)+1;
+          
+          my $checked="";
+          if (defined $checkeddb{$pool}){
+              $checked="checked=\"checked\"";
+          }
+          
+          push @catdb, { 
+              column => $rcolumn,
+              category => $category,
+              db => $pool,
+              name => $name,
+              systemtype => $stype{$pool},
+              sigel => $sigel,
+              url => $url,
+              checked => $checked,
+          };
+          
+          
+          $count++;
+      }
 
-	if ($systemtype eq "a"){
-	  $stype{$pool}="yellow";
-	}
-	elsif ($systemtype eq "b"){
-	  $stype{$pool}="red";
-	}
-	elsif ($systemtype eq "l"){
-	  $stype{$pool}="green";
-	}
-	elsif ($systemtype eq "s"){
-	  $stype{$pool}="blue";
-	}
-
-	if ($category ne $lastcategory){
-	  while ($count % $maxcolumn != 0){
-
-	    $rcolumn=($count % $maxcolumn)+1;
-	    # 'Leereintrag erzeugen'
-	    push @catdb, { 
-			  column => $rcolumn, 
-			  category => $lastcategory,
-			  db => '',
-			  name => '',
-			  systemtype => '',
-			  sigel => '',
-			  url => '',
-			 };
-	    
-	    $count++;
-	  }
-
-	  $count=0;
-	}
-
-	$lastcategory=$category;
-
-	$rcolumn=($count % $maxcolumn)+1;
-
-	my $checked="";
-	if (defined $checkeddb{$pool}){
-          $checked="checked=\"checked\"";
-        }
-
-	push @catdb, { 
-		      column => $rcolumn,
-		      category => $category,
-		      db => $pool,
-		      name => $name,
-		      systemtype => $stype{$pool},
-		      sigel => $sigel,
-		      url => $url,
-		      checked => $checked,
-		     };
-
-
-	$count++;
+      # Ueberbleibende Elemente erzeugen, die wegen des Endes und eines ausbleibenden
+      # Kategorienwechsels vergessen wuerden
+      while ($count % $maxcolumn != 0){
+          
+          my $rcolumn=($count % $maxcolumn)+1;
+          # 'Leereintrag erzeugen'
+          push @catdb, { 
+              column => $rcolumn,
+              category => $lastcategory,
+              db => '',
+              name => '',
+              systemtype => '',
+              sigel => '',
+              url => '',
+          };
+          
+          $count++;
       }
       
       # TT-Data erzeugen

@@ -257,7 +257,7 @@ sub handler {
    $loginname=~s/#/\%23/;
 
    if ($loginname && $password){
-     $authurl="&USERID=$loginname&PASSWORD=$password";
+     $authurl=";USERID=$loginname;PASSWORD=$password";
    }
  }
 

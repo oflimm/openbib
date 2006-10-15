@@ -6,7 +6,7 @@
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
   <tr class="titlerow">
     <td width="20">&nbsp;</td>
-    <td valign="middle" align="left" height="32"><img src="/images/openbib/[% database %].png"></td>
+    <td valign="middle" align="left" height="32"><img src="/images/openbib/[% database %].png" alt="Schriftzug der DB [% database %]" /></td>
       <td>&nbsp;</td>
       <td class="fbuttonarea" align="right" width="180">
 	<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% database %];singleidn=[% titidn %]" target="header" title="In die Merkliste"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="In die Merkliste" border="0" /></a>&nbsp;
@@ -22,24 +22,24 @@
 [%- IF prevurl -%]
 <td align="left"><a href="[% prevurl %]">[Vorheriger Titel]</a></td>
 [%- ELSE -%]
-<td align="left"><span color="slategrey">[Vorheriger Titel]</span></td>
+<td align="left"><span style="color:slategrey">[Vorheriger Titel]</span></td>
 [%- END -%]
 <td></td>
 [%- IF nexturl -%]
 <td align="right"><a href="[% nexturl %]">[N&auml;chster Titel]</a></td>
 [%- ELSE -%]
-<td align="right"><span color="slategrey">[N&auml;chster Titel]</span></td>
+<td align="right"><span style="color:slategrey">[N&auml;chster Titel]</span></td>
 [%- END -%]
 </tr>
 </table>
 
-<p>
+<p />
 <!-- Title begins here -->
 <table width="100%">
 <tr><th>Titelaufnahme</th></tr>
 <tr><td class="boxedclear">
 
-<table cellpadding=2>
+<table cellpadding="2">
 <tr><td>Kategorie</td><td>Inhalt</td></tr>
 
 [%- FOREACH normkat IN normset -%]
@@ -62,7 +62,7 @@ END;
 <a
 href="http://[% config.loadbalancerservername %][% config.connector_rss_loc %]/neuzugang_nach_sys/[% rssid %]/[%
 database %].rdf" title="RSS-Feed abonnieren" target="_blank"><img
-src="/images/openbib/rssfeed.png"></a>&nbsp;
+src="/images/openbib/rssfeed.png" alt="RSS-Feed Icon" /></a>&nbsp;
 [% END %]
 <a href="[% utf2iso(normkat.url) %]" title="Begriff in diesem Katalog suchen">[% utf2iso(normkat.contents) %]</a>&nbsp;[% utf2iso(normkat.supplement) %]</td></tr>
 [% ELSE %]
@@ -78,7 +78,7 @@ href="[% utf2iso(normkat.url) %]" [% openextern %] >[% utf2iso(normkat.contents)
 <a
 href="http://[% config.loadbalancerservername %][% config.connector_rss_loc %]/neuzugang_nach_aut/[% rssid %]/[%
 database %].rdf" title="RSS-Feed abonnieren" target="_blank"><img
-src="/images/openbib/rssfeed.png"></a>&nbsp;
+src="/images/openbib/rssfeed.png" alt="RSS-Feed Icon" /></a>&nbsp;
 [% END %]
 <a href="[% utf2iso(normkat.globalurl) %]" title="Begriff in allen Katalogen suchen"><span class="globalsearch">G</span></a>&nbsp;<a href="[% utf2iso(normkat.url) %]" title="Begriff in diesem Katalog suchen">[% utf2iso(normkat.contents) %]</a>&nbsp;[% utf2iso(normkat.supplement) %]</td></tr>
 [% ELSIF normkat.desc == 'Person' ;
@@ -89,7 +89,7 @@ src="/images/openbib/rssfeed.png"></a>&nbsp;
 <a
 href="http://[% config.loadbalancerservername %][% config.connector_rss_loc %]/neuzugang_nach_aut/[% rssid %]/[%
 database %].rdf" title="RSS-Feed abonnieren" target="_blank"><img
-src="/images/openbib/rssfeed.png"></a>&nbsp;
+src="/images/openbib/rssfeed.png" alt="RSS-Feed Icon" /></a>&nbsp;
 [% END %]
 <a href="[% utf2iso(normkat.globalurl) %]" title="Begriff in allen Katalogen suchen"><span class="globalsearch">G</span></a>&nbsp;<a href="[% utf2iso(normkat.url) %]" title="Begriff in diesem Katalog suchen">[% utf2iso(normkat.contents) %]</a>&nbsp;[% utf2iso(normkat.supplement) %]</td></tr>
 [% ELSIF normkat.desc == 'Gefeierte Person' ;
@@ -100,7 +100,7 @@ src="/images/openbib/rssfeed.png"></a>&nbsp;
 <a
 href="http://[% config.loadbalancerservername %][% config.connector_rss_loc %]/neuzugang_nach_aut/[% rssid %]/[%
 database %].rdf" title="RSS-Feed abonnieren" target="_blank"><img
-src="/images/openbib/rssfeed.png"></a>&nbsp;
+src="/images/openbib/rssfeed.png" alt="RSS-Feed Icon" /></a>&nbsp;
 [% END %]
 <a href="[% utf2iso(normkat.globalurl) %]" title="Begriff in allen Katalogen suchen"><span class="globalsearch">G</span></a>&nbsp;<a href="[% utf2iso(normkat.url) %]" title="Begriff in diesem Katalog suchen">[% utf2iso(normkat.contents) %]</a>&nbsp;[% utf2iso(normkat.supplement) %]</td></tr>
 [% ELSIF normkat.desc == 'K&ouml;rperschaft' ;
@@ -111,7 +111,7 @@ src="/images/openbib/rssfeed.png"></a>&nbsp;
 <a
 href="http://[% config.loadbalancerservername %][% config.connector_rss_loc %]/neuzugang_nach_kor/[% rssid %]/[%
 database %].rdf" title="RSS-Feed abonnieren" target="_blank"><img
-src="/images/openbib/rssfeed.png"></a>&nbsp;
+src="/images/openbib/rssfeed.png" alt="RSS-Feed Icon" /></a>&nbsp;
 [% END %]
 <a href="[% utf2iso(normkat.globalurl) %]" title="Begriff in allen Katalogen suchen"><span class="globalsearch">G</span></a>&nbsp;<a href="[% utf2iso(normkat.url) %]" title="Begriff in diesem Katalog suchen">[% utf2iso(normkat.contents) %]</a>&nbsp;[% utf2iso(normkat.supplement) %]</td></tr>
 [% ELSIF normkat.desc == 'Urheber' ;
@@ -122,7 +122,7 @@ src="/images/openbib/rssfeed.png"></a>&nbsp;
 <a
 href="http://[% config.loadbalancerservername %][% config.connector_rss_loc %]/neuzugang_nach_kor/[% rssid %]/[%
 database %].rdf" title="RSS-Feed abonnieren" target="_blank"><img
-src="/images/openbib/rssfeed.png"></a>&nbsp;
+src="/images/openbib/rssfeed.png" alt="RSS-Feed Icon" /></a>&nbsp;
 [% END %]
 <a href="[% utf2iso(normkat.globalurl) %]" title="Begriff in allen Katalogen suchen"><span class="globalsearch">G</span></a>&nbsp;<a href="[% utf2iso(normkat.url) %]" title="Begriff in diesem Katalog suchen">[% utf2iso(normkat.contents) %]</a>&nbsp;[% utf2iso(normkat.supplement) %]</td></tr>
 [% ELSIF normkat.desc == 'Schlagwort' ;
@@ -133,7 +133,7 @@ src="/images/openbib/rssfeed.png"></a>&nbsp;
 <a
 href="http://[% config.loadbalancerservername %][% config.connector_rss_loc %]/neuzugang_nach_swt/[% rssid %]/[%
 database %].rdf" title="RSS-Feed abonnieren" target="_blank"><img
-src="/images/openbib/rssfeed.png"></a>&nbsp;
+src="/images/openbib/rssfeed.png" alt="RSS-Feed Icon" /></a>&nbsp;
 [% END %]
 <a href="[% utf2iso(normkat.globalurl) %]" title="Begriff in allen Katalogen suchen"><span class="globalsearch">G</span></a>&nbsp;<a href="[% utf2iso(normkat.url) %]" title="Begriff in diesem Katalog suchen">[% utf2iso(normkat.contents) %]</a>&nbsp;[% utf2iso(normkat.supplement) %]</td></tr>
 [% ELSE %]
@@ -144,12 +144,12 @@ src="/images/openbib/rssfeed.png"></a>&nbsp;
 </table>
 
 [% IF mexnormset.size > 0 %]
-<p>
+<p />
 <table width="100%">
-<tr class="titlerow" align=center><td width="225">Besitzende Bibliothek</td><td width="250">Standort</td><td width="120">Inventarnummer</td><td width="250">Lokale Signatur</td><td width="230">Bestandsverlauf</td></tr>
+<tr class="titlerow" align="center"><td width="225">Besitzende Bibliothek</td><td width="250">Standort</td><td width="120">Inventarnummer</td><td width="250">Lokale Signatur</td><td width="230">Bestandsverlauf</td></tr>
 
 [% FOREACH mex IN mexnormset %]
-<tr align=center><td><a href="[% utf2iso(mex.bibinfourl) %]" target="_blank"><strong>[% utf2iso(mex.bibliothek) %]</strong></a></td><td>[% utf2iso(mex.standort) %]</td><td>[% utf2iso(mex.inventarnummer) %]</td><td><strong><span id="rlsignature">[% utf2iso(mex.signatur) %]</span></strong></td><td>[% utf2iso(mex.erschverl) %]</td></tr>
+<tr align="center"><td><a href="[% utf2iso(mex.bibinfourl) %]" target="_blank"><strong>[% utf2iso(mex.bibliothek) %]</strong></a></td><td>[% utf2iso(mex.standort) %]</td><td>[% utf2iso(mex.inventarnummer) %]</td><td><strong><span class="rlsignature">[% utf2iso(mex.signatur) %]</span></strong></td><td>[% utf2iso(mex.erschverl) %]</td></tr>
 [% END %]
 </table>
 [% END %]
@@ -158,7 +158,7 @@ src="/images/openbib/rssfeed.png"></a>&nbsp;
 </table>
 
 [% IF circset.size > 0 %]
-<p>
+<p />
 <table width="100%">
 <tr><th>Ausleihe/Exemplare</th></tr>
 <tr><td class="boxedclear">
@@ -166,7 +166,7 @@ src="/images/openbib/rssfeed.png"></a>&nbsp;
 <table width=100%">
 <tr class="titlerow" align="center"><td width="225">Besitzende Bibliothek</td><td width="250">Standort</td><td width="120">Lokale Signatur</td><td width="120">Ausleihstatus</td><td width="110">Ausleihsystem</td></tr>
 [% FOREACH mex IN circset %]
-<tr align="center"><td><a href="[% utf2iso(mex.Bibinfourl) %]" target="_blank"><strong>[% utf2iso(mex.Bibliothek) %]</strong></a></td><td>[% utf2iso(mex.Standort) %]</td><td><strong>[% utf2iso(mex.Signatur) %]</strong></td><td><strong>[% utf2iso(mex.Status) %]</strong></td><td class="circurl"><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png">&nbsp;<a TARGET=_blank href="[% utf2iso(mex.Ausleihurl) %]">[% utf2iso(mex.Ausleihstring) %]</a></td></tr>
+<tr align="center"><td><a href="[% utf2iso(mex.Bibinfourl) %]" target="_blank"><strong>[% utf2iso(mex.Bibliothek) %]</strong></a></td><td>[% utf2iso(mex.Standort) %]</td><td><strong>[% utf2iso(mex.Signatur) %]</strong></td><td><strong>[% utf2iso(mex.Status) %]</strong></td><td class="circurl"><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon"/>&nbsp;<a target="_blank" href="[% utf2iso(mex.Ausleihurl) %]">[% utf2iso(mex.Ausleihstring) %]</a></td></tr>
 [% END %]
 
 </table>
@@ -175,25 +175,23 @@ src="/images/openbib/rssfeed.png"></a>&nbsp;
 </td></tr>
 </table>
 [% END %]
-<p>
+<p />
 <!-- Title ends here -->
-
-</div>
 
 <p />
 
-<hr>
+<hr />
 
 <form method="get" action="[% config.search_loc %]">
-<input type="hidden" name="sessionID" value="[% sessionID %]">
-<input type="hidden" name="searchmode" value="[% searchmode %]">
-<input type="hidden" name="rating" value="[% rating %]">
-<input type="hidden" name="bookinfo" value="[% bookinfo %]">
-<input type="hidden" name="hitrange" value="[% hitrange %]">
-<input type="hidden" name="database" value="[% database %]">
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<input type="hidden" name="searchmode" value="[% searchmode %]" />
+<input type="hidden" name="rating" value="[% rating %]" />
+<input type="hidden" name="bookinfo" value="[% bookinfo %]" />
+<input type="hidden" name="hitrange" value="[% hitrange %]" />
+<input type="hidden" name="database" value="[% database %]" />
 
 <table>
-<tr><td class="category">Schlagwortindex dieses Katalogs</td><td>&nbsp;<input type="text" name="swtindex" value="" size="20" maxlength="50" title="Geben Sie hier den Schlagwortanfang ein">&nbsp;<input type="submit" value="Suchen">&nbsp;</td></tr>
+<tr><td class="category">Schlagwortindex dieses Katalogs</td><td>&nbsp;<input type="text" name="swtindex" value="" size="20" maxlength="50" title="Geben Sie hier den Schlagwortanfang ein" />&nbsp;<input type="submit" value="Suchen" />&nbsp;</td></tr>
 </table>
 
 </form>

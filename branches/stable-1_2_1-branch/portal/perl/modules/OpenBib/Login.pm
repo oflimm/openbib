@@ -352,7 +352,7 @@ sub handler {
     # Und nun wird ein komplett neue Frameset aufgebaut
 
     my $headerframeurl="http://$config{servername}$config{headerframe_loc}?sessionID=$sessionID";
-    my $bodyframeurl="http://$config{servername}$config{userprefs_loc}?sessionID=$sessionID&action=showfields";
+    my $bodyframeurl="http://$config{servername}$config{userprefs_loc}?sessionID=$sessionID;action=showfields";
     
     if ($view ne ""){
       $headerframeurl.="&view=$view";
@@ -362,7 +362,7 @@ sub handler {
     # Fehlerbehandlung
     
     if ($loginfailed){
-      $bodyframeurl="http://$config{servername}$config{login_loc}?sessionID=$sessionID&action=loginfailed&code=$loginfailed";
+      $bodyframeurl="http://$config{servername}$config{login_loc}?sessionID=$sessionID;action=loginfailed;code=$loginfailed";
     }
     
     my $ttdata={

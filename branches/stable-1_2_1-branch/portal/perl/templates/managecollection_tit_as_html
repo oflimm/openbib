@@ -1,4 +1,4 @@
-<tr class="titlerow"><td><input type="checkbox" name="loeschtit" value="[% titset.database %]:[% titset.titidn %]"></td><td>aus: [% utf2iso(titset.dbdesc) %]<td></tr><tr><td>&nbsp;</td><td>
+<tr class="titlerow"><td><input type="checkbox" name="loeschtit" value="[% titset.database %]:[% titset.titidn %]" /></td><td>aus: [% utf2iso(titset.dbdesc) %]</td></tr><tr><td>&nbsp;</td><td>
 [% normset = titset.tit %]
 [% mexnormset = titset.mex %]
 [% circset = titset.circ %]
@@ -8,7 +8,7 @@
 <tr><th>Titelaufnahme</th></tr>
 <tr><td class="boxedclear">
 
-<table cellpadding=2>
+<table cellpadding="2">
 <tr><td>Kategorie</td><td>Inhalt</td></tr>
 
 [%- FOREACH normkat IN normset -%]
@@ -17,12 +17,12 @@
 </table>
 
 [% IF mexnormset.size > 0 %]
-<p>
+<p />
 <table width="100%">
-<tr class="titlerow" align=center><td width="225">Besitzende Bibliothek</td><td width="250">Standort</td><td width="120">Inventarnummer</td><td width="250">Lokale Signatur</td><td width="230">Bestandsverlauf</td></tr>
+<tr class="titlerow" align="center"><td width="225">Besitzende Bibliothek</td><td width="250">Standort</td><td width="120">Inventarnummer</td><td width="250">Lokale Signatur</td><td width="230">Bestandsverlauf</td></tr>
 
 [% FOREACH mex IN mexnormset %]
-<tr align=center><td><a href="[% utf2iso(mex.bibinfourl) %]"><strong>[% utf2iso(mex.bibliothek) %]</strong></a></td><td>[% utf2iso(mex.standort) %]</td><td>[% utf2iso(mex.inventarnummer) %]</td><td><strong><span id="rlsignature">[% utf2iso(mex.signatur) %]</span></strong></td><td>[% utf2iso(mex.erschverl) %]</td></tr>
+<tr align="center"><td><a href="[% utf2iso(mex.bibinfourl) %]"><strong>[% utf2iso(mex.bibliothek) %]</strong></a></td><td>[% utf2iso(mex.standort) %]</td><td>[% utf2iso(mex.inventarnummer) %]</td><td><strong><span class="rlsignature">[% utf2iso(mex.signatur) %]</span></strong></td><td>[% utf2iso(mex.erschverl) %]</td></tr>
 [% END %]
 </table>
 [% END %]
@@ -31,7 +31,7 @@
 </table>
 
 [% IF circset.size > 0 %]
-<p>
+<p />
 <table width="100%">
 <tr><th>Ausleihe/Exemplare</th></tr>
 <tr><td class="boxedclear">
@@ -39,13 +39,13 @@
 <table>
 <tr class="titlerow" align="center"><td width="225">Besitzende Bibliothek</td><td width="250">Standort</td><td width="120">Lokale Signatur</td><td width="120">Ausleihstatus</td><td width="110">Ausleihsystem</td></tr>
 [% FOREACH mex IN circset %]
-<tr align="center"><td><a href="[% utf2iso(mex.Bibinfourl) %]"><strong>[% utf2iso(mex.Bibliothek) %]</strong></a></td><td>[% utf2iso(mex.Standort) %]</td><td><strong>[% utf2iso(mex.Signatur) %]</strong></td><td><strong>[% utf2iso(mex.Status) %]</strong></td><td class="circurl"><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png">&nbsp;<a TARGET=_blank href="[% utf2iso(mex.Ausleihurl) %]">[% utf2iso(mex.Ausleihstring) %]</a></td></tr>
+<tr align="center"><td><a href="[% utf2iso(mex.Bibinfourl) %]"><strong>[% utf2iso(mex.Bibliothek) %]</strong></a></td><td>[% utf2iso(mex.Standort) %]</td><td><strong>[% utf2iso(mex.Signatur) %]</strong></td><td><strong>[% utf2iso(mex.Status) %]</strong></td><td class="circurl"><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" />&nbsp;<a target="_blank" href="[% utf2iso(mex.Ausleihurl) %]">[% utf2iso(mex.Ausleihstring) %]</a></td></tr>
 [% END %]
 </table>
 </td></tr>
 </table>
 [% END %]
-<p>
+<p />
 <!-- Title ends here -->
 </td></tr>
 <tr><td></td><td></td></tr>

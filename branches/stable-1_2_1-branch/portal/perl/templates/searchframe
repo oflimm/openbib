@@ -14,19 +14,19 @@
 [% PROCESS common/subtemplate name="user_info" %]
 [% END %]
 
-<ul id="tabbingmenu">
+<ul class="tabbingmenu">
    <li><a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">Einfache Recherche</a></li>
    <li><a class="active" href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">Komplexe Recherche</a></li>
 </ul>
 
-<div id="content">
+<div class="content">
 
 <p />
 <p />
 
 [% IF prevqueries %]
 
-<form method="get" id="queries" action="http://[% config.servername %][% config.dispatchquery_loc %]">
+<form method="get" class="queries" action="http://[% config.servername %][% config.dispatchquery_loc %]">
 <table width="100%">
 <tr><th>Suchhistorie</th></tr>
 <tr><td class="boxed">
@@ -44,7 +44,7 @@
 <p />
 <p />
 
-<form method="get" id="openbib" action="http://[% config.servername %][% config.virtualsearch_loc %]">
+<form method="get" class="openbib" action="http://[% config.servername %][% config.virtualsearch_loc %]">
 <input type="hidden" name="hitrange" value="-1" />
 <input type="hidden" name="view" value="[% view %]" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
@@ -89,15 +89,15 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
 [% END %]
 
 [% IF showverf %]
-<tr><td class="category">Verfasser</td><td class="category"><select name="bool9"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="verf" value="[% verf %]" size="30" maxlength="200" /></td><td><input type="submit" name="verfindex" value="Index"></td></tr>
+<tr><td class="category">Verfasser</td><td class="category"><select name="bool9"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="verf" value="[% verf %]" size="30" maxlength="200" /></td><td><input type="submit" name="verfindex" value="Index" /></td></tr>
 [% END %]
 
 [% IF showkor %]
-<tr><td class="category">K&ouml;rperschaft</td><td class="category"><select name="bool3"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="kor" value="[% kor %]" size="30" maxlength="200" /></td><td><input type="submit" name="korindex" value="Index"></td></tr>
+<tr><td class="category">K&ouml;rperschaft</td><td class="category"><select name="bool3"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="kor" value="[% kor %]" size="30" maxlength="200" /></td><td><input type="submit" name="korindex" value="Index" /></td></tr>
 [% END %]
 
 [% IF showswt %]
-<tr><td class="category">Schlagwort</td><td class="category"><select name="bool2"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="swt" value="[% swt %]" size="30" maxlength="200" /></td><td><input type="submit" name="swtindex" value="Index"></td></tr>
+<tr><td class="category">Schlagwort</td><td class="category"><select name="bool2"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="swt" value="[% swt %]" size="30" maxlength="200" /></td><td><input type="submit" name="swtindex" value="Index" /></td></tr>
 [% END %]
 
 [% IF shownotation %]

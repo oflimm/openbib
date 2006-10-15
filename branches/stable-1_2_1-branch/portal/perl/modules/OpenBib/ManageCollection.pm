@@ -148,7 +148,7 @@ sub handler {
       # damit verlinkt
       
       if ($url ne ""){
-	$dbinfo{"$dbname"}="<a href=\"$url\" target=_blank>$description</a>";
+	$dbinfo{"$dbname"}="<a href=\"$url\" target=\"_blank\">$description</a>";
       }
       else {
 	$dbinfo{"$dbname"}="$description";

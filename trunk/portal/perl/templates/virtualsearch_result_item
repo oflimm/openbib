@@ -63,7 +63,7 @@ align="right" colspan="3"><strong>[%- IF treffer == qopts.maxhits && qopts.sb ==
 %]</span><br /><a href="[% config.search_loc %]?sessionID=[%
 sessionID %];database=[% item.database %];searchsingletit=[% item.id
 %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
-class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></td><td><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="header"><span class="rlcollect"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="header" title="[% msg.maketext("In die Merkliste") %]"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="[% msg.maketext("In die Merkliste") %]" border=0></a></span></a></td><td align=left><b>[% signatur %]</b></td></tr>
+class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></td><td><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="header"><span class="rlcollect"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="header" title="[% msg.maketext("In die Merkliste") %]"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="[% msg.maketext("In die Merkliste") %]" border="0"></a></span></a></td><td align="left"><b>[% signatur %]</b></td></tr>
 [%- IF listrow == 'listrow1' -%]
 [%- listrow = 'listrow2' -%]
 [%- ELSE -%]
@@ -84,7 +84,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <tr><td class="boxedclear">
 [% FOREACH termitem IN relevantaut %]
 <a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID
-%];sb=xapian;drilldown=1;fs=[% lastquery %] [% termitem %]">[% termitem %]</a><br>
+%];sb=xapian;drilldown=1;fs=[% lastquery %] [% termitem %]">[% termitem %]</a><br />
 [% END %]
 </td></tr>
 </table>
@@ -96,7 +96,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <tr><td class="boxedclear">
 [% FOREACH termitem IN relevantkor %]
 <a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID
-%];sb=xapian;drilldown=1;fs=[% lastquery %] [% termitem %]">[% termitem %]</a><br>
+%];sb=xapian;drilldown=1;fs=[% lastquery %] [% termitem %]">[% termitem %]</a><br />
 [% END %]
 </td></tr>
 </table>
@@ -109,7 +109,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <tr><td class="boxedclear">
 [% FOREACH termitem IN termfeedback.${"hst"} %]
 <a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID
-%];sb=xapian;drilldown=1;fs=[% lastquery %] [% termitem.name %]">[% termitem.name %]</a><br>
+%];sb=xapian;drilldown=1;fs=[% lastquery %] [% termitem.name %]">[% termitem.name %]</a><br />
 [% END %]
 </td></tr>
 </table>
@@ -121,7 +121,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <tr><td class="boxedclear">
 [% FOREACH termitem IN relevantswt %]
 <a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID
-%];sb=xapian;drilldown=1;fs=[% lastquery %] [% termitem %]">[% termitem %]</a><br>
+%];sb=xapian;drilldown=1;fs=[% lastquery %] [% termitem %]">[% termitem %]</a><br />
 [% END %]
 </td></tr>
 </table>
@@ -133,7 +133,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <tr><td class="boxedclear">
 [% FOREACH termitem IN termfeedback.${"ejahr"} %]
 <a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID
-%];sb=xapian;drilldown=1;fs=[% lastquery %] [% termitem.name %]">[% termitem.name %]</a><br>
+%];sb=xapian;drilldown=1;fs=[% lastquery %] [% termitem.name %]">[% termitem.name %]</a><br />
 [% END %]
 </td></tr>
 </table>
@@ -179,9 +179,9 @@ output = [
 
 FOREACH thisoutput IN output ;
 %]
-<b>[% thisoutput.title%]</b><br>
+<b>[% thisoutput.title%]</b><br />
 [% FOREACH termitem IN termfeedback.${thisoutput.cat} %]
-[% termitem.name %]<br>
+[% termitem.name %]<br />
 [% END %]
 
 [% END %]

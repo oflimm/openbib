@@ -10,12 +10,12 @@
 [% PROCESS testsystem_info %]
 [% END %]
 
-<ul id="tabbingmenu">
+<ul class="tabbingmenu">
    <li><a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">Einfache Recherche</a></li>
    <li><a class="active" href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">Komplexe Recherche</a></li>
 </ul>
 
-<div id="content">
+<div class="content">
 
 <p />
 <p />
@@ -76,13 +76,13 @@ zugeh&ouml;rigen digitalisierten Karten-Katalogen
 <p />
 
 <table>
-  <tr><td><input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="tosearch" value="In ausgewählten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="Lösche Eingabemaske"></td></tr>
+  <tr><td><input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="tosearch" value="In ausgewÃ¤hlten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="LÃ¶sche Eingabemaske"></td></tr>
 </table>
 [% ELSE %]
 Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs %] einzelnen <a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">Katalogen</a> recherchieren oder auch sofort in allen zusammen.
 <p />
 <table>
-  <tr><td><input type="submit" title="Hier suchen Sie in allen Katalogen auf einmal" name="tosearch" value="In allen Katalogen suchen" />&nbsp;<input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="tosearch" value="In ausgewählten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="Lösche Eingabemaske" /></td></tr>
+  <tr><td><input type="submit" title="Hier suchen Sie in allen Katalogen auf einmal" name="tosearch" value="In allen Katalogen suchen" />&nbsp;<input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="tosearch" value="In ausgewÃ¤hlten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="LÃ¶sche Eingabemaske" /></td></tr>
 </table>
 [% END %]
 
@@ -159,7 +159,7 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
 <tr><td class="boxed">
 <table>
 <tr><td bgcolor="#ADD8E6"><b>Maximale Trefferzahl pro Katalog</b></td><td colspan="3"><select name="maxhits"><option selected="selected">200</option><option>500</option><option>1000</option><option value="9999999">alle</option></select></td></tr>
-<tr><td bgcolor="#ADD8E6"><b>Sortierung nach</b></td><td colspan="2"><select name="sorttype"><option value="author" selected="selected">Autor/Körperschaft</option><option value="title">Titel</option><option value="yearofpub">Erscheinungsjahr</option></select><select name="sortorder"><option value="up">aufsteigend</option><option value="down">absteigend</option></select>&nbsp;pro Katalog</td><td></td></tr>
+<tr><td bgcolor="#ADD8E6"><b>Sortierung nach</b></td><td colspan="2"><select name="sorttype"><option value="author" selected="selected">Autor/KÃ¶rperschaft</option><option value="title">Titel</option><option value="yearofpub">Erscheinungsjahr</option></select><select name="sortorder"><option value="up">aufsteigend</option><option value="down">absteigend</option></select>&nbsp;pro Katalog</td><td></td></tr>
 <tr><td bgcolor="#ADD8E6"><b>Suchprofil</b></td><td colspan="3"><select name="profil">
 [%- IF dbcount || userprofiles -%]
 [% dbcount %] [% userprofiles %]
@@ -187,11 +187,11 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
 
 [% IF view %]
 <table>
-  <tr><td><input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="tosearch" value="In ausgewählten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="Lösche Eingabemaske" /></td></tr>
+  <tr><td><input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="tosearch" value="In ausgewÃ¤hlten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="LÃ¶sche Eingabemaske" /></td></tr>
 </table>
 [% ELSE %]
 <table>
-  <tr><td><input type="submit" title="Hier suchen Sie in allen Katalogen auf einmal" name="tosearch" value="In allen Katalogen suchen" />&nbsp;<input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="tosearch" value="In ausgewählten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="Lösche Eingabemaske" /></td></tr>
+  <tr><td><input type="submit" title="Hier suchen Sie in allen Katalogen auf einmal" name="tosearch" value="In allen Katalogen suchen" />&nbsp;<input type="submit" title="Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen" name="tosearch" value="In ausgewÃ¤hlten Katalogen suchen" />&nbsp;<input type="reset" title="Hier l&ouml;schen Sie die Eingabefelder" value="LÃ¶sche Eingabemaske" /></td></tr>
 </table>
 [% END %]
 

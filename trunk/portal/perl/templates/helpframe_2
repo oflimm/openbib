@@ -12,16 +12,17 @@
 #######################################################################
 -%]
 [% PROCESS common/subtemplate name="std_header" %]
-  <BODY BGCOLOR="#FFFFFF">
+  <body>
 
-    <ul id="tabbingmenu">
-      <li><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">[% msg.maketext("Suchhilfe") %]</a></li>
-      <li><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=1" target="body">[% msg.maketext("Projekt") %]</a></li>
+    <ul class="tabbingmenu">
+      <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">[% msg.maketext("Suchhilfe") %]</a></li>
+      <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=1" target="body">[% msg.maketext("Projekt") %]</a></li>
       <li><a class="active" href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=2" target="body">[% msg.maketext("KUG-Versionen") %]</a></li>
     </ul>
     
-    <div id="content">
-      <p>
+    <div class="content">
+      <p />
+
 <h1>KUG-Versionen</h1>
 
 <h2 id="kugv2.0">Neuerungen mit Version 2.0</h2>
@@ -81,7 +82,7 @@ Meta-Datenformate verarbeitet werden. Grundlage hierfür ist die
 Restrukturierung der bibliographischen Datenstrukturen in Verbindung
 mit der parametrisierbaren Import-Schnittstelle.
 
-<p>
+<p />
 
 Wiederum wurden wesentliche Entwicklungen und Verbesserungen f&uuml;r
 den Benutzer unsichtbar im Fundament der Anwendung vorgenommen.
@@ -110,7 +111,7 @@ F&uuml;r die Verfasser, K&ouml;rperschaften sowie Schlagworte wurde
 ein virtueller Index als Wortanfangssuche in den ausgew&auml;hlten
 Profil-Katalogen implementiert ist.
 
-<p>
+<p />
 Dar&uuml;berhinaus wurden wesentliche Entwicklungen f&uuml;r den Benutzer unsichbar im Fundament des Recherche-Portals vorgenommen. Es sind dies:
 
 </p>
@@ -159,7 +160,7 @@ entsprechenden Bibliotheken der philosophischen Fakult&auml;t Verweise auf ihre
 zuk&uuml;nftigen digitalen Kartenkataloge eingebunden. Ein Beispiel ist z.B. der
 View des Instituts f&uuml;r Deutsche Sprache und Literatur unter:
 
-<p>
+<p />
 <a href="http://kug.ub.uni-koeln.de/portal/lastverteilung?view=inst405">http://kug.ub.uni-koeln.de/portal/lastverteilung?view=inst405</a>
 </p>
 

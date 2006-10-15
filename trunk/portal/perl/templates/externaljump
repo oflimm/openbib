@@ -18,11 +18,11 @@
 
   <body>
 
-<ul id="tabbingmenu">
+<ul class="tabbingmenu">
    <li><a class="active" href="http://[% config.servername %][% config.externaljump_loc %]?sessionID=[% sessionID %];queryid=[% queryid %];action=action=Weiter+als+externe+Recherche" target="body">[% msg.maketext("Sprung in externe Recherchequellen") %]</a></li>
 </ul>
 
-<div id="content">
+<div class="content">
 
 <p />
 
@@ -91,49 +91,49 @@
 <tr><td class="boxedclear" style="font-size:0.9em">
 
 <table>
-<tr><td><img src="http://kug.ub.uni-koeln.de/images/openbib/external/digibib.gif" />&nbsp;&nbsp;</td><td><b>[% msg.maketext("Digitale Bibliothek / Monographien (Fernleihe)") %]</b></td><td>=&gt;</td><td>
+<tr><td><img src="http://kug.ub.uni-koeln.de/images/openbib/external/digibib.gif" alt="DigiBib-Logo" />&nbsp;&nbsp;</td><td><b>[% msg.maketext("Digitale Bibliothek / Monographien (Fernleihe)") %]</b></td><td>=&gt;</td><td>
 
 [% IF thisquery.searchquery.verf.val != '' || thisquery.searchquery.hst.val != '' || thisquery.searchquery.kor.val != '' || thisquery.searchquery.isbn.val != '' %]
-<a href="[% config.hbzmonofernleih_exturl %]&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_HBZ=on&D_PARAM_QUERY_bzAU=[% thisquery.searchquery.verf.val %]&D_PARAM_QUERY_azTI=[% thisquery.searchquery.hst.val %]&D_PARAM_QUERY_czCO=[% thisquery.searchquery.kor.val %]&D_PARAM_QUERY_fzIB=[% thisquery.searchquery.isbn.val %]&D_PARAM_QUERY_hzYR=[% thisquery.searchquery.ejahr.val %][% authurl %]" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a>
+<a href="[% config.hbzmonofernleih_exturl %];D_PARAM_SEARCH_RLBKO=on;D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_HBZ=on;D_PARAM_QUERY_bzAU=[% thisquery.searchquery.verf.val %];D_PARAM_QUERY_azTI=[% thisquery.searchquery.hst.val %];D_PARAM_QUERY_czCO=[% thisquery.searchquery.kor.val %];D_PARAM_QUERY_fzIB=[% thisquery.searchquery.isbn.val %];D_PARAM_QUERY_hzYR=[% thisquery.searchquery.ejahr.val %][% authurl %]" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a>
 [% ELSE %]
 <span class="warning">[% msg.maketext("Ungeeignete Suchfelder") %]</span>
 [% END %]
 
 </td><td>[ [% msg.maketext("&Uuml;bernommene Felder: Titel, Verfasser, K&ouml;rperschaft, ISBN, Erscheinungsjahr") %]]</td></tr>
-<tr><td><img src="http://kug.ub.uni-koeln.de/images/openbib/external/digibib.gif" />&nbsp;&nbsp;</td><td><b>[% msg.maketext("Digitale Bibliothek / Zeitschriften (Aufsatzlieferung)") %]</b></td><td>=&gt;</td><td>
+<tr><td><img src="http://kug.ub.uni-koeln.de/images/openbib/external/digibib.gif" alt="DigiBib-Logo" />&nbsp;&nbsp;</td><td><b>[% msg.maketext("Digitale Bibliothek / Zeitschriften (Aufsatzlieferung)") %]</b></td><td>=&gt;</td><td>
 
 [% IF thisquery.searchquery.hst.val != '' || thisquery.searchquery.kor.val != '' || thisquery.searchquery.issn.val != '' %]
-<a href="[% config.hbzzeitfernleih_exturl %]&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_ZDB=on&D_PARAM_QUERY_azTI=[% thisquery.searchquery.hst.val %]&D_PARAM_QUERY_czCO=[% thisquery.searchquery.kor.val %]&D_PARAM_QUERY_gzIS=[% thisquery.searchquery.issn.val %][% authurl %]" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a>
+<a href="[% config.hbzzeitfernleih_exturl %];D_PARAM_SEARCH_RLBKO=on;D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_ZDB=on;D_PARAM_QUERY_azTI=[% thisquery.searchquery.hst.val %];D_PARAM_QUERY_czCO=[% thisquery.searchquery.kor.val %];D_PARAM_QUERY_gzIS=[% thisquery.searchquery.issn.val %][% authurl %]" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a>
 [% ELSE %]
 <span class="warning">[% msg.maketext("Ungeeignete Suchfelder") %]</span>
 [% END %]
 
 </td><td>[ [% msg.maketext("&Uuml;bernommene Felder: Titel, K&ouml;rperschaft, ISSN") %]]</td></tr>
 <tr><td></td><td></td><td></td><td></td></tr>
-<tr><td><img src="http://kug.ub.uni-koeln.de/images/openbib/external/ezb.gif" />&nbsp;&nbsp;</td><td><b>[% msg.maketext("Datenbankinformationssystem (DBIS)") %]</b></td><td>=&gt;</td><td>
+<tr><td><img src="http://kug.ub.uni-koeln.de/images/openbib/external/ezb.gif" alt="DBIS-Logo" />&nbsp;&nbsp;</td><td><b>[% msg.maketext("Datenbankinformationssystem (DBIS)") %]</b></td><td>=&gt;</td><td>
 
 [% IF thisquery.searchquery.hst.val != '' %]
-<a href="http://www.bibliothek.uni-regensburg.de/dbinfo/suche.phtml?bib_id=usb_k&colors=63&Suchwort=[% thisquery.searchquery.hst.val %]&lett=fs" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a>
+<a href="http://www.bibliothek.uni-regensburg.de/dbinfo/suche.phtml?bib_id=usb_k;colors=63;Suchwort=[% thisquery.searchquery.hst.val %];lett=fs" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a>
 [% ELSE %]
 <span class="warning">[% msg.maketext("Ungeeignete Suchfelder") %]</span>
 [% END %]
 
 </td><td>[ [% msg.maketext("&Uuml;bernommene Felder: Titel") %]]</td></tr>
 <tr><td></td><td></td><td></td><td></td></tr>
-<tr><td><img src="http://kug.ub.uni-koeln.de/images/openbib/external/ezb.gif" />&nbsp;&nbsp;</td><td><b>[% msg.maketext("Elektronische Zeitschriftendatenbank (EZB)") %]</b></td><td>=&gt;</td><td>
+<tr><td><img src="http://kug.ub.uni-koeln.de/images/openbib/external/ezb.gif" alt="EZB-Logo" />&nbsp;&nbsp;</td><td><b>[% msg.maketext("Elektronische Zeitschriftendatenbank (EZB)") %]</b></td><td>=&gt;</td><td>
 
 [% IF thisquery.searchquery.hst.val != '' || thisquery.searchquery.issn.val != '' %]
-<a href="[% config.ezb_exturl %]&jq_term1=[% thisquery.searchquery.issn.val %]&jq_term2=[% thisquery.searchquery.hst.val %]" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a></td>
+<a href="[% config.ezb_exturl %];jq_term1=[% thisquery.searchquery.issn.val %];jq_term2=[% thisquery.searchquery.hst.val %]" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a></td>
 [% ELSE %]
 <span class="warning">[% msg.maketext("Ungeeignete Suchfelder") %]</span>
 [% END %]
 
 <td>[ [% msg.maketext("&Uuml;bernommene Felder: Titel, ISSN") %] ]</td></tr>
 <tr><td></td><td></td><td></td><td></td></tr>
-<tr><td><img src="http://kug.ub.uni-koeln.de/images/openbib/external/medpilot.gif" height="30"/>&nbsp;&nbsp;</td><td><b>[% msg.maketext("MedPilot") %]</td><td>=&gt;</td><td>
+<tr><td><img src="http://kug.ub.uni-koeln.de/images/openbib/external/medpilot.gif" height="30" alt="MedPilot-Logo" />&nbsp;&nbsp;</td><td><b>[% msg.maketext("MedPilot") %]</td><td>=&gt;</td><td>
 
 [% IF thisquery.searchquery.hst.val != '' %]
-<a href="http://www.medpilot.de/medptools/cgi-bin/mpsearch.pl?q=[% thisquery.searchquery.hst.val %]&Suche=Suchen" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a>
+<a href="http://www.medpilot.de/medptools/cgi-bin/mpsearch.pl?q=[% thisquery.searchquery.hst.val %];Suche=Suchen" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a>
 [% ELSE %]
 <span class="warning">[% msg.maketext("Ungeeignete Suchfelder") %]</span>
 [% END %]

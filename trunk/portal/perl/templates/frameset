@@ -33,7 +33,7 @@ END;
    <noframes>
         <p>[% msg.maketext("Sie brauchen einen Browser, der Frames darstellen kann, um diese Seiten mit ihren Inhalten wie geplant zu sehen.") %]</p>
    </noframes>
-   <frame name="header" src="[% headerframeurl %]" noresize >
-   <frame name="body"   src="[% bodyframeurl %]">
+   <frame name="header" src="[% headerframeurl %]" noresize />
+   <frame name="body"   src="[% bodyframeurl %]" />
  </frameset>
 </html>

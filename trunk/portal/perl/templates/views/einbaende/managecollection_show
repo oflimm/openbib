@@ -23,15 +23,15 @@
       <input type="hidden" name="sessionID" value="[% sessionID %]">
       <input type="hidden" name="action"    value="show">
       
-      <ul id="tabbingmenu">
+      <ul class="tabbingmenu">
 	<li><a class="active" href="http://[% config.servername %][% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=HTML">[% msg.maketext("Merkliste") %]</a></li>
       </ul>
       
-      <div id="content">
+      <div class="content">
 	
 	<p>
 	  
-	<ul id="tabbingmenu">
+	<ul class="tabbingmenu">
 	  <li><a
 [%- IF type == 'HTML' -%]
  class="active"
@@ -45,7 +45,7 @@
  href="http://[% config.servername %][% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=Text">Text</a></li>
 	</ul>
 	
-	<div id="content">
+	<div class="content">
 	  
 	  <table width="100%">
 	      <tr><th>[% msg.maketext("Optionen") %]</th></tr>

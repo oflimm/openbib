@@ -6,11 +6,11 @@
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 [% END %]
 
-<ul id="tabbingmenu">
+<ul class="tabbingmenu">
    <li><a class="active" href="/views/einbaende/suchhilfe.html" target="_blank">[% msg.maketext("Fehler") %]</a></li>
 </ul>
 
-<div id="content">
+<div class="content">
 
 <p />
 <table width="100%">

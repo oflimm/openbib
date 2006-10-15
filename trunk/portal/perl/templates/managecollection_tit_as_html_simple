@@ -24,7 +24,7 @@
 <tr><th>[% msg.maketext("Titelaufnahme") %]</th></tr>
 <tr><td class="boxedclear">
 
-<table cellpadding=2>
+<table cellpadding="2">
 <tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
 <tr><td class="category">id</td><td>[% normset.id %]</td></tr>
 
@@ -40,13 +40,13 @@ FOREACH category IN categories;
 </table>
 
 [% IF mexnormset.size > 0 %]
-<p>
+<p />
 <table width="100%">
-<tr class="titlerow" align=center><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="250">[% msg.maketext("Standort") %]</td><td width="120">[% msg.maketext("Inventarnummer") %]</td><td width="250">[% msg.maketext("Lokale Signatur") %]</td><td width="230">[% msg.maketext("Bestandsverlauf") %]</td></tr>
+<tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="250">[% msg.maketext("Standort") %]</td><td width="120">[% msg.maketext("Inventarnummer") %]</td><td width="250">[% msg.maketext("Lokale Signatur") %]</td><td width="230">[% msg.maketext("Bestandsverlauf") %]</td></tr>
 
 [% FOREACH mex IN mexnormset %]
-<tr align=center><td><strong>[% mex.${"X4000"}.content.full %]</strong>
-</td><td>[% mex.${"X0016"}.content %]</td><td>[% mex.${"X0005"}.content %]</td><td><strong><span id="rlsignature">[% mex.${"X0014"}.content %]</span></strong></td><td>[% mex.${"X1204"}.content %]</td></tr>
+<tr align="center"><td><strong>[% mex.${"X4000"}.content.full %]</strong>
+</td><td>[% mex.${"X0016"}.content %]</td><td>[% mex.${"X0005"}.content %]</td><td><strong><span class="rlsignature">[% mex.${"X0014"}.content %]</span></strong></td><td>[% mex.${"X1204"}.content %]</td></tr>
 [% END %]
 </table>
 [% END %]
@@ -55,7 +55,7 @@ FOREACH category IN categories;
 </table>
 
 [% IF circset.size > 0 %]
-<p>
+<p />
 <table width="100%">
 <tr><th>[% msg.maketext("Ausleihe/Exemplare") %]</th></tr>
 <tr><td class="boxedclear">
@@ -63,14 +63,14 @@ FOREACH category IN categories;
 <table>
 <tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="250">[% msg.maketext("Standort") %]</td><td width="120">[% msg.maketext("Lokale Signatur") %]</td><td width="120">[% msg.maketext("Ausleihstatus") %]</td><td width="110">[% msg.maketext("Aktion") %]</td></tr>
 [% FOREACH mex IN circset %]
-<tr align="center"><td><a href="[% mex.Bibinfourl %]"><strong>[% mex.Bibliothek.full %]</strong></a></td><td>[% mex.Standort %]</td><td><strong>[% mex.Signatur %]</strong></td><td><strong>[% mex.Ausleihstatus %]</strong></td><td class="circurl"><a TARGET=_blank href="[% mex.Ausleihurl %]">[% mex.Ausleihstring %]</a></td></tr>
+<tr align="center"><td><a href="[% mex.Bibinfourl %]"><strong>[% mex.Bibliothek.full %]</strong></a></td><td>[% mex.Standort %]</td><td><strong>[% mex.Signatur %]</strong></td><td><strong>[% mex.Ausleihstatus %]</strong></td><td class="circurl"><a href="[% mex.Ausleihurl %]" target="_blank">[% mex.Ausleihstring %]</a></td></tr>
 [% END %]
 </table>
 </td></tr>
 </table>
 [% END %]
-<p>
-<p>
+<p />
+<p />
 <!-- Title ends here -->
 </td></tr>
 <tr><td></td><td></td></tr>

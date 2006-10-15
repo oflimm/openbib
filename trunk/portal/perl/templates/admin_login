@@ -13,7 +13,7 @@
 -%]
 [% PROCESS std_header title='KUG Administration - Authentifizierung' %]
 
-  <body bgcolor="#FFFFFF">
+  <body>
 
 [% PROCESS corporate_banner %]
 
@@ -29,7 +29,7 @@
 <table>
 <tr><td align="right"><b>[% msg.maketext("Benutzername") %]:</b></td><td><input type="text" name="user" /></td></tr>
 <tr><td align="right"><b>[% msg.maketext("Passwort") %]:</b></td><td><input type="password" name="passwd" /></td></tr>
-<tr><td></td><td><input type="submit" name="do_login" value="[% msg.maketext("Einloggen") %]"></td></tr>
+<tr><td></td><td><input type="submit" name="do_login" value="[% msg.maketext("Einloggen") %]" /></td></tr>
 </table>
 </form>
 

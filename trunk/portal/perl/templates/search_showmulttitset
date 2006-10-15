@@ -15,13 +15,13 @@
 
 <body>
 
-<table BORDER="0" CELLSPACING="0" CELLPADDING="0" width="100%">
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
   <tr class="titlerow">
-    <td  width="20">&nbsp;</td><td valign="middle" ALIGN="left" height="32"><span class="dbdescshort">[% poolname.short %]</span></td>
+    <td  width="20">&nbsp;</td><td valign="middle" align="left" height="32"><span class="dbdescshort">[% poolname.short %]</span></td>
   </tr>
 </table>
 
-<p>
+<p />
 [% FOREACH titset IN titsets %]
 [% normset = titset.normset %]
 [% mexnormset = titset.mexnormset %]
@@ -32,7 +32,7 @@
 <tr><th>[% msg.maketext("Titelaufnahme") %]</th></tr>
 <tr><td class="boxedclear">
 
-<table cellpadding=2>
+<table cellpadding="2">
 <tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
 <tr><td class="category">id</td><td>[% normset.id %]</td></tr>
 
@@ -49,8 +49,7 @@ FOREACH category IN categories;
     CASE [ "T0100" "T0101" "T0103" ];
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;verf=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsingleaut=${item.id}";
-         content   = "<a
-href=\"${config.connector_rss_loc}/neuzugang_nach_aut/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\"></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+         content   = "<a href=\"${config.connector_rss_loc}/neuzugang_nach_aut/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\"></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;kor=%22${item.content}%22";
@@ -66,17 +65,13 @@ href=\"${config.connector_rss_loc}/neuzugang_nach_aut/${item.id}/${normset.datab
     CASE [ "T0710" "T0902" "T0907" "T0912" "T0917" "T0922" "T0927" "T0932" "T0937" "T0942" "T0947" ];
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;swt=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsingleswt=${item.id}";
-         content   = " <a
-href=\"${config.connector_rss_loc}/neuzugang_nach_swt/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\"></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in
-allen Katalogen suchen\"><span
-class=\"globalsearch\">G</span></a>&nbsp;<a
-href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+         content   = " <a href=\"${config.connector_rss_loc}/neuzugang_nach_swt/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\"></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in
+allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE "T0700";
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;notation=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsinglenot=${item.id}";
-         content   = " <a
-href=\"${config.connector_rss_loc}/neuzugang_nach_sys/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\"></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+         content   = " <a href=\"${config.connector_rss_loc}/neuzugang_nach_sys/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\"></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE "T5001";
          content   = "<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};supertit=${normset.id};generalsearch=supertit\">${content}</a>";
@@ -94,19 +89,19 @@ END;
 </table>
 
 [% IF mexnormset.size > 0 %]
-<p>
+<p />
 <table width="100%">
-<tr class="titlerow" align=center><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="250">[% msg.maketext("Standort") %]</td><td width="120">[% msg.maketext("Inventarnummer") %]</td><td width="250">[% msg.maketext("Signatur") %]</td><td width="230">[% msg.maketext("Bestandsverlauf") %]</td></tr>
+<tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="250">[% msg.maketext("Standort") %]</td><td width="120">[% msg.maketext("Inventarnummer") %]</td><td width="250">[% msg.maketext("Signatur") %]</td><td width="230">[% msg.maketext("Bestandsverlauf") %]</td></tr>
 
 [% FOREACH mex IN mexnormset %]
-<tr align=center><td><strong>
+<tr align="center"><td><strong>
 [%- IF mex.${"X4000"}.content && mex.${"X4001"}.content -%]
 <a href="[% mex.${"X4001"}.content %]" target="_blank">[% mex.${"X4000"}.content.full %]</a>
 [%- ELSE -%]
 [% mex.${"X4000"}.content.full %]
 [%- END -%]
 </strong>
-</td><td>[% mex.${"X0016"}.content %]</td><td>[% mex.${"X0005"}.content %]</td><td><strong><span id="rlsignature">[% mex.${"X0014"}.content %]</span></strong></td><td>[% mex.${"X1204"}.content %]</td></tr>
+</td><td>[% mex.${"X0016"}.content %]</td><td>[% mex.${"X0005"}.content %]</td><td><strong><span class="rlsignature">[% mex.${"X0014"}.content %]</span></strong></td><td>[% mex.${"X1204"}.content %]</td></tr>
 [% END %]
 </table>
 [% END %]
@@ -115,7 +110,7 @@ END;
 </table>
 
 [% IF circset.size > 0 %]
-<p>
+<p />
 <table width="100%">
 <tr><th>[% msg.maketext("Ausleihe/Exemplare") %]</th></tr>
 <tr><td class="boxedclear">
@@ -123,7 +118,7 @@ END;
 <table width=100%">
 <tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="250">[% msg.maketext("Standort") %]</td><td width="120">[% msg.maketext("Signatur") %]</td><td width="120">[% msg.maketext("Ausleihstatus") %]</td><td width="110">[% msg.maketext("Aktion") %]</td></tr>
 [% FOREACH mex IN circset %]
-<tr align="center"><td><a href="[% utf2iso(mex.Bibinfourl) %]"><strong>[% utf2iso(mex.Bibliothek) %]</strong></a></td><td>[% utf2iso(mex.Standort) %]</td><td><strong>[% utf2iso(mex.Signatur) %]</strong></td><td><strong>[% utf2iso(mex.Status) %]</strong></td><td class="circurl"><a TARGET=_blank href="[% utf2iso(mex.Ausleihurl) %]">[% utf2iso(mex.Ausleihstring) %]</a></td></tr>
+<tr align="center"><td><a href="[% mex.Bibinfourl %]"><strong>[% mex.Bibliothek %]</strong></a></td><td>[% mex.Standort %]</td><td><strong>[% mex.Signatur %]</strong></td><td><strong>[% mex.Status %]</strong></td><td class="circurl"><a TARGET=_blank href="[% mex.Ausleihurl %]">[% mex.Ausleihstring %]</a></td></tr>
 [% END %]
 
 </table>
@@ -132,7 +127,7 @@ END;
 </td></tr>
 </table>
 [% END %]
-<p>
+<p />
 <!-- Title ends here -->
 
 </div>
@@ -140,18 +135,18 @@ END;
 
 <p />
 
-<hr>
+<hr />
 
 <form method="get" action="[% config.search_loc %]">
-<input type="hidden" name="sessionID" value="[% sessionID %]">
-<input type="hidden" name="searchmode" value="[% searchmode %]">
-<input type="hidden" name="rating" value="[% rating %]">
-<input type="hidden" name="bookinfo" value="[% bookinfo %]">
-<input type="hidden" name="hitrange" value="[% hitrange %]">
-<input type="hidden" name="database" value="[% database %]">
+<input type="hidden" name="sessionID"  value="[% sessionID %]" />
+<input type="hidden" name="searchmode" value="[% searchmode %]" />
+<input type="hidden" name="rating"     value="[% rating %]" />
+<input type="hidden" name="bookinfo"   value="[% bookinfo %]" />
+<input type="hidden" name="hitrange"   value="[% hitrange %]" />
+<input type="hidden" name="database"   value="[% database %]" />
 
 <table>
-<tr><td class="category">Schlagwortindex dieses Katalogs</td><td>&nbsp;<input type="text" name="swtindex" value="" size="4" maxlength="50" title="Geben Sie hier den Schlagwortanfang ein">&nbsp;<input type="submit" value="Suchen">&nbsp;</td></tr>
+<tr><td class="category">Schlagwortindex dieses Katalogs</td><td>&nbsp;<input type="text" name="swtindex" value="" size="4" maxlength="50" title="Geben Sie hier den Schlagwortanfang ein" />&nbsp;<input type="submit" value="Suchen" />&nbsp;</td></tr>
 </table>
 
 </form>

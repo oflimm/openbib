@@ -14,7 +14,7 @@
 <select name="queryid">
 
 [% FOREACH query IN queries %]	  
-<OPTION value="[% query.id %]">(
+<option value="[% query.id %]">(
 [%- IF query.searchquery.fs.val -%]
 &nbsp;FS: [% query.searchquery.fs.val %] 
 [%- END -%]
@@ -52,6 +52,6 @@
 &nbsp;HSTR: [% query.searchquery.hststring.val %] 
 [%- END -%]
 = [% msg.maketext("Treffer") %]: [% query.hits %])
-</OPTION>
+</option>
 [% END %]	    
 </select>

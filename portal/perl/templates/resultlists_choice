@@ -15,16 +15,13 @@
 -%]
 [% PROCESS common/subtemplate name="std_header" %]
 
-<FORM METHOD="GET">
-
-<ul id="tabbingmenu">
+<ul class="tabbingmenu">
    <li><a class="active" href="[% config.resultlists_loc %]?sessionID=[% sessionID %];action=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a></li>
 </ul>
 
-<div id="content">
+<div class="content">
 
-<p>
-
+<p />
 
 <table width="100%">
 <tr>
@@ -80,14 +77,13 @@
 <tr><td colspan="2"></td></tr>
 
 <tr><td>[% msg.maketext("Katalog") %]</td><td>[% msg.maketext("Treffer") %]</td></tr>
-<tr><td class="listrow2"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %]&action=showall&sortall=0&sorttype=author&queryid=[% thisquery.id %]&view=[% view %];offset=0;hitrange=[% qopts.maxhits %]"><b>[% msg.maketext("Alle Treffer") %]</b></a></td><td align=right>[% hitcount %]</td></tr>
+<tr><td class="listrow2"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %]&action=showall&sortall=0&sorttype=author&queryid=[% thisquery.id %]&view=[% view %];offset=0;hitrange=[% qopts.maxhits %]"><b>[% msg.maketext("Alle Treffer") %]</b></a></td><td align="right">[% hitcount %]</td></tr>
       
-<tr><td class="listrow1">&nbsp;</td><td align=right>&nbsp;</td></tr>
-
+<tr><td class="listrow1">&nbsp;</td><td align="right">&nbsp;</td></tr>
       
 [% listrow = 'listrow2' %]
 [% FOREACH resultdb IN resultdbs %]
-<tr><td class="[% listrow %]"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];database=[% resultdb.trefferdb %];action=showrange;offset=0;queryid=[% thisquery.id %];hitrange=[% qopts.maxhits %]"><b>[% resultdb.trefferdbdesc.full %]</b></a></td><td align=right>
+<tr><td class="[% listrow %]"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];database=[% resultdb.trefferdb %];action=showrange;offset=0;queryid=[% thisquery.id %];hitrange=[% qopts.maxhits %]"><b>[% resultdb.trefferdbdesc.full %]</b></a></td><td align="right">
 [% IF resultdb.trefferzahl == qopts.maxhits %]
 [% msg.maketext("mind.") %]&nbsp;
 [% END %]
@@ -101,8 +97,6 @@
 
 [% END %]
 
-
-      
 </table>
 
 </td></tr>
@@ -112,17 +106,20 @@
 
 [% IF queryids.size >= 0 %]
 <form method="get" action="[% config.resultlists_loc %]">
-<input type="hidden" name="sessionID"    value="[% sessionID %]">
-<input type="hidden" name="trefferliste" value="choice">
-<input type="hidden" name="view"         value="[% view %]">
+<input type="hidden" name="sessionID"    value="[% sessionID %]" />
+<input type="hidden" name="trefferliste" value="choice" />
+<input type="hidden" name="view"         value="[% view %]" />
 	  
-<p><table width="100%"><tr>
+<p />
+<table width="100%"><tr>
 <th>Alle bisherigen Recherchen</th></tr>
 <tr><td class="boxedclear">
 
 [% PROCESS common/subtemplate name="select_queries" %]
 
-<input type=submit value="Auswahl"></td></tr></table></form>
+<input type=submit value="Auswahl">
+</td></tr></table>
+</form>
 
 [% END %]
 

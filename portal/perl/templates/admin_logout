@@ -13,7 +13,7 @@
 -%]
 [% PROCESS std_header title='KUG Administration - Abmeldung' %]
 
-  <body bgcolor="#FFFFFF">
+  <body>
 
 [% PROCESS corporate_banner %]
 

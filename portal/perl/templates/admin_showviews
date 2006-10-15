@@ -18,25 +18,25 @@
 
 [% PROCESS corporate_banner %]
 
-<ul id="tabbingmenu">
+<ul class="tabbingmenu">
    <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">[% msg.maketext("Kataloge") %]</a></li>
    <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">[% msg.maketext("Views") %]</a></li>
    <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">[% msg.maketext("Sessions") %]</a></li>
    <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">[% msg.maketext("Logout") %]</a></li>
 </ul>
 
-<div id="content">
+<div class="content">
 
 <form method="get" action="http://[% config.servername %][%config.admin_loc %]">
 <input type="hidden" name="do_editview" value="1" />
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<input type="hidden" name="sessionID"   value="[% sessionID %]" />
 
 <table width="100%">
 <tr><th>[% msg.maketext("Neuen View anlegen") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:12pt">
 <table>
 <tr><td><b>[% msg.maketext("Viewname") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td><td></td></tr>
-<tr><td><input type="text" name="viewname"></td><td><input type="text" name="description" size="20" />
+<tr><td><input type="text" name="viewname" /></td><td><input type="text" name="description" size="20" />
 </td><td><select name=active><option value="1">[% msg.maketext("Ja") %]</option><option value="0" selected>[% msg.maketext("Nein") %]</option></select></td><td><input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></td></tr>
 </table>
 </td></tr>
@@ -60,7 +60,7 @@
 [% FOREACH view IN views %]
 
 <tr><td>[% view.viewname %]</td><td align="center"><a href="http://[%
-config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&do_editview_rss=1&viewid=[% view.viewid %];do_edit=1"><img src="/images/openbib/rssfeed.png"></a></td><td><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&do_editview=1&viewid=[% view.viewid %]&do_edit=1">[% view.description %]</a></td><td>[% view.viewdb %]</td><td>[% view.active %]</td></tr>
+config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&do_editview_rss=1&viewid=[% view.viewid %];do_edit=1"><img src="/images/openbib/rssfeed.png" alt="RSS-Icon" /></a></td><td><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&do_editview=1&viewid=[% view.viewid %]&do_edit=1">[% view.description %]</a></td><td>[% view.viewdb %]</td><td>[% view.active %]</td></tr>
 [% END %]
 
 </table>

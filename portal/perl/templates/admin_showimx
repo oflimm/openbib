@@ -2,7 +2,7 @@
 [% SET show_foot_banner = 1 %]
 [% PROCESS std_header %]
 
-  <body bgcolor="#FFFFFF">
+  <body>
 
 [% PROCESS corporate_banner %]
 
@@ -17,8 +17,8 @@ align="right"><a href="http://[% config.servername %][% config.admin_loc %]?sess
 <hr />
 
 <form method="get" action="http://[% config.servername %][%config.admin_loc %]">
-<input type="hidden" name="action" value="imximport">
-<input type="hidden" name="sessionID" value="[% sessionID %]">
+<input type="hidden" name="action" value="imximport" />
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
 
 <table width="100%">
 <tr><th>Automatische Importe veranlassen</th></tr>

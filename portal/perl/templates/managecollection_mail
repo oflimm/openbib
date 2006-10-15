@@ -16,41 +16,41 @@
 [% PROCESS common/subtemplate name="std_header" %]
 [% PROCESS common/subtemplate name="visible_categories_titset" %]
 
-  <BODY>
+  <body>
     
-      <ul id="tabbingmenu">
+      <ul class="tabbingmenu">
 	<li><a class="active" href="http://[% config.servername %][% config.managecollection_loc %]?sessionID=[% sessionID %];action=mail;type=[% type%]">[% msg.maketext("Titel/Merkliste via Mail verschicken") %]</a></li>
       </ul>
       
-      <div id="content">
+      <div class="content">
 	
-<FORM method="post" action="http://[% config.servername %][% config.mailcollection_loc %]" enctype="application/x-www-form-urlencoded">
-<INPUT type="hidden" name="sessionID" value="[% sessionID %]">
-<INPUT type="hidden" name="type"      value="[% type %]">
+<form method="post" action="http://[% config.servername %][% config.mailcollection_loc %]" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<input type="hidden" name="type"      value="[% type %]" />
 
 <table width="100%">
 <tr><th>[% msg.maketext("Ihre Eingabe") %]</th></tr>
 <tr><td class="boxed">
 <table>
-<tr><td class="category">[% msg.maketext("Ihre Mailadresse") %]</td><td><input type="text" name="email" VALUE="[% loginname %]" SIZE="30" MAXLENGTH="200"></td></tr>
-<tr><td class="category">[% msg.maketext("Betreff") %]</td><td><input type="text" name="subject" VALUE="" SIZE="30" MAXLENGTH="200"></td></tr>
+<tr><td class="category">[% msg.maketext("Ihre Mailadresse") %]</td><td><input type="text" name="email" value="[% loginname %]" size="30" maxlength="200" /></td></tr>
+<tr><td class="category">[% msg.maketext("Betreff") %]</td><td><input type="text" name="subject" value="" SIZE="30" maxlength="200" /></td></tr>
 </table>
-<p>
-<input type="submit" name="mail" VALUE="[% msg.maketext("Abschicken") %]">&nbsp;<input type="reset" value="[% msg.maketext("Felder leeren") %]">
+<p />
+<input type="submit" name="mail" value="[% msg.maketext("Abschicken") %]" />&nbsp;<input type="reset" value="[% msg.maketext("Felder leeren") %]" />
 </td><tr>
 </table>
-<p>
+<p />
 
 [% IF singleidn %]
-<INPUT type="hidden" name="singleidn" value="[% singleidn %]">
+<input type="hidden" name="singleidn" value="[% singleidn %]" />
 [% END %]
 [% IF database %]
-<INPUT type="hidden" name="database" value="[% database %]">
+<input type="hidden" name="database" value="[% database %]" />
 [% END %]	
 
 </form>
 
-	  <p>
+	  <p />
 [% IF type == 'HTML' %]
 	  <table>
 [% PROCESS common/subtemplate name="managecollection_tit_as_html_simple" %]

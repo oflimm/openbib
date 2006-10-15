@@ -209,7 +209,7 @@ a:active.invisible {
 } /* active links */
 
 
-#tabbingmenu {
+.tabbingmenu {
   color: #333;
   border-bottom: 1px solid #666;
   margin: 12px 0px 0px 0px;
@@ -218,13 +218,13 @@ a:active.invisible {
   padding-left: 10px 
 }
 
-#tabbingmenu li {
+.tabbingmenu li {
   display: inline;
   overflow: hidden;
   list-style-type: none; 
 }
 
-#tabbingmenu a, a.active {
+.tabbingmenu a, a.active {
   color: #333;
   background: #EDEBE3; /* Hintergrundfarbe Tab 'weiss'*/
   font: bold 1em "Trebuchet MS", Arial, sans-serif;
@@ -234,17 +234,17 @@ a:active.invisible {
   text-decoration: none; 
 }
 
-#tabbingmenu a.active {
+.tabbingmenu a.active {
   background: #EDEBE3;
   border-bottom: 3px solid #EDEBE3; 
 }
 
-#tabbingmenu a:visited {
+.tabbingmenu a:visited {
   color: #333; 
   background: #EDEBE3; 
 }
 
-#content {
+.content {
 
   font-family: Arial,helv,Helvetica,Verdana,sans-serif;
   background: #EDEBE3;

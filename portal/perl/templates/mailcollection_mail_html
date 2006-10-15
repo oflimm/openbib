@@ -15,7 +15,7 @@
 [% PROCESS common/subtemplate name="std_header" %]
 [% PROCESS common/subtemplate name="visible_categories_titset" %]
 
-  <BODY>
+  <body>
 
 <h1>[% msg.maketext("Zugemailte Merkliste") %]</h1>
 <table>

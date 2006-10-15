@@ -12,16 +12,16 @@
 #######################################################################
 -%]
 [% PROCESS common/subtemplate name="std_header" %]
-  <BODY BGCOLOR="#FFFFFF">
+  <body>
 
-    <ul id="tabbingmenu">
-      <li><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">[% msg.maketext("Suchhilfe") %]</a></li>
+    <ul class="tabbingmenu">
+      <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">[% msg.maketext("Suchhilfe") %]</a></li>
       <li><a class="active" href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=1" target="body">[% msg.maketext("Projekt") %]</a></li>
-      <li><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=2" target="body">[% msg.maketext("KUG-Versionen") %]</a></li>
+      <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=2" target="body">[% msg.maketext("KUG-Versionen") %]</a></li>
     </ul>
     
-    <div id="content">
-      <p>
+    <div class="content">
+      <p />
 
 <h1>Das KUG-Projekt an der Universit&auml;t zu K&ouml;ln</h1>
 
@@ -43,8 +43,8 @@ u.a.:
 technischem Gerät in Form von insgesamt mehr als 400 PC's und 60
 sogenannter Thin-Clients. Diese Geräte werden sowohl zur
 Katalogisierung wie auch als Recherche-Instrument für die Besucher der
-jeweiligen Bibliothek eingesetzt.
-<p />
+jeweiligen Bibliothek eingesetzt.</li>
+
 <li> Die Betreuung eines zentralen Datenbankservers in der USB mit der
 für das Projekt eingesetzten bibliothekarischen Standardsoftware <a
 href="http://www.sisis.de/">Sisis</a> SunRise auf der die
@@ -56,7 +56,6 @@ Instituten, Seminaren, USB und ZBMED
 realisiert. Dar&uuml;berhinaus werden als weitere Kataloge die
 Poetica-Sammlung, die Virtuelle Fachbibliothek Wirtschaftswissenschaften (ECONBIZ) sowie der K&ouml;lner
 Universit&auml;ts-Publikations-Server KUPS via OAI angeboten. 
-
 <p />
 Ebenso
 wird für jedes Institut und Seminar ein eigenständiger Sucheinstieg
@@ -65,13 +64,13 @@ des jeweiligen Instituts umfasst und vom Benutzer sukzessive auf den
 Gesamtbestand erweitert werden kann. Generell k&ouml;nnen beliebige
 Sichten angeboten werden, die aus einer beliebigen Zusammenstellung
 der einzelnen Kataloge bestehen.
-<p />
+</li>
 <li> Die Migration der Altdaten aus dem bisher genutzten prim&auml;ren
 Katalogisierunssystemen Bislok und entsprechend unserer
 M&ouml;glichkeiten auch aus Allegro in das neue System Sisis SunRise.
-<p />
+</li>
 <li> Die Schulung und bibliothekarische Betreuung der teilnehmenden
-Institute und Seminare.
+Institute und Seminare.</li>
 </ul>
 
 Die Wurzeln des KUG-Projektes reichen an den Anfang der 90er
@@ -93,7 +92,6 @@ z.B.  Allegro und Lars im Jahr 1997/1998 schließlich zum sog. KVIK,
 dem Kölner Virtuellen InstitutsgesamtKatalog, ausgebaut. Insgesamt
 umfasste der KVIK die Daten von knapp 80 Instituten mit mehr als
 700.000 Titeln.
-
 <p />
 Im Jahre 2001 wurde mit Sisis SunRise ein bereits in der USB erprobtes
 Nachfolgesystem für das inzwischen veraltete Bislok gefunden und durch
@@ -160,18 +158,18 @@ Citrix-Metaframe waren:
 Instituten des KUG-Projektes ist personell von der USB nicht zu
 leisten. Stattdessen setzen wir auf eine Lösung, die zentral
 administriert werden kann.
-<p />
+</li>>
 <li> Citrix-Metaframe steht für eine Vielzahl an Hardware-Platformen
 zur Verfügung. Damit braucht die lokale System-Infrastruktur eines
 Instituts für eine Teilnahme am KUG-Projekt nicht geändert werden,
 obwohl die SunRise-Clienten selbst nur für die Win32-Platform
 angeboten werden können.
-<p />
+</li>
 <li> Citrix-Metaframe-Clienten k&ouml;nnen auch auf beliebiger alter
 Hardware in den Instituten eingesetzt werden, da die hinsichtlich der
 Hardwareresourcen anspruchsvollen SunRise-Clienten nicht lokal,
 sondern auf entsprechend dimensionierten Servern in einem Verbund in
-der USB gestartet werden.
+der USB gestartet werden.</li>
 </ul>
 
 Insgesamt stehen für die Sisis-Anwendungen wie auch Rechereplätze der

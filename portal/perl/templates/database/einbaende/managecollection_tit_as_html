@@ -49,7 +49,7 @@ END;
 
 [% FOREACH mex IN mexnormset %]
 <tr align=center><td><strong>[% mex.${"X4000"}.content %]</strong>
-</td><td>[% mex.${"X0016"}.content %]</td><td>[% mex.${"X0005"}.content %]</td><td><strong><span id="rlsignature">[% mex.${"X0014"}.content %]</span></strong></td><td>[% mex.${"X1204"}.content %]</td></tr>
+</td><td>[% mex.${"X0016"}.content %]</td><td>[% mex.${"X0005"}.content %]</td><td><strong><span class="rlsignature">[% mex.${"X0014"}.content %]</span></strong></td><td>[% mex.${"X1204"}.content %]</td></tr>
 [% END %]
 </table>
 [% END %]

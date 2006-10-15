@@ -16,24 +16,24 @@
 
 <body>
 
-<ul id="tabbingmenu">
+<ul class="tabbingmenu">
    <li><a class="active" href="[% config.resultlists_loc %]?sessionID=[% sessionID %];action=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a></li>
 </ul>
 
-<div id="content">
+<div class="content">
 
-<FORM METHOD="GET" action="[% config.resultlists_loc %]">
-<p>
+<form method="get" action="[% config.resultlists_loc %]">
+<p />
 
 [%- FOREACH i IN queryargs -%]
-<input type="hidden" name="[% i.key %]" value="[% i.value %]">
+<input type="hidden" name="[% i.key %]" value="[% i.value %]" />
 [%- END -%]
 
 <table width="100%">
 <tr><th>[% msg.maketext("Optionen") %]</th></tr>
 <tr><td class="boxed">
-<b>[% msg.maketext("Sortierung:") %]<b>&nbsp;
-<select name=sorttype><option value="author">[% msg.maketext("nach Autor") %]</option><option value="title">[% msg.maketext("nach Titel") %]</option><option value="yearofpub">[% msg.maketext("nach Jahr") %]</option><option value="publisher">[% msg.maketext("nach Verlag") %]</option><option value="signature">[% msg.maketext("nach Signatur") %]</option></select>&nbsp;<select name=sortorder><option value="up">[% msg.maketext("aufsteigend") %]</option><option value="down">[% msg.maketext("absteigend") %]</option></select>
+<b>[% msg.maketext("Sortierung:") %]</b>&nbsp;
+<select name="sorttype"><option value="author">[% msg.maketext("nach Autor") %]</option><option value="title">[% msg.maketext("nach Titel") %]</option><option value="yearofpub">[% msg.maketext("nach Jahr") %]</option><option value="publisher">[% msg.maketext("nach Verlag") %]</option><option value="signature">[% msg.maketext("nach Signatur") %]</option></select>&nbsp;<select name="sortorder"><option value="up">[% msg.maketext("aufsteigend") %]</option><option value="down">[% msg.maketext("absteigend") %]</option></select>
 [% IF sortselect %]
 <select name="sortall">
 [%- FOREACH select IN sortselect -%]
@@ -41,13 +41,13 @@
 [%- END -%]
 </select>
 [%- END -%]
-&nbsp;<input type="submit" value="[% msg.maketext("Los") %]"></form>&nbsp;&nbsp;&nbsp;[% thissortstring %]</td></tr></table><p>
+&nbsp;<input type="submit" value="[% msg.maketext("Los") %]" />&nbsp;&nbsp;&nbsp;[% thissortstring %]</td></tr></table><p />
 </form>
 
 <table>
 [%- FOREACH result IN resultlists %]
 [%-     database = result.database %]
-<tr class="titlerow"><td>&nbsp;</td><td>[% targetdbinfo.dbinfo.$database.full %]</td><td align=right colspan=3><strong>[% result.resultlist.size %] [% msg.maketext("Treffer") %]</strong></td></tr>
+<tr class="titlerow"><td>&nbsp;</td><td>[% targetdbinfo.dbinfo.$database.full %]</td><td align="right" colspan=3><strong>[% result.resultlist.size %] [% msg.maketext("Treffer") %]</strong></td></tr>
 [%-     IF result.offsets -%]
 <tr class="titlerow"><td>&nbsp;</td><td colspan="4">
 [%          FOREACH singleoffset IN result.offsets %]
@@ -66,9 +66,6 @@
 
 [% listrow = 'listrow1' %]
 [% FOREACH item IN result.resultlist %]
-[%# IF offset >= 0 && hitrange > 0 %]
-[%# IF loop.count >= offset && loop.count < offset+hitrange %]
-
 [%# Verfasser konstruieren %]
 [%- persons = [] -%]
 [%- FOREACH part IN item.${'P0100'}  -%]
@@ -108,53 +105,23 @@
 [%- END -%]
 [%- signatur = signaturen.join(' ; ') -%]
 
-<tr class="[% listrow %]"><td class="listnr">[% loop.count+offset %]</td><td colspan="2"><span id="rlauthor">[% person
+<tr class="[% listrow %]"><td class="listnr">[% loop.count+offset %]</td><td colspan="2"><span class="rlauthor">[% person
 %]</span><br /><a href="[% config.search_loc %]?sessionID=[%
 sessionID %];search=Mehrfachauswahl;searchmode=[% searchmode %];rating=[% rating %];bookinfo=[% bookinfo %];hitrange=;sorttype=[%
-sorttype %]&database=[% item.${"database"} %];searchsingletit=[% item.id
-%]"><strong><span id="rltitle">[% title %]</span></strong></a>, <span
-id="rlpublisher">[% publisher %]</span> <span id="rlyearofpub">[% yearofpub %]</span></td><td><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="header"><span id="rlmerken"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="header" title="[% msg.maketext("In die Merkliste") %]"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="In die Merkliste" border=0></a></span></a></td><td align=left><b>[% signatur %]</b></td></tr>
+sorttype %];database=[% item.${"database"} %];searchsingletit=[% item.id
+%]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
+id="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></td><td><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="header"><span class="rlmerken"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="header" title="[% msg.maketext("In die Merkliste") %]"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="In die Merkliste" border=0></a></span></a></td><td align=left><b>[% signatur %]</b></td></tr>
 
 [% IF listrow == 'listrow1' %]
 [% listrow = 'listrow2' %]
 [% ELSE %]
 [% listrow = 'listrow1' %]
 [% END %]
-
-[%# END %]
-[%# ELSE %]
-<!-- <tr class="[% listrow %]"><td><input type="checkbox"
-name="searchmultipletit" value="[% item.idn %]"
-/></td><td><strong><span id="rlauthor">[% item.verfasser
-%]</span></strong><br /><a href="[% config.search_loc %]?sessionID=[%
-sessionID %];search=Mehrfachauswahl;searchmode=[% searchmode
-%];rating=[% rating %];bookinfo=[% bookinfo %];hitrange=[% hitrange
-%];sorttype=[% sorttype %];sortorder=[% sortorder %];database=[%
-database %];searchsingletit=[% item.idn %]"><strong><span
-id="rltitle">[% item.title %]</span></strong></a>, <span
-id="rlpublisher">[% item.publisher %]</span> <span id="rlyearofpub">[%
-item.erschjahr %]</span></td><td><a href="[%
-config.managecollection_loc %]?sessionID=[% sessionID
-%];action=insert;database=[% database %];singleidn=[% item.idn %]"
-target="header"><span id="rlmerken"><a href="[%
-config.managecollection_loc %]?sessionID=[% sessionID
-%];action=insert;database=[% database %];singleidn=[% item.idn %]"
-target="header" title="[% msg.maketext("In die Merkliste") %]"><img
-src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="[% msg.maketext("In die Merkliste") %]" border=0></a></span></a></td><td align=left><b>[%
-item.signatur %]</b></td></tr> -->
-[%# IF listrow == 'listrow1' %]
-[%# listrow = 'listrow2' %]
-[%# ELSE %]
-[%# listrow = 'listrow1' %]
-[%# END %]
-
-[%# END %]
-
 [% END %]
 <tr><td colspan="4">&nbsp;<td></tr>
 [% END %]
 </table>
 
-</div><p>
+</div><p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

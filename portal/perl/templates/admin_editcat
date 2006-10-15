@@ -13,18 +13,18 @@
 -%]
 [% PROCESS std_header title='' %]
 
-  <body bgcolor="#FFFFFF">
+  <body>
 
 [% PROCESS corporate_banner %]
 
-<ul id="tabbingmenu">
+<ul class="tabbingmenu">
    <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">[% msg.maketext("Kataloge") %]</a></li>
    <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">[% msg.maketext("Views") %]</a></li>
    <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">[% msg.maketext("Sessions") %]</a></li>
    <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">[% msg.maketext("Logout") %]</a></li>
 </ul>
 
-<div id="content">
+<div class="content">
 
 <form method="get" action="http://[% config.servername %][% config.admin_loc %]">
 <input type="hidden" name="sessionID"  value="[% sessionID %]" />
@@ -47,8 +47,8 @@
 [% END %]
 </select>
 </td></tr>
-<tr><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><input type="text" name="description" value="[% katalog.description %]" size="60"></td></tr>
-<tr><td><b>[% msg.maketext("Kurzbeschreibung") %]</b></td><td><input type="text" name="shortdesc" value="[% katalog.shortdesc %]" size="60"></td></tr>
+<tr><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><input type="text" name="description" value="[% katalog.description %]" size="60" /></td></tr>
+<tr><td><b>[% msg.maketext("Kurzbeschreibung") %]</b></td><td><input type="text" name="shortdesc" value="[% katalog.shortdesc %]" size="60" /></td></tr>
 <tr><td><b>[% msg.maketext("System") %]</b></td><td>
 <select name="system">
 <option value="Lars" 
@@ -74,11 +74,11 @@ selected
 >Z39.50</option></select>
 </td></tr>
 <tr><td><b>[% msg.maketext("DB-Name") %]</b></td><td>[% katalog.dbname %]</td></tr>
-<tr><td><b>[% msg.maketext("Sigel") %]</b></td><td><input type="text" name="sigel" value="[% katalog.sigel %]" size="3"></td></tr>
-<tr><td><b>[% msg.maketext("URL") %]</b></td><td><input type="text" name="url" value="[% katalog.url %]" size="60"></td></tr>
+<tr><td><b>[% msg.maketext("Sigel") %]</b></td><td><input type="text" name="sigel" value="[% katalog.sigel %]" size="3" /></td></tr>
+<tr><td><b>[% msg.maketext("URL") %]</b></td><td><input type="text" name="url" value="[% katalog.url %]" size="60" /></td></tr>
 <tr><td><b>[% msg.maketext("Aktiv") %]</b></td><td>
-<select
-name=active><option value="1" 
+<select name="active">
+<option value="1" 
 [% IF katalog.active == 1 %]
 selected
 [% END %]
@@ -113,23 +113,23 @@ selected
 selected
 [% END %]
 >[% msg.maketext("Lokal") %]</option></td></tr>
-<tr><td><b>[% msg.maketext("Entfernter Rechnername") %]</b></td><td><input type="text" size="20" name="host" value="[% katalog.imxconfig.host %]"></td></tr>
-<tr><td><b>[% msg.maketext("Entferntes Verz.") %]</b></td><td><input type="text" size="20" name="remotepath" value="[% katalog.imxconfig.remotepath %]"></td></tr>
-<tr><td><b>[% msg.maketext("Entfernter Nutzername") %]</b></td><td><input type="text" size="20" name="remoteuser" value="[% katalog.imxconfig.remoteuser %]"></td></tr>
-<tr><td><b>[% msg.maketext("Entferntes Passwort") %]</b></td><td><input type="password" size="20" name="remotepasswd" value="[% katalog.imxconfig.remotepasswd %]"></td></tr>
+<tr><td><b>[% msg.maketext("Entfernter Rechnername") %]</b></td><td><input type="text" size="20" name="host" value="[% katalog.imxconfig.host %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Entferntes Verz.") %]</b></td><td><input type="text" size="20" name="remotepath" value="[% katalog.imxconfig.remotepath %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Entfernter Nutzername") %]</b></td><td><input type="text" size="20" name="remoteuser" value="[% katalog.imxconfig.remoteuser %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Entferntes Passwort") %]</b></td><td><input type="password" size="20" name="remotepasswd" value="[% katalog.imxconfig.remotepasswd %]" /></td></tr>
 <tr><td><b></b></td><td></td></tr>
 
     
 [% IF katalog.system == 'Sisis' %]
-<tr><td><b>[% msg.maketext("Tit-Datei") %]</b></td><td><input type="text" size="20" name="titfilename" value="[% katalog.imxconfig.titfilename %]"></td></tr>
-<tr><td><b>[% msg.maketext("Aut-Datei") %]</b></td><td><input type="text" size="20" name="autfilename" value="[% katalog.imxconfig.autfilename %]"></td></tr>
-<tr><td><b>[% msg.maketext("Kor-Datei") %]</b></td><td><input type="text" size="20" name="korfilename" value="[% katalog.imxconfig.korfilename %]"></td></tr>
-<tr><td><b>[% msg.maketext("Swt-Datei") %]</b></td><td><input type="text" size="20" name="swtfilename" value="[% katalog.imxconfig.swtfilename %]"></td></tr>
-<tr><td><b>[% msg.maketext("Not-Datei") %]</b></td><td><input type="text" size="20" name="notfilename" value="[% katalog.imxconfig.notfilename %]"></td></tr>
-<tr><td><b>[% msg.maketext("Mex-Datei") %]</b></td><td><input type="text" size="20" name="mexfilename" value="[% katalog.imxconfig.mexfilename %]"></td></tr>
+<tr><td><b>[% msg.maketext("Tit-Datei") %]</b></td><td><input type="text" size="20" name="titfilename" value="[% katalog.imxconfig.titfilename %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Aut-Datei") %]</b></td><td><input type="text" size="20" name="autfilename" value="[% katalog.imxconfig.autfilename %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Kor-Datei") %]</b></td><td><input type="text" size="20" name="korfilename" value="[% katalog.imxconfig.korfilename %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Swt-Datei") %]</b></td><td><input type="text" size="20" name="swtfilename" value="[% katalog.imxconfig.swtfilename %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Not-Datei") %]</b></td><td><input type="text" size="20" name="notfilename" value="[% katalog.imxconfig.notfilename %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Mex-Datei") %]</b></td><td><input type="text" size="20" name="mexfilename" value="[% katalog.imxconfig.mexfilename %]" /></td></tr>
 [% END %]
     
-<tr><td><b>[% msg.maketext("DB-Datei") %]</b></td><td><input type="text" size="50" name="filename" value="[% katalog.imxconfig.filename %]"></td></tr>
+<tr><td><b>[% msg.maketext("DB-Datei") %]</b></td><td><input type="text" size="50" name="filename" value="[% katalog.imxconfig.filename %]" /></td></tr>
 
 <tr><td><b>[% msg.maketext("Autokonvertierung (cron)") %]</b></td><td><select name="autoconvert"><option value="0"
 
@@ -167,9 +167,9 @@ selected
 [% END %]
 
 >[% msg.maketext("Ja") %]</option></td></tr>
-<tr><td><b>[% msg.maketext("DB-Name im Lokalsystem") %]</b></td><td><input type="text" size="50" name="circdb" value="[% katalog.circconfig.circdb %]"></td></tr>
-<tr><td><b>[% msg.maketext("WebOPAC-URL") %]</b></td><td><input type="text" size="50" name="circurl" value="[% katalog.circconfig.circurl %]"></td></tr>
-<tr><td><b>[% msg.maketext("Bestands-&Uuml;berpr&uuml;fungs-URL") %]</b></td><td><input type="text" size="50" name="circcheckurl" value="[% katalog.circconfig.circcheckurl %]"></td></tr>
+<tr><td><b>[% msg.maketext("DB-Name im Lokalsystem") %]</b></td><td><input type="text" size="50" name="circdb" value="[% katalog.circconfig.circdb %]" /></td></tr>
+<tr><td><b>[% msg.maketext("WebOPAC-URL") %]</b></td><td><input type="text" size="50" name="circurl" value="[% katalog.circconfig.circurl %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Bestands-&Uuml;berpr&uuml;fungs-URL") %]</b></td><td><input type="text" size="50" name="circcheckurl" value="[% katalog.circconfig.circcheckurl %]" /></td></tr>
 </table>
 </td></tr>
 </table>

@@ -15,9 +15,9 @@
 
 <body>
 
-<table BORDER="0" CELLSPACING="0" CELLPADDING="0" width="100%">
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
   <tr class="titlerow">
-    <td  width="20">&nbsp;</td><td valign="middle" ALIGN="left" height="32"><span class="dbdescshort">[% poolname.short %]</span></td>
+    <td  width="20">&nbsp;</td><td valign="middle" align="left" height="32"><span class="dbdescshort">[% poolname.short %]</span></td>
   </tr>
 </table>
 

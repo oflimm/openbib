@@ -19,24 +19,24 @@
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 [% END %]
 
-<ul id="tabbingmenu">
+<ul class="tabbingmenu">
    <li><a                href="http://[% config.servername %][% config.userprefs_loc %]?sessionID=[% sessionID %];action=showfields" target="body">[% msg.maketext("Grundeinstellungen") %]</a></li>
    <li><a class="active" href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc" target="body">[% msg.maketext("Benutzerkonto") %]</a></li>
    <li><a                href="http://[% config.servername %][% config.databaseprofile_loc %]?sessionID=[% sessionID %];do_showprofile=1" target="body">[% msg.maketext("Katalogprofile") %]</a></li>
 </ul>
 
-<div id="content">
+<div class="content">
 
 <p />
 
-<ul id="tabbingmenu">
+<ul class="tabbingmenu">
    <li><a                href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc;circaction=borrows" target="body">[% msg.maketext("Ausleihen") %]</a></li>
    <li><a                href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc;circaction=reservations" target="body">[% msg.maketext("Vormerkungen") %]</a></li>
    <li><a class="active" href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc;circaction=orders" target="body">[% msg.maketext("Bestellungen") %]</a></li>
    <li><a                href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc;circaction=reminders" target="body">[% msg.maketext("Überziehungen / Gebühren") %]</a></li>
 </ul>
 
-<div id="content">
+<div class="content">
 
 <p />
 
@@ -57,18 +57,18 @@ class="[% listrow %]"
 [%- ELSE -%]
 [%- listrow = 'listrow1' -%] 
 [%- END -%]
-><td><i>[% utf2iso(order.Verfasser) %]</i><br>[% utf2iso(order.Titel) %]
+><td><i>[% order.Verfasser %]</i><br />[% order.Titel %]
 
 [% IF order.EJahr %]
-, [% utf2iso(order.EJahr) %]
+, [% order.EJahr %]
 [% END %]
 
 </td><td>
 [% IF order.MTyp == 99 %]
-[% msg.maketext("Fernleihbestellung") %]<br>
+[% msg.maketext("Fernleihbestellung") %]<br />
 [% END %]
 
-[% utf2iso(order.Mediennummer) %]</td><td>[% order.BestellDatum %]</td><td>[% order.Status %]</td></tr>
+[% order.Mediennummer %]</td><td>[% order.BestellDatum %]</td><td>[% order.Status %]</td></tr>
 [% END %]
 </table>
 

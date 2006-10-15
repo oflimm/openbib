@@ -19,6 +19,6 @@
 [% PROCESS common/subtemplate name="virtualsearch_more_search_tips" %]
 
 
-</div><p>
+</div><p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

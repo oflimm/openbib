@@ -16,7 +16,7 @@
 <body>
 
 <table width="100%">
-<tr><th align="left">[% msg.maketext("Virtueller Schlagwortindex") %]: [% contentreq %]</b> / <b>[% msg.maketext("Treffer") %]: [% index.size %]</b></tr>
+<tr><th align="left">[% msg.maketext("Virtueller Schlagwortindex") %]: <b>[% contentreq %]</b> / <b>[% msg.maketext("Treffer") %]: [% index.size %]</b></th></tr>
 <tr><td class="boxedclear">
 [%- PROCESS common/subtemplate name="common/navitembar" -%]
 [%- FOREACH item IN index -%]

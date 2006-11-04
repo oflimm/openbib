@@ -29,16 +29,16 @@ function update_fak(yourform, checked, fak) {
 // -->
 </script>
 
-<form method="get" action="http://[% config.servername %][% config.databasechoice_loc %]">
-<input type="hidden" name="hitrange" value="-1" />
-<input type="hidden" name="view" value="[% view %]" />
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
-
 <ul class="tabbingmenu">
    <li><a class="active" href="[% config.databasechoice_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">[% msg.maketext("Katalogauswahl") %]</a></li>
 </ul>
 
 <div class="content">
+
+<form method="get" action="http://[% config.servername %][% config.databasechoice_loc %]">
+<input type="hidden" name="hitrange" value="-1" />
+<input type="hidden" name="view" value="[% view %]" />
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
 
 <p />
 <table width="100%">

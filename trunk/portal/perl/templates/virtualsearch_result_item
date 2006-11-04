@@ -63,14 +63,14 @@ align="right" colspan="3"><strong>[%- IF treffer == qopts.maxhits && qopts.sb ==
 %]</span><br /><a href="[% config.search_loc %]?sessionID=[%
 sessionID %];database=[% item.database %];searchsingletit=[% item.id
 %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
-class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></td><td><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="header"><span class="rlcollect"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="header" title="[% msg.maketext("In die Merkliste") %]"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="[% msg.maketext("In die Merkliste") %]" border="0"></a></span></a></td><td align="left"><b>[% signatur %]</b></td></tr>
+class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></td><td><span class="rlcollect"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="header" title="[% msg.maketext("In die Merkliste") %]"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a></span></td><td align="left"><b>[% signatur %]</b></td></tr>
 [%- IF listrow == 'listrow1' -%]
 [%- listrow = 'listrow2' -%]
 [%- ELSE -%]
 [%- listrow = 'listrow1' -%]
 [%- END -%]
 [% END %]
-<tr><td class="listnr"></td><td colspan="4"><span style="font-size:0.8em">in: [% resulttime %] [% msg.maketext("Sekunden") %]</span></b></td></tr>
+<tr><td class="listnr"></td><td colspan="4"><b><span style="font-size:0.8em">in: [% resulttime %] [% msg.maketext("Sekunden") %]</span></b></td></tr>
 
 [% IF drilldown && fullresultcount > qopts.maxhits %]
 <tr><td class="listnr"><td colspan="4">
@@ -186,8 +186,8 @@ FOREACH thisoutput IN output ;
 
 [% END %]
 <td></tr>
-<tr><td colspan="4">&nbsp;<td></tr>
+<tr><td colspan="4">&nbsp;</td></tr>
 [% END %]
-<tr><td colspan="4">&nbsp;<td></tr>
+<tr><td colspan="4">&nbsp;</td></tr>
 <!-- Ende Result Item -->
 

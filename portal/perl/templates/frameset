@@ -27,13 +27,15 @@ END;
 <head>
 <title>KUG Recherche-Portal</title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<link href="/images/openbib/favicon.ico" rel="shortcut icon">
+<link href="/images/openbib/favicon.ico" rel="shortcut icon" />
 </head>
- <frameset rows="[% toprows %],*" border="0" frameborder="0">
+ <frameset rows="[% toprows %],*">
    <noframes>
+    <body>
         <p>[% msg.maketext("Sie brauchen einen Browser, der Frames darstellen kann, um diese Seiten mit ihren Inhalten wie geplant zu sehen.") %]</p>
+    </body>
    </noframes>
-   <frame name="header" src="[% headerframeurl %]" noresize />
-   <frame name="body"   src="[% bodyframeurl %]" />
+   <frame name="header" src="[% headerframeurl %]" noresize="noresize" frameborder="0"/>
+   <frame name="body"   src="[% bodyframeurl %]" frameborder="0" />
  </frameset>
 </html>

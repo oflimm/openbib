@@ -15,6 +15,23 @@
 
   <body>
 
+[% IF config.testsystem %]
+[% PROCESS common/subtemplate name="testsystem_info" %]
+[% END %]
+
+<div id="langchoice">
+[% FOREACH l IN config.lang %]
+<a href="[% config.frameset_loc %]?headerframeurl=[% config.headerframe_loc %];bodyframeurl=[% config.searchframe_loc %];sessionID=[% sessionID %];setmask=simple;l=[% l %]" target="_top"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[% END %]
+</div>
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
+   <li><a                href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
+</ul>
+
+<div class="content">
+
 <form method="get" id="openbib" action="http://[% config.servername %][% config.virtualsearch_loc %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="hitrange"  value="-1" />
@@ -25,22 +42,6 @@
 <input type="hidden" name="sb"        value="xapian" />
 <input type="hidden" name="drilldown" value="1" />
 
-[% IF config.testsystem %]
-[% PROCESS common/subtemplate name="testsystem_info" %]
-[% END %]
-
-<div id="langchoice">
-[% FOREACH l IN config.lang %]
-<a href="[% config.frameset_loc %]?headerframeurl=[% config.headerframe_loc %];bodyframeurl=[% config.searchframe_loc %];sessionID=[% sessionID %];setmask=simple;l=[% l %]" target="_top"><img src="/images/openbib/[% l %].png"></a>&nbsp;
-[% END %]
-</div>
-
-<ul class="tabbingmenu">
-   <li><a class="active" href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
-   <li><a                href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
-</ul>
-
-<div class="content">
 <p />
 <p />
 
@@ -130,11 +131,11 @@
 [% PROCESS common/subtemplate name="select_queries" %]
 
 <input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" />
+</td></tr>
+</table>
 </form>
 [% END %]
 
-</td></tr>
-</table>
 
 <p />
 

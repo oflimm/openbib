@@ -135,7 +135,7 @@ sub handler {
         my $rows = $res->{rowcount};
 
         if ($rows > 0) {
-            OpenBib::Common::Util::print_warning($msg->maketext("Ein Benutzer mit dem Namen $loginname existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_1]zurück[_2] und lassen es sich zumailen.","<a href=\"http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID}?do_login=1\">","</a>"),$r,$msg);
+            OpenBib::Common::Util::print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$loginname","<a href=\"http://$config->{servername}$config->{selfreg_loc}?sessionID=$session->{ID};view=$view;action=show\">","</a>"),$r,$msg);
             $userresult->finish();
             return OK;
         }

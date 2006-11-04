@@ -33,11 +33,11 @@
 <tr><td class="boxed">
 <table>
 <tr><td class="category">[% msg.maketext("Ihre Mailadresse") %]</td><td><input type="text" name="email" value="[% loginname %]" size="30" maxlength="200" /></td></tr>
-<tr><td class="category">[% msg.maketext("Betreff") %]</td><td><input type="text" name="subject" value="" SIZE="30" maxlength="200" /></td></tr>
+<tr><td class="category">[% msg.maketext("Betreff") %]</td><td><input type="text" name="subject" value="" size="30" maxlength="200" /></td></tr>
 </table>
 <p />
 <input type="submit" name="mail" value="[% msg.maketext("Abschicken") %]" />&nbsp;<input type="reset" value="[% msg.maketext("Felder leeren") %]" />
-</td><tr>
+</td></tr>
 </table>
 <p />
 

@@ -12,7 +12,7 @@
 #
 #######################################################################
 -%]
-<tr class="titlerow"><td><input type="checkbox" name="loeschtit" value="[% titset.database %]:[% titset.titidn %]" /></td><td>[% msg.maketext("aus:") %] [% titset.dbdesc.full %]<td></tr><tr><td>&nbsp;</td><td>
+<tr class="titlerow"><td><input type="checkbox" name="loeschtit" value="[% titset.database %]:[% titset.titidn %]" /></td><td>[% msg.maketext("aus:") %] [% titset.dbdesc.full %]</td></tr><tr><td>&nbsp;</td><td>
 [% normset    = titset.tit %]
 [% mexnormset = titset.mex %]
 [% circset    = titset.circ %]

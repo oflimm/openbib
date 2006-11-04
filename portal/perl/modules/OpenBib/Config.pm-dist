@@ -208,13 +208,13 @@ use vars qw(%config);
 	   # sowie elektr. Aufsatz/Zeitschriftenlieferungen (Medea) 
 	   # fuer den entsprechenden Standort (hier 038)
 
-	   hbzmonofernleih_exturl  => 'http://www.digibib.net/Digibib?SERVICE=TEMPLATE&SUBSERVICE=JUMPTO&DEST_SERVICE=TEMPLATE&DEST_SUBSERVICE=ILL_FRAME&DEST_MAINFRAMESUBSERVICE=MSEARCH_ILLSEARCH_MONO&LOCATION=038',
-	   hbzzeitfernleih_exturl  => 'http://www.digibib.net/Digibib?SERVICE=TEMPLATE&SUBSERVICE=JUMPTO&DEST_SERVICE=TEMPLATE&DEST_SUBSERVICE=ILL_FRAME&DEST_MAINFRAMESUBSERVICE=MSEARCH_ILLSEARCH_ARTICLE&LOCATION=038',
+	   hbzmonofernleih_exturl  => 'http://www.digibib.net/Digibib?SERVICE=TEMPLATE;SUBSERVICE=JUMPTO;DEST_SERVICE=TEMPLATE;DEST_SUBSERVICE=ILL_FRAME;DEST_MAINFRAMESUBSERVICE=MSEARCH_ILLSEARCH_MONO;LOCATION=038',
+	   hbzzeitfernleih_exturl  => 'http://www.digibib.net/Digibib?SERVICE=TEMPLATE;SUBSERVICE=JUMPTO;DEST_SERVICE=TEMPLATE;DEST_SUBSERVICE=ILL_FRAME;DEST_MAINFRAMESUBSERVICE=MSEARCH_ILLSEARCH_ARTICLE;LOCATION=038',
 
 	   # Externer Link zur Elektronischen ZeitschriftenBibliothek (EZB)
 	   # fuer den entsprechenden Standort (hier USBK)
 
-	   ezb_exturl              => 'http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?bibid=USBK&colors=7&lang=de&jq_type1=IS&jq_bool2=AND&jq_not2=+&jq_type2=KT&jq_bool3=AND&jq_not3=+&jq_type3=PU&jq_term3=&offset=-1&hits_per_page=50&search_journal=Suche+starten&Notations%5B%5D=all&selected_colors%5B%5D=1&selected_colors%5B%5D=2&selected_colors%5B%5D=4',
+	   ezb_exturl              => 'http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?bibid=USBK;colors=7;lang=de;jq_type1=IS;jq_bool2=AND;jq_not2=+;jq_type2=KT;jq_bool3=AND;jq_not3=+;jq_type3=PU;jq_term3=;offset=-1;hits_per_page=50;search_journal=Suche+starten;Notations%5B%5D=all;selected_colors%5B%5D=1;selected_colors%5B%5D=2;selected_colors%5B%5D=4',
 
 	   # Externer Link zum DatenBankInfoSystem (DBIS)
 

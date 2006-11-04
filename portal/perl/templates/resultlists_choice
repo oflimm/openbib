@@ -15,6 +15,8 @@
 -%]
 [% PROCESS common/subtemplate name="std_header" %]
 
+<body>
+
 <ul class="tabbingmenu">
    <li><a class="active" href="[% config.resultlists_loc %]?sessionID=[% sessionID %];action=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a></li>
 </ul>
@@ -77,7 +79,7 @@
 <tr><td colspan="2"></td></tr>
 
 <tr><td>[% msg.maketext("Katalog") %]</td><td>[% msg.maketext("Treffer") %]</td></tr>
-<tr><td class="listrow2"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %]&action=showall&sortall=0&sorttype=author&queryid=[% thisquery.id %]&view=[% view %];offset=0;hitrange=[% qopts.maxhits %]"><b>[% msg.maketext("Alle Treffer") %]</b></a></td><td align="right">[% hitcount %]</td></tr>
+<tr><td class="listrow2"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];action=showall;sortall=0;sorttype=author;queryid=[% thisquery.id %];view=[% view %];offset=0;hitrange=[% qopts.maxhits %]"><b>[% msg.maketext("Alle Treffer") %]</b></a></td><td align="right">[% hitcount %]</td></tr>
       
 <tr><td class="listrow1">&nbsp;</td><td align="right">&nbsp;</td></tr>
       
@@ -117,7 +119,7 @@
 
 [% PROCESS common/subtemplate name="select_queries" %]
 
-<input type=submit value="Auswahl">
+<input type="submit" value="Auswahl" />
 </td></tr></table>
 </form>
 

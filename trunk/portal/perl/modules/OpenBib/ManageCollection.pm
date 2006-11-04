@@ -183,14 +183,14 @@ sub handler {
                     singleidn => $singleidn,
                 };
             }
+
+            $idnresult->finish();
         }
         else {
             push @dbidnlist, $session->get_items_in_collection();
         }
 
         my @collection=();
-
-        $idnresult->finish();
 
         if ($#dbidnlist < 0){
             OpenBib::Common::Util::print_warning($msg->maketext("Derzeit ist Ihre Merkliste leer"),$r,$msg);

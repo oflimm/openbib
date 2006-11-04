@@ -164,7 +164,7 @@
 <input type="hidden" name="action" value="changefields" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <table>
-<tr><td colspan="2"><b>[% msg.maketext("Welche Suchfelder sollen in der erweiterten<br>Recherchemaske angezeigt werden?") %]</b></td></tr>
+<tr><td colspan="2"><b>[% msg.maketext("Welche Suchfelder sollen in der erweiterten<br />Recherchemaske angezeigt werden?") %]</b></td></tr>
 <tr><td colspan="2">&nbsp;</td></tr>
 <tr><td align="right"><input type="checkbox" name="showfs" value="1" [% fschecked %] /></td><td>[% msg.maketext("Freie Suche") %]</td></tr>
 <tr><td align="right"><input type="checkbox" name="showhst" value="1" [% hstchecked %] /></td><td>[% msg.maketext("Hauptsachtitel (HST)") %]</td></tr>

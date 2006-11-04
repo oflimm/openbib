@@ -13,7 +13,7 @@
 #######################################################################
 -%]
 [% FOREACH titset IN collection %]
-<tr class="titlerow"><td>[% msg.maketext("Titel") %] [% loop.count %] [% msg.maketext("aus:") %] [% titset.dbdesc.full %]<td></tr>
+<tr class="titlerow"><td>[% msg.maketext("Titel") %] [% loop.count %] [% msg.maketext("aus:") %] [% titset.dbdesc.full %]</td></tr>
 <tr><td>
 [% normset    = titset.tit %]
 [% mexnormset = titset.mex %]
@@ -75,5 +75,3 @@ FOREACH category IN categories;
 </td></tr>
 <tr><td></td><td></td></tr>
 [% END %]
-</div>
-<p />

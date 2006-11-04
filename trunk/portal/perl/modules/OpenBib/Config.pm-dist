@@ -1202,7 +1202,23 @@ sub get_infomatrix_of_active_databases {
         
         $count++;
     }
-    
+
+    while ($count % $maxcolumn != 0) {
+        my $rcolumn=($count % $maxcolumn)+1;
+        
+        # 'Leereintrag erzeugen'
+        push @catdb, { 
+            column     => $rcolumn, 
+            category   => $lastcategory,
+            db         => '',
+            name       => '',
+            systemtype => '',
+            sigel      => '',
+            url        => '',
+        };
+        $count++;
+    }
+
     return @catdb;
 }
 

@@ -156,7 +156,7 @@ sub handler {
         while (my $result=$targetresult->fetchrow_hashref()) {
             $hostname    = decode_utf8($result->{'hostname'});
             $port        = decode_utf8($result->{'port'});
-            $username     = decode_utf8($result->{'user'});
+            $username    = decode_utf8($result->{'user'});
             $db          = decode_utf8($result->{'db'});
             $description = decode_utf8($result->{'description'});
             $type        = decode_utf8($result->{'type'});
@@ -291,16 +291,16 @@ sub handler {
         my $headerframeurl
             = "http://$config->{servername}$config->{headerframe_loc}?sessionID=$session->{ID}";
         my $bodyframeurl
-            = "http://$config->{servername}$config->{userprefs_loc}?sessionID=$session->{ID}&action=showfields";
+            = "http://$config->{servername}$config->{userprefs_loc}?sessionID=$session->{ID};action=showfields";
     
         if ($view ne "") {
-            $headerframeurl.="&view=$view";
-            $bodyframeurl.="&view=$view";
+            $headerframeurl.=";view=$view";
+            $bodyframeurl.=";view=$view";
         }
 
         # Fehlerbehandlung
         if ($loginfailed) {
-            $bodyframeurl="http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID}&do_loginfailed=1&code=$loginfailed";
+            $bodyframeurl="http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};do_loginfailed=1;code=$loginfailed";
         }
     
         my $ttdata={

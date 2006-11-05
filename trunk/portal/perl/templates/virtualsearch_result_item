@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 <!-- Beginn Result Item -->
-<tr class="titlerow"><td>&nbsp;</td><td>[% dbinfo.full %]</td><td
+<tr class="titlerow"><td>&nbsp;</td><td><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% dbinfo.full %]</td><td
 align="right" colspan="3"><strong>[%- IF treffer == qopts.maxhits && qopts.sb == 'sql' -%]<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#recherche">[% msg.maketext("mind.") %]&nbsp;[% treffer %] [% msg.maketext("Treffer") %]</a>[% ELSE %][% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %][%- END -%]</strong></td></tr>
 [%- IF treffer == qopts.maxhits -%]
 <tr class="titlerow"><td>&nbsp;</td><td colspan="4"><b>[1 - [% qopts.maxhits %]]</b>&nbsp;<a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];database=[% database %];queryid=[% queryid %];action=getnext;offset=[% qopts.maxhits %];hitrange=[% qopts.maxhits %];sb=[% qopts.sb %]">[weitere Treffer...]</a></td></tr>

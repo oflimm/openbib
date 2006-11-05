@@ -1,0 +1,238 @@
+[%#-
+#######################################################################
+#
+# Templatename: connector_digibib_showtitset
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Treffers in der vollen Titelanzeige
+#
+#######################################################################
+-%]
+[%# Verfasser konstruieren %]
+[%- persons = [] -%]
+[%- FOREACH part IN item.${'T0100'}  -%]
+[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.${'T0101'}  -%]
+[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- person = persons.join(' ; ') -%]
+[%# Koerperschaften konstruieren %]
+[%- corps = [] -%]
+[%- FOREACH part IN item.${'T0200'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%- corps.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- END -%]
+[%- FOREACH part IN item.${'T0201'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%- corps.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- END -%]
+[%- corp   = corps.join(' ; ') -%]
+[%# Schlagworte konstruieren %]
+[%- subjects = [] -%]
+[%- FOREACH part IN item.${'T0710'}  -%]
+[%- subjects.push("${part.content}")-%]
+[%- END -%]
+[%- subject  = subjects.join(' ; ') -%]
+[%# Abstracts konstruieren %]
+[%- abstracts = [] -%]
+[%- FOREACH part IN item.${'T0750'}  -%]
+[%- abstracts.push("${part.content}")-%]
+[%- END -%]
+[%- abstract  = abstracts.join(' ; ') -%]
+[%# ISBNs konstruieren %]
+[%- isbns = [] -%]
+[%- FOREACH part IN item.${'T0540'}  -%]
+[%- isbns.push("${part.content}")-%]
+[%- END -%]
+[%- isbn  = isbns.join(' ; ') -%]
+[%# ISSNs konstruieren %]
+[%- issns = [] -%]
+[%- FOREACH part IN item.${'T0543'}  -%]
+[%- issns.push("${part.content}")-%]
+[%- END -%]
+[%- issn  = issns.join(' ; ') -%]
+[%# Fussnoten konstruieren %]
+[%- fussnoten = [] -%]
+[%- FOREACH part IN item.${'T0501'}  -%]
+[%- fussnoten.push("${part.content}")-%]
+[%- END -%]
+[%- fussnote  = fussnoten.join(' ; ') -%]
+[%# Titel konstruieren %]
+[%- title = item.${'T0331'}.first.content -%]
+[%- IF item.${'T0310'}.first.content -%]
+[%- title = item.${'T0310'}.first.content -%]
+[%- END -%]
+[%# Verlage konstruieren %]
+[%- publisher = item.${'T0412'}.first.content -%]
+[%# Ejahr konstruieren %]
+[%- yearofpub = item.${'T0425'}.first.content -%]
+[%# URL's konstruieren %]
+[%- urls = [] -%]
+[%- FOREACH part IN item.${'T0662'}  -%]
+[%- urls.push("<a href=\"${part.content}\" target=\"_blank\">${part.content}</a>")-%]
+[%- END -%]
+[%- url  = urls.join(' ; ') -%]
+[%# Signaturen konstruieren %]
+[%- signaturen = [] -%]
+[%- FOREACH singleitemmex IN itemmex -%]
+[%- part = singleitemmex.${'X0014'} -%]
+[%- signaturen.push("${part.content}") -%]
+[%- END -%]
+[%- signatur = signaturen.join(' ; ') -%]
+[%- location = targetdbinfo.dbinfo.${item.database}.short -%]
+[%
+IF signatur ;
+  location = "${location}: ${signatur}";
+END;
+
+%]
+[%
+
+ quelle = item.${'T0590'}.0.content;
+ seitenzahl = quelle.match(' ; (S\. *\d+.*)$');
+%]
+<HTML>
+<HEAD>
+<TITLE>Langanzeige</TITLE>
+</HEAD>
+<BODY>
+
+<!-- begin result -->
+
+<!--
+[%
+
+USE dumper;
+dumper.dump(item);
+dumper.dump(itemmex);
+dumper.dump(sbitem);
+dumper.dump(sbitemmex);
+
+%]
+-->
+
+<OL>
+
+<LI><UL>
+<LI> DB=KVIK
+<LI> AU=[% person                     # Verfasser %]
+<LI> RE=[% item.${'T0359'}.0.content  # VorlVerf%]
+<LI> TI=[% item.${'T0331'}.0.content  # HST %]
+<LI> CO=[% corp                       # Koerperschaften %]
+<LI> KY=[% subject                    # Schlagworte %]
+<LI> PB=[% item.${'T0412'}.0.content  # Verlag%]
+<LI> PBO=[% item.${'T0410'}.0.content # Verlagsort %]
+<LI> AG=[% item.${'T0403'}.0.content  # Ausgabe %]
+<LI> UM=[% item.${'T0433'}.0.content  # Kollation %]
+<LI> SE=[% item.${'T0451'}.0.content  # Serie %]
+<LI> CT=
+<LI> ZT=
+<LI> SZ=[% seitenzahl.0               # Seitenzahl der Quelle %]
+<LI> SO=[% item.${'T0590'}.0.content  # HSTQuelle %]
+<LI> AB=[% abstract                   # Abstract %]
+<LI> YR=[% item.${'T0425'}.0.content  # ErschJahr %]
+<LI> IB=[% isbn                       # ISBN %]
+<LI> IS=[% issn                       # ISSN %]
+<LI> LO=[% location                   # Location mit Signatur %]
+<LI> FN=[% fussnote                   # Fussnote %]
+<LI> OLL=[% url                       # URL %]
+<LI> AUH=[% autorlink %]
+<LI> TIH=[% titellink %]
+[% IF has_sb %]
+[%# Verfasser konstruieren %]
+[%- persons = [] -%]
+[%- FOREACH part IN sbitem.${'T0100'}  -%]
+[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN sbitem.${'T0101'}  -%]
+[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- person = persons.join(' ; ') -%]
+[%# Koerperschaften konstruieren %]
+[%- corps = [] -%]
+[%- FOREACH part IN sbitem.${'T0200'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%- corps.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- END -%]
+[%- FOREACH part IN sbitem.${'T0201'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%- corps.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- END -%]
+[%- corp   = corps.join(' ; ') -%]
+[%# Schlagworte konstruieren %]
+[%- subjects = [] -%]
+[%- FOREACH part IN sbitem.${'T0710'}  -%]
+[%- subjects.push("${part.content}")-%]
+[%- END -%]
+[%- subject  = subjects.join(' ; ') -%]
+[%# Abstracts konstruieren %]
+[%- abstracts = [] -%]
+[%- FOREACH part IN sbitem.${'T0750'}  -%]
+[%- abstracts.push("${part.content}")-%]
+[%- END -%]
+[%- abstract  = abstracts.join(' ; ') -%]
+[%# ISBNs konstruieren %]
+[%- isbns = [] -%]
+[%- FOREACH part IN sbitem.${'T0540'}  -%]
+[%- isbns.push("${part.content}")-%]
+[%- END -%]
+[%- isbn  = isbns.join(' ; ') -%]
+[%# ISSNs konstruieren %]
+[%- issns = [] -%]
+[%- FOREACH part IN sbitem.${'T0543'}  -%]
+[%- issns.push("${part.content}")-%]
+[%- END -%]
+[%- issn  = issns.join(' ; ') -%]
+[%# Fussnoten konstruieren %]
+[%- fussnoten = [] -%]
+[%- FOREACH part IN sbitem.${'T0501'}  -%]
+[%- fussnoten.push("${part.content}")-%]
+[%- END -%]
+[%- fussnote  = fussnoten.join(' ; ') -%]
+[%# Titel konstruieren %]
+[%- title = sbitem.${'T0331'}.first.content -%]
+[%- IF item.${'T0310'}.first.content -%]
+[%- title = sbitem.${'T0310'}.first.content -%]
+[%- END -%]
+[%# Verlage konstruieren %]
+[%- publisher = sbitem.${'T0412'}.first.content -%]
+[%# Ejahr konstruieren %]
+[%- yearofpub = sbitem.${'T0425'}.first.content -%]
+[%# Signaturen konstruieren %]
+[%- signaturen = [] -%]
+[%- FOREACH singleitemmex IN sbitemmex -%]
+[%- part = singleitemmex.${'X0014'} -%]
+[%- signaturen.push("${part.content}") -%]
+[%- END -%]
+[%- signatur = signaturen.join(' ; ') -%]
+[%- location = targetdbinfo.dbinfo.${item.database}.short -%]
+[%
+IF signatur ;
+  location = "${location}: ${signatur}";
+END;
+
+%]
+<LI> SBAU=[% person                       # Verfasser%]
+<LI> SBTI=[% hst                          # Titel %]
+<LI> SBPB=[% publisher                    # Verlag %]
+<LI> SBPBO=[% sbitem.${'T0410'}.0.content # Verlagsort %]
+<LI> SBSE=[% item.${'T0451'}.0.content    # Serie %]
+<LI> SBYR=[% yearofpub                    # ErschJahr%]
+<LI> SBIB=[% isbn                         # ISBN %]
+<LI> SBIS=[% issn                         # ISSN %]
+[%- END -%]
+</UL>
+</OL>
+
+<!-- end result -->
+
+</BODY>
+</HTML>

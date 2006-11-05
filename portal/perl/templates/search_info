@@ -11,23 +11,40 @@
 #
 #######################################################################
 -%]
-<b>[% msg.maketext("Normale Suchanfragen") %]</b><br />
-[% msg.maketext("Zur Suche tragen Sie in die einzelnen Eingabefelder alle Begriffe mit
-Leerzeichen getrennt ein, die in Ihrem gesuchten Titel enthalten sein
-m&uuml;ssen. Deaktivieren Sie <b>nicht</b> die Suchoption 'Und-Verkn&uuml;pfung innerhalb eines Suchfeldes'. Die Begriffe werden dann automatisch innerhalb eines Suchfeldes Und-verkn&uuml;pft.") %]<br />
+<b>[% msg.maketext("Wenn Sie mehrere Suchworte in ein Feld eingetragen haben,</b><br />
+gilt automatisch die <b>UND-Verkn&uuml;pfung</b>: alle Begriffe
+kommen im Titel vor. W&uuml;nschen Sie eine
+<b>ODER-Verkn&uuml;pfung</b>, deaktivieren Sie die Suchoption
+<b>UND-Verkn&uuml;pfung innerhalb eines Suchfeldes</b>: der eine
+<b>oder</b> der andere Begriff ist enthalten.") %]
 <p />
-<b>[% msg.maketext("Komplizierte Suchanfragen") %]</b><br />
-[% msg.maketext("Wenn Sie kompliziertere Suchanfragen stellen m&ouml;chten, so erfahren Sie") %]
-<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#profisuche">[% msg.maketext("hier") %]</a> [% msg.maketext("alles &uuml;ber die Verwendung m&ouml;glicher Boolscher Suchoperatoren innerhalb eines Eingabefeldes und die angesprochene Suchoption 'Und-Verkn&uuml;pfung innerhalb eines Suchfeldes'.") %]<br />
+<b>[% msg.maketext("Soll ein Begriff beliebig enden,</b><br />
+schreiben Sie als <b>Trunkierungszeichen</b> ein *.") %]
+
 <p />
-<b>[% msg.maketext("Suchlogik bei Verkn&uuml;pfungen mehrerer Suchfelder:") %]</b><br />
-[% msg.maketext("Die einzelnen Suchfelder sind standardm&auml;ssig &uuml;ber eine 
-<b>Und</b>-Verkn&uuml;pfung verbunden. Zur Einschr&auml;nkung des Suchergebnisses 
-k&ouml;nnen die Suchfelder auch &uuml;ber eine <b>Oder</b>- sowie eine 
-<b>Und Nicht</b>-Verkn&uuml;pfung verbunden werden. W&auml;hlen Sie hierzu die 
-entsprechende Verkn&uuml;pfungsart aus dem Pull-Down-Men&uuml; vor dem 
-jeweiligen Texteingabefeld.") %]<br />
-<br />
-<b>[% msg.maketext("Besonderheit bei") %] <span class="warning">*</span>:</b><br />
-- [% msg.maketext("Keine <b>logische</b> Kombination mehrerer Worte im Eingabefeld m&ouml;glich") %]<br />
-- [% msg.maketext("<b>aber</b> exakte Phrasensuche") %]
+<b>[% msg.maketext("Wenn Sie mehrere Suchworte in verschiedene Felder eingetragen haben,</b><br />
+k&ouml;nnen Sie &uuml;ber die Spalte <b>Verkn&uuml;pfung</b> festlegen,
+ob die einzelnen Felder <b>UND</b>, <b>ODER</b> bzw. <b>UND NICHT</b>
+verkn&uuml;pft werden sollen.") %]
+
+<p />
+<b>[% msg.maketext("Wenn Sie den Index aufrufen m&ouml;chten,</b> <br /> dann
+geben Sie bitte dort einen Begriff ein und klicken auf
+<b>Index</b>. Sie erhalten dann eine Liste der entsprechenden
+Normdaten aus der Datenbank, die mit dem von Ihnen eingegebenen
+Begriff beginnen.") %]
+
+<p />
+
+
+<b>[% msg.maketext("Besonderheit bei Feldern mit") %] <span class="warning">*</span>
+[% msg.maketext("(Notation, Signatur, Titel-String):") %]</b><br />
+[% msg.maketext("Hier gilt automatisch die <b>Phrasensuche</b>. Eine <b>logische</b>
+Kombination mehrerer Worte im Eingabefeld ist <b>nicht</b>
+m&ouml;glich. Sie k&ouml;nnen jedoch das Trunkierungszeichen am Ende
+Ihrer Eingabe hinzuf&uuml;gen (z.B. KA 15*).") %]
+<p />
+<b>[% msg.maketext("Hinweise und Beispiele zu weiteren
+Suchm&ouml;glichkeiten erhalten Sie [_1]hier[_2]","<a href=\"${config.helpframe_loc}?sessionID=${sessionID};view=${view}#profisuche\" target=\"body\">","</a>") %]
+</b>.
+<p />

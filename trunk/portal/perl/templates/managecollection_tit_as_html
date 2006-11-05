@@ -63,7 +63,7 @@ END;
 <table>
 <tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="250">[% msg.maketext("Standort") %]</td><td width="120">[% msg.maketext("Lokale Signatur") %]</td><td width="120">[% msg.maketext("Ausleihstatus") %]</td><td width="110">[% msg.maketext("Aktion") %]</td></tr>
 [% FOREACH mex IN circset %]
-<tr align="center"><td><a href="[% mex.Bibinfourl %]"><strong>[% mex.Bibliothek.full %]</strong></a></td><td>[% mex.Standort %]</td><td><strong>[% mex.Signatur %]</strong></td><td><strong>[% mex.Status %]</strong></td><td class="circurl"><a href="[% mex.Ausleihurl %]" target="_blank">[% mex.Ausleihstring %]</a></td></tr>
+<tr align="center"><td><a href="[% mex.Bibinfourl %]" target="_blank"><strong>[% mex.Bibliothek.full %]</strong></a></td><td>[% mex.Standort %]</td><td><strong>[% mex.Signatur %]</strong></td><td><strong>[% mex.Status %]</strong></td><td class="circurl"><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% mex.Ausleihurl %]" target="_blank">[% mex.Ausleihstring %]</a></td></tr>
 [% END %]
 </table>
 </td></tr>

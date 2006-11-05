@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2006-11-04 21:19+0100\n"
+"PO-Revision-Date: 2006-11-05 12:38+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team:  <l10n@openbib.org>\n"
 "MIME-Version: 1.0\n"
@@ -71,6 +71,10 @@ msgstr ""
 msgid "&Uuml;berzogen"
 msgstr "&Uuml;berzogen"
 
+#: ../templates/search_info:41
+msgid "(Notation, Signatur, Titel-String):"
+msgstr "(Notation, Signatur, Titel-String):"
+
 #: ../templates/views/einbaende/std_footer:17
 msgid ""
 "<b>KUG</b> und <b>Digitale Einband-Sammlung</b> sind Dienste der "
@@ -78,10 +82,6 @@ msgid ""
 msgstr ""
 "<b>KUG</b> und <b>Digitale Einband-Sammlung</b> sind Dienste der "
 "Universit&auml;ts- und Stadtbibliothek K&ouml;ln"
-
-#: ../templates/search_info:33
-msgid "<b>aber</b> exakte Phrasensuche"
-msgstr "<b>aber</b> exakte Phrasensuche"
 
 #: ../templates/database/einbaende/search_showtitlist:127
 #: ../templates/views/einbaende/resultlists_showall:101
@@ -342,9 +342,9 @@ msgstr "Beschreibung"
 msgid "Besitzende Bibliothek"
 msgstr "Besitzende Bibliothek"
 
-#: ../templates/search_info:31
-msgid "Besonderheit bei"
-msgstr "Besonderheit bei"
+#: ../templates/search_info:40
+msgid "Besonderheit bei Feldern mit"
+msgstr "Besonderheit bei Feldern mit"
 
 #: ../templates/admin_editcat:172
 msgid "Bestands-&Uuml;berpr&uuml;fungs-URL"
@@ -526,26 +526,6 @@ msgstr ""
 #: ../modules/OpenBib/SelfReg.pm:122
 msgid "Die beiden eingegebenen Passworte stimmen nicht überein."
 msgstr "Die beiden eingegebenen Passworte stimmen nicht überein."
-
-#: ../templates/search_info:24
-msgid ""
-"Die einzelnen Suchfelder sind standardm&auml;ssig &uuml;ber eine \n"
-"<b>Und</b>-Verkn&uuml;pfung verbunden. Zur Einschr&auml;nkung des "
-"Suchergebnisses \n"
-"k&ouml;nnen die Suchfelder auch &uuml;ber eine <b>Oder</b>- sowie eine \n"
-"<b>Und Nicht</b>-Verkn&uuml;pfung verbunden werden. W&auml;hlen Sie hierzu "
-"die \n"
-"entsprechende Verkn&uuml;pfungsart aus dem Pull-Down-Men&uuml; vor dem \n"
-"jeweiligen Texteingabefeld."
-msgstr ""
-"Die einzelnen Suchfelder sind standardm&auml;ssig &uuml;ber eine \n"
-"<b>Und</b>-Verkn&uuml;pfung verbunden. Zur Einschr&auml;nkung des "
-"Suchergebnisses \n"
-"k&ouml;nnen die Suchfelder auch &uuml;ber eine <b>Oder</b>- sowie eine \n"
-"<b>Und Nicht</b>-Verkn&uuml;pfung verbunden werden. W&auml;hlen Sie hierzu "
-"die \n"
-"entsprechende Verkn&uuml;pfungsart aus dem Pull-Down-Men&uuml; vor dem \n"
-"jeweiligen Texteingabefeld."
 
 #: ../modules/OpenBib/Circulation.pm:108 ../modules/OpenBib/UserPrefs.pm:122
 msgid "Diese Session ist nicht authentifiziert."
@@ -903,6 +883,18 @@ msgstr ""
 msgid "Hauptsachtitel (HST)"
 msgstr "Hauptsachtitel (HST)"
 
+#: ../templates/search_info:42
+msgid ""
+"Hier gilt automatisch die <b>Phrasensuche</b>. Eine <b>logische</b>\n"
+"Kombination mehrerer Worte im Eingabefeld ist <b>nicht</b>\n"
+"m&ouml;glich. Sie k&ouml;nnen jedoch das Trunkierungszeichen am Ende\n"
+"Ihrer Eingabe hinzuf&uuml;gen (z.B. KA 15*)."
+msgstr ""
+"Hier gilt automatisch die <b>Phrasensuche</b>. Eine <b>logische</b>\n"
+"Kombination mehrerer Worte im Eingabefeld ist <b>nicht</b>\n"
+"m&ouml;glich. Sie k&ouml;nnen jedoch das Trunkierungszeichen am Ende\n"
+"Ihrer Eingabe hinzuf&uuml;gen (z.B. KA 15*)."
+
 #: ../templates/searchframe:198 ../templates/searchframe:202
 #: ../templates/searchframe:80 ../templates/searchframe:88
 #: ../templates/searchframe_simple:109 ../templates/searchframe_simple:115
@@ -940,6 +932,15 @@ msgstr "Hilfe"
 #: ../templates/selfreg:32
 msgid "Hinweis"
 msgstr "Hinweis"
+
+#. ("<a href=\"${config.helpframe_loc}?sessionID=${sessionID};view=${view}#profisuche\" target=\"body\">","</a>")
+#: ../templates/search_info:47
+msgid ""
+"Hinweise und Beispiele zu weiteren\n"
+"Suchm&ouml;glichkeiten erhalten Sie %1hier%2"
+msgstr ""
+"Hinweise und Beispiele zu weiteren\n"
+"Suchm&ouml;glichkeiten erhalten Sie %1hier%2"
 
 #: ../templates/views/einbaende/headerframe:26
 #: ../templates/views/richter/headerframe:26
@@ -1174,10 +1175,6 @@ msgstr "Kategorie"
 msgid "Kein prim&auml;rer RSS-Feed ausgew&auml;hlt"
 msgstr "Kein prim&auml;rer RSS-Feed ausgew&auml;hlt"
 
-#: ../templates/search_info:32
-msgid "Keine <b>logische</b> Kombination mehrerer Worte im Eingabefeld m&ouml;glich"
-msgstr "Keine <b>logische</b> Kombination mehrerer Worte im Eingabefeld m&ouml;glich"
-
 #: ../modules/OpenBib/DatabaseProfile.pm:230
 msgid "Keine gültige Aktion"
 msgstr "Keine gültige Aktion"
@@ -1208,10 +1205,6 @@ msgstr "Klicken Sie nun %1hier%2, um sich anzumelden."
 #: ../templates/views/richter/searchframe_simple:39
 msgid "Komplexe Recherche"
 msgstr "Komplexe Recherche"
-
-#: ../templates/search_info:19
-msgid "Komplizierte Suchanfragen"
-msgstr "Komplizierte Suchanfragen"
 
 #: ../templates/virtualsearch_more_search_tips:26
 msgid ""
@@ -1430,10 +1423,6 @@ msgstr "Neuen View anlegen"
 #: ../templates/admin_editcat_rss:334
 msgid "Neuerwerbungen"
 msgstr "Neuerwerbungen"
-
-#: ../templates/search_info:14
-msgid "Normale Suchanfragen"
-msgstr "Normale Suchanfragen"
 
 #: ../templates/admin_editcat:128
 msgid "Not-Datei"
@@ -1914,6 +1903,14 @@ msgstr "Soll"
 msgid "Soll die Kennung wirklich gel&ouml;scht werden?"
 msgstr "Soll die Kennung wirklich gel&ouml;scht werden?"
 
+#: ../templates/search_info:21
+msgid ""
+"Soll ein Begriff beliebig enden,</b><br />\n"
+"schreiben Sie als <b>Trunkierungszeichen</b> ein *."
+msgstr ""
+"Soll ein Begriff beliebig enden,</b><br />\n"
+"schreiben Sie als <b>Trunkierungszeichen</b> ein *."
+
 #: ../templates/database/einbaende/search_showtitlist:37
 #: ../templates/search_showtitlist:33
 #: ../templates/views/einbaende/virtualsearch_result_start:41
@@ -2045,10 +2042,6 @@ msgstr "Suchhinweise"
 #: ../templates/views/richter/searchframe:40
 msgid "Suchhistorie"
 msgstr "Suchhistorie"
-
-#: ../templates/search_info:23
-msgid "Suchlogik bei Verkn&uuml;pfungen mehrerer Suchfelder:"
-msgstr "Suchlogik bei Verkn&uuml;pfungen mehrerer Suchfelder:"
 
 #: ../templates/searchframe:165
 msgid "Suchoptionen"
@@ -2597,6 +2590,10 @@ msgstr "Treffer"
 msgid "Trefferliste"
 msgstr "Trefferliste"
 
+#: ../templates/headerframe:32
+msgid "Tutorien"
+msgstr "Tutorien"
+
 #: ../templates/admin_editcat:78 ../templates/admin_showcat:43
 #: ../templates/admin_showcat:73
 msgid "URL"
@@ -2809,9 +2806,49 @@ msgstr ""
 "Welcher RSS-Feed soll der prim&auml;re Feed f&uuml;r das Browser Auto-"
 "Discovery sein"
 
-#: ../templates/search_info:20
-msgid "Wenn Sie kompliziertere Suchanfragen stellen m&ouml;chten, so erfahren Sie"
-msgstr "Wenn Sie kompliziertere Suchanfragen stellen m&ouml;chten, so erfahren Sie"
+#: ../templates/search_info:31
+msgid ""
+"Wenn Sie den Index aufrufen m&ouml;chten,</b> <br /> dann\n"
+"geben Sie bitte dort einen Begriff ein und klicken auf\n"
+"<b>Index</b>. Sie erhalten dann eine Liste der entsprechenden\n"
+"Normdaten aus der Datenbank, die mit dem von Ihnen eingegebenen\n"
+"Begriff beginnen."
+msgstr ""
+"Wenn Sie den Index aufrufen m&ouml;chten,</b> <br /> dann\n"
+"geben Sie bitte dort einen Begriff ein und klicken auf\n"
+"<b>Index</b>. Sie erhalten dann eine Liste der entsprechenden\n"
+"Normdaten aus der Datenbank, die mit dem von Ihnen eingegebenen\n"
+"Begriff beginnen."
+
+#: ../templates/search_info:14
+msgid ""
+"Wenn Sie mehrere Suchworte in ein Feld eingetragen haben,</b><br />\n"
+"gilt automatisch die <b>UND-Verkn&uuml;pfung</b>: alle Begriffe\n"
+"kommen im Titel vor. W&uuml;nschen Sie eine\n"
+"<b>ODER-Verkn&uuml;pfung</b>, deaktivieren Sie die Suchoption\n"
+"<b>UND-Verkn&uuml;pfung innerhalb eines Suchfeldes</b>: der eine\n"
+"<b>oder</b> der andere Begriff ist enthalten."
+msgstr ""
+"Wenn Sie mehrere Suchworte in ein Feld eingetragen haben,</b><br />\n"
+"gilt automatisch die <b>UND-Verkn&uuml;pfung</b>: alle Begriffe\n"
+"kommen im Titel vor. W&uuml;nschen Sie eine\n"
+"<b>ODER-Verkn&uuml;pfung</b>, deaktivieren Sie die Suchoption\n"
+"<b>UND-Verkn&uuml;pfung innerhalb eines Suchfeldes</b>: der eine\n"
+"<b>oder</b> der andere Begriff ist enthalten."
+
+#: ../templates/search_info:25
+msgid ""
+"Wenn Sie mehrere Suchworte in verschiedene Felder eingetragen haben,</b><br /"
+">\n"
+"k&ouml;nnen Sie &uuml;ber die Spalte <b>Verkn&uuml;pfung</b> festlegen,\n"
+"ob die einzelnen Felder <b>UND</b>, <b>ODER</b> bzw. <b>UND NICHT</b>\n"
+"verkn&uuml;pft werden sollen."
+msgstr ""
+"Wenn Sie mehrere Suchworte in verschiedene Felder eingetragen haben,</b><br /"
+">\n"
+"k&ouml;nnen Sie &uuml;ber die Spalte <b>Verkn&uuml;pfung</b> festlegen,\n"
+"ob die einzelnen Felder <b>UND</b>, <b>ODER</b> bzw. <b>UND NICHT</b>\n"
+"verkn&uuml;pft werden sollen."
 
 #. ("<a href=\"http://${config.loadbalancerservername}${config.loadbalancer_loc}?view=${view}\">","</a>")
 #: ../templates/userprefs_userdeleted:23
@@ -2856,20 +2893,6 @@ msgstr "Zugangsdatum"
 msgid "Zugemailte Merkliste"
 msgstr "Zugemailte Merkliste"
 
-#: ../templates/search_info:15
-msgid ""
-"Zur Suche tragen Sie in die einzelnen Eingabefelder alle Begriffe mit\n"
-"Leerzeichen getrennt ein, die in Ihrem gesuchten Titel enthalten sein\n"
-"m&uuml;ssen. Deaktivieren Sie <b>nicht</b> die Suchoption 'Und-Verkn&uuml;"
-"pfung innerhalb eines Suchfeldes'. Die Begriffe werden dann automatisch "
-"innerhalb eines Suchfeldes Und-verkn&uuml;pft."
-msgstr ""
-"Zur Suche tragen Sie in die einzelnen Eingabefelder alle Begriffe mit\n"
-"Leerzeichen getrennt ein, die in Ihrem gesuchten Titel enthalten sein\n"
-"m&uuml;ssen. Deaktivieren Sie <b>nicht</b> die Suchoption 'Und-Verkn&uuml;"
-"pfung innerhalb eines Suchfeldes'. Die Begriffe werden dann automatisch "
-"innerhalb eines Suchfeldes Und-verkn&uuml;pft."
-
 #: ../templates/searchframe:53 ../templates/searchframe_simple:133
 #: ../templates/views/einbaende/searchframe_simple:50
 #: ../templates/views/richter/searchframe:47
@@ -2890,16 +2913,6 @@ msgstr "Zur Trefferliste"
 #: ../templates/virtualsearch_result_start:35
 msgid "absteigend"
 msgstr "absteigend"
-
-#: ../templates/search_info:21
-msgid ""
-"alles &uuml;ber die Verwendung m&ouml;glicher Boolscher Suchoperatoren "
-"innerhalb eines Eingabefeldes und die angesprochene Suchoption 'Und-"
-"Verkn&uuml;pfung innerhalb eines Suchfeldes'."
-msgstr ""
-"alles &uuml;ber die Verwendung m&ouml;glicher Boolscher Suchoperatoren "
-"innerhalb eines Eingabefeldes und die angesprochene Suchoption 'Und-"
-"Verkn&uuml;pfung innerhalb eines Suchfeldes'."
 
 #: ../modules/OpenBib/Common/Util.pm:323
 #: ../templates/database/einbaende/search_showtitlist:37
@@ -2932,10 +2945,6 @@ msgstr "beginnend mit"
 #: ../templates/search_showswtindex:66
 msgid "gefunden werden."
 msgstr "gefunden werden."
-
-#: ../templates/search_info:21
-msgid "hier"
-msgstr "hier"
 
 #: ../templates/search_showswtindex:39
 msgid "in diesem Katalog gefunden"

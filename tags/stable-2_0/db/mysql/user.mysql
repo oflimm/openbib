@@ -1,0 +1,115 @@
+-------------------------------------------------
+--------------- T A B E L L E N -----------------
+-------------------------------------------------
+
+create table user (
+ userid     BIGINT AUTO_INCREMENT PRIMARY KEY,
+ lastlogin  DATETIME,
+
+ loginname  TEXT,
+ pin        TEXT,
+
+ nachname   TEXT,
+ vorname    TEXT,
+ strasse    TEXT,
+ ort        TEXT,
+ plz        INT,
+ soll       TEXT,
+ gut        TEXT,
+ avanz      TEXT,
+ branz      TEXT,
+ bsanz      TEXT,
+ vmanz      TEXT,
+ maanz      TEXT,
+ vlanz      TEXT,
+ sperre     TEXT,
+ sperrdatum TEXT,
+ gebdatum   TEXT,
+
+ email      TEXT,
+
+ masktype   TEXT,
+
+ INDEX (userid)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+;
+
+create table usersession (
+  sessionid VARCHAR(255) NOT NULL,
+  userid    BIGINT NOT NULL,
+  targetid  BIGINT NOT NULL,
+  INDEX (sessionid),
+  INDEX (userid)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+;
+
+create table userdbprofile (
+ profilid    BIGINT AUTO_INCREMENT PRIMARY KEY,
+ profilename TEXT,
+ userid      BIGINT NOT NULL,
+ INDEX (profilid),
+ INDEX (userid)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+;
+
+create table profildb (
+ profilid BIGINT NOT NULL,
+ dbname   TEXT,
+ INDEX (profilid)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+;
+
+create table fieldchoice (
+ userid    BIGINT NOT NULL,
+ fs        BOOL,
+ hst       BOOL,
+ verf      BOOL,
+ kor       BOOL,
+ swt       BOOL,
+ notation  BOOL,
+ isbn      BOOL,
+ issn      BOOL,
+ sign      BOOL,
+ mart      BOOL,
+ hststring BOOL,
+ ejahr     BOOL,
+ 
+ INDEX (userid)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+;
+
+create table logintarget (
+ targetid    BIGINT AUTO_INCREMENT PRIMARY KEY,
+ hostname    TEXT,
+ port        TEXT,
+ user        TEXT,
+ db          TEXT,
+ description TEXT,
+ type        TEXT,
+ INDEX (targetid)
+);
+
+create table treffer (
+ userid    BIGINT NOT NULL,
+ dbname    TEXT,
+ singleidn BIGINT
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+;

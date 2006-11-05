@@ -1,0 +1,53 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showautset
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Verfasser-Normdatensatzes
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title = "KUG Recherche" %]
+
+<body>
+
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+  <tr class="titlerow">
+    <td  width="20">&nbsp;</td><td valign="middle" align="left" height="32"><span class="dbdescshort">[% poolname.short %]</span></td>
+  </tr>
+</table>
+
+<table cellpadding="2">
+<tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
+
+[%# Ausgabekategorien %]
+[%- categories = [
+                 'P0001', # msg.maketext("P0001") Ansetzung
+                 'P0102', # msg.maketext("P0102") Verweisung
+                 'P5000', # msg.maketext("P5000") Anzahl Titel
+                 ];
+
+FOREACH category IN categories;
+    FOREACH item IN normset.$category;
+    content = item.content;
+
+    SWITCH category;
+
+    CASE "P5000";
+         content   = "<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchtitofaut=${normset.id}\">${content}</a>";
+    END;
+-%]
+<tr><td class="category">[% msg.maketext("${category}") %]</td><td>[% content %]</td></tr>
+[%-
+   END;
+END;
+-%]
+</table>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

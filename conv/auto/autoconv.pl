@@ -228,8 +228,8 @@ system("$config->{'base_dir'}/conv/db2xapian.pl $singlepool");
 
 print "### $singlepool: Cleanup\n";
 
-#system("$mysqladminexe drop   $singlepooltmp");
-#system("rm $rootdir/data/$singlepool/*");
+system("$mysqladminexe drop   $singlepooltmp");
+system("rm $rootdir/data/$singlepool/*");
   
 sub print_help {
     print << "ENDHELP";

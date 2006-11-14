@@ -729,226 +729,238 @@ sub handler {
             }
         }
         else {
+            # Lokale Datenbaken
+            my $fallbacksb=$sb;
+
             if ($sb eq 'xapian') {
                 # Xapian
             
                 my $atime=new Benchmark;
 
                 $logger->debug("Creating Xapian DB-Object for database $database");
-                my $dbh = new Search::Xapian::Database ( $config->{xapian_index_base_path}."/".$database) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
 
-                my $request = new OpenBib::Search::Local::Xapian();
-            
-                $request->initial_search({
-                    searchquery_ref => $searchquery_ref,
-                
-                    serien          => $serien,
-                    dbh             => $dbh,
-                    database        => $database,
-                    maxhits         => $maxhits,
-                
-                    enrich          => $enrich,
-                    enrichkeys_ref  => $enrichkeys_ref,
-                });
-            
-                my $fullresultcount = scalar($request->matches);
-            
-                my $btime      = new Benchmark;
-                my $timeall    = timediff($btime,$atime);
-                my $resulttime = timestr($timeall,"nop");
-                $resulttime    =~s/(\d+\.\d+) .*/$1/;
-            
-                $logger->info($fullresultcount . " results found in $resulttime");
-            
-                if ($fullresultcount >= 1) {
-                
-                    my @outputbuffer=();
-                
-                    my $rset=Search::Xapian::RSet->new() if ($drilldown && $fullresultcount > $maxhits);
+                my $dbh;
+                eval {
+                    $dbh = new Search::Xapian::Database ( $config->{xapian_index_base_path}."/".$database) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+                };
 
-                    my $mcount=0;
-                    foreach my $match ($request->matches) {
-                        last if ($mcount >= $maxhits);
+                if ($@){
+                    $logger->error($@);
+                    $fallbacksb="sql";
+                }
+                else {
+                    my $request = new OpenBib::Search::Local::Xapian();
                     
-                        $rset->add_document($match->get_docid) if ($drilldown && $fullresultcount > $maxhits);
-                        my $document=$match->get_document();
-                        my $titlistitem_raw=pack "H*", decode_utf8($document->get_data());
-                        my $titlistitem_ref=Storable::thaw($titlistitem_raw);
-                    
-                        push @outputbuffer, $titlistitem_ref;
-                        $mcount++;
-                    }
-
-                    my $relevant_aut_ref;
-                    my $relevant_kor_ref;
-                    my $relevant_swt_ref;
-                    my $term_ref;
-                    my $drilldowntime;
-                
-                    if ($drilldown && $fullresultcount > $maxhits ) {
-                        my $ddatime=new Benchmark;
-                        my $eterms=$request->enq->get_eset(50,$rset);
-                    
-                        my $iter=$eterms->begin();
-                    
-                        $term_ref = {
-                            aut => [],
-                            kor => [],
-                            hst => [],
-                            all => [],
-                        };
-                    
-                        while ($iter != $eterms->end()) {
-                            my $term   = $iter->get_termname();
-                            my $weight = $iter->get_weight();
+                    $request->initial_search({
+                        searchquery_ref => $searchquery_ref,
                         
-                            if ($term=~/^X1(.+)$/) {
-                                push @{$term_ref->{aut}}, {
-                                    name   => $1,
-                                    weight => $weight,
-                                };
-                            } elsif ($term=~/^X2(.+)$/) {
-                                $term=$1;
-                                $term=~s/^(.)(.*)$/\u$1\l$2/;
-                                push @{$term_ref->{hst}}, {
-                                    name   => $term,
-                                    weight => $weight,
-                                };
-                            } elsif ($term=~/^X3(.+)$/) {
-                                push @{$term_ref->{kor}}, {
-                                    name   => $1,
-                                    weight => $weight,
-                                };
-                            } elsif ($term=~/^X4(.+)$/) {
-                                push @{$term_ref->{swt}}, {
-                                    name   => $1,
-                                    weight => $weight,
-                                };
-                            } elsif ($term=~/^X7(.+)$/) {
-                                push @{$term_ref->{ejahr}}, {
-                                    name   => $1,
-                                    weight => $weight,
-                                };
-                            } else {
-                                $term=~s/^(.)(.*)$/\u$1\l$2/;
-                                push @{$term_ref->{all}}, {
-                                    name   => $term,
-                                    weight => $weight,
-                                };
-                            }
+                        serien          => $serien,
+                        dbh             => $dbh,
+                        database        => $database,
+                        maxhits         => $maxhits,
                         
-                            $iter++;
+                        enrich          => $enrich,
+                        enrichkeys_ref  => $enrichkeys_ref,
+                    });
+                    
+                    my $fullresultcount = scalar($request->matches);
+                    
+                    my $btime      = new Benchmark;
+                    my $timeall    = timediff($btime,$atime);
+                    my $resulttime = timestr($timeall,"nop");
+                    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+                    
+                    $logger->info($fullresultcount . " results found in $resulttime");
+                    
+                    if ($fullresultcount >= 1) {
+                        
+                        my @outputbuffer=();
+                        
+                        my $rset=Search::Xapian::RSet->new() if ($drilldown && $fullresultcount > $maxhits);
+                        
+                        my $mcount=0;
+                        foreach my $match ($request->matches) {
+                            last if ($mcount >= $maxhits);
+                            
+                            $rset->add_document($match->get_docid) if ($drilldown && $fullresultcount > $maxhits);
+                            my $document=$match->get_document();
+                            my $titlistitem_raw=pack "H*", decode_utf8($document->get_data());
+                            my $titlistitem_ref=Storable::thaw($titlistitem_raw);
+                            
+                            push @outputbuffer, $titlistitem_ref;
+                            $mcount++;
                         }
-
-                        {
+                        
+                        my $relevant_aut_ref;
+                        my $relevant_kor_ref;
+                        my $relevant_swt_ref;
+                        my $term_ref;
+                        my $drilldowntime;
+                        
+                        if ($drilldown && $fullresultcount > $maxhits ) {
+                            my $ddatime=new Benchmark;
+                            my $eterms=$request->enq->get_eset(50,$rset);
+                            
+                            my $iter=$eterms->begin();
+                            
+                            $term_ref = {
+                                aut => [],
+                                kor => [],
+                                hst => [],
+                                all => [],
+                            };
+                            
+                            while ($iter != $eterms->end()) {
+                                my $term   = $iter->get_termname();
+                                my $weight = $iter->get_weight();
+                                
+                                if ($term=~/^X1(.+)$/) {
+                                    push @{$term_ref->{aut}}, {
+                                        name   => $1,
+                                        weight => $weight,
+                                    };
+                                } elsif ($term=~/^X2(.+)$/) {
+                                    $term=$1;
+                                    $term=~s/^(.)(.*)$/\u$1\l$2/;
+                                    push @{$term_ref->{hst}}, {
+                                        name   => $term,
+                                        weight => $weight,
+                                    };
+                                } elsif ($term=~/^X3(.+)$/) {
+                                    push @{$term_ref->{kor}}, {
+                                        name   => $1,
+                                        weight => $weight,
+                                    };
+                                } elsif ($term=~/^X4(.+)$/) {
+                                    push @{$term_ref->{swt}}, {
+                                        name   => $1,
+                                        weight => $weight,
+                                    };
+                                } elsif ($term=~/^X7(.+)$/) {
+                                    push @{$term_ref->{ejahr}}, {
+                                        name   => $1,
+                                        weight => $weight,
+                                    };
+                                } else {
+                                    $term=~s/^(.)(.*)$/\u$1\l$2/;
+                                    push @{$term_ref->{all}}, {
+                                        name   => $term,
+                                        weight => $weight,
+                                    };
+                                }
+                                
+                                $iter++;
+                            }
+                            
+                            {
+                                my $ddbtime       = new Benchmark;
+                                my $ddtimeall     = timediff($ddbtime,$ddatime);
+                                $logger->debug("ESet-Time: ".timestr($ddtimeall,"nop"));
+                            }
+                            
+                            $logger->debug(YAML::Dump(\@outputbuffer));
+                            
+                            # Relavante Kategorieinhalte bestimmen
+                            
+                            $relevant_aut_ref = OpenBib::Search::Local::Xapian::get_relevant_terms({
+                                categories     => ['P0100','P0101'],
+                                type           => 'aut',
+                                resultbuffer   => \@outputbuffer,
+                                relevanttokens => $term_ref,
+                            });
+                            
+                            $relevant_kor_ref = OpenBib::Search::Local::Xapian::get_relevant_terms({
+                                categories     => ['C0200','C0201'],
+                                type           => 'kor',
+                                resultbuffer   => \@outputbuffer,
+                                relevanttokens => $term_ref,
+                            });
+                            
+                            $relevant_swt_ref = OpenBib::Search::Local::Xapian::get_relevant_terms({
+                                categories     => ['T0710'],
+                                type           => 'swt',
+                                resultbuffer   => \@outputbuffer,
+                                relevanttokens => $term_ref,
+                            });
+                            
                             my $ddbtime       = new Benchmark;
                             my $ddtimeall     = timediff($ddbtime,$ddatime);
-                            $logger->debug("ESet-Time: ".timestr($ddtimeall,"nop"));
+                            $drilldowntime    = timestr($ddtimeall,"nop");
+                            $drilldowntime    =~s/(\d+\.\d+) .*/$1/;
                         }
-                    
-                        $logger->debug(YAML::Dump(\@outputbuffer));
-                    
-                        # Relavante Kategorieinhalte bestimmen
-                    
-                        $relevant_aut_ref = OpenBib::Search::Local::Xapian::get_relevant_terms({
-                            categories     => ['P0100','P0101'],
-                            type           => 'aut',
-                            resultbuffer   => \@outputbuffer,
-                            relevanttokens => $term_ref,
-                        });
-                    
-                        $relevant_kor_ref = OpenBib::Search::Local::Xapian::get_relevant_terms({
-                            categories     => ['C0200','C0201'],
-                            type           => 'kor',
-                            resultbuffer   => \@outputbuffer,
-                            relevanttokens => $term_ref,
-                        });
-                    
-                        $relevant_swt_ref = OpenBib::Search::Local::Xapian::get_relevant_terms({
-                            categories     => ['T0710'],
-                            type           => 'swt',
-                            resultbuffer   => \@outputbuffer,
-                            relevanttokens => $term_ref,
-                        });
-                    
-                        my $ddbtime       = new Benchmark;
-                        my $ddtimeall     = timediff($ddbtime,$ddatime);
-                        $drilldowntime    = timestr($ddtimeall,"nop");
-                        $drilldowntime    =~s/(\d+\.\d+) .*/$1/;
+                        
+                        OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@resultlist);
+                        
+                        # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
+                        foreach my $item_ref (@resultlist) {
+                            push @resultset, { id       => $item_ref->{id},
+                                               database => $item_ref->{database},
+                                           };
+                        }
+                        
+                        my $treffer=$#resultlist+1;
+                        
+                        my $itemtemplatename=$config->{tt_virtualsearch_result_item_tname};
+                        if ($view && -e "$config->{tt_include_path}/views/$view/$itemtemplatename") {
+                            $itemtemplatename="views/$view/$itemtemplatename";
+                        }
+                        
+                        my $itemtemplate = Template->new({
+                            LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+                                INCLUDE_PATH   => $config->{tt_include_path},
+                                ABSOLUTE       => 1,
+                            }) ],
+                            #                INCLUDE_PATH   => $config->{tt_include_path},
+                            #                ABSOLUTE       => 1,
+                            OUTPUT         => $r,
+                        });            
+                        
+                        # TT-Data erzeugen
+                        my $ttdata={
+                            view            => $view,
+                            sessionID       => $session->{ID},
+                            
+                            dbinfo          => $targetdbinfo_ref->{dbinfo}{$database},
+                            
+                            treffer         => $treffer,
+                            
+                            database        => $database,
+                            queryid         => $queryid,
+                            
+                            fullresultcount => $fullresultcount,
+                            resultlist      => \@resultlist,
+                            
+                            qopts           => $queryoptions_ref,
+                            drilldown       => $drilldown,
+                            termfeedback    => $term_ref,
+                            relevantaut     => $relevant_aut_ref,
+                            relevantkor     => $relevant_kor_ref,
+                            relevantswt     => $relevant_swt_ref,
+                            lastquery       => $request->querystring,
+                            sorttype        => $sorttype,
+                            sortorder       => $sortorder,
+                            resulttime      => $resulttime,
+                            drilldowntime   => $drilldowntime,
+                            config          => $config,
+                            msg             => $msg,
+                        };
+                        
+                        $itemtemplate->process($itemtemplatename, $ttdata) || do {
+                            $r->log_reason($itemtemplate->error(), $r->filename);
+                            return SERVER_ERROR;
+                        };
+                        
+                        $trefferpage{$database} = \@resultlist;
+                        $dbhits     {$database} = $treffer;
+                        $gesamttreffer          = $gesamttreffer+$treffer;
+                        
+                        undef $btime;
+                        undef $timeall;
                     }
-                
-                    OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@resultlist);
-            
-                    # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
-                    foreach my $item_ref (@resultlist) {
-                        push @resultset, { id       => $item_ref->{id},
-                                           database => $item_ref->{database},
-                                       };
-                    }
-            
-                    my $treffer=$#resultlist+1;
-            
-                    my $itemtemplatename=$config->{tt_virtualsearch_result_item_tname};
-                    if ($view && -e "$config->{tt_include_path}/views/$view/$itemtemplatename") {
-                        $itemtemplatename="views/$view/$itemtemplatename";
-                    }
-            
-                    my $itemtemplate = Template->new({
-                        LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-                            INCLUDE_PATH   => $config->{tt_include_path},
-                            ABSOLUTE       => 1,
-                        }) ],
-                        #                INCLUDE_PATH   => $config->{tt_include_path},
-                        #                ABSOLUTE       => 1,
-                        OUTPUT         => $r,
-                    });            
-            
-                    # TT-Data erzeugen
-                    my $ttdata={
-                        view            => $view,
-                        sessionID       => $session->{ID},
-		  
-                        dbinfo          => $targetdbinfo_ref->{dbinfo}{$database},
-
-                        treffer         => $treffer,
-
-                        database        => $database,
-                        queryid         => $queryid,
-                    
-                        fullresultcount => $fullresultcount,
-                        resultlist      => \@resultlist,
-
-                        qopts           => $queryoptions_ref,
-                        drilldown       => $drilldown,
-                        termfeedback    => $term_ref,
-                        relevantaut     => $relevant_aut_ref,
-                        relevantkor     => $relevant_kor_ref,
-                        relevantswt     => $relevant_swt_ref,
-                        lastquery       => $request->querystring,
-                        sorttype        => $sorttype,
-                        sortorder       => $sortorder,
-                        resulttime      => $resulttime,
-                        drilldowntime   => $drilldowntime,
-                        config          => $config,
-                        msg             => $msg,
-                    };
-
-                    $itemtemplate->process($itemtemplatename, $ttdata) || do {
-                        $r->log_reason($itemtemplate->error(), $r->filename);
-                        return SERVER_ERROR;
-                    };
-
-                    $trefferpage{$database} = \@resultlist;
-                    $dbhits     {$database} = $treffer;
-                    $gesamttreffer          = $gesamttreffer+$treffer;
-
-                    undef $btime;
-                    undef $timeall;
-            
-            
                 }
             }
-            elsif ($sb eq 'sql') {
+
+            if ($sb eq 'sql' || $fallbacksb eq 'sql') {
                 # SQL
 
                 my $dbh

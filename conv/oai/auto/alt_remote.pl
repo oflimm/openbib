@@ -34,47 +34,20 @@
 use DBI;
 use OpenBib::Config;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
+my $config = new OpenBib::Config();
 
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
-
-my $rootdir       = $config{'autoconv_dir'};
+my $rootdir       = $config->{'autoconv_dir'};
 my $pooldir       = $rootdir."/pools";
-my $konvdir       = $config{'conv_dir'};
+my $konvdir       = $config->{'conv_dir'};
 
-my $harvestoaiexe = "$config{'conv_dir'}/harvestOAI.pl";
-my $oai2metaexe   = "$config{'conv_dir'}/oai2meta.pl";
+my $harvestoaiexe = "$config->{'conv_dir'}/harvestOAI.pl";
+my $oai2metaexe   = "$config->{'conv_dir'}/oai2meta.pl";
 
 my $pool          = $ARGV[0];
 
-my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or die "could not connect";
+my $dboptions_ref = $config->get_dboptions($pool);
 
-my $dbinforesult=$sessiondbh->prepare("select * from dboptions where dbname=?") or die "Error -- $DBI::errstr";
-$dbinforesult->execute($pool);
-my $result=$dbinforesult->fetchrow_hashref();
-
-my $host          = $result->{'host'};
-my $protocol      = $result->{'protocol'};
-my $remotepath    = $result->{'remotepath'};
-my $remoteuser    = $result->{'remoteuser'};
-my $remotepasswd  = $result->{'remotepasswd'};
-my $filename      = $result->{'filename'};
-my $titfilename   = $result->{'titfilename'};
-my $autfilename   = $result->{'autfilename'};
-my $korfilename   = $result->{'korfilename'};
-my $swtfilename   = $result->{'swtfilename'};
-my $notfilename   = $result->{'notfilename'};
-my $mexfilename   = $result->{'mexfilename'};
-my $autoconvert   = $result->{'autoconvert'};
-
-$dbinforesult->finish();
-
-$sessiondbh->disconnect();
-
-my $oaiurl        = "$protocol://$host/$remotepath/$filename";
+my $oaiurl        = "$dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{filename}";
 
 print "### $pool: Datenabzug via OAI von $oaiurl\n";
 system("cd $pooldir/$pool ; rm *");

@@ -82,11 +82,11 @@ selected
 [% IF katalog.active == 1 %]
 selected
 [% END %]
->[% msg.maketext("Nein") %]</option><option value="0" 
+>[% msg.maketext("Ja") %]</option><option value="0" 
 [% IF katalog.active == 0 %]
 selected
 [% END %]
->[% msg.maketext("Ja") %]</option></select>
+>[% msg.maketext("Nein") %]</option></select>
 </td></tr>
 </table>
 <p />

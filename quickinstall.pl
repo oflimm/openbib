@@ -73,6 +73,7 @@ my @install_dirs = (
     '/opt/openbib/conv',
     '/opt/openbib/ft',
     '/opt/openbib/ft/xapian',
+    '/opt/openbib/ft/xapian/index',
     '/opt/openbib/autoconv',
     '/opt/openbib/autoconv/bin',
     '/opt/openbib/autoconv/pools',

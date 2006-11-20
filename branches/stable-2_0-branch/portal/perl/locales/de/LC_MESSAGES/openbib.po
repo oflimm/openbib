@@ -1,19 +1,20 @@
+# translation of openbib.po to 
 # translation of openbib.po to
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
-#
 # Oliver Flimm <flimm@openbib.org>, 2006.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2006-11-05 12:38+0100\n"
+"PO-Revision-Date: 2006-11-20 10:05+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team:  <l10n@openbib.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
+"X-Generator: KBabel 1.9.1\n"
 
 #: ../templates/database/einbaende/managecollection_tit_as_html:38
 #: ../templates/database/einbaende/managecollection_tit_as_html:77
@@ -117,7 +118,7 @@ msgstr "Administrations-Login"
 #: ../templates/database/einbaende/search_showtitset:245
 #: ../templates/managecollection_tit_as_html:64
 #: ../templates/managecollection_tit_as_html_simple:64
-#: ../templates/search_showmulttitset:119 ../templates/search_showtitset:153
+#: ../templates/search_showmulttitset:119
 msgid "Aktion"
 msgstr "Aktion"
 
@@ -276,6 +277,10 @@ msgstr "Ausleihinformationen"
 #: ../templates/search_showmulttitset:119 ../templates/search_showtitset:153
 msgid "Ausleihstatus"
 msgstr "Ausleihstatus"
+
+#: ../templates/search_showtitset:153
+msgid "Ausleihsystem"
+msgstr "Ausleihsystem"
 
 #: ../templates/admin_editcat:125
 msgid "Aut-Datei"
@@ -1084,7 +1089,7 @@ msgid "Inventarnummer       "
 msgstr "Inventarnummer       "
 
 #: ../templates/admin_editcat:146 ../templates/admin_editcat:169
-#: ../templates/admin_editcat:89 ../templates/admin_editcat_rss:134
+#: ../templates/admin_editcat:85 ../templates/admin_editcat_rss:134
 #: ../templates/admin_editcat_rss:192 ../templates/admin_editcat_rss:250
 #: ../templates/admin_editcat_rss:308 ../templates/admin_editcat_rss:76
 #: ../templates/admin_editview:47 ../templates/admin_showcat:52
@@ -1368,7 +1373,7 @@ msgid "Nachname"
 msgstr "Nachname"
 
 #: ../templates/admin_editcat:140 ../templates/admin_editcat:163
-#: ../templates/admin_editcat:85 ../templates/admin_editcat_rss:128
+#: ../templates/admin_editcat:89 ../templates/admin_editcat_rss:128
 #: ../templates/admin_editcat_rss:186 ../templates/admin_editcat_rss:244
 #: ../templates/admin_editcat_rss:302 ../templates/admin_editcat_rss:70
 #: ../templates/admin_editview:51 ../templates/admin_showcat:53

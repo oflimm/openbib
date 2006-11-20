@@ -87,7 +87,7 @@ msgstr ""
 msgid "Administrations-Login"
 msgstr ""
 
-#: ../templates/database/einbaende/managecollection_tit_as_html:95 ../templates/database/einbaende/search_showtitset:245 ../templates/managecollection_tit_as_html:64 ../templates/managecollection_tit_as_html_simple:64 ../templates/search_showmulttitset:119 ../templates/search_showtitset:153
+#: ../templates/database/einbaende/managecollection_tit_as_html:95 ../templates/database/einbaende/search_showtitset:245 ../templates/managecollection_tit_as_html:64 ../templates/managecollection_tit_as_html_simple:64 ../templates/search_showmulttitset:119
 msgid "Aktion"
 msgstr ""
 
@@ -196,6 +196,10 @@ msgstr ""
 
 #: ../templates/database/einbaende/managecollection_tit_as_html:95 ../templates/database/einbaende/search_showtitset:245 ../templates/managecollection_tit_as_html:64 ../templates/managecollection_tit_as_html_simple:64 ../templates/search_showmulttitset:119 ../templates/search_showtitset:153
 msgid "Ausleihstatus"
+msgstr ""
+
+#: ../templates/search_showtitset:153
+msgid "Ausleihsystem"
 msgstr ""
 
 #: ../templates/admin_editcat:125
@@ -795,7 +799,7 @@ msgstr ""
 msgid "Inventarnummer       "
 msgstr ""
 
-#: ../templates/admin_editcat:146 ../templates/admin_editcat:169 ../templates/admin_editcat:89 ../templates/admin_editcat_rss:134 ../templates/admin_editcat_rss:192 ../templates/admin_editcat_rss:250 ../templates/admin_editcat_rss:308 ../templates/admin_editcat_rss:76 ../templates/admin_editview:47 ../templates/admin_showcat:52 ../templates/admin_showcat:87 ../templates/admin_showcat:94 ../templates/admin_showviews:40 ../templates/searchframe:190
+#: ../templates/admin_editcat:146 ../templates/admin_editcat:169 ../templates/admin_editcat:85 ../templates/admin_editcat_rss:134 ../templates/admin_editcat_rss:192 ../templates/admin_editcat_rss:250 ../templates/admin_editcat_rss:308 ../templates/admin_editcat_rss:76 ../templates/admin_editview:47 ../templates/admin_showcat:52 ../templates/admin_showcat:87 ../templates/admin_showcat:94 ../templates/admin_showviews:40 ../templates/searchframe:190
 msgid "Ja"
 msgstr ""
 
@@ -1016,7 +1020,7 @@ msgstr ""
 msgid "Nachname"
 msgstr ""
 
-#: ../templates/admin_editcat:140 ../templates/admin_editcat:163 ../templates/admin_editcat:85 ../templates/admin_editcat_rss:128 ../templates/admin_editcat_rss:186 ../templates/admin_editcat_rss:244 ../templates/admin_editcat_rss:302 ../templates/admin_editcat_rss:70 ../templates/admin_editview:51 ../templates/admin_showcat:53 ../templates/admin_showcat:89 ../templates/admin_showcat:96 ../templates/admin_showviews:40 ../templates/searchframe:190
+#: ../templates/admin_editcat:140 ../templates/admin_editcat:163 ../templates/admin_editcat:89 ../templates/admin_editcat_rss:128 ../templates/admin_editcat_rss:186 ../templates/admin_editcat_rss:244 ../templates/admin_editcat_rss:302 ../templates/admin_editcat_rss:70 ../templates/admin_editview:51 ../templates/admin_showcat:53 ../templates/admin_showcat:89 ../templates/admin_showcat:96 ../templates/admin_showviews:40 ../templates/searchframe:190
 msgid "Nein"
 msgstr ""
 

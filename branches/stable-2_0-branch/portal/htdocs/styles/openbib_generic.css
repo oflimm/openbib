@@ -72,7 +72,10 @@ table {
 }
 
 .circurl { 
-  background-color: yellow;
+  font-weight:bold;
+  vertical-align:top;
+  font-size:1.2em;
+  color:red;
 }
 
 .warning { 

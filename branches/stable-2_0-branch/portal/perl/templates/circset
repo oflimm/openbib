@@ -1,0 +1,30 @@
+[%#-
+#######################################################################
+#
+# Templatename: circset
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe der Ausleih/Explar-Informationen (via OLWS)
+#
+#######################################################################
+-%]
+<table width=100%">
+<tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="250">[% msg.maketext("Standort") %]</td><td width="120">[% msg.maketext("Signatur") %]</td><td width="120">[% msg.maketext("Ausleihstatus") %]</td><td width="110">[% msg.maketext("Ausleihsystem") %]</td></tr>
+[% FOREACH mex IN circset %]
+[%-
+     IF mex.Standort.match('Erziehungswiss') || mex.Standort.match('Heilp.*?dagogik-Magazin') ;
+        mex.Ausleihurl = "${mex.Ausleihurl}?Login=ewa&Query=0000=${normset.id}";
+     ELSE ;
+        IF database == 'inst001' || database == 'poetica' ;
+           mex.Ausleihurl = "${mex.Ausleihurl}?Login=sisis&Query=0000=${normset.id}";
+        ELSE ;
+           mex.Ausleihurl = "${mex.Ausleihurl}&KatKeySearch=${normset.id}";
+        END ;
+     END ;
+-%]
+<tr align="center"><td><a href="[% mex.Bibinfourl %]" target="_blank"><strong>[% mex.Bibliothek.short %]</strong></a></td><td>[% mex.Standort %]</td><td><strong>[% mex.Signatur %]</strong></td><td><strong>[% mex.Status %]</strong></td><td class="circurl"><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% mex.Ausleihurl %]">[% msg.maketext("Weiter") %]</a></td></tr>
+[% END %]
+</table>

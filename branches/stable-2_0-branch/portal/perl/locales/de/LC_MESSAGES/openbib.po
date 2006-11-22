@@ -1,5 +1,6 @@
 # translation of openbib.po to 
 # translation of openbib.po to
+# translation of openbib.po to
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
 # Oliver Flimm <flimm@openbib.org>, 2006.
@@ -8,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2006-11-20 10:05+0100\n"
+"PO-Revision-Date: 2006-11-22 10:57+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team:  <l10n@openbib.org>\n"
 "MIME-Version: 1.0\n"
@@ -270,15 +271,16 @@ msgstr "Ausleihfrist"
 msgid "Ausleihinformationen"
 msgstr "Ausleihinformationen"
 
+#: ../templates/circset:2
 #: ../templates/database/einbaende/managecollection_tit_as_html:95
 #: ../templates/database/einbaende/search_showtitset:245
 #: ../templates/managecollection_tit_as_html:64
 #: ../templates/managecollection_tit_as_html_simple:64
-#: ../templates/search_showmulttitset:119 ../templates/search_showtitset:153
+#: ../templates/search_showmulttitset:119
 msgid "Ausleihstatus"
 msgstr "Ausleihstatus"
 
-#: ../templates/search_showtitset:153
+#: ../templates/circset:2
 msgid "Ausleihsystem"
 msgstr "Ausleihsystem"
 
@@ -332,6 +334,7 @@ msgstr "Bereits existierende Views"
 msgid "Beschreibung"
 msgstr "Beschreibung"
 
+#: ../templates/circset:2
 #: ../templates/database/einbaende/managecollection_tit_as_html:48
 #: ../templates/database/einbaende/managecollection_tit_as_html:95
 #: ../templates/database/einbaende/search_showtitset:140
@@ -343,7 +346,6 @@ msgstr "Beschreibung"
 #: ../templates/managecollection_tit_as_text:40
 #: ../templates/search_showmulttitset:119
 #: ../templates/search_showmulttitset:94 ../templates/search_showtitset:128
-#: ../templates/search_showtitset:153
 msgid "Besitzende Bibliothek"
 msgstr "Besitzende Bibliothek"
 
@@ -381,7 +383,7 @@ msgstr "Bestellungen"
 msgid "Betreff"
 msgstr "Betreff"
 
-#: ../modules/OpenBib/VirtualSearch.pm:482
+#: ../modules/OpenBib/VirtualSearch.pm:498
 msgid "Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."
 msgstr "Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."
 
@@ -444,8 +446,8 @@ msgstr ""
 "Mail zugeschickt werden kann, geben Sie bitte Ihren Benutzernamen an, der "
 "Ihrer E-Mail-Adresse entspricht."
 
-#: ../modules/OpenBib/VirtualSearch.pm:489
-#: ../modules/OpenBib/VirtualSearch.pm:498
+#: ../modules/OpenBib/VirtualSearch.pm:505
+#: ../modules/OpenBib/VirtualSearch.pm:514
 msgid ""
 "Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und "
 "mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die "
@@ -481,7 +483,7 @@ msgstr ""
 "<b>Suchprofil</b> aus und aktivieren zur Suche dann <b>In ausgew&auml;hlten "
 "Katalogen suchen</b>."
 
-#: ../modules/OpenBib/VirtualSearch.pm:294
+#: ../modules/OpenBib/VirtualSearch.pm:310
 msgid ""
 "Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank "
 "zur Suche ausgewählt wurde."
@@ -688,7 +690,7 @@ msgstr "Es sind keine Gebühren angefallen."
 msgid "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
 msgstr "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
 
-#: ../modules/OpenBib/VirtualSearch.pm:505
+#: ../modules/OpenBib/VirtualSearch.pm:521
 msgid "Es wurde kein Suchkriterium eingegeben."
 msgstr "Es wurde kein Suchkriterium eingegeben."
 
@@ -844,7 +846,7 @@ msgid "Geben Sie hier den Körperschaftsanfang ein"
 msgstr "Geben Sie hier den Körperschaftsanfang ein"
 
 #: ../templates/search_showswtindex:85 ../templates/search_showtitlist:157
-#: ../templates/search_showtitset:181
+#: ../templates/search_showtitset:172
 #: ../templates/virtualsearch_showswtindex:48
 msgid "Geben Sie hier den Schlagwortanfang ein"
 msgstr "Geben Sie hier den Schlagwortanfang ein"
@@ -1624,7 +1626,7 @@ msgstr "Schlagworte"
 msgid "Schlagwortindex"
 msgstr "Schlagwortindex"
 
-#: ../templates/search_showtitset:180
+#: ../templates/search_showtitset:171
 msgid "Schlagwortindex diese Katalogs"
 msgstr "Schlagwortindex diese Katalogs"
 
@@ -1752,7 +1754,7 @@ msgid "Sie greifen auf eine nicht autorisierte Session zu"
 msgstr "Sie greifen auf eine nicht autorisierte Session zu"
 
 #. ("<a href=\"$config->{databasechoice_loc}?sessionID=$session->{ID}\" target=\"body\">","</a>")
-#: ../modules/OpenBib/VirtualSearch.pm:211
+#: ../modules/OpenBib/VirtualSearch.pm:227
 msgid ""
 "Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie "
 "keine %1Kataloge%2 oder Suchprofile ausgewählt haben. Bitte wählen Sie die "
@@ -1821,7 +1823,7 @@ msgstr ""
 "Sie haben keine gütige Mailadresse eingegeben. Gehen Sie bitte %1zurück%2 "
 "und korrigieren Sie Ihre Eingabe"
 
-#: ../modules/OpenBib/VirtualSearch.pm:289
+#: ../modules/OpenBib/VirtualSearch.pm:305
 msgid "Sie haben keinen Begriff eingegeben"
 msgstr "Sie haben keinen Begriff eingegeben"
 
@@ -1880,16 +1882,16 @@ msgstr "Sie sind nun als Administrator eingeloggt."
 msgid "Sigel"
 msgstr "Sigel"
 
-#: ../templates/circulation:48 ../templates/circulation_orders:48
-#: ../templates/circulation_remind:48 ../templates/circulation_reserv:48
+#: ../templates/circset:2 ../templates/circulation:48
+#: ../templates/circulation_orders:48 ../templates/circulation_remind:48
+#: ../templates/circulation_reserv:48
 #: ../templates/database/einbaende/managecollection_tit_as_html:48
 #: ../templates/database/einbaende/search_showtitset:140
 #: ../templates/database/einbaende/search_showtitset:245
 #: ../templates/managecollection_tit_as_html:45
 #: ../templates/search_showmulttitset:119
 #: ../templates/search_showmulttitset:94 ../templates/search_showtitset:128
-#: ../templates/search_showtitset:153 ../templates/searchframe:133
-#: ../templates/userprefs:177
+#: ../templates/searchframe:133 ../templates/userprefs:177
 #: ../templates/views/einbaende/searchframe_simple:106
 #: ../templates/views/richter/searchframe:116
 msgid "Signatur"
@@ -1963,6 +1965,7 @@ msgstr "Sprung in externe Recherchequellen"
 msgid "Sprung zur Trefferliste im KUG"
 msgstr "Sprung zur Trefferliste im KUG"
 
+#: ../templates/circset:2
 #: ../templates/database/einbaende/managecollection_tit_as_html:48
 #: ../templates/database/einbaende/managecollection_tit_as_html:95
 #: ../templates/database/einbaende/search_showtitset:140
@@ -1973,7 +1976,6 @@ msgstr "Sprung zur Trefferliste im KUG"
 #: ../templates/managecollection_tit_as_html_simple:64
 #: ../templates/search_showmulttitset:119
 #: ../templates/search_showmulttitset:94 ../templates/search_showtitset:128
-#: ../templates/search_showtitset:153
 msgid "Standort"
 msgstr "Standort"
 
@@ -2005,7 +2007,7 @@ msgid "Suche starten"
 msgstr "Suche starten"
 
 #: ../templates/search_showswtindex:85 ../templates/search_showtitlist:157
-#: ../templates/search_showtitset:181
+#: ../templates/search_showtitset:172
 #: ../templates/views/einbaende/searchframe_simple:30
 msgid "Suchen"
 msgstr "Suchen"
@@ -2782,6 +2784,10 @@ msgid ""
 msgstr ""
 "Wegen eines unerwarteten Problems kann der KUG in den n&auml;chsten Minuten\n"
 "leider nicht genutzt werden."
+
+#: ../templates/circset:15
+msgid "Weiter"
+msgstr "Weiter"
 
 #: ../templates/searchframe:53 ../templates/views/richter/searchframe:47
 msgid "Weiter als externe Recherche"

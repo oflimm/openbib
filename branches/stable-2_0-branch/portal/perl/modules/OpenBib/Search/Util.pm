@@ -1370,9 +1370,6 @@ sub get_tit_set_by_idn {
         if (exists $targetcircinfo_ref->{$database}{circ}
                 && $#circexemplarliste >= 0) {
             for (my $i=0; $i <= $#circexemplarliste; $i++) {
-
-                # Zusammensetzung von Signatur und Exemplar
-                $circexemplarliste[$i]{'Signatur'}=$circexemplarliste[$i]{'Signatur'}.$circexemplarliste[$i]{'Exemplar'};
                 
                 my $bibliothek="-";
                 my $sigel=$targetdbinfo_ref->{dbases}{$database};
@@ -1391,45 +1388,15 @@ sub get_tit_set_by_idn {
                             $targetdbinfo_ref->{dbases}{$database}};
                     }
                 }
-                $circexemplarliste[$i]{'Bibliothek'}=$bibliothek;
                 
                 my $bibinfourl=$targetdbinfo_ref->{bibinfo}{
                     $targetdbinfo_ref->{dbases}{$database}};
                 
-                $circexemplarliste[$i]{'Bibinfourl'}=$bibinfourl;
-                
-                my $ausleihstatus=(exists $circexemplarliste[$i]{'Ausleihstatus'})?$circexemplarliste[$i]{'Ausleihstatus'}:"";
-                
-                my $ausleihstring="";
-                if ($ausleihstatus eq "bestellbar") {
-                    $ausleihstring="ausleihen?";
-                }
-                elsif ($ausleihstatus eq "bestellt") {
-                    $ausleihstring="vormerken?";
-                }
-                elsif ($ausleihstatus eq "entliehen") {
-                    $ausleihstring="vormerken/verlängern?";
-                }
-                elsif ($ausleihstatus eq "bestellbar") {
-                    $ausleihstring="ausleihen?";
-                }
-                else {
-                    $ausleihstring="WebOPAC?";
-                }
-                
-                $circexemplarliste[$i]{'Ausleihstring'}=$ausleihstring;
-                
-                if ($circexemplarliste[$i]{'Standort'}=~/Erziehungswiss/ || $circexemplarliste[$i]{'Standort'}=~/Heilp.*?dagogik-Magazin/) {
-                    $circexemplarliste[$i]{'Ausleihurl'}=$targetcircinfo_ref->{$database}{circurl}."?Login=ewa&Query=0000=$titidn";
-                }
-                else {
-                    if ($database eq "inst001" || $database eq "poetica") {
-                        $circexemplarliste[$i]{'Ausleihurl'}=$targetcircinfo_ref->{$database}{circurl}."?Login=sisis&Query=0000=$titidn";
-                    }
-                    else {
-                        $circexemplarliste[$i]{'Ausleihurl'}=$targetcircinfo_ref->{$database}{circurl}."&KatKeySearch=$titidn";
-                    }
-                }
+                # Zusammensetzung von Signatur und Exemplar
+                $circexemplarliste[$i]{'Signatur'}   = $circexemplarliste[$i]{'Signatur'}.$circexemplarliste[$i]{'Exemplar'};
+                $circexemplarliste[$i]{'Bibliothek'} = $bibliothek;
+                $circexemplarliste[$i]{'Bibinfourl'} = $bibinfourl;
+                $circexemplarliste[$i]{'Ausleihurl'} = $targetcircinfo_ref->{$database}{circurl};
             }
         }
         else {

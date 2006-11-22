@@ -163,12 +163,28 @@ sub handler {
     # Bestimmung der Datenbanken, in denen gesucht werden soll
     ####################################################################
 
+    
     # Ueber view koennen bei Direkteinsprung in VirtualSearch die
     # entsprechenden Kataloge vorausgewaehlt werden
     if ($view && $#databases == -1) {
         @databases = $config->get_dbs_of_view($view);
     }
-
+    elsif ($#databases != -1) {
+        # Wenn Datenbanken explizit ueber das Suchformular uebergeben werden,
+        # ann werden diese als neue Datenbankauswahl gesetzt
+        
+        # Zuerst die bestehende Auswahl loeschen
+        $session->clear_dbchoice();
+        
+        # Wenn es eine neue Auswahl gibt, dann wird diese eingetragen
+        foreach my $database (@databases) {
+            $session->set_dbchoice($database);
+        }
+        
+        # Neue Datenbankauswahl ist voreingestellt
+        $session->set_profile('dbauswahl');    
+    }
+    
     if ($searchall) {
         @databases = $config->get_active_databases();
     }
@@ -840,6 +856,7 @@ sub handler {
                                     push @{$term_ref->{ejahr}}, {
                                         name   => $1,
                                         weight => $weight,
+                                        freq   => $request->matches->get_termfreq("X7$1"),
                                     };
                                 } else {
                                     $term=~s/^(.)(.*)$/\u$1\l$2/;

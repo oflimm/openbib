@@ -10,6 +10,7 @@
 ../templates/admin_showimx
 ../templates/admin_showsessions
 ../templates/admin_showviews
+../templates/circset
 ../templates/circulation
 ../templates/circulation_orders
 ../templates/circulation_remind

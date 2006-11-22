@@ -42,9 +42,9 @@ Keine
 <tr><td class="boxed" valign="top" align="left">
 <table>
 [% IF item.type == 'neuzugang' %]
-<tr><td><img src="/images/openbib/rssfeed.png" alt="RSS-Icon" /></td><td>[% msg.maketext("Letzte 50 Neuaufnahmen") %](<a
+<tr><td><img src="/images/openbib/rssfeed.png" alt="RSS-Icon" /></td><td>[% msg.maketext("Letzte 50 Neuaufnahmen") %]&nbsp;(<a
 href="[% config.connector_rss_loc %]/[% item.type %]/[% item.pool
-%].rdf" target="_blank">http://kugtest.ub.uni-koeln.de[% config.connector_rss_loc %]/[% item.type %]/[% item.pool %].rdf</a>)</td></tr>
+%].rdf" target="_blank">http://kug.ub.uni-koeln.de[% config.connector_rss_loc %]/[% item.type %]/[% item.pool %].rdf</a>)</td></tr>
 [% END %]
 </table>
 </td></tr></table>

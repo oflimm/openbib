@@ -631,7 +631,7 @@ sub handler {
 
             # Primary RSS-Feed fuer Autodiscovery eintragen
             if ($primrssfeed){
-                $idnresult=$config->{dbh}->prepare("update viewinfo set primrssfeed = ? where viewid = ?") or $logger->error($DBI::errstr);
+                $idnresult=$config->{dbh}->prepare("update viewinfo set rssfeed = ? where viewid = ?") or $logger->error($DBI::errstr);
                 $idnresult->execute($primrssfeed,$viewid) or $logger->error($DBI::errstr);
             }
             
@@ -688,7 +688,7 @@ sub handler {
                 return OK;
             }
       
-            $idnresult=$config->{dbh}->prepare("insert into viewinfo values (NULL,?,?,?)") or $logger->error($DBI::errstr);
+            $idnresult=$config->{dbh}->prepare("insert into viewinfo values (NULL,?,?,NULL,?)") or $logger->error($DBI::errstr);
             $idnresult->execute($viewname,$description,$active) or $logger->error($DBI::errstr);
 
 

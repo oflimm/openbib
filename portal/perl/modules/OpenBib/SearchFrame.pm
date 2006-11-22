@@ -241,6 +241,10 @@ sub handler {
 
     $idnresult->finish();
 
+    my @catdb     = $config->get_infomatrix_of_active_databases($session,1);
+    my $maxcolumn = 1;
+    my $colspan   = $maxcolumn*3;
+    
     # TT-Data erzeugen
     my $ttdata={
         view          => $view,
@@ -271,6 +275,11 @@ sub handler {
         anzahl        => $anzahl,
         queries       => \@queries,
         useragent     => $useragent,
+
+        catdb         => \@catdb,
+        maxcolumn     => $maxcolumn,
+        colspan       => $colspan,
+        
         config        => $config,
         msg           => $msg,
     };

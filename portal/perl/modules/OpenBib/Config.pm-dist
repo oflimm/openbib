@@ -108,6 +108,16 @@ use vars qw(%config);
 	   adminuser     => 'adminuser',
 	   adminpasswd   => 'StrengGeheim',
 
+           # Verteilte Administration mit einer Masteradmin?
+
+           distadmin     => {
+               master => 'admin.openbib.org',
+               slave  => [
+                   'slaveadmin1.openbib.org',
+                   'slaveadmin2.openbib.org',
+               ],
+           },
+
 	   # Organisationseinheiten der Kataloge (z.B. Fakultaeten)
 
 	   orgunits => [

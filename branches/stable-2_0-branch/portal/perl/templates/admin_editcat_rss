@@ -34,7 +34,6 @@
 <!-- Anfang: RSS Feed fuer Neuaufnahmen (generell) -->
 <form method="get" action="http://[% config.servername %][% config.admin_loc %]">
 <input type="hidden" name="sessionID"      value="[% sessionID %]" />
-<input type="hidden" name="dbid"           value="[% katalog.dbid %]" />
 <input type="hidden" name="dbname"         value="[% katalog.dbname %]" />
 <input type="hidden" name="do_editcat_rss" value="1" />
 <input type="hidden" name="rss_type"       value="1" />
@@ -92,7 +91,6 @@ selected
 <!-- Anfang: RSS Feed fuer Neuaufnahmen nach Verfasser -->
 <form method="get" action="http://[% config.servername %][% config.admin_loc %]">
 <input type="hidden" name="sessionID"      value="[% sessionID %]" />
-<input type="hidden" name="dbid"           value="[% katalog.dbid %]" />
 <input type="hidden" name="dbname"         value="[% katalog.dbname %]" />
 <input type="hidden" name="do_editcat_rss" value="1" />
 <input type="hidden" name="rss_type"       value="2" />
@@ -150,7 +148,6 @@ selected
 <!-- Anfang: RSS Feed fuer Neuaufnahmen nach Koerperschaft -->
 <form method="get" action="http://[% config.servername %][% config.admin_loc %]">
 <input type="hidden" name="sessionID"      value="[% sessionID %]" />
-<input type="hidden" name="dbid"           value="[% katalog.dbid %]" />
 <input type="hidden" name="dbname"         value="[% katalog.dbname %]" />
 <input type="hidden" name="do_editcat_rss" value="1" />
 <input type="hidden" name="rss_type"       value="3" />
@@ -208,7 +205,6 @@ selected
 <!-- Anfang: RSS Feed fuer Neuaufnahmen nach Schlagwort -->
 <form method="get" action="http://[% config.servername %][% config.admin_loc %]">
 <input type="hidden" name="sessionID"      value="[% sessionID %]" />
-<input type="hidden" name="dbid"           value="[% katalog.dbid %]" />
 <input type="hidden" name="dbname"         value="[% katalog.dbname %]" />
 <input type="hidden" name="do_editcat_rss" value="1" />
 <input type="hidden" name="rss_type"       value="4" />
@@ -266,7 +262,6 @@ selected
 <!-- Anfang: RSS Feed fuer Neuaufnahmen nach Systematik -->
 <form method="get" action="http://[% config.servername %][% config.admin_loc %]">
 <input type="hidden" name="sessionID"      value="[% sessionID %]" />
-<input type="hidden" name="dbid"           value="[% katalog.dbid %]" />
 <input type="hidden" name="dbname"         value="[% katalog.dbname %]" />
 <input type="hidden" name="do_editcat_rss" value="1" />
 <input type="hidden" name="rss_type"       value="5" />
@@ -325,7 +320,6 @@ selected
 <!--
 <form method="get" action="http://[% config.servername %][% config.admin_loc %]">
 <input type="hidden" name="sessionID"      value="[% sessionID %]" />
-<input type="hidden" name="dbid"           value="[% katalog.dbid %]" />
 <input type="hidden" name="dbname"         value="[% katalog.dbname %]" />
 <input type="hidden" name="do_editcat_rss" value="1" />
 <input type="hidden" name="rss_type"       value="2" />

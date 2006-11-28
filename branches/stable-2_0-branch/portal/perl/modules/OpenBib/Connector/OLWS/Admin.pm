@@ -42,7 +42,7 @@ use Log::Log4perl qw(get_logger :levels);
 use OpenBib::Admin;
 use OpenBib::Config;
 
-sub create_catalogue {
+sub create_db {
     my ($class, %args) = @_;
 
     # Log4perl logger erzeugen
@@ -50,11 +50,60 @@ sub create_catalogue {
     my $logger = get_logger();
 
     my $config = new OpenBib::Config();
+
+    # Parameter
+    my $username         = $args{ 'username'        } || '';
+    my $password         = $args{ 'password'        } || '';
+    my $dbinfo_ref       = $args{ 'dbinfo'          } || '';
+
+    if (!defined $username || !defined $password || !defined $dbinfo_ref->{dbname}){
+        return {
+            error => "not enough parameters"
+        };
+    }
+
+    if (! ($username eq $config->{adminuser} && $password eq $config->{adminpw})){
+        return {
+            error => "couldn't authenticate"
+        };
+    }
+
+    OpenBib::Admin::editcat_new($dbinfo_ref);
+    
+    return;
+}
+
+sub change_dbinfo {
+    my ($class, %args) = @_;
+
+    # Log4perl logger erzeugen
+
+    my $logger = get_logger();
+
+    my $config = new OpenBib::Config();
+
+    # Parameter
+    my $username         = $args{ 'username'        } || '';
+    my $password         = $args{ 'password'        } || '';
+    my $dbinfo_ref       = $args{ 'dbinfo'          } || '';
+    my $dboptions_ref    = $args{ 'dboptions'       } || '';
+
+    if (!defined $username || !defined $password || !defined $dbinfo_ref->{dbname}){
+        return {
+            error => "not enough parameters"
+        };
+    }
+
+    if (! ($username eq $config->{adminuser} && $password eq $config->{adminpw})){
+        return {
+            error => "couldn't authenticate"
+        };
+    }
 
     return;
 }
 
-sub change_catalogue {
+sub remove_db {
     my ($class, %args) = @_;
 
     # Log4perl logger erzeugen
@@ -63,17 +112,10 @@ sub change_catalogue {
 
     my $config = new OpenBib::Config();
 
-    return;
-}
-
-sub remove_catalogue {
-    my ($class, %args) = @_;
-
-    # Log4perl logger erzeugen
-
-    my $logger = get_logger();
-
-    my $config = new OpenBib::Config();
+    # Parameter
+    my $username         = $args{ 'username'        } || '';
+    my $password         = $args{ 'password'        } || '';
+    my $dbname           = $args{ 'dbname'          } || '';
 
     return;
 }

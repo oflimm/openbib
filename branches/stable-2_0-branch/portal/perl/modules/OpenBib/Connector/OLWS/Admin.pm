@@ -33,9 +33,6 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-use Apache::Constants qw(:common);
-use Apache::Reload;
-use Apache::Request ();
 use Benchmark ':hireswallclock';
 use Log::Log4perl qw(get_logger :levels);
 
@@ -62,7 +59,7 @@ sub create_db {
         };
     }
 
-    if (! ($username eq $config->{adminuser} && $password eq $config->{adminpw})){
+    if (! ($username eq $config->{adminuser} && $password eq $config->{adminpasswd})){
         return {
             error => "couldn't authenticate"
         };
@@ -70,7 +67,9 @@ sub create_db {
 
     OpenBib::Admin::editcat_new($dbinfo_ref);
     
-    return;
+    return {
+        success => "Database created"
+    };
 }
 
 sub change_dbinfo {
@@ -94,13 +93,17 @@ sub change_dbinfo {
         };
     }
 
-    if (! ($username eq $config->{adminuser} && $password eq $config->{adminpw})){
+    if (! ($username eq $config->{adminuser} && $password eq $config->{adminpasswd})){
         return {
             error => "couldn't authenticate"
         };
     }
 
-    return;
+    OpenBib::Admin::editcat_change($dbinfo_ref,$dboptions_ref);
+    
+    return {
+        success => "Database Infos and Options change"
+    };
 }
 
 sub remove_db {
@@ -117,7 +120,23 @@ sub remove_db {
     my $password         = $args{ 'password'        } || '';
     my $dbname           = $args{ 'dbname'          } || '';
 
-    return;
+    if (!defined $username || !defined $password || !defined $dbname){
+        return {
+            error => "not enough parameters"
+        };
+    }
+
+    if (! ($username eq $config->{adminuser} && $password eq $config->{adminpasswd})){
+        return {
+            error => "couldn't authenticate"
+        };
+    }
+
+    OpenBib::Admin::editcat_del($dbname);
+
+    return {
+        success => "DB $dbname deleted"
+    };
 }
 
 1;

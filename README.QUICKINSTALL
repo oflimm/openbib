@@ -34,7 +34,6 @@ Vorgehensweise:
    Apache::Request
    Apache::URI
    Benchmark ':hireswallclock'
-   Config::Std
    Date::Manip
    DBI
    Digest::MD5

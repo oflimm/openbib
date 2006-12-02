@@ -122,6 +122,7 @@ END;
 -%]
 </table>
 
+
 [% IF mexnormset.size > 0 %]
 <p />
 <table width="100%">
@@ -153,6 +154,23 @@ END;
 </table>
 [% END %]
 <p />
+
+[% IF normset.exists('T4000') %]
+<p />
+<table width="100%">
+<tr><th>Das könnte Sie interessieren:</th></tr>
+<tr><td class="boxedclear">
+<ul>
+[% FOREACH item IN normset.${"T4000"} %]
+[% hstitem = normset.${"T4001"}.shift %]
+[% globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;isbn=${item.content}" %]
+<li><b><a href="[% globalurl %]">[% hstitem.content %]</b></li>
+[% END %]
+</ul>
+</td></tr>
+</table>
+[% END %]
+
 <!-- Title ends here -->
 
 <p />

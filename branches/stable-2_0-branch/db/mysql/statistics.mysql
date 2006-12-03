@@ -1,0 +1,16 @@
+-------------------------------------------------
+--------------- T A B E L L E N -----------------
+-------------------------------------------------
+
+drop table IF EXISTS relevance;
+CREATE TABLE borrows (
+ id          VARCHAR(40),
+ isbn        VARCHAR(15),
+ content     TEXT,
+ INDEX (id),
+ INDEX (isbn)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+

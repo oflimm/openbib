@@ -2412,7 +2412,7 @@ sub get_tit_set_by_idn {
           
           $isbn =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10/g;
           
-          my $reqstring="select category,content from normdata where isbn=? order by category ASC";
+          my $reqstring="select category,indicator,content from normdata where isbn=? order by category,indicator ASC";
           my $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
           $request->execute($isbn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
 
@@ -2429,20 +2429,44 @@ sub get_tit_set_by_idn {
                          desc => "TOC / PDF",
                          content => "<img src=\"/images/openbib/pdf-document.png\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)",
                      },
+
+              T4000 => { type => "collect",
+              },
+
+              T4001 => { type => "collect",
+              },
+
           };
 
+          my $collectdata_ref={};
+          my $maxcount_ref={};
           while (my $res=$request->fetchrow_hashref) {
               my $category   = "T".sprintf "%04d",$res->{category };
+              my $indicator  =                    $res->{indicator};
               my $content    =                    $res->{content  };
 
               if (exists $categorynames_ref->{$category}){
                   if ($categorynames_ref->{$category}->{type} eq "url"){
                       push @normset, set_url_category($categorynames_ref->{$category}->{desc},$content,$categorynames_ref->{$category}->{content});
                   }
+                  elsif ($categorynames_ref->{$category}->{type} eq "collect"){
+                      push @{$collectdata_ref->{$category}}, {
+                          content    => $content,
+                      };
+                      $maxcount_ref->{$category}=$maxcount_ref->{$category}+1;
+                  }
               }
               else {
                   $logger->debug("Enrich: $isbn nicht gefunden");
               }
+          }
+          
+          # Spezialbehandlung Collectdata/Relevanzinformation fuer weitere Titel
+          
+          for (my $i=0;$i < $maxcount_ref->{'T4000'};$i++){
+              my $url     = "$config{virtualsearch_loc}?sessionID=$sessionID;searchall=1;isbn=$collectdata_ref->{'T4000'}[$i]{content}";
+              my $urldata = $collectdata_ref->{'T4001'}[$i]{content};
+              push @normset, set_url_category('Interessante Titel',$url,$urldata);
           }
           $request->finish();
           $logger->debug("Enrich: $isbn -> $reqstring");

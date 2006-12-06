@@ -160,14 +160,18 @@ END;
 <table width="100%">
 <tr><th>Das könnte Sie interessieren:</th></tr>
 <tr><td class="boxedclear">
+Nutzer, die diesen Titel ausgew&auml;hlt haben, interessierten sich auch f&uuml;r die folgenden Titel. <a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#enrichrelevance" target="body">Weitere Informationen</a> finden Sie in der Suchhilfe.
 <ul>
-[% FOREACH item IN normset.${"T4000"} %]
-[% hstitem = normset.${"T4001"}.shift %]
-[% globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;isbn=${item.content}" %]
-[% IF hstitem.content %]
-<li><b><a href="[% globalurl %]">[% hstitem.content %]</b></li>
-[% END %]
-[% END %]
+[%-   isbnitems = normset.${"T4000"} -%]
+[%-   hstitems  = normset.${"T4001"} -%]
+[%- FOREACH isbnitem IN isbnitems -%]
+[%-   isbnidx = loop.index -%]
+[%-   hstitem = hstitems.${isbnidx} -%]
+[%-   globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;isbn=${isbnitem.content}" -%]
+[%-   IF hstitem.content.defined -%]
+<li><b><a href="[% globalurl %]">[% hstitem.content %]</a></b></li>
+[%-   END -%]
+[%- END -%]
 </ul>
 </td></tr>
 </table>

@@ -110,25 +110,14 @@ sub handler {
     }
   
     if ($do_login) {
-        my $targetresult=$user->{dbh}->prepare("select * from logintarget order by type DESC,description") or $logger->error($DBI::errstr);
-        $targetresult->execute() or $logger->error($DBI::errstr);
-    
-        my $targetselect="<select name=\"targetid\">";
-        while (my $result=$targetresult->fetchrow_hashref()) {
-            my $targetid    = decode_utf8($result->{'targetid'});
-            my $description = decode_utf8($result->{'description'});
-
-            $targetselect.="<option value=\"$targetid\">$description</option>";
-        }
-        $targetselect.="</select>";
-        $targetresult->finish();
+        my $logintargets_ref = $user->get_logintargets();
     
         # TT-Data erzeugen
         my $ttdata={
             view         => $view,
             stylesheet   => $stylesheet,
             sessionID    => $session->{ID},
-            targetselect => $targetselect,
+            logintargets => $logintargets_ref,
             loginname    => $loginname,
             config       => $config,
             msg          => $msg,

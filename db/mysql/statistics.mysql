@@ -3,12 +3,15 @@
 -------------------------------------------------
 
 drop table IF EXISTS relevance;
-CREATE TABLE borrows (
+CREATE TABLE relevance (
  id          VARCHAR(40),
  isbn        VARCHAR(15),
- content     TEXT,
+ dbname      VARCHAR(25),
+ katkey      INT,
  INDEX (id),
- INDEX (isbn)
+ INDEX (isbn),
+ INDEX (dbname),
+ INDEX (katkey)
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci

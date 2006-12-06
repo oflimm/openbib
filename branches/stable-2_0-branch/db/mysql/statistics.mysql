@@ -8,10 +8,12 @@ CREATE TABLE relevance (
  isbn        VARCHAR(15),
  dbname      VARCHAR(25),
  katkey      INT,
+ origin      INT,
  INDEX (id),
  INDEX (isbn),
  INDEX (dbname),
- INDEX (katkey)
+ INDEX (katkey),
+ INDEX (origin)
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci

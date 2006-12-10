@@ -25,18 +25,19 @@
 #####################################################################   
 
 use DBI;
+use YAML;
 use OpenBib::Config;
 
 my $config=new OpenBib::Config();
 
-# Verbindung zu SQL-Datenbanken herstellen
-my $statisticsdbh
-    = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd});
-
-my $enrichmntdbh
+# Verbindung zur SQL-Datenbank herstellen
+my $enrichdbh
     = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd});
 
-my $request=$statisticsdbh->prepare("select distinct isbn from relevances");
+my $statdbh
+    = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd});
+
+my $request=$statdbh->prepare("select distinct isbn from relevance where isbn != ''");
 
 $request->execute();
 
@@ -45,13 +46,12 @@ while (my $result=$request->fetchrow_hashref){
     my $isbn = $result->{isbn};
 
     # Bestimme alle Nutzer, die diese ISBN ausgeliehen haben
-    my $request=$statisticsdbh->prepare("select distinct id from relevances where isbn=?");
+    my $request=$statdbh->prepare("select distinct id from relevance where isbn=?");
     $request->execute($isbn);
 
     my @ids=();
     while (my $result=$request->fetchrow_hashref){
         my $id = $result->{id};
-        $id=~s/'//g;
         push @ids, "'$id'";
     }
 
@@ -60,17 +60,21 @@ while (my $result=$request->fetchrow_hashref){
     # Bestimme alle ISBNs, die diese Nutzer ausgeliehen haben und erzeuge
     # daraus ein Nutzungshistogramm
 
-    my $request=$statisticsdbh->prepare("select isbn,content from relevances where isbn != ? and id in ($idstring)");
+    my $request=$statdbh->prepare("select isbn,dbname,katkey from relevance where isbn != ? and id in ($idstring)");
     $request->execute($isbn);
 
     my %isbnhist=();
+  ISBNHIST:
     while (my $result=$request->fetchrow_hashref){
-        my $isbn = $result->{isbn};
-        my $hst  = $result->{content};
+        my $isbn   = $result->{isbn};
+        my $dbname = $result->{dbname};
+        my $katkey = $result->{katkey};
+        
         if (!exists $isbnhist{$isbn}){
             $isbnhist{$isbn}={
-                count => 0,
-                hst   => $hst,
+                count  => 0,
+                dbname => $dbname,
+                katkey => $katkey,
             };
         }
         $isbnhist{$isbn}{count}=$isbnhist{$isbn}{count}+1;
@@ -79,14 +83,13 @@ while (my $result=$request->fetchrow_hashref){
     my @histo=();
     foreach my $isbn (keys %isbnhist){
         push @{$histo[$isbnhist{$isbn}{count}]}, {
-            isbn => $isbn,
-            hst  => $isbnhist{$isbn}{hst},
+            isbn   => $isbn,
+            dbname => $isbnhist{$isbn}{dbname},
+            katkey => $isbnhist{$isbn}{katkey},
         };
     }
 
-    # Es werden nur Titel mit einer Relevanz von >= 4 (Nutzern/Sessions)
-    # beruecksichtigt
-    if ($#histo >= 4){
+    if ($#histo >= 3){
         my $i=$#histo;
 
         my @references=();
@@ -102,21 +105,42 @@ while (my $result=$request->fetchrow_hashref){
         my $count=0;
         $i=0;
         # 5 References werden bestimmt
-        my $request1=$enrichmntdbh->prepare('delete from normdata where category=? and isbn=?');
-        my $request2=$enrichmntdbh->prepare('insert into normdata values (?,?,?,?,?)');
+        my $request1=$enrichdbh->prepare('delete from normdata where isbn=? and category=?');
+        my $request2=$enrichdbh->prepare('insert into normdata values (?,?,?,?,?)');
 
-        $request1->execute(4000,$isbn);
-        $request1->execute(4001,$isbn);
+        $request1->execute($isbn,4000);
+        $request1->execute($isbn,4001);
+      REFERENCES:
         foreach my $references_ref (@references){
-            foreach my $item_ref (@{$references_ref->{references}}){
-                $count++;
-                next if (!$item_ref->{hst});
-                
-                $request2->execute($isbn,50,4000,$count,$item_ref->{isbn});
-                $request2->execute($isbn,50,4001,$count,$item_ref->{hst});
 
+            foreach my $item_ref (@{$references_ref->{references}}){
+                my $dbh;
+                
+                eval {
+                    $dbh
+                        = DBI->connect("DBI:$config->{dbimodule}:dbname=$item_ref->{dbname};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+                            ;# or $logger->error_die($DBI::errstr);
+                };
+                
+                if ($@){
+                    print STDERR "$_";
+                    next REFERENCES;
+                }
+                
+                my $dbrequest=$dbh->prepare("select content from tit where id=? and category=?");
+                $dbrequest->execute($item_ref->{katkey},331);
+                
+                my $result=$dbrequest->fetchrow_hashref();
+                my $hst=$result->{content};
+                                
+                $count++;
+                if ($hst && $item_ref->{isbn}){                
+                    $request2->execute($isbn,50,4000,$count,$item_ref->{isbn});
+                    $request2->execute($isbn,50,4001,$count,$hst);
+                }
                 last if ($count > 5);
             }
-        }       
+        }
     }
 }
+

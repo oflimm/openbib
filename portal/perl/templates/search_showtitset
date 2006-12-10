@@ -195,7 +195,7 @@ href="/suchhilfe.html#enrichrelevance" target="body">Suchhilfe</a>.
 <ul>
 [%- FOREACH normkat IN normset -%]
 [%    IF normkat.type == 'url_category' && normkat.desc == 'Interessante Titel' %]
-<li><b><a href="[% normkat.url %]">[% utf2iso(normkat.contents) %]</b></li>
+<li><b><a href="[% normkat.url %]">[% normkat.contents %]</b></li>
 [%    END %]
 [% END %]
 </ul>

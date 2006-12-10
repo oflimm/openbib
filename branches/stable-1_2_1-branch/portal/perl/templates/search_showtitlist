@@ -10,7 +10,7 @@
 
 <p />
 
-<form method="get" action="[% hostself %]">
+<form method="get" action="[% config.search_loc %]">
 [%- FOREACH i IN queryargs -%]
 <input type="hidden" name="[% i.key %]" value="[% i.value %]" />
 [%- END -%]

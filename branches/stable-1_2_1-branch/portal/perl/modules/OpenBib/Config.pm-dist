@@ -86,6 +86,14 @@ use vars qw(%config);
            enrichmntdbuser    => 'root',
            enrichmntdbpasswd  => 'StrengGeheim',
 
+           # Einstellungen fuer den Zugriff auf die Statistik-Datenbank
+
+           statisticsdbhost    => 'localhost',
+           statisticsdbport    => '3306',
+           statisticsdbname    => 'statistics',
+           statisticsdbuser    => 'root',
+           statisticsdbpasswd  => 'StrengGeheim',
+
 	   # Benutzer und Passwort fuer die Administration
 
 	   adminuser     => 'adminuser',

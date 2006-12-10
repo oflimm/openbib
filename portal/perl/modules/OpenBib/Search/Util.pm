@@ -1421,8 +1421,10 @@ sub get_tit_set_by_idn {
 
             my $isbn=$isbn_ref->{content};
             
-            $isbn =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10/g;
-            
+            $isbn =~s/ //g;
+            $isbn =~s/-//g;
+            $isbn=~s/([A-Z])/\l$1/g;
+                        
             my $reqstring="select category,content from normdata where isbn=? order by category,indicator";
             my $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
             $request->execute($isbn) or $logger->error("Request: $reqstring - ".$DBI::errstr);

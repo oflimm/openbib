@@ -24,13 +24,40 @@
 #
 #####################################################################   
 
+use Benchmark ':hireswallclock';
 use DBI;
+use Getopt::Long;
+use Log::Log4perl qw(get_logger :levels);
 use YAML;
+
+
 use OpenBib::Config;
+use OpenBib::Common::Util;
+use OpenBib::Search::Util;
 
 use vars qw(%config);
 
 *config=\%OpenBib::Config::config;
+
+my $logfile=($logfile)?$logfile:'/var/log/openbib/analyze_relevances.log';
+
+my $log4Perl_config = << "L4PCONF";
+log4perl.rootLogger=DEBUG, LOGFILE, Screen
+log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
+log4perl.appender.LOGFILE.filename=$logfile
+log4perl.appender.LOGFILE.mode=append
+log4perl.appender.LOGFILE.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.LOGFILE.layout.ConversionPattern=%d [%c]: %m%n
+log4perl.appender.Screen=Log::Dispatch::Screen
+log4perl.appender.Screen.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.Screen.layout.ConversionPattern=%d %p> %F{1}:%L %M - %m%n
+L4PCONF
+
+Log::Log4perl::init(\$log4Perl_config);
+
+# Log4perl logger erzeugen
+my $logger = get_logger();
+
 
 # Verbindung zur SQL-Datenbank herstellen
 my $enrichdbh
@@ -129,11 +156,9 @@ while (my $result=$request->fetchrow_hashref){
                     next REFERENCES;
                 }
                 
-                my $dbrequest=$dbh->prepare("select hst from tit where idn=?");
-                $dbrequest->execute($item_ref->{katkey});
-                
-                my $result=$dbrequest->fetchrow_hashref();
-                my $hst=$result->{hst};
+		my $listitem_ref=OpenBib::Search::Util::get_tit_listitem_by_idn($item_ref->{katkey},"none",5,$dbh,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,$dbname,{},{},{},{},{},0);
+
+		my $hst="<span class=\"rlauthor\">".$listitem_ref->{verfasser}."</span></strong><br /><strong><span class=\"rltitle\">".$listitem_ref->{title}."</span></strong>, <span class=\"rlpublisher\">".$listitem_ref->{publisher}."</span> <span class=\"rlyearofpub\">".$listitem_ref->{erschjahr}."</span> (".$references_ref->{count}."&nbsp;Nutzer)";
                                 
                 $count++;
                 if ($hst && $item_ref->{isbn}){                

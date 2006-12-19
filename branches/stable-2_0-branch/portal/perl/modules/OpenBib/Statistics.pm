@@ -106,7 +106,7 @@ sub get_result {
     while (my $result=$request->fetchrow_hashref){
         my $datastring = $result->{data};
         
-        $data_ref     = unpack "H*", Storable::thaw(pack "H*",$datastring);
+        $data_ref     = Storable::thaw(pack "H*",$datastring);
     }
 
     return $data_ref;

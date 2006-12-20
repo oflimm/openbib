@@ -182,8 +182,8 @@ sub handler {
   my $bodyframeurl="$config{searchframe_loc}?sessionID=$sessionID";
 
   if ($view ne ""){
-    $headerframeurl.="&view=$view";
-    $bodyframeurl.="&view=$view";
+    $headerframeurl.=";view=$view";
+    $bodyframeurl.=";view=$view";
   }
 
   $logger->info("StartOpac-sID: $sessionID");

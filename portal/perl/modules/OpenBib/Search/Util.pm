@@ -905,7 +905,6 @@ sub get_tit_listitem_by_idn {
 
     my $gtall_ref=$gtresult->fetchall_arrayref;
 
-    $logger->info($gtresult);
     $titstring=($gtall_ref->[0][0])?$gtall_ref->[0][0]:'';
     
     if (!$titstring){
@@ -2679,18 +2678,17 @@ sub get_tit_set_by_idn {
 	$circexemplarliste[$i]{'Ausleihstring'}=$ausleihstring;
 
 	if ($circexemplarliste[$i]{'Standort'}=~/Erziehungswiss/ || $circexemplarliste[$i]{'Standort'}=~/Heilp.*?dagogik-Magazin/){
-	  $circexemplarliste[$i]{'Ausleihurl'}="$circurl?Login=ewa;Query=0000=$titidn";
+	  $circexemplarliste[$i]{'Ausleihurl'}="$circurl?Login=ewa&Query=0000=$titidn";
 
 #	  print "<td><strong>$ausleihstatus</strong></td><td bgcolor=\"yellow\"><a TARGET=_blank href=\"$circurl&branch=4&KatKeySearch=$titidn\">$ausleihstring</a></td>";
 	}
 	else {
 	  if ($database eq "inst001" || $database eq "poetica"){
-	    $circexemplarliste[$i]{'Ausleihurl'}="$circurl?Login=sisis;Query=0000=$titidn
-";
+	    $circexemplarliste[$i]{'Ausleihurl'}="$circurl?Login=sisis&Query=0000=$titidn";
 #	    print "<td><strong>$ausleihstatus</strong></td><td bgcolor=\"yellow\"><a TARGET=_blank href=\"$circurl&branch=0&KatKeySearch=$titidn\">$ausleihstring</a></td>";
 	  }
 	  else {
-	    $circexemplarliste[$i]{'Ausleihurl'}="$circurl;KatKeySearch=$titidn";
+	    $circexemplarliste[$i]{'Ausleihurl'}="$circurl&KatKeySearch=$titidn";
 #	    print "<td><strong>$ausleihstatus</strong></td><td bgcolor=\"yellow\"><a TARGET=_blank href=\"$circurl&KatKeySearch=$titidn\">$ausleihstring</a></td>";
 	  }
 	}

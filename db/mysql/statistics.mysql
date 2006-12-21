@@ -17,3 +17,15 @@ CREATE TABLE relevance (
 )
 PACK_KEYS=1;
 
+drop table IF EXISTS result_data;
+CREATE TABLE result_data (
+ id          VARCHAR(40),
+ tstamp      TIMESTAMP,
+ type        INT,
+ data        BLOB,
+ INDEX (id),
+ INDEX (tstamp),
+ INDEX (type)
+)
+PACK_KEYS=1;
+

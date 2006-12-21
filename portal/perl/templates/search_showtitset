@@ -8,8 +8,9 @@
     <td width="20">&nbsp;</td>
     <td valign="middle" align="left" height="32"><img src="/images/openbib/[% database %].png" alt="Schriftzug der DB [% database %]" /></td>
       <td>&nbsp;</td>
-      <td class="fbuttonarea" align="right" width="180">
-	<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% database %];singleidn=[% titidn %]" target="header" title="In die Merkliste"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="In die Merkliste" border="0" /></a>&nbsp;
+      <td class="fbuttonarea" align="right" width="220">
+        <a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=10" target="body" title="Top 20"><img valign="center" src="/images/openbib/top20-12px.png" alt="Top 20" heigth="28" border="0" /></a>&nbsp;
+        <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% database %];singleidn=[% titidn %]" target="header" title="In die Merkliste"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="In die Merkliste" border="0" /></a>&nbsp;
         <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=mail;database=[% database %];singleidn=[% titidn %]" target="body" title="Als Mail verschicken"><img src="/images/openbib/3d-file-blue-mailbox.png" height="29" alt="Als Mail verschicken" border="0" /></a>&nbsp;
         <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=save;database=[% database %];singleidn=[% titidn %]" target="save" title="Abspeichern"><img src="/images/openbib/3d-file-blue-disk35.png" height="29" alt="Abspeichern" border="0" /></a>&nbsp;
         <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=print;database=[% database %];singleidn=[% titidn %]" target="print" title="Ausdrucken"><img src="/images/openbib/3d-file-blue-printer.png" height="29" alt="Ausdrucken" border="0" /></a>&nbsp;
@@ -192,13 +193,14 @@ src="/images/openbib/rssfeed.png" alt="RSS-Feed Icon" /></a>&nbsp;
 Nutzer, die diesen Titel ausgew&auml;hlt haben, interessierten sich auch
 f&uuml;r die folgenden Titel. Weitere Informationen finden Sie in der <a
 href="/suchhilfe.html#enrichrelevance" target="body">Suchhilfe</a>.
-<ul>
+<p />
+<table cellpadding="2">
 [%- FOREACH normkat IN normset -%]
 [%    IF normkat.type == 'url_category' && normkat.desc == 'Interessante Titel' %]
-<li><b><a href="[% normkat.url %]">[% normkat.contents %]</b></li>
+<tr><td><a href="[% normkat.url %]"><span class="globalsearch">G</span></a></td><td>[% normkat.contents %]</td></tr>
 [%    END %]
 [% END %]
-</ul>
+</table>
 </td></tr>
 </table>
 [% END %]

@@ -1,0 +1,45 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+[% show_foot_banner = 1%]
+<body>
+[%
+      funcargs = { id => database, type => 1 } ;
+      resultlist = statistics.get_result(funcargs);
+%]
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+  <tr class="titlerow">
+    <td width="20">&nbsp;</td>
+    <td valign="middle" align="left" height="32"><img src="/images/openbib/[% database %].png" alt="Schriftzug der DB [% database %]" /></td>
+      <td>&nbsp;</td>
+  </tr>
+</table>
+<p />
+<table width="100%">
+<tr><th>Die 20 meist aufgerufenen Titel</th></tr>
+<tr><td class="boxedclear">
+<table>
+<!-- Beginn Result Item -->
+[%- FOREACH thisitem IN resultlist -%]
+[% item      = thisitem.item;
+   itemcount = thisitem.count;
+%]
+<tr><td><b>[% loop.count %]</b></td><td><strong><span class="rlauthor">[% item.verfasser %]</span></strong><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;searchmode=[% searchmode %];rating=[% rating %];bookinfo=[% bookinfo %];hitrange=;sorttype=[% sorttype %];database=[% item.database %];searchsingletit=[% item.idn %]"><strong><span class="rltitle">[% item.title %]</span></strong></a>, <span class="rlpublisher">[% item.publisher %]</span> <span class="rlyearofpub">[% item.erschjahr %]</span></td><td><b>[% itemcount %]&nbsp;Nutzer</b></td></tr>
+[% END %]
+</table>
+</td></tr>
+</table>
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

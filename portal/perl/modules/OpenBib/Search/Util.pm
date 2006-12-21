@@ -38,6 +38,7 @@ use SOAP::Lite;
 use DBI;
 
 use OpenBib::Config;
+use OpenBib::Common::Util;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace

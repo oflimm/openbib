@@ -13,6 +13,7 @@
 <ul class="tabbingmenu">
    <li><a class="active" href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">Einfache Recherche</a></li>
    <li><a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">Komplexe Recherche</a></li>
+   <li><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=11" target="body" title="Top 20">Top 20</a></li>
 </ul>
 
 <div class="content">

@@ -111,6 +111,7 @@ sub handler {
         stylesheet    => $stylesheet,
         viewdesc      => $viewdesc,
         sessionID     => $session->{ID},
+	session       => $session,
         useragent     => $useragent,
         config        => $config,
         statistics    => $statistics,

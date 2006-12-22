@@ -107,7 +107,7 @@ $request=$dbh->do("truncate table popularity");
 $request=$dbh->prepare("insert into popularity values (?,?)");
 
 foreach my $item_ref (@popularity){
-    $request->execute($item_ref->{id},$item_ref->{count});
+    $request->execute($item_ref->{id},$item_ref->{idcount});
 }
 
 $logger->info("Inserted ".($#popularity+1)." popularity titlesets into pool $pool");

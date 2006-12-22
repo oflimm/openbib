@@ -115,7 +115,30 @@ if ($type == 1){
             data => $bestof_ref,
         });
     }
+}
+
+# Typ 2 => Meistgenutzte Datenbanken
+if ($type == 2){
+    $logger->info("Generating Type 2 BestOf-Values for all databases");
     
+    my $bestof_ref=[];
+    my $request=$statistics->{dbh}->prepare("select dbname, count(katkey) as kcount from relevance where origin=2 group by dbname order by kcount desc limit 20");
+    $request->execute();
+    while (my $result=$request->fetchrow_hashref){
+        my $dbname = $result->{dbname};
+        my $count  = $result->{kcount};
+
+        push @$bestof_ref, {
+            item  => $dbname,
+            count => $count,
+        };
+    }
+
+    $statistics->store_result({
+        type => 2,
+        id   => 'all',
+        data => $bestof_ref,
+    });
 }
 
 sub print_help {
@@ -130,7 +153,8 @@ gen_bestof.pl - Erzeugen von BestOf-Analysen aus Relevance-Statistik-Daten
    Typen:
 
    1 => Meistaufgerufene Titel pro Datenbank
-
+   2 => Meistgenutzte Kataloge bezogen auf Titelaufrufe
+       
 ENDHELP
     exit;
 }

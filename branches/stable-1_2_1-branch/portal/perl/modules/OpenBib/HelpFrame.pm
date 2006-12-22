@@ -271,6 +271,7 @@ sub handler {
         view          => $view,
         stylesheet    => $stylesheet,
         dbdesc        => $dbdesc,
+        dbinfo        => \%dbinfo,
         sessionID     => $sessionID,
         useragent     => $useragent,
         config        => \%config,

@@ -41,8 +41,8 @@ use SOAP::Lite;
 use Storable;
 use YAML ();
 
+use OpenBib::Common::Util;
 use OpenBib::Config;
-
 
 #####################################################################
 ## get_aut_ans_by_idn(autidn,...): Gebe zu autidn geh"oerende
@@ -603,11 +603,15 @@ sub get_tit_listitem_by_idn {
 
     if ($use_titlistitem_table) {
         # Bestimmung des Satzes
-        my $request=$dbh->prepare("select listitem from titlistitem where id = ?") or $logger->error($DBI::errstr);
+        my $request=$dbh->prepare("select t.listitem as listitem, p.idcount as idcount from titlistitem as t,popularity as p where t.id = ? and t.id=p.id") or $logger->error($DBI::errstr);
         $request->execute($titidn);
         
         if (my $res=$request->fetchrow_hashref){
             my $titlistitem     = $res->{listitem};
+            my $popularity      = $res->{idcount};
+
+            $listitem_ref->{popularity} = $popularity;
+            
             $logger->debug("Storable::listitem: $titlistitem");
 
             my $encoding_type="hex";
@@ -623,8 +627,10 @@ sub get_tit_listitem_by_idn {
             }
 
             my %titlistitem = %{ Storable::thaw($titlistitem) };
+            
             $logger->debug("TitlistitemYAML: ".YAML::Dump(\%titlistitem));
             %$listitem_ref=(%$listitem_ref,%titlistitem);
+
         }
     }
     else {
@@ -856,6 +862,24 @@ sub get_tit_listitem_by_idn {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : Bestimmung der HST-Ueberordnungsinformationen : ist ".timestr($timeall));
+        }
+
+                if ($config->{benchmark}) {
+            $atime=new Benchmark;
+        }    
+        
+        # Bestimmung der Popularitaet des Titels
+        $request=$dbh->prepare("select idcount from popularity where id=?") or $logger->error($DBI::errstr);
+        $request->execute($titidn);
+        
+        while (my $res=$request->fetchrow_hashref){
+            $listitem_ref->{popularity} = $res->{idcount};
+        }
+        
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : Bestimmung der Popularitaetsinformation : ist ".timestr($timeall));
         }
 
     }

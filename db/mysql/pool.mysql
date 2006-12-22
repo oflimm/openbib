@@ -341,3 +341,13 @@ PRIMARY KEY (id)
 )
 DEFAULT CHARACTER SET latin1
 PACK_KEYS=1;
+
+drop table IF EXISTS popularity;
+create table popularity (
+id        MEDIUMINT NOT NULL,
+idcount   INT,
+INDEX     (id)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;

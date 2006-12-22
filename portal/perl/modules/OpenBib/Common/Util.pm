@@ -320,13 +320,14 @@ sub get_sort_nav {
         $queryargs_ref=\%fullargs;
     }
 
-    my %fullstring=('up'        => $msg->maketext("aufsteigend"),
-                    'down'      => $msg->maketext("absteigend"),
-                    'author'    => $msg->maketext("nach Autor/Körperschaft"),
-                    'publisher' => $msg->maketext("nach Verlag"),
-                    'signature' => $msg->maketext("nach Signatur"),
-                    'title'     => $msg->maketext("nach Titel"),
-                    'yearofpub' => $msg->maketext("nach Erscheinungsjahr"),
+    my %fullstring=('up'         => $msg->maketext("aufsteigend"),
+                    'down'       => $msg->maketext("absteigend"),
+                    'author'     => $msg->maketext("nach Autor/Körperschaft"),
+                    'publisher'  => $msg->maketext("nach Verlag"),
+                    'signature'  => $msg->maketext("nach Signatur"),
+                    'title'      => $msg->maketext("nach Titel"),
+                    'yearofpub'  => $msg->maketext("nach Erscheinungsjahr"),
+                    'popularity' => $msg->maketext("nach Popularit&auml;t"),
                 );
 
     my $katalogtyp=$msg->maketext("pro Katalog");
@@ -483,6 +484,32 @@ sub by_title_down {
     $line2 cmp $line1;
 }
 
+sub by_popularity {
+    my %line1=%$a;
+    my %line2=%$b;
+
+    my $line1=(exists $line1{popularity} && defined $line1{popularity})?cleanrl($line1{popularity}):"";
+    my $line2=(exists $line2{popularity} && defined $line2{popularity})?cleanrl($line2{popularity}):"";
+
+    $line1=0 if (!defined $line1);
+    $line2=0 if (!defined $line2);
+
+    $line1 <=> $line2;
+}
+
+sub by_popularity_down {
+    my %line1=%$a;
+    my %line2=%$b;
+
+    my $line1=(exists $line1{popularity} && defined $line1{popularity})?cleanrl($line1{popularity}):"";
+    my $line2=(exists $line2{popularity} && defined $line2{popularity})?cleanrl($line2{popularity}):"";
+
+    $line1=0 if (!defined $line1);
+    $line2=0 if (!defined $line2);
+
+    $line2 <=> $line1;
+}
+
 sub sort_buffer {
     my ($sorttype,$sortorder,$outputbuffer_ref,$sortedoutputbuffer_ref)=@_;
 
@@ -528,6 +555,12 @@ sub sort_buffer {
     }
     elsif ($sorttype eq "title" && $sortorder eq "down") {
         @$sortedoutputbuffer_ref=sort by_title_down @$outputbuffer_ref;
+    }
+    elsif ($sorttype eq "popularity" && $sortorder eq "up") {
+        @$sortedoutputbuffer_ref=sort by_popularity @$outputbuffer_ref;
+    }
+    elsif ($sorttype eq "popularity" && $sortorder eq "down") {
+        @$sortedoutputbuffer_ref=sort by_popularity_down @$outputbuffer_ref;
     }
     else {
         @$sortedoutputbuffer_ref=@$outputbuffer_ref;

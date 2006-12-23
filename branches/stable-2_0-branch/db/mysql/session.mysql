@@ -35,12 +35,14 @@ CREATE TABLE lastresultlist (
  INDEX (sessionid)
 );
 
-drop table IF EXISTS sessionlog;
-CREATE TABLE sessionlog (
+drop table IF EXISTS eventlog;
+CREATE TABLE eventlog (
  sessionid  VARCHAR(255) NOT NULL,
- query      TEXT,
- createtime DATETIME,
- endtime    DATETIME
+ tstamp     DATETIME,
+ type       INT,
+ content    MEDIUMBLOB,
+ INDEX (sessionid),
+ INDEX (type)
 );
 
 drop table IF EXISTS queries;

@@ -58,6 +58,31 @@ sub new {
     return $self;
 }
 
+sub store_relevance {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $id                = exists $arg_ref->{id}
+        ? $arg_ref->{id    }        : undef;
+    my $isbn              = exists $arg_ref->{isbn}
+        ? $arg_ref->{isbn  }        : undef;
+    my $dbname            = exists $arg_ref->{dbname}
+        ? $arg_ref->{dbname}        : undef;
+    my $katkey            = exists $arg_ref->{katkey}
+        ? $arg_ref->{katkey}        : undef;
+    my $type              = exists $arg_ref->{type}
+        ? $arg_ref->{type  }        : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return undef unless (defined $id && defined $dbname && defined $katkey && defined $type);
+    
+    my $request=$self->{dbh}->prepare("insert into relevance values (?,?,?,?,?)") or $logger->error($DBI::errstr);
+    $request->execute($id,$isbn,$dbname,$katkey,$type) or $logger->error($DBI::errstr);
+    return;
+}
+
 sub store_result {
     my ($self,$arg_ref)=@_;
 

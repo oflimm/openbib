@@ -15,8 +15,6 @@ CREATE TABLE relevance (
  INDEX (katkey),
  INDEX (origin)
 )
-DEFAULT CHARACTER SET utf8
-COLLATE utf8_general_ci
 PACK_KEYS=1;
 
 drop table IF EXISTS result_data;
@@ -29,6 +27,4 @@ CREATE TABLE result_data (
  INDEX (tstamp),
  INDEX (type)
 )
-DEFAULT CHARACTER SET utf8
-COLLATE utf8_general_ci
 PACK_KEYS=1;

@@ -38,12 +38,15 @@ use Storable ();
 use OpenBib::Common::Util;
 use OpenBib::Common::Stopwords;
 use OpenBib::Config;
+use OpenBib::Statistics;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
 use vars qw(%config);
 
 *config = \%OpenBib::Config::config;
+
+my ($singlepool,$reducemem);
 
 &GetOptions("reduce-mem"    => \$reducemem,
 	    "single-pool=s" => \$singlepool,
@@ -55,24 +58,42 @@ my $convtab_ref = (exists $config{convtab}{singlepool})?
 my $dir=`pwd`;
 chop $dir;
 
-my %listitemdata_aut=();
-my %listitemdata_kor=();
-my %listitemdata_swt=();
-my %listitemdata_mex=();
+my %listitemdata_aut        = ();
+my %listitemdata_kor        = ();
+my %listitemdata_swt        = ();
+my %listitemdata_mex        = ();
+my %listitemdata_popularity = ();
 
+my $statistics = new OpenBib::Statistics();
+
+my $request=$statistics->{dbh}->prepare("select katkey, count(katkey) as kcount from relevance where origin=2 and dbname=? group by katkey");
+$request->execute($singlepool);
+
+open(OUTPOP,    ">:utf8","popularity.mysql")     || die "OUTPOP konnte nicht geoeffnet werden";
+while (my $res    = $request->fetchrow_hashref){
+    my $id      = $res->{katkey};
+    my $idcount = $res->{kcount};
+    $listitemdata_popularity{$id}=$idcount;
+    print OUTPOP "$id$idcount\n";
+}
+$request->finish();
+close(OUTPOP);
 
 if ($reducemem){
-    tie %listitemdata_aut, 'MLDBM', "./listitemdata_aut.db"
+    tie %listitemdata_aut,        'MLDBM', "./listitemdata_aut.db"
         or die "Could not tie listitemdata_aut.\n";
     
-    tie %listitemdata_kor, 'MLDBM', "./listitemdata_kor.db"
+    tie %listitemdata_kor,        'MLDBM', "./listitemdata_kor.db"
         or die "Could not tie listitemdata_kor.\n";
 
-    tie %listitemdata_swt, 'MLDBM', "./listitemdata_swt.db"
+    tie %listitemdata_swt,        'MLDBM', "./listitemdata_swt.db"
         or die "Could not tie listitemdata_swt.\n";
  
-    tie %listitemdata_mex, 'MLDBM', "./listitemdata_mex.db"
+    tie %listitemdata_mex,        'MLDBM', "./listitemdata_mex.db"
         or die "Could not tie listitemdata_mex.\n";
+
+    tie %listitemdata_popularity, 'MLDBM', "./listitemdata_popularity.db"
+        or die "Could not tie listitemdata_popularity.\n";
 }
 
 my $stammdateien_ref = {
@@ -367,6 +388,10 @@ while (my $line=<IN>){
         $listitem_ref->{id}       = $id;
         $listitem_ref->{database} = $singlepool;
 
+        if (exists $listitemdata_popularity{$id}){
+            $listitem_ref->{popularity} = $listitemdata_popularity{$id};
+        }
+        
         next CATLINE;
     }
     elsif ($line=~m/^9999:/){
@@ -526,7 +551,7 @@ while (my $line=<IN>){
         elsif ($encoding_type eq "uu"){
             $listitem =~s/\\/\\\\/g;
             $listitem =~s/\n/\\n/g;
-            $listitem = pack "u",$tit;
+            $listitem = pack "u",$listitem;
         }
 
         print TITLISTITEM "$id$listitem\n";
@@ -951,9 +976,11 @@ ITEM
 
 print CONTROL << "TITITEM";
 truncate table conn;
+truncate table popularity;
 truncate table search;
 truncate table titlistitem;
 load data infile '$dir/conn.mysql'        into table conn   fields terminated by '' ;
+load data infile '$dir/popularity.mysql'  into table popularity fields terminated by '' ;
 load data infile '$dir/search.mysql'      into table search fields terminated by '' ;
 load data infile '$dir/titlistitem.mysql' into table titlistitem fields terminated by '' ;
 TITITEM
@@ -978,6 +1005,7 @@ if ($reducemem){
     untie %listitemdata_aut;
     untie %listitemdata_kor;
     untie %listitemdata_mex;
+    untie %listitemdata_popularity;
 }
 
 1;

@@ -1014,8 +1014,8 @@ sub print_tit_set_by_idn {
         ? $arg_ref->{titidn}             : undef;
     my $dbh                = exists $arg_ref->{dbh}
         ? $arg_ref->{dbh}                : undef;
-    my $sessiondbh         = exists $arg_ref->{sessiondbh}
-        ? $arg_ref->{sessiondbh}         : undef;
+    my $session            = exists $arg_ref->{session}
+        ? $arg_ref->{session}            : undef;
     my $targetdbinfo_ref   = exists $arg_ref->{targetdbinfo_ref}
         ? $arg_ref->{targetdbinfo_ref}   : undef;
     my $targetcircinfo_ref = exists $arg_ref->{targetcircinfo_ref}
@@ -1024,8 +1024,6 @@ sub print_tit_set_by_idn {
         ? $arg_ref->{queryoptions_ref}  : undef;
     my $database           = exists $arg_ref->{database}
         ? $arg_ref->{database}           : undef;
-    my $sessionID          = exists $arg_ref->{sessionID}
-        ? $arg_ref->{sessionID}          : undef;
     my $r                  = exists $arg_ref->{apachereq}
         ? $arg_ref->{apachereq}          : undef;
     my $stylesheet         = exists $arg_ref->{stylesheet}
@@ -1039,7 +1037,7 @@ sub print_tit_set_by_idn {
     my $logger = get_logger();
 
     my $config = new OpenBib::Config();
-    
+
     my ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn({
         titidn             => $titidn,
         dbh                => $dbh,
@@ -1049,10 +1047,10 @@ sub print_tit_set_by_idn {
     });
 
     my ($prevurl,$nexturl)=OpenBib::Search::Util::get_result_navigation({
-        sessiondbh => $sessiondbh,
+        sessiondbh => $session->{dbh},
         database   => $database,
         titidn     => $titidn,
-        sessionID  => $sessionID,
+        sessionID  => $session->{ID},
     });
 
     my $poolname=$targetdbinfo_ref->{sigel}{
@@ -1067,24 +1065,37 @@ sub print_tit_set_by_idn {
         prevurl    => $prevurl,
         nexturl    => $nexturl,
         qopts      => $queryoptions_ref,
-        sessionID  => $sessionID,
+        sessionID  => $session->{ID},
         titidn     => $titidn,
         normset    => $normset,
         mexnormset => $mexnormset,
         circset    => $circset,
-
-        utf2iso    => sub {
-            my $string=shift;
-            $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
-            return $string;
-        },
-
         config     => $config,
         msg        => $msg,
     };
   
     OpenBib::Common::Util::print_page($config->{tt_search_showtitset_tname},$ttdata,$r);
 
+    # Log Event
+
+    my $isbn;
+
+    if (exists $normset->{T0540}[0]{content}){
+        $isbn = $normset->{T0540}[0]{content};
+        $isbn =~s/ //g;
+        $isbn =~s/-//g;
+        $isbn =~s/X/x/g;
+    }
+    
+    $session->log_event({
+        type    => 10,
+        content => {
+            id       => $titidn,
+            database => $database,
+            isbn     => $isbn,
+        },
+    });
+    
     return;
 }
 
@@ -1131,7 +1142,6 @@ sub print_mult_tit_set_by_idn {
             targetdbinfo_ref   => $targetdbinfo_ref,
             targetcircinfo_ref => $targetcircinfo_ref,
             database           => $database,
-            sessionID          => $sessionID
         });
         
         my $thisset={
@@ -1179,8 +1189,6 @@ sub get_tit_set_by_idn {
         ? $arg_ref->{targetcircinfo_ref} : undef;
     my $database           = exists $arg_ref->{database}
         ? $arg_ref->{database}           : undef;
-    my $sessionID          = exists $arg_ref->{sessionID}
-        ? $arg_ref->{sessionID}          : undef;
   
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -1348,7 +1356,6 @@ sub get_tit_set_by_idn {
                     targetdbinfo_ref   => $targetdbinfo_ref,
                     targetcircinfo_ref => $targetcircinfo_ref,
                     database           => $database,
-                    sessionID          => $sessionID,
                 });
             }
         }
@@ -1475,7 +1482,7 @@ sub get_tit_set_by_idn {
 
 
     }
-    
+
     return ($normset_ref,\@mexnormset,\@circexemplarliste);
 }
 

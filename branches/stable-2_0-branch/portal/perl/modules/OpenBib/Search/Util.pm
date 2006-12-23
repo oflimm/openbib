@@ -603,14 +603,11 @@ sub get_tit_listitem_by_idn {
 
     if ($use_titlistitem_table) {
         # Bestimmung des Satzes
-        my $request=$dbh->prepare("select t.listitem as listitem, p.idcount as idcount from titlistitem as t,popularity as p where t.id = ? and t.id=p.id") or $logger->error($DBI::errstr);
+        my $request=$dbh->prepare("select listitem from titlistitem where t.id = ?") or $logger->error($DBI::errstr);
         $request->execute($titidn);
         
         if (my $res=$request->fetchrow_hashref){
             my $titlistitem     = $res->{listitem};
-            my $popularity      = $res->{idcount};
-
-            $listitem_ref->{popularity} = $popularity;
             
             $logger->debug("Storable::listitem: $titlistitem");
 

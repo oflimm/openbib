@@ -19,7 +19,7 @@
 <tr><th>Optionen</th></tr>
 <tr><td class="boxed">
 <b>Sortierung:</b>&nbsp;
-<select name="sorttype"><option value="author">nach Autor</option><option value="title">nach Titel</option><option value="yearofpub">nach Jahr</option><option value="publisher">nach Verlag</option><option value="signature">nach Signatur</option></select>&nbsp;<select name="sortorder"><option value="up">aufsteigend</option><option value="down">absteigend</option></select>
+<select name="sorttype"><option value="author">nach Autor</option><option value="title">nach Titel</option><option value="yearofpub">nach Jahr</option><option value="publisher">nach Verlag</option><option value="signature">nach Signatur</option><option value="popularity">nach Popularit&auml;t</option></select>&nbsp;<select name="sortorder"><option value="up">aufsteigend</option><option value="down">absteigend</option></select>
 [% IF sortselect %]
 <select name="sortall">
 [%- FOREACH select IN sortselect -%]

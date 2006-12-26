@@ -578,3 +578,9 @@ create table lastresultlist (
  singleidn bigint,
  index     (sessionid)
 );
+
+create table popularity (
+ titidn bigint,
+ count  int,
+ index  (titidn)
+);

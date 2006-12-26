@@ -60,3 +60,4 @@ drop table titwst ;
 drop table titurl ;
 drop table search ;
 drop table lastresultlist ;
+drop table popularity ;

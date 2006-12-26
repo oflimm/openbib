@@ -697,7 +697,8 @@ sub get_sort_nav {
 		  'publisher','nach Verlag',
 		  'signature','nach Signatur',
 		  'title','nach Titel',
-		  'yearofpub','nach Erscheinungsjahr'
+		  'yearofpub','nach Erscheinungsjahr',
+		  'popularity','nach Popularit&auml;t'
 		  );
 
   my $katalogtyp="pro Katalog";
@@ -975,6 +976,26 @@ sub by_title_down {
   $line2{title} cmp $line1{title};
 }
 
+sub by_popularity {
+  my %line1=%$a;
+  my %line2=%$b;
+
+  $line1{popularity}=cleanrl($line1{popularity}) if ($line1{popularity});
+  $line2{popularity}=cleanrl($line2{popularity}) if ($line2{popularity});
+
+  $line1{popularity} <=> $line2{popularity};
+}
+
+sub by_popularity_down {
+  my %line1=%$a;
+  my %line2=%$b;
+
+  $line1{popularity}=cleanrl($line1{popularity}) if ($line1{popularity});
+  $line2{popularity}=cleanrl($line2{popularity}) if ($line2{popularity});
+
+  $line2{popularity} <=> $line1{popularity};
+}
+
 sub sort_buffer {
   my ($sorttype,$sortorder,$routputbuffer,$rsortedoutputbuffer)=@_;
 
@@ -1019,6 +1040,12 @@ sub sort_buffer {
   }
   elsif ($sorttype eq "title" && $sortorder eq "down"){
     @$rsortedoutputbuffer=sort by_title_down @$routputbuffer;
+  }
+  elsif ($sorttype eq "popularity" && $sortorder eq "up"){
+    @$rsortedoutputbuffer=sort by_popularity @$routputbuffer;
+  }
+  elsif ($sorttype eq "popularity" && $sortorder eq "down"){
+    @$rsortedoutputbuffer=sort by_popularity_down @$routputbuffer;
   }
   else {
     @$rsortedoutputbuffer=@$routputbuffer;

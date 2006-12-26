@@ -1078,6 +1078,15 @@ sub get_tit_listitem_by_idn {
     $listitem{title}=$titstring;
   }
 
+  # Popularitaetsinformationen hinzufuegen
+
+  @requests=("select count from popularity where titidn=$titidn");
+  my @titres12=OpenBib::Common::Util::get_sql_result(\@requests,$dbh);
+
+  if (defined $titres12[0]){
+    $listitem{popularity}=$titres12[0];
+  }
+  
   return \%listitem;
 }
 

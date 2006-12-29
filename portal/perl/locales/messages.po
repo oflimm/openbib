@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../templates/database/einbaende/managecollection_tit_as_html:38 ../templates/database/einbaende/managecollection_tit_as_html:77 ../templates/managecollection_tit_as_html:35 ../templates/managecollection_tit_as_html_simple:37 ../templates/managecollection_tit_as_text:35 ../templates/search_showautset:44 ../templates/search_showkorset:47 ../templates/search_showmulttitset:84 ../templates/search_shownotset:45 ../templates/search_showswtset:50 ../templates/search_showtitset:118
+#: ../templates/database/einbaende/managecollection_tit_as_html:38 ../templates/database/einbaende/managecollection_tit_as_html:77 ../templates/managecollection_tit_as_html:35 ../templates/managecollection_tit_as_html_simple:37 ../templates/managecollection_tit_as_text:35 ../templates/search_showautset:44 ../templates/search_showkorset:47 ../templates/search_showmulttitset:84 ../templates/search_shownotset:45 ../templates/search_showswtset:50 ../templates/search_showtitset:126
 msgid "${category}"
 msgstr ""
 
@@ -31,7 +31,7 @@ msgstr ""
 msgid "&Uuml;bernahme der Anfrage in externe Recherchequellen"
 msgstr ""
 
-#: ../templates/admin_editcat_rss:336
+#: ../templates/admin_editcat_rss:330
 msgid "&Uuml;bernahme der F&auml;cherstruktur der Erwerbung"
 msgstr ""
 
@@ -71,7 +71,7 @@ msgstr ""
 msgid "Abschicken"
 msgstr ""
 
-#: ../templates/database/einbaende/search_showtitset:30 ../templates/managecollection_show:68 ../templates/search_showtitset:26 ../templates/views/einbaende/managecollection_show:65
+#: ../templates/database/einbaende/search_showtitset:30 ../templates/managecollection_show:68 ../templates/search_showtitset:27 ../templates/views/einbaende/managecollection_show:65
 msgid "Abspeichern"
 msgstr ""
 
@@ -87,11 +87,11 @@ msgstr ""
 msgid "Administrations-Login"
 msgstr ""
 
-#: ../templates/database/einbaende/managecollection_tit_as_html:95 ../templates/database/einbaende/search_showtitset:245 ../templates/managecollection_tit_as_html:64 ../templates/managecollection_tit_as_html_simple:64 ../templates/search_showmulttitset:119
+#: ../templates/database/einbaende/managecollection_tit_as_html:95 ../templates/database/einbaende/search_showtitset:245
 msgid "Aktion"
 msgstr ""
 
-#: ../templates/admin_editcat:79 ../templates/admin_editcat_rss:122 ../templates/admin_editcat_rss:180 ../templates/admin_editcat_rss:238 ../templates/admin_editcat_rss:296 ../templates/admin_editcat_rss:64 ../templates/admin_editview:39 ../templates/admin_editview_rss:135 ../templates/admin_editview_rss:89 ../templates/admin_showcat:43 ../templates/admin_showcat:74 ../templates/admin_showviews:38 ../templates/admin_showviews:58
+#: ../templates/admin_editcat:78 ../templates/admin_editcat_rss:120 ../templates/admin_editcat_rss:177 ../templates/admin_editcat_rss:234 ../templates/admin_editcat_rss:291 ../templates/admin_editcat_rss:63 ../templates/admin_editview:39 ../templates/admin_editview_rss:135 ../templates/admin_editview_rss:89 ../templates/admin_showcat:43 ../templates/admin_showcat:69 ../templates/admin_showviews:38 ../templates/admin_showviews:58
 msgid "Aktiv"
 msgstr ""
 
@@ -99,7 +99,7 @@ msgstr ""
 msgid "Aktuelle Recherche"
 msgstr ""
 
-#: ../templates/databasechoice:57 ../templates/databaseprofile:78 ../templates/searchframe:179 ../templates/searchframe_simple:88
+#: ../templates/databasechoice:57 ../templates/databaseprofile:78 ../templates/searchframe:180 ../templates/searchframe_simple:89
 msgid "Alle Kataloge"
 msgstr ""
 
@@ -111,11 +111,11 @@ msgstr ""
 msgid "Allgemeine Informationen"
 msgstr ""
 
-#: ../templates/database/einbaende/search_showtitset:29 ../templates/managecollection_show:67 ../templates/search_showtitset:25 ../templates/views/einbaende/managecollection_show:64
+#: ../templates/database/einbaende/search_showtitset:29 ../templates/managecollection_show:67 ../templates/search_showtitset:26 ../templates/views/einbaende/managecollection_show:64
 msgid "Als Mail verschicken"
 msgstr ""
 
-#: ../templates/searchframe:53 ../templates/views/einbaende/searchframe_simple:50 ../templates/views/richter/searchframe:47
+#: ../templates/searchframe:54 ../templates/views/einbaende/searchframe_simple:50 ../templates/views/richter/searchframe:47
 msgid "Als Suchvorlage"
 msgstr ""
 
@@ -127,7 +127,7 @@ msgstr ""
 msgid "An dieser Stelle k&ouml;nnen Sie ausgehend von Ihrer (eventuell erfolglosen) Suchanfrage im KUG Recherche-Portal diese auf weitere externe Kataloge ausdehnen."
 msgstr ""
 
-#: ../templates/login:41
+#: ../templates/login:51 ../templates/login:85
 msgid "Anmeldeziel"
 msgstr ""
 
@@ -154,7 +154,7 @@ msgid ""
 "dieser Seite und kopieren ihn in Ihr RSS-Leseprogramm."
 msgstr ""
 
-#: ../templates/database/einbaende/search_showtitset:31 ../templates/search_showtitset:27
+#: ../templates/database/einbaende/search_showtitset:31 ../templates/search_showtitset:28
 msgid "Ausdrucken"
 msgstr ""
 
@@ -174,11 +174,11 @@ msgstr ""
 msgid "Ausleih-/Buchungsdatum"
 msgstr ""
 
-#: ../templates/admin_editcat:154
+#: ../templates/admin_editcat:153
 msgid "Ausleih-Einstellungen"
 msgstr ""
 
-#: ../templates/database/einbaende/managecollection_tit_as_html:91 ../templates/database/einbaende/search_showtitset:241 ../templates/managecollection_tit_as_html:60 ../templates/managecollection_tit_as_html_simple:60 ../templates/search_showmulttitset:115 ../templates/search_showtitset:149
+#: ../templates/database/einbaende/managecollection_tit_as_html:91 ../templates/database/einbaende/search_showtitset:241 ../templates/managecollection_tit_as_html:60 ../templates/managecollection_tit_as_html_simple:60 ../templates/search_showmulttitset:115 ../templates/search_showtitset:158
 msgid "Ausleihe/Exemplare"
 msgstr ""
 
@@ -194,23 +194,23 @@ msgstr ""
 msgid "Ausleihinformationen"
 msgstr ""
 
-#: ../templates/circset:2 ../templates/database/einbaende/managecollection_tit_as_html:95 ../templates/database/einbaende/search_showtitset:245 ../templates/managecollection_tit_as_html:64 ../templates/managecollection_tit_as_html_simple:64 ../templates/search_showmulttitset:119
+#: ../templates/circset:15 ../templates/database/einbaende/managecollection_tit_as_html:95 ../templates/database/einbaende/search_showtitset:245
 msgid "Ausleihstatus"
 msgstr ""
 
-#: ../templates/circset:2
+#: ../templates/circset:15
 msgid "Ausleihsystem"
 msgstr ""
 
-#: ../templates/admin_editcat:125
+#: ../templates/admin_editcat:124
 msgid "Aut-Datei"
 msgstr ""
 
-#: ../templates/admin_editcat:134
+#: ../templates/admin_editcat:133
 msgid "Autokonvertierung (cron)"
 msgstr ""
 
-#: ../templates/searchframe:170
+#: ../templates/searchframe:171
 msgid "Autor/Körperschaft"
 msgstr ""
 
@@ -230,7 +230,7 @@ msgstr ""
 msgid "Benutzerkonto"
 msgstr ""
 
-#: ../templates/admin_login:30 ../templates/login:42 ../templates/mailpassword:44 ../templates/selfreg:44 ../templates/userprefs:42
+#: ../templates/admin_login:30 ../templates/login:61 ../templates/login:94 ../templates/mailpassword:44 ../templates/selfreg:44 ../templates/userprefs:42
 msgid "Benutzername"
 msgstr ""
 
@@ -242,11 +242,11 @@ msgstr ""
 msgid "Bereits existierende Views"
 msgstr ""
 
-#: ../templates/admin_editcat:50 ../templates/admin_editview:39 ../templates/admin_showcat:41 ../templates/admin_showcat:70 ../templates/admin_showviews:38 ../templates/admin_showviews:58
+#: ../templates/admin_editcat:49 ../templates/admin_editview:39 ../templates/admin_showcat:41 ../templates/admin_showcat:69 ../templates/admin_showviews:38 ../templates/admin_showviews:58
 msgid "Beschreibung"
 msgstr ""
 
-#: ../templates/circset:2 ../templates/database/einbaende/managecollection_tit_as_html:48 ../templates/database/einbaende/managecollection_tit_as_html:95 ../templates/database/einbaende/search_showtitset:140 ../templates/database/einbaende/search_showtitset:245 ../templates/managecollection_tit_as_html:45 ../templates/managecollection_tit_as_html:64 ../templates/managecollection_tit_as_html_simple:45 ../templates/managecollection_tit_as_html_simple:64 ../templates/managecollection_tit_as_text:40 ../templates/search_showmulttitset:119 ../templates/search_showmulttitset:94 ../templates/search_showtitset:128
+#: ../templates/circset:15 ../templates/database/einbaende/managecollection_tit_as_html:48 ../templates/database/einbaende/managecollection_tit_as_html:95 ../templates/database/einbaende/search_showtitset:140 ../templates/database/einbaende/search_showtitset:245 ../templates/managecollection_tit_as_html:45 ../templates/managecollection_tit_as_html_simple:45 ../templates/managecollection_tit_as_text:40 ../templates/search_showmulttitset:94 ../templates/search_showtitset:137
 msgid "Besitzende Bibliothek"
 msgstr ""
 
@@ -254,11 +254,11 @@ msgstr ""
 msgid "Besonderheit bei Feldern mit"
 msgstr ""
 
-#: ../templates/admin_editcat:172
+#: ../templates/admin_editcat:171
 msgid "Bestands-&Uuml;berpr&uuml;fungs-URL"
 msgstr ""
 
-#: ../templates/database/einbaende/managecollection_tit_as_html:48 ../templates/database/einbaende/search_showtitset:140 ../templates/managecollection_tit_as_html:45 ../templates/managecollection_tit_as_html_simple:45 ../templates/search_showmulttitset:94 ../templates/search_showtitset:128
+#: ../templates/database/einbaende/managecollection_tit_as_html:48 ../templates/database/einbaende/search_showtitset:140 ../templates/managecollection_tit_as_html:45 ../templates/managecollection_tit_as_html_simple:45 ../templates/search_showmulttitset:94 ../templates/search_showtitset:137
 msgid "Bestandsverlauf"
 msgstr ""
 
@@ -314,15 +314,15 @@ msgstr ""
 msgid "C5000"
 msgstr ""
 
-#: ../templates/admin_editcat:132
+#: ../templates/admin_editcat:131
 msgid "DB-Datei"
 msgstr ""
 
-#: ../templates/admin_editcat:76 ../templates/admin_showcat:42 ../templates/admin_showcat:72
+#: ../templates/admin_editcat:75 ../templates/admin_showcat:42 ../templates/admin_showcat:69
 msgid "DB-Name"
 msgstr ""
 
-#: ../templates/admin_editcat:170
+#: ../templates/admin_editcat:169
 msgid "DB-Name im Lokalsystem"
 msgstr ""
 
@@ -431,11 +431,11 @@ msgstr ""
 msgid "Einfache Recherchemaske"
 msgstr ""
 
-#: ../templates/searchframe:148
+#: ../templates/searchframe:149
 msgid "Eingrenzung auf Gesamttitel"
 msgstr ""
 
-#: ../templates/admin_login:32 ../templates/login:44
+#: ../templates/admin_login:32 ../templates/login:63 ../templates/login:96
 msgid "Einloggen"
 msgstr ""
 
@@ -443,19 +443,19 @@ msgstr ""
 msgid "Elektronische Zeitschriftendatenbank (EZB)"
 msgstr ""
 
-#: ../templates/admin_editcat:118
+#: ../templates/admin_editcat:117
 msgid "Entfernter Nutzername"
 msgstr ""
 
-#: ../templates/admin_editcat:116
+#: ../templates/admin_editcat:115
 msgid "Entfernter Rechnername"
 msgstr ""
 
-#: ../templates/admin_editcat:119
+#: ../templates/admin_editcat:118
 msgid "Entferntes Passwort"
 msgstr ""
 
-#: ../templates/admin_editcat:117
+#: ../templates/admin_editcat:116
 msgid "Entferntes Verz."
 msgstr ""
 
@@ -467,7 +467,7 @@ msgstr ""
 msgid "Erfolgsmeldung"
 msgstr ""
 
-#: ../templates/searchframe:170 ../templates/userprefs:180
+#: ../templates/searchframe:171 ../templates/userprefs:180
 msgid "Erscheinungsjahr"
 msgstr ""
 
@@ -479,11 +479,11 @@ msgstr ""
 msgid "Erweitere Recherchemaske"
 msgstr ""
 
-#: ../modules/OpenBib/Admin.pm:295
+#: ../modules/OpenBib/Admin.pm:308
 msgid "Es existiert bereits ein Katalog unter diesem Namen"
 msgstr ""
 
-#: ../modules/OpenBib/Admin.pm:685
+#: ../modules/OpenBib/Admin.pm:678
 msgid "Es existiert bereits ein View unter diesem Namen"
 msgstr ""
 
@@ -495,19 +495,19 @@ msgstr ""
 msgid "Es existiert kein Passwort für die Kennung $loginname"
 msgstr ""
 
-#: ../templates/admin_editcat_rss:174
+#: ../templates/admin_editcat_rss:171
 msgid "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
 msgstr ""
 
-#: ../templates/admin_editcat_rss:232
+#: ../templates/admin_editcat_rss:228
 msgid "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach Schlagwort"
 msgstr ""
 
-#: ../templates/admin_editcat_rss:116
+#: ../templates/admin_editcat_rss:114
 msgid "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach Verfasser"
 msgstr ""
 
-#: ../templates/admin_editcat_rss:290 ../templates/admin_editcat_rss:58
+#: ../templates/admin_editcat_rss:285 ../templates/admin_editcat_rss:57
 msgid "Es existiert noch kein genereller RSS-Feed f&uuml;r Neuaufnahmen"
 msgstr ""
 
@@ -527,7 +527,7 @@ msgstr ""
 msgid "Es wurde kein Suchkriterium eingegeben."
 msgstr ""
 
-#: ../modules/OpenBib/Search.pm:1108 ../modules/OpenBib/Search.pm:1219 ../modules/OpenBib/Search.pm:1298 ../modules/OpenBib/Search.pm:286 ../modules/OpenBib/Search.pm:381 ../modules/OpenBib/Search.pm:879 ../modules/OpenBib/Search.pm:994
+#: ../modules/OpenBib/Search.pm:1102 ../modules/OpenBib/Search.pm:1212 ../modules/OpenBib/Search.pm:1290 ../modules/OpenBib/Search.pm:286 ../modules/OpenBib/Search.pm:380 ../modules/OpenBib/Search.pm:875 ../modules/OpenBib/Search.pm:989
 msgid "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
 msgstr ""
 
@@ -544,11 +544,11 @@ msgstr ""
 msgid "F&uuml;r verschiedene Institute und Seminare der Philosophischen Fakult&auml;t besteht die M&ouml;glichkeit der Suche in einem %1Online-Kartenkatalog%2"
 msgstr ""
 
-#: ../templates/admin_editcat:107
+#: ../templates/admin_editcat:106
 msgid "FTP"
 msgstr ""
 
-#: ../templates/admin_editcat:39
+#: ../templates/admin_editcat:38
 msgid "Fakult&auml;t"
 msgstr ""
 
@@ -556,11 +556,11 @@ msgstr ""
 msgid "Fakultät"
 msgstr ""
 
-#: ../templates/searchframe:180 ../templates/searchframe_simple:89
+#: ../templates/searchframe:181 ../templates/searchframe_simple:90
 msgid "Fakultäten"
 msgstr ""
 
-#: ../templates/login:50
+#: ../templates/login:99
 #. ("<a href=\"http://${config.servername}${config.selfreg_loc}?sessionID=${sessionID};action=show\">","</a>")
 msgid "Falls Sie bei keinem der Anmeldeziele registriert sind, so k&ouml;nnen Sie sich %1<b>hier</b>%2 f&uuml;r das Anmeldeziel Selbstregistierung eine Kennung einrichten."
 msgstr ""
@@ -573,7 +573,7 @@ msgstr ""
 msgid "Falls leer, so geben Sie hier bitte einen neuen Profilnamen ein"
 msgstr ""
 
-#: ../modules/OpenBib/Login.pm:325
+#: ../modules/OpenBib/Login.pm:314
 msgid "Falscher Fehler-Code"
 msgstr ""
 
@@ -593,11 +593,11 @@ msgstr ""
 msgid "Fernleihbestellung"
 msgstr ""
 
-#: ../templates/searchframe:100 ../templates/userprefs:169 ../templates/views/einbaende/searchframe_simple:81 ../templates/views/richter/searchframe:84
+#: ../templates/searchframe:101 ../templates/userprefs:169 ../templates/views/einbaende/searchframe_simple:81 ../templates/views/richter/searchframe:84
 msgid "Freie Suche"
 msgstr ""
 
-#: ../templates/searchframe:212 ../templates/searchframe_simple:146 ../templates/views/einbaende/searchframe_simple:129 ../templates/views/richter/searchframe:154 ../templates/views/richter/searchframe_simple:86
+#: ../templates/searchframe:213 ../templates/searchframe_simple:147 ../templates/views/einbaende/searchframe_simple:129 ../templates/views/richter/searchframe:154 ../templates/views/richter/searchframe_simple:86
 #. ("<a href=\"http://www.ub.uni-koeln.de/usb-cgi/zms_makeEmail.pl?adr0=kug\" target=\"_blank\">","</a>")
 msgid "Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter %1 kug@ub.uni-koeln.de %2 erreichen."
 msgstr ""
@@ -606,7 +606,7 @@ msgstr ""
 msgid "Geben Sie f&uuml;r die Selbstregistrierung bitte als Benutzername Ihre g&uuml;ltige Email-Adresse ein und danach zwei Mal Ihr selbst gew&auml;hltes Passwort. Danach best&auml;tigen Sie bitte mit <b>Registrieren</b>."
 msgstr ""
 
-#: ../templates/login:43
+#: ../templates/login:62 ../templates/login:95
 msgid "Geben Sie hier bitte Ihr Passwort bzw. Ihre OpacPin ein."
 msgstr ""
 
@@ -614,11 +614,11 @@ msgstr ""
 msgid "Geben Sie hier bitte Ihre E-Mail Adresse ein."
 msgstr ""
 
-#: ../templates/searchframe_simple:71 ../templates/views/richter/searchframe_simple:48
+#: ../templates/searchframe_simple:72 ../templates/views/richter/searchframe_simple:48
 msgid "Geben Sie hier bitte Ihre Suchbegriffe ein"
 msgstr ""
 
-#: ../templates/login:42
+#: ../templates/login:61 ../templates/login:94
 msgid "Geben Sie hier bitte Ihren Benutzernamen bzw. Ihre Benutzernummer ein."
 msgstr ""
 
@@ -626,7 +626,7 @@ msgstr ""
 msgid "Geben Sie hier den Körperschaftsanfang ein"
 msgstr ""
 
-#: ../templates/search_showswtindex:85 ../templates/search_showtitlist:157 ../templates/search_showtitset:172 ../templates/virtualsearch_showswtindex:48
+#: ../templates/search_showswtindex:85 ../templates/search_showtitlist:157 ../templates/search_showtitset:204 ../templates/virtualsearch_showswtindex:48
 msgid "Geben Sie hier den Schlagwortanfang ein"
 msgstr ""
 
@@ -650,11 +650,11 @@ msgstr ""
 msgid "Guthaben"
 msgstr ""
 
-#: ../templates/admin_editcat:111
+#: ../templates/admin_editcat:110
 msgid "HTTP"
 msgstr ""
 
-#: ../templates/login:53
+#: ../templates/login:102
 #. ("<a href=\"http://${config.servername}${config.mailpassword_loc}?sessionID=${sessionID};action=show\">","</a>")
 msgid "Haben Sie Ihr Passwort vergessen, das Sie bei der Selbstregistrierung angegeben haben? Dann klicken Sie %1<b>hier</b>%2"
 msgstr ""
@@ -671,15 +671,15 @@ msgid ""
 "Ihrer Eingabe hinzuf&uuml;gen (z.B. KA 15*)."
 msgstr ""
 
-#: ../templates/searchframe:198 ../templates/searchframe:202 ../templates/searchframe:80 ../templates/searchframe:88 ../templates/searchframe_simple:109 ../templates/searchframe_simple:115 ../templates/views/einbaende/searchframe_simple:122 ../templates/views/einbaende/searchframe_simple:70 ../templates/views/richter/searchframe:146 ../templates/views/richter/searchframe:72 ../templates/views/richter/searchframe_simple:57
+#: ../templates/searchframe:199 ../templates/searchframe:203 ../templates/searchframe:81 ../templates/searchframe:89 ../templates/searchframe_simple:110 ../templates/searchframe_simple:116 ../templates/views/einbaende/searchframe_simple:122 ../templates/views/einbaende/searchframe_simple:70 ../templates/views/richter/searchframe:146 ../templates/views/richter/searchframe:72 ../templates/views/richter/searchframe_simple:57
 msgid "Hier löschen Sie die Eingabefelder"
 msgstr ""
 
-#: ../templates/searchframe:198 ../templates/searchframe:202 ../templates/searchframe:80 ../templates/searchframe:87 ../templates/searchframe_simple:109 ../templates/searchframe_simple:115 ../templates/views/einbaende/searchframe_simple:122 ../templates/views/einbaende/searchframe_simple:70 ../templates/views/richter/searchframe:146 ../templates/views/richter/searchframe:72 ../templates/views/richter/searchframe_simple:57
+#: ../templates/searchframe:199 ../templates/searchframe:203 ../templates/searchframe:81 ../templates/searchframe:88 ../templates/searchframe_simple:110 ../templates/searchframe_simple:116 ../templates/views/einbaende/searchframe_simple:122 ../templates/views/einbaende/searchframe_simple:70 ../templates/views/richter/searchframe:146 ../templates/views/richter/searchframe:72 ../templates/views/richter/searchframe_simple:57
 msgid "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
 msgstr ""
 
-#: ../templates/searchframe:202 ../templates/searchframe:86 ../templates/searchframe_simple:115
+#: ../templates/searchframe:203 ../templates/searchframe:87 ../templates/searchframe_simple:116
 msgid "Hier suchen Sie in allen Katalogen auf einmal"
 msgstr ""
 
@@ -702,11 +702,11 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-#: ../templates/searchframe:125 ../templates/userprefs:175 ../templates/views/richter/searchframe:108
+#: ../templates/searchframe:126 ../templates/userprefs:175 ../templates/views/richter/searchframe:108
 msgid "ISBN"
 msgstr ""
 
-#: ../templates/searchframe:129 ../templates/userprefs:176 ../templates/views/richter/searchframe:112
+#: ../templates/searchframe:130 ../templates/userprefs:176 ../templates/views/richter/searchframe:112
 msgid "ISSN"
 msgstr ""
 
@@ -718,7 +718,7 @@ msgstr ""
 msgid "Ihr vergessenes KUG-Passwort"
 msgstr ""
 
-#: ../templates/managecollection_mail:32 ../templates/searchframe:97 ../templates/views/einbaende/searchframe_simple:78 ../templates/views/richter/searchframe:80
+#: ../templates/managecollection_mail:32 ../templates/searchframe:98 ../templates/views/einbaende/searchframe_simple:78 ../templates/views/richter/searchframe:80
 msgid "Ihre Eingabe"
 msgstr ""
 
@@ -742,19 +742,19 @@ msgstr ""
 msgid "Ihre Suchanfrage im KUG Recherche-Portal"
 msgstr ""
 
-#: ../templates/admin_editcat:100
+#: ../templates/admin_editcat:99
 msgid "Import-Einstellungen"
 msgstr ""
 
-#: ../templates/searchframe:202 ../templates/searchframe:86 ../templates/searchframe_simple:115
+#: ../templates/searchframe:203 ../templates/searchframe:87 ../templates/searchframe_simple:116
 msgid "In allen Katalogen suchen"
 msgstr ""
 
-#: ../templates/searchframe_simple:109 ../templates/searchframe_simple:115
+#: ../templates/searchframe_simple:110 ../templates/searchframe_simple:116
 msgid "In ausgewähltem Profil suchen"
 msgstr ""
 
-#: ../templates/searchframe:198 ../templates/searchframe:202 ../templates/searchframe:80 ../templates/searchframe:87
+#: ../templates/searchframe:199 ../templates/searchframe:203 ../templates/searchframe:81 ../templates/searchframe:88
 msgid "In ausgewählten Katalogen suchen"
 msgstr ""
 
@@ -762,7 +762,7 @@ msgstr ""
 msgid "In der Virtuellen Bibliothek suchen"
 msgstr ""
 
-#: ../templates/database/einbaende/search_showtitlist:127 ../templates/database/einbaende/search_showtitset:28 ../templates/resultlists_showall:113 ../templates/resultlists_showall_sortall:93 ../templates/resultlists_showsinglepool:113 ../templates/search_showtitlist:123 ../templates/search_showtitset:24 ../templates/views/einbaende/resultlists_showall:101 ../templates/views/einbaende/resultlists_showall_sortall:92 ../templates/views/einbaende/resultlists_showsinglepool:101 ../templates/views/einbaende/virtualsearch_result_item:68 ../templates/virtualsearch_result_item:66
+#: ../templates/database/einbaende/search_showtitlist:127 ../templates/database/einbaende/search_showtitset:28 ../templates/resultlists_showall:113 ../templates/resultlists_showall_sortall:93 ../templates/resultlists_showsinglepool:113 ../templates/search_showtitlist:123 ../templates/search_showtitset:25 ../templates/views/einbaende/resultlists_showall:101 ../templates/views/einbaende/resultlists_showall_sortall:92 ../templates/views/einbaende/resultlists_showsinglepool:101 ../templates/views/einbaende/virtualsearch_result_item:68 ../templates/virtualsearch_result_item:66
 msgid "In die Merkliste"
 msgstr ""
 
@@ -770,7 +770,7 @@ msgstr ""
 msgid "In diesem Katalog konnte leider kein Schlagwort beginnend mit"
 msgstr ""
 
-#: ../templates/searchframe:109 ../templates/views/einbaende/searchframe_simple:102 ../templates/views/einbaende/searchframe_simple:90 ../templates/views/einbaende/searchframe_simple:94 ../templates/views/einbaende/searchframe_simple:98 ../templates/views/richter/searchframe:92 ../templates/virtualsearch_showkorindex:48 ../templates/virtualsearch_showswtindex:48 ../templates/virtualsearch_showverfindex:48
+#: ../templates/searchframe:110 ../templates/views/einbaende/searchframe_simple:102 ../templates/views/einbaende/searchframe_simple:90 ../templates/views/einbaende/searchframe_simple:94 ../templates/views/einbaende/searchframe_simple:98 ../templates/views/richter/searchframe:92 ../templates/virtualsearch_showkorindex:48 ../templates/virtualsearch_showswtindex:48 ../templates/virtualsearch_showverfindex:48
 msgid "Index"
 msgstr ""
 
@@ -778,7 +778,7 @@ msgstr ""
 msgid "Information"
 msgstr ""
 
-#: ../templates/database/einbaende/managecollection_tit_as_html:27 ../templates/database/einbaende/managecollection_tit_as_html:66 ../templates/database/einbaende/search_showtitset:165 ../templates/database/einbaende/search_showtitset:67 ../templates/managecollection_tit_as_html:26 ../templates/managecollection_tit_as_html_simple:28 ../templates/search_showautset:25 ../templates/search_showkorset:25 ../templates/search_showmulttitset:36 ../templates/search_shownotset:25 ../templates/search_showswtset:27 ../templates/search_showtitset:55
+#: ../templates/database/einbaende/managecollection_tit_as_html:27 ../templates/database/einbaende/managecollection_tit_as_html:66 ../templates/database/einbaende/search_showtitset:165 ../templates/database/einbaende/search_showtitset:67 ../templates/managecollection_tit_as_html:26 ../templates/managecollection_tit_as_html_simple:28 ../templates/search_showautset:25 ../templates/search_showkorset:25 ../templates/search_showmulttitset:36 ../templates/search_shownotset:25 ../templates/search_showswtset:27 ../templates/search_showtitset:63
 msgid "Inhalt"
 msgstr ""
 
@@ -786,12 +786,12 @@ msgstr ""
 msgid "Initiale Suchen"
 msgstr ""
 
-#: ../templates/searchframe:210 ../templates/searchframe_simple:143
+#: ../templates/searchframe:211 ../templates/searchframe_simple:144
 #. ("${alldbcount}")
 msgid "Insgesamt sind im KUG derzeit %1 Titel nachgewiesen."
 msgstr ""
 
-#: ../templates/database/einbaende/managecollection_tit_as_html:48 ../templates/database/einbaende/search_showtitset:140 ../templates/managecollection_tit_as_html:45 ../templates/managecollection_tit_as_html_simple:45 ../templates/search_showmulttitset:94 ../templates/search_showtitset:128
+#: ../templates/database/einbaende/managecollection_tit_as_html:48 ../templates/database/einbaende/search_showtitset:140 ../templates/managecollection_tit_as_html:45 ../templates/managecollection_tit_as_html_simple:45 ../templates/search_showmulttitset:94 ../templates/search_showtitset:137
 msgid "Inventarnummer"
 msgstr ""
 
@@ -799,11 +799,11 @@ msgstr ""
 msgid "Inventarnummer       "
 msgstr ""
 
-#: ../templates/admin_editcat:146 ../templates/admin_editcat:169 ../templates/admin_editcat:85 ../templates/admin_editcat_rss:134 ../templates/admin_editcat_rss:192 ../templates/admin_editcat_rss:250 ../templates/admin_editcat_rss:308 ../templates/admin_editcat_rss:76 ../templates/admin_editview:47 ../templates/admin_showcat:52 ../templates/admin_showcat:87 ../templates/admin_showcat:94 ../templates/admin_showviews:40 ../templates/searchframe:190
+#: ../templates/admin_editcat:145 ../templates/admin_editcat:168 ../templates/admin_editcat:84 ../templates/admin_editcat_rss:132 ../templates/admin_editcat_rss:189 ../templates/admin_editcat_rss:246 ../templates/admin_editcat_rss:303 ../templates/admin_editcat_rss:75 ../templates/admin_editview:47 ../templates/admin_showcat:52 ../templates/admin_showcat:81 ../templates/admin_showcat:88 ../templates/admin_showviews:40 ../templates/searchframe:191
 msgid "Ja"
 msgstr ""
 
-#: ../templates/searchframe:145 ../templates/views/richter/searchframe:128
+#: ../templates/searchframe:146 ../templates/views/richter/searchframe:128
 msgid "Jahr"
 msgstr ""
 
@@ -835,7 +835,7 @@ msgstr ""
 msgid "Katalog"
 msgstr ""
 
-#: ../templates/admin_editcat:36
+#: ../templates/admin_editcat:35
 msgid "Katalog bearbeiten"
 msgstr ""
 
@@ -859,7 +859,7 @@ msgstr ""
 msgid "Katalogprofile"
 msgstr ""
 
-#: ../templates/database/einbaende/managecollection_tit_as_html:27 ../templates/database/einbaende/managecollection_tit_as_html:66 ../templates/database/einbaende/search_showtitset:165 ../templates/database/einbaende/search_showtitset:67 ../templates/managecollection_tit_as_html:26 ../templates/managecollection_tit_as_html_simple:28 ../templates/search_showautset:25 ../templates/search_showkorset:25 ../templates/search_showmulttitset:36 ../templates/search_shownotset:25 ../templates/search_showswtset:27 ../templates/search_showtitset:55 ../templates/searchframe:97 ../templates/views/einbaende/searchframe_simple:78 ../templates/views/richter/searchframe:80
+#: ../templates/database/einbaende/managecollection_tit_as_html:27 ../templates/database/einbaende/managecollection_tit_as_html:66 ../templates/database/einbaende/search_showtitset:165 ../templates/database/einbaende/search_showtitset:67 ../templates/managecollection_tit_as_html:26 ../templates/managecollection_tit_as_html_simple:28 ../templates/search_showautset:25 ../templates/search_showkorset:25 ../templates/search_showmulttitset:36 ../templates/search_shownotset:25 ../templates/search_showswtset:27 ../templates/search_showtitset:63 ../templates/searchframe:98 ../templates/views/einbaende/searchframe_simple:78 ../templates/views/richter/searchframe:80
 msgid "Kategorie"
 msgstr ""
 
@@ -871,7 +871,7 @@ msgstr ""
 msgid "Keine gültige Aktion"
 msgstr ""
 
-#: ../modules/OpenBib/Admin.pm:1070
+#: ../modules/OpenBib/Admin.pm:1061
 msgid "Keine gültige Aktion oder Session"
 msgstr ""
 
@@ -900,15 +900,15 @@ msgstr ""
 msgid "Konnten Sie das von Ihnen gesuchte Buch oder den von Ihnen gesuchten Zeitschriftenartikel nicht im KUG finden?"
 msgstr ""
 
-#: ../templates/admin_editcat:126
+#: ../templates/admin_editcat:125
 msgid "Kor-Datei"
 msgstr ""
 
-#: ../templates/admin_editcat:51
+#: ../templates/admin_editcat:50
 msgid "Kurzbeschreibung"
 msgstr ""
 
-#: ../templates/searchframe:113 ../templates/views/richter/searchframe:96
+#: ../templates/searchframe:114 ../templates/views/richter/searchframe:96
 msgid "Körperschaft"
 msgstr ""
 
@@ -936,11 +936,11 @@ msgstr ""
 msgid "Logout erfolgreich"
 msgstr ""
 
-#: ../templates/admin_editcat:115
+#: ../templates/admin_editcat:114
 msgid "Lokal"
 msgstr ""
 
-#: ../templates/database/einbaende/managecollection_tit_as_html:95 ../templates/managecollection_tit_as_html:64 ../templates/managecollection_tit_as_html_simple:45 ../templates/managecollection_tit_as_html_simple:64
+#: ../templates/database/einbaende/managecollection_tit_as_html:95 ../templates/managecollection_tit_as_html_simple:45
 msgid "Lokale Signatur"
 msgstr ""
 
@@ -948,19 +948,19 @@ msgstr ""
 msgid "Lokale Signatur      "
 msgstr ""
 
-#: ../templates/database/einbaende/search_showtitlist:37 ../templates/managecollection_show:60 ../templates/resultlists_showall:44 ../templates/resultlists_showall_sortall:45 ../templates/resultlists_showsinglepool:43 ../templates/search_showtitlist:33 ../templates/views/einbaende/managecollection_show:57 ../templates/views/einbaende/resultlists_showall:43 ../templates/views/einbaende/resultlists_showall_sortall:42 ../templates/views/einbaende/resultlists_showsinglepool:42 ../templates/views/einbaende/virtualsearch_result_start:43 ../templates/virtualsearch_result_start:43
+#: ../templates/database/einbaende/search_showtitlist:37 ../templates/managecollection_show:60 ../templates/resultlists_showall:44 ../templates/resultlists_showall_sortall:45 ../templates/resultlists_showsinglepool:43 ../templates/search_showtitlist:33 ../templates/views/einbaende/managecollection_show:57 ../templates/views/einbaende/resultlists_showall:43 ../templates/views/einbaende/resultlists_showall_sortall:42 ../templates/views/einbaende/resultlists_showsinglepool:42 ../templates/views/einbaende/virtualsearch_result_start:43 ../templates/virtualsearch_result_start:46
 msgid "Los"
 msgstr ""
 
-#: ../templates/searchframe:198 ../templates/searchframe:202 ../templates/searchframe:80 ../templates/searchframe:88 ../templates/searchframe_simple:109 ../templates/searchframe_simple:115 ../templates/views/einbaende/searchframe_simple:122 ../templates/views/einbaende/searchframe_simple:70 ../templates/views/richter/searchframe:146 ../templates/views/richter/searchframe:72 ../templates/views/richter/searchframe_simple:57
+#: ../templates/searchframe:199 ../templates/searchframe:203 ../templates/searchframe:81 ../templates/searchframe:89 ../templates/searchframe_simple:110 ../templates/searchframe_simple:116 ../templates/views/einbaende/searchframe_simple:122 ../templates/views/einbaende/searchframe_simple:70 ../templates/views/richter/searchframe:146 ../templates/views/richter/searchframe:72 ../templates/views/richter/searchframe_simple:57
 msgid "Lösche Eingabemaske"
 msgstr ""
 
-#: ../templates/admin_editcat:181 ../templates/admin_editcat_rss:342 ../templates/admin_editview:135
+#: ../templates/admin_editcat:180 ../templates/admin_editcat_rss:336 ../templates/admin_editview:135
 msgid "Löschen"
 msgstr ""
 
-#: ../templates/searchframe:168
+#: ../templates/searchframe:169
 msgid "Maximale Trefferzahl pro Katalog"
 msgstr ""
 
@@ -968,7 +968,7 @@ msgstr ""
 msgid "MedPilot"
 msgstr ""
 
-#: ../templates/searchframe:141 ../templates/userprefs:179 ../templates/views/richter/searchframe:124
+#: ../templates/searchframe:142 ../templates/userprefs:179 ../templates/views/richter/searchframe:124
 msgid "Medienart"
 msgstr ""
 
@@ -988,7 +988,7 @@ msgstr ""
 msgid "Merkliste"
 msgstr ""
 
-#: ../templates/admin_editcat:129
+#: ../templates/admin_editcat:128
 msgid "Mex-Datei"
 msgstr ""
 
@@ -996,7 +996,7 @@ msgstr ""
 msgid "Möchten Sie diesen ändern?"
 msgstr ""
 
-#: ../templates/database/einbaende/search_showtitset:45 ../templates/database/einbaende/search_showtitset:47 ../templates/search_showtitset:41 ../templates/search_showtitset:43
+#: ../templates/database/einbaende/search_showtitset:45 ../templates/database/einbaende/search_showtitset:47 ../templates/search_showtitset:42 ../templates/search_showtitset:44
 msgid "N&auml;chster Titel"
 msgstr ""
 
@@ -1020,31 +1020,31 @@ msgstr ""
 msgid "Nachname"
 msgstr ""
 
-#: ../templates/admin_editcat:140 ../templates/admin_editcat:163 ../templates/admin_editcat:89 ../templates/admin_editcat_rss:128 ../templates/admin_editcat_rss:186 ../templates/admin_editcat_rss:244 ../templates/admin_editcat_rss:302 ../templates/admin_editcat_rss:70 ../templates/admin_editview:51 ../templates/admin_showcat:53 ../templates/admin_showcat:89 ../templates/admin_showcat:96 ../templates/admin_showviews:40 ../templates/searchframe:190
+#: ../templates/admin_editcat:139 ../templates/admin_editcat:162 ../templates/admin_editcat:88 ../templates/admin_editcat_rss:126 ../templates/admin_editcat_rss:183 ../templates/admin_editcat_rss:240 ../templates/admin_editcat_rss:297 ../templates/admin_editcat_rss:69 ../templates/admin_editview:51 ../templates/admin_showcat:53 ../templates/admin_showcat:83 ../templates/admin_showcat:90 ../templates/admin_showviews:40 ../templates/searchframe:191
 msgid "Nein"
 msgstr ""
 
-#: ../templates/admin_editcat_rss:118 ../templates/admin_editcat_rss:176 ../templates/admin_editcat_rss:234 ../templates/admin_editcat_rss:292 ../templates/admin_editcat_rss:60 ../templates/admin_showcat:54 ../templates/admin_showviews:40
+#: ../templates/admin_editcat_rss:116 ../templates/admin_editcat_rss:173 ../templates/admin_editcat_rss:230 ../templates/admin_editcat_rss:287 ../templates/admin_editcat_rss:59 ../templates/admin_showcat:54 ../templates/admin_showviews:40
 msgid "Neu"
 msgstr ""
 
-#: ../templates/admin_editcat_rss:43
+#: ../templates/admin_editcat_rss:42
 msgid "Neuaufnahmen (generell)"
 msgstr ""
 
-#: ../templates/admin_editcat_rss:159
+#: ../templates/admin_editcat_rss:156
 msgid "Neuaufnahmen nach K&ouml;rperschaft"
 msgstr ""
 
-#: ../templates/admin_editcat_rss:217
+#: ../templates/admin_editcat_rss:213
 msgid "Neuaufnahmen nach Schlagwort"
 msgstr ""
 
-#: ../templates/admin_editcat_rss:275
+#: ../templates/admin_editcat_rss:270
 msgid "Neuaufnahmen nach Systematik"
 msgstr ""
 
-#: ../templates/admin_editcat_rss:101
+#: ../templates/admin_editcat_rss:99
 msgid "Neuaufnahmen nach Verfasser"
 msgstr ""
 
@@ -1064,19 +1064,19 @@ msgstr ""
 msgid "Neuen View anlegen"
 msgstr ""
 
-#: ../templates/admin_editcat_rss:334
+#: ../templates/admin_editcat_rss:328
 msgid "Neuerwerbungen"
 msgstr ""
 
-#: ../templates/admin_editcat:128
+#: ../templates/admin_editcat:127
 msgid "Not-Datei"
 msgstr ""
 
-#: ../templates/searchframe:121 ../templates/userprefs:174 ../templates/views/richter/searchframe:104
+#: ../templates/searchframe:122 ../templates/userprefs:174 ../templates/views/richter/searchframe:104
 msgid "Notation"
 msgstr ""
 
-#: ../templates/database/einbaende/search_showtitlist:35 ../templates/managecollection_show:54 ../templates/resultlists_showall:33 ../templates/resultlists_showall_sortall:34 ../templates/resultlists_showsinglepool:34 ../templates/search_showtitlist:31 ../templates/views/einbaende/managecollection_show:51 ../templates/views/einbaende/resultlists_showall:39 ../templates/views/einbaende/resultlists_showall_sortall:38 ../templates/views/einbaende/resultlists_showsinglepool:38 ../templates/views/einbaende/virtualsearch_result_start:39 ../templates/virtualsearch_result_start:32
+#: ../templates/database/einbaende/search_showtitlist:35 ../templates/managecollection_show:54 ../templates/resultlists_showall:33 ../templates/resultlists_showall_sortall:34 ../templates/resultlists_showsinglepool:34 ../templates/search_showtitlist:31 ../templates/views/einbaende/managecollection_show:51 ../templates/views/einbaende/resultlists_showall:39 ../templates/views/einbaende/resultlists_showall_sortall:38 ../templates/views/einbaende/resultlists_showsinglepool:38 ../templates/views/einbaende/virtualsearch_result_start:39 ../templates/virtualsearch_result_start:35
 msgid "Optionen"
 msgstr ""
 
@@ -1096,7 +1096,7 @@ msgstr ""
 msgid "P5000"
 msgstr ""
 
-#: ../templates/admin_login:31 ../templates/login:43 ../templates/selfreg:45 ../templates/userprefs:51
+#: ../templates/admin_login:31 ../templates/login:62 ../templates/login:95 ../templates/selfreg:45 ../templates/userprefs:51
 msgid "Passwort"
 msgstr ""
 
@@ -1148,11 +1148,11 @@ msgstr ""
 msgid "Projekt"
 msgstr ""
 
-#: ../templates/admin_editcat:103
+#: ../templates/admin_editcat:102
 msgid "Protokoll"
 msgstr ""
 
-#: ../templates/admin_showcat:70 ../templates/admin_showviews:58 ../templates/headerframe:24 ../templates/views/einbaende/headerframe:26 ../templates/views/richter/headerframe:26
+#: ../templates/admin_showcat:69 ../templates/admin_showviews:58 ../templates/headerframe:24 ../templates/views/einbaende/headerframe:26 ../templates/views/richter/headerframe:26
 msgid "RSS"
 msgstr ""
 
@@ -1192,7 +1192,7 @@ msgstr ""
 msgid "Registrieren"
 msgstr ""
 
-#: ../templates/searchframe_simple:127 ../templates/views/richter/searchframe_simple:68
+#: ../templates/searchframe_simple:128 ../templates/views/richter/searchframe_simple:68
 msgid "Rufen Sie hier die Ergebnisse frührerer Recherchen auf"
 msgstr ""
 
@@ -1228,7 +1228,7 @@ msgstr ""
 msgid "S5000"
 msgstr ""
 
-#: ../templates/search_showswtindex:35 ../templates/search_showswtindex:43 ../templates/searchframe:117 ../templates/userprefs:173 ../templates/views/richter/searchframe:100 ../templates/virtualsearch_showswtindex:48
+#: ../templates/search_showswtindex:35 ../templates/search_showswtindex:43 ../templates/searchframe:118 ../templates/userprefs:173 ../templates/views/richter/searchframe:100 ../templates/virtualsearch_showswtindex:48
 msgid "Schlagwort"
 msgstr ""
 
@@ -1240,7 +1240,7 @@ msgstr ""
 msgid "Schlagwortindex"
 msgstr ""
 
-#: ../templates/search_showtitset:171
+#: ../templates/search_showtitset:203
 msgid "Schlagwortindex diese Katalogs"
 msgstr ""
 
@@ -1289,7 +1289,7 @@ msgstr ""
 msgid "Selbstregistrierung"
 msgstr ""
 
-#: ../templates/searchframe:148
+#: ../templates/searchframe:149
 msgid "Serien"
 msgstr ""
 
@@ -1313,7 +1313,7 @@ msgstr ""
 msgid "Sie brauchen einen Browser, der Frames darstellen kann, um diese Seiten mit ihren Inhalten wie geplant zu sehen."
 msgstr ""
 
-#: ../modules/OpenBib/Admin.pm:240
+#: ../modules/OpenBib/Admin.pm:271
 msgid "Sie greifen auf eine nicht autorisierte Session zu"
 msgstr ""
 
@@ -1322,11 +1322,11 @@ msgstr ""
 msgid "Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie keine %1Kataloge%2 oder Suchprofile ausgewählt haben. Bitte wählen Sie die gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen Katalogen suchen</a>."
 msgstr ""
 
-#: ../modules/OpenBib/Admin.pm:202
+#: ../modules/OpenBib/Admin.pm:233
 msgid "Sie haben als Benutzer entweder keinen oder nicht den Admin-Benutzer eingegeben"
 msgstr ""
 
-#: ../modules/OpenBib/Admin.pm:207
+#: ../modules/OpenBib/Admin.pm:238
 msgid "Sie haben ein falsches Passwort eingegeben"
 msgstr ""
 
@@ -1338,7 +1338,7 @@ msgstr ""
 msgid "Sie haben entweder kein Passwort eingegeben oder die beiden Passworte stimmen nicht überein"
 msgstr ""
 
-#: ../modules/OpenBib/Login.pm:319
+#: ../modules/OpenBib/Login.pm:308
 msgid "Sie haben entweder kein Passwort oder keinen Loginnamen eingegeben"
 msgstr ""
 
@@ -1379,25 +1379,25 @@ msgstr ""
 msgid "Sie haben sich nicht authentifiziert."
 msgstr ""
 
-#: ../modules/OpenBib/Login.pm:322
+#: ../modules/OpenBib/Login.pm:311
 msgid "Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht erfolgreich authentifiziert werden"
 msgstr ""
 
-#: ../templates/searchframe:73 ../templates/searchframe_simple:56
+#: ../templates/searchframe:74 ../templates/searchframe_simple:57
 #. ("${viewdesc}","<a href=\"${config.databasechoice_loc}?sessionID=${sessionID};view=${view}\" target=\"body\">","</a>")
 msgid "Sie können entweder direkt im vorausgewählten Katalog <b>%1</b> recherchieren, oder die Suche auf weitere %2Kataloge%3 ausdehnen."
 msgstr ""
 
-#: ../templates/searchframe:83 ../templates/searchframe_simple:64
+#: ../templates/searchframe:84 ../templates/searchframe_simple:65
 #. ("${alldbs}","<a href=\"${config.databasechoice_loc}?sessionID=${sessionID};view=${view}\" target=\"body\">","</a>")
 msgid "Sie können entweder durch entsprechende Auswahl in den insgesamt %1 einzelnen %2Katalogen%3 recherchieren oder auch sofort in allen zusammen."
 msgstr ""
 
-#: ../modules/OpenBib/Admin.pm:281
+#: ../modules/OpenBib/Admin.pm:294
 msgid "Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
 msgstr ""
 
-#: ../modules/OpenBib/Admin.pm:671
+#: ../modules/OpenBib/Admin.pm:664
 msgid "Sie müssen mindestens einen Viewnamen und eine Beschreibung eingeben."
 msgstr ""
 
@@ -1409,11 +1409,11 @@ msgstr ""
 msgid "Sie sind nun als Administrator eingeloggt."
 msgstr ""
 
-#: ../templates/admin_editcat:77 ../templates/admin_showcat:43 ../templates/admin_showcat:73
+#: ../templates/admin_editcat:76 ../templates/admin_showcat:43 ../templates/admin_showcat:69
 msgid "Sigel"
 msgstr ""
 
-#: ../templates/circset:2 ../templates/circulation:48 ../templates/circulation_orders:48 ../templates/circulation_remind:48 ../templates/circulation_reserv:48 ../templates/database/einbaende/managecollection_tit_as_html:48 ../templates/database/einbaende/search_showtitset:140 ../templates/database/einbaende/search_showtitset:245 ../templates/managecollection_tit_as_html:45 ../templates/search_showmulttitset:119 ../templates/search_showmulttitset:94 ../templates/search_showtitset:128 ../templates/searchframe:133 ../templates/userprefs:177 ../templates/views/einbaende/searchframe_simple:106 ../templates/views/richter/searchframe:116
+#: ../templates/circset:15 ../templates/circulation:48 ../templates/circulation_orders:48 ../templates/circulation_remind:48 ../templates/circulation_reserv:48 ../templates/database/einbaende/managecollection_tit_as_html:48 ../templates/database/einbaende/search_showtitset:140 ../templates/database/einbaende/search_showtitset:245 ../templates/managecollection_tit_as_html:45 ../templates/search_showmulttitset:94 ../templates/search_showtitset:137 ../templates/searchframe:134 ../templates/userprefs:177 ../templates/views/einbaende/searchframe_simple:106 ../templates/views/richter/searchframe:116
 msgid "Signatur"
 msgstr ""
 
@@ -1435,11 +1435,11 @@ msgid ""
 "schreiben Sie als <b>Trunkierungszeichen</b> ein *."
 msgstr ""
 
-#: ../templates/database/einbaende/search_showtitlist:37 ../templates/search_showtitlist:33 ../templates/views/einbaende/virtualsearch_result_start:41 ../templates/virtualsearch_result_start:34
+#: ../templates/database/einbaende/search_showtitlist:37 ../templates/search_showtitlist:33 ../templates/views/einbaende/virtualsearch_result_start:41 ../templates/virtualsearch_result_start:37
 msgid "Sortierung"
 msgstr ""
 
-#: ../templates/searchframe:169
+#: ../templates/searchframe:170
 msgid "Sortierung nach"
 msgstr ""
 
@@ -1456,7 +1456,7 @@ msgstr ""
 msgid "Sprach-Icon für %1"
 msgstr ""
 
-#: ../templates/admin_editcat:157
+#: ../templates/admin_editcat:156
 msgid "Sprung in WebOPAC"
 msgstr ""
 
@@ -1472,7 +1472,7 @@ msgstr ""
 msgid "Sprung zur Trefferliste im KUG"
 msgstr ""
 
-#: ../templates/circset:2 ../templates/database/einbaende/managecollection_tit_as_html:48 ../templates/database/einbaende/managecollection_tit_as_html:95 ../templates/database/einbaende/search_showtitset:140 ../templates/database/einbaende/search_showtitset:245 ../templates/managecollection_tit_as_html:45 ../templates/managecollection_tit_as_html:64 ../templates/managecollection_tit_as_html_simple:45 ../templates/managecollection_tit_as_html_simple:64 ../templates/search_showmulttitset:119 ../templates/search_showmulttitset:94 ../templates/search_showtitset:128
+#: ../templates/circset:15 ../templates/database/einbaende/managecollection_tit_as_html:48 ../templates/database/einbaende/managecollection_tit_as_html:95 ../templates/database/einbaende/search_showtitset:140 ../templates/database/einbaende/search_showtitset:245 ../templates/managecollection_tit_as_html:45 ../templates/managecollection_tit_as_html_simple:45 ../templates/search_showmulttitset:94 ../templates/search_showtitset:137
 msgid "Standort"
 msgstr ""
 
@@ -1492,7 +1492,7 @@ msgstr ""
 msgid "Strasse"
 msgstr ""
 
-#: ../templates/searchframe:94 ../templates/views/einbaende/searchframe_simple:75 ../templates/views/richter/searchframe:77
+#: ../templates/searchframe:95 ../templates/views/einbaende/searchframe_simple:75 ../templates/views/richter/searchframe:77
 msgid "Suchbegriffe"
 msgstr ""
 
@@ -1500,7 +1500,7 @@ msgstr ""
 msgid "Suche starten"
 msgstr ""
 
-#: ../templates/search_showswtindex:85 ../templates/search_showtitlist:157 ../templates/search_showtitset:172 ../templates/views/einbaende/searchframe_simple:30
+#: ../templates/search_showswtindex:85 ../templates/search_showtitlist:157 ../templates/search_showtitset:204 ../templates/views/einbaende/searchframe_simple:30
 msgid "Suchen"
 msgstr ""
 
@@ -1521,15 +1521,15 @@ msgstr ""
 msgid "Suchhilfe"
 msgstr ""
 
-#: ../templates/searchframe:94 ../templates/views/richter/searchframe:77
+#: ../templates/searchframe:95 ../templates/views/richter/searchframe:77
 msgid "Suchhinweise"
 msgstr ""
 
-#: ../templates/searchframe:46 ../templates/views/einbaende/searchframe_simple:43 ../templates/views/richter/searchframe:40
+#: ../templates/searchframe:47 ../templates/views/einbaende/searchframe_simple:43 ../templates/views/richter/searchframe:40
 msgid "Suchhistorie"
 msgstr ""
 
-#: ../templates/searchframe:165
+#: ../templates/searchframe:166
 msgid "Suchoptionen"
 msgstr ""
 
@@ -1537,11 +1537,11 @@ msgstr ""
 msgid "Suchverfeinerung mit relevanten Begriffen"
 msgstr ""
 
-#: ../templates/admin_editcat:127
+#: ../templates/admin_editcat:126
 msgid "Swt-Datei"
 msgstr ""
 
-#: ../templates/admin_editcat:52 ../templates/admin_showcat:42 ../templates/admin_showcat:71
+#: ../templates/admin_editcat:51 ../templates/admin_showcat:42 ../templates/admin_showcat:69
 msgid "System"
 msgstr ""
 
@@ -1993,11 +1993,11 @@ msgstr ""
 msgid "Textangaben"
 msgstr ""
 
-#: ../templates/admin_editcat:124
+#: ../templates/admin_editcat:123
 msgid "Tit-Datei"
 msgstr ""
 
-#: ../templates/managecollection_tit_as_html_simple:16 ../templates/searchframe:104 ../templates/searchframe:170 ../templates/views/richter/searchframe:88 ../templates/virtualsearch_result_item:108
+#: ../templates/managecollection_tit_as_html_simple:16 ../templates/searchframe:105 ../templates/searchframe:171 ../templates/views/richter/searchframe:88 ../templates/virtualsearch_result_item:108
 msgid "Titel"
 msgstr ""
 
@@ -2005,7 +2005,7 @@ msgstr ""
 msgid "Titel-Daten"
 msgstr ""
 
-#: ../templates/searchframe:137 ../templates/userprefs:178 ../templates/views/richter/searchframe:120
+#: ../templates/searchframe:138 ../templates/userprefs:178 ../templates/views/richter/searchframe:120
 msgid "Titel-String"
 msgstr ""
 
@@ -2021,7 +2021,7 @@ msgstr ""
 msgid "Titelangaben"
 msgstr ""
 
-#: ../templates/managecollection_tit_as_html:22 ../templates/managecollection_tit_as_html_simple:24 ../templates/search_showmulttitset:32 ../templates/search_showtitset:51
+#: ../templates/managecollection_tit_as_html:22 ../templates/managecollection_tit_as_html_simple:24 ../templates/search_showmulttitset:32 ../templates/search_showtitset:52
 msgid "Titelaufnahme"
 msgstr ""
 
@@ -2031,6 +2031,10 @@ msgstr ""
 
 #: ../templates/search_showswtindex:43
 msgid "Titelzahl"
+msgstr ""
+
+#: ../templates/search_showtitset:24 ../templates/searchframe:35 ../templates/searchframe_simple:31
+msgid "Top 20"
 msgstr ""
 
 #: ../templates/admin_editsession:54 ../templates/database/einbaende/search_showtitlist:55 ../templates/database/einbaende/search_showtitlist:70 ../templates/resultlists_choice:81 ../templates/resultlists_showall:50 ../templates/search_showtitlist:53 ../templates/search_showtitlist:68 ../templates/select_queries:54 ../templates/views/einbaende/resultlists_showall:50 ../templates/views/einbaende/virtualsearch_result_item:20 ../templates/virtualsearch_result_item:16 ../templates/virtualsearch_showkorindex:19 ../templates/virtualsearch_showswtindex:19 ../templates/virtualsearch_showverfindex:19
@@ -2045,7 +2049,7 @@ msgstr ""
 msgid "Tutorien"
 msgstr ""
 
-#: ../templates/admin_editcat:78 ../templates/admin_showcat:43 ../templates/admin_showcat:73
+#: ../templates/admin_editcat:77 ../templates/admin_showcat:43 ../templates/admin_showcat:69
 msgid "URL"
 msgstr ""
 
@@ -2058,7 +2062,7 @@ msgstr ""
 msgid "Um sich wieder einzuloggen folgen Sie bitte %1diesem Link%2."
 msgstr ""
 
-#: ../templates/searchframe:190
+#: ../templates/searchframe:191
 msgid "Und-Verknüpfung innerhalb eines Suchfeldes"
 msgstr ""
 
@@ -2074,7 +2078,7 @@ msgstr ""
 msgid "Ungültige Aktion"
 msgstr ""
 
-#: ../modules/OpenBib/Circulation.pm:92 ../modules/OpenBib/DatabaseChoice.pm:99 ../modules/OpenBib/DatabaseProfile.pm:97 ../modules/OpenBib/DispatchQuery.pm:87 ../modules/OpenBib/ExternalJump.pm:116 ../modules/OpenBib/HeaderFrame.pm:88 ../modules/OpenBib/HelpFrame.pm:89 ../modules/OpenBib/Leave.pm:82 ../modules/OpenBib/Login.pm:99 ../modules/OpenBib/MailCollection.pm:97 ../modules/OpenBib/MailPassword.pm:91 ../modules/OpenBib/ManageCollection.pm:104 ../modules/OpenBib/RSSFrame.pm:81 ../modules/OpenBib/ResultLists.pm:102 ../modules/OpenBib/Search.pm:196 ../modules/OpenBib/SearchFrame.pm:93 ../modules/OpenBib/SelfReg.pm:90 ../modules/OpenBib/UserPrefs.pm:106 ../modules/OpenBib/VirtualSearch.pm:144
+#: ../modules/OpenBib/Circulation.pm:92 ../modules/OpenBib/DatabaseChoice.pm:99 ../modules/OpenBib/DatabaseProfile.pm:97 ../modules/OpenBib/DispatchQuery.pm:87 ../modules/OpenBib/ExternalJump.pm:116 ../modules/OpenBib/HeaderFrame.pm:88 ../modules/OpenBib/HelpFrame.pm:92 ../modules/OpenBib/Leave.pm:82 ../modules/OpenBib/Login.pm:99 ../modules/OpenBib/MailCollection.pm:97 ../modules/OpenBib/MailPassword.pm:91 ../modules/OpenBib/ManageCollection.pm:104 ../modules/OpenBib/RSSFrame.pm:81 ../modules/OpenBib/ResultLists.pm:102 ../modules/OpenBib/Search.pm:196 ../modules/OpenBib/SearchFrame.pm:93 ../modules/OpenBib/SelfReg.pm:90 ../modules/OpenBib/UserPrefs.pm:106 ../modules/OpenBib/VirtualSearch.pm:144
 msgid "Ungültige Session"
 msgstr ""
 
@@ -2082,11 +2086,11 @@ msgstr ""
 msgid "Ursprüngliche Auswahl wiederherstellen"
 msgstr ""
 
-#: ../templates/searchframe:108 ../templates/userprefs:171 ../templates/views/richter/searchframe:92 ../templates/virtualsearch_result_item:83 ../templates/virtualsearch_showverfindex:48
+#: ../templates/searchframe:109 ../templates/userprefs:171 ../templates/views/richter/searchframe:92 ../templates/virtualsearch_result_item:83 ../templates/virtualsearch_showverfindex:48
 msgid "Verfasser"
 msgstr ""
 
-#: ../templates/searchframe:97 ../templates/views/einbaende/searchframe_simple:78 ../templates/views/richter/searchframe:80
+#: ../templates/searchframe:98 ../templates/views/einbaende/searchframe_simple:78 ../templates/views/richter/searchframe:80
 msgid "Verknüpfung"
 msgstr ""
 
@@ -2140,7 +2144,7 @@ msgstr ""
 msgid "Vorgemerkt"
 msgstr ""
 
-#: ../templates/database/einbaende/search_showtitset:39 ../templates/database/einbaende/search_showtitset:41 ../templates/search_showtitset:35 ../templates/search_showtitset:37
+#: ../templates/database/einbaende/search_showtitset:39 ../templates/database/einbaende/search_showtitset:41 ../templates/search_showtitset:36 ../templates/search_showtitset:38
 msgid "Vorheriger Titel"
 msgstr ""
 
@@ -2164,7 +2168,7 @@ msgstr ""
 msgid "Wartungsarbeiten"
 msgstr ""
 
-#: ../templates/admin_editcat:171
+#: ../templates/admin_editcat:170
 msgid "WebOPAC-URL"
 msgstr ""
 
@@ -2174,11 +2178,11 @@ msgid ""
 "leider nicht genutzt werden."
 msgstr ""
 
-#: ../templates/circset:15
+#: ../templates/circset:28
 msgid "Weiter"
 msgstr ""
 
-#: ../templates/searchframe:53 ../templates/views/richter/searchframe:47
+#: ../templates/searchframe:54 ../templates/views/richter/searchframe:47
 msgid "Weiter als externe Recherche"
 msgstr ""
 
@@ -2242,7 +2246,7 @@ msgstr ""
 msgid "Wählen Sie bitte einen View aus:"
 msgstr ""
 
-#: ../templates/searchframe_simple:78
+#: ../templates/searchframe_simple:79
 msgid "Wählen Sie hier bitte Ihr Suchprofil aus"
 msgstr ""
 
@@ -2258,15 +2262,15 @@ msgstr ""
 msgid "Zugemailte Merkliste"
 msgstr ""
 
-#: ../templates/searchframe:53 ../templates/searchframe_simple:133 ../templates/views/einbaende/searchframe_simple:50 ../templates/views/richter/searchframe:47 ../templates/views/richter/searchframe_simple:75
+#: ../templates/searchframe:54 ../templates/searchframe_simple:134 ../templates/views/einbaende/searchframe_simple:50 ../templates/views/richter/searchframe:47 ../templates/views/richter/searchframe_simple:75
 msgid "Zur Trefferliste"
 msgstr ""
 
-#: ../modules/OpenBib/Common/Util.pm:324 ../templates/database/einbaende/search_showtitlist:37 ../templates/resultlists_showall:36 ../templates/resultlists_showall_sortall:37 ../templates/resultlists_showsinglepool:37 ../templates/search_showtitlist:33 ../templates/searchframe:170 ../templates/views/einbaende/resultlists_showall:42 ../templates/views/einbaende/resultlists_showall_sortall:41 ../templates/views/einbaende/resultlists_showsinglepool:41 ../templates/views/einbaende/virtualsearch_result_start:42 ../templates/virtualsearch_result_start:35
+#: ../modules/OpenBib/Common/Util.pm:324 ../templates/database/einbaende/search_showtitlist:37 ../templates/resultlists_showall:36 ../templates/resultlists_showall_sortall:37 ../templates/resultlists_showsinglepool:37 ../templates/search_showtitlist:33 ../templates/searchframe:171 ../templates/views/einbaende/resultlists_showall:42 ../templates/views/einbaende/resultlists_showall_sortall:41 ../templates/views/einbaende/resultlists_showsinglepool:41 ../templates/views/einbaende/virtualsearch_result_start:42 ../templates/virtualsearch_result_start:38
 msgid "absteigend"
 msgstr ""
 
-#: ../modules/OpenBib/Common/Util.pm:323 ../templates/database/einbaende/search_showtitlist:37 ../templates/resultlists_showall:36 ../templates/resultlists_showall_sortall:37 ../templates/resultlists_showsinglepool:37 ../templates/search_showtitlist:33 ../templates/searchframe:170 ../templates/views/einbaende/resultlists_showall:42 ../templates/views/einbaende/resultlists_showall_sortall:41 ../templates/views/einbaende/resultlists_showsinglepool:41 ../templates/views/einbaende/virtualsearch_result_start:42 ../templates/virtualsearch_result_start:35
+#: ../modules/OpenBib/Common/Util.pm:323 ../templates/database/einbaende/search_showtitlist:37 ../templates/resultlists_showall:36 ../templates/resultlists_showall_sortall:37 ../templates/resultlists_showsinglepool:37 ../templates/search_showtitlist:33 ../templates/searchframe:171 ../templates/views/einbaende/resultlists_showall:42 ../templates/views/einbaende/resultlists_showall_sortall:41 ../templates/views/einbaende/resultlists_showsinglepool:41 ../templates/views/einbaende/virtualsearch_result_start:42 ../templates/virtualsearch_result_start:38
 msgid "aufsteigend"
 msgstr ""
 
@@ -2298,7 +2302,7 @@ msgstr ""
 msgid "ja, seit"
 msgstr ""
 
-#: ../modules/OpenBib/Common/Util.pm:335 ../modules/OpenBib/Common/Util.pm:353 ../modules/OpenBib/Common/Util.pm:364
+#: ../modules/OpenBib/Common/Util.pm:336 ../modules/OpenBib/Common/Util.pm:354 ../modules/OpenBib/Common/Util.pm:365
 msgid "katalogübergreifend"
 msgstr ""
 
@@ -2310,7 +2314,7 @@ msgstr ""
 msgid "mit Grund"
 msgstr ""
 
-#: ../templates/resultlists_showall:36 ../templates/resultlists_showall_sortall:37 ../templates/resultlists_showsinglepool:37 ../templates/search_showtitlist:33 ../templates/virtualsearch_result_start:35
+#: ../templates/resultlists_showall:36 ../templates/resultlists_showall_sortall:37 ../templates/resultlists_showsinglepool:37 ../templates/search_showtitlist:33 ../templates/virtualsearch_result_start:38
 msgid "nach Autor"
 msgstr ""
 
@@ -2326,7 +2330,7 @@ msgstr ""
 msgid "nach Fert.Jahr"
 msgstr ""
 
-#: ../templates/resultlists_showall:36 ../templates/resultlists_showall_sortall:37 ../templates/resultlists_showsinglepool:37 ../templates/search_showtitlist:33 ../templates/virtualsearch_result_start:35
+#: ../templates/resultlists_showall:36 ../templates/resultlists_showall_sortall:37 ../templates/resultlists_showsinglepool:37 ../templates/search_showtitlist:33 ../templates/virtualsearch_result_start:38
 msgid "nach Jahr"
 msgstr ""
 
@@ -2334,11 +2338,15 @@ msgstr ""
 msgid "nach Person/Region"
 msgstr ""
 
-#: ../modules/OpenBib/Common/Util.pm:327 ../templates/database/einbaende/search_showtitlist:37 ../templates/resultlists_showall:36 ../templates/resultlists_showall_sortall:37 ../templates/resultlists_showsinglepool:37 ../templates/search_showtitlist:33 ../templates/views/einbaende/resultlists_showall:42 ../templates/views/einbaende/resultlists_showall_sortall:41 ../templates/views/einbaende/resultlists_showsinglepool:41 ../templates/views/einbaende/virtualsearch_result_start:42 ../templates/virtualsearch_result_start:35
+#: ../modules/OpenBib/Common/Util.pm:330 ../templates/resultlists_showall:36 ../templates/resultlists_showall_sortall:37 ../templates/resultlists_showsinglepool:37 ../templates/search_showtitlist:33 ../templates/virtualsearch_result_start:38
+msgid "nach Popularit&auml;t"
+msgstr ""
+
+#: ../modules/OpenBib/Common/Util.pm:327 ../templates/database/einbaende/search_showtitlist:37 ../templates/resultlists_showall:36 ../templates/resultlists_showall_sortall:37 ../templates/resultlists_showsinglepool:37 ../templates/search_showtitlist:33 ../templates/views/einbaende/resultlists_showall:42 ../templates/views/einbaende/resultlists_showall_sortall:41 ../templates/views/einbaende/resultlists_showsinglepool:41 ../templates/views/einbaende/virtualsearch_result_start:42 ../templates/virtualsearch_result_start:38
 msgid "nach Signatur"
 msgstr ""
 
-#: ../modules/OpenBib/Common/Util.pm:328 ../templates/resultlists_showall:36 ../templates/resultlists_showall_sortall:37 ../templates/resultlists_showsinglepool:37 ../templates/views/einbaende/resultlists_showall:42 ../templates/views/einbaende/resultlists_showall_sortall:41 ../templates/views/einbaende/resultlists_showsinglepool:41 ../templates/views/einbaende/virtualsearch_result_start:42 ../templates/virtualsearch_result_start:35
+#: ../modules/OpenBib/Common/Util.pm:328 ../templates/resultlists_showall:36 ../templates/resultlists_showall_sortall:37 ../templates/resultlists_showsinglepool:37 ../templates/views/einbaende/resultlists_showall:42 ../templates/views/einbaende/resultlists_showall_sortall:41 ../templates/views/einbaende/resultlists_showsinglepool:41 ../templates/views/einbaende/virtualsearch_result_start:42 ../templates/virtualsearch_result_start:38
 msgid "nach Titel"
 msgstr ""
 
@@ -2346,7 +2354,7 @@ msgstr ""
 msgid "nach Titel/Z&auml;hlung"
 msgstr ""
 
-#: ../modules/OpenBib/Common/Util.pm:326 ../templates/database/einbaende/search_showtitlist:37 ../templates/resultlists_showall:36 ../templates/resultlists_showall_sortall:37 ../templates/resultlists_showsinglepool:37 ../templates/search_showtitlist:33 ../templates/views/einbaende/resultlists_showall:42 ../templates/views/einbaende/resultlists_showall_sortall:41 ../templates/views/einbaende/resultlists_showsinglepool:41 ../templates/views/einbaende/virtualsearch_result_start:42 ../templates/virtualsearch_result_start:35
+#: ../modules/OpenBib/Common/Util.pm:326 ../templates/database/einbaende/search_showtitlist:37 ../templates/resultlists_showall:36 ../templates/resultlists_showall_sortall:37 ../templates/resultlists_showsinglepool:37 ../templates/search_showtitlist:33 ../templates/views/einbaende/resultlists_showall:42 ../templates/views/einbaende/resultlists_showall_sortall:41 ../templates/views/einbaende/resultlists_showsinglepool:41 ../templates/views/einbaende/virtualsearch_result_start:42 ../templates/virtualsearch_result_start:38
 msgid "nach Verlag"
 msgstr ""
 
@@ -2354,7 +2362,7 @@ msgstr ""
 msgid "nein"
 msgstr ""
 
-#: ../modules/OpenBib/Common/Util.pm:332 ../modules/OpenBib/Common/Util.pm:347 ../modules/OpenBib/Common/Util.pm:359 ../templates/searchframe:170
+#: ../modules/OpenBib/Common/Util.pm:333 ../modules/OpenBib/Common/Util.pm:348 ../modules/OpenBib/Common/Util.pm:360 ../templates/searchframe:171
 msgid "pro Katalog"
 msgstr ""
 
@@ -2366,11 +2374,11 @@ msgstr ""
 msgid "wiederholt"
 msgstr ""
 
-#: ../templates/admin_editcat:181 ../templates/admin_editcat_rss:139 ../templates/admin_editcat_rss:197 ../templates/admin_editcat_rss:255 ../templates/admin_editcat_rss:313 ../templates/admin_editcat_rss:342 ../templates/admin_editcat_rss:81 ../templates/admin_editview:135 ../templates/admin_editview_rss:100 ../templates/admin_editview_rss:144
+#: ../templates/admin_editcat:180 ../templates/admin_editcat_rss:137 ../templates/admin_editcat_rss:194 ../templates/admin_editcat_rss:251 ../templates/admin_editcat_rss:308 ../templates/admin_editcat_rss:336 ../templates/admin_editcat_rss:80 ../templates/admin_editview:135 ../templates/admin_editview_rss:100 ../templates/admin_editview_rss:144
 msgid "Ändern"
 msgstr ""
 
-#: ../templates/admin_editcat_rss:336
+#: ../templates/admin_editcat_rss:330
 msgid "Übernehmen"
 msgstr ""
 

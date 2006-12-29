@@ -535,10 +535,6 @@ sub handler {
     # Hash im Loginname ersetzen
     $loginname =~s/#/\%23/;
 
-    my $hostself="http://".$r->hostname.$r->uri;
-
-    my ($queryargs,$sortselect,$thissortstring)=OpenBib::Common::Util::get_sort_nav($r,'sortboth',1,$msg);
-
     my $starttemplatename=$config->{tt_virtualsearch_result_start_tname};
     if ($view && -e "$config->{tt_include_path}/views/$view/$starttemplatename") {
         $starttemplatename="views/$view/$starttemplatename";
@@ -569,9 +565,10 @@ sub handler {
         password       => $password,
 
         searchquery    => $searchquery_ref,
-        queryargs      => $queryargs,
-        sortselect     => $sortselect,
-        thissortstring => $thissortstring,
+        query          => $query,
+
+        queryid        => $queryid,
+        
         config         => $config,
         msg            => $msg,
     };
@@ -1182,7 +1179,7 @@ sub handler {
         password      => $password,
         
         searchquery   => $searchquery_ref,
-        queryargs     => $queryargs,
+        query         => $query,
 
         config        => $config,
         msg           => $msg,

@@ -313,8 +313,6 @@ sub handler {
         # Hash im Loginname ersetzen
         $loginname=~s/#/\%23/;
         
-        my $hostself="http://".$r->hostname.$r->uri;
-        
         # Eintraege merken fuer Lastresultset
         foreach my $item_ref (@sortedoutputbuffer) {
             push @resultset, { id       => $item_ref->{id},
@@ -344,6 +342,8 @@ sub handler {
             
             loginname      => $loginname,
             password       => $password,
+
+            query          => $query,
             
             qopts          => $queryoptions_ref,
             database       => $database,
@@ -378,12 +378,17 @@ sub handler {
             my $storableres=Storable::thaw(pack "H*", $searchresult);
             
             my @outputbuffer=@$storableres;
-            
+
+            # Sortierung des Outputbuffers
+
+            my @sortedoutputbuffer=();
+            OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
+
             my $treffer=$#outputbuffer+1;
             
             push @resultlists, {
                 database   => $database,
-                resultlist => \@outputbuffer,
+                resultlist => \@sortedoutputbuffer,
             };
             
             # Eintraege merken fuer Lastresultset
@@ -404,8 +409,6 @@ sub handler {
         # Hash im Loginname ersetzen
         $loginname=~s/#/\%23/;
         
-        my $hostself="http://".$r->hostname.$r->uri;
-        
         my @offsets = $session->get_resultlists_offsets({
             database  => $database,
             queryid   => $queryid,
@@ -418,6 +421,7 @@ sub handler {
             stylesheet     => $stylesheet,
             sessionID      => $session->{ID},
 
+            query          => $query,
             qopts          => $queryoptions_ref,
             resultlists    => \@resultlists,
             dbinfo         => $targetdbinfo_ref->{dbinfo},
@@ -559,10 +563,6 @@ sub handler {
             # Hash im Loginname ersetzen
             $loginname=~s/#/\%23/;
             
-            my $hostself="http://".$r->hostname.$r->uri;
-            
-            my ($queryargs,$sortselect,$thissortstring)=OpenBib::Common::Util::get_sort_nav($r,'sortboth',1,$msg);
-            
             # TT-Data erzeugen
             my $ttdata={
                 view           => $view,
@@ -574,10 +574,8 @@ sub handler {
                 
                 loginname      => $loginname,
                 password       => $password,
-                
-                queryargs      => $queryargs,
-                sortselect     => $sortselect,
-                thissortstring => $thissortstring,
+
+                query          => $query,
 
                 offset         => $offset,
                 hitrange       => $hitrange,
@@ -649,10 +647,6 @@ sub handler {
             # Hash im Loginname ersetzen
             $loginname=~s/#/\%23/;
             
-            my $hostself="http://".$r->hostname.$r->uri;
-            
-            my ($queryargs,$sortselect,$thissortstring)=OpenBib::Common::Util::get_sort_nav($r,'sortboth',1,$msg);
-
             # TT-Data erzeugen
             my $ttdata={
                 view           => $view,
@@ -671,9 +665,7 @@ sub handler {
 
                 queryid        => $queryid,
                 
-                queryargs      => $queryargs,
-                sortselect     => $sortselect,
-                thissortstring => $thissortstring,
+                query          => $query,
                 
                 config         => $config,
                 msg            => $msg,

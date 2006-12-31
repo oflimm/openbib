@@ -28,6 +28,9 @@
 ../templates/helpframe
 ../templates/helpframe_1
 ../templates/helpframe_2
+../templates/helpframe_10
+../templates/helpframe_11
+../templates/helpframe_12
 ../templates/info_message
 ../templates/leave
 ../templates/loadbalancer

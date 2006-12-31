@@ -23,9 +23,17 @@
 
 <p />
 <form method="get" action="[% config.search_loc %]">
-[%- FOREACH i IN queryargs -%]
-<input type="hidden" name="[% i.key %]" value="[% i.value %]" />
-[%- END -%]
+<input type="hidden" name="offset"          value="[% offset %]" />
+<input type="hidden" name="hitrange"        value="[% qopts.hitrange %]" />
+<input type="hidden" name="sessionID"       value="[% sessionID %]" />
+[%- IF query.param('database')          -%]<input type="hidden" name="database"      value="[% query.param('database') %]" />[% END %]
+[%- IF query.param('subtit')            -%]<input type="hidden" name="subtit"        value="[% query.param('subtit') %]" />[% END %]
+[%- IF query.param('supertit')          -%]<input type="hidden" name="supertit"      value="[% query.param('supertit') %]" />[% END %]
+[%- IF query.param('generalsearch')     -%]<input type="hidden" name="generalsearch" value="[% query.param('generalsearch') %]" />[% END %]
+[%- IF query.param('searchtitofaut')    -%]<input type="hidden" name="searchtitofaut" value="[% query.param('searchtitofaut') %]" />[% END %]
+[%- IF query.param('searchtitofurhkor') -%]<input type="hidden" name="searchtitofurhkor" value="[% query.param('searchtitofurhkor') %]" />[% END %]
+[%- IF query.param('searchtitofnot')    -%]<input type="hidden" name="searchtitofnot" value="[% query.param('searchtitofnot') %]" />[% END %]
+[%- IF query.param('searchtitofswt')    -%]<input type="hidden" name="searchtitofswt" value="[% query.param('searchtitofswt') %]" />[% END %]
 
 <table width="100%">
 <tr><th>[% msg.maketext("Optionen") %]</th></tr>

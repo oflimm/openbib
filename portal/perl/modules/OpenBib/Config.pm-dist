@@ -382,7 +382,11 @@ use vars qw(%config);
 
 	   benchmark               => 0,
 
-	   # Testsystem
+           # Kurztiteltabelle verwenden?
+
+           use_titlistitem_table   => 1,
+
+           # Testsystem
 
 	   testsystem              => 0,
 
@@ -669,7 +673,7 @@ use vars qw(%config);
 			blacklist_tit => 
 			
 			{
-			 #    '0002' => 1, # Aufnahmedatum
+			 #'0002' => 1, # Aufnahmedatum
 			 '0003' => 1, # Aenderungsdatum
 			 '0005' => 1, # Inventarnummer (in mex vorhanden)
 			 '0009' => 1, # Herkunft
@@ -686,7 +690,7 @@ use vars qw(%config);
 			 '0150' => 1, # HBZ Personen-ID
 			 '0453' => 1, # Id des GT
 			 '0454' => 1, # Ansetzungsform GT
-			 '0572' => 1, # ZDB-ID
+			 #'0572' => 1, # ZDB-ID
 			 '0715' => 1, # Unbekannt
 			 '0802' => 1, # Medien-Zustand
 			 '0905' => 1, # RSWK-ID

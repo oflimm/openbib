@@ -580,7 +580,7 @@ sub get_tit_listitem_by_idn {
 
     my $config = new OpenBib::Config();
 
-    my $use_titlistitem_table=0;
+    my $use_titlistitem_table=1;
 
     if ($database eq "inst006"){
         $use_titlistitem_table=1;
@@ -603,7 +603,7 @@ sub get_tit_listitem_by_idn {
 
     if ($use_titlistitem_table) {
         # Bestimmung des Satzes
-        my $request=$dbh->prepare("select listitem from titlistitem where t.id = ?") or $logger->error($DBI::errstr);
+        my $request=$dbh->prepare("select listitem from titlistitem where id = ?") or $logger->error($DBI::errstr);
         $request->execute($titidn);
         
         if (my $res=$request->fetchrow_hashref){
@@ -929,7 +929,9 @@ sub print_tit_list_by_idn {
     my $logger = get_logger();
 
     my $config = new OpenBib::Config();
-    
+
+    my $query=Apache::Request->new($r);
+
     my @itemlist=@$itemlist_ref;
 
     my $hits=$#itemlist;
@@ -965,10 +967,6 @@ sub print_tit_list_by_idn {
         }
     }
 
-    my $hostself="http://".$r->hostname.$r->uri;
-
-    my ($queryargs,$sortselect,$thissortstring)=OpenBib::Common::Util::get_sort_nav($r,'',0,$msg);
-
     # TT-Data erzeugen
     my $ttdata={
         lang           => $lang,
@@ -987,12 +985,10 @@ sub print_tit_list_by_idn {
 	      
         targetdbinfo   => $targetdbinfo_ref,
         itemlist       => \@itemlist,
-        hostself       => $hostself,
-        queryargs      => $queryargs,
+
         baseurl        => $baseurl,
-        thissortstring => $thissortstring,
-        sortselect     => $sortselect,
-	      
+
+        query          => $query,
         hitrange       => $hitrange,
         offset         => $offset,
         nav            => \@nav,

@@ -55,7 +55,7 @@
 <table>
 [%- FOREACH result IN resultlists %]
 [%-     database = result.database %]
-<tr class="titlerow"><td>&nbsp;</td><td>[% targetdbinfo.dbinfo.$database.full %]</td><td align="right" colspan="3"><strong>[% result.resultlist.size %] [% msg.maketext("Treffer") %]</strong></td><td class="popularitycount"><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
+<tr class="titlerow"><td>&nbsp;</td><td><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% targetdbinfo.dbinfo.$database.full %]</td><td align="right" colspan="3"><strong>[% result.resultlist.size %] [% msg.maketext("Treffer") %]</strong></td><td class="popularitycount"><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
 [%-     IF result.offsets -%]
 <tr class="titlerow"><td>&nbsp;</td><td colspan="4">
 [%          FOREACH singleoffset IN result.offsets %]

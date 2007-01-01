@@ -55,10 +55,25 @@ if ($OpenBib::Config::config{benchmark}){
     hostname              => "",
     port                  => "",
 
-    querytype             => "prefix",
+    querytype             => "CQL",
     elementSetName        => "B",
     preferredRecordSyntax => "MAB",
+    hitrange              => 10,
 );
+
+sub new {
+    my $class = shift;
+
+    # Ininitalisierung mit Config-Parametern
+    my $self = \%z39config;
+
+    bless ($self, $class);
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return $self;
+}
 
 1;
 

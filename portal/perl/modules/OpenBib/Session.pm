@@ -2,7 +2,7 @@
 #
 #  OpenBib::Session
 #
-#  Dieses File ist (C) 2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2007 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -116,7 +116,6 @@ sub _init_new_session {
             my $queryoptions_ref={
                 hitrange  => undef,
                 offset    => undef,
-                maxhits   => undef,
                 l         => undef,
                 profil    => undef,
                 autoplus  => undef,
@@ -239,9 +238,8 @@ sub get_queryoptions {
     my $queryoptions_ref = $self->load_queryoptions();
 
     my $default_queryoptions_ref={
-        hitrange  => 20,
+        hitrange  => 50,
         offset    => 1,
-        maxhits   => 500,
         l         => 'de',
         profil    => '',
         autoplus  => '',

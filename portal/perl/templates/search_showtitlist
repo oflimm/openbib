@@ -24,7 +24,7 @@
 <p />
 <form method="get" action="[% config.search_loc %]">
 <input type="hidden" name="offset"          value="[% offset %]" />
-<input type="hidden" name="hitrange"        value="[% qopts.hitrange %]" />
+<input type="hidden" name="hitrange"        value="[% hitrange %]" />
 <input type="hidden" name="sessionID"       value="[% sessionID %]" />
 [%- IF query.param('database')          -%]<input type="hidden" name="database"      value="[% query.param('database') %]" />[% END %]
 [%- IF query.param('subtit')            -%]<input type="hidden" name="subtit"        value="[% query.param('subtit') %]" />[% END %]
@@ -71,8 +71,8 @@
 
 <table cellpadding="2">
 [% IF offset >= 0 && hitrange > 0 %]
-<tr class="titlerow"><td>&nbsp;</td><td>&nbsp;</td><td><span class="rldbase">[% targetdbinfo.dbinfo.$database.full %]</span></td><td align="left" colspan=2><span class="rlhits"><strong>[% itemlist.size %] [% msg.maketext("Treffer") %]</strong></span></td></tr>
-<tr><td>&nbsp;</td><td>&nbsp;</td><td>
+<tr class="titlerow"><td>&nbsp;</td><td><span class="rldbase"><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% targetdbinfo.dbinfo.$database.full %]</span></td><td align="left" colspan="3"><span class="rlhits"><strong>[% itemlist.size %] [% msg.maketext("Treffer") %]</strong></span></td><td class="popularitycount"><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
+<tr class="titlerow"><td>&nbsp;</td><td>
 [%- FOREACH navitem IN nav -%]
 <a href="[% navitem.url %]">
 [%- IF navitem.active -%]
@@ -84,7 +84,7 @@
 [%- END -%]
 <a href="[% baseurl %];hitrange=-1;offset=0">[ Alles ]</a>
 
-</td><td align="left" colspan="2"></td></tr>
+</td><td align="left" colspan="3"></td><td></td></tr>
 [% ELSE %]
 <tr class="titlerow"><td>&nbsp;</td><td><span class="rldbase">[% targetdbinfo.dbinfo.$database.full %]</span></td><td align="left" colspan="3"><span class="rlhits"><strong>[% itemlist.size %] [% msg.maketext("Treffer") %]</strong></span></td><td class="popularitycount"><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
 [% END %]

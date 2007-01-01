@@ -36,7 +36,7 @@ IF searchsingletit && database;
 END;
 
 IF fs;
-    bodyframeurl = "${config.virtualsearch_loc}?hitrange=-1;view=${view};sessionID=${sessionID};searchall=In+allen+Katalogen+suchen;fs=${fs};bool9=AND;verf=;bool1=AND;hst=;bool2=AND;swt=;bool3=AND;kor=;bool4=AND;notation=;bool5=AND;isbn=;bool8=AND;issn=;bool6=AND;sign=;bool7=AND;ejahr=;ejahrop=%3D;maxhits=200;sorttype=author;sortorder=up;profil=;autoplus=1";
+    bodyframeurl = "${config.virtualsearch_loc}?hitrange=-1;view=${view};sessionID=${sessionID};searchall=1;fs=${fs};hitrange=50;sorttype=author;sortorder=up;profil=;autoplus=1";
 END;
 -%]
 [% PROCESS common/subtemplate name="frameset" %]

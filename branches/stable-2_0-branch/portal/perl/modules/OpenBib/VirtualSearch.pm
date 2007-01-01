@@ -87,9 +87,8 @@ sub handler {
 
     my @databases     = ($query->param('database'))?$query->param('database'):();
 
-    my $hitrange      = ($query->param('hitrange' ))?$query->param('hitrange'):20;
-    my $offset        = ($query->param('offset'   ))?$query->param('offset'):1;
-    my $maxhits       = ($query->param('maxhits'  ))?$query->param('maxhits'):50;
+    my $hitrange      = ($query->param('hitrange' ))?$query->param('hitrange'):50;
+    my $offset        = ($query->param('offset'   ))?$query->param('offset'):0;
     my $sorttype      = ($query->param('sorttype' ))?$query->param('sorttype'):"author";
     my $sortorder     = ($query->param('sortorder'))?$query->param('sortorder'):'up';
     my $autoplus      = $query->param('autoplus')      || '';
@@ -115,10 +114,6 @@ sub handler {
     my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
-    if ($hitrange eq "alles") {
-        $hitrange=-1;
-    }
-    
     my $targetdbinfo_ref
         = $config->get_targetdbinfo();
 
@@ -379,18 +374,14 @@ sub handler {
         
         my $hits=$#sortedindex;
 
-        if ($hits > 200) {
-            $hitrange=200;
-        }
-
-        my $baseurl="http://$config->{servername}$config->{virtualsearch_loc}?sessionID=$session->{ID};view=$view;$urlpart;profil=$profil;maxhits=$maxhits;sorttype=$sorttype;sortorder=$sortorder";
+        my $baseurl="http://$config->{servername}$config->{virtualsearch_loc}?sessionID=$session->{ID};view=$view;$urlpart;profil=$profil;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder";
 
         my @nav=();
 
         if ($hitrange > 0) {
             $logger->debug("Navigation wird erzeugt: Hitrange: $hitrange Hits: $hits");
 
-            for (my $i=1; $i <= $hits; $i+=$hitrange) {
+            for (my $i=0; $i <= $hits-1; $i+=$hitrange) {
                 my $active=0;
 	
                 if ($i == $offset) {
@@ -399,7 +390,7 @@ sub handler {
 	
                 my $item={
                     start  => $i,
-                    end    => ($i+$hitrange>$hits)?$hits+1:$i+$hitrange-1,
+                    end    => ($i+$hitrange>$hits)?$hits:$i+$hitrange,
                     url    => $baseurl.";hitrange=$hitrange;offset=$i",
                     active => $active,
                 };
@@ -641,8 +632,7 @@ sub handler {
 
             # Beschraenkung der Treffer pro Datenbank auf 10, da Z39.50-Abragen
             # sehr langsam sind
-#            $maxhits = 10;
-
+            # $hitrange = 10;
             my $z3950dbh = new OpenBib::Search::Z3950($database);
 
             $z3950dbh->search($searchquery_ref);
@@ -661,7 +651,7 @@ sub handler {
                 
                 my @outputbuffer=();
 
-                my $end=($fullresultcount < $maxhits)?$fullresultcount:$maxhits;
+                my $end=($fullresultcount < $z3950dbh->{hitrange})?$fullresultcount:$z3950dbh->{hitrange};
                 
                 @outputbuffer = $z3950dbh->get_resultlist(0,$end);
                 
@@ -770,7 +760,6 @@ sub handler {
                         serien          => $serien,
                         dbh             => $dbh,
                         database        => $database,
-                        maxhits         => $maxhits,
                         
                         enrich          => $enrich,
                         enrichkeys_ref  => $enrichkeys_ref,
@@ -789,13 +778,13 @@ sub handler {
                         
                         my @outputbuffer=();
                         
-                        my $rset=Search::Xapian::RSet->new() if ($drilldown && $fullresultcount > $maxhits);
+                        my $rset=Search::Xapian::RSet->new() if ($drilldown && $fullresultcount > $hitrange);
                         
                         my $mcount=0;
                         foreach my $match ($request->matches) {
-                            last if ($mcount >= $maxhits);
+                            last if ($mcount >= $hitrange);
                             
-                            $rset->add_document($match->get_docid) if ($drilldown && $fullresultcount > $maxhits);
+                            $rset->add_document($match->get_docid) if ($drilldown && $fullresultcount > $hitrange);
                             my $document=$match->get_document();
                             my $titlistitem_raw=pack "H*", decode_utf8($document->get_data());
                             my $titlistitem_ref=Storable::thaw($titlistitem_raw);
@@ -810,7 +799,7 @@ sub handler {
                         my $term_ref;
                         my $drilldowntime;
                         
-                        if ($drilldown && $fullresultcount > $maxhits ) {
+                        if ($drilldown && $fullresultcount > $hitrange ) {
                             my $ddatime=new Benchmark;
                             my $eterms=$request->enq->get_eset(50,$rset);
                             
@@ -988,7 +977,7 @@ sub handler {
 
                     serien          => $serien,
                     dbh             => $dbh,
-                    maxhits         => $maxhits,
+                    hitrange        => $hitrange,
 
                     enrich          => $enrich,
                     enrichkeys_ref  => $enrichkeys_ref,
@@ -1146,7 +1135,7 @@ sub handler {
 
                 $logger->debug("YAML-Dumped: ".YAML::Dump($res));
                 my $num=$dbhits{$db};
-                $idnresult->execute($session->{ID},$db,$maxhits,$storableres,$num,$queryid) or $logger->error($DBI::errstr);
+                $idnresult->execute($session->{ID},$db,$hitrange,$storableres,$num,$queryid) or $logger->error($DBI::errstr);
             }
             $idnresult->finish();
         }

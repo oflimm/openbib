@@ -61,7 +61,6 @@
 <p />
 
 <form method="get" id="openbib" action="http://[% config.servername %][% config.virtualsearch_loc %]">
-<input type="hidden" name="hitrange"  value="-1" />
 <input type="hidden" name="view"      value="[% view %]" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="sb"        value="sql" />
@@ -166,7 +165,7 @@ value="NOT">und nicht</option></select></td><td><input type="text" name="verf" v
 <tr><th>[% msg.maketext("Suchoptionen") %]</th></tr>
 <tr><td class="boxed">
 <table>
-<tr><td class="category">[% msg.maketext("Maximale Trefferzahl pro Katalog") %]</td><td colspan="3"><select name="maxhits"><option selected="selected">50</option><option>200</option><option>500</option></select></td></tr>
+<tr><td class="category">[% msg.maketext("Maximale Trefferzahl pro Katalog") %]</td><td colspan="3"><select name="hitrange"><option selected="selected">50</option><option>200</option><option>500</option></select></td></tr>
 <tr><td class="category">[% msg.maketext("Sortierung nach") %]</td><td
 colspan="2"><select name="sorttype"><option value="author" selected="selected">[% msg.maketext("Autor/Körperschaft") %]</option><option value="title">[% msg.maketext("Titel") %]</option><option value="yearofpub">[% msg.maketext("Erscheinungsjahr") %]</option></select><select name="sortorder"><option value="up">[% msg.maketext("aufsteigend") %]</option><option value="down">[% msg.maketext("absteigend") %]</option></select>&nbsp;[% msg.maketext("pro Katalog") %]</td><td></td></tr>
 <tr><td class="category">Suchprofil</td><td colspan="3"><select name="profil">

@@ -2,7 +2,7 @@
 #
 #  OpenBib::Search::Util
 #
-#  Dieses File ist (C) 2004-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2007 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -900,12 +900,6 @@ sub print_tit_list_by_idn {
         ? $arg_ref->{itemlist_ref}      : undef;
     my $targetdbinfo_ref  = exists $arg_ref->{targetdbinfo_ref}
         ? $arg_ref->{targetdbinfo_ref}  : undef;
-    my $searchmode        = exists $arg_ref->{searchmode}
-        ? $arg_ref->{searchmode}        : undef;
-    my $rating            = exists $arg_ref->{rating}
-        ? $arg_ref->{rating}            : undef;
-    my $bookinfo          = exists $arg_ref->{bookinfo}
-        ? $arg_ref->{bookinfo}          : undef;
     my $database          = exists $arg_ref->{database}
         ? $arg_ref->{database}          : undef;
     my $sessionID         = exists $arg_ref->{sessionID}
@@ -914,8 +908,10 @@ sub print_tit_list_by_idn {
         ? $arg_ref->{apachereq}         : undef;
     my $stylesheet        = exists $arg_ref->{stylesheet}
         ? $arg_ref->{stylesheet}        : undef;
+    my $hits              = exists $arg_ref->{hits}
+        ? $arg_ref->{hits}              : -1;
     my $hitrange          = exists $arg_ref->{hitrange}
-        ? $arg_ref->{hitrange}          : -1;
+        ? $arg_ref->{hitrange}          : 50;
     my $offset            = exists $arg_ref->{offset}
         ? $arg_ref->{offset}            : undef;
     my $view              = exists $arg_ref->{view}
@@ -934,8 +930,6 @@ sub print_tit_list_by_idn {
 
     my @itemlist=@$itemlist_ref;
 
-    my $hits=$#itemlist;
-
     # Navigationselemente erzeugen
     my %args=$r->args;
     delete $args{offset};
@@ -950,7 +944,7 @@ sub print_tit_list_by_idn {
     my @nav=();
 
     if ($hitrange > 0) {
-        for (my $i=1; $i <= $hits; $i+=$hitrange) {
+        for (my $i=0; $i <= $hits-1; $i+=$hitrange) {
             my $active=0;
 
             if ($i == $offset) {
@@ -958,8 +952,8 @@ sub print_tit_list_by_idn {
             }
 
             my $item={
-		start  => $i,
-		end    => ($i+$hitrange>$hits)?$hits+1:$i+$hitrange-1,
+		start  => $i+1,
+		end    => ($i+$hitrange>$hits)?$hits:$i+$hitrange,
 		url    => $baseurl.";hitrange=$hitrange;offset=$i",
 		active => $active,
             };
@@ -978,9 +972,6 @@ sub print_tit_list_by_idn {
 
         hits           => $hits,
 	      
-        searchmode     => $searchmode,
-        rating         => $rating,
-        bookinfo       => $bookinfo,
         sessionID      => $sessionID,
 	      
         targetdbinfo   => $targetdbinfo_ref,
@@ -1587,12 +1578,6 @@ sub get_result_navigation {
         ? $arg_ref->{titidn}                : undef;
     my $sessionID             = exists $arg_ref->{sessionID}
         ? $arg_ref->{sessionID}             : undef;
-    my $searchmode            = exists $arg_ref->{searchmode}
-        ? $arg_ref->{searchmode}            : undef;
-    my $rating                = exists $arg_ref->{rating}
-        ? $arg_ref->{rating}                : undef;
-    my $bookinfo              = exists $arg_ref->{bookinfo}
-        ? $arg_ref->{bookinfo}              : undef;
     my $hitrange              = exists $arg_ref->{hitrange}
         ? $arg_ref->{hitrange}              : undef;
     my $sortorder             = exists $arg_ref->{sortorder}
@@ -1868,11 +1853,10 @@ sub initial_search_for_titidns {
         ? $arg_ref->{enrichkeys_ref}: undef;
     my $dbh               = exists $arg_ref->{dbh}
         ? $arg_ref->{dbh}           : undef;
-    my $maxhits           = exists $arg_ref->{maxhits}
-        ? $arg_ref->{maxhits}       : 50;
-
+    my $hitrange          = exists $arg_ref->{hitrange}
+        ? $arg_ref->{hitrange}      : 50;
     my $offset            = exists $arg_ref->{offset}
-        ? $arg_ref->{offset}        : undef;
+        ? $arg_ref->{offset}        : 0;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -1978,11 +1962,11 @@ sub initial_search_for_titidns {
     $sqlwherestring     =~s/^(?:AND|OR|NOT) //;
     my $sqlfromstring   = join(", ",@sqlfrom);
 
-    if ($offset){
+    if ($offset >= 0){
         $offset=$offset.",";
     }
     
-    my $sqlquerystring  = "select verwidn from $sqlfromstring where $sqlwherestring limit $offset$maxhits";
+    my $sqlquerystring  = "select verwidn from $sqlfromstring where $sqlwherestring limit $offset$hitrange";
 
     $logger->debug("QueryString: ".$sqlquerystring);
     my $request         = $dbh->prepare($sqlquerystring);
@@ -2030,11 +2014,11 @@ sub initial_search_for_titidns {
 
     }
 
-    # Entfernen mehrfacher verwidn's unter Beruecksichtigung von $maxhits
+    # Entfernen mehrfacher verwidn's unter Beruecksichtigung von $hitrange
     my %schon_da=();
     my $count=0;
     my @tidns=grep {! $schon_da{$_}++ } @tempidns;
-    @tidns=splice(@tidns,0,$maxhits);
+    @tidns=splice(@tidns,0,$hitrange);
     
     
     my $fullresultcount=$#tidns+1;
@@ -2043,13 +2027,13 @@ sub initial_search_for_titidns {
   
     $logger->info("Treffer: ".($#tidns+1)." von ".$fullresultcount);
 
-    # Wenn maxhits Treffer gefunden wurden, ist es wahrscheinlich, dass
+    # Wenn hitrange Treffer gefunden wurden, ist es wahrscheinlich, dass
     # die wirkliche Trefferzahl groesser ist.
     # Diese wird daher getrennt bestimmt, damit sie dem Benutzer als
     # Hilfestellung fuer eine Praezisierung seiner Suchanfrage
     # ausgegeben werden kann
-    if ($#tidns+1 > $maxhits){ # ueberspringen
-    #    if ($#tidns+1 == $maxhits){
+    if ($#tidns+1 > $hitrange){ # ueberspringen
+    #    if ($#tidns+1 == $hitrange){
 
         if ($config->{benchmark}) {
             $atime=new Benchmark;

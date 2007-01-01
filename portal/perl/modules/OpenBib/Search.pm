@@ -240,10 +240,25 @@ sub handler {
         }
     
         if ($generalsearch=~/^supertit/) {
-            my $supertitidn=$query->param("$generalsearch");
+            my $supertitidn = $query->param("$generalsearch");
+            my $hits        = 0;
 
-            my $reqstring="select distinct targetid from conn where sourceid=? and sourcetype=1 and targettype=1";
+            # Zuerst Gesamtzahl bestimmen
+            my $reqstring="select count(distinct targetid) as conncount from conn where sourceid=? and sourcetype=1 and targettype=1";
             my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
+            $request->execute($supertitidn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+
+            my $res=$request->fetchrow_hashref;
+            $hits = $res->{conncount};
+
+            my $limits="";
+            if ($hitrange > 0){
+                $limits="limit $offset,$hitrange";
+            }
+
+            # Bestimmung der Titel
+            $reqstring="select distinct targetid from conn where sourceid=? and sourcetype=1 and targettype=1 $limits";
+            $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
             $request->execute($supertitidn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
 
             my @titidns=();
@@ -327,6 +342,9 @@ sub handler {
                     apachereq        => $r,
                     stylesheet       => $stylesheet,
                     view             => $view,
+                    hits             => $hits,
+                    offset           => $offset,
+                    hitrange         => $hitrange,
                     msg              => $msg,
                 });
                 return OK;
@@ -335,9 +353,23 @@ sub handler {
 
         if ($generalsearch=~/^subtit/) {
             my $subtitidn=$query->param("$generalsearch");
+            my $hits        = 0;
 
-            my $reqstring="select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=1";
+            my $reqstring="select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=1";
             my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
+            $request->execute($subtitidn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+            
+            my $res=$request->fetchrow_hashref;
+            $hits = $res->{conncount};
+
+            my $limits="";
+            if ($hitrange > 0){
+                $limits="limit $offset,$hitrange";
+            }
+            
+            # Bestimmung der Titel
+            $reqstring="select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=1 $limits";
+            $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
             $request->execute($subtitidn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
 
             my @titidns=();
@@ -421,6 +453,9 @@ sub handler {
                     apachereq        => $r,
                     stylesheet       => $stylesheet,
                     view             => $view,
+                    hits             => $hits,
+                    offset           => $offset,
+                    hitrange         => $hitrange,
                     msg              => $msg,
                 });
                 return OK;
@@ -1061,7 +1096,7 @@ sub handler {
         if ($searchtitofswt =~ /^\d+$/){
             # Zuerst Gesamtzahl bestimmen
             my $request=$dbh->prepare("select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=4") or $logger->error($DBI::errstr);
-            $request->execute($searchtitofaut);
+            $request->execute($searchtitofswt);
             
             my $res=$request->fetchrow_hashref;
             $hits = $res->{conncount};

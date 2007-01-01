@@ -2,7 +2,7 @@
 #
 #  OpenBib::Config
 #
-#  Dieses File ist (C) 2004-2005 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2007 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -302,6 +302,7 @@ use vars qw(%config);
 	   tt_helpframe_3_tname          => 'helpframe_3',
            tt_helpframe_10_tname         => 'helpframe_10',
            tt_helpframe_11_tname         => 'helpframe_11',
+           tt_helpframe_12_tname         => 'helpframe_12',
 
 	   tt_startopac_tname            => 'startopac',
 

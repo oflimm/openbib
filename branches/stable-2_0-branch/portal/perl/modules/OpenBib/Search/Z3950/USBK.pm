@@ -36,6 +36,7 @@ use utf8;
 
 use Apache::Reload;
 use Apache::Request ();
+use Benchmark ':hireswallclock';
 use DBI;
 use Encode; # 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
@@ -47,17 +48,6 @@ use YAML ();
 
 use OpenBib::Search::Z3950::USBK::Config;
 use OpenBib::Config;
-
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-use vars qw(%config %z39config);
-
-*config    = \%OpenBib::Config::config;
-*z39config = \%OpenBib::Search::Z3950::USBK::Config;
-
-if ($OpenBib::Config::config{benchmark}){
-    use Benchmark ':hireswallclock';
-}
 
 sub new {
     my ($class) = @_;
@@ -79,8 +69,8 @@ sub new {
                                     preferredRecordSyntax => $z39config->{preferredRecordSyntax},
                                     querytype             => $z39config->{querytype},
                                 ) or $logger->error_die("Connection Error:".$!);
-    $self->{conn} = $conn;
-
+    $self->{conn}     = $conn;
+    $self->{hitrange} = $z39config->{hitrange};
     return $self;
 }
 
@@ -96,7 +86,6 @@ sub search {
     
     $self->{conn}->option(cqlfile => $pqfpath);
 
-    $logger->debug("blabla");
     my @querystrings=();
     
     if ($searchquery_ref->{fs}{val}){
@@ -131,20 +120,20 @@ sub search {
 }
 
 sub get_resultlist {
-    my ($self,$offset,$hitrange)=@_;
+    my ($self,$offset)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     my $start = $offset+1;
-    my $end   = $offset+$hitrange;
+    my $end   = $offset+$self->{hitrange};
 
     if ($start >= $self->{rs}->size() || $start >= $self->{rs}->size()){
         return ();
     }
     
     # Pre-Cache Results
-    $self->{rs}->records($offset, $hitrange, 0);
+    $self->{rs}->records($offset, $self->{hitrange}, 0);
     
     my @resultlist=();
     foreach my $i ($start..$end) {

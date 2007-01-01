@@ -87,7 +87,7 @@
 [%- END -%]
 </td><td align="left" colspan="3"></td><td></td></tr>
 [% ELSE %]
-<tr class="titlerow"><td>&nbsp;</td><td><span class="rldbase">[% targetdbinfo.dbinfo.$database.full %]</span></td><td align="left" colspan="3"><span class="rlhits"><strong>[% itemlist.size %] [% msg.maketext("Treffer") %]</strong></span></td><td class="popularitycount"><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
+<tr class="titlerow"><td>&nbsp;</td><td><span class="rldbase"><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% targetdbinfo.dbinfo.$database.full %]</span></td><td align="left" colspan="3"><span class="rlhits"><strong>[% itemlist.size %] [% msg.maketext("Treffer") %]</strong></span></td><td class="popularitycount"><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
 [% END %]
 
 [% listrow = 'listrow1' %]

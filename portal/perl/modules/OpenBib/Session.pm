@@ -251,9 +251,15 @@ sub get_queryoptions {
     # Uebergebene Parameter 'ueberschreiben'und gehen vor
     foreach my $option (keys %$default_queryoptions_ref){
         if (defined $query->param($option)){
-            $queryoptions_ref->{$option}=$query->param($option);
-	    $logger->debug("Option $option received via HTTP");
-	    $altered=1;
+            # Es darf nicht hitrange = -1 (= hole alles) dauerhaft gespeichert
+            # werden - speziell nicht bei einer anfaenglichen Suche
+            # Dennoch darf - derzeit ausgehend von den Normdaten - alles
+            # geholt werden
+            unless ($option eq "hitrange" && $query->param($option) == -1){
+                $queryoptions_ref->{$option}=$query->param($option);
+                $logger->debug("Option $option received via HTTP");
+                $altered=1;
+            }
         }
     }
 

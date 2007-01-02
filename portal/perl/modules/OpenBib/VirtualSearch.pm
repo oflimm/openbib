@@ -1169,6 +1169,7 @@ sub handler {
         
         searchquery   => $searchquery_ref,
         query         => $query,
+        queryid       => $queryid,
 
         config        => $config,
         msg           => $msg,

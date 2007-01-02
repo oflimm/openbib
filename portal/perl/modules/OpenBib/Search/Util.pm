@@ -1884,7 +1884,6 @@ sub initial_search_for_titidns {
         push @sqlwhere, $searchquery_ref->{fs}{bool}." match (verf,hst,kor,swt,notation,sign,isbn,issn) against (? IN BOOLEAN MODE)";
         push @sqlargs, $searchquery_ref->{fs}{norm};
     }
-
    
     if ($searchquery_ref->{verf}{norm}) {	
         push @sqlwhere, $searchquery_ref->{verf}{bool}." match (verf) against (? IN BOOLEAN MODE)";

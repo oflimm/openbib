@@ -43,6 +43,7 @@ use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Storable ();
 use Template;
+use YAML;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
@@ -187,6 +188,7 @@ sub handler {
     
         my $result=$idnresult->fetchrow_hashref();
         $searchquery_ref = Storable::thaw(pack "H*",$result->{'query'});
+        $logger->debug(YAML::Dump($searchquery_ref));
         $hits            = decode_utf8($result->{'hits'});
 #        $query=~s/"/&quot;/g;
 

@@ -153,21 +153,26 @@ sub handler {
 
         $targetresult->finish();
 
+        $logger->debug("Hostname: $hostname Port: $port Username: $username DB: $db Description: $description Type: $type");
+        
         ## Ausleihkonfiguration fuer den Katalog einlesen
         my $targetcircinfo_ref
             = $config->get_targetcircinfo();
 
         if ($type eq "olws") {
-        
+            $logger->debug("Trying to authenticate via OLWS: ".YAML::Dump($targetcircinfo_ref));
+            
             my $userinfo_ref=OpenBib::Login::Util::authenticate_olws_user({
                 username      => $loginname,
                 pin           => $password,
-                circhcheckurl => $targetcircinfo_ref->{$db}{circcheckurl},
+                circcheckurl  => $targetcircinfo_ref->{$db}{circcheckurl},
                 circdb        => $targetcircinfo_ref->{$db}{circdb},
             });
         
             my %userinfo=%$userinfo_ref;
-      
+
+            $logger->debug("Authentication via OLWS done");
+            
             if ($userinfo{'erfolgreich'} ne "1") {
                 $loginfailed=2;
             }

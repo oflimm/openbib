@@ -206,7 +206,7 @@ sub handler {
         autoconvert  => $autoconvert,        
         circ         => $circ,
         circurl      => $circurl,
-        circheckurl  => $circcheckurl,
+        circcheckurl => $circcheckurl,
         circdb       => $circdb,
     };
     
@@ -283,6 +283,7 @@ sub handler {
 
         }
         elsif ($do_change) {
+            $logger->debug("do_editcat: $do_editcat do_change: $do_change");
             editcat_change($thisdbinfo_ref,$thisdboptions_ref);
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showcat=1");
             return OK;

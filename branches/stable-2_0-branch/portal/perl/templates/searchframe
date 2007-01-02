@@ -83,9 +83,7 @@
 [% msg.maketext("Sie können entweder durch entsprechende Auswahl in den insgesamt [_1] einzelnen [_2]Katalogen[_3] recherchieren oder auch sofort in allen zusammen.","${alldbs}","<a href=\"${config.databasechoice_loc}?sessionID=${sessionID};view=${view}\" target=\"body\">","</a>") %]
 <p />
 <table>
-  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in allen Katalogen auf einmal") %]" name="searchall" value="[% msg.maketext("In allen Katalogen suchen") %]" />&nbsp;<input
-type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]"
-/>&nbsp;<input type="reset" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" value="[% msg.maketext("Lösche Eingabemaske") %]" /></td></tr>
+  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in allen Katalogen auf einmal") %]" name="searchall" value="[% msg.maketext("In allen Katalogen suchen") %]" />&nbsp;<input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" />&nbsp;<input type="reset" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" value="[% msg.maketext("Lösche Eingabemaske") %]" /></td></tr>
 </table>
 [% END %]
 
@@ -97,44 +95,43 @@ type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bz
 <tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Verknüpfung") %]</td><td>[% msg.maketext("Ihre Eingabe") %]</td><td></td></tr>
 
 [% IF showfs %]
-<tr><td class="category">[% msg.maketext("Freie Suche") %]</td><td class="category"></td><td><input type="text" name="fs" value="[% fs %]" size="30" maxlength="200" /></td><td></td></tr>
+<tr><td class="category">[% msg.maketext("Freie Suche") %]</td><td class="category"></td><td><input type="text" name="fs" value="[% searchquery.fs.val %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
 [% IF showhst %]
-<tr><td class="category">[% msg.maketext("Titel") %]</td><td class="category"><select name="bool1"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="hst" value="[% hst %]" size="30" maxlength="200" /></td><td></td></tr>
+<tr><td class="category">[% msg.maketext("Titel") %]</td><td class="category"><select name="bool1"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="hst" value="[% searchquery.hst.val %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
 [% IF showverf %]
-<tr><td class="category">[% msg.maketext("Verfasser") %]</td><td class="category"><select name="bool9"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option
-value="NOT">und nicht</option></select></td><td><input type="text" name="verf" value="[% verf %]" size="30" maxlength="200" /></td><td><input type="submit" name="verfindex" value="[% msg.maketext("Index") %]" /></td></tr>
+<tr><td class="category">[% msg.maketext("Verfasser") %]</td><td class="category"><select name="bool9"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="verf" value="[% searchquery.verf.val %]" size="30" maxlength="200" /></td><td><input type="submit" name="verfindex" value="[% msg.maketext("Index") %]" /></td></tr>
 [% END %]
 
 [% IF showkor %]
-<tr><td class="category">[% msg.maketext("Körperschaft") %]</td><td class="category"><select name="bool3"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="kor" value="[% kor %]" size="30" maxlength="200" /></td><td><input type="submit" name="korindex" value="Index" /></td></tr>
+<tr><td class="category">[% msg.maketext("Körperschaft") %]</td><td class="category"><select name="bool3"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="kor" value="[% searchquery.kor.val %]" size="30" maxlength="200" /></td><td><input type="submit" name="korindex" value="Index" /></td></tr>
 [% END %]
 
 [% IF showswt %]
-<tr><td class="category">[% msg.maketext("Schlagwort") %]</td><td class="category"><select name="bool2"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="swt" value="[% swt %]" size="30" maxlength="200" /></td><td><input type="submit" name="swtindex" value="Index" /></td></tr>
+<tr><td class="category">[% msg.maketext("Schlagwort") %]</td><td class="category"><select name="bool2"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="swt" value="[% searchquery.swt.val %]" size="30" maxlength="200" /></td><td><input type="submit" name="swtindex" value="Index" /></td></tr>
 [% END %]
 
 [% IF shownotation %]
-<tr><td class="category">[% msg.maketext("Notation") %]</td><td class="category"><select name="bool4"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="notation" value="[% notation %]" size="30" maxlength="200" /></td><td><span class="warning">*</span></td></tr>
+<tr><td class="category">[% msg.maketext("Notation") %]</td><td class="category"><select name="bool4"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="notation" value="[% searchquery.notation.val %]" size="30" maxlength="200" /></td><td><span class="warning">*</span></td></tr>
 [% END %]
 
 [% IF showisbn %]
-<tr><td class="category">[% msg.maketext("ISBN") %]</td><td class="category"><select name="bool5"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="isbn" value="[% isbn %]" size="30" maxlength="200" /></td><td></td></tr>
+<tr><td class="category">[% msg.maketext("ISBN") %]</td><td class="category"><select name="bool5"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="isbn" value="[% searchquery.isbn.val %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
 [% IF showissn %]
-<tr><td class="category">[% msg.maketext("ISSN") %]</td><td class="category"><select name="bool8"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="issn" value="[% issn %]" size="30" maxlength="200" /></td><td></td></tr>
+<tr><td class="category">[% msg.maketext("ISSN") %]</td><td class="category"><select name="bool8"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="issn" value="[% searchquery.issn.val %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
 [% IF showsign %]
-<tr><td class="category">[% msg.maketext("Signatur") %]</td><td class="category"><select name="bool6"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="sign" value="[% sign %]" size="30" maxlength="200" /></td><td><span class="warning">*</span></td></tr>
+<tr><td class="category">[% msg.maketext("Signatur") %]</td><td class="category"><select name="bool6"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="sign" value="[% searchquery.sign.val %]" size="30" maxlength="200" /></td><td><span class="warning">*</span></td></tr>
 [% END %]
 
 [% IF showhststring %]
-<tr><td class="category">[% msg.maketext("Titel-String") %]</td><td class="category"><select name="bool12"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="hststring" value="[% hststring %]" size="30" maxlength="200" /></td><td><span class="warning">*</span></td></tr>
+<tr><td class="category">[% msg.maketext("Titel-String") %]</td><td class="category"><select name="bool12"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="hststring" value="[% searchquery.hststring.val %]" size="30" maxlength="200" /></td><td><span class="warning">*</span></td></tr>
 [% END %]
 
 [% IF showmart %]
@@ -142,7 +139,7 @@ value="NOT">und nicht</option></select></td><td><input type="text" name="verf" v
 [% END %]
 
 [% IF showejahr %]
-<tr><td class="category">[% msg.maketext("Jahr") %]</td><td class="category">und<input type="hidden" name="bool7" value="AND" /></td><td><input type="text" name="ejahr" value="[% ejahr %]" size="4" maxlength="4" />&nbsp;<select name="ejahrop"><option value="eq" selected="selected">genau</option><option value="gt">jünger</option><option value="lt">älter</option></select></td><td></td></tr>
+<tr><td class="category">[% msg.maketext("Jahr") %]</td><td class="category">und<input type="hidden" name="bool7" value="AND" /></td><td><input type="text" name="ejahr" value="[% searchquery.ejahr.val %]" size="4" maxlength="4" />&nbsp;<select name="ejahrop"><option value="eq" selected="selected">genau</option><option value="gt">jünger</option><option value="lt">älter</option></select></td><td></td></tr>
 [% END %]
 
 <tr><td class="category">[% msg.maketext("Eingrenzung auf Gesamttitel") %]&nbsp;([% msg.maketext("Serien") %])</td><td class="category">und</td><td><input type="checkbox" name="serien" /></td><td></td></tr>

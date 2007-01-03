@@ -1,0 +1,91 @@
+[%#-
+#######################################################################
+#
+# Templatename: managecollection_tit_as_bibtex
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe *aller* Merklisten-Items im BibTeX-Format *ohne* Funktions-
+# elemente
+#
+#######################################################################
+-%]
+[%- FOREACH titset IN collection -%]
+[%- normset    = titset.tit -%]
+[%- mexnormset = titset.mex -%]
+[%-
+    #USE dumper;
+    #dumper.dump(normset);
+    # Verfasser konstruieren ;
+    authors = [] ;
+    FOREACH part IN normset.${'T0100'} ;
+      authors.push("${part.content}") ;
+    END ;
+    FOREACH part IN normset.${'T0101'} ;
+      authors.push("${part.content}") ;
+    END ;
+    author = authors.join(' and ') ;
+
+    # Schlagworte
+    keywords = [] ;
+    FOREACH part IN normset.${'T0710'} ;
+      keywords.push("${part.content}") ;
+    END ;
+    keyword = keywords.join(', ') ;
+
+    # Auflage
+    edition = normset.${'T0403'}.first.content ;
+
+    # Verleger
+    publisher = normset.${'T0412'}.first.content ;
+
+    # Titel
+    title    = normset.${'T0331'}.first.content ;
+
+    # Jahr
+    year     = normset.${'T0425'}.first.content ;
+
+    # ISBN
+    isbn     = normset.${'T0540'}.first.content ;
+
+    # Sprache
+    language = normset.${'T0516'}.first.content ;
+
+    # identifier
+    identifiers = [] ;
+    identifiers.push(normset.${'T0100'}.first.content);
+    identifiers.push(normset.${'T0331'}.first.content);
+    identifiers.push(normset.${'T0425'}.first.content);
+    identifier = identifiers.join('') ;
+-%]
+@book {identifier,
+
+[%- IF author -%]
+   author = {[% author %]},
+[% END -%]
+[%- IF edition -%]
+   edition = {[% edition %]},
+[% END -%]
+[%- IF publisher -%]
+   publisher = {[% publisher %]},
+[% END -%]
+[%- IF title -%]
+   title = {[% title %]},
+[% END -%]
+[%- IF year -%]
+   year = {[% year %]},
+[% END -%]
+[%- IF isbn -%]
+   ISBN = {[% isbn %]},
+[% END -%]
+[%- IF keywords -%]
+   keywords = {[% keyword %]},
+[% END -%]
+[%- IF language -%]
+   language = {[% language %]}
+[% END -%]
+}
+
+[% END -%]

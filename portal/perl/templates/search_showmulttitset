@@ -129,10 +129,7 @@ END;
 
 <form method="get" action="[% config.search_loc %]">
 <input type="hidden" name="sessionID"  value="[% sessionID %]" />
-<input type="hidden" name="searchmode" value="[% searchmode %]" />
-<input type="hidden" name="rating"     value="[% rating %]" />
-<input type="hidden" name="bookinfo"   value="[% bookinfo %]" />
-<input type="hidden" name="hitrange"   value="[% hitrange %]" />
+<input type="hidden" name="hitrange"   value="[% qopts.hitrange %]" />
 <input type="hidden" name="database"   value="[% database %]" />
 
 <table>

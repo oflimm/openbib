@@ -169,7 +169,7 @@ END;
 <tr><th>Das könnte Sie interessieren:</th></tr>
 <tr><td class="boxedclear">
 Nutzer, die diesen Titel ausgew&auml;hlt haben, interessierten sich auch f&uuml;r die folgenden Titel. <a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#enrichrelevance" target="body">Weitere Informationen</a> finden Sie in der Suchhilfe.
-<ul>
+<table>
 [%-   isbnitems = normset.${"T4000"} -%]
 [%-   hstitems  = normset.${"T4001"} -%]
 [%- FOREACH isbnitem IN isbnitems -%]
@@ -177,10 +177,10 @@ Nutzer, die diesen Titel ausgew&auml;hlt haben, interessierten sich auch f&uuml;
 [%-   hstitem = hstitems.${isbnidx} -%]
 [%-   globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;isbn=${isbnitem.content}" -%]
 [%-   IF hstitem.content.defined -%]
-<li><b><a href="[% globalurl %]">[% hstitem.content %]</a></b></li>
+<tr><td><a href="[% globalurl %]"><span class="globalsearch">G</span></a></td><td>[% hstitem.content %]</td></tr>
 [%-   END -%]
 [%- END -%]
-</ul>
+</table>
 </td></tr>
 </table>
 [% END %]
@@ -193,10 +193,7 @@ Nutzer, die diesen Titel ausgew&auml;hlt haben, interessierten sich auch f&uuml;
 
 <form method="get" action="[% config.search_loc %]">
 <input type="hidden" name="sessionID"  value="[% sessionID %]" />
-<input type="hidden" name="searchmode" value="[% searchmode %]" />
-<input type="hidden" name="rating"     value="[% rating %]" />
-<input type="hidden" name="bookinfo"   value="[% bookinfo %]" />
-<input type="hidden" name="hitrange"   value="[% hitrange %]" />
+<input type="hidden" name="hitrange"   value="[% qopts.hitrange %]" />
 <input type="hidden" name="database"   value="[% database %]" />
 
 <table>

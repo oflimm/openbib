@@ -39,9 +39,7 @@
 
 <form method="get" action="[% config.virtualsearch_loc %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
-<input type="hidden" name="rating"    value="[% rating %]" />
-<input type="hidden" name="bookinfo"  value="[% bookinfo %]" />
-<input type="hidden" name="hitrange"  value="-1" />
+<input type="hidden" name="hitrange"  value="[% qopts.hitrange %]" />
 <input type="hidden" name="profil"    value="[% profil %]" />
 
 <table>

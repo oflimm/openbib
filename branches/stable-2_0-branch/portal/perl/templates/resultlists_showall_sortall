@@ -27,7 +27,7 @@
 <p />
 <form method="get" action="[% config.resultlists_loc %]">
 <input type="hidden" name="offset"    value="[% query.param('offset') %]" />
-<input type="hidden" name="hitrange"  value="[% query.param('hitrange') %]" />
+<input type="hidden" name="hitrange"  value="[% qopts.hitrange %]" />
 <input type="hidden" name="action"    value="showall" />
 <input type="hidden" name="sessionID" value="[% query.param('sessionID') %]" />
 <input type="hidden" name="queryid"   value="[% query.param('queryid') %]" />

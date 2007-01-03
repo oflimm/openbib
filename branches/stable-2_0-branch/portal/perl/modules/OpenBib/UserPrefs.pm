@@ -77,6 +77,7 @@ sub handler {
     my $showfs        = ($query->param('showfs'))?$query->param('showfs'):'0';
     my $showhst       = ($query->param('showhst'))?$query->param('showhst'):'0';
     my $showhststring = ($query->param('showhststring'))?$query->param('showhststring'):'0';
+    my $showgtquelle  = ($query->param('showgtquelle'))?$query->param('showgtquelle'):'0';
     my $showverf      = ($query->param('showverf'))?$query->param('showverf'):'0';
     my $showkor       = ($query->param('showkor'))?$query->param('showkor'):'0';
     my $showswt       = ($query->param('showswt'))?$query->param('showswt'):'0';
@@ -136,6 +137,10 @@ sub handler {
         my $showhst = decode_utf8($result->{'hst'});
         my $hstchecked="";
         $hstchecked="checked=\"checked\"" if ($showhst);
+
+        my $showgtquelle = decode_utf8($result->{'gtquelle'});
+        my $gtquellechecked="";
+        $gtquellechecked="checked=\"checked\"" if ($showgtquelle);
 
         my $showhststring = decode_utf8($result->{'hststring'});
         my $hststringchecked="";
@@ -248,8 +253,8 @@ sub handler {
         OpenBib::Common::Util::print_page($config->{tt_userprefs_tname},$ttdata,$r);
     }
     elsif ($action eq "changefields") {
-        my $targetresult=$user->{dbh}->prepare("update fieldchoice set fs = ?, hst = ?, hststring = ?, verf = ?, kor = ?, swt = ?, notation = ?, isbn = ?, issn = ?, sign = ?, mart = ?, ejahr = ? where userid = ?") or $logger->error($DBI::errstr);
-        $targetresult->execute($showfs,$showhst,$showhststring,$showverf,$showkor,$showswt,$shownotation,$showisbn,$showissn,$showsign,$showmart,$showejahr, $userid) or $logger->error($DBI::errstr);
+        my $targetresult=$user->{dbh}->prepare("update fieldchoice set fs = ?, hst = ?, hststring = ?, verf = ?, kor = ?, swt = ?, notation = ?, isbn = ?, issn = ?, sign = ?, mart = ?, ejahr = ?, gtquelle=? where userid = ?") or $logger->error($DBI::errstr);
+        $targetresult->execute($showfs,$showhst,$showhststring,$showverf,$showkor,$showswt,$shownotation,$showisbn,$showissn,$showsign,$showmart,$showejahr,$showgtquelle,$userid) or $logger->error($DBI::errstr);
         $targetresult->finish();
 
         # TT-Data erzeugen

@@ -900,6 +900,8 @@ sub print_tit_list_by_idn {
         ? $arg_ref->{itemlist_ref}      : undef;
     my $targetdbinfo_ref  = exists $arg_ref->{targetdbinfo_ref}
         ? $arg_ref->{targetdbinfo_ref}  : undef;
+    my $queryoptions_ref  = exists $arg_ref->{queryoptions_ref}
+        ? $arg_ref->{queryoptions_ref}  : undef;
     my $database          = exists $arg_ref->{database}
         ? $arg_ref->{database}          : undef;
     my $sessionID         = exists $arg_ref->{sessionID}
@@ -979,6 +981,7 @@ sub print_tit_list_by_idn {
 
         baseurl        => $baseurl,
 
+        qopts          => $queryoptions_ref,
         query          => $query,
         hitrange       => $hitrange,
         offset         => $offset,
@@ -1881,7 +1884,7 @@ sub initial_search_for_titidns {
     my $notfirstsql=0;
     
     if ($searchquery_ref->{fs}{norm}) {	
-        push @sqlwhere, $searchquery_ref->{fs}{bool}." match (verf,hst,kor,swt,notation,sign,isbn,issn) against (? IN BOOLEAN MODE)";
+        push @sqlwhere, $searchquery_ref->{fs}{bool}." match (verf,hst,kor,swt,notation,sign,isbn,issn,ejahrft) against (? IN BOOLEAN MODE)";
         push @sqlargs, $searchquery_ref->{fs}{norm};
     }
    
@@ -1944,6 +1947,10 @@ sub initial_search_for_titidns {
         push @sqlargs,  $searchquery_ref->{hststring}{norm};
     }
   
+    if ($searchquery_ref->{gtquelle}{norm}) {
+        push @sqlwhere, $searchquery_ref->{gtquelle}{bool}."  match (gtquelle) against (? IN BOOLEAN MODE)";
+        push @sqlargs,  $searchquery_ref->{gtquelle}{norm};
+    }
   
     if ($searchquery_ref->{ejahr}{norm}) {
         push @sqlwhere, $searchquery_ref->{ejahr}{bool}." ejahr ".$searchquery_ref->{ejahr}{arg}." ?";

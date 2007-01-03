@@ -353,6 +353,8 @@ my @isbn      = ();
 my @issn      = ();
 my @artinh    = ();
 my @ejahr     = ();
+my @ejahrft   = ();
+my @gtquelle  = ();
 my @titverf   = ();
 my @titkor    = ();
 my @titswt    = ();
@@ -378,6 +380,8 @@ while (my $line=<IN>){
         @issn      = ();
         @artinh    = ();
         @ejahr     = ();
+        @ejahrft   = ();
+        @gtquelle  = ();
         @titverf   = ();
         @titkor    = ();
         @titswt    = ();
@@ -440,8 +444,10 @@ while (my $line=<IN>){
         my $issn      = join(" ",@issn);
         my $artinh    = join(" ",@artinh);
         my $ejahr     = join(" ",@ejahr);
+        my $ejahrft   = join(" ",@ejahrft);
+        my $gtquelle  = join(" ",@gtquelle);
         
-        print OUTSEARCH "$id$verf$hst$kor$swt$notation$mex$ejahr$isbn$issn$artinh\n";
+        print OUTSEARCH "$id$verf$hst$kor$swt$notation$mex$ejahr$ejahrft$gtquelle$isbn$issn$artinh\n";
 
         # Listitem zusammensetzen
 
@@ -876,6 +882,18 @@ while (my $line=<IN>){
         else {
             if (   exists $convtab_ref->{search_category}{ejahr    }{$category}){
                 push @ejahr, OpenBib::Common::Util::grundform({
+                    category => $category,
+                    content  => $content,
+                });
+            }
+            if (   exists $convtab_ref->{search_category}{ejahrft  }{$category}){
+                push @ejahrft, OpenBib::Common::Util::grundform({
+                    category => $category,
+                    content  => $content,
+                });
+            }
+            if (   exists $convtab_ref->{search_category}{gtquelle }{$category}){
+                push @gtquelle, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });

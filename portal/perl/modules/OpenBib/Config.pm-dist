@@ -641,6 +641,14 @@ use vars qw(%config);
 			 ejahr => {
 				   '0425' => 1, # Erschjahr
 				  },
+			 ejahrft => {
+				   '0425' => 1, # Erschjahr
+				  },
+                         gtquelle => { # Gesamttitel/Quelle
+                                   '0089' => 1, # Bandkennzeichen
+                                   '0590' => 1, # Quelle
+                                   '0451' => 1, # Serie/Band
+                                  },
 			},
 			
 			blacklist_aut => 

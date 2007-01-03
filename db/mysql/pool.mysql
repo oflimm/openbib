@@ -313,6 +313,8 @@ swt       TEXT,
 notation  TEXT,
 sign      TEXT,
 ejahr     SMALLINT,
+ejahrft   TEXT,
+gtquelle  TEXT,
 isbn      TEXT,
 issn      TEXT,
 artinh    TEXT,
@@ -327,7 +329,7 @@ INDEX     (ejahr),
 FULLTEXT  (isbn),
 FULLTEXT  (issn),
 FULLTEXT  (artinh),
-FULLTEXT  (verf,hst,kor,swt,notation,sign,isbn,issn)
+FULLTEXT  (verf,hst,kor,swt,notation,sign,isbn,issn,ejahrft)
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci

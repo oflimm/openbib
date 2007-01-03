@@ -409,6 +409,9 @@ sub handler {
             view       => $view,
             stylesheet => $stylesheet,		
             sessionID  => $session->{ID},
+
+            qopts           => $queryoptions_ref,
+            
             resulttime => $resulttime,
             contentreq => $contentreq,
             index      => \@sortedindex,
@@ -476,6 +479,10 @@ sub handler {
     }
 
     if ($searchquery_ref->{hststring}{norm}) {
+        $firstsql=1;
+    }
+
+    if ($searchquery_ref->{gtquelle}{norm}) {
         $firstsql=1;
     }
 
@@ -1103,7 +1110,7 @@ sub handler {
     #
     # ENDE Anfrage an Datenbanken schicken und Ergebnisse einsammeln
 
-#    $logger->info("InitialSearch: ", $session->{ID}, " ", $gesamttreffer, " fs=(", $fs, ") verf=(", $boolverf, "#", $verf, ") hst=(", $boolhst, "#", $hst, ") hststring=(", $boolhststring, "#", $hststring, ") swt=(", $boolswt, "#", $swt, ") kor=(", $boolkor, "#", $kor, ") sign=(", $boolsign, "#", $sign, ") isbn=(", $boolisbn, "#", $isbn, ") issn=(", $boolissn, "#", $issn, ") mart=(", $boolmart, "#", $mart, ") notation=(", $boolnotation, "#", $notation, ") ejahr=(", $boolejahr, "#", $ejahr, ") ejahrop=(", $ejahrop, ") databases=(",join(' ',sort @databases),") ");
+#    $logger->info("InitialSearch: ", $session->{ID}, " ", $gesamttreffer, " fs=(", $fs, ") verf=(", $boolverf, "#", $verf, ") hst=(", $boolhst, "#", $hst, ") hststring=(", $boolhststring, "#", $hststring, ") gtquelle=(", $boolgtquelle, "#", $gtquelle, ") swt=(", $boolswt, "#", $swt, ") kor=(", $boolkor, "#", $kor, ") sign=(", $boolsign, "#", $sign, ") isbn=(", $boolisbn, "#", $isbn, ") issn=(", $boolissn, "#", $issn, ") mart=(", $boolmart, "#", $mart, ") notation=(", $boolnotation, "#", $notation, ") ejahr=(", $boolejahr, "#", $ejahr, ") ejahrop=(", $ejahrop, ") databases=(",join(' ',sort @databases),") ");
 
     # Wenn etwas gefunden wurde, dann kann ein Resultset geschrieben werden.
 

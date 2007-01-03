@@ -471,14 +471,15 @@ sub get_searchquery {
         'lt' => '<',
     };
 
-    my ($fs, $verf, $hst, $hststring, $swt, $kor, $sign, $isbn, $issn, $mart,$notation,$ejahr,$ejahrop);
+    my ($fs, $verf, $hst, $hststring, $gtquelle, $swt, $kor, $sign, $isbn, $issn, $mart,$notation,$ejahr,$ejahrop);
 
-    my ($fsnorm, $verfnorm, $hstnorm, $hststringnorm, $swtnorm, $kornorm, $signnorm, $isbnnorm, $issnnorm, $martnorm,$notationnorm,$ejahrnorm);
+    my ($fsnorm, $verfnorm, $hstnorm, $hststringnorm, $gtquellenorm, $swtnorm, $kornorm, $signnorm, $isbnnorm, $issnnorm, $martnorm,$notationnorm,$ejahrnorm);
     
     $fs        = $fsnorm        = decode_utf8($query->param('fs'))            || '';
     $verf      = $verfnorm      = decode_utf8($query->param('verf'))          || '';
     $hst       = $hstnorm       = decode_utf8($query->param('hst'))           || '';
     $hststring = $hststringnorm = decode_utf8($query->param('hststring'))     || '';
+    $gtquelle  = $gtquellenorm  = decode_utf8($query->param('gtquelle'))      || '';
     $swt       = $swtnorm       = decode_utf8($query->param('swt'))           || '';
     $kor       = $kornorm       = decode_utf8($query->param('kor'))           || '';
     $sign      = $signnorm      = decode_utf8($query->param('sign'))          || '';
@@ -487,7 +488,7 @@ sub get_searchquery {
     $mart      = $martnorm      = decode_utf8($query->param('mart'))          || '';
     $notation  = $notationnorm  = decode_utf8($query->param('notation'))      || '';
     $ejahr     = $ejahrnorm     = decode_utf8($query->param('ejahr'))         || '';
-    $ejahrop   = decode_utf8($query->param('ejahrop'))       || 'eq';
+    $ejahrop   =                  decode_utf8($query->param('ejahrop'))       || 'eq';
 
     my $autoplus      = $query->param('autoplus')      || '';
     my $verfindex     = $query->param('verfindex')     || '';
@@ -522,6 +523,8 @@ sub get_searchquery {
     my $boolmart      = ($query->param('boolmart'))     ?$query->param('boolmart')
         :"AND";
     my $boolhststring = ($query->param('boolhststring'))?$query->param('boolhststring')
+        :"AND";
+    my $boolgtquelle  = ($query->param('boolgtquelle')) ?$query->param('boolgtquelle')
         :"AND";
 
     # Sicherheits-Checks
@@ -574,6 +577,10 @@ sub get_searchquery {
         $boolhststring = "AND";
     }
 
+    if ($boolgtquelle ne "AND" && $boolgtquelle ne "OR" && $boolgtquelle ne "NOT") {
+        $boolgtquelle = "AND";
+    }
+
     $boolverf      = "AND NOT" if ($boolverf      eq "NOT");
     $boolhst       = "AND NOT" if ($boolhst       eq "NOT");
     $boolswt       = "AND NOT" if ($boolswt       eq "NOT");
@@ -585,6 +592,7 @@ sub get_searchquery {
     $boolfs        = "AND NOT" if ($boolfs        eq "NOT");
     $boolmart      = "AND NOT" if ($boolmart      eq "NOT");
     $boolhststring = "AND NOT" if ($boolhststring eq "NOT");
+    $boolgtquelle  = "AND NOT" if ($boolgtquelle  eq "NOT");
 
     # Setzen der arithmetischen Ejahrop-Operatoren
     if (exists $ejahrop_ref->{$ejahrop}){
@@ -629,6 +637,11 @@ sub get_searchquery {
 
     $hststringnorm = OpenBib::Common::Util::grundform({
         content   => $hststringnorm,
+        searchreq => 1,
+    });
+
+    $gtquellenorm  = OpenBib::Common::Util::grundform({
+        content   => $gtquellenorm,
         searchreq => 1,
     });
 
@@ -680,13 +693,14 @@ sub get_searchquery {
 
     # Umwandlung impliziter ODER-Verknuepfung in UND-Verknuepfung
     if ($autoplus eq "1" && !$verfindex && !$korindex && !$swtindex) {
-        $fsnorm   = OpenBib::VirtualSearch::Util::conv2autoplus($fsnorm)   if ($fs);
-        $verfnorm = OpenBib::VirtualSearch::Util::conv2autoplus($verfnorm) if ($verf);
-        $hstnorm  = OpenBib::VirtualSearch::Util::conv2autoplus($hstnorm)  if ($hst);
-        $kornorm  = OpenBib::VirtualSearch::Util::conv2autoplus($kornorm)  if ($kor);
-        $swtnorm  = OpenBib::VirtualSearch::Util::conv2autoplus($swtnorm)  if ($swt);
-        $isbnnorm = OpenBib::VirtualSearch::Util::conv2autoplus($isbnnorm) if ($isbn);
-        $issnnorm = OpenBib::VirtualSearch::Util::conv2autoplus($issnnorm) if ($issn);
+        $fsnorm       = OpenBib::VirtualSearch::Util::conv2autoplus($fsnorm)   if ($fs);
+        $verfnorm     = OpenBib::VirtualSearch::Util::conv2autoplus($verfnorm) if ($verf);
+        $hstnorm      = OpenBib::VirtualSearch::Util::conv2autoplus($hstnorm)  if ($hst);
+        $kornorm      = OpenBib::VirtualSearch::Util::conv2autoplus($kornorm)  if ($kor);
+        $swtnorm      = OpenBib::VirtualSearch::Util::conv2autoplus($swtnorm)  if ($swt);
+        $isbnnorm     = OpenBib::VirtualSearch::Util::conv2autoplus($isbnnorm) if ($isbn);
+        $issnnorm     = OpenBib::VirtualSearch::Util::conv2autoplus($issnnorm) if ($issn);
+        $gtquellenorm = OpenBib::VirtualSearch::Util::conv2autoplus($gtquellenorm) if ($gtquelle);
     }
 
     # Spezielle Trunkierungen
@@ -715,6 +729,11 @@ sub get_searchquery {
             val   => $hststring,
             norm  => $hststringnorm,
             bool  => $boolhststring,
+        },
+        gtquelle  => {
+            val   => $gtquelle,
+            norm  => $gtquellenorm,
+            bool  => $boolgtquelle,
         },
         swt => {
             val   => $swt,

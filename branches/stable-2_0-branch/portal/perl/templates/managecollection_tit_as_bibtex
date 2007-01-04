@@ -113,13 +113,17 @@
       bibtexset.push("language  = \"${language}\"") ;
     END ;
 
+    USE autstr = String "${author}" ;
+    USE titstr = String "${title}" ;
+    identifier = "${autstr.truncate(4)}${titstr.truncate(4)}${year}";
+
     IF isbn ;
-      bibtexset.unshift("@book {BibTeXid");
+      bibtexset.unshift("@book {${identifier}");
       bibtexset.push("}");
       bibtexout = bibtexset.join(",\n") ;
       bibsonomy = bibtexset.join(",") ;
     ELSE ;
-      bibtexset.unshift("@book {BibTeXid");
+      bibtexset.unshift("@book {${identifier}");
       bibtexset.push("}");
       bibtexout = bibtexset.join(",\n") ;
       bibsonomy = bibtexset.join(",") ;

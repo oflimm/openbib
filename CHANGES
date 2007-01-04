@@ -21,3 +21,8 @@ Version 2.0:
 - Extener DigiBib-Connector als mod_perl-Handler (zurueckportiert nach 1.2.2)
 - Ausgabe der Bandangaben in den Kurztitellisten. Damit ist nun eine alphabetische Sortierung moeglich
 - Schneller Zugriff auf Kurztitel-Informationen durch neue titlistitem-Tabelle
+- Integration des Logging-Frameworks in die Programme zur automatischen
+  Konvertierung sowie Anreichern mit Popularitaetsinformationen
+- Erweiterung um das BibTeX-Format fuer die Merklisten
+- Uebernahme von Merklisteneintraegen im BibTeX-Format nach BibSonomy
+  (www.bibsonomy.org)

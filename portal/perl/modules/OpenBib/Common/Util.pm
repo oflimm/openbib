@@ -214,10 +214,8 @@ sub print_page {
             INCLUDE_PATH   => $config->{tt_include_path},
 	    ABSOLUTE       => 1,
         }) ],
-#         INCLUDE_PATH   => $config->{tt_include_path},
-#         ABSOLUTE       => 1,     # Notwendig fuer Kaskadierung
          OUTPUT         => $r,    # Output geht direkt an Apache Request
-#         RECURSION      => 1,
+         RECURSION      => 1,
     });
   
     # Dann Ausgabe des neuen Headers

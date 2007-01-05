@@ -115,24 +115,30 @@
 
     USE autstr = String "${author}" ;
     USE titstr = String "${title}" ;
-    identifier = "${autstr.truncate(4)}${titstr.truncate(4)}${year}";
+    autstr = autstr.truncate(4) ;
+    autstr = autstr.replace('\W','') ;
+    titstr = titstr.truncate(4) ;
+    titstr = titstr.replace('\W','') ;
+    identifier = "${autstr}${titstr}${year}";
 
     IF isbn ;
       bibtexset.unshift("@book {${identifier}");
-      bibtexset.push("}");
       bibtexout = bibtexset.join(",\n") ;
+      bibtexout = "${bibtexout}}";
       bibsonomy = bibtexset.join(",") ;
+      bibsonomy = "${bibsonomy}}";
     ELSE ;
       bibtexset.unshift("@book {${identifier}");
-      bibtexset.push("}");
       bibtexout = bibtexset.join(",\n") ;
+      bibtexout = "${bibtexout}}";
       bibsonomy = bibtexset.join(",") ;
+      bibsonomy = "${bibsonomy}}";
     END ;
 -%]
 [% bibtexout %]
 </pre>
 <p />
-[ <a href="http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&selection=[% bibsonomy | uri %]" target="_top">An BibSonomy senden</a> ]
+<img style="vertical-align: bottom;" src="/images/openbib/share.png" alt="Share this"/>&nbsp;<a href="http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&selection=[% bibsonomy | uri %]" target="_top" valign="top">[% msg.maketext("An BibSonomy senden") %]</a>
 <p />
 <p />
 <pre>

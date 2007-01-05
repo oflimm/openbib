@@ -47,6 +47,7 @@
 ../templates/managecollection_save_html
 ../templates/managecollection_save_plain
 ../templates/managecollection_show
+../templates/managecollection_tit_as_bibtex
 ../templates/managecollection_tit_as_endnote
 ../templates/managecollection_tit_as_html
 ../templates/managecollection_tit_as_html_simple

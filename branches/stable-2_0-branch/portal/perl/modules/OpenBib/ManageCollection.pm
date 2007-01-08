@@ -244,6 +244,7 @@ sub handler {
             type       => $type,
             collection => \@collection,
             config     => $config,
+            utf2bibtex => \&OpenBib::ManageCollection::Util::utf2bibtex,
             msg        => $msg,
         };
     

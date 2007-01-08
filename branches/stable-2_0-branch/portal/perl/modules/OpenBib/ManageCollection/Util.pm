@@ -35,5 +35,19 @@ use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Config;
 
+sub utf2bibtex {
+    my ($string)=@_;
+
+    $string=~s/ä/{\\"a}/g;
+    $string=~s/ö/{\\"o}/g;
+    $string=~s/ü/{\\"u}/g;
+    $string=~s/Ä/{\\"A}/g;
+    $string=~s/Ö/{\\"O}/g;
+    $string=~s/Ü/{\\"U}/g;
+    $string=~s/ß/{\\"s}/g;
+
+    return $string;
+}
+
 
 1;

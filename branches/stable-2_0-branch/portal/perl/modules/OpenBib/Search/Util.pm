@@ -1011,7 +1011,11 @@ sub print_tit_set_by_idn {
     my $targetcircinfo_ref = exists $arg_ref->{targetcircinfo_ref}
         ? $arg_ref->{targetcircinfo_ref} : undef;
     my $queryoptions_ref   = exists $arg_ref->{queryoptions_ref}
-        ? $arg_ref->{queryoptions_ref}  : undef;
+        ? $arg_ref->{queryoptions_ref}   : undef;
+    my $searchquery_ref    = exists $arg_ref->{searchquery_ref}
+        ? $arg_ref->{searchquery_ref}    : undef;
+    my $queryid            = exists $arg_ref->{queryid}
+        ? $arg_ref->{queryid}            : undef;
     my $database           = exists $arg_ref->{database}
         ? $arg_ref->{database}           : undef;
     my $r                  = exists $arg_ref->{apachereq}
@@ -1043,25 +1047,47 @@ sub print_tit_set_by_idn {
         sessionID  => $session->{ID},
     });
 
+    # Highlight Query
+
+#     my $term_ref = OpenBib::Common::Util::get_searchterms({
+#         searchquery_ref => $searchquery_ref,
+#     });
+
+#     foreach my $category (keys %$normset){
+#         if ($category ne "id" && $category ne "database"){
+#             foreach my $item (@{$normset->{$category}}){
+#                 foreach my $singleterm (@$term_ref){
+#                     $logger->debug("Trying to change $item->{content} : Term $singleterm");
+#                     $item->{content}=~s/($singleterm)/<span class="queryhighlight">$1<\/span>/ig unless ($item->{content}=~/http/);
+#                 }
+#             }
+#         }
+#     }
+    
     my $poolname=$targetdbinfo_ref->{sigel}{
         $targetdbinfo_ref->{dbases}{$database}};
 
     # TT-Data erzeugen
     my $ttdata={
-        view       => $view,
-        stylesheet => $stylesheet,
-        database   => $database,
-        poolname   => $poolname,
-        prevurl    => $prevurl,
-        nexturl    => $nexturl,
-        qopts      => $queryoptions_ref,
-        sessionID  => $session->{ID},
-        titidn     => $titidn,
-        normset    => $normset,
-        mexnormset => $mexnormset,
-        circset    => $circset,
-        config     => $config,
-        msg        => $msg,
+        view        => $view,
+        stylesheet  => $stylesheet,
+        database    => $database,
+        poolname    => $poolname,
+        prevurl     => $prevurl,
+        nexturl     => $nexturl,
+        qopts       => $queryoptions_ref,
+        queryid     => $queryid,
+        sessionID   => $session->{ID},
+        titidn      => $titidn,
+        normset     => $normset,
+        mexnormset  => $mexnormset,
+        circset     => $circset,
+        searchquery => $searchquery_ref,
+
+        highlightquery => \&highlightquery,
+
+        config      => $config,
+        msg         => $msg,
     };
   
     OpenBib::Common::Util::print_page($config->{tt_search_showtitset_tname},$ttdata,$r);
@@ -2242,6 +2268,22 @@ sub get_recent_titids_by_not {
     $dbh->disconnect;
 
     return \@titlist;
+}
+
+sub highlightquery {
+    my ($searchquery_ref,$content) = @_;
+    
+    # Highlight Query
+
+    my $term_ref = OpenBib::Common::Util::get_searchterms({
+        searchquery_ref => $searchquery_ref,
+    });
+
+    foreach my $singleterm (@$term_ref){
+        $content=~s/($singleterm)/<span class="queryhighlight">$1<\/span>/ig unless ($content=~/http/);
+    }
+
+    return $content;
 }
 
 1;

@@ -38,6 +38,7 @@ use Digest::MD5();
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use POSIX();
+use String::Tokenizer;
 use Template;
 use YAML ();
 
@@ -454,6 +455,69 @@ sub cleanrl {
     return $line;
 }
 
+sub get_searchterms {
+    my ($arg_ref) = @_;
+    
+    # Set defaults
+    my $searchquery_ref  = exists $arg_ref->{searchquery_ref}
+        ? $arg_ref->{searchquery_ref}     : "";
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $term_ref = [];
+
+    my @allterms = ();
+    foreach my $cat (qw/fs verf hst hststring gtquelle kor notation isbn issn sign swt ejahr/){
+        push @allterms, $searchquery_ref->{$cat}->{val}
+    }
+
+    my $alltermsstring = join (" ",@allterms);
+
+    my $tokenizer = String::Tokenizer->new();
+    $tokenizer->tokenize($alltermsstring);
+
+    my $i = $tokenizer->iterator();
+
+    while ($i->hasNextToken()) {
+        my $next = $i->nextToken();
+        next if (!$next);
+        push @$term_ref, $next;
+    }
+
+    return $term_ref;
+}
+
+sub get_searchquery_of_queryid {
+    my ($arg_ref) = @_;
+    
+    # Set defaults
+    my $queryid   = exists $arg_ref->{queryid}
+        ? $arg_ref->{queryid}             : "";
+
+    my $sessionID = exists $arg_ref->{sessionID}
+        ? $arg_ref->{sessionID}           : "";
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return unless ($queryid && $sessionID);
+
+    my $session = new OpenBib::Session({
+        sessionID => $sessionID
+    });
+
+    my $request = $session->{dbh}->prepare("select query from queries where queryid=? and sessionid=?");
+    $request->execute($queryid,$sessionID);
+
+    my $result=$request->fetchrow_hashref;
+
+    my $searchquery_ref=Storable::thaw(pack "H*",$result->{query});
+
+    return $searchquery_ref;
+}
+
+
 sub get_searchquery {
     my ($r)=@_;
     
@@ -602,9 +666,11 @@ sub get_searchquery {
     
     # Filter: ISBN und ISSN
 
-    # Entfernung der Minus-Zeichen bei der ISBN
+    # Entfernung der Minus-Zeichen bei der ISBN zuerst 13-, dann 10-stellig
     $fsnorm   =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10/g;
+    $fsnorm   =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10$11$12$13/g;
     $isbnnorm =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10/g;
+    $isbnnorm =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10$11$12$13/g;
 
     # Entfernung der Minus-Zeichen bei der ISSN
     $fsnorm   =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*([0-9xX])/$1$2$3$4$5$6$7$8/g;

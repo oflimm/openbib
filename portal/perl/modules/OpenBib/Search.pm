@@ -136,6 +136,8 @@ sub handler {
     my $searchtitofnot    = $query->param('searchtitofnot')    || '';
     my $searchtitofswt    = $query->param('searchtitofswt')    || '';
 
+    my $queryid           = $query->param('queryid')           || '';
+
     #####                                                          ######
     ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########
     #####                                                          ######
@@ -660,6 +662,17 @@ sub handler {
     #####################################################################
   
     if ($searchsingletit) {
+        # Zuerst die zugehoerige Suchanfrage bestimmen
+
+        my $searchquery_ref = {};
+
+        if ($queryid){
+            $searchquery_ref = OpenBib::Common::Util::get_searchquery_of_queryid({
+                queryid   => $queryid,
+                sessionID => $session->{ID},
+            });
+        }
+
         if ($config->get_system_of_db($database) eq "Z39.50"){
             my $z3950dbh = new OpenBib::Search::Z3950($database);
 
@@ -677,21 +690,23 @@ sub handler {
             
             # TT-Data erzeugen
             my $ttdata={
-                view       => $view,
-                stylesheet => $stylesheet,
-                database   => $database,
-                poolname   => $poolname,
-                prevurl    => $prevurl,
-                nexturl    => $nexturl,
-                qopts      => $queryoptions_ref,
-                sessionID  => $session->{ID},
-                titidn     => $searchsingletit,
-                normset    => $normset,
-                mexnormset => $mexnormset,
-                circset    => {},
+                view        => $view,
+                stylesheet  => $stylesheet,
+                database    => $database,
+                poolname    => $poolname,
+                prevurl     => $prevurl,
+                nexturl     => $nexturl,
+                qopts       => $queryoptions_ref,
+                sessionID   => $session->{ID},
+                titidn      => $searchsingletit,
+                normset     => $normset,
+                mexnormset  => $mexnormset,
+                circset     => {},
+
+                searchquery => $searchquery_ref,
                 
-                config     => $config,
-                msg        => $msg,
+                config      => $config,
+                msg         => $msg,
             };
             
             OpenBib::Common::Util::print_page($config->{tt_search_showtitset_tname},$ttdata,$r);
@@ -704,6 +719,8 @@ sub handler {
                 targetdbinfo_ref   => $targetdbinfo_ref,
                 targetcircinfo_ref => $targetcircinfo_ref,
                 queryoptions_ref   => $queryoptions_ref,
+                searchquery_ref    => $searchquery_ref,
+                queryid            => $queryid,
                 database           => $database,
                 apachereq          => $r,
                 stylesheet         => $stylesheet,

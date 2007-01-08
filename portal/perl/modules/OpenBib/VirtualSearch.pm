@@ -410,7 +410,7 @@ sub handler {
             stylesheet => $stylesheet,		
             sessionID  => $session->{ID},
 
-            qopts           => $queryoptions_ref,
+            qopts      => $queryoptions_ref,
             
             resulttime => $resulttime,
             contentreq => $contentreq,

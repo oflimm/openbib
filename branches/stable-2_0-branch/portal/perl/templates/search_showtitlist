@@ -15,16 +15,16 @@
 %]
 
 <body>
-<table border="0" cellspacing="0" cellpadding="0" width="100%">
-  <tr class="titlerow">
-    <td  width="20">&nbsp;</td><td valign="middle" align="left" height="32"><span class="dbdescshort">[% targetdbinfo.dbnames.$database.short %]</span></td>
-  </tr>
-</table>
 
+<ul class="tabbingmenu">
+   <li><a class="active" href="#"><span class="dbdescshort">[% targetdbinfo.dbnames.$database.short %]</span></a></li>
+</ul>
+
+<div class="content">
 <p />
 <form method="get" action="[% config.search_loc %]">
 <input type="hidden" name="offset"          value="[% offset %]" />
-<input type="hidden" name="hitrange"        value="[% qopts.hitrange %]" />
+<input type="hidden" name="hitrange"        value="[% IF hitrange %][% hitrange %][% ELSE %][% qopts.hitrange %][% END %]" />
 <input type="hidden" name="sessionID"       value="[% sessionID %]" />
 [%- IF query.param('database')          -%]<input type="hidden" name="database"      value="[% query.param('database') %]" />[% END %]
 [%- IF query.param('subtit')            -%]<input type="hidden" name="subtit"        value="[% query.param('subtit') %]" />[% END %]
@@ -173,6 +173,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 </table>
 
 </form>
+</div>
 <p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

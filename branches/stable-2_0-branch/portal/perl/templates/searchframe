@@ -76,14 +76,14 @@
 <p />
 <p />
 
-<table>
-  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" />&nbsp;<input type="reset" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" value="[% msg.maketext("Lösche Eingabemaske") %]" /></td></tr>
+<table width=100%">
+  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" />&nbsp<a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" class="button" target="body">[% msg.maketext("Lösche Eingabemaske") %]</a></td></tr>
 </table>
 [% ELSE %]
 [% msg.maketext("Sie können entweder durch entsprechende Auswahl in den insgesamt [_1] einzelnen [_2]Katalogen[_3] recherchieren oder auch sofort in allen zusammen.","${alldbs}","<a href=\"${config.databasechoice_loc}?sessionID=${sessionID};view=${view}\" target=\"body\">","</a>") %]
 <p />
-<table>
-  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in allen Katalogen auf einmal") %]" name="searchall" value="[% msg.maketext("In allen Katalogen suchen") %]" />&nbsp;<input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" />&nbsp;<input type="reset" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" value="[% msg.maketext("Lösche Eingabemaske") %]" /></td></tr>
+<table width=100%">
+  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in allen Katalogen auf einmal") %]" name="searchall" value="[% msg.maketext("In allen Katalogen suchen") %]" />&nbsp;<input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" />&nbsp;<a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" class="button" target="body">[% msg.maketext("Lösche Eingabemaske") %]</a></td></tr>
 </table>
 [% END %]
 
@@ -99,11 +99,11 @@
 [% END %]
 
 [% IF showhst %]
-<tr><td class="category">[% msg.maketext("Titel") %]</td><td class="category"><select name="boolhst"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="hst" value="[% searchquery.hst.val %]" size="30" maxlength="200" /></td><td></td></tr>
+<tr><td class="category">[% msg.maketext("Titelwort(e)") %]</td><td class="category"><select name="boolhst"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="hst" value="[% searchquery.hst.val %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
 [% IF showverf %]
-<tr><td class="category">[% msg.maketext("Verfasser") %]</td><td class="category"><select name="boolverf"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="verf" value="[% searchquery.verf.val %]" size="30" maxlength="200" /></td><td><input type="submit" name="verfindex" value="[% msg.maketext("Index") %]" /></td></tr>
+<tr><td class="category">[% msg.maketext("Person") %]</td><td class="category"><select name="boolverf"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="verf" value="[% searchquery.verf.val %]" size="30" maxlength="200" /></td><td><input type="submit" name="verfindex" value="[% msg.maketext("Index") %]" /></td></tr>
 [% END %]
 
 [% IF showkor %]
@@ -131,7 +131,7 @@
 [% END %]
 
 [% IF showhststring %]
-<tr><td class="category">[% msg.maketext("Titel-String") %]</td><td class="category"><select name="boolhststring"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="hststring" value="[% searchquery.hststring.val %]" size="30" maxlength="200" /></td><td><span class="warning">*</span></td></tr>
+<tr><td class="category">[% msg.maketext("Kompletter Titel") %]</td><td class="category"><select name="boolhststring"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="hststring" value="[% searchquery.hststring.val %]" size="30" maxlength="200" /></td><td><span class="warning">*</span></td></tr>
 [% END %]
 
 [% IF showgtquelle %]
@@ -195,12 +195,12 @@ colspan="2"><select name="sorttype"><option value="author" selected="selected">[
 <p />
 
 [% IF view %]
-<table>
-  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" />&nbsp;<input type="reset" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" value="[% msg.maketext("Lösche Eingabemaske") %]" /></td></tr>
+<table width=100%">
+  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" />&nbsp;<a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" class="button" target="body">[% msg.maketext("Lösche Eingabemaske") %]</a></td></tr>
 </table>
 [% ELSE %]
-<table>
-  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in allen Katalogen auf einmal") %]" name="searchall" value="[% msg.maketext("In allen Katalogen suchen") %]" />&nbsp;<input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" />&nbsp;<input type="reset" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" value="[% msg.maketext("Lösche Eingabemaske") %]" /></td></tr>
+<table width=100%">
+  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in allen Katalogen auf einmal") %]" name="searchall" value="[% msg.maketext("In allen Katalogen suchen") %]" />&nbsp;<input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" />&nbsp;<a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" class="button" target="body">[% msg.maketext("Lösche Eingabemaske") %]</a></td></tr>
 </table>
 [% END %]
 

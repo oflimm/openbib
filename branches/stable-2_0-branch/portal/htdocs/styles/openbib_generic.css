@@ -227,18 +227,15 @@ a:active.invisible {
   border-bottom: 3px solid #ffffff; 
 }
 
-#langchoice {
-  float: right;
-}
-
-#rightchoice {
-  float: right;
-}
-
 .tabbingmenu a:visited {
   color: #000000; 
   background: #ffffff; 
 }
+
+#langchoice {
+  float: right;
+}
+
 
 .content {
 
@@ -251,7 +248,7 @@ a:active.invisible {
 }
 
 .queryhighlight {
-  color:slategrey;
+  color:#990000;
 }
 
 #mainnavigation a:link {

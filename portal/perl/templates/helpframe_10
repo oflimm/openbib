@@ -17,12 +17,16 @@
       funcargs = { id => database, type => 1 } ;
       resultlist = statistics.get_result(funcargs);
 %]
-<table border="0" cellspacing="0" cellpadding="0" width="100%">
-  <tr class="titlerow">
-      <td width="20">&nbsp;</td>
-          <td valign="middle" align="left" height="32"><span class="dbdescshort">[% config.get_targetdbinfo.dbinfo.${database}.full %]</span></td>
-	        <td>&nbsp;</td></tr>
-		</table>
+
+[%# USE dumper;
+#dumper.dump( config.get_targetdbinfo);
+%]
+<div class="tabbingmenu">
+  <li><a hef="#" class="active"><span class="dbdescshort">[% config.get_targetdbinfo.dbnames.${database}.short %]</span></a></li>
+</div>
+
+<div class="content">
+
 <p />
 
 <table width="100%">
@@ -84,6 +88,8 @@ class="rlyearofpub">[% yearofpub %]</span></td><td><b>[% itemcount %]&nbsp;Nutze
 </table>
 </td></tr>
 </table>
+
+</div>
 <p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

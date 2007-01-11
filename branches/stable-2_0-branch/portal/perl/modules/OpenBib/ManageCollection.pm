@@ -237,15 +237,16 @@ sub handler {
     
         # TT-Data erzeugen
         my $ttdata={
-            view       => $view,
-            stylesheet => $stylesheet,
-            sessionID  => $session->{ID},
-            qopts      => $queryoptions_ref,
-            type       => $type,
-            collection => \@collection,
-            config     => $config,
-            utf2bibtex => \&OpenBib::ManageCollection::Util::utf2bibtex,
-            msg        => $msg,
+            view              => $view,
+            stylesheet        => $stylesheet,
+            sessionID         => $session->{ID},
+            qopts             => $queryoptions_ref,
+            type              => $type,
+            collection        => \@collection,
+            config            => $config,
+            normset2bibtex    => \&OpenBib::Common::Util::normset2bibtex,
+            normset2bibsonomy => \&OpenBib::Common::Util::normset2bibsonomy,
+            msg               => $msg,
         };
     
         OpenBib::Common::Util::print_page($config->{tt_managecollection_show_tname},$ttdata,$r);

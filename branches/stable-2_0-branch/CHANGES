@@ -26,3 +26,5 @@ Version 2.0:
 - Erweiterung um das BibTeX-Format fuer die Merklisten
 - Uebernahme von Merklisteneintraegen im BibTeX-Format nach BibSonomy
   (www.bibsonomy.org)
+- Highlighting der Suchbegriffe in der Einzeltitelanzeige
+- Ausweitung der Titel-String-Suche auf weitere Kategorien

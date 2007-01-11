@@ -1084,7 +1084,9 @@ sub print_tit_set_by_idn {
         circset     => $circset,
         searchquery => $searchquery_ref,
 
-        highlightquery => \&highlightquery,
+        highlightquery    => \&highlightquery,
+        normset2bibtex    => \&OpenBib::Common::Util::normset2bibtex,
+        normset2bibsonomy => \&OpenBib::Common::Util::normset2bibsonomy,
 
         config      => $config,
         msg         => $msg,

@@ -2,7 +2,7 @@
 #
 #  OpenBib::Common::Util
 #
-#  Dieses File ist (C) 2004-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2007 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -1070,6 +1070,250 @@ sub get_loadbalanced_servername {
     return $bestserver;
 }
 
+sub normset2bibtex {
+    my ($normset_ref)=@_;
+
+    my $bibtex_ref=[];
+
+    # Verfasser und Herausgeber konstruieren
+    my $authors_ref=[];
+    my $editors_ref=[];
+    foreach my $category (qw/T0100 T0101/){
+        next if (!exists $normset_ref->{$category});
+        foreach my $part_ref (@$normset_ref->{$category}){
+            if ($part_ref->{supplement} =~ /Hrsg/){
+                push @$editors_ref, $part_ref->{content};
+            }
+            else {
+                push @$authors_ref, $part_ref->{content};
+            }
+        }
+    }
+    my $author = join(' and ',@$authors_ref);
+    my $editor = join(' and ',@$editors_ref);
+
+    # Schlagworte
+    my $keywords_ref=[];
+    foreach my $category (qw/T0710 T0902 T0907 T0912 T0917 T0922 T0927 T0932 T0937 T0942 T0947/){
+        next if (!exists $normset_ref->{$category});
+        foreach my $part_ref (@$normset_ref->{$category}){
+            push @$keywords_ref, $part_ref->{content};
+        }
+    }
+    my $keyword = join(' ; ',@$keywords_ref);
+    
+    # Auflage
+    my $edition   = (exists $normset_ref->{T0403})?$normset_ref->{T0403}[0]{content}:'';
+
+    # Verleger
+    my $publisher = (exists $normset_ref->{T0412})?$normset_ref->{T0412}[0]{content}:'';
+
+    # Verlagsort
+    my $address   = (exists $normset_ref->{T0410})?$normset_ref->{T0410}[0]{content}:'';
+
+    # Titel
+    my $title     = (exists $normset_ref->{T0331})?$normset_ref->{T0331}[0]{content}:'';
+
+    # Jahr
+    my $year      = (exists $normset_ref->{T0425})?$normset_ref->{T0425}[0]{content}:'';
+
+    # ISBN
+    my $isbn      = (exists $normset_ref->{T0540})?$normset_ref->{T0540}[0]{content}:'';
+
+    # ISSN
+    my $issn      = (exists $normset_ref->{T0543})?$normset_ref->{T0543}[0]{content}:'';
+
+    # Sprache
+    my $language  = (exists $normset_ref->{T0516})?$normset_ref->{T0516}[0]{content}:'';
+
+    if ($author){
+        push @$bibtex_ref, "author    = \"$author\"";
+    }
+    if ($editor){
+        push @$bibtex_ref, "editor    = \"$editor\"";
+    }
+    if ($edition){
+        push @$bibtex_ref, "edition   = \"$edition\"";
+    }
+    if ($author){
+        push @$bibtex_ref, "author    = \"$author\"";
+    }
+    if ($publisher){
+        push @$bibtex_ref, "publisher = \"$publisher\"";
+    }
+    if ($address){
+        push @$bibtex_ref, "address   = \"$address\"";
+    }
+    if ($title){
+        push @$bibtex_ref, "title     = \"$title\"";
+    }
+    if ($year){
+        push @$bibtex_ref, "year      = \"$year\"";
+    }
+    if ($isbn){
+        push @$bibtex_ref, "ISBN      = \"$isbn\"";
+    }
+    if ($issn){
+        push @$bibtex_ref, "ISSN      = \"$issn\"";
+    }
+    if ($keyword){
+        push @$bibtex_ref, "keywords  = \"$keyword\"";
+    }
+    if ($language){
+        push @$bibtex_ref, "language  = \"$language\"";
+    }
+    
+    my $identifier=substr($author,0,4).substr($title,0,4).$year;
+    $identifier=~s/\W//g;
+
+    my $bibtex="";
+    
+    if ($isbn){
+        unshift @$bibtex_ref, "\@book {$identifier";
+        $bibtex=join(",\n",@$bibtex_ref);
+        $bibtex="$bibtex}";
+    }
+    else {
+        unshift @$bibtex_ref, "\@book {$identifier";
+        $bibtex=join(",\n",@$bibtex_ref);
+        $bibtex="$bibtex}";
+    }
+
+    
+    return utf2bibtex($bibtex);
+}
+
+sub normset2bibsonomy {
+    my ($normset_ref)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug(YAML::Dump($normset_ref));
+    
+    my $bibtex_ref=[];
+
+    # Verfasser und Herausgeber konstruieren
+    my $authors_ref=[];
+    my $editors_ref=[];
+    foreach my $category (qw/T0100 T0101/){
+        next if (!exists $normset_ref->{$category});
+        foreach my $part_ref (@{$normset_ref->{$category}}){
+            if ($part_ref->{supplement} =~ /Hrsg/){
+                push @$editors_ref, $part_ref->{content};
+            }
+            else {
+                push @$authors_ref, $part_ref->{content};
+            }
+        }
+    }
+    my $author = join(' and ',@$authors_ref);
+    my $editor = join(' and ',@$editors_ref);
+
+    # Schlagworte
+    my $keywords_ref=[];
+    foreach my $category (qw/T0710 T0902 T0907 T0912 T0917 T0922 T0927 T0932 T0937 T0942 T0947/){
+        next if (!exists $normset_ref->{$category});
+        foreach my $part_ref (@{$normset_ref->{$category}}){
+            push @$keywords_ref, $part_ref->{content};
+        }
+    }
+    my $keyword = join(' ; ',@$keywords_ref);
+    
+    # Auflage
+    my $edition   = (exists $normset_ref->{T0403})?$normset_ref->{T0403}[0]{content}:'';
+
+    # Verleger
+    my $publisher = (exists $normset_ref->{T0412})?$normset_ref->{T0412}[0]{content}:'';
+
+    # Verlagsort
+    my $address   = (exists $normset_ref->{T0410})?$normset_ref->{T0410}[0]{content}:'';
+
+    # Titel
+    my $title     = (exists $normset_ref->{T0331})?$normset_ref->{T0331}[0]{content}:'';
+
+    # Jahr
+    my $year      = (exists $normset_ref->{T0425})?$normset_ref->{T0425}[0]{content}:'';
+
+    # ISBN
+    my $isbn      = (exists $normset_ref->{T0540})?$normset_ref->{T0540}[0]{content}:'';
+
+    # ISSN
+    my $issn      = (exists $normset_ref->{T0543})?$normset_ref->{T0543}[0]{content}:'';
+
+    # Sprache
+    my $language  = (exists $normset_ref->{T0516})?$normset_ref->{T0516}[0]{content}:'';
+
+    if ($author){
+        push @$bibtex_ref, "author    = \"$author\"";
+    }
+    if ($editor){
+        push @$bibtex_ref, "editor    = \"$editor\"";
+    }
+    if ($edition){
+        push @$bibtex_ref, "edition   = \"$edition\"";
+    }
+    if ($author){
+        push @$bibtex_ref, "author    = \"$author\"";
+    }
+    if ($publisher){
+        push @$bibtex_ref, "publisher = \"$publisher\"";
+    }
+    if ($address){
+        push @$bibtex_ref, "address   = \"$address\"";
+    }
+    if ($title){
+        push @$bibtex_ref, "title     = \"$title\"";
+    }
+    if ($year){
+        push @$bibtex_ref, "year      = \"$year\"";
+    }
+    if ($isbn){
+        push @$bibtex_ref, "ISBN      = \"$isbn\"";
+    }
+    if ($issn){
+        push @$bibtex_ref, "ISSN      = \"$issn\"";
+    }
+    if ($keyword){
+        push @$bibtex_ref, "keywords  = \"$keyword\"";
+    }
+    if ($language){
+        push @$bibtex_ref, "language  = \"$language\"";
+    }
+    
+    my $identifier=substr($author,0,4).substr($title,0,4).$year;
+    $identifier=~s/\W//g;
+
+    my $bibtex="";
+    
+    if ($isbn){
+        unshift @$bibtex_ref, "\@book {$identifier";
+        $bibtex=join(",\n",@$bibtex_ref);
+        $bibtex="$bibtex}";
+    }
+    else {
+        unshift @$bibtex_ref, "\@book {$identifier";
+        $bibtex=join(",",@$bibtex_ref);
+        $bibtex="$bibtex}";
+    }
+
+    
+    return utf2bibtex($bibtex);
+}
+
+sub utf2bibtex {
+    my ($string)=@_;
+
+    $string=~s/ä/{\\"a}/g;
+    $string=~s/ö/{\\"o}/g;
+    $string=~s/ü/{\\"u}/g;
+    $string=~s/Ä/{\\"A}/g;
+    $string=~s/Ö/{\\"O}/g;
+    $string=~s/Ü/{\\"U}/g;
+    $string=~s/ß/{\\"s}/g;
+
+    return $string;
+}
 
 1;
 __END__

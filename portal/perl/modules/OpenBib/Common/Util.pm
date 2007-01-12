@@ -2,7 +2,7 @@
 #
 #  OpenBib::Common::Util
 #
-#  Dieses File ist (C) 2004 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2007 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -1321,6 +1321,144 @@ sub grundform {
 #     $line=~s/<//g;
 
     return $content;
+}
+
+sub normset2bibtex {
+    my ($normset_ref)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug(YAML::Dump($normset_ref));
+    
+    my $bibtex_ref=[];
+
+    # Verfasser und Herausgeber konstruieren
+    my $authors_ref  = [];
+    my $editors_ref  = [];
+    my $keywords_ref = [];
+
+    my ($edition,$publisher,$address,$title,$year,$isbn,$issn,$language);
+
+    foreach my $item_ref (@$normset_ref){
+      $logger->debug("Item ".YAML::Dump($item_ref));
+      if ($item_ref->{desc} eq "Verfasser" || $item_ref->{desc} eq "Person"){
+	my $contents=$item_ref->{contents};
+	if ($item_ref->{supplement}=~/Hrsg/){
+	  push @$editors_ref, $contents;
+	}
+	else {
+	  push @$authors_ref, $contents;
+	}
+      }
+      if ($item_ref->{desc} eq "Schlagwort"){
+	push @$keywords_ref, $item_ref->{contents};
+      }
+      if ($item_ref->{desc} eq "Auflage" && !$edition){
+	$edition = $item_ref->{contents};
+      }
+      if ($item_ref->{desc} eq "Verlag" && !$publisher){
+	$publisher = $item_ref->{contents};
+      }
+      if ($item_ref->{desc} eq "Verlagsort" && !$address){
+	$address   = $item_ref->{contents};
+      }
+      if ($item_ref->{desc} eq "HST" && !$title){
+	$title     = $item_ref->{contents};
+      }
+      if ($item_ref->{desc} eq "Ersch. Jahr" && !$year){
+	$year      = $item_ref->{contents};
+      }
+      if ($item_ref->{desc} eq "ISBN" && !$isbn){
+	$isbn      = $item_ref->{contents};
+      }
+      if ($item_ref->{desc} eq "ISSN" && !$issn){
+	$issn      = $item_ref->{contents};
+      }
+      if ($item_ref->{desc} eq "Sprache" && !$language){
+	$language  = $item_ref->{contents};
+      }
+    }
+    my $author  = join(' and ',@$authors_ref);
+    my $editor  = join(' and ',@$editors_ref);
+    my $keyword = join(' ; ',@$keywords_ref);
+
+    if ($author){
+        push @$bibtex_ref, "author    = \"$author\"";
+    }
+    if ($editor){
+        push @$bibtex_ref, "editor    = \"$editor\"";
+    }
+    if ($edition){
+        push @$bibtex_ref, "edition   = \"$edition\"";
+    }
+    if ($publisher){
+        push @$bibtex_ref, "publisher = \"$publisher\"";
+    }
+    if ($address){
+        push @$bibtex_ref, "address   = \"$address\"";
+    }
+    if ($title){
+        $title=~s/<.?strong>//g;
+        $title=~s/&#172;//g;      
+        push @$bibtex_ref, "title     = \"$title\"";
+    }
+    if ($year){
+        push @$bibtex_ref, "year      = \"$year\"";
+    }
+    if ($isbn){
+        push @$bibtex_ref, "ISBN      = \"$isbn\"";
+    }
+    if ($issn){
+        push @$bibtex_ref, "ISSN      = \"$issn\"";
+    }
+    if ($keyword){
+        push @$bibtex_ref, "keywords  = \"$keyword\"";
+    }
+    if ($language){
+        push @$bibtex_ref, "language  = \"$language\"";
+    }
+    
+    my $identifier.=substr($author,0,4);
+    $identifier.=substr($title,0,4);
+    $identifier.=$year;
+    $identifier=~s/[^a-zA-Z0-9]//g;
+
+    my $bibtex="";
+    
+    if ($isbn){
+        unshift @$bibtex_ref, "\@book {$identifier";
+        $bibtex=join(",\n",@$bibtex_ref);
+        $bibtex="$bibtex}";
+    }
+    else {
+        unshift @$bibtex_ref, "\@book {$identifier";
+        $bibtex=join(",\n",@$bibtex_ref);
+        $bibtex="$bibtex}";
+    }
+
+    
+    return utf2bibtex($bibtex);
+}
+
+sub utf2bibtex {
+    my ($string)=@_;
+
+    $string=~s/<.?strong>//g;
+    $string=~s/&lt;/</g;
+    $string=~s/&gt;/>/g;
+    $string=~s/&#172;//g;
+    $string=~s/ä/{\\"a}/g;
+    $string=~s/ö/{\\"o}/g;
+    $string=~s/ü/{\\"u}/g;
+    $string=~s/Ä/{\\"A}/g;
+    $string=~s/Ö/{\\"O}/g;
+    $string=~s/Ü/{\\"U}/g;
+    $string=~s/ß/{\\"s}/g;
+    # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
+    $string=~s/[^-+\p{Alphabetic}0-9\n\/&;#: '(){}@<>\\,.="^*[]]//g;
+
+    return $string;
 }
 
 1;

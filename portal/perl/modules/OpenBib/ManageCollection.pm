@@ -380,6 +380,8 @@ sub handler {
 		  return $string;
 		},
 		
+		normset2bibtex => \&OpenBib::Common::Util::normset2bibtex,
+
 		show_corporate_banner => 0,
 		show_foot_banner => 1,
 		config     => \%config,
@@ -516,6 +518,8 @@ sub handler {
 		  return $string;
 		},
 		
+		normset2bibtex => \&OpenBib::Common::Util::normset2bibtex,
+
 		show_corporate_banner => 0,
 		show_foot_banner => 1,
 		config     => \%config,
@@ -678,6 +682,8 @@ sub handler {
 		  $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
 		  return $string;
 		},
+
+		normset2bibtex => \&OpenBib::Common::Util::normset2bibtex,
 		
 		show_corporate_banner => 0,
 		show_foot_banner => 1,
@@ -830,6 +836,8 @@ sub handler {
 		  return $string;
 		},
 		
+		normset2bibtex => \&OpenBib::Common::Util::normset2bibtex,
+
 		show_corporate_banner => 0,
 		show_foot_banner => 1,
 		config     => \%config,

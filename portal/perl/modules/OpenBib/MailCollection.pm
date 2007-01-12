@@ -348,6 +348,8 @@ sub handler {
 		return $string;
 	      },
 		
+	      normset2bibtex => \&OpenBib::Common::Util::normset2bibtex,
+
 	      show_corporate_banner => 0,
 	      show_foot_banner => 1,
 	      config     => \%config,

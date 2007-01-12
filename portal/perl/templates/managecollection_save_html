@@ -26,6 +26,12 @@
 [%- END -%] 
 [% activetext %] 
  href="http://[% config.servername %][% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=Text">Text</a></li>
+	  <li><a
+[%- IF type == 'BibTeX' -%]
+ class="active"
+[%- END -%] 
+[% activetext %] 
+ href="http://[% config.servername %][% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=BibTeX">BibTeX</a></li>
 	  <li><a 
 [%- IF type == 'EndNote' -%]
  class="active"
@@ -67,6 +73,10 @@
 [% ELSIF type == 'Text' %]
 	  <pre>
 [% PROCESS common/subtemplate name="managecollection_tit_as_text" %]
+          </pre>
+[% ELSIF type == 'BibTeX' %]
+	  <pre>
+[% PROCESS common/subtemplate name="managecollection_tit_as_bibtex" %]
           </pre>
 [% ELSIF type == 'EndNote' %]
           <pre>

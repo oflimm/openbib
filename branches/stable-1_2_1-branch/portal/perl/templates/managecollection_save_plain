@@ -5,11 +5,9 @@
 [%- END -%]
 	  </table>
 [% ELSIF type == 'Text' %]
-[%- FOREACH titset IN collection -%]
 [% PROCESS common/subtemplate name="managecollection_tit_as_text"  database="${titset.database}" %]
-[%- END -%]
+[% ELSIF type == 'BibTeX' %]
+[% PROCESS common/subtemplate name="managecollection_tit_as_bibtex"  database="${titset.database}" %]
 [% ELSIF type == 'EndNote' %]
-[%- FOREACH titset IN collection -%]
 [% PROCESS common/subtemplate name="managecollection_tit_as_endnote" database="${titset.database}" %]
-[%- END -%]
 [% END %]

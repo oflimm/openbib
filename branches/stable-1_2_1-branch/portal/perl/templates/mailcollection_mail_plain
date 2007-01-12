@@ -1,5 +1,7 @@
 [% IF type == 'Text' %]
 [% PROCESS common/subtemplate name="managecollection_tit_as_text" %]
+[% ELSIF type == 'BibTeX' %]
+[% PROCESS common/subtemplate name="managecollection_tit_as_bibtex" %]
 [% ELSIF type == 'EndNote' %]
 [% PROCESS common/subtemplate name="managecollection_tit_as_endnote" %]
 [% END %]

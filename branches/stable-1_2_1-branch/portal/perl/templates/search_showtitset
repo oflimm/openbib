@@ -8,8 +8,9 @@
     <td width="20">&nbsp;</td>
     <td valign="middle" align="left" height="32"><img src="/images/openbib/[% database %].png" alt="Schriftzug der DB [% database %]" /></td>
       <td>&nbsp;</td>
-      <td class="fbuttonarea" align="right" width="220">
+      <td class="fbuttonarea" align="right" width="250">
         <a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=10" target="body" title="Top 20"><img valign="center" src="/images/openbib/top20-12px.png" alt="Top 20" heigth="28" border="0" /></a>&nbsp;
+	<a href="http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=[% normset2bibtex(normset) | uri %]" target="_top" valign="top"><img src="/images/openbib/share.png" alt="An BibSonomy senden" title="An BibSonomy senden" /></a>&nbsp;
         <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% database %];singleidn=[% titidn %]" target="header" title="In die Merkliste"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="In die Merkliste" border="0" /></a>&nbsp;
         <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=mail;database=[% database %];singleidn=[% titidn %]" target="body" title="Als Mail verschicken"><img src="/images/openbib/3d-file-blue-mailbox.png" height="29" alt="Als Mail verschicken" border="0" /></a>&nbsp;
         <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=save;database=[% database %];singleidn=[% titidn %]" target="save" title="Abspeichern"><img src="/images/openbib/3d-file-blue-disk35.png" height="29" alt="Abspeichern" border="0" /></a>&nbsp;
@@ -164,7 +165,7 @@ src="/images/openbib/rssfeed.png" alt="RSS-Feed Icon" /></a>&nbsp;
 <tr><th>Ausleihe/Exemplare</th></tr>
 <tr><td class="boxedclear">
 
-<table width=100%">
+<table width="100%">
 <tr class="titlerow" align="center"><td width="225">Besitzende Bibliothek</td><td width="250">Standort</td><td width="120">Lokale Signatur</td><td width="120">Ausleihstatus</td><td width="110">Ausleihsystem</td></tr>
 [% FOREACH mex IN circset %]
 <tr align="center"><td><a href="[% utf2iso(mex.Bibinfourl) %]" target="_blank"><strong>[% utf2iso(mex.Bibliothek) %]</strong></a></td><td>[% utf2iso(mex.Standort) %]</td><td><strong>[% utf2iso(mex.Signatur) %]</strong></td><td><strong>[% utf2iso(mex.Status) %]</strong></td><td class="circurl"><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon"/>&nbsp;<a target="_blank" href="[% utf2iso(mex.Ausleihurl) %]">[% utf2iso(mex.Ausleihstring) %]</a></td></tr>

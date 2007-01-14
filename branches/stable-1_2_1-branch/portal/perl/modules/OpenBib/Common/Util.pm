@@ -1448,6 +1448,13 @@ sub utf2bibtex {
     $string=~s/&lt;/</g;
     $string=~s/&gt;/>/g;
     $string=~s/&#172;//g;
+    $string=~s/&#228;/{\\"a}/g;
+    $string=~s/&#252;/{\\"u}/g;
+    $string=~s/&#246;/{\\"o}/g;
+    $string=~s/&#223;/{\\"s}/g;
+    $string=~s/&#214;/{\\"O}/g;
+    $string=~s/&#220;/{\\"U}/g;
+    $string=~s/&#196;/{\\"A}/g;
     $string=~s/&auml;/{\\"a}/g;
     $string=~s/&ouml;/{\\"o}/g;
     $string=~s/&uuml;/{\\"u}/g;

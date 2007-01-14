@@ -243,9 +243,9 @@ sub handler {
             qopts             => $queryoptions_ref,
             type              => $type,
             collection        => \@collection,
-            config            => $config,
             normset2bibtex    => \&OpenBib::Common::Util::normset2bibtex,
-            normset2bibsonomy => \&OpenBib::Common::Util::normset2bibsonomy,
+
+            config            => $config,
             msg               => $msg,
         };
     
@@ -331,6 +331,8 @@ sub handler {
             qopts      => $queryoptions_ref,		
             type       => $type,
             collection => \@collection,
+            normset2bibtex    => \&OpenBib::Common::Util::normset2bibtex,
+
             config     => $config,
             msg        => $msg,
         };
@@ -442,6 +444,8 @@ sub handler {
             singleidn  => $singleidn,
             database   => $database,
             collection => \@collection,
+            normset2bibtex    => \&OpenBib::Common::Util::normset2bibtex,
+
             config     => $config,
             msg        => $msg,
         };
@@ -540,6 +544,8 @@ sub handler {
             singleidn  => $singleidn,
             database   => $database,
             collection => \@collection,
+            normset2bibtex    => \&OpenBib::Common::Util::normset2bibtex,
+
             config     => $config,
             msg        => $msg,
         };

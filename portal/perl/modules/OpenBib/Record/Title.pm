@@ -70,9 +70,9 @@ sub new {
     if (defined $database){
         $self->{database} = $database;
 
-        $self->{dbh}
-            = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-                or $logger->error_die($DBI::errstr);
+        my $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+            or $logger->error_die($DBI::errstr);
+        $self->{dbh} = $dbh;
     }
 
     $logger->debug("Title-Record-Object created: ".YAML::Dump($self));
@@ -88,8 +88,6 @@ sub get_full_record {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
-    my @normset=();
 
     my $normset_ref={};
 
@@ -107,7 +105,7 @@ sub get_full_record {
 
         my $reqstring="select * from tit where id = ?";
         my $request=$self->{dbh}->prepare($reqstring) or $logger->error($DBI::errstr);
-        $request->execute($self->{id}) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+        $request->execute($id) or $logger->error("Request: $reqstring - ".$DBI::errstr);
         
         while (my $res=$request->fetchrow_hashref) {
             my $category  = "T".sprintf "%04d",$res->{category };
@@ -138,7 +136,7 @@ sub get_full_record {
 
         my $reqstring="select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)";
         my $request=$self->{dbh}->prepare($reqstring) or $logger->error($DBI::errstr);
-        $request->execute($self->{id}) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+        $request->execute($id) or $logger->error("Request: $reqstring - ".$DBI::errstr);
         
         while (my $res=$request->fetchrow_hashref) {
             my $category   = "T".sprintf "%04d",$res->{category };
@@ -149,11 +147,18 @@ sub get_full_record {
 	    # Korrektes UTF-8 Encoding Flag wird in get_*_ans_*
 	    # vorgenommen
 
-            my $content    =
-                ($targettype == 2 )?OpenBib::Record::Person->new({database=>$self->{database}})->get_name({id=>$targetid})->name_as_string():
-                ($targettype == 3 )?OpenBib::Record::CorporateBody->new({database=>$self->{database}})->get_name({id=>$targetid})->name_as_string():
-                ($targettype == 4 )?OpenBib::Record::Subject->new({database=>$self->{database}})->get_name({id=>$targetid})->name_as_string():
-                ($targettype == 5 )?OpenBib::Record::Classification->new({database=>$self->{database}})->get_name({id=>$targetid})->name_as_string():'Error';
+             my $recordclass    =
+                 ($targettype == 2 )?"OpenBib::Record::Person":
+                 ($targettype == 3 )?"OpenBib::Record::CorporateBody":
+                 ($targettype == 4 )?"OpenBib::Record::Subject":
+                 ($targettype == 5 )?"OpenBib::Record::Classification":undef;
+
+            my $content = "";
+            if (defined $recordclass){
+                my $record=$recordclass->new({database=>$self->{database}});
+                $record->get_name({id=>$targetid});
+                $content=$record->name_as_string;
+            }
 
             push @{$normset_ref->{$category}}, {
                 id         => $targetid,
@@ -185,7 +190,7 @@ sub get_full_record {
 
         $reqstring="select count(distinct targetid) as conncount from conn where sourceid=? and sourcetype=1 and targettype=1";
         $request=$self->{dbh}->prepare($reqstring) or $logger->error($DBI::errstr);
-        $request->execute($self->{id}) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+        $request->execute($id) or $logger->error("Request: $reqstring - ".$DBI::errstr);
 
         $res=$request->fetchrow_hashref;
 
@@ -208,7 +213,7 @@ sub get_full_record {
 
         $reqstring="select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=1";
         $request=$self->{dbh}->prepare($reqstring) or $logger->error($DBI::errstr);
-        $request->execute($self->{id}) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+        $request->execute($id) or $logger->error("Request: $reqstring - ".$DBI::errstr);
 
         $res=$request->fetchrow_hashref;
 
@@ -229,12 +234,12 @@ sub get_full_record {
     }
 
     # Exemplardaten
-    my @mexnormset=();
+    my $mexnormset_ref=[];
     {
 
         my $reqstring="select distinct targetid from conn where sourceid= ? and sourcetype=1 and targettype=6";
         my $request=$self->{dbh}->prepare($reqstring) or $logger->error($DBI::errstr);
-        $request->execute($self->{id}) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+        $request->execute($id) or $logger->error("Request: $reqstring - ".$DBI::errstr);
 
         my @verknmex=();
         while (my $res=$request->fetchrow_hashref){
@@ -243,9 +248,9 @@ sub get_full_record {
         $request->finish();
 
         if ($#verknmex >= 0) {
-            foreach my $mexsatz (@verknmex) {
-                push @mexnormset, _get_mex_set_by_idn({
-                    mexidn             => $mexsatz,
+            foreach my $mexid (@verknmex) {
+                push @$mexnormset_ref, $self->_get_mex_set_by_idn({
+                    id             => $mexid,
                 });
             }
         }
@@ -259,9 +264,9 @@ sub get_full_record {
 
         if (exists $self->{targetcircinfo}->{$self->{database}}{circ}) {
 
-            my $circid=(exists $normset_ref->{'T0001'}[0]{content} && $normset_ref->{'T0001'}[0]{content} > 0 && $normset_ref->{'T0001'}[0]{content} != $self->{id} )?$normset_ref->{'T0001'}[0]{content}:$self->{id};
+            my $circid=(exists $normset_ref->{'T0001'}[0]{content} && $normset_ref->{'T0001'}[0]{content} > 0 && $normset_ref->{'T0001'}[0]{content} != $id )?$normset_ref->{'T0001'}[0]{content}:$id;
 
-            $logger->debug("Katkey: $self->{id} - Circ-ID: $circid");
+            $logger->debug("Katkey: $id - Circ-ID: $circid");
 
             my $soap = SOAP::Lite
                 -> uri("urn:/MediaStatus")
@@ -369,25 +374,24 @@ sub get_full_record {
             undef $btime;
             undef $timeall;
         }
-
-
     }
 
-    ($self->{normset},$self->{mexset},$self->{circset})=($normset_ref,\@mexnormset,\@circexemplarliste);
+    $logger->info(YAML::Dump($normset_ref));
+    ($self->{normset},$self->{mexset},$self->{circset})=($normset_ref,$mexnormset_ref,\@circexemplarliste);
 }
 
 sub _get_mex_set_by_idn {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
-    my $mexidn             = exists $arg_ref->{mexidn}
-        ? $arg_ref->{mexidn}             : undef;
+    my $id                = exists $arg_ref->{id}
+        ? $arg_ref->{id}               : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     my $normset_ref={};
-    
+
     # Defaultwerte setzen
     $normset_ref->{X0005}{content}="-";
     $normset_ref->{X0014}{content}="-";
@@ -403,7 +407,7 @@ sub _get_mex_set_by_idn {
 
     my $sqlrequest="select category,content,indicator from mex where id = ?";
     my $result=$self->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
-    $result->execute($mexidn);
+    $result->execute($id);
 
     while (my $res=$result->fetchrow_hashref){
         my $category  = "X".sprintf "%04d",$res->{category };

@@ -145,6 +145,8 @@ sub get_full_record {
     $request->finish();
 
     $self->{normset}=$normset_ref;
+
+    return;
 }
 
 sub get_name {
@@ -189,6 +191,8 @@ sub get_name {
     $request->finish();
   
     $self->{name}=$schlagwort;
+
+    return;
 }
 
 sub name_as_string {

@@ -145,6 +145,8 @@ sub get_full_record {
     $request->finish();
 
     $self->{normset}=$normset_ref;
+
+    return;
 }
 
 sub get_name {
@@ -180,7 +182,7 @@ sub get_name {
         undef $timeall;
     }
     
-    my $notation;
+    my $notation="Unbekannt";
     
     if ($res->{content}) {
         $notation = decode_utf8($res->{content});
@@ -189,12 +191,14 @@ sub get_name {
     $request->finish();
 
     $self->{name}=$notation;
+
+    return;
 }
 
 sub name_as_string {
     my $self=shift;
     
-    return $self->{name}
+    return $self->{name};
 }
 
 sub DESTROY {

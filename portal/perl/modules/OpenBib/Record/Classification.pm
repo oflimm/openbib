@@ -147,7 +147,7 @@ sub get_full_record {
     $self->{normset}=$normset_ref;
 }
 
-sub get_short_record {
+sub get_name {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
@@ -188,9 +188,14 @@ sub get_short_record {
 
     $request->finish();
 
-    $self->{shortrecord}=$notation;
+    $self->{name}=$notation;
 }
 
+sub name_as_string {
+    my $self=shift;
+    
+    return $self->{name}
+}
 
 sub DESTROY {
     my $self = shift;

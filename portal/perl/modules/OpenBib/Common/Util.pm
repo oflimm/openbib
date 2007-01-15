@@ -1343,7 +1343,7 @@ sub normset2bibtex {
     foreach my $item_ref (@$normset_ref){
       $logger->debug("Item ".YAML::Dump($item_ref));
       if ($item_ref->{desc} eq "Verfasser" || $item_ref->{desc} eq "Person"){
-	my $contents=$item_ref->{contents};
+	my $contents=utf2bibtex($item_ref->{contents});
 	if ($item_ref->{supplement}=~/Hrsg/){
 	  push @$editors_ref, $contents;
 	}
@@ -1352,31 +1352,31 @@ sub normset2bibtex {
 	}
       }
       if ($item_ref->{desc} eq "Schlagwort"){
-	push @$keywords_ref, $item_ref->{contents};
+	push @$keywords_ref, utf2bibtex($item_ref->{contents});
       }
       if ($item_ref->{desc} eq "Auflage" && !$edition){
-	$edition = $item_ref->{contents};
+	$edition   = utf2bibtex($item_ref->{contents});
       }
       if ($item_ref->{desc} eq "Verlag" && !$publisher){
-	$publisher = $item_ref->{contents};
+	$publisher = utf2bibtex($item_ref->{contents});
       }
       if ($item_ref->{desc} eq "Verlagsort" && !$address){
-	$address   = $item_ref->{contents};
+	$address   = utf2bibtex($item_ref->{contents});
       }
       if ($item_ref->{desc} eq "HST" && !$title){
-	$title     = $item_ref->{contents};
+	$title     = utf2bibtex($item_ref->{contents});
       }
       if ($item_ref->{desc} eq "Ersch. Jahr" && !$year){
-	$year      = $item_ref->{contents};
+	$year      = utf2bibtex($item_ref->{contents});
       }
       if ($item_ref->{desc} eq "ISBN" && !$isbn){
-	$isbn      = $item_ref->{contents};
+	$isbn      = utf2bibtex($item_ref->{contents});
       }
       if ($item_ref->{desc} eq "ISSN" && !$issn){
-	$issn      = $item_ref->{contents};
+	$issn      = utf2bibtex($item_ref->{contents});
       }
       if ($item_ref->{desc} eq "Sprache" && !$language){
-	$language  = $item_ref->{contents};
+	$language  = utf2bibtex($item_ref->{contents});
       }
     }
     my $author  = join(' and ',@$authors_ref);
@@ -1399,8 +1399,6 @@ sub normset2bibtex {
         push @$bibtex_ref, "address   = \"$address\"";
     }
     if ($title){
-        $title=~s/<.?strong>//g;
-        $title=~s/&#172;//g;      
         push @$bibtex_ref, "title     = \"$title\"";
     }
     if ($year){
@@ -1419,9 +1417,7 @@ sub normset2bibtex {
         push @$bibtex_ref, "language  = \"$language\"";
     }
     
-    my $identifier.=substr($author,0,4);
-    $identifier.=substr($title,0,4);
-    $identifier.=$year;
+    my $identifier=substr($author,0,4).substr($title,0,4).$year;
     $identifier=~s/[^a-zA-Z0-9]//g;
 
     my $bibtex="";
@@ -1438,12 +1434,16 @@ sub normset2bibtex {
     }
 
     
-    return utf2bibtex($bibtex);
+    return $bibtex;
 }
 
 sub utf2bibtex {
     my ($string)=@_;
 
+    $string=~s/\{//g;
+    $string=~s/\}//g;
+    # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
+    $string=~s/[^-+\p{Alphabetic}0-9\n\/&;#: '()@<>\\,.="^*[]]//g;
     $string=~s/<.?strong>//g;
     $string=~s/&lt;/</g;
     $string=~s/&gt;/>/g;
@@ -1469,8 +1469,6 @@ sub utf2bibtex {
     $string=~s/Ö/{\\"O}/g;
     $string=~s/Ü/{\\"U}/g;
     $string=~s/ß/{\\"s}/g;
-    # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
-    $string=~s/[^-+\p{Alphabetic}0-9\n\/&;#: '(){}@<>\\,.="^*[]]//g;
 
     return $string;
 }

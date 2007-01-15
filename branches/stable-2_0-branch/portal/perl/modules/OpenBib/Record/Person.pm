@@ -72,7 +72,7 @@ sub new {
             = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
                 or $logger->error_die($DBI::errstr);
     }
-    $logger->debug("Title-Record-Object created: ".YAML::Dump($self));
+    $logger->debug("Person-Record-Object created: ".YAML::Dump($self));
     return $self;
 }
 
@@ -89,6 +89,7 @@ sub get_full_record {
 
     my $normset_ref={};
 
+    $self->{id      }        = $id;
     $normset_ref->{id      } = $id;
     $normset_ref->{database} = $self->{database};
 
@@ -152,6 +153,12 @@ sub get_full_record {
     $self->{normset}=$normset_ref;
 
     return;
+}
+
+sub to_raw {
+    my ($self) = @_;
+
+    return $self->{normset};
 }
 
 sub get_name {

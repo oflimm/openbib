@@ -150,10 +150,10 @@ sub get_full_record {
 	    # vorgenommen
 
             my $content    =
-                ($targettype == 2 )?get_aut_ans_by_idn($targetid,$self->{dbh}):
-                ($targettype == 3 )?get_kor_ans_by_idn($targetid,$self->{dbh}):
-                ($targettype == 4 )?get_swt_ans_by_idn($targetid,$self->{dbh}):
-                ($targettype == 5 )?get_not_ans_by_idn($targetid,$self->{dbh}):'Error';
+                ($targettype == 2 )?OpenBib::Record::Person->new({database=>$self->{database}})->get_name({id=>$targetid})->name_as_string():
+                ($targettype == 3 )?OpenBib::Record::CorporateBody->new({database=>$self->{database}})->get_name({id=>$targetid})->name_as_string():
+                ($targettype == 4 )?OpenBib::Record::Subject->new({database=>$self->{database}})->get_name({id=>$targetid})->name_as_string():
+                ($targettype == 5 )?OpenBib::Record::Classification->new({database=>$self->{database}})->get_name({id=>$targetid})->name_as_string():'Error';
 
             push @{$normset_ref->{$category}}, {
                 id         => $targetid,

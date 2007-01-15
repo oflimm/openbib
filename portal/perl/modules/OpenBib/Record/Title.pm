@@ -41,6 +41,7 @@ use SOAP::Lite;
 use Storable;
 use YAML ();
 
+use OpenBib::Common::Util;
 use OpenBib::Record::Person;
 use OpenBib::Record::CorporateBody;
 use OpenBib::Record::Subject;
@@ -91,6 +92,7 @@ sub get_full_record {
 
     my $normset_ref={};
 
+    $self->{id      }        = $id;
     $normset_ref->{id      } = $id;
     $normset_ref->{database} = $self->{database};
 
@@ -380,6 +382,105 @@ sub get_full_record {
     ($self->{normset},$self->{mexset},$self->{circset})=($normset_ref,$mexnormset_ref,\@circexemplarliste);
 }
 
+sub print_to_handler {
+    my ($self,$arg_ref)=@_;
+
+    my $session            = exists $arg_ref->{session}
+        ? $arg_ref->{session}            : undef;
+    my $queryoptions_ref   = exists $arg_ref->{queryoptions_ref}
+        ? $arg_ref->{queryoptions_ref}   : undef;
+    my $searchquery_ref    = exists $arg_ref->{searchquery_ref}
+        ? $arg_ref->{searchquery_ref}    : undef;
+    my $queryid            = exists $arg_ref->{queryid}
+        ? $arg_ref->{queryid}            : undef;
+    my $r                  = exists $arg_ref->{apachereq}
+        ? $arg_ref->{apachereq}          : undef;
+    my $stylesheet         = exists $arg_ref->{stylesheet}
+        ? $arg_ref->{stylesheet}         : undef;
+    my $view               = exists $arg_ref->{view}
+        ? $arg_ref->{view}               : undef;
+    my $msg                = exists $arg_ref->{msg}
+        ? $arg_ref->{msg}                : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my ($prevurl,$nexturl)=OpenBib::Search::Util::get_result_navigation({
+        sessiondbh => $session->{dbh},
+        database   => $self->{database},
+        titidn     => $self->{id},
+        sessionID  => $session->{ID},
+    });
+
+    # Highlight Query
+
+#     my $term_ref = OpenBib::Common::Util::get_searchterms({
+#         searchquery_ref => $searchquery_ref,
+#     });
+
+#     foreach my $category (keys %$normset){
+#         if ($category ne "id" && $category ne "database"){
+#             foreach my $item (@{$normset->{$category}}){
+#                 foreach my $singleterm (@$term_ref){
+#                     $logger->debug("Trying to change $item->{content} : Term $singleterm");
+#                     $item->{content}=~s/($singleterm)/<span class="queryhighlight">$1<\/span>/ig unless ($item->{content}=~/http/);
+#                 }
+#             }
+#         }
+#     }
+    
+    my $poolname=$self->{targetdbinfo}->{sigel}{
+        $self->{targetdbinfo}->{dbases}{$self->{database}}};
+
+    # TT-Data erzeugen
+    my $ttdata={
+        view        => $view,
+        stylesheet  => $stylesheet,
+        database    => $self->{database},
+        poolname    => $poolname,
+        prevurl     => $prevurl,
+        nexturl     => $nexturl,
+        qopts       => $queryoptions_ref,
+        queryid     => $queryid,
+        sessionID   => $session->{ID},
+        titidn      => $self->{id},
+        normset     => $self->{normset},
+        mexnormset  => $self->{mexnormset},
+        circset     => $self->{circset},
+        searchquery => $searchquery_ref,
+
+        highlightquery    => \&highlightquery,
+        record      => $self,
+
+        config      => $self->{config},
+        msg         => $msg,
+    };
+  
+    OpenBib::Common::Util::print_page($self->{config}->{tt_search_showtitset_tname},$ttdata,$r);
+
+    # Log Event
+
+    my $isbn;
+
+    if (exists $self->{normset}->{T0540}[0]{content}){
+        $isbn = $self->{normset}->{T0540}[0]{content};
+        $isbn =~s/ //g;
+        $isbn =~s/-//g;
+        $isbn =~s/X/x/g;
+    }
+    
+    $session->log_event({
+        type    => 10,
+        content => {
+            id       => $self->{id},
+            database => $self->{database},
+            isbn     => $isbn,
+        },
+    });
+    
+    return;
+}
+
 sub _get_mex_set_by_idn {
     my ($self,$arg_ref) = @_;
 
@@ -463,6 +564,169 @@ sub _get_mex_set_by_idn {
     }
 
     return $normset_ref;
+}
+
+sub highlightquery {
+    my ($searchquery_ref,$content) = @_;
+    
+    # Highlight Query
+
+    my $term_ref = OpenBib::Common::Util::get_searchterms({
+        searchquery_ref => $searchquery_ref,
+    });
+
+    foreach my $singleterm (@$term_ref){
+        $content=~s/($singleterm)/<span class="queryhighlight">$1<\/span>/ig unless ($content=~/http/);
+    }
+
+    return $content;
+}
+
+sub to_bibtex {
+    my ($self)=@_;
+
+    my $bibtex_ref=[];
+
+    # Verfasser und Herausgeber konstruieren
+    my $authors_ref=[];
+    my $editors_ref=[];
+    foreach my $category (qw/T0100 T0101/){
+        next if (!exists $self->{normset}->{$category});
+        foreach my $part_ref (@{$self->{normset}->{$category}}){
+            if ($part_ref->{supplement} =~ /Hrsg/){
+                push @$editors_ref, utf2bibtex($part_ref->{content});
+            }
+            else {
+                push @$authors_ref, utf2bibtex($part_ref->{content});
+            }
+        }
+    }
+    my $author = join(' and ',@$authors_ref);
+    my $editor = join(' and ',@$editors_ref);
+
+    # Schlagworte
+    my $keywords_ref=[];
+    foreach my $category (qw/T0710 T0902 T0907 T0912 T0917 T0922 T0927 T0932 T0937 T0942 T0947/){
+        next if (!exists $self->{normset}->{$category});
+        foreach my $part_ref (@{$self->{normset}->{$category}}){
+            push @$keywords_ref, utf2bibtex($part_ref->{content});
+        }
+    }
+    my $keyword = join(' ; ',@$keywords_ref);
+    
+    # Auflage
+    my $edition   = (exists $self->{normset}->{T0403})?utf2bibtex($self->{normset}->{T0403}[0]{content}):'';
+
+    # Verleger
+    my $publisher = (exists $self->{normset}->{T0412})?utf2bibtex($self->{normset}->{T0412}[0]{content}):'';
+
+    # Verlagsort
+    my $address   = (exists $self->{normset}->{T0410})?utf2bibtex($self->{normset}->{T0410}[0]{content}):'';
+
+    # Titel
+    my $title     = (exists $self->{normset}->{T0331})?utf2bibtex($self->{normset}->{T0331}[0]{content}):'';
+
+    # Jahr
+    my $year      = (exists $self->{normset}->{T0425})?utf2bibtex($self->{normset}->{T0425}[0]{content}):'';
+
+    # ISBN
+    my $isbn      = (exists $self->{normset}->{T0540})?utf2bibtex($self->{normset}->{T0540}[0]{content}):'';
+
+    # ISSN
+    my $issn      = (exists $self->{normset}->{T0543})?utf2bibtex($self->{normset}->{T0543}[0]{content}):'';
+
+    # Sprache
+    my $language  = (exists $self->{normset}->{T0516})?utf2bibtex($self->{normset}->{T0516}[0]{content}):'';
+
+    if ($author){
+        push @$bibtex_ref, "author    = \"$author\"";
+    }
+    if ($editor){
+        push @$bibtex_ref, "editor    = \"$editor\"";
+    }
+    if ($edition){
+        push @$bibtex_ref, "edition   = \"$edition\"";
+    }
+    if ($publisher){
+        push @$bibtex_ref, "publisher = \"$publisher\"";
+    }
+    if ($address){
+        push @$bibtex_ref, "address   = \"$address\"";
+    }
+    if ($title){
+        push @$bibtex_ref, "title     = \"$title\"";
+    }
+    if ($year){
+        push @$bibtex_ref, "year      = \"$year\"";
+    }
+    if ($isbn){
+        push @$bibtex_ref, "ISBN      = \"$isbn\"";
+    }
+    if ($issn){
+        push @$bibtex_ref, "ISSN      = \"$issn\"";
+    }
+    if ($keyword){
+        push @$bibtex_ref, "keywords  = \"$keyword\"";
+    }
+    if ($language){
+        push @$bibtex_ref, "language  = \"$language\"";
+    }
+    
+    my $identifier=substr($author,0,4).substr($title,0,4).$year;
+    $identifier=~s/[^A-Za-z0-9]//g;
+
+    my $bibtex="";
+    
+    if ($isbn){
+        unshift @$bibtex_ref, "\@book {$identifier";
+        $bibtex=join(",\n",@$bibtex_ref);
+        $bibtex="$bibtex}";
+    }
+    else {
+        unshift @$bibtex_ref, "\@book {$identifier";
+        $bibtex=join(",\n",@$bibtex_ref);
+        $bibtex="$bibtex}";
+    }
+
+    
+    return $bibtex;
+}
+
+sub utf2bibtex {
+    my ($string)=@_;
+
+    # {} werden von BibTeX verwendet und haben in den Originalinhalten
+    # nichts zu suchen
+    $string=~s/\{//g;
+    $string=~s/\}//g;
+    # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
+    $string=~s/[^-+\p{Alphabetic}0-9\n\/&;#: '()@<>\\,.="^*[]]//g;
+    $string=~s/&lt;/</g;
+    $string=~s/&gt;/>/g;
+    $string=~s/&#172;//g;
+    $string=~s/&#228;/{\\"a}/g;
+    $string=~s/&#252;/{\\"u}/g;
+    $string=~s/&#246;/{\\"o}/g;
+    $string=~s/&#223;/{\\"s}/g;
+    $string=~s/&#214;/{\\"O}/g;
+    $string=~s/&#220;/{\\"U}/g;
+    $string=~s/&#196;/{\\"A}/g;
+    $string=~s/&auml;/{\\"a}/g;
+    $string=~s/&ouml;/{\\"o}/g;
+    $string=~s/&uuml;/{\\"u}/g;
+    $string=~s/&Auml;/{\\"A}/g;
+    $string=~s/&Ouml;/{\\"O}/g;
+    $string=~s/&Uuml;/{\\"U}/g;
+    $string=~s/&szlig;/{\\"s}/g;
+    $string=~s/ä/{\\"a}/g;
+    $string=~s/ö/{\\"o}/g;
+    $string=~s/ü/{\\"u}/g;
+    $string=~s/Ä/{\\"A}/g;
+    $string=~s/Ö/{\\"O}/g;
+    $string=~s/Ü/{\\"U}/g;
+    $string=~s/ß/{\\"s}/g;
+
+    return $string;
 }
 
 sub DESTROY {

@@ -380,6 +380,336 @@ sub get_full_record {
 
     $logger->info(YAML::Dump($normset_ref));
     ($self->{normset},$self->{mexset},$self->{circset})=($normset_ref,$mexnormset_ref,\@circexemplarliste);
+
+    return $self;
+}
+
+sub get_brief_record {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $id                = exists $arg_ref->{id}
+        ? $arg_ref->{id}                : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $use_titlistitem_table=1;
+
+    if ($self->{database} eq "inst006"){
+        $use_titlistitem_table=1;
+    }
+
+    $logger->debug("Getting ID $id");
+    
+    my $listitem_ref={};
+    
+    # Titel-ID und zugehoerige Datenbank setzen
+
+    $self->{id    }           = $id;
+    $listitem_ref->{id      } = $id;
+    $listitem_ref->{database} = $self->{database};
+    
+    my ($atime,$btime,$timeall)=(0,0,0);
+    
+    if ($self->{config}->{benchmark}) {
+        $atime  = new Benchmark;
+    }
+
+    if ($use_titlistitem_table) {
+        # Bestimmung des Satzes
+        my $request=$self->{dbh}->prepare("select listitem from titlistitem where id = ?") or $logger->error($DBI::errstr);
+        $request->execute($id);
+        
+        if (my $res=$request->fetchrow_hashref){
+            my $titlistitem     = $res->{listitem};
+            
+            $logger->debug("Storable::listitem: $titlistitem");
+
+            my $encoding_type="hex";
+
+            if    ($encoding_type eq "base64"){
+                $titlistitem = MIME::Base64::decode($titlistitem);
+            }
+            elsif ($encoding_type eq "hex"){
+                $titlistitem = pack "H*",$titlistitem;
+            }
+            elsif ($encoding_type eq "uu"){
+                $titlistitem = unpack "u",$titlistitem;
+            }
+
+            my %titlistitem = %{ Storable::thaw($titlistitem) };
+            
+            $logger->debug("TitlistitemYAML: ".YAML::Dump(\%titlistitem));
+            %$listitem_ref=(%$listitem_ref,%titlistitem);
+
+        }
+    }
+    else {
+        my ($atime,$btime,$timeall)=(0,0,0);
+        
+        if ($self->{config}->{benchmark}) {
+            $atime  = new Benchmark;
+        }
+
+        # Bestimmung der Titelinformationen
+        my $request=$self->{dbh}->prepare("select category,indicator,content from tit where id = ? and category in (0310,0331,0403,0412,0424,0425,0451,0455,1203,0089)") or $logger->error($DBI::errstr);
+        #    my $request=$self->{dbh}->prepare("select category,indicator,content from tit where id = ? ") or $logger->error($DBI::errstr);
+        $request->execute($id);
+        
+        while (my $res=$request->fetchrow_hashref){
+            my $category  = "T".sprintf "%04d",$res->{category };
+            my $indicator =        decode_utf8($res->{indicator});
+            my $content   =        decode_utf8($res->{content  });
+            
+            push @{$listitem_ref->{$category}}, {
+                indicator => $indicator,
+                content   => $content,
+            };
+        }
+        
+        $logger->debug("Titel: ".YAML::Dump($listitem_ref));
+        
+        if ($self->{config}->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : Bestimmung der Titelinformationen : ist ".timestr($timeall));
+        }
+        
+        
+        if ($self->{config}->{benchmark}) {
+            $atime=new Benchmark;
+        }
+        
+        # Bestimmung der Exemplarinformationen
+        $request=$self->{dbh}->prepare("select mex.category,mex.indicator,mex.content from mex,conn where conn.sourceid = ? and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6 and mex.category=0014") or $logger->error($DBI::errstr);
+        $request->execute($id);
+        
+        while (my $res=$request->fetchrow_hashref){
+            my $category  = "X".sprintf "%04d",$res->{category };
+            my $indicator =        decode_utf8($res->{indicator});
+            my $content   =        decode_utf8($res->{content  });
+            
+            push @{$listitem_ref->{$category}}, {
+                indicator => $indicator,
+                content   => $content,
+            };
+        }
+        
+        
+        if ($self->{config}->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : Bestimmung der Exemplarinformationen : ist ".timestr($timeall));
+        }
+        
+        
+        if ($self->{config}->{benchmark}) {
+            $atime=new Benchmark;
+        }
+        
+        my @autkor=();
+        
+        # Bestimmung der Verfasser, Personen
+        #
+        # Bemerkung zur Performance: Mit Profiling (Devel::SmallProf) wurde
+        # festgestellt, dass die Bestimmung der Information ueber conn
+        # und get_*_ans_by_idn durchschnittlich ungefaehr um den Faktor 30-50
+        # schneller ist als ein join ueber conn und aut (!)
+        $request=$self->{dbh}->prepare("select targetid,category,supplement from conn where sourceid=? and sourcetype=1 and targettype=2") or $logger->error($DBI::errstr);
+        $request->execute($id);
+        
+        while (my $res=$request->fetchrow_hashref){
+            my $category  = "P".sprintf "%04d",$res->{category };
+            my $indicator =        decode_utf8($res->{indicator});
+            my $targetid  =        decode_utf8($res->{targetid});
+            
+            my $supplement="";
+            if ($res->{supplement}){
+                $supplement=" ".decode_utf8($res->{supplement});
+            }
+            
+            my $content=get_aut_ans_by_idn($targetid,$self->{dbh}).$supplement;
+            
+            # Kategorieweise Abspeichern
+            push @{$listitem_ref->{$category}}, {
+                id      => $targetid,
+                type    => 'aut',
+                content => $content,
+            };
+            
+            # Gemeinsam Abspeichern
+            push @autkor, $content;
+        }
+        
+        if ($self->{config}->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : Bestimmung der Verfasserinformationen : ist ".timestr($timeall));
+        }
+        
+        if ($self->{config}->{benchmark}) {
+            $atime=new Benchmark;
+        }    
+        
+        # Bestimmung der Urheber, Koerperschaften
+        $request=$self->{dbh}->prepare("select targetid,category,supplement from conn where sourceid=? and sourcetype=1 and targettype=3") or $logger->error($DBI::errstr);
+        $request->execute($id);
+        
+        while (my $res=$request->fetchrow_hashref){
+            my $category  = "C".sprintf "%04d",$res->{category };
+            my $indicator =        decode_utf8($res->{indicator});
+            my $targetid  =        decode_utf8($res->{targetid});
+            
+            my $supplement="";
+            if ($res->{supplement}){
+                $supplement.=" ".decode_utf8($res->{supplement});
+            }
+            
+            my $content=get_kor_ans_by_idn($targetid,$self->{dbh}).$supplement;
+            
+            # Kategorieweise Abspeichern
+            push @{$listitem_ref->{$category}}, {
+                id      => $targetid,
+                type    => 'kor',
+                content => $content,
+            };
+            
+            # Gemeinsam Abspeichern
+            push @autkor, $content;
+        }
+        
+        if ($self->{config}->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : Bestimmung der Koerperschaftsinformationen : ist ".timestr($timeall));
+        }
+        
+        # Zusammenfassen von autkor fuer die Sortierung
+        
+        push @{$listitem_ref->{'PC0001'}}, {
+            content   => join(" ; ",@autkor),
+        };
+        
+        if ($self->{config}->{benchmark}) {
+            $atime=new Benchmark;
+        }    
+        
+        
+        $request->finish();
+        
+        $logger->debug("Vor Sonderbehandlung: ".YAML::Dump($listitem_ref));
+
+        # Konzeptionelle Vorgehensweise fuer die korrekte Anzeige eines Titel in
+        # der Kurztitelliste:
+        #
+        # 1. Fall: Es existiert ein HST
+        #
+        # Dann:
+        #
+        # Unterfall 1.1: Es existiert eine (erste) Bandzahl(089)
+        #
+        # Dann: Setze diese Bandzahl vor den AST/HST
+        #
+        # Unterfall 1.2: Es existiert keine Bandzahl(089), aber eine (erste)
+        #                Bandzahl(455)
+        #
+        # Dann: Setze diese Bandzahl vor den AST/HST
+        #
+        # 2. Fall: Es existiert kein HST(331)
+        #
+        # Dann:
+        #
+        # Unterfall 2.1: Es existiert eine (erste) Bandzahl(089)
+        #
+        # Dann: Verwende diese Bandzahl
+        #
+        # Unterfall 2.2: Es existiert keine Bandzahl(089), aber eine (erste)
+        #                Bandzahl(455)
+        #
+        # Dann: Verwende diese Bandzahl
+        #
+        # Unterfall 2.3: Es existieren keine Bandzahlen, aber ein (erster)
+        #                Gesamttitel(451)
+        #
+        # Dann: Verwende diesen GT
+        #
+        # Unterfall 2.4: Es existieren keine Bandzahlen, kein Gesamttitel(451),
+        #                aber eine Zeitschriftensignatur(1203/USB-spezifisch)
+        #
+        # Dann: Verwende diese Zeitschriftensignatur
+        #
+        if (exists $listitem_ref->{T0331}) {
+            $logger->debug("1. Fall: HST existiert");
+            # UnterFall 1.1:
+            if (exists $listitem_ref->{'T0089'}) {
+                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0089}[0]{content}.". ".$listitem_ref->{T0331}[0]{content};
+            }
+            # Unterfall 1.2:
+            elsif (exists $listitem_ref->{T0455}) {
+                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0455}[0]{content}.". ".$listitem_ref->{T0331}[0]{content};
+            }
+        } else {
+            # UnterFall 1.1:
+            if (exists $listitem_ref->{'T0089'}) {
+                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0089}[0]{content};
+            }
+            # Unterfall 1.2:
+            elsif (exists $listitem_ref->{T0455}) {
+                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0455}[0]{content};
+            }
+            # Unterfall 1.3:
+            elsif (exists $listitem_ref->{T0451}) {
+                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0451}[0]{content};
+            }
+            # Unterfall 1.4:
+            elsif (exists $listitem_ref->{T1203}) {
+                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T1203}[0]{content};
+            } else {
+                $listitem_ref->{T0331}[0]{content}="Kein HST/AST vorhanden";
+            }
+        }
+
+        if ($self->{config}->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : Bestimmung der HST-Ueberordnungsinformationen : ist ".timestr($timeall));
+        }
+
+                if ($self->{config}->{benchmark}) {
+            $atime=new Benchmark;
+        }    
+        
+        # Bestimmung der Popularitaet des Titels
+        $request=$self->{dbh}->prepare("select idcount from popularity where id=?") or $logger->error($DBI::errstr);
+        $request->execute($id);
+        
+        while (my $res=$request->fetchrow_hashref){
+            $listitem_ref->{popularity} = $res->{idcount};
+        }
+        
+        if ($self->{config}->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : Bestimmung der Popularitaetsinformation : ist ".timestr($timeall));
+        }
+
+    }
+
+    if ($self->{config}->{benchmark}) {
+        $btime=new Benchmark;
+        $timeall=timediff($btime,$atime);
+        my $timeall=timediff($btime,$atime);
+        $logger->info("Zeit fuer : Bestimmung der gesamten Informationen         : ist ".timestr($timeall));
+    }
+
+    $logger->debug(YAML::Dump($listitem_ref));
+
+    $self->{brief_normset}=$listitem_ref;
+
+    return $self;
+
+
 }
 
 sub print_to_handler {
@@ -428,7 +758,7 @@ sub print_to_handler {
 #             }
 #         }
 #     }
-    
+
     my $poolname=$self->{targetdbinfo}->{sigel}{
         $self->{targetdbinfo}->{dbases}{$self->{database}}};
 
@@ -727,6 +1057,17 @@ sub utf2bibtex {
     $string=~s/ß/{\\"s}/g;
 
     return $string;
+}
+
+sub to_rawdata {
+    my ($self) = @_;
+
+    if (exists $self->{brief_normset}){
+        return $self->{brief_normset};
+    }
+    else {
+        return ($self->{normset},$self->{mexset},$self->{circset});
+    }
 }
 
 sub DESTROY {

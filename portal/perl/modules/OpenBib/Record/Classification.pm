@@ -146,7 +146,7 @@ sub get_full_record {
 
     $self->{normset}=$normset_ref;
 
-    return;
+    return $self;
 }
 
 sub get_name {
@@ -192,7 +192,13 @@ sub get_name {
 
     $self->{name}=$notation;
 
-    return;
+    return $self;
+}
+
+sub to_rawdata {
+    my ($self) = @_;
+
+    return $self->{normset};
 }
 
 sub name_as_string {
@@ -203,7 +209,10 @@ sub name_as_string {
 
 sub DESTROY {
     my $self = shift;
-    $self->{dbh}->disconnect();
+
+    if (exists $self->{dbh}){
+        $self->{dbh}->disconnect();
+    }
 
     return;
 }

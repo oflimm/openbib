@@ -1047,23 +1047,6 @@ sub print_tit_set_by_idn {
         sessionID  => $session->{ID},
     });
 
-    # Highlight Query
-
-#     my $term_ref = OpenBib::Common::Util::get_searchterms({
-#         searchquery_ref => $searchquery_ref,
-#     });
-
-#     foreach my $category (keys %$normset){
-#         if ($category ne "id" && $category ne "database"){
-#             foreach my $item (@{$normset->{$category}}){
-#                 foreach my $singleterm (@$term_ref){
-#                     $logger->debug("Trying to change $item->{content} : Term $singleterm");
-#                     $item->{content}=~s/($singleterm)/<span class="queryhighlight">$1<\/span>/ig unless ($item->{content}=~/http/);
-#                 }
-#             }
-#         }
-#     }
-    
     my $poolname=$targetdbinfo_ref->{sigel}{
         $targetdbinfo_ref->{dbases}{$database}};
 

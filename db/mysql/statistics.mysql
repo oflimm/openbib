@@ -1,0 +1,30 @@
+-------------------------------------------------
+--------------- T A B E L L E N -----------------
+-------------------------------------------------
+
+drop table IF EXISTS relevance;
+CREATE TABLE relevance (
+ id          VARCHAR(40),
+ isbn        VARCHAR(15),
+ dbname      VARCHAR(25),
+ katkey      INT,
+ origin      INT,
+ INDEX (id),
+ INDEX (isbn),
+ INDEX (dbname),
+ INDEX (katkey),
+ INDEX (origin)
+)
+PACK_KEYS=1;
+
+drop table IF EXISTS result_data;
+CREATE TABLE result_data (
+ id          VARCHAR(40),
+ tstamp      TIMESTAMP,
+ type        INT,
+ data        BLOB,
+ INDEX (id),
+ INDEX (tstamp),
+ INDEX (type)
+)
+PACK_KEYS=1;

@@ -2,7 +2,7 @@
 #
 #  OpenBib::Search::Local::Xapian
 #
-#  Dieses File ist (C) 2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2007 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -142,9 +142,7 @@ sub initial_search {
     my $dbh               = exists $arg_ref->{dbh}
         ? $arg_ref->{dbh}           : undef;
     my $database          = exists $arg_ref->{database}
-        ? $arg_ref->{database}           : undef;
-    my $maxhits           = exists $arg_ref->{maxhits}
-        ? $arg_ref->{maxhits}       : 50;
+        ? $arg_ref->{database}      : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();

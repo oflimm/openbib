@@ -109,7 +109,7 @@
 [% IF queryids.size >= 0 %]
 <form method="get" action="[% config.resultlists_loc %]">
 <input type="hidden" name="sessionID"    value="[% sessionID %]" />
-<input type="hidden" name="trefferliste" value="choice" />
+<input type="hidden" name="action"       value="choice" />
 <input type="hidden" name="view"         value="[% view %]" />
 	  
 <p />

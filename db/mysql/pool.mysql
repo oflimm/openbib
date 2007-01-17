@@ -313,6 +313,8 @@ swt       TEXT,
 notation  TEXT,
 sign      TEXT,
 ejahr     SMALLINT,
+ejahrft   TEXT,
+gtquelle  TEXT,
 isbn      TEXT,
 issn      TEXT,
 artinh    TEXT,
@@ -327,7 +329,7 @@ INDEX     (ejahr),
 FULLTEXT  (isbn),
 FULLTEXT  (issn),
 FULLTEXT  (artinh),
-FULLTEXT  (verf,hst,kor,swt,notation,sign,isbn,issn)
+FULLTEXT  (verf,hst,kor,swt,notation,sign,isbn,issn,ejahrft)
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
@@ -340,4 +342,14 @@ listitem BLOB,
 PRIMARY KEY (id)
 )
 DEFAULT CHARACTER SET latin1
+PACK_KEYS=1;
+
+drop table IF EXISTS popularity;
+create table popularity (
+id        MEDIUMINT NOT NULL,
+idcount   INT,
+INDEX     (id)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
 PACK_KEYS=1;

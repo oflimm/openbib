@@ -2,7 +2,7 @@
 #
 #  OpenBib::Search.pm
 #
-#  Copyright 1997-2006 Oliver Flimm <flimm@openbib.org>
+#  Copyright 1997-2007 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -62,13 +62,6 @@ sub handler {
 
     my $config = new OpenBib::Config();
     
-    ## Wandlungstabelle Erscheinungsjahroperator
-    my %ejop=(
-        'genau' => '=',
-        'jünger' => '>',
-        'älter' => '<'
-    );
-  
     my $query=Apache::Request->new($r);
 
     my $status=$query->parse;
@@ -88,41 +81,20 @@ sub handler {
     #####################################################################
   
     #####################################################################
-    ## Maxhits: Maximale Trefferzahl
-    ##          > 0  - gibt die maximale Zahl an
-  
-    my $maxhits=($query->param('maxhits'))?$query->param('maxhits'):400;
-  
-    #####################################################################
-    ## Rating
-    ##          0 - nein
-    ##          1 - ja
-  
-    my $rating=($query->param('rating'))?$query->param('rating'):0;
-  
-    #####################################################################
-    ## Bookinfo
-    ##          0 - nein
-    ##          1 - ja
-  
-    my $bookinfo=($query->param('bookinfo'))?$query->param('bookinfo'):0;
-  
-    #####################################################################
-    ## Hitrange: Anzahl gleichzeitig ausgegebener Treffer bei Anfangs-Suche
+    ## Hitrange: Anzahl gleichzeitig ausgegebener Treffer (Blaettern)
     ##          >0  - gibt die maximale Zahl an
-    ##          <=0 - gibt immer alle Treffer aus 
+    ##          <=0 - gibt immer alle Treffer aus
   
     my $hitrange=($query->param('hitrange'))?$query->param('hitrange'):-1;
-    if ($hitrange eq "alles") {
-        $hitrange=-1
-    }
+    ($hitrange)=$hitrange=~/^(-?\d+)$/; # hitrange muss numerisch sein (SQL-Injection)
   
     #####################################################################
     ## Offset: Maximale Anzahl ausgegebener Treffer bei Anfangs-Suche
     ##          >0  - hitrange Treffer werden ab dieser Nr. ausgegeben 
   
-    my $offset=($query->param('offset'))?$query->param('offset'):1;
-  
+    my $offset=($query->param('offset'))?$query->param('offset'):0;
+    ($offset)=$offset=~/^(-?\d+)$/; # offset muss numerisch sein (SQL-Injection)
+
     #####################################################################
     ## Database: Name der verwendeten SQL-Datenbank
   
@@ -163,6 +135,8 @@ sub handler {
     my $searchtitofurhkor = $query->param('searchtitofurhkor') || '';
     my $searchtitofnot    = $query->param('searchtitofnot')    || '';
     my $searchtitofswt    = $query->param('searchtitofswt')    || '';
+
+    my $queryid           = $query->param('queryid')           || '';
 
     #####                                                          ######
     ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########
@@ -268,10 +242,25 @@ sub handler {
         }
     
         if ($generalsearch=~/^supertit/) {
-            my $supertitidn=$query->param("$generalsearch");
+            my $supertitidn = $query->param("$generalsearch");
+            my $hits        = 0;
 
-            my $reqstring="select distinct targetid from conn where sourceid=? and sourcetype=1 and targettype=1";
+            # Zuerst Gesamtzahl bestimmen
+            my $reqstring="select count(distinct targetid) as conncount from conn where sourceid=? and sourcetype=1 and targettype=1";
             my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
+            $request->execute($supertitidn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+
+            my $res=$request->fetchrow_hashref;
+            $hits = $res->{conncount};
+
+            my $limits="";
+            if ($hitrange > 0){
+                $limits="limit $offset,$hitrange";
+            }
+
+            # Bestimmung der Titel
+            $reqstring="select distinct targetid from conn where sourceid=? and sourcetype=1 and targettype=1 $limits";
+            $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
             $request->execute($supertitidn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
 
             my @titidns=();
@@ -291,12 +280,11 @@ sub handler {
                 OpenBib::Search::Util::print_tit_set_by_idn({
                     titidn             => $titidns[0],
                     dbh                => $dbh,
-                    sessiondbh         => $session->{dbh},
+                    session            => $session,
                     targetdbinfo_ref   => $targetdbinfo_ref,
                     targetcircinfo_ref => $targetcircinfo_ref,
                     queryoptions_ref   => $queryoptions_ref,
                     database           => $database,
-                    sessionID          => $session->{ID},
                     apachereq          => $r,
                     stylesheet         => $stylesheet,
                     view               => $view,
@@ -356,6 +344,9 @@ sub handler {
                     apachereq        => $r,
                     stylesheet       => $stylesheet,
                     view             => $view,
+                    hits             => $hits,
+                    offset           => $offset,
+                    hitrange         => $hitrange,
                     msg              => $msg,
                 });
                 return OK;
@@ -364,9 +355,23 @@ sub handler {
 
         if ($generalsearch=~/^subtit/) {
             my $subtitidn=$query->param("$generalsearch");
+            my $hits        = 0;
 
-            my $reqstring="select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=1";
+            my $reqstring="select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=1";
             my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
+            $request->execute($subtitidn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+            
+            my $res=$request->fetchrow_hashref;
+            $hits = $res->{conncount};
+
+            my $limits="";
+            if ($hitrange > 0){
+                $limits="limit $offset,$hitrange";
+            }
+            
+            # Bestimmung der Titel
+            $reqstring="select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=1 $limits";
+            $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
             $request->execute($subtitidn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
 
             my @titidns=();
@@ -386,12 +391,11 @@ sub handler {
                 OpenBib::Search::Util::print_tit_set_by_idn({
                     titidn             => $titidns[0],
                     dbh                => $dbh,
-                    sessiondbh         => $session->{dbh},
+                    session            => $session,
                     targetdbinfo_ref   => $targetdbinfo_ref,
                     targetcircinfo_ref => $targetcircinfo_ref,
                     queryoptions_ref   => $queryoptions_ref,
                     database           => $database,
-                    sessionID          => $session->{ID},
                     apachereq          => $r,
                     stylesheet         => $stylesheet,
                     view               => $view,
@@ -451,6 +455,9 @@ sub handler {
                     apachereq        => $r,
                     stylesheet       => $stylesheet,
                     view             => $view,
+                    hits             => $hits,
+                    offset           => $offset,
+                    hitrange         => $hitrange,
                     msg              => $msg,
                 });
                 return OK;
@@ -463,12 +470,11 @@ sub handler {
             OpenBib::Search::Util::print_tit_set_by_idn({
                 titidn             => $titidn,
                 dbh                => $dbh,
-                sessiondbh         => $session->{dbh},
+                session            => $session,
                 targetdbinfo_ref   => $targetdbinfo_ref,
                 targetcircinfo_ref => $targetcircinfo_ref,
                 queryoptions_ref   => $queryoptions_ref,
                 database           => $database,
-                sessionID          => $session->{ID},
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
                 view               => $view,
@@ -568,12 +574,9 @@ sub handler {
 #             dbh                => $dbh,
 #             sessiondbh         => $session->{dbh},
 #             searchmultipleaut  => $searchmultipleaut,
-#             searchmode         => $searchmode,
 #             targetdbinfo_ref   => $targetdbinfo_ref,
 #             targetcircinfo_ref => $targetcircinfo_ref,
 #             hitrange           => $hitrange,
-#             rating             => $rating,
-#             bookinfo           => $bookinfo,
 #             sorttype           => $sorttype,
 #             sortorder          => $sortorder,
 #             database           => $database,
@@ -595,12 +598,9 @@ sub handler {
 #             dbh                => $dbh,
 #             sessiondbh         => $session->{dbh},
 #             searchmultiplekor  => $searchmultiplekor,
-#             searchmode         => $searchmode,
 #             targetdbinfo_ref   => $targetdbinfo_ref,
 #             targetcircinfo_ref => $targetcircinfo_ref,
 #             hitrange           => $hitrange,
-#             rating             => $rating,
-#             bookinfo           => $bookinfo,
 #             sorttype           => $sorttype,
 #             sortorder          => $sortorder,
 #             database           => $database,
@@ -622,12 +622,9 @@ sub handler {
 #             dbh                => $dbh,
 #             sessiondbh         => $session->{dbh},
 #             searchmultiplekor  => $searchmultiplekor,
-#             searchmode         => $searchmode,
 #             targetdbinfo_ref   => $targetdbinfo_ref,
 #             targetcircinfo_ref => $targetcircinfo_ref,
 #             hitrange           => $hitrange,
-#             rating             => $rating,
-#             bookinfo           => $bookinfo,
 #             sorttype           => $sorttype,
 #             sortorder          => $sortorder,
 #             database           => $database,
@@ -648,12 +645,9 @@ sub handler {
 #             dbh                => $dbh,
 #             sessiondbh         => $session->{dbh},
 #             searchmultiplekor  => $searchmultiplekor,
-#             searchmode         => $searchmode,
 #             targetdbinfo_ref   => $targetdbinfo_ref,
 #             targetcircinfo_ref => $targetcircinfo_ref,
 #             hitrange           => $hitrange,
-#             rating             => $rating,
-#             bookinfo           => $bookinfo,
 #             sorttype           => $sorttype,
 #             sortorder          => $sortorder,
 #             database           => $database,
@@ -668,6 +662,17 @@ sub handler {
     #####################################################################
   
     if ($searchsingletit) {
+        # Zuerst die zugehoerige Suchanfrage bestimmen
+
+        my $searchquery_ref = {};
+
+        if ($queryid){
+            $searchquery_ref = OpenBib::Common::Util::get_searchquery_of_queryid({
+                queryid   => $queryid,
+                sessionID => $session->{ID},
+            });
+        }
+
         if ($config->get_system_of_db($database) eq "Z39.50"){
             my $z3950dbh = new OpenBib::Search::Z3950($database);
 
@@ -685,21 +690,23 @@ sub handler {
             
             # TT-Data erzeugen
             my $ttdata={
-                view       => $view,
-                stylesheet => $stylesheet,
-                database   => $database,
-                poolname   => $poolname,
-                prevurl    => $prevurl,
-                nexturl    => $nexturl,
-                qopts      => $queryoptions_ref,
-                sessionID  => $session->{ID},
-                titidn     => $searchsingletit,
-                normset    => $normset,
-                mexnormset => $mexnormset,
-                circset    => {},
+                view        => $view,
+                stylesheet  => $stylesheet,
+                database    => $database,
+                poolname    => $poolname,
+                prevurl     => $prevurl,
+                nexturl     => $nexturl,
+                qopts       => $queryoptions_ref,
+                sessionID   => $session->{ID},
+                titidn      => $searchsingletit,
+                normset     => $normset,
+                mexnormset  => $mexnormset,
+                circset     => {},
+
+                searchquery => $searchquery_ref,
                 
-                config     => $config,
-                msg        => $msg,
+                config      => $config,
+                msg         => $msg,
             };
             
             OpenBib::Common::Util::print_page($config->{tt_search_showtitset_tname},$ttdata,$r);
@@ -708,12 +715,13 @@ sub handler {
             OpenBib::Search::Util::print_tit_set_by_idn({
                 titidn             => $searchsingletit,
                 dbh                => $dbh,
-                sessiondbh         => $session->{dbh},
+                session            => $session,
                 targetdbinfo_ref   => $targetdbinfo_ref,
                 targetcircinfo_ref => $targetcircinfo_ref,
                 queryoptions_ref   => $queryoptions_ref,
+                searchquery_ref    => $searchquery_ref,
+                queryid            => $queryid,
                 database           => $database,
-                sessionID          => $session->{ID},
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
                 view               => $view,
@@ -840,15 +848,26 @@ sub handler {
     }
     
     if ($searchtitofaut) {
-        
-        my @titelidns=();
+        my @titelidns = ();
+        my $hits      = 0;
 
         # Verfasser-Id numerisch, dann Titel zu von entsprechendem Normdaten
         # satz bestimmen.
         if ($searchtitofaut =~ /^\d+$/){
+            # Zuerst Gesamtzahl bestimmen
+            my $request=$dbh->prepare("select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=2") or $logger->error($DBI::errstr);
+            $request->execute($searchtitofaut);
+            
+            my $res=$request->fetchrow_hashref;
+            $hits = $res->{conncount};
+
+            my $limits="";
+            if ($hitrange > 0){
+                $limits="limit $offset,$hitrange";
+            }
 
             # Bestimmung der Titel
-            my $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=2") or $logger->error($DBI::errstr);
+            $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=2 $limits") or $logger->error($DBI::errstr);
             $request->execute($searchtitofaut);
             
             
@@ -884,12 +903,11 @@ sub handler {
             OpenBib::Search::Util::print_tit_set_by_idn({
                 titidn             => $titelidns[0],
                 dbh                => $dbh,
-                sessiondbh         => $session->{dbh},
+                session            => $session,
                 targetdbinfo_ref   => $targetdbinfo_ref,
                 targetcircinfo_ref => $targetcircinfo_ref,
                 queryoptions_ref   => $queryoptions_ref,
                 database           => $database,
-                sessionID          => $session->{ID},
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
                 view               => $view,
@@ -947,6 +965,9 @@ sub handler {
                 apachereq        => $r,
                 stylesheet       => $stylesheet,
                 view             => $view,
+                hits             => $hits,
+                offset           => $offset,
+                hitrange         => $hitrange,
                 msg              => $msg,
             });
             return OK;
@@ -955,15 +976,26 @@ sub handler {
   
     #####################################################################
     if ($searchtitofurhkor) {
-
-        my @titelidns=();
+        my @titelidns = ();
+        my $hits      = 0;
 
         # Koerperschafts-Id numerisch, dann Titel zu von entsprechendem Normdaten
         # satz bestimmen.
         if ($searchtitofurhkor =~ /^\d+$/){
+            # Zuerst Gesamtzahl bestimmen
+            my $request=$dbh->prepare("select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=3") or $logger->error($DBI::errstr);
+            $request->execute($searchtitofurhkor);
+            
+            my $res=$request->fetchrow_hashref;
+            $hits = $res->{conncount};
+
+            my $limits="";
+            if ($hitrange > 0){
+                $limits="limit $offset,$hitrange";
+            }
 
             # Bestimmung der Titel
-            my $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=3") or $logger->error($DBI::errstr);
+            $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=3 $limits") or $logger->error($DBI::errstr);
             $request->execute($searchtitofurhkor);
             
             while (my $res=$request->fetchrow_hashref){
@@ -999,12 +1031,11 @@ sub handler {
             OpenBib::Search::Util::print_tit_set_by_idn({
                 titidn             => $titelidns[0],
                 dbh                => $dbh,
-                sessiondbh         => $session->{dbh},
+                session            => $session,
                 targetdbinfo_ref   => $targetdbinfo_ref,
                 targetcircinfo_ref => $targetcircinfo_ref,
                 queryoptions_ref   => $queryoptions_ref,
                 database           => $database,
-                sessionID          => $session->{ID},
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
                 view               => $view,
@@ -1063,6 +1094,9 @@ sub handler {
                 apachereq        => $r,
                 stylesheet       => $stylesheet,
                 view             => $view,
+                hits             => $hits,
+                offset           => $offset,
+                hitrange         => $hitrange,
                 msg              => $msg,
             });
             return OK;
@@ -1071,14 +1105,26 @@ sub handler {
   
     #######################################################################
     if ($searchtitofswt) {
-        my @titelidns=();
+        my @titelidns = ();
+        my $hits      = 0;
 
         # Schlagwort-Id numerisch, dann Titel zu von entsprechendem Normdaten
         # satz bestimmen.
         if ($searchtitofswt =~ /^\d+$/){
+            # Zuerst Gesamtzahl bestimmen
+            my $request=$dbh->prepare("select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=4") or $logger->error($DBI::errstr);
+            $request->execute($searchtitofswt);
+            
+            my $res=$request->fetchrow_hashref;
+            $hits = $res->{conncount};
+
+            my $limits="";
+            if ($hitrange > 0){
+                $limits="limit $offset,$hitrange";
+            }
 
             # Bestimmung der Titel
-            my $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=4") or $logger->error($DBI::errstr);
+            $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=4 $limits") or $logger->error($DBI::errstr);
             $request->execute($searchtitofswt);
             
             while (my $res=$request->fetchrow_hashref){
@@ -1112,12 +1158,11 @@ sub handler {
             OpenBib::Search::Util::print_tit_set_by_idn({
                 titidn             => $titelidns[0],
                 dbh                => $dbh,
-                sessiondbh         => $session->{dbh},
+                session            => $session,
                 targetdbinfo_ref   => $targetdbinfo_ref,
                 targetcircinfo_ref => $targetcircinfo_ref,
                 queryoptions_ref   => $queryoptions_ref,
                 database           => $database,
-                sessionID          => $session->{ID},
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
                 view               => $view,
@@ -1175,6 +1220,9 @@ sub handler {
                 apachereq        => $r,
                 stylesheet       => $stylesheet,
                 view             => $view,
+                hits             => $hits,
+                offset           => $offset,
+                hitrange         => $hitrange,
                 msg              => $msg,
             });
             return OK;
@@ -1183,19 +1231,32 @@ sub handler {
   
     #######################################################################
     if ($searchtitofnot) {
-        my @titelidns=();
+        my @titelidns = ();
+        my $hits      = 0;
 
         # Notations-Id numerisch, dann Titel zu von entsprechendem Normdaten
         # satz bestimmen.
         if ($searchtitofnot =~ /^\d+$/){
+            # Zuerst Gesamtzahl bestimmen
+            my $request=$dbh->prepare("select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=5") or $logger->error($DBI::errstr);
+            $request->execute($searchtitofnot);
+            
+            my $res=$request->fetchrow_hashref;
+            $hits = $res->{conncount};
+
+            my $limits="";
+            if ($hitrange > 0){
+                $limits="limit $offset,$hitrange";
+            }
+            
             # Bestimmung der Titel
-            my $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=5") or $logger->error($DBI::errstr);
+            $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=5 $limits") or $logger->error($DBI::errstr);
             $request->execute($searchtitofnot);
 
             while (my $res=$request->fetchrow_hashref){
                 push @titelidns, $res->{sourceid};
             }
-            $request->finish();            
+            $request->finish();
         }
         # ... ansonsten wird fuer den Fall fehlender Normdaten die komplette
         # Notation uebergeben, der ausschliesslich in den Titeldaten zu finden ist.
@@ -1224,12 +1285,11 @@ sub handler {
             OpenBib::Search::Util::print_tit_set_by_idn({
                 titidn             => $titelidns[0],
                 dbh                => $dbh,
-                sessiondbh         => $session->{dbh},
+                session            => $session,
                 targetdbinfo_ref   => $targetdbinfo_ref,
                 targetcircinfo_ref => $targetcircinfo_ref,
                 queryoptions_ref   => $queryoptions_ref,
                 database           => $database,
-                sessionID          => $session->{ID},
                 apachereq          => $r,
                 stylesheet         => $stylesheet,
                 view               => $view,
@@ -1288,6 +1348,9 @@ sub handler {
                 apachereq        => $r,
                 stylesheet       => $stylesheet,
                 view             => $view,
+                hits             => $hits,
+                offset           => $offset,
+                hitrange         => $hitrange,
                 msg              => $msg,
             });
             return OK;

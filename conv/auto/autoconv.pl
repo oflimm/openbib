@@ -35,13 +35,21 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
+use strict;
+use warnings;
+
+use Benchmark ':hireswallclock';
 use DBI;
 use Getopt::Long;
+use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Config;
 
+my ($singlepool,$getfromremote,$help,$logfile);
+
 &GetOptions("single-pool=s"   => \$singlepool,
-	    "get-from-remote" => \$getfromremote,
+            "logfile=s"       => \$logfile,
+	    "get-from-remote" => \$getfromremote,            
 	    "help"            => \$help
 	    );
 
@@ -49,188 +57,295 @@ if ($help){
     print_help();
 }
 
+$logfile=($logfile)?$logfile:'/var/log/openbib/autoconv.log';
+
+my $log4Perl_config = << "L4PCONF";
+log4perl.rootLogger=DEBUG, LOGFILE, Screen
+log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
+log4perl.appender.LOGFILE.filename=$logfile
+log4perl.appender.LOGFILE.mode=append
+log4perl.appender.LOGFILE.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.LOGFILE.layout.ConversionPattern=%d [%c]: %m%n
+log4perl.appender.Screen=Log::Dispatch::Screen
+log4perl.appender.Screen.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.Screen.layout.ConversionPattern=%d [%c]: %m%n
+L4PCONF
+
+Log::Log4perl::init(\$log4Perl_config);
+
+# Log4perl logger erzeugen
+my $logger = get_logger();
+
 my $config = new OpenBib::Config();
 
-$rootdir       = $config->{'autoconv_dir'};
-$pooldir       = $rootdir."/pools";
+my $rootdir       = $config->{'autoconv_dir'};
+my $pooldir       = $rootdir."/pools";
 
-$wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
-$meta2sqlexe   = "$config->{'conv_dir'}/meta2sql.pl";
-$meta2mexexe   = "$config->{'conv_dir'}/meta2mex.pl";
-$meta2waisexe  = "$config->{'conv_dir'}/meta2wais.pl";
-$wais2sqlexe   = "$config->{'conv_dir'}/wais2searchSQL.pl";
-$mysqlexe      = "/usr/bin/mysql -u $config->{'dbuser'} --password=$config->{'dbpasswd'} -f";
-$mysqladminexe = "/usr/bin/mysqladmin -u $config->{'dbuser'} --password=$config->{'dbpasswd'} -f";
+my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
+my $meta2sqlexe   = "$config->{'conv_dir'}/meta2sql.pl";
+my $meta2mexexe   = "$config->{'conv_dir'}/meta2mex.pl";
+my $meta2waisexe  = "$config->{'conv_dir'}/meta2wais.pl";
+my $wais2sqlexe   = "$config->{'conv_dir'}/wais2searchSQL.pl";
+my $mysqlexe      = "/usr/bin/mysql -u $config->{'dbuser'} --password=$config->{'dbpasswd'} -f";
+my $mysqladminexe = "/usr/bin/mysqladmin -u $config->{'dbuser'} --password=$config->{'dbpasswd'} -f";
 
 if (!$singlepool){
-  print STDERR "Kein Pool mit --single-pool= ausgewaehlt\n";
+  $logger->fatal("Kein Pool mit --single-pool= ausgewaehlt");
   exit;
 }
 
 my $singlepooltmp=$singlepool."tmp";
 
 if (!$config->db_exists($singlepool)){
-  print STDERR "Pool $singlepool existiert nicht\n";
+  $logger->fatal("Pool $singlepool existiert nicht");
   exit;
 }
 
 my $dboptions_ref = $config->get_dboptions($singlepool);
 
-print "### POOL $singlepool\n";
+$logger->info("### POOL $singlepool");
 
-if ($singlepool && -e "$config->{autoconv_dir}/filter/$singlepool/pre_remote.pl"){
-    print "### $singlepool: Verwende Plugin pre_remote.pl\n";
-    system("$config->{autoconv_dir}/filter/$singlepool/pre_remote.pl $singlepool");
+my $atime = new Benchmark;
+
+# Aktuelle Pool-Version von entfernter Quelle uebertragen
+
+{
+    my $atime = new Benchmark;
+    
+    if ($singlepool && -e "$config->{autoconv_dir}/filter/$singlepool/pre_remote.pl"){
+        $logger->info("### $singlepool: Verwende Plugin pre_remote.pl");
+        system("$config->{autoconv_dir}/filter/$singlepool/pre_remote.pl $singlepool");
+    }
+    
+    if ($getfromremote){
+        
+        if ($singlepool && -e "$config->{autoconv_dir}/filter/$singlepool/alt_remote.pl"){
+            $logger->info("### $singlepool: Verwende Plugin alt_remote.pl");
+            system("$config->{autoconv_dir}/filter/$singlepool/alt_remote.pl $singlepool");
+        }
+        else {
+            $logger->info("### $singlepool: Hole Exportdateien mit wget von $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/");
+                        
+            my $httpauthstring="";
+            if ($dboptions_ref->{protocol} eq "http" && $dboptions_ref->{remoteuser} ne "" && $dboptions_ref->{remotepasswd} ne ""){
+                $httpauthstring=" --http-user=$dboptions_ref->{remoteuser} --http-passwd=$dboptions_ref->{remotepasswd}";
+            }
+            
+            system("cd $pooldir/$singlepool ; rm unload.*");
+            system("$wgetexe $httpauthstring -P $pooldir/$singlepool/ $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{titfilename} > /dev/null 2>&1 ");
+            system("$wgetexe $httpauthstring -P $pooldir/$singlepool/ $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{autfilename} > /dev/null 2>&1 ");
+            system("$wgetexe $httpauthstring -P $pooldir/$singlepool/ $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{korfilename} > /dev/null 2>&1 ");
+            system("$wgetexe $httpauthstring -P $pooldir/$singlepool/ $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{swtfilename} > /dev/null 2>&1 ");
+            system("$wgetexe $httpauthstring -P $pooldir/$singlepool/ $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{notfilename} > /dev/null 2>&1 ");
+            system("$wgetexe $httpauthstring -P $pooldir/$singlepool/ $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{mexfilename} > /dev/null 2>&1 ");
+        }
+    }
+    
+    if ($singlepool && -e "$config->{autoconv_dir}/filter/$singlepool/post_remote.pl"){
+        $logger->info("### $singlepool: Verwende Plugin post_remote.pl");
+        system("$config->{autoconv_dir}/filter/$singlepool/post_remote.pl $singlepool");
+    }
+    
+    my $btime      = new Benchmark;
+    my $timeall    = timediff($btime,$atime);
+    my $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+
+    $logger->info("### $singlepool: Benoetigte Zeit -> $resulttime");
 }
 
-if ($getfromremote){
+# Entpacken der Pool-Daten in separates Arbeits-Verzeichnis unter 'data'
 
-    if ($singlepool && -e "$config->{autoconv_dir}/filter/$singlepool/alt_remote.pl"){
-        print "### $singlepool: Verwende Plugin alt_remote.pl\n";
-        system("$config->{autoconv_dir}/filter/$singlepool/alt_remote.pl $singlepool");
+{    
+    my $atime = new Benchmark;
+
+    $logger->info("### $singlepool: Entpacken der Pool-Daten");
+
+    if (! -d "$rootdir/data/$singlepool"){
+        system("mkdir $rootdir/data/$singlepool");
+    }
+    
+    system("cd $pooldir/$singlepool/ ; zcat $dboptions_ref->{titfilename} | $meta2mexexe");
+    
+    if ($singlepool && -e "$config->{autoconv_dir}/filter/$singlepool/pre_move.pl"){
+        $logger->info("### $singlepool: Verwende Plugin pre_move.pl");
+        system("$config->{autoconv_dir}/filter/$singlepool/pre_move.pl $singlepool");
+    }
+    
+    system("rm $rootdir/data/$singlepool/*");
+    system("/bin/gzip -dc $pooldir/$singlepool/$dboptions_ref->{titfilename} > $rootdir/data/$singlepool/tit.exp");
+    system("/bin/gzip -dc $pooldir/$singlepool/$dboptions_ref->{autfilename} > $rootdir/data/$singlepool/aut.exp");
+    system("/bin/gzip -dc $pooldir/$singlepool/$dboptions_ref->{swtfilename} > $rootdir/data/$singlepool/swt.exp");
+    system("/bin/gzip -dc $pooldir/$singlepool/$dboptions_ref->{notfilename} > $rootdir/data/$singlepool/not.exp");
+    system("/bin/gzip -dc $pooldir/$singlepool/$dboptions_ref->{korfilename} > $rootdir/data/$singlepool/kor.exp");
+    system("/bin/gzip -dc $pooldir/$singlepool/$dboptions_ref->{mexfilename} > $rootdir/data/$singlepool/mex.exp");
+
+    my $btime      = new Benchmark;
+    my $timeall    = timediff($btime,$atime);
+    my $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+
+    $logger->info("### $singlepool: Benoetigte Zeit -> $resulttime");
+}
+    
+# Konvertierung aus dem Meta- in das SQL-Einladeformat
+
+{
+    my $atime = new Benchmark;
+
+    # Konvertierung Exportdateien -> SQL
+    if ($singlepool && -e "$config->{autoconv_dir}/filter/$singlepool/pre_conv.pl"){
+        $logger->info("### $singlepool: Verwende Plugin pre_conv.pl");
+        system("$config->{autoconv_dir}/filter/$singlepool/pre_conv.pl $singlepool");
+    }
+
+    $logger->info("### $singlepool: Konvertierung Exportdateien -> SQL");
+
+    if ($singlepool && -e "$config->{autoconv_dir}/filter/$singlepool/alt_conv.pl"){
+        $logger->info("### $singlepool: Verwende Plugin alt_conv.pl");
+        system("$config->{autoconv_dir}/filter/$singlepool/alt_conv.pl $singlepool");
     }
     else {
-        print "### $singlepool: Hole Exportdateien mit wget von $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/\n";
-        
-        
-        my $httpauthstring="";
-        if ($dboptions_ref->{protocol} eq "http" && $dboptions_ref->{remoteuser} ne "" && $dboptions_ref->{remotepasswd} ne ""){
-            $httpauthstring=" --http-user=$dboptions_ref->{remoteuser} --http-passwd=$dboptions_ref->{remotepasswd}";
-        }
-        
-        system("cd $pooldir/$singlepool ; rm unload.*");
-        system("$wgetexe $httpauthstring -P $pooldir/$singlepool/ $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{titfilename} > /dev/null 2>&1 ");
-        system("$wgetexe $httpauthstring -P $pooldir/$singlepool/ $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{autfilename} > /dev/null 2>&1 ");
-        system("$wgetexe $httpauthstring -P $pooldir/$singlepool/ $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{korfilename} > /dev/null 2>&1 ");
-        system("$wgetexe $httpauthstring -P $pooldir/$singlepool/ $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{swtfilename} > /dev/null 2>&1 ");
-        system("$wgetexe $httpauthstring -P $pooldir/$singlepool/ $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{notfilename} > /dev/null 2>&1 ");
-        system("$wgetexe $httpauthstring -P $pooldir/$singlepool/ $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{mexfilename} > /dev/null 2>&1 ");
+        system("cd $rootdir/data/$singlepool ; $meta2sqlexe --single-pool=$singlepool");
     }
+    
+    if ($singlepool && -e "$config->{autoconv_dir}/filter/$singlepool/post_conv.pl"){
+        $logger->info("### $singlepool: Verwende Plugin post_conv.pl");
+        system("$config->{autoconv_dir}/filter/$singlepool/post_conv.pl $singlepool");
+    }
+
+    my $btime      = new Benchmark;
+    my $timeall    = timediff($btime,$atime);
+    my $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+
+    $logger->info("### $singlepool: Benoetigte Zeit -> $resulttime");     
 }
 
-if ($singlepool && -e "$config->{autoconv_dir}/filter/$singlepool/post_remote.pl"){
-    print "### $singlepool: Verwende Plugin post_remote.pl\n";
-    system("$config->{autoconv_dir}/filter/$singlepool/post_remote.pl $singlepool");
+# Einladen in temporaere SQL-Datenbank
+
+{
+    my $atime = new Benchmark;
+        
+    $logger->info("### $singlepool: Temporaere Datenbank erzeugen");
+
+    # Fuer das Einladen externer SQL-Daten mit 'load' wird das File_priv
+    # fuer den Benutzer dbuser benoetigt
+
+    system("$mysqladminexe drop   $singlepooltmp");
+    system("$mysqladminexe create $singlepooltmp");
+    
+    $logger->info("### $singlepool: Datendefinition einlesen");
+    
+    system("$mysqlexe $singlepooltmp < $config->{'dbdesc_dir'}/mysql/pool.mysql");
+    
+    # Index entfernen
+    $logger->info("### $singlepool: Index in temporaerer Datenbank entfernen");
+    system("$mysqlexe $singlepooltmp < $rootdir/data/$singlepool/control_index_off.mysql");
+    
+    if ($singlepool && -e "$config->{autoconv_dir}/filter/$singlepool/post_index_off.pl"){
+        $logger->info("### $singlepool: Verwende Plugin post_index_off.pl");
+        system("$config->{autoconv_dir}/filter/$singlepool/post_index_off.pl $singlepooltmp");
+    }
+    
+    # Einladen der Daten
+    $logger->info("### $singlepool: Einladen der Daten in temporaere Datenbank");
+    system("$mysqlexe $singlepooltmp < $rootdir/data/$singlepool/control.mysql");
+
+    if ($singlepool && -e "$config->{autoconv_dir}/filter/$singlepool/post_dbload.pl"){
+        $logger->info("### $singlepool: Verwende Plugin post_dbload.pl");
+        system("$config->{autoconv_dir}/filter/$singlepool/post_dbload.pl $singlepooltmp");
+    }
+
+    # Index setzen
+    $logger->info("### $singlepool: Index in temporaerer Datenbank aufbauen");
+    system("$mysqlexe $singlepooltmp < $rootdir/data/$singlepool/control_index_on.mysql");
+
+    if ($singlepool && -e "$config->{autoconv_dir}/filter/$singlepool/post_index_on.pl"){
+        $logger->info("### $singlepool: Verwende Plugin post_index_on.pl");
+        system("$config->{autoconv_dir}/filter/$singlepool/post_index_on.pl $singlepooltmp");
+    }
+
+    # Tabellen Packen
+    system("$config->{autoconv_dir}/filter/common/pack_data.pl $singlepooltmp");
+
+    my $btime      = new Benchmark;
+    my $timeall    = timediff($btime,$atime);
+    my $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+
+    $logger->info("### $singlepool: Benoetigte Zeit -> $resulttime");     
 }
-
-if (! -d "$rootdir/data/$singlepool"){
-  system("mkdir $rootdir/data/$singlepool");
-}
-
-system("cd $pooldir/$singlepool/ ; zcat $dboptions_ref->{titfilename} | $meta2mexexe");
-
-if ($singlepool && -e "$config->{autoconv_dir}/filter/$singlepool/pre_move.pl"){
-    print "### $singlepool: Verwende Plugin pre_move.pl\n";
-    system("$config->{autoconv_dir}/filter/$singlepool/pre_move.pl $singlepool");
-}
-
-system("rm $rootdir/data/$singlepool/*");
-system("/bin/gzip -dc $pooldir/$singlepool/$dboptions_ref->{titfilename} > $rootdir/data/$singlepool/tit.exp");
-system("/bin/gzip -dc $pooldir/$singlepool/$dboptions_ref->{autfilename} > $rootdir/data/$singlepool/aut.exp");
-system("/bin/gzip -dc $pooldir/$singlepool/$dboptions_ref->{swtfilename} > $rootdir/data/$singlepool/swt.exp");
-system("/bin/gzip -dc $pooldir/$singlepool/$dboptions_ref->{notfilename} > $rootdir/data/$singlepool/not.exp");
-system("/bin/gzip -dc $pooldir/$singlepool/$dboptions_ref->{korfilename} > $rootdir/data/$singlepool/kor.exp");
-system("/bin/gzip -dc $pooldir/$singlepool/$dboptions_ref->{mexfilename} > $rootdir/data/$singlepool/mex.exp");
-
-# Konvertierung Exportdateien -> SQL
-if ($singlepool && -e "$config->{autoconv_dir}/filter/$singlepool/pre_conv.pl"){
-    print "### $singlepool: Verwende Plugin pre_conv.pl\n";
-    system("$config->{autoconv_dir}/filter/$singlepool/pre_conv.pl $singlepool");
-}
-
-print "### $singlepool: Konvertierung Exportdateien -> SQL\n";
-
-if ($singlepool && -e "$config->{autoconv_dir}/filter/$singlepool/alt_conv.pl"){
-    print "### $singlepool: Verwende Plugin alt_conv.pl\n";
-    system("$config->{autoconv_dir}/filter/$singlepool/alt_conv.pl $singlepool");
-}
-else {
-    system("cd $rootdir/data/$singlepool ; $meta2sqlexe --single-pool=$singlepool");
-}
-
-if ($singlepool && -e "$config->{autoconv_dir}/filter/$singlepool/post_conv.pl"){
-    print "### $singlepool: Verwende Plugin post_conv.pl\n";
-    system("$config->{autoconv_dir}/filter/$singlepool/post_conv.pl $singlepool");
-}
-
-print "### $singlepool: Temporaere Datenbank erzeugen\n";
-
-# Fuer das Einladen externer SQL-Daten mit 'load' wird das File_priv
-# fuer den Benutzer dbuser benoetigt
-
-system("$mysqladminexe drop   $singlepooltmp");
-system("$mysqladminexe create $singlepooltmp");
-
-print "### $singlepool: Datendefinition einlesen\n";
-
-system("$mysqlexe $singlepooltmp < $config->{'dbdesc_dir'}/mysql/pool.mysql");
-
-# Index entfernen
-print "### $singlepool: Index in temporaerer Datenbank entfernen\n";
-system("$mysqlexe $singlepooltmp < $rootdir/data/$singlepool/control_index_off.mysql");
-
-if ($singlepool && -e "$config->{autoconv_dir}/filter/$singlepool/post_index_off.pl"){
-    print "### $singlepool: Verwende Plugin post_index_off.pl\n";
-    system("$config->{autoconv_dir}/filter/$singlepool/post_index_off.pl $singlepooltmp");
-}
-
-# Einladen der Daten
-print "### $singlepool: Einladen der Daten in temporaere Datenbank\n";
-system("$mysqlexe $singlepooltmp < $rootdir/data/$singlepool/control.mysql");
-
-if ($singlepool && -e "$config->{autoconv_dir}/filter/$singlepool/post_dbload.pl"){
-    print "### $singlepool: Verwende Plugin post_dbload.pl\n";
-    system("$config->{autoconv_dir}/filter/$singlepool/post_dbload.pl $singlepooltmp");
-}
-
-# Index setzen
-print "### $singlepool: Index in temporaerer Datenbank aufbauen\n";
-system("$mysqlexe $singlepooltmp < $rootdir/data/$singlepool/control_index_on.mysql");
-
-if ($singlepool && -e "$config->{autoconv_dir}/filter/$singlepool/post_index_on.pl"){
-    print "### $singlepool: Verwende Plugin post_index_on.pl\n";
-    system("$config->{autoconv_dir}/filter/$singlepool/post_index_on.pl $singlepooltmp");
-}
-
-# Tabellen Packen
-system("$config->{autoconv_dir}/filter/common/pack_data.pl $singlepooltmp");
-
+ 
 # Tabellen aus temporaerer Datenbank in finale Datenbank verschieben
-print "### $singlepool: Tabellen aus temporaerer Datenbank in finale Datenbank verschieben\n";
 
-system("$mysqladminexe drop $singlepool ");
-system("$mysqladminexe create $singlepool ");
-#system("mv /var/lib/mysql/$singlepooltmp /var/lib/mysql/$singlepool");
+{
+    my $atime = new Benchmark;
+
+    $logger->info("### $singlepool: Tabellen aus temporaerer Datenbank in finale Datenbank verschieben");
+
+    system("$mysqladminexe drop $singlepool ");
+    system("$mysqladminexe create $singlepool ");
+    #system("mv /var/lib/mysql/$singlepooltmp /var/lib/mysql/$singlepool");
 
 
-open(COPYIN, "echo \"show tables;\" | $mysqlexe -s $singlepooltmp |");
-open(COPYOUT,"| $mysqlexe -s $singlepooltmp |");
+    open(COPYIN, "echo \"show tables;\" | $mysqlexe -s $singlepooltmp |");
+    open(COPYOUT,"| $mysqlexe -s $singlepooltmp |");
 
-while (<COPYIN>){
-    chomp();
+    while (<COPYIN>){
+        chomp();
     print COPYOUT <<"ENDE";
 rename table $singlepooltmp.$_ to $singlepool.$_ ;
 ENDE
+    }
+
+    close(COPYIN);
+    close(COPYOUT);
+
+    my $btime      = new Benchmark;
+    my $timeall    = timediff($btime,$atime);
+    my $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+
+    $logger->info("### $singlepool: Benoetigte Zeit -> $resulttime");     
 }
 
-close(COPYIN);
-close(COPYOUT);
+# Titelanzahl in Datenbank festhalten
 
-system("$config->{autoconv_dir}/filter/$singlepool/post_index_on.pl $singlepool");
+{
+    $logger->info("### $singlepool: Updating Titcount");    
+    system("$config->{'base_dir'}/bin/updatetitcount.pl --single-pool=$singlepool");
+}
 
-print "### $singlepool: Updating Titcount\n";
+# Daten aus SQL-Datenbank durch Suchmachinenkonnektor extrahieren und
+# Suchmaschinen-Index aufbauen
 
-system("$config->{'base_dir'}/bin/updatetitcount.pl --single-pool=$singlepool");
+{
+    my $atime = new Benchmark;
 
-print "### $singlepool: Importing data into searchengine\n";
+    $logger->info("### $singlepool: Importing data into searchengine");   
+    system("$config->{'base_dir'}/conv/db2xapian.pl $singlepool");
 
-system("$config->{'base_dir'}/conv/db2xapian.pl $singlepool");
+    my $btime      = new Benchmark;
+    my $timeall    = timediff($btime,$atime);
+    my $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
 
-print "### $singlepool: Cleanup\n";
+    $logger->info("### $singlepool: Benoetigte Zeit -> $resulttime");     
+}
+    
+$logger->info("### $singlepool: Cleanup");
 
-#system("$mysqladminexe drop   $singlepooltmp");
-#system("rm $rootdir/data/$singlepool/*");
-  
+system("$mysqladminexe drop   $singlepooltmp");
+system("rm $rootdir/data/$singlepool/*");
+
+my $btime      = new Benchmark;
+my $timeall    = timediff($btime,$atime);
+my $resulttime = timestr($timeall,"nop");
+$resulttime    =~s/(\d+\.\d+) .*/$1/;
+
+$logger->info("### $singlepool: Gesamte Zeit -> $resulttime");
+
 sub print_help {
     print << "ENDHELP";
 autoconv-sikis.pl - Automatische Konvertierung von SIKIS-Daten

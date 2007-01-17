@@ -237,14 +237,16 @@ sub handler {
     
         # TT-Data erzeugen
         my $ttdata={
-            view       => $view,
-            stylesheet => $stylesheet,
-            sessionID  => $session->{ID},
-            qopts      => $queryoptions_ref,
-            type       => $type,
-            collection => \@collection,
-            config     => $config,
-            msg        => $msg,
+            view              => $view,
+            stylesheet        => $stylesheet,
+            sessionID         => $session->{ID},
+            qopts             => $queryoptions_ref,
+            type              => $type,
+            collection        => \@collection,
+            normset2bibtex    => \&OpenBib::Common::Util::normset2bibtex,
+
+            config            => $config,
+            msg               => $msg,
         };
     
         OpenBib::Common::Util::print_page($config->{tt_managecollection_show_tname},$ttdata,$r);
@@ -329,6 +331,8 @@ sub handler {
             qopts      => $queryoptions_ref,		
             type       => $type,
             collection => \@collection,
+            normset2bibtex    => \&OpenBib::Common::Util::normset2bibtex,
+
             config     => $config,
             msg        => $msg,
         };
@@ -440,6 +444,8 @@ sub handler {
             singleidn  => $singleidn,
             database   => $database,
             collection => \@collection,
+            normset2bibtex    => \&OpenBib::Common::Util::normset2bibtex,
+
             config     => $config,
             msg        => $msg,
         };
@@ -538,6 +544,8 @@ sub handler {
             singleidn  => $singleidn,
             database   => $database,
             collection => \@collection,
+            normset2bibtex    => \&OpenBib::Common::Util::normset2bibtex,
+
             config     => $config,
             msg        => $msg,
         };

@@ -11,7 +11,7 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" %]
+[% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
 
   <body>
 
@@ -28,19 +28,19 @@
 <ul class="tabbingmenu">
    <li><a class="active" href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
    <li><a                href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
+   <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=11" target="body" title="Top 20">[% msg.maketext("Top 20") %]</a></li>
 </ul>
 
 <div class="content">
 
 <form method="get" id="openbib" action="http://[% config.servername %][% config.virtualsearch_loc %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
-<input type="hidden" name="hitrange"  value="-1" />
+<input type="hidden" name="hitrange"  value="50" />
 <input type="hidden" name="view"      value="[% view %]" />
-<input type="hidden" name="maxhits"   value="50" />
 <input type="hidden" name="sorttype"  value="author" />
 <input type="hidden" name="sortorder" value="up" />
 <input type="hidden" name="sb"        value="xapian" />
-<input type="hidden" name="drilldown" value="1" />
+<input type="hidden" name="drilldown" value="0" />
 
 <p />
 <p />
@@ -70,7 +70,7 @@
 <table width="100%">
 <tr><th style="text-align: center">[% msg.maketext("Geben Sie hier bitte Ihre Suchbegriffe ein") %]</th></tr>
 <tr><td class="boxed" valign="top" align="center">
-<input type="text" name="fs" value="[% fs %]" size="80" maxlength="200" />
+<input type="text" name="fs" value="[% searchquery.fs.val %]" size="80" maxlength="200" />
 </td></tr>
 </table>
 

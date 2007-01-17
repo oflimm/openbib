@@ -1,0 +1,24 @@
+[%#-
+#######################################################################
+#
+# Templatename: managecollection_tit_as_bibtex
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe *aller* Merklisten-Items im BibTeX-Format *ohne* Funktions-
+# elemente
+#
+#######################################################################
+-%]
+[%- FOREACH titset IN collection -%]
+[%- normset    = titset.tit -%]
+[% normset2bibtex(normset) %]
+</pre>
+<p />
+<img style="vertical-align: bottom;" src="/images/openbib/share.png" alt="Share this"/>&nbsp;<a href="http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=[% normset2bibtex(normset) | uri %]" target="_top" valign="top">[% msg.maketext("An BibSonomy senden") %]</a>
+<p />
+<p />
+<pre>
+[% END -%]

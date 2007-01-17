@@ -44,19 +44,21 @@
          <tr><td align="right">10</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#treffermerkliste">Treffer- und Merkliste</a></td></tr>
 
          <tr><td align="right">11</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#externesuche">Sprung in externe Recherchequellen</a></td></tr>
-         <tr><td align="right">12</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#rssfeeds">RSS-Feeds (abonnierbare Informations-Kan&auml;le)</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;12.1&nbsp;<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#rssarten">Angebotene Arten an RSS-Feeds</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;12.2&nbsp;<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#rssinstall">Beispiel: Installation von Feedview f&uuml;r den Browser Firefox</a></td></tr>
+         <tr><td align="right">12</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#enrichment">Ergebnisanreicherung</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;12.1&nbsp;<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#enrichtoc">Digitalisierte Inhaltsverzeichnisse</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;12.2&nbsp;<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#enrichrelevance">Potentiell interessante andere Titel</a></td></tr>
+         <tr><td align="right">13</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#rssfeeds">RSS-Feeds (abonnierbare Informations-Kan&auml;le)</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;13.1&nbsp;<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#rssarten">Angebotene Arten an RSS-Feeds</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;13.2&nbsp;<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#rssinstall">Beispiel: Installation von Feedview f&uuml;r den Browser Firefox</a></td></tr>
 
-         <tr><td align="right">13</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#bilder">Bildliche Funktionselemente</a></td></tr>
-         <tr><td align="right">14</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#verlinkung">Verlinkung und Lastverteilung des KUG</a></td></tr>
-         <tr><td align="right">15</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#suchplugin">KUG Such-Plugin f&uuml;r Mozilla Firefox-Browser</a></td></tr>
-         <tr><td align="right">16</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#kontakt">Kontakt</a></td></tr>
+         <tr><td align="right">14</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#bilder">Bildliche Funktionselemente</a></td></tr>
+         <tr><td align="right">15</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#verlinkung">Verlinkung und Lastverteilung des KUG</a></td></tr>
+         <tr><td align="right">16</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#suchplugin">KUG Such-Plugin f&uuml;r Mozilla Firefox-Browser</a></td></tr>
+         <tr><td align="right">17</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#kontakt">Kontakt</a></td></tr>
 
          </table>
       </td></tr>
       </table>
-
 
       <h1 id="allghinweise">1 Allgemeine Hinweise zum KUG</h1>
       <p>      
@@ -498,7 +500,33 @@ Derzeit werden folgende externe Recherchequellen angeboten:
 <li>MedPilot</li>
 </ul>
 
-      <h1 id="rssfeeds">12 RSS-Feeds (abonnierbare Informations-Kan&auml;le)</h1>
+      <h1 id="rssfeeds">12 Ergebnisanreicherung</h1>
+<p>  
+      Die Ergebnisse werden datenbankübergreifend durch zusätzliche
+Informationen angereichert. Diese Informationen werden über eine
+zentrale Anreicherungsdatenbank bereitgestellt, in der diese
+Informationen bezogen auf eine vorhandene ISBN abgelegt werden.
+      </p>
+      <h2 id="enrichtoc">12.1 Digitalisierte Inhaltsverzeichnisse</h2>
+      <p>
+Im Rahmen eines Projektes wurden Inhaltsverzeichnisse von mehr als
+200000 Monographien der USB eingescannt. Diese Inhaltsverzeichnisse
+wurden für alle im KUG beteiligten Bibliotheken nutzbar gemacht. Wenn
+ein Inhaltsverzeichnis zu einem Buch existiert, dann wird dies in der
+Kategorie <b>TOC / Übersicht</b> bzw. <b>TOC / PDF</b> verlinkt. 
+      </p>
+
+      <h2 id="enrichrelevance">12.2 Potentiell interessante andere Titel</h2>
+      <p>
+      Durch statistische Auswertungen des Ausleihverhaltens im Bestand
+der USB sowie des Nutzungsverhaltens im KUG werden zu einem gegebenen
+Titel gewichtete nutzer- bzw. sessionspezifische Überschneidungsmengen mit
+anderen ausgeliehenen/-gewählten Titeln bestimmt. Dadurch bekommt der
+Nutzer einen Überblick von weiteren Titel, die von anderen Nutzern im
+Kontext des aktuellen Titels für interessant befunden wurden.
+      </p>
+
+      <h1 id="rssfeeds">13 RSS-Feeds (abonnierbare Informations-Kan&auml;le)</h1>
 <p>
 In einem ausgew&auml;hlten Katalog oder einer Institutssicht werden
 sog. <a href="http://de.wikipedia.org/wiki/RSS-Feed"
@@ -532,7 +560,7 @@ Data-Mining in Verbindung mit spezialisierter Suchtechnologie
 einsetzen, usw.
 </p>
 
-      <h2 id="rssarten">12.1 Angebotene Arten an RSS-Feeds</h2>
+      <h2 id="rssarten">13.1 Angebotene Arten an RSS-Feeds</h2>
 
 <p>
 Im KUG werden derzeit folgende Arten von RSS-Feeds angeboten:
@@ -580,7 +608,7 @@ Im KUG werden derzeit folgende Arten von RSS-Feeds angeboten:
 
 </p>
       
-      <h2 id="rssinstall">12.2 Beispiel: Installation von Feedview f&uuml;r den Browser Firefox</h2>
+      <h2 id="rssinstall">13.2 Beispiel: Installation von Feedview f&uuml;r den Browser Firefox</h2>
       <p>
 
 F&uuml;r deren Installation rufen Sie bitte diesen <a

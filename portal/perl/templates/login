@@ -31,27 +31,79 @@
 [% msg.maketext("Falls Sie sich bereits hier f&uuml;r den KUG registriert haben oder eine Kennung in den anderen aufgef&uuml;hrten Anmeldezielen besitzen, so k&ouml;nnen Sie sich hier anmelden. Ihnen stehen dann weitere Nutzungsm&ouml;glichkeiten des KUG offen. Dazu geh&ouml;rt u.a. die Definition gespeicherter Katalogprofile. Ebenso steht Ihnen Ihre Merkliste nach dem n&auml;chsten Anmelden wieder zur Verf&uuml;gung. Wenn Sie sich &uuml;ber Ihre USB-Kennung anmelden, so bietet dies den Vorteil, da&szlig; Sie unter 'Weitergehende Suchhinweise' in der Ergebnisliste Ihrer Suche automatisch authentifiziert in die Buch-Fernleih- und Zeitschriftenartikel-Lieferfunktion der Digitalen Bibliothek (Digibib) springen k&ouml;nnen und sich nicht sp&auml;ter dort nochmals authentifizieren m&uuml;ssen.") %]
 </td></tr>
 </table>
-<br />
-<br />
+
+<p />
+
 <form method="post" action="http://[% config.servername %][% config.login_loc %]" enctype="application/x-www-form-urlencoded" target="_top">
 <input type="hidden" name="do_auth"   value="1" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="view"      value="[% view %]" />
+
+<table width="100%">
+<tr><th>Wenn Sie bereits einen Benutzerausweis besitzen</th></tr>
+<tr><td class="boxedclear" style="font-size:9pt">
+Wenn Sie einen Benutzerausweis der folgenden Bibliotheken besitzen,
+dann können Sie sich mit der Kennung und Ihrem Passwort am KUG anmelden.
+
+<p />
+
 <table>
-<tr><td align="right"><b>[% msg.maketext("Anmeldeziel") %]:</b></td><td>[% targetselect %]</td><td></td></tr>
+<tr><td align="right"><b>[% msg.maketext("Anmeldeziel")
+%]:</b></td><td>
+<select name="targetid">
+[%- FOREACH target IN logintargets -%]
+[%-   IF target.description != 'Selbstregistrierung' -%]
+<option value="[% target.id %]">[% target.description %]</option>
+[%-   END -%]
+[%- END -%]
+</select>
+</td><td></td></tr>
 <tr><td align="right"><b>[% msg.maketext("Benutzername") %]</b></td><td><input type="text" name="loginname" value="[% loginname %]" /></td><td><span style="font-size:9pt">&lt;&lt; [% msg.maketext("Geben Sie hier bitte Ihren Benutzernamen bzw. Ihre Benutzernummer ein.") %]</span></td></tr>
 <tr><td align="right"><b>[% msg.maketext("Passwort") %]</b></td><td><input type="password" name="password" /></td><td><span style="font-size:9pt">&lt;&lt; [% msg.maketext("Geben Sie hier bitte Ihr Passwort bzw. Ihre OpacPin ein.") %]</span></td></tr>
 <tr><td></td><td><input type="submit" value="[% msg.maketext("Einloggen") %]" /></td><td></td></tr>
 </table>
+</td></tr>
+</table>
+
 </form>
-<br />
-<br />
+
+<p />
+
+<form method="post" action="http://[% config.servername %][% config.login_loc %]" enctype="application/x-www-form-urlencoded" target="_top">
+<input type="hidden" name="do_auth"   value="1" />
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<input type="hidden" name="view"      value="[% view %]" />
+
+<table width="100%">
+<tr><th>Wenn Sie keinen Benutzerausweis besitzen</th></tr>
+<tr><td class="boxedclear" style="font-size:9pt">
+Wenn Sie keinen Benutzerausweis besitzen, dann können Sie sich direkt
+im KUG-Portal über die Selbsregistierung eine Kennung einrichten, um
+die weitergehenden Funktionen des Portals zu nutzen.
+<p />
+<table>
+<tr><td align="right"><b>[% msg.maketext("Anmeldeziel")
+%]:</b></td><td>
+[%- FOREACH target IN logintargets -%]
+[%-   IF target.description == 'Selbstregistrierung' -%]
+<input type="hidden" name="targetid" value="[% target.id %]">
+[%-   END -%]
+[%- END -%]
+Selbstregistrierung
+</td><td></td></tr>
+<tr><td align="right"><b>[% msg.maketext("Benutzername") %]</b></td><td><input type="text" name="loginname" value="[% loginname %]" /></td><td><span style="font-size:9pt">&lt;&lt; [% msg.maketext("Geben Sie hier bitte Ihren Benutzernamen bzw. Ihre Benutzernummer ein.") %]</span></td></tr>
+<tr><td align="right"><b>[% msg.maketext("Passwort") %]</b></td><td><input type="password" name="password" /></td><td><span style="font-size:9pt">&lt;&lt; [% msg.maketext("Geben Sie hier bitte Ihr Passwort bzw. Ihre OpacPin ein.") %]</span></td></tr>
+<tr><td></td><td><input type="submit" value="[% msg.maketext("Einloggen") %]" /></td><td></td></tr>
+</table>
 <p>
 [% msg.maketext("Falls Sie bei keinem der Anmeldeziele registriert sind, so k&ouml;nnen Sie sich [_1]<b>hier</b>[_2] f&uuml;r das Anmeldeziel Selbstregistierung eine Kennung einrichten.","<a href=\"http://${config.servername}${config.selfreg_loc}?sessionID=${sessionID};action=show\">","</a>") %]
 </p>
 <p>
 [% msg.maketext("Haben Sie Ihr Passwort vergessen, das Sie bei der Selbstregistrierung angegeben haben? Dann klicken Sie [_1]<b>hier</b>[_2]","<a href=\"http://${config.servername}${config.mailpassword_loc}?sessionID=${sessionID};action=show\">","</a>") %]
-</p>
+</td></tr>
+</table>
+
+</form>
 </div>
 
 <p />

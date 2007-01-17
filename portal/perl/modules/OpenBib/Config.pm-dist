@@ -2,7 +2,7 @@
 #
 #  OpenBib::Config
 #
-#  Dieses File ist (C) 2004-2005 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2007 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -31,7 +31,6 @@ no warnings 'redefine';
 use utf8;
 
 use Apache::Reload;
-use Config::Std qw(read_config);
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 
@@ -103,10 +102,28 @@ use vars qw(%config);
 	   enrichmntdbuser    => 'root',
 	   enrichmntdbpasswd  => 'StrengGeheim',
 
+	   # Einstellungen fuer den Zugriff auf die Statistik-Datenbank
+
+	   statisticsdbhost    => 'localhost',
+	   statisticsdbport    => '3306',
+	   statisticsdbname    => 'statistics',
+	   statisticsdbuser    => 'root',
+	   statisticsdbpasswd  => 'StrengGeheim',
+
            # Benutzer und Passwort fuer die Administration
 
 	   adminuser     => 'adminuser',
 	   adminpasswd   => 'StrengGeheim',
+
+           # Verteilte Administration mit einer Masteradmin?
+
+           distadmin     => {
+               master => 'admin.openbib.org',
+               slave  => [
+                   'slaveadmin1.openbib.org',
+                   'slaveadmin2.openbib.org',
+               ],
+           },
 
 	   # Organisationseinheiten der Kataloge (z.B. Fakultaeten)
 
@@ -208,13 +225,13 @@ use vars qw(%config);
 	   # sowie elektr. Aufsatz/Zeitschriftenlieferungen (Medea) 
 	   # fuer den entsprechenden Standort (hier 038)
 
-	   hbzmonofernleih_exturl  => 'http://www.digibib.net/Digibib?SERVICE=TEMPLATE;SUBSERVICE=JUMPTO;DEST_SERVICE=TEMPLATE;DEST_SUBSERVICE=ILL_FRAME;DEST_MAINFRAMESUBSERVICE=MSEARCH_ILLSEARCH_MONO;LOCATION=038',
-	   hbzzeitfernleih_exturl  => 'http://www.digibib.net/Digibib?SERVICE=TEMPLATE;SUBSERVICE=JUMPTO;DEST_SERVICE=TEMPLATE;DEST_SUBSERVICE=ILL_FRAME;DEST_MAINFRAMESUBSERVICE=MSEARCH_ILLSEARCH_ARTICLE;LOCATION=038',
+	   hbzmonofernleih_exturl  => 'http://www.digibib.net/Digibib?SERVICE=TEMPLATE&SUBSERVICE=JUMPTO&DEST_SERVICE=TEMPLATE&DEST_SUBSERVICE=ILL_FRAME&DEST_MAINFRAMESUBSERVICE=MSEARCH_ILLSEARCH_MONO&LOCATION=038',
+	   hbzzeitfernleih_exturl  => 'http://www.digibib.net/Digibib?SERVICE=TEMPLATE&SUBSERVICE=JUMPTO&DEST_SERVICE=TEMPLATE&DEST_SUBSERVICE=ILL_FRAME&DEST_MAINFRAMESUBSERVICE=MSEARCH_ILLSEARCH_ARTICLE&LOCATION=038',
 
 	   # Externer Link zur Elektronischen ZeitschriftenBibliothek (EZB)
 	   # fuer den entsprechenden Standort (hier USBK)
 
-	   ezb_exturl              => 'http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?bibid=USBK;colors=7;lang=de;jq_type1=IS;jq_bool2=AND;jq_not2=+;jq_type2=KT;jq_bool3=AND;jq_not3=+;jq_type3=PU;jq_term3=;offset=-1;hits_per_page=50;search_journal=Suche+starten;Notations%5B%5D=all;selected_colors%5B%5D=1;selected_colors%5B%5D=2;selected_colors%5B%5D=4',
+	   ezb_exturl              => 'http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?bibid=USBK&colors=7&lang=de&jq_type1=IS&jq_bool2=AND&jq_not2=+&jq_type2=KT&jq_bool3=AND&jq_not3=+&jq_type3=PU&jq_term3=&offset=-1&hits_per_page=50&search_journal=Suche+starten&Notations%5B%5D=all&selected_colors%5B%5D=1&selected_colors%5B%5D=2&selected_colors%5B%5D=4',
 
 	   # Externer Link zum DatenBankInfoSystem (DBIS)
 
@@ -283,6 +300,9 @@ use vars qw(%config);
            tt_helpframe_1_tname          => 'helpframe_1',
            tt_helpframe_2_tname          => 'helpframe_2',
 	   tt_helpframe_3_tname          => 'helpframe_3',
+           tt_helpframe_10_tname         => 'helpframe_10',
+           tt_helpframe_11_tname         => 'helpframe_11',
+           tt_helpframe_12_tname         => 'helpframe_12',
 
 	   tt_startopac_tname            => 'startopac',
 
@@ -363,7 +383,11 @@ use vars qw(%config);
 
 	   benchmark               => 0,
 
-	   # Testsystem
+           # Kurztiteltabelle verwenden?
+
+           use_titlistitem_table   => 1,
+
+           # Testsystem
 
 	   testsystem              => 0,
 
@@ -617,6 +641,14 @@ use vars qw(%config);
 			 ejahr => {
 				   '0425' => 1, # Erschjahr
 				  },
+			 ejahrft => {
+				   '0425' => 1, # Erschjahr
+				  },
+                         gtquelle => { # Gesamttitel/Quelle
+                                   '0089' => 1, # Bandkennzeichen
+                                   '0590' => 1, # Quelle
+                                   '0451' => 1, # Serie/Band
+                                  },
 			},
 			
 			blacklist_aut => 
@@ -650,7 +682,7 @@ use vars qw(%config);
 			blacklist_tit => 
 			
 			{
-			 #    '0002' => 1, # Aufnahmedatum
+			 #'0002' => 1, # Aufnahmedatum
 			 '0003' => 1, # Aenderungsdatum
 			 '0005' => 1, # Inventarnummer (in mex vorhanden)
 			 '0009' => 1, # Herkunft
@@ -667,7 +699,7 @@ use vars qw(%config);
 			 '0150' => 1, # HBZ Personen-ID
 			 '0453' => 1, # Id des GT
 			 '0454' => 1, # Ansetzungsform GT
-			 '0572' => 1, # ZDB-ID
+			 #'0572' => 1, # ZDB-ID
 			 '0715' => 1, # Unbekannt
 			 '0802' => 1, # Medien-Zustand
 			 '0905' => 1, # RSWK-ID

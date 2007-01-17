@@ -110,25 +110,14 @@ sub handler {
     }
   
     if ($do_login) {
-        my $targetresult=$user->{dbh}->prepare("select * from logintarget order by type DESC,description") or $logger->error($DBI::errstr);
-        $targetresult->execute() or $logger->error($DBI::errstr);
-    
-        my $targetselect="<select name=\"targetid\">";
-        while (my $result=$targetresult->fetchrow_hashref()) {
-            my $targetid    = decode_utf8($result->{'targetid'});
-            my $description = decode_utf8($result->{'description'});
-
-            $targetselect.="<option value=\"$targetid\">$description</option>";
-        }
-        $targetselect.="</select>";
-        $targetresult->finish();
+        my $logintargets_ref = $user->get_logintargets();
     
         # TT-Data erzeugen
         my $ttdata={
             view         => $view,
             stylesheet   => $stylesheet,
             sessionID    => $session->{ID},
-            targetselect => $targetselect,
+            logintargets => $logintargets_ref,
             loginname    => $loginname,
             config       => $config,
             msg          => $msg,
@@ -164,21 +153,26 @@ sub handler {
 
         $targetresult->finish();
 
+        $logger->debug("Hostname: $hostname Port: $port Username: $username DB: $db Description: $description Type: $type");
+        
         ## Ausleihkonfiguration fuer den Katalog einlesen
         my $targetcircinfo_ref
             = $config->get_targetcircinfo();
 
         if ($type eq "olws") {
-        
+            $logger->debug("Trying to authenticate via OLWS: ".YAML::Dump($targetcircinfo_ref));
+            
             my $userinfo_ref=OpenBib::Login::Util::authenticate_olws_user({
                 username      => $loginname,
                 pin           => $password,
-                circhcheckurl => $targetcircinfo_ref->{$db}{circcheckurl},
+                circcheckurl  => $targetcircinfo_ref->{$db}{circcheckurl},
                 circdb        => $targetcircinfo_ref->{$db}{circdb},
             });
         
             my %userinfo=%$userinfo_ref;
-      
+
+            $logger->debug("Authentication via OLWS done");
+            
             if ($userinfo{'erfolgreich'} ne "1") {
                 $loginfailed=2;
             }

@@ -35,6 +35,7 @@ use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use SOAP::Lite;
+use YAML;
 
 sub authenticate_olws_user {
     my ($arg_ref) = @_;
@@ -52,11 +53,15 @@ sub authenticate_olws_user {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    $logger->debug("Entered authenticate_olws_user circcheckurl: $circcheckurl circdb: $circdb");
+    
     my $soap = SOAP::Lite
         -> uri("urn:/Authentication")
             -> proxy($circcheckurl);
 
     my $result = $soap->authenticate_user($username,$pin,$circdb);
+
+    $logger->debug("Result: ".YAML::Dump($result->result));
 
     my %userinfo=();
 
@@ -72,7 +77,8 @@ sub authenticate_olws_user {
     else {
         $logger->error("SOAP Authentication Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
     }
-  
+
+    $logger->debug("Userinfo: ".YAML::Dump(\%userinfo));
     return \%userinfo;
 }
 

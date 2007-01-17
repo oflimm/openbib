@@ -2,7 +2,7 @@
 #
 #  OpenBib::Session
 #
-#  Dieses File ist (C) 2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2007 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -32,8 +32,10 @@ use utf8;
 
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
+use Storable;
 
 use OpenBib::Config;
+use OpenBib::Statistics;
 
 sub new {
     my ($class,$arg_ref) = @_;
@@ -114,7 +116,6 @@ sub _init_new_session {
             my $queryoptions_ref={
                 hitrange  => undef,
                 offset    => undef,
-                maxhits   => undef,
                 l         => undef,
                 profil    => undef,
                 autoplus  => undef,
@@ -237,9 +238,8 @@ sub get_queryoptions {
     my $queryoptions_ref = $self->load_queryoptions();
 
     my $default_queryoptions_ref={
-        hitrange  => 20,
+        hitrange  => 50,
         offset    => 1,
-        maxhits   => 500,
         l         => 'de',
         profil    => '',
         autoplus  => '',
@@ -251,9 +251,15 @@ sub get_queryoptions {
     # Uebergebene Parameter 'ueberschreiben'und gehen vor
     foreach my $option (keys %$default_queryoptions_ref){
         if (defined $query->param($option)){
-            $queryoptions_ref->{$option}=$query->param($option);
-	    $logger->debug("Option $option received via HTTP");
-	    $altered=1;
+            # Es darf nicht hitrange = -1 (= hole alles) dauerhaft gespeichert
+            # werden - speziell nicht bei einer anfaenglichen Suche
+            # Dennoch darf - derzeit ausgehend von den Normdaten - alles
+            # geholt werden
+            unless ($option eq "hitrange" && $query->param($option) == -1){
+                $queryoptions_ref->{$option}=$query->param($option);
+                $logger->debug("Option $option received via HTTP");
+                $altered=1;
+            }
         }
     }
 
@@ -744,7 +750,35 @@ sub clear_data {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $idnresult=$self->{dbh}->prepare("delete from treffer where sessionid = ?") or $logger->error($DBI::errstr);
+    my $idnresult;
+
+    # Zuerst Statistikdaten in Statistik-Datenbank uebertragen,
+    my $statistics=new OpenBib::Statistics;
+
+    # Relevanz-Daten vom Typ 2 (Einzeltrefferaufruf)
+    $idnresult=$self->{dbh}->prepare("select content from eventlog where sessionid = ? and type=10") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+
+    my ($wkday,$month,$day,$time,$year) = split(/\s+/, localtime);
+    
+    while (my $result=$idnresult->fetchrow_hashref){
+        my $content_ref   = Storable::thaw(pack "H*", $result->{content});
+        my $id            = "$year/$month/$day".$self->{ID};
+        my $isbn          = $content_ref->{isbn};
+        my $dbname        = $content_ref->{database};
+        my $katkey        = $content_ref->{id};
+
+        $statistics->store_relevance({
+            id     => $id,
+            isbn   => $isbn,
+            dbname => $dbname,
+            katkey => $katkey,
+            type   => 2,
+        });            
+    }   
+    
+    # dann Sessiondaten loeschen
+    $idnresult=$self->{dbh}->prepare("delete from treffer where sessionid = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
   
     $idnresult=$self->{dbh}->prepare("delete from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
@@ -773,6 +807,31 @@ sub clear_data {
     return;
 }
 
+sub log_event {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $type        = exists $arg_ref->{type}
+        ? $arg_ref->{type}               : undef;
+    
+    my $content_ref = exists $arg_ref->{content}
+        ? $arg_ref->{content}            : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $contentstring=unpack "H*", Storable::freeze($content_ref);
+    
+    # Moegliche Event-Typen
+    #
+    # 10 => Eineltrefferanzeige
+    
+    my $request=$self->{dbh}->prepare("insert into eventlog values (?,NULL,?,?)") or $logger->error($DBI::errstr);
+    $request->execute($self->{ID},$type,$contentstring) or $logger->error($DBI::errstr);
+    $request->finish;
+
+    return;    
+}
 
 sub DESTROY {
     my $self = shift;

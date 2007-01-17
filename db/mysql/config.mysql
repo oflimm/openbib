@@ -4,12 +4,11 @@
 
 drop table IF EXISTS dbinfo;
 CREATE TABLE dbinfo (
- dbid        BIGINT AUTO_INCREMENT PRIMARY KEY,
  orgunit     VARCHAR(20),
  description TEXT,
  shortdesc   TEXT,
  system      TEXT, 
- dbname      VARCHAR(255),
+ dbname      VARCHAR(25) PRIMARY KEY,
  sigel       VARCHAR(20),
  url         TEXT,
  active      BOOL,

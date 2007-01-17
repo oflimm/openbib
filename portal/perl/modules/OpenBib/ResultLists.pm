@@ -2,7 +2,7 @@
 #
 #  OpenBib::ResultLists.pm
 #
-#  Dieses File ist (C) 2003-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2003-2007 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -85,8 +85,11 @@ sub handler {
     my $sortorder    = ($query->param('sortorder'))?$query->param('sortorder'):'up';
     my $autoplus     = $query->param('autoplus')     || '';
     my $queryid      = $query->param('queryid')      || '';
-    my $offset       = (defined $query->param('offset'))?$query->param('offset'):undef;
-    my $hitrange     = $query->param('hitrange')     || '';
+    my $offset       = (defined $query->param('offset'))?$query->param('offset'):0;
+    ($offset)=$offset=~/^(-?\d+)$/; # offset muss numerisch sein (SQL-Injection)
+    my $hitrange     = $query->param('hitrange')     || 50;
+    ($hitrange)=$hitrange=~/^(-?\d+)$/; # hitrange muss numerisch sein (SQL-Injection)
+
     my $database     = $query->param('database')     || '';
     my $sb           = $query->param('sb')           || 'sql';
     my $action       = $query->param('action')       || '';
@@ -135,9 +138,9 @@ sub handler {
         if ($config->get_system_of_db($database) eq "Z39.50"){
             my $atime=new Benchmark;
             
-            # Beschraenkung der Treffer pro Datenbank auf 10, da Z39.50-Abragen
+            # Beschraenkung der Treffer pro Datenbank, da Z39.50-Abragen
             # sehr langsam sind
-            #            $maxhits = 10;
+            # Beschraenkung ist in der Config.pm der entsprechenden DB definiert
             
             my $z3950dbh = new OpenBib::Search::Z3950($database);
 
@@ -189,7 +192,6 @@ sub handler {
                 serien          => 0,
                 dbh             => $dbh,
                 database        => $database,
-                maxhits         => $offset+$hitrange,
                 
                 enrich          => 0,
                 enrichkeys_ref  => {},
@@ -240,7 +242,7 @@ sub handler {
                 
                 serien          => 0,
                 dbh             => $dbh,
-                maxhits         => $hitrange,
+                hitrange        => $hitrange,
                 offset          => $offset,
                 
                 enrich          => 0,
@@ -313,8 +315,6 @@ sub handler {
         # Hash im Loginname ersetzen
         $loginname=~s/#/\%23/;
         
-        my $hostself="http://".$r->hostname.$r->uri;
-        
         # Eintraege merken fuer Lastresultset
         foreach my $item_ref (@sortedoutputbuffer) {
             push @resultset, { id       => $item_ref->{id},
@@ -344,6 +344,8 @@ sub handler {
             
             loginname      => $loginname,
             password       => $password,
+
+            query          => $query,
             
             qopts          => $queryoptions_ref,
             database       => $database,
@@ -378,12 +380,17 @@ sub handler {
             my $storableres=Storable::thaw(pack "H*", $searchresult);
             
             my @outputbuffer=@$storableres;
-            
+
+            # Sortierung des Outputbuffers
+
+            my @sortedoutputbuffer=();
+            OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
+
             my $treffer=$#outputbuffer+1;
             
             push @resultlists, {
                 database   => $database,
-                resultlist => \@outputbuffer,
+                resultlist => \@sortedoutputbuffer,
             };
             
             # Eintraege merken fuer Lastresultset
@@ -404,8 +411,6 @@ sub handler {
         # Hash im Loginname ersetzen
         $loginname=~s/#/\%23/;
         
-        my $hostself="http://".$r->hostname.$r->uri;
-        
         my @offsets = $session->get_resultlists_offsets({
             database  => $database,
             queryid   => $queryid,
@@ -418,6 +423,7 @@ sub handler {
             stylesheet     => $stylesheet,
             sessionID      => $session->{ID},
 
+            query          => $query,
             qopts          => $queryoptions_ref,
             resultlists    => \@resultlists,
             dbinfo         => $targetdbinfo_ref->{dbinfo},
@@ -559,10 +565,6 @@ sub handler {
             # Hash im Loginname ersetzen
             $loginname=~s/#/\%23/;
             
-            my $hostself="http://".$r->hostname.$r->uri;
-            
-            my ($queryargs,$sortselect,$thissortstring)=OpenBib::Common::Util::get_sort_nav($r,'sortboth',1,$msg);
-            
             # TT-Data erzeugen
             my $ttdata={
                 view           => $view,
@@ -574,10 +576,8 @@ sub handler {
                 
                 loginname      => $loginname,
                 password       => $password,
-                
-                queryargs      => $queryargs,
-                sortselect     => $sortselect,
-                thissortstring => $thissortstring,
+
+                query          => $query,
 
                 offset         => $offset,
                 hitrange       => $hitrange,
@@ -649,10 +649,6 @@ sub handler {
             # Hash im Loginname ersetzen
             $loginname=~s/#/\%23/;
             
-            my $hostself="http://".$r->hostname.$r->uri;
-            
-            my ($queryargs,$sortselect,$thissortstring)=OpenBib::Common::Util::get_sort_nav($r,'sortboth',1,$msg);
-
             # TT-Data erzeugen
             my $ttdata={
                 view           => $view,
@@ -671,9 +667,7 @@ sub handler {
 
                 queryid        => $queryid,
                 
-                queryargs      => $queryargs,
-                sortselect     => $sortselect,
-                thissortstring => $thissortstring,
+                query          => $query,
                 
                 config         => $config,
                 msg            => $msg,

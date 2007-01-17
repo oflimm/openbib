@@ -465,11 +465,15 @@ sub get_searchterms {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    $logger->debug(YAML::Dump($searchquery_ref));
+    
     my $term_ref = [];
 
+    return $term_ref unless (defined %$searchquery_ref);
+
     my @allterms = ();
-    foreach my $cat (qw/fs verf hst hststring gtquelle kor notation isbn issn sign swt ejahr/){
-        push @allterms, $searchquery_ref->{$cat}->{val}
+    foreach my $cat_ref (keys %$searchquery_ref){
+        push @allterms, $cat_ref->{val};
     }
 
     my $alltermsstring = join (" ",@allterms);

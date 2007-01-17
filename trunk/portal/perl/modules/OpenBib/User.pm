@@ -296,7 +296,30 @@ sub authenticate_self_user {
 
     return (defined $userid)?$userid:-1;
 }
+
+sub get_logintargets {
+    my ($self) = @_;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $request=$self->{dbh}->prepare("select * from logintarget order by type DESC,description") or $logger->error($DBI::errstr);
+    $request->execute() or $logger->error($DBI::errstr);
     
+    my $logintargets_ref = [];
+    while (my $result=$request->fetchrow_hashref()) {
+        push @$logintargets_ref, {
+            id          => decode_utf8($result->{'targetid'}),
+            description => decode_utf8($result->{'description'}),
+
+        };
+    }
+    $request->finish();
+
+    return $logintargets_ref;
+}
+
 sub DESTROY {
     my $self = shift;
     $self->{dbh}->disconnect();

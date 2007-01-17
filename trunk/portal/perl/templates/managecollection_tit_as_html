@@ -59,16 +59,12 @@ END;
 <table width="100%">
 <tr><th>[% msg.maketext("Ausleihe/Exemplare") %]</th></tr>
 <tr><td class="boxedclear">
-
-<table>
-<tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="250">[% msg.maketext("Standort") %]</td><td width="120">[% msg.maketext("Lokale Signatur") %]</td><td width="120">[% msg.maketext("Ausleihstatus") %]</td><td width="110">[% msg.maketext("Aktion") %]</td></tr>
-[% FOREACH mex IN circset %]
-<tr align="center"><td><a href="[% mex.Bibinfourl %]" target="_blank"><strong>[% mex.Bibliothek.full %]</strong></a></td><td>[% mex.Standort %]</td><td><strong>[% mex.Signatur %]</strong></td><td><strong>[% mex.Status %]</strong></td><td class="circurl"><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% mex.Ausleihurl %]" target="_blank">[% mex.Ausleihstring %]</a></td></tr>
-[% END %]
-</table>
+[% PROCESS common/subtemplate name="circset" %]
 </td></tr>
 </table>
 [% END %]
+<p />
+<img style="vertical-align: bottom;" src="/images/openbib/share.png" alt="Share this"/>&nbsp;<a href="http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=[% normset2bibtex(normset) | uri %]" target="_top" valign="top">[% msg.maketext("An BibSonomy senden") %]</a>
 <p />
 <!-- Title ends here -->
 </td></tr>

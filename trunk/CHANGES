@@ -1,0 +1,30 @@
+Version 2.0:
+
+- Durchgaengige Verwendung des UTF8-Encodings
+- Mehrsprachigkeit durch gettext/maketext
+- Optionale Verwendung der Xapian-Suchmaschinentechnologie
+- Experimenteller Zugriff auf Z39.50-Datenbanken
+- Durchgaengige Blaetter-Funktion in den Treffermengen bzgl. hitrange-Parameter
+- Recherche in Serie/Band/Quelle
+- Beschraenkung einer Recherche auf Ueberordnungen
+- Neues MAB2-orientiertes internes Standard-Metadaten-Format
+- Alternative Metadaten-Formate sind moeglich
+- Parametrisierbare Konvertierungsschnittstelle (Filter/Plugins)
+- Inkrementelles Live-Update über OLWS
+- Eventlogging in Session->Statistik-Datenbank
+- Recommender-Funktion (zurueckportiert nach 1.2.3)
+- Popularitaets-Funktionen (Top 20, Sortierung ; zurueckportiert nach 1.2.3)
+- Katalogauswahl kann alternativ nun auch direkt in die Rechercheseite
+  integriert werden
+- RSS-Feeds fuer Neuzugaenge (zurueckportiert nach 1.2.2)
+- Ergebnisanreicherung (zurueckportiert nach 1.2.2)
+- Extener DigiBib-Connector als mod_perl-Handler (zurueckportiert nach 1.2.2)
+- Ausgabe der Bandangaben in den Kurztitellisten. Damit ist nun eine alphabetische Sortierung moeglich
+- Schneller Zugriff auf Kurztitel-Informationen durch neue titlistitem-Tabelle
+- Integration des Logging-Frameworks in die Programme zur automatischen
+  Konvertierung sowie Anreichern mit Popularitaetsinformationen
+- Erweiterung um das BibTeX-Format fuer die Merklisten
+- Uebernahme von Merklisteneintraegen im BibTeX-Format nach BibSonomy
+  (www.bibsonomy.org)
+- Highlighting der Suchbegriffe in der Einzeltitelanzeige
+- Ausweitung der Titel-String-Suche auf weitere Kategorien

@@ -53,7 +53,7 @@
   \vspace{2cm}
 
   Oliver Flimm \texttt{<flimm@openbib.de>}\\
-  Stand: 6.8.2006
+  Stand: 16.11.2006
 
   \vspace{8cm}
 
@@ -156,7 +156,8 @@ Wenn Sie nun nach einen Passwort gefragt werden drücken Sie einfach
 die Return-Taste.
 
 \begin{verbatim}
-cvs -z3 -d:pserver:anonymous@cvs.openbib.berlios.de:/cvsroot/openbib co openbib
+cvs -z3 -d:pserver:anonymous@cvs.openbib.berlios.de:/cvsroot/openbib \
+    co -r stable-2_0-branch openbib
 \end{verbatim}
 
 Im Verzeichnis \texttt{/opt/store/openbib} finden Sie nun die gesamte
@@ -197,6 +198,158 @@ Verzeichnissen organisiert:
     befinden sich unter unter \texttt{perl}.
   \end{description}
 \end{description}
+
+\chapter{Schnell-Installation}
+
+Mit dem Skript \texttt{quickinstall.pl} kann die OpenBib-Portalsoftware
+ausgehend von einem ausgecheckten Verzeichnisbaum des entsprechenden
+CVS-Repositories in einer Standard-Konfiguration mit geringem Aufwand
+installiert werden.
+
+Das Skript legt unter \texttt{/opt/openbib} eine
+Standard-Verzeichnisstruktur für OpenBib an und verlinkt dabei
+wesentliche Teile in den ausgecheckten CVS-Baum, während andere --
+typischerweise lokal anzupassende -- Dateien einfach kopiert werden.
+
+Der grosse Vorteil dieser Verlinkung in den CVS-Baum besteht darin,
+dass auch nach der lokalen Installation durch ein \texttt{cvs update}
+von alle Fehlerbereinigungen und Erweiterungen lokal profitiert werden
+kann.
+ 
+Die generelle Vorgehensweise bei der \emph{Schnell-Installation} ist
+im Folgenden dargestellt. Für weitere Informationen zu den einzelnen
+Punkten sei auf die ausführliche Beschreibung in den folgenden
+Kapiteln verwiesen.
+
+\begin{enumerate}
+\item Installation eines Apache-Webservers mit mod\_perl-Unterstützung in
+   der Version 1.3.x.
+
+   Fuer die OpenBib-Installation (siehe 6.) wird folgendes benötigt:
+
+   \begin{itemize}
+   \item Verzeichnisname des DocumentRoot
+   \item Verzeichnisname des \texttt{conf.d}-Verzeichnisses, in dem
+     individuelle Apache-Konfigura\-tio\-nen abgelegt werden koennen
+   \end{itemize}
+\item Installation eines MySQL-Servers (ab Version 4.1)
+
+   Fuer die OpenBib-Installation (siehe 6.) wird folgendes benötigt:
+
+   Benutzername und Passwort eines Nutzers in der Datenbank, der
+   idealer-/einfacherweise maximale Rechte hat. 
+
+\item Installation der für OpenBib benötigten Perl-Module für Perl ab
+   Version 5.8 - sofern diese nicht bereits installiert sind:
+
+   Es sind dies:
+
+   \begin{itemize}
+   \item Apache::Constants
+   \item Apache::GTopLimit
+   \item Apache::Reload
+   \item Apache::Request
+   \item Apache::URI
+   \item Benchmark ':hireswallclock'
+   \item Config::Std
+   \item Date::Manip
+   \item DBI
+   \item Digest::MD5
+   \item Email::Valid
+   \item Encode
+   \item Encode::MAB2
+   \item Getopt::Long
+   \item HTTP::Request
+   \item HTTP::Response
+   \item IO::Socket
+   \item Locale::Maketext
+   \item Locale::Maketext::Extract
+   \item Locale::Maketext::Lexicon
+   \item Log::Log4perl
+   \item LWP::UserAgent
+   \item MIME::Base64
+   \item MIME::Lite
+   \item MLDBM
+   \item OAI2::Harvester
+   \item POSIX
+   \item Search::Xapian
+   \item SOAP::Lite
+   \item SOAP::Transport::HTTP
+   \item Socket
+   \item Storable
+   \item String::Tokenizer
+   \item Template
+   \item XML::RSS
+   \item XML::Twig
+   \item YAML
+   \item ZOOM
+   \end{itemize}
+
+\item Gehen Sie nun in das ausgecheckte CVS-Verzeichniss und passen
+   folgende lokale Pfadangaben im Skript \texttt{quickinstall.pl} an:
+
+   \begin{description}
+   \item[\$documentroot] Wo ist der Basis-Pfad fuer die Dokumente
+     Ihres Apache-Webservers
+   \item[\$confd] Wo liegt das \texttt{conf.d}-Verzeichnis Ihres
+     Apache-Webservers
+   \end{description}
+
+   Beide Pfade sind ohne abschliessenden '/' einzugeben.
+
+   Danach erzeugen sie bitte mit \texttt{touch} die Datei
+   \texttt{.changed\_config} als Zeichen der erfolgen
+   Konfigurationsänderung.
+
+   \begin{verbatim}
+   touch .changed\_config
+   \end{verbatim}
+
+ \item Rufen Sie nun das Programm \texttt{quickinstall.pl} als ein
+   Nutzer auf, der in \texttt{/opt} ein Verzeichnis \texttt{openbib} samt
+   Unterverzeichnissen anlegen darf:
+
+   \begin{verbatim}
+   ./quickinstall.pl
+   \end{verbatim}
+\item Bitte passen Sie nun die Datei
+
+\begin{verbatim}
+/usr/local/lib/site_perl/OpenBib/Config.pm
+\end{verbatim}
+
+   entsprechend Ihren lokalen Gegebenheiten an. Insbesondere sind hier
+   der lokale Rechnername sowie die Verbindungsparameter der
+   MySQL-Datenbanken abzuändern.
+
+\item Danach führen Sie bitte folgende Programme zur Erzeugung der
+   grundlegenden Datenbanken aus:
+
+\begin{enumerate}
+   \item /opt/openbib/bin/createconfig.pl
+   \item /opt/openbib/bin/createsession.pl
+   \item /opt/openbib/bin/createuser.pl
+   \item /opt/openbib/bin/createenrichmnt.pl
+\end{enumerate}
+
+\item Restarten Sie den Apache-Webserver
+
+
+\end{enumerate}
+
+Danach sollten Sie eine funktionsfähige, aber rudimentäre
+OpenBib-Installation auf Ihrem Rechner vorfinden, die sie unter
+folgendem URL aufrufen koennen
+
+\begin{verbatim}
+http://<lokaler.rechner>/portal/opac
+\end{verbatim}
+
+bzw. 
+
+\begin{verbatim}
+http://<lokaler.rechner>/portal/admin
+\end{verbatim}
 
 \chapter{Installation der notwendigen Infrastruktur}
 Das Recherche-Portal, die zugehörigen Datenbanken sowie die

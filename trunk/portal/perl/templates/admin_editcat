@@ -28,7 +28,6 @@
 
 <form method="get" action="http://[% config.servername %][% config.admin_loc %]">
 <input type="hidden" name="sessionID"  value="[% sessionID %]" />
-<input type="hidden" name="dbid"       value="[% katalog.dbid %]" />
 <input type="hidden" name="dbname"     value="[% katalog.dbname %]" />
 <input type="hidden" name="do_editcat" value="1" />
 
@@ -82,11 +81,11 @@ selected
 [% IF katalog.active == 1 %]
 selected
 [% END %]
->[% msg.maketext("Nein") %]</option><option value="0" 
+>[% msg.maketext("Ja") %]</option><option value="0" 
 [% IF katalog.active == 0 %]
 selected
 [% END %]
->[% msg.maketext("Ja") %]</option></select>
+>[% msg.maketext("Nein") %]</option></select>
 </td></tr>
 </table>
 <p />

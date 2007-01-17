@@ -2,7 +2,7 @@
 #
 #  OpenBib::Search::Util
 #
-#  Dieses File ist (C) 2004-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2007 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -41,8 +41,8 @@ use SOAP::Lite;
 use Storable;
 use YAML ();
 
+use OpenBib::Common::Util;
 use OpenBib::Config;
-
 
 #####################################################################
 ## get_aut_ans_by_idn(autidn,...): Gebe zu autidn geh"oerende
@@ -580,7 +580,7 @@ sub get_tit_listitem_by_idn {
 
     my $config = new OpenBib::Config();
 
-    my $use_titlistitem_table=0;
+    my $use_titlistitem_table=1;
 
     if ($database eq "inst006"){
         $use_titlistitem_table=1;
@@ -608,6 +608,7 @@ sub get_tit_listitem_by_idn {
         
         if (my $res=$request->fetchrow_hashref){
             my $titlistitem     = $res->{listitem};
+            
             $logger->debug("Storable::listitem: $titlistitem");
 
             my $encoding_type="hex";
@@ -623,8 +624,10 @@ sub get_tit_listitem_by_idn {
             }
 
             my %titlistitem = %{ Storable::thaw($titlistitem) };
+            
             $logger->debug("TitlistitemYAML: ".YAML::Dump(\%titlistitem));
             %$listitem_ref=(%$listitem_ref,%titlistitem);
+
         }
     }
     else {
@@ -858,6 +861,24 @@ sub get_tit_listitem_by_idn {
             $logger->info("Zeit fuer : Bestimmung der HST-Ueberordnungsinformationen : ist ".timestr($timeall));
         }
 
+                if ($config->{benchmark}) {
+            $atime=new Benchmark;
+        }    
+        
+        # Bestimmung der Popularitaet des Titels
+        $request=$dbh->prepare("select idcount from popularity where id=?") or $logger->error($DBI::errstr);
+        $request->execute($titidn);
+        
+        while (my $res=$request->fetchrow_hashref){
+            $listitem_ref->{popularity} = $res->{idcount};
+        }
+        
+        if ($config->{benchmark}) {
+            $btime=new Benchmark;
+            $timeall=timediff($btime,$atime);
+            $logger->info("Zeit fuer : Bestimmung der Popularitaetsinformation : ist ".timestr($timeall));
+        }
+
     }
 
     if ($config->{benchmark}) {
@@ -879,12 +900,8 @@ sub print_tit_list_by_idn {
         ? $arg_ref->{itemlist_ref}      : undef;
     my $targetdbinfo_ref  = exists $arg_ref->{targetdbinfo_ref}
         ? $arg_ref->{targetdbinfo_ref}  : undef;
-    my $searchmode        = exists $arg_ref->{searchmode}
-        ? $arg_ref->{searchmode}        : undef;
-    my $rating            = exists $arg_ref->{rating}
-        ? $arg_ref->{rating}            : undef;
-    my $bookinfo          = exists $arg_ref->{bookinfo}
-        ? $arg_ref->{bookinfo}          : undef;
+    my $queryoptions_ref  = exists $arg_ref->{queryoptions_ref}
+        ? $arg_ref->{queryoptions_ref}  : undef;
     my $database          = exists $arg_ref->{database}
         ? $arg_ref->{database}          : undef;
     my $sessionID         = exists $arg_ref->{sessionID}
@@ -893,8 +910,10 @@ sub print_tit_list_by_idn {
         ? $arg_ref->{apachereq}         : undef;
     my $stylesheet        = exists $arg_ref->{stylesheet}
         ? $arg_ref->{stylesheet}        : undef;
+    my $hits              = exists $arg_ref->{hits}
+        ? $arg_ref->{hits}              : -1;
     my $hitrange          = exists $arg_ref->{hitrange}
-        ? $arg_ref->{hitrange}          : -1;
+        ? $arg_ref->{hitrange}          : 50;
     my $offset            = exists $arg_ref->{offset}
         ? $arg_ref->{offset}            : undef;
     my $view              = exists $arg_ref->{view}
@@ -908,10 +927,10 @@ sub print_tit_list_by_idn {
     my $logger = get_logger();
 
     my $config = new OpenBib::Config();
-    
-    my @itemlist=@$itemlist_ref;
 
-    my $hits=$#itemlist;
+    my $query=Apache::Request->new($r);
+
+    my @itemlist=@$itemlist_ref;
 
     # Navigationselemente erzeugen
     my %args=$r->args;
@@ -927,7 +946,7 @@ sub print_tit_list_by_idn {
     my @nav=();
 
     if ($hitrange > 0) {
-        for (my $i=1; $i <= $hits; $i+=$hitrange) {
+        for (my $i=0; $i <= $hits-1; $i+=$hitrange) {
             my $active=0;
 
             if ($i == $offset) {
@@ -935,18 +954,14 @@ sub print_tit_list_by_idn {
             }
 
             my $item={
-		start  => $i,
-		end    => ($i+$hitrange>$hits)?$hits+1:$i+$hitrange-1,
+		start  => $i+1,
+		end    => ($i+$hitrange>$hits)?$hits:$i+$hitrange,
 		url    => $baseurl.";hitrange=$hitrange;offset=$i",
 		active => $active,
             };
             push @nav,$item;
         }
     }
-
-    my $hostself="http://".$r->hostname.$r->uri;
-
-    my ($queryargs,$sortselect,$thissortstring)=OpenBib::Common::Util::get_sort_nav($r,'',0,$msg);
 
     # TT-Data erzeugen
     my $ttdata={
@@ -959,19 +974,15 @@ sub print_tit_list_by_idn {
 
         hits           => $hits,
 	      
-        searchmode     => $searchmode,
-        rating         => $rating,
-        bookinfo       => $bookinfo,
         sessionID      => $sessionID,
 	      
         targetdbinfo   => $targetdbinfo_ref,
         itemlist       => \@itemlist,
-        hostself       => $hostself,
-        queryargs      => $queryargs,
+
         baseurl        => $baseurl,
-        thissortstring => $thissortstring,
-        sortselect     => $sortselect,
-	      
+
+        qopts          => $queryoptions_ref,
+        query          => $query,
         hitrange       => $hitrange,
         offset         => $offset,
         nav            => \@nav,
@@ -993,18 +1004,20 @@ sub print_tit_set_by_idn {
         ? $arg_ref->{titidn}             : undef;
     my $dbh                = exists $arg_ref->{dbh}
         ? $arg_ref->{dbh}                : undef;
-    my $sessiondbh         = exists $arg_ref->{sessiondbh}
-        ? $arg_ref->{sessiondbh}         : undef;
+    my $session            = exists $arg_ref->{session}
+        ? $arg_ref->{session}            : undef;
     my $targetdbinfo_ref   = exists $arg_ref->{targetdbinfo_ref}
         ? $arg_ref->{targetdbinfo_ref}   : undef;
     my $targetcircinfo_ref = exists $arg_ref->{targetcircinfo_ref}
         ? $arg_ref->{targetcircinfo_ref} : undef;
     my $queryoptions_ref   = exists $arg_ref->{queryoptions_ref}
-        ? $arg_ref->{queryoptions_ref}  : undef;
+        ? $arg_ref->{queryoptions_ref}   : undef;
+    my $searchquery_ref    = exists $arg_ref->{searchquery_ref}
+        ? $arg_ref->{searchquery_ref}    : undef;
+    my $queryid            = exists $arg_ref->{queryid}
+        ? $arg_ref->{queryid}            : undef;
     my $database           = exists $arg_ref->{database}
         ? $arg_ref->{database}           : undef;
-    my $sessionID          = exists $arg_ref->{sessionID}
-        ? $arg_ref->{sessionID}          : undef;
     my $r                  = exists $arg_ref->{apachereq}
         ? $arg_ref->{apachereq}          : undef;
     my $stylesheet         = exists $arg_ref->{stylesheet}
@@ -1018,7 +1031,7 @@ sub print_tit_set_by_idn {
     my $logger = get_logger();
 
     my $config = new OpenBib::Config();
-    
+
     my ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn({
         titidn             => $titidn,
         dbh                => $dbh,
@@ -1028,10 +1041,10 @@ sub print_tit_set_by_idn {
     });
 
     my ($prevurl,$nexturl)=OpenBib::Search::Util::get_result_navigation({
-        sessiondbh => $sessiondbh,
+        sessiondbh => $session->{dbh},
         database   => $database,
         titidn     => $titidn,
-        sessionID  => $sessionID,
+        sessionID  => $session->{ID},
     });
 
     my $poolname=$targetdbinfo_ref->{sigel}{
@@ -1039,31 +1052,51 @@ sub print_tit_set_by_idn {
 
     # TT-Data erzeugen
     my $ttdata={
-        view       => $view,
-        stylesheet => $stylesheet,
-        database   => $database,
-        poolname   => $poolname,
-        prevurl    => $prevurl,
-        nexturl    => $nexturl,
-        qopts      => $queryoptions_ref,
-        sessionID  => $sessionID,
-        titidn     => $titidn,
-        normset    => $normset,
-        mexnormset => $mexnormset,
-        circset    => $circset,
+        view        => $view,
+        stylesheet  => $stylesheet,
+        database    => $database,
+        poolname    => $poolname,
+        prevurl     => $prevurl,
+        nexturl     => $nexturl,
+        qopts       => $queryoptions_ref,
+        queryid     => $queryid,
+        sessionID   => $session->{ID},
+        titidn      => $titidn,
+        normset     => $normset,
+        mexnormset  => $mexnormset,
+        circset     => $circset,
+        searchquery => $searchquery_ref,
 
-        utf2iso    => sub {
-            my $string=shift;
-            $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse; 
-            return $string;
-        },
+        highlightquery    => \&highlightquery,
+        normset2bibtex    => \&OpenBib::Common::Util::normset2bibtex,
+        normset2bibsonomy => \&OpenBib::Common::Util::normset2bibsonomy,
 
-        config     => $config,
-        msg        => $msg,
+        config      => $config,
+        msg         => $msg,
     };
   
     OpenBib::Common::Util::print_page($config->{tt_search_showtitset_tname},$ttdata,$r);
 
+    # Log Event
+
+    my $isbn;
+
+    if (exists $normset->{T0540}[0]{content}){
+        $isbn = $normset->{T0540}[0]{content};
+        $isbn =~s/ //g;
+        $isbn =~s/-//g;
+        $isbn =~s/X/x/g;
+    }
+    
+    $session->log_event({
+        type    => 10,
+        content => {
+            id       => $titidn,
+            database => $database,
+            isbn     => $isbn,
+        },
+    });
+    
     return;
 }
 
@@ -1110,7 +1143,6 @@ sub print_mult_tit_set_by_idn {
             targetdbinfo_ref   => $targetdbinfo_ref,
             targetcircinfo_ref => $targetcircinfo_ref,
             database           => $database,
-            sessionID          => $sessionID
         });
         
         my $thisset={
@@ -1158,8 +1190,6 @@ sub get_tit_set_by_idn {
         ? $arg_ref->{targetcircinfo_ref} : undef;
     my $database           = exists $arg_ref->{database}
         ? $arg_ref->{database}           : undef;
-    my $sessionID          = exists $arg_ref->{sessionID}
-        ? $arg_ref->{sessionID}          : undef;
   
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -1327,7 +1357,6 @@ sub get_tit_set_by_idn {
                     targetdbinfo_ref   => $targetdbinfo_ref,
                     targetcircinfo_ref => $targetcircinfo_ref,
                     database           => $database,
-                    sessionID          => $sessionID,
                 });
             }
         }
@@ -1370,9 +1399,6 @@ sub get_tit_set_by_idn {
         if (exists $targetcircinfo_ref->{$database}{circ}
                 && $#circexemplarliste >= 0) {
             for (my $i=0; $i <= $#circexemplarliste; $i++) {
-
-                # Zusammensetzung von Signatur und Exemplar
-                $circexemplarliste[$i]{'Signatur'}=$circexemplarliste[$i]{'Signatur'}.$circexemplarliste[$i]{'Exemplar'};
                 
                 my $bibliothek="-";
                 my $sigel=$targetdbinfo_ref->{dbases}{$database};
@@ -1391,45 +1417,15 @@ sub get_tit_set_by_idn {
                             $targetdbinfo_ref->{dbases}{$database}};
                     }
                 }
-                $circexemplarliste[$i]{'Bibliothek'}=$bibliothek;
                 
                 my $bibinfourl=$targetdbinfo_ref->{bibinfo}{
                     $targetdbinfo_ref->{dbases}{$database}};
                 
-                $circexemplarliste[$i]{'Bibinfourl'}=$bibinfourl;
-                
-                my $ausleihstatus=(exists $circexemplarliste[$i]{'Ausleihstatus'})?$circexemplarliste[$i]{'Ausleihstatus'}:"";
-                
-                my $ausleihstring="";
-                if ($ausleihstatus eq "bestellbar") {
-                    $ausleihstring="ausleihen?";
-                }
-                elsif ($ausleihstatus eq "bestellt") {
-                    $ausleihstring="vormerken?";
-                }
-                elsif ($ausleihstatus eq "entliehen") {
-                    $ausleihstring="vormerken/verlängern?";
-                }
-                elsif ($ausleihstatus eq "bestellbar") {
-                    $ausleihstring="ausleihen?";
-                }
-                else {
-                    $ausleihstring="WebOPAC?";
-                }
-                
-                $circexemplarliste[$i]{'Ausleihstring'}=$ausleihstring;
-                
-                if ($circexemplarliste[$i]{'Standort'}=~/Erziehungswiss/ || $circexemplarliste[$i]{'Standort'}=~/Heilp.*?dagogik-Magazin/) {
-                    $circexemplarliste[$i]{'Ausleihurl'}=$targetcircinfo_ref->{$database}{circurl}."?Login=ewa&Query=0000=$titidn";
-                }
-                else {
-                    if ($database eq "inst001" || $database eq "poetica") {
-                        $circexemplarliste[$i]{'Ausleihurl'}=$targetcircinfo_ref->{$database}{circurl}."?Login=sisis&Query=0000=$titidn";
-                    }
-                    else {
-                        $circexemplarliste[$i]{'Ausleihurl'}=$targetcircinfo_ref->{$database}{circurl}."&KatKeySearch=$titidn";
-                    }
-                }
+                # Zusammensetzung von Signatur und Exemplar
+                $circexemplarliste[$i]{'Signatur'}   = $circexemplarliste[$i]{'Signatur'}.$circexemplarliste[$i]{'Exemplar'};
+                $circexemplarliste[$i]{'Bibliothek'} = $bibliothek;
+                $circexemplarliste[$i]{'Bibinfourl'} = $bibinfourl;
+                $circexemplarliste[$i]{'Ausleihurl'} = $targetcircinfo_ref->{$database}{circurl};
             }
         }
         else {
@@ -1454,9 +1450,11 @@ sub get_tit_set_by_idn {
 
             my $isbn=$isbn_ref->{content};
             
-            $isbn =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10/g;
-            
-            my $reqstring="select category,content from normdata where isbn=?";
+            $isbn =~s/ //g;
+            $isbn =~s/-//g;
+            $isbn=~s/([A-Z])/\l$1/g;
+                        
+            my $reqstring="select category,content from normdata where isbn=? order by category,indicator";
             my $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
             $request->execute($isbn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
             
@@ -1485,7 +1483,7 @@ sub get_tit_set_by_idn {
 
 
     }
-    
+
     return ($normset_ref,\@mexnormset,\@circexemplarliste);
 }
 
@@ -1594,12 +1592,6 @@ sub get_result_navigation {
         ? $arg_ref->{titidn}                : undef;
     my $sessionID             = exists $arg_ref->{sessionID}
         ? $arg_ref->{sessionID}             : undef;
-    my $searchmode            = exists $arg_ref->{searchmode}
-        ? $arg_ref->{searchmode}            : undef;
-    my $rating                = exists $arg_ref->{rating}
-        ? $arg_ref->{rating}                : undef;
-    my $bookinfo              = exists $arg_ref->{bookinfo}
-        ? $arg_ref->{bookinfo}              : undef;
     my $hitrange              = exists $arg_ref->{hitrange}
         ? $arg_ref->{hitrange}              : undef;
     my $sortorder             = exists $arg_ref->{sortorder}
@@ -1875,11 +1867,10 @@ sub initial_search_for_titidns {
         ? $arg_ref->{enrichkeys_ref}: undef;
     my $dbh               = exists $arg_ref->{dbh}
         ? $arg_ref->{dbh}           : undef;
-    my $maxhits           = exists $arg_ref->{maxhits}
-        ? $arg_ref->{maxhits}       : 50;
-
+    my $hitrange          = exists $arg_ref->{hitrange}
+        ? $arg_ref->{hitrange}      : 50;
     my $offset            = exists $arg_ref->{offset}
-        ? $arg_ref->{offset}        : undef;
+        ? $arg_ref->{offset}        : 0;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -1904,10 +1895,9 @@ sub initial_search_for_titidns {
     my $notfirstsql=0;
     
     if ($searchquery_ref->{fs}{norm}) {	
-        push @sqlwhere, $searchquery_ref->{fs}{bool}." match (verf,hst,kor,swt,notation,sign,isbn,issn) against (? IN BOOLEAN MODE)";
+        push @sqlwhere, $searchquery_ref->{fs}{bool}." match (verf,hst,kor,swt,notation,sign,isbn,issn,ejahrft) against (? IN BOOLEAN MODE)";
         push @sqlargs, $searchquery_ref->{fs}{norm};
     }
-
    
     if ($searchquery_ref->{verf}{norm}) {	
         push @sqlwhere, $searchquery_ref->{verf}{bool}." match (verf) against (? IN BOOLEAN MODE)";
@@ -1968,6 +1958,10 @@ sub initial_search_for_titidns {
         push @sqlargs,  $searchquery_ref->{hststring}{norm};
     }
   
+    if ($searchquery_ref->{gtquelle}{norm}) {
+        push @sqlwhere, $searchquery_ref->{gtquelle}{bool}."  match (gtquelle) against (? IN BOOLEAN MODE)";
+        push @sqlargs,  $searchquery_ref->{gtquelle}{norm};
+    }
   
     if ($searchquery_ref->{ejahr}{norm}) {
         push @sqlwhere, $searchquery_ref->{ejahr}{bool}." ejahr ".$searchquery_ref->{ejahr}{arg}." ?";
@@ -1985,11 +1979,11 @@ sub initial_search_for_titidns {
     $sqlwherestring     =~s/^(?:AND|OR|NOT) //;
     my $sqlfromstring   = join(", ",@sqlfrom);
 
-    if ($offset){
+    if ($offset >= 0){
         $offset=$offset.",";
     }
     
-    my $sqlquerystring  = "select verwidn from $sqlfromstring where $sqlwherestring limit $offset$maxhits";
+    my $sqlquerystring  = "select verwidn from $sqlfromstring where $sqlwherestring limit $offset$hitrange";
 
     $logger->debug("QueryString: ".$sqlquerystring);
     my $request         = $dbh->prepare($sqlquerystring);
@@ -2037,11 +2031,11 @@ sub initial_search_for_titidns {
 
     }
 
-    # Entfernen mehrfacher verwidn's unter Beruecksichtigung von $maxhits
+    # Entfernen mehrfacher verwidn's unter Beruecksichtigung von $hitrange
     my %schon_da=();
     my $count=0;
     my @tidns=grep {! $schon_da{$_}++ } @tempidns;
-    @tidns=splice(@tidns,0,$maxhits);
+    @tidns=splice(@tidns,0,$hitrange);
     
     
     my $fullresultcount=$#tidns+1;
@@ -2050,13 +2044,13 @@ sub initial_search_for_titidns {
   
     $logger->info("Treffer: ".($#tidns+1)." von ".$fullresultcount);
 
-    # Wenn maxhits Treffer gefunden wurden, ist es wahrscheinlich, dass
+    # Wenn hitrange Treffer gefunden wurden, ist es wahrscheinlich, dass
     # die wirkliche Trefferzahl groesser ist.
     # Diese wird daher getrennt bestimmt, damit sie dem Benutzer als
     # Hilfestellung fuer eine Praezisierung seiner Suchanfrage
     # ausgegeben werden kann
-    if ($#tidns+1 > $maxhits){ # ueberspringen
-    #    if ($#tidns+1 == $maxhits){
+    if ($#tidns+1 > $hitrange){ # ueberspringen
+    #    if ($#tidns+1 == $hitrange){
 
         if ($config->{benchmark}) {
             $atime=new Benchmark;
@@ -2259,6 +2253,22 @@ sub get_recent_titids_by_not {
     $dbh->disconnect;
 
     return \@titlist;
+}
+
+sub highlightquery {
+    my ($searchquery_ref,$content) = @_;
+    
+    # Highlight Query
+
+    my $term_ref = OpenBib::Common::Util::get_searchterms({
+        searchquery_ref => $searchquery_ref,
+    });
+
+    foreach my $singleterm (@$term_ref){
+        $content=~s/($singleterm)/<span class="queryhighlight">$1<\/span>/ig unless ($content=~/http/);
+    }
+
+    return $content;
 }
 
 1;

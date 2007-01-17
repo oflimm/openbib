@@ -17,12 +17,12 @@
 
 <body>
 
-<table border="0" cellspacing="0" cellpadding="0" width="100%">
-  <tr class="titlerow">
-    <td  width="20">&nbsp;</td><td valign="middle" align="left" height="32"><span class="dbdescshort">[% poolname.short %]</span></td>
-  </tr>
-</table>
+<ul class="tabbingmenu">
+   <li><a class="active" href="#"><span class="dbdescshort">[% poolname.short %]</span></a></li>
+</ul>
 
+<div class="content">
+<p />
 <table cellpadding="2">
 <tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
 
@@ -44,7 +44,7 @@ FOREACH category IN categories;
     SWITCH category;
 
     CASE "S5000";
-         content   = "<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchtitofswt=${normset.id}\">${content}</a>";
+         content   = "<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchtitofswt=${normset.id};offset=0;hitrange=${qopts.hitrange}\">${content}</a>";
     END;
 -%]
 <tr><td class="category">[% msg.maketext("${category}") %]</td><td>[% content %]</td></tr>
@@ -53,7 +53,7 @@ FOREACH category IN categories;
 END;
 -%]
 </table>
-
+</div>
 <p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

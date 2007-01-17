@@ -84,6 +84,7 @@ create table fieldchoice (
  sign      BOOL,
  mart      BOOL,
  hststring BOOL,
+ gtquelle  BOOL,
  ejahr     BOOL,
  
  INDEX (userid)

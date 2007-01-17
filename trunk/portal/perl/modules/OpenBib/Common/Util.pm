@@ -2,7 +2,7 @@
 #
 #  OpenBib::Common::Util
 #
-#  Dieses File ist (C) 2004-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2007 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -38,6 +38,7 @@ use Digest::MD5();
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use POSIX();
+use String::Tokenizer;
 use Template;
 use YAML ();
 
@@ -214,10 +215,8 @@ sub print_page {
             INCLUDE_PATH   => $config->{tt_include_path},
 	    ABSOLUTE       => 1,
         }) ],
-#         INCLUDE_PATH   => $config->{tt_include_path},
-#         ABSOLUTE       => 1,     # Notwendig fuer Kaskadierung
          OUTPUT         => $r,    # Output geht direkt an Apache Request
-#         RECURSION      => 1,
+         RECURSION      => 1,
     });
   
     # Dann Ausgabe des neuen Headers
@@ -229,143 +228,6 @@ sub print_page {
     };
   
     return;
-}   
-
-sub get_sort_nav {
-    my ($r,$nav,$usequerycache,$msg)=@_;
-
-    my @argself=$r->args;
-
-    my $sorttype  = "";
-    my $sortorder = "";
-    my $sortall   = "";
-    my $sessionID = "";
-    my $queryid   = "";
-    my $hitrange  = undef;
-    my $offset    = undef;
-    
-    my $fullargstring="";
-
-    my %fullargs = ();
-
-    my %blacklisted_args = (
-        sortorder => 1,
-        sorttype  => 1,
-        sortall   => 1,
-        sessionID => 1,
-        queryid   => 1,
-        offset    => 1,
-        hitrange  => 1,        
-    );
-    
-    for (my $i = 0; $i < $#argself; $i += 2) {
-        my $key=$argself[$i];
-
-        my $value="";
-
-        if (defined($argself[$i+1])) {
-            $value=$argself[$i+1];
-        }
-
-        if (!exists $blacklisted_args{$key}) {
-            $fullargs{$key}=$value;
-        }
-        elsif ($key eq "sortorder") {
-            $sortorder=$value;
-        }
-        elsif ($key eq "sorttype") {
-            $sorttype=$value;
-        }
-        elsif ($key eq "sortall") {
-            $fullargs{$key}=$value;
-            $sortall=$value;
-        }
-        elsif ($key eq "sessionID") {
-            $fullargs{$key}=$value;
-            $sessionID=$value;
-        }
-        elsif ($key eq "queryid") {
-            $fullargs{$key}=$value;
-            $queryid=$value;
-        }
-        elsif ($key eq "hitrange") {
-            $fullargs{$key}=$value;
-            $hitrange=$value;
-        }
-        elsif ($key eq "offset") {
-            $fullargs{$key}=$value;
-            $offset=$value;
-        }
-
-    }
-
-    #Defaults setzen, falls Parameter nicht uebergeben
-    $sortorder = "up"     unless ($sortorder);
-    $sorttype  = "author" unless ($sorttype);
-
-    my %cacheargs=();
-
-    $cacheargs{offset}       = $offset;
-    $cacheargs{hitrange}     = $hitrange;
-    $cacheargs{action}       = "showall";
-    $cacheargs{sessionID}    = $sessionID;
-    $cacheargs{queryid}      = $queryid;
-
-    my $queryargs_ref="";
-
-    if ($usequerycache) {
-        $queryargs_ref=\%cacheargs;
-    }
-    else {
-        $queryargs_ref=\%fullargs;
-    }
-
-    my %fullstring=('up'        => $msg->maketext("aufsteigend"),
-                    'down'      => $msg->maketext("absteigend"),
-                    'author'    => $msg->maketext("nach Autor/Körperschaft"),
-                    'publisher' => $msg->maketext("nach Verlag"),
-                    'signature' => $msg->maketext("nach Signatur"),
-                    'title'     => $msg->maketext("nach Titel"),
-                    'yearofpub' => $msg->maketext("nach Erscheinungsjahr"),
-                );
-
-    my $katalogtyp=$msg->maketext("pro Katalog");
-
-    if ($sortall eq "1") {
-        $katalogtyp=$msg->maketext("katalogübergreifend");
-    }
-
-    my $thissortstring=$fullstring{$sorttype}." / ".$fullstring{$sortorder};
-
-    $thissortstring=$thissortstring." / $katalogtyp" if ($nav);
-
-    my @sortselect=();
-
-    if ($nav eq 'sortsingle') {
-        push @sortselect, {
-            val  => 0,
-            desc => $msg->maketext("pro Katalog"),
-        };
-    }
-    elsif ($nav eq 'sortall') {
-        push @sortselect, {
-            val  => 1,
-            desc => $msg->maketext("katalogübergreifend"),
-        };
-    }
-    elsif ($nav eq 'sortboth') {
-        push @sortselect, {
-            val  => 0,
-            desc => $msg->maketext("pro Katalog"),
-        };
-
-        push @sortselect, {
-            val  => 1,
-            desc => $msg->maketext("katalogübergreifend"),
-        };
-    }
-
-    return ($queryargs_ref,\@sortselect,$thissortstring);
 }
 
 sub by_yearofpub {
@@ -483,6 +345,32 @@ sub by_title_down {
     $line2 cmp $line1;
 }
 
+sub by_popularity {
+    my %line1=%$a;
+    my %line2=%$b;
+
+    my $line1=(exists $line1{popularity} && defined $line1{popularity})?cleanrl($line1{popularity}):"";
+    my $line2=(exists $line2{popularity} && defined $line2{popularity})?cleanrl($line2{popularity}):"";
+
+    $line1=0 if (!defined $line1);
+    $line2=0 if (!defined $line2);
+
+    $line1 <=> $line2;
+}
+
+sub by_popularity_down {
+    my %line1=%$a;
+    my %line2=%$b;
+
+    my $line1=(exists $line1{popularity} && defined $line1{popularity})?cleanrl($line1{popularity}):"";
+    my $line2=(exists $line2{popularity} && defined $line2{popularity})?cleanrl($line2{popularity}):"";
+
+    $line1=0 if (!defined $line1);
+    $line2=0 if (!defined $line2);
+
+    $line2 <=> $line1;
+}
+
 sub sort_buffer {
     my ($sorttype,$sortorder,$outputbuffer_ref,$sortedoutputbuffer_ref)=@_;
 
@@ -529,6 +417,12 @@ sub sort_buffer {
     elsif ($sorttype eq "title" && $sortorder eq "down") {
         @$sortedoutputbuffer_ref=sort by_title_down @$outputbuffer_ref;
     }
+    elsif ($sorttype eq "popularity" && $sortorder eq "up") {
+        @$sortedoutputbuffer_ref=sort by_popularity @$outputbuffer_ref;
+    }
+    elsif ($sorttype eq "popularity" && $sortorder eq "down") {
+        @$sortedoutputbuffer_ref=sort by_popularity_down @$outputbuffer_ref;
+    }
     else {
         @$sortedoutputbuffer_ref=@$outputbuffer_ref;
     }
@@ -561,6 +455,73 @@ sub cleanrl {
     return $line;
 }
 
+sub get_searchterms {
+    my ($arg_ref) = @_;
+    
+    # Set defaults
+    my $searchquery_ref  = exists $arg_ref->{searchquery_ref}
+        ? $arg_ref->{searchquery_ref}     : "";
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    $logger->debug(YAML::Dump($searchquery_ref));
+    
+    my $term_ref = [];
+
+    return $term_ref unless (exists $searchquery_ref->{fs});
+
+    my @allterms = ();
+    foreach my $cat (keys %$searchquery_ref){
+        push @allterms, $searchquery_ref->{$cat}->{val};
+    }
+
+    my $alltermsstring = join (" ",@allterms);
+
+    my $tokenizer = String::Tokenizer->new();
+    $tokenizer->tokenize($alltermsstring);
+
+    my $i = $tokenizer->iterator();
+
+    while ($i->hasNextToken()) {
+        my $next = $i->nextToken();
+        next if (!$next);
+        push @$term_ref, $next;
+    }
+
+    return $term_ref;
+}
+
+sub get_searchquery_of_queryid {
+    my ($arg_ref) = @_;
+    
+    # Set defaults
+    my $queryid   = exists $arg_ref->{queryid}
+        ? $arg_ref->{queryid}             : "";
+
+    my $sessionID = exists $arg_ref->{sessionID}
+        ? $arg_ref->{sessionID}           : "";
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return unless ($queryid && $sessionID);
+
+    my $session = new OpenBib::Session({
+        sessionID => $sessionID
+    });
+
+    my $request = $session->{dbh}->prepare("select query from queries where queryid=? and sessionid=?");
+    $request->execute($queryid,$sessionID);
+
+    my $result=$request->fetchrow_hashref;
+
+    my $searchquery_ref=Storable::thaw(pack "H*",$result->{query});
+
+    return $searchquery_ref;
+}
+
+
 sub get_searchquery {
     my ($r)=@_;
     
@@ -576,14 +537,15 @@ sub get_searchquery {
         'lt' => '<',
     };
 
-    my ($fs, $verf, $hst, $hststring, $swt, $kor, $sign, $isbn, $issn, $mart,$notation,$ejahr,$ejahrop);
+    my ($fs, $verf, $hst, $hststring, $gtquelle, $swt, $kor, $sign, $isbn, $issn, $mart,$notation,$ejahr,$ejahrop);
 
-    my ($fsnorm, $verfnorm, $hstnorm, $hststringnorm, $swtnorm, $kornorm, $signnorm, $isbnnorm, $issnnorm, $martnorm,$notationnorm,$ejahrnorm);
+    my ($fsnorm, $verfnorm, $hstnorm, $hststringnorm, $gtquellenorm, $swtnorm, $kornorm, $signnorm, $isbnnorm, $issnnorm, $martnorm,$notationnorm,$ejahrnorm);
     
     $fs        = $fsnorm        = decode_utf8($query->param('fs'))            || '';
     $verf      = $verfnorm      = decode_utf8($query->param('verf'))          || '';
     $hst       = $hstnorm       = decode_utf8($query->param('hst'))           || '';
     $hststring = $hststringnorm = decode_utf8($query->param('hststring'))     || '';
+    $gtquelle  = $gtquellenorm  = decode_utf8($query->param('gtquelle'))      || '';
     $swt       = $swtnorm       = decode_utf8($query->param('swt'))           || '';
     $kor       = $kornorm       = decode_utf8($query->param('kor'))           || '';
     $sign      = $signnorm      = decode_utf8($query->param('sign'))          || '';
@@ -592,7 +554,7 @@ sub get_searchquery {
     $mart      = $martnorm      = decode_utf8($query->param('mart'))          || '';
     $notation  = $notationnorm  = decode_utf8($query->param('notation'))      || '';
     $ejahr     = $ejahrnorm     = decode_utf8($query->param('ejahr'))         || '';
-    $ejahrop   = decode_utf8($query->param('ejahrop'))       || 'eq';
+    $ejahrop   =                  decode_utf8($query->param('ejahrop'))       || 'eq';
 
     my $autoplus      = $query->param('autoplus')      || '';
     my $verfindex     = $query->param('verfindex')     || '';
@@ -627,6 +589,8 @@ sub get_searchquery {
     my $boolmart      = ($query->param('boolmart'))     ?$query->param('boolmart')
         :"AND";
     my $boolhststring = ($query->param('boolhststring'))?$query->param('boolhststring')
+        :"AND";
+    my $boolgtquelle  = ($query->param('boolgtquelle')) ?$query->param('boolgtquelle')
         :"AND";
 
     # Sicherheits-Checks
@@ -679,6 +643,10 @@ sub get_searchquery {
         $boolhststring = "AND";
     }
 
+    if ($boolgtquelle ne "AND" && $boolgtquelle ne "OR" && $boolgtquelle ne "NOT") {
+        $boolgtquelle = "AND";
+    }
+
     $boolverf      = "AND NOT" if ($boolverf      eq "NOT");
     $boolhst       = "AND NOT" if ($boolhst       eq "NOT");
     $boolswt       = "AND NOT" if ($boolswt       eq "NOT");
@@ -690,6 +658,7 @@ sub get_searchquery {
     $boolfs        = "AND NOT" if ($boolfs        eq "NOT");
     $boolmart      = "AND NOT" if ($boolmart      eq "NOT");
     $boolhststring = "AND NOT" if ($boolhststring eq "NOT");
+    $boolgtquelle  = "AND NOT" if ($boolgtquelle  eq "NOT");
 
     # Setzen der arithmetischen Ejahrop-Operatoren
     if (exists $ejahrop_ref->{$ejahrop}){
@@ -701,9 +670,11 @@ sub get_searchquery {
     
     # Filter: ISBN und ISSN
 
-    # Entfernung der Minus-Zeichen bei der ISBN
+    # Entfernung der Minus-Zeichen bei der ISBN zuerst 13-, dann 10-stellig
     $fsnorm   =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10/g;
+    $fsnorm   =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10$11$12$13/g;
     $isbnnorm =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10/g;
+    $isbnnorm =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/$1$2$3$4$5$6$7$8$9$10$11$12$13/g;
 
     # Entfernung der Minus-Zeichen bei der ISSN
     $fsnorm   =~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*([0-9xX])/$1$2$3$4$5$6$7$8/g;
@@ -734,6 +705,11 @@ sub get_searchquery {
 
     $hststringnorm = OpenBib::Common::Util::grundform({
         content   => $hststringnorm,
+        searchreq => 1,
+    });
+
+    $gtquellenorm  = OpenBib::Common::Util::grundform({
+        content   => $gtquellenorm,
         searchreq => 1,
     });
 
@@ -785,13 +761,14 @@ sub get_searchquery {
 
     # Umwandlung impliziter ODER-Verknuepfung in UND-Verknuepfung
     if ($autoplus eq "1" && !$verfindex && !$korindex && !$swtindex) {
-        $fsnorm   = OpenBib::VirtualSearch::Util::conv2autoplus($fsnorm)   if ($fs);
-        $verfnorm = OpenBib::VirtualSearch::Util::conv2autoplus($verfnorm) if ($verf);
-        $hstnorm  = OpenBib::VirtualSearch::Util::conv2autoplus($hstnorm)  if ($hst);
-        $kornorm  = OpenBib::VirtualSearch::Util::conv2autoplus($kornorm)  if ($kor);
-        $swtnorm  = OpenBib::VirtualSearch::Util::conv2autoplus($swtnorm)  if ($swt);
-        $isbnnorm = OpenBib::VirtualSearch::Util::conv2autoplus($isbnnorm) if ($isbn);
-        $issnnorm = OpenBib::VirtualSearch::Util::conv2autoplus($issnnorm) if ($issn);
+        $fsnorm       = OpenBib::VirtualSearch::Util::conv2autoplus($fsnorm)   if ($fs);
+        $verfnorm     = OpenBib::VirtualSearch::Util::conv2autoplus($verfnorm) if ($verf);
+        $hstnorm      = OpenBib::VirtualSearch::Util::conv2autoplus($hstnorm)  if ($hst);
+        $kornorm      = OpenBib::VirtualSearch::Util::conv2autoplus($kornorm)  if ($kor);
+        $swtnorm      = OpenBib::VirtualSearch::Util::conv2autoplus($swtnorm)  if ($swt);
+        $isbnnorm     = OpenBib::VirtualSearch::Util::conv2autoplus($isbnnorm) if ($isbn);
+        $issnnorm     = OpenBib::VirtualSearch::Util::conv2autoplus($issnnorm) if ($issn);
+        $gtquellenorm = OpenBib::VirtualSearch::Util::conv2autoplus($gtquellenorm) if ($gtquelle);
     }
 
     # Spezielle Trunkierungen
@@ -820,6 +797,11 @@ sub get_searchquery {
             val   => $hststring,
             norm  => $hststringnorm,
             bool  => $boolhststring,
+        },
+        gtquelle  => {
+            val   => $gtquelle,
+            norm  => $gtquellenorm,
+            bool  => $boolgtquelle,
         },
         swt => {
             val   => $swt,
@@ -1092,6 +1074,129 @@ sub get_loadbalanced_servername {
     return $bestserver;
 }
 
+sub normset2bibtex {
+    my ($normset_ref)=@_;
+
+    my $bibtex_ref=[];
+
+    # Verfasser und Herausgeber konstruieren
+    my $authors_ref=[];
+    my $editors_ref=[];
+    foreach my $category (qw/T0100 T0101/){
+        next if (!exists $normset_ref->{$category});
+        foreach my $part_ref (@{$normset_ref->{$category}}){
+            if ($part_ref->{supplement} =~ /Hrsg/){
+                push @$editors_ref, $part_ref->{content};
+            }
+            else {
+                push @$authors_ref, $part_ref->{content};
+            }
+        }
+    }
+    my $author = join(' and ',@$authors_ref);
+    my $editor = join(' and ',@$editors_ref);
+
+    # Schlagworte
+    my $keywords_ref=[];
+    foreach my $category (qw/T0710 T0902 T0907 T0912 T0917 T0922 T0927 T0932 T0937 T0942 T0947/){
+        next if (!exists $normset_ref->{$category});
+        foreach my $part_ref (@{$normset_ref->{$category}}){
+            push @$keywords_ref, $part_ref->{content};
+        }
+    }
+    my $keyword = join(' ; ',@$keywords_ref);
+    
+    # Auflage
+    my $edition   = (exists $normset_ref->{T0403})?$normset_ref->{T0403}[0]{content}:'';
+
+    # Verleger
+    my $publisher = (exists $normset_ref->{T0412})?$normset_ref->{T0412}[0]{content}:'';
+
+    # Verlagsort
+    my $address   = (exists $normset_ref->{T0410})?$normset_ref->{T0410}[0]{content}:'';
+
+    # Titel
+    my $title     = (exists $normset_ref->{T0331})?$normset_ref->{T0331}[0]{content}:'';
+
+    # Jahr
+    my $year      = (exists $normset_ref->{T0425})?$normset_ref->{T0425}[0]{content}:'';
+
+    # ISBN
+    my $isbn      = (exists $normset_ref->{T0540})?$normset_ref->{T0540}[0]{content}:'';
+
+    # ISSN
+    my $issn      = (exists $normset_ref->{T0543})?$normset_ref->{T0543}[0]{content}:'';
+
+    # Sprache
+    my $language  = (exists $normset_ref->{T0516})?$normset_ref->{T0516}[0]{content}:'';
+
+    if ($author){
+        push @$bibtex_ref, "author    = \"$author\"";
+    }
+    if ($editor){
+        push @$bibtex_ref, "editor    = \"$editor\"";
+    }
+    if ($edition){
+        push @$bibtex_ref, "edition   = \"$edition\"";
+    }
+    if ($publisher){
+        push @$bibtex_ref, "publisher = \"$publisher\"";
+    }
+    if ($address){
+        push @$bibtex_ref, "address   = \"$address\"";
+    }
+    if ($title){
+        push @$bibtex_ref, "title     = \"$title\"";
+    }
+    if ($year){
+        push @$bibtex_ref, "year      = \"$year\"";
+    }
+    if ($isbn){
+        push @$bibtex_ref, "ISBN      = \"$isbn\"";
+    }
+    if ($issn){
+        push @$bibtex_ref, "ISSN      = \"$issn\"";
+    }
+    if ($keyword){
+        push @$bibtex_ref, "keywords  = \"$keyword\"";
+    }
+    if ($language){
+        push @$bibtex_ref, "language  = \"$language\"";
+    }
+    
+    my $identifier=substr($author,0,4).substr($title,0,4).$year;
+    $identifier=~s/\W//g;
+
+    my $bibtex="";
+    
+    if ($isbn){
+        unshift @$bibtex_ref, "\@book {$identifier";
+        $bibtex=join(",\n",@$bibtex_ref);
+        $bibtex="$bibtex}";
+    }
+    else {
+        unshift @$bibtex_ref, "\@book {$identifier";
+        $bibtex=join(",\n",@$bibtex_ref);
+        $bibtex="$bibtex}";
+    }
+
+    
+    return utf2bibtex($bibtex);
+}
+
+sub utf2bibtex {
+    my ($string)=@_;
+
+    $string=~s/ä/{\\"a}/g;
+    $string=~s/ö/{\\"o}/g;
+    $string=~s/ü/{\\"u}/g;
+    $string=~s/Ä/{\\"A}/g;
+    $string=~s/Ö/{\\"O}/g;
+    $string=~s/Ü/{\\"U}/g;
+    $string=~s/ß/{\\"s}/g;
+
+    return $string;
+}
 
 1;
 __END__
@@ -1127,9 +1232,6 @@ __END__
  # Ist die Session authentifiziert? Ja, dann Rueckgabe der positiven $userid,
  # sonst wird nichts zurueckgegeben 
  my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
-
- # Navigationsselement zwecks Sortierung einer Trefferliste erzeugen
- OpenBib::Common::Util::get_sort_nav($r,'',0);
 
  # Komplette Seite aus Template $templatename, Template-Daten $ttdata und
  # Request-Objekt $r bilden und ausgeben

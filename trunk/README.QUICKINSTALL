@@ -1,0 +1,114 @@
+README.QUICKINSTALL:
+
+Mit dem Skript quickinstall.pl kann die OpenBib-Portalsoftware
+ausgehend von einem ausgecheckten Verzeichnisbaum des entsprechenden
+CVS-Repositories in einer Standard-Konfiguration mit geringem Aufwand
+installiert werden.
+
+Vorgehensweise:
+
+1) Installation eines Apache-Webservers mit mod_perl-Unterstuetzung in
+   der Version 1.3.x.
+
+   Fuer die OpenBib-Installation (siehe 6.) wird folgendes benoetigt:
+
+   - Verzeichnisname des DocumentRoot
+   - Verzeichnisname des conf.d-Verzeichnisses, in dem individuelle
+     Apache-Konfigurationen abgelegt werden koennen
+
+2) Installation eines MySQL-Servers (ab Version 4.1)
+
+   Fuer die OpenBib-Installation (siehe 6.) wird folgendes benoetigt:
+
+   Benutzername und Passwort eines Nutzers in der Datenbank, der
+   idealer-/einfacherweise maximale Rechte hat. 
+
+3) Installation der fuer OpenBib benoetigten Perl-Module fuer Perl ab
+   Version 5.8 - sofern diese nicht bereits installiert sind:
+
+   Es sind dies:
+
+   Apache::Constants
+   Apache::GTopLimit
+   Apache::Reload
+   Apache::Request
+   Apache::URI
+   Benchmark ':hireswallclock'
+   Date::Manip
+   DBI
+   Digest::MD5
+   Email::Valid
+   Encode
+   Encode::MAB2
+   Getopt::Long
+   HTTP::Request
+   HTTP::Response
+   IO::Socket
+   Locale::Maketext
+   Locale::Maketext::Extract
+   Locale::Maketext::Lexicon
+   Log::Log4perl
+   LWP::UserAgent
+   MIME::Base64
+   MIME::Lite
+   MLDBM
+   OAI2::Harvester
+   POSIX
+   Search::Xapian
+   SOAP::Lite
+   SOAP::Transport::HTTP
+   Socket
+   Storable
+   String::Tokenizer
+   Template
+   XML::RSS
+   XML::Twig
+   YAML
+   ZOOM
+
+4) Gehen Sie nun in das ausgecheckte CVS-Verzeichniss und passen
+   folgende lokale Pfadangaben im Skript quickinstall.pl an:
+
+   $documentroot : Wo ist der Basis-Pfad fuer die Dokumente Ihres
+                   Apache-Webservers
+
+   $confd        : Wo liegt das conf.d-Verzeichnis Ihres
+                   Apache-Webservers
+
+   Beide Pfade sind ohne abschliessenden '/' einzugeben.
+
+   Danach erzeugen sie bitte mit 'touch' die Datei '.changed_config'
+   als Zeichen der erfolgen Konfigurationsaenderung.
+
+   touch .changed_config
+
+5) Rufen Sie nun das Programm quickinstall.pl als ein Nutzer auf, der
+   in /opt ein Verzeichnis openbib samt Unterverzeichnisse anlegen
+   darf:
+
+   ./quickinstall.pl
+
+6) Bitte passen Sie nun die Datei
+
+   /usr/local/lib/site_perl/OpenBib/Config.pm
+
+   entsprechend Ihren lokalen Gegebenheiten an. Insbesondere sind hier
+   der lokale Rechnername sowie die Verbindungsparameter der
+   MySQL-Datenbank abzuaendern.
+
+7) Danach fuehren Sie bitte folgende Programme zur Erzeugung der
+   grundlegenden Datenbanken aus:
+
+   a) /opt/openbib/bin/createconfig.pl
+   b) /opt/openbib/bin/createsession.pl
+   c) /opt/openbib/bin/createuser.pl
+   d) /opt/openbib/bin/createenrichmnt.pl
+
+8) Restarten Sie den Apache-Webserver
+
+Danach sollten Sie eine funktionsfaehige, aber rudimentaere
+OpenBib-Installation auf Ihrem Rechner vorfinden, die sie unter
+folgendem URL aufrufen koennen:
+
+http://<lokaler.rechner>/portal/opac
+

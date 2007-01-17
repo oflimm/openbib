@@ -72,7 +72,10 @@ table {
 }
 
 .circurl { 
-  background-color: yellow;
+  font-weight:bold;
+  vertical-align:top;
+  font-size:1.2em;
+  color:red;
 }
 
 .warning { 
@@ -176,21 +179,21 @@ a:link.invisible {
   color:white;
   font-family:helvetica,arial;
   font-weight:lighter;
-  font-size:10pti
+  font-size:10pt;
 } /* unvisited link */
 
 a:visited.invisible { 
   color:white;
   font-family:helvetica,arial;
   font-weight:lighter;
-  font-size:10pt 
+  font-size:10pt; 
 } /* visited links */
 
 a:active.invisible { 
   color:white;
   font-family:helvetica,arial;
   font-weight:lighter;
-  font-size:10pt 
+  font-size:10pt; 
 } /* active links */
 
 
@@ -224,14 +227,15 @@ a:active.invisible {
   border-bottom: 3px solid #ffffff; 
 }
 
-#langchoice {
-  float: right;
-}
-
 .tabbingmenu a:visited {
   color: #000000; 
   background: #ffffff; 
 }
+
+#langchoice {
+  float: right;
+}
+
 
 .content {
 
@@ -241,6 +245,10 @@ a:active.invisible {
   border: 2px solid lightblue;
   border-top: none;
   z-index: 2;	
+}
+
+.queryhighlight {
+  color:#990000;
 }
 
 #mainnavigation a:link {

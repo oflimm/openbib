@@ -10,6 +10,7 @@
 ../templates/admin_showimx
 ../templates/admin_showsessions
 ../templates/admin_showviews
+../templates/circset
 ../templates/circulation
 ../templates/circulation_orders
 ../templates/circulation_remind
@@ -27,6 +28,9 @@
 ../templates/helpframe
 ../templates/helpframe_1
 ../templates/helpframe_2
+../templates/helpframe_10
+../templates/helpframe_11
+../templates/helpframe_12
 ../templates/info_message
 ../templates/leave
 ../templates/loadbalancer
@@ -43,6 +47,7 @@
 ../templates/managecollection_save_html
 ../templates/managecollection_save_plain
 ../templates/managecollection_show
+../templates/managecollection_tit_as_bibtex
 ../templates/managecollection_tit_as_endnote
 ../templates/managecollection_tit_as_html
 ../templates/managecollection_tit_as_html_simple

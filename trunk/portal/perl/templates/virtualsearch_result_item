@@ -13,9 +13,9 @@
 -%]
 <!-- Beginn Result Item -->
 <tr class="titlerow"><td>&nbsp;</td><td><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% dbinfo.full %]</td><td
-align="right" colspan="3"><strong>[%- IF treffer == qopts.maxhits && qopts.sb == 'sql' -%]<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#recherche">[% msg.maketext("mind.") %]&nbsp;[% treffer %] [% msg.maketext("Treffer") %]</a>[% ELSE %][% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %][%- END -%]</strong></td></tr>
-[%- IF treffer == qopts.maxhits -%]
-<tr class="titlerow"><td>&nbsp;</td><td colspan="4"><b>[1 - [% qopts.maxhits %]]</b>&nbsp;<a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];database=[% database %];queryid=[% queryid %];action=getnext;offset=[% qopts.maxhits %];hitrange=[% qopts.maxhits %];sb=[% qopts.sb %]">[weitere Treffer...]</a></td></tr>
+align="right" colspan="3"><strong>[%- IF treffer == qopts.hitrange && qopts.sb == 'sql' -%]<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#recherche">[% msg.maketext("mind.") %]&nbsp;[% treffer %] [% msg.maketext("Treffer") %]</a>[% ELSE %][% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %][%- END -%]</strong></td><td class="popularitycount"><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
+[%- IF treffer == qopts.hitrange -%]
+<tr class="titlerow"><td>&nbsp;</td><td colspan="4"><b>[1 - [% qopts.hitrange %]]</b>&nbsp;<a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];database=[% database %];queryid=[% queryid %];action=getnext;offset=[% qopts.hitrange %];hitrange=[% qopts.hitrange %];sb=[% qopts.sb %]">[weitere Treffer...]</a></td><td>&nbsp;</td></tr>
 [%- END -%]
 [% listrow = 'listrow2' %]
 [%- FOREACH item IN resultlist -%]
@@ -61,9 +61,9 @@ align="right" colspan="3"><strong>[%- IF treffer == qopts.maxhits && qopts.sb ==
 
 <tr class="[% listrow %]"><td class="listnr">[% loop.count %]</td><td colspan="2"><span class="rlperson">[% person
 %]</span><br /><a href="[% config.search_loc %]?sessionID=[%
-sessionID %];database=[% item.database %];searchsingletit=[% item.id
+sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id
 %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
-class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></td><td><span class="rlcollect"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="header" title="[% msg.maketext("In die Merkliste") %]"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a></span></td><td align="left"><b>[% signatur %]</b></td></tr>
+class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></td><td><span class="rlcollect"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="header" title="[% msg.maketext("In die Merkliste") %]"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a></span></td><td align="left"><b>[% signatur %]</b></td><td class="popularitycount">[% item.popularity %]</td></tr>
 [%- IF listrow == 'listrow1' -%]
 [%- listrow = 'listrow2' -%]
 [%- ELSE -%]
@@ -72,7 +72,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 [% END %]
 <tr><td class="listnr"></td><td colspan="4"><b><span style="font-size:0.8em">in: [% resulttime %] [% msg.maketext("Sekunden") %]</span></b></td></tr>
 
-[% IF drilldown && fullresultcount > qopts.maxhits %]
+[% IF drilldown && fullresultcount > qopts.hitrange %]
 <tr><td class="listnr"><td colspan="4">
 <table width="100%">
 <tr><th colspan="4">[% msg.maketext("Suchverfeinerung mit relevanten Begriffen") %]</th></tr>
@@ -181,7 +181,11 @@ FOREACH thisoutput IN output ;
 %]
 <b>[% thisoutput.title%]</b><br />
 [% FOREACH termitem IN termfeedback.${thisoutput.cat} %]
-[% termitem.name %]<br />
+[% termitem.name %]
+[% IF termitem.freq %]
+([% termitem.freq %])
+[% END %]
+<br />
 [% END %]
 
 [% END %]

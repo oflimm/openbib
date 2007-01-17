@@ -49,9 +49,6 @@
                 'T0508', # msg.maketext("T0508") Quelle
                 'T0433', # msg.maketext("T0433") Kollation
                 'T0334', # msg.maketext("T0334") Material
-                'T0662', # msg.maketext("T0662") EDVurl
-                'T2662', # msg.maketext("T2662") USB EDVurl
-                'T2663', # msg.maketext("T2663") USB URLInfo
                 'T0652', # msg.maketext("T0652") EDV Material
                 'T0655', # msg.maketext("T0655") EDV Adress
                 'T0451', # msg.maketext("T0451") GesTit Vorl
@@ -103,8 +100,11 @@
                 'T0700', # msg.maketext("T0700") Notation
                 'T0540', # msg.maketext("T0540") ISBN
                 'T0543', # msg.maketext("T0543") ISSN
+                'T0662', # msg.maketext("T0662") EDVurl
+                'T2662', # msg.maketext("T2662") USB EDVurl
+                'T2663', # msg.maketext("T2663") USB URLInfo
                 'T3001', # msg.maketext("T3001") TOC-URL / HTML
-                'T3002', # msg.maketext("T3002") TOC-URL / TIFF
+                #'T3002', # msg.maketext("T3002") TOC-URL / TIFF
                 'T3003', # msg.maketext("T3003") TOC-URL / PDF
                 'T5001', # msg.maketext("T5001") Anzahl uebergeordn. Werke
                 'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke

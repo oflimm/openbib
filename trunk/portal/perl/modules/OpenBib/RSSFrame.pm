@@ -89,7 +89,7 @@ sub handler {
         $view=$query->param('view');
     }
     else {
-        $view=$session->get_viewname_of_session();
+        $view=$session->get_viewname();
     }
 
     my $request=$config->{dbh}->prepare("select * from dbinfo where active=1 order by orgunit ASC, description ASC");

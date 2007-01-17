@@ -46,6 +46,7 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::Session;
+use OpenBib::Statistics;
 use OpenBib::User;
 
 sub handler {
@@ -54,7 +55,8 @@ sub handler {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = new OpenBib::Config();
+    my $config     = new OpenBib::Config();
+    my $statistics = new OpenBib::Statistics();
 
     my $query = Apache::Request->new($r);
 
@@ -75,7 +77,8 @@ sub handler {
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
     # Sub-Template ID
-    my $stid   = $query->param('stid') || '';
+    my $stid     = $query->param('stid') || '';
+    my $database = $query->param('database') || '';
 
     my $queryoptions_ref
         = $session->get_queryoptions($query);
@@ -103,17 +106,22 @@ sub handler {
 
     # TT-Data erzeugen
     my $ttdata={
+        database      => $database,
         view          => $view,
         stylesheet    => $stylesheet,
         viewdesc      => $viewdesc,
         sessionID     => $session->{ID},
+	session       => $session,
         useragent     => $useragent,
         config        => $config,
+        statistics    => $statistics,
         msg           => $msg,
     };
 
+    $stid=~s/[^0-9]//g;
+
     my $templatename = ($stid)?"tt_helpframe_".$stid."_tname":"tt_helpframe_tname";
-    
+
     OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
 
     return OK;

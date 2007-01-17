@@ -107,7 +107,6 @@ sub handler {
 
     my $user            = $query->param('user')            || '';
     my $passwd          = $query->param('passwd')          || '';
-    my $dbid            = $query->param('dbid')            || '';
     my $orgunit         = $query->param('orgunit')         || '';
     my $description     = $query->param('description')     || '';
     my $shortdesc       = $query->param('shortdesc')       || '';
@@ -121,6 +120,7 @@ sub handler {
     my @viewdb          = ($query->param('viewdb'))?$query->param('viewdb'):();
     my $viewid          = $query->param('viewid')          || '';
 
+    # dboptions
     my $host            = $query->param('host')            || '';
     my $protocol        = $query->param('protocol')        || '';
     my $remotepath      = $query->param('remotepath')      || '';
@@ -179,6 +179,37 @@ sub handler {
   
     $dbinforesult->finish();
 
+    my $thisdbinfo_ref = {
+        orgunit     => $orgunit,
+        description => $description,
+        shortdesc   => $shortdesc,
+        system      => $system,
+        dbname      => $dbname,
+        sigel       => $sigel,
+        url         => $url,
+        active      => $active,        
+    };
+        
+    my $thisdboptions_ref = {
+        host         => $host,
+        protocol     => $protocol,
+        remotepath   => $remotepath,
+        remoteuser   => $remoteuser,
+        remotepasswd => $remotepasswd,
+        filename     => $filename,
+        titfilename  => $titfilename,
+        autfilename  => $autfilename,
+        korfilename  => $korfilename,
+        swtfilename  => $swtfilename,
+        notfilename  => $notfilename,
+        mexfilename  => $mexfilename,
+        autoconvert  => $autoconvert,        
+        circ         => $circ,
+        circurl      => $circurl,
+        circcheckurl => $circcheckurl,
+        circdb       => $circdb,
+    };
+    
     # Expliziter aufruf und default bei keiner Parameteruebergabe
     if ($do_loginmask || ($r->method eq "GET" && ! scalar $r->args) ) {
     
@@ -246,31 +277,14 @@ sub handler {
     
         # Zuerst schauen, ob Aktionen gefordert sind
         if ($do_del) {
-            my $idnresult=$config->{dbh}->prepare("delete from dbinfo where dbname = ?") or $logger->error($DBI::errstr);
-            $idnresult->execute($dbname) or $logger->error($DBI::errstr);
-            $idnresult=$config->{dbh}->prepare("delete from titcount where dbname = ?") or $logger->error($DBI::errstr);
-            $idnresult->execute($dbname) or $logger->error($DBI::errstr);
-            $idnresult=$config->{dbh}->prepare("delete from dboptions where dbname = ?") or $logger->error($DBI::errstr);
-            $idnresult->execute($dbname) or $logger->error($DBI::errstr);
-            $idnresult->finish();
-
-            if ($system ne "Z39.50"){
-                # Und nun auch die Datenbank komplett loeschen
-                system("$config->{tool_dir}/destroypool.pl $dbname > /dev/null 2>&1");
-            }
+            editcat_del($dbname);
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showcat=1");
             return OK;
 
         }
         elsif ($do_change) {
-            my $idnresult=$config->{dbh}->prepare("update dbinfo set orgunit = ?, description = ?, shortdesc = ?, system = ?, dbname = ?, sigel = ?, url = ?, active = ? where dbid = ?") or $logger->error($DBI::errstr); # 
-            $idnresult->execute($orgunit,$description,$shortdesc,$system,$dbname,$sigel,$url,$active,$dbid) or $logger->error($DBI::errstr);
-            $idnresult->finish();
-
-            $idnresult=$config->{dbh}->prepare("update dboptions set protocol = ?, host = ?, remotepath = ?, remoteuser = ?, remotepasswd = ?, titfilename = ?, autfilename = ?, korfilename = ?, swtfilename = ?, notfilename = ?, mexfilename = ?, filename = ?, autoconvert = ?, circ = ?, circurl = ?, circcheckurl = ?, circdb = ? where dbname= ?") or $logger->error($DBI::errstr);
-            $idnresult->execute($protocol,$host,$remotepath,$remoteuser,$remotepasswd,$titfilename,$autfilename,$korfilename,$swtfilename,$notfilename,$mexfilename,$filename,$autoconvert,$circ,$circurl,$circcheckurl,$circdb,$dbname) or $logger->error($DBI::errstr);
-            $idnresult->finish();
-
+            $logger->debug("do_editcat: $do_editcat do_change: $do_change");
+            editcat_change($thisdbinfo_ref,$thisdboptions_ref);
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showcat=1");
             return OK;
         }
@@ -284,7 +298,7 @@ sub handler {
                 return OK;
             }
 
-            my $idnresult=$config->{dbh}->prepare("select count(dbid) as rowcount from dbinfo where dbname = ?") or $logger->error($DBI::errstr);
+            my $idnresult=$config->{dbh}->prepare("select count(dbname) as rowcount from dbinfo where dbname = ?") or $logger->error($DBI::errstr);
             $idnresult->execute($dbname) or $logger->error($DBI::errstr);
 
             my $res=$idnresult->fetchrow_hashref;
@@ -298,32 +312,17 @@ sub handler {
                 return OK;
             }
 
-            $idnresult=$config->{dbh}->prepare("insert into dbinfo values (NULL,?,?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
-            $idnresult->execute($orgunit,$description,$shortdesc,$system,$dbname,$sigel,$url,$active) or $logger->error($DBI::errstr);
-            $idnresult=$config->{dbh}->prepare("insert into titcount values (?,'0')") or $logger->error($DBI::errstr);
-            $idnresult->execute($dbname) or $logger->error($DBI::errstr);
-            $idnresult=$config->{dbh}->prepare("insert into dboptions values (?,'','','','','','','','','','','','',0,0,'','','')") or $logger->error($DBI::errstr);
-            $idnresult->execute($dbname) or $logger->error($DBI::errstr);
-            $idnresult->finish();
-
-            if ($system ne "Z39.50"){
-                # Und nun auch die Datenbank zuerst komplett loeschen (falls vorhanden)
-                system("$config->{tool_dir}/destroypool.pl $dbname > /dev/null 2>&1");
-                
-                # ... und dann wieder anlegen
-                system("$config->{tool_dir}/createpool.pl $dbname > /dev/null 2>&1");
-            }
+            editcat_new($thisdbinfo_ref);
             
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showcat=1");
             return OK;
         }
         elsif ($do_edit) {
-            my $idnresult=$config->{dbh}->prepare("select * from dbinfo where dbid = ?") or $logger->error($DBI::errstr);
-            $idnresult->execute($dbid) or $logger->error($DBI::errstr);
+            my $idnresult=$config->{dbh}->prepare("select * from dbinfo where dbname = ?") or $logger->error($DBI::errstr);
+            $idnresult->execute($dbname) or $logger->error($DBI::errstr);
       
             my $result=$idnresult->fetchrow_hashref();
       
-            my $dbid        = decode_utf8($result->{'dbid'});
             my $orgunit     = decode_utf8($result->{'orgunit'});
             my $description = decode_utf8($result->{'description'});
             my $shortdesc   = decode_utf8($result->{'shortdesc'});
@@ -372,7 +371,6 @@ sub handler {
             }
             
             my $katalog={
-                dbid        => $dbid,
                 orgunit     => $orgunit,
                 description => $description,
                 shortdesc   => $shortdesc,
@@ -428,24 +426,23 @@ sub handler {
             my $request=$config->{dbh}->prepare("update rssfeeds set dbname = ?, type = ?, active = ? where id = ?") or $logger->error($DBI::errstr);
             $request->execute($dbname,$rsstype,$active,$rssid) or $logger->error($DBI::errstr);
             $request->finish();
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editcat_rss=1&dbid=$dbid&dbname=$dbname&do_edit=1");
+            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editcat_rss=1&dbname=$dbname&do_edit=1");
             return OK;
         }
         elsif ($do_new){
             my $request=$config->{dbh}->prepare("insert into rssfeeds values (NULL,?,?,-1,'',0)") or $logger->error($DBI::errstr);
             $request->execute($dbname,$rsstype) or $logger->error($DBI::errstr);
             $request->finish();
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editcat_rss=1&dbid=$dbid&dbname=$dbname&do_edit=1");
+            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editcat_rss=1&dbname=$dbname&do_edit=1");
             return OK;              
         }
         
         if ($do_edit) {
-            my $request=$config->{dbh}->prepare("select * from dbinfo where dbid = ?") or $logger->error($DBI::errstr);
-            $request->execute($dbid) or $logger->error($DBI::errstr);
+            my $request=$config->{dbh}->prepare("select * from dbinfo where dbname = ?") or $logger->error($DBI::errstr);
+            $request->execute($dbname) or $logger->error($DBI::errstr);
             
             my $result=$request->fetchrow_hashref();
             
-            my $dbid        = decode_utf8($result->{'dbid'});
             my $dbname      = decode_utf8($result->{'dbname'});
             
             my $rssfeed_ref=[];
@@ -471,7 +468,6 @@ sub handler {
             $request->finish();
             
             my $katalog={
-                dbid        => $dbid,
                 dbname      => $dbname,
                 rssfeeds    => $rssfeed_ref,
             };
@@ -498,7 +494,6 @@ sub handler {
 
         my $katalog;
         while (my $result=$idnresult->fetchrow_hashref()) {
-            my $dbid        = decode_utf8($result->{'dbid'});
             my $orgunit     = decode_utf8($result->{'orgunit'});
             my $autoconvert = decode_utf8($result->{'autoconvert'});
 
@@ -526,7 +521,6 @@ sub handler {
             }
 
             $katalog={
-		dbid        => $dbid,
 		orgunit     => $orgunit,
 		description => $description,
 		system      => $system,
@@ -631,7 +625,7 @@ sub handler {
 
             # Primary RSS-Feed fuer Autodiscovery eintragen
             if ($primrssfeed){
-                $idnresult=$config->{dbh}->prepare("update viewinfo set primrssfeed = ? where viewid = ?") or $logger->error($DBI::errstr);
+                $idnresult=$config->{dbh}->prepare("update viewinfo set rssfeed = ? where viewid = ?") or $logger->error($DBI::errstr);
                 $idnresult->execute($primrssfeed,$viewid) or $logger->error($DBI::errstr);
             }
             
@@ -688,7 +682,7 @@ sub handler {
                 return OK;
             }
       
-            $idnresult=$config->{dbh}->prepare("insert into viewinfo values (NULL,?,?,?)") or $logger->error($DBI::errstr);
+            $idnresult=$config->{dbh}->prepare("insert into viewinfo values (NULL,?,?,NULL,?)") or $logger->error($DBI::errstr);
             $idnresult->execute($viewname,$description,$active) or $logger->error($DBI::errstr);
 
 
@@ -808,7 +802,7 @@ sub handler {
           my $request=$config->{dbh}->prepare("insert into rssfeeds values (NULL,?,?,-1,'',0)") or $logger->error($DBI::errstr);
           $request->execute($dbname,$rsstype) or $logger->error($DBI::errstr);
           $request->finish();
-          $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&action=editcatrss&dbid=$dbid&dbname=$dbname&catrssaction=Bearbeiten");
+          $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&action=editcatrss&dbname=$dbname&catrssaction=Bearbeiten");
           return OK;
       }
       elsif ($do_edit) {
@@ -889,7 +883,6 @@ sub handler {
 
         my $katalog;
         while (my $result=$idnresult->fetchrow_hashref()) {
-            my $dbid    = decode_utf8($result->{'dbid'});
             my $orgunit = decode_utf8($result->{'orgunit'});
 
             my $orgunits_ref=$config->{orgunits};
@@ -916,7 +909,6 @@ sub handler {
             my $count       = decode_utf8($result->{'count'});
 
             $katalog={
-		dbid        => $dbid,
 		orgunit     => $orgunit,
 		description => $description,
 		system      => $system,
@@ -1075,5 +1067,71 @@ sub handler {
     return OK;
 }
 
+sub editcat_del {
+    my ($dbname)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = new OpenBib::Config();
+
+    my $idnresult=$config->{dbh}->prepare("delete from dbinfo where dbname = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($dbname) or $logger->error($DBI::errstr);
+    $idnresult=$config->{dbh}->prepare("delete from titcount where dbname = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($dbname) or $logger->error($DBI::errstr);
+    $idnresult=$config->{dbh}->prepare("delete from dboptions where dbname = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($dbname) or $logger->error($DBI::errstr);
+    $idnresult->finish();
+    
+    if ($config->get_system_of_db($dbname) ne "Z39.50"){
+        # Und nun auch die Datenbank komplett loeschen
+        system("$config->{tool_dir}/destroypool.pl $dbname > /dev/null 2>&1");
+    }
+    return;
+}
+
+sub editcat_change {
+    my ($dbinfo_ref,$dboptions_ref)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = new OpenBib::Config();
+
+    my $idnresult=$config->{dbh}->prepare("update dbinfo set orgunit = ?, description = ?, shortdesc = ?, system = ?, sigel = ?, url = ?, active = ? where dbname = ?") or $logger->error($DBI::errstr); # 
+    $idnresult->execute($dbinfo_ref->{orgunit},$dbinfo_ref->{description},$dbinfo_ref->{shortdesc},$dbinfo_ref->{system},$dbinfo_ref->{sigel},$dbinfo_ref->{url},$dbinfo_ref->{active},$dbinfo_ref->{dbname}) or $logger->error($DBI::errstr);
+    $idnresult->finish();
+    
+    $idnresult=$config->{dbh}->prepare("update dboptions set protocol = ?, host = ?, remotepath = ?, remoteuser = ?, remotepasswd = ?, titfilename = ?, autfilename = ?, korfilename = ?, swtfilename = ?, notfilename = ?, mexfilename = ?, filename = ?, autoconvert = ?, circ = ?, circurl = ?, circcheckurl = ?, circdb = ? where dbname= ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($dboptions_ref->{protocol},$dboptions_ref->{host},$dboptions_ref->{remotepath},$dboptions_ref->{remoteuser},$dboptions_ref->{remotepasswd},$dboptions_ref->{titfilename},$dboptions_ref->{autfilename},$dboptions_ref->{korfilename},$dboptions_ref->{swtfilename},$dboptions_ref->{notfilename},$dboptions_ref->{mexfilename},$dboptions_ref->{filename},$dboptions_ref->{autoconvert},$dboptions_ref->{circ},$dboptions_ref->{circurl},$dboptions_ref->{circcheckurl},$dboptions_ref->{circdb},$dbinfo_ref->{dbname}) or $logger->error($DBI::errstr);
+    $idnresult->finish();
+    return;
+}
+
+sub editcat_new {
+    my ($dbinfo_ref)=@_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = new OpenBib::Config();
+
+    my $idnresult=$config->{dbh}->prepare("insert into dbinfo values (?,?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
+    $idnresult->execute($dbinfo_ref->{orgunit},$dbinfo_ref->{description},$dbinfo_ref->{shortdesc},$dbinfo_ref->{system},$dbinfo_ref->{dbname},$dbinfo_ref->{sigel},$dbinfo_ref->{url},$dbinfo_ref->{active}) or $logger->error($DBI::errstr);
+    $idnresult=$config->{dbh}->prepare("insert into titcount values (?,'0')") or $logger->error($DBI::errstr);
+    $idnresult->execute($dbinfo_ref->{dbname}) or $logger->error($DBI::errstr);
+    $idnresult=$config->{dbh}->prepare("insert into dboptions values (?,'','','','','','','','','','','','',0,0,'','','')") or $logger->error($DBI::errstr);
+    $idnresult->execute($dbinfo_ref->{dbname}) or $logger->error($DBI::errstr);
+    $idnresult->finish();
+    
+    if ($config->get_system_of_db($dbinfo_ref->{dbname}) ne "Z39.50"){
+        # Und nun auch die Datenbank zuerst komplett loeschen (falls vorhanden)
+        system("$config->{tool_dir}/destroypool.pl $dbinfo_ref->{dbname} > /dev/null 2>&1");
+        
+        # ... und dann wieder anlegen
+        system("$config->{tool_dir}/createpool.pl $dbinfo_ref->{dbname} > /dev/null 2>&1");
+    }
+    return;
+}
 
 1;

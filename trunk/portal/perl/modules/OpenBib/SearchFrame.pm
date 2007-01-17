@@ -43,6 +43,7 @@ use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Storable ();
 use Template;
+use YAML;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
@@ -117,6 +118,7 @@ sub handler {
     my $showsign      = "1";
     my $showmart      = "0";
     my $showhststring = "1";
+    my $showgtquelle  = "1";
     my $showejahr     = "1";
   
     my $userprofiles  = "";
@@ -141,6 +143,7 @@ sub handler {
         $showsign      = decode_utf8($result->{'sign'});
         $showmart      = decode_utf8($result->{'mart'});
         $showhststring = decode_utf8($result->{'hststring'});
+        $showgtquelle  = decode_utf8($result->{'gtquelle'});
         $showejahr     = decode_utf8($result->{'ejahr'});
 
         $targetresult->finish();
@@ -187,6 +190,7 @@ sub handler {
     
         my $result=$idnresult->fetchrow_hashref();
         $searchquery_ref = Storable::thaw(pack "H*",$result->{'query'});
+        $logger->debug(YAML::Dump($searchquery_ref));
         $hits            = decode_utf8($result->{'hits'});
 #        $query=~s/"/&quot;/g;
 
@@ -241,6 +245,10 @@ sub handler {
 
     $idnresult->finish();
 
+    my @catdb     = $config->get_infomatrix_of_active_databases($session,1);
+    my $maxcolumn = 1;
+    my $colspan   = $maxcolumn*3;
+    
     # TT-Data erzeugen
     my $ttdata={
         view          => $view,
@@ -264,6 +272,7 @@ sub handler {
         showsign      => $showsign,
         showmart      => $showmart,
         showhststring => $showhststring,
+        showgtquelle  => $showgtquelle,
         showejahr     => $showejahr,
 
         searchquery   => $searchquery_ref,
@@ -271,6 +280,11 @@ sub handler {
         anzahl        => $anzahl,
         queries       => \@queries,
         useragent     => $useragent,
+
+        catdb         => \@catdb,
+        maxcolumn     => $maxcolumn,
+        colspan       => $colspan,
+        
         config        => $config,
         msg           => $msg,
     };

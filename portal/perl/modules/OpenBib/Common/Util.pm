@@ -469,11 +469,11 @@ sub get_searchterms {
     
     my $term_ref = [];
 
-    return $term_ref unless (defined %$searchquery_ref);
+    return $term_ref unless (exists $searchquery_ref->{fs});
 
     my @allterms = ();
-    foreach my $cat_ref (keys %$searchquery_ref){
-        push @allterms, $cat_ref->{val};
+    foreach my $cat (keys %$searchquery_ref){
+        push @allterms, $searchquery_ref->{$cat}->{val};
     }
 
     my $alltermsstring = join (" ",@allterms);

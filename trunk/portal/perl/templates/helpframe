@@ -635,11 +635,11 @@ entsprechende RSS-Feed.
      Funktionselemente verwendet. Es sind dies:
     </p>
     <table>
-     <tr><td align="center"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="In die Merkliste" border="0" /></td><td>Titel in die Merkliste eintragen</td></tr>
+     <tr><td align="center"><img src="/images/openbib/3d-file-blue-clipboard.png" alt="In die Merkliste" border="0" /></td><td>Titel in die Merkliste eintragen</td></tr>
 
-     <tr><td align="center"><img src="/images/openbib/3d-file-blue-mailbox.png" height="29" alt="Als Mail verschicken" border="0" /></td><td>Titel(liste) als Mail verschicken</td></tr>
-     <tr><td align="center"><img src="/images/openbib/3d-file-blue-disk35.png" height="29" alt="Abspeichern" border="0" /></td><td>Titel(liste) abspeichern</td></tr>   
-     <tr><td align="center"><img src="/images/openbib/3d-file-blue-printer.png" height="29" alt="Ausdrucken" border="0" /></td><td>Titel(liste) ausdrucken, bzw. in einer Druckansicht darstellen</td></tr>   
+     <tr><td align="center"><img src="/images/openbib/3d-file-blue-mailbox.png" alt="Als Mail verschicken" border="0" /></td><td>Titel(liste) als Mail verschicken</td></tr>
+     <tr><td align="center"><img src="/images/openbib/3d-file-blue-disk35.png" alt="Abspeichern" border="0" /></td><td>Titel(liste) abspeichern</td></tr>   
+     <tr><td align="center"><img src="/images/openbib/3d-file-blue-printer.png" alt="Ausdrucken" border="0" /></td><td>Titel(liste) ausdrucken, bzw. in einer Druckansicht darstellen</td></tr>   
      <tr><td align="center"><img src="/images/openbib/rssfeed.png"  alt="RSS-Feed" border="0" /></td><td>RSS-Feed</td></tr>   
     </table>
 

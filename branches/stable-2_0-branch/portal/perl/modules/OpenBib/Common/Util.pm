@@ -1086,10 +1086,10 @@ sub normset2bibtex {
         next if (!exists $normset_ref->{$category});
         foreach my $part_ref (@{$normset_ref->{$category}}){
             if ($part_ref->{supplement} =~ /Hrsg/){
-                push @$editors_ref, $part_ref->{content};
+                push @$editors_ref, utf2bibtex($part_ref->{content});
             }
             else {
-                push @$authors_ref, $part_ref->{content};
+                push @$authors_ref, utf2bibtex($part_ref->{content});
             }
         }
     }
@@ -1101,34 +1101,34 @@ sub normset2bibtex {
     foreach my $category (qw/T0710 T0902 T0907 T0912 T0917 T0922 T0927 T0932 T0937 T0942 T0947/){
         next if (!exists $normset_ref->{$category});
         foreach my $part_ref (@{$normset_ref->{$category}}){
-            push @$keywords_ref, $part_ref->{content};
+            push @$keywords_ref, utf2bibtex($part_ref->{content});
         }
     }
     my $keyword = join(' ; ',@$keywords_ref);
     
     # Auflage
-    my $edition   = (exists $normset_ref->{T0403})?$normset_ref->{T0403}[0]{content}:'';
+    my $edition   = (exists $normset_ref->{T0403})?utf2bibtex($normset_ref->{T0403}[0]{content}):'';
 
     # Verleger
-    my $publisher = (exists $normset_ref->{T0412})?$normset_ref->{T0412}[0]{content}:'';
+    my $publisher = (exists $normset_ref->{T0412})?utf2bibtex($normset_ref->{T0412}[0]{content}):'';
 
     # Verlagsort
-    my $address   = (exists $normset_ref->{T0410})?$normset_ref->{T0410}[0]{content}:'';
+    my $address   = (exists $normset_ref->{T0410})?utf2bibtex($normset_ref->{T0410}[0]{content}):'';
 
     # Titel
-    my $title     = (exists $normset_ref->{T0331})?$normset_ref->{T0331}[0]{content}:'';
+    my $title     = (exists $normset_ref->{T0331})?utf2bibtex($normset_ref->{T0331}[0]{content}):'';
 
     # Jahr
-    my $year      = (exists $normset_ref->{T0425})?$normset_ref->{T0425}[0]{content}:'';
+    my $year      = (exists $normset_ref->{T0425})?utf2bibtex($normset_ref->{T0425}[0]{content}):'';
 
     # ISBN
-    my $isbn      = (exists $normset_ref->{T0540})?$normset_ref->{T0540}[0]{content}:'';
+    my $isbn      = (exists $normset_ref->{T0540})?utf2bibtex($normset_ref->{T0540}[0]{content}):'';
 
     # ISSN
-    my $issn      = (exists $normset_ref->{T0543})?$normset_ref->{T0543}[0]{content}:'';
+    my $issn      = (exists $normset_ref->{T0543})?utf2bibtex($normset_ref->{T0543}[0]{content}):'';
 
     # Sprache
-    my $language  = (exists $normset_ref->{T0516})?$normset_ref->{T0516}[0]{content}:'';
+    my $language  = (exists $normset_ref->{T0516})?utf2bibtex($normset_ref->{T0516}[0]{content}):'';
 
     if ($author){
         push @$bibtex_ref, "author    = \"$author\"";
@@ -1165,7 +1165,7 @@ sub normset2bibtex {
     }
     
     my $identifier=substr($author,0,4).substr($title,0,4).$year;
-    $identifier=~s/\W//g;
+    $identifier=~s/[^A-Za-z0-9]//g;
 
     my $bibtex="";
     
@@ -1181,12 +1181,35 @@ sub normset2bibtex {
     }
 
     
-    return utf2bibtex($bibtex);
+    return $bibtex;
 }
 
 sub utf2bibtex {
     my ($string)=@_;
 
+    # {} werden von BibTeX verwendet und haben in den Originalinhalten
+    # nichts zu suchen
+    $string=~s/\{//g;
+    $string=~s/\}//g;
+    # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
+    $string=~s/[^-+\p{Alphabetic}0-9\n\/&;#: '()@<>\\,.="^*[]]//g;
+    $string=~s/&lt;/</g;
+    $string=~s/&gt;/>/g;
+    $string=~s/&#172;//g;
+    $string=~s/&#228;/{\\"a}/g;
+    $string=~s/&#252;/{\\"u}/g;
+    $string=~s/&#246;/{\\"o}/g;
+    $string=~s/&#223;/{\\"s}/g;
+    $string=~s/&#214;/{\\"O}/g;
+    $string=~s/&#220;/{\\"U}/g;
+    $string=~s/&#196;/{\\"A}/g;
+    $string=~s/&auml;/{\\"a}/g;
+    $string=~s/&ouml;/{\\"o}/g;
+    $string=~s/&uuml;/{\\"u}/g;
+    $string=~s/&Auml;/{\\"A}/g;
+    $string=~s/&Ouml;/{\\"O}/g;
+    $string=~s/&Uuml;/{\\"U}/g;
+    $string=~s/&szlig;/{\\"s}/g;
     $string=~s/ä/{\\"a}/g;
     $string=~s/ö/{\\"o}/g;
     $string=~s/ü/{\\"u}/g;

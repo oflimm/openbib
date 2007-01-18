@@ -44,5 +44,12 @@ FOREACH category IN categories;
 [% msg.maketext("Erscheinungsverlauf  ") %] [% loop.count %] : [% mex.${"X1204"}.content %]
 [% END %]
 [%- END -%]
-------------------------------------------
+[%   IF show_bibsonomy %]
+</pre>
+<p />
+<img style="vertical-align: bottom;" src="/images/openbib/share.png" alt="Share this"/>&nbsp;<a href="http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=[% normset2bibtex(normset) | uri %]" target="_top" valign="top">[% msg.maketext("An BibSonomy senden") %]</a>
+<p />
+<p />
+<pre>
+[%   END %]
 [% END %]

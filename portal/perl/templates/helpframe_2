@@ -76,33 +76,90 @@ aktualisiert werden.
 
 <h3>Verarbeitung beliebiger Meta-Datenformate</h3> 
 
-
+<p>
 Jenseits des verwendeten MAB2-Datenformats können nun beliebige
 Meta-Datenformate verarbeitet werden. Grundlage hierfür ist die
 Restrukturierung der bibliographischen Datenstrukturen in Verbindung
 mit der parametrisierbaren Import-Schnittstelle.
+</p>
 
-<p />
-
+<p>
 Wiederum wurden wesentliche Entwicklungen und Verbesserungen f&uuml;r
 den Benutzer unsichtbar im Fundament der Anwendung vorgenommen.
+</p>
+
+<h2 id="kugv1.2.3">Neuerungen mit Version 1.2.3 (Umstellung am 18.12.2006)</h2>
+
+<h3>Recommender-Funktion mit Titelvorschl&auml;gen '...das k&ouml;nnte Sie interessieren' durch
+Nutzungsanalysen</h3>
+
+<p>
+Durch statistische Auswertungen des Ausleihverhaltens im Bestand der
+USB sowie des Nutzungsverhaltens im KUG werden zu einem gegebenen
+Titel gewichtete nutzer- bzw. sessionspezifische
+&Uuml;berschneidungsmengen mit anderen ausgeliehenen/-gew&auml;hlten
+Titeln bestimmt. Dadurch bekommt der Nutzer konkrete
+Titelvorschl&auml;ge und somit einen &Uuml;berblick von weiteren
+Titeln, die von anderen Nutzern im Kontext des aktuellen Titels
+f&uuml;r interessant befunden wurden. (R&uuml;ckportiert von Version
+2.0)
+</p>
+
+<h3>Popularit&auml;ts-Funktionen</h3>
+
+<p>
+Durch eine Analyse des Nutzungsverhaltens - &auml;hnlich wie bei der
+Recommender-Funktion - werden Popularit&auml;ts-Funktionen ermöglicht.
+</p>
+
+<p>
+So werden f&uuml;r jeden Katalog getrennte Top 20 Listen der am meisten
+aufgerufenen Titel angeboten. Ebenso lassen sich Treffermengen nach der
+Popularit&auml;t der Titel sortieren. Damit k&ouml;nnen Nutzer direkt vom
+Nutzungsverhalten anderer Nutzer profitieren. (R&uuml;ckportiert von Version 2.0)
+</p>
+
+<h3>Integration mit Social-Software / BibSonomy</h3>
+
+<p>
+In der Einzeltreffer-Anzeige wie auch in der Merkliste k&ouml;nnen
+die bibliographischen Angaben eines Titels direkt an <a
+href="http://www.bibsonomy.org/" target="_blank">BibSonomy</a>
+gesendet werden. BibSonomy ist ein freier Social Bookmark Dienst
+(entsprechend der Webseite genauer: ein <b>social bookmark and
+publication sharing system</b>), der jedoch auch auf die Verwaltung
+von Bibliographie-Listen und deren Austausch/Verbreitung spezialisiert
+ist. (R&uuml;ckportiert von Version 2.0)
+</p>
+
+<h3>Standardkonformit&auml;t zu XHTML 1.0 transitional</h3>
+
+<p>
+Alle Templates des KUG wurden entsprechend &uuml;berarbeitet, so dass
+nun &uuml;berall die Standardkonformit&auml;t entsprechend dem
+W3C-Validator gegeben ist.
+</p>
 
 <h2 id="kugv1.2.2">Neuerungen mit Version 1.2.2 (Umstellung am 4.4.2006)</h2>
 
 <h3>RSS-Feeds (Abonnierbare Nachrichtenkan&auml;le)</h3>
 
+<p>
 Die letzten 50 Neuzug&auml;nge (alle, zu einem Verfasser oder einer
 Person, zu einer K&ouml;rperschaft oder einem Urheber, zu einem
-Schlagwort oder einer Notation) eines Kataloges lassen sich nun
-als <a href="http://de.wikipedia.org/wiki/RSS-Feed" target="_blank">RSS-Feed</a> abonnieren.
-
+Schlagwort oder einer Notation) eines Kataloges lassen sich nun als <a
+href="http://de.wikipedia.org/wiki/RSS-Feed"
+target="_blank">RSS-Feed</a> abonnieren. (R&uuml;ckportiert von Version 2.0)
+</p>
 
 <h3>Ergebnisanreicherung durch gescannte Inhaltsverzeichnisse</h3>      
 
+<p>
 Wenn uns zu einem Titel digitalisierte Inhaltsverzeichnisse zur
 Verf&uuml;gung stehen, dann werden sie katalog&uuml;bergreifend in der
-Titelanzeige verlinkt.
-      
+Titelanzeige verlinkt. (R&uuml;ckportiert von Version 2.0)
+</p>
+
 <h2 id="kugv1.2.1">Neuerungen mit Version 1.2.1 (Umstellung am 7.9.2005)</h2>
 
 <h3>Virtueller Index</h3>

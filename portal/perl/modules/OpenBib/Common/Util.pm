@@ -460,7 +460,7 @@ sub get_searchterms {
     
     # Set defaults
     my $searchquery_ref  = exists $arg_ref->{searchquery_ref}
-        ? $arg_ref->{searchquery_ref}     : "";
+        ? $arg_ref->{searchquery_ref}     : {};
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -469,7 +469,7 @@ sub get_searchterms {
     
     my $term_ref = [];
 
-    return $term_ref unless (exists $searchquery_ref->{fs});
+    return $term_ref if (!defined %$searchquery_ref);
 
     my @allterms = ();
     foreach my $cat (keys %$searchquery_ref){

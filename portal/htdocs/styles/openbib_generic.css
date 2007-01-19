@@ -273,3 +273,7 @@ a:active.invisible {
   font-size:1.2em;
   font-weight:bold;
 }
+
+.submitbuttons {
+  padding: 5px;
+}

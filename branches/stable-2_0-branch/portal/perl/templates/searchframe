@@ -170,9 +170,14 @@
 <tr><td class="category">[% msg.maketext("Sortierung nach") %]</td><td
 colspan="2"><select name="sorttype"><option value="author" selected="selected">[% msg.maketext("Autor/Körperschaft") %]</option><option value="title">[% msg.maketext("Titel") %]</option><option value="yearofpub">[% msg.maketext("Erscheinungsjahr") %]</option></select><select name="sortorder"><option value="up">[% msg.maketext("aufsteigend") %]</option><option value="down">[% msg.maketext("absteigend") %]</option></select>&nbsp;[% msg.maketext("pro Katalog") %]</td><td></td></tr>
 <tr><td class="category">Suchprofil</td><td colspan="3"><select name="profil">
-[%- IF dbcount || userprofiles -%]
-[% dbcount %] [% userprofiles %]
+[%- IF dbchoice.size > 0 -%]
+<option value="dbauswahl"[%- IF prevprofile == 'dbauswahl' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
 [% END %]
+[%- FOREACH profile IN userprofile -%]
+[%     pid   = profile.key %]
+[%     pdata = profile.value %]
+<option value="user[% pid %]"[%- IF prevprofile == 'user${pid}' -%] selected="selected"[%- END -%]>Benutzerdefiniert: [% pdata.name %]</option>
+[%  END %]
 <option value="alldbs"
 [%- IF prevprofile == 'alldbs' -%]
  selected="selected"

@@ -21,8 +21,70 @@
 function update_fak(yourform, checked, fak) {
     for (var i = 0; i < yourform.elements.length; i++) {
          if (yourform.elements[i].title.indexOf(fak) != -1) {
-              yourform.elements[i].checked = checked;
+              yourform.elements[i].checked = 'checked';
          }
+    }
+}
+
+function clear_alldbs(yourform) {
+    for (var i = 0; i < yourform.elements.length; i++) {
+         if (yourform.elements[i].name.indexOf('database') != -1) {
+              yourform.elements[i].checked = '';
+         }
+         if (yourform.elements[i].name.indexOf('fakult') != -1) {
+              yourform.elements[i].checked = '';
+         }
+    }
+}
+
+function update_dbchoice(yourform, value) {
+
+[% FOREACH profile IN userprofile %]
+[%     pid   = profile.key %]
+[%     pdata = profile.value %]
+    user[% pid %] = ['[%-  pdata.databases.join("','") -%]'] ;
+[% END %]
+
+    dbchoice = ['[%-  dbchoice.join("','") -%]'] ;
+
+    if (value == "alldbs"){
+       update_fak(yourform, 'checked', 'inst');
+    }
+[% FOREACH unit IN config.orgunits %]
+    else if (value == "[% unit.short %]"){
+       clear_alldbs(yourform);
+       update_fak(yourform, 'checked', 'inst[% unit.nr %]');
+    }
+[% END %]
+[% FOREACH profile IN userprofile %]
+[%     pid   = profile.key %]
+    else if (value =="user[% pid %]"){
+       clear_alldbs(yourform);
+       for (var i = 0; i < yourform.elements.length; i++) {
+           if (yourform.elements[i].name.indexOf('database') != -1) {
+              for (var j = 0; j < user[% pid %].length; j++){
+                 if (user[% pid %][j].indexOf(yourform.elements[i].value) != -1) {
+                    yourform.elements[i].checked = 'checked';
+                 }
+              }
+           }
+       }
+    }
+[% END %]
+    else if (value == 'dbauswahl'){
+       clear_alldbs(yourform);
+       for (var i = 0; i < yourform.elements.length; i++) {
+           if (yourform.elements[i].name.indexOf('database') != -1) {
+              for (var j = 0; j < dbchoice.length; j++){
+                 if (dbchoice[j].indexOf(yourform.elements[i].value) != -1) {
+                    yourform.elements[i].checked = 'checked';
+                 }
+              }
+           }
+       }
+    }
+    else if (value == 'cleardbs'){
+       clear_alldbs(yourform);
     }
 }
 
@@ -74,18 +136,15 @@ function update_fak(yourform, checked, fak) {
 <p />
 <p />
 
+[% msg.maketext("Sie können entweder durch entsprechende Auswahl in den insgesamt [_1] einzelnen [_2]Katalogen[_3] recherchieren oder auch sofort in allen zusammen.","${alldbs}","<a href=\"${config.databasechoice_loc}?sessionID=${sessionID};view=${view}\" target=\"body\">","</a>") %]
+<p />
+
+<p />
+
 <form method="get" id="openbib" action="http://[% config.servername %][% config.virtualsearch_loc %]">
 <input type="hidden" name="view"      value="[% view %]" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="sb"        value="sql" />
-
-[% msg.maketext("Sie können entweder durch entsprechende Auswahl in den insgesamt [_1] einzelnen [_2]Katalogen[_3] recherchieren oder auch sofort in allen zusammen.","${alldbs}","<a href=\"${config.databasechoice_loc}?sessionID=${sessionID};view=${view}\" target=\"body\">","</a>") %]
-<p />
-<table>
-  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in allen Katalogen auf einmal") %]" name="searchall" value="[% msg.maketext("In allen Katalogen suchen") %]" />&nbsp;<input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" />&nbsp;<input type="reset" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" value="[% msg.maketext("Lösche Eingabemaske") %]" /></td></tr>
-</table>
-
-<p />
 
 <table width="100%">
 <tr><td valign="top">
@@ -93,7 +152,7 @@ function update_fak(yourform, checked, fak) {
 <!-- Erste Spalte -->
 <table>
 <tr><th>[% msg.maketext("Suchbegriffe") %]</th></tr>
-<tr><td class="boxed" valign="top">
+<tr><td class="boxed" valign="top" style="font-size:0.8em">
 <table>
 <tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Verknüpfung") %]</td><td>[% msg.maketext("Ihre Eingabe") %]</td><td></td></tr>
 
@@ -158,33 +217,19 @@ function update_fak(yourform, checked, fak) {
 </table>
 
 <p />
+<table class="submitbuttons">
+  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" /></td><td><a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" class="button" target="body">[% msg.maketext("Lösche Eingabemaske") %]</a></td></tr>
+</table>
+
+<p />
 
 <table width="100%">
-<tr><th>[% msg.maketext("Suchoptionen") %]</th></tr>
-<tr><td class="boxed">
+<tr><th>[% msg.maketext("Suchoptionen") %]&nbsp;<a href="#searchoptions"><img src="/images/openbib/expand.png" alt="Optionen anzeigen" onclick="expandContent('searchoptions',this); return false;"></a></th></tr>
+<tr><td class="boxed" id="searchoptions" style="display:none">
 <table>
 <tr><td class="category">[% msg.maketext("Maximale Trefferzahl pro Katalog") %]</td><td colspan="3"><select name="hitrange"><option selected="selected">50</option><option>100</option><option>200</option></select></td></tr>
 <tr><td class="category">[% msg.maketext("Sortierung nach") %]</td><td
-colspan="2"><select name="sorttype"><option value="author" selected="selected">[% msg.maketext("Autor/Körperschaft") %]</option><option value="title">[% msg.maketext("Titel") %]</option><option value="yearofpub">[% msg.maketext("Erscheinungsjahr") %]</option></select><select name="sortorder"><option value="up">[% msg.maketext("aufsteigend") %]</option><option value="down">[% msg.maketext("absteigend") %]</option></select>&nbsp;[% msg.maketext("pro Katalog") %]</td><td></td></tr>
-<tr><td class="category">Suchprofil</td><td colspan="3"><select name="profil">
-[%- IF dbcount || userprofiles -%]
-[% dbcount %] [% userprofiles %]
-[% END %]
-<option value="alldbs"
-[%- IF prevprofile == 'alldbs' -%]
- selected="selected"
-[%- END -%]
->[% msg.maketext("Alle Kataloge") %]</option><option value=""></option>
-<option value="">[% msg.maketext("Fakultäten") %]:</option><option value=""></option>
-
-[% FOREACH unit IN config.orgunits %]
-<option value="[% unit.short %]"
-[%- IF prevprofile == unit.short -%]
- selected="selected"
-[%- END -%]
->- [% unit.desc %]</option>
-[% END %]
-<option value=""></option></select></td></tr>
+colspan="2"><select name="sorttype"><option value="author" selected="selected">[% msg.maketext("Autor/Körperschaft") %]</option><option value="title">[% msg.maketext("Titel") %]</option><option value="yearofpub">[% msg.maketext("Erscheinungsjahr") %]</option></select><select name="sortorder"><option value="up">[% msg.maketext("aufsteigend") %]</option><option value="down">[% msg.maketext("absteigend") %]</option></select></td><td></td></tr>
 <tr><td class="category">[% msg.maketext("Und-Verknüpfung innerhalb eines Suchfeldes") %]</td><td colspan="3"><input type="radio" name="autoplus" value="1" checked="checked" />[% msg.maketext("Ja") %]&nbsp;<input type="radio" name="autoplus" value="0" />[% msg.maketext("Nein") %]</td></tr>
 </table>
 </td></tr>
@@ -193,8 +238,8 @@ colspan="2"><select name="sorttype"><option value="author" selected="selected">[
 <p />
 
 <table width="100%">
-<tr><th>[% msg.maketext("Suchhilfe") %]</th></tr>
-<tr><td class="boxed">
+<tr><th>[% msg.maketext("Suchhilfe") %]&nbsp;<a href="#searchoptions"><img src="/images/openbib/expand.png" alt="Optionen anzeigen" onclick="expandContent('searchinfo',this); return false;"></a></th></tr>
+<tr><td class="boxed" id="searchinfo" style="display:none">
 [% PROCESS common/subtemplate name="search_info" %]
 </td></tr>
 </table>
@@ -210,6 +255,34 @@ colspan="2"><select name="sorttype"><option value="author" selected="selected">[
 <table>
 <tr><th>[% msg.maketext("Katalogauswahl") %]</th></tr>
 <tr><td class="boxed" valign="top" style="font-size:0.8em">
+
+[%# USE dumper; dumper.dump(userprofile) %]
+<table>
+<tr><td colspan=[% colspan %]><b>Profil:</b>&nbsp;<select name="js_profil" onChange="update_dbchoice(this.form,this.options[this.selectedIndex].value)" >
+<option value="">W&auml;hlen Sie hier ein bestehendes Profil aus</option>
+<option value="cleardbs">Kein Katalog vorausgew&auml;hlt</option>
+[%- IF dbchoice.size > 0 -%]
+<option value="dbauswahl"[%- IF prevprofile == 'dbauswahl' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
+[% END %]
+[%- FOREACH profile IN userprofile -%]
+[%     pid   = profile.key %]
+[%     pdata = profile.value %]
+<option value="user[% pid %]"[%- IF prevprofile == 'user${pid}' -%] selected="selected"[%- END -%]>Benutzerdefiniert: [% pdata.name %]</option>
+[%  END %]
+<option value="alldbs"
+[%- IF prevprofile == 'alldbs' -%]
+ selected="selected"
+[%- END -%]
+>[% msg.maketext("Alle Kataloge") %]</option>
+[% FOREACH unit IN config.orgunits %]
+<option value="[% unit.short %]"
+[%- IF prevprofile == unit.short -%]
+ selected="selected"
+[%- END -%]
+>[% unit.desc %]</option>
+[% END %]
+</select></td></tr>
+</table>
 
 <table>
 <tr class="titlerow"><td colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /><b>[% msg.maketext("Alle Kataloge") %]</b></td></tr>
@@ -257,12 +330,6 @@ colspan="2"><select name="sorttype"><option value="author" selected="selected">[
 </table>
 
 <p />
-
-<p />
-
-<table>
-  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in allen Katalogen auf einmal") %]" name="searchall" value="[% msg.maketext("In allen Katalogen suchen") %]" />&nbsp;<input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" />&nbsp;<input type="reset" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" value="[% msg.maketext("Lösche Eingabemaske") %]" /></td></tr>
-</table>
 
 </form>
 

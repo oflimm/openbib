@@ -78,9 +78,14 @@
 <tr><th style="text-align: center">[% msg.maketext("Wählen Sie hier bitte Ihr Suchprofil aus") %]</th></tr>
 <tr><td class="boxed" valign="top" align="center">
 <select name="profil">
-[%- IF dbcount || userprofiles -%]
-[% dbcount %] [% userprofiles %]
-[%- END -%]
+[%- IF dbchoice.size > 0 -%]
+<option value="dbauswahl"[%- IF prevprofile == 'dbauswahl' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
+[% END %]
+[%- FOREACH profile IN userprofile -%]
+[%     pid   = profile.key %]
+[%     pdata = profile.value %]
+<option value="user[% pid %]"[%- IF prevprofile == 'user${pid}' -%] selected="selected"[%- END -%]>Benutzerdefiniert: [% pdata.name %]</option>
+[%  END %]
 <option value="alldbs"
 [%- IF prevprofile == 'alldbs' -%]
  selected="selected"

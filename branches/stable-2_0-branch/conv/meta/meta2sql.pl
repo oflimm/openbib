@@ -662,6 +662,34 @@ while (my $line=<IN>){
             
             print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
         }
+        elsif ($category=~m/^0102/){
+            my ($targetid)  = $content=~m/^IDN: (\d+)/;
+            my $targettype  = 2; # AUT
+            my $sourceid    = $id;
+            my $sourcetype  = 1; # TIT
+            my $supplement  = "";
+
+            if ($content=~m/^IDN: \d+ ; (.+)/){
+                $supplement = $1;
+            }
+            
+            my $category="0102";
+
+            push @verf, $targetid;
+
+            my $content = $listitemdata_aut{$targetid};
+            
+            push @{$listitem_ref->{P0102}}, {
+                id         => $targetid,
+                type       => 'aut',
+                content    => $content,
+                supplement => $supplement,
+            };
+
+            push @autkor, $content;
+            
+            print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+        }
         elsif ($category=~m/^0103/){
             my ($targetid)  = $content=~m/^IDN: (\d+)/;
             my $targettype  = 2; # AUT

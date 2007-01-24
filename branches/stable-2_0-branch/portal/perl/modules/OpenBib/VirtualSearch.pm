@@ -91,7 +91,7 @@ sub handler {
     my $offset        = ($query->param('offset'   ))?$query->param('offset'):0;
     my $sorttype      = ($query->param('sorttype' ))?$query->param('sorttype'):"author";
     my $sortorder     = ($query->param('sortorder'))?$query->param('sortorder'):'up';
-    my $autoplus      = $query->param('autoplus')      || '';
+    my $autoplus      = $query->param('autoplus')      || 1;
 
     my $sortall       = ($query->param('sortall'))?$query->param('sortall'):'0';
 

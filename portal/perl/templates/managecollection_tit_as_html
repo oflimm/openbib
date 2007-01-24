@@ -31,6 +31,12 @@
 FOREACH category IN categories;
     FOREACH item IN normset.$category;
     content = item.content;
+
+    SWITCH category;
+
+    CASE "T0331";
+         content   = "<b>${content}</b>";
+    END;
 -%]
 <tr><td class="category">[% msg.maketext("${category}") %]</td><td>[% content %]</td></tr>
 [%-

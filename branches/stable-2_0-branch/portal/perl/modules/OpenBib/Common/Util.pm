@@ -142,7 +142,7 @@ sub print_info {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = new OpenBib::Config();
+    my $config  = new OpenBib::Config();
     
     my $stylesheet=get_css_by_browsertype($r);
 
@@ -150,9 +150,9 @@ sub print_info {
 
     my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
 
-    my $sessiondbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
+    my $session = new OpenBib::Session({sessionID => $sessionID});
 
-    my $view=get_viewname_of_session($sessiondbh,$sessionID);
+    my $view=$session->get_viewname();
  
     my $template = Template->new({
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({

@@ -37,6 +37,7 @@ use utf8;
 use Apache::Constants qw(:common);
 use Apache::Reload;
 use Apache::Request ();
+use Encode 'decode_utf8';
 use DBI;
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
@@ -135,6 +136,10 @@ sub handler {
     my $searchtitofurhkor = $query->param('searchtitofurhkor') || '';
     my $searchtitofnot    = $query->param('searchtitofnot')    || '';
     my $searchtitofswt    = $query->param('searchtitofswt')    || '';
+    my $searchtitofcnt    = $query->param('searchtitofcnt')    || '';
+
+    my $browsecat         = $query->param('browsecat')         || '';
+    my $category          = $query->param('category')          || '';
 
     my $queryid           = $query->param('queryid')           || '';
 
@@ -1356,7 +1361,179 @@ sub handler {
             return OK;
         }	
     }
-  
+
+    #######################################################################
+    # Titel zu einem gegebenen Kategorie-Inhalt
+    # Voraussetzung: Diese Kategorie muss String-Invertiert sein (Config.pm)
+    if ($searchtitofcnt) {
+        my @titelidns = ();
+        my $hits      = 0;
+
+        ($category)=$category=~/^T(\d+)/;
+        $searchtitofcnt = OpenBib::Common::Util::grundform({
+            content  => $searchtitofcnt,
+        });
+
+        my $limits="";
+        if ($hitrange > 0){
+            $limits="limit $offset,$hitrange";
+        }
+
+        $logger->debug("$searchtitofcnt / $limits / $category");
+        
+        # Bestimmung der Titel
+        my $request=$dbh->prepare("select distinct id from tit_string where category=? and content=? $limits ") or $logger->error($DBI::errstr);
+        $request->execute($category,$searchtitofcnt);
+        
+        while (my $res=$request->fetchrow_hashref){
+            push @titelidns, $res->{id};
+        }        
+
+        # Bestimmung der Titelzahl
+        $request=$dbh->prepare("select count(distinct id) as rowcount from tit_string where category=? and content=?") or $logger->error($DBI::errstr);
+        $request->execute($category,$searchtitofcnt);
+
+        my $res=$request->fetchrow_hashref;
+        $hits=$res->{rowcount};
+
+        $request->finish();
+
+        if ($#titelidns == -1) {
+            OpenBib::Common::Util::print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"),$r,$msg);
+            return OK;
+        }
+    
+        if ($#titelidns == 0) {
+            OpenBib::Search::Util::print_tit_set_by_idn({
+                titidn             => $titelidns[0],
+                dbh                => $dbh,
+                session            => $session,
+                targetdbinfo_ref   => $targetdbinfo_ref,
+                targetcircinfo_ref => $targetcircinfo_ref,
+                queryoptions_ref   => $queryoptions_ref,
+                database           => $database,
+                apachereq          => $r,
+                stylesheet         => $stylesheet,
+                view               => $view,
+                msg                => $msg,
+            });
+            return OK;
+        }
+    
+        if ($#titelidns > 0) {
+            my @outputbuffer=();
+            my ($atime,$btime,$timeall);
+      
+            if ($config->{benchmark}) {
+                $atime=new Benchmark;
+            }
+
+            foreach my $titelidn (@titelidns) {
+                push @outputbuffer, OpenBib::Search::Util::get_tit_listitem_by_idn({
+                    titidn            => $titelidn,
+                    dbh               => $dbh,
+                    sessiondbh        => $session->{dbh},
+                    targetdbinfo_ref  => $targetdbinfo_ref,
+                    database          => $database,
+                    sessionID         => $session->{ID},
+                });
+            }
+
+            if ($config->{benchmark}) {
+                $btime   = new Benchmark;
+                $timeall = timediff($btime,$atime);
+                $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel : ist ".timestr($timeall));
+                undef $atime;
+                undef $btime;
+                undef $timeall;
+            }
+
+            my @sortedoutputbuffer=();
+            OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
+
+	    my @resultset=();
+	    # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
+	    foreach my $item_ref (@sortedoutputbuffer){
+	      push @resultset, { id       => $item_ref->{id},
+				 database => $item_ref->{database},
+			       };
+	    }
+
+            $session->updatelastresultset(\@resultset);
+            
+            OpenBib::Search::Util::print_tit_list_by_idn({
+                itemlist_ref     => \@sortedoutputbuffer,
+                targetdbinfo_ref => $targetdbinfo_ref,
+                queryoptions_ref => $queryoptions_ref,
+                database         => $database,
+                sessionID        => $session->{ID},
+                apachereq        => $r,
+                stylesheet       => $stylesheet,
+                view             => $view,
+                hits             => $hits,
+                offset           => $offset,
+                hitrange         => $hitrange,
+                msg              => $msg,
+            });
+            return OK;
+        }	
+    }
+
+    #######################################################################
+    # Browsen ueber alle Inhalte von Kategorien
+    # Voraussetzung: Diese Kategorie muss String-Invertiert sein (Config.pm)
+    if ($browsecat) {
+        my $browselist_ref = [];
+        my $hits           = 0;
+
+        my ($type,$thiscategory)=$browsecat=~/^([A-Z])(\d+)/;
+
+        $type =
+            ($type eq "P")?'aut':
+                ($type eq "C")?'kor':
+                    ($type eq "S")?'swt':
+                        ($type eq "N")?'swt':'tit';
+        
+        my $limits="";
+        if ($hitrange > 0){
+            $limits="limit $offset,$hitrange";
+        }
+
+        # Bestimmung der Titel
+        my $request=$dbh->prepare("select distinct content from $type where category=? order by content $limits ") or $logger->error($DBI::errstr);
+        $request->execute($thiscategory);
+        
+        while (my $res=$request->fetchrow_hashref){
+            push @$browselist_ref, decode_utf8($res->{content});
+        }        
+
+        # Bestimmung der Titelzahl
+        $request=$dbh->prepare("select count(distinct content) as rowcount from tit where category=?") or $logger->error($DBI::errstr);
+        $request->execute($thiscategory);
+
+        my $res=$request->fetchrow_hashref;
+        $hits=$res->{rowcount};
+
+        $request->finish();
+
+        # TT-Data erzeugen
+        my $ttdata={
+            view       => $view,
+            stylesheet => $stylesheet,
+            database   => $database,
+            category   => $category,
+            qopts      => $queryoptions_ref,
+            sessionID  => $session->{ID},
+            browselist => $browselist_ref,
+            hits       => $hits,
+            
+            config     => $config,
+            msg        => $msg,
+        };
+        OpenBib::Common::Util::print_page($config->{"tt_search_browse_".$type."_tname"},$ttdata,$r);
+        return OK;
+    }
+
     # Falls bis hierhin noch nicht abgearbeitet, dann wirds wohl nichts mehr geben
     OpenBib::Common::Util::print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"),$r,$msg);
     $logger->error("Unerlaubt das Ende erreicht");

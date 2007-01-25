@@ -1369,35 +1369,93 @@ sub handler {
         my @titelidns = ();
         my $hits      = 0;
 
-        ($category)=$category=~/^T(\d+)/;
         $searchtitofcnt = OpenBib::Common::Util::grundform({
             content  => $searchtitofcnt,
         });
 
+        my ($type,$thiscategory)=$category=~/^([A-Z])(\d+)/;
+
+        $type =
+            ($type eq "P")?'aut':
+                ($type eq "C")?'kor':
+                    ($type eq "S")?'swt':
+                        ($type eq "N")?'notation':'tit';
+        
         my $limits="";
         if ($hitrange > 0){
             $limits="limit $offset,$hitrange";
         }
 
-        $logger->debug("$searchtitofcnt / $limits / $category");
-        
-        # Bestimmung der Titel
-        my $request=$dbh->prepare("select distinct id from tit_string where category=? and content=? $limits ") or $logger->error($DBI::errstr);
-        $request->execute($category,$searchtitofcnt);
-        
-        while (my $res=$request->fetchrow_hashref){
-            push @titelidns, $res->{id};
-        }        
+        my $conn_cat_ref = {
+            'T0100' => 'aut',
+            'T0101' => 'aut',
+            'T0102' => 'aut',
+            'T0103' => 'aut',
+            'T0200' => 'kor',
+            'T0201' => 'kor',
+            'T0700' => 'notation',
+            'T0710' => 'swt',
+            'T0902' => 'swt',
+            'T0902' => 'swt',
+            'T0907' => 'swt',
+            'T0912' => 'swt',
+            'T0917' => 'swt',
+            'T0922' => 'swt',
+            'T0927' => 'swt',
+            'T0932' => 'swt',
+            'T0937' => 'swt',
+            'T0942' => 'swt',
+            'T0947' => 'swt',
+        };
 
-        # Bestimmung der Titelzahl
-        $request=$dbh->prepare("select count(distinct id) as rowcount from tit_string where category=? and content=?") or $logger->error($DBI::errstr);
-        $request->execute($category,$searchtitofcnt);
+        if ($type eq "tit" && exists $conn_cat_ref->{$category}){
+            # Bestimmung der Titel
+            my $normtable  = $conn_cat_ref->{$category};
+            my $targettype =
+                ($normtable eq "aut")?2:
+                ($normtable eq "kor")?3:
+                ($normtable eq "swt")?4:
+                ($normtable eq "notation")?5:1;
 
-        my $res=$request->fetchrow_hashref;
-        $hits=$res->{rowcount};
+            my $sqlstring="select distinct conn.sourceid as sourceid from ".$normtable."_string as norm, conn where conn.category=? and conn.sourcetype=1 and conn.targettype=? and conn.targetid=norm.id and norm.category=1 and norm.content=?";
+            my $request=$dbh->prepare($sqlstring) or $logger->error($DBI::errstr);
+            $request->execute($thiscategory,$targettype,$searchtitofcnt);
 
-        $request->finish();
+            $logger->debug("$thiscategory/$targettype/$searchtitofcnt");
+            while (my $res=$request->fetchrow_hashref){
+                $logger->debug("Pushing: $res->{sourceid}");
+                push @titelidns, $res->{sourceid};
+            }
+            
+            # Bestimmung der Titelzahl
+            $request=$dbh->prepare("select count(distinct conn.sourceid) as rowcount from ".$normtable."_string as norm, conn where conn.category=? and conn.sourcetype=1 and conn.targettype=? and conn.targetid=norm.id and norm.category=1 and norm.content=?") or $logger->error($DBI::errstr);
+            $request->execute($thiscategory,$targettype,$searchtitofcnt);
+            
+            my $res=$request->fetchrow_hashref;
+            $hits=$res->{rowcount};
+            
+            $request->finish();
+        }
+        else {
+            # Bestimmung der Titel
+            my $request=$dbh->prepare("select distinct id from tit_string where category=? and content=? $limits ") or $logger->error($DBI::errstr);
+            $request->execute($category,$searchtitofcnt);
+            
+            while (my $res=$request->fetchrow_hashref){
+                push @titelidns, $res->{id};
+            }        
+            
+            # Bestimmung der Titelzahl
+            $request=$dbh->prepare("select count(distinct id) as rowcount from tit_string where category=? and content=?") or $logger->error($DBI::errstr);
+            $request->execute($category,$searchtitofcnt);
+            
+            my $res=$request->fetchrow_hashref;
+            $hits=$res->{rowcount};
+            
+            $request->finish();
+        }
 
+        $logger->debug(YAML::Dump(\@titelidns));
         if ($#titelidns == -1) {
             OpenBib::Common::Util::print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"),$r,$msg);
             return OK;
@@ -1492,36 +1550,87 @@ sub handler {
             ($type eq "P")?'aut':
                 ($type eq "C")?'kor':
                     ($type eq "S")?'swt':
-                        ($type eq "N")?'swt':'tit';
+                        ($type eq "N")?'notation':'tit';
         
         my $limits="";
         if ($hitrange > 0){
             $limits="limit $offset,$hitrange";
         }
 
-        # Bestimmung der Titel
-        my $request=$dbh->prepare("select distinct content from $type where category=? order by content $limits ") or $logger->error($DBI::errstr);
-        $request->execute($thiscategory);
+        my $conn_cat_ref = {
+            'T0100' => 'aut',
+            'T0101' => 'aut',
+            'T0102' => 'aut',
+            'T0103' => 'aut',
+            'T0200' => 'kor',
+            'T0201' => 'kor',
+            'T0700' => 'notation',
+            'T0710' => 'swt',
+            'T0902' => 'swt',
+            'T0902' => 'swt',
+            'T0907' => 'swt',
+            'T0912' => 'swt',
+            'T0917' => 'swt',
+            'T0922' => 'swt',
+            'T0927' => 'swt',
+            'T0932' => 'swt',
+            'T0937' => 'swt',
+            'T0942' => 'swt',
+            'T0947' => 'swt',
+        };
+
+        if ($type eq "tit" && exists $conn_cat_ref->{$browsecat}){
+            # Bestimmung der Titel
+            my $normtable  = $conn_cat_ref->{$browsecat};
+            my $targettype =
+                ($normtable eq "aut")?2:
+                ($normtable eq "kor")?3:
+                ($normtable eq "swt")?4:
+                ($normtable eq "notation")?5:1;
+
+            my $sqlstring="select distinct norm.content as content from $normtable as norm, conn where conn.category=? and conn.sourcetype=1 and conn.targettype=? and conn.targetid=norm.id and norm.category=1 order by content $limits ";
+            my $request=$dbh->prepare($sqlstring) or $logger->error($DBI::errstr);
+            $request->execute($thiscategory,$targettype);
+            
+            $logger->debug("SQL: $sqlstring");
+            while (my $res=$request->fetchrow_hashref){
+                push @$browselist_ref, decode_utf8($res->{content});
+            }
+            
+            # Bestimmung der Titelzahl
+            $request=$dbh->prepare("select count(distinct content) as rowcount from tit where category=?") or $logger->error($DBI::errstr);
+            $request->execute($thiscategory);
+            
+            my $res=$request->fetchrow_hashref;
+            $hits=$res->{rowcount};
+            
+            $request->finish();
+        }
+        else {
+            # Bestimmung der Titel
+            my $request=$dbh->prepare("select distinct content from $type where category=? order by content $limits ") or $logger->error($DBI::errstr);
+            $request->execute($thiscategory);
+            
+            while (my $res=$request->fetchrow_hashref){
+                push @$browselist_ref, decode_utf8($res->{content});
+            }
+            
+            # Bestimmung der Titelzahl
+            $request=$dbh->prepare("select count(distinct content) as rowcount from tit where category=?") or $logger->error($DBI::errstr);
+            $request->execute($thiscategory);
+            
+            my $res=$request->fetchrow_hashref;
+            $hits=$res->{rowcount};
+            
+            $request->finish();
+        }
         
-        while (my $res=$request->fetchrow_hashref){
-            push @$browselist_ref, decode_utf8($res->{content});
-        }        
-
-        # Bestimmung der Titelzahl
-        $request=$dbh->prepare("select count(distinct content) as rowcount from tit where category=?") or $logger->error($DBI::errstr);
-        $request->execute($thiscategory);
-
-        my $res=$request->fetchrow_hashref;
-        $hits=$res->{rowcount};
-
-        $request->finish();
-
         # TT-Data erzeugen
         my $ttdata={
             view       => $view,
             stylesheet => $stylesheet,
             database   => $database,
-            category   => $category,
+            browsecat  => $browsecat,
             qopts      => $queryoptions_ref,
             sessionID  => $session->{ID},
             browselist => $browselist_ref,

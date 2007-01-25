@@ -52,8 +52,7 @@
 
 <!--
 <div style="float:right;padding:10px">
-<img src="[%# config.connector_amazon_loc %]/image/[%#
-normset.${"T0540"}.first.content %]" title="Titelbild; (c) beim Verlag; bereitgestellt durch Amazon" />
+<img src="[%# config.connector_amazon_loc %]/image/[%# normset.${"T0540"}.first.content.replace('-','') %]" title="Titelbild; (c) beim Verlag; bereitgestellt durch Amazon" />
 </div>
 -->
 
@@ -80,7 +79,7 @@ FOREACH category IN categories;
          END;
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;verf=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsingleaut=${thisid}";
-         content   = "<a href=\"${config.connector_rss_loc}/neuzugang_nach_aut/${thisid}/${normset.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\" alt=\"RSS-Icon\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+         content   = "<a href=\"${config.connector_rss_loc}/neuzugang_nach_aut/${thisid}/${normset.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\" alt=\"RSS-Icon\" /></a>&nbsp;<a href=\"http://de.wikipedia.org/wiki/Spezial:Search?search=${content}&fulltext=fulltext&sourceid=mozilla-search\" target=\"_blank\"><img src=\"/images/openbib/wikipedia.png\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
          thisid     = item.id;
@@ -93,6 +92,9 @@ FOREACH category IN categories;
 
     CASE "T0331";
          content   = "<b>${highlightquery(searchquery,content)}</b>";
+
+    CASE "T0540";
+         content   = "<a href=\"http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}\" target=\"_blank\"><img src=\"/images/openbib/wikipedia.png\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${highlightquery(searchquery,content)}";
 
     CASE [ "T0662" "T2662" "T3001" "T3002" "T3003" ];
          thisindicator = item.indicator ;
@@ -148,8 +150,18 @@ FOREACH category IN categories;
     CASE ;
          content   = highlightquery(searchquery,item.content);
    END;
+
+   # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+   # in Config.pm fuer die entsprechende Datenbank definiert
+   # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+   # kodiert.
+   thiscategory = category ;
+   IF config.categorymapping.$database.$category ;
+     thiscategory = "${category}-${normset.database}" ;
+   END;
+
 -%]
-<tr><td class="category">[% msg.maketext("${category}") %]</td><td>[% content %]</td></tr>
+<tr><td class="category">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
 [%
    END;
 END;

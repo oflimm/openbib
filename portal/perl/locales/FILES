@@ -80,6 +80,8 @@
 ../templates/userprefs_ask_delete
 ../templates/userprefs_changefields
 ../templates/userprefs_userdeleted
+../templates/views/kug/searchframe
+../templates/views/kug/searchframe_simple
 ../templates/views/inst405/searchframe
 ../templates/virtualsearch_more_search_tips
 ../templates/virtualsearch_result_end
@@ -143,6 +145,9 @@
 ../templates/database/einbaende/search_showtitset
 ../templates/database/einbaende/visible_categories_coverset
 ../templates/database/einbaende/visible_categories_titset
+../templates/database/portrait/search_showtitset
+../templates/database/portrait/search_showtitlist
+../templates/database/portrait/visible_categories_titset
 ../templates/views/richter/searchframe_simple
 ../templates/views/richter/corporate_banner
 ../templates/views/richter/headerframe

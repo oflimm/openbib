@@ -1439,7 +1439,7 @@ sub handler {
         else {
             # Bestimmung der Titel
             my $request=$dbh->prepare("select distinct id from tit_string where category=? and content=? $limits ") or $logger->error($DBI::errstr);
-            $request->execute($category,$searchtitofcnt);
+            $request->execute($thiscategory,$searchtitofcnt);
             
             while (my $res=$request->fetchrow_hashref){
                 push @titelidns, $res->{id};
@@ -1447,7 +1447,7 @@ sub handler {
             
             # Bestimmung der Titelzahl
             $request=$dbh->prepare("select count(distinct id) as rowcount from tit_string where category=? and content=?") or $logger->error($DBI::errstr);
-            $request->execute($category,$searchtitofcnt);
+            $request->execute($thiscategory,$searchtitofcnt);
             
             my $res=$request->fetchrow_hashref;
             $hits=$res->{rowcount};

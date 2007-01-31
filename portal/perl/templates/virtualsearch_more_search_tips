@@ -32,7 +32,7 @@
 </ul>
 <b><span style="font-size:1.2em">[% msg.maketext("Zeitschriftenartikel") %]</span></b>
 <ul>
-<li>[% msg.maketext("Suchen Sie in den elektronischen [_1]Fachdatenbanken[_2] und den [_3]elektronisch verf&uuml;gbaren Zeitschriften[_4] der Universit&auml;tsbibliothek.","<a href=\"${config.dbis_exturl}\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>","<a href=\"${config.ezb_exturl}\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>") %]</li>
+<li>[% msg.maketext("Suchen Sie in den elektronischen [_1]Fachdatenbanken[_2] und den [_3]elektronisch verf&uuml;gbaren Zeitschriften[_4] der Universit&auml;tsbibliothek.","<a href=\"${config.dbis_exturl}\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>","<a href=\"${config.ezb_exturl}&jq_term1=${searchquery.issn.val}&jq_term2=${searchquery.hst.val}\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>") %]</li>
 <li>[% msg.maketext("Versuchen Sie den Artikel in NRW im Rahmen der [_1]Online-Zeitschriftenlieferung[_2] in der Digitalen Bibliothek zu finden.","<a href=\"${hbzzeitfernleih_exturl}\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>") %]</li>
 </ul>
 </td></tr>

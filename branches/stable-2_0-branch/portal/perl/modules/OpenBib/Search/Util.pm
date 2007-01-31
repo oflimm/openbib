@@ -792,14 +792,7 @@ sub get_tit_listitem_by_idn {
         #
         # Dann:
         #
-        # Unterfall 1.1: Es existiert eine (erste) Bandzahl(089)
-        #
-        # Dann: Setze diese Bandzahl vor den AST/HST
-        #
-        # Unterfall 1.2: Es existiert keine Bandzahl(089), aber eine (erste)
-        #                Bandzahl(455)
-        #
-        # Dann: Setze diese Bandzahl vor den AST/HST
+        # Ist nichts zu tun
         #
         # 2. Fall: Es existiert kein HST(331)
         #
@@ -824,30 +817,20 @@ sub get_tit_listitem_by_idn {
         #
         # Dann: Verwende diese Zeitschriftensignatur
         #
-        if (exists $listitem_ref->{T0331}) {
-            $logger->debug("1. Fall: HST existiert");
-            # UnterFall 1.1:
-            if (exists $listitem_ref->{'T0089'}) {
-                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0089}[0]{content}.". ".$listitem_ref->{T0331}[0]{content};
-            }
-            # Unterfall 1.2:
-            elsif (exists $listitem_ref->{T0455}) {
-                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0455}[0]{content}.". ".$listitem_ref->{T0331}[0]{content};
-            }
-        } else {
-            # UnterFall 1.1:
+        if (!exists $listitem_ref->{T0331}) {
+            # UnterFall 2.1:
             if (exists $listitem_ref->{'T0089'}) {
                 $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0089}[0]{content};
             }
-            # Unterfall 1.2:
+            # Unterfall 2.2:
             elsif (exists $listitem_ref->{T0455}) {
                 $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0455}[0]{content};
             }
-            # Unterfall 1.3:
+            # Unterfall 2.3:
             elsif (exists $listitem_ref->{T0451}) {
                 $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0451}[0]{content};
             }
-            # Unterfall 1.4:
+            # Unterfall 2.4:
             elsif (exists $listitem_ref->{T1203}) {
                 $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T1203}[0]{content};
             } else {
@@ -855,6 +838,34 @@ sub get_tit_listitem_by_idn {
             }
         }
 
+        # Bestimmung der Zaehlung
+
+        # Fall 1: Es existiert eine (erste) Bandzahl(089)
+        #
+        # Dann: Setze diese Bandzahl
+        #
+        # Fall 2: Es existiert keine Bandzahl(089), aber eine (erste)
+        #                Bandzahl(455)
+        #
+        # Dann: Setze diese Bandzahl
+
+        # Fall 1:
+        if (exists $listitem_ref->{'T0089'}) {
+            $listitem_ref->{T5100}= [
+                {
+                    content => $listitem_ref->{T0089}[0]{content}
+                }
+            ];
+        }
+        # Fall 2:
+        elsif (exists $listitem_ref->{T0455}) {
+            $listitem_ref->{T5100}= [
+                {
+                    content => $listitem_ref->{T0455}[0]{content}
+                }
+            ];
+        }
+        
         if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);

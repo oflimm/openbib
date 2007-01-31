@@ -142,10 +142,10 @@ FOREACH category IN categories;
          content   = " <a href=\"${config.connector_rss_loc}/neuzugang_nach_sys/${thisid}/${normset.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\" alt=\"RSS-Icon\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE "T5001";
-         content   = "<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};supertit=${normset.id};generalsearch=supertit\">${content}</a>";
+         content   = "<img style=\"vertical-align:bottom\" src=\"/images/openbib/2rightarrow.png\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};supertit=${normset.id};generalsearch=supertit\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE "T5002";
-         content   = "<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};subtit=${normset.id};generalsearch=subtit\">${content}</a>";
+         content   = "<img style=\"vertical-align:bottom\" src=\"/images/openbib/2rightarrow.png\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};subtit=${normset.id};generalsearch=subtit\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE ;
          content   = highlightquery(searchquery,item.content);

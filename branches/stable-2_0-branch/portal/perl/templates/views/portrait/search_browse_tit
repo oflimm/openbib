@@ -18,7 +18,7 @@
 <ul class="tabbingmenu">
    <li><a                href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
    <li><a                href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
-   <li><a class="active" href="[% config.search_loc %]?sessionID=[% sessionID %];view=[% view %];database=portrait;browsecat=T0100" target="body" title="Blättern">Blättern</a></li>
+   <li><a class="active" href="[% config.search_loc %]?sessionID=[% sessionID %];view=[% view %];database=portrait;browsecat=T0100" target="body" title="Register">Register</a></li>
 </ul>
 
 <div class="content">

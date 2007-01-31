@@ -29,8 +29,6 @@
 <td align="left"><span style="color:slategrey">[[% msg.maketext("Vorheriger Titel") %]]</span></td>
 [%- END -%]
 <td align="center">
-	<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=10" target="body" title="Top 20"><img src="/images/openbib/top20-12px.png" alt="[% msg.maketext("Top 20") %]" border="0" /></a>&nbsp;
-        <a href="http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=[% normset2bibtex(normset) | uri %]" target="_top" valign="top"><img src="/images/openbib/share.png" alt="An BibSonomy senden" title="An BibSonomy senden" /></a>&nbsp;
 	<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% database %];singleidn=[% titidn %]" target="header" title="In die Merkliste"><img src="/images/openbib/3d-file-blue-clipboard.png" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>&nbsp;
         <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=mail;database=[% database %];singleidn=[% titidn %]" target="body" title="Als Mail verschicken"><img src="/images/openbib/3d-file-blue-mailbox.png" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></a>&nbsp;
         <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=save;database=[% database %];singleidn=[% titidn %]" target="save" title="Abspeichern"><img src="/images/openbib/3d-file-blue-disk35.png" alt="[% msg.maketext("Abspeichern") %]" border="0" /></a>&nbsp;
@@ -51,7 +49,12 @@
 <tr><td class="boxedclear">
 
 <div style="float:right;padding:10px">
-<img src="http://tsipouro.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait_web.jpg" height="300" title="(c) "/>
+<a class="invisible" href="http://tsipouro.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait_web.jpg"><img src="http://tsipouro.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait_web.jpg" height="300" title="(c) "/></a>
+<p>
+<a href="http://tsipouro.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait_web.jpg"><span style="font-size:0.7em">Als JPG-Datei (Vorschau)</span></a>
+<br /><br />
+<a href="http://tsipouro.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait.tif"><span style="font-size:0.7em">Als Tiff-Datei (Original)</span></a>
+</p>
 </div>
 
 <table cellpadding="2">
@@ -141,17 +144,11 @@ END;
 [% IF mexnormset.size > 0 %]
 <p />
 <table width="100%">
-<tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="250">[% msg.maketext("Standort") %]</td><td width="120">[% msg.maketext("Inventarnummer") %]</td><td width="250">[% msg.maketext("Signatur") %]</td><td width="230">[% msg.maketext("Bestandsverlauf") %]</td></tr>
+<tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="250">[% msg.maketext("Signatur") %]</td></tr>
 
 [% FOREACH mex IN mexnormset %]
-<tr align="center"><td><strong>
-[%- IF mex.${"X4000"}.content && mex.${"X4001"}.content -%]
-<a href="[% mex.${"X4001"}.content %]" target="_blank">[% mex.${"X4000"}.content.full %]</a>
-[%- ELSE -%]
-[% mex.${"X4000"}.content.full %]
-[%- END -%]
-</strong>
-</td><td>[% mex.${"X0016"}.content %]</td><td>[% mex.${"X0005"}.content %]</td><td><strong><span class="rlsignature">[% mex.${"X0014"}.content %]</span></strong></td><td>[% mex.${"X1204"}.content %]</td></tr>
+<tr align="center"><td><strong>Universit&auml;ts- und Stadtbibliothek Köln</strong>
+</td><td><strong><span class="rlsignature">[% mex.${"X0014"}.content %]</span></strong></td></tr>
 [% END %]
 </table>
 [% END %]
@@ -195,20 +192,6 @@ Nutzer, die diesen Titel ausgew&auml;hlt haben, interessierten sich auch f&uuml;
 <!-- Title ends here -->
 
 <p />
-
-<hr />
-
-<form method="get" action="[% config.search_loc %]">
-<input type="hidden" name="sessionID"  value="[% sessionID %]" />
-<input type="hidden" name="hitrange"   value="[% qopts.hitrange %]" />
-<input type="hidden" name="database"   value="[% database %]" />
-
-<table>
-<tr><td class="category">[% msg.maketext("Schlagwortindex diese Katalogs") %]</td><td>&nbsp;<input
-type="text" name="swtindex" value="" size="4" maxlength="50" title="[% msg.maketext("Geben Sie hier den Schlagwortanfang ein") %]" />&nbsp;<input type="submit" value="[% msg.maketext("Suchen") %]" />&nbsp;</td></tr>
-</table>
-
-</form>
 
 </div>
 <p />

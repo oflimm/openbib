@@ -46,6 +46,11 @@ align="right" colspan="3"><strong>[%- IF treffer == qopts.hitrange && qopts.sb =
 [%- title = item.${'T0310'}.first.content -%]
 [%- END -%]
 
+[%- IF title && item.${'T5100'}.first.content -%]
+[%- order = item.${'T5100'}.first.content -%]
+[%- title = "${order}. ${title}"-%]
+[%- END -%]
+
 [%# Verlage konstruieren %]
 [%- publisher = item.${'T0412'}.first.content -%]
 
@@ -155,7 +160,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 
 output = [
     {
-        title => 'Autoren:',
+        title => 'Personen:',
         cat   => 'aut',
     },
     {

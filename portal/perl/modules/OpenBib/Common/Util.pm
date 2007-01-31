@@ -345,6 +345,26 @@ sub by_title_down {
     $line2 cmp $line1;
 }
 
+sub by_order {
+    my %line1=%$a;
+    my %line2=%$b;
+
+    my $line1=(exists $line1{T5100}[0]{content} && defined $line1{T5100}[0]{content})?cleanrl($line1{T5100}[0]{content}):"";
+    my $line2=(exists $line2{T5100}[0]{content} && defined $line2{T5100}[0]{content})?cleanrl($line2{T5100}[0]{content}):"";
+
+    $line1 cmp $line2;
+}
+
+sub by_order_down {
+    my %line1=%$a;
+    my %line2=%$b;
+
+    my $line1=(exists $line1{T5100}[0]{content} && defined $line1{T5100}[0]{content})?cleanrl($line1{T5100}[0]{content}):"";
+    my $line2=(exists $line2{T5100}[0]{content} && defined $line2{T5100}[0]{content})?cleanrl($line2{T5100}[0]{content}):"";
+
+    $line2 cmp $line1;
+}
+
 sub by_popularity {
     my %line1=%$a;
     my %line2=%$b;
@@ -416,6 +436,12 @@ sub sort_buffer {
     }
     elsif ($sorttype eq "title" && $sortorder eq "down") {
         @$sortedoutputbuffer_ref=sort by_title_down @$outputbuffer_ref;
+    }
+    elsif ($sorttype eq "order" && $sortorder eq "up") {
+        @$sortedoutputbuffer_ref=sort by_order @$outputbuffer_ref;
+    }
+    elsif ($sorttype eq "order" && $sortorder eq "down") {
+        @$sortedoutputbuffer_ref=sort by_order_down @$outputbuffer_ref;
     }
     elsif ($sorttype eq "popularity" && $sortorder eq "up") {
         @$sortedoutputbuffer_ref=sort by_popularity @$outputbuffer_ref;

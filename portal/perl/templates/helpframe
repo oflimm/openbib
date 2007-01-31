@@ -18,6 +18,7 @@
       <li><a class="active" href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">[% msg.maketext("Suchhilfe") %]</a></li>
       <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=1" target="body">[% msg.maketext("Projekt") %]</a></li>
       <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=2" target="body">[% msg.maketext("KUG-Versionen") %]</a></li>
+      <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=3" target="body">Artikel/Stimmen</a></li>
     </ul>
     
     <div class="content">
@@ -28,34 +29,36 @@
 
          <table>
          <tr><td colspan="2">Inhaltsverzeichnis</td></tr>
-         <tr><td align="right">1</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#allghinweise">Allgemeine Hinweise zum KUG</a></td></tr>
-         <tr><td align="right">2</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#recherche">Recherchemasken</a></td></tr>
-         <tr><td align="right">3</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#auswahl">Katalogauswahl</a></td></tr>
+         <tr><td align="right">1</td><td><a href="#allghinweise">Allgemeine Hinweise zum KUG</a></td></tr>
+         <tr><td align="right">2</td><td><a href="#recherche">Recherchemasken</a></td></tr>
+         <tr><td align="right">3</td><td><a href="#auswahl">Katalogauswahl</a></td></tr>
 
-         <tr><td align="right">4</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#suchlogikeinfach">Suchlogik in der Einfachen Recherche</a></td></tr>
-         <tr><td align="right">5</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#suchlogikkomplex">Suchlogik in der Komplexen Recherche</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;5.1&nbsp;<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#suchfeldverknuepfung">Verkn&uuml;pfung mehrerer Suchfelder</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;5.2&nbsp;<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#profisuche">Verkn&uuml;pfungen innerhalb eines Suchfeldes</a></td></tr>
+         <tr><td align="right">4</td><td><a href="#suchlogikeinfach">Suchlogik in der Einfachen Recherche</a></td></tr>
+         <tr><td align="right">5</td><td><a href="#suchlogikkomplex">Suchlogik in der Komplexen Recherche</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;5.1&nbsp;<a href="#suchfeldverknuepfung">Verkn&uuml;pfung mehrerer Suchfelder</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;5.2&nbsp;<a href="#profisuche">Verkn&uuml;pfungen innerhalb eines Suchfeldes</a></td></tr>
 
-         <tr><td align="right">6</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#allghinweisesuche">Weitere allgemeine Hinweise zur Suchanfrage</a></td></tr>
-         <tr><td align="right">7</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#beispiele">Einige Beispiele</a></td></tr>
-         <tr><td align="right">8</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#perskug">Der personalisierte KUG</a></td></tr>
-         <tr><td align="right">9</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#buchstandort">Standort des Buches</a></td></tr>
-         <tr><td align="right">10</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#treffermerkliste">Treffer- und Merkliste</a></td></tr>
+         <tr><td align="right">6</td><td><a href="#allghinweisesuche">Weitere allgemeine Hinweise zur Suchanfrage</a></td></tr>
+         <tr><td align="right">7</td><td><a href="#beispiele">Einige Beispiele</a></td></tr>
+         <tr><td align="right">8</td><td><a href="#perskug">Der personalisierte KUG</a></td></tr>
+         <tr><td align="right">9</td><td><a href="#buchstandort">Standort des Buches</a></td></tr>
+         <tr><td align="right">10</td><td><a href="#treffermerkliste">Treffer- und Merkliste</a></td></tr>
 
-         <tr><td align="right">11</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#externesuche">Sprung in externe Recherchequellen</a></td></tr>
-         <tr><td align="right">12</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#enrichment">Ergebnisanreicherung</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;12.1&nbsp;<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#enrichtoc">Digitalisierte Inhaltsverzeichnisse</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;12.2&nbsp;<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#enrichrelevance">Potentiell interessante andere Titel</a></td></tr>
-         <tr><td align="right">13</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#rssfeeds">RSS-Feeds (abonnierbare Informations-Kan&auml;le)</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;13.1&nbsp;<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#rssarten">Angebotene Arten an RSS-Feeds</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;13.2&nbsp;<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#rssinstall">Beispiel: Installation von Feedview f&uuml;r den Browser Firefox</a></td></tr>
+         <tr><td align="right">11</td><td><a href="#externesuche">Sprung in externe Recherchequellen</a></td></tr>
+         <tr><td align="right">12</td><td><a href="#enrichment">Ergebnisanreicherung</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;12.1&nbsp;<a href="#enrichtoc">Digitalisierte Inhaltsverzeichnisse</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;12.2&nbsp;<a href="#enrichrelevance">Weitere potentiell interessante Titel (Recommender-Funktion)</a></td></tr>
+         <tr><td align="right">13</td><td><a href="#popularity">Popularit&auml;ts-Funktionen</a></td></tr>
 
-         <tr><td align="right">14</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#bilder">Bildliche Funktionselemente</a></td></tr>
-         <tr><td align="right">15</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#verlinkung">Verlinkung und Lastverteilung des KUG</a></td></tr>
-         <tr><td align="right">16</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#suchplugin">KUG Such-Plugin f&uuml;r Mozilla Firefox-Browser</a></td></tr>
-         <tr><td align="right">17</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#kontakt">Kontakt</a></td></tr>
+         <tr><td align="right">14</td><td><a href="#rssfeeds">RSS-Feeds (abonnierbare Informations-Kan&auml;le)</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;14.1&nbsp;<a href="#rssarten">Angebotene Arten an RSS-Feeds</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;14.2&nbsp;<a href="#rssinstall">Beispiel: Installation von Feedview f&uuml;r den Browser Firefox</a></td></tr>
+         <tr><td align="right">15</td><td><a href="#socialsoftware">Integration mit Sozialer Software / Web 2.0 (BibSonomy)</a></td></tr>
 
+         <tr><td align="right">16</td><td><a href="#bilder">Bildliche Funktionselemente</a></td></tr>
+         <tr><td align="right">17</td><td><a href="#verlinkung">Verlinkung und Lastverteilung des KUG</a></td></tr>
+         <tr><td align="right">18</td><td><a href="#suchplugin">KUG Such-Plugin f&uuml;r Mozilla Firefox-Browser</a></td></tr>
+         <tr><td align="right">19</td><td><a href="#kontakt">Kontakt</a></td></tr>
          </table>
       </td></tr>
       </table>
@@ -261,7 +264,7 @@ Abk&uuml;rzungsoperator <b>*</b> ist erlaubt.
           <b>Komplexen Recherche</b> die maximale Anzahl der angezeigten Treffer
           pro Katalog festlegen (200, 500, 1000 oder alle) &uuml;ber "<b>Treffer Maximal pro Katalog</b>".</li>
 
-        <li> Unter <b>Sortierung nach</b> erfolgt die Einstellung der Sortierung nach Autor/K&ouml;rperschaft, Titel
+        <li> Unter <b>Sortierung nach</b> erfolgt die Einstellung der Sortierung nach Person/K&ouml;rperschaft, Titel
           oder Erscheinungsjahr (auf- oder absteigend), Anzeige pro Katalog oder
           katalog&uuml;bergreifend.</li>
 
@@ -464,7 +467,7 @@ Abk&uuml;rzungsoperator <b>*</b> ist erlaubt.
       <p>
       Der Link "Trefferliste" gibt Ihnen die aktuelle Suchanfrage an und darunter die Treffermenge insgesamt und die der
       verschiedenen Datenbanken. Durch Ihre Auswahl gelangen Sie auf die betreffende Kurztitelliste. Ihre Kurztitelliste
-      k&ouml;nnen Sie noch einmal umsortieren lassen, indem Sie Ihre gew&uuml;nschten Ordnungskriterien (Autor, Titel,
+      k&ouml;nnen Sie noch einmal umsortieren lassen, indem Sie Ihre gew&uuml;nschten Ordnungskriterien (Person, Titel,
       Jahr, Verlag, Signatur und Anzeige "Pro Katalog" oder "Katalog&uuml;bergreifend") festlegen und Ihre Wahl durch "Los"
       best&auml;tigen.
       </p>
@@ -526,7 +529,24 @@ Nutzer einen Überblick von weiteren Titel, die von anderen Nutzern im
 Kontext des aktuellen Titels für interessant befunden wurden.
       </p>
 
-      <h1 id="rssfeeds">13 RSS-Feeds (abonnierbare Informations-Kan&auml;le)</h1>
+ <h1 id="popularity">13 Popularit&auml;ts-Funktionen</h1>
+
+      <p>
+&Auml;hnlich der Recommender-Funktion bietet der KUG verschiedene
+Popularit&auml;ts-Funktionen an. Es sind dies
+
+<ul>
+<li><b>Top 20</b> Pro Katalog lassen sich die 20 meist aufgerufenen
+Titel anzeigen.</li>
+<li><b>Sortierung nach Popularit&auml;t</b> In jeder Titel-Liste
+lassen sich die Titel nach Popularit&auml;t - entsprechend der
+konkreten Aufrufe - (sinnvollerweise absteigend) sortieren. Die Popularit&auml;t eines Titels finden
+Sie in der mit <b>P</b> ausgezeichneten Spalte der Ergebnistabelle. Damit k&ouml;nnen Nutzer direkt vom Nutzungsverhalten anderer Nutzer profitieren.</li>
+
+</ul>
+      </p>
+
+      <h1 id="rssfeeds">14 RSS-Feeds (abonnierbare Informations-Kan&auml;le)</h1>
 <p>
 In einem ausgew&auml;hlten Katalog oder einer Institutssicht werden
 sog. <a href="http://de.wikipedia.org/wiki/RSS-Feed"
@@ -560,7 +580,7 @@ Data-Mining in Verbindung mit spezialisierter Suchtechnologie
 einsetzen, usw.
 </p>
 
-      <h2 id="rssarten">13.1 Angebotene Arten an RSS-Feeds</h2>
+      <h2 id="rssarten">14.1 Angebotene Arten an RSS-Feeds</h2>
 
 <p>
 Im KUG werden derzeit folgende Arten von RSS-Feeds angeboten:
@@ -608,7 +628,7 @@ Im KUG werden derzeit folgende Arten von RSS-Feeds angeboten:
 
 </p>
       
-      <h2 id="rssinstall">13.2 Beispiel: Installation von Feedview f&uuml;r den Browser Firefox</h2>
+      <h2 id="rssinstall">14.2 Beispiel: Installation von Feedview f&uuml;r den Browser Firefox</h2>
       <p>
 
 F&uuml;r deren Installation rufen Sie bitte diesen <a
@@ -628,7 +648,20 @@ entsprechende RSS-Feed.
         Neuzug&auml;nge eines Kataloges</b>) abonnieren k&ouml;nnen.
       </p>
 
-      <h1 id="bilder">13 Bildliche Funktionselemente</h1>
+      <h1 id="socialsoftware">15 Integration mit Sozialer Software / Web 2.0 (BibSonomy)</h1>
+     <p>
+     In der Einzeltreffer-Anzeige wie auch in der Merkliste
+     k&ouml;nnen Sie die bibliographischen Angaben eines Titels durch
+     Klicken auf den entsprechenden Link bzw. das entsprechende Icon
+     (s.u.) an BibSonomy senden. <a href="http://www.bibsonomy.org/"
+     target="_blank">BibSonomy</a> ist ein freier Social Bookmarking
+     Dienst, der jedoch auch auf die Verwaltung von
+     Bibliographie-Listen und deren Austausch/Verbreitung
+     spezialisiert ist.
+
+     </p>
+
+      <h1 id="bilder">16 Bildliche Funktionselemente</h1>
      <p>
      In den Kurztrefferlisten, den einzelnen Titeln, der Merkliste
      oder anderen Stellen im KUG werden verschiedene bildliche
@@ -643,7 +676,7 @@ entsprechende RSS-Feed.
      <tr><td align="center"><img src="/images/openbib/rssfeed.png"  alt="RSS-Feed" border="0" /></td><td>RSS-Feed</td></tr>   
     </table>
 
-    <h1 id="verlinkung">14 Verlinkung und Lastverteilung des KUG</h1>
+    <h1 id="verlinkung">17 Verlinkung und Lastverteilung des KUG</h1>
 
     <p>
     Das KUG Recherche-Portal ist mit einer zentralen Lastverteilung ausgestattet. Entsprechend der Belastung (und Funktionsf&auml;higkeit) werden Sie auf derzeit einen von drei KUG-Servern (kug1 bis kug3) weitergeleitet. Ebenso werden aus Wartungsgr&uuml;nden oder Problemen einzelne KUG-Server von uns aus der Lastverteilung genommen. Aus diesem Grund ist es sehr problematisch, direkt einen der drei Server zu verlinken (z.B. als URL <tt>http://kug3.ub.uni-koeln.de/portal/opac?view=</tt>) Verwenden Sie daher bitte <b>immer</b> die offiziellen Einsprung-URL's in den KUG. Es sind dies
@@ -657,7 +690,7 @@ entsprechende RSS-Feed.
     </dl>
   
 
-    <h1 id="suchplugin">15 KUG Such-Plugin f&uuml;r Mozilla Firefox-Browser</h1>
+    <h1 id="suchplugin">18 KUG Such-Plugin f&uuml;r Mozilla Firefox-Browser</h1>
 
     <script type="text/javascript">
 <!--
@@ -691,7 +724,7 @@ function addEngine(name,ext,cat)
 
     </p>
 
-    <h1 id="kontakt">16 Kontakt</h1>
+    <h1 id="kontakt">19 Kontakt</h1>
     <p>
     Fragen und Anmerkungen richten Sie bitte an: <a href="http://www.ub.uni-koeln.de/usb-cgi/makeEmailPage.pl?adr0=kug">kug@ub.uni-koeln.de</a>
     </p>

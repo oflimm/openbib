@@ -81,101 +81,119 @@ my $db = Search::Xapian::WritableDatabase->new( $thisdbpath, Search::Xapian::DB_
 
 my $tokenizer = String::Tokenizer->new();
 
-my $request=$dbh->prepare("select b.id, a.verf, a.hst, a.kor, a.swt, a.notation, a.sign, a.ejahr, a.isbn, a.issn, b.listitem from search as a, titlistitem b where a.verwidn=b.id");
+my $request=$dbh->prepare("select count(b.id) as rowcount from search as a, titlistitem b where a.verwidn=b.id");
 $request->execute();
 
-my $count=1;
-while (my $res=$request->fetchrow_hashref){
-    my $id       = decode_utf8($res->{id});
-    my $listitem = decode_utf8($res->{listitem});
-    my $verf     = lc(decode_utf8($res->{verf}));
-    my $hst      = lc(decode_utf8($res->{hst}));
-    my $kor      = lc(decode_utf8($res->{kor}));
-    my $swt      = lc(decode_utf8($res->{swt}));
-    my $notation = lc(decode_utf8($res->{notation}));
-    my $ejahr    = lc(decode_utf8($res->{ejahr}));
-    my $sign     = lc(decode_utf8($res->{sign}));
-    my $isbn     = lc(decode_utf8($res->{isbn}));
-    my $issn     = lc(decode_utf8($res->{issn}));
+my $res=$request->fetchrow_hashref;
 
-    print "$count sets indexed\n" if ($count % 1000 == 0);
+my $rowcount=$res->{rowcount};
 
-    my $tokinfos_ref=[
-        {
-            prefix  => "X1",
-            content => $verf,
-        },
-        {
-            prefix  => "X2",
-            content => $hst,
-        },
-        {
-            prefix  => "X3",
-            content => $kor,
-        },
-        {
-            prefix  => "X4",
-            content => $swt,
-        },
-        {
-            prefix  => "X5",
-            content => $notation,
-        },
-        {
-            prefix  => "X6",
-            content => $sign,
-        },
-        {
-            prefix  => "X7",
-            content => $ejahr,
-        },
-        {
-            prefix  => "X8",
-            content => $isbn,
-        },
-        {
-            prefix  => "X9",
-            content => $issn,
-        },
+$request->finish();
+
+print "Migration von $rowcount Titelsaetzen\n";
+
+my $hitrange = 1000;
+
+for (my $offset=1;$offset<=$rowcount;$offset=$offset+$hitrange){
+#    if ($offset+$hitrange > $rowcount){
+#        $hitrange=$rowcount-$offset;
+#    }
+    my $request=$dbh->prepare("select b.id, a.verf, a.hst, a.kor, a.swt, a.notation, a.sign, a.ejahr, a.isbn, a.issn, b.listitem from search as a, titlistitem b where a.verwidn=b.id limit $offset,$hitrange");
+    $request->execute();
+
+    my $count=1;
+    while (my $res=$request->fetchrow_hashref) {
+        my $id       = decode_utf8($res->{id});
+        my $listitem = decode_utf8($res->{listitem});
+        my $verf     = lc(decode_utf8($res->{verf}));
+        my $hst      = lc(decode_utf8($res->{hst}));
+        my $kor      = lc(decode_utf8($res->{kor}));
+        my $swt      = lc(decode_utf8($res->{swt}));
+        my $notation = lc(decode_utf8($res->{notation}));
+        my $ejahr    = lc(decode_utf8($res->{ejahr}));
+        my $sign     = lc(decode_utf8($res->{sign}));
+        my $isbn     = lc(decode_utf8($res->{isbn}));
+        my $issn     = lc(decode_utf8($res->{issn}));
+
+        my $tokinfos_ref=[
+            {
+                prefix  => "X1",
+                content => $verf,
+            },
+            {
+                prefix  => "X2",
+                content => $hst,
+            },
+            {
+                prefix  => "X3",
+                content => $kor,
+            },
+            {
+                prefix  => "X4",
+                content => $swt,
+            },
+            {
+                prefix  => "X5",
+                content => $notation,
+            },
+            {
+                prefix  => "X6",
+                content => $sign,
+            },
+            {
+                prefix  => "X7",
+                content => $ejahr,
+            },
+            {
+                prefix  => "X8",
+                content => $isbn,
+            },
+            {
+                prefix  => "X9",
+                content => $issn,
+            },
         
-    ];
+        ];
     
-    my $doc=Search::Xapian::Document->new();
+        my $doc=Search::Xapian::Document->new();
 
-    my $k = 0;
-    foreach my $tokinfo_ref (@$tokinfos_ref){
-        # Tokenize
-        next if (! $tokinfo_ref->{content});
+        my $k = 0;
+        foreach my $tokinfo_ref (@$tokinfos_ref) {
+            # Tokenize
+            next if (! $tokinfo_ref->{content});
         
-        $tokenizer->tokenize($tokinfo_ref->{content});
+            $tokenizer->tokenize($tokinfo_ref->{content});
         
-        my $i = $tokenizer->iterator();
+            my $i = $tokenizer->iterator();
 
-        my @saved_tokens=();
-        while ($i->hasNextToken()) {
-            my $next = $i->nextToken();
-            next if (!$next);
-            next if (length($next) < 3);
-            #next if ($stopword_ref->{$next});
+            my @saved_tokens=();
+            while ($i->hasNextToken()) {
+                my $next = $i->nextToken();
+                next if (!$next);
+                next if (length($next) < 3);
+                #next if ($stopword_ref->{$next});
 
-            # Token generell einfuegen
-            $doc->add_posting($next,$k);
+                # Token generell einfuegen
+                $doc->add_posting($next,$k);
 
-            push @saved_tokens, $next;
-            $k++;
+                push @saved_tokens, $next;
+                $k++;
+            }
+
+            foreach my $token (@saved_tokens) {
+                # Token in Feld einfuegen            
+                my $fieldtoken=$tokinfo_ref->{prefix}.$token;
+                $doc->add_posting($fieldtoken,$k);
+                $k++;
+            }
         }
+    
+        $doc->set_data(encode_utf8($listitem));
+    
+        my $docid=$db->add_document($doc);
 
-        foreach my $token (@saved_tokens){
-            # Token in Feld einfuegen            
-            my $fieldtoken=$tokinfo_ref->{prefix}.$token;
-            $doc->add_posting($fieldtoken,$k);
-            $k++;
-        }
     }
-    
-    $doc->set_data(encode_utf8($listitem));
-    
-    my $docid=$db->add_document($doc);
+    print ($offset+$hitrange)". sets indexed\n";
 
-    $count++;
+
 }

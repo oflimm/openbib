@@ -31,3 +31,35 @@ input[type="reset"]:hover {
   border:     1px groove Highlight;
   outline:    1px solid #000;
 }
+
+a.button {
+  font: 100% Arial,helv,Helvetica,Verdana;
+  text-decoration: none; 
+  display: block;
+  width: 200px; 
+  text-align: center; 
+  border-width: 1px;
+  color: #000000; 
+  border-color: #666; 
+  border-style: solid; 
+  background:	#efefef;
+}
+
+a.button:hover {
+  font: 100% Arial,helv,Helvetica,Verdana;
+  text-decoration: none; 
+  display: block;
+  width: 200px; 
+  text-align: center; 
+  border-width: 1px;
+  color: HighlightText; 
+  border-color: #666; 
+  border-style: solid; 
+  background: Highlight;
+  outline:    1px solid #000;
+
+}
+
+a.button:active {
+  border-style: inset;
+} 

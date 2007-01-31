@@ -22,7 +22,10 @@ h3, h4, h5 {
 
 body {
   color: black;
-  background-color: #EDEBE3;
+  /* background-color: #EDEBE3; */
+  /* background-color: #FFFFCC; */
+  /* background-color: #FFF8C6; */
+  background-color: #FAF8CC;
   font-family: Arial,helv,Helvetica,Verdana,sans-serif;
 }
 
@@ -78,11 +81,11 @@ table {
 .globalsearch { 
   font-family:Arial,helv,Helvetica,Verdana; 
   font-size:135%; 
-  color=blue;
+  color:blue;
 }
 
 .fbuttonarea { 
-  background-color: #EDEBE3;
+  background-color: #FAF8CC;
 }
 
 th {
@@ -90,7 +93,7 @@ th {
   font-size: 1.2em;
   font-weight: bold;
   color: black;
-  background-color: #EDEBE3;
+  background-color: #FAF8CC;
   padding: 2px;
   text-align: left;
   vertical-align: top;
@@ -172,6 +175,15 @@ img {
   border:0;
 }
 
+dt {
+  font-weight:bold;
+  margin-bottom: 2px;
+}
+
+dd {
+  margin-bottom: 10px;
+}
+
 a:link { 
   color:#333;
 }
@@ -226,7 +238,7 @@ a:active.invisible {
 
 .tabbingmenu a, a.active {
   color: #333;
-  background: #EDEBE3; /* Hintergrundfarbe Tab 'weiss'*/
+  background: #FAF8CC; /* Hintergrundfarbe Tab 'weiss'*/
   font: bold 1em "Trebuchet MS", Arial, sans-serif;
   border: 1px solid #666;
   padding: 2px 5px 0px 5px;
@@ -235,19 +247,19 @@ a:active.invisible {
 }
 
 .tabbingmenu a.active {
-  background: #EDEBE3;
-  border-bottom: 3px solid #EDEBE3; 
+  background: #FAF8CC;
+  border-bottom: 3px solid #FAF8CC; 
 }
 
 .tabbingmenu a:visited {
   color: #333; 
-  background: #EDEBE3; 
+  background: #FAF8CC; 
 }
 
 .content {
 
   font-family: Arial,helv,Helvetica,Verdana,sans-serif;
-  background: #EDEBE3;
+  background: #FAF8CC;
   padding: 5px;
   border: 1px solid #666;
   border-top: none;
@@ -273,10 +285,11 @@ a:active.invisible {
 
 #mainnavigation a:hover {
   color:      #333; 
-  background: #EDEBE3;
+  background: #FAF8CC;
 }
 
 .dbdescshort {
   font-size:1.2em;
   font-weight:bold;
 }
+

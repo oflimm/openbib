@@ -451,21 +451,14 @@ while (my $line=<IN>){
 
         # Listitem zusammensetzen
 
-        # Konzeptionelle Vorgehensweise fuer die korrekte Anzeige eines Titel in
+                # Konzeptionelle Vorgehensweise fuer die korrekte Anzeige eines Titel in
         # der Kurztitelliste:
         #
         # 1. Fall: Es existiert ein HST
         #
         # Dann:
         #
-        # Unterfall 1.1: Es existiert eine (erste) Bandzahl(089)
-        #
-        # Dann: Setze diese Bandzahl vor den AST/HST
-        #
-        # Unterfall 1.2: Es existiert keine Bandzahl(089), aber eine (erste)
-        #                Bandzahl(455)
-        #
-        # Dann: Setze diese Bandzahl vor den AST/HST
+        # Ist nichts zu tun
         #
         # 2. Fall: Es existiert kein HST(331)
         #
@@ -490,36 +483,53 @@ while (my $line=<IN>){
         #
         # Dann: Verwende diese Zeitschriftensignatur
         #
-        if (exists $listitem_ref->{T0331}){
-            # UnterFall 1.1:
-            if (exists $listitem_ref->{'T0089'}){
-                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0089}[0]{content}.". ".$listitem_ref->{T0331}[0]{content};
-            }
-            # Unterfall 1.2:
-            elsif (exists $listitem_ref->{T0455}){
-                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0455}[0]{content}.". ".$listitem_ref->{T0331}[0]{content};
-            }
-        }
-        else {
+        if (!exists $listitem_ref->{T0331}) {
             # UnterFall 2.1:
-            if (exists $listitem_ref->{'T0089'}){
+            if (exists $listitem_ref->{'T0089'}) {
                 $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0089}[0]{content};
             }
             # Unterfall 2.2:
-            elsif (exists $listitem_ref->{T0455}){
+            elsif (exists $listitem_ref->{T0455}) {
                 $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0455}[0]{content};
             }
             # Unterfall 2.3:
-            elsif (exists $listitem_ref->{T0451}){
+            elsif (exists $listitem_ref->{T0451}) {
                 $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0451}[0]{content};
             }
             # Unterfall 2.4:
-            elsif (exists $listitem_ref->{T1203}){
+            elsif (exists $listitem_ref->{T1203}) {
                 $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T1203}[0]{content};
-            }
-            else {
+            } else {
                 $listitem_ref->{T0331}[0]{content}="Kein HST/AST vorhanden";
             }
+        }
+
+        # Bestimmung der Zaehlung
+
+        # Fall 1: Es existiert eine (erste) Bandzahl(089)
+        #
+        # Dann: Setze diese Bandzahl
+        #
+        # Fall 2: Es existiert keine Bandzahl(089), aber eine (erste)
+        #                Bandzahl(455)
+        #
+        # Dann: Setze diese Bandzahl
+
+        # Fall 1:
+        if (exists $listitem_ref->{'T0089'}) {
+            $listitem_ref->{T5100}= [
+                {
+                    content => $listitem_ref->{T0089}[0]{content}
+                }
+            ];
+        }
+        # Fall 2:
+        elsif (exists $listitem_ref->{T0455}) {
+            $listitem_ref->{T5100}= [
+                {
+                    content => $listitem_ref->{T0455}[0]{content}
+                }
+            ];
         }
         
         # Exemplardaten-Hash zu listitem-Hash hinzufuegen

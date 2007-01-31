@@ -42,6 +42,15 @@ img {
   border: 0;
 }
 
+dt {
+  font-weight:bold;
+  margin-bottom: 2px;
+}
+
+dd {
+  margin-bottom: 10px;
+}
+
 table {
   padding: 0px;
 }
@@ -276,4 +285,8 @@ a:active.invisible {
 
 .submitbuttons {
   padding: 5px;
+}
+
+.popularitycount {
+  font-style:italic
 }

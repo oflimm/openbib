@@ -83,7 +83,7 @@ sub handler {
     my $newprofile = $query->param('newprofile') || '';
     my $profilid   = $query->param('profilid')   || '';
 
-    my %checkeddb;
+    my $checkeddb_ref;
   
     my $queryoptions_ref
         = $session->get_queryoptions($query);
@@ -129,7 +129,7 @@ sub handler {
             $profilname = $user->get_profilename_of_profileid($profilid);
 
             foreach my $dbname ($user->get_profiledbs_of_profileid($profilid)){
-                $checkeddb{$dbname}="checked";
+                $checkeddb_ref->{$dbname}=1;
             }
         }
     
@@ -137,7 +137,7 @@ sub handler {
         my $targettype     = $user->get_targettype_of_session($session->{ID});
 
         my $maxcolumn      = $config->{databasechoice_maxcolumn};
-        my @catdb          = $config->get_infomatrix_of_active_databases($session);
+        my @catdb          = $config->get_infomatrix_of_active_databases({session => $session, checkeddb_ref => $checkeddb_ref});
 
         # TT-Data erzeugen
         my $colspan=$maxcolumn*3;

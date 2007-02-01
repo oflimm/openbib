@@ -165,7 +165,7 @@ Sie k&ouml;nnen entweder durch entsprechende Auswahl in den insgesamt [% alldbs 
 <tr><td class="boxed">
 <table>
 <tr><td bgcolor="#ADD8E6"><b>Maximale Trefferzahl pro Katalog</b></td><td colspan="3"><select name="maxhits"><option selected="selected">200</option><option>500</option><option>1000</option><option value="9999999">alle</option></select></td></tr>
-<tr><td bgcolor="#ADD8E6"><b>Sortierung nach</b></td><td colspan="2"><select name="sorttype"><option value="author" selected="selected">Autor/Körperschaft</option><option value="title">Titel</option><option value="yearofpub">Erscheinungsjahr</option></select><select name="sortorder"><option value="up">aufsteigend</option><option value="down">absteigend</option></select>&nbsp;pro Katalog</td><td></td></tr>
+<tr><td bgcolor="#ADD8E6"><b>Sortierung nach</b></td><td colspan="2"><select name="sorttype"><option value="author" selected="selected">Person/Körperschaft</option><option value="title">Titel</option><option value="yearofpub">Erscheinungsjahr</option></select><select name="sortorder"><option value="up">aufsteigend</option><option value="down">absteigend</option></select>&nbsp;pro Katalog</td><td></td></tr>
 <tr><td bgcolor="#ADD8E6"><b>Suchprofil</b></td><td colspan="3"><select name="profil">
 [%- IF dbcount || userprofiles -%]
 [% dbcount %] [% userprofiles %]

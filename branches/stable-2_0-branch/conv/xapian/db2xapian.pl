@@ -4,7 +4,7 @@
 #
 #  db2xapian.pl
 #
-#  Dieses File ist (C) 2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2007 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -29,17 +29,59 @@ use strict;
 use warnings;
 use utf8;
 
+use Benchmark ':hireswallclock';
 use DBI;
 use Encode qw(decode_utf8 encode_utf8);
+use Getopt::Long;
+use Log::Log4perl qw(get_logger :levels);
 use Search::Xapian;
 use String::Tokenizer;
+
 use OpenBib::Config;
 
 use vars qw(%config);
 
 *config = \%OpenBib::Config::config;
 
-my $database=$ARGV[0];
+my ($database,$help,$logfile,$withfields);
+
+&GetOptions("single-pool=s"   => \$database,
+            "logfile=s"       => \$logfile,
+            "with-fields"     => \$withfields,
+	    "help"            => \$help
+	    );
+
+if ($help){
+    print_help();
+}
+
+$logfile=($logfile)?$logfile:'/var/log/openbib/db2xapian.log';
+
+my $log4Perl_config = << "L4PCONF";
+log4perl.rootLogger=DEBUG, LOGFILE, Screen
+log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
+log4perl.appender.LOGFILE.filename=$logfile
+log4perl.appender.LOGFILE.mode=append
+log4perl.appender.LOGFILE.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.LOGFILE.layout.ConversionPattern=%d [%c]: %m%n
+log4perl.appender.Screen=Log::Dispatch::Screen
+log4perl.appender.Screen.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.Screen.layout.ConversionPattern=%d [%c]: %m%n
+L4PCONF
+
+Log::Log4perl::init(\$log4Perl_config);
+
+# Log4perl logger erzeugen
+my $logger = get_logger();
+
+my $config = new OpenBib::Config();
+
+if (!$database){
+  $logger->fatal("Kein Pool mit --single-pool= ausgewaehlt");
+  exit;
+}
+
+$logger->info("### POOL $database");
 
 my $dbh
     = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
@@ -53,11 +95,11 @@ if (! -d "$thisdbpath"){
     mkdir "$thisdbpath";
 }
 
-print "Removing prior Index for Database $database\n";
+$logger->info("Removing prior Index for Database $database");
 
 system("rm -f $thisdbpath/*");
 
-print "Building new   Index for Database $database\n";
+$logger->info("Building new   Index for Database $database");
 
 my $db = Search::Xapian::WritableDatabase->new( $thisdbpath, Search::Xapian::DB_CREATE_OR_OVERWRITE ) || die "Couldn't open/create Xapian DB $!\n";
 
@@ -90,14 +132,15 @@ my $rowcount=$res->{rowcount};
 
 $request->finish();
 
-print "Migration von $rowcount Titelsaetzen\n";
+$logger->info("Migration von $rowcount Titelsaetzen");
 
 my $hitrange = 1000;
 
+my $atime = new Benchmark;
+
 for (my $offset=1;$offset<=$rowcount;$offset=$offset+$hitrange){
-#    if ($offset+$hitrange > $rowcount){
-#        $hitrange=$rowcount-$offset;
-#    }
+    my $atime = new Benchmark;
+
     my $request=$dbh->prepare("select b.id, a.verf, a.hst, a.kor, a.swt, a.notation, a.sign, a.ejahr, a.isbn, a.issn, b.listitem from search as a, titlistitem b where a.verwidn=b.id limit $offset,$hitrange");
     $request->execute();
 
@@ -154,14 +197,15 @@ for (my $offset=1;$offset<=$rowcount;$offset=$offset+$hitrange){
             },
         
         ];
-    
+
+        my $seen_token_ref = {};
+        
         my $doc=Search::Xapian::Document->new();
 
-        my $k = 0;
         foreach my $tokinfo_ref (@$tokinfos_ref) {
             # Tokenize
             next if (! $tokinfo_ref->{content});
-        
+            
             $tokenizer->tokenize($tokinfo_ref->{content});
         
             my $i = $tokenizer->iterator();
@@ -169,22 +213,30 @@ for (my $offset=1;$offset<=$rowcount;$offset=$offset+$hitrange){
             my @saved_tokens=();
             while ($i->hasNextToken()) {
                 my $next = $i->nextToken();
+
+                # Naechstes, wenn kein Token
                 next if (!$next);
-                next if (length($next) < 3);
+                # Naechstes, wenn keine Zahl oder einstellig
+                next if (length($next) < 2 && $next !~ /\d/);
+                # Naechstes, wenn schon gesehen 
+                next if (exists $seen_token_ref->{$next});
+                # Naechstes, wenn Stopwort
                 #next if ($stopword_ref->{$next});
 
+                $seen_token_ref->{$next}=1;
+                
                 # Token generell einfuegen
-                $doc->add_posting($next,$k);
+                $doc->add_term($next);
 
                 push @saved_tokens, $next;
-                $k++;
             }
 
-            foreach my $token (@saved_tokens) {
-                # Token in Feld einfuegen            
-                my $fieldtoken=$tokinfo_ref->{prefix}.$token;
-                $doc->add_posting($fieldtoken,$k);
-                $k++;
+            if ($withfields){
+                foreach my $token (@saved_tokens) {
+                    # Token in Feld einfuegen            
+                    my $fieldtoken=$tokinfo_ref->{prefix}.$token;
+                    $doc->add_term($fieldtoken);
+                }
             }
         }
     
@@ -193,7 +245,32 @@ for (my $offset=1;$offset<=$rowcount;$offset=$offset+$hitrange){
         my $docid=$db->add_document($doc);
 
     }
-    print ($offset+$hitrange)". sets indexed\n";
+    my $btime      = new Benchmark;
+    my $timeall    = timediff($btime,$atime);
+    my $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+
+    $logger->info($offset+$hitrange-1," Saetze indexiert in $resulttime Sekunden");
+}
+
+my $btime      = new Benchmark;
+my $timeall    = timediff($btime,$atime);
+my $resulttime = timestr($timeall,"nop");
+$resulttime    =~s/(\d+\.\d+) .*/$1/;
+
+$logger->info("Gesamtzeit: $resulttime Sekunden");
 
 
+sub print_help {
+    print << "ENDHELP";
+db2xapian.pl - Datenbank-Konnektor zum Aufbau eines Xapian-Index
+
+   Optionen:
+   -help                 : Diese Informationsseite
+       
+   -with-fields          : Aufbau von einzelnen Suchfeldern (nicht default)
+   --single-pool=...     : Angegebenen Datenpool verwenden
+
+ENDHELP
+    exit;
 }

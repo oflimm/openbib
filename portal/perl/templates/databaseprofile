@@ -32,7 +32,6 @@ function update_fak(yourform, checked, fak) {
 </script>
 
 <form method="get" action="http://[% config.servername %][% config.databaseprofile_loc %]">
-<input type="hidden" name="hitrange" value="-1" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 
 <ul class="tabbingmenu">
@@ -86,11 +85,11 @@ function update_fak(yourform, checked, fak) {
 [%- FOREACH db = catdb -%]
 [%- IF db.category == category.short -%]
 [%- IF db.column == 1 -%]
-<tr><td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% db.checked %] /></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% db.url %]" target="_blank">[% db.name %]</a></td>
+<tr><td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% db.url %]" target="_blank">[% db.name %]</a></td>
 [%- END -%]
 [%- IF db.column > 1 && db.column < maxcolumn -%]
 [%- IF db.db -%]
-<td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% db.checked %] /></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% db.url %]" target="_blank">[% db.name %]</a></td>
+<td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% db.url %]" target="_blank">[% db.name %]</a></td>
 [%- ELSE -%]
 <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
 [%- END -%]
@@ -100,7 +99,7 @@ function update_fak(yourform, checked, fak) {
 [%- IF db.column != 1 -%]
 
 [%- IF db.db -%]
-<td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% db.checked %] /></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% db.url %]" target="_blank">[% db.name %]</a></td>
+<td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% db.url %]" target="_blank">[% db.name %]</a></td>
 [%- ELSE -%]
 <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
 [%- END -%]

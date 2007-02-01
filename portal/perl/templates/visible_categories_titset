@@ -108,6 +108,7 @@
                 'T3003', # msg.maketext("T3003") TOC-URL / PDF
                 'T5001', # msg.maketext("T5001") Anzahl uebergeordn. Werke
                 'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke
+                'T5100', # msg.maketext("T5100") Allg. Zaehlung
                 ]
 
 %]

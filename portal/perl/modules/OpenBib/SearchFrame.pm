@@ -241,8 +241,14 @@ sub handler {
 
     $idnresult->finish();
 
-    my @catdb     = $config->get_infomatrix_of_active_databases($session,1);
+    # Ausgewaehlte Datenbanken bestimmen
+    my $checkeddb_ref = {};
+    foreach my $dbname ($session->get_dbchoice()){
+        $checkeddb_ref->{$dbname}=1;
+    }
+    
     my $maxcolumn = 1;
+    my @catdb     = $config->get_infomatrix_of_active_databases({session => $session, checkeddb_ref => $checkeddb_ref, maxcolumn => $maxcolumn});
     my $colspan   = $maxcolumn*3;
     
     # TT-Data erzeugen

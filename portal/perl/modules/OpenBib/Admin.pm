@@ -159,7 +159,7 @@ sub handler {
 
     # Verweis: Datenbankname -> Informationen zum zugeh"origen Institut/Seminar
   
-    my $dbinforesult=$config->{dbh}->prepare("select dbname,description from dbinfo where active=1 order by description") or $logger->error($DBI::errstr);
+    my $dbinforesult=$config->{dbh}->prepare("select dbname,description,orgunit from dbinfo where active=1 order by orgunit,description") or $logger->error($DBI::errstr);
     $dbinforesult->execute() or $logger->error($DBI::errstr);
   
     my @dbnames=();

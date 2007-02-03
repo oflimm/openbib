@@ -887,6 +887,9 @@ sub grundform {
 
     my $searchreq = exists $arg_ref->{searchreq}
         ? $arg_ref->{searchreq}           : undef;
+
+    # Normalisierung auf Kleinschreibung
+    $content = lc($content);
     
     # Sonderbehandlung verschiedener Kategorien
 

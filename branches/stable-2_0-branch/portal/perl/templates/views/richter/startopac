@@ -27,17 +27,14 @@ IF NOT headerframeurl;
 headerframeurl = "${config.headerframe_loc}?sessionID=${sessionID};view=${view}" ;
 END;
 
-bodyframeurl = "http://${config.servername}/views/richter/home.html";
+bodyframeurl   = "${config.helpframe_loc}?sessionID=${sessionID};view=${view};stid=20" ;
 
 IF searchsingletit && database;
-    bodyframeurl = "${config.search_loc}?sessionID=${sessionID}&search=Mehrfachauswahl&searchmode=2&rating=0&bookinfo=0&showmexintit=1&casesensitive=0&hitrange=-1&database=${database}&searchsingletit=${searchsingletit}&view=${view}";
+    bodyframeurl = "${config.search_loc}?sessionID=${sessionID};search=Mehrfachauswahl;database=${database};searchsingletit=${searchsingletit};view=${view}";
 END;
 
 IF fs;
-    bodyframeurl = "${config.virtualsearch_loc}?hitrange=-1&view=${view}&sessionID=${sessionID}&searchall=In+allen+Katalogen+suchen&fs=${fs}&bool9=AND&verf=&bool1=AND&hst=&bool2=AND&swt=&bool3=AND&kor=&bool4=AND&notation=&bool5=AND&isbn=&bool8=AND&issn=&bool6=AND&sign=&bool7=AND&ejahr=&ejahrop=%3D&maxhits=200&sorttype=author&sortorder=up&profil=&autoplus=1";
+    bodyframeurl = "${config.virtualsearch_loc}?view=${view};sessionID=${sessionID};searchall=1;fs=${fs};hitrange=50;sorttype=author;sortorder=up;profil=;autoplus=1";
 END;
 -%]
-
-[% toprows = 180 %]
-
 [% PROCESS common/subtemplate name="frameset" %]

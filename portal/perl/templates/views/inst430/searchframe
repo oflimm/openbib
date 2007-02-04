@@ -68,11 +68,7 @@
 
 [% IF view %]
 
-[% IF viewtemplate %]
-[% PROCESS $viewtemplate %]
-[% ELSE %]
 [% msg.maketext("Sie können entweder direkt im vorausgewählten Katalog <b>[_1]</b> recherchieren, oder die Suche auf weitere [_2]Kataloge[_3] ausdehnen.","${viewdesc}","<a href=\"${config.databasechoice_loc}?sessionID=${sessionID};view=${view}\" target=\"body\">","</a>") %]
-[% END %]
 <p />
 Dar&uuml;berhinaus finden Sie weitere Best&auml;nde dieses Katalogs in den
 zugeh&ouml;rigen digitalisierten Karten-Katalogen
@@ -84,15 +80,16 @@ zugeh&ouml;rigen digitalisierten Karten-Katalogen
 </td>
 <td>
 <ul>
-<li><a href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=405c" target="_blank">Deutsche Sprache und Literatur</a>. </li>
-<li><a href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=405a" target="_blank">Deutsche Sprache und Literatur; mittelalterliches Drama; geistl. und weltl. Spiele</a>. </li>
-<li><a href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=405b" target="_blank">Deutsche Sprache und Literatur; mittelalterliches Drama; Sekund&auml;rliteratur</a>. </li>
+<li><a href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=430n" target="_blank">Musikwissenschaftliches Institut / Notenkatalog</a>. </li>
+<li><a href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=430s" target="_blank">Musikwissenschaftliches Institut / Schriftenkatalog</a>. </li>
+<li><a href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=430t" target="_blank">Musikwissenschaftliches Institut / Tontr&auml;gerkatalog</a>. </li>
 </ul>
 </td>
 </tr>
 </table>
 
 <p />
+
 
 <p />
 <p />

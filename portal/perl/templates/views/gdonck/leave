@@ -23,7 +23,7 @@
   <center>
     <p style="font-size:1.5em">
       [% msg.maketext("Ihre Sitzung wurde beendet.") %]<br />
-        <br />Vielen Dank f&uuml;r Ihren Besuch der Bibliotheca Domus Presbyterorum Gaesdonck aus der Virtuellen Bibliothek der Arbeitsstelle Historische Best&auml;nde im Rheinland..
+        <br />Vielen Dank f&uuml;r Ihren Besuch der Bibliotheca Domus Presbyterorum Gaesdonck aus der Virtuellen Bibliothek der Arbeitsstelle Historische Best&auml;nde im Rheinland.
 
     </p>
   </center>

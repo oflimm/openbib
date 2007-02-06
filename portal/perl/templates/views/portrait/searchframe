@@ -112,6 +112,29 @@
 </table>
 
 <p />
+
+[%
+   sammlungen = [
+                 'Sammlung Mevissen',
+                 'Sammlung Oidtman',
+                 'Sammlung Wolff',
+                 'Stadtbibliothek Köln',                  
+                ];
+%]
+<table width="100%">
+<tr><th>Sammlungen</th></tr>
+<tr><td class="boxed">
+<table>
+[% FOREACH sammlung IN sammlungen %]
+<tr><td><a style="font-weight:bold" href="[% config.search_loc%]?sessionID=[% sessionID %];view=[% view %];database=portrait;searchtitofcnt=[% sammlung | uri %];category=T0200">[% sammlung %]</a></td></tr>
+[% END %]
+</table>
+</td></tr>
+</table>
+<p />
+
+
+<p />
 <table width="100%">
 <tr><th>[% msg.maketext("Suchoptionen") %]</th></tr>
 <tr><td class="boxed">

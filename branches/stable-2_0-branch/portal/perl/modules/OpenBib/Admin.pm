@@ -561,7 +561,9 @@ sub handler {
             my $description = decode_utf8($result->{'description'});
             my $active      = decode_utf8($result->{'active'});
 
-            $active="Ja" if ($active eq "1");
+            $description = (defined $description)?$description:'Keine Beschreibung';
+            
+            $active="Ja"   if ($active eq "1");
             $active="Nein" if ($active eq "0");
       
             my $idnresult2=$config->{dbh}->prepare("select * from viewdbs where viewname = ? order by dbname") or $logger->error($DBI::errstr);
@@ -578,11 +580,11 @@ sub handler {
             my $viewdb=join " ; ", @viewdbs;
 
             $view={
-		viewid => $viewid,
-		viewname => $viewname,
+		viewid      => $viewid,
+		viewname    => $viewname,
 		description => $description,
-		active => $active,
-		viewdb => $viewdb,
+		active      => $active,
+		viewdb      => $viewdb,
             };
 
             push @views, $view;

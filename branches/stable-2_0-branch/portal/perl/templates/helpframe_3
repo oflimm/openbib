@@ -23,7 +23,9 @@
     </ul>
     
     <div class="content">
-      <p />
+      <div class="infotext">
+    
+<p />
 
 
 <table width="100%">
@@ -79,6 +81,7 @@ target="_blank">Edlef Stabenau im netbib-Weblog</a></dd>
 </td></tr>
 </table>
 
+ </div>
 </div>
 <p />
 

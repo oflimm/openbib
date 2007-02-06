@@ -22,7 +22,9 @@
     </ul>
     
     <div class="content">
-      <p />
+      <div class="infotext">
+
+<p />
 
 <h1>KUG-Versionen</h1>
 
@@ -353,6 +355,7 @@ In der Version 1.0 wurden folgende Änderungen und Erweiterungen vorgenommen:
 Ablösung des bisherigen Recherche-Portals durch die Weiterentwicklung des seit 1997 eingesetzten KVIK im Rahmen des Lokalsystem-Updates auf die Version V3.0A20. 
 
     </div>
+</div>
 <p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

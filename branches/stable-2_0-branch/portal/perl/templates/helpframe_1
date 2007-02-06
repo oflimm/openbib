@@ -22,6 +22,8 @@
     </ul>
     
     <div class="content">
+      <div class="infotext">
+
       <p />
 
 <h1>Das KUG-Projekt an der Universit&auml;t zu K&ouml;ln</h1>
@@ -227,6 +229,7 @@ langfristig rechtfertigen wird.
 <address>Oliver Flimm (05/01/20)</address>
 
     </div>
+  </div>
 <p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

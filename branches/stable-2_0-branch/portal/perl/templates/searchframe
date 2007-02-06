@@ -23,16 +23,17 @@
 [% PROCESS common/subtemplate name="testsystem_info" %]
 [% END %]
 
+[% IF config.lang.size > 1 %]
 <div id="langchoice">
-[% FOREACH l IN config.lang %]
+[%   FOREACH l IN config.lang %]
 <a href="[% config.frameset_loc %]?headerframeurl=[% config.headerframe_loc %];bodyframeurl=[% config.searchframe_loc %];sessionID=[% sessionID %];setmask=simple;l=[% l %]" target="_top"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
-[% END %]
+[%   END %]
 </div>
+[% END %]
 
 <ul class="tabbingmenu">
    <li><a                href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
    <li><a class="active" href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
-   <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=11" target="body" title="Top 20">[% msg.maketext("Top 20") %]</a></li>
 </ul>
 
 <div class="content">
@@ -107,7 +108,7 @@
 [% END %]
 
 [% IF showkor %]
-<tr><td class="category">[% msg.maketext("Körperschaft") %]</td><td class="category"><select name="boolkor"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="kor" value="[% searchquery.kor.val %]" size="30" maxlength="200" /></td><td><input type="submit" name="korindex" value="Index" /></td></tr>
+<tr><td class="category">[% msg.maketext("Körperschaft/Institution") %]</td><td class="category"><select name="boolkor"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="kor" value="[% searchquery.kor.val %]" size="30" maxlength="200" /></td><td><input type="submit" name="korindex" value="Index" /></td></tr>
 [% END %]
 
 [% IF showswt %]
@@ -146,7 +147,7 @@
 <tr><td class="category">[% msg.maketext("Jahr") %]</td><td class="category">und<input type="hidden" name="boolejahr" value="AND" /></td><td><input type="text" name="ejahr" value="[% searchquery.ejahr.val %]" size="4" maxlength="4" />&nbsp;<select name="ejahrop"><option value="eq" selected="selected">genau</option><option value="gt">jünger</option><option value="lt">älter</option></select></td><td></td></tr>
 [% END %]
 
-<tr><td class="category">[% msg.maketext("Eingrenzung auf Gesamttitel") %]&nbsp;([% msg.maketext("Serien") %])</td><td class="category">und</td><td><input type="checkbox" name="serien" /></td><td></td></tr>
+<tr><td class="category">[% msg.maketext("Eingrenzung auf Gesamttitel (Serien)") %]&nbsp;([% msg.maketext("Serien") %])</td><td class="category">und</td><td><input type="checkbox" name="serien" /></td><td></td></tr>
 
 
 </table></td>
@@ -213,7 +214,7 @@ colspan="2"><select name="sorttype"><option value="author" selected="selected">[
 
 <p />
 
-<b>[% msg.maketext("Insgesamt sind im KUG derzeit [_1] Titel nachgewiesen.","${alldbcount}") %]</b>
+<b>[% msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount}","${alldbs}") %]</b>
 <p />
 [% msg.maketext("Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter [_1] kug@ub.uni-koeln.de [_2] erreichen.","<a href=\"http://www.ub.uni-koeln.de/usb-cgi/zms_makeEmail.pl?adr0=kug\" target=\"_blank\">","</a>") %]
 

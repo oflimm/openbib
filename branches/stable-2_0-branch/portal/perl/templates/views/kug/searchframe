@@ -21,7 +21,7 @@
 function update_fak(yourform, checked, fak) {
     for (var i = 0; i < yourform.elements.length; i++) {
          if (yourform.elements[i].title.indexOf(fak) != -1) {
-              yourform.elements[i].checked = 'checked';
+              yourform.elements[i].checked = checked;
          }
     }
 }
@@ -113,11 +113,13 @@ function submitViaEnter(evt){
 [% PROCESS common/subtemplate name="testsystem_info" %]
 [% END %]
 
+[% IF config.lang.size > 1 %]
 <div id="langchoice">
-[% FOREACH l IN config.lang %]
+[%   FOREACH l IN config.lang %]
 <a href="[% config.frameset_loc %]?headerframeurl=[% config.headerframe_loc %];bodyframeurl=[% config.searchframe_loc %];sessionID=[% sessionID %];setmask=simple;l=[% l %]" target="_top"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
-[% END %]
+[%   END %]
 </div>
+[% END %]
 
 <ul class="tabbingmenu">
    <li><a                href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>

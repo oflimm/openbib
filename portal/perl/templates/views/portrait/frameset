@@ -18,7 +18,7 @@ IF NOT toprows ;
   toprows = 140;
 
   IF view;
-    toprows = 180;
+    toprows = 185;
   END;
 END;
 -%]

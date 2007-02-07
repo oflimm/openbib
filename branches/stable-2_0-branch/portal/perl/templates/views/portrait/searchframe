@@ -77,7 +77,7 @@
 [% END %]
 
 [% IF showkor %]
-<tr><td class="category">[% msg.maketext("Körperschaft/Provenienz") %]</td><td class="category"><select name="boolkor"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="kor" value="[% searchquery.kor.val %]" size="30" maxlength="200" /></td><td><input type="submit" name="korindex" value="Index" /></td></tr>
+<tr><td class="category">[% msg.maketext("Körperschaft") %]</td><td class="category"><select name="boolkor"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="kor" value="[% searchquery.kor.val %]" size="30" maxlength="200" /></td><td><input type="submit" name="korindex" value="Index" /></td></tr>
 [% END %]
 
 [% IF showswt %]

@@ -954,7 +954,7 @@ sub grundform {
     $content=~s/ö/oe/g;
     $content=~s/Ü/Ue/g;
     $content=~s/Ö/Oe/g;
-    $content=~s/Ü/Ae/g;
+    $content=~s/Ä/Ae/g;
     $content=~s/ß/ss/g;
 
     $content=~s/é/e/g;

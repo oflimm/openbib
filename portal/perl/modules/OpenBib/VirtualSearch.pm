@@ -770,7 +770,12 @@ sub handler {
                 if ($view && -e "$config->{tt_include_path}/views/$view/$itemtemplatename") {
                     $itemtemplatename="views/$view/$itemtemplatename";
                 }
-                
+
+                # Database-Template ist spezifischer als View-Template und geht vor
+                if ($database && -e "$config->{tt_include_path}/database/$database/$itemtemplatename") {
+                    $itemtemplatename="database/$database/$itemtemplatename";
+                }
+
                 my $itemtemplate = Template->new({
                     LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
                         INCLUDE_PATH   => $config->{tt_include_path},
@@ -786,6 +791,7 @@ sub handler {
                 my $ttdata={
                     view            => $view,
                     sessionID       => $session->{ID},
+                    database        => $database,
                     
                     dbinfo          => $targetdbinfo_ref->{dbinfo}{$database},
                     
@@ -994,7 +1000,12 @@ sub handler {
                         if ($view && -e "$config->{tt_include_path}/views/$view/$itemtemplatename") {
                             $itemtemplatename="views/$view/$itemtemplatename";
                         }
-                        
+
+                        # Database-Template ist spezifischer als View-Template und geht vor
+                        if ($database && -e "$config->{tt_include_path}/database/$database/$itemtemplatename") {
+                            $itemtemplatename="database/$database/$itemtemplatename";
+                        }
+
                         my $itemtemplate = Template->new({
                             LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
                                 INCLUDE_PATH   => $config->{tt_include_path},
@@ -1122,6 +1133,11 @@ sub handler {
                     my $itemtemplatename=$config->{tt_virtualsearch_result_item_tname};
                     if ($view && -e "$config->{tt_include_path}/views/$view/$itemtemplatename") {
                         $itemtemplatename="views/$view/$itemtemplatename";
+                    }
+
+                    # Database-Template ist spezifischer als View-Template und geht vor
+                    if ($database && -e "$config->{tt_include_path}/database/$database/$itemtemplatename") {
+                        $itemtemplatename="database/$database/$itemtemplatename";
                     }
 
                     my $itemtemplate = Template->new({

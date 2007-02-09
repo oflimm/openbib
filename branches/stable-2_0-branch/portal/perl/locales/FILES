@@ -88,7 +88,6 @@
 ../templates/views/portrait/headerframe
 ../templates/views/portrait/headerframe.ori
 ../templates/views/portrait/helpframe_20
-../templates/views/portrait/helpframe_30
 ../templates/views/portrait/leave
 ../templates/views/portrait/resultlists_showsinglepool
 ../templates/views/portrait/search_browse_tit
@@ -159,6 +158,7 @@
 ../templates/database/einbaende/search_showtitset
 ../templates/database/einbaende/visible_categories_coverset
 ../templates/database/einbaende/visible_categories_titset
+../templates/database/landschaft/visible_categories_titset
 ../templates/database/portrait/search_showtitset
 ../templates/database/portrait/search_showtitlist
 ../templates/database/portrait/visible_categories_titset

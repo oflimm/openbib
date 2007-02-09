@@ -78,7 +78,7 @@
 
 [% ELSIF type == 'Text' %]
 	  <pre>
-  [%- PROCESS common/subtemplate name="managecollection_tit_as_text" database="${titset.database}" -%]
+  [%- PROCESS common/subtemplate name="managecollection_tit_as_text" -%]
           </pre>
 [% END %]
 

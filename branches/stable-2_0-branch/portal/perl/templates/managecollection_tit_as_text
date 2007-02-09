@@ -25,14 +25,13 @@ FOREACH category IN categories;
     # in Config.pm fuer die entsprechende Datenbank definiert
     # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
     # kodiert.
+    thiscategory = category ;
     IF config.categorymapping.$database.$category ;
-      thiscategory = "${category}-${normset.database}" ;
-    ELSE ;
-      thiscategory = ${category} ;
+       thiscategory = "${category}-${normset.database}" ;
     END;
 
 -%]
-[% msg.maketext("${category}") | format("%- 24s") %]: [% content %]
+[% msg.maketext("${thiscategory}") | format("%- 24s") %]: [% content %]
 [% END -%]
 [%- END -%]
 [%- IF mexnormset.size > 0 -%]

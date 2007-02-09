@@ -12,10 +12,10 @@
 #######################################################################
 -%]
 <!-- Beginn Result Item -->
-<tr class="titlerow"><td>&nbsp;</td><td><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% dbinfo.full %]</td><td
-align="right" colspan="3"><strong>[%- IF treffer == qopts.hitrange && qopts.sb == 'sql' -%]<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#recherche">[% msg.maketext("mind.") %]&nbsp;[% treffer %] [% msg.maketext("Treffer") %]</a>[% ELSE %][% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %][%- END -%]</strong></td><td class="popularitycount"><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
+<tr class="titlerow"><td>&nbsp;</td><td colspan="3"><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% dbinfo.full %]</td><td
+align="right" colspan="2"><strong>[%- IF treffer == qopts.hitrange && qopts.sb == 'sql' -%]<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#recherche">[% msg.maketext("mind.") %]&nbsp;[% treffer %] [% msg.maketext("Treffer") %]</a>[% ELSE %][% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %][%- END -%]</strong></td><td class="popularitycount"><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
 [%- IF treffer == qopts.hitrange -%]
-<tr class="titlerow"><td>&nbsp;</td><td colspan="4"><b>[1 - [% qopts.hitrange %]]</b>&nbsp;<a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];database=[% database %];queryid=[% queryid %];action=getnext;offset=[% qopts.hitrange %];hitrange=[% qopts.hitrange %];sb=[% qopts.sb %]">[weitere Treffer...]</a></td><td>&nbsp;</td></tr>
+<tr class="titlerow"><td>&nbsp;</td><td colspan="5"><b>[1 - [% qopts.hitrange %]]</b>&nbsp;<a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];database=[% database %];queryid=[% queryid %];action=getnext;offset=[% qopts.hitrange %];hitrange=[% qopts.hitrange %];sb=[% qopts.sb %]">[weitere Treffer...]</a></td><td>&nbsp;</td></tr>
 [%- END -%]
 [% listrow = 'listrow2' %]
 [%- FOREACH item IN resultlist -%]
@@ -64,7 +64,7 @@ align="right" colspan="3"><strong>[%- IF treffer == qopts.hitrange && qopts.sb =
 [%- END -%]
 [%- signatur = signaturen.join(' ; ') -%]
 
-<tr class="[% listrow %]"><td class="listnr">[% loop.count %]</td><td colspan="2"><span class="rlperson">[% person
+<tr class="[% listrow %]"><td class="listnr">[% loop.count %]</td><td>&nbsp;</td><td colspan="2"><span class="rlperson">[% person
 %]</span><br /><a href="[% config.search_loc %]?sessionID=[%
 sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id
 %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
@@ -75,10 +75,10 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 [%- listrow = 'listrow1' -%]
 [%- END -%]
 [% END %]
-<tr><td class="listnr"></td><td colspan="4"><b><span style="font-size:0.8em">in: [% resulttime %] [% msg.maketext("Sekunden") %]</span></b></td></tr>
+<tr><td class="listnr">&nbsp;</td><td colspan="5"><b><span style="font-size:0.8em">in: [% resulttime %] [% msg.maketext("Sekunden") %]</span></b></td></tr>
 
 [% IF drilldown && fullresultcount > qopts.hitrange %]
-<tr><td class="listnr"><td colspan="4">
+<tr><td class="listnr"><td>&nbsp;</td><td colspan="4">
 <table width="100%">
 <tr><th colspan="4">[% msg.maketext("Suchverfeinerung mit relevanten Begriffen") %]</th></tr>
 <tr><td colspan="4" class="boxedclear">
@@ -151,7 +151,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 </table>
 
 </td></tr>
-<tr><td class="listnr"></td><td colspan="4"><span style="font-size:0.8em">[% msg.maketext("Drill-Down") %] in: [% drilldowntime %] [% msg.maketext("Sekunden") %]</span></b></td></tr>
+<tr><td class="listnr"></td><td>&nbsp;</td><td colspan="4"><span style="font-size:0.8em">[% msg.maketext("Drill-Down") %] in: [% drilldowntime %] [% msg.maketext("Sekunden") %]</span></b></td></tr>
 [% END %]
 
 [% IF false %]

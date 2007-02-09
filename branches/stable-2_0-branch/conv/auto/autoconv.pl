@@ -324,7 +324,7 @@ ENDE
     my $atime = new Benchmark;
 
     $logger->info("### $singlepool: Importing data into searchengine");   
-    system("$config->{'base_dir'}/conv/db2xapian.pl --single-pool=$singlepool");
+    system("cd $rootdir/data/$singlepool/ ; $config->{'base_dir'}/conv/file2xapian.pl --single-pool=$singlepool");
 
     my $btime      = new Benchmark;
     my $timeall    = timediff($btime,$atime);

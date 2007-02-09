@@ -14,7 +14,6 @@ CREATE TABLE dbinfo (
  active      BOOL,
 
  INDEX (orgunit),
- INDEX (dbid),
  INDEX (dbname),
  INDEX (active),
  INDEX (description(255))

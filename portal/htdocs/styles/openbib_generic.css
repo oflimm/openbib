@@ -245,6 +245,9 @@ a:active.invisible {
   float: right;
 }
 
+.infotext {
+  width:800px;
+}
 
 .content {
 

@@ -25,7 +25,7 @@ body {
   /* background-color: #EDEBE3; */
   /* background-color: #FFFFCC; */
   /* background-color: #FFF8C6; */
-  background-color: #FAF8CC;
+  background-color: #EDEBE3;
   font-family: Arial,helv,Helvetica,Verdana,sans-serif;
 }
 
@@ -85,7 +85,7 @@ table {
 }
 
 .fbuttonarea { 
-  background-color: #FAF8CC;
+  background-color: #EDEBE3;
 }
 
 th {
@@ -93,7 +93,7 @@ th {
   font-size: 1.2em;
   font-weight: bold;
   color: black;
-  background-color: #FAF8CC;
+  background-color: #EDEBE3;
   padding: 2px;
   text-align: left;
   vertical-align: top;
@@ -238,7 +238,7 @@ a:active.invisible {
 
 .tabbingmenu a, a.active {
   color: #333;
-  background: #FAF8CC; /* Hintergrundfarbe Tab 'weiss'*/
+  background: #EDEBE3; /* Hintergrundfarbe Tab 'weiss'*/
   font: bold 1em "Trebuchet MS", Arial, sans-serif;
   border: 1px solid #666;
   padding: 2px 5px 0px 5px;
@@ -247,19 +247,19 @@ a:active.invisible {
 }
 
 .tabbingmenu a.active {
-  background: #FAF8CC;
-  border-bottom: 3px solid #FAF8CC; 
+  background: #EDEBE3;
+  border-bottom: 3px solid #EDEBE3; 
 }
 
 .tabbingmenu a:visited {
   color: #333; 
-  background: #FAF8CC; 
+  background: #EDEBE3; 
 }
 
 .content {
 
   font-family: Arial,helv,Helvetica,Verdana,sans-serif;
-  background: #FAF8CC;
+  background: #EDEBE3;
   padding: 5px;
   border: 1px solid #666;
   border-top: none;
@@ -285,7 +285,7 @@ a:active.invisible {
 
 #mainnavigation a:hover {
   color:      #333; 
-  background: #FAF8CC;
+  background: #EDEBE3;
 }
 
 .dbdescshort {

@@ -19,7 +19,8 @@ Version 2.0:
 - RSS-Feeds fuer Neuzugaenge (zurueckportiert nach 1.2.2)
 - Ergebnisanreicherung (zurueckportiert nach 1.2.2)
 - Extener DigiBib-Connector als mod_perl-Handler (zurueckportiert nach 1.2.2)
-- Ausgabe der Bandangaben in den Kurztitellisten. Damit ist nun eine alphabetische Sortierung moeglich
+- Ausgabe der Bandangaben in den Kurztitellisten. Getrennte Sortierung nach
+  Bandzaehlung und Titel (alphabetisch)
 - Schneller Zugriff auf Kurztitel-Informationen durch neue titlistitem-Tabelle
 - Integration des Logging-Frameworks in die Programme zur automatischen
   Konvertierung sowie Anreichern mit Popularitaetsinformationen
@@ -28,3 +29,10 @@ Version 2.0:
   (www.bibsonomy.org)
 - Highlighting der Suchbegriffe in der Einzeltitelanzeige
 - Ausweitung der Titel-String-Suche auf weitere Kategorien
+- Browsing ueber die Inhalte beliebiger Kategorien - es kann auf alle
+  Inhalte einer Kategorie zugegriffen werden (normdatenuebergreifend). Damit 
+  koennen z.B.  Register realisiert werden (Portrait-Sammlung, 
+  Landschaftsbilder)
+- Titelrecherche bei gegebenem Inhalt einer Kategorie. Damit koennen fuer
+  beliebige Kategorien Verknuepfungen zu anderen Titeln mit gleichem
+  Kategorieinhalt realisiert werden.

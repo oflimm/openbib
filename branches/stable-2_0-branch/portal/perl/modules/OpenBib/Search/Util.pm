@@ -1456,31 +1456,33 @@ sub get_tit_set_by_idn {
         my $enrichdbh
             = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
                 or $logger->error_die($DBI::errstr);
-        
-        foreach my $isbn_ref (@{$normset_ref->{T0540}}){
 
-            my $isbn=$isbn_ref->{content};
-            
-            $isbn =~s/ //g;
-            $isbn =~s/-//g;
-            $isbn=~s/([A-Z])/\l$1/g;
-                        
-            my $reqstring="select category,content from normdata where isbn=? order by category,indicator";
-            my $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
-            $request->execute($isbn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
-            
-            while (my $res=$request->fetchrow_hashref) {
-                my $category   = "T".sprintf "%04d",$res->{category };
-                my $content    =        decode_utf8($res->{content});
+        if (exists $normset_ref->{T0540}){
+            foreach my $isbn_ref (@{$normset_ref->{T0540}}){
+
+                my $isbn=$isbn_ref->{content};
                 
-                push @{$normset_ref->{$category}}, {
-                    content    => $content,
-                };
+                $isbn =~s/ //g;
+                $isbn =~s/-//g;
+                $isbn=~s/([A-Z])/\l$1/g;
+                
+                my $reqstring="select category,content from normdata where isbn=? order by category,indicator";
+                my $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
+                $request->execute($isbn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+                
+                while (my $res=$request->fetchrow_hashref) {
+                    my $category   = "T".sprintf "%04d",$res->{category };
+                    my $content    =        decode_utf8($res->{content});
+                    
+                    push @{$normset_ref->{$category}}, {
+                        content    => $content,
+                    };
+                }
+                $request->finish();
+                $logger->debug("Enrich: $isbn -> $reqstring");
             }
-            $request->finish();
-            $logger->debug("Enrich: $isbn -> $reqstring");
+            
         }
-        
         $enrichdbh->disconnect();
 
         if ($config->{benchmark}) {

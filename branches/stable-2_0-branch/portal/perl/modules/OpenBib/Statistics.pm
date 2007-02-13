@@ -51,7 +51,7 @@ sub new {
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
         = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
-            or $logger->error_die($DBI::errstr);
+            or $logger->error($DBI::errstr);
 
     $self->{dbh}       = $dbh;
 
@@ -76,9 +76,9 @@ sub store_relevance {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    return undef unless (defined $id && defined $dbname && defined $katkey && defined $type);
+    return undef unless (defined $id && defined $dbname && defined $katkey && defined $type && defined $self->{dbh});
     
-    my $request=$self->{dbh}->prepare("insert into relevance values (?,?,?,?,?)") or $logger->error($DBI::errstr);
+    my $request=$self->{dbh}->prepare("insert into relevance values (NULL,?,?,?,?,?)") or $logger->error($DBI::errstr);
     $request->execute($id,$isbn,$dbname,$katkey,$type) or $logger->error($DBI::errstr);
     return;
 }
@@ -97,7 +97,7 @@ sub store_result {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    return undef unless (defined $id && defined $type && defined $data_ref);
+    return undef unless (defined $id && defined $type && defined $data_ref && defined $self->{dbh});
     
     my $request=$self->{dbh}->prepare("delete from result_data where id=? and type=?") or $logger->error($DBI::errstr);
     $request->execute($id,$type) or $logger->error($DBI::errstr);
@@ -135,6 +135,16 @@ sub get_result {
     }
 
     return $data_ref;
+}
+
+sub DESTROY {
+    my $self = shift;
+
+    return if (!defined $self->{dbh});
+
+    $self->{dbh}->disconnect();
+
+    return;
 }
 
 1;

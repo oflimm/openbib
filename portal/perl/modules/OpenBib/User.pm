@@ -50,19 +50,31 @@ sub new {
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
         = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
-            or $logger->error_die($DBI::errstr);
+            or $logger->error($DBI::errstr);
 
     $self->{dbh}       = $dbh;
 
     return $self;
 }
 
+sub userdb_accessible{
+    my ($self)=@_;
+
+    if (defined $self->{dbh}){
+        return 1;
+    }
+    
+    return 0;
+}
+    
 sub get_cred_for_userid {
     my ($self,$userid)=@_;
-
+                  
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    return if (!defined $self->{dbh});
+    
     my $userresult=$self->{dbh}->prepare("select loginname,pin from user where userid = ?") or $logger->error($DBI::errstr);
 
     $userresult->execute($userid) or $logger->error($DBI::errstr);
@@ -86,6 +98,8 @@ sub get_username_for_userid {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    return undef if (!defined $self->{dbh});
+    
     my $userresult=$self->{dbh}->prepare("select loginname from user where userid = ?") or $logger->error($DBI::errstr);
 
     $userresult->execute($userid) or $logger->error($DBI::errstr);
@@ -107,6 +121,8 @@ sub get_userid_for_username {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    return undef if (!defined $self->{dbh});
+    
     my $userresult=$self->{dbh}->prepare("select userid from user where loginname = ?") or $logger->error($DBI::errstr);
 
     $userresult->execute($username) or $logger->error($DBI::errstr);
@@ -128,6 +144,8 @@ sub get_userid_of_session {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    return undef if (!defined $self->{dbh});
+    
     my $config = new OpenBib::Config();
     
     my $globalsessionID="$config->{servername}:$sessionID";
@@ -153,6 +171,8 @@ sub get_targetdb_of_session {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    return undef if (!defined $self->{dbh});
+    
     my $config = new OpenBib::Config();
     
     my $globalsessionID="$config->{servername}:$sessionID";
@@ -175,6 +195,8 @@ sub get_targettype_of_session {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    return undef if (!defined $self->{dbh});
+    
     my $config = new OpenBib::Config();
     
     my $globalsessionID="$config->{servername}:$sessionID";
@@ -197,6 +219,8 @@ sub get_profilename_of_profileid {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    return undef if (!defined $self->{dbh});
+    
     my $config = new OpenBib::Config();
 
     my $idnresult=$self->{dbh}->prepare("select profilename from userdbprofile where profilid = ?") or $logger->error($DBI::errstr);
@@ -217,6 +241,8 @@ sub get_profiledbs_of_profileid {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    return if (!defined $self->{dbh});
+    
     my $config = new OpenBib::Config();
 
     my $idnresult=$self->{dbh}->prepare("select dbname from profildb where profilid = ?") or $logger->error($DBI::errstr);
@@ -238,6 +264,8 @@ sub get_number_of_items_in_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    return undef if (!defined $self->{dbh});
+    
     my $idnresult=$self->{dbh}->prepare("select count(*) as rowcount from treffer where userid = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($userid) or $logger->error($DBI::errstr);
     my $res = $idnresult->fetchrow_hashref();
@@ -253,6 +281,8 @@ sub get_all_profiles {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    return if (!defined $self->{dbh});
+    
     my $config = new OpenBib::Config();
 
     my $idnresult=$self->{dbh}->prepare("select profilid, profilename from userdbprofile where userid = ? order by profilename") or $logger->error($DBI::errstr);
@@ -284,6 +314,8 @@ sub authenticate_self_user {
   
     my $logger = get_logger();
 
+    return undef if (!defined $self->{dbh});
+    
     my $userresult=$self->{dbh}->prepare("select userid from user where loginname = ? and pin = ?") or $logger->error($DBI::errstr);
   
     $userresult->execute($username,$pin) or $logger->error($DBI::errstr);
@@ -304,6 +336,8 @@ sub get_logintargets {
   
     my $logger = get_logger();
 
+    return if (!defined $self->{dbh});
+    
     my $request=$self->{dbh}->prepare("select * from logintarget order by type DESC,description") or $logger->error($DBI::errstr);
     $request->execute() or $logger->error($DBI::errstr);
     
@@ -322,6 +356,9 @@ sub get_logintargets {
 
 sub DESTROY {
     my $self = shift;
+
+    return if (!defined $self->{dbh});
+
     $self->{dbh}->disconnect();
 
     return;

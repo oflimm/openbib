@@ -83,7 +83,7 @@ sub handler {
 
     # CGI-Input auslesen
     my $serien        = decode_utf8($query->param('serien'))        || 0;
-    my $enrich        = decode_utf8($query->param('enrich'))        || 1;
+    my $enrich        = decode_utf8($query->param('enrich'))        || 0;
 
     my @databases     = ($query->param('database'))?$query->param('database'):();
 
@@ -452,7 +452,7 @@ sub handler {
 
         $logger->debug("Index 2".YAML::Dump(\@sortedindex));
         
-        my $hits=$#sortedindex;
+        my $hits=$#sortedindex+1;
 
         my $baseurl="http://$config->{servername}$config->{virtualsearch_loc}?sessionID=$session->{ID};view=$view;$urlpart;profil=$profil;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder";
 
@@ -469,7 +469,7 @@ sub handler {
                 }
 	
                 my $item={
-                    start  => $i,
+                    start  => $i+1,
                     end    => ($i+$hitrange>$hits)?$hits:$i+$hitrange,
                     url    => $baseurl.";hitrange=$hitrange;offset=$i",
                     active => $active,
@@ -1083,6 +1083,8 @@ sub handler {
 
                 my @tidns           = @{$result_ref->{titidns_ref}};
                 my $fullresultcount = $result_ref->{fullresultcount};
+
+                $logger->debug("Treffer-Ids in $database:".join(",",@tidns));
 
                 # Wenn mindestens ein Treffer gefunden wurde
                 if ($#tidns >= 0) {

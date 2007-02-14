@@ -286,7 +286,7 @@ colspan="2"><select name="sorttype"><option value="author" selected="selected">[
 <table>
 <tr><td colspan=[% colspan %]><b>Profil:</b>&nbsp;<select name="js_profil" onChange="update_dbchoice(this.form,this.options[this.selectedIndex].value)" >
 <option value="">W&auml;hlen Sie hier ein bestehendes Profil aus</option>
-<option value="cleardbs">Kein Katalog vorausgew&auml;hlt</option>
+<option value="cleardbs">Katalogauswahl l&ouml;schen</option>
 [%- IF dbchoice.size > 0 -%]
 <option value="dbauswahl"[%- IF prevprofile == 'dbauswahl' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
 [% END %]

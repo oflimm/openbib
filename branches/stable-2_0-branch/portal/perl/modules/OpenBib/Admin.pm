@@ -941,7 +941,7 @@ sub handler {
 
         my $idnresult=$session->{dbh}->prepare("select * from session order by createtime") or $logger->error($DBI::errstr);
         $idnresult->execute() or $logger->error($DBI::errstr);
-        my $session="";
+        my $singlesession="";
         my @sessions=();
 
         while (my $result=$idnresult->fetchrow_hashref()) {
@@ -959,13 +959,13 @@ sub handler {
                 $benutzernr="Anonym";
             }
 
-            $session={
+            $singlesession={
                 singlesessionid => $singlesessionid,
                 createtime      => $createtime,
                 benutzernr      => $benutzernr,
                 numqueries      => $numqueries,
             };
-            push @sessions, $session;
+            push @sessions, $singlesession;
         }
     
 
@@ -1018,7 +1018,7 @@ sub handler {
                 $benutzernr="Anonym";
             }
 
-            my $session={
+            my $singlesession={
                 singlesessionid => $singlesessionid,
                 createtime      => $createtime,
                 benutzernr      => $benutzernr,
@@ -1029,7 +1029,7 @@ sub handler {
                 stylesheet => $stylesheet,
                 sessionID  => $session->{ID},
 	         
-                session    => $session,
+                session    => $singlesession,
 
                 queries    => \@queries,
 

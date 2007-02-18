@@ -56,7 +56,7 @@ $bufferidx=0;
 # Kategorieflags
 
 %autkonv=(
-    'Person'   => '0101:', # Person
+    'AutorPerson'   => '0101:', # Person
 );
 
 %korkonv=(
@@ -76,15 +76,15 @@ $bufferidx=0;
 %titelkonv=(
     'OBJ-Dok-Nr.'  => '0000:',
     'Bez-Verwalt.' => '', # Verwaltung
-    'Ort'          => '', # Köln
-    'Art'          => '', # (öffentliche) Sammlung
-    'Sozietät'     => '', # Universitäts- und Stadtbibliothek Köln
+    'Ort'          => '', # KÃ¶ln
+    'Art'          => '', # (Ã¶ffentliche) Sammlung
+    'SozietÃ¤t'     => '', # UniversitÃ¤ts- und Stadtbibliothek KÃ¶ln
     'Abteilung'    => '', # Altes Buch
     'Invent-Nr.'   => '', # GG4/925-4/5 (v. S. 13)
-# Bez-Künstler:Herstellung
+# Bez-KÃ¼nstler:Herstellung
 # Name:Manesson-Mallet, Alain
 # ber. Funkt.:Autor
-# Bez-Künstler:Herstellung
+# Bez-KÃ¼nstler:Herstellung
 # Name:Zunner, Johann David
 # ber. Funkt.:Verleger
     'Dat-Art'      => '', # Datierung
@@ -97,10 +97,10 @@ $bufferidx=0;
     'U-Gattung'    => '', # Buchillustration
     'Sachbegriff'  => '', # Bild
     'Farbmater.'   => '', # Druckfarbe (schwarz)
-    '(Träger-)Mat' => '0334:', # Papier
+    '(TrÃ¤ger-)Mat' => '0334:', # Papier
     'Technik'      => '', # Radierung
-    'HöhexBreite'  => '0407:', # 19,9 x 15,4 (Blatt)
-    'Höhe'         => '', # 17,4 (Platte)
+    'HÃ¶hexBreite'  => '0407:', # 19,9 x 15,4 (Blatt)
+    'HÃ¶he'         => '', # 17,4 (Platte)
     'Breite'       => '', # 15,4 (Blatt)
     # Block Anfang
     'Beschr-Art'   => '', # Titel
@@ -108,8 +108,8 @@ $bufferidx=0;
     'Anbr-Ort'     => '', # Blatt 
     'Farbmat.'     => '', # Druckfarbe (schwarz)
     'Technik'      => '', # Typendruck
-    'Sprache'      => '', # Französisch
-    'Übersetz.'    => '', # x
+    'Sprache'      => '', # FranzÃ¶sisch
+    'Ãœbersetz.'    => '', # x
     # Block Ende
     'Foto'         => '', # Reproduktion
     'Aufnahmenr.'  => '', # CD9/09222359/00000004
@@ -117,7 +117,7 @@ $bufferidx=0;
     'Repro-Nr.'    => '', # <a href="http://sweethardt.ub.uni-koeln.de/retro/archiv/09222359/00000004.jpg"><img src="http://sweethardt.ub.uni-koeln.de/retro/archiv/09222359/00000004.gif"></a>
     'Erhaltung'    => '', # gut
     'Datum'        => '', # 2001.11.12
-    'Urh-Instit.'  => '', # Universitäts- und Stadtbibliothek Köln
+    'Urh-Instit.'  => '', # UniversitÃ¤ts- und Stadtbibliothek KÃ¶ln
     'Urh-Autor'    => '', # Beatrix Herling
 );
 

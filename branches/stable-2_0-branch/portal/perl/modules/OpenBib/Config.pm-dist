@@ -1006,6 +1006,31 @@ sub get_primary_rssfeed_of_view  {
     return $primrssfeedurl;
 }
 
+sub get_activefeeds_of_db  {
+    my ($self,$dbname)=@_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    
+    my $activefeeds_ref = {};
+    
+    my $request=$self->{dbh}->prepare("select type from rssfeeds where dbname \
+= ? and active = 1") or $logger->error($DBI::errstr);
+    $request->execute($dbname) or $logger->error($DBI::errstr);
+    
+    while (my $result=$request->fetchrow_hashref()){
+        my $type    = $result->{'type'}    || 0;
+        
+        $activefeeds_ref->{$type} = 1;
+    }
+    
+    
+    $request->finish();
+    
+    return $activefeeds_ref;
+}
+
 sub get_dboptions {
     my $self   = shift;
     my $dbname = shift;

@@ -1077,6 +1077,7 @@ sub print_tit_set_by_idn {
         mexnormset  => $mexnormset,
         circset     => $circset,
         searchquery => $searchquery_ref,
+        activefeed  => $config->get_activefeeds_of_db($database),        
 
         highlightquery    => \&highlightquery,
         normset2bibtex    => \&OpenBib::Common::Util::normset2bibtex,

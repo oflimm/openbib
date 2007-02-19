@@ -2278,9 +2278,8 @@ sub highlightquery {
         searchquery_ref => $searchquery_ref,
     });
 
-    foreach my $singleterm (@$term_ref){
-        $content=~s/($singleterm)/<span class="queryhighlight">$1<\/span>/ig unless ($content=~/http/);
-    }
+    my $terms = join("|",@$term_ref);
+    $content=~s/\b($terms)/<span class="queryhighlight">$1<\/span>/ig unless ($content=~/http/);
 
     return $content;
 }

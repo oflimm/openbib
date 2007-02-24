@@ -5,7 +5,7 @@
 #
 #  Erzeugen von BestOf-Analysen aus Relevance-Statistik-Daten
 #
-#  Dieses File ist (C) 2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2007 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -141,6 +141,59 @@ if ($type == 2){
     });
 }
 
+# Typ 3 => Meistgenutzte Schlagworte
+if ($type == 3){
+    my @databases=$config->get_active_databases();
+
+    foreach my $database (@databases){
+        $logger->info("Generating Type 3 BestOf-Values for database $database");
+
+        my $maxcount=0;
+
+        my $dbh
+            = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+                or $logger->error_die($DBI::errstr);
+        
+        my $bestof_ref=[];
+        my $request=$dbh->prepare("select swt.content , count(distinct sourceid) as scount from conn, swt where sourcetype=1 and targettype=4 and swt.category=1 and swt.id=conn.targetid group by targetid order by scount desc limit 200");
+        $request->execute();
+        while (my $result=$request->fetchrow_hashref){
+            my $content = decode_utf8($result->{content});
+            my $count   = $result->{scount};
+            if ($maxcount < $count){
+                $maxcount = $count;
+            }
+            
+            push @$bestof_ref, {
+                item  => $content,
+                count => $count,
+            };
+        }
+        
+        my $font;
+        my $sm = 70;
+        my $lg = 200;
+        my $del = $lg - $sm;
+        
+        for (my $i=0 ; $i < scalar (@$bestof_ref) ; $i++){
+            my $weight = $bestof_ref->[$i]->{count}/$maxcount;
+            $bestof_ref->[$i]->{count} = sprintf ("%d", $sm + $del * $weight);
+        }
+
+        my $sortedbestof_ref;
+        @{$sortedbestof_ref} = map { $_->[0] }
+            sort { $a->[1] cmp $b->[1] }
+                map { [$_, $_->{item}] }
+                    @{$bestof_ref};
+        
+        $statistics->store_result({
+            type => 3,
+            id   => $database,
+            data => $sortedbestof_ref,
+        });
+    }
+}
+
 sub print_help {
     print << "ENDHELP";
 gen_bestof.pl - Erzeugen von BestOf-Analysen aus Relevance-Statistik-Daten
@@ -154,6 +207,7 @@ gen_bestof.pl - Erzeugen von BestOf-Analysen aus Relevance-Statistik-Daten
 
    1 => Meistaufgerufene Titel pro Datenbank
    2 => Meistgenutzte Kataloge bezogen auf Titelaufrufe
+   3 => Meistgenutzte Schlagworte pro Katalog (Wolke)
        
 ENDHELP
     exit;

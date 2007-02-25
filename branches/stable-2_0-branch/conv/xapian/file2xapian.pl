@@ -103,27 +103,20 @@ $logger->info("Aufbau eines neuen  Index fuer Datenbank $database");
 
 my $db = Search::Xapian::WritableDatabase->new( $thisdbpath, Search::Xapian::DB_CREATE_OR_OVERWRITE ) || die "Couldn't open/create Xapian DB $!\n";
 
-# my $stopword_ref={};
+my $stopword_ref={};
 
-# my @stopwordfiles=(
-# 		  '/opt/openbib/ft/wordlists/de.txt',
-# 		  '/opt/openbib/ft/wordlists/en.txt',
-# 		  '/opt/openbib/ft/wordlists/fr.txt',
-# 		  '/opt/openbib/ft/wordlists/nl.txt',
-# 		 );
-
-# foreach my $stopwordfile (@stopwordfiles){
-#     open(SW,$stopwordfile);
-#     while (my $stopword=<SW>){
-#         chomp $stopword ;
-#         $stopword = OpenBib::Common::Util::grundform({
-#                         content  => $stopword,
-#                     });
-#
-#         $stopword_ref->{$stopword}=1;
-#     }
-#     close(SW);
-# }
+if (exists $config->{stopword_filename}){
+    open(SW,$config->{stopword_filename});
+    while (my $stopword=<SW>){
+        chomp $stopword ;
+        $stopword = OpenBib::Common::Util::grundform({
+            content  => $stopword,
+        });
+        
+        $stopword_ref->{$stopword}=1;
+    }
+    close(SW);
+}
 
 my $tokenizer = String::Tokenizer->new();
 
@@ -204,7 +197,7 @@ my $count = 1;
                 # Naechstes, wenn schon gesehen 
                 next if (exists $seen_token_ref->{$next});
                 # Naechstes, wenn Stopwort
-                #next if (exists $stopword_ref->{$next});
+                next if (exists $config->{stopword_filename} && exists $stopword_ref->{$next});
 
                 $seen_token_ref->{$next}=1;
                 

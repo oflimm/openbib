@@ -1337,7 +1337,7 @@ sub gen_cloud {
 
     my $weight;
     my $font;
-    my $sm = 70;
+    my $sm = 40;
     my $lg = 200;
     my $del = $lg - $sm;
     my $ret = '';
@@ -1381,7 +1381,7 @@ sub gen_cloud_absolute {
     my $atime=new Benchmark;
     
     my $font;
-    my $sm = 70;
+    my $sm = 40;
     my $lg = 200;
     my $del = $lg - $sm;
     my $ret = '';

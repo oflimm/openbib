@@ -147,6 +147,8 @@ sub initial_search {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my ($atime,$btime,$timeall);
   
     if ($config{benchmark}) {
@@ -154,6 +156,22 @@ sub initial_search {
     }
 
     my $qp = new Search::Xapian::QueryParser() || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+
+    my @stopwords = ();
+    if (exists $config->{stopword_filename}){
+        open(SW,$config->{stopword_filename});
+        while (my $stopword=<SW>){
+            chomp $stopword ;
+            $stopword = OpenBib::Common::Util::grundform({
+                content  => $stopword,
+            });
+            push @stopwords, $stopword;
+        }
+        close(SW);
+    }
+
+    my $stopper = new Search::Xapian::SimpleStopper(@stopwords);
+    $qp->set_stopper($stopper);
     
     my $querystring = lc($searchquery_ref->{fs}{norm});
     

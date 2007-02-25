@@ -182,6 +182,7 @@ use vars qw(%config);
 	   # Mapping der einzelnen Kompontenten zu ihren Zugriffs-URI's
 
 	   admin_loc             => '/portal/admin',
+	   catalogue_loc         => '/portal/katalogisierung',
 	   circulation_loc       => '/portal/benutzerkonto',
 	   connector_digibib_loc => '/portal/connector/digibib',
 	   connector_olws_loc    => '/portal/connector/olws',
@@ -273,6 +274,10 @@ use vars qw(%config);
 	   tt_admin_logout_tname         => 'admin_logout',
 
 	   tt_leave_tname                => 'leave',
+
+	   tt_catalogue_login_tname          => 'catalogue_login',
+	   tt_catalogue_loggedin_tname       => 'catalogue_loggedin',
+	   tt_catalogue_logout_tname         => 'catalogue_logout',
 
 	   tt_circulation_tname          => 'circulation',
 	   tt_circulation_reserv_tname   => 'circulation_reserv',

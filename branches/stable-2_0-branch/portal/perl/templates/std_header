@@ -41,6 +41,7 @@
   [%- END -%]
 
     </style>
+    <script language="JavaScript" type="text/javascript" src="/js/openbib.js"></script>
 
     <title>[% title %]</title>
   </head>

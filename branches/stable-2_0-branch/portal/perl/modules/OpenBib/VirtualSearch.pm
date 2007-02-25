@@ -106,6 +106,7 @@ sub handler {
     my $queryid       = $query->param('queryid')       || '';
     my $sb            = $query->param('sb')            || 'sql'; # Search backend
     my $drilldown     = $query->param('drilldown')     || 0;     # Drill-Down?
+    my $cloud         = $query->param('cloud')         || 0;     # Cloud?
 
     my $queryoptions_ref
         = $session->get_queryoptions($query);
@@ -871,18 +872,23 @@ sub handler {
                         
                         my @outputbuffer=();
                         
-                        my $rset=Search::Xapian::RSet->new() if ($drilldown && $fullresultcount > $hitrange);
-                        
+                        my $rset=Search::Xapian::RSet->new() if ($drilldown || $cloud);
                         my $mcount=0;
+
                         foreach my $match ($request->matches) {
-                            last if ($mcount >= $hitrange);
-                            
-                            $rset->add_document($match->get_docid) if ($drilldown && $fullresultcount > $hitrange);
-                            my $document=$match->get_document();
-                            my $titlistitem_raw=pack "H*", decode_utf8($document->get_data());
-                            my $titlistitem_ref=Storable::thaw($titlistitem_raw);
-                            
-                            push @outputbuffer, $titlistitem_ref;
+                            # Fuer Drilldowns und Tag-Clouds werden die ersten
+                            # 200 Treffer analysiert
+                            last if (($drilldown || $cloud) && $mcount >= 200);
+
+                            $rset->add_document($match->get_docid) if ($drilldown || $cloud);
+                            # Es werden immer nur $hitrange Titelinformationen
+                            # zur Ausgabe aus dem MSet herausgeholt
+                            if ($mcount < $hitrange){
+                                my $document        = $match->get_document();
+                                my $titlistitem_raw = pack "H*", decode_utf8($document->get_data());
+                                my $titlistitem_ref = Storable::thaw($titlistitem_raw);
+                                push @outputbuffer, $titlistitem_ref;
+                            }
                             $mcount++;
                         }
                         
@@ -890,61 +896,94 @@ sub handler {
                         my $relevant_kor_ref;
                         my $relevant_swt_ref;
                         my $term_ref;
+                        my $termweight_ref={};
+
                         my $drilldowntime;
                         
-                        if ($drilldown && $fullresultcount > $hitrange ) {
-                            my $ddatime=new Benchmark;
-                            my $eterms=$request->enq->get_eset(50,$rset);
-                            
+                        if ($drilldown || $cloud) {
+                            my $ddatime   = new Benchmark;
+                            my $esetrange = ($fullresultcount < 200)?$fullresultcount-1:200;
+                            my $eterms    = $request->enq->get_eset($esetrange,$rset);
                             my $iter=$eterms->begin();
                             
                             $term_ref = {
                                 aut => [],
+                                aut_maxweight   => 0,
                                 kor => [],
+                                kor_maxweight   => 0,
                                 hst => [],
-                                all => [],
+                                hst_maxweight   => 0,
+                                swt => [],
+                                swt_maxweight   => 0,
+                                ejahr => [],
+                                ejahr_maxweight => 0,
                             };
-                            
+
                             while ($iter != $eterms->end()) {
                                 my $term   = $iter->get_termname();
                                 my $weight = $iter->get_weight();
-                                
+
                                 if ($term=~/^X1(.+)$/) {
                                     push @{$term_ref->{aut}}, {
                                         name   => $1,
                                         weight => $weight,
                                     };
-                                } elsif ($term=~/^X2(.+)$/) {
-                                    $term=$1;
-                                    $term=~s/^(.)(.*)$/\u$1\l$2/;
+                                }
+                                elsif ($term=~/^X2(.+)$/) {
+                                    my $thisterm = $1;
+
                                     push @{$term_ref->{hst}}, {
-                                        name   => $term,
+                                        name   => $thisterm,
                                         weight => $weight,
                                     };
-                                } elsif ($term=~/^X3(.+)$/) {
+
+                                    if ($cloud){
+                                        if (exists $termweight_ref->{$thisterm}){
+                                            $termweight_ref->{$thisterm}+=$weight;
+                                        }
+                                        else {
+                                            $termweight_ref->{$thisterm}=$weight;
+                                        }
+                                    }
+                                }
+                                elsif ($term=~/^X3(.+)$/) {
                                     push @{$term_ref->{kor}}, {
                                         name   => $1,
                                         weight => $weight,
                                     };
-                                } elsif ($term=~/^X4(.+)$/) {
-                                    push @{$term_ref->{swt}}, {
-                                        name   => $1,
-                                        weight => $weight,
-                                    };
-                                } elsif ($term=~/^X7(.+)$/) {
-                                    push @{$term_ref->{ejahr}}, {
-                                        name   => $1,
-                                        weight => $weight,
-                                        freq   => $request->matches->get_termfreq("X7$1"),
-                                    };
-                                } else {
-                                    $term=~s/^(.)(.*)$/\u$1\l$2/;
-                                    push @{$term_ref->{all}}, {
-                                        name   => $term,
-                                        weight => $weight,
-                                    };
                                 }
-                                
+                                elsif ($term=~/^X4(.+)$/) {
+                                    my $thisterm = $1;
+                                    push @{$term_ref->{swt}}, {
+                                        name   => $thisterm,
+                                        weight => $weight,
+                                    };
+
+                                    if ($cloud){
+                                        if (exists $termweight_ref->{$thisterm}){
+                                            $termweight_ref->{$thisterm}+=$weight;
+                                        }
+                                        else {
+                                            $termweight_ref->{$thisterm}=$weight;
+                                        }
+                                    }
+                                }
+                                elsif ($term=~/^X7(.+)$/) {
+                                    my $thisterm = $1;
+                                    push @{$term_ref->{ejahr}}, {
+                                        name   => $thisterm,
+                                        weight => $weight,
+                                    };
+
+                                    if ($cloud){
+                                        if (exists $termweight_ref->{$thisterm}){
+                                            $termweight_ref->{$thisterm}+=$weight;
+                                        }
+                                        else {
+                                            $termweight_ref->{$thisterm}=$weight;
+                                        }
+                                    }
+                                }
                                 $iter++;
                             }
                             
@@ -955,30 +994,31 @@ sub handler {
                             }
                             
                             $logger->debug(YAML::Dump(\@outputbuffer));
-                            
-                            # Relavante Kategorieinhalte bestimmen
-                            
-                            $relevant_aut_ref = OpenBib::Search::Local::Xapian::get_relevant_terms({
-                                categories     => ['P0100','P0101'],
-                                type           => 'aut',
-                                resultbuffer   => \@outputbuffer,
-                                relevanttokens => $term_ref,
-                            });
-                            
-                            $relevant_kor_ref = OpenBib::Search::Local::Xapian::get_relevant_terms({
-                                categories     => ['C0200','C0201'],
-                                type           => 'kor',
-                                resultbuffer   => \@outputbuffer,
-                                relevanttokens => $term_ref,
-                            });
-                            
-                            $relevant_swt_ref = OpenBib::Search::Local::Xapian::get_relevant_terms({
-                                categories     => ['T0710'],
-                                type           => 'swt',
-                                resultbuffer   => \@outputbuffer,
-                                relevanttokens => $term_ref,
-                            });
-                            
+
+                            if ($drilldown){
+                                # Relavante Kategorieinhalte bestimmen
+                                
+                                $relevant_aut_ref = OpenBib::Search::Local::Xapian::get_relevant_terms({
+                                    categories     => ['P0100','P0101'],
+                                    type           => 'aut',
+                                    resultbuffer   => \@outputbuffer,
+                                    relevanttokens => $term_ref,
+                                });
+                                
+                                $relevant_kor_ref = OpenBib::Search::Local::Xapian::get_relevant_terms({
+                                    categories     => ['C0200','C0201'],
+                                    type           => 'kor',
+                                    resultbuffer   => \@outputbuffer,
+                                    relevanttokens => $term_ref,
+                                });
+                                
+                                $relevant_swt_ref = OpenBib::Search::Local::Xapian::get_relevant_terms({
+                                    categories     => ['T0710'],
+                                    type           => 'swt',
+                                    resultbuffer   => \@outputbuffer,
+                                    relevanttokens => $term_ref,
+                                });
+                            }
                             my $ddbtime       = new Benchmark;
                             my $ddtimeall     = timediff($ddbtime,$ddatime);
                             $drilldowntime    = timestr($ddtimeall,"nop");
@@ -1037,6 +1077,7 @@ sub handler {
                             relevantaut     => $relevant_aut_ref,
                             relevantkor     => $relevant_kor_ref,
                             relevantswt     => $relevant_swt_ref,
+                            cloud           => gen_cloud_absolute({dbh => $dbh, term_ref => $termweight_ref}),
                             lastquery       => $request->querystring,
                             sorttype        => $sorttype,
                             sortorder       => $sortorder,
@@ -1285,6 +1326,105 @@ sub handler {
         return SERVER_ERROR;
     };
     return OK;
+}
+
+sub gen_cloud {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $term_ref            = exists $arg_ref->{term_ref}
+        ? $arg_ref->{term_ref}            : undef;
+
+    my $weight;
+    my $font;
+    my $sm = 70;
+    my $lg = 200;
+    my $del = $lg - $sm;
+    my $ret = '';
+    my $termcloud_ref = [];
+    my $maxweight = 0;
+    foreach my $singleterm (keys %{$term_ref}) {
+        if ($term_ref->{$singleterm} > $maxweight){
+            $maxweight = $term_ref->{$singleterm};
+        }
+    }
+
+    foreach my $singleterm (keys %{$term_ref}) {
+#       $font = sprintf ("%d", $sm + $del * $weight/$maxweight);
+        $font = sprintf ("%d", $sm + $del * $term_ref->{$singleterm}/$maxweight);
+        push @{$termcloud_ref}, {
+            term => $singleterm,
+            font => $font,
+        };
+        #       $ret .= "<a href=\"/blabla/$k/\" style=\"font-size: $font%;\">$k</a>\n";
+    }
+
+    my $sortedtermcloud_ref;
+    @{$sortedtermcloud_ref} = map { $_->[0] }
+                    sort { $a->[1] cmp $b->[1] }
+                        map { [$_, $_->{term}] }
+                            @{$termcloud_ref};
+
+    return $sortedtermcloud_ref;
+}
+
+sub gen_cloud_absolute {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $term_ref            = exists $arg_ref->{term_ref}
+        ? $arg_ref->{term_ref}            : undef;
+    my $dbh                 = exists $arg_ref->{dbh}
+        ? $arg_ref->{dbh}                 : undef;
+
+    my $logger = get_logger ();
+    my $atime=new Benchmark;
+    
+    my $font;
+    my $sm = 70;
+    my $lg = 200;
+    my $del = $lg - $sm;
+    my $ret = '';
+    my $termcloud_ref = [];
+    my $maxtermfreq = 0;
+
+    # Termfrequenzen sowie maximale Termfrequenz bestimmen
+    foreach my $singleterm (keys %{$term_ref}) {
+        if (length($singleterm) < 3){
+            delete $term_ref->{$singleterm};
+            next;
+        }
+        $term_ref->{$singleterm} = $dbh->get_termfreq($singleterm);
+        if ($term_ref->{$singleterm} > $maxtermfreq){
+            $maxtermfreq = $term_ref->{$singleterm};
+        }
+    }
+
+    # Jetzt Fontgroessen bestimmen
+    foreach my $singleterm (keys %{$term_ref}) {
+        my $weight = $term_ref->{$singleterm}/$maxtermfreq;
+        #       $font = sprintf ("%d", $sm + $del * $weight);
+        $font = sprintf ("%d", $sm + $del * $weight);
+        push @{$termcloud_ref}, {
+            term => $singleterm,
+            font => $font,
+        };
+        #       $ret .= "<a href=\"/blabla/$k/\" style=\"font-size: $font%;\">$k</a>\n";
+    }
+
+    my $sortedtermcloud_ref;
+    @{$sortedtermcloud_ref} = map { $_->[0] }
+                    sort { $a->[1] cmp $b->[1] }
+                        map { [$_, $_->{term}] }
+                            @{$termcloud_ref};
+
+    my $btime      = new Benchmark;
+    my $timeall    = timediff($btime,$atime);
+    my $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+    $logger->debug("Time: ".$resulttime);
+
+    return $sortedtermcloud_ref;
 }
 
 1;

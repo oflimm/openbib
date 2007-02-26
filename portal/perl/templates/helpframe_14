@@ -29,13 +29,29 @@
 <table width="100%">
 <tr><th>Schlagwort-Wolke</th></tr>
 <tr><td class="boxedclear">
-<!-- Beginn Result Item -->
+<!-- Beginn Tag-Cloud -->
+[%
+   css_classes = [
+        'fast-nicht-genutzt',
+        'nicht-sehr-genutzt',
+        'etwas-genutzt',
+        'genutzt',
+        'sehr-viel-genutzt',
+        'ultra-genutzt',
+        'am-meisten-genutzt',
+   ];
+%]
+
+<ol class="cloud">
 [%- FOREACH thisitem IN resultlist -%]
 [% item      = thisitem.item;
    itemcount = thisitem.count;
+   classnr   = thisitem.class;
+   itemclass = css_classes.$classnr;
 %]
-<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=sql;swt=%22[% item %]%22;database=[% database %];searchprofile=1" style="font-size:[% itemcount %]%">[% item %]</a>
+<li class="[% itemclass %]"><span>[% itemcount %] Titel sind verschlagwortet mit </span><a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=sql;swt=%22[% item %]%22;database=[% database %];searchprofile=1" class="tag">[% item %]</a></li>
 [% END %]
+</ol>
 </td></tr>
 </table>
 <p />

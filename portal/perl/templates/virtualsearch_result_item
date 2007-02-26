@@ -80,13 +80,33 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 [% IF (drilldown && fullresultcount > qopts.hitrange) || cloud.size > 5 %]
 <tr><td class="listnr"><td>&nbsp;</td><td colspan="4">
 
-[% IF cloud.size > 5 # Wenn mindest. 5 Elemente verfuegbar, dann ausgeben %]
+[% IF cloud.size > 6 # Wenn mindest. 6 Elemente verfuegbar, dann ausgeben %]
 <table width="100%">
 <tr><th colspan="4">Begriffs-Wolke&nbsp;<a href="#cloud[% database %]"><img src="/images/openbib/expand.png" alt="Optionen anzeigen" onclick="expandContent('cloud[% database %]',this); return false;"></th></tr>
 <tr><td colspan="4" class="boxedclear" id="cloud[% database %]" style="display:none;font-size:0.8em;">
-[% FOREACH item IN cloud %]
-<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;fs=[% lastquery %] [% item.term %]" style="font-size:[% item.font %]%">[% item.term %]</a>
+<!-- Beginn Tag-Cloud -->
+[%
+   css_classes = [
+        'fast-nicht-genutzt',
+        'nicht-sehr-genutzt',
+        'etwas-genutzt',
+        'genutzt',
+        'sehr-viel-genutzt',
+        'ultra-genutzt',
+        'am-meisten-genutzt',
+   ];
+%]
+
+<ol class="cloud">
+[%- FOREACH item IN cloud -%]
+[% 
+   classnr   = item.class;
+   class     = css_classes.$classnr;
+%]
+<li class="[% class %]"><span>[% item.count %] Titel enthalten den Term </span><a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;searchall=1;fs=[% lastquery %] [% item.term %]" class="tag">[% item.term %]</a></li>
 [% END %]
+</ol>
+
 </tr></tr>
 </table>
 <p />

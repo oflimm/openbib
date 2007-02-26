@@ -169,18 +169,14 @@ if ($type == 3){
                 count => $count,
             };
         }
-        
-        my $font;
-        my $sm = 70;
-        my $lg = 200;
-        my $del = $lg - $sm;
-        
-        for (my $i=0 ; $i < scalar (@$bestof_ref) ; $i++){
-            my $weight = $bestof_ref->[$i]->{count}/$maxcount;
-            $bestof_ref->[$i]->{count} = sprintf ("%d", $sm + $del * $weight);
+
+        if ($maxcount >= 6){
+            for (my $i=0 ; $i < scalar (@$bestof_ref) ; $i++){
+                $bestof_ref->[$i]->{class} = int($bestof_ref->[$i]->{count} / int($maxcount/6));
+            }
         }
 
-        my $sortedbestof_ref;
+        my $sortedbestof_ref ;
         @{$sortedbestof_ref} = map { $_->[0] }
             sort { $a->[1] cmp $b->[1] }
                 map { [$_, $_->{item}] }

@@ -1335,28 +1335,25 @@ sub gen_cloud {
     my $term_ref            = exists $arg_ref->{term_ref}
         ? $arg_ref->{term_ref}            : undef;
 
-    my $weight;
-    my $font;
-    my $sm = 40;
-    my $lg = 200;
-    my $del = $lg - $sm;
-    my $ret = '';
     my $termcloud_ref = [];
-    my $maxweight = 0;
+    my $maxtermfreq = 0;
     foreach my $singleterm (keys %{$term_ref}) {
-        if ($term_ref->{$singleterm} > $maxweight){
-            $maxweight = $term_ref->{$singleterm};
+        if ($term_ref->{$singleterm} > $maxtermfreq){
+            $maxtermfreq = $term_ref->{$singleterm};
         }
     }
 
     foreach my $singleterm (keys %{$term_ref}) {
-#       $font = sprintf ("%d", $sm + $del * $weight/$maxweight);
-        $font = sprintf ("%d", $sm + $del * $term_ref->{$singleterm}/$maxweight);
         push @{$termcloud_ref}, {
             term => $singleterm,
-            font => $font,
+            font => $term_ref->{$singleterm},
         };
-        #       $ret .= "<a href=\"/blabla/$k/\" style=\"font-size: $font%;\">$k</a>\n";
+    }
+
+    if ($maxtermfreq >= 6){
+        for (my $i=0 ; $i < scalar (@$termcloud_ref) ; $i++){
+            $termcloud_ref->[$i]->{class} = int($termcloud_ref->[$i]->{count} / int($maxtermfreq/6));
+        }
     }
 
     my $sortedtermcloud_ref;
@@ -1380,11 +1377,6 @@ sub gen_cloud_absolute {
     my $logger = get_logger ();
     my $atime=new Benchmark;
     
-    my $font;
-    my $sm = 40;
-    my $lg = 200;
-    my $del = $lg - $sm;
-    my $ret = '';
     my $termcloud_ref = [];
     my $maxtermfreq = 0;
 
@@ -1402,16 +1394,18 @@ sub gen_cloud_absolute {
 
     # Jetzt Fontgroessen bestimmen
     foreach my $singleterm (keys %{$term_ref}) {
-        my $weight = $term_ref->{$singleterm}/$maxtermfreq;
-        #       $font = sprintf ("%d", $sm + $del * $weight);
-        $font = sprintf ("%d", $sm + $del * $weight);
         push @{$termcloud_ref}, {
-            term => $singleterm,
-            font => $font,
+            term  => $singleterm,
+            count => $term_ref->{$singleterm},
         };
-        #       $ret .= "<a href=\"/blabla/$k/\" style=\"font-size: $font%;\">$k</a>\n";
     }
 
+    if ($maxtermfreq >= 6){
+        for (my $i=0 ; $i < scalar (@$termcloud_ref) ; $i++){
+            $termcloud_ref->[$i]->{class} = int($termcloud_ref->[$i]->{count} / int($maxtermfreq/6));
+        }
+    }
+    
     my $sortedtermcloud_ref;
     @{$sortedtermcloud_ref} = map { $_->[0] }
                     sort { $a->[1] cmp $b->[1] }

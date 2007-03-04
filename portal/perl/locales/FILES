@@ -106,6 +106,10 @@
 ../templates/virtualsearch_showswtindex_item
 ../templates/virtualsearch_showverfindex
 ../templates/virtualsearch_showverfindex_item
+../templates/visible_categories_autset
+../templates/visible_categories_korset
+../templates/visible_categories_notset
+../templates/visible_categories_swtset
 ../templates/visible_categories_titset
 ../modules/OpenBib/Admin.pm
 ../modules/OpenBib/Circulation.pm

@@ -2271,6 +2271,9 @@ sub get_recent_titids_by_not {
 
 sub highlightquery {
     my ($searchquery_ref,$content) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
     
     # Highlight Query
 
@@ -2278,8 +2281,18 @@ sub highlightquery {
         searchquery_ref => $searchquery_ref,
     });
 
-    my $terms = join("|",@$term_ref);
+    return $content if (scalar(@$term_ref) <= 0);
+
+    $logger->debug("Terms: ".YAML::Dump($term_ref));
+
+    my $terms = join("|", grep /^\w{3,}/ ,@$term_ref);
+
+    $logger->debug("Terms: ".YAML::Dump($term_ref));
+    $logger->debug("Content vor: ".$content);
+
     $content=~s/\b($terms)/<span class="queryhighlight">$1<\/span>/ig unless ($content=~/http/);
+
+    $logger->debug("Content nach: ".$content);
 
     return $content;
 }

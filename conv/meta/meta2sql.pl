@@ -612,7 +612,7 @@ while (my $line=<IN>){
             }
         }
 
-        # Verknupefungen
+        # Verknuepfungen
         if ($category=~m/^0004/){
             my ($targetid) = $content=~m/^(\d+)/;
             my $targettype = 1; # TIT

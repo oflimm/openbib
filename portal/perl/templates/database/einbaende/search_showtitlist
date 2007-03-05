@@ -112,10 +112,15 @@
 [%- title = item.${'T0310'}.first.content -%]
 [%- END -%]
 
-[%- IF NOT title && item.${'T0089'}.first.content -%]
-[%- title = item.${'T0089'}.first.content -%]
+[%# Einbeziehung der Zaehlfelder T5100 %]
+[%- IF title && item.${'T5100'}.first.content -%]
+[%-    order = item.${'T5100'}.first.content -%]
+[%-    IF title == order -%]
+[%-      title = "${order}."-%]
+[%-    ELSE -%]
+[%-      title = "${order}. ${title}" -%]
+[%-    END -%]
 [%- END -%]
-
 
 [%# Verlage konstruieren %]
 [%- publisher = item.${'T0412'}.first.content -%]

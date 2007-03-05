@@ -101,9 +101,14 @@
 [%- title = item.${'T0310'}.first.content -%]
 [%- END -%]
 
+[%# Einbeziehung der Zaehlfelder T5100 %]
 [%- IF title && item.${'T5100'}.first.content -%]
 [%- order = item.${'T5100'}.first.content -%]
-[%- title = "${order}. ${title}"-%]
+[%-    IF title == order -%]
+[%-      title = "${order}."-%]
+[%-    ELSE -%]
+[%-      title = "${order}. ${title}" -%]
+[%-    END -%]
 [%- END -%]
 
 [%# Verlage konstruieren %]

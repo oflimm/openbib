@@ -5,7 +5,7 @@ Version 2.0:
 - Optionale Verwendung der Xapian-Suchmaschinentechnologie
 - Experimenteller Zugriff auf Z39.50-Datenbanken
 - Durchgaengige Blaetter-Funktion in den Treffermengen bzgl. hitrange-Parameter
-- Recherche in Serie/Band/Quelle
+- Recherche in Serie/Band/Quelle (Kategorien 089,451,590)
 - Beschraenkung einer Recherche auf Ueberordnungen
 - Neues MAB2-orientiertes internes Standard-Metadaten-Format
 - Alternative Metadaten-Formate sind moeglich

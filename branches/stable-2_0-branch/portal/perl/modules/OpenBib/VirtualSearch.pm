@@ -378,12 +378,12 @@ sub handler {
         $contentreq=~s/%//g;
 
         if (!$contentreq) {
-            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keinen Begriff eingegeben"),$r,$msg);
+            OpenBib::Common::Util::print_warning($msg->maketext("F&uuml;r die Nutzung der Index-Funktion m&uuml;ssen Sie einen Begriff eingegeben"),$r,$msg);
             return OK;
         }
 
         if ($#databases > 0 && length($contentreq) < 3) {
-            OpenBib::Common::Util::print_warning($msg->maketext("Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche ausgewählt wurde."),$r,$msg);
+            OpenBib::Common::Util::print_warning($msg->maketext("Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche im Index ausgewählt wurde."),$r,$msg);
             return OK;
         }
 

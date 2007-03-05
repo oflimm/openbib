@@ -33,7 +33,10 @@
 <table width="100%">
 <tr><th>Hinweis</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
-Auf dieser Seite bekommen Sie eine &Uuml;bersicht von der Struktur des Kataloges bezogen auf die vergebenen Schlagworte in der Form einer Navigationswolke f&uuml;r einen auszuw&auml;hlenden Katalog.
+W&auml;hlen Sie einen Katalog aus, um f&uuml;r diesen eine
+&Uuml;bersicht der 200 am h&auml;ufigsten vergebenen Schlagworte in der Form einer
+Navigationswolke zu erhalten. Je mehr Titel entsprechend
+verschlagwortet wurden, umso grösser wird das zugehörige Schlagwort dargestellt.
 </td></tr>
 </table>
 <p />

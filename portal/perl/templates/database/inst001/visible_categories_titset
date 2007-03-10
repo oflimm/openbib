@@ -106,6 +106,7 @@
                 'T3001', # msg.maketext("T3001") TOC-URL / HTML
                 #'T3002', # msg.maketext("T3002") TOC-URL / TIFF
                 'T3003', # msg.maketext("T3003") TOC-URL / PDF
+                'T1600', # msg.maketext("T1600") Hinweis
                 'T5001', # msg.maketext("T5001") Anzahl uebergeordn. Werke
                 'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke
                 'T5100', # msg.maketext("T5100") Allg. Zaehlung

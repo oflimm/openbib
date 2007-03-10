@@ -161,6 +161,12 @@ FOREACH category IN categories;
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsinglenot=${thisid}";
          content   = " ${rssfeed}<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
+    CASE "T1600";
+         IF content.match('Sie einen Bestellschein aus');
+             content = "${content} Ebenso können Sie eine Mail an die <a href=\"http://www.ub.uni-koeln.de/res/listen_e_mail/ortsleihe/index_ger.html\" target=\"_blank\">Ortsleihe</a> schicken";
+         END;
+
+
     CASE "T5001";
          content   = "<img style=\"vertical-align:bottom\" src=\"/images/openbib/2rightarrow.png\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};supertit=${normset.id};generalsearch=supertit\"><span style=\"font-size:1.4em\">${content}</span></a>";
 

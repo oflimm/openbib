@@ -271,7 +271,7 @@ sub handler {
             my $setmask = decode_utf8($maskresult->{'masktype'});
 
             # Assoziieren des Recherchemasken-Typs mit der Session
-            if ($setmask ne "simple" && $setmask ne "advanced") {
+            if (!defined $setmask || ($setmask ne "simple" && $setmask ne "advanced")) {
                 $setmask="simple";
             }
 

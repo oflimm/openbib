@@ -29,6 +29,7 @@
 # translation of openbib.po to
 # translation of openbib.po to
 # translation of openbib.po to
+# translation of openbib.po to
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
 # Oliver Flimm <flimm@openbib.org>, 2006, 2007.
@@ -37,7 +38,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2007-03-04 14:32+0100\n"
+"PO-Revision-Date: 2007-03-06 18:23+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team:  <l10n@openbib.org>\n"
 "MIME-Version: 1.0\n"
@@ -46,7 +47,7 @@ msgstr ""
 "X-Generator: KBabel 1.9.1\n"
 
 #: ../templates/managecollection_tit_as_html_simple:37
-#: ../templates/search_showautset:39 ../templates/search_showkorset:42
+#: ../templates/search_showautset:41 ../templates/search_showkorset:42
 #: ../templates/search_shownotset:41 ../templates/search_showswtset:43
 msgid "${category}"
 msgstr "${category}"
@@ -59,7 +60,7 @@ msgstr "${category}"
 #: ../templates/database/portrait/search_showtitset:136
 #: ../templates/managecollection_tit_as_html:51
 #: ../templates/managecollection_tit_as_text:34
-#: ../templates/search_showmulttitset:93 ../templates/search_showtitset:184
+#: ../templates/search_showmulttitset:93 ../templates/search_showtitset:190
 msgid "${thiscategory}"
 msgstr "${thiscategory}"
 
@@ -317,7 +318,7 @@ msgstr "Ausleih-Einstellungen"
 #: ../templates/database/portrait/search_showtitset:162
 #: ../templates/managecollection_tit_as_html:76
 #: ../templates/managecollection_tit_as_html_simple:60
-#: ../templates/search_showmulttitset:124 ../templates/search_showtitset:216
+#: ../templates/search_showmulttitset:124 ../templates/search_showtitset:222
 msgid "Ausleihe/Exemplare"
 msgstr "Ausleihe/Exemplare"
 
@@ -406,7 +407,7 @@ msgstr "Beschreibung"
 #: ../templates/managecollection_tit_as_html:61
 #: ../templates/managecollection_tit_as_html_simple:45
 #: ../templates/managecollection_tit_as_text:39
-#: ../templates/search_showmulttitset:103 ../templates/search_showtitset:195
+#: ../templates/search_showmulttitset:103 ../templates/search_showtitset:201
 msgid "Besitzende Bibliothek"
 msgstr "Besitzende Bibliothek"
 
@@ -422,7 +423,7 @@ msgstr "Bestands-&Uuml;berpr&uuml;fungs-URL"
 #: ../templates/database/einbaende/search_showtitset:137
 #: ../templates/managecollection_tit_as_html:61
 #: ../templates/managecollection_tit_as_html_simple:45
-#: ../templates/search_showmulttitset:103 ../templates/search_showtitset:195
+#: ../templates/search_showmulttitset:103 ../templates/search_showtitset:201
 msgid "Bestandsverlauf"
 msgstr "Bestandsverlauf"
 
@@ -936,7 +937,7 @@ msgid "Geben Sie hier den Körperschaftsanfang ein"
 msgstr "Geben Sie hier den Körperschaftsanfang ein"
 
 #: ../templates/search_showswtindex:83 ../templates/search_showtitlist:178
-#: ../templates/search_showtitset:259
+#: ../templates/search_showtitset:265
 #: ../templates/virtualsearch_showswtindex:46
 msgid "Geben Sie hier den Schlagwortanfang ein"
 msgstr "Geben Sie hier den Schlagwortanfang ein"
@@ -1253,7 +1254,7 @@ msgstr "Initiale Suchen"
 #: ../templates/database/einbaende/search_showtitset:137
 #: ../templates/managecollection_tit_as_html:61
 #: ../templates/managecollection_tit_as_html_simple:45
-#: ../templates/search_showmulttitset:103 ../templates/search_showtitset:195
+#: ../templates/search_showmulttitset:103 ../templates/search_showtitset:201
 msgid "Inventarnummer"
 msgstr "Inventarnummer"
 
@@ -1908,7 +1909,7 @@ msgstr "Schlagworte"
 msgid "Schlagwortindex"
 msgstr "Schlagwortindex"
 
-#: ../templates/search_showtitset:258
+#: ../templates/search_showtitset:264
 msgid "Schlagwortindex diese Katalogs"
 msgstr "Schlagwortindex diese Katalogs"
 
@@ -2210,7 +2211,7 @@ msgstr "Sigel"
 #: ../templates/database/landschaft/search_showtitset:147
 #: ../templates/database/portrait/search_showtitset:147
 #: ../templates/managecollection_tit_as_html:61
-#: ../templates/search_showmulttitset:103 ../templates/search_showtitset:195
+#: ../templates/search_showmulttitset:103 ../templates/search_showtitset:201
 #: ../templates/searchframe:132 ../templates/userprefs:177
 #: ../templates/views/einbaende/searchframe_simple:106
 #: ../templates/views/inst405/searchframe:151
@@ -2307,7 +2308,7 @@ msgstr "Sprung zur Trefferliste im KUG"
 #: ../templates/database/einbaende/search_showtitset:241
 #: ../templates/managecollection_tit_as_html:61
 #: ../templates/managecollection_tit_as_html_simple:45
-#: ../templates/search_showmulttitset:103 ../templates/search_showtitset:195
+#: ../templates/search_showmulttitset:103 ../templates/search_showtitset:201
 msgid "Standort"
 msgstr "Standort"
 
@@ -2342,7 +2343,7 @@ msgid "Suche starten"
 msgstr "Suche starten"
 
 #: ../templates/search_showswtindex:83 ../templates/search_showtitlist:178
-#: ../templates/search_showtitset:259
+#: ../templates/search_showtitset:265
 #: ../templates/views/einbaende/searchframe_simple:30
 #: ../templates/views/portrait/searchframe:153
 #: ../templates/views/portrait/searchframe:157
@@ -2420,18 +2421,22 @@ msgstr "System"
 msgid "Systematik"
 msgstr "Systematik"
 
+#: ../templates/database/inst001/visible_categories_titset:87
 #: ../templates/visible_categories_titset:86
 msgid "T0026"
 msgstr "Nebeneintr."
 
+#: ../templates/database/inst001/visible_categories_titset:47
 #: ../templates/visible_categories_titset:46
 msgid "T0035"
 msgstr "Ersch.Land"
 
+#: ../templates/database/inst001/visible_categories_titset:21
 #: ../templates/visible_categories_titset:21
 msgid "T0089"
 msgstr "Bandangabe"
 
+#: ../templates/database/inst001/visible_categories_titset:16
 #: ../templates/visible_categories_titset:16
 msgid "T0100"
 msgstr "Verfasser"
@@ -2448,6 +2453,7 @@ msgstr "Künstler"
 msgid "T0100-portrait"
 msgstr "Maler / Zeichner"
 
+#: ../templates/database/inst001/visible_categories_titset:17
 #: ../templates/database/landschaft/visible_categories_titset:18
 #: ../templates/visible_categories_titset:17
 msgid "T0101"
@@ -2469,6 +2475,7 @@ msgstr "Dargestellte Person"
 msgid "T0102-portrait"
 msgstr "Dargestellt Person"
 
+#: ../templates/database/inst001/visible_categories_titset:18
 #: ../templates/database/landschaft/visible_categories_titset:19
 #: ../templates/visible_categories_titset:18
 msgid "T0103"
@@ -2478,6 +2485,7 @@ msgstr "Gefeierte Person"
 msgid "T0103-portrait"
 msgstr "Weitere Person"
 
+#: ../templates/database/inst001/visible_categories_titset:19
 #: ../templates/visible_categories_titset:19
 msgid "T0200"
 msgstr "Urheber"
@@ -2495,6 +2503,7 @@ msgstr "Topogr. Schlagwort"
 msgid "T0200-portrait"
 msgstr "Provenienz"
 
+#: ../templates/database/inst001/visible_categories_titset:20
 #: ../templates/visible_categories_titset:20
 msgid "T0201"
 msgstr "Körperschaft"
@@ -2503,18 +2512,22 @@ msgstr "Körperschaft"
 msgid "T0201-portrait"
 msgstr "Körperschaft"
 
+#: ../templates/database/inst001/visible_categories_titset:25
 #: ../templates/visible_categories_titset:25
 msgid "T0300"
 msgstr "SammelVermerk"
 
+#: ../templates/database/inst001/visible_categories_titset:23
 #: ../templates/visible_categories_titset:23
 msgid "T0304"
 msgstr "EST"
 
+#: ../templates/database/inst001/visible_categories_titset:22
 #: ../templates/visible_categories_titset:22
 msgid "T0310"
 msgstr "Ansetzungstitel"
 
+#: ../templates/database/inst001/visible_categories_titset:24
 #: ../templates/visible_categories_titset:24
 msgid "T0331"
 msgstr "Titel"
@@ -2531,10 +2544,12 @@ msgstr "Objekt-Titel"
 msgid "T0331-portrait"
 msgstr "Bildtitel"
 
+#: ../templates/database/inst001/visible_categories_titset:29
 #: ../templates/visible_categories_titset:28
 msgid "T0333"
 msgstr "Zu erg. Urh."
 
+#: ../templates/database/inst001/visible_categories_titset:51
 #: ../templates/visible_categories_titset:50
 msgid "T0334"
 msgstr "Material"
@@ -2547,6 +2562,7 @@ msgstr "Trägermaterial"
 msgid "T0334-portrait"
 msgstr "Material"
 
+#: ../templates/database/inst001/visible_categories_titset:30
 #: ../templates/database/portrait/visible_categories_titset:21
 #: ../templates/visible_categories_titset:29
 msgid "T0335"
@@ -2556,10 +2572,12 @@ msgstr "Zusatz"
 msgid "T0335-einbaende"
 msgstr "Untertitel"
 
+#: ../templates/database/inst001/visible_categories_titset:27
 #: ../templates/visible_categories_titset:27
 msgid "T0341"
 msgstr "Paralleltitel"
 
+#: ../templates/database/inst001/visible_categories_titset:33
 #: ../templates/database/landschaft/visible_categories_titset:30
 #: ../templates/visible_categories_titset:32
 msgid "T0359"
@@ -2569,10 +2587,13 @@ msgstr "Vorlageform Verfasser"
 msgid "T0359-portrait"
 msgstr "Vorlageform"
 
+#: ../templates/database/inst001/visible_categories_titset:34
 #: ../templates/visible_categories_titset:33
 msgid "T0360"
 msgstr "Vorl.Unterreihe"
 
+#: ../templates/database/inst001/visible_categories_titset:28
+#: ../templates/database/inst001/visible_categories_titset:31
 #: ../templates/visible_categories_titset:30
 msgid "T0361"
 msgstr "Beigefügte Werke"
@@ -2581,10 +2602,12 @@ msgstr "Beigefügte Werke"
 msgid "T0361-einbaende"
 msgstr "Beibände"
 
+#: ../templates/database/inst001/visible_categories_titset:32
 #: ../templates/visible_categories_titset:31
 msgid "T0365"
 msgstr "Gemeins. Angaben"
 
+#: ../templates/database/inst001/visible_categories_titset:26
 #: ../templates/visible_categories_titset:26
 msgid "T0370"
 msgstr "Weiterer Titel"
@@ -2593,14 +2616,17 @@ msgstr "Weiterer Titel"
 msgid "T0370-einbaende"
 msgstr "Provenienz"
 
+#: ../templates/database/inst001/visible_categories_titset:35
 #: ../templates/visible_categories_titset:34
 msgid "T0403"
 msgstr "Ausgabe"
 
+#: ../templates/database/inst001/visible_categories_titset:40
 #: ../templates/visible_categories_titset:39
 msgid "T0405"
 msgstr "Erscheinungsverlauf"
 
+#: ../templates/database/inst001/visible_categories_titset:57
 #: ../templates/visible_categories_titset:56
 msgid "T0407"
 msgstr "Maßstab"
@@ -2609,6 +2635,7 @@ msgstr "Maßstab"
 msgid "T0407-landschaft"
 msgstr "Höhe x Breite"
 
+#: ../templates/database/inst001/visible_categories_titset:36
 #: ../templates/database/landschaft/visible_categories_titset:37
 #: ../templates/database/portrait/visible_categories_titset:30
 #: ../templates/visible_categories_titset:35
@@ -2619,12 +2646,14 @@ msgstr "Verlagsort"
 msgid "T0410-einbaende"
 msgstr "Ersch-Ort"
 
+#: ../templates/database/inst001/visible_categories_titset:37
 #: ../templates/database/landschaft/visible_categories_titset:38
 #: ../templates/database/portrait/visible_categories_titset:31
 #: ../templates/visible_categories_titset:36
 msgid "T0412"
 msgstr "Verlag"
 
+#: ../templates/database/inst001/visible_categories_titset:46
 #: ../templates/visible_categories_titset:45
 msgid "T0413"
 msgstr "Drucker"
@@ -2633,6 +2662,7 @@ msgstr "Drucker"
 msgid "T0413-einbaende"
 msgstr "Drucker"
 
+#: ../templates/database/inst001/visible_categories_titset:39
 #: ../templates/database/landschaft/visible_categories_titset:39
 #: ../templates/visible_categories_titset:38
 msgid "T0424"
@@ -2646,6 +2676,7 @@ msgstr "E-Jahr"
 msgid "T0424-portrait"
 msgstr "Jahr/Ansetzung"
 
+#: ../templates/database/inst001/visible_categories_titset:38
 #: ../templates/visible_categories_titset:37
 msgid "T0425"
 msgstr "Ersch. Jahr"
@@ -2662,12 +2693,15 @@ msgstr "Datierung"
 msgid "T0425-portrait"
 msgstr "Jahr"
 
+#: ../templates/database/inst001/visible_categories_titset:50
 #: ../templates/database/landschaft/visible_categories_titset:40
 #: ../templates/database/portrait/visible_categories_titset:34
 #: ../templates/visible_categories_titset:49
 msgid "T0433"
 msgstr "Umfang"
 
+#: ../templates/database/inst001/visible_categories_titset:45
+#: ../templates/database/inst001/visible_categories_titset:58
 #: ../templates/database/landschaft/visible_categories_titset:42
 #: ../templates/database/portrait/visible_categories_titset:36
 #: ../templates/visible_categories_titset:44
@@ -2675,6 +2709,7 @@ msgstr "Umfang"
 msgid "T0434"
 msgstr "Sonst.Angaben"
 
+#: ../templates/database/inst001/visible_categories_titset:48
 #: ../templates/visible_categories_titset:47
 msgid "T0435"
 msgstr "Format"
@@ -2683,14 +2718,17 @@ msgstr "Format"
 msgid "T0435-einbaende"
 msgstr "Maße"
 
+#: ../templates/database/inst001/visible_categories_titset:59
 #: ../templates/visible_categories_titset:58
 msgid "T0437"
 msgstr "Begleitmaterial"
 
+#: ../templates/database/inst001/visible_categories_titset:54
 #: ../templates/visible_categories_titset:53
 msgid "T0451"
 msgstr "Gesamttitel"
 
+#: ../templates/database/inst001/visible_categories_titset:60
 #: ../templates/database/landschaft/visible_categories_titset:31
 #: ../templates/visible_categories_titset:59
 msgid "T0501"
@@ -2709,26 +2747,31 @@ msgstr "Lebensdaten"
 msgid "T0502"
 msgstr "EST beig. Werk"
 
+#: ../templates/database/inst001/visible_categories_titset:86
 #: ../templates/visible_categories_titset:85
 msgid "T0503"
 msgstr "Übers. HST"
 
+#: ../templates/database/inst001/visible_categories_titset:61
 #: ../templates/database/landschaft/visible_categories_titset:44
 #: ../templates/database/portrait/visible_categories_titset:38
 #: ../templates/visible_categories_titset:60
 msgid "T0504"
 msgstr "Paralleltitel/Fußnote"
 
+#: ../templates/database/inst001/visible_categories_titset:62
 #: ../templates/database/landschaft/visible_categories_titset:45
 #: ../templates/database/portrait/visible_categories_titset:39
 #: ../templates/visible_categories_titset:61
 msgid "T0505"
 msgstr "Weiterer Titel/Fußnote"
 
+#: ../templates/database/inst001/visible_categories_titset:63
 #: ../templates/visible_categories_titset:62
 msgid "T0507"
 msgstr "AngabenHST"
 
+#: ../templates/database/inst001/visible_categories_titset:49
 #: ../templates/database/landschaft/visible_categories_titset:84
 #: ../templates/visible_categories_titset:48
 msgid "T0508"
@@ -2742,6 +2785,7 @@ msgstr "Bibl. Nachweis"
 msgid "T0508-portrait"
 msgstr "Bibl. Nachweis"
 
+#: ../templates/database/inst001/visible_categories_titset:64
 #: ../templates/database/landschaft/visible_categories_titset:46
 #: ../templates/visible_categories_titset:63
 msgid "T0509"
@@ -2751,40 +2795,47 @@ msgstr "Verfasser Fußnote"
 msgid "T0509-portrait"
 msgstr "Lebensdaten"
 
+#: ../templates/database/inst001/visible_categories_titset:65
 #: ../templates/database/landschaft/visible_categories_titset:47
 #: ../templates/database/portrait/visible_categories_titset:41
 #: ../templates/visible_categories_titset:64
 msgid "T0510"
 msgstr "Ausgabe Fußnote"
 
+#: ../templates/database/inst001/visible_categories_titset:66
 #: ../templates/database/landschaft/visible_categories_titset:48
 #: ../templates/database/portrait/visible_categories_titset:42
 #: ../templates/visible_categories_titset:65
 msgid "T0511"
 msgstr "Erschverm. Fußnote"
 
+#: ../templates/database/inst001/visible_categories_titset:67
 #: ../templates/database/landschaft/visible_categories_titset:49
 #: ../templates/database/portrait/visible_categories_titset:43
 #: ../templates/visible_categories_titset:66
 msgid "T0512"
 msgstr "Koll. Fußnote"
 
+#: ../templates/database/inst001/visible_categories_titset:68
 #: ../templates/database/landschaft/visible_categories_titset:50
 #: ../templates/database/portrait/visible_categories_titset:44
 #: ../templates/visible_categories_titset:67
 msgid "T0513"
 msgstr "Impress. Änderung"
 
+#: ../templates/database/inst001/visible_categories_titset:69
 #: ../templates/database/landschaft/visible_categories_titset:51
 #: ../templates/database/portrait/visible_categories_titset:45
 #: ../templates/visible_categories_titset:68
 msgid "T0515"
 msgstr "Ergänzt. GesamtTitel"
 
+#: ../templates/database/inst001/visible_categories_titset:84
 #: ../templates/visible_categories_titset:83
 msgid "T0516"
 msgstr "Sprache"
 
+#: ../templates/database/inst001/visible_categories_titset:81
 #: ../templates/visible_categories_titset:80
 msgid "T0519"
 msgstr "Hochschulschrift"
@@ -2794,70 +2845,82 @@ msgstr "Hochschulschrift"
 msgid "T0521"
 msgstr "Angaben zum Inhalt"
 
+#: ../templates/database/inst001/visible_categories_titset:70
 #: ../templates/database/landschaft/visible_categories_titset:53
 #: ../templates/database/portrait/visible_categories_titset:47
 #: ../templates/visible_categories_titset:69
 msgid "T0522"
 msgstr "Teilungsvermerk"
 
+#: ../templates/database/inst001/visible_categories_titset:41
 #: ../templates/visible_categories_titset:40
 msgid "T0523"
 msgstr "Erscheinungsweise"
 
+#: ../templates/database/inst001/visible_categories_titset:71
 #: ../templates/database/landschaft/visible_categories_titset:54
 #: ../templates/database/portrait/visible_categories_titset:48
 #: ../templates/visible_categories_titset:70
 msgid "T0525"
 msgstr "Herkunft Fußnote"
 
+#: ../templates/database/inst001/visible_categories_titset:75
 #: ../templates/database/landschaft/visible_categories_titset:55
 #: ../templates/database/portrait/visible_categories_titset:49
 #: ../templates/visible_categories_titset:74
 msgid "T0527"
 msgstr "Parallele Ausg."
 
+#: ../templates/database/inst001/visible_categories_titset:76
 #: ../templates/database/landschaft/visible_categories_titset:56
 #: ../templates/database/portrait/visible_categories_titset:50
 #: ../templates/visible_categories_titset:75
 msgid "T0529"
 msgstr "Titel Beilage"
 
+#: ../templates/database/inst001/visible_categories_titset:77
 #: ../templates/database/landschaft/visible_categories_titset:57
 #: ../templates/database/portrait/visible_categories_titset:51
 #: ../templates/visible_categories_titset:76
 msgid "T0530"
 msgstr "Bezugswerk"
 
+#: ../templates/database/inst001/visible_categories_titset:78
 #: ../templates/database/landschaft/visible_categories_titset:58
 #: ../templates/database/portrait/visible_categories_titset:52
 #: ../templates/visible_categories_titset:77
 msgid "T0531"
 msgstr "Frühere Ausg."
 
+#: ../templates/database/inst001/visible_categories_titset:79
 #: ../templates/database/landschaft/visible_categories_titset:59
 #: ../templates/database/portrait/visible_categories_titset:53
 #: ../templates/visible_categories_titset:78
 msgid "T0532"
 msgstr "Früherer Titel"
 
+#: ../templates/database/inst001/visible_categories_titset:80
 #: ../templates/database/landschaft/visible_categories_titset:60
 #: ../templates/database/portrait/visible_categories_titset:54
 #: ../templates/visible_categories_titset:79
 msgid "T0533"
 msgstr "Spätere Ausg."
 
+#: ../templates/database/inst001/visible_categories_titset:72
 #: ../templates/database/landschaft/visible_categories_titset:61
 #: ../templates/database/portrait/visible_categories_titset:55
 #: ../templates/visible_categories_titset:71
 msgid "T0534"
 msgstr "Titelkonk."
 
+#: ../templates/database/inst001/visible_categories_titset:73
 #: ../templates/database/landschaft/visible_categories_titset:62
 #: ../templates/database/portrait/visible_categories_titset:56
 #: ../templates/visible_categories_titset:72
 msgid "T0535"
 msgstr "Anz. Exemplare"
 
+#: ../templates/database/inst001/visible_categories_titset:74
 #: ../templates/database/landschaft/visible_categories_titset:63
 #: ../templates/database/portrait/visible_categories_titset:57
 #: ../templates/visible_categories_titset:73
@@ -2874,10 +2937,12 @@ msgstr "Redaktionelle Bemerkungen"
 msgid "T0538"
 msgstr "Angabe Vervielfältigungsart"
 
+#: ../templates/database/inst001/visible_categories_titset:101
 #: ../templates/visible_categories_titset:100
 msgid "T0540"
 msgstr "ISBN"
 
+#: ../templates/database/inst001/visible_categories_titset:102
 #: ../templates/visible_categories_titset:101
 msgid "T0543"
 msgstr "ISSN"
@@ -2892,12 +2957,14 @@ msgstr "Fingerprint"
 msgid "T0580"
 msgstr "Sonstige Standardnummern"
 
+#: ../templates/database/inst001/visible_categories_titset:55
 #: ../templates/database/landschaft/visible_categories_titset:68
 #: ../templates/database/portrait/visible_categories_titset:62
 #: ../templates/visible_categories_titset:54
 msgid "T0590"
 msgstr "In:"
 
+#: ../templates/database/inst001/visible_categories_titset:42
 #: ../templates/database/portrait/visible_categories_titset:63
 #: ../templates/visible_categories_titset:41
 msgid "T0591"
@@ -2917,6 +2984,7 @@ msgstr "Abteilung Unterreiche der Quelle"
 msgid "T0593"
 msgstr "Ausgabebez. der Quelle"
 
+#: ../templates/database/inst001/visible_categories_titset:43
 #: ../templates/database/portrait/visible_categories_titset:66
 #: ../templates/visible_categories_titset:42
 msgid "T0594"
@@ -2926,6 +2994,7 @@ msgstr "Ersch.Ort Quelle"
 msgid "T0594-landschaft"
 msgstr "Entstehungslandschaft"
 
+#: ../templates/database/inst001/visible_categories_titset:44
 #: ../templates/database/portrait/visible_categories_titset:67
 #: ../templates/visible_categories_titset:43
 msgid "T0595"
@@ -2955,32 +3024,38 @@ msgstr "Fußnote der Quelle"
 msgid "T0599"
 msgstr "Standardnummer der Quelle"
 
+#: ../templates/database/inst001/visible_categories_titset:56
 #: ../templates/visible_categories_titset:55
 msgid "T0600"
 msgstr "Bemerkung"
 
+#: ../templates/database/inst001/visible_categories_titset:82
 #: ../templates/database/landschaft/visible_categories_titset:73
 #: ../templates/database/portrait/visible_categories_titset:72
 #: ../templates/visible_categories_titset:81
 msgid "T0619"
 msgstr "Jahr Vorlage"
 
+#: ../templates/database/inst001/visible_categories_titset:83
 #: ../templates/database/landschaft/visible_categories_titset:74
 #: ../templates/database/portrait/visible_categories_titset:73
 #: ../templates/visible_categories_titset:82
 msgid "T0646"
 msgstr "Filmbesitz"
 
+#: ../templates/database/inst001/visible_categories_titset:52
 #: ../templates/visible_categories_titset:51
 msgid "T0652"
 msgstr "EDV Material"
 
+#: ../templates/database/inst001/visible_categories_titset:53
 #: ../templates/database/landschaft/visible_categories_titset:75
 #: ../templates/database/portrait/visible_categories_titset:74
 #: ../templates/visible_categories_titset:52
 msgid "T0655"
 msgstr "EDV Adress"
 
+#: ../templates/database/inst001/visible_categories_titset:103
 #: ../templates/database/landschaft/visible_categories_titset:85
 #: ../templates/visible_categories_titset:102
 msgid "T0662"
@@ -3015,6 +3090,7 @@ msgstr "Jahr des Orginals"
 msgid "T0675"
 msgstr "Abweichende Orthographie"
 
+#: ../templates/database/inst001/visible_categories_titset:100
 #: ../templates/visible_categories_titset:99
 msgid "T0700"
 msgstr "Notation"
@@ -3031,6 +3107,7 @@ msgstr "1. Ikonogr. Schlagwort"
 msgid "T0700-portrait"
 msgstr "Beruf / Weltanschauung"
 
+#: ../templates/database/inst001/visible_categories_titset:89
 #: ../templates/visible_categories_titset:88
 msgid "T0710"
 msgstr "Schlagwort"
@@ -3047,6 +3124,7 @@ msgstr "2. Ikonogr. Schlagwort"
 msgid "T0710-portrait"
 msgstr "Region"
 
+#: ../templates/database/inst001/visible_categories_titset:85
 #: ../templates/visible_categories_titset:84
 msgid "T0750"
 msgstr "Abstract"
@@ -3059,6 +3137,7 @@ msgstr "Beschreibung"
 msgid "T0750-landschaft"
 msgstr "Transkription"
 
+#: ../templates/database/inst001/visible_categories_titset:88
 #: ../templates/database/landschaft/visible_categories_titset:81
 #: ../templates/visible_categories_titset:87
 msgid "T0800"
@@ -3073,42 +3152,52 @@ msgstr "Medienart"
 msgid "T0840"
 msgstr "Konkordanz"
 
+#: ../templates/database/inst001/visible_categories_titset:90
 #: ../templates/visible_categories_titset:89
 msgid "T0902"
 msgstr "Schlagwort RSWK"
 
+#: ../templates/database/inst001/visible_categories_titset:91
 #: ../templates/visible_categories_titset:90
 msgid "T0907"
 msgstr "Schlagwort RSWK"
 
+#: ../templates/database/inst001/visible_categories_titset:92
 #: ../templates/visible_categories_titset:91
 msgid "T0912"
 msgstr "Schlagwort RSWK"
 
+#: ../templates/database/inst001/visible_categories_titset:93
 #: ../templates/visible_categories_titset:92
 msgid "T0917"
 msgstr "Schlagwort RSWK"
 
+#: ../templates/database/inst001/visible_categories_titset:94
 #: ../templates/visible_categories_titset:93
 msgid "T0922"
 msgstr "Schlagwort RSWK"
 
+#: ../templates/database/inst001/visible_categories_titset:95
 #: ../templates/visible_categories_titset:94
 msgid "T0927"
 msgstr "Schlagwort RSWK"
 
+#: ../templates/database/inst001/visible_categories_titset:96
 #: ../templates/visible_categories_titset:95
 msgid "T0932"
 msgstr "Schlagwort RSWK"
 
+#: ../templates/database/inst001/visible_categories_titset:97
 #: ../templates/visible_categories_titset:96
 msgid "T0937"
 msgstr "Schlagwort RSWK"
 
+#: ../templates/database/inst001/visible_categories_titset:98
 #: ../templates/visible_categories_titset:97
 msgid "T0942"
 msgstr "Schlagwort RSWK"
 
+#: ../templates/database/inst001/visible_categories_titset:99
 #: ../templates/visible_categories_titset:98
 msgid "T0947"
 msgstr "Schlagwort RSWK"
@@ -3118,10 +3207,16 @@ msgstr "Schlagwort RSWK"
 msgid "T1202"
 msgstr "Bestand Bemerkung"
 
+#: ../templates/database/inst001/visible_categories_titset:109
+msgid "T1600"
+msgstr "Hinweis"
+
+#: ../templates/database/inst001/visible_categories_titset:104
 #: ../templates/visible_categories_titset:103
 msgid "T2662"
 msgstr "USB URL"
 
+#: ../templates/database/inst001/visible_categories_titset:105
 #: ../templates/visible_categories_titset:104
 msgid "T2663"
 msgstr "USB URL-Info"
@@ -3134,6 +3229,7 @@ msgstr "Besitzer"
 msgid "T3000-portrait"
 msgstr "Besitzer"
 
+#: ../templates/database/inst001/visible_categories_titset:106
 #: ../templates/database/landschaft/visible_categories_titset:35
 #: ../templates/visible_categories_titset:105
 msgid "T3001"
@@ -3143,24 +3239,29 @@ msgstr "TOC / HTML"
 msgid "T3001-portrait"
 msgstr "Fr&uuml;here Signatur"
 
+#: ../templates/database/inst001/visible_categories_titset:107
 #: ../templates/visible_categories_titset:106
 msgid "T3002"
 msgstr "TOC / TIFF"
 
+#: ../templates/database/inst001/visible_categories_titset:108
 #: ../templates/visible_categories_titset:107
 msgid "T3003"
 msgstr "TOC / PDF"
 
 #: ../templates/database/einbaende/visible_categories_titset:24
+#: ../templates/database/inst001/visible_categories_titset:110
 #: ../templates/visible_categories_titset:108
 msgid "T5001"
 msgstr "Anzahl Gesamttitel"
 
 #: ../templates/database/einbaende/visible_categories_titset:25
+#: ../templates/database/inst001/visible_categories_titset:111
 #: ../templates/visible_categories_titset:109
 msgid "T5002"
 msgstr "Anzahl Bände/Stücke"
 
+#: ../templates/database/inst001/visible_categories_titset:112
 #: ../templates/visible_categories_titset:110
 msgid "T5100"
 msgstr "Zählung"

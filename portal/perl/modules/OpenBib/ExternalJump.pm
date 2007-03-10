@@ -183,20 +183,18 @@ sub handler {
     my $password  = "";
 
     my $globalsessionID="$config->{servername}:$session->{ID}";
-    my $userresult=$user->{dbh}->prepare("select user.loginname,user.pin,count(user.loginname) as rowcount from usersession,user where usersession.sessionid = ? and user.userid=usersession.userid") or die "Error -- $DBI::errstr";
+    my $userresult=$user->{dbh}->prepare("select user.loginname,user.pin from usersession,user where usersession.sessionid = ? and user.userid=usersession.userid") or die "Error -- $DBI::errstr";
  
     $userresult->execute($globalsessionID);
-    my $res  = $userresult->fetchrow_hashref();
-    my $rows = $res->{rowcount};
 
-    if ($rows > 0) {
+    while (my $res  = $userresult->fetchrow_hashref()){
         $loginname = decode_utf8($res->{'loginname'});
         $password  = decode_utf8($res->{'pin'});
     }
     $userresult->finish();
 
     my $authurl="";
-    unless (Email::Valid->address($loginname)){
+    unless (defined $loginname && defined $password && Email::Valid->address($loginname)){
 
         # Hash im loginname durch %23 ersetzen
         $loginname=~s/#/\%23/;

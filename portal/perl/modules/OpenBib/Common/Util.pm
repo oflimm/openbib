@@ -372,8 +372,8 @@ sub by_popularity {
     my $line1=(exists $line1{popularity} && defined $line1{popularity})?cleanrl($line1{popularity}):"";
     my $line2=(exists $line2{popularity} && defined $line2{popularity})?cleanrl($line2{popularity}):"";
 
-    $line1=0 if (!defined $line1);
-    $line2=0 if (!defined $line2);
+    $line1=0 if (!defined $line1 || $line1 eq "");
+    $line2=0 if (!defined $line2 || $line2 eq "");
 
     $line1 <=> $line2;
 }
@@ -385,8 +385,8 @@ sub by_popularity_down {
     my $line1=(exists $line1{popularity} && defined $line1{popularity})?cleanrl($line1{popularity}):"";
     my $line2=(exists $line2{popularity} && defined $line2{popularity})?cleanrl($line2{popularity}):"";
 
-    $line1=0 if (!defined $line1);
-    $line2=0 if (!defined $line2);
+    $line1=0 if (!defined $line1 || $line1 eq "");
+    $line2=0 if (!defined $line2 || $line2 eq "");
 
     $line2 <=> $line1;
 }
@@ -567,20 +567,20 @@ sub get_searchquery {
 
     my ($fsnorm, $verfnorm, $hstnorm, $hststringnorm, $gtquellenorm, $swtnorm, $kornorm, $signnorm, $isbnnorm, $issnnorm, $martnorm,$notationnorm,$ejahrnorm);
     
-    $fs        = $fsnorm        = decode_utf8($query->param('fs'))            || '';
-    $verf      = $verfnorm      = decode_utf8($query->param('verf'))          || '';
-    $hst       = $hstnorm       = decode_utf8($query->param('hst'))           || '';
-    $hststring = $hststringnorm = decode_utf8($query->param('hststring'))     || '';
-    $gtquelle  = $gtquellenorm  = decode_utf8($query->param('gtquelle'))      || '';
-    $swt       = $swtnorm       = decode_utf8($query->param('swt'))           || '';
-    $kor       = $kornorm       = decode_utf8($query->param('kor'))           || '';
-    $sign      = $signnorm      = decode_utf8($query->param('sign'))          || '';
-    $isbn      = $isbnnorm      = decode_utf8($query->param('isbn'))          || '';
-    $issn      = $issnnorm      = decode_utf8($query->param('issn'))          || '';
-    $mart      = $martnorm      = decode_utf8($query->param('mart'))          || '';
-    $notation  = $notationnorm  = decode_utf8($query->param('notation'))      || '';
-    $ejahr     = $ejahrnorm     = decode_utf8($query->param('ejahr'))         || '';
-    $ejahrop   =                  decode_utf8($query->param('ejahrop'))       || 'eq';
+    $fs        = $fsnorm        = decode_utf8($query->param('fs'))            || $query->param('fs')      || '';
+    $verf      = $verfnorm      = decode_utf8($query->param('verf'))          || $query->param('verf')    || '';
+    $hst       = $hstnorm       = decode_utf8($query->param('hst'))           || $query->param('hst')     || '';
+    $hststring = $hststringnorm = decode_utf8($query->param('hststring'))     || $query->param('hststrin')|| '';
+    $gtquelle  = $gtquellenorm  = decode_utf8($query->param('gtquelle'))      || $query->param('qtquelle')|| '';
+    $swt       = $swtnorm       = decode_utf8($query->param('swt'))           || $query->param('swt')     || '';
+    $kor       = $kornorm       = decode_utf8($query->param('kor'))           || $query->param('kor')     || '';
+    $sign      = $signnorm      = decode_utf8($query->param('sign'))          || $query->param('sign')    || '';
+    $isbn      = $isbnnorm      = decode_utf8($query->param('isbn'))          || $query->param('isbn')    || '';
+    $issn      = $issnnorm      = decode_utf8($query->param('issn'))          || $query->param('issn')    || '';
+    $mart      = $martnorm      = decode_utf8($query->param('mart'))          || $query->param('mart')    || '';
+    $notation  = $notationnorm  = decode_utf8($query->param('notation'))      || $query->param('notation')|| '';
+    $ejahr     = $ejahrnorm     = decode_utf8($query->param('ejahr'))         || $query->param('ejahr')   || '';
+    $ejahrop   =                  decode_utf8($query->param('ejahrop'))       || $query->param('ejahrop') || 'eq';
 
     my $autoplus      = $query->param('autoplus')      || '';
     my $verfindex     = $query->param('verfindex')     || '';
@@ -928,6 +928,9 @@ sub grundform {
     $content=~s/&quot;//g;
     $content=~s/&amp;//g;
 
+    # Ausfiltern von Supplements in []
+    $content=~s/\[.*?\]//g;
+    
     # Fall: C++, C# und .Net
     $content=~s/(?<=(\w|\+))\+/plus/g;
     $content=~s/(c)\#/$1sharp/ig;
@@ -1216,6 +1219,8 @@ sub normset2bibtex {
 sub utf2bibtex {
     my ($string)=@_;
 
+    return "" if (!defined $string);
+    
     # {} werden von BibTeX verwendet und haben in den Originalinhalten
     # nichts zu suchen
     $string=~s/\{//g;

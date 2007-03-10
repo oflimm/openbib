@@ -566,14 +566,8 @@ sub get_tit_listitem_by_idn {
         ? $arg_ref->{titidn}            : undef;
     my $dbh               = exists $arg_ref->{dbh}
         ? $arg_ref->{dbh}               : undef;
-    my $sessiondbh        = exists $arg_ref->{sessiondbh}
-        ? $arg_ref->{sessiondbh}        : undef;
-    my $targetdbinfo_ref  = exists $arg_ref->{targetdbinfo_ref}
-        ? $arg_ref->{targetdbinfo_ref}  : undef;
     my $database          = exists $arg_ref->{database}
         ? $arg_ref->{database}          : undef;
-    my $sessionID         = exists $arg_ref->{sessionID}
-        ? $arg_ref->{sessionID}         : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();

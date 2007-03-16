@@ -5,7 +5,7 @@
 #
 #  Entladen von statistisch relevanten Daten
 #
-#  Dieses File ist (C) 2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2007 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -61,24 +61,47 @@ L4PCONF
 Log::Log4perl::init(\$log4Perl_config);
 
 my $logger = get_logger();
-  
+
+
+my %monthtab=(
+    Jan => '01',
+    Feb => '02',
+    Mrz => '03',
+    Apr => '04',
+    Mai => '05',
+    Jun => '06',
+    Jul => '07',
+    Aug => '08',
+    Sep => '09',
+    Okt => '10',
+    Nov => '11',
+    Dez => '12',
+);
+
 #####################################################################
 # Verbindung zur SQL-Datenbank herstellen
   
 my $dbh=DBI->connect("DBI:$config{dbimodule}:dbname=$database;server=$config{dbserver};host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd}) or $logger->error_die($DBI::errstr);
 
-my $request=$dbh->prepare("select b.d01bnr as id, b.d01katkey as katkey, d.isbn as isbn from $database.sisis.d01buch as b, $database.sisis.titel_dupdaten as d where b.d01status = 4 and b.d01bg in (1,2,3,4,5,6,7,17,18) and b.d01katkey=d.katkey");
+my $request=$dbh->prepare("select b.d01bnr as id, b.d01katkey as katkey, d.isbn as isbn, b.d01av as borrowdate from $database.sisis.d01buch as b, $database.sisis.titel_dupdaten as d where b.d01status = 4 and b.d01bg in (1,2,3,4,5,6,7,17,18) and b.d01katkey=d.katkey");
 $request->execute() or $logger->error_die($DBI::errstr);
 
 while (my $result=$request->fetchrow_hashref){
-    my $id     = $result->{id};
-    my $katkey = $result->{katkey};
-    my $isbn   = $result->{isbn} || '';
+    my $id         = $result->{id};
+    my $borrowdate = $result->{borrowdate};
+    my $katkey     = $result->{katkey};
+    my $isbn       = $result->{isbn} || '';
     
     $id=~s/#.$//;
     $isbn=~s/ //g;
     $isbn=~s/-//g;
     $isbn=~s/([A-Z])/\l$1/g;
-    
-    print $id.":".$isbn.":inst001:".$katkey.":1\n";
+
+    my ($month,$day,$year)=$borrowdate=~m/^([A-Za-z]+)\s+(\d+)\s+(\d+)\s+/;
+    $day   = sprintf "%02d", $day;
+    $month = sprintf "%02d", $monthtab{$month};
+
+    $borrowdate="$year-$month-$day";
+
+    print "$borrowdate 00:00:00|$id|$isbn|inst001|$katkey|1\n";
 }

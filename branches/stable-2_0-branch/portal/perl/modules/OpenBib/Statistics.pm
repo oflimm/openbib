@@ -62,6 +62,8 @@ sub store_relevance {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
+    my $tstamp            = exists $arg_ref->{tstamp}
+        ? $arg_ref->{tstamp}        : undef;
     my $id                = exists $arg_ref->{id}
         ? $arg_ref->{id    }        : undef;
     my $isbn              = exists $arg_ref->{isbn}
@@ -78,8 +80,8 @@ sub store_relevance {
 
     return undef unless (defined $id && defined $dbname && defined $katkey && defined $type && defined $self->{dbh});
     
-    my $request=$self->{dbh}->prepare("insert into relevance values (NULL,?,?,?,?,?)") or $logger->error($DBI::errstr);
-    $request->execute($id,$isbn,$dbname,$katkey,$type) or $logger->error($DBI::errstr);
+    my $request=$self->{dbh}->prepare("insert into relevance values (?,?,?,?,?,?)") or $logger->error($DBI::errstr);
+    $request->execute($tstamp,$id,$isbn,$dbname,$katkey,$type) or $logger->error($DBI::errstr);
     return;
 }
 

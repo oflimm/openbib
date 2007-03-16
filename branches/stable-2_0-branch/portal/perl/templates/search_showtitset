@@ -106,6 +106,9 @@ FOREACH category IN categories;
     CASE "T0540";
          content   = "<a href=\"http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}\" target=\"_blank\"><img src=\"/images/openbib/wikipedia.png\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${highlightquery(searchquery,content)}";
 
+    CASE "T0543";
+         content   = "${content} (<a href=\"${config.ezb_exturl}&jq_term1=${content}\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
+
     CASE [ "T0662" "T2662" "T3001" "T3002" "T3003" ];
          thisindicator = item.indicator ;
          thiscontent   = '' ;

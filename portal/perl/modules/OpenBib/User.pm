@@ -165,6 +165,22 @@ sub get_userid_of_session {
     return $userid;
 }
 
+sub clear_cached_userdata {
+    my ($self,$userid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return undef if (!defined $self->{dbh});
+
+    my $request=$self->{dbh}->prepare("update user set nachname = '', vorname = '', strasse = '', ort = '', plz = '', soll = '', gut = '', avanz = '', branz = '', bsanz = '', vmanz = '', maanz = '', vlanz = '', sperre = '', sperrdatum = '', gebdatum = '' where userid = ?") or die "$DBI::errstr";
+    $request->execute($userid) or die "$DBI::errstr";
+  
+    $request->finish();
+
+    return;
+}
+
 sub get_targetdb_of_session {
     my ($self,$sessionID)=@_;
 

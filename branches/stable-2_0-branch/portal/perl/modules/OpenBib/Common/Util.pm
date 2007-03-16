@@ -352,6 +352,30 @@ sub by_order {
     my $line1=(exists $line1{T5100}[0]{content} && defined $line1{T5100}[0]{content})?cleanrl($line1{T5100}[0]{content}):"";
     my $line2=(exists $line2{T5100}[0]{content} && defined $line2{T5100}[0]{content})?cleanrl($line2{T5100}[0]{content}):"";
 
+    # Intelligentere Sortierung nach numerisch beginnenden Zaehlungen
+    my ($zahl1,$zahl2,$rest1,$rest2);
+
+    if ($line1 =~m/^(\d+)(.*?)/i){
+        $zahl1=$1;
+        $rest1=$2;
+    }
+    else {
+        $zahl1=0;
+        $rest1=$line1;
+    }
+
+    if ($line2 =~m/^(\d+)(.*?)/i){
+        $zahl2=$1;
+        $rest2=$2;
+    }
+    else {
+        $zahl2=0;
+        $rest2=$line2;
+    }
+
+    $line1=sprintf "%08d%s", (defined $zahl1)?$zahl1:"", (defined $rest1)?$rest1:"";
+    $line2=sprintf "%08d%s", (defined $zahl2)?$zahl2:"", (defined $rest2)?$rest2:"";
+
     $line1 cmp $line2;
 }
 
@@ -361,6 +385,30 @@ sub by_order_down {
 
     my $line1=(exists $line1{T5100}[0]{content} && defined $line1{T5100}[0]{content})?cleanrl($line1{T5100}[0]{content}):"";
     my $line2=(exists $line2{T5100}[0]{content} && defined $line2{T5100}[0]{content})?cleanrl($line2{T5100}[0]{content}):"";
+
+    # Intelligentere Sortierung nach numerisch beginnenden Zaehlungen
+    my ($zahl1,$zahl2,$rest1,$rest2);
+    
+    if ($line1 =~m/^(\d+)(.*?)/i){
+        $zahl1=$1;
+        $rest1=$2;
+    }
+    else {
+        $zahl1=0;
+        $rest1=$line1;
+    }
+
+    if ($line2 =~m/^(\d+)(.*?)/i){
+        $zahl2=$1;
+        $rest2=$2;
+    }
+    else {
+        $zahl2=0;
+        $rest2=$line2;
+    }
+
+    $line1=sprintf "%08d%s", (defined $zahl1)?$zahl1:"", (defined $rest1)?$rest1:"";
+    $line2=sprintf "%08d%s", (defined $zahl2)?$zahl2:"", (defined $rest2)?$rest2:"";
 
     $line2 cmp $line1;
 }

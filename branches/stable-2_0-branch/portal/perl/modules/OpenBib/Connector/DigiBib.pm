@@ -137,7 +137,7 @@ sub handler {
         = $session->get_queryoptions($query);
 
     my $targetdbinfo_ref
-        = config->get_targetdbinfo();
+        = $config->get_targetdbinfo();
 
     my $searchquery_ref
         = OpenBib::Common::Util::get_searchquery($r);

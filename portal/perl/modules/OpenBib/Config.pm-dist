@@ -185,6 +185,7 @@ use vars qw(%config);
 	   catalogue_loc         => '/portal/katalogisierung',
 	   circulation_loc       => '/portal/benutzerkonto',
 	   connector_digibib_loc => '/portal/connector/digibib',
+           connector_ukonline_loc=> '/portal/connector/uk-online',
 	   connector_olws_loc    => '/portal/connector/olws',
            connector_rss_loc     => '/portal/connector/rss',
            databasechoice_loc    => '/portal/katalogauswahl',

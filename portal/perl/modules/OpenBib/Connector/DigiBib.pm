@@ -45,6 +45,7 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Search::Util;
 use OpenBib::Session;
+use OpenBib::VirtualSearch::Util;
 
 sub handler {
     
@@ -103,8 +104,6 @@ sub handler {
     # database = Datenbank
     # tosearch = Langanzeige
 
-    my $autoplus = 1;
-    
     # Umwandlung impliziter ODER-Verknuepfung in UND-Verknuepfung
     my $hitrange   = 20;
     my $idn        = $query->param('idn');
@@ -141,7 +140,18 @@ sub handler {
 
     my $searchquery_ref
         = OpenBib::Common::Util::get_searchquery($r);
-                
+
+    # Autoplus einfuegen
+
+    $searchquery_ref->{fs      }{norm} = OpenBib::VirtualSearch::Util::conv2autoplus($searchquery_ref->{fs      }{norm}) if ($searchquery_ref->{fs      }{norm});
+    $searchquery_ref->{verf    }{norm} = OpenBib::VirtualSearch::Util::conv2autoplus($searchquery_ref->{verf    }{norm}) if ($searchquery_ref->{verf    }{norm});
+    $searchquery_ref->{hst     }{norm} = OpenBib::VirtualSearch::Util::conv2autoplus($searchquery_ref->{hst     }{norm}) if ($searchquery_ref->{hst     }{norm});
+    $searchquery_ref->{kor     }{norm} = OpenBib::VirtualSearch::Util::conv2autoplus($searchquery_ref->{kor     }{norm}) if ($searchquery_ref->{kor     }{norm});
+    $searchquery_ref->{swt     }{norm} = OpenBib::VirtualSearch::Util::conv2autoplus($searchquery_ref->{swt     }{norm}) if ($searchquery_ref->{swt     }{norm});
+    $searchquery_ref->{isbn    }{norm} = OpenBib::VirtualSearch::Util::conv2autoplus($searchquery_ref->{isbn    }{norm}) if ($searchquery_ref->{isbn    }{norm});
+    $searchquery_ref->{issn    }{norm} = OpenBib::VirtualSearch::Util::conv2autoplus($searchquery_ref->{issn    }{norm}) if ($searchquery_ref->{issn    }{norm});
+    $searchquery_ref->{gtquelle}{norm} = OpenBib::VirtualSearch::Util::conv2autoplus($searchquery_ref->{gtquelle}{norm}) if ($searchquery_ref->{gtquelle}{norm});
+
     if (!$sortorder){
         if ($sorttype eq "ejahr"){
             $sortorder="down";

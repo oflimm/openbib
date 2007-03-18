@@ -92,22 +92,18 @@ sub handler {
         $view=$session->get_viewname();
     }
 
-    my $request=$config->{dbh}->prepare("select * from dbinfo where active=1 order by orgunit ASC, description ASC");
-    $request->execute();
-
     my $rssfeedinfo_ref = {
     };
 
-
     if ($view){
-        my $request=$config->{dbh}->prepare("select dbinfo.dbname,dbinfo.description,dbinfo.faculty,rssfeeds.type from dbinfo,rssfeeds,viewrssfeeds where dbinfo.active=1 and rssfeeds.active=1 and dbinfo.dbname=rssfeeds.dbname and rssfeeds.type = 1 and viewrssfeeds.viewname = ? and viewrssfeeds.rssfeed=rssfeeds.id order by faculty ASC, description ASC");
+        my $request=$config->{dbh}->prepare("select dbinfo.dbname,dbinfo.description,dbinfo.orgunit,rssfeeds.type from dbinfo,rssfeeds,viewrssfeeds where dbinfo.active=1 and rssfeeds.active=1 and dbinfo.dbname=rssfeeds.dbname and rssfeeds.type = 1 and viewrssfeeds.viewname = ? and viewrssfeeds.rssfeed=rssfeeds.id order by orgunit ASC, description ASC");
         $request->execute($view);
         
         while (my $result=$request->fetchrow_hashref){
-            my $orgunit    = $result->{'faculty'};
-            my $name       = $result->{'description'};
-            my $pool       = $result->{'dbname'};
-            my $rsstype    = $result->{'type'};
+            my $orgunit    = decode_utf8($result->{'orgunit'});
+            my $name       = decode_utf8($result->{'description'});
+            my $pool       = decode_utf8($result->{'dbname'});
+            my $rsstype    = decode_utf8($result->{'type'});
             
             push @{$rssfeedinfo_ref->{$orgunit}},{
                 pool     => $pool,
@@ -117,14 +113,14 @@ sub handler {
         }
     }
     else {
-        my $request=$config->{dbh}->prepare("select dbinfo.dbname,dbinfo.description,dbinfo.faculty,rssfeeds.type from dbinfo,rssfeeds where dbinfo.active=1 and rssfeeds.active=1 and dbinfo.dbname=rssfeeds.dbname and rssfeeds.type = 1 order by faculty ASC, description ASC");
+        my $request=$config->{dbh}->prepare("select dbinfo.dbname,dbinfo.description,dbinfo.orgunit,rssfeeds.type from dbinfo,rssfeeds where dbinfo.active=1 and rssfeeds.active=1 and dbinfo.dbname=rssfeeds.dbname and rssfeeds.type = 1 order by orgunit ASC, description ASC");
         $request->execute();
         
         while (my $result=$request->fetchrow_hashref){
-            my $orgunit    = $result->{'faculty'};
-            my $name       = $result->{'description'};
-            my $pool       = $result->{'dbname'};
-            my $rsstype    = $result->{'type'};
+            my $orgunit    = decode_utf8($result->{'orgunit'});
+            my $name       = decode_utf8($result->{'description'});
+            my $pool       = decode_utf8($result->{'dbname'});
+            my $rsstype    = decode_utf8($result->{'type'});
             
             push @{$rssfeedinfo_ref->{$orgunit}},{
                 pool     => $pool,

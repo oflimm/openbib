@@ -1,4 +1,4 @@
-#####################################################################
+####################################################################
 #
 #  OpenBib::RSSFrame
 #
@@ -97,25 +97,46 @@ sub handler {
 
     my $rssfeedinfo_ref = {
     };
-    
-    while (my $result=$request->fetchrow_hashref){
-        my $orgunit    = decode_utf8($result->{'orgunit'});
-        my $name       = decode_utf8($result->{'description'});
-        my $systemtype = decode_utf8($result->{'system'});
-        my $pool       = decode_utf8($result->{'dbname'});
-        my $url        = decode_utf8($result->{'url'});
-        my $sigel      = decode_utf8($result->{'sigel'});
 
-        push @{$rssfeedinfo_ref->{$orgunit}},{
-            pool     => $pool,
-            pooldesc => $name,
-            type     => "neuzugang",
-        };
+
+    if ($view){
+        my $request=$config->{dbh}->prepare("select dbinfo.dbname,dbinfo.description,dbinfo.faculty,rssfeeds.type from dbinfo,rssfeeds,viewrssfeeds where dbinfo.active=1 and rssfeeds.active=1 and dbinfo.dbname=rssfeeds.dbname and rssfeeds.type = 1 and viewrssfeeds.viewname = ? and viewrssfeeds.rssfeed=rssfeeds.id order by faculty ASC, description ASC");
+        $request->execute($view);
+        
+        while (my $result=$request->fetchrow_hashref){
+            my $orgunit    = $result->{'faculty'};
+            my $name       = $result->{'description'};
+            my $pool       = $result->{'dbname'};
+            my $rsstype    = $result->{'type'};
+            
+            push @{$rssfeedinfo_ref->{$orgunit}},{
+                pool     => $pool,
+                pooldesc => $name,
+                type     => 'neuzugang',
+            };
+        }
     }
-    
+    else {
+        my $request=$config->{dbh}->prepare("select dbinfo.dbname,dbinfo.description,dbinfo.faculty,rssfeeds.type from dbinfo,rssfeeds where dbinfo.active=1 and rssfeeds.active=1 and dbinfo.dbname=rssfeeds.dbname and rssfeeds.type = 1 order by faculty ASC, description ASC");
+        $request->execute();
+        
+        while (my $result=$request->fetchrow_hashref){
+            my $orgunit    = $result->{'faculty'};
+            my $name       = $result->{'description'};
+            my $pool       = $result->{'dbname'};
+            my $rsstype    = $result->{'type'};
+            
+            push @{$rssfeedinfo_ref->{$orgunit}},{
+                pool     => $pool,
+                pooldesc => $name,
+                type     => 'neuzugang',
+            };
+        }
+    }
 
     # TT-Data erzeugen
     my $ttdata={
+        view        => $view,
         rssfeedinfo => $rssfeedinfo_ref,
         stylesheet  => $stylesheet,
         config      => $config,

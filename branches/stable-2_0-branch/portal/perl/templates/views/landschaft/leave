@@ -30,7 +30,7 @@
 
   <center>
     <p>
-      <a href="http://[% config.loadbalancerservername %][% config.loadbalancer_loc %]?view=[% view %]" target="_parent"><span style="font-size:2em">[% msg.maketext("Neue Sitzung beginnen") %]</span></a>
+      <a href="http://landschaftsbilder.ub.uni-koeln.de/" target="_parent"><span style="font-size:2em">[% msg.maketext("Neue Sitzung beginnen") %]</span></a>
     </p>
   </center>
 <br />

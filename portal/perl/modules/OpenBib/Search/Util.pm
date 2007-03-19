@@ -1991,7 +1991,7 @@ sub initial_search_for_titidns {
         $offset=$offset.",";
     }
     
-    my $sqlquerystring  = "select verwidn from $sqlfromstring where $sqlwherestring limit $offset$hitrange";
+    my $sqlquerystring  = "select distinct verwidn from $sqlfromstring where $sqlwherestring limit $offset$hitrange";
 
     $logger->debug("QueryString: ".$sqlquerystring);
     my $request         = $dbh->prepare($sqlquerystring);

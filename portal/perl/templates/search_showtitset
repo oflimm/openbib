@@ -160,9 +160,8 @@ FOREACH category IN categories;
          IF activefeed.5 ;
              rssfeed = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_sys/${thisid}/${normset.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
-         globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;notation=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsinglenot=${thisid}";
-         content   = " ${rssfeed}<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+         content   = " ${rssfeed}&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE "T1600";
          IF content.match('Sie einen Bestellschein aus');

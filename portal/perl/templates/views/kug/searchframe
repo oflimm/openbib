@@ -170,10 +170,18 @@ nutzen, bei der die Verwendung von JavaScript minimiert ist.","<a href=\"${start
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="sb"        value="sql" />
 
+<p />
+<table class="submitbuttons">
+  <tr><td><noscript><input type="submit" title="[% msg.maketext("Hier suchen Sie in allen Katalogen auf einmal") %]" name="searchall" value="[% msg.maketext("In allen Katalogen suchen") %]" /></noscript></td><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" /></td><td><a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" class="button" target="body">[% msg.maketext("Lösche Eingabemaske") %]</a></td></tr>
+</table>
+<p />
+
+
 <table width="100%">
 <tr><td valign="top">
 
 <!-- Erste Spalte -->
+
 <table>
 <tr><th>[% msg.maketext("Suchbegriffe") %]</th></tr>
 <tr><td class="boxed" valign="top" style="font-size:0.8em">

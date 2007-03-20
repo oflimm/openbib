@@ -161,10 +161,9 @@ sub handler {
 
     # Wenn Datenbanken uebergeben werden, dann wird nur
     # in diesen gesucht.
-    # entsprechenden Kataloge vorausgewaehlt werden
     if ($#databases != -1) {
         # Wenn Datenbanken explizit ueber das Suchformular uebergeben werden,
-        # ann werden diese als neue Datenbankauswahl gesetzt
+        # dann werden diese als neue Datenbankauswahl gesetzt
         
         # Zuerst die bestehende Auswahl loeschen
         $session->clear_dbchoice();
@@ -175,7 +174,7 @@ sub handler {
         }
         
         # Neue Datenbankauswahl ist voreingestellt
-        $session->set_profile('dbauswahl');    
+        $session->set_profile('dbauswahl');
     }
     else {
         # Wenn nur ein View angegeben wird, aber keine Submit-Funktion (s.u.),
@@ -185,135 +184,62 @@ sub handler {
             @databases = $config->get_dbs_of_view($view);
         }
         
-        if ($searchall) {
-            @databases = $config->get_active_databases();
-        }
-        elsif ($searchprofile || $verfindex || $korindex || $swtindex ) {
-            if ($profil eq "dbauswahl") {
-                # Eventuell bestehende Auswahl zuruecksetzen
-                @databases = $session->get_dbchoice();
+        else {
+            if ($searchall) {
+                @databases = $config->get_active_databases();
             }
-            # Wenn ein anderes Profil als 'dbauswahl' ausgewaehlt wuerde
-            elsif ($profil) {
-                # Eventuell bestehende Auswahl zuruecksetzen
-                @databases=();
-                
-                # Benutzerspezifische Datenbankprofile
-                if ($profil=~/^user(\d+)/) {
-                    my $profilid=$1;
+            elsif ($searchprofile || $verfindex || $korindex || $swtindex ) {
+                if ($profil eq "dbauswahl") {
+                    # Eventuell bestehende Auswahl zuruecksetzen
+                    @databases = $session->get_dbchoice();
+                }
+                # Wenn ein anderes Profil als 'dbauswahl' ausgewaehlt wuerde
+                elsif ($profil) {
+                    # Eventuell bestehende Auswahl zuruecksetzen
+                    @databases=();
                     
-                    my $profilresult=$user->{dbh}->prepare("select profildb.dbname from profildb,userdbprofile where userdbprofile.userid = ? and userdbprofile.profilid = ? and userdbprofile.profilid=profildb.profilid order by dbname") or $logger->error($DBI::errstr);
-                    $profilresult->execute($userid,$profilid) or $logger->error($DBI::errstr);
-                    
-                    my @poolres;
-                    while (@poolres=$profilresult->fetchrow) {
-                        push @databases, decode_utf8($poolres[0]);
+                    # Benutzerspezifische Datenbankprofile
+                    if ($profil=~/^user(\d+)/) {
+                        my $profilid=$1;
+                        
+                        my $profilresult=$user->{dbh}->prepare("select profildb.dbname from profildb,userdbprofile where userdbprofile.userid = ? and userdbprofile.profilid = ? and userdbprofile.profilid=profildb.profilid order by dbname") or $logger->error($DBI::errstr);
+                        $profilresult->execute($userid,$profilid) or $logger->error($DBI::errstr);
+                        
+                        my @poolres;
+                        while (@poolres=$profilresult->fetchrow) {
+                            push @databases, decode_utf8($poolres[0]);
+                        }
+                        $profilresult->finish();
+                        
                     }
-                    $profilresult->finish();
-                    
+                    # oder alle
+                    elsif ($profil eq "alldbs") {
+                        # Alle Datenbanken
+                        @databases = $config->get_active_databases();
+                    }
+                    # ansonsten orgunit
+                    else {
+                        @databases = $config->get_active_databases_of_orgunit($profil);
+                    }
                 }
-                # oder alle
-                elsif ($profil eq "alldbs") {
-                    # Alle Datenbanken
-                    @databases = $config->get_active_databases();
-                }
-                # ansonsten orgunit
+                # Kein Profil
                 else {
-                    @databases = $config->get_active_databases_of_orgunit($profil);
+                    OpenBib::Common::Util::print_warning($msg->maketext("Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie keine [_1]Kataloge[_2] oder Suchprofile ausgewählt haben. Bitte wählen Sie die gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen Katalogen suchen</a>.","<a href=\"$config->{databasechoice_loc}?sessionID=$session->{ID}\" target=\"body\">","</a>"),$r,$msg);
+                    return OK;
+                }
+                
+                # Wenn Profil aufgerufen wurde, dann abspeichern fuer Recherchemaske
+                if ($profil) {
+                    my $idnresult=$session->{dbh}->prepare("delete from sessionprofile where sessionid = ? ") or $logger->error($DBI::errstr);
+                    $idnresult->execute($session->{ID}) or $logger->error($DBI::errstr);
+                    
+                    $idnresult=$session->{dbh}->prepare("insert into sessionprofile values (?,?) ") or $logger->error($DBI::errstr);
+                    $idnresult->execute($session->{ID},$profil) or $logger->error($DBI::errstr);
+                    $idnresult->finish();
                 }
             }
-            # Kein Profil
-            else {
-                OpenBib::Common::Util::print_warning($msg->maketext("Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie keine [_1]Kataloge[_2] oder Suchprofile ausgewählt haben. Bitte wählen Sie die gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen Katalogen suchen</a>.","<a href=\"$config->{databasechoice_loc}?sessionID=$session->{ID}\" target=\"body\">","</a>"),$r,$msg);
-                return OK;
-            }
-            
-            # Wenn Profil aufgerufen wurde, dann abspeichern fuer Recherchemaske
-            if ($profil) {
-                my $idnresult=$session->{dbh}->prepare("delete from sessionprofile where sessionid = ? ") or $logger->error($DBI::errstr);
-                $idnresult->execute($session->{ID}) or $logger->error($DBI::errstr);
-                
-                $idnresult=$session->{dbh}->prepare("insert into sessionprofile values (?,?) ") or $logger->error($DBI::errstr);
-                $idnresult->execute($session->{ID},$profil) or $logger->error($DBI::errstr);
-                $idnresult->finish();
-            }
-            
         }
     }
-#     # Ueber view koennen bei Direkteinsprung in VirtualSearch die
-#     # entsprechenden Kataloge vorausgewaehlt werden
-#     if ($view && $#databases == -1) {
-#         @databases = $config->get_dbs_of_view($view);
-#     }
-#     elsif ($#databases != -1) {
-#         # Wenn Datenbanken explizit ueber das Suchformular uebergeben werden,
-#         # ann werden diese als neue Datenbankauswahl gesetzt
-        
-#         # Zuerst die bestehende Auswahl loeschen
-#         $session->clear_dbchoice();
-        
-#         # Wenn es eine neue Auswahl gibt, dann wird diese eingetragen
-#         foreach my $database (@databases) {
-#             $session->set_dbchoice($database);
-#         }
-        
-#         # Neue Datenbankauswahl ist voreingestellt
-#         $session->set_profile('dbauswahl');    
-#     }
-    
-#     if ($searchall) {
-#         @databases = $config->get_active_databases();
-#     }
-#     elsif ($searchprofile || $verfindex || $korindex || $swtindex ) {
-#         if ($profil eq "dbauswahl") {
-#             # Eventuell bestehende Auswahl zuruecksetzen
-#             @databases = $session->get_dbchoice();
-#         }
-#         # Wenn ein anderes Profil als 'dbauswahl' ausgewaehlt wuerde
-#         elsif ($profil) {
-#             # Eventuell bestehende Auswahl zuruecksetzen
-#             @databases=();
-
-#             # Benutzerspezifische Datenbankprofile
-#             if ($profil=~/^user(\d+)/) {
-#                 my $profilid=$1;
-	
-#                 my $profilresult=$user->{dbh}->prepare("select profildb.dbname from profildb,userdbprofile where userdbprofile.userid = ? and userdbprofile.profilid = ? and userdbprofile.profilid=profildb.profilid order by dbname") or $logger->error($DBI::errstr);
-#                 $profilresult->execute($userid,$profilid) or $logger->error($DBI::errstr);
-	
-#                 my @poolres;
-#                 while (@poolres=$profilresult->fetchrow) {
-#                     push @databases, decode_utf8($poolres[0]);
-#                 }
-#                 $profilresult->finish();
-	
-#             }
-#             # oder alle
-#             elsif ($profil eq "alldbs") {
-#                 # Alle Datenbanken
-#                 @databases = $config->get_active_databases();
-#             }
-#             # ansonsten orgunit
-#             else {
-#                 @databases = $config->get_active_databases_of_orgunit($profil);
-#             }
-#         }
-#         # Kein Profil
-#         else {
-#             OpenBib::Common::Util::print_warning($msg->maketext("Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie keine [_1]Kataloge[_2] oder Suchprofile ausgewählt haben. Bitte wählen Sie die gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen Katalogen suchen</a>.","<a href=\"$config->{databasechoice_loc}?sessionID=$session->{ID}\" target=\"body\">","</a>"),$r,$msg);
-#             return OK;
-#         }
-
-#         # Wenn Profil aufgerufen wurde, dann abspeichern fuer Recherchemaske
-#         if ($profil) {
-#             my $idnresult=$session->{dbh}->prepare("delete from sessionprofile where sessionid = ? ") or $logger->error($DBI::errstr);
-#             $idnresult->execute($session->{ID}) or $logger->error($DBI::errstr);
-
-#             $idnresult=$session->{dbh}->prepare("insert into sessionprofile values (?,?) ") or $logger->error($DBI::errstr);
-#             $idnresult->execute($session->{ID},$profil) or $logger->error($DBI::errstr);
-#             $idnresult->finish();
-#         }
-#     }
 
     my $queryalreadyexists = 0;
     

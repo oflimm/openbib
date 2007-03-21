@@ -354,6 +354,13 @@ sub handler {
         my $ttdata={
             targetdbinfo    => $targetdbinfo_ref,
             resultlist      => \@ergebnisse,#[$liststart..$listend],
+
+            utf2iso      => sub {
+                my $string=shift;
+                $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
+                return $string;
+            },
+
             config          => $config,
         };
         
@@ -459,6 +466,13 @@ sub handler {
             sbitem       => $sbnormset,
             sbitemmex    => $sbmexnormset,
             targetdbinfo => $targetdbinfo_ref,
+
+            utf2iso      => sub {
+                my $string=shift;
+                $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
+                return $string;
+            },
+
         };
         
         $template->process($templatename, $ttdata) || do {

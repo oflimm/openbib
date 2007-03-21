@@ -1052,8 +1052,7 @@ sub print_tit_set_by_idn {
         sessionID  => $session->{ID},
     });
 
-    my $poolname=$targetdbinfo_ref->{sigel}{
-        $targetdbinfo_ref->{dbases}{$database}};
+    my $poolname=$targetdbinfo_ref->{dbnames}{$database};
 
     # TT-Data erzeugen
     my $ttdata={

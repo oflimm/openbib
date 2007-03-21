@@ -117,7 +117,7 @@ sub handler {
     ## Initialsearch:
   
     my $generalsearch     = $query->param('generalsearch')     || '';
-    my $swtindex          = $query->param('swtindex')          || '';
+    my $swtindex          = decode_utf8($query->param('swtindex'))          || '';
     my $swtindexall       = $query->param('swtindexall')       || '';
 
     my $searchsingletit   = $query->param('searchsingletit')   || '';

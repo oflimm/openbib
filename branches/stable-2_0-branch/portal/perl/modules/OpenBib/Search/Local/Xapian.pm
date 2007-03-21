@@ -230,10 +230,7 @@ sub enq {
 sub DESTROY {
     my $self=shift;
 
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    $logger->debug("dying");
+    return;
 }
 
 1;

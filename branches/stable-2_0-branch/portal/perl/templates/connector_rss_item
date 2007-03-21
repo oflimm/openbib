@@ -71,5 +71,4 @@
 [%- IF gt -%]
 [% msg.maketext("aus") %]: [% gt %]<br />
 [%- END -%]
-([% msg.maketext("Zugangsdatum") %]: [% date %])<br />
 ]]>

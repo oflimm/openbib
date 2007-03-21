@@ -55,11 +55,11 @@ END;
 %]
 <LI><UL>
 <LI> DB=KVIK
-<LI> AU=[% person %]
-<LI> TI=[% title %]
-<LI> YR=[% yearofpub%]
+<LI> AU=[% utf2iso(person) %]
+<LI> TI=[% utf2iso(title) %]
+<LI> YR=[% utf2iso(yearofpub) %]
 <LI> URL=database=[% item.database %]&idn=[% item.id %]&tosearch=Langanzeige
-<LI> LO=[% location %]
+<LI> LO=[% utf2iso(location) %]
 <LI> LNK=
 </UL>
 [%- END -%]

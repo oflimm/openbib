@@ -207,6 +207,7 @@ sub handler {
             apachereq        => $r,
             stylesheet       => $stylesheet,
             view             => $view,
+            msg              => $msg,
         });
         return OK;
     }

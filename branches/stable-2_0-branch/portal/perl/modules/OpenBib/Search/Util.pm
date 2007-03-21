@@ -1821,6 +1821,8 @@ sub print_index_by_swt {
         ? $arg_ref->{stylesheet}        : undef;
     my $view              = exists $arg_ref->{view}
         ? $arg_ref->{view}              : undef;
+    my $msg                = exists $arg_ref->{msg}
+        ? $arg_ref->{msg}                : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -1847,13 +1849,9 @@ sub print_index_by_swt {
         swt        => $swt,
         swtindex   => $swtindex,
 
-        utf2iso    => sub {
-            my $string=shift;
-            $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-            return $string;
-        },
-
         config     => $config,
+        msg        => $msg,
+
     };
   
     OpenBib::Common::Util::print_page($config->{tt_search_showswtindex_tname},$ttdata,$r);

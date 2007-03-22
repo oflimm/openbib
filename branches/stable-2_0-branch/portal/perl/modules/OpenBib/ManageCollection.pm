@@ -157,7 +157,7 @@ sub handler {
                     $idnresult->finish();
                 }
                 else {
-                    $session->clean_item_in_collection({
+                    $session->clear_item_in_collection({
                         database => $loeschdb,
                         id       => $loeschidn,
                     });

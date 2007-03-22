@@ -58,7 +58,7 @@ sub get_css_by_browsertype {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $useragent=$r->subprocess_env('HTTP_USER_AGENT');
+    my $useragent=$r->subprocess_env('HTTP_USER_AGENT') || '';
 
     $logger->debug("User-Agent: $useragent");
 

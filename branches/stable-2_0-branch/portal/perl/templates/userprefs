@@ -42,20 +42,19 @@
 <tr><td><b>[% msg.maketext("Benutzername") %]:</b></td><td>[% loginname %]</td>
 
 [% IF targettype == 'self' %]
-<td><input type="submit" name="action" value="[% msg.maketext("Kennung l&ouml;schen") %]" /></td>
+<td><form method="post" action="http://[% config.servername %][% config.userprefs_loc %]" enctype="application/x-www-form-urlencoded"><input type="hidden" name="sessionID" value="[% sessionID %]" /><input type="hidden" name="action" value="delaccount_ask" /><input type="submit" value="[% msg.maketext("Kennung l&ouml;schen") %]" /></form></td>
 [% END %]
 
 </tr>
 
 [% IF targettype == 'self' %]
-<tr><td><b>[% msg.maketext("Passwort") %]:</b></td><td><input type="password" name="password1" value="[% password %]" />&nbsp;[% msg.maketext("wiederholt") %]:&nbsp;<input type="password" name="password2" value="[% password %]" /></td><td><input type="submit" name="action" value="[% msg.maketext("Passwort &auml;ndern") %]" /></td></tr>
+<tr><form method="post" action="http://[% config.servername %][% config.userprefs_loc %]" enctype="application/x-www-form-urlencoded"><input type="hidden" name="sessionID" value="[% sessionID %]" /><input type="hidden" name="action" value="changepw" /><td><b>[% msg.maketext("Passwort") %]:</b></td><td><input type="password" name="password1" value="[% password %]" />&nbsp;[% msg.maketext("wiederholt") %]:&nbsp;<input type="password" name="password2" value="[% password %]" /></td><td><input type="submit" value="[% msg.maketext("Passwort &auml;ndern") %]" /></td></form></tr>
 [% END %]
 
 </table>
 </td>
 </tr>
 </table>
-</form>
 
 <p />
 

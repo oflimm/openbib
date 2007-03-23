@@ -73,7 +73,7 @@ sub new {
         $logger->debug("Examining if SessionID $self->{ID} is valid");
         if (!$self->is_valid()){
             $self->{ID} = undef;
-            $logger->debug("SessionID $self->{ID} is NOT valid");
+            $logger->debug("SessionID is NOT valid");
         }
     }
     

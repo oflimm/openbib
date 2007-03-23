@@ -106,16 +106,16 @@ sub handler {
 
     # Umwandlung impliziter ODER-Verknuepfung in UND-Verknuepfung
     my $hitrange   = 20;
-    my $idn        = $query->param('idn');
-    my $database   = $query->param('database');
-    my $maxhits    = ($query->param('maxhits'))?$query->param('maxhits'):200;
-    my $offset     = ($query->param('offset'))?$query->param('offset'):1;
-    my $listlength = ($query->param('listlength'))?$query->param('listlength'):999999999;
-    my $sorttype   = ($query->param('sorttype'))?$query->param('sorttype'):"author";
-    my $sortorder  = $query->param('sortorder');
-    my $tosearch   = $query->param('tosearch');
-    my $view       = $query->param('view') || 'institute';
-    my $serien     = ($query->param('serien'))?$query->param('serien'):0;
+    my $idn        = $query->param('idn')        || '';
+    my $database   = $query->param('database')   || '';
+    my $maxhits    = $query->param('maxhits')    || 200;
+    my $offset     = $query->param('offset')     || 1;
+    my $listlength = $query->param('listlength') || 999999999;
+    my $sorttype   = $query->param('sorttype')   || 'author';
+    my $sortorder  = $query->param('sortorder')  || '';;
+    my $tosearch   = $query->param('tosearch')   || '';
+    my $view       = $query->param('view')       || 'institute';
+    my $serien     = $query->param('serien')     || 0;
     
     # Historisch begruendetes Kompatabilitaetsmapping
     $query->param('boolverf'      => $query->param('bool9'));

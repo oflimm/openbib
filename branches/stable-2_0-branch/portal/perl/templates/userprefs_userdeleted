@@ -28,6 +28,6 @@
 </td></tr>
 </table>
 
-</p>
+<p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

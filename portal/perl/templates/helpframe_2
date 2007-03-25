@@ -114,8 +114,8 @@ angeboten werden. Xapian wird z.B. von der Webpr&auml;senz der Zeitung
 "Die Zeit" eingesetzt.
 </p>
 
-<h3>Parametrisierbare Import-Schnittstelle mit Plugin-Mechanismus und
-Live-Update</h3> 
+<h3>Parametrisierbare Import-Schnittstelle mit Plugin-Mechanismus<!-- und
+Live-Update--></h3> 
 
 <p>
 Auf der Grundlage des auf MAB2 basierten Meta-Datenformates wird das
@@ -125,11 +125,11 @@ ausgehend von einer Standardkonvertierung (Sisis-Format) im Programm
 für den automatisierten Import an verschiedenen Stellen des
 Import-Ablaufes datenbankspezifische Plugins eingebracht werden, in
 die man Spezialanpassungen für einzelne Katalog-Typen ausgelagern
-kann. Schließlich können neben einem Komplett-Update eines Kataloges
+kann. <!-- Schließlich können neben einem Komplett-Update eines Kataloges
 alternativ neue bzw. geänderte Datensätze von einem Target, das über
 die WebServices OLWS (Open Library WebServices) angesprechbar ist,
 auch live inkrementell aggregiert und in der zugehörigen KUG-Datenbank
-aktualisiert werden.
+aktualisiert werden. -->
 </p>
 
 <h3>Verarbeitung beliebiger Meta-Datenformate</h3> 

@@ -28,30 +28,67 @@
 
 <h1>KUG-Versionen</h1>
 
-<h2 id="kugv2.0">Neuerungen mit Version 2.0</h2>
+<h2 id="kugv2.0">Neuerungen mit Version 2.0 (Umstellung am 19.3.2007)</h2>
+
+<h3>Darstellung der vergebenen Schlagworte als Wortwolken
+(Tag-Clouds)</h3>
+
+<p>
+F&uuml;r jeden Katalog kann - soweit dort verschlagwortet wird - eine
+Übersicht der 200 am häufigsten vergebenen Schlagworte in der Form
+einer Wortwolke (engl. tag cloud) dargestellt werden. Je mehr Titel
+entsprechend verschlagwortet wurden, umso grösser wird das zugehörige
+Schlagwort dargestellt.
+</p>
+
+<h3>&Uuml;bersicht der Spezial-Sichten des KUG</h3>
+
+<p>
+Neben dem Standard-KUG mit allen Katalogen gibt es eine Vielzahl an
+Spezial-Sichten, bei denen z.B. bestimmte Kataloge vorausgewählt sind,
+die weitergehende Informationen anbieten oder ein eigenständiges
+Fach-Portal bilden. Diese f&uuml;r den Nutzer oft unsichtbaren
+speziellen Einstiegspunkte in verschiedene KUG-Varianten werden nun
+an zentraler Stelle aufgef&uuml;hrt.
+</p>
+
 
 <h3>Unicode</h3>
 
-Das System verarbeitet nun grunds&auml;tzlich alle bibliographischen Daten im Unicode-Format. Damit wird der Grundstein f&uuml;r die Integration von CJK-Datenbest&auml;nden gelegt, z.B. des Ostasiatischen Seminars.
+<p>
+Das System verarbeitet nun grunds&auml;tzlich alle bibliographischen
+Daten im Unicode-Format. Damit wird der Grundstein f&uuml;r die
+Integration von CJK-Datenbest&auml;nden gelegt.
+</p>
 
 <h3>Mehrsprachigkeit</h3>
 
-Mit der Einführungen von GNU gettext als Mechanismus zur Internationalisierung (I18N) der Texte - in den Programmteilen wie auch in den Templates - gewinnt das System die Fähigkeit diese Texte in verschiedenen Sprachen auszugeben.
+<p>
+Mit der Einführungen von GNU gettext als Mechanismus zur
+Internationalisierung (I18N) der Texte - in den Programmteilen wie
+auch in den Templates - gewinnt das System die Fähigkeit diese Texte
+in verschiedenen Sprachen auszugeben.
+</p>
 
 <h3>Restrukturierung der bibliographischen Datenstrukturen</h3>
 
+<p>
 Es wurde eine grunds&auml;tzliche Restrukturierung der verwendeten
 Datenstrukturen vorgenommen. Grundlage ist eine weitgehende
 Orientierung am MAB2-Standard (modifizierte Sisis-Variante). Neben dem
+</p>
 
+<p>
 &Uuml;bergang zu MAB2 sind die Daten nun deutlich effizienter in den
 Templates verwendbar. Ebenso sind nun deutlich flexiblere
 Recherchem&ouml;glichkeiten denkbar. So kann bereits die
 Titel-Stringsuche auf weitere Kategorien jenseits des HST ausgedehnt
 werden.
+</p>
 
 <h3>Verwendung von Suchmaschinen-Technologie</h3>      
 
+<p>
 Durch die Verwendung von Suchmaschinen-Technologie basierend auf der
 OpenSource Software <a
 href="http://openbib.org/wiki/index.php?title=Kategorie:Xapian"
@@ -60,10 +97,12 @@ target="_blank">www.xapian.org</a>) mit ihrem Relevance Ranking k&ouml;nnen
 weitere Funktionalit&auml;ten wie z.B. 'Drill-Downs' in Treffermengen
 angeboten werden. Xapian wird z.B. von der Webpr&auml;senz der Zeitung
 "Die Zeit" eingesetzt.
+</p>
 
 <h3>Parametrisierbare Import-Schnittstelle mit Plugin-Mechanismus und
 Live-Update</h3> 
 
+<p>
 Auf der Grundlage des auf MAB2 basierten Meta-Datenformates wird das
 Portal um eine für jede Datenbank individualisierbare und
 parametrisierbare Importschnittstelle erweitert. Zusätzlich können
@@ -76,6 +115,7 @@ alternativ neue bzw. geänderte Datensätze von einem Target, das über
 die WebServices OLWS (Open Library WebServices) angesprechbar ist,
 auch live inkrementell aggregiert und in der zugehörigen KUG-Datenbank
 aktualisiert werden.
+</p>
 
 <h3>Verarbeitung beliebiger Meta-Datenformate</h3> 
 
@@ -85,6 +125,43 @@ Meta-Datenformate verarbeitet werden. Grundlage hierfür ist die
 Restrukturierung der bibliographischen Datenstrukturen in Verbindung
 mit der parametrisierbaren Import-Schnittstelle.
 </p>
+
+
+<h3>Weitere nutzerspezifische Verbesserungen</h3>
+
+F&uuml;r den Benutzer direkt sichtbar wurde u.a. folgendes ge&auml;ndert:
+
+<ul>
+<li>Zugriff von den Trefferlisten auf die Personen/K&ouml;rperschaften</li>
+<li>Durchg&auml;ngige Bl&auml;tter-Funktion in den Trefferlisten. Speziell bei
+  der Suche &uuml;ber mehrere Datenbanken ist nun ein sukzessiver Zugriff
+  auf alle Treffer - und nicht nur der ersten 50 bzw. 200 - m&ouml;glich.</li>
+<li>Ausgabe der Bandangaben in den Kurztitellisten. Getrennte Sortierung nach
+  Bandz&auml;hlung und Titel</li>
+<li>Integration von Vorschau-Bilder in die Trefferlisten (z.B. im
+  Katalog der im Aufbau befindlichen Portraitsammlung)</li>
+<li>Separate Recherche in Serie/Band/Quelle (Kategorien 089,451,590)</li>
+<li>Beschr&auml;nkung einer Recherche auf &Uuml;berordnungen
+  (z.B. Hauptaufnahmen von Serien)</li>
+<li>Die Katalogauswahl ist f&uuml;r die Standard-KUG-Sicht nun direkt in die
+  (komplexe) Rechercheseite integriert</li>
+<li>Erweiterung um das BibTeX-Format f&uuml;r die Merklisten</li>
+<li>Highlighting der Suchbegriffe in der Einzeltitelanzeige</li>
+<li>Ausweitung der Titel-String-Suche auf weitere Kategorien. Es wird
+  nun nicht mehr nur der HST, sondern auch AST, WST usw. durchsucht.</li>
+<li>Erweiterung der Index-Funktion. Es kann nun &uuml;ber Wortanf&auml;nge (mit
+^abc*) sowie per Volltext (mit ab*) im Normdatenindex recherchiert werden</li>
+<li>Browsing &uuml;ber die Inhalte beliebiger Kategorien - es kann auf
+  alle Inhalte einer Kategorie zugegriffen werden (normdaten&uuml;bergreifend).
+  Damit k&ouml;nnen  z.B. katalogspezifische Register realisiert werden
+  (z.B. Spezial-Sicht der Portrait-Sammlung)
+</li>
+<li>Titelrecherche bei gegebenem Inhalt einer Kategorie. Damit k&ouml;nnen f&uuml;r
+  beliebige Kategorien Verkn&uuml;pfungen zu anderen Titeln mit gleichem
+  Kategorieinhalt realisiert werden, die &uuml;ber den
+  Sisis-Standardverkn&uuml;pfungsmechanismus (Kategorie 004) nicht
+  abgebildet werden k&ouml;nnen.</li>
+</ul>
 
 <p>
 Wiederum wurden wesentliche Entwicklungen und Verbesserungen f&uuml;r

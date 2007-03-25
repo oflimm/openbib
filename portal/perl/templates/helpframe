@@ -730,7 +730,7 @@ function addEngine(name,ext,cat)
 
     <h1 id="kontakt">19 Kontakt</h1>
     <p>
-    Fragen und Anmerkungen richten Sie bitte an: <a href="http://www.ub.uni-koeln.de/usb-cgi/makeEmailPage.pl?adr0=kug">kug@ub.uni-koeln.de</a>
+    Fragen und Anmerkungen richten Sie bitte an: <a href="http://www.ub.uni-koeln.de/usb-cgi/zms_makeEmail.pl?adr0=kug">kug@ub.uni-koeln.de</a>
     </p>
 </div>
 </div>

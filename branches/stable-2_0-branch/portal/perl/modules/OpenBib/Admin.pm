@@ -784,7 +784,7 @@ sub handler {
               my $request=$config->{dbh}->prepare("update viewinfo set rssfeed = ? where viewid = ?") or $logger->error($DBI::errstr);
               $request->execute($rssid,$viewid) or $logger->error($DBI::errstr);
               $request->finish();
-              $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&action=editviewrss&viewid=$viewid&viewrssaction=Bearbeiten");
+              $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editview_rss=1&do_edit=1&viewid=$viewid");
               return OK;
           }
           elsif ($rsstype eq "all") {
@@ -796,16 +796,9 @@ sub handler {
                   $request->execute($viewname,$rssid) or $logger->error($DBI::errstr);
               }
               $request->finish();
-              $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&action=editviewrss&viewid=$viewid&viewrssaction=Bearbeiten");
+              $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showviews=1");
               return OK;
           }
-      }
-      elsif ($do_new){
-          my $request=$config->{dbh}->prepare("insert into rssfeeds values (NULL,?,?,-1,'',0)") or $logger->error($DBI::errstr);
-          $request->execute($dbname,$rsstype) or $logger->error($DBI::errstr);
-          $request->finish();
-          $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&action=editcatrss&dbname=$dbname&catrssaction=Bearbeiten");
-          return OK;
       }
       elsif ($do_edit) {
           my $request=$config->{dbh}->prepare("select * from viewinfo where viewid=?") or $logger->error($DBI::errstr);

@@ -45,7 +45,7 @@ use OpenBib::Search::Util;
 my ($type,$singlepool,$help,$logfile);
 
 &GetOptions("type=s"          => \$type,
-            "singlepool=s"    => \$singlepool,
+            "single-pool=s"   => \$singlepool,
             "logfile=s"       => \$logfile,
 	    "help"            => \$help
 	    );
@@ -379,8 +379,9 @@ gen_bestof.pl - Erzeugen von BestOf-Analysen aus Relevance-Statistik-Daten
 
    Optionen:
    -help                 : Diese Informationsseite
-       
-   -type=...             : BestOf-Typ
+   --single-pool=...     : Einzelner Katalog
+   --logfile=...         : Alternatives Logfile
+   --type=...            : BestOf-Typ
 
    Typen:
 

@@ -32,7 +32,7 @@
 <div class="content">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=11" target="body" title="Top 20">[% msg.maketext("Titel pro Katalog") %]</a></li>
+   <li><a class="active" href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=11" target="body" title="Katalogauswahl">Katalogauswahl</a></li>
 </ul>
 
 <div class="content">
@@ -41,7 +41,8 @@
 <table width="100%">
 <tr><th>Hinweis</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
-[% msg.maketext("Auf dieser Seite k&ouml;nnen Sie auf die 20 meist aufgerufenen Titel eines jeden Kataloges zugreifen.") %]
+W&auml;hlen Sie einen Katalog aus, um Informationen &uuml;ber dessen
+Nutzung zu erhalten.
 </td></tr>
 </table>
 <p />

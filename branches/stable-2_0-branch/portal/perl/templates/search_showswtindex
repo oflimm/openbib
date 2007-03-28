@@ -55,7 +55,7 @@ Gefundene Schlagworte zur Anfrage <b>'[% swt %]'</b> in diesem Katalog: <b>[% sw
 
 </table>
 [% ELSE %]
-[% msg.maketext("In diesem Katalog konnte leider kein Schlagwort beginnend mit") %] <b>'[% swt %]'</b> [% msg.maketext("gefunden werden.") %]
+In diesem Katalog konnte leider kein Schlagwort zur Ihrer Anfrage <b>'[% swt %]'</b> [% msg.maketext("gefunden werden.") %]
 [% END %]
 
 </td></tr>

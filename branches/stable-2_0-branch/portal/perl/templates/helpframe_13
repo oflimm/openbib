@@ -33,7 +33,7 @@
 <p />
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" target="body" title="Schlagworte">Schlagworte</a></li>
+   <li><a class="active" href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" target="body" title="Katalogauswahl">Katalogauswahl</a></li>
 </ul>
 
 <div class="content">
@@ -43,11 +43,13 @@
 <tr><th>Hinweis</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
 W&auml;hlen Sie einen Katalog aus, um f&uuml;r diesen eine
-<b>&Uuml;bersicht der 200 am h&auml;ufigsten vergebenen Schlagworte</b> in der Form einer
+<b>&Uuml;bersicht der 200 am h&auml;ufigsten verwendeten
+Normdaten-Eintr&auml;ge f&uuml;r Schlagworte,
+Systematiken/Notationen, K&ouml;rperschaften/Institutionen sowie Personen</b> in der Form einer
 Wortwolke (<img src="/images/openbib/wikipedia.png" alt="Mashup mit
 Wikipedia" />&nbsp;<a href="http://de.wikipedia.org/wiki/Wortwolke"
-target="_blank">engl. tag cloud</a>) zu erhalten. Je mehr Titel entsprechend
-verschlagwortet wurden, umso grösser wird das zugehörige Schlagwort dargestellt.
+target="_blank">engl. tag cloud</a>) zu erhalten. Je mehr Titel mit
+einem Normdaten-Eintrag verkn&uuml;pft wurden, umso grösser wird der zugehörige Normdaten-Eintrag dargestellt.
 </td></tr>
 </table>
 <p />

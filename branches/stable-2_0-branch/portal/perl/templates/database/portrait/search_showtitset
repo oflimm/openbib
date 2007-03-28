@@ -49,11 +49,11 @@
 <tr><td class="boxedclear">
 
 <div style="float:right;padding:10px">
-<a class="invisible" href="http://tsipouro.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait_web.jpg"><img src="http://tsipouro.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait_web.jpg" height="300" title="(c) "/></a>
+<a class="invisible" href="http://portraitsammlung.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait_web.jpg"><img src="http://portraitsammlung.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait_web.jpg" height="300" title="(c) "/></a>
 <p>
-<a href="http://tsipouro.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait_web.jpg"><span style="font-size:0.7em">Als JPG-Datei (Vorschau)</span></a>
+<a href="http://portraitsammlung.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait_web.jpg"><span style="font-size:0.7em">Als JPG-Datei (Vorschau)</span></a>
 <br /><br />
-<a href="http://tsipouro.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait.tif"><span style="font-size:0.7em">Als Tiff-Datei (Original)</span></a>
+<a href="http://portraitsammlung.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait.tif"><span style="font-size:0.7em">Als Tiff-Datei (Original)</span></a>
 </p>
 </div>
 

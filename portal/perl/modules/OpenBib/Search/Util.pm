@@ -1036,6 +1036,10 @@ sub print_tit_set_by_idn {
     my $logger = get_logger();
 
     my $config = new OpenBib::Config();
+    my $user   = new OpenBib::User();
+
+    my $userid    = $user->get_userid_of_session($session->{ID});
+    my $loginname = $user->get_username_for_userid($userid);
 
     my ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn({
         titidn             => $titidn,
@@ -1072,6 +1076,9 @@ sub print_tit_set_by_idn {
         searchquery => $searchquery_ref,
         activefeed  => $config->get_activefeeds_of_db($database),        
 
+        $user       => $user,
+        $loginname  => $loginname,
+        
         highlightquery    => \&highlightquery,
         normset2bibtex    => \&OpenBib::Common::Util::normset2bibtex,
         normset2bibsonomy => \&OpenBib::Common::Util::normset2bibsonomy,
@@ -1702,7 +1709,8 @@ sub get_index {
             };
         }
         $request->finish();
-        
+
+        $logger->debug("Index-Worte: ".YAML::Dump(\@contents))
     }
 
     if ($config->{benchmark}) {

@@ -370,6 +370,180 @@ sub get_logintargets {
     return $logintargets_ref;
 }
 
+sub add_tags {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $tags                = exists $arg_ref->{tags}
+        ? $arg_ref->{tags    }            : undef;
+    my $titid               = exists $arg_ref->{titid}
+        ? $arg_ref->{titid}               : undef;
+    my $titisbn             = exists $arg_ref->{titisbn}
+        ? $arg_ref->{titisbn}             : '';
+    my $titdb               = exists $arg_ref->{titdb}
+        ? $arg_ref->{titdb}               : undef;
+    my $loginname           = exists $arg_ref->{loginname}
+        ? $arg_ref->{loginname}           : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    # Splitten der Tags
+    my @taglist = split("\\s+",$tags);
+
+    foreach my $tag (@taglist){
+        $tag=~s/[^-+\p{Alphabetic}0-9._]//g;
+
+        my $request=$self->{dbh}->prepare("select id from tags where tag = ?") or $logger->error($DBI::errstr);
+        $request->execute($tag) or $logger->error($DBI::errstr);
+
+        my $result=$request->fetchrow_hashref;
+
+        my $tagid=$result->{id};
+
+        # Wenn Tag nicht existiert, dann kann alles eintragen werden (tags/tittag)
+        
+        if (!$tagid){
+            $logger->debug("Tag $tag noch nicht verhanden");
+            $request=$self->{dbh}->prepare("insert into tags (tag) values (?)") or $logger->error($DBI::errstr);
+            $request->execute($tag) or $logger->error($DBI::errstr);
+
+            $request=$self->{dbh}->prepare("select id from tags where tag = ?") or $logger->error($DBI::errstr);
+            $request->execute($tag) or $logger->error($DBI::errstr);
+            my $result=$request->fetchrow_hashref;
+            my $tagid=$result->{id};
+
+            $request=$self->{dbh}->prepare("insert into tittag (tagid,titid,titisbn,titdb,loginname) values (?,?,?,?,?)") or $logger->error($DBI::errstr);
+            $request->execute($tagid,$titid,$titisbn,$titdb,$loginname) or $logger->error($DBI::errstr);
+        }
+        
+        # Jetzt Verknuepfung mit Titel herstellen
+        else {
+            $logger->debug("Tag verhanden");
+
+            # Zuerst alle Verknuepfungen loeschen
+            $request=$self->{dbh}->prepare("delete from tittag where tagid = ? and loginname = ? and titid=? and titdb=?") or $logger->error($DBI::errstr);
+            $request->execute($tagid, $loginname, $titid, $titdb) or $logger->error($DBI::errstr);
+
+            # Und dann neue eintragen
+            $logger->debug("Verknuepfung zu Titel noch nicht vorhanden");
+            $request=$self->{dbh}->prepare("insert into tittag (tagid,titid,titisbn,titdb,loginname) values (?,?,?,?,?)") or $logger->error($DBI::errstr);
+            $request->execute($tagid,$titid,$titisbn,$titdb,$loginname) or $logger->error($DBI::errstr);
+        }
+        
+    }
+
+    return;
+}
+
+sub del_tags {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $titid               = exists $arg_ref->{titid}
+        ? $arg_ref->{titid}               : undef;
+    my $titisbn             = exists $arg_ref->{titisbn}
+        ? $arg_ref->{titisbn}             : '';
+    my $titdb               = exists $arg_ref->{titdb}
+        ? $arg_ref->{titdb}               : undef;
+    my $loginname           = exists $arg_ref->{loginname}
+        ? $arg_ref->{loginname}           : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    my $request=$self->{dbh}->prepare("delete from tittag where titid=? and titdb=? and loginname=?") or $logger->error($DBI::errstr);
+    $request->execute($titid,$titdb,$loginname) or $logger->error($DBI::errstr);
+
+    return;
+}
+
+sub get_all_tags_of_tit {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $titid               = exists $arg_ref->{titid}
+        ? $arg_ref->{titid}               : undef;
+    my $titisbn             = exists $arg_ref->{titisbn}
+        ? $arg_ref->{titisbn}             : '';
+    my $titdb               = exists $arg_ref->{titdb}
+        ? $arg_ref->{titdb}               : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    my $request=$self->{dbh}->prepare("select t.id,t.tag from tags as t,tittag as tt where tt.titid=? and tt.titdb=? and tt.tagid = t.id") or $logger->error($DBI::errstr);
+    $request->execute($titid,$titdb) or $logger->error($DBI::errstr);
+
+    my $taglist_ref = [];
+
+    while (my $result=$request->fetchrow_hashref){
+        my $tag=$result->{tag};
+        my $id =$result->{id};
+
+        push @$taglist_ref, {
+            id   => $id,
+            name => $tag
+        };
+    }
+    
+    return $taglist_ref;
+}
+
+sub get_private_tags_of_tit {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $titid               = exists $arg_ref->{titid}
+        ? $arg_ref->{titid}               : undef;
+    my $titisbn             = exists $arg_ref->{titisbn}
+        ? $arg_ref->{titisbn}             : '';
+    my $titdb               = exists $arg_ref->{titdb}
+        ? $arg_ref->{titdb}               : undef;
+    my $loginname           = exists $arg_ref->{loginname}
+        ? $arg_ref->{loginname}           : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    my $request=$self->{dbh}->prepare("select t.id,t.tag from tags as t,tittag as tt where tt.loginname=? and tt.titid=? and tt.titdb=? and tt.tagid = t.id") or $logger->error($DBI::errstr);
+    $request->execute($loginname,$titid,$titdb) or $logger->error($DBI::errstr);
+
+    my $taglist_ref = [];
+
+    while (my $result=$request->fetchrow_hashref){
+        my $tag = $result->{tag};
+        my $id  = $result->{id};
+
+        push @$taglist_ref, {
+            id   => $id,
+            name => $tag,
+        };
+    }
+    
+    return $taglist_ref;
+}
+
 sub DESTROY {
     my $self = shift;
 

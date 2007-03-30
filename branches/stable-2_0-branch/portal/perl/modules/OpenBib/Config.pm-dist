@@ -208,7 +208,8 @@ use vars qw(%config);
 	   selfreg_loc           => '/portal/selbstregistrierung',
 	   serverload_loc        => '/portal/getload',
 	   startopac_loc         => '/portal/opac',
-	   userprefs_loc         => '/portal/benutzereinstellungen',
+           tags_loc              => '/portal/tags',
+           userprefs_loc         => '/portal/benutzereinstellungen',
 	   virtualsearch_loc     => '/portal/virtuellerecherche',
 
 	   css_loc               => '/styles',

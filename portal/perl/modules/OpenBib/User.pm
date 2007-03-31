@@ -34,6 +34,7 @@ use Encode qw(decode_utf8 encode_utf8);
 use Log::Log4perl qw(get_logger :levels);
 use YAML;
 
+use OpenBib::Common::Util;
 use OpenBib::Config;
 
 sub new {
@@ -397,6 +398,10 @@ sub add_tags {
     # Splitten der Tags
     my @taglist = split("\\s+",$tags);
 
+    # Zuerst alle Verknuepfungen loeschen
+    my $request=$self->{dbh}->prepare("delete from tittag where loginname = ? and titid=? and titdb=?") or $logger->error($DBI::errstr);
+    $request->execute($loginname, $titid, $titdb) or $logger->error($DBI::errstr);
+
     foreach my $tag (@taglist){
         # Unerwuenschte Zeichen ausfiltern
         $tag=~s/[^-+\p{Alphabetic}0-9._]//g;
@@ -408,7 +413,7 @@ sub add_tags {
 
         $tag=lc($tag);
 
-        my $request=$self->{dbh}->prepare("select id from tags where tag = ?") or $logger->error($DBI::errstr);
+        $request=$self->{dbh}->prepare("select id from tags where tag = ?") or $logger->error($DBI::errstr);
         $request->execute($tag) or $logger->error($DBI::errstr);
 
         my $result=$request->fetchrow_hashref;
@@ -435,11 +440,7 @@ sub add_tags {
         else {
             $logger->debug("Tag verhanden");
 
-            # Zuerst alle Verknuepfungen loeschen
-            $request=$self->{dbh}->prepare("delete from tittag where tagid = ? and loginname = ? and titid=? and titdb=?") or $logger->error($DBI::errstr);
-            $request->execute($tagid, $loginname, $titid, $titdb) or $logger->error($DBI::errstr);
-
-            # Und dann neue eintragen
+            # Neue Verknuepfungen eintragen
             $logger->debug("Verknuepfung zu Titel noch nicht vorhanden");
             $request=$self->{dbh}->prepare("insert into tittag (tagid,titid,titisbn,titdb,loginname) values (?,?,?,?,?)") or $logger->error($DBI::errstr);
             $request->execute($tagid,$titid,$titisbn,$titdb,$loginname) or $logger->error($DBI::errstr);

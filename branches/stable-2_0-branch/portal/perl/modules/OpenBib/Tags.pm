@@ -82,17 +82,19 @@ sub handler {
     # Konfigurationsoptionen bei <FORM> mit Defaulteinstellungen
     #####################################################################
 
-    my $offset = 0;
-    my $hitrange= 0;
-    my $database =0;
-    my $sorttype = "author";
-    my $sortorder ="up";
+    my $offset         = $query->param('titid')       || 0;
+    my $hitrange       = $query->param('titid')       || 50;
+    my $database       = 0;
+    my $sorttype       = $query->param('sorttype')    || "author";
+    my $sortorder      = $query->param('sortorder')   || "up";
     my $titid          = $query->param('titid')       || '';
     my $titdb          = $query->param('titdb')       || '';
     my $titisbn        = $query->param('titisbn')     || '';
-    my $tags           = $query->param('tags')        || '';
+    my $tags           = decode_utf8($query->param('tags'))        || '';
 
+    my $private_tags   = $query->param('private_tags')   || 0;
     my $searchtitoftag = $query->param('searchtitoftag') || '';
+    my $show_usertags  = $query->param('show_usertags')  || '';
 
     my $queryid        = $query->param('queryid')     || '';
 
@@ -139,15 +141,16 @@ sub handler {
     my $user = new OpenBib::User();
 
     my $userid = $user->get_userid_of_session($session->{ID});
-
-    if (!$userid){
-        OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
-        return OK;
-    }
     
     my $loginname = $user->get_username_for_userid($userid);
     
     if ($do_add){
+
+        if (!$userid){
+            OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
+            return OK;
+        }
+
         $user->add_tags({
             tags      => $tags,
             titid     => $titid,
@@ -155,10 +158,16 @@ sub handler {
             loginname => $loginname,
         });
 
-        $r->internal_redirect("http://$config->{servername}$config->{search_loc}?sessionID=$session->{ID};database=$titdb;searchsingletit=$titid;queryid=$queryid");
+        $r->internal_redirect("http://$config->{servername}$config->{search_loc}?sessionID=$session->{ID};database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
         return OK;
     }
     elsif ($do_del){
+
+        if (!$userid){
+            OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
+            return OK;
+        }
+
         $user->del_tags({
             tags      => $tags,
             titid     => $titid,
@@ -166,64 +175,109 @@ sub handler {
             loginname => $loginname,
         });
         
-        $r->internal_redirect("http://$config->{servername}$config->{search_loc}?sessionID=$session->{ID};database=$titdb;searchsingletit=$titid;queryid=$queryid");
+        $r->internal_redirect("http://$config->{servername}$config->{search_loc}?sessionID=$session->{ID};database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
         return OK;
 
     }
 
+    if ($show_usertags){
+
+        if (!$userid){
+            OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
+            return OK;
+        }
+
+        my $targettype=$user->get_targettype_of_session($session->{ID});
+
+        # TT-Data erzeugen
+        my $ttdata={
+            view       => $view,
+            stylesheet => $stylesheet,
+            sessionID  => $session->{ID},
+
+            targettype => $targettype,
+            loginname  => $loginname,
+            user       => $user,
+            config     => $config,
+            msg        => $msg,
+        };
+        OpenBib::Common::Util::print_page($config->{tt_tags_showusertags_tname},$ttdata,$r);
+    }
+    
     if ($searchtitoftag) {
         my @titelidns = ();
         my $hits      = 0;
 
         if ($searchtitoftag =~ /^\d+$/){
             # Zuerst Gesamtzahl bestimmen
-            my $sqlrequest="select count(distinct titid,titdb) as conncount from tittag  where tagid=?";
-            my $request=$user->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
-            $request->execute($searchtitoftag);
             
-            my $res=$request->fetchrow_hashref;
-            $hits = $res->{conncount};
+            if ($private_tags){
+                if (!$userid){
+                    OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
+                    return OK;
+                }
 
-            my $limits="";
-            if ($hitrange > 0){
-                $limits="limit $offset,$hitrange";
-
+                my $sqlrequest="select count(distinct titid,titdb) as conncount from tittag where tagid=? and loginname=?";
+                my $request=$user->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
+                $request->execute($searchtitoftag,$loginname);
+            
+                my $res=$request->fetchrow_hashref;
+                $hits = $res->{conncount};
+                
+                my $limits="";
+                if ($hitrange > 0){
+                    $limits="limit $offset,$hitrange";
+                }
+                
+                # Bestimmung der Titel
+                $request=$user->{dbh}->prepare("select distinct titid,titdb from tittag where tagid=? and loginname=? $limits") or $logger->error($DBI::errstr);
+                $request->execute($searchtitoftag,$loginname);
+                
+                
+                while (my $res=$request->fetchrow_hashref){
+                    push @titelidns, {
+                        id       => $res->{titid},
+                        dbname   => $res->{titdb}
+                    };
+                }
+                $request->finish();
             }
-
-            # Bestimmung der Titel
-            $request=$user->{dbh}->prepare("select distinct stagid from conn where targetid=? and sourcetype=1 and targettype=2 $limits") or $logger->error($DBI::errstr);
-            $request->execute($searchtitoftag);
+            else {
+                my $sqlrequest="select count(distinct titid,titdb) as conncount from tittag where tagid=?";
+                my $request=$user->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
+                $request->execute($searchtitoftag);
             
-            
-            while (my $res=$request->fetchrow_hashref){
-                push @titelidns, $res->{sourceid};
+                my $res=$request->fetchrow_hashref;
+                $hits = $res->{conncount};
+                
+                my $limits="";
+                if ($hitrange > 0){
+                    $limits="limit $offset,$hitrange";
+                    
+                }
+                
+                # Bestimmung der Titel
+                $request=$user->{dbh}->prepare("select distinct titid,titdb from tittag where tagid=? $limits") or $logger->error($DBI::errstr);
+                $request->execute($searchtitoftag);
+                
+                
+                while (my $res=$request->fetchrow_hashref){
+                    push @titelidns, {
+                        id       => $res->{titid},
+                        dbname   => $res->{titdb}
+                    };
+                }
+                $request->finish();
             }
-            $request->finish();            
         }
-        
+
+        $logger->debug("Titel-IDs: ".YAML::Dump(\@titelidns));
+
         if ($#titelidns == -1) {
             OpenBib::Common::Util::print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"),$r,$msg);
             return OK;
         }
-    
-        if ($#titelidns == 0) {
-            OpenBib::Search::Util::print_tit_set_by_idn({
-                titidn             => $titelidns[0],
-#                dbh                => $dbh,
-                session            => $session,
-                targetdbinfo_ref   => $targetdbinfo_ref,
-                targetcircinfo_ref => $targetcircinfo_ref,
-                queryoptions_ref   => $queryoptions_ref,
-                database           => $database,
-                apachereq          => $r,
-                stylesheet         => $stylesheet,
-                view               => $view,
-                msg                => $msg,
-            });
-            return OK;
-        }
-    
-        if ($#titelidns > 0) {
+        else {
             my @outputbuffer=();
             my ($atime,$btime,$timeall);
       
@@ -231,15 +285,25 @@ sub handler {
                 $atime=new Benchmark;
             }
       
-            foreach my $titelidn (@titelidns) {
+            foreach my $titel (@titelidns) {
+
+                my $titelidn = $titel->{id};
+                my $database = $titel->{dbname};
+
+                my $dbh
+                    = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+                        or $logger->error_die($DBI::errstr);
+
                 push @outputbuffer, OpenBib::Search::Util::get_tit_listitem_by_idn({
                     titidn            => $titelidn,
-#                    dbh               => $dbh,
+                    dbh               => $dbh,
                     sessiondbh        => $session->{dbh},
                     targetdbinfo_ref  => $targetdbinfo_ref,
                     database          => $database,
                     sessionID         => $session->{ID},
                 });
+
+                $dbh->disconnect();
             }
             
             if ($config->{benchmark}) {
@@ -263,6 +327,7 @@ sub handler {
 	    }
 
             $session->updatelastresultset(\@resultset);
+
             OpenBib::Search::Util::print_tit_list_by_idn({
                 itemlist_ref     => \@sortedoutputbuffer,
                 targetdbinfo_ref => $targetdbinfo_ref,
@@ -275,9 +340,13 @@ sub handler {
                 hits             => $hits,
                 offset           => $offset,
                 hitrange         => $hitrange,
+
+                query            => $query,
+                template         => 'tt_tags_showtitlist_tname',
+                location         => 'tags_loc',
+
                 msg              => $msg,
             });
-            return OK;
         }	
     }
 

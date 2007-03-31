@@ -228,7 +228,8 @@ sub handler {
             view             => $view,
             stylesheet       => $stylesheet,
             sessionID        => $session->{ID},
-
+            user             => $user,
+            
             loginname        => $loginname,
             password         => $password,
             email_valid      => $email_valid,

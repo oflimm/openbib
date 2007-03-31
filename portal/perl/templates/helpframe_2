@@ -30,7 +30,8 @@
 
 <h2 id="kugv2.0">Neuerungen mit Version 2.0 (Umstellung am 19.3.2007)</h2>
 
-<h3>Darstellung der vergebenen Schlagworte als Wortwolken
+<h3>Darstellung der vergebenen Schlagworte, Notationen, Körperschaften
+sowie Personen als Wortwolken
 (Tag-Clouds)</h3>
 
 <p>
@@ -38,7 +39,29 @@ F&uuml;r jeden Katalog kann - soweit dort verschlagwortet wird - eine
 Übersicht der 200 am häufigsten vergebenen Schlagworte in der Form
 einer Wortwolke (engl. tag cloud) dargestellt werden. Je mehr Titel
 entsprechend verschlagwortet wurden, umso grösser wird das zugehörige
-Schlagwort dargestellt.
+Schlagwort dargestellt. Gleiches gilt für Notationen, Körperschaften
+und Personen.
+</p>
+
+<h3>Tagging</h3>
+
+<p> Angemeldete Nutzer können nun alle im KUG gefundenen Titel
+'taggen', d.h. mit einem eigenen Etikett (= Schlagwort/Tag)
+versehen. Diese Tags sind einzelne Worte, die mit Leerzeichen getrennt
+eingeben müssen. Zur Vereinheitlichung werden sie automatisch normiert
+- d.h. Umlaute werden aufgelöst, es wird Kleinschreibung verwendet und
+unerwünschte Zeichen werden eliminiert (erlaubt sind Alphanumerische
+Zeichen sowie +-_.). Unter dem Reiter 'Tags' erhält der Nutzer dann in
+'Mein KUG' eine Übersicht aller von ihm verwendeten Tags in Form einer
+Wortwolke - je mehr Titel sie mit einem entsprechenden Tag versehen
+haben, desto grösser wird es dargestellt. Durch einen Klick auf einen
+Tag gelangt er zu einer Kurztitel-Liste aller Titel, die von ihm mit
+dem jeweiligen Tag versehen wurden.  </p>
+
+<p>
+Alle von Nutzern vergebenen Tags werden in den jeweiligen Titeln auch
+für nicht authentifizierte Nutzer dargestellt - so erhalten auch sie
+Zugriff auf alle mit dem jeweiligen Tag verknüpften Titel.
 </p>
 
 <h3>Mashup mit Wikipedia</h3>

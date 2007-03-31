@@ -923,6 +923,10 @@ sub print_tit_list_by_idn {
         ? $arg_ref->{offset}            : undef;
     my $view              = exists $arg_ref->{view}
         ? $arg_ref->{view}              : undef;
+    my $template          = exists $arg_ref->{template}
+        ? $arg_ref->{template}          : 'tt_search_showtitlist_tname';
+    my $location          = exists $arg_ref->{location}
+        ? $arg_ref->{location}          : 'search_loc';
     my $lang              = exists $arg_ref->{lang}
         ? $arg_ref->{lang}              : undef;
     my $msg                = exists $arg_ref->{msg}
@@ -946,7 +950,7 @@ sub print_tit_list_by_idn {
         push @args,"$key=$value";
     }
 
-    my $baseurl="http://$config->{servername}$config->{search_loc}?".join(";",@args);
+    my $baseurl="http://$config->{servername}$config->{$location}?".join(";",@args);
 
     my @nav=();
 
@@ -996,7 +1000,8 @@ sub print_tit_list_by_idn {
         msg            => $msg,
     };
   
-    OpenBib::Common::Util::print_page($config->{tt_search_showtitlist_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{$template},$ttdata,$r);
+#    OpenBib::Common::Util::print_page($config->{tt_search_showtitlist_tname},$ttdata,$r);
 
     return;
 }
@@ -1031,6 +1036,8 @@ sub print_tit_set_by_idn {
         ? $arg_ref->{view}               : undef;
     my $msg                = exists $arg_ref->{msg}
         ? $arg_ref->{msg}                : undef;
+    my $no_log             = exists $arg_ref->{no_log}
+        ? $arg_ref->{no_log}             : 0;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -1076,8 +1083,8 @@ sub print_tit_set_by_idn {
         searchquery => $searchquery_ref,
         activefeed  => $config->get_activefeeds_of_db($database),        
 
-        $user       => $user,
-        $loginname  => $loginname,
+        user        => $user,
+        loginname   => $loginname,
         
         highlightquery    => \&highlightquery,
         normset2bibtex    => \&OpenBib::Common::Util::normset2bibtex,
@@ -1099,15 +1106,17 @@ sub print_tit_set_by_idn {
         $isbn =~s/-//g;
         $isbn =~s/X/x/g;
     }
-    
-    $session->log_event({
-        type    => 10,
-        content => {
-            id       => $titidn,
-            database => $database,
-            isbn     => $isbn,
-        },
-    });
+
+    if (!$no_log){
+        $session->log_event({
+            type    => 10,
+            content => {
+                id       => $titidn,
+                database => $database,
+                isbn     => $isbn,
+            },
+        });
+    }
     
     return;
 }

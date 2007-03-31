@@ -143,6 +143,8 @@ sub handler {
 
     my $queryid           = $query->param('queryid')           || '';
 
+    my $no_log            = $query->param('no_log')            || '';
+
     #####                                                          ######
     ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########
     #####                                                          ######
@@ -732,6 +734,7 @@ sub handler {
                 stylesheet         => $stylesheet,
                 view               => $view,
                 msg                => $msg,
+                no_log             => $no_log,
             });
         }
         return OK;

@@ -30,8 +30,9 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Encode 'decode_utf8';
+use Encode qw(decode_utf8 encode_utf8);
 use Log::Log4perl qw(get_logger :levels);
+use YAML;
 
 use OpenBib::Config;
 
@@ -397,7 +398,15 @@ sub add_tags {
     my @taglist = split("\\s+",$tags);
 
     foreach my $tag (@taglist){
+        # Unerwuenschte Zeichen ausfiltern
         $tag=~s/[^-+\p{Alphabetic}0-9._]//g;
+
+        # Normierun
+        $tag = OpenBib::Common::Util::grundform({
+            content  => $tag,
+        });
+
+        $tag=lc($tag);
 
         my $request=$self->{dbh}->prepare("select id from tags where tag = ?") or $logger->error($DBI::errstr);
         $request->execute($tag) or $logger->error($DBI::errstr);
@@ -411,10 +420,10 @@ sub add_tags {
         if (!$tagid){
             $logger->debug("Tag $tag noch nicht verhanden");
             $request=$self->{dbh}->prepare("insert into tags (tag) values (?)") or $logger->error($DBI::errstr);
-            $request->execute($tag) or $logger->error($DBI::errstr);
+            $request->execute(encode_utf8($tag)) or $logger->error($DBI::errstr);
 
             $request=$self->{dbh}->prepare("select id from tags where tag = ?") or $logger->error($DBI::errstr);
-            $request->execute($tag) or $logger->error($DBI::errstr);
+            $request->execute(encode_utf8($tag)) or $logger->error($DBI::errstr);
             my $result=$request->fetchrow_hashref;
             my $tagid=$result->{id};
 
@@ -487,19 +496,31 @@ sub get_all_tags_of_tit {
 
     #return if (!$titid || !$titdb || !$loginname || !$tags);
 
-    my $request=$self->{dbh}->prepare("select t.id,t.tag from tags as t,tittag as tt where tt.titid=? and tt.titdb=? and tt.tagid = t.id") or $logger->error($DBI::errstr);
+    my $request=$self->{dbh}->prepare("select t.tag, t.id, count(tt.tagid) as tagcount from tags as t, tittag as tt where tt.titid=? and tt.titdb=? and t.id=tt.tagid group by tt.tagid order by t.tag") or $logger->error($DBI::errstr);
+
     $request->execute($titid,$titdb) or $logger->error($DBI::errstr);
 
     my $taglist_ref = [];
-
+    my $maxcount = 0;
     while (my $result=$request->fetchrow_hashref){
-        my $tag=$result->{tag};
-        my $id =$result->{id};
+        my $tag       = decode_utf8($result->{tag});
+        my $id        = $result->{id};
+        my $count     = $result->{tagcount};
 
+        $logger->debug("Gefundene Tags: $tag - $id - $count");
+        if ($maxcount < $count){
+            $maxcount = $count;
+        }
+        
         push @$taglist_ref, {
-            id   => $id,
-            name => $tag
+            id    => $id,
+            name  => $tag,
+            count => $count,
         };
+
+        for (my $i=0 ; $i < scalar (@$taglist_ref) ; $i++){
+            $taglist_ref->[$i]->{class} = int($taglist_ref->[$i]->{count} / (int($maxcount/6)+1));
+        }
     }
     
     return $taglist_ref;
@@ -532,7 +553,7 @@ sub get_private_tags_of_tit {
     my $taglist_ref = [];
 
     while (my $result=$request->fetchrow_hashref){
-        my $tag = $result->{tag};
+        my $tag = decode_utf8($result->{tag});
         my $id  = $result->{id};
 
         push @$taglist_ref, {
@@ -541,6 +562,52 @@ sub get_private_tags_of_tit {
         };
     }
     
+    return $taglist_ref;
+}
+
+sub get_private_tags {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $loginname           = exists $arg_ref->{loginname}
+        ? $arg_ref->{loginname}           : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    $logger->debug("loginname: $loginname");
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    my $request=$self->{dbh}->prepare("select t.tag, t.id, count(tt.tagid) as tagcount from tags as t, tittag as tt where t.id=tt.tagid and tt.loginname=? group by tt.tagid order by t.tag") or $logger->error($DBI::errstr);
+    $request->execute($loginname) or $logger->error($DBI::errstr);
+
+    my $taglist_ref = [];
+    my $maxcount = 0;
+    while (my $result=$request->fetchrow_hashref){
+        my $tag       = decode_utf8($result->{tag});
+        my $id        = $result->{id};
+        my $count     = $result->{tagcount};
+
+        $logger->debug("Gefundene Tags: $tag - $id - $count");
+        if ($maxcount < $count){
+            $maxcount = $count;
+        }
+        
+        push @$taglist_ref, {
+            id    => $id,
+            name  => $tag,
+            count => $count,
+        };
+
+        for (my $i=0 ; $i < scalar (@$taglist_ref) ; $i++){
+            $taglist_ref->[$i]->{class} = int($taglist_ref->[$i]->{count} / (int($maxcount/6)+1));
+        }
+    }
+
+    $logger->debug("Private Tags: ".YAML::Dump($taglist_ref));
     return $taglist_ref;
 }
 

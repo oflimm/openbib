@@ -983,6 +983,10 @@ sub grundform {
     $content=~s/(?<=(\w|\+))\+/plus/g;
     $content=~s/(c)\#/$1sharp/ig;
     $content=~s/\.(net)\#/dot$1/ig;
+
+    # Verbundene Terme splitten
+    $content=~s/(\w)-(\w)/$1 $2/g;
+    $content=~s/(\w)'(\w)/$1 $2/g;
     
     if ($searchreq){
         # Ausfiltern nicht akzeptierter Zeichen (Positivliste)

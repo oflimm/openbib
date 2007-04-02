@@ -299,7 +299,7 @@ Nutzer, die diesen Titel ausgew&auml;hlt haben, interessierten sich auch f&uuml;
 [% IF all_tags.size > 0 %]
 <p />
 <table width="100%">
-<tr><th>Tags&nbsp;<a href="#alltags"><img src="/images/openbib/expand.png" alt="Alle Tags anzeigen" onclick="expandContent('alltags',this); return false;"></a></th></tr>
+<tr><th>Von Nutzern vergebene Tags&nbsp;<a href="#alltags"><img src="/images/openbib/expand.png" alt="Alle Tags anzeigen" onclick="expandContent('alltags',this); return false;"></a></th></tr>
 <tr><td id="alltags" class="boxedclear" style="display:none;font-size:0.8em;">
 <!-- Beginn Tag-Cloud -->
 [%

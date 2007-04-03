@@ -251,21 +251,120 @@ Nutzer, die diesen Titel ausgew&auml;hlt haben, interessierten sich auch f&uuml;
 </table>
 [% END %]
 
+[% all_tags = user.get_all_tags_of_tit({ titid => titidn, titdb => database }); %]
+
 [% IF loginname ;
       private_tags = user.get_private_tags_of_tit({ titid => titidn, titdb => database, loginname => loginname  });
       IF private_tags.size <= 0 ; %]
 <p />
 <table width="100%">
-<tr><th>Tags vergeben</th></tr>
+<tr><th>Eigene Tags vergeben&nbsp;<a href="#newtags"><img src="/images/openbib/expand.png" alt="Alle Tags anzeigen" onclick="expandContent('newtags',this); return false;"></a></th></tr>
+<tr><td id="newtags" class="boxedclear" style="display:none;">
+
+<table>
+<tr><td valign="top">
+
+<table width="100%">
+<tr><th>Eingabe neuer Tags</th></tr>
 <tr><td class="boxedclear">
+
 <form method="get" action="[% config.tags_loc %]">
 <input type="hidden" name="sessionID"  value="[% sessionID %]" />
 <input type="hidden" name="titdb"      value="[% database %]" />
 <input type="hidden" name="titid"      value="[% titidn %]" />
 <input type="hidden" name="queryid"    value="[% queryid %]" />
 <input type="hidden" name="titisbn"    value="[% normset.${"T0540"}.first.content.replace('-','') %]" />
-<input type="text"   name="tags"       value="" size="60" maxlength="200" />&nbsp;<input type="submit" name="do_add" value="Hinzuf&uuml;gen" />
+<input type="text"   name="tags"       value="" size="60" maxlength="200" id="inputfield"/>&nbsp;<input type="submit" name="do_add" value="Hinzuf&uuml;gen" />
 </form>
+
+</td></tr>
+</table>
+
+</td><td valign="top">
+
+[%
+   private_tags = user.get_private_tags({ loginname => loginname  });
+
+%]
+
+<table width="100%">
+<tr><th>Übernahme eigener Tags</th></tr>
+<tr><td class="boxedclear">
+
+<!-- Beginn Tag-Cloud -->
+[%
+   css_classes = [
+        'fast-nicht-genutzt',
+        'nicht-sehr-genutzt',
+        'etwas-genutzt',
+        'genutzt',
+        'sehr-viel-genutzt',
+        'ultra-genutzt',
+        'am-meisten-genutzt',
+   ];
+%]
+
+[%- IF private_tags.size > 0 -%]
+<ol class="cloud">
+[%- FOREACH thisitem IN private_tags -%]
+[% item      = thisitem.name;
+   itemcount = thisitem.count;
+   classnr   = thisitem.class;
+   itemid    = thisitem.id;
+   itemclass = css_classes.$classnr;
+%]
+<li class="[% itemclass %]"><span>[% itemcount %] Titel sind
+verkn&uuml;pft mit dem Tag </span><a onclick="insert_tag(event); return false;" class="tag" style="display: inline; cursor: pointer;" onMouseOver="oldColor=this.style.backgroundColor; this.style.backgroundColor='lightblue';" onMouseOut="this.style.backgroundColor=oldColor;" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
+[% END %]
+</ol>
+[% ELSE %]
+Bisher haben Sie noch keine Tags vergeben.
+[% END %]
+
+</td></tr>
+</table>
+
+<p />
+
+[% IF all_tags.size > 0 %]
+<p />
+<table width="100%">
+<tr><th>Übernahme bereits von Nutzern vergebener Tags</th></tr>
+<tr><td class="boxedclear">
+
+<!-- Beginn Tag-Cloud -->
+[%
+   css_classes = [
+        'fast-nicht-genutzt',
+        'nicht-sehr-genutzt',
+        'etwas-genutzt',
+        'genutzt',
+        'sehr-viel-genutzt',
+        'ultra-genutzt',
+        'am-meisten-genutzt',
+   ];
+%]
+
+<ol class="cloud">
+[%- FOREACH thisitem IN all_tags -%]
+[% item      = thisitem.name;
+   itemcount = thisitem.count;
+   classnr   = thisitem.class;
+   itemid    = thisitem.id;
+   itemclass = css_classes.$classnr;
+%]
+<li class="[% itemclass %]"><span>[% itemcount %] Titel sind
+verkn&uuml;pft mit dem Tag </span><a onclick="insert_tag(event); return false;" class="tag" style="display: inline; cursor: pointer;"  onMouseOver="oldColor=this.style.backgroundColor; this.style.backgroundColor='lightblue';" onMouseOut="this.style.backgroundColor=oldColor;" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
+[% END %]
+</ol>
+
+</td></tr>
+</table>
+[% END %]
+
+</td></tr>
+</table>
+
 </td></tr>
 </table>
 [%    ELSE %]
@@ -293,14 +392,14 @@ Nutzer, die diesen Titel ausgew&auml;hlt haben, interessierten sich auch f&uuml;
 </table>
 
 [%    END %]
-[% END %]
-[% all_tags = user.get_all_tags_of_tit({ titid => titidn, titdb => database }); %]
 
-[% IF all_tags.size > 0 %]
+[% END %]
+
+[% IF config.social_tagging && all_tags.size > 0 %]
 <p />
 <table width="100%">
 <tr><th>Von Nutzern vergebene Tags&nbsp;<a href="#alltags"><img src="/images/openbib/expand.png" alt="Alle Tags anzeigen" onclick="expandContent('alltags',this); return false;"></a></th></tr>
-<tr><td id="alltags" class="boxedclear" style="display:none;font-size:0.8em;">
+<tr><td id="alltags" class="boxedclear" style="display:none;">
 <!-- Beginn Tag-Cloud -->
 [%
    css_classes = [
@@ -323,7 +422,7 @@ Nutzer, die diesen Titel ausgew&auml;hlt haben, interessierten sich auch f&uuml;
    itemclass = css_classes.$classnr;
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel sind
-verkn&uuml;pft mit dem Tag </span><a href="[% config.tags_loc %]?sessionID=[% sessionID %];searchtitoftag=[% itemid %]" class="tag">[% item %]</a></li>
+verkn&uuml;pft mit dem Tag </span><a href="[% config.tags_loc %]?sessionID=[% sessionID %];searchtitoftag=[% itemid %]" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 
@@ -331,6 +430,7 @@ verkn&uuml;pft mit dem Tag </span><a href="[% config.tags_loc %]?sessionID=[% se
 </table>
 
 [% END %]
+
 <!-- Title ends here -->
 
 <p />
@@ -350,6 +450,11 @@ type="text" name="swtindex" value="" size="4" maxlength="50" title="[% msg.maket
 </form>
 
 </div>
+
+<script type="text/javascript">
+  add_toggle();
+</script>
+
 <p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

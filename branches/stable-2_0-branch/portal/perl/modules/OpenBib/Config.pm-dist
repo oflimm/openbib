@@ -256,6 +256,10 @@ use vars qw(%config);
 
            xapian_index_base_path  => '/opt/openbib/ft/xapian/index',
 
+	   # Stopwort-Liste
+
+           stopword_filename       => '/opt/openbib/ft/stopwords.txt',
+
 	   # Pfad zum Document Root
 
 	   document_root_path       => '/usr/db/www/documents',
@@ -370,6 +374,9 @@ use vars qw(%config);
 
 	   tt_search_showswtindex_tname   => 'search_showswtindex',
 
+           tt_tags_showusertags_tname    => 'tags_showusertags',
+           tt_tags_showtitlist_tname     => 'tags_showtitlist',
+
 	   tt_virtualsearch_result_start_tname  => 'virtualsearch_result_start',
 	   tt_virtualsearch_result_item_tname   => 'virtualsearch_result_item',
 	   tt_virtualsearch_result_end_tname    => 'virtualsearch_result_end',
@@ -420,6 +427,10 @@ use vars qw(%config);
            # Testsystem
 
 	   testsystem              => 0,
+
+           # Social-Tagging
+
+           social_tagging          => 1,
 
 	   # Katalogabhaengige Kategorie-Mappings
 
@@ -636,7 +647,7 @@ use vars qw(%config);
 			{
 			 '0014' => {  # Signatur
 				    string => 1,
-				    ft     => 0,
+				    ft     => 1,
 				    init   => 1,
 				   },
 			 
@@ -1352,6 +1363,9 @@ sub get_infomatrix_of_active_databases {
 
 sub DESTROY {
     my $self = shift;
+
+    return if (!defined $self->{dbh});
+
     $self->{dbh}->disconnect();
 
     return;

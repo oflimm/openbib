@@ -36,7 +36,7 @@
 %]
 <p />
 <table width="100%">
-<tr><th>Ihre Tags</th></tr>
+<tr><th>Eigene Tags</th></tr>
 <tr><td class="boxedclear">
 <!-- Beginn Tag-Cloud -->
 [%
@@ -61,7 +61,7 @@
    itemclass = css_classes.$classnr;
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel sind
-verkn&uuml;pft mit dem Tag </span><a href="[% config.tags_loc %]?sessionID=[% sessionID %];searchtitoftag=[% itemid %];private_tags=1" class="tag">[% item %]</a></li>
+verkn&uuml;pft mit dem Tag </span><a href="[% config.tags_loc %]?sessionID=[% sessionID %];searchtitoftag=[% itemid %];private_tags=1" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

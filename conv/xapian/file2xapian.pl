@@ -35,6 +35,7 @@ BEGIN {
 }
 
 use Benchmark ':hireswallclock';
+use DB_File;
 use DBI;
 use Encode qw(decode_utf8 encode_utf8);
 use Getopt::Long;
@@ -84,6 +85,10 @@ if (!$database){
 }
 
 $logger->info("### POOL $database");
+
+my %xapian_idmapping;
+
+tie %xapian_idmapping, 'DB_File', $config->{'autoconv_dir'}."/pools/$database/xapian_idmapping.db";
 
 open(SEARCH,      "<:utf8","search.mysql"      ) || die "SEARCH konnte nicht geoeffnet werden";
 open(TITLISTITEM, "<:utf8","titlistitem.mysql" ) || die "TITLISTITEM konnte nicht geoeffnet werden";
@@ -220,6 +225,9 @@ my $count = 1;
     
         my $docid=$db->add_document($doc);
 
+        # Abspeichern des Mappings der SQL-ID zur Xapian-Doc-ID
+        $xapian_idmapping{$s_id} = $docid;
+
         if ($count % 1000 == 0) {
             my $btime      = new Benchmark;
             my $timeall    = timediff($btime,$atime);
@@ -240,6 +248,7 @@ $resulttime    =~s/(\d+\.\d+) .*/$1/;
 
 $logger->info("Gesamtzeit: $resulttime Sekunden");
 
+untie(%xapian_idmapping);
 
 sub print_help {
     print << "ENDHELP";

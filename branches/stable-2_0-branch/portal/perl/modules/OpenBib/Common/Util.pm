@@ -936,6 +936,9 @@ sub grundform {
     my $searchreq = exists $arg_ref->{searchreq}
         ? $arg_ref->{searchreq}           : undef;
 
+    my $tagging   = exists $arg_ref->{tagging}
+        ? $arg_ref->{tagging}             : undef;
+
     # Normalisierung auf Kleinschreibung
     $content = lc($content);
     
@@ -984,17 +987,27 @@ sub grundform {
     $content=~s/(c)\#/$1sharp/ig;
     $content=~s/\.(net)\#/dot$1/ig;
 
-    # Verbundene Terme splitten
-    $content=~s/(\w)-(\w)/$1 $2/g;
-    $content=~s/(\w)'(\w)/$1 $2/g;
     
     if ($searchreq){
         # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
         $content=~s/[^-+\p{Alphabetic}0-9\/: '()"^*]//g;
+
+        # Verbundene Terme splitten
+        $content=~s/(\w)-(\w)/$1 $2/g;
+        $content=~s/(\w)'(\w)/$1 $2/g;
+        
+    }
+    elsif ($tagging){
+        $content=~s/[^-+\p{Alphabetic}0-9._]//g;
+
     }
     else {
         # Ausfiltern nicht akzeptierter Zeichen (Postitivliste)
         $content=~s/[^-+\p{Alphabetic}0-9\/: ']//g;
+
+        # Verbundene Terme splitten
+        $content=~s/(\w)-(\w)/$1 $2/g;
+        $content=~s/(\w)'(\w)/$1 $2/g;
     }
     
     # Zeichenersetzungen

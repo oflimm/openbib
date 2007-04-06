@@ -403,15 +403,12 @@ sub add_tags {
     $request->execute($loginname, $titid, $titdb) or $logger->error($DBI::errstr);
 
     foreach my $tag (@taglist){
-        # Unerwuenschte Zeichen ausfiltern
-        $tag=~s/[^-+\p{Alphabetic}0-9._]//g;
 
-        # Normierun
+        # Normierung
         $tag = OpenBib::Common::Util::grundform({
             content  => $tag,
+            tagging  => 1,
         });
-
-        $tag=lc($tag);
 
         $request=$self->{dbh}->prepare("select id from tags where tag = ?") or $logger->error($DBI::errstr);
         $request->execute($tag) or $logger->error($DBI::errstr);

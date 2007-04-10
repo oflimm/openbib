@@ -142,10 +142,12 @@ CREATE TABLE tittag (
  titisbn   CHAR(14)    NOT NULL default '',
  titdb     VARCHAR(25) NOT NULL default '',
  loginname TEXT,
+ type      INT(3)      NOT NULL default '1',
  PRIMARY KEY  (ttid),
  INDEX (tagid),
  INDEX (titid),
  INDEX (titdb),
+ INDEX (type),
  INDEX (loginname(30))
 )
 DEFAULT CHARACTER SET utf8

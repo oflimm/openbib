@@ -277,7 +277,7 @@ Nutzer, die diesen Titel ausgew&auml;hlt haben, interessierten sich auch f&uuml;
 <input type="hidden" name="titid"      value="[% titidn %]" />
 <input type="hidden" name="queryid"    value="[% queryid %]" />
 <input type="hidden" name="titisbn"    value="[% normset.${"T0540"}.first.content.replace('-','') %]" />
-<input type="text"   name="tags"       value="" size="60" maxlength="200" id="inputfield"/>&nbsp;<input type="submit" name="do_add" value="Hinzuf&uuml;gen" />
+<input type="text"   name="tags"       value="" size="60" maxlength="200" id="inputfield"/><p />Typ:&nbsp;<select name="type"><option value="1" selected="selected">&ouml;ffentlich</option><option value="2">privat</option></select>&nbsp;<input type="submit" name="do_add" value="Hinzuf&uuml;gen" />
 </form>
 
 </td></tr>

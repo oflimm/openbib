@@ -2,7 +2,7 @@
 #
 #  OpenBib::User
 #
-#  Dieses File ist (C) 2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2007 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -386,6 +386,8 @@ sub add_tags {
         ? $arg_ref->{titdb}               : undef;
     my $loginname           = exists $arg_ref->{loginname}
         ? $arg_ref->{loginname}           : undef;
+    my $type                = exists $arg_ref->{type}
+        ? $arg_ref->{type}                : undef;
 
     # Log4perl logger erzeugen
   
@@ -429,8 +431,8 @@ sub add_tags {
             my $result=$request->fetchrow_hashref;
             my $tagid=$result->{id};
 
-            $request=$self->{dbh}->prepare("insert into tittag (tagid,titid,titisbn,titdb,loginname) values (?,?,?,?,?)") or $logger->error($DBI::errstr);
-            $request->execute($tagid,$titid,$titisbn,$titdb,$loginname) or $logger->error($DBI::errstr);
+            $request=$self->{dbh}->prepare("insert into tittag (tagid,titid,titisbn,titdb,loginname,type) values (?,?,?,?,?,?)") or $logger->error($DBI::errstr);
+            $request->execute($tagid,$titid,$titisbn,$titdb,$loginname,$type) or $logger->error($DBI::errstr);
         }
         
         # Jetzt Verknuepfung mit Titel herstellen
@@ -439,8 +441,8 @@ sub add_tags {
 
             # Neue Verknuepfungen eintragen
             $logger->debug("Verknuepfung zu Titel noch nicht vorhanden");
-            $request=$self->{dbh}->prepare("insert into tittag (tagid,titid,titisbn,titdb,loginname) values (?,?,?,?,?)") or $logger->error($DBI::errstr);
-            $request->execute($tagid,$titid,$titisbn,$titdb,$loginname) or $logger->error($DBI::errstr);
+            $request=$self->{dbh}->prepare("insert into tittag (tagid,titid,titisbn,titdb,loginname,type) values (?,?,?,?,?,?)") or $logger->error($DBI::errstr);
+            $request->execute($tagid,$titid,$titisbn,$titdb,$loginname,$type) or $logger->error($DBI::errstr);
         }
         
     }
@@ -475,6 +477,51 @@ sub del_tags {
     return;
 }
 
+sub get_all_tags_of_db {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $dbname              = exists $arg_ref->{dbname}
+        ? $arg_ref->{dbname}              : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    my $request=$self->{dbh}->prepare("select t.tag, t.id, count(tt.tagid) as tagcount from tags as t, tittag as tt where tt.titdb=? and t.id=tt.tagid and tt.type=1 group by tt.tagid order by t.tag") or $logger->error($DBI::errstr);
+
+    $request->execute($dbname) or $logger->error($DBI::errstr);
+
+    my $taglist_ref = [];
+    my $maxcount = 0;
+    while (my $result=$request->fetchrow_hashref){
+        my $tag       = decode_utf8($result->{tag});
+        my $id        = $result->{id};
+        my $count     = $result->{tagcount};
+
+        $logger->debug("Gefundene Tags: $tag - $id - $count");
+        if ($maxcount < $count){
+            $maxcount = $count;
+        }
+        
+        push @$taglist_ref, {
+            id    => $id,
+            name  => $tag,
+            count => $count,
+        };
+
+        for (my $i=0 ; $i < scalar (@$taglist_ref) ; $i++){
+            $taglist_ref->[$i]->{class} = int($taglist_ref->[$i]->{count} / (int($maxcount/6)+1));
+        }
+    }
+    
+    return $taglist_ref;
+}
+
 sub get_all_tags_of_tit {
     my ($self,$arg_ref)=@_;
 
@@ -494,7 +541,7 @@ sub get_all_tags_of_tit {
 
     #return if (!$titid || !$titdb || !$loginname || !$tags);
 
-    my $request=$self->{dbh}->prepare("select t.tag, t.id, count(tt.tagid) as tagcount from tags as t, tittag as tt where tt.titid=? and tt.titdb=? and t.id=tt.tagid group by tt.tagid order by t.tag") or $logger->error($DBI::errstr);
+    my $request=$self->{dbh}->prepare("select t.tag, t.id, count(tt.tagid) as tagcount from tags as t, tittag as tt where tt.titid=? and tt.titdb=? and t.id=tt.tagid and tt.type=1 group by tt.tagid order by t.tag") or $logger->error($DBI::errstr);
 
     $request->execute($titid,$titdb) or $logger->error($DBI::errstr);
 

@@ -91,9 +91,6 @@ if ($reducemem){
  
     tie %listitemdata_mex,        'MLDBM', "./listitemdata_mex.db"
         or die "Could not tie listitemdata_mex.\n";
-
-    tie %listitemdata_popularity, 'MLDBM', "./listitemdata_popularity.db"
-        or die "Could not tie listitemdata_popularity.\n";
 }
 
 my $stammdateien_ref = {
@@ -1061,7 +1058,6 @@ if ($reducemem){
     untie %listitemdata_aut;
     untie %listitemdata_kor;
     untie %listitemdata_mex;
-    untie %listitemdata_popularity;
 }
 
 1;

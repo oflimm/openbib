@@ -91,6 +91,7 @@ sub handler {
     my $titdb          = $query->param('titdb')       || '';
     my $titisbn        = $query->param('titisbn')     || '';
     my $tags           = decode_utf8($query->param('tags'))        || '';
+    my $type           = $query->param('type')        || 1;
 
     my $private_tags   = $query->param('private_tags')   || 0;
     my $searchtitoftag = $query->param('searchtitoftag') || '';
@@ -151,11 +152,14 @@ sub handler {
             return OK;
         }
 
+        $logger->debug("Aufnehmen/Aendern der Tags: $tags");
+        
         $user->add_tags({
             tags      => $tags,
             titid     => $titid,
             titdb     => $titdb,
             loginname => $loginname,
+            type      => $type,
         });
 
         $r->internal_redirect("http://$config->{servername}$config->{search_loc}?sessionID=$session->{ID};database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");

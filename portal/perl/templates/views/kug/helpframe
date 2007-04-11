@@ -450,6 +450,19 @@ Sie sich erst später in <b>Mein KUG</b> einloggen, bleiben Ihnen die Einträge,
 Sie <b>anonym</b> in dieser Sitzung gesammelt haben, erhalten. Sie werden Ihnen in
 die <b>persönliche</b> Liste übertragen.</li>
 
+<li>Sie können jeden Titel in den Katalogen <b>taggen</b>, d.h. mit
+einem eigenen Etikett (= Schlagwort/Tag) versehen. Diese Tags sind
+einzelne Worte, die Sie mit Leerzeichen getrennt eingeben müssen. Zur
+Vereinheitlichung der Tags werden sie automatisch normiert -
+d.h. Umlaute werden aufgelöst, es wird Kleinschreibung verwendet und
+unerwünschte Zeichen werden eliminiert (erlaubt sind Alphanumerische
+Zeichen sowie +-_.). Unter dem Reiter 'Tags' erhalten Sie dann in
+'Mein KUG' eine Übersicht aller von Ihnen verwendeten Tags in Form
+einer Wortwolke - je mehr Titel sie mit einem entsprechenden Tag
+versehen haben, desto grösser wird es dargestellt. Durch einen Klick
+auf einen Tag erhalten Sie eine Kurztitel-Liste aller Titel, die sie
+mit dem jeweiligen Tag versehen haben.</li>
+
 <li>Wenn Sie sich mit Ihrem USB-Ausweis anmelden, können Sie aus dem KUG heraus
 eine Fernleihe starten, ohne sich zuvor nochmals authentifizieren zu müssen.</li>
 

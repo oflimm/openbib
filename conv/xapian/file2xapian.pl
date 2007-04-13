@@ -198,7 +198,7 @@ my $count = 1;
                 # Naechstes, wenn kein Token
                 next if (!$next);
                 # Naechstes, wenn keine Zahl oder einstellig
-                next if (length($next) < 2 && $next !~ /\d/);
+                # next if (length($next) < 2 && $next !~ /\d/);
                 # Naechstes, wenn schon gesehen 
                 next if (exists $seen_token_ref->{$next});
                 # Naechstes, wenn Stopwort

@@ -1109,12 +1109,13 @@ sub print_tit_set_by_idn {
 
     if (!$no_log){
         $session->log_event({
-            type    => 10,
-            content => {
+            type      => 10,
+            content   => {
                 id       => $titidn,
                 database => $database,
                 isbn     => $isbn,
             },
+            serialize => 1,
         });
     }
     

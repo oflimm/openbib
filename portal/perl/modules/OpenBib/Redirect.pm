@@ -53,8 +53,9 @@ sub handler {
 
     my $config = new OpenBib::Config();
 
-    my $uri  = $r->parsed_uri;
-    my $path = $uri->path;
+    my $uri   = $r->parsed_uri;
+    my $path  = $uri->path;
+    my $query = $uri->query;
 
     my $lang = "de"; # TODO: Ausweitung auf andere Sprachen
 
@@ -66,6 +67,8 @@ sub handler {
     my $basepath = $config->{redirect_loc};
     $path=~s/$basepath//;
 
+    $logger->debug("Path: $path URI: $uri");
+
     # Parameter aus URI bestimmen
     #
     # 
@@ -75,6 +78,10 @@ sub handler {
         ($sessionID,$type,$url)=($1,$2,$3);
     }
 
+    if ($query){
+        $url = $url."?".$query;
+    }
+    
     $logger->debug("SessionID: $sessionID - Type: $type - URL: $url");
 
     my $session   = new OpenBib::Session({

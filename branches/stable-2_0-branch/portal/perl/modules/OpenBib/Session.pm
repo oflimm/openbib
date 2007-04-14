@@ -821,20 +821,34 @@ sub log_event {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $type        = exists $arg_ref->{type}
+    my $type         = exists $arg_ref->{type}
         ? $arg_ref->{type}               : undef;
     
-    my $content_ref = exists $arg_ref->{content}
+    my $content      = exists $arg_ref->{content}
         ? $arg_ref->{content}            : undef;
+
+    my $serialize = exists $arg_ref->{serialize}
+        ? $arg_ref->{serialize}          : 0;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $contentstring=unpack "H*", Storable::freeze($content_ref);
+    my $contentstring = $content;
+
+    if ($serialize){
+        $contentstring=unpack "H*", Storable::freeze($content);
+    }
     
     # Moegliche Event-Typen
     #
     # 10 => Eineltrefferanzeige
+
+    # Redirects 
+    # 500 => TOC / hbz-Server
+    # 501 => TOC / ImageWaere-Server
+    # 510 => BibSonomy
+    # 520 => Wikipedia / Personen
+    # 521 => Wikipedia / ISBN
     
     my $request=$self->{dbh}->prepare("insert into eventlog values (?,NOW(),?,?)") or $logger->error($DBI::errstr);
     $request->execute($self->{ID},$type,$contentstring) or $logger->error($DBI::errstr);

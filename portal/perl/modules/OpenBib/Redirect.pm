@@ -100,6 +100,13 @@ sub handler {
         510 => 1, # BibSonomy
         520 => 1, # Wikipedia / Personen
         521 => 1, # Wikipedia / ISBN
+        530 => 1, # EZB
+        531 => 1, # DBIS
+        532 => 1, # Kartenkatalog Philfak
+        533 => 1, # MedPilot
+        540 => 1, # HBZ-Monofernleihe
+        541 => 1, # HBZ-Dokumentenlieferung
+        550 => 1, # WebOPAC
     };
 
     if (exists $valid_redirection_type_ref->{$type}){

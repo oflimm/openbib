@@ -35,6 +35,13 @@ FOREACH category IN categories;
     FOREACH item IN normset.$category;
     content = item.content;
 
+    # Fehlerhafte Daten korrigieren
+    content = content.replace('&lt; */p&gt;','<p />');
+    content = content.replace('&lt;link&gt;','<a href="http://');
+    content = content.replace('&lt;/link&gt;','" target="_blank">Link</a>');
+    content = content.replace('&lt;.?siglink&gt;','');
+    content = content.replace('\x{96}','-');
+
     # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
     # in Config.pm fuer die entsprechende Datenbank definiert
     # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
@@ -83,6 +90,13 @@ END;
 FOREACH category IN categories;
     FOREACH item IN normset.$category;
     content = item.content;
+
+    # Fehlerhafte Daten korrigieren
+    content = content.replace('&lt; */p&gt;','<p />');
+    content = content.replace('&lt;link&gt;','<a href="http://');
+    content = content.replace('&lt;/link&gt;','" target="_blank">Link</a>');
+    content = content.replace('&lt;.?siglink&gt;','');
+    content = content.replace('\x{96}','-');
 
     # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
     # in Config.pm fuer die entsprechende Datenbank definiert

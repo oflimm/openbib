@@ -389,7 +389,7 @@ verkn&uuml;pft mit dem Tag </span><a onclick="insert_tag(event); return false;" 
 <input type="hidden" name="titid"      value="[% titidn %]" />
 <input type="hidden" name="queryid"    value="[% queryid %]" />
 <input type="hidden" name="titisbn"    value="[% normset.${"T0540"}.first.content.replace('-','') %]" />
-<input type="text"   name="tags"       value="[% my_tags.join(' ') %]" size="60" maxlength="200" />&nbsp;<input type="submit" name="do_add" value="&Auml;ndern" />&nbsp;<input type="submit" name="do_del" value="L&ouml;schen" />
+<input type="text"   name="tags"       value="[% my_tags.join(' ') %]" size="60" maxlength="200" />&nbsp;&nbsp;Typ:&nbsp;<select name="type"><option value="1" [% IF private_tags.first.type == 1 %]selected="selected"[% END %]>&ouml;ffentlich</option><option value="2" [% IF private_tags.first.type == 2 %]selected="selected"[% END %]>privat</option></select>&nbsp;&nbsp;&nbsp;<input type="submit" name="do_add" value="&Auml;ndern" />&nbsp;<input type="submit" name="do_del" value="L&ouml;schen" />
 </form>
 </td></tr>
 </table>

@@ -30,7 +30,7 @@
 [%- END -%]
 <td align="center">
 	<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=10" target="body" title="Top 20"><img src="/images/openbib/top20-12px.png" alt="[% msg.maketext("Top 20") %]" border="0" /></a>&nbsp;
-        <a href="http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=[% normset2bibtex(normset) | uri %]" target="_top" valign="top"><img src="/images/openbib/share.png" alt="An BibSonomy senden" title="An BibSonomy senden" /></a>&nbsp;
+        <a href="[% config.redirect_loc %]/[% sessionID %]/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=[% normset2bibtex(normset) | uri %]" target="_top" valign="top"><img src="/images/openbib/share.png" alt="An BibSonomy senden" title="An BibSonomy senden" /></a>&nbsp;
 	<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% database %];singleidn=[% titidn %]" target="header" title="In die Merkliste"><img src="/images/openbib/3d-file-blue-clipboard.png" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>&nbsp;
         <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=mail;database=[% database %];singleidn=[% titidn %]" target="body" title="Als Mail verschicken"><img src="/images/openbib/3d-file-blue-mailbox.png" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></a>&nbsp;
         <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=save;database=[% database %];singleidn=[% titidn %]" target="save" title="Abspeichern"><img src="/images/openbib/3d-file-blue-disk35.png" alt="[% msg.maketext("Abspeichern") %]" border="0" /></a>&nbsp;
@@ -87,7 +87,7 @@ FOREACH category IN categories;
          END ;
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;verf=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsingleaut=${thisid}";
-         content   = "${rssfeed}<a href=\"http://de.wikipedia.org/wiki/Spezial:Search?search=${wikicontent}&go=Artikel\" target=\"_blank\"><img src=\"/images/openbib/wikipedia.png\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+         content   = "${rssfeed}<a href=\"${config.redirect_loc}/${sessionID}/520/http://de.wikipedia.org/wiki/Spezial:Search?search=${wikicontent}&go=Artikel\" target=\"_blank\"><img src=\"/images/openbib/wikipedia.png\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
          thisid     = item.id;
@@ -107,10 +107,10 @@ FOREACH category IN categories;
          content   = "<b>${highlightquery(searchquery,content)}</b>";
 
     CASE "T0540";
-         content   = "<a href=\"http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}\" target=\"_blank\"><img src=\"/images/openbib/wikipedia.png\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${highlightquery(searchquery,content)}";
+         content   = "<a href=\"${config.redirect_loc}/${sessionID}/521/http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}\" target=\"_blank\"><img src=\"/images/openbib/wikipedia.png\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${highlightquery(searchquery,content)}";
 
     CASE "T0543";
-         content   = "${content} (<a href=\"${config.ezb_exturl}&jq_term1=${content}\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
+         content   = "${content} (<a href=\"${config.redirect_loc}/${sessionID}/530/${config.ezb_exturl}&jq_term1=${content}\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
 
     CASE [ "T0662" "T2662" "T3001" "T3002" "T3003" ];
          thisindicator = item.indicator ;
@@ -129,12 +129,17 @@ FOREACH category IN categories;
            END ;
          ELSIF category == 'T3001' ;
             thiscontent = "<img src=\"/images/openbib/html.png\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (&Uuml;bersicht)";
+            content     = "${config.redirect_loc}/${sessionID}/501/${content}" ;
          ELSIF category == 'T3003' ;
             thiscontent = "<img src=\"/images/openbib/pdf-document.png\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)";
+            content     = "${config.redirect_loc}/${sessionID}/501/${content}" ;
          END ;
          IF thiscontent ;
-           thiscontent = thiscontent.replace('; Interna: Inhaltsverzeichnis','<img src="/images/openbib/pdf-document.png" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format/DigiTool)') ;
-           content   = "<a href=\"${content}\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
+            IF thiscontent.match('; Interna: Inhaltsverzeichnis') ;
+               thiscontent = thiscontent.replace('; Interna: Inhaltsverzeichnis','<img src="/images/openbib/pdf-document.png" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format/DigiTool)') ;
+               content     = "${config.redirect_loc}/${sessionID}/500/${content}" ;
+            END ;
+            content   = "<a href=\"${content}\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
          ELSE ;
             content   = "<a href=\"${content}\" target=\"_blank\">${highlightquery(searchquery,content)}</a>";
          END ;

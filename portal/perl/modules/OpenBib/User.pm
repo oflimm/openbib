@@ -592,18 +592,20 @@ sub get_private_tags_of_tit {
 
     #return if (!$titid || !$titdb || !$loginname || !$tags);
 
-    my $request=$self->{dbh}->prepare("select t.id,t.tag from tags as t,tittag as tt where tt.loginname=? and tt.titid=? and tt.titdb=? and tt.tagid = t.id") or $logger->error($DBI::errstr);
+    my $request=$self->{dbh}->prepare("select t.id,t.tag,tt.type from tags as t,tittag as tt where tt.loginname=? and tt.titid=? and tt.titdb=? and tt.tagid = t.id") or $logger->error($DBI::errstr);
     $request->execute($loginname,$titid,$titdb) or $logger->error($DBI::errstr);
 
     my $taglist_ref = [];
 
     while (my $result=$request->fetchrow_hashref){
-        my $tag = decode_utf8($result->{tag});
-        my $id  = $result->{id};
+        my $tag  = decode_utf8($result->{tag});
+        my $id   = $result->{id};
+        my $type = $result->{type};
 
         push @$taglist_ref, {
             id   => $id,
             name => $tag,
+            type => $type,
         };
     }
     

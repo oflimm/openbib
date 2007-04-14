@@ -170,6 +170,13 @@ FOREACH category IN categories;
     FOREACH item IN normset.$category;
     content = item.content;
 
+    # Fehlerhafte Daten korrigieren
+    content = content.replace('&lt; */p&gt;','<p />');
+    content = content.replace('&lt;link&gt;','<a href="http://');
+    content = content.replace('&lt;/link&gt;','" target="_blank">Link</a>');
+    content = content.replace('&lt;.?siglink&gt;','');
+    content = content.replace('\x{96}','-');
+   
     SWITCH category;
 
     CASE [ "T0100" "T0101" "T0103" ];

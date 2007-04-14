@@ -53,36 +53,34 @@ sub handler {
 
     my $config = new OpenBib::Config();
 
-    my @base_args   = split("/",$config->{redirect_loc});
-    my $base_length = $#base_args;
+    my $uri  = $r->parsed_uri;
+    my $path = $uri->path;
 
-    $logger->debug("Base-Length: $base_length");
+    my $lang = "de"; # TODO: Ausweitung auf andere Sprachen
 
-    my $sessionID = substr($r->path_info, $base_length,   1);
-    my $type      = substr($r->path_info, $base_length+2, 1);
-    my $url       = substr($r->path_info, $base_length+3, length $r->path_info);
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+    
+    # Basisipfad entfernen
+    my $basepath = $config->{redirect_loc};
+    $path=~s/$basepath//;
+
+    # Parameter aus URI bestimmen
+    #
+    # 
+
+    my ($sessionID,$type,$url);
+    if ($path=~m/^\/(\w+?)\/(\w+?)\/(.+?)$/){
+        ($sessionID,$type,$url)=($1,$2,$3);
+    }
 
     $logger->debug("SessionID: $sessionID - Type: $type - URL: $url");
 
-    my $query=Apache::Request->new($r);
-    
-    my $status=$query->parse;
-    
-    if ($status) {
-        $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
-    }
-    
     my $session   = new OpenBib::Session({
         sessionID => $sessionID,
     });
     
-    my $queryoptions_ref
-        = $session->get_queryoptions($query);
-    
-    # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
-    $msg->fail_with( \&OpenBib::L10N::failure_handler );
-
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
 
@@ -90,7 +88,8 @@ sub handler {
     }
 
     my $valid_redirection_type_ref = {
-        500 => 1, # TOC
+        500 => 1, # TOC / hbz-Server
+        501 => 1, # TOC / ImageWaere-Server
         510 => 1, # BibSonomy
         520 => 1, # Wikipedia / Personen
         521 => 1, # Wikipedia / ISBN

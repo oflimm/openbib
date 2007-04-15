@@ -82,8 +82,35 @@ sub handler {
   
     my $view="";
 
+    my $useragent=$r->subprocess_env('HTTP_USER_AGENT') || '';
+
+    # Loggen des Brower-Types
+    $session->log_event({
+        type      => 101,
+        content   => $useragent,
+    });
+
+    # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
+    # Client-IP setzen
+    if ($r->header_in('X-Forwarded-For') =~ /([^,\s]+)$/) {
+        $r->connection->remote_ip($1);
+    }
+    
+    # Loggen der Client-IP
+    $session->log_event({
+        type      => 102,
+        content   => $r->connection->remote_ip,
+    });
+    
     if ($query->param('view')) {
         $view=$query->param('view');
+
+        # Loggen der View-Auswahl
+        $session->log_event({
+            type      => 100,
+            content   => $view,
+        });
+
     }
     else {
         $view=$session->get_viewname();

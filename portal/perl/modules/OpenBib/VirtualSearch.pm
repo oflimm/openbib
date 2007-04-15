@@ -1194,7 +1194,18 @@ sub handler {
             # Jetzt update der Trefferinformationen
             my $dbasesstring=join("||",sort @databases);
             my $thisquerystring=unpack "H*", Storable::freeze($searchquery_ref);
-            
+
+            my $searchquery_log_ref = $searchquery_ref;
+            $searchquery_log_ref->{dbases} = \@databases;
+            $searchquery_log_ref->{hits}   = $gesamttreffer;
+
+            # Loggen des Queries
+            $session->log_event({
+                type      => 1,
+                content   => $searchquery_log_ref,
+                serialize => 1,
+            });
+
             my $idnresult=$session->{dbh}->prepare("update queries set hits = ? where queryid = ? and sessionID = ? and query = ? and dbases = ?") or $logger->error($DBI::errstr);
             $idnresult->execute($gesamttreffer,$queryid,$session->{ID},$thisquerystring,$dbasesstring) or $logger->error($DBI::errstr);
             

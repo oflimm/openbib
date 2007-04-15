@@ -762,10 +762,28 @@ sub clear_data {
     # Zuerst Statistikdaten in Statistik-Datenbank uebertragen,
     my $statistics=new OpenBib::Statistics;
 
+    # Alle Events in Statistics-DB uebertragen
+    $idnresult=$self->{dbh}->prepare("select * from eventlog where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+
+    while (my $result=$idnresult->fetchrow_hashref){
+        my $tstamp        = $result->{tstamp};
+        my $type          = $result->{type};
+        my $content       = $result->{content};
+        my $id            = $self->{servername}.":".$self->{ID};
+
+        $statistics->log_event({
+            sessionID => $id,
+            tstamp    => $tstamp,
+            type      => $type,
+            content   => $content,
+        });
+    }
+    
     # Relevanz-Daten vom Typ 2 (Einzeltrefferaufruf)
     $idnresult=$self->{dbh}->prepare("select tstamp,content from eventlog where sessionid = ? and type=10") or $logger->error($DBI::errstr);
     $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
-
+    
     my ($wkday,$month,$day,$time,$year) = split(/\s+/, localtime);
     
     while (my $result=$idnresult->fetchrow_hashref){
@@ -841,14 +859,27 @@ sub log_event {
     
     # Moegliche Event-Typen
     #
-    # 10 => Eineltrefferanzeige
-
+    # Recherchen:
+    #   1 => Recherche-Anfrage bei Virtueller Recherche
+    #  10 => Eineltrefferanzeige
+    #
+    # Allgemeine Informationen
+    # 100 => View
+    # 101 => Browser
+    # 102 => IP des Klienten
     # Redirects 
     # 500 => TOC / hbz-Server
     # 501 => TOC / ImageWaere-Server
     # 510 => BibSonomy
     # 520 => Wikipedia / Personen
     # 521 => Wikipedia / ISBN
+    # 530 => EZB
+    # 531 => DBIS
+    # 532 => Kartenkatalog Philfak
+    # 533 => MedPilot
+    # 540 => HBZ-Monofernleihe
+    # 541 => HBZ-Dokumentenlieferung
+    # 550 => WebOPAC
     
     my $request=$self->{dbh}->prepare("insert into eventlog values (?,NOW(),?,?)") or $logger->error($DBI::errstr);
     $request->execute($self->{ID},$type,$contentstring) or $logger->error($DBI::errstr);

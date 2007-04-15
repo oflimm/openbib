@@ -139,6 +139,56 @@ sub get_result {
     return $data_ref;
 }
 
+sub log_event {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $sessionID    = exists $arg_ref->{sessionID}
+        ? $arg_ref->{sessionID}          : undef;
+
+    my $tstamp       = exists $arg_ref->{tstamp}
+        ? $arg_ref->{tstamp}             : undef;
+
+    my $type         = exists $arg_ref->{type}
+        ? $arg_ref->{type}               : undef;
+    
+    my $content      = exists $arg_ref->{content}
+        ? $arg_ref->{content}            : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Moegliche Event-Typen
+    #
+    # Recherchen:
+    #   1 => Recherche-Anfrage bei Virtueller Recherche
+    #  10 => Eineltrefferanzeige
+    #
+    # Allgemeine Informationen
+    # 100 => View
+    # 101 => Browser
+    # 102 => IP des Klienten
+    # Redirects 
+    # 500 => TOC / hbz-Server
+    # 501 => TOC / ImageWaere-Server
+    # 510 => BibSonomy
+    # 520 => Wikipedia / Personen
+    # 521 => Wikipedia / ISBN
+    # 530 => EZB
+    # 531 => DBIS
+    # 532 => Kartenkatalog Philfak
+    # 533 => MedPilot
+    # 540 => HBZ-Monofernleihe
+    # 541 => HBZ-Dokumentenlieferung
+    # 550 => WebOPAC
+    
+    my $request=$self->{dbh}->prepare("insert into eventlog values (?,?,?,?)") or $logger->error($DBI::errstr);
+    $request->execute($sessionID,$tstamp,$type,$content) or $logger->error($DBI::errstr);
+    $request->finish;
+
+    return;
+}
+
 sub DESTROY {
     my $self = shift;
 

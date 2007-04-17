@@ -996,6 +996,7 @@ sub grundform {
         $content=~s/(\w)-(\w)/$1 $2/g;
         $content=~s/(\w)'(\w)/$1 $2/g;
         
+        $content=OpenBib::Common::Stopwords::strip_first_stopword($content);
     }
     elsif ($tagging){
         $content=~s/[^-+\p{Alphabetic}0-9._]//g;

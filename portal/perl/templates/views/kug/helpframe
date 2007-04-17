@@ -40,7 +40,7 @@
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;5.1&nbsp;<a href="#suchfeldverknuepfung">Verkn&uuml;pfung mehrerer Suchfelder</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;5.2&nbsp;<a href="#profisuche">Verkn&uuml;pfungen innerhalb eines Suchfeldes</a></td></tr>
 
-         <tr><td align="right">6</td><td><a href="#suchindex">Such-Index</a></td></tr>
+         <tr><td align="right">6</td><td><a href="#indexsuche">Such-Index</a></td></tr>
 
          <tr><td align="right">7</td><td><a href="#allghinweisesuche">Weitere allgemeine Hinweise zur Suchanfrage</a></td></tr>
          <tr><td align="right">8</td><td><a href="#beispiele">Einige Beispiele f&uuml;r die Komplexe Recherche</a></td></tr>
@@ -134,13 +134,29 @@
       <p>
 
       Wenn Sie einzelne Kataloge ausw&auml;hlen m&ouml;chten, gehen
-      Sie in die Komplexe Recherche und markieren die gew&uuml;nschten
-      Kataloge. Dann f&uuml;llen Sie die Suchmaske aus und klicken auf
-      <b>"In ausgew&auml;hlten Katalogen suchen"</b>. Um sich bei der
-      Katalogauswahl langes Scrollen zu ersparen, k&ouml;nnen Sie
-      diese dauerhaft in "Mein KUG" als Katalogprofil festlegen.
+      Sie in die Komplexe Recherche. Da die meisten Nutzer in allen
+      Katalogen suchen möchten, sind diese voreingestellt. Klicken Sie
+      zweimal auf "Alle Kataloge" (auf der rechten Seite unter
+      "Katalogauswahl") oder wählen Sie das Profil "Katalogauswahl
+      löschen" aus, so werden alle Kataloge demarkiert, und Sie können
+      Ihre Auswahl treffen, indem Sie entweder bestimmte Kataloge oder
+      ein schon bestehendes Profil auswählen. Dann f&uuml;llen Sie die
+      Suchmaske aus und klicken auf <b>"In ausgew&auml;hlten Katalogen
+      suchen"</b>. Um sich bei der Katalogauswahl langes Scrollen zu
+      ersparen, k&ouml;nnen Sie diese dauerhaft in "Mein KUG" als
+      Katalogprofil festlegen.
 
       </p>
+
+      <p> Neben dem Standard-KUG mit allen Katalogen finden Sie
+      außerdem unter dem Reiter "Übersichten"->"Sichten" eine
+      Zusammenstellung aller vorhandenen Spezial-Sichten, bei denen
+      z.B. bestimmte Kataloge vorausgewählt sind, die weitergehende
+      Informationen anbieten oder ein eigenständiges Fach-Portal
+      bilden. Um hier die Suche auf weitere Kataloge auszudehnen,
+      gehen Sie in das Menu "Katalogauswahl", markieren die
+      gewünschten Kataloge und bestätigen Ihre Auswahl mit "Kataloge
+      auswählen".</p>
 
       <h1 id="suchlogikeinfach">4 Suchlogik in der Einfachen Recherche</h1>
 
@@ -159,14 +175,12 @@
 
       <h2 id="suchfeldverknuepfung">5.1 Verkn&uuml;pfungen mehrerer Suchfelder</h2>
 
-      <p>
-      Die einzelnen Suchfelder (Freie Suche, Titelworte, Person etc.) 
-      sind standardm&auml;ssig &uuml;ber eine "UND-Verkn&uuml;pfung"
-      verbunden,  k&ouml;nnen jedoch auch &uuml;ber eine "ODER-" sowie
-      eine "UND NICHT-Verkn&uuml;pfung" verbunden werden. W&auml;hlen
-      Sie hierzu die entsprechende Verkn&uuml;pfungsart aus dem
-      Pull-Down-Men&uuml; hinter dem jeweiligen Suchfeld.
-      </p>
+      <p> Die einzelnen Suchfelder (Freie Suche, Titelworte, Person
+      etc.) sind standardm&auml;ssig &uuml;ber eine
+      "UND-Verkn&uuml;pfung" verbunden, möglich ist jedoch auch eine
+      "ODER-" sowie eine "UND NICHT-Verkn&uuml;pfung". W&auml;hlen Sie
+      hierzu die entsprechende Verkn&uuml;pfungsart aus dem
+      Pull-Down-Men&uuml; hinter dem jeweiligen Suchfeld.  </p>
 
       <h2 id="profisuche">5.2 Verkn&uuml;pfungen innerhalb eines
       Suchfeldes (ausser bei <span style="color:red">*</span>,
@@ -233,10 +247,10 @@ Abk&uuml;rzungsoperator <b>*</b> ist erlaubt.
 Schlagwort ist eine Index-Suche m&ouml;glich. Sie erhalten dann eine
 &Uuml;bersicht von den zutreffenden Ansetzungsformen der
 Normeintr&auml;ge. Die hier eingegebenen Begriffe werden im Volltext
-gesucht, d.h. z.B. auch innerhalb von Schlagwort-Ketten
+gesucht, d.h. sie werden z.B. auch innerhalb von Schlagwort-Ketten
 gefunden. M&ouml;chten Sie hingegen eine Wortanfangssuche
 durchf&uuml;hren, so stellen Sie dem Suchbegriff bitte das Zeichen
-<b>^</b> voran (z.B. ^frauenbildung*). Mit * k&ouml;nnen sie wie
+<b>^</b> voran (z.B. ^frauenbildung*). Mit * k&ouml;nnen Sie wie
 gewohnt den entsprechenden Begriff trunkieren.  </p>
 
 <h1 id="allghinweisesuche">7 Weitere allgemeine Hinweise zur Suchanfrage</h1>
@@ -267,7 +281,7 @@ Kompletter Titel). F&uuml;r die Suche nach dem Titel 'Die
       <li> Bei der Suche im Personenfeld werden nicht nur Verfasser,
       sondern auch andere Personen (Hrsg., gefeierte Personen ...)
       gesucht. Geben Sie jedoch keine abgek&uuml;rzten Vornamen
-      ein. Suche Sie Titel von 2 Personen, k&ouml;nnen Sie beide Namen
+      ein. Suchen Sie Titel von 2 Personen, k&ouml;nnen Sie beide Namen
       eingeben. Suchen Sie eine bestimmte Person, geben Sie den Namen
       besser als Phrase in der Komplexen Recherche ein,
       z.B. <b>"kernighan, brian"</b>.</li>
@@ -482,8 +496,8 @@ jedoch nicht. Wechseln Sie dazu in den Katalog der betreffenden
 Bibliothek.</li>
 
 <li>Unter der Rubrik <b>Katalogprofile</b> können Sie sich beliebige Kataloge
-zusammenstellen und unter einem Namen abspeichern. Bei Ihrer Recherche greifen
-Sie unter <b>Suchprofil</b> (in den Suchoptionen) auf sie zurück. Möchten Sie sie
+zusammenstellen und unter einem Namen abspeichern. In der Komplexen Recherche greifen
+Sie unter <b>Profil</b> auf sie zurück. Möchten Sie sie
 ändern bzw. löschen, wählen Sie Ihr Profil aus der Select-Box (Rubrik
 Katalogprofile) und klicken auf <b>Profil anzeigen</b>. Der Profilname wird
 automatisch in das Abspeicher-Textfeld eingetragen. Es erscheint die
@@ -553,7 +567,7 @@ gew&uuml;nschten Ordnungskriterien (Person, Titel usw. und Anzeige "Pro Katalog"
 
       <h1 id="externesuche">12 Sprung in externe Recherchequellen</h1>
       <p>
-      In der Recherchemaske finden Sie unter 'Suchhistorie' eine Aufstellung Ihrer bisherigen Recherche-Anfragen. An dieser Stelle k&ouml;nnen Sie f&uuml;r den Fall, dass eine Anfrage nicht die gew&uuml;nschten Ergebnisse lieferte, diese auf weitere externe Recherchequellen ausweiten. Nach der Auswahl der betreffenden Recherche und Aktivierung von 'Weiter als externe Recherche' gelangen Sie auf eine Seite, auf der zus&auml;tzliche Recherchequellen angeboten werden. Jede dieser Recherchequellen stellt eine Recherche nach bestimmten Suchfeldern zur Verf&uuml;gung. Entsprechend der bei Ihrer KUG-Recherche gew&auml;hlten Suchfelder sind unter 'Übernahme der Anfrage in externe Recherchequellen' verschiedene Links aktiviert. Wenn die Suchfelder/kategorien Ihrer ausgew&auml;hlten Anfrage nicht von einer externen Recherchequelle verarbeitet werden k&ouml;nnen, erscheint anstelle des Links die rote Meldung '<span style="color:red">Ungeeignete Suchfelder</span>'. Bei der Aktivierung eines entsprechenden Links springen Sie sofort zur entsprechenden Recherche in der externen Quelle. Dabei wird sowohl Ihre Suchanfrage wie auch eine etwaige Authentifizierung am KUG mit weitergereicht.
+      In der Recherchemaske finden Sie unter 'Suchhistorie' eine Aufstellung Ihrer bisherigen Recherche-Anfragen. An dieser Stelle k&ouml;nnen Sie f&uuml;r den Fall, dass eine Anfrage nicht die gew&uuml;nschten Ergebnisse lieferte, diese auf weitere externe Recherchequellen ausweiten. Nach der Auswahl der betreffenden Recherche und Aktivierung von 'Weiter als externe Recherche' gelangen Sie auf eine Seite, auf der zus&auml;tzliche Recherchequellen angeboten werden. Jede dieser Recherchequellen stellt eine Recherche nach bestimmten Suchfeldern zur Verf&uuml;gung. Entsprechend der bei Ihrer KUG-Recherche gew&auml;hlten Suchfelder sind unter 'Übernahme der Anfrage in externe Recherchequellen' verschiedene Links aktiviert. Wenn die Suchfelder/Kategorien Ihrer ausgew&auml;hlten Anfrage nicht von einer externen Recherchequelle verarbeitet werden k&ouml;nnen, erscheint anstelle des Links die rote Meldung '<span style="color:red">Ungeeignete Suchfelder</span>'. Bei der Aktivierung eines entsprechenden Links springen Sie sofort zur entsprechenden Recherche in der externen Quelle. Dabei wird sowohl Ihre Suchanfrage wie auch eine etwaige Authentifizierung am KUG mit weitergereicht.
 
       </p>
 <p>
@@ -567,7 +581,7 @@ Derzeit werden folgende externe Recherchequellen angeboten:
 <li>MedPilot</li>
 </ul>
 
-      <h1 id="rssfeeds">13 Ergebnisanreicherung</h1>
+      <h1 id="enrichment">13 Ergebnisanreicherung</h1>
 
      <p> Die Ergebnisse werden datenbankübergreifend durch zusätzliche
      Informationen angereichert. Diese Informationen werden über eine
@@ -830,10 +844,21 @@ function addEngine(name,ext,cat)
 //-->
 </script>
 
-    <p>
-    Wenn Sie den Internet-Browser <a href="http://www.mozilla.org/products/firefox/" target="_blank">Mozilla Firefox</a> verwenden, dann k&ouml;nnen Sie f&uuml;r ihn von <a href="javascript:addEngine('KUG','jpg','Academic')">hier</a> das KUG Such-Plugin installieren (Achtung! Zur Installation muss JavaScript aktiviert sein und Sie m&uuml;ssen Schreibberechtigung im searchplugins-Verzeichnis von Firefox besitzen).
+    <p> Wenn Sie den Internet-Browser <a
+    href="http://www.mozilla.org/products/firefox/"
+    target="_blank">Mozilla Firefox bis Version 1.5</a> verwenden, dann k&ouml;nnen
+    Sie f&uuml;r ihn von <a
+    href="javascript:addEngine('KUG','jpg','Academic')">hier</a> das
+    KUG Such-Plugin installieren (Achtung! Zur Installation muss
+    JavaScript aktiviert sein und Sie m&uuml;ssen Schreibberechtigung
+    im searchplugins-Verzeichnis von Firefox besitzen).
 
-    </p>
+    Wenn Sie Mozille Firefox in der Version 2.x verwenden, dann
+    benötigen Sie kein Plugin. Sie können dort in den
+    Browser-Einstellungen unter "Feeds" einfach "Feed abonnieren mit"
+    aktivieren und dort "Keine Anwendung gewählt" auswählen - ohne
+    dort wirklich eine Anwendung auszuwählen (!). Dann zeigt Firefox
+    den Feed wie gewünscht an.  </p>
 
     <h1 id="kontakt">21 Kontakt</h1>
     <p>

@@ -206,7 +206,7 @@ my $atime = new Benchmark;
         system("$config->{autoconv_dir}/filter/$singlepool/alt_conv.pl $singlepool");
     }
     else {
-        system("cd $rootdir/data/$singlepool ; $meta2sqlexe --single-pool=$singlepool");
+        system("cd $rootdir/data/$singlepool ; $meta2sqlexe -add-superpers --single-pool=$singlepool");
     }
     
     if ($singlepool && -e "$config->{autoconv_dir}/filter/$singlepool/post_conv.pl"){

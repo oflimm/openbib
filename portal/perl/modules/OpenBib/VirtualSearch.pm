@@ -1195,8 +1195,20 @@ sub handler {
             my $dbasesstring=join("||",sort @databases);
             my $thisquerystring=unpack "H*", Storable::freeze($searchquery_ref);
 
+            # Wurde in allen Katalogen recherchiert?
+
+            my $alldbcount = $config->get_number_of_dbs();
+
             my $searchquery_log_ref = $searchquery_ref;
-            $searchquery_log_ref->{dbases} = \@databases;
+
+            if ($#databases+1 == $alldbcount){
+                $searchquery_log_ref->{alldbases} = 1;
+                $logger->debug("Alle Datenbanken ausgewaehlt");
+            }
+            else {
+                $searchquery_log_ref->{dbases} = \@databases;
+            }
+
             $searchquery_log_ref->{hits}   = $gesamttreffer;
 
             # Loggen des Queries

@@ -778,6 +778,7 @@ sub get_searchquery {
     });
 
     $hststringnorm = OpenBib::Common::Util::grundform({
+        category  => "0331", # Exemplarisch fuer die Kategorien, bei denen das erste Stopwort entfernt wird
         content   => $hststringnorm,
         searchreq => 1,
     });
@@ -829,10 +830,6 @@ sub get_searchquery {
         searchreq => 1,
     });
     
-    # Bei hststring zusaetzlich normieren durch Weglassung des ersten
-    # Stopwortes
-    $hststringnorm = OpenBib::Common::Stopwords::strip_first_stopword($hststringnorm);
-
     # Umwandlung impliziter ODER-Verknuepfung in UND-Verknuepfung
     if ($autoplus eq "1" && !$verfindex && !$korindex && !$swtindex) {
         $fsnorm       = OpenBib::VirtualSearch::Util::conv2autoplus($fsnorm)   if ($fs);
@@ -919,6 +916,8 @@ sub get_searchquery {
             arg   => $ejahrop,
         },
     };
+
+    $logger->debug(YAML::Dump($searchquery_ref));
     
     return $searchquery_ref;
 }
@@ -997,8 +996,6 @@ sub grundform {
         # Verbundene Terme splitten
         $content=~s/(\w)-(\w)/$1 $2/g;
         $content=~s/(\w)'(\w)/$1 $2/g;
-        
-        $content=OpenBib::Common::Stopwords::strip_first_stopword($content);
     }
     elsif ($tagging){
         $content=~s/[^-+\p{Alphabetic}0-9._]//g;

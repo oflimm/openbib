@@ -2296,9 +2296,11 @@ sub highlightquery {
 
     my $terms = join("|", grep /^\w{3,}/ ,@$term_ref);
 
-    $logger->debug("Terms: ".YAML::Dump($term_ref));
+    return $content if (!$terms);
+    
+    $logger->debug("Term_ref: ".YAML::Dump($term_ref)."\nTerms: $terms");
     $logger->debug("Content vor: ".$content);
-
+    
     $content=~s/\b($terms)/<span class="queryhighlight">$1<\/span>/ig unless ($content=~/http/);
 
     $logger->debug("Content nach: ".$content);

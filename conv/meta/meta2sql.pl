@@ -656,8 +656,10 @@ while (my $line=<IN>){
     
     if ($category && $content){
         
+        # Kategorien in der Blacklist werden generell nicht uebernommen
         next CATLINE if (exists $stammdateien_ref->{tit}{blacklist_ref}->{$category});
 
+        # Kategorien in listitemcat werden fuer die Kurztitelliste verwendet
         if (exists $convtab_ref->{listitemcat}{$category}){
             push @{$listitem_ref->{"T".$category}}, {
                 indicator => $indicator,
@@ -669,6 +671,7 @@ while (my $line=<IN>){
         my $contentnorm   = "";
         my $contentnormft = "";
 
+        # Normierung (String/Fulltext) der als invertierbar definierten Kategorien
         if (exists $stammdateien_ref->{tit}{inverted_ref}->{$category}){
             my $contentnormtmp = OpenBib::Common::Util::grundform({
                 category => $category,
@@ -1013,7 +1016,7 @@ while (my $line=<IN>){
             }
             elsif (exists $convtab_ref->{search_category}{hst      }{$category}){
                 push @hst, OpenBib::Common::Util::grundform({
-                    category => $category,
+                    # Keine Uebergabe der Kategorie, da erstes Stopwort hier nicht entfernt werden soll
                     content  => $content,
                 });
             }

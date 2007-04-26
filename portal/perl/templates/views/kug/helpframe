@@ -710,17 +710,24 @@ Im KUG werden derzeit folgende Arten von RSS-Feeds angeboten:
 </p>
       
       <h2 id="rssinstall">15.2 Beispiel: Installation von Feedview f&uuml;r den Browser Firefox</h2>
-      <p>
 
-F&uuml;r deren Installation rufen Sie bitte diesen <a
-href="https://addons.mozilla.org/extensions/moreinfo.php?id=445;application=firefox"
-target="_blank">Link</a> zu der Firefox-Erweiterung Feedview auf und
-klicken dort auf "Install Now". Es &ouml;ffnet sich dann ein
-Fenster. In diesem best&auml;tigen Sie bitte die Installation. Nach
-dem Neustart von Firefox und einem Klick auf eines der <img
-src="/images/openbib/rssfeed.png" alt="RSS-Icon" />-Icons im KUG &ouml;ffnet sich der
-entsprechende RSS-Feed.
+      <p>F&uuml;r die Installation bei Firefox-Browsern bis Version
+      1.5 rufen Sie bitte diesen <a
+      href="https://addons.mozilla.org/extensions/moreinfo.php?id=445;application=firefox"
+      target="_blank">Link</a> zu der Firefox-Erweiterung Feedview auf
+      und klicken dort auf "Install Now". Es &ouml;ffnet sich dann ein
+      Fenster. In diesem best&auml;tigen Sie bitte die
+      Installation. Nach dem Neustart von Firefox und einem Klick auf
+      eines der <img src="/images/openbib/rssfeed.png" alt="RSS-Icon"
+      />-Icons im KUG &ouml;ffnet sich der entsprechende RSS-Feed.
       </p>
+
+      <p> Wenn Sie Mozille Firefox in der Version 2.x verwenden, dann
+      benötigen Sie kein Plugin. Sie können dort in den
+      Browser-Einstellungen unter "Feeds" einfach "Feed abonnieren
+      mit" aktivieren und dort "Keine Anwendung gewählt" auswählen -
+      ohne dort wirklich eine Anwendung auszuwählen (!). Dann zeigt
+      auch Firefox ab Version 2.x den Feed wie gewünscht an.  </p>
 
       <p>
       &Uuml;ber die Hauptrubrik "RSS" gelangen Sie auf eine Seite, auf
@@ -846,19 +853,13 @@ function addEngine(name,ext,cat)
 
     <p> Wenn Sie den Internet-Browser <a
     href="http://www.mozilla.org/products/firefox/"
-    target="_blank">Mozilla Firefox bis Version 1.5</a> verwenden, dann k&ouml;nnen
+    target="_blank">Mozilla Firefox</a> verwenden, dann k&ouml;nnen
     Sie f&uuml;r ihn von <a
     href="javascript:addEngine('KUG','jpg','Academic')">hier</a> das
     KUG Such-Plugin installieren (Achtung! Zur Installation muss
     JavaScript aktiviert sein und Sie m&uuml;ssen Schreibberechtigung
     im searchplugins-Verzeichnis von Firefox besitzen).
-
-    Wenn Sie Mozille Firefox in der Version 2.x verwenden, dann
-    benötigen Sie kein Plugin. Sie können dort in den
-    Browser-Einstellungen unter "Feeds" einfach "Feed abonnieren mit"
-    aktivieren und dort "Keine Anwendung gewählt" auswählen - ohne
-    dort wirklich eine Anwendung auszuwählen (!). Dann zeigt Firefox
-    den Feed wie gewünscht an.  </p>
+    </p>
 
     <h1 id="kontakt">21 Kontakt</h1>
     <p>

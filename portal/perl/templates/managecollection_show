@@ -16,7 +16,7 @@
 
   <body>
     
-    <form method="get" action="http://[% config.servername %][% config.managecollection_loc %]">
+    <form method="get" action="http://[% config.servername %][% config.managecollection_loc %]" target="_top">
       <input type="hidden" name="sessionID" value="[% sessionID %]" />
       <input type="hidden" name="action"    value="show" />
       

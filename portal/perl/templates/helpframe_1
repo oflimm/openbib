@@ -18,9 +18,12 @@
       <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">[% msg.maketext("Suchhilfe") %]</a></li>
       <li><a class="active" href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=1" target="body">[% msg.maketext("Projekt") %]</a></li>
       <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=2" target="body">[% msg.maketext("KUG-Versionen") %]</a></li>
+      <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=3" target="body">Artikel/Stimmen</a></li>
     </ul>
     
     <div class="content">
+      <div class="infotext">
+
       <p />
 
 <h1>Das KUG-Projekt an der Universit&auml;t zu K&ouml;ln</h1>
@@ -226,6 +229,7 @@ langfristig rechtfertigen wird.
 <address>Oliver Flimm (05/01/20)</address>
 
     </div>
+  </div>
 <p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

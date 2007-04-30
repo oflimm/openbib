@@ -22,6 +22,9 @@ h3, h4, h5 {
 
 body {
   color: black;
+  /* background-color: #EDEBE3; */
+  /* background-color: #FFFFCC; */
+  /* background-color: #FFF8C6; */
   background-color: #EDEBE3;
   font-family: Arial,helv,Helvetica,Verdana,sans-serif;
 }
@@ -78,7 +81,7 @@ table {
 .globalsearch { 
   font-family:Arial,helv,Helvetica,Verdana; 
   font-size:135%; 
-  color=blue;
+  color:blue;
 }
 
 .fbuttonarea { 
@@ -170,6 +173,15 @@ input, select, textarea {
 
 img { 
   border:0;
+}
+
+dt {
+  font-weight:bold;
+  margin-bottom: 2px;
+}
+
+dd {
+  margin-bottom: 10px;
 }
 
 a:link { 
@@ -280,3 +292,4 @@ a:active.invisible {
   font-size:1.2em;
   font-weight:bold;
 }
+

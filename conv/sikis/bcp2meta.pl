@@ -40,6 +40,8 @@
 #
 #####################################################################
 
+use 5.008001;
+
 use Getopt::Long;
 
 my $bcppath;
@@ -558,15 +560,15 @@ while (($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<PER>)){
   foreach $key (sort {$b cmp $a} keys %SATZn){
     $outkey=$key;
     $outkey=~s/(\d\d\d\d)\.\d\d\d/$1/;
-    printf AUT $outkey.konv($SATZn{$key})."\n" if ($SATZn{$key} !~ /idn:/);
+    print AUT $outkey.konv($SATZn{$key})."\n" if ($SATZn{$key} !~ /idn:/);
   }
 
 
   foreach $key (sort keys %SATZ){
-    printf PERSIK $key.":".konv($SATZ{$key})."\n" if ($SATZ{$key} !~ /idn:/);
+    print PERSIK $key.":".konv($SATZ{$key})."\n" if ($SATZ{$key} !~ /idn:/);
   }
 
-  printf PERSIK "9999:\n\n";
+  print PERSIK "9999:\n\n";
   print AUT "ENDE\n";
 
 }
@@ -656,11 +658,11 @@ while (($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<KOE>)){
       $konvinhalt=~s/^.//;
     }
 
-    printf KOR $outkey.$konvinhalt."\n" if ($SATZn{$key} !~ /idn:/);
+    print KOR $outkey.$konvinhalt."\n" if ($SATZn{$key} !~ /idn:/);
   }
 
   foreach $key (sort {$b cmp $a} keys %SATZ){
-    printf KOESIK $key.":".konv($SATZ{$key})."\n" if ($SATZ{$key} !~ /idn:/);
+    print KOESIK $key.":".konv($SATZ{$key})."\n" if ($SATZ{$key} !~ /idn:/);
   }
 
   print KOESIK "9999:\n\n";
@@ -737,11 +739,11 @@ while (($katkey,$aktion,$reserv,$ansetzung,$daten) = split ("",<SYS>)){
   foreach $key (sort {$b cmp $a} keys %SATZn){
     $outkey=$key;
     $outkey=~s/(\d\d\d\d)\.\d\d\d/$1/;
-    printf NOTA $outkey.konv($SATZn{$key})."\n" if ($SATZn{$key} !~ /idn:/);
+    print NOTA $outkey.konv($SATZn{$key})."\n" if ($SATZn{$key} !~ /idn:/);
   }
 
   foreach $key (sort keys %SATZ){
-    printf SYSSIK $key.":".konv($SATZ{$key})."\n" if ($SATZ{$key} !~ /idn:/);
+    print SYSSIK $key.":".konv($SATZ{$key})."\n" if ($SATZ{$key} !~ /idn:/);
   }
   print SYSSIK "9999:\n\n";
   print NOTA "ENDE\n";
@@ -847,11 +849,11 @@ while (($katkey,$aktion,$reserv,$id,$ansetzung,$daten) = split ("",<SWD>)){
     $outkey=~s/(\d\d\d\d)\.\d\d\d/$1/;
     $SATZn{$key}=~s/^[a-z]([A-Z0-9])/$1/;
  #   $SATZn{$key}=~s/^[a-z]// if ($key=~/^6520/);
-    printf SWT $outkey.konv($SATZn{$key})."\n" if ($SATZn{$key} !~ /idn:/);
+    print SWT $outkey.konv($SATZn{$key})."\n" if ($SATZn{$key} !~ /idn:/);
   }
 
   foreach $key (sort {$b cmp $a} keys %SATZ){
-    printf SWDSIK $key.":".konv($SATZ{$key})."\n" if ($SATZ{$key} !~ /idn:/);
+    print SWDSIK $key.":".konv($SATZ{$key})."\n" if ($SATZ{$key} !~ /idn:/);
   }
 
 
@@ -943,7 +945,7 @@ while (($katkey,$aktion,$fcopy,$reserv,$vsias,$vsiera,$vopac,$daten) = split ("
 
   printf TIT "IDN  %0d\n", $katkey;
   printf TITSIK "0000:%0d\n", $katkey;
-  printf TIT "1100 8\n";
+  print TIT "1100 8\n";
 #  print  TIT "SDU  $sdu\n";
 #  print  TIT "SDN  %sdn\n";
 

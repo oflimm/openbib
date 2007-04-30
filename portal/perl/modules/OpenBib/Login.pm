@@ -239,7 +239,7 @@ sub handler {
 
             # Falls noch keins da ist, eintragen
             if ($rows <= 0) {
-                $userresult=$user->{dbh}->prepare("insert into fieldchoice values (?,1,1,1,1,1,1,1,1,1,1,0,1)") or $logger->error($DBI::errstr);
+                $userresult=$user->{dbh}->prepare("insert into fieldchoice values (?,1,1,1,1,1,1,1,1,1,0,1,1,1)") or $logger->error($DBI::errstr);
                 $userresult->execute($userid) or $logger->error($DBI::errstr);
             }
       
@@ -271,7 +271,7 @@ sub handler {
             my $setmask = decode_utf8($maskresult->{'masktype'});
 
             # Assoziieren des Recherchemasken-Typs mit der Session
-            if ($setmask ne "simple" && $setmask ne "advanced") {
+            if (!defined $setmask || ($setmask ne "simple" && $setmask ne "advanced")) {
                 $setmask="simple";
             }
 

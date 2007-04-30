@@ -228,7 +228,8 @@ sub handler {
             view             => $view,
             stylesheet       => $stylesheet,
             sessionID        => $session->{ID},
-
+            user             => $user,
+            
             loginname        => $loginname,
             password         => $password,
             email_valid      => $email_valid,
@@ -268,7 +269,7 @@ sub handler {
         };
         OpenBib::Common::Util::print_page($config->{tt_userprefs_changefields_tname},$ttdata,$r);
     }
-    elsif ($action eq "Kennung löschen") {
+    elsif ($action eq "delaccount_ask") {
         # TT-Data erzeugen
         my $ttdata={
             view       => $view,
@@ -280,7 +281,7 @@ sub handler {
         };
         OpenBib::Common::Util::print_page($config->{tt_userprefs_ask_delete_tname},$ttdata,$r);
     }
-    elsif ($action eq "Kennung soll wirklich gelöscht werden") {
+    elsif ($action eq "delaccount") {
         # Zuerst werden die Datenbankprofile geloescht
         my $userresult;
         $userresult=$user->{dbh}->prepare("delete from profildb using profildb,userdbprofile where userdbprofile.userid = ? and userdbprofile.profilid=profildb.profilid") or $logger->error($DBI::errstr);
@@ -335,7 +336,7 @@ sub handler {
         };
         OpenBib::Common::Util::print_page($config->{tt_userprefs_userdeleted_tname},$ttdata,$r);
     }
-    elsif ($action eq "Password ändern") {
+    elsif ($action eq "changepw") {
         if ($password1 eq "" || $password1 ne $password2) {
             OpenBib::Common::Util::print_warning($msg->maketext("Sie haben entweder kein Passwort eingegeben oder die beiden Passworte stimmen nicht überein"),$r,$msg);
             return OK;

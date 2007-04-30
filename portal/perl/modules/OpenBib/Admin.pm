@@ -159,7 +159,7 @@ sub handler {
 
     # Verweis: Datenbankname -> Informationen zum zugeh"origen Institut/Seminar
   
-    my $dbinforesult=$config->{dbh}->prepare("select dbname,description from dbinfo where active=1 order by description") or $logger->error($DBI::errstr);
+    my $dbinforesult=$config->{dbh}->prepare("select dbname,description,orgunit from dbinfo where active=1 order by orgunit,description") or $logger->error($DBI::errstr);
     $dbinforesult->execute() or $logger->error($DBI::errstr);
   
     my @dbnames=();
@@ -561,7 +561,9 @@ sub handler {
             my $description = decode_utf8($result->{'description'});
             my $active      = decode_utf8($result->{'active'});
 
-            $active="Ja" if ($active eq "1");
+            $description = (defined $description)?$description:'Keine Beschreibung';
+            
+            $active="Ja"   if ($active eq "1");
             $active="Nein" if ($active eq "0");
       
             my $idnresult2=$config->{dbh}->prepare("select * from viewdbs where viewname = ? order by dbname") or $logger->error($DBI::errstr);
@@ -578,11 +580,11 @@ sub handler {
             my $viewdb=join " ; ", @viewdbs;
 
             $view={
-		viewid => $viewid,
-		viewname => $viewname,
+		viewid      => $viewid,
+		viewname    => $viewname,
 		description => $description,
-		active => $active,
-		viewdb => $viewdb,
+		active      => $active,
+		viewdb      => $viewdb,
             };
 
             push @views, $view;
@@ -782,7 +784,7 @@ sub handler {
               my $request=$config->{dbh}->prepare("update viewinfo set rssfeed = ? where viewid = ?") or $logger->error($DBI::errstr);
               $request->execute($rssid,$viewid) or $logger->error($DBI::errstr);
               $request->finish();
-              $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&action=editviewrss&viewid=$viewid&viewrssaction=Bearbeiten");
+              $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editview_rss=1&do_edit=1&viewid=$viewid");
               return OK;
           }
           elsif ($rsstype eq "all") {
@@ -794,16 +796,9 @@ sub handler {
                   $request->execute($viewname,$rssid) or $logger->error($DBI::errstr);
               }
               $request->finish();
-              $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&action=editviewrss&viewid=$viewid&viewrssaction=Bearbeiten");
+              $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showviews=1");
               return OK;
           }
-      }
-      elsif ($do_new){
-          my $request=$config->{dbh}->prepare("insert into rssfeeds values (NULL,?,?,-1,'',0)") or $logger->error($DBI::errstr);
-          $request->execute($dbname,$rsstype) or $logger->error($DBI::errstr);
-          $request->finish();
-          $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&action=editcatrss&dbname=$dbname&catrssaction=Bearbeiten");
-          return OK;
       }
       elsif ($do_edit) {
           my $request=$config->{dbh}->prepare("select * from viewinfo where viewid=?") or $logger->error($DBI::errstr);
@@ -939,7 +934,7 @@ sub handler {
 
         my $idnresult=$session->{dbh}->prepare("select * from session order by createtime") or $logger->error($DBI::errstr);
         $idnresult->execute() or $logger->error($DBI::errstr);
-        my $session="";
+        my $singlesession="";
         my @sessions=();
 
         while (my $result=$idnresult->fetchrow_hashref()) {
@@ -957,13 +952,13 @@ sub handler {
                 $benutzernr="Anonym";
             }
 
-            $session={
+            $singlesession={
                 singlesessionid => $singlesessionid,
                 createtime      => $createtime,
                 benutzernr      => $benutzernr,
                 numqueries      => $numqueries,
             };
-            push @sessions, $session;
+            push @sessions, $singlesession;
         }
     
 
@@ -1016,7 +1011,7 @@ sub handler {
                 $benutzernr="Anonym";
             }
 
-            my $session={
+            my $singlesession={
                 singlesessionid => $singlesessionid,
                 createtime      => $createtime,
                 benutzernr      => $benutzernr,
@@ -1027,7 +1022,7 @@ sub handler {
                 stylesheet => $stylesheet,
                 sessionID  => $session->{ID},
 	         
-                session    => $session,
+                session    => $singlesession,
 
                 queries    => \@queries,
 

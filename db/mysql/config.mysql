@@ -14,11 +14,13 @@ CREATE TABLE dbinfo (
  active      BOOL,
 
  INDEX (orgunit),
- INDEX (dbid),
  INDEX (dbname),
  INDEX (active),
  INDEX (description(255))
-);
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
 
 drop table IF EXISTS dboptions;
 CREATE TABLE dboptions (
@@ -41,7 +43,10 @@ CREATE TABLE dboptions (
  circcheckurl TEXT,
  circdb       TEXT,
  INDEX(dbname)
-);
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
 
 drop table IF EXISTS titcount;
 create table titcount (
@@ -61,7 +66,10 @@ CREATE TABLE viewinfo (
 
  INDEX (viewid),
  INDEX (viewname)
-);
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
 
 drop table IF EXISTS viewdbs;
 CREATE TABLE viewdbs (
@@ -70,7 +78,10 @@ CREATE TABLE viewdbs (
 
  INDEX(viewname),
  INDEX(dbname)
-);
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
 
 drop table IF EXISTS viewrssfeeds;
 CREATE TABLE viewrssfeeds (
@@ -79,7 +90,10 @@ CREATE TABLE viewrssfeeds (
 
  INDEX(viewname),
  INDEX(rssfeed)
-);
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
 
 drop table IF EXISTS rssfeeds;
 create table rssfeeds (
@@ -93,7 +107,10 @@ create table rssfeeds (
  INDEX (dbname),
  INDEX (type),
  INDEX (subtype)
-);
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+;
 
 drop table IF EXISTS rsscache;
 create table rsscache (
@@ -108,5 +125,6 @@ INDEX   (type),
 INDEX   (subtype)
 )
 DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
 PACK_KEYS=1;
 

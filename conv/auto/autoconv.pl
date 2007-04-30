@@ -10,7 +10,7 @@
 #
 #  Andere : Ueber Plugins/Filter realisierbar
 #
-#  Dieses File ist (C) 1997-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2007 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -110,15 +110,14 @@ my $atime = new Benchmark;
 # Aktuelle Pool-Version von entfernter Quelle uebertragen
 
 {
-    my $atime = new Benchmark;
-    
-    if ($singlepool && -e "$config->{autoconv_dir}/filter/$singlepool/pre_remote.pl"){
-        $logger->info("### $singlepool: Verwende Plugin pre_remote.pl");
-        system("$config->{autoconv_dir}/filter/$singlepool/pre_remote.pl $singlepool");
-    }
-    
     if ($getfromremote){
+        my $atime = new Benchmark;
         
+        if ($singlepool && -e "$config->{autoconv_dir}/filter/$singlepool/pre_remote.pl"){
+            $logger->info("### $singlepool: Verwende Plugin pre_remote.pl");
+            system("$config->{autoconv_dir}/filter/$singlepool/pre_remote.pl $singlepool");
+        }
+    
         if ($singlepool && -e "$config->{autoconv_dir}/filter/$singlepool/alt_remote.pl"){
             $logger->info("### $singlepool: Verwende Plugin alt_remote.pl");
             system("$config->{autoconv_dir}/filter/$singlepool/alt_remote.pl $singlepool");
@@ -139,19 +138,20 @@ my $atime = new Benchmark;
             system("$wgetexe $httpauthstring -P $pooldir/$singlepool/ $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{notfilename} > /dev/null 2>&1 ");
             system("$wgetexe $httpauthstring -P $pooldir/$singlepool/ $dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{mexfilename} > /dev/null 2>&1 ");
         }
-    }
-    
-    if ($singlepool && -e "$config->{autoconv_dir}/filter/$singlepool/post_remote.pl"){
-        $logger->info("### $singlepool: Verwende Plugin post_remote.pl");
-        system("$config->{autoconv_dir}/filter/$singlepool/post_remote.pl $singlepool");
-    }
-    
-    my $btime      = new Benchmark;
-    my $timeall    = timediff($btime,$atime);
-    my $resulttime = timestr($timeall,"nop");
-    $resulttime    =~s/(\d+\.\d+) .*/$1/;
 
-    $logger->info("### $singlepool: Benoetigte Zeit -> $resulttime");
+    
+        if ($singlepool && -e "$config->{autoconv_dir}/filter/$singlepool/post_remote.pl"){
+            $logger->info("### $singlepool: Verwende Plugin post_remote.pl");
+            system("$config->{autoconv_dir}/filter/$singlepool/post_remote.pl $singlepool");
+        }
+        
+        my $btime      = new Benchmark;
+        my $timeall    = timediff($btime,$atime);
+        my $resulttime = timestr($timeall,"nop");
+        $resulttime    =~s/(\d+\.\d+) .*/$1/;
+        
+        $logger->info("### $singlepool: Benoetigte Zeit -> $resulttime");
+    }
 }
 
 # Entpacken der Pool-Daten in separates Arbeits-Verzeichnis unter 'data'
@@ -206,7 +206,7 @@ my $atime = new Benchmark;
         system("$config->{autoconv_dir}/filter/$singlepool/alt_conv.pl $singlepool");
     }
     else {
-        system("cd $rootdir/data/$singlepool ; $meta2sqlexe --single-pool=$singlepool");
+        system("cd $rootdir/data/$singlepool ; $meta2sqlexe -add-superpers --single-pool=$singlepool");
     }
     
     if ($singlepool && -e "$config->{autoconv_dir}/filter/$singlepool/post_conv.pl"){
@@ -324,7 +324,7 @@ ENDE
     my $atime = new Benchmark;
 
     $logger->info("### $singlepool: Importing data into searchengine");   
-    system("$config->{'base_dir'}/conv/db2xapian.pl $singlepool");
+    system("cd $rootdir/data/$singlepool/ ; $config->{'base_dir'}/conv/file2xapian.pl --with-fields --single-pool=$singlepool");
 
     my $btime      = new Benchmark;
     my $timeall    = timediff($btime,$atime);

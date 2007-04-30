@@ -25,7 +25,6 @@
                 'T0300', # msg.maketext("T0300") Sammlungsvermerk
                 'T0370', # msg.maketext("T0370") WST
                 'T0341', # msg.maketext("T0341") PSTVorlage
-                'T0361', # msg.maketext("T0361") Beig.Werke
                 'T0333', # msg.maketext("T0333") Zu erg. Urheber/HST Urheber
                 'T0335', # msg.maketext("T0335") Zusatz zum HST
                 'T0361', # msg.maketext("T0361") Vorlage beigef. Werk
@@ -108,6 +107,7 @@
                 'T3003', # msg.maketext("T3003") TOC-URL / PDF
                 'T5001', # msg.maketext("T5001") Anzahl uebergeordn. Werke
                 'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke
+                'T5100', # msg.maketext("T5100") Allg. Zaehlung
                 ]
 
 %]

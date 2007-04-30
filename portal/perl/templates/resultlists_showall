@@ -34,8 +34,9 @@
 <tr><td class="boxed">
 <b>[% msg.maketext("Sortierung") %]:</b>&nbsp;
 <select name="sorttype">
-  <option value="author"[%- IF query.param('sorttype') == 'author' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Autor") %]</option>
+  <option value="author"[%- IF query.param('sorttype') == 'author' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Person") %]</option>
   <option value="title"[%- IF query.param('sorttype') == 'title' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel") %]</option>
+  <option value="order"[%- IF query.param('sorttype') == 'order' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Z&auml;hlung") %]</option>
   <option value="yearofpub"[%- IF query.param('sorttype') == 'yearofpub' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]</option>
   <option value="publisher"[%- IF query.param('sorttype') == 'publisher' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Verlag") %]</option>
   <option value="signature"[%- IF query.param('sorttype') == 'signature' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Signatur") %]</option>
@@ -98,6 +99,16 @@
 [%- title = item.${'T0331'}.first.content -%]
 [%- IF item.${'T0310'}.first.content -%]
 [%- title = item.${'T0310'}.first.content -%]
+[%- END -%]
+
+[%# Einbeziehung der Zaehlfelder T5100 %]
+[%- IF title && item.${'T5100'}.first.content -%]
+[%- order = item.${'T5100'}.first.content -%]
+[%-    IF title == order -%]
+[%-      title = "${order}."-%]
+[%-    ELSE -%]
+[%-      title = "${order}. ${title}" -%]
+[%-    END -%]
 [%- END -%]
 
 [%# Verlage konstruieren %]

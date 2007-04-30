@@ -51,7 +51,7 @@ sub new {
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
         = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
-            or $logger->error_die($DBI::errstr);
+            or $logger->error($DBI::errstr);
 
     $self->{dbh}       = $dbh;
 
@@ -62,6 +62,8 @@ sub store_relevance {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
+    my $tstamp            = exists $arg_ref->{tstamp}
+        ? $arg_ref->{tstamp}        : undef;
     my $id                = exists $arg_ref->{id}
         ? $arg_ref->{id    }        : undef;
     my $isbn              = exists $arg_ref->{isbn}
@@ -76,10 +78,10 @@ sub store_relevance {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    return undef unless (defined $id && defined $dbname && defined $katkey && defined $type);
+    return undef unless (defined $id && defined $dbname && defined $katkey && defined $type && defined $self->{dbh});
     
-    my $request=$self->{dbh}->prepare("insert into relevance values (?,?,?,?,?)") or $logger->error($DBI::errstr);
-    $request->execute($id,$isbn,$dbname,$katkey,$type) or $logger->error($DBI::errstr);
+    my $request=$self->{dbh}->prepare("insert into relevance values (?,?,?,?,?,?)") or $logger->error($DBI::errstr);
+    $request->execute($tstamp,$id,$isbn,$dbname,$katkey,$type) or $logger->error($DBI::errstr);
     return;
 }
 
@@ -97,7 +99,7 @@ sub store_result {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    return undef unless (defined $id && defined $type && defined $data_ref);
+    return undef unless (defined $id && defined $type && defined $data_ref && defined $self->{dbh});
     
     my $request=$self->{dbh}->prepare("delete from result_data where id=? and type=?") or $logger->error($DBI::errstr);
     $request->execute($id,$type) or $logger->error($DBI::errstr);
@@ -135,6 +137,66 @@ sub get_result {
     }
 
     return $data_ref;
+}
+
+sub log_event {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $sessionID    = exists $arg_ref->{sessionID}
+        ? $arg_ref->{sessionID}          : undef;
+
+    my $tstamp       = exists $arg_ref->{tstamp}
+        ? $arg_ref->{tstamp}             : undef;
+
+    my $type         = exists $arg_ref->{type}
+        ? $arg_ref->{type}               : undef;
+    
+    my $content      = exists $arg_ref->{content}
+        ? $arg_ref->{content}            : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Moegliche Event-Typen
+    #
+    # Recherchen:
+    #   1 => Recherche-Anfrage bei Virtueller Recherche
+    #  10 => Eineltrefferanzeige
+    #
+    # Allgemeine Informationen
+    # 100 => View
+    # 101 => Browser
+    # 102 => IP des Klienten
+    # Redirects 
+    # 500 => TOC / hbz-Server
+    # 501 => TOC / ImageWaere-Server
+    # 510 => BibSonomy
+    # 520 => Wikipedia / Personen
+    # 521 => Wikipedia / ISBN
+    # 530 => EZB
+    # 531 => DBIS
+    # 532 => Kartenkatalog Philfak
+    # 533 => MedPilot
+    # 540 => HBZ-Monofernleihe
+    # 541 => HBZ-Dokumentenlieferung
+    # 550 => WebOPAC
+    
+    my $request=$self->{dbh}->prepare("insert into eventlog values (?,?,?,?)") or $logger->error($DBI::errstr);
+    $request->execute($sessionID,$tstamp,$type,$content) or $logger->error($DBI::errstr);
+    $request->finish;
+
+    return;
+}
+
+sub DESTROY {
+    my $self = shift;
+
+    return if (!defined $self->{dbh});
+
+    $self->{dbh}->disconnect();
+
+    return;
 }
 
 1;

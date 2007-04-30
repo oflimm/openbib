@@ -32,5 +32,6 @@
 <tr><td></td><td><input type="submit" name="do_login" value="[% msg.maketext("Einloggen") %]" /></td></tr>
 </table>
 </form>
+<p />
 
 [% PROCESS std_footer %]

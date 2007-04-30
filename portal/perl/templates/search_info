@@ -22,14 +22,9 @@ kommen im Titel vor. W&uuml;nschen Sie eine
 schreiben Sie als <b>Trunkierungszeichen</b> ein *.") %]
 
 <p />
-<b>[% msg.maketext("Wenn Sie mehrere Suchworte in verschiedene Felder eingetragen haben,</b><br />
-k&ouml;nnen Sie &uuml;ber die Spalte <b>Verkn&uuml;pfung</b> festlegen,
-ob die einzelnen Felder <b>UND</b>, <b>ODER</b> bzw. <b>UND NICHT</b>
-verkn&uuml;pft werden sollen.") %]
-
-<p />
 <b>[% msg.maketext("Wenn Sie den Index aufrufen m&ouml;chten,</b> <br /> dann
-geben Sie bitte dort einen Begriff ein und klicken auf
+geben Sie in das Feld Person, K&ouml;rperschaft/Institution oder
+Schlagwort einen Begriff ein und klicken auf
 <b>Index</b>. Sie erhalten dann eine Liste der entsprechenden
 Normdaten aus der Datenbank, die mit dem von Ihnen eingegebenen
 Begriff beginnen.") %]

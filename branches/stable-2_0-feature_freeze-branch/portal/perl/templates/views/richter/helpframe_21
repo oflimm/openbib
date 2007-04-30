@@ -1,0 +1,120 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_3
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=20">Elise und Helene Richter</a></li>
+   <li><a class="active" href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=21">Die Bibliothek Richter heute</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<h1>Die Bibliothek Richter heute</h1>
+
+
+<table width="100%" cellpadding="10">
+<tr>
+<td><a href="/images/openbib/views/richter/richterexlibris.jpg"><img src="/images/openbib/views/richter/richterexlibris.jpg" width="200" alt="Ex Libris der Schwestern Richter"></a></td>
+<td>
+<p>
+Heute ist sicher, dass nicht die komplette Bibliothek der Schwestern
+Richter in den Bestand der USB K&ouml;ln eingegangen ist. Helene
+Richter hatte 1938/39 bereits 1700 B&auml;nde verkauft, somit befanden
+sich 1941 noch ca. 750 B&auml;nde in der "englischen Bibliothek" der
+Schwestern. Dies geht aus einem Brief hervor, den Elise Richter am
+24. August 1941 dem Direktor der Universit&auml;tsbibliothek K&ouml;ln
+geschrieben hat.  Der Kaufvertrag &uuml;ber die B&uuml;chersammlung
+datiert vom 21.10. 1941.  Der Kaufpreis f&uuml;r die romanistische
+Bibliothek betrug 4000 Reichsmark. F&uuml;r die anglistischen
+B&uuml;cher wurden 500 Reichsmark geboten. Die Anzahl der B&uuml;cher
+wurde mit &uuml;ber 3000 B&auml;nden angegeben. [Quelle: Briefwechsel
+Corsten / Richter; Akte Richter, Bl&auml;tter 4 und 46] Die erworbenen
+B&uuml;cher sind in mindestens drei Sendungen nach K&ouml;ln
+gelangt. Im Mai 1942 kam die letzte Lieferung in K&ouml;ln an. Die
+B&uuml;cher wurden in die Aufstellungssystematik der USB
+eingearbeitet.
+</p>
+
+<p>
+Das von Elise und Helene Richter verwendete Ex Libris des Wiener
+Graphikers <a href="http://de.wikipedia.org/wiki/Alfred_Cossmann" target="_blank">Alfred Cossmann</a> (2.10.1870 Graz - 31.3.1951 Wien) stellte
+bei der Recherche in der Regel das einzige Provenienz-Merkmal dar, da
+die Inventarisierungsb&uuml;cher (Akzessionsjournale) der
+Erwerbungsjahre bis 1949 in den Kriegswirren verloren gegangen sind.
+</p>
+
+</td>
+</tr>
+</table>
+
+<p>
+Von der "Zerstreuung" der Bibliothek zeugen z.B. einzelne
+Exemplare, die sich im Nachlass des mit Elise Richter bekannten
+Prof. Fritz Schalk befanden, und somit erst nach 1980 in den Besitz
+USB K&ouml;ln gelangten.  Der Nachlass Schalk wurde allerdings nicht
+komplett der USB K&ouml;ln vermacht.  Im bereits 1941 von der USB
+K&ouml;ln erworbenem Nachlass des Anglisten Alois Brandl (1855-1940)
+wurde bislang ein Buch der Richter-Bibliothek
+gefunden. M&ouml;glicherweise handelt es sich hierbei um ein Exemplar
+der "Englischen Bibliothek" von Helene Richter, die bereits 1938/39
+verkauft worden war.  Wahrscheinlich befinden sich B&uuml;cher der
+ehemaligen Richter-Bibliothek heute auch in anderen Bibliotheken,
+nicht nur an der Universit&auml;t zu K&ouml;ln und m&ouml;glicherweise
+auch im Privatbesitz.
+</p>
+
+<p> Das Projekt "Virtuelle Bibliothek Elise und Helene Richter"
+versucht die einstige Bibliothek zun&auml;chst als Titelnachweis
+wieder zusammen zu f&uuml;hren.  Die Grundlage f&uuml;r die Recherche
+bilden die 1941 von Elise und Helene Richter erstellten <a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=30">Listen</a>.  Neben der bibliographischen Verzeichnung der
+B&uuml;cher findet eine z.Zt. rudiment&auml;re Verschlagwortung der
+Titel statt.  Der "Fundort" der B&uuml;cher in den Richter-Listen wird
+als Notation erfasst.  Des weiteren werden spezifische Hinweise zum
+Buchbesitz der Schwestern (Widmungen, Ex Libris etc.) und zum
+gegenw&auml;rtigen Zustand der B&uuml;cher gegeben.  </p>
+
+<p>
+Im Anschluss an die Fertigstellung des Katalogs ist eine
+Ver&ouml;ffentlichung geplant, die neben dem B&uuml;cherverzeichnis
+auch den Vorgang der Erwerbung anhand des Briefwechsels dokumentieren
+wird.
+</p>
+
+<p>
+Ob es zu einer m&ouml;glichen Restitution der Richter-Bibliothek
+kommen wird, muss nach der Erfassung der noch vorhandenen B&uuml;cher
+juristisch gekl&auml;rt werden.
+</p>
+
+<p>
+Diese Informationsseite wird durch st&auml;ndige Aktualisierung
+&uuml;ber den <a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=31">Stand
+der Entwicklung</a> der "Virtuellen Bibliothek Elise und Helene
+Richter" Aufschluss geben.
+</p>
+
+<p>
+Falls Sie &uuml;ber Informationen verf&uuml;gen oder Fragen zur
+Richter-Bibliothek haben, mailen Sie bitte an: <a
+href="mailto:hoffrath@ub.uni-koeln.de">hoffrath@ub.uni-koeln.de</a>
+</p>
+
+Christiane Hoffrath, USB K&ouml;ln
+<p />
+</div>
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

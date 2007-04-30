@@ -1,0 +1,109 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_3
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=30">Die B&uuml;cherlisten</a></li>
+   <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=31">Arbeitsablauf / Aktuelles</a></li>
+   <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=32">Publikationen</a></li>
+   <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=33">Ansprechpartner</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<h1>Die B&uuml;cherlisten als Grundlage der virtuellen
+Zusammenf&uuml;hrung</h1>
+
+<p>
+In der Akte "Richter" befindet sich neben dem Briefwechsel mit Elise
+Richter ein wahrscheinlich unvollst&auml;ndiges Konvolut an
+B&uuml;cherlisten.  Diese Listen sind nach Fachgebieten (Anglistik,
+Linguistik, Klima & Sprache etc.) aufgeteilt, insgesamt aber
+unsortiert vorhanden. Es handelt sich &uuml;berwiegend um Typoskripte
+mit handschriftlichen Korrekturen und Anmerkungen. Die einzelnen
+Bl&auml;tter weisen verschiedene Z&auml;hlungen auf.
+</p>
+
+<p>
+<a href="/images/openbib/views/richter/31.jpg" target="_blank"><img src="/images/openbib/views/richter/31_small.jpg"  border="0" alt=""></a>
+</p>
+
+<p>
+Neben arabischen und r&ouml;mischen Z&auml;hlungen, finden sich auch
+handschriftliche Zahlen auf den einzelnen Bl&auml;ttern. Noch ist
+nicht klar, welche Bedeutung diese handgeschriebenen Zahlen haben. Es
+handelt sich wahrscheinlich nicht um die Z&auml;hlung der
+Listenbl&auml;tter. Teilweise handelt es sich bei den Listen um
+einzelne Papierstreifen.
+</p>
+
+<p>
+<a href="/images/openbib/views/richter/32.jpg" target="_blank"><img src="/images/openbib/views/richter/32_small.jpg" border="0" alt=""></a>
+</p>
+
+<p>
+In einer Akte der Erwerbungsabteilung aus den Kriegsjahren tauchten
+weitere Bl&auml;tter mit B&uuml;cherlisten auf.  Anhand der
+Handschrift als auch der Typoschrift k&ouml;nnen diese Bl&auml;tter
+den Richter-Listen zugeordnet werden.  Die bislang gefundenen Listen
+umfassen insgesamt 78 Seiten.
+</p>
+
+<h1>Die Bearbeitung der Listen</h1>
+
+<p>
+Die Listen werden im ersten Arbeitsgang im Onlinekatalog der USB
+recherchiert. Nicht im Onlinekatalog zu ermittelnde Titel werden
+erfasst und im zweiten Arbeitsgang am alphabetischen Katalog (AK) und
+ggf. im systematischen Katalog (SyK) &uuml;berpr&uuml;ft.
+Wahrscheinlich sind ca. 30 Prozent der aufgef&uuml;hrten B&uuml;cher
+(noch) nicht retrokatalogisiert oder befinden sich nicht (mehr?) im
+Besitz der USB K&ouml;ln.
+</p>
+
+<p>
+Ob es sich bei den ermittelten B&uuml;chern um Exemplare der
+Richter-Bibliothek handelt, kann nur im Magazin per Autopsie
+festgestellt werden.  Die tats&auml;chlichen Richter-B&uuml;cher
+werden f&uuml;r die "Virtuelle Bibliothek Elise und Helene Richter",
+sofern n&ouml;tig katalogisiert und beschrieben.  B&uuml;cher, die
+nicht in der USB K&ouml;ln ermittelt werden k&ouml;nnen, werden auf
+Nachweise im Institutsbereich &uuml;berpr&uuml;ft und im Katalog
+erfasst.
+</p>
+
+<p>
+Aufw&auml;ndig und schwierig wird die Suche nach Titeln, die in den
+Listen nur als Mengenangabe erscheinen.  Beispiel: "Cottwold
+Dial.[ect] 108 Brosch&uuml;ren und Dissertationen" oder "Zur
+engl. Philologie rund 80 Brosch&uuml;ren und Dissertationen". Diese
+Werke konnten in der u.g. Statistik nicht ber&uuml;cksichtigt werden.
+</p>
+
+<h1>Statistische Erfassung der Richter-Bibliothek</h1>
+
+<h2 id="Anglistik">Anglistik</h2>
+<img src="/images/openbib/views/richter/Anglistiktabelle.jpg" width="1000">
+
+<h2 id="Romanistik">Romanistik</h2>
+
+<img src="/images/openbib/views/richter/Romanisitik_frz_Dichtung.png" width="1000">
+
+<p />
+</div>
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

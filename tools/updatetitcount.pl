@@ -63,7 +63,7 @@ my $allidns=0;
 foreach $database (@databases){
   my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or die "could not connect";
     
-  $idnresult=$dbh->prepare("select count(distinct id) as rowcount from tit") or die "Error -- $DBI::errstr";
+  $idnresult=$dbh->prepare("select count(*) as rowcount from search") or die "Error -- $DBI::errstr";
   $idnresult->execute();
 
   my $result=$idnresult->fetchrow_hashref;

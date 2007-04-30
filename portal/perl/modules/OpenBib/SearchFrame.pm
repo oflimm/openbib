@@ -125,7 +125,9 @@ sub handler {
 
     # Wurde bereits ein Profil bei einer vorangegangenen Suche ausgewaehlt?
     my $prevprofile=$session->get_profile();
-    
+
+    my $userprofile_ref = {};
+
     if ($userid) {
         my $targetresult=$user->{dbh}->prepare("select * from fieldchoice where userid = ?") or $logger->error($DBI::errstr);
         $targetresult->execute($userid) or $logger->error($DBI::errstr);
@@ -149,6 +151,12 @@ sub handler {
         $targetresult->finish();
 
         foreach my $profile_ref ($user->get_all_profiles()){
+            my @profiledbs = $user->get_profiledbs_of_profileid($profile_ref->{profilid});
+            $userprofile_ref->{$profile_ref->{profilid}} = {
+                name      => $profile_ref->{profilename},
+                databases => \@profiledbs,
+            };
+
             my $profselected="";
             if ($prevprofile eq "user$profile_ref->{profilid}") {
                 $profselected="selected=\"selected\"";
@@ -208,25 +216,13 @@ sub handler {
 
     # Erzeugung der database-Input Tags fuer die suche
     my $dbinputtags = "";
-    my $dbcount     = 0;
+    my $dbchoice_ref = [];
     foreach my $dbname ($session->get_dbchoice()){
-        $dbinputtags.="<input type=\"hidden\" name=\"database\" value=\"$dbname\" />\n";
-        $dbcount++;
+        push @$dbchoice_ref, $dbname;
     }
 
     my $alldbs     = $config->get_number_of_dbs();
     my $alldbcount = $config->get_number_of_titles();
-
-    if ($dbcount != 0) {
-        my $profselected="";
-        if ($prevprofile eq "dbauswahl") {
-            $profselected="selected=\"selected\"";
-        }
-        $dbcount="<option value=\"dbauswahl\" $profselected>Aktuelle Katalogauswahl ($dbcount Datenbanken)</option><option value=\"\">&nbsp;</option>";
-    }
-    else {
-        $dbcount="";
-    }
 
     # Ausgabe der vorhandenen queries
     my $idnresult=$session->{dbh}->prepare("select * from queries where sessionid = ?") or $logger->error($DBI::errstr);
@@ -245,8 +241,14 @@ sub handler {
 
     $idnresult->finish();
 
-    my @catdb     = $config->get_infomatrix_of_active_databases($session,1);
+    # Ausgewaehlte Datenbanken bestimmen
+    my $checkeddb_ref = {};
+    foreach my $dbname ($session->get_dbchoice()){
+        $checkeddb_ref->{$dbname}=1;
+    }
+    
     my $maxcolumn = 1;
+    my @catdb     = $config->get_infomatrix_of_active_databases({session => $session, checkeddb_ref => $checkeddb_ref, maxcolumn => $maxcolumn});
     my $colspan   = $maxcolumn*3;
     
     # TT-Data erzeugen
@@ -255,11 +257,10 @@ sub handler {
         stylesheet    => $stylesheet,
         viewdesc      => $viewdesc,
         sessionID     => $session->{ID},
-        dbinputtags   => $dbinputtags,
         alldbs        => $alldbs,
-        dbcount       => $dbcount,
         alldbcount    => $alldbcount,
-        userprofiles  => $userprofiles,
+        userprofile   => $userprofile_ref,
+        dbchoice      => $dbchoice_ref,
         prevprofile   => $prevprofile,
         showfs        => $showfs,
         showhst       => $showhst,

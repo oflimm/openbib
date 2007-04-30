@@ -129,8 +129,14 @@ sub handler {
     # ... sonst anzeigen
     else {
 
+        # Ausgewaehlte Datenbanken bestimmen
+        my $checkeddb_ref = {};
+        foreach my $dbname ($session->get_dbchoice()){
+            $checkeddb_ref->{$dbname}=1;
+        }
+        
         my $maxcolumn = $config->{databasechoice_maxcolumn};
-        my @catdb     = $config->get_infomatrix_of_active_databases($session);
+        my @catdb     = $config->get_infomatrix_of_active_databases({session => $session, checkeddb_ref => $checkeddb_ref});
         
         # TT-Data erzeugen
         my $colspan=$maxcolumn*3;

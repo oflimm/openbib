@@ -69,7 +69,6 @@
 [% yearofpub %]<br />
 [%- END -%]
 [%- IF gt -%]
-[% msg.maketext("aus") %]: [% gt %]<br />
+([% gt %])<br />
 [%- END -%]
-([% msg.maketext("Zugangsdatum") %]: [% date %])<br />
 ]]>

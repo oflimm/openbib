@@ -19,16 +19,25 @@
 [% PROCESS common/subtemplate name="testsystem_info" %]
 [% END %]
 
+[% IF config.lang.size > 1 %]
 <div id="langchoice">
-[% FOREACH l IN config.lang %]
-<a href="[% config.frameset_loc %]?headerframeurl=[% config.headerframe_loc %];bodyframeurl=[% config.searchframe_loc %];sessionID=[% sessionID %];setmask=simple;l=[% l %]" target="_top"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
-[% END %]
+[%   FOREACH l IN config.lang %]
+<a href="[% config.frameset_loc %]?headerframeurl=[% config.headerframe_loc %];bodyframeurl=[% config.searchframe_loc %];sessionID=[% sessionID %];setmask=simple;l=[% l %]" target="_parent"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[%   END %]
 </div>
+[% END %]
+
+[%
+  viewdbs = [];
+  IF view ;
+    viewdbs = config.get_dbs_of_view(view);
+  END ;
+%]
 
 <ul class="tabbingmenu">
    <li><a class="active" href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
    <li><a                href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
-   <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=11" target="body" title="Top 20">[% msg.maketext("Top 20") %]</a></li>
+   <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];[% IF viewdbs.size == 1 %]database=[% viewdbs.first %];stid=14[% ELSE %]stid=13[% END %]" target="body" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
 </ul>
 
 <div class="content">
@@ -41,6 +50,8 @@
 <input type="hidden" name="sortorder" value="up" />
 <input type="hidden" name="sb"        value="xapian" />
 <input type="hidden" name="drilldown" value="0" />
+<input type="hidden" name="cloud"     value="0" />
+<input type="hidden" name="autoplus"  value="0" />
 
 <p />
 <p />
@@ -68,19 +79,24 @@
 
 <p />
 <table width="100%">
-<tr><th style="text-align: center">[% msg.maketext("Geben Sie hier bitte Ihre Suchbegriffe ein") %]</th></tr>
+<tr><th style="text-align: center">[% msg.maketext("Geben Sie hier Ihre Suchbegriffe ein") %]</th></tr>
 <tr><td class="boxed" valign="top" align="center">
 <input type="text" name="fs" value="[% searchquery.fs.val %]" size="80" maxlength="200" />
 </td></tr>
 </table>
 
 <table width="100%">
-<tr><th style="text-align: center">[% msg.maketext("Wählen Sie hier bitte Ihr Suchprofil aus") %]</th></tr>
+<tr><th style="text-align: center">[% msg.maketext("In welchen Katalogen möchten Sie suchen") %]</th></tr>
 <tr><td class="boxed" valign="top" align="center">
 <select name="profil">
-[%- IF dbcount || userprofiles -%]
-[% dbcount %] [% userprofiles %]
-[%- END -%]
+[%- IF dbchoice.size > 0 -%]
+<option value="dbauswahl"[%- IF prevprofile == 'dbauswahl' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
+[% END %]
+[%- FOREACH profile IN userprofile -%]
+[%     pid   = profile.key %]
+[%     pdata = profile.value %]
+<option value="user[% pid %]"[%- IF prevprofile == 'user${pid}' -%] selected="selected"[%- END -%]>Benutzerdefiniert: [% pdata.name %]</option>
+[%  END %]
 <option value="alldbs"
 [%- IF prevprofile == 'alldbs' -%]
  selected="selected"
@@ -105,14 +121,14 @@
 
 [% IF view %]
 <center>
-<table>
-  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewähltem Profil suchen") %]" />&nbsp;<input type="reset" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" value="[% msg.maketext("Lösche Eingabemaske") %]" /></td></tr>
+<table class="submitbuttons">
+  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" /></td><td><a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" class="button" target="body">[% msg.maketext("Lösche Eingabemaske") %]</a></td></tr>
 </table>
 </center>
 [% ELSE %]
 <center>
-<table>
-  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in allen Katalogen auf einmal") %]" name="searchall" value="[% msg.maketext("In allen Katalogen suchen") %]" />&nbsp;<input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewähltem Profil suchen") %]" />&nbsp;<input type="reset" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" value="[% msg.maketext("Lösche Eingabemaske") %]" /></td></tr>
+<table class="submitbuttons">
+  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in allen Katalogen auf einmal") %]" name="searchall" value="[% msg.maketext("In allen Katalogen suchen") %]" /></td><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" /></td><td><a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" class="button" target="body">[% msg.maketext("Lösche Eingabemaske") %]</a></td></tr>
 </table>
 </center>
 [% END %]
@@ -124,7 +140,7 @@
 
 <form method="get" id="queries" action="http://[% config.servername %][% config.dispatchquery_loc %]">
 <table width="100%">
-<tr><th style="text-align: center">[% msg.maketext("Rufen Sie hier die Ergebnisse frührerer Recherchen auf") %]</th></tr>
+<tr><th style="text-align: center">[% msg.maketext("Rufen Sie hier die Ergebnisse früherer Recherchen auf") %]</th></tr>
 <tr><td align="center" class="boxed">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 
@@ -140,7 +156,7 @@
 <p />
 
 <center>
-<b>[% msg.maketext("Insgesamt sind im KUG derzeit [_1] Titel nachgewiesen.","${alldbcount}") %]</b>
+<b>[% msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount}","${alldbs}") %]</b>
 
 <p />
 [% msg.maketext("Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter [_1] kug@ub.uni-koeln.de [_2] erreichen.","<a href=\"http://www.ub.uni-koeln.de/usb-cgi/zms_makeEmail.pl?adr0=kug\" target=\"_blank\">","</a>") %]

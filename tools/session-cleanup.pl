@@ -6,7 +6,7 @@
 #
 #  Loeschung alter Sessions
 #
-#  Dieses File ist (C) 2003-2004 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2003-2007 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -37,22 +37,15 @@ use warnings;
 use DBI;
 
 use OpenBib::Config;
+use OpenBib::Session;
+use OpenBib::User;
 
-use OpenBib::Common::Util;
-
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
+my $config = new OpenBib::Config();
 
 #####################################################################
 # Verbindung zur SQL-Datenbank herstellen
 
-my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or die "could not connect";
-
-my $userdbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{userdbname};host=$config{userdbhost};port=$config{userdbport}", $config{userdbuser}, $config{userdbpasswd}) or die "$DBI::errstr";
+my $sessiondbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd}) or die "could not connect";
 
 my $validtimespan=84000; # in Sek. = 24 Std.
 
@@ -61,100 +54,33 @@ my $validtimespan=84000; # in Sek. = 24 Std.
 my $idnresult=$sessiondbh->prepare("select distinct sessionid,createtime from session where (UNIX_TIMESTAMP()-UNIX_TIMESTAMP(createtime)) > $validtimespan order by createtime asc");
 $idnresult->execute();
 
-my @delsessionids=();
-my %createtime=();
+my @delsessions = ();
 
 while (my $result=$idnresult->fetchrow_hashref()){
-  my $sessionID=$result->{'sessionid'};
-  push @delsessionids,$sessionID;
-  $createtime{$sessionID}=$result->{'createtime'};
-}
-
-foreach my $sessionID (@delsessionids){
-
-  print "Purging SessionID $sessionID from ".$createtime{$sessionID};
-
-  # Tabelle session
-
-  $idnresult=$sessiondbh->prepare("delete from session where sessionid = ?");
-  $idnresult->execute($sessionID);
-
-  print ".";
-
-  # Tabelle treffer
-
-  $idnresult=$sessiondbh->prepare("delete from treffer where sessionid = ?");
-  $idnresult->execute($sessionID);
-
-  print ".";
-
-  # Tabelle queries
-
-  $idnresult=$sessiondbh->prepare("delete from queries where sessionid = ?");
-  $idnresult->execute($sessionID);
-
-  print ".";
-
-  # Tabelle sessionlog
-
-  $idnresult=$sessiondbh->prepare("delete from sessionlog where sessionid = ?");
-  $idnresult->execute($sessionID);
-
-  print ".";
-
-  # Tabelle queries
-
-  $idnresult=$sessiondbh->prepare("delete from queries where sessionid = ?");
-  $idnresult->execute($sessionID);
-
-  print ".";
-
-  # Tabelle dbchoice
-
-  $idnresult=$sessiondbh->prepare("delete from dbchoice where sessionid = ?");
-  $idnresult->execute($sessionID);
-
-  print ".";
-
-  # Tabelle searchresults
-
-  $idnresult=$sessiondbh->prepare("delete from searchresults where sessionid = ?");
-  $idnresult->execute($sessionID);
-
-  print ".";
-
-  # Tabelle sessionmask
-
-  $idnresult=$sessiondbh->prepare("delete from sessionmask where sessionid = ?") or die "$DBI::errstr";
-  $idnresult->execute($sessionID) or die "$DBI::errstr";
-
-  print ".";
-
-  # Tabelle sessionprofile
-
-  $idnresult=$sessiondbh->prepare("delete from sessionprofile where sessionid = ?") or die "$DBI::errstr";
-  $idnresult->execute($sessionID) or die "$DBI::errstr";
-
-  print ".";
-
-  # Tabelle sessionview
-
-  $idnresult=$sessiondbh->prepare("delete from sessionview where sessionid = ?") or die "$DBI::errstr";
-  $idnresult->execute($sessionID) or die "$DBI::errstr";
-
-  print ".";
-
-  # Zwischengespeicherte Benutzerinformationen
-
-  my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
-  
-  my $userresult=$userdbh->prepare("update user set nachname = '', vorname = '', strasse = '', ort = '', plz = '', soll = '', gut = '', avanz = '', branz = '', bsanz = '', vmanz = '', maanz = '', vlanz = '', sperre = '', sperrdatum = '', gebdatum = '' where userid = ?") or die "$DBI::errstr";
-  $userresult->execute($userid) or die "$DBI::errstr";
-  
-  $userresult->finish();
-
-  print ". done\n";
+  my $sessionID  = $result->{'sessionid'};
+  my $createtime = $result->{'createtime'};
+  push @delsessions, {
+      id         => $sessionID,
+      createtime => $createtime,
+  };
 }
 
 $idnresult->finish;
 $sessiondbh->disconnect;
+
+foreach my $session_ref (@delsessions){
+  print "Purging SessionID ".$session_ref->{id}." from ".$session_ref->{createtime};
+
+  my $session = new OpenBib::Session({sessionID => $session_ref->{id}});
+  $session->clear_data();
+
+  print " .";
+
+  # Zwischengespeicherte Benutzerinformationen loeschen
+  my $user   = new OpenBib::User();
+  my $userid = $user->get_userid_of_session($session_ref->{id});
+
+  $user->clear_cached_userdata($userid);
+
+  print ". done\n";
+}

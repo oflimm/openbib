@@ -2,7 +2,8 @@
 --------------- T A B E L L E N -----------------
 -------------------------------------------------
 
-create table user (
+DROP TABLE IF EXISTS user;
+CREATE TABLE user (
  userid     BIGINT AUTO_INCREMENT PRIMARY KEY,
  lastlogin  DATETIME,
 
@@ -37,7 +38,8 @@ COLLATE utf8_general_ci
 PACK_KEYS=1;
 ;
 
-create table usersession (
+DROP TABLE IF EXISTS usersession;
+CREATE TABLE usersession (
   sessionid VARCHAR(255) NOT NULL,
   userid    BIGINT NOT NULL,
   targetid  BIGINT NOT NULL,
@@ -49,7 +51,8 @@ COLLATE utf8_general_ci
 PACK_KEYS=1;
 ;
 
-create table userdbprofile (
+DROP TABLE IF EXISTS userdbprofile;
+CREATE TABLE userdbprofile (
  profilid    BIGINT AUTO_INCREMENT PRIMARY KEY,
  profilename TEXT,
  userid      BIGINT NOT NULL,
@@ -61,7 +64,8 @@ COLLATE utf8_general_ci
 PACK_KEYS=1;
 ;
 
-create table profildb (
+DROP TABLE IF EXISTS profildb;
+CREATE TABLE profildb (
  profilid BIGINT NOT NULL,
  dbname   TEXT,
  INDEX (profilid)
@@ -71,7 +75,8 @@ COLLATE utf8_general_ci
 PACK_KEYS=1;
 ;
 
-create table fieldchoice (
+DROP TABLE IF EXISTS fieldchoice;
+CREATE TABLE fieldchoice (
  userid    BIGINT NOT NULL,
  fs        BOOL,
  hst       BOOL,
@@ -94,7 +99,8 @@ COLLATE utf8_general_ci
 PACK_KEYS=1;
 ;
 
-create table logintarget (
+DROP TABLE IF EXISTS logintarget;
+CREATE TABLE logintarget (
  targetid    BIGINT AUTO_INCREMENT PRIMARY KEY,
  hostname    TEXT,
  port        TEXT,
@@ -105,7 +111,8 @@ create table logintarget (
  INDEX (targetid)
 );
 
-create table treffer (
+DROP TABLE IF EXISTS treffer;
+CREATE TABLE treffer (
  userid    BIGINT NOT NULL,
  dbname    TEXT,
  singleidn BIGINT
@@ -114,3 +121,37 @@ DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
 ;
+
+DROP TABLE IF EXISTS tags;
+CREATE TABLE tags (
+ id     INT(11)      NOT NULL auto_increment,
+ tag    VARCHAR(255) NOT NULL default '',
+ INDEX (id),
+ INDEX (tag)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+;
+
+DROP TABLE IF EXISTS tittag;
+CREATE TABLE tittag (
+ ttid      INT(11)     NOT NULL auto_increment,
+ tagid     INT(11)     NOT NULL default '0',
+ titid     INT(11)     NOT NULL default '0',
+ titisbn   CHAR(14)    NOT NULL default '',
+ titdb     VARCHAR(25) NOT NULL default '',
+ loginname TEXT,
+ type      INT(3)      NOT NULL default '1',
+ PRIMARY KEY  (ttid),
+ INDEX (tagid),
+ INDEX (titid),
+ INDEX (titdb),
+ INDEX (type),
+ INDEX (loginname(30))
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+;
+

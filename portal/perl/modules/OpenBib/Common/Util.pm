@@ -58,7 +58,7 @@ sub get_css_by_browsertype {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $useragent=$r->subprocess_env('HTTP_USER_AGENT');
+    my $useragent=$r->subprocess_env('HTTP_USER_AGENT') || '';
 
     $logger->debug("User-Agent: $useragent");
 
@@ -142,7 +142,7 @@ sub print_info {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = new OpenBib::Config();
+    my $config  = new OpenBib::Config();
     
     my $stylesheet=get_css_by_browsertype($r);
 
@@ -150,9 +150,9 @@ sub print_info {
 
     my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
 
-    my $sessiondbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd}) or $logger->error_die($DBI::errstr);
+    my $session = new OpenBib::Session({sessionID => $sessionID});
 
-    my $view=get_viewname_of_session($sessiondbh,$sessionID);
+    my $view=$session->get_viewname();
  
     my $template = Template->new({
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
@@ -196,7 +196,7 @@ sub print_page {
     my $stylesheet=get_css_by_browsertype($r);
 
     # View- und Datenbank-spezifisches Templating
-    my $database = $ttdata->{'view'};
+    my $database = $ttdata->{'database'};
     my $view     = $ttdata->{'view'};
 
     if ($view && -e "$config->{tt_include_path}/views/$view/$templatename") {
@@ -345,6 +345,74 @@ sub by_title_down {
     $line2 cmp $line1;
 }
 
+sub by_order {
+    my %line1=%$a;
+    my %line2=%$b;
+
+    my $line1=(exists $line1{T5100}[0]{content} && defined $line1{T5100}[0]{content})?cleanrl($line1{T5100}[0]{content}):"";
+    my $line2=(exists $line2{T5100}[0]{content} && defined $line2{T5100}[0]{content})?cleanrl($line2{T5100}[0]{content}):"";
+
+    # Intelligentere Sortierung nach numerisch beginnenden Zaehlungen
+    my ($zahl1,$zahl2,$rest1,$rest2);
+
+    if ($line1 =~m/^(\d+)(.*?)/i){
+        $zahl1=$1;
+        $rest1=$2;
+    }
+    else {
+        $zahl1=0;
+        $rest1=$line1;
+    }
+
+    if ($line2 =~m/^(\d+)(.*?)/i){
+        $zahl2=$1;
+        $rest2=$2;
+    }
+    else {
+        $zahl2=0;
+        $rest2=$line2;
+    }
+
+    $line1=sprintf "%08d%s", (defined $zahl1)?$zahl1:"", (defined $rest1)?$rest1:"";
+    $line2=sprintf "%08d%s", (defined $zahl2)?$zahl2:"", (defined $rest2)?$rest2:"";
+
+    $line1 cmp $line2;
+}
+
+sub by_order_down {
+    my %line1=%$a;
+    my %line2=%$b;
+
+    my $line1=(exists $line1{T5100}[0]{content} && defined $line1{T5100}[0]{content})?cleanrl($line1{T5100}[0]{content}):"";
+    my $line2=(exists $line2{T5100}[0]{content} && defined $line2{T5100}[0]{content})?cleanrl($line2{T5100}[0]{content}):"";
+
+    # Intelligentere Sortierung nach numerisch beginnenden Zaehlungen
+    my ($zahl1,$zahl2,$rest1,$rest2);
+    
+    if ($line1 =~m/^(\d+)(.*?)/i){
+        $zahl1=$1;
+        $rest1=$2;
+    }
+    else {
+        $zahl1=0;
+        $rest1=$line1;
+    }
+
+    if ($line2 =~m/^(\d+)(.*?)/i){
+        $zahl2=$1;
+        $rest2=$2;
+    }
+    else {
+        $zahl2=0;
+        $rest2=$line2;
+    }
+
+    $line1=sprintf "%08d%s", (defined $zahl1)?$zahl1:"", (defined $rest1)?$rest1:"";
+    $line2=sprintf "%08d%s", (defined $zahl2)?$zahl2:"", (defined $rest2)?$rest2:"";
+
+    $line2 cmp $line1;
+}
+
 sub by_popularity {
     my %line1=%$a;
     my %line2=%$b;
@@ -352,8 +420,8 @@ sub by_popularity {
     my $line1=(exists $line1{popularity} && defined $line1{popularity})?cleanrl($line1{popularity}):"";
     my $line2=(exists $line2{popularity} && defined $line2{popularity})?cleanrl($line2{popularity}):"";
 
-    $line1=0 if (!defined $line1);
-    $line2=0 if (!defined $line2);
+    $line1=0 if (!defined $line1 || $line1 eq "");
+    $line2=0 if (!defined $line2 || $line2 eq "");
 
     $line1 <=> $line2;
 }
@@ -365,8 +433,8 @@ sub by_popularity_down {
     my $line1=(exists $line1{popularity} && defined $line1{popularity})?cleanrl($line1{popularity}):"";
     my $line2=(exists $line2{popularity} && defined $line2{popularity})?cleanrl($line2{popularity}):"";
 
-    $line1=0 if (!defined $line1);
-    $line2=0 if (!defined $line2);
+    $line1=0 if (!defined $line1 || $line1 eq "");
+    $line2=0 if (!defined $line2 || $line2 eq "");
 
     $line2 <=> $line1;
 }
@@ -416,6 +484,12 @@ sub sort_buffer {
     }
     elsif ($sorttype eq "title" && $sortorder eq "down") {
         @$sortedoutputbuffer_ref=sort by_title_down @$outputbuffer_ref;
+    }
+    elsif ($sorttype eq "order" && $sortorder eq "up") {
+        @$sortedoutputbuffer_ref=sort by_order @$outputbuffer_ref;
+    }
+    elsif ($sorttype eq "order" && $sortorder eq "down") {
+        @$sortedoutputbuffer_ref=sort by_order_down @$outputbuffer_ref;
     }
     elsif ($sorttype eq "popularity" && $sortorder eq "up") {
         @$sortedoutputbuffer_ref=sort by_popularity @$outputbuffer_ref;
@@ -541,20 +615,20 @@ sub get_searchquery {
 
     my ($fsnorm, $verfnorm, $hstnorm, $hststringnorm, $gtquellenorm, $swtnorm, $kornorm, $signnorm, $isbnnorm, $issnnorm, $martnorm,$notationnorm,$ejahrnorm);
     
-    $fs        = $fsnorm        = decode_utf8($query->param('fs'))            || '';
-    $verf      = $verfnorm      = decode_utf8($query->param('verf'))          || '';
-    $hst       = $hstnorm       = decode_utf8($query->param('hst'))           || '';
-    $hststring = $hststringnorm = decode_utf8($query->param('hststring'))     || '';
-    $gtquelle  = $gtquellenorm  = decode_utf8($query->param('gtquelle'))      || '';
-    $swt       = $swtnorm       = decode_utf8($query->param('swt'))           || '';
-    $kor       = $kornorm       = decode_utf8($query->param('kor'))           || '';
-    $sign      = $signnorm      = decode_utf8($query->param('sign'))          || '';
-    $isbn      = $isbnnorm      = decode_utf8($query->param('isbn'))          || '';
-    $issn      = $issnnorm      = decode_utf8($query->param('issn'))          || '';
-    $mart      = $martnorm      = decode_utf8($query->param('mart'))          || '';
-    $notation  = $notationnorm  = decode_utf8($query->param('notation'))      || '';
-    $ejahr     = $ejahrnorm     = decode_utf8($query->param('ejahr'))         || '';
-    $ejahrop   =                  decode_utf8($query->param('ejahrop'))       || 'eq';
+    $fs        = $fsnorm        = decode_utf8($query->param('fs'))            || $query->param('fs')      || '';
+    $verf      = $verfnorm      = decode_utf8($query->param('verf'))          || $query->param('verf')    || '';
+    $hst       = $hstnorm       = decode_utf8($query->param('hst'))           || $query->param('hst')     || '';
+    $hststring = $hststringnorm = decode_utf8($query->param('hststring'))     || $query->param('hststrin')|| '';
+    $gtquelle  = $gtquellenorm  = decode_utf8($query->param('gtquelle'))      || $query->param('qtquelle')|| '';
+    $swt       = $swtnorm       = decode_utf8($query->param('swt'))           || $query->param('swt')     || '';
+    $kor       = $kornorm       = decode_utf8($query->param('kor'))           || $query->param('kor')     || '';
+    $sign      = $signnorm      = decode_utf8($query->param('sign'))          || $query->param('sign')    || '';
+    $isbn      = $isbnnorm      = decode_utf8($query->param('isbn'))          || $query->param('isbn')    || '';
+    $issn      = $issnnorm      = decode_utf8($query->param('issn'))          || $query->param('issn')    || '';
+    $mart      = $martnorm      = decode_utf8($query->param('mart'))          || $query->param('mart')    || '';
+    $notation  = $notationnorm  = decode_utf8($query->param('notation'))      || $query->param('notation')|| '';
+    $ejahr     = $ejahrnorm     = decode_utf8($query->param('ejahr'))         || $query->param('ejahr')   || '';
+    $ejahrop   =                  decode_utf8($query->param('ejahrop'))       || $query->param('ejahrop') || 'eq';
 
     my $autoplus      = $query->param('autoplus')      || '';
     my $verfindex     = $query->param('verfindex')     || '';
@@ -704,6 +778,7 @@ sub get_searchquery {
     });
 
     $hststringnorm = OpenBib::Common::Util::grundform({
+        category  => "0331", # Exemplarisch fuer die Kategorien, bei denen das erste Stopwort entfernt wird
         content   => $hststringnorm,
         searchreq => 1,
     });
@@ -755,10 +830,6 @@ sub get_searchquery {
         searchreq => 1,
     });
     
-    # Bei hststring zusaetzlich normieren durch Weglassung des ersten
-    # Stopwortes
-    $hststringnorm = OpenBib::Common::Stopwords::strip_first_stopword($hststringnorm);
-
     # Umwandlung impliziter ODER-Verknuepfung in UND-Verknuepfung
     if ($autoplus eq "1" && !$verfindex && !$korindex && !$swtindex) {
         $fsnorm       = OpenBib::VirtualSearch::Util::conv2autoplus($fsnorm)   if ($fs);
@@ -845,6 +916,8 @@ sub get_searchquery {
             arg   => $ejahrop,
         },
     };
+
+    $logger->debug(YAML::Dump($searchquery_ref));
     
     return $searchquery_ref;
 }
@@ -861,6 +934,12 @@ sub grundform {
 
     my $searchreq = exists $arg_ref->{searchreq}
         ? $arg_ref->{searchreq}           : undef;
+
+    my $tagging   = exists $arg_ref->{tagging}
+        ? $arg_ref->{tagging}             : undef;
+
+    # Normalisierung auf Kleinschreibung
+    $content = lc($content);
     
     # Sonderbehandlung verschiedener Kategorien
 
@@ -874,6 +953,8 @@ sub grundform {
     
     # ISBN filtern
     if ($category eq "0540"){
+        # Entfernung der Minus-Zeichen bei der ISBN zuerst 13-, dann 10-stellig
+        $content=~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*([0-9xX])/$1$2$3$4$5$6$7$8$9$10$11$12$13/g;
         $content=~s/(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?([0-9xX])/$1$2$3$4$5$6$7$8$9$10/g;
     }
 
@@ -899,18 +980,34 @@ sub grundform {
     $content=~s/&quot;//g;
     $content=~s/&amp;//g;
 
+    # Ausfiltern von Supplements in []
+    $content=~s/\[.*?\]//g;
+    
     # Fall: C++, C# und .Net
     $content=~s/(?<=(\w|\+))\+/plus/g;
     $content=~s/(c)\#/$1sharp/ig;
     $content=~s/\.(net)\#/dot$1/ig;
+
     
     if ($searchreq){
         # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
         $content=~s/[^-+\p{Alphabetic}0-9\/: '()"^*]//g;
+
+        # Verbundene Terme splitten
+        $content=~s/(\w)-(\w)/$1 $2/g;
+        $content=~s/(\w)'(\w)/$1 $2/g;
+    }
+    elsif ($tagging){
+        $content=~s/[^-+\p{Alphabetic}0-9._]//g;
+
     }
     else {
         # Ausfiltern nicht akzeptierter Zeichen (Postitivliste)
         $content=~s/[^-+\p{Alphabetic}0-9\/: ']//g;
+
+        # Verbundene Terme splitten
+        $content=~s/(\w)-(\w)/$1 $2/g;
+        $content=~s/(\w)'(\w)/$1 $2/g;
     }
     
     # Zeichenersetzungen
@@ -925,7 +1022,7 @@ sub grundform {
     $content=~s/ö/oe/g;
     $content=~s/Ü/Ue/g;
     $content=~s/Ö/Oe/g;
-    $content=~s/Ü/Ae/g;
+    $content=~s/Ä/Ae/g;
     $content=~s/ß/ss/g;
 
     $content=~s/é/e/g;
@@ -1086,10 +1183,10 @@ sub normset2bibtex {
         next if (!exists $normset_ref->{$category});
         foreach my $part_ref (@{$normset_ref->{$category}}){
             if ($part_ref->{supplement} =~ /Hrsg/){
-                push @$editors_ref, $part_ref->{content};
+                push @$editors_ref, utf2bibtex($part_ref->{content});
             }
             else {
-                push @$authors_ref, $part_ref->{content};
+                push @$authors_ref, utf2bibtex($part_ref->{content});
             }
         }
     }
@@ -1101,34 +1198,34 @@ sub normset2bibtex {
     foreach my $category (qw/T0710 T0902 T0907 T0912 T0917 T0922 T0927 T0932 T0937 T0942 T0947/){
         next if (!exists $normset_ref->{$category});
         foreach my $part_ref (@{$normset_ref->{$category}}){
-            push @$keywords_ref, $part_ref->{content};
+            push @$keywords_ref, utf2bibtex($part_ref->{content});
         }
     }
     my $keyword = join(' ; ',@$keywords_ref);
     
     # Auflage
-    my $edition   = (exists $normset_ref->{T0403})?$normset_ref->{T0403}[0]{content}:'';
+    my $edition   = (exists $normset_ref->{T0403})?utf2bibtex($normset_ref->{T0403}[0]{content}):'';
 
     # Verleger
-    my $publisher = (exists $normset_ref->{T0412})?$normset_ref->{T0412}[0]{content}:'';
+    my $publisher = (exists $normset_ref->{T0412})?utf2bibtex($normset_ref->{T0412}[0]{content}):'';
 
     # Verlagsort
-    my $address   = (exists $normset_ref->{T0410})?$normset_ref->{T0410}[0]{content}:'';
+    my $address   = (exists $normset_ref->{T0410})?utf2bibtex($normset_ref->{T0410}[0]{content}):'';
 
     # Titel
-    my $title     = (exists $normset_ref->{T0331})?$normset_ref->{T0331}[0]{content}:'';
+    my $title     = (exists $normset_ref->{T0331})?utf2bibtex($normset_ref->{T0331}[0]{content}):'';
 
     # Jahr
-    my $year      = (exists $normset_ref->{T0425})?$normset_ref->{T0425}[0]{content}:'';
+    my $year      = (exists $normset_ref->{T0425})?utf2bibtex($normset_ref->{T0425}[0]{content}):'';
 
     # ISBN
-    my $isbn      = (exists $normset_ref->{T0540})?$normset_ref->{T0540}[0]{content}:'';
+    my $isbn      = (exists $normset_ref->{T0540})?utf2bibtex($normset_ref->{T0540}[0]{content}):'';
 
     # ISSN
-    my $issn      = (exists $normset_ref->{T0543})?$normset_ref->{T0543}[0]{content}:'';
+    my $issn      = (exists $normset_ref->{T0543})?utf2bibtex($normset_ref->{T0543}[0]{content}):'';
 
     # Sprache
-    my $language  = (exists $normset_ref->{T0516})?$normset_ref->{T0516}[0]{content}:'';
+    my $language  = (exists $normset_ref->{T0516})?utf2bibtex($normset_ref->{T0516}[0]{content}):'';
 
     if ($author){
         push @$bibtex_ref, "author    = \"$author\"";
@@ -1165,7 +1262,7 @@ sub normset2bibtex {
     }
     
     my $identifier=substr($author,0,4).substr($title,0,4).$year;
-    $identifier=~s/\W//g;
+    $identifier=~s/[^A-Za-z0-9]//g;
 
     my $bibtex="";
     
@@ -1181,12 +1278,37 @@ sub normset2bibtex {
     }
 
     
-    return utf2bibtex($bibtex);
+    return $bibtex;
 }
 
 sub utf2bibtex {
     my ($string)=@_;
 
+    return "" if (!defined $string);
+    
+    # {} werden von BibTeX verwendet und haben in den Originalinhalten
+    # nichts zu suchen
+    $string=~s/\{//g;
+    $string=~s/\}//g;
+    # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
+    $string=~s/[^-+\p{Alphabetic}0-9\n\/&;#: '()@<>\\,.="^*[]]//g;
+    $string=~s/&lt;/</g;
+    $string=~s/&gt;/>/g;
+    $string=~s/&#172;//g;
+    $string=~s/&#228;/{\\"a}/g;
+    $string=~s/&#252;/{\\"u}/g;
+    $string=~s/&#246;/{\\"o}/g;
+    $string=~s/&#223;/{\\"s}/g;
+    $string=~s/&#214;/{\\"O}/g;
+    $string=~s/&#220;/{\\"U}/g;
+    $string=~s/&#196;/{\\"A}/g;
+    $string=~s/&auml;/{\\"a}/g;
+    $string=~s/&ouml;/{\\"o}/g;
+    $string=~s/&uuml;/{\\"u}/g;
+    $string=~s/&Auml;/{\\"A}/g;
+    $string=~s/&Ouml;/{\\"O}/g;
+    $string=~s/&Uuml;/{\\"U}/g;
+    $string=~s/&szlig;/{\\"s}/g;
     $string=~s/ä/{\\"a}/g;
     $string=~s/ö/{\\"o}/g;
     $string=~s/ü/{\\"u}/g;

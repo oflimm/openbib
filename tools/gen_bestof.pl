@@ -5,7 +5,7 @@
 #
 #  Erzeugen von BestOf-Analysen aus Relevance-Statistik-Daten
 #
-#  Dieses File ist (C) 2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2007 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -42,9 +42,10 @@ use OpenBib::Config;
 use OpenBib::Statistics;
 use OpenBib::Search::Util;
 
-my ($type,$help,$logfile);
+my ($type,$singlepool,$help,$logfile);
 
 &GetOptions("type=s"          => \$type,
+            "single-pool=s"   => \$singlepool,
             "logfile=s"       => \$logfile,
 	    "help"            => \$help
 	    );
@@ -82,8 +83,15 @@ if (!$type){
 
 # Typ 1 => Meistaufgerufene Titel pro Datenbank
 if ($type == 1){
-    my @databases=$config->get_active_databases();
+    my @databases = ();
 
+    if ($singlepool){
+        push @databases, $singlepool;
+    }
+    else {
+        @databases=$config->get_active_databases();
+    }
+    
     foreach my $database (@databases){
         $logger->info("Generating Type 1 BestOf-Values for database $database");
         my $dbh
@@ -141,19 +149,248 @@ if ($type == 2){
     });
 }
 
+# Typ 3 => Meistgenutzte Schlagworte
+if ($type == 3){
+    my @databases = ();
+
+    if ($singlepool){
+        push @databases, $singlepool;
+    }
+    else {
+        @databases=$config->get_active_databases();
+    }
+
+    foreach my $database (@databases){
+        $logger->info("Generating Type 3 BestOf-Values for database $database");
+
+        my $maxcount=0;
+
+        my $dbh
+            = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+                or $logger->error_die($DBI::errstr);
+        
+        my $bestof_ref=[];
+        my $request=$dbh->prepare("select swt.content , count(distinct sourceid) as scount from conn, swt where sourcetype=1 and targettype=4 and swt.category=1 and swt.id=conn.targetid group by targetid order by scount desc limit 200");
+        $request->execute();
+        while (my $result=$request->fetchrow_hashref){
+            my $content = decode_utf8($result->{content});
+            my $count   = $result->{scount};
+            if ($maxcount < $count){
+                $maxcount = $count;
+            }
+            
+            push @$bestof_ref, {
+                item  => $content,
+                count => $count,
+            };
+        }
+
+        if ($maxcount >= 6){
+            for (my $i=0 ; $i < scalar (@$bestof_ref) ; $i++){
+                $bestof_ref->[$i]->{class} = int($bestof_ref->[$i]->{count} / int($maxcount/6));
+            }
+        }
+
+        my $sortedbestof_ref ;
+        @{$sortedbestof_ref} = map { $_->[0] }
+            sort { $a->[1] cmp $b->[1] }
+                map { [$_, $_->{item}] }
+                    @{$bestof_ref};
+        
+        $statistics->store_result({
+            type => 3,
+            id   => $database,
+            data => $sortedbestof_ref,
+        });
+    }
+}
+
+# Typ 4 => Meistgenutzte Notationen/Systematiken
+if ($type == 4){
+    my @databases = ();
+
+    if ($singlepool){
+        push @databases, $singlepool;
+    }
+    else {
+        @databases=$config->get_active_databases();
+    }
+
+    foreach my $database (@databases){
+        $logger->info("Generating Type 4 BestOf-Values for database $database");
+
+        my $maxcount=0;
+
+        my $dbh
+            = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+                or $logger->error_die($DBI::errstr);
+        
+        my $bestof_ref=[];
+        my $request=$dbh->prepare("select notation.content , count(distinct sourceid) as scount from conn, notation where sourcetype=1 and targettype=5 and notation.category=1 and notation.id=conn.targetid group by targetid order by scount desc limit 200");
+        $request->execute();
+        while (my $result=$request->fetchrow_hashref){
+            my $content = decode_utf8($result->{content});
+            my $count   = $result->{scount};
+            if ($maxcount < $count){
+                $maxcount = $count;
+            }
+            
+            push @$bestof_ref, {
+                item  => $content,
+                count => $count,
+            };
+        }
+
+        if ($maxcount >= 6){
+            for (my $i=0 ; $i < scalar (@$bestof_ref) ; $i++){
+                $bestof_ref->[$i]->{class} = int($bestof_ref->[$i]->{count} / int($maxcount/6));
+            }
+        }
+
+        my $sortedbestof_ref ;
+        @{$sortedbestof_ref} = map { $_->[0] }
+            sort { $a->[1] cmp $b->[1] }
+                map { [$_, $_->{item}] }
+                    @{$bestof_ref};
+        
+        $statistics->store_result({
+            type => 4,
+            id   => $database,
+            data => $sortedbestof_ref,
+        });
+    }
+}
+
+# Typ 5 => Meistgenutzte Koerperschaften/Urheber
+if ($type == 5){
+    my @databases = ();
+
+    if ($singlepool){
+        push @databases, $singlepool;
+    }
+    else {
+        @databases=$config->get_active_databases();
+    }
+
+    foreach my $database (@databases){
+        $logger->info("Generating Type 5 BestOf-Values for database $database");
+
+        my $maxcount=0;
+
+        my $dbh
+            = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+                or $logger->error_die($DBI::errstr);
+        
+        my $bestof_ref=[];
+        my $request=$dbh->prepare("select kor.content , count(distinct sourceid) as scount from conn, kor where sourcetype=1 and targettype=3 and kor.category=1 and kor.id=conn.targetid group by targetid order by scount desc limit 200");
+        $request->execute();
+        while (my $result=$request->fetchrow_hashref){
+            my $content = decode_utf8($result->{content});
+            my $count   = $result->{scount};
+            if ($maxcount < $count){
+                $maxcount = $count;
+            }
+            
+            push @$bestof_ref, {
+                item  => $content,
+                count => $count,
+            };
+        }
+
+        if ($maxcount >= 6){
+            for (my $i=0 ; $i < scalar (@$bestof_ref) ; $i++){
+                $bestof_ref->[$i]->{class} = int($bestof_ref->[$i]->{count} / int($maxcount/6));
+            }
+        }
+
+        my $sortedbestof_ref ;
+        @{$sortedbestof_ref} = map { $_->[0] }
+            sort { $a->[1] cmp $b->[1] }
+                map { [$_, $_->{item}] }
+                    @{$bestof_ref};
+        
+        $statistics->store_result({
+            type => 5,
+            id   => $database,
+            data => $sortedbestof_ref,
+        });
+    }
+}
+
+# Typ 6 => Meistgenutzte Verfasser/Personen
+if ($type == 6){
+    my @databases = ();
+
+    if ($singlepool){
+        push @databases, $singlepool;
+    }
+    else {
+        @databases=$config->get_active_databases();
+    }
+
+    foreach my $database (@databases){
+        $logger->info("Generating Type 6 BestOf-Values for database $database");
+
+        my $maxcount=0;
+
+        my $dbh
+            = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+                or $logger->error_die($DBI::errstr);
+        
+        my $bestof_ref=[];
+        my $request=$dbh->prepare("select aut.content , count(distinct sourceid) as scount from conn, aut where sourcetype=1 and targettype=2 and aut.category=1 and aut.id=conn.targetid group by targetid order by scount desc limit 200");
+        $request->execute();
+        while (my $result=$request->fetchrow_hashref){
+            my $content = decode_utf8($result->{content});
+            my $count   = $result->{scount};
+            if ($maxcount < $count){
+                $maxcount = $count;
+            }
+            
+            push @$bestof_ref, {
+                item  => $content,
+                count => $count,
+            };
+        }
+
+        if ($maxcount >= 6){
+            for (my $i=0 ; $i < scalar (@$bestof_ref) ; $i++){
+                $bestof_ref->[$i]->{class} = int($bestof_ref->[$i]->{count} / int($maxcount/6));
+            }
+        }
+
+        my $sortedbestof_ref ;
+        @{$sortedbestof_ref} = map { $_->[0] }
+            sort { $a->[1] cmp $b->[1] }
+                map { [$_, $_->{item}] }
+                    @{$bestof_ref};
+        
+        $statistics->store_result({
+            type => 6,
+            id   => $database,
+            data => $sortedbestof_ref,
+        });
+    }
+}
+
 sub print_help {
     print << "ENDHELP";
 gen_bestof.pl - Erzeugen von BestOf-Analysen aus Relevance-Statistik-Daten
 
    Optionen:
    -help                 : Diese Informationsseite
-       
-   -type=...             : BestOf-Typ
+   --single-pool=...     : Einzelner Katalog
+   --logfile=...         : Alternatives Logfile
+   --type=...            : BestOf-Typ
 
    Typen:
 
    1 => Meistaufgerufene Titel pro Datenbank
    2 => Meistgenutzte Kataloge bezogen auf Titelaufrufe
+   3 => Meistgenutzte Schlagworte pro Katalog (Wolke)
+   4 => Meistgenutzte Notationen/Systematiken pro Katalog (Wolke)
+   5 => Meistgenutzte Koerperschaften/Urheber pro Katalog (Wolke)
+   6 => Meistgenutzte Verfasser/Personen pro Katalog (Wolke)
        
 ENDHELP
     exit;

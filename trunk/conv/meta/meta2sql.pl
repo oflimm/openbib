@@ -6,7 +6,7 @@
 #
 #  Generierung von SQL-Einladedateien aus dem Meta-Format
 #
-#  Dieses File ist (C) 1997-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2007 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -30,10 +30,12 @@
 use 5.008001;
 use utf8;
 
+use DB_File;
 use Getopt::Long;
 use MIME::Base64 ();
 use MLDBM qw(DB_File Storable);
 use Storable ();
+use YAML;
 
 use OpenBib::Common::Util;
 use OpenBib::Common::Stopwords;
@@ -46,9 +48,10 @@ use vars qw(%config);
 
 *config = \%OpenBib::Config::config;
 
-my ($singlepool,$reducemem);
+my ($singlepool,$reducemem,$addsuperpers);
 
 &GetOptions("reduce-mem"    => \$reducemem,
+            "add-superpers" => \$addsuperpers,
 	    "single-pool=s" => \$singlepool,
 	    );
 
@@ -62,6 +65,7 @@ my %listitemdata_aut        = ();
 my %listitemdata_kor        = ();
 my %listitemdata_swt        = ();
 my %listitemdata_mex        = ();
+my %listitemdata_superid    = ();
 my %listitemdata_popularity = ();
 
 my $statistics = new OpenBib::Statistics();
@@ -92,8 +96,8 @@ if ($reducemem){
     tie %listitemdata_mex,        'MLDBM', "./listitemdata_mex.db"
         or die "Could not tie listitemdata_mex.\n";
 
-    tie %listitemdata_popularity, 'MLDBM', "./listitemdata_popularity.db"
-        or die "Could not tie listitemdata_popularity.\n";
+    tie %listitemdata_superid,    "DB_File", "./listitemdata_superid.db"
+        or die "Could not tie listitemdata_superid.\n";
 }
 
 my $stammdateien_ref = {
@@ -334,6 +338,44 @@ $stammdateien_ref->{tit} = {
     blacklist_ref  => $convtab_ref->{blacklist_tit},
 };
 
+if ($addsuperpers){
+    print STDERR "1. Durchgang: Uebergeordnete Titel-ID's finden\n";
+    open(IN ,           "<:utf8","tit.exp"          ) || die "IN konnte nicht geoeffnet werden";
+
+    while (my $line=<IN>){
+        if ($line=~m/^0004.*?:(\d+)/){
+            my $superid=$1;
+            $listitemdata_superid{$superid}=1;
+        }
+    }
+    close(IN);
+
+    print STDERR "2. Durchgang: Verfasser-ID's in uebergeordneten Titeln finden\n";
+    open(IN ,           "<:utf8","tit.exp"          ) || die "IN konnte nicht geoeffnet werden";
+
+    my ($id,@persids);
+
+    while (my $line=<IN>){
+        if ($line=~m/^0000:(\d+)$/){            
+            $id=$1;
+            @persids=();
+        }
+        elsif ($line=~m/^9999:/){
+            if ($#persids >= 0){
+                $listitemdata_superid{$id}=join(":",@persids);
+            }
+        }
+        elsif ($line=~m/^010[0123].*?:IDN: (\d+)/){
+            my $persid=$1;
+            if (exists $listitemdata_superid{$id}){
+                push @persids, $persid;
+            }
+        }
+    }
+
+    close(IN);
+}
+
 print STDERR "Bearbeite tit.exp\n";
 
 open(IN ,           "<:utf8","tit.exp"          ) || die "IN konnte nicht geoeffnet werden";
@@ -386,6 +428,7 @@ while (my $line=<IN>){
         @titkor    = ();
         @titswt    = ();
         @autkor    = ();
+        @superids  = ();
 
         $listitem_ref={};
 
@@ -400,9 +443,38 @@ while (my $line=<IN>){
     }
     elsif ($line=~m/^9999:/){
 
+        if ($addsuperpers){
+#             if ($id == 16562){
+#                 print STDERR "Vorher: ".join(", ",@verf)."\n";
+
+#                 print STDERR "SuperID's: ".join(" ",@superids)."\n";
+#             }
+
+            foreach my $superid (@superids){
+                if (exists $listitemdata_superid{$superid}){
+                    my @superpersids = split (":",$listitemdata_superid{$superid}); #
+
+#                     if ($id == 16562){
+#                         print STDERR "Daten zur Superid $superid: ".join(" ",@superpersids)."\n";
+#                     }
+
+                    push @verf, @superpersids;
+                }
+            }
+#             if ($id == 16562){
+#                 print STDERR "Nachher: ".join(", ",@verf)."\n";
+#             }
+        }
+        
         my @temp=();
+
+        # Im Falle einer Personenanreicherung durch Ueberordnungen mit
+        # -add-superpers sollen Dubletten entfernt werden.
+        my %seen_verf=();
         foreach my $item (@verf){
+            next if (exists $seen_verf{$item});
             push @temp, join(" ",@{$stammdateien_ref->{aut}{data}[$item]});
+            $seen_verf{$item}=1;
         }
         push @temp, join(" ",@titverf);
         my $verf     = join(" ",@temp);
@@ -451,21 +523,14 @@ while (my $line=<IN>){
 
         # Listitem zusammensetzen
 
-        # Konzeptionelle Vorgehensweise fuer die korrekte Anzeige eines Titel in
+                # Konzeptionelle Vorgehensweise fuer die korrekte Anzeige eines Titel in
         # der Kurztitelliste:
         #
         # 1. Fall: Es existiert ein HST
         #
         # Dann:
         #
-        # Unterfall 1.1: Es existiert eine (erste) Bandzahl(089)
-        #
-        # Dann: Setze diese Bandzahl vor den AST/HST
-        #
-        # Unterfall 1.2: Es existiert keine Bandzahl(089), aber eine (erste)
-        #                Bandzahl(455)
-        #
-        # Dann: Setze diese Bandzahl vor den AST/HST
+        # Ist nichts zu tun
         #
         # 2. Fall: Es existiert kein HST(331)
         #
@@ -490,36 +555,53 @@ while (my $line=<IN>){
         #
         # Dann: Verwende diese Zeitschriftensignatur
         #
-        if (exists $listitem_ref->{T0331}){
-            # UnterFall 1.1:
-            if (exists $listitem_ref->{'T0089'}){
-                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0089}[0]{content}.". ".$listitem_ref->{T0331}[0]{content};
-            }
-            # Unterfall 1.2:
-            elsif (exists $listitem_ref->{T0455}){
-                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0455}[0]{content}.". ".$listitem_ref->{T0331}[0]{content};
-            }
-        }
-        else {
+        if (!exists $listitem_ref->{T0331}) {
             # UnterFall 2.1:
-            if (exists $listitem_ref->{'T0089'}){
+            if (exists $listitem_ref->{'T0089'}) {
                 $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0089}[0]{content};
             }
             # Unterfall 2.2:
-            elsif (exists $listitem_ref->{T0455}){
+            elsif (exists $listitem_ref->{T0455}) {
                 $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0455}[0]{content};
             }
             # Unterfall 2.3:
-            elsif (exists $listitem_ref->{T0451}){
+            elsif (exists $listitem_ref->{T0451}) {
                 $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0451}[0]{content};
             }
             # Unterfall 2.4:
-            elsif (exists $listitem_ref->{T1203}){
+            elsif (exists $listitem_ref->{T1203}) {
                 $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T1203}[0]{content};
-            }
-            else {
+            } else {
                 $listitem_ref->{T0331}[0]{content}="Kein HST/AST vorhanden";
             }
+        }
+
+        # Bestimmung der Zaehlung
+
+        # Fall 1: Es existiert eine (erste) Bandzahl(089)
+        #
+        # Dann: Setze diese Bandzahl
+        #
+        # Fall 2: Es existiert keine Bandzahl(089), aber eine (erste)
+        #                Bandzahl(455)
+        #
+        # Dann: Setze diese Bandzahl
+
+        # Fall 1:
+        if (exists $listitem_ref->{'T0089'}) {
+            $listitem_ref->{T5100}= [
+                {
+                    content => $listitem_ref->{T0089}[0]{content}
+                }
+            ];
+        }
+        # Fall 2:
+        elsif (exists $listitem_ref->{T0455}) {
+            $listitem_ref->{T5100}= [
+                {
+                    content => $listitem_ref->{T0455}[0]{content}
+                }
+            ];
         }
         
         # Exemplardaten-Hash zu listitem-Hash hinzufuegen
@@ -574,8 +656,10 @@ while (my $line=<IN>){
     
     if ($category && $content){
         
+        # Kategorien in der Blacklist werden generell nicht uebernommen
         next CATLINE if (exists $stammdateien_ref->{tit}{blacklist_ref}->{$category});
 
+        # Kategorien in listitemcat werden fuer die Kurztitelliste verwendet
         if (exists $convtab_ref->{listitemcat}{$category}){
             push @{$listitem_ref->{"T".$category}}, {
                 indicator => $indicator,
@@ -587,6 +671,7 @@ while (my $line=<IN>){
         my $contentnorm   = "";
         my $contentnormft = "";
 
+        # Normierung (String/Fulltext) der als invertierbar definierten Kategorien
         if (exists $stammdateien_ref->{tit}{inverted_ref}->{$category}){
             my $contentnormtmp = OpenBib::Common::Util::grundform({
                 category => $category,
@@ -602,7 +687,7 @@ while (my $line=<IN>){
             }
         }
 
-        # Verknupefungen
+        # Verknuepfungen
         if ($category=~m/^0004/){
             my ($targetid) = $content=~m/^(\d+)/;
             my $targettype = 1; # TIT
@@ -610,6 +695,9 @@ while (my $line=<IN>){
             my $sourcetype = 1; # TIT
             my $supplement = "";
             my $category   = "";
+
+            push @superids, $targetid;
+            
             print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
         }
         elsif ($category=~m/^0100/){
@@ -652,6 +740,34 @@ while (my $line=<IN>){
             my $content = $listitemdata_aut{$targetid};
             
             push @{$listitem_ref->{P0101}}, {
+                id         => $targetid,
+                type       => 'aut',
+                content    => $content,
+                supplement => $supplement,
+            };
+
+            push @autkor, $content;
+            
+            print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+        }
+        elsif ($category=~m/^0102/){
+            my ($targetid)  = $content=~m/^IDN: (\d+)/;
+            my $targettype  = 2; # AUT
+            my $sourceid    = $id;
+            my $sourcetype  = 1; # TIT
+            my $supplement  = "";
+
+            if ($content=~m/^IDN: \d+ ; (.+)/){
+                $supplement = $1;
+            }
+            
+            my $category="0102";
+
+            push @verf, $targetid;
+
+            my $content = $listitemdata_aut{$targetid};
+            
+            push @{$listitem_ref->{P0102}}, {
                 id         => $targetid,
                 type       => 'aut',
                 content    => $content,
@@ -900,7 +1016,7 @@ while (my $line=<IN>){
             }
             elsif (exists $convtab_ref->{search_category}{hst      }{$category}){
                 push @hst, OpenBib::Common::Util::grundform({
-                    category => $category,
+                    # Keine Uebergabe der Kategorie, da erstes Stopwort hier nicht entfernt werden soll
                     content  => $content,
                 });
             }
@@ -1023,7 +1139,7 @@ if ($reducemem){
     untie %listitemdata_aut;
     untie %listitemdata_kor;
     untie %listitemdata_mex;
-    untie %listitemdata_popularity;
+    untie %listitemdata_superid;
 }
 
 1;

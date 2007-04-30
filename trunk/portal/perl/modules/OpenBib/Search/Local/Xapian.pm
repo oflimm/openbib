@@ -147,6 +147,8 @@ sub initial_search {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = new OpenBib::Config();
+    
     my ($atime,$btime,$timeall);
   
     if ($config{benchmark}) {
@@ -154,13 +156,32 @@ sub initial_search {
     }
 
     my $qp = new Search::Xapian::QueryParser() || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+
+    my @stopwords = ();
+    if (exists $config->{stopword_filename}){
+        open(SW,$config->{stopword_filename});
+        while (my $stopword=<SW>){
+            chomp $stopword ;
+            $stopword = OpenBib::Common::Util::grundform({
+                content  => $stopword,
+            });
+            push @stopwords, $stopword;
+        }
+        close(SW);
+    }
+
+    my $stopper = new Search::Xapian::SimpleStopper(@stopwords);
+    $qp->set_stopper($stopper);
     
     my $querystring = lc($searchquery_ref->{fs}{norm});
     
     $querystring    = OpenBib::Common::Util::grundform({
-        content  => $querystring,
+        searchreq => 1,
+        content   => $querystring,
     });
         
+    # Explizites Setzen der Datenbank fuer FLAG_WILDCARD
+    $qp->set_database($dbh);
     $qp->set_default_op(Search::Xapian::OP_AND);
     $qp->add_prefix('inauth'   ,'X1');
     $qp->add_prefix('intitle'  ,'X2');
@@ -171,7 +192,7 @@ sub initial_search {
     $qp->add_prefix('inisbn'   ,'X8');
     $qp->add_prefix('inissn'   ,'X9');
     
-    my $enq       = $dbh->enquire($qp->parse_query($querystring));
+    my $enq       = $dbh->enquire($qp->parse_query($querystring,Search::Xapian::FLAG_WILDCARD|Search::Xapian::FLAG_LOVEHATE|Search::Xapian::FLAG_BOOLEAN));
     my $thisquery = $enq->get_query()->get_description();
     my @matches   = $enq->matches(0,99999);
 
@@ -212,10 +233,7 @@ sub enq {
 sub DESTROY {
     my $self=shift;
 
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-    
-    $logger->debug("dying");
+    return;
 }
 
 1;

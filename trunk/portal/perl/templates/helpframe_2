@@ -18,37 +18,115 @@
       <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">[% msg.maketext("Suchhilfe") %]</a></li>
       <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=1" target="body">[% msg.maketext("Projekt") %]</a></li>
       <li><a class="active" href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=2" target="body">[% msg.maketext("KUG-Versionen") %]</a></li>
+      <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=3" target="body">Artikel/Stimmen</a></li>
     </ul>
     
     <div class="content">
-      <p />
+      <div class="infotext">
+
+<p />
 
 <h1>KUG-Versionen</h1>
 
-<h2 id="kugv2.0">Neuerungen mit Version 2.0</h2>
+<h2 id="kugv2.0">Neuerungen mit Version 2.0 (Umstellung am 19.3.2007)</h2>
+
+<h3>Darstellung der vergebenen Schlagworte, Notationen, Körperschaften
+sowie Personen als Wortwolken
+(Tag-Clouds)</h3>
+
+<p>
+F&uuml;r jeden Katalog kann - soweit dort verschlagwortet wird - eine
+Übersicht der 200 am häufigsten vergebenen Schlagworte in der Form
+einer Wortwolke (engl. tag cloud) dargestellt werden. Je mehr Titel
+entsprechend verschlagwortet wurden, umso grösser wird das zugehörige
+Schlagwort dargestellt. Gleiches gilt für Notationen, Körperschaften
+und Personen.
+</p>
+
+<h3>Tagging</h3>
+
+<p> Angemeldete Nutzer können nun alle im KUG gefundenen Titel
+'taggen', d.h. mit einem eigenen Etikett (= Schlagwort/Tag)
+versehen. Diese Tags sind einzelne Worte, die mit Leerzeichen getrennt
+eingeben müssen. Zur Vereinheitlichung werden sie automatisch normiert
+- d.h. Umlaute werden aufgelöst, es wird Kleinschreibung verwendet und
+unerwünschte Zeichen werden eliminiert (erlaubt sind Alphanumerische
+Zeichen sowie +-_.). Unter dem Reiter 'Tags' erhält der Nutzer dann in
+'Mein KUG' eine Übersicht aller von ihm verwendeten Tags in Form einer
+Wortwolke - je mehr Titel sie mit einem entsprechenden Tag versehen
+haben, desto grösser wird es dargestellt. Durch einen Klick auf einen
+Tag gelangt er zu einer Kurztitel-Liste aller Titel, die von ihm mit
+dem jeweiligen Tag versehen wurden.  </p>
+
+<p>
+Alle von Nutzern vergebenen Tags werden in den jeweiligen Titeln auch
+für nicht authentifizierte Nutzer dargestellt - so erhalten auch sie
+Zugriff auf alle mit dem jeweiligen Tag verknüpften Titel.
+</p>
+
+<h3>Mashup mit Wikipedia</h3>
+
+<p>
+In der Einzeltreffer-Anzeige werden Personen sowie ISBNs
+direkt in die Wikipedia verlinkt. Wenn ein Nutzer Informationen zu
+einer Person oder einem Verfasser benötigt, kann er direkt eine
+Recherche nach der ensprechenden Person in der Wikipedia
+starten. Ebenso lässt sich bei vorhandener ISBN der ISBN-Suchservice
+der Wikipedia nutzen. Damit stehen dem Nutzer automatisch verschiedene
+Verbundkataloge, Buchhändler, Antiquariate usw. zur Verfügung, bei
+denen er direkt nach dem aktuell ausgewählten Titel recherchieren
+kann, ohne sich mit der jeweiligen Suchoberfläche auseinandersetzen zu
+müssen.
+</p>
+
+<h3>&Uuml;bersicht der Spezial-Sichten des KUG</h3>
+
+<p>
+Neben dem Standard-KUG mit allen Katalogen gibt es eine Vielzahl an
+Spezial-Sichten, bei denen z.B. bestimmte Kataloge vorausgewählt sind,
+die weitergehende Informationen anbieten oder ein eigenständiges
+Fach-Portal bilden. Diese f&uuml;r den Nutzer oft unsichtbaren
+speziellen Einstiegspunkte in verschiedene KUG-Varianten werden nun
+an zentraler Stelle aufgef&uuml;hrt.
+</p>
+
 
 <h3>Unicode</h3>
 
-Das System verarbeitet nun grunds&auml;tzlich alle bibliographischen Daten im Unicode-Format. Damit wird der Grundstein f&uuml;r die Integration von CJK-Datenbest&auml;nden gelegt, z.B. des Ostasiatischen Seminars.
+<p>
+Das System verarbeitet nun grunds&auml;tzlich alle bibliographischen
+Daten im Unicode-Format. Damit wird der Grundstein f&uuml;r die
+Integration von CJK-Datenbest&auml;nden gelegt.
+</p>
 
 <h3>Mehrsprachigkeit</h3>
 
-Mit der Einführungen von GNU gettext als Mechanismus zur Internationalisierung (I18N) der Texte - in den Programmteilen wie auch in den Templates - gewinnt das System die Fähigkeit diese Texte in verschiedenen Sprachen auszugeben.
+<p>
+Mit der Einführungen von GNU gettext als Mechanismus zur
+Internationalisierung (I18N) der Texte - in den Programmteilen wie
+auch in den Templates - gewinnt das System die Fähigkeit diese Texte
+in verschiedenen Sprachen auszugeben.
+</p>
 
 <h3>Restrukturierung der bibliographischen Datenstrukturen</h3>
 
+<p>
 Es wurde eine grunds&auml;tzliche Restrukturierung der verwendeten
 Datenstrukturen vorgenommen. Grundlage ist eine weitgehende
 Orientierung am MAB2-Standard (modifizierte Sisis-Variante). Neben dem
+</p>
 
+<p>
 &Uuml;bergang zu MAB2 sind die Daten nun deutlich effizienter in den
 Templates verwendbar. Ebenso sind nun deutlich flexiblere
 Recherchem&ouml;glichkeiten denkbar. So kann bereits die
 Titel-Stringsuche auf weitere Kategorien jenseits des HST ausgedehnt
 werden.
+</p>
 
 <h3>Verwendung von Suchmaschinen-Technologie</h3>      
 
+<p>
 Durch die Verwendung von Suchmaschinen-Technologie basierend auf der
 OpenSource Software <a
 href="http://openbib.org/wiki/index.php?title=Kategorie:Xapian"
@@ -57,10 +135,12 @@ target="_blank">www.xapian.org</a>) mit ihrem Relevance Ranking k&ouml;nnen
 weitere Funktionalit&auml;ten wie z.B. 'Drill-Downs' in Treffermengen
 angeboten werden. Xapian wird z.B. von der Webpr&auml;senz der Zeitung
 "Die Zeit" eingesetzt.
+</p>
 
-<h3>Parametrisierbare Import-Schnittstelle mit Plugin-Mechanismus und
-Live-Update</h3> 
+<h3>Parametrisierbare Import-Schnittstelle mit Plugin-Mechanismus<!-- und
+Live-Update--></h3> 
 
+<p>
 Auf der Grundlage des auf MAB2 basierten Meta-Datenformates wird das
 Portal um eine für jede Datenbank individualisierbare und
 parametrisierbare Importschnittstelle erweitert. Zusätzlich können
@@ -68,41 +148,136 @@ ausgehend von einer Standardkonvertierung (Sisis-Format) im Programm
 für den automatisierten Import an verschiedenen Stellen des
 Import-Ablaufes datenbankspezifische Plugins eingebracht werden, in
 die man Spezialanpassungen für einzelne Katalog-Typen ausgelagern
-kann. Schließlich können neben einem Komplett-Update eines Kataloges
+kann. <!-- Schließlich können neben einem Komplett-Update eines Kataloges
 alternativ neue bzw. geänderte Datensätze von einem Target, das über
 die WebServices OLWS (Open Library WebServices) angesprechbar ist,
 auch live inkrementell aggregiert und in der zugehörigen KUG-Datenbank
-aktualisiert werden.
+aktualisiert werden. -->
+</p>
 
 <h3>Verarbeitung beliebiger Meta-Datenformate</h3> 
 
-
+<p>
 Jenseits des verwendeten MAB2-Datenformats können nun beliebige
 Meta-Datenformate verarbeitet werden. Grundlage hierfür ist die
 Restrukturierung der bibliographischen Datenstrukturen in Verbindung
 mit der parametrisierbaren Import-Schnittstelle.
+</p>
 
-<p />
 
+<h3>Weitere nutzerspezifische Verbesserungen</h3>
+
+F&uuml;r den Benutzer direkt sichtbar wurde u.a. folgendes ge&auml;ndert:
+
+<ul>
+<li>Zugriff von den Trefferlisten auf die Personen/K&ouml;rperschaften</li>
+<li>Durchg&auml;ngige Bl&auml;tter-Funktion in den Trefferlisten. Speziell bei
+  der Suche &uuml;ber mehrere Datenbanken ist nun ein sukzessiver Zugriff
+  auf alle Treffer - und nicht nur der ersten 50 bzw. 200 - m&ouml;glich.</li>
+<li>Ausgabe der Bandangaben in den Kurztitellisten. Getrennte Sortierung nach
+  Bandz&auml;hlung und Titel</li>
+<li>Integration von Vorschau-Bilder in die Trefferlisten (z.B. im
+  Katalog der im Aufbau befindlichen Portraitsammlung)</li>
+<li>Separate Recherche in Serie/Band/Quelle (Kategorien 089,451,590)</li>
+<li>Beschr&auml;nkung einer Recherche auf &Uuml;berordnungen
+  (z.B. Hauptaufnahmen von Serien)</li>
+<li>Die Katalogauswahl ist f&uuml;r die Standard-KUG-Sicht nun direkt in die
+  (komplexe) Rechercheseite integriert</li>
+<li>Erweiterung um das BibTeX-Format f&uuml;r die Merklisten</li>
+<li>Highlighting der Suchbegriffe in der Einzeltitelanzeige</li>
+<li>Ausweitung der Titel-String-Suche auf weitere Kategorien. Es wird
+  nun nicht mehr nur der HST, sondern auch AST, WST usw. durchsucht.</li>
+<li>Erweiterung der Index-Funktion. Es kann nun &uuml;ber Wortanf&auml;nge (mit
+^abc*) sowie per Volltext (mit ab*) im Normdatenindex recherchiert werden</li>
+<li>Browsing &uuml;ber die Inhalte beliebiger Kategorien - es kann auf
+  alle Inhalte einer Kategorie zugegriffen werden (normdaten&uuml;bergreifend).
+  Damit k&ouml;nnen  z.B. katalogspezifische Register realisiert werden
+  (z.B. Spezial-Sicht der Portrait-Sammlung)
+</li>
+<li>Titelrecherche bei gegebenem Inhalt einer Kategorie. Damit k&ouml;nnen f&uuml;r
+  beliebige Kategorien Verkn&uuml;pfungen zu anderen Titeln mit gleichem
+  Kategorieinhalt realisiert werden, die &uuml;ber den
+  Sisis-Standardverkn&uuml;pfungsmechanismus (Kategorie 004) nicht
+  abgebildet werden k&ouml;nnen.</li>
+</ul>
+
+<p>
 Wiederum wurden wesentliche Entwicklungen und Verbesserungen f&uuml;r
 den Benutzer unsichtbar im Fundament der Anwendung vorgenommen.
+</p>
+
+<h2 id="kugv1.2.3">Neuerungen mit Version 1.2.3 (Umstellung am 18.12.2006)</h2>
+
+<h3>Recommender-Funktion mit Titelvorschl&auml;gen '...das k&ouml;nnte Sie interessieren' durch
+Nutzungsanalysen</h3>
+
+<p>
+Durch statistische Auswertungen des Ausleihverhaltens im Bestand der
+USB sowie des Nutzungsverhaltens im KUG werden zu einem gegebenen
+Titel gewichtete nutzer- bzw. sessionspezifische
+&Uuml;berschneidungsmengen mit anderen ausgeliehenen/-gew&auml;hlten
+Titeln bestimmt. Dadurch bekommt der Nutzer konkrete
+Titelvorschl&auml;ge und somit einen &Uuml;berblick von weiteren
+Titeln, die von anderen Nutzern im Kontext des aktuellen Titels
+f&uuml;r interessant befunden wurden. (R&uuml;ckportiert von Version
+2.0)
+</p>
+
+<h3>Popularit&auml;ts-Funktionen</h3>
+
+<p>
+Durch eine Analyse des Nutzungsverhaltens - &auml;hnlich wie bei der
+Recommender-Funktion - werden Popularit&auml;ts-Funktionen ermöglicht.
+</p>
+
+<p>
+So werden f&uuml;r jeden Katalog getrennte Top 20 Listen der am meisten
+aufgerufenen Titel angeboten. Ebenso lassen sich Treffermengen nach der
+Popularit&auml;t der Titel sortieren. Damit k&ouml;nnen Nutzer direkt vom
+Nutzungsverhalten anderer Nutzer profitieren. (R&uuml;ckportiert von Version 2.0)
+</p>
+
+<h3>Integration mit Social-Software / BibSonomy</h3>
+
+<p>
+In der Einzeltreffer-Anzeige wie auch in der Merkliste k&ouml;nnen
+die bibliographischen Angaben eines Titels direkt an <a
+href="http://www.bibsonomy.org/" target="_blank">BibSonomy</a>
+gesendet werden. BibSonomy ist ein freier Social Bookmark Dienst
+(entsprechend der Webseite genauer: ein <b>social bookmark and
+publication sharing system</b>), der jedoch auch auf die Verwaltung
+von Bibliographie-Listen und deren Austausch/Verbreitung spezialisiert
+ist. (R&uuml;ckportiert von Version 2.0)
+</p>
+
+<h3>Standardkonformit&auml;t zu XHTML 1.0 transitional</h3>
+
+<p>
+Alle Templates des KUG wurden entsprechend &uuml;berarbeitet, so dass
+nun &uuml;berall die Standardkonformit&auml;t entsprechend dem
+W3C-Validator gegeben ist.
+</p>
 
 <h2 id="kugv1.2.2">Neuerungen mit Version 1.2.2 (Umstellung am 4.4.2006)</h2>
 
 <h3>RSS-Feeds (Abonnierbare Nachrichtenkan&auml;le)</h3>
 
+<p>
 Die letzten 50 Neuzug&auml;nge (alle, zu einem Verfasser oder einer
 Person, zu einer K&ouml;rperschaft oder einem Urheber, zu einem
-Schlagwort oder einer Notation) eines Kataloges lassen sich nun
-als <a href="http://de.wikipedia.org/wiki/RSS-Feed" target="_blank">RSS-Feed</a> abonnieren.
-
+Schlagwort oder einer Notation) eines Kataloges lassen sich nun als <a
+href="http://de.wikipedia.org/wiki/RSS-Feed"
+target="_blank">RSS-Feed</a> abonnieren. (R&uuml;ckportiert von Version 2.0)
+</p>
 
 <h3>Ergebnisanreicherung durch gescannte Inhaltsverzeichnisse</h3>      
 
+<p>
 Wenn uns zu einem Titel digitalisierte Inhaltsverzeichnisse zur
 Verf&uuml;gung stehen, dann werden sie katalog&uuml;bergreifend in der
-Titelanzeige verlinkt.
-      
+Titelanzeige verlinkt. (R&uuml;ckportiert von Version 2.0)
+</p>
+
 <h2 id="kugv1.2.1">Neuerungen mit Version 1.2.1 (Umstellung am 7.9.2005)</h2>
 
 <h3>Virtueller Index</h3>
@@ -295,6 +470,7 @@ In der Version 1.0 wurden folgende Änderungen und Erweiterungen vorgenommen:
 Ablösung des bisherigen Recherche-Portals durch die Weiterentwicklung des seit 1997 eingesetzten KVIK im Rahmen des Lokalsystem-Updates auf die Version V3.0A20. 
 
     </div>
+</div>
 <p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

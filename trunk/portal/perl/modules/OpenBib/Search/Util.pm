@@ -566,14 +566,8 @@ sub get_tit_listitem_by_idn {
         ? $arg_ref->{titidn}            : undef;
     my $dbh               = exists $arg_ref->{dbh}
         ? $arg_ref->{dbh}               : undef;
-    my $sessiondbh        = exists $arg_ref->{sessiondbh}
-        ? $arg_ref->{sessiondbh}        : undef;
-    my $targetdbinfo_ref  = exists $arg_ref->{targetdbinfo_ref}
-        ? $arg_ref->{targetdbinfo_ref}  : undef;
     my $database          = exists $arg_ref->{database}
         ? $arg_ref->{database}          : undef;
-    my $sessionID         = exists $arg_ref->{sessionID}
-        ? $arg_ref->{sessionID}         : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -792,14 +786,7 @@ sub get_tit_listitem_by_idn {
         #
         # Dann:
         #
-        # Unterfall 1.1: Es existiert eine (erste) Bandzahl(089)
-        #
-        # Dann: Setze diese Bandzahl vor den AST/HST
-        #
-        # Unterfall 1.2: Es existiert keine Bandzahl(089), aber eine (erste)
-        #                Bandzahl(455)
-        #
-        # Dann: Setze diese Bandzahl vor den AST/HST
+        # Ist nichts zu tun
         #
         # 2. Fall: Es existiert kein HST(331)
         #
@@ -824,30 +811,20 @@ sub get_tit_listitem_by_idn {
         #
         # Dann: Verwende diese Zeitschriftensignatur
         #
-        if (exists $listitem_ref->{T0331}) {
-            $logger->debug("1. Fall: HST existiert");
-            # UnterFall 1.1:
-            if (exists $listitem_ref->{'T0089'}) {
-                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0089}[0]{content}.". ".$listitem_ref->{T0331}[0]{content};
-            }
-            # Unterfall 1.2:
-            elsif (exists $listitem_ref->{T0455}) {
-                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0455}[0]{content}.". ".$listitem_ref->{T0331}[0]{content};
-            }
-        } else {
-            # UnterFall 1.1:
+        if (!exists $listitem_ref->{T0331}) {
+            # UnterFall 2.1:
             if (exists $listitem_ref->{'T0089'}) {
                 $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0089}[0]{content};
             }
-            # Unterfall 1.2:
+            # Unterfall 2.2:
             elsif (exists $listitem_ref->{T0455}) {
                 $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0455}[0]{content};
             }
-            # Unterfall 1.3:
+            # Unterfall 2.3:
             elsif (exists $listitem_ref->{T0451}) {
                 $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0451}[0]{content};
             }
-            # Unterfall 1.4:
+            # Unterfall 2.4:
             elsif (exists $listitem_ref->{T1203}) {
                 $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T1203}[0]{content};
             } else {
@@ -855,6 +832,34 @@ sub get_tit_listitem_by_idn {
             }
         }
 
+        # Bestimmung der Zaehlung
+
+        # Fall 1: Es existiert eine (erste) Bandzahl(089)
+        #
+        # Dann: Setze diese Bandzahl
+        #
+        # Fall 2: Es existiert keine Bandzahl(089), aber eine (erste)
+        #                Bandzahl(455)
+        #
+        # Dann: Setze diese Bandzahl
+
+        # Fall 1:
+        if (exists $listitem_ref->{'T0089'}) {
+            $listitem_ref->{T5100}= [
+                {
+                    content => $listitem_ref->{T0089}[0]{content}
+                }
+            ];
+        }
+        # Fall 2:
+        elsif (exists $listitem_ref->{T0455}) {
+            $listitem_ref->{T5100}= [
+                {
+                    content => $listitem_ref->{T0455}[0]{content}
+                }
+            ];
+        }
+        
         if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
@@ -918,6 +923,10 @@ sub print_tit_list_by_idn {
         ? $arg_ref->{offset}            : undef;
     my $view              = exists $arg_ref->{view}
         ? $arg_ref->{view}              : undef;
+    my $template          = exists $arg_ref->{template}
+        ? $arg_ref->{template}          : 'tt_search_showtitlist_tname';
+    my $location          = exists $arg_ref->{location}
+        ? $arg_ref->{location}          : 'search_loc';
     my $lang              = exists $arg_ref->{lang}
         ? $arg_ref->{lang}              : undef;
     my $msg                = exists $arg_ref->{msg}
@@ -941,7 +950,7 @@ sub print_tit_list_by_idn {
         push @args,"$key=$value";
     }
 
-    my $baseurl="http://$config->{servername}$config->{search_loc}?".join(";",@args);
+    my $baseurl="http://$config->{servername}$config->{$location}?".join(";",@args);
 
     my @nav=();
 
@@ -991,7 +1000,8 @@ sub print_tit_list_by_idn {
         msg            => $msg,
     };
   
-    OpenBib::Common::Util::print_page($config->{tt_search_showtitlist_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{$template},$ttdata,$r);
+#    OpenBib::Common::Util::print_page($config->{tt_search_showtitlist_tname},$ttdata,$r);
 
     return;
 }
@@ -1026,11 +1036,17 @@ sub print_tit_set_by_idn {
         ? $arg_ref->{view}               : undef;
     my $msg                = exists $arg_ref->{msg}
         ? $arg_ref->{msg}                : undef;
+    my $no_log             = exists $arg_ref->{no_log}
+        ? $arg_ref->{no_log}             : 0;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
     my $config = new OpenBib::Config();
+    my $user   = new OpenBib::User();
+
+    my $userid    = $user->get_userid_of_session($session->{ID});
+    my $loginname = $user->get_username_for_userid($userid);
 
     my ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn({
         titidn             => $titidn,
@@ -1047,8 +1063,7 @@ sub print_tit_set_by_idn {
         sessionID  => $session->{ID},
     });
 
-    my $poolname=$targetdbinfo_ref->{sigel}{
-        $targetdbinfo_ref->{dbases}{$database}};
+    my $poolname=$targetdbinfo_ref->{dbnames}{$database};
 
     # TT-Data erzeugen
     my $ttdata={
@@ -1066,7 +1081,11 @@ sub print_tit_set_by_idn {
         mexnormset  => $mexnormset,
         circset     => $circset,
         searchquery => $searchquery_ref,
+        activefeed  => $config->get_activefeeds_of_db($database),        
 
+        user        => $user,
+        loginname   => $loginname,
+        
         highlightquery    => \&highlightquery,
         normset2bibtex    => \&OpenBib::Common::Util::normset2bibtex,
         normset2bibsonomy => \&OpenBib::Common::Util::normset2bibsonomy,
@@ -1087,15 +1106,18 @@ sub print_tit_set_by_idn {
         $isbn =~s/-//g;
         $isbn =~s/X/x/g;
     }
-    
-    $session->log_event({
-        type    => 10,
-        content => {
-            id       => $titidn,
-            database => $database,
-            isbn     => $isbn,
-        },
-    });
+
+    if (!$no_log){
+        $session->log_event({
+            type      => 10,
+            content   => {
+                id       => $titidn,
+                database => $database,
+                isbn     => $isbn,
+            },
+            serialize => 1,
+        });
+    }
     
     return;
 }
@@ -1445,31 +1467,33 @@ sub get_tit_set_by_idn {
         my $enrichdbh
             = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
                 or $logger->error_die($DBI::errstr);
-        
-        foreach my $isbn_ref (@{$normset_ref->{T0540}}){
 
-            my $isbn=$isbn_ref->{content};
-            
-            $isbn =~s/ //g;
-            $isbn =~s/-//g;
-            $isbn=~s/([A-Z])/\l$1/g;
-                        
-            my $reqstring="select category,content from normdata where isbn=? order by category,indicator";
-            my $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
-            $request->execute($isbn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
-            
-            while (my $res=$request->fetchrow_hashref) {
-                my $category   = "T".sprintf "%04d",$res->{category };
-                my $content    =        decode_utf8($res->{content});
+        if (exists $normset_ref->{T0540}){
+            foreach my $isbn_ref (@{$normset_ref->{T0540}}){
+
+                my $isbn=$isbn_ref->{content};
                 
-                push @{$normset_ref->{$category}}, {
-                    content    => $content,
-                };
+                $isbn =~s/ //g;
+                $isbn =~s/-//g;
+                $isbn=~s/([A-Z])/\l$1/g;
+                
+                my $reqstring="select category,content from normdata where isbn=? order by category,indicator";
+                my $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
+                $request->execute($isbn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+                
+                while (my $res=$request->fetchrow_hashref) {
+                    my $category   = "T".sprintf "%04d",$res->{category };
+                    my $content    =        decode_utf8($res->{content});
+                    
+                    push @{$normset_ref->{$category}}, {
+                        content    => $content,
+                    };
+                }
+                $request->finish();
+                $logger->debug("Enrich: $isbn -> $reqstring");
             }
-            $request->finish();
-            $logger->debug("Enrich: $isbn -> $reqstring");
+            
         }
-        
         $enrichdbh->disconnect();
 
         if ($config->{benchmark}) {
@@ -1695,7 +1719,8 @@ sub get_index {
             };
         }
         $request->finish();
-        
+
+        $logger->debug("Index-Worte: ".YAML::Dump(\@contents))
     }
 
     if ($config->{benchmark}) {
@@ -1813,6 +1838,8 @@ sub print_index_by_swt {
         ? $arg_ref->{stylesheet}        : undef;
     my $view              = exists $arg_ref->{view}
         ? $arg_ref->{view}              : undef;
+    my $msg                = exists $arg_ref->{msg}
+        ? $arg_ref->{msg}                : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -1839,13 +1866,9 @@ sub print_index_by_swt {
         swt        => $swt,
         swtindex   => $swtindex,
 
-        utf2iso    => sub {
-            my $string=shift;
-            $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
-            return $string;
-        },
-
         config     => $config,
+        msg        => $msg,
+
     };
   
     OpenBib::Common::Util::print_page($config->{tt_search_showswtindex_tname},$ttdata,$r);
@@ -1983,7 +2006,7 @@ sub initial_search_for_titidns {
         $offset=$offset.",";
     }
     
-    my $sqlquerystring  = "select verwidn from $sqlfromstring where $sqlwherestring limit $offset$hitrange";
+    my $sqlquerystring  = "select distinct verwidn from $sqlfromstring where $sqlwherestring limit $offset$hitrange";
 
     $logger->debug("QueryString: ".$sqlquerystring);
     my $request         = $dbh->prepare($sqlquerystring);
@@ -2257,6 +2280,9 @@ sub get_recent_titids_by_not {
 
 sub highlightquery {
     my ($searchquery_ref,$content) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
     
     # Highlight Query
 
@@ -2264,9 +2290,20 @@ sub highlightquery {
         searchquery_ref => $searchquery_ref,
     });
 
-    foreach my $singleterm (@$term_ref){
-        $content=~s/($singleterm)/<span class="queryhighlight">$1<\/span>/ig unless ($content=~/http/);
-    }
+    return $content if (scalar(@$term_ref) <= 0);
+
+    $logger->debug("Terms: ".YAML::Dump($term_ref));
+
+    my $terms = join("|", grep /^\w{3,}/ ,@$term_ref);
+
+    return $content if (!$terms);
+    
+    $logger->debug("Term_ref: ".YAML::Dump($term_ref)."\nTerms: $terms");
+    $logger->debug("Content vor: ".$content);
+    
+    $content=~s/\b($terms)/<span class="queryhighlight">$1<\/span>/ig unless ($content=~/http/);
+
+    $logger->debug("Content nach: ".$content);
 
     return $content;
 }

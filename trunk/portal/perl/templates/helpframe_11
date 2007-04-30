@@ -17,15 +17,22 @@
 <ul class="tabbingmenu">
    <li><a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
    <li><a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
-   <li><a class="active" href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=11" target="body" title="Top 20">[% msg.maketext("Top 20") %]</a></li>
+   <li><a class="active" href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" target="body" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
 </ul>
 
 <div class="content">
 <p />
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=11" target="body" title="Top 20">[% msg.maketext("Titel pro Katalog") %]</a></li>
-   <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=12" target="body" title="Meistgenutzte Kataloge">[% msg.maketext("Meistgenutzte Kataloge") %]</a></li>
+  <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" target="body" title="Wolken">Wolken</a></li>
+  <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=15" target="body" title="Sichten">Sichten</a></li>
+  <li><a class="active" href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=11" target="body" title="Top 20">[% msg.maketext("Top 20") %]</a></li>
+</ul>
+
+<div class="content">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=11" target="body" title="Katalogauswahl">Katalogauswahl</a></li>
 </ul>
 
 <div class="content">
@@ -34,7 +41,8 @@
 <table width="100%">
 <tr><th>Hinweis</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
-[% msg.maketext("Auf dieser Seite k&ouml;nnen Sie auf die 20 meist aufgerufenen Titel eines jeden Kataloges zugreifen.") %]
+W&auml;hlen Sie einen Katalog aus, um Informationen &uuml;ber dessen
+Nutzung zu erhalten.
 </td></tr>
 </table>
 <p />
@@ -80,6 +88,7 @@
   [%- END -%]
 [%- END -%]
 </table>
+</div>
 </div>
 </div>
 

@@ -21,7 +21,7 @@
 	  <td width="50%"> &nbsp;&nbsp;</td>
 	  
 	  <td align="right" width="20%">
-	    <a target="_top" href="http://www.uni-koeln.de/"><img src="/images/openbib/logorechts.png" height="95" border="0" alt="Goldenes Universit&auml;tssigel" /></a>
+	    <a target="_blank" href="http://www.uni-koeln.de/"><img src="/images/openbib/logorechts.png" height="95" border="0" alt="Goldenes Universit&auml;tssigel" /></a>
 	  </td>
 	</tr>
 	[% IF view %]

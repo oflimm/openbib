@@ -2,16 +2,16 @@
     <table  border="0" cellspacing="0" cellpadding="0" width="100%">
 	<tr>
 	  <td align="left" width="5%">
-           <img src="/views/richter/bilder/richterexlibris_logo.jpg">
+           <img src="/images/openbib/views/richter/richterexlibris_logo.jpg">
           </td>
 	  <td align="left" width="65%">
-                      <img src="/views/richter/bilder/virtuelle.bibliothek.png">
+                      <img src="/images/openbib/views/richter/virtuelle.bibliothek.png">
 	  </td>
 
 	  <td width="10%"> &nbsp;&nbsp;</td>
 	  
 	  <td align="right" width="20%">
-	    <a target="_top" href="http://www.uni-koeln.de/"><img src="/views/richter/bilder/siegel.gif" height="95" border="0" alt="Goldenes Universit&auml;tssigel" /></a>
+	    <a target="_blank" href="http://www.uni-koeln.de/"><img src="/images/openbib/views/richter/siegel.gif" height="95" border="0" alt="Goldenes Universit&auml;tssigel" /></a>
 	  </td>
 	</tr>
     </table>

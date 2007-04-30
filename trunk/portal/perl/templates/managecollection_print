@@ -34,6 +34,10 @@
 	  <pre>
 [% PROCESS common/subtemplate name="managecollection_tit_as_text" %]
           </pre>
+[% ELSIF type == 'BibTeX' %]
+  	  <pre>
+[% PROCESS common/subtemplate name="managecollection_tit_as_bibtex" %]
+  	  </pre>
 [% ELSIF type == 'EndNote' %]
           <pre>
 [% PROCESS common/subtemplate name="managecollection_tit_as_endnote" %]

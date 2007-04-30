@@ -33,6 +33,7 @@ use utf8;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use Storable;
+use YAML;
 
 use OpenBib::Config;
 use OpenBib::Statistics;
@@ -58,7 +59,8 @@ sub new {
         = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    $self->{dbh}       = $dbh;
+    $self->{dbh}        = $dbh;
+    $self->{servername} = $config->{servername};
 
     # Setzen der Defaults
 
@@ -71,7 +73,7 @@ sub new {
         $logger->debug("Examining if SessionID $self->{ID} is valid");
         if (!$self->is_valid()){
             $self->{ID} = undef;
-            $logger->debug("SessionID $self->{ID} is NOT valid");
+            $logger->debug("SessionID is NOT valid");
         }
     }
     
@@ -255,7 +257,7 @@ sub get_queryoptions {
             # werden - speziell nicht bei einer anfaenglichen Suche
             # Dennoch darf - derzeit ausgehend von den Normdaten - alles
             # geholt werden
-            unless ($option eq "hitrange" && $query->param($option) == -1){
+            unless ($option eq "hitrange" && $query->param($option) eq "-1"){
                 $queryoptions_ref->{$option}=$query->param($option);
                 $logger->debug("Option $option received via HTTP");
                 $altered=1;
@@ -532,13 +534,18 @@ sub get_items_in_resultlist_per_db {
     my $sqlrequest="select searchresult from searchresults where sessionid = ? and dbname = ? and queryid = ?";
     my @sqlargs=($self->{ID},$database,$queryid);
 
-    if (defined $offset && defined $hitrange){
-        $sqlrequest.=" and offset = ? and hitrange = ?";
-        push @sqlargs, $offset;
-        push @sqlargs, $hitrange;
-    }
+     if (defined $offset && defined $hitrange){
+         $sqlrequest.=" and offset = ? and hitrange = ?";
+         push @sqlargs, $offset;
+         push @sqlargs, $hitrange;
+     }
 
-    $logger->debug("SQL-Request: $sqlrequest");
+#     if (defined $offset){
+#         $sqlrequest.=" and offset = ?";
+#         push @sqlargs, $offset;
+#     }
+
+    $logger->debug("SQL-Request: $sqlrequest / $self->{ID} - $database - $queryid - $offset - $hitrange");
     my $idnresult=$self->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $idnresult->execute(@sqlargs) or $logger->error($DBI::errstr);
     while (my $res = $idnresult->fetchrow_hashref()){
@@ -755,27 +762,48 @@ sub clear_data {
     # Zuerst Statistikdaten in Statistik-Datenbank uebertragen,
     my $statistics=new OpenBib::Statistics;
 
-    # Relevanz-Daten vom Typ 2 (Einzeltrefferaufruf)
-    $idnresult=$self->{dbh}->prepare("select content from eventlog where sessionid = ? and type=10") or $logger->error($DBI::errstr);
+    # Alle Events in Statistics-DB uebertragen
+    $idnresult=$self->{dbh}->prepare("select * from eventlog where sessionid = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
 
+    while (my $result=$idnresult->fetchrow_hashref){
+        my $tstamp        = $result->{tstamp};
+        my $type          = $result->{type};
+        my $content       = $result->{content};
+        my $id            = $self->{servername}.":".$self->{ID};
+
+        $statistics->log_event({
+            sessionID => $id,
+            tstamp    => $tstamp,
+            type      => $type,
+            content   => $content,
+        });
+    }
+    
+    # Relevanz-Daten vom Typ 2 (Einzeltrefferaufruf)
+    $idnresult=$self->{dbh}->prepare("select tstamp,content from eventlog where sessionid = ? and type=10") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+    
     my ($wkday,$month,$day,$time,$year) = split(/\s+/, localtime);
     
     while (my $result=$idnresult->fetchrow_hashref){
+        my $tstamp        = $result->{tstamp};
         my $content_ref   = Storable::thaw(pack "H*", $result->{content});
-        my $id            = "$year/$month/$day".$self->{ID};
+
+        my $id            = $self->{servername}.":".$self->{ID};
         my $isbn          = $content_ref->{isbn};
         my $dbname        = $content_ref->{database};
         my $katkey        = $content_ref->{id};
 
         $statistics->store_relevance({
+            tstamp => $tstamp,
             id     => $id,
             isbn   => $isbn,
             dbname => $dbname,
             katkey => $katkey,
             type   => 2,
-        });            
-    }   
+        });
+    }
     
     # dann Sessiondaten loeschen
     $idnresult=$self->{dbh}->prepare("delete from treffer where sessionid = ?") or $logger->error($DBI::errstr);
@@ -811,30 +839,60 @@ sub log_event {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $type        = exists $arg_ref->{type}
+    my $type         = exists $arg_ref->{type}
         ? $arg_ref->{type}               : undef;
     
-    my $content_ref = exists $arg_ref->{content}
+    my $content      = exists $arg_ref->{content}
         ? $arg_ref->{content}            : undef;
+
+    my $serialize = exists $arg_ref->{serialize}
+        ? $arg_ref->{serialize}          : 0;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $contentstring=unpack "H*", Storable::freeze($content_ref);
+    my $contentstring = $content;
+
+    if ($serialize){
+        $contentstring=unpack "H*", Storable::freeze($content);
+    }
     
     # Moegliche Event-Typen
     #
-    # 10 => Eineltrefferanzeige
+    # Recherchen:
+    #   1 => Recherche-Anfrage bei Virtueller Recherche
+    #  10 => Eineltrefferanzeige
+    #
+    # Allgemeine Informationen
+    # 100 => View
+    # 101 => Browser
+    # 102 => IP des Klienten
+    # Redirects 
+    # 500 => TOC / hbz-Server
+    # 501 => TOC / ImageWaere-Server
+    # 510 => BibSonomy
+    # 520 => Wikipedia / Personen
+    # 521 => Wikipedia / ISBN
+    # 530 => EZB
+    # 531 => DBIS
+    # 532 => Kartenkatalog Philfak
+    # 533 => MedPilot
+    # 540 => HBZ-Monofernleihe
+    # 541 => HBZ-Dokumentenlieferung
+    # 550 => WebOPAC
     
-    my $request=$self->{dbh}->prepare("insert into eventlog values (?,NULL,?,?)") or $logger->error($DBI::errstr);
+    my $request=$self->{dbh}->prepare("insert into eventlog values (?,NOW(),?,?)") or $logger->error($DBI::errstr);
     $request->execute($self->{ID},$type,$contentstring) or $logger->error($DBI::errstr);
     $request->finish;
 
-    return;    
+    return;
 }
 
 sub DESTROY {
     my $self = shift;
+
+    return if (!defined $self->{dbh});
+
     $self->{dbh}->disconnect();
 
     return;

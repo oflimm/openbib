@@ -24,13 +24,9 @@
 <table cellpadding="2">
 <tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
 
-[%# Ausgabekategorien %]
-[%- categories = [
-                 'N0001', # msg.maketext("N0001") Ansetzung 
-                 'N0002', # msg.maketext("N0002") Ansetzung
-                 'N0103', # msg.maketext("N0103") Verweisform
-                 'N5000', # msg.maketext("N5000") Anzahl Titel
-                 ];
+[% PROCESS common/subtemplate name="visible_categories_notset" %]
+
+[%- 
 
 FOREACH category IN categories;
     FOREACH item IN normset.$category;

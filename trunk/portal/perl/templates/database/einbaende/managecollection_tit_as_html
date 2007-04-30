@@ -13,7 +13,7 @@
 # - Aenderung in zwei Abschnitte Titel-Daten und Einband-Daten
 #######################################################################
 -%]
-<tr class="titlerow"><td><input type="checkbox" name="loeschtit" value="[% titset.database %]:[% titset.titidn %]"></td><td>[% msg.maketext("aus:") %] [% titset.dbdesc %]<td></tr><tr><td>&nbsp;</td><td>
+<tr class="titlerow"><td><input type="checkbox" name="loeschtit" value="[% titset.database %]:[% titset.titidn %]"></td><td>[% msg.maketext("aus:") %] [% titset.dbdesc.full %]<td></tr><tr><td>&nbsp;</td><td>
 [% normset    = titset.tit %]
 [% mexnormset = titset.mex %]
 [% circset    = titset.circ %]
@@ -34,8 +34,25 @@
 FOREACH category IN categories;
     FOREACH item IN normset.$category;
     content = item.content;
+
+    # Fehlerhafte Daten korrigieren
+    content = content.replace('&lt; */p&gt;','<p />');
+    content = content.replace('&lt;link&gt;','<a href="http://');
+    content = content.replace('&lt;/link&gt;','" target="_blank">Link</a>');
+    content = content.replace('&lt;.?siglink&gt;','');
+    content = content.replace('\x{96}','-');
+
+    # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+    # in Config.pm fuer die entsprechende Datenbank definiert
+    # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+    # kodiert.
+    thiscategory = category ;
+    IF config.categorymapping.$database.$category ;
+      thiscategory = "${category}-${normset.database}" ;
+    END;
+
 -%]
-<tr><td class="category">[% msg.maketext("${category}") %]</td><td>[% content %]</td></tr>
+<tr><td class="category">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
 [%-
    END;
 END;
@@ -48,7 +65,7 @@ END;
 <tr class="titlerow" align=center><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="250">[% msg.maketext("Standort") %]</td><td width="120">[% msg.maketext("Inventarnummer") %]</td><td width="250">[% msg.maketext("Signatur") %]</td><td width="230">[% msg.maketext("Bestandsverlauf") %]</td></tr>
 
 [% FOREACH mex IN mexnormset %]
-<tr align=center><td><strong>[% mex.${"X4000"}.content %]</strong>
+<tr align=center><td><strong>[% mex.${"X4000"}.content.full %]</strong>
 </td><td>[% mex.${"X0016"}.content %]</td><td>[% mex.${"X0005"}.content %]</td><td><strong><span class="rlsignature">[% mex.${"X0014"}.content %]</span></strong></td><td>[% mex.${"X1204"}.content %]</td></tr>
 [% END %]
 </table>
@@ -62,7 +79,7 @@ END;
 <tr><th>[% msg.maketext("Einband-Daten") %]</th></tr>
 <tr><td class="boxedclear">
 
-<table cellpadding=2>
+<table cellpadding="2">
 <tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
 <tr><td class="category">id</td><td>[% normset.id %]</td></tr>
 
@@ -73,8 +90,25 @@ END;
 FOREACH category IN categories;
     FOREACH item IN normset.$category;
     content = item.content;
+
+    # Fehlerhafte Daten korrigieren
+    content = content.replace('&lt; */p&gt;','<p />');
+    content = content.replace('&lt;link&gt;','<a href="http://');
+    content = content.replace('&lt;/link&gt;','" target="_blank">Link</a>');
+    content = content.replace('&lt;.?siglink&gt;','');
+    content = content.replace('\x{96}','-');
+
+    # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+    # in Config.pm fuer die entsprechende Datenbank definiert
+    # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+    # kodiert.
+    thiscategory = category ;
+    IF config.categorymapping.$database.$category ;
+      thiscategory = "${category}-${normset.database}" ;
+    END;
+
 -%]
-<tr><td class="category">[% msg.maketext("${category}") %]</td><td>[% content %]</td></tr>
+<tr><td class="category">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
 [%-
    END;
 END;

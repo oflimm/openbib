@@ -95,7 +95,9 @@ my %cvs_links = (
     "$cwd/conv/lidos/lidos2meta.pl"         => "/opt/openbib/conv/lidos2meta.pl",
     "$cwd/conv/econbiz/econbiz2meta.pl"     => "/opt/openbib/conv/econbiz2meta.pl",
     "$cwd/conv/filemaker/filemaker2meta.pl" => "/opt/openbib/conv/filemaker2meta.pl",
+    "$cwd/conv/simple/simple2meta.pl"       => "/opt/openbib/conv/simple2meta.pl",
     "$cwd/conv/xapian/db2xapian.pl"         => "/opt/openbib/conv/db2xapian.pl",
+    "$cwd/conv/xapian/file2xapian.pl"       => "/opt/openbib/conv/file2xapian.pl",
     "$cwd/conv/auto/autoconv.pl"            => "/opt/openbib/autoconv/bin/autoconv.pl",
     "$cwd/db/mysql"                         => "/opt/openbib/db/mysql",
     "$cwd/portal/perl/modules/OpenBib"      => "/usr/local/lib/site_perl/OpenBib",
@@ -151,6 +153,7 @@ grundlegenden Datenbanken aus:
 2) /opt/openbib/bin/createsession.pl
 3) /opt/openbib/bin/createuser.pl
 4) /opt/openbib/bin/createenrichmnt.pl
+5) /opt/openbib/bin/createstatistics.pl
 
 Starten Sie schliesslich bitte Apache neu.
 HINWEIS

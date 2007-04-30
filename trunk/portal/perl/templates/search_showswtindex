@@ -28,15 +28,7 @@
 
 [% IF swtindex.size > 0 %]
 
-Es wurde
-[%- IF swtindex.size > 1 -%]
-n
-[%- END -%]
- [% swtindex.size %] [% msg.maketext("Schlagwort") %]
-[%- IF swtindex.size > 1 -%]
-e
-[%- END -%]
- [% msg.maketext("beginnend mit") %] <b>'[% swt %]'</b> [% msg.maketext("in diesem Katalog gefunden") %]
+Gefundene Schlagworte zur Anfrage <b>'[% swt %]'</b> in diesem Katalog: <b>[% swtindex.size %]</b>
 <p />
 
 <table cellpadding="2">
@@ -44,13 +36,13 @@ e
 
 [% FOREACH item IN swtindex %]
 [% IF loop.index % 3 == 0 %]
-<tr><td><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;hitrange=[% hitrange %];database=[% database %];searchtitofswt=[% item.swtidn%]">[% item.swt %]</a></td><td>[% item.titanzahl %]</td>
+<tr><td><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;hitrange=[% hitrange %];database=[% database %];searchtitofswt=[% item.id %]">[% item.content %]</a></td><td>[% item.titcount %]</td>
 [% END %]
 [% IF loop.index % 3 == 1 %]
-<td><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;hitrange=[% hitrange %];database=[% database %];searchtitofswt=[% item.swtidn%]">[% item.swt %]</a></td><td>[% item.titanzahl %]</td>
+<td><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;hitrange=[% hitrange %];database=[% database %];searchtitofswt=[% item.id %]">[% item.content %]</a></td><td>[% item.titcount %]</td>
 [% END %]
 [% IF loop.index % 3 == 2 %]
-<td><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;hitrange=[% hitrange %];database=[% database %];searchtitofswt=[% item.swtidn%]">[% item.swt %]</a></td><td>[% item.titanzahl %]</td></tr>
+<td><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;hitrange=[% hitrange %];database=[% database %];searchtitofswt=[% item.id %]">[% item.content %]</a></td><td>[% item.titcount %]</td></tr>
 [% END %]
 
 [% END %]
@@ -63,7 +55,7 @@ e
 
 </table>
 [% ELSE %]
-[% msg.maketext("In diesem Katalog konnte leider kein Schlagwort beginnend mit") %] <b>'[% swt %]'</b> [% msg.maketext("gefunden werden.") %]
+In diesem Katalog konnte leider kein Schlagwort zur Ihrer Anfrage <b>'[% swt %]'</b> [% msg.maketext("gefunden werden.") %]
 [% END %]
 
 </td></tr>

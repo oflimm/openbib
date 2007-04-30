@@ -5,12 +5,12 @@ Version 2.0:
 - Optionale Verwendung der Xapian-Suchmaschinentechnologie
 - Experimenteller Zugriff auf Z39.50-Datenbanken
 - Durchgaengige Blaetter-Funktion in den Treffermengen bzgl. hitrange-Parameter
-- Recherche in Serie/Band/Quelle
+- Recherche in Serie/Band/Quelle (Kategorien 089,451,590)
 - Beschraenkung einer Recherche auf Ueberordnungen
 - Neues MAB2-orientiertes internes Standard-Metadaten-Format
 - Alternative Metadaten-Formate sind moeglich
 - Parametrisierbare Konvertierungsschnittstelle (Filter/Plugins)
-- Inkrementelles Live-Update über OLWS
+- Inkrementelles Live-Update der SQL-Datenbanken über OLWS
 - Eventlogging in Session->Statistik-Datenbank
 - Recommender-Funktion (zurueckportiert nach 1.2.3)
 - Popularitaets-Funktionen (Top 20, Sortierung ; zurueckportiert nach 1.2.3)
@@ -19,7 +19,8 @@ Version 2.0:
 - RSS-Feeds fuer Neuzugaenge (zurueckportiert nach 1.2.2)
 - Ergebnisanreicherung (zurueckportiert nach 1.2.2)
 - Extener DigiBib-Connector als mod_perl-Handler (zurueckportiert nach 1.2.2)
-- Ausgabe der Bandangaben in den Kurztitellisten. Damit ist nun eine alphabetische Sortierung moeglich
+- Ausgabe der Bandangaben in den Kurztitellisten. Getrennte Sortierung nach
+  Bandzaehlung und Titel (alphabetisch)
 - Schneller Zugriff auf Kurztitel-Informationen durch neue titlistitem-Tabelle
 - Integration des Logging-Frameworks in die Programme zur automatischen
   Konvertierung sowie Anreichern mit Popularitaetsinformationen
@@ -28,3 +29,22 @@ Version 2.0:
   (www.bibsonomy.org)
 - Highlighting der Suchbegriffe in der Einzeltitelanzeige
 - Ausweitung der Titel-String-Suche auf weitere Kategorien
+- Browsing ueber die Inhalte beliebiger Kategorien - es kann auf alle
+  Inhalte einer Kategorie zugegriffen werden (normdatenuebergreifend). Damit 
+  koennen z.B.  Register realisiert werden (Portrait-Sammlung, 
+  Landschaftsbilder)
+- Titelrecherche bei gegebenem Inhalt einer Kategorie. Damit koennen fuer
+  beliebige Kategorien Verknuepfungen zu anderen Titeln mit gleichem
+  Kategorieinhalt realisiert werden.
+- Mashup mit Wikipedia bei Personen/ISBN's
+- Social-Tagging. Benutzer koennen nun einzelne Titel selbst mit
+  Mini-Schlagworten (engl. tags) versehen
+- Einfuehrung von Tag-Clouds:
+  a) Schlagwort-Wolken zur Uebersicht bezogen auf einen
+     Katalog. Ebenso fuer die anderen Normdaten (Personen,
+     Koerperschaften, Notationen)
+  b) Begriffs-Wolken bezogen auf die relevantesten Terme einer Recherche-
+     Treffermenge zur Suchverfeinerung
+  c) Tag-Clouds fuer die von Nutzern vergebenen und als oeffentlich
+     deklarierten Tags fuer Titel im KUG
+

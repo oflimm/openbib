@@ -41,28 +41,19 @@ use OpenBib::Config;
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
 
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
+my $config = new OpenBib::Config;
 
 my $pool=($ARGV[0])?$ARGV[0]:'econbiz';
 
 my $dbimodule = "Pg";    # Pg (PostgreSQL)
 my $port      = "5432";  # Pg:5432
 
-my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or die "could not connect";
+my $dboptions_ref = $config->get_dboptions($pool);
 
-my $dbinforesult=$sessiondbh->prepare("select * from dboptions where dbname=?") or die "Error -- $DBI::errstr";
-$dbinforesult->execute($pool);
-my $result=$dbinforesult->fetchrow_hashref();
-
-my $dbuser    = $result->{'remoteuser'};
-my $dbpasswd  = $result->{'remotepasswd'};
-my $dbhost    = $result->{'host'};
-my $dbname    = $result->{'remotepath'};
-$dbinforesult->finish();
-
-$sessiondbh->disconnect();
+my $dbuser    = $dboptions_ref->{'remoteuser'};
+my $dbpasswd  = $dboptions_ref->{'remotepasswd'};
+my $dbhost    = $dboptions_ref->{'host'};
+my $dbname    = $dboptions_ref->{'remotepath'};
 
 
 my %formattab={

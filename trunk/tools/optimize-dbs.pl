@@ -6,7 +6,7 @@
 #
 #  DBMS-Optimierung der Katalog-Datenbanken
 #
-#  Dieses File ist (C) 2003-2004 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2003-2007 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -35,22 +35,17 @@ use DBI;
 
 use OpenBib::Config;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
+my $config = new OpenBib::Config();
 
 #####################################################################
 # Verbindung zur SQL-Datenbank herstellen
 
-my $sessiondbh=DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd}) or die "could not connect";
+my $sessiondbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd}) or die "could not connect";
 
 #####################################################################
 # Optimierung der Session-Datenbank
 
-open(SESSIONTABS,"$config{'dbdesc_dir'}/mysql/session.mysql");
+open(SESSIONTABS,"$config->{'dbdesc_dir'}/mysql/session.mysql");
 
 my @sessiontabs=();
 
@@ -81,14 +76,7 @@ print "done\n";
 
 # Einlesen aller Datenbanknamen
 
-$idnresult=$sessiondbh->prepare("select dbname from dbinfo");
-$idnresult->execute();
-
-my @optimizedbs=();
-
-while (my @res=$idnresult->fetchrow()){
-  push @optimizedbs, $res[0];;
-}
+my @optimizedbs=$config->get_active_databases();
 
 $idnresult->finish;
 $sessiondbh->disconnect;
@@ -98,7 +86,7 @@ $sessiondbh->disconnect;
 
 # Einlesen aller Tabellennamen
 
-open(TABS,"$config{'dbdesc_dir'}/mysql/pool.mysql");
+open(TABS,"$config->{'dbdesc_dir'}/mysql/pool.mysql");
 
 my @dbtabs=();
 
@@ -112,7 +100,7 @@ close(TABS);
 
 foreach $dbname (@optimizedbs){
 
-  my $dbh=DBI->connect("DBI:$config{dbimodule}:dbname=$dbname;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd}) or die "could not connect";
+  my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$dbname;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or die "could not connect";
 
   print "Optimizing DB $dbname";
 

@@ -83,7 +83,7 @@ sub handler {
 
     # CGI-Input auslesen
     my $serien        = decode_utf8($query->param('serien'))        || 0;
-    my $enrich        = decode_utf8($query->param('enrich'))        || 1;
+    my $enrich        = decode_utf8($query->param('enrich'))        || 0;
 
     my @databases     = ($query->param('database'))?$query->param('database'):();
 
@@ -91,7 +91,7 @@ sub handler {
     my $offset        = ($query->param('offset'   ))?$query->param('offset'):0;
     my $sorttype      = ($query->param('sorttype' ))?$query->param('sorttype'):"author";
     my $sortorder     = ($query->param('sortorder'))?$query->param('sortorder'):'up';
-    my $autoplus      = $query->param('autoplus')      || '';
+    my $autoplus      = $query->param('autoplus')      || 1;
 
     my $sortall       = ($query->param('sortall'))?$query->param('sortall'):'0';
 
@@ -106,6 +106,7 @@ sub handler {
     my $queryid       = $query->param('queryid')       || '';
     my $sb            = $query->param('sb')            || 'sql'; # Search backend
     my $drilldown     = $query->param('drilldown')     || 0;     # Drill-Down?
+    my $cloud         = $query->param('cloud')         || 0;     # Cloud?
 
     my $queryoptions_ref
         = $session->get_queryoptions($query);
@@ -158,15 +159,11 @@ sub handler {
     # Bestimmung der Datenbanken, in denen gesucht werden soll
     ####################################################################
 
-    
-    # Ueber view koennen bei Direkteinsprung in VirtualSearch die
-    # entsprechenden Kataloge vorausgewaehlt werden
-    if ($view && $#databases == -1) {
-        @databases = $config->get_dbs_of_view($view);
-    }
-    elsif ($#databases != -1) {
+    # Wenn Datenbanken uebergeben werden, dann wird nur
+    # in diesen gesucht.
+    if ($#databases != -1) {
         # Wenn Datenbanken explizit ueber das Suchformular uebergeben werden,
-        # ann werden diese als neue Datenbankauswahl gesetzt
+        # dann werden diese als neue Datenbankauswahl gesetzt
         
         # Zuerst die bestehende Auswahl loeschen
         $session->clear_dbchoice();
@@ -177,60 +174,70 @@ sub handler {
         }
         
         # Neue Datenbankauswahl ist voreingestellt
-        $session->set_profile('dbauswahl');    
+        $session->set_profile('dbauswahl');
     }
-    
-    if ($searchall) {
-        @databases = $config->get_active_databases();
-    }
-    elsif ($searchprofile || $verfindex || $korindex || $swtindex ) {
-        if ($profil eq "dbauswahl") {
-            # Eventuell bestehende Auswahl zuruecksetzen
-            @databases = $session->get_dbchoice();
+    else {
+        # Wenn nur ein View angegeben wird, aber keine Submit-Funktion (s.u.),
+        # z.B. wenn direkt von extern fuer einen View eine Recherche gestartet werden soll,
+        # dann wird in den Datenbanken des View recherchiert
+        if ($view && !($searchall||$searchprofile||$verfindex||$korindex||$swtindex)){
+            @databases = $config->get_dbs_of_view($view);
         }
-        # Wenn ein anderes Profil als 'dbauswahl' ausgewaehlt wuerde
-        elsif ($profil) {
-            # Eventuell bestehende Auswahl zuruecksetzen
-            @databases=();
-
-            # Benutzerspezifische Datenbankprofile
-            if ($profil=~/^user(\d+)/) {
-                my $profilid=$1;
-	
-                my $profilresult=$user->{dbh}->prepare("select profildb.dbname from profildb,userdbprofile where userdbprofile.userid = ? and userdbprofile.profilid = ? and userdbprofile.profilid=profildb.profilid order by dbname") or $logger->error($DBI::errstr);
-                $profilresult->execute($userid,$profilid) or $logger->error($DBI::errstr);
-	
-                my @poolres;
-                while (@poolres=$profilresult->fetchrow) {
-                    push @databases, decode_utf8($poolres[0]);
-                }
-                $profilresult->finish();
-	
-            }
-            # oder alle
-            elsif ($profil eq "alldbs") {
-                # Alle Datenbanken
+        
+        else {
+            if ($searchall) {
                 @databases = $config->get_active_databases();
             }
-            # ansonsten orgunit
-            else {
-                @databases = $config->get_active_databases_of_orgunit($profil);
+            elsif ($searchprofile || $verfindex || $korindex || $swtindex ) {
+                if ($profil eq "dbauswahl") {
+                    # Eventuell bestehende Auswahl zuruecksetzen
+                    @databases = $session->get_dbchoice();
+                }
+                # Wenn ein anderes Profil als 'dbauswahl' ausgewaehlt wuerde
+                elsif ($profil) {
+                    # Eventuell bestehende Auswahl zuruecksetzen
+                    @databases=();
+                    
+                    # Benutzerspezifische Datenbankprofile
+                    if ($profil=~/^user(\d+)/) {
+                        my $profilid=$1;
+                        
+                        my $profilresult=$user->{dbh}->prepare("select profildb.dbname from profildb,userdbprofile where userdbprofile.userid = ? and userdbprofile.profilid = ? and userdbprofile.profilid=profildb.profilid order by dbname") or $logger->error($DBI::errstr);
+                        $profilresult->execute($userid,$profilid) or $logger->error($DBI::errstr);
+                        
+                        my @poolres;
+                        while (@poolres=$profilresult->fetchrow) {
+                            push @databases, decode_utf8($poolres[0]);
+                        }
+                        $profilresult->finish();
+                        
+                    }
+                    # oder alle
+                    elsif ($profil eq "alldbs") {
+                        # Alle Datenbanken
+                        @databases = $config->get_active_databases();
+                    }
+                    # ansonsten orgunit
+                    else {
+                        @databases = $config->get_active_databases_of_orgunit($profil);
+                    }
+                }
+                # Kein Profil
+                else {
+                    OpenBib::Common::Util::print_warning($msg->maketext("Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie keine [_1]Kataloge[_2] oder Suchprofile ausgewählt haben. Bitte wählen Sie die gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen Katalogen suchen</a>.","<a href=\"$config->{databasechoice_loc}?sessionID=$session->{ID}\" target=\"body\">","</a>"),$r,$msg);
+                    return OK;
+                }
+                
+                # Wenn Profil aufgerufen wurde, dann abspeichern fuer Recherchemaske
+                if ($profil) {
+                    my $idnresult=$session->{dbh}->prepare("delete from sessionprofile where sessionid = ? ") or $logger->error($DBI::errstr);
+                    $idnresult->execute($session->{ID}) or $logger->error($DBI::errstr);
+                    
+                    $idnresult=$session->{dbh}->prepare("insert into sessionprofile values (?,?) ") or $logger->error($DBI::errstr);
+                    $idnresult->execute($session->{ID},$profil) or $logger->error($DBI::errstr);
+                    $idnresult->finish();
+                }
             }
-        }
-        # Kein Profil
-        else {
-            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie keine [_1]Kataloge[_2] oder Suchprofile ausgewählt haben. Bitte wählen Sie die gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen Katalogen suchen</a>.","<a href=\"$config->{databasechoice_loc}?sessionID=$session->{ID}\" target=\"body\">","</a>"),$r,$msg);
-            return OK;
-        }
-
-        # Wenn Profil aufgerufen wurde, dann abspeichern fuer Recherchemaske
-        if ($profil) {
-            my $idnresult=$session->{dbh}->prepare("delete from sessionprofile where sessionid = ? ") or $logger->error($DBI::errstr);
-            $idnresult->execute($session->{ID}) or $logger->error($DBI::errstr);
-
-            $idnresult=$session->{dbh}->prepare("insert into sessionprofile values (?,?) ") or $logger->error($DBI::errstr);
-            $idnresult->execute($session->{ID},$profil) or $logger->error($DBI::errstr);
-            $idnresult->finish();
         }
     }
 
@@ -297,12 +304,12 @@ sub handler {
         $contentreq=~s/%//g;
 
         if (!$contentreq) {
-            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keinen Begriff eingegeben"),$r,$msg);
+            OpenBib::Common::Util::print_warning($msg->maketext("F&uuml;r die Nutzung der Index-Funktion m&uuml;ssen Sie einen Begriff eingegeben"),$r,$msg);
             return OK;
         }
 
         if ($#databases > 0 && length($contentreq) < 3) {
-            OpenBib::Common::Util::print_warning($msg->maketext("Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche ausgewählt wurde."),$r,$msg);
+            OpenBib::Common::Util::print_warning($msg->maketext("Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche im Index ausgewählt wurde."),$r,$msg);
             return OK;
         }
 
@@ -372,7 +379,7 @@ sub handler {
 
         $logger->debug("Index 2".YAML::Dump(\@sortedindex));
         
-        my $hits=$#sortedindex;
+        my $hits=$#sortedindex+1;
 
         my $baseurl="http://$config->{servername}$config->{virtualsearch_loc}?sessionID=$session->{ID};view=$view;$urlpart;profil=$profil;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder";
 
@@ -389,7 +396,7 @@ sub handler {
                 }
 	
                 my $item={
-                    start  => $i,
+                    start  => $i+1,
                     end    => ($i+$hitrange>$hits)?$hits:$i+$hitrange,
                     url    => $baseurl.";hitrange=$hitrange;offset=$i",
                     active => $active,
@@ -690,7 +697,12 @@ sub handler {
                 if ($view && -e "$config->{tt_include_path}/views/$view/$itemtemplatename") {
                     $itemtemplatename="views/$view/$itemtemplatename";
                 }
-                
+
+                # Database-Template ist spezifischer als View-Template und geht vor
+                if ($database && -e "$config->{tt_include_path}/database/$database/$itemtemplatename") {
+                    $itemtemplatename="database/$database/$itemtemplatename";
+                }
+
                 my $itemtemplate = Template->new({
                     LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
                         INCLUDE_PATH   => $config->{tt_include_path},
@@ -706,6 +718,7 @@ sub handler {
                 my $ttdata={
                     view            => $view,
                     sessionID       => $session->{ID},
+                    database        => $database,
                     
                     dbinfo          => $targetdbinfo_ref->{dbinfo}{$database},
                     
@@ -785,18 +798,23 @@ sub handler {
                         
                         my @outputbuffer=();
                         
-                        my $rset=Search::Xapian::RSet->new() if ($drilldown && $fullresultcount > $hitrange);
-                        
+                        my $rset=Search::Xapian::RSet->new() if ($drilldown || $cloud);
                         my $mcount=0;
+
                         foreach my $match ($request->matches) {
-                            last if ($mcount >= $hitrange);
-                            
-                            $rset->add_document($match->get_docid) if ($drilldown && $fullresultcount > $hitrange);
-                            my $document=$match->get_document();
-                            my $titlistitem_raw=pack "H*", decode_utf8($document->get_data());
-                            my $titlistitem_ref=Storable::thaw($titlistitem_raw);
-                            
-                            push @outputbuffer, $titlistitem_ref;
+                            # Fuer Drilldowns und Tag-Clouds werden die ersten
+                            # 200 Treffer analysiert
+                            last if (($drilldown || $cloud) && $mcount >= 200);
+
+                            $rset->add_document($match->get_docid) if ($drilldown || $cloud);
+                            # Es werden immer nur $hitrange Titelinformationen
+                            # zur Ausgabe aus dem MSet herausgeholt
+                            if ($mcount < $hitrange){
+                                my $document        = $match->get_document();
+                                my $titlistitem_raw = pack "H*", decode_utf8($document->get_data());
+                                my $titlistitem_ref = Storable::thaw($titlistitem_raw);
+                                push @outputbuffer, $titlistitem_ref;
+                            }
                             $mcount++;
                         }
                         
@@ -804,61 +822,94 @@ sub handler {
                         my $relevant_kor_ref;
                         my $relevant_swt_ref;
                         my $term_ref;
+                        my $termweight_ref={};
+
                         my $drilldowntime;
                         
-                        if ($drilldown && $fullresultcount > $hitrange ) {
-                            my $ddatime=new Benchmark;
-                            my $eterms=$request->enq->get_eset(50,$rset);
-                            
+                        if ($drilldown || $cloud) {
+                            my $ddatime   = new Benchmark;
+                            my $esetrange = ($fullresultcount < 200)?$fullresultcount-1:200;
+                            my $eterms    = $request->enq->get_eset($esetrange,$rset);
                             my $iter=$eterms->begin();
                             
                             $term_ref = {
                                 aut => [],
+                                aut_maxweight   => 0,
                                 kor => [],
+                                kor_maxweight   => 0,
                                 hst => [],
-                                all => [],
+                                hst_maxweight   => 0,
+                                swt => [],
+                                swt_maxweight   => 0,
+                                ejahr => [],
+                                ejahr_maxweight => 0,
                             };
-                            
+
                             while ($iter != $eterms->end()) {
                                 my $term   = $iter->get_termname();
                                 my $weight = $iter->get_weight();
-                                
+
                                 if ($term=~/^X1(.+)$/) {
                                     push @{$term_ref->{aut}}, {
                                         name   => $1,
                                         weight => $weight,
                                     };
-                                } elsif ($term=~/^X2(.+)$/) {
-                                    $term=$1;
-                                    $term=~s/^(.)(.*)$/\u$1\l$2/;
+                                }
+                                elsif ($term=~/^X2(.+)$/) {
+                                    my $thisterm = $1;
+
                                     push @{$term_ref->{hst}}, {
-                                        name   => $term,
+                                        name   => $thisterm,
                                         weight => $weight,
                                     };
-                                } elsif ($term=~/^X3(.+)$/) {
+
+                                    if ($cloud){
+                                        if (exists $termweight_ref->{$thisterm}){
+                                            $termweight_ref->{$thisterm}+=$weight;
+                                        }
+                                        else {
+                                            $termweight_ref->{$thisterm}=$weight;
+                                        }
+                                    }
+                                }
+                                elsif ($term=~/^X3(.+)$/) {
                                     push @{$term_ref->{kor}}, {
                                         name   => $1,
                                         weight => $weight,
                                     };
-                                } elsif ($term=~/^X4(.+)$/) {
-                                    push @{$term_ref->{swt}}, {
-                                        name   => $1,
-                                        weight => $weight,
-                                    };
-                                } elsif ($term=~/^X7(.+)$/) {
-                                    push @{$term_ref->{ejahr}}, {
-                                        name   => $1,
-                                        weight => $weight,
-                                        freq   => $request->matches->get_termfreq("X7$1"),
-                                    };
-                                } else {
-                                    $term=~s/^(.)(.*)$/\u$1\l$2/;
-                                    push @{$term_ref->{all}}, {
-                                        name   => $term,
-                                        weight => $weight,
-                                    };
                                 }
-                                
+                                elsif ($term=~/^X4(.+)$/) {
+                                    my $thisterm = $1;
+                                    push @{$term_ref->{swt}}, {
+                                        name   => $thisterm,
+                                        weight => $weight,
+                                    };
+
+                                    if ($cloud){
+                                        if (exists $termweight_ref->{$thisterm}){
+                                            $termweight_ref->{$thisterm}+=$weight;
+                                        }
+                                        else {
+                                            $termweight_ref->{$thisterm}=$weight;
+                                        }
+                                    }
+                                }
+                                elsif ($term=~/^X7(.+)$/) {
+                                    my $thisterm = $1;
+                                    push @{$term_ref->{ejahr}}, {
+                                        name   => $thisterm,
+                                        weight => $weight,
+                                    };
+
+                                    if ($cloud){
+                                        if (exists $termweight_ref->{$thisterm}){
+                                            $termweight_ref->{$thisterm}+=$weight;
+                                        }
+                                        else {
+                                            $termweight_ref->{$thisterm}=$weight;
+                                        }
+                                    }
+                                }
                                 $iter++;
                             }
                             
@@ -869,30 +920,31 @@ sub handler {
                             }
                             
                             $logger->debug(YAML::Dump(\@outputbuffer));
-                            
-                            # Relavante Kategorieinhalte bestimmen
-                            
-                            $relevant_aut_ref = OpenBib::Search::Local::Xapian::get_relevant_terms({
-                                categories     => ['P0100','P0101'],
-                                type           => 'aut',
-                                resultbuffer   => \@outputbuffer,
-                                relevanttokens => $term_ref,
-                            });
-                            
-                            $relevant_kor_ref = OpenBib::Search::Local::Xapian::get_relevant_terms({
-                                categories     => ['C0200','C0201'],
-                                type           => 'kor',
-                                resultbuffer   => \@outputbuffer,
-                                relevanttokens => $term_ref,
-                            });
-                            
-                            $relevant_swt_ref = OpenBib::Search::Local::Xapian::get_relevant_terms({
-                                categories     => ['T0710'],
-                                type           => 'swt',
-                                resultbuffer   => \@outputbuffer,
-                                relevanttokens => $term_ref,
-                            });
-                            
+
+                            if ($drilldown){
+                                # Relavante Kategorieinhalte bestimmen
+                                
+                                $relevant_aut_ref = OpenBib::Search::Local::Xapian::get_relevant_terms({
+                                    categories     => ['P0100','P0101'],
+                                    type           => 'aut',
+                                    resultbuffer   => \@outputbuffer,
+                                    relevanttokens => $term_ref,
+                                });
+                                
+                                $relevant_kor_ref = OpenBib::Search::Local::Xapian::get_relevant_terms({
+                                    categories     => ['C0200','C0201'],
+                                    type           => 'kor',
+                                    resultbuffer   => \@outputbuffer,
+                                    relevanttokens => $term_ref,
+                                });
+                                
+                                $relevant_swt_ref = OpenBib::Search::Local::Xapian::get_relevant_terms({
+                                    categories     => ['T0710'],
+                                    type           => 'swt',
+                                    resultbuffer   => \@outputbuffer,
+                                    relevanttokens => $term_ref,
+                                });
+                            }
                             my $ddbtime       = new Benchmark;
                             my $ddtimeall     = timediff($ddbtime,$ddatime);
                             $drilldowntime    = timestr($ddtimeall,"nop");
@@ -914,7 +966,12 @@ sub handler {
                         if ($view && -e "$config->{tt_include_path}/views/$view/$itemtemplatename") {
                             $itemtemplatename="views/$view/$itemtemplatename";
                         }
-                        
+
+                        # Database-Template ist spezifischer als View-Template und geht vor
+                        if ($database && -e "$config->{tt_include_path}/database/$database/$itemtemplatename") {
+                            $itemtemplatename="database/$database/$itemtemplatename";
+                        }
+
                         my $itemtemplate = Template->new({
                             LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
                                 INCLUDE_PATH   => $config->{tt_include_path},
@@ -946,6 +1003,7 @@ sub handler {
                             relevantaut     => $relevant_aut_ref,
                             relevantkor     => $relevant_kor_ref,
                             relevantswt     => $relevant_swt_ref,
+                            cloud           => gen_cloud_absolute({dbh => $dbh, term_ref => $termweight_ref}),
                             lastquery       => $request->querystring,
                             sorttype        => $sorttype,
                             sortorder       => $sortorder,
@@ -992,6 +1050,8 @@ sub handler {
 
                 my @tidns           = @{$result_ref->{titidns_ref}};
                 my $fullresultcount = $result_ref->{fullresultcount};
+
+                $logger->debug("Treffer-Ids in $database:".join(",",@tidns));
 
                 # Wenn mindestens ein Treffer gefunden wurde
                 if ($#tidns >= 0) {
@@ -1042,6 +1102,11 @@ sub handler {
                     my $itemtemplatename=$config->{tt_virtualsearch_result_item_tname};
                     if ($view && -e "$config->{tt_include_path}/views/$view/$itemtemplatename") {
                         $itemtemplatename="views/$view/$itemtemplatename";
+                    }
+
+                    # Database-Template ist spezifischer als View-Template und geht vor
+                    if ($database && -e "$config->{tt_include_path}/database/$database/$itemtemplatename") {
+                        $itemtemplatename="database/$database/$itemtemplatename";
                     }
 
                     my $itemtemplate = Template->new({
@@ -1129,7 +1194,30 @@ sub handler {
             # Jetzt update der Trefferinformationen
             my $dbasesstring=join("||",sort @databases);
             my $thisquerystring=unpack "H*", Storable::freeze($searchquery_ref);
-            
+
+            # Wurde in allen Katalogen recherchiert?
+
+            my $alldbcount = $config->get_number_of_dbs();
+
+            my $searchquery_log_ref = $searchquery_ref;
+
+            if ($#databases+1 == $alldbcount){
+                $searchquery_log_ref->{alldbases} = 1;
+                $logger->debug("Alle Datenbanken ausgewaehlt");
+            }
+            else {
+                $searchquery_log_ref->{dbases} = \@databases;
+            }
+
+            $searchquery_log_ref->{hits}   = $gesamttreffer;
+
+            # Loggen des Queries
+            $session->log_event({
+                type      => 1,
+                content   => $searchquery_log_ref,
+                serialize => 1,
+            });
+
             my $idnresult=$session->{dbh}->prepare("update queries set hits = ? where queryid = ? and sessionID = ? and query = ? and dbases = ?") or $logger->error($DBI::errstr);
             $idnresult->execute($gesamttreffer,$queryid,$session->{ID},$thisquerystring,$dbasesstring) or $logger->error($DBI::errstr);
             
@@ -1187,6 +1275,99 @@ sub handler {
         return SERVER_ERROR;
     };
     return OK;
+}
+
+sub gen_cloud {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $term_ref            = exists $arg_ref->{term_ref}
+        ? $arg_ref->{term_ref}            : undef;
+
+    my $termcloud_ref = [];
+    my $maxtermfreq = 0;
+    foreach my $singleterm (keys %{$term_ref}) {
+        if ($term_ref->{$singleterm} > $maxtermfreq){
+            $maxtermfreq = $term_ref->{$singleterm};
+        }
+    }
+
+    foreach my $singleterm (keys %{$term_ref}) {
+        push @{$termcloud_ref}, {
+            term => $singleterm,
+            font => $term_ref->{$singleterm},
+        };
+    }
+
+    if ($maxtermfreq >= 6){
+        for (my $i=0 ; $i < scalar (@$termcloud_ref) ; $i++){
+            $termcloud_ref->[$i]->{class} = int($termcloud_ref->[$i]->{count} / int($maxtermfreq/6));
+        }
+    }
+
+    my $sortedtermcloud_ref;
+    @{$sortedtermcloud_ref} = map { $_->[0] }
+                    sort { $a->[1] cmp $b->[1] }
+                        map { [$_, $_->{term}] }
+                            @{$termcloud_ref};
+
+    return $sortedtermcloud_ref;
+}
+
+sub gen_cloud_absolute {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $term_ref            = exists $arg_ref->{term_ref}
+        ? $arg_ref->{term_ref}            : undef;
+    my $dbh                 = exists $arg_ref->{dbh}
+        ? $arg_ref->{dbh}                 : undef;
+
+    my $logger = get_logger ();
+    my $atime=new Benchmark;
+    
+    my $termcloud_ref = [];
+    my $maxtermfreq = 0;
+
+    # Termfrequenzen sowie maximale Termfrequenz bestimmen
+    foreach my $singleterm (keys %{$term_ref}) {
+        if (length($singleterm) < 3){
+            delete $term_ref->{$singleterm};
+            next;
+        }
+        $term_ref->{$singleterm} = $dbh->get_termfreq($singleterm);
+        if ($term_ref->{$singleterm} > $maxtermfreq){
+            $maxtermfreq = $term_ref->{$singleterm};
+        }
+    }
+
+    # Jetzt Fontgroessen bestimmen
+    foreach my $singleterm (keys %{$term_ref}) {
+        push @{$termcloud_ref}, {
+            term  => $singleterm,
+            count => $term_ref->{$singleterm},
+        };
+    }
+
+    if ($maxtermfreq >= 6){
+        for (my $i=0 ; $i < scalar (@$termcloud_ref) ; $i++){
+            $termcloud_ref->[$i]->{class} = int($termcloud_ref->[$i]->{count} / int($maxtermfreq/6));
+        }
+    }
+    
+    my $sortedtermcloud_ref;
+    @{$sortedtermcloud_ref} = map { $_->[0] }
+                    sort { $a->[1] cmp $b->[1] }
+                        map { [$_, $_->{term}] }
+                            @{$termcloud_ref};
+
+    my $btime      = new Benchmark;
+    my $timeall    = timediff($btime,$atime);
+    my $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+    $logger->debug("Time: ".$resulttime);
+
+    return $sortedtermcloud_ref;
 }
 
 1;

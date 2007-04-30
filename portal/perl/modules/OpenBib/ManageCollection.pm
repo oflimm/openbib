@@ -2,7 +2,7 @@
 #
 #  OpenBib::ManageCollection
 #
-#  Dieses File ist (C) 2001-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2007 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -76,8 +76,8 @@ sub handler {
     my $database  = $query->param('database')  || '';
     my $singleidn = $query->param('singleidn') || '';
     my $loeschen  = $query->param('loeschen')  || '';
-    my $action    = ($query->param('action'))?$query->param('action'):'none';
-    my $type      = ($query->param('type'))?$query->param('type'):'HTML';
+    my $action    = $query->param('action')    || 'show';
+    my $type      = $query->param('type')      || 'HTML';
 
     my $queryoptions_ref
         = $session->get_queryoptions($query);
@@ -157,12 +157,32 @@ sub handler {
                     $idnresult->finish();
                 }
                 else {
-                    $session->clean_item_in_collection({
+                    $session->clear_item_in_collection({
                         database => $loeschdb,
                         id       => $loeschidn,
                     });
                 }
             }
+
+            my $headerframeurl = "http://$config->{servername}$config->{headerframe_loc}?sessionID=$session->{ID}";
+            my $bodyframeurl   = "http://$config->{servername}$config->{managecollection_loc}?sessionID=$session->{ID}";
+
+            if ($view ne "") {
+                $headerframeurl.=";view=$view";
+                $bodyframeurl.=";view=$view";
+            }
+
+            my $ttdata={
+                headerframeurl  => $headerframeurl,
+                bodyframeurl    => $bodyframeurl,
+                view            => $view,
+                sessionID       => $session->{ID},
+                config          => $config,
+                msg             => $msg,
+            };
+
+            OpenBib::Common::Util::print_page($config->{tt_startopac_tname},$ttdata,$r);
+            return OK;
         }
 
         # Schleife ueber alle Treffer

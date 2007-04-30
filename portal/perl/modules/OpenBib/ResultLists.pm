@@ -484,7 +484,7 @@ sub handler {
             }
         }
         
-        $idnresult=$session->{dbh}->prepare("select dbname,hits from searchresults where sessionid = ? and queryid = ? and offset=0 order by hits desc") or $logger->error($DBI::errstr);
+        $idnresult=$session->{dbh}->prepare("select dbname,sum(hits) as hitcount from searchresults where sessionid = ? and queryid = ? group by dbname order by hitcount desc") or $logger->error($DBI::errstr);
         $idnresult->execute($session->{ID},@{$thisquery_ref}{id}) or $logger->error($DBI::errstr);
         
         my $hitcount=0;

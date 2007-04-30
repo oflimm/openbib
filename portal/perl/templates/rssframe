@@ -26,10 +26,34 @@ dieser Seite und kopieren ihn in Ihr RSS-Leseprogramm.") %]
 
 <p />
 
+[%- IF view && view !='kug' -%]
+
+[%- FOREACH category = config.orgunits -%]
+
+[% IF rssfeedinfo.${category.short} %]
+
+[% FOREACH item IN rssfeedinfo.${category.short} %]
+<table width="100%">
+<tr><th style="text-align: left">[% item.pooldesc %]</th></tr>
+<tr><td class="boxed" valign="top" align="left">
+<table>
+[% IF item.type == 'neuzugang' %]
+<tr><td><img src="/images/openbib/rssfeed.png" alt="RSS-Icon" /></td><td>[% msg.maketext("Letzte 50 Neuaufnahmen") %]&nbsp;(<a
+href="http://[% config.loadbalancerservername %][% config.connector_rss_loc %]/[% item.type %]/[% item.pool
+%].rdf" target="_blank">http://[% config.loadbalancerservername %][% config.connector_rss_loc %]/[% item.type %]/[% item.pool %].rdf</a>)</td></tr>
+[% END %]
+</table>
+</td></tr></table>
+<p />
+[% END %]
+[%- END -%]
+[%- END -%]
+
+[% ELSE %]
 [%- FOREACH category = config.orgunits -%]
 
 <table width="100%">
-<tr><th style="font-size:1.2em">[% msg.maketext("RSS-Feeds") %]: [% category.desc %]</th></tr>
+<tr><th style="font-size:1.2em">RSS-Feeds: [% category.desc %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
 [% IF NOT rssfeedinfo.${category.short} %]
 Keine
@@ -43,17 +67,22 @@ Keine
 <table>
 [% IF item.type == 'neuzugang' %]
 <tr><td><img src="/images/openbib/rssfeed.png" alt="RSS-Icon" /></td><td>[% msg.maketext("Letzte 50 Neuaufnahmen") %]&nbsp;(<a
-href="[% config.connector_rss_loc %]/[% item.type %]/[% item.pool
-%].rdf" target="_blank">http://kug.ub.uni-koeln.de[% config.connector_rss_loc %]/[% item.type %]/[% item.pool %].rdf</a>)</td></tr>
+href="http://[% config.loadbalancerservername %][% config.connector_rss_loc %]/[% item.type %]/[% item.pool
+%].rdf" target="_blank">http://[% config.loadbalancerservername %][% config.connector_rss_loc %]/[% item.type %]/[% item.pool %].rdf</a>)</td></tr>
 [% END %]
 </table>
 </td></tr></table>
+<p />
 [% END %]
 
 </td></tr>
 </table>
 <p />
-[%- END-%]
+[%- END -%]
+
+[% END %]
+
+
 
 <p />
 

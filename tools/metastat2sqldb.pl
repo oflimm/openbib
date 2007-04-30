@@ -34,14 +34,14 @@ my $config=new OpenBib::Config();
 my $statisticsdbh
     = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd});
 
-my $request1=$statisticsdbh->prepare("delete from relevance where id=? and isbn=? and origin=?");
-my $request2=$statisticsdbh->prepare("insert into relevance values (?,?,?,?,?)");
+my $request1=$statisticsdbh->prepare("delete from relevance where tstamp=? and id=? and dbname=? and katkey=? and origin=?");
+my $request2=$statisticsdbh->prepare("insert into relevance values (?,?,?,?,?,?)");
 
 while (<>){
-    my ($id,$isbn,$database,$katkey,$origin)=split(":",$_);
+    my ($tstamp,$id,$isbn,$database,$katkey,$origin)=split("\\|",$_);
     chomp($origin);
-    $request1->execute($id,$isbn,$origin);
-    $request2->execute($id,$isbn,$database,$katkey,$origin);
+    $request1->execute($tstamp,$id,$database,$katkey,$origin);
+    $request2->execute($tstamp,$id,$isbn,$database,$katkey,$origin);
 }
 
 $request1->finish();

@@ -21,12 +21,27 @@
 [%# USE dumper;
 #dumper.dump( config.get_targetdbinfo);
 %]
-<div class="tabbingmenu">
-  <li><a hef="#" class="active"><span class="dbdescshort">[% config.get_targetdbinfo.dbnames.${database}.short %]</span></a></li>
-</div>
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=10" target="body" title="Katalogname"><span class="dbdescshort">[% config.get_targetdbinfo.dbnames.${database}.short %]</span></a></li>
+</ul>
 
 <div class="content">
+<p />
 
+<ul class="tabbingmenu">
+   <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=14" target="body" title="Wolken">Wolken</a></li>
+   <li><a class="active" href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=10" target="body" title="Top 20">[% msg.maketext("Top 20") %]</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=10" target="body" title="Titel">Titel</a></li>
+</ul>
+
+<div class="content">
 <p />
 
 <table width="100%">
@@ -89,6 +104,8 @@ class="rlyearofpub">[% yearofpub %]</span></td><td><b>[% itemcount %]&nbsp;Nutze
 </td></tr>
 </table>
 
+</div>
+</div>
 </div>
 <p />
 

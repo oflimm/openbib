@@ -21,6 +21,7 @@
 
 <ul class="tabbingmenu">
    <li><a class="active" href="http://[% config.servername %][% config.userprefs_loc %]?sessionID=[% sessionID %];action=showfields" target="body">[% msg.maketext("Grundeinstellungen") %]</a></li>
+   <li><a                href="http://[% config.servername %][% config.tags_loc %]?sessionID=[% sessionID %];show_usertags=1" target="body">Tags</a></li>
 [% IF targettype != 'self' %]
    <li><a                href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc" target="body">[% msg.maketext("Benutzerkonto") %]</a></li>
 [% END %]
@@ -42,20 +43,19 @@
 <tr><td><b>[% msg.maketext("Benutzername") %]:</b></td><td>[% loginname %]</td>
 
 [% IF targettype == 'self' %]
-<td><input type="submit" name="action" value="[% msg.maketext("Kennung l&ouml;schen") %]" /></td>
+<td><form method="post" action="http://[% config.servername %][% config.userprefs_loc %]" enctype="application/x-www-form-urlencoded"><input type="hidden" name="sessionID" value="[% sessionID %]" /><input type="hidden" name="action" value="delaccount_ask" /><input type="submit" value="[% msg.maketext("Kennung l&ouml;schen") %]" /></form></td>
 [% END %]
 
 </tr>
 
 [% IF targettype == 'self' %]
-<tr><td><b>[% msg.maketext("Passwort") %]:</b></td><td><input type="password" name="password1" value="[% password %]" />&nbsp;[% msg.maketext("wiederholt") %]:&nbsp;<input type="password" name="password2" value="[% password %]" /></td><td><input type="submit" name="action" value="[% msg.maketext("Passwort &auml;ndern") %]" /></td></tr>
+<tr><form method="post" action="http://[% config.servername %][% config.userprefs_loc %]" enctype="application/x-www-form-urlencoded"><input type="hidden" name="sessionID" value="[% sessionID %]" /><input type="hidden" name="action" value="changepw" /><td><b>[% msg.maketext("Passwort") %]:</b></td><td><input type="password" name="password1" value="[% password %]" />&nbsp;[% msg.maketext("wiederholt") %]:&nbsp;<input type="password" name="password2" value="[% password %]" /></td><td><input type="submit" value="[% msg.maketext("Passwort &auml;ndern") %]" /></td></form></tr>
 [% END %]
 
 </table>
 </td>
 </tr>
 </table>
-</form>
 
 <p />
 

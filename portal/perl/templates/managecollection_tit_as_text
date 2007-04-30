@@ -25,14 +25,13 @@ FOREACH category IN categories;
     # in Config.pm fuer die entsprechende Datenbank definiert
     # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
     # kodiert.
+    thiscategory = category ;
     IF config.categorymapping.$database.$category ;
-      thiscategory = "${category}-${normset.database}" ;
-    ELSE ;
-      thiscategory = ${category} ;
+       thiscategory = "${category}-${normset.database}" ;
     END;
 
 -%]
-[% msg.maketext("${category}") | format("%- 24s") %]: [% content %]
+[% msg.maketext("${thiscategory}") | format("%- 24s") %]: [% content %]
 [% END -%]
 [%- END -%]
 [%- IF mexnormset.size > 0 -%]
@@ -44,5 +43,12 @@ FOREACH category IN categories;
 [% msg.maketext("Erscheinungsverlauf  ") %] [% loop.count %] : [% mex.${"X1204"}.content %]
 [% END %]
 [%- END -%]
-------------------------------------------
+[%   IF show_bibsonomy %]
+</pre>
+<p />
+<img style="vertical-align: bottom;" src="/images/openbib/share.png" alt="Share this"/>&nbsp;<a href="[% config.redirect_loc %]/[% sessionID %]/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=[% normset2bibtex(normset) | uri %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a>
+<p />
+<p />
+<pre>
+[%   END %]
 [% END %]

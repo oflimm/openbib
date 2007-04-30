@@ -21,7 +21,7 @@
 [%- PROCESS common/subtemplate name="common/navitembar" -%]
 [%- FOREACH item IN index -%]
 [%-   IF offset >= 0 && hitrange > 0 -%]
-[%-     IF loop.count >= offset && loop.count < offset+hitrange -%]
+[%-     IF loop.count > offset && loop.count <= offset+hitrange -%]
 [%-       PROCESS common/subtemplate name="virtualsearch_showkorindex_item" -%]
 [%-     END -%]
 [%-   ELSE -%]

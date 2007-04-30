@@ -1,0 +1,52 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showswtset
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Schlagwort-Normdatensatzes
+#
+#######################################################################
+-%]
+[%- show_foot_banner = 1 -%]
+[%- title = "KUG Recherche" -%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+<body>
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="#"><span class="dbdescshort">[% poolname.short %]</span></a></li>
+</ul>
+
+<div class="content">
+<p />
+<table cellpadding="2">
+<tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
+
+[% PROCESS common/subtemplate name="visible_categories_swtset" %]
+
+[%- 
+
+FOREACH category IN categories;
+    FOREACH item IN normset.$category;
+    content = item.content;
+
+    SWITCH category;
+
+    CASE "S5000";
+         content   = "<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchtitofswt=${normset.id};offset=0;hitrange=${qopts.hitrange}\">${content}</a>";
+    END;
+-%]
+<tr><td class="category">[% msg.maketext("${category}") %]</td><td>[% content %]</td></tr>
+[%-
+   END;
+END;
+-%]
+</table>
+</div>
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

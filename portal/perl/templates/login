@@ -28,22 +28,20 @@
 <table width="100%">
 <tr><th>[% msg.maketext("Hinweis") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:9pt">
-[% msg.maketext("Falls Sie sich bereits hier f&uuml;r den KUG registriert haben oder eine Kennung in den anderen aufgef&uuml;hrten Anmeldezielen besitzen, so k&ouml;nnen Sie sich hier anmelden. Ihnen stehen dann weitere Nutzungsm&ouml;glichkeiten des KUG offen. Dazu geh&ouml;rt u.a. die Definition gespeicherter Katalogprofile. Ebenso steht Ihnen Ihre Merkliste nach dem n&auml;chsten Anmelden wieder zur Verf&uuml;gung. Wenn Sie sich &uuml;ber Ihre USB-Kennung anmelden, so bietet dies den Vorteil, da&szlig; Sie unter 'Weitergehende Suchhinweise' in der Ergebnisliste Ihrer Suche automatisch authentifiziert in die Buch-Fernleih- und Zeitschriftenartikel-Lieferfunktion der Digitalen Bibliothek (Digibib) springen k&ouml;nnen und sich nicht sp&auml;ter dort nochmals authentifizieren m&uuml;ssen.") %]
+[% msg.maketext("Sie haben [_1]Vorteile[_2], wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden.","<a href=\"${config.helpframe_loc}?sessionID=${sessionID};view=${view}#meinkugvorteile\" target=\"body\">","</a>") %]
 </td></tr>
 </table>
 
 <p />
 
-<form method="post" action="http://[% config.servername %][% config.login_loc %]" enctype="application/x-www-form-urlencoded" target="_top">
+<form method="post" action="http://[% config.servername %][% config.login_loc %]" enctype="application/x-www-form-urlencoded" target="_parent">
 <input type="hidden" name="do_auth"   value="1" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="view"      value="[% view %]" />
 
 <table width="100%">
-<tr><th>Wenn Sie bereits einen Benutzerausweis besitzen</th></tr>
+<tr><th>Login mit einem Benutzerausweis</th></tr>
 <tr><td class="boxedclear" style="font-size:9pt">
-Wenn Sie einen Benutzerausweis der folgenden Bibliotheken besitzen,
-dann können Sie sich mit der Kennung und Ihrem Passwort am KUG anmelden.
 
 <p />
 
@@ -57,11 +55,13 @@ dann können Sie sich mit der Kennung und Ihrem Passwort am KUG anmelden.
 [%-   END -%]
 [%- END -%]
 </select>
-</td><td></td></tr>
-<tr><td align="right"><b>[% msg.maketext("Benutzername") %]</b></td><td><input type="text" name="loginname" value="[% loginname %]" /></td><td><span style="font-size:9pt">&lt;&lt; [% msg.maketext("Geben Sie hier bitte Ihren Benutzernamen bzw. Ihre Benutzernummer ein.") %]</span></td></tr>
-<tr><td align="right"><b>[% msg.maketext("Passwort") %]</b></td><td><input type="password" name="password" /></td><td><span style="font-size:9pt">&lt;&lt; [% msg.maketext("Geben Sie hier bitte Ihr Passwort bzw. Ihre OpacPin ein.") %]</span></td></tr>
+</td></tr>
+<tr><td align="right"><b>[% msg.maketext("Benutzernummer") %]</b></td><td><input type="text" name="loginname" value="[% loginname %]" /></td></tr>
+<tr><td align="right"><b>[% msg.maketext("Passwort") %]</b></td><td><input type="password" name="password" /></td></tr>
 <tr><td></td><td><input type="submit" value="[% msg.maketext("Einloggen") %]" /></td><td></td></tr>
 </table>
+<p />
+[% msg.maketext("Haben Sie Ihr Passwort vergessen, dann finden Sie hier [_1]weitere Informationen[_2].","<a href=\"${config.helpframe_loc}?sessionID=${sessionID};view=${view}#passwortbenutzerausweis\" target=\"body\">","</a>") %]
 </td></tr>
 </table>
 
@@ -69,18 +69,16 @@ dann können Sie sich mit der Kennung und Ihrem Passwort am KUG anmelden.
 
 <p />
 
-<form method="post" action="http://[% config.servername %][% config.login_loc %]" enctype="application/x-www-form-urlencoded" target="_top">
+<form method="post" action="http://[% config.servername %][% config.login_loc %]" enctype="application/x-www-form-urlencoded" target="_parent">
 <input type="hidden" name="do_auth"   value="1" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="view"      value="[% view %]" />
 
 <table width="100%">
-<tr><th>Wenn Sie keinen Benutzerausweis besitzen</th></tr>
+<tr><th>Login ohne Benutzerausweis</th></tr>
 <tr><td class="boxedclear" style="font-size:9pt">
-Wenn Sie keinen Benutzerausweis besitzen, dann können Sie sich direkt
-im KUG-Portal über die Selbsregistierung eine Kennung einrichten, um
-die weitergehenden Funktionen des Portals zu nutzen.
 <p />
+[% msg.maketext("Haben Sie sich schon &uuml;ber die Selbstregistrierung eine Kennung eingerichtet? Wenn nicht, so k&ouml;nnen Sie sich [_1]hier[_2] registrierten.","<a href=\"${config.selfreg_loc}?sessionID=${sessionID};view=${view};action=show\" target=\"body\">","</a>") %]
 <table>
 <tr><td align="right"><b>[% msg.maketext("Anmeldeziel")
 %]:</b></td><td>
@@ -90,16 +88,13 @@ die weitergehenden Funktionen des Portals zu nutzen.
 [%-   END -%]
 [%- END -%]
 Selbstregistrierung
-</td><td></td></tr>
-<tr><td align="right"><b>[% msg.maketext("Benutzername") %]</b></td><td><input type="text" name="loginname" value="[% loginname %]" /></td><td><span style="font-size:9pt">&lt;&lt; [% msg.maketext("Geben Sie hier bitte Ihren Benutzernamen bzw. Ihre Benutzernummer ein.") %]</span></td></tr>
-<tr><td align="right"><b>[% msg.maketext("Passwort") %]</b></td><td><input type="password" name="password" /></td><td><span style="font-size:9pt">&lt;&lt; [% msg.maketext("Geben Sie hier bitte Ihr Passwort bzw. Ihre OpacPin ein.") %]</span></td></tr>
+</td></tr>
+<tr><td align="right"><b>[% msg.maketext("E-Mail-Adresse") %]</b></td><td><input type="text" name="loginname" value="[% loginname %]" /></td></tr>
+<tr><td align="right"><b>[% msg.maketext("Passwort") %]</b></td><td><input type="password" name="password" /></td></tr>
 <tr><td></td><td><input type="submit" value="[% msg.maketext("Einloggen") %]" /></td><td></td></tr>
 </table>
 <p>
-[% msg.maketext("Falls Sie bei keinem der Anmeldeziele registriert sind, so k&ouml;nnen Sie sich [_1]<b>hier</b>[_2] f&uuml;r das Anmeldeziel Selbstregistierung eine Kennung einrichten.","<a href=\"http://${config.servername}${config.selfreg_loc}?sessionID=${sessionID};action=show\">","</a>") %]
-</p>
-<p>
-[% msg.maketext("Haben Sie Ihr Passwort vergessen, das Sie bei der Selbstregistrierung angegeben haben? Dann klicken Sie [_1]<b>hier</b>[_2]","<a href=\"http://${config.servername}${config.mailpassword_loc}?sessionID=${sessionID};action=show\">","</a>") %]
+[% msg.maketext("Haben Sie Ihr Passwort vergessen, dann klicken Sie es sich [_1]<b>hier</b>[_2] per E-Mail zusenden lassen","<a href=\"http://${config.servername}${config.mailpassword_loc}?sessionID=${sessionID};action=show\">","</a>") %]
 </td></tr>
 </table>
 

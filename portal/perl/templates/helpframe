@@ -18,47 +18,53 @@
       <li><a class="active" href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">[% msg.maketext("Suchhilfe") %]</a></li>
       <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=1" target="body">[% msg.maketext("Projekt") %]</a></li>
       <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=2" target="body">[% msg.maketext("KUG-Versionen") %]</a></li>
+      <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=3" target="body">Artikel/Stimmen</a></li>
     </ul>
-    
+
     <div class="content">
-      <p />
+      <div class="infotext">
+
+     <p />
 
       <table border="0" cellspacing="0" cellpadding="0" width="100%">
       <tr><td class="boxedfull" align="left">
 
          <table>
          <tr><td colspan="2">Inhaltsverzeichnis</td></tr>
-         <tr><td align="right">1</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#allghinweise">Allgemeine Hinweise zum KUG</a></td></tr>
-         <tr><td align="right">2</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#recherche">Recherchemasken</a></td></tr>
-         <tr><td align="right">3</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#auswahl">Katalogauswahl</a></td></tr>
+         <tr><td align="right">1</td><td><a href="#allghinweise">Allgemeine Hinweise zum KUG</a></td></tr>
+         <tr><td align="right">2</td><td><a href="#recherche">Recherchemasken</a></td></tr>
+         <tr><td align="right">3</td><td><a href="#auswahl">Katalogauswahl</a></td></tr>
 
-         <tr><td align="right">4</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#suchlogikeinfach">Suchlogik in der Einfachen Recherche</a></td></tr>
-         <tr><td align="right">5</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#suchlogikkomplex">Suchlogik in der Komplexen Recherche</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;5.1&nbsp;<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#suchfeldverknuepfung">Verkn&uuml;pfung mehrerer Suchfelder</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;5.2&nbsp;<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#profisuche">Verkn&uuml;pfungen innerhalb eines Suchfeldes</a></td></tr>
+         <tr><td align="right">4</td><td><a href="#suchlogikeinfach">Suchlogik in der Einfachen Recherche</a></td></tr>
+         <tr><td align="right">5</td><td><a href="#suchlogikkomplex">Suchlogik in der Komplexen Recherche</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;5.1&nbsp;<a href="#suchfeldverknuepfung">Verkn&uuml;pfung mehrerer Suchfelder</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;5.2&nbsp;<a href="#profisuche">Verkn&uuml;pfungen innerhalb eines Suchfeldes</a></td></tr>
 
-         <tr><td align="right">6</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#allghinweisesuche">Weitere allgemeine Hinweise zur Suchanfrage</a></td></tr>
-         <tr><td align="right">7</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#beispiele">Einige Beispiele</a></td></tr>
-         <tr><td align="right">8</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#perskug">Der personalisierte KUG</a></td></tr>
-         <tr><td align="right">9</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#buchstandort">Standort des Buches</a></td></tr>
-         <tr><td align="right">10</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#treffermerkliste">Treffer- und Merkliste</a></td></tr>
+         <tr><td align="right">6</td><td><a href="#allghinweisesuche">Weitere allgemeine Hinweise zur Suchanfrage</a></td></tr>
+         <tr><td align="right">7</td><td><a href="#beispiele">Einige Beispiele</a></td></tr>
+         <tr><td align="right">8</td><td><a href="#perskug">Mein KUG</a></td></tr>
+         <tr><td align="right">9</td><td><a href="#buchstandort">Standort des Buches</a></td></tr>
+         <tr><td align="right">10</td><td><a href="#treffermerkliste">Treffer- und Merkliste</a></td></tr>
 
-         <tr><td align="right">11</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#externesuche">Sprung in externe Recherchequellen</a></td></tr>
-         <tr><td align="right">12</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#enrichment">Ergebnisanreicherung</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;12.1&nbsp;<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#enrichtoc">Digitalisierte Inhaltsverzeichnisse</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;12.2&nbsp;<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#enrichrelevance">Potentiell interessante andere Titel</a></td></tr>
-         <tr><td align="right">13</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#rssfeeds">RSS-Feeds (abonnierbare Informations-Kan&auml;le)</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;13.1&nbsp;<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#rssarten">Angebotene Arten an RSS-Feeds</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;13.2&nbsp;<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#rssinstall">Beispiel: Installation von Feedview f&uuml;r den Browser Firefox</a></td></tr>
+         <tr><td align="right">11</td><td><a href="#externesuche">Sprung in externe Recherchequellen</a></td></tr>
+         <tr><td align="right">12</td><td><a href="#enrichment">Ergebnisanreicherung</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;12.1&nbsp;<a href="#enrichtoc">Digitalisierte Inhaltsverzeichnisse</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;12.2&nbsp;<a href="#enrichrelevance">Weitere potentiell interessante Titel (Recommender-Funktion)</a></td></tr>
+         <tr><td align="right">13</td><td><a href="#popularity">Popularit&auml;ts-Funktionen</a></td></tr>
 
-         <tr><td align="right">14</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#bilder">Bildliche Funktionselemente</a></td></tr>
-         <tr><td align="right">15</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#verlinkung">Verlinkung und Lastverteilung des KUG</a></td></tr>
-         <tr><td align="right">16</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#suchplugin">KUG Such-Plugin f&uuml;r Mozilla Firefox-Browser</a></td></tr>
-         <tr><td align="right">17</td><td><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#kontakt">Kontakt</a></td></tr>
+         <tr><td align="right">14</td><td><a href="#rssfeeds">RSS-Feeds (abonnierbare Informations-Kan&auml;le)</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;14.1&nbsp;<a href="#rssarten">Angebotene Arten an RSS-Feeds</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;14.2&nbsp;<a href="#rssinstall">Beispiel: Installation von Feedview f&uuml;r den Browser Firefox</a></td></tr>
+         <tr><td align="right">15</td><td><a href="#socialsoftware">Integration mit Sozialer Software / Web 2.0 (BibSonomy)</a></td></tr>
 
+         <tr><td align="right">16</td><td><a href="#bilder">Bildliche Funktionselemente</a></td></tr>
+         <tr><td align="right">17</td><td><a href="#verlinkung">Verlinkung und Lastverteilung des KUG</a></td></tr>
+         <tr><td align="right">18</td><td><a href="#suchplugin">KUG Such-Plugin f&uuml;r Mozilla Firefox-Browser</a></td></tr>
+         <tr><td align="right">19</td><td><a href="#kontakt">Kontakt</a></td></tr>
          </table>
       </td></tr>
       </table>
+
 
       <h1 id="allghinweise">1 Allgemeine Hinweise zum KUG</h1>
       <p>      
@@ -261,11 +267,11 @@ Abk&uuml;rzungsoperator <b>*</b> ist erlaubt.
           <b>Komplexen Recherche</b> die maximale Anzahl der angezeigten Treffer
           pro Katalog festlegen (200, 500, 1000 oder alle) &uuml;ber "<b>Treffer Maximal pro Katalog</b>".</li>
 
-        <li> Unter <b>Sortierung nach</b> erfolgt die Einstellung der Sortierung nach Autor/K&ouml;rperschaft, Titel
+        <li> Unter <b>Sortierung nach</b> erfolgt die Einstellung der Sortierung nach Person/K&ouml;rperschaft, Titel
           oder Erscheinungsjahr (auf- oder absteigend), Anzeige pro Katalog oder
           katalog&uuml;bergreifend.</li>
 
-        <li>Das <b>Suchprofil</b> zeigt Ihnen Ihre ausgew&auml;hlten Datenbanken an. Dar&uuml;ber hinaus k&ouml;nnen sie hier auch voreingestellte Fakult&auml;tsprofile sowie von Ihnen abgelegte pers&ouml;nliche Suchprofile (siehe: <a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#perskug">Der personalisierte KUG</a>) fuer die 'Suche in einzelnen Katalogen' ausw&auml;hlen.</li>
+        <li>Das <b>Suchprofil</b> zeigt Ihnen Ihre ausgew&auml;hlten Datenbanken an. Dar&uuml;ber hinaus k&ouml;nnen sie hier auch voreingestellte Fakult&auml;tsprofile sowie von Ihnen abgelegte pers&ouml;nliche Suchprofile (siehe: <a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#perskug">Mein KUG</a>) fuer die 'Suche in einzelnen Katalogen' ausw&auml;hlen.</li>
         <li>Die <b>Suchhistorie</b> listet Ihnen Ihre schon gestellten
          Suchanfragen auf mit der Angabe der Trefferzahl. So k&ouml;nnen Sie eine alte Suchanfrage anklicken und als Suchvorlage erneut in das
           Suchformular &uuml;bertragen.</li>
@@ -362,74 +368,86 @@ Abk&uuml;rzungsoperator <b>*</b> ist erlaubt.
       </li>
       </ol>
 
-      <h1 id="perskug">8 Der personalisierte KUG</h1>
-      <p>
-	Ihren 'personalisierten KUG' erreichen Sie &uuml;ber den Punkt
-	'Login' in der KUG-Navigationsleiste.  Sie springen dann in
-	eine Anmeldemaske. Hier wiederum m&uuml;ssen Sie entscheiden,
-	mit welcher Identit&auml;t (= Anmeldeziel) Sie sich anmelden
-	wollen. Zur Auswahl stehen insbesondere  Benutzernummern der
-	USB oder der Institute, die eine SunRise-Ausleihe betreiben.
-      </p>
-      <p>
-	Dar&uuml;ber hinaus besteht f&uuml;r alle anderen ohne Benutzernummer (aber
-	nat&uuml;rlich auch die mit) die M&ouml;glichkeit, sich mit ihrer e-Mail-Adresse
-	und einem eigenen Passwort beim System zu registrieren. Hierzu k&ouml;nnen Sie von
-	der Anmeldemaske zur Selbstregistrierungsmaske &uuml;ber den Karten-Reiter 'Selbstregistrierung' wechseln und dort eine Kennung anlegen. Falls Sie das Passwort vergessen haben sollten,
-	k&ouml;nnen Sie sich dieses &uuml;ber Karten-Reiter 'Passwort vergessen?' per e-Mail zuschicken lassen.
-      </p>
+      <h1 id="perskug">8 Mein KUG</h1>
 
-      <p>
-	Sobald Sie sich erfolgreich authentifiziert haben, &auml;ndert sich das Navigationselement 'Login' zu
-	'Mein KUG' und Sie k&ouml;nnen dort
-      </p>
+<p>
+Ihren personalisierten KUG erreichen Sie über den Punkt <b>Mein KUG</b> in der
+KUG-Navigationsleiste. Sie gelangen in eine Anmeldemaske und entscheiden, mit
+welcher Identität (=Anmeldeziel) Sie sich anmelden wollen. Zur Auswahl stehen
+insbesondere Benutzernummern der USB oder der Institute, die eine
+Online-Ausleihe betreiben.
+</p>
 
-      <ul>
-	<li>unter 'Grundeinstellungen' bei Selbstregistrierung Ihr Passwort &auml;ndern</li>
-	    
-	<li>unter 'Grundeinstellungen' Ihre Kennung wieder l&ouml;schen</li>
-	    
-	<li>unter 'Grundeinstellungen' festlegen, welche Suchkategorien Sie in der
-	  Recherche anzeigen und damit verwenden m&ouml;chten oder insbesondere nicht</li>
+<p>
+Darüber hinaus besteht für alle anderen ohne Benutzernummer (aber natürlich auch
+für die mit) die Möglichkeit, sich mit ihrer e-Mail-Adresse und einem eigenen
+Passwort beim System zu registrieren (über die Rubrik <b>Selbstregistrierung</b>).
+Falls Sie dieses Passwort vergessen haben, können Sie es sich über die Rubrik
+<b>Passwort vergessen?</b> per e-Mail zuschicken lassen.
+</p>
 
-	<li>unter 'Grundeinstellungen' nach Authentifikation an einem Bibliothekssystem Ihre pers&ouml;nlichen Daten auf Korrektheit &uuml;berpr&uuml;fen und in der betreffenden Bibliothek diese gegebenenfalls aktualisieren lassen. Ebenso wird Ihnen angezeigt, ob, seit wann und warum Sie eventuell in der betreffenden Bibliothek als Nutzer gesperrt sind. Schlie&szlig;lich k&ouml;nnen Sie unter der Rubrik 'Ausleihinformationen' einen ersten &Uuml;berblick &uuml;ber Ihr Benutzerkonto bekommen.</li>
-        <li>unter 'Benutzerkonto' nach Authentifikation an einem
-          Bibliothekssystem eine Aufstellung Ihrer ausgeliehenen,
-          vorgemerkten, bestellten oder mit Geb&uuml;hren belasteten Medien bekommen.
-        </li>
-	<li>unter 'Katalogprofile' sich unter eigenen Namen beliebige
-	  Zusammenstellungen von Katalogen zur Suche definieren und abspeichern. Auf
-	  diese 'Katalogprofile' k&ouml;nnen Sie dann auf der Rechercheseite unter 'Suchprofil' (in den
-	  Suchoptionen) f&uuml;r Recherchen zur&uuml;ckgreifen.<p />
+<p id="passwortbenutzerausweis">
+Haben Sie sich mit Ihrer Benutzernummer der Bibliothek angemeldet, ist Ihr
+Passwort automatisch Ihr Geburtsdatum in 6-stelliger Zahl (z. B.: Geburtsdatum:
+5. März 1975 ; Passwort: 050375), wenn Sie es nicht geändert haben. Sollten Sie
+sich damit nicht einloggen können, wenden Sie sich an die Auskunft oder
+Anmeldung der betreffenden Bibliothek.
+</p>
 
-	    Diese Katalogprofile lassen
-	    sich auch nachtr&auml;glich bearbeiten. Dazu w&auml;hlen Sie zuerst eines aus der
-	    Select-Box aus und klicken dann auf 'Profil anzeigen'. Es erscheinen dann die
-	    H&auml;kchen der Kataloge, die zu dem Profil geh&ouml;ren, wie auch eine
-	    Mitteilung, um welches Profil es sich handelt. Automatisch wird der
-	    Profilname in das Abspeicher-Textfeld eingetragen, so dass Sie nun einfach
-	    weitere H&auml;kchen setzen oder entfernen
-            k&ouml;nnen. Dann m&uuml;ssen Sie auf 'Profil speichern'
-	    klicken, um das bearbeitete Profil unter gleichem Namen zu speichern.
-	    Ebenso k&ouml;nnen Sie nach der Bearbeitung einfach einen anderen Namen in das
-	    Textfeld eingeben und dann auf 'Profil speichern' klicken - so haben Sie,
-	    ausgehend von einem bestehenden Profil, durch &Auml;nderung ein neues erzeugt.
-	    Schliesslich k&ouml;nnen Sie nat&uuml;rlich auch Profile l&ouml;schen.</li>
-      </ul>
+<p id="meinkugvorteile">
+Sobald Sie sich erfolgreich authentifiziert haben, können Sie die Vorteile von
+<b>Mein KUG</b> nutzen:
+</p>
 
-      <p>
-      Dar&uuml;ber hinaus werden s&auml;mtliche Merklisteneintr&auml;ge, die vor der Anmeldung
-      gesammelt wurden, in die pers&ouml;nliche Merkliste des Benutzers zus&auml;tzlich zu
-      den dort bereits bestehenden eingetragen/gespeichert. Damit gehen keine
-      'anonym' gesammelten Merklisteneintr&auml;ge verloren, wenn Sie
-      pl&ouml;tzlich merken, dass es einen personalisierten KUG gibt. Ebenso werden
-      alle nach der Anmeldung in die Merkliste eingetragenen Titel dauerhaft
-      gespeichert.
-      </p>
-      <p>
-      Bei der n&auml;chsten Anmeldung sind damit sowohl Profildefinitionen,
-      Suchfeldeinstellungen wie auch Merklisteneintr&auml;ge wieder verf&uuml;gbar.
-      </p>
+<ul>
+<li>Ihre Merkliste in <b>Mein KUG</b> bleibt Ihnen auch über das Ende einer
+Recherchesitzung hinaus erhalten - für einen beliebig langen Zeitraum! Sollten
+Sie sich erst später in <b>Mein KUG</b> einloggen, bleiben Ihnen die Einträge, die
+Sie <b>anonym</b> in dieser Sitzung gesammelt haben, erhalten. Sie werden Ihnen in
+die <b>persönliche</b> Liste übertragen.</li>
+
+<li>Sie können jeden Titel in den Katalogen <b>taggen</b>, d.h. mit einem
+eigenen Etikett (= Schlagwort/Tag) versehen. Diese Tags sind einzelne
+Worte, die Sie mit Leerzeichen getrennt eingeben müssen. Zur
+Vereinheitlichung der Tags werden sie automatisch
+normiert - d.h. Umlaute werden aufgelöst, es wird Kleinschreibung
+verwendet und unerwünschte Zeichen werden eliminiert (erlaubt sind
+Alphanumerische Zeichen sowie +-_.). Unter dem Reiter
+'Tags' erhalten Sie dann in 'Mein KUG' eine Übersicht aller von Ihnen
+verwendeten Tags in Form einer Wortwolke - je mehr Titel sie mit einem
+entsprechenden Tag versehen haben, desto grösser wird es
+dargestellt. Durch einen Klick auf einen Tag erhalten Sie eine
+Kurztitel-Liste aller Titel, die sie mit dem jeweiligen Tag versehen haben.</li>
+
+<li>Wenn Sie sich mit Ihrem USB-Ausweis anmelden, können Sie aus dem KUG heraus
+eine Fernleihe starten, ohne sich zuvor nochmals authentifizieren zu müssen.</li>
+
+<li>Beim Einloggen mit Ihrem Bibliotheksausweis erhalten Sie sofort einen
+Überblick über Ihre Personendaten und Ausleihinformationen. (Rubik
+<b>Grundeinstellungen</b>). Stimmt Ihre Adresse noch? Sind Sie gesperrt? Wieviel
+Bücher haben Sie ausgeliehen, vorgemerkt, bestellt oder überzogen? Müssen Sie
+Gebühren bezahlen? Welche Recherchemaske möchten Sie bei Ihrer Suche
+standardmäßig verwenden, welche Suchfelder? Bei Unstimmigkeiten in den
+Personendaten wenden Sie sich bitte an die Auskunft der betreffenden
+Bibliothek.</li>
+
+<li>Unter der Rubrik <b>Benutzerkonto</b> erhalten Sie ausführliche Angaben zu Ihren
+Ausleihen (Buchtitel mit Rückgabetermin), Bestellungen, Vormerkungen und
+Gebühren. Ihre Medien verlängern oder eine Vormerkung stornieren können Sie hier
+jedoch nicht. Wechseln Sie dazu in den Katalog der betreffenden
+Bibliothek.</li>
+
+<li>Unter der Rubrik <b>Katalogprofile</b> können Sie sich beliebige Kataloge
+zusammenstellen und unter einem Namen abspeichern. Bei Ihrer Recherche greifen
+Sie unter <b>Suchprofil</b> (in den Suchoptionen) auf sie zurück. Möchten Sie sie
+ändern bzw. löschen, wählen Sie Ihr Profil aus der Select-Box (Rubrik
+Katalogprofile) und klicken auf <b>Profil anzeigen</b>. Der Profilname wird
+automatisch in das Abspeicher-Textfeld eingetragen. Es erscheint die
+Katalogauswahl mit den markierten Katalogen, deren Auswahl Sie gemäß Ihrer
+Wünsche ändern und unter gleichem bzw. mit neuem Namen abspeichern können. Ihre
+Profildefinitionen und Suchfeldeinstellungen bleiben gespeichert, auch für
+zukünftige Recherchen.</li>
+</ul>
 
       <h1 id="buchstandort">9 Standort des Buches</h1>
 
@@ -464,7 +482,7 @@ Abk&uuml;rzungsoperator <b>*</b> ist erlaubt.
       <p>
       Der Link "Trefferliste" gibt Ihnen die aktuelle Suchanfrage an und darunter die Treffermenge insgesamt und die der
       verschiedenen Datenbanken. Durch Ihre Auswahl gelangen Sie auf die betreffende Kurztitelliste. Ihre Kurztitelliste
-      k&ouml;nnen Sie noch einmal umsortieren lassen, indem Sie Ihre gew&uuml;nschten Ordnungskriterien (Autor, Titel,
+      k&ouml;nnen Sie noch einmal umsortieren lassen, indem Sie Ihre gew&uuml;nschten Ordnungskriterien (Person, Titel,
       Jahr, Verlag, Signatur und Anzeige "Pro Katalog" oder "Katalog&uuml;bergreifend") festlegen und Ihre Wahl durch "Los"
       best&auml;tigen.
       </p>
@@ -526,7 +544,24 @@ Nutzer einen Überblick von weiteren Titel, die von anderen Nutzern im
 Kontext des aktuellen Titels für interessant befunden wurden.
       </p>
 
-      <h1 id="rssfeeds">13 RSS-Feeds (abonnierbare Informations-Kan&auml;le)</h1>
+ <h1 id="popularity">13 Popularit&auml;ts-Funktionen</h1>
+
+      <p>
+&Auml;hnlich der Recommender-Funktion bietet der KUG verschiedene
+Popularit&auml;ts-Funktionen an. Es sind dies
+
+<ul>
+<li><b>Top 20</b> Pro Katalog lassen sich die 20 meist aufgerufenen
+Titel anzeigen.</li>
+<li><b>Sortierung nach Popularit&auml;t</b> In jeder Titel-Liste
+lassen sich die Titel nach Popularit&auml;t - entsprechend der
+konkreten Aufrufe - (sinnvollerweise absteigend) sortieren. Die Popularit&auml;t eines Titels finden
+Sie in der mit <b>P</b> ausgezeichneten Spalte der Ergebnistabelle. Damit k&ouml;nnen Nutzer direkt vom Nutzungsverhalten anderer Nutzer profitieren.</li>
+
+</ul>
+      </p>
+
+      <h1 id="rssfeeds">14 RSS-Feeds (abonnierbare Informations-Kan&auml;le)</h1>
 <p>
 In einem ausgew&auml;hlten Katalog oder einer Institutssicht werden
 sog. <a href="http://de.wikipedia.org/wiki/RSS-Feed"
@@ -560,7 +595,7 @@ Data-Mining in Verbindung mit spezialisierter Suchtechnologie
 einsetzen, usw.
 </p>
 
-      <h2 id="rssarten">13.1 Angebotene Arten an RSS-Feeds</h2>
+      <h2 id="rssarten">14.1 Angebotene Arten an RSS-Feeds</h2>
 
 <p>
 Im KUG werden derzeit folgende Arten von RSS-Feeds angeboten:
@@ -608,7 +643,7 @@ Im KUG werden derzeit folgende Arten von RSS-Feeds angeboten:
 
 </p>
       
-      <h2 id="rssinstall">13.2 Beispiel: Installation von Feedview f&uuml;r den Browser Firefox</h2>
+      <h2 id="rssinstall">14.2 Beispiel: Installation von Feedview f&uuml;r den Browser Firefox</h2>
       <p>
 
 F&uuml;r deren Installation rufen Sie bitte diesen <a
@@ -628,7 +663,20 @@ entsprechende RSS-Feed.
         Neuzug&auml;nge eines Kataloges</b>) abonnieren k&ouml;nnen.
       </p>
 
-      <h1 id="bilder">13 Bildliche Funktionselemente</h1>
+      <h1 id="socialsoftware">15 Integration mit Sozialer Software / Web 2.0 (BibSonomy)</h1>
+     <p>
+     In der Einzeltreffer-Anzeige wie auch in der Merkliste
+     k&ouml;nnen Sie die bibliographischen Angaben eines Titels durch
+     Klicken auf den entsprechenden Link bzw. das entsprechende Icon
+     (s.u.) an BibSonomy senden. <a href="http://www.bibsonomy.org/"
+     target="_blank">BibSonomy</a> ist ein freier Social Bookmarking
+     Dienst, der jedoch auch auf die Verwaltung von
+     Bibliographie-Listen und deren Austausch/Verbreitung
+     spezialisiert ist.
+
+     </p>
+
+      <h1 id="bilder">16 Bildliche Funktionselemente</h1>
      <p>
      In den Kurztrefferlisten, den einzelnen Titeln, der Merkliste
      oder anderen Stellen im KUG werden verschiedene bildliche
@@ -641,9 +689,11 @@ entsprechende RSS-Feed.
      <tr><td align="center"><img src="/images/openbib/3d-file-blue-disk35.png" alt="Abspeichern" border="0" /></td><td>Titel(liste) abspeichern</td></tr>   
      <tr><td align="center"><img src="/images/openbib/3d-file-blue-printer.png" alt="Ausdrucken" border="0" /></td><td>Titel(liste) ausdrucken, bzw. in einer Druckansicht darstellen</td></tr>   
      <tr><td align="center"><img src="/images/openbib/rssfeed.png"  alt="RSS-Feed" border="0" /></td><td>RSS-Feed</td></tr>   
+     <tr><td align="center"><img src="/images/openbib/share.png"  alt="An BibSonomy senden" border="0" /></td><td>An BibSonomy senden</td></tr>   
+     <tr><td align="center"><img src="/images/openbib/top20-12px.png"  alt="Top 20" border="0" /></td><td>Anzeige der Top 20 meist aufgerufenen Titel im entsprechenden Katalog</td></tr>   
     </table>
 
-    <h1 id="verlinkung">14 Verlinkung und Lastverteilung des KUG</h1>
+    <h1 id="verlinkung">17 Verlinkung und Lastverteilung des KUG</h1>
 
     <p>
     Das KUG Recherche-Portal ist mit einer zentralen Lastverteilung ausgestattet. Entsprechend der Belastung (und Funktionsf&auml;higkeit) werden Sie auf derzeit einen von drei KUG-Servern (kug1 bis kug3) weitergeleitet. Ebenso werden aus Wartungsgr&uuml;nden oder Problemen einzelne KUG-Server von uns aus der Lastverteilung genommen. Aus diesem Grund ist es sehr problematisch, direkt einen der drei Server zu verlinken (z.B. als URL <tt>http://kug3.ub.uni-koeln.de/portal/opac?view=</tt>) Verwenden Sie daher bitte <b>immer</b> die offiziellen Einsprung-URL's in den KUG. Es sind dies
@@ -657,7 +707,7 @@ entsprechende RSS-Feed.
     </dl>
   
 
-    <h1 id="suchplugin">15 KUG Such-Plugin f&uuml;r Mozilla Firefox-Browser</h1>
+    <h1 id="suchplugin">18 KUG Such-Plugin f&uuml;r Mozilla Firefox-Browser</h1>
 
     <script type="text/javascript">
 <!--
@@ -691,10 +741,11 @@ function addEngine(name,ext,cat)
 
     </p>
 
-    <h1 id="kontakt">16 Kontakt</h1>
+    <h1 id="kontakt">19 Kontakt</h1>
     <p>
-    Fragen und Anmerkungen richten Sie bitte an: <a href="http://www.ub.uni-koeln.de/usb-cgi/makeEmailPage.pl?adr0=kug">kug@ub.uni-koeln.de</a>
+    Fragen und Anmerkungen richten Sie bitte an: <a href="http://www.ub.uni-koeln.de/usb-cgi/zms_makeEmail.pl?adr0=kug">kug@ub.uni-koeln.de</a>
     </p>
+</div>
 </div>
 <p />
 

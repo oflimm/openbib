@@ -15,6 +15,10 @@
 
   <body>
 
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+<p />
+
 <table width="100%">
 <tr><th>[% msg.maketext("Erfolgsmeldung") %]</th></tr>
 <tr><td class="boxedclear">
@@ -23,5 +27,7 @@
 [% msg.maketext("Wenn Sie weiter im KUG recherchieren m&ouml;chten, so klicken Sie bitte [_1]<b>hier</b>[_2}, um eine neue Sitzung zu beginnen.","<a href=\"http://${config.loadbalancerservername}${config.loadbalancer_loc}?view=${view}\">","</a>") %]
 </td></tr>
 </table>
+
+<p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

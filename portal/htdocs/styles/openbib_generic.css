@@ -42,6 +42,15 @@ img {
   border: 0;
 }
 
+dt {
+  font-weight:bold;
+  margin-bottom: 2px;
+}
+
+dd {
+  margin-bottom: 10px;
+}
+
 table {
   padding: 0px;
 }
@@ -236,6 +245,9 @@ a:active.invisible {
   float: right;
 }
 
+.infotext {
+  width:800px;
+}
 
 .content {
 
@@ -272,4 +284,48 @@ a:active.invisible {
 .dbdescshort {
   font-size:1.2em;
   font-weight:bold;
+}
+
+.submitbuttons {
+  padding: 5px;
+}
+
+.popularitycount {
+  font-style:italic
+}
+
+.cloud {
+  margin:0;
+  padding:0;
+}
+.cloud li {
+  margin:0;
+  padding:0;
+  display: inline;
+}
+.cloud span {
+  position: absolute;
+  left: -999px;
+  width: 990px;
+}
+.cloud .fast-nicht-genutzt {
+  font-size: 0.6em;
+}
+.cloud .nicht-sehr-genutzt {
+  font-size: 0.9em;
+}
+.cloud .etwas-genutzt {
+  font-size: 1.2em;
+}
+.cloud .genutzt {
+  font-size: 1.5em;
+}
+.cloud .sehr-viel-genutzt {
+  font-size: 1.8em;
+}
+.cloud .ultra-genutzt {
+  font-size: 2.1em;
+}
+.cloud .am-meisten-genutzt {
+  font-size: 2.3em;
 }

@@ -16,7 +16,7 @@
 
   <body>
     
-    <form method="get" action="http://[% config.servername %][% config.managecollection_loc %]">
+    <form method="get" action="http://[% config.servername %][% config.managecollection_loc %]" target="_parent">
       <input type="hidden" name="sessionID" value="[% sessionID %]" />
       <input type="hidden" name="action"    value="show" />
       
@@ -62,21 +62,21 @@
 [% IF type == 'HTML' %]
 	  <table>
 [%- FOREACH titset IN collection -%]
-  [%- PROCESS common/subtemplate name="managecollection_tit_as_html" database="${titset.database}" -%]
+  [%- PROCESS common/subtemplate name="managecollection_tit_as_html" database="${titset.database}" show_bibsonomy=1 -%]
 [%- END -%]
 	  </table>
 
 [% ELSIF type == 'Text' %]
 	  <pre>
-  [%- PROCESS common/subtemplate name="managecollection_tit_as_text" database="${titset.database}" -%]
+  [%- PROCESS common/subtemplate name="managecollection_tit_as_text" show_bibsonomy=1 -%]
           </pre>
 [% ELSIF type == 'BibTeX' %]
           <pre>
-  [%- PROCESS common/subtemplate name="managecollection_tit_as_bibtex" database="${titset.database}" -%]
+  [%- PROCESS common/subtemplate name="managecollection_tit_as_bibtex" show_bibsonomy=1 -%]
           </pre>
 [% ELSIF type == 'EndNote' %]
           <pre>
-  [%- PROCESS common/subtemplate name="managecollection_tit_as_endnote" database="${titset.database}" -%]
+  [%- PROCESS common/subtemplate name="managecollection_tit_as_endnote" show_bibsonomy=1 -%]
           </pre>
 [% END %]
 

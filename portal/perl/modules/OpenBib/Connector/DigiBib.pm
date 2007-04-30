@@ -45,6 +45,7 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Search::Util;
 use OpenBib::Session;
+use OpenBib::VirtualSearch::Util;
 
 sub handler {
     
@@ -103,45 +104,54 @@ sub handler {
     # database = Datenbank
     # tosearch = Langanzeige
 
-    my $autoplus = 1;
-    
     # Umwandlung impliziter ODER-Verknuepfung in UND-Verknuepfung
     my $hitrange   = 20;
-    my $idn        = $query->param('idn');
-    my $database   = $query->param('database');
-    my $maxhits    = ($query->param('maxhits'))?$query->param('maxhits'):200;
-    my $offset     = ($query->param('offset'))?$query->param('offset'):1;
-    my $listlength = ($query->param('listlength'))?$query->param('listlength'):999999999;
-    my $sorttype   = ($query->param('sorttype'))?$query->param('sorttype'):"author";
-    my $sortorder  = $query->param('sortorder');
-    my $tosearch   = $query->param('tosearch');
-    my $view       = $query->param('view') || 'institute';
-    my $serien     = ($query->param('serien'))?$query->param('serien'):0;
+    my $idn        = $query->param('idn')        || '';
+    my $database   = $query->param('database')   || '';
+    my $maxhits    = $query->param('maxhits')    || 200;
+    my $offset     = $query->param('offset')     || 1;
+    my $listlength = $query->param('listlength') || 999999999;
+    my $sorttype   = $query->param('sorttype')   || 'author';
+    my $sortorder  = $query->param('sortorder')  || '';;
+    my $tosearch   = $query->param('tosearch')   || '';
+    my $view       = $query->param('view')       || 'institute';
+    my $serien     = $query->param('serien')     || 0;
     
     # Historisch begruendetes Kompatabilitaetsmapping
-    $query->param('boolverf'      => $query->param('bool9'));
-    $query->param('boolhst'       => $query->param('bool1'));
-    $query->param('boolswt'       => $query->param('bool2'));
-    $query->param('boolkor'       => $query->param('bool3'));
-    $query->param('boolnotation'  => $query->param('bool4'));
-    $query->param('boolisbn'      => $query->param('bool5'));
-    $query->param('boolissn'      => $query->param('bool8'));
-    $query->param('boolsign'      => $query->param('bool6'));
-    $query->param('boolejahr'     => $query->param('bool7'));
-    $query->param('boolfs'        => $query->param('bool10'));
-    $query->param('boolmart'      => $query->param('bool11'));
-    $query->param('boolhststring' => $query->param('bool12'));
     
+    $query->param('boolverf'      => $query->param('bool9'))  if ($query->param('bool9'));
+    $query->param('boolhst'       => $query->param('bool1'))  if ($query->param('bool1'));
+    $query->param('boolswt'       => $query->param('bool2'))  if ($query->param('bool2'));
+    $query->param('boolkor'       => $query->param('bool3'))  if ($query->param('bool3'));
+    $query->param('boolnotation'  => $query->param('bool4'))  if ($query->param('bool4'));
+    $query->param('boolisbn'      => $query->param('bool5'))  if ($query->param('bool5'));
+    $query->param('boolissn'      => $query->param('bool8'))  if ($query->param('bool8'));
+    $query->param('boolsign'      => $query->param('bool6'))  if ($query->param('bool6'));
+    $query->param('boolejahr'     => $query->param('bool7'))  if ($query->param('bool7'));
+    $query->param('boolfs'        => $query->param('bool10')) if ($query->param('bool10'));
+    $query->param('boolmart'      => $query->param('bool11')) if ($query->param('bool11'));
+    $query->param('boolhststring' => $query->param('bool12')) if ($query->param('bool12'));
 
     my $queryoptions_ref
         = $session->get_queryoptions($query);
 
     my $targetdbinfo_ref
-        = config->get_targetdbinfo();
+        = $config->get_targetdbinfo();
 
     my $searchquery_ref
         = OpenBib::Common::Util::get_searchquery($r);
-                
+
+    # Autoplus einfuegen
+
+    $searchquery_ref->{fs      }{norm} = OpenBib::VirtualSearch::Util::conv2autoplus($searchquery_ref->{fs      }{norm}) if ($searchquery_ref->{fs      }{norm});
+    $searchquery_ref->{verf    }{norm} = OpenBib::VirtualSearch::Util::conv2autoplus($searchquery_ref->{verf    }{norm}) if ($searchquery_ref->{verf    }{norm});
+    $searchquery_ref->{hst     }{norm} = OpenBib::VirtualSearch::Util::conv2autoplus($searchquery_ref->{hst     }{norm}) if ($searchquery_ref->{hst     }{norm});
+    $searchquery_ref->{kor     }{norm} = OpenBib::VirtualSearch::Util::conv2autoplus($searchquery_ref->{kor     }{norm}) if ($searchquery_ref->{kor     }{norm});
+    $searchquery_ref->{swt     }{norm} = OpenBib::VirtualSearch::Util::conv2autoplus($searchquery_ref->{swt     }{norm}) if ($searchquery_ref->{swt     }{norm});
+    $searchquery_ref->{isbn    }{norm} = OpenBib::VirtualSearch::Util::conv2autoplus($searchquery_ref->{isbn    }{norm}) if ($searchquery_ref->{isbn    }{norm});
+    $searchquery_ref->{issn    }{norm} = OpenBib::VirtualSearch::Util::conv2autoplus($searchquery_ref->{issn    }{norm}) if ($searchquery_ref->{issn    }{norm});
+    $searchquery_ref->{gtquelle}{norm} = OpenBib::VirtualSearch::Util::conv2autoplus($searchquery_ref->{gtquelle}{norm}) if ($searchquery_ref->{gtquelle}{norm});
+
     if (!$sortorder){
         if ($sorttype eq "ejahr"){
             $sortorder="down";
@@ -344,6 +354,13 @@ sub handler {
         my $ttdata={
             targetdbinfo    => $targetdbinfo_ref,
             resultlist      => \@ergebnisse,#[$liststart..$listend],
+
+            utf2iso      => sub {
+                my $string=shift;
+                $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
+                return $string;
+            },
+
             config          => $config,
         };
         
@@ -449,6 +466,13 @@ sub handler {
             sbitem       => $sbnormset,
             sbitemmex    => $sbmexnormset,
             targetdbinfo => $targetdbinfo_ref,
+
+            utf2iso      => sub {
+                my $string=shift;
+                $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
+                return $string;
+            },
+
         };
         
         $template->process($templatename, $ttdata) || do {

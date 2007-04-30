@@ -2,7 +2,7 @@
 #
 #  OpenBib::User
 #
-#  Dieses File ist (C) 2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2007 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -30,9 +30,11 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Encode 'decode_utf8';
+use Encode qw(decode_utf8 encode_utf8);
 use Log::Log4perl qw(get_logger :levels);
+use YAML;
 
+use OpenBib::Common::Util;
 use OpenBib::Config;
 
 sub new {
@@ -50,19 +52,31 @@ sub new {
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
         = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
-            or $logger->error_die($DBI::errstr);
+            or $logger->error($DBI::errstr);
 
     $self->{dbh}       = $dbh;
 
     return $self;
 }
 
+sub userdb_accessible{
+    my ($self)=@_;
+
+    if (defined $self->{dbh}){
+        return 1;
+    }
+    
+    return 0;
+}
+    
 sub get_cred_for_userid {
     my ($self,$userid)=@_;
-
+                  
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    return if (!defined $self->{dbh});
+    
     my $userresult=$self->{dbh}->prepare("select loginname,pin from user where userid = ?") or $logger->error($DBI::errstr);
 
     $userresult->execute($userid) or $logger->error($DBI::errstr);
@@ -86,6 +100,8 @@ sub get_username_for_userid {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    return undef if (!defined $self->{dbh});
+    
     my $userresult=$self->{dbh}->prepare("select loginname from user where userid = ?") or $logger->error($DBI::errstr);
 
     $userresult->execute($userid) or $logger->error($DBI::errstr);
@@ -107,6 +123,8 @@ sub get_userid_for_username {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    return undef if (!defined $self->{dbh});
+    
     my $userresult=$self->{dbh}->prepare("select userid from user where loginname = ?") or $logger->error($DBI::errstr);
 
     $userresult->execute($username) or $logger->error($DBI::errstr);
@@ -128,6 +146,8 @@ sub get_userid_of_session {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    return undef if (!defined $self->{dbh});
+    
     my $config = new OpenBib::Config();
     
     my $globalsessionID="$config->{servername}:$sessionID";
@@ -147,12 +167,30 @@ sub get_userid_of_session {
     return $userid;
 }
 
+sub clear_cached_userdata {
+    my ($self,$userid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return undef if (!defined $self->{dbh});
+
+    my $request=$self->{dbh}->prepare("update user set nachname = '', vorname = '', strasse = '', ort = '', plz = '', soll = '', gut = '', avanz = '', branz = '', bsanz = '', vmanz = '', maanz = '', vlanz = '', sperre = '', sperrdatum = '', gebdatum = '' where userid = ?") or die "$DBI::errstr";
+    $request->execute($userid) or die "$DBI::errstr";
+  
+    $request->finish();
+
+    return;
+}
+
 sub get_targetdb_of_session {
     my ($self,$sessionID)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    return undef if (!defined $self->{dbh});
+    
     my $config = new OpenBib::Config();
     
     my $globalsessionID="$config->{servername}:$sessionID";
@@ -175,6 +213,8 @@ sub get_targettype_of_session {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    return undef if (!defined $self->{dbh});
+    
     my $config = new OpenBib::Config();
     
     my $globalsessionID="$config->{servername}:$sessionID";
@@ -197,6 +237,8 @@ sub get_profilename_of_profileid {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    return undef if (!defined $self->{dbh});
+    
     my $config = new OpenBib::Config();
 
     my $idnresult=$self->{dbh}->prepare("select profilename from userdbprofile where profilid = ?") or $logger->error($DBI::errstr);
@@ -217,6 +259,8 @@ sub get_profiledbs_of_profileid {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    return if (!defined $self->{dbh});
+    
     my $config = new OpenBib::Config();
 
     my $idnresult=$self->{dbh}->prepare("select dbname from profildb where profilid = ?") or $logger->error($DBI::errstr);
@@ -238,6 +282,8 @@ sub get_number_of_items_in_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    return undef if (!defined $self->{dbh});
+    
     my $idnresult=$self->{dbh}->prepare("select count(*) as rowcount from treffer where userid = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($userid) or $logger->error($DBI::errstr);
     my $res = $idnresult->fetchrow_hashref();
@@ -253,6 +299,8 @@ sub get_all_profiles {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    return if (!defined $self->{dbh});
+    
     my $config = new OpenBib::Config();
 
     my $idnresult=$self->{dbh}->prepare("select profilid, profilename from userdbprofile where userid = ? order by profilename") or $logger->error($DBI::errstr);
@@ -284,6 +332,8 @@ sub authenticate_self_user {
   
     my $logger = get_logger();
 
+    return undef if (!defined $self->{dbh});
+    
     my $userresult=$self->{dbh}->prepare("select userid from user where loginname = ? and pin = ?") or $logger->error($DBI::errstr);
   
     $userresult->execute($username,$pin) or $logger->error($DBI::errstr);
@@ -304,6 +354,8 @@ sub get_logintargets {
   
     my $logger = get_logger();
 
+    return if (!defined $self->{dbh});
+    
     my $request=$self->{dbh}->prepare("select * from logintarget order by type DESC,description") or $logger->error($DBI::errstr);
     $request->execute() or $logger->error($DBI::errstr);
     
@@ -320,8 +372,297 @@ sub get_logintargets {
     return $logintargets_ref;
 }
 
+sub add_tags {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $tags                = exists $arg_ref->{tags}
+        ? $arg_ref->{tags    }            : undef;
+    my $titid               = exists $arg_ref->{titid}
+        ? $arg_ref->{titid}               : undef;
+    my $titisbn             = exists $arg_ref->{titisbn}
+        ? $arg_ref->{titisbn}             : '';
+    my $titdb               = exists $arg_ref->{titdb}
+        ? $arg_ref->{titdb}               : undef;
+    my $loginname           = exists $arg_ref->{loginname}
+        ? $arg_ref->{loginname}           : undef;
+    my $type                = exists $arg_ref->{type}
+        ? $arg_ref->{type}                : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    # Splitten der Tags
+    my @taglist = split("\\s+",$tags);
+
+    # Zuerst alle Verknuepfungen loeschen
+    my $request=$self->{dbh}->prepare("delete from tittag where loginname = ? and titid=? and titdb=?") or $logger->error($DBI::errstr);
+    $request->execute($loginname, $titid, $titdb) or $logger->error($DBI::errstr);
+
+    foreach my $tag (@taglist){
+
+        # Normierung
+        $tag = OpenBib::Common::Util::grundform({
+            content  => $tag,
+            tagging  => 1,
+        });
+
+        $request=$self->{dbh}->prepare("select id from tags where tag = ?") or $logger->error($DBI::errstr);
+        $request->execute($tag) or $logger->error($DBI::errstr);
+
+        my $result=$request->fetchrow_hashref;
+
+        my $tagid=$result->{id};
+
+        # Wenn Tag nicht existiert, dann kann alles eintragen werden (tags/tittag)
+        
+        if (!$tagid){
+            $logger->debug("Tag $tag noch nicht verhanden");
+            $request=$self->{dbh}->prepare("insert into tags (tag) values (?)") or $logger->error($DBI::errstr);
+            $request->execute(encode_utf8($tag)) or $logger->error($DBI::errstr);
+
+            $request=$self->{dbh}->prepare("select id from tags where tag = ?") or $logger->error($DBI::errstr);
+            $request->execute(encode_utf8($tag)) or $logger->error($DBI::errstr);
+            my $result=$request->fetchrow_hashref;
+            my $tagid=$result->{id};
+
+            $request=$self->{dbh}->prepare("insert into tittag (tagid,titid,titisbn,titdb,loginname,type) values (?,?,?,?,?,?)") or $logger->error($DBI::errstr);
+            $request->execute($tagid,$titid,$titisbn,$titdb,$loginname,$type) or $logger->error($DBI::errstr);
+        }
+        
+        # Jetzt Verknuepfung mit Titel herstellen
+        else {
+            $logger->debug("Tag verhanden");
+
+            # Neue Verknuepfungen eintragen
+            $logger->debug("Verknuepfung zu Titel noch nicht vorhanden");
+            $request=$self->{dbh}->prepare("insert into tittag (tagid,titid,titisbn,titdb,loginname,type) values (?,?,?,?,?,?)") or $logger->error($DBI::errstr);
+            $request->execute($tagid,$titid,$titisbn,$titdb,$loginname,$type) or $logger->error($DBI::errstr);
+        }
+        
+    }
+
+    return;
+}
+
+sub del_tags {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $titid               = exists $arg_ref->{titid}
+        ? $arg_ref->{titid}               : undef;
+    my $titisbn             = exists $arg_ref->{titisbn}
+        ? $arg_ref->{titisbn}             : '';
+    my $titdb               = exists $arg_ref->{titdb}
+        ? $arg_ref->{titdb}               : undef;
+    my $loginname           = exists $arg_ref->{loginname}
+        ? $arg_ref->{loginname}           : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    my $request=$self->{dbh}->prepare("delete from tittag where titid=? and titdb=? and loginname=?") or $logger->error($DBI::errstr);
+    $request->execute($titid,$titdb,$loginname) or $logger->error($DBI::errstr);
+
+    return;
+}
+
+sub get_all_tags_of_db {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $dbname              = exists $arg_ref->{dbname}
+        ? $arg_ref->{dbname}              : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    my $request=$self->{dbh}->prepare("select t.tag, t.id, count(tt.tagid) as tagcount from tags as t, tittag as tt where tt.titdb=? and t.id=tt.tagid and tt.type=1 group by tt.tagid order by t.tag") or $logger->error($DBI::errstr);
+
+    $request->execute($dbname) or $logger->error($DBI::errstr);
+
+    my $taglist_ref = [];
+    my $maxcount = 0;
+    while (my $result=$request->fetchrow_hashref){
+        my $tag       = decode_utf8($result->{tag});
+        my $id        = $result->{id};
+        my $count     = $result->{tagcount};
+
+        $logger->debug("Gefundene Tags: $tag - $id - $count");
+        if ($maxcount < $count){
+            $maxcount = $count;
+        }
+        
+        push @$taglist_ref, {
+            id    => $id,
+            name  => $tag,
+            count => $count,
+        };
+
+        for (my $i=0 ; $i < scalar (@$taglist_ref) ; $i++){
+            $taglist_ref->[$i]->{class} = int($taglist_ref->[$i]->{count} / (int($maxcount/6)+1));
+        }
+    }
+    
+    return $taglist_ref;
+}
+
+sub get_all_tags_of_tit {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $titid               = exists $arg_ref->{titid}
+        ? $arg_ref->{titid}               : undef;
+    my $titisbn             = exists $arg_ref->{titisbn}
+        ? $arg_ref->{titisbn}             : '';
+    my $titdb               = exists $arg_ref->{titdb}
+        ? $arg_ref->{titdb}               : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    my $request=$self->{dbh}->prepare("select t.tag, t.id, count(tt.tagid) as tagcount from tags as t, tittag as tt where tt.titid=? and tt.titdb=? and t.id=tt.tagid and tt.type=1 group by tt.tagid order by t.tag") or $logger->error($DBI::errstr);
+
+    $request->execute($titid,$titdb) or $logger->error($DBI::errstr);
+
+    my $taglist_ref = [];
+    my $maxcount = 0;
+    while (my $result=$request->fetchrow_hashref){
+        my $tag       = decode_utf8($result->{tag});
+        my $id        = $result->{id};
+        my $count     = $result->{tagcount};
+
+        $logger->debug("Gefundene Tags: $tag - $id - $count");
+        if ($maxcount < $count){
+            $maxcount = $count;
+        }
+        
+        push @$taglist_ref, {
+            id    => $id,
+            name  => $tag,
+            count => $count,
+        };
+
+        for (my $i=0 ; $i < scalar (@$taglist_ref) ; $i++){
+            $taglist_ref->[$i]->{class} = int($taglist_ref->[$i]->{count} / (int($maxcount/6)+1));
+        }
+    }
+    
+    return $taglist_ref;
+}
+
+sub get_private_tags_of_tit {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $titid               = exists $arg_ref->{titid}
+        ? $arg_ref->{titid}               : undef;
+    my $titisbn             = exists $arg_ref->{titisbn}
+        ? $arg_ref->{titisbn}             : '';
+    my $titdb               = exists $arg_ref->{titdb}
+        ? $arg_ref->{titdb}               : undef;
+    my $loginname           = exists $arg_ref->{loginname}
+        ? $arg_ref->{loginname}           : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    my $request=$self->{dbh}->prepare("select t.id,t.tag,tt.type from tags as t,tittag as tt where tt.loginname=? and tt.titid=? and tt.titdb=? and tt.tagid = t.id") or $logger->error($DBI::errstr);
+    $request->execute($loginname,$titid,$titdb) or $logger->error($DBI::errstr);
+
+    my $taglist_ref = [];
+
+    while (my $result=$request->fetchrow_hashref){
+        my $tag  = decode_utf8($result->{tag});
+        my $id   = $result->{id};
+        my $type = $result->{type};
+
+        push @$taglist_ref, {
+            id   => $id,
+            name => $tag,
+            type => $type,
+        };
+    }
+    
+    return $taglist_ref;
+}
+
+sub get_private_tags {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $loginname           = exists $arg_ref->{loginname}
+        ? $arg_ref->{loginname}           : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    $logger->debug("loginname: $loginname");
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    my $request=$self->{dbh}->prepare("select t.tag, t.id, count(tt.tagid) as tagcount from tags as t, tittag as tt where t.id=tt.tagid and tt.loginname=? group by tt.tagid order by t.tag") or $logger->error($DBI::errstr);
+    $request->execute($loginname) or $logger->error($DBI::errstr);
+
+    my $taglist_ref = [];
+    my $maxcount = 0;
+    while (my $result=$request->fetchrow_hashref){
+        my $tag       = decode_utf8($result->{tag});
+        my $id        = $result->{id};
+        my $count     = $result->{tagcount};
+
+        $logger->debug("Gefundene Tags: $tag - $id - $count");
+        if ($maxcount < $count){
+            $maxcount = $count;
+        }
+        
+        push @$taglist_ref, {
+            id    => $id,
+            name  => $tag,
+            count => $count,
+        };
+
+        for (my $i=0 ; $i < scalar (@$taglist_ref) ; $i++){
+            $taglist_ref->[$i]->{class} = int($taglist_ref->[$i]->{count} / (int($maxcount/6)+1));
+        }
+    }
+
+    $logger->debug("Private Tags: ".YAML::Dump($taglist_ref));
+    return $taglist_ref;
+}
+
 sub DESTROY {
     my $self = shift;
+
+    return if (!defined $self->{dbh});
+
     $self->{dbh}->disconnect();
 
     return;

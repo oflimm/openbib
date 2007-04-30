@@ -126,16 +126,20 @@ sub handler {
         $anzahl = $session->get_number_of_items_in_collection();
     }
 
+    if (!$user->userdb_accessible()){
+        $config->{login_active} = 0;
+    }
+    
     # TT-Data erzeugen
     my $ttdata={
-        view        => $view,
-        primrssfeed => $primrssfeed,
-        stylesheet  => $stylesheet,
-        sessionID   => $session->{ID},
-        username    => $username,
-        anzahl      => $anzahl,
-        config      => $config,
-        msg         => $msg,
+        view              => $view,
+        primrssfeed       => $primrssfeed,
+        stylesheet        => $stylesheet,
+        sessionID         => $session->{ID},
+        username          => $username,
+        anzahl            => $anzahl,
+        config            => $config,
+        msg               => $msg,
     };
 
     OpenBib::Common::Util::print_page($config->{tt_headerframe_tname},$ttdata,$r);

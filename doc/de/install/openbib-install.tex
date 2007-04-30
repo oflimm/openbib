@@ -854,6 +854,10 @@ apt-get install liblog-log4perl-perl libipc-shareable-perl liblog-dispatch-perl
 \begin{verbatim}
 apt-get install libdate-manip-perl
 \end{verbatim}
+\item BerkeleyDB (fuer Encode::MAB2)
+\begin{verbatim}
+apt-get install libberkeleydb-perl
+\end{verbatim}
 \item Locale::Maketext::Lexicon
 \begin{verbatim}
 apt-get install liblocale-maketext-lexicon-perl
@@ -893,6 +897,19 @@ Dieses Modul muss händisch von
 http://oai-perl.sourceforge.net/
 \end{verbatim}
 installiert werden.
+
+
+\item MARC::Record (fuer Net-Z3950-ZOOM)
+
+Dieses Modul 
+
+\begin{verbatim}
+MARC-Record-1.38.tar.gz
+\end{verbatim}
+
+muss h"andisch vom CPAN installiert werden (s.u.)
+
+
 \item Net-Z3950-ZOOM (für Zugriff auf Z39.50 Datenbanken) 
 
 Zur Installation dieses Moduls muß zunächst die Datei
@@ -917,6 +934,27 @@ installiert.
 \begin{verbatim}
 apt-get install libxml-twig-perl
 \end{verbatim}
+
+\item String::Tokenizer (f"ur file2xapian.pl)
+
+Dieses Modul 
+
+\begin{verbatim}
+String-Tokenizer-0.05
+\end{verbatim}
+
+muss h"andisch vom CPAN installiert werden (s.u.)
+
+\item Encode::MAB2 (f"ur Z39.50)
+
+Dieses Modul 
+
+\begin{verbatim}
+MAB2-0.06.tar.gz
+\end{verbatim}
+
+muss h"andisch vom CPAN installiert werden (s.u.)
+
 \end{itemize}
 
 Die CPAN-Module lassen sich im allgemeinen sehr einfach über die

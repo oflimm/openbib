@@ -25,6 +25,6 @@
         END ;
      END ;
 -%]
-<tr align="center"><td><a href="[% mex.Bibinfourl %]" target="_blank"><strong>[% mex.Bibliothek.short %]</strong></a></td><td>[% mex.Standort %]</td><td><strong>[% mex.Signatur %]</strong></td><td><strong>[% mex.Status %]</strong></td><td class="circurl"><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% mex.Ausleihurl %]">[% msg.maketext("Weiter") %]</a></td></tr>
+<tr align="center"><td><a href="[% mex.Bibinfourl %]" target="_blank"><strong>[% mex.Bibliothek.short %]</strong></a></td><td>[% mex.Standort %]</td><td><strong>[% mex.Signatur %]</strong></td><td><strong>[% mex.Status %]</strong></td><td class="circurl"><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% config.redirect_loc %]/[% sessionID %]/550/[% mex.Ausleihurl %]">[% msg.maketext("Weiter") %]</a></td></tr>
 [% END %]
 </table>

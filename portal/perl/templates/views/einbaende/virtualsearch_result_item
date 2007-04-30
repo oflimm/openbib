@@ -29,6 +29,9 @@ align="right" colspan="4"><strong>[% treffer %] [% msg.maketext("von") %] [% ful
 [%#- persons.push("${part.content}") -%]
 [%- END -%]
 [%- FOREACH part IN item.${'P0101'}  -%]
+[%-   IF part.supplement -%]
+[%-      part.content = "${part.content} ${part.supplement}" -%]
+[%-   END -%]
 [%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
 [%#- persons.push("${part.content}") -%]
 [%- END -%]
@@ -65,7 +68,7 @@ align="right" colspan="4"><strong>[% treffer %] [% msg.maketext("von") %] [% ful
 %]</span><br /><a href="[% config.search_loc %]?sessionID=[%
 sessionID %];database=[% item.database %];searchsingletit=[% item.id
 %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
-class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></td><td><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="header"><span class="rlcollect"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="header" title="[% msg.maketext("In die Merkliste") %]"><img src="/images/openbib/3d-file-blue-clipboard.png" height="29" alt="[% msg.maketext("In die Merkliste") %]" border=0></a></span></a></td><td align=left><b>[% signatur %]</b></td><td><a href="http://einbandsammlung.ub.uni-koeln.de/opendia/viewer?collection=einbaende;item=[% item.idn %];action=showsingleitem;view=kug;remotehost=[% config.servername %];remoteview=[% view %];sessionID=[% sessionID %]">[&nbsp;[% msg.maketext("Abb.") %]&nbsp;]</a></td></tr>
+class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></td><td><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="header"><span class="rlcollect"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="header" title="[% msg.maketext("In die Merkliste") %]"><img src="/images/openbib/3d-file-blue-clipboard.png" alt="[% msg.maketext("In die Merkliste") %]" border=0></a></span></a></td><td align=left><b>[% signatur %]</b></td><td><a href="http://einbandsammlung.ub.uni-koeln.de/opendia/viewer?collection=einbaende;item=[% item.id %];action=showsingleitem;view=kug;remotehost=[% config.servername %];remoteview=[% view %];sessionID=[% sessionID %]">[&nbsp;[% msg.maketext("Abb.") %]&nbsp;]</a></td></tr>
 [%- IF listrow == 'listrow1' -%]
 [%- listrow = 'listrow2' -%]
 [%- ELSE -%]

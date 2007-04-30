@@ -1,0 +1,92 @@
+[%#-
+#######################################################################
+#
+# Templatename: databasechoice
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Katalogauswahlliste/-tabelle
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+<script language="JavaScript" type="text/javascript">
+<!--
+
+function update_fak(yourform, checked, fak) {
+    for (var i = 0; i < yourform.elements.length; i++) {
+         if (yourform.elements[i].title.indexOf(fak) != -1) {
+              yourform.elements[i].checked = checked;
+         }
+    }
+}
+
+// -->
+</script>
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.databasechoice_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">[% msg.maketext("Katalogauswahl") %]</a></li>
+</ul>
+
+<div class="content">
+
+<form method="get" action="http://[% config.servername %][% config.databasechoice_loc %]">
+<input type="hidden" name="hitrange" value="-1" />
+<input type="hidden" name="view" value="[% view %]" />
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+
+<p />
+<table width="100%">
+<tr><th>[% msg.maketext("Hinweis") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.8em">
+Auf dieser Seite k&ouml;nnen Sie einzelne Kataloge als Suchziel auswählen.<p />
+Nachdem Sie Ihre Auswahl getroffen haben aktivieren Sie bitte <b>Kataloge auswählen</b>. Sie springen dann auf die Rechercheseite und k&ouml;nnen Ihre Suchbegriffe eingeben. Ihre gerade
+getroffene Datenbankauswahl ist unter <b>Suchprofil</b> vorausgewählt. Nun müssen Sie nur noch auf <b>In ausgewählten Katalogen suchen</b> klicken, um in den ausgewählten
+Datenbanken zu recherchieren.
+</td></tr>
+</table>
+<p />
+<input type="submit" name="do_choose" value="[% msg.maketext("Kataloge auswählen") %]" />&nbsp;<input type="reset" value="[% msg.maketext("Ursprüngliche Auswahl wiederherstellen") %]" />
+<p />
+<p />
+<table>
+[%
+
+thisdb = {
+            'gleuel'   => 1,
+            'gdonck'   => 1,
+            'kwinter'  => 1,
+            'kempen'   => 1,
+            'kevelaer' => 1,
+            'xanten'   => 1,
+            'rheinabt' => 1,
+
+         };
+
+%]
+
+
+[%- FOREACH db = catdb -%]
+[% dbname = db.db %]
+[%- IF thisdb.${dbname} == 1 -%]
+<tr><td><input type="checkbox" name="database" value="[% db.db %]" [% IF db.checked %]checked="checked"[% END %] /></td><td>&nbsp;</td><td><a href="[% db.url %]" target="_blank">[% db.name %]</a></td></tr>
+[%- END -%]
+
+[%- END -%]
+</table>
+<p />
+<input type="submit" name="do_choose" value="[% msg.maketext("Kataloge auswählen") %]" />&nbsp;<input type="reset" value="[% msg.maketext("Ursprüngliche Auswahl wiederherstellen") %]" />
+</form>
+<p />
+
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]
+

@@ -1,0 +1,31 @@
+[%#-
+#######################################################################
+#
+# Templatename: navitembar
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe einer Navigationszeile mit Titellistenpaketen ala
+# Treffer 1-10, 11-20 usw.
+#
+#######################################################################
+-%]
+[% IF offset >= 0 && hitrange > 0 %]
+<table>
+<tr bgcolor="white"><td>
+[%- FOREACH navitem IN nav -%]
+<a href="[% navitem.url %]">
+[%- IF navitem.active -%]
+<b>[ [% navitem.start %]-[% navitem.end %] ]</b>
+[%- ELSE -%]
+[ [% navitem.start %]-[% navitem.end %] ]
+[%- END -%]
+</a>&nbsp;
+[%- END -%]
+
+</td></tr>
+</table>
+<p />
+[% END %]

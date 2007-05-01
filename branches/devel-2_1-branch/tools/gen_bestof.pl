@@ -373,6 +373,64 @@ if ($type == 6){
     }
 }
 
+# Typ 7 => Von Nutzern vergebene Tags
+if ($type == 7){
+    my @databases = ();
+
+    if ($singlepool){
+        push @databases, $singlepool;
+    }
+    else {
+        @databases=$config->get_active_databases();
+    }
+
+    my $dbh
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    foreach my $database (@databases){
+        $logger->info("Generating Type 7 BestOf-Values for database $database");
+
+        my $maxcount=0;
+        
+        my $bestof_ref=[];
+        my $request=$dbh->prepare("select t.id,t.tag,count(tt.tagid) as scount from tags as t, tittag as tt where tt.titdb=? and tt.tagid=t.id group by tt.tagid");
+        $request->execute($database);
+        while (my $result=$request->fetchrow_hashref){
+            my $content = decode_utf8($result->{tag});
+            my $id      = $result->{id};
+            my $count   = $result->{scount};
+            if ($maxcount < $count){
+                $maxcount = $count;
+            }
+            
+            push @$bestof_ref, {
+                item  => $content,
+                id    => $id,
+                count => $count,
+            };
+        }
+
+        if ($maxcount >= 6){
+            for (my $i=0 ; $i < scalar (@$bestof_ref) ; $i++){
+                $bestof_ref->[$i]->{class} = int($bestof_ref->[$i]->{count} / int($maxcount/6));
+            }
+        }
+
+        my $sortedbestof_ref ;
+        @{$sortedbestof_ref} = map { $_->[0] }
+            sort { $a->[1] cmp $b->[1] }
+                map { [$_, $_->{item}] }
+                    @{$bestof_ref};
+        
+        $statistics->store_result({
+            type => 7,
+            id   => $database,
+            data => $sortedbestof_ref,
+        });
+    }
+}
+
 sub print_help {
     print << "ENDHELP";
 gen_bestof.pl - Erzeugen von BestOf-Analysen aus Relevance-Statistik-Daten
@@ -391,6 +449,7 @@ gen_bestof.pl - Erzeugen von BestOf-Analysen aus Relevance-Statistik-Daten
    4 => Meistgenutzte Notationen/Systematiken pro Katalog (Wolke)
    5 => Meistgenutzte Koerperschaften/Urheber pro Katalog (Wolke)
    6 => Meistgenutzte Verfasser/Personen pro Katalog (Wolke)
+   7 => Nutzer-Tags pro Katalog (Wolke)
        
 ENDHELP
     exit;

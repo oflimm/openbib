@@ -381,7 +381,12 @@ sub handler {
         
         my $hits=$#sortedindex+1;
 
-        my $baseurl="http://$config->{servername}$config->{virtualsearch_loc}?sessionID=$session->{ID};view=$view;$urlpart;profil=$profil;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder";
+        my $databasestring="";
+        foreach my $database (@databases){
+            $databasestring.=";database=$database";
+        }
+        
+        my $baseurl="http://$config->{servername}$config->{virtualsearch_loc}?sessionID=$session->{ID};view=$view;$urlpart;profil=$profil;hitrange=$hitrange;sorttype=$sorttype;sortorder=$sortorder$databasestring";
 
         my @nav=();
 

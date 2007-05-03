@@ -18,7 +18,9 @@
 [%-
 
 endnotecategories = {
-        'T0100' => '%A',    # Author 
+        'T0100' => '%A',    # Author
+        'T0101' => '%A',    # Person
+        'T0103' => '%A',    # Celebr. Person 
         'T0200' => '%C',    # Corporate Author
         'T0331' => '%T',    # Title of the article or book
         'T0451' => '%S',    # Title of the serie

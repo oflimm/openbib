@@ -1215,6 +1215,13 @@ sub normset2bibtex {
     # Titel
     my $title     = (exists $normset_ref->{T0331})?utf2bibtex($normset_ref->{T0331}[0]{content}):'';
 
+    # Zusatz zum Titel
+    my $titlesup  = (exists $normset_ref->{T0335})?utf2bibtex($normset_ref->{T0335}[0]{content}):'';
+
+    if ($title && $titlesup){
+        $title = "$title : $titlesup";
+    }
+    
     # Jahr
     my $year      = (exists $normset_ref->{T0425})?utf2bibtex($normset_ref->{T0425}[0]{content}):'';
 
@@ -1226,6 +1233,9 @@ sub normset2bibtex {
 
     # Sprache
     my $language  = (exists $normset_ref->{T0516})?utf2bibtex($normset_ref->{T0516}[0]{content}):'';
+
+    # Abstract
+    my $abstract  = (exists $normset_ref->{T0750})?utf2bibtex($normset_ref->{T0750}[0]{content}):'';
 
     if ($author){
         push @$bibtex_ref, "author    = \"$author\"";
@@ -1260,6 +1270,9 @@ sub normset2bibtex {
     if ($language){
         push @$bibtex_ref, "language  = \"$language\"";
     }
+    if ($abstract){
+        push @$bibtex_ref, "abstract  = \"$abstract\"";
+    }
     
     my $identifier=substr($author,0,4).substr($title,0,4).$year;
     $identifier=~s/[^A-Za-z0-9]//g;
@@ -1292,6 +1305,7 @@ sub utf2bibtex {
     $string=~s/\}//g;
     # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
     $string=~s/[^-+\p{Alphabetic}0-9\n\/&;#: '()@<>\\,.="^*[]]//g;
+    $string=~s/"/'/g;
     $string=~s/&lt;/</g;
     $string=~s/&gt;/>/g;
     $string=~s/&#172;//g;

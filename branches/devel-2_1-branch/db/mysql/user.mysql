@@ -147,26 +147,6 @@ DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
 
-DROP TABLE IF EXISTS ratings;
-CREATE TABLE rating (
- id        INT(11)     NOT NULL auto_increment,
- titid     INT(11)     NOT NULL default '0',
- titisbn   CHAR(14)    NOT NULL default '',
- titdb     VARCHAR(25) NOT NULL default '',
- loginname TEXT,
- rating    INT(3)      NOT NULL default '0',
- PRIMARY KEY  (id),
- INDEX (id),
- INDEX (titid),
- INDEX (titisbn),
- INDEX (titdb),
- INDEX (rating),
- INDEX (loginname(30))
-)
-DEFAULT CHARACTER SET utf8
-COLLATE utf8_general_ci
-PACK_KEYS=1;
-
 DROP TABLE IF EXISTS reviews;
 CREATE TABLE reviews (
  id        INT(11)     NOT NULL auto_increment,
@@ -174,7 +154,10 @@ CREATE TABLE reviews (
  titisbn   CHAR(14)    NOT NULL default '',
  titdb     VARCHAR(25) NOT NULL default '',
  loginname TEXT,
+ nickname  VARCHAR(30) NOT NULL default '',
+ title     MEDIUMTEXT  NOT NULL default '',
  review    MEDIUMTEXT  NOT NULL default '',
+ rating    INT(3)      NOT NULL default '0',
  PRIMARY KEY  (id),
  INDEX (id),
  INDEX (titid),

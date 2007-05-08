@@ -211,7 +211,8 @@ use vars qw(%config);
 	   startopac_loc         => '/portal/opac',
            tags_loc              => '/portal/tags',
            userprefs_loc         => '/portal/benutzereinstellungen',
-	   virtualsearch_loc     => '/portal/virtuellerecherche',
+           userreviews_loc       => '/portal/benutzerbewertungen',
+           virtualsearch_loc     => '/portal/virtuellerecherche',
 
 	   css_loc               => '/styles',
 

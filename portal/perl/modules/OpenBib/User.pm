@@ -704,11 +704,11 @@ sub add_review {
     # Review schon vorhanden?
     if ($reviewid){
         $request=$self->{dbh}->prepare("update reviews set titid=?, set titisbn=?, set titdb=?, set loginname=?, set nickname=?, set title=?, set review=?, set rating=? where id=?") or $logger->error($DBI::errstr);
-        $request->execute($titid,$titisbn,$titdb,$loginname,encode_utf8($nickname),encode_utf8($title),code_utf8($review),$rating,$reviewid) or $logger->error($DBI::errstr);
+        $request->execute($titid,$titisbn,$titdb,$loginname,encode_utf8($nickname),encode_utf8($title),encode_utf8($review),$rating,$reviewid) or $logger->error($DBI::errstr);
     }
     else {
-        $request=$self->{dbh}->prepare("insert into reviews (titid,titisbn,titdb,loginname,nickname,title,review,rating) values (?,?,?,?,?)") or $logger->error($DBI::errstr);
-        $request->execute($titid,$titisbn,$titdb,$loginname,encode_utf8($nickname),encode_utf8($title),code_utf8($review),$rating) or $logger->error($DBI::errstr);
+        $request=$self->{dbh}->prepare("insert into reviews (titid,titisbn,titdb,loginname,nickname,title,review,rating) values (?,?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
+        $request->execute($titid,$titisbn,$titdb,$loginname,encode_utf8($nickname),encode_utf8($title),encode_utf8($review),$rating) or $logger->error($DBI::errstr);
     }
 
     return;

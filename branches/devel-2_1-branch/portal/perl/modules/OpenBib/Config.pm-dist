@@ -434,6 +434,10 @@ use vars qw(%config);
 
            social_tagging          => 1,
 
+           # Reviews/Ratings
+
+           reviews                 => 1,
+
 	   # Katalogabhaengige Kategorie-Mappings
 
 	   categorymapping => {

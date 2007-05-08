@@ -658,6 +658,98 @@ sub get_private_tags {
     return $taglist_ref;
 }
 
+sub add_rating {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $titid               = exists $arg_ref->{titid}
+        ? $arg_ref->{titid}               : undef;
+    my $titisbn             = exists $arg_ref->{titisbn}
+        ? $arg_ref->{titisbn}             : '';
+    my $titdb               = exists $arg_ref->{titdb}
+        ? $arg_ref->{titdb}               : undef;
+    my $loginname           = exists $arg_ref->{loginname}
+        ? $arg_ref->{loginname}           : undef;
+    my $rating              = exists $arg_ref->{rating}
+        ? $arg_ref->{rating}              : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    # Ratings sind numerisch
+    $rating=~s/[^0-9]//g;
+    
+    # Zuerst alle Verknuepfungen loeschen
+    my $request=$self->{dbh}->prepare("select id from ratings where loginname = ? and titid=? and titdb=?") or $logger->error($DBI::errstr);
+    $request->execute($loginname, $titid, $titdb) or $logger->error($DBI::errstr);
+
+    my $result   = $request->fetchrow_hashref;
+    my $ratingid = $result->{id};
+
+    # Rating schon vorhanden?
+    if ($ratingid){
+        $request=$self->{dbh}->prepare("update ratings set titid=?, set titisbn=?, set titdb=?, set loginname=?, set rating=? where id=?") or $logger->error($DBI::errstr);
+        $request->execute($titid,$titisbn,$titdb,$loginname,$rating,$ratingid) or $logger->error($DBI::errstr);
+    }
+    else {
+        $request=$self->{dbh}->prepare("insert into ratings (titid,titisbn,titdb,loginname,rating) values (?,?,?,?,?)") or $logger->error($DBI::errstr);
+        $request->execute($titid,$titisbn,$titdb,$loginname,$rating) or $logger->error($DBI::errstr);
+    }
+
+    return;
+}
+
+sub add_review {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $titid               = exists $arg_ref->{titid}
+        ? $arg_ref->{titid}               : undef;
+    my $titisbn             = exists $arg_ref->{titisbn}
+        ? $arg_ref->{titisbn}             : '';
+    my $titdb               = exists $arg_ref->{titdb}
+        ? $arg_ref->{titdb}               : undef;
+    my $loginname           = exists $arg_ref->{loginname}
+        ? $arg_ref->{loginname}           : undef;
+    my $review              = exists $arg_ref->{review}
+        ? $arg_ref->{review}              : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    # Reviews bestehen nur aus Text
+    $review=~s/[^-+\p{Alphabetic}0-9\/:. '()"\?!]//g;
+    
+    # Zuerst alle Verknuepfungen loeschen
+    my $request=$self->{dbh}->prepare("select id from reviews where loginname = ? and titid=? and titdb=?") or $logger->error($DBI::errstr);
+    $request->execute($loginname, $titid, $titdb) or $logger->error($DBI::errstr);
+
+    my $result   = $request->fetchrow_hashref;
+    my $reviewid = $result->{id};
+
+    # Review schon vorhanden?
+    if ($reviewid){
+        $request=$self->{dbh}->prepare("update reviews set titid=?, set titisbn=?, set titdb=?, set loginname=?, set review=? where id=?") or $logger->error($DBI::errstr);
+        $request->execute($titid,$titisbn,$titdb,$loginname,$review,$reviewid) or $logger->error($DBI::errstr);
+    }
+    else {
+        $request=$self->{dbh}->prepare("insert into reviews (titid,titisbn,titdb,loginname,review) values (?,?,?,?,?)") or $logger->error($DBI::errstr);
+        $request->execute($titid,$titisbn,$titdb,$loginname,$review) or $logger->error($DBI::errstr);
+    }
+
+    return;
+}
+
 sub DESTROY {
     my $self = shift;
 

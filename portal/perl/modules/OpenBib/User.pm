@@ -714,6 +714,51 @@ sub add_review {
     return;
 }
 
+sub get_reviews_of_tit {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $titid               = exists $arg_ref->{titid}
+        ? $arg_ref->{titid}               : undef;
+    my $titisbn             = exists $arg_ref->{titisbn}
+        ? $arg_ref->{titisbn}             : '';
+    my $titdb               = exists $arg_ref->{titdb}
+        ? $arg_ref->{titdb}               : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    my $request=$self->{dbh}->prepare("select id,nickname,loginname,title,review,rating from reviews where titid=? and titdb=?") or $logger->error($DBI::errstr);
+    $request->execute($titid,$titdb) or $logger->error($DBI::errstr);
+
+    my $reviewlist_ref = [];
+
+    while (my $result=$request->fetchrow_hashref){
+        my $loginname = decode_utf8($result->{loginname});
+        my $nickname  = decode_utf8($result->{nickname});
+        my $title     = decode_utf8($result->{title});
+        my $review    = decode_utf8($result->{review});
+        my $id        = $result->{id};
+        my $rating    = $result->{rating};
+
+        push @$reviewlist_ref, {
+            id        => $id,
+            loginname => $loginname,
+            nickname  => $nickname,
+            title     => $title,
+            review    => $review,
+            rating    => $rating,
+        };
+    }
+    
+    return $reviewlist_ref;
+}
+
 sub DESTROY {
     my $self = shift;
 

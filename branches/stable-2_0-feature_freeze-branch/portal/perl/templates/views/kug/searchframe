@@ -156,7 +156,7 @@ function submitViaEnter(evt){
 [% msg.maketext("Sie haben JavaScript in Ihrem Browser
 deaktiviert. Daher k&ouml;nnen Sie auf dieser Seite die Profilauswahl
 nicht verwenden. Alternativ k&ouml;nnen Sie eine [_1]alternative Version[_2]
-nutzen, bei der die Verwendung von JavaScript minimiert ist.","<a href=\"${startopac_loc}?view=\" target=\"_top\"","</a>") %]
+nutzen, bei der die Verwendung von JavaScript minimiert ist.","<a href=\"${config.startopac_loc}?view=${view}\" target=\"_parent\">","</a>") %]
 </td></tr>
 </table>
 </noscript>
@@ -255,7 +255,7 @@ nutzen, bei der die Verwendung von JavaScript minimiert ist.","<a href=\"${start
 <p />
 
 <table width="100%">
-<tr><th>[% msg.maketext("Suchoptionen") %]&nbsp;<a href="#searchoptions"><img src="/images/openbib/expand.png" alt="Optionen anzeigen" onclick="expandContent('searchoptions',this); return false;"></a></th></tr>
+<tr><th>[% msg.maketext("Suchoptionen") %]&nbsp;<a href="#searchoptions"><img src="/images/openbib/expand.png" alt="Optionen anzeigen" onclick="expandContent('searchoptions',this); return false;" /></a></th></tr>
 <tr><td class="boxed" id="searchoptions" style="display:none;font-size:0.8em;">
 <table>
 <tr><td class="category">[% msg.maketext("Maximale Trefferzahl pro Katalog") %]</td><td colspan="3"><select name="hitrange"><option selected="selected">50</option><option>100</option><option>200</option></select></td></tr>
@@ -269,7 +269,7 @@ colspan="2"><select name="sorttype"><option value="author" selected="selected">[
 <p />
 
 <table width="100%">
-<tr><th>[% msg.maketext("Suchhilfe") %]&nbsp;<a href="#searchoptions"><img src="/images/openbib/expand.png" alt="Optionen anzeigen" onclick="expandContent('searchinfo',this); return false;"></a></th></tr>
+<tr><th>[% msg.maketext("Suchhilfe") %]&nbsp;<a href="#searchoptions"><img src="/images/openbib/expand.png" alt="Optionen anzeigen" onclick="expandContent('searchinfo',this); return false;" /></a></th></tr>
 <tr><td class="boxed" id="searchinfo" style="display:none;font-size:0.8em;">
 [% PROCESS common/subtemplate name="search_info" %]
 </td></tr>
@@ -293,7 +293,7 @@ colspan="2"><select name="sorttype"><option value="author" selected="selected">[
 
 [%# USE dumper; dumper.dump(userprofile) %]
 <table>
-<tr><td colspan=[% colspan %]><b>Profil:</b>&nbsp;<select name="js_profil" onChange="update_dbchoice(this.form,this.options[this.selectedIndex].value)" >
+<tr><td colspan="[% colspan %]"><b>Profil:</b>&nbsp;<select name="js_profil" onchange="update_dbchoice(this.form,this.options[this.selectedIndex].value)" >
 <option value="">W&auml;hlen Sie hier ein bestehendes Profil aus</option>
 <option value="cleardbs">Katalogauswahl l&ouml;schen</option>
 [%- IF dbchoice.size > 0 -%]

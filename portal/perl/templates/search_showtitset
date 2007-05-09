@@ -491,15 +491,18 @@ value="" /></td></tr>
 [%   IF reviews.size > 0 %]
 
 <p />
+
 <table width="100%">
 <tr><th>Bewertungen/Rezensionen von Nutzern <a href="#allreviews"><img src="/images/openbib/expand.png" alt="Alle Reviews anzeigen" onclick="expandContent('allreviews',this); return false;"></a></th></tr>
 <tr><td id="allreviews" class="boxedclear" style="display:none;">
 <!-- Beginn Reviews -->
-<ul class="review">
-[%- FOREACH thisitem IN reviews -%]
-<li>Rating: [% item.rating %]<br />[% item.title %] von [% IF item.nickname %][% item.nickname %][% ELSE %]Unbekannt[% END %]<br>[% IF item.review %][% review %][% END %]</li>
+
+<dl class="reviews">
+[%- FOREACH item IN reviews -%]
+<dt>[% item.title %] von [% IF item.nickname %][% item.nickname %][% ELSE %]Unbekannt[% END %]&nbsp;&nbsp;(Bewertung: [% item.rating %])</dt>
+<dd>[%    IF item.review %][% item.review %][% END %]</dd>
 [%  END %]
-</ul>
+</dl>
 
 </td></tr>
 </table>

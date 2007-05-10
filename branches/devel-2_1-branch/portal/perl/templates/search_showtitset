@@ -461,24 +461,28 @@ verkn&uuml;pft mit dem Tag </span><a href="[% config.tags_loc %]?sessionID=[% se
 <tr><th>Neue Bewertung/Rezension <a href="#newreview"><img src="/images/openbib/expand.png" alt="Neue Bewertung/Rezension" onclick="expandContent('newreview',this); return false;"></a></th></tr>
 <tr><td id="newreview" class="boxedclear" style="display:none;">
 
+<h3>Bewertung</h3>
 <table>
-<tr><td><b>Bewertung</b></td><td>schlecht&nbsp;<input type="radio"
+<tr><td>schlecht&nbsp;<input type="radio"
 name="rating" value="0"/>&nbsp;<input type="radio" name="rating"
 value="1"/>&nbsp;<input type="radio" name="rating"
 value="2"/>&nbsp;<input type="radio" name="rating"
 value="3" checked="checked"/>&nbsp;<input type="radio" name="rating"
 value="4"/>&nbsp;<input type="radio" name="rating"
 value="5"/>&nbsp;sehr gut</td></tr>
-<tr><td colspan="2">&nbsp;</td></tr>
-<tr><td colspan="2"><b>Rezension</b></td></tr>
-<tr><td><b>Nickname</b></td><td><input type="text" name="nickname"
-value="" /></td></tr>
+</table>
+
+<h3>Rezension</h3>
+<table>
+<tr><td><b>Pseudonym</b></td><td><input type="text" name="nickname"
+value="" size="30" maxlenth="30" /></td></tr>
 <tr><td><b>Titel</b></td><td><input type="text" name="title"
-value="" /></td></tr>
-<tr><td><b>Text</b></td><td><input type="text" name="review" value="" /></td></tr>
+value="" size="30" maxlenth="100" /></td></tr>
+<tr><td><b>Text</b></td><td><textarea cols="80" rows="10"
+name="review" /></textarea></td></tr>
 </table>
 <p />
-<input type="submit" name="do_add" value="Aufnehmen"/>
+<input type="submit" name="do_add" value="Aufnehmen"/>&nbsp;&nbsp;<input type="reset" value="Löschen"/>
 </td></tr>
 </table>
 
@@ -499,7 +503,7 @@ value="" /></td></tr>
 
 <dl class="reviews">
 [%- FOREACH item IN reviews -%]
-<dt>[% item.title %] von [% IF item.nickname %][% item.nickname %][% ELSE %]Unbekannt[% END %]&nbsp;&nbsp;(Bewertung: [% item.rating %])</dt>
+<dt class="review"><span class="reviewtitle">[% item.title %]</span> von <span class="reviewnick">[% IF item.nickname %][% item.nickname %][% ELSE %]Unbekannt[% END %]</span>&nbsp;&nbsp;(Bewertung: <span class="reviewrating">[% item.rating %]</span>)</dt>
 <dd>[%    IF item.review %][% item.review %][% END %]</dd>
 [%  END %]
 </dl>

@@ -329,3 +329,23 @@ a:active.invisible {
 .cloud .am-meisten-genutzt {
   font-size: 2.3em;
 }
+
+dt.review {
+  font-weight:normal;
+  margin-bottom: 2px;
+}
+
+.reviewnick {
+  font-weight:bold;
+  font-size: 1.1em;
+}
+
+.reviewtitle {
+  font-weight:bold;
+  font-size: 1.1em;
+}
+
+.reviewrating {
+  font-weight:bold;
+  font-size: 1.1em;
+}

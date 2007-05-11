@@ -64,7 +64,7 @@ sub get_css_by_browsertype {
 
     my $stylesheet="";
   
-    if ( $useragent=~/Mozilla.5.0/ || $useragent=~/MSIE 5/ || $useragent=~/MSIE 6/ || $useragent=~/Konqueror"/ ) {
+    if ( $useragent=~/Mozilla.5.0/ || $useragent=~/MSIE [5-9]/ || $useragent=~/Konqueror"/ ) {
         if ($useragent=~/MSIE/) {
             $stylesheet="openbib-ie.css";
         }
@@ -1028,6 +1028,8 @@ sub grundform {
     $content=~s/é/e/g;
     $content=~s/è/e/g;
     $content=~s/ê/e/g;
+    $content=~s/ë/e/g;
+    
     $content=~s/É/E/g;
     $content=~s/È/E/g;
     $content=~s/Ê/E/g;
@@ -1035,30 +1037,40 @@ sub grundform {
     $content=~s/á/a/g;
     $content=~s/à/a/g;
     $content=~s/â/a/g;
+    $content=~s/ã/a/g;
+    
     $content=~s/Á/A/g;
     $content=~s/À/A/g;
     $content=~s/Â/A/g;
-
+    $content=~s/Ã/A/g;
+    
     $content=~s/ó/o/g;
     $content=~s/ò/o/g;
     $content=~s/ô/o/g;
+    $content=~s/õ/o/g;
+    
     $content=~s/Ó/O/g;
-    $content=~s/Ò/o/g;
-    $content=~s/Ô/o/g;
-
+    $content=~s/Ò/O/g;
+    $content=~s/Ô/O/g;
+    $content=~s/Õ/O/g;
+    
     $content=~s/í/i/g;
     $content=~s/ì/i/g;
     $content=~s/î/i/g;
+    $content=~s/ï/i/g;
+
     $content=~s/Í/I/g;
     $content=~s/Ì/I/g;
     $content=~s/Î/I/g;
-
+    $content=~s/Ï/I/g;
+    
     $content=~s/ø/o/g;
     $content=~s/Ø/o/g;
     $content=~s/ñ/n/g;
     $content=~s/Ñ/N/g;
-#     $content=~s///g;
-#     $content=~s///g;
+
+    $content=~s/ç/c/g;
+
 #     $content=~s///g;
 #     $content=~s///g;
 

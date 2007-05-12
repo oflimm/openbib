@@ -47,6 +47,7 @@ use OpenBib::Search::Util;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
+use OpenBib::Search::Util;
 use OpenBib::Session;
 use OpenBib::User;
 
@@ -88,6 +89,7 @@ sub handler {
     my $database       = $query->param('database')    || '';
     my $sorttype       = $query->param('sorttype')    || "author";
     my $sortorder      = $query->param('sortorder')   || "up";
+    my $reviewid       = $query->param('reviewid')    || '';
     my $titid          = $query->param('titid')       || '';
     my $titdb          = $query->param('titdb')       || '';
     my $titisbn        = $query->param('titisbn')     || '';
@@ -96,7 +98,9 @@ sub handler {
     my $nickname       = decode_utf8($query->param('nickname')) || '';
     my $rating         = $query->param('rating')      || 1;
 
+    my $do_show        = $query->param('do_show')     || '';
     my $do_add         = $query->param('do_add')      || '';
+    my $do_change      = $query->param('do_change')   || '';
     my $do_edit        = $query->param('do_edit')     || '';
     my $do_del         = $query->param('do_del')      || '';
     
@@ -140,8 +144,58 @@ sub handler {
 
     my $userid = $user->get_userid_of_session($session->{ID});
     
-    my $loginname = $user->get_username_for_userid($userid);
-    
+    my $loginname  = $user->get_username_for_userid($userid);
+    my $targettype = $user->get_targettype_of_session($session->{ID});
+
+
+    if ($do_show){
+
+        if (!$userid){
+            OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
+            return OK;
+        }
+
+        my $reviewlist_ref = $user->get_reviews({loginname => $loginname});
+
+        foreach my $review_ref (@$reviewlist_ref){
+            my $titelidn = $review_ref->{titid};
+            my $database = $review_ref->{titdb};
+            
+            my $dbh
+                = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+                    or $logger->error_die($DBI::errstr);
+            
+            $review_ref->{titnormset} = OpenBib::Search::Util::get_tit_listitem_by_idn({
+                titidn            => $titelidn,
+                dbh               => $dbh,
+                sessiondbh        => $session->{dbh},
+                targetdbinfo_ref  => $targetdbinfo_ref,
+                database          => $database,
+                sessionID         => $session->{ID},
+            });
+            
+            $dbh->disconnect();
+        }
+        
+        # TT-Data erzeugen
+        my $ttdata={
+            view             => $view,
+            stylesheet       => $stylesheet,
+            queryoptions_ref => $queryoptions_ref,
+            sessionID        => $session->{ID},
+            targettype       => $targettype,
+            targetdbinfo     => $targetdbinfo_ref,
+            reviews          => $reviewlist_ref,
+
+            config           => $config,
+            msg              => $msg,
+        };
+
+        OpenBib::Common::Util::print_page($config->{tt_userreviews_show_tname},$ttdata,$r);
+
+        return OK;
+    }
+
     if ($do_add){
 
         if (!$userid){
@@ -165,6 +219,29 @@ sub handler {
         return OK;
     }
 
+    if ($do_change){
+
+        if (!$userid){
+            OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
+            return OK;
+        }
+
+        $logger->debug("Aufnehmen/Aendern des Reviews");
+        
+        $user->add_review({
+            titid     => $titid,
+            titdb     => $titdb,
+            loginname => $loginname,
+            nickname  => $nickname,
+            title     => $title,
+            review    => $review,
+            rating    => $rating,
+        });
+        
+        $r->internal_redirect("http://$config->{servername}$config->{userreviews_loc}?sessionID=$session->{ID};do_show=1");
+        return OK;
+    }
+
     if ($do_del){
 
         if (!$userid){
@@ -172,17 +249,65 @@ sub handler {
             return OK;
         }
 
-        $user->del_review({
-            titid     => $titid,
-            titdb     => $titdb,
+        $user->del_review_of_user({
+            id        => $reviewid,
             loginname => $loginname,
         });
-        
-        $r->internal_redirect("http://$config->{servername}$config->{search_loc}?sessionID=$session->{ID};database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
+
+        $r->internal_redirect("http://$config->{servername}$config->{userreviews_loc}?sessionID=$session->{ID};do_show=1");
         return OK;
 
     }
 
+            
+    if ($do_edit){
+        
+        if (!$userid){
+            OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
+            return OK;
+        }
+
+        my $review_ref = $user->get_review_of_user({id => $reviewid, loginname => $loginname});
+
+        {
+            my $titelidn = $review_ref->{titid};
+            my $database = $review_ref->{titdb};
+            
+            my $dbh
+                = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+                    or $logger->error_die($DBI::errstr);
+            
+            $review_ref->{titnormset} = OpenBib::Search::Util::get_tit_listitem_by_idn({
+                titidn            => $titelidn,
+                dbh               => $dbh,
+                sessiondbh        => $session->{dbh},
+                targetdbinfo_ref  => $targetdbinfo_ref,
+                database          => $database,
+                sessionID         => $session->{ID},
+            });
+            
+            $dbh->disconnect();
+            
+        }
+        
+        # TT-Data erzeugen
+        my $ttdata={
+            view             => $view,
+            stylesheet       => $stylesheet,
+            queryoptions_ref => $queryoptions_ref,
+            sessionID        => $session->{ID},
+            targettype       => $targettype,
+            targetdbinfo     => $targetdbinfo_ref,
+            review           => $review_ref,
+
+            config           => $config,
+            msg              => $msg,
+        };
+
+        OpenBib::Common::Util::print_page($config->{tt_userreviews_edit_tname},$ttdata,$r);
+        
+        return OK;
+    }
 
     return OK;
 }

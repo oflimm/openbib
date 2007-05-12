@@ -703,7 +703,7 @@ sub add_review {
 
     # Review schon vorhanden?
     if ($reviewid){
-        $request=$self->{dbh}->prepare("update reviews set titid=?, set titisbn=?, set titdb=?, set loginname=?, set nickname=?, set title=?, set review=?, set rating=? where id=?") or $logger->error($DBI::errstr);
+        $request=$self->{dbh}->prepare("update reviews set titid=?, titisbn=?, titdb=?, loginname=?, nickname=?, title=?, review=?, rating=? where id=?") or $logger->error($DBI::errstr);
         $request->execute($titid,$titisbn,$titdb,$loginname,encode_utf8($nickname),encode_utf8($title),encode_utf8($review),$rating,$reviewid) or $logger->error($DBI::errstr);
     }
     else {
@@ -748,6 +748,121 @@ sub get_reviews_of_tit {
 
         push @$reviewlist_ref, {
             id        => $id,
+            loginname => $loginname,
+            nickname  => $nickname,
+            title     => $title,
+            review    => $review,
+            rating    => $rating,
+        };
+    }
+    
+    return $reviewlist_ref;
+}
+
+sub get_review_of_user {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $id                  = exists $arg_ref->{id}
+        ? $arg_ref->{id}                  : undef;
+    my $loginname           = exists $arg_ref->{loginname}
+        ? $arg_ref->{loginname}           : '';
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    my $request=$self->{dbh}->prepare("select id,titid,titdb,nickname,loginname,title,review,rating from reviews where id=? and loginname=?") or $logger->error($DBI::errstr);
+    $request->execute($id,$loginname) or $logger->error($DBI::errstr);
+
+    my $review_ref = {};
+
+    while (my $result=$request->fetchrow_hashref){
+        my $loginname = decode_utf8($result->{loginname});
+        my $nickname  = decode_utf8($result->{nickname});
+        my $title     = decode_utf8($result->{title});
+        my $review    = decode_utf8($result->{review});
+        my $id        = $result->{id};
+        my $titid     = $result->{titid};
+        my $titdb     = $result->{titdb};
+        my $rating    = $result->{rating};
+
+        $review_ref = {
+            id        => $id,
+            titid     => $titid,
+            titdb     => $titdb,
+            loginname => $loginname,
+            nickname  => $nickname,
+            title     => $title,
+            review    => $review,
+            rating    => $rating,
+        };
+    }
+    
+    return $review_ref;
+}
+
+sub del_review_of_user {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $id                  = exists $arg_ref->{id}
+        ? $arg_ref->{id}                  : undef;
+    my $loginname           = exists $arg_ref->{loginname}
+        ? $arg_ref->{loginname}           : '';
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    my $request=$self->{dbh}->prepare("delete from reviews where id=? and loginname=?") or $logger->error($DBI::errstr);
+    $request->execute($id,$loginname) or $logger->error($DBI::errstr);
+
+    return;
+}
+
+sub get_reviews {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $loginname           = exists $arg_ref->{loginname}
+        ? $arg_ref->{loginname}           : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    my $request=$self->{dbh}->prepare("select id,titid,titdb,nickname,loginname,title,review,rating from reviews where loginname=?") or $logger->error($DBI::errstr);
+    $request->execute($loginname) or $logger->error($DBI::errstr);
+
+    my $reviewlist_ref = [];
+
+    while (my $result=$request->fetchrow_hashref){
+        my $loginname = decode_utf8($result->{loginname});
+        my $nickname  = decode_utf8($result->{nickname});
+        my $title     = decode_utf8($result->{title});
+        my $review    = decode_utf8($result->{review});
+        my $id        = $result->{id};
+        my $titid     = $result->{titid};
+        my $titdb     = $result->{titdb};
+        my $rating    = $result->{rating};
+
+        push @$reviewlist_ref, {
+            id        => $id,
+            titid     => $titid,
+            titdb     => $titdb,
             loginname => $loginname,
             nickname  => $nickname,
             title     => $title,

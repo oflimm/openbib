@@ -450,6 +450,85 @@ sub add_tags {
     return;
 }
 
+sub rename_tag {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $oldtag              = exists $arg_ref->{oldtag}
+        ? $arg_ref->{oldtag  }            : undef;
+    my $newtag              = exists $arg_ref->{newtag}
+        ? $arg_ref->{newtag  }            : undef;
+    my $loginname           = exists $arg_ref->{loginname}
+        ? $arg_ref->{loginname}           : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    # Splitten der Tags
+    my @oldtaglist = split("\\s+",$oldtag);
+    my @newtaglist = split("\\s+",$newtag);
+
+    # Normierung
+    $oldtag = OpenBib::Common::Util::grundform({
+        content  => $oldtaglist[0],
+        tagging  => 1,
+    });
+
+    $newtag = OpenBib::Common::Util::grundform({
+        content  => $newtaglist[0],
+        tagging  => 1,
+    });
+
+    # Vorgehensweise
+    # 1.) oldid von oldtag bestimmen
+    # 2.) Uebepruefen, ob newtag schon existiert. Wenn nicht, dann anlegen
+    #     und newid merken
+    # 3.) In tittag alle Vorkommen von oldid durch newid fuer loginname
+    #     ersetzen
+
+    my $request=$self->{dbh}->prepare("select id from tags where tag = ?") or $logger->error($DBI::errstr);
+    $request->execute($oldtag) or $logger->error($DBI::errstr);
+
+    my $result   = $request->fetchrow_hashref;
+    my $oldtagid = $result->{id};
+
+    
+    $request=$self->{dbh}->prepare("select id from tags where tag = ?") or $logger->error($DBI::errstr);
+    $request->execute($newtag) or $logger->error($DBI::errstr);
+
+    $result=$request->fetchrow_hashref;
+
+    my $newtagid=$result->{id};
+
+    # Wenn NewTag nicht existiert
+        
+    if (!$newtagid){
+        $logger->debug("Tag $newtag noch nicht verhanden");
+        $request=$self->{dbh}->prepare("insert into tags (tag) values (?)") or $logger->error($DBI::errstr);
+        $request->execute(encode_utf8($newtag)) or $logger->error($DBI::errstr);
+
+        $request=$self->{dbh}->prepare("select id from tags where tag = ?") or $logger->error($DBI::errstr);
+        $request->execute(encode_utf8($newtag)) or $logger->error($DBI::errstr);
+        my $result=$request->fetchrow_hashref;
+        $newtagid=$result->{id};
+    }
+
+    if ($oldtagid && $newtagid){
+        $request=$self->{dbh}->prepare("update tittag set tagid = ? where tagid = ? and loginname = ?") or $logger->error($DBI::errstr);
+        $request->execute($newtagid,$oldtagid,$loginname) or $logger->error($DBI::errstr);
+    }
+    else {
+        return 1;
+    }
+
+    return;
+}
+
 sub del_tags {
     my ($self,$arg_ref)=@_;
 

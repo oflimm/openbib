@@ -376,6 +376,7 @@ use vars qw(%config);
 
 	   tt_search_showswtindex_tname   => 'search_showswtindex',
 
+           tt_tags_editusertags_tname    => 'tags_editusertags',
            tt_tags_showusertags_tname    => 'tags_showusertags',
            tt_tags_showtitlist_tname     => 'tags_showtitlist',
 

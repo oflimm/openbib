@@ -93,14 +93,20 @@ sub handler {
     my $tags           = decode_utf8($query->param('tags'))        || '';
     my $type           = $query->param('type')        || 1;
 
+    my $oldtag         = $query->param('oldtag')      || '';
+    my $newtag         = $query->param('newtag')      || '';
+    
+    # Actions
     my $private_tags   = $query->param('private_tags')   || 0;
     my $searchtitoftag = $query->param('searchtitoftag') || '';
+    my $edit_usertags  = $query->param('edit_usertags')  || '';
     my $show_usertags  = $query->param('show_usertags')  || '';
 
     my $queryid        = $query->param('queryid')     || '';
 
     my $do_add         = $query->param('do_add')      || '';
     my $do_edit        = $query->param('do_edit')     || '';
+    my $do_change      = $query->param('do_change')   || '';
     my $do_del         = $query->param('do_del')      || '';
     
     #####                                                          ######
@@ -183,6 +189,53 @@ sub handler {
         return OK;
 
     }
+    elsif ($do_change){
+        if (!$userid){
+            OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
+            return OK;
+        }
+        
+        $logger->debug("Aendern des Tags $oldtag in $newtag");
+        
+        my $status = $user->rename_tag({
+            oldtag    => $oldtag,
+            newtag    => $newtag,
+            loginname => $loginname,
+        });
+
+        if ($status){
+            OpenBib::Common::Util::print_warning("Die Ersetzung des Tags konnte nicht ausgeführt werden.",$r,$msg);
+            return OK;
+        }
+        
+        $r->internal_redirect("http://$config->{servername}$config->{tags_loc}?sessionID=$session->{ID};show_usertags=1");
+        return OK;
+
+    }
+    
+    if ($edit_usertags){
+
+        if (!$userid){
+            OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
+            return OK;
+        }
+
+        my $targettype=$user->get_targettype_of_session($session->{ID});
+
+        # TT-Data erzeugen
+        my $ttdata={
+            view       => $view,
+            stylesheet => $stylesheet,
+            sessionID  => $session->{ID},
+
+            targettype => $targettype,
+            loginname  => $loginname,
+            user       => $user,
+            config     => $config,
+            msg        => $msg,
+        };
+        OpenBib::Common::Util::print_page($config->{tt_tags_editusertags_tname},$ttdata,$r);
+    }
 
     if ($show_usertags){
 
@@ -235,7 +288,7 @@ sub handler {
                 
                 # Bestimmung der Titel
                 $sqlrequest="select distinct titid,titdb from tittag where tagid=? and loginname=? $limits";
-                $request=$user->{dbh}->prepare("") or $logger->error($DBI::errstr);
+                $request=$user->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
                 $request->execute($searchtitoftag,$loginname);
                 
                 

@@ -31,6 +31,13 @@
 
 <div class="content">
 
+<ul class="tabbingmenu">
+   <li><a class="active" href="http://[% config.servername %][% config.tags_loc %]?sessionID=[% sessionID %];show_usertags=1" target="body">&Uuml;bersicht</a></li>
+   <li><a                href="http://[% config.servername %][% config.tags_loc %]?sessionID=[% sessionID %];edit_usertags=1" target="body">&Auml;ndern</a></li>
+</ul>
+
+<div class="content">
+
 [%
    private_tags = user.get_private_tags({ loginname => loginname  });
 
@@ -72,6 +79,7 @@ Bisher haben Sie noch keine Tags vergeben.
 </table>
 <p />
 
+</div>
 </div>
 
 <p />

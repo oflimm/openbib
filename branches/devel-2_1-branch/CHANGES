@@ -1,3 +1,9 @@
+Version 2.1:
+
+- Tag-Editor. Nutzer koennen nun einzelne ihrer Tags umbenennen
+- Rezensionen und Bewertungen. Angemeldete Nutzer koennen nun entsprechendes
+  Feedback geben
+
 Version 2.0:
 
 - Durchgaengige Verwendung des UTF8-Encodings

@@ -137,6 +137,10 @@
 <p />
 [% END %]
 
+<table width="100%">
+<tr><th>[% msg.maketext("Einstellungen") %]</th></tr>
+<tr><td class="boxedclear">
+
 <table>
 <tr><td valign="top">
 <form method="post" action="http://[% config.servername %][% config.userprefs_loc %]" enctype="application/x-www-form-urlencoded">
@@ -185,6 +189,9 @@
 </form>
 </td></tr>
 
+</table>
+
+</td></tr>
 </table>
 
 </div>

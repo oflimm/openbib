@@ -852,8 +852,10 @@ sub get_reviews_of_tit {
 
     #return if (!$titid || !$titdb || !$loginname || !$tags);
 
-    my $request=$self->{dbh}->prepare("select id,nickname,loginname,title,review,rating from reviews where titid=? and titdb=?") or $logger->error($DBI::errstr);
+    my $request=$self->{dbh}->prepare("select r.id,r.nickname,r.loginname,r.title,r.review,r.rating,count(rr.id) as votecount from reviews r,reviewratings rr where r.titid=? and r.titdb=? and r.id=rr.reviewid group by rr.id") or $logger->error($DBI::errstr);
     $request->execute($titid,$titdb) or $logger->error($DBI::errstr);
+
+    my $request2=$self->{dbh}->prepare("select count(id) as posvotecount from reviewratings where reviewid=? and rating > 0 group by id") or $logger->error($DBI::errstr);
 
     my $reviewlist_ref = [];
 
@@ -864,7 +866,14 @@ sub get_reviews_of_tit {
         my $review    = decode_utf8($result->{review});
         my $id        = $result->{id};
         my $rating    = $result->{rating};
+        my $votecount = $result->{votecount};
 
+        $request2->execute($id) or $logger->error($DBI::errstr);
+
+        my $result2=$request2->fetchrow_hashref;
+
+        my $posvotecount = $result2->{posvotecount};
+        
         push @$reviewlist_ref, {
             id        => $id,
             loginname => $loginname,
@@ -872,6 +881,10 @@ sub get_reviews_of_tit {
             title     => $title,
             review    => $review,
             rating    => $rating,
+            votes     => {
+                all      => $votecount,
+                positive => $posvotecount,
+            },
         };
     }
     

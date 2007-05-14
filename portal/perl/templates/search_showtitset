@@ -448,8 +448,11 @@ verkn&uuml;pft mit dem Tag </span><a href="[% config.tags_loc %]?sessionID=[% se
 
 [% IF   loginname %]
 
+[% ownreviewid = user.tit_reviewed_by_user({ titid => titidn, titdb => database, loginname => loginname }); %]
+
 <p />
 
+[% IF NOT ownreviewid %]
 <form method="get" action="[% config.userreviews_loc %]">
 <input type="hidden" name="sessionID"  value="[% sessionID %]" />
 <input type="hidden" name="titdb"      value="[% database %]" />
@@ -487,6 +490,7 @@ name="review" /></textarea></td></tr>
 </table>
 
 </form>
+[% END %]
 
 [%   END %]
 
@@ -504,7 +508,22 @@ name="review" /></textarea></td></tr>
 <dl class="reviews">
 [%- FOREACH item IN reviews -%]
 <dt class="review"><span class="reviewtitle">[% item.title %]</span> von <span class="reviewnick">[% IF item.nickname %][% item.nickname %][% ELSE %]Unbekannt[% END %]</span>&nbsp;&nbsp;(Bewertung: <span class="reviewrating">[% item.rating %]</span>)</dt>
-<dd>[%    IF item.review %][% item.review %][% END %]</dd>
+<dd class="review">[%    IF item.review %][% item.review %][% END %]
+[% IF item.id == ownreviewid %]
+<p />
+<a href="[% config.userreviews_loc %]?sessionID=[% sessionID
+%];reviewid=[% item.id %];do_edit=1">Eigenen Review
+bearbeiten</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
+href="[% config.userreviews_loc %]?sessionID=[% sessionID
+%];reviewid=[% item.id %];do_del=1">Eigenen Review l&ouml;schen</a>
+[% ELSIF loginname %]
+<p />
+War diese Rezension hilfreich?&nbsp;<a href="[% config.userreviews_loc %]?sessionID=[% sessionID
+%];titid=[% titidn %];titdb=[% database %];queryid=[% queryid %];reviewid=[% item.id %];do_vote=1;rating=1">Ja</a>&nbsp;&nbsp;
+<a href="[% config.userreviews_loc %]?sessionID=[% sessionID
+%];titid=[% titidn %];titdb=[% database %];queryid=[% queryid %];reviewid=[% item.id %];do_vote=1;rating=0">Nein</a>
+[% END %]
+</dd>
 [%  END %]
 </dl>
 

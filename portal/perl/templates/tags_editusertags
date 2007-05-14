@@ -46,6 +46,8 @@
 <form <form method="post" action="http://[% config.servername %][% config.tags_loc %]" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 
+<p />
+
 <table>
 <tr><td>Zu ersetzendes Tag</td><td></td><td>Neuer Tag-Name</td><td></td></tr>
 <tr><td><input type="text" name="oldtag" size="30" id="inputfield"></td><td>&rarr;</td><td><input type="text" name="newtag" size="30"></td><td>&nbsp;&nbsp;<input type="submit" name="do_change" value="&Auml;ndern"></td></tr>

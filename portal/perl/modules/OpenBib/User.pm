@@ -737,6 +737,46 @@ sub get_private_tags {
     return $taglist_ref;
 }
 
+sub vote_for_review {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $reviewid            = exists $arg_ref->{reviewid}
+        ? $arg_ref->{reviewid}            : undef;
+    my $loginname           = exists $arg_ref->{loginname}
+        ? $arg_ref->{loginname}           : undef;
+    my $rating              = exists $arg_ref->{rating}
+        ? $arg_ref->{rating}              : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    # Ratings sind Zahlen
+    $rating   =~s/[^0-9]//g;
+    
+    # Zuerst alle Verknuepfungen loeschen
+    my $request=$self->{dbh}->prepare("select reviewid from reviewratings where loginname = ? and reviewid=?") or $logger->error($DBI::errstr);
+    $request->execute($loginname, $reviewid) or $logger->error($DBI::errstr);
+
+    my $result   = $request->fetchrow_hashref;
+    my $thisreviewid = $result->{reviewid};
+
+    # Review schon vorhanden?
+    if ($thisreviewid){
+        return 1; # Review schon vorhanden! Es darf aber pro Nutzer nur einer abgegeben werden;
+    }
+    else {
+        $request=$self->{dbh}->prepare("insert into reviewratings (reviewid,loginname,rating) values (?,?,?)") or $logger->error($DBI::errstr);
+        $request->execute($reviewid,$loginname,$rating) or $logger->error($DBI::errstr);
+    }
+
+    return;
+}
 
 sub add_review {
     my ($self,$arg_ref)=@_;
@@ -803,7 +843,7 @@ sub get_reviews_of_tit {
         ? $arg_ref->{titisbn}             : '';
     my $titdb               = exists $arg_ref->{titdb}
         ? $arg_ref->{titdb}               : undef;
-
+    
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
@@ -836,6 +876,37 @@ sub get_reviews_of_tit {
     }
     
     return $reviewlist_ref;
+}
+
+sub tit_reviewed_by_user {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $titid               = exists $arg_ref->{titid}
+        ? $arg_ref->{titid}               : undef;
+    my $titisbn             = exists $arg_ref->{titisbn}
+        ? $arg_ref->{titisbn}             : '';
+    my $titdb               = exists $arg_ref->{titdb}
+        ? $arg_ref->{titdb}               : undef;
+    my $loginname           = exists $arg_ref->{loginname}
+        ? $arg_ref->{loginname}           : undef;
+    
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    my $request=$self->{dbh}->prepare("select id from reviews where titid=? and titdb=? and loginname=?") or $logger->error($DBI::errstr);
+    $request->execute($titid,$titdb,$loginname) or $logger->error($DBI::errstr);
+
+    my $result=$request->fetchrow_hashref;
+
+    my $reviewid=$result->{id};
+
+    return $reviewid;
 }
 
 sub get_review_of_user {

@@ -508,8 +508,7 @@ name="review" /></textarea></td></tr>
 <dl class="reviews">
 [%- FOREACH item IN reviews -%]
 <dt class="review">[% IF item.votes.all > 0 %][% item.votes.positive%]
-von [% item.votes.all %] Nutzer fanden die folgende Rezension f&uuml;r
-hilfreich: <p />[% END %]<span class="reviewtitle">[% item.title %]</span> von <span class="reviewnick">[% IF item.nickname %][% item.nickname %][% ELSE %]Unbekannt[% END %]</span>&nbsp;&nbsp;(Bewertung: <span class="reviewrating">[% item.rating %]</span>)</dt>
+von [% item.votes.all %] Nutzer fanden die folgende Rezension hilfreich: <p />[% END %]<span class="reviewtitle">[% item.title %]</span> von <span class="reviewnick">[% IF item.nickname %][% item.nickname %][% ELSE %]Unbekannt[% END %]</span>&nbsp;&nbsp;(Bewertung: <span class="reviewrating">[% item.rating %]</span>)</dt>
 <dd class="review">[%    IF item.review %][% item.review %][% END %]
 [% IF item.id == ownreviewid %]
 <p />

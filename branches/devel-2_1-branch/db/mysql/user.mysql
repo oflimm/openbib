@@ -170,3 +170,18 @@ DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
 
+DROP TABLE IF EXISTS reviewrating;
+CREATE TABLE reviewrating (
+ id        INT(11)     NOT NULL auto_increment,
+ tstamp    TIMESTAMP,
+ reviewid  INT(11)     NOT NULL default '0',
+ loginname TEXT,
+ rating    INT(3)      NOT NULL default '0',
+ PRIMARY KEY  (id),
+ INDEX (id),
+ INDEX (reviewid),
+ INDEX (loginname(30))
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;

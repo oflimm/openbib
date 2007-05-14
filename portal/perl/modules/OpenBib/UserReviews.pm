@@ -96,13 +96,14 @@ sub handler {
     my $title          = decode_utf8($query->param('title'))    || '';
     my $review         = decode_utf8($query->param('review'))   || '';
     my $nickname       = decode_utf8($query->param('nickname')) || '';
-    my $rating         = $query->param('rating')      || 1;
+    my $rating         = $query->param('rating')      || 0;
 
     my $do_show        = $query->param('do_show')     || '';
     my $do_add         = $query->param('do_add')      || '';
     my $do_change      = $query->param('do_change')   || '';
     my $do_edit        = $query->param('do_edit')     || '';
     my $do_del         = $query->param('do_del')      || '';
+    my $do_vote        = $query->param('do_vote')      || '';
     
     #####                                                          ######
     ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########
@@ -242,7 +243,30 @@ sub handler {
         return OK;
     }
 
-    if ($do_del){
+    if ($do_vote){
+
+        if (!$userid){
+            OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um diese Rezension zu beurteilen",$r,$msg);
+            return OK;
+        }
+
+        my $status = $user->vote_for_review({
+            reviewid  => $reviewid,
+            rating    => $rating,
+            loginname => $loginname,
+        });
+
+        if ($status == 1){
+            OpenBib::Common::Util::print_warning("Sie haben bereits diese Rezension beurteilt",$r,$msg);
+            return OK;
+        }
+        
+        $r->internal_redirect("http://$config->{servername}$config->{search_loc}?sessionID=$session->{ID};database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
+        return OK;
+
+    }
+
+        if ($do_del){
 
         if (!$userid){
             OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);

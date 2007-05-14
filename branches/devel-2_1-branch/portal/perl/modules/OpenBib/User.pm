@@ -855,8 +855,8 @@ sub get_reviews_of_tit {
     my $request=$self->{dbh}->prepare("select id,nickname,loginname,title,review,rating from reviews where titid=? and titdb=?") or $logger->error($DBI::errstr);
     $request->execute($titid,$titdb) or $logger->error($DBI::errstr);
 
-    my $request2=$self->{dbh}->prepare("select count(id) as posvotecount from reviewratings where reviewid=?  group by id") or $logger->error($DBI::errstr);
-    my $request3=$self->{dbh}->prepare("select count(id) as votecount from reviewratings where reviewid=? and rating > 0 group by id") or $logger->error($DBI::errstr);
+    my $request2=$self->{dbh}->prepare("select count(id) as votecount from reviewratings where reviewid=?  group by id") or $logger->error($DBI::errstr);
+    my $request3=$self->{dbh}->prepare("select count(id) as posvotecount from reviewratings where reviewid=? and rating > 0 group by id") or $logger->error($DBI::errstr);
 
     my $reviewlist_ref = [];
 
@@ -871,13 +871,17 @@ sub get_reviews_of_tit {
         $request2->execute($id) or $logger->error($DBI::errstr);
 
         my $result2      = $request2->fetchrow_hashref;
-        my $posvotecount = $result2->{posvotecount};
+        my $votecount = $result2->{votecount};
 
-        $request3->execute($id) or $logger->error($DBI::errstr);
+        my $posvotecount = 0;
         
-        my $result3      = $request3->fetchrow_hashref;
-        my $votecount    = $result3->{votecount};
-
+        if ($votecount){
+            $request3->execute($id) or $logger->error($DBI::errstr);
+        
+            my $result3      = $request3->fetchrow_hashref;
+            $posvotecount = $result3->{posvotecount};
+        }
+        
         push @$reviewlist_ref, {
             id        => $id,
             loginname => $loginname,

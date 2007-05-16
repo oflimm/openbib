@@ -31,7 +31,7 @@ function update_fak(yourform, checked, fak) {
 // -->
 </script>
 
-<form method="get" action="http://[% config.servername %][% config.databaseprofile_loc %]">
+<form method="post" action="http://[% config.servername %][% config.databaseprofile_loc %]" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 
 <ul class="tabbingmenu">

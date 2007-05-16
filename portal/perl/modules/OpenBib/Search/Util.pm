@@ -937,7 +937,7 @@ sub print_tit_list_by_idn {
 
     my $config = new OpenBib::Config();
 
-    my $query=Apache::Request->new($r);
+    my $query=Apache::Request->instance($r);
 
     my @itemlist=@$itemlist_ref;
 

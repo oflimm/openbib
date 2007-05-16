@@ -2,7 +2,7 @@
 #
 #  OpenBib::VirtualSearch.pm
 #
-#  Dieses File ist (C) 1997-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2007 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -65,7 +65,7 @@ sub handler {
 
     my $config = new OpenBib::Config();
     
-    my $query=Apache::Request->new($r);
+    my $query=Apache::Request->instance($r);
 
     my $status=$query->parse;
 

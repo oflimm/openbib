@@ -94,7 +94,7 @@ Bei diesem Katalog werden Ihnen nach F&auml;chern organisierte <a href="http://k
 <table width="100%">
 <tr><th style="text-align: center">[% msg.maketext("Geben Sie hier Ihre Suchbegriffe ein") %]</th></tr>
 <tr><td class="boxed" valign="top" align="center">
-<input type="text" name="fs" value="[% searchquery.fs.val %]" size="80" maxlength="200" />
+<input type="text" name="fs" value="[% searchquery.fs.val | html %]" size="80" maxlength="200" />
 </td></tr>
 </table>
 

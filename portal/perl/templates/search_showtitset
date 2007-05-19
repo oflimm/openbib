@@ -403,7 +403,9 @@ verkn&uuml;pft mit dem Tag </span><a onclick="insert_tag(event); return false;" 
 
 [% END %]
 
-[% IF config.social_tagging && all_tags.size > 0 %]
+[% IF config.social_tagging %]
+
+[%   IF all_tags.size > 0 %]
 <p />
 <table width="100%">
 <tr><th>Von Nutzern vergebene Tags&nbsp;<a href="#alltags"><img src="/images/openbib/expand.png" alt="Alle Tags anzeigen" onclick="expandContent('alltags',this); return false;"></a></th></tr>
@@ -436,6 +438,100 @@ verkn&uuml;pft mit dem Tag </span><a href="[% config.tags_loc %]?sessionID=[% se
 
 </td></tr>
 </table>
+
+[%   END %]
+
+[% END %]
+
+
+[% IF config.reviews %]
+
+[% IF   loginname %]
+
+[% ownreviewid = user.tit_reviewed_by_user({ titid => titidn, titdb => database, loginname => loginname }); %]
+
+<p />
+
+[% IF NOT ownreviewid %]
+<form method="get" action="[% config.userreviews_loc %]">
+<input type="hidden" name="sessionID"  value="[% sessionID %]" />
+<input type="hidden" name="titdb"      value="[% database %]" />
+<input type="hidden" name="titid"      value="[% titidn %]" />
+<input type="hidden" name="queryid"    value="[% queryid %]" />
+<input type="hidden" name="titisbn"    value="[% normset.${"T0540"}.first.content.replace('-','') %]" />
+
+<table width="100%">
+<tr><th>Neue Bewertung/Rezension <a href="#newreview"><img src="/images/openbib/expand.png" alt="Neue Bewertung/Rezension" onclick="expandContent('newreview',this); return false;"></a></th></tr>
+<tr><td id="newreview" class="boxedclear" style="display:none;">
+
+<h3>Bewertung</h3>
+<table>
+<tr><td>schlecht&nbsp;<input type="radio"
+name="rating" value="0"/>&nbsp;<input type="radio" name="rating"
+value="1"/>&nbsp;<input type="radio" name="rating"
+value="2"/>&nbsp;<input type="radio" name="rating"
+value="3" checked="checked"/>&nbsp;<input type="radio" name="rating"
+value="4"/>&nbsp;<input type="radio" name="rating"
+value="5"/>&nbsp;sehr gut</td></tr>
+</table>
+
+<h3>Rezension</h3>
+<table>
+<tr><td><b>Pseudonym</b></td><td><input type="text" name="nickname"
+value="" size="30" maxlenth="30" /></td></tr>
+<tr><td><b>Titel</b></td><td><input type="text" name="title"
+value="" size="30" maxlenth="100" /></td></tr>
+<tr><td><b>Text</b></td><td><textarea cols="80" rows="10"
+name="review" /></textarea></td></tr>
+</table>
+<p />
+<input type="submit" name="do_add" value="Aufnehmen"/>&nbsp;&nbsp;<input type="reset" value="Löschen"/>
+</td></tr>
+</table>
+
+</form>
+[% END %]
+
+[%   END %]
+
+[%   reviews = user.get_reviews_of_tit({ titid => titidn, titdb => database }); %]
+
+[%   IF reviews.size > 0 %]
+
+<p />
+
+<table width="100%">
+<tr><th>Bewertungen/Rezensionen von Nutzern <a href="#allreviews"><img src="/images/openbib/expand.png" alt="Alle Reviews anzeigen" onclick="expandContent('allreviews',this); return false;"></a></th></tr>
+<tr><td id="allreviews" class="boxedclear" style="display:none;">
+<!-- Beginn Reviews -->
+
+<dl class="reviews">
+[%- FOREACH item IN reviews -%]
+<dt class="review">[% IF item.votes.all > 0 %][% item.votes.positive%]
+von [% item.votes.all %] Nutzer fanden die folgende Rezension hilfreich: <p />[% END %]<span class="reviewtitle">[% item.title %]</span> von <span class="reviewnick">[% IF item.nickname %][% item.nickname %][% ELSE %]Unbekannt[% END %]</span>&nbsp;&nbsp;(Bewertung: <span class="reviewrating">[% item.rating %]</span>)</dt>
+<dd class="review">[%    IF item.review %][% item.review %][% END %]
+[% IF item.id == ownreviewid %]
+<p />
+<a href="[% config.userreviews_loc %]?sessionID=[% sessionID
+%];reviewid=[% item.id %];do_edit=1">Eigenen Review
+bearbeiten</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
+href="[% config.userreviews_loc %]?sessionID=[% sessionID
+%];reviewid=[% item.id %];do_del=1">Eigenen Review l&ouml;schen</a>
+[% ELSIF loginname %]
+<p />
+War diese Rezension hilfreich?&nbsp;<a href="[% config.userreviews_loc %]?sessionID=[% sessionID
+%];titid=[% titidn %];titdb=[% database %];queryid=[% queryid %];reviewid=[% item.id %];do_vote=1;rating=1">Ja</a>&nbsp;&nbsp;
+<a href="[% config.userreviews_loc %]?sessionID=[% sessionID
+%];titid=[% titidn %];titdb=[% database %];queryid=[% queryid %];reviewid=[% item.id %];do_vote=1;rating=0">Nein</a>
+[% END %]
+</dd>
+[%  END %]
+</dl>
+
+</td></tr>
+</table>
+
+[%   END %]
 
 [% END %]
 

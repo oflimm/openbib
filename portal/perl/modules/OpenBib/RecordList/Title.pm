@@ -192,7 +192,7 @@ sub print_to_handler {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $query=Apache::Request->new($r);
+    my $query=Apache::Request->instance($r);
 
     my @itemlist=@{$self->{recordlist}};
 

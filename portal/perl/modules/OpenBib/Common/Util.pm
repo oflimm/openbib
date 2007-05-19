@@ -64,7 +64,7 @@ sub get_css_by_browsertype {
 
     my $stylesheet="";
   
-    if ( $useragent=~/Mozilla.5.0/ || $useragent=~/MSIE 5/ || $useragent=~/MSIE 6/ || $useragent=~/Konqueror"/ ) {
+    if ( $useragent=~/Mozilla.5.0/ || $useragent=~/MSIE [5-9]/ || $useragent=~/Konqueror"/ ) {
         if ($useragent=~/MSIE/) {
             $stylesheet="openbib-ie.css";
         }
@@ -95,7 +95,7 @@ sub print_warning {
     
     my $stylesheet=get_css_by_browsertype($r);
 
-    my $query=Apache::Request->new($r);
+    my $query=Apache::Request->instance($r);
 
     my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
 
@@ -146,7 +146,7 @@ sub print_info {
     
     my $stylesheet=get_css_by_browsertype($r);
 
-    my $query=Apache::Request->new($r);
+    my $query=Apache::Request->instance($r);
 
     my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
 
@@ -602,7 +602,7 @@ sub get_searchquery {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $query=Apache::Request->new($r);
+    my $query=Apache::Request->instance($r);
 
     # Wandlungstabelle Erscheinungsjahroperator
     my $ejahrop_ref={
@@ -1009,7 +1009,7 @@ sub grundform {
         $content=~s/(\w)-(\w)/$1 $2/g;
         $content=~s/(\w)'(\w)/$1 $2/g;
     }
-    
+
     # Zeichenersetzungen
     $content=~s/'/ /g;
     $content=~s/\// /g;
@@ -1028,36 +1028,141 @@ sub grundform {
     $content=~s/é/e/g;
     $content=~s/è/e/g;
     $content=~s/ê/e/g;
+    $content=~s/ë/e/g;
+    $content=~s/\u0113/e/g; # Kl. e mit Ueberstrich/Macron
+    $content=~s/\u0115/e/g; # Kl. e mit Hacek/Breve
+    $content=~s/\u011b/e/g; # Kl. e mit Caron
+    $content=~s/\u0117/e/g; # Kl. e mit Punkt
+    
     $content=~s/É/E/g;
     $content=~s/È/E/g;
     $content=~s/Ê/E/g;
-
+    $content=~s/Ë/E/g;
+    $content=~s/\u0112/E/g; # Gr. E mit Ueberstrich/Macron
+    $content=~s/\u0114/E/g; # Gr. E mit Hacek/Breve
+    $content=~s/\u011a/E/g; # Gr. E mit Caron
+    $content=~s/\u0116/E/g; # Gr. E mit Punkt
+    
     $content=~s/á/a/g;
     $content=~s/à/a/g;
     $content=~s/â/a/g;
+    $content=~s/ã/a/g;
+    $content=~s/å/a/g;
+    $content=~s/\u0101/a/g; # Kl. a mit Ueberstrich/Macron
+    $content=~s/\u0103/a/g; # Kl. a mit Hacek/Breve
+    
     $content=~s/Á/A/g;
     $content=~s/À/A/g;
     $content=~s/Â/A/g;
-
+    $content=~s/Ã/A/g;
+    $content=~s/Å/A/g;
+    $content=~s/\u0100/A/g; # Gr. A mit Ueberstrich/Macron
+    $content=~s/\u0102/A/g; # Gr. A mit Hacek/Breve
+    
     $content=~s/ó/o/g;
     $content=~s/ò/o/g;
     $content=~s/ô/o/g;
+    $content=~s/õ/o/g;
+    $content=~s/\u014d/o/g; # Kl. o mit Ueberstrich/Macron
+    $content=~s/\u014f/o/g; # Kl. o mit Hacek/Breve
+    $content=~s/\u0151/o/g; # Kl. o mit Doppel-Acute
+    
     $content=~s/Ó/O/g;
-    $content=~s/Ò/o/g;
-    $content=~s/Ô/o/g;
-
+    $content=~s/Ò/O/g;
+    $content=~s/Ô/O/g;
+    $content=~s/Õ/O/g;
+    $content=~s/\u014c/O/g; # Gr. O mit Ueberstrich/Macron
+    $content=~s/\u014e/O/g; # Gr. O mit Hacek/Breve
+    $content=~s/\u0150/O/g; # Gr. O mit Doppel-Acute
+    
     $content=~s/í/i/g;
     $content=~s/ì/i/g;
     $content=~s/î/i/g;
+    $content=~s/ï/i/g;
+    $content=~s/\u0131/i/g; # Kl. punktloses i
+    $content=~s/\u012b/i/g; # Kl. i mit Ueberstrich/Macron
+    $content=~s/\u012d/i/g; # Kl. i mit Hacek/Breve
+
+    
     $content=~s/Í/I/g;
     $content=~s/Ì/I/g;
     $content=~s/Î/I/g;
+    $content=~s/Ï/I/g;
+    $content=~s/\u0130/I/g; # Gr. I mit Punkt
+    $content=~s/\u012a/I/g; # Gr. i mit Ueberstrich/Macron
+    $content=~s/\u012c/I/g; # Gr. i mit Hacek/Breve
+
+    $content=~s/Ú/U/g;
+    $content=~s/Ù/U/g;
+    $content=~s/Û/U/g;
+    $content=~s/\u0168/U/g; # Gr. U mit Tilde
+    $content=~s/\u016a/U/g; # Gr. U mit Ueberstrich/Macron
+    $content=~s/\u016c/U/g; # Gr. U mit Hacek/Breve
+    $content=~s/\u0170/U/g; # Gr. U mit Doppel-Acute
+    $content=~s/\u016e/U/g; # Gr. U mit Ring oben
+
+    $content=~s/ú/u/g;
+    $content=~s/ù/u/g;
+    $content=~s/û/u/g;
+    $content=~s/\u0169/u/g; # Kl. u mit Tilde
+    $content=~s/\u016b/u/g; # Kl. u mit Ueberstrich/Macron
+    $content=~s/\u016d/u/g; # Kl. u mit Hacek/Breve
+    $content=~s/\u0171/u/g; # Kl. u mit Doppel-Acute
+    $content=~s/\u016f/u/g; # Kl. u mit Ring oben
 
     $content=~s/ø/o/g;
     $content=~s/Ø/o/g;
     $content=~s/ñ/n/g;
     $content=~s/Ñ/N/g;
-#     $content=~s///g;
+
+    $content=~s/ç/c/g;
+    $content=~s/\u0107/c/g; # Kl. c mit Acute
+    $content=~s/\u0108/c/g; # Kl. c mit Circumflexe
+    $content=~s/\u010b/c/g; # Kl. c mit Punkt oben
+    $content=~s/\u010d/c/g; # Kl. c mit Caron
+    
+    $content=~s/Ç/c/g;
+    $content=~s/\u0106/C/g; # Gr. C mit Acute
+    $content=~s/\u0108/C/g; # Gr. C mit Circumflexe
+    $content=~s/\u010a/C/g; # Gr. C mit Punkt oben
+    $content=~s/\u010c/C/g; # Gr. C mit Caron
+
+    $content=~s/\u0123/g/g; # Kl. g mit Cedille
+    $content=~s/\u011f/g/g; # Kl. g mit Breve
+    $content=~s/\u011d/g/g; # Kl. g mit Circumflexe
+    $content=~s/\u0121/g/g; # Kl. g mit Punkt oben
+
+    $content=~s/\u0122/G/g; # Gr. G mit Cedille
+    $content=~s/\u011e/G/g; # Gr. G mit Breve
+    $content=~s/\u011c/G/g; # Gr. G mit Circumflexe
+    $content=~s/\u0120/G/g; # Gr. g mit Punkt oben
+
+    $content=~s/\u20ac/e/g;   # Euro-Zeichen
+    $content=~s/\u0152/oe/g;  # OE-Ligatur
+    $content=~s/\u0153/oe/g;  # oe-Ligatur
+    $content=~s/Æ/ae/g;       # AE-Ligatur
+    $content=~s/æ/ae/g;       # ae-Ligatur
+    $content=~s/\u0160/s/g;   # S hacek
+    $content=~s/\u0161/s/g;   # s hacek
+    $content=~s/\u017d/z/g;   # Z hacek
+    $content=~s/\u017e/z/g;   # z hacek
+    $content=~s/\u0178/y/g;   # Y Umlaut
+    $content=~s/¡/i/g;        # i Ueberstrich
+    $content=~s/¢/c/g;        # Cent
+    $content=~s/£/l/g;        # Pfund
+    $content=~s/¥/y/g;        # Yen
+    $content=~s/µ/u/g;        # Mikro
+    
+    $content=~s/Ð/e/g;        # Gr. Islaend. E (durchgestrichenes D)
+    $content=~s/\u0111/e/g;   # Kl. Islaend. e ? (durchgestrichenes d)
+
+    $content=~s/Ý/y/g;
+    $content=~s/ý/y/g;
+    $content=~s/Þ/th/g;       # Gr. Thorn
+    $content=~s/þ/th/g;       # kl. Thorn
+    $content=~s/ð/eth/g;      # eth
+
+    #     $content=~s///g;
 #     $content=~s///g;
 #     $content=~s///g;
 #     $content=~s///g;

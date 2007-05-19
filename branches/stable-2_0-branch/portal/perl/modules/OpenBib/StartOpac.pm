@@ -57,7 +57,7 @@ sub handler {
 
     my $session = new OpenBib::Session();
     
-    my $query  = Apache::Request->new($r);
+    my $query  = Apache::Request->instance($r);
 
     my $status = $query->parse;
 

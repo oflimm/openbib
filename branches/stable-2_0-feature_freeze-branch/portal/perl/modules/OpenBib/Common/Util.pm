@@ -551,7 +551,8 @@ sub get_searchterms {
     }
 
     my $alltermsstring = join (" ",@allterms);
-
+    $alltermsstring    =~s/[^\p{Alphabetic}0-9 ]//g;
+    
     my $tokenizer = String::Tokenizer->new();
     $tokenizer->tokenize($alltermsstring);
 

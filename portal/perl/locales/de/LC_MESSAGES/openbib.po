@@ -32,6 +32,7 @@
 # translation of openbib.po to
 # translation of openbib.po to
 # translation of openbib.po to
+# translation of openbib.po to
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
 # Oliver Flimm <flimm@openbib.org>, 2006, 2007.
@@ -40,7 +41,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2007-05-23 10:51+0200\n"
+"PO-Revision-Date: 2007-05-24 09:52+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team:  <l10n@openbib.org>\n"
 "MIME-Version: 1.0\n"
@@ -245,6 +246,7 @@ msgstr "Als Mail verschicken"
 #: ../templates/views/inst431/searchframe:63
 #: ../templates/views/inst460/searchframe:63
 #: ../templates/views/inst501/searchframe:63
+#: ../templates/views/kapsel/searchframe:43
 #: ../templates/views/kempen/searchframe:63
 #: ../templates/views/kevelaer/searchframe:63
 #: ../templates/views/kug/searchframe:146
@@ -692,6 +694,7 @@ msgstr "Digitale Bibliothek / Zeitschriften (Aufsatzlieferung)"
 
 #: ../templates/database/landschaft/virtualsearch_result_item:159
 #: ../templates/database/portrait/virtualsearch_result_item:159
+#: ../templates/views/kapsel/virtualsearch_result_item:185
 #: ../templates/views/portrait/virtualsearch_result_item:153
 #: ../templates/virtualsearch_result_item:195
 msgid "Drill-Down"
@@ -776,6 +779,12 @@ msgstr "Eine Bearbeitung ist nur bei 'HTML' m&ouml;glich"
 #: ../templates/views/inst460/searchframe:42
 #: ../templates/views/inst460/searchframe_simple:38
 #: ../templates/views/inst501/searchframe:42
+#: ../templates/views/kapsel/helpframe_14:23
+#: ../templates/views/kapsel/helpframe_15:23
+#: ../templates/views/kapsel/helpframe_16:23
+#: ../templates/views/kapsel/search_browse_tit:19
+#: ../templates/views/kapsel/searchframe:19
+#: ../templates/views/kapsel/searchframe_simple:19
 #: ../templates/views/kempen/searchframe:42
 #: ../templates/views/kempen/searchframe_simple:38
 #: ../templates/views/kevelaer/searchframe:42
@@ -1081,6 +1090,7 @@ msgstr "Fernleihbestellung"
 #: ../templates/views/inst431/searchframe:121
 #: ../templates/views/inst460/searchframe:122
 #: ../templates/views/inst501/searchframe:107
+#: ../templates/views/kapsel/searchframe:71
 #: ../templates/views/kempen/searchframe:102
 #: ../templates/views/kevelaer/searchframe:102
 #: ../templates/views/kug/searchframe:191
@@ -1132,6 +1142,7 @@ msgstr "Freie Suche"
 #: ../templates/views/inst460/searchframe:242
 #: ../templates/views/inst460/searchframe_simple:174
 #: ../templates/views/inst501/searchframe:227
+#: ../templates/views/kapsel/searchframe:133
 #: ../templates/views/kempen/searchframe:199
 #: ../templates/views/kempen/searchframe_simple:111
 #: ../templates/views/kevelaer/searchframe:199
@@ -1193,6 +1204,7 @@ msgstr ""
 msgid "Geben Sie hier Ihre Suchbegriffe ein"
 msgstr "Geben Sie hier Ihre Suchbegriffe ein"
 
+#: ../templates/views/kapsel/searchframe_simple:42
 #: ../templates/views/landschaft/searchframe_simple:42
 #: ../templates/views/portrait/searchframe_simple:49
 msgid "Geben Sie hier bitte Ihre Suchbegriffe ein"
@@ -1204,6 +1216,7 @@ msgstr "Geben Sie hier den Körperschaftsanfang ein"
 
 #: ../templates/search_showswtindex:75 ../templates/search_showtitlist:178
 #: ../templates/search_showtitset:455
+#: ../templates/views/kapsel/search_showtitlist:168
 #: ../templates/virtualsearch_showswtindex:46
 msgid "Geben Sie hier den Schlagwortanfang ein"
 msgstr "Geben Sie hier den Schlagwortanfang ein"
@@ -1402,6 +1415,10 @@ msgstr ""
 #: ../templates/views/inst501/searchframe:217
 #: ../templates/views/inst501/searchframe:89
 #: ../templates/views/inst501/searchframe:95
+#: ../templates/views/kapsel/searchframe:120
+#: ../templates/views/kapsel/searchframe:124
+#: ../templates/views/kapsel/searchframe:60
+#: ../templates/views/kapsel/searchframe_simple:50
 #: ../templates/views/kempen/searchframe:184
 #: ../templates/views/kempen/searchframe:188
 #: ../templates/views/kempen/searchframe:84
@@ -1566,6 +1583,10 @@ msgstr "Hier löschen Sie die Eingabefelder"
 #: ../templates/views/inst501/searchframe:217
 #: ../templates/views/inst501/searchframe:89
 #: ../templates/views/inst501/searchframe:95
+#: ../templates/views/kapsel/searchframe:120
+#: ../templates/views/kapsel/searchframe:124
+#: ../templates/views/kapsel/searchframe:60
+#: ../templates/views/kapsel/searchframe_simple:50
 #: ../templates/views/kempen/searchframe:184
 #: ../templates/views/kempen/searchframe:188
 #: ../templates/views/kempen/searchframe:84
@@ -1670,6 +1691,7 @@ msgstr "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
 #: ../templates/views/inst460/searchframe_simple:143
 #: ../templates/views/inst501/searchframe:217
 #: ../templates/views/inst501/searchframe:95
+#: ../templates/views/kapsel/searchframe:124
 #: ../templates/views/kempen/searchframe:188
 #: ../templates/views/kempen/searchframe:90
 #: ../templates/views/kempen/searchframe_simple:80
@@ -1698,6 +1720,7 @@ msgstr "Hier suchen Sie in allen Katalogen auf einmal"
 #: ../templates/headerframe:32 ../templates/views/einbaende/headerframe:26
 #: ../templates/views/gdonck/headerframe:24
 #: ../templates/views/gleuel/headerframe:24
+#: ../templates/views/kapsel/headerframe:26
 #: ../templates/views/kempen/headerframe:24
 #: ../templates/views/kevelaer/headerframe:24
 #: ../templates/views/kug/headerframe:32
@@ -1726,6 +1749,7 @@ msgstr ""
 "Hinweise und Beispiele zu weiteren\n"
 "Suchm&ouml;glichkeiten erhalten Sie %1hier%2"
 
+#: ../templates/views/kapsel/headerframe:26
 #: ../templates/views/landschaft/headerframe:26
 #: ../templates/views/portrait/headerframe:26
 #: ../templates/views/rheinlandbib/headerframe:26
@@ -1819,6 +1843,7 @@ msgstr "Ihr vergessenes KUG-Passwort"
 #: ../templates/views/inst431/searchframe:118
 #: ../templates/views/inst460/searchframe:119
 #: ../templates/views/inst501/searchframe:104
+#: ../templates/views/kapsel/searchframe:68
 #: ../templates/views/kempen/searchframe:99
 #: ../templates/views/kevelaer/searchframe:99
 #: ../templates/views/kwinter/searchframe:99
@@ -1844,9 +1869,9 @@ msgstr "Ihre Merkliste wurde an Sie per Mail versendet."
 
 #: ../templates/leave:25 ../templates/views/einbaende/leave:25
 #: ../templates/views/gdonck/leave:25 ../templates/views/gleuel/leave:25
-#: ../templates/views/kempen/leave:25 ../templates/views/kevelaer/leave:25
-#: ../templates/views/kwinter/leave:25 ../templates/views/landschaft/leave:25
-#: ../templates/views/portrait/leave:25
+#: ../templates/views/kapsel/leave:25 ../templates/views/kempen/leave:25
+#: ../templates/views/kevelaer/leave:25 ../templates/views/kwinter/leave:25
+#: ../templates/views/landschaft/leave:25 ../templates/views/portrait/leave:25
 #: ../templates/views/rheinlandbib/leave:25
 #: ../templates/views/richter/leave:25 ../templates/views/xanten/leave:25
 msgid "Ihre Sitzung wurde beendet."
@@ -1916,6 +1941,7 @@ msgstr "Import-Einstellungen"
 #: ../templates/views/inst460/searchframe_simple:143
 #: ../templates/views/inst501/searchframe:217
 #: ../templates/views/inst501/searchframe:95
+#: ../templates/views/kapsel/searchframe:124
 #: ../templates/views/kempen/searchframe:188
 #: ../templates/views/kempen/searchframe:90
 #: ../templates/views/kempen/searchframe_simple:80
@@ -2087,6 +2113,10 @@ msgstr "In ausgewählten Katalogen suchen"
 #: ../templates/views/einbaende/resultlists_showall_sortall:103
 #: ../templates/views/einbaende/resultlists_showsinglepool:124
 #: ../templates/views/einbaende/virtualsearch_result_item:71
+#: ../templates/views/kapsel/resultlists_showall:127
+#: ../templates/views/kapsel/resultlists_showsinglepool:130
+#: ../templates/views/kapsel/search_showtitlist:137
+#: ../templates/views/kapsel/virtualsearch_result_item:69
 #: ../templates/views/portrait/resultlists_showsinglepool:119
 #: ../templates/views/portrait/virtualsearch_result_item:70
 #: ../templates/virtualsearch_result_item:79
@@ -2239,6 +2269,7 @@ msgstr "Ja"
 #: ../templates/views/inst431/searchframe:169
 #: ../templates/views/inst460/searchframe:170
 #: ../templates/views/inst501/searchframe:155
+#: ../templates/views/kapsel/searchframe:95
 #: ../templates/views/kempen/searchframe:150
 #: ../templates/views/kevelaer/searchframe:150
 #: ../templates/views/kug/searchframe:239
@@ -2253,6 +2284,7 @@ msgstr "Jahr"
 
 #: ../templates/database/landschaft/virtualsearch_result_item:142
 #: ../templates/database/portrait/virtualsearch_result_item:142
+#: ../templates/views/kapsel/virtualsearch_result_item:169
 #: ../templates/views/portrait/virtualsearch_result_item:136
 #: ../templates/virtualsearch_result_item:179
 msgid "Jahre"
@@ -2268,6 +2300,7 @@ msgstr "K&ouml;rperschaft"
 
 #: ../templates/database/landschaft/virtualsearch_result_item:105
 #: ../templates/database/portrait/virtualsearch_result_item:105
+#: ../templates/views/kapsel/virtualsearch_result_item:133
 #: ../templates/views/portrait/virtualsearch_result_item:99
 #: ../templates/virtualsearch_result_item:143
 msgid "K&ouml;rperschaften"
@@ -2353,6 +2386,7 @@ msgstr "Katalogprofile"
 #: ../templates/views/inst431/searchframe:118
 #: ../templates/views/inst460/searchframe:119
 #: ../templates/views/inst501/searchframe:104
+#: ../templates/views/kapsel/searchframe:68
 #: ../templates/views/kempen/searchframe:99
 #: ../templates/views/kevelaer/searchframe:99
 #: ../templates/views/kwinter/searchframe:99
@@ -2464,6 +2498,12 @@ msgstr "Kompletter Titel"
 #: ../templates/views/inst460/searchframe:43
 #: ../templates/views/inst460/searchframe_simple:39
 #: ../templates/views/inst501/searchframe:43
+#: ../templates/views/kapsel/helpframe_14:24
+#: ../templates/views/kapsel/helpframe_15:24
+#: ../templates/views/kapsel/helpframe_16:24
+#: ../templates/views/kapsel/search_browse_tit:20
+#: ../templates/views/kapsel/searchframe:20
+#: ../templates/views/kapsel/searchframe_simple:20
 #: ../templates/views/kempen/searchframe:43
 #: ../templates/views/kempen/searchframe_simple:39
 #: ../templates/views/kevelaer/searchframe:43
@@ -2590,6 +2630,9 @@ msgstr "Lokale Signatur      "
 #: ../templates/views/einbaende/resultlists_showall_sortall:53
 #: ../templates/views/einbaende/resultlists_showsinglepool:53
 #: ../templates/views/einbaende/virtualsearch_result_start:54
+#: ../templates/views/kapsel/resultlists_showall:52
+#: ../templates/views/kapsel/resultlists_showsinglepool:54
+#: ../templates/views/kapsel/search_showtitlist:58
 #: ../templates/views/portrait/resultlists_showsinglepool:53
 #: ../templates/virtualsearch_result_start:54
 msgid "Los"
@@ -2710,6 +2753,10 @@ msgstr "Los"
 #: ../templates/views/inst501/searchframe:217
 #: ../templates/views/inst501/searchframe:89
 #: ../templates/views/inst501/searchframe:95
+#: ../templates/views/kapsel/searchframe:120
+#: ../templates/views/kapsel/searchframe:124
+#: ../templates/views/kapsel/searchframe:60
+#: ../templates/views/kapsel/searchframe_simple:50
 #: ../templates/views/kempen/searchframe:184
 #: ../templates/views/kempen/searchframe:188
 #: ../templates/views/kempen/searchframe:84
@@ -2834,6 +2881,7 @@ msgstr "Medienart"
 #: ../templates/database/landschaft/search_showtitlist:160
 #: ../templates/database/portrait/search_showtitlist:160
 #: ../templates/search_showtitlist:160
+#: ../templates/views/kapsel/search_showtitlist:150
 msgid "Mehrfachauswahl"
 msgstr "Mehrfachauswahl"
 
@@ -2858,6 +2906,7 @@ msgstr "Meldung"
 #: ../templates/views/einbaende/managecollection_show:27
 #: ../templates/views/gdonck/headerframe:24
 #: ../templates/views/gleuel/headerframe:24
+#: ../templates/views/kapsel/headerframe:25
 #: ../templates/views/kempen/headerframe:24
 #: ../templates/views/kevelaer/headerframe:24
 #: ../templates/views/kug/headerframe:23
@@ -2972,7 +3021,8 @@ msgstr "Neuaufnahmen nach Systematik"
 msgid "Neuaufnahmen nach Verfasser"
 msgstr "Neuaufnahmen nach Verfasser"
 
-#: ../templates/views/landschaft/leave:33 ../templates/views/portrait/leave:33
+#: ../templates/views/kapsel/leave:33 ../templates/views/landschaft/leave:33
+#: ../templates/views/portrait/leave:33
 msgid "Neue Sitzung beginnen"
 msgstr "Neue Sitzung beginnen"
 
@@ -3040,6 +3090,9 @@ msgstr "Notation"
 #: ../templates/views/einbaende/resultlists_showall_sortall:38
 #: ../templates/views/einbaende/resultlists_showsinglepool:38
 #: ../templates/views/einbaende/virtualsearch_result_start:39
+#: ../templates/views/kapsel/resultlists_showall:33
+#: ../templates/views/kapsel/resultlists_showsinglepool:35
+#: ../templates/views/kapsel/search_showtitlist:39
 #: ../templates/views/portrait/resultlists_showsinglepool:35
 #: ../templates/virtualsearch_result_start:34
 msgid "Optionen"
@@ -3172,7 +3225,8 @@ msgid "Profilmanagement"
 msgstr "Profilmanagement"
 
 #: ../templates/helpframe:19 ../templates/helpframe_1:19
-#: ../templates/helpframe_2:19 ../templates/views/landschaft/headerframe:26
+#: ../templates/helpframe_2:19 ../templates/views/kapsel/headerframe:26
+#: ../templates/views/landschaft/headerframe:26
 #: ../templates/views/portrait/headerframe:26
 msgid "Projekt"
 msgstr "Projekt"
@@ -3183,6 +3237,7 @@ msgstr "Protokoll"
 
 #: ../templates/admin_showcat:69 ../templates/admin_showviews:58
 #: ../templates/headerframe:24 ../templates/views/einbaende/headerframe:26
+#: ../templates/views/kapsel/headerframe:26
 #: ../templates/views/kug/headerframe:24
 #: ../templates/views/landschaft/headerframe:26
 #: ../templates/views/portrait/headerframe.ori:24
@@ -3207,6 +3262,7 @@ msgstr "RSS-Feed zu diesem View"
 #: ../templates/views/einbaende/headerframe:25
 #: ../templates/views/gdonck/headerframe:24
 #: ../templates/views/gleuel/headerframe:24
+#: ../templates/views/kapsel/headerframe:25
 #: ../templates/views/kempen/headerframe:24
 #: ../templates/views/kevelaer/headerframe:24
 #: ../templates/views/kug/headerframe:23
@@ -3265,6 +3321,7 @@ msgstr "Registrieren"
 msgid "Rufen Sie hier die Ergebnisse früherer Recherchen auf"
 msgstr "Rufen Sie hier die Ergebnisse früherer Recherchen auf"
 
+#: ../templates/views/kapsel/searchframe_simple:60
 #: ../templates/views/landschaft/searchframe_simple:60
 #: ../templates/views/portrait/searchframe_simple:67
 msgid "Rufen Sie hier die Ergebnisse frührerer Recherchen auf"
@@ -3335,6 +3392,7 @@ msgstr "Schlagwort"
 
 #: ../templates/database/landschaft/virtualsearch_result_item:130
 #: ../templates/database/portrait/virtualsearch_result_item:130
+#: ../templates/views/kapsel/virtualsearch_result_item:157
 #: ../templates/views/portrait/virtualsearch_result_item:124
 #: ../templates/virtualsearch_result_item:167
 msgid "Schlagworte"
@@ -3349,6 +3407,7 @@ msgid "Schlagwortindex diese Katalogs"
 msgstr "Schlagwortindex diese Katalogs"
 
 #: ../templates/search_showswtindex:75 ../templates/search_showtitlist:178
+#: ../templates/views/kapsel/search_showtitlist:168
 msgid "Schlagwortindex dieses Katalogs"
 msgstr "Schlagwortindex dieses Katalogs"
 
@@ -3410,6 +3469,8 @@ msgstr "Seit"
 #: ../templates/database/portrait/virtualsearch_result_item:159
 #: ../templates/database/portrait/virtualsearch_result_item:83
 #: ../templates/views/einbaende/virtualsearch_result_item:78
+#: ../templates/views/kapsel/virtualsearch_result_item:185
+#: ../templates/views/kapsel/virtualsearch_result_item:76
 #: ../templates/views/portrait/virtualsearch_result_item:153
 #: ../templates/views/portrait/virtualsearch_result_item:77
 #: ../templates/virtualsearch_result_item:195
@@ -3520,7 +3581,8 @@ msgstr ""
 "bekanntgegebene und &ouml;ffentliche finale Testphase &uuml;bergegangen ist."
 
 #: ../templates/frameset:35 ../templates/views/gdonck/frameset:28
-#: ../templates/views/gleuel/frameset:28 ../templates/views/kempen/frameset:28
+#: ../templates/views/gleuel/frameset:28 ../templates/views/kapsel/frameset:30
+#: ../templates/views/kempen/frameset:28
 #: ../templates/views/kevelaer/frameset:28 ../templates/views/kug/frameset:31
 #: ../templates/views/kwinter/frameset:28
 #: ../templates/views/landschaft/frameset:30
@@ -3804,6 +3866,7 @@ msgstr "Signatur"
 #: ../templates/headerframe:32 ../templates/views/einbaende/headerframe:26
 #: ../templates/views/gdonck/headerframe:24
 #: ../templates/views/gleuel/headerframe:24
+#: ../templates/views/kapsel/headerframe:26
 #: ../templates/views/kempen/headerframe:24
 #: ../templates/views/kevelaer/headerframe:24
 #: ../templates/views/kug/headerframe:32
@@ -3841,6 +3904,9 @@ msgstr ""
 #: ../templates/resultlists_showsinglepool:37
 #: ../templates/search_showtitlist:41
 #: ../templates/views/einbaende/virtualsearch_result_start:41
+#: ../templates/views/kapsel/resultlists_showall:35
+#: ../templates/views/kapsel/resultlists_showsinglepool:37
+#: ../templates/views/kapsel/search_showtitlist:41
 #: ../templates/views/portrait/resultlists_showsinglepool:37
 #: ../templates/virtualsearch_result_start:36
 msgid "Sortierung"
@@ -4005,6 +4071,7 @@ msgstr "Strasse"
 #: ../templates/views/inst431/searchframe:115
 #: ../templates/views/inst460/searchframe:116
 #: ../templates/views/inst501/searchframe:101
+#: ../templates/views/kapsel/searchframe:65
 #: ../templates/views/kempen/searchframe:96
 #: ../templates/views/kevelaer/searchframe:96
 #: ../templates/views/kug/searchframe:186
@@ -4025,6 +4092,11 @@ msgstr "Suche starten"
 #: ../templates/search_showswtindex:75 ../templates/search_showtitlist:178
 #: ../templates/search_showtitset:455
 #: ../templates/views/einbaende/searchframe_simple:30
+#: ../templates/views/kapsel/search_showtitlist:168
+#: ../templates/views/kapsel/searchframe:120
+#: ../templates/views/kapsel/searchframe:124
+#: ../templates/views/kapsel/searchframe:60
+#: ../templates/views/kapsel/searchframe_simple:50
 #: ../templates/views/landschaft/searchframe:120
 #: ../templates/views/landschaft/searchframe:124
 #: ../templates/views/landschaft/searchframe:60
@@ -4083,6 +4155,7 @@ msgstr "Suchhilfe"
 #: ../templates/views/inst431/searchframe:115
 #: ../templates/views/inst460/searchframe:116
 #: ../templates/views/inst501/searchframe:101
+#: ../templates/views/kapsel/searchframe:65
 #: ../templates/views/kempen/searchframe:96
 #: ../templates/views/kevelaer/searchframe:96
 #: ../templates/views/kwinter/searchframe:96
@@ -4114,6 +4187,7 @@ msgstr "Suchhinweise"
 #: ../templates/views/inst431/searchframe:56
 #: ../templates/views/inst460/searchframe:56
 #: ../templates/views/inst501/searchframe:56
+#: ../templates/views/kapsel/searchframe:36
 #: ../templates/views/kempen/searchframe:56
 #: ../templates/views/kevelaer/searchframe:56
 #: ../templates/views/kug/searchframe:139
@@ -4157,6 +4231,7 @@ msgstr "Suchoptionen"
 
 #: ../templates/database/landschaft/virtualsearch_result_item:88
 #: ../templates/database/portrait/virtualsearch_result_item:88
+#: ../templates/views/kapsel/virtualsearch_result_item:115
 #: ../templates/views/portrait/virtualsearch_result_item:82
 #: ../templates/virtualsearch_result_item:125
 msgid "Suchverfeinerung mit relevanten Begriffen"
@@ -4176,21 +4251,25 @@ msgid "Systematik"
 msgstr "Systematik"
 
 #: ../templates/database/inst001/visible_categories_titset:87
+#: ../templates/database/kapsel/visible_categories_titset:86
 #: ../templates/visible_categories_titset:86
 msgid "T0026"
 msgstr "Nebeneintr."
 
 #: ../templates/database/inst001/visible_categories_titset:47
+#: ../templates/database/kapsel/visible_categories_titset:46
 #: ../templates/visible_categories_titset:46
 msgid "T0035"
 msgstr "Ersch.Land"
 
 #: ../templates/database/inst001/visible_categories_titset:21
+#: ../templates/database/kapsel/visible_categories_titset:21
 #: ../templates/visible_categories_titset:21
 msgid "T0089"
 msgstr "Bandangabe"
 
 #: ../templates/database/inst001/visible_categories_titset:16
+#: ../templates/database/kapsel/visible_categories_titset:16
 #: ../templates/visible_categories_titset:16
 msgid "T0100"
 msgstr "Verfasser"
@@ -4208,6 +4287,7 @@ msgid "T0100-portrait"
 msgstr "Maler / Zeichner"
 
 #: ../templates/database/inst001/visible_categories_titset:17
+#: ../templates/database/kapsel/visible_categories_titset:17
 #: ../templates/database/landschaft/visible_categories_titset:18
 #: ../templates/visible_categories_titset:17
 msgid "T0101"
@@ -4230,6 +4310,7 @@ msgid "T0102-portrait"
 msgstr "Dargestellt Person"
 
 #: ../templates/database/inst001/visible_categories_titset:18
+#: ../templates/database/kapsel/visible_categories_titset:18
 #: ../templates/database/landschaft/visible_categories_titset:19
 #: ../templates/visible_categories_titset:18
 msgid "T0103"
@@ -4240,6 +4321,7 @@ msgid "T0103-portrait"
 msgstr "Weitere Person"
 
 #: ../templates/database/inst001/visible_categories_titset:19
+#: ../templates/database/kapsel/visible_categories_titset:19
 #: ../templates/visible_categories_titset:19
 msgid "T0200"
 msgstr "Urheber"
@@ -4258,6 +4340,7 @@ msgid "T0200-portrait"
 msgstr "Provenienz"
 
 #: ../templates/database/inst001/visible_categories_titset:20
+#: ../templates/database/kapsel/visible_categories_titset:20
 #: ../templates/visible_categories_titset:20
 msgid "T0201"
 msgstr "Körperschaft"
@@ -4267,16 +4350,19 @@ msgid "T0201-portrait"
 msgstr "Körperschaft"
 
 #: ../templates/database/inst001/visible_categories_titset:25
+#: ../templates/database/kapsel/visible_categories_titset:25
 #: ../templates/visible_categories_titset:25
 msgid "T0300"
 msgstr "SammelVermerk"
 
 #: ../templates/database/inst001/visible_categories_titset:23
+#: ../templates/database/kapsel/visible_categories_titset:23
 #: ../templates/visible_categories_titset:23
 msgid "T0304"
 msgstr "EST"
 
 #: ../templates/database/inst001/visible_categories_titset:22
+#: ../templates/database/kapsel/visible_categories_titset:22
 #: ../templates/visible_categories_titset:22
 msgid "T0310"
 msgstr "Ansetzungstitel"
@@ -4290,6 +4376,10 @@ msgstr "Titel"
 msgid "T0331-einbaende"
 msgstr "Titel"
 
+#: ../templates/database/kapsel/visible_categories_titset:24
+msgid "T0331-kapsel"
+msgstr "Quelle"
+
 #: ../templates/database/landschaft/visible_categories_titset:20
 msgid "T0331-landschaft"
 msgstr "Objekt-Titel"
@@ -4299,11 +4389,13 @@ msgid "T0331-portrait"
 msgstr "Bildtitel"
 
 #: ../templates/database/inst001/visible_categories_titset:29
+#: ../templates/database/kapsel/visible_categories_titset:28
 #: ../templates/visible_categories_titset:28
 msgid "T0333"
 msgstr "Zu erg. Urh."
 
 #: ../templates/database/inst001/visible_categories_titset:51
+#: ../templates/database/kapsel/visible_categories_titset:50
 #: ../templates/visible_categories_titset:50
 msgid "T0334"
 msgstr "Material"
@@ -4317,6 +4409,7 @@ msgid "T0334-portrait"
 msgstr "Material"
 
 #: ../templates/database/inst001/visible_categories_titset:30
+#: ../templates/database/kapsel/visible_categories_titset:29
 #: ../templates/database/portrait/visible_categories_titset:21
 #: ../templates/visible_categories_titset:29
 msgid "T0335"
@@ -4327,11 +4420,13 @@ msgid "T0335-einbaende"
 msgstr "Untertitel"
 
 #: ../templates/database/inst001/visible_categories_titset:27
+#: ../templates/database/kapsel/visible_categories_titset:27
 #: ../templates/visible_categories_titset:27
 msgid "T0341"
 msgstr "Paralleltitel"
 
 #: ../templates/database/inst001/visible_categories_titset:33
+#: ../templates/database/kapsel/visible_categories_titset:32
 #: ../templates/database/landschaft/visible_categories_titset:30
 #: ../templates/visible_categories_titset:32
 msgid "T0359"
@@ -4342,12 +4437,14 @@ msgid "T0359-portrait"
 msgstr "Vorlageform"
 
 #: ../templates/database/inst001/visible_categories_titset:34
+#: ../templates/database/kapsel/visible_categories_titset:33
 #: ../templates/visible_categories_titset:33
 msgid "T0360"
 msgstr "Vorl.Unterreihe"
 
 #: ../templates/database/inst001/visible_categories_titset:28
 #: ../templates/database/inst001/visible_categories_titset:31
+#: ../templates/database/kapsel/visible_categories_titset:30
 #: ../templates/visible_categories_titset:30
 msgid "T0361"
 msgstr "Beigefügte Werke"
@@ -4357,11 +4454,13 @@ msgid "T0361-einbaende"
 msgstr "Beibände"
 
 #: ../templates/database/inst001/visible_categories_titset:32
+#: ../templates/database/kapsel/visible_categories_titset:31
 #: ../templates/visible_categories_titset:31
 msgid "T0365"
 msgstr "Gemeins. Angaben"
 
 #: ../templates/database/inst001/visible_categories_titset:26
+#: ../templates/database/kapsel/visible_categories_titset:26
 #: ../templates/visible_categories_titset:26
 msgid "T0370"
 msgstr "Weiterer Titel"
@@ -4371,16 +4470,19 @@ msgid "T0370-einbaende"
 msgstr "Provenienz"
 
 #: ../templates/database/inst001/visible_categories_titset:35
+#: ../templates/database/kapsel/visible_categories_titset:34
 #: ../templates/visible_categories_titset:34
 msgid "T0403"
 msgstr "Ausgabe"
 
 #: ../templates/database/inst001/visible_categories_titset:40
+#: ../templates/database/kapsel/visible_categories_titset:39
 #: ../templates/visible_categories_titset:39
 msgid "T0405"
 msgstr "Erscheinungsverlauf"
 
 #: ../templates/database/inst001/visible_categories_titset:57
+#: ../templates/database/kapsel/visible_categories_titset:56
 #: ../templates/visible_categories_titset:56
 msgid "T0407"
 msgstr "Maßstab"
@@ -4390,6 +4492,7 @@ msgid "T0407-landschaft"
 msgstr "Höhe x Breite"
 
 #: ../templates/database/inst001/visible_categories_titset:36
+#: ../templates/database/kapsel/visible_categories_titset:35
 #: ../templates/database/landschaft/visible_categories_titset:37
 #: ../templates/database/portrait/visible_categories_titset:30
 #: ../templates/visible_categories_titset:35
@@ -4401,6 +4504,7 @@ msgid "T0410-einbaende"
 msgstr "Ersch-Ort"
 
 #: ../templates/database/inst001/visible_categories_titset:37
+#: ../templates/database/kapsel/visible_categories_titset:36
 #: ../templates/database/landschaft/visible_categories_titset:38
 #: ../templates/database/portrait/visible_categories_titset:31
 #: ../templates/visible_categories_titset:36
@@ -4408,6 +4512,7 @@ msgid "T0412"
 msgstr "Verlag"
 
 #: ../templates/database/inst001/visible_categories_titset:46
+#: ../templates/database/kapsel/visible_categories_titset:45
 #: ../templates/visible_categories_titset:45
 msgid "T0413"
 msgstr "Drucker"
@@ -4417,6 +4522,7 @@ msgid "T0413-einbaende"
 msgstr "Drucker"
 
 #: ../templates/database/inst001/visible_categories_titset:39
+#: ../templates/database/kapsel/visible_categories_titset:38
 #: ../templates/database/landschaft/visible_categories_titset:39
 #: ../templates/visible_categories_titset:38
 msgid "T0424"
@@ -4431,6 +4537,7 @@ msgid "T0424-portrait"
 msgstr "Jahr/Ansetzung"
 
 #: ../templates/database/inst001/visible_categories_titset:38
+#: ../templates/database/kapsel/visible_categories_titset:37
 #: ../templates/visible_categories_titset:37
 msgid "T0425"
 msgstr "Ersch. Jahr"
@@ -4448,6 +4555,7 @@ msgid "T0425-portrait"
 msgstr "Jahr"
 
 #: ../templates/database/inst001/visible_categories_titset:50
+#: ../templates/database/kapsel/visible_categories_titset:49
 #: ../templates/database/landschaft/visible_categories_titset:40
 #: ../templates/database/portrait/visible_categories_titset:34
 #: ../templates/visible_categories_titset:49
@@ -4456,6 +4564,8 @@ msgstr "Umfang"
 
 #: ../templates/database/inst001/visible_categories_titset:45
 #: ../templates/database/inst001/visible_categories_titset:58
+#: ../templates/database/kapsel/visible_categories_titset:44
+#: ../templates/database/kapsel/visible_categories_titset:57
 #: ../templates/database/landschaft/visible_categories_titset:42
 #: ../templates/database/portrait/visible_categories_titset:36
 #: ../templates/visible_categories_titset:44
@@ -4464,6 +4574,7 @@ msgid "T0434"
 msgstr "Sonst.Angaben"
 
 #: ../templates/database/inst001/visible_categories_titset:48
+#: ../templates/database/kapsel/visible_categories_titset:47
 #: ../templates/visible_categories_titset:47
 msgid "T0435"
 msgstr "Format"
@@ -4473,16 +4584,19 @@ msgid "T0435-einbaende"
 msgstr "Maße"
 
 #: ../templates/database/inst001/visible_categories_titset:59
+#: ../templates/database/kapsel/visible_categories_titset:58
 #: ../templates/visible_categories_titset:58
 msgid "T0437"
 msgstr "Begleitmaterial"
 
 #: ../templates/database/inst001/visible_categories_titset:54
+#: ../templates/database/kapsel/visible_categories_titset:53
 #: ../templates/visible_categories_titset:53
 msgid "T0451"
 msgstr "Gesamttitel"
 
 #: ../templates/database/inst001/visible_categories_titset:60
+#: ../templates/database/kapsel/visible_categories_titset:59
 #: ../templates/database/landschaft/visible_categories_titset:31
 #: ../templates/visible_categories_titset:59
 msgid "T0501"
@@ -4502,11 +4616,13 @@ msgid "T0502"
 msgstr "EST beig. Werk"
 
 #: ../templates/database/inst001/visible_categories_titset:86
+#: ../templates/database/kapsel/visible_categories_titset:85
 #: ../templates/visible_categories_titset:85
 msgid "T0503"
 msgstr "Übers. HST"
 
 #: ../templates/database/inst001/visible_categories_titset:61
+#: ../templates/database/kapsel/visible_categories_titset:60
 #: ../templates/database/landschaft/visible_categories_titset:44
 #: ../templates/database/portrait/visible_categories_titset:38
 #: ../templates/visible_categories_titset:60
@@ -4514,6 +4630,7 @@ msgid "T0504"
 msgstr "Paralleltitel/Fußnote"
 
 #: ../templates/database/inst001/visible_categories_titset:62
+#: ../templates/database/kapsel/visible_categories_titset:61
 #: ../templates/database/landschaft/visible_categories_titset:45
 #: ../templates/database/portrait/visible_categories_titset:39
 #: ../templates/visible_categories_titset:61
@@ -4521,11 +4638,13 @@ msgid "T0505"
 msgstr "Weiterer Titel/Fußnote"
 
 #: ../templates/database/inst001/visible_categories_titset:63
+#: ../templates/database/kapsel/visible_categories_titset:62
 #: ../templates/visible_categories_titset:62
 msgid "T0507"
 msgstr "AngabenHST"
 
 #: ../templates/database/inst001/visible_categories_titset:49
+#: ../templates/database/kapsel/visible_categories_titset:48
 #: ../templates/database/landschaft/visible_categories_titset:84
 #: ../templates/visible_categories_titset:48
 msgid "T0508"
@@ -4540,6 +4659,7 @@ msgid "T0508-portrait"
 msgstr "Bibl. Nachweis"
 
 #: ../templates/database/inst001/visible_categories_titset:64
+#: ../templates/database/kapsel/visible_categories_titset:63
 #: ../templates/database/landschaft/visible_categories_titset:46
 #: ../templates/visible_categories_titset:63
 msgid "T0509"
@@ -4550,6 +4670,7 @@ msgid "T0509-portrait"
 msgstr "Lebensdaten"
 
 #: ../templates/database/inst001/visible_categories_titset:65
+#: ../templates/database/kapsel/visible_categories_titset:64
 #: ../templates/database/landschaft/visible_categories_titset:47
 #: ../templates/database/portrait/visible_categories_titset:41
 #: ../templates/visible_categories_titset:64
@@ -4557,6 +4678,7 @@ msgid "T0510"
 msgstr "Ausgabe Fußnote"
 
 #: ../templates/database/inst001/visible_categories_titset:66
+#: ../templates/database/kapsel/visible_categories_titset:65
 #: ../templates/database/landschaft/visible_categories_titset:48
 #: ../templates/database/portrait/visible_categories_titset:42
 #: ../templates/visible_categories_titset:65
@@ -4564,6 +4686,7 @@ msgid "T0511"
 msgstr "Erschverm. Fußnote"
 
 #: ../templates/database/inst001/visible_categories_titset:67
+#: ../templates/database/kapsel/visible_categories_titset:66
 #: ../templates/database/landschaft/visible_categories_titset:49
 #: ../templates/database/portrait/visible_categories_titset:43
 #: ../templates/visible_categories_titset:66
@@ -4571,6 +4694,7 @@ msgid "T0512"
 msgstr "Koll. Fußnote"
 
 #: ../templates/database/inst001/visible_categories_titset:68
+#: ../templates/database/kapsel/visible_categories_titset:67
 #: ../templates/database/landschaft/visible_categories_titset:50
 #: ../templates/database/portrait/visible_categories_titset:44
 #: ../templates/visible_categories_titset:67
@@ -4578,6 +4702,7 @@ msgid "T0513"
 msgstr "Impress. Änderung"
 
 #: ../templates/database/inst001/visible_categories_titset:69
+#: ../templates/database/kapsel/visible_categories_titset:68
 #: ../templates/database/landschaft/visible_categories_titset:51
 #: ../templates/database/portrait/visible_categories_titset:45
 #: ../templates/visible_categories_titset:68
@@ -4585,11 +4710,13 @@ msgid "T0515"
 msgstr "Ergänzt. GesamtTitel"
 
 #: ../templates/database/inst001/visible_categories_titset:84
+#: ../templates/database/kapsel/visible_categories_titset:83
 #: ../templates/visible_categories_titset:83
 msgid "T0516"
 msgstr "Sprache"
 
 #: ../templates/database/inst001/visible_categories_titset:81
+#: ../templates/database/kapsel/visible_categories_titset:80
 #: ../templates/visible_categories_titset:80
 msgid "T0519"
 msgstr "Hochschulschrift"
@@ -4600,6 +4727,7 @@ msgid "T0521"
 msgstr "Angaben zum Inhalt"
 
 #: ../templates/database/inst001/visible_categories_titset:70
+#: ../templates/database/kapsel/visible_categories_titset:69
 #: ../templates/database/landschaft/visible_categories_titset:53
 #: ../templates/database/portrait/visible_categories_titset:47
 #: ../templates/visible_categories_titset:69
@@ -4607,11 +4735,13 @@ msgid "T0522"
 msgstr "Teilungsvermerk"
 
 #: ../templates/database/inst001/visible_categories_titset:41
+#: ../templates/database/kapsel/visible_categories_titset:40
 #: ../templates/visible_categories_titset:40
 msgid "T0523"
 msgstr "Erscheinungsweise"
 
 #: ../templates/database/inst001/visible_categories_titset:71
+#: ../templates/database/kapsel/visible_categories_titset:70
 #: ../templates/database/landschaft/visible_categories_titset:54
 #: ../templates/database/portrait/visible_categories_titset:48
 #: ../templates/visible_categories_titset:70
@@ -4619,6 +4749,7 @@ msgid "T0525"
 msgstr "Herkunft Fußnote"
 
 #: ../templates/database/inst001/visible_categories_titset:75
+#: ../templates/database/kapsel/visible_categories_titset:74
 #: ../templates/database/landschaft/visible_categories_titset:55
 #: ../templates/database/portrait/visible_categories_titset:49
 #: ../templates/visible_categories_titset:74
@@ -4626,6 +4757,7 @@ msgid "T0527"
 msgstr "Parallele Ausg."
 
 #: ../templates/database/inst001/visible_categories_titset:76
+#: ../templates/database/kapsel/visible_categories_titset:75
 #: ../templates/database/landschaft/visible_categories_titset:56
 #: ../templates/database/portrait/visible_categories_titset:50
 #: ../templates/visible_categories_titset:75
@@ -4633,6 +4765,7 @@ msgid "T0529"
 msgstr "Titel Beilage"
 
 #: ../templates/database/inst001/visible_categories_titset:77
+#: ../templates/database/kapsel/visible_categories_titset:76
 #: ../templates/database/landschaft/visible_categories_titset:57
 #: ../templates/database/portrait/visible_categories_titset:51
 #: ../templates/visible_categories_titset:76
@@ -4640,6 +4773,7 @@ msgid "T0530"
 msgstr "Bezugswerk"
 
 #: ../templates/database/inst001/visible_categories_titset:78
+#: ../templates/database/kapsel/visible_categories_titset:77
 #: ../templates/database/landschaft/visible_categories_titset:58
 #: ../templates/database/portrait/visible_categories_titset:52
 #: ../templates/visible_categories_titset:77
@@ -4647,6 +4781,7 @@ msgid "T0531"
 msgstr "Frühere Ausg."
 
 #: ../templates/database/inst001/visible_categories_titset:79
+#: ../templates/database/kapsel/visible_categories_titset:78
 #: ../templates/database/landschaft/visible_categories_titset:59
 #: ../templates/database/portrait/visible_categories_titset:53
 #: ../templates/visible_categories_titset:78
@@ -4654,6 +4789,7 @@ msgid "T0532"
 msgstr "Früherer Titel"
 
 #: ../templates/database/inst001/visible_categories_titset:80
+#: ../templates/database/kapsel/visible_categories_titset:79
 #: ../templates/database/landschaft/visible_categories_titset:60
 #: ../templates/database/portrait/visible_categories_titset:54
 #: ../templates/visible_categories_titset:79
@@ -4661,6 +4797,7 @@ msgid "T0533"
 msgstr "Spätere Ausg."
 
 #: ../templates/database/inst001/visible_categories_titset:72
+#: ../templates/database/kapsel/visible_categories_titset:71
 #: ../templates/database/landschaft/visible_categories_titset:61
 #: ../templates/database/portrait/visible_categories_titset:55
 #: ../templates/visible_categories_titset:71
@@ -4668,6 +4805,7 @@ msgid "T0534"
 msgstr "Titelkonk."
 
 #: ../templates/database/inst001/visible_categories_titset:73
+#: ../templates/database/kapsel/visible_categories_titset:72
 #: ../templates/database/landschaft/visible_categories_titset:62
 #: ../templates/database/portrait/visible_categories_titset:56
 #: ../templates/visible_categories_titset:72
@@ -4675,6 +4813,7 @@ msgid "T0535"
 msgstr "Anz. Exemplare"
 
 #: ../templates/database/inst001/visible_categories_titset:74
+#: ../templates/database/kapsel/visible_categories_titset:73
 #: ../templates/database/landschaft/visible_categories_titset:63
 #: ../templates/database/portrait/visible_categories_titset:57
 #: ../templates/visible_categories_titset:73
@@ -4692,11 +4831,13 @@ msgid "T0538"
 msgstr "Angabe Vervielfältigungsart"
 
 #: ../templates/database/inst001/visible_categories_titset:101
+#: ../templates/database/kapsel/visible_categories_titset:100
 #: ../templates/visible_categories_titset:100
 msgid "T0540"
 msgstr "ISBN"
 
 #: ../templates/database/inst001/visible_categories_titset:102
+#: ../templates/database/kapsel/visible_categories_titset:101
 #: ../templates/visible_categories_titset:101
 msgid "T0543"
 msgstr "ISSN"
@@ -4712,6 +4853,7 @@ msgid "T0580"
 msgstr "Sonstige Standardnummern"
 
 #: ../templates/database/inst001/visible_categories_titset:55
+#: ../templates/database/kapsel/visible_categories_titset:54
 #: ../templates/database/landschaft/visible_categories_titset:68
 #: ../templates/database/portrait/visible_categories_titset:62
 #: ../templates/visible_categories_titset:54
@@ -4719,6 +4861,7 @@ msgid "T0590"
 msgstr "In:"
 
 #: ../templates/database/inst001/visible_categories_titset:42
+#: ../templates/database/kapsel/visible_categories_titset:41
 #: ../templates/database/portrait/visible_categories_titset:63
 #: ../templates/visible_categories_titset:41
 msgid "T0591"
@@ -4739,6 +4882,7 @@ msgid "T0593"
 msgstr "Ausgabebez. der Quelle"
 
 #: ../templates/database/inst001/visible_categories_titset:43
+#: ../templates/database/kapsel/visible_categories_titset:42
 #: ../templates/database/portrait/visible_categories_titset:66
 #: ../templates/visible_categories_titset:42
 msgid "T0594"
@@ -4749,6 +4893,7 @@ msgid "T0594-landschaft"
 msgstr "Entstehungslandschaft"
 
 #: ../templates/database/inst001/visible_categories_titset:44
+#: ../templates/database/kapsel/visible_categories_titset:43
 #: ../templates/database/portrait/visible_categories_titset:67
 #: ../templates/visible_categories_titset:43
 msgid "T0595"
@@ -4779,11 +4924,13 @@ msgid "T0599"
 msgstr "Standardnummer der Quelle"
 
 #: ../templates/database/inst001/visible_categories_titset:56
+#: ../templates/database/kapsel/visible_categories_titset:55
 #: ../templates/visible_categories_titset:55
 msgid "T0600"
 msgstr "Bemerkung"
 
 #: ../templates/database/inst001/visible_categories_titset:82
+#: ../templates/database/kapsel/visible_categories_titset:81
 #: ../templates/database/landschaft/visible_categories_titset:73
 #: ../templates/database/portrait/visible_categories_titset:72
 #: ../templates/visible_categories_titset:81
@@ -4791,6 +4938,7 @@ msgid "T0619"
 msgstr "Jahr Vorlage"
 
 #: ../templates/database/inst001/visible_categories_titset:83
+#: ../templates/database/kapsel/visible_categories_titset:82
 #: ../templates/database/landschaft/visible_categories_titset:74
 #: ../templates/database/portrait/visible_categories_titset:73
 #: ../templates/visible_categories_titset:82
@@ -4798,11 +4946,13 @@ msgid "T0646"
 msgstr "Filmbesitz"
 
 #: ../templates/database/inst001/visible_categories_titset:52
+#: ../templates/database/kapsel/visible_categories_titset:51
 #: ../templates/visible_categories_titset:51
 msgid "T0652"
 msgstr "EDV Material"
 
 #: ../templates/database/inst001/visible_categories_titset:53
+#: ../templates/database/kapsel/visible_categories_titset:52
 #: ../templates/database/landschaft/visible_categories_titset:75
 #: ../templates/database/portrait/visible_categories_titset:74
 #: ../templates/visible_categories_titset:52
@@ -4810,6 +4960,7 @@ msgid "T0655"
 msgstr "EDV Adress"
 
 #: ../templates/database/inst001/visible_categories_titset:103
+#: ../templates/database/kapsel/visible_categories_titset:102
 #: ../templates/database/landschaft/visible_categories_titset:85
 #: ../templates/visible_categories_titset:102
 msgid "T0662"
@@ -4853,6 +5004,10 @@ msgstr "Notation"
 msgid "T0700-einbaende"
 msgstr "Einband"
 
+#: ../templates/database/kapsel/visible_categories_titset:99
+msgid "T0700-kapsel"
+msgstr "Systematik"
+
 #: ../templates/database/landschaft/visible_categories_titset:33
 msgid "T0700-landschaft"
 msgstr "1. Ikonogr. Schlagwort"
@@ -4862,6 +5017,7 @@ msgid "T0700-portrait"
 msgstr "Beruf / Weltanschauung"
 
 #: ../templates/database/inst001/visible_categories_titset:89
+#: ../templates/database/kapsel/visible_categories_titset:88
 #: ../templates/visible_categories_titset:88
 msgid "T0710"
 msgstr "Schlagwort"
@@ -4879,6 +5035,7 @@ msgid "T0710-portrait"
 msgstr "Region"
 
 #: ../templates/database/inst001/visible_categories_titset:85
+#: ../templates/database/kapsel/visible_categories_titset:84
 #: ../templates/visible_categories_titset:84
 msgid "T0750"
 msgstr "Abstract"
@@ -4892,6 +5049,7 @@ msgid "T0750-landschaft"
 msgstr "Transkription"
 
 #: ../templates/database/inst001/visible_categories_titset:88
+#: ../templates/database/kapsel/visible_categories_titset:87
 #: ../templates/database/landschaft/visible_categories_titset:81
 #: ../templates/visible_categories_titset:87
 msgid "T0800"
@@ -4907,51 +5065,61 @@ msgid "T0840"
 msgstr "Konkordanz"
 
 #: ../templates/database/inst001/visible_categories_titset:90
+#: ../templates/database/kapsel/visible_categories_titset:89
 #: ../templates/visible_categories_titset:89
 msgid "T0902"
 msgstr "Schlagwort RSWK"
 
 #: ../templates/database/inst001/visible_categories_titset:91
+#: ../templates/database/kapsel/visible_categories_titset:90
 #: ../templates/visible_categories_titset:90
 msgid "T0907"
 msgstr "Schlagwort RSWK"
 
 #: ../templates/database/inst001/visible_categories_titset:92
+#: ../templates/database/kapsel/visible_categories_titset:91
 #: ../templates/visible_categories_titset:91
 msgid "T0912"
 msgstr "Schlagwort RSWK"
 
 #: ../templates/database/inst001/visible_categories_titset:93
+#: ../templates/database/kapsel/visible_categories_titset:92
 #: ../templates/visible_categories_titset:92
 msgid "T0917"
 msgstr "Schlagwort RSWK"
 
 #: ../templates/database/inst001/visible_categories_titset:94
+#: ../templates/database/kapsel/visible_categories_titset:93
 #: ../templates/visible_categories_titset:93
 msgid "T0922"
 msgstr "Schlagwort RSWK"
 
 #: ../templates/database/inst001/visible_categories_titset:95
+#: ../templates/database/kapsel/visible_categories_titset:94
 #: ../templates/visible_categories_titset:94
 msgid "T0927"
 msgstr "Schlagwort RSWK"
 
 #: ../templates/database/inst001/visible_categories_titset:96
+#: ../templates/database/kapsel/visible_categories_titset:95
 #: ../templates/visible_categories_titset:95
 msgid "T0932"
 msgstr "Schlagwort RSWK"
 
 #: ../templates/database/inst001/visible_categories_titset:97
+#: ../templates/database/kapsel/visible_categories_titset:96
 #: ../templates/visible_categories_titset:96
 msgid "T0937"
 msgstr "Schlagwort RSWK"
 
 #: ../templates/database/inst001/visible_categories_titset:98
+#: ../templates/database/kapsel/visible_categories_titset:97
 #: ../templates/visible_categories_titset:97
 msgid "T0942"
 msgstr "Schlagwort RSWK"
 
 #: ../templates/database/inst001/visible_categories_titset:99
+#: ../templates/database/kapsel/visible_categories_titset:98
 #: ../templates/visible_categories_titset:98
 msgid "T0947"
 msgstr "Schlagwort RSWK"
@@ -4966,16 +5134,19 @@ msgid "T1600"
 msgstr "Hinweis"
 
 #: ../templates/database/inst001/visible_categories_titset:104
+#: ../templates/database/kapsel/visible_categories_titset:103
 #: ../templates/visible_categories_titset:103
 msgid "T1664"
 msgstr "Provenienz"
 
 #: ../templates/database/inst001/visible_categories_titset:105
+#: ../templates/database/kapsel/visible_categories_titset:104
 #: ../templates/visible_categories_titset:104
 msgid "T2662"
 msgstr "USB URL"
 
 #: ../templates/database/inst001/visible_categories_titset:106
+#: ../templates/database/kapsel/visible_categories_titset:105
 #: ../templates/visible_categories_titset:105
 msgid "T2663"
 msgstr "USB URL-Info"
@@ -4989,6 +5160,7 @@ msgid "T3000-portrait"
 msgstr "Besitzer"
 
 #: ../templates/database/inst001/visible_categories_titset:107
+#: ../templates/database/kapsel/visible_categories_titset:106
 #: ../templates/database/landschaft/visible_categories_titset:35
 #: ../templates/visible_categories_titset:106
 msgid "T3001"
@@ -4999,28 +5171,33 @@ msgid "T3001-portrait"
 msgstr "Fr&uuml;here Signatur"
 
 #: ../templates/database/inst001/visible_categories_titset:108
+#: ../templates/database/kapsel/visible_categories_titset:107
 #: ../templates/visible_categories_titset:107
 msgid "T3002"
 msgstr "TOC / TIFF"
 
 #: ../templates/database/inst001/visible_categories_titset:109
+#: ../templates/database/kapsel/visible_categories_titset:108
 #: ../templates/visible_categories_titset:108
 msgid "T3003"
 msgstr "TOC / PDF"
 
 #: ../templates/database/einbaende/visible_categories_titset:24
 #: ../templates/database/inst001/visible_categories_titset:111
+#: ../templates/database/kapsel/visible_categories_titset:109
 #: ../templates/visible_categories_titset:109
 msgid "T5001"
 msgstr "Anzahl Gesamttitel"
 
 #: ../templates/database/einbaende/visible_categories_titset:25
 #: ../templates/database/inst001/visible_categories_titset:112
+#: ../templates/database/kapsel/visible_categories_titset:110
 #: ../templates/visible_categories_titset:110
 msgid "T5002"
 msgstr "Anzahl Bände/Stücke"
 
 #: ../templates/database/inst001/visible_categories_titset:113
+#: ../templates/database/kapsel/visible_categories_titset:111
 #: ../templates/visible_categories_titset:111
 msgid "T5100"
 msgstr "Zählung"
@@ -5059,6 +5236,7 @@ msgstr "Tit-Datei"
 #: ../templates/views/inst431/searchframe:194
 #: ../templates/views/inst460/searchframe:195
 #: ../templates/views/inst501/searchframe:180
+#: ../templates/views/kapsel/virtualsearch_result_item:145
 #: ../templates/views/kempen/searchframe:175
 #: ../templates/views/kevelaer/searchframe:175
 #: ../templates/views/kug/searchframe:263
@@ -5109,6 +5287,7 @@ msgstr "Titelaufnahme"
 #: ../templates/database/landschaft/search_showtitlist:69
 #: ../templates/database/portrait/search_showtitlist:69
 #: ../templates/search_showtitlist:70
+#: ../templates/views/kapsel/search_showtitlist:70
 msgid "Titelliste"
 msgstr "Titelliste"
 
@@ -5151,6 +5330,7 @@ msgstr "Titelzugriffe"
 
 #: ../templates/helpframe_10:34 ../templates/helpframe_11:29
 #: ../templates/helpframe_12:24 ../templates/search_showtitset:32
+#: ../templates/views/kapsel/helpframe_18:31
 msgid "Top 20"
 msgstr "Top 20"
 
@@ -5168,6 +5348,10 @@ msgstr "Top 20"
 #: ../templates/select_queries:57
 #: ../templates/views/einbaende/resultlists_showall:60
 #: ../templates/views/einbaende/virtualsearch_result_item:20
+#: ../templates/views/kapsel/resultlists_showall:58
+#: ../templates/views/kapsel/search_showtitlist:75
+#: ../templates/views/kapsel/search_showtitlist:91
+#: ../templates/views/kapsel/virtualsearch_result_item:16
 #: ../templates/views/portrait/virtualsearch_result_item:16
 #: ../templates/virtualsearch_result_item:16
 #: ../templates/virtualsearch_showkorindex:19
@@ -5187,6 +5371,9 @@ msgstr "Treffer"
 #: ../templates/views/einbaende/virtualsearch_result_start:25
 #: ../templates/views/gdonck/headerframe:24
 #: ../templates/views/gleuel/headerframe:24
+#: ../templates/views/kapsel/headerframe:25
+#: ../templates/views/kapsel/resultlists_showall:20
+#: ../templates/views/kapsel/resultlists_showsinglepool:20
 #: ../templates/views/kempen/headerframe:24
 #: ../templates/views/kevelaer/headerframe:24
 #: ../templates/views/kug/headerframe:23
@@ -5327,6 +5514,7 @@ msgstr "Ursprüngliche Auswahl wiederherstellen"
 #: ../templates/database/landschaft/virtualsearch_result_item:93
 #: ../templates/database/portrait/virtualsearch_result_item:93
 #: ../templates/userprefs:171
+#: ../templates/views/kapsel/virtualsearch_result_item:121
 #: ../templates/views/portrait/virtualsearch_result_item:87
 #: ../templates/virtualsearch_result_item:131
 #: ../templates/virtualsearch_showverfindex:46
@@ -5353,6 +5541,7 @@ msgstr "Verfasser"
 #: ../templates/views/inst431/searchframe:118
 #: ../templates/views/inst460/searchframe:119
 #: ../templates/views/inst501/searchframe:104
+#: ../templates/views/kapsel/searchframe:68
 #: ../templates/views/kempen/searchframe:99
 #: ../templates/views/kevelaer/searchframe:99
 #: ../templates/views/kwinter/searchframe:99
@@ -5620,6 +5809,8 @@ msgstr "Zugemailte Merkliste"
 #: ../templates/views/inst460/searchframe:63
 #: ../templates/views/inst460/searchframe_simple:161
 #: ../templates/views/inst501/searchframe:63
+#: ../templates/views/kapsel/searchframe:43
+#: ../templates/views/kapsel/searchframe_simple:66
 #: ../templates/views/kempen/searchframe:63
 #: ../templates/views/kempen/searchframe_simple:98
 #: ../templates/views/kevelaer/searchframe:63
@@ -5677,6 +5868,9 @@ msgstr "Zur&uuml;ck zur %1Suchanfrage%2"
 #: ../templates/views/inst431/searchframe:194
 #: ../templates/views/inst460/searchframe:195
 #: ../templates/views/inst501/searchframe:180
+#: ../templates/views/kapsel/resultlists_showall:47
+#: ../templates/views/kapsel/resultlists_showsinglepool:49
+#: ../templates/views/kapsel/search_showtitlist:53
 #: ../templates/views/kempen/searchframe:175
 #: ../templates/views/kevelaer/searchframe:175
 #: ../templates/views/kug/searchframe:263
@@ -5719,6 +5913,9 @@ msgstr "absteigend"
 #: ../templates/views/inst431/searchframe:194
 #: ../templates/views/inst460/searchframe:195
 #: ../templates/views/inst501/searchframe:180
+#: ../templates/views/kapsel/resultlists_showall:46
+#: ../templates/views/kapsel/resultlists_showsinglepool:48
+#: ../templates/views/kapsel/search_showtitlist:52
 #: ../templates/views/kempen/searchframe:175
 #: ../templates/views/kevelaer/searchframe:175
 #: ../templates/views/kug/searchframe:263
@@ -5758,6 +5955,7 @@ msgstr "katalogübergreifend"
 #: ../templates/database/landschaft/virtualsearch_result_item:16
 #: ../templates/database/portrait/virtualsearch_result_item:16
 #: ../templates/resultlists_choice:90
+#: ../templates/views/kapsel/virtualsearch_result_item:16
 #: ../templates/views/portrait/virtualsearch_result_item:16
 #: ../templates/virtualsearch_result_item:16
 msgid "mind."
@@ -5781,6 +5979,9 @@ msgstr "nach Fert.Jahr"
 #: ../templates/resultlists_showall_sortall:43
 #: ../templates/resultlists_showsinglepool:42
 #: ../templates/search_showtitlist:46
+#: ../templates/views/kapsel/resultlists_showall:40
+#: ../templates/views/kapsel/resultlists_showsinglepool:42
+#: ../templates/views/kapsel/search_showtitlist:46
 #: ../templates/views/portrait/resultlists_showsinglepool:41
 #: ../templates/virtualsearch_result_start:41
 msgid "nach Jahr"
@@ -5792,6 +5993,9 @@ msgstr "nach Jahr"
 #: ../templates/resultlists_showall_sortall:40
 #: ../templates/resultlists_showsinglepool:39
 #: ../templates/search_showtitlist:43
+#: ../templates/views/kapsel/resultlists_showall:37
+#: ../templates/views/kapsel/resultlists_showsinglepool:39
+#: ../templates/views/kapsel/search_showtitlist:43
 #: ../templates/views/portrait/resultlists_showsinglepool:39
 #: ../templates/virtualsearch_result_start:38
 msgid "nach Person"
@@ -5816,6 +6020,9 @@ msgstr "nach Person/Region"
 #: ../templates/views/einbaende/resultlists_showall_sortall:47
 #: ../templates/views/einbaende/resultlists_showsinglepool:47
 #: ../templates/views/einbaende/virtualsearch_result_start:48
+#: ../templates/views/kapsel/resultlists_showall:43
+#: ../templates/views/kapsel/resultlists_showsinglepool:45
+#: ../templates/views/kapsel/search_showtitlist:49
 #: ../templates/views/portrait/resultlists_showsinglepool:44
 #: ../templates/virtualsearch_result_start:44
 msgid "nach Popularit&auml;t"
@@ -5832,6 +6039,9 @@ msgstr "nach Popularit&auml;t"
 #: ../templates/views/einbaende/resultlists_showall_sortall:46
 #: ../templates/views/einbaende/resultlists_showsinglepool:46
 #: ../templates/views/einbaende/virtualsearch_result_start:47
+#: ../templates/views/kapsel/resultlists_showall:42
+#: ../templates/views/kapsel/resultlists_showsinglepool:44
+#: ../templates/views/kapsel/search_showtitlist:48
 #: ../templates/views/portrait/resultlists_showsinglepool:43
 #: ../templates/virtualsearch_result_start:43
 msgid "nach Signatur"
@@ -5843,6 +6053,9 @@ msgstr "nach Signatur"
 #: ../templates/resultlists_showall_sortall:41
 #: ../templates/resultlists_showsinglepool:40
 #: ../templates/search_showtitlist:44
+#: ../templates/views/kapsel/resultlists_showall:38
+#: ../templates/views/kapsel/resultlists_showsinglepool:40
+#: ../templates/views/kapsel/search_showtitlist:44
 #: ../templates/views/portrait/resultlists_showsinglepool:40
 #: ../templates/virtualsearch_result_start:39
 msgid "nach Titel"
@@ -5867,6 +6080,9 @@ msgstr "nach Titel/Z&auml;hlung"
 #: ../templates/views/einbaende/resultlists_showall_sortall:45
 #: ../templates/views/einbaende/resultlists_showsinglepool:45
 #: ../templates/views/einbaende/virtualsearch_result_start:46
+#: ../templates/views/kapsel/resultlists_showall:41
+#: ../templates/views/kapsel/resultlists_showsinglepool:43
+#: ../templates/views/kapsel/search_showtitlist:47
 #: ../templates/views/portrait/resultlists_showsinglepool:42
 #: ../templates/virtualsearch_result_start:42
 msgid "nach Verlag"
@@ -5876,6 +6092,9 @@ msgstr "nach Verlag"
 #: ../templates/resultlists_showall_sortall:42
 #: ../templates/resultlists_showsinglepool:41
 #: ../templates/search_showtitlist:45
+#: ../templates/views/kapsel/resultlists_showall:39
+#: ../templates/views/kapsel/resultlists_showsinglepool:41
+#: ../templates/views/kapsel/search_showtitlist:45
 #: ../templates/virtualsearch_result_start:40
 msgid "nach Z&auml;hlung"
 msgstr "nach Z&auml;hlung"
@@ -5909,6 +6128,9 @@ msgstr "nein"
 #: ../templates/views/inst431/searchframe:194
 #: ../templates/views/inst460/searchframe:195
 #: ../templates/views/inst501/searchframe:180
+#: ../templates/views/kapsel/resultlists_showall:50
+#: ../templates/views/kapsel/resultlists_showsinglepool:52
+#: ../templates/views/kapsel/search_showtitlist:56
 #: ../templates/views/kempen/searchframe:175
 #: ../templates/views/kevelaer/searchframe:175
 #: ../templates/views/kwinter/searchframe:175
@@ -5923,6 +6145,7 @@ msgstr "pro Katalog"
 #: ../templates/database/landschaft/virtualsearch_result_item:16
 #: ../templates/database/portrait/virtualsearch_result_item:16
 #: ../templates/views/einbaende/virtualsearch_result_item:20
+#: ../templates/views/kapsel/virtualsearch_result_item:16
 #: ../templates/views/portrait/virtualsearch_result_item:16
 #: ../templates/virtualsearch_result_item:16
 msgid "von"

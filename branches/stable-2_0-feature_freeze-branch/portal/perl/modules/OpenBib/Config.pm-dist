@@ -687,6 +687,7 @@ use vars qw(%config);
 			 
 			 isbn => {
 				  '0540' => 1, # ISBN
+                                  '0553' => 1, # ArtikelNr als 13-stellige ISBN
 				 },
 			 
 			 issn => {

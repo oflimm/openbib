@@ -184,10 +184,12 @@ use vars qw(%config);
 	   admin_loc             => '/portal/admin',
 	   catalogue_loc         => '/portal/katalogisierung',
 	   circulation_loc       => '/portal/benutzerkonto',
-	   connector_digibib_loc => '/portal/connector/digibib',
-           connector_ukonline_loc=> '/portal/connector/uk-online',
+           connector_bibmanager_loc => '/portal/connector/literaturverwaltung'
+           connector_digibib_loc => '/portal/connector/digibib',
 	   connector_olws_loc    => '/portal/connector/olws',
+           connector_permalink_loc  => '/portal/connector/permalink',
            connector_rss_loc     => '/portal/connector/rss',
+           connector_ukonline_loc=> '/portal/connector/uk-online',
            databasechoice_loc    => '/portal/katalogauswahl',
 	   databaseprofile_loc   => '/portal/katalogprofile',
 	   dispatchquery_loc     => '/portal/anfrageverteilen',
@@ -296,6 +298,8 @@ use vars qw(%config);
            tt_connector_digibib_result_item_tname   => 'connector_digibib_result_item',
            tt_connector_digibib_result_end_tname    => 'connector_digibib_result_end',
            tt_connector_digibib_showtitset_tname    => 'connector_digibib_showtitset',
+
+           tt_connector_permalink_tname  => 'connector_permalink',
 
            tt_connector_rss_item_tname   => 'connector_rss_item',
 

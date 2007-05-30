@@ -226,6 +226,7 @@ sub handler {
 #        INCLUDE_PATH  => $config->{tt_include_path},
         # Es ist wesentlich, dass OUTPUT* hier und nicht im
         # Template::Provider definiert wird
+        RECURSION      => 1,
         OUTPUT_PATH   => '/tmp',
         OUTPUT        => $ofile,
     });
@@ -263,8 +264,9 @@ sub handler {
          }) ],
 #        ABSOLUTE      => 1,
 #        INCLUDE_PATH  => $config->{tt_include_path},
-        # Es ist wesentlich, dass OUTPUT* hier und nicht im
+         # Es ist wesentlich, dass OUTPUT* hier und nicht im
         # Template::Provider definiert wird
+        RECURSION      => 1,
         OUTPUT_PATH   => '/tmp',
         OUTPUT        => $afile,
     });

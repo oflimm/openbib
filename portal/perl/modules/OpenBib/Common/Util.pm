@@ -112,6 +112,7 @@ sub print_warning {
         }) ],
 #        INCLUDE_PATH   => $config->{tt_include_path},
 #        ABSOLUTE       => 1,
+        RECURSION      => 1,
         OUTPUT         => $r,    # Output geht direkt an Apache Request
     });
   
@@ -161,6 +162,7 @@ sub print_info {
         }) ],
 #        INCLUDE_PATH   => $config->{tt_include_path},
 #        ABSOLUTE       => 1,
+        RECURSION      => 1,
         OUTPUT         => $r,    # Output geht direkt an Apache Request
     });
   
@@ -215,8 +217,8 @@ sub print_page {
             INCLUDE_PATH   => $config->{tt_include_path},
 	    ABSOLUTE       => 1,
         }) ],
-         OUTPUT         => $r,    # Output geht direkt an Apache Request
          RECURSION      => 1,
+         OUTPUT         => $r,    # Output geht direkt an Apache Request
     });
   
     # Dann Ausgabe des neuen Headers
@@ -1113,8 +1115,50 @@ sub grundform {
 
     $content=~s/ø/o/g;
     $content=~s/Ø/o/g;
+
     $content=~s/ñ/n/g;
+    $content=~s/\u0144/n/g; # Kl. n mit Acute
+    $content=~s/\u0146/n/g; # Kl. n mit Cedille
+    $content=~s/\u0148/n/g; # Kl. n mit Caron
+
     $content=~s/Ñ/N/g;
+    $content=~s/\u0143/N/g; # Gr. N mit Acute
+    $content=~s/\u0145/N/g; # Gr. N mit Cedille
+    $content=~s/\u0147/N/g; # Gr. N mit Caron
+
+    $content=~s/\u0155/r/g; # Kl. r mit Acute
+    $content=~s/\u0157/r/g; # Kl. r mit Cedille
+    $content=~s/\u0159/r/g; # Kl. r mit Caron
+
+    $content=~s/\u0154/R/g; # Gr. R mit Acute
+    $content=~s/\u0156/R/g; # Gr. R mit Cedille
+    $content=~s/\u0158/R/g; # Gr. R mit Caron
+
+    $content=~s/\u015b/s/g; # Kl. s mit Acute
+    $content=~s/\u015d/s/g; # Kl. s mit Circumflexe
+    $content=~s/\u015f/s/g; # Kl. s mit Cedille
+    $content=~s/š/s/g; # Kl. s mit Caron
+
+    $content=~s/\u015a/S/g; # Gr. S mit Acute
+    $content=~s/\u015c/S/g; # Gr. S mit Circumflexe
+    $content=~s/\u015e/S/g; # Gr. S mit Cedille
+    $content=~s/Š/S/g; # Gr. S mit Caron
+
+    $content=~s/\u0167/t/g; # Kl. t mit Mittelstrich
+    $content=~s/\u0163/t/g; # Kl. t mit Cedille
+    $content=~s/\u0165/t/g; # Kl. t mit Caron
+
+    $content=~s/\u0166/T/g; # Gr. T mit Mittelstrich
+    $content=~s/\u0162/T/g; # Gr. T mit Cedille
+    $content=~s/\u0164/T/g; # Gr. T mit Caron
+
+    $content=~s/\u017a/z/g; # Kl. z mit Acute
+    $content=~s/\u017c/z/g; # Kl. z mit Punkt oben
+    $content=~s/ž/z/g; # Kl. z mit Caron
+
+    $content=~s/\u0179/Z/g; # Gr. Z mit Acute
+    $content=~s/\u017b/Z/g; # Gr. Z mit Punkt oben
+    $content=~s/Ž/Z/g; # Gr. Z mit Caron
 
     $content=~s/ç/c/g;
     $content=~s/\u0107/c/g; # Kl. c mit Acute
@@ -1128,6 +1172,9 @@ sub grundform {
     $content=~s/\u010a/C/g; # Gr. C mit Punkt oben
     $content=~s/\u010c/C/g; # Gr. C mit Caron
 
+    $content=~s/\u010f/d/g; # Kl. d mit Caron
+    $content=~s/\u010e/D/g; # Gr. D mit Caron
+
     $content=~s/\u0123/g/g; # Kl. g mit Cedille
     $content=~s/\u011f/g/g; # Kl. g mit Breve
     $content=~s/\u011d/g/g; # Kl. g mit Circumflexe
@@ -1136,7 +1183,25 @@ sub grundform {
     $content=~s/\u0122/G/g; # Gr. G mit Cedille
     $content=~s/\u011e/G/g; # Gr. G mit Breve
     $content=~s/\u011c/G/g; # Gr. G mit Circumflexe
-    $content=~s/\u0120/G/g; # Gr. g mit Punkt oben
+    $content=~s/\u0120/G/g; # Gr. G mit Punkt oben
+
+    $content=~s/\u0127/h/g; # Kl. h mit Ueberstrich
+    $content=~s/\u0126/H/g; # Gr. H mit Ueberstrich
+
+    $content=~s/\u0137/k/g; # Kl. k mit Cedille
+    $content=~s/\u0136/K/g; # Gr. K mit Cedille
+
+    $content=~s/\u013c/l/g; # Kl. l mit Cedille
+    $content=~s/\u013a/l/g; # Kl. l mit Acute
+    $content=~s/\u013e/l/g; # Kl. l mit Caron
+    $content=~s/\u0140/l/g; # Kl. l mit Punkt mittig
+    $content=~s/\u0142/l/g; # Kl. l mit Querstrich
+
+    $content=~s/\u013b/L/g; # Gr. L mit Cedille
+    $content=~s/\u0139/L/g; # Gr. L mit Acute
+    $content=~s/\u013d/L/g; # Gr. L mit Caron
+    $content=~s/\u013f/L/g; # Gr. L mit Punkt mittig
+    $content=~s/\u0141/L/g; # Gr. L mit Querstrick
 
     $content=~s/\u20ac/e/g;   # Euro-Zeichen
     $content=~s/\u0152/oe/g;  # OE-Ligatur
@@ -1163,47 +1228,6 @@ sub grundform {
     $content=~s/þ/th/g;       # kl. Thorn
     $content=~s/ð/eth/g;      # eth
     
-    #     $content=~s///g;
-#     $content=~s///g;
-
-#     $content=~s///g;
-#     $content=~s///g;
-#     $content=~s///g;
-#     $content=~s///g;
-#     $content=~s///g;
-#     $content=~s///g;
-
-#    $line=~s/?/g;
-
-#     $line=~s/该/g;
-#     $line=~s/?/g;
-#     $line=~s/?g;
-#     $line=~s/?;
-#     $line=~s/?e/g;
-#     $line=~s//a/g;
-#     $line=~s/?o/g;
-#     $line=~s/?u/g;
-#     $line=~s/鯥/g;
-#     $line=~s/ɯE/g;
-#     $line=~s/?/g;
-#     $line=~s/oa/g;
-#     $line=~s/?/g;
-#     $line=~s/?I/g;
-#     $line=~s/?g;
-#     $line=~s/?O/g;
-#     $line=~s/?;
-#     $line=~s/?U/g;
-#     $line=~s/ /y/g;
-#     $line=~s/?Y/g;
-#     $line=~s/毡e/g; # ae
-#     $line=~s/?/g; # Hacek
-#     $line=~s/?/g; # Macron / Oberstrich
-#     $line=~s/?/g;
-#     $line=~s/&gt;//g;
-#     $line=~s/&lt;//g;
-#     $line=~s/>//g;
-#     $line=~s/<//g;
-
     return $content;
 }
 

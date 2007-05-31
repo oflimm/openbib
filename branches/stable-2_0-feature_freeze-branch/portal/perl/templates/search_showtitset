@@ -204,6 +204,9 @@ END;
 -%]
 </table>
 
+[% IF config.unAPI %]
+<abbr class="unapi-id" title="[% normset.database %]:[% normset.id %]"></abbr>
+[% END %]
 
 [% IF mexnormset.size > 0 %]
 <p />

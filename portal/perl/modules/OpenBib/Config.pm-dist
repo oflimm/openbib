@@ -184,10 +184,12 @@ use vars qw(%config);
 	   admin_loc             => '/portal/admin',
 	   catalogue_loc         => '/portal/katalogisierung',
 	   circulation_loc       => '/portal/benutzerkonto',
+           connector_bibmanager_loc => '/portal/connector/literaturverwaltung',
 	   connector_digibib_loc => '/portal/connector/digibib',
            connector_ukonline_loc=> '/portal/connector/uk-online',
 	   connector_olws_loc    => '/portal/connector/olws',
            connector_rss_loc     => '/portal/connector/rss',
+           connector_unapi_loc   => '/portal/connector/unapi',
            databasechoice_loc    => '/portal/katalogauswahl',
 	   databaseprofile_loc   => '/portal/katalogprofile',
 	   dispatchquery_loc     => '/portal/anfrageverteilen',
@@ -297,6 +299,9 @@ use vars qw(%config);
            tt_connector_digibib_showtitset_tname    => 'connector_digibib_showtitset',
 
            tt_connector_rss_item_tname   => 'connector_rss_item',
+
+           tt_connector_unapi_formats_tname  => 'connector_unapi_formats',
+           tt_connector_unapi_bibtex_tname   => 'connector_unapi_bibtex',
 
            tt_databaseprofile_tname      => 'databaseprofile',
 
@@ -432,6 +437,10 @@ use vars qw(%config);
            # Social-Tagging
 
            social_tagging          => 1,
+
+           # unAPI
+
+           unAPI                   => 1,
 
 	   # Katalogabhaengige Kategorie-Mappings
 

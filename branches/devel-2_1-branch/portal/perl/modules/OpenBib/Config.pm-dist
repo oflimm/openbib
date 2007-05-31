@@ -446,6 +446,10 @@ use vars qw(%config);
 
            reviews                 => 1,
 
+           # unAPI
+
+           unAPI                   => 1,
+
 	   # Katalogabhaengige Kategorie-Mappings
 
 	   categorymapping => {

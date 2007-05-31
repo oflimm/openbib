@@ -24,6 +24,9 @@
 [%- IF view && primrssfeed -%]
 <link rel="alternate" type="application/rss+xml" title="RDF-Datei" href="[% primrssfeed %]">
 [%- END -%]
+[%- IF config.unAPI -%]
+    <link rel="unapi-server" title="unAPI" type="application/xml" href="http://[% config.servername %][% config.connector_unapi_loc %]"/>
+[%- END -%]
   <style type="text/css">
 
   [%- TRY -%]

@@ -120,9 +120,13 @@ sub handler {
             OUTPUT         => $r,    # Output geht direkt an Apache Request
             RECURSION      => 1,
         });
+
+        my %format_info = (
+            bibtex => 'text/plain',
+        );
         
         # Dann Ausgabe des neuen Headers
-        print $r->send_http_header("application/xml");
+        print $r->send_http_header($format_info{$format});
   
         $template->process($config->{$templatename}, $ttdata) || do {
             $r->log_reason($template->error(), $r->filename);

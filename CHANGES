@@ -7,6 +7,9 @@ Version 2.1:
   Beurteilung der Nuetzlichkeit der betreffenden Rezension/Bewertung
 - PermaLink. Einzelne Normdaten-Saetze koennen nun unter einem einheitlichen
   URL verlinkt werden - aehnlich Blog-Eintraegen
+- unAPI. Bereitstellung Bibliographischer Informations-Objekte z.B. zur
+  strukturierten Uebernahme/Verarbeitung durch externe Programme wie
+  z.B. Zotero (www.zotero.org)
 
 Version 2.0:
 

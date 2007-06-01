@@ -306,6 +306,8 @@ use vars qw(%config);
 
            tt_connector_unapi_formats_tname  => 'connector_unapi_formats',
            tt_connector_unapi_bibtex_tname   => 'connector_unapi_bibtex',
+           tt_connector_unapi_mods_tname     => 'connector_unapi_mods',
+           tt_connector_unapi_oai_dc_tname   => 'connector_unapi_oai_dc',
 
            tt_databaseprofile_tname      => 'databaseprofile',
 
@@ -453,6 +455,10 @@ use vars qw(%config);
            # unAPI
 
            unAPI                   => 1,
+
+           unAPI_formats           => {
+               bibtex => 1,
+           },
 
 	   # Katalogabhaengige Kategorie-Mappings
 

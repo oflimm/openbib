@@ -123,11 +123,17 @@ sub handler {
 
         my %format_info = (
             bibtex => 'text/plain',
+            mods   => 'application/xml',
         );
         
         # Dann Ausgabe des neuen Headers
-        print $r->send_http_header($format_info{$format});
-  
+        if ($format_info{$format}){
+            print $r->send_http_header($format_info{$format});
+        }
+        else {
+            print $r->send_http_header('application/xml');
+        }
+        
         $template->process($config->{$templatename}, $ttdata) || do {
             $r->log_reason($template->error(), $r->filename);
             return SERVER_ERROR;

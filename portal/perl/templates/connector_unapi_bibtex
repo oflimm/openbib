@@ -1,1 +1,1 @@
-[% normset2bibtex(normset) %]
+[% normset2bibtex(normset,1) %]

@@ -10,7 +10,7 @@ Version 2.0:
 - Neues MAB2-orientiertes internes Standard-Metadaten-Format
 - Alternative Metadaten-Formate sind moeglich
 - Parametrisierbare Konvertierungsschnittstelle (Filter/Plugins)
-- Inkrementelles Live-Update der SQL-Datenbanken über OLWS
+- Inkrementelles Live-Update über OLWS
 - Eventlogging in Session->Statistik-Datenbank
 - Recommender-Funktion (zurueckportiert nach 1.2.3)
 - Popularitaets-Funktionen (Top 20, Sortierung ; zurueckportiert nach 1.2.3)
@@ -37,14 +37,7 @@ Version 2.0:
   beliebige Kategorien Verknuepfungen zu anderen Titeln mit gleichem
   Kategorieinhalt realisiert werden.
 - Mashup mit Wikipedia bei Personen/ISBN's
-- Social-Tagging. Benutzer koennen nun einzelne Titel selbst mit
-  Mini-Schlagworten (engl. tags) versehen
 - Einfuehrung von Tag-Clouds:
-  a) Schlagwort-Wolken zur Uebersicht bezogen auf einen
-     Katalog. Ebenso fuer die anderen Normdaten (Personen,
-     Koerperschaften, Notationen)
+  a) Schlagwort-Wolken zur Uebersicht bezogen auf einen Katalog
   b) Begriffs-Wolken bezogen auf die relevantesten Terme einer Recherche-
      Treffermenge zur Suchverfeinerung
-  c) Tag-Clouds fuer die von Nutzern vergebenen und als oeffentlich
-     deklarierten Tags fuer Titel im KUG
-

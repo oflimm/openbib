@@ -33,7 +33,7 @@ use strict;
 use warnings;
 no warnings 'redefine';
 
-use Apache::Constants qw(:common);
+use Apache::Constants qw(OK HTTP_NOT_ACCEPTABLE HTTP_NOT_FOUND SERVER_ERROR);
 use Apache::Reload;
 use Apache::Request ();
 use Apache::URI ();
@@ -76,70 +76,81 @@ sub handler {
     my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
     
-    if ($unapiid && $format){
+    if ($format){
 
-        my ($database,$idn,$normset,$mexnormset,$circset);
+        unless (exists $config->{unAPI_formats}->{$format}){
+            return HTTP_NOT_ACCEPTABLE;
+        }
 
-        if ($unapiid =~/^(\w+):(\d+)$/){
-            $database = $1;
-            $idn      = $2;
+        if ($unapiid){
+            my ($database,$idn,$normset,$mexnormset,$circset);
 
-            $logger->debug("Database: $database - ID: $idn");
+            if ($unapiid =~/^(\w+):(\d+)$/){
+                $database = $1;
+                $idn      = $2;
+                
+                $logger->debug("Database: $database - ID: $idn");
+                
+                my $dbh   = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
+                
+                ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn({
+                    titidn             => $idn,
+                    dbh                => $dbh,
+                    targetdbinfo_ref   => $targetdbinfo_ref,
+                    targetcircinfo_ref => {},
+                    database           => $database,
+                });
+                
+            }
+
+            if (!exists $normset->{id}){
+                return HTTP_NOT_FOUND;
+            }
             
-            my $dbh   = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
+            my $ttdata={
+                database        => $database,
+                id              => $idn,
+                normset         => $normset,
+                normset2bibtex  => \&OpenBib::Common::Util::normset2bibtex,
+                
+                config          => $config,
+                msg             => $msg,
+            };
             
-            ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn({
-                titidn             => $idn,
-                dbh                => $dbh,
-                targetdbinfo_ref   => $targetdbinfo_ref,
-                targetcircinfo_ref => {},
-                database           => $database,
+            my $templatename = ($format)?"tt_connector_unapi_".$format."_tname":"tt_unapi_formats_tname";
+            
+            $logger->debug("Using Template $templatename");
+            
+            my $template = Template->new({ 
+                LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+                    INCLUDE_PATH   => $config->{tt_include_path},
+                    ABSOLUTE       => 1,
+                }) ],
+                OUTPUT         => $r,    # Output geht direkt an Apache Request
+                RECURSION      => 1,
             });
             
-        }
-
-        my $ttdata={
-            database        => $database,
-            id              => $idn,
-            normset         => $normset,
-            normset2bibtex  => \&OpenBib::Common::Util::normset2bibtex,
-
-            config          => $config,
-            msg             => $msg,
-        };
-
-        my $templatename = ($format)?"tt_connector_unapi_".$format."_tname":"tt_unapi_formats_tname";
-
-        $logger->debug("Using Template $templatename");
-        
-        my $template = Template->new({ 
-            LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-                INCLUDE_PATH   => $config->{tt_include_path},
-                ABSOLUTE       => 1,
-            }) ],
-            OUTPUT         => $r,    # Output geht direkt an Apache Request
-            RECURSION      => 1,
-        });
-
-        my %format_info = (
-            bibtex => 'text/plain',
-            mods   => 'application/xml',
-            oai_dc => 'application/xml',
-        );
-        
-        # Dann Ausgabe des neuen Headers
-        if ($format_info{$format}){
-            print $r->send_http_header($format_info{$format});
+            my %format_info = (
+                bibtex => 'text/plain',
+                mods   => 'application/xml',
+            );
+            
+            # Dann Ausgabe des neuen Headers
+            if ($format_info{$format}){
+                print $r->send_http_header($format_info{$format});
+            }
+            else {
+                print $r->send_http_header('application/xml');
+            }
+            
+            $template->process($config->{$templatename}, $ttdata) || do {
+                $r->log_reason($template->error(), $r->filename);
+                return SERVER_ERROR;
+            };
+            
         }
         else {
-            print $r->send_http_header('application/xml');
         }
-        
-        $template->process($config->{$templatename}, $ttdata) || do {
-            $r->log_reason($template->error(), $r->filename);
-            return SERVER_ERROR;
-        };
-        
     }
     else {
 
@@ -170,10 +181,11 @@ sub handler {
             return SERVER_ERROR;
         };
 
+        return OK;
     }
 
     
-    return OK;
+
 }
 
 1;

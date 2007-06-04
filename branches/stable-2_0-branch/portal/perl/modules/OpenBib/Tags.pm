@@ -235,7 +235,7 @@ sub handler {
                 
                 # Bestimmung der Titel
                 $sqlrequest="select distinct titid,titdb from tittag where tagid=? and loginname=? $limits";
-                $request=$user->{dbh}->prepare("") or $logger->error($DBI::errstr);
+                $request=$user->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
                 $request->execute($searchtitoftag,$loginname);
                 
                 

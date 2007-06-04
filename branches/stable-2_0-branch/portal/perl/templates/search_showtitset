@@ -11,7 +11,7 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title = "Recherche in Katalog: $poolname" %]
+[% PROCESS common/subtemplate name="std_header" title = "Recherche in Katalog: ${poolname.short}" unapi=1 %]
 
 <body>
 
@@ -204,6 +204,9 @@ END;
 -%]
 </table>
 
+[% IF config.unAPI %]
+<abbr class="unapi-id" title="[% normset.database %]:[% normset.id %]"></abbr>
+[% END %]
 
 [% IF mexnormset.size > 0 %]
 <p />

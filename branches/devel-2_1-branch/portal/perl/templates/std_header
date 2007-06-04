@@ -21,12 +21,12 @@
     <meta http-equiv="Expires"       content="Thu, 01 Dec 1970 12:00:00 GMT" />
 [% END %]
   <link href="/images/openbib/favicon.ico" rel="shortcut icon" />
-[%- IF view && primrssfeed -%]
+[% IF view && primrssfeed %]
 <link rel="alternate" type="application/rss+xml" title="RDF-Datei" href="[% primrssfeed %]">
-[%- END -%]
-[%- IF unapi && config.unAPI -%]
+[% END %]
+[% IF unapi && config.unAPI %]
     <link rel="unapi-server" title="unAPI" type="application/xml" href="http://[% config.servername %][% config.connector_unapi_loc %]"/>
-[%- END -%]
+[% END %]
   <style type="text/css">
 
   [%- TRY -%]

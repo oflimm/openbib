@@ -184,7 +184,7 @@ use vars qw(%config);
 	   admin_loc             => '/portal/admin',
 	   catalogue_loc         => '/portal/katalogisierung',
 	   circulation_loc       => '/portal/benutzerkonto',
-           connector_bibmanager_loc => '/portal/connector/literaturverwaltung'
+           connector_bibmanager_loc => '/portal/connector/literaturverwaltung',
            connector_digibib_loc => '/portal/connector/digibib',
 	   connector_olws_loc    => '/portal/connector/olws',
            connector_permalink_loc  => '/portal/connector/permalink',

@@ -218,14 +218,15 @@ sub handler {
     my $ofile="ml." . $$;
 
     my $datatemplate = Template->new({
-         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-             INCLUDE_PATH   => $config->{tt_include_path},
-             ABSOLUTE       => 1,
-         }) ],
-#        ABSOLUTE      => 1,
-#        INCLUDE_PATH  => $config->{tt_include_path},
+        LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+            INCLUDE_PATH   => $config->{tt_include_path},
+            ABSOLUTE       => 1,
+        }) ],
+        #        ABSOLUTE      => 1,
+        #        INCLUDE_PATH  => $config->{tt_include_path},
         # Es ist wesentlich, dass OUTPUT* hier und nicht im
         # Template::Provider definiert wird
+        RECURSION      => 1,
         OUTPUT_PATH   => '/tmp',
         OUTPUT        => $ofile,
     });
@@ -257,14 +258,15 @@ sub handler {
 		     };
 
     my $maintemplate = Template->new({
-         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
-             INCLUDE_PATH   => $config->{tt_include_path},
-             ABSOLUTE       => 1,
-         }) ],
-#        ABSOLUTE      => 1,
-#        INCLUDE_PATH  => $config->{tt_include_path},
+        LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
+            INCLUDE_PATH   => $config->{tt_include_path},
+            ABSOLUTE       => 1,
+        }) ],
+        #        ABSOLUTE      => 1,
+        #        INCLUDE_PATH  => $config->{tt_include_path},
         # Es ist wesentlich, dass OUTPUT* hier und nicht im
         # Template::Provider definiert wird
+        RECURSION      => 1,
         OUTPUT_PATH   => '/tmp',
         OUTPUT        => $afile,
     });

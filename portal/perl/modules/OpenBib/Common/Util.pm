@@ -112,6 +112,7 @@ sub print_warning {
         }) ],
 #        INCLUDE_PATH   => $config->{tt_include_path},
 #        ABSOLUTE       => 1,
+        RECURSION      => 1,
         OUTPUT         => $r,    # Output geht direkt an Apache Request
     });
   
@@ -161,6 +162,7 @@ sub print_info {
         }) ],
 #        INCLUDE_PATH   => $config->{tt_include_path},
 #        ABSOLUTE       => 1,
+        RECURSION      => 1,
         OUTPUT         => $r,    # Output geht direkt an Apache Request
     });
   
@@ -551,6 +553,7 @@ sub get_searchterms {
     }
 
     my $alltermsstring = join (" ",@allterms);
+    $alltermsstring    =~s/[^\p{Alphabetic}0-9 ]//g;
 
     my $tokenizer = String::Tokenizer->new();
     $tokenizer->tokenize($alltermsstring);
@@ -952,7 +955,7 @@ sub grundform {
     }
     
     # ISBN filtern
-    if ($category eq "0540"){
+    if ($category eq "0540" || $category eq "0553"){
         # Entfernung der Minus-Zeichen bei der ISBN zuerst 13-, dann 10-stellig
         $content=~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*([0-9xX])/$1$2$3$4$5$6$7$8$9$10$11$12$13/g;
         $content=~s/(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?([0-9xX])/$1$2$3$4$5$6$7$8$9$10/g;
@@ -1112,8 +1115,50 @@ sub grundform {
 
     $content=~s/ø/o/g;
     $content=~s/Ø/o/g;
+
     $content=~s/ñ/n/g;
+    $content=~s/\u0144/n/g; # Kl. n mit Acute
+    $content=~s/\u0146/n/g; # Kl. n mit Cedille
+    $content=~s/\u0148/n/g; # Kl. n mit Caron
+
     $content=~s/Ñ/N/g;
+    $content=~s/\u0143/N/g; # Gr. N mit Acute
+    $content=~s/\u0145/N/g; # Gr. N mit Cedille
+    $content=~s/\u0147/N/g; # Gr. N mit Caron
+
+    $content=~s/\u0155/r/g; # Kl. r mit Acute
+    $content=~s/\u0157/r/g; # Kl. r mit Cedille
+    $content=~s/\u0159/r/g; # Kl. r mit Caron
+
+    $content=~s/\u0154/R/g; # Gr. R mit Acute
+    $content=~s/\u0156/R/g; # Gr. R mit Cedille
+    $content=~s/\u0158/R/g; # Gr. R mit Caron
+
+    $content=~s/\u015b/s/g; # Kl. s mit Acute
+    $content=~s/\u015d/s/g; # Kl. s mit Circumflexe
+    $content=~s/\u015f/s/g; # Kl. s mit Cedille
+    $content=~s/š/s/g; # Kl. s mit Caron
+
+    $content=~s/\u015a/S/g; # Gr. S mit Acute
+    $content=~s/\u015c/S/g; # Gr. S mit Circumflexe
+    $content=~s/\u015e/S/g; # Gr. S mit Cedille
+    $content=~s/Š/S/g; # Gr. S mit Caron
+
+    $content=~s/\u0167/t/g; # Kl. t mit Mittelstrich
+    $content=~s/\u0163/t/g; # Kl. t mit Cedille
+    $content=~s/\u0165/t/g; # Kl. t mit Caron
+
+    $content=~s/\u0166/T/g; # Gr. T mit Mittelstrich
+    $content=~s/\u0162/T/g; # Gr. T mit Cedille
+    $content=~s/\u0164/T/g; # Gr. T mit Caron
+
+    $content=~s/\u017a/z/g; # Kl. z mit Acute
+    $content=~s/\u017c/z/g; # Kl. z mit Punkt oben
+    $content=~s/ž/z/g; # Kl. z mit Caron
+
+    $content=~s/\u0179/Z/g; # Gr. Z mit Acute
+    $content=~s/\u017b/Z/g; # Gr. Z mit Punkt oben
+    $content=~s/Ž/Z/g; # Gr. Z mit Caron
 
     $content=~s/ç/c/g;
     $content=~s/\u0107/c/g; # Kl. c mit Acute
@@ -1127,6 +1172,9 @@ sub grundform {
     $content=~s/\u010a/C/g; # Gr. C mit Punkt oben
     $content=~s/\u010c/C/g; # Gr. C mit Caron
 
+    $content=~s/\u010f/d/g; # Kl. d mit Caron
+    $content=~s/\u010e/D/g; # Gr. D mit Caron
+
     $content=~s/\u0123/g/g; # Kl. g mit Cedille
     $content=~s/\u011f/g/g; # Kl. g mit Breve
     $content=~s/\u011d/g/g; # Kl. g mit Circumflexe
@@ -1135,7 +1183,25 @@ sub grundform {
     $content=~s/\u0122/G/g; # Gr. G mit Cedille
     $content=~s/\u011e/G/g; # Gr. G mit Breve
     $content=~s/\u011c/G/g; # Gr. G mit Circumflexe
-    $content=~s/\u0120/G/g; # Gr. g mit Punkt oben
+    $content=~s/\u0120/G/g; # Gr. G mit Punkt oben
+
+    $content=~s/\u0127/h/g; # Kl. h mit Ueberstrich
+    $content=~s/\u0126/H/g; # Gr. H mit Ueberstrich
+
+    $content=~s/\u0137/k/g; # Kl. k mit Cedille
+    $content=~s/\u0136/K/g; # Gr. K mit Cedille
+
+    $content=~s/\u013c/l/g; # Kl. l mit Cedille
+    $content=~s/\u013a/l/g; # Kl. l mit Acute
+    $content=~s/\u013e/l/g; # Kl. l mit Caron
+    $content=~s/\u0140/l/g; # Kl. l mit Punkt mittig
+    $content=~s/\u0142/l/g; # Kl. l mit Querstrich
+
+    $content=~s/\u013b/L/g; # Gr. L mit Cedille
+    $content=~s/\u0139/L/g; # Gr. L mit Acute
+    $content=~s/\u013d/L/g; # Gr. L mit Caron
+    $content=~s/\u013f/L/g; # Gr. L mit Punkt mittig
+    $content=~s/\u0141/L/g; # Gr. L mit Querstrick
 
     $content=~s/\u20ac/e/g;   # Euro-Zeichen
     $content=~s/\u0152/oe/g;  # OE-Ligatur
@@ -1161,49 +1227,6 @@ sub grundform {
     $content=~s/Þ/th/g;       # Gr. Thorn
     $content=~s/þ/th/g;       # kl. Thorn
     $content=~s/ð/eth/g;      # eth
-
-    #     $content=~s///g;
-#     $content=~s///g;
-#     $content=~s///g;
-#     $content=~s///g;
-
-#     $content=~s///g;
-#     $content=~s///g;
-#     $content=~s///g;
-#     $content=~s///g;
-#     $content=~s///g;
-#     $content=~s///g;
-
-#    $line=~s/?/g;
-
-#     $line=~s/该/g;
-#     $line=~s/?/g;
-#     $line=~s/?g;
-#     $line=~s/?;
-#     $line=~s/?e/g;
-#     $line=~s//a/g;
-#     $line=~s/?o/g;
-#     $line=~s/?u/g;
-#     $line=~s/鯥/g;
-#     $line=~s/ɯE/g;
-#     $line=~s/?/g;
-#     $line=~s/oa/g;
-#     $line=~s/?/g;
-#     $line=~s/?I/g;
-#     $line=~s/?g;
-#     $line=~s/?O/g;
-#     $line=~s/?;
-#     $line=~s/?U/g;
-#     $line=~s/ /y/g;
-#     $line=~s/?Y/g;
-#     $line=~s/毡e/g; # ae
-#     $line=~s/?/g; # Hacek
-#     $line=~s/?/g; # Macron / Oberstrich
-#     $line=~s/?/g;
-#     $line=~s/&gt;//g;
-#     $line=~s/&lt;//g;
-#     $line=~s/>//g;
-#     $line=~s/<//g;
 
     return $content;
 }
@@ -1277,7 +1300,7 @@ sub get_loadbalanced_servername {
 }
 
 sub normset2bibtex {
-    my ($normset_ref)=@_;
+    my ($normset_ref,$utf8)=@_;
 
     my $bibtex_ref=[];
 
@@ -1288,10 +1311,10 @@ sub normset2bibtex {
         next if (!exists $normset_ref->{$category});
         foreach my $part_ref (@{$normset_ref->{$category}}){
             if ($part_ref->{supplement} =~ /Hrsg/){
-                push @$editors_ref, utf2bibtex($part_ref->{content});
+                push @$editors_ref, utf2bibtex($part_ref->{content},$utf8);
             }
             else {
-                push @$authors_ref, utf2bibtex($part_ref->{content});
+                push @$authors_ref, utf2bibtex($part_ref->{content},$utf8);
             }
         }
     }
@@ -1303,44 +1326,44 @@ sub normset2bibtex {
     foreach my $category (qw/T0710 T0902 T0907 T0912 T0917 T0922 T0927 T0932 T0937 T0942 T0947/){
         next if (!exists $normset_ref->{$category});
         foreach my $part_ref (@{$normset_ref->{$category}}){
-            push @$keywords_ref, utf2bibtex($part_ref->{content});
+            push @$keywords_ref, utf2bibtex($part_ref->{content},$utf8);
         }
     }
     my $keyword = join(' ; ',@$keywords_ref);
     
     # Auflage
-    my $edition   = (exists $normset_ref->{T0403})?utf2bibtex($normset_ref->{T0403}[0]{content}):'';
+    my $edition   = (exists $normset_ref->{T0403})?utf2bibtex($normset_ref->{T0403}[0]{content},$utf8):'';
 
     # Verleger
-    my $publisher = (exists $normset_ref->{T0412})?utf2bibtex($normset_ref->{T0412}[0]{content}):'';
+    my $publisher = (exists $normset_ref->{T0412})?utf2bibtex($normset_ref->{T0412}[0]{content},$utf8):'';
 
     # Verlagsort
-    my $address   = (exists $normset_ref->{T0410})?utf2bibtex($normset_ref->{T0410}[0]{content}):'';
+    my $address   = (exists $normset_ref->{T0410})?utf2bibtex($normset_ref->{T0410}[0]{content},$utf8):'';
 
     # Titel
-    my $title     = (exists $normset_ref->{T0331})?utf2bibtex($normset_ref->{T0331}[0]{content}):'';
+    my $title     = (exists $normset_ref->{T0331})?utf2bibtex($normset_ref->{T0331}[0]{content},$utf8):'';
 
     # Zusatz zum Titel
-    my $titlesup  = (exists $normset_ref->{T0335})?utf2bibtex($normset_ref->{T0335}[0]{content}):'';
+    my $titlesup  = (exists $normset_ref->{T0335})?utf2bibtex($normset_ref->{T0335}[0]{content},$utf8):'';
 
     if ($title && $titlesup){
         $title = "$title : $titlesup";
     }
-    
+
     # Jahr
-    my $year      = (exists $normset_ref->{T0425})?utf2bibtex($normset_ref->{T0425}[0]{content}):'';
+    my $year      = (exists $normset_ref->{T0425})?utf2bibtex($normset_ref->{T0425}[0]{content},$utf8):'';
 
     # ISBN
-    my $isbn      = (exists $normset_ref->{T0540})?utf2bibtex($normset_ref->{T0540}[0]{content}):'';
+    my $isbn      = (exists $normset_ref->{T0540})?utf2bibtex($normset_ref->{T0540}[0]{content},$utf8):'';
 
     # ISSN
-    my $issn      = (exists $normset_ref->{T0543})?utf2bibtex($normset_ref->{T0543}[0]{content}):'';
+    my $issn      = (exists $normset_ref->{T0543})?utf2bibtex($normset_ref->{T0543}[0]{content},$utf8):'';
 
     # Sprache
-    my $language  = (exists $normset_ref->{T0516})?utf2bibtex($normset_ref->{T0516}[0]{content}):'';
+    my $language  = (exists $normset_ref->{T0516})?utf2bibtex($normset_ref->{T0516}[0]{content},$utf8):'';
 
     # Abstract
-    my $abstract  = (exists $normset_ref->{T0750})?utf2bibtex($normset_ref->{T0750}[0]{content}):'';
+    my $abstract  = (exists $normset_ref->{T0750})?utf2bibtex($normset_ref->{T0750}[0]{content},$utf8):'';
 
     if ($author){
         push @$bibtex_ref, "author    = \"$author\"";
@@ -1400,7 +1423,7 @@ sub normset2bibtex {
 }
 
 sub utf2bibtex {
-    my ($string)=@_;
+    my ($string,$utf8)=@_;
 
     return "" if (!defined $string);
     
@@ -1410,9 +1433,13 @@ sub utf2bibtex {
     $string=~s/\}//g;
     # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
     $string=~s/[^-+\p{Alphabetic}0-9\n\/&;#: '()@<>\\,.="^*[]]//g;
-    $string=~s/"/'/g;
     $string=~s/&lt;/</g;
     $string=~s/&gt;/>/g;
+
+    # Wenn utf8 ausgegeben werden soll, dann sind wir hier fertig
+    return $string if ($utf8);
+
+    # ... ansonsten muessen weitere Sonderzeichen umgesetzt werden.
     $string=~s/&#172;//g;
     $string=~s/&#228;/{\\"a}/g;
     $string=~s/&#252;/{\\"u}/g;

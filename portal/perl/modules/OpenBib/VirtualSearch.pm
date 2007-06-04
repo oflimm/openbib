@@ -561,6 +561,7 @@ sub handler {
         }) ],
 #        INCLUDE_PATH   => $config->{tt_include_path},
 #        ABSOLUTE       => 1,
+        RECURSION      => 1,
         OUTPUT         => $r,
     });
 
@@ -715,6 +716,7 @@ sub handler {
                     }) ],
                     #                INCLUDE_PATH   => $config->{tt_include_path},
                     #                ABSOLUTE       => 1,
+                    RECURSION      => 1,
                     OUTPUT         => $r,
                 });
                 
@@ -984,6 +986,7 @@ sub handler {
                             }) ],
                             #                INCLUDE_PATH   => $config->{tt_include_path},
                             #                ABSOLUTE       => 1,
+                            RECURSION      => 1,
                             OUTPUT         => $r,
                         });            
                         
@@ -1121,6 +1124,7 @@ sub handler {
                         }) ],
                         #                INCLUDE_PATH   => $config->{tt_include_path},
                         #                ABSOLUTE       => 1,
+                        RECURSION      => 1,
                         OUTPUT         => $r,
                     });
 
@@ -1254,7 +1258,8 @@ sub handler {
         }) ],
 #        INCLUDE_PATH   => $config->{tt_include_path},
 #        ABSOLUTE       => 1,
-         OUTPUT         => $r,
+        RECURSION      => 1,
+        OUTPUT         => $r,
     });
 
     # TT-Data erzeugen

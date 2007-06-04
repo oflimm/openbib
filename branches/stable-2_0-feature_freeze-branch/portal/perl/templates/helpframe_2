@@ -79,6 +79,18 @@ kann, ohne sich mit der jeweiligen Suchoberfläche auseinandersetzen zu
 müssen.
 </p>
 
+<h3>unAPI-Unterst&uuml;tzung</h3>
+
+<p> Der KUG bietet nun mit seiner Unterst&uuml;tzung von unAPI
+(vgl. Artikel <a
+href="http://www.ariadne.ac.uk/issue48/chudnov-et-al/"
+target="_blank">Introducing unAPI</a> einen strukturierten Zugriff auf
+bibliographische Informations-Objekte. Diese k&ouml;nnen nun von
+separaten Klienten, wie z.B. der kostenfreien
+Literaturverwaltungs-Software <a href="http://www.zotero.org/"
+target="_blank">Zotero</a> w&auml;hrend der Recherche im KUG abgerufen
+und verarbeitet werden. </p>
+
 <h3>&Uuml;bersicht der Spezial-Sichten des KUG</h3>
 
 <p>

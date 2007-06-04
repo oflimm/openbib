@@ -84,7 +84,7 @@ sub handler {
 
     my $offset         = $query->param('titid')       || 0;
     my $hitrange       = $query->param('titid')       || 50;
-    my $database       = 0;
+    my $database       = $query->param('database')    || '';
     my $sorttype       = $query->param('sorttype')    || "author";
     my $sortorder      = $query->param('sortorder')   || "up";
     my $titid          = $query->param('titid')       || '';
@@ -248,8 +248,17 @@ sub handler {
             }
             else {
                 my $sqlrequest="select count(distinct titid,titdb) as conncount from tittag where tagid=?";
+                my @sqlargs = ();
+                push @sqlargs, $searchtitoftag;
+
+                if ($database) {
+                    $sqlrequest.=" and titdb=?";
+                    push @sqlargs, $database;
+                }
+
+                $logger->debug($sqlrequest." - ".join(",",@sqlargs));
                 my $request=$user->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
-                $request->execute($searchtitoftag);
+                $request->execute(@sqlargs);
             
                 my $res=$request->fetchrow_hashref;
                 $hits = $res->{conncount};
@@ -259,10 +268,21 @@ sub handler {
                     $limits="limit $offset,$hitrange";
                     
                 }
+
+                $sqlrequest="select distinct titid,titdb from tittag where tagid=?";
+                @sqlargs = ();
+                push @sqlargs, $searchtitoftag;
+                
+                if ($database) {
+                    $sqlrequest.=" and titdb=?";
+                    push @sqlargs, $database;
+                }
+
+                $sqlrequest.=" $limits";
                 
                 # Bestimmung der Titel
-                $request=$user->{dbh}->prepare("select distinct titid,titdb from tittag where tagid=? $limits") or $logger->error($DBI::errstr);
-                $request->execute($searchtitoftag);
+                $request=$user->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
+                $request->execute(@sqlargs);
                 
                 
                 while (my $res=$request->fetchrow_hashref){

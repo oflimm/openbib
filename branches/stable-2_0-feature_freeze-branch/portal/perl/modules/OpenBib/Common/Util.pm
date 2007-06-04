@@ -1398,6 +1398,9 @@ sub normset2bibtex {
     if ($language){
         push @$bibtex_ref, "language  = \"$language\"";
     }
+    if ($abstract){
+        push @$bibtex_ref, "abstract  = \"$abstract\"";
+    }
     
     my $identifier=substr($author,0,4).substr($title,0,4).$year;
     $identifier=~s/[^A-Za-z0-9]//g;

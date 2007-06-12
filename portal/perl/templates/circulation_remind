@@ -45,11 +45,30 @@
 <b>[% msg.maketext("Es sind keine Gebühren angefallen.") %]</b>
 [% ELSE  %]
 
+[%- 
+mahnungen = [] ;
+gebuehren = [] ;
+
+FOREACH reminder = reminders ;
+  IF reminder.Leihfristende == '01.01.1753' ;
+    gebuehren.push(reminder);
+  ELSE ;
+    mahnungen.push(reminder);
+  END ;
+-%]
+
+[%- END -%]
+
+[% IF mahnungen.size != 0 %]
+<table width="100%">
+<tr><th>Überziehungen</th></tr>
+<tr><td class="boxedclear">
+
 <table cellpadding="5">
 <tr><td><b>[% msg.maketext("Titelangaben") %]</b></td><td><b>[% msg.maketext("Signatur") %]</b></td><td><b>[% msg.maketext("Ausleih-/Buchungsdatum") %]</b></td><td><b>[% msg.maketext("Leihfristende") %]</b></td><td><b>[% msg.maketext("Gebühr") %]</b></td></tr>
 [%- listrow = 'listrow1' -%]
 
-[%- FOREACH reminder = reminders -%]
+[%- FOREACH reminder = mahnungen -%]
 
 <tr class="[% listrow %]"
 [%- IF listrow == 'listrow1' -%]
@@ -74,6 +93,41 @@
 &nbsp;EUR</span></td></tr>
 [%- END -%]
 </table>
+</td></tr>
+</table>
+
+<p/ >
+[% END %]
+
+[% IF gebuehren.size != 0 %]
+<table width="100%">
+<tr><th>Gebühren</th></tr>
+<tr><td class="boxedclear">
+
+<table cellpadding="5">
+<tr><td><b>Beschreibung</b></td><td><b>Datum</b></td><td><b>[% msg.maketext("Gebühr") %]</b></td></tr>
+[%- listrow = 'listrow1' -%]
+
+[%- FOREACH reminder = gebuehren -%]
+
+<tr class="[% listrow %]"
+[%- IF listrow == 'listrow1' -%]
+[%- listrow = 'listrow2' -%] 
+[%- ELSE -%]
+[%- listrow = 'listrow1' -%] 
+[%- END -%]
+><td>[% reminder.Mediennummer %]</td>
+<td>[% reminder.AusleihDatum %]</td>
+<td><span style="color:red">
+[%- reminder.Saeumnisgebuehr -%] 
+&nbsp;EUR</span></td></tr>
+[%- END -%]
+
+</td></tr>
+</table>
+</td></tr>
+</table>
+[%- END -%]
 
 [%- END -%]
 </div>

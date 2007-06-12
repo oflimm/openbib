@@ -1365,6 +1365,9 @@ sub normset2bibtex {
     # Abstract
     my $abstract  = (exists $normset_ref->{T0750})?utf2bibtex($normset_ref->{T0750}[0]{content},$utf8):'';
 
+    # Origin
+    my $origin    = (exists $normset_ref->{T0590})?utf2bibtex($normset_ref->{T0590}[0]{content},$utf8):'';
+    
     if ($author){
         push @$bibtex_ref, "author    = \"$author\"";
     }
@@ -1401,13 +1404,42 @@ sub normset2bibtex {
     if ($abstract){
         push @$bibtex_ref, "abstract  = \"$abstract\"";
     }
+
+    if ($origin){
+        # Pages
+        if ($origin=~/ ; (S\. *\d+.*)$/){
+            push @$bibtex_ref, "pages     = \"$1\"";
+        }
+
+        # Journal and/or Volume
+        if ($origin=~/^(.+?) ; (.*?) ; S\. *\d+.*$/){
+            my $journal = $1;
+            my $volume  = $2;
+
+            $journal =~ s/ \/ .*$//;
+            push @$bibtex_ref, "journal   = \"$journal\"";
+            push @$bibtex_ref, "volume    = \"$volume\"";
+        }
+        elsif ($origin=~/^(.*?) ; S\. *\d+.*$/){
+            my $journal = $1;
+
+            $journal =~ s/ \/ .*$//;
+            push @$bibtex_ref, "journal   = \"$journal\"";
+        }
+    }
     
     my $identifier=substr($author,0,4).substr($title,0,4).$year;
     $identifier=~s/[^A-Za-z0-9]//g;
 
     my $bibtex="";
+
     
-    if ($isbn){
+    if ($origin){
+        unshift @$bibtex_ref, "\@article {$identifier";
+        $bibtex=join(",\n",@$bibtex_ref);
+        $bibtex="$bibtex}";
+    }
+    elsif ($isbn){
         unshift @$bibtex_ref, "\@book {$identifier";
         $bibtex=join(",\n",@$bibtex_ref);
         $bibtex="$bibtex}";
@@ -1431,6 +1463,8 @@ sub utf2bibtex {
     # nichts zu suchen
     $string=~s/\{//g;
     $string=~s/\}//g;
+    # ... ebenso "
+    $string=~s/"/''/g;
     # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
     $string=~s/[^-+\p{Alphabetic}0-9\n\/&;#: '()@<>\\,.="^*[]]//g;
     $string=~s/&lt;/</g;

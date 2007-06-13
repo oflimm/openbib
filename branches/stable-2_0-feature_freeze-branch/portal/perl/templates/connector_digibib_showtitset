@@ -89,23 +89,31 @@
        verlauf  = mex.${"X1204"}.content ;
        signatur = mex.${"X0014"}.content ;
 
+       IF verlauf == '-' ;
+          verlauf = '' ;
+       ELSE ;
+          verlauf = "(${verlauf})" ;
+       END ;
        location.${catname}.${"url"}     = caturl ;
        location.${catname}.${"verlauf"} = verlauf ;
-       location.${catname}.${"signatur"}.push(signatur) ;
 
+       IF NOT location.${catname}.exists("signatur") ;
+          location.${catname}.${"signatur"} = signatur ;
+       ELSE ;
+          signaturstring = location.${catname}.${"signatur"} ;
+          signaturstring = "${signaturstring} ; ${signatur}" ;
+          location.${catname}.${"signatur"}= signaturstring  ;      
+       END ;
     END ;
 
     locations = [] ;
 
     FOREACH catname IN location.keys ;
-       caturl     = location.${catname}.${"url"} ;
-       verlauf    = location.${catname}.${"verlauf"} ;
-       IF verlauf ;
-          verlauf = "(${verlauf})" ;
-       END ;
-       signaturen = location.${catname}.${"signatur"}.join(" ; ") ;
+       caturl         = location.${catname}.${"url"} ;
+       verlauf        = location.${catname}.${"verlauf"} ;
+       signaturstring = location.${catname}.${"signatur"} ;
 
-       locations.push("<a href=\"${caturl}\" target=\"_blank\">${catname}</a>: ${signaturen} ${verlauf}");
+       locations.push("<a href=\"${caturl}\" target=\"_blank\">${catname}</a>: ${signaturstring} ${verlauf}");
 
     END ;
 
@@ -121,7 +129,6 @@
 <TITLE>Langanzeige</TITLE>
 </HEAD>
 <BODY>
-
 <!-- begin result -->
 
 <OL>

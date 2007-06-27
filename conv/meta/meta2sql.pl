@@ -63,10 +63,12 @@ chop $dir;
 
 my %listitemdata_aut        = ();
 my %listitemdata_kor        = ();
+my %listitemdata_not        = ();
 my %listitemdata_swt        = ();
 my %listitemdata_mex        = ();
 my %listitemdata_superid    = ();
 my %listitemdata_popularity = ();
+my %normdata                = ();
 
 my $statistics = new OpenBib::Statistics();
 
@@ -90,15 +92,21 @@ if ($reducemem){
     tie %listitemdata_kor,        'MLDBM', "./listitemdata_kor.db"
         or die "Could not tie listitemdata_kor.\n";
 
+    tie %listitemdata_not,        'MLDBM', "./listitemdata_not.db"
+        or die "Could not tie listitemdata_not.\n";
+ 
     tie %listitemdata_swt,        'MLDBM', "./listitemdata_swt.db"
         or die "Could not tie listitemdata_swt.\n";
- 
+
     tie %listitemdata_mex,        'MLDBM', "./listitemdata_mex.db"
         or die "Could not tie listitemdata_mex.\n";
 
     tie %listitemdata_superid,    "DB_File", "./listitemdata_superid.db"
         or die "Could not tie listitemdata_superid.\n";
 }
+
+tie %normdata,                'MLDBM', "./normdata.db"
+    or die "Could not tie normdata.\n";
 
 my $stammdateien_ref = {
     aut => {
@@ -177,6 +185,9 @@ foreach my $type (keys %{$stammdateien_ref}){
         }
         elsif ($type eq "kor"){
             $listitemdata_kor{$id}=$content;
+        }
+        elsif ($type eq "not"){
+            $listitemdata_not{$id}=$content;
         }
         elsif ($type eq "swt"){
             $listitemdata_swt{$id}= {
@@ -404,6 +415,8 @@ my @autkor    = ();
 
 my $listitem_ref={};
 
+my $normdata_ref={};
+
 CATLINE:
 while (my $line=<IN>){
     my ($category,$indicator,$content);
@@ -432,6 +445,8 @@ while (my $line=<IN>){
 
         $listitem_ref={};
 
+        $normdata_ref={};
+
         $listitem_ref->{id}       = $id;
         $listitem_ref->{database} = $singlepool;
 
@@ -444,26 +459,12 @@ while (my $line=<IN>){
     elsif ($line=~m/^9999:/){
 
         if ($addsuperpers){
-#             if ($id == 16562){
-#                 print STDERR "Vorher: ".join(", ",@verf)."\n";
-
-#                 print STDERR "SuperID's: ".join(" ",@superids)."\n";
-#             }
-
             foreach my $superid (@superids){
                 if (exists $listitemdata_superid{$superid}){
-                    my @superpersids = split (":",$listitemdata_superid{$superid}); #
-
-#                     if ($id == 16562){
-#                         print STDERR "Daten zur Superid $superid: ".join(" ",@superpersids)."\n";
-#                     }
-
+                    my @superpersids = split (":",$listitemdata_superid{$superid}); 
                     push @verf, @superpersids;
                 }
             }
-#             if ($id == 16562){
-#                 print STDERR "Nachher: ".join(", ",@verf)."\n";
-#             }
         }
         
         my @temp=();
@@ -643,6 +644,8 @@ while (my $line=<IN>){
         }
 
         print TITLISTITEM "$id$listitem\n";
+
+	$normdata{$id} = $normdata_ref; 
         next CATLINE;
     }
     elsif ($line=~m/^(\d+)\.(\d+):(.*?)$/){
@@ -718,6 +721,8 @@ while (my $line=<IN>){
                 content => $content,
             };
 
+            push @{$normdata_ref->{verf}}, $content;
+
             push @autkor, $content;
 
             print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
@@ -745,6 +750,8 @@ while (my $line=<IN>){
                 content    => $content,
                 supplement => $supplement,
             };
+
+            push @{$normdata_ref->{verf}}, $content;
 
             push @autkor, $content;
             
@@ -774,6 +781,8 @@ while (my $line=<IN>){
                 supplement => $supplement,
             };
 
+            push @{$normdata_ref->{verf}}, $content;
+
             push @autkor, $content;
             
             print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
@@ -802,6 +811,8 @@ while (my $line=<IN>){
                 supplement => $supplement,
             };
 
+            push @{$normdata_ref->{verf}}, $content;
+
             push @autkor, $content;
             
             print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
@@ -823,6 +834,8 @@ while (my $line=<IN>){
                 type       => 'kor',
                 content    => $content,
             };
+
+            push @{$normdata_ref->{kor}}, $content;
 
             push @autkor, $content;
             
@@ -846,6 +859,8 @@ while (my $line=<IN>){
                 content    => $content,
             };
 
+            push @{$normdata_ref->{kor}}, $content;
+
             push @autkor, $content;
             
             print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
@@ -859,7 +874,11 @@ while (my $line=<IN>){
             my $category   = "0700";
 
             push @notation, $targetid;
+
+            my $content = $listitemdata_not{$targetid};
             
+            push @{$normdata_ref->{notation}}, $content;
+
             print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
         }
         elsif ($category=~m/^0710/){
@@ -872,6 +891,10 @@ while (my $line=<IN>){
 
             push @swt, $targetid;
             
+            my $content = $listitemdata_swt{$targetid}->{content};
+
+            push @{$normdata_ref->{swt}}, $content;
+
             print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
         }
         elsif ($category=~m/^0902/){
@@ -1138,6 +1161,8 @@ close(CONTROLINDEXON);
 if ($reducemem){
     untie %listitemdata_aut;
     untie %listitemdata_kor;
+    untie %listitemdata_not;
+    untie %listitemdata_swt;
     untie %listitemdata_mex;
     untie %listitemdata_superid;
 }

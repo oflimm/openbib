@@ -397,7 +397,7 @@ use vars qw(%config);
 	   tt_virtualsearch_showverfindex_tname => 'virtualsearch_showverfindex',
 	   tt_virtualsearch_showkorindex_tname  => 'virtualsearch_showkorindex',
 	   tt_virtualsearch_showswtindex_tname  => 'virtualsearch_showswtindex',
-
+	   tt_virtualsearch_shownotindex_tname  => 'virtualsearch_shownotindex',
            tt_userreviews_edit_tname       => 'userreviews_edit',
            tt_userreviews_show_tname       => 'userreviews_show',
 
@@ -444,6 +444,20 @@ use vars qw(%config);
 
 	   testsystem              => 0,
 
+	   # Drill-Down
+
+	   drilldown               => 1,
+
+	   drilldown_option        => {
+				       cloud       => 1,
+				       cloud_min   => 6, # Minimale Anzahl notwendiger Elemente
+				       categorized => 1,
+				       categorized_aut  => 1,
+				       categorized_kor  => 1,
+				       categorized_swt  => 1,
+				       categorized_not  => 1,
+				       categorized_year => 1,
+				      },
            # Social-Tagging
 
            social_tagging          => 1,

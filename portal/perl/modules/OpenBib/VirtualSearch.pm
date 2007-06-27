@@ -1,4 +1,4 @@
-####################################################################
+###################################################################
 #
 #  OpenBib::VirtualSearch.pm
 #
@@ -101,12 +101,14 @@ sub handler {
     my $verfindex     = $query->param('verfindex')     || '';
     my $korindex      = $query->param('korindex')      || '';
     my $swtindex      = $query->param('swtindex')      || '';
+    my $notindex      = $query->param('notindex')      || '';
     my $profil        = $query->param('profil')        || '';
     my $trefferliste  = $query->param('trefferliste')  || '';
     my $queryid       = $query->param('queryid')       || '';
     my $sb            = $query->param('sb')            || 'sql'; # Search backend
-    my $drilldown     = $query->param('drilldown')     || 0;     # Drill-Down?
-    my $cloud         = $query->param('cloud')         || 0;     # Cloud?
+    my $drilldown             = $query->param('drilldown')      || 0;     # Drill-Down?
+    my $drilldown_cloud       = $query->param('dd_cloud')       || 0;     # Cloud?
+    my $drilldown_categorized = $query->param('dd_categorized') || 0;     # Categorized?
 
     my $queryoptions_ref
         = $session->get_queryoptions($query);
@@ -180,7 +182,7 @@ sub handler {
         # Wenn nur ein View angegeben wird, aber keine Submit-Funktion (s.u.),
         # z.B. wenn direkt von extern fuer einen View eine Recherche gestartet werden soll,
         # dann wird in den Datenbanken des View recherchiert
-        if ($view && !($searchall||$searchprofile||$verfindex||$korindex||$swtindex)){
+        if ($view && !($searchall||$searchprofile||$verfindex||$korindex||$swtindex||$notindex)){
             @databases = $config->get_dbs_of_view($view);
         }
         
@@ -188,7 +190,7 @@ sub handler {
             if ($searchall) {
                 @databases = $config->get_active_databases();
             }
-            elsif ($searchprofile || $verfindex || $korindex || $swtindex ) {
+            elsif ($searchprofile || $verfindex || $korindex || $swtindex || $notindex) {
                 if ($profil eq "dbauswahl") {
                     # Eventuell bestehende Auswahl zuruecksetzen
                     @databases = $session->get_dbchoice();
@@ -278,26 +280,30 @@ sub handler {
     # Wenn ein kataloguebergreifender Index ausgewaehlt wurde
     ####################################################################
 
-    if ($verfindex || $korindex || $swtindex) {
+    if ($verfindex || $korindex || $swtindex || $notindex) {
         my $contentreq =
-            ($verfindex)?$searchquery_ref->{verf}{norm}:
-            ($korindex )?$searchquery_ref->{kor }{norm}:
-            ($swtindex )?$searchquery_ref->{swt }{norm}:undef;
+            ($verfindex)?$searchquery_ref->{verf    }{norm}:
+            ($korindex )?$searchquery_ref->{kor     }{norm}:
+            ($swtindex )?$searchquery_ref->{swt     }{norm}:
+            ($notindex )?$searchquery_ref->{notation}{norm}:undef;
 
         my $type =
             ($verfindex)?'aut':
             ($korindex )?'kor':
-            ($swtindex )?'swt':undef;
+            ($swtindex )?'swt':
+            ($notindex )?'notation':undef;
 
         my $urlpart =
             ($verfindex)?"verf=$contentreq;verfindex=Index":
             ($korindex )?"kor=$contentreq;korindex=Index":
-            ($swtindex )?"swt=$contentreq;swtindex=Index":undef;
+            ($swtindex )?"swt=$contentreq;swtindex=Index":
+            ($notindex )?"notation=$contentreq;notindex=Index":undef;
 
         my $template =
             ($verfindex)?$config->{"tt_virtualsearch_showverfindex_tname"}:
             ($korindex )?$config->{"tt_virtualsearch_showkorindex_tname"}:
-            ($swtindex )?$config->{"tt_virtualsearch_showswtindex_tname"}:undef;
+            ($swtindex )?$config->{"tt_virtualsearch_showswtindex_tname"}:
+            ($notindex )?$config->{"tt_virtualsearch_shownotindex_tname"}:undef;
             
         $contentreq=~s/\+//g;
         $contentreq=~s/%2B//g;
@@ -805,15 +811,15 @@ sub handler {
                         
                         my @outputbuffer=();
                         
-                        my $rset=Search::Xapian::RSet->new() if ($drilldown || $cloud);
+                        my $rset=Search::Xapian::RSet->new() if ($drilldown);
                         my $mcount=0;
 
                         foreach my $match ($request->matches) {
-                            # Fuer Drilldowns und Tag-Clouds werden die ersten
+                            # Fuer Drilldowns (Tag-Cloud oder kategorisiert) werden die ersten
                             # 200 Treffer analysiert
-                            last if (($drilldown || $cloud) && $mcount >= 200);
+                            last if ($drilldown && $mcount >= 200);
 
-                            $rset->add_document($match->get_docid) if ($drilldown || $cloud);
+                            $rset->add_document($match->get_docid) if ($drilldown);
                             # Es werden immer nur $hitrange Titelinformationen
                             # zur Ausgabe aus dem MSet herausgeholt
                             if ($mcount < $hitrange){
@@ -827,15 +833,16 @@ sub handler {
                         
                         my $relevant_aut_ref;
                         my $relevant_kor_ref;
+                        my $relevant_not_ref;
                         my $relevant_swt_ref;
                         my $term_ref;
                         my $termweight_ref={};
 
                         my $drilldowntime;
                         
-                        if ($drilldown || $cloud) {
+                        if ($drilldown) {
                             my $ddatime   = new Benchmark;
-                            my $esetrange = ($fullresultcount < 200)?$fullresultcount-1:200;
+                            my $esetrange = ($fullresultcount < 50)?$fullresultcount-1:200;
                             my $eterms    = $request->enq->get_eset($esetrange,$rset);
                             my $iter=$eterms->begin();
                             
@@ -856,7 +863,8 @@ sub handler {
                                 my $term   = $iter->get_termname();
                                 my $weight = $iter->get_weight();
 
-                                if ($term=~/^X1(.+)$/) {
+				$logger->debug("Got relevant term $term with weight $weight");
+                                if ($term=~/^A1(.+)$/) {
                                     push @{$term_ref->{aut}}, {
                                         name   => $1,
                                         weight => $weight,
@@ -870,7 +878,7 @@ sub handler {
                                         weight => $weight,
                                     };
 
-                                    if ($cloud){
+                                    if ($drilldown_cloud){
                                         if (exists $termweight_ref->{$thisterm}){
                                             $termweight_ref->{$thisterm}+=$weight;
                                         }
@@ -879,20 +887,26 @@ sub handler {
                                         }
                                     }
                                 }
-                                elsif ($term=~/^X3(.+)$/) {
+                                elsif ($term=~/^A2(.+)$/) {
                                     push @{$term_ref->{kor}}, {
                                         name   => $1,
                                         weight => $weight,
                                     };
                                 }
-                                elsif ($term=~/^X4(.+)$/) {
+                                elsif ($term=~/^A3(.+)$/) {
+                                    push @{$term_ref->{notation}}, {
+                                        name   => $1,
+                                        weight => $weight,
+                                    };
+                                }
+                                elsif ($term=~/^A4(.+)$/) {
                                     my $thisterm = $1;
                                     push @{$term_ref->{swt}}, {
                                         name   => $thisterm,
                                         weight => $weight,
                                     };
 
-                                    if ($cloud){
+                                    if ($drilldown_cloud){
                                         if (exists $termweight_ref->{$thisterm}){
                                             $termweight_ref->{$thisterm}+=$weight;
                                         }
@@ -908,7 +922,7 @@ sub handler {
                                         weight => $weight,
                                     };
 
-                                    if ($cloud){
+                                    if ($drilldown_cloud){
                                         if (exists $termweight_ref->{$thisterm}){
                                             $termweight_ref->{$thisterm}+=$weight;
                                         }
@@ -928,29 +942,13 @@ sub handler {
                             
                             $logger->debug(YAML::Dump(\@outputbuffer));
 
-                            if ($drilldown){
+                            if ($drilldown_categorized){
                                 # Relavante Kategorieinhalte bestimmen
                                 
-                                $relevant_aut_ref = OpenBib::Search::Local::Xapian::get_relevant_terms({
-                                    categories     => ['P0100','P0101'],
-                                    type           => 'aut',
-                                    resultbuffer   => \@outputbuffer,
-                                    relevanttokens => $term_ref,
-                                });
-                                
-                                $relevant_kor_ref = OpenBib::Search::Local::Xapian::get_relevant_terms({
-                                    categories     => ['C0200','C0201'],
-                                    type           => 'kor',
-                                    resultbuffer   => \@outputbuffer,
-                                    relevanttokens => $term_ref,
-                                });
-                                
-                                $relevant_swt_ref = OpenBib::Search::Local::Xapian::get_relevant_terms({
-                                    categories     => ['T0710'],
-                                    type           => 'swt',
-                                    resultbuffer   => \@outputbuffer,
-                                    relevanttokens => $term_ref,
-                                });
+                                $relevant_aut_ref = $term_ref->{aut};
+                                $relevant_kor_ref = $term_ref->{kor};
+				$relevant_not_ref = $term_ref->{notation};
+                                $relevant_swt_ref = $term_ref->{swt};
                             }
                             my $ddbtime       = new Benchmark;
                             my $ddtimeall     = timediff($ddbtime,$ddatime);
@@ -1006,11 +1004,14 @@ sub handler {
                             resultlist      => \@resultlist,
                             
                             qopts           => $queryoptions_ref,
-                            drilldown       => $drilldown,
+                            drilldown             => $drilldown,
+                            drilldown_cloud       => $drilldown_cloud,
+                            drilldown_categorized => $drilldown_categorized,
                             termfeedback    => $term_ref,
                             relevantaut     => $relevant_aut_ref,
                             relevantkor     => $relevant_kor_ref,
                             relevantswt     => $relevant_swt_ref,
+                            relevantnot     => $relevant_not_ref,
                             cloud           => gen_cloud_absolute({dbh => $dbh, term_ref => $termweight_ref}),
                             lastquery       => $request->querystring,
                             sorttype        => $sorttype,

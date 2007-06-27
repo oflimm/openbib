@@ -37,6 +37,8 @@ BEGIN {
 use Benchmark ':hireswallclock';
 use DB_File;
 use DBI;
+use MLDBM qw(DB_File Storable);
+use Storable ();
 use Encode qw(decode_utf8 encode_utf8);
 use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
@@ -83,6 +85,11 @@ if (!$database){
   $logger->fatal("Kein Pool mit --single-pool= ausgewaehlt");
   exit;
 }
+
+my %normdata                = ();
+
+tie %normdata,                'MLDBM', "./normdata.db"
+    or die "Could not tie normdata.\n";
 
 $logger->info("### POOL $database");
 
@@ -143,38 +150,67 @@ my $count = 1;
             {
                 prefix  => "X1",
                 content => $verf,
+	        type    => 'index',
             },
             {
                 prefix  => "X2",
                 content => $hst,
+	        type    => 'index',
             },
             {
                 prefix  => "X3",
                 content => $kor,
+	        type    => 'index',
             },
             {
                 prefix  => "X4",
                 content => $swt,
+	        type    => 'index',
             },
             {
                 prefix  => "X5",
                 content => $notation,
+	        type    => 'index',
             },
             {
                 prefix  => "X6",
                 content => $sign,
+	        type    => 'index',
             },
             {
                 prefix  => "X7",
                 content => $ejahr,
+	        type    => 'index',
             },
             {
                 prefix  => "X8",
                 content => $isbn,
+	        type    => 'index',
             },
             {
                 prefix  => "X9",
                 content => $issn,
+	        type    => 'index',
+            },
+            {
+                prefix  => "A1",
+                content => $normdata{$s_id}->{verf},
+	        type    => 'normdata',
+            },
+            {
+                prefix  => "A2",
+                content => $normdata{$s_id}->{kor},
+	        type    => 'normdata',
+            },
+            {
+                prefix  => "A3",
+                content => $normdata{$s_id}->{notation},
+	        type    => 'normdata',
+            },
+            {
+                prefix  => "A4",
+                content => $normdata{$s_id}->{swt},
+	        type    => 'normdata',
             },
         
         ];
@@ -186,41 +222,50 @@ my $count = 1;
         foreach my $tokinfo_ref (@$tokinfos_ref) {
             # Tokenize
             next if (! $tokinfo_ref->{content});
-            
-            $tokenizer->tokenize($tokinfo_ref->{content});
+
+            if ($tokinfo_ref->{type} eq 'index'){
+                $tokenizer->tokenize($tokinfo_ref->{content});
         
-            my $i = $tokenizer->iterator();
+                my $i = $tokenizer->iterator();
 
-            my @saved_tokens=();
-            while ($i->hasNextToken()) {
-                my $next = $i->nextToken();
+                my @saved_tokens=();
+                while ($i->hasNextToken()) {
+                    my $next = $i->nextToken();
 
-                # Naechstes, wenn kein Token
-                next if (!$next);
-                # Naechstes, wenn keine Zahl oder einstellig
-                # next if (length($next) < 2 && $next !~ /\d/);
-                # Naechstes, wenn schon gesehen 
-                next if (exists $seen_token_ref->{$next});
-                # Naechstes, wenn Stopwort
-                next if (exists $config->{stopword_filename} && exists $stopword_ref->{$next});
+                    # Naechstes, wenn kein Token
+                    next if (!$next);
+                    # Naechstes, wenn keine Zahl oder einstellig
+                    # next if (length($next) < 2 && $next !~ /\d/);
+                    # Naechstes, wenn schon gesehen 
+                    next if (exists $seen_token_ref->{$next});
+                    # Naechstes, wenn Stopwort
+                    next if (exists $config->{stopword_filename} && exists $stopword_ref->{$next});
 
-                $seen_token_ref->{$next}=1;
+                    $seen_token_ref->{$next}=1;
                 
-                # Token generell einfuegen
-                $doc->add_term($next);
+                    # Token generell einfuegen
+                    $doc->add_term($next);
 
-                push @saved_tokens, $next;
-            }
-
-            if ($withfields) {
-                foreach my $token (@saved_tokens) {
-                    # Token in Feld einfuegen            
-                    my $fieldtoken=$tokinfo_ref->{prefix}.$token;
-                    $doc->add_term($fieldtoken);
+                    push @saved_tokens, $next;
                 }
+
+                if ($withfields) {
+                    foreach my $token (@saved_tokens) {
+                        # Token in Feld einfuegen            
+                        my $fieldtoken=$tokinfo_ref->{prefix}.$token;
+                        $doc->add_term($fieldtoken);
+                    }
+                }
+   	    }
+   	    elsif ($tokinfo_ref->{type} eq 'normdata'){
+                foreach my $normdata_item (@{$tokinfo_ref->{content}}){
+		    next if (!$normdata_item);
+                    my $fieldtoken=$tokinfo_ref->{prefix}.$normdata_item;
+                    $doc->add_term($fieldtoken);
+		}
             }
-        }
-    
+	}
+
         $doc->set_data(encode_utf8($listitem));
     
         my $docid=$db->add_document($doc);

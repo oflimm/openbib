@@ -1682,12 +1682,12 @@ sub get_index {
     my $config = new OpenBib::Config();
     
     my $type_ref = {
-        tit => 1,
-        aut => 2,
-        kor => 3,
-        swt => 4,
-        not => 5,
-        mex => 6,
+        tit      => 1,
+        aut      => 2,
+        kor      => 3,
+        swt      => 4,
+        notation => 5,
+        mex      => 6,
     };
     
     my ($atime,$btime,$timeall);

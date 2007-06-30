@@ -289,6 +289,8 @@ sub get_viewname {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    $logger->debug("Self: ".YAML::Dump($self));
+
     # Assoziierten View zur Session aus Datenbank holen
     my $idnresult=$self->{dbh}->prepare("select viewname from sessionview where sessionid = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
@@ -300,6 +302,8 @@ sub get_viewname {
     my $view = decode_utf8($result->{'viewname'}) || '';
 
     $idnresult->finish();
+
+    $logger->debug("Got view: $view");
 
     return $view;
 }
@@ -427,7 +431,10 @@ sub set_view {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $idnresult=$self->{dbh}->prepare("insert into sessionview values (?,?)") or $logger->error($DBI::errstr);
+    $logger->debug("Setting view $view for session $self->{ID}");
+    my $idnresult=$self->{dbh}->prepare("delete from sessionview where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+    $idnresult=$self->{dbh}->prepare("insert into sessionview values (?,?)") or $logger->error($DBI::errstr);
     $idnresult->execute($self->{ID},$view) or $logger->error($DBI::errstr);
     $idnresult->finish();
 
@@ -759,6 +766,9 @@ sub clear_data {
 
     my $idnresult;
 
+    my $view = $self->get_viewname();
+    $logger->debug("Viewname: $view");
+
     # Zuerst Statistikdaten in Statistik-Datenbank uebertragen,
     my $statistics=new OpenBib::Statistics;
 
@@ -778,6 +788,17 @@ sub clear_data {
             type      => $type,
             content   => $content,
         });
+
+	if ($type == 1){
+	  my $searchquery_ref = Storable::thaw(pack "H*", $content);
+	  
+	  $logger->debug(YAML::Dump($searchquery_ref));
+	  $statistics->log_query({
+				  tstamp          => $tstamp,
+				  view            => $view,
+				  searchquery_ref => $searchquery_ref,
+	  });
+	}
     }
     
     # Relevanz-Daten vom Typ 2 (Einzeltrefferaufruf)

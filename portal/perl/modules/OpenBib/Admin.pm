@@ -2,7 +2,7 @@
 #
 #  OpenBib::Admin
 #
-#  Dieses File ist (C) 2004-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2007 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -48,6 +48,7 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::Session;
+use OpenBib::Statistics;
 
 sub handler {
 
@@ -96,6 +97,7 @@ sub handler {
     my $do_showimx      = $query->param('do_showimx')      || '';
     my $do_showsessions = $query->param('do_showsessions') || '';
     my $do_editsession  = $query->param('do_editsession')  || '';
+    my $do_showstat     = $query->param('do_showstat')     || '';
     my $do_logout       = $query->param('do_logout')       || '';
 
     # Sub-Actions
@@ -149,6 +151,9 @@ sub handler {
 
     my $rssid           = $query->param('rssid') || '';
     my @rssids          = ($query->param('rssids'))?$query->param('rssids'):();
+
+    # Sub-Template ID
+    my $stid            = $query->param('stid') || '';
 
     my $queryoptions_ref
         = $session->get_queryoptions($query);
@@ -1036,6 +1041,27 @@ sub handler {
             $idnresult2->finish;
             return OK;
         }
+    }
+    elsif ($do_showstat) {
+
+        my $statistics = new OpenBib::Statistics();
+
+        # TT-Data erzeugen
+        my $ttdata={
+                    sessionID  => $session->{ID},
+
+		    session    => $session,
+		    statistics => $statistics,
+		    config     => $config,
+		    msg        => $msg,
+		   };
+
+	$stid=~s/[^0-9]//g;
+
+	my $templatename = ($stid)?"tt_admin_showstat_".$stid."_tname":"tt_admin_showstat_tname";
+
+	OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+
     }
     elsif ($do_logout) {
 

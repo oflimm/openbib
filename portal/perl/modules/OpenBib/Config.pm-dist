@@ -40,7 +40,7 @@ use vars qw(%config);
 
 	   # Versionnummer
 
-	   version => 'OpenBib v2.0-pre1',
+	   version => 'OpenBib v2.1',
 	   
 	   # Unter diesem Namen wird der lokale Server angesprochen
 	   
@@ -225,8 +225,8 @@ use vars qw(%config);
 
 	   # Email-Adressen fuer den Admin und generellen Kontakt
 
-	   admin_email          => 'admin\@openbib.org',
-	   contact_email        => 'contact\@openbib.org',
+	   admin_email          => 'admin@openbib.org',
+	   contact_email        => 'contact@openbib.org',
 
 	   # Externe Links zum direkten Einsprung in die Digitale
 	   # Bibliothek NRW: In die Funktionen Monographien-Fernleihe 
@@ -281,7 +281,9 @@ use vars qw(%config);
 	   tt_admin_editview_rss_tname   => 'admin_editview_rss',
 	   tt_admin_showsessions_tname   => 'admin_showsessions',
 	   tt_admin_editsession_tname    => 'admin_editsession',
-	   tt_admin_showimx_tname        => 'admin_showimx',
+	   tt_admin_showstat_tname       => 'admin_showstat',
+	   tt_admin_showstat_1_tname     => 'admin_showstat_1',
+	   tt_admin_showstat_2_tname     => 'admin_showstat_2',
 	   tt_admin_logout_tname         => 'admin_logout',
 
 	   tt_leave_tname                => 'leave',
@@ -332,6 +334,7 @@ use vars qw(%config);
            tt_helpframe_16_tname         => 'helpframe_16',
            tt_helpframe_17_tname         => 'helpframe_17',
            tt_helpframe_18_tname         => 'helpframe_18',
+           tt_helpframe_19_tname         => 'helpframe_19',
            tt_helpframe_20_tname         => 'helpframe_20',
            tt_helpframe_21_tname         => 'helpframe_21',
            tt_helpframe_22_tname         => 'helpframe_22',
@@ -344,6 +347,7 @@ use vars qw(%config);
            tt_helpframe_33_tname         => 'helpframe_33',
            tt_helpframe_34_tname         => 'helpframe_34',
            tt_helpframe_35_tname         => 'helpframe_35',
+           tt_helpframe_40_tname         => 'helpframe_40',
 
 	   tt_startopac_tname            => 'startopac',
 
@@ -925,6 +929,51 @@ sub get_number_of_dbs {
     $request->finish();
     
     return $alldbs;
+}
+
+sub get_number_of_all_dbs {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$self->{dbh}->prepare("select count(dbname) as rowcount from dbinfo") or $logger->error($DBI::errstr);
+    $request->execute() or $logger->error($DBI::errstr);
+    my $res    = $request->fetchrow_hashref;
+    my $alldbs = $res->{rowcount};
+    $request->finish();
+    
+    return $alldbs;
+}
+
+sub get_number_of_views {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$self->{dbh}->prepare("select count(viewname) as rowcount from viewinfo where active=1") or $logger->error($DBI::errstr);
+    $request->execute() or $logger->error($DBI::errstr);
+    my $res      = $request->fetchrow_hashref;
+    my $allviews = $res->{rowcount};
+    $request->finish();
+    
+    return $allviews;
+}
+
+sub get_number_of_all_views {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$self->{dbh}->prepare("select count(viewname) as rowcount from viewinfo") or $logger->error($DBI::errstr);
+    $request->execute() or $logger->error($DBI::errstr);
+    my $res      = $request->fetchrow_hashref;
+    my $allviews = $res->{rowcount};
+    $request->finish();
+    
+    return $allviews;
 }
 
 sub get_number_of_titles {

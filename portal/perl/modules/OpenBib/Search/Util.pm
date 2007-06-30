@@ -1945,6 +1945,9 @@ sub initial_search_for_titidns {
     my $notfrom="";
   
     if ($searchquery_ref->{notation}{norm}) {
+        # Spezielle Trunkierung
+        $searchquery_ref->{notation}{norm} =~ s/\*$/%/;
+
         push @sqlfrom,  "notation_string";
         push @sqlfrom,  "conn";
         push @sqlwhere, $searchquery_ref->{notation}{bool}." (notation_string.content like ? and conn.sourcetype=1 and conn.targettype=5 and conn.targetid=notation_string.id and search.verwidn=conn.sourceid)";
@@ -1954,6 +1957,9 @@ sub initial_search_for_titidns {
     my $signfrom="";
   
     if ($searchquery_ref->{sign}{norm}) {
+        # Spezielle Trunkierung
+        $searchquery_ref->{sign}{norm} =~ s/\*$/%/;
+
         push @sqlfrom,  "mex_string";
         push @sqlfrom,  "conn";
         push @sqlwhere, $searchquery_ref->{sign}{bool}." (mex_string.content like ? and mex_string.category=0014 and conn.sourcetype=1 and conn.targettype=6 and conn.targetid=mex_string.id and search.verwidn=conn.sourceid)";
@@ -1976,6 +1982,9 @@ sub initial_search_for_titidns {
     }
   
     if ($searchquery_ref->{hststring}{norm}) {
+        # Spezielle Trunkierung
+        $searchquery_ref->{hststring}{norm} =~ s/\*$/%/;
+
         push @sqlfrom,  "tit_string";
         push @sqlwhere, $searchquery_ref->{hststring}{bool}." (tit_string.content like ? and tit_string.category in (0331,0310,0304,0370,0341) and search.verwidn=tit_string.id)";
         push @sqlargs,  $searchquery_ref->{hststring}{norm};

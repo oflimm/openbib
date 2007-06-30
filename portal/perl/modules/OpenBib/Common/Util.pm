@@ -637,6 +637,7 @@ sub get_searchquery {
     my $verfindex     = $query->param('verfindex')     || '';
     my $korindex      = $query->param('korindex')      || '';
     my $swtindex      = $query->param('swtindex')      || '';
+    my $notindex      = $query->param('notindex')      || '';
 
     #####################################################################
     ## boolX: Verknuepfung der Eingabefelder (leere Felder werden ignoriert)
@@ -845,12 +846,6 @@ sub get_searchquery {
         $gtquellenorm = OpenBib::VirtualSearch::Util::conv2autoplus($gtquellenorm) if ($gtquelle);
     }
 
-    # Spezielle Trunkierungen
-
-    $signnorm      =~s/\*$/%/;
-    $notationnorm  =~s/\*$/%/;
-    $hststringnorm =~s/\*$/%/;
-    
     my $searchquery_ref={
         fs => {
             val   => $fs,

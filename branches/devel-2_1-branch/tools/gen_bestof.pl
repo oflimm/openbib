@@ -42,10 +42,11 @@ use OpenBib::Config;
 use OpenBib::Statistics;
 use OpenBib::Search::Util;
 
-my ($type,$singlepool,$help,$logfile);
+my ($type,$singlepool,$singleview,$help,$logfile);
 
 &GetOptions("type=s"          => \$type,
             "single-pool=s"   => \$singlepool,
+            "single-view=s"   => \$singleview,
             "logfile=s"       => \$logfile,
 	    "help"            => \$help
 	    );
@@ -164,7 +165,8 @@ if ($type == 3){
         $logger->info("Generating Type 3 BestOf-Values for database $database");
 
         my $maxcount=0;
-
+	my $mincount=999999999;
+	
         my $dbh
             = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
                 or $logger->error_die($DBI::errstr);
@@ -178,16 +180,20 @@ if ($type == 3){
             if ($maxcount < $count){
                 $maxcount = $count;
             }
-            
+        
+            if ($mincount > $count){
+                $mincount = $count;
+            }
+    
             push @$bestof_ref, {
                 item  => $content,
                 count => $count,
             };
         }
 
-        if ($maxcount >= 6){
+        if ($maxcount-$mincount > 0){
             for (my $i=0 ; $i < scalar (@$bestof_ref) ; $i++){
-                $bestof_ref->[$i]->{class} = int($bestof_ref->[$i]->{count} / int($maxcount/6));
+                $bestof_ref->[$i]->{class} = int(($bestof_ref->[$i]->{count}-$mincount) / ($maxcount-$mincount) * 6);
             }
         }
 
@@ -220,6 +226,7 @@ if ($type == 4){
         $logger->info("Generating Type 4 BestOf-Values for database $database");
 
         my $maxcount=0;
+	my $mincount=999999999;
 
         my $dbh
             = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
@@ -234,6 +241,10 @@ if ($type == 4){
             if ($maxcount < $count){
                 $maxcount = $count;
             }
+
+            if ($mincount > $count){
+                $mincount = $count;
+            }
             
             push @$bestof_ref, {
                 item  => $content,
@@ -241,9 +252,9 @@ if ($type == 4){
             };
         }
 
-        if ($maxcount >= 6){
+        if ($maxcount-$mincount > 0){
             for (my $i=0 ; $i < scalar (@$bestof_ref) ; $i++){
-                $bestof_ref->[$i]->{class} = int($bestof_ref->[$i]->{count} / int($maxcount/6));
+                $bestof_ref->[$i]->{class} = int(($bestof_ref->[$i]->{count}-$mincount) / ($maxcount-$mincount) * 6);
             }
         }
 
@@ -276,6 +287,7 @@ if ($type == 5){
         $logger->info("Generating Type 5 BestOf-Values for database $database");
 
         my $maxcount=0;
+	my $mincount=999999999;
 
         my $dbh
             = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
@@ -290,6 +302,10 @@ if ($type == 5){
             if ($maxcount < $count){
                 $maxcount = $count;
             }
+
+            if ($mincount > $count){
+                $mincount = $count;
+            }
             
             push @$bestof_ref, {
                 item  => $content,
@@ -297,9 +313,9 @@ if ($type == 5){
             };
         }
 
-        if ($maxcount >= 6){
+        if ($maxcount-$mincount > 0){
             for (my $i=0 ; $i < scalar (@$bestof_ref) ; $i++){
-                $bestof_ref->[$i]->{class} = int($bestof_ref->[$i]->{count} / int($maxcount/6));
+                $bestof_ref->[$i]->{class} = int(($bestof_ref->[$i]->{count}-$mincount) / ($maxcount-$mincount) * 6);
             }
         }
 
@@ -332,6 +348,7 @@ if ($type == 6){
         $logger->info("Generating Type 6 BestOf-Values for database $database");
 
         my $maxcount=0;
+	my $mincount=999999999;
 
         my $dbh
             = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
@@ -346,6 +363,10 @@ if ($type == 6){
             if ($maxcount < $count){
                 $maxcount = $count;
             }
+
+            if ($mincount > $count){
+                $mincount = $count;
+            }
             
             push @$bestof_ref, {
                 item  => $content,
@@ -353,9 +374,9 @@ if ($type == 6){
             };
         }
 
-        if ($maxcount >= 6){
+        if ($maxcount-$mincount > 0){
             for (my $i=0 ; $i < scalar (@$bestof_ref) ; $i++){
-                $bestof_ref->[$i]->{class} = int($bestof_ref->[$i]->{count} / int($maxcount/6));
+                $bestof_ref->[$i]->{class} = int(($bestof_ref->[$i]->{count}-$mincount) / ($maxcount-$mincount) * 6);
             }
         }
 
@@ -392,6 +413,7 @@ if ($type == 7){
         $logger->info("Generating Type 7 BestOf-Values for database $database");
 
         my $maxcount=0;
+	my $mincount=999999999;
         
         my $bestof_ref=[];
         my $request=$dbh->prepare("select t.id,t.tag,count(tt.tagid) as scount from tags as t, tittag as tt where tt.titdb=? and tt.tagid=t.id group by tt.tagid");
@@ -403,6 +425,10 @@ if ($type == 7){
             if ($maxcount < $count){
                 $maxcount = $count;
             }
+
+            if ($mincount > $count){
+                $mincount = $count;
+            }
             
             push @$bestof_ref, {
                 item  => $content,
@@ -411,9 +437,9 @@ if ($type == 7){
             };
         }
 
-        if ($maxcount >= 6){
+        if ($maxcount-$mincount > 0){
             for (my $i=0 ; $i < scalar (@$bestof_ref) ; $i++){
-                $bestof_ref->[$i]->{class} = int($bestof_ref->[$i]->{count} / int($maxcount/6));
+                $bestof_ref->[$i]->{class} = int(($bestof_ref->[$i]->{count}-$mincount) / ($maxcount-$mincount) * 6);
             }
         }
 
@@ -426,6 +452,66 @@ if ($type == 7){
         $statistics->store_result({
             type => 7,
             id   => $database,
+            data => $sortedbestof_ref,
+        });
+    }
+}
+
+# Typ 8 => Meistgenutzte Suchbegriffe
+if ($type == 8){
+    my @views = ();
+
+    if ($singleview){
+        push @views, $singleview;
+    }
+    else {
+        @views=$config->get_active_views();
+    }
+
+    foreach my $view (@views){
+        $logger->info("Generating Type 8 BestOf-Values for view $view");
+
+        my $maxcount=0;
+	my $mincount=999999999;
+
+        my $dbh
+            = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
+                or $logger->error_die($DBI::errstr);
+        
+        my $bestof_ref=[];
+        my $request=$dbh->prepare("select content, count(content) as scount from queryterm where viewname=? group by content order by scount DESC limit 200");
+        $request->execute($view);
+        while (my $result=$request->fetchrow_hashref){
+            my $content = decode_utf8($result->{content});
+            my $count   = $result->{scount};
+            if ($maxcount < $count){
+                $maxcount = $count;
+            }
+            if ($mincount > $count){
+                $mincount = $count;
+            }
+            
+            push @$bestof_ref, {
+                item  => $content,
+                count => $count,
+            };
+        }
+
+        if ($maxcount-$mincount > 0){
+            for (my $i=0 ; $i < scalar (@$bestof_ref) ; $i++){
+                $bestof_ref->[$i]->{class} = int(($bestof_ref->[$i]->{count}-$mincount) / ($maxcount-$mincount) * 6);
+            }
+        }
+
+        my $sortedbestof_ref ;
+        @{$sortedbestof_ref} = map { $_->[0] }
+            sort { $a->[1] cmp $b->[1] }
+                map { [$_, $_->{item}] }
+                    @{$bestof_ref};
+        
+        $statistics->store_result({
+            type => 8,
+            id   => $view,
             data => $sortedbestof_ref,
         });
     }
@@ -450,6 +536,7 @@ gen_bestof.pl - Erzeugen von BestOf-Analysen aus Relevance-Statistik-Daten
    5 => Meistgenutzte Koerperschaften/Urheber pro Katalog (Wolke)
    6 => Meistgenutzte Verfasser/Personen pro Katalog (Wolke)
    7 => Nutzer-Tags pro Katalog (Wolke)
+   8 => Suchbegriffe pro View (Wolke)
        
 ENDHELP
     exit;

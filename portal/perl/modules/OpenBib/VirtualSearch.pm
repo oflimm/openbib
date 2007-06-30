@@ -1297,9 +1297,14 @@ sub gen_cloud {
 
     my $termcloud_ref = [];
     my $maxtermfreq = 0;
+    my $mintermfreq = 999999999;
+
     foreach my $singleterm (keys %{$term_ref}) {
         if ($term_ref->{$singleterm} > $maxtermfreq){
             $maxtermfreq = $term_ref->{$singleterm};
+        }
+        if ($term_ref->{$singleterm} < $mintermfreq){
+            $mintermfreq = $term_ref->{$singleterm};
         }
     }
 
@@ -1310,10 +1315,10 @@ sub gen_cloud {
         };
     }
 
-    if ($maxtermfreq >= 6){
+    if ($maxtermfreq-$mintermfreq > 0){
         for (my $i=0 ; $i < scalar (@$termcloud_ref) ; $i++){
-            $termcloud_ref->[$i]->{class} = int($termcloud_ref->[$i]->{count} / int($maxtermfreq/6));
-        }
+	    $termcloud_ref->[$i]->{class} = int(($termcloud_ref->[$i]->{count}-$mintermfreq) / ($maxtermfreq-$mintermfreq) * 6);
+	}
     }
 
     my $sortedtermcloud_ref;
@@ -1339,6 +1344,7 @@ sub gen_cloud_absolute {
     
     my $termcloud_ref = [];
     my $maxtermfreq = 0;
+    my $mintermfreq = 999999999;
 
     # Termfrequenzen sowie maximale Termfrequenz bestimmen
     foreach my $singleterm (keys %{$term_ref}) {
@@ -1350,6 +1356,9 @@ sub gen_cloud_absolute {
         if ($term_ref->{$singleterm} > $maxtermfreq){
             $maxtermfreq = $term_ref->{$singleterm};
         }
+        if ($term_ref->{$singleterm} < $mintermfreq){
+            $mintermfreq = $term_ref->{$singleterm};
+        }
     }
 
     # Jetzt Fontgroessen bestimmen
@@ -1360,10 +1369,10 @@ sub gen_cloud_absolute {
         };
     }
 
-    if ($maxtermfreq >= 6){
+    if ($maxtermfreq-$mintermfreq > 0){
         for (my $i=0 ; $i < scalar (@$termcloud_ref) ; $i++){
-            $termcloud_ref->[$i]->{class} = int($termcloud_ref->[$i]->{count} / int($maxtermfreq/6));
-        }
+	    $termcloud_ref->[$i]->{class} = int(($termcloud_ref->[$i]->{count}-$mintermfreq) / ($maxtermfreq-$mintermfreq) * 6);
+	}
     }
     
     my $sortedtermcloud_ref;

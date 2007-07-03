@@ -284,6 +284,9 @@ use vars qw(%config);
 	   tt_admin_showstat_tname       => 'admin_showstat',
 	   tt_admin_showstat_1_tname     => 'admin_showstat_1',
 	   tt_admin_showstat_2_tname     => 'admin_showstat_2',
+	   tt_admin_showstat_3_tname     => 'admin_showstat_3',
+	   tt_admin_showstat_4_tname     => 'admin_showstat_4',
+	   tt_admin_showstat_5_tname     => 'admin_showstat_5',
 	   tt_admin_logout_tname         => 'admin_logout',
 
 	   tt_leave_tname                => 'leave',

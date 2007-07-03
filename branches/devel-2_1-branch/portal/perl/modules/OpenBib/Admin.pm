@@ -49,6 +49,7 @@ use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::Session;
 use OpenBib::Statistics;
+use OpenBib::User;
 
 sub handler {
 
@@ -1045,6 +1046,7 @@ sub handler {
     elsif ($do_showstat) {
 
         my $statistics = new OpenBib::Statistics();
+	my $user       = new OpenBib::User();
 
         # TT-Data erzeugen
         my $ttdata={
@@ -1052,6 +1054,7 @@ sub handler {
 
 		    session    => $session,
 		    statistics => $statistics,
+		    user       => $user,
 		    config     => $config,
 		    msg        => $msg,
 		   };

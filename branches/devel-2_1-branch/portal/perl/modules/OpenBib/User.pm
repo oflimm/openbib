@@ -293,6 +293,78 @@ sub get_number_of_items_in_collection {
     return $numofitems;
 }
 
+sub get_number_of_tagged_titles {
+    my ($self,$userid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return undef if (!defined $self->{dbh});
+    
+    my $idnresult=$self->{dbh}->prepare("select count(distinct(titid)) as rowcount from tittag") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
+    my $res = $idnresult->fetchrow_hashref();
+    my $numoftitles = $res->{rowcount};
+
+    $idnresult->finish();
+
+    return ($numoftitles)?$numoftitles:0;
+}
+
+sub get_number_of_tagging_users {
+    my ($self,$userid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return undef if (!defined $self->{dbh});
+    
+    my $idnresult=$self->{dbh}->prepare("select count(distinct(loginname)) as rowcount from tittag") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
+    my $res = $idnresult->fetchrow_hashref();
+    my $numofusers = $res->{rowcount};
+
+    $idnresult->finish();
+
+    return ($numofusers)?$numofusers:0;
+}
+
+sub get_number_of_tags {
+    my ($self,$userid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return undef if (!defined $self->{dbh});
+    
+    my $idnresult=$self->{dbh}->prepare("select count(distinct(tagid)) as rowcount from tittag") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
+    my $res = $idnresult->fetchrow_hashref();
+    my $numoftags = $res->{rowcount};
+
+    $idnresult->finish();
+
+    return ($numoftags)?$numoftags:0;
+}
+
+sub get_number_of_users {
+    my ($self,$userid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return undef if (!defined $self->{dbh});
+    
+    my $idnresult=$self->{dbh}->prepare("select count(userid) as rowcount from user") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
+    my $res = $idnresult->fetchrow_hashref();
+    my $numofusers = $res->{rowcount};
+
+    $idnresult->finish();
+
+    return ($numofusers)?$numofusers:0;
+}
+
 sub get_all_profiles {
     my ($self)=@_;
 

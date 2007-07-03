@@ -477,42 +477,76 @@ if ($type == 8){
         my $dbh
             = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
                 or $logger->error_die($DBI::errstr);
-        
-        my $bestof_ref=[];
-        my $request=$dbh->prepare("select content, count(content) as scount from queryterm where viewname=? group by content order by scount DESC limit 200");
-        $request->execute($view);
-        while (my $result=$request->fetchrow_hashref){
+
+	my $cat2type_ref = {
+			    fs        => 1,
+			    hst       => 2,
+			    verf      => 3,
+			    kor       => 4,
+			    swt       => 5,
+			    notation  => 6,
+			    isbn      => 7,
+			    issn      => 8,
+			    sign      => 9,
+			    mart      => 10,
+			    hststring => 11,
+			    gtquelle  => 12,
+			    ejahr     => 13,
+			   };
+
+	my $bestof_ref={};
+        foreach my $category (qw/all fs hst verf swt/){
+	  my $thisbestof_ref=[];
+	  my $sqlstring;
+
+	  my @sqlargs = ($view);
+
+	  if ($category eq 'all'){
+	    $sqlstring="select content, count(content) as scount from queryterm where viewname=? group by content order by scount DESC limit 200";
+	  }
+	  else {
+	    $sqlstring="select content, count(content) as scount from queryterm where viewname=? and type = ? group by content order by scount DESC limit 200";
+	    push @sqlargs, $cat2type_ref->{$category}; 
+	  }
+
+	  my $request=$dbh->prepare($sqlstring);
+	  $request->execute(@sqlargs);
+	  while (my $result=$request->fetchrow_hashref){
             my $content = decode_utf8($result->{content});
             my $count   = $result->{scount};
             if ($maxcount < $count){
-                $maxcount = $count;
+	      $maxcount = $count;
             }
             if ($mincount > $count){
-                $mincount = $count;
+	      $mincount = $count;
             }
             
-            push @$bestof_ref, {
-                item  => $content,
-                count => $count,
+            push @$thisbestof_ref, {
+				item  => $content,
+				count => $count,
             };
-        }
-
-        if ($maxcount-$mincount > 0){
-            for (my $i=0 ; $i < scalar (@$bestof_ref) ; $i++){
-                $bestof_ref->[$i]->{class} = int(($bestof_ref->[$i]->{count}-$mincount) / ($maxcount-$mincount) * 6);
+	  }
+	  
+	  if ($maxcount-$mincount > 0){
+            for (my $i=0 ; $i < scalar (@$thisbestof_ref) ; $i++){
+	      $thisbestof_ref->[$i]->{class} = int(($thisbestof_ref->[$i]->{count}-$mincount) / ($maxcount-$mincount) * 6);
             }
-        }
-
-        my $sortedbestof_ref ;
-        @{$sortedbestof_ref} = map { $_->[0] }
+	  }
+	  
+	  my $sortedbestof_ref ;
+	  @{$sortedbestof_ref} = map { $_->[0] }
             sort { $a->[1] cmp $b->[1] }
-                map { [$_, $_->{item}] }
-                    @{$bestof_ref};
-        
+	      map { [$_, $_->{item}] }
+		@{$thisbestof_ref};
+
+
+	  $bestof_ref->{$category}=$sortedbestof_ref;
+	}
+
         $statistics->store_result({
             type => 8,
             id   => $view,
-            data => $sortedbestof_ref,
+            data => $bestof_ref,
         });
     }
 }

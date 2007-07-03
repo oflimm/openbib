@@ -243,6 +243,39 @@ sub get_number_of_event {
 	    }
 }
 
+sub get_number_of_queries_by_category {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $tstamp       = exists $arg_ref->{tstamp}
+        ? $arg_ref->{tstamp}             : undef;
+
+    my $category     = exists $arg_ref->{category}
+        ? $arg_ref->{category}           : undef;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return 0 if (!$category);
+
+    my $sqlstring="select count(tstamp) as rowcount, min(tstamp) as mintstamp from querycategory where $category = 1";
+
+    my $request=$self->{dbh}->prepare($sqlstring) or $logger->error($DBI::errstr);
+    $request->execute() or $logger->error($DBI::errstr);
+    
+    my $res        = $request->fetchrow_hashref;
+    my $count      = $res->{rowcount};
+    my $mintstamp  = $res->{mintstamp};
+
+
+    $request->finish;
+
+    return {
+	    number => $count,
+	    since  => $mintstamp,
+	    }
+}
+
 sub get_ranking_of_event {
     my ($self,$arg_ref)=@_;
 
@@ -252,6 +285,9 @@ sub get_ranking_of_event {
 
     my $type         = exists $arg_ref->{type}
         ? $arg_ref->{type}               : undef;
+
+    my $limit        = exists $arg_ref->{limit}
+        ? $arg_ref->{limit}              : '';
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -273,6 +309,10 @@ sub get_ranking_of_event {
     }
 
     $sqlstring.=" group by content order by rowcount DESC";
+
+    if ($limit){
+        $sqlstring.=" limit $limit";
+    }
 
     $logger->debug($sqlstring." ".join(" - ",@sqlargs));
     my $request=$self->{dbh}->prepare($sqlstring) or $logger->error($DBI::errstr);

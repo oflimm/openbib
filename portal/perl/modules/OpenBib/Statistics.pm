@@ -447,6 +447,89 @@ sub log_query {
     return;
 }
 
+sub get_sequencestat_of_event {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $type         = exists $arg_ref->{type}
+        ? $arg_ref->{type}               : undef;
+
+    my $content      = exists $arg_ref->{content}
+        ? $arg_ref->{content}            : undef;
+
+    my $year         = exists $arg_ref->{year}
+        ? $arg_ref->{year}               : undef;
+
+    my $month        = exists $arg_ref->{month}
+        ? $arg_ref->{month}              : undef;
+
+    my $day          = exists $arg_ref->{day}
+        ? $arg_ref->{day}                : undef;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $sqlstring="";
+
+    my @x_values = ();
+    my @y_values = ();
+
+    my @sqlwhere = ();
+    my @sqlargs  = ();
+
+    if ($type){
+        push @sqlwhere, " type = ?";
+	push @sqlargs,  $type;
+    } 
+
+    if ($content){
+        push @sqlwhere, " content = ?";
+	push @sqlargs,  $content;
+    } 
+    
+    my $sqlwherestring  = join(" and ",@sqlwhere);
+
+    my ($thisday, $thismonth, $thisyear) = (localtime)[3,4,5];
+    $thisyear  += 1900;
+    $thismonth += 1;
+
+    # Monatsstatistik fuer Jahr $year
+    if ($year){
+      $sqlstring="select month(tstamp) as x_value, count(tstamp) as y_value from eventlog where $sqlwherestring and year(tstamp) = ? group by month(tstamp)";
+      push @sqlargs, $year;
+    }
+    # Tagesstatistik fuer Monat $month
+    elsif ($month){
+      $sqlstring="select day(tstamp) as x_value, count(tstamp) as y_value from eventlog where $sqlwherestring and month(tstamp) = ? and YEAR(tstamp) = ? group by day(tstamp)";
+      push @sqlargs, $month;
+      push @sqlargs, $thisyear;
+    }
+    # Stundenstatistik fuer Tag $day
+    elsif ($day){
+      $sqlstring="select hour(tstamp) as x_value, count(tstamp) as y_value from eventlog where $sqlwherestring and DAY(tstamp) = ? and MONTH(tstamp) = ? and YEAR(tstamp) = ? group by hour(tstamp)";
+      push @sqlargs, $day;
+      push @sqlargs, $month;
+      push @sqlargs, $thisyear;
+    }
+
+    my $request=$self->{dbh}->prepare($sqlstring) or $logger->error($DBI::errstr);
+    $request->execute(@sqlargs) or $logger->error($DBI::errstr);
+
+    $logger->debug($sqlstring." ".join("/",@sqlargs));
+
+    while (my $result=$request->fetchrow_hashref){
+        push @x_values, $result->{x_value};
+        push @y_values, $result->{y_value};
+    }
+
+    my $values_ref = { x_values => \@x_values,
+		       y_values => \@y_values};
+
+    $logger->debug(YAML::Dump($values_ref));
+
+    return $values_ref;
+}
+
 sub DESTROY {
     my $self = shift;
 

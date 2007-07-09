@@ -454,6 +454,9 @@ sub get_sequencestat_of_event {
     my $type         = exists $arg_ref->{type}
         ? $arg_ref->{type}               : undef;
 
+    my $subtype      = exists $arg_ref->{subtype}
+        ? $arg_ref->{subtype}            : undef;
+
     my $content      = exists $arg_ref->{content}
         ? $arg_ref->{content}            : undef;
 
@@ -493,19 +496,23 @@ sub get_sequencestat_of_event {
     $thisyear  += 1900;
     $thismonth += 1;
 
+    $year   = $thisyear  if (!$year);
+    $month  = $thismonth if (!$month);
+    $day    = $thisday   if (!$day);
+
     # Monatsstatistik fuer Jahr $year
-    if ($year){
+    if ($subtype eq 'monthly'){
       $sqlstring="select month(tstamp) as x_value, count(tstamp) as y_value from eventlog where $sqlwherestring and year(tstamp) = ? group by month(tstamp)";
       push @sqlargs, $year;
     }
     # Tagesstatistik fuer Monat $month
-    elsif ($month){
+    elsif ($subtype eq 'daily'){
       $sqlstring="select day(tstamp) as x_value, count(tstamp) as y_value from eventlog where $sqlwherestring and month(tstamp) = ? and YEAR(tstamp) = ? group by day(tstamp)";
       push @sqlargs, $month;
       push @sqlargs, $thisyear;
     }
     # Stundenstatistik fuer Tag $day
-    elsif ($day){
+    elsif ($subtype eq 'hourly'){
       $sqlstring="select hour(tstamp) as x_value, count(tstamp) as y_value from eventlog where $sqlwherestring and DAY(tstamp) = ? and MONTH(tstamp) = ? and YEAR(tstamp) = ? group by hour(tstamp)";
       push @sqlargs, $day;
       push @sqlargs, $month;

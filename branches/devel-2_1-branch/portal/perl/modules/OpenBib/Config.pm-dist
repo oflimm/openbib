@@ -265,9 +265,10 @@ use vars qw(%config);
 
            stopword_filename       => '/opt/openbib/ft/stopwords.txt',
 
-	   # Pfad zum Document Root
+	   # Pfade zum Document und Image Root
 
 	   document_root_path       => '/usr/db/www/documents',
+	   image_root_path          => '/var/www/images/openbib',
 
 	   # Mapping der einzelnen Kompontenten zu ihren Templates
 

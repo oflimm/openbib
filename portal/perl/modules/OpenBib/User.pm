@@ -348,7 +348,7 @@ sub get_number_of_tags {
 }
 
 sub get_number_of_users {
-    my ($self,$userid)=@_;
+    my ($self)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -363,6 +363,60 @@ sub get_number_of_users {
     $idnresult->finish();
 
     return ($numofusers)?$numofusers:0;
+}
+
+sub get_number_of_dbprofiles {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return undef if (!defined $self->{dbh});
+    
+    my $idnresult=$self->{dbh}->prepare("select count(profilid) as rowcount from userdbprofile") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
+    my $res = $idnresult->fetchrow_hashref();
+    my $numofprofiles = $res->{rowcount};
+
+    $idnresult->finish();
+
+    return ($numofprofiles)?$numofprofiles:0;
+}
+
+sub get_number_of_collections {
+    my ($self,$userid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return undef if (!defined $self->{dbh});
+    
+    my $idnresult=$self->{dbh}->prepare("select count(distinct(userid)) as rowcount from treffer") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
+    my $res = $idnresult->fetchrow_hashref();
+    my $numofcollections = $res->{rowcount};
+
+    $idnresult->finish();
+
+    return ($numofcollections)?$numofcollections:0;
+}
+
+sub get_number_of_collection_entries {
+    my ($self,$userid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return undef if (!defined $self->{dbh});
+    
+    my $idnresult=$self->{dbh}->prepare("select count(userid) as rowcount from treffer") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
+    my $res = $idnresult->fetchrow_hashref();
+    my $numofentries = $res->{rowcount};
+
+    $idnresult->finish();
+
+    return ($numofentries)?$numofentries:0;
 }
 
 sub get_all_profiles {
@@ -435,13 +489,67 @@ sub get_logintargets {
     while (my $result=$request->fetchrow_hashref()) {
         push @$logintargets_ref, {
             id          => decode_utf8($result->{'targetid'}),
+            hostname    => decode_utf8($result->{'hostname'}),
+            port        => decode_utf8($result->{'port'}),
+            username    => decode_utf8($result->{'user'}),
+            dbname      => decode_utf8($result->{'db'}),
             description => decode_utf8($result->{'description'}),
-
+            type        => decode_utf8($result->{'type'}),
         };
     }
     $request->finish();
 
     return $logintargets_ref;
+}
+
+sub get_logintarget_by_id {
+    my ($self,$targetid) = @_;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+    
+    my $request=$self->{dbh}->prepare("select * from logintarget where targetid = ?") or $logger->error($DBI::errstr);
+    $request->execute($targetid) or $logger->error($DBI::errstr);
+    
+    my $result=$request->fetchrow_hashref();
+    
+    my $logintarget_ref = {};
+
+    $logintarget_ref = {
+			   id          => decode_utf8($result->{'targetid'}),
+			   hostname    => decode_utf8($result->{'hostname'}),
+			   port        => decode_utf8($result->{'port'}),
+			   username    => decode_utf8($result->{'user'}),
+			   dbname      => decode_utf8($result->{'db'}),
+			   description => decode_utf8($result->{'description'}),
+			   type        => decode_utf8($result->{'type'}),
+			  } if ($result->{'targetid'});
+
+    $request->finish();
+
+    $logger->debug("Getting Info for Targetid: $targetid -> Got: ".YAML::Dump($logintarget_ref));
+    return $logintarget_ref;
+}
+
+sub get_number_of_logintargets {
+    my ($self,$userid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return undef if (!defined $self->{dbh});
+    
+    my $idnresult=$self->{dbh}->prepare("select count(targetid) as rowcount from logintarget") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
+    my $res = $idnresult->fetchrow_hashref();
+    my $numoftargets = $res->{rowcount};
+
+    $idnresult->finish();
+
+    return ($numoftargets)?$numoftargets:0;
 }
 
 sub add_tags {

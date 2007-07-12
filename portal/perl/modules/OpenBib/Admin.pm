@@ -101,6 +101,9 @@ sub handler {
     my $do_editsession  = $query->param('do_editsession')  || '';
     my $do_exploresessions = $query->param('do_exploresessions') || '';
     my $do_showstat     = $query->param('do_showstat')     || '';
+    my $do_showuser     = $query->param('do_showuser')     || '';
+    my $do_showlogintarget  = $query->param('do_showlogintarget')     || '';
+    my $do_editlogintarget  = $query->param('do_editlogintarget')     || '';
     my $do_logout       = $query->param('do_logout')       || '';
 
     # Sub-Actions
@@ -153,6 +156,12 @@ sub handler {
 
     my $rssid           = $query->param('rssid') || '';
     my @rssids          = ($query->param('rssids'))?$query->param('rssids'):();
+
+    my $targetid        = $query->param('targetid')        || '';
+    my $hostname        = $query->param('hostname')        || '';
+    my $port            = $query->param('port')            || '';
+    my $username        = $query->param('username')        || '';
+    my $type            = $query->param('type')             || '';
 
     my $clientip        = $query->param('clientip') || '';
 
@@ -227,6 +236,16 @@ sub handler {
         circcheckurl => $circcheckurl,
         circdb       => $circdb,
     };
+
+    my $thislogintarget_ref = {
+			       id          => $targetid,
+			       hostname    => $hostname,
+			       port        => $port,
+			       username    => $username,
+			       dbname      => $dbname,
+			       description => $description,
+			       type        => $type,
+			      };
     
     # Expliziter aufruf und default bei keiner Parameteruebergabe
     if ($do_loginmask || ($r->method eq "GET" && ! scalar $r->args) ) {
@@ -1192,6 +1211,126 @@ sub handler {
 	OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
 
     }
+    elsif ($do_showlogintarget) {
+
+	my $user       = new OpenBib::User();
+
+        # TT-Data erzeugen
+        my $ttdata={
+                    sessionID  => $session->{ID},
+
+		    session    => $session,
+
+		    user       => $user,
+		    config     => $config,
+		    msg        => $msg,
+		   };
+
+	$stid=~s/[^0-9]//g;
+
+	my $templatename = ($stid)?"tt_admin_showlogintarget_".$stid."_tname":"tt_admin_showlogintarget_tname";
+
+	OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+
+
+    }
+    elsif ($do_editlogintarget) {
+
+	my $user       = new OpenBib::User();
+
+        # Zuerst schauen, ob Aktionen gefordert sind
+        if ($do_del) {
+            editlogintarget_del($targetid);
+
+	    my $ret_ref = dist_cmd("editlogintarget_del",{ targetid => $targetid }) if ($do_dist);
+
+            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showlogintarget=1");
+            return OK;
+
+        }
+        elsif ($do_change) {
+
+            editlogintarget_change($thislogintarget_ref);
+
+	    my $ret_ref = dist_cmd("editlogintarget_change",{ 
+						     logintarget => $thislogintarget_ref,
+						 }) if ($do_dist);
+
+            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showlogintarget=1");
+            return OK;
+        }
+        elsif ($do_new) {
+
+            if ($description eq "") {
+
+                OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen mindestens eine Beschreibung eingeben."),$r,$msg);
+
+                $idnresult->finish();
+                return OK;
+            }
+
+            my $idnresult=$user->{dbh}->prepare("select count(description) as rowcount from logintarget where description = ?") or $logger->error($DBI::errstr);
+            $idnresult->execute($thislogintarget_ref->{description}) or $logger->error($DBI::errstr);
+
+            my $res=$idnresult->fetchrow_hashref;
+            my $rows=$res->{rowcount};
+            
+            if ($rows > 0) {
+
+                OpenBib::Common::Util::print_warning($msg->maketext("Es existiert bereits ein Anmeldeziel unter diesem Namen"),$r,$msg);
+
+                $idnresult->finish();
+                return OK;
+            }
+
+            editlogintarget_new($thislogintarget_ref);
+            
+	    my $ret_ref = dist_cmd("editlogintarget_new",{ logintarget => $thislogintarget_ref }) if ($do_dist);
+
+            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showlogintarget=1");
+            return OK;
+        }
+        elsif ($do_edit) {
+
+	  my $logintarget_ref = $user->get_logintarget_by_id($targetid);
+      
+	  my $ttdata={
+                stylesheet  => $stylesheet,
+                sessionID   => $session->{ID},
+		  
+                logintarget => $logintarget_ref,
+		  
+                user        => $user,
+                config      => $config,
+                msg         => $msg,
+            };
+      
+            OpenBib::Common::Util::print_page($config->{tt_admin_editlogintarget_tname},$ttdata,$r);
+        }
+    }
+    elsif ($do_showuser) {
+
+	my $user       = new OpenBib::User();
+
+        # TT-Data erzeugen
+        my $ttdata={
+                    sessionID  => $session->{ID},
+
+		    session    => $session,
+
+		    user       => $user,
+		    config     => $config,
+		    msg        => $msg,
+		   };
+
+	$stid=~s/[^0-9]//g;
+
+	my $templatename = ($stid)?"tt_admin_showuser_".$stid."_tname":"tt_admin_showuser_tname";
+
+	OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+
+
+    }
     elsif ($do_logout) {
 
         my $ttdata={
@@ -1464,6 +1603,52 @@ sub editview_rss_change {
     
     return;
 }
+
+sub editlogintarget_del {
+    my ($targetid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $user = new OpenBib::User();
+
+    my $idnresult=$user->{dbh}->prepare("delete from logintarget where targetid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($targetid) or $logger->error($DBI::errstr);
+    $idnresult->finish();
+
+    return;
+}
+
+sub editlogintarget_change {
+    my ($logintarget_ref)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $user = new OpenBib::User();
+
+    my $idnresult=$user->{dbh}->prepare("update logintarget set hostname = ?, port = ?, user =?, db = ?, description = ?, type = ? where targetid = ?") or $logger->error($DBI::errstr); # 
+    $idnresult->execute($logintarget_ref->{hostname},$logintarget_ref->{port},$logintarget_ref->{username},$logintarget_ref->{dbname},$logintarget_ref->{description},$logintarget_ref->{type},$logintarget_ref->{id}) or $logger->error($DBI::errstr);
+    $idnresult->finish();
+    
+    return;
+}
+
+sub editlogintarget_new {
+    my ($logintarget_ref)=@_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $user = new OpenBib::User();
+
+    my $idnresult=$user->{dbh}->prepare("insert into logintarget (hostname,port,user,db,description,type) values (?,?,?,?,?,?)") or $logger->error($DBI::errstr);
+    $idnresult->execute($logintarget_ref->{hostname},$logintarget_ref->{port},$logintarget_ref->{username},$logintarget_ref->{dbname},$logintarget_ref->{description},$logintarget_ref->{type}) or $logger->error($DBI::errstr);
+    $idnresult->finish();
+
+    return;
+}
+
 
 sub dist_cmd {
   my ($cmd,$args_ref)=@_;

@@ -10,6 +10,7 @@
 ../templates/admin_logout
 ../templates/admin_showcat
 ../templates/admin_showimx
+../templates/admin_showlogintarget
 ../templates/admin_showsessions
 ../templates/admin_showsessions_1
 ../templates/admin_showstat
@@ -18,6 +19,7 @@
 ../templates/admin_showstat_3
 ../templates/admin_showstat_4
 ../templates/admin_showstat_5
+../templates/admin_showuser
 ../templates/admin_showviews
 ../templates/circset
 ../templates/circulation
@@ -30,7 +32,7 @@
 ../templates/connector_digibib_result_start
 ../templates/connector_digibib_result_end
 ../templates/connector_digibib_showtitset
-../templates/connector_permalink_item
+../templates/connector_permalink
 ../templates/connector_rss_item
 ../templates/corporate_banner
 ../templates/databasechoice
@@ -105,7 +107,6 @@
 ../templates/views/portrait/corporate_banner
 ../templates/views/portrait/frameset
 ../templates/views/portrait/headerframe
-../templates/views/portrait/headerframe.ori
 ../templates/views/portrait/helpframe_20
 ../templates/views/portrait/leave
 ../templates/views/portrait/resultlists_showsinglepool
@@ -222,7 +223,6 @@
 ../templates/database/portrait/search_showtitset
 ../templates/database/portrait/search_showtitlist
 ../templates/database/portrait/visible_categories_titset
-../templates/database/kapsel/visible_categories_titset
 ../templates/views/richter/searchframe_simple
 ../templates/views/richter/corporate_banner
 ../templates/views/richter/headerframe
@@ -296,7 +296,6 @@
 ../templates/views/inst460/searchframe
 ../templates/views/inst460/searchframe_simple
 ../templates/views/inst501/searchframe
-../templates/views/kempen
 ../templates/views/kempen/corporate_banner
 ../templates/views/kempen/frameset
 ../templates/views/kempen/headerframe

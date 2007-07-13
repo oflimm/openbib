@@ -33,9 +33,14 @@
 <table width="100%">
 <tr><th>Entwicklung der Sessions nach Monaten eines Jahres</th></tr>
 <tr><td class="boxedclear" style="font-size:12pt">
-
-<img src="/images/openbib/graph/monthly/sessions/2007.png" />
-
+[% TRY %]
+[%   USE dir = Directory("${config.image_root_path}/graph/monthly/sessions") %]
+[%   FOREACH file = dir.files %]
+<img src="/images/openbib/graph/monthly/sessions/[% file.name %]" />
+[%   END %]
+[% CATCH Directory %] 
+Es existieren keine entsprechenden Grafiken.
+[% END %]
 </td></td>
 </table>
 
@@ -44,13 +49,15 @@
 <table width="100%">
 <tr><th>Entwicklung der Sessions nach Tagen eines Monats</th></tr>
 <tr><td class="boxedclear" style="font-size:12pt">
-
-<img src="/images/openbib/graph/daily/sessions/2007-6.png" />
-
+[% TRY %]
+[%   USE dir = Directory("${config.image_root_path}/graph/daily/sessions") %]
+[%   FOREACH file = dir.files %]
+<img src="/images/openbib/graph/daily/sessions/[% file.name %]" />
 <p />
-
-<img src="/images/openbib/graph/daily/sessions/2007-7.png" />
-
+[%   END %]
+[% CATCH Directory %] 
+Es existieren keine entsprechenden Grafiken.
+[% END %]
 </td></td>
 </table>
 

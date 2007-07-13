@@ -94,6 +94,9 @@ $year   = $thisyear  if (!$year);
 $month  = $thismonth if (!$month);
 $day    = $thisday   if (!$day);
 
+$month  = sprintf "%02d",$month;
+$day    = sprintf "%02d",$day;
+
 my $template = Template->new({ 
 	    LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
             INCLUDE_PATH   => $config->{tt_include_path}."/graph",

@@ -14,7 +14,10 @@ Version 2.1:
   jeweiligen View in einer Wolken-Ansicht
 - Statistiken in der Web-Administration. Allgemeine Statistiken des Portals
   sowie zum Aufruf externer Dienste (ueber den Redirektor) und der Nutzung
-  der Views.
+  der Views. Generierung von Grafiken zur Auswertung der zeitlichen Entwicklung
+  der beobachteten Werte. 
+- Benutzer-Verwaltung in der Web-Administration. Es koennen nun auch die
+  Anmeldeziele fuer die Benutzer dort verwaltet werden.
 - Virtueller Notations-Index. 
 - Optimierung der kategorie-basierten Drill-Downs. Die kategorisierten
   Inhalte werden nun direkt vollstaendig aus dem Xapian-Index geholt.

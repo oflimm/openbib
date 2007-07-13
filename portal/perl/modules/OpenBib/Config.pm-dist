@@ -291,6 +291,13 @@ use vars qw(%config);
 	   tt_admin_showstat_3_tname     => 'admin_showstat_3',
 	   tt_admin_showstat_4_tname     => 'admin_showstat_4',
 	   tt_admin_showstat_5_tname     => 'admin_showstat_5',
+	   tt_admin_showstat_50_tname    => 'admin_showstat_50',
+	   tt_admin_showstat_51_tname    => 'admin_showstat_51',
+	   tt_admin_showstat_52_tname    => 'admin_showstat_52',
+	   tt_admin_showstat_53_tname    => 'admin_showstat_53',
+	   tt_admin_showuser_tname       => 'admin_showuser',
+	   tt_admin_showlogintarget_tname  => 'admin_showlogintarget',
+	   tt_admin_editlogintarget_tname  => 'admin_editlogintarget',
 	   tt_admin_logout_tname         => 'admin_logout',
 
 	   tt_leave_tname                => 'leave',

@@ -2,7 +2,7 @@
 #
 #  OpenBib::Connector::DigiBib.pm
 #
-#  Dieses File ist (C) 2003-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2003-2007 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -66,6 +66,12 @@ sub handler {
     }
 
     my $session = new OpenBib::Session();
+
+    # Loggen des Recherche-Einstiegs ueber Connector (1=DigiBib)
+    $session->log_event({
+		type      => 22,
+                content   => '1',
+    });
     
     # CGI-Input auslesen
     
@@ -297,6 +303,29 @@ sub handler {
         $myself=~s!:8008/!/!;
         
         my $treffercount=$#ergebnisse+1;
+
+
+	my $alldbcount = $config->get_number_of_dbs();
+
+	my $searchquery_log_ref = $searchquery_ref;
+
+	if ($#databases+1 == $alldbcount){
+	  $searchquery_log_ref->{alldbases} = 1;
+	  $logger->debug("Alle Datenbanken ausgewaehlt");
+	}
+	else {
+	  $searchquery_log_ref->{dbases} = \@databases;
+	}
+
+	$searchquery_log_ref->{hits}   = $treffercount;
+	
+	# Loggen des Queries
+	$session->log_event({
+		type      => 1,
+                content   => $searchquery_log_ref,
+                serialize => 1,
+            });
+
 
         my $starttemplatename=$config->{tt_connector_digibib_result_start_tname};
         if ($view && -e "$config->{tt_include_path}/views/$view/$starttemplatename") {

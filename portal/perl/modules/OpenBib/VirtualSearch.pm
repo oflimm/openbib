@@ -2,7 +2,7 @@
 #
 #  OpenBib::VirtualSearch.pm
 #
-#  Dieses File ist (C) 1997-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2007 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -106,6 +106,7 @@ sub handler {
     my $trefferliste  = $query->param('trefferliste')  || '';
     my $queryid       = $query->param('queryid')       || '';
     my $sb            = $query->param('sb')            || 'sql'; # Search backend
+    my $st            = $query->param('st')            || '';    # Search type (1=simple,2=complex)    
     my $drilldown             = $query->param('drilldown')      || 0;     # Drill-Down?
     my $drilldown_cloud       = $query->param('dd_cloud')       || 0;     # Cloud?
     my $drilldown_categorized = $query->param('dd_categorized') || 0;     # Categorized?
@@ -155,6 +156,18 @@ sub handler {
     # Authorisierter user?
     my $userid=$user->get_userid_of_session($session->{ID});
     $logger->info("Authorization: ", $session->{ID}, " ", ($userid)?$userid:'none');
+
+    # Loggen der Recherche-Art (1=simple, 2=complex)
+    $session->log_event({
+		type      => 20,
+                content   => $st,
+    });
+
+    # Loggen des Recherche-Backends
+    $session->log_event({
+		type      => 21,
+                content   => $sb,
+    });
 
     # BEGIN DB-Bestimmung
     ####################################################################

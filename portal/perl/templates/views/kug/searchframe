@@ -169,6 +169,7 @@ nutzen, bei der die Verwendung von JavaScript minimiert ist.","<a href=\"${confi
 <input type="hidden" name="view"      value="[% view %]" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="sb"        value="sql" />
+<input type="hidden" name="st"        value="2" />
 
 <p />
 <table class="submitbuttons">

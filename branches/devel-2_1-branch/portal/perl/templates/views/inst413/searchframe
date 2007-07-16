@@ -73,6 +73,7 @@
 <input type="hidden" name="view"      value="[% view %]" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="sb"        value="sql" />
+<input type="hidden" name="st"        value="2" />
 
 [% IF view %]
 [% msg.maketext("Sie können entweder direkt im vorausgewählten Katalog <b>[_1]</b> recherchieren, oder die Suche auf weitere [_2]Kataloge[_3] ausdehnen.","${viewdesc}","<a href=\"${config.databasechoice_loc}?sessionID=${sessionID};view=${view}\" target=\"body\">","</a>") %]

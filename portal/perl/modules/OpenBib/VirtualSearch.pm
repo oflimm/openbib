@@ -786,6 +786,8 @@ sub handler {
             
                 my $atime=new Benchmark;
 
+		my $category_map_ref = ();
+
                 $logger->debug("Creating Xapian DB-Object for database $database");
 
                 my $dbh;
@@ -837,7 +839,7 @@ sub handler {
                             # zur Ausgabe aus dem MSet herausgeholt
                             if ($mcount < $hitrange){
                                 my $document        = $match->get_document();
-                                my $titlistitem_raw = pack "H*", decode_utf8($document->get_data());
+                                my $titlistitem_raw = pack "H*", $document->get_data();
                                 my $titlistitem_ref = Storable::thaw($titlistitem_raw);
                                 push @outputbuffer, $titlistitem_ref;
                             }
@@ -855,6 +857,9 @@ sub handler {
                         
                         if ($drilldown) {
                             my $ddatime   = new Benchmark;
+
+			    $category_map_ref = $request->{categories};
+
                             my $esetrange = ($fullresultcount < 50)?$fullresultcount-1:200;
                             my $eterms    = $request->enq->get_eset($esetrange,$rset);
                             my $iter=$eterms->begin();
@@ -1012,7 +1017,9 @@ sub handler {
                             
                             database        => $database,
                             queryid         => $queryid,
-                            
+
+			    category_map    => $category_map_ref,
+
                             fullresultcount => $fullresultcount,
                             resultlist      => \@resultlist,
                             

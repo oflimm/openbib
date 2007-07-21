@@ -1082,6 +1082,15 @@ while (my $line=<IN>){
 
             if ($category && $content){
                 print OUT       "$id$category$indicator$content\n";
+
+		if ($category eq "0800"){ # Medienart
+		  push @{$normdata_ref->{mart}}, $content;
+		}
+
+		if ($category eq "0516"){ # Sprache
+		  push @{$normdata_ref->{spr}}, $content;
+		}
+
             }
             if ($category && $contentnorm){
                 print OUTSTRING "$id$category$contentnorm\n";

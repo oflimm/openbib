@@ -192,17 +192,33 @@ sub initial_search {
     $qp->add_prefix('inisbn'   ,'X8');
     $qp->add_prefix('inissn'   ,'X9');
     
+    my $category_map_ref = {};
     my $enq       = $dbh->enquire($qp->parse_query($querystring,Search::Xapian::FLAG_WILDCARD|Search::Xapian::FLAG_LOVEHATE|Search::Xapian::FLAG_BOOLEAN));
     my $thisquery = $enq->get_query()->get_description();
-    my @matches   = $enq->matches(0,99999);
+
+    my %decider_map= ();
+    my $decider_ref = sub {
+      foreach my $value (1,3,4){
+	my $mvalues = $_[0]->get_value($value);
+	foreach my $mvalue (split("\t",$mvalues)){
+	  $decider_map{$value}{$mvalue}+=1;
+	}
+      }
+      return 1;
+    };
+
+    my @matches   = $enq->matches(0,99999,$decider_ref);
 
     $logger->debug("DB: $database");
     
     $logger->debug("Matches: ".YAML::Dump(\@matches));
-    
+
+    $logger->debug("Categories-Map: ".YAML::Dump(\%decider_map));
+
     $self->{_querystring} = $querystring;
     $self->{_enq}         = $enq;
     $self->{_matches}     = \@matches;
+    $self->{categories}   = \%decider_map;
 
     $logger->info("Running query ".$self->{_querystring});
 

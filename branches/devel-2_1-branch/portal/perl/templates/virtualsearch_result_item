@@ -138,7 +138,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <tr><td class="boxedclear">
 [%             FOREACH termitem IN relevantaut %]
 <a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID
-%];sb=xapian;drilldown=1;searchall=1;fs=[% lastquery %] [% termitem.name %]">[% termitem.name %]</a><br />
+%];sb=xapian;drilldown=1;searchall=1;fs=[% lastquery %] [% termitem.name %]">[% termitem.name %] ([% category_map.1.${termitem.name}%])</a><br />
 [%             END %]
 </td></tr>
 </table>
@@ -162,7 +162,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <tr><td class="boxedclear">
 [%             FOREACH termitem IN relevantswt %]
 <a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID
-%];sb=xapian;drilldown=1;searchall=1;fs=[% lastquery %] [% termitem.name %]">[% termitem.name %]</a><br />
+%];sb=xapian;drilldown=1;searchall=1;fs=[% lastquery %] [% termitem.name %]">[% termitem.name %] ([% category_map.4.${termitem.name}%])</a><br />
 [%             END %]
 </td></tr>
 </table>
@@ -174,7 +174,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <tr><td class="boxedclear">
 [%             FOREACH termitem IN relevantnot %]
 <a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID
-%];sb=xapian;drilldown=1;searchall=1;fs=[% lastquery %] [% termitem.name %]">[% termitem.name %]</a><br />
+%];sb=xapian;drilldown=1;searchall=1;fs=[% lastquery %] [% termitem.name %]">[% termitem.name %] ([% category_map.3.${termitem.name}%])</a><br />
 [%             END %]
 </td></tr>
 </table>

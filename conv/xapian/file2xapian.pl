@@ -39,7 +39,6 @@ use DB_File;
 use DBI;
 use MLDBM qw(DB_File Storable);
 use Storable ();
-use Encode qw(decode_utf8 encode_utf8);
 use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
 use Search::Xapian;
@@ -263,10 +262,21 @@ my $count = 1;
                     my $fieldtoken=$tokinfo_ref->{prefix}.$normdata_item;
                     $doc->add_term($fieldtoken);
 		}
+
+		my $multstring=join("\t",@{$tokinfo_ref->{content}}) if (@{$tokinfo_ref->{content}});
+		if ($tokinfo_ref->{prefix} eq "A1"){
+		  $doc->add_value(1,$multstring) if ($multstring);
+		}
+		elsif ($tokinfo_ref->{prefix} eq "A3"){
+		  $doc->add_value(3,$multstring) if ($multstring);
+		}
+		elsif ($tokinfo_ref->{prefix} eq "A4"){
+		  $doc->add_value(4,$multstring) if ($multstring);
+		}
             }
 	}
 
-        $doc->set_data(encode_utf8($listitem));
+        $doc->set_data($listitem);
     
         my $docid=$db->add_document($doc);
 

@@ -198,7 +198,7 @@ sub initial_search {
 
     my %decider_map= ();
     my $decider_ref = sub {
-      foreach my $value (1,3,4){
+      foreach my $value (1,2,3,4,5,6){
 	my $mvalues = $_[0]->get_value($value);
 	foreach my $mvalue (split("\t",$mvalues)){
 	  $decider_map{$value}{$mvalue}+=1;

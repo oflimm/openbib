@@ -786,8 +786,6 @@ sub handler {
             
                 my $atime=new Benchmark;
 
-		my $category_map_ref = ();
-
                 $logger->debug("Creating Xapian DB-Object for database $database");
 
                 my $dbh;
@@ -812,7 +810,7 @@ sub handler {
                         enrich          => $enrich,
                         enrichkeys_ref  => $enrichkeys_ref,
                     });
-                    
+
                     my $fullresultcount = scalar($request->matches);
                     
                     my $btime      = new Benchmark;
@@ -821,20 +819,22 @@ sub handler {
                     $resulttime    =~s/(\d+\.\d+) .*/$1/;
                     
                     $logger->info($fullresultcount . " results found in $resulttime");
-                    
+
+                    my $category_map_ref = ();
+
                     if ($fullresultcount >= 1) {
                         
                         my @outputbuffer=();
                         
-                        my $rset=Search::Xapian::RSet->new() if ($drilldown);
+                        my $rset=Search::Xapian::RSet->new() if ($drilldown && $drilldown_cloud);
                         my $mcount=0;
 
                         foreach my $match ($request->matches) {
-                            # Fuer Drilldowns (Tag-Cloud oder kategorisiert) werden die ersten
+                            # Fuer Drilldowns (Tag-Cloud) werden die ersten
                             # 200 Treffer analysiert
-                            last if ($drilldown && $mcount >= 200);
+                            last if ($drilldown && $drilldown_cloud && $mcount >= 200);
 
-                            $rset->add_document($match->get_docid) if ($drilldown);
+                            $rset->add_document($match->get_docid) if ($drilldown && $drilldown_cloud);
                             # Es werden immer nur $hitrange Titelinformationen
                             # zur Ausgabe aus dem MSet herausgeholt
                             if ($mcount < $hitrange){
@@ -846,11 +846,6 @@ sub handler {
                             $mcount++;
                         }
                         
-                        my $relevant_aut_ref;
-                        my $relevant_kor_ref;
-                        my $relevant_not_ref;
-                        my $relevant_swt_ref;
-                        my $term_ref;
                         my $termweight_ref={};
 
                         my $drilldowntime;
@@ -858,116 +853,67 @@ sub handler {
                         if ($drilldown) {
                             my $ddatime   = new Benchmark;
 
-			    $category_map_ref = $request->{categories};
+                            if ($drilldown_categorized){
+                                # Transformation Hash->Array zur Sortierung
+                                
+                                my $tmp_category_map_ref = $request->{categories};
 
-                            my $esetrange = ($fullresultcount < 50)?$fullresultcount-1:200;
-                            my $eterms    = $request->enq->get_eset($esetrange,$rset);
-                            my $iter=$eterms->begin();
-                            
-                            $term_ref = {
-                                aut => [],
-                                aut_maxweight   => 0,
-                                kor => [],
-                                kor_maxweight   => 0,
-                                hst => [],
-                                hst_maxweight   => 0,
-                                swt => [],
-                                swt_maxweight   => 0,
-                                ejahr => [],
-                                ejahr_maxweight => 0,
-                            };
-
-                            while ($iter != $eterms->end()) {
-                                my $term   = $iter->get_termname();
-                                my $weight = $iter->get_weight();
-
-				$logger->debug("Got relevant term $term with weight $weight");
-                                if ($term=~/^A1(.+)$/) {
-                                    push @{$term_ref->{aut}}, {
-                                        name   => $1,
-                                        weight => $weight,
-                                    };
-                                }
-                                elsif ($term=~/^X2(.+)$/) {
-                                    my $thisterm = $1;
-
-                                    push @{$term_ref->{hst}}, {
-                                        name   => $thisterm,
-                                        weight => $weight,
-                                    };
-
-                                    if ($drilldown_cloud){
-                                        if (exists $termweight_ref->{$thisterm}){
-                                            $termweight_ref->{$thisterm}+=$weight;
-                                        }
-                                        else {
-                                            $termweight_ref->{$thisterm}=$weight;
-                                        }
+                                foreach my $type (keys %{$tmp_category_map_ref}){
+                                    my $contents_ref = [] ;
+                                    foreach my $content (keys %{$tmp_category_map_ref->{$type}}){
+                                        push @{$contents_ref}, [
+                                            decode_utf8($content),
+                                            $tmp_category_map_ref->{$type}{$content}
+                                        ];
                                     }
-                                }
-                                elsif ($term=~/^A2(.+)$/) {
-                                    push @{$term_ref->{kor}}, {
-                                        name   => $1,
-                                        weight => $weight,
-                                    };
-                                }
-                                elsif ($term=~/^A3(.+)$/) {
-                                    push @{$term_ref->{notation}}, {
-                                        name   => $1,
-                                        weight => $weight,
-                                    };
-                                }
-                                elsif ($term=~/^A4(.+)$/) {
-                                    my $thisterm = $1;
-                                    push @{$term_ref->{swt}}, {
-                                        name   => $thisterm,
-                                        weight => $weight,
-                                    };
 
-                                    if ($drilldown_cloud){
-                                        if (exists $termweight_ref->{$thisterm}){
-                                            $termweight_ref->{$thisterm}+=$weight;
-                                        }
-                                        else {
-                                            $termweight_ref->{$thisterm}=$weight;
-                                        }
-                                    }
-                                }
-                                elsif ($term=~/^X7(.+)$/) {
-                                    my $thisterm = $1;
-                                    push @{$term_ref->{ejahr}}, {
-                                        name   => $thisterm,
-                                        weight => $weight,
-                                    };
+                                    $logger->debug(YAML::Dump($contents_ref));
 
-                                    if ($drilldown_cloud){
-                                        if (exists $termweight_ref->{$thisterm}){
-                                            $termweight_ref->{$thisterm}+=$weight;
-                                        }
-                                        else {
-                                            $termweight_ref->{$thisterm}=$weight;
-                                        }
-                                    }
+                                    # Schwartz'ian Transform
+                                    
+                                    @{$category_map_ref->{$type}} = map { $_->[0] }
+                                        sort { $b->[1] <=> $a->[1] }
+                                            map { [$_, $_->[1]] }
+                                                @{$contents_ref};
                                 }
-                                $iter++;
+
                             }
-                            
-                            {
-                                my $ddbtime       = new Benchmark;
-                                my $ddtimeall     = timediff($ddbtime,$ddatime);
-                                $logger->debug("ESet-Time: ".timestr($ddtimeall,"nop"));
+
+                            if ($drilldown_cloud){
+                                my $esetrange = ($fullresultcount < 50)?$fullresultcount-1:200;
+                                my $eterms    = $request->enq->get_eset($esetrange,$rset);
+                                my $iter=$eterms->begin();
+                                
+                                while ($iter != $eterms->end()) {
+                                    my $term   = $iter->get_termname();
+                                    my $weight = $iter->get_weight();
+                                    
+                                    $logger->debug("Got relevant term $term with weight $weight");
+                                    my $thisterm = $term;
+                                    
+                                    if ($term=~/X\d+(.+)/){
+                                        $thisterm=$1;
+                                    }
+
+                                    if (exists $termweight_ref->{$thisterm}){
+                                        $termweight_ref->{$thisterm}+=$weight;
+                                    }
+                                    else {
+                                        $termweight_ref->{$thisterm}=$weight;
+                                    }
+                                    
+                                    $iter++;
+                                }
+
+                                {
+                                    my $ddbtime       = new Benchmark;
+                                    my $ddtimeall     = timediff($ddbtime,$ddatime);
+                                    $logger->debug("ESet-Time: ".timestr($ddtimeall,"nop"));
+                                }
                             }
                             
                             $logger->debug(YAML::Dump(\@outputbuffer));
 
-                            if ($drilldown_categorized){
-                                # Relavante Kategorieinhalte bestimmen
-                                
-                                $relevant_aut_ref = $term_ref->{aut};
-                                $relevant_kor_ref = $term_ref->{kor};
-				$relevant_not_ref = $term_ref->{notation};
-                                $relevant_swt_ref = $term_ref->{swt};
-                            }
                             my $ddbtime       = new Benchmark;
                             my $ddtimeall     = timediff($ddbtime,$ddatime);
                             $drilldowntime    = timestr($ddtimeall,"nop");
@@ -1027,12 +973,9 @@ sub handler {
                             drilldown             => $drilldown,
                             drilldown_cloud       => $drilldown_cloud,
                             drilldown_categorized => $drilldown_categorized,
-                            termfeedback    => $term_ref,
-                            relevantaut     => $relevant_aut_ref,
-                            relevantkor     => $relevant_kor_ref,
-                            relevantswt     => $relevant_swt_ref,
-                            relevantnot     => $relevant_not_ref,
+
                             cloud           => gen_cloud_absolute({dbh => $dbh, term_ref => $termweight_ref}),
+
                             lastquery       => $request->querystring,
                             sorttype        => $sorttype,
                             sortorder       => $sortorder,

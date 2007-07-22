@@ -103,7 +103,7 @@ my $template = Template->new({
 
 	    ABSOLUTE       => 1,
         }) ],
-         OUTPUT_PATH   => "/var/www/images/openbib/graph",
+         OUTPUT_PATH   => $config->{image_root_path}."/graph",
          RECURSION      => 1,
     });
 

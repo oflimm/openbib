@@ -85,15 +85,18 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 [% END %]
 <tr><td class="listnr">&nbsp;</td><td colspan="5"><b><span style="font-size:0.8em">in: [% resulttime %] [% msg.maketext("Sekunden") %]</span></b></td></tr>
 
-[% IF (drilldown && fullresultcount > qopts.hitrange) %]
+[% IF drilldown %]
 <tr><td class="listnr"><td>&nbsp;</td><td colspan="4">
+
+[%# USE dumper; dumper.dump(category_map)%]
 
 <table width="100%">
 <tr><th colspan="4">[% msg.maketext("Suchverfeinerung mit relevanten Begriffen") %]&nbsp;<a href="#drilldown[% database %]"><img src="/images/openbib/expand.png" alt="Optionen anzeigen" onclick="expandContent('drilldown[% database %]',this); return false;"></th></tr>
 <tr><td colspan="4" class="boxedclear" id="drilldown[% database %]" style="display:none;font-size:0.8em;">
 
 
-[%     IF drilldown_cloud && cloud.size > config.drilldown_option.cloud_min # Wenn mindest. cloud_min  Elemente verfuegbar, dann ausgeben %]
+[%     IF drilldown_cloud && cloud.size > config.drilldown_option.cloud_min && fullresultsize > qopts.hitrange # Wenn mindest. cloud_min  Elemente verfuegbar, dann ausgeben %]
+
 <table width="100%">
 <tr><th colspan="4">Begriffs-Wolke&nbsp;</th></tr>
 <tr><td colspan="4" class="boxedclear" style="font-size:0.8em;">
@@ -132,61 +135,74 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 
 <table>
 <tr><td valign="top">
-[%         IF config.drilldown_option.categorized_aut && relevantaut.size > 0 %]
+[%         IF config.drilldown_option.categorized_aut && category_map.3.size > 0 %]
 <table width="100%">
 <tr><th>[% msg.maketext("Verfasser") %]</th></tr>
 <tr><td class="boxedclear">
-[%             FOREACH termitem IN relevantaut %]
-<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID
-%];sb=xapian;drilldown=1;searchall=1;fs=[% lastquery %] [% termitem.name %]">[% termitem.name %] ([% category_map.1.${termitem.name}%])</a><br />
+[%             FOREACH termitem IN category_map.3 %]
+[%                LAST IF loop.count > 5 %]
+<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;searchall=1;fs=[% lastquery %] [% termitem.0 %]">[% termitem.0 %]</a> ([% termitem.1%])<br />
 [%             END %]
 </td></tr>
 </table>
 [%         END %]
 </td><td valign="top">
-[%         IF config.drilldown_option.categorized_kor && relevantkor.size > 0 %]
-<table width="100%">
-<tr><th>[% msg.maketext("K&ouml;rperschaften") %]</th></tr>
-<tr><td class="boxedclear">
-[%             FOREACH termitem IN relevantkor %]
-<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID
-%];sb=xapian;drilldown=1;searchall=1;fs=[% lastquery %] [% termitem.name %]">[% termitem.name %]</a><br />
-[%             END %]
-</td></tr>
-</table>
-[%         END %]
-</td><td valign="top">
-[%         IF config.drilldown_option.categorized_swt && relevantswt.size > 0 %]
+[%         IF config.drilldown_option.categorized_swt && category_map.1.size > 0 %]
 <table width="100%">
 <tr><th>[% msg.maketext("Schlagworte") %]</th></tr>
 <tr><td class="boxedclear">
-[%             FOREACH termitem IN relevantswt %]
-<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID
-%];sb=xapian;drilldown=1;searchall=1;fs=[% lastquery %] [% termitem.name %]">[% termitem.name %] ([% category_map.4.${termitem.name}%])</a><br />
+[%             FOREACH termitem IN category_map.1 %]
+[%                LAST IF loop.count > 5 %]
+<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;searchall=1;fs=[% lastquery %] [% termitem.0 %]">[% termitem.0 %]</a> ([% termitem.1 %])<br />
 [%             END %]
 </td></tr>
 </table>
 [%         END %]
 </td><td valign="top">
-[%         IF config.drilldown_option.categorized_not && relevantnot.size > 0 %]
+[%         IF config.drilldown_option.categorized_not && category_map.2.size > 0 %]
 <table width="100%">
 <tr><th>[% msg.maketext("Notationen") %]</th></tr>
 <tr><td class="boxedclear">
-[%             FOREACH termitem IN relevantnot %]
-<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID
-%];sb=xapian;drilldown=1;searchall=1;fs=[% lastquery %] [% termitem.name %]">[% termitem.name %] ([% category_map.3.${termitem.name}%])</a><br />
+[%             FOREACH termitem IN category_map.2 %]
+[%                LAST IF loop.count > 5 %]
+<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;searchall=1;fs=[% lastquery %] [% termitem.0 %]">[% termitem.0 %]</a> ([% termitem.1 %])<br />
 [%             END %]
 </td></tr>
 </table>
 [%         END %]
 </td><td valign="top">
-[%         IF config.drilldown_option.categorized_year && termfeedback.${"ejahr"}.size > 0 %]
+[%         IF config.drilldown_option.categorized_year && category_map.5.size > 0 %]
 <table width="100%">
-<tr><th>[% msg.maketext("Jahre") %]</th></tr>
+<tr><th>[% msg.maketext("Erscheinungsjahr") %]</th></tr>
 <tr><td class="boxedclear">
-[%             FOREACH termitem IN termfeedback.${"ejahr"} %]
+[%             FOREACH termitem IN category_map.5 %]
+[%                LAST IF loop.count > 5 %]
+<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;searchall=1;fs=[% lastquery %] [% termitem.0 %]">[% termitem.0 %]</a> ([% termitem.1%])<br />
+[%             END %]
+</td></tr>
+</table>
+[%         END %]
+</td><td valign="top">
+[%         IF config.drilldown_option.categorized_mart && category_map.4.size > 0 %]
+<table width="100%">
+<tr><th>[% msg.maketext("Medienart") %]</th></tr>
+<tr><td class="boxedclear">
+[%             FOREACH termitem IN category_map.4 %]
+[%                LAST IF loop.count > 5 %]
 <a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID
-%];sb=xapian;drilldown=1;searchall=1;fs=[% lastquery %] [% termitem.name %]">[% termitem.name %]</a><br />
+%];sb=xapian;drilldown=1;searchall=1;fs=[% lastquery %] [% termitem.0 %]">[% termitem.0 %]</a> ([% termitem.1 %])<br />
+[%             END %]
+</td></tr>
+</table>
+[%        END %]
+</td><td valign="top">
+[%         IF config.drilldown_option.categorized_spr && category_map.6.size > 0 %]
+<table width="100%">
+<tr><th>[% msg.maketext("Sprache") %]</th></tr>
+<tr><td class="boxedclear">
+[%             FOREACH termitem IN category_map.6 %]
+[%                LAST IF loop.count > 5 %]
+<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;searchall=1;fs=[% lastquery %] [% termitem.0 %]">[% termitem.0 %]</a> ([% termitem.1 %])<br />
 [%             END %]
 </td></tr>
 </table>

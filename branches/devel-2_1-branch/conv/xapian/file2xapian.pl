@@ -37,6 +37,7 @@ BEGIN {
 use Benchmark ':hireswallclock';
 use DB_File;
 use DBI;
+use Encode qw(decode_utf8 encode_utf8);
 use MLDBM qw(DB_File Storable);
 use Storable ();
 use Getopt::Long;
@@ -191,27 +192,6 @@ my $count = 1;
                 content => $issn,
 	        type    => 'index',
             },
-            {
-                prefix  => "A1",
-                content => $normdata{$s_id}->{verf},
-	        type    => 'normdata',
-            },
-            {
-                prefix  => "A2",
-                content => $normdata{$s_id}->{kor},
-	        type    => 'normdata',
-            },
-            {
-                prefix  => "A3",
-                content => $normdata{$s_id}->{notation},
-	        type    => 'normdata',
-            },
-            {
-                prefix  => "A4",
-                content => $normdata{$s_id}->{swt},
-	        type    => 'normdata',
-            },
-        
         ];
 
         my $seen_token_ref = {};
@@ -256,25 +236,49 @@ my $count = 1;
                     }
                 }
    	    }
-   	    elsif ($tokinfo_ref->{type} eq 'normdata'){
-                foreach my $normdata_item (@{$tokinfo_ref->{content}}){
-		    next if (!$normdata_item);
-                    my $fieldtoken=$tokinfo_ref->{prefix}.$normdata_item;
-                    $doc->add_term($fieldtoken);
-		}
-
-		my $multstring=join("\t",@{$tokinfo_ref->{content}}) if (@{$tokinfo_ref->{content}});
-		if ($tokinfo_ref->{prefix} eq "A1"){
-		  $doc->add_value(1,$multstring) if ($multstring);
-		}
-		elsif ($tokinfo_ref->{prefix} eq "A3"){
-		  $doc->add_value(3,$multstring) if ($multstring);
-		}
-		elsif ($tokinfo_ref->{prefix} eq "A4"){
-		  $doc->add_value(4,$multstring) if ($multstring);
-		}
-            }
 	}
+
+        my $value_type_ref = [
+            {
+                # Schlagwort
+                id   => 1,
+                type => 'swt',
+            },
+            {
+                # Notation
+                id   => 2,
+                type => 'notation',
+            },
+            {
+                # Person
+                id   => 3,
+                type => 'verf',
+            },
+            {
+                # Medientyp
+                id   => 4,
+                type => 'mart',
+            },
+            {
+                # Jahr
+                id   => 5,
+                type => 'year',
+            },
+            {
+                # Sprache
+                id   => 6,
+                type => 'spr',
+            },
+            
+        ];
+        
+        foreach my $type_ref (@{$value_type_ref}){
+            next if (!exists $normdata{$s_id}->{$type_ref->{type}});
+
+            my $multstring = join("\t",@{$normdata{$s_id}->{$type_ref->{type}}});
+
+            $doc->add_value($type_ref->{id},encode_utf8($multstring)) if ($multstring);
+        }
 
         $doc->set_data($listitem);
     

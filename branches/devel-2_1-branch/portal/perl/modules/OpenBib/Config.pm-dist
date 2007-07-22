@@ -471,9 +471,10 @@ use vars qw(%config);
 				       cloud_min   => 6, # Minimale Anzahl notwendiger Elemente
 				       categorized => 1,
 				       categorized_aut  => 1,
-				       categorized_kor  => 1,
+				       categorized_mart => 1,
 				       categorized_swt  => 1,
 				       categorized_not  => 1,
+				       categorized_spr  => 1,
 				       categorized_year => 1,
 				      },
            # Social-Tagging

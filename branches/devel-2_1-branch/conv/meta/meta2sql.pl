@@ -186,7 +186,7 @@ foreach my $type (keys %{$stammdateien_ref}){
         elsif ($type eq "kor"){
             $listitemdata_kor{$id}=$content;
         }
-        elsif ($type eq "not"){
+        elsif ($type eq "notation"){
             $listitemdata_not{$id}=$content;
         }
         elsif ($type eq "swt"){
@@ -835,8 +835,6 @@ while (my $line=<IN>){
                 content    => $content,
             };
 
-            push @{$normdata_ref->{kor}}, $content;
-
             push @autkor, $content;
             
             print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
@@ -858,8 +856,6 @@ while (my $line=<IN>){
                 type       => 'kor',
                 content    => $content,
             };
-
-            push @{$normdata_ref->{kor}}, $content;
 
             push @autkor, $content;
             
@@ -1089,6 +1085,10 @@ while (my $line=<IN>){
 
 		if ($category eq "0516"){ # Sprache
 		  push @{$normdata_ref->{spr}}, $content;
+		}
+
+                if ($category eq "0425" || $category eq "0424"){ # Jahr
+		  push @{$normdata_ref->{year}}, $content;
 		}
 
             }

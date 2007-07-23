@@ -119,7 +119,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
    classnr   = item.class;
    class     = css_classes.$classnr;
 %]
-<li class="[% class %]"><span>[% item.count %] Titel enthalten den Term </span><a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;searchall=1;fs=[% lastquery %] [% item.term %]" class="tag">[% item.term %]</a></li>
+<li class="[% class %]"><span>[% item.count %] Titel enthalten den Term </span><a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=[% lastquery %] [% item.term %]" class="tag">[% item.term %]</a></li>
 [%         END %]
 </ol>
 
@@ -141,7 +141,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <tr><td class="boxedclear">
 [%             FOREACH termitem IN category_map.3 %]
 [%                LAST IF loop.count > 5 %]
-<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;searchall=1;fs=[% lastquery %] [% termitem.0 %]">[% termitem.0 %]</a> ([% termitem.1%])<br />
+<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=[% lastquery %] [% termitem.0 %]">[% termitem.0 %]</a> ([% termitem.1%])<br />
 [%             END %]
 </td></tr>
 </table>
@@ -153,7 +153,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <tr><td class="boxedclear">
 [%             FOREACH termitem IN category_map.1 %]
 [%                LAST IF loop.count > 5 %]
-<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;searchall=1;fs=[% lastquery %] [% termitem.0 %]">[% termitem.0 %]</a> ([% termitem.1 %])<br />
+<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=[% lastquery %] [% termitem.0 %]">[% termitem.0 %]</a> ([% termitem.1 %])<br />
 [%             END %]
 </td></tr>
 </table>
@@ -165,7 +165,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <tr><td class="boxedclear">
 [%             FOREACH termitem IN category_map.2 %]
 [%                LAST IF loop.count > 5 %]
-<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;searchall=1;fs=[% lastquery %] [% termitem.0 %]">[% termitem.0 %]</a> ([% termitem.1 %])<br />
+<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=[% lastquery %] [% termitem.0 %]">[% termitem.0 %]</a> ([% termitem.1 %])<br />
 [%             END %]
 </td></tr>
 </table>
@@ -177,7 +177,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <tr><td class="boxedclear">
 [%             FOREACH termitem IN category_map.5 %]
 [%                LAST IF loop.count > 5 %]
-<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;searchall=1;fs=[% lastquery %] [% termitem.0 %]">[% termitem.0 %]</a> ([% termitem.1%])<br />
+<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=[% lastquery %] [% termitem.0 %]">[% termitem.0 %]</a> ([% termitem.1%])<br />
 [%             END %]
 </td></tr>
 </table>
@@ -189,8 +189,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <tr><td class="boxedclear">
 [%             FOREACH termitem IN category_map.4 %]
 [%                LAST IF loop.count > 5 %]
-<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID
-%];sb=xapian;drilldown=1;searchall=1;fs=[% lastquery %] [% termitem.0 %]">[% termitem.0 %]</a> ([% termitem.1 %])<br />
+<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=[% lastquery %] [% termitem.0 %]">[% termitem.0 %]</a> ([% termitem.1 %])<br />
 [%             END %]
 </td></tr>
 </table>
@@ -202,7 +201,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <tr><td class="boxedclear">
 [%             FOREACH termitem IN category_map.6 %]
 [%                LAST IF loop.count > 5 %]
-<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;searchall=1;fs=[% lastquery %] [% termitem.0 %]">[% termitem.0 %]</a> ([% termitem.1 %])<br />
+<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=[% lastquery %] [% termitem.0 %]">[% termitem.0 %]</a> ([% termitem.1 %])<br />
 [%             END %]
 </td></tr>
 </table>

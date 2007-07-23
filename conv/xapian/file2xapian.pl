@@ -275,7 +275,9 @@ my $count = 1;
         foreach my $type_ref (@{$value_type_ref}){
             next if (!exists $normdata{$s_id}->{$type_ref->{type}});
 
-            my $multstring = join("\t",@{$normdata{$s_id}->{$type_ref->{type}}});
+            my %seen_terms = ();
+            my @unique_terms = grep { ! $seen_terms{$_} ++ } @{$normdata{$s_id}->{$type_ref->{type}}}; 
+            my $multstring = join("\t",@unique_terms);
 
             $doc->add_value($type_ref->{id},encode_utf8($multstring)) if ($multstring);
         }

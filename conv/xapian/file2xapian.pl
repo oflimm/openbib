@@ -192,6 +192,11 @@ my $count = 1;
                 content => $issn,
 	        type    => 'index',
             },
+            {
+                prefix  => "Y1",
+                content => $artinh,
+	        type    => 'index',
+            },
         ];
 
         my $seen_token_ref = {};

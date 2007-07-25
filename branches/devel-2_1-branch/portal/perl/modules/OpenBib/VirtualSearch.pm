@@ -809,6 +809,7 @@ sub handler {
                         
                         enrich          => $enrich,
                         enrichkeys_ref  => $enrichkeys_ref,
+			dd_categorized  => $drilldown_categorized,
                     });
 
                     my $fullresultcount = scalar($request->matches);

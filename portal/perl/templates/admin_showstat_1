@@ -55,7 +55,7 @@
 <tr><td>Anzahl Aufrufe der Kartenkataloge/PhilFak</td><td><b>[% ret = statistics.get_number_of_event({ type => 532 }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
 <tr><td>Anzahl Aufrufe von MedPilot</td><td><b>[% ret = statistics.get_number_of_event({ type => 533 }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
 <tr><td>Anzahl Aufrufe der hbz Mono-Fernleihe</td><td><b>[% ret = statistics.get_number_of_event({ type => 540 }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
-<tr><td>Anzahl Aufrufe der hbz Artikel-Fernleihe</td><td><b>[% ret = statistics.get_number_of_event({ type => 551 }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
+<tr><td>Anzahl Aufrufe der hbz Artikel-Fernleihe</td><td><b>[% ret = statistics.get_number_of_event({ type => 541 }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
 <tr><td>Anzahl Aufrufe des WebOPACs</td><td><b>[% ret = statistics.get_number_of_event({ type => 550 }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
 </table>
 </td></td>

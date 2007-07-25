@@ -1410,9 +1410,36 @@ sub normset2bibtex {
         if ($origin=~/ ; (S\. *\d+.*)$/){
             push @$bibtex_ref, "pages     = \"$1\"";
         }
+        elsif ($origin=~/, (S\. *\d+.*)$/){
+            push @$bibtex_ref, "pages     = \"$1\"";
+        }
 
         # Journal and/or Volume
         if ($origin=~/^(.+?) ; (.*?) ; S\. *\d+.*$/){
+            my $journal = $1;
+            my $volume  = $2;
+
+            $journal =~ s/ \/ .*$//;
+            push @$bibtex_ref, "journal   = \"$journal\"";
+            push @$bibtex_ref, "volume    = \"$volume\"";
+        }
+        elsif ($origin=~/^(.+?)\. (.*?), \d\d\d\d, S\. *\d+.*$/){
+            my $journal = $1;
+            my $volume  = $2;
+
+            $journal =~ s/ \/ .*$//;
+            push @$bibtex_ref, "journal   = \"$journal\"";
+            push @$bibtex_ref, "volume    = \"$volume\"";
+        }
+        elsif ($origin=~/^(.+?)\. (.*?), S\. *\d+.*$/){
+            my $journal = $1;
+            my $volume  = $2;
+
+            $journal =~ s/ \/ .*$//;
+            push @$bibtex_ref, "journal   = \"$journal\"";
+            push @$bibtex_ref, "volume    = \"$volume\"";
+        }
+        elsif ($origin=~/^(.+?) ; (.*?), S\. *\d+.*$/){
             my $journal = $1;
             my $volume  = $2;
 

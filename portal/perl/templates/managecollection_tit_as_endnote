@@ -53,6 +53,11 @@ FOREACH category IN categories;
 
     IF endnotecategories.$category ;
       thiscategory = endnotecategories.${category} ;
+
+    IF normset.${"T0335"}.first.content && category == 'T0331';
+      titsup = normset.${"T0335"}.first.content;
+      content = "${content} : ${titsup}";
+    END ; 
 -%]
 [% thiscategory %] [% content %]
 [% END -%]

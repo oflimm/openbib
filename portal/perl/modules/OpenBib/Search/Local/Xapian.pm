@@ -143,6 +143,8 @@ sub initial_search {
         ? $arg_ref->{dbh}           : undef;
     my $database          = exists $arg_ref->{database}
         ? $arg_ref->{database}      : undef;
+    my $dd_categorized    = exists $arg_ref->{dd_categorized}
+        ? $arg_ref->{dd_categorized} : 0;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -207,7 +209,7 @@ sub initial_search {
       return 1;
     };
 
-    my @matches   = $enq->matches(0,99999,$decider_ref);
+    my @matches   = ($dd_categorized)?$enq->matches(0,99999,$decider_ref):$enq->matches(0,99999);
 
     $logger->debug("DB: $database");
     

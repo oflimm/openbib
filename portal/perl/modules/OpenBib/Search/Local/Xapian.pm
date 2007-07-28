@@ -198,9 +198,18 @@ sub initial_search {
     my $enq       = $dbh->enquire($qp->parse_query($querystring,Search::Xapian::FLAG_WILDCARD|Search::Xapian::FLAG_LOVEHATE|Search::Xapian::FLAG_BOOLEAN));
     my $thisquery = $enq->get_query()->get_description();
 
-    my %decider_map= ();
+    my %decider_map   = ();
+    my @decider_types = ();
+
+    push @decider_types, 1 if ($config->{drilldown_option}{categorized_swt});
+    push @decider_types, 2 if ($config->{drilldown_option}{categorized_not});
+    push @decider_types, 3 if ($config->{drilldown_option}{categorized_aut});
+    push @decider_types, 4 if ($config->{drilldown_option}{categorized_mart});
+    push @decider_types, 5 if ($config->{drilldown_option}{categorized_year});
+    push @decider_types, 6 if ($config->{drilldown_option}{categorized_spr});
+
     my $decider_ref = sub {
-      foreach my $value (1,2,3,4,5,6){
+      foreach my $value (@decider_types){
 	my $mvalues = $_[0]->get_value($value);
 	foreach my $mvalue (split("\t",$mvalues)){
 	  $decider_map{$value}{$mvalue}+=1;

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2007-07-23 14:55+0200\n"
+"PO-Revision-Date: 2007-07-29 22:35+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team:  <l10n@openbib.org>\n"
 "MIME-Version: 1.0\n"
@@ -147,7 +147,7 @@ msgstr "Aktuelle Recherche"
 #: ../templates/views/inst404/searchframe:211
 #: ../templates/views/inst404/searchframe_simple:124
 #: ../templates/views/inst405/searchframe:215
-#: ../templates/views/inst405/searchframe_simple:124
+#: ../templates/views/inst405/searchframe_simple:132
 #: ../templates/views/inst406/searchframe:206
 #: ../templates/views/inst406/searchframe_simple:118
 #: ../templates/views/inst410/searchframe:208
@@ -168,7 +168,7 @@ msgstr "Aktuelle Recherche"
 #: ../templates/views/inst426/searchframe:210
 #: ../templates/views/inst426/searchframe_simple:117
 #: ../templates/views/inst430/searchframe:212
-#: ../templates/views/inst430/searchframe_simple:119
+#: ../templates/views/inst430/searchframe_simple:127
 #: ../templates/views/inst431/searchframe:209
 #: ../templates/views/inst431/searchframe_simple:116
 #: ../templates/views/inst460/searchframe:210
@@ -685,7 +685,6 @@ msgstr "Digitale Bibliothek / Zeitschriften (Aufsatzlieferung)"
 #: ../templates/database/portrait/virtualsearch_result_item:159
 #: ../templates/views/kapsel/virtualsearch_result_item:185
 #: ../templates/views/portrait/virtualsearch_result_item:153
-#: ../templates/virtualsearch_result_item:219
 msgid "Drill-Down"
 msgstr "Drill-Down"
 
@@ -871,8 +870,8 @@ msgstr "Erfolgreiche Aktion"
 msgid "Erfolgsmeldung"
 msgstr "Erfolgsmeldung"
 
-#: ../templates/searchframe:181 ../templates/userprefs:185
-#: ../templates/views/edz/searchframe:196
+#: ../templates/drilldown_categorized:49 ../templates/searchframe:181
+#: ../templates/userprefs:185 ../templates/views/edz/searchframe:196
 #: ../templates/views/gdonck/searchframe:176
 #: ../templates/views/gleuel/searchframe:176
 #: ../templates/views/inst404/searchframe:197
@@ -898,7 +897,6 @@ msgstr "Erfolgsmeldung"
 #: ../templates/views/portrait/searchframe:153
 #: ../templates/views/rheinlandbib/searchframe:168
 #: ../templates/views/xanten/searchframe:176
-#: ../templates/virtualsearch_result_item:176
 msgid "Erscheinungsjahr"
 msgstr "Erscheinungsjahr"
 
@@ -1014,7 +1012,7 @@ msgstr "Fakultät"
 #: ../templates/views/inst404/searchframe:212
 #: ../templates/views/inst404/searchframe_simple:125
 #: ../templates/views/inst405/searchframe:216
-#: ../templates/views/inst405/searchframe_simple:125
+#: ../templates/views/inst405/searchframe_simple:133
 #: ../templates/views/inst406/searchframe:207
 #: ../templates/views/inst406/searchframe_simple:119
 #: ../templates/views/inst410/searchframe:209
@@ -1035,7 +1033,7 @@ msgstr "Fakultät"
 #: ../templates/views/inst426/searchframe:211
 #: ../templates/views/inst426/searchframe_simple:118
 #: ../templates/views/inst430/searchframe:213
-#: ../templates/views/inst430/searchframe_simple:120
+#: ../templates/views/inst430/searchframe_simple:128
 #: ../templates/views/inst431/searchframe:210
 #: ../templates/views/inst431/searchframe_simple:117
 #: ../templates/views/inst460/searchframe:211
@@ -1115,7 +1113,7 @@ msgstr "Freie Suche"
 #: ../templates/views/inst404/searchframe:244
 #: ../templates/views/inst404/searchframe_simple:182
 #: ../templates/views/inst405/searchframe:248
-#: ../templates/views/inst405/searchframe_simple:182
+#: ../templates/views/inst405/searchframe_simple:190
 #: ../templates/views/inst406/searchframe:239
 #: ../templates/views/inst406/searchframe_simple:176
 #: ../templates/views/inst410/searchframe:241
@@ -1136,7 +1134,7 @@ msgstr "Freie Suche"
 #: ../templates/views/inst426/searchframe:243
 #: ../templates/views/inst426/searchframe_simple:175
 #: ../templates/views/inst430/searchframe:245
-#: ../templates/views/inst430/searchframe_simple:177
+#: ../templates/views/inst430/searchframe_simple:185
 #: ../templates/views/inst431/searchframe:242
 #: ../templates/views/inst431/searchframe_simple:174
 #: ../templates/views/inst460/searchframe:243
@@ -1181,7 +1179,7 @@ msgstr ""
 #: ../templates/views/gdonck/searchframe_simple:62
 #: ../templates/views/gleuel/searchframe_simple:62
 #: ../templates/views/inst404/searchframe_simple:102
-#: ../templates/views/inst405/searchframe_simple:102
+#: ../templates/views/inst405/searchframe_simple:110
 #: ../templates/views/inst406/searchframe_simple:96
 #: ../templates/views/inst410/searchframe_simple:94
 #: ../templates/views/inst411/searchframe_simple:95
@@ -1191,7 +1189,7 @@ msgstr ""
 #: ../templates/views/inst420/searchframe_simple:97
 #: ../templates/views/inst425/searchframe_simple:94
 #: ../templates/views/inst426/searchframe_simple:95
-#: ../templates/views/inst430/searchframe_simple:97
+#: ../templates/views/inst430/searchframe_simple:105
 #: ../templates/views/inst431/searchframe_simple:94
 #: ../templates/views/inst460/searchframe_simple:95
 #: ../templates/views/kempen/searchframe_simple:62
@@ -1337,8 +1335,8 @@ msgstr ""
 #: ../templates/views/inst405/searchframe:116
 #: ../templates/views/inst405/searchframe:234
 #: ../templates/views/inst405/searchframe:238
-#: ../templates/views/inst405/searchframe_simple:145
-#: ../templates/views/inst405/searchframe_simple:151
+#: ../templates/views/inst405/searchframe_simple:153
+#: ../templates/views/inst405/searchframe_simple:159
 #: ../templates/views/inst406/searchframe:100
 #: ../templates/views/inst406/searchframe:107
 #: ../templates/views/inst406/searchframe:225
@@ -1401,8 +1399,8 @@ msgstr ""
 #: ../templates/views/inst430/searchframe:113
 #: ../templates/views/inst430/searchframe:231
 #: ../templates/views/inst430/searchframe:235
-#: ../templates/views/inst430/searchframe_simple:140
-#: ../templates/views/inst430/searchframe_simple:146
+#: ../templates/views/inst430/searchframe_simple:148
+#: ../templates/views/inst430/searchframe_simple:154
 #: ../templates/views/inst431/searchframe:104
 #: ../templates/views/inst431/searchframe:110
 #: ../templates/views/inst431/searchframe:228
@@ -1505,8 +1503,8 @@ msgstr "Hier löschen Sie die Eingabefelder"
 #: ../templates/views/inst405/searchframe:116
 #: ../templates/views/inst405/searchframe:234
 #: ../templates/views/inst405/searchframe:238
-#: ../templates/views/inst405/searchframe_simple:145
-#: ../templates/views/inst405/searchframe_simple:151
+#: ../templates/views/inst405/searchframe_simple:153
+#: ../templates/views/inst405/searchframe_simple:159
 #: ../templates/views/inst406/searchframe:100
 #: ../templates/views/inst406/searchframe:107
 #: ../templates/views/inst406/searchframe:225
@@ -1569,8 +1567,8 @@ msgstr "Hier löschen Sie die Eingabefelder"
 #: ../templates/views/inst430/searchframe:113
 #: ../templates/views/inst430/searchframe:231
 #: ../templates/views/inst430/searchframe:235
-#: ../templates/views/inst430/searchframe_simple:140
-#: ../templates/views/inst430/searchframe_simple:146
+#: ../templates/views/inst430/searchframe_simple:148
+#: ../templates/views/inst430/searchframe_simple:154
 #: ../templates/views/inst431/searchframe:104
 #: ../templates/views/inst431/searchframe:110
 #: ../templates/views/inst431/searchframe:228
@@ -1654,7 +1652,7 @@ msgstr "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
 #: ../templates/views/inst404/searchframe_simple:151
 #: ../templates/views/inst405/searchframe:116
 #: ../templates/views/inst405/searchframe:238
-#: ../templates/views/inst405/searchframe_simple:151
+#: ../templates/views/inst405/searchframe_simple:159
 #: ../templates/views/inst406/searchframe:107
 #: ../templates/views/inst406/searchframe:229
 #: ../templates/views/inst406/searchframe_simple:145
@@ -1686,7 +1684,7 @@ msgstr "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
 #: ../templates/views/inst426/searchframe_simple:144
 #: ../templates/views/inst430/searchframe:113
 #: ../templates/views/inst430/searchframe:235
-#: ../templates/views/inst430/searchframe_simple:146
+#: ../templates/views/inst430/searchframe_simple:154
 #: ../templates/views/inst431/searchframe:110
 #: ../templates/views/inst431/searchframe:232
 #: ../templates/views/inst431/searchframe_simple:143
@@ -1909,7 +1907,7 @@ msgstr "Import-Einstellungen"
 #: ../templates/views/inst404/searchframe_simple:151
 #: ../templates/views/inst405/searchframe:116
 #: ../templates/views/inst405/searchframe:238
-#: ../templates/views/inst405/searchframe_simple:151
+#: ../templates/views/inst405/searchframe_simple:159
 #: ../templates/views/inst406/searchframe:107
 #: ../templates/views/inst406/searchframe:229
 #: ../templates/views/inst406/searchframe_simple:145
@@ -1941,7 +1939,7 @@ msgstr "Import-Einstellungen"
 #: ../templates/views/inst426/searchframe_simple:144
 #: ../templates/views/inst430/searchframe:113
 #: ../templates/views/inst430/searchframe:235
-#: ../templates/views/inst430/searchframe_simple:146
+#: ../templates/views/inst430/searchframe_simple:154
 #: ../templates/views/inst431/searchframe:110
 #: ../templates/views/inst431/searchframe:232
 #: ../templates/views/inst431/searchframe_simple:143
@@ -2001,8 +1999,8 @@ msgstr "In allen Katalogen suchen"
 #: ../templates/views/inst405/searchframe:116
 #: ../templates/views/inst405/searchframe:234
 #: ../templates/views/inst405/searchframe:238
-#: ../templates/views/inst405/searchframe_simple:145
-#: ../templates/views/inst405/searchframe_simple:151
+#: ../templates/views/inst405/searchframe_simple:153
+#: ../templates/views/inst405/searchframe_simple:159
 #: ../templates/views/inst406/searchframe:100
 #: ../templates/views/inst406/searchframe:107
 #: ../templates/views/inst406/searchframe:225
@@ -2065,8 +2063,8 @@ msgstr "In allen Katalogen suchen"
 #: ../templates/views/inst430/searchframe:113
 #: ../templates/views/inst430/searchframe:231
 #: ../templates/views/inst430/searchframe:235
-#: ../templates/views/inst430/searchframe_simple:140
-#: ../templates/views/inst430/searchframe_simple:146
+#: ../templates/views/inst430/searchframe_simple:148
+#: ../templates/views/inst430/searchframe_simple:154
 #: ../templates/views/inst431/searchframe:104
 #: ../templates/views/inst431/searchframe:110
 #: ../templates/views/inst431/searchframe:228
@@ -2135,7 +2133,7 @@ msgstr "In die Merkliste"
 #: ../templates/searchframe_simple:97
 #: ../templates/views/edz/searchframe_simple:103
 #: ../templates/views/inst404/searchframe_simple:109
-#: ../templates/views/inst405/searchframe_simple:109
+#: ../templates/views/inst405/searchframe_simple:117
 #: ../templates/views/inst406/searchframe_simple:103
 #: ../templates/views/inst410/searchframe_simple:101
 #: ../templates/views/inst411/searchframe_simple:102
@@ -2145,7 +2143,7 @@ msgstr "In die Merkliste"
 #: ../templates/views/inst420/searchframe_simple:104
 #: ../templates/views/inst425/searchframe_simple:101
 #: ../templates/views/inst426/searchframe_simple:102
-#: ../templates/views/inst430/searchframe_simple:104
+#: ../templates/views/inst430/searchframe_simple:112
 #: ../templates/views/inst431/searchframe_simple:101
 #: ../templates/views/inst460/searchframe_simple:102
 #: ../templates/views/richter/searchframe_simple:69
@@ -2695,8 +2693,8 @@ msgstr "Los"
 #: ../templates/views/inst405/searchframe:116
 #: ../templates/views/inst405/searchframe:234
 #: ../templates/views/inst405/searchframe:238
-#: ../templates/views/inst405/searchframe_simple:145
-#: ../templates/views/inst405/searchframe_simple:151
+#: ../templates/views/inst405/searchframe_simple:153
+#: ../templates/views/inst405/searchframe_simple:159
 #: ../templates/views/inst406/searchframe:100
 #: ../templates/views/inst406/searchframe:107
 #: ../templates/views/inst406/searchframe:225
@@ -2759,8 +2757,8 @@ msgstr "Los"
 #: ../templates/views/inst430/searchframe:113
 #: ../templates/views/inst430/searchframe:231
 #: ../templates/views/inst430/searchframe:235
-#: ../templates/views/inst430/searchframe_simple:140
-#: ../templates/views/inst430/searchframe_simple:146
+#: ../templates/views/inst430/searchframe_simple:148
+#: ../templates/views/inst430/searchframe_simple:154
 #: ../templates/views/inst431/searchframe:104
 #: ../templates/views/inst431/searchframe:110
 #: ../templates/views/inst431/searchframe:228
@@ -2872,8 +2870,8 @@ msgstr "Maximale Trefferzahl pro Katalog"
 msgid "MedPilot"
 msgstr "MedPilot"
 
-#: ../templates/searchframe:152 ../templates/userprefs:184
-#: ../templates/views/edz/searchframe:167
+#: ../templates/drilldown_categorized:62 ../templates/searchframe:152
+#: ../templates/userprefs:184 ../templates/views/edz/searchframe:167
 #: ../templates/views/gdonck/searchframe:147
 #: ../templates/views/gleuel/searchframe:147
 #: ../templates/views/inst404/searchframe:168
@@ -2900,7 +2898,6 @@ msgstr "MedPilot"
 #: ../templates/views/rheinlandbib/searchframe:139
 #: ../templates/views/richter/searchframe:139
 #: ../templates/views/xanten/searchframe:147
-#: ../templates/virtualsearch_result_item:188
 msgid "Medienart"
 msgstr "Medienart"
 
@@ -3107,10 +3104,6 @@ msgstr "Not-Datei"
 msgid "Notation"
 msgstr "Notation"
 
-#: ../templates/virtualsearch_result_item:164
-msgid "Notationen"
-msgstr "Notationen"
-
 #: ../templates/admin_showlogintarget:46 ../templates/admin_showlogintarget:64
 msgid "Nutzername"
 msgstr "Nutzername"
@@ -3246,6 +3239,10 @@ msgstr "Person"
 msgid "Person/Körperschaft"
 msgstr "Person/Körperschaft"
 
+#: ../templates/drilldown_categorized:10
+msgid "Personen"
+msgstr "Personen"
+
 #: ../templates/userprefs:65
 msgid "Personendaten"
 msgstr "Personendaten"
@@ -3350,7 +3347,7 @@ msgstr "Registrieren"
 #: ../templates/views/gdonck/searchframe_simple:93
 #: ../templates/views/gleuel/searchframe_simple:93
 #: ../templates/views/inst404/searchframe_simple:163
-#: ../templates/views/inst405/searchframe_simple:163
+#: ../templates/views/inst405/searchframe_simple:171
 #: ../templates/views/inst406/searchframe_simple:157
 #: ../templates/views/inst410/searchframe_simple:155
 #: ../templates/views/inst411/searchframe_simple:156
@@ -3360,7 +3357,7 @@ msgstr "Registrieren"
 #: ../templates/views/inst420/searchframe_simple:158
 #: ../templates/views/inst425/searchframe_simple:155
 #: ../templates/views/inst426/searchframe_simple:156
-#: ../templates/views/inst430/searchframe_simple:158
+#: ../templates/views/inst430/searchframe_simple:166
 #: ../templates/views/inst431/searchframe_simple:155
 #: ../templates/views/inst460/searchframe_simple:156
 #: ../templates/views/kempen/searchframe_simple:93
@@ -3447,7 +3444,6 @@ msgstr "Schlagwort"
 #: ../templates/database/portrait/virtualsearch_result_item:130
 #: ../templates/views/kapsel/virtualsearch_result_item:157
 #: ../templates/views/portrait/virtualsearch_result_item:124
-#: ../templates/virtualsearch_result_item:152
 msgid "Schlagworte"
 msgstr "Schlagworte"
 
@@ -3526,7 +3522,6 @@ msgstr "Seit"
 #: ../templates/views/kapsel/virtualsearch_result_item:76
 #: ../templates/views/portrait/virtualsearch_result_item:153
 #: ../templates/views/portrait/virtualsearch_result_item:77
-#: ../templates/virtualsearch_result_item:219
 #: ../templates/virtualsearch_result_item:86
 #: ../templates/virtualsearch_showkorindex:32
 #: ../templates/virtualsearch_shownotindex:32
@@ -3780,7 +3775,7 @@ msgstr ""
 #: ../templates/views/inst404/searchframe:83
 #: ../templates/views/inst404/searchframe_simple:67
 #: ../templates/views/inst405/searchframe:83
-#: ../templates/views/inst405/searchframe_simple:67
+#: ../templates/views/inst405/searchframe_simple:75
 #: ../templates/views/inst406/searchframe:86
 #: ../templates/views/inst406/searchframe_simple:73
 #: ../templates/views/inst410/searchframe:80
@@ -3801,7 +3796,7 @@ msgstr ""
 #: ../templates/views/inst426/searchframe:80
 #: ../templates/views/inst426/searchframe_simple:62
 #: ../templates/views/inst430/searchframe:80
-#: ../templates/views/inst430/searchframe_simple:62
+#: ../templates/views/inst430/searchframe_simple:70
 #: ../templates/views/inst431/searchframe:80
 #: ../templates/views/inst431/searchframe_simple:62
 #: ../templates/views/inst460/searchframe:80
@@ -3823,7 +3818,7 @@ msgstr ""
 #: ../templates/views/inst404/searchframe:109
 #: ../templates/views/inst404/searchframe_simple:95
 #: ../templates/views/inst405/searchframe:113
-#: ../templates/views/inst405/searchframe_simple:95
+#: ../templates/views/inst405/searchframe_simple:103
 #: ../templates/views/inst406/searchframe:104
 #: ../templates/views/inst406/searchframe_simple:89
 #: ../templates/views/inst410/searchframe:106
@@ -3844,7 +3839,7 @@ msgstr ""
 #: ../templates/views/inst426/searchframe:108
 #: ../templates/views/inst426/searchframe_simple:88
 #: ../templates/views/inst430/searchframe:110
-#: ../templates/views/inst430/searchframe_simple:90
+#: ../templates/views/inst430/searchframe_simple:98
 #: ../templates/views/inst431/searchframe:107
 #: ../templates/views/inst431/searchframe_simple:87
 #: ../templates/views/inst460/searchframe:108
@@ -4072,7 +4067,7 @@ msgstr "Sperre"
 msgid "Sprach-Icon für %1"
 msgstr "Sprach-Icon für %1"
 
-#: ../templates/virtualsearch_result_item:200
+#: ../templates/drilldown_categorized:75
 msgid "Sprache"
 msgstr "Sprache"
 
@@ -4317,7 +4312,6 @@ msgstr "Suchoptionen"
 #: ../templates/database/portrait/virtualsearch_result_item:88
 #: ../templates/views/kapsel/virtualsearch_result_item:115
 #: ../templates/views/portrait/virtualsearch_result_item:82
-#: ../templates/virtualsearch_result_item:94
 msgid "Suchverfeinerung mit relevanten Begriffen"
 msgstr "Suchverfeinerung mit relevanten Begriffen"
 
@@ -4330,6 +4324,7 @@ msgstr "Swt-Datei"
 msgid "System"
 msgstr "System"
 
+#: ../templates/drilldown_categorized:36
 #: ../templates/views/richter/searchframe:123
 msgid "Systematik"
 msgstr "Systematik"
@@ -5196,6 +5191,10 @@ msgstr "Testsystem - Nicht f&uuml;r den produktiven Einsatz bestimmt"
 msgid "Textangaben"
 msgstr "Textangaben"
 
+#: ../templates/drilldown_categorized:23
+msgid "Themen"
+msgstr "Themen"
+
 #: ../templates/admin_editcat:125
 msgid "Tit-Datei"
 msgstr "Tit-Datei"
@@ -5412,7 +5411,7 @@ msgstr "Um sich wieder einzuloggen folgen Sie bitte %1diesem Link%2."
 #: ../templates/views/inst404/searchframe:242
 #: ../templates/views/inst404/searchframe_simple:179
 #: ../templates/views/inst405/searchframe:246
-#: ../templates/views/inst405/searchframe_simple:179
+#: ../templates/views/inst405/searchframe_simple:187
 #: ../templates/views/inst406/searchframe:237
 #: ../templates/views/inst406/searchframe_simple:173
 #: ../templates/views/inst410/searchframe:239
@@ -5433,7 +5432,7 @@ msgstr "Um sich wieder einzuloggen folgen Sie bitte %1diesem Link%2."
 #: ../templates/views/inst426/searchframe:241
 #: ../templates/views/inst426/searchframe_simple:172
 #: ../templates/views/inst430/searchframe:243
-#: ../templates/views/inst430/searchframe_simple:174
+#: ../templates/views/inst430/searchframe_simple:182
 #: ../templates/views/inst431/searchframe:240
 #: ../templates/views/inst431/searchframe_simple:171
 #: ../templates/views/inst460/searchframe:241
@@ -5512,7 +5511,6 @@ msgstr "Ursprüngliche Auswahl wiederherstellen"
 #: ../templates/userprefs:176
 #: ../templates/views/kapsel/virtualsearch_result_item:121
 #: ../templates/views/portrait/virtualsearch_result_item:87
-#: ../templates/virtualsearch_result_item:140
 #: ../templates/virtualsearch_showverfindex:46
 msgid "Verfasser"
 msgstr "Verfasser"
@@ -5788,7 +5786,7 @@ msgstr "Zugemailte Merkliste"
 #: ../templates/views/inst404/searchframe:63
 #: ../templates/views/inst404/searchframe_simple:169
 #: ../templates/views/inst405/searchframe:63
-#: ../templates/views/inst405/searchframe_simple:169
+#: ../templates/views/inst405/searchframe_simple:177
 #: ../templates/views/inst406/searchframe:63
 #: ../templates/views/inst406/searchframe_simple:163
 #: ../templates/views/inst410/searchframe:63
@@ -5809,7 +5807,7 @@ msgstr "Zugemailte Merkliste"
 #: ../templates/views/inst426/searchframe:63
 #: ../templates/views/inst426/searchframe_simple:162
 #: ../templates/views/inst430/searchframe:63
-#: ../templates/views/inst430/searchframe_simple:164
+#: ../templates/views/inst430/searchframe_simple:172
 #: ../templates/views/inst431/searchframe:63
 #: ../templates/views/inst431/searchframe_simple:161
 #: ../templates/views/inst460/searchframe:63

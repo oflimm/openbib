@@ -37,6 +37,8 @@
 ../templates/corporate_banner
 ../templates/databasechoice
 ../templates/databaseprofile
+../templates/drilldown_categorized
+../templates/drilldown_cloud
 ../templates/error
 ../templates/externaljump
 ../templates/frameset

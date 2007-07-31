@@ -1049,7 +1049,7 @@ sub grundform {
     # Zeichenersetzungen
     $content=~s/'/ /g;
     $content=~s/\// /g;
-    $content=~s/:/ /g;
+    #$content=~s/:/ /g;
     $content=~s/  / /g;
 
     # Buchstabenersetzungen

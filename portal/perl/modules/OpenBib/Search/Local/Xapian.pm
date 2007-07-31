@@ -193,6 +193,14 @@ sub initial_search {
     $qp->add_prefix('inyear'   ,'X7');
     $qp->add_prefix('inisbn'   ,'X8');
     $qp->add_prefix('inissn'   ,'X9');
+
+    # Drilldowns
+    $qp->add_prefix('ddswt'   ,'D1');
+    $qp->add_prefix('ddnot'   ,'D2');
+    $qp->add_prefix('ddper'   ,'D3');
+    $qp->add_prefix('ddtyp'   ,'D4');
+    $qp->add_prefix('ddyear'  ,'D5');
+    $qp->add_prefix('ddspr'   ,'D6');
     
     my $category_map_ref = {};
     my $enq       = $dbh->enquire($qp->parse_query($querystring,Search::Xapian::FLAG_WILDCARD|Search::Xapian::FLAG_LOVEHATE|Search::Xapian::FLAG_BOOLEAN));

@@ -794,7 +794,7 @@ sub handler {
                 };
 
                 if ($@){
-                    $logger->error($@);
+                    $logger->error("Database: $database - :".$@);
                     $fallbacksb="sql";
                 }
                 else {

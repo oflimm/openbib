@@ -197,6 +197,42 @@ my $count = 1;
                 content => $artinh,
 	        type    => 'index',
             },
+            {
+                # Schlagwort
+                prefix  => "D1",
+	        type    => "drilldown",
+                cat     => 'swt',
+            },
+            {
+                # Notation
+                prefix  => "D1",
+	        type    => "drilldown",
+                cat     => 'notation',
+            },
+            {
+                # Person
+                prefix  => "D1",
+	        type    => "drilldown",
+                cat     => 'verf',
+            },
+            {
+                # Medientyp
+                prefix  => "D1",
+	        type    => "drilldown",
+                cat     => 'mart',
+            },
+            {
+                # Jahr
+                prefix  => "D1",
+	        type    => "drilldown",
+                cat     => 'year',
+            },
+            {
+                # Sprache
+                prefix  => "D1",
+	        type    => "drilldown",
+                cat     => 'spr',
+            },
         ];
 
         my $seen_token_ref = {};
@@ -241,13 +277,51 @@ my $count = 1;
                     }
                 }
    	    }
+            elsif ($tokinfo_ref->{type} eq 'drilldown'){
+                next if (!exists $normdata{$s_id}->{$tokinfo_ref->{cat}});
+
+                my %seen_terms = ();
+                my @unique_terms = grep { ! $seen_terms{$_} ++ } @{$normdata{$s_id}->{$tokinfo_ref->{cat}}}; 
+
+	        foreach my $unique_term (@unique_terms){
+	            # Kategorie in Feld einfuegen            
+		    my $field = OpenBib::Common::Util::grundform({
+                       content  => $unique_term,
+                    });
+
+                    $tokenizer->tokenize($field);
+        
+                    my $i = $tokenizer->iterator();
+
+                    while ($i->hasNextToken()) {
+                        my $next = $i->nextToken();
+
+                        # Naechstes, wenn kein Token
+                        next if (!$next);
+                        # Naechstes, wenn keine Zahl oder einstellig
+                        # next if (length($next) < 2 && $next !~ /\d/);
+                        # Naechstes, wenn schon gesehen 
+                        next if (exists $seen_token_ref->{$next});
+                        # Naechstes, wenn Stopwort
+                        next if (exists $config->{stopword_filename} && exists $stopword_ref->{$next});
+
+                        $seen_token_ref->{$next}=1;
+                
+                        # Token generell einfuegen
+			$next="$tokinfo_ref->{prefix}$field";
+
+			$doc->add_term($next);
+
+                    }
+	        }
+   	    }
 	}
 
         my $value_type_ref = [
             {
                 # Schlagwort
-                id   => 1,
-                type => 'swt',
+                id     => 1,
+                type   => 'swt',
             },
             {
                 # Notation
@@ -282,6 +356,19 @@ my $count = 1;
 
             my %seen_terms = ();
             my @unique_terms = grep { ! $seen_terms{$_} ++ } @{$normdata{$s_id}->{$type_ref->{type}}}; 
+
+	    foreach my $unique_term (@unique_terms){
+	        # Kategorie in Feld einfuegen            
+		my $field = OpenBib::Common::Util::grundform({
+                   content  => $unique_term,
+                });
+		
+	        $field="D$type_ref->{id}$field";
+		#$logger->info($field);
+
+	        $doc->add_term($field);
+	    }
+
             my $multstring = join("\t",@unique_terms);
 
             $doc->add_value($type_ref->{id},encode_utf8($multstring)) if ($multstring);

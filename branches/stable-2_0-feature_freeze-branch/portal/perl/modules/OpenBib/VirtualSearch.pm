@@ -105,6 +105,7 @@ sub handler {
     my $trefferliste  = $query->param('trefferliste')  || '';
     my $queryid       = $query->param('queryid')       || '';
     my $sb            = $query->param('sb')            || 'sql'; # Search backend
+    my $st            = $query->param('st')            || '';    # Search type (1=simple,2=complex)    
     my $drilldown     = $query->param('drilldown')     || 0;     # Drill-Down?
     my $cloud         = $query->param('cloud')         || 0;     # Cloud?
 
@@ -154,6 +155,18 @@ sub handler {
     my $userid=$user->get_userid_of_session($session->{ID});
     $logger->info("Authorization: ", $session->{ID}, " ", ($userid)?$userid:'none');
 
+    # Loggen der Recherche-Art (1=simple, 2=complex)
+    $session->log_event({
+		type      => 20,
+                content   => $st,
+    });
+
+    # Loggen des Recherche-Backends
+    $session->log_event({
+		type      => 21,
+                content   => $sb,
+    });
+    
     # BEGIN DB-Bestimmung
     ####################################################################
     # Bestimmung der Datenbanken, in denen gesucht werden soll

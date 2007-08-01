@@ -850,76 +850,114 @@ sub get_searchquery {
     $signnorm      =~s/\*$/%/;
     $notationnorm  =~s/\*$/%/;
     $hststringnorm =~s/\*$/%/;
-    
-    my $searchquery_ref={
-        fs => {
-            val   => $fs,
-            norm  => $fsnorm,
-            bool  => '',
-        },
-        verf => {
-            val   => $verf,
-            norm  => $verfnorm,
-            bool  => $boolverf,
-        },
-        hst => {
-            val   => $hst,
-            norm  => $hstnorm,
-            bool  => $boolhst,
-        },
-        hststring => {
-            val   => $hststring,
-            norm  => $hststringnorm,
-            bool  => $boolhststring,
-        },
-        gtquelle  => {
-            val   => $gtquelle,
-            norm  => $gtquellenorm,
-            bool  => $boolgtquelle,
-        },
-        swt => {
-            val   => $swt,
-            norm  => $swtnorm,
-            bool  => $boolswt,
-        },
-        kor => {
-            val   => $kor,
-            norm  => $kornorm,
-            bool  => $boolkor,
-        },
-        sign => {
-            val   => $sign,
-            norm  => $signnorm,
-            bool  => $boolsign,
-        },
-        isbn => {
-            val   => $isbn,
-            norm  => $isbnnorm,
-            bool  => $boolisbn,
-        },
-        issn => {
-            val   => $issn,
-            norm  => $issnnorm,
-            bool  => $boolissn,
-        },
-        mart => {
-            val   => $mart,
-            norm  => $martnorm,
-            bool  => $boolmart,
-        },
-        notation => {
-            val   => $notation,
-            norm  => $notationnorm,
-            bool  => $boolnotation,
-        },
-        ejahr => {
-            val   => $ejahr,
-            norm  => $ejahrnorm,
-            bool  => $boolejahr,
-            arg   => $ejahrop,
-        },
-    };
 
+    my $searchquery_ref={};
+    
+    if ($fs){
+      $searchquery_ref->{fs}={
+			      val   => $fs,
+			      norm  => $fsnorm,
+			      bool  => '',			      
+			     };
+    }
+
+    if ($hst){
+      $searchquery_ref->{hst}={
+			       val   => $hst,
+			       norm  => $hstnorm,
+			       bool  => $boolhst,
+			      };
+    }
+
+    if ($hststring){
+      $searchquery_ref->{hststring}={
+				     val   => $hststring,
+				     norm  => $hststringnorm,
+				     bool  => $boolhststring,
+				    };
+    }
+
+    if ($gtquelle){
+      $searchquery_ref->{gtquelle}={
+			    val   => $gtquelle,
+			    norm  => $gtquellenorm,
+			    bool  => $boolgtquelle,
+			   };
+    }
+
+    if ($verf){
+      $searchquery_ref->{verf}={
+			    val   => $verf,
+			    norm  => $verfnorm,
+			    bool  => $boolverf,
+			   };
+    }
+
+    if ($swt){
+      $searchquery_ref->{swt}={
+			       val   => $swt,
+			       norm  => $swtnorm,
+			       bool  => $boolswt,
+			      };
+    }
+
+    if ($kor){
+      $searchquery_ref->{kor}={
+			       val   => $kor,
+			       norm  => $kornorm,
+			       bool  => $boolkor,
+			      };
+    }
+
+    if ($sign){
+      $searchquery_ref->{sign}={
+				val   => $sign,
+				norm  => $signnorm,
+				bool  => $boolsign,
+			       };
+    }
+
+    if ($isbn){
+      $searchquery_ref->{isbn}={
+				val   => $isbn,
+				norm  => $isbnnorm,
+				bool  => $boolisbn,
+			     };
+    }
+
+    if ($issn){
+      $searchquery_ref->{issn}={
+				val   => $issn,
+				norm  => $issnnorm,
+				bool  => $boolissn,
+			     };
+    }
+
+    if ($mart){
+      $searchquery_ref->{mart}={
+				val   => $mart,
+				norm  => $martnorm,
+				bool  => $boolmart,
+			       };
+    }
+
+    if ($notation){
+      $searchquery_ref->{notation}={
+				    val   => $notation,
+				    norm  => $notationnorm,
+				    bool  => $boolnotation,
+				   };
+    }
+
+    if ($ejahr){
+      $searchquery_ref->{ejahr}={
+			    val   => $ejahr,
+			    norm  => $ejahrnorm,
+			    bool  => $boolejahr,
+			    arg   => $ejahrop,
+			   };
+    }
+    
     $logger->debug(YAML::Dump($searchquery_ref));
     
     return $searchquery_ref;

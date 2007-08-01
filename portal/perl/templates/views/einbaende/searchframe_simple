@@ -62,6 +62,7 @@
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="database"  value="einbaende" />
 <input type="hidden" name="sb"        value="sql" />
+<input type="hidden" name="st"        value="1" />
 
 <p />
 <p />

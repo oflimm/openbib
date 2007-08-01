@@ -73,6 +73,7 @@
 <input type="hidden" name="view"      value="[% view %]" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="sb"        value="sql" />
+<input type="hidden" name="st"        value="2" />
 <input type="hidden" name="profil"    value="dbauswahl" />
 
 [% IF view %]

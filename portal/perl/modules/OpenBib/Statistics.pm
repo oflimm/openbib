@@ -163,6 +163,9 @@ sub log_event {
     # Recherchen:
     #   1 => Recherche-Anfrage bei Virtueller Recherche
     #  10 => Eineltrefferanzeige
+    #  20 => Rechercheart (einfach=1,komplex=2,...)
+    #  21 => Recherche-Backend (sql,xapian,z3950)
+    #  22 => Recherche-Einstieg ueber Connector (1=DigiBib)
     #
     # Allgemeine Informationen
     # 100 => View
@@ -185,6 +188,115 @@ sub log_event {
     my $request=$self->{dbh}->prepare("insert into eventlog values (?,?,?,?)") or $logger->error($DBI::errstr);
     $request->execute($sessionID,$tstamp,$type,$content) or $logger->error($DBI::errstr);
     $request->finish;
+
+    return;
+}
+
+sub log_query {
+    my ($self,$arg_ref)=@_;
+
+    my $tstamp       = exists $arg_ref->{tstamp}
+        ? $arg_ref->{tstamp}             : undef;
+
+    # Set defaults
+    my $view            = exists $arg_ref->{view}
+        ? $arg_ref->{view}               : undef;
+
+    my $searchquery_ref = exists $arg_ref->{searchquery_ref}
+        ? $arg_ref->{searchquery_ref}    : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Moegliche Queryterm-Typen
+    #
+    # 01 => fs
+    # 02 => hst 
+    # 03 => verf
+    # 04 => kor
+    # 05 => swt
+    # 06 => notation
+    # 07 => isbn
+    # 08 => issn
+    # 09 => sign
+    # 10 => mart
+    # 11 => hststring
+    # 12 => gtquelle
+    # 13 => ejahr
+
+    my $cat2type_ref = {
+			fs        => 1,
+			hst       => 2,
+			verf      => 3,
+			kor       => 4,
+			swt       => 5,
+			notation  => 6,
+			isbn      => 7,
+			issn      => 8,
+			sign      => 9,
+			mart      => 10,
+			hststring => 11,
+			gtquelle  => 12,
+			ejahr     => 13,
+		       };
+
+    my $used_category_ref = {
+			fs        => 0,
+			hst       => 0,
+			verf      => 0,
+			kor       => 0,
+			swt       => 0,
+			notation  => 0,
+			isbn      => 0,
+			issn      => 0,
+			sign      => 0,
+			mart      => 0,
+			hststring => 0,
+			gtquelle  => 0,
+			ejahr     => 0,
+			    };
+
+    my $termrequest     = $self->{dbh}->prepare("insert into queryterm values (?,?,?,?)") or $logger->error($DBI::errstr);
+    my $categoryrequest = $self->{dbh}->prepare("insert into querycategory values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
+
+    foreach my $cat (keys %$cat2type_ref){
+        my $thiscategory_terms = $searchquery_ref->{$cat}->{val};
+	
+	$thiscategory_terms    =~s/[^\p{Alphabetic}0-9 ]//g;
+
+	# Genutzte Kategorie merken
+	if ($thiscategory_terms){
+	  $used_category_ref->{$cat} = 1;
+	}
+
+	my $tokenizer = String::Tokenizer->new();
+	$tokenizer->tokenize($thiscategory_terms);
+	
+	my $i = $tokenizer->iterator();
+	
+	while ($i->hasNextToken()) {
+	  my $next = $i->nextToken();
+	  next if (!$next);
+	  
+	  $termrequest->execute($tstamp,$view,$cat2type_ref->{$cat},encode_utf8($next)) or $logger->error($DBI::errstr);
+	}
+    }
+    
+    $categoryrequest->execute($tstamp,$view,
+			      $used_category_ref->{fs},
+			      $used_category_ref->{hst},
+			      $used_category_ref->{verf},
+			      $used_category_ref->{kor},
+			      $used_category_ref->{swt},
+			      $used_category_ref->{notation},
+			      $used_category_ref->{isbn},
+			      $used_category_ref->{issn},
+			      $used_category_ref->{sign},
+			      $used_category_ref->{mart},
+			      $used_category_ref->{hststring},
+			      $used_category_ref->{gtquelle},
+			      $used_category_ref->{ejahr}
+			     ) or $logger->error($DBI::errstr);
 
     return;
 }

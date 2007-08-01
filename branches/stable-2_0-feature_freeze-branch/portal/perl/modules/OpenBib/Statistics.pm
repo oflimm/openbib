@@ -30,7 +30,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Encode 'decode_utf8';
+use Encode qw(decode_utf8 encode_utf8);
 use Log::Log4perl qw(get_logger :levels);
 use Storable ();
 

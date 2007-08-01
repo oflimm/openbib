@@ -67,12 +67,6 @@ sub handler {
 
     my $session = new OpenBib::Session();
 
-    # Loggen des Recherche-Einstiegs ueber Connector (1=DigiBib)
-    $session->log_event({
-		type      => 22,
-                content   => '1',
-    });
-    
     # CGI-Input auslesen
     
     #####################################################################
@@ -122,7 +116,39 @@ sub handler {
     my $tosearch   = $query->param('tosearch')   || '';
     my $view       = $query->param('view')       || 'institute';
     my $serien     = $query->param('serien')     || 0;
+
+    # Loggen des Recherche-Einstiegs ueber Connector (1=DigiBib)
+    $session->log_event({
+		type      => 22,
+                content   => 1,
+    });
+
+    # Loggen der View-Auswahl
+    $session->log_event({
+        type      => 100,
+        content   => $view,
+    });
     
+    my $useragent=$r->subprocess_env('HTTP_USER_AGENT') || '';
+
+    # Loggen des Brower-Types
+    $session->log_event({
+        type      => 101,
+        content   => $useragent,
+    });
+
+    # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
+    # Client-IP setzen
+    if ($r->header_in('X-Forwarded-For') =~ /([^,\s]+)$/) {
+        $r->connection->remote_ip($1);
+    }
+    
+    # Loggen der Client-IP
+    $session->log_event({
+        type      => 102,
+        content   => $r->connection->remote_ip,
+    });
+        
     # Historisch begruendetes Kompatabilitaetsmapping
     
     $query->param('boolverf'      => $query->param('bool9'))  if ($query->param('bool9'));
@@ -294,7 +320,6 @@ sub handler {
                 push @ergebnisse, @sortedoutputbuffer;
             }
         }
-
         
         # Dann den eigenen URL bestimmen
         my $myself="http://".$r->hostname.$r->uri."?".$r->args;
@@ -304,28 +329,28 @@ sub handler {
         
         my $treffercount=$#ergebnisse+1;
 
+        # Wurde in allen Katalogen recherchiert?
 
-	my $alldbcount = $config->get_number_of_dbs();
+        my $alldbcount = $config->get_number_of_dbs();
 
-	my $searchquery_log_ref = $searchquery_ref;
+        my $searchquery_log_ref = $searchquery_ref;
 
-	if ($#databases+1 == $alldbcount){
-	  $searchquery_log_ref->{alldbases} = 1;
-	  $logger->debug("Alle Datenbanken ausgewaehlt");
-	}
-	else {
-	  $searchquery_log_ref->{dbases} = \@databases;
-	}
+        if ($#databases+1 == $alldbcount){
+            $searchquery_log_ref->{alldbases} = 1;
+            $logger->debug("Alle Datenbanken ausgewaehlt");
+        }
+        else {
+            $searchquery_log_ref->{dbases} = \@databases;
+        }
 
-	$searchquery_log_ref->{hits}   = $treffercount;
-	
-	# Loggen des Queries
-	$session->log_event({
-		type      => 1,
-                content   => $searchquery_log_ref,
-                serialize => 1,
-            });
-
+        $searchquery_log_ref->{hits}   = $treffercount;
+        
+        # Loggen des Queries
+        $session->log_event({
+            type      => 1,
+            content   => $searchquery_log_ref,
+            serialize => 1,
+        });
 
         my $starttemplatename=$config->{tt_connector_digibib_result_start_tname};
         if ($view && -e "$config->{tt_include_path}/views/$view/$starttemplatename") {
@@ -440,8 +465,16 @@ sub handler {
             targetcircinfo_ref => {},
             database           => $database,
         });
-        
 
+        $session->log_event({
+            type      => 10,
+            content   => {
+                id       => $idn,
+                database => $database,
+            },
+            serialize => 1,
+        });
+        
         # Quelle besetzt?
 
         my ($sbnormset,$sbmexnormset,$sbcircset);

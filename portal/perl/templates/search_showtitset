@@ -11,7 +11,7 @@
 #
 #######################################################################
 -%]
-[% PROCESS common/subtemplate name="std_header" title = "Recherche in Katalog: ${poolname.short}" unapi=1 %]
+[% PROCESS common/subtemplate name="std_header" title = "Recherche in Katalog: ${poolname.short}" unapi=1%]
 
 <body>
 
@@ -264,13 +264,14 @@ Nutzer, die diesen Titel ausgew&auml;hlt haben, interessierten sich auch f&uuml;
 
 [% all_tags = user.get_all_tags_of_tit({ titid => titidn, titdb => database }); %]
 
-[% IF loginname ;
-      private_tags = user.get_private_tags_of_tit({ titid => titidn, titdb => database, loginname => loginname  });
-      IF private_tags.size <= 0 ; %]
 <p />
 <table width="100%">
 <tr><th>Eigene Tags vergeben&nbsp;<a href="#newtags"><img src="/images/openbib/expand.png" alt="Alle Tags anzeigen" onclick="expandContent('newtags',this); return false;"></a></th></tr>
 <tr><td id="newtags" class="boxedclear" style="display:none;">
+
+[% IF loginname ;
+      private_tags = user.get_private_tags_of_tit({ titid => titidn, titdb => database, loginname => loginname  });
+      IF private_tags.size <= 0 ; %]
 
 <table>
 <tr><td valign="top">
@@ -399,12 +400,17 @@ verkn&uuml;pft mit dem Tag </span><a onclick="insert_tag(event); return false;" 
 <input type="hidden" name="titisbn"    value="[% normset.${"T0540"}.first.content.replace('-','') %]" />
 <input type="text"   name="tags"       value="[% my_tags.join(' ') %]" size="60" maxlength="200" />&nbsp;&nbsp;Typ:&nbsp;<select name="type"><option value="1" [% IF private_tags.first.type == 1 %]selected="selected"[% END %]>&ouml;ffentlich</option><option value="2" [% IF private_tags.first.type == 2 %]selected="selected"[% END %]>privat</option></select>&nbsp;&nbsp;&nbsp;<input type="submit" name="do_add" value="&Auml;ndern" />&nbsp;<input type="submit" name="do_del" value="L&ouml;schen" />
 </form>
-</td></tr>
-</table>
 
 [%    END %]
 
+[% ELSE %]
+
+Um eigene Tags/Etiketten f&uuml;r einen Titel zu vergeben, m&uuml;ssen Sie sich zun&auml;chst unter '<a href="[% config.login_loc %]?sessionID=[% sessionID %];view=[% view %];do_login=1" target="body">Mein KUG</a>' anmelden.
+
 [% END %]
+
+</td></tr>
+</table>
 
 [% IF config.social_tagging && all_tags.size > 0 %]
 <p />

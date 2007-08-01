@@ -81,6 +81,7 @@
 <input type="hidden" name="sorttype"  value="author" />
 <input type="hidden" name="sortorder" value="up" />
 <input type="hidden" name="sb"        value="sql" />
+<input type="hidden" name="st"        value="2" />
 <input type="hidden" name="profil"    value="dbauswahl" />
 <input type="hidden" name="autoplus"  value="1" />
 

@@ -759,6 +759,9 @@ sub clear_data {
 
     my $idnresult;
 
+    my $view = $self->get_viewname();
+    $logger->debug("Viewname: $view");
+
     # Zuerst Statistikdaten in Statistik-Datenbank uebertragen,
     my $statistics=new OpenBib::Statistics;
 
@@ -778,6 +781,17 @@ sub clear_data {
             type      => $type,
             content   => $content,
         });
+
+	if ($type == 1){
+	  my $searchquery_ref = Storable::thaw(pack "H*", $content);
+	  
+	  $logger->debug(YAML::Dump($searchquery_ref));
+	  $statistics->log_query({
+				  tstamp          => $tstamp,
+				  view            => $view,
+				  searchquery_ref => $searchquery_ref,
+	  });
+	}
     }
     
     # Relevanz-Daten vom Typ 2 (Einzeltrefferaufruf)
@@ -862,6 +876,9 @@ sub log_event {
     # Recherchen:
     #   1 => Recherche-Anfrage bei Virtueller Recherche
     #  10 => Eineltrefferanzeige
+    #  20 => Rechercheart (einfach=1,komplex=2,...)
+    #  21 => Recherche-Backend (sql,xapian,z3950)
+    #  22 => Recherche-Einstieg ueber Connector (1=DigiBib)
     #
     # Allgemeine Informationen
     # 100 => View

@@ -1089,7 +1089,8 @@ sub print_tit_set_by_idn {
         highlightquery    => \&highlightquery,
         normset2bibtex    => \&OpenBib::Common::Util::normset2bibtex,
         normset2bibsonomy => \&OpenBib::Common::Util::normset2bibsonomy,
-
+        genlinks          => \&OpenBib::Common::Util::gen_links,
+        
         config      => $config,
         msg         => $msg,
     };

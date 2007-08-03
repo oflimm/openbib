@@ -118,37 +118,45 @@ sub handler {
     my $serien     = $query->param('serien')     || 0;
 
     # Loggen des Recherche-Einstiegs ueber Connector (1=DigiBib)
-    $session->log_event({
-		type      => 22,
-                content   => 1,
-    });
 
-    # Loggen der View-Auswahl
-    $session->log_event({
-        type      => 100,
-        content   => $view,
-    });
+    # Wenn 'erste Trefferliste' oder Langtitelanzeige
+    # Bei zurueckblaettern auf die erste Trefferliste wird eine weitere Session
+    # geoeffnet und gezaeht. Die DigiBib-Zugriffsspezifikation des hbz ohne
+    # eigene Sessions laesst jedoch keinen anderen Weg zu.
     
-    my $useragent=$r->subprocess_env('HTTP_USER_AGENT') || '';
+    if ($offset == 1){
+        $session->log_event({
+            type      => 22,
+            content   => 1,
+        });
+        
+        # Loggen der View-Auswahl
+        $session->log_event({
+            type      => 100,
+            content   => $view,
+        });
+    
+        my $useragent=$r->subprocess_env('HTTP_USER_AGENT') || '';
+        
+        # Loggen des Brower-Types
+        $session->log_event({
+            type      => 101,
+            content   => $useragent,
+        });
 
-    # Loggen des Brower-Types
-    $session->log_event({
-        type      => 101,
-        content   => $useragent,
-    });
-
-    # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
-    # Client-IP setzen
-    if ($r->header_in('X-Forwarded-For') =~ /([^,\s]+)$/) {
-        $r->connection->remote_ip($1);
+        # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
+        # Client-IP setzen
+        if ($r->header_in('X-Forwarded-For') =~ /([^,\s]+)$/) {
+            $r->connection->remote_ip($1);
+        }
+        
+        # Loggen der Client-IP
+        $session->log_event({
+            type      => 102,
+            content   => $r->connection->remote_ip,
+        });
     }
     
-    # Loggen der Client-IP
-    $session->log_event({
-        type      => 102,
-        content   => $r->connection->remote_ip,
-    });
-        
     # Historisch begruendetes Kompatabilitaetsmapping
     
     $query->param('boolverf'      => $query->param('bool9'))  if ($query->param('bool9'));
@@ -320,6 +328,7 @@ sub handler {
                 push @ergebnisse, @sortedoutputbuffer;
             }
         }
+
         
         # Dann den eigenen URL bestimmen
         my $myself="http://".$r->hostname.$r->uri."?".$r->args;
@@ -351,7 +360,7 @@ sub handler {
             content   => $searchquery_log_ref,
             serialize => 1,
         });
-
+        
         my $starttemplatename=$config->{tt_connector_digibib_result_start_tname};
         if ($view && -e "$config->{tt_include_path}/views/$view/$starttemplatename") {
             $starttemplatename="views/$view/$starttemplatename";

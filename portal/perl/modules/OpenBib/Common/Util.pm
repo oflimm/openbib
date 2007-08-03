@@ -1565,6 +1565,121 @@ sub utf2bibtex {
     return $string;
 }
 
+sub gen_links {
+    my ($content)=@_;
+
+    # Thanks to Abigail for posting her code in comp.lang.perl.misc on 18 Nov 1996
+    my $lowalpha       =  '(?:[a-z])';
+    my $hialpha        =  '(?:[A-Z])';
+    my $alpha          =  "(?:$lowalpha|$hialpha)";
+    my $digit          =  '(?:\d)';
+    my $safe           =  '(?:[$_.+-])';
+    my $extra          =  '(?:[!*\'(),])';
+    my $national       =  '(?:[{}|\\\\^~\[\]`])';
+    my $punctuation    =  '(?:[<>#%"])';
+    my $reserved       =  '(?:[;/?:@&=])';
+    my $hex            =  '(?:[\dA-Fa-f])';
+    my $escape         =  "(?:%$hex$hex)";
+    my $unreserved     =  "(?:$alpha|$digit|$safe|$extra)";
+    my $uchar          =  "(?:$unreserved|$escape)";
+    my $xchar          =  "(?:$unreserved|$escape|$reserved)";
+    my $digits         =  '(?:\d+)';
+    my $alphadigit     =  "(?:$alpha|\\d)";
+
+    # URL schemeparts for ip based protocols:
+    my $urlpath        =  "(?:$xchar*)";
+    my $user           =  "(?:(?:$uchar|[;?&=])*)";
+    my $password       =  "(?:(?:$uchar|[;?&=])*)";
+    my $port           =  "(?:$digits)";
+    my $hostnumber     =  "(?:$digits\\.$digits\\.$digits\\.$digits)";
+    my $toplabel       =  "(?:(?:$alpha(?:$alphadigit|-)*$alphadigit)|$alpha)";
+    my $domainlabel    =  "(?:(?:$alphadigit(?:$alphadigit|-)*$alphadigit)|" .
+                              "$alphadigit)";
+    my $hostname       =  "(?:(?:$domainlabel\\.)*$toplabel)";
+    my $host           =  "(?:(?:$hostname)|(?:$hostnumber))";
+    my $hostport       =  "(?:(?:$host)(?::$port)?)";
+    my $login          =  "(?:(?:$user(?::$password)?\@)?$hostport)";
+    my $ip_schemepart  =  "(?://$login(?:/$urlpath)?)";
+
+    my $schemepart     =  "(?:$xchar*|$ip_schemepart)";
+    my $scheme         =  "(?:(?:$lowalpha|$digit|[+.-])+)";
+
+    # The generic form of a URL is:
+    my $genericurl     =  "(?:$scheme:$schemepart)";
+
+    # The predefined schemes:
+
+    # FTP (see also RFC959)
+    my $fsegment       =  "(?:(?:$uchar|[?:\@&=])*)";
+    my $ftptype        =  "(?:[AIDaid])";
+    my $fpath          =  "(?:$fsegment(?:/$fsegment)*)";
+    my $ftpurl         =  "(?:ftp://$login(?:/$fpath(?:;type=$ftptype)))";
+
+    # FILE
+    my $fileurl        =  "(?:file://(?:(?:$host)|localhost)?/$fpath)";
+
+    # HTTP
+    my $hsegment       =  "(?:(?:$uchar|[;:\@&=])*)";
+    my $search         =  "(?:(?:$uchar|[;:\@&=])*)";
+    my $hpath          =  "(?:$hsegment(?:/$hsegment)*)";
+    my $httpurl        =  "(?:http://$hostport(?:/$hpath(?:\\?$search)?)?)";
+
+    # GOPHER (see also RFC1436)
+    my $gopher_plus    =  "(?:$xchar*)";
+    my $selector       =  "(?:$xchar*)";
+    my $gtype          =  "(?:$xchar)";
+    my $gopherurl      =  "(?:gopher://$hostport(?:/$gtype(?:$selector" .
+                              "(?:%09$search(?:%09$gopher_plus)?)?)?)?)";
+
+    # MAILTO (see also RFC822)
+    my $encoded822addr =  "(?:$xchar+)";
+    my $mailtourl      =  "(?:mailto:$encoded822addr)";
+
+    # NEWS (see also RFC1036)
+    my $article        =  "(?:(?:$uchar|[;/?:&=])+\@$host)";
+    my $group          =  "(?:$alpha(?:$alpha|$digit|[.+_-])*)";
+    my $grouppart      =  "(?:$article|$group|\\*)";
+    my $newsurl        =  "(?:news:$grouppart)";
+
+    # NNTP (see also RFC977)
+    my $nntpurl        =  "(?:nntp://$hostport/$group(?:/$digits)?)";
+
+    # TELNET
+    my $telneturl      =  "(?:telnet://$login(?:/)?)";
+
+    # WAIS (see also RFC1625)
+    my $wpath          =  "(?:$uchar*)";
+    my $wtype          =  "(?:$uchar*)";
+    my $database       =  "(?:$uchar*)";
+    my $waisdoc        =  "(?:wais://$hostport/$database/$wtype/$wpath)";
+    my $waisindex      =  "(?:wais://$hostport/$database\\?$search)";
+    my $waisdatabase   =  "(?:wais://$hostport/$database)";
+    my $waisurl        =  "(?:$waisdatabase|$waisindex|$waisdoc)";
+
+    # PROSPERO
+    my $fieldvalue     =  "(?:(?:$uchar|[?:\@&]))";
+    my $fieldname      =  "(?:(?:$uchar|[?:\@&]))";
+    my $fieldspec      =  "(?:;$fieldname=$fieldvalue)";
+    my $psegment       =  "(?:(?:$uchar|[?:\@&=]))";
+    my $ppath          =  "(?:$psegment(?:/$psegment)*)";
+    my $prosperourl    =  "(?:prospero://$hostport/$ppath(?:$fieldspec)*)";
+
+    # new schemes follow the general syntax
+    my $otherurl       =  $genericurl;
+
+    # Specific predefined schemes are defined here; new schemes
+    # may be registered with IANA
+
+    # We don't use otherurls
+    my $url            =  "$httpurl|$ftpurl|$newsurl|$nntpurl|$telneturl|" .
+        "$gopherurl|$waisurl|$mailtourl|$fileurl|" .
+            "$prosperourl";
+
+    $content=~s{($url)}{<a href="$1" target="_blank">$1</a>}g;
+
+    return $content;
+}
+
 1;
 __END__
 

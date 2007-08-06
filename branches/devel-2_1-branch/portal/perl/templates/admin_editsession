@@ -35,7 +35,7 @@
 
 <table width="100%">
 <tr><th>[% msg.maketext("Allgemeine Informationen") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 
 <table cellpadding="3">
 <tr><td><b>[% msg.maketext("Session") %]</b></td><td>[% session.singlesessionid %]</td></tr>
@@ -50,7 +50,7 @@
 
 <table width="100%">
 <tr><th>[% msg.maketext("Recherchen") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 
 <table cellpadding="3">
 <tr><td><b>[% msg.maketext("Recherche") %]</b></td><td><b>[% msg.maketext("Treffer") %]</b></td><td><b>[% msg.maketext("Datenbanken") %]</b></td></tr>

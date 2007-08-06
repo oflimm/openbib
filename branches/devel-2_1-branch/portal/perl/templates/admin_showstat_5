@@ -44,7 +44,7 @@
 
 <table width="100%">
 <tr><th>Genutzte Browser</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 <table>
 [% browsers = statistics.get_ranking_of_event({ type => 101, limit => 20}) %]
 [% FOREACH browser IN browsers %]

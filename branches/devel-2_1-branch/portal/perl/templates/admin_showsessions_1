@@ -41,7 +41,7 @@
 
 <table width="100%">
 <tr><th>Session-Explorer</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 
 <table cellpadding="2">
 <tr><td><b>IP</b></td><td><input type="text" name="clientip"></td></tr>

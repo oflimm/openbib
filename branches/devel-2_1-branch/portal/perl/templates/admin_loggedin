@@ -30,7 +30,7 @@
 
 <table width="100%">
 <tr><th>[% msg.maketext("Erfolgsmeldung") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 [% msg.maketext("Sie sind nun als Administrator eingeloggt.") %]
 </td></tr>
 </table>

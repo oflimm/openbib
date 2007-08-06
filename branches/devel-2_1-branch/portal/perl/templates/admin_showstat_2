@@ -44,7 +44,7 @@
 
 <table width="100%">
 <tr><th>Nutzung der vorhandenen Views</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 <table>
 [% views = statistics.get_ranking_of_event({ type => 100}) %]
 [% FOREACH view IN views %]

@@ -17,6 +17,7 @@
 [%
       funcargs = { id => view, type => 8 } ;
       resultlist = statistics.get_result(funcargs);
+
 %]
 
 <ul class="tabbingmenu">
@@ -235,8 +236,6 @@ Nutzern verwendeten Suchbegriffe anbieten.
 </td></tr>
 </table>
 <p />
-
-[%# USE dumper; dumper.dump(resultlist) %]
 
 </div>
 </div>

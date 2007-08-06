@@ -37,7 +37,7 @@
 
 <table width="100%">
 <tr><th>[% msg.maketext("Neuen Katalog anlegen") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 <table>
 <tr><td><b>[% msg.maketext("Fakultät") %]</b></td><td><b>[%
 msg.maketext("Beschreibung") %]</b></td><td><b>[%
@@ -66,7 +66,7 @@ type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></td></tr>
 
 <table width="100%">
 <tr><th>[% msg.maketext("Bereits existierende Kataloge") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 <table>
 <tr><td><b>[% msg.maketext("Fakultät") %]</b></td><td><b>[% msg.maketext("RSS") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("System") %]</b></td><td><b>[% msg.maketext("DB-Name") %]</b></td><td><b>[% msg.maketext("Sigel") %]</b></td><td><b>[% msg.maketext("URL") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td><td><b>Auto-Konv</b></td><td><b>Titel-Anzahl</b></td></tr>
 [% FOREACH katalog IN kataloge %]

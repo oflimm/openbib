@@ -43,7 +43,7 @@
 
 <table width="100%">
 <tr><th>Allgemeine Statistikdaten zum KUG</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 <table>
 <tr><td>Anzahl der Titels&auml;tze</td><td><b>[% config.get_number_of_titles %]</b></td><td></td></tr>
 <tr><td>Anzahl der Kataloge (aktiv/gesamt)</td><td><b>[% config.get_number_of_dbs %] / [% config.get_number_of_all_dbs %]</b></td><td></td></tr>

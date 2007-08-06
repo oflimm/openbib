@@ -30,7 +30,7 @@
 
 <table width="100%">
 <tr><th>[% msg.maketext("RSS-Einstellungen für View") %] [% view.description%]</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 
 <!-- Anfang: Primaerer RSS Feed fuer diesen View -->
 <form method="get" action="http://[% config.servername %][% config.admin_loc %]">

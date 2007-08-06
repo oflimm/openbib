@@ -99,10 +99,14 @@ sub store_result {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    $logger->debug("About to store result");
+
     return undef unless (defined $id && defined $type && defined $data_ref && defined $self->{dbh});
     
     my $request=$self->{dbh}->prepare("delete from result_data where id=? and type=?") or $logger->error($DBI::errstr);
     $request->execute($id,$type) or $logger->error($DBI::errstr);
+
+    $logger->debug("Storing:\n".YAML::Dump($data_ref));
 
     my $datastring=unpack "H*", Storable::freeze($data_ref);
     
@@ -126,16 +130,23 @@ sub get_result {
 
     return undef unless (defined $id && defined $type);
     
-    my $request=$self->{dbh}->prepare("select data from result_data where id=? and type=?") or $logger->error($DBI::errstr);
+    my $sqlstatement="select data from result_data where id=? and type=?";
+    my $request=$self->{dbh}->prepare($sqlstatement) or $logger->error($DBI::errstr);
     $request->execute($id,$type) or $logger->error($DBI::errstr);
+
+    $logger->debug("$sqlstatement - $id / $type");
 
     my $data_ref;
     while (my $result=$request->fetchrow_hashref){
         my $datastring = $result->{data};
-        
+
+	$logger->debug("Found a Record");
+
         $data_ref     = Storable::thaw(pack "H*",$datastring);
     }
 
+    $logger->debug(YAML::Dump($data_ref));
+    
     return $data_ref;
 }
 
@@ -219,7 +230,11 @@ sub get_number_of_event {
     } 
 
     if ($content){
-        push @sqlwhere, " content = ?";
+        my $op = "=";
+        if ($content =~m/\%$/){
+	    $op = "like";
+        }
+        push @sqlwhere, " content $op ?";
 	push @sqlargs,  $content;
     } 
 

@@ -23,7 +23,7 @@ CREATE TABLE result_data (
  id          VARCHAR(100),
  tstamp      TIMESTAMP,
  type        INT,
- data        BLOB,
+ data        MEDIUMBLOB,
  INDEX (id),
  INDEX (tstamp),
  INDEX (type)

@@ -191,11 +191,11 @@ if ($type == 3){
             };
         }
 
-        if ($maxcount-$mincount > 0){
-            for (my $i=0 ; $i < scalar (@$bestof_ref) ; $i++){
-                $bestof_ref->[$i]->{class} = int(($bestof_ref->[$i]->{count}-$mincount) / ($maxcount-$mincount) * 6);
-            }
-        }
+	$bestof_ref = gen_cloud_class({
+				       items => $bestof_ref, 
+				       min   => $mincount, 
+				       max   => $maxcount, 
+				       type  => $config->{best_of}{$type}{cloud}});
 
         my $sortedbestof_ref ;
         @{$sortedbestof_ref} = map { $_->[0] }
@@ -252,11 +252,11 @@ if ($type == 4){
             };
         }
 
-        if ($maxcount-$mincount > 0){
-            for (my $i=0 ; $i < scalar (@$bestof_ref) ; $i++){
-                $bestof_ref->[$i]->{class} = int(($bestof_ref->[$i]->{count}-$mincount) / ($maxcount-$mincount) * 6);
-            }
-        }
+	$bestof_ref = gen_cloud_class({
+				       items => $bestof_ref, 
+				       min   => $mincount, 
+				       max   => $maxcount, 
+				       type  => $config->{best_of}{$type}{cloud}});
 
         my $sortedbestof_ref ;
         @{$sortedbestof_ref} = map { $_->[0] }
@@ -313,11 +313,11 @@ if ($type == 5){
             };
         }
 
-        if ($maxcount-$mincount > 0){
-            for (my $i=0 ; $i < scalar (@$bestof_ref) ; $i++){
-                $bestof_ref->[$i]->{class} = int(($bestof_ref->[$i]->{count}-$mincount) / ($maxcount-$mincount) * 6);
-            }
-        }
+	$bestof_ref = gen_cloud_class({
+				       items => $bestof_ref, 
+				       min   => $mincount, 
+				       max   => $maxcount, 
+				       type  => $config->{best_of}{$type}{cloud}});
 
         my $sortedbestof_ref ;
         @{$sortedbestof_ref} = map { $_->[0] }
@@ -374,11 +374,11 @@ if ($type == 6){
             };
         }
 
-        if ($maxcount-$mincount > 0){
-            for (my $i=0 ; $i < scalar (@$bestof_ref) ; $i++){
-                $bestof_ref->[$i]->{class} = int(($bestof_ref->[$i]->{count}-$mincount) / ($maxcount-$mincount) * 6);
-            }
-        }
+	$bestof_ref = gen_cloud_class({
+				       items => $bestof_ref, 
+				       min   => $mincount, 
+				       max   => $maxcount, 
+				       type  => $config->{best_of}{$type}{cloud}});
 
         my $sortedbestof_ref ;
         @{$sortedbestof_ref} = map { $_->[0] }
@@ -437,11 +437,11 @@ if ($type == 7){
             };
         }
 
-        if ($maxcount-$mincount > 0){
-            for (my $i=0 ; $i < scalar (@$bestof_ref) ; $i++){
-                $bestof_ref->[$i]->{class} = int(($bestof_ref->[$i]->{count}-$mincount) / ($maxcount-$mincount) * 6);
-            }
-        }
+	$bestof_ref = gen_cloud_class({
+				       items => $bestof_ref, 
+				       min   => $mincount, 
+				       max   => $maxcount, 
+				       type  => $config->{best_of}{$type}{cloud}});
 
         my $sortedbestof_ref ;
         @{$sortedbestof_ref} = map { $_->[0] }
@@ -471,13 +471,6 @@ if ($type == 8){
     foreach my $view (@views){
         $logger->info("Generating Type 8 BestOf-Values for view $view");
 
-        my $maxcount=0;
-	my $mincount=999999999;
-
-        my $dbh
-            = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
-                or $logger->error_die($DBI::errstr);
-
 	my $cat2type_ref = {
 			    fs        => 1,
 			    hst       => 2,
@@ -499,6 +492,9 @@ if ($type == 8){
 	  my $thisbestof_ref=[];
 	  my $sqlstring;
 
+          my $maxcount=0;
+	  my $mincount=999999999;
+
 	  my @sqlargs = ($view);
 
 	  if ($category eq 'all'){
@@ -509,7 +505,7 @@ if ($type == 8){
 	    push @sqlargs, $cat2type_ref->{$category}; 
 	  }
 
-	  my $request=$dbh->prepare($sqlstring);
+	  my $request=$statistics->{dbh}->prepare($sqlstring);
 	  $request->execute(@sqlargs);
 	  while (my $result=$request->fetchrow_hashref){
             my $content = decode_utf8($result->{content});
@@ -526,13 +522,13 @@ if ($type == 8){
 				count => $count,
             };
 	  }
-	  
-	  if ($maxcount-$mincount > 0){
-            for (my $i=0 ; $i < scalar (@$thisbestof_ref) ; $i++){
-	      $thisbestof_ref->[$i]->{class} = int(($thisbestof_ref->[$i]->{count}-$mincount) / ($maxcount-$mincount) * 6);
-            }
-	  }
-	  
+
+	  $thisbestof_ref = gen_cloud_class({
+					     items => $thisbestof_ref, 
+					     min   => $mincount, 
+					     max   => $maxcount, 
+					     type  => $config->{best_of}{$type}{cloud}});
+
 	  my $sortedbestof_ref ;
 	  @{$sortedbestof_ref} = map { $_->[0] }
             sort { $a->[1] cmp $b->[1] }
@@ -543,12 +539,69 @@ if ($type == 8){
 	  $bestof_ref->{$category}=$sortedbestof_ref;
 	}
 
+        $logger->debug(YAML::Dump($bestof_ref));
+
         $statistics->store_result({
             type => 8,
             id   => $view,
             data => $bestof_ref,
         });
     }
+}
+
+sub gen_cloud_class {
+    my ($arg_ref) = @_;
+    
+    # Set defaults
+    my $items_ref    = exists $arg_ref->{items}
+        ? $arg_ref->{items}   : [];
+    my $mincount     = exists $arg_ref->{min}
+        ? $arg_ref->{min}     : 0;
+    my $maxcount     = exists $arg_ref->{max}
+        ? $arg_ref->{max}     : 0;
+    my $type         = exists $arg_ref->{type}
+        ? $arg_ref->{type}    : 'log';
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    if ($type eq 'log'){
+
+      if ($maxcount-$mincount > 0){
+	
+	my $delta = ($maxcount-$mincount) / 6;
+	
+	my @thresholds = ();
+	
+	for (my $i=0 ; $i<=6 ; $i++){
+	  $thresholds[$i] = 100 * log(($mincount + $i * $delta) + 2);
+	}
+
+        $logger->debug(YAML::Dump(\@thresholds)." - $delta");
+
+	foreach my $item_ref (@$items_ref){
+	  my $done = 0;
+	  
+	  for (my $class=0 ; $class<=6 ; $class++){
+	    if ((100 * log($item_ref->{count} + 2) <= $thresholds[$class]) && !$done){
+	      $item_ref->{class} = $class;
+              $logger->debug("Klasse $class gefunden");
+	      $done = 1;
+	    }
+	  }
+	}
+      }
+    }
+    elsif ($type eq 'linear'){
+      if ($maxcount-$mincount > 0){
+	foreach my $item_ref (@$items_ref){
+	  $item_ref->{class} = int(($item_ref->{count}-$mincount) / ($maxcount-$mincount) * 6);
+	}
+      }
+    }
+
+    $logger->debug(YAML::Dump($items_ref));
+    return $items_ref;
 }
 
 sub print_help {

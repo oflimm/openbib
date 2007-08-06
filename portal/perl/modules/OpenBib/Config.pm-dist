@@ -477,6 +477,28 @@ use vars qw(%config);
 				       categorized_spr  => 1,
 				       categorized_year => 1,
 				      },
+
+	   # Generierte BestOf-Daten
+	   best_of                 => {
+                                        '3' => {
+                                                  cloud => 'linear',
+                                               },
+                                        '4' => {
+                                                  cloud => 'linear',
+                                               },
+                                        '5' => {
+                                                  cloud => 'linear',
+                                               },
+                                        '6' => {
+                                                  cloud => 'linear',
+                                               },
+                                        '7' => {
+                                                  cloud => 'linear',
+                                               },
+                                        '8' => {
+                                                  cloud => 'linear',
+                                               },
+                                      },
            # Social-Tagging
 
            social_tagging          => 1,

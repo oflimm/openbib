@@ -35,7 +35,7 @@
 
 <table width="100%">
 <tr><th>[% msg.maketext("Neuen View anlegen") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 <table>
 <tr><td><b>[% msg.maketext("Viewname") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td><td></td></tr>
 <tr><td><input type="text" name="viewname" /></td><td><input type="text" name="description" size="20" />
@@ -52,7 +52,7 @@
 
 <table width="100%">
 <tr><th>[% msg.maketext("Bereits existierende Views") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 [% msg.maketext("Um einen bereits existierenden View zu bearbeiten klicken Sie bitte auf den Viewnamen.") %]
 <p />
 

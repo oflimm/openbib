@@ -51,7 +51,7 @@
 
 <table width="100%">
 <tr><th>Einzelne Session [% singlesessionid %]</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 
 <table>
 <tr><td>Event</td><td>Inhalt</td></td><td></td></tr>

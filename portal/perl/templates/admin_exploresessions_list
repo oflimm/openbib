@@ -44,7 +44,7 @@
 
 <table width="100%">
 <tr><th>Session-Explorer</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 
 <table cellpadding="2">
 <tr><td><b>[% msg.maketext("Session-ID") %]</b></td><td><b>[% msg.maketext("Beginn") %]</b></td></tr>

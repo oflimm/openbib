@@ -32,7 +32,7 @@
 
 <table width="100%">
 <tr><th>Entwicklung der Sessions nach Monaten eines Jahres</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 [% TRY %]
 [%   USE dir = Directory("${config.image_root_path}/graph/monthly/sessions") %]
 [%   FOREACH file = dir.files %]
@@ -48,7 +48,7 @@ Es existieren keine entsprechenden Grafiken.
 
 <table width="100%">
 <tr><th>Entwicklung der Sessions nach Tagen eines Monats</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 [% TRY %]
 [%   USE dir = Directory("${config.image_root_path}/graph/daily/sessions") %]
 [%   FOREACH file = dir.files %]

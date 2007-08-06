@@ -19,7 +19,7 @@
 
 <table width="100%">
 <tr><th>[% msg.maketext("Administrations-Login") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 [% msg.maketext("&Uuml;ber diese Authentifizierungsseite k&ouml;nnen Sie sich als Administrator anmelden.") %]
 </td></tr>
 </table>

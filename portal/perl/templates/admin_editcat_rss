@@ -31,7 +31,7 @@
 
 <table width="100%">
 <tr><th>[% msg.maketext("RSS-Einstellungen") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 
 <!-- Anfang: RSS Feed fuer Neuaufnahmen (generell) -->
 <form method="get" action="http://[% config.servername %][% config.admin_loc %]">

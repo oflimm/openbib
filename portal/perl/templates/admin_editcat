@@ -35,7 +35,7 @@
 
 <table width="100%">
 <tr><th>[% msg.maketext("Katalog bearbeiten") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 <table>
 <tr><td><b>[% msg.maketext("Fakult&auml;t") %]</b></td><td>
 <select name="orgunit">
@@ -99,7 +99,7 @@ selected
 
 <table width="100%">
 <tr><th>[% msg.maketext("Import-Einstellungen") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 <table>
 <tr><td><b>[% msg.maketext("Protokoll") %]</b></td><td><select name="protocol"><option value="ftp" 
 [% IF katalog.imxconfig.protocol == 'ftp' %]
@@ -153,7 +153,7 @@ selected
 
 <table width="100%">
 <tr><th>[% msg.maketext("Ausleih-Einstellungen") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 <table>
 <tr><td><b>[% msg.maketext("Sprung in WebOPAC") %]</b></td><td><select name="circ"><option value="0"
 

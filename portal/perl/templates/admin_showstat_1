@@ -43,7 +43,7 @@
 
 <table width="100%">
 <tr><th>Aufrufe externer Seiten &uuml;ber Weiterleitungen aus dem KUG</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 <table>
 <tr><td>Anzahl Aufrufe von TOC / hbz-Server</td><td><b>[% ret = statistics.get_number_of_event({ type => 500 }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
 <tr><td>Anzahl Aufrufe von TOC / ImageWare-Server</td><td><b>[% ret = statistics.get_number_of_event({ type => 501 }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>

@@ -288,9 +288,10 @@ my $count = 1;
 		  # Kategorie in Feld einfuegen            
 		  my $field = OpenBib::Common::Util::grundform({
                        content   => $unique_term,
+		       searchreq => 1,
 							       });
 
-		  $field=~s/ /_/g;
+		  $field=~s/\W/_/g;
 
 		  $field="$tokinfo_ref->{prefix}$field";
 

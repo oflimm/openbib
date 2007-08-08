@@ -175,13 +175,10 @@ sub initial_search {
     my $stopper = new Search::Xapian::SimpleStopper(@stopwords);
     $qp->set_stopper($stopper);
     
-    my $querystring = lc($searchquery_ref->{fs}{norm});
-    
-    $querystring    = OpenBib::Common::Util::grundform({
-        searchreq => 1,
-        content   => $querystring,
-    });
-        
+    my $querystring    = $searchquery_ref->{fs}{norm};
+
+    my ($is_singleterm) = $querystring =~m/^(\w+)$/;
+
     # Explizites Setzen der Datenbank fuer FLAG_WILDCARD
     $qp->set_database($dbh);
     $qp->set_default_op(Search::Xapian::OP_AND);
@@ -226,7 +223,29 @@ sub initial_search {
       return 1;
     };
 
-    my @matches   = ($dd_categorized)?$enq->matches(0,99999,$decider_ref):$enq->matches(0,99999);
+    my $maxmatch=$config->{xapian_option}{maxmatch};
+
+    # Abkuerzung fuer Suchanfragen mit nur einem Begriff:
+    #
+    # Hier wird direkt die Begriffsfrequenz bestimmt.
+    # Wenn diese die maximale Treffermengengroesse (maxmatch)
+    # uebersteigt, dann werden
+    # - drilldowns deaktiviert, da diese bei so unspezifischen
+    #   Recherchen keine Hilfe bieten
+    # - aber die korrekte Treffermengenzahl zurueck gegeben
+    # Generell gilt aber auch hier: Es sind maximal maxmatch
+    # Treffer ueber die Recherche zugreifbar!
+    
+    my $singletermcount = 0;
+    if ($is_singleterm){
+      $singletermcount = $dbh->get_termfreq($is_singleterm);
+
+      if ($singletermcount > $maxmatch){
+	$dd_categorized = "";
+      }
+    }
+
+    my @matches   = ($dd_categorized)?$enq->matches(0,$maxmatch,$decider_ref):$enq->matches(0,$maxmatch);
 
     $logger->debug("DB: $database");
     
@@ -236,8 +255,22 @@ sub initial_search {
 
     $self->{_querystring} = $querystring;
     $self->{_enq}         = $enq;
+
+    if ($singletermcount > $maxmatch){
+      $self->{resultcount} = $singletermcount;
+    }
+    else {
+      $self->{resultcount} = scalar(@matches);
+    }
+
     $self->{_matches}     = \@matches;
-    $self->{categories}   = \%decider_map;
+
+    if ($singletermcount > $maxmatch){
+      $self->{categories} = {};
+    }
+    else {
+      $self->{categories}   = \%decider_map;
+    }
 
     $logger->info("Running query ".$self->{_querystring});
 

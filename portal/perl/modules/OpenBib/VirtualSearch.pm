@@ -42,6 +42,7 @@ use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use Storable ();
+use String::Tokenizer;
 use Search::Xapian;
 use YAML ();
 
@@ -812,7 +813,7 @@ sub handler {
 			dd_categorized  => $drilldown_categorized,
                     });
 
-                    my $fullresultcount = scalar($request->matches);
+                    my $fullresultcount = $request->{resultcount};
                     
                     my $btime      = new Benchmark;
                     my $timeall    = timediff($btime,$atime);
@@ -862,9 +863,15 @@ sub handler {
                                 foreach my $type (keys %{$tmp_category_map_ref}){
                                     my $contents_ref = [] ;
                                     foreach my $content (keys %{$tmp_category_map_ref->{$type}}){
+				      my $normcontent = OpenBib::Common::Util::grundform({											  content   => decode_utf8($content),
+																						  searchreq => 1,
+											 });
+				      $normcontent=~s/ /_/g;
+
                                         push @{$contents_ref}, [
                                             decode_utf8($content),
-                                            $tmp_category_map_ref->{$type}{$content}
+                                            $tmp_category_map_ref->{$type}{$content},
+					    $normcontent,
                                         ];
                                     }
 
@@ -1192,8 +1199,8 @@ sub handler {
                 serialize => 1,
             });
 
-            my $idnresult=$session->{dbh}->prepare("update queries set hits = ? where queryid = ? and sessionID = ? and query = ? and dbases = ?") or $logger->error($DBI::errstr);
-            $idnresult->execute($gesamttreffer,$queryid,$session->{ID},$thisquerystring,$dbasesstring) or $logger->error($DBI::errstr);
+            my $idnresult=$session->{dbh}->prepare("update queries set hits = ? where queryid = ?") or $logger->error($DBI::errstr);
+            $idnresult->execute($gesamttreffer,$queryid) or $logger->error($DBI::errstr);
             
             $idnresult=$session->{dbh}->prepare("insert into searchresults values (?,?,0,?,?,?,?)") or $logger->error($DBI::errstr);
 

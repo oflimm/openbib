@@ -205,31 +205,31 @@ my $count = 1;
             },
             {
                 # Notation
-                prefix  => "D1",
+                prefix  => "D2",
 	        type    => "drilldown",
                 cat     => 'notation',
             },
             {
                 # Person
-                prefix  => "D1",
+                prefix  => "D3",
 	        type    => "drilldown",
                 cat     => 'verf',
             },
             {
                 # Medientyp
-                prefix  => "D1",
+                prefix  => "D4",
 	        type    => "drilldown",
                 cat     => 'mart',
             },
             {
                 # Jahr
-                prefix  => "D1",
+                prefix  => "D5",
 	        type    => "drilldown",
                 cat     => 'year',
             },
             {
                 # Sprache
-                prefix  => "D1",
+                prefix  => "D6",
 	        type    => "drilldown",
                 cat     => 'spr',
             },
@@ -240,10 +240,11 @@ my $count = 1;
         my $doc=Search::Xapian::Document->new();
 
         foreach my $tokinfo_ref (@$tokinfos_ref) {
-            # Tokenize
-            next if (! $tokinfo_ref->{content});
 
             if ($tokinfo_ref->{type} eq 'index'){
+	      # Tokenize
+	      next if (! $tokinfo_ref->{content});
+
                 $tokenizer->tokenize($tokinfo_ref->{content});
         
                 my $i = $tokenizer->iterator();
@@ -284,35 +285,16 @@ my $count = 1;
                 my @unique_terms = grep { ! $seen_terms{$_} ++ } @{$normdata{$s_id}->{$tokinfo_ref->{cat}}}; 
 
 	        foreach my $unique_term (@unique_terms){
-	            # Kategorie in Feld einfuegen            
-		    my $field = OpenBib::Common::Util::grundform({
-                       content  => $unique_term,
-                    });
+		  # Kategorie in Feld einfuegen            
+		  my $field = OpenBib::Common::Util::grundform({
+                       content   => $unique_term,
+							       });
 
-                    $tokenizer->tokenize($field);
-        
-                    my $i = $tokenizer->iterator();
+		  $field=~s/ /_/g;
 
-                    while ($i->hasNextToken()) {
-                        my $next = $i->nextToken();
+		  $field="$tokinfo_ref->{prefix}$field";
 
-                        # Naechstes, wenn kein Token
-                        next if (!$next);
-                        # Naechstes, wenn keine Zahl oder einstellig
-                        # next if (length($next) < 2 && $next !~ /\d/);
-                        # Naechstes, wenn schon gesehen 
-                        next if (exists $seen_token_ref->{$next});
-                        # Naechstes, wenn Stopwort
-                        next if (exists $config->{stopword_filename} && exists $stopword_ref->{$next});
-
-                        $seen_token_ref->{$next}=1;
-                
-                        # Token generell einfuegen
-			$next="$tokinfo_ref->{prefix}$field";
-
-			$doc->add_term($next);
-
-                    }
+		  $doc->add_term($field);
 	        }
    	    }
 	}
@@ -356,18 +338,6 @@ my $count = 1;
 
             my %seen_terms = ();
             my @unique_terms = grep { ! $seen_terms{$_} ++ } @{$normdata{$s_id}->{$type_ref->{type}}}; 
-
-	    foreach my $unique_term (@unique_terms){
-	        # Kategorie in Feld einfuegen            
-		my $field = OpenBib::Common::Util::grundform({
-                   content  => $unique_term,
-                });
-		
-	        $field="D$type_ref->{id}$field";
-		#$logger->info($field);
-
-	        $doc->add_term($field);
-	    }
 
             my $multstring = join("\t",@unique_terms);
 

@@ -1004,7 +1004,6 @@ sub grundform {
     if ($category eq "0304" || $category eq "0310" || $category eq "0331"
             || $category eq "0341" || $category eq "0370"){
 
-        $content=~s/¬//g;
         $content=~s/\s+$//;
         $content=~s/\s+<.*?>//g;
 
@@ -1015,6 +1014,8 @@ sub grundform {
     $content=~s/&[gl]t;//g;
     $content=~s/&quot;//g;
     $content=~s/&amp;//g;
+
+    $content=~s/¬//g;
 
     # Ausfiltern von Supplements in []
     $content=~s/\[.*?\]//g;
@@ -1027,7 +1028,7 @@ sub grundform {
     
     if ($searchreq){
         # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
-        $content=~s/[^-+\p{Alphabetic}0-9\/: '()"^*]//g;
+        $content=~s/[^-+\p{Alphabetic}0-9\/: '()"^*_]//g;
 
         # Verbundene Terme splitten
         $content=~s/(\w)-(\w)/$1 $2/g;

@@ -866,8 +866,8 @@ sub handler {
 				      my $normcontent = OpenBib::Common::Util::grundform({											  content   => decode_utf8($content),
 																						  searchreq => 1,
 											 });
-				      $normcontent=~s/ /_/g;
 
+				      $normcontent=~s/\W/_/g;
                                         push @{$contents_ref}, [
                                             decode_utf8($content),
                                             $tmp_category_map_ref->{$type}{$content},

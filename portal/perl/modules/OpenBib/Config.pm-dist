@@ -261,6 +261,10 @@ use vars qw(%config);
 
            xapian_index_base_path  => '/opt/openbib/ft/xapian/index',
 
+	   xapian_option           => {
+				       maxmatch => 2000,
+				      },
+
 	   # Stopwort-Liste
 
            stopword_filename       => '/opt/openbib/ft/stopwords.txt',

@@ -420,6 +420,36 @@ sub log_query {
 			ejahr     => 0,
 			    };
 
+    my $term_stopword_ref = {
+			  'a'     => 1,
+			  'als'   => 1,
+			  'an'    => 1,
+			  'and'   => 1,
+			  'auf'   => 1,
+			  'aus'   => 1,
+			  'bei'   => 1,
+			  'das'   => 1,
+			  'de'    => 1,
+			  'der'   => 1,
+			  'des'   => 1,
+			  'die'   => 1,
+			  'ein'   => 1,
+			  'eine'  => 1,
+			  'einer' => 1,
+			  'für'   => 1,
+			  'im'    => 1,
+			  'in'    => 1,
+			  'la'    => 1,
+			  'le'    => 1,
+			  'of'    => 1,
+			  'the'   => 1,
+			  'und'   => 1,
+			  'von'   => 1,
+			  'zu'    => 1,
+			  'zum'   => 1,
+			  'zur'   => 1,
+			 };
+
     my $termrequest     = $self->{dbh}->prepare("insert into queryterm values (?,?,?,?)") or $logger->error($DBI::errstr);
     my $categoryrequest = $self->{dbh}->prepare("insert into querycategory values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
 
@@ -427,6 +457,7 @@ sub log_query {
         my $thiscategory_terms = $searchquery_ref->{$cat}->{val};
 	
 	$thiscategory_terms    =~s/[^\p{Alphabetic}0-9 ]//g;
+	$thiscategory_terms    = lc($thiscategory_terms);
 
 	# Genutzte Kategorie merken
 	if ($thiscategory_terms){
@@ -441,7 +472,9 @@ sub log_query {
 	while ($i->hasNextToken()) {
 	  my $next = $i->nextToken();
 	  next if (!$next);
-	  
+	  next if ($next=~/^[\p{Alphabetic}0-9]$/);
+	  next if (exists $term_stopword_ref->{$next});
+
 	  $termrequest->execute($tstamp,$view,$cat2type_ref->{$cat},encode_utf8($next)) or $logger->error($DBI::errstr);
 	}
     }

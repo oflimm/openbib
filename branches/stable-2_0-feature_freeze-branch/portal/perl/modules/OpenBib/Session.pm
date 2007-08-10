@@ -800,6 +800,8 @@ sub clear_data {
     
     my ($wkday,$month,$day,$time,$year) = split(/\s+/, localtime);
     
+    my %seen_title=();
+
     while (my $result=$idnresult->fetchrow_hashref){
         my $tstamp        = $result->{tstamp};
         my $content_ref   = Storable::thaw(pack "H*", $result->{content});
@@ -809,6 +811,8 @@ sub clear_data {
         my $dbname        = $content_ref->{database};
         my $katkey        = $content_ref->{id};
 
+	next if (exists $seen_title{"$dbname:$katkey"});
+
         $statistics->store_relevance({
             tstamp => $tstamp,
             id     => $id,
@@ -817,6 +821,8 @@ sub clear_data {
             katkey => $katkey,
             type   => 2,
         });
+
+	$seen_title{"$dbname:$katkey"}=1;
     }
     
     # dann Sessiondaten loeschen

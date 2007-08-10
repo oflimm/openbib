@@ -903,8 +903,18 @@ sub log_event {
     # 540 => HBZ-Monofernleihe
     # 541 => HBZ-Dokumentenlieferung
     # 550 => WebOPAC
-    
-    my $request=$self->{dbh}->prepare("insert into eventlog values (?,NOW(),?,?)") or $logger->error($DBI::errstr);
+
+    my $log_only_unique_ref = {
+			     10 => 1,
+			    };
+
+    my $request;
+    if (exists $log_only_unique_ref->{$type}){
+      $request=$self->{dbh}->prepare("delete from eventlog where id=? and type=? and contentstring=?") or $logger->error($DBI::errstr);
+      $request->execute($self->{ID},$type,$contentstring) or $logger->error($DBI::errstr);
+    }
+
+    $request=$self->{dbh}->prepare("insert into eventlog values (?,NOW(),?,?)") or $logger->error($DBI::errstr);
     $request->execute($self->{ID},$type,$contentstring) or $logger->error($DBI::errstr);
     $request->finish;
 

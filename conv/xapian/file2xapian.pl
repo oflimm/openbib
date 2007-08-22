@@ -86,6 +86,8 @@ if (!$database){
   exit;
 }
 
+my $FLINT_BTREE_MAX_KEY_LEN = 250;
+
 my %normdata                = ();
 
 tie %normdata,                'MLDBM', "./normdata.db"
@@ -262,6 +264,9 @@ my $count = 1;
                     # Naechstes, wenn Stopwort
                     next if (exists $config->{stopword_filename} && exists $stopword_ref->{$next});
 
+                    # Begrenzung der keys auf FLINT_BTREE_MAX_KEY_LEN=252 Zeichen
+                    $next=(length($next) > $FLINT_BTREE_MAX_KEY_LEN)?substr($next,0,$FLINT_BTREE_MAX_KEY_LEN):$next;
+
                     $seen_token_ref->{$next}=1;
                 
                     # Token generell einfuegen
@@ -274,6 +279,10 @@ my $count = 1;
                     foreach my $token (@saved_tokens) {
                         # Token in Feld einfuegen            
                         my $fieldtoken=$tokinfo_ref->{prefix}.$token;
+
+                        # Begrenzung der keys auf FLINT_BTREE_MAX_KEY_LEN=252 Zeichen
+                        $fieldtoken=(length($fieldtoken) > $FLINT_BTREE_MAX_KEY_LEN)?substr($fieldtoken,0,$FLINT_BTREE_MAX_KEY_LEN):$fieldtoken;
+
                         $doc->add_term($fieldtoken);
                     }
                 }
@@ -294,6 +303,9 @@ my $count = 1;
 		  $field=~s/\W/_/g;
 
 		  $field="$tokinfo_ref->{prefix}$field";
+
+                  # Begrenzung der keys auf FLINT_BTREE_MAX_KEY_LEN Zeichen
+		  $field=(length($field) > $FLINT_BTREE_MAX_KEY_LEN)?substr($field,0,$FLINT_BTREE_MAX_KEY_LEN):$field;
 
 		  $doc->add_term($field);
 	        }

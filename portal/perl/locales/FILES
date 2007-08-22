@@ -85,6 +85,14 @@
 ../templates/rssframe
 ../templates/searchframe
 ../templates/searchframe_simple
+../templates/searchframe_query
+../templates/views/gdonck/searchframe_options
+../templates/views/gleuel/searchframe_options
+../templates/views/kempen/searchframe_options
+../templates/views/kevelaer/searchframe_options
+../templates/views/kwinter/searchframe_options
+../templates/views/xanten/searchframe_options
+../templates/searchframe_options
 ../templates/search_info
 ../templates/search_showautset
 ../templates/search_showkorset

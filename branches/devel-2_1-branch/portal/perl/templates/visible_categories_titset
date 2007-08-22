@@ -66,6 +66,7 @@
                 'T0512', # msg.maketext("T0512") Koll. Fussnote
                 'T0513', # msg.maketext("T0513") Impress. Aend.
                 'T0515', # msg.maketext("T0515") Ergaenzt. GesamtTitel
+                'T0517', # msg.maketext("T0517") Angaben zum Inhalt
                 'T0522', # msg.maketext("T0522") Teilungsvermerk
                 'T0525', # msg.maketext("T0525") Herkunft Fussnote
                 'T0534', # msg.maketext("T0534") Titelkonk.

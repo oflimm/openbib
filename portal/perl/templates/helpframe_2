@@ -28,6 +28,53 @@
 
 <h1>KUG-Versionen</h1>
 
+<h2 id="kugv2.1">Neuerungen mit Version 2.1</h2>
+
+<h3>Tag-Editor</h3>
+
+<p>Nutzer können nun einzelne ihrer Tags umbenennen.</p>
+
+<h3>PermaLink</h3>
+
+<p>Einzelne Titel-Sätze können nun unter einem einheitlichen
+URL verlinkt werden - ähnlich Blog-Einträgen </p>
+
+<h3>unAPI</h3>
+
+<p>Bereitstellung bibliographischer Informations-Objekte z.B. zur
+strukturierten Übernahme/Verarbeitung durch externe Programme.</p>
+
+<h3>Such-Wolken</h3>
+
+<p>
+Darstellung der von Nutzern verwendeten Suchbegriffe im
+der jeweiligen Instituts-Sicht in einer Wolken-Ansicht.
+</p>
+
+
+<h3>Virtueller Notations-Index</h3>
+
+<p>
+Die schon vorhandenen virtuellen Indizes für Personen, Institutionen und Schlagworte
+wurden um einen Index für Notationen erweitert.
+</p>
+
+<h3>Optimierung der kategorie-basierten Drill-Downs</h3>
+
+<p>Die kategorisierten Inhalte werden nun direkt vollständig aus dem
+Xapian-Index geholt.</p>
+
+<h3>Optimierung des Suchwolken-Algorithmus.</h3>
+
+<p> Neben einer Verbesserung des linearen Suchwolken-Algorithmus kann
+nun zusätzlich ein logarithmischer Algorithmus verwendet werden.  </p>
+
+
+<p>
+Wiederum wurden wesentliche Entwicklungen und Verbesserungen f&uuml;r
+den Benutzer unsichtbar im Fundament der Anwendung vorgenommen.
+</p>
+
 <h2 id="kugv2.0">Neuerungen mit Version 2.0 (Umstellung am 19.3.2007)</h2>
 
 <h3>Darstellung der vergebenen Schlagworte, Notationen, Körperschaften

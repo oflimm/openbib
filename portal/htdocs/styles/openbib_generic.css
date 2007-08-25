@@ -25,6 +25,7 @@ body {
   font-size: 0.9em;
   background-color: #ffffff;
   font-family: Arial,helv,Helvetica,Verdana,sans-serif;
+  padding: 0px;
 }
 
 pre { 
@@ -263,14 +264,35 @@ a:active.invisible {
   color:#990000;
 }
 
+#mainnavigation{
+  width: 100%;
+  position: absolute;
+  top: 90px;
+  left: 0;
+  background: white ;
+  padding: 0px;
+}
+
+#mainnavigation_left{
+  position: absolute;
+  left: 20px;
+}
+
+#mainnavigation_right{
+  position: absolute;
+  right: 20px;
+}
+
 #mainnavigation a:link {
-  color: darkblue;
+  color: #41799e;
+  font-weight: bold;
   background: #ffffff; /* Hintergrundfarbe Tab 'weiss'*/
   text-decoration: none; 
 }
 
 #mainnavigation a:visited {
-  color: darkblue;
+  color: #41799e;
+  font-weight: bold;
   background: #ffffff; /* Hintergrundfarbe Tab 'weiss'*/
   text-decoration: none; 
 }
@@ -349,3 +371,72 @@ dt.review {
   font-weight:bold;
   font-size: 1.1em;
 }
+
+/* Kopf */
+
+#header {
+  height: 90px;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: white ;
+  padding: 0px;
+}
+
+#header_uni_siegel {
+  background: white url(/images/openbib/unisiegel.gif) center no-repeat;
+  width: 120px;
+  height: 90px;
+  position: absolute;
+  top: 2px;
+  right: 0px;
+}
+
+#header_usb_siegel {
+  background: url(/images/openbib/kuglogo.png) center no-repeat;
+  width: 150px;
+  height: 68px;
+  position: absolute;
+  top: 10px;
+  left: 15px;
+}
+
+#header_uni_schriftzug {
+  border-bottom: 4px solid #41799e; /* Linie im Kopf */
+  padding-bottom: 3px;
+  display: block;
+  margin: 17px 0 0 190px;
+}
+#header_uni_schriftzug,
+#header_uni_schriftzug span {
+  font-family: "Arial Narrow", "DejaVu Sans Condensed", Arial, Verdana, Helvetica, sans-serif;
+  font-size: 20px;
+  font-weight: bold;
+  color: #04049a;
+  text-decoration: none;
+}
+#header_uni_schriftzug span:hover,
+#header_uni_schriftzug:focus span {
+  color: #FF020E;
+  text-decoration: underline;
+}
+
+#header_usb_schriftzug {
+  display: block;
+  margin: 4px 0 0 190px;
+}	
+#header_usb_schriftzug,
+#header_usb_schriftzug span {
+  font-family: "Arial Narrow", "DejaVu Sans Condensed", Arial, Verdana, Helvetica, sans-serif;
+  font-size: 18px;
+  font-weight: bold;
+  color: #04049a;
+  text-decoration: none;
+}
+#header_usb_schriftzug span:hover,
+#header_usb_schriftzug:focus span {
+  color: #FF020E;
+  text-decoration: underline;
+}
+

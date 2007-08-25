@@ -1,33 +1,10 @@
-[%#-
-#######################################################################
-#
-# Templatename: corporate_banner
-#
-# Typ         : Subtemplate       
-#
-# Aufgabe:
-#
-# Ausgabe eines Banners entsprechend der Corporate Identity
-#
-#######################################################################
--%]
 <!-- Begin Template: corporate_banner -->
-    <table  border="0" cellspacing="0" cellpadding="0" width="100%">
-	<tr>
-	  <td align="left" width="30%">
-	      <table><tr><td rowspan="2" valign="bottom"><a target="_blank" href="http://kug.ub.uni-koeln.de/projekt/"><img src="/images/openbib/logo.png" border="0" alt="KUG" /></a></td><td valign="bottom"><img src="/images/openbib/logozeile1.png" border="0" alt="K&ouml;lner" /></td></tr><tr><td valign="top"><img src="/images/openbib/logozeile2.png" border="0" alt="Universit&auml;tsGesamtkatalog" /></td></tr></table>
-	  </td>
+	<div id="header">
+		<a href="http://kug.ub.uni-koeln.de/" title="KUG Startseite" id="header_usb_siegel" target="_blank"></a>
+		<a href="http://www.uni-koeln.de" title="Startseite der Universität zu Köln" id="header_uni_schriftzug" target="_blank"><span>Universit&auml;t zu K&ouml;ln</span></a>
 
-	  <td width="50%"> &nbsp;&nbsp;</td>
-	  
-	  <td align="right" width="20%">
-	    <a target="_blank" href="http://www.uni-koeln.de/"><img src="/images/openbib/logorechts.png" height="95" border="0" alt="Goldenes Universit&auml;tssigel" /></a>
-	  </td>
-	</tr>
-	[% IF view %]
-        <tr>
-  	  <td colspan="3" align="left"><img src="/images/openbib/views/[% view %].png" alt="Bezeichnungs-Icon des Instituts/Seminars" /></td>
-	</tr>
-        [% END %]
-    </table>
+		<a href="http://kug.ub.uni-koeln.de/" title="KUG Startseite" id="header_usb_schriftzug" target="_blank"><span>[% IF view %][% config.get_viewdesc_from_viewname(view) %][% ELSE %]K&ouml;lner Universit&auml;tsGesamtkatalog[% END %]</span></a>
+		<a href="http://www.uni-koeln.de" title="Startseite der Universit&auml;t zu Köln" id="header_uni_siegel" target="_blank"></a>
+
+        </div>
 <!-- End Template: corporate_banner -->

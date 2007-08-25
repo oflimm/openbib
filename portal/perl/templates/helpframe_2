@@ -37,7 +37,7 @@
 <h3>PermaLink</h3>
 
 <p>Einzelne Titel-Sätze können nun unter einem einheitlichen
-URL verlinkt werden - ähnlich Blog-Einträgen </p>
+URL verlinkt werden - ähnlich Blog-Einträgen.</p>
 
 <h3>unAPI</h3>
 
@@ -72,7 +72,19 @@ nun zusätzlich ein logarithmischer Algorithmus verwendet werden.  </p>
 
 <p>
 Wiederum wurden wesentliche Entwicklungen und Verbesserungen f&uuml;r
-den Benutzer unsichtbar im Fundament der Anwendung vorgenommen.
+den Benutzer unsichtbar im Fundament der Anwendung vorgenommen. Dazu
+gehören:
+
+<ul>
+
+<li>Einführung eines Event/Statistik-Frameworks zu
+Nutzungsanalysen.</li>
+
+<li>Erweiterung der Web-Administration um statistische Kennzahlen und
+Auswertungen.</li>
+
+</ul>
+
 </p>
 
 <h2 id="kugv2.0">Neuerungen mit Version 2.0 (Umstellung am 19.3.2007)</h2>

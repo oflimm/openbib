@@ -19,22 +19,25 @@
 [% PROCESS common/subtemplate name="corporate_banner" %]
 
 <div id="mainnavigation">
-<table border="0" cellspacing="0" cellpadding="0" width="100%">
-<tr><td align="left">&nbsp;&nbsp;<a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">[% msg.maketext("Katalogauswahl") %]</a>&nbsp;&nbsp;<a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">[% msg.maketext("Recherche") %]</a>&nbsp;&nbsp;<a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];action=choice;view=[% view %]" target="body">[% msg.maketext("Trefferliste") %]</a>&nbsp;&nbsp;<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;view=[% view %]" target="body">[% msg.maketext("Merkliste") %] [[% anzahl %]]</a></td><td height="25">&nbsp;</td><td align="right">
-<a href="[% config.rssframe_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">[% msg.maketext("RSS") %]</a>&nbsp;
+<div id="mainnavigation_left">
+<a href="[% config.databasechoice_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">[% msg.maketext("Katalogauswahl") %]</a>&nbsp;::&nbsp;<a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">[% msg.maketext("Recherche") %]</a>&nbsp;::&nbsp;<a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];action=choice;view=[% view %]" target="body">[% msg.maketext("Trefferliste") %]</a>&nbsp;::&nbsp;<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;view=[% view %]" target="body">[% msg.maketext("Merkliste") %] [[% anzahl %]]</a>
+</div>
+<div id="mainnavigation_right">
+<a href="[% config.rssframe_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">[% msg.maketext("RSS") %]</a>&nbsp;::&nbsp;
 [% IF config.login_active == 1 %]
 [% IF username %]
-<a href="[% config.userprefs_loc %]?sessionID=[% sessionID %];view=[% view %];action=showfields" target="body">[% msg.maketext("Mein KUG") %]</a>&nbsp;
+<a href="[% config.userprefs_loc %]?sessionID=[% sessionID %];view=[% view %];action=showfields" target="body">[% msg.maketext("Mein KUG") %]</a>
 [% ELSE %]
-<a href="[% config.login_loc %]?sessionID=[% sessionID %];view=[% view %];do_login=1" target="body">[% msg.maketext("Mein KUG") %]</a>&nbsp;
+<a href="[% config.login_loc %]?sessionID=[% sessionID %];view=[% view %];do_login=1" target="body">[% msg.maketext("Mein KUG") %]</a>
 [% END %]
+&nbsp;::&nbsp;
 [% END %]
-<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">[% msg.maketext("Hilfe") %]</a>&nbsp;&nbsp;<a href="http://www.ub.uni-koeln.de/dezkat/content/service/schulm/tutorial/index_ger.html" target="_blank">[% msg.maketext("Tutorien") %]</a>&nbsp;&nbsp;<a href="[% config.leave_loc %]?sessionID=[% sessionID %];view=[% view %]" target="_parent"><b><span class="warning">[% msg.maketext("Sitzung beenden") %]
+<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">[% msg.maketext("Hilfe") %]</a>&nbsp;::&nbsp;<a href="http://www.ub.uni-koeln.de/dezkat/content/service/schulm/tutorial/index_ger.html" target="_blank">[% msg.maketext("Tutorien") %]</a>&nbsp;::&nbsp;<a href="[% config.leave_loc %]?sessionID=[% sessionID %];view=[% view %]" target="_parent"><b><span class="warning">[% msg.maketext("Sitzung beenden") %]
 [%- IF username -%]
  [[% username %]]
 [%- END -%]
-</span></b></a>&nbsp;</td></tr>
-</table>
+</span></b></a>
+</div>
 </div>
 
 [% PROCESS common/subtemplate name="std_footer" hide_foot_banner=1 %]

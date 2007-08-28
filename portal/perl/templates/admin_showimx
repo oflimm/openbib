@@ -6,6 +6,8 @@
 
 [% PROCESS corporate_banner %]
 
+<div id="maincontent">
+
 <table width="100%">
 <tr>
   <td align="left"><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showcat">Kataloge</a>&nbsp;&nbsp;&nbsp;<a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&action=showviews">Views</a>&nbsp;&nbsp;&nbsp;<a href="http://[% config.servername %][%
@@ -56,5 +58,7 @@ value="&Auml;ndern" /></td><td>&nbsp;</td><td align="right"><input type="submit"
 
 </form>
 <p />
+
+</div>
 
 [% PROCESS std_footer %]

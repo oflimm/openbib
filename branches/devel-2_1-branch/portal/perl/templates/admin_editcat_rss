@@ -18,6 +18,8 @@
 
 [% PROCESS corporate_banner %]
 
+<div id="maincontent">
+
 <ul class="tabbingmenu">
    <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">[% msg.maketext("Kataloge") %]</a></li>
    <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">[% msg.maketext("Views") %]</a></li>
@@ -353,5 +355,7 @@ selected
 </div>
 
 <p />
+
+</div>
 
 [% PROCESS std_footer %]

@@ -17,6 +17,8 @@
 
 [% PROCESS corporate_banner %]
 
+<div id="maincontent">
+
 <table width="100%">
 <tr><th>[% msg.maketext("Administrations-Login") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
@@ -33,5 +35,7 @@
 </table>
 </form>
 <p />
+
+</div>
 
 [% PROCESS std_footer %]

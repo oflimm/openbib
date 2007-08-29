@@ -19,6 +19,7 @@
    <li><a                href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
    <li><a                href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
    <li><a class="active" href="[% config.search_loc %]?sessionID=[% sessionID %];view=[% view %];database=portrait;browsecat=T0100" target="body" title="Register">Register</a></li>
+   <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=portrait;database=portrait;stid=14" target="body" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
 </ul>
 
 <div class="content">

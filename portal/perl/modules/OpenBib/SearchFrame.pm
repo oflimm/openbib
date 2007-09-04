@@ -277,6 +277,7 @@ sub handler {
         showejahr     => $showejahr,
 
         searchquery   => $searchquery_ref,
+        qopts         => $queryoptions_ref,
 	       
         anzahl        => $anzahl,
         queries       => \@queries,

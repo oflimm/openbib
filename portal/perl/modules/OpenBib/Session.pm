@@ -122,6 +122,7 @@ sub _init_new_session {
                 profil    => undef,
                 autoplus  => undef,
                 sb        => undef,
+                js        => undef,
             };
 
             # Eintrag in die Datenbank
@@ -246,6 +247,7 @@ sub get_queryoptions {
         profil    => '',
         autoplus  => '',
         sb        => 'sql',
+        js        => 0,
     };
 
     my $altered=0;

@@ -72,18 +72,7 @@ nun zusätzlich ein logarithmischer Algorithmus verwendet werden.  </p>
 
 <p>
 Wiederum wurden wesentliche Entwicklungen und Verbesserungen f&uuml;r
-den Benutzer unsichtbar im Fundament der Anwendung vorgenommen. Dazu
-gehören:
-
-<ul>
-
-<li>Einführung eines Event/Statistik-Frameworks zu
-Nutzungsanalysen.</li>
-
-<li>Erweiterung der Web-Administration um statistische Kennzahlen und
-Auswertungen.</li>
-
-</ul>
+den Benutzer unsichtbar im Fundament der Anwendung vorgenommen.
 
 </p>
 

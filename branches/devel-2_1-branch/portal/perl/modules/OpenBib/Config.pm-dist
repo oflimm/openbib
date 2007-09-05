@@ -485,7 +485,7 @@ use vars qw(%config);
 	   # Generierte BestOf-Daten
 	   best_of                 => {
                                         '3' => {
-                                                  cloud => 'linear',
+                                                  cloud => 'log',
                                                },
                                         '4' => {
                                                   cloud => 'linear',
@@ -500,7 +500,7 @@ use vars qw(%config);
                                                   cloud => 'linear',
                                                },
                                         '8' => {
-                                                  cloud => 'linear',
+                                                  cloud => 'log',
                                                },
                                       },
            # Social-Tagging

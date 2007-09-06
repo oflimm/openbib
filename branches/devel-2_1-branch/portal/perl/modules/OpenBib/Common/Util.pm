@@ -985,6 +985,8 @@ sub grundform {
         if ($content =~ /^(\d\d)\.(\d\d)\.(\d\d\d\d)$/){
             $content=$3.$2.$1;
         }
+
+	return $content;
     }
     
     # ISBN filtern

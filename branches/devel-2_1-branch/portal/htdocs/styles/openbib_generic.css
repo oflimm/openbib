@@ -451,3 +451,9 @@ dt.review {
   text-decoration: underline;
 }
 
+.tutorial { 
+  font-weight:bold;
+  vertical-align:top;
+  font-size:1.1em;
+  color:red;
+}

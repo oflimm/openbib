@@ -269,8 +269,6 @@
 ../templates/views/kevelaer/searchframe_simple
 ../templates/views/kevelaer/std_footer
 ../templates/views/kevelaer/virtualsearch_more_search_tips
-../templates/views/kug/corporate_banner
-../templates/views/kug/frameset
 ../templates/views/kug/headerframe
 ../templates/views/kug/searchframe
 ../templates/views/kug/searchframe_options

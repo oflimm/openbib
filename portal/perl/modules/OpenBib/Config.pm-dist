@@ -144,8 +144,8 @@ use vars qw(%config);
                    nr    => '2',
                },
                {
-                   short => '3ezwheil',
-                   desc  => 'Erziehungswissenschaftliche u. Heilpädagogische Fakultät',
+                   short => '3human',
+                   desc  => 'Humanwissenschaftliche Fakultät',
                    nr    => '3',
                },
                {

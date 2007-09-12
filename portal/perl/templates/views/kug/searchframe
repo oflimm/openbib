@@ -113,13 +113,14 @@ function submitViaEnter(evt){
 [% PROCESS common/subtemplate name="testsystem_info" %]
 [% END %]
 
-[% IF config.lang.size > 1 %]
 <div id="langchoice">
+<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %]#recherchekomplex"><img src="/images/openbib/info.png"></a>&nbsp;
+[% IF config.lang.size > 1 %]
 [%   FOREACH l IN config.lang %]
 <a href="[% config.frameset_loc %]?headerframeurl=[% config.headerframe_loc %];bodyframeurl=[% config.searchframe_loc %];sessionID=[% sessionID %];setmask=simple;l=[% l %]" target="_parent"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
-</div>
 [% END %]
+</div>
 
 <ul class="tabbingmenu">
    <li><a                href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>

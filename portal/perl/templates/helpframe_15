@@ -19,6 +19,15 @@
       targetdbinfo = config.get_targetdbinfo.dbnames;
 %]
 
+<div id="langchoice">
+<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %]#sichten"><img src="/images/openbib/info.png"></a>&nbsp;
+[% IF config.lang.size > 1 %]
+[%   FOREACH l IN config.lang %]
+<a href="[% config.frameset_loc %]?headerframeurl=[% config.headerframe_loc %];bodyframeurl=[% config.searchframe_loc %];sessionID=[% sessionID %];setmask=simple;l=[% l %]" target="_parent"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[%   END %]
+[% END %]
+</div>
+
 <ul class="tabbingmenu">
    <li><a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
    <li><a href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>

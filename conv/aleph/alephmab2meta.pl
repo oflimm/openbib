@@ -426,6 +426,7 @@ foreach my $rawrec (@mab2swtdata){
 
 close(SWTOUT);
 
+
 ######################################################################
 # Titel-Daten
 
@@ -682,6 +683,8 @@ sub konv {
   $line=~s/\&/&amp;/g;
   $line=~s/>/&gt;/g;
   $line=~s/</&lt;/g;
+  $line=~s/\x{0088}//g;
+  $line=~s/\x{0089}//g;
 
   return $line;
 }

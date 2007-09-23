@@ -190,13 +190,13 @@ foreach my $type (keys %{$stammdateien_ref}){
             $listitemdata_not{$id}=$content;
         }
         elsif ($type eq "swt"){
-            $listitemdata_swt{$id}= {
-                content     => $content,
-                 contentnorm => OpenBib::Common::Util::grundform({
-                     category => 'T0710',
-                     content  => $content,
-                 }),
-            };
+           $listitemdata_swt{$id}= {
+               content     => $content,
+                contentnorm => OpenBib::Common::Util::grundform({
+                    category => 'T0710',
+                    content  => $content,
+                }),
+           };
         }
   
     }
@@ -218,7 +218,7 @@ foreach my $type (keys %{$stammdateien_ref}){
        }
        
        if ($stammdateien_ref->{$type}{inverted_ref}->{$category}->{init}){
-           push @{$stammdateien_ref->{$type}{data}[$id]}, $contentnormtmp;
+           push @{$stammdateien_ref->{$type}{data}{$id}}, $contentnormtmp;
        }
    }
 
@@ -306,7 +306,7 @@ while (my $line=<IN>){
             }
 
             if ($stammdateien_ref->{mex}{inverted_ref}->{$category}->{init}){
-                push @{$stammdateien_ref->{mex}{data}[$titid]}, $contentnormtmp;
+                push @{$stammdateien_ref->{mex}{data}{$titid}}, $contentnormtmp;
             }
 	}
 
@@ -474,7 +474,7 @@ while (my $line=<IN>){
         my %seen_verf=();
         foreach my $item (@verf){
             next if (exists $seen_verf{$item});
-            push @temp, join(" ",@{$stammdateien_ref->{aut}{data}[$item]});
+            push @temp, join(" ",@{$stammdateien_ref->{aut}{data}{$item}});
             $seen_verf{$item}=1;
         }
         push @temp, join(" ",@titverf);
@@ -482,14 +482,14 @@ while (my $line=<IN>){
 
         @temp=();
         foreach my $item (@kor){
-            push @temp, join(" ",@{$stammdateien_ref->{kor}{data}[$item]});
+            push @temp, join(" ",@{$stammdateien_ref->{kor}{data}{$item}});
         }
         push @temp, join(" ",@titkor);
         my $kor      = join(" ",@temp);
 
         @temp=();
         foreach my $item (@swt){
-            push @temp, join(" ",@{$stammdateien_ref->{swt}{data}[$item]});
+            push @temp, join(" ",@{$stammdateien_ref->{swt}{data}{$item}});
 
             push @{$listitem_ref->{T0710}}, {
                 id          => $item,
@@ -504,12 +504,12 @@ while (my $line=<IN>){
 
         @temp=();
         foreach my $item (@notation){
-            push @temp, join(" ",@{$stammdateien_ref->{notation}{data}[$item]});
+            push @temp, join(" ",@{$stammdateien_ref->{notation}{data}{$item}});
         }
         my $notation = join(" ",@temp);
 
         @temp=();
-	push @temp, join(" ",@{$stammdateien_ref->{mex}{data}[$id]});
+	push @temp, join(" ",@{$stammdateien_ref->{mex}{data}{$id}});
         my $mex = join(" ",@temp);
         
         my $hst       = join(" ",@hst);

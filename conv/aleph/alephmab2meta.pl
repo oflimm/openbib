@@ -344,7 +344,7 @@ my $swtdefs_ref = {
     },
     '800' => {            # hauptschlagwort
         newcat => '0001', # Ansetzung
-        mult   => 0,
+        mult   => 1,
     },
     '820' => {            # alternativform zum hauptschlagwort
         newcat => '0102', # verweisungsform 
@@ -378,7 +378,7 @@ open(SWTOUT,'>:utf8','unload.SWD');
 
 tie @mab2swtdata, 'Tie::MAB2::Recno', file => "tmp.SWD";
 
-foreach my $rawrec (@mab2swtdata){
+SWTLOOP: foreach my $rawrec (@mab2swtdata){
     my $rec = MAB2::Record::Base->new($rawrec);
 #    print $rec->readable."\n----------------------\n";    
     my $multcount_ref = {};
@@ -397,6 +397,8 @@ foreach my $rawrec (@mab2swtdata){
         # Vorabfilterung
         if ($category =~ /^001$/){
             $content=~s/\D//g;
+            $content = sprintf "%d", $content;
+            next SWTLOOP if ($content > 10000000);
         }
 
         if ($category =~ /^002$/){
@@ -438,6 +440,10 @@ my $titdefs_ref = {
     '002'  => {
         newcat => '0002', # SDN
         mut    => 0,
+    },
+    '010'  => {           # identifikationsnummer des direkt uebergeordneten datensatzes
+        newcat => '0004', # Uebergeordn. Satz
+        mut    => 1,
     },
     '089' => {            # bandangaben in vorlageform
         newcat => '0089', # bandangaben in vorlageform
@@ -527,7 +533,7 @@ tie @mab2titdata, 'Tie::MAB2::Recno', file => "tmp.TIT";
 
 foreach my $rawrec (@mab2titdata){
     my $rec = MAB2::Record::Base->new($rawrec);
-#    print $rec->readable."\n----------------------\n";    
+    #print $rec->readable."\n----------------------\n";    
     my $multcount_ref = {};
     
     foreach my $category_ref (@{$rec->_struct->[1]}){
@@ -542,7 +548,9 @@ foreach my $rawrec (@mab2titdata){
         }
         
         # Vorabfilterung
-        if ($category =~ /^001$/){
+
+        # Titel-ID sowie Ueberordnungs-ID
+        if ($category =~ /^001$/ || $category =~ /^010$/){
             $content=~s/\D//g;
         }
 
@@ -625,7 +633,7 @@ my $notdefs_ref = {
 };
 
 print "Bearbeite Systematik\n";
-open(SWTOUT,'>:utf8','unload.SYS');
+open(NOTOUT,'>:utf8','unload.SYS');
 
 tie @mab2notdata, 'Tie::MAB2::Recno', file => "tmp.SYS";
 
@@ -666,16 +674,96 @@ foreach my $rawrec (@mab2notdata){
 
         if ($newcategory && $notdefs_ref->{$category}{mult} && $content){
             my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
-            print "$newcategory.$multcount:$content\n";
+            print NOTOUT "$newcategory.$multcount:$content\n";
         }
         elsif ($newcategory && $content){
-            print "$newcategory:$content\n";
+            print NOTOUT "$newcategory:$content\n";
         }
     }
-    print "9999:\n\n";
+    print NOTOUT "9999:\n\n";
 }
 
 close(NOTOUT);
+
+######################################################################
+# Exemplar-Daten
+
+my $mexdefs_ref = {
+    '001'  => {
+        newcat => '0000', # ID
+        mult   => 0,
+    },    
+    '002'  => {
+        newcat => '0100', # SDN
+        mut => 0,
+    },
+    '800' => {
+        newcat => '0001', # Ansetzung
+        mult => 0,
+    },
+    '820' => {
+        newcat => '0102', # ansetzungsform nach einem weiteren regelwerk => verweisungsform
+        mult => 1,
+    },
+    '830' => {
+        newcat => '0102', # verweisungsform 
+        mult => 1,
+    },
+
+};
+
+print "Bearbeite Exemplare\n";
+open(MEXOUT,'>:utf8','unload.MEX');
+
+tie @mab2mexdata, 'Tie::MAB2::Recno', file => "tmp.MEX";
+
+foreach my $rawrec (@mab2mexdata){
+    my $rec = MAB2::Record::Base->new($rawrec);
+    #print $rec->readable."\n----------------------\n";    
+    my $multcount_ref = {};
+    
+    foreach my $category_ref (@{$rec->_struct->[1]}){
+        my $category  = $category_ref->[0];
+        my $indicator = $category_ref->[1];
+        my $content   = konv($category_ref->[2]);
+
+        my $newcategory = "";
+        
+        if (!exists $mexdefs_ref->{$category}){
+            next;
+        }
+        
+        # Vorabfilterung
+        if ($category =~ /^001$/){
+            $content=~s/\D//g;
+        }
+
+        if ($category =~ /^002$/){
+            $content=~s/(\d\d\d\d)(\d\d)(\d\d)/$3.$2.$1/;
+        }
+
+        # Standard-Konvertierung mit perkonv
+
+        if (!$mexdefs_ref->{$category}{mult}){
+            $indicator="";
+        }
+
+        if (exists $mexdefs_ref->{$category}{newcat}){
+            $newcategory = $mexdefs_ref->{$category}{newcat};
+        }
+
+        if ($newcategory && $mexdefs_ref->{$category}{mult} && $content){
+            my $multcount=sprintf "%03d",++$multcount_ref->{$newcategory};
+            print MEXOUT "$newcategory.$multcount:$content\n";
+        }
+        elsif ($newcategory && $content){
+            print MEXOUT "$newcategory:$content\n";
+        }
+    }
+    print MEXOUT "9999:\n\n";
+}
+
+close(MEXOUT);
 
 sub konv {
   my ($line)=@_;

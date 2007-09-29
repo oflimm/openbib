@@ -10,7 +10,7 @@ CREATE TABLE session (
  benutzernr    TEXT,
  benutzerpin   TEXT,
  queryoptions  TEXT,
-
+ returnurl     TEXT,
  INDEX (sessionid),
  INDEX (benutzernr(255))
 );

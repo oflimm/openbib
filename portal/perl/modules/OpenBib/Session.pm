@@ -930,6 +930,34 @@ sub log_event {
     return;
 }
 
+sub set_returnurl {
+    my ($self,$returnurl)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $idnresult=$self->{dbh}->prepare("update session set returnurl=? where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($returnurl, $self->{ID}) or $logger->error($DBI::errstr);
+    $idnresult->finish();
+
+    return;
+}
+
+sub get_returnurl {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $idnresult=$self->{dbh}->prepare("select returnurl from session where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+    my $res = $idnresult->fetchrow_hashref();
+    my $returnurl = $res->{returnurl};
+    $idnresult->finish();
+
+    return $returnurl;
+}
+
 sub DESTROY {
     my $self = shift;
 

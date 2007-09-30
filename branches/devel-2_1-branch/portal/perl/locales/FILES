@@ -70,6 +70,7 @@
 ../templates/circulation_orders
 ../templates/circulation_remind
 ../templates/circulation_reserv
+../templates/circulation_make_reserv
 ../templates/common/navitembar
 ../templates/common/subtemplate
 ../templates/connector_digibib_result_end
@@ -119,6 +120,7 @@
 ../templates/leave
 ../templates/loadbalancer
 ../templates/login
+../templates/login_circulation
 ../templates/mailcollection_mail_html
 ../templates/mailcollection_mail_main
 ../templates/mailcollection_mail_plain

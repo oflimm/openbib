@@ -375,6 +375,7 @@ tt_connector_digibib_result_start_tname  => 'connector_digibib_result_start',
 	   tt_loadbalancer_tname         => 'loadbalancer',
 
 	   tt_login_tname                => 'login',
+           tt_login_circulation_tname    => 'login_circulation',
 
 	   tt_mailcollection_mail_html_tname    => 'mailcollection_mail_html',
 	   tt_mailcollection_mail_plain_tname   => 'mailcollection_mail_plain',

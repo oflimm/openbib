@@ -100,10 +100,10 @@ juristisch gekl&auml;rt werden.
 </p>
 
 <p>
-Diese Informationsseite wird durch st&auml;ndige Aktualisierung
-&uuml;ber den <a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=31">Stand
-der Entwicklung</a> der "Virtuellen Bibliothek Elise und Helene
-Richter" Aufschluss geben.
+Hier k&ouml;nnen Sie sich &uuml;ber die
+<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[%
+view %];stid=31">Historie</a> der "Virtuellen Bibliothek
+Elise und Helene Richter" informieren.
 </p>
 
 <p>

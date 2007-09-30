@@ -108,7 +108,9 @@ sub handler {
     else {
         $view=$session->get_viewname();
     }
-  
+
+    my $return_url = $session->get_returnurl();
+    
     if ($do_login) {
         my $logintargets_ref = $user->get_logintargets();
     
@@ -119,6 +121,7 @@ sub handler {
             sessionID    => $session->{ID},
             logintargets => $logintargets_ref,
             loginname    => $loginname,
+            return_url   => $return_url,
             config       => $config,
             msg          => $msg,
         };
@@ -286,12 +289,19 @@ sub handler {
             = "http://$config->{servername}$config->{headerframe_loc}?sessionID=$session->{ID}";
         my $bodyframeurl
             = "http://$config->{servername}$config->{userprefs_loc}?sessionID=$session->{ID};action=showfields";
-    
+        
         if ($view ne "") {
             $headerframeurl.=";view=$view";
             $bodyframeurl.=";view=$view";
         }
 
+        # Wenn Return_url existiert, dann wird im Body-Frame dorthin gesprungen
+        if ($return_url){
+            $bodyframeurl=$return_url;
+
+            $session->set_returnurl('');
+        }
+        
         # Fehlerbehandlung
         if ($loginfailed) {
             $bodyframeurl="http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};do_loginfailed=1;code=$loginfailed";

@@ -80,6 +80,8 @@ sub handler {
     my $action    = ($query->param('action'))?$query->param('action'):'none';
     my $code      = ($query->param('code'))?$query->param('code'):'1';
     my $targetid  = ($query->param('targetid'))?$query->param('targetid'):'none';
+    my $validtarget = ($query->param('validtarget'))?$query->param('validtarget'):'none';
+    my $type      = ($query->param('type'))?$query->param('type'):'';
     my $loginname = ($query->param('loginname'))?$query->param('loginname'):'';
     my $password  = ($query->param('password'))?$query->param('password'):'';
 
@@ -113,20 +115,23 @@ sub handler {
     
     if ($do_login) {
         my $logintargets_ref = $user->get_logintargets();
-    
+
         # TT-Data erzeugen
         my $ttdata={
             view         => $view,
             stylesheet   => $stylesheet,
             sessionID    => $session->{ID},
             logintargets => $logintargets_ref,
+            validtarget  => $validtarget,
             loginname    => $loginname,
             return_url   => $return_url,
             config       => $config,
             msg          => $msg,
         };
     
-        OpenBib::Common::Util::print_page($config->{tt_login_tname},$ttdata,$r);
+        my $templatename = ($type)?"tt_login_".$type."_tname":"tt_login_tname";
+
+        OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
     }
     elsif ($do_auth) {
         my $loginfailed=0;

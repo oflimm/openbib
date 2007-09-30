@@ -919,7 +919,7 @@ sub log_event {
 
     my $request;
     if (exists $log_only_unique_ref->{$type}){
-      $request=$self->{dbh}->prepare("delete from eventlog where sessionid=? and type=? and contentstring=?") or $logger->error($DBI::errstr);
+      $request=$self->{dbh}->prepare("delete from eventlog where sessionid=? and type=? and content=?") or $logger->error($DBI::errstr);
       $request->execute($self->{ID},$type,$contentstring) or $logger->error($DBI::errstr);
     }
 

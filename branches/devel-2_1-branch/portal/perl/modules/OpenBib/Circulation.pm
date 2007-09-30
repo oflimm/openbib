@@ -82,9 +82,10 @@ sub handler {
     my $listlength = ($query->param('listlength'))?$query->param('listlength'):10;
 
     # Aktive Aenderungen des Nutzerkontos
-    my $mediennummer  = ($query->param('mnr'    ))?$query->param('mnr'):undef;
-    my $ausgabeort    = ($query->param('aort'   ))?$query->param('aort'):0;
-    my $zweigstelle   = ($query->param('zst'    ))?$query->param('zst'):0;
+    my $validtarget   = ($query->param('validtarget'))?$query->param('validtarget'):undef;
+    my $mediennummer  = ($query->param('mnr'        ))?$query->param('mnr'):undef;
+    my $ausgabeort    = ($query->param('aort'       ))?$query->param('aort'):0;
+    my $zweigstelle   = ($query->param('zst'        ))?$query->param('zst'):0;
 
     my $queryoptions_ref
         = $session->get_queryoptions($query);
@@ -107,8 +108,9 @@ sub handler {
         $view=$session->get_viewname();
     }
   
-    my $userid=$user->get_userid_of_session($session->{ID});
-  
+    my $userid             = $user->get_userid_of_session($session->{ID});
+    my $sessionlogintarget = $user->get_targetdb_of_session($session->{ID});
+
     unless($userid){
         # Aufruf-URL
         my $return_url = $r->parsed_uri->unparse;
@@ -117,8 +119,12 @@ sub handler {
 
         $session->set_returnurl($return_url);
 
-        $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1");
-
+        if ($validtarget){
+            $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1;type=circulation;validtarget=$validtarget");
+        }
+        else {
+            $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1");
+        }
         return OK;
     }
   
@@ -311,6 +317,20 @@ sub handler {
 
     }
     elsif ($action eq "make_reservation"){
+
+    unless($sessionlogintarget eq $validtarget){
+        # Aufruf-URL
+        my $return_url = $r->parsed_uri->unparse;
+
+        # Return-URL in der Session abspeichern
+
+        $session->set_returnurl($return_url);
+
+        $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1;type=circulation;validtarget=$validtarget");
+
+        return OK;
+    }
+
         my $circexlist=undef;
 
         $logger->info("Zweigstelle: $zweigstelle");

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2007-09-11 09:14+0200\n"
+"PO-Revision-Date: 2007-09-20 10:30+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -157,8 +157,8 @@ msgstr "Aktuelle Recherche"
 #: ../templates/views/inst430/searchframe_simple:127
 #: ../templates/views/inst431/searchframe_simple:116
 #: ../templates/views/inst460/searchframe_simple:117
-#: ../templates/views/kug/searchframe:249
-#: ../templates/views/kug/searchframe:261
+#: ../templates/views/kug/searchframe:250
+#: ../templates/views/kug/searchframe:262
 #: ../templates/views/richter/searchframe_simple:84
 msgid "Alle Kataloge"
 msgstr "Alle Kataloge"
@@ -206,7 +206,7 @@ msgstr "Als Permanenten Link verwenden"
 #: ../templates/views/kapsel/searchframe:43
 #: ../templates/views/kempen/searchframe:63
 #: ../templates/views/kevelaer/searchframe:63
-#: ../templates/views/kug/searchframe:146
+#: ../templates/views/kug/searchframe:147
 #: ../templates/views/kwinter/searchframe:63
 #: ../templates/views/landschaft/searchframe:43
 #: ../templates/views/portrait/searchframe:48
@@ -237,7 +237,7 @@ msgstr ""
 "Suchanfrage im KUG Recherche-Portal diese auf weitere externe Kataloge "
 "ausdehnen."
 
-#: ../templates/login:49 ../templates/login:83
+#: ../templates/login:58 ../templates/login:92
 msgid "Anmeldeziel"
 msgstr "Anmeldeziel"
 
@@ -387,7 +387,7 @@ msgstr "Benutzerkonto"
 msgid "Benutzername"
 msgstr "Benutzername"
 
-#: ../templates/login:59
+#: ../templates/login:68
 msgid "Benutzernummer"
 msgstr "Benutzernummer"
 
@@ -679,7 +679,7 @@ msgstr "Druckansicht Titel"
 msgid "E-Mail"
 msgstr "E-Mail"
 
-#: ../templates/login:92 ../templates/mailpassword:44 ../templates/selfreg:44
+#: ../templates/login:101 ../templates/mailpassword:44 ../templates/selfreg:44
 msgid "E-Mail-Adresse"
 msgstr "E-Mail-Adresse"
 
@@ -713,7 +713,7 @@ msgid "Eine Bearbeitung ist nur bei 'HTML' m&ouml;glich"
 msgstr "Eine Bearbeitung ist nur bei 'HTML' m&ouml;glich"
 
 #: ../templates/helpframe_11:18 ../templates/helpframe_12:22
-#: ../templates/helpframe_13:18 ../templates/helpframe_15:23
+#: ../templates/helpframe_13:18 ../templates/helpframe_15:32
 #: ../templates/searchframe:42 ../templates/searchframe_simple:38
 #: ../templates/views/edz/searchframe:42
 #: ../templates/views/edz/searchframe_simple:38
@@ -761,8 +761,8 @@ msgstr "Eine Bearbeitung ist nur bei 'HTML' m&ouml;glich"
 #: ../templates/views/kempen/searchframe_simple:38
 #: ../templates/views/kevelaer/searchframe:42
 #: ../templates/views/kevelaer/searchframe_simple:38
-#: ../templates/views/kug/searchframe:125
-#: ../templates/views/kug/searchframe_simple:31
+#: ../templates/views/kug/searchframe:126
+#: ../templates/views/kug/searchframe_simple:32
 #: ../templates/views/kwinter/searchframe:42
 #: ../templates/views/kwinter/searchframe_simple:38
 #: ../templates/views/landschaft/search_browse_tit:19
@@ -790,7 +790,7 @@ msgstr "Einfache Recherchemaske"
 msgid "Eingrenzung auf Gesamttitel (Serien)"
 msgstr "Eingrenzung auf Gesamttitel (Serien)"
 
-#: ../templates/admin_login:34 ../templates/login:61 ../templates/login:94
+#: ../templates/admin_login:34 ../templates/login:103 ../templates/login:70
 msgid "Einloggen"
 msgstr "Einloggen"
 
@@ -1044,8 +1044,8 @@ msgstr "Freie Suche"
 #: ../templates/views/kempen/searchframe_simple:112
 #: ../templates/views/kevelaer/searchframe:138
 #: ../templates/views/kevelaer/searchframe_simple:112
-#: ../templates/views/kug/searchframe:316
-#: ../templates/views/kug/searchframe_simple:115
+#: ../templates/views/kug/searchframe:317
+#: ../templates/views/kug/searchframe_simple:116
 #: ../templates/views/kwinter/searchframe:138
 #: ../templates/views/kwinter/searchframe_simple:112
 #: ../templates/views/landschaft/searchframe:103
@@ -1093,7 +1093,7 @@ msgstr ""
 #: ../templates/views/inst460/searchframe_simple:95
 #: ../templates/views/kempen/searchframe_simple:62
 #: ../templates/views/kevelaer/searchframe_simple:62
-#: ../templates/views/kug/searchframe_simple:73
+#: ../templates/views/kug/searchframe_simple:74
 #: ../templates/views/kwinter/searchframe_simple:62
 #: ../templates/views/rheinlandbib/searchframe_simple:54
 #: ../templates/views/richter/searchframe_simple:62
@@ -1150,7 +1150,7 @@ msgid "HTTP"
 msgstr "HTTP"
 
 #. ("<a href=\"${config.helpframe_loc}?sessionID=${sessionID};view=${view}#passwortbenutzerausweis\" target=\"body\">","</a>")
-#: ../templates/login:64
+#: ../templates/login:73
 msgid ""
 "Haben Sie Ihr Passwort vergessen, dann finden Sie hier %1weitere "
 "Informationen%2."
@@ -1159,7 +1159,7 @@ msgstr ""
 "Informationen%2."
 
 #. ("<a href=\"http://${config.servername}${config.mailpassword_loc}?sessionID=${sessionID};action=show\">","</a>")
-#: ../templates/login:97
+#: ../templates/login:106
 msgid ""
 "Haben Sie Ihr Passwort vergessen, dann klicken Sie es sich %1<b>hier</b>%2 "
 "per E-Mail zusenden lassen"
@@ -1177,7 +1177,7 @@ msgstr ""
 "%1Datenbankangebot%2 informiert? Auch hier finden Sie Volltexte."
 
 #. ("<a href=\"${config.selfreg_loc}?sessionID=${sessionID};view=${view};action=show\" target=\"body\">","</a>")
-#: ../templates/login:81
+#: ../templates/login:90
 msgid ""
 "Haben Sie sich schon &uuml;ber die Selbstregistrierung eine Kennung "
 "eingerichtet? Wenn nicht, so k&ouml;nnen Sie sich %1hier%2 registrierten."
@@ -1332,10 +1332,10 @@ msgstr ""
 #: ../templates/views/kevelaer/searchframe:91
 #: ../templates/views/kevelaer/searchframe_simple:75
 #: ../templates/views/kevelaer/searchframe_simple:81
-#: ../templates/views/kug/searchframe:176
-#: ../templates/views/kug/searchframe:195
-#: ../templates/views/kug/searchframe:304
-#: ../templates/views/kug/searchframe_simple:85
+#: ../templates/views/kug/searchframe:177
+#: ../templates/views/kug/searchframe:196
+#: ../templates/views/kug/searchframe:305
+#: ../templates/views/kug/searchframe_simple:86
 #: ../templates/views/kwinter/searchframe:123
 #: ../templates/views/kwinter/searchframe:127
 #: ../templates/views/kwinter/searchframe:85
@@ -1500,9 +1500,9 @@ msgstr "Hier löschen Sie die Eingabefelder"
 #: ../templates/views/kevelaer/searchframe:91
 #: ../templates/views/kevelaer/searchframe_simple:75
 #: ../templates/views/kevelaer/searchframe_simple:81
-#: ../templates/views/kug/searchframe:176
-#: ../templates/views/kug/searchframe:195
-#: ../templates/views/kug/searchframe:304
+#: ../templates/views/kug/searchframe:177
+#: ../templates/views/kug/searchframe:196
+#: ../templates/views/kug/searchframe:305
 #: ../templates/views/kwinter/searchframe:123
 #: ../templates/views/kwinter/searchframe:127
 #: ../templates/views/kwinter/searchframe:85
@@ -1599,10 +1599,10 @@ msgstr "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
 #: ../templates/views/kevelaer/searchframe:127
 #: ../templates/views/kevelaer/searchframe:91
 #: ../templates/views/kevelaer/searchframe_simple:81
-#: ../templates/views/kug/searchframe:176
-#: ../templates/views/kug/searchframe:195
-#: ../templates/views/kug/searchframe:304
-#: ../templates/views/kug/searchframe_simple:85
+#: ../templates/views/kug/searchframe:177
+#: ../templates/views/kug/searchframe:196
+#: ../templates/views/kug/searchframe:305
+#: ../templates/views/kug/searchframe_simple:86
 #: ../templates/views/kwinter/searchframe:127
 #: ../templates/views/kwinter/searchframe:91
 #: ../templates/views/kwinter/searchframe_simple:81
@@ -1635,7 +1635,7 @@ msgid "Hilfe"
 msgstr "Hilfe"
 
 #: ../templates/databasechoice:45 ../templates/externaljump:30
-#: ../templates/login:29 ../templates/mailpassword:33 ../templates/rssframe:19
+#: ../templates/login:38 ../templates/mailpassword:33 ../templates/rssframe:19
 #: ../templates/selfreg:32 ../templates/views/rheinlandbib/databasechoice:45
 msgid "Hinweis"
 msgstr "Hinweis"
@@ -1780,10 +1780,10 @@ msgstr "Import-Einstellungen"
 #: ../templates/views/kevelaer/searchframe:127
 #: ../templates/views/kevelaer/searchframe:91
 #: ../templates/views/kevelaer/searchframe_simple:81
-#: ../templates/views/kug/searchframe:176
-#: ../templates/views/kug/searchframe:195
-#: ../templates/views/kug/searchframe:304
-#: ../templates/views/kug/searchframe_simple:85
+#: ../templates/views/kug/searchframe:177
+#: ../templates/views/kug/searchframe:196
+#: ../templates/views/kug/searchframe:305
+#: ../templates/views/kug/searchframe_simple:86
 #: ../templates/views/kwinter/searchframe:127
 #: ../templates/views/kwinter/searchframe:91
 #: ../templates/views/kwinter/searchframe_simple:81
@@ -1912,9 +1912,9 @@ msgstr "In allen Katalogen suchen"
 #: ../templates/views/kevelaer/searchframe:127
 #: ../templates/views/kevelaer/searchframe:91
 #: ../templates/views/kevelaer/searchframe_simple:81
-#: ../templates/views/kug/searchframe:176
-#: ../templates/views/kug/searchframe:195
-#: ../templates/views/kug/searchframe:304
+#: ../templates/views/kug/searchframe:177
+#: ../templates/views/kug/searchframe:196
+#: ../templates/views/kug/searchframe:305
 #: ../templates/views/kwinter/searchframe:127
 #: ../templates/views/kwinter/searchframe:91
 #: ../templates/views/kwinter/searchframe_simple:81
@@ -2097,7 +2097,7 @@ msgid "Katalog bearbeiten"
 msgstr "Katalog bearbeiten"
 
 #: ../templates/databasechoice:33 ../templates/headerframe:23
-#: ../templates/views/kug/searchframe:229
+#: ../templates/views/kug/searchframe:230
 #: ../templates/views/rheinlandbib/databasechoice:33
 #: ../templates/views/rheinlandbib/headerframe:25
 msgid "Katalogauswahl"
@@ -2192,7 +2192,7 @@ msgid "Kompletter Titel"
 msgstr "Kompletter Titel"
 
 #: ../templates/helpframe_11:19 ../templates/helpframe_12:23
-#: ../templates/helpframe_13:19 ../templates/helpframe_15:24
+#: ../templates/helpframe_13:19 ../templates/helpframe_15:33
 #: ../templates/searchframe:43 ../templates/searchframe_simple:39
 #: ../templates/views/edz/searchframe:43
 #: ../templates/views/edz/searchframe_simple:39
@@ -2240,8 +2240,8 @@ msgstr "Kompletter Titel"
 #: ../templates/views/kempen/searchframe_simple:39
 #: ../templates/views/kevelaer/searchframe:43
 #: ../templates/views/kevelaer/searchframe_simple:39
-#: ../templates/views/kug/searchframe:126
-#: ../templates/views/kug/searchframe_simple:32
+#: ../templates/views/kug/searchframe:127
+#: ../templates/views/kug/searchframe_simple:33
 #: ../templates/views/kwinter/searchframe:43
 #: ../templates/views/kwinter/searchframe_simple:39
 #: ../templates/views/landschaft/search_browse_tit:20
@@ -2296,7 +2296,7 @@ msgstr "Leihfristende"
 msgid "Letzte 50 Neuaufnahmen"
 msgstr "Letzte 50 Neuaufnahmen"
 
-#: ../templates/login:20 ../templates/mailpassword:24 ../templates/selfreg:23
+#: ../templates/login:29 ../templates/mailpassword:24 ../templates/selfreg:23
 #: ../templates/selfreg_success:19
 msgid "Login"
 msgstr "Login"
@@ -2483,10 +2483,10 @@ msgstr "Los"
 #: ../templates/views/kevelaer/searchframe:91
 #: ../templates/views/kevelaer/searchframe_simple:75
 #: ../templates/views/kevelaer/searchframe_simple:81
-#: ../templates/views/kug/searchframe:176
-#: ../templates/views/kug/searchframe:195
-#: ../templates/views/kug/searchframe:304
-#: ../templates/views/kug/searchframe_simple:85
+#: ../templates/views/kug/searchframe:177
+#: ../templates/views/kug/searchframe:196
+#: ../templates/views/kug/searchframe:305
+#: ../templates/views/kug/searchframe_simple:86
 #: ../templates/views/kwinter/searchframe:123
 #: ../templates/views/kwinter/searchframe:127
 #: ../templates/views/kwinter/searchframe:85
@@ -2769,7 +2769,7 @@ msgstr "Verweisung"
 msgid "P5000"
 msgstr "Anzahl Titel"
 
-#: ../templates/admin_login:33 ../templates/login:60 ../templates/login:93
+#: ../templates/admin_login:33 ../templates/login:102 ../templates/login:69
 #: ../templates/selfreg:45 ../templates/userprefs:53
 msgid "Passwort"
 msgstr "Passwort"
@@ -2786,7 +2786,7 @@ msgstr "Passwort (wiederholt)"
 msgid "Passwort per Mail schicken"
 msgstr "Passwort per Mail schicken"
 
-#: ../templates/login:22 ../templates/mailpassword:26 ../templates/selfreg:25
+#: ../templates/login:31 ../templates/mailpassword:26 ../templates/selfreg:25
 #: ../templates/selfreg_success:21
 msgid "Passwort vergessen?"
 msgstr "Passwort vergessen?"
@@ -2915,6 +2915,10 @@ msgstr "Region"
 msgid "Registrieren"
 msgstr "Registrieren"
 
+#: ../templates/views/richter/searchframe_query:25
+msgid "Richter-Systematik"
+msgstr "Richter-Systematik"
+
 #: ../templates/searchframe_simple:151
 #: ../templates/views/edz/searchframe_simple:157
 #: ../templates/views/gdonck/searchframe_simple:93
@@ -2935,7 +2939,7 @@ msgstr "Registrieren"
 #: ../templates/views/inst460/searchframe_simple:156
 #: ../templates/views/kempen/searchframe_simple:93
 #: ../templates/views/kevelaer/searchframe_simple:93
-#: ../templates/views/kug/searchframe_simple:96
+#: ../templates/views/kug/searchframe_simple:97
 #: ../templates/views/kwinter/searchframe_simple:93
 #: ../templates/views/rheinlandbib/searchframe_simple:85
 #: ../templates/views/richter/searchframe_simple:123
@@ -3080,7 +3084,7 @@ msgstr "Seit"
 msgid "Sekunden"
 msgstr "Sekunden"
 
-#: ../templates/login:21 ../templates/mailpassword:25 ../templates/selfreg:24
+#: ../templates/login:30 ../templates/mailpassword:25 ../templates/selfreg:24
 #: ../templates/selfreg_success:20
 msgid "Selbstregistrierung"
 msgstr "Selbstregistrierung"
@@ -3162,7 +3166,7 @@ msgid "Sie greifen auf eine nicht autorisierte Session zu"
 msgstr "Sie greifen auf eine nicht autorisierte Session zu"
 
 #. ("<a href=\"${config.helpframe_loc}?sessionID=${sessionID};view=${view}#meinkugvorteile\" target=\"body\">","</a>")
-#: ../templates/login:31
+#: ../templates/login:40
 msgid "Sie haben %1Vorteile%2, wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden."
 msgstr "Sie haben %1Vorteile%2, wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden."
 
@@ -3179,15 +3183,15 @@ msgstr ""
 "gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen "
 "Katalogen suchen</a>."
 
-#: ../templates/views/kug/searchframe:154
-#: ../templates/views/kug/searchframe_simple:60
+#: ../templates/views/kug/searchframe:155
+#: ../templates/views/kug/searchframe_simple:61
 msgid "Sie haben JavaScript deaktiviert"
 msgstr "Sie haben JavaScript deaktiviert"
 
 #. ("<a href=\"${config.startopac_loc}?view=${view}\" target=\"_parent\">","</a>")
 #. ("<a href=\"${startopac_loc}?view=\" target=\"_top\"","</a>")
-#: ../templates/views/kug/searchframe:156
-#: ../templates/views/kug/searchframe_simple:62
+#: ../templates/views/kug/searchframe:157
+#: ../templates/views/kug/searchframe_simple:63
 msgid ""
 "Sie haben JavaScript in Ihrem Browser\n"
 "deaktiviert. Daher k&ouml;nnen Sie auf dieser Seite die Profilauswahl\n"
@@ -3477,6 +3481,7 @@ msgid "Sperre"
 msgstr "Sperre"
 
 #. (l)
+#: ../templates/helpframe_15:26 ../templates/login:23
 #: ../templates/searchframe:29 ../templates/searchframe_simple:25
 #: ../templates/views/edz/searchframe:29
 #: ../templates/views/edz/searchframe_simple:25
@@ -3518,8 +3523,8 @@ msgstr "Sperre"
 #: ../templates/views/kempen/searchframe_simple:25
 #: ../templates/views/kevelaer/searchframe:29
 #: ../templates/views/kevelaer/searchframe_simple:25
-#: ../templates/views/kug/searchframe:119
-#: ../templates/views/kug/searchframe_simple:25
+#: ../templates/views/kug/searchframe:120
+#: ../templates/views/kug/searchframe_simple:26
 #: ../templates/views/kwinter/searchframe:29
 #: ../templates/views/kwinter/searchframe_simple:25
 #: ../templates/views/rheinlandbib/searchframe:29
@@ -3613,7 +3618,7 @@ msgstr "Strasse"
 #: ../templates/views/kapsel/searchframe:66
 #: ../templates/views/kempen/searchframe:97
 #: ../templates/views/kevelaer/searchframe:97
-#: ../templates/views/kug/searchframe:187
+#: ../templates/views/kug/searchframe:188
 #: ../templates/views/kwinter/searchframe:97
 #: ../templates/views/landschaft/searchframe:66
 #: ../templates/views/portrait/searchframe:71
@@ -3671,7 +3676,7 @@ msgid "Suchfelder &auml;ndern"
 msgstr "Suchfelder &auml;ndern"
 
 #: ../templates/helpframe:18 ../templates/helpframe_1:18
-#: ../templates/helpframe_2:18 ../templates/views/kug/searchframe:210
+#: ../templates/helpframe_2:18 ../templates/views/kug/searchframe:211
 msgid "Suchhilfe"
 msgstr "Suchhilfe"
 
@@ -3729,7 +3734,7 @@ msgstr "Suchhinweise"
 #: ../templates/views/kapsel/searchframe:36
 #: ../templates/views/kempen/searchframe:56
 #: ../templates/views/kevelaer/searchframe:56
-#: ../templates/views/kug/searchframe:139
+#: ../templates/views/kug/searchframe:140
 #: ../templates/views/kwinter/searchframe:56
 #: ../templates/views/landschaft/searchframe:36
 #: ../templates/views/portrait/searchframe:41
@@ -3760,7 +3765,7 @@ msgstr "Suchhistorie"
 #: ../templates/views/inst501/searchframe:119
 #: ../templates/views/kempen/searchframe:114
 #: ../templates/views/kevelaer/searchframe:114
-#: ../templates/views/kug/searchframe:201
+#: ../templates/views/kug/searchframe:202
 #: ../templates/views/kwinter/searchframe:114
 #: ../templates/views/portrait/searchframe:111
 #: ../templates/views/rheinlandbib/searchframe:106
@@ -3783,10 +3788,6 @@ msgstr "Swt-Datei"
 #: ../templates/admin_showcat:73
 msgid "System"
 msgstr "System"
-
-#: ../templates/views/richter/searchframe_query:25
-msgid "Systematik"
-msgstr "Systematik"
 
 #: ../templates/database/inst001/visible_categories_titset:87
 #: ../templates/visible_categories_titset:87
@@ -4738,7 +4739,7 @@ msgstr "Titelzugriffe"
 
 #: ../templates/helpframe_10:34 ../templates/helpframe_11:29
 #: ../templates/helpframe_12:24 ../templates/helpframe_13:29
-#: ../templates/helpframe_14:31 ../templates/helpframe_15:34
+#: ../templates/helpframe_14:31 ../templates/helpframe_15:43
 #: ../templates/helpframe_16:31 ../templates/helpframe_17:31
 #: ../templates/helpframe_18:31 ../templates/helpframe_19:31
 #: ../templates/search_showtitset:32 ../templates/views/kapsel/helpframe_18:31
@@ -4860,8 +4861,8 @@ msgstr "Um sich wieder einzuloggen folgen Sie bitte %1diesem Link%2."
 #: ../templates/views/inst460/searchframe:155
 #: ../templates/views/inst460/searchframe_simple:172
 #: ../templates/views/inst501/searchframe:140
-#: ../templates/views/kug/searchframe:217
-#: ../templates/views/kug/searchframe_simple:112
+#: ../templates/views/kug/searchframe:218
+#: ../templates/views/kug/searchframe_simple:113
 msgid "Umfang des KUG: %1 Titel in %2 Katalogen"
 msgstr "Umfang des KUG: %1 Titel in %2 Katalogen"
 
@@ -5066,7 +5067,7 @@ msgstr "Weiter"
 #: ../templates/views/inst501/searchframe:63
 #: ../templates/views/kempen/searchframe:63
 #: ../templates/views/kevelaer/searchframe:63
-#: ../templates/views/kug/searchframe:146
+#: ../templates/views/kug/searchframe:147
 #: ../templates/views/kwinter/searchframe:63
 #: ../templates/views/rheinlandbib/searchframe:55
 #: ../templates/views/richter/searchframe:68
@@ -5199,8 +5200,8 @@ msgstr "Zugemailte Merkliste"
 #: ../templates/views/kempen/searchframe_simple:99
 #: ../templates/views/kevelaer/searchframe:63
 #: ../templates/views/kevelaer/searchframe_simple:99
-#: ../templates/views/kug/searchframe:146
-#: ../templates/views/kug/searchframe_simple:102
+#: ../templates/views/kug/searchframe:147
+#: ../templates/views/kug/searchframe_simple:103
 #: ../templates/views/kwinter/searchframe:63
 #: ../templates/views/kwinter/searchframe_simple:99
 #: ../templates/views/landschaft/searchframe:43

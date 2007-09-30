@@ -1045,8 +1045,9 @@ sub print_tit_set_by_idn {
     my $config = new OpenBib::Config();
     my $user   = new OpenBib::User();
 
-    my $userid    = $user->get_userid_of_session($session->{ID});
-    my $loginname = $user->get_username_for_userid($userid);
+    my $userid        = $user->get_userid_of_session($session->{ID});
+    my $loginname     = $user->get_username_for_userid($userid);
+    my $logintargetdb = $user->get_targetdb_of_session($session->{ID});
 
     my ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn({
         titidn             => $titidn,
@@ -1081,11 +1082,12 @@ sub print_tit_set_by_idn {
         mexnormset  => $mexnormset,
         circset     => $circset,
         searchquery => $searchquery_ref,
-        activefeed  => $config->get_activefeeds_of_db($database),        
+        activefeed  => $config->get_activefeeds_of_db($database),
 
-        user        => $user,
-        loginname   => $loginname,
-        
+        user          => $user,
+        loginname     => $loginname,
+        logintargetdb => $logintargetdb,
+
         highlightquery    => \&highlightquery,
         normset2bibtex    => \&OpenBib::Common::Util::normset2bibtex,
         normset2bibsonomy => \&OpenBib::Common::Util::normset2bibsonomy,
@@ -1093,7 +1095,7 @@ sub print_tit_set_by_idn {
         config      => $config,
         msg         => $msg,
     };
-  
+
     OpenBib::Common::Util::print_page($config->{tt_search_showtitset_tname},$ttdata,$r);
 
     # Log Event
@@ -1400,7 +1402,9 @@ sub get_tit_set_by_idn {
                 -> uri("urn:/MediaStatus")
                     -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
             my $result = $soap->get_mediastatus(
-                $circid,$targetcircinfo_ref->{$database}{circdb});
+                SOAP::Data->name(paramaters  =>\SOAP::Data->value(
+                    SOAP::Data->name(katkey   => $circid)->type('string'),
+                    SOAP::Data->name(database => $targetcircinfo_ref->{$database}{circdb})->type('string'))));
             
             unless ($result->fault) {
                 $circexlist=$result->result;

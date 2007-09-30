@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2007-09-20 10:30+0200\n"
-"Last-Translator: \n"
-"Language-Team:  <en@li.org>\n"
+"PO-Revision-Date: 2007-09-30 22:25+0200\n"
+"Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
+"Language-Team:  <l10n@openbib.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -159,7 +159,7 @@ msgstr "Aktuelle Recherche"
 #: ../templates/views/inst460/searchframe_simple:117
 #: ../templates/views/kug/searchframe:250
 #: ../templates/views/kug/searchframe:262
-#: ../templates/views/richter/searchframe_simple:84
+#: ../templates/views/richter/searchframe_simple:92
 msgid "Alle Kataloge"
 msgstr "Alle Kataloge"
 
@@ -238,6 +238,7 @@ msgstr ""
 "ausdehnen."
 
 #: ../templates/login:58 ../templates/login:92
+#: ../templates/login_circulation:58
 msgid "Anmeldeziel"
 msgstr "Anmeldeziel"
 
@@ -387,7 +388,7 @@ msgstr "Benutzerkonto"
 msgid "Benutzername"
 msgstr "Benutzername"
 
-#: ../templates/login:68
+#: ../templates/login:68 ../templates/login_circulation:68
 msgid "Benutzernummer"
 msgstr "Benutzernummer"
 
@@ -648,13 +649,21 @@ msgstr ""
 "Die USB K&ouml;ln ist nicht f&uuml;r die Inhalte fremder Seiten "
 "verantwortlich, die Sie &uuml;ber einen Link erreichen!"
 
+#: ../templates/circulation_make_reserv:60
+msgid "Die Vormerkung wurde erfolgreich durchgef&uuml;hrt."
+msgstr "Die Vormerkung wurde erfolgreich durchgef&uuml;hrt."
+
 #: ../modules/OpenBib/SelfReg.pm:122
 msgid "Die beiden eingegebenen Passworte stimmen nicht überein."
 msgstr "Die beiden eingegebenen Passworte stimmen nicht überein."
 
-#: ../modules/OpenBib/Circulation.pm:108 ../modules/OpenBib/UserPrefs.pm:123
+#: ../modules/OpenBib/UserPrefs.pm:123
 msgid "Diese Session ist nicht authentifiziert."
 msgstr "Diese Session ist nicht authentifiziert."
+
+#: ../templates/circulation_make_reserv:47
+msgid "Dieses Medium ist direkt ausleihbar"
+msgstr "Dieses Medium ist direkt ausleihbar"
 
 #: ../templates/externaljump:94
 msgid "Digitale Bibliothek / Monographien (Fernleihe)"
@@ -711,6 +720,14 @@ msgstr "Einband-Daten"
 #: ../templates/views/einbaende/managecollection_show:59
 msgid "Eine Bearbeitung ist nur bei 'HTML' m&ouml;glich"
 msgstr "Eine Bearbeitung ist nur bei 'HTML' m&ouml;glich"
+
+#: ../templates/circulation_make_reserv:39
+msgid ""
+"Eine Vormerkung auf das von Ihnen gew&uuml;nsche\n"
+"Medium ist leider nicht m&ouml;glich!>"
+msgstr ""
+"Eine Vormerkung auf das von Ihnen gew&uuml;nsche\n"
+"Medium ist leider nicht m&ouml;glich!>"
 
 #: ../templates/helpframe_11:18 ../templates/helpframe_12:22
 #: ../templates/helpframe_13:18 ../templates/helpframe_15:32
@@ -791,6 +808,7 @@ msgid "Eingrenzung auf Gesamttitel (Serien)"
 msgstr "Eingrenzung auf Gesamttitel (Serien)"
 
 #: ../templates/admin_login:34 ../templates/login:103 ../templates/login:70
+#: ../templates/login_circulation:70
 msgid "Einloggen"
 msgstr "Einloggen"
 
@@ -848,7 +866,7 @@ msgstr "Erscheinungsverlauf  "
 msgid "Erweitere Recherchemaske"
 msgstr "Erweitere Recherchemaske"
 
-#: ../modules/OpenBib/Admin.pm:1282
+#: ../modules/OpenBib/Admin.pm:1280
 msgid "Es existiert bereits ein Anmeldeziel unter diesem Namen"
 msgstr "Es existiert bereits ein Anmeldeziel unter diesem Namen"
 
@@ -962,7 +980,7 @@ msgstr "Fakultät"
 #: ../templates/views/inst430/searchframe_simple:128
 #: ../templates/views/inst431/searchframe_simple:117
 #: ../templates/views/inst460/searchframe_simple:118
-#: ../templates/views/richter/searchframe_simple:85
+#: ../templates/views/richter/searchframe_simple:93
 msgid "Fakultäten"
 msgstr "Fakultäten"
 
@@ -970,7 +988,7 @@ msgstr "Fakultäten"
 msgid "Falls leer, so geben Sie hier bitte einen neuen Profilnamen ein"
 msgstr "Falls leer, so geben Sie hier bitte einen neuen Profilnamen ein"
 
-#: ../modules/OpenBib/Login.pm:319
+#: ../modules/OpenBib/Login.pm:334
 msgid "Falscher Fehler-Code"
 msgstr "Falscher Fehler-Code"
 
@@ -1053,7 +1071,7 @@ msgstr "Freie Suche"
 #: ../templates/views/rheinlandbib/searchframe:127
 #: ../templates/views/rheinlandbib/searchframe_simple:101
 #: ../templates/views/richter/searchframe:122
-#: ../templates/views/richter/searchframe_simple:139
+#: ../templates/views/richter/searchframe_simple:147
 #: ../templates/views/xanten/searchframe:138
 #: ../templates/views/xanten/searchframe_simple:112
 msgid ""
@@ -1096,7 +1114,7 @@ msgstr ""
 #: ../templates/views/kug/searchframe_simple:74
 #: ../templates/views/kwinter/searchframe_simple:62
 #: ../templates/views/rheinlandbib/searchframe_simple:54
-#: ../templates/views/richter/searchframe_simple:62
+#: ../templates/views/richter/searchframe_simple:70
 #: ../templates/views/xanten/searchframe_simple:62
 msgid "Geben Sie hier Ihre Suchbegriffe ein"
 msgstr "Geben Sie hier Ihre Suchbegriffe ein"
@@ -1133,6 +1151,10 @@ msgstr "Geburtsdatum"
 #: ../templates/circulation_remind:108 ../templates/circulation_remind:68
 msgid "Gebühr"
 msgstr "Gebühr"
+
+#: ../templates/circulation_make_reserv:42
+msgid "Grund:"
+msgstr "Grund:"
 
 #: ../templates/circulation:23 ../templates/circulation_orders:23
 #: ../templates/circulation_remind:23 ../templates/circulation_reserv:23
@@ -1358,8 +1380,8 @@ msgstr ""
 #: ../templates/views/rheinlandbib/searchframe_simple:73
 #: ../templates/views/richter/searchframe:115
 #: ../templates/views/richter/searchframe:92
-#: ../templates/views/richter/searchframe_simple:105
-#: ../templates/views/richter/searchframe_simple:111
+#: ../templates/views/richter/searchframe_simple:113
+#: ../templates/views/richter/searchframe_simple:119
 #: ../templates/views/xanten/searchframe:123
 #: ../templates/views/xanten/searchframe:127
 #: ../templates/views/xanten/searchframe:85
@@ -1525,8 +1547,8 @@ msgstr "Hier löschen Sie die Eingabefelder"
 #: ../templates/views/rheinlandbib/searchframe_simple:73
 #: ../templates/views/richter/searchframe:115
 #: ../templates/views/richter/searchframe:92
-#: ../templates/views/richter/searchframe_simple:105
-#: ../templates/views/richter/searchframe_simple:111
+#: ../templates/views/richter/searchframe_simple:113
+#: ../templates/views/richter/searchframe_simple:119
 #: ../templates/views/xanten/searchframe:123
 #: ../templates/views/xanten/searchframe:127
 #: ../templates/views/xanten/searchframe:85
@@ -1611,7 +1633,7 @@ msgstr "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
 #: ../templates/views/rheinlandbib/searchframe:119
 #: ../templates/views/rheinlandbib/searchframe:83
 #: ../templates/views/rheinlandbib/searchframe_simple:73
-#: ../templates/views/richter/searchframe_simple:111
+#: ../templates/views/richter/searchframe_simple:119
 #: ../templates/views/xanten/searchframe:127
 #: ../templates/views/xanten/searchframe:91
 #: ../templates/views/xanten/searchframe_simple:81
@@ -1635,7 +1657,8 @@ msgid "Hilfe"
 msgstr "Hilfe"
 
 #: ../templates/databasechoice:45 ../templates/externaljump:30
-#: ../templates/login:38 ../templates/mailpassword:33 ../templates/rssframe:19
+#: ../templates/login:38 ../templates/login_circulation:36
+#: ../templates/mailpassword:33 ../templates/rssframe:19
 #: ../templates/selfreg:32 ../templates/views/rheinlandbib/databasechoice:45
 msgid "Hinweis"
 msgstr "Hinweis"
@@ -1792,7 +1815,7 @@ msgstr "Import-Einstellungen"
 #: ../templates/views/rheinlandbib/searchframe:119
 #: ../templates/views/rheinlandbib/searchframe:83
 #: ../templates/views/rheinlandbib/searchframe_simple:73
-#: ../templates/views/richter/searchframe_simple:111
+#: ../templates/views/richter/searchframe_simple:119
 #: ../templates/views/xanten/searchframe:127
 #: ../templates/views/xanten/searchframe:91
 #: ../templates/views/xanten/searchframe_simple:81
@@ -1922,7 +1945,7 @@ msgstr "In allen Katalogen suchen"
 #: ../templates/views/rheinlandbib/searchframe:83
 #: ../templates/views/rheinlandbib/searchframe_simple:73
 #: ../templates/views/richter/searchframe:115
-#: ../templates/views/richter/searchframe_simple:111
+#: ../templates/views/richter/searchframe_simple:119
 #: ../templates/views/xanten/searchframe:127
 #: ../templates/views/xanten/searchframe:91
 #: ../templates/views/xanten/searchframe_simple:81
@@ -1971,7 +1994,7 @@ msgstr "In die Merkliste"
 #: ../templates/views/inst430/searchframe_simple:112
 #: ../templates/views/inst431/searchframe_simple:101
 #: ../templates/views/inst460/searchframe_simple:102
-#: ../templates/views/richter/searchframe_simple:69
+#: ../templates/views/richter/searchframe_simple:77
 msgid "In welchen Katalogen möchten Sie suchen"
 msgstr "In welchen Katalogen möchten Sie suchen"
 
@@ -2159,7 +2182,7 @@ msgstr "Kein prim&auml;rer RSS-Feed ausgew&auml;hlt"
 msgid "Keine gültige Aktion"
 msgstr "Keine gültige Aktion"
 
-#: ../modules/OpenBib/Admin.pm:1353
+#: ../modules/OpenBib/Admin.pm:1351
 msgid "Keine gültige Aktion oder Session"
 msgstr "Keine gültige Aktion oder Session"
 
@@ -2296,7 +2319,8 @@ msgstr "Leihfristende"
 msgid "Letzte 50 Neuaufnahmen"
 msgstr "Letzte 50 Neuaufnahmen"
 
-#: ../templates/login:29 ../templates/mailpassword:24 ../templates/selfreg:23
+#: ../templates/login:29 ../templates/login_circulation:29
+#: ../templates/mailpassword:24 ../templates/selfreg:23
 #: ../templates/selfreg_success:19
 msgid "Login"
 msgstr "Login"
@@ -2509,8 +2533,8 @@ msgstr "Los"
 #: ../templates/views/rheinlandbib/searchframe_simple:73
 #: ../templates/views/richter/searchframe:115
 #: ../templates/views/richter/searchframe:92
-#: ../templates/views/richter/searchframe_simple:105
-#: ../templates/views/richter/searchframe_simple:111
+#: ../templates/views/richter/searchframe_simple:113
+#: ../templates/views/richter/searchframe_simple:119
 #: ../templates/views/xanten/searchframe:123
 #: ../templates/views/xanten/searchframe:127
 #: ../templates/views/xanten/searchframe:85
@@ -2770,7 +2794,8 @@ msgid "P5000"
 msgstr "Anzahl Titel"
 
 #: ../templates/admin_login:33 ../templates/login:102 ../templates/login:69
-#: ../templates/selfreg:45 ../templates/userprefs:53
+#: ../templates/login_circulation:69 ../templates/selfreg:45
+#: ../templates/userprefs:53
 msgid "Passwort"
 msgstr "Passwort"
 
@@ -2942,7 +2967,7 @@ msgstr "Richter-Systematik"
 #: ../templates/views/kug/searchframe_simple:97
 #: ../templates/views/kwinter/searchframe_simple:93
 #: ../templates/views/rheinlandbib/searchframe_simple:85
-#: ../templates/views/richter/searchframe_simple:123
+#: ../templates/views/richter/searchframe_simple:131
 #: ../templates/views/xanten/searchframe_simple:93
 msgid "Rufen Sie hier die Ergebnisse früherer Recherchen auf"
 msgstr "Rufen Sie hier die Ergebnisse früherer Recherchen auf"
@@ -3211,6 +3236,10 @@ msgstr ""
 "Sie haben als Benutzer entweder keinen oder nicht den Admin-Benutzer "
 "eingegeben"
 
+#: ../templates/circulation_make_reserv:45
+msgid "Sie haben dieses Medium bereits vorgemerkt"
+msgstr "Sie haben dieses Medium bereits vorgemerkt"
+
 #: ../modules/OpenBib/Admin.pm:275
 msgid "Sie haben ein falsches Passwort eingegeben"
 msgstr "Sie haben ein falsches Passwort eingegeben"
@@ -3227,7 +3256,7 @@ msgstr ""
 "Sie haben entweder kein Passwort eingegeben oder die beiden Passworte "
 "stimmen nicht überein"
 
-#: ../modules/OpenBib/Login.pm:313
+#: ../modules/OpenBib/Login.pm:328
 msgid "Sie haben entweder kein Passwort oder keinen Loginnamen eingegeben"
 msgstr "Sie haben entweder kein Passwort oder keinen Loginnamen eingegeben"
 
@@ -3268,7 +3297,7 @@ msgstr "Sie haben keinen Profilnamen eingegeben!"
 msgid "Sie haben sich nicht authentifiziert."
 msgstr "Sie haben sich nicht authentifiziert."
 
-#: ../modules/OpenBib/Login.pm:316
+#: ../modules/OpenBib/Login.pm:331
 msgid ""
 "Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht "
 "erfolgreich authentifiziert werden"
@@ -3365,7 +3394,7 @@ msgstr ""
 "Sie können entweder durch entsprechende Auswahl in den insgesamt %1 "
 "einzelnen %2Katalogen%3 recherchieren oder auch sofort in allen zusammen."
 
-#: ../modules/OpenBib/Admin.pm:1268
+#: ../modules/OpenBib/Admin.pm:1266
 msgid "Sie müssen mindestens eine Beschreibung eingeben."
 msgstr "Sie müssen mindestens eine Beschreibung eingeben."
 
@@ -3481,7 +3510,8 @@ msgid "Sperre"
 msgstr "Sperre"
 
 #. (l)
-#: ../templates/helpframe_15:26 ../templates/login:23
+#: ../templates/circulation_make_reserv:22 ../templates/helpframe_15:26
+#: ../templates/login:23 ../templates/login_circulation:23
 #: ../templates/searchframe:29 ../templates/searchframe_simple:25
 #: ../templates/views/edz/searchframe:29
 #: ../templates/views/edz/searchframe_simple:25
@@ -4879,7 +4909,7 @@ msgstr "Umfang des KUG: %1 Titel in %2 Katalogen"
 msgid "Und-Verknüpfung innerhalb eines Suchfeldes"
 msgstr "Und-Verknüpfung innerhalb eines Suchfeldes"
 
-#: ../modules/OpenBib/Circulation.pm:287 ../modules/OpenBib/SelfReg.pm:186
+#: ../modules/OpenBib/Circulation.pm:373 ../modules/OpenBib/SelfReg.pm:186
 #: ../modules/OpenBib/UserPrefs.pm:366
 msgid "Unerlaubte Aktion"
 msgstr "Unerlaubte Aktion"
@@ -4888,13 +4918,13 @@ msgstr "Unerlaubte Aktion"
 msgid "Ungültige Aktion"
 msgstr "Ungültige Aktion"
 
-#: ../modules/OpenBib/Circulation.pm:92
+#: ../modules/OpenBib/Circulation.pm:98
 #: ../modules/OpenBib/DatabaseChoice.pm:99
 #: ../modules/OpenBib/DatabaseProfile.pm:97
 #: ../modules/OpenBib/DispatchQuery.pm:87
 #: ../modules/OpenBib/ExternalJump.pm:116 ../modules/OpenBib/FrameSet.pm:82
 #: ../modules/OpenBib/HeaderFrame.pm:88 ../modules/OpenBib/HelpFrame.pm:92
-#: ../modules/OpenBib/Leave.pm:82 ../modules/OpenBib/Login.pm:99
+#: ../modules/OpenBib/Leave.pm:82 ../modules/OpenBib/Login.pm:101
 #: ../modules/OpenBib/MailCollection.pm:97
 #: ../modules/OpenBib/MailPassword.pm:91
 #: ../modules/OpenBib/ManageCollection.pm:104
@@ -5008,6 +5038,14 @@ msgstr "Vorgemerkt"
 #: ../templates/search_showtitset:27 ../templates/search_showtitset:29
 msgid "Vorheriger Titel"
 msgstr "Vorheriger Titel"
+
+#: ../templates/circulation_make_reserv:58
+msgid "Vormerkung erfolgreich durchgef&uuml;hrt"
+msgstr "Vormerkung erfolgreich durchgef&uuml;hrt"
+
+#: ../templates/circulation_make_reserv:37
+msgid "Vormerkung nicht m&ouml;glich"
+msgstr "Vormerkung nicht m&ouml;glich"
 
 #: ../templates/circulation:35 ../templates/circulation_orders:35
 #: ../templates/circulation_remind:35 ../templates/circulation_reserv:35
@@ -5211,7 +5249,7 @@ msgstr "Zugemailte Merkliste"
 #: ../templates/views/rheinlandbib/searchframe:55
 #: ../templates/views/rheinlandbib/searchframe_simple:91
 #: ../templates/views/richter/searchframe:68
-#: ../templates/views/richter/searchframe_simple:129
+#: ../templates/views/richter/searchframe_simple:137
 #: ../templates/views/xanten/searchframe:63
 #: ../templates/views/xanten/searchframe_simple:99
 msgid "Zur Trefferliste"

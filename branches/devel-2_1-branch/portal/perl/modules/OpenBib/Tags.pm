@@ -148,15 +148,23 @@ sub handler {
     my $user = new OpenBib::User();
 
     my $userid = $user->get_userid_of_session($session->{ID});
-    
+
+    unless($userid){
+        # Aufruf-URL
+        my $return_url = $r->parsed_uri->unparse;
+
+        # Return-URL in der Session abspeichern
+
+        $session->set_returnurl($return_url);
+
+        $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1");
+
+        return OK;
+    }
+
     my $loginname = $user->get_username_for_userid($userid);
     
     if ($do_add){
-
-        if (!$userid){
-            OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
-            return OK;
-        }
 
         $logger->debug("Aufnehmen/Aendern der Tags: $tags");
         
@@ -173,11 +181,8 @@ sub handler {
     }
     elsif ($do_del){
 
-        if (!$userid){
-            OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
-            return OK;
-        }
-
+        $logger->debug("Loeschen der Tags $tags von $titdb:$titid");
+        
         $user->del_tags({
             tags      => $tags,
             titid     => $titid,
@@ -190,10 +195,6 @@ sub handler {
 
     }
     elsif ($do_change){
-        if (!$userid){
-            OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
-            return OK;
-        }
         
         $logger->debug("Aendern des Tags $oldtag in $newtag");
         
@@ -215,11 +216,6 @@ sub handler {
     
     if ($edit_usertags){
 
-        if (!$userid){
-            OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
-            return OK;
-        }
-
         my $targettype=$user->get_targettype_of_session($session->{ID});
 
         # TT-Data erzeugen
@@ -238,11 +234,6 @@ sub handler {
     }
 
     if ($show_usertags){
-
-        if (!$userid){
-            OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
-            return OK;
-        }
 
         my $targettype=$user->get_targettype_of_session($session->{ID});
 

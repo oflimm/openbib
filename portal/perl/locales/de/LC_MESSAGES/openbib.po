@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2007-09-30 22:25+0200\n"
-"Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
-"Language-Team:  <l10n@openbib.org>\n"
+"PO-Revision-Date: 2007-10-01 10:03+0200\n"
+"Last-Translator: \n"
+"Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -724,10 +724,10 @@ msgstr "Eine Bearbeitung ist nur bei 'HTML' m&ouml;glich"
 #: ../templates/circulation_make_reserv:39
 msgid ""
 "Eine Vormerkung auf das von Ihnen gew&uuml;nsche\n"
-"Medium ist leider nicht m&ouml;glich!>"
+"Medium ist leider nicht m&ouml;glich!"
 msgstr ""
 "Eine Vormerkung auf das von Ihnen gew&uuml;nsche\n"
-"Medium ist leider nicht m&ouml;glich!>"
+"Medium ist leider nicht m&ouml;glich!"
 
 #: ../templates/helpframe_11:18 ../templates/helpframe_12:22
 #: ../templates/helpframe_13:18 ../templates/helpframe_15:32
@@ -866,7 +866,7 @@ msgstr "Erscheinungsverlauf  "
 msgid "Erweitere Recherchemaske"
 msgstr "Erweitere Recherchemaske"
 
-#: ../modules/OpenBib/Admin.pm:1280
+#: ../modules/OpenBib/Admin.pm:1282
 msgid "Es existiert bereits ein Anmeldeziel unter diesem Namen"
 msgstr "Es existiert bereits ein Anmeldeziel unter diesem Namen"
 
@@ -2182,7 +2182,7 @@ msgstr "Kein prim&auml;rer RSS-Feed ausgew&auml;hlt"
 msgid "Keine gültige Aktion"
 msgstr "Keine gültige Aktion"
 
-#: ../modules/OpenBib/Admin.pm:1351
+#: ../modules/OpenBib/Admin.pm:1353
 msgid "Keine gültige Aktion oder Session"
 msgstr "Keine gültige Aktion oder Session"
 
@@ -3394,7 +3394,7 @@ msgstr ""
 "Sie können entweder durch entsprechende Auswahl in den insgesamt %1 "
 "einzelnen %2Katalogen%3 recherchieren oder auch sofort in allen zusammen."
 
-#: ../modules/OpenBib/Admin.pm:1266
+#: ../modules/OpenBib/Admin.pm:1268
 msgid "Sie müssen mindestens eine Beschreibung eingeben."
 msgstr "Sie müssen mindestens eine Beschreibung eingeben."
 

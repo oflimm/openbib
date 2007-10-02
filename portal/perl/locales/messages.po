@@ -492,7 +492,7 @@ msgstr ""
 #: ../templates/circulation_make_reserv:39
 msgid ""
 "Eine Vormerkung auf das von Ihnen gew&uuml;nsche\n"
-"Medium ist leider nicht m&ouml;glich!>"
+"Medium ist leider nicht m&ouml;glich!"
 msgstr ""
 
 #: ../templates/helpframe_11:18 ../templates/helpframe_12:22 ../templates/helpframe_13:18 ../templates/helpframe_15:32 ../templates/searchframe:42 ../templates/searchframe_simple:38 ../templates/views/edz/searchframe:42 ../templates/views/edz/searchframe_simple:38 ../templates/views/gdonck/searchframe:42 ../templates/views/gdonck/searchframe_simple:38 ../templates/views/gleuel/searchframe:42 ../templates/views/gleuel/searchframe_simple:38 ../templates/views/inst404/searchframe:42 ../templates/views/inst404/searchframe_simple:38 ../templates/views/inst405/searchframe:42 ../templates/views/inst405/searchframe_simple:38 ../templates/views/inst406/searchframe:42 ../templates/views/inst406/searchframe_simple:38 ../templates/views/inst410/searchframe:42 ../templates/views/inst410/searchframe_simple:38 ../templates/views/inst411/searchframe:42 ../templates/views/inst411/searchframe_simple:38 ../templates/views/inst412/searchframe:42 ../templates/views/inst412/searchframe_simple:38 ../templates/views/inst413/searchframe:42 ../templates/views/inst413/searchframe_simple:38 ../templates/views/inst415/searchframe:42 ../templates/views/inst415/searchframe_simple:38 ../templates/views/inst419/searchframe:42 ../templates/views/inst420/searchframe:42 ../templates/views/inst420/searchframe_simple:38 ../templates/views/inst425/searchframe:42 ../templates/views/inst425/searchframe_simple:38 ../templates/views/inst426/searchframe:42 ../templates/views/inst426/searchframe_simple:38 ../templates/views/inst430/searchframe:42 ../templates/views/inst430/searchframe_simple:38 ../templates/views/inst431/searchframe:42 ../templates/views/inst431/searchframe_simple:38 ../templates/views/inst460/searchframe:42 ../templates/views/inst460/searchframe_simple:38 ../templates/views/inst501/searchframe:42 ../templates/views/kapsel/helpframe_14:23 ../templates/views/kapsel/helpframe_15:23 ../templates/views/kapsel/helpframe_16:23 ../templates/views/kapsel/search_browse_tit:19 ../templates/views/kapsel/searchframe:19 ../templates/views/kapsel/searchframe_simple:19 ../templates/views/kempen/searchframe:42 ../templates/views/kempen/searchframe_simple:38 ../templates/views/kevelaer/searchframe:42 ../templates/views/kevelaer/searchframe_simple:38 ../templates/views/kug/searchframe:126 ../templates/views/kug/searchframe_simple:32 ../templates/views/kwinter/searchframe:42 ../templates/views/kwinter/searchframe_simple:38 ../templates/views/landschaft/search_browse_tit:19 ../templates/views/landschaft/searchframe:19 ../templates/views/landschaft/searchframe_simple:19 ../templates/views/portrait/search_browse_tit:19 ../templates/views/portrait/searchframe:26 ../templates/views/portrait/searchframe_simple:26 ../templates/views/rheinlandbib/searchframe:35 ../templates/views/rheinlandbib/searchframe_simple:31 ../templates/views/richter/searchframe:47 ../templates/views/richter/searchframe_simple:38 ../templates/views/xanten/searchframe:42 ../templates/views/xanten/searchframe_simple:38
@@ -555,7 +555,7 @@ msgstr ""
 msgid "Erweitere Recherchemaske"
 msgstr ""
 
-#: ../modules/OpenBib/Admin.pm:1280
+#: ../modules/OpenBib/Admin.pm:1282
 msgid "Es existiert bereits ein Anmeldeziel unter diesem Namen"
 msgstr ""
 
@@ -958,7 +958,7 @@ msgstr ""
 msgid "Keine gültige Aktion"
 msgstr ""
 
-#: ../modules/OpenBib/Admin.pm:1351
+#: ../modules/OpenBib/Admin.pm:1353
 msgid "Keine gültige Aktion oder Session"
 msgstr ""
 
@@ -1559,7 +1559,7 @@ msgstr ""
 msgid "Sie können entweder durch entsprechende Auswahl in den insgesamt %1 einzelnen %2Katalogen%3 recherchieren oder auch sofort in allen zusammen."
 msgstr ""
 
-#: ../modules/OpenBib/Admin.pm:1266
+#: ../modules/OpenBib/Admin.pm:1268
 msgid "Sie müssen mindestens eine Beschreibung eingeben."
 msgstr ""
 

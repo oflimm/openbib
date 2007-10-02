@@ -16,7 +16,7 @@
   <body>
 
 <div id="langchoice">
-<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %]#perskug"><img src="/images/openbib/info.png"></a>&nbsp;
+<!--<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %]#perskug"><img src="/images/openbib/info.png"></a>&nbsp;-->
 [% IF config.lang.size > 1 %]
 [%   FOREACH l IN config.lang %]
 <a href="[% config.frameset_loc %]?headerframeurl=[% config.headerframe_loc %];bodyframeurl=[% config.searchframe_loc %];sessionID=[% sessionID %];setmask=simple;l=[% l %]" target="_parent"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
@@ -37,7 +37,7 @@
 <tr><th>[% msg.maketext("Vormerkung nicht m&ouml;glich") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:9pt">
 [% msg.maketext("Eine Vormerkung auf das von Ihnen gew&uuml;nsche
-Medium ist leider nicht m&ouml;glich!>") %]
+Medium ist leider nicht m&ouml;glich!") %]
 <p />
 [% msg.maketext("Grund:") %]
 <p/ >

@@ -22,6 +22,7 @@ Version 2.1:
 - Optimierung der kategorie-basierten Drill-Downs. Die kategorisierten
   Inhalte werden nun direkt vollstaendig aus dem Xapian-Index geholt.
 - Optimierung des Suchwolken-Algorithmus.
+- Nachgeschaltete Authentifizierung bei Vormerkungen und Tagging
 
 Version 2.0:
 

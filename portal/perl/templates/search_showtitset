@@ -65,8 +65,46 @@
 
 [% PROCESS common/subtemplate name="visible_categories_titset" %]
 
-[%-
+[%
+  css_classes = [
+        'fast-nicht-genutzt',
+        'nicht-sehr-genutzt',
+        'etwas-genutzt',
+        'genutzt',
+        'sehr-viel-genutzt',
+        'ultra-genutzt',
+        'am-meisten-genutzt',
+  ];
+%]
 
+[%
+   all_tags = user.get_all_tags_of_tit({ titid => titidn, titdb => database });
+
+   IF config.social_tagging ;
+
+     IF all_tags.size > 0 ;
+
+     alltags_cloud = "<ol class=\"cloud\">\n" ;
+
+     FOREACH thisitem IN all_tags ;
+       item          = thisitem.name;
+       itemcount     = thisitem.count;
+       classnr       = thisitem.class;
+       itemid        = thisitem.id;
+       itemclass     = css_classes.$classnr;
+
+       alltags_cloud = "${alltags_cloud}\n<li class=\"${itemclass}\"><span>${itemcount} Titel sind verkn&uuml;pft mit dem Tag </span><a href=\"${config.tags_loc}?sessionID=${sessionID};searchtitoftag=${itemid}\" class=\"tag\" title=\"${itemcount} Titel sind verkn&uuml;pft mit dem Tag ${item}\">${item}</a></li>" ;
+     END ;
+     alltags_cloud = "${alltags_cloud}\n</ol>" ;
+     cloud_item = {
+                    content => alltags_cloud,
+                  } ;
+     normset.${"T4000"} = [ cloud_item ];
+   END ;
+END ;
+%]
+
+[%-
 FOREACH category IN categories;
     FOREACH item IN normset.$category;
     content = item.content;
@@ -177,6 +215,10 @@ FOREACH category IN categories;
              content = "${content} Ebenso können Sie eine Mail an die <a href=\"http://www.ub.uni-koeln.de/res/listen_e_mail/ortsleihe/index_ger.html\" target=\"_blank\">Ortsleihe</a> schicken";
          END;
 
+    CASE "T4000";
+         # Dummy-Eintrag, damit dieser Eintrag nicht vom higlightquery
+         # erwischt wird
+         content   = content ;
 
     CASE "T5001";
          content   = "<img style=\"vertical-align:bottom\" src=\"/images/openbib/2rightarrow.png\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};supertit=${normset.id};generalsearch=supertit\"><span style=\"font-size:1.4em\">${content}</span></a>";
@@ -264,20 +306,6 @@ Nutzer, die diesen Titel ausgew&auml;hlt haben, interessierten sich auch f&uuml;
 [% END %]
 
 <!-- Begin: Tagging -->
-[%
-  css_classes = [
-        'fast-nicht-genutzt',
-        'nicht-sehr-genutzt',
-        'etwas-genutzt',
-        'genutzt',
-        'sehr-viel-genutzt',
-        'ultra-genutzt',
-        'am-meisten-genutzt',
-  ];
-%]
-[%
-  all_tags = user.get_all_tags_of_tit({ titid => titidn, titdb => database });
-%]
 <p />
 <table width="100%">
 <tr><th>Eigene Tags vergeben&nbsp;<a href="#newtags"><img src="/images/openbib/expand.png" alt="Alle Tags anzeigen" onclick="expandContent('newtags',this); return false;" /></a></th></tr>
@@ -469,39 +497,8 @@ verkn&uuml;pft mit dem Tag </span><a onclick="insert_tag(event); return false;" 
 
 [%END %]
 
-
 </td></tr>
 </table>
-
-[% IF config.social_tagging %]
-
-[%   IF all_tags.size > 0 %]
-<p />
-<table width="100%">
-<tr><th>Von Nutzern vergebene Tags&nbsp;<a href="#alltags"><img src="/images/openbib/expand.png" alt="Alle Tags anzeigen" onclick="expandContent('alltags',this); return false;" /></a></th></tr>
-<tr><td id="alltags" class="boxedclear" style="display:none;">
-<!-- Beginn Tag-Cloud -->
-
-<ol class="cloud">
-[%- FOREACH thisitem IN all_tags -%]
-[% item      = thisitem.name;
-   itemcount = thisitem.count;
-   classnr   = thisitem.class;
-   itemid    = thisitem.id;
-   itemclass = css_classes.$classnr;
-%]
-<li class="[% itemclass %]"><span>[% itemcount %] Titel sind
-verkn&uuml;pft mit dem Tag </span><a href="[% config.tags_loc %]?sessionID=[% sessionID %];searchtitoftag=[% itemid %]" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
-[% END %]
-</ol>
-
-</td></tr>
-</table>
-
-[%   END %]
-
-[% END %]
-
 <!-- End: Tagging -->
 
 <!-- Begin: Reviews -->

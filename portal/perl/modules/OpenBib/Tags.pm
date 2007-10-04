@@ -149,7 +149,7 @@ sub handler {
 
     my $userid = $user->get_userid_of_session($session->{ID});
 
-    unless($userid){
+    unless($userid || $searchtitoftag){
         # Aufruf-URL
         my $return_url = $r->parsed_uri->unparse;
 
@@ -164,7 +164,7 @@ sub handler {
 
     my $loginname = $user->get_username_for_userid($userid);
     
-    if ($do_add){
+    if ($do_add && $userid){
 
         $logger->debug("Aufnehmen/Aendern der Tags: $tags");
         
@@ -179,7 +179,7 @@ sub handler {
         $r->internal_redirect("http://$config->{servername}$config->{search_loc}?sessionID=$session->{ID};database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
         return OK;
     }
-    elsif ($do_del){
+    elsif ($do_del && $userid){
 
         $logger->debug("Loeschen der Tags $tags von $titdb:$titid");
         
@@ -194,7 +194,7 @@ sub handler {
         return OK;
 
     }
-    elsif ($do_change){
+    elsif ($do_change && $userid){
         
         $logger->debug("Aendern des Tags $oldtag in $newtag");
         
@@ -214,7 +214,7 @@ sub handler {
 
     }
     
-    if ($edit_usertags){
+    if ($edit_usertags && $userid){
 
         my $targettype=$user->get_targettype_of_session($session->{ID});
 
@@ -233,7 +233,7 @@ sub handler {
         OpenBib::Common::Util::print_page($config->{tt_tags_editusertags_tname},$ttdata,$r);
     }
 
-    if ($show_usertags){
+    if ($show_usertags && $userid){
 
         my $targettype=$user->get_targettype_of_session($session->{ID});
 

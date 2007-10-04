@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2007-10-01 10:03+0200\n"
-"Last-Translator: \n"
-"Language-Team:  <en@li.org>\n"
+"PO-Revision-Date: 2007-10-04 22:49+0200\n"
+"Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
+"Language-Team:  <l10n@openbib.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -29,7 +29,7 @@ msgstr "${category}"
 #: ../templates/database/portrait/search_showtitset:136
 #: ../templates/managecollection_tit_as_html:51
 #: ../templates/managecollection_tit_as_text:34
-#: ../templates/search_showmulttitset:93 ../templates/search_showtitset:201
+#: ../templates/search_showmulttitset:93 ../templates/search_showtitset:243
 msgid "${thiscategory}"
 msgstr "${thiscategory}"
 
@@ -330,7 +330,7 @@ msgstr "Ausleih-Einstellungen"
 #: ../templates/database/portrait/search_showtitset:162
 #: ../templates/managecollection_tit_as_html:76
 #: ../templates/managecollection_tit_as_html_simple:60
-#: ../templates/search_showmulttitset:124 ../templates/search_showtitset:236
+#: ../templates/search_showmulttitset:124 ../templates/search_showtitset:278
 msgid "Ausleihe/Exemplare"
 msgstr "Ausleihe/Exemplare"
 
@@ -425,7 +425,7 @@ msgstr "Beschreibung"
 #: ../templates/managecollection_tit_as_html:61
 #: ../templates/managecollection_tit_as_html_simple:45
 #: ../templates/managecollection_tit_as_text:39
-#: ../templates/search_showmulttitset:103 ../templates/search_showtitset:215
+#: ../templates/search_showmulttitset:103 ../templates/search_showtitset:257
 msgid "Besitzende Bibliothek"
 msgstr "Besitzende Bibliothek"
 
@@ -441,7 +441,7 @@ msgstr "Bestands-&Uuml;berpr&uuml;fungs-URL"
 #: ../templates/database/einbaende/search_showtitset:137
 #: ../templates/managecollection_tit_as_html:61
 #: ../templates/managecollection_tit_as_html_simple:45
-#: ../templates/search_showmulttitset:103 ../templates/search_showtitset:215
+#: ../templates/search_showmulttitset:103 ../templates/search_showtitset:257
 msgid "Bestandsverlauf"
 msgstr "Bestandsverlauf"
 
@@ -866,7 +866,7 @@ msgstr "Erscheinungsverlauf  "
 msgid "Erweitere Recherchemaske"
 msgstr "Erweitere Recherchemaske"
 
-#: ../modules/OpenBib/Admin.pm:1282
+#: ../modules/OpenBib/Admin.pm:1280
 msgid "Es existiert bereits ein Anmeldeziel unter diesem Namen"
 msgstr "Es existiert bereits ein Anmeldeziel unter diesem Namen"
 
@@ -922,7 +922,7 @@ msgstr "Es wurde kein Suchkriterium eingegeben."
 #: ../modules/OpenBib/Search.pm:1289 ../modules/OpenBib/Search.pm:1464
 #: ../modules/OpenBib/Search.pm:1651 ../modules/OpenBib/Search.pm:283
 #: ../modules/OpenBib/Search.pm:394 ../modules/OpenBib/Search.pm:907
-#: ../modules/OpenBib/Tags.pm:355
+#: ../modules/OpenBib/Tags.pm:346
 msgid "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
 msgstr "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
 
@@ -1134,7 +1134,7 @@ msgid "Geben Sie hier den Notationsanfang ein"
 msgstr "Geben Sie hier den Notationsanfang ein"
 
 #: ../templates/search_showswtindex:75 ../templates/search_showtitlist:178
-#: ../templates/search_showtitset:562
+#: ../templates/search_showtitset:611
 #: ../templates/views/kapsel/search_showtitlist:168
 #: ../templates/virtualsearch_showswtindex:46
 msgid "Geben Sie hier den Schlagwortanfang ein"
@@ -2044,7 +2044,7 @@ msgstr "Institutionen"
 #: ../templates/database/einbaende/search_showtitset:137
 #: ../templates/managecollection_tit_as_html:61
 #: ../templates/managecollection_tit_as_html_simple:45
-#: ../templates/search_showmulttitset:103 ../templates/search_showtitset:215
+#: ../templates/search_showmulttitset:103 ../templates/search_showtitset:257
 msgid "Inventarnummer"
 msgstr "Inventarnummer"
 
@@ -2182,7 +2182,7 @@ msgstr "Kein prim&auml;rer RSS-Feed ausgew&auml;hlt"
 msgid "Keine gültige Aktion"
 msgstr "Keine gültige Aktion"
 
-#: ../modules/OpenBib/Admin.pm:1353
+#: ../modules/OpenBib/Admin.pm:1351
 msgid "Keine gültige Aktion oder Session"
 msgstr "Keine gültige Aktion oder Session"
 
@@ -3030,7 +3030,7 @@ msgstr "Schlagworte"
 msgid "Schlagwortindex"
 msgstr "Schlagwortindex"
 
-#: ../templates/search_showtitset:561
+#: ../templates/search_showtitset:610
 msgid "Schlagwortindex diese Katalogs"
 msgstr "Schlagwortindex diese Katalogs"
 
@@ -3394,7 +3394,7 @@ msgstr ""
 "Sie können entweder durch entsprechende Auswahl in den insgesamt %1 "
 "einzelnen %2Katalogen%3 recherchieren oder auch sofort in allen zusammen."
 
-#: ../modules/OpenBib/Admin.pm:1268
+#: ../modules/OpenBib/Admin.pm:1266
 msgid "Sie müssen mindestens eine Beschreibung eingeben."
 msgstr "Sie müssen mindestens eine Beschreibung eingeben."
 
@@ -3428,7 +3428,7 @@ msgstr "Sigel"
 #: ../templates/database/landschaft/search_showtitset:147
 #: ../templates/database/portrait/search_showtitset:147
 #: ../templates/managecollection_tit_as_html:61
-#: ../templates/search_showmulttitset:103 ../templates/search_showtitset:215
+#: ../templates/search_showmulttitset:103 ../templates/search_showtitset:257
 #: ../templates/searchframe_query:35 ../templates/userprefs:182
 #: ../templates/views/einbaende/searchframe_simple:106
 #: ../templates/views/inst501/searchframe_query:35
@@ -3591,7 +3591,7 @@ msgstr "Sprung zur Trefferliste im KUG"
 #: ../templates/database/einbaende/search_showtitset:248
 #: ../templates/managecollection_tit_as_html:61
 #: ../templates/managecollection_tit_as_html_simple:45
-#: ../templates/search_showmulttitset:103 ../templates/search_showtitset:215
+#: ../templates/search_showmulttitset:103 ../templates/search_showtitset:257
 msgid "Standort"
 msgstr "Standort"
 
@@ -3664,7 +3664,7 @@ msgid "Suche starten"
 msgstr "Suche starten"
 
 #: ../templates/search_showswtindex:75 ../templates/search_showtitlist:178
-#: ../templates/search_showtitset:562
+#: ../templates/search_showtitset:611
 #: ../templates/views/einbaende/searchframe_simple:30
 #: ../templates/views/kapsel/search_showtitlist:168
 #: ../templates/views/kapsel/searchframe:61
@@ -4660,20 +4660,25 @@ msgstr "TOC / TIFF"
 msgid "T3003"
 msgstr "TOC / PDF"
 
-#: ../templates/database/einbaende/visible_categories_titset:24
 #: ../templates/database/inst001/visible_categories_titset:111
 #: ../templates/visible_categories_titset:111
+msgid "T4000"
+msgstr "Nutzer-Tags"
+
+#: ../templates/database/einbaende/visible_categories_titset:24
+#: ../templates/database/inst001/visible_categories_titset:112
+#: ../templates/visible_categories_titset:112
 msgid "T5001"
 msgstr "Anzahl Gesamttitel"
 
 #: ../templates/database/einbaende/visible_categories_titset:25
-#: ../templates/database/inst001/visible_categories_titset:112
-#: ../templates/visible_categories_titset:112
+#: ../templates/database/inst001/visible_categories_titset:113
+#: ../templates/visible_categories_titset:113
 msgid "T5002"
 msgstr "Anzahl Bände/Stücke"
 
-#: ../templates/database/inst001/visible_categories_titset:113
-#: ../templates/visible_categories_titset:113
+#: ../templates/database/inst001/visible_categories_titset:114
+#: ../templates/visible_categories_titset:114
 msgid "T5100"
 msgstr "Zählung"
 

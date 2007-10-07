@@ -112,7 +112,18 @@ sub handler {
     }
 
     my $return_url = $session->get_returnurl();
-    
+
+    my $userid = $user->get_userid_of_session($session->{ID});
+
+    # Wenn die Session schon authentifiziert ist, dann wird
+    # wird in die Benutzereinstellungen gesprungen
+    if ($userid){
+
+        $r->internal_redirect("http://$config->{servername}$config->{userprefs_loc}?sessionID=$session->{ID};view=$view;action=showfields");
+
+        return OK;
+    }
+
     if ($do_login) {
         my $logintargets_ref = $user->get_logintargets();
 

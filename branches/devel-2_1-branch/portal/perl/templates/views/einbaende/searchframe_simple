@@ -26,9 +26,6 @@
 
   <body>
 
-  <!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
-  <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
-
 <ul class="tabbingmenu">
    <li><a class="active" href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Suchen") %]</a></li>
    <li><a                href="http://einbandsammlung.ub.uni-koeln.de/opendia/viewer?collection=einbaende;action=browse;browsecat=M0101;sessionID=[% sessionID %];remoteview=[% view %];remotehost=[% config.servername %];view=kug">[% msg.maketext("Bl&auml;ttern") %]</a></li>
@@ -131,6 +128,9 @@
 [% msg.maketext("Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter [_1] kug@ub.uni-koeln.de [_2] erreichen.","<a href=\"http://www.ub.uni-koeln.de/usb-cgi/zms_makeEmail.pl?adr0=kug\" target=\"_blank\">","</a>") %]
 
 </div>
+
+  <!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
+  <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
 
 <p />
 

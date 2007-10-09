@@ -15,9 +15,6 @@
 
   <body>
 
-  <!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
-  <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
-
 [% IF config.testsystem %]
 [% PROCESS common/subtemplate name="testsystem_info" %]
 [% END %]
@@ -121,6 +118,9 @@ nutzen, bei der die Verwendung von JavaScript minimiert ist.","<a href=\"${start
 </center>
 
 </div>
+
+  <!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
+  <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
 
 <p />
 

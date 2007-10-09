@@ -15,9 +15,6 @@
 
   <body>
 
-  <!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
-  <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
-
 [%
   viewdbs = [];
   IF view ;
@@ -84,6 +81,9 @@
 <p />
 
 </div>
+
+  <!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
+  <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
 
 <p />
 

@@ -26,6 +26,9 @@
 
   <body>
 
+  <!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
+  <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
+
 <ul class="tabbingmenu">
    <li><a class="active" href="[% config.searchframe_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Suchen") %]</a></li>
    <li><a                href="http://einbandsammlung.ub.uni-koeln.de/opendia/viewer?collection=einbaende;action=browse;browsecat=M0101;sessionID=[% sessionID %];remoteview=[% view %];remotehost=[% config.servername %];view=kug">[% msg.maketext("Bl&auml;ttern") %]</a></li>

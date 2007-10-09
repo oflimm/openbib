@@ -15,9 +15,6 @@
 
   <body>
 
-  <!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
-  <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
-
 [% IF show_corporate_banner %]
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 [% END %]
@@ -147,5 +144,8 @@
 </div>
 
 <p />
+
+  <!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
+  <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
 
 [% PROCESS common/subtemplate name="std_footer" %]

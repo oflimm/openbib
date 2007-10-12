@@ -841,7 +841,7 @@ tt_connector_digibib_result_start_tname  => 'connector_digibib_result_start',
 			 '0010' => 1, # Fremdnummer
 			 '0011' => 1, # Lokale ID
 			 '0014' => 1, # Signatur (in mex vorhanden)
-			 '0015' => 1, # Sprache
+			 #'0015' => 1, # Sprache
 			 '0016' => 1, # Standort (in mex vorhanden)
 			 '0027' => 1, # Art des Werkes (V oder Leer = Verfasser, S=Sachtitelwerk, U=Urheberwerk)
 			 '0028' => 1, # Bandkennzeichen (Leer = Stuecktitel, B = Band, G = Gesamtwerk/Ueberordnung)

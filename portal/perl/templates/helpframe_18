@@ -70,7 +70,7 @@
    itemclass = css_classes.$classnr;
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel sind 
-verkn&uuml;pft mit </span><a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=sql;verf=%22[% item.replace('"','') | uri %]%22;database=[% database %];searchprofile=1" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% item %]">[% item %]</a></li>
+verkn&uuml;pft mit </span><a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=sql;verf=%22[% item.replace('"','') %]%22;database=[% database %];searchprofile=1" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

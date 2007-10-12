@@ -1083,7 +1083,7 @@ while (my $line=<IN>){
 		  push @{$normdata_ref->{mart}}, $content;
 		}
 
-		if ($category eq "0516"){ # Sprache
+		if ($category eq "0015"){ # Sprache
 		  push @{$normdata_ref->{spr}}, $content;
 		}
 

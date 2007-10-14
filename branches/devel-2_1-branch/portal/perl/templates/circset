@@ -20,11 +20,9 @@
      ELSE ;
         IF database == 'inst001' || database == 'zbmed' || database == 'poetica' ;
            mex.Ausleihurl = "${mex.Ausleihurl}?Login=sisis&Query=0000=${normset.id}";
-        ELSE ;
-           mex.Ausleihurl = "${mex.Ausleihurl}&KatKeySearch=${normset.id}";
         END ;
      END ;
 -%]
-<tr align="center"><td><a href="[% mex.Bibinfourl %]" target="_blank"><strong>[% mex.Bibliothek.full %]</strong></a></td><td>[% mex.Standort %]</td><td><strong>[% mex.Signatur %]</strong></td><td><strong>[% mex.Status %]</strong></td><td class="circurl"><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% config.redirect_loc %]/[% sessionID %]/550/[% mex.Ausleihurl %]">[% msg.maketext("Weiter") %]</a></td></tr>
+<tr align="center"><td><a href="[% mex.Bibinfourl %]" target="_blank"><strong>[% mex.Bibliothek.full %]</strong></a></td><td>[% mex.Standort %]</td><td><strong>[% mex.Signatur %]</strong></td><td><strong>[% mex.Status %]</strong></td><td class="circurl">[% IF mex.Ausleihurl %]<img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% config.redirect_loc %]/[% sessionID %]/550/[% mex.Ausleihurl %]">[% msg.maketext("Weiter") %]</a>[% ELSE %][% IF mex.StatusCode != 0 %]<a href="[% config.circulation_loc %]?sessionID=[% sessionID %];action=make_reservation;mnr=[% mex.Mediennr %];zst=[% mex.Zweigstelle %];aort=[% mex.Ausgabeort %];validtarget=[% database %]" title="Titel vormerken">Vormerken</a>[% ELSE %]Keine Aktion m&ouml;glich[% END %][% END %]</td></tr>
 [% END %]
 </table>

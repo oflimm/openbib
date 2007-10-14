@@ -99,7 +99,7 @@
      cloud_item = {
                     content => alltags_cloud,
                   } ;
-     normset.${"T4000"} = [ cloud_item ];
+     normset.${"T4500"} = [ cloud_item ];
    END ;
 END ;
 %]
@@ -215,7 +215,7 @@ FOREACH category IN categories;
              content = "${content} Ebenso können Sie eine Mail an die <a href=\"http://www.ub.uni-koeln.de/res/listen_e_mail/ortsleihe/index_ger.html\" target=\"_blank\">Ortsleihe</a> schicken";
          END;
 
-    CASE "T4000";
+    CASE "T4500";
          # Dummy-Eintrag, damit dieser Eintrag nicht vom higlightquery
          # erwischt wird
          content   = content ;

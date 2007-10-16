@@ -60,7 +60,7 @@ sub authenticate_olws_user {
             -> proxy($circcheckurl);
 
     my $result = $soap->authenticate_user(
-        SOAP::Data->name(paramaters  =>\SOAP::Data->value(
+        SOAP::Data->name(parameter  =>\SOAP::Data->value(
             SOAP::Data->name(username => $username)->type('string'),
             SOAP::Data->name(password => $pin)->type('string'),
             SOAP::Data->name(database => $circdb)->type('string')))

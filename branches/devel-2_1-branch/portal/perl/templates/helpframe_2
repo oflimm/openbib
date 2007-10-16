@@ -40,7 +40,7 @@ Migration auf eine neue Version unseres integrierten
 Bibliothekssystems wird dieser Web-OPAC jedoch nicht mehr
 angeboten. Deswegen hat der KUG diese Funktion &uuml;bernommen.  Dies
 hat den Vorteil, dass Nutzer nach der Recherche f&uuml;r Vormerkungen
-nicht mehr in einen andere Anwendung wechseln m&uuml;ssen.
+nicht mehr in eine andere Anwendung wechseln m&uuml;ssen.
 </p>
 
 <h3>Kategorie-basierte Suchverfeinerungen (Drill-Downs)</h3>
@@ -54,21 +54,21 @@ angezeigte Treffermenge bei Bedarf einzugrenzen.  </p>
 
 <h3>Social-Tagging</h3>
 
-<p>D.h. die von Nutzern vergeben offentlichen Tags werden nun allen
-Nutzern angezeigt. Damit besteht der Zugriff auf inhaltlich
-zusammenh&auml;ngende Titel</p>
+<p>D.h. die von Nutzern vergebenen &ouml;ffentlichen Tags werden nun
+allen Nutzern angezeigt. Damit besteht &uuml;ber die Tags ein
+Zugriff auf inhaltlich benachbarte Titel</p>
 
 <h3>Kontextsensitive Hilfe</h3>
 
 <p> Wir haben begonnen, eine kontextbezogene Hilfe in den KUG
-einzubauen.  Diese erkennen Sie an einem Fragezeichen am rechten
-Bildschirmrand (auf H&ouml;he der "Reiter"). &Uuml;ber dieses
-Fragezeichen k&ouml;nnen Sie zielgenau in den entsprechenden Abschnitt
-der Hilfeseite gelangen.  </p>
+einzubauen.  Diese erkennen Sie an einem Fragezeichen <img
+src="/images/openbib/info.png" /> am rechten Bildschirmrand. &Uuml;ber
+dieses Fragezeichen k&ouml;nnen Sie zielgenau in den entsprechenden
+Abschnitt der Hilfeseite gelangen.  </p>
 
 <h3>Such-Wolken</h3>
 
-<p> Die von Nutzern verwendenten Suchbegriffe bei der Recherche werden
+<p> Die von Nutzern verwendeten Suchbegriffe bei der Recherche werden
 nun f&uuml;r jede Spezial- (Instituts-) Sicht ausgewertet und in Form
 einer Wolke dargestellt. Diese finden Sie unter &Uuml;bersichten ->
 Wolken -> Suchbegriffe.  </p>
@@ -77,9 +77,10 @@ Wolken -> Suchbegriffe.  </p>
 
 <p>Einzelne Titel-S&auml;tze k&ouml;nnen nun unter einem einheitlichen
 URL verlinkt werden - &auml;hnlich Blog-Eintr&auml;gen. D.h. bei einer
-Volltitelanzeige finden Sie ein neues Icon. Wenn Sie darauf klicken,
-&ouml;ffnet sich in einem neuen Fenster der verlinkbare permanente URL
-zu diesem Titel in dieser Sicht.  </p>
+Volltitelanzeige finden Sie ein neues Icon <img
+src="/images/openbib/3d-file-blue-permalink.png" border="0" />. Wenn
+Sie darauf klicken, &ouml;ffnet sich in einem neuen Fenster der
+verlinkbare permanente URL zu diesem Titel in dieser Sicht.  </p>
 
 <h3>Virtueller Notations-Index</h3>
 
@@ -87,11 +88,12 @@ zu diesem Titel in dieser Sicht.  </p>
 Institutionen und Schlagworte wurden um einen Index für Notationen
 erweitert.  </p>
 
-<h3>Optimierung des Suchwolken-Algorithmus.</h3>
+<h3>Optimierung des Wortwolken-Algorithmus.</h3>
 
-<p>Bei den Suchwolken in den &Uuml;bersichten verwenden wir nun statt eines
-linearen einen logarithmischen Algorithmus. Dadurch werden dominierende
-Begriffe weniger hoch gewichtet und es kommt zu "ausgewogeneren" Wolken.</p>
+<p>Bei den Wortwolken (Tag-Clouds) in den &Uuml;bersichten verwenden
+wir nun statt eines linearen einen logarithmischen
+Algorithmus. Dadurch werden dominierende Begriffe weniger hoch
+gewichtet und es kommt zu "ausgewogeneren" Wolken.</p>
 
 <h3>Tag-Editor</h3>
 

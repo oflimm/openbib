@@ -819,6 +819,8 @@ Im KUG werden derzeit folgende Arten von RSS-Feeds angeboten:
      <tr><td align="center"><img src="/images/openbib/rssfeed.png"  alt="RSS-Feed" border="0" /></td><td>RSS-Feed <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/rss.html" target="tutorial">[zum Tutorial]</a></td></tr>   
      <tr><td align="center"><img src="/images/openbib/share.png"  alt="An BibSonomy senden" border="0" /></td><td>An BibSonomy senden <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/bibsonomy.html" target="tutorial">[zum Tutorial]</a></td></tr>   
      <tr><td align="center"><img src="/images/openbib/top20-12px.png"  alt="Top 20" border="0" /></td><td>Anzeige der Top 20 meist aufgerufenen Titel im entsprechenden Katalog <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/top20.html" target="tutorial">[zum Tutorial]</a></td></tr>   
+     <tr><td align="center"><img src="/images/openbib/3d-file-blue-permalink.png" alt="Permanenter Link" /></td><td>Permanenter Link zu diesem Titel</td></tr>
+     <tr><td align="center"><img src="/images/openbib/info.png" alt="Kontextsensitive Hilfe" /></td><td>Kontextsensitive Hilfe</td></tr>   
     </table>
 
     <h1 id="verlinkung">14 Verlinkung und Lastverteilung des KUG</h1>

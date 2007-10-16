@@ -141,7 +141,7 @@ sub handler {
                 -> uri("urn:/Circulation")
                     -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
             my $result = $soap->get_reservations(
-                SOAP::Data->name(paramaters  =>\SOAP::Data->value(
+                SOAP::Data->name(parameter  =>\SOAP::Data->value(
                     SOAP::Data->name(username => $loginname)->type('string'),
                     SOAP::Data->name(password => $password)->type('string'),
                     SOAP::Data->name(database => $targetcircinfo_ref->{$database}{circdb})->type('string'))));
@@ -187,7 +187,7 @@ sub handler {
                 -> uri("urn:/Circulation")
                     -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
             my $result = $soap->get_reminders(
-                SOAP::Data->name(paramaters  =>\SOAP::Data->value(
+                SOAP::Data->name(parameter  =>\SOAP::Data->value(
                     SOAP::Data->name(username => $loginname)->type('string'),
                     SOAP::Data->name(password => $password)->type('string'),
                     SOAP::Data->name(database => $targetcircinfo_ref->{$database}{circdb})->type('string'))));
@@ -232,7 +232,7 @@ sub handler {
                 -> uri("urn:/Circulation")
                     -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
             my $result = $soap->get_orders(
-                SOAP::Data->name(paramaters  =>\SOAP::Data->value(
+                SOAP::Data->name(parameter  =>\SOAP::Data->value(
                     SOAP::Data->name(username => $loginname)->type('string'),
                     SOAP::Data->name(password => $password)->type('string'),
                     SOAP::Data->name(database => $targetcircinfo_ref->{$database}{circdb})->type('string'))));
@@ -276,7 +276,7 @@ sub handler {
                 -> uri("urn:/Circulation")
                     -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
             my $result = $soap->get_borrows(
-                SOAP::Data->name(paramaters  =>\SOAP::Data->value(
+                SOAP::Data->name(parameter  =>\SOAP::Data->value(
                     SOAP::Data->name(username => $loginname)->type('string'),
                     SOAP::Data->name(password => $password)->type('string'),
                     SOAP::Data->name(database => $targetcircinfo_ref->{$database}{circdb})->type('string'))));
@@ -339,7 +339,7 @@ sub handler {
             -> uri("urn:/Circulation")
                 -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
         my $result = $soap->make_reservation(
-            SOAP::Data->name(paramaters  =>\SOAP::Data->value(
+            SOAP::Data->name(parameter  =>\SOAP::Data->value(
                 SOAP::Data->name(username     => $loginname)->type('string'),
                 SOAP::Data->name(password     => $password)->type('string'),
                 SOAP::Data->name(mediennummer => $mediennummer)->type('string'),

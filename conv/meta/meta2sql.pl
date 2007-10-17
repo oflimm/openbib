@@ -30,6 +30,7 @@
 use 5.008001;
 use utf8;
 
+use Business::ISBN;
 use DB_File;
 use Getopt::Long;
 use MIME::Base64 ();
@@ -1040,10 +1041,27 @@ while (my $line=<IN>){
                 });
             }
             elsif (exists $convtab_ref->{search_category}{isbn     }{$category}){
-                push @isbn,      OpenBib::Common::Util::grundform({
+
+                my $isbnnorm = OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
+                
+                push @isbn, $isbnnorm;
+
+                # Alternative ISBN zur Rechercheanreicherung erzeugen
+                my $isbn = Business::ISBN->new($isbnnorm);
+
+                if (defined $isbn && $isbn->is_valid){
+
+                    my $isbnXX =(length($isbnnorm) == 10)?$isbn->as_isbn13->as_string:$isbn->as_isbn10->as_string;
+
+                    push @isbn,      OpenBib::Common::Util::grundform({
+                        category => $category,
+                        content  => $isbnXX,
+                    });
+                }
+
             }
             elsif (exists $convtab_ref->{search_category}{issn     }{$category}){
                 push @issn,      OpenBib::Common::Util::grundform({

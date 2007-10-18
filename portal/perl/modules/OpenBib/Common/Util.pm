@@ -1003,6 +1003,8 @@ sub grundform {
         return $content;
     }
 
+    $content=~s/¬//g;
+
     # Stopwoerter fuer versch. Kategorien ausfiltern (Titel-String)
 
     if ($category eq "0304" || $category eq "0310" || $category eq "0331"
@@ -1019,8 +1021,6 @@ sub grundform {
     $content=~s/&quot;//g;
     $content=~s/&amp;//g;
 
-    $content=~s/¬//g;
-
     # Ausfiltern von Supplements in []
     $content=~s/\[.*?\]//g;
     
@@ -1028,7 +1028,6 @@ sub grundform {
     $content=~s/(?<=(\w|\+))\+/plus/g;
     $content=~s/(c)\#/$1sharp/ig;
     $content=~s/\.(net)\#/dot$1/ig;
-
     
     if ($searchreq){
         # Ausfiltern nicht akzeptierter Zeichen (Positivliste)

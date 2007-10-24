@@ -38,7 +38,7 @@ use Apache::Constants qw(:common);
 use Apache::Reload;
 use Apache::Request ();
 use DBI;
-use Encode 'decode_utf8';
+use Encode qw(decode_utf8 encode_utf8);
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Storable ();
@@ -278,7 +278,13 @@ sub handler {
 
         searchquery   => $searchquery_ref,
         qopts         => $queryoptions_ref,
-	       
+
+        iso2utf      => sub {
+            my $string=shift;
+            $string=Encode::encode("iso-8859-1",$string);
+            return $string;
+        },
+
         anzahl        => $anzahl,
         queries       => \@queries,
         useragent     => $useragent,

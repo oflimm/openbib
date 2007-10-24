@@ -124,20 +124,24 @@ sub parse_titset {
 
     # Schlagworte
     if($cols[19]->first_child('DATA')->text()) {
-        my $swtans=$cols[19]->text();
+        my $swtans_all=$cols[19]->text();
 
-        if ($swtans){
-            my $swtidn=get_swtidn($swtans);
-            if ($swtidn > 0){
-                $swtbuffer[$swtidx++]="0000:".$swtidn;
-                $swtbuffer[$swtidx++]="0001:".$swtans;
-                $swtbuffer[$swtidx++]="9999:";
-            }
-            else {
-                $swtidn=(-1)*$swtidn;
-            }
+        if ($swtans_all){
+            my @swts = split(" +",$swtans_all);
 
-            $titbuffer[$titidx++]="0710:IDN: ".$swtidn;
+            foreach my $swtans (@swts){
+                my $swtidn=get_swtidn($swtans);
+                if ($swtidn > 0){
+                    $swtbuffer[$swtidx++]="0000:".$swtidn;
+                    $swtbuffer[$swtidx++]="0001:".$swtans;
+                    $swtbuffer[$swtidx++]="9999:";
+                }
+                else {
+                    $swtidn=(-1)*$swtidn;
+                }
+                
+                $titbuffer[$titidx++]="0710:IDN: ".$swtidn;
+            }
         }
     }
 

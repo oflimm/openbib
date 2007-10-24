@@ -65,7 +65,7 @@ sub handler {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
 
-    my $fs   = $query->param('fs') || '';
+    my $fs   = decode_utf8($query->param('fs')) || $query->param('fs')      || '';
 
     my $queryoptions_ref
         = $session->get_queryoptions($query);

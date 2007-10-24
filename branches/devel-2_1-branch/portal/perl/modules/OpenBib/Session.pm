@@ -891,7 +891,7 @@ sub log_event {
     # Recherchen:
     #   1 => Recherche-Anfrage bei Virtueller Recherche
     #  10 => Eineltrefferanzeige
-    #  20 => Rechercheart (einfach=1,komplex=2,...)
+    #  20 => Rechercheart (einfach=1,komplex=2, externer Suchschlitz=3)
     #  21 => Recherche-Backend (sql,xapian,z3950)
     #  22 => Recherche-Einstieg ueber Connector (1=DigiBib)
     #

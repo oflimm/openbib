@@ -1053,13 +1053,20 @@ while (my $line=<IN>){
                 my $isbn = Business::ISBN->new($isbnnorm);
 
                 if (defined $isbn && $isbn->is_valid){
+                    my $isbnXX;
+                    if (length($isbnnorm) == 10){
+                        $isbnXX = $isbn->as_isbn13;
+                    }
+                    else {
+                        $isbnXX = $isbn->as_isbn10;
+                    }
 
-                    my $isbnXX =(length($isbnnorm) == 10)?$isbn->as_isbn13->as_string:$isbn->as_isbn10->as_string;
-
-                    push @isbn,      OpenBib::Common::Util::grundform({
-                        category => $category,
-                        content  => $isbnXX,
-                    });
+                    if (defined $isbnXX){
+                        push @isbn,      OpenBib::Common::Util::grundform({
+                            category => $category,
+                            content  => $isbnXX->as_string,
+                        });
+                    }
                 }
 
             }

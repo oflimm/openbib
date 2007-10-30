@@ -18,6 +18,7 @@
    <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=30">Die B&uuml;cherlisten</a></li>
    <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=31">Arbeitsablauf / Aktuelles</a></li>
    <li><a class="active" href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=32">Publikationen</a></li>
+   <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=34">Internetquellen</a></li>
    <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=33">Ansprechpartner</a></li>
 </ul>
 

@@ -65,7 +65,7 @@ class="[% listrow %]"
 , [% reservation.EJahr %]
 [% END %]
 
-</td><td>[% reservation.Mediennummer %]</td><td>[% reservation.VormerkDatum %]-[% reservation.AufrechtDatum %]</td><td>[% reservation.Stelle %]. Stelle</td></tr>
+</td><td>[% reservation.Signatur %]</td><td>[% reservation.VormerkDatum %]-[% reservation.AufrechtDatum %]</td><td>[% reservation.Stelle %]. Stelle</td></tr>
 [% END %]
 </table>
 

@@ -118,6 +118,7 @@ sub handler {
     my $showsign      = "1";
     my $showmart      = "0";
     my $showhststring = "1";
+    my $showinhalt    = "1";
     my $showgtquelle  = "1";
     my $showejahr     = "1";
   
@@ -145,6 +146,7 @@ sub handler {
         $showsign      = decode_utf8($result->{'sign'});
         $showmart      = decode_utf8($result->{'mart'});
         $showhststring = decode_utf8($result->{'hststring'});
+        $showinhalt    = decode_utf8($result->{'inhalt'});
         $showgtquelle  = decode_utf8($result->{'gtquelle'});
         $showejahr     = decode_utf8($result->{'ejahr'});
 
@@ -273,6 +275,7 @@ sub handler {
         showsign      => $showsign,
         showmart      => $showmart,
         showhststring => $showhststring,
+        showinhalt    => $showinhalt,
         showgtquelle  => $showgtquelle,
         showejahr     => $showejahr,
 

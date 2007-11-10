@@ -1148,6 +1148,8 @@ sub handler {
 	  # Eventtyp 102 = Client-IP
 	  my $sqlstring="select sessionid,tstamp from eventlog where type=102 and content = ? and tstamp > ? and tstamp < ?";
 	  
+	  $logger->debug("$sqlstring - $clientip / $fromdate / $todate");
+
 	  my $idnresult=$statistics->{dbh}->prepare($sqlstring) or $logger->error($DBI::errstr);
 	  $idnresult->execute($clientip,$fromdate,$todate) or $logger->error($DBI::errstr);
 	  my @sessions=();

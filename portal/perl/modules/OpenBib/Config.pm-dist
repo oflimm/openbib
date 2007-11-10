@@ -771,7 +771,6 @@ tt_connector_digibib_result_start_tname  => 'connector_digibib_result_start',
 				 '0341' => 1, # PSTVorlage
 				 '0370' => 1, # WST
 				 '0412' => 1, # Verlag
-				 '0750' => 1, # Abstract
 				},
 			 
 			 isbn => {
@@ -786,7 +785,12 @@ tt_connector_digibib_result_start_tname  => 'connector_digibib_result_start',
 				    '0800' => 1, # ArtInhalt
 				   },
 			 
-			 sign => {
+
+                         inhalt => {
+				    '0750' => 1, # Abstract
+				   },
+
+                         sign => {
 				  '0014' => 1, # Signatur
 				  '1203' => 1, # Zeitschriftensignatur
 				 },

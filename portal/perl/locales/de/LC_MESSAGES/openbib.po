@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2007-10-14 14:28+0200\n"
-"Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
-"Language-Team:  <l10n@openbib.org>\n"
+"PO-Revision-Date: 2007-11-06 17:20+0100\n"
+"Last-Translator: \n"
+"Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -113,6 +113,10 @@ msgstr "Abspeichern"
 msgid "Abspeicherung eines neuen oder bestehenden Profils"
 msgstr "Abspeicherung eines neuen oder bestehenden Profils"
 
+#: ../templates/searchframe_query:43
+msgid "Abstrakt/Inhalt"
+msgstr "Abstrakt/Inhalt"
+
 #: ../modules/OpenBib/LoadBalancer.pm:97
 msgid "Achtung: Es sind *alle* Server ausgefallen"
 msgstr "Achtung: Es sind *alle* Server ausgefallen"
@@ -141,7 +145,7 @@ msgid "Aktuelle Recherche"
 msgstr "Aktuelle Recherche"
 
 #: ../templates/databasechoice:57 ../templates/databaseprofile:79
-#: ../templates/searchframe_options:18 ../templates/searchframe_simple:112
+#: ../templates/searchframe_options:18 ../templates/searchframe_simple:116
 #: ../templates/views/edz/searchframe_simple:126
 #: ../templates/views/inst404/searchframe_simple:132
 #: ../templates/views/inst405/searchframe_simple:132
@@ -347,13 +351,13 @@ msgstr "Ausleihfrist"
 msgid "Ausleihinformationen"
 msgstr "Ausleihinformationen"
 
-#: ../templates/circset:15
+#: ../templates/circset:16
 #: ../templates/database/einbaende/managecollection_tit_as_html:129
 #: ../templates/database/einbaende/search_showtitset:248
 msgid "Ausleihstatus"
 msgstr "Ausleihstatus"
 
-#: ../templates/circset:15
+#: ../templates/circset:16
 msgid "Ausleihsystem"
 msgstr "Ausleihsystem"
 
@@ -415,7 +419,7 @@ msgstr "Beruf/Weltanschauung"
 msgid "Beschreibung"
 msgstr "Beschreibung"
 
-#: ../templates/circset:15
+#: ../templates/circset:16
 #: ../templates/database/einbaende/managecollection_tit_as_html:129
 #: ../templates/database/einbaende/managecollection_tit_as_html:65
 #: ../templates/database/einbaende/search_showtitset:137
@@ -485,7 +489,7 @@ msgstr "Betreff"
 msgid "Bildtitelwort(e)"
 msgstr "Bildtitelwort(e)"
 
-#: ../modules/OpenBib/VirtualSearch.pm:528
+#: ../modules/OpenBib/VirtualSearch.pm:532
 msgid "Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."
 msgstr "Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."
 
@@ -553,8 +557,8 @@ msgstr ""
 "Mail zugeschickt werden kann, geben Sie bitte Ihren Benutzernamen an, der "
 "Ihrer E-Mail-Adresse entspricht."
 
-#: ../modules/OpenBib/VirtualSearch.pm:535
-#: ../modules/OpenBib/VirtualSearch.pm:544
+#: ../modules/OpenBib/VirtualSearch.pm:539
+#: ../modules/OpenBib/VirtualSearch.pm:548
 msgid ""
 "Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und "
 "mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die "
@@ -657,7 +661,7 @@ msgstr "Die Vormerkung wurde erfolgreich durchgef&uuml;hrt."
 msgid "Die beiden eingegebenen Passworte stimmen nicht überein."
 msgstr "Die beiden eingegebenen Passworte stimmen nicht überein."
 
-#: ../modules/OpenBib/UserPrefs.pm:123
+#: ../modules/OpenBib/UserPrefs.pm:124
 msgid "Diese Session ist nicht authentifiziert."
 msgstr "Diese Session ist nicht authentifiziert."
 
@@ -702,7 +706,7 @@ msgstr ""
 "Passwort vergessen? Dann gehen Sie bitte %2zurück%3 und lassen es sich "
 "zumailen."
 
-#: ../templates/views/einbaende/searchframe_simple:102
+#: ../templates/views/einbaende/searchframe_simple:111
 msgid "Einband"
 msgstr "Einband"
 
@@ -800,7 +804,7 @@ msgstr "Einfache Recherche"
 msgid "Einfache Recherchemaske"
 msgstr "Einfache Recherchemaske"
 
-#: ../templates/searchframe_query:54
+#: ../templates/searchframe_query:58
 #: ../templates/views/inst501/searchframe_query:54
 #: ../templates/views/richter/searchframe_query:48
 msgid "Eingrenzung auf Gesamttitel (Serien)"
@@ -865,7 +869,7 @@ msgstr "Erscheinungsverlauf  "
 msgid "Erweitere Recherchemaske"
 msgstr "Erweitere Recherchemaske"
 
-#: ../modules/OpenBib/Admin.pm:1280
+#: ../modules/OpenBib/Admin.pm:1282
 msgid "Es existiert bereits ein Anmeldeziel unter diesem Namen"
 msgstr "Es existiert bereits ein Anmeldeziel unter diesem Namen"
 
@@ -913,7 +917,7 @@ msgstr "Es sind keine Gebühren angefallen."
 msgid "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
 msgstr "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
 
-#: ../modules/OpenBib/VirtualSearch.pm:551
+#: ../modules/OpenBib/VirtualSearch.pm:555
 msgid "Es wurde kein Suchkriterium eingegeben."
 msgstr "Es wurde kein Suchkriterium eingegeben."
 
@@ -925,7 +929,7 @@ msgstr "Es wurde kein Suchkriterium eingegeben."
 msgid "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
 msgstr "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
 
-#: ../modules/OpenBib/UserPrefs.pm:353
+#: ../modules/OpenBib/UserPrefs.pm:359
 msgid "Es wurde keine Standard-Recherchemaske ausgewählt"
 msgstr "Es wurde keine Standard-Recherchemaske ausgewählt"
 
@@ -963,7 +967,7 @@ msgstr "Fakult&auml;t"
 msgid "Fakultät"
 msgstr "Fakultät"
 
-#: ../templates/searchframe_options:19 ../templates/searchframe_simple:113
+#: ../templates/searchframe_options:19 ../templates/searchframe_simple:117
 #: ../templates/views/edz/searchframe_simple:127
 #: ../templates/views/inst404/searchframe_simple:133
 #: ../templates/views/inst405/searchframe_simple:133
@@ -1008,7 +1012,7 @@ msgid "Fernleihbestellung"
 msgstr "Fernleihbestellung"
 
 #: ../templates/searchframe_query:3 ../templates/userprefs:174
-#: ../templates/views/einbaende/searchframe_simple:82
+#: ../templates/views/einbaende/searchframe_simple:91
 #: ../templates/views/inst501/searchframe_query:3
 #: ../templates/views/kapsel/searchframe_query:3
 #: ../templates/views/landschaft/searchframe_query:3
@@ -1018,10 +1022,10 @@ msgid "Freie Suche"
 msgstr "Freie Suche"
 
 #. ("<a href=\"http://www.ub.uni-koeln.de/usb-cgi/zms_makeEmail.pl?adr0=kug\" target=\"_blank\">","</a>")
-#: ../templates/searchframe:142 ../templates/searchframe_simple:170
+#: ../templates/searchframe:142 ../templates/searchframe_simple:174
 #: ../templates/views/edz/searchframe:157
 #: ../templates/views/edz/searchframe_simple:184
-#: ../templates/views/einbaende/searchframe_simple:128
+#: ../templates/views/einbaende/searchframe_simple:137
 #: ../templates/views/gdonck/searchframe:138
 #: ../templates/views/gdonck/searchframe_simple:120
 #: ../templates/views/gleuel/searchframe:138
@@ -1062,7 +1066,7 @@ msgstr "Freie Suche"
 #: ../templates/views/kevelaer/searchframe:138
 #: ../templates/views/kevelaer/searchframe_simple:120
 #: ../templates/views/kug/searchframe:317
-#: ../templates/views/kug/searchframe_simple:116
+#: ../templates/views/kug/searchframe_simple:120
 #: ../templates/views/kwinter/searchframe:138
 #: ../templates/views/kwinter/searchframe_simple:120
 #: ../templates/views/landschaft/searchframe:103
@@ -1090,7 +1094,7 @@ msgstr ""
 "g&uuml;ltige Email-Adresse ein und danach zwei Mal Ihr selbst gew&auml;hltes "
 "Passwort. Danach best&auml;tigen Sie bitte mit <b>Registrieren</b>."
 
-#: ../templates/searchframe_simple:90
+#: ../templates/searchframe_simple:94
 #: ../templates/views/edz/searchframe_simple:104
 #: ../templates/views/gdonck/searchframe_simple:70
 #: ../templates/views/gleuel/searchframe_simple:73
@@ -1110,7 +1114,7 @@ msgstr ""
 #: ../templates/views/inst460/searchframe_simple:103
 #: ../templates/views/kempen/searchframe_simple:70
 #: ../templates/views/kevelaer/searchframe_simple:70
-#: ../templates/views/kug/searchframe_simple:74
+#: ../templates/views/kug/searchframe_simple:78
 #: ../templates/views/kwinter/searchframe_simple:70
 #: ../templates/views/rheinlandbib/searchframe_simple:62
 #: ../templates/views/richter/searchframe_simple:70
@@ -1224,15 +1228,15 @@ msgstr ""
 
 #: ../templates/searchframe:128 ../templates/searchframe:132
 #: ../templates/searchframe:90 ../templates/searchframe:96
-#: ../templates/searchframe_simple:133 ../templates/searchframe_simple:139
+#: ../templates/searchframe_simple:137 ../templates/searchframe_simple:143
 #: ../templates/views/edz/searchframe:105
 #: ../templates/views/edz/searchframe:111
 #: ../templates/views/edz/searchframe:143
 #: ../templates/views/edz/searchframe:147
 #: ../templates/views/edz/searchframe_simple:147
 #: ../templates/views/edz/searchframe_simple:153
-#: ../templates/views/einbaende/searchframe_simple:121
-#: ../templates/views/einbaende/searchframe_simple:71
+#: ../templates/views/einbaende/searchframe_simple:130
+#: ../templates/views/einbaende/searchframe_simple:80
 #: ../templates/views/gdonck/searchframe:123
 #: ../templates/views/gdonck/searchframe:127
 #: ../templates/views/gdonck/searchframe:85
@@ -1356,7 +1360,7 @@ msgstr ""
 #: ../templates/views/kug/searchframe:177
 #: ../templates/views/kug/searchframe:196
 #: ../templates/views/kug/searchframe:305
-#: ../templates/views/kug/searchframe_simple:86
+#: ../templates/views/kug/searchframe_simple:90
 #: ../templates/views/kwinter/searchframe:123
 #: ../templates/views/kwinter/searchframe:127
 #: ../templates/views/kwinter/searchframe:85
@@ -1392,15 +1396,15 @@ msgstr "Hier löschen Sie die Eingabefelder"
 
 #: ../templates/searchframe:128 ../templates/searchframe:132
 #: ../templates/searchframe:90 ../templates/searchframe:96
-#: ../templates/searchframe_simple:133 ../templates/searchframe_simple:139
+#: ../templates/searchframe_simple:137 ../templates/searchframe_simple:143
 #: ../templates/views/edz/searchframe:105
 #: ../templates/views/edz/searchframe:111
 #: ../templates/views/edz/searchframe:143
 #: ../templates/views/edz/searchframe:147
 #: ../templates/views/edz/searchframe_simple:147
 #: ../templates/views/edz/searchframe_simple:153
-#: ../templates/views/einbaende/searchframe_simple:121
-#: ../templates/views/einbaende/searchframe_simple:71
+#: ../templates/views/einbaende/searchframe_simple:130
+#: ../templates/views/einbaende/searchframe_simple:80
 #: ../templates/views/gdonck/searchframe:123
 #: ../templates/views/gdonck/searchframe:127
 #: ../templates/views/gdonck/searchframe:85
@@ -1558,7 +1562,7 @@ msgid "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
 msgstr "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
 
 #: ../templates/searchframe:132 ../templates/searchframe:96
-#: ../templates/searchframe_simple:139 ../templates/views/edz/searchframe:111
+#: ../templates/searchframe_simple:143 ../templates/views/edz/searchframe:111
 #: ../templates/views/edz/searchframe:147
 #: ../templates/views/edz/searchframe_simple:153
 #: ../templates/views/gdonck/searchframe:127
@@ -1623,7 +1627,7 @@ msgstr "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
 #: ../templates/views/kug/searchframe:177
 #: ../templates/views/kug/searchframe:196
 #: ../templates/views/kug/searchframe:305
-#: ../templates/views/kug/searchframe_simple:86
+#: ../templates/views/kug/searchframe_simple:90
 #: ../templates/views/kwinter/searchframe:127
 #: ../templates/views/kwinter/searchframe:91
 #: ../templates/views/kwinter/searchframe_simple:89
@@ -1703,7 +1707,7 @@ msgid "Ihr vergessenes KUG-Passwort"
 msgstr "Ihr vergessenes KUG-Passwort"
 
 #: ../templates/managecollection_mail:32
-#: ../templates/views/einbaende/searchframe_simple:79
+#: ../templates/views/einbaende/searchframe_simple:88
 #: ../templates/views/portrait/searchframe_query:2
 #: ../templates/views/richter/searchframe_query:2
 msgid "Ihre Eingabe"
@@ -1740,7 +1744,7 @@ msgid "Import-Einstellungen"
 msgstr "Import-Einstellungen"
 
 #: ../templates/searchframe:132 ../templates/searchframe:96
-#: ../templates/searchframe_simple:139 ../templates/views/edz/searchframe:111
+#: ../templates/searchframe_simple:143 ../templates/views/edz/searchframe:111
 #: ../templates/views/edz/searchframe:147
 #: ../templates/views/edz/searchframe_simple:153
 #: ../templates/views/gdonck/searchframe:127
@@ -1805,7 +1809,7 @@ msgstr "Import-Einstellungen"
 #: ../templates/views/kug/searchframe:177
 #: ../templates/views/kug/searchframe:196
 #: ../templates/views/kug/searchframe:305
-#: ../templates/views/kug/searchframe_simple:86
+#: ../templates/views/kug/searchframe_simple:90
 #: ../templates/views/kwinter/searchframe:127
 #: ../templates/views/kwinter/searchframe:91
 #: ../templates/views/kwinter/searchframe_simple:89
@@ -1823,7 +1827,7 @@ msgstr "In allen Katalogen suchen"
 
 #: ../templates/searchframe:128 ../templates/searchframe:132
 #: ../templates/searchframe:90 ../templates/searchframe:96
-#: ../templates/searchframe_simple:133 ../templates/searchframe_simple:139
+#: ../templates/searchframe_simple:137 ../templates/searchframe_simple:143
 #: ../templates/views/edz/searchframe:105
 #: ../templates/views/edz/searchframe:111
 #: ../templates/views/edz/searchframe:143
@@ -1976,7 +1980,7 @@ msgstr "In ausgewählten Katalogen suchen"
 msgid "In die Merkliste"
 msgstr "In die Merkliste"
 
-#: ../templates/searchframe_simple:97
+#: ../templates/searchframe_simple:101
 #: ../templates/views/edz/searchframe_simple:111
 #: ../templates/views/inst404/searchframe_simple:117
 #: ../templates/views/inst405/searchframe_simple:117
@@ -1997,10 +2001,10 @@ msgid "In welchen Katalogen möchten Sie suchen"
 msgstr "In welchen Katalogen möchten Sie suchen"
 
 #: ../templates/searchframe_query:11 ../templates/searchframe_query:23
-#: ../templates/views/einbaende/searchframe_simple:102
-#: ../templates/views/einbaende/searchframe_simple:90
-#: ../templates/views/einbaende/searchframe_simple:94
-#: ../templates/views/einbaende/searchframe_simple:98
+#: ../templates/views/einbaende/searchframe_simple:103
+#: ../templates/views/einbaende/searchframe_simple:107
+#: ../templates/views/einbaende/searchframe_simple:111
+#: ../templates/views/einbaende/searchframe_simple:99
 #: ../templates/views/inst501/searchframe_query:11
 #: ../templates/views/kapsel/searchframe_query:11
 #: ../templates/views/portrait/searchframe_query:13
@@ -2069,7 +2073,7 @@ msgstr "Inventarnummer       "
 msgid "Ja"
 msgstr "Ja"
 
-#: ../templates/searchframe_query:51
+#: ../templates/searchframe_query:55
 #: ../templates/views/inst501/searchframe_query:51
 #: ../templates/views/kapsel/searchframe_query:47
 #: ../templates/views/landschaft/searchframe_query:27
@@ -2084,7 +2088,7 @@ msgstr "Jahr"
 msgid "Jahre"
 msgstr "Jahre"
 
-#: ../templates/views/einbaende/searchframe_simple:98
+#: ../templates/views/einbaende/searchframe_simple:107
 msgid "Jahrhundert"
 msgstr "Jahrhundert"
 
@@ -2164,7 +2168,7 @@ msgstr "Katalogprofile"
 #: ../templates/search_showautset:25 ../templates/search_showkorset:26
 #: ../templates/search_showmulttitset:35 ../templates/search_shownotset:25
 #: ../templates/search_showswtset:27 ../templates/search_showtitset:63
-#: ../templates/views/einbaende/searchframe_simple:79
+#: ../templates/views/einbaende/searchframe_simple:88
 #: ../templates/views/portrait/searchframe_query:2
 #: ../templates/views/richter/searchframe_query:2
 msgid "Kategorie"
@@ -2178,7 +2182,7 @@ msgstr "Kein prim&auml;rer RSS-Feed ausgew&auml;hlt"
 msgid "Keine gültige Aktion"
 msgstr "Keine gültige Aktion"
 
-#: ../modules/OpenBib/Admin.pm:1351
+#: ../modules/OpenBib/Admin.pm:1353
 msgid "Keine gültige Aktion oder Session"
 msgstr "Keine gültige Aktion oder Session"
 
@@ -2374,15 +2378,15 @@ msgstr "Los"
 
 #: ../templates/searchframe:128 ../templates/searchframe:132
 #: ../templates/searchframe:90 ../templates/searchframe:96
-#: ../templates/searchframe_simple:133 ../templates/searchframe_simple:139
+#: ../templates/searchframe_simple:137 ../templates/searchframe_simple:143
 #: ../templates/views/edz/searchframe:105
 #: ../templates/views/edz/searchframe:111
 #: ../templates/views/edz/searchframe:143
 #: ../templates/views/edz/searchframe:147
 #: ../templates/views/edz/searchframe_simple:147
 #: ../templates/views/edz/searchframe_simple:153
-#: ../templates/views/einbaende/searchframe_simple:121
-#: ../templates/views/einbaende/searchframe_simple:71
+#: ../templates/views/einbaende/searchframe_simple:130
+#: ../templates/views/einbaende/searchframe_simple:80
 #: ../templates/views/gdonck/searchframe:123
 #: ../templates/views/gdonck/searchframe:127
 #: ../templates/views/gdonck/searchframe:85
@@ -2506,7 +2510,7 @@ msgstr "Los"
 #: ../templates/views/kug/searchframe:177
 #: ../templates/views/kug/searchframe:196
 #: ../templates/views/kug/searchframe:305
-#: ../templates/views/kug/searchframe_simple:86
+#: ../templates/views/kug/searchframe_simple:90
 #: ../templates/views/kwinter/searchframe:123
 #: ../templates/views/kwinter/searchframe:127
 #: ../templates/views/kwinter/searchframe:85
@@ -2566,7 +2570,7 @@ msgstr "Maximale Trefferzahl pro Katalog"
 msgid "MedPilot"
 msgstr "MedPilot"
 
-#: ../templates/searchframe_query:47 ../templates/userprefs:184
+#: ../templates/searchframe_query:51 ../templates/userprefs:184
 #: ../templates/views/inst501/searchframe_query:47
 #: ../templates/views/kapsel/searchframe_query:43
 #: ../templates/views/richter/searchframe_query:41
@@ -2812,7 +2816,7 @@ msgstr "Passwort per Mail schicken"
 msgid "Passwort vergessen?"
 msgstr "Passwort vergessen?"
 
-#: ../templates/views/einbaende/searchframe_simple:90
+#: ../templates/views/einbaende/searchframe_simple:99
 #: ../templates/views/inst501/searchframe_query:11
 #: ../templates/views/kapsel/searchframe_query:11
 #: ../templates/views/portrait/searchframe_query:13
@@ -2927,7 +2931,7 @@ msgstr "Recherchemaske festlegen"
 msgid "Recherchen"
 msgstr "Recherchen"
 
-#: ../templates/views/einbaende/searchframe_simple:94
+#: ../templates/views/einbaende/searchframe_simple:103
 #: ../templates/views/portrait/searchframe_query:21
 msgid "Region"
 msgstr "Region"
@@ -2940,7 +2944,7 @@ msgstr "Registrieren"
 msgid "Richter-Systematik"
 msgstr "Richter-Systematik"
 
-#: ../templates/searchframe_simple:151
+#: ../templates/searchframe_simple:155
 #: ../templates/views/edz/searchframe_simple:165
 #: ../templates/views/gdonck/searchframe_simple:101
 #: ../templates/views/gleuel/searchframe_simple:104
@@ -2960,7 +2964,7 @@ msgstr "Richter-Systematik"
 #: ../templates/views/inst460/searchframe_simple:164
 #: ../templates/views/kempen/searchframe_simple:101
 #: ../templates/views/kevelaer/searchframe_simple:101
-#: ../templates/views/kug/searchframe_simple:97
+#: ../templates/views/kug/searchframe_simple:101
 #: ../templates/views/kwinter/searchframe_simple:101
 #: ../templates/views/rheinlandbib/searchframe_simple:93
 #: ../templates/views/richter/searchframe_simple:131
@@ -3107,14 +3111,14 @@ msgstr "Sekunden"
 msgid "Selbstregistrierung"
 msgstr "Selbstregistrierung"
 
-#: ../templates/searchframe_query:43
+#: ../templates/searchframe_query:47
 #: ../templates/views/inst501/searchframe_query:43
 #: ../templates/views/kapsel/searchframe_query:39
 #: ../templates/views/richter/searchframe_query:37
 msgid "Serie/Band/Quelle"
 msgstr "Serie/Band/Quelle"
 
-#: ../templates/searchframe_query:54
+#: ../templates/searchframe_query:58
 #: ../templates/views/inst501/searchframe_query:54
 #: ../templates/views/richter/searchframe_query:48
 msgid "Serien"
@@ -3202,14 +3206,14 @@ msgstr ""
 "Katalogen suchen</a>."
 
 #: ../templates/views/kug/searchframe:155
-#: ../templates/views/kug/searchframe_simple:61
+#: ../templates/views/kug/searchframe_simple:65
 msgid "Sie haben JavaScript deaktiviert"
 msgstr "Sie haben JavaScript deaktiviert"
 
 #. ("<a href=\"${config.startopac_loc}?view=${view}\" target=\"_parent\">","</a>")
 #. ("<a href=\"${startopac_loc}?view=\" target=\"_top\"","</a>")
 #: ../templates/views/kug/searchframe:157
-#: ../templates/views/kug/searchframe_simple:63
+#: ../templates/views/kug/searchframe_simple:67
 msgid ""
 "Sie haben JavaScript in Ihrem Browser\n"
 "deaktiviert. Daher k&ouml;nnen Sie auf dieser Seite die Profilauswahl\n"
@@ -3241,7 +3245,7 @@ msgstr "Sie haben ein falsches Passwort eingegeben"
 msgid "Sie haben eine ungültige Mailadresse eingegeben."
 msgstr "Sie haben eine ungültige Mailadresse eingegeben."
 
-#: ../modules/OpenBib/UserPrefs.pm:341
+#: ../modules/OpenBib/UserPrefs.pm:347
 msgid ""
 "Sie haben entweder kein Passwort eingegeben oder die beiden Passworte "
 "stimmen nicht überein"
@@ -3299,7 +3303,7 @@ msgstr ""
 "erfolgreich authentifiziert werden"
 
 #. ("${viewdesc}","<a href=\"${config.databasechoice_loc}?sessionID=${sessionID};view=${view}\" target=\"body\">","</a>")
-#: ../templates/searchframe:83 ../templates/searchframe_simple:75
+#: ../templates/searchframe:83 ../templates/searchframe_simple:79
 #: ../templates/views/edz/searchframe:86
 #: ../templates/views/edz/searchframe_simple:76
 #: ../templates/views/inst404/searchframe:83
@@ -3340,7 +3344,7 @@ msgstr ""
 "recherchieren, oder die Suche auf weitere %2Kataloge%3 ausdehnen."
 
 #. ("${alldbs}","<a href=\"${config.databasechoice_loc}?sessionID=${sessionID};view=${view}\" target=\"body\">","</a>")
-#: ../templates/searchframe:93 ../templates/searchframe_simple:83
+#: ../templates/searchframe:93 ../templates/searchframe_simple:87
 #: ../templates/views/edz/searchframe:108
 #: ../templates/views/edz/searchframe_simple:97
 #: ../templates/views/gdonck/searchframe:88
@@ -3387,7 +3391,7 @@ msgstr ""
 "Sie können entweder durch entsprechende Auswahl in den insgesamt %1 "
 "einzelnen %2Katalogen%3 recherchieren oder auch sofort in allen zusammen."
 
-#: ../modules/OpenBib/Admin.pm:1266
+#: ../modules/OpenBib/Admin.pm:1268
 msgid "Sie müssen mindestens eine Beschreibung eingeben."
 msgstr "Sie müssen mindestens eine Beschreibung eingeben."
 
@@ -3412,7 +3416,7 @@ msgstr "Sie sind nun als Administrator eingeloggt."
 msgid "Sigel"
 msgstr "Sigel"
 
-#: ../templates/circset:15 ../templates/circulation:50
+#: ../templates/circset:16 ../templates/circulation:50
 #: ../templates/circulation_orders:50 ../templates/circulation_remind:69
 #: ../templates/circulation_reserv:50
 #: ../templates/database/einbaende/managecollection_tit_as_html:65
@@ -3423,7 +3427,7 @@ msgstr "Sigel"
 #: ../templates/managecollection_tit_as_html:61
 #: ../templates/search_showmulttitset:103 ../templates/search_showtitset:257
 #: ../templates/searchframe_query:35 ../templates/userprefs:182
-#: ../templates/views/einbaende/searchframe_simple:106
+#: ../templates/views/einbaende/searchframe_simple:115
 #: ../templates/views/inst501/searchframe_query:35
 #: ../templates/views/kapsel/searchframe_query:31
 #: ../templates/views/portrait/searchframe_query:29
@@ -3577,7 +3581,7 @@ msgstr "Sprung in externe Recherchequellen"
 msgid "Sprung zur Trefferliste im KUG"
 msgstr "Sprung zur Trefferliste im KUG"
 
-#: ../templates/circset:15
+#: ../templates/circset:16
 #: ../templates/database/einbaende/managecollection_tit_as_html:129
 #: ../templates/database/einbaende/managecollection_tit_as_html:65
 #: ../templates/database/einbaende/search_showtitset:137
@@ -3619,7 +3623,7 @@ msgid "Strasse"
 msgstr "Strasse"
 
 #: ../templates/searchframe:102 ../templates/views/edz/searchframe:117
-#: ../templates/views/einbaende/searchframe_simple:76
+#: ../templates/views/einbaende/searchframe_simple:85
 #: ../templates/views/gdonck/searchframe:97
 #: ../templates/views/gleuel/searchframe:97
 #: ../templates/views/inst404/searchframe:118
@@ -3651,8 +3655,8 @@ msgstr "Strasse"
 msgid "Suchbegriffe"
 msgstr "Suchbegriffe"
 
-#: ../templates/views/einbaende/searchframe_simple:121
-#: ../templates/views/einbaende/searchframe_simple:71
+#: ../templates/views/einbaende/searchframe_simple:130
+#: ../templates/views/einbaende/searchframe_simple:80
 msgid "Suche starten"
 msgstr "Suche starten"
 
@@ -4725,7 +4729,7 @@ msgstr "Titel-String"
 msgid "Titel/Merkliste via Mail verschicken"
 msgstr "Titel/Merkliste via Mail verschicken"
 
-#: ../templates/views/einbaende/searchframe_simple:86
+#: ../templates/views/einbaende/searchframe_simple:95
 msgid "Titel/Provenienz"
 msgstr "Titel/Provenienz"
 
@@ -4858,7 +4862,7 @@ msgid "Um sich wieder einzuloggen folgen Sie bitte %1diesem Link%2."
 msgstr "Um sich wieder einzuloggen folgen Sie bitte %1diesem Link%2."
 
 #. ("${alldbcount}","${alldbs}")
-#: ../templates/searchframe:140 ../templates/searchframe_simple:167
+#: ../templates/searchframe:140 ../templates/searchframe_simple:171
 #: ../templates/views/edz/searchframe:155
 #: ../templates/views/edz/searchframe_simple:181
 #: ../templates/views/inst404/searchframe:156
@@ -4892,7 +4896,7 @@ msgstr "Um sich wieder einzuloggen folgen Sie bitte %1diesem Link%2."
 #: ../templates/views/inst460/searchframe_simple:180
 #: ../templates/views/inst501/searchframe:140
 #: ../templates/views/kug/searchframe:218
-#: ../templates/views/kug/searchframe_simple:113
+#: ../templates/views/kug/searchframe_simple:117
 msgid "Umfang des KUG: %1 Titel in %2 Katalogen"
 msgstr "Umfang des KUG: %1 Titel in %2 Katalogen"
 
@@ -4910,7 +4914,7 @@ msgid "Und-Verknüpfung innerhalb eines Suchfeldes"
 msgstr "Und-Verknüpfung innerhalb eines Suchfeldes"
 
 #: ../modules/OpenBib/Circulation.pm:373 ../modules/OpenBib/SelfReg.pm:186
-#: ../modules/OpenBib/UserPrefs.pm:366
+#: ../modules/OpenBib/UserPrefs.pm:372
 msgid "Unerlaubte Aktion"
 msgstr "Unerlaubte Aktion"
 
@@ -4931,7 +4935,7 @@ msgstr "Ungültige Aktion"
 #: ../modules/OpenBib/RSSFrame.pm:81 ../modules/OpenBib/Redirect.pm:92
 #: ../modules/OpenBib/ResultLists.pm:105 ../modules/OpenBib/Search.pm:177
 #: ../modules/OpenBib/SearchFrame.pm:94 ../modules/OpenBib/SelfReg.pm:90
-#: ../modules/OpenBib/Tags.pm:134 ../modules/OpenBib/UserPrefs.pm:107
+#: ../modules/OpenBib/Tags.pm:134 ../modules/OpenBib/UserPrefs.pm:108
 #: ../modules/OpenBib/UserReviews.pm:130
 #: ../modules/OpenBib/VirtualSearch.pm:144
 msgid "Ungültige Session"
@@ -4951,7 +4955,7 @@ msgstr "Ursprüngliche Auswahl wiederherstellen"
 msgid "Verfasser"
 msgstr "Verfasser"
 
-#: ../templates/views/einbaende/searchframe_simple:79
+#: ../templates/views/einbaende/searchframe_simple:88
 #: ../templates/views/portrait/searchframe_query:2
 #: ../templates/views/richter/searchframe_query:2
 msgid "Verknüpfung"
@@ -5079,7 +5083,7 @@ msgstr ""
 "Wegen eines unerwarteten Problems kann der KUG in den n&auml;chsten Minuten\n"
 "leider nicht genutzt werden."
 
-#: ../templates/circset:26
+#: ../templates/circset:27
 msgid "Weiter"
 msgstr "Weiter"
 
@@ -5193,7 +5197,7 @@ msgstr "Zeitschriftenartikel"
 msgid "Zugemailte Merkliste"
 msgstr "Zugemailte Merkliste"
 
-#: ../templates/searchframe:63 ../templates/searchframe_simple:157
+#: ../templates/searchframe:63 ../templates/searchframe_simple:161
 #: ../templates/views/edz/searchframe:63
 #: ../templates/views/edz/searchframe_simple:171
 #: ../templates/views/einbaende/searchframe_simple:50
@@ -5238,7 +5242,7 @@ msgstr "Zugemailte Merkliste"
 #: ../templates/views/kevelaer/searchframe:63
 #: ../templates/views/kevelaer/searchframe_simple:107
 #: ../templates/views/kug/searchframe:147
-#: ../templates/views/kug/searchframe_simple:103
+#: ../templates/views/kug/searchframe_simple:107
 #: ../templates/views/kwinter/searchframe:63
 #: ../templates/views/kwinter/searchframe_simple:107
 #: ../templates/views/landschaft/searchframe:43

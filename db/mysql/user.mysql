@@ -85,6 +85,7 @@ CREATE TABLE fieldchoice (
  sign      BOOL,
  mart      BOOL,
  hststring BOOL,
+ inhalt    BOOL,
  gtquelle  BOOL,
  ejahr     BOOL,
  

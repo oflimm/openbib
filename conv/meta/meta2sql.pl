@@ -40,14 +40,8 @@ use YAML;
 
 use OpenBib::Common::Util;
 use OpenBib::Common::Stopwords;
-use OpenBib::Config;
+use OpenBib::Conv::Config;
 use OpenBib::Statistics;
-
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-use vars qw(%config);
-
-*config = \%OpenBib::Config::config;
 
 my ($singlepool,$reducemem,$addsuperpers);
 
@@ -56,8 +50,7 @@ my ($singlepool,$reducemem,$addsuperpers);
 	    "single-pool=s" => \$singlepool,
 	    );
 
-my $convtab_ref = (exists $config{convtab}{singlepool})?
-  $config{convtab}{singlepool}:$config{convtab}{default};
+my $conv_config = new OpenBib::Conv::Config({dbname => $singlepool});
 
 my $dir=`pwd`;
 chop $dir;
@@ -116,8 +109,8 @@ my $stammdateien_ref = {
         outfile        => "aut.mysql",
         outfile_ft     => "aut_ft.mysql",
         outfile_string => "aut_string.mysql",
-        inverted_ref   => $convtab_ref->{inverted_aut},
-        blacklist_ref  => $convtab_ref->{blacklist_aut},
+        inverted_ref   => $conv_config->{inverted_aut},
+        blacklist_ref  => $conv_config->{blacklist_aut},
     },
     
     kor => {
@@ -125,8 +118,8 @@ my $stammdateien_ref = {
         outfile        => "kor.mysql",
         outfile_ft     => "kor_ft.mysql",
         outfile_string => "kor_string.mysql",
-        inverted_ref   => $convtab_ref->{inverted_kor},
-        blacklist_ref  => $convtab_ref->{blacklist_kor},
+        inverted_ref   => $conv_config->{inverted_kor},
+        blacklist_ref  => $conv_config->{blacklist_kor},
     },
     
     swt => {
@@ -134,8 +127,8 @@ my $stammdateien_ref = {
         outfile        => "swt.mysql",
         outfile_ft     => "swt_ft.mysql",
         outfile_string => "swt_string.mysql",
-        inverted_ref   => $convtab_ref->{inverted_swt},
-        blacklist_ref  => $convtab_ref->{blacklist_swt},
+        inverted_ref   => $conv_config->{inverted_swt},
+        blacklist_ref  => $conv_config->{blacklist_swt},
     },
     
     notation => {
@@ -143,8 +136,8 @@ my $stammdateien_ref = {
         outfile        => "not.mysql",
         outfile_ft     => "not_ft.mysql",
         outfile_string => "not_string.mysql",
-        inverted_ref   => $convtab_ref->{inverted_not},
-        blacklist_ref  => $convtab_ref->{blacklist_not},
+        inverted_ref   => $conv_config->{inverted_not},
+        blacklist_ref  => $conv_config->{blacklist_not},
     },
 };
 
@@ -247,7 +240,7 @@ $stammdateien_ref->{mex} = {
     outfile        => "mex.mysql",
     outfile_ft     => "mex_ft.mysql",
     outfile_string => "mex_string.mysql",
-    inverted_ref   => $convtab_ref->{inverted_mex},
+    inverted_ref   => $conv_config->{inverted_mex},
 };
 
 print STDERR "Bearbeite mex.exp\n";
@@ -346,8 +339,8 @@ $stammdateien_ref->{tit} = {
     outfile        => "tit.mysql",
     outfile_ft     => "tit_ft.mysql",
     outfile_string => "tit_string.mysql",
-    inverted_ref   => $convtab_ref->{inverted_tit},
-    blacklist_ref  => $convtab_ref->{blacklist_tit},
+    inverted_ref   => $conv_config->{inverted_tit},
+    blacklist_ref  => $conv_config->{blacklist_tit},
 };
 
 if ($addsuperpers){
@@ -666,7 +659,7 @@ while (my $line=<IN>){
         next CATLINE if (exists $stammdateien_ref->{tit}{blacklist_ref}->{$category});
 
         # Kategorien in listitemcat werden fuer die Kurztitelliste verwendet
-        if (exists $convtab_ref->{listitemcat}{$category}){
+        if (exists $conv_config->{listitemcat}{$category}){
             push @{$listitem_ref->{"T".$category}}, {
                 indicator => $indicator,
                 content   => $content,
@@ -1018,37 +1011,37 @@ while (my $line=<IN>){
         }
         # Titeldaten
         else {
-            if (   exists $convtab_ref->{search_category}{ejahr    }{$category}){
+            if (   exists $conv_config->{search_ejahr    }{$category}){
                 push @ejahr, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            if (   exists $convtab_ref->{search_category}{ejahrft  }{$category}){
+            if (   exists $conv_config->{search_ejahrft  }{$category}){
                 push @ejahrft, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            if (   exists $convtab_ref->{search_category}{gtquelle }{$category}){
+            if (   exists $conv_config->{search_gtquelle }{$category}){
                 push @gtquelle, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            elsif (exists $convtab_ref->{search_category}{hst      }{$category}){
+            elsif (exists $conv_config->{search_hst      }{$category}){
                 push @hst, OpenBib::Common::Util::grundform({
                     # Keine Uebergabe der Kategorie, da erstes Stopwort hier nicht entfernt werden soll
                     content  => $content,
                 });
             }
-            if (   exists $convtab_ref->{search_category}{inhalt   }{$category}){
+            if (   exists $conv_config->{search_inhalt   }{$category}){
                 push @inhalt, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            elsif (exists $convtab_ref->{search_category}{isbn     }{$category}){
+            elsif (exists $conv_config->{search_isbn     }{$category}){
 
                 my $isbnnorm = OpenBib::Common::Util::grundform({
                     category => $category,
@@ -1078,31 +1071,31 @@ while (my $line=<IN>){
                 }
 
             }
-            elsif (exists $convtab_ref->{search_category}{issn     }{$category}){
+            elsif (exists $conv_config->{search_issn     }{$category}){
                 push @issn,      OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            elsif (exists $convtab_ref->{search_category}{artinh   }{$category}){
+            elsif (exists $conv_config->{search_artinh   }{$category}){
                 push @artinh, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            elsif (exists $convtab_ref->{search_category}{verf     }{$category}){
+            elsif (exists $conv_config->{search_verf     }{$category}){
                 push @titverf, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            elsif (exists $convtab_ref->{search_category}{kor      }{$category}){
+            elsif (exists $conv_config->{search_kor      }{$category}){
                 push @titkor, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            elsif (exists $convtab_ref->{search_category}{swt      }{$category}){
+            elsif (exists $conv_config->{search_swt      }{$category}){
                 push @titswt, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,

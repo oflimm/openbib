@@ -1402,7 +1402,7 @@ sub get_tit_set_by_idn {
                 -> uri("urn:/MediaStatus")
                     -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
             my $result = $soap->get_mediastatus(
-                SOAP::Data->name(paramaters  =>\SOAP::Data->value(
+                SOAP::Data->name(parameter  =>\SOAP::Data->value(
                     SOAP::Data->name(katkey   => $circid)->type('string'),
                     SOAP::Data->name(database => $targetcircinfo_ref->{$database}{circdb})->type('string'))));
             
@@ -1922,7 +1922,7 @@ sub initial_search_for_titidns {
     my $notfirstsql=0;
     
     if ($searchquery_ref->{fs}{norm}) {	
-        push @sqlwhere, $searchquery_ref->{fs}{bool}." match (verf,hst,kor,swt,notation,sign,isbn,issn,ejahrft) against (? IN BOOLEAN MODE)";
+        push @sqlwhere, $searchquery_ref->{fs}{bool}." match (verf,hst,kor,swt,notation,sign,inhalt,isbn,issn,ejahrft) against (? IN BOOLEAN MODE)";
         push @sqlargs, $searchquery_ref->{fs}{norm};
     }
    

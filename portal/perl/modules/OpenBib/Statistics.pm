@@ -491,6 +491,7 @@ sub log_query {
 			      $used_category_ref->{sign},
 			      $used_category_ref->{mart},
 			      $used_category_ref->{hststring},
+			      $used_category_ref->{inhalt},
 			      $used_category_ref->{gtquelle},
 			      $used_category_ref->{ejahr}
 			     ) or $logger->error($DBI::errstr);

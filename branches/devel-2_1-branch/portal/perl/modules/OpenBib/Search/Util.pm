@@ -1993,7 +1993,12 @@ sub initial_search_for_titidns {
         push @sqlwhere, $searchquery_ref->{hststring}{bool}." (tit_string.content like ? and tit_string.category in (0331,0310,0304,0370,0341) and search.verwidn=tit_string.id)";
         push @sqlargs,  $searchquery_ref->{hststring}{norm};
     }
-  
+
+    if ($searchquery_ref->{inhalt}{norm}) {
+        push @sqlwhere, $searchquery_ref->{inhalt}{bool}."  match (inhalt) against (? IN BOOLEAN MODE)";
+        push @sqlargs,  $searchquery_ref->{inhalt}{norm};
+    }
+    
     if ($searchquery_ref->{gtquelle}{norm}) {
         push @sqlwhere, $searchquery_ref->{gtquelle}{bool}."  match (gtquelle) against (? IN BOOLEAN MODE)";
         push @sqlargs,  $searchquery_ref->{gtquelle}{norm};

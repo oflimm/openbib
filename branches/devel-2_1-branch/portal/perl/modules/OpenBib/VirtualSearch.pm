@@ -514,6 +514,10 @@ sub handler {
         $firstsql=1;
     }
 
+    if ($searchquery_ref->{inhalt}{norm}) {
+        $firstsql=1;
+    }
+    
     if ($searchquery_ref->{gtquelle}{norm}) {
         $firstsql=1;
     }

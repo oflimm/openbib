@@ -39,6 +39,10 @@
 <tr><td class="category">[% msg.maketext("Kompletter Titel") %]</td><td class="category"><select name="boolhststring"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="hststring" value="[% searchquery.hststring.val | html %]" size="30" maxlength="200" /></td><td><span class="warning">*</span></td><td></td></tr>
 [% END %]
 
+[% IF showinhalt %]
+<tr><td class="category">[% msg.maketext("Abstrakt/Inhalt") %]</td><td class="category"><select name="boolinhalt"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="inhalt" value="[% searchquery.inhalt.val | html %]" size="30" maxlength="200" /></td><td></td><td></td></tr>
+[% END %]
+
 [% IF showgtquelle %]
 <tr><td class="category">[% msg.maketext("Serie/Band/Quelle") %]</td><td class="category"><select name="boolgtquelle"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="gtquelle" value="[% searchquery.gtquelle.val | html %]" size="30" maxlength="200" /></td><td></td><td></td></tr>
 [% END %]

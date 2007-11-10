@@ -141,7 +141,7 @@ my $count = 1;
 {
     my $atime = new Benchmark;
     while (my $search=<SEARCH>, my $titlistitem=<TITLISTITEM>) {
-        my ($s_id,$verf,$hst,$kor,$swt,$notation,$sign,$ejahrint,$ejahr,$gtquelle,$isbn,$issn,$artinh)=split("",$search);
+        my ($s_id,$verf,$hst,$kor,$swt,$notation,$sign,$ejahrint,$ejahr,$gtquelle,$inhalt,$isbn,$issn,$artinh)=split("",$search);
         my ($t_id,$listitem)=split ("",$titlistitem);
         if ($s_id != $t_id) {
             $logger->fatal("Id's stimmen nicht ueberein ($s_id != $t_id)!");
@@ -197,6 +197,11 @@ my $count = 1;
             {
                 prefix  => "Y1",
                 content => $artinh,
+	        type    => 'index',
+            },
+            {
+                prefix  => "Y2",
+                content => $inhalt,
 	        type    => 'index',
             },
             {

@@ -438,6 +438,7 @@ while (my $line=<IN>){
         @ejahr     = ();
         @ejahrft   = ();
         @gtquelle  = ();
+        @inhalt    = ();
         @titverf   = ();
         @titkor    = ();
         @titswt    = ();
@@ -520,8 +521,9 @@ while (my $line=<IN>){
         my $ejahr     = join(" ",@ejahr);
         my $ejahrft   = join(" ",@ejahrft);
         my $gtquelle  = join(" ",@gtquelle);
+        my $inhalt    = join(" ",@inhalt);
         
-        print OUTSEARCH "$id$verf$hst$kor$swt$notation$mex$ejahr$ejahrft$gtquelle$isbn$issn$artinh\n";
+        print OUTSEARCH "$id$verf$hst$kor$swt$notation$mex$ejahr$ejahrft$gtquelle$inhalt$isbn$issn$artinh\n";
 
         # Listitem zusammensetzen
 
@@ -1037,6 +1039,12 @@ while (my $line=<IN>){
             elsif (exists $convtab_ref->{search_category}{hst      }{$category}){
                 push @hst, OpenBib::Common::Util::grundform({
                     # Keine Uebergabe der Kategorie, da erstes Stopwort hier nicht entfernt werden soll
+                    content  => $content,
+                });
+            }
+            if (   exists $convtab_ref->{search_category}{inhalt   }{$category}){
+                push @inhalt, OpenBib::Common::Util::grundform({
+                    category => $category,
                     content  => $content,
                 });
             }

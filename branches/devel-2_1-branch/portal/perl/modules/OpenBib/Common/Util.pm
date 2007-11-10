@@ -614,9 +614,9 @@ sub get_searchquery {
         'lt' => '<',
     };
 
-    my ($fs, $verf, $hst, $hststring, $gtquelle, $swt, $kor, $sign, $isbn, $issn, $mart,$notation,$ejahr,$ejahrop);
+    my ($fs, $verf, $hst, $hststring, $gtquelle, $swt, $kor, $sign, $inhalt, $isbn, $issn, $mart,$notation,$ejahr,$ejahrop);
 
-    my ($fsnorm, $verfnorm, $hstnorm, $hststringnorm, $gtquellenorm, $swtnorm, $kornorm, $signnorm, $isbnnorm, $issnnorm, $martnorm,$notationnorm,$ejahrnorm);
+    my ($fsnorm, $verfnorm, $hstnorm, $hststringnorm, $gtquellenorm, $swtnorm, $kornorm, $signnorm, $inhaltnorm, $isbnnorm, $issnnorm, $martnorm,$notationnorm,$ejahrnorm);
     
     $fs        = $fsnorm        = decode_utf8($query->param('fs'))            || $query->param('fs')      || '';
     $verf      = $verfnorm      = decode_utf8($query->param('verf'))          || $query->param('verf')    || '';
@@ -626,6 +626,7 @@ sub get_searchquery {
     $swt       = $swtnorm       = decode_utf8($query->param('swt'))           || $query->param('swt')     || '';
     $kor       = $kornorm       = decode_utf8($query->param('kor'))           || $query->param('kor')     || '';
     $sign      = $signnorm      = decode_utf8($query->param('sign'))          || $query->param('sign')    || '';
+    $inhalt    = $inhaltnorm    = decode_utf8($query->param('inhalt'))        || $query->param('inhalt')  || '';
     $isbn      = $isbnnorm      = decode_utf8($query->param('isbn'))          || $query->param('isbn')    || '';
     $issn      = $issnnorm      = decode_utf8($query->param('issn'))          || $query->param('issn')    || '';
     $mart      = $martnorm      = decode_utf8($query->param('mart'))          || $query->param('mart')    || '';
@@ -660,6 +661,8 @@ sub get_searchquery {
         :"AND";
     my $boolsign      = ($query->param('boolsign'))     ?$query->param('boolsign')
         :"AND";
+    my $boolinhalt    = ($query->param('boolinhalt'))   ?$query->param('boolinhalt')
+        :"AND";
     my $boolejahr     = ($query->param('boolejahr'))    ?$query->param('boolejahr')
         :"AND" ;
     my $boolfs        = ($query->param('boolfs'))       ?$query->param('boolfs')
@@ -673,57 +676,27 @@ sub get_searchquery {
 
     # Sicherheits-Checks
 
-    if ($boolverf ne "AND" && $boolverf ne "OR" && $boolverf ne "NOT") {
-        $boolverf      = "AND";
-    }
+    my $valid_bools_ref = {
+        'AND' => 1,
+        'OR'  => 1,
+        'NOT' => 1,
+    };
 
-    if ($boolhst ne "AND" && $boolhst ne "OR" && $boolhst ne "NOT") {
-        $boolhst       = "AND";
-    }
+    $boolverf      = (exists $valid_bools_ref->{$boolverf     })?$boolverf     :"AND";
+    $boolhst       = (exists $valid_bools_ref->{$boolhst      })?$boolhst      :"AND";
+    $boolswt       = (exists $valid_bools_ref->{$boolswt      })?$boolswt      :"AND";
+    $boolkor       = (exists $valid_bools_ref->{$boolkor      })?$boolkor      :"AND";
+    $boolnotation  = (exists $valid_bools_ref->{$boolnotation })?$boolnotation :"AND";
+    $boolisbn      = (exists $valid_bools_ref->{$boolisbn     })?$boolisbn     :"AND";
+    $boolissn      = (exists $valid_bools_ref->{$boolissn     })?$boolissn     :"AND";
+    $boolsign      = (exists $valid_bools_ref->{$boolsign     })?$boolsign     :"AND";
+    $boolinhalt    = (exists $valid_bools_ref->{$boolinhalt   })?$boolinhalt   :"AND";
+    $boolfs        = (exists $valid_bools_ref->{$boolfs       })?$boolfs       :"AND";
+    $boolmart      = (exists $valid_bools_ref->{$boolmart     })?$boolmart     :"AND";
+    $boolhststring = (exists $valid_bools_ref->{$boolhststring})?$boolhststring:"AND";
+    $boolgtquelle  = (exists $valid_bools_ref->{$boolgtquelle })?$boolgtquelle :"AND";
 
-    if ($boolswt ne "AND" && $boolswt ne "OR" && $boolswt ne "NOT") {
-        $boolswt       = "AND";
-    }
-
-    if ($boolkor ne "AND" && $boolkor ne "OR" && $boolkor ne "NOT") {
-        $boolkor       = "AND";
-    }
-
-    if ($boolnotation ne "AND" && $boolnotation ne "OR" && $boolnotation ne "NOT") {
-        $boolnotation  = "AND";
-    }
-
-    if ($boolisbn ne "AND" && $boolisbn ne "OR" && $boolisbn ne "NOT") {
-        $boolisbn      = "AND";
-    }
-
-    if ($boolissn ne "AND" && $boolissn ne "OR" && $boolissn ne "NOT") {
-        $boolissn      = "AND";
-    }
-
-    if ($boolsign ne "AND" && $boolsign ne "OR" && $boolsign ne "NOT") {
-        $boolsign      = "AND";
-    }
-
-    if ($boolejahr ne "AND") {
-        $boolejahr     = "AND";
-    }
-
-    if ($boolfs ne "AND" && $boolfs ne "OR" && $boolfs ne "NOT") {
-        $boolfs        = "AND";
-    }
-
-    if ($boolmart ne "AND" && $boolmart ne "OR" && $boolmart ne "NOT") {
-        $boolmart      = "AND";
-    }
-
-    if ($boolhststring ne "AND" && $boolhststring ne "OR" && $boolhststring ne "NOT") {
-        $boolhststring = "AND";
-    }
-
-    if ($boolgtquelle ne "AND" && $boolgtquelle ne "OR" && $boolgtquelle ne "NOT") {
-        $boolgtquelle = "AND";
-    }
+    $boolejahr    = "AND";
 
     $boolverf      = "AND NOT" if ($boolverf      eq "NOT");
     $boolhst       = "AND NOT" if ($boolhst       eq "NOT");
@@ -733,6 +706,7 @@ sub get_searchquery {
     $boolisbn      = "AND NOT" if ($boolisbn      eq "NOT");
     $boolissn      = "AND NOT" if ($boolissn      eq "NOT");
     $boolsign      = "AND NOT" if ($boolsign      eq "NOT");
+    $boolinhalt    = "AND NOT" if ($boolinhalt    eq "NOT");
     $boolfs        = "AND NOT" if ($boolfs        eq "NOT");
     $boolmart      = "AND NOT" if ($boolmart      eq "NOT");
     $boolhststring = "AND NOT" if ($boolhststring eq "NOT");
@@ -807,6 +781,11 @@ sub get_searchquery {
         searchreq => 1,
     });
 
+    $inhaltnorm    = OpenBib::Common::Util::grundform({
+        content   => $inhaltnorm,
+        searchreq => 1,
+    });
+    
     $isbnnorm      = OpenBib::Common::Util::grundform({
         category  => '0540',
         content   => $isbnnorm,
@@ -843,6 +822,7 @@ sub get_searchquery {
         $swtnorm      = OpenBib::VirtualSearch::Util::conv2autoplus($swtnorm)  if ($swt);
         $isbnnorm     = OpenBib::VirtualSearch::Util::conv2autoplus($isbnnorm) if ($isbn);
         $issnnorm     = OpenBib::VirtualSearch::Util::conv2autoplus($issnnorm) if ($issn);
+        $inhaltnorm   = OpenBib::VirtualSearch::Util::conv2autoplus($inhaltnorm) if ($inhalt);
         $gtquellenorm = OpenBib::VirtualSearch::Util::conv2autoplus($gtquellenorm) if ($gtquelle);
     }
 
@@ -877,6 +857,14 @@ sub get_searchquery {
 			    val   => $gtquelle,
 			    norm  => $gtquellenorm,
 			    bool  => $boolgtquelle,
+			   };
+    }
+
+    if ($inhalt){
+      $searchquery_ref->{inhalt}={
+			    val   => $inhalt,
+			    norm  => $inhaltnorm,
+			    bool  => $boolinhalt,
 			   };
     }
 

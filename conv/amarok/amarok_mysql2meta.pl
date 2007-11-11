@@ -159,7 +159,7 @@ SYSSET
         print TIT "0200:IDN: $albumid\n" if ($albumid);
         print TIT "0331:$title\n";
         print TIT "0425:$year\n" if ($year);
-        print TIT "0800:IDN: $genreid\n" if ($genreid);
+        print TIT "0700:IDN: $genreid\n" if ($genreid);
         print TIT "9999:\n\n";
         $titid++;
     }

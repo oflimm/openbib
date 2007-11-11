@@ -153,12 +153,23 @@ SYSSET
         my $length    = $res->{'length'};
         my $title     = decode_utf8($res->{'title'});
 
+
+        my $sec = $length % 60;
+        $length = ($length - $sec) / 60;
+        my $minute = $length % 60;
+#        $length = ($length - $minute) / 60;
+#        my $hour = $length % 24;
+
+        $length="$minute:$sec (min:sec)";
+#        $length="$hour:$length" if ($hour);
+        
         print TIT "0000:$titid\n";
         print TIT "0089:$track\n" if ($track);
         print TIT "0100:IDN: $artistid\n" if ($artistid);
         print TIT "0200:IDN: $albumid\n" if ($albumid);
         print TIT "0331:$title\n";
         print TIT "0425:$year\n" if ($year);
+        print TIT "0433:$length\n" if ($length);
         print TIT "0700:IDN: $genreid\n" if ($genreid);
         print TIT "9999:\n\n";
         $titid++;

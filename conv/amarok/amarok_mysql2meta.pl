@@ -160,7 +160,7 @@ SYSSET
 #        $length = ($length - $minute) / 60;
 #        my $hour = $length % 24;
 
-        $length="$minute:$sec (min:sec)";
+        $length=sprintf "%d:%02d (min:sec)",$minute,$sec;
 #        $length="$hour:$length" if ($hour);
         
         print TIT "0000:$titid\n";

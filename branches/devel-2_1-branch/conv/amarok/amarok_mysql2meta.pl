@@ -34,6 +34,7 @@
 use utf8;
 
 use DBI;
+use Encode qw(decode_utf8 encode_utf8);
 
 use OpenBib::Config;
 
@@ -66,7 +67,7 @@ my $dbh=DBI->connect("DBI:mysql:dbname=$dbname;host=$dbhost;port=$port", $dbuser
     
     while (my $res=$result->fetchrow_hashref){
         my $id    = $res->{'id'};
-        my $name  = $res->{'name'};
+        my $name  = decode_utf8($res->{'name'});
 
         print AUT << "PERSET"
 0000:$id
@@ -92,7 +93,7 @@ PERSET
     
     while (my $res=$result->fetchrow_hashref){
         my $id    = $res->{'id'};
-        my $name  = $res->{'name'};
+        my $name  = decode_utf8($res->{'name'});
         
         print KOR << "KOESET"
 0000:$id
@@ -118,7 +119,7 @@ KOESET
 
     while (my $res=$result->fetchrow_hashref){
         my $id    = $res->{'id'};
-        my $name  = $res->{'name'};
+        my $name  = decode_utf8($res->{'name'});
 
         print NOTATION << "SYSSET"
 0000:$id
@@ -138,7 +139,7 @@ SYSSET
     my $titid=1;
     open(TIT,">:utf8", "unload.TIT");
     
-    my $sql_statement = "select * from tags";
+    my $sql_statement = "select tags.*,year.name as thisyear from tags left join year on tags.year=year.id";
     my $result=$dbh->prepare($sql_statement) or die "Error -- $DBI::errstr";
     
     $result->execute();
@@ -147,10 +148,10 @@ SYSSET
         my $artistid  = $res->{'artist'};
         my $albumid   = $res->{'album'};
         my $genreid   = $res->{'genre'};
-        my $year      = $res->{'year'};
+        my $year      = $res->{'thisyear'};
         my $track     = $res->{'track'};
         my $length    = $res->{'length'};
-        my $title     = $res->{'title'};
+        my $title     = decode_utf8($res->{'title'});
 
         print TIT "0000:$titid\n";
         print TIT "0089:$track\n" if ($track);

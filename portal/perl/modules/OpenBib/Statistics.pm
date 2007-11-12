@@ -451,7 +451,7 @@ sub log_query {
 			 };
 
     my $termrequest     = $self->{dbh}->prepare("insert into queryterm values (?,?,?,?)") or $logger->error($DBI::errstr);
-    my $categoryrequest = $self->{dbh}->prepare("insert into querycategory values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
+    my $categoryrequest = $self->{dbh}->prepare("insert into querycategory values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
 
     foreach my $cat (keys %$cat2type_ref){
         my $thiscategory_terms = $searchquery_ref->{$cat}->{val};

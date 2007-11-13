@@ -39,11 +39,51 @@ use vars qw(%config);
     # Konvertierungskonfiguration bzgl. MAB-basierten Meta-Formats
     
     convtab => {
-        inst431 => {
-#             listitemcat => {
-#                 '0089' => 1,
-#                 '0310' => 1,
-#             }
+        richter => {
+            inverted_tit => {
+                '0002' => {     # Aufnahmedatum
+                    string => 1,
+                },
+                    
+                '0304' => {     # EST
+                    string => 1,
+                    ft     => 1,
+                },
+                    
+                '0310' => {     # AST
+                    string => 1,
+                    ft     => 1,
+                },
+                    
+                '0331' => {     # HST
+                    string => 1,
+                    ft     => 1,
+                },
+                    
+                '0335' => {     # Zusatz zum HST
+                    string => 0,
+                    ft     => 1,
+                },
+                    
+                '0341' => {     # PSTVorlage
+                    string => 1,
+                    ft     => 1,
+                },
+                    
+                '0370' => {     # WST
+                    string => 1,
+                    ft     => 1,
+                },
+                    
+                '0540' => {     # ISBN
+                    string => 1,
+                },
+
+                '0720' => {     # Provenienz-Register
+                    string => 1,
+                },
+                    
+            },
         },
 
         default => {                

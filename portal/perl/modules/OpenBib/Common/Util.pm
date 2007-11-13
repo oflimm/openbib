@@ -1519,6 +1519,7 @@ sub utf2bibtex {
     $string=~s/[^-+\p{Alphabetic}0-9\n\/&;#: '()@<>\\,.="^*[]]//g;
     $string=~s/&lt;/</g;
     $string=~s/&gt;/>/g;
+    $string=~s/&amp;/&/g;
 
     # Wenn utf8 ausgegeben werden soll, dann sind wir hier fertig
     return $string if ($utf8);

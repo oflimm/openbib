@@ -1,0 +1,21 @@
+[%#-
+#######################################################################
+#
+# Templatename: visible_categories_titset
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabekategorien fuer einen einzelnen Titelsatz
+#
+#######################################################################
+-%]
+[%# Ausgabekategorien %]
+[% categories = [
+                   'T0100', # msg.maketext("T0100-inst450") Autor
+                   'T0101', # msg.maketext("T0101-inst450") Co-Autor
+                   'T0331', # msg.maketext("T0331") Titel
+                ]
+
+%]

@@ -52,6 +52,13 @@ HELP
 exit;
 }
 
+$mergecat_ref = {
+	       '0100' => 1,
+	       '0331' => 1,
+	       '0509' => 1,
+	       '0590' => 1,
+};
+
 # Kategoriemappings
 
 $titcat_ref = {
@@ -62,6 +69,9 @@ $titcat_ref = {
 	       '0425' => 1,
 	       '0433' => 1,
 	       '0451' => 1,
+	       '0501' => 1,
+	       '0509' => 1,
+	       '0525' => 1,
 	       '0590' => 1,
 	       '0800' => 1,
 	      };
@@ -73,6 +83,7 @@ $autcat_ref = {
 
 $korcat_ref = {
 	       '0200' => 1,
+	       '0201' => 1,
 	      };
 
 $notcat_ref = {
@@ -83,6 +94,7 @@ $swtcat_ref = {
 	      };
 
 $mexcat_ref = {
+	       '0005' => 1,
 	       '0014' => 1,
 	       '0016' => 1,
 	      };
@@ -96,15 +108,15 @@ $konvtab_ref = {
     'Deskriptoren:'                            => '0710', 
     'Freie Stichworte:'                        => '0710', 
     'Gimm-Standorte:'                          => '0016', 
-    'Herausgebende Institution:'               => '', 
+    'Herausgebende Institution:'               => '0201', 
     'In (Sammelband/Zeitschrift/Zeitung):'     => '0590', 
-    'Inventarnummer:'                          => '', 
+    'Inventarnummer:'                          => '0005', 
     'Jahr:'                                    => '0425', 
     'Kommentar:'                               => '', 
     'Markierung:'                              => '', 
     'Ort:'                                     => '0410', 
-    'Ortsnamen:'                               => '', 
-    'Personennamen:'                           => '', 
+    'Ortsnamen:'                               => '0525', 
+    'Personennamen:'                           => '0509', 
     'Reihe:'                                   => '0451', 
     'Seiten:'                                  => '0433', 
     'Signatur-Kommentar:'                      => '', 
@@ -114,7 +126,7 @@ $konvtab_ref = {
     'Titel:'                                   => '0331', 
     'Typ (M-ono.,A-rtik.,P-eriodik.,Z-eitg.):' => '0800', 
     'Verlag:'                                  => '0412', 
-    'Werke:'                                   => '', 
+    'Werke:'                                   => '0501', 
     'Zeichen:'                                 => '',
 };
 
@@ -162,8 +174,13 @@ while (<DAT>){
 	  $newcontent .= Encode::decode("cp437",$char);
 	}
       }
-
-      push @{$title_ref->{$category_dst}}, $newcontent; 
+    
+      if (exists $title_ref->{$category_dst} && exists $mergecat_ref->{$category_dst}){
+	$title_ref->{$category_dst}[0].=" $newcontent";
+      }
+      else {
+	push @{$title_ref->{$category_dst}}, $newcontent; 
+      }
     }
   }
 }
@@ -199,10 +216,11 @@ foreach my $title_ref (@$titlelist_ref){
          my $mult = 1;
          foreach my $content (@{$title_ref->{$category}}){       
                 my $supplement="";
-                if ($content =~/^(.+?)( ; \[.*?$)/){
+                if ($content =~/^(.+?) *\/? *(\(.*?$)/){
                    $content    = $1;
-                   $supplement = $2;
+                   $supplement = " ; $2";
                 }
+
                 $autidn=get_autidn($content);
                 
                 if ($autidn > 0){

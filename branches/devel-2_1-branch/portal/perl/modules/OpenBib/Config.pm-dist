@@ -548,6 +548,36 @@ tt_connector_digibib_result_start_tname  => 'connector_digibib_result_start',
                    'T0710' => 1,
                    'T0750' => 1,
                },
+               
+               inst450 => {
+                   'T0100' => 1,
+                   'T0101' => 1,
+                   'T0200' => 1,
+                   'T0201' => 1,
+                   'T0501' => 1,
+                   'T0509' => 1,
+                   'T0525' => 1,
+               },
+
+               kapsel => {
+                   'T0331' => 1,
+                   'T0700' => 1,
+               }
+
+               landschaft => {
+                   'T0100' => 1,
+                   'T0200' => 1,
+                   'T0331' => 1,
+                   'T0334' => 1,
+                   'T0750' => 1,
+                   'T0407' => 1,
+                   'T0425' => 1,
+                   'T0700' => 1,
+                   'T0710' => 1,
+                   'T0591' => 1,
+                   'T0594' => 1,
+                   'T0595' => 1,
+               },
 
                portrait => {
                    'T0100' => 1,
@@ -570,7 +600,6 @@ tt_connector_digibib_result_start_tname  => 'connector_digibib_result_start',
                    'T0508' => 1,
                    'T0662' => 1,
                },
-               
 
            },
 

@@ -260,6 +260,7 @@ use vars qw(%config);
                 '0331' => 1,    # HST
                 '0335' => 1,    # Zusatz zum HST
                 '0341' => 1,    # PSTVorlage
+                '0361' => 1,    # Vorlage beigefuegtes Werk
                 '0370' => 1,    # WST
                 '0412' => 1,    # Verlag
             },

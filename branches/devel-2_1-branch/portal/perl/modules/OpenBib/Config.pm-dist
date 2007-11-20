@@ -562,7 +562,7 @@ tt_connector_digibib_result_start_tname  => 'connector_digibib_result_start',
                kapsel => {
                    'T0331' => 1,
                    'T0700' => 1,
-               }
+               },
 
                landschaft => {
                    'T0100' => 1,

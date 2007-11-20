@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2007-11-06 17:20+0100\n"
+"PO-Revision-Date: 2007-11-20 07:56+0100\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -113,7 +113,7 @@ msgstr "Abspeichern"
 msgid "Abspeicherung eines neuen oder bestehenden Profils"
 msgstr "Abspeicherung eines neuen oder bestehenden Profils"
 
-#: ../templates/searchframe_query:43
+#: ../templates/searchframe_query:43 ../templates/userprefs:184
 msgid "Abstrakt/Inhalt"
 msgstr "Abstrakt/Inhalt"
 
@@ -163,7 +163,7 @@ msgstr "Aktuelle Recherche"
 #: ../templates/views/inst460/searchframe_simple:125
 #: ../templates/views/kug/searchframe:250
 #: ../templates/views/kug/searchframe:262
-#: ../templates/views/richter/searchframe_simple:92
+#: ../templates/views/richter/searchframe_simple:93
 msgid "Alle Kataloge"
 msgstr "Alle Kataloge"
 
@@ -215,7 +215,7 @@ msgstr "Als Permanenten Link verwenden"
 #: ../templates/views/landschaft/searchframe:43
 #: ../templates/views/portrait/searchframe:48
 #: ../templates/views/rheinlandbib/searchframe:55
-#: ../templates/views/richter/searchframe:68
+#: ../templates/views/richter/searchframe:69
 #: ../templates/views/xanten/searchframe:63
 msgid "Als Suchvorlage"
 msgstr "Als Suchvorlage"
@@ -848,7 +848,7 @@ msgstr "Erfolgreiche Aktion"
 msgid "Erfolgsmeldung"
 msgstr "Erfolgsmeldung"
 
-#: ../templates/searchframe_options:4 ../templates/userprefs:185
+#: ../templates/searchframe_options:4 ../templates/userprefs:186
 #: ../templates/views/gdonck/searchframe_options:4
 #: ../templates/views/gleuel/searchframe_options:4
 #: ../templates/views/kempen/searchframe_options:4
@@ -983,7 +983,7 @@ msgstr "Fakultät"
 #: ../templates/views/inst430/searchframe_simple:128
 #: ../templates/views/inst431/searchframe_simple:125
 #: ../templates/views/inst460/searchframe_simple:126
-#: ../templates/views/richter/searchframe_simple:93
+#: ../templates/views/richter/searchframe_simple:94
 msgid "Fakultäten"
 msgstr "Fakultäten"
 
@@ -1073,8 +1073,8 @@ msgstr "Freie Suche"
 #: ../templates/views/portrait/searchframe:133
 #: ../templates/views/rheinlandbib/searchframe:127
 #: ../templates/views/rheinlandbib/searchframe_simple:109
-#: ../templates/views/richter/searchframe:122
-#: ../templates/views/richter/searchframe_simple:147
+#: ../templates/views/richter/searchframe:123
+#: ../templates/views/richter/searchframe_simple:148
 #: ../templates/views/xanten/searchframe:138
 #: ../templates/views/xanten/searchframe_simple:120
 msgid ""
@@ -1117,7 +1117,7 @@ msgstr ""
 #: ../templates/views/kug/searchframe_simple:78
 #: ../templates/views/kwinter/searchframe_simple:70
 #: ../templates/views/rheinlandbib/searchframe_simple:62
-#: ../templates/views/richter/searchframe_simple:70
+#: ../templates/views/richter/searchframe_simple:71
 #: ../templates/views/xanten/searchframe_simple:70
 msgid "Geben Sie hier Ihre Suchbegriffe ein"
 msgstr "Geben Sie hier Ihre Suchbegriffe ein"
@@ -1381,10 +1381,10 @@ msgstr ""
 #: ../templates/views/rheinlandbib/searchframe:83
 #: ../templates/views/rheinlandbib/searchframe_simple:75
 #: ../templates/views/rheinlandbib/searchframe_simple:81
-#: ../templates/views/richter/searchframe:115
-#: ../templates/views/richter/searchframe:92
-#: ../templates/views/richter/searchframe_simple:113
-#: ../templates/views/richter/searchframe_simple:119
+#: ../templates/views/richter/searchframe:116
+#: ../templates/views/richter/searchframe:93
+#: ../templates/views/richter/searchframe_simple:114
+#: ../templates/views/richter/searchframe_simple:120
 #: ../templates/views/xanten/searchframe:123
 #: ../templates/views/xanten/searchframe:127
 #: ../templates/views/xanten/searchframe:85
@@ -1548,10 +1548,10 @@ msgstr "Hier löschen Sie die Eingabefelder"
 #: ../templates/views/rheinlandbib/searchframe:83
 #: ../templates/views/rheinlandbib/searchframe_simple:75
 #: ../templates/views/rheinlandbib/searchframe_simple:81
-#: ../templates/views/richter/searchframe:115
-#: ../templates/views/richter/searchframe:92
-#: ../templates/views/richter/searchframe_simple:113
-#: ../templates/views/richter/searchframe_simple:119
+#: ../templates/views/richter/searchframe:116
+#: ../templates/views/richter/searchframe:93
+#: ../templates/views/richter/searchframe_simple:114
+#: ../templates/views/richter/searchframe_simple:120
 #: ../templates/views/xanten/searchframe:123
 #: ../templates/views/xanten/searchframe:127
 #: ../templates/views/xanten/searchframe:85
@@ -1636,7 +1636,7 @@ msgstr "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
 #: ../templates/views/rheinlandbib/searchframe:119
 #: ../templates/views/rheinlandbib/searchframe:83
 #: ../templates/views/rheinlandbib/searchframe_simple:81
-#: ../templates/views/richter/searchframe_simple:119
+#: ../templates/views/richter/searchframe_simple:120
 #: ../templates/views/xanten/searchframe:127
 #: ../templates/views/xanten/searchframe:91
 #: ../templates/views/xanten/searchframe_simple:89
@@ -1818,7 +1818,7 @@ msgstr "Import-Einstellungen"
 #: ../templates/views/rheinlandbib/searchframe:119
 #: ../templates/views/rheinlandbib/searchframe:83
 #: ../templates/views/rheinlandbib/searchframe_simple:81
-#: ../templates/views/richter/searchframe_simple:119
+#: ../templates/views/richter/searchframe_simple:120
 #: ../templates/views/xanten/searchframe:127
 #: ../templates/views/xanten/searchframe:91
 #: ../templates/views/xanten/searchframe_simple:89
@@ -1947,8 +1947,8 @@ msgstr "In allen Katalogen suchen"
 #: ../templates/views/rheinlandbib/searchframe:119
 #: ../templates/views/rheinlandbib/searchframe:83
 #: ../templates/views/rheinlandbib/searchframe_simple:81
-#: ../templates/views/richter/searchframe:115
-#: ../templates/views/richter/searchframe_simple:119
+#: ../templates/views/richter/searchframe:116
+#: ../templates/views/richter/searchframe_simple:120
 #: ../templates/views/xanten/searchframe:127
 #: ../templates/views/xanten/searchframe:91
 #: ../templates/views/xanten/searchframe_simple:89
@@ -1996,7 +1996,7 @@ msgstr "In die Merkliste"
 #: ../templates/views/inst430/searchframe_simple:112
 #: ../templates/views/inst431/searchframe_simple:109
 #: ../templates/views/inst460/searchframe_simple:110
-#: ../templates/views/richter/searchframe_simple:77
+#: ../templates/views/richter/searchframe_simple:78
 msgid "In welchen Katalogen möchten Sie suchen"
 msgstr "In welchen Katalogen möchten Sie suchen"
 
@@ -2531,10 +2531,10 @@ msgstr "Los"
 #: ../templates/views/rheinlandbib/searchframe:83
 #: ../templates/views/rheinlandbib/searchframe_simple:75
 #: ../templates/views/rheinlandbib/searchframe_simple:81
-#: ../templates/views/richter/searchframe:115
-#: ../templates/views/richter/searchframe:92
-#: ../templates/views/richter/searchframe_simple:113
-#: ../templates/views/richter/searchframe_simple:119
+#: ../templates/views/richter/searchframe:116
+#: ../templates/views/richter/searchframe:93
+#: ../templates/views/richter/searchframe_simple:114
+#: ../templates/views/richter/searchframe_simple:120
 #: ../templates/views/xanten/searchframe:123
 #: ../templates/views/xanten/searchframe:127
 #: ../templates/views/xanten/searchframe:85
@@ -2570,7 +2570,7 @@ msgstr "Maximale Trefferzahl pro Katalog"
 msgid "MedPilot"
 msgstr "MedPilot"
 
-#: ../templates/searchframe_query:51 ../templates/userprefs:184
+#: ../templates/searchframe_query:51 ../templates/userprefs:185
 #: ../templates/views/inst501/searchframe_query:47
 #: ../templates/views/kapsel/searchframe_query:43
 #: ../templates/views/richter/searchframe_query:41
@@ -2967,7 +2967,7 @@ msgstr "Richter-Systematik"
 #: ../templates/views/kug/searchframe_simple:101
 #: ../templates/views/kwinter/searchframe_simple:101
 #: ../templates/views/rheinlandbib/searchframe_simple:93
-#: ../templates/views/richter/searchframe_simple:131
+#: ../templates/views/richter/searchframe_simple:132
 #: ../templates/views/xanten/searchframe_simple:101
 msgid "Rufen Sie hier die Ergebnisse früherer Recherchen auf"
 msgstr "Rufen Sie hier die Ergebnisse früherer Recherchen auf"
@@ -3650,7 +3650,7 @@ msgstr "Strasse"
 #: ../templates/views/landschaft/searchframe:66
 #: ../templates/views/portrait/searchframe:71
 #: ../templates/views/rheinlandbib/searchframe:89
-#: ../templates/views/richter/searchframe:97
+#: ../templates/views/richter/searchframe:98
 #: ../templates/views/xanten/searchframe:97
 msgid "Suchbegriffe"
 msgstr "Suchbegriffe"
@@ -3698,7 +3698,7 @@ msgstr ""
 "Suchen Sie in den %1elektronisch verf&uuml;gbaren Zeitschriften%2 der "
 "Universit&auml;tsbibliothek nach dem Zeitschriftentitel."
 
-#: ../templates/userprefs:187
+#: ../templates/userprefs:188
 msgid "Suchfelder &auml;ndern"
 msgstr "Suchfelder &auml;ndern"
 
@@ -3733,7 +3733,7 @@ msgstr "Suchhilfe"
 #: ../templates/views/landschaft/searchframe:66
 #: ../templates/views/portrait/searchframe:71
 #: ../templates/views/rheinlandbib/searchframe:89
-#: ../templates/views/richter/searchframe:97
+#: ../templates/views/richter/searchframe:98
 #: ../templates/views/xanten/searchframe:97
 msgid "Suchhinweise"
 msgstr "Suchhinweise"
@@ -3766,7 +3766,7 @@ msgstr "Suchhinweise"
 #: ../templates/views/landschaft/searchframe:36
 #: ../templates/views/portrait/searchframe:41
 #: ../templates/views/rheinlandbib/searchframe:48
-#: ../templates/views/richter/searchframe:61
+#: ../templates/views/richter/searchframe:62
 #: ../templates/views/xanten/searchframe:56
 msgid "Suchhistorie"
 msgstr "Suchhistorie"
@@ -3816,6 +3816,7 @@ msgid "System"
 msgstr "System"
 
 #: ../templates/database/inst001/visible_categories_titset:84
+#: ../templates/database/inst450/visible_categories_titset:33
 #: ../templates/visible_categories_titset:84
 msgid "T0015"
 msgstr "Sprache"
@@ -3831,6 +3832,7 @@ msgid "T0035"
 msgstr "Ersch.Land"
 
 #: ../templates/database/inst001/visible_categories_titset:21
+#: ../templates/database/inst450/visible_categories_titset:27
 #: ../templates/visible_categories_titset:21
 msgid "T0089"
 msgstr "Bandangabe"
@@ -3843,6 +3845,10 @@ msgstr "Verfasser"
 #: ../templates/database/einbaende/visible_categories_titset:16
 msgid "T0100-einbaende"
 msgstr "Person"
+
+#: ../templates/database/inst450/visible_categories_titset:16
+msgid "T0100-inst450"
+msgstr "Autor"
 
 #: ../templates/database/landschaft/visible_categories_titset:17
 msgid "T0100-landschaft"
@@ -3861,6 +3867,10 @@ msgstr "Person"
 #: ../templates/database/einbaende/visible_categories_coverset:16
 msgid "T0101-einbaende"
 msgstr "Buchbinder/Werkstätten"
+
+#: ../templates/database/inst450/visible_categories_titset:17
+msgid "T0101-inst450"
+msgstr "Co-Autor"
 
 #: ../templates/database/portrait/visible_categories_titset:18
 msgid "T0101-portrait"
@@ -3893,6 +3903,10 @@ msgstr "Urheber"
 msgid "T0200-einbaende"
 msgstr "Region"
 
+#: ../templates/database/inst450/visible_categories_titset:18
+msgid "T0200-inst450"
+msgstr "Behörden, Betriebe, Institutionen"
+
 #: ../templates/database/landschaft/visible_categories_titset:32
 msgid "T0200-landschaft"
 msgstr "Topogr. Schlagwort"
@@ -3906,6 +3920,10 @@ msgstr "Provenienz"
 #: ../templates/visible_categories_titset:20
 msgid "T0201"
 msgstr "Körperschaft"
+
+#: ../templates/database/inst450/visible_categories_titset:19
+msgid "T0201-inst450"
+msgstr "Herausgebende Institution"
 
 #: ../templates/database/portrait/visible_categories_titset:27
 msgid "T0201-portrait"
@@ -3927,6 +3945,7 @@ msgid "T0310"
 msgstr "Ansetzungstitel"
 
 #: ../templates/database/inst001/visible_categories_titset:24
+#: ../templates/database/inst450/visible_categories_titset:20
 #: ../templates/visible_categories_titset:24
 msgid "T0331"
 msgstr "Titel"
@@ -4035,6 +4054,7 @@ msgid "T0407-landschaft"
 msgstr "Höhe x Breite"
 
 #: ../templates/database/inst001/visible_categories_titset:36
+#: ../templates/database/inst450/visible_categories_titset:21
 #: ../templates/database/landschaft/visible_categories_titset:37
 #: ../templates/database/portrait/visible_categories_titset:30
 #: ../templates/visible_categories_titset:35
@@ -4046,6 +4066,7 @@ msgid "T0410-einbaende"
 msgstr "Ersch-Ort"
 
 #: ../templates/database/inst001/visible_categories_titset:37
+#: ../templates/database/inst450/visible_categories_titset:22
 #: ../templates/database/landschaft/visible_categories_titset:38
 #: ../templates/database/portrait/visible_categories_titset:31
 #: ../templates/visible_categories_titset:36
@@ -4076,6 +4097,7 @@ msgid "T0424-portrait"
 msgstr "Jahr/Ansetzung"
 
 #: ../templates/database/inst001/visible_categories_titset:38
+#: ../templates/database/inst450/visible_categories_titset:23
 #: ../templates/visible_categories_titset:37
 msgid "T0425"
 msgstr "Ersch. Jahr"
@@ -4093,6 +4115,7 @@ msgid "T0425-portrait"
 msgstr "Jahr"
 
 #: ../templates/database/inst001/visible_categories_titset:50
+#: ../templates/database/inst450/visible_categories_titset:24
 #: ../templates/database/landschaft/visible_categories_titset:40
 #: ../templates/database/portrait/visible_categories_titset:34
 #: ../templates/visible_categories_titset:49
@@ -4123,6 +4146,7 @@ msgid "T0437"
 msgstr "Begleitmaterial"
 
 #: ../templates/database/inst001/visible_categories_titset:54
+#: ../templates/database/inst450/visible_categories_titset:25
 #: ../templates/visible_categories_titset:53
 msgid "T0451"
 msgstr "Gesamttitel"
@@ -4136,6 +4160,10 @@ msgstr "Fußnote"
 #: ../templates/database/einbaende/visible_categories_coverset:23
 msgid "T0501-einbaende"
 msgstr "Quellen"
+
+#: ../templates/database/inst450/visible_categories_titset:29
+msgid "T0501-inst450"
+msgstr "Werke"
 
 #: ../templates/database/portrait/visible_categories_titset:23
 msgid "T0501-portrait"
@@ -4189,6 +4217,10 @@ msgstr "Bibl. Nachweis"
 #: ../templates/visible_categories_titset:63
 msgid "T0509"
 msgstr "Verfasser Fußnote"
+
+#: ../templates/database/inst450/visible_categories_titset:30
+msgid "T0509-inst450"
+msgstr "Personennamen"
 
 #: ../templates/database/portrait/visible_categories_titset:40
 msgid "T0509-portrait"
@@ -4266,6 +4298,10 @@ msgstr "Erscheinungsweise"
 #: ../templates/visible_categories_titset:71
 msgid "T0525"
 msgstr "Herkunft Fußnote"
+
+#: ../templates/database/inst450/visible_categories_titset:31
+msgid "T0525-inst450"
+msgstr "Ortsnamen"
 
 #: ../templates/database/inst001/visible_categories_titset:75
 #: ../templates/database/landschaft/visible_categories_titset:55
@@ -4365,6 +4401,7 @@ msgid "T0580"
 msgstr "Sonstige Standardnummern"
 
 #: ../templates/database/inst001/visible_categories_titset:55
+#: ../templates/database/inst450/visible_categories_titset:26
 #: ../templates/database/landschaft/visible_categories_titset:68
 #: ../templates/database/portrait/visible_categories_titset:62
 #: ../templates/visible_categories_titset:54
@@ -4515,6 +4552,7 @@ msgid "T0700-portrait"
 msgstr "Beruf / Weltanschauung"
 
 #: ../templates/database/inst001/visible_categories_titset:90
+#: ../templates/database/inst450/visible_categories_titset:34
 #: ../templates/visible_categories_titset:90
 msgid "T0710"
 msgstr "Schlagwort"
@@ -4549,6 +4587,10 @@ msgstr "Transkription"
 #: ../templates/visible_categories_titset:89
 msgid "T0800"
 msgstr "Medienart"
+
+#: ../templates/database/inst450/visible_categories_titset:32
+msgid "T0800-inst450"
+msgstr "Typ (M-ono.,A-rtik.,P-eriodik.,Z-eitg.)"
 
 #: ../templates/database/portrait/visible_categories_titset:81
 msgid "T0800-portrait"
@@ -4792,7 +4834,7 @@ msgstr "Top 20"
 #: ../templates/database/portrait/virtualsearch_result_item:16
 #: ../templates/resultlists_choice:81 ../templates/resultlists_showall:59
 #: ../templates/search_showtitlist:75 ../templates/search_showtitlist:91
-#: ../templates/select_queries:57
+#: ../templates/select_queries:60
 #: ../templates/views/einbaende/resultlists_showall:60
 #: ../templates/views/einbaende/virtualsearch_result_item:20
 #: ../templates/views/kapsel/resultlists_showall:58
@@ -5111,7 +5153,7 @@ msgstr "Weiter"
 #: ../templates/views/kug/searchframe:147
 #: ../templates/views/kwinter/searchframe:63
 #: ../templates/views/rheinlandbib/searchframe:55
-#: ../templates/views/richter/searchframe:68
+#: ../templates/views/richter/searchframe:69
 #: ../templates/views/xanten/searchframe:63
 msgid "Weiter als externe Recherche"
 msgstr "Weiter als externe Recherche"
@@ -5251,8 +5293,8 @@ msgstr "Zugemailte Merkliste"
 #: ../templates/views/portrait/searchframe_simple:74
 #: ../templates/views/rheinlandbib/searchframe:55
 #: ../templates/views/rheinlandbib/searchframe_simple:99
-#: ../templates/views/richter/searchframe:68
-#: ../templates/views/richter/searchframe_simple:137
+#: ../templates/views/richter/searchframe:69
+#: ../templates/views/richter/searchframe_simple:138
 #: ../templates/views/xanten/searchframe:63
 #: ../templates/views/xanten/searchframe_simple:107
 msgid "Zur Trefferliste"

@@ -139,6 +139,7 @@
 ../templates/managecollection_tit_as_html
 ../templates/managecollection_tit_as_html_simple
 ../templates/managecollection_tit_as_text
+../templates/mexset
 ../templates/resultlists_choice
 ../templates/resultlists_showall
 ../templates/resultlists_showall_sortall

@@ -24,7 +24,7 @@
                    'T0433', # msg.maketext("T0433") Umfang
                    'T0451', # msg.maketext("T0451") Reihe
                    'T0590', # msg.maketext("T0590") In:
-                   'T0451', # msg.maketext("T0089") Band
+                   'T0089', # msg.maketext("T0089") Band
 
                    'T0501', # msg.maketext("T0501-inst450") Werke
                    'T0509', # msg.maketext("T0509-inst450") Personennamen

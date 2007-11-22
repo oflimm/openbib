@@ -60,7 +60,7 @@ sub handler {
 
     my $config = new OpenBib::Config();
     
-    my $query=Apache::Request->new($r);
+    my $query=Apache::Request->instance($r);
 
     my $status=$query->parse;
 
@@ -80,6 +80,8 @@ sub handler {
     my $action    = ($query->param('action'))?$query->param('action'):'none';
     my $code      = ($query->param('code'))?$query->param('code'):'1';
     my $targetid  = ($query->param('targetid'))?$query->param('targetid'):'none';
+    my $validtarget = ($query->param('validtarget'))?$query->param('validtarget'):'none';
+    my $type      = ($query->param('type'))?$query->param('type'):'';
     my $loginname = ($query->param('loginname'))?$query->param('loginname'):'';
     my $password  = ($query->param('password'))?$query->param('password'):'';
 
@@ -108,22 +110,39 @@ sub handler {
     else {
         $view=$session->get_viewname();
     }
-  
+
+    my $return_url = $session->get_returnurl();
+
+    my $userid = $user->get_userid_of_session($session->{ID});
+
+    # Wenn die Session schon authentifiziert ist, dann wird
+    # wird in die Benutzereinstellungen gesprungen
+    if ($userid){
+
+        $r->internal_redirect("http://$config->{servername}$config->{userprefs_loc}?sessionID=$session->{ID};view=$view;action=showfields");
+
+        return OK;
+    }
+
     if ($do_login) {
         my $logintargets_ref = $user->get_logintargets();
-    
+
         # TT-Data erzeugen
         my $ttdata={
             view         => $view,
             stylesheet   => $stylesheet,
             sessionID    => $session->{ID},
             logintargets => $logintargets_ref,
+            validtarget  => $validtarget,
             loginname    => $loginname,
+            return_url   => $return_url,
             config       => $config,
             msg          => $msg,
         };
     
-        OpenBib::Common::Util::print_page($config->{tt_login_tname},$ttdata,$r);
+        my $templatename = ($type)?"tt_login_".$type."_tname":"tt_login_tname";
+
+        OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
     }
     elsif ($do_auth) {
         my $loginfailed=0;
@@ -286,12 +305,19 @@ sub handler {
             = "http://$config->{servername}$config->{headerframe_loc}?sessionID=$session->{ID}";
         my $bodyframeurl
             = "http://$config->{servername}$config->{userprefs_loc}?sessionID=$session->{ID};action=showfields";
-    
+        
         if ($view ne "") {
             $headerframeurl.=";view=$view";
             $bodyframeurl.=";view=$view";
         }
 
+        # Wenn Return_url existiert, dann wird im Body-Frame dorthin gesprungen
+        if ($return_url){
+            $bodyframeurl=$return_url;
+
+            $session->set_returnurl('');
+        }
+        
         # Fehlerbehandlung
         if ($loginfailed) {
             $bodyframeurl="http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};do_loginfailed=1;code=$loginfailed";

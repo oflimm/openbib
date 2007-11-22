@@ -15,6 +15,7 @@ create table aut (
  INDEX         (id),
  INDEX         (category),
  INDEX         (indicator),
+ INDEX         (content(10)),
  INDEX         (id,category)
 )
 DEFAULT CHARACTER SET utf8
@@ -63,6 +64,7 @@ create table kor (
  INDEX         (id),
  INDEX         (category),
  INDEX         (indicator),
+ INDEX         (content(10)),
  INDEX         (id,category)
 )
 DEFAULT CHARACTER SET utf8
@@ -111,6 +113,7 @@ create table swt (
  INDEX         (id),
  INDEX         (category),
  INDEX         (indicator),
+ INDEX         (content(10)),
  INDEX         (id,category)
 )
 DEFAULT CHARACTER SET utf8
@@ -159,6 +162,7 @@ create table notation (
  INDEX         (id),
  INDEX         (category),
  INDEX         (indicator),
+ INDEX         (content(10)),
  INDEX         (id,category)
 )
 DEFAULT CHARACTER SET utf8
@@ -205,7 +209,9 @@ create table tit (
  content       TEXT NOT NULL,
  INDEX         (id),
  INDEX         (category),
- INDEX         (indicator)
+ INDEX         (indicator),
+ INDEX         (content(10)),
+ INDEX         (id,category)
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
@@ -250,6 +256,7 @@ create table mex (
  INDEX         (id),
  INDEX         (category),
  INDEX         (indicator),
+ INDEX         (content(10)),
  INDEX         (id,category)
 )
 DEFAULT CHARACTER SET utf8
@@ -315,6 +322,7 @@ sign      TEXT,
 ejahr     SMALLINT,
 ejahrft   TEXT,
 gtquelle  TEXT,
+inhalt    TEXT,
 isbn      TEXT,
 issn      TEXT,
 artinh    TEXT,
@@ -326,10 +334,11 @@ FULLTEXT  (swt),
 FULLTEXT  (notation),
 FULLTEXT  (sign),
 INDEX     (ejahr),
+FULLTEXT  (inhalt),
 FULLTEXT  (isbn),
 FULLTEXT  (issn),
 FULLTEXT  (artinh),
-FULLTEXT  (verf,hst,kor,swt,notation,sign,isbn,issn,ejahrft)
+FULLTEXT  (verf,hst,kor,swt,notation,sign,inhalt,isbn,issn,ejahrft)
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci

@@ -18,6 +18,7 @@
    <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=30">Die B&uuml;cherlisten</a></li>
    <li><a class="active" href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=31">Arbeitsablauf / Aktuelles</a></li>
    <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=32">Publikationen</a></li>
+   <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=34">Internetquellen</a></li>
    <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=33">Ansprechpartner</a></li>
 </ul>
 
@@ -26,27 +27,40 @@
 
 <h1>Arbeitsergebnisse</h1>
 
-<h2>April 2005:</h2>
+<h2>Februar - September 2007:</h2>
 
 <ul>
- <li>Die Originale der Listen und Briefe werden im Fotolabor der USB
- K&ouml;ln gescannt und als Arbeitskopien ausgedruckt. </li>
-
- <li>Teilweise m&uuml;ssen die Listen vorher in der Buchbinderei
- restauriert werden.</li>
-
- <li>F&uuml;r die Erfassung der "Virtuellen Bibliothek Elise und Helene Richter" wird ein Sisis-Sunrise-Katalog-Client (KC) eingerichtet.</li>
-
-<li>Der Katalog ist in  den "K&ouml;lner Universit&auml;tsGesamtkatalog"
-<a href="http://kug.ub.uni-koeln.de" target="_blank">KUG</a> eingebunden."</li>
+ <li>Abschluss der Bearbeitung der verbliebenen Listen (Romanistik:
+Rumänisch, Rätoromanisch, Provenzalisch ; Linguistik ; Phonetik ;
+Sprachwissenschaft ; Folklore ; Wörterbücher ; Theater und Reisebücher)</li>
+ <li>Abschliessende Meldung an die LostArt-Datenbank</li>
 </ul>
 
-<h2>Mai 2005:</h2>
+<h2>Oktober 2006:</h2>
 
 <ul>
- <li>Zur Zeit werden die "Anglistik-Listen" an den Katalogen (KUG, AK
- und SyK) sowie im Magazin &uuml;berpr&uuml;ft und erfasst.
-  </li>
+ <li>Beginn der Bearbeitung der Romanistik-Listen (Italienisch, Spanisch, Portugiesisch)</li>
+</ul>
+
+<h2>Mai - Juli 2006:</h2>
+
+<ul>
+ <li>Ver&ouml;ffentlichung verschiedener
+<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=32">Publikationen</a> zum Thema: 'Die Bibliothek von Elise und Helene Richter'</li>
+</ul>
+
+<h2>Januar - M&auml;rz 2006:</h2>
+
+<ul>
+ <li>Fertigstellung der <a
+href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=30#Romanistik">Romanistik-Listen-frz.Dichtung</a>. Von
+436 im Magazin der USB &uuml;berpr&uuml;ften Titel konnten 51 Werke<br> als Richterbesitz identifiziert werden. </li>
+</ul>
+
+<h2>Oktober 2005:</h2>
+
+<ul>
+ <li>Neugestaltung des Webauftritts.</li>
 </ul>
 
 <h2>August 2005:</h2>
@@ -86,32 +100,29 @@ Literatur) im KUG und im Magazin hat begonnen.
 </li>
 </ul>
 
-<h2>Oktober 2005:</h2>
+<h2>Mai 2005:</h2>
 
 <ul>
- <li>Neugestaltung des Webauftritts.</li>
+ <li>Zur Zeit werden die "Anglistik-Listen" an den Katalogen (KUG, AK
+ und SyK) sowie im Magazin &uuml;berpr&uuml;ft und erfasst.
+  </li>
 </ul>
 
-<h2>Januar - M&auml;rz 2006:</h2>
+<h2>April 2005:</h2>
 
 <ul>
- <li>Fertigstellung der <a
-href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=30#Romanistik">Romanistik-Listen-frz.Dichtung</a>. Von
-436 im Magazin der USB &uuml;berpr&uuml;ften Titel konnten 51 Werke<br> als Richterbesitz identifiziert werden. </li>
+ <li>Die Originale der Listen und Briefe werden im Fotolabor der USB
+ K&ouml;ln gescannt und als Arbeitskopien ausgedruckt. </li>
+
+ <li>Teilweise m&uuml;ssen die Listen vorher in der Buchbinderei
+ restauriert werden.</li>
+
+ <li>F&uuml;r die Erfassung der "Virtuellen Bibliothek Elise und Helene Richter" wird ein Sisis-Sunrise-Katalog-Client (KC) eingerichtet.</li>
+
+<li>Der Katalog ist in  den "K&ouml;lner Universit&auml;tsGesamtkatalog"
+<a href="http://kug.ub.uni-koeln.de" target="_blank">KUG</a> eingebunden."</li>
 </ul>
 
-<h2>Mai- Juli 2006:</h2>
-
-<ul>
- <li>Ver&ouml;ffentlichung verschiedener
-<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=32">Publikationen</a> zum Thema: 'Die Bibliothek von Elise und Helene Richter'</li>
-</ul>
-
-<h2>Oktober 2006:</h2>
-
-<ul>
- <li>Beginn der Bearbeitung der Romanistik-Listen (Italienisch, Spanisch, Portugiesisch)</li>
-</ul>
 
 <p />
 

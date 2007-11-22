@@ -73,6 +73,7 @@
 <input type="hidden" name="view"      value="[% view %]" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="sb"        value="sql" />
+<input type="hidden" name="st"        value="2" />
 
 [% IF view %]
 
@@ -113,65 +114,8 @@ zugeh&ouml;rigen digitalisierten Karten-Katalog
 <table width="100%">
 <tr><th>[% msg.maketext("Suchbegriffe") %]</th><td width="25">&nbsp;</td><th>[% msg.maketext("Suchhinweise") %]</th></tr>
 <tr><td class="boxed" valign="top">
-<table>
-<tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Verknüpfung") %]</td><td>[% msg.maketext("Ihre Eingabe") %]</td><td></td></tr>
-
-[% IF showfs %]
-<tr><td class="category">[% msg.maketext("Freie Suche") %]</td><td class="category"></td><td><input type="text" name="fs" value="[% searchquery.fs.val %]" size="30" maxlength="200" /></td><td></td></tr>
-[% END %]
-
-[% IF showhst %]
-<tr><td class="category">[% msg.maketext("Titelwort(e)") %]</td><td class="category"><select name="boolhst"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="hst" value="[% searchquery.hst.val %]" size="30" maxlength="200" /></td><td></td></tr>
-[% END %]
-
-[% IF showverf %]
-<tr><td class="category">[% msg.maketext("Person") %]</td><td class="category"><select name="boolverf"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="verf" value="[% searchquery.verf.val %]" size="30" maxlength="200" /></td><td><input type="submit" name="verfindex" value="[% msg.maketext("Index") %]" /></td></tr>
-[% END %]
-
-[% IF showkor %]
-<tr><td class="category">[% msg.maketext("Körperschaft/Institution") %]</td><td class="category"><select name="boolkor"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="kor" value="[% searchquery.kor.val %]" size="30" maxlength="200" /></td><td><input type="submit" name="korindex" value="Index" /></td></tr>
-[% END %]
-
-[% IF showswt %]
-<tr><td class="category">[% msg.maketext("Schlagwort") %]</td><td class="category"><select name="boolswt"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="swt" value="[% searchquery.swt.val %]" size="30" maxlength="200" /></td><td><input type="submit" name="swtindex" value="Index" /></td></tr>
-[% END %]
-
-[% IF shownotation %]
-<tr><td class="category">[% msg.maketext("Notation") %]</td><td class="category"><select name="boolnotation"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="notation" value="[% searchquery.notation.val %]" size="30" maxlength="200" /></td><td><span class="warning">*</span></td></tr>
-[% END %]
-
-[% IF showisbn %]
-<tr><td class="category">[% msg.maketext("ISBN") %]</td><td class="category"><select name="boolisbn"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="isbn" value="[% searchquery.isbn.val %]" size="30" maxlength="200" /></td><td></td></tr>
-[% END %]
-
-[% IF showissn %]
-<tr><td class="category">[% msg.maketext("ISSN") %]</td><td class="category"><select name="boolissn"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="issn" value="[% searchquery.issn.val %]" size="30" maxlength="200" /></td><td></td></tr>
-[% END %]
-
-[% IF showsign %]
-<tr><td class="category">[% msg.maketext("Signatur") %]</td><td class="category"><select name="boolsign"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="sign" value="[% searchquery.sign.val %]" size="30" maxlength="200" /></td><td><span class="warning">*</span></td></tr>
-[% END %]
-
-[% IF showhststring %]
-<tr><td class="category">[% msg.maketext("Kompletter Titel") %]</td><td class="category"><select name="boolhststring"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="hststring" value="[% searchquery.hststring.val %]" size="30" maxlength="200" /></td><td><span class="warning">*</span></td></tr>
-[% END %]
-
-[% IF showgtquelle %]
-<tr><td class="category">[% msg.maketext("Serie/Band/Quelle") %]</td><td class="category"><select name="boolgtquelle"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="gtquelle" value="[% searchquery.gtquelle.val %]" size="30" maxlength="200" /></td><td></td></tr>
-[% END %]
-
-[% IF showmart %]
-<tr><td class="category">[% msg.maketext("Medienart") %]</td><td class="category"><select name="boolmart"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><select name="mart"><option value="" selected="selected">Keine ausgewählt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option><option value="Hochschulangehoerige">Hochschulangehörige(r)</option><option value="Audio CD">Audio-CD</option><option value="%22Audio Mitschnitt%22">Audio Mitschnitt</option><option value="%22audiovisuelle Materialien%22">Audiovisuelle Materialien</option><option value="Aufsatz">Aufsatz</option><option value="%22Aufsatz-Fotokopie%22">Aufsatz-Fotokopie</option><option value="%22CD-ROM%22">CD-ROM</option><option value="Diskette">Diskette</option><option value="Dissertation">Dissertation</option><option value="DVD">DVD</option><option value="Festschrift">Festschrift</option><option value="Fotokopie">Fotokopie</option><option value="Geschaeftsbericht">Geschäftsbericht</option><option value="Kassette">Kassette</option><option value="Loseblattsammlung">Loseblattsammlung</option><option value="%22masch.Schr.%22">Masch.Schr.</option><option value="Medienkombination">Medienkombination</option><option value="Musikdruck Noten">Musikdruck / Noten</option><option value="Original">Original</option><option value="%22Reisefuehrer, Karte oder Atlas%22">Reiseführer, Karte oder Atlas</option><option value="Sprachkassette">Sprachkassette</option><option value="Standardmonographie">Standardmonographie</option><option value="Video">Video</option><option value="Zeitschrift">Zeitschrift</option><option value="Zeitung">Zeitung</option></select>&nbsp;</td><td></td></tr>
-[% END %]
-
-[% IF showejahr %]
-<tr><td class="category">[% msg.maketext("Jahr") %]</td><td class="category">und<input type="hidden" name="boolejahr" value="AND" /></td><td><input type="text" name="ejahr" value="[% searchquery.ejahr.val %]" size="4" maxlength="4" />&nbsp;<select name="ejahrop"><option value="eq" selected="selected">genau</option><option value="gt">jünger</option><option value="lt">älter</option></select></td><td></td></tr>
-[% END %]
-
-<tr><td class="category">[% msg.maketext("Eingrenzung auf Gesamttitel (Serien)") %]&nbsp;([% msg.maketext("Serien") %])</td><td class="category">und</td><td><input type="checkbox" name="serien" /></td><td></td></tr>
-
-
-</table></td>
+[% PROCESS common/subtemplate name="searchframe_query" %]
+</td>
 <td>
 <table>
 <tr><td>&nbsp;</td></tr>
@@ -187,36 +131,7 @@ zugeh&ouml;rigen digitalisierten Karten-Katalog
 <table width="100%">
 <tr><th>[% msg.maketext("Suchoptionen") %]</th></tr>
 <tr><td class="boxed">
-<table>
-<tr><td class="category">[% msg.maketext("Maximale Trefferzahl pro Katalog") %]</td><td colspan="3"><select name="hitrange"><option selected="selected">50</option><option>100</option><option>200</option></select></td></tr>
-<tr><td class="category">[% msg.maketext("Sortierung nach") %]</td><td
-colspan="2"><select name="sorttype"><option value="author" selected="selected">[% msg.maketext("Person/Körperschaft") %]</option><option value="title">[% msg.maketext("Titel") %]</option><option value="yearofpub">[% msg.maketext("Erscheinungsjahr") %]</option></select><select name="sortorder"><option value="up">[% msg.maketext("aufsteigend") %]</option><option value="down">[% msg.maketext("absteigend") %]</option></select>&nbsp;[% msg.maketext("pro Katalog") %]</td><td></td></tr>
-<tr><td class="category">Suchprofil</td><td colspan="3"><select name="profil">
-[%- IF dbchoice.size > 0 -%]
-<option value="dbauswahl"[%- IF prevprofile == 'dbauswahl' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
-[% END %]
-[%- FOREACH profile IN userprofile -%]
-[%     pid   = profile.key %]
-[%     pdata = profile.value %]
-<option value="user[% pid %]"[%- IF prevprofile == 'user${pid}' -%] selected="selected"[%- END -%]>Benutzerdefiniert: [% pdata.name %]</option>
-[%  END %]
-<option value="alldbs"
-[%- IF prevprofile == 'alldbs' -%]
- selected="selected"
-[%- END -%]
->[% msg.maketext("Alle Kataloge") %]</option><option value=""></option>
-<option value="">[% msg.maketext("Fakultäten") %]:</option><option value=""></option>
-
-[% FOREACH unit IN config.orgunits %]
-<option value="[% unit.short %]"
-[%- IF prevprofile == unit.short -%]
- selected="selected"
-[%- END -%]
->- [% unit.desc %]</option>
-[% END %]
-<option value=""></option></select></td></tr>
-<tr><td class="category">[% msg.maketext("Und-Verknüpfung innerhalb eines Suchfeldes") %]</td><td colspan="3"><input type="radio" name="autoplus" value="1" checked="checked" />[% msg.maketext("Ja") %]&nbsp;<input type="radio" name="autoplus" value="0" />[% msg.maketext("Nein") %]</td></tr>
-</table>
+[% PROCESS common/subtemplate name="searchframe_options" %]
 </td></tr>
 </table>
 <p />
@@ -240,6 +155,9 @@ colspan="2"><select name="sorttype"><option value="author" selected="selected">[
 [% msg.maketext("Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter [_1] kug@ub.uni-koeln.de [_2] erreichen.","<a href=\"http://www.ub.uni-koeln.de/usb-cgi/zms_makeEmail.pl?adr0=kug\" target=\"_blank\">","</a>") %]
 
 </div>
+
+  <!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
+  <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
 
 <p />
 

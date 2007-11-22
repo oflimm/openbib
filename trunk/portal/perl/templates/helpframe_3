@@ -32,11 +32,25 @@
 <tr><th>Artikel</th></tr>
 <tr><td class="boxed">
 <dl>
+<dt>Oliver Flimm: KUG mit OpenBib - Aufbau des Kölner
+UniversitätsGesamtkataloges (KUG) mit Open-Source Komponenten</dt>
+<dd>Vortrag: Netz-AG NRW, 8.11.2007 (<a
+href="http://www.ub.uni-koeln.de/usb/content/e30/e314/e2354/e6733/e12096/e12099/e12097/netz-ag-kug-20071108_ger.odp"
+target="_blank">ODP</a>, <a
+href="http://www.ub.uni-koeln.de/usb/content/e30/e314/e2354/e6733/e12096/e12099/e12098/netz-ag-kug-20071108_ger.pdf"
+target="_blank">PDF</a>)</dd>
+
+<dt>Oliver Flimm: Die Open-Source-Software OpenBib an der USB Köln - Überblick und Entwicklungen in Richtung OPAC 2.0</dt>
+<dd>aus: <a href="http://eprints.rclis.org/archive/00009891/" target="_blank">BIBLIOTHEK. Forschung und Praxis, Jg. 31 (2007) Nr. 2</a></dd>
+
+<dt>Dr. Peter Kostaedt: Der Kölner UniversitätsGesamtkatalog (KUG)</dt>
+<dd>Vortrag: <a href="http://www.vdb-online.org/landesverbaende/sw/berichte/2007-fortbildung-stuttgart/kostaedt_kug.pdf" target="_blank">VDB-Fortbildungsveranstaltung, Stuttgart, Hochschule der Medien, 9.7.2007</a></dd>
+
 <dt>Oliver Flimm: Der Kölner UniversitätsGesamtkatalog (KUG) - Einsatz und technischer Aufbau</dt>
 <dd>aus: <a href="http://www.ub.uni-koeln.de/dezkat/content/e1604/e2004" target="_blank">RRZK-Kompass - Mitteilungen des RRZK/ZAIK Nr. 108</a></dd>
 
 <dt>Oliver Flimm u. Regine Boeff: Von der traditionellen zur digitalen Sammlung historischer und künstlerischer Bucheinbände der USB Köln mit einem Einblick in die technische Konzeption der Datenbank</dt>
-<dd>aus: <a href="http://www.bibliothek-saur.de/t6030001.html" target="_blank">Bibliothek. Forschung und Praxis. Jahrgang 30 (2006) Nr. 1, S.63-68</a></dd>
+<dd>aus: <a href="http://www.bibliothek-saur.de/t6030001.html" target="_blank">BIBLIOTHEK. Forschung und Praxis. Jg. 30 (2006) Nr. 1, S.63-68</a></dd>
 
 <dt>Oliver Flimm und Christiane Hoffrath: Der Weg des KUG zum umfassenden Recherche-Portal</dt>
 <dd>aus: <a href="http://www.ub.uni-koeln.de/dezkat/content/e1604/e1790" target="_blank">Kooperative Informationsverarbeitung an der Universität zu Köln - Bericht für das Jahr 2005: Der Weg des KUG zum umfassenden Recherche-Portal, S. 135-141</a></dd>
@@ -65,6 +79,11 @@
 <tr><th>Stimmen</th></tr>
 <tr><td class="boxed">
 <dl>
+
+<dt>Interview mit Patrick Danowski und Lambert Heller zu Bibliothek 2.0</dt>
+<dd><i>[...]Es gibt zwei sehr schöne Open Source OPAC-Systeme in Deutschland, eines ist der <a href="http://www.xopac.org/" target="_blank">XOPAC</a> in Karlsruhe und der KUG, Kölner Universitätsgesamtkatalog, der auf OpenBib basiert.[...]</i><p /><a href="http://www.ib.hu-berlin.de/~libreas/libreas_neu/podcasts/podcast_5/index.html"
+target="_blank">Patrick Danowski im LIBREAS Podcast Nr. 5</a> am 24.7.2007</dd>
+
 <dt>Bibliothekskatalog 2.0: Wortwolken und eigene «tags»</dt>
 <dd><i>Eine schöne Neuerung hat der Kölner Universitätsgesamtkatalog
 soeben freigeschaltet, [...]</i><p /><a href="http://weblog.histnet.ch/archives/335"
@@ -107,6 +126,41 @@ target="_blank">Edlef Stabenau im netbib-Weblog</a> am 21.9.2006</dd>
 
 </td></tr>
 </table>
+
+<p />
+
+<table width="100%">
+<tr><th>Verschiedenes</th></tr>
+<tr><td class="boxed">
+<dl>
+
+<dt>Jürgen Plieninger, Edlef Stabenau, Lambert Heller: Never run a
+changing system? - Über die Chancen des Einsatzes "Sozialer Software" in der Bibliotheksarbeit</dt>
+<dd><i>[...]Gerade das letzte Beispiel "Katalog 2.0" zeigt, wie viel
+Entwicklung noch vor den Bibliotheken liegt. Dass dies aber
+prinzipiell möglich ist, ohne wieder ein überdimensioniertes Projekt
+mit hunderttausenden Euro Etat starten zu müssen, zeigt das Beispiel
+des Kölner Universitäts-Gesamtkatalogs (KUG)
+(http://kug.ub.uni-koeln.de, weitere Beispiele unter
+http://wiki.netbib.de/coma/Katalog2.0). Hier [wurden] entscheidende
+Verbesserungen (RSS, Merkpunkte, Personalisierbarkeit ...)
+eingebunden, ohne dass hierfür ein großer Etat bereitgestanden
+hätte.[...]</i><p />
+<a href="http://www.b-i-t-online.de/heft/2007-03/fach4.htm"
+target="_blank">B.I.T. online</a>, Heft 3/2007</dd>
+
+<dt>Patrick Danowski: Library 2.0 ? Will the web 2.0 change everything?</dt>
+<dd><a href="http://internal.ulib.sk/indico/prispevky/danowski.pdf"
+target="_blank">Vortrag CASLIN 2007</a>, 3.-7.6.2007</dd>
+
+<dt>Esther Susanne Steiner: OPAC 2.0 - mit Web 2.0-Technologie zum Bibliothekskatalog der Zukunft?</dt>
+<dd><a href="http://opus.bsz-bw.de/hdms/volltexte/2007/624/" target="_blank">Bachelor-Arbeit</a>, 29.5.2007</dd>
+
+
+</dl>
+</td></tr>
+</table>
+
 
  </div>
 </div>

@@ -32,43 +32,42 @@
          <table>
          <tr><td colspan="2">Inhaltsverzeichnis</td></tr>
          <tr><td align="right">1</td><td><a href="#allghinweise">Allgemeine Hinweise zum KUG</a></td></tr>
-         <tr><td align="right">2</td><td><a href="#recherche">Recherchemasken</a></td></tr>
-         <tr><td align="right">3</td><td><a href="#auswahl">Katalogauswahl</a></td></tr>
+         <tr><td align="right">2</td><td><a href="#recherche">Recherchearten</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.1&nbsp;<a href="#rechercheeinfach">Einfache Recherche</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.1.1&nbsp;&nbsp;&nbsp;<a href="#rechercheeinfachallgemein">Allgemeine Informationen</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.1.2&nbsp;&nbsp;&nbsp;<a href="#suchlogikeinfach">Suchlogik</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.2&nbsp;<a href="#recherchekomplex">Komplexe Recherche</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.2.1&nbsp;&nbsp;&nbsp;<a href="#recherchekomplexallgemein">Allgemeine Informationen</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.2.2&nbsp;&nbsp;&nbsp;<a href="#suchlogikkomplex">Suchlogik</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.2.3&nbsp;&nbsp;&nbsp;<a href="#auswahl">Katalogauswahl</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.2.4&nbsp;&nbsp;&nbsp;<a href="#indexsuche">Such-Index</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.2.5&nbsp;&nbsp;&nbsp;<a href="#beispiele">Beispiele</a></td></tr>
+         <tr><td align="right">3</td><td><a href="#allghinweisesuche">Weitere allgemeine Hinweise zur Suchanfrage</a></td></tr>
+         <tr><td align="right">4</td><td><a href="#perskug">Mein KUG</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/anmeldung.html" target="tutorial">[zum Tutorial]</a></td></tr>
+         <tr><td align="right">5</td><td><a href="#buchstandort">Standort des Buches</a></td></tr>
+         <tr><td align="right">6</td><td><a href="#treffermerkliste">Treffer- und Merkliste</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/merkliste.html" target="tutorial">[zum Tutorial]</a></td></tr>
 
-         <tr><td align="right">4</td><td><a href="#suchlogikeinfach">Suchlogik in der Einfachen Recherche</a></td></tr>
-         <tr><td align="right">5</td><td><a href="#suchlogikkomplex">Suchlogik in der Komplexen Recherche</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;5.1&nbsp;<a href="#suchfeldverknuepfung">Verkn&uuml;pfung mehrerer Suchfelder</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;5.2&nbsp;<a href="#profisuche">Verkn&uuml;pfungen innerhalb eines Suchfeldes</a></td></tr>
+         <tr><td align="right">7</td><td><a href="#externesuche">Sprung in externe Recherchequellen</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/externerecherche.html" target="tutorial">[zum Tutorial]</a></td></tr>
+         <tr><td align="right">8</td><td><a href="#enrichment">Ergebnisanreicherung</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;8.1&nbsp;<a href="#enrichtoc">Digitalisierte Inhaltsverzeichnisse</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/inhaltsverz.html" target="tutorial">[zum Tutorial]</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;8.2&nbsp;<a href="#enrichrelevance">Weitere potentiell interessante Titel (Recommender-Funktion)</a></td></tr>
+         <tr><td align="right">9</td><td><a href="#popularity">Popularit&auml;ts-Funktionen</a></td></tr>
 
-         <tr><td align="right">6</td><td><a href="#indexsuche">Such-Index</a></td></tr>
+         <tr><td align="right">10</td><td><a href="#rssfeeds">RSS-Feeds (abonnierbare Informations-Kan&auml;le)</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/rss.html" target="tutorial">[zum Tutorial]</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;10.1&nbsp;<a href="#rssarten">Angebotene Arten an RSS-Feeds</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;10.2&nbsp;<a href="#rssinstall">Beispiel: Installation von Feedview f&uuml;r den Browser Firefox</a></td></tr>
+         <tr><td align="right">11</td><td><a href="#mashups">Mashups mit Sozialer Software</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.1&nbsp;<a href="#bibsonomy">Integration von BibSonomy</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/bibsonomy.html" target="tutorial">[zum Tutorial]</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.2&nbsp;<a href="#wikipedia">Integration der Wikipedia <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/w.html" target="tutorial">[zum Tutorial]</a></a></td></tr>
 
-         <tr><td align="right">7</td><td><a href="#allghinweisesuche">Weitere allgemeine Hinweise zur Suchanfrage</a></td></tr>
-         <tr><td align="right">8</td><td><a href="#beispiele">Einige Beispiele f&uuml;r die Komplexe Recherche</a></td></tr>
-         <tr><td align="right">9</td><td><a href="#perskug">Mein KUG</a></td></tr>
-         <tr><td align="right">10</td><td><a href="#buchstandort">Standort des Buches</a></td></tr>
-         <tr><td align="right">11</td><td><a href="#treffermerkliste">Treffer- und Merkliste</a></td></tr>
+         <tr><td align="right">12</td><td><a href="#uebersichten">&Uuml;bersichten</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;12.1&nbsp;<a href="#wolken">Wolken</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;12.2&nbsp;<a href="#sichten">Sichten</a></td></tr>
 
-         <tr><td align="right">12</td><td><a href="#externesuche">Sprung in externe Recherchequellen</a></td></tr>
-         <tr><td align="right">13</td><td><a href="#enrichment">Ergebnisanreicherung</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;13.1&nbsp;<a href="#enrichtoc">Digitalisierte Inhaltsverzeichnisse</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;13.2&nbsp;<a href="#enrichrelevance">Weitere potentiell interessante Titel (Recommender-Funktion)</a></td></tr>
-         <tr><td align="right">14</td><td><a href="#popularity">Popularit&auml;ts-Funktionen</a></td></tr>
-
-         <tr><td align="right">15</td><td><a href="#rssfeeds">RSS-Feeds (abonnierbare Informations-Kan&auml;le)</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;15.1&nbsp;<a href="#rssarten">Angebotene Arten an RSS-Feeds</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;15.2&nbsp;<a href="#rssinstall">Beispiel: Installation von Feedview f&uuml;r den Browser Firefox</a></td></tr>
-         <tr><td align="right">16</td><td><a href="#mashups">Mashups mit Sozialer Software</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;16.1&nbsp;<a href="#bibsonomy">Integration von BibSonomy</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;16.2&nbsp;<a href="#wikipedia">Integration der Wikipedia</a></td></tr>
-
-         <tr><td align="right">17</td><td><a href="#uebersichten">&Uuml;bersichten</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;17.1&nbsp;<a href="#wolken">Wolken</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;17.2&nbsp;<a href="#sichten">Sichten</a></td></tr>
-
-         <tr><td align="right">18</td><td><a href="#bilder">Bildliche Funktionselemente</a></td></tr>
-         <tr><td align="right">19</td><td><a href="#verlinkung">Verlinkung und Lastverteilung des KUG</a></td></tr>
-         <tr><td align="right">20</td><td><a href="#suchplugin">KUG Such-Plugin f&uuml;r Mozilla Firefox-Browser</a></td></tr>
-         <tr><td align="right">21</td><td><a href="#kontakt">Kontakt</a></td></tr>
+         <tr><td align="right">13</td><td><a href="#bilder">Bildliche Funktionselemente</a></td></tr>
+         <tr><td align="right">14</td><td><a href="#verlinkung">Verlinkung und Lastverteilung des KUG</a></td></tr>
+         <tr><td align="right">15</td><td><a href="#suchplugin">KUG Such-Plugin f&uuml;r Mozilla Firefox-Browser</a></td></tr>
+         <tr><td align="right">16</td><td><a href="#kontakt">Kontakt</a></td></tr>
          </table>
       </td></tr>
       </table>
@@ -105,60 +104,31 @@
       recherchieren.
       </p>
       
-      <h1 id="recherche">2 Recherchemasken</h1>
+      <h1 id="recherche">2 Recherchearten</h1>
       <p>
 	Ihnen stehen f&uuml;r Ihre Suchanfragen zwei Recherchemasken zur Verf&uuml;gung:
       </p>
 
-      <dl>
-        <dt>Einfache Recherche</dt>
+      <h2 id="rechercheeinfach">2.1 Einfache Recherche</h2>
 
-        <dd>Ihre eingegebenen Suchbegriffe werden in <b>allen</b>
-        m&ouml;glichen Suchkategorien recherchiert und automatisch
-        UND-verkn&uuml;pft, d.h. bei Ihren Treffern m&uuml;ssen alle
-        Suchbegriffe enthalten sein. M&ouml;chten Sie gezielter
-        Suchen, wechseln Sie in die Komplexe Recherche.</dd>
+      <h3 id="rechercheeinfachallgemein">2.1.1 Allgemeine Informationen</h3>
 
-	<dt>Komplexe Recherche</dt>
+       <p>
+        Ihre eingegebenen Suchbegriffe werden in <b>allen</b>
+        m&ouml;glichen Suchkategorien und in allen verf&uuml;gbaren
+        Datenbanken mit Suchmaschinen-Technologie recherchiert.  Wenn
+        Sie einzelne Kataloge ausw&auml;hlen m&ouml;chten, gehen Sie
+        in die Komplexe Recherche.
+       </p>
 
-        <dd>Diese Recherchemaske bietet vielf&auml;ltige Suchfelder
-        und -optionen an (siehe <a href="#suchlogikkomplex">Suchlogik
-        in der Komplexen Recherche</a>). Hier k&ouml;nnen Sie auch
-        Ihre Kataloge festlegen, in denen Sie suchen m&ouml;chten. Sie
-        stellen Ihre Suchanfrage und schicken sie mit <b>"In
-        ausgew&auml;hlten Katalogen suchen"</b> ab.</dd>
+       <p> Damit Sie nicht mit &uuml;berdimensionierten Trefferlisten
+       konfrontiert werden, <b>ist die maximale Treffermenge pro
+       Katalog zun&auml;chst immer auf 50 begrenzt</b>. Für jeden
+       Katalog können Sie jedoch sukzessife auf die jeweils nächsten
+       50 Treffer durch Klick auf <emph>Weitere Treffer</emph>
+       zugreifen.  </p>
 
-     </dl>
-
-      <h1 id="auswahl">3 Katalogauswahl</h1>
-      <p>
-
-      Wenn Sie einzelne Kataloge ausw&auml;hlen m&ouml;chten, gehen
-      Sie in die Komplexe Recherche. Da die meisten Nutzer in allen
-      Katalogen suchen möchten, sind diese voreingestellt. Klicken Sie
-      zweimal auf "Alle Kataloge" (auf der rechten Seite unter
-      "Katalogauswahl") oder wählen Sie das Profil "Katalogauswahl
-      löschen" aus, so werden alle Kataloge demarkiert, und Sie können
-      Ihre Auswahl treffen, indem Sie entweder bestimmte Kataloge oder
-      ein schon bestehendes Profil auswählen. Dann f&uuml;llen Sie die
-      Suchmaske aus und klicken auf <b>"In ausgew&auml;hlten Katalogen
-      suchen"</b>. Um sich bei der Katalogauswahl langes Scrollen zu
-      ersparen, k&ouml;nnen Sie diese dauerhaft in "Mein KUG" als
-      Katalogprofil festlegen.
-
-      </p>
-
-      <p> Neben dem Standard-KUG mit allen Katalogen finden Sie
-      außerdem unter dem Reiter "Übersichten"->"Sichten" eine
-      Zusammenstellung aller vorhandenen Spezial-Sichten, bei denen
-      z.B. bestimmte Kataloge vorausgewählt sind, die weitergehende
-      Informationen anbieten oder ein eigenständiges Fach-Portal
-      bilden. Um hier die Suche auf weitere Kataloge auszudehnen,
-      gehen Sie in das Menu "Katalogauswahl", markieren die
-      gewünschten Kataloge und bestätigen Ihre Auswahl mit "Kataloge
-      auswählen".</p>
-
-      <h1 id="suchlogikeinfach">4 Suchlogik in der Einfachen Recherche</h1>
+      <h3 id="suchlogikeinfach">2.1.2 Suchlogik</h3>
 
       <p> In der Einfachen Recherche werden alle eingegebenen Begriffe
       automatisch UND-verkn&uuml;pft und in den Kategorien Person,
@@ -171,9 +141,28 @@
          z.B.: <b>kernighan ritchie</b> (von beiden Autoren verfasste Titel werden angezeigt)</li>
       </ul>
 
-      <h1 id="suchlogikkomplex">5 Suchlogik in der Komplexen Recherche</h1>
 
-      <h2 id="suchfeldverknuepfung">5.1 Verkn&uuml;pfungen mehrerer Suchfelder</h2>
+      <h2 id="recherchekomplex">2.2 Komplexe Recherche</h2>
+
+      <h3 id="recherchekomplesallgemein">2.2.1 Allgemeine Informationen</h3>
+
+         <p>
+         Diese Recherchemaske bietet vielf&auml;ltige Suchfelder und
+         -optionen an. Anders als in der Einfachen Recherche kommt
+         hier keine Suchmaschinen-Technologie zum Einsatz.
+         </p>
+
+        <p>
+        Hier k&ouml;nnen Sie auch
+        Ihre Kataloge festlegen, in denen Sie suchen m&ouml;chten. Sie
+        stellen Ihre Suchanfrage und schicken sie mit <b>"In
+        ausgew&auml;hlten Katalogen suchen"</b> ab.
+        </p>
+     
+      <h3 id="suchlogikkomplex">2.2.2 Suchlogik</h3>
+
+      <h4 id="suchfeldverknuepfung">2.2.2.1 Verkn&uuml;pfungen mehrerer Suchfelder</h4>
+
 
       <p> Die einzelnen Suchfelder (Freie Suche, Titelworte, Person
       etc.) sind standardm&auml;ssig &uuml;ber eine
@@ -182,9 +171,9 @@
       hierzu die entsprechende Verkn&uuml;pfungsart aus dem
       Pull-Down-Men&uuml; hinter dem jeweiligen Suchfeld.  </p>
 
-      <h2 id="profisuche">5.2 Verkn&uuml;pfungen innerhalb eines
+      <h4 id="profisuche">2.2.2.2 Verkn&uuml;pfungen innerhalb eines
       Suchfeldes (ausser bei <span style="color:red">*</span>,
-      d.h. den Feldern Notation, Signatur und Kompletter Titel)</h2>
+      d.h. den Feldern Notation, Signatur und Kompletter Titel)</h4>
 
       <p>
       Die <b>automatische UND-Verkn&uuml;pfung</b> ist innerhalb eines
@@ -241,93 +230,37 @@ Abk&uuml;rzungsoperator <b>*</b> ist erlaubt.
        </p>
 
 
-<h1 id="indexsuche">6 Such-Index</h1>
+      <h3 id="auswahl">2.2.3 Katalogauswahl</h3>
+      <p>
+       Da die meisten Nutzer in allen
+      Katalogen suchen möchten, sind diese voreingestellt. Klicken Sie
+      zweimal auf "Alle Kataloge" (auf der rechten Seite unter
+      "Katalogauswahl") oder wählen Sie das Profil "Katalogauswahl
+      löschen" aus, so werden alle Kataloge demarkiert, und Sie können
+      Ihre Auswahl treffen, indem Sie entweder bestimmte Kataloge oder
+      ein schon bestehendes Profil auswählen. Dann f&uuml;llen Sie die
+      Suchmaske aus und klicken auf <b>"In ausgew&auml;hlten Katalogen
+      suchen"</b>. Um sich bei der Katalogauswahl langes Scrollen zu
+      ersparen, k&ouml;nnen Sie diese dauerhaft in "Mein KUG" als
+      Katalogprofil festlegen.
 
-<p> F&uuml;r die Kategorien Person, K&ouml;rperschaft/Institution und
-Schlagwort ist eine Index-Suche m&ouml;glich. Sie erhalten dann eine
-&Uuml;bersicht von den zutreffenden Ansetzungsformen der
-Normeintr&auml;ge. Die hier eingegebenen Begriffe werden im Volltext
-gesucht, d.h. sie werden z.B. auch innerhalb von Schlagwort-Ketten
-gefunden. M&ouml;chten Sie hingegen eine Wortanfangssuche
-durchf&uuml;hren, so stellen Sie dem Suchbegriff bitte das Zeichen
-<b>^</b> voran (z.B. ^frauenbildung*). Mit * k&ouml;nnen Sie wie
-gewohnt den entsprechenden Begriff trunkieren.  </p>
+      </p>
 
-<h1 id="allghinweisesuche">7 Weitere allgemeine Hinweise zur Suchanfrage</h1>
+      <h3 id="indexsuche">2.2.4 Such-Index</h3>
 
-      <ul>
+      <p> F&uuml;r die Kategorien Person,
+      K&ouml;rperschaft/Institution und Schlagwort ist eine
+      Index-Suche m&ouml;glich. Sie erhalten dann eine &Uuml;bersicht
+      von den zutreffenden Ansetzungsformen der Normeintr&auml;ge. Die
+      hier eingegebenen Begriffe werden im Volltext gesucht, d.h. sie
+      werden z.B. auch innerhalb von Schlagwort-Ketten
+      gefunden. M&ouml;chten Sie hingegen eine Wortanfangssuche
+      durchf&uuml;hren, so stellen Sie dem Suchbegriff bitte das
+      Zeichen <b>^</b> voran (z.B. ^frauenbildung*). Mit * k&ouml;nnen
+      Sie wie gewohnt den entsprechenden Begriff trunkieren.  </p>
 
-      <li>Beachten Sie, dass nur einige Bibliotheken die Aufs&auml;tze
-      im Online-Katalog aufnehmen.</li>
 
-      <li>Es k&ouml;nnen nur Begriffe recherchiert werden, die aus
-      mindestens zwei Zeichen (Buchstaben/Ziffern) bestehen.</li>
-
-      <li><b>Verwenden Sie nur sinntragende Worte</b> und <b>nicht</b>
-      den gesamten Titel eines Buches (mit Ausnahme der Suche als
-Kompletter Titel). F&uuml;r die Suche nach dem Titel 'Die
-      unertr&auml;gliche Leichtigkeit des Seins' w&auml;re daher
-      folgende Suchanfrage (in der UND-Standardeinstellung) sinnvoll:
-      <b>unertr&auml;gliche leichtigkeit seins</b> </li>
-
-      <li> Wenn Ihre Suchanfrage l&auml;nger als das Eingabefeld ist,
-        schreiben Sie ruhig weiter. Der Anfang der Zeile wird zwar aus dem
-        Feld geschoben, aber richtig und vollst&auml;ndig an die Datenbank
-        &uuml;bergeben. Insgesamt sind so bis zu 200 Zeichen in den Eingabefeldern m&ouml;glich.</li>
-
-      <li> Bei der Suche wird nicht zwischen Gro&szlig;- und
-        Kleinschreibung unterschieden.</li>
-
-      <li> Bei der Suche im Personenfeld werden nicht nur Verfasser,
-      sondern auch andere Personen (Hrsg., gefeierte Personen ...)
-      gesucht. Geben Sie jedoch keine abgek&uuml;rzten Vornamen
-      ein. Suchen Sie Titel von 2 Personen, k&ouml;nnen Sie beide Namen
-      eingeben. Suchen Sie eine bestimmte Person, geben Sie den Namen
-      besser als Phrase in der Komplexen Recherche ein,
-      z.B. <b>"kernighan, brian"</b>.</li>
-
-      <li> Bei der Suche im Titelfeld werden nicht nur Hauptsachtitel,
-      sondern auch andere Titel (Parallel-, Nebentitel, ...) 
-      gesucht.</li>
-
-      <li>Im Feld Serie/Band/Quelle k&ouml;nnen Sie einen bestimmten
-      Band aus einer Serie oder, wenn eine Bibliothek Aufs&auml;tze
-      verzeichnet hat, nach der <b>Quelle</b> (Werk, in dem die
-      Aufs&auml;tze enthalten sind) suchen.</li>
-
-      <li>Wollen Sie die Suche mit einem Erscheinungsjahr kombinieren, f&uuml;llen
-        Sie bitte zus&auml;tzlich das Feld "Jahr" (genau/j&uuml;nger/&auml;lter) aus.
-        Eine Suche nur mit dem Jahr ist nicht m&ouml;glich.</li>
-
-      <li> Bei der Eingabe m&uuml;ssen folgende Zeichen mit ihrem entsprechenden
-        Grundbuchstaben gesucht werden ...:
-
-        <p /> &iuml;, &Iuml;, &ntilde;, &Ntilde;, &atilde;, &Atilde;, &otilde;, &Otilde;, &eacute;,
-          &Eacute;, &aacute;, &Aacute;, &oacute;, &Oacute;,&iacute;, &Iacute;, &egrave;, &Egrave;, &agrave;, &Agrave;, &ograve;, &Ograve;, &igrave;, &Igrave;, &ecirc;, &Ecirc;, &acirc;, &Acirc;, &ocirc;, &Ocirc;, &icirc;, &Icirc;.<br />Also:<br />
-
-          &iuml; <i>suchen mit:</i> i<br />
-          &Iuml; <i>suchen mit:</i> I<br />
-          &ntilde; <i>suchen mit:</i> n; <br />
-
-          usw. usf. </li>
-
-        <li> Unter <b>Sortierung nach</b> erfolgt die Einstellung der
-        Sortierung nach Person/K&ouml;rperschaft, Titel, Z&auml;hlung,
-        Jahr, Verlag, Signatur und Popularit&auml;t (auf- oder
-        absteigend), Anzeige pro Katalog oder
-        katalog&uuml;bergreifend.</li>
-
-        <li>Das <b>Suchprofil</b> zeigt Ihnen Ihre ausgew&auml;hlten Datenbanken an. Dar&uuml;ber hinaus k&ouml;nnen sie hier auch voreingestellte Fakult&auml;tsprofile sowie von Ihnen abgelegte pers&ouml;nliche Suchprofile (siehe: <a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#perskug">Mein KUG</a>) fuer die 'Suche in einzelnen Katalogen' ausw&auml;hlen.</li>
-
-        <li>Die <b>Suchhistorie</b> listet Ihnen Ihre schon gestellten
-        Suchanfragen auf mit der Angabe der Trefferzahl. So
-        k&ouml;nnen Sie in der Komplexen Recherche eine alte
-        Suchanfrage anklicken und als Suchvorlage erneut in das
-        Suchformular &uuml;bertragen.</li>
-
-    </ul>
-
-    <h1 id="beispiele">8 Einige Beispiele f&uuml;r die Komplexe Recherche</h1>
+      <h3 id="beispiele">2.2.5 Beispiele</h3>
 
     <ol>
       <li> Sie m&ouml;chten nach den B&uuml;chern von <tt>Brian
@@ -426,7 +359,83 @@ NICHT-Verkn&uuml;pfung) bei aktivierter Suchoption
       </li>
       </ol>
 
-      <h1 id="perskug">9 Mein KUG</h1>
+
+<h1 id="allghinweisesuche">3 Weitere allgemeine Hinweise zur Suchanfrage</h1>
+
+      <ul>
+
+      <li>Beachten Sie, dass nur einige Bibliotheken die Aufs&auml;tze
+      im Online-Katalog aufnehmen.</li>
+
+      <li>Es k&ouml;nnen nur Begriffe recherchiert werden, die aus
+      mindestens zwei Zeichen (Buchstaben/Ziffern) bestehen.</li>
+
+      <li><b>Verwenden Sie nur sinntragende Worte</b> und <b>nicht</b>
+      den gesamten Titel eines Buches (mit Ausnahme der Suche als
+Kompletter Titel). F&uuml;r die Suche nach dem Titel 'Die
+      unertr&auml;gliche Leichtigkeit des Seins' w&auml;re daher
+      folgende Suchanfrage (in der UND-Standardeinstellung) sinnvoll:
+      <b>unertr&auml;gliche leichtigkeit seins</b> </li>
+
+      <li> Wenn Ihre Suchanfrage l&auml;nger als das Eingabefeld ist,
+        schreiben Sie ruhig weiter. Der Anfang der Zeile wird zwar aus dem
+        Feld geschoben, aber richtig und vollst&auml;ndig an die Datenbank
+        &uuml;bergeben. Insgesamt sind so bis zu 200 Zeichen in den Eingabefeldern m&ouml;glich.</li>
+
+      <li> Bei der Suche wird nicht zwischen Gro&szlig;- und
+        Kleinschreibung unterschieden.</li>
+
+      <li> Bei der Suche im Personenfeld werden nicht nur Verfasser,
+      sondern auch andere Personen (Hrsg., gefeierte Personen ...)
+      gesucht. Geben Sie jedoch keine abgek&uuml;rzten Vornamen
+      ein. Suchen Sie Titel von 2 Personen, k&ouml;nnen Sie beide Namen
+      eingeben. Suchen Sie eine bestimmte Person, geben Sie den Namen
+      besser als Phrase in der Komplexen Recherche ein,
+      z.B. <b>"kernighan, brian"</b>.</li>
+
+      <li> Bei der Suche im Titelfeld werden nicht nur Hauptsachtitel,
+      sondern auch andere Titel (Parallel-, Nebentitel, ...) 
+      gesucht.</li>
+
+      <li>Im Feld Serie/Band/Quelle k&ouml;nnen Sie einen bestimmten
+      Band aus einer Serie oder, wenn eine Bibliothek Aufs&auml;tze
+      verzeichnet hat, nach der <b>Quelle</b> (Werk, in dem die
+      Aufs&auml;tze enthalten sind) suchen.</li>
+
+      <li>Wollen Sie die Suche mit einem Erscheinungsjahr kombinieren, f&uuml;llen
+        Sie bitte zus&auml;tzlich das Feld "Jahr" (genau/j&uuml;nger/&auml;lter) aus.
+        Eine Suche nur mit dem Jahr ist nicht m&ouml;glich.</li>
+
+      <li> Bei der Eingabe m&uuml;ssen folgende Zeichen mit ihrem entsprechenden
+        Grundbuchstaben gesucht werden ...:
+
+        <p /> &iuml;, &Iuml;, &ntilde;, &Ntilde;, &atilde;, &Atilde;, &otilde;, &Otilde;, &eacute;,
+          &Eacute;, &aacute;, &Aacute;, &oacute;, &Oacute;,&iacute;, &Iacute;, &egrave;, &Egrave;, &agrave;, &Agrave;, &ograve;, &Ograve;, &igrave;, &Igrave;, &ecirc;, &Ecirc;, &acirc;, &Acirc;, &ocirc;, &Ocirc;, &icirc;, &Icirc;.<br />Also:<br />
+
+          &iuml; <i>suchen mit:</i> i<br />
+          &Iuml; <i>suchen mit:</i> I<br />
+          &ntilde; <i>suchen mit:</i> n; <br />
+
+          usw. usf. </li>
+
+        <li> Unter <b>Sortierung nach</b> erfolgt die Einstellung der
+        Sortierung nach Person/K&ouml;rperschaft, Titel, Z&auml;hlung,
+        Jahr, Verlag, Signatur und Popularit&auml;t (auf- oder
+        absteigend), Anzeige pro Katalog oder
+        katalog&uuml;bergreifend.</li>
+
+        <li>Das <b>Suchprofil</b> zeigt Ihnen Ihre ausgew&auml;hlten Datenbanken an. Dar&uuml;ber hinaus k&ouml;nnen sie hier auch voreingestellte Fakult&auml;tsprofile sowie von Ihnen abgelegte pers&ouml;nliche Suchprofile (siehe: <a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#perskug">Mein KUG</a>) fuer die 'Suche in einzelnen Katalogen' ausw&auml;hlen.</li>
+
+        <li>Die <b>Suchhistorie</b> listet Ihnen Ihre schon gestellten
+        Suchanfragen auf mit der Angabe der Trefferzahl. So
+        k&ouml;nnen Sie in der Komplexen Recherche eine alte
+        Suchanfrage anklicken und als Suchvorlage erneut in das
+        Suchformular &uuml;bertragen.</li>
+
+    </ul>
+
+
+      <h1 id="perskug">4 Mein KUG</h1>
 
 <p>
 Ihren personalisierten KUG erreichen Sie über den Punkt <b>Mein KUG</b> in der
@@ -464,21 +473,25 @@ Sie sich erst später in <b>Mein KUG</b> einloggen, bleiben Ihnen die Einträge,
 Sie <b>anonym</b> in dieser Sitzung gesammelt haben, erhalten. Sie werden Ihnen in
 die <b>persönliche</b> Liste übertragen.</li>
 
-<li>Sie können jeden Titel in den Katalogen <b>taggen</b>, d.h. mit
-einem eigenen Etikett (= Schlagwort/Tag) versehen. Diese Tags sind
-einzelne Worte, die Sie mit Leerzeichen getrennt eingeben müssen. Zur
-Vereinheitlichung der Tags werden sie automatisch normiert -
-d.h. Umlaute werden aufgelöst, es wird Kleinschreibung verwendet und
-unerwünschte Zeichen werden eliminiert (erlaubt sind Alphanumerische
-Zeichen sowie +-_.). Unter dem Reiter 'Tags' erhalten Sie dann in
-'Mein KUG' eine Übersicht aller von Ihnen verwendeten Tags in Form
-einer Wortwolke - je mehr Titel sie mit einem entsprechenden Tag
-versehen haben, desto grösser wird es dargestellt. Durch einen Klick
-auf einen Tag erhalten Sie eine Kurztitel-Liste aller Titel, die sie
-mit dem jeweiligen Tag versehen haben.</li>
+<li>Sie können jeden Titel in den Katalogen <b>taggen</b> <a
+class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/taggen.html"
+target="tutorial">[zum Tutorial]</a>, d.h. mit einem eigenen Etikett
+(= Schlagwort/Tag) versehen. Diese Tags sind einzelne Worte, die Sie
+mit Leerzeichen getrennt eingeben müssen. Zur Vereinheitlichung der
+Tags werden sie automatisch normiert - d.h. Umlaute werden aufgelöst,
+es wird Kleinschreibung verwendet und unerwünschte Zeichen werden
+eliminiert (erlaubt sind Alphanumerische Zeichen sowie +-_.). Unter
+dem Reiter 'Tags' erhalten Sie dann in 'Mein KUG' eine Übersicht aller
+von Ihnen verwendeten Tags in Form einer Wortwolke - je mehr Titel sie
+mit einem entsprechenden Tag versehen haben, desto grösser wird es
+dargestellt. Durch einen Klick auf einen Tag erhalten Sie eine
+Kurztitel-Liste aller Titel, die sie mit dem jeweiligen Tag versehen
+haben.</li>
 
 <li>Wenn Sie sich mit Ihrem USB-Ausweis anmelden, können Sie aus dem KUG heraus
-eine Fernleihe starten, ohne sich zuvor nochmals authentifizieren zu müssen.</li>
+eine Fernleihe  <a class="tutorial"
+href="http://kug.ub.uni-koeln.de/tutorials/fernleihe.html"
+target="tutorial">[zum Tutorial]</a> starten, ohne sich zuvor nochmals authentifizieren zu müssen.</li>
 
 <li>Beim Einloggen mit Ihrem Bibliotheksausweis erhalten Sie sofort einen
 Überblick über Ihre Personendaten und Ausleihinformationen. (Rubik
@@ -507,7 +520,7 @@ Profildefinitionen und Suchfeldeinstellungen bleiben gespeichert, auch für
 zukünftige Recherchen.</li>
 </ul>
 
-      <h1 id="buchstandort">10 Standort des Buches</h1>
+      <h1 id="buchstandort">5 Standort des Buches</h1>
 
       <p>
       Nach Ihrer Sucheingabe erhalten Sie eine Kurztitelliste, die, wenn Sie in mehreren Datenbanken
@@ -535,7 +548,7 @@ zukünftige Recherchen.</li>
         sie hier vormerken.
      </p>
 
-     <h1 id="treffermerkliste">11 Treffer- und Merkliste</h1>
+     <h1 id="treffermerkliste">6 Treffer- und Merkliste</h1>
 
       <p>
       Der Link "Trefferliste" gibt Ihnen die aktuelle Suchanfrage an und darunter die Treffermenge insgesamt und die der
@@ -565,7 +578,7 @@ gew&uuml;nschten Ordnungskriterien (Person, Titel usw. und Anzeige "Pro Katalog"
       Icons ausdrucken, speichern oder als E-Mail versenden.
       </p>
 
-      <h1 id="externesuche">12 Sprung in externe Recherchequellen</h1>
+      <h1 id="externesuche">7 Sprung in externe Recherchequellen</h1>
       <p>
       In der Recherchemaske finden Sie unter 'Suchhistorie' eine Aufstellung Ihrer bisherigen Recherche-Anfragen. An dieser Stelle k&ouml;nnen Sie f&uuml;r den Fall, dass eine Anfrage nicht die gew&uuml;nschten Ergebnisse lieferte, diese auf weitere externe Recherchequellen ausweiten. Nach der Auswahl der betreffenden Recherche und Aktivierung von 'Weiter als externe Recherche' gelangen Sie auf eine Seite, auf der zus&auml;tzliche Recherchequellen angeboten werden. Jede dieser Recherchequellen stellt eine Recherche nach bestimmten Suchfeldern zur Verf&uuml;gung. Entsprechend der bei Ihrer KUG-Recherche gew&auml;hlten Suchfelder sind unter 'Übernahme der Anfrage in externe Recherchequellen' verschiedene Links aktiviert. Wenn die Suchfelder/Kategorien Ihrer ausgew&auml;hlten Anfrage nicht von einer externen Recherchequelle verarbeitet werden k&ouml;nnen, erscheint anstelle des Links die rote Meldung '<span style="color:red">Ungeeignete Suchfelder</span>'. Bei der Aktivierung eines entsprechenden Links springen Sie sofort zur entsprechenden Recherche in der externen Quelle. Dabei wird sowohl Ihre Suchanfrage wie auch eine etwaige Authentifizierung am KUG mit weitergereicht.
 
@@ -581,14 +594,14 @@ Derzeit werden folgende externe Recherchequellen angeboten:
 <li>MedPilot</li>
 </ul>
 
-      <h1 id="enrichment">13 Ergebnisanreicherung</h1>
+      <h1 id="enrichment">8 Ergebnisanreicherung</h1>
 
      <p> Die Ergebnisse werden datenbankübergreifend durch zusätzliche
      Informationen angereichert. Diese Informationen werden über eine
      zentrale Anreicherungsdatenbank bereitgestellt, in der sie,
      bezogen auf eine vorhandene ISBN, abgelegt werden.  </p>
 
-      <h2 id="enrichtoc">13.1 Digitalisierte Inhaltsverzeichnisse</h2>
+      <h2 id="enrichtoc">8.1 Digitalisierte Inhaltsverzeichnisse</h2>
 
      <p> Im Rahmen eines Projektes wurden Inhaltsverzeichnisse von
      mehr als 200000 Monographien der USB eingescannt und für alle im
@@ -600,7 +613,7 @@ Derzeit werden folgende externe Recherchequellen angeboten:
      den Inhaltsverzeichnissen ist im KUG (derzeit) nicht
      m&ouml;glich.</p>
 
-      <h2 id="enrichrelevance">13.2 Potentiell interessante andere Titel</h2>
+      <h2 id="enrichrelevance">8.2 Potentiell interessante andere Titel</h2>
       <p>
       Durch statistische Auswertungen des Ausleihverhaltens im Bestand
 der USB sowie des Nutzungsverhaltens im KUG werden zu einem gegebenen
@@ -610,7 +623,7 @@ Nutzer weitere Titel angezeigt, die von anderen Nutzern im
 Kontext des aktuellen Titels für interessant befunden wurden.
       </p>
 
- <h1 id="popularity">14 Popularit&auml;ts-Funktionen</h1>
+ <h1 id="popularity">9 Popularit&auml;ts-Funktionen</h1>
 
       <p>
 &Auml;hnlich der Recommender-Funktion bietet der KUG verschiedene
@@ -618,7 +631,7 @@ Popularit&auml;ts-Funktionen an. Es sind dies
 
 <ul>
 <li><b>Top 20</b> Pro Katalog lassen sich die 20 meist aufgerufenen
-Titel unter dem Reiter <a href="#sichten">&Uuml;bersichten</a> anzeigen.</li>
+Titel unter dem Reiter <a href="#sichten">&Uuml;bersichten</a> anzeigen. <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/top20.html" target="tutorial">[zum Tutorial]</a></li>
 <li><b>Sortierung nach Popularit&auml;t</b> In jeder Titel-Liste
 lassen sich die Titel nach Popularit&auml;t - entsprechend der
 konkreten Aufrufe - (sinnvollerweise absteigend) sortieren. Die Popularit&auml;t eines Titels finden
@@ -627,7 +640,7 @@ Sie in der mit <b>P</b> ausgezeichneten Spalte der Ergebnistabelle. Damit k&ouml
 </ul>
       </p>
 
-      <h1 id="rssfeeds">15 RSS-Feeds (abonnierbare Informations-Kan&auml;le)</h1>
+      <h1 id="rssfeeds">10 RSS-Feeds (abonnierbare Informations-Kan&auml;le)</h1>
 <p>
 In einem ausgew&auml;hlten Katalog oder einer Institutssicht werden
 sog. <a href="http://de.wikipedia.org/wiki/RSS-Feed"
@@ -641,7 +654,7 @@ in XML kodiert, so dass zu ihrer Nutzung entsprechende Programme
 (Feedreader, Aggregatorprogramm) ben&ouml;tigt werden. Im
 einfachsten Fall ist dies ein einfaches Anzeige-Programm wie z.B. die
 Erweiterung <a
-href="https://addons.mozilla.org/extensions/moreinfo.php?id=445;application=firefox"
+href="https://addons.mozilla.org/en-US/firefox/addon/445"
 target="_blank">FeedView</a> f&uuml;r den Browser <a
 href="http://www.mozilla.org/"
 target="_blank">Firefox</a>. Dar&uuml;ber hinaus stehen eine Vielzahl
@@ -661,7 +674,7 @@ Data-Mining in Verbindung mit spezialisierter Suchtechnologie
 einsetzen, usw.
 </p>
 
-      <h2 id="rssarten">15.1 Angebotene Arten an RSS-Feeds</h2>
+      <h2 id="rssarten">10.1 Angebotene Arten an RSS-Feeds</h2>
 
 <p>
 Im KUG werden derzeit folgende Arten von RSS-Feeds angeboten:
@@ -709,11 +722,11 @@ Im KUG werden derzeit folgende Arten von RSS-Feeds angeboten:
 
 </p>
       
-      <h2 id="rssinstall">15.2 Beispiel: Installation von Feedview f&uuml;r den Browser Firefox</h2>
+      <h2 id="rssinstall">10.2 Beispiel: Installation von Feedview f&uuml;r den Browser Firefox</h2>
 
       <p>F&uuml;r die Installation bei Firefox-Browsern bis Version
       1.5 rufen Sie bitte diesen <a
-      href="https://addons.mozilla.org/extensions/moreinfo.php?id=445;application=firefox"
+      href="https://addons.mozilla.org/en-US/firefox/addon/445"
       target="_blank">Link</a> zu der Firefox-Erweiterung Feedview auf
       und klicken dort auf "Install Now". Es &ouml;ffnet sich dann ein
       Fenster. In diesem best&auml;tigen Sie bitte die
@@ -736,9 +749,9 @@ Im KUG werden derzeit folgende Arten von RSS-Feeds angeboten:
         Neuzug&auml;nge eines Kataloges</b>) abonnieren k&ouml;nnen.
       </p>
 
-      <h1 id="mashups">16 Mashups mit Sozialer Software</h1>
+      <h1 id="mashups">11 Mashups mit Sozialer Software</h1>
 
-      <h2 id="bibsonomy">16.1 Integration mit BibSonomy</h2>
+      <h2 id="bibsonomy">11.1 Integration mit BibSonomy</h2>
      <p>
      In der Einzeltreffer-Anzeige wie auch in der Merkliste
      k&ouml;nnen Sie die bibliographischen Angaben eines Titels durch
@@ -751,7 +764,7 @@ Im KUG werden derzeit folgende Arten von RSS-Feeds angeboten:
 
      </p>
 
-      <h2 id="wikipedia">16.2 Integration der Wikipedia</h2>
+      <h2 id="wikipedia">11.2 Integration der Wikipedia</h2>
 
      <p> In der Einzeltreffer-Anzeige werden Personen sowie ISBNs
      direkt in die Wikipedia verlinkt. Wenn Sie Informationen zu einer
@@ -768,8 +781,8 @@ Im KUG werden derzeit folgende Arten von RSS-Feeds angeboten:
      <p> Doch beachten Sie, dass die Beitrage unter Umst&auml;nden
      nicht wissenschaftlich gepr&uuml;ft sein k&ouml;nnten.  </p>
 
-      <h1 id="uebersichten">17 &Uuml;bersichten</h1>
-      <h2 id="wolken">17.1 Wolken</h2>
+      <h1 id="uebersichten">12 &Uuml;bersichten</h1>
+      <h2 id="wolken">12.1 Wolken</h2>
 
       <p> Für jeden Katalog kann - soweit dort
       verschlagwortet wird - eine Übersicht der 200
@@ -780,7 +793,7 @@ Im KUG werden derzeit folgende Arten von RSS-Feeds angeboten:
       Schlagwort dargestellt.
       </p>
 
-      <h2 id="sichten">17.2 Sichten</h2>
+      <h2 id="sichten">12.2 Sichten</h2>
 
       <p> Neben dem Standard-KUG mit allen Katalogen gibt es eine
       Vielzahl an Spezial-Sichten, bei denen z.B. bestimmte Kataloge
@@ -791,24 +804,26 @@ Im KUG werden derzeit folgende Arten von RSS-Feeds angeboten:
       </p>
 
 
-      <h1 id="bilder">18 Bildliche Funktionselemente</h1>
+      <h1 id="bilder">13 Bildliche Funktionselemente</h1>
      <p>
      In den Kurztrefferlisten, den einzelnen Titeln, der Merkliste
      oder anderen Stellen im KUG werden verschiedene bildliche
      Funktionselemente verwendet. Es sind dies:
     </p>
     <table>
-     <tr><td align="center"><img src="/images/openbib/3d-file-blue-clipboard.png" alt="In die Merkliste" border="0" /></td><td>Titel in die Merkliste eintragen</td></tr>
+     <tr><td align="center"><img src="/images/openbib/3d-file-blue-clipboard.png" alt="In die Merkliste" border="0" /></td><td>Titel in die Merkliste eintragen <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/merkliste.html" target="tutorial">[zum Tutorial]</a></td></tr>
 
-     <tr><td align="center"><img src="/images/openbib/3d-file-blue-mailbox.png" alt="Als Mail verschicken" border="0" /></td><td>Titel(liste) als Mail verschicken</td></tr>
-     <tr><td align="center"><img src="/images/openbib/3d-file-blue-disk35.png" alt="Abspeichern" border="0" /></td><td>Titel(liste) abspeichern</td></tr>   
-     <tr><td align="center"><img src="/images/openbib/3d-file-blue-printer.png" alt="Ausdrucken" border="0" /></td><td>Titel(liste) ausdrucken, bzw. in einer Druckansicht darstellen</td></tr>   
-     <tr><td align="center"><img src="/images/openbib/rssfeed.png"  alt="RSS-Feed" border="0" /></td><td>RSS-Feed</td></tr>   
-     <tr><td align="center"><img src="/images/openbib/share.png"  alt="An BibSonomy senden" border="0" /></td><td>An BibSonomy senden</td></tr>   
-     <tr><td align="center"><img src="/images/openbib/top20-12px.png"  alt="Top 20" border="0" /></td><td>Anzeige der Top 20 meist aufgerufenen Titel im entsprechenden Katalog</td></tr>   
+     <tr><td align="center"><img src="/images/openbib/3d-file-blue-mailbox.png" alt="Als Mail verschicken" border="0" /></td><td>Titel(liste) als Mail verschicken <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/speichern.html" target="tutorial">[zum Tutorial]</a></td></tr>
+     <tr><td align="center"><img src="/images/openbib/3d-file-blue-disk35.png" alt="Abspeichern" border="0" /></td><td>Titel(liste) abspeichern <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/speichern.html" target="tutorial">[zum Tutorial]</a></td></tr>   
+     <tr><td align="center"><img src="/images/openbib/3d-file-blue-printer.png" alt="Ausdrucken" border="0" /></td><td>Titel(liste) ausdrucken, bzw. in einer Druckansicht darstellen <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/drucken.html" target="tutorial">[zum Tutorial]</a></td></tr>   
+     <tr><td align="center"><img src="/images/openbib/rssfeed.png"  alt="RSS-Feed" border="0" /></td><td>RSS-Feed <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/rss.html" target="tutorial">[zum Tutorial]</a></td></tr>   
+     <tr><td align="center"><img src="/images/openbib/share.png"  alt="An BibSonomy senden" border="0" /></td><td>An BibSonomy senden <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/bibsonomy.html" target="tutorial">[zum Tutorial]</a></td></tr>   
+     <tr><td align="center"><img src="/images/openbib/top20-12px.png"  alt="Top 20" border="0" /></td><td>Anzeige der Top 20 meist aufgerufenen Titel im entsprechenden Katalog <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/top20.html" target="tutorial">[zum Tutorial]</a></td></tr>   
+     <tr><td align="center"><img src="/images/openbib/3d-file-blue-permalink.png" alt="Permanenter Link" /></td><td>Permanenter Link zu diesem Titel</td></tr>
+     <tr><td align="center"><img src="/images/openbib/info.png" alt="Kontextsensitive Hilfe" /></td><td>Kontextsensitive Hilfe</td></tr>   
     </table>
 
-    <h1 id="verlinkung">19 Verlinkung und Lastverteilung des KUG</h1>
+    <h1 id="verlinkung">14 Verlinkung und Lastverteilung des KUG</h1>
 
     <p>
     Das KUG Recherche-Portal ist mit einer zentralen Lastverteilung ausgestattet. Entsprechend der Belastung (und Funktionsf&auml;higkeit) werden Sie auf derzeit einen von drei KUG-Servern (kug1 bis kug3) weitergeleitet. Ebenso werden aus Wartungsgr&uuml;nden oder Problemen einzelne KUG-Server von uns aus der Lastverteilung genommen. Aus diesem Grund ist es sehr problematisch, direkt einen der drei Server zu verlinken (z.B. als URL <tt>http://kug3.ub.uni-koeln.de/portal/opac?view=</tt>) Verwenden Sie daher bitte <b>immer</b> die offiziellen Einsprung-URL's in den KUG. Es sind dies
@@ -822,7 +837,7 @@ Im KUG werden derzeit folgende Arten von RSS-Feeds angeboten:
     </dl>
   
 
-    <h1 id="suchplugin">20 KUG Such-Plugin f&uuml;r Mozilla Firefox-Browser</h1>
+    <h1 id="suchplugin">15 KUG Such-Plugin f&uuml;r Mozilla Firefox-Browser</h1>
 
     <script type="text/javascript">
 <!--
@@ -861,7 +876,7 @@ function addEngine(name,ext,cat)
     im searchplugins-Verzeichnis von Firefox besitzen).
     </p>
 
-    <h1 id="kontakt">21 Kontakt</h1>
+    <h1 id="kontakt">16 Kontakt</h1>
     <p>
     Fragen und Anmerkungen richten Sie bitte an: <a href="http://www.ub.uni-koeln.de/usb-cgi/zms_makeEmail.pl?adr0=kug">kug@ub.uni-koeln.de</a>
     </p>

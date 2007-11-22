@@ -17,9 +17,11 @@
 
 [% PROCESS corporate_banner %]
 
+<div id="maincontent">
+
 <table width="100%">
 <tr><th>[% msg.maketext("Logout erfolgreich") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 
 [% msg.maketext("Um sich wieder einzuloggen folgen Sie bitte [_1]diesem Link[_2].","<a href=\"http://${config.servername}${config.admin_loc}?do_loginmask=1\">","</a>") %]
 
@@ -27,5 +29,7 @@
 </table>
 
 <p />
+
+</div>
 
 [% PROCESS std_footer %]

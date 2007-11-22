@@ -58,7 +58,7 @@ sub handler {
 
     my $config = new OpenBib::Config();
     
-    my $query=Apache::Request->new($r);
+    my $query=Apache::Request->instance($r);
 
     my $status=$query->parse;
 
@@ -85,6 +85,7 @@ sub handler {
     my $showisbn      = ($query->param('showisbn'))?$query->param('showisbn'):'0';
     my $showissn      = ($query->param('showissn'))?$query->param('showissn'):'0';
     my $showsign      = ($query->param('showsign'))?$query->param('showsign'):'0';
+    my $showinhalt    = ($query->param('showinhalt'))?$query->param('showinhalt'):'0';
     my $showmart      = ($query->param('showmart'))?$query->param('showmart'):'0';
     my $showejahr     = ($query->param('showejahr'))?$query->param('showejahr'):'0';
 
@@ -141,6 +142,10 @@ sub handler {
         my $showgtquelle = decode_utf8($result->{'gtquelle'});
         my $gtquellechecked="";
         $gtquellechecked="checked=\"checked\"" if ($showgtquelle);
+
+        my $showinhalt = decode_utf8($result->{'inhalt'});
+        my $inhaltchecked="";
+        $inhaltchecked="checked=\"checked\"" if ($showinhalt);
 
         my $showhststring = decode_utf8($result->{'hststring'});
         my $hststringchecked="";
@@ -243,6 +248,7 @@ sub handler {
             notationchecked  => $notationchecked,
             isbnchecked      => $isbnchecked,
             issnchecked      => $issnchecked,
+            inhaltchecked    => $inhaltchecked,
             signchecked      => $signchecked,
             martchecked      => $martchecked,
             ejahrchecked     => $ejahrchecked,
@@ -254,8 +260,8 @@ sub handler {
         OpenBib::Common::Util::print_page($config->{tt_userprefs_tname},$ttdata,$r);
     }
     elsif ($action eq "changefields") {
-        my $targetresult=$user->{dbh}->prepare("update fieldchoice set fs = ?, hst = ?, hststring = ?, verf = ?, kor = ?, swt = ?, notation = ?, isbn = ?, issn = ?, sign = ?, mart = ?, ejahr = ?, gtquelle=? where userid = ?") or $logger->error($DBI::errstr);
-        $targetresult->execute($showfs,$showhst,$showhststring,$showverf,$showkor,$showswt,$shownotation,$showisbn,$showissn,$showsign,$showmart,$showejahr,$showgtquelle,$userid) or $logger->error($DBI::errstr);
+        my $targetresult=$user->{dbh}->prepare("update fieldchoice set fs = ?, hst = ?, hststring = ?, verf = ?, kor = ?, swt = ?, notation = ?, isbn = ?, issn = ?, sign = ?, mart = ?, ejahr = ?, inhalt=?, gtquelle=? where userid = ?") or $logger->error($DBI::errstr);
+        $targetresult->execute($showfs,$showhst,$showhststring,$showverf,$showkor,$showswt,$shownotation,$showisbn,$showissn,$showsign,$showmart,$showejahr,$showinhalt,$showgtquelle,$userid) or $logger->error($DBI::errstr);
         $targetresult->finish();
 
         # TT-Data erzeugen

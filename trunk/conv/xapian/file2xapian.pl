@@ -38,6 +38,8 @@ use Benchmark ':hireswallclock';
 use DB_File;
 use DBI;
 use Encode qw(decode_utf8 encode_utf8);
+use MLDBM qw(DB_File Storable);
+use Storable ();
 use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
 use Search::Xapian;
@@ -83,6 +85,13 @@ if (!$database){
   $logger->fatal("Kein Pool mit --single-pool= ausgewaehlt");
   exit;
 }
+
+my $FLINT_BTREE_MAX_KEY_LEN = 250;
+
+my %normdata                = ();
+
+tie %normdata,                'MLDBM', "./normdata.db"
+    or die "Could not tie normdata.\n";
 
 $logger->info("### POOL $database");
 
@@ -132,7 +141,7 @@ my $count = 1;
 {
     my $atime = new Benchmark;
     while (my $search=<SEARCH>, my $titlistitem=<TITLISTITEM>) {
-        my ($s_id,$verf,$hst,$kor,$swt,$notation,$sign,$ejahrint,$ejahr,$gtquelle,$isbn,$issn,$artinh)=split("",$search);
+        my ($s_id,$verf,$hst,$kor,$swt,$notation,$sign,$ejahrint,$ejahr,$gtquelle,$inhalt,$isbn,$issn,$artinh)=split("",$search);
         my ($t_id,$listitem)=split ("",$titlistitem);
         if ($s_id != $t_id) {
             $logger->fatal("Id's stimmen nicht ueberein ($s_id != $t_id)!");
@@ -143,40 +152,94 @@ my $count = 1;
             {
                 prefix  => "X1",
                 content => $verf,
+	        type    => 'index',
             },
             {
                 prefix  => "X2",
                 content => $hst,
+	        type    => 'index',
             },
             {
                 prefix  => "X3",
                 content => $kor,
+	        type    => 'index',
             },
             {
                 prefix  => "X4",
                 content => $swt,
+	        type    => 'index',
             },
             {
                 prefix  => "X5",
                 content => $notation,
+	        type    => 'index',
             },
             {
                 prefix  => "X6",
                 content => $sign,
+	        type    => 'index',
             },
             {
                 prefix  => "X7",
                 content => $ejahr,
+	        type    => 'index',
             },
             {
                 prefix  => "X8",
                 content => $isbn,
+	        type    => 'index',
             },
             {
                 prefix  => "X9",
                 content => $issn,
+	        type    => 'index',
             },
-        
+            {
+                prefix  => "Y1",
+                content => $artinh,
+	        type    => 'index',
+            },
+            {
+                prefix  => "Y2",
+                content => $inhalt,
+	        type    => 'index',
+            },
+            {
+                # Schlagwort
+                prefix  => "D1",
+	        type    => "drilldown",
+                cat     => 'swt',
+            },
+            {
+                # Notation
+                prefix  => "D2",
+	        type    => "drilldown",
+                cat     => 'notation',
+            },
+            {
+                # Person
+                prefix  => "D3",
+	        type    => "drilldown",
+                cat     => 'verf',
+            },
+            {
+                # Medientyp
+                prefix  => "D4",
+	        type    => "drilldown",
+                cat     => 'mart',
+            },
+            {
+                # Jahr
+                prefix  => "D5",
+	        type    => "drilldown",
+                cat     => 'year',
+            },
+            {
+                # Sprache
+                prefix  => "D6",
+	        type    => "drilldown",
+                cat     => 'spr',
+            },
         ];
 
         my $seen_token_ref = {};
@@ -184,44 +247,122 @@ my $count = 1;
         my $doc=Search::Xapian::Document->new();
 
         foreach my $tokinfo_ref (@$tokinfos_ref) {
-            # Tokenize
-            next if (! $tokinfo_ref->{content});
-            
-            $tokenizer->tokenize($tokinfo_ref->{content});
+
+            if ($tokinfo_ref->{type} eq 'index'){
+	      # Tokenize
+	      next if (! $tokinfo_ref->{content});
+
+                $tokenizer->tokenize($tokinfo_ref->{content});
         
-            my $i = $tokenizer->iterator();
+                my $i = $tokenizer->iterator();
 
-            my @saved_tokens=();
-            while ($i->hasNextToken()) {
-                my $next = $i->nextToken();
+                my @saved_tokens=();
+                while ($i->hasNextToken()) {
+                    my $next = $i->nextToken();
 
-                # Naechstes, wenn kein Token
-                next if (!$next);
-                # Naechstes, wenn keine Zahl oder einstellig
-                # next if (length($next) < 2 && $next !~ /\d/);
-                # Naechstes, wenn schon gesehen 
-                next if (exists $seen_token_ref->{$next});
-                # Naechstes, wenn Stopwort
-                next if (exists $config->{stopword_filename} && exists $stopword_ref->{$next});
+                    # Naechstes, wenn kein Token
+                    next if (!$next);
+                    # Naechstes, wenn keine Zahl oder einstellig
+                    # next if (length($next) < 2 && $next !~ /\d/);
+                    # Naechstes, wenn schon gesehen 
+                    next if (exists $seen_token_ref->{$next});
+                    # Naechstes, wenn Stopwort
+                    next if (exists $config->{stopword_filename} && exists $stopword_ref->{$next});
 
-                $seen_token_ref->{$next}=1;
+                    # Begrenzung der keys auf FLINT_BTREE_MAX_KEY_LEN=252 Zeichen
+                    $next=(length($next) > $FLINT_BTREE_MAX_KEY_LEN)?substr($next,0,$FLINT_BTREE_MAX_KEY_LEN):$next;
+
+                    $seen_token_ref->{$next}=1;
                 
-                # Token generell einfuegen
-                $doc->add_term($next);
+                    # Token generell einfuegen
+                    $doc->add_term($next);
 
-                push @saved_tokens, $next;
-            }
-
-            if ($withfields) {
-                foreach my $token (@saved_tokens) {
-                    # Token in Feld einfuegen            
-                    my $fieldtoken=$tokinfo_ref->{prefix}.$token;
-                    $doc->add_term($fieldtoken);
+                    push @saved_tokens, $next;
                 }
-            }
+
+                if ($withfields) {
+                    foreach my $token (@saved_tokens) {
+                        # Token in Feld einfuegen            
+                        my $fieldtoken=$tokinfo_ref->{prefix}.$token;
+
+                        # Begrenzung der keys auf FLINT_BTREE_MAX_KEY_LEN=252 Zeichen
+                        $fieldtoken=(length($fieldtoken) > $FLINT_BTREE_MAX_KEY_LEN)?substr($fieldtoken,0,$FLINT_BTREE_MAX_KEY_LEN):$fieldtoken;
+
+                        $doc->add_term($fieldtoken);
+                    }
+                }
+   	    }
+            elsif ($tokinfo_ref->{type} eq 'drilldown'){
+                next if (!exists $normdata{$s_id}->{$tokinfo_ref->{cat}});
+
+                my %seen_terms = ();
+                my @unique_terms = grep { ! $seen_terms{$_} ++ } @{$normdata{$s_id}->{$tokinfo_ref->{cat}}}; 
+
+	        foreach my $unique_term (@unique_terms){
+		  # Kategorie in Feld einfuegen            
+		  my $field = OpenBib::Common::Util::grundform({
+                       content   => $unique_term,
+		       searchreq => 1,
+							       });
+
+		  $field=~s/\W/_/g;
+
+		  $field="$tokinfo_ref->{prefix}$field";
+
+                  # Begrenzung der keys auf FLINT_BTREE_MAX_KEY_LEN Zeichen
+		  $field=(length($field) > $FLINT_BTREE_MAX_KEY_LEN)?substr($field,0,$FLINT_BTREE_MAX_KEY_LEN):$field;
+
+		  $doc->add_term($field);
+	        }
+   	    }
+	}
+
+        my $value_type_ref = [
+            {
+                # Schlagwort
+                id     => 1,
+                type   => 'swt',
+            },
+            {
+                # Notation
+                id   => 2,
+                type => 'notation',
+            },
+            {
+                # Person
+                id   => 3,
+                type => 'verf',
+            },
+            {
+                # Medientyp
+                id   => 4,
+                type => 'mart',
+            },
+            {
+                # Jahr
+                id   => 5,
+                type => 'year',
+            },
+            {
+                # Sprache
+                id   => 6,
+                type => 'spr',
+            },
+            
+        ];
+        
+        foreach my $type_ref (@{$value_type_ref}){
+            next if (!exists $normdata{$s_id}->{$type_ref->{type}});
+
+            my %seen_terms = ();
+            my @unique_terms = grep { ! $seen_terms{$_} ++ } @{$normdata{$s_id}->{$type_ref->{type}}}; 
+
+            my $multstring = join("\t",@unique_terms);
+
+            $doc->add_value($type_ref->{id},encode_utf8($multstring)) if ($multstring);
         }
-    
-        $doc->set_data(encode_utf8($listitem));
+
+        $doc->set_data($listitem);
     
         my $docid=$db->add_document($doc);
 

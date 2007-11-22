@@ -17,10 +17,14 @@
 
 [% PROCESS corporate_banner %]
 
+<div id="maincontent">
+
 <ul class="tabbingmenu">
    <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">[% msg.maketext("Kataloge") %]</a></li>
    <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">[% msg.maketext("Views") %]</a></li>
    <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">[% msg.maketext("Sessions") %]</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1">[% msg.maketext("Statistik") %]</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showuser=1">[% msg.maketext("Nutzerverwaltung") %]</a></li>
    <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">[% msg.maketext("Logout") %]</a></li>
 </ul>
 
@@ -28,12 +32,11 @@
 
 <table width="100%">
 <tr><th>[% msg.maketext("RSS-Einstellungen für View") %] [% view.description%]</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 
 <!-- Anfang: Primaerer RSS Feed fuer diesen View -->
 <form method="get" action="http://[% config.servername %][% config.admin_loc %]">
 <input type="hidden" name="sessionID"       value="[% sessionID %]" />
-<input type="hidden" name="viewid"          value="[% view.id %]" />
 <input type="hidden" name="viewname"        value="[% view.name %]" />
 <input type="hidden" name="do_editview_rss" value="1" />
 <input type="hidden" name="rss_type"        value="primary" />
@@ -109,7 +112,6 @@ selected="selected"
 <!-- Anfang: Alle RSS Feeds fuer diesen View -->
 <form method="get" action="http://[% config.servername %][% config.admin_loc %]">
 <input type="hidden" name="sessionID"       value="[% sessionID %]" />
-<input type="hidden" name="viewid"          value="[% view.id %]" />
 <input type="hidden" name="viewname"        value="[% view.name %]" />
 <input type="hidden" name="do_editview_rss" value="1" />
 <input type="hidden" name="rss_type"        value="all" />
@@ -159,5 +161,7 @@ selected="selected"
 </div>
 
 <p />
+
+</div>
 
 [% PROCESS std_footer %]

@@ -58,13 +58,11 @@ create table titcount (
 
 drop table IF EXISTS viewinfo;
 CREATE TABLE viewinfo (
- viewid      BIGINT AUTO_INCREMENT PRIMARY KEY,
  viewname    VARCHAR(20),
  description TEXT,
  rssfeed     BIGINT,
  active      BOOL,
 
- INDEX (viewid),
  INDEX (viewname)
 )
 DEFAULT CHARACTER SET utf8

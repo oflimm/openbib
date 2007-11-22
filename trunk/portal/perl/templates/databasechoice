@@ -35,7 +35,7 @@ function update_fak(yourform, checked, fak) {
 
 <div class="content">
 
-<form method="get" action="http://[% config.servername %][% config.databasechoice_loc %]">
+<form method="post" action="http://[% config.servername %][% config.databasechoice_loc %]" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="hitrange" value="-1" />
 <input type="hidden" name="view" value="[% view %]" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />

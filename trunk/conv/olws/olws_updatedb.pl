@@ -47,6 +47,7 @@ use YAML;
 use OpenBib::Common::Util;
 use OpenBib::Common::Stopwords;
 use OpenBib::Config;
+use OpenBib::Conv::Config;
 
 # Importieren der Konfigurationsdaten als Globale Variablen
 # in diesem Namespace
@@ -82,8 +83,7 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-our $convtab_ref = (exists $config{convtab}{singlepool})?
-    $config{convtab}{singlepool}:$config{convtab}{default};
+my $conv_config = new OpenBib::Conv::Config({dbname => $singlepool});
 
 # Verbindung zur SQL-Datenbank herstellen
 my $sessiondbh
@@ -295,9 +295,9 @@ sub process_raw_title {
 
         $content = decode("iso-8859-1", $raw_title_ref->{$multcategory});
         
-        next CATLINE if (exists $convtab_ref->{blacklist_tit}{$category});
+        next CATLINE if (exists $conv_config->{blacklist_tit}{$category});
 
-        if (exists $convtab_ref->{listitemcat}{$category}){
+        if (exists $conv_config->{listitemcat}{$category}){
             push @{$listitem_ref->{"T".$category}}, {
                 indicator => $indicator,
                 content   => $content,
@@ -423,65 +423,65 @@ sub process_raw_title {
                 my $contentnorm   = "";
                 my $contentnormft = "";
                 
-                if (exists $convtab_ref->{inverted_tit}{$category}){
+                if (exists $conv_config->{inverted_tit}{$category}){
                     my $contentnormtmp = OpenBib::Common::Util::grundform({
                         category => $category,
                         content  => $content,
                     });
                     
-                    if ($convtab_ref->{inverted_tit}{$category}{string}){
+                    if ($conv_config->{inverted_tit}{$category}{string}){
                         $contentnorm   = $contentnormtmp;
                     }
                     
-                    if ($convtab_ref->{inverted_tit}{$category}{ft}){
+                    if ($conv_config->{inverted_tit}{$category}{ft}){
                         $contentnormft = $contentnormtmp;
                     }
                 }
 
 
-                if (   exists $convtab_ref->{search_category}{ejahr    }{$category}){
+                if (   exists $conv_config->{search_ejahr    }{$category}){
                     push @ejahr, OpenBib::Common::Util::grundform({
                         category => $category,
                         content  => $content,
                     });
                 }
-                elsif (exists $convtab_ref->{search_category}{hst      }{$category}){
+                elsif (exists $conv_config->{search_hst      }{$category}){
                     push @hst, OpenBib::Common::Util::grundform({
                         category => $category,
                         content  => $content,
                     });
                 }
-                elsif (exists $convtab_ref->{search_category}{isbn     }{$category}){
+                elsif (exists $conv_config->{search_isbn     }{$category}){
                     push @isbn,      OpenBib::Common::Util::grundform({
                         category => $category,
                         content  => $content,
                     });
                 }
-                elsif (exists $convtab_ref->{search_category}{issn     }{$category}){
+                elsif (exists $conv_config->{search_issn     }{$category}){
                     push @issn,      OpenBib::Common::Util::grundform({
                         category => $category,
                         content  => $content,
                     });
                 }
-                elsif (exists $convtab_ref->{search_category}{artinh   }{$category}){
+                elsif (exists $conv_config->{search_artinh   }{$category}){
                     push @artinh, OpenBib::Common::Util::grundform({
                         category => $category,
                         content  => $content,
                     });
                 }
-                elsif (exists $convtab_ref->{search_category}{verf     }{$category}){
+                elsif (exists $conv_config->{search_verf     }{$category}){
                     push @titverf, OpenBib::Common::Util::grundform({
                         category => $category,
                         content  => $content,
                     });
                 }
-                elsif (exists $convtab_ref->{search_category}{kor      }{$category}){
+                elsif (exists $conv_config->{search_kor      }{$category}){
                     push @titkor, OpenBib::Common::Util::grundform({
                         category => $category,
                         content  => $content,
                     });
                 }
-                elsif (exists $convtab_ref->{search_category}{swt      }{$category}){
+                elsif (exists $conv_config->{search_swt      }{$category}){
                     push @titswt, OpenBib::Common::Util::grundform({
                         category => $category,
                         content  => $content,
@@ -754,7 +754,7 @@ sub process_raw_aut {
        
         $content = $raw_aut_ref->{$multcategory};
 
-        next CATLINE if (exists $convtab_ref->{blacklist_aut}{$category});
+        next CATLINE if (exists $conv_config->{blacklist_aut}{$category});
 
         # Ansetzungsform fuer listitem merken
         if ($category == 1){
@@ -763,21 +763,21 @@ sub process_raw_aut {
 
         my $contentnorm   = "";
         my $contentnormft = "";
-        if (exists $convtab_ref->{inverted_aut}{$category}){
+        if (exists $conv_config->{inverted_aut}{$category}){
             my $contentnormtmp = OpenBib::Common::Util::grundform({
                 category => $category,
                 content  => $content,
             });
             
-            if ($convtab_ref->{inverted_aut}{$category}{string}){
+            if ($conv_config->{inverted_aut}{$category}{string}){
                 $contentnorm   = $contentnormtmp;
             }
             
-            if ($convtab_ref->{inverted_aut}{$category}{ft}){
+            if ($conv_config->{inverted_aut}{$category}{ft}){
                 $contentnormft = $contentnormtmp;
             }
 
-            if ($convtab_ref->{inverted_aut}{$category}{init}){
+            if ($conv_config->{inverted_aut}{$category}{init}){
                 push @{$listitemdata_aut_ref->{$id}{data}}, $contentnormtmp;
             }
         }
@@ -868,7 +868,7 @@ sub process_raw_kor {
        
         $content = $raw_kor_ref->{$multcategory};
 
-        next CATLINE if (exists $convtab_ref->{blacklist_kor}{$category});
+        next CATLINE if (exists $conv_config->{blacklist_kor}{$category});
 
         # Ansetzungsform fuer listitem merken
         if ($category == 1){
@@ -877,21 +877,21 @@ sub process_raw_kor {
         
         my $contentnorm   = "";
         my $contentnormft = "";
-        if (exists $convtab_ref->{inverted_kor}{$category}){
+        if (exists $conv_config->{inverted_kor}{$category}){
             my $contentnormtmp = OpenBib::Common::Util::grundform({
                 category => $category,
                 content  => $content,
             });
             
-            if ($convtab_ref->{inverted_kor}{$category}{string}){
+            if ($conv_config->{inverted_kor}{$category}{string}){
                 $contentnorm   = $contentnormtmp;
             }
             
-            if ($convtab_ref->{inverted_kor}{$category}{ft}){
+            if ($conv_config->{inverted_kor}{$category}{ft}){
                 $contentnormft = $contentnormtmp;
             }
 
-            if ($convtab_ref->{inverted_kor}{$category}{init}){
+            if ($conv_config->{inverted_kor}{$category}{init}){
                 push @{$listitemdata_kor_ref->{$id}{data}}, $contentnormtmp;
             }
         }
@@ -981,25 +981,25 @@ sub process_raw_sys {
        
         $content = $raw_sys_ref->{$multcategory};
 
-        next CATLINE if (exists $convtab_ref->{blacklist_not}{$category});
+        next CATLINE if (exists $conv_config->{blacklist_not}{$category});
         
         my $contentnorm   = "";
         my $contentnormft = "";
-        if (exists $convtab_ref->{inverted_not}{$category}){
+        if (exists $conv_config->{inverted_not}{$category}){
             my $contentnormtmp = OpenBib::Common::Util::grundform({
                 category => $category,
                 content  => $content,
             });
             
-            if ($convtab_ref->{inverted_not}{$category}{string}){
+            if ($conv_config->{inverted_not}{$category}{string}){
                 $contentnorm   = $contentnormtmp;
             }
             
-            if ($convtab_ref->{inverted_not}{$category}{ft}){
+            if ($conv_config->{inverted_not}{$category}{ft}){
                 $contentnormft = $contentnormtmp;
             }
 
-            if ($convtab_ref->{inverted_not}{$category}{init}){
+            if ($conv_config->{inverted_not}{$category}{init}){
                 push @{$listitemdata_not_ref->{$id}{data}}, $contentnormtmp;
             }
 
@@ -1089,7 +1089,7 @@ sub process_raw_swt {
        
         $content = $raw_swt_ref->{$multcategory};
 
-        next CATLINE if (exists $convtab_ref->{blacklist_swt}{$category});
+        next CATLINE if (exists $conv_config->{blacklist_swt}{$category});
 
         # Ansetzungsform fuer listitem merken
         if ($category == 1){
@@ -1098,21 +1098,21 @@ sub process_raw_swt {
 
         my $contentnorm   = "";
         my $contentnormft = "";
-        if (exists $convtab_ref->{inverted_swt}{$category}){
+        if (exists $conv_config->{inverted_swt}{$category}){
             my $contentnormtmp = OpenBib::Common::Util::grundform({
                 category => $category,
                 content  => $content,
             });
             
-            if ($convtab_ref->{inverted_swt}{$category}{string}){
+            if ($conv_config->{inverted_swt}{$category}{string}){
                 $contentnorm   = $contentnormtmp;
             }
             
-            if ($convtab_ref->{inverted_swt}{$category}{ft}){
+            if ($conv_config->{inverted_swt}{$category}{ft}){
                 $contentnormft = $contentnormtmp;
             }
 
-            if ($convtab_ref->{inverted_swt}{$category}{init}){
+            if ($conv_config->{inverted_swt}{$category}{init}){
                 push @{$listitemdata_swt_ref->{$id}{data}}, $contentnormtmp;
             }
 
@@ -1193,21 +1193,21 @@ sub process_raw_mex {
             my $contentnorm   = "";
             my $contentnormft = "";
             
-            if (exists $convtab_ref->{inverted_mex}{$item_ref->{category}}){
+            if (exists $conv_config->{inverted_mex}{$item_ref->{category}}){
                 my $contentnormtmp = OpenBib::Common::Util::grundform({
                     category => $item_ref->{category},
                     content  => $item_ref->{content},
                 });
                 
-                if ($convtab_ref->{inverted_mex}{$item_ref->{category}}{string}){
+                if ($conv_config->{inverted_mex}{$item_ref->{category}}{string}){
                     $contentnorm   = $contentnormtmp;
                 }
                 
-                if ($convtab_ref->{inverted_mex}{$item_ref->{category}}{ft}){
+                if ($conv_config->{inverted_mex}{$item_ref->{category}}{ft}){
                     $contentnormft = $contentnormtmp;
                 }
 
-                if ($convtab_ref->{inverted_mex}{$item_ref->{category}}{init}){
+                if ($conv_config->{inverted_mex}{$item_ref->{category}}{init}){
                     push @{$listitemdata_mex_ref->{$titid}{data}}, $contentnormtmp;
                 }
 

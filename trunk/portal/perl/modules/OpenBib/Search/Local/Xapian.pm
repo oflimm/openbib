@@ -143,6 +143,8 @@ sub initial_search {
         ? $arg_ref->{dbh}           : undef;
     my $database          = exists $arg_ref->{database}
         ? $arg_ref->{database}      : undef;
+    my $dd_categorized    = exists $arg_ref->{dd_categorized}
+        ? $arg_ref->{dd_categorized} : 0;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -173,13 +175,10 @@ sub initial_search {
     my $stopper = new Search::Xapian::SimpleStopper(@stopwords);
     $qp->set_stopper($stopper);
     
-    my $querystring = lc($searchquery_ref->{fs}{norm});
-    
-    $querystring    = OpenBib::Common::Util::grundform({
-        searchreq => 1,
-        content   => $querystring,
-    });
-        
+    my $querystring    = $searchquery_ref->{fs}{norm};
+
+    my ($is_singleterm) = $querystring =~m/^(\w+)$/;
+
     # Explizites Setzen der Datenbank fuer FLAG_WILDCARD
     $qp->set_database($dbh);
     $qp->set_default_op(Search::Xapian::OP_AND);
@@ -191,18 +190,87 @@ sub initial_search {
     $qp->add_prefix('inyear'   ,'X7');
     $qp->add_prefix('inisbn'   ,'X8');
     $qp->add_prefix('inissn'   ,'X9');
+
+    # Drilldowns
+    $qp->add_prefix('ddswt'   ,'D1');
+    $qp->add_prefix('ddnot'   ,'D2');
+    $qp->add_prefix('ddper'   ,'D3');
+    $qp->add_prefix('ddtyp'   ,'D4');
+    $qp->add_prefix('ddyear'  ,'D5');
+    $qp->add_prefix('ddspr'   ,'D6');
     
+    my $category_map_ref = {};
     my $enq       = $dbh->enquire($qp->parse_query($querystring,Search::Xapian::FLAG_WILDCARD|Search::Xapian::FLAG_LOVEHATE|Search::Xapian::FLAG_BOOLEAN));
     my $thisquery = $enq->get_query()->get_description();
-    my @matches   = $enq->matches(0,99999);
+
+    my %decider_map   = ();
+    my @decider_types = ();
+
+    push @decider_types, 1 if ($config->{drilldown_option}{categorized_swt});
+    push @decider_types, 2 if ($config->{drilldown_option}{categorized_not});
+    push @decider_types, 3 if ($config->{drilldown_option}{categorized_aut});
+    push @decider_types, 4 if ($config->{drilldown_option}{categorized_mart});
+    push @decider_types, 5 if ($config->{drilldown_option}{categorized_year});
+    push @decider_types, 6 if ($config->{drilldown_option}{categorized_spr});
+
+    my $decider_ref = sub {
+      foreach my $value (@decider_types){
+	my $mvalues = $_[0]->get_value($value);
+	foreach my $mvalue (split("\t",$mvalues)){
+	  $decider_map{$value}{$mvalue}+=1;
+	}
+      }
+      return 1;
+    };
+
+    my $maxmatch=$config->{xapian_option}{maxmatch};
+
+    # Abkuerzung fuer Suchanfragen mit nur einem Begriff:
+    #
+    # Hier wird direkt die Begriffsfrequenz bestimmt.
+    # Wenn diese die maximale Treffermengengroesse (maxmatch)
+    # uebersteigt, dann werden
+    # - drilldowns deaktiviert, da diese bei so unspezifischen
+    #   Recherchen keine Hilfe bieten
+    # - aber die korrekte Treffermengenzahl zurueck gegeben
+    # Generell gilt aber auch hier: Es sind maximal maxmatch
+    # Treffer ueber die Recherche zugreifbar!
+    
+    my $singletermcount = 0;
+    if ($is_singleterm){
+      $singletermcount = $dbh->get_termfreq($is_singleterm);
+
+      if ($singletermcount > $maxmatch){
+	$dd_categorized = "";
+      }
+    }
+
+    my @matches   = ($dd_categorized)?$enq->matches(0,$maxmatch,$decider_ref):$enq->matches(0,$maxmatch);
 
     $logger->debug("DB: $database");
     
     $logger->debug("Matches: ".YAML::Dump(\@matches));
-    
+
+    $logger->debug("Categories-Map: ".YAML::Dump(\%decider_map));
+
     $self->{_querystring} = $querystring;
     $self->{_enq}         = $enq;
+
+    if ($singletermcount > $maxmatch){
+      $self->{resultcount} = $singletermcount;
+    }
+    else {
+      $self->{resultcount} = scalar(@matches);
+    }
+
     $self->{_matches}     = \@matches;
+
+    if ($singletermcount > $maxmatch){
+      $self->{categories} = {};
+    }
+    else {
+      $self->{categories}   = \%decider_map;
+    }
 
     $logger->info("Running query ".$self->{_querystring});
 

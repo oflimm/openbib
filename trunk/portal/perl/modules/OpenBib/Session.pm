@@ -122,6 +122,7 @@ sub _init_new_session {
                 profil    => undef,
                 autoplus  => undef,
                 sb        => undef,
+                js        => undef,
             };
 
             # Eintrag in die Datenbank
@@ -246,6 +247,7 @@ sub get_queryoptions {
         profil    => '',
         autoplus  => '',
         sb        => 'sql',
+        js        => 0,
     };
 
     my $altered=0;
@@ -289,6 +291,8 @@ sub get_viewname {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    $logger->debug("Self: ".YAML::Dump($self));
+
     # Assoziierten View zur Session aus Datenbank holen
     my $idnresult=$self->{dbh}->prepare("select viewname from sessionview where sessionid = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
@@ -300,6 +304,8 @@ sub get_viewname {
     my $view = decode_utf8($result->{'viewname'}) || '';
 
     $idnresult->finish();
+
+    $logger->debug("Got view: $view");
 
     return $view;
 }
@@ -427,7 +433,10 @@ sub set_view {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $idnresult=$self->{dbh}->prepare("insert into sessionview values (?,?)") or $logger->error($DBI::errstr);
+    $logger->debug("Setting view $view for session $self->{ID}");
+    my $idnresult=$self->{dbh}->prepare("delete from sessionview where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+    $idnresult=$self->{dbh}->prepare("insert into sessionview values (?,?)") or $logger->error($DBI::errstr);
     $idnresult->execute($self->{ID},$view) or $logger->error($DBI::errstr);
     $idnresult->finish();
 
@@ -759,6 +768,9 @@ sub clear_data {
 
     my $idnresult;
 
+    my $view = $self->get_viewname();
+    $logger->debug("Viewname: $view");
+
     # Zuerst Statistikdaten in Statistik-Datenbank uebertragen,
     my $statistics=new OpenBib::Statistics;
 
@@ -778,6 +790,17 @@ sub clear_data {
             type      => $type,
             content   => $content,
         });
+
+	if ($type == 1){
+	  my $searchquery_ref = Storable::thaw(pack "H*", $content);
+	  
+	  $logger->debug(YAML::Dump($searchquery_ref));
+	  $statistics->log_query({
+				  tstamp          => $tstamp,
+				  view            => $view,
+				  searchquery_ref => $searchquery_ref,
+	  });
+	}
     }
     
     # Relevanz-Daten vom Typ 2 (Einzeltrefferaufruf)
@@ -786,6 +809,8 @@ sub clear_data {
     
     my ($wkday,$month,$day,$time,$year) = split(/\s+/, localtime);
     
+    my %seen_title=();
+
     while (my $result=$idnresult->fetchrow_hashref){
         my $tstamp        = $result->{tstamp};
         my $content_ref   = Storable::thaw(pack "H*", $result->{content});
@@ -795,6 +820,8 @@ sub clear_data {
         my $dbname        = $content_ref->{database};
         my $katkey        = $content_ref->{id};
 
+	next if (exists $seen_title{"$dbname:$katkey"});
+
         $statistics->store_relevance({
             tstamp => $tstamp,
             id     => $id,
@@ -803,6 +830,8 @@ sub clear_data {
             katkey => $katkey,
             type   => 2,
         });
+
+	$seen_title{"$dbname:$katkey"}=1;
     }
     
     # dann Sessiondaten loeschen
@@ -862,6 +891,9 @@ sub log_event {
     # Recherchen:
     #   1 => Recherche-Anfrage bei Virtueller Recherche
     #  10 => Eineltrefferanzeige
+    #  20 => Rechercheart (einfach=1,komplex=2, externer Suchschlitz=3)
+    #  21 => Recherche-Backend (sql,xapian,z3950)
+    #  22 => Recherche-Einstieg ueber Connector (1=DigiBib)
     #
     # Allgemeine Informationen
     # 100 => View
@@ -880,12 +912,50 @@ sub log_event {
     # 540 => HBZ-Monofernleihe
     # 541 => HBZ-Dokumentenlieferung
     # 550 => WebOPAC
-    
-    my $request=$self->{dbh}->prepare("insert into eventlog values (?,NOW(),?,?)") or $logger->error($DBI::errstr);
+
+    my $log_only_unique_ref = {
+			     10 => 1,
+			    };
+
+    my $request;
+    if (exists $log_only_unique_ref->{$type}){
+      $request=$self->{dbh}->prepare("delete from eventlog where sessionid=? and type=? and content=?") or $logger->error($DBI::errstr);
+      $request->execute($self->{ID},$type,$contentstring) or $logger->error($DBI::errstr);
+    }
+
+    $request=$self->{dbh}->prepare("insert into eventlog values (?,NOW(),?,?)") or $logger->error($DBI::errstr);
     $request->execute($self->{ID},$type,$contentstring) or $logger->error($DBI::errstr);
     $request->finish;
 
     return;
+}
+
+sub set_returnurl {
+    my ($self,$returnurl)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $idnresult=$self->{dbh}->prepare("update session set returnurl=? where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($returnurl, $self->{ID}) or $logger->error($DBI::errstr);
+    $idnresult->finish();
+
+    return;
+}
+
+sub get_returnurl {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $idnresult=$self->{dbh}->prepare("select returnurl from session where sessionid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+    my $res = $idnresult->fetchrow_hashref();
+    my $returnurl = $res->{returnurl};
+    $idnresult->finish();
+
+    return $returnurl;
 }
 
 sub DESTROY {

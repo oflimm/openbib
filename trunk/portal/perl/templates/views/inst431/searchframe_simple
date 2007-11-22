@@ -49,7 +49,16 @@
 <input type="hidden" name="sorttype"  value="author" />
 <input type="hidden" name="sortorder" value="up" />
 <input type="hidden" name="sb"        value="xapian" />
-<input type="hidden" name="drilldown" value="0" />
+<input type="hidden" name="st"        value="1" />
+[% IF config.drilldown %]
+<input type="hidden" name="drilldown"      value="1" />
+[% END %]
+[% IF config.drilldown_option.cloud %]
+<input type="hidden" name="dd_cloud"       value="1" />
+[% END %]
+[% IF config.drilldown_option.categorized %]
+<input type="hidden" name="dd_categorized" value="1" />
+[% END %]
 <input type="hidden" name="autoplus"  value="0" />
 
 <p />
@@ -65,7 +74,7 @@ Dar&uuml;berhinaus finden Sie weitere Best&auml;nde dieses Katalogs in dem
 zugeh&ouml;rigen digitalisierten Karten-Katalog
 
 <ul>
-<li><a href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=431y" target="_blank">V&ouml;kerkunde</a>. </li>
+<li><a href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=431y" target="_blank">Ethnologie</a>. </li>
 </ul>
 <p />
 Bei diesem Katalog werden Ihnen nach F&auml;chern organisierte <a href="http://kug.ub.uni-koeln.de/neuerwerbungslisten/inst431/index.html" target="_blank">Neuerwerbungslisten</a> angeboten.
@@ -92,7 +101,7 @@ Bei diesem Katalog werden Ihnen nach F&auml;chern organisierte <a href="http://k
 <table width="100%">
 <tr><th style="text-align: center">[% msg.maketext("Geben Sie hier Ihre Suchbegriffe ein") %]</th></tr>
 <tr><td class="boxed" valign="top" align="center">
-<input type="text" name="fs" value="[% searchquery.fs.val %]" size="80" maxlength="200" />
+<input type="text" name="fs" value="[% searchquery.fs.val | html %]" size="80" maxlength="200" />
 </td></tr>
 </table>
 
@@ -175,6 +184,9 @@ Bei diesem Katalog werden Ihnen nach F&auml;chern organisierte <a href="http://k
 </center>
 
 </div>
+
+  <!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
+  <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
 
 <p />
 

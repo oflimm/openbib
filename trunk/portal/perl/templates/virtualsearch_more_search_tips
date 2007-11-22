@@ -16,7 +16,7 @@
    hbzzeitfernleih_exturl = "${config.hbzzeitfernleih_exturl}&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_ZDB=on&D_PARAM_QUERY_azTI=${searchquery.hst.val}%20${searchquery.hststring.val}&D_PARAM_QUERY_czCO=${searchquery.kor.val}&D_PARAM_QUERY_gzIS=${searchquery.issn.val}" ;
 
    IF loginname && password ;
-      hbzmonofernleih_exturl = "${hbzzeitfernleih_exturl}&USERID=${loginname}&PASSWORD=${password}" ;
+      hbzmonofernleih_exturl = "${hbzmonofernleih_exturl}&USERID=${loginname}&PASSWORD=${password}" ;
       hbzzeitfernleih_exturl = "${hbzzeitfernleih_exturl}&USERID=${loginname}&PASSWORD=${password}" ;
    END ;
 -%]

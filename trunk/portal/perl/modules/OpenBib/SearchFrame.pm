@@ -38,7 +38,7 @@ use Apache::Constants qw(:common);
 use Apache::Reload;
 use Apache::Request ();
 use DBI;
-use Encode 'decode_utf8';
+use Encode qw(decode_utf8 encode_utf8);
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Storable ();
@@ -59,7 +59,7 @@ sub handler {
 
     my $config = new OpenBib::Config();
 
-    my $query=Apache::Request->new($r);
+    my $query=Apache::Request->instance($r);
 
     my $status=$query->parse;
 
@@ -118,6 +118,7 @@ sub handler {
     my $showsign      = "1";
     my $showmart      = "0";
     my $showhststring = "1";
+    my $showinhalt    = "1";
     my $showgtquelle  = "1";
     my $showejahr     = "1";
   
@@ -145,6 +146,7 @@ sub handler {
         $showsign      = decode_utf8($result->{'sign'});
         $showmart      = decode_utf8($result->{'mart'});
         $showhststring = decode_utf8($result->{'hststring'});
+        $showinhalt    = decode_utf8($result->{'inhalt'});
         $showgtquelle  = decode_utf8($result->{'gtquelle'});
         $showejahr     = decode_utf8($result->{'ejahr'});
 
@@ -273,11 +275,19 @@ sub handler {
         showsign      => $showsign,
         showmart      => $showmart,
         showhststring => $showhststring,
+        showinhalt    => $showinhalt,
         showgtquelle  => $showgtquelle,
         showejahr     => $showejahr,
 
         searchquery   => $searchquery_ref,
-	       
+        qopts         => $queryoptions_ref,
+
+        iso2utf      => sub {
+            my $string=shift;
+            $string=Encode::encode("iso-8859-1",$string);
+            return $string;
+        },
+
         anzahl        => $anzahl,
         queries       => \@queries,
         useragent     => $useragent,

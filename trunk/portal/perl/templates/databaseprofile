@@ -31,12 +31,13 @@ function update_fak(yourform, checked, fak) {
 // -->
 </script>
 
-<form method="get" action="http://[% config.servername %][% config.databaseprofile_loc %]">
+<form method="post" action="http://[% config.servername %][% config.databaseprofile_loc %]" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 
 <ul class="tabbingmenu">
    <li><a href="http://[% config.servername %][% config.userprefs_loc %]?sessionID=[% sessionID %];action=showfields" target="body">[% msg.maketext("Grundeinstellungen") %]</a></li>
    <li><a                href="http://[% config.servername %][% config.tags_loc %]?sessionID=[% sessionID %];show_usertags=1" target="body">Tags</a></li>
+[% IF config.reviews %]   <li><a                href="http://[% config.servername %][% config.userreviews_loc %]?sessionID=[% sessionID %];do_show=1" target="body">Rezensionen</a></li>[% END %]
 [% IF targettype != 'self' %]
 <li><a href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc">[% msg.maketext("Benutzerkonto") %]</a></li>
 [% END %]

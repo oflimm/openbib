@@ -28,6 +28,116 @@
 
 <h1>KUG-Versionen</h1>
 
+<h2 id="kugv2.1">Neuerungen mit Version 2.1 (Umstellung am 14.10.2007)</h2>
+
+<h3>Vormerkungen</h3>
+
+<p>
+Bisher konnte man bei Instituten, die eine elektronische Ausleihe
+einsetzen (Heilp&auml;dagogik, Historisches Seminar, Ethnologie) mit
+einem separaten Web-OPAC Vormerkungen durchf&uuml;hren. Nach der
+Migration auf eine neue Version unseres integrierten
+Bibliothekssystems wird dieser Web-OPAC jedoch nicht mehr
+angeboten. Deswegen hat der KUG diese Funktion &uuml;bernommen.  Dies
+hat den Vorteil, dass Nutzer nach der Recherche f&uuml;r Vormerkungen
+nicht mehr in eine andere Anwendung wechseln m&uuml;ssen.
+</p>
+
+<h3>Kategorie-basierte Suchverfeinerungen (Drill-Downs)</h3>
+
+<p>Bei der einfachen Recherche werden verschiedene kategorisierte
+Inhalte nun direkt vollst&auml;ndig aus dem Suchmaschinen-Index geholt
+und bei einer Treffermenge (&uuml;ber 10 und unter 2000 Titeln) am
+rechten Bildschirmrand mit der Anzahl verkn&uuml;pfter Titel
+angezeigt. Sie sollen dem unge&uuml;bten Benutzer helfen, die
+angezeigte Treffermenge bei Bedarf einzugrenzen.  </p>
+
+<h3>Social-Tagging</h3>
+
+<p>D.h. die von Nutzern vergebenen &ouml;ffentlichen Tags werden nun
+allen Nutzern angezeigt. Damit besteht &uuml;ber die Tags ein
+Zugriff auf inhaltlich benachbarte Titel</p>
+
+<h3>Kontextsensitive Hilfe</h3>
+
+<p> Wir haben begonnen, eine kontextbezogene Hilfe in den KUG
+einzubauen.  Diese erkennen Sie an einem Fragezeichen <img
+src="/images/openbib/info.png" /> am rechten Bildschirmrand. &Uuml;ber
+dieses Fragezeichen k&ouml;nnen Sie zielgenau in den entsprechenden
+Abschnitt der Hilfeseite gelangen.  </p>
+
+<h3>Such-Wolken</h3>
+
+<p> Die von Nutzern verwendeten Suchbegriffe bei der Recherche werden
+nun f&uuml;r jede Spezial- (Instituts-) Sicht ausgewertet und in Form
+einer Wolke dargestellt. Diese finden Sie unter &Uuml;bersichten ->
+Wolken -> Suchbegriffe.  </p>
+
+<h3>PermaLink</h3>
+
+<p>Einzelne Titel-S&auml;tze k&ouml;nnen nun unter einem einheitlichen
+URL verlinkt werden - &auml;hnlich Blog-Eintr&auml;gen. D.h. bei einer
+Volltitelanzeige finden Sie ein neues Icon <img
+src="/images/openbib/3d-file-blue-permalink.png" border="0" />. Wenn
+Sie darauf klicken, &ouml;ffnet sich in einem neuen Fenster der
+verlinkbare permanente URL zu diesem Titel in dieser Sicht.  </p>
+
+<h3>Recherche-Anreicherungen</h3>
+
+<p>Um zu den vom Nutzer gew&uuml;nschten Recherche-Ergebnisse zu gelangen,
+werden die zugrunde liegenden Daten f&uuml;r die Recherche intern um
+weitere Informationen angereichert:</p>
+
+<ul>
+
+<li>Bei einem konkreten Titel im KUG wird nun zu einer vorhandenen
+10-stelligen ISBN automatisch auch die zugeh&ouml;rige 13-stellige
+ISBN suchbar gemacht - und umgekehrt. Damit k&ouml;nnen nun
+insbesondere auch Titel mit 13-stelliger ISBN gefunden werden - wie
+sie z.B. seit dem 1.1.2007 in Verlagskatalogen in Verwendung sind -
+wenn bei der Erfassung im Katalog lediglich die 10-stellige ISBN
+bekannt war. </li>
+
+<!--<li>Bei einem konkreten Titel im KUG werden nun auch die Verfasser des
+&uuml;bergeordneten Werkes suchbar gemacht. Damit wurde das
+sog. "Schiller-R&auml;ber-Problem" im KUG gel&ouml;st - bei einer
+Recherche nach Schiller und R&auml;ber werden nun also die
+entsprechenden Treffer nun gefunden, was bei korrekter Katalogisierung
+in der Regel nicht der Fall w&auml;re</li>-->
+</ul>
+
+<h3>Virtueller Notations-Index</h3>
+
+<p> Die schon vorhandenen virtuellen Indizes für Personen,
+Institutionen und Schlagworte wurden um einen Index für Notationen
+erweitert.  </p>
+
+<h3>Optimierung des Wortwolken-Algorithmus.</h3>
+
+<p>Bei den Wortwolken (Tag-Clouds) in den &Uuml;bersichten verwenden
+wir nun statt eines linearen einen logarithmischen
+Algorithmus. Dadurch werden dominierende Begriffe weniger hoch
+gewichtet und es kommt zu "ausgewogeneren" Wolken.</p>
+
+<h3>Tag-Editor</h3>
+
+<p>Nutzer können nun einzelne ihrer Tags umbenennen.</p>
+
+<h3>unAPI</h3>
+
+<p>Bereitstellung bibliographischer Informations-Objekte &uuml;ber <a
+href="http://unapi.info" target="_blank">unAPI</a> z.B. zur
+strukturierten Übernahme/Verarbeitung durch externe Programme. (siehe
+auch den Artikel <a
+href="http://www.ariadne.ac.uk/issue48/chudnov-et-al/"
+target="_blank">Introducing unAPI</a>).</p>
+
+<p>
+Wiederum wurden wesentliche Entwicklungen und Verbesserungen f&uuml;r
+den Benutzer unsichtbar im Fundament der Anwendung vorgenommen.
+
+</p>
+
 <h2 id="kugv2.0">Neuerungen mit Version 2.0 (Umstellung am 19.3.2007)</h2>
 
 <h3>Darstellung der vergebenen Schlagworte, Notationen, Körperschaften

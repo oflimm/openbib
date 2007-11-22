@@ -66,6 +66,7 @@
                 'T0512', # msg.maketext("T0512") Koll. Fussnote
                 'T0513', # msg.maketext("T0513") Impress. Aend.
                 'T0515', # msg.maketext("T0515") Ergaenzt. GesamtTitel
+                'T0517', # msg.maketext("T0517") Angaben zum Inhalt
                 'T0522', # msg.maketext("T0522") Teilungsvermerk
                 'T0525', # msg.maketext("T0525") Herkunft Fussnote
                 'T0534', # msg.maketext("T0534") Titelkonk.
@@ -80,6 +81,7 @@
                 'T0519', # msg.maketext("T0519") HSSVermerk
                 'T0619', # msg.maketext("T0619") Jahr Vorlage
                 'T0646', # msg.maketext("T0646") Filmbesitz
+                'T0015', # msg.maketext("T0015") Sprache
                 'T0516', # msg.maketext("T0516") Sprache
                 'T0750', # msg.maketext("T0750") Abstract
                 'T0503', # msg.maketext("T0503") Uebers. HST
@@ -98,13 +100,16 @@
                 'T0947', # msg.maketext("T0947") Schlagwort
                 'T0700', # msg.maketext("T0700") Notation
                 'T0540', # msg.maketext("T0540") ISBN
+                'T0553', # msg.maketext("T0553") ArtikelNr. als 13-stellige ISBN
                 'T0543', # msg.maketext("T0543") ISSN
                 'T0662', # msg.maketext("T0662") EDVurl
+                'T1664', # msg.maketext("T1664") Provenienz
                 'T2662', # msg.maketext("T2662") USB EDVurl
                 'T2663', # msg.maketext("T2663") USB URLInfo
                 'T3001', # msg.maketext("T3001") TOC-URL / HTML
                 #'T3002', # msg.maketext("T3002") TOC-URL / TIFF
                 'T3003', # msg.maketext("T3003") TOC-URL / PDF
+                'T4500', # msg.maketext("T4500") Nutzer-Tags
                 'T5001', # msg.maketext("T5001") Anzahl uebergeordn. Werke
                 'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke
                 'T5100', # msg.maketext("T5100") Allg. Zaehlung

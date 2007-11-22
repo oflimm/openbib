@@ -30,6 +30,7 @@
 use 5.008001;
 use utf8;
 
+use Business::ISBN;
 use DB_File;
 use Getopt::Long;
 use MIME::Base64 ();
@@ -39,14 +40,8 @@ use YAML;
 
 use OpenBib::Common::Util;
 use OpenBib::Common::Stopwords;
-use OpenBib::Config;
+use OpenBib::Conv::Config;
 use OpenBib::Statistics;
-
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-use vars qw(%config);
-
-*config = \%OpenBib::Config::config;
 
 my ($singlepool,$reducemem,$addsuperpers);
 
@@ -55,18 +50,19 @@ my ($singlepool,$reducemem,$addsuperpers);
 	    "single-pool=s" => \$singlepool,
 	    );
 
-my $convtab_ref = (exists $config{convtab}{singlepool})?
-  $config{convtab}{singlepool}:$config{convtab}{default};
+my $conv_config = new OpenBib::Conv::Config({dbname => $singlepool});
 
 my $dir=`pwd`;
 chop $dir;
 
 my %listitemdata_aut        = ();
 my %listitemdata_kor        = ();
+my %listitemdata_not        = ();
 my %listitemdata_swt        = ();
 my %listitemdata_mex        = ();
 my %listitemdata_superid    = ();
 my %listitemdata_popularity = ();
+my %normdata                = ();
 
 my $statistics = new OpenBib::Statistics();
 
@@ -90,15 +86,21 @@ if ($reducemem){
     tie %listitemdata_kor,        'MLDBM', "./listitemdata_kor.db"
         or die "Could not tie listitemdata_kor.\n";
 
+    tie %listitemdata_not,        'MLDBM', "./listitemdata_not.db"
+        or die "Could not tie listitemdata_not.\n";
+ 
     tie %listitemdata_swt,        'MLDBM', "./listitemdata_swt.db"
         or die "Could not tie listitemdata_swt.\n";
- 
+
     tie %listitemdata_mex,        'MLDBM', "./listitemdata_mex.db"
         or die "Could not tie listitemdata_mex.\n";
 
     tie %listitemdata_superid,    "DB_File", "./listitemdata_superid.db"
         or die "Could not tie listitemdata_superid.\n";
 }
+
+tie %normdata,                'MLDBM', "./normdata.db"
+    or die "Could not tie normdata.\n";
 
 my $stammdateien_ref = {
     aut => {
@@ -107,8 +109,8 @@ my $stammdateien_ref = {
         outfile        => "aut.mysql",
         outfile_ft     => "aut_ft.mysql",
         outfile_string => "aut_string.mysql",
-        inverted_ref   => $convtab_ref->{inverted_aut},
-        blacklist_ref  => $convtab_ref->{blacklist_aut},
+        inverted_ref   => $conv_config->{inverted_aut},
+        blacklist_ref  => $conv_config->{blacklist_aut},
     },
     
     kor => {
@@ -116,8 +118,8 @@ my $stammdateien_ref = {
         outfile        => "kor.mysql",
         outfile_ft     => "kor_ft.mysql",
         outfile_string => "kor_string.mysql",
-        inverted_ref   => $convtab_ref->{inverted_kor},
-        blacklist_ref  => $convtab_ref->{blacklist_kor},
+        inverted_ref   => $conv_config->{inverted_kor},
+        blacklist_ref  => $conv_config->{blacklist_kor},
     },
     
     swt => {
@@ -125,8 +127,8 @@ my $stammdateien_ref = {
         outfile        => "swt.mysql",
         outfile_ft     => "swt_ft.mysql",
         outfile_string => "swt_string.mysql",
-        inverted_ref   => $convtab_ref->{inverted_swt},
-        blacklist_ref  => $convtab_ref->{blacklist_swt},
+        inverted_ref   => $conv_config->{inverted_swt},
+        blacklist_ref  => $conv_config->{blacklist_swt},
     },
     
     notation => {
@@ -134,8 +136,8 @@ my $stammdateien_ref = {
         outfile        => "not.mysql",
         outfile_ft     => "not_ft.mysql",
         outfile_string => "not_string.mysql",
-        inverted_ref   => $convtab_ref->{inverted_not},
-        blacklist_ref  => $convtab_ref->{blacklist_not},
+        inverted_ref   => $conv_config->{inverted_not},
+        blacklist_ref  => $conv_config->{blacklist_not},
     },
 };
 
@@ -178,14 +180,17 @@ foreach my $type (keys %{$stammdateien_ref}){
         elsif ($type eq "kor"){
             $listitemdata_kor{$id}=$content;
         }
+        elsif ($type eq "notation"){
+            $listitemdata_not{$id}=$content;
+        }
         elsif ($type eq "swt"){
-            $listitemdata_swt{$id}= {
-                content     => $content,
-                 contentnorm => OpenBib::Common::Util::grundform({
-                     category => 'T0710',
-                     content  => $content,
-                 }),
-            };
+           $listitemdata_swt{$id}= {
+               content     => $content,
+                contentnorm => OpenBib::Common::Util::grundform({
+                    category => 'T0710',
+                    content  => $content,
+                }),
+           };
         }
   
     }
@@ -207,7 +212,7 @@ foreach my $type (keys %{$stammdateien_ref}){
        }
        
        if ($stammdateien_ref->{$type}{inverted_ref}->{$category}->{init}){
-           push @{$stammdateien_ref->{$type}{data}[$id]}, $contentnormtmp;
+           push @{$stammdateien_ref->{$type}{data}{$id}}, $contentnormtmp;
        }
    }
 
@@ -235,7 +240,7 @@ $stammdateien_ref->{mex} = {
     outfile        => "mex.mysql",
     outfile_ft     => "mex_ft.mysql",
     outfile_string => "mex_string.mysql",
-    inverted_ref   => $convtab_ref->{inverted_mex},
+    inverted_ref   => $conv_config->{inverted_mex},
 };
 
 print STDERR "Bearbeite mex.exp\n";
@@ -295,7 +300,7 @@ while (my $line=<IN>){
             }
 
             if ($stammdateien_ref->{mex}{inverted_ref}->{$category}->{init}){
-                push @{$stammdateien_ref->{mex}{data}[$titid]}, $contentnormtmp;
+                push @{$stammdateien_ref->{mex}{data}{$titid}}, $contentnormtmp;
             }
 	}
 
@@ -334,8 +339,8 @@ $stammdateien_ref->{tit} = {
     outfile        => "tit.mysql",
     outfile_ft     => "tit_ft.mysql",
     outfile_string => "tit_string.mysql",
-    inverted_ref   => $convtab_ref->{inverted_tit},
-    blacklist_ref  => $convtab_ref->{blacklist_tit},
+    inverted_ref   => $conv_config->{inverted_tit},
+    blacklist_ref  => $conv_config->{blacklist_tit},
 };
 
 if ($addsuperpers){
@@ -404,6 +409,8 @@ my @autkor    = ();
 
 my $listitem_ref={};
 
+my $normdata_ref={};
+
 CATLINE:
 while (my $line=<IN>){
     my ($category,$indicator,$content);
@@ -424,6 +431,7 @@ while (my $line=<IN>){
         @ejahr     = ();
         @ejahrft   = ();
         @gtquelle  = ();
+        @inhalt    = ();
         @titverf   = ();
         @titkor    = ();
         @titswt    = ();
@@ -431,6 +439,8 @@ while (my $line=<IN>){
         @superids  = ();
 
         $listitem_ref={};
+
+        $normdata_ref={};
 
         $listitem_ref->{id}       = $id;
         $listitem_ref->{database} = $singlepool;
@@ -444,26 +454,12 @@ while (my $line=<IN>){
     elsif ($line=~m/^9999:/){
 
         if ($addsuperpers){
-#             if ($id == 16562){
-#                 print STDERR "Vorher: ".join(", ",@verf)."\n";
-
-#                 print STDERR "SuperID's: ".join(" ",@superids)."\n";
-#             }
-
             foreach my $superid (@superids){
                 if (exists $listitemdata_superid{$superid}){
-                    my @superpersids = split (":",$listitemdata_superid{$superid}); #
-
-#                     if ($id == 16562){
-#                         print STDERR "Daten zur Superid $superid: ".join(" ",@superpersids)."\n";
-#                     }
-
+                    my @superpersids = split (":",$listitemdata_superid{$superid}); 
                     push @verf, @superpersids;
                 }
             }
-#             if ($id == 16562){
-#                 print STDERR "Nachher: ".join(", ",@verf)."\n";
-#             }
         }
         
         my @temp=();
@@ -473,7 +469,7 @@ while (my $line=<IN>){
         my %seen_verf=();
         foreach my $item (@verf){
             next if (exists $seen_verf{$item});
-            push @temp, join(" ",@{$stammdateien_ref->{aut}{data}[$item]});
+            push @temp, join(" ",@{$stammdateien_ref->{aut}{data}{$item}});
             $seen_verf{$item}=1;
         }
         push @temp, join(" ",@titverf);
@@ -481,14 +477,14 @@ while (my $line=<IN>){
 
         @temp=();
         foreach my $item (@kor){
-            push @temp, join(" ",@{$stammdateien_ref->{kor}{data}[$item]});
+            push @temp, join(" ",@{$stammdateien_ref->{kor}{data}{$item}});
         }
         push @temp, join(" ",@titkor);
         my $kor      = join(" ",@temp);
 
         @temp=();
         foreach my $item (@swt){
-            push @temp, join(" ",@{$stammdateien_ref->{swt}{data}[$item]});
+            push @temp, join(" ",@{$stammdateien_ref->{swt}{data}{$item}});
 
             push @{$listitem_ref->{T0710}}, {
                 id          => $item,
@@ -503,12 +499,12 @@ while (my $line=<IN>){
 
         @temp=();
         foreach my $item (@notation){
-            push @temp, join(" ",@{$stammdateien_ref->{notation}{data}[$item]});
+            push @temp, join(" ",@{$stammdateien_ref->{notation}{data}{$item}});
         }
         my $notation = join(" ",@temp);
 
         @temp=();
-	push @temp, join(" ",@{$stammdateien_ref->{mex}{data}[$id]});
+	push @temp, join(" ",@{$stammdateien_ref->{mex}{data}{$id}});
         my $mex = join(" ",@temp);
         
         my $hst       = join(" ",@hst);
@@ -518,8 +514,9 @@ while (my $line=<IN>){
         my $ejahr     = join(" ",@ejahr);
         my $ejahrft   = join(" ",@ejahrft);
         my $gtquelle  = join(" ",@gtquelle);
+        my $inhalt    = join(" ",@inhalt);
         
-        print OUTSEARCH "$id$verf$hst$kor$swt$notation$mex$ejahr$ejahrft$gtquelle$isbn$issn$artinh\n";
+        print OUTSEARCH "$id$verf$hst$kor$swt$notation$mex$ejahr$ejahrft$gtquelle$inhalt$isbn$issn$artinh\n";
 
         # Listitem zusammensetzen
 
@@ -643,6 +640,8 @@ while (my $line=<IN>){
         }
 
         print TITLISTITEM "$id$listitem\n";
+
+	$normdata{$id} = $normdata_ref; 
         next CATLINE;
     }
     elsif ($line=~m/^(\d+)\.(\d+):(.*?)$/){
@@ -660,7 +659,7 @@ while (my $line=<IN>){
         next CATLINE if (exists $stammdateien_ref->{tit}{blacklist_ref}->{$category});
 
         # Kategorien in listitemcat werden fuer die Kurztitelliste verwendet
-        if (exists $convtab_ref->{listitemcat}{$category}){
+        if (exists $conv_config->{listitemcat}{$category}){
             push @{$listitem_ref->{"T".$category}}, {
                 indicator => $indicator,
                 content   => $content,
@@ -718,6 +717,8 @@ while (my $line=<IN>){
                 content => $content,
             };
 
+            push @{$normdata_ref->{verf}}, $content;
+
             push @autkor, $content;
 
             print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
@@ -745,6 +746,8 @@ while (my $line=<IN>){
                 content    => $content,
                 supplement => $supplement,
             };
+
+            push @{$normdata_ref->{verf}}, $content;
 
             push @autkor, $content;
             
@@ -774,6 +777,8 @@ while (my $line=<IN>){
                 supplement => $supplement,
             };
 
+            push @{$normdata_ref->{verf}}, $content;
+
             push @autkor, $content;
             
             print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
@@ -801,6 +806,8 @@ while (my $line=<IN>){
                 content    => $content,
                 supplement => $supplement,
             };
+
+            push @{$normdata_ref->{verf}}, $content;
 
             push @autkor, $content;
             
@@ -859,7 +866,11 @@ while (my $line=<IN>){
             my $category   = "0700";
 
             push @notation, $targetid;
+
+            my $content = $listitemdata_not{$targetid};
             
+            push @{$normdata_ref->{notation}}, $content;
+
             print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
         }
         elsif ($category=~m/^0710/){
@@ -872,6 +883,10 @@ while (my $line=<IN>){
 
             push @swt, $targetid;
             
+            my $content = $listitemdata_swt{$targetid}->{content};
+
+            push @{$normdata_ref->{swt}}, $content;
+
             print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
         }
         elsif ($category=~m/^0902/){
@@ -996,61 +1011,91 @@ while (my $line=<IN>){
         }
         # Titeldaten
         else {
-            if (   exists $convtab_ref->{search_category}{ejahr    }{$category}){
+            if (   exists $conv_config->{search_ejahr    }{$category}){
                 push @ejahr, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            if (   exists $convtab_ref->{search_category}{ejahrft  }{$category}){
+            if (   exists $conv_config->{search_ejahrft  }{$category}){
                 push @ejahrft, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            if (   exists $convtab_ref->{search_category}{gtquelle }{$category}){
+            if (   exists $conv_config->{search_gtquelle }{$category}){
                 push @gtquelle, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            elsif (exists $convtab_ref->{search_category}{hst      }{$category}){
+            elsif (exists $conv_config->{search_hst      }{$category}){
                 push @hst, OpenBib::Common::Util::grundform({
                     # Keine Uebergabe der Kategorie, da erstes Stopwort hier nicht entfernt werden soll
                     content  => $content,
                 });
             }
-            elsif (exists $convtab_ref->{search_category}{isbn     }{$category}){
-                push @isbn,      OpenBib::Common::Util::grundform({
+            if (   exists $conv_config->{search_inhalt   }{$category}){
+                push @inhalt, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            elsif (exists $convtab_ref->{search_category}{issn     }{$category}){
+            elsif (exists $conv_config->{search_isbn     }{$category}){
+
+                my $isbnnorm = OpenBib::Common::Util::grundform({
+                    category => $category,
+                    content  => $content,
+                });
+                
+                push @isbn, $isbnnorm;
+
+                # Alternative ISBN zur Rechercheanreicherung erzeugen
+                my $isbn = Business::ISBN->new($isbnnorm);
+
+                if (defined $isbn && $isbn->is_valid){
+                    my $isbnXX;
+                    if (length($isbnnorm) == 10){
+                        $isbnXX = $isbn->as_isbn13;
+                    }
+                    else {
+                        $isbnXX = $isbn->as_isbn10;
+                    }
+
+                    if (defined $isbnXX){
+                        push @isbn,      OpenBib::Common::Util::grundform({
+                            category => $category,
+                            content  => $isbnXX->as_string,
+                        });
+                    }
+                }
+
+            }
+            elsif (exists $conv_config->{search_issn     }{$category}){
                 push @issn,      OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            elsif (exists $convtab_ref->{search_category}{artinh   }{$category}){
+            elsif (exists $conv_config->{search_artinh   }{$category}){
                 push @artinh, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            elsif (exists $convtab_ref->{search_category}{verf     }{$category}){
+            elsif (exists $conv_config->{search_verf     }{$category}){
                 push @titverf, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            elsif (exists $convtab_ref->{search_category}{kor      }{$category}){
+            elsif (exists $conv_config->{search_kor      }{$category}){
                 push @titkor, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
                 });
             }
-            elsif (exists $convtab_ref->{search_category}{swt      }{$category}){
+            elsif (exists $conv_config->{search_swt      }{$category}){
                 push @titswt, OpenBib::Common::Util::grundform({
                     category => $category,
                     content  => $content,
@@ -1059,6 +1104,19 @@ while (my $line=<IN>){
 
             if ($category && $content){
                 print OUT       "$id$category$indicator$content\n";
+
+		if ($category eq "0800"){ # Medienart
+		  push @{$normdata_ref->{mart}}, $content;
+		}
+
+		if ($category eq "0015"){ # Sprache
+		  push @{$normdata_ref->{spr}}, $content;
+		}
+
+                if ($category eq "0425" || $category eq "0424"){ # Jahr
+		  push @{$normdata_ref->{year}}, $content;
+		}
+
             }
             if ($category && $contentnorm){
                 print OUTSTRING "$id$category$contentnorm\n";
@@ -1138,6 +1196,8 @@ close(CONTROLINDEXON);
 if ($reducemem){
     untie %listitemdata_aut;
     untie %listitemdata_kor;
+    untie %listitemdata_not;
+    untie %listitemdata_swt;
     untie %listitemdata_mex;
     untie %listitemdata_superid;
 }

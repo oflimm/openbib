@@ -1,0 +1,29 @@
+[%#-
+#######################################################################
+#
+# Templatename: connector_digibib_result_start
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Anfang der Trefferausgabe in der Kurztitelanzeige
+#
+#######################################################################
+-%]
+<HTML>
+<HEAD>
+<TITLE>Trefferliste</TITLE>
+</HEAD>
+<BODY>
+
+<!-- begin result -->
+
+<OL>
+<LI><UL>
+<LI> META
+<LI> DB=KVIK
+<LI> HITS=[% treffercount %]
+<LI> QUERY=[% myself %]
+</UL>
+

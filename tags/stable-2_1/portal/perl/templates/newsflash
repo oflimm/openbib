@@ -1,0 +1,28 @@
+[%#-
+#######################################################################
+#
+# Templatename: newsflash
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe aktueller Meldungen und Hinweise
+#
+#######################################################################
+-%]
+<table width="100%">
+<tr><th style="color:red">Aktuelles</th></tr>
+<tr><td class="boxedclear">
+<ul>
+<li>Seit dem 14.10.2007 ist eine neue KUG-Version mit einigen
+<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[%
+view %];stid=2" target="body"">Verbesserungen</a> (Suchverfeinerung
+usw.) aktiv.
+<li>Bitte aktualisieren Sie den Kopfbereich des KUG in Ihrem Browser,
+falls Sie dort Darstellungsprobleme beobachten wie z.B. fehlende Logos usw. Im
+Firefox-Browser ist dies z.B. mit 'Rechter Klick &uuml;ber dem
+Kopfbereich->Aktueller Frame->Frame neuladen' m&ouml;glich.</li>
+</ul>
+</td></tr>
+</table>

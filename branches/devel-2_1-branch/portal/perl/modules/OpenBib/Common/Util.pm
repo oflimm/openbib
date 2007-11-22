@@ -1582,10 +1582,6 @@ __END__
    exit;
  }
 
- # Ist die Session authentifiziert? Ja, dann Rueckgabe der positiven $userid,
- # sonst wird nichts zurueckgegeben 
- my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
-
  # Komplette Seite aus Template $templatename, Template-Daten $ttdata und
  # Request-Objekt $r bilden und ausgeben
  OpenBib::Common::Util::print_page($templatename,$ttdata,$r);

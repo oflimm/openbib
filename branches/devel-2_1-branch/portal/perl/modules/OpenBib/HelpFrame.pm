@@ -70,7 +70,7 @@ sub handler {
         sessionID => $query->param('sessionID'),
     });
 
-    my $user      = new OpenBib::User();
+    my $user      = new OpenBib::User({sessionID => $session->{ID}});
     
     my $useragent=$r->subprocess_env('HTTP_USER_AGENT');
   

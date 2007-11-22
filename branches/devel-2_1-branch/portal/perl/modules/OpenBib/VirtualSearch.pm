@@ -78,7 +78,7 @@ sub handler {
         sessionID => $query->param('sessionID'),
     });
 
-    my $user      = new OpenBib::User();
+    my $user      = new OpenBib::User({sessionID => $session->{ID}});
     
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
@@ -154,10 +154,6 @@ sub handler {
         $view=$session->get_viewname();
     }
 
-    # Authorisierter user?
-    my $userid=$user->get_userid_of_session($session->{ID});
-    $logger->info("Authorization: ", $session->{ID}, " ", ($userid)?$userid:'none');
-
     # Loggen der Recherche-Art (1=simple, 2=complex)
     $session->log_event({
 		type      => 20,
@@ -219,7 +215,7 @@ sub handler {
                         my $profilid=$1;
                         
                         my $profilresult=$user->{dbh}->prepare("select profildb.dbname from profildb,userdbprofile where userdbprofile.userid = ? and userdbprofile.profilid = ? and userdbprofile.profilid=profildb.profilid order by dbname") or $logger->error($DBI::errstr);
-                        $profilresult->execute($userid,$profilid) or $logger->error($DBI::errstr);
+                        $profilresult->execute($user->{ID},$profilid) or $logger->error($DBI::errstr);
                         
                         my @poolres;
                         while (@poolres=$profilresult->fetchrow) {
@@ -562,8 +558,8 @@ sub handler {
     my $loginname = "";
     my $password  = "";
 
-    if ($userid && $user->get_targettype_of_session($session->{ID}) ne "self"){
-        ($loginname,$password)=$user->get_cred_for_userid($userid);
+    if ($user->{ID} && $user->get_targettype_of_session($session->{ID}) ne "self"){
+        ($loginname,$password)=$user->get_credentials();
     }
 
     # Hash im Loginname ersetzen

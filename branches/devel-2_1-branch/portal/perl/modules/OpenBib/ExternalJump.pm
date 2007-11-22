@@ -70,7 +70,7 @@ sub handler {
         sessionID => $query->param('sessionID'),
     });
 
-    my $user      = new OpenBib::User();
+    my $user      = new OpenBib::User({sessionID => $session->{ID}});
     
     my $useragent=$r->subprocess_env('HTTP_USER_AGENT');
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
@@ -126,9 +126,6 @@ sub handler {
         $view=$session->get_viewname();
     }
 
-    # Authorisierte Session?
-    my $userid=$user->get_userid_of_session($session->{ID});
-    
     my $viewdesc = $config->get_viewdesc_from_viewname($view);
   
     my $hits;

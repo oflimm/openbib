@@ -72,7 +72,7 @@ sub handler {
         sessionID => $query->param('sessionID'),
     });
 
-    my $user       = new OpenBib::User();
+    my $user       = new OpenBib::User({sessionID => $session->{ID}});
     
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
@@ -108,10 +108,9 @@ sub handler {
         $view=$session->get_viewname();
     }
   
-    my $userid             = $user->get_userid_of_session($session->{ID});
     my $sessionlogintarget = $user->get_targetdb_of_session($session->{ID});
 
-    unless($userid){
+    unless($user->{ID}){
         # Aufruf-URL
         my $return_url = $r->parsed_uri->unparse;
 
@@ -128,7 +127,7 @@ sub handler {
         return OK;
     }
   
-    my ($loginname,$password) = $user->get_cred_for_userid($userid);
+    my ($loginname,$password) = $user->get_credentials();
     my $database              = $user->get_targetdb_of_session($session->{ID});
     my $targetcircinfo_ref    = $config->get_targetcircinfo();
 

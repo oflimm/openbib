@@ -15,6 +15,7 @@
 ../modules/OpenBib/HelpFrame.pm
 ../modules/OpenBib/L10N.pm
 ../modules/OpenBib/Leave.pm
+../modules/OpenBib/LitLists.pm
 ../modules/OpenBib/LoadBalancer.pm
 ../modules/OpenBib/LoadBalancer/Util.pm
 ../modules/OpenBib/Login.pm
@@ -119,6 +120,8 @@
 ../templates/helpframe_40
 ../templates/info_message
 ../templates/leave
+../templates/litlists_manage_lists
+../templates/litlists_manage_singlelist
 ../templates/loadbalancer
 ../templates/login
 ../templates/login_circulation

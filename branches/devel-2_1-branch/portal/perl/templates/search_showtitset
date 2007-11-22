@@ -57,8 +57,23 @@
 </div>
 -->
 
-[%# USE dumper;
-  # dumper.dump(normset) ;%]
+[% 
+   IF config.litlists ;
+      litlists = user.get_litlists();
+
+      IF litlists.size > 0 ;
+%]
+<form method="get" action="http://[% config.servername %][%config.litlists_loc %]">
+<input type="hidden" name="action"          value="manage" />
+<input type="hidden" name="titid"           value="[% titidn %]" />
+<input type="hidden" name="titdb"           value="[% database %]" />
+<input type="hidden" name="sessionID"       value="[% sessionID %]" />
+Diesen Titel in die Literaturliste <select name="litlistid">[% FOREACH litlist IN litlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select>&nbsp;<input type="submit" name="do_addentry" value="&uuml;bernehmen" />
+</form>
+<p />
+[%    END %]
+[% END %]
+
 <table cellpadding="2">
 <tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
 <tr><td class="category">id</td><td>[% normset.id %]</td></tr>

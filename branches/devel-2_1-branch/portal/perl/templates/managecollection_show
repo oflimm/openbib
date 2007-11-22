@@ -44,7 +44,20 @@
 		      <tr>
 			<td>
 [%- IF type == 'HTML' -%]
-<b>[% msg.maketext("Ausgew&auml;hlte Titel l&ouml;schen") %]</b>&nbsp;<input type="submit" name="loeschen" value="[% msg.maketext("Los") %]" />
+<b>[% msg.maketext("Ausgew&auml;hlte Titel") %]</b>
+<ul>
+<li>auf der Merkliste <input type="submit" name="do_collection_delentry" value="[% msg.maketext("entfernen") %]" /></li>
+[% 
+   IF config.litlists ;
+      litlists = user.get_litlists();
+
+      IF litlists.size > 0 ;
+%]
+<li>in die Literaturliste <select name="litlistid">[% FOREACH litlist IN litlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select>&nbsp;<input type="submit" name="do_litlist_addentry" value="&uuml;bernehmen" />
+<p />
+[%    END %]
+[% END %]
+
 [%- ELSE -%]
 <b>[% msg.maketext("Eine Bearbeitung ist nur bei 'HTML' m&ouml;glich") %]</b>
 [%- END -%]

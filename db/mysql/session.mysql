@@ -10,7 +10,7 @@ CREATE TABLE session (
  benutzernr    TEXT,
  benutzerpin   TEXT,
  queryoptions  TEXT,
-
+ returnurl     TEXT,
  INDEX (sessionid),
  INDEX (benutzernr(255))
 );
@@ -42,7 +42,9 @@ CREATE TABLE eventlog (
  type       INT,
  content    MEDIUMBLOB,
  INDEX (sessionid),
- INDEX (type)
+ INDEX (tstamp),
+ INDEX (type),
+ INDEX (content(50))
 );
 
 drop table IF EXISTS queries;

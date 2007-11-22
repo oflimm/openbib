@@ -57,7 +57,7 @@ sub handler {
 
     my $session = new OpenBib::Session();
     
-    my $query  = Apache::Request->new($r);
+    my $query  = Apache::Request->instance($r);
 
     my $status = $query->parse;
 
@@ -65,7 +65,7 @@ sub handler {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
 
-    my $fs   = $query->param('fs') || '';
+    my $fs   = decode_utf8($query->param('fs')) || $query->param('fs')      || '';
 
     my $queryoptions_ref
         = $session->get_queryoptions($query);

@@ -64,7 +64,7 @@ sub get_css_by_browsertype {
 
     my $stylesheet="";
   
-    if ( $useragent=~/Mozilla.5.0/ || $useragent=~/MSIE 5/ || $useragent=~/MSIE 6/ || $useragent=~/Konqueror"/ ) {
+    if ( $useragent=~/Mozilla.5.0/ || $useragent=~/MSIE [5-9]/ || $useragent=~/Konqueror"/ ) {
         if ($useragent=~/MSIE/) {
             $stylesheet="openbib-ie.css";
         }
@@ -95,7 +95,7 @@ sub print_warning {
     
     my $stylesheet=get_css_by_browsertype($r);
 
-    my $query=Apache::Request->new($r);
+    my $query=Apache::Request->instance($r);
 
     my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
 
@@ -112,6 +112,7 @@ sub print_warning {
         }) ],
 #        INCLUDE_PATH   => $config->{tt_include_path},
 #        ABSOLUTE       => 1,
+        RECURSION      => 1,
         OUTPUT         => $r,    # Output geht direkt an Apache Request
     });
   
@@ -146,7 +147,7 @@ sub print_info {
     
     my $stylesheet=get_css_by_browsertype($r);
 
-    my $query=Apache::Request->new($r);
+    my $query=Apache::Request->instance($r);
 
     my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
 
@@ -161,6 +162,7 @@ sub print_info {
         }) ],
 #        INCLUDE_PATH   => $config->{tt_include_path},
 #        ABSOLUTE       => 1,
+        RECURSION      => 1,
         OUTPUT         => $r,    # Output geht direkt an Apache Request
     });
   
@@ -551,6 +553,7 @@ sub get_searchterms {
     }
 
     my $alltermsstring = join (" ",@allterms);
+    $alltermsstring    =~s/[^\p{Alphabetic}0-9 ]//g;
 
     my $tokenizer = String::Tokenizer->new();
     $tokenizer->tokenize($alltermsstring);
@@ -602,7 +605,7 @@ sub get_searchquery {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $query=Apache::Request->new($r);
+    my $query=Apache::Request->instance($r);
 
     # Wandlungstabelle Erscheinungsjahroperator
     my $ejahrop_ref={
@@ -611,9 +614,9 @@ sub get_searchquery {
         'lt' => '<',
     };
 
-    my ($fs, $verf, $hst, $hststring, $gtquelle, $swt, $kor, $sign, $isbn, $issn, $mart,$notation,$ejahr,$ejahrop);
+    my ($fs, $verf, $hst, $hststring, $gtquelle, $swt, $kor, $sign, $inhalt, $isbn, $issn, $mart,$notation,$ejahr,$ejahrop);
 
-    my ($fsnorm, $verfnorm, $hstnorm, $hststringnorm, $gtquellenorm, $swtnorm, $kornorm, $signnorm, $isbnnorm, $issnnorm, $martnorm,$notationnorm,$ejahrnorm);
+    my ($fsnorm, $verfnorm, $hstnorm, $hststringnorm, $gtquellenorm, $swtnorm, $kornorm, $signnorm, $inhaltnorm, $isbnnorm, $issnnorm, $martnorm,$notationnorm,$ejahrnorm);
     
     $fs        = $fsnorm        = decode_utf8($query->param('fs'))            || $query->param('fs')      || '';
     $verf      = $verfnorm      = decode_utf8($query->param('verf'))          || $query->param('verf')    || '';
@@ -623,6 +626,7 @@ sub get_searchquery {
     $swt       = $swtnorm       = decode_utf8($query->param('swt'))           || $query->param('swt')     || '';
     $kor       = $kornorm       = decode_utf8($query->param('kor'))           || $query->param('kor')     || '';
     $sign      = $signnorm      = decode_utf8($query->param('sign'))          || $query->param('sign')    || '';
+    $inhalt    = $inhaltnorm    = decode_utf8($query->param('inhalt'))        || $query->param('inhalt')  || '';
     $isbn      = $isbnnorm      = decode_utf8($query->param('isbn'))          || $query->param('isbn')    || '';
     $issn      = $issnnorm      = decode_utf8($query->param('issn'))          || $query->param('issn')    || '';
     $mart      = $martnorm      = decode_utf8($query->param('mart'))          || $query->param('mart')    || '';
@@ -634,6 +638,7 @@ sub get_searchquery {
     my $verfindex     = $query->param('verfindex')     || '';
     my $korindex      = $query->param('korindex')      || '';
     my $swtindex      = $query->param('swtindex')      || '';
+    my $notindex      = $query->param('notindex')      || '';
 
     #####################################################################
     ## boolX: Verknuepfung der Eingabefelder (leere Felder werden ignoriert)
@@ -656,6 +661,8 @@ sub get_searchquery {
         :"AND";
     my $boolsign      = ($query->param('boolsign'))     ?$query->param('boolsign')
         :"AND";
+    my $boolinhalt    = ($query->param('boolinhalt'))   ?$query->param('boolinhalt')
+        :"AND";
     my $boolejahr     = ($query->param('boolejahr'))    ?$query->param('boolejahr')
         :"AND" ;
     my $boolfs        = ($query->param('boolfs'))       ?$query->param('boolfs')
@@ -669,57 +676,27 @@ sub get_searchquery {
 
     # Sicherheits-Checks
 
-    if ($boolverf ne "AND" && $boolverf ne "OR" && $boolverf ne "NOT") {
-        $boolverf      = "AND";
-    }
+    my $valid_bools_ref = {
+        'AND' => 1,
+        'OR'  => 1,
+        'NOT' => 1,
+    };
 
-    if ($boolhst ne "AND" && $boolhst ne "OR" && $boolhst ne "NOT") {
-        $boolhst       = "AND";
-    }
+    $boolverf      = (exists $valid_bools_ref->{$boolverf     })?$boolverf     :"AND";
+    $boolhst       = (exists $valid_bools_ref->{$boolhst      })?$boolhst      :"AND";
+    $boolswt       = (exists $valid_bools_ref->{$boolswt      })?$boolswt      :"AND";
+    $boolkor       = (exists $valid_bools_ref->{$boolkor      })?$boolkor      :"AND";
+    $boolnotation  = (exists $valid_bools_ref->{$boolnotation })?$boolnotation :"AND";
+    $boolisbn      = (exists $valid_bools_ref->{$boolisbn     })?$boolisbn     :"AND";
+    $boolissn      = (exists $valid_bools_ref->{$boolissn     })?$boolissn     :"AND";
+    $boolsign      = (exists $valid_bools_ref->{$boolsign     })?$boolsign     :"AND";
+    $boolinhalt    = (exists $valid_bools_ref->{$boolinhalt   })?$boolinhalt   :"AND";
+    $boolfs        = (exists $valid_bools_ref->{$boolfs       })?$boolfs       :"AND";
+    $boolmart      = (exists $valid_bools_ref->{$boolmart     })?$boolmart     :"AND";
+    $boolhststring = (exists $valid_bools_ref->{$boolhststring})?$boolhststring:"AND";
+    $boolgtquelle  = (exists $valid_bools_ref->{$boolgtquelle })?$boolgtquelle :"AND";
 
-    if ($boolswt ne "AND" && $boolswt ne "OR" && $boolswt ne "NOT") {
-        $boolswt       = "AND";
-    }
-
-    if ($boolkor ne "AND" && $boolkor ne "OR" && $boolkor ne "NOT") {
-        $boolkor       = "AND";
-    }
-
-    if ($boolnotation ne "AND" && $boolnotation ne "OR" && $boolnotation ne "NOT") {
-        $boolnotation  = "AND";
-    }
-
-    if ($boolisbn ne "AND" && $boolisbn ne "OR" && $boolisbn ne "NOT") {
-        $boolisbn      = "AND";
-    }
-
-    if ($boolissn ne "AND" && $boolissn ne "OR" && $boolissn ne "NOT") {
-        $boolissn      = "AND";
-    }
-
-    if ($boolsign ne "AND" && $boolsign ne "OR" && $boolsign ne "NOT") {
-        $boolsign      = "AND";
-    }
-
-    if ($boolejahr ne "AND") {
-        $boolejahr     = "AND";
-    }
-
-    if ($boolfs ne "AND" && $boolfs ne "OR" && $boolfs ne "NOT") {
-        $boolfs        = "AND";
-    }
-
-    if ($boolmart ne "AND" && $boolmart ne "OR" && $boolmart ne "NOT") {
-        $boolmart      = "AND";
-    }
-
-    if ($boolhststring ne "AND" && $boolhststring ne "OR" && $boolhststring ne "NOT") {
-        $boolhststring = "AND";
-    }
-
-    if ($boolgtquelle ne "AND" && $boolgtquelle ne "OR" && $boolgtquelle ne "NOT") {
-        $boolgtquelle = "AND";
-    }
+    $boolejahr    = "AND";
 
     $boolverf      = "AND NOT" if ($boolverf      eq "NOT");
     $boolhst       = "AND NOT" if ($boolhst       eq "NOT");
@@ -729,6 +706,7 @@ sub get_searchquery {
     $boolisbn      = "AND NOT" if ($boolisbn      eq "NOT");
     $boolissn      = "AND NOT" if ($boolissn      eq "NOT");
     $boolsign      = "AND NOT" if ($boolsign      eq "NOT");
+    $boolinhalt    = "AND NOT" if ($boolinhalt    eq "NOT");
     $boolfs        = "AND NOT" if ($boolfs        eq "NOT");
     $boolmart      = "AND NOT" if ($boolmart      eq "NOT");
     $boolhststring = "AND NOT" if ($boolhststring eq "NOT");
@@ -803,6 +781,11 @@ sub get_searchquery {
         searchreq => 1,
     });
 
+    $inhaltnorm    = OpenBib::Common::Util::grundform({
+        content   => $inhaltnorm,
+        searchreq => 1,
+    });
+    
     $isbnnorm      = OpenBib::Common::Util::grundform({
         category  => '0540',
         content   => $isbnnorm,
@@ -839,83 +822,124 @@ sub get_searchquery {
         $swtnorm      = OpenBib::VirtualSearch::Util::conv2autoplus($swtnorm)  if ($swt);
         $isbnnorm     = OpenBib::VirtualSearch::Util::conv2autoplus($isbnnorm) if ($isbn);
         $issnnorm     = OpenBib::VirtualSearch::Util::conv2autoplus($issnnorm) if ($issn);
+        $inhaltnorm   = OpenBib::VirtualSearch::Util::conv2autoplus($inhaltnorm) if ($inhalt);
         $gtquellenorm = OpenBib::VirtualSearch::Util::conv2autoplus($gtquellenorm) if ($gtquelle);
     }
 
-    # Spezielle Trunkierungen
+    my $searchquery_ref={};
 
-    $signnorm      =~s/\*$/%/;
-    $notationnorm  =~s/\*$/%/;
-    $hststringnorm =~s/\*$/%/;
-    
-    my $searchquery_ref={
-        fs => {
-            val   => $fs,
-            norm  => $fsnorm,
-            bool  => '',
-        },
-        verf => {
-            val   => $verf,
-            norm  => $verfnorm,
-            bool  => $boolverf,
-        },
-        hst => {
-            val   => $hst,
-            norm  => $hstnorm,
-            bool  => $boolhst,
-        },
-        hststring => {
-            val   => $hststring,
-            norm  => $hststringnorm,
-            bool  => $boolhststring,
-        },
-        gtquelle  => {
-            val   => $gtquelle,
-            norm  => $gtquellenorm,
-            bool  => $boolgtquelle,
-        },
-        swt => {
-            val   => $swt,
-            norm  => $swtnorm,
-            bool  => $boolswt,
-        },
-        kor => {
-            val   => $kor,
-            norm  => $kornorm,
-            bool  => $boolkor,
-        },
-        sign => {
-            val   => $sign,
-            norm  => $signnorm,
-            bool  => $boolsign,
-        },
-        isbn => {
-            val   => $isbn,
-            norm  => $isbnnorm,
-            bool  => $boolisbn,
-        },
-        issn => {
-            val   => $issn,
-            norm  => $issnnorm,
-            bool  => $boolissn,
-        },
-        mart => {
-            val   => $mart,
-            norm  => $martnorm,
-            bool  => $boolmart,
-        },
-        notation => {
-            val   => $notation,
-            norm  => $notationnorm,
-            bool  => $boolnotation,
-        },
-        ejahr => {
-            val   => $ejahr,
-            norm  => $ejahrnorm,
-            bool  => $boolejahr,
-            arg   => $ejahrop,
-        },
-    };
+    if ($fs){
+      $searchquery_ref->{fs}={
+			      val   => $fs,
+			      norm  => $fsnorm,
+			      bool  => '',			      
+			     };
+    }
+
+    if ($hst){
+      $searchquery_ref->{hst}={
+			       val   => $hst,
+			       norm  => $hstnorm,
+			       bool  => $boolhst,
+			      };
+    }
+
+    if ($hststring){
+      $searchquery_ref->{hststring}={
+				     val   => $hststring,
+				     norm  => $hststringnorm,
+				     bool  => $boolhststring,
+				    };
+    }
+
+    if ($gtquelle){
+      $searchquery_ref->{gtquelle}={
+			    val   => $gtquelle,
+			    norm  => $gtquellenorm,
+			    bool  => $boolgtquelle,
+			   };
+    }
+
+    if ($inhalt){
+      $searchquery_ref->{inhalt}={
+			    val   => $inhalt,
+			    norm  => $inhaltnorm,
+			    bool  => $boolinhalt,
+			   };
+    }
+
+    if ($verf){
+      $searchquery_ref->{verf}={
+			    val   => $verf,
+			    norm  => $verfnorm,
+			    bool  => $boolverf,
+			   };
+    }
+
+    if ($swt){
+      $searchquery_ref->{swt}={
+			       val   => $swt,
+			       norm  => $swtnorm,
+			       bool  => $boolswt,
+			      };
+    }
+
+    if ($kor){
+      $searchquery_ref->{kor}={
+			       val   => $kor,
+			       norm  => $kornorm,
+			       bool  => $boolkor,
+			      };
+    }
+
+    if ($sign){
+      $searchquery_ref->{sign}={
+				val   => $sign,
+				norm  => $signnorm,
+				bool  => $boolsign,
+			       };
+    }
+
+    if ($isbn){
+      $searchquery_ref->{isbn}={
+				val   => $isbn,
+				norm  => $isbnnorm,
+				bool  => $boolisbn,
+			     };
+    }
+
+    if ($issn){
+      $searchquery_ref->{issn}={
+				val   => $issn,
+				norm  => $issnnorm,
+				bool  => $boolissn,
+			     };
+    }
+
+    if ($mart){
+      $searchquery_ref->{mart}={
+				val   => $mart,
+				norm  => $martnorm,
+				bool  => $boolmart,
+			       };
+    }
+
+    if ($notation){
+      $searchquery_ref->{notation}={
+				    val   => $notation,
+				    norm  => $notationnorm,
+				    bool  => $boolnotation,
+				   };
+    }
+
+    if ($ejahr){
+      $searchquery_ref->{ejahr}={
+			    val   => $ejahr,
+			    norm  => $ejahrnorm,
+			    bool  => $boolejahr,
+			    arg   => $ejahrop,
+			   };
+    }
 
     $logger->debug(YAML::Dump($searchquery_ref));
     
@@ -949,26 +973,31 @@ sub grundform {
         if ($content =~ /^(\d\d)\.(\d\d)\.(\d\d\d\d)$/){
             $content=$3.$2.$1;
         }
+
+	return $content;
     }
     
     # ISBN filtern
-    if ($category eq "0540"){
+    if ($category eq "0540" || $category eq "0553"){
         # Entfernung der Minus-Zeichen bei der ISBN zuerst 13-, dann 10-stellig
         $content=~s/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*([0-9xX])/$1$2$3$4$5$6$7$8$9$10$11$12$13/g;
         $content=~s/(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?([0-9xX])/$1$2$3$4$5$6$7$8$9$10/g;
+        return $content;
     }
 
     # ISSN filtern
     if ($category eq "0543"){
         $content=~s/(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?(\d)-?([0-9xX])/$1$2$3$4$5$6$7$8/g;
+        return $content;
     }
+
+    $content=~s/¬//g;
 
     # Stopwoerter fuer versch. Kategorien ausfiltern (Titel-String)
 
     if ($category eq "0304" || $category eq "0310" || $category eq "0331"
             || $category eq "0341" || $category eq "0370"){
 
-        $content=~s/¬//g;
         $content=~s/\s+$//;
         $content=~s/\s+<.*?>//g;
 
@@ -987,11 +1016,10 @@ sub grundform {
     $content=~s/(?<=(\w|\+))\+/plus/g;
     $content=~s/(c)\#/$1sharp/ig;
     $content=~s/\.(net)\#/dot$1/ig;
-
     
     if ($searchreq){
         # Ausfiltern nicht akzeptierter Zeichen (Positivliste)
-        $content=~s/[^-+\p{Alphabetic}0-9\/: '()"^*]//g;
+        $content=~s/[^-+\p{Alphabetic}0-9\/: '()"^*_]//g;
 
         # Verbundene Terme splitten
         $content=~s/(\w)-(\w)/$1 $2/g;
@@ -1009,11 +1037,11 @@ sub grundform {
         $content=~s/(\w)-(\w)/$1 $2/g;
         $content=~s/(\w)'(\w)/$1 $2/g;
     }
-    
+
     # Zeichenersetzungen
     $content=~s/'/ /g;
     $content=~s/\// /g;
-    $content=~s/:/ /g;
+    #$content=~s/:/ /g;
     $content=~s/  / /g;
 
     # Buchstabenersetzungen
@@ -1028,77 +1056,202 @@ sub grundform {
     $content=~s/é/e/g;
     $content=~s/è/e/g;
     $content=~s/ê/e/g;
+    $content=~s/ë/e/g;
+    $content=~s/\u0113/e/g; # Kl. e mit Ueberstrich/Macron
+    $content=~s/\u0115/e/g; # Kl. e mit Hacek/Breve
+    $content=~s/\u011b/e/g; # Kl. e mit Caron
+    $content=~s/\u0117/e/g; # Kl. e mit Punkt
+    
     $content=~s/É/E/g;
     $content=~s/È/E/g;
     $content=~s/Ê/E/g;
-
+    $content=~s/Ë/E/g;
+    $content=~s/\u0112/E/g; # Gr. E mit Ueberstrich/Macron
+    $content=~s/\u0114/E/g; # Gr. E mit Hacek/Breve
+    $content=~s/\u011a/E/g; # Gr. E mit Caron
+    $content=~s/\u0116/E/g; # Gr. E mit Punkt
+    
     $content=~s/á/a/g;
     $content=~s/à/a/g;
     $content=~s/â/a/g;
+    $content=~s/ã/a/g;
+    $content=~s/å/a/g;
+    $content=~s/\u0101/a/g; # Kl. a mit Ueberstrich/Macron
+    $content=~s/\u0103/a/g; # Kl. a mit Hacek/Breve
+    
     $content=~s/Á/A/g;
     $content=~s/À/A/g;
     $content=~s/Â/A/g;
-
+    $content=~s/Ã/A/g;
+    $content=~s/Å/A/g;
+    $content=~s/\u0100/A/g; # Gr. A mit Ueberstrich/Macron
+    $content=~s/\u0102/A/g; # Gr. A mit Hacek/Breve
+    
     $content=~s/ó/o/g;
     $content=~s/ò/o/g;
     $content=~s/ô/o/g;
+    $content=~s/õ/o/g;
+    $content=~s/\u014d/o/g; # Kl. o mit Ueberstrich/Macron
+    $content=~s/\u014f/o/g; # Kl. o mit Hacek/Breve
+    $content=~s/\u0151/o/g; # Kl. o mit Doppel-Acute
+    
     $content=~s/Ó/O/g;
-    $content=~s/Ò/o/g;
-    $content=~s/Ô/o/g;
-
+    $content=~s/Ò/O/g;
+    $content=~s/Ô/O/g;
+    $content=~s/Õ/O/g;
+    $content=~s/\u014c/O/g; # Gr. O mit Ueberstrich/Macron
+    $content=~s/\u014e/O/g; # Gr. O mit Hacek/Breve
+    $content=~s/\u0150/O/g; # Gr. O mit Doppel-Acute
+    
     $content=~s/í/i/g;
     $content=~s/ì/i/g;
     $content=~s/î/i/g;
+    $content=~s/ï/i/g;
+    $content=~s/\u0131/i/g; # Kl. punktloses i
+    $content=~s/\u012b/i/g; # Kl. i mit Ueberstrich/Macron
+    $content=~s/\u012d/i/g; # Kl. i mit Hacek/Breve
+
+    
     $content=~s/Í/I/g;
     $content=~s/Ì/I/g;
     $content=~s/Î/I/g;
+    $content=~s/Ï/I/g;
+    $content=~s/\u0130/I/g; # Gr. I mit Punkt
+    $content=~s/\u012a/I/g; # Gr. i mit Ueberstrich/Macron
+    $content=~s/\u012c/I/g; # Gr. i mit Hacek/Breve
+
+    $content=~s/Ú/U/g;
+    $content=~s/Ù/U/g;
+    $content=~s/Û/U/g;
+    $content=~s/\u0168/U/g; # Gr. U mit Tilde
+    $content=~s/\u016a/U/g; # Gr. U mit Ueberstrich/Macron
+    $content=~s/\u016c/U/g; # Gr. U mit Hacek/Breve
+    $content=~s/\u0170/U/g; # Gr. U mit Doppel-Acute
+    $content=~s/\u016e/U/g; # Gr. U mit Ring oben
+
+    $content=~s/ú/u/g;
+    $content=~s/ù/u/g;
+    $content=~s/û/u/g;
+    $content=~s/\u0169/u/g; # Kl. u mit Tilde
+    $content=~s/\u016b/u/g; # Kl. u mit Ueberstrich/Macron
+    $content=~s/\u016d/u/g; # Kl. u mit Hacek/Breve
+    $content=~s/\u0171/u/g; # Kl. u mit Doppel-Acute
+    $content=~s/\u016f/u/g; # Kl. u mit Ring oben
 
     $content=~s/ø/o/g;
     $content=~s/Ø/o/g;
+
     $content=~s/ñ/n/g;
+    $content=~s/\u0144/n/g; # Kl. n mit Acute
+    $content=~s/\u0146/n/g; # Kl. n mit Cedille
+    $content=~s/\u0148/n/g; # Kl. n mit Caron
+
     $content=~s/Ñ/N/g;
-#     $content=~s///g;
-#     $content=~s///g;
-#     $content=~s///g;
-#     $content=~s///g;
+    $content=~s/\u0143/N/g; # Gr. N mit Acute
+    $content=~s/\u0145/N/g; # Gr. N mit Cedille
+    $content=~s/\u0147/N/g; # Gr. N mit Caron
 
-#     $content=~s///g;
-#     $content=~s///g;
-#     $content=~s///g;
-#     $content=~s///g;
-#     $content=~s///g;
-#     $content=~s///g;
+    $content=~s/\u0155/r/g; # Kl. r mit Acute
+    $content=~s/\u0157/r/g; # Kl. r mit Cedille
+    $content=~s/\u0159/r/g; # Kl. r mit Caron
 
-#    $line=~s/?/g;
+    $content=~s/\u0154/R/g; # Gr. R mit Acute
+    $content=~s/\u0156/R/g; # Gr. R mit Cedille
+    $content=~s/\u0158/R/g; # Gr. R mit Caron
 
-#     $line=~s/该/g;
-#     $line=~s/?/g;
-#     $line=~s/?g;
-#     $line=~s/?;
-#     $line=~s/?e/g;
-#     $line=~s//a/g;
-#     $line=~s/?o/g;
-#     $line=~s/?u/g;
-#     $line=~s/鯥/g;
-#     $line=~s/ɯE/g;
-#     $line=~s/?/g;
-#     $line=~s/oa/g;
-#     $line=~s/?/g;
-#     $line=~s/?I/g;
-#     $line=~s/?g;
-#     $line=~s/?O/g;
-#     $line=~s/?;
-#     $line=~s/?U/g;
-#     $line=~s/ /y/g;
-#     $line=~s/?Y/g;
-#     $line=~s/毡e/g; # ae
-#     $line=~s/?/g; # Hacek
-#     $line=~s/?/g; # Macron / Oberstrich
-#     $line=~s/?/g;
-#     $line=~s/&gt;//g;
-#     $line=~s/&lt;//g;
-#     $line=~s/>//g;
-#     $line=~s/<//g;
+    $content=~s/\u015b/s/g; # Kl. s mit Acute
+    $content=~s/\u015d/s/g; # Kl. s mit Circumflexe
+    $content=~s/\u015f/s/g; # Kl. s mit Cedille
+    $content=~s/š/s/g; # Kl. s mit Caron
+
+    $content=~s/\u015a/S/g; # Gr. S mit Acute
+    $content=~s/\u015c/S/g; # Gr. S mit Circumflexe
+    $content=~s/\u015e/S/g; # Gr. S mit Cedille
+    $content=~s/Š/S/g; # Gr. S mit Caron
+
+    $content=~s/\u0167/t/g; # Kl. t mit Mittelstrich
+    $content=~s/\u0163/t/g; # Kl. t mit Cedille
+    $content=~s/\u0165/t/g; # Kl. t mit Caron
+
+    $content=~s/\u0166/T/g; # Gr. T mit Mittelstrich
+    $content=~s/\u0162/T/g; # Gr. T mit Cedille
+    $content=~s/\u0164/T/g; # Gr. T mit Caron
+
+    $content=~s/\u017a/z/g; # Kl. z mit Acute
+    $content=~s/\u017c/z/g; # Kl. z mit Punkt oben
+    $content=~s/ž/z/g; # Kl. z mit Caron
+
+    $content=~s/\u0179/Z/g; # Gr. Z mit Acute
+    $content=~s/\u017b/Z/g; # Gr. Z mit Punkt oben
+    $content=~s/Ž/Z/g; # Gr. Z mit Caron
+
+    $content=~s/ç/c/g;
+    $content=~s/\u0107/c/g; # Kl. c mit Acute
+    $content=~s/\u0108/c/g; # Kl. c mit Circumflexe
+    $content=~s/\u010b/c/g; # Kl. c mit Punkt oben
+    $content=~s/\u010d/c/g; # Kl. c mit Caron
+    
+    $content=~s/Ç/c/g;
+    $content=~s/\u0106/C/g; # Gr. C mit Acute
+    $content=~s/\u0108/C/g; # Gr. C mit Circumflexe
+    $content=~s/\u010a/C/g; # Gr. C mit Punkt oben
+    $content=~s/\u010c/C/g; # Gr. C mit Caron
+
+    $content=~s/\u010f/d/g; # Kl. d mit Caron
+    $content=~s/\u010e/D/g; # Gr. D mit Caron
+
+    $content=~s/\u0123/g/g; # Kl. g mit Cedille
+    $content=~s/\u011f/g/g; # Kl. g mit Breve
+    $content=~s/\u011d/g/g; # Kl. g mit Circumflexe
+    $content=~s/\u0121/g/g; # Kl. g mit Punkt oben
+
+    $content=~s/\u0122/G/g; # Gr. G mit Cedille
+    $content=~s/\u011e/G/g; # Gr. G mit Breve
+    $content=~s/\u011c/G/g; # Gr. G mit Circumflexe
+    $content=~s/\u0120/G/g; # Gr. G mit Punkt oben
+
+    $content=~s/\u0127/h/g; # Kl. h mit Ueberstrich
+    $content=~s/\u0126/H/g; # Gr. H mit Ueberstrich
+
+    $content=~s/\u0137/k/g; # Kl. k mit Cedille
+    $content=~s/\u0136/K/g; # Gr. K mit Cedille
+
+    $content=~s/\u013c/l/g; # Kl. l mit Cedille
+    $content=~s/\u013a/l/g; # Kl. l mit Acute
+    $content=~s/\u013e/l/g; # Kl. l mit Caron
+    $content=~s/\u0140/l/g; # Kl. l mit Punkt mittig
+    $content=~s/\u0142/l/g; # Kl. l mit Querstrich
+
+    $content=~s/\u013b/L/g; # Gr. L mit Cedille
+    $content=~s/\u0139/L/g; # Gr. L mit Acute
+    $content=~s/\u013d/L/g; # Gr. L mit Caron
+    $content=~s/\u013f/L/g; # Gr. L mit Punkt mittig
+    $content=~s/\u0141/L/g; # Gr. L mit Querstrick
+
+    $content=~s/\u20ac/e/g;   # Euro-Zeichen
+    $content=~s/\u0152/oe/g;  # OE-Ligatur
+    $content=~s/\u0153/oe/g;  # oe-Ligatur
+    $content=~s/Æ/ae/g;       # AE-Ligatur
+    $content=~s/æ/ae/g;       # ae-Ligatur
+    $content=~s/\u0160/s/g;   # S hacek
+    $content=~s/\u0161/s/g;   # s hacek
+    $content=~s/\u017d/z/g;   # Z hacek
+    $content=~s/\u017e/z/g;   # z hacek
+    $content=~s/\u0178/y/g;   # Y Umlaut
+    $content=~s/¡/i/g;        # i Ueberstrich
+    $content=~s/¢/c/g;        # Cent
+    $content=~s/£/l/g;        # Pfund
+    $content=~s/¥/y/g;        # Yen
+    $content=~s/µ/u/g;        # Mikro
+    
+    $content=~s/Ð/e/g;        # Gr. Islaend. E (durchgestrichenes D)
+    $content=~s/\u0111/e/g;   # Kl. Islaend. e ? (durchgestrichenes d)
+
+    $content=~s/Ý/y/g;
+    $content=~s/ý/y/g;
+    $content=~s/Þ/th/g;       # Gr. Thorn
+    $content=~s/þ/th/g;       # kl. Thorn
+    $content=~s/ð/eth/g;      # eth
 
     return $content;
 }
@@ -1172,7 +1325,7 @@ sub get_loadbalanced_servername {
 }
 
 sub normset2bibtex {
-    my ($normset_ref)=@_;
+    my ($normset_ref,$utf8)=@_;
 
     my $bibtex_ref=[];
 
@@ -1183,10 +1336,10 @@ sub normset2bibtex {
         next if (!exists $normset_ref->{$category});
         foreach my $part_ref (@{$normset_ref->{$category}}){
             if ($part_ref->{supplement} =~ /Hrsg/){
-                push @$editors_ref, utf2bibtex($part_ref->{content});
+                push @$editors_ref, utf2bibtex($part_ref->{content},$utf8);
             }
             else {
-                push @$authors_ref, utf2bibtex($part_ref->{content});
+                push @$authors_ref, utf2bibtex($part_ref->{content},$utf8);
             }
         }
     }
@@ -1198,34 +1351,47 @@ sub normset2bibtex {
     foreach my $category (qw/T0710 T0902 T0907 T0912 T0917 T0922 T0927 T0932 T0937 T0942 T0947/){
         next if (!exists $normset_ref->{$category});
         foreach my $part_ref (@{$normset_ref->{$category}}){
-            push @$keywords_ref, utf2bibtex($part_ref->{content});
+            push @$keywords_ref, utf2bibtex($part_ref->{content},$utf8);
         }
     }
     my $keyword = join(' ; ',@$keywords_ref);
     
     # Auflage
-    my $edition   = (exists $normset_ref->{T0403})?utf2bibtex($normset_ref->{T0403}[0]{content}):'';
+    my $edition   = (exists $normset_ref->{T0403})?utf2bibtex($normset_ref->{T0403}[0]{content},$utf8):'';
 
     # Verleger
-    my $publisher = (exists $normset_ref->{T0412})?utf2bibtex($normset_ref->{T0412}[0]{content}):'';
+    my $publisher = (exists $normset_ref->{T0412})?utf2bibtex($normset_ref->{T0412}[0]{content},$utf8):'';
 
     # Verlagsort
-    my $address   = (exists $normset_ref->{T0410})?utf2bibtex($normset_ref->{T0410}[0]{content}):'';
+    my $address   = (exists $normset_ref->{T0410})?utf2bibtex($normset_ref->{T0410}[0]{content},$utf8):'';
 
     # Titel
-    my $title     = (exists $normset_ref->{T0331})?utf2bibtex($normset_ref->{T0331}[0]{content}):'';
+    my $title     = (exists $normset_ref->{T0331})?utf2bibtex($normset_ref->{T0331}[0]{content},$utf8):'';
+
+    # Zusatz zum Titel
+    my $titlesup  = (exists $normset_ref->{T0335})?utf2bibtex($normset_ref->{T0335}[0]{content},$utf8):'';
+
+    if ($title && $titlesup){
+        $title = "$title : $titlesup";
+    }
 
     # Jahr
-    my $year      = (exists $normset_ref->{T0425})?utf2bibtex($normset_ref->{T0425}[0]{content}):'';
+    my $year      = (exists $normset_ref->{T0425})?utf2bibtex($normset_ref->{T0425}[0]{content},$utf8):'';
 
     # ISBN
-    my $isbn      = (exists $normset_ref->{T0540})?utf2bibtex($normset_ref->{T0540}[0]{content}):'';
+    my $isbn      = (exists $normset_ref->{T0540})?utf2bibtex($normset_ref->{T0540}[0]{content},$utf8):'';
 
     # ISSN
-    my $issn      = (exists $normset_ref->{T0543})?utf2bibtex($normset_ref->{T0543}[0]{content}):'';
+    my $issn      = (exists $normset_ref->{T0543})?utf2bibtex($normset_ref->{T0543}[0]{content},$utf8):'';
 
     # Sprache
-    my $language  = (exists $normset_ref->{T0516})?utf2bibtex($normset_ref->{T0516}[0]{content}):'';
+    my $language  = (exists $normset_ref->{T0516})?utf2bibtex($normset_ref->{T0516}[0]{content},$utf8):'';
+
+    # Abstract
+    my $abstract  = (exists $normset_ref->{T0750})?utf2bibtex($normset_ref->{T0750}[0]{content},$utf8):'';
+
+    # Origin
+    my $origin    = (exists $normset_ref->{T0590})?utf2bibtex($normset_ref->{T0590}[0]{content},$utf8):'';
 
     if ($author){
         push @$bibtex_ref, "author    = \"$author\"";
@@ -1260,13 +1426,72 @@ sub normset2bibtex {
     if ($language){
         push @$bibtex_ref, "language  = \"$language\"";
     }
-    
+    if ($abstract){
+        push @$bibtex_ref, "abstract  = \"$abstract\"";
+    }
+
+    if ($origin){
+        # Pages
+        if ($origin=~/ ; (S\. *\d+.*)$/){
+            push @$bibtex_ref, "pages     = \"$1\"";
+        }
+        elsif ($origin=~/, (S\. *\d+.*)$/){
+            push @$bibtex_ref, "pages     = \"$1\"";
+        }
+
+        # Journal and/or Volume
+        if ($origin=~/^(.+?) ; (.*?) ; S\. *\d+.*$/){
+            my $journal = $1;
+            my $volume  = $2;
+
+            $journal =~ s/ \/ .*$//;
+            push @$bibtex_ref, "journal   = \"$journal\"";
+            push @$bibtex_ref, "volume    = \"$volume\"";
+        }
+        elsif ($origin=~/^(.+?)\. (.*?), (\d\d\d\d), S\. *\d+.*$/){
+            my $journal = $1;
+            my $volume  = $2;
+            my $year    = $3;
+
+            $journal =~ s/ \/ .*$//;
+            push @$bibtex_ref, "journal   = \"$journal\"";
+            push @$bibtex_ref, "volume    = \"$volume\"";
+        }
+        elsif ($origin=~/^(.+?)\. (.*?), S\. *\d+.*$/){
+            my $journal = $1;
+            my $volume  = $2;
+
+            $journal =~ s/ \/ .*$//;
+            push @$bibtex_ref, "journal   = \"$journal\"";
+            push @$bibtex_ref, "volume    = \"$volume\"";
+        }
+        elsif ($origin=~/^(.+?) ; (.*?), S\. *\d+.*$/){
+            my $journal = $1;
+            my $volume  = $2;
+
+            $journal =~ s/ \/ .*$//;
+            push @$bibtex_ref, "journal   = \"$journal\"";
+            push @$bibtex_ref, "volume    = \"$volume\"";
+        }
+        elsif ($origin=~/^(.*?) ; S\. *\d+.*$/){
+            my $journal = $1;
+
+            $journal =~ s/ \/ .*$//;
+            push @$bibtex_ref, "journal   = \"$journal\"";
+        }
+    }
+
     my $identifier=substr($author,0,4).substr($title,0,4).$year;
     $identifier=~s/[^A-Za-z0-9]//g;
 
     my $bibtex="";
-    
-    if ($isbn){
+
+    if ($origin){
+        unshift @$bibtex_ref, "\@article {$identifier";
+        $bibtex=join(",\n",@$bibtex_ref);
+        $bibtex="$bibtex}";
+    }
+    elsif ($isbn){
         unshift @$bibtex_ref, "\@book {$identifier";
         $bibtex=join(",\n",@$bibtex_ref);
         $bibtex="$bibtex}";
@@ -1282,7 +1507,7 @@ sub normset2bibtex {
 }
 
 sub utf2bibtex {
-    my ($string)=@_;
+    my ($string,$utf8)=@_;
 
     return "" if (!defined $string);
     
@@ -1294,6 +1519,12 @@ sub utf2bibtex {
     $string=~s/[^-+\p{Alphabetic}0-9\n\/&;#: '()@<>\\,.="^*[]]//g;
     $string=~s/&lt;/</g;
     $string=~s/&gt;/>/g;
+    $string=~s/&amp;/&/g;
+
+    # Wenn utf8 ausgegeben werden soll, dann sind wir hier fertig
+    return $string if ($utf8);
+
+    # ... ansonsten muessen weitere Sonderzeichen umgesetzt werden.
     $string=~s/&#172;//g;
     $string=~s/&#228;/{\\"a}/g;
     $string=~s/&#252;/{\\"u}/g;

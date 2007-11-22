@@ -2,7 +2,7 @@
 #
 #  OpenBib::Admin
 #
-#  Dieses File ist (C) 2004-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2007 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -42,12 +42,15 @@ use Digest::MD5;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
+use SOAP::Lite;
 use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::Session;
+use OpenBib::Statistics;
+use OpenBib::User;
 
 sub handler {
 
@@ -58,7 +61,7 @@ sub handler {
 
     my $config = new OpenBib::Config();
     
-    my $query=Apache::Request->new($r);
+    my $query=Apache::Request->instance($r);
 
     my $status=$query->parse;
 
@@ -96,6 +99,11 @@ sub handler {
     my $do_showimx      = $query->param('do_showimx')      || '';
     my $do_showsessions = $query->param('do_showsessions') || '';
     my $do_editsession  = $query->param('do_editsession')  || '';
+    my $do_exploresessions = $query->param('do_exploresessions') || '';
+    my $do_showstat     = $query->param('do_showstat')     || '';
+    my $do_showuser     = $query->param('do_showuser')     || '';
+    my $do_showlogintarget  = $query->param('do_showlogintarget')     || '';
+    my $do_editlogintarget  = $query->param('do_editlogintarget')     || '';
     my $do_logout       = $query->param('do_logout')       || '';
 
     # Sub-Actions
@@ -118,7 +126,6 @@ sub handler {
 
     my $viewname        = $query->param('viewname')        || '';
     my @viewdb          = ($query->param('viewdb'))?$query->param('viewdb'):();
-    my $viewid          = $query->param('viewid')          || '';
 
     # dboptions
     my $host            = $query->param('host')            || '';
@@ -150,12 +157,32 @@ sub handler {
     my $rssid           = $query->param('rssid') || '';
     my @rssids          = ($query->param('rssids'))?$query->param('rssids'):();
 
+    my $targetid        = $query->param('targetid')        || '';
+    my $hostname        = $query->param('hostname')        || '';
+    my $port            = $query->param('port')            || '';
+    my $username        = $query->param('username')        || '';
+    my $type            = $query->param('type')             || '';
+
+    my $clientip        = $query->param('clientip') || '';
+
+    # Von bis
+    my $fromdate        = $query->param('fromdate') || '';
+    my $todate          = $query->param('todate')   || '';
+
+    # Sub-Template ID
+    my $stid            = $query->param('stid') || '';
+
     my $queryoptions_ref
         = $session->get_queryoptions($query);
 
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
+
+    my $do_dist = 0;
+    if (exists $config->{distadmin} && $r->get_server_name eq $config->{distadmin}{master}){
+      $do_dist = 1;
+    }
 
     # Verweis: Datenbankname -> Informationen zum zugeh"origen Institut/Seminar
   
@@ -209,6 +236,16 @@ sub handler {
         circcheckurl => $circcheckurl,
         circdb       => $circdb,
     };
+
+    my $thislogintarget_ref = {
+			       id          => $targetid,
+			       hostname    => $hostname,
+			       port        => $port,
+			       username    => $username,
+			       dbname      => $dbname,
+			       description => $description,
+			       type        => $type,
+			      };
     
     # Expliziter aufruf und default bei keiner Parameteruebergabe
     if ($do_loginmask || ($r->method eq "GET" && ! scalar $r->args) ) {
@@ -272,19 +309,30 @@ sub handler {
         return OK;
     }
   
+    $logger->debug("Server: ".$r->get_server_name);
     ###########################################################################
     if ($do_editcat) {
     
         # Zuerst schauen, ob Aktionen gefordert sind
         if ($do_del) {
             editcat_del($dbname);
+
+	    my $ret_ref = dist_cmd("editcat_del",{ dbname => $dbname }) if ($do_dist);
+
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showcat=1");
             return OK;
 
         }
         elsif ($do_change) {
             $logger->debug("do_editcat: $do_editcat do_change: $do_change");
+
             editcat_change($thisdbinfo_ref,$thisdboptions_ref);
+
+	    my $ret_ref = dist_cmd("editcat_change",{ 
+						     dbinfo    => $thisdbinfo_ref,
+						     dboptions => $thisdboptions_ref,
+						 }) if ($do_dist);
+
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showcat=1");
             return OK;
         }
@@ -314,6 +362,8 @@ sub handler {
 
             editcat_new($thisdbinfo_ref);
             
+	    my $ret_ref = dist_cmd("editcat_new",{ dbinfo => $thisdbinfo_ref }) if ($do_dist);
+
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showcat=1");
             return OK;
         }
@@ -423,16 +473,26 @@ sub handler {
     elsif ($do_editcat_rss){
         
         if ($do_change) {
-            my $request=$config->{dbh}->prepare("update rssfeeds set dbname = ?, type = ?, active = ? where id = ?") or $logger->error($DBI::errstr);
-            $request->execute($dbname,$rsstype,$active,$rssid) or $logger->error($DBI::errstr);
-            $request->finish();
+	    editcat_rss_change($dbname,$rsstype,$active,$rssid);
+
+	    my $ret_ref = dist_cmd("editcat_rss_change",{ 
+							 dbname  => $dbname,
+							 rsstype => $rsstype,
+							 active  => $active,
+							 rssid   => $rssid,
+							}) if ($do_dist);
+
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editcat_rss=1&dbname=$dbname&do_edit=1");
             return OK;
         }
         elsif ($do_new){
-            my $request=$config->{dbh}->prepare("insert into rssfeeds values (NULL,?,?,-1,'',0)") or $logger->error($DBI::errstr);
-            $request->execute($dbname,$rsstype) or $logger->error($DBI::errstr);
-            $request->finish();
+	    editcat_rss_new($dbname,$rsstype);
+
+	    my $ret_ref = dist_cmd("editcat_rss_new",{ 
+						      dbname  => $dbname,
+						      rsstype => $rsstype,
+						     }) if ($do_dist);
+
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editcat_rss=1&dbname=$dbname&do_edit=1");
             return OK;              
         }
@@ -556,7 +616,6 @@ sub handler {
         my $idnresult=$config->{dbh}->prepare("select * from viewinfo order by viewname") or $logger->error($DBI::errstr);
         $idnresult->execute() or $logger->error($DBI::errstr);
         while (my $result=$idnresult->fetchrow_hashref()) {
-            my $viewid      = decode_utf8($result->{'viewid'});
             my $viewname    = decode_utf8($result->{'viewname'});
             my $description = decode_utf8($result->{'description'});
             my $active      = decode_utf8($result->{'active'});
@@ -580,7 +639,6 @@ sub handler {
             my $viewdb=join " ; ", @viewdbs;
 
             $view={
-		viewid      => $viewid,
 		viewname    => $viewname,
 		description => $description,
 		active      => $active,
@@ -609,52 +667,32 @@ sub handler {
         # Zuerst schauen, ob Aktionen gefordert sind
     
         if ($do_del) {
-            my $idnresult=$config->{dbh}->prepare("delete from viewinfo where viewid = ?") or $logger->error($DBI::errstr);
-            $idnresult->execute($viewid) or $logger->error($DBI::errstr);
-            $idnresult=$config->{dbh}->prepare("delete from viewdbs where viewname = ?") or $logger->error($DBI::errstr);
-            $idnresult->execute($viewname) or $logger->error($DBI::errstr);
-            $idnresult->finish();
+	    editview_del($viewname);
+
+	    my $ret_ref = dist_cmd("editview_del",{ viewname => $viewname }) if ($do_dist);
+
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showviews=1");
             return OK;
       
         }
         elsif ($do_change) {
+	    editview_change({
+			     viewname    => $viewname,
+			     description => $description,
+			     active      => $active,
+			     primrssfeed => $primrssfeed,
+			     viewdb      => \@viewdb,
+			     rssfeeds    => \@rssfeeds,
+			    });
 
-            # Zuerst die Aenderungen in der Tabelle Viewinfo vornehmen
-
-            my $idnresult=$config->{dbh}->prepare("update viewinfo set viewname = ?, description = ?, active = ? where viewid = ?") or $logger->error($DBI::errstr);
-            $idnresult->execute($viewname,$description,$active,$viewid) or $logger->error($DBI::errstr);
-
-            # Primary RSS-Feed fuer Autodiscovery eintragen
-            if ($primrssfeed){
-                $idnresult=$config->{dbh}->prepare("update viewinfo set rssfeed = ? where viewid = ?") or $logger->error($DBI::errstr);
-                $idnresult->execute($primrssfeed,$viewid) or $logger->error($DBI::errstr);
-            }
-            
-            # Datenbanken zunaechst loeschen
-
-            $idnresult=$config->{dbh}->prepare("delete from viewdbs where viewname = ?") or $logger->error($DBI::errstr);
-            $idnresult->execute($viewname) or $logger->error($DBI::errstr);
-
-      
-            # Dann die zugehoerigen Datenbanken eintragen
-            foreach my $singleviewdb (@viewdb) {
-                $idnresult=$config->{dbh}->prepare("insert into viewdbs values (?,?)") or $logger->error($DBI::errstr);
-                $idnresult->execute($viewname,$singleviewdb) or $logger->error($DBI::errstr);
-            }
-
-            # RSS-Feeds zunaechst loeschen
-            $idnresult=$config->{dbh}->prepare("delete from viewrssfeeds where viewname = ?") or $logger->error($DBI::errstr);
-            $idnresult->execute($viewname) or $logger->error($DBI::errstr);
-
-            # Dann die zugehoerigen Feeds eintragen
-            foreach my $singleviewrssfeed (@rssfeeds) {
-                $idnresult=$config->{dbh}->prepare("insert into viewrssfeeds values (?,?)") or $logger->error($DBI::errstr);
-                $idnresult->execute($viewname,$singleviewrssfeed) or $logger->error($DBI::errstr);
-            }
-
-            
-            $idnresult->finish();
+	    my $ret_ref = dist_cmd("editview_change",{ 
+						      viewname    => $viewname,
+						      description => $description,
+						      active      => $active,
+						      primrssfeed => $primrssfeed,
+						      viewdb      => \@viewdb,
+						      rssfeeds    => \@rssfeeds,
+						     }) if ($do_dist);
 
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showviews=1");
       
@@ -670,44 +708,33 @@ sub handler {
                 return OK;
             }
 
+	    my $ret = editview_new({
+				    viewname    => $viewname,
+				    description => $description,
+				    active      => $active,
+				   });
 
-            my $idnresult=$config->{dbh}->prepare("select count(*) as rowcount from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
-            $idnresult->execute($viewname) or $logger->error($DBI::errstr);
-            my $res=$idnresult->fetchrow_hashref;
-            my $rows=$res->{rowcount};
+	    my $ret_ref = dist_cmd("editview_new",{ 
+						   viewname    => $viewname,
+						   description => $description,
+						   active      => $active,
+						  }) if ($do_dist);
 
-            if ($rows > 0) {
+	    if ($ret == -1){
+	      OpenBib::Common::Util::print_warning($msg->maketext("Es existiert bereits ein View unter diesem Namen"),$r,$msg);
+	      return OK;
+	    }
 
-                OpenBib::Common::Util::print_warning($msg->maketext("Es existiert bereits ein View unter diesem Namen"),$r,$msg);
-
-                $idnresult->finish();
-                return OK;
-            }
-      
-            $idnresult=$config->{dbh}->prepare("insert into viewinfo values (NULL,?,?,NULL,?)") or $logger->error($DBI::errstr);
-            $idnresult->execute($viewname,$description,$active) or $logger->error($DBI::errstr);
-
-
-
-            $idnresult=$config->{dbh}->prepare("select viewid from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
-            $idnresult->execute($viewname);
-
-
-            $res       = $idnresult->fetchrow_hashref();
-            my $viewid = decode_utf8($res->{viewid});
-
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editview=1&do_edit=1&viewid=$viewid");
+            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editview=1&do_edit=1&viewname=$viewname");
             return OK;
         }
         elsif ($do_edit) {
-
-
-            my $idnresult=$config->{dbh}->prepare("select * from viewinfo where viewid = ?") or $logger->error($DBI::errstr);
-            $idnresult->execute($viewid) or $logger->error($DBI::errstr);
+	    
+            my $idnresult=$config->{dbh}->prepare("select * from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
+            $idnresult->execute($viewname) or $logger->error($DBI::errstr);
       
             my $result=$idnresult->fetchrow_hashref();
 
-            my $viewid      = decode_utf8($result->{'viewid'});
             my $viewname    = decode_utf8($result->{'viewname'});
             my $description = decode_utf8($result->{'description'});
             my $primrssfeed = decode_utf8($result->{'primrssfeed'});
@@ -750,7 +777,6 @@ sub handler {
             $idnresult->finish();
 
             my $view={
-		viewid       => $viewid,
 		viewname     => $viewname,
 		description  => $description,
 		active       => $active,
@@ -780,33 +806,36 @@ sub handler {
     elsif ($do_editview_rss){
 
       if ($do_change) {
+
+	  editview_rss_change({
+			       viewname => $viewname,
+			       rsstype  => $rsstype,
+			       rssid    => $rssid,
+			       rssids   => \@rssids,
+			      });
+
+	  my $ret_ref = dist_cmd("editview_rss_change",{ 
+							viewname => $viewname,
+							rsstype  => $rsstype,
+							rssid    => $rssid,
+							rssids   => \@rssids,
+						       }) if ($do_dist);
+
           if ($rsstype eq "primary"){
-              my $request=$config->{dbh}->prepare("update viewinfo set rssfeed = ? where viewid = ?") or $logger->error($DBI::errstr);
-              $request->execute($rssid,$viewid) or $logger->error($DBI::errstr);
-              $request->finish();
-              $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editview_rss=1&do_edit=1&viewid=$viewid");
+              $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editview_rss=1&do_edit=1&viewname=$viewname");
               return OK;
           }
           elsif ($rsstype eq "all") {
-              my $request=$config->{dbh}->prepare("delete from viewrssfeeds where viewname = ?");
-              $request->execute($viewname);
-
-              $request=$config->{dbh}->prepare("insert into viewrssfeeds values (?,?)") or $logger->error($DBI::errstr);
-              foreach my $rssid (@rssids){
-                  $request->execute($viewname,$rssid) or $logger->error($DBI::errstr);
-              }
-              $request->finish();
               $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showviews=1");
               return OK;
           }
       }
       elsif ($do_edit) {
-          my $request=$config->{dbh}->prepare("select * from viewinfo where viewid=?") or $logger->error($DBI::errstr);
-          $request->execute($viewid) or $logger->error($DBI::errstr);
+          my $request=$config->{dbh}->prepare("select * from viewinfo where viewname=?") or $logger->error($DBI::errstr);
+          $request->execute($viewname) or $logger->error($DBI::errstr);
           
           my $result=$request->fetchrow_hashref();
           
-          my $viewid        = decode_utf8($result->{'viewid'});
           my $viewname      = decode_utf8($result->{'viewname'});
           my $viewdesc      = decode_utf8($result->{'description'});
           my $primrssfeed   = decode_utf8($result->{'rssfeed'});
@@ -846,7 +875,6 @@ sub handler {
 
 
           my $view={
-              id          => $viewid,
               name        => $viewname,
               description => $viewdesc,
               primrssfeed => $primrssfeed,
@@ -964,6 +992,8 @@ sub handler {
 
         my $ttdata={
             stylesheet => $stylesheet,
+
+	    session    => $session,
             sessionID  => $session->{ID},
 	         
             sessions   => \@sessions,
@@ -972,7 +1002,12 @@ sub handler {
             msg        => $msg,
         };
 
-        OpenBib::Common::Util::print_page($config->{tt_admin_showsessions_tname},$ttdata,$r);
+	$stid=~s/[^0-9]//g;
+
+	my $templatename = ($stid)?"tt_admin_showsessions_".$stid."_tname":"tt_admin_showsessions_tname";
+
+	OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+
         return OK;
     }
     elsif ($do_editsession) {
@@ -1036,6 +1071,267 @@ sub handler {
             $idnresult2->finish;
             return OK;
         }
+    }
+    elsif ($do_exploresessions) {
+        if ($do_show) {
+
+	  my $statistics = new OpenBib::Statistics();
+
+	  my $serialized_type_ref = {
+				     1  => 1,
+				     10 => 1,
+				    };
+
+
+	  my $idnresult=$statistics->{dbh}->prepare("select * from eventlog where sessionid = ? order by tstamp ASC") or $logger->error($DBI::errstr);
+	  $idnresult->execute($singlesessionid) or $logger->error($DBI::errstr);
+	  
+	  my @events = ();
+
+	  while (my $result=$idnresult->fetchrow_hashref()) {
+            my $type        = decode_utf8($result->{'type'});
+            my $tstamp      = decode_utf8($result->{'tstamp'});
+            my $content     = decode_utf8($result->{'content'});
+	    
+
+
+	    if (exists $serialized_type_ref->{$type}){
+	      $content=Storable::thaw(pack "H*", $content);
+	    }
+
+            push @events, {
+			   type => $type,
+			   content => $content,
+			   createtime => $tstamp,
+			  };
+	  }
+	  
+	  
+	  my $ttdata={
+		      stylesheet => $stylesheet,
+		      
+		      session    => $session,
+		      sessionID  => $session->{ID},
+		      
+		      singlesessionid => $singlesessionid,
+
+		      events     => \@events,
+
+		      clientip   => $clientip,
+		      fromdate   => $fromdate,
+		      todate     => $todate,
+		      
+		      config     => $config,
+		      msg        => $msg,
+		     };
+	  
+	  $stid=~s/[^0-9]//g;
+	  
+	  my $templatename = ($stid)?"tt_admin_exploresessions_show".$stid."_tname":"tt_admin_exploresessions_show_tname";
+	  
+	  OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+	  
+	  return OK;
+	    
+
+	}
+        else {
+
+	  unless ($fromdate && $todate){
+            OpenBib::Common::Util::print_warning($msg->maketext("Bitte geben Sie ein Anfangs- sowie ein End-Datum an!"),$r,$msg);
+            return OK;
+	    
+	  }
+
+	  my $statistics = new OpenBib::Statistics();
+	  
+	  # Eventtyp 102 = Client-IP
+	  my $sqlstring="select sessionid,tstamp from eventlog where type=102 and content = ? and tstamp > ? and tstamp < ?";
+	  
+	  $logger->debug("$sqlstring - $clientip / $fromdate / $todate");
+
+	  my $idnresult=$statistics->{dbh}->prepare($sqlstring) or $logger->error($DBI::errstr);
+	  $idnresult->execute($clientip,$fromdate,$todate) or $logger->error($DBI::errstr);
+	  my @sessions=();
+	  
+	  while (my $result=$idnresult->fetchrow_hashref()) {
+            my $singlesessionid = decode_utf8($result->{'sessionid'});
+            my $tstamp          = decode_utf8($result->{'tstamp'});
+	    
+            push @sessions, {
+			     sessionid  => $singlesessionid,
+			     createtime => $tstamp,
+			    };
+	  }
+	  
+	  
+	  my $ttdata={
+		      stylesheet => $stylesheet,
+		      
+		      session    => $session,
+		      sessionID  => $session->{ID},
+		      
+		      sessions   => \@sessions,
+	
+		      clientip   => $clientip,
+		      fromdate   => $fromdate,
+		      todate     => $todate,
+
+		      config     => $config,
+		      msg        => $msg,
+		     };
+	  
+	  $stid=~s/[^0-9]//g;
+	  
+	  my $templatename = ($stid)?"tt_admin_exploresessions_list".$stid."_tname":"tt_admin_exploresessions_list_tname";
+	  
+	  OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+	  
+	  return OK;
+	}
+    }
+    elsif ($do_showstat) {
+
+        my $statistics = new OpenBib::Statistics();
+	my $user       = new OpenBib::User();
+
+        # TT-Data erzeugen
+        my $ttdata={
+                    sessionID  => $session->{ID},
+
+		    session    => $session,
+		    statistics => $statistics,
+		    user       => $user,
+		    config     => $config,
+		    msg        => $msg,
+		   };
+
+	$stid=~s/[^0-9]//g;
+
+	my $templatename = ($stid)?"tt_admin_showstat_".$stid."_tname":"tt_admin_showstat_tname";
+
+	OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+
+    }
+    elsif ($do_showlogintarget) {
+
+	my $user       = new OpenBib::User();
+
+        # TT-Data erzeugen
+        my $ttdata={
+                    sessionID  => $session->{ID},
+
+		    session    => $session,
+
+		    user       => $user,
+		    config     => $config,
+		    msg        => $msg,
+		   };
+
+	$stid=~s/[^0-9]//g;
+
+	my $templatename = ($stid)?"tt_admin_showlogintarget_".$stid."_tname":"tt_admin_showlogintarget_tname";
+
+	OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+
+
+    }
+    elsif ($do_editlogintarget) {
+
+	my $user       = new OpenBib::User();
+
+        # Zuerst schauen, ob Aktionen gefordert sind
+        if ($do_del) {
+            editlogintarget_del($targetid);
+
+	    my $ret_ref = dist_cmd("editlogintarget_del",{ targetid => $targetid }) if ($do_dist);
+
+            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showlogintarget=1");
+            return OK;
+
+        }
+        elsif ($do_change) {
+
+            editlogintarget_change($thislogintarget_ref);
+
+	    my $ret_ref = dist_cmd("editlogintarget_change",{ 
+						     logintarget => $thislogintarget_ref,
+						 }) if ($do_dist);
+
+            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showlogintarget=1");
+            return OK;
+        }
+        elsif ($do_new) {
+
+            if ($description eq "") {
+
+                OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen mindestens eine Beschreibung eingeben."),$r,$msg);
+
+                $idnresult->finish();
+                return OK;
+            }
+
+            my $idnresult=$user->{dbh}->prepare("select count(description) as rowcount from logintarget where description = ?") or $logger->error($DBI::errstr);
+            $idnresult->execute($thislogintarget_ref->{description}) or $logger->error($DBI::errstr);
+
+            my $res=$idnresult->fetchrow_hashref;
+            my $rows=$res->{rowcount};
+            
+            if ($rows > 0) {
+
+                OpenBib::Common::Util::print_warning($msg->maketext("Es existiert bereits ein Anmeldeziel unter diesem Namen"),$r,$msg);
+
+                $idnresult->finish();
+                return OK;
+            }
+
+            editlogintarget_new($thislogintarget_ref);
+            
+	    my $ret_ref = dist_cmd("editlogintarget_new",{ logintarget => $thislogintarget_ref }) if ($do_dist);
+
+            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showlogintarget=1");
+            return OK;
+        }
+        elsif ($do_edit) {
+
+	  my $logintarget_ref = $user->get_logintarget_by_id($targetid);
+      
+	  my $ttdata={
+                stylesheet  => $stylesheet,
+                sessionID   => $session->{ID},
+		  
+                logintarget => $logintarget_ref,
+		  
+                user        => $user,
+                config      => $config,
+                msg         => $msg,
+            };
+      
+            OpenBib::Common::Util::print_page($config->{tt_admin_editlogintarget_tname},$ttdata,$r);
+        }
+    }
+    elsif ($do_showuser) {
+
+	my $user       = new OpenBib::User();
+
+        # TT-Data erzeugen
+        my $ttdata={
+                    sessionID  => $session->{ID},
+
+		    session    => $session,
+
+		    user       => $user,
+		    config     => $config,
+		    msg        => $msg,
+		   };
+
+	$stid=~s/[^0-9]//g;
+
+	my $templatename = ($stid)?"tt_admin_showuser_".$stid."_tname":"tt_admin_showuser_tname";
+
+	OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+
+
     }
     elsif ($do_logout) {
 
@@ -1127,6 +1423,256 @@ sub editcat_new {
         system("$config->{tool_dir}/createpool.pl $dbinfo_ref->{dbname} > /dev/null 2>&1");
     }
     return;
+}
+
+sub editcat_rss_change {
+    my ($dbname,$rsstype,$active,$rssid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = new OpenBib::Config();
+
+    my $request=$config->{dbh}->prepare("update rssfeeds set dbname = ?, type = ?, active = ? where id = ?") or $logger->error($DBI::errstr);
+    $request->execute($dbname,$rsstype,$active,$rssid) or $logger->error($DBI::errstr);
+    $request->finish();
+
+    return;
+}
+
+sub editcat_rss_new {
+    my ($dbname,$rsstype,$active,$rssid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = new OpenBib::Config();
+
+    my $request=$config->{dbh}->prepare("insert into rssfeeds values (NULL,?,?,-1,'',0)") or $logger->error($DBI::errstr);
+    $request->execute($dbname,$rsstype) or $logger->error($DBI::errstr);
+    $request->finish();
+
+    return;
+}
+
+sub editview_del {
+    my ($viewname)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = new OpenBib::Config();
+
+    my $idnresult=$config->{dbh}->prepare("delete from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($viewname) or $logger->error($DBI::errstr);
+    $idnresult=$config->{dbh}->prepare("delete from viewdbs where viewname = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($viewname) or $logger->error($DBI::errstr);
+    $idnresult->finish();
+
+    return;
+}
+
+sub editview_change {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $viewname               = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}            : undef;
+    my $description            = exists $arg_ref->{description}
+        ? $arg_ref->{description}         : undef;
+    my $active                 = exists $arg_ref->{active}
+        ? $arg_ref->{active}              : undef;
+    my $primrssfeed            = exists $arg_ref->{primrssfeed}
+        ? $arg_ref->{primrssfeed}         : undef;
+    my $viewdb_ref             = exists $arg_ref->{viewdb}
+        ? $arg_ref->{viewdb}              : undef;
+    my $rssfeeds_ref           = exists $arg_ref->{rssfeeds}
+        ? $arg_ref->{rssfeeds}            : undef;
+
+    my @viewdb   = (defined $viewdb_ref)?@$viewdb_ref:();
+    my @rssfeeds = (defined $rssfeeds_ref)?@$rssfeeds_ref:();
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = new OpenBib::Config();
+
+    # Zuerst die Aenderungen in der Tabelle Viewinfo vornehmen
+    
+    my $idnresult=$config->{dbh}->prepare("update viewinfo set description = ?, active = ? where viewname = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($description,$active,$viewname) or $logger->error($DBI::errstr);
+    
+    # Primary RSS-Feed fuer Autodiscovery eintragen
+    if ($primrssfeed){
+      $idnresult=$config->{dbh}->prepare("update viewinfo set rssfeed = ? where viewname = ?") or $logger->error($DBI::errstr);
+      $idnresult->execute($primrssfeed,$viewname) or $logger->error($DBI::errstr);
+    }
+    
+    # Datenbanken zunaechst loeschen
+    
+    $idnresult=$config->{dbh}->prepare("delete from viewdbs where viewname = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($viewname) or $logger->error($DBI::errstr);
+    
+    
+    # Dann die zugehoerigen Datenbanken eintragen
+    foreach my $singleviewdb (@viewdb) {
+      $idnresult=$config->{dbh}->prepare("insert into viewdbs values (?,?)") or $logger->error($DBI::errstr);
+      $idnresult->execute($viewname,$singleviewdb) or $logger->error($DBI::errstr);
+    }
+    
+    # RSS-Feeds zunaechst loeschen
+    $idnresult=$config->{dbh}->prepare("delete from viewrssfeeds where viewname = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($viewname) or $logger->error($DBI::errstr);
+    
+    # Dann die zugehoerigen Feeds eintragen
+    foreach my $singleviewrssfeed (@rssfeeds) {
+      $idnresult=$config->{dbh}->prepare("insert into viewrssfeeds values (?,?)") or $logger->error($DBI::errstr);
+      $idnresult->execute($viewname,$singleviewrssfeed) or $logger->error($DBI::errstr);
+    }
+    
+    $idnresult->finish();
+
+    return;
+}
+
+sub editview_new {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $viewname               = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname}            : undef;
+    my $description            = exists $arg_ref->{description}
+        ? $arg_ref->{description}         : undef;
+    my $active                 = exists $arg_ref->{active}
+        ? $arg_ref->{active}              : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = new OpenBib::Config();
+
+    my $idnresult=$config->{dbh}->prepare("select count(*) as rowcount from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($viewname) or $logger->error($DBI::errstr);
+    my $res=$idnresult->fetchrow_hashref;
+    my $rows=$res->{rowcount};
+    
+    if ($rows > 0) {
+      $idnresult->finish();
+      return -1;
+    }
+    
+    $idnresult=$config->{dbh}->prepare("insert into viewinfo values (?,?,NULL,?)") or $logger->error($DBI::errstr);
+    $idnresult->execute($viewname,$description,$active) or $logger->error($DBI::errstr);
+    
+    return;
+}
+
+sub editview_rss_change {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $viewname               = exists $arg_ref->{viewname}
+        ? $arg_ref->{viewname }           : undef;
+    my $rsstype                = exists $arg_ref->{rsstype}
+        ? $arg_ref->{rsstype }            : undef;
+    my $rssid                  = exists $arg_ref->{rssid}
+        ? $arg_ref->{rssid}               : undef;
+    my $rssids_ref             = exists $arg_ref->{rssids}
+        ? $arg_ref->{rssids}              : undef;
+
+    my @rssids = (defined $rssids_ref)?@$rssids_ref:();
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = new OpenBib::Config();
+
+    if ($rsstype eq "primary"){
+      my $request=$config->{dbh}->prepare("update viewinfo set rssfeed = ? where viewname = ?") or $logger->error($DBI::errstr);
+      $request->execute($rssid,$viewname) or $logger->error($DBI::errstr);
+      $request->finish();
+    }
+    elsif ($rsstype eq "all") {
+      my $request=$config->{dbh}->prepare("delete from viewrssfeeds where viewname = ?");
+      $request->execute($viewname);
+      
+      $request=$config->{dbh}->prepare("insert into viewrssfeeds values (?,?)") or $logger->error($DBI::errstr);
+      foreach my $rssid (@rssids){
+	$request->execute($viewname,$rssid) or $logger->error($DBI::errstr);
+      }
+      $request->finish();
+    }
+    
+    return;
+}
+
+sub editlogintarget_del {
+    my ($targetid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $user = new OpenBib::User();
+
+    my $idnresult=$user->{dbh}->prepare("delete from logintarget where targetid = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($targetid) or $logger->error($DBI::errstr);
+    $idnresult->finish();
+
+    return;
+}
+
+sub editlogintarget_change {
+    my ($logintarget_ref)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $user = new OpenBib::User();
+
+    my $idnresult=$user->{dbh}->prepare("update logintarget set hostname = ?, port = ?, user =?, db = ?, description = ?, type = ? where targetid = ?") or $logger->error($DBI::errstr); # 
+    $idnresult->execute($logintarget_ref->{hostname},$logintarget_ref->{port},$logintarget_ref->{username},$logintarget_ref->{dbname},$logintarget_ref->{description},$logintarget_ref->{type},$logintarget_ref->{id}) or $logger->error($DBI::errstr);
+    $idnresult->finish();
+    
+    return;
+}
+
+sub editlogintarget_new {
+    my ($logintarget_ref)=@_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $user = new OpenBib::User();
+
+    my $idnresult=$user->{dbh}->prepare("insert into logintarget (hostname,port,user,db,description,type) values (?,?,?,?,?,?)") or $logger->error($DBI::errstr);
+    $idnresult->execute($logintarget_ref->{hostname},$logintarget_ref->{port},$logintarget_ref->{username},$logintarget_ref->{dbname},$logintarget_ref->{description},$logintarget_ref->{type}) or $logger->error($DBI::errstr);
+    $idnresult->finish();
+
+    return;
+}
+
+
+sub dist_cmd {
+  my ($cmd,$args_ref)=@_;
+
+  # Log4perl logger erzeugen
+  my $logger = get_logger();
+
+  my $config = new OpenBib::Config();
+
+  foreach my $slave_ref (@{$config->{distadmin}{slaves}}){
+    my $soap = SOAP::Lite
+      -> uri("urn:/Admin")
+	-> proxy($slave_ref->{wsurl});
+    my $result = $soap->$cmd($args_ref);
+    
+    if ($result->fault) {
+      $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+    }
+    
+  }
+
+  return;
 }
 
 1;

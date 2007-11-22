@@ -58,7 +58,7 @@ sub handler {
     my $config     = new OpenBib::Config();
     my $statistics = new OpenBib::Statistics();
 
-    my $query = Apache::Request->new($r);
+    my $query = Apache::Request->instance($r);
 
     my $status=$query->parse;
 

@@ -36,7 +36,6 @@ CREATE TABLE user (
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
-;
 
 DROP TABLE IF EXISTS usersession;
 CREATE TABLE usersession (
@@ -49,7 +48,6 @@ CREATE TABLE usersession (
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
-;
 
 DROP TABLE IF EXISTS userdbprofile;
 CREATE TABLE userdbprofile (
@@ -62,7 +60,6 @@ CREATE TABLE userdbprofile (
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
-;
 
 DROP TABLE IF EXISTS profildb;
 CREATE TABLE profildb (
@@ -73,7 +70,6 @@ CREATE TABLE profildb (
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
-;
 
 DROP TABLE IF EXISTS fieldchoice;
 CREATE TABLE fieldchoice (
@@ -89,6 +85,7 @@ CREATE TABLE fieldchoice (
  sign      BOOL,
  mart      BOOL,
  hststring BOOL,
+ inhalt    BOOL,
  gtquelle  BOOL,
  ejahr     BOOL,
  
@@ -97,7 +94,6 @@ CREATE TABLE fieldchoice (
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
-;
 
 DROP TABLE IF EXISTS logintarget;
 CREATE TABLE logintarget (
@@ -120,7 +116,6 @@ CREATE TABLE treffer (
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
-;
 
 DROP TABLE IF EXISTS tags;
 CREATE TABLE tags (
@@ -132,7 +127,6 @@ CREATE TABLE tags (
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
-;
 
 DROP TABLE IF EXISTS tittag;
 CREATE TABLE tittag (
@@ -153,5 +147,42 @@ CREATE TABLE tittag (
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
-;
 
+DROP TABLE IF EXISTS reviews;
+CREATE TABLE reviews (
+ id        INT(11)     NOT NULL auto_increment,
+ tstamp    TIMESTAMP,
+ titid     INT(11)     NOT NULL default '0',
+ titisbn   CHAR(14)    NOT NULL default '',
+ titdb     VARCHAR(25) NOT NULL default '',
+ loginname TEXT,
+ nickname  VARCHAR(30) NOT NULL default '',
+ title     VARCHAR(100)NOT NULL default '',
+ review    MEDIUMTEXT  NOT NULL default '',
+ rating    INT(3)      NOT NULL default '0',
+ PRIMARY KEY  (id),
+ INDEX (id),
+ INDEX (titid),
+ INDEX (titisbn),
+ INDEX (titdb),
+ INDEX (loginname(30))
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+DROP TABLE IF EXISTS reviewratings;
+CREATE TABLE reviewratings (
+ id        INT(11)     NOT NULL auto_increment,
+ tstamp    TIMESTAMP,
+ reviewid  INT(11)     NOT NULL default '0',
+ loginname TEXT,
+ rating    INT(3)      NOT NULL default '0',
+ PRIMARY KEY  (id),
+ INDEX (id),
+ INDEX (reviewid),
+ INDEX (loginname(30))
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;

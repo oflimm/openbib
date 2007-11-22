@@ -17,10 +17,14 @@
 
 [% PROCESS corporate_banner %]
 
+<div id="maincontent">
+
 <ul class="tabbingmenu">
    <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">[% msg.maketext("Kataloge") %]</a></li>
    <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">[% msg.maketext("Views") %]</a></li>
    <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">[% msg.maketext("Sessions") %]</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1">[% msg.maketext("Statistik") %]</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showuser=1">[% msg.maketext("Nutzerverwaltung") %]</a></li>
    <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">[% msg.maketext("Logout") %]</a></li>
 </ul>
 
@@ -33,7 +37,7 @@
 
 <table width="100%">
 <tr><th>[% msg.maketext("Katalog bearbeiten") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 <table>
 <tr><td><b>[% msg.maketext("Fakult&auml;t") %]</b></td><td>
 <select name="orgunit">
@@ -97,7 +101,7 @@ selected
 
 <table width="100%">
 <tr><th>[% msg.maketext("Import-Einstellungen") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 <table>
 <tr><td><b>[% msg.maketext("Protokoll") %]</b></td><td><select name="protocol"><option value="ftp" 
 [% IF katalog.imxconfig.protocol == 'ftp' %]
@@ -151,7 +155,7 @@ selected
 
 <table width="100%">
 <tr><th>[% msg.maketext("Ausleih-Einstellungen") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 <table>
 <tr><td><b>[% msg.maketext("Sprung in WebOPAC") %]</b></td><td><select name="circ"><option value="0"
 
@@ -185,5 +189,7 @@ value="[% msg.maketext("Ändern") %]"></td><td>&nbsp;</td><td align="right"><inp
 </div>
 
 <p />
+
+</div>
 
 [% PROCESS std_footer %]

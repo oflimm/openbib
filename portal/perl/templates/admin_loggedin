@@ -17,10 +17,14 @@
 
 [% PROCESS corporate_banner %]
 
+<div id="maincontent">
+
 <ul class="tabbingmenu">
    <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">[% msg.maketext("Kataloge") %]</a></li>
    <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">[% msg.maketext("Views") %]</a></li>
    <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">[% msg.maketext("Sessions") %]</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1">[% msg.maketext("Statistik") %]</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showuser=1">[% msg.maketext("Nutzerverwaltung") %]</a></li>
    <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">[% msg.maketext("Logout") %]</a></li>
 </ul>
 
@@ -28,7 +32,7 @@
 
 <table width="100%">
 <tr><th>[% msg.maketext("Erfolgsmeldung") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 [% msg.maketext("Sie sind nun als Administrator eingeloggt.") %]
 </td></tr>
 </table>
@@ -38,5 +42,7 @@
 </div>
 
 <p />
+
+</div>
 
 [% PROCESS std_footer %]

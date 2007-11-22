@@ -78,20 +78,47 @@
 [%- urls.push("<a href=\"${part.content}\" target=\"_blank\">${part.content}</a>")-%]
 [%- END -%]
 [%- url  = urls.join(' ; ') -%]
-[%# Signaturen konstruieren %]
-[%- signaturen = [] -%]
-[%- FOREACH singleitemmex IN itemmex -%]
-[%- part = singleitemmex.${'X0014'} -%]
-[%- signaturen.push("${part.content}") -%]
-[%- END -%]
-[%- signatur = signaturen.join(' ; ') -%]
-[%- location = targetdbinfo.dbinfo.${item.database}.short -%]
-[%
-IF signatur ;
-  location = "${location}: ${signatur}";
-END;
+[%-
 
-%]
+    location = {} ;
+
+    FOREACH mex IN itemmex ;
+
+       catname  = mex.${"X4000"}.content.short ;
+       caturl   = mex.${"X4001"}.content ;
+       verlauf  = mex.${"X1204"}.content ;
+       signatur = mex.${"X0014"}.content ;
+
+       IF verlauf == '-' ;
+          verlauf = '' ;
+       ELSE ;
+          verlauf = "(${verlauf})" ;
+       END ;
+       location.${catname}.${"url"}     = caturl ;
+       location.${catname}.${"verlauf"} = verlauf ;
+
+       IF NOT location.${catname}.exists("signatur") ;
+          location.${catname}.${"signatur"} = signatur ;
+       ELSE ;
+          signaturstring = location.${catname}.${"signatur"} ;
+          signaturstring = "${signaturstring} ; ${signatur}" ;
+          location.${catname}.${"signatur"}= signaturstring  ;      
+       END ;
+    END ;
+
+    locations = [] ;
+
+    FOREACH catname IN location.keys ;
+       caturl         = location.${catname}.${"url"} ;
+       verlauf        = location.${catname}.${"verlauf"} ;
+       signaturstring = location.${catname}.${"signatur"} ;
+
+       locations.push("<a href=\"${caturl}\" target=\"_blank\">${catname}</a>: ${signaturstring} ${verlauf}");
+
+    END ;
+
+    locationstring = locations.join("<br />");
+-%]
 [%
 
  quelle = item.${'T0590'}.0.content;
@@ -102,7 +129,6 @@ END;
 <TITLE>Langanzeige</TITLE>
 </HEAD>
 <BODY>
-
 <!-- begin result -->
 
 <OL>
@@ -127,7 +153,7 @@ END;
 <LI> YR=[% utf2iso(item.${'T0425'}.0.content)  # ErschJahr %]
 <LI> IB=[% utf2iso(isbn)                       # ISBN %]
 <LI> IS=[% utf2iso(issn)                       # ISSN %]
-<LI> LO=[% utf2iso(location)                   # Location mit Signatur %]
+<LI> LO=[% utf2iso(locationstring)             # Locations mit Signatur und Bestandsverlauf%]
 <LI> FN=[% utf2iso(fussnote)                   # Fussnote %]
 <LI> OLL=[% utf2iso(url)                       # URL %]
 <LI> AUH=[% utf2iso(autorlink) %]
@@ -194,18 +220,6 @@ END;
 [%- publisher = sbitem.${'T0412'}.first.content -%]
 [%# Ejahr konstruieren %]
 [%- yearofpub = sbitem.${'T0425'}.first.content -%]
-[%# Signaturen konstruieren %]
-[%- signaturen = [] -%]
-[%- FOREACH singleitemmex IN sbitemmex -%]
-[%- part = singleitemmex.${'X0014'} -%]
-[%- signaturen.push("${part.content}") -%]
-[%- END -%]
-[%- signatur = signaturen.join(' ; ') -%]
-[%- location = targetdbinfo.dbinfo.${item.database}.short -%]
-[%
-IF signatur ;
-  location = "${location}: ${signatur}";
-END;
 
 %]
 <LI> SBAU=[% utf2iso(person)                       # Verfasser%]

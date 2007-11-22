@@ -62,6 +62,16 @@
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="database"  value="einbaende" />
 <input type="hidden" name="sb"        value="sql" />
+<input type="hidden" name="st"        value="1" />
+[% IF config.drilldown %]
+<input type="hidden" name="drilldown"      value="1" />
+[% END %]
+[% IF config.drilldown_option.cloud %]
+<input type="hidden" name="dd_cloud"       value="1" />
+[% END %]
+[% IF config.drilldown_option.categorized %]
+<input type="hidden" name="dd_categorized" value="1" />
+[% END %]
 
 <p />
 <p />
@@ -78,31 +88,31 @@
 <tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Verknüpfung") %]</td><td>[% msg.maketext("Ihre Eingabe") %]</td><td></td></tr>
 
 [% IF showfs %]
-<tr><td class="category">[% msg.maketext("Freie Suche") %]</td><td class="category"></td><td><input type="text" name="fs" value="[% searchquery.fs.val %]" size="30" maxlength="200" /></td><td></td></tr>
+<tr><td class="category">[% msg.maketext("Freie Suche") %]</td><td class="category"></td><td><input type="text" name="fs" value="[% searchquery.fs.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
 [% IF showhst %]
-<tr><td class="category">[% msg.maketext("Titel/Provenienz") %]</td><td class="category"><select name="boolhst"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="hst" value="[% searchquery.hst.val %]" size="30" maxlength="200" /></td><td></td></tr>
+<tr><td class="category">[% msg.maketext("Titel/Provenienz") %]</td><td class="category"><select name="boolhst"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="hst" value="[% searchquery.hst.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
 [% IF showverf %]
-<tr><td class="category">[% msg.maketext("Person") %]</td><td class="category"><select name="boolverf"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="verf" value="[% searchquery.verf.val %]" size="30" maxlength="200" /></td><td><a href="http://einbandsammlung.ub.uni-koeln.de/opendia/viewer?collection=einbaende;action=browse;browsecat=M0101;sessionID=[% sessionID %];remoteview=[% view %];remotehost=[% config.servername %];view=kug">[% msg.maketext("Index") %]</a></td></tr>
+<tr><td class="category">[% msg.maketext("Person") %]</td><td class="category"><select name="boolverf"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="verf" value="[% searchquery.verf.val | html %]" size="30" maxlength="200" /></td><td><a href="http://einbandsammlung.ub.uni-koeln.de/opendia/viewer?collection=einbaende;action=browse;browsecat=M0101;sessionID=[% sessionID %];remoteview=[% view %];remotehost=[% config.servername %];view=kug">[% msg.maketext("Index") %]</a></td></tr>
 [% END %]
 
 [% IF showkor %]
-<tr><td class="category">[% msg.maketext("Region") %]</td><td class="category"><select name="boolkor"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="kor" value="[% searchquery.kor.val %]" size="30" maxlength="200" /></td><td><a href="http://einbandsammlung.ub.uni-koeln.de/opendia/viewer?collection=einbaende;action=browse;browsecat=M0200;sessionID=[% sessionID %];remoteview=[% view %];remotehost=[% config.servername %];view=kug">[% msg.maketext("Index") %]</a></td></tr>
+<tr><td class="category">[% msg.maketext("Region") %]</td><td class="category"><select name="boolkor"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="kor" value="[% searchquery.kor.val | html %]" size="30" maxlength="200" /></td><td><a href="http://einbandsammlung.ub.uni-koeln.de/opendia/viewer?collection=einbaende;action=browse;browsecat=M0200;sessionID=[% sessionID %];remoteview=[% view %];remotehost=[% config.servername %];view=kug">[% msg.maketext("Index") %]</a></td></tr>
 [% END %]
 
 [% IF showswt %]
-<tr><td class="category">[% msg.maketext("Jahrhundert") %]</td><td class="category"><select name="boolswt"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="swt" value="[% searchquery.swt.val %]" size="30" maxlength="200" /></td><td><a href="http://einbandsammlung.ub.uni-koeln.de/opendia/viewer?collection=einbaende;action=browse;browsecat=M0710;sessionID=[% sessionID %];remoteview=[% view %];remotehost=[% config.servername %];view=kug">[% msg.maketext("Index") %]</a></td></tr>
+<tr><td class="category">[% msg.maketext("Jahrhundert") %]</td><td class="category"><select name="boolswt"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="swt" value="[% searchquery.swt.val | html %]" size="30" maxlength="200" /></td><td><a href="http://einbandsammlung.ub.uni-koeln.de/opendia/viewer?collection=einbaende;action=browse;browsecat=M0710;sessionID=[% sessionID %];remoteview=[% view %];remotehost=[% config.servername %];view=kug">[% msg.maketext("Index") %]</a></td></tr>
 [% END %]
 
 [% IF shownotation %]
-<tr><td class="category">[% msg.maketext("Einband") %]</td><td class="category"><select name="boolnotation"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="notation" value="[% searchquery.notation.val %]" size="30" maxlength="200" /></td><td><a href="http://einbandsammlung.ub.uni-koeln.de/opendia/viewer?collection=einbaende;action=browse;browsecat=M0700;sessionID=[% sessionID %];remoteview=[% view %];remotehost=[% config.servername %];view=kug">[% msg.maketext("Index") %]</a></td></tr>
+<tr><td class="category">[% msg.maketext("Einband") %]</td><td class="category"><select name="boolnotation"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="notation" value="[% searchquery.notation.val | html %]" size="30" maxlength="200" /></td><td><a href="http://einbandsammlung.ub.uni-koeln.de/opendia/viewer?collection=einbaende;action=browse;browsecat=M0700;sessionID=[% sessionID %];remoteview=[% view %];remotehost=[% config.servername %];view=kug">[% msg.maketext("Index") %]</a></td></tr>
 [% END %]
 
 [% IF showsign %]
-<tr><td class="category">[% msg.maketext("Signatur") %]</td><td class="category"><select name="boolsign"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="sign" value="[% searchquery.sign.val %]" size="30" maxlength="200" /></td><td><span class="warning">*</span></td></tr>
+<tr><td class="category">[% msg.maketext("Signatur") %]</td><td class="category"><select name="boolsign"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="sign" value="[% searchquery.sign.val | html %]" size="30" maxlength="200" /></td><td><span class="warning">*</span></td></tr>
 [% END %]
 
 </table>
@@ -127,6 +137,9 @@
 [% msg.maketext("Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter [_1] kug@ub.uni-koeln.de [_2] erreichen.","<a href=\"http://www.ub.uni-koeln.de/usb-cgi/zms_makeEmail.pl?adr0=kug\" target=\"_blank\">","</a>") %]
 
 </div>
+
+  <!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
+  <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
 
 <p />
 

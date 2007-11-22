@@ -40,7 +40,7 @@ use vars qw(%config);
 
 	   # Versionnummer
 
-	   version => 'OpenBib v2.0-pre1',
+	   version => 'OpenBib v2.1',
 	   
 	   # Unter diesem Namen wird der lokale Server angesprochen
 	   
@@ -144,8 +144,8 @@ use vars qw(%config);
                    nr    => '2',
                },
                {
-                   short => '3ezwheil',
-                   desc  => 'Erziehungswissenschaftliche u. Heilpädagogische Fakultät',
+                   short => '3human',
+                   desc  => 'Humanwissenschaftliche Fakultät',
                    nr    => '3',
                },
                {
@@ -184,10 +184,13 @@ use vars qw(%config);
 	   admin_loc             => '/portal/admin',
 	   catalogue_loc         => '/portal/katalogisierung',
 	   circulation_loc       => '/portal/benutzerkonto',
-	   connector_digibib_loc => '/portal/connector/digibib',
-           connector_ukonline_loc=> '/portal/connector/uk-online',
+           connector_bibmanager_loc => '/portal/connector/literaturverwaltung',
+           connector_digibib_loc => '/portal/connector/digibib',
 	   connector_olws_loc    => '/portal/connector/olws',
+           connector_permalink_loc  => '/portal/connector/permalink',
            connector_rss_loc     => '/portal/connector/rss',
+           connector_ukonline_loc=> '/portal/connector/uk-online',
+           connector_unapi_loc   => '/portal/connector/unapi',
            databasechoice_loc    => '/portal/katalogauswahl',
 	   databaseprofile_loc   => '/portal/katalogprofile',
 	   dispatchquery_loc     => '/portal/anfrageverteilen',
@@ -211,7 +214,8 @@ use vars qw(%config);
 	   startopac_loc         => '/portal/opac',
            tags_loc              => '/portal/tags',
            userprefs_loc         => '/portal/benutzereinstellungen',
-	   virtualsearch_loc     => '/portal/virtuellerecherche',
+           userreviews_loc       => '/portal/benutzerbewertungen',
+           virtualsearch_loc     => '/portal/virtuellerecherche',
 
 	   css_loc               => '/styles',
 
@@ -221,8 +225,8 @@ use vars qw(%config);
 
 	   # Email-Adressen fuer den Admin und generellen Kontakt
 
-	   admin_email          => 'admin\@openbib.org',
-	   contact_email        => 'contact\@openbib.org',
+	   admin_email          => 'admin@openbib.org',
+	   contact_email        => 'contact@openbib.org',
 
 	   # Externe Links zum direkten Einsprung in die Digitale
 	   # Bibliothek NRW: In die Funktionen Monographien-Fernleihe 
@@ -257,13 +261,22 @@ use vars qw(%config);
 
            xapian_index_base_path  => '/opt/openbib/ft/xapian/index',
 
+	   xapian_option           => {
+				       maxmatch => 2000,
+				      },
+
+           # BibSonomy API
+           
+           bibsonomy_api_key       => '',
+
 	   # Stopwort-Liste
 
            stopword_filename       => '/opt/openbib/ft/stopwords.txt',
 
-	   # Pfad zum Document Root
+	   # Pfade zum Document und Image Root
 
 	   document_root_path       => '/usr/db/www/documents',
+	   image_root_path          => '/var/www/images/openbib',
 
 	   # Mapping der einzelnen Kompontenten zu ihren Templates
 
@@ -276,8 +289,23 @@ use vars qw(%config);
 	   tt_admin_editview_tname       => 'admin_editview',
 	   tt_admin_editview_rss_tname   => 'admin_editview_rss',
 	   tt_admin_showsessions_tname   => 'admin_showsessions',
+	   tt_admin_showsessions_1_tname => 'admin_showsessions_1',
 	   tt_admin_editsession_tname    => 'admin_editsession',
-	   tt_admin_showimx_tname        => 'admin_showimx',
+	   tt_admin_exploresessions_list_tname => 'admin_exploresessions_list',
+	   tt_admin_exploresessions_show_tname => 'admin_exploresessions_show',
+	   tt_admin_showstat_tname       => 'admin_showstat',
+	   tt_admin_showstat_1_tname     => 'admin_showstat_1',
+	   tt_admin_showstat_2_tname     => 'admin_showstat_2',
+	   tt_admin_showstat_3_tname     => 'admin_showstat_3',
+	   tt_admin_showstat_4_tname     => 'admin_showstat_4',
+	   tt_admin_showstat_5_tname     => 'admin_showstat_5',
+	   tt_admin_showstat_50_tname    => 'admin_showstat_50',
+	   tt_admin_showstat_51_tname    => 'admin_showstat_51',
+	   tt_admin_showstat_52_tname    => 'admin_showstat_52',
+	   tt_admin_showstat_53_tname    => 'admin_showstat_53',
+	   tt_admin_showuser_tname       => 'admin_showuser',
+	   tt_admin_showlogintarget_tname  => 'admin_showlogintarget',
+	   tt_admin_editlogintarget_tname  => 'admin_editlogintarget',
 	   tt_admin_logout_tname         => 'admin_logout',
 
 	   tt_leave_tname                => 'leave',
@@ -290,13 +318,21 @@ use vars qw(%config);
 	   tt_circulation_reserv_tname   => 'circulation_reserv',
 	   tt_circulation_remind_tname   => 'circulation_remind',
 	   tt_circulation_orders_tname   => 'circulation_orders',
+           tt_circulation_make_reserv_tname    => 'circulation_make_reserv',
 
-           tt_connector_digibib_result_start_tname  => 'connector_digibib_result_start',
+tt_connector_digibib_result_start_tname  => 'connector_digibib_result_start',
            tt_connector_digibib_result_item_tname   => 'connector_digibib_result_item',
            tt_connector_digibib_result_end_tname    => 'connector_digibib_result_end',
            tt_connector_digibib_showtitset_tname    => 'connector_digibib_showtitset',
 
+           tt_connector_permalink_tname  => 'connector_permalink',
+
            tt_connector_rss_item_tname   => 'connector_rss_item',
+
+           tt_connector_unapi_formats_tname  => 'connector_unapi_formats',
+           tt_connector_unapi_bibtex_tname   => 'connector_unapi_bibtex',
+           tt_connector_unapi_mods_tname     => 'connector_unapi_mods',
+           tt_connector_unapi_oai_dc_tname   => 'connector_unapi_oai_dc',
 
            tt_databaseprofile_tname      => 'databaseprofile',
 
@@ -321,6 +357,7 @@ use vars qw(%config);
            tt_helpframe_16_tname         => 'helpframe_16',
            tt_helpframe_17_tname         => 'helpframe_17',
            tt_helpframe_18_tname         => 'helpframe_18',
+           tt_helpframe_19_tname         => 'helpframe_19',
            tt_helpframe_20_tname         => 'helpframe_20',
            tt_helpframe_21_tname         => 'helpframe_21',
            tt_helpframe_22_tname         => 'helpframe_22',
@@ -333,6 +370,7 @@ use vars qw(%config);
            tt_helpframe_33_tname         => 'helpframe_33',
            tt_helpframe_34_tname         => 'helpframe_34',
            tt_helpframe_35_tname         => 'helpframe_35',
+           tt_helpframe_40_tname         => 'helpframe_40',
 
 	   tt_startopac_tname            => 'startopac',
 
@@ -341,6 +379,7 @@ use vars qw(%config);
 	   tt_loadbalancer_tname         => 'loadbalancer',
 
 	   tt_login_tname                => 'login',
+           tt_login_circulation_tname    => 'login_circulation',
 
 	   tt_mailcollection_mail_html_tname    => 'mailcollection_mail_html',
 	   tt_mailcollection_mail_plain_tname   => 'mailcollection_mail_plain',
@@ -375,6 +414,7 @@ use vars qw(%config);
 
 	   tt_search_showswtindex_tname   => 'search_showswtindex',
 
+           tt_tags_editusertags_tname    => 'tags_editusertags',
            tt_tags_showusertags_tname    => 'tags_showusertags',
            tt_tags_showtitlist_tname     => 'tags_showtitlist',
 
@@ -385,7 +425,10 @@ use vars qw(%config);
 	   tt_virtualsearch_showverfindex_tname => 'virtualsearch_showverfindex',
 	   tt_virtualsearch_showkorindex_tname  => 'virtualsearch_showkorindex',
 	   tt_virtualsearch_showswtindex_tname  => 'virtualsearch_showswtindex',
-	   
+	   tt_virtualsearch_shownotindex_tname  => 'virtualsearch_shownotindex',
+           tt_userreviews_edit_tname       => 'userreviews_edit',
+           tt_userreviews_show_tname       => 'userreviews_show',
+
 	   tt_userprefs_tname              => 'userprefs',
 	   tt_userprefs_ask_delete_tname   => 'userprefs_ask_delete',
 	   tt_userprefs_changefields_tname => 'userprefs_changefields',
@@ -416,6 +459,7 @@ use vars qw(%config);
 	   # Aktivierung verschiedener Funktionalitaeten
 
 	   login_active            => 1,
+	   newsflash               => 0,
 
 	   # Sollen Performance-Benchmarks durchgefuehrt werden
 
@@ -429,9 +473,58 @@ use vars qw(%config);
 
 	   testsystem              => 0,
 
+	   # Drill-Down
+
+	   drilldown               => 1,
+
+	   drilldown_option        => {
+				       cloud       => 1,
+				       cloud_min   => 6, # Minimale Anzahl notwendiger Elemente
+				       categorized => 1,
+				       categorized_aut  => 1,
+				       categorized_mart => 1,
+				       categorized_swt  => 1,
+				       categorized_not  => 1,
+				       categorized_spr  => 1,
+				       categorized_year => 1,
+				      },
+
+	   # Generierte BestOf-Daten
+	   best_of                 => {
+                                        '3' => {
+                                                  cloud => 'log',
+                                               },
+                                        '4' => {
+                                                  cloud => 'linear',
+                                               },
+                                        '5' => {
+                                                  cloud => 'linear',
+                                               },
+                                        '6' => {
+                                                  cloud => 'linear',
+                                               },
+                                        '7' => {
+                                                  cloud => 'linear',
+                                               },
+                                        '8' => {
+                                                  cloud => 'log',
+                                               },
+                                      },
            # Social-Tagging
 
            social_tagging          => 1,
+
+           # Reviews/Ratings
+
+           reviews                 => 1,
+
+           # unAPI
+
+           unAPI                   => 1,
+
+           unAPI_formats           => {
+               bibtex => 1,
+           },
 
 	   # Katalogabhaengige Kategorie-Mappings
 
@@ -455,6 +548,36 @@ use vars qw(%config);
                    'T0710' => 1,
                    'T0750' => 1,
                },
+               
+               inst450 => {
+                   'T0100' => 1,
+                   'T0101' => 1,
+                   'T0200' => 1,
+                   'T0201' => 1,
+                   'T0501' => 1,
+                   'T0509' => 1,
+                   'T0525' => 1,
+               },
+
+               kapsel => {
+                   'T0331' => 1,
+                   'T0700' => 1,
+               },
+
+               landschaft => {
+                   'T0100' => 1,
+                   'T0200' => 1,
+                   'T0331' => 1,
+                   'T0334' => 1,
+                   'T0750' => 1,
+                   'T0407' => 1,
+                   'T0425' => 1,
+                   'T0700' => 1,
+                   'T0710' => 1,
+                   'T0591' => 1,
+                   'T0594' => 1,
+                   'T0595' => 1,
+               },
 
                portrait => {
                    'T0100' => 1,
@@ -477,375 +600,8 @@ use vars qw(%config);
                    'T0508' => 1,
                    'T0662' => 1,
                },
-               
 
            },
-
-	   # Konvertierungskonfiguration bzgl. MAB-basierten Meta-Formats
-
-	   convtab => {
-		       default => 
-		       {
-
-			listitemcat => 
-
-			{
-			 '0089' => 1,
-			 '0310' => 1,
-			 '0331' => 1,
-			 '0412' => 1,
-			 '0424' => 1,
-			 '0425' => 1,
-			 '0451' => 1,
-			 '0455' => 1,
-			 '1203' => 1,
-			},
-			
-			inverted_aut => 
-
-			{
-			 '0001' => {  # Ansetzung
-				    string => 1,
-				    ft     => 1,
-				    init   => 1,
-				   },
-			 
-			 '0102' => {  # Verweisform
-				    string => 1,
-				    ft     => 1,
-				    init   => 1,
-				   },
-			},
-			
-			
-			inverted_kor => 
-
-			{
-			 '0001' => {  # Ansetzung
-				    string => 1,
-				    ft     => 1,
-				    init   => 1,
-				   },
-			 
-			 '0102' => {  # Verweisform
-				    string => 1,
-				    ft     => 1,
-				    init   => 1,
-				   },
-			 
-			 '0103' => {  # Abkuerzung der Verweisform
-				    string => 1,
-				    ft     => 1,
-				    init   => 1,
-				   },
-			 
-			 '0110' => {  # Abkuerzung der Ansetzung
-				    string => 1,
-				    ft     => 1,
-				    init   => 1,
-				   },
-			 
-			 '0111' => {  # Frueherer/Spaeterer Name
-				    string => 1,
-				    ft     => 1,
-				    init   => 1,
-				   },
-			 
-			},
-			
-
-			inverted_not => 
-
-			{
-			 '0001' => {  # Ansetzung
-				    string => 1,
-				    ft     => 1,
-				    init   => 1,
-				   },
-			 
-			 '0002' => {  # Ansetzung
-				    string => 1,
-				    ft     => 1,
-				    init   => 1,
-				   },
-			 
-			 '0102' => {  # Stichwort
-				    string => 1,
-				    ft     => 1,
-				    init   => 1,
-				   },
-			 
-			 '0103' => {  # Verweisform
-				    string => 1,
-				    ft     => 1,
-				    init   => 1,
-				   },
-			 
-			},
-
-			inverted_swt => 
-			
-			{
-			 '0001' => {  # Ansetzung
-				    string => 1,
-				    ft     => 1,
-				    init   => 1,
-				   },
-			 
-			 '0102' => { # Verweisform
-				    string => 1,
-				    ft     => 1,
-				    init   => 1,
-				   },
-			 
-			},
-			
-			inverted_tit => 
-
-			{
-			 '0002' => { # Aufnahmedatum
-				    string => 1,
-				   },
-			 
-			 '0304' => { # EST
-				    string => 1,
-				    ft     => 1,
-				   },
-			 
-			 '0310' => { # AST
-				    string => 1,
-				    ft     => 1,
-				   },
-			 
-			 '0331' => { # HST
-				    string => 1,
-				    ft     => 1,
-				   },
-			 
-			 '0335' => { # Zusatz zum HST
-				    string => 0,
-				    ft     => 1,
-				   },
-			 
-			 '0341' => { # PSTVorlage
-				    string => 1,
-				    ft     => 1,
-				   },
-			 
-			 '0370' => { # WST
-				    string => 1,
-				    ft     => 1,
-				   },
-			 
-			 '0540' => { # ISBN
-				    string => 1,
-				   },
-			 
-			},
-			
-			inverted_mex => 
-
-			{
-			 '0014' => {  # Signatur
-				    string => 1,
-				    ft     => 1,
-				    init   => 1,
-				   },
-			 
-			},
-			
-			# In die initiale Volltextsuche werden neben den bereits definierten
-			# Normdateikategorien inverted_*_ref folgende weitere Kategorien aus dem
-			# Titelbereich einbezogen. So koennen z.B. bestimmte im Titelbereich
-			# angesiedelte Kategorien in den anderen Normdaten-Klassen verf, kor oder
-			# swt recherchierbar gemacht werden.
-			
-			search_category => 
-
-			{
-			 
-			 verf => {
-				  '0413' => 1, # Drucker
-				 },
-			 
-			 kor => {
-				},
-			 
-			 swt => {
-				},
-			 
-			 hst => {
-				 '0304' => 1, # EST
-				 '0310' => 1, # AST
-				 '0331' => 1, # HST
-				 '0335' => 1, # Zusatz zum HST
-				 '0341' => 1, # PSTVorlage
-				 '0370' => 1, # WST
-				 '0412' => 1, # Verlag
-				 '0750' => 1, # Abstract
-				},
-			 
-			 isbn => {
-				  '0540' => 1, # ISBN
-				 },
-			 
-			 issn => {
-				  '0543' => 1, # ISSN
-				 },
-			 
-			 artinh => {
-				    '0800' => 1, # ArtInhalt
-				   },
-			 
-			 sign => {
-				  '0014' => 1, # Signatur
-				  '1203' => 1, # Zeitschriftensignatur
-				 },
-			 
-			 ejahr => {
-				   '0425' => 1, # Erschjahr
-				  },
-			 ejahrft => {
-				   '0425' => 1, # Erschjahr
-				  },
-                         gtquelle => { # Gesamttitel/Quelle
-                                   '0089' => 1, # Bandkennzeichen
-                                   '0590' => 1, # Quelle
-                                   '0451' => 1, # Serie/Band
-                                  },
-			},
-			
-			blacklist_aut => 
-
-			{
-			 '0100' => 1, # Aufnahmedatum
-			 '0101' => 1, # Aenderungsdatum
-			},
-			
-			blacklist_kor => 
-
-			{
-			 '0100' => 1, # Aufnahmedatum
-			 '0101' => 1, # Aenderungsdatum
-			},
-			
-			blacklist_not => 
-
-			{
-			 '0100' => 1, # Aufnahmedatum
-			 '0101' => 1, # Aenderungsdatum
-			},
-			
-			blacklist_swt => 
-
-			{
-			 '0100' => 1, # Aufnahmedatum
-			 '0101' => 1, # Aenderungsdatum
-			},
-			
-			blacklist_tit => 
-			
-			{
-			 #'0002' => 1, # Aufnahmedatum
-			 '0003' => 1, # Aenderungsdatum
-			 '0005' => 1, # Inventarnummer (in mex vorhanden)
-			 '0009' => 1, # Herkunft
-			 '0010' => 1, # Fremdnummer
-			 '0011' => 1, # Lokale ID
-			 '0014' => 1, # Signatur (in mex vorhanden)
-			 '0015' => 1, # Sprache
-			 '0016' => 1, # Standort (in mex vorhanden)
-			 '0027' => 1, # Art des Werkes (V oder Leer = Verfasser, S=Sachtitelwerk, U=Urheberwerk)
-			 '0028' => 1, # Bandkennzeichen (Leer = Stuecktitel, B = Band, G = Gesamtwerk/Ueberordnung)
-			 '0036' => 1, # Erscheinungsform
-			 '0038' => 1, # Veroeffentlichungsart
-			 '0042' => 1, # Publikationsstatus
-			 '0150' => 1, # HBZ Personen-ID
-			 '0453' => 1, # Id des GT
-			 '0454' => 1, # Ansetzungsform GT
-			 #'0572' => 1, # ZDB-ID
-			 '0715' => 1, # Unbekannt
-			 '0802' => 1, # Medien-Zustand
-			 '0905' => 1, # RSWK-ID
-			 '0910' => 1, # RSWK-ID
-			 '0915' => 1, # RSWK-ID
-			 '0920' => 1, # RSWK-ID
-			 '0925' => 1, # RSWK-ID
-			 '0930' => 1, # RSWK-ID
-			 '0935' => 1, # RSWK-ID    
-			 '0940' => 1, # RSWK-ID
-			 '0955' => 1, # RSWK-ID    
-			 '1000' => 1, # Titel beginnend mit 1000
-			 '1014' => 1, # Unbekannt
-			 '1025' => 1, # Lokale ZDB-ID
-			 '1026' => 1, # ZDB Jason-ID
-			 '1042' => 1, # ZDB Prio
-			 '1200' => 1, # Bestandzusammenfassung (in mex verwenden wir 1204)
-			 '1201' => 1, # Bestandsluecken (in mex verwenden wir 1204)
-			 '1202' => 1, # Bemerkungen zum Bestand
-			 '1299' => 1, # ZDB Mikro
-			 '1527' => 1, # ID der Parallelausgabe
-			 '1529' => 1, # Fortlaufende Beilage Titel?
-			 '1530' => 1, # ID des Bezugswerkes
-			 '1531' => 1, # ID der frueheren Ausgabe
-			 '1532' => 1, # ID fruehrer Hinweis
-			 '1533' => 1, # ID Titelkonkordanz
-			 '1533' => 1, # ID spaeterer Hinweis
-			 '1671' => 1, # Verbreitungsort
-			 '1672' => 1, # Hochschulort (z.B. Paris)
-			 '1674' => 1, # Veranstaltungsjahr (TODO)
-			 '1675' => 1, # ID des Hochschulortes
-			 '1676' => 1, # ID des Veranstaltungsortes
-			 '1677' => 1, # ID des Erscheinungsortes
-			 '1679' => 1, # Jahr Orginal
-			 '1710' => 1, # MESH-Ketten
-			 '1751' => 1, # Nicht mehr existent
-			 '1800' => 1, # Nebeneintragung 1. Person
-			 '1802' => 1, # Nebeneintragung 2. Koerperschaft
-			 '1804' => 1, # Nebeneintragung 1. EST
-			 '1805' => 1, # Nebeneintragung 1. Titelansetzung
-			 '1806' => 1, # Nebeneintragung 1. Titel in Mischform
-			 '1814' => 1, # Nicht mehr existent
-			 '1836' => 1, # Nicht mehr existent
-			 '1848' => 1, # Nicht mehr existent
-			 '1850' => 1, # Nebeneintragung 1. Person ID
-			 '1852' => 1, # Nebeneintragung 1. Koerperschaft ID
-			 '1978' => 1, # Nicht mehr existent
-			 '2000' => 1, # Urheber HBZ
-			 '2001' => 1, # HBZ-ID der Sonstig beteiligten Koerperschaft
-			 '2010' => 1, # RSWK HBZ
-			 '2011' => 1, # RSWK HBZ
-			 '2012' => 1, # RSWK HBZ
-			 '2013' => 1, # RSWK HBZ
-			 '2014' => 1, # RSWK HBZ
-			 '2015' => 1, # RSWK HBZ
-			 '2016' => 1, # RSWK HBZ
-			 '2017' => 1, # RSWK HBZ
-			 '2018' => 1, # RSWK HBZ
-			 '2019' => 1, # RSWK HBZ
-			 '2651' => 1, # URL lokal
-			 '2655' => 1, # URL lokal 
-			 '3000' => 1, # Erwerbung Intern
-			 '3002' => 1, # ZDB TitelID alt
-			 '3003' => 1, # ZDB lokaleID alt
-			 '3004' => 1, # Kommentar MAB2
-			 '3005' => 1, # IntNotEx
-			 '3006' => 1, # IntNotLok
-			 '3006' => 1, # IntNotLok (z.B. retro)
-			 '3007' => 1, # Unbekannt (Standort?)
-			 '3750' => 1, # Nicht mehr existent
-			 '4711' => 1, # Unbekannt
-			 '4712' => 1, # Markierung Econbiz (wi, so, wiso)
-			 '4715' => 1, # Markierung EDZ
-			 '4717' => 1, # Markierung Fachbibliothek Versicherungswissenschaft
-			 '4720' => 1, # Testdaten Inhaltsverzeichnis-Scans
-			 '4725' => 1, # Temporaeres Schlagwort
-			 #    '0800' => 1, # Medianart (TODO: spaeter pro Pool Listen konfigurierbar machen)
-			 #    '1600' => 1, # Hinweis auf Pseudo-Orte (TODO: Zweigstellen, Lesesaaltheke etc.)
-			 #    '1673' => 1, # Veranstaltungsort (TODO)
-			},
-		       },
-		      },
 
        );
 
@@ -884,6 +640,51 @@ sub get_number_of_dbs {
     $request->finish();
     
     return $alldbs;
+}
+
+sub get_number_of_all_dbs {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$self->{dbh}->prepare("select count(dbname) as rowcount from dbinfo") or $logger->error($DBI::errstr);
+    $request->execute() or $logger->error($DBI::errstr);
+    my $res    = $request->fetchrow_hashref;
+    my $alldbs = $res->{rowcount};
+    $request->finish();
+    
+    return $alldbs;
+}
+
+sub get_number_of_views {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$self->{dbh}->prepare("select count(viewname) as rowcount from viewinfo where active=1") or $logger->error($DBI::errstr);
+    $request->execute() or $logger->error($DBI::errstr);
+    my $res      = $request->fetchrow_hashref;
+    my $allviews = $res->{rowcount};
+    $request->finish();
+    
+    return $allviews;
+}
+
+sub get_number_of_all_views {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$self->{dbh}->prepare("select count(viewname) as rowcount from viewinfo") or $logger->error($DBI::errstr);
+    $request->execute() or $logger->error($DBI::errstr);
+    my $res      = $request->fetchrow_hashref;
+    my $allviews = $res->{rowcount};
+    $request->finish();
+    
+    return $allviews;
 }
 
 sub get_number_of_titles {

@@ -23,7 +23,7 @@ CREATE TABLE result_data (
  id          VARCHAR(100),
  tstamp      TIMESTAMP,
  type        INT,
- data        BLOB,
+ data        MEDIUMBLOB,
  INDEX (id),
  INDEX (tstamp),
  INDEX (type)
@@ -37,5 +37,57 @@ CREATE TABLE eventlog (
  type       INT,
  content    MEDIUMBLOB,
  INDEX (sessionid),
- INDEX (type)
-);
+ INDEX (tstamp),
+ INDEX (type),
+ INDEX (content(50))
+)
+PACK_KEYS=1;
+
+drop table IF EXISTS queryterm;
+CREATE TABLE queryterm (
+ tstamp     DATETIME,
+ viewname   VARCHAR(20),
+ type       INT,
+ content    VARCHAR(40),
+ INDEX (tstamp),
+ INDEX (viewname),
+ INDEX (type),
+ INDEX (content)
+)
+PACK_KEYS=1;
+
+drop table IF EXISTS querycategory;
+CREATE TABLE querycategory (
+ tstamp     DATETIME,
+ viewname   VARCHAR(20),
+ fs        BOOL,
+ hst       BOOL,
+ verf      BOOL,
+ kor       BOOL,
+ swt       BOOL,
+ notation  BOOL,
+ isbn      BOOL,
+ issn      BOOL,
+ sign      BOOL,
+ mart      BOOL,
+ hststring BOOL,
+ inhalt    BOOL,
+ gtquelle  BOOL,
+ ejahr     BOOL,
+ INDEX (tstamp),
+ INDEX (viewname),
+ INDEX (fs),
+ INDEX (hst),
+ INDEX (verf),
+ INDEX (kor),
+ INDEX (swt),
+ INDEX (notation),
+ INDEX (isbn),
+ INDEX (issn),
+ INDEX (sign),
+ INDEX (mart),
+ INDEX (hststring),
+ INDEX (gtquelle),
+ INDEX (ejahr)
+)
+PACK_KEYS=1;

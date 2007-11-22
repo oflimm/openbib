@@ -1,3 +1,29 @@
+Version 2.1:
+
+- Tag-Editor. Nutzer koennen nun einzelne ihrer Tags umbenennen
+- Rezensionen und Bewertungen. Angemeldete Nutzer koennen nun entsprechendes
+  Feedback geben
+- Bewertung der Rezensionen/Bewertungen durch angemeldete Nutzer zur 
+  Beurteilung der Nuetzlichkeit der betreffenden Rezension/Bewertung
+- PermaLink. Einzelne Normdaten-Saetze koennen nun unter einem einheitlichen
+  URL verlinkt werden - aehnlich Blog-Eintraegen
+- unAPI. Bereitstellung Bibliographischer Informations-Objekte z.B. zur
+  strukturierten Uebernahme/Verarbeitung durch externe Programme wie
+  z.B. Zotero (www.zotero.org)
+- Such-Wolken. Darstellung der von Nutzern verwendeten Suchbegriffe im
+  jeweiligen View in einer Wolken-Ansicht
+- Statistiken in der Web-Administration. Allgemeine Statistiken des Portals
+  sowie zum Aufruf externer Dienste (ueber den Redirektor) und der Nutzung
+  der Views. Generierung von Grafiken zur Auswertung der zeitlichen Entwicklung
+  der beobachteten Werte. 
+- Benutzer-Verwaltung in der Web-Administration. Es koennen nun auch die
+  Anmeldeziele fuer die Benutzer dort verwaltet werden.
+- Virtueller Notations-Index. 
+- Optimierung der kategorie-basierten Drill-Downs. Die kategorisierten
+  Inhalte werden nun direkt vollstaendig aus dem Xapian-Index geholt.
+- Optimierung des Suchwolken-Algorithmus.
+- Nachgeschaltete Authentifizierung bei Vormerkungen und Tagging
+
 Version 2.0:
 
 - Durchgaengige Verwendung des UTF8-Encodings

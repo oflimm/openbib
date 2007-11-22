@@ -56,7 +56,7 @@ sub handler {
 
     my $config = new OpenBib::Config();
     
-    my $query=Apache::Request->new($r);
+    my $query=Apache::Request->instance($r);
 
     my $status=$query->parse;
 
@@ -172,7 +172,7 @@ sub handler {
             return OK;
         }
 
-        my $profilresult=$user->{dbh}->prepare("select profilid,count(profilid) as rowcount from userdbprofile where userid = ? and profilename = ?") or $logger->error($DBI::errstr);
+        my $profilresult=$user->{dbh}->prepare("select profilid,count(profilid) as rowcount from userdbprofile where userid = ? and profilename = ? group by profilid") or $logger->error($DBI::errstr);
         $profilresult->execute($userid,$newprofile) or $logger->error($DBI::errstr);
         my $res=$profilresult->fetchrow_hashref();
         

@@ -58,7 +58,7 @@ sub handler {
 
     my $config = new OpenBib::Config();
     
-    my $query=Apache::Request->new($r);
+    my $query=Apache::Request->instance($r);
 
     my $status=$query->parse;
 
@@ -157,6 +157,7 @@ sub handler {
 #         INCLUDE_PATH  => $config->{tt_include_path},
           # Es ist wesentlich, dass OUTPUT* hier und nicht im
           # Template::Provider definiert wird
+          RECURSION      => 1,
           OUTPUT_PATH   => '/tmp',
           OUTPUT        => $afile,
         });

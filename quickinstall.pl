@@ -107,10 +107,11 @@ my %cvs_links = (
 );
 
 my %copy_files = (
-    "$cwd/portal/perl/conf/portal.log4perl"           => "/opt/openbib/conf/portal.log4perl",
-    "$cwd/portal/perl/modules/OpenBib/Config.pm-dist" => "$cwd/portal/perl/modules/OpenBib/Config.pm",
+    "$cwd/portal/perl/conf/portal.log4perl"                => "/opt/openbib/conf/portal.log4perl",
+    "$cwd/portal/perl/modules/OpenBib/Config.pm-dist"      => "$cwd/portal/perl/modules/OpenBib/Config.pm",
+    "$cwd/portal/perl/modules/OpenBib/Conv/Config.pm-dist" => "$cwd/portal/perl/modules/OpenBib/Conv/Config.pm",
     "$cwd/portal/perl/modules/OpenBib/Search/Z3950/USBK/Config.pm-dist"
-                                                      => "$cwd/portal/perl/modules/OpenBib/Search/Z3950/USBK/Config.pm",
+                                                           => "$cwd/portal/perl/modules/OpenBib/Search/Z3950/USBK/Config.pm",
 );
 
 print "Erzeuge Verzeichnisse\n";

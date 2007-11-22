@@ -64,7 +64,7 @@ sub handler {
 
     my $config = new OpenBib::Config();
     
-    my $query=Apache::Request->new($r);
+    my $query=Apache::Request->instance($r);
 
     my $status=$query->parse;
 
@@ -84,7 +84,7 @@ sub handler {
 
     my $offset         = $query->param('titid')       || 0;
     my $hitrange       = $query->param('titid')       || 50;
-    my $database       = 0;
+    my $database       = $query->param('database')    || '';
     my $sorttype       = $query->param('sorttype')    || "author";
     my $sortorder      = $query->param('sortorder')   || "up";
     my $titid          = $query->param('titid')       || '';
@@ -93,14 +93,20 @@ sub handler {
     my $tags           = decode_utf8($query->param('tags'))        || '';
     my $type           = $query->param('type')        || 1;
 
+    my $oldtag         = $query->param('oldtag')      || '';
+    my $newtag         = $query->param('newtag')      || '';
+    
+    # Actions
     my $private_tags   = $query->param('private_tags')   || 0;
     my $searchtitoftag = $query->param('searchtitoftag') || '';
+    my $edit_usertags  = $query->param('edit_usertags')  || '';
     my $show_usertags  = $query->param('show_usertags')  || '';
 
     my $queryid        = $query->param('queryid')     || '';
 
     my $do_add         = $query->param('do_add')      || '';
     my $do_edit        = $query->param('do_edit')     || '';
+    my $do_change      = $query->param('do_change')   || '';
     my $do_del         = $query->param('do_del')      || '';
     
     #####                                                          ######
@@ -142,15 +148,23 @@ sub handler {
     my $user = new OpenBib::User();
 
     my $userid = $user->get_userid_of_session($session->{ID});
-    
+
+    unless($userid || $searchtitoftag){
+        # Aufruf-URL
+        my $return_url = $r->parsed_uri->unparse;
+
+        # Return-URL in der Session abspeichern
+
+        $session->set_returnurl($return_url);
+
+        $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1");
+
+        return OK;
+    }
+
     my $loginname = $user->get_username_for_userid($userid);
     
-    if ($do_add){
-
-        if (!$userid){
-            OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
-            return OK;
-        }
+    if ($do_add && $userid){
 
         $logger->debug("Aufnehmen/Aendern der Tags: $tags");
         
@@ -165,13 +179,10 @@ sub handler {
         $r->internal_redirect("http://$config->{servername}$config->{search_loc}?sessionID=$session->{ID};database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
         return OK;
     }
-    elsif ($do_del){
+    elsif ($do_del && $userid){
 
-        if (!$userid){
-            OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
-            return OK;
-        }
-
+        $logger->debug("Loeschen der Tags $tags von $titdb:$titid");
+        
         $user->del_tags({
             tags      => $tags,
             titid     => $titid,
@@ -183,13 +194,46 @@ sub handler {
         return OK;
 
     }
+    elsif ($do_change && $userid){
+        
+        $logger->debug("Aendern des Tags $oldtag in $newtag");
+        
+        my $status = $user->rename_tag({
+            oldtag    => $oldtag,
+            newtag    => $newtag,
+            loginname => $loginname,
+        });
 
-    if ($show_usertags){
-
-        if (!$userid){
-            OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
+        if ($status){
+            OpenBib::Common::Util::print_warning("Die Ersetzung des Tags konnte nicht ausgeführt werden.",$r,$msg);
             return OK;
         }
+        
+        $r->internal_redirect("http://$config->{servername}$config->{tags_loc}?sessionID=$session->{ID};show_usertags=1");
+        return OK;
+
+    }
+    
+    if ($edit_usertags && $userid){
+
+        my $targettype=$user->get_targettype_of_session($session->{ID});
+
+        # TT-Data erzeugen
+        my $ttdata={
+            view       => $view,
+            stylesheet => $stylesheet,
+            sessionID  => $session->{ID},
+
+            targettype => $targettype,
+            loginname  => $loginname,
+            user       => $user,
+            config     => $config,
+            msg        => $msg,
+        };
+        OpenBib::Common::Util::print_page($config->{tt_tags_editusertags_tname},$ttdata,$r);
+    }
+
+    if ($show_usertags && $userid){
 
         my $targettype=$user->get_targettype_of_session($session->{ID});
 
@@ -234,7 +278,8 @@ sub handler {
                 }
                 
                 # Bestimmung der Titel
-                $request=$user->{dbh}->prepare("select distinct titid,titdb from tittag where tagid=? and loginname=? $limits") or $logger->error($DBI::errstr);
+                $sqlrequest="select distinct titid,titdb from tittag where tagid=? and loginname=? $limits";
+                $request=$user->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
                 $request->execute($searchtitoftag,$loginname);
                 
                 
@@ -248,8 +293,17 @@ sub handler {
             }
             else {
                 my $sqlrequest="select count(distinct titid,titdb) as conncount from tittag where tagid=?";
+                my @sqlargs = ();
+                push @sqlargs, $searchtitoftag;
+
+                if ($database) {
+                    $sqlrequest.=" and titdb=?";
+                    push @sqlargs, $database;
+                }
+
+                $logger->debug($sqlrequest." - ".join(",",@sqlargs));
                 my $request=$user->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
-                $request->execute($searchtitoftag);
+                $request->execute(@sqlargs);
             
                 my $res=$request->fetchrow_hashref;
                 $hits = $res->{conncount};
@@ -259,10 +313,21 @@ sub handler {
                     $limits="limit $offset,$hitrange";
                     
                 }
+
+                $sqlrequest="select distinct titid,titdb from tittag where tagid=?";
+                @sqlargs = ();
+                push @sqlargs, $searchtitoftag;
                 
+                if ($database) {
+                    $sqlrequest.=" and titdb=?";
+                    push @sqlargs, $database;
+                }
+
+                $sqlrequest.=" $limits";
+
                 # Bestimmung der Titel
-                $request=$user->{dbh}->prepare("select distinct titid,titdb from tittag where tagid=? $limits") or $logger->error($DBI::errstr);
-                $request->execute($searchtitoftag);
+                $request=$user->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
+                $request->execute(@sqlargs);
                 
                 
                 while (my $res=$request->fetchrow_hashref){

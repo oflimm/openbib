@@ -18,6 +18,7 @@
 
 [% PROCESS common/subtemplate name="corporate_banner" %]
 
+<div id="maincontent">
 <br />
   <br />
   <center>
@@ -37,4 +38,6 @@
 <br />
 <br />
 <br />
+</div>
+
 [% PROCESS common/subtemplate name="std_footer" hide_foot_banner=1 %]

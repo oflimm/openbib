@@ -59,8 +59,13 @@ sub authenticate_olws_user {
         -> uri("urn:/Authentication")
             -> proxy($circcheckurl);
 
-    my $result = $soap->authenticate_user($username,$pin,$circdb);
-
+    my $result = $soap->authenticate_user(
+        SOAP::Data->name(parameter  =>\SOAP::Data->value(
+            SOAP::Data->name(username => $username)->type('string'),
+            SOAP::Data->name(password => $pin)->type('string'),
+            SOAP::Data->name(database => $circdb)->type('string')))
+      );
+    
     $logger->debug("Result: ".YAML::Dump($result->result));
 
     my %userinfo=();

@@ -60,7 +60,7 @@ sub handler {
 
     my $config = new OpenBib::Config();
     
-    my $query=Apache::Request->new($r);
+    my $query=Apache::Request->instance($r);
 
     my $status=$query->parse;
 
@@ -80,6 +80,12 @@ sub handler {
     my $circaction = ($query->param('circaction'))?$query->param('circaction'):'none';
     my $offset     = ($query->param('offset'    ))?$query->param('offset'):0;
     my $listlength = ($query->param('listlength'))?$query->param('listlength'):10;
+
+    # Aktive Aenderungen des Nutzerkontos
+    my $validtarget   = ($query->param('validtarget'))?$query->param('validtarget'):undef;
+    my $mediennummer  = ($query->param('mnr'        ))?$query->param('mnr'):undef;
+    my $ausgabeort    = ($query->param('aort'       ))?$query->param('aort'):0;
+    my $zweigstelle   = ($query->param('zst'        ))?$query->param('zst'):0;
 
     my $queryoptions_ref
         = $session->get_queryoptions($query);
@@ -102,18 +108,29 @@ sub handler {
         $view=$session->get_viewname();
     }
   
-    my $userid=$user->get_userid_of_session($session->{ID});
-  
+    my $userid             = $user->get_userid_of_session($session->{ID});
+    my $sessionlogintarget = $user->get_targetdb_of_session($session->{ID});
+
     unless($userid){
-        OpenBib::Common::Util::print_warning($msg->maketext("Diese Session ist nicht authentifiziert."),$r,$msg);
+        # Aufruf-URL
+        my $return_url = $r->parsed_uri->unparse;
+
+        # Return-URL in der Session abspeichern
+
+        $session->set_returnurl($return_url);
+
+        if ($validtarget){
+            $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1;type=circulation;validtarget=$validtarget");
+        }
+        else {
+            $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1");
+        }
         return OK;
     }
   
-    my ($loginname,$password)=$user->get_cred_for_userid($userid);
-
-    my $database=$user->get_targetdb_of_session($session->{ID});
-
-    my $targetcircinfo_ref = $config->get_targetcircinfo();
+    my ($loginname,$password) = $user->get_cred_for_userid($userid);
+    my $database              = $user->get_targetdb_of_session($session->{ID});
+    my $targetcircinfo_ref    = $config->get_targetcircinfo();
 
     if ($action eq "showcirc") {
 
@@ -123,7 +140,11 @@ sub handler {
             my $soap = SOAP::Lite
                 -> uri("urn:/Circulation")
                     -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
-            my $result = $soap->get_reservations($loginname,$password,$targetcircinfo_ref->{$database}{circdb});
+            my $result = $soap->get_reservations(
+                SOAP::Data->name(parameter  =>\SOAP::Data->value(
+                    SOAP::Data->name(username => $loginname)->type('string'),
+                    SOAP::Data->name(password => $password)->type('string'),
+                    SOAP::Data->name(database => $targetcircinfo_ref->{$database}{circdb})->type('string'))));
       
             unless ($result->fault) {
                 $circexlist=$result->result;
@@ -165,7 +186,11 @@ sub handler {
             my $soap = SOAP::Lite
                 -> uri("urn:/Circulation")
                     -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
-            my $result = $soap->get_reminders($loginname,$password,$targetcircinfo_ref->{$database}{circdb});
+            my $result = $soap->get_reminders(
+                SOAP::Data->name(parameter  =>\SOAP::Data->value(
+                    SOAP::Data->name(username => $loginname)->type('string'),
+                    SOAP::Data->name(password => $password)->type('string'),
+                    SOAP::Data->name(database => $targetcircinfo_ref->{$database}{circdb})->type('string'))));
       
             unless ($result->fault) {
                 $circexlist=$result->result;
@@ -206,7 +231,11 @@ sub handler {
             my $soap = SOAP::Lite
                 -> uri("urn:/Circulation")
                     -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
-            my $result = $soap->get_orders($loginname,$password,$targetcircinfo_ref->{$database}{circdb});
+            my $result = $soap->get_orders(
+                SOAP::Data->name(parameter  =>\SOAP::Data->value(
+                    SOAP::Data->name(username => $loginname)->type('string'),
+                    SOAP::Data->name(password => $password)->type('string'),
+                    SOAP::Data->name(database => $targetcircinfo_ref->{$database}{circdb})->type('string'))));
       
             unless ($result->fault) {
                 $circexlist=$result->result;
@@ -246,7 +275,11 @@ sub handler {
             my $soap = SOAP::Lite
                 -> uri("urn:/Circulation")
                     -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
-            my $result = $soap->get_borrows($loginname,$password,$targetcircinfo_ref->{$database}{circdb});
+            my $result = $soap->get_borrows(
+                SOAP::Data->name(parameter  =>\SOAP::Data->value(
+                    SOAP::Data->name(username => $loginname)->type('string'),
+                    SOAP::Data->name(password => $password)->type('string'),
+                    SOAP::Data->name(database => $targetcircinfo_ref->{$database}{circdb})->type('string'))));
       
             unless ($result->fault) {
                 $circexlist=$result->result;
@@ -282,6 +315,59 @@ sub handler {
         }
 
 
+    }
+    elsif ($action eq "make_reservation"){
+
+    unless($sessionlogintarget eq $validtarget){
+        # Aufruf-URL
+        my $return_url = $r->parsed_uri->unparse;
+
+        # Return-URL in der Session abspeichern
+
+        $session->set_returnurl($return_url);
+
+        $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1;type=circulation;validtarget=$validtarget");
+
+        return OK;
+    }
+
+        my $circexlist=undef;
+
+        $logger->info("Zweigstelle: $zweigstelle");
+        
+        my $soap = SOAP::Lite
+            -> uri("urn:/Circulation")
+                -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
+        my $result = $soap->make_reservation(
+            SOAP::Data->name(parameter  =>\SOAP::Data->value(
+                SOAP::Data->name(username     => $loginname)->type('string'),
+                SOAP::Data->name(password     => $password)->type('string'),
+                SOAP::Data->name(mediennummer => $mediennummer)->type('string'),
+                SOAP::Data->name(ausgabeort   => $ausgabeort)->type('string'),
+                SOAP::Data->name(zweigstelle  => $zweigstelle)->type('string'),
+                SOAP::Data->name(database     => $targetcircinfo_ref->{$database}{circdb})->type('string'))));
+        
+        unless ($result->fault) {
+            $circexlist=$result->result;
+        }
+        else {
+            $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+        }
+        
+        # TT-Data erzeugen
+        my $ttdata={
+            view       => $view,
+            stylesheet => $stylesheet,
+            
+            sessionID  => $session->{ID},
+            
+            result     => $circexlist,
+            
+            config     => $config,
+            msg        => $msg,
+        };
+        
+        OpenBib::Common::Util::print_page($config->{tt_circulation_make_reserv_tname},$ttdata,$r);
     }
     else {
         OpenBib::Common::Util::print_warning($msg->maketext("Unerlaubte Aktion"),$r,$msg);

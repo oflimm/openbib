@@ -937,7 +937,7 @@ sub print_tit_list_by_idn {
 
     my $config = new OpenBib::Config();
 
-    my $query=Apache::Request->new($r);
+    my $query=Apache::Request->instance($r);
 
     my @itemlist=@$itemlist_ref;
 
@@ -1045,8 +1045,9 @@ sub print_tit_set_by_idn {
     my $config = new OpenBib::Config();
     my $user   = new OpenBib::User();
 
-    my $userid    = $user->get_userid_of_session($session->{ID});
-    my $loginname = $user->get_username_for_userid($userid);
+    my $userid        = $user->get_userid_of_session($session->{ID});
+    my $loginname     = $user->get_username_for_userid($userid);
+    my $logintargetdb = $user->get_targetdb_of_session($session->{ID});
 
     my ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn({
         titidn             => $titidn,
@@ -1081,11 +1082,12 @@ sub print_tit_set_by_idn {
         mexnormset  => $mexnormset,
         circset     => $circset,
         searchquery => $searchquery_ref,
-        activefeed  => $config->get_activefeeds_of_db($database),        
+        activefeed  => $config->get_activefeeds_of_db($database),
 
-        user        => $user,
-        loginname   => $loginname,
-        
+        user          => $user,
+        loginname     => $loginname,
+        logintargetdb => $logintargetdb,
+
         highlightquery    => \&highlightquery,
         normset2bibtex    => \&OpenBib::Common::Util::normset2bibtex,
         normset2bibsonomy => \&OpenBib::Common::Util::normset2bibsonomy,
@@ -1093,7 +1095,7 @@ sub print_tit_set_by_idn {
         config      => $config,
         msg         => $msg,
     };
-  
+
     OpenBib::Common::Util::print_page($config->{tt_search_showtitset_tname},$ttdata,$r);
 
     # Log Event
@@ -1400,7 +1402,9 @@ sub get_tit_set_by_idn {
                 -> uri("urn:/MediaStatus")
                     -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
             my $result = $soap->get_mediastatus(
-                $circid,$targetcircinfo_ref->{$database}{circdb});
+                SOAP::Data->name(parameter  =>\SOAP::Data->value(
+                    SOAP::Data->name(katkey   => $circid)->type('string'),
+                    SOAP::Data->name(database => $targetcircinfo_ref->{$database}{circdb})->type('string'))));
             
             unless ($result->fault) {
                 $circexlist=$result->result;
@@ -1682,12 +1686,12 @@ sub get_index {
     my $config = new OpenBib::Config();
     
     my $type_ref = {
-        tit => 1,
-        aut => 2,
-        kor => 3,
-        swt => 4,
-        not => 5,
-        mex => 6,
+        tit      => 1,
+        aut      => 2,
+        kor      => 3,
+        swt      => 4,
+        notation => 5,
+        mex      => 6,
     };
     
     my ($atime,$btime,$timeall);
@@ -1918,7 +1922,7 @@ sub initial_search_for_titidns {
     my $notfirstsql=0;
     
     if ($searchquery_ref->{fs}{norm}) {	
-        push @sqlwhere, $searchquery_ref->{fs}{bool}." match (verf,hst,kor,swt,notation,sign,isbn,issn,ejahrft) against (? IN BOOLEAN MODE)";
+        push @sqlwhere, $searchquery_ref->{fs}{bool}." match (verf,hst,kor,swt,notation,sign,inhalt,isbn,issn,ejahrft) against (? IN BOOLEAN MODE)";
         push @sqlargs, $searchquery_ref->{fs}{norm};
     }
    
@@ -1945,6 +1949,9 @@ sub initial_search_for_titidns {
     my $notfrom="";
   
     if ($searchquery_ref->{notation}{norm}) {
+        # Spezielle Trunkierung
+        $searchquery_ref->{notation}{norm} =~ s/\*$/%/;
+
         push @sqlfrom,  "notation_string";
         push @sqlfrom,  "conn";
         push @sqlwhere, $searchquery_ref->{notation}{bool}." (notation_string.content like ? and conn.sourcetype=1 and conn.targettype=5 and conn.targetid=notation_string.id and search.verwidn=conn.sourceid)";
@@ -1954,6 +1961,9 @@ sub initial_search_for_titidns {
     my $signfrom="";
   
     if ($searchquery_ref->{sign}{norm}) {
+        # Spezielle Trunkierung
+        $searchquery_ref->{sign}{norm} =~ s/\*$/%/;
+
         push @sqlfrom,  "mex_string";
         push @sqlfrom,  "conn";
         push @sqlwhere, $searchquery_ref->{sign}{bool}." (mex_string.content like ? and mex_string.category=0014 and conn.sourcetype=1 and conn.targettype=6 and conn.targetid=mex_string.id and search.verwidn=conn.sourceid)";
@@ -1976,11 +1986,19 @@ sub initial_search_for_titidns {
     }
   
     if ($searchquery_ref->{hststring}{norm}) {
+        # Spezielle Trunkierung
+        $searchquery_ref->{hststring}{norm} =~ s/\*$/%/;
+
         push @sqlfrom,  "tit_string";
         push @sqlwhere, $searchquery_ref->{hststring}{bool}." (tit_string.content like ? and tit_string.category in (0331,0310,0304,0370,0341) and search.verwidn=tit_string.id)";
         push @sqlargs,  $searchquery_ref->{hststring}{norm};
     }
-  
+
+    if ($searchquery_ref->{inhalt}{norm}) {
+        push @sqlwhere, $searchquery_ref->{inhalt}{bool}."  match (inhalt) against (? IN BOOLEAN MODE)";
+        push @sqlargs,  $searchquery_ref->{inhalt}{norm};
+    }
+    
     if ($searchquery_ref->{gtquelle}{norm}) {
         push @sqlwhere, $searchquery_ref->{gtquelle}{bool}."  match (gtquelle) against (? IN BOOLEAN MODE)";
         push @sqlargs,  $searchquery_ref->{gtquelle}{norm};

@@ -293,6 +293,132 @@ sub get_number_of_items_in_collection {
     return $numofitems;
 }
 
+sub get_number_of_tagged_titles {
+    my ($self,$userid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return undef if (!defined $self->{dbh});
+    
+    my $idnresult=$self->{dbh}->prepare("select count(distinct(titid)) as rowcount from tittag") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
+    my $res = $idnresult->fetchrow_hashref();
+    my $numoftitles = $res->{rowcount};
+
+    $idnresult->finish();
+
+    return ($numoftitles)?$numoftitles:0;
+}
+
+sub get_number_of_tagging_users {
+    my ($self,$userid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return undef if (!defined $self->{dbh});
+    
+    my $idnresult=$self->{dbh}->prepare("select count(distinct(loginname)) as rowcount from tittag") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
+    my $res = $idnresult->fetchrow_hashref();
+    my $numofusers = $res->{rowcount};
+
+    $idnresult->finish();
+
+    return ($numofusers)?$numofusers:0;
+}
+
+sub get_number_of_tags {
+    my ($self,$userid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return undef if (!defined $self->{dbh});
+    
+    my $idnresult=$self->{dbh}->prepare("select count(distinct(tagid)) as rowcount from tittag") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
+    my $res = $idnresult->fetchrow_hashref();
+    my $numoftags = $res->{rowcount};
+
+    $idnresult->finish();
+
+    return ($numoftags)?$numoftags:0;
+}
+
+sub get_number_of_users {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return undef if (!defined $self->{dbh});
+    
+    my $idnresult=$self->{dbh}->prepare("select count(userid) as rowcount from user") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
+    my $res = $idnresult->fetchrow_hashref();
+    my $numofusers = $res->{rowcount};
+
+    $idnresult->finish();
+
+    return ($numofusers)?$numofusers:0;
+}
+
+sub get_number_of_dbprofiles {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return undef if (!defined $self->{dbh});
+    
+    my $idnresult=$self->{dbh}->prepare("select count(profilid) as rowcount from userdbprofile") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
+    my $res = $idnresult->fetchrow_hashref();
+    my $numofprofiles = $res->{rowcount};
+
+    $idnresult->finish();
+
+    return ($numofprofiles)?$numofprofiles:0;
+}
+
+sub get_number_of_collections {
+    my ($self,$userid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return undef if (!defined $self->{dbh});
+    
+    my $idnresult=$self->{dbh}->prepare("select count(distinct(userid)) as rowcount from treffer") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
+    my $res = $idnresult->fetchrow_hashref();
+    my $numofcollections = $res->{rowcount};
+
+    $idnresult->finish();
+
+    return ($numofcollections)?$numofcollections:0;
+}
+
+sub get_number_of_collection_entries {
+    my ($self,$userid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return undef if (!defined $self->{dbh});
+    
+    my $idnresult=$self->{dbh}->prepare("select count(userid) as rowcount from treffer") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
+    my $res = $idnresult->fetchrow_hashref();
+    my $numofentries = $res->{rowcount};
+
+    $idnresult->finish();
+
+    return ($numofentries)?$numofentries:0;
+}
+
 sub get_all_profiles {
     my ($self)=@_;
 
@@ -363,13 +489,67 @@ sub get_logintargets {
     while (my $result=$request->fetchrow_hashref()) {
         push @$logintargets_ref, {
             id          => decode_utf8($result->{'targetid'}),
+            hostname    => decode_utf8($result->{'hostname'}),
+            port        => decode_utf8($result->{'port'}),
+            username    => decode_utf8($result->{'user'}),
+            dbname      => decode_utf8($result->{'db'}),
             description => decode_utf8($result->{'description'}),
-
+            type        => decode_utf8($result->{'type'}),
         };
     }
     $request->finish();
 
     return $logintargets_ref;
+}
+
+sub get_logintarget_by_id {
+    my ($self,$targetid) = @_;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+    
+    my $request=$self->{dbh}->prepare("select * from logintarget where targetid = ?") or $logger->error($DBI::errstr);
+    $request->execute($targetid) or $logger->error($DBI::errstr);
+    
+    my $result=$request->fetchrow_hashref();
+    
+    my $logintarget_ref = {};
+
+    $logintarget_ref = {
+			   id          => decode_utf8($result->{'targetid'}),
+			   hostname    => decode_utf8($result->{'hostname'}),
+			   port        => decode_utf8($result->{'port'}),
+			   username    => decode_utf8($result->{'user'}),
+			   dbname      => decode_utf8($result->{'db'}),
+			   description => decode_utf8($result->{'description'}),
+			   type        => decode_utf8($result->{'type'}),
+			  } if ($result->{'targetid'});
+
+    $request->finish();
+
+    $logger->debug("Getting Info for Targetid: $targetid -> Got: ".YAML::Dump($logintarget_ref));
+    return $logintarget_ref;
+}
+
+sub get_number_of_logintargets {
+    my ($self,$userid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return undef if (!defined $self->{dbh});
+    
+    my $idnresult=$self->{dbh}->prepare("select count(targetid) as rowcount from logintarget") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
+    my $res = $idnresult->fetchrow_hashref();
+    my $numoftargets = $res->{rowcount};
+
+    $idnresult->finish();
+
+    return ($numoftargets)?$numoftargets:0;
 }
 
 sub add_tags {
@@ -445,6 +625,85 @@ sub add_tags {
             $request->execute($tagid,$titid,$titisbn,$titdb,$loginname,$type) or $logger->error($DBI::errstr);
         }
         
+    }
+
+    return;
+}
+
+sub rename_tag {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $oldtag              = exists $arg_ref->{oldtag}
+        ? $arg_ref->{oldtag  }            : undef;
+    my $newtag              = exists $arg_ref->{newtag}
+        ? $arg_ref->{newtag  }            : undef;
+    my $loginname           = exists $arg_ref->{loginname}
+        ? $arg_ref->{loginname}           : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    # Splitten der Tags
+    my @oldtaglist = split("\\s+",$oldtag);
+    my @newtaglist = split("\\s+",$newtag);
+
+    # Normierung
+    $oldtag = OpenBib::Common::Util::grundform({
+        content  => $oldtaglist[0],
+        tagging  => 1,
+    });
+
+    $newtag = OpenBib::Common::Util::grundform({
+        content  => $newtaglist[0],
+        tagging  => 1,
+    });
+
+    # Vorgehensweise
+    # 1.) oldid von oldtag bestimmen
+    # 2.) Uebepruefen, ob newtag schon existiert. Wenn nicht, dann anlegen
+    #     und newid merken
+    # 3.) In tittag alle Vorkommen von oldid durch newid fuer loginname
+    #     ersetzen
+
+    my $request=$self->{dbh}->prepare("select id from tags where tag = ?") or $logger->error($DBI::errstr);
+    $request->execute($oldtag) or $logger->error($DBI::errstr);
+
+    my $result   = $request->fetchrow_hashref;
+    my $oldtagid = $result->{id};
+
+    
+    $request=$self->{dbh}->prepare("select id from tags where tag = ?") or $logger->error($DBI::errstr);
+    $request->execute($newtag) or $logger->error($DBI::errstr);
+
+    $result=$request->fetchrow_hashref;
+
+    my $newtagid=$result->{id};
+
+    # Wenn NewTag nicht existiert
+        
+    if (!$newtagid){
+        $logger->debug("Tag $newtag noch nicht verhanden");
+        $request=$self->{dbh}->prepare("insert into tags (tag) values (?)") or $logger->error($DBI::errstr);
+        $request->execute(encode_utf8($newtag)) or $logger->error($DBI::errstr);
+
+        $request=$self->{dbh}->prepare("select id from tags where tag = ?") or $logger->error($DBI::errstr);
+        $request->execute(encode_utf8($newtag)) or $logger->error($DBI::errstr);
+        my $result=$request->fetchrow_hashref;
+        $newtagid=$result->{id};
+    }
+
+    if ($oldtagid && $newtagid){
+        $request=$self->{dbh}->prepare("update tittag set tagid = ? where tagid = ? and loginname = ?") or $logger->error($DBI::errstr);
+        $request->execute($newtagid,$oldtagid,$loginname) or $logger->error($DBI::errstr);
+    }
+    else {
+        return 1;
     }
 
     return;
@@ -656,6 +915,314 @@ sub get_private_tags {
 
     $logger->debug("Private Tags: ".YAML::Dump($taglist_ref));
     return $taglist_ref;
+}
+
+sub vote_for_review {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $reviewid            = exists $arg_ref->{reviewid}
+        ? $arg_ref->{reviewid}            : undef;
+    my $loginname           = exists $arg_ref->{loginname}
+        ? $arg_ref->{loginname}           : undef;
+    my $rating              = exists $arg_ref->{rating}
+        ? $arg_ref->{rating}              : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    # Ratings sind Zahlen
+    $rating   =~s/[^0-9]//g;
+    
+    # Zuerst alle Verknuepfungen loeschen
+    my $request=$self->{dbh}->prepare("select reviewid from reviewratings where loginname = ? and reviewid=?") or $logger->error($DBI::errstr);
+    $request->execute($loginname, $reviewid) or $logger->error($DBI::errstr);
+
+    my $result   = $request->fetchrow_hashref;
+    my $thisreviewid = $result->{reviewid};
+
+    # Review schon vorhanden?
+    if ($thisreviewid){
+        return 1; # Review schon vorhanden! Es darf aber pro Nutzer nur einer abgegeben werden;
+    }
+    else {
+        $request=$self->{dbh}->prepare("insert into reviewratings (reviewid,loginname,rating) values (?,?,?)") or $logger->error($DBI::errstr);
+        $request->execute($reviewid,$loginname,$rating) or $logger->error($DBI::errstr);
+    }
+
+    return;
+}
+
+sub add_review {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $titid               = exists $arg_ref->{titid}
+        ? $arg_ref->{titid}               : undef;
+    my $titisbn             = exists $arg_ref->{titisbn}
+        ? $arg_ref->{titisbn}             : '';
+    my $titdb               = exists $arg_ref->{titdb}
+        ? $arg_ref->{titdb}               : undef;
+    my $loginname           = exists $arg_ref->{loginname}
+        ? $arg_ref->{loginname}           : undef;
+    my $nickname            = exists $arg_ref->{nickname}
+        ? $arg_ref->{nickname}            : undef;
+    my $title              = exists $arg_ref->{title}
+        ? $arg_ref->{title}               : undef;
+    my $review              = exists $arg_ref->{review}
+        ? $arg_ref->{review}              : undef;
+    my $rating              = exists $arg_ref->{rating}
+        ? $arg_ref->{rating}              : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    # Ratings sind Zahlen und Reviews, Titel sowie Nicknames bestehen nur aus Text
+    $rating   =~s/[^0-9]//g;
+    $review   =~s/[^-+\p{Alphabetic}0-9\/:. '()"\?!]//g;
+    $title    =~s/[^-+\p{Alphabetic}0-9\/:. '()"\?!]//g;
+    $nickname =~s/[^-+\p{Alphabetic}0-9\/:. '()"\?!]//g;
+    
+    # Zuerst alle Verknuepfungen loeschen
+    my $request=$self->{dbh}->prepare("select id from reviews where loginname = ? and titid=? and titdb=?") or $logger->error($DBI::errstr);
+    $request->execute($loginname, $titid, $titdb) or $logger->error($DBI::errstr);
+
+    my $result   = $request->fetchrow_hashref;
+    my $reviewid = $result->{id};
+
+    # Review schon vorhanden?
+    if ($reviewid){
+        $request=$self->{dbh}->prepare("update reviews set titid=?, titisbn=?, titdb=?, loginname=?, nickname=?, title=?, review=?, rating=? where id=?") or $logger->error($DBI::errstr);
+        $request->execute($titid,$titisbn,$titdb,$loginname,encode_utf8($nickname),encode_utf8($title),encode_utf8($review),$rating,$reviewid) or $logger->error($DBI::errstr);
+    }
+    else {
+        $request=$self->{dbh}->prepare("insert into reviews (titid,titisbn,titdb,loginname,nickname,title,review,rating) values (?,?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
+        $request->execute($titid,$titisbn,$titdb,$loginname,encode_utf8($nickname),encode_utf8($title),encode_utf8($review),$rating) or $logger->error($DBI::errstr);
+    }
+
+    return;
+}
+
+sub get_reviews_of_tit {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $titid               = exists $arg_ref->{titid}
+        ? $arg_ref->{titid}               : undef;
+    my $titisbn             = exists $arg_ref->{titisbn}
+        ? $arg_ref->{titisbn}             : '';
+    my $titdb               = exists $arg_ref->{titdb}
+        ? $arg_ref->{titdb}               : undef;
+    
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    my $request=$self->{dbh}->prepare("select id,nickname,loginname,title,review,rating from reviews where titid=? and titdb=?") or $logger->error($DBI::errstr);
+    $request->execute($titid,$titdb) or $logger->error($DBI::errstr);
+
+    my $request2=$self->{dbh}->prepare("select count(id) as votecount from reviewratings where reviewid=?  group by id") or $logger->error($DBI::errstr);
+    my $request3=$self->{dbh}->prepare("select count(id) as posvotecount from reviewratings where reviewid=? and rating > 0 group by id") or $logger->error($DBI::errstr);
+
+    my $reviewlist_ref = [];
+
+    while (my $result=$request->fetchrow_hashref){
+        my $loginname = decode_utf8($result->{loginname});
+        my $nickname  = decode_utf8($result->{nickname});
+        my $title     = decode_utf8($result->{title});
+        my $review    = decode_utf8($result->{review});
+        my $id        = $result->{id};
+        my $rating    = $result->{rating};
+
+        $request2->execute($id) or $logger->error($DBI::errstr);
+
+        my $result2      = $request2->fetchrow_hashref;
+        my $votecount = $result2->{votecount};
+
+        my $posvotecount = 0;
+        
+        if ($votecount){
+            $request3->execute($id) or $logger->error($DBI::errstr);
+        
+            my $result3      = $request3->fetchrow_hashref;
+            $posvotecount = $result3->{posvotecount};
+        }
+        
+        push @$reviewlist_ref, {
+            id        => $id,
+            loginname => $loginname,
+            nickname  => $nickname,
+            title     => $title,
+            review    => $review,
+            rating    => $rating,
+            votes     => {
+                all      => $votecount,
+                positive => $posvotecount,
+            },
+        };
+    }
+    
+    return $reviewlist_ref;
+}
+
+sub tit_reviewed_by_user {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $titid               = exists $arg_ref->{titid}
+        ? $arg_ref->{titid}               : undef;
+    my $titisbn             = exists $arg_ref->{titisbn}
+        ? $arg_ref->{titisbn}             : '';
+    my $titdb               = exists $arg_ref->{titdb}
+        ? $arg_ref->{titdb}               : undef;
+    my $loginname           = exists $arg_ref->{loginname}
+        ? $arg_ref->{loginname}           : undef;
+    
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    my $request=$self->{dbh}->prepare("select id from reviews where titid=? and titdb=? and loginname=?") or $logger->error($DBI::errstr);
+    $request->execute($titid,$titdb,$loginname) or $logger->error($DBI::errstr);
+
+    my $result=$request->fetchrow_hashref;
+
+    my $reviewid=$result->{id};
+
+    return $reviewid;
+}
+
+sub get_review_of_user {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $id                  = exists $arg_ref->{id}
+        ? $arg_ref->{id}                  : undef;
+    my $loginname           = exists $arg_ref->{loginname}
+        ? $arg_ref->{loginname}           : '';
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    my $request=$self->{dbh}->prepare("select id,titid,titdb,nickname,loginname,title,review,rating from reviews where id=? and loginname=?") or $logger->error($DBI::errstr);
+    $request->execute($id,$loginname) or $logger->error($DBI::errstr);
+
+    my $review_ref = {};
+
+    while (my $result=$request->fetchrow_hashref){
+        my $loginname = decode_utf8($result->{loginname});
+        my $nickname  = decode_utf8($result->{nickname});
+        my $title     = decode_utf8($result->{title});
+        my $review    = decode_utf8($result->{review});
+        my $id        = $result->{id};
+        my $titid     = $result->{titid};
+        my $titdb     = $result->{titdb};
+        my $rating    = $result->{rating};
+
+        $review_ref = {
+            id        => $id,
+            titid     => $titid,
+            titdb     => $titdb,
+            loginname => $loginname,
+            nickname  => $nickname,
+            title     => $title,
+            review    => $review,
+            rating    => $rating,
+        };
+    }
+    
+    return $review_ref;
+}
+
+sub del_review_of_user {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $id                  = exists $arg_ref->{id}
+        ? $arg_ref->{id}                  : undef;
+    my $loginname           = exists $arg_ref->{loginname}
+        ? $arg_ref->{loginname}           : '';
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    my $request=$self->{dbh}->prepare("delete from reviews where id=? and loginname=?") or $logger->error($DBI::errstr);
+    $request->execute($id,$loginname) or $logger->error($DBI::errstr);
+
+    return;
+}
+
+sub get_reviews {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $loginname           = exists $arg_ref->{loginname}
+        ? $arg_ref->{loginname}           : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    my $request=$self->{dbh}->prepare("select id,titid,titdb,nickname,loginname,title,review,rating from reviews where loginname=?") or $logger->error($DBI::errstr);
+    $request->execute($loginname) or $logger->error($DBI::errstr);
+
+    my $reviewlist_ref = [];
+
+    while (my $result=$request->fetchrow_hashref){
+        my $loginname = decode_utf8($result->{loginname});
+        my $nickname  = decode_utf8($result->{nickname});
+        my $title     = decode_utf8($result->{title});
+        my $review    = decode_utf8($result->{review});
+        my $id        = $result->{id};
+        my $titid     = $result->{titid};
+        my $titdb     = $result->{titdb};
+        my $rating    = $result->{rating};
+
+        push @$reviewlist_ref, {
+            id        => $id,
+            titid     => $titid,
+            titdb     => $titdb,
+            loginname => $loginname,
+            nickname  => $nickname,
+            title     => $title,
+            review    => $review,
+            rating    => $rating,
+        };
+    }
+    
+    return $reviewlist_ref;
 }
 
 sub DESTROY {

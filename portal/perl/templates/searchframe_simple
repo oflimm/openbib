@@ -42,6 +42,10 @@
 
 <div class="content">
 
+[% IF config.newsflash %]
+[% PROCESS common/subtemplate name="newsflash" %]
+[% END %]
+
 <form method="get" id="openbib" action="http://[% config.servername %][% config.virtualsearch_loc %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="hitrange"  value="50" />
@@ -49,8 +53,16 @@
 <input type="hidden" name="sorttype"  value="author" />
 <input type="hidden" name="sortorder" value="up" />
 <input type="hidden" name="sb"        value="xapian" />
-<input type="hidden" name="drilldown" value="0" />
-<input type="hidden" name="cloud"     value="0" />
+<input type="hidden" name="st"        value="1" />
+[% IF config.drilldown %]
+<input type="hidden" name="drilldown"      value="1" />
+[% END %]
+[% IF config.drilldown_option.cloud %]
+<input type="hidden" name="dd_cloud"       value="1" />
+[% END %]
+[% IF config.drilldown_option.categorized %]
+<input type="hidden" name="dd_categorized" value="1" />
+[% END %]
 <input type="hidden" name="autoplus"  value="0" />
 
 <p />
@@ -81,7 +93,7 @@
 <table width="100%">
 <tr><th style="text-align: center">[% msg.maketext("Geben Sie hier Ihre Suchbegriffe ein") %]</th></tr>
 <tr><td class="boxed" valign="top" align="center">
-<input type="text" name="fs" value="[% searchquery.fs.val %]" size="80" maxlength="200" />
+<input type="text" name="fs" value="[% searchquery.fs.val | html %]" size="80" maxlength="200" />
 </td></tr>
 </table>
 
@@ -166,5 +178,8 @@
 </div>
 
 <p />
+
+  <!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
+  <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
 
 [% PROCESS common/subtemplate name="std_footer" %]

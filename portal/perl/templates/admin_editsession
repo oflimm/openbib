@@ -18,10 +18,14 @@
 
 [% PROCESS corporate_banner %]
 
+<div id="maincontent">
+
 <ul class="tabbingmenu">
    <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">[% msg.maketext("Kataloge") %]</a></li>
    <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">[% msg.maketext("Views") %]</a></li>
    <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions">[% msg.maketext("Sessions") %]</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1">[% msg.maketext("Statistik") %]</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showuser=1">[% msg.maketext("Nutzerverwaltung") %]</a></li>
    <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">[% msg.maketext("Logout") %]</a></li>
 </ul>
 
@@ -33,7 +37,7 @@
 
 <table width="100%">
 <tr><th>[% msg.maketext("Allgemeine Informationen") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 
 <table cellpadding="3">
 <tr><td><b>[% msg.maketext("Session") %]</b></td><td>[% session.singlesessionid %]</td></tr>
@@ -48,7 +52,7 @@
 
 <table width="100%">
 <tr><th>[% msg.maketext("Recherchen") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 
 <table cellpadding="3">
 <tr><td><b>[% msg.maketext("Recherche") %]</b></td><td><b>[% msg.maketext("Treffer") %]</b></td><td><b>[% msg.maketext("Datenbanken") %]</b></td></tr>
@@ -105,5 +109,7 @@
 </div>
 
 <p />
+
+</div>
 
 [% PROCESS std_footer %]

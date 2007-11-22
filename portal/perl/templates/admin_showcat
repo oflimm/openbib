@@ -20,11 +20,15 @@
 
 [% PROCESS corporate_banner %]
 
+<div id="maincontent">
+
 <ul class="tabbingmenu">
    <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">[% msg.maketext("Kataloge") %]</a></li>
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">[% msg.maketext("Views") %]</a></li>
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">[% msg.maketext("Sessions") %]</a></li>
-   <li><a href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">[% msg.maketext("Logout") %]</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">[% msg.maketext("Views") %]</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">[% msg.maketext("Sessions") %]</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1">[% msg.maketext("Statistik") %]</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showuser=1">[% msg.maketext("Nutzerverwaltung") %]</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">[% msg.maketext("Logout") %]</a></li>
 </ul>
 
 <div class="content">
@@ -35,7 +39,7 @@
 
 <table width="100%">
 <tr><th>[% msg.maketext("Neuen Katalog anlegen") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 <table>
 <tr><td><b>[% msg.maketext("Fakultät") %]</b></td><td><b>[%
 msg.maketext("Beschreibung") %]</b></td><td><b>[%
@@ -64,7 +68,7 @@ type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></td></tr>
 
 <table width="100%">
 <tr><th>[% msg.maketext("Bereits existierende Kataloge") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:12pt">
+<tr><td class="boxedclear" style="font-size:0.9em">
 <table>
 <tr><td><b>[% msg.maketext("Fakultät") %]</b></td><td><b>[% msg.maketext("RSS") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("System") %]</b></td><td><b>[% msg.maketext("DB-Name") %]</b></td><td><b>[% msg.maketext("Sigel") %]</b></td><td><b>[% msg.maketext("URL") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td><td><b>Auto-Konv</b></td><td><b>Titel-Anzahl</b></td></tr>
 [% FOREACH katalog IN kataloge %]
@@ -103,5 +107,7 @@ config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&do_editcat=
 </div>
 
 <p />
+
+</div>
 
 [% PROCESS std_footer %]

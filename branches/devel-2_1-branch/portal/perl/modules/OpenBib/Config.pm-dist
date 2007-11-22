@@ -377,6 +377,9 @@ tt_connector_digibib_result_start_tname  => 'connector_digibib_result_start',
 
 	   tt_databasechoice_tname       => 'databasechoice',
 
+           tt_litlists_manage_lists_tname      => 'litlists_manage_lists',
+           tt_litlists_manage_singlelist_tname => 'litlists_manage_singlelist',
+
 	   tt_loadbalancer_tname         => 'loadbalancer',
 
 	   tt_login_tname                => 'login',
@@ -514,6 +517,10 @@ tt_connector_digibib_result_start_tname  => 'connector_digibib_result_start',
            # Social-Tagging
 
            social_tagging          => 1,
+
+           # Literaturlisten
+
+           litlists                => 1,
 
            # Reviews/Ratings
 

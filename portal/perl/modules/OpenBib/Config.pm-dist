@@ -199,6 +199,7 @@ use vars qw(%config);
 	   headerframe_loc       => '/portal/kopf',
            helpframe_loc         => '/portal/hilfe',
            leave_loc             => '/portal/beenden',
+           litlists_loc          => '/portal/literaturlisten',
 	   loadbalancer_loc      => '/portal/lastverteilung',
 	   login_loc             => '/portal/login',
 	   mailcollection_loc    => '/portal/merklistemailen',

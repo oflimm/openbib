@@ -74,7 +74,7 @@ sub handler {
         sessionID => $query->param('sessionID'),
     });
 
-    my $user      = new OpenBib::User();
+    my $user      = new OpenBib::User({sessionID => $session->{ID}});
     
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
@@ -308,9 +308,7 @@ sub handler {
         my $loginname="";
         my $password="";
         
-        my $userid=$user->get_userid_of_session($session->{ID});
-        
-        ($loginname,$password)=$user->get_cred_for_userid($userid) if ($userid && $user->get_targettype_of_session($session->{ID}) ne "self");
+        ($loginname,$password)=$user->get_credentials() if ($user->{ID} && $user->get_targettype_of_session($session->{ID}) ne "self");
         
         # Hash im Loginname ersetzen
         $loginname=~s/#/\%23/;
@@ -404,9 +402,7 @@ sub handler {
         my $loginname="";
         my $password="";
         
-        my $userid=$user->get_userid_of_session($session->{ID});
-        
-        ($loginname,$password)=$user->get_cred_for_userid($userid) if ($userid && $user->get_targettype_of_session($session->{ID}) ne "self");
+        ($loginname,$password)=$user->get_credentials() if ($user->{ID} && $user->get_targettype_of_session($session->{ID}) ne "self");
         
         # Hash im Loginname ersetzen
         $loginname=~s/#/\%23/;
@@ -558,9 +554,7 @@ sub handler {
             my $loginname="";
             my $password="";
             
-            my $userid=$user->get_userid_of_session($session->{ID});
-            
-            ($loginname,$password)=$user->get_cred_for_userid($userid) if ($userid && $user->get_targettype_of_session($session->{ID}) ne "self");
+            ($loginname,$password)=$user->get_credentials() if ($user->{ID} && $user->get_targettype_of_session($session->{ID}) ne "self");
             
             # Hash im Loginname ersetzen
             $loginname=~s/#/\%23/;
@@ -642,9 +636,7 @@ sub handler {
             my $loginname="";
             my $password="";
             
-            my $userid=$user->get_userid_of_session($session->{ID});
-            
-            ($loginname,$password)=$user->get_cred_for_userid($userid) if ($userid && $user->get_targettype_of_session($session->{ID}) ne "self");
+            ($loginname,$password)=$user->get_credentials() if ($user->{ID} && $user->get_targettype_of_session($session->{ID}) ne "self");
             
             # Hash im Loginname ersetzen
             $loginname=~s/#/\%23/;

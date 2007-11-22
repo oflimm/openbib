@@ -72,7 +72,7 @@ sub handler {
         sessionID => $query->param('sessionID'),
     });
 
-    my $user      = new OpenBib::User();
+    my $user      = new OpenBib::User({sessionID => $session->{ID}});
     
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
@@ -113,11 +113,9 @@ sub handler {
 
     my $return_url = $session->get_returnurl();
 
-    my $userid = $user->get_userid_of_session($session->{ID});
-
     # Wenn die Session schon authentifiziert ist, dann wird
     # wird in die Benutzereinstellungen gesprungen
-    if ($userid){
+    if ($user->{ID}){
 
         $r->internal_redirect("http://$config->{servername}$config->{userprefs_loc}?sessionID=$session->{ID};view=$view;action=showfields");
 

@@ -67,7 +67,7 @@ sub handler {
         sessionID => $query->param('sessionID'),
     });
 
-    my $user      = new OpenBib::User();
+    my $user      = new OpenBib::User({sessionID => $session->{ID}});
     
     my $stylesheet = OpenBib::Common::Util::get_css_by_browsertype($r);
 
@@ -92,17 +92,14 @@ sub handler {
         $view=$session->get_viewname();
     }
   
-    # Haben wir eine authentifizierte Session?
-    my $userid=$user->get_userid_of_session($session->{ID});
-  
-    if ($userid) {
+    if ($user->{ID}) {
         # Authentifiziert-Status der Session loeschen
         my $userresult=$user->{dbh}->prepare("delete from usersession where userid = ?") or $logger->error($DBI::errstr);
-        $userresult->execute($userid) or $logger->error($DBI::errstr);
+        $userresult->execute($user->{ID}) or $logger->error($DBI::errstr);
     
         # Zwischengespeicherte Benutzerinformationen loeschen
         $userresult=$user->{dbh}->prepare("update user set nachname = '', vorname = '', strasse = '', ort = '', plz = '', soll = '', gut = '', avanz = '', branz = '', bsanz = '', vmanz = '', maanz = '', vlanz = '', sperre = '', sperrdatum = '', gebdatum = '' where userid = ?") or $logger->error($DBI::errstr);
-        $userresult->execute($userid) or $logger->error($DBI::errstr);
+        $userresult->execute($user->{ID}) or $logger->error($DBI::errstr);
     
         $userresult->finish();
     }

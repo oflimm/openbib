@@ -68,7 +68,7 @@ sub handler {
         sessionID => $query->param('sessionID'),
     });
 
-    my $user    = new OpenBib::User();
+    my $user    = new OpenBib::User({sessionID => $session->{ID}});
     
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
@@ -107,10 +107,7 @@ sub handler {
         $view=$session->get_viewname();
     }
 
-    # Authorisierte Session?
-    my $userid=$user->get_userid_of_session($session->{ID});
-  
-    unless($userid){
+    unless($user->{ID}){
         OpenBib::Common::Util::print_warning($msg->maketext("Sie haben sich nicht authentifiziert."),$r,$msg);
         return OK;
     }
@@ -173,7 +170,7 @@ sub handler {
         }
 
         my $profilresult=$user->{dbh}->prepare("select profilid,count(profilid) as rowcount from userdbprofile where userid = ? and profilename = ? group by profilid") or $logger->error($DBI::errstr);
-        $profilresult->execute($userid,$newprofile) or $logger->error($DBI::errstr);
+        $profilresult->execute($user->{ID},$newprofile) or $logger->error($DBI::errstr);
         my $res=$profilresult->fetchrow_hashref();
         
         my $numrows=$res->{rowcount};
@@ -188,10 +185,10 @@ sub handler {
         else {
             my $profilresult2=$user->{dbh}->prepare("insert into userdbprofile values (NULL,?,?)") or $logger->error($DBI::errstr);
       
-            $profilresult2->execute($newprofile,$userid) or $logger->error($DBI::errstr);
+            $profilresult2->execute($newprofile,$user->{ID}) or $logger->error($DBI::errstr);
             $profilresult2=$user->{dbh}->prepare("select profilid from userdbprofile where userid = ? and profilename = ?") or $logger->error($DBI::errstr);
       
-            $profilresult2->execute($userid,$newprofile) or $logger->error($DBI::errstr);
+            $profilresult2->execute($user->{ID},$newprofile) or $logger->error($DBI::errstr);
             my $res=$profilresult2->fetchrow_hashref();
             $profilid = decode_utf8($res->{'profilid'});
       
@@ -216,7 +213,7 @@ sub handler {
     # Loeschen eines Profils
     elsif ($do_delprofile) {
         my $profilresult=$user->{dbh}->prepare("delete from userdbprofile where userid = ? and profilid = ?") or $logger->error($DBI::errstr);
-        $profilresult->execute($userid,$profilid) or $logger->error($DBI::errstr);
+        $profilresult->execute($user->{ID},$profilid) or $logger->error($DBI::errstr);
     
         $profilresult=$user->{dbh}->prepare("delete from profildb where profilid = ?") or $logger->error($DBI::errstr);
         $profilresult->execute($profilid) or $logger->error($DBI::errstr);

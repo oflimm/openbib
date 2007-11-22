@@ -1,0 +1,14 @@
+portal/apache/openbib.conf       etc/openbib
+portal/perl/conf/portal.log4perl etc/openbib
+portal/perl/conf/messages.conf   etc/openbib
+portal/perl/modules/OpenBib/Config.pm    etc/openbib
+portal/perl/modules/OpenBib/*    usr/share/perl5/OpenBib
+portal/perl/templates/*          usr/share/openbib/templates
+db/mysql/*                       usr/share/openbib/db/mysql
+tools/*                          usr/share/openbib/bin	
+conv/auto/*.pl                   usr/share/openbib/autoconv/bin
+conv/meta/*.pl                   usr/share/openbib/conv
+conv/lidos/*.pl                  usr/share/openbib/conv
+conv/oai/*.pl                    usr/share/openbib/conv
+doc/*                            usr/share/doc/openbib
+portal/htdocs/*                  var/www

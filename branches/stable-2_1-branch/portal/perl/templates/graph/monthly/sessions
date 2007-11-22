@@ -1,0 +1,33 @@
+[% 
+
+    FILTER null ;
+        result = statistics.get_sequencestat_of_event({ type => 102 , subtype => graph, year => year }) ;
+
+	data = [
+	     result.x_values ,
+	     result.y_values ,
+	] ;
+	
+        USE my_graph = GD.Graph.bars3d();
+
+        my_graph.set(
+            x_label          => 'Monat',
+            y_label          => 'Sessions',
+	    x_label_position => 0.5,
+            title            => "Sessions ${year}",
+            y_min_value      => 0,
+	    show_values      => 1,
+	    values_space     => 12,
+
+            # shadows
+            bar_spacing      => 8,
+            shadow_depth     => 4,
+            shadowclr        => 'dred',
+            transparent      => 0,
+        ) ; 
+
+        my_graph.plot(data).png | redirect("${graph}/${type}/${year}.png",1);
+      END;
+
+
+    -%]

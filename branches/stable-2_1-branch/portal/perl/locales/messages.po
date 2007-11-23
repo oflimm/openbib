@@ -202,7 +202,7 @@ msgstr ""
 msgid "Ausleih-Einstellungen"
 msgstr ""
 
-#: ../templates/database/einbaende/managecollection_tit_as_html:125 ../templates/database/einbaende/search_showtitset:244 ../templates/database/landschaft/search_showtitset:162 ../templates/database/portrait/search_showtitset:162 ../templates/managecollection_tit_as_html:76 ../templates/managecollection_tit_as_html_simple:60 ../templates/search_showmulttitset:124 ../templates/search_showtitset:278
+#: ../templates/database/einbaende/managecollection_tit_as_html:125 ../templates/database/einbaende/search_showtitset:244 ../templates/database/landschaft/search_showtitset:162 ../templates/database/portrait/search_showtitset:162 ../templates/managecollection_tit_as_html:76 ../templates/managecollection_tit_as_html_simple:60 ../templates/search_showmulttitset:124 ../templates/search_showtitset:265
 msgid "Ausleihe/Exemplare"
 msgstr ""
 
@@ -278,7 +278,7 @@ msgstr ""
 msgid "Beschreibung"
 msgstr ""
 
-#: ../templates/circset:16 ../templates/database/einbaende/managecollection_tit_as_html:129 ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:137 ../templates/database/einbaende/search_showtitset:248 ../templates/database/landschaft/search_showtitset:147 ../templates/database/portrait/search_showtitset:147 ../templates/managecollection_tit_as_html:61 ../templates/managecollection_tit_as_html_simple:45 ../templates/managecollection_tit_as_text:39 ../templates/search_showmulttitset:103 ../templates/search_showtitset:257
+#: ../templates/circset:16 ../templates/database/einbaende/managecollection_tit_as_html:129 ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:137 ../templates/database/einbaende/search_showtitset:248 ../templates/database/landschaft/search_showtitset:147 ../templates/database/portrait/search_showtitset:147 ../templates/managecollection_tit_as_html:61 ../templates/managecollection_tit_as_html_simple:45 ../templates/managecollection_tit_as_text:39 ../templates/mexset:2 ../templates/search_showmulttitset:103
 msgid "Besitzende Bibliothek"
 msgstr ""
 
@@ -290,7 +290,7 @@ msgstr ""
 msgid "Bestands-&Uuml;berpr&uuml;fungs-URL"
 msgstr ""
 
-#: ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:137 ../templates/managecollection_tit_as_html:61 ../templates/managecollection_tit_as_html_simple:45 ../templates/search_showmulttitset:103 ../templates/search_showtitset:257
+#: ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:137 ../templates/managecollection_tit_as_html:61 ../templates/managecollection_tit_as_html_simple:45 ../templates/mexset:2 ../templates/search_showmulttitset:103
 msgid "Bestandsverlauf"
 msgstr ""
 
@@ -701,7 +701,7 @@ msgstr ""
 msgid "Geben Sie hier den Notationsanfang ein"
 msgstr ""
 
-#: ../templates/search_showswtindex:75 ../templates/search_showtitlist:178 ../templates/search_showtitset:611 ../templates/views/kapsel/search_showtitlist:168 ../templates/virtualsearch_showswtindex:46
+#: ../templates/search_showswtindex:75 ../templates/search_showtitlist:178 ../templates/search_showtitset:598 ../templates/views/kapsel/search_showtitlist:168 ../templates/virtualsearch_showswtindex:46
 msgid "Geben Sie hier den Schlagwortanfang ein"
 msgstr ""
 
@@ -882,7 +882,7 @@ msgstr ""
 msgid "Institutionen"
 msgstr ""
 
-#: ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:137 ../templates/managecollection_tit_as_html:61 ../templates/managecollection_tit_as_html_simple:45 ../templates/search_showmulttitset:103 ../templates/search_showtitset:257
+#: ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:137 ../templates/managecollection_tit_as_html:61 ../templates/managecollection_tit_as_html_simple:45 ../templates/mexset:2 ../templates/search_showmulttitset:103
 msgid "Inventarnummer"
 msgstr ""
 
@@ -1387,7 +1387,7 @@ msgstr ""
 msgid "Schlagwortindex"
 msgstr ""
 
-#: ../templates/search_showtitset:610
+#: ../templates/search_showtitset:597
 msgid "Schlagwortindex diese Katalogs"
 msgstr ""
 
@@ -1587,7 +1587,7 @@ msgstr ""
 msgid "Sigel"
 msgstr ""
 
-#: ../templates/circset:16 ../templates/circulation:50 ../templates/circulation_orders:50 ../templates/circulation_remind:69 ../templates/circulation_reserv:50 ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:137 ../templates/database/einbaende/search_showtitset:248 ../templates/database/landschaft/search_showtitset:147 ../templates/database/portrait/search_showtitset:147 ../templates/managecollection_tit_as_html:61 ../templates/search_showmulttitset:103 ../templates/search_showtitset:257 ../templates/searchframe_query:35 ../templates/userprefs:182 ../templates/views/einbaende/searchframe_simple:115 ../templates/views/inst501/searchframe_query:35 ../templates/views/kapsel/searchframe_query:31 ../templates/views/portrait/searchframe_query:29 ../templates/views/richter/searchframe_query:29
+#: ../templates/circset:16 ../templates/circulation:50 ../templates/circulation_orders:50 ../templates/circulation_remind:69 ../templates/circulation_reserv:50 ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:137 ../templates/database/einbaende/search_showtitset:248 ../templates/database/landschaft/search_showtitset:147 ../templates/database/portrait/search_showtitset:147 ../templates/managecollection_tit_as_html:61 ../templates/mexset:2 ../templates/search_showmulttitset:103 ../templates/searchframe_query:35 ../templates/userprefs:182 ../templates/views/einbaende/searchframe_simple:115 ../templates/views/inst501/searchframe_query:35 ../templates/views/kapsel/searchframe_query:31 ../templates/views/portrait/searchframe_query:29 ../templates/views/richter/searchframe_query:29
 msgid "Signatur"
 msgstr ""
 
@@ -1646,7 +1646,7 @@ msgstr ""
 msgid "Sprung zur Trefferliste im KUG"
 msgstr ""
 
-#: ../templates/circset:16 ../templates/database/einbaende/managecollection_tit_as_html:129 ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:137 ../templates/database/einbaende/search_showtitset:248 ../templates/managecollection_tit_as_html:61 ../templates/managecollection_tit_as_html_simple:45 ../templates/search_showmulttitset:103 ../templates/search_showtitset:257
+#: ../templates/circset:16 ../templates/database/einbaende/managecollection_tit_as_html:129 ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:137 ../templates/database/einbaende/search_showtitset:248 ../templates/managecollection_tit_as_html:61 ../templates/managecollection_tit_as_html_simple:45 ../templates/mexset:2 ../templates/search_showmulttitset:103
 msgid "Standort"
 msgstr ""
 
@@ -1678,7 +1678,7 @@ msgstr ""
 msgid "Suche starten"
 msgstr ""
 
-#: ../templates/search_showswtindex:75 ../templates/search_showtitlist:178 ../templates/search_showtitset:611 ../templates/views/einbaende/searchframe_simple:30 ../templates/views/kapsel/search_showtitlist:168 ../templates/views/kapsel/searchframe:61 ../templates/views/kapsel/searchframe:90 ../templates/views/kapsel/searchframe:94 ../templates/views/kapsel/searchframe_simple:59 ../templates/views/landschaft/searchframe:61 ../templates/views/landschaft/searchframe:90 ../templates/views/landschaft/searchframe:94 ../templates/views/landschaft/searchframe_simple:51 ../templates/views/portrait/searchframe:120 ../templates/views/portrait/searchframe:124 ../templates/views/portrait/searchframe:66 ../templates/views/portrait/searchframe_simple:58
+#: ../templates/search_showswtindex:75 ../templates/search_showtitlist:178 ../templates/search_showtitset:598 ../templates/views/einbaende/searchframe_simple:30 ../templates/views/kapsel/search_showtitlist:168 ../templates/views/kapsel/searchframe:61 ../templates/views/kapsel/searchframe:90 ../templates/views/kapsel/searchframe:94 ../templates/views/kapsel/searchframe_simple:59 ../templates/views/landschaft/searchframe:61 ../templates/views/landschaft/searchframe:90 ../templates/views/landschaft/searchframe:94 ../templates/views/landschaft/searchframe_simple:51 ../templates/views/portrait/searchframe:120 ../templates/views/portrait/searchframe:124 ../templates/views/portrait/searchframe:66 ../templates/views/portrait/searchframe_simple:58
 msgid "Suchen"
 msgstr ""
 
@@ -1723,7 +1723,7 @@ msgstr ""
 msgid "System"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:84 ../templates/database/inst450/visible_categories_titset:33 ../templates/visible_categories_titset:84
+#: ../templates/database/inst001/visible_categories_titset:84 ../templates/database/inst450/visible_categories_titset:34 ../templates/visible_categories_titset:84
 msgid "T0015"
 msgstr ""
 
@@ -1981,6 +1981,10 @@ msgstr ""
 
 #: ../templates/database/inst001/visible_categories_titset:45 ../templates/database/inst001/visible_categories_titset:58 ../templates/database/landschaft/visible_categories_titset:42 ../templates/database/portrait/visible_categories_titset:36 ../templates/visible_categories_titset:44 ../templates/visible_categories_titset:57
 msgid "T0434"
+msgstr ""
+
+#: ../templates/database/inst450/visible_categories_titset:32
+msgid "T0434-inst450"
 msgstr ""
 
 #: ../templates/database/inst001/visible_categories_titset:48 ../templates/visible_categories_titset:47
@@ -2291,7 +2295,7 @@ msgstr ""
 msgid "T0700-portrait"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:90 ../templates/database/inst450/visible_categories_titset:34 ../templates/visible_categories_titset:90
+#: ../templates/database/inst001/visible_categories_titset:90 ../templates/database/inst450/visible_categories_titset:35 ../templates/visible_categories_titset:90
 msgid "T0710"
 msgstr ""
 
@@ -2319,12 +2323,8 @@ msgstr ""
 msgid "T0750-landschaft"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:89 ../templates/database/landschaft/visible_categories_titset:81 ../templates/visible_categories_titset:89
+#: ../templates/database/inst001/visible_categories_titset:89 ../templates/database/inst450/visible_categories_titset:33 ../templates/database/landschaft/visible_categories_titset:81 ../templates/visible_categories_titset:89
 msgid "T0800"
-msgstr ""
-
-#: ../templates/database/inst450/visible_categories_titset:32
-msgid "T0800-inst450"
 msgstr ""
 
 #: ../templates/database/portrait/visible_categories_titset:81

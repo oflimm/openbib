@@ -44,20 +44,16 @@
 		      <tr>
 			<td>
 [%- IF type == 'HTML' -%]
-<b>[% msg.maketext("Ausgew&auml;hlte Titel") %]</b>
-<ul>
-<li>auf der Merkliste <input type="submit" name="do_collection_delentry" value="[% msg.maketext("entfernen") %]" /></li>
+<b>Ausgew&auml;hlte Titel</b> aus der Merkliste <input type="submit" name="do_collection_delentry" value="[% msg.maketext("entfernen") %]" />
 [% 
    IF config.litlists ;
       litlists = user.get_litlists();
 
       IF litlists.size > 0 ;
 %]
-<li>in die Literaturliste <select name="litlistid">[% FOREACH litlist IN litlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select>&nbsp;<input type="submit" name="do_litlist_addentry" value="&uuml;bernehmen" />
-<p />
+&nbsp;&#124;&nbsp;in die Literaturliste <select name="litlistid">[% FOREACH litlist IN litlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select>&nbsp;<input type="submit" name="do_litlist_addentry" value="&uuml;bernehmen" /></li>
 [%    END %]
 [% END %]
-
 [%- ELSE -%]
 <b>[% msg.maketext("Eine Bearbeitung ist nur bei 'HTML' m&ouml;glich") %]</b>
 [%- END -%]
@@ -70,6 +66,10 @@
 		  </table>
 		</td></tr>
 	  </table>
+
+<p />
+M&ouml;chten Sie eine neue <select name="type"><option value="1">&ouml;ffentliche</option><option value="2">private</option></select> Literaturliste mit dem Namen <input type="text" name="title" /> <input type="submit" name="do_addlist" value="anlegen" />
+
 	  
 	  <p />
 [% IF type == 'HTML' %]

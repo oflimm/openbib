@@ -78,8 +78,12 @@ sub handler {
     my $litlistid               = $query->param('litlistid') || '';
     my $do_collection_delentry  = $query->param('do_collection_delentry')  || '';
     my $do_litlist_addentry     = $query->param('do_litlist_addentry')  || '';
+    my $do_addlitlist           = $query->param('do_addlitlist')  || '';
+    my $title                   = $query->param('title')  || '';
     my $action                  = $query->param('action')    || 'show';
+    my $show                    = $query->param('show')      || 'short';
     my $type                    = $query->param('type')      || 'HTML';
+    my $littype                 = $query->param('littype')   || 1;
 
     my $queryoptions_ref
         = $session->get_queryoptions($query);
@@ -113,6 +117,21 @@ sub handler {
         $view=$session->get_viewname();
     }
 
+    $logger->debug(":".$user->is_authenticated.":$do_addlitlist");
+    if (! $user->is_authenticated && $do_addlitlist){
+        # Aufruf-URL
+        my $return_url = $r->parsed_uri->unparse;
+
+        # Return-URL in der Session abspeichern
+
+        $session->set_returnurl($return_url);
+
+        $logger->debug("Nicht authentifizierter Nutzer versucht Literaturliste anzulegen");
+        $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1");
+
+        return OK;
+    }
+    
     my $idnresult="";
 
     # Einfuegen eines Titels ind die Merkliste
@@ -198,6 +217,18 @@ sub handler {
 	  return OK;
 
 	}
+	elsif ($do_addlitlist) {
+	  if (!$title){
+	    OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."),$r,$msg);
+	    
+	    return OK;
+	  }
+	  
+	  $user->add_litlist({ title =>$title, type => $littype});
+
+	  $r->internal_redirect("http://$config->{servername}$config->{managecollection_loc}?sessionID=$session->{ID}&action=show&type=HTML");
+	  return OK;
+	}
 
         # Schleife ueber alle Treffer
         my $idnresult="";
@@ -248,12 +279,6 @@ sub handler {
                 sessionID          => $session->{ID}
             });
 
-#            if ($type eq "Text") {
-#                $normset=OpenBib::ManageCollection::Util::titset_to_text($normset);
-#            }
-#            elsif ($type eq "EndNote") {
-#                $normset=OpenBib::ManageCollection::Util::titset_to_endnote($normset);
-#            }
 
             $dbh->disconnect();
 
@@ -276,7 +301,9 @@ sub handler {
             sessionID         => $session->{ID},
             qopts             => $queryoptions_ref,
             type              => $type,
+            show              => $show,
             collection        => \@collection,
+            targetdbinfo      => $targetdbinfo_ref,
             normset2bibtex    => \&OpenBib::Common::Util::normset2bibtex,
 
 	    user              => $user,
@@ -365,6 +392,7 @@ sub handler {
             sessionID  => $session->{ID},
             qopts      => $queryoptions_ref,		
             type       => $type,
+            show       => $show,
             collection => \@collection,
             normset2bibtex    => \&OpenBib::Common::Util::normset2bibtex,
 
@@ -475,6 +503,7 @@ sub handler {
             sessionID  => $session->{ID},
             qopts      => $queryoptions_ref,				
             type       => $type,
+            show       => $show,
             loginname  => $loginname,
             singleidn  => $singleidn,
             database   => $database,
@@ -575,6 +604,7 @@ sub handler {
             sessionID  => $session->{ID},
             qopts      => $queryoptions_ref,		
             type       => $type,
+            show       => $show,
             loginname  => $loginname,
             singleidn  => $singleidn,
             database   => $database,

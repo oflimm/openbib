@@ -63,9 +63,11 @@ sub new {
 
     if (defined $sessionID){
       my $userid = $self->get_userid_of_session($sessionID);
-      $self->{ID} = $userid; 
-      $logger->debug("Got UserID $userid for session $sessionID");
-    }
+      if (defined $userid){
+          $self->{ID} = $userid ;
+          $logger->debug("Got UserID $userid for session $sessionID");
+      }
+  }
 
     return $self;
 }
@@ -189,14 +191,11 @@ sub get_userid_of_session {
 
     $userresult->execute($globalsessionID) or $logger->error($DBI::errstr);
   
-    my $userid="";
+    my $userid=undef;
   
     while(my $res=$userresult->fetchrow_hashref()){
         $userid = decode_utf8($res->{'userid'});
     }
-
-    # Userid merken
-    $self->{userid} = $userid;
 
     return $userid;
 }
@@ -464,7 +463,7 @@ sub get_all_profiles {
     my $config = new OpenBib::Config();
 
     my $idnresult=$self->{dbh}->prepare("select profilid, profilename from userdbprofile where userid = ? order by profilename") or $logger->error($DBI::errstr);
-    $idnresult->execute($self->{userid}) or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
 
     my @userdbprofiles=();
     while (my $result=$idnresult->fetchrow_hashref()){
@@ -1503,6 +1502,12 @@ sub get_litlist_properties {
 		       };
 
     return $litlist_ref;
+}
+
+sub is_authenticated {
+    my ($self)=@_;
+
+    return (exists $self->{ID})?1:0;
 }
 
 sub DESTROY {

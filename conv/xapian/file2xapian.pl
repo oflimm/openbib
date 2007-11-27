@@ -86,7 +86,7 @@ if (!$database){
   exit;
 }
 
-my $FLINT_BTREE_MAX_KEY_LEN = 250;
+my $FLINT_BTREE_MAX_KEY_LEN = 245;
 
 my %normdata                = ();
 

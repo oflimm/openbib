@@ -47,8 +47,8 @@
 
 <p />
 <!-- Title begins here -->
-<table width="100%">
-<tr><th>[% msg.maketext("Titelaufnahme") %]</th></tr>
+<table width="100%" cellpadding="2">
+<tr><th>[% msg.maketext("Titelaufnahme") %]</th>[% IF litlists.size > 0 %]<td width="5">&nbsp;</td><td width="200">&nbsp;</td>[% END %]</tr>
 <tr><td class="boxedclear">
 
 <!--
@@ -271,7 +271,19 @@ END;
 [% PROCESS common/subtemplate name="mexset" %]
 [% END %]
 
-</td></tr>
+</td>
+[% IF litlists.size > 0 %]<td></td><td class="boxedfull" valign="top" style="font-size:0.8em">
+Dieser Titel befindet sich in folgenden Literaturlisten:
+
+<ul>
+[% FOREACH litlist IN litlists%]
+<li><a href="[% config.litlists_loc %]?sessionID=[% sessionID
+%];action=show;litlistid=[% litlist.id %]">[% litlist.title %]</a></li>
+[% END %]
+</ul>
+
+</td>[% END %]
+</tr>
 </table>
 
 [% IF circset.size > 0 %]

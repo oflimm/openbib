@@ -1510,6 +1510,69 @@ sub is_authenticated {
     return (exists $self->{ID})?1:0;
 }
 
+sub litlist_is_public {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $litlistid           = exists $arg_ref->{litlistid}
+        ? $arg_ref->{litlistid}           : undef;
+
+    
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return ($self->get_litlist_properties({ litlistid => $litlistid })->{type} == 1)?1:0;;
+}
+
+sub get_litlist_owner {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $litlistid           = exists $arg_ref->{litlistid}
+        ? $arg_ref->{litlistid}           : undef;
+
+    
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return $self->get_litlist_properties({ litlistid => $litlistid })->{userid};
+}
+
+sub get_litlists_of_tit {
+    my ($self,$arg_ref)=@_;
+
+    my $titid               = exists $arg_ref->{titid}
+        ? $arg_ref->{titid}               : undef;
+    my $titdb               = exists $arg_ref->{titdb}
+        ? $arg_ref->{titdb}               : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    return if (!$titid || !$titdb);
+
+    my $request=$self->{dbh}->prepare("select ll.* from litlistitems as lli, litlists as ll where ll.id=lli.litlistid and lli.titid=? and lli.titdb=?") or $logger->error($DBI::errstr);
+    $request->execute($titid,$titdb) or $logger->error($DBI::errstr);
+
+    my $litlists_ref = [];
+
+    while (my $result=$request->fetchrow_hashref){
+        push @$litlists_ref, {
+            id     => $result->{id},
+            userid => $result->{userid},
+            type   => $result->{type},
+            title  => $result->{title},
+        };
+    }
+
+    return $litlists_ref;
+}
+
 sub DESTROY {
     my $self = shift;
 

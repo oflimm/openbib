@@ -1065,6 +1065,10 @@ sub print_tit_set_by_idn {
 
     my $poolname=$targetdbinfo_ref->{dbnames}{$database};
 
+    # Literaturlisten finden
+
+    my $litlists_ref = $user->get_litlists_of_tit({titid => $titidn, titdb => $database});
+    
     # TT-Data erzeugen
     my $ttdata={
         view        => $view,
@@ -1087,6 +1091,7 @@ sub print_tit_set_by_idn {
         loginname     => $loginname,
         logintargetdb => $logintargetdb,
 
+        litlists     => $litlists_ref,
         highlightquery    => \&highlightquery,
         normset2bibtex    => \&OpenBib::Common::Util::normset2bibtex,
         normset2bibsonomy => \&OpenBib::Common::Util::normset2bibsonomy,

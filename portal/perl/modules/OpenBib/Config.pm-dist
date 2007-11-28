@@ -379,6 +379,7 @@ tt_connector_digibib_result_start_tname  => 'connector_digibib_result_start',
 
            tt_litlists_manage_lists_tname      => 'litlists_manage_lists',
            tt_litlists_manage_singlelist_tname => 'litlists_manage_singlelist',
+           tt_litlists_show_singlelist_tname   => 'litlists_show_singlelist',
 
 	   tt_loadbalancer_tname         => 'loadbalancer',
 

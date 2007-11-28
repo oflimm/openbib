@@ -277,9 +277,39 @@ sub handler {
 	  OpenBib::Common::Util::print_page($config->{tt_litlists_manage_lists_tname},$ttdata,$r);
 	  return OK;
 	}
-      }
-    
+    }
+    elsif ($action eq "show"){
+        if ($user->litlist_is_public({litlistid => $litlistid}) || $user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid})){
+        
+            my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
+            
+	    my $singlelitlist = {
+				 itemlist => $user->get_litlistentries({litlistid => $litlistid}),
+				 properties => $litlist_properties_ref,
+                             };
 
+	    # TT-Data erzeugen
+	    my $ttdata={
+                view       => $view,
+                stylesheet => $stylesheet,
+                sessionID  => $session->{ID},
+                
+                user       => $user,
+                litlist    => $singlelitlist,
+                targetdbinfo  => $targetdbinfo_ref,
+                
+                config     => $config,
+                msg        => $msg,
+            };
+	    
+	    OpenBib::Common::Util::print_page($config->{tt_litlists_show_singlelist_tname},$ttdata,$r);
+            return OK;
+        }
+        else {
+	    OpenBib::Common::Util::print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."),$r,$msg);
+            return OK;
+        }
+    }
     return OK;
 }
 

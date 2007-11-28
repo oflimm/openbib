@@ -73,17 +73,17 @@ sub handler {
     #
     # 
 
-    my ($database,$id,$type,$view);
-    if ($path=~m/^\/(\w+?)\/(\w+?)\/(\w+?)\/index.html$/){
-        ($database,$id,$type)=($1,$2,$3);
+    my ($misc,$id,$type,$view);
+    if ($path=~m/^\/(\w+?)\/(\d+?)\/(\d+?)\/index.html$/){
+        ($misc,$id,$type)=($1,$2,$3);
     }
-    elsif ($path=~m/^\/(\w+?)\/(\w+?)\/(\w+?)\/(\w+?)\/index.html$/){
-        ($database,$id,$type,$view)=($1,$2,$3,$4);
+    elsif ($path=~m/^\/(\w+?)\/(\d+?)\/(\d+?)\/(\w+?)\/index.html$/){
+        ($misc,$id,$type,$view)=($1,$2,$3,$4);
     }
 
     my $ttdata={
         view            => $view,
-        database        => $database,
+        misc            => $misc,
         id              => $id,
         type            => $type,
         config          => $config,

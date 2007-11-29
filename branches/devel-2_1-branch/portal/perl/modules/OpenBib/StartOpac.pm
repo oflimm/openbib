@@ -79,6 +79,7 @@ sub handler {
     my $action          = $query->param('action') || '';
     my $setmask         = $query->param('setmask') || '';
     my $searchsingletit = $query->param('searchsingletit') || '';
+    my $searchlitlist   = $query->param('searchlitlist')   || '';
   
     my $view="";
 
@@ -171,6 +172,7 @@ sub handler {
         fs              => $fs,
         database        => $database,
         searchsingletit => $searchsingletit,
+        searchlitlist   => $searchlitlist,
         config          => $config,
         msg             => $msg,
     };

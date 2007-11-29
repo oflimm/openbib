@@ -32,7 +32,7 @@
 
 <!-- Titlelist begins here -->
 <table width="100%">
-<tr><th>[% litlist.properties.title %]</th></tr>
+<tr><th>[% litlist.properties.title %]&nbsp;<a href="http://[% config.loadbalancerservername %][% config.connector_permalink_loc %]/[% litlist.properties.userid %]/[% litlist.properties.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="Permanenter Link"><img src="/images/openbib/3d-file-blue-permalink.png" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a></th></tr>
 <tr><td class="boxedclear">
 
 <table cellpadding="2">

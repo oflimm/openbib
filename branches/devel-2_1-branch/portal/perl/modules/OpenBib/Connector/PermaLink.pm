@@ -73,18 +73,18 @@ sub handler {
     #
     # 
 
-    my ($misc,$id,$type,$view);
+    my ($id1,$id2,$type,$view);
     if ($path=~m/^\/(\w+?)\/(\d+?)\/(\d+?)\/index.html$/){
-        ($misc,$id,$type)=($1,$2,$3);
+        ($id1,$id2,$type)=($1,$2,$3);
     }
     elsif ($path=~m/^\/(\w+?)\/(\d+?)\/(\d+?)\/(\w+?)\/index.html$/){
-        ($misc,$id,$type,$view)=($1,$2,$3,$4);
+        ($id1,$id2,$type,$view)=($1,$2,$3,$4);
     }
 
     my $ttdata={
         view            => $view,
-        misc            => $misc,
-        id              => $id,
+        id1             => $id1,
+        id2             => $id2,
         type            => $type,
         config          => $config,
         msg             => $msg,

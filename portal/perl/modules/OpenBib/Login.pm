@@ -258,7 +258,7 @@ sub handler {
 
             # Falls noch keins da ist, eintragen
             if ($rows <= 0) {
-                $userresult=$user->{dbh}->prepare("insert into fieldchoice values (?,1,1,1,1,1,1,1,1,1,0,1,1,1)") or $logger->error($DBI::errstr);
+                $userresult=$user->{dbh}->prepare("insert into fieldchoice values (?,1,1,1,1,1,1,1,1,1,0,1,1,1,1)") or $logger->error($DBI::errstr);
                 $userresult->execute($userid) or $logger->error($DBI::errstr);
             }
       

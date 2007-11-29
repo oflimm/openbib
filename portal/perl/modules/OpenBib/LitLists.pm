@@ -122,7 +122,7 @@ sub handler {
   
     my $queryoptions_ref
         = $session->get_queryoptions($query);
-
+    
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
@@ -151,142 +151,142 @@ sub handler {
     my $user = new OpenBib::User({sessionID => $session->{ID}});
 
     if ($action eq "manage" && $user->{ID}){
-
+        
 	if ($do_addlist) {
-	  
-	  if ($title eq ""){
-	    OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."),$r,$msg);
-	    
-	    return OK;
-	  }
-	  
-	  $user->add_litlist({ title =>$title, type => $type});
-
-	  $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage");
-	  return OK;
-	  
+            
+            if ($title eq ""){
+                OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."),$r,$msg);
+                
+                return OK;
+            }
+            
+            $user->add_litlist({ title =>$title, type => $type});
+            
+            $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage");
+            return OK;
+            
 	}
 	if ($do_changelist) {
-	  
-	  if (!$title || !$type || !$litlistid){
-	    OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."),$r,$msg);
-	    
-	    return OK;
-	  }
-
-	  my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
-
-	  if ($litlist_properties_ref->{userid} eq $user->{ID}){
-	    $user->change_litlist({ title => $title, type => $type, litlistid => $litlistid});
-	  }
-
-	  $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage");
-	  return OK;
-	  
+            
+            if (!$title || !$type || !$litlistid){
+                OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."),$r,$msg);
+                
+                return OK;
+            }
+            
+            my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
+            
+            if ($litlist_properties_ref->{userid} eq $user->{ID}){
+                $user->change_litlist({ title => $title, type => $type, litlistid => $litlistid});
+            }
+            
+            $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage");
+            return OK;
+            
 	}
 	elsif ($do_addentry) {
+            
+            if (!$litlistid || !$titid || !$titdb ){
+                OpenBib::Common::Util::print_warning($msg->maketext("Sie haben entweder keine entsprechende List oder Titel und Datenbank existieren nicht."),$r,$msg);
+                
+                return OK;
+            }
+            
+            my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
+            
+            if ($litlist_properties_ref->{userid} eq $user->{ID}){
+                $user->add_litlistentry({ litlistid =>$litlistid, titid => $titid, titdb => $titdb});
+            }
+            
+            $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage&do_showlitlist=1&litlistid=$litlistid");
+            return OK;
 	  
-	  if (!$litlistid || !$titid || !$titdb ){
-	    OpenBib::Common::Util::print_warning($msg->maketext("Sie haben entweder keine entsprechende List oder Titel und Datenbank existieren nicht."),$r,$msg);
+	} elsif ($do_delentry) {
+	  
+            if (!$titid || !$titdb || !$litlistid) {
+                OpenBib::Common::Util::print_warning($msg->maketext("Keine Titelid, Titel-Datenbank oder Literaturliste vorhanden."),$r,$msg);
 	    
-	    return OK;
-	  }
-	  
-	  my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
+                return OK;
+            }
 
-	  if ($litlist_properties_ref->{userid} eq $user->{ID}){
-	    $user->add_litlistentry({ litlistid =>$litlistid, titid => $titid, titdb => $titdb});
-	  }
+            my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
 
-	  $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage&do_showlitlist=1&litlistid=$litlistid");
-	  return OK;
+            if ($litlist_properties_ref->{userid} eq $user->{ID}) {
+                $user->del_litlistentry({ titid => $titid, titdb => $titdb, litlistid => $litlistid});
+            }
+
+            $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage&litlistid=$litlistid&do_showlitlist=1");
+            return OK;
 	  
-	}
-	elsif ($do_delentry) {
+	} elsif ($do_showlitlist) {
 	  
-	  if (!$titid || !$titdb || !$litlistid){
-	    OpenBib::Common::Util::print_warning($msg->maketext("Keine Titelid, Titel-Datenbank oder Literaturliste vorhanden."),$r,$msg);
+            if (!$litlistid || !$user->{ID} ) {
+                OpenBib::Common::Util::print_warning($msg->maketext("Sie haben entweder keine entsprechende Liste oder Sie sind nicht authentifiziert."),$r,$msg);
 	    
-	    return OK;
-	  }
-
-	  my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
-
-	  if ($litlist_properties_ref->{userid} eq $user->{ID}){
-	    $user->del_litlistentry({ titid => $titid, titdb => $titdb, litlistid => $litlistid});
-	  }
-
-	  $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage&litlistid=$litlistid&do_showlitlist=1");
-	  return OK;
+                return OK;
+            }
 	  
-	}
-	elsif ($do_showlitlist) {
+            my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
 	  
-	  if (!$litlistid || !$user->{ID} ){
-	    OpenBib::Common::Util::print_warning($msg->maketext("Sie haben entweder keine entsprechende Liste oder Sie sind nicht authentifiziert."),$r,$msg);
-	    
-	    return OK;
-	  }
-	  
-	  my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
-	  
-	  if ($litlist_properties_ref->{userid} eq $user->{ID}){
-	
-	    my $singlelitlist = {
-				 itemlist => $user->get_litlistentries({litlistid => $litlistid}),
-				 properties => $litlist_properties_ref,
-				};
-	    # TT-Data erzeugen
-	    my $ttdata={
-			view       => $view,
-			stylesheet => $stylesheet,
-			sessionID  => $session->{ID},
-			
-			user       => $user,
-			litlist    => $singlelitlist,
-			targetdbinfo  => $targetdbinfo_ref,
+            if ($litlist_properties_ref->{userid} eq $user->{ID}) {
 
-			config     => $config,
-			msg        => $msg,
-		       };
-	    
-	    OpenBib::Common::Util::print_page($config->{tt_litlists_manage_singlelist_tname},$ttdata,$r);
-	  }
-	  else {
-	    OpenBib::Common::Util::print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."),$r,$msg);
-	  }
-	  return OK;
+                my $targettype    = $user->get_targettype_of_session($session->{ID});
+
+                my $singlelitlist = {
+                    itemlist => $user->get_litlistentries({litlistid => $litlistid}),
+                    properties => $litlist_properties_ref,
+                };
+                # TT-Data erzeugen
+                my $ttdata={
+                    view       => $view,
+                    stylesheet => $stylesheet,
+                    sessionID  => $session->{ID},
+                  
+                    user         => $user,
+                    litlist      => $singlelitlist,
+                    targetdbinfo => $targetdbinfo_ref,
+                    targettype   => $targettype,
+                    
+                    config     => $config,
+                    msg        => $msg,
+                };
+              
+                OpenBib::Common::Util::print_page($config->{tt_litlists_manage_singlelist_tname},$ttdata,$r);
+            } else {
+                OpenBib::Common::Util::print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."),$r,$msg);
+            }
+            return OK;
 	  
-	}
-	else {
+        } else {
+            
+            my $litlists   = $user->get_litlists();
+            my $targettype = $user->get_targettype_of_session($session->{ID});
 
-	  my $litlists = $user->get_litlists();
-
-	  # TT-Data erzeugen
-	  my $ttdata={
-		      view       => $view,
-		      stylesheet => $stylesheet,
-		      sessionID  => $session->{ID},
+            # TT-Data erzeugen
+            my $ttdata={
+                view       => $view,
+                stylesheet => $stylesheet,
+                sessionID  => $session->{ID},
 		      
-		      litlists   => $litlists,
-		      user       => $user,
-		      config     => $config,
-		      msg        => $msg,
-		     };
+                litlists   => $litlists,
+                user       => $user,
+                targettype => $targettype,
+                config     => $config,
+                msg        => $msg,
+            };
 
-	  OpenBib::Common::Util::print_page($config->{tt_litlists_manage_lists_tname},$ttdata,$r);
-	  return OK;
+            OpenBib::Common::Util::print_page($config->{tt_litlists_manage_lists_tname},$ttdata,$r);
+            return OK;
 	}
-    }
-    elsif ($action eq "show"){
-        if ($user->litlist_is_public({litlistid => $litlistid}) || $user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid})){
+    } elsif ($action eq "show") {
+        if ($user->litlist_is_public({litlistid => $litlistid}) || $user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid})) {
         
             my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
             
 	    my $singlelitlist = {
-				 itemlist => $user->get_litlistentries({litlistid => $litlistid}),
-				 properties => $litlist_properties_ref,
-                             };
+                itemlist => $user->get_litlistentries({litlistid => $litlistid}),
+                properties => $litlist_properties_ref,
+            };
 
 	    # TT-Data erzeugen
 	    my $ttdata={
@@ -304,8 +304,7 @@ sub handler {
 	    
 	    OpenBib::Common::Util::print_page($config->{tt_litlists_show_singlelist_tname},$ttdata,$r);
             return OK;
-        }
-        else {
+        } else {
 	    OpenBib::Common::Util::print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."),$r,$msg);
             return OK;
         }

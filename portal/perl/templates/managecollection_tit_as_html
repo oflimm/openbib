@@ -15,7 +15,7 @@
 [% normset    = titset.tit %]
 [% mexnormset = titset.mex %]
 [% circset    = titset.circ %]
-<tr class="titlerow"><td><input type="checkbox" name="titid" value="[% titset.database %]:[% titset.titidn %]" /></td><td>[% msg.maketext("aus:") %] [% titset.dbdesc.full %]</td></tr>
+<tr class="titlerow"><td><input type="checkbox" name="titid" value="[% titset.database %]:[% titset.titidn %]"  title="collection_item" /></td><td>[% msg.maketext("aus:") %] [% titset.dbdesc.full %]</td></tr>
 <tr><td>&nbsp;</td><td>
 <!-- Title begins here -->
 [% IF show == 'full' %]

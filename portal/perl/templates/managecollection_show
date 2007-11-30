@@ -15,6 +15,20 @@
 [% PROCESS common/subtemplate name="visible_categories_titset" %]
 
   <body>
+
+<script language="JavaScript" type="text/javascript">
+<!--
+
+function update_collection(yourform, checked, item) {
+    for (var i = 0; i < yourform.elements.length; i++) {
+         if (yourform.elements[i].title.indexOf(item) != -1) {
+              yourform.elements[i].checked = checked;
+         }
+    }
+}
+
+// -->
+</script>
     
     <form method="get" action="http://[% config.servername %][% config.managecollection_loc %]">
       <input type="hidden" name="sessionID" value="[% sessionID %]" />
@@ -78,6 +92,7 @@
 M&ouml;chten Sie eine neue <select name="littype"><option value="1">&ouml;ffentliche</option><option value="2">private</option></select> Literaturliste unter dem Namen <input type="text" name="title" /> <input type="submit" name="do_addlitlist" value="anlegen" />
 <p />
 	  <table width="100%">
+            <tr class="titlerow"><td><input type="checkbox" name="collection" value="select" onclick="update_collection(this.form, this.checked,'collection_item')" /></td><td><b>Alle Eintr&auml;ge ausw&auml;hlen</b></td></tr>
 [%- FOREACH titset IN collection -%]
   [%- PROCESS common/subtemplate name="managecollection_tit_as_html" database="${titset.database}" show_bibsonomy=1 -%]
 [%- END -%]

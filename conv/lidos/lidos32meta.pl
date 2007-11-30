@@ -68,12 +68,16 @@ $titcat_ref = {
 	       '0412' => 1,
 	       '0425' => 1,
 	       '0433' => 1,
+	       '0434' => 1,
 	       '0451' => 1,
 	       '0501' => 1,
 	       '0509' => 1,
 	       '0525' => 1,
 	       '0590' => 1,
 	       '0800' => 1,
+	       '0005' => 1,
+	       '0014' => 1,
+	       '0016' => 1,
 	      };
 
 $autcat_ref = {
@@ -94,9 +98,6 @@ $swtcat_ref = {
 	      };
 
 $mexcat_ref = {
-	       '0005' => 1,
-	       '0014' => 1,
-	       '0016' => 1,
 	      };
 
 $konvtab_ref = {
@@ -107,7 +108,7 @@ $konvtab_ref = {
     'Co-Autor:'                                => '0101', 
     'Deskriptoren:'                            => '0710', 
     'Freie Stichworte:'                        => '0710', 
-    'Gimm-Standorte:'                          => '0016', 
+    'Gimm-Standorte:'                          => '0434', 
     'Herausgebende Institution:'               => '0201', 
     'In (Sammelband/Zeitschrift/Zeitung):'     => '0590', 
     'Inventarnummer:'                          => '0005', 
@@ -119,7 +120,7 @@ $konvtab_ref = {
     'Personennamen:'                           => '0509', 
     'Reihe:'                                   => '0451', 
     'Seiten:'                                  => '0433', 
-    'Signatur-Kommentar:'                      => '', 
+    'Signatur-Kommentar:'                      => '0016', 
     'Sprache (D/E/C/F/J/R):'                   => '0015', 
     'Standort/Signatur:'                       => '0014', 
     'Tagesdatum:'                              => '', 
@@ -168,7 +169,7 @@ while (<DAT>){
  
       foreach my $char (@chars) {
 	if (length($char) == 2) { # 2-byte Zeichen
-	  $newcontent .= Encode::decode("euc-cn",$char);
+	  $newcontent .= Encode::decode("euc-cn",$char)." ";
 	} 
 	else {  # 1-byte Zeichen
 	  $newcontent .= Encode::decode("cp437",$char);
@@ -298,7 +299,7 @@ foreach my $title_ref (@$titlelist_ref){
    print TIT "9999:\n\n";
 
    my $has_mex = 0;
-   foreach my $category (sort keys %$mexcat_ref){
+   foreach my $category (sort keys %{$mexcat_ref}){
      if (exists $title_ref->{$category}){
         $has_mex = 1;
      }
@@ -307,7 +308,7 @@ foreach my $title_ref (@$titlelist_ref){
    if ($has_mex){
      print MEX "0000:$mexidn\n";
      print MEX "0004:".$title_ref->{'0000'}[0]."\n";
-     foreach my $category (sort keys %$mexcat_ref){
+     foreach my $category (sort keys %{$mexcat_ref}){
        if (exists $title_ref->{$category}){
          foreach my $content (@{$title_ref->{$category}}){       
                 printf MEX "%04d:%s\n",$category,$content;

@@ -1,0 +1,26 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_browsetit
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Inhalte einer Titel-Kategorie
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+<body>
+
+<table width="100%">
+[% FOREACH item IN browselist %]
+<tr><td>[% item %]</td></tr>
+[% END %]
+</table>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

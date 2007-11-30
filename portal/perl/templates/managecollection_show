@@ -15,6 +15,20 @@
 [% PROCESS common/subtemplate name="visible_categories_titset" %]
 
   <body>
+
+<script language="JavaScript" type="text/javascript">
+<!--
+
+function update_collection(yourform, checked, item) {
+    for (var i = 0; i < yourform.elements.length; i++) {
+         if (yourform.elements[i].title.indexOf(item) != -1) {
+              yourform.elements[i].checked = checked;
+         }
+    }
+}
+
+// -->
+</script>
     
     <form method="get" action="http://[% config.servername %][% config.managecollection_loc %]" target="_parent">
       <input type="hidden" name="sessionID" value="[% sessionID %]" />
@@ -61,6 +75,7 @@
 	  <p />
 [% IF type == 'HTML' %]
 	  <table>
+            <tr class="titlerow"><td><input type="checkbox" name="collection" value="select" onclick="update_collection(this.form, this.checked,'collection_item')" /></td><td><b>Alle Eintr&auml;ge ausw&auml;hlen</b></td></tr>
 [%- FOREACH titset IN collection -%]
   [%- PROCESS common/subtemplate name="managecollection_tit_as_html" database="${titset.database}" show_bibsonomy=1 -%]
 [%- END -%]

@@ -19,7 +19,7 @@
      IF mex.Standort.match('Erziehungswiss') || mex.Standort.match('Heilp.*?dagogik-Magazin') ;
         mex.Ausleihurl = "${mex.Ausleihurl}?Login=ewa&Query=0000=${normset.id}";
      ELSE ;
-        IF database == 'inst001' || database == 'zbmed' || database == 'poetica' ;
+        IF database == 'inst001' || database == 'zbmed' || database == 'poetica' || database == 'wiso' ;
            mex.Ausleihurl = "${mex.Ausleihurl}?Login=sisis&Query=0000=${normset.id}";
         END ;
      END ;

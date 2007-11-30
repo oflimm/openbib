@@ -43,6 +43,7 @@ use YAML ();
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::VirtualSearch::Util;
 
 #####################################################################
 ## get_aut_ans_by_idn(autidn,...): Gebe zu autidn geh"oerende
@@ -1724,6 +1725,7 @@ sub get_index {
         # Normdaten-Volltext-Recherche
         else {
             $sqlrequest="select distinct ${type}.content as content from $type, ${type}_ft where ${type}.category = ? and ${type}_ft.category = ? and match (${type}_ft.content) against (? IN BOOLEAN MODE) and ${type}.id=${type}_ft.id order by ${type}.content";
+            $contentreq = OpenBib::VirtualSearch::Util::conv2autoplus($contentreq);
         }
         $logger->info($sqlrequest." - $category, $contentreq");
         my $request=$dbh->prepare($sqlrequest);

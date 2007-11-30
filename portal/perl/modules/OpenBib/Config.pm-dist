@@ -163,6 +163,11 @@ use vars qw(%config);
                    desc  => 'Spezialkataloge',
                    nr    => '6',
                },
+               {
+                   short => '7extern',
+                   desc  => 'Externe Kataloge',
+                   nr    => '7',
+               },
            ],
 
            rss_types => {
@@ -608,6 +613,10 @@ tt_connector_digibib_result_start_tname  => 'connector_digibib_result_start',
                    'T0800' => 1,
                    'T0508' => 1,
                    'T0662' => 1,
+               },
+
+               richter => {
+                   'T0501' => 1,
                },
 
            },

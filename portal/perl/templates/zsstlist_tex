@@ -49,13 +49,6 @@
   Ein Service der Abt. UniversitätsGesamtKatalog\\
   Stand: \today
 
-  \vspace{8cm}
-
-\rule[-.1in]{16cm}{1mm}\\[3mm]
-{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{20}{20pt}\selectfont
-  USB Köln $\bullet$ Abt. UniversitätsGesamtKatalog}\\[-2mm]
-\rule[-.1in]{16cm}{1mm}
-
 \end{center}
 
 \newpage 

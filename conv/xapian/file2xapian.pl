@@ -86,7 +86,8 @@ if (!$database){
   exit;
 }
 
-my $FLINT_BTREE_MAX_KEY_LEN = 250;
+my $FLINT_BTREE_MAX_KEY_LEN = 245;
+my $DRILLDOWN_MAX_KEY_LEN   = 100;
 
 my %normdata                = ();
 
@@ -310,7 +311,7 @@ my $count = 1;
 		  $field="$tokinfo_ref->{prefix}$field";
 
                   # Begrenzung der keys auf FLINT_BTREE_MAX_KEY_LEN Zeichen
-		  $field=(length($field) > $FLINT_BTREE_MAX_KEY_LEN)?substr($field,0,$FLINT_BTREE_MAX_KEY_LEN):$field;
+		  next if (length($field) > $DRILLDOWN_MAX_KEY_LEN);
 
 		  $doc->add_term($field);
 	        }

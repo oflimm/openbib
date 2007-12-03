@@ -1448,8 +1448,6 @@ sub get_tit_set_by_idn {
                 my $bibinfourl=$targetdbinfo_ref->{bibinfo}{
                     $targetdbinfo_ref->{dbases}{$database}};
                 
-                # Zusammensetzung von Signatur und Exemplar
-                $circexemplarliste[$i]{'Signatur'}   = $circexemplarliste[$i]{'Signatur'}.$circexemplarliste[$i]{'Exemplar'};
                 $circexemplarliste[$i]{'Bibliothek'} = $bibliothek;
                 $circexemplarliste[$i]{'Bibinfourl'} = $bibinfourl;
                 $circexemplarliste[$i]{'Ausleihurl'} = $targetcircinfo_ref->{$database}{circurl};

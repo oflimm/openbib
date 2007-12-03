@@ -274,7 +274,7 @@ sub initial_search {
 
     $logger->info("Running query ".$self->{_querystring});
 
-    $logger->info("Found ".scalar(@matches)." matches");
+    $logger->info("Found ".scalar(@matches)." matches in database $database");
     return;
 }
 

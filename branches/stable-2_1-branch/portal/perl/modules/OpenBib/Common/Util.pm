@@ -1036,6 +1036,9 @@ sub grundform {
         # Verbundene Terme splitten
         $content=~s/(\w)-(\w)/$1 $2/g;
         $content=~s/(\w)'(\w)/$1 $2/g;
+
+        # Sonderbehandlung : fuer die Indexierung (bei der Recherche wird : fuer intitle: usw. benoetigt)
+        $content=~s/:/ /g;
     }
 
     # Zeichenersetzungen

@@ -458,7 +458,7 @@ sub get_all_profiles {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    return if (!defined $self->{dbh});
+    return () if (!defined $self->{dbh});
     
     my $config = new OpenBib::Config();
 
@@ -513,7 +513,7 @@ sub get_logintargets {
   
     my $logger = get_logger();
 
-    return if (!defined $self->{dbh});
+    return [] if (!defined $self->{dbh});
     
     my $request=$self->{dbh}->prepare("select * from logintarget order by type DESC,description") or $logger->error($DBI::errstr);
     $request->execute() or $logger->error($DBI::errstr);
@@ -542,7 +542,7 @@ sub get_logintarget_by_id {
   
     my $logger = get_logger();
 
-    return if (!defined $self->{dbh});
+    return {} if (!defined $self->{dbh});
     
     my $request=$self->{dbh}->prepare("select * from logintarget where targetid = ?") or $logger->error($DBI::errstr);
     $request->execute($targetid) or $logger->error($DBI::errstr);
@@ -780,7 +780,7 @@ sub get_all_tags_of_db {
   
     my $logger = get_logger();
 
-    return if (!defined $self->{dbh});
+    return [] if (!defined $self->{dbh});
 
     #return if (!$titid || !$titdb || !$loginname || !$tags);
 
@@ -829,7 +829,7 @@ sub get_all_tags_of_tit {
   
     my $logger = get_logger();
 
-    return if (!defined $self->{dbh});
+    return [] if (!defined $self->{dbh});
 
     #return if (!$titid || !$titdb || !$loginname || !$tags);
 
@@ -880,7 +880,7 @@ sub get_private_tags_of_tit {
   
     my $logger = get_logger();
 
-    return if (!defined $self->{dbh});
+    return [] if (!defined $self->{dbh});
 
     #return if (!$titid || !$titdb || !$loginname || !$tags);
 
@@ -916,7 +916,7 @@ sub get_private_tags {
     my $logger = get_logger();
 
     $logger->debug("loginname: $loginname");
-    return if (!defined $self->{dbh});
+    return [] if (!defined $self->{dbh});
 
     #return if (!$titid || !$titdb || !$loginname || !$tags);
 
@@ -1061,7 +1061,7 @@ sub get_reviews_of_tit {
   
     my $logger = get_logger();
 
-    return if (!defined $self->{dbh});
+    return [] if (!defined $self->{dbh});
 
     #return if (!$titid || !$titdb || !$loginname || !$tags);
 
@@ -1129,7 +1129,7 @@ sub tit_reviewed_by_user {
   
     my $logger = get_logger();
 
-    return if (!defined $self->{dbh});
+    return undef if (!defined $self->{dbh});
 
     #return if (!$titid || !$titdb || !$loginname || !$tags);
 
@@ -1156,7 +1156,7 @@ sub get_review_of_user {
   
     my $logger = get_logger();
 
-    return if (!defined $self->{dbh});
+    return {} if (!defined $self->{dbh});
 
     #return if (!$titid || !$titdb || !$loginname || !$tags);
 
@@ -1224,7 +1224,7 @@ sub get_reviews {
   
     my $logger = get_logger();
 
-    return if (!defined $self->{dbh});
+    return [] if (!defined $self->{dbh});
 
     #return if (!$titid || !$titdb || !$loginname || !$tags);
 
@@ -1372,9 +1372,9 @@ sub get_litlists {
   
     my $logger = get_logger();
 
-    return if (!defined $self->{dbh});
+    return [] if (!defined $self->{dbh});
 
-    return if (!$self->{ID});
+    return [] if (!$self->{ID});
 
     my $sql_stmnt = "select id from litlists where userid=?";
 
@@ -1389,7 +1389,7 @@ sub get_litlists {
       push @$litlists_ref, $self->get_litlist_properties({litlistid => $litlistid});
     }
     
-    return :$litlists_ref;
+    return $litlists_ref;
 }
 
 sub get_litlistentries {
@@ -1405,7 +1405,7 @@ sub get_litlistentries {
 
     my $config = new OpenBib::Config();
 
-    return if (!defined $self->{dbh});
+    return [] if (!defined $self->{dbh});
 
     #return if (!$litlistid);
 
@@ -1454,7 +1454,7 @@ sub get_number_of_litlistentries {
 
     my $config = new OpenBib::Config();
 
-    return if (!defined $self->{dbh});
+    return undef if (!defined $self->{dbh});
 
     #return if (!$litlistid);
 
@@ -1477,9 +1477,9 @@ sub get_litlist_properties {
   
     my $logger = get_logger();
 
-    return if (!defined $self->{dbh});
+    return {} if (!defined $self->{dbh});
 
-    return if (!$litlistid);
+    return {} if (!$litlistid);
 
     my $request=$self->{dbh}->prepare("select * from litlists where id = ?") or $logger->error($DBI::errstr);
     $request->execute($litlistid) or $logger->error($DBI::errstr);
@@ -1552,9 +1552,9 @@ sub get_litlists_of_tit {
   
     my $logger = get_logger();
 
-    return if (!defined $self->{dbh});
+    return [] if (!defined $self->{dbh});
 
-    return if (!$titid || !$titdb);
+    return [] if (!$titid || !$titdb);
 
     my $request=$self->{dbh}->prepare("select ll.* from litlistitems as lli, litlists as ll where ll.id=lli.litlistid and lli.titid=? and lli.titdb=?") or $logger->error($DBI::errstr);
     $request->execute($titid,$titdb) or $logger->error($DBI::errstr);

@@ -87,6 +87,7 @@
 ../templates/database/einbaende/visible_categories_titset
 ../templates/database/inst001/visible_categories_titset
 ../templates/database/inst450/visible_categories_titset
+../templates/database/kapsel/visible_categories_titset
 ../templates/database/landschaft/search_showtitlist
 ../templates/database/landschaft/search_showtitset
 ../templates/database/landschaft/virtualsearch_result_item

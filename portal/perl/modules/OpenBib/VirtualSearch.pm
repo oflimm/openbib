@@ -260,24 +260,24 @@ sub handler {
         my $dbasesstring=join("||",sort @databases);
         
         my $thisquerystring=unpack "H*", Storable::freeze($searchquery_ref);
-        my $idnresult=$session->{dbh}->prepare("select count(*) as rowcount from queries where query = ? and sessionid = ? and dbases = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($thisquerystring,$session->{ID},$dbasesstring) or $logger->error($DBI::errstr);
+        my $idnresult=$session->{dbh}->prepare("select count(*) as rowcount from queries where query = ? and sessionid = ? and dbases = ? and hitrange = ?") or $logger->error($DBI::errstr);
+        $idnresult->execute($thisquerystring,$session->{ID},$dbasesstring,$hitrange) or $logger->error($DBI::errstr);
         my $res  = $idnresult->fetchrow_hashref;
         my $rows = $res->{rowcount};
         
         # Neuer Query
         if ($rows <= 0) {
             # Abspeichern des Queries bis auf die Gesamttrefferzahl
-            $idnresult=$session->{dbh}->prepare("insert into queries (queryid,sessionid,query,dbases) values (NULL,?,?,?)") or $logger->error($DBI::errstr);
-            $idnresult->execute($session->{ID},$thisquerystring,$dbasesstring) or $logger->error($DBI::errstr);
+            $idnresult=$session->{dbh}->prepare("insert into queries (queryid,sessionid,query,hitrange,dbases) values (NULL,?,?,?,?)") or $logger->error($DBI::errstr);
+            $idnresult->execute($session->{ID},$thisquerystring,$hitrange,$dbasesstring) or $logger->error($DBI::errstr);
         }
         # Query existiert schon
         else {
             $queryalreadyexists=1;
         }
         
-        $idnresult=$session->{dbh}->prepare("select queryid from queries where query = ? and sessionid = ? and dbases = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($thisquerystring,$session->{ID},$dbasesstring) or $logger->error($DBI::errstr);
+        $idnresult=$session->{dbh}->prepare("select queryid from queries where query = ? and sessionid = ? and dbases = ? and hitrange = ?") or $logger->error($DBI::errstr);
+        $idnresult->execute($thisquerystring,$session->{ID},$dbasesstring,$hitrange) or $logger->error($DBI::errstr);
         
         while (my @idnres=$idnresult->fetchrow) {
             $queryid = decode_utf8($idnres[0]);

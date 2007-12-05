@@ -117,7 +117,11 @@
 
     END ;
 
-    locationstring = locations.join("<br />");
+    IF locations.size == 0;
+       locationstring = targetdbinfo.dbinfo.${database}.short;
+    ELSE ;
+       locationstring = locations.join("<br />");
+    END ;
 -%]
 [%
 
@@ -130,7 +134,6 @@
 </HEAD>
 <BODY>
 <!-- begin result -->
-
 <OL>
 
 <LI><UL>

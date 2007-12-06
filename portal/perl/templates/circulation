@@ -46,6 +46,10 @@
 <b>[% msg.maketext("Sie haben keine Ausleihen getätigt.") %]</b>
 [% ELSE  %]
 
+<p>
+<b>Gesamtkonto-Verl&auml;ngerung:</b> <a href="[% config.circulation_loc %]?sessionID=[% sessionID %];action=renew_loans;validtarget=[% database %]" title="Gesamtkonto verl&auml;ngern"">durchf&uuml;hren</a>
+</p>
+
 <table cellpadding="5">
 <tr><td><b>[% msg.maketext("Titelangaben") %]</b></td><td><b>[% msg.maketext("Signatur") %]</b></td><td><b>[% msg.maketext("Ausleihfrist") %]</b></td></tr>
 [%- listrow = 'listrow1' -%]

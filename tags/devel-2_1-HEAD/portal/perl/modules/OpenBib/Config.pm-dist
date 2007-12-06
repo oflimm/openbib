@@ -1,0 +1,1196 @@
+#####################################################################
+#
+#  OpenBib::Config
+#
+#  Dieses File ist (C) 2004-2007 Oliver Flimm <flimm@openbib.org>
+#
+#  Dieses Programm ist freie Software. Sie koennen es unter
+#  den Bedingungen der GNU General Public License, wie von der
+#  Free Software Foundation herausgegeben, weitergeben und/oder
+#  modifizieren, entweder unter Version 2 der Lizenz oder (wenn
+#  Sie es wuenschen) jeder spaeteren Version.
+#
+#  Die Veroeffentlichung dieses Programms erfolgt in der
+#  Hoffnung, dass es Ihnen von Nutzen sein wird, aber OHNE JEDE
+#  GEWAEHRLEISTUNG - sogar ohne die implizite Gewaehrleistung
+#  der MARKTREIFE oder der EIGNUNG FUER EINEN BESTIMMTEN ZWECK.
+#  Details finden Sie in der GNU General Public License.
+#
+#  Sie sollten eine Kopie der GNU General Public License zusammen
+#  mit diesem Programm erhalten haben. Falls nicht, schreiben Sie
+#  an die Free Software Foundation, Inc., 675 Mass Ave, Cambridge,
+#  MA 02139, USA.
+#
+#####################################################################   
+
+package OpenBib::Config;
+
+use strict;
+use warnings;
+no warnings 'redefine';
+use utf8;
+
+use Apache::Reload;
+use Encode 'decode_utf8';
+use Log::Log4perl qw(get_logger :levels);
+
+use vars qw(%config);
+  
+%config = (
+
+	   # Versionnummer
+
+	   version => 'OpenBib v2.1',
+	   
+	   # Unter diesem Namen wird der lokale Server angesprochen
+	   
+	   servername => 'server.openbib.org',
+	   
+	   # Unter diesem Name wird der Servers, der die Lastverteilung
+	   # vornimmt, angesprochen
+
+	   loadbalancerservername => 'balancer.openbib.org',
+
+	   # Auf folgende Server werden die Benutzer verteilt
+
+	   loadbalancertargets => [
+				   'target1.openbib.org',
+				   'target2.openbib.org',
+				   ],
+
+	   # Name des Datenbanksystems und des verwendeten DBI/DBD-Moduls
+
+	   dbms      => 'mysql',
+	   dbimodule => 'mysql',
+
+	   # Einstellungen fuer den Zugriff auf die Katalog-Datenbanken
+
+	   dbhost    => 'localhost',
+	   dbport    => '3306',
+	   dbuser    => 'root',
+	   dbpasswd  => 'StrengGeheim',
+
+	   # Einstellungen fuer den Zugriff auf die Session-Datenbank
+
+	   sessiondbhost    => 'localhost',
+	   sessiondbport    => '3306',
+	   sessiondbname    => 'session',
+	   sessiondbuser    => 'root',
+	   sessiondbpasswd  => 'StrengGeheim',
+
+	   # Einstellungen fuer den Zugriff auf die Config-Datenbank
+
+	   configdbhost    => 'localhost',
+	   configdbport    => '3306',
+	   configdbname    => 'config',
+	   configdbuser    => 'root',
+	   configdbpasswd  => 'StrengGeheim',
+
+           # Einstellungen fuer den Zugriff auf die UserProfile-Datenbank
+
+	   userdbhost    => 'zentraler.rechner',
+	   userdbport    => '3306',
+	   userdbname    => 'userprofile',
+	   userdbuser    => 'root',
+	   userdbpasswd  => 'StrengGeheim',
+
+	   # Einstellungen fuer den Zugriff auf die Enrichmnt-Datenbank
+
+	   enrichmntdbhost    => 'localhost',
+	   enrichmntdbport    => '3306',
+	   enrichmntdbname    => 'enrichmnt',
+	   enrichmntdbuser    => 'root',
+	   enrichmntdbpasswd  => 'StrengGeheim',
+
+	   # Einstellungen fuer den Zugriff auf die Statistik-Datenbank
+
+	   statisticsdbhost    => 'localhost',
+	   statisticsdbport    => '3306',
+	   statisticsdbname    => 'statistics',
+	   statisticsdbuser    => 'root',
+	   statisticsdbpasswd  => 'StrengGeheim',
+
+           # Benutzer und Passwort fuer die Administration
+
+	   adminuser     => 'adminuser',
+	   adminpasswd   => 'StrengGeheim',
+
+           # Verteilte Administration mit einer Masteradmin?
+
+           distadmin     => {
+               master => 'admin.openbib.org',
+               slave  => [
+                   'slaveadmin1.openbib.org',
+                   'slaveadmin2.openbib.org',
+               ],
+           },
+
+	   # Organisationseinheiten der Kataloge (z.B. Fakultaeten)
+
+	   orgunits => [
+               {
+                   short => '0ungeb',
+                   desc  => 'Fakultätsungebunden',
+                   nr    => '0',
+               },
+               {
+                   short => '1wiso',
+                   desc  => 'Wirtschafts- u. Sozialwissenschaftliche Fakultät',
+                   nr    => '1',
+               },
+               {
+                   short => '2recht',
+                   desc  => 'Rechtswissenschaftliche Fakultät',
+                   nr    => '2',
+               },
+               {
+                   short => '3human',
+                   desc  => 'Humanwissenschaftliche Fakultät',
+                   nr    => '3',
+               },
+               {
+                   short => '4phil',
+                   desc  => 'Philosophische Fakultät',
+                   nr    => '4',
+               },
+               {
+                   short => '5matnat',
+                   desc  => 'Mathematisch-Naturwissenschaftliche Fakultät',
+                   nr    => '5',
+               },
+               {
+                   short => '6spezial',
+                   desc  => 'Spezialkataloge',
+                   nr    => '6',
+               },
+               {
+                   short => '7extern',
+                   desc  => 'Externe Kataloge',
+                   nr    => '7',
+               },
+           ],
+
+           rss_types => {
+               'neuzugang'             => 1,
+               'neuzugang_nach_aut'    => 2,
+               'neuzugang_nach_kor'    => 3,
+               'neuzugang_nach_swt'    => 4,
+               'neuzugang_nach_sys'    => 5,
+               'neuerwerbung'          => 99,
+           },
+
+           lang => [
+               'de',
+               'en',
+           ],
+
+	   # Mapping der einzelnen Kompontenten zu ihren Zugriffs-URI's
+
+	   admin_loc             => '/portal/admin',
+	   catalogue_loc         => '/portal/katalogisierung',
+	   circulation_loc       => '/portal/benutzerkonto',
+           connector_bibmanager_loc => '/portal/connector/literaturverwaltung',
+           connector_digibib_loc => '/portal/connector/digibib',
+	   connector_olws_loc    => '/portal/connector/olws',
+           connector_permalink_loc  => '/portal/connector/permalink',
+           connector_rss_loc     => '/portal/connector/rss',
+           connector_ukonline_loc=> '/portal/connector/uk-online',
+           connector_unapi_loc   => '/portal/connector/unapi',
+           databasechoice_loc    => '/portal/katalogauswahl',
+	   databaseprofile_loc   => '/portal/katalogprofile',
+	   dispatchquery_loc     => '/portal/anfrageverteilen',
+	   externaljump_loc      => '/portal/externersprung',
+           frameset_loc          => '/portal/frameset',
+	   headerframe_loc       => '/portal/kopf',
+           helpframe_loc         => '/portal/hilfe',
+           leave_loc             => '/portal/beenden',
+           litlists_loc          => '/portal/literaturlisten',
+	   loadbalancer_loc      => '/portal/lastverteilung',
+	   login_loc             => '/portal/login',
+	   mailcollection_loc    => '/portal/merklistemailen',
+	   mailpassword_loc      => '/portal/passwortmailen',
+	   managecollection_loc  => '/portal/merkliste',
+	   redirect_loc          => '/portal/weiterleitung',
+           resultlists_loc       => '/portal/trefferlisten',
+           rssframe_loc          => '/portal/rssfeeds',
+           search_loc            => '/portal/recherche',
+	   searchframe_loc       => '/portal/eingabe',
+	   selfreg_loc           => '/portal/selbstregistrierung',
+	   serverload_loc        => '/portal/getload',
+	   startopac_loc         => '/portal/opac',
+           tags_loc              => '/portal/tags',
+           userprefs_loc         => '/portal/benutzereinstellungen',
+           userreviews_loc       => '/portal/benutzerbewertungen',
+           virtualsearch_loc     => '/portal/virtuellerecherche',
+
+	   css_loc               => '/styles',
+
+	   # Programm zum Versenden von Mails
+
+	   mail_prog             => '/bin/mailx',
+
+	   # Email-Adressen fuer den Admin und generellen Kontakt
+
+	   admin_email          => 'admin@openbib.org',
+	   contact_email        => 'contact@openbib.org',
+
+	   # Externe Links zum direkten Einsprung in die Digitale
+	   # Bibliothek NRW: In die Funktionen Monographien-Fernleihe 
+	   # sowie elektr. Aufsatz/Zeitschriftenlieferungen (Medea) 
+	   # fuer den entsprechenden Standort (hier 038)
+
+	   hbzmonofernleih_exturl  => 'http://www.digibib.net/Digibib?SERVICE=TEMPLATE&SUBSERVICE=JUMPTO&DEST_SERVICE=TEMPLATE&DEST_SUBSERVICE=ILL_FRAME&DEST_MAINFRAMESUBSERVICE=MSEARCH_ILLSEARCH_MONO&LOCATION=038',
+	   hbzzeitfernleih_exturl  => 'http://www.digibib.net/Digibib?SERVICE=TEMPLATE&SUBSERVICE=JUMPTO&DEST_SERVICE=TEMPLATE&DEST_SUBSERVICE=ILL_FRAME&DEST_MAINFRAMESUBSERVICE=MSEARCH_ILLSEARCH_ARTICLE&LOCATION=038',
+
+	   # Externer Link zur Elektronischen ZeitschriftenBibliothek (EZB)
+	   # fuer den entsprechenden Standort (hier USBK)
+
+	   ezb_exturl              => 'http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?bibid=USBK&colors=7&lang=de&jq_type1=IS&jq_bool2=AND&jq_not2=+&jq_type2=KT&jq_bool3=AND&jq_not3=+&jq_type3=PU&jq_term3=&offset=-1&hits_per_page=50&search_journal=Suche+starten&Notations%5B%5D=all&selected_colors%5B%5D=1&selected_colors%5B%5D=2&selected_colors%5B%5D=4',
+
+	   # Externer Link zum DatenBankInfoSystem (DBIS)
+
+	   dbis_exturl             => 'http://www.bibliothek.uni-regensburg.de/dbinfo/?bib_id=usb_k',
+
+	   # Pfad zur Konfigurationsdatei von Log4Perl
+
+           log4perl_path           => '/opt/openbib/conf/portal.log4perl',
+
+           # Pfad zu den lokalisierten Message-Dateien
+
+           locale_base_path        => '/opt/openbib/locales',
+
+	   # Pfad zu den Portal-Templates (Template Toolkit)
+
+	   tt_include_path         => '/opt/openbib/templates',
+
+           # xapian index basepath
+
+           xapian_index_base_path  => '/opt/openbib/ft/xapian/index',
+
+	   xapian_option           => {
+				       maxmatch => 2000,
+				      },
+
+           # BibSonomy API
+           
+           bibsonomy_api_key       => '',
+
+	   # Stopwort-Liste
+
+           stopword_filename       => '/opt/openbib/ft/stopwords.txt',
+
+	   # Pfade zum Document und Image Root
+
+	   document_root_path       => '/usr/db/www/documents',
+	   image_root_path          => '/var/www/images/openbib',
+
+	   # Mapping der einzelnen Kompontenten zu ihren Templates
+
+	   tt_admin_login_tname          => 'admin_login',
+	   tt_admin_loggedin_tname       => 'admin_loggedin',
+	   tt_admin_showcat_tname        => 'admin_showcat',
+	   tt_admin_editcat_tname        => 'admin_editcat',
+	   tt_admin_editcat_rss_tname    => 'admin_editcat_rss',
+	   tt_admin_showviews_tname      => 'admin_showviews',
+	   tt_admin_editview_tname       => 'admin_editview',
+	   tt_admin_editview_rss_tname   => 'admin_editview_rss',
+	   tt_admin_showsessions_tname   => 'admin_showsessions',
+	   tt_admin_showsessions_1_tname => 'admin_showsessions_1',
+	   tt_admin_editsession_tname    => 'admin_editsession',
+	   tt_admin_exploresessions_list_tname => 'admin_exploresessions_list',
+	   tt_admin_exploresessions_show_tname => 'admin_exploresessions_show',
+	   tt_admin_showstat_tname       => 'admin_showstat',
+	   tt_admin_showstat_1_tname     => 'admin_showstat_1',
+	   tt_admin_showstat_2_tname     => 'admin_showstat_2',
+	   tt_admin_showstat_3_tname     => 'admin_showstat_3',
+	   tt_admin_showstat_4_tname     => 'admin_showstat_4',
+	   tt_admin_showstat_5_tname     => 'admin_showstat_5',
+	   tt_admin_showstat_50_tname    => 'admin_showstat_50',
+	   tt_admin_showstat_51_tname    => 'admin_showstat_51',
+	   tt_admin_showstat_52_tname    => 'admin_showstat_52',
+	   tt_admin_showstat_53_tname    => 'admin_showstat_53',
+	   tt_admin_showuser_tname       => 'admin_showuser',
+	   tt_admin_showlogintarget_tname  => 'admin_showlogintarget',
+	   tt_admin_editlogintarget_tname  => 'admin_editlogintarget',
+	   tt_admin_logout_tname         => 'admin_logout',
+
+	   tt_leave_tname                => 'leave',
+
+	   tt_catalogue_login_tname          => 'catalogue_login',
+	   tt_catalogue_loggedin_tname       => 'catalogue_loggedin',
+	   tt_catalogue_logout_tname         => 'catalogue_logout',
+
+	   tt_circulation_tname          => 'circulation',
+	   tt_circulation_reserv_tname   => 'circulation_reserv',
+	   tt_circulation_remind_tname   => 'circulation_remind',
+	   tt_circulation_orders_tname   => 'circulation_orders',
+           tt_circulation_make_reserv_tname    => 'circulation_make_reserv',
+           tt_circulation_make_order_tname     => 'circulation_make_order',
+           tt_circulation_renew_loans_tname    => 'circulation_renew_loans',
+
+           tt_connector_digibib_result_start_tname  => 'connector_digibib_result_start',
+           tt_connector_digibib_result_item_tname   => 'connector_digibib_result_item',
+           tt_connector_digibib_result_end_tname    => 'connector_digibib_result_end',
+           tt_connector_digibib_showtitset_tname    => 'connector_digibib_showtitset',
+
+           tt_connector_permalink_tname  => 'connector_permalink',
+
+           tt_connector_rss_item_tname   => 'connector_rss_item',
+
+           tt_connector_unapi_formats_tname  => 'connector_unapi_formats',
+           tt_connector_unapi_bibtex_tname   => 'connector_unapi_bibtex',
+           tt_connector_unapi_mods_tname     => 'connector_unapi_mods',
+           tt_connector_unapi_oai_dc_tname   => 'connector_unapi_oai_dc',
+
+           tt_databaseprofile_tname      => 'databaseprofile',
+
+	   tt_externaljump_tname         => 'externaljump',
+
+	   tt_frameset_tname             => 'frameset',
+	   tt_headerframe_tname          => 'headerframe',
+
+	   tt_searchframe_simple_tname   => 'searchframe_simple',
+	   tt_searchframe_advanced_tname => 'searchframe',
+
+	   tt_helpframe_tname            => 'helpframe',
+           tt_helpframe_1_tname          => 'helpframe_1',
+           tt_helpframe_2_tname          => 'helpframe_2',
+	   tt_helpframe_3_tname          => 'helpframe_3',
+           tt_helpframe_10_tname         => 'helpframe_10',
+           tt_helpframe_11_tname         => 'helpframe_11',
+           tt_helpframe_12_tname         => 'helpframe_12',
+	   tt_helpframe_13_tname         => 'helpframe_13',
+	   tt_helpframe_14_tname         => 'helpframe_14',
+	   tt_helpframe_15_tname         => 'helpframe_15',
+           tt_helpframe_16_tname         => 'helpframe_16',
+           tt_helpframe_17_tname         => 'helpframe_17',
+           tt_helpframe_18_tname         => 'helpframe_18',
+           tt_helpframe_19_tname         => 'helpframe_19',
+           tt_helpframe_20_tname         => 'helpframe_20',
+           tt_helpframe_21_tname         => 'helpframe_21',
+           tt_helpframe_22_tname         => 'helpframe_22',
+           tt_helpframe_23_tname         => 'helpframe_23',
+           tt_helpframe_24_tname         => 'helpframe_24',
+           tt_helpframe_25_tname         => 'helpframe_25',
+           tt_helpframe_30_tname         => 'helpframe_30',
+           tt_helpframe_31_tname         => 'helpframe_31',
+           tt_helpframe_32_tname         => 'helpframe_32',
+           tt_helpframe_33_tname         => 'helpframe_33',
+           tt_helpframe_34_tname         => 'helpframe_34',
+           tt_helpframe_35_tname         => 'helpframe_35',
+           tt_helpframe_40_tname         => 'helpframe_40',
+
+	   tt_startopac_tname            => 'startopac',
+
+	   tt_databasechoice_tname       => 'databasechoice',
+
+           tt_litlists_manage_lists_tname      => 'litlists_manage_lists',
+           tt_litlists_manage_singlelist_tname => 'litlists_manage_singlelist',
+           tt_litlists_show_singlelist_tname   => 'litlists_show_singlelist',
+
+	   tt_loadbalancer_tname         => 'loadbalancer',
+
+	   tt_login_tname                => 'login',
+           tt_login_circulation_tname    => 'login_circulation',
+
+	   tt_mailcollection_mail_html_tname    => 'mailcollection_mail_html',
+	   tt_mailcollection_mail_plain_tname   => 'mailcollection_mail_plain',
+	   tt_mailcollection_mail_main_tname    => 'mailcollection_mail_main',
+	   tt_mailcollection_success_tname      => 'mailcollection_success',
+
+	   tt_managecollection_mail_tname       => 'managecollection_mail',
+	   tt_managecollection_print_tname      => 'managecollection_print',
+	   tt_managecollection_save_html_tname  => 'managecollection_save_html',
+	   tt_managecollection_save_plain_tname => 'managecollection_save_plain',
+	   tt_managecollection_show_tname       => 'managecollection_show',
+
+	   tt_resultlists_choice_tname          => 'resultlists_choice',
+	   tt_resultlists_showall_tname         => 'resultlists_showall',
+	   tt_resultlists_showall_sortall_tname => 'resultlists_showall_sortall',
+	   tt_resultlists_showsinglepool_tname  => 'resultlists_showsinglepool',
+
+           tt_rssframe_tname              => 'rssframe',
+
+	   tt_search_showautset_tname     => 'search_showautset',
+	   tt_search_showkorset_tname     => 'search_showkorset',
+	   tt_search_showswtset_tname     => 'search_showswtset',
+	   tt_search_shownotset_tname     => 'search_shownotset',
+	   tt_search_showtitset_tname     => 'search_showtitset',
+	   tt_search_showmulttitset_tname => 'search_showmulttitset',
+	   tt_search_showtitlist_tname    => 'search_showtitlist',
+           tt_search_browse_aut_tname     => 'search_browse_aut',
+           tt_search_browse_kor_tname     => 'search_browse_kor',
+           tt_search_browse_swt_tname     => 'search_browse_swt',
+           tt_search_browse_not_tname     => 'search_browse_not',
+           tt_search_browse_tit_tname     => 'search_browse_tit',
+
+	   tt_search_showswtindex_tname   => 'search_showswtindex',
+
+           tt_tags_editusertags_tname    => 'tags_editusertags',
+           tt_tags_showusertags_tname    => 'tags_showusertags',
+           tt_tags_showtitlist_tname     => 'tags_showtitlist',
+
+	   tt_virtualsearch_result_start_tname  => 'virtualsearch_result_start',
+	   tt_virtualsearch_result_item_tname   => 'virtualsearch_result_item',
+	   tt_virtualsearch_result_end_tname    => 'virtualsearch_result_end',
+
+	   tt_virtualsearch_showverfindex_tname => 'virtualsearch_showverfindex',
+	   tt_virtualsearch_showkorindex_tname  => 'virtualsearch_showkorindex',
+	   tt_virtualsearch_showswtindex_tname  => 'virtualsearch_showswtindex',
+	   tt_virtualsearch_shownotindex_tname  => 'virtualsearch_shownotindex',
+           tt_userreviews_edit_tname       => 'userreviews_edit',
+           tt_userreviews_show_tname       => 'userreviews_show',
+
+	   tt_userprefs_tname              => 'userprefs',
+	   tt_userprefs_ask_delete_tname   => 'userprefs_ask_delete',
+	   tt_userprefs_changefields_tname => 'userprefs_changefields',
+	   tt_userprefs_userdeleted_tname  => 'userprefs_userdeleted',
+
+	   tt_selfreg_tname                => 'selfreg',
+	   tt_selfreg_success_tname        => 'selfreg_success',
+
+	   tt_mailpassword_tname           => 'mailpassword',
+           tt_mailpassword_mail_main_tname => 'mailpassword_mail_main',
+	   tt_mailpassword_success_tname   => 'mailpassword_success',
+
+	   tt_error_tname                  => 'error',
+	   tt_info_message_tname           => 'info_message',
+
+	   # Anzahl der Spalten bei der Datenbankauswahlseite
+
+	   databasechoice_maxcolumn => 3,
+
+	   # Verschiedene Pfadangaben
+
+	   base_dir                => '/opt/openbib',
+	   conv_dir                => '/opt/openbib/conv',
+	   autoconv_dir            => '/opt/openbib/autoconv',
+	   dbdesc_dir              => '/opt/openbib/db',
+           tool_dir                => '/opt/openbib/bin',
+
+	   # Aktivierung verschiedener Funktionalitaeten
+
+	   login_active            => 1,
+	   newsflash               => 0,
+
+	   # Sollen Performance-Benchmarks durchgefuehrt werden
+
+	   benchmark               => 0,
+
+           # Kurztiteltabelle verwenden?
+
+           use_titlistitem_table   => 1,
+
+           # Testsystem
+
+	   testsystem              => 0,
+
+	   # Drill-Down
+
+	   drilldown               => 1,
+
+	   drilldown_option        => {
+				       cloud       => 1,
+				       cloud_min   => 6, # Minimale Anzahl notwendiger Elemente
+				       categorized => 1,
+				       categorized_aut  => 1,
+				       categorized_mart => 1,
+				       categorized_swt  => 1,
+				       categorized_not  => 1,
+				       categorized_spr  => 1,
+				       categorized_year => 1,
+				      },
+
+	   # Generierte BestOf-Daten
+	   best_of                 => {
+                                        '3' => {
+                                                  cloud => 'log',
+                                               },
+                                        '4' => {
+                                                  cloud => 'linear',
+                                               },
+                                        '5' => {
+                                                  cloud => 'linear',
+                                               },
+                                        '6' => {
+                                                  cloud => 'linear',
+                                               },
+                                        '7' => {
+                                                  cloud => 'linear',
+                                               },
+                                        '8' => {
+                                                  cloud => 'log',
+                                               },
+                                      },
+           # Social-Tagging
+
+           social_tagging          => 1,
+
+           # Literaturlisten
+
+           litlists                => 1,
+
+           # Reviews/Ratings
+
+           reviews                 => 1,
+
+           # unAPI
+
+           unAPI                   => 1,
+
+           unAPI_formats           => {
+               bibtex => 1,
+           },
+
+	   # Katalogabhaengige Kategorie-Mappings
+
+	   categorymapping => {
+               einbaende => {
+                   'T0100' => 1,
+                   'T0101' => 1,
+                   'T0200' => 1,
+                   'T0331' => 1,
+                   'T0335' => 1,
+                   'T0361' => 1,
+                   'T0370' => 1,
+                   'T0410' => 1,
+                   'T0413' => 1,
+                   'T0424' => 1,
+                   'T0425' => 1,
+                   'T0435' => 1,
+                   'T0501' => 1,
+                   'T0508' => 1,
+                   'T0700' => 1,
+                   'T0710' => 1,
+                   'T0750' => 1,
+               },
+               
+               inst450 => {
+                   'T0100' => 1,
+                   'T0101' => 1,
+                   'T0200' => 1,
+                   'T0201' => 1,
+                   'T0501' => 1,
+                   'T0509' => 1,
+                   'T0525' => 1,
+               },
+
+               kapsel => {
+                   'T0331' => 1,
+                   'T0700' => 1,
+               },
+
+               landschaft => {
+                   'T0100' => 1,
+                   'T0200' => 1,
+                   'T0331' => 1,
+                   'T0334' => 1,
+                   'T0750' => 1,
+                   'T0407' => 1,
+                   'T0425' => 1,
+                   'T0700' => 1,
+                   'T0710' => 1,
+                   'T0591' => 1,
+                   'T0594' => 1,
+                   'T0595' => 1,
+               },
+
+               portrait => {
+                   'T0100' => 1,
+                   'T0101' => 1,
+                   'T0102' => 1,
+                   'T0103' => 1,
+                   'T0331' => 1,
+                   'T0334' => 1,
+                   'T0501' => 1,
+                   'T0559' => 1,
+                   'T0201' => 1,
+                   'T0424' => 1,
+                   'T0425' => 1,
+                   'T0700' => 1,
+                   'T0710' => 1,
+                   'T0200' => 1,
+                   'T3001' => 1,
+                   'T3000' => 1,
+                   'T0800' => 1,
+                   'T0508' => 1,
+                   'T0662' => 1,
+               },
+
+               richter => {
+                   'T0501' => 1,
+               },
+
+           },
+
+       );
+
+sub new {
+    my $class = shift;
+
+    # Ininitalisierung mit Config-Parametern
+    my $self = \%config;
+
+    bless ($self, $class);
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    # dbh ist private Instance Variable
+    $self->{dbh}    = $dbh;
+
+    return $self;
+}
+
+sub get_number_of_dbs {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$self->{dbh}->prepare("select count(dbname) as rowcount from dbinfo where active=1") or $logger->error($DBI::errstr);
+    $request->execute() or $logger->error($DBI::errstr);
+    my $res    = $request->fetchrow_hashref;
+    my $alldbs = $res->{rowcount};
+    $request->finish();
+    
+    return $alldbs;
+}
+
+sub get_number_of_all_dbs {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$self->{dbh}->prepare("select count(dbname) as rowcount from dbinfo") or $logger->error($DBI::errstr);
+    $request->execute() or $logger->error($DBI::errstr);
+    my $res    = $request->fetchrow_hashref;
+    my $alldbs = $res->{rowcount};
+    $request->finish();
+    
+    return $alldbs;
+}
+
+sub get_number_of_views {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$self->{dbh}->prepare("select count(viewname) as rowcount from viewinfo where active=1") or $logger->error($DBI::errstr);
+    $request->execute() or $logger->error($DBI::errstr);
+    my $res      = $request->fetchrow_hashref;
+    my $allviews = $res->{rowcount};
+    $request->finish();
+    
+    return $allviews;
+}
+
+sub get_number_of_all_views {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$self->{dbh}->prepare("select count(viewname) as rowcount from viewinfo") or $logger->error($DBI::errstr);
+    $request->execute() or $logger->error($DBI::errstr);
+    my $res      = $request->fetchrow_hashref;
+    my $allviews = $res->{rowcount};
+    $request->finish();
+    
+    return $allviews;
+}
+
+sub get_number_of_titles {
+    my $self = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$self->{dbh}->prepare("select sum(count) as alltitcount from titcount,dbinfo where  titcount.dbname=dbinfo.dbname and dbinfo.active=1") or $logger->error($DBI::errstr);
+    $request->execute() or $logger->error($DBI::errstr);
+    my $res       = $request->fetchrow_hashref;
+    my $alltitles = $res->{alltitcount};
+    $request->finish();
+    
+    return $alltitles;
+}
+
+sub get_viewdesc_from_viewname {
+    my $self     = shift;
+    my $viewname = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$self->{dbh}->prepare("select description from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
+    $request->execute($viewname) or $logger->error($DBI::errstr);
+    my $res       = $request->fetchrow_hashref;
+    my $desc      = decode_utf8($res->{description}) if (defined($res->{'description'}));
+    $request->finish();
+    
+    return $desc;
+}
+
+sub db_exists {
+    my $self   = shift;
+    my $dbname = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$self->{dbh}->prepare("select count(dbname) as rowcount from dbinfo where dbname = ?") or $logger->error($DBI::errstr);
+    $request->execute($dbname) or $logger->error($DBI::errstr);
+    my $res       = $request->fetchrow_hashref;
+    my $rowcount  = $res->{rowcount};
+    $request->finish();
+    
+    return $rowcount;
+}
+
+sub view_exists {
+    my $self     = shift;
+    my $viewname = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$self->{dbh}->prepare("select count(viewname) as rowcount from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
+    $request->execute($viewname) or $logger->error($DBI::errstr);
+    my $res       = $request->fetchrow_hashref;
+    my $rowcount  = $res->{rowcount};
+    $request->finish();
+    
+    return $rowcount;
+}
+
+sub get_valid_rsscache_entry {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $database               = exists $arg_ref->{database}
+        ? $arg_ref->{database}            : undef;
+    my $type                   = exists $arg_ref->{type}
+        ? $arg_ref->{type}                : undef;
+    my $subtype                = exists $arg_ref->{subtype}
+        ? $arg_ref->{subtype}             : undef;
+    my $expiretimedate         = exists $arg_ref->{expiretimedate}
+        ? $arg_ref->{expiretimedate}      : undef;
+
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Bestimmung, ob ein valider Cacheeintrag existiert
+    my $request=$self->{dbh}->prepare("select content from rsscache where dbname=? and type=? and subtype = ? and tstamp > ?");
+    $request->execute($database,$type,$subtype,$expiretimedate);
+
+    my $res=$request->fetchrow_arrayref;
+    my $rss_content=(exists $res->[0])?$res->[0]:undef;
+
+    $request->finish();
+    
+    return $rss_content;
+}
+
+sub get_dbs_of_view {
+    my ($self,$view) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my @dblist=();
+    my $idnresult=$self->{dbh}->prepare("select viewdbs.dbname from viewdbs,dbinfo where viewdbs.viewname = ? and viewdbs.dbname=dbinfo.dbname and dbinfo.active=1 order by dbinfo.orgunit ASC, dbinfo.description ASC") or $logger->error($DBI::errstr);
+    $idnresult->execute($view) or $logger->error($DBI::errstr);
+
+    my @idnres;
+    while (@idnres=$idnresult->fetchrow) {
+        push @dblist, decode_utf8($idnres[0]);
+    }
+    $idnresult->finish();
+    $logger->debug("View-Databases:\n".YAML::Dump(\@dblist));
+    return @dblist;
+}
+
+sub get_primary_rssfeed_of_view  {
+    my ($self,$viewname)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Assoziierten View zur Session aus Datenbank holen
+    my $idnresult=$self->{dbh}->prepare("select rssfeeds.dbname as dbname,rssfeeds.type as type, rssfeeds.subtype as subtype from rssfeeds,viewinfo where viewname = ? and rssfeeds.id = viewinfo.rssfeed and rssfeeds.active = 1") or $logger->error($DBI::errstr);
+    $idnresult->execute($viewname) or $logger->error($DBI::errstr);
+  
+    my $result=$idnresult->fetchrow_hashref();
+  
+    my $dbname  = decode_utf8($result->{'dbname'}) || '';
+    my $type    = $result->{'type'}    || 0;
+    my $subtype = $result->{'subtype'} || 0;
+
+    foreach my $typename (keys %{$config{rss_types}}){
+        if ($config{rss_types}{$typename} eq $type){
+            $type=$typename;
+            last;
+        }
+    }
+    
+    $idnresult->finish();
+
+    my $primrssfeedurl="";
+
+    if ($dbname && $type){
+        $primrssfeedurl="http://".$config{loadbalancerservername}.$config{connector_rss_loc}."/$type/$dbname.rdf";
+    }
+    
+    return $primrssfeedurl;
+}
+
+sub get_activefeeds_of_db  {
+    my ($self,$dbname)=@_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    
+    my $activefeeds_ref = {};
+    
+    my $request=$self->{dbh}->prepare("select type from rssfeeds where dbname \
+= ? and active = 1") or $logger->error($DBI::errstr);
+    $request->execute($dbname) or $logger->error($DBI::errstr);
+    
+    while (my $result=$request->fetchrow_hashref()){
+        my $type    = $result->{'type'}    || 0;
+        
+        $activefeeds_ref->{$type} = 1;
+    }
+    
+    
+    $request->finish();
+    
+    return $activefeeds_ref;
+}
+
+sub get_dboptions {
+    my $self   = shift;
+    my $dbname = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$self->{dbh}->prepare("select * from dboptions where dbname=?") or die "Error -- $DBI::errstr";
+    $request->execute($dbname);
+    my $result=$request->fetchrow_hashref();
+
+    my $dboptions_ref;
+
+    $dboptions_ref = {
+        host          => $result->{'host'},
+        protocol      => $result->{'protocol'},
+        remotepath    => $result->{'remotepath'},
+        remoteuser    => $result->{'remoteuser'},
+        remotepasswd  => $result->{'remotepasswd'},
+        filename      => $result->{'filename'},
+        titfilename   => $result->{'titfilename'},
+        autfilename   => $result->{'autfilename'},
+        korfilename   => $result->{'korfilename'},
+        swtfilename   => $result->{'swtfilename'},
+        notfilename   => $result->{'notfilename'},
+        mexfilename   => $result->{'mexfilename'},
+        autoconvert   => $result->{'autoconvert'},
+    };
+    
+    $request->finish();
+    
+    return $dboptions_ref;
+}
+
+sub get_targetdbinfo {
+    my $self = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    #####################################################################
+    # Dynamische Definition diverser Variablen
+  
+    # Verweis: Datenbankname -> Informationen zum zugeh"origen Institut/Seminar
+  
+    my $dbinforesult=$self->{dbh}->prepare("select dbname,sigel,url,description,shortdesc from dbinfo") or $logger->error($DBI::errstr);
+    $dbinforesult->execute() or $logger->error($DBI::errstr);;
+  
+    my %sigel   =();
+    my %bibinfo =();
+    my %dbinfo  =();
+    my %dbases  =();
+    my %dbnames =();
+
+    while (my $result=$dbinforesult->fetchrow_hashref()) {
+        my $dbname      = decode_utf8($result->{'dbname'});
+        my $sigel       = decode_utf8($result->{'sigel'});
+        my $url         = decode_utf8($result->{'url'});
+        my $description = decode_utf8($result->{'description'});
+        my $shortdesc   = decode_utf8($result->{'shortdesc'});
+    
+        ##################################################################### 
+        ## Wandlungstabelle Bibliothekssigel <-> Bibliotheksname
+    
+        $sigel{"$sigel"} = {
+			    full  => $description,
+			    short => $shortdesc,
+			   };
+    
+        #####################################################################
+        ## Wandlungstabelle Bibliothekssigel <-> Informations-URL
+    
+        $bibinfo{"$sigel"} = "$url";
+    
+        #####################################################################
+        ## Wandlungstabelle  Name SQL-Datenbank <-> Datenbankinfo
+    
+        # Wenn ein URL fuer die Datenbankinformation definiert ist, dann wird
+        # damit verlinkt
+    
+        if ($url ne "") {
+            $dbinfo{"$dbname"} = {
+				  full  => "<a href=\"$url\" target=\"_blank\">$description</a>",
+				  short => "<a href=\"$url\" target=\"_blank\">$shortdesc</a>",
+				 };
+        } else {
+            $dbinfo{"$dbname"} = {
+				  full  => "$description",
+				  short => "$shortdesc",
+				 };
+        }
+    
+        #####################################################################
+        ## Wandlungstabelle  Name SQL-Datenbank <-> Bibliothekssigel
+    
+        $dbases{"$dbname"}       = "$sigel";
+
+        $dbnames{"$dbname"}      = {
+				    full => $description,
+				    short => $shortdesc,
+				   };
+    }
+  
+    $dbinforesult->finish;
+    
+    return {
+        sigel   => \%sigel,
+        bibinfo => \%bibinfo,
+        dbinfo  => \%dbinfo,
+        dbases  => \%dbases,
+        dbnames => \%dbnames,
+    };
+}
+
+sub get_targetcircinfo {
+    my $self = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    #####################################################################
+    ## Ausleihkonfiguration fuer den Katalog einlesen
+
+    my $dbinforesult=$self->{dbh}->prepare("select dbname,circ,circurl,circcheckurl,circdb from dboptions where circ = 1") or $logger->error($DBI::errstr);
+    $dbinforesult->execute() or $logger->error($DBI::errstr);;
+
+    my %targetcircinfo=();
+    
+    while (my $result=$dbinforesult->fetchrow_hashref()) {
+        my $dbname                             = decode_utf8($result->{'dbname'});
+
+        $targetcircinfo{$dbname}{circ}         = decode_utf8($result->{'circ'});
+        $targetcircinfo{$dbname}{circurl}      = decode_utf8($result->{'circurl'});
+        $targetcircinfo{$dbname}{circcheckurl} = decode_utf8($result->{'circcheckurl'});
+        $targetcircinfo{$dbname}{circdb}       = decode_utf8($result->{'circdb'});
+    }
+
+    $dbinforesult->finish();
+
+    return \%targetcircinfo;
+}
+
+sub get_active_databases {
+    my $self = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my @dblist=();
+    my $request=$self->{dbh}->prepare("select dbname from dbinfo where active=1 order by orgunit ASC, dbname ASC") or $logger->error($DBI::errstr);
+    $request->execute() or $logger->error($DBI::errstr);
+    while (my $res    = $request->fetchrow_hashref){
+        push @dblist, $res->{dbname};
+    }
+    $request->finish();
+    
+    return @dblist;
+}
+
+sub get_active_views {
+    my $self = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my @viewlist=();
+    my $request=$self->{dbh}->prepare("select viewname from viewinfo where active=1 order by description ASC") or $logger->error($DBI::errstr);
+    $request->execute() or $logger->error($DBI::errstr);
+    while (my $res    = $request->fetchrow_hashref){
+        push @viewlist, $res->{viewname};
+    }
+    $request->finish();
+    
+    return @viewlist;
+}
+
+sub get_active_databases_of_orgunit {
+    my ($self,$orgunit) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my @dblist=();
+    my $request=$self->{dbh}->prepare("select dbname from dbinfo where active=1 and orgunit = ? order by dbname ASC") or $logger->error($DBI::errstr);
+    $request->execute($orgunit) or $logger->error($DBI::errstr);
+    while (my $res    = $request->fetchrow_hashref){
+        push @dblist, $res->{dbname};
+    }
+    $request->finish();
+    
+    return @dblist;
+}
+
+sub get_system_of_db {
+    my ($self,$dbname) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $request=$self->{dbh}->prepare("select system from dbinfo where dbname = ?") or $logger->error($DBI::errstr);
+    $request->execute($dbname) or $logger->error($DBI::errstr);
+    my $systemtype = "";
+    while (my $res    = $request->fetchrow_hashref){
+        $systemtype = $res->{system};
+    }
+    $request->finish();
+    
+    return $systemtype;
+}
+
+sub get_infomatrix_of_active_databases {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $session           = exists $arg_ref->{session}
+        ? $arg_ref->{session}           : undef;
+    my $checkeddb_ref     = exists $arg_ref->{checkeddb_ref}
+        ? $arg_ref->{checkeddb_ref}     : undef;
+    my $maxcolumn          = exists $arg_ref->{maxcolumn}
+        ? $arg_ref->{maxcolumn}         : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $lastcategory="";
+    my $count=0;
+    
+    $maxcolumn=(defined $maxcolumn)?$maxcolumn:$self->{databasechoice_maxcolumn};
+    
+    my $idnresult=$self->{dbh}->prepare("select * from dbinfo where active=1 order by orgunit ASC, description ASC") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
+
+    my @catdb=();
+    
+    while (my $result=$idnresult->fetchrow_hashref) {
+        my $category   = decode_utf8($result->{'orgunit'});
+        my $name       = decode_utf8($result->{'description'});
+        my $systemtype = decode_utf8($result->{'system'});
+        my $pool       = decode_utf8($result->{'dbname'});
+        my $url        = decode_utf8($result->{'url'});
+        my $sigel      = decode_utf8($result->{'sigel'});
+	
+        my $rcolumn;
+        
+        if ($category ne $lastcategory) {
+            while ($count % $maxcolumn != 0) {
+                $rcolumn=($count % $maxcolumn)+1;
+                
+                # 'Leereintrag erzeugen'
+                push @catdb, { 
+                    column     => $rcolumn, 
+                    category   => $lastcategory,
+                    db         => '',
+                    name       => '',
+                    systemtype => '',
+                    sigel      => '',
+                    url        => '',
+                };
+                $count++;
+            }
+            $count=0;
+        }
+        
+        $lastcategory=$category;
+        
+        $rcolumn=($count % $maxcolumn)+1;
+        
+        my $checked="";
+        if (defined $checkeddb_ref->{$pool}) {
+            $checked=$checkeddb_ref->{$pool};
+        }
+        
+        push @catdb, { 
+            column     => $rcolumn,
+            category   => $category,
+            db         => $pool,
+            name       => $name,
+            systemtype => $systemtype,
+            sigel      => $sigel,
+            url        => $url,
+            checked    => $checked,
+        };
+        
+        
+        $count++;
+    }
+
+    while ($count % $maxcolumn != 0) {
+        my $rcolumn=($count % $maxcolumn)+1;
+        
+        # 'Leereintrag erzeugen'
+        push @catdb, { 
+            column     => $rcolumn, 
+            category   => $lastcategory,
+            db         => '',
+            name       => '',
+            systemtype => '',
+            sigel      => '',
+            url        => '',
+        };
+        $count++;
+    }
+
+    return @catdb;
+}
+
+sub DESTROY {
+    my $self = shift;
+
+    return if (!defined $self->{dbh});
+
+    $self->{dbh}->disconnect();
+
+    return;
+}
+
+1;

@@ -1,0 +1,39 @@
+[%#-
+#######################################################################
+#
+# Templatename: visible_categories_titset
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabekategorien fuer einen einzelnen Titelsatz
+#
+#######################################################################
+-%]
+[%# Ausgabekategorien %]
+[% categories = [
+                   'T0100', # msg.maketext("T0100-inst450") Autor
+                   'T0101', # msg.maketext("T0101-inst450") Co-Autor
+                   'T0200', # msg.maketext("T0200-inst450") Behoerden, Betriebe, Institutionen
+                   'T0201', # msg.maketext("T0201-inst450") Herausgebende Institution
+                   'T0331', # msg.maketext("T0331") Titel
+                   'T0410', # msg.maketext("T0410") Erscheinungsort
+                   'T0412', # msg.maketext("T0412") Verlag
+                   'T0425', # msg.maketext("T0425") Jahr
+                   'T0433', # msg.maketext("T0433") Umfang
+                   'T0451', # msg.maketext("T0451") Reihe
+                   'T0590', # msg.maketext("T0590") In:
+                   'T0089', # msg.maketext("T0089") Band
+
+                   'T0501', # msg.maketext("T0501-inst450") Werke
+                   'T0509', # msg.maketext("T0509-inst450") Personennamen
+                   'T0525', # msg.maketext("T0525-inst450") Ortsnamen
+                   'T0800', # msg.maketext("T0800") Typ (M-ono.,A-rtik.,P-eriodik.,Z-eitg.)
+                   'T0015', # msg.maketext("T0015") Sprache
+                   'T0710', # msg.maketext("T0710") Deskriptoren, Freie Stichworte
+
+                ]
+
+
+%]

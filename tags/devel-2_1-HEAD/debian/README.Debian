@@ -1,0 +1,11 @@
+openbib for Debian
+------------------
+
+Due to the circumstance that German libraries with their
+german-specific meta-data formats (MAB) and bibliographic standards
+(RAK) are the primary target of this application at this point with no
+MARC21/AACR2 support it might not be of much use in NON-MAB2/RAK countries.
+On the other hand, everybody is free to port it to MARC21/AACR2 and let
+me integrate the patches.
+
+ -- Oliver Flimm <flimm@openbib.org>, Wed, 25 Mar 2006 10:00:59 +0200

@@ -1,0 +1,49 @@
+[%#-
+#######################################################################
+#
+# Templatename: circulation_renew_loans
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Meldung nach dem Versuch einer Gesamtkonto-Verlaengerung
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+<div id="langchoice">
+<!--<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %]#perskug"><img src="/images/openbib/info.png"></a>&nbsp;-->
+[% IF config.lang.size > 1 %]
+[%   FOREACH l IN config.lang %]
+<a href="[% config.frameset_loc %]?headerframeurl=[% config.headerframe_loc %];bodyframeurl=[% config.searchframe_loc %];sessionID=[% sessionID %];setmask=simple;l=[% l %]" target="_parent"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[%   END %]
+[% END %]
+</div>
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="#1" target="body">Gesamtkonto-Verl&auml;ngerung</a></li>
+</ul>
+
+<div class="content">
+[% USE dumper;dumper.dump(result); %]
+
+<p />
+<table width="100%">
+<tr><th>Gesamtkonto-Verl&auml;ngerung</th></tr>
+<tr><td class="boxedclear" style="font-size:9pt">
+<table>
+<tr><td><b>Erfolgreich</b> verl&auml;ngerte Medien:</td><td><b>[% result.GesamtVerlaengerung.AnzPos %]</b></td></tr>
+<tr><td><b>Nicht</b> verl&auml;ngerte Medien:</td><td><b>[% result.GesamtVerlaengerung.AnzNeg %]</b></td></tr>
+</table>
+</td></tr>
+</table>
+
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -543,17 +543,14 @@ sub get_items_in_resultlist_per_db {
     my $sqlrequest="select searchresult from searchresults where sessionid = ? and dbname = ? and queryid = ?";
     my @sqlargs=($self->{ID},$database,$queryid);
 
-     if (defined $offset && defined $hitrange){
-         $sqlrequest.=" and offset = ? and hitrange = ?";
-         push @sqlargs, $offset;
-         push @sqlargs, $hitrange;
-     }
-
-#     if (defined $offset){
-#         $sqlrequest.=" and offset = ?";
-#         push @sqlargs, $offset;
-#     }
-
+    if (defined $offset){
+        $sqlrequest.=" and offset = ?";
+        push @sqlargs, $offset;
+    }
+    else {
+        $sqlrequest.=" order by ASC";
+    }
+    
     $logger->debug("SQL-Request: $sqlrequest / $self->{ID} - $database - $queryid - $offset - $hitrange");
     my $idnresult=$self->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $idnresult->execute(@sqlargs) or $logger->error($DBI::errstr);

@@ -69,7 +69,7 @@ sub handler {
         sessionID => $query->param('sessionID'),
     });
 
-    my $user      = new OpenBib::User();
+    my $user      = new OpenBib::User({sessionID => $session->{ID}});
     
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 

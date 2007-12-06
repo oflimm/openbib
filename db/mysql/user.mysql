@@ -186,3 +186,36 @@ CREATE TABLE reviewratings (
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
+
+DROP TABLE IF EXISTS litlists;
+CREATE TABLE litlists (
+ id        INT(11)     NOT NULL auto_increment,
+ tstamp    TIMESTAMP,
+ userid    INT(11)     NOT NULL,
+ title     TEXT        NOT NULL,
+ type      INT(3)      NOT NULL default '1',
+ PRIMARY KEY  (id),
+ INDEX (id),
+ INDEX (userid),
+ INDEX (title(30)),
+ INDEX (type)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+DROP TABLE IF EXISTS litlistitems;
+CREATE TABLE litlistitems (
+ litlistid INT(11)     NOT NULL,
+ tstamp    TIMESTAMP,
+ titid     INT(11)     NOT NULL,
+ titisbn   CHAR(14)    NOT NULL default '',
+ titdb     VARCHAR(25) NOT NULL,
+ INDEX (litlistid),
+ INDEX (titid),
+ INDEX (titisbn),
+ INDEX (titdb)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;

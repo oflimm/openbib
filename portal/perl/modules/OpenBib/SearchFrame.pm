@@ -71,7 +71,7 @@ sub handler {
         sessionID => $query->param('sessionID'),
     });
 
-    my $user      = new OpenBib::User();
+    my $user      = new OpenBib::User({sessionID => $session->{ID}});
     
     my $useragent=$r->subprocess_env('HTTP_USER_AGENT');
   
@@ -104,9 +104,6 @@ sub handler {
         $view=$session->get_viewname();
     }
 
-    # Authorisierte Session?
-    my $userid=$user->get_userid_of_session($session->{ID});
-  
     my $showfs        = "1";
     my $showhst       = "1";
     my $showverf      = "1";
@@ -129,9 +126,9 @@ sub handler {
 
     my $userprofile_ref = {};
 
-    if ($userid) {
+    if ($user->{ID}) {
         my $targetresult=$user->{dbh}->prepare("select * from fieldchoice where userid = ?") or $logger->error($DBI::errstr);
-        $targetresult->execute($userid) or $logger->error($DBI::errstr);
+        $targetresult->execute($user->{ID}) or $logger->error($DBI::errstr);
     
         my $result=$targetresult->fetchrow_hashref();
     
@@ -172,7 +169,7 @@ sub handler {
         }
     
         $targetresult=$user->{dbh}->prepare("select * from fieldchoice where userid = ?") or $logger->error($DBI::errstr);
-        $targetresult->execute($userid) or $logger->error($DBI::errstr);
+        $targetresult->execute($user->{ID}) or $logger->error($DBI::errstr);
     
         $result=$targetresult->fetchrow_hashref();
     

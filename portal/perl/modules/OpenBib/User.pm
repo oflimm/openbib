@@ -38,7 +38,11 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 
 sub new {
-    my ($class) = @_;
+    my ($class,$arg_ref) = @_;
+
+    # Set defaults
+    my $sessionID   = exists $arg_ref->{sessionID}
+        ? $arg_ref->{sessionID}             : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -53,8 +57,17 @@ sub new {
     my $dbh
         = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
             or $logger->error($DBI::errstr);
+    
 
     $self->{dbh}       = $dbh;
+
+    if (defined $sessionID){
+      my $userid = $self->get_userid_of_session($sessionID);
+      if (defined $userid){
+          $self->{ID} = $userid ;
+          $logger->debug("Got UserID $userid for session $sessionID");
+      }
+  }
 
     return $self;
 }
@@ -69,8 +82,8 @@ sub userdb_accessible{
     return 0;
 }
     
-sub get_cred_for_userid {
-    my ($self,$userid)=@_;
+sub get_credentials {
+    my ($self)=@_;
                   
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -79,7 +92,7 @@ sub get_cred_for_userid {
     
     my $userresult=$self->{dbh}->prepare("select loginname,pin from user where userid = ?") or $logger->error($DBI::errstr);
 
-    $userresult->execute($userid) or $logger->error($DBI::errstr);
+    $userresult->execute($self->{ID}) or $logger->error($DBI::errstr);
   
     my @cred=();
   
@@ -92,6 +105,29 @@ sub get_cred_for_userid {
 
     return @cred;
 
+}
+
+sub get_username {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return undef if (!defined $self->{dbh});
+    
+    my $userresult=$self->{dbh}->prepare("select loginname from user where userid = ?") or $logger->error($DBI::errstr);
+
+    $userresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+  
+    my $username="";
+  
+    while (my $res=$userresult->fetchrow_hashref()){
+        $username = decode_utf8($res->{loginname});
+    }
+
+    $userresult->finish();
+
+    return $username;
 }
 
 sub get_username_for_userid {
@@ -155,20 +191,17 @@ sub get_userid_of_session {
 
     $userresult->execute($globalsessionID) or $logger->error($DBI::errstr);
   
-    my $userid="";
+    my $userid=undef;
   
     while(my $res=$userresult->fetchrow_hashref()){
         $userid = decode_utf8($res->{'userid'});
     }
 
-    # Userid merken
-    $self->{userid} = $userid;
-
     return $userid;
 }
 
 sub clear_cached_userdata {
-    my ($self,$userid)=@_;
+    my ($self)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -176,7 +209,7 @@ sub clear_cached_userdata {
     return undef if (!defined $self->{dbh});
 
     my $request=$self->{dbh}->prepare("update user set nachname = '', vorname = '', strasse = '', ort = '', plz = '', soll = '', gut = '', avanz = '', branz = '', bsanz = '', vmanz = '', maanz = '', vlanz = '', sperre = '', sperrdatum = '', gebdatum = '' where userid = ?") or die "$DBI::errstr";
-    $request->execute($userid) or die "$DBI::errstr";
+    $request->execute($self->{ID}) or die "$DBI::errstr";
   
     $request->finish();
 
@@ -277,7 +310,7 @@ sub get_profiledbs_of_profileid {
 }
 
 sub get_number_of_items_in_collection {
-    my ($self,$userid)=@_;
+    my ($self)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -285,7 +318,7 @@ sub get_number_of_items_in_collection {
     return undef if (!defined $self->{dbh});
     
     my $idnresult=$self->{dbh}->prepare("select count(*) as rowcount from treffer where userid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($userid) or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
     my $res = $idnresult->fetchrow_hashref();
     my $numofitems = $res->{rowcount};
     $idnresult->finish();
@@ -294,7 +327,7 @@ sub get_number_of_items_in_collection {
 }
 
 sub get_number_of_tagged_titles {
-    my ($self,$userid)=@_;
+    my ($self)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -312,7 +345,7 @@ sub get_number_of_tagged_titles {
 }
 
 sub get_number_of_tagging_users {
-    my ($self,$userid)=@_;
+    my ($self)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -330,7 +363,7 @@ sub get_number_of_tagging_users {
 }
 
 sub get_number_of_tags {
-    my ($self,$userid)=@_;
+    my ($self)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -384,7 +417,7 @@ sub get_number_of_dbprofiles {
 }
 
 sub get_number_of_collections {
-    my ($self,$userid)=@_;
+    my ($self)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -402,7 +435,7 @@ sub get_number_of_collections {
 }
 
 sub get_number_of_collection_entries {
-    my ($self,$userid)=@_;
+    my ($self)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -425,12 +458,12 @@ sub get_all_profiles {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    return if (!defined $self->{dbh});
+    return () if (!defined $self->{dbh});
     
     my $config = new OpenBib::Config();
 
     my $idnresult=$self->{dbh}->prepare("select profilid, profilename from userdbprofile where userid = ? order by profilename") or $logger->error($DBI::errstr);
-    $idnresult->execute($self->{userid}) or $logger->error($DBI::errstr);
+    $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
 
     my @userdbprofiles=();
     while (my $result=$idnresult->fetchrow_hashref()){
@@ -480,7 +513,7 @@ sub get_logintargets {
   
     my $logger = get_logger();
 
-    return if (!defined $self->{dbh});
+    return [] if (!defined $self->{dbh});
     
     my $request=$self->{dbh}->prepare("select * from logintarget order by type DESC,description") or $logger->error($DBI::errstr);
     $request->execute() or $logger->error($DBI::errstr);
@@ -509,7 +542,7 @@ sub get_logintarget_by_id {
   
     my $logger = get_logger();
 
-    return if (!defined $self->{dbh});
+    return {} if (!defined $self->{dbh});
     
     my $request=$self->{dbh}->prepare("select * from logintarget where targetid = ?") or $logger->error($DBI::errstr);
     $request->execute($targetid) or $logger->error($DBI::errstr);
@@ -535,7 +568,7 @@ sub get_logintarget_by_id {
 }
 
 sub get_number_of_logintargets {
-    my ($self,$userid)=@_;
+    my ($self)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -747,7 +780,7 @@ sub get_all_tags_of_db {
   
     my $logger = get_logger();
 
-    return if (!defined $self->{dbh});
+    return [] if (!defined $self->{dbh});
 
     #return if (!$titid || !$titdb || !$loginname || !$tags);
 
@@ -796,7 +829,7 @@ sub get_all_tags_of_tit {
   
     my $logger = get_logger();
 
-    return if (!defined $self->{dbh});
+    return [] if (!defined $self->{dbh});
 
     #return if (!$titid || !$titdb || !$loginname || !$tags);
 
@@ -847,7 +880,7 @@ sub get_private_tags_of_tit {
   
     my $logger = get_logger();
 
-    return if (!defined $self->{dbh});
+    return [] if (!defined $self->{dbh});
 
     #return if (!$titid || !$titdb || !$loginname || !$tags);
 
@@ -883,7 +916,7 @@ sub get_private_tags {
     my $logger = get_logger();
 
     $logger->debug("loginname: $loginname");
-    return if (!defined $self->{dbh});
+    return [] if (!defined $self->{dbh});
 
     #return if (!$titid || !$titdb || !$loginname || !$tags);
 
@@ -1028,7 +1061,7 @@ sub get_reviews_of_tit {
   
     my $logger = get_logger();
 
-    return if (!defined $self->{dbh});
+    return [] if (!defined $self->{dbh});
 
     #return if (!$titid || !$titdb || !$loginname || !$tags);
 
@@ -1096,7 +1129,7 @@ sub tit_reviewed_by_user {
   
     my $logger = get_logger();
 
-    return if (!defined $self->{dbh});
+    return undef if (!defined $self->{dbh});
 
     #return if (!$titid || !$titdb || !$loginname || !$tags);
 
@@ -1123,7 +1156,7 @@ sub get_review_of_user {
   
     my $logger = get_logger();
 
-    return if (!defined $self->{dbh});
+    return {} if (!defined $self->{dbh});
 
     #return if (!$titid || !$titdb || !$loginname || !$tags);
 
@@ -1191,7 +1224,7 @@ sub get_reviews {
   
     my $logger = get_logger();
 
-    return if (!defined $self->{dbh});
+    return [] if (!defined $self->{dbh});
 
     #return if (!$titid || !$titdb || !$loginname || !$tags);
 
@@ -1223,6 +1256,321 @@ sub get_reviews {
     }
     
     return $reviewlist_ref;
+}
+
+sub add_litlist {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $title               = exists $arg_ref->{title}
+        ? $arg_ref->{title}               : 'Literaturliste';
+    my $type                = exists $arg_ref->{type}
+        ? $arg_ref->{type}                : 1;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    # Ratings sind Zahlen und Reviews, Titel sowie Nicknames bestehen nur aus Text
+    $title    =~s/[^-+\p{Alphabetic}0-9\/:. '()"\?!]//g;
+    
+    my $request=$self->{dbh}->prepare("insert into litlists (userid,title,type) values (?,?,?)") or $logger->error($DBI::errstr);
+    $request->execute($self->{ID},$title,$type) or $logger->error($DBI::errstr);
+
+    return;
+}
+
+sub change_litlist {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $litlistid           = exists $arg_ref->{litlistid}
+        ? $arg_ref->{litlistid}           : undef;
+    my $title               = exists $arg_ref->{title}
+        ? $arg_ref->{title}               : 'Literaturliste';
+    my $type                = exists $arg_ref->{type}
+        ? $arg_ref->{type}                : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    return if (!$litlistid || !$title || !$type);
+
+    # Ratings sind Zahlen und Reviews, Titel sowie Nicknames bestehen nur aus Text
+    $title    =~s/[^-+\p{Alphabetic}0-9\/:. '()"\?!]//g;
+    
+    my $request=$self->{dbh}->prepare("update litlists set title=?, type=? where id=?") or $logger->error($DBI::errstr);
+    $request->execute($title,$type,$litlistid) or $logger->error($DBI::errstr);
+
+    return;
+}
+
+sub add_litlistentry {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $litlistid           = exists $arg_ref->{litlistid}
+        ? $arg_ref->{litlistid}           : undef;
+    my $titid               = exists $arg_ref->{titid}
+        ? $arg_ref->{titid}               : undef;
+    my $titdb               = exists $arg_ref->{titdb}
+        ? $arg_ref->{titdb}               : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    #return if (!$titid || !$titdb || !$litlitid );
+
+    my $request=$self->{dbh}->prepare("delete from litlistitems where litlistid=? and titid=? and titdb=?") or $logger->error($DBI::errstr);
+    $request->execute($litlistid,$titid,$titdb) or $logger->error($DBI::errstr);
+
+    $request=$self->{dbh}->prepare("insert into litlistitems (litlistid,titid,titdb) values (?,?,?)") or $logger->error($DBI::errstr);
+    $request->execute($litlistid,$titid,$titdb) or $logger->error($DBI::errstr);
+
+    return;
+}
+
+sub del_litlistentry {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $litlistid           = exists $arg_ref->{litlistid}
+        ? $arg_ref->{litlistid}           : undef;
+    my $titid               = exists $arg_ref->{titid}
+        ? $arg_ref->{titid}               : undef;
+    my $titdb               = exists $arg_ref->{titdb}
+        ? $arg_ref->{titdb}               : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return if (!defined $self->{dbh});
+
+    return if (!$litlistid || !$titid || !$titdb);
+
+    my $request=$self->{dbh}->prepare("delete from litlistitems where litlistid=? and titid=? and titdb=?") or $logger->error($DBI::errstr);
+    $request->execute($litlistid,$titid,$titdb) or $logger->error($DBI::errstr);
+
+    return;
+}
+
+sub get_litlists {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return [] if (!defined $self->{dbh});
+
+    return [] if (!$self->{ID});
+
+    my $sql_stmnt = "select id from litlists where userid=?";
+
+    my $request=$self->{dbh}->prepare($sql_stmnt) or $logger->error($DBI::errstr);
+    $request->execute($self->{ID}) or $logger->error($DBI::errstr);
+
+    my $litlists_ref = [];
+
+    while (my $result=$request->fetchrow_hashref){
+      my $litlistid        = $result->{id};
+      
+      push @$litlists_ref, $self->get_litlist_properties({litlistid => $litlistid});
+    }
+    
+    return $litlists_ref;
+}
+
+sub get_litlistentries {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $litlistid           = exists $arg_ref->{litlistid}
+        ? $arg_ref->{litlistid}           : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = new OpenBib::Config();
+
+    return [] if (!defined $self->{dbh});
+
+    #return if (!$litlistid);
+
+    my $request=$self->{dbh}->prepare("select titid,titdb,tstamp from litlistitems where litlistid=?") or $logger->error($DBI::errstr);
+    $request->execute($litlistid) or $logger->error($DBI::errstr);
+
+    my $litlistitems_ref = [];
+
+    my $targetdbinfo_ref
+        = $config->get_targetdbinfo();
+
+    while (my $result=$request->fetchrow_hashref){
+      my $titelidn  = decode_utf8($result->{titid});
+      my $database  = decode_utf8($result->{titdb});
+      my $tstamp    = decode_utf8($result->{tstamp});
+      
+      my $dbh
+	= DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+	    or $logger->error_die($DBI::errstr);
+	
+      push @$litlistitems_ref, {            
+				id        => $titelidn,
+				title     => OpenBib::Search::Util::get_tit_listitem_by_idn({
+                    titidn            => $titelidn,
+                    dbh               => $dbh,
+                    database          => $database,
+											    }),
+				tstamp    => $tstamp,
+			       };
+      $dbh->disconnect();
+    }
+    
+    return $litlistitems_ref;
+}
+
+sub get_number_of_litlistentries {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $litlistid           = exists $arg_ref->{litlistid}
+        ? $arg_ref->{litlistid}           : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = new OpenBib::Config();
+
+    return undef if (!defined $self->{dbh});
+
+    #return if (!$litlistid);
+
+    my $request=$self->{dbh}->prepare("select count(litlistid) as numofentries from litlistitems where litlistid=?") or $logger->error($DBI::errstr);
+    $request->execute($litlistid) or $logger->error($DBI::errstr);
+
+    my $result=$request->fetchrow_hashref;
+
+    return $result->{numofentries};
+}
+
+sub get_litlist_properties {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $litlistid           = exists $arg_ref->{litlistid}
+        ? $arg_ref->{litlistid}           : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return {} if (!defined $self->{dbh});
+
+    return {} if (!$litlistid);
+
+    my $request=$self->{dbh}->prepare("select * from litlists where id = ?") or $logger->error($DBI::errstr);
+    $request->execute($litlistid) or $logger->error($DBI::errstr);
+
+    my $result=$request->fetchrow_hashref;
+
+    my $title     = decode_utf8($result->{title});
+    my $type      = $result->{type};
+    my $tstamp    = $result->{tstamp};
+    my $userid    = $result->{userid};
+    my $itemcount = $self->get_number_of_litlistentries({litlistid => $litlistid});
+
+    my $litlist_ref = {
+			id        => $litlistid,
+			userid    => $userid,
+			title     => $title,
+			type      => $type,
+		        itemcount => $itemcount,
+			tstamp    => $tstamp,
+		       };
+
+    return $litlist_ref;
+}
+
+sub is_authenticated {
+    my ($self)=@_;
+
+    return (exists $self->{ID})?1:0;
+}
+
+sub litlist_is_public {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $litlistid           = exists $arg_ref->{litlistid}
+        ? $arg_ref->{litlistid}           : undef;
+
+    
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return ($self->get_litlist_properties({ litlistid => $litlistid })->{type} == 1)?1:0;;
+}
+
+sub get_litlist_owner {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $litlistid           = exists $arg_ref->{litlistid}
+        ? $arg_ref->{litlistid}           : undef;
+
+    
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return $self->get_litlist_properties({ litlistid => $litlistid })->{userid};
+}
+
+sub get_litlists_of_tit {
+    my ($self,$arg_ref)=@_;
+
+    my $titid               = exists $arg_ref->{titid}
+        ? $arg_ref->{titid}               : undef;
+    my $titdb               = exists $arg_ref->{titdb}
+        ? $arg_ref->{titdb}               : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    return [] if (!defined $self->{dbh});
+
+    return [] if (!$titid || !$titdb);
+
+    my $request=$self->{dbh}->prepare("select ll.* from litlistitems as lli, litlists as ll where ll.id=lli.litlistid and lli.titid=? and lli.titdb=?") or $logger->error($DBI::errstr);
+    $request->execute($titid,$titdb) or $logger->error($DBI::errstr);
+
+    my $litlists_ref = [];
+
+    while (my $result=$request->fetchrow_hashref){
+        push @$litlists_ref, {
+            id     => $result->{id},
+            userid => $result->{userid},
+            type   => $result->{type},
+            title  => $result->{title},
+        };
+    }
+
+    return $litlists_ref;
 }
 
 sub DESTROY {

@@ -15,6 +15,7 @@
 ../modules/OpenBib/HelpFrame.pm
 ../modules/OpenBib/L10N.pm
 ../modules/OpenBib/Leave.pm
+../modules/OpenBib/LitLists.pm
 ../modules/OpenBib/LoadBalancer.pm
 ../modules/OpenBib/LoadBalancer/Util.pm
 ../modules/OpenBib/Login.pm
@@ -87,6 +88,7 @@
 ../templates/database/einbaende/visible_categories_titset
 ../templates/database/inst001/visible_categories_titset
 ../templates/database/inst450/visible_categories_titset
+../templates/database/kapsel/visible_categories_titset
 ../templates/database/landschaft/search_showtitlist
 ../templates/database/landschaft/search_showtitset
 ../templates/database/landschaft/virtualsearch_result_item
@@ -95,6 +97,7 @@
 ../templates/database/portrait/search_showtitset
 ../templates/database/portrait/virtualsearch_result_item
 ../templates/database/portrait/visible_categories_titset
+../templates/database/richter/visible_categories_titset
 ../templates/databasechoice
 ../templates/databaseprofile
 ../templates/drilldown_categorized
@@ -119,6 +122,8 @@
 ../templates/helpframe_40
 ../templates/info_message
 ../templates/leave
+../templates/litlists_manage_lists
+../templates/litlists_manage_singlelist
 ../templates/loadbalancer
 ../templates/login
 ../templates/login_circulation

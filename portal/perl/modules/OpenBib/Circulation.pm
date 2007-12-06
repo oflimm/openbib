@@ -72,7 +72,7 @@ sub handler {
         sessionID => $query->param('sessionID'),
     });
 
-    my $user       = new OpenBib::User();
+    my $user       = new OpenBib::User({sessionID => $session->{ID}});
     
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
@@ -108,10 +108,9 @@ sub handler {
         $view=$session->get_viewname();
     }
   
-    my $userid             = $user->get_userid_of_session($session->{ID});
     my $sessionlogintarget = $user->get_targetdb_of_session($session->{ID});
 
-    unless($userid){
+    unless($user->{ID}){
         # Aufruf-URL
         my $return_url = $r->parsed_uri->unparse;
 
@@ -128,7 +127,7 @@ sub handler {
         return OK;
     }
   
-    my ($loginname,$password) = $user->get_cred_for_userid($userid);
+    my ($loginname,$password) = $user->get_credentials();
     my $database              = $user->get_targetdb_of_session($session->{ID});
     my $targetcircinfo_ref    = $config->get_targetcircinfo();
 
@@ -164,7 +163,9 @@ sub handler {
                 password     => $password,
 		  
                 reservations => $circexlist,
-		  
+
+                database     => $database,
+                    
                 utf2iso      => sub {
 		    my $string=shift;
 		    $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
@@ -298,7 +299,9 @@ sub handler {
                 password   => $password,
 		  
                 borrows    => $circexlist,
-		  
+
+                database   => $database,
+
                 utf2iso    => sub {
 		    my $string=shift;
 		    $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
@@ -318,18 +321,18 @@ sub handler {
     }
     elsif ($action eq "make_reservation"){
 
-    unless($sessionlogintarget eq $validtarget){
-        # Aufruf-URL
-        my $return_url = $r->parsed_uri->unparse;
-
-        # Return-URL in der Session abspeichern
-
-        $session->set_returnurl($return_url);
-
-        $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1;type=circulation;validtarget=$validtarget");
-
-        return OK;
-    }
+        unless($sessionlogintarget eq $validtarget){
+            # Aufruf-URL
+            my $return_url = $r->parsed_uri->unparse;
+            
+            # Return-URL in der Session abspeichern
+            
+            $session->set_returnurl($return_url);
+            
+            $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1;type=circulation;validtarget=$validtarget");
+            
+            return OK;
+        }
 
         my $circexlist=undef;
 
@@ -368,6 +371,149 @@ sub handler {
         };
         
         OpenBib::Common::Util::print_page($config->{tt_circulation_make_reserv_tname},$ttdata,$r);
+    }
+    elsif ($action eq "cancel_reservation"){
+
+        unless($sessionlogintarget eq $validtarget){
+            # Aufruf-URL
+            my $return_url = $r->parsed_uri->unparse;
+            
+            # Return-URL in der Session abspeichern
+            
+            $session->set_returnurl($return_url);
+            
+            $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1;type=circulation;validtarget=$validtarget");
+            
+            return OK;
+        }
+
+        my $circexlist=undef;
+
+        $logger->info("Zweigstelle: $zweigstelle");
+        
+        my $soap = SOAP::Lite
+            -> uri("urn:/Circulation")
+                -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
+        my $result = $soap->cancel_reservation(
+            SOAP::Data->name(parameter  =>\SOAP::Data->value(
+                SOAP::Data->name(username     => $loginname)->type('string'),
+                SOAP::Data->name(password     => $password)->type('string'),
+                SOAP::Data->name(mediennummer => $mediennummer)->type('string'),
+                SOAP::Data->name(zweigstelle  => $zweigstelle)->type('string'),
+                SOAP::Data->name(database     => $targetcircinfo_ref->{$database}{circdb})->type('string'))));
+        
+        unless ($result->fault) {
+            $circexlist=$result->result;
+        }
+        else {
+            $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+        }
+        
+
+        $r->internal_redirect("http://$config->{servername}$config->{circulation_loc}?sessionID=$session->{ID};action=showcirc;circaction=reservations");
+
+        return OK;
+    }
+    elsif ($action eq "make_order"){
+
+        unless($sessionlogintarget eq $validtarget){
+            # Aufruf-URL
+            my $return_url = $r->parsed_uri->unparse;
+            
+            # Return-URL in der Session abspeichern
+            
+            $session->set_returnurl($return_url);
+            
+            $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1;type=circulation;validtarget=$validtarget");
+            
+            return OK;
+        }
+
+        my $circexlist=undef;
+
+        $logger->info("Zweigstelle: $zweigstelle");
+        
+        my $soap = SOAP::Lite
+            -> uri("urn:/Circulation")
+                -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
+        my $result = $soap->make_order(
+            SOAP::Data->name(parameter  =>\SOAP::Data->value(
+                SOAP::Data->name(username     => $loginname)->type('string'),
+                SOAP::Data->name(password     => $password)->type('string'),
+                SOAP::Data->name(mediennummer => $mediennummer)->type('string'),
+                SOAP::Data->name(ausgabeort   => $ausgabeort)->type('string'),
+                SOAP::Data->name(zweigstelle  => $zweigstelle)->type('string'),
+                SOAP::Data->name(database     => $targetcircinfo_ref->{$database}{circdb})->type('string'))));
+        
+        unless ($result->fault) {
+            $circexlist=$result->result;
+        }
+        else {
+            $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+        }
+        
+        # TT-Data erzeugen
+        my $ttdata={
+            view       => $view,
+            stylesheet => $stylesheet,
+            
+            sessionID  => $session->{ID},
+            
+            result     => $circexlist,
+            
+            config     => $config,
+            msg        => $msg,
+        };
+        
+        OpenBib::Common::Util::print_page($config->{tt_circulation_make_order_tname},$ttdata,$r);
+    }
+    elsif ($action eq "renew_loans"){
+
+        unless($sessionlogintarget eq $validtarget){
+            # Aufruf-URL
+            my $return_url = $r->parsed_uri->unparse;
+            
+            # Return-URL in der Session abspeichern
+            
+            $session->set_returnurl($return_url);
+            
+            $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1;type=circulation;validtarget=$validtarget");
+            
+            return OK;
+        }
+
+        my $circexlist=undef;
+
+        my $soap = SOAP::Lite
+            -> uri("urn:/Circulation")
+                -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
+        my $result = $soap->renew_loans(
+            SOAP::Data->name(parameter  =>\SOAP::Data->value(
+                SOAP::Data->name(username     => $loginname)->type('string'),
+                SOAP::Data->name(password     => $password)->type('string'),
+                SOAP::Data->name(database     => $targetcircinfo_ref->{$database}{circdb})->type('string'))));
+        
+        unless ($result->fault) {
+            $circexlist=$result->result;
+        }
+        else {
+            $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+        }
+        
+        # TT-Data erzeugen
+        my $ttdata={
+            view       => $view,
+            stylesheet => $stylesheet,
+            
+            sessionID  => $session->{ID},
+            
+            result     => $circexlist,
+            
+            config     => $config,
+            msg        => $msg,
+        };
+        
+        OpenBib::Common::Util::print_page($config->{tt_circulation_renew_loans_tname},$ttdata,$r);
     }
     else {
         OpenBib::Common::Util::print_warning($msg->maketext("Unerlaubte Aktion"),$r,$msg);

@@ -43,6 +43,7 @@ use YAML ();
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::VirtualSearch::Util;
 
 #####################################################################
 ## get_aut_ans_by_idn(autidn,...): Gebe zu autidn geh"oerende
@@ -1043,10 +1044,9 @@ sub print_tit_set_by_idn {
     my $logger = get_logger();
 
     my $config = new OpenBib::Config();
-    my $user   = new OpenBib::User();
+    my $user   = new OpenBib::User({sessionID => $session->{ID}});
 
-    my $userid        = $user->get_userid_of_session($session->{ID});
-    my $loginname     = $user->get_username_for_userid($userid);
+    my $loginname     = $user->get_username();
     my $logintargetdb = $user->get_targetdb_of_session($session->{ID});
 
     my ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn({
@@ -1066,6 +1066,10 @@ sub print_tit_set_by_idn {
 
     my $poolname=$targetdbinfo_ref->{dbnames}{$database};
 
+    # Literaturlisten finden
+
+    my $litlists_ref = $user->get_litlists_of_tit({titid => $titidn, titdb => $database});
+    
     # TT-Data erzeugen
     my $ttdata={
         view        => $view,
@@ -1088,6 +1092,7 @@ sub print_tit_set_by_idn {
         loginname     => $loginname,
         logintargetdb => $logintargetdb,
 
+        litlists     => $litlists_ref,
         highlightquery    => \&highlightquery,
         normset2bibtex    => \&OpenBib::Common::Util::normset2bibtex,
         normset2bibsonomy => \&OpenBib::Common::Util::normset2bibsonomy,
@@ -1398,20 +1403,28 @@ sub get_tit_set_by_idn {
 
             $logger->debug("Katkey: $titidn - Circ-ID: $circid");
 
-            my $soap = SOAP::Lite
+	    eval {
+	      my $soap = SOAP::Lite
                 -> uri("urn:/MediaStatus")
-                    -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
-            my $result = $soap->get_mediastatus(
+		  -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
+	      my $result = $soap->get_mediastatus(
                 SOAP::Data->name(parameter  =>\SOAP::Data->value(
                     SOAP::Data->name(katkey   => $circid)->type('string'),
                     SOAP::Data->name(database => $targetcircinfo_ref->{$database}{circdb})->type('string'))));
             
-            unless ($result->fault) {
+	      unless ($result->fault) {
                 $circexlist=$result->result;
-            }
-            else {
+	      }
+	      else {
                 $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-            }
+	      }
+	    };
+
+	    if ($@){
+                    $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
+	    }
+
+
         }
         
         # Bei einer Ausleihbibliothek haben - falls Exemplarinformationen
@@ -1447,8 +1460,6 @@ sub get_tit_set_by_idn {
                 my $bibinfourl=$targetdbinfo_ref->{bibinfo}{
                     $targetdbinfo_ref->{dbases}{$database}};
                 
-                # Zusammensetzung von Signatur und Exemplar
-                $circexemplarliste[$i]{'Signatur'}   = $circexemplarliste[$i]{'Signatur'}.$circexemplarliste[$i]{'Exemplar'};
                 $circexemplarliste[$i]{'Bibliothek'} = $bibliothek;
                 $circexemplarliste[$i]{'Bibinfourl'} = $bibinfourl;
                 $circexemplarliste[$i]{'Ausleihurl'} = $targetcircinfo_ref->{$database}{circurl};
@@ -1712,6 +1723,7 @@ sub get_index {
         # Normdaten-Volltext-Recherche
         else {
             $sqlrequest="select distinct ${type}.content as content from $type, ${type}_ft where ${type}.category = ? and ${type}_ft.category = ? and match (${type}_ft.content) against (? IN BOOLEAN MODE) and ${type}.id=${type}_ft.id order by ${type}.content";
+            $contentreq = OpenBib::VirtualSearch::Util::conv2autoplus($contentreq);
         }
         $logger->info($sqlrequest." - $category, $contentreq");
         my $request=$dbh->prepare($sqlrequest);

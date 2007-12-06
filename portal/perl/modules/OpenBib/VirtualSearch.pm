@@ -78,7 +78,7 @@ sub handler {
         sessionID => $query->param('sessionID'),
     });
 
-    my $user      = new OpenBib::User();
+    my $user      = new OpenBib::User({sessionID => $session->{ID}});
     
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
@@ -154,10 +154,6 @@ sub handler {
         $view=$session->get_viewname();
     }
 
-    # Authorisierter user?
-    my $userid=$user->get_userid_of_session($session->{ID});
-    $logger->info("Authorization: ", $session->{ID}, " ", ($userid)?$userid:'none');
-
     # Loggen der Recherche-Art (1=simple, 2=complex)
     $session->log_event({
 		type      => 20,
@@ -219,7 +215,7 @@ sub handler {
                         my $profilid=$1;
                         
                         my $profilresult=$user->{dbh}->prepare("select profildb.dbname from profildb,userdbprofile where userdbprofile.userid = ? and userdbprofile.profilid = ? and userdbprofile.profilid=profildb.profilid order by dbname") or $logger->error($DBI::errstr);
-                        $profilresult->execute($userid,$profilid) or $logger->error($DBI::errstr);
+                        $profilresult->execute($user->{ID},$profilid) or $logger->error($DBI::errstr);
                         
                         my @poolres;
                         while (@poolres=$profilresult->fetchrow) {
@@ -264,24 +260,24 @@ sub handler {
         my $dbasesstring=join("||",sort @databases);
         
         my $thisquerystring=unpack "H*", Storable::freeze($searchquery_ref);
-        my $idnresult=$session->{dbh}->prepare("select count(*) as rowcount from queries where query = ? and sessionid = ? and dbases = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($thisquerystring,$session->{ID},$dbasesstring) or $logger->error($DBI::errstr);
+        my $idnresult=$session->{dbh}->prepare("select count(*) as rowcount from queries where query = ? and sessionid = ? and dbases = ? and hitrange = ?") or $logger->error($DBI::errstr);
+        $idnresult->execute($thisquerystring,$session->{ID},$dbasesstring,$hitrange) or $logger->error($DBI::errstr);
         my $res  = $idnresult->fetchrow_hashref;
         my $rows = $res->{rowcount};
         
         # Neuer Query
         if ($rows <= 0) {
             # Abspeichern des Queries bis auf die Gesamttrefferzahl
-            $idnresult=$session->{dbh}->prepare("insert into queries (queryid,sessionid,query,dbases) values (NULL,?,?,?)") or $logger->error($DBI::errstr);
-            $idnresult->execute($session->{ID},$thisquerystring,$dbasesstring) or $logger->error($DBI::errstr);
+            $idnresult=$session->{dbh}->prepare("insert into queries (queryid,sessionid,query,hitrange,dbases) values (NULL,?,?,?,?)") or $logger->error($DBI::errstr);
+            $idnresult->execute($session->{ID},$thisquerystring,$hitrange,$dbasesstring) or $logger->error($DBI::errstr);
         }
         # Query existiert schon
         else {
             $queryalreadyexists=1;
         }
         
-        $idnresult=$session->{dbh}->prepare("select queryid from queries where query = ? and sessionid = ? and dbases = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($thisquerystring,$session->{ID},$dbasesstring) or $logger->error($DBI::errstr);
+        $idnresult=$session->{dbh}->prepare("select queryid from queries where query = ? and sessionid = ? and dbases = ? and hitrange = ?") or $logger->error($DBI::errstr);
+        $idnresult->execute($thisquerystring,$session->{ID},$dbasesstring,$hitrange) or $logger->error($DBI::errstr);
         
         while (my @idnres=$idnresult->fetchrow) {
             $queryid = decode_utf8($idnres[0]);
@@ -562,8 +558,8 @@ sub handler {
     my $loginname = "";
     my $password  = "";
 
-    if ($userid && $user->get_targettype_of_session($session->{ID}) ne "self"){
-        ($loginname,$password)=$user->get_cred_for_userid($userid);
+    if ($user->{ID} && $user->get_targettype_of_session($session->{ID}) ne "self"){
+        ($loginname,$password)=$user->get_credentials();
     }
 
     # Hash im Loginname ersetzen

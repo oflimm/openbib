@@ -70,7 +70,7 @@ sub handler {
         sessionID => $query->param('sessionID'),
     });
 
-    my $user      = new OpenBib::User();
+    my $user      = new OpenBib::User({sessionID => $session->{ID}});
     
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
@@ -118,16 +118,14 @@ sub handler {
         $view=$session->get_viewname();
     }
 
-    my $userid=$user->get_userid_of_session($session->{ID});
-  
-    unless($userid){
+    unless($user->{ID}){
         OpenBib::Common::Util::print_warning($msg->maketext("Diese Session ist nicht authentifiziert."),$r,$msg);
         return OK;
     }
   
     if ($action eq "showfields") {
         my $targetresult=$user->{dbh}->prepare("select * from fieldchoice where userid = ?") or $logger->error($DBI::errstr);
-        $targetresult->execute($userid) or $logger->error($DBI::errstr);
+        $targetresult->execute($user->{ID}) or $logger->error($DBI::errstr);
     
         my $result=$targetresult->fetchrow_hashref();
     
@@ -190,7 +188,7 @@ sub handler {
         $targetresult->finish();
     
         my $userresult=$user->{dbh}->prepare("select * from user where userid = ?") or $logger->error($DBI::errstr);
-        $userresult->execute($userid) or $logger->error($DBI::errstr);
+        $userresult->execute($user->{ID}) or $logger->error($DBI::errstr);
     
         my $res=$userresult->fetchrow_hashref();
     
@@ -261,7 +259,7 @@ sub handler {
     }
     elsif ($action eq "changefields") {
         my $targetresult=$user->{dbh}->prepare("update fieldchoice set fs = ?, hst = ?, hststring = ?, verf = ?, kor = ?, swt = ?, notation = ?, isbn = ?, issn = ?, sign = ?, mart = ?, ejahr = ?, inhalt=?, gtquelle=? where userid = ?") or $logger->error($DBI::errstr);
-        $targetresult->execute($showfs,$showhst,$showhststring,$showverf,$showkor,$showswt,$shownotation,$showisbn,$showissn,$showsign,$showmart,$showejahr,$showinhalt,$showgtquelle,$userid) or $logger->error($DBI::errstr);
+        $targetresult->execute($showfs,$showhst,$showhststring,$showverf,$showkor,$showswt,$shownotation,$showisbn,$showissn,$showsign,$showmart,$showejahr,$showinhalt,$showgtquelle,$user->{ID}) or $logger->error($DBI::errstr);
         $targetresult->finish();
 
         # TT-Data erzeugen
@@ -291,26 +289,26 @@ sub handler {
         # Zuerst werden die Datenbankprofile geloescht
         my $userresult;
         $userresult=$user->{dbh}->prepare("delete from profildb using profildb,userdbprofile where userdbprofile.userid = ? and userdbprofile.profilid=profildb.profilid") or $logger->error($DBI::errstr);
-        $userresult->execute($userid) or $logger->error($DBI::errstr);
+        $userresult->execute($user->{ID}) or $logger->error($DBI::errstr);
     
         $userresult=$user->{dbh}->prepare("delete from userdbprofile where userdbprofile.userid = ?") or $logger->error($DBI::errstr);
-        $userresult->execute($userid) or $logger->error($DBI::errstr);
+        $userresult->execute($user->{ID}) or $logger->error($DBI::errstr);
     
         # .. dann die Suchfeldeinstellungen
         $userresult=$user->{dbh}->prepare("delete from fieldchoice where userid = ?") or $logger->error($DBI::errstr);
-        $userresult->execute($userid) or $logger->error($DBI::errstr);
+        $userresult->execute($user->{ID}) or $logger->error($DBI::errstr);
     
         # .. dann die Merkliste
         $userresult=$user->{dbh}->prepare("delete from treffer where userid = ?") or $logger->error($DBI::errstr);
-        $userresult->execute($userid) or $logger->error($DBI::errstr);
+        $userresult->execute($user->{ID}) or $logger->error($DBI::errstr);
     
         # .. dann die Verknuepfung zur Session
         $userresult=$user->{dbh}->prepare("delete from usersession where userid = ?") or $logger->error($DBI::errstr);
-        $userresult->execute($userid) or $logger->error($DBI::errstr);
+        $userresult->execute($user->{ID}) or $logger->error($DBI::errstr);
     
         # und schliesslich der eigentliche Benutzereintrag
         $userresult=$user->{dbh}->prepare("delete from user where userid = ?") or $logger->error($DBI::errstr);
-        $userresult->execute($userid) or $logger->error($DBI::errstr);
+        $userresult->execute($user->{ID}) or $logger->error($DBI::errstr);
     
         $userresult->finish();
 
@@ -349,7 +347,7 @@ sub handler {
         }
     
         my $targetresult=$user->{dbh}->prepare("update user set pin = ? where userid = ?") or $logger->error($DBI::errstr);
-        $targetresult->execute($password1,$userid) or $logger->error($DBI::errstr);
+        $targetresult->execute($password1,$user->{ID}) or $logger->error($DBI::errstr);
         $targetresult->finish();
     
         $r->internal_redirect("http://$config->{servername}$config->{userprefs_loc}?sessionID=$session->{ID}&action=showfields");
@@ -361,7 +359,7 @@ sub handler {
         }
     
         my $targetresult=$user->{dbh}->prepare("update user set masktype = ? where userid = ?") or $logger->error($DBI::errstr);
-        $targetresult->execute($setmask,$userid) or $logger->error($DBI::errstr);
+        $targetresult->execute($setmask,$user->{ID}) or $logger->error($DBI::errstr);
         $targetresult->finish();
 
         $session->set_mask($setmask);

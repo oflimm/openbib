@@ -47,8 +47,8 @@
 
 <p />
 <!-- Title begins here -->
-<table width="100%">
-<tr><th>[% msg.maketext("Titelaufnahme") %]</th></tr>
+<table width="100%" cellpadding="2">
+<tr><th>[% msg.maketext("Titelaufnahme") %]</th>[% IF litlists.size > 0 %]<td width="5">&nbsp;</td><td width="200">&nbsp;</td>[% END %]</tr>
 <tr><td class="boxedclear">
 
 <!--
@@ -57,8 +57,23 @@
 </div>
 -->
 
-[%# USE dumper;
-  # dumper.dump(normset) ;%]
+[% 
+   IF config.litlists ;
+      litlists = user.get_litlists();
+
+      IF litlists.size > 0 ;
+%]
+<form method="get" action="http://[% config.servername %][%config.litlists_loc %]">
+<input type="hidden" name="action"          value="manage" />
+<input type="hidden" name="titid"           value="[% titidn %]" />
+<input type="hidden" name="titdb"           value="[% database %]" />
+<input type="hidden" name="sessionID"       value="[% sessionID %]" />
+Diesen Titel in die Literaturliste <select name="litlistid">[% FOREACH litlist IN litlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select>&nbsp;<input type="submit" name="do_addentry" value="&uuml;bernehmen" />
+</form>
+<p />
+[%    END %]
+[% END %]
+
 <table cellpadding="2">
 <tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
 <tr><td class="category">id</td><td>[% normset.id %]</td></tr>
@@ -174,8 +189,8 @@ FOREACH category IN categories;
             content     = "${config.redirect_loc}/${sessionID}/501/${content}" ;
          END ;
          IF thiscontent ;
-            IF thiscontent.match('; Interna: Inhaltsverzeichnis') ;
-               thiscontent = thiscontent.replace('; Interna: Inhaltsverzeichnis','<img src="/images/openbib/pdf-document.png" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format/DigiTool)') ;
+            IF content.match('digitool.hbz-nrw.de') ;
+               thiscontent = '<img src="/images/openbib/pdf-document.png" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format/DigiTool)' ;
                content     = "${config.redirect_loc}/${sessionID}/500/${content}" ;
             END ;
             content   = "<a href=\"${content}\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
@@ -256,7 +271,19 @@ END;
 [% PROCESS common/subtemplate name="mexset" %]
 [% END %]
 
-</td></tr>
+</td>
+[% IF litlists.size > 0 %]<td></td><td class="boxedfull" valign="top" style="font-size:0.8em">
+Dieser Titel befindet sich in folgenden Literaturlisten:
+
+<ul>
+[% FOREACH litlist IN litlists%]
+<li><a href="[% config.litlists_loc %]?sessionID=[% sessionID
+%];action=show;litlistid=[% litlist.id %]">[% litlist.title %]</a></li>
+[% END %]
+</ul>
+
+</td>[% END %]
+</tr>
 </table>
 
 [% IF circset.size > 0 %]

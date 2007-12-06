@@ -68,7 +68,7 @@ sub handler {
         sessionID => $query->param('sessionID'),
     });
 
-    my $user    = new OpenBib::User();
+    my $user    = new OpenBib::User({sessionID => $session->{ID}});
     
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
     
@@ -104,22 +104,19 @@ sub handler {
         $primrssfeed=$config->get_primary_rssfeed_of_view($view);
     }
     
-    # Haben wir eine authentifizierte Session?
-    my $userid=$user->get_userid_of_session($session->{ID});
-  
-    # Ab hier ist in $userid entweder die gueltige Userid oder nichts, wenn
+    # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
     # Dementsprechend einen LoginLink oder ein ProfilLink ausgeben
     my $anzahl="";
 
     # Wenn wir authentifiziert sind, dann
     my $username="";
-    if ($userid) {
-        $username=$user->get_username_for_userid($userid);
+    if ($user->{ID}) {
+        $username=$user->get_username();
 
         # Anzahl Eintraege der privaten Merkliste bestimmen
         # Zuallererst Suchen, wieviele Titel in der Merkliste vorhanden sind.
-        $anzahl =    $user->get_number_of_items_in_collection($userid);
+        $anzahl =    $user->get_number_of_items_in_collection();
     }
     else {
         #  Zuallererst Suchen, wieviele Titel in der Merkliste vorhanden sind.

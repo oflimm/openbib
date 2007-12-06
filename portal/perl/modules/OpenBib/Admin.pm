@@ -1193,7 +1193,7 @@ sub handler {
     elsif ($do_showstat) {
 
         my $statistics = new OpenBib::Statistics();
-	my $user       = new OpenBib::User();
+	my $user       = new OpenBib::User({sessionID => $session->{ID}});
 
         # TT-Data erzeugen
         my $ttdata={
@@ -1215,7 +1215,7 @@ sub handler {
     }
     elsif ($do_showlogintarget) {
 
-	my $user       = new OpenBib::User();
+	my $user       = new OpenBib::User({sessionID => $session->{ID}});
 
         # TT-Data erzeugen
         my $ttdata={
@@ -1238,7 +1238,7 @@ sub handler {
     }
     elsif ($do_editlogintarget) {
 
-	my $user       = new OpenBib::User();
+	my $user       = new OpenBib::User({sessionID => $session->{ID}});
 
         # Zuerst schauen, ob Aktionen gefordert sind
         if ($do_del) {
@@ -1312,7 +1312,7 @@ sub handler {
     }
     elsif ($do_showuser) {
 
-	my $user       = new OpenBib::User();
+	my $user       = new OpenBib::User({sessionID => $session->{ID}});
 
         # TT-Data erzeugen
         my $ttdata={

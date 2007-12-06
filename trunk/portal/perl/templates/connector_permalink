@@ -32,8 +32,11 @@
         <p>Sie brauchen einen Browser, der Frames darstellen kann, um diese Seiten mit ihren Inhalten wie geplant zu sehen.</p>
     </body>
    </noframes>
-   <frame name="Weiter zur Lastverteilung" src="http://[% config.loadbalancerservername %][% config.loadbalancer_loc %]?view=[% view %];database=[% database %];searchsingletit=[% id %]" noresize="noresize" frameborder="0"/>
-
+[% IF type == 1%]
+   <frame name="Weiter zur Lastverteilung" src="http://[% config.loadbalancerservername %][% config.loadbalancer_loc %]?view=[% view %];database=[% id1 %];searchsingletit=[% id2 %]" noresize="noresize" frameborder="0"/>
+[% ELSIF type == 6 %]
+   <frame name="Weiter zur Lastverteilung" src="http://[% config.loadbalancerservername %][% config.loadbalancer_loc %]?view=[% view %];searchlitlist=[% id2 %]" noresize="noresize" frameborder="0"/>
+[% END %]
  </frameset>
 
 </html>

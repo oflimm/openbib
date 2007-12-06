@@ -12,12 +12,13 @@
 #
 #######################################################################
 -%]
-<tr class="titlerow"><td><input type="checkbox" name="loeschtit" value="[% titset.database %]:[% titset.titidn %]" /></td><td>[% msg.maketext("aus:") %] [% titset.dbdesc.full %]</td></tr><tr><td>&nbsp;</td><td>
 [% normset    = titset.tit %]
 [% mexnormset = titset.mex %]
 [% circset    = titset.circ %]
-
+<tr class="titlerow"><td><input type="checkbox" name="titid" value="[% titset.database %]:[% titset.titidn %]"  title="collection_item" /></td><td>[% msg.maketext("aus:") %] [% titset.dbdesc.full %]</td></tr>
+<tr><td>&nbsp;</td><td>
 <!-- Title begins here -->
+[% IF show == 'full' %]
 <table width="100%">
 <tr><th>[% msg.maketext("Titelaufnahme") %]</th></tr>
 <tr><td class="boxedclear">
@@ -79,11 +80,67 @@ END;
 </td></tr>
 </table>
 [% END %]
+[% ELSE # show=short%]
+[%# Verfasser konstruieren %]
+[%- item = normset -%]
+[%- persons = [] -%]
+[%- FOREACH part IN item.${'T0100'}  -%]
+[%- persons.push("${part.content}")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.${'T0101'}  -%]
+[%- persons.push("${part.content}")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.${'T0200'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%- persons.push("${part.content}")-%]
+[%- END -%]
+[%- FOREACH part IN item.${'T0201'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%- persons.push("${part.content}")-%]
+[%- END -%]
+[%- person = persons.join(' ; ') -%]
+
+[%# Titel konstruieren %]
+[%- title = item.${'T0331'}.first.content -%]
+[%- IF item.${'T0310'}.first.content -%]
+[%- title = item.${'T0310'}.first.content -%]
+[%- END -%]
+
+[%# Einbeziehung der Zaehlfelder T5100 %]
+[%- IF title && item.${'T5100'}.first.content -%]
+[%-    order = item.${'T5100'}.first.content -%]
+[%-    IF title == order -%]
+[%-      title = "${order}."-%]
+[%-    ELSE -%]
+[%-      title = "${order}. ${title}" -%]
+[%-    END -%]
+[%- END -%]
+
+[%# Verlage konstruieren %]
+[%- publisher = item.${'T0412'}.first.content -%]
+
+[%# Ejahr konstruieren %]
+[%- yearofpub = item.${'T0425'}.first.content -%]
+
+[%# Signaturen konstruieren %]
+[%- signaturen = [] -%]
+[%- FOREACH normset IN mexnormset -%]
+[%  IF normset.${'X0014'}.content %]
+[%-   signaturen.push(normset.${'X0014'}.content) -%]
+[%- END -%]
+[%- END -%]
+[%- signatur = signaturen.join(' ; ') -%]
+<span class="rlauthor">[% person %]</span><br /><strong><span class="rltitle">[% title %]</span></strong>, <span
+class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>, <b>[% signatur %]</b><br />
+[% END %]
 [% IF show_bibsonomy %]
 <p />
 <img style="vertical-align: bottom;" src="/images/openbib/share.png" alt="Share this"/>&nbsp;<a href="[% config.redirect_loc %]/[% sessionID %]/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=[% normset2bibtex(normset) | uri | replace('&','%26') %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a>
 <p />
 [% END %]
+
 <!-- Title ends here -->
 </td></tr>
 <tr><td></td><td></td></tr>

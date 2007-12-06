@@ -82,8 +82,8 @@ sub handler {
     # Konfigurationsoptionen bei <FORM> mit Defaulteinstellungen
     #####################################################################
 
-    my $offset         = $query->param('titid')       || 0;
-    my $hitrange       = $query->param('titid')       || 50;
+    my $offset         = $query->param('offset')      || 0;
+    my $hitrange       = $query->param('hitrange')    || 50;
     my $database       = $query->param('database')    || '';
     my $sorttype       = $query->param('sorttype')    || "author";
     my $sortorder      = $query->param('sortorder')   || "up";
@@ -145,11 +145,9 @@ sub handler {
         $view=$session->get_viewname();
     }
 
-    my $user = new OpenBib::User();
+    my $user = new OpenBib::User({sessionID => $session->{ID}});
 
-    my $userid = $user->get_userid_of_session($session->{ID});
-
-    unless($userid || $searchtitoftag){
+    unless($user->{ID} || $searchtitoftag){
         # Aufruf-URL
         my $return_url = $r->parsed_uri->unparse;
 
@@ -162,9 +160,9 @@ sub handler {
         return OK;
     }
 
-    my $loginname = $user->get_username_for_userid($userid);
+    my $loginname = $user->get_username();
     
-    if ($do_add && $userid){
+    if ($do_add && $user->{ID}){
 
         $logger->debug("Aufnehmen/Aendern der Tags: $tags");
         
@@ -179,7 +177,7 @@ sub handler {
         $r->internal_redirect("http://$config->{servername}$config->{search_loc}?sessionID=$session->{ID};database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
         return OK;
     }
-    elsif ($do_del && $userid){
+    elsif ($do_del && $user->{ID}){
 
         $logger->debug("Loeschen der Tags $tags von $titdb:$titid");
         
@@ -194,7 +192,7 @@ sub handler {
         return OK;
 
     }
-    elsif ($do_change && $userid){
+    elsif ($do_change && $user->{ID}){
         
         $logger->debug("Aendern des Tags $oldtag in $newtag");
         
@@ -214,7 +212,7 @@ sub handler {
 
     }
     
-    if ($edit_usertags && $userid){
+    if ($edit_usertags && $user->{ID}){
 
         my $targettype=$user->get_targettype_of_session($session->{ID});
 
@@ -233,7 +231,7 @@ sub handler {
         OpenBib::Common::Util::print_page($config->{tt_tags_editusertags_tname},$ttdata,$r);
     }
 
-    if ($show_usertags && $userid){
+    if ($show_usertags && $user->{ID}){
 
         my $targettype=$user->get_targettype_of_session($session->{ID});
 
@@ -260,7 +258,7 @@ sub handler {
             # Zuerst Gesamtzahl bestimmen
             
             if ($private_tags){
-                if (!$userid){
+                if (!$user->{ID}){
                     OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
                     return OK;
                 }

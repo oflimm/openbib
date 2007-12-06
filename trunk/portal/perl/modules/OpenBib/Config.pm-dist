@@ -163,6 +163,11 @@ use vars qw(%config);
                    desc  => 'Spezialkataloge',
                    nr    => '6',
                },
+               {
+                   short => '7extern',
+                   desc  => 'Externe Kataloge',
+                   nr    => '7',
+               },
            ],
 
            rss_types => {
@@ -199,6 +204,7 @@ use vars qw(%config);
 	   headerframe_loc       => '/portal/kopf',
            helpframe_loc         => '/portal/hilfe',
            leave_loc             => '/portal/beenden',
+           litlists_loc          => '/portal/literaturlisten',
 	   loadbalancer_loc      => '/portal/lastverteilung',
 	   login_loc             => '/portal/login',
 	   mailcollection_loc    => '/portal/merklistemailen',
@@ -319,8 +325,10 @@ use vars qw(%config);
 	   tt_circulation_remind_tname   => 'circulation_remind',
 	   tt_circulation_orders_tname   => 'circulation_orders',
            tt_circulation_make_reserv_tname    => 'circulation_make_reserv',
+           tt_circulation_make_order_tname     => 'circulation_make_order',
+           tt_circulation_renew_loans_tname    => 'circulation_renew_loans',
 
-tt_connector_digibib_result_start_tname  => 'connector_digibib_result_start',
+           tt_connector_digibib_result_start_tname  => 'connector_digibib_result_start',
            tt_connector_digibib_result_item_tname   => 'connector_digibib_result_item',
            tt_connector_digibib_result_end_tname    => 'connector_digibib_result_end',
            tt_connector_digibib_showtitset_tname    => 'connector_digibib_showtitset',
@@ -375,6 +383,10 @@ tt_connector_digibib_result_start_tname  => 'connector_digibib_result_start',
 	   tt_startopac_tname            => 'startopac',
 
 	   tt_databasechoice_tname       => 'databasechoice',
+
+           tt_litlists_manage_lists_tname      => 'litlists_manage_lists',
+           tt_litlists_manage_singlelist_tname => 'litlists_manage_singlelist',
+           tt_litlists_show_singlelist_tname   => 'litlists_show_singlelist',
 
 	   tt_loadbalancer_tname         => 'loadbalancer',
 
@@ -514,6 +526,10 @@ tt_connector_digibib_result_start_tname  => 'connector_digibib_result_start',
 
            social_tagging          => 1,
 
+           # Literaturlisten
+
+           litlists                => 1,
+
            # Reviews/Ratings
 
            reviews                 => 1,
@@ -599,6 +615,10 @@ tt_connector_digibib_result_start_tname  => 'connector_digibib_result_start',
                    'T0800' => 1,
                    'T0508' => 1,
                    'T0662' => 1,
+               },
+
+               richter => {
+                   'T0501' => 1,
                },
 
            },

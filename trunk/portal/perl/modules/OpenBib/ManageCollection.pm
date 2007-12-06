@@ -69,15 +69,21 @@ sub handler {
         sessionID => $query->param('sessionID'),
     });
 
-    my $user      = new OpenBib::User();
+    my $user      = new OpenBib::User({sessionID => $session->{ID}});
     
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
-    my $database  = $query->param('database')  || '';
-    my $singleidn = $query->param('singleidn') || '';
-    my $loeschen  = $query->param('loeschen')  || '';
-    my $action    = $query->param('action')    || 'show';
-    my $type      = $query->param('type')      || 'HTML';
+    my $database                = $query->param('database')  || '';
+    my $singleidn               = $query->param('singleidn') || '';
+    my $litlistid               = $query->param('litlistid') || '';
+    my $do_collection_delentry  = $query->param('do_collection_delentry')  || '';
+    my $do_litlist_addentry     = $query->param('do_litlist_addentry')  || '';
+    my $do_addlitlist           = $query->param('do_addlitlist')  || '';
+    my $title                   = $query->param('title')  || '';
+    my $action                  = $query->param('action')    || 'show';
+    my $show                    = $query->param('show')      || 'short';
+    my $type                    = $query->param('type')      || 'HTML';
+    my $littype                 = $query->param('littype')   || 1;
 
     my $queryoptions_ref
         = $session->get_queryoptions($query);
@@ -86,10 +92,7 @@ sub handler {
     my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
     
-    # Haben wir eine authentifizierte Session?
-    my $userid=$user->get_userid_of_session($session->{ID});
-  
-    # Ab hier ist in $userid entweder die gueltige Userid oder nichts, wenn
+    # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
 
     $logger->debug(YAML::Dump($queryoptions_ref));
@@ -114,14 +117,29 @@ sub handler {
         $view=$session->get_viewname();
     }
 
+    $logger->debug(":".$user->is_authenticated.":$do_addlitlist");
+    if (! $user->is_authenticated && $do_addlitlist){
+        # Aufruf-URL
+        my $return_url = $r->parsed_uri->unparse;
+
+        # Return-URL in der Session abspeichern
+
+        $session->set_returnurl($return_url);
+
+        $logger->debug("Nicht authentifizierter Nutzer versucht Literaturliste anzulegen");
+        $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1");
+
+        return OK;
+    }
+    
     my $idnresult="";
 
     # Einfuegen eines Titels ind die Merkliste
     if ($action eq "insert") {
-        if ($userid) {
+        if ($user->{ID}) {
             # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
             my $idnresult=$user->{dbh}->prepare("select count(*) as rowcount from treffer where userid = ? and dbname = ? and singleidn = ?") or $logger->error($DBI::errstr);
-            $idnresult->execute($userid,$database,$singleidn) or $logger->error($DBI::errstr);
+            $idnresult->execute($user->{ID},$database,$singleidn) or $logger->error($DBI::errstr);
             my $res    = $idnresult->fetchrow_hashref;
             my $anzahl = $res->{rowcount};
 
@@ -130,7 +148,7 @@ sub handler {
             if ($anzahl == 0) {
                 # Zuerst Eintragen der Informationen
                 my $idnresult=$user->{dbh}->prepare("insert into treffer values (?,?,?)") or $logger->error($DBI::errstr);
-                $idnresult->execute($userid,$database,$singleidn) or $logger->error($DBI::errstr);
+                $idnresult->execute($user->{ID},$database,$singleidn) or $logger->error($DBI::errstr);
                 $idnresult->finish();
             }
         }
@@ -147,19 +165,19 @@ sub handler {
     }
     # Anzeigen des Inhalts der Merkliste
     elsif ($action eq "show") {
-        if ($loeschen eq "Los") {
-            foreach my $loeschtit ($query->param('loeschtit')) {
-                my ($loeschdb,$loeschidn)=split(":",$loeschtit);
+        if ($do_collection_delentry) {
+            foreach my $tit ($query->param('titid')) {
+                my ($titdb,$titid)=split(":",$tit);
 	
-                if ($userid) {
+                if ($user->{ID}) {
                     my $idnresult=$user->{dbh}->prepare("delete from treffer where userid = ? and dbname = ? and singleidn = ?") or $logger->error($DBI::errstr);
-                    $idnresult->execute($userid,$loeschdb,$loeschidn) or $logger->error($DBI::errstr);
+                    $idnresult->execute($user->{ID},$titdb,$titid) or $logger->error($DBI::errstr);
                     $idnresult->finish();
                 }
                 else {
                     $session->clear_item_in_collection({
-                        database => $loeschdb,
-                        id       => $loeschidn,
+                        database => $titdb,
+                        id       => $titid,
                     });
                 }
             }
@@ -184,15 +202,42 @@ sub handler {
             OpenBib::Common::Util::print_page($config->{tt_startopac_tname},$ttdata,$r);
             return OK;
         }
+	elsif ($do_litlist_addentry) {
+	  my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
+
+	  foreach my $tit ($query->param('titid')) {
+	    my ($titdb,$titid)=split(":",$tit);
+	    
+	    if ($litlist_properties_ref->{userid} eq $user->{ID}){
+	      $user->add_litlistentry({ titid => $titid, titdb => $titdb, litlistid => $litlistid});
+	    }
+	  }
+
+	  $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage&litlistid=$litlistid&do_showlitlist=1");
+	  return OK;
+
+	}
+	elsif ($do_addlitlist) {
+	  if (!$title){
+	    OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."),$r,$msg);
+	    
+	    return OK;
+	  }
+	  
+	  $user->add_litlist({ title =>$title, type => $littype});
+
+	  $r->internal_redirect("http://$config->{servername}$config->{managecollection_loc}?sessionID=$session->{ID}&action=show&type=HTML");
+	  return OK;
+	}
 
         # Schleife ueber alle Treffer
         my $idnresult="";
 
         my @dbidnlist=();
         
-        if ($userid) {
+        if ($user->{ID}) {
             $idnresult=$user->{dbh}->prepare("select * from treffer where userid = ? order by dbname") or $logger->error($DBI::errstr);
-            $idnresult->execute($userid) or $logger->error($DBI::errstr);
+            $idnresult->execute($user->{ID}) or $logger->error($DBI::errstr);
 
             while (my $result=$idnresult->fetchrow_hashref()) {
                 my $database  = decode_utf8($result->{'dbname'});
@@ -234,12 +279,6 @@ sub handler {
                 sessionID          => $session->{ID}
             });
 
-#            if ($type eq "Text") {
-#                $normset=OpenBib::ManageCollection::Util::titset_to_text($normset);
-#            }
-#            elsif ($type eq "EndNote") {
-#                $normset=OpenBib::ManageCollection::Util::titset_to_endnote($normset);
-#            }
 
             $dbh->disconnect();
 
@@ -262,9 +301,12 @@ sub handler {
             sessionID         => $session->{ID},
             qopts             => $queryoptions_ref,
             type              => $type,
+            show              => $show,
             collection        => \@collection,
+            targetdbinfo      => $targetdbinfo_ref,
             normset2bibtex    => \&OpenBib::Common::Util::normset2bibtex,
 
+	    user              => $user,
             config            => $config,
             msg               => $msg,
         };
@@ -284,9 +326,9 @@ sub handler {
         }
         else {
             # Schleife ueber alle Treffer
-            if ($userid) {
+            if ($user->{ID}) {
                 my $idnresult=$user->{dbh}->prepare("select * from treffer where userid = ? order by dbname") or $logger->error($DBI::errstr);
-                $idnresult->execute($userid) or $logger->error($DBI::errstr);
+                $idnresult->execute($user->{ID}) or $logger->error($DBI::errstr);
                 while (my $result=$idnresult->fetchrow_hashref()) {
                     my $database  = decode_utf8($result->{'dbname'});
                     my $singleidn = decode_utf8($result->{'singleidn'});
@@ -350,6 +392,7 @@ sub handler {
             sessionID  => $session->{ID},
             qopts      => $queryoptions_ref,		
             type       => $type,
+            show       => $show,
             collection => \@collection,
             normset2bibtex    => \&OpenBib::Common::Util::normset2bibtex,
 
@@ -374,7 +417,7 @@ sub handler {
     elsif ($action eq "mail") {
         # Weg mit der Singleidn - muss spaeter gefixed werden
         my $userresult=$user->{dbh}->prepare("select loginname from user where userid = ?") or $logger->error($DBI::errstr);
-        $userresult->execute($userid) or $logger->error($DBI::errstr);
+        $userresult->execute($user->{ID}) or $logger->error($DBI::errstr);
     
         my $loginname="";
     
@@ -391,9 +434,9 @@ sub handler {
         }
         else {
             # Schleife ueber alle Treffer
-            if ($userid) {
+            if ($user->{ID}) {
                 my $idnresult=$user->{dbh}->prepare("select * from treffer where userid = ? order by dbname") or $logger->error($DBI::errstr);
-                $idnresult->execute($userid) or $logger->error($DBI::errstr);
+                $idnresult->execute($user->{ID}) or $logger->error($DBI::errstr);
 
                 while (my $result=$idnresult->fetchrow_hashref()) {
                     my $database  = decode_utf8($result->{'dbname'});
@@ -460,6 +503,7 @@ sub handler {
             sessionID  => $session->{ID},
             qopts      => $queryoptions_ref,				
             type       => $type,
+            show       => $show,
             loginname  => $loginname,
             singleidn  => $singleidn,
             database   => $database,
@@ -477,7 +521,7 @@ sub handler {
     elsif ($action eq "print") {
         # Weg mit der Singleidn - muss spaeter gefixed werden
         my $userresult=$user->{dbh}->prepare("select loginname from user where userid = ?") or $logger->error($DBI::errstr);
-        $userresult->execute($userid) or $logger->error($DBI::errstr);
+        $userresult->execute($user->{ID}) or $logger->error($DBI::errstr);
     
         my $loginname="";
     
@@ -494,9 +538,9 @@ sub handler {
         }
         else {
             # Schleife ueber alle Treffer
-            if ($userid) {
+            if ($user->{ID}) {
                 my $idnresult=$user->{dbh}->prepare("select * from treffer where userid = ? order by dbname") or $logger->error($DBI::errstr);
-                $idnresult->execute($userid) or $logger->error($DBI::errstr);
+                $idnresult->execute($user->{ID}) or $logger->error($DBI::errstr);
                 while (my $result=$idnresult->fetchrow_hashref()) {
                     my $database  = decode_utf8($result->{'dbname'});
                     my $singleidn = decode_utf8($result->{'singleidn'});
@@ -560,6 +604,7 @@ sub handler {
             sessionID  => $session->{ID},
             qopts      => $queryoptions_ref,		
             type       => $type,
+            show       => $show,
             loginname  => $loginname,
             singleidn  => $singleidn,
             database   => $database,

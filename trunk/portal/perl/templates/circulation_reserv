@@ -65,7 +65,7 @@ class="[% listrow %]"
 , [% reservation.EJahr %]
 [% END %]
 
-</td><td>[% reservation.Signatur %]</td><td>[% reservation.VormerkDatum %]-[% reservation.AufrechtDatum %]</td><td>[% reservation.Stelle %]. Stelle</td></tr>
+</td><td>[% reservation.Signatur %]</td><td>[% reservation.VormerkDatum %]-[% reservation.AufrechtDatum %]</td><td>[% reservation.Stelle %]. Stelle</td><td><a href="[% config.circulation_loc %]?sessionID=[% sessionID %];action=cancel_reservation;mnr=[% reservation.Mediennummer %];zst=[% reservation.Zweigstelle %];validtarget=[% database %]" title="Vormerkung l&ouml;lschen">Vormerkung l&ouml;schen</a></td></tr>
 [% END %]
 </table>
 

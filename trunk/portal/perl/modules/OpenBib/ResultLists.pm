@@ -74,7 +74,7 @@ sub handler {
         sessionID => $query->param('sessionID'),
     });
 
-    my $user      = new OpenBib::User();
+    my $user      = new OpenBib::User({sessionID => $session->{ID}});
     
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
@@ -308,9 +308,7 @@ sub handler {
         my $loginname="";
         my $password="";
         
-        my $userid=$user->get_userid_of_session($session->{ID});
-        
-        ($loginname,$password)=$user->get_cred_for_userid($userid) if ($userid && $user->get_targettype_of_session($session->{ID}) ne "self");
+        ($loginname,$password)=$user->get_credentials() if ($user->{ID} && $user->get_targettype_of_session($session->{ID}) ne "self");
         
         # Hash im Loginname ersetzen
         $loginname=~s/#/\%23/;
@@ -375,7 +373,6 @@ sub handler {
             queryid  => $queryid,
             database => $database,
             offset   => $offset,
-            hitrange => $hitrange,
         })){
             my $storableres=Storable::thaw(pack "H*", $searchresult);
             
@@ -404,9 +401,7 @@ sub handler {
         my $loginname="";
         my $password="";
         
-        my $userid=$user->get_userid_of_session($session->{ID});
-        
-        ($loginname,$password)=$user->get_cred_for_userid($userid) if ($userid && $user->get_targettype_of_session($session->{ID}) ne "self");
+        ($loginname,$password)=$user->get_credentials() if ($user->{ID} && $user->get_targettype_of_session($session->{ID}) ne "self");
         
         # Hash im Loginname ersetzen
         $loginname=~s/#/\%23/;
@@ -452,7 +447,7 @@ sub handler {
         my @querystrings = ();
         my @queryhits    = ();
         
-        my $idnresult=$session->{dbh}->prepare("select distinct searchresults.queryid as queryid,queries.query as query,queries.hits as hits from searchresults,queries where searchresults.sessionid = ? and searchresults.queryid=queries.queryid order by queryid desc") or $logger->error($DBI::errstr);
+        my $idnresult=$session->{dbh}->prepare("select searchresults.queryid as queryid,queries.query as query,queries.hits as hits from searchresults,queries where searchresults.sessionid = ? and searchresults.queryid=queries.queryid and searchresults.offset=0 order by queryid desc") or $logger->error($DBI::errstr);
         $idnresult->execute($session->{ID}) or $logger->error($DBI::errstr);
         
         my @queries=();
@@ -460,9 +455,9 @@ sub handler {
         while (my $res=$idnresult->fetchrow_hashref) {
             
             push @queries, {
-                id          => decode_utf8($res->{queryid}),
+                id          => $res->{queryid},
                 searchquery => Storable::thaw(pack "H*",$res->{query}),
-                hits        => decode_utf8($res->{hits}),
+                hits        => $res->{hits},
             };
             
         }
@@ -490,14 +485,14 @@ sub handler {
         my $hitcount=0;
         my @resultdbs=();
         
-        while (my @res=$idnresult->fetchrow) {
+        while (my $res=$idnresult->fetchrow_hashref) {
             push @resultdbs, {
-                trefferdb     => decode_utf8($res[0]),
-                trefferdbdesc => $targetdbinfo_ref->{dbnames}{decode_utf8($res[0])},
-                trefferzahl   => decode_utf8($res[1]),
+                trefferdb     => decode_utf8($res->{dbname}),
+                trefferdbdesc => $targetdbinfo_ref->{dbnames}{decode_utf8($res->{dbname})},
+                trefferzahl   => decode_utf8($res->{hitcount}),
             };
             
-            $hitcount+=decode_utf8($res[1]);
+            $hitcount+=$res->{hitcount};
         }
         
         # TT-Data erzeugen
@@ -558,9 +553,7 @@ sub handler {
             my $loginname="";
             my $password="";
             
-            my $userid=$user->get_userid_of_session($session->{ID});
-            
-            ($loginname,$password)=$user->get_cred_for_userid($userid) if ($userid && $user->get_targettype_of_session($session->{ID}) ne "self");
+            ($loginname,$password)=$user->get_credentials() if ($user->{ID} && $user->get_targettype_of_session($session->{ID}) ne "self");
             
             # Hash im Loginname ersetzen
             $loginname=~s/#/\%23/;
@@ -642,9 +635,7 @@ sub handler {
             my $loginname="";
             my $password="";
             
-            my $userid=$user->get_userid_of_session($session->{ID});
-            
-            ($loginname,$password)=$user->get_cred_for_userid($userid) if ($userid && $user->get_targettype_of_session($session->{ID}) ne "self");
+            ($loginname,$password)=$user->get_credentials() if ($user->{ID} && $user->get_targettype_of_session($session->{ID}) ne "self");
             
             # Hash im Loginname ersetzen
             $loginname=~s/#/\%23/;

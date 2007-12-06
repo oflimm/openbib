@@ -52,6 +52,7 @@ CREATE TABLE queries (
  queryid   BIGINT AUTO_INCREMENT PRIMARY KEY,
  sessionid VARCHAR(255) NOT NULL,
  query     TEXT,
+ hitrange  INT,
  hits      INT,
  dbases    TEXT,
 

@@ -1036,6 +1036,9 @@ sub grundform {
         # Verbundene Terme splitten
         $content=~s/(\w)-(\w)/$1 $2/g;
         $content=~s/(\w)'(\w)/$1 $2/g;
+
+	# Sonderbehandlung : fuer die Indexierung (bei der Recherche wird : fuer intitle: usw. benoetigt)
+	$content=~s/:/ /g;
     }
 
     # Zeichenersetzungen
@@ -1581,10 +1584,6 @@ __END__
    OpenBib::Search::Util::print_warning("Warnungstext",$r);
    exit;
  }
-
- # Ist die Session authentifiziert? Ja, dann Rueckgabe der positiven $userid,
- # sonst wird nichts zurueckgegeben 
- my $userid=OpenBib::Common::Util::get_userid_of_session($userdbh,$sessionID);
 
  # Komplette Seite aus Template $templatename, Template-Daten $ttdata und
  # Request-Objekt $r bilden und ausgeben

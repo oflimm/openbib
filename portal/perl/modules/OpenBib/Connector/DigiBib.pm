@@ -541,6 +541,7 @@ sub handler {
             sbitem       => $sbnormset,
             sbitemmex    => $sbmexnormset,
             targetdbinfo => $targetdbinfo_ref,
+            database     => $database,
 
             utf2iso      => sub {
                 my $string=shift;

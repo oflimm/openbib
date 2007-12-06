@@ -72,7 +72,7 @@ sub handler {
         sessionID => $query->param('sessionID'),
     });
 
-    my $user      = new OpenBib::User();
+    my $user      = new OpenBib::User({sessionID => $session->{ID}});
     
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
@@ -107,11 +107,7 @@ sub handler {
         $view=$session->get_viewname();
     }
   
-    # Haben wir eine authentifizierte Session?
-  
-    my $userid=$user->get_userid_of_session($session->{ID});
-  
-    # Ab hier ist in $userid entweder die gueltige Userid oder nichts, wenn
+    # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
     if ($email eq "") {
         OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine Mailadresse eingegeben."),$r,$msg);
@@ -141,9 +137,9 @@ sub handler {
         # Schleife ueber alle Treffer
         my $idnresult="";
 
-        if ($userid) {
+        if ($user->{ID}) {
             $idnresult=$user->{dbh}->prepare("select * from treffer where userid = ? order by dbname") or $logger->error($DBI::errstr);
-            $idnresult->execute($userid) or $logger->error($DBI::errstr);
+            $idnresult->execute($user->{ID}) or $logger->error($DBI::errstr);
         }
         else {
             $idnresult=$session->{dbh}->prepare("select * from treffer where sessionid = ? order by dbname") or $logger->error($DBI::errstr);

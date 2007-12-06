@@ -141,17 +141,15 @@ sub handler {
         $view=$session->get_viewname();
     }
 
-    my $user = new OpenBib::User();
+    my $user = new OpenBib::User({sessionID => $session->{ID}});
 
-    my $userid = $user->get_userid_of_session($session->{ID});
-    
-    my $loginname  = $user->get_username_for_userid($userid);
+    my $loginname  = $user->get_username();
     my $targettype = $user->get_targettype_of_session($session->{ID});
 
 
     if ($do_show){
 
-        if (!$userid){
+        if (!$user->{ID}){
             OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
             return OK;
         }
@@ -199,7 +197,7 @@ sub handler {
 
     if ($do_add){
 
-        if (!$userid){
+        if (!$user->{ID}){
             OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
             return OK;
         }
@@ -222,7 +220,7 @@ sub handler {
 
     if ($do_change){
 
-        if (!$userid){
+        if (!$user->{ID}){
             OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
             return OK;
         }
@@ -245,7 +243,7 @@ sub handler {
 
     if ($do_vote){
 
-        if (!$userid){
+        if (!$user->{ID}){
             OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um diese Rezension zu beurteilen",$r,$msg);
             return OK;
         }
@@ -268,7 +266,7 @@ sub handler {
 
         if ($do_del){
 
-        if (!$userid){
+        if (!$user->{ID}){
             OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
             return OK;
         }
@@ -286,7 +284,7 @@ sub handler {
             
     if ($do_edit){
         
-        if (!$userid){
+        if (!$user->{ID}){
             OpenBib::Common::Util::print_warning("Sie müssen sich authentifizieren, um taggen zu können",$r,$msg);
             return OK;
         }

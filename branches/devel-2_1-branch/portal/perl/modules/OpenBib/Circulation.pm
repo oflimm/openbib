@@ -299,7 +299,9 @@ sub handler {
                 password   => $password,
 		  
                 borrows    => $circexlist,
-		  
+
+                database   => $database,
+
                 utf2iso    => sub {
 		    my $string=shift;
 		    $string=~s/([^\x20-\x7F])/'&#' . ord($1) . ';'/gse;
@@ -464,6 +466,54 @@ sub handler {
         };
         
         OpenBib::Common::Util::print_page($config->{tt_circulation_make_order_tname},$ttdata,$r);
+    }
+    elsif ($action eq "renew_loans"){
+
+        unless($sessionlogintarget eq $validtarget){
+            # Aufruf-URL
+            my $return_url = $r->parsed_uri->unparse;
+            
+            # Return-URL in der Session abspeichern
+            
+            $session->set_returnurl($return_url);
+            
+            $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1;type=circulation;validtarget=$validtarget");
+            
+            return OK;
+        }
+
+        my $circexlist=undef;
+
+        my $soap = SOAP::Lite
+            -> uri("urn:/Circulation")
+                -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
+        my $result = $soap->renew_loans(
+            SOAP::Data->name(parameter  =>\SOAP::Data->value(
+                SOAP::Data->name(username     => $loginname)->type('string'),
+                SOAP::Data->name(password     => $password)->type('string'),
+                SOAP::Data->name(database     => $targetcircinfo_ref->{$database}{circdb})->type('string'))));
+        
+        unless ($result->fault) {
+            $circexlist=$result->result;
+        }
+        else {
+            $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+        }
+        
+        # TT-Data erzeugen
+        my $ttdata={
+            view       => $view,
+            stylesheet => $stylesheet,
+            
+            sessionID  => $session->{ID},
+            
+            result     => $circexlist,
+            
+            config     => $config,
+            msg        => $msg,
+        };
+        
+        OpenBib::Common::Util::print_page($config->{tt_circulation_renew_loans_tname},$ttdata,$r);
     }
     else {
         OpenBib::Common::Util::print_warning($msg->maketext("Unerlaubte Aktion"),$r,$msg);

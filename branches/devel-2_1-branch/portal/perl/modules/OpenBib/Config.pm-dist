@@ -326,6 +326,7 @@ use vars qw(%config);
 	   tt_circulation_orders_tname   => 'circulation_orders',
            tt_circulation_make_reserv_tname    => 'circulation_make_reserv',
            tt_circulation_make_order_tname     => 'circulation_make_order',
+           tt_circulation_renew_loans_tname    => 'circulation_renew_loans',
 
            tt_connector_digibib_result_start_tname  => 'connector_digibib_result_start',
            tt_connector_digibib_result_item_tname   => 'connector_digibib_result_item',

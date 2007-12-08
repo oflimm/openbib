@@ -38,6 +38,5 @@
 <br />
 <br />
 <br />
-</div>
 
 [% PROCESS common/subtemplate name="std_footer" hide_foot_banner=1 %]

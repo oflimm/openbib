@@ -16,8 +16,8 @@
 <tr><td class="boxedclear">
 <ul>
 <li>Seit dem 14.10.2007 ist eine neue KUG-Version mit einigen
-<a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[%
-view %];stid=2" target="body"">Verbesserungen</a> (Suchverfeinerung
+<a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[%
+view %];stid=2"">Verbesserungen</a> (Suchverfeinerung
 usw.) aktiv.
 <li>Bitte aktualisieren Sie den Kopfbereich des KUG in Ihrem Browser,
 falls Sie dort Darstellungsprobleme beobachten wie z.B. fehlende Logos usw. Im

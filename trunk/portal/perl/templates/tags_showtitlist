@@ -16,6 +16,12 @@
 
 <body>
 
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
 <ul class="tabbingmenu">
    <li><a class="active" href="#">Tag-spezifische Titel</a></li>
 </ul>
@@ -79,7 +85,7 @@
 [%- IF hits <= 1000 -%]
 <a href="[% baseurl %];hitrange=-1;offset=0">[ Alles ]</a>
 [%- END -%]
-</td><td align="left" colspan="3"></td><td class="popularitycount"><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
+</td><td align="left" colspan="3"></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
 [% END %]
 
 [% listrow = 'listrow1' %]
@@ -154,6 +160,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 <p />
 
 </div>
+
 <p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

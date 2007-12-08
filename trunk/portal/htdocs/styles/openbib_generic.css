@@ -251,7 +251,7 @@ a:active.invisible {
 }
 
 .content {
-
+  position: static
   font-family: Arial,helv,Helvetica,Verdana,sans-serif;
   background: #ffffff;
   padding: 5px;
@@ -265,12 +265,12 @@ a:active.invisible {
 }
 
 #maincontent{
-  width: 100%;
+  width: 99%;
   position: absolute;
-  top: 90px;
+  top: 110px;
   left: 0;
   background: white ;
-  padding: 0px;
+  padding: 5px;
 }
 
 #mainnavigation{

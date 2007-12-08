@@ -19,5 +19,7 @@ align="left"><b>KUG</b> [% msg.maketext("ist ein Dienst der Universitäts- und S
 <p />
 <tt>[% config.version %]</tt>
 [% END %]
+</div>
+
 </body>
 </html>

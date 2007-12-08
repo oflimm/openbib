@@ -19,5 +19,6 @@ align="left">Der <b>"Kapselkatalog"</b> ist ein Dienst der Universitäts- und St
 <p />
 <tt>[% config.version %]</tt>
 [% END %]
+</div>
 </body>
 </html>

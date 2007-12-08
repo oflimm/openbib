@@ -19,5 +19,6 @@ align="left">Die <b>Städte- und Landschaftsdarstellungen</b> sind ein Dienst de
 <p />
 <tt>[% config.version %]</tt>
 [% END %]
+</div>
 </body>
 </html>

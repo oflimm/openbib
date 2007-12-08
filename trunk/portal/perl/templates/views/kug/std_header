@@ -46,5 +46,7 @@
     </style>
 
     <script language="JavaScript" type="text/javascript" src="/js/openbib.js"></script>
-    <title>[% title %]</title>
+    <script language="JavaScript" type="text/javascript" src="/js/jquery-1.2.1.min.js"></script>
+
+<title>[% title %]</title>
   </head>

@@ -15,6 +15,12 @@
 
 <body>
 
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
 <table width="100%">
 <tr><th align="left">[% msg.maketext("Virtueller Systematikindex") %]: <b>[% contentreq %]</b> / <b>[% msg.maketext("Treffer") %]: [% index.size %]</b></th></tr>
 <tr><td class="boxedclear">
@@ -47,6 +53,7 @@
 </table>
 
 </form>
+
 <p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

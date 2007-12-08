@@ -20,11 +20,18 @@
 %]
 
 <body>
-<table BORDER="0" CELLSPACING="0" CELLPADDING="0" width="100%">
-  <tr class="titlerow">
-    <td  width="20">&nbsp;</td><td valign="middle" ALIGN="left" height="32"><span class="dbdescshort">[% targetdbinfo.dbnames.$database.short %]</span></td>
-  </tr>
-</table>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="#"><span class="dbdescshort">[% targetdbinfo.dbnames.$database.short %]</span></a></li>
+</ul>
+
+<div class="content">
 
 <p><form method="get" action="[% hostself %]">
 [%- FOREACH i IN queryargs -%]
@@ -155,6 +162,8 @@ id="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %
 </td></tr>
 </table>
 <!-- Titlelist ends here -->
+
+</div>
 
 <p />
 

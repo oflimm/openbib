@@ -78,6 +78,4 @@
 
 <p />
 
-</div>
-
 [% PROCESS std_footer %]

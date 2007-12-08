@@ -28,7 +28,7 @@ headerframeurl = "${config.headerframe_loc}?sessionID=${sessionID};view=${view}"
 END;
 
 IF NOT bodyframeurl;
-bodyframeurl   = "${config.searchframe_loc}?sessionID=${sessionID};view=${view};setmask=${setmask}" ;
+bodyframeurl   = "${config.searchmask_loc}?sessionID=${sessionID};view=${view};setmask=${setmask}" ;
 END;
 
 IF searchsingletit && database;

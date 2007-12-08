@@ -16,9 +16,11 @@
 
   <body>
 
-[% IF show_corporate_banner %]
 [% PROCESS common/subtemplate name="corporate_banner" %] 
-[% END %]
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
 
 <table width="100%">
 <tr><th>[% msg.maketext("Erfolgsmeldung") %]</th></tr>
@@ -26,5 +28,7 @@
 [% msg.maketext("Die Einstellung Ihrer Suchfelder wurde erfolgreich vorgenommen. Klicken Sie nun bitte auf 'Recherche' in der Navigationsleiste, um die neuen Suchfeldauswahl zu verwenden.") %]
 </td></tr>
 </table>
+
+<p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

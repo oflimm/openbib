@@ -20,6 +20,12 @@
 
 <body>
 
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
 <ul class="tabbingmenu">
    <li><a class="active" href="[% config.resultlists_loc %]?sessionID=[% sessionID %];action=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a></li>
 </ul>
@@ -133,6 +139,8 @@ id="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %
 [% END %]
 </table>
 
-</div><p>
+</div>
+
+<p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

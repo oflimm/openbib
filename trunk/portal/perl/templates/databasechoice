@@ -29,8 +29,14 @@ function update_fak(yourform, checked, fak) {
 // -->
 </script>
 
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.databasechoice_loc %]?sessionID=[% sessionID %];view=[% view %]" target="body">[% msg.maketext("Katalogauswahl") %]</a></li>
+   <li><a class="active" href="[% config.databasechoice_loc %]?sessionID=[% sessionID %];view=[% view %]">[% msg.maketext("Katalogauswahl") %]</a></li>
 </ul>
 
 <div class="content">

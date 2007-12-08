@@ -14,6 +14,12 @@
 -%]
 [% PROCESS common/subtemplate name="std_header" %]
 
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
 <h1>[% msg.maketext("Wartungsarbeiten") %]</h1>
 
 [% msg.maketext("Wegen eines unerwarteten Problems kann der KUG in den n&auml;chsten Minuten

@@ -59,6 +59,4 @@ value="&Auml;ndern" /></td><td>&nbsp;</td><td align="right"><input type="submit"
 </form>
 <p />
 
-</div>
-
 [% PROCESS std_footer %]

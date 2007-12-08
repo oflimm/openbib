@@ -20,4 +20,5 @@ align="left">Die <b>Portraitsammlung</b> [% msg.maketext("ist ein Dienst der Uni
 <tt>[% config.version %]</tt>
 [% END %]
 </body>
+</div>
 </html>

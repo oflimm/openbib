@@ -190,6 +190,4 @@ value="[% msg.maketext("Ändern") %]"></td><td>&nbsp;</td><td align="right"><inp
 
 <p />
 
-</div>
-
 [% PROCESS std_footer %]

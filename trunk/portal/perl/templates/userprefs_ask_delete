@@ -16,13 +16,15 @@
 
   <body>
 
-[% IF show_corporate_banner %]
 [% PROCESS common/subtemplate name="corporate_banner" %] 
-[% END %]
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="http://[% config.servername %][% config.userprefs_loc %]?sessionID=[% sessionID %];action=showfields" target="body">[% msg.maketext("Grundeinstellungen") %]</a></li>
-   <li><a                href="http://[% config.servername %][% config.databaseprofile_loc %]?sessionID=[% sessionID %];do_showprofile=1" target="body">[% msg.maketext("Katalogprofile") %]</a></li>
+   <li><a class="active" href="http://[% config.servername %][% config.userprefs_loc %]?sessionID=[% sessionID %];action=showfields">[% msg.maketext("Grundeinstellungen") %]</a></li>
+   <li><a                href="http://[% config.servername %][% config.databaseprofile_loc %]?sessionID=[% sessionID %];do_showprofile=1">[% msg.maketext("Katalogprofile") %]</a></li>
 </ul>
 
 <div class="content">

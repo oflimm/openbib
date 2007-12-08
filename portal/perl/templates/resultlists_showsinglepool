@@ -16,6 +16,12 @@
 
 <body>
 
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
 <ul class="tabbingmenu">
    <li><a class="active" href="[% config.resultlists_loc %]?sessionID=[% sessionID %];trefferliste=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a></li>
 </ul>
@@ -57,7 +63,7 @@
 
 [%- FOREACH result IN resultlists -%]
 [%-     database = result.database -%]
-<tr class="titlerow"><td>&nbsp;</td><td><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% dbinfo.$database.full %]</td><td align="right" colspan="3"><strong>[% result.resultlist.size %] Treffer</strong></td><td class="popularitycount"><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
+<tr class="titlerow"><td>&nbsp;</td><td><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% dbinfo.$database.full %]</td><td align="right" colspan="3"><strong>[% result.resultlist.size %] Treffer</strong></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
 [%-     IF offsets -%]
 <tr class="titlerow"><td>&nbsp;</td><td colspan="4">
 [%          FOREACH singleoffset IN offsets %]
@@ -137,6 +143,7 @@ sorttype %];database=[% item.${"database"} %];searchsingletit=[% item.id %]"><st
 </table>
 
 </div>
+
 <p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

@@ -17,6 +17,10 @@
 
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
 <p />
 
 <table width="100%">

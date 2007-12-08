@@ -78,6 +78,4 @@ config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&do_editview
 
 <p />
 
-</div>
-
 [% PROCESS std_footer %]

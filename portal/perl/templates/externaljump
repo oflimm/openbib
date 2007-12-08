@@ -18,8 +18,14 @@
 
   <body>
 
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
 <ul class="tabbingmenu">
-   <li><a class="active" href="http://[% config.servername %][% config.externaljump_loc %]?sessionID=[% sessionID %];queryid=[% queryid %];action=action=Weiter+als+externe+Recherche" target="body">[% msg.maketext("Sprung in externe Recherchequellen") %]</a></li>
+   <li><a class="active" href="http://[% config.servername %][% config.externaljump_loc %]?sessionID=[% sessionID %];queryid=[% queryid %];action=action=Weiter+als+externe+Recherche">[% msg.maketext("Sprung in externe Recherchequellen") %]</a></li>
 </ul>
 
 <div class="content">
@@ -79,7 +85,7 @@
 [%- IF thisquery.hits -%]
  = [% thisquery.hits %] Treffer
 [%- END -%]
-</td><td>=&gt;</td><td><a href="http://[% config.servername %][% config.resultlists_loc %]?sessionID=[% sessionID %]&action=choice&queryid=[% queryid %]" target="body">[% msg.maketext("Sprung zur Trefferliste im KUG") %]</a></td></tr>
+</td><td>=&gt;</td><td><a href="http://[% config.servername %][% config.resultlists_loc %]?sessionID=[% sessionID %]&action=choice&queryid=[% queryid %]">[% msg.maketext("Sprung zur Trefferliste im KUG") %]</a></td></tr>
 </table>
 </td></tr>
 </table>

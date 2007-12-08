@@ -108,6 +108,4 @@ config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&do_editcat=
 
 <p />
 
-</div>
-
 [% PROCESS std_footer %]

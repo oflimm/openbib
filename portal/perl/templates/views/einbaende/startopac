@@ -27,7 +27,7 @@ IF NOT headerframeurl;
 headerframeurl = "${config.headerframe_loc}?sessionID=${sessionID};view=${view}" ;
 END;
 
-bodyframeurl   = "${config.helpframe_loc}?sessionID=${sessionID};view=${view};stid=20" ;
+bodyframeurl   = "${config.info_loc}?sessionID=${sessionID};view=${view};stid=20" ;
 
 IF searchsingletit && database;
     bodyframeurl = "${config.search_loc}?sessionID=${sessionID};search=Mehrfachauswahl;database=${database};searchsingletit=${searchsingletit};view=${view}";

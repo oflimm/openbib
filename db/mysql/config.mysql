@@ -61,6 +61,7 @@ CREATE TABLE viewinfo (
  viewname    VARCHAR(20),
  description TEXT,
  rssfeed     BIGINT,
+ startpage   TEXT,
  active      BOOL,
 
  INDEX (viewname)

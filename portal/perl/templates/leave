@@ -16,7 +16,7 @@
 
   <body>
 
-[% PROCESS common/subtemplate name="corporate_banner" %]
+[% PROCESS common/subtemplate name="corporate_banner" %] 
 
 <div id="maincontent">
 <br />

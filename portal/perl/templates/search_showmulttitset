@@ -15,6 +15,12 @@
 
 <body>
 
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
 <ul class="tabbingmenu">
    <li><a class="active" href="#"><span class="dbdescshort">[% poolname.short %]</span></a></li>
 </ul>
@@ -147,6 +153,7 @@ END;
 
 </form>
 </div>
+
 <p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

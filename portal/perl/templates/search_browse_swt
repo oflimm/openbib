@@ -15,6 +15,12 @@
 
 <body>
 
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
 <table width="100%">
 [% FOREACH item IN browselist %]
 <tr><td>% item %]</td></tr>

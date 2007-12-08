@@ -18,6 +18,8 @@
 
 [% PROCESS common/subtemplate name="corporate_banner" %]
 
+<div id="maincontent">
+
 <br />
   <br />
   <center>

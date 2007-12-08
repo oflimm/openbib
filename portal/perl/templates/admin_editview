@@ -56,6 +56,12 @@ selected
 </table>
 <p />
 
+<table>
+<tr><td>Besondere Start-Location</td><td><input type="text" name="viewstart_loc" value="[% view.start_loc %]" size="40" /></td></tr>
+<tr><td>Besondere Start-SubTemplateId</td><td><input type="text" name="viewstart_stid" value="[% view.start_stid %]" size="40" /></td></tr>
+</table>
+
+<p />
 <b>[% msg.maketext("Katalogauswahl zu diesem View") %]</b><br /><br />
 
 <select name="viewdb" multiple="multiple">
@@ -145,7 +151,5 @@ selected="selected"
 </div>
 
 <p />
-
-</div>
 
 [% PROCESS std_footer %]

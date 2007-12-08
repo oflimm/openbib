@@ -2,12 +2,14 @@
 
   <body>
 
-[% IF show_corporate_banner %]
 [% PROCESS common/subtemplate name="corporate_banner" %] 
-[% END %]
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]" target="_blank">[% msg.maketext("Fehler") %]</a></li>
+   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]" target="_blank">[% msg.maketext("Fehler") %]</a></li>
 </ul>
 
 <div class="content">

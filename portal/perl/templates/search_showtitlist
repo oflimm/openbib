@@ -16,6 +16,12 @@
 
 <body>
 
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
 <ul class="tabbingmenu">
    <li><a class="active" href="#"><span class="dbdescshort">[% targetdbinfo.dbnames.$database.short %]</span></a></li>
 </ul>
@@ -72,7 +78,7 @@
 
 <table cellpadding="2">
 [% IF offset >= 0 && hitrange > 0 %]
-<tr class="titlerow"><td>&nbsp;</td><td><span class="rldbase"><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% targetdbinfo.dbinfo.$database.full %]</span></td><td align="left" colspan="3"><span class="rlhits"><strong>[% itemlist.size %]/[% hits %] [% msg.maketext("Treffer") %]</strong></span></td><td class="popularitycount"><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
+<tr class="titlerow"><td>&nbsp;</td><td><span class="rldbase"><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% targetdbinfo.dbinfo.$database.full %]</span></td><td align="left" colspan="3"><span class="rlhits"><strong>[% itemlist.size %]/[% hits %] [% msg.maketext("Treffer") %]</strong></span></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
 <tr class="titlerow"><td>&nbsp;</td><td>
 [%- FOREACH navitem IN nav -%]
 <a href="[% navitem.url %]">
@@ -88,7 +94,7 @@
 [%- END -%]
 </td><td align="left" colspan="3"></td><td></td></tr>
 [% ELSE %]
-<tr class="titlerow"><td>&nbsp;</td><td><span class="rldbase"><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% targetdbinfo.dbinfo.$database.full %]</span></td><td align="left" colspan="3"><span class="rlhits"><strong>[% itemlist.size %] [% msg.maketext("Treffer") %]</strong></span></td><td class="popularitycount"><a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
+<tr class="titlerow"><td>&nbsp;</td><td><span class="rldbase"><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% targetdbinfo.dbinfo.$database.full %]</span></td><td align="left" colspan="3"><span class="rlhits"><strong>[% itemlist.size %] [% msg.maketext("Treffer") %]</strong></span></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
 [% END %]
 
 [% listrow = 'listrow1' %]

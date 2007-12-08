@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Connector::UnAPI;
+package OpenBib::Handler::Apache::Connector::UnAPI;
 
 use strict;
 use warnings;

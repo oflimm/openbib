@@ -73,17 +73,18 @@ sub handler {
     
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
-    my $database                = $query->param('database')  || '';
-    my $singleidn               = $query->param('singleidn') || '';
-    my $litlistid               = $query->param('litlistid') || '';
+    my $database                = $query->param('database')                || '';
+    my $singleidn               = $query->param('singleidn')               || '';
+    my $litlistid               = $query->param('litlistid')               || '';
     my $do_collection_delentry  = $query->param('do_collection_delentry')  || '';
-    my $do_litlist_addentry     = $query->param('do_litlist_addentry')  || '';
-    my $do_addlitlist           = $query->param('do_addlitlist')  || '';
-    my $title                   = $query->param('title')  || '';
-    my $action                  = $query->param('action')    || 'show';
-    my $show                    = $query->param('show')      || 'short';
-    my $type                    = $query->param('type')      || 'HTML';
-    my $littype                 = $query->param('littype')   || 1;
+    my $do_collection_showcount = $query->param('do_collection_showcount') || '';
+    my $do_litlist_addentry     = $query->param('do_litlist_addentry')     || '';
+    my $do_addlitlist           = $query->param('do_addlitlist')           || '';
+    my $title                   = $query->param('title')                   || '';
+    my $action                  = $query->param('action')                  || 'show';
+    my $show                    = $query->param('show')                    || 'short';
+    my $type                    = $query->param('type')                    || 'HTML';
+    my $littype                 = $query->param('littype')                 || 1;
 
     my $queryoptions_ref
         = $session->get_queryoptions($query);
@@ -165,7 +166,31 @@ sub handler {
     }
     # Anzeigen des Inhalts der Merkliste
     elsif ($action eq "show") {
-        if ($do_collection_delentry) {
+        if ($do_collection_showcount) {
+
+            # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
+            # die Session nicht authentifiziert ist
+            # Dementsprechend einen LoginLink oder ein ProfilLink ausgeben
+            my $anzahl="";
+            
+            if ($user->{ID}) {
+                # Anzahl Eintraege der privaten Merkliste bestimmen
+                # Zuallererst Suchen, wieviele Titel in der Merkliste vorhanden sind.
+                $anzahl =    $user->get_number_of_items_in_collection();
+            }
+            else {
+                #  Zuallererst Suchen, wieviele Titel in der Merkliste vorhanden sind.
+                $anzahl = $session->get_number_of_items_in_collection();
+            }
+
+            # Start der Ausgabe mit korrektem Header
+            print $r->send_http_header("text/html");
+            
+            print $anzahl;
+
+            return OK;
+        }
+        elsif ($do_collection_delentry) {
             foreach my $tit ($query->param('titid')) {
                 my ($titdb,$titid)=split(":",$tit);
 	

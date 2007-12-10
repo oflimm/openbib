@@ -135,6 +135,7 @@ sub handler {
         view        => $view,
         rssfeedinfo => $rssfeedinfo_ref,
         stylesheet  => $stylesheet,
+        sessionID   => $session->{ID},
         config      => $config,
         msg         => $msg,
     };

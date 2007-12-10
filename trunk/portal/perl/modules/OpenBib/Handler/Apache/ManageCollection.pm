@@ -132,6 +132,8 @@ sub handler {
 
         return OK;
     }
+
+    $logger->info("SessionID: $session->{ID}");
     
     my $idnresult="";
 
@@ -184,7 +186,7 @@ sub handler {
             }
 
             # Start der Ausgabe mit korrektem Header
-            print $r->send_http_header("text/html");
+            print $r->send_http_header("text/plain");
             
             print $anzahl;
 

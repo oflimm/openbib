@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Leave;
+package OpenBib::Handler::Apache::Leave;
 
 use strict;
 use warnings;

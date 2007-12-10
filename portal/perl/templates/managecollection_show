@@ -16,6 +16,10 @@
 
   <body>
 
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
 <script language="JavaScript" type="text/javascript">
 <!--
 
@@ -33,10 +37,6 @@ function update_collection(yourform, checked, item) {
     <form method="get" action="http://[% config.servername %][% config.managecollection_loc %]">
       <input type="hidden" name="sessionID" value="[% sessionID %]" />
       <input type="hidden" name="action"    value="show" />
-
-[% PROCESS common/subtemplate name="corporate_banner" %] 
-
-[% PROCESS common/subtemplate name="mainnavigation" %] 
 
 <div id="maincontent">
 

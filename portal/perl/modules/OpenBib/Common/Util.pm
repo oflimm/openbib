@@ -120,7 +120,7 @@ sub print_warning {
     my $ttdata={
         view       => $view,
         stylesheet => $stylesheet,
-
+        sessionID   => $session->{ID},
         errmsg     => $warning,
         config     => $config,
         msg        => $msg,
@@ -170,6 +170,7 @@ sub print_info {
     my $ttdata={
         view       => $view,
         stylesheet => $stylesheet,
+        sessionID   => $session->{ID},
 
         info_msg   => $info,
         config     => $config,
@@ -195,8 +196,6 @@ sub print_page {
 
     my $config = new OpenBib::Config();
     
-    my $stylesheet=get_css_by_browsertype($r);
-
     # View- und Datenbank-spezifisches Templating
     my $database = $ttdata->{'database'};
     my $view     = $ttdata->{'view'};

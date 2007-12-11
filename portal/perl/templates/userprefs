@@ -114,7 +114,7 @@
 [%- userinfo.vmanz -%]
 [%- END -%]
 
-</td><td>&nbsp;&nbsp;</td><td><b>[% msg.maketext("&Uuml;berzogen") %]:</b></td><td><span class="warning">
+</td><td>&nbsp;&nbsp;</td><td><b>[% msg.maketext("Offene Geb&uuml;hren") %]:</b></td><td><span class="warning">
 
 [% IF userinfo.maanz > 0 %]
 <a href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc;circaction=reminders">[% userinfo.maanz %]</a>

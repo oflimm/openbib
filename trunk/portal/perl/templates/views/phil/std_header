@@ -53,7 +53,35 @@
     a.hist2:active {color: #993399; text-decoration:none}
 
     </style>
+    <script language="JavaScript" type="text/javascript" src="/js/jquery-1.2.1.min.js"></script>
     <script language="JavaScript" type="text/javascript" src="/js/openbib.js"></script>
 
-    <title>[% title %]</title>
+    <script type="text/javascript">
+
+$(document).ready(function(){
+
+// Merklistenfuellstand aktualisieren
+$.get("[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;do_collection_showcount=1",
+function (txt){
+ $("#collectioncount").html("["+txt+"]"); 
+}
+);
+
+$(".rlcollect a").click(function(){
+
+   // Insert-Funktion aufrufen
+   $.get(this.href);
+
+   // Merklistenfuellstand aktualisieren
+   $.get("[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;do_collection_showcount=1",
+function (txt){ $("#collectioncount").html("["+txt+"]"); });
+
+   return false;
+ });
+
+
+});
+
+    </script>
+    <title>KUG - K&ouml;lner Universit&auml;tsGesamtkatalog</title>
   </head>

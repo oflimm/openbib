@@ -20,7 +20,8 @@
     <meta http-equiv="Cache-Control" content="private,no-cache,no-store" />
     <meta http-equiv="Expires"       content="Thu, 01 Dec 1970 12:00:00 GMT" />
 [% END %]
-  <link href="/images/openbib/favicon.ico" rel="shortcut icon" />
+    <meta name="sessionID"           content="[% sessionID %]" />
+<link href="/images/openbib/favicon.ico" rel="shortcut icon" />
 [% IF view && primrssfeed %]
 <link rel="alternate" type="application/rss+xml" title="RDF-Datei" href="[% primrssfeed %]">
 [% END %]
@@ -47,32 +48,5 @@
     <script language="JavaScript" type="text/javascript" src="/js/jquery-1.2.1.min.js"></script>
     <script language="JavaScript" type="text/javascript" src="/js/openbib.js"></script>
 
-    <script type="text/javascript">
-
-$(document).ready(function(){
-
-// Merklistenfuellstand aktualisieren
-$.get("[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;do_collection_showcount=1",
-function (txt){
- $("#collectioncount").html("["+txt+"]"); 
-}
-);
-
-$(".rlcollect a").click(function(){
-
-   // Insert-Funktion aufrufen
-   $.get(this.href);
-
-   // Merklistenfuellstand aktualisieren
-   $.get("[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;do_collection_showcount=1",
-function (txt){ $("#collectioncount").html("["+txt+"]"); });
-
-   return false;
- });
-
-
-});
-
-    </script>
     <title>KUG - K&ouml;lner Universit&auml;tsGesamtkatalog</title>
   </head>

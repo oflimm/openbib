@@ -328,8 +328,8 @@ Nutzer, die diesen Titel ausgew&auml;hlt haben, interessierten sich auch f&uuml;
 <!-- Begin: Tagging -->
 <p />
 <table width="100%">
-<tr><th>Eigene Tags vergeben&nbsp;<a href="#newtags"><img src="/images/openbib/expand.png" alt="Alle Tags anzeigen" onclick="expandContent('newtags',this); return false;" /></a></th></tr>
-<tr><td id="newtags" class="boxedclear" style="display:none;">
+<tr><th>Eigene Tags vergeben&nbsp;<span id="newtags_toggle"></span></th></tr>
+<tr><td id="newtags" class="boxedclear">
 
 [%
   private_tags_of_tit = [];
@@ -539,8 +539,8 @@ verkn&uuml;pft mit dem Tag </span><a onclick="insert_tag(event); return false;" 
 <input type="hidden" name="titisbn"    value="[% normset.${"T0540"}.first.content.replace('-','') %]" />
 
 <table width="100%">
-<tr><th>Neue Bewertung/Rezension <a href="#newreview"><img src="/images/openbib/expand.png" alt="Neue Bewertung/Rezension" onclick="expandContent('newreview',this); return false;" /></a></th></tr>
-<tr><td id="newreview" class="boxedclear" style="display:none;">
+<tr><th>Neue Bewertung/Rezension <span id="newreview_toggle"></span></th></tr>
+<tr><td id="newreview" class="boxedclear">
 
 <h3>Bewertung</h3>
 <table>
@@ -579,8 +579,8 @@ name="review"></textarea></td></tr>
 <p />
 
 <table width="100%">
-<tr><th>Bewertungen/Rezensionen von Nutzern <a href="#allreviews"><img src="/images/openbib/expand.png" alt="Alle Reviews anzeigen" onclick="expandContent('allreviews',this); return false;" /></a></th></tr>
-<tr><td id="allreviews" class="boxedclear" style="display:none;">
+<tr><th>Bewertungen/Rezensionen von Nutzern <span id="allreviews_toggle"></span></th></tr>
+<tr><td id="allreviews" class="boxedclear">
 <!-- Beginn Reviews -->
 
 <dl class="reviews">
@@ -634,10 +634,6 @@ type="text" name="swtindex" value="" size="4" maxlength="50" title="[% msg.maket
 </form>
 
 </div>
-
-<script type="text/javascript">
-  add_toggle();
-</script>
 
 <p />
 

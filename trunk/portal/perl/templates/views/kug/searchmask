@@ -201,8 +201,8 @@ nutzen, bei der die Verwendung von JavaScript minimiert ist.","<a href=\"${confi
 <p />
 
 <table width="100%">
-<tr><th>[% msg.maketext("Suchoptionen") %]&nbsp;<a href="#searchoptions"><img src="/images/openbib/expand.png" alt="Optionen anzeigen" onclick="expandContent('searchoptions',this); return false;" /></a></th></tr>
-<tr><td class="boxed" id="searchoptions" style="display:none;font-size:0.8em;">
+<tr><th>[% msg.maketext("Suchoptionen") %]&nbsp;<span id="searchoptions_toggle"></span></th></tr>
+<tr><td class="boxed" id="searchoptions" style="font-size:0.8em;">
 [% PROCESS common/subtemplate name="searchmask_options" %]
 </td></tr>
 </table>
@@ -210,8 +210,8 @@ nutzen, bei der die Verwendung von JavaScript minimiert ist.","<a href=\"${confi
 <p />
 
 <table width="100%">
-<tr><th>[% msg.maketext("Suchhilfe") %]&nbsp;<a href="#searchoptions"><img src="/images/openbib/expand.png" alt="Optionen anzeigen" onclick="expandContent('searchinfo',this); return false;" /></a></th></tr>
-<tr><td class="boxed" id="searchinfo" style="display:none;font-size:0.8em;">
+<tr><th>[% msg.maketext("Suchhilfe") %]&nbsp;<span id="searchinfo_toggle"></span></th></tr>
+<tr><td class="boxed" id="searchinfo" style="font-size:0.8em;">
 [% PROCESS common/subtemplate name="search_info" %]
 </td></tr>
 </table>

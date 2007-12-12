@@ -103,24 +103,47 @@ sub print_warning {
         sessionID => $sessionID,
     });
     
-    my $view=$session->get_viewname();
- 
+    my $view    = $session->get_viewname();
+
+    my $user    = new OpenBib::User({sessionID => $session->{ID}});
+
+    # Nutzer-DB zugreifbar? Falls nicht, dann wird der Menu-Punkt
+    # Einloggen/Mein KUG automatisch deaktiviert
+    
+    if (!$user->userdb_accessible()){
+        $config->{login_active} = 0;
+    }
+
+    my $loginname="";
+
+    # Wenn wir authentifiziert sind, dann
+    if ($user->{ID}) {
+        $loginname=$user->get_username();
+    }
+
+    my $templatename = $config->{tt_error_tname};
+    
+    if ($view && -e "$config->{tt_include_path}/views/$view/$templatename") {
+        $templatename="views/$view/$templatename";
+    }
+
+    $logger->debug("Using Template $templatename");
+    
     my $template = Template->new({
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
             INCLUDE_PATH   => $config->{tt_include_path},
             ABSOLUTE       => 1,
         }) ],
-#        INCLUDE_PATH   => $config->{tt_include_path},
-#        ABSOLUTE       => 1,
-        RECURSION      => 1,
         OUTPUT         => $r,    # Output geht direkt an Apache Request
+        RECURSION      => 1,
     });
   
     # TT-Data erzeugen
     my $ttdata={
         view       => $view,
         stylesheet => $stylesheet,
-        sessionID   => $session->{ID},
+        loginname  => $loginname,
+        sessionID  => $session->{ID},
         errmsg     => $warning,
         config     => $config,
         msg        => $msg,
@@ -129,7 +152,7 @@ sub print_warning {
     # Dann Ausgabe des neuen Headers
     print $r->send_http_header("text/html");
   
-    $template->process($config->{tt_error_tname}, $ttdata) || do {
+    $template->process($templatename, $ttdata) || do {
         $r->log_reason($template->error(), $r->filename);
         return SERVER_ERROR;
     };
@@ -153,25 +176,47 @@ sub print_info {
 
     my $session = new OpenBib::Session({sessionID => $sessionID});
 
-    my $view=$session->get_viewname();
- 
+    my $view    = $session->get_viewname();
+
+    my $user    = new OpenBib::User({sessionID => $session->{ID}});
+
+    # Nutzer-DB zugreifbar? Falls nicht, dann wird der Menu-Punkt
+    # Einloggen/Mein KUG automatisch deaktiviert
+    
+    if (!$user->userdb_accessible()){
+        $config->{login_active} = 0;
+    }
+
+    my $loginname="";
+
+    # Wenn wir authentifiziert sind, dann
+    if ($user->{ID}) {
+        $loginname=$user->get_username();
+    }
+    
+    my $templatename = $config->{tt_info_message_tname};
+    
+    if ($view && -e "$config->{tt_include_path}/views/$view/$templatename") {
+        $templatename="views/$view/$templatename";
+    }
+
+    $logger->debug("Using Template $templatename");
+    
     my $template = Template->new({
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
             INCLUDE_PATH   => $config->{tt_include_path},
             ABSOLUTE       => 1,
         }) ],
-#        INCLUDE_PATH   => $config->{tt_include_path},
-#        ABSOLUTE       => 1,
-        RECURSION      => 1,
         OUTPUT         => $r,    # Output geht direkt an Apache Request
+        RECURSION      => 1,
     });
   
     # TT-Data erzeugen
     my $ttdata={
         view       => $view,
         stylesheet => $stylesheet,
-        sessionID   => $session->{ID},
-
+        sessionID  => $session->{ID},
+        loginname  => $loginname,
         info_msg   => $info,
         config     => $config,
         msg        => $msg,
@@ -180,7 +225,7 @@ sub print_info {
     # Dann Ausgabe des neuen Headers
     print $r->send_http_header("text/html");
   
-    $template->process($config->{tt_info_message_tname}, $ttdata) || do {
+    $template->process($templatename, $ttdata) || do {
         $r->log_reason($template->error(), $r->filename);
         return SERVER_ERROR;
     };
@@ -197,9 +242,28 @@ sub print_page {
     my $config = new OpenBib::Config();
     
     # View- und Datenbank-spezifisches Templating
-    my $database = $ttdata->{'database'};
-    my $view     = $ttdata->{'view'};
+    my $database  = $ttdata->{'database'};
+    my $view      = $ttdata->{'view'};
+    my $sessionID = $ttdata->{'sessionID'};
 
+    my $user      = new OpenBib::User({sessionID => $sessionID});
+
+    # Nutzer-DB zugreifbar? Falls nicht, dann wird der Menu-Punkt
+    # Einloggen/Mein KUG automatisch deaktiviert
+    
+    if (!$user->userdb_accessible()){
+        $config->{login_active} = 0;
+    }
+
+    my $loginname="";
+
+    # Wenn wir authentifiziert sind, dann
+    if ($user->{ID}) {
+        $loginname=$user->get_username();
+    }
+
+    $ttdata->{'loginname'} = $loginname;
+    
     if ($view && -e "$config->{tt_include_path}/views/$view/$templatename") {
         $templatename="views/$view/$templatename";
     }

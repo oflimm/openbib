@@ -49,7 +49,7 @@ my ($singlepool,$getfromremote,$help,$logfile);
 
 &GetOptions("single-pool=s"   => \$singlepool,
             "logfile=s"       => \$logfile,
-	    "get-from-remote" => \$getfromremote,            
+	    "sync"            => \$sync,            
 	    "help"            => \$help
 	    );
 
@@ -110,7 +110,7 @@ my $atime = new Benchmark;
 # Aktuelle Pool-Version von entfernter Quelle uebertragen
 
 {
-    if ($getfromremote){
+    if ($sync){
         my $atime = new Benchmark;
         
         if ($singlepool && -e "$config->{autoconv_dir}/filter/$singlepool/pre_remote.pl"){

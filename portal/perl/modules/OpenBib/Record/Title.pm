@@ -98,13 +98,13 @@ sub get_full_record {
 
     # Titelkategorien
     {
-
+        
         my ($atime,$btime,$timeall)=(0,0,0);
-
+        
         if ($self->{config}->{benchmark}) {
             $atime=new Benchmark;
         }
-
+        
         my $reqstring="select * from tit where id = ?";
         my $request=$self->{dbh}->prepare($reqstring) or $logger->error($DBI::errstr);
         $request->execute($id) or $logger->error("Request: $reqstring - ".$DBI::errstr);
@@ -127,15 +127,15 @@ sub get_full_record {
             $logger->info("Zeit fuer : $reqstring : ist ".timestr($timeall));
         }
     }
-
+    
     # Verknuepfte Normdaten
     {
         my ($atime,$btime,$timeall)=(0,0,0);
-
+        
         if ($self->{config}->{benchmark}) {
             $atime=new Benchmark;
         }
-
+        
         my $reqstring="select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)";
         my $request=$self->{dbh}->prepare($reqstring) or $logger->error($DBI::errstr);
         $request->execute($id) or $logger->error("Request: $reqstring - ".$DBI::errstr);
@@ -145,23 +145,23 @@ sub get_full_record {
             my $targetid   =        decode_utf8($res->{targetid  });
             my $targettype =                    $res->{targettype};
             my $supplement =        decode_utf8($res->{supplement});
-
+            
 	    # Korrektes UTF-8 Encoding Flag wird in get_*_ans_*
 	    # vorgenommen
-
-             my $recordclass    =
-                 ($targettype == 2 )?"OpenBib::Record::Person":
-                 ($targettype == 3 )?"OpenBib::Record::CorporateBody":
-                 ($targettype == 4 )?"OpenBib::Record::Subject":
-                 ($targettype == 5 )?"OpenBib::Record::Classification":undef;
-
+            
+            my $recordclass    =
+                ($targettype == 2 )?"OpenBib::Record::Person":
+                    ($targettype == 3 )?"OpenBib::Record::CorporateBody":
+                        ($targettype == 4 )?"OpenBib::Record::Subject":
+                            ($targettype == 5 )?"OpenBib::Record::Classification":undef;
+            
             my $content = "";
             if (defined $recordclass){
                 my $record=$recordclass->new({database=>$self->{database}});
                 $record->get_name({id=>$targetid});
                 $content=$record->name_as_string;
             }
-
+            
             push @{$normset_ref->{$category}}, {
                 id         => $targetid,
                 content    => $content,
@@ -169,18 +169,18 @@ sub get_full_record {
             };
         }
         $request->finish();
-
+        
         if ($self->{config}->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : $reqstring : ist ".timestr($timeall));
         }
     }
-
+    
     # Verknuepfte Titel
     {
         my ($atime,$btime,$timeall)=(0,0,0);
-
+        
         my $reqstring;
         my $request;
         my $res;
@@ -189,11 +189,11 @@ sub get_full_record {
         if ($self->{config}->{benchmark}) {
             $atime=new Benchmark;
         }
-
+        
         $reqstring="select count(distinct targetid) as conncount from conn where sourceid=? and sourcetype=1 and targettype=1";
         $request=$self->{dbh}->prepare($reqstring) or $logger->error($DBI::errstr);
         $request->execute($id) or $logger->error("Request: $reqstring - ".$DBI::errstr);
-
+        
         $res=$request->fetchrow_hashref;
 
         if ($res->{conncount} > 0){
@@ -216,7 +216,7 @@ sub get_full_record {
         $reqstring="select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=1";
         $request=$self->{dbh}->prepare($reqstring) or $logger->error($DBI::errstr);
         $request->execute($id) or $logger->error("Request: $reqstring - ".$DBI::errstr);
-
+        
         $res=$request->fetchrow_hashref;
 
         if ($res->{conncount} > 0){
@@ -238,17 +238,17 @@ sub get_full_record {
     # Exemplardaten
     my $mexnormset_ref=[];
     {
-
+        
         my $reqstring="select distinct targetid from conn where sourceid= ? and sourcetype=1 and targettype=6";
         my $request=$self->{dbh}->prepare($reqstring) or $logger->error($DBI::errstr);
         $request->execute($id) or $logger->error("Request: $reqstring - ".$DBI::errstr);
-
+        
         my @verknmex=();
         while (my $res=$request->fetchrow_hashref){
             push @verknmex, decode_utf8($res->{targetid});
         }
         $request->finish();
-
+        
         if ($#verknmex >= 0) {
             foreach my $mexid (@verknmex) {
                 push @$mexnormset_ref, $self->_get_mex_set_by_idn({
@@ -270,18 +270,25 @@ sub get_full_record {
 
             $logger->debug("Katkey: $id - Circ-ID: $circid");
 
-            my $soap = SOAP::Lite
-                -> uri("urn:/MediaStatus")
-                    -> proxy($self->{targetcircinfo}->{$self->{database}}{circcheckurl});
-            my $result = $soap->get_mediastatus(
-                $circid,$self->{targetcircinfo}->{$self->{database}}{circdb});
-            
-            unless ($result->fault) {
-                $circexlist=$result->result;
-            }
-            else {
-                $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-            }
+            eval {
+                my $soap = SOAP::Lite
+                    -> uri("urn:/MediaStatus")
+                        -> proxy($self->{targetcircinfo}->{$self->{database}}{circcheckurl});
+                my $result = $soap->get_mediastatus(
+                    $circid,$self->{targetcircinfo}->{$self->{database}}{circdb});
+                
+                unless ($result->fault) {
+                    $circexlist=$result->result;
+                }
+                else {
+                    $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+                }
+            };
+
+            if ($@){
+                $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
+	    }
+
         }
         
         # Bei einer Ausleihbibliothek haben - falls Exemplarinformationen
@@ -317,8 +324,6 @@ sub get_full_record {
                 my $bibinfourl=$self->{targetdbinfo}->{bibinfo}{
                     $self->{targetdbinfo}->{dbases}{$self->{database}}};
                 
-                # Zusammensetzung von Signatur und Exemplar
-                $circexemplarliste[$i]{'Signatur'}   = $circexemplarliste[$i]{'Signatur'}.$circexemplarliste[$i]{'Exemplar'};
                 $circexemplarliste[$i]{'Bibliothek'} = $bibliothek;
                 $circexemplarliste[$i]{'Bibinfourl'} = $bibinfourl;
                 $circexemplarliste[$i]{'Ausleihurl'} = $self->{targetcircinfo}->{$self->{database}}{circurl};
@@ -342,30 +347,32 @@ sub get_full_record {
             = DBI->connect("DBI:$self->{config}->{dbimodule}:dbname=$self->{config}->{enrichmntdbname};host=$self->{config}->{enrichmntdbhost};port=$self->{config}->{enrichmntdbport}", $self->{config}->{enrichmntdbuser}, $self->{config}->{enrichmntdbpasswd})
                 or $logger->error_die($DBI::errstr);
         
-        foreach my $isbn_ref (@{$normset_ref->{T0540}}){
+        if (exists $normset_ref->{T0540}){
+            foreach my $isbn_ref (@{$normset_ref->{T0540}}){
 
-            my $isbn=$isbn_ref->{content};
+                my $isbn=$isbn_ref->{content};
             
-            $isbn =~s/ //g;
-            $isbn =~s/-//g;
-            $isbn=~s/([A-Z])/\l$1/g;
+                $isbn =~s/ //g;
+                $isbn =~s/-//g;
+                $isbn=~s/([A-Z])/\l$1/g;
                         
-            my $reqstring="select category,content from normdata where isbn=? order by category,indicator";
-            my $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
-            $request->execute($isbn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+                my $reqstring="select category,content from normdata where isbn=? order by category,indicator";
+                my $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
+                $request->execute($isbn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
             
-            while (my $res=$request->fetchrow_hashref) {
-                my $category   = "T".sprintf "%04d",$res->{category };
-                my $content    =        decode_utf8($res->{content});
+                while (my $res=$request->fetchrow_hashref) {
+                    my $category   = "T".sprintf "%04d",$res->{category };
+                    my $content    =        decode_utf8($res->{content});
                 
-                push @{$normset_ref->{$category}}, {
-                    content    => $content,
-                };
+                    push @{$normset_ref->{$category}}, {
+                        content    => $content,
+                    };
+                }
+                $request->finish();
+                $logger->debug("Enrich: $isbn -> $reqstring");
             }
-            $request->finish();
-            $logger->debug("Enrich: $isbn -> $reqstring");
         }
-        
+
         $enrichdbh->disconnect();
 
         if ($self->{config}->{benchmark}) {
@@ -378,7 +385,7 @@ sub get_full_record {
         }
     }
 
-    $logger->info(YAML::Dump($normset_ref));
+    $logger->debug(YAML::Dump($normset_ref));
     ($self->{normset},$self->{mexset},$self->{circset})=($normset_ref,$mexnormset_ref,\@circexemplarliste);
 
     return $self;
@@ -393,12 +400,6 @@ sub get_brief_record {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
-    my $use_titlistitem_table=1;
-
-    if ($self->{database} eq "inst006"){
-        $use_titlistitem_table=1;
-    }
 
     $logger->debug("Getting ID $id");
     
@@ -416,7 +417,7 @@ sub get_brief_record {
         $atime  = new Benchmark;
     }
 
-    if ($use_titlistitem_table) {
+    if ($self->{config}->{use_titlistitem_table}) {
         # Bestimmung des Satzes
         my $request=$self->{dbh}->prepare("select listitem from titlistitem where id = ?") or $logger->error($DBI::errstr);
         $request->execute($id);
@@ -607,14 +608,7 @@ sub get_brief_record {
         #
         # Dann:
         #
-        # Unterfall 1.1: Es existiert eine (erste) Bandzahl(089)
-        #
-        # Dann: Setze diese Bandzahl vor den AST/HST
-        #
-        # Unterfall 1.2: Es existiert keine Bandzahl(089), aber eine (erste)
-        #                Bandzahl(455)
-        #
-        # Dann: Setze diese Bandzahl vor den AST/HST
+        # Ist nichts zu tun
         #
         # 2. Fall: Es existiert kein HST(331)
         #
@@ -639,30 +633,21 @@ sub get_brief_record {
         #
         # Dann: Verwende diese Zeitschriftensignatur
         #
-        if (exists $listitem_ref->{T0331}) {
-            $logger->debug("1. Fall: HST existiert");
-            # UnterFall 1.1:
-            if (exists $listitem_ref->{'T0089'}) {
-                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0089}[0]{content}.". ".$listitem_ref->{T0331}[0]{content};
-            }
-            # Unterfall 1.2:
-            elsif (exists $listitem_ref->{T0455}) {
-                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0455}[0]{content}.". ".$listitem_ref->{T0331}[0]{content};
-            }
-        } else {
-            # UnterFall 1.1:
+
+        if (!exists $listitem_ref->{T0331}) {
+            # UnterFall 2.1:
             if (exists $listitem_ref->{'T0089'}) {
                 $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0089}[0]{content};
             }
-            # Unterfall 1.2:
+            # Unterfall 2.2:
             elsif (exists $listitem_ref->{T0455}) {
                 $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0455}[0]{content};
             }
-            # Unterfall 1.3:
+            # Unterfall 2.3:
             elsif (exists $listitem_ref->{T0451}) {
                 $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0451}[0]{content};
             }
-            # Unterfall 1.4:
+            # Unterfall 2.4:
             elsif (exists $listitem_ref->{T1203}) {
                 $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T1203}[0]{content};
             } else {
@@ -670,13 +655,41 @@ sub get_brief_record {
             }
         }
 
+        # Bestimmung der Zaehlung
+
+        # Fall 1: Es existiert eine (erste) Bandzahl(089)
+        #
+        # Dann: Setze diese Bandzahl
+        #
+        # Fall 2: Es existiert keine Bandzahl(089), aber eine (erste)
+        #                Bandzahl(455)
+        #
+        # Dann: Setze diese Bandzahl
+
+        # Fall 1:
+        if (exists $listitem_ref->{'T0089'}) {
+            $listitem_ref->{T5100}= [
+                {
+                    content => $listitem_ref->{T0089}[0]{content}
+                }
+            ];
+        }
+        # Fall 2:
+        elsif (exists $listitem_ref->{T0455}) {
+            $listitem_ref->{T5100}= [
+                {
+                    content => $listitem_ref->{T0455}[0]{content}
+                }
+            ];
+        }
+                
         if ($self->{config}->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : Bestimmung der HST-Ueberordnungsinformationen : ist ".timestr($timeall));
         }
 
-                if ($self->{config}->{benchmark}) {
+        if ($self->{config}->{benchmark}) {
             $atime=new Benchmark;
         }    
         

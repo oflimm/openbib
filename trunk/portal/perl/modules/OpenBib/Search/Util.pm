@@ -45,115 +45,6 @@ use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::VirtualSearch::Util;
 
-sub print_tit_list_by_idn {
-    my ($arg_ref) = @_;
-
-    # Set defaults
-    my $itemlist_ref      = exists $arg_ref->{itemlist_ref}
-        ? $arg_ref->{itemlist_ref}      : undef;
-    my $targetdbinfo_ref  = exists $arg_ref->{targetdbinfo_ref}
-        ? $arg_ref->{targetdbinfo_ref}  : undef;
-    my $queryoptions_ref  = exists $arg_ref->{queryoptions_ref}
-        ? $arg_ref->{queryoptions_ref}  : undef;
-    my $database          = exists $arg_ref->{database}
-        ? $arg_ref->{database}          : undef;
-    my $sessionID         = exists $arg_ref->{sessionID}
-        ? $arg_ref->{sessionID}         : undef;
-    my $r                 = exists $arg_ref->{apachereq}
-        ? $arg_ref->{apachereq}         : undef;
-    my $stylesheet        = exists $arg_ref->{stylesheet}
-        ? $arg_ref->{stylesheet}        : undef;
-    my $hits              = exists $arg_ref->{hits}
-        ? $arg_ref->{hits}              : -1;
-    my $hitrange          = exists $arg_ref->{hitrange}
-        ? $arg_ref->{hitrange}          : 50;
-    my $offset            = exists $arg_ref->{offset}
-        ? $arg_ref->{offset}            : undef;
-    my $view              = exists $arg_ref->{view}
-        ? $arg_ref->{view}              : undef;
-    my $template          = exists $arg_ref->{template}
-        ? $arg_ref->{template}          : 'tt_search_showtitlist_tname';
-    my $location          = exists $arg_ref->{location}
-        ? $arg_ref->{location}          : 'search_loc';
-    my $lang              = exists $arg_ref->{lang}
-        ? $arg_ref->{lang}              : undef;
-    my $msg                = exists $arg_ref->{msg}
-        ? $arg_ref->{msg}                : undef;
-    
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = new OpenBib::Config();
-
-    my $query=Apache::Request->instance($r);
-
-    my @itemlist=@$itemlist_ref;
-
-    # Navigationselemente erzeugen
-    my %args=$r->args;
-    delete $args{offset};
-    delete $args{hitrange};
-    my @args=();
-    while (my ($key,$value)=each %args) {
-        push @args,"$key=$value";
-    }
-
-    my $baseurl="http://$config->{servername}$config->{$location}?".join(";",@args);
-
-    my @nav=();
-
-    if ($hitrange > 0) {
-        for (my $i=0; $i <= $hits-1; $i+=$hitrange) {
-            my $active=0;
-
-            if ($i == $offset) {
-                $active=1;
-            }
-
-            my $item={
-		start  => $i+1,
-		end    => ($i+$hitrange>$hits)?$hits:$i+$hitrange,
-		url    => $baseurl.";hitrange=$hitrange;offset=$i",
-		active => $active,
-            };
-            push @nav,$item;
-        }
-    }
-
-    # TT-Data erzeugen
-    my $ttdata={
-        lang           => $lang,
-        view           => $view,
-        stylesheet     => $stylesheet,
-        sessionID      => $sessionID,
-	      
-        database       => $database,
-
-        hits           => $hits,
-	      
-        sessionID      => $sessionID,
-	      
-        targetdbinfo   => $targetdbinfo_ref,
-        itemlist       => \@itemlist,
-
-        baseurl        => $baseurl,
-
-        qopts          => $queryoptions_ref,
-        query          => $query,
-        hitrange       => $hitrange,
-        offset         => $offset,
-        nav            => \@nav,
-
-        config         => $config,
-        msg            => $msg,
-    };
-  
-    OpenBib::Common::Util::print_page($config->{$template},$ttdata,$r);
-#    OpenBib::Common::Util::print_page($config->{tt_search_showtitlist_tname},$ttdata,$r);
-
-    return;
-}
-
 sub print_mult_tit_set_by_idn { 
     my ($arg_ref) = @_;
 
@@ -191,19 +82,14 @@ sub print_mult_tit_set_by_idn {
     my @titsets=();
 
     foreach my $titidn (@$titidns_ref) {
-        my ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn({
-            titidn             => $titidn,
-            dbh                => $dbh,
-            targetdbinfo_ref   => $targetdbinfo_ref,
-            targetcircinfo_ref => $targetcircinfo_ref,
-            database           => $database,
-        });
-        
+        my $record = OpenBib::Record::Title->new({database=>$database})
+            ->get_full_record({id=>$titidn});
+
         my $thisset={
             titidn     => $titidn,
-            normset    => $normset,
-            mexnormset => $mexnormset,
-            circset    => $circset,
+            normset    => $record->{normset},
+            mexnormset => $record->{mexnormset},
+            circset    => $record->{circset},
         };
         push @titsets, $thisset;
     }

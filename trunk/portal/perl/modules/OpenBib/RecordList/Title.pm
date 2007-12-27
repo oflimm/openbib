@@ -184,6 +184,10 @@ sub print_to_handler {
         ? $arg_ref->{offset}            : undef;
     my $view              = exists $arg_ref->{view}
         ? $arg_ref->{view}              : undef;
+    my $template          = exists $arg_ref->{template}
+        ? $arg_ref->{template}          : 'tt_search_showtitlist_tname';
+    my $location          = exists $arg_ref->{location}
+        ? $arg_ref->{location}          : 'search_loc';
     my $lang              = exists $arg_ref->{lang}
         ? $arg_ref->{lang}              : undef;
     my $msg                = exists $arg_ref->{msg}
@@ -254,8 +258,8 @@ sub print_to_handler {
         config         => $self->{config},
         msg            => $msg,
     };
-  
-    OpenBib::Common::Util::print_page($self->{config}->{tt_search_showtitlist_tname},$ttdata,$r);
+
+    OpenBib::Common::Util::print_page($config->{$template},$ttdata,$r);
 
     return;
 }

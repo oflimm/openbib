@@ -275,7 +275,9 @@ sub get_full_record {
                     -> uri("urn:/MediaStatus")
                         -> proxy($self->{targetcircinfo}->{$self->{database}}{circcheckurl});
                 my $result = $soap->get_mediastatus(
-                    $circid,$self->{targetcircinfo}->{$self->{database}}{circdb});
+                SOAP::Data->name(parameter  =>\SOAP::Data->value(
+                    SOAP::Data->name(katkey   => $circid)->type('string'),
+                    SOAP::Data->name(database => $self->{targetcircinfo}->{$self->{database}}{circdb})->type('string'))));
                 
                 unless ($result->fault) {
                     $circexlist=$result->result;
@@ -529,9 +531,9 @@ sub get_brief_record {
             if ($res->{supplement}){
                 $supplement=" ".decode_utf8($res->{supplement});
             }
-            
-            my $content=get_aut_ans_by_idn($targetid,$self->{dbh}).$supplement;
-            
+
+            my $content=OpenBib::Record::Person->new({database => $self->{database}})->get_name({id => $targetid})->name_as_string.$supplement;
+
             # Kategorieweise Abspeichern
             push @{$listitem_ref->{$category}}, {
                 id      => $targetid,
@@ -566,8 +568,8 @@ sub get_brief_record {
             if ($res->{supplement}){
                 $supplement.=" ".decode_utf8($res->{supplement});
             }
-            
-            my $content=get_kor_ans_by_idn($targetid,$self->{dbh}).$supplement;
+
+            my $content=OpenBib::Record::CorporateBody->new({database => $self->{database}})->get_name({id => $targetid})->name_as_string.$supplement;
             
             # Kategorieweise Abspeichern
             push @{$listitem_ref->{$category}}, {
@@ -744,9 +746,16 @@ sub print_to_handler {
         ? $arg_ref->{view}               : undef;
     my $msg                = exists $arg_ref->{msg}
         ? $arg_ref->{msg}                : undef;
+    my $no_log             = exists $arg_ref->{no_log}
+        ? $arg_ref->{no_log}             : 0;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+
+    my $user   = new OpenBib::User({sessionID => $session->{ID}});
+
+    my $loginname     = $user->get_username();
+    my $logintargetdb = $user->get_targetdb_of_session($session->{ID});
 
     my ($prevurl,$nexturl)=OpenBib::Search::Util::get_result_navigation({
         sessiondbh => $session->{dbh},
@@ -755,26 +764,12 @@ sub print_to_handler {
         sessionID  => $session->{ID},
     });
 
-    # Highlight Query
+    my $poolname=$self->{targetdbinfo}->{dbnames}{$self->{database}};
 
-#     my $term_ref = OpenBib::Common::Util::get_searchterms({
-#         searchquery_ref => $searchquery_ref,
-#     });
+    # Literaturlisten finden
 
-#     foreach my $category (keys %$normset){
-#         if ($category ne "id" && $category ne "database"){
-#             foreach my $item (@{$normset->{$category}}){
-#                 foreach my $singleterm (@$term_ref){
-#                     $logger->debug("Trying to change $item->{content} : Term $singleterm");
-#                     $item->{content}=~s/($singleterm)/<span class="queryhighlight">$1<\/span>/ig unless ($item->{content}=~/http/);
-#                 }
-#             }
-#         }
-#     }
-
-    my $poolname=$self->{targetdbinfo}->{sigel}{
-        $self->{targetdbinfo}->{dbases}{$self->{database}}};
-
+    my $litlists_ref = $user->get_litlists_of_tit({titid => $self->{id}, titdb => $self->{database}});
+    
     # TT-Data erzeugen
     my $ttdata={
         view        => $view,
@@ -791,14 +786,23 @@ sub print_to_handler {
         mexnormset  => $self->{mexnormset},
         circset     => $self->{circset},
         searchquery => $searchquery_ref,
+        activefeed  => $self->{config}->get_activefeeds_of_db($self->{database}),
 
+        user          => $user,
+        loginname     => $loginname,
+        logintargetdb => $logintargetdb,
+
+        litlists     => $litlists_ref,
         highlightquery    => \&highlightquery,
-        record      => $self,
+        normset2bibtex    => \&OpenBib::Common::Util::normset2bibtex,
+        normset2bibsonomy => \&OpenBib::Common::Util::normset2bibsonomy,
 
+        record      => $self,
         config      => $self->{config},
+        
         msg         => $msg,
     };
-  
+
     OpenBib::Common::Util::print_page($self->{config}->{tt_search_showtitset_tname},$ttdata,$r);
 
     # Log Event
@@ -811,15 +815,18 @@ sub print_to_handler {
         $isbn =~s/-//g;
         $isbn =~s/X/x/g;
     }
-    
-    $session->log_event({
-        type    => 10,
-        content => {
-            id       => $self->{id},
-            database => $self->{database},
-            isbn     => $isbn,
-        },
-    });
+
+    if (!$no_log){
+        $session->log_event({
+            type      => 10,
+            content   => {
+                id       => $self->{id},
+                database => $self->{database},
+                isbn     => $isbn,
+            },
+            serialize => 1,
+        });
+    }
     
     return;
 }
@@ -911,6 +918,9 @@ sub _get_mex_set_by_idn {
 
 sub highlightquery {
     my ($searchquery_ref,$content) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
     
     # Highlight Query
 
@@ -918,15 +928,30 @@ sub highlightquery {
         searchquery_ref => $searchquery_ref,
     });
 
-    foreach my $singleterm (@$term_ref){
-        $content=~s/($singleterm)/<span class="queryhighlight">$1<\/span>/ig unless ($content=~/http/);
-    }
+    return $content if (scalar(@$term_ref) <= 0);
+
+    $logger->debug("Terms: ".YAML::Dump($term_ref));
+
+    my $terms = join("|", grep /^\w{3,}/ ,@$term_ref);
+
+    return $content if (!$terms);
+    
+    $logger->debug("Term_ref: ".YAML::Dump($term_ref)."\nTerms: $terms");
+    $logger->debug("Content vor: ".$content);
+    
+    $content=~s/\b($terms)/<span class="queryhighlight">$1<\/span>/ig unless ($content=~/http/);
+
+    $logger->debug("Content nach: ".$content);
 
     return $content;
 }
 
 sub to_bibtex {
-    my ($self)=@_;
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $utf8               = exists $arg_ref->{utf8}
+        ? $arg_ref->{utf8}               : 0;
 
     my $bibtex_ref=[];
 
@@ -937,10 +962,10 @@ sub to_bibtex {
         next if (!exists $self->{normset}->{$category});
         foreach my $part_ref (@{$self->{normset}->{$category}}){
             if ($part_ref->{supplement} =~ /Hrsg/){
-                push @$editors_ref, utf2bibtex($part_ref->{content});
+                push @$editors_ref, utf2bibtex($part_ref->{content},$utf8);
             }
             else {
-                push @$authors_ref, utf2bibtex($part_ref->{content});
+                push @$authors_ref, utf2bibtex($part_ref->{content},$utf8);
             }
         }
     }
@@ -952,34 +977,47 @@ sub to_bibtex {
     foreach my $category (qw/T0710 T0902 T0907 T0912 T0917 T0922 T0927 T0932 T0937 T0942 T0947/){
         next if (!exists $self->{normset}->{$category});
         foreach my $part_ref (@{$self->{normset}->{$category}}){
-            push @$keywords_ref, utf2bibtex($part_ref->{content});
+            push @$keywords_ref, utf2bibtex($part_ref->{content},$utf8);
         }
     }
     my $keyword = join(' ; ',@$keywords_ref);
     
     # Auflage
-    my $edition   = (exists $self->{normset}->{T0403})?utf2bibtex($self->{normset}->{T0403}[0]{content}):'';
+    my $edition   = (exists $self->{normset}->{T0403})?utf2bibtex($self->{normset}->{T0403}[0]{content},$utf8):'';
 
     # Verleger
-    my $publisher = (exists $self->{normset}->{T0412})?utf2bibtex($self->{normset}->{T0412}[0]{content}):'';
+    my $publisher = (exists $self->{normset}->{T0412})?utf2bibtex($self->{normset}->{T0412}[0]{content},$utf8):'';
 
     # Verlagsort
-    my $address   = (exists $self->{normset}->{T0410})?utf2bibtex($self->{normset}->{T0410}[0]{content}):'';
+    my $address   = (exists $self->{normset}->{T0410})?utf2bibtex($self->{normset}->{T0410}[0]{content},$utf8):'';
 
     # Titel
-    my $title     = (exists $self->{normset}->{T0331})?utf2bibtex($self->{normset}->{T0331}[0]{content}):'';
+    my $title     = (exists $self->{normset}->{T0331})?utf2bibtex($self->{normset}->{T0331}[0]{content},$utf8):'';
+
+    # Zusatz zum Titel
+    my $titlesup  = (exists $self->{normset}->{T0335})?utf2bibtex($self->{normset}->{T0335}[0]{content},$utf8):'';
+
+    if ($title && $titlesup){
+        $title = "$title : $titlesup";
+    }
 
     # Jahr
-    my $year      = (exists $self->{normset}->{T0425})?utf2bibtex($self->{normset}->{T0425}[0]{content}):'';
+    my $year      = (exists $self->{normset}->{T0425})?utf2bibtex($self->{normset}->{T0425}[0]{content},$utf8):'';
 
     # ISBN
-    my $isbn      = (exists $self->{normset}->{T0540})?utf2bibtex($self->{normset}->{T0540}[0]{content}):'';
+    my $isbn      = (exists $self->{normset}->{T0540})?utf2bibtex($self->{normset}->{T0540}[0]{content},$utf8):'';
 
     # ISSN
-    my $issn      = (exists $self->{normset}->{T0543})?utf2bibtex($self->{normset}->{T0543}[0]{content}):'';
+    my $issn      = (exists $self->{normset}->{T0543})?utf2bibtex($self->{normset}->{T0543}[0]{content},$utf8):'';
 
     # Sprache
-    my $language  = (exists $self->{normset}->{T0516})?utf2bibtex($self->{normset}->{T0516}[0]{content}):'';
+    my $language  = (exists $self->{normset}->{T0516})?utf2bibtex($self->{normset}->{T0516}[0]{content},$utf8):'';
+
+    # Abstract
+    my $abstract  = (exists $self->{normset}->{T0750})?utf2bibtex($self->{normset}->{T0750}[0]{content},$utf8):'';
+
+    # Origin
+    my $origin    = (exists $self->{normset}->{T0590})?utf2bibtex($self->{normset}->{T0590}[0]{content},$utf8):'';
 
     if ($author){
         push @$bibtex_ref, "author    = \"$author\"";
@@ -1014,13 +1052,72 @@ sub to_bibtex {
     if ($language){
         push @$bibtex_ref, "language  = \"$language\"";
     }
-    
+    if ($abstract){
+        push @$bibtex_ref, "abstract  = \"$abstract\"";
+    }
+
+    if ($origin){
+        # Pages
+        if ($origin=~/ ; (S\. *\d+.*)$/){
+            push @$bibtex_ref, "pages     = \"$1\"";
+        }
+        elsif ($origin=~/, (S\. *\d+.*)$/){
+            push @$bibtex_ref, "pages     = \"$1\"";
+        }
+
+        # Journal and/or Volume
+        if ($origin=~/^(.+?) ; (.*?) ; S\. *\d+.*$/){
+            my $journal = $1;
+            my $volume  = $2;
+
+            $journal =~ s/ \/ .*$//;
+            push @$bibtex_ref, "journal   = \"$journal\"";
+            push @$bibtex_ref, "volume    = \"$volume\"";
+        }
+        elsif ($origin=~/^(.+?)\. (.*?), (\d\d\d\d), S\. *\d+.*$/){
+            my $journal = $1;
+            my $volume  = $2;
+            my $year    = $3;
+
+            $journal =~ s/ \/ .*$//;
+            push @$bibtex_ref, "journal   = \"$journal\"";
+            push @$bibtex_ref, "volume    = \"$volume\"";
+        }
+        elsif ($origin=~/^(.+?)\. (.*?), S\. *\d+.*$/){
+            my $journal = $1;
+            my $volume  = $2;
+
+            $journal =~ s/ \/ .*$//;
+            push @$bibtex_ref, "journal   = \"$journal\"";
+            push @$bibtex_ref, "volume    = \"$volume\"";
+        }
+        elsif ($origin=~/^(.+?) ; (.*?), S\. *\d+.*$/){
+            my $journal = $1;
+            my $volume  = $2;
+
+            $journal =~ s/ \/ .*$//;
+            push @$bibtex_ref, "journal   = \"$journal\"";
+            push @$bibtex_ref, "volume    = \"$volume\"";
+        }
+        elsif ($origin=~/^(.*?) ; S\. *\d+.*$/){
+            my $journal = $1;
+
+            $journal =~ s/ \/ .*$//;
+            push @$bibtex_ref, "journal   = \"$journal\"";
+        }
+    }
+
     my $identifier=substr($author,0,4).substr($title,0,4).$year;
     $identifier=~s/[^A-Za-z0-9]//g;
 
     my $bibtex="";
-    
-    if ($isbn){
+
+    if ($origin){
+        unshift @$bibtex_ref, "\@article {$identifier";
+        $bibtex=join(",\n",@$bibtex_ref);
+        $bibtex="$bibtex}";
+    }
+    elsif ($isbn){
         unshift @$bibtex_ref, "\@book {$identifier";
         $bibtex=join(",\n",@$bibtex_ref);
         $bibtex="$bibtex}";
@@ -1036,8 +1133,10 @@ sub to_bibtex {
 }
 
 sub utf2bibtex {
-    my ($string)=@_;
+    my ($string,$utf8)=@_;
 
+    return "" if (!defined $string);
+    
     # {} werden von BibTeX verwendet und haben in den Originalinhalten
     # nichts zu suchen
     $string=~s/\{//g;
@@ -1046,6 +1145,12 @@ sub utf2bibtex {
     $string=~s/[^-+\p{Alphabetic}0-9\n\/&;#: '()@<>\\,.="^*[]]//g;
     $string=~s/&lt;/</g;
     $string=~s/&gt;/>/g;
+    $string=~s/&amp;/&/g;
+
+    # Wenn utf8 ausgegeben werden soll, dann sind wir hier fertig
+    return $string if ($utf8);
+
+    # ... ansonsten muessen weitere Sonderzeichen umgesetzt werden.
     $string=~s/&#172;//g;
     $string=~s/&#228;/{\\"a}/g;
     $string=~s/&#252;/{\\"u}/g;

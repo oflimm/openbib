@@ -164,36 +164,19 @@ sub handler {
     foreach my $dbidn_ref (@dbidnlist) {
         my $database  = $dbidn_ref->{database};
         my $singleidn = $dbidn_ref->{singleidn};
-      
-        my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
-      
-        my ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn({
-            titidn             => $singleidn,
-            dbh                => $dbh,
-            targetdbinfo_ref   => $targetdbinfo_ref,
-            targetcircinfo_ref => $targetcircinfo_ref,
-            database           => $database,
-            sessionID          => $session->{ID}
-        });
-      
-#         if ($type eq "Text") {
-#             $normset=OpenBib::ManageCollection::Util::titset_to_text($normset);
-#         }
-#         elsif ($type eq "EndNote") {
-#             $normset=OpenBib::ManageCollection::Util::titset_to_endnote($normset);
-#         }
-      
-        $dbh->disconnect();
-      
+
+        my $record = OpenBib::Record::Title->new({database=>$database})
+            ->get_full_record({id=>$singleidn});
+        
         $logger->debug("Merklistensatz geholt");
       
         push @collection, {
             database => $database,
             dbdesc   => $targetdbinfo_ref->{dbinfo}{$database},
             titidn   => $singleidn,
-            tit      => $normset,
-            mex      => $mexnormset,
-            circ     => $circset,
+            tit      => $record->{normset},
+            mex      => $record->{mexnormset},
+            circ     => $record->{circset},
         };
     }
     

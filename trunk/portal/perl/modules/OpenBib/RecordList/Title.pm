@@ -120,6 +120,12 @@ sub sort {
     elsif ($type eq "title" && $order eq "down") {
         @$sortedoutputbuffer_ref=sort _by_title_down @{$self->{recordlist}};
     }
+    elsif ($type eq "order" && $order eq "up") {
+        @$sortedoutputbuffer_ref=sort _by_order @{$self->{recordlist}};
+    }
+    elsif ($type eq "order" && $order eq "down") {
+        @$sortedoutputbuffer_ref=sort _by_order_down @{$self->{recordlist}};
+    }
     elsif ($type eq "popularity" && $order eq "up") {
         @$sortedoutputbuffer_ref=sort _by_popularity @{$self->{recordlist}};
     }
@@ -386,6 +392,74 @@ sub _by_title_down {
     $line2 cmp $line1;
 }
 
+sub _by_order {
+    my %line1=%$a;
+    my %line2=%$b;
+
+    my $line1=(exists $line1{T5100}[0]{content} && defined $line1{T5100}[0]{content})?cleanrl($line1{T5100}[0]{content}):"";
+    my $line2=(exists $line2{T5100}[0]{content} && defined $line2{T5100}[0]{content})?cleanrl($line2{T5100}[0]{content}):"";
+
+    # Intelligentere Sortierung nach numerisch beginnenden Zaehlungen
+    my ($zahl1,$zahl2,$rest1,$rest2);
+
+    if ($line1 =~m/^(\d+)(.*?)/i){
+        $zahl1=$1;
+        $rest1=$2;
+    }
+    else {
+        $zahl1=0;
+        $rest1=$line1;
+    }
+
+    if ($line2 =~m/^(\d+)(.*?)/i){
+        $zahl2=$1;
+        $rest2=$2;
+    }
+    else {
+        $zahl2=0;
+        $rest2=$line2;
+    }
+
+    $line1=sprintf "%08d%s", (defined $zahl1)?$zahl1:"", (defined $rest1)?$rest1:"";
+    $line2=sprintf "%08d%s", (defined $zahl2)?$zahl2:"", (defined $rest2)?$rest2:"";
+
+    $line1 cmp $line2;
+}
+
+sub _by_order_down {
+    my %line1=%$a;
+    my %line2=%$b;
+
+    my $line1=(exists $line1{T5100}[0]{content} && defined $line1{T5100}[0]{content})?cleanrl($line1{T5100}[0]{content}):"";
+    my $line2=(exists $line2{T5100}[0]{content} && defined $line2{T5100}[0]{content})?cleanrl($line2{T5100}[0]{content}):"";
+
+    # Intelligentere Sortierung nach numerisch beginnenden Zaehlungen
+    my ($zahl1,$zahl2,$rest1,$rest2);
+    
+    if ($line1 =~m/^(\d+)(.*?)/i){
+        $zahl1=$1;
+        $rest1=$2;
+    }
+    else {
+        $zahl1=0;
+        $rest1=$line1;
+    }
+
+    if ($line2 =~m/^(\d+)(.*?)/i){
+        $zahl2=$1;
+        $rest2=$2;
+    }
+    else {
+        $zahl2=0;
+        $rest2=$line2;
+    }
+
+    $line1=sprintf "%08d%s", (defined $zahl1)?$zahl1:"", (defined $rest1)?$rest1:"";
+    $line2=sprintf "%08d%s", (defined $zahl2)?$zahl2:"", (defined $rest2)?$rest2:"";
+
+    $line2 cmp $line1;
+}
+
 sub _by_popularity {
     my %line1=%$a;
     my %line2=%$b;
@@ -393,8 +467,8 @@ sub _by_popularity {
     my $line1=(exists $line1{popularity} && defined $line1{popularity})?_cleanrl($line1{popularity}):"";
     my $line2=(exists $line2{popularity} && defined $line2{popularity})?_cleanrl($line2{popularity}):"";
 
-    $line1=0 if (!defined $line1);
-    $line2=0 if (!defined $line2);
+    $line1=0 if (!defined $line1 || $line1 eq "");
+    $line2=0 if (!defined $line2 || $line2 eq "");
 
     $line1 <=> $line2;
 }
@@ -406,8 +480,8 @@ sub _by_popularity_down {
     my $line1=(exists $line1{popularity} && defined $line1{popularity})?_cleanrl($line1{popularity}):"";
     my $line2=(exists $line2{popularity} && defined $line2{popularity})?_cleanrl($line2{popularity}):"";
 
-    $line1=0 if (!defined $line1);
-    $line2=0 if (!defined $line2);
+    $line1=0 if (!defined $line1 || $line1 eq "");
+    $line2=0 if (!defined $line2 || $line2 eq "");
 
     $line2 <=> $line1;
 }

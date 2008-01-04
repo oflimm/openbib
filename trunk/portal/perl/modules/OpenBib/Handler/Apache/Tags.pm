@@ -47,6 +47,8 @@ use OpenBib::Search::Util;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
+use OpenBib::Record::Title;
+use OpenBib::RecordList::Title;
 use OpenBib::Session;
 use OpenBib::User;
 
@@ -345,7 +347,8 @@ sub handler {
             return OK;
         }
         else {
-            my @outputbuffer=();
+            my $recordlist = new OpenBib::RecordList::Title();
+
             my ($atime,$btime,$timeall);
       
             if ($config->{benchmark}) {
@@ -353,51 +356,26 @@ sub handler {
             }
       
             foreach my $titel (@titelidns) {
-
                 my $titelidn = $titel->{id};
                 my $database = $titel->{dbname};
 
-                my $dbh
-                    = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-                        or $logger->error_die($DBI::errstr);
-
-                push @outputbuffer, OpenBib::Search::Util::get_tit_listitem_by_idn({
-                    titidn            => $titelidn,
-                    dbh               => $dbh,
-                    sessiondbh        => $session->{dbh},
-                    targetdbinfo_ref  => $targetdbinfo_ref,
-                    database          => $database,
-                    sessionID         => $session->{ID},
-                });
-
-                $dbh->disconnect();
+                $recordlist->add(OpenBib::Record::Title->new({database=>$database})->get_brief_record({id=>$titelidn})->to_rawdata);
             }
-            
+
             if ($config->{benchmark}) {
                 $btime   = new Benchmark;
                 $timeall = timediff($btime,$atime);
-                $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel : ist ".timestr($timeall));
+                $logger->info("Zeit fuer : ".($recordlist->size())." Titel : ist ".timestr($timeall));
                 undef $atime;
                 undef $btime;
                 undef $timeall;
             }
 
-            my @sortedoutputbuffer=();
-            OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
+            $recordlist->sort({order=>$sortorder,type=>$sorttype});
 
-	    my @resultset=();
-	    # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
-	    foreach my $item_ref (@sortedoutputbuffer){
-	      push @resultset, { id       => $item_ref->{id},
-				 database => $item_ref->{database},
-			       };
-	    }
+            $session->updatelastresultset($recordlist->to_ids);
 
-            $session->updatelastresultset(\@resultset);
-
-            OpenBib::Search::Util::print_tit_list_by_idn({
-                itemlist_ref     => \@sortedoutputbuffer,
-                targetdbinfo_ref => $targetdbinfo_ref,
+            $recordlist->print_to_handler({
                 queryoptions_ref => $queryoptions_ref,
                 database         => $database,
                 sessionID        => $session->{ID},
@@ -414,6 +392,7 @@ sub handler {
 
                 msg              => $msg,
             });
+            
         }	
     }
 

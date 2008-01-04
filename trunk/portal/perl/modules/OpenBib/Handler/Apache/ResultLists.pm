@@ -49,6 +49,8 @@ use OpenBib::Common::Stopwords;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
+use OpenBib::Record::Title;
+use OpenBib::RecordList::Title;
 use OpenBib::ResultLists::Util;
 use OpenBib::Search::Util;
 use OpenBib::Session;
@@ -128,8 +130,8 @@ sub handler {
     ####################################################################
 
     if ($action eq "getnext"){
+        my $recordlist = new OpenBib::RecordList::Title();
 
-        my @outputbuffer = ();
         my @resultset    = ();
         my @resultlists  = ();
 
@@ -158,7 +160,7 @@ sub handler {
                     $a2time=new Benchmark;
                 }
                 
-                @outputbuffer = $z3950dbh->get_resultlist($offset,$hitrange);
+                $recordlist = $z3950dbh->get_resultlist($offset,$hitrange);
                 
                 my $btime      = new Benchmark;
                 my $timeall    = timediff($btime,$atime);
@@ -169,8 +171,8 @@ sub handler {
                     my $b2time     = new Benchmark;
                     my $timeall2   = timediff($b2time,$a2time);
                     
-                    $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel (holen)       : ist ".timestr($timeall2));
-                    $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel (suchen+holen): ist ".timestr($timeall));
+                    $logger->info("Zeit fuer : ".($recordlist->size())." Titel (holen)       : ist ".timestr($timeall2));
+                    $logger->info("Zeit fuer : ".($recordlist->size())." Titel (suchen+holen): ist ".timestr($timeall));
                 }
                 
                 
@@ -224,7 +226,9 @@ sub handler {
                     my $titlistitem_ref=Storable::thaw($titlistitem_raw);
 
                     $logger->debug("Pushing titlistitem_ref:\n".YAML::Dump($titlistitem_ref));
-                    push @outputbuffer, $titlistitem_ref;
+
+                    $recordlist->add($titlistitem_ref);
+
                     $mcount++;
                 }
             } 
@@ -260,18 +264,13 @@ sub handler {
                 if ($config->{benchmark}) {
                     $a2time=new Benchmark;
                 }
-                                
+
+                my $record     = new OpenBib::Record::Title({database=>$database});
+
                 foreach my $idn (@tidns) {
-                    push @outputbuffer, OpenBib::Search::Util::get_tit_listitem_by_idn({
-                        titidn            => $idn,
-                        dbh               => $dbh,
-                        sessiondbh        => $session->{dbh},
-                        database          => $database,
-                        sessionID         => $session->{ID},
-                        targetdbinfo_ref  => $targetdbinfo_ref,
-                    });
+                    $recordlist->add($record->get_brief_record({id=>$idn})->to_rawdata);
                 }
-                
+
                 my $btime      = new Benchmark;
                 my $timeall    = timediff($btime,$atime);
                 my $resulttime = timestr($timeall,"nop");
@@ -281,16 +280,16 @@ sub handler {
                     my $b2time     = new Benchmark;
                     my $timeall2   = timediff($b2time,$a2time);
                     
-                    $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel (holen)       : ist ".timestr($timeall2));
-                    $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel (suchen+holen): ist ".timestr($timeall));
+                    $logger->info("Zeit fuer : ".($recordlist->size())." Titel (holen)       : ist ".timestr($timeall2));
+                    $logger->info("Zeit fuer : ".($recordlist->size())." Titel (suchen+holen): ist ".timestr($timeall));
                 }
             }
         }
 
-        $logger->debug("Outputbuffer\n".YAML::Dump(\@outputbuffer));
+        $logger->debug("Recordlist\n".YAML::Dump($recordlist->to_list));
         # Sortierung
-        my @sortedoutputbuffer=();
-        OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
+
+        $recordlist->sort({order=>$sortorder,type=>$sorttype});
         
         # Weitere Treffer Cachen.
         
@@ -298,10 +297,10 @@ sub handler {
         $idnresult->execute($session->{ID},$queryid,$database,$offset,$hitrange) or $logger->error($DBI::errstr);
         
         $idnresult=$session->{dbh}->prepare("insert into searchresults values (?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
-        my $storableres=unpack "H*",Storable::freeze(\@sortedoutputbuffer);
+        my $storableres=unpack "H*",Storable::freeze($recordlist->to_list);
         
-        $logger->debug("YAML-Dumped: ".YAML::Dump(\@sortedoutputbuffer));
-        my $num=$#sortedoutputbuffer+1;
+        $logger->debug("YAML-Dumped: ".YAML::Dump($recordlist->to_list));
+        my $num=$recordlist->size();
         $idnresult->execute($session->{ID},$database,$offset,$hitrange,$storableres,$num,$queryid) or $logger->error($DBI::errstr);
         $idnresult->finish();
         
@@ -312,17 +311,14 @@ sub handler {
         
         # Hash im Loginname ersetzen
         $loginname=~s/#/\%23/;
+
         
         # Eintraege merken fuer Lastresultset
-        foreach my $item_ref (@sortedoutputbuffer) {
-            push @resultset, { id       => $item_ref->{id},
-                               database => $item_ref->{database},
-                           };
-        }
+        push @resultset, @{$recordlist->to_ids};
         
         push @resultlists, {
             database   => $database,
-            resultlist => \@sortedoutputbuffer,
+            resultlist => $recordlist->to_list,
         };
         
         my @offsets = $session->get_resultlists_offsets({
@@ -374,28 +370,26 @@ sub handler {
             database => $database,
             offset   => $offset,
         })){
-            my $storableres=Storable::thaw(pack "H*", $searchresult);
-            
-            my @outputbuffer=@$storableres;
+            my $storable_ref=Storable::thaw(pack "H*", $searchresult);
 
+            my $recordlist = new OpenBib::RecordList::Title();
+
+            $recordlist->add_from_storable($storable_ref);
+                
             # Sortierung des Outputbuffers
+            
+            $recordlist->sort({order=>$sortorder,type=>$sorttype});
 
-            my @sortedoutputbuffer=();
-            OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
-
-            my $treffer=$#outputbuffer+1;
+            my $treffer=$recordlist->size();
             
             push @resultlists, {
                 database   => $database,
-                resultlist => \@sortedoutputbuffer,
+                resultlist => $recordlist->to_list,
             };
+
             
-            # Eintraege merken fuer Lastresultset
-            foreach my $item_ref (@outputbuffer) {
-                push @resultset, { id       => $item_ref->{id},
-                                   database => $database,
-                               };
-            }
+            push @resultset, @{$recordlist->to_ids};
+
         }
       
         my $loginname="";
@@ -533,23 +527,23 @@ sub handler {
         my @resultset=();
         
         if ($sortall == 1) {
-            
-            my @outputbuffer=();
+
+            my $recordlist = new OpenBib::RecordList::Title();
             
             foreach my $item_ref ($session->get_all_items_in_resultlist({
                 queryid => $queryid,
             })) {
-                my $storableres=Storable::thaw(pack "H*", $item_ref->{searchresult});
-                
-                push @outputbuffer, @$storableres;
+                my $storable_ref=Storable::thaw(pack "H*", $item_ref->{searchresult});
+
+                $recordlist->add_from_storable($storable_ref);
             }
             
-            my $treffer=$#outputbuffer+1;
+            my $treffer=$recordlist->size();
             
             # Sortierung
-            my @sortedoutputbuffer=();
-            OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
-            
+
+            $recordlist->sort({order=>$sortorder,type=>$sorttype});
+
             my $loginname="";
             my $password="";
             
@@ -564,7 +558,7 @@ sub handler {
                 stylesheet     => $stylesheet,
                 sessionID      => $session->{ID},
                 
-                resultlist     => \@sortedoutputbuffer,
+                resultlist     => $recordlist->to_list,
                 targetdbinfo   => $targetdbinfo_ref,
                 
                 loginname      => $loginname,
@@ -581,16 +575,8 @@ sub handler {
             };
             
             OpenBib::Common::Util::print_page($config->{tt_resultlists_showall_sortall_tname},$ttdata,$r);
-            
-            # Eintraege merken fuer Lastresultset
-            foreach my $item_ref (@sortedoutputbuffer) {
-                push @resultset, { id       => $item_ref->{id},
-                                   database => $item_ref->{database},
-                               };
-            }
-            
-            
-            $session->updatelastresultset(\@resultset);
+
+            $session->updatelastresultset($recordlist->to_ids);
         }
         elsif ($sortall == 0) {
             # Katalogoriertierte Sortierung
@@ -600,17 +586,19 @@ sub handler {
             foreach my $item_ref ($session->get_all_items_in_resultlist({
                 queryid => $queryid,
             })) {
-                my $storableres=Storable::thaw(pack "H*", $item_ref->{searchresult});
+                my $storable_ref=Storable::thaw(pack "H*", $item_ref->{searchresult});
                 
                 my $database=$item_ref->{dbname};
-                
-                my @outputbuffer=@$storableres;
-                
-                my $treffer=$#outputbuffer+1;
+
+                my $recordlist = new OpenBib::RecordList::Title();
+
+                $recordlist->add_from_storable($storable_ref);
+
+                my $treffer=$recordlist->size();
                 
                 # Sortierung
-                my @sortedoutputbuffer=();
-                OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
+
+                $recordlist->sort({order=>$sortorder,type=>$sorttype});
                 
                 my @offsets = $session->get_resultlists_offsets({
                     database  => $database,
@@ -620,16 +608,12 @@ sub handler {
 
                 push @resultlists, {
                     database   => $database,
-                    resultlist => \@sortedoutputbuffer,
+                    resultlist => $recordlist->to_list,
                     offsets    => \@offsets,
                 };
-                
+
                 # Eintraege merken fuer Lastresultset
-                foreach my $item_ref (@sortedoutputbuffer) {
-                    push @resultset, { id       => $item_ref->{id},
-                                       database => $item_ref->{database},
-                                   };
-                }
+                push @resultset, @{$recordlist->to_ids};
             }
             
             my $loginname="";

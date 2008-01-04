@@ -45,6 +45,7 @@ use Template;
 use OpenBib::Config;
 use OpenBib::Common::Util;
 use OpenBib::L10N;
+use OpenBib::Record::Title;
 use OpenBib::Search::Util;
 use OpenBib::Session;
 
@@ -83,34 +84,26 @@ sub handler {
         }
 
         if ($unapiid){
-            my ($database,$idn,$normset,$mexnormset,$circset);
+            my ($database,$idn,$record);
 
             if ($unapiid =~/^(\w+):(\d+)$/){
                 $database = $1;
                 $idn      = $2;
                 
                 $logger->debug("Database: $database - ID: $idn");
-                
-                my $dbh   = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
-                
-                ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn({
-                    titidn             => $idn,
-                    dbh                => $dbh,
-                    targetdbinfo_ref   => $targetdbinfo_ref,
-                    targetcircinfo_ref => {},
-                    database           => $database,
-                });
+
+                $record     = new OpenBib::Record::Title({database=>$database})->get_full_record({id=>$idn})
                 
             }
 
-            if (!exists $normset->{id}){
+            if (!exists $record->{normset}->{id}){
                 return HTTP_NOT_FOUND;
             }
             
             my $ttdata={
                 database        => $database,
                 id              => $idn,
-                normset         => $normset,
+                normset         => $record->{normset},
                 normset2bibtex  => \&OpenBib::Common::Util::normset2bibtex,
                 
                 config          => $config,

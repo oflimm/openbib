@@ -68,6 +68,12 @@ sub add {
     push @{$self->{recordlist}}, $record;
 }
 
+sub add_from_storable {
+    my ($self,$storable_ref)=@_;
+
+    push @{$self->{recordlist}}, @{$storable_ref};
+}
+
 sub sort {
     my ($self,$arg_ref)=@_;
 
@@ -265,12 +271,12 @@ sub print_to_handler {
         msg            => $msg,
     };
 
-    OpenBib::Common::Util::print_page($config->{$template},$ttdata,$r);
+    OpenBib::Common::Util::print_page($self->{config}->{$template},$ttdata,$r);
 
     return;
 }
 
-sub get_number {
+sub size {
     my ($self,$arg_ref)=@_;
 
     my @list=@{$self->{recordlist}};

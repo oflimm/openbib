@@ -90,7 +90,7 @@ sub handler {
     }
 
     if    ($do_newquery) {
-        $r->internal_redirect("http://$config->{servername}$config->{searchframe_loc}?sessionID=$session->{ID}&queryid=$queryid&view=$view");
+        $r->internal_redirect("http://$config->{servername}$config->{searchmask_loc}?sessionID=$session->{ID}&queryid=$queryid&view=$view");
         return OK;
     }
     elsif ($do_resultlist) {

@@ -441,7 +441,7 @@ sub handler {
         my @querystrings = ();
         my @queryhits    = ();
         
-        my $idnresult=$session->{dbh}->prepare("select searchresults.queryid as queryid,queries.query as query,queries.hits as hits from searchresults,queries where searchresults.sessionid = ? and searchresults.queryid=queries.queryid and searchresults.offset=0 order by queryid desc") or $logger->error($DBI::errstr);
+        my $idnresult=$session->{dbh}->prepare("select distinct searchresults.queryid as queryid,queries.query as query,queries.hits as hits from searchresults,queries where searchresults.sessionid = ? and searchresults.queryid=queries.queryid and searchresults.offset=0 order by queryid desc") or $logger->error($DBI::errstr);
         $idnresult->execute($session->{ID}) or $logger->error($DBI::errstr);
         
         my @queries=();

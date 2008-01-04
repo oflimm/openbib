@@ -124,7 +124,7 @@ sub handler {
         # Neue Datenbankauswahl ist voreingestellt
         $session->set_profile('dbauswahl');
       
-        $r->internal_redirect("http://$config->{servername}$config->{searchframe_loc}?sessionID=$session->{ID}&view=$view");
+        $r->internal_redirect("http://$config->{servername}$config->{searchmask_loc}?sessionID=$session->{ID}&view=$view");
     }
     # ... sonst anzeigen
     else {

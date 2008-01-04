@@ -43,6 +43,8 @@ use DBI;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::Record::Title;
+use OpenBib::RecordList::Title;
 use OpenBib::Search::Util;
 use OpenBib::Session;
 use OpenBib::VirtualSearch::Util;
@@ -308,24 +310,17 @@ sub handler {
             my $fullresultcount = $result_ref->{fullresultcount};
             
             if ($#tidns >= 0){
-                my @outputbuffer=();
-                
-                foreach my $idn (@tidns){
-                    push @outputbuffer, OpenBib::Search::Util::get_tit_listitem_by_idn({
-                        titidn            => $idn,
-                        dbh               => $dbh,
-                        sessiondbh        => $session->{dbh},
-                        database          => $database,
-                        sessionID         => -1,
-                        targetdbinfo_ref  => $targetdbinfo_ref,
-                    });
+
+                my $recordlist = new OpenBib::RecordList::Title();
+                my $record     = new OpenBib::Record::Title({database=>$database});
+
+                foreach my $idn (@tidns) {
+                    $recordlist->add($record->get_brief_record({id=>$idn})->to_rawdata);
                 }
                 
-                my @sortedoutputbuffer=();
+                $recordlist->sort({order=>$sortorder,type=>$sorttype});
                 
-                OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@sortedoutputbuffer);
-                
-                push @ergebnisse, @sortedoutputbuffer;
+                push @ergebnisse, @{$recordlist->to_list};
             }
         }
 
@@ -466,14 +461,9 @@ sub handler {
         print $r->send_http_header("text/html");
         
         my $dbh   = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
-        
-        my ($normset,$mexnormset,$circset)=OpenBib::Search::Util::get_tit_set_by_idn({
-            titidn             => $idn,
-            dbh                => $dbh,
-            targetdbinfo_ref   => $targetdbinfo_ref,
-            targetcircinfo_ref => {},
-            database           => $database,
-        });
+
+        my $record = OpenBib::Record::Title->new({database=>$database})
+                      ->get_full_record({id=>$idn});
 
         $session->log_event({
             type      => 10,
@@ -486,10 +476,10 @@ sub handler {
         
         # Quelle besetzt?
 
-        my ($sbnormset,$sbmexnormset,$sbcircset);
+        my $sbrecord;
         my $has_sb=0;
         
-        if (exists $normset->{'T0590'}){
+        if (exists $record->{normset}->{'T0590'}){
 
             $logger->debug("Satz hat 590");
             my $reqstring="select distinct targetid from conn where sourceid=? and sourcetype=1 and targettype=1";
@@ -505,13 +495,9 @@ sub handler {
 
             $logger->debug("Sbid ist $sbid");
             if ($sbid){
-                ($sbnormset,$sbmexnormset,$sbcircset)=OpenBib::Search::Util::get_tit_set_by_idn({
-                    titidn             => $sbid,
-                    dbh                => $dbh,
-                    targetdbinfo_ref   => $targetdbinfo_ref,
-                    targetcircinfo_ref => {},
-                    database           => $database,
-                });                
+                $sbrecord = OpenBib::Record::Title->new({database=>$database})
+                    ->get_full_record({id=>$sbid});
+
                 $has_sb=1;
             }
         }            
@@ -535,11 +521,11 @@ sub handler {
         
         # TT-Data erzeugen
         my $ttdata={
-            item         => $normset,
-            itemmex      => $mexnormset,
+            item         => $record->{normset},
+            itemmex      => $record->{mexnormset},
             has_sb       => $has_sb,
-            sbitem       => $sbnormset,
-            sbitemmex    => $sbmexnormset,
+            sbitem       => $sbrecord->{normset},
+            sbitemmex    => $sbrecord->{mexnormset},
             targetdbinfo => $targetdbinfo_ref,
             database     => $database,
 

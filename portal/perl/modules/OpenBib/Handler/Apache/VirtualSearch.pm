@@ -52,6 +52,8 @@ use OpenBib::Common::Util;
 use OpenBib::Common::Stopwords;
 use OpenBib::Config;
 use OpenBib::L10N;
+use OpenBib::Record::Title;
+use OpenBib::RecordList::Title;
 use OpenBib::Search::Local::Xapian;
 use OpenBib::Search::Z3950;
 use OpenBib::Session;
@@ -663,9 +665,9 @@ sub handler {
     my $cacherequest=$session->{dbh}->prepare("insert into searchresults values (?,?,?,?,?)") or $logger->error($DBI::errstr);
 
     foreach my $database (@databases) {
-
+        
         # Trefferliste
-        my @resultlist=();
+        my $recordlist = new OpenBib::RecordList::Title();
 
         if ($config->get_system_of_db($database) eq "Z39.50"){
             my $atime=new Benchmark;
@@ -688,12 +690,10 @@ sub handler {
                 if ($config->{benchmark}) {
                     $a2time=new Benchmark;
                 }
-                
-                my @outputbuffer=();
 
                 my $end=($fullresultcount < $z3950dbh->{hitrange})?$fullresultcount:$z3950dbh->{hitrange};
                 
-                @outputbuffer = $z3950dbh->get_resultlist(0,$end);
+                $recordlist = $z3950dbh->get_resultlist(0,$end);
                 
                 my $btime      = new Benchmark;
                 my $timeall    = timediff($btime,$atime);
@@ -704,20 +704,16 @@ sub handler {
                     my $b2time     = new Benchmark;
                     my $timeall2   = timediff($b2time,$a2time);
                     
-                    $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel (holen)       : ist ".timestr($timeall2));
-                    $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel (suchen+holen): ist ".timestr($timeall));
+                    $logger->info("Zeit fuer : ".($recordlist->size())." Titel (holen)       : ist ".timestr($timeall2));
+                    $logger->info("Zeit fuer : ".($recordlist->size())." Titel (suchen+holen): ist ".timestr($timeall));
                 }
-                
-                OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@resultlist);
 
-                # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
-                foreach my $item_ref (@resultlist) {
-                    push @resultset, { id       => $item_ref->{id},
-                                       database => $item_ref->{database},
-                                   };
-                }
+                $recordlist->sort({order=>$sortorder,type=>$sorttype});
                 
-                my $treffer=$#outputbuffer+1;
+                # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
+                push @resultset, @{$recordlist->to_ids};
+                
+                my $treffer=$recordlist->size();
                 
                 my $itemtemplatename=$config->{tt_virtualsearch_result_item_tname};
                 if ($view && -e "$config->{tt_include_path}/views/$view/$itemtemplatename") {
@@ -734,8 +730,6 @@ sub handler {
                         INCLUDE_PATH   => $config->{tt_include_path},
                         ABSOLUTE       => 1,
                     }) ],
-                    #                INCLUDE_PATH   => $config->{tt_include_path},
-                    #                ABSOLUTE       => 1,
                     RECURSION      => 1,
                     OUTPUT         => $r,
                 });
@@ -755,7 +749,7 @@ sub handler {
                     queryid         => $queryid,
                     qopts           => $queryoptions_ref,
                     fullresultcount => $fullresultcount,
-                    resultlist      => \@resultlist,
+                    resultlist      => $recordlist->to_list,
                     
                     sorttype        => $sorttype,
                     sortorder       => $sortorder,
@@ -769,7 +763,7 @@ sub handler {
                     return SERVER_ERROR;
                 };
                 
-                $trefferpage{$database} = \@resultlist;
+                $trefferpage{$database} = $recordlist->to_list;
                 $dbhits     {$database} = $treffer;
                 $gesamttreffer          = $gesamttreffer+$treffer;
                 
@@ -825,9 +819,7 @@ sub handler {
                     my $category_map_ref = ();
 
                     if ($fullresultcount >= 1) {
-                        
-                        my @outputbuffer=();
-                        
+
                         my $rset=Search::Xapian::RSet->new() if ($drilldown && $drilldown_cloud);
                         my $mcount=0;
 
@@ -843,7 +835,8 @@ sub handler {
                                 my $document        = $match->get_document();
                                 my $titlistitem_raw = pack "H*", $document->get_data();
                                 my $titlistitem_ref = Storable::thaw($titlistitem_raw);
-                                push @outputbuffer, $titlistitem_ref;
+
+                                $recordlist->add($titlistitem_ref);
                             }
                             $mcount++;
                         }
@@ -920,24 +913,21 @@ sub handler {
                                 }
                             }
                             
-                            $logger->debug(YAML::Dump(\@outputbuffer));
+                            $logger->debug(YAML::Dump($recordlist->to_list));
 
                             my $ddbtime       = new Benchmark;
                             my $ddtimeall     = timediff($ddbtime,$ddatime);
                             $drilldowntime    = timestr($ddtimeall,"nop");
                             $drilldowntime    =~s/(\d+\.\d+) .*/$1/;
                         }
-                        
-                        OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@resultlist);
+
+                        $recordlist->sort({order=>$sortorder,type=>$sorttype});
+
                         
                         # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
-                        foreach my $item_ref (@resultlist) {
-                            push @resultset, { id       => $item_ref->{id},
-                                               database => $item_ref->{database},
-                                           };
-                        }
+                        push @resultset, @{$recordlist->to_ids};
                         
-                        my $treffer=$#resultlist+1;
+                        my $treffer=$recordlist->size();
                         
                         my $itemtemplatename=$config->{tt_virtualsearch_result_item_tname};
                         if ($view && -e "$config->{tt_include_path}/views/$view/$itemtemplatename") {
@@ -975,7 +965,7 @@ sub handler {
 			    category_map    => $category_map_ref,
 
                             fullresultcount => $fullresultcount,
-                            resultlist      => \@resultlist,
+                            resultlist      => $recordlist->to_list,
                             
                             qopts           => $queryoptions_ref,
                             drilldown             => $drilldown,
@@ -998,7 +988,7 @@ sub handler {
                             return SERVER_ERROR;
                         };
                         
-                        $trefferpage{$database} = \@resultlist;
+                        $trefferpage{$database} = $recordlist->to_list;
                         $dbhits     {$database} = $treffer;
                         $gesamttreffer          = $gesamttreffer+$treffer;
                         
@@ -1042,17 +1032,10 @@ sub handler {
                         $a2time=new Benchmark;
                     }
 
-                    my @outputbuffer=();
+                    my $record     = new OpenBib::Record::Title({database=>$database});
 
                     foreach my $idn (@tidns) {
-                        push @outputbuffer, OpenBib::Search::Util::get_tit_listitem_by_idn({
-                            titidn            => $idn,
-                            dbh               => $dbh,
-                            sessiondbh        => $session->{dbh},
-                            database          => $database,
-                            sessionID         => $session->{ID},
-                            targetdbinfo_ref  => $targetdbinfo_ref,
-                        });
+                        $recordlist->add($record->get_brief_record({id=>$idn})->to_rawdata);
                     }
 
                     my $btime      = new Benchmark;
@@ -1064,20 +1047,16 @@ sub handler {
                         my $b2time     = new Benchmark;
                         my $timeall2   = timediff($b2time,$a2time);
 
-                        $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel (holen)       : ist ".timestr($timeall2));
-                        $logger->info("Zeit fuer : ".($#outputbuffer+1)." Titel (suchen+holen): ist ".timestr($timeall));
+                        $logger->info("Zeit fuer : ".($recordlist->size())." Titel (holen)       : ist ".timestr($timeall2));
+                        $logger->info("Zeit fuer : ".($recordlist->size())." Titel (suchen+holen): ist ".timestr($timeall));
                     }
 
-                    OpenBib::Common::Util::sort_buffer($sorttype,$sortorder,\@outputbuffer,\@resultlist);
+                    $recordlist->sort({order=>$sortorder,type=>$sorttype});
 
                     # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
-                    foreach my $item_ref (@resultlist) {
-                        push @resultset, { id       => $item_ref->{id},
-                                           database => $item_ref->{database},
-                                       };
-                    }
+                    push @resultset, @{$recordlist->to_ids};
 	    
-                    my $treffer=$#resultlist+1;
+                    my $treffer=$recordlist->size();
 
                     my $itemtemplatename=$config->{tt_virtualsearch_result_item_tname};
                     if ($view && -e "$config->{tt_include_path}/views/$view/$itemtemplatename") {
@@ -1114,7 +1093,7 @@ sub handler {
                         queryid         => $queryid,
                         qopts           => $queryoptions_ref,
                         fullresultcount => $fullresultcount,
-                        resultlist      => \@resultlist,
+                        resultlist      => $recordlist->to_list,
 
                         sorttype        => $sorttype,
                         sortorder       => $sortorder,
@@ -1128,7 +1107,7 @@ sub handler {
                         return SERVER_ERROR;
                     };
 
-                    $trefferpage{$database} = \@resultlist;
+                    $trefferpage{$database} = $recordlist->to_list;
                     $dbhits     {$database} = $treffer;
                     $gesamttreffer          = $gesamttreffer+$treffer;
 

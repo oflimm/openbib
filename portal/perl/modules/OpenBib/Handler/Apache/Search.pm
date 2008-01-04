@@ -52,6 +52,7 @@ use OpenBib::Record::Person;
 use OpenBib::Record::CorporateBody;
 use OpenBib::Record::Subject;
 use OpenBib::Record::Classification;
+use OpenBib::RecordList::Title;
 use OpenBib::Session;
 
 my $benchmark;
@@ -316,7 +317,7 @@ sub handler {
                 if ($config->{benchmark}) {
                     $btime   = new Benchmark;
                     $timeall = timediff($btime,$atime);
-                    $logger->info("Zeit fuer : ".($recordlist->get_number)." Titel : ist ".timestr($timeall));
+                    $logger->info("Zeit fuer : ".($recordlist->size())." Titel : ist ".timestr($timeall));
                     undef $atime;
                     undef $btime;
                     undef $timeall;

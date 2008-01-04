@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Connector::OLWS.pm
 #
-#  Dieses File ist (C) 2005-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2005-2007 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -42,7 +42,6 @@ use SOAP::Transport::HTTP;
 
 my $server = SOAP::Transport::HTTP::Apache
     -> dispatch_with({
-        'urn:/Search'         => 'OpenBib::Connector::OLWS::Search',
         'urn:/Admin'          => 'OpenBib::Connector::OLWS::Admin',
     });
 

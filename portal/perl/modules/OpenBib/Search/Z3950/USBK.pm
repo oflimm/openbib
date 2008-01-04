@@ -47,6 +47,7 @@ use Storable;
 use YAML ();
 
 use OpenBib::Search::Z3950::USBK::Config;
+use OpenBib::RecordList::Title;
 use OpenBib::Config;
 
 sub new {
@@ -135,7 +136,8 @@ sub get_resultlist {
     # Pre-Cache Results
     $self->{rs}->records($offset, $self->{hitrange}, 0);
     
-    my @resultlist=();
+    my $resultlist=new OpenBib::RecordList::Title();
+    
     foreach my $i ($start..$end) {
         my $rec  = $self->{rs}->record($i-1);
 
@@ -144,12 +146,12 @@ sub get_resultlist {
         $logger->debug("Raw Record: ".$rrec);
 
         
-        push @resultlist, $self->to_openbib_list($rrec);
+        $resultlist->add($self->to_openbib_list($rrec));
     }
 
-    $logger->debug(YAML::Dump(\@resultlist));
+    $logger->debug(YAML::Dump($resultlist->to_list));
 
-    return @resultlist;
+    return $resultlist;
 }
 
 sub get_singletitle {

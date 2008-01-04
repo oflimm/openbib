@@ -45,7 +45,7 @@ use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Config;
 
-my ($singlepool,$getfromremote,$help,$logfile);
+my ($singlepool,$sync,$help,$logfile);
 
 &GetOptions("single-pool=s"   => \$singlepool,
             "logfile=s"       => \$logfile,

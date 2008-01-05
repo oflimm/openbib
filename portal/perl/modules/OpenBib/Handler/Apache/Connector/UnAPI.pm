@@ -96,14 +96,14 @@ sub handler {
                 
             }
 
-            if (!exists $record->{normset}->{id}){
+            if (!exists $record->get_normdata->{id}){
                 return HTTP_NOT_FOUND;
             }
             
             my $ttdata={
                 database        => $database,
                 id              => $idn,
-                normset         => $record->{normset},
+                normset         => $record->get_normdata,
                 normset2bibtex  => \&OpenBib::Common::Util::normset2bibtex,
                 
                 config          => $config,

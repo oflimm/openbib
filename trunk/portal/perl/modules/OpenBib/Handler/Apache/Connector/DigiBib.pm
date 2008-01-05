@@ -521,11 +521,11 @@ sub handler {
         
         # TT-Data erzeugen
         my $ttdata={
-            item         => $record->{normset},
-            itemmex      => $record->{mexnormset},
+            item         => $record->get_normdata,
+            itemmex      => $record->get_mexdata,
             has_sb       => $has_sb,
-            sbitem       => $sbrecord->{normset},
-            sbitemmex    => $sbrecord->{mexnormset},
+            sbitem       => $sbrecord->get_normdata,
+            sbitemmex    => $sbrecord->get_mexdata,
             targetdbinfo => $targetdbinfo_ref,
             database     => $database,
 

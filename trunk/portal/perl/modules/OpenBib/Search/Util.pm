@@ -81,15 +81,16 @@ sub print_mult_tit_set_by_idn {
     
     my @titsets=();
 
+    my $record = new OpenBib::Record::Title({database=>$database});
+
     foreach my $titidn (@$titidns_ref) {
-        my $record = OpenBib::Record::Title->new({database=>$database})
-            ->get_full_record({id=>$titidn});
+        $record->get_full_record({id=>$titidn});
 
         my $thisset={
             titidn     => $titidn,
-            normset    => $record->{normset},
-            mexnormset => $record->{mexnormset},
-            circset    => $record->{circset},
+            normset    => $record->get_normdata,
+            mexnormset => $record->get_mexdata,
+            circset    => $record->get_circdata,
         };
         push @titsets, $thisset;
     }

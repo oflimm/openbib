@@ -174,9 +174,9 @@ sub handler {
             database => $database,
             dbdesc   => $targetdbinfo_ref->{dbinfo}{$database},
             titidn   => $singleidn,
-            tit      => $record->{normset},
-            mex      => $record->{mexnormset},
-            circ     => $record->{circset},
+            tit      => $record->get_normdata,
+            mex      => $record->get_mexdata,
+            circ     => $record->get_circdata,
         };
     }
     

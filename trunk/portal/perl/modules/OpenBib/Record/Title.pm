@@ -737,6 +737,30 @@ sub get_brief_record {
 
 }
 
+sub get_normdata {
+    my ($self)=@_;
+
+    return $self->{normset}
+}
+
+sub get_mexdata {
+    my ($self)=@_;
+
+    return $self->{mexset}
+}
+
+sub get_circdata {
+    my ($self)=@_;
+
+    return $self->{circset}
+}
+
+sub get_brief_normdata {
+    my ($self)=@_;
+
+    return $self->{brief_normset}
+}
+
 sub print_to_handler {
     my ($self,$arg_ref)=@_;
 

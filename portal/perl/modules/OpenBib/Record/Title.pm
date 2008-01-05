@@ -91,10 +91,10 @@ sub get_full_record {
     my $logger = get_logger();
 
     # (Re-)Initialisierung
-    delete $self->{normset}       if (exists $self->{normset});
-    delete $self->{mexset}        if (exists $self->{mexset});
-    delete $self->{circset}       if (exists $self->{circset});
-    delete $self->{brief_normset} if (exists $self->{brief_normset});
+    delete $self->{_normset}       if (exists $self->{_normset});
+    delete $self->{_mexset}        if (exists $self->{_mexset});
+    delete $self->{_circset}       if (exists $self->{_circset});
+    delete $self->{_brief_normset} if (exists $self->{_brief_normset});
 
     my $normset_ref={};
 
@@ -394,7 +394,7 @@ sub get_full_record {
     }
 
     $logger->debug(YAML::Dump($normset_ref));
-    ($self->{normset},$self->{mexset},$self->{circset})=($normset_ref,$mexnormset_ref,\@circexemplarliste);
+    ($self->{_normset},$self->{_mexset},$self->{_circset})=($normset_ref,$mexnormset_ref,\@circexemplarliste);
 
     return $self;
 }
@@ -410,10 +410,10 @@ sub get_brief_record {
     my $logger = get_logger();
 
     # (Re-)Initialisierung
-    delete $self->{normset}       if (exists $self->{normset});
-    delete $self->{mexset}        if (exists $self->{mexset});
-    delete $self->{circset}       if (exists $self->{circset});
-    delete $self->{brief_normset} if (exists $self->{brief_normset});
+    delete $self->{_normset}       if (exists $self->{_normset});
+    delete $self->{_mexset}        if (exists $self->{_mexset});
+    delete $self->{_circset}       if (exists $self->{_circset});
+    delete $self->{_brief_normset} if (exists $self->{_brief_normset});
     
     my $listitem_ref={};
     
@@ -730,7 +730,7 @@ sub get_brief_record {
 
     $logger->debug(YAML::Dump($listitem_ref));
 
-    $self->{brief_normset}=$listitem_ref;
+    $self->{_brief_normset}=$listitem_ref;
 
     return $self;
 
@@ -740,25 +740,25 @@ sub get_brief_record {
 sub get_normdata {
     my ($self)=@_;
 
-    return $self->{normset}
+    return $self->{_normset}
 }
 
 sub get_mexdata {
     my ($self)=@_;
 
-    return $self->{mexset}
+    return $self->{_mexset}
 }
 
 sub get_circdata {
     my ($self)=@_;
 
-    return $self->{circset}
+    return $self->{_circset}
 }
 
 sub get_brief_normdata {
     my ($self)=@_;
 
-    return $self->{brief_normset}
+    return $self->{_brief_normset}
 }
 
 sub print_to_handler {
@@ -816,9 +816,9 @@ sub print_to_handler {
         queryid     => $queryid,
         sessionID   => $session->{ID},
         titidn      => $self->{id},
-        normset     => $self->{normset},
-        mexnormset  => $self->{mexnormset},
-        circset     => $self->{circset},
+        normset     => $self->{_normset},
+        mexnormset  => $self->{_mexset},
+        circset     => $self->{_circset},
         searchquery => $searchquery_ref,
         activefeed  => $self->{config}->get_activefeeds_of_db($self->{database}),
 
@@ -1214,11 +1214,11 @@ sub utf2bibtex {
 sub to_rawdata {
     my ($self) = @_;
 
-    if (exists $self->{brief_normset}){
-        return $self->{brief_normset};
+    if (exists $self->{_brief_normset}){
+        return $self->{_brief_normset};
     }
     else {
-        return ($self->{normset},$self->{mexset},$self->{circset});
+        return ($self->{_normset},$self->{_mexset},$self->{_circset});
     }
 }
 

@@ -90,6 +90,12 @@ sub get_full_record {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    # (Re-)Initialisierung
+    delete $self->{normset}       if (exists $self->{normset});
+    delete $self->{mexset}        if (exists $self->{mexset});
+    delete $self->{circset}       if (exists $self->{circset});
+    delete $self->{brief_normset} if (exists $self->{brief_normset});
+
     my $normset_ref={};
 
     $self->{id      }        = $id;
@@ -403,7 +409,11 @@ sub get_brief_record {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $logger->debug("Getting ID $id");
+    # (Re-)Initialisierung
+    delete $self->{normset}       if (exists $self->{normset});
+    delete $self->{mexset}        if (exists $self->{mexset});
+    delete $self->{circset}       if (exists $self->{circset});
+    delete $self->{brief_normset} if (exists $self->{brief_normset});
     
     my $listitem_ref={};
     

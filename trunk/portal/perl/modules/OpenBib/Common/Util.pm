@@ -333,36 +333,6 @@ sub get_searchterms {
     return $term_ref;
 }
 
-sub get_searchquery_of_queryid {
-    my ($arg_ref) = @_;
-    
-    # Set defaults
-    my $queryid   = exists $arg_ref->{queryid}
-        ? $arg_ref->{queryid}             : "";
-
-    my $sessionID = exists $arg_ref->{sessionID}
-        ? $arg_ref->{sessionID}           : "";
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    return unless ($queryid && $sessionID);
-
-    my $session = new OpenBib::Session({
-        sessionID => $sessionID
-    });
-
-    my $request = $session->{dbh}->prepare("select query from queries where queryid=? and sessionid=?");
-    $request->execute($queryid,$sessionID);
-
-    my $result=$request->fetchrow_hashref;
-
-    my $searchquery_ref=Storable::thaw(pack "H*",$result->{query});
-
-    return $searchquery_ref;
-}
-
-
 sub get_searchquery {
     my ($r)=@_;
     

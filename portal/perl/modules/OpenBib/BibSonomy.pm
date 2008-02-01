@@ -65,10 +65,13 @@ sub new {
     
     $self->{config}  = $config;
 
-    $api_key = (defined $api_key)?$api_key:(defined $self->{config}->{bibsonomy_api_key})?$self->{bibsonomy_api_key}:undef;
+    $api_user = (defined $api_user)?$api_user:(defined $self->{config}->{bibsonomy_api_user})?$self->{config}->{bibsonomy_api_user}:undef;
+    $api_key  = (defined $api_key )?$api_key :(defined $self->{config}->{bibsonomy_api_key} )?$self->{config}->{bibsonomy_api_key} :undef;
 
     $self->{client}  = LWP::UserAgent->new;            # HTTP client
 
+    $logger->debug("Authenticating with credentials $api_user/$api_key");
+    
     $self->{client}->credentials(                      # HTTP authentication
         'www.bibsonomy.org:80',
         'BibSonomyWebService',
@@ -107,6 +110,8 @@ sub get_posts {
     
     my $response = $self->{client}->get($url)->content;
 
+    $logger->debug("Response: $response");
+    
     my $parser = XML::LibXML->new();
     my $tree   = $parser->parse_string($response);
     my $root   = $tree->getDocumentElement;
@@ -149,7 +154,7 @@ sub get_posts {
     }
 
     
-    $logger->debug("Response: ".YAML::Dump($self->{posts}));
+    $logger->debug("Response / Posts: ".YAML::Dump($self->{posts}));
     
     return $self;
 }
@@ -161,7 +166,8 @@ sub get_tags_of_posts {
     foreach my $singlepost_ref (@{$self->{posts}}){
         push @tags, @{$singlepost_ref->{tags}};
     }
-                                
+
+    
     return @tags;
 }
 

@@ -70,7 +70,7 @@ sub handler {
         sessionID => $query->param('sessionID'),
     });
 
-    my $user      = new OpenBib::User({sessionID => $session->{ID}});
+    my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
     
     my $useragent=$r->subprocess_env('HTTP_USER_AGENT');
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
@@ -128,46 +128,10 @@ sub handler {
 
     my $viewdesc = $config->get_viewdesc_from_viewname($view);
   
-    my $hits;
-    my $searchquery_ref;
+    my ($searchquery_ref,$hits);
 
     if ($queryid ne "") {
-        my $idnresult=$session->{dbh}->prepare("select query,hits from queries where queryid = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($queryid) or $logger->error($DBI::errstr);
-    
-        my $result       = $idnresult->fetchrow_hashref();
-        $searchquery_ref = Storable::thaw(pack "H*",$result->{query});
-        $hits            = decode_utf8($result->{'hits'});
-
-        $idnresult->finish();
-
-#         $thisquery.="SWT: $swt "        if ($swt);
-#         $thisquery.="KOR: $kor "        if ($kor);
-#         $thisquery.="NOT: $notation "   if ($notation);
-#         $thisquery.="SIG: $sign "       if ($sign);
-#         $thisquery.="EJAHR: $ejahr "    if ($ejahr);
-#         $thisquery.="ISBN: $isbn "      if ($isbn);
-#         $thisquery.="ISSN: $issn "      if ($issn);
-#         $thisquery.="MART: $mart "      if ($mart);
-#         $thisquery.="HSTR: $hststring " if ($hststring);
-#         $thisquery.="= Treffer: $hits"  if ($hits);
-
-#         # Plus-Zeichen entfernen
-    
-#         $verf  =~s/%2B(\w+)/$1/g;
-#         $hst   =~s/%2B(\w+)/$1/g;
-#         $kor   =~s/%2B(\w+)/$1/g;
-#         $ejahr =~s/%2B(\w+)/$1/g;
-#         $isbn  =~s/%2B(\w+)/$1/g;
-#         $issn  =~s/%2B(\w+)/$1/g;
-
-#         $verf  =~s/\+(\w+)/$1/g;
-#         $hst   =~s/\+(\w+)/$1/g;
-#         $kor   =~s/\+(\w+)/$1/g;
-#         $ejahr =~s/\+(\w+)/$1/g;
-#         $isbn  =~s/\+(\w+)/$1/g;
-#         $issn  =~s/\+(\w+)/$1/g;
-    
+        ($searchquery_ref,$hits) = $session->get_searchquery($queryid);
     }
     else {
         OpenBib::Common::Util::print_warning($msg->maketext("Keine gültige Anfrage-ID"),$r,$msg);
@@ -176,19 +140,8 @@ sub handler {
 
     # Haben wir eine Benutzernummer? Dann versuchen wir den 
     # Authentifizierten Sprung in die Digibib
-    my $loginname = "";
-    my $password  = "";
 
-    my $globalsessionID="$config->{servername}:$session->{ID}";
-    my $userresult=$user->{dbh}->prepare("select user.loginname,user.pin from usersession,user where usersession.sessionid = ? and user.userid=usersession.userid") or die "Error -- $DBI::errstr";
- 
-    $userresult->execute($globalsessionID);
-
-    while (my $res  = $userresult->fetchrow_hashref()){
-        $loginname = decode_utf8($res->{'loginname'});
-        $password  = decode_utf8($res->{'pin'});
-    }
-    $userresult->finish();
+    my ($loginname,$password) = $user->get_credentials();
 
     my $authurl="";
     unless (defined $loginname && defined $password && Email::Valid->address($loginname)){

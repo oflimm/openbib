@@ -138,25 +138,11 @@ sub handler {
         my $idnresult="";
 
         if ($user->{ID}) {
-            $idnresult=$user->{dbh}->prepare("select * from treffer where userid = ? order by dbname") or $logger->error($DBI::errstr);
-            $idnresult->execute($user->{ID}) or $logger->error($DBI::errstr);
+            push @dbidnlist, $session->get_items_in_collection();
         }
         else {
-            $idnresult=$session->{dbh}->prepare("select * from treffer where sessionid = ? order by dbname") or $logger->error($DBI::errstr);
-            $idnresult->execute($session->{ID}) or $logger->error($DBI::errstr);
+            push @dbidnlist, $session->get_items_in_collection()
         }
-
-        while (my $result=$idnresult->fetchrow_hashref()) {
-            my $database  = decode_utf8($result->{'dbname'});
-            my $singleidn = decode_utf8($result->{'singleidn'});
-	
-            push @dbidnlist, {
-                database  => $database,
-                singleidn => $singleidn,
-            };
-        }
-
-        $idnresult->finish();
     }      
 
     my @collection=();

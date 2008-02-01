@@ -54,7 +54,7 @@ sub handler {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = new OpenBib::Config();
+    my $config = OpenBib::Config->instance;
     
     my $query=Apache::Request->instance($r);
 
@@ -169,56 +169,29 @@ sub handler {
             return OK;
         }
 
-        my $profilresult=$user->{dbh}->prepare("select profilid,count(profilid) as rowcount from userdbprofile where userid = ? and profilename = ? group by profilid") or $logger->error($DBI::errstr);
-        $profilresult->execute($user->{ID},$newprofile) or $logger->error($DBI::errstr);
-        my $res=$profilresult->fetchrow_hashref();
-        
-        my $numrows=$res->{rowcount};
-    
-        my $profilid="";
+        my $profilid = $user->dbprofile_exists($newprofile);
 
-        if ($numrows > 0){
-            $profilid = decode_utf8($res->{'profilid'});
-        }
         # Wenn noch keine Profilid (=kein Profil diesen Namens)
         # existiert, dann wird eins erzeugt.
-        else {
-            my $profilresult2=$user->{dbh}->prepare("insert into userdbprofile values (NULL,?,?)") or $logger->error($DBI::errstr);
-      
-            $profilresult2->execute($newprofile,$user->{ID}) or $logger->error($DBI::errstr);
-            $profilresult2=$user->{dbh}->prepare("select profilid from userdbprofile where userid = ? and profilename = ?") or $logger->error($DBI::errstr);
-      
-            $profilresult2->execute($user->{ID},$newprofile) or $logger->error($DBI::errstr);
-            my $res=$profilresult2->fetchrow_hashref();
-            $profilid = decode_utf8($res->{'profilid'});
-      
-            $profilresult2->finish();
+        unless ($profilid) {
+            $profilid = $user->new_dbprofile($newprofile);
         }
     
         # Jetzt habe ich eine profilid und kann Eintragen
         # Auswahl wird immer durch aktuelle ueberschrieben.
         # Daher erst potentiell loeschen
-        $profilresult=$user->{dbh}->prepare("delete from profildb where profilid = ?") or $logger->error($DBI::errstr);
-        $profilresult->execute($profilid) or $logger->error($DBI::errstr);
+        $user->delete_profiledbs($profilid);
     
         foreach my $database (@databases) {
             # ... und dann eintragen
-      
-            my $profilresult=$user->{dbh}->prepare("insert into profildb (profilid,dbname) values (?,?)") or $logger->error($DBI::errstr);
-            $profilresult->execute($profilid,$database) or $logger->error($DBI::errstr);
-            $profilresult->finish();
+            $user->add_profiledb($profilid,$database);
         }
         $r->internal_redirect("http://$config->{servername}$config->{databaseprofile_loc}?sessionID=$session->{ID}&do_showprofile=1");
     }
     # Loeschen eines Profils
     elsif ($do_delprofile) {
-        my $profilresult=$user->{dbh}->prepare("delete from userdbprofile where userid = ? and profilid = ?") or $logger->error($DBI::errstr);
-        $profilresult->execute($user->{ID},$profilid) or $logger->error($DBI::errstr);
-    
-        $profilresult=$user->{dbh}->prepare("delete from profildb where profilid = ?") or $logger->error($DBI::errstr);
-        $profilresult->execute($profilid) or $logger->error($DBI::errstr);
-    
-        $profilresult->finish();
+        $user->delete_dbprofile($profilid);
+        $user->delete_profiledbs($profilid);
 
         $r->internal_redirect("http://$config->{servername}$config->{databaseprofile_loc}?sessionID=$session->{ID}&do_showprofile=1");
     }

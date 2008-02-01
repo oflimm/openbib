@@ -148,28 +148,16 @@ sub handler {
         if ($loginname eq "" || $password eq "") {
             $loginfailed=1;
         }
-   
-        my $targetresult=$user->{dbh}->prepare("select * from logintarget where targetid = ?") or $logger->error($DBI::errstr);
-        $targetresult->execute($targetid) or $logger->error($DBI::errstr);
+
+        my $logintarget_ref = $user->get_logintarget_by_id($targetid);
     
-        my $hostname    = "";
-        my $port        = "";
-        my $username    = "";
-        my $db          = "";
-        my $description = "";
-        my $type        = "";
+        my $hostname    = $logintarget_ref->{hostname};
+        my $port        = $logintarget_ref->{port};
+        my $username    = $logintarget_ref->{username};
+        my $db          = $logintarget_ref->{dbname};
+        my $description = $logintarget_ref->{description};
+        my $type        = $logintarget_ref->{type};
   
-        while (my $result=$targetresult->fetchrow_hashref()) {
-            $hostname    = decode_utf8($result->{'hostname'});
-            $port        = decode_utf8($result->{'port'});
-            $username    = decode_utf8($result->{'user'});
-            $db          = decode_utf8($result->{'db'});
-            $description = decode_utf8($result->{'description'});
-            $type        = decode_utf8($result->{'type'});
-        }
-
-        $targetresult->finish();
-
         $logger->debug("Hostname: $hostname Port: $port Username: $username DB: $db Description: $description Type: $type");
         
         ## Ausleihkonfiguration fuer den Katalog einlesen
@@ -198,27 +186,24 @@ sub handler {
             else {
                 my $userid;
 
-                my $userresult=$user->{dbh}->prepare("select count(userid) as rowcount from user where loginname = ?") or $logger->error($DBI::errstr);
-                $userresult->execute($loginname) or $logger->error($DBI::errstr);
-                my $res=$userresult->fetchrow_hashref;
-                my $rows=$res->{rowcount};
-
                 # Eintragen, wenn noch nicht existent
-                if ($rows <= 0) {
+                if (!$user->user_exists($loginname)) {
                     # Neuen Satz eintragen
-                    $userresult=$user->{dbh}->prepare("insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','','','')") or $logger->error($DBI::errstr);
-                    $userresult->execute($loginname,$password) or $logger->error($DBI::errstr);
+                    $user->add({
+                        loginname => $loginname,
+                        password  => $password,
+                    });
                 }
                 else {
-                    # Neuen Satz eintragen
-                    $userresult=$user->{dbh}->prepare("update user set pin = ? where loginname = ?") or $logger->error($DBI::errstr);
-                    $userresult->execute($password,$loginname) or $logger->error($DBI::errstr);
+                    # Satz aktualisieren
+                    $user->set_credentials({
+                        loginname => $loginname,
+                        password  => $password,
+                    });
                 }
 
                 # Benuzerinformationen eintragen
-                $userresult=$user->{dbh}->prepare("update user set nachname = ?, vorname = ?, strasse = ?, ort = ?, plz = ?, soll = ?, gut = ?, avanz = ?, branz = ?, bsanz = ?, vmanz = ?, maanz = ?, vlanz = ?, sperre = ?, sperrdatum = ?, gebdatum = ? where loginname = ?") or $logger->error($DBI::errstr);
-                $userresult->execute($userinfo{'Nachname'},$userinfo{'Vorname'},$userinfo{'Strasse'},$userinfo{'Ort'},$userinfo{'PLZ'},$userinfo{'Soll'},$userinfo{'Guthaben'},$userinfo{'Avanz'},$userinfo{'Branz'},$userinfo{'Bsanz'},$userinfo{'Vmanz'},$userinfo{'Maanz'},$userinfo{'Vlanz'},$userinfo{'Sperre'},$userinfo{'Sperrdatum'},$userinfo{'Geburtsdatum'},$loginname) or $logger->error($DBI::errstr);
-                $userresult->finish();
+                $user->set_private_info($loginname,$userinfo_ref);
             }
         }
         elsif ($type eq "self") {
@@ -238,64 +223,34 @@ sub handler {
         if (!$loginfailed) {
             # Jetzt wird die Session mit der Benutzerid assoziiert
             my $userid = $user->get_userid_for_username($loginname);
-            
-            # Es darf keine Session assoziiert sein. Daher stumpf loeschen
-            my $globalsessionID="$config->{servername}:$session->{ID}";
-            my $userresult=$user->{dbh}->prepare("delete from usersession where sessionid = ?") or $logger->error($DBI::errstr);
-            $userresult->execute($globalsessionID) or $logger->error($DBI::errstr);
-      
-            $userresult=$user->{dbh}->prepare("insert into usersession values (?,?,?)") or $logger->error($DBI::errstr);
-            $userresult->execute($globalsessionID,$userid,$targetid) or $logger->error($DBI::errstr);
-      
-            # Ueberpruefen, ob der Benutzer schon ein Suchprofil hat
-            $userresult=$user->{dbh}->prepare("select count(userid) as rowcount from fieldchoice where userid = ?") or $logger->error($DBI::errstr);
-            $userresult->execute($userid) or $logger->error($DBI::errstr);
-            my $res=$userresult->fetchrow_hashref;
 
-            my $rows=$res->{rowcount};
-
+            $user->connect_session({
+                sessionID => $session->{ID},
+                userid    => $userid,
+                targetid  => $targetid,
+            });
+      
             # Falls noch keins da ist, eintragen
-            if ($rows <= 0) {
-                $userresult=$user->{dbh}->prepare("insert into fieldchoice values (?,1,1,1,1,1,1,1,1,1,0,1,1,1,1)") or $logger->error($DBI::errstr);
-                $userresult->execute($userid) or $logger->error($DBI::errstr);
+            if (!$user->fieldchoice_exists($userid)) {
+                $user->set_default_fieldchoice($userid);
             }
       
             # Jetzt wird die bestehende Trefferliste uebernommen.
             # Gehe ueber alle Eintraege der Trefferliste
-            my $idnresult=$session->{dbh}->prepare("select dbname,singleidn from treffer where sessionid = ?") or $logger->error($DBI::errstr);
-            $idnresult->execute($session->{ID}) or $logger->error($DBI::errstr);
-      
-            while (my $res=$idnresult->fetchrow_hashref()) {
-                my $dbname    = decode_utf8($res->{'dbname'});
-                my $singleidn = decode_utf8($res->{'singleidn'});
-                
-                # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
-                $userresult=$user->{dbh}->prepare("select count(userid) as rowcount from treffer where userid = ? and dbname = ? and singleidn = ?") or $logger->error($DBI::errstr);
-                $userresult->execute($userid,$dbname,$singleidn) or $logger->error($DBI::errstr);
-                my $res  = $userresult->fetchrow_hashref;
-                my $rows = $res->{rowcount};
-                if ($rows <= 0) {
-                    $userresult=$user->{dbh}->prepare("insert into treffer values (?,?,?)") or $logger->error($DBI::errstr);
-                    $userresult->execute($userid,$dbname,$singleidn) or $logger->error($DBI::errstr);
-                }
+
+            my @existing_collection = $session->get_items_in_collection();
+
+            foreach my $item_ref (@existing_collection){
+                $user->add_item_to_collection({
+                    userid => $userid,
+                    item   => $item_ref
+                });
             }
             
             # Bestimmen des Recherchemasken-Typs
-            $userresult=$user->{dbh}->prepare("select masktype from user where userid = ?") or $logger->error($DBI::errstr);
-            $userresult->execute($userid) or $logger->error($DBI::errstr);
-      
-            my $maskresult=$userresult->fetchrow_hashref();
-            my $setmask = decode_utf8($maskresult->{'masktype'});
+            my $masktype = $user->get_mask($userid);
 
-            # Assoziieren des Recherchemasken-Typs mit der Session
-            if (!defined $setmask || ($setmask ne "simple" && $setmask ne "advanced")) {
-                $setmask="simple";
-            }
-
-            $session->set_mask($setmask);
-
-            $idnresult->finish();
-            $userresult->finish();
+            $session->set_mask($masktype);
         }
 
         my $redirecturl

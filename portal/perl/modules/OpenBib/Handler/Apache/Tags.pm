@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Tags.pm
 #
-#  Copyright 2007 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2007-2008 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -265,78 +265,28 @@ sub handler {
                     return OK;
                 }
 
-                my $sqlrequest="select count(distinct titid,titdb) as conncount from tittag where tagid=? and loginname=?";
-                my $request=$user->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
-                $request->execute($searchtitoftag,$loginname);
-            
-                my $res=$request->fetchrow_hashref;
-                $hits = $res->{conncount};
-                
-                my $limits="";
-                if ($hitrange > 0){
-                    $limits="limit $offset,$hitrange";
-                }
-                
-                # Bestimmung der Titel
-                $sqlrequest="select distinct titid,titdb from tittag where tagid=? and loginname=? $limits";
-                $request=$user->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
-                $request->execute($searchtitoftag,$loginname);
-                
-                
-                while (my $res=$request->fetchrow_hashref){
-                    push @titelidns, {
-                        id       => $res->{titid},
-                        dbname   => $res->{titdb}
-                    };
-                }
-                $request->finish();
+                my $titles_ref;
+
+                ($titles_ref,$hits)= $user->get_titles_of_tag({
+                    loginname => $loginname,
+                    tagid     => $searchtitoftag,
+                    offset    => $offset,
+                    hitrange  => $hitrange,
+                });
+
+                @titelidns = @{$titles_ref};
             }
             else {
-                my $sqlrequest="select count(distinct titid,titdb) as conncount from tittag where tagid=?";
-                my @sqlargs = ();
-                push @sqlargs, $searchtitoftag;
+                my $titles_ref;
 
-                if ($database) {
-                    $sqlrequest.=" and titdb=?";
-                    push @sqlargs, $database;
-                }
+                ($titles_ref,$hits)= $user->get_titles_of_tag({
+                    tagid     => $searchtitoftag,
+                    database  => $database,
+                    offset    => $offset,
+                    hitrange  => $hitrange,
+                });
 
-                $logger->debug($sqlrequest." - ".join(",",@sqlargs));
-                my $request=$user->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
-                $request->execute(@sqlargs);
-            
-                my $res=$request->fetchrow_hashref;
-                $hits = $res->{conncount};
-                
-                my $limits="";
-                if ($hitrange > 0){
-                    $limits="limit $offset,$hitrange";
-                    
-                }
-
-                $sqlrequest="select distinct titid,titdb from tittag where tagid=?";
-                @sqlargs = ();
-                push @sqlargs, $searchtitoftag;
-                
-                if ($database) {
-                    $sqlrequest.=" and titdb=?";
-                    push @sqlargs, $database;
-                }
-
-                $sqlrequest.=" $limits";
-
-                # Bestimmung der Titel
-                $request=$user->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
-                $request->execute(@sqlargs);
-                
-                
-                while (my $res=$request->fetchrow_hashref){
-                    push @titelidns, {
-                        id       => $res->{titid},
-                        dbname   => $res->{titdb}
-                    };
-                }
-                $request->finish();
+                @titelidns = @{$titles_ref};
             }
         }
 

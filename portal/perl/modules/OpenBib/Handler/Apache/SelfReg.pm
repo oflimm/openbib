@@ -129,45 +129,28 @@ sub handler {
             return OK;
         }
 
-        my $userresult=$user->{dbh}->prepare("select count(*) as rowcount from user where loginname = ?") or $logger->error($DBI::errstr);
-        $userresult->execute($loginname) or $logger->error($DBI::errstr);
-        my $res  = $userresult->fetchrow_hashref;
-        my $rows = $res->{rowcount};
-
-        if ($rows > 0) {
+        if ($user->user_exists($loginname)) {
             OpenBib::Common::Util::print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$loginname","<a href=\"http://$config->{servername}$config->{selfreg_loc}?sessionID=$session->{ID};view=$view;action=show\">","</a>"),$r,$msg);
-            $userresult->finish();
             return OK;
         }
 
         # ab jetzt ist klar, dass es den Benutzer noch nicht gibt.
         # Jetzt eintragen und session mit dem Benutzer assoziieren;
 
-        $userresult=$user->{dbh}->prepare("insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','',?,'')") or $logger->error($DBI::errstr);
-        $userresult->execute($loginname,$password1,$loginname) or $logger->error($DBI::errstr);
+        $user->add({
+            loginname => $loginname,
+            password  => $password1,
+            email     => $loginname,
+        });
 
-        $userresult=$user->{dbh}->prepare("select userid from user where loginname = ?") or $logger->error($DBI::errstr);
-        $userresult->execute($loginname) or $logger->error($DBI::errstr);
+        my $userid   = $user->get_userid_for_username($loginname);
+        my $targetid = $user->get_id_of_selfreg_logintarget();
 
-        $res=$userresult->fetchrow_hashref();
-
-        my $userid = decode_utf8($res->{'userid'});
-
-        $userresult=$user->{dbh}->prepare("select targetid from logintarget where type = 'self'") or $logger->error($DBI::errstr);
-        $userresult->execute() or $logger->error($DBI::errstr);
-
-        $res=$userresult->fetchrow_hashref();
-
-        my $targetid = $res->{'targetid'};
-    
-        # Es darf keine Session assoziiert sein. Daher stumpf loeschen
-        $userresult=$user->{dbh}->prepare("delete from usersession where sessionid = ?") or $logger->error($DBI::errstr);
-        $userresult->execute($session->{ID}) or $logger->error($DBI::errstr);
-
-        $userresult=$user->{dbh}->prepare("insert into usersession values (?,?,?)") or $logger->error($DBI::errstr);
-        $userresult->execute($session->{ID},$userid,$targetid) or $logger->error($DBI::errstr);
-
-        $userresult->finish();
+        $user->connect_session({
+            sessionID => $session->{ID},
+            userid    => $userid,
+            targetid  => $targetid,
+        });
 
         # TT-Data erzeugen
         my $ttdata={

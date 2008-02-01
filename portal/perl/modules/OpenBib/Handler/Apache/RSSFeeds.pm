@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::RSSFeeds
 #
-#  Dieses File ist (C) 2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2008 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -92,43 +92,9 @@ sub handler {
         $view=$session->get_viewname();
     }
 
-    my $rssfeedinfo_ref = {
-    };
-
-    if ($view){
-        my $request=$config->{dbh}->prepare("select dbinfo.dbname,dbinfo.description,dbinfo.orgunit,rssfeeds.type from dbinfo,rssfeeds,viewrssfeeds where dbinfo.active=1 and rssfeeds.active=1 and dbinfo.dbname=rssfeeds.dbname and rssfeeds.type = 1 and viewrssfeeds.viewname = ? and viewrssfeeds.rssfeed=rssfeeds.id order by orgunit ASC, description ASC");
-        $request->execute($view);
-        
-        while (my $result=$request->fetchrow_hashref){
-            my $orgunit    = decode_utf8($result->{'orgunit'});
-            my $name       = decode_utf8($result->{'description'});
-            my $pool       = decode_utf8($result->{'dbname'});
-            my $rsstype    = decode_utf8($result->{'type'});
-            
-            push @{$rssfeedinfo_ref->{$orgunit}},{
-                pool     => $pool,
-                pooldesc => $name,
-                type     => 'neuzugang',
-            };
-        }
-    }
-    else {
-        my $request=$config->{dbh}->prepare("select dbinfo.dbname,dbinfo.description,dbinfo.orgunit,rssfeeds.type from dbinfo,rssfeeds where dbinfo.active=1 and rssfeeds.active=1 and dbinfo.dbname=rssfeeds.dbname and rssfeeds.type = 1 order by orgunit ASC, description ASC");
-        $request->execute();
-        
-        while (my $result=$request->fetchrow_hashref){
-            my $orgunit    = decode_utf8($result->{'orgunit'});
-            my $name       = decode_utf8($result->{'description'});
-            my $pool       = decode_utf8($result->{'dbname'});
-            my $rsstype    = decode_utf8($result->{'type'});
-            
-            push @{$rssfeedinfo_ref->{$orgunit}},{
-                pool     => $pool,
-                pooldesc => $name,
-                type     => 'neuzugang',
-            };
-        }
-    }
+    my $rssfeedinfo_ref = $config->get_rssfeedinfo({
+        view => $view
+    });
 
     # TT-Data erzeugen
     my $ttdata={

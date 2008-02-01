@@ -94,14 +94,10 @@ sub handler {
   
     if ($user->{ID}) {
         # Authentifiziert-Status der Session loeschen
-        my $userresult=$user->{dbh}->prepare("delete from usersession where userid = ?") or $logger->error($DBI::errstr);
-        $userresult->execute($user->{ID}) or $logger->error($DBI::errstr);
+        $user->disconnect_session();
     
         # Zwischengespeicherte Benutzerinformationen loeschen
-        $userresult=$user->{dbh}->prepare("update user set nachname = '', vorname = '', strasse = '', ort = '', plz = '', soll = '', gut = '', avanz = '', branz = '', bsanz = '', vmanz = '', maanz = '', vlanz = '', sperre = '', sperrdatum = '', gebdatum = '' where userid = ?") or $logger->error($DBI::errstr);
-        $userresult->execute($user->{ID}) or $logger->error($DBI::errstr);
-    
-        $userresult->finish();
+        $user->delete_private_info();
     }
 
     $session->clear_data();

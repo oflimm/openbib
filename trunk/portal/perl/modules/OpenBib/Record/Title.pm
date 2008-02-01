@@ -41,7 +41,9 @@ use SOAP::Lite;
 use Storable;
 use YAML ();
 
+use OpenBib::BibSonomy;
 use OpenBib::Common::Util;
+use OpenBib::Database::DBI;
 use OpenBib::Record::Person;
 use OpenBib::Record::CorporateBody;
 use OpenBib::Record::Subject;
@@ -70,10 +72,6 @@ sub new {
 
     if (defined $database){
         $self->{database} = $database;
-
-        my $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-            or $logger->error_die($DBI::errstr);
-        $self->{dbh} = $dbh;
     }
 
     $logger->debug("Title-Record-Object created: ".YAML::Dump($self));
@@ -102,6 +100,9 @@ sub get_full_record {
     $normset_ref->{id      } = $id;
     $normset_ref->{database} = $self->{database};
 
+    my $dbh = OpenBib::Database::DBI->connect("DBI:$self->{config}->{dbimodule}:dbname=$self->{database};host=$self->{config}->{dbhost};port=$self->{config}->{dbport}", $self->{config}->{dbuser}, $self->{config}->{dbpasswd})
+        or $logger->error_die($DBI::errstr);
+    
     # Titelkategorien
     {
         
@@ -112,7 +113,7 @@ sub get_full_record {
         }
         
         my $reqstring="select * from tit where id = ?";
-        my $request=$self->{dbh}->prepare($reqstring) or $logger->error($DBI::errstr);
+        my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
         $request->execute($id) or $logger->error("Request: $reqstring - ".$DBI::errstr);
         
         while (my $res=$request->fetchrow_hashref) {
@@ -143,7 +144,7 @@ sub get_full_record {
         }
         
         my $reqstring="select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)";
-        my $request=$self->{dbh}->prepare($reqstring) or $logger->error($DBI::errstr);
+        my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
         $request->execute($id) or $logger->error("Request: $reqstring - ".$DBI::errstr);
         
         while (my $res=$request->fetchrow_hashref) {
@@ -197,7 +198,7 @@ sub get_full_record {
         }
         
         $reqstring="select count(distinct targetid) as conncount from conn where sourceid=? and sourcetype=1 and targettype=1";
-        $request=$self->{dbh}->prepare($reqstring) or $logger->error($DBI::errstr);
+        $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
         $request->execute($id) or $logger->error("Request: $reqstring - ".$DBI::errstr);
         
         $res=$request->fetchrow_hashref;
@@ -220,7 +221,7 @@ sub get_full_record {
         }
 
         $reqstring="select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=1";
-        $request=$self->{dbh}->prepare($reqstring) or $logger->error($DBI::errstr);
+        $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
         $request->execute($id) or $logger->error("Request: $reqstring - ".$DBI::errstr);
         
         $res=$request->fetchrow_hashref;
@@ -246,7 +247,7 @@ sub get_full_record {
     {
         
         my $reqstring="select distinct targetid from conn where sourceid= ? and sourcetype=1 and targettype=6";
-        my $request=$self->{dbh}->prepare($reqstring) or $logger->error($DBI::errstr);
+        my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
         $request->execute($id) or $logger->error("Request: $reqstring - ".$DBI::errstr);
         
         my @verknmex=();
@@ -359,7 +360,7 @@ sub get_full_record {
             foreach my $isbn_ref (@{$normset_ref->{T0540}}){
 
                 my $isbn=$isbn_ref->{content};
-            
+                
                 $isbn =~s/ //g;
                 $isbn =~s/-//g;
                 $isbn=~s/([A-Z])/\l$1/g;
@@ -392,7 +393,7 @@ sub get_full_record {
             undef $timeall;
         }
     }
-
+    
     $logger->debug(YAML::Dump($normset_ref));
     ($self->{_normset},$self->{_mexset},$self->{_circset})=($normset_ref,$mexnormset_ref,\@circexemplarliste);
 
@@ -422,7 +423,10 @@ sub get_brief_record {
     $self->{id    }           = $id;
     $listitem_ref->{id      } = $id;
     $listitem_ref->{database} = $self->{database};
-    
+
+    my $dbh = OpenBib::Database::DBI->connect("DBI:$self->{config}->{dbimodule}:dbname=$self->{database};host=$self->{config}->{dbhost};port=$self->{config}->{dbport}", $self->{config}->{dbuser}, $self->{config}->{dbpasswd})
+        or $logger->error_die($DBI::errstr);
+
     my ($atime,$btime,$timeall)=(0,0,0);
     
     if ($self->{config}->{benchmark}) {
@@ -431,7 +435,7 @@ sub get_brief_record {
 
     if ($self->{config}->{use_titlistitem_table}) {
         # Bestimmung des Satzes
-        my $request=$self->{dbh}->prepare("select listitem from titlistitem where id = ?") or $logger->error($DBI::errstr);
+        my $request=$dbh->prepare("select listitem from titlistitem where id = ?") or $logger->error($DBI::errstr);
         $request->execute($id);
         
         if (my $res=$request->fetchrow_hashref){
@@ -466,8 +470,8 @@ sub get_brief_record {
         }
 
         # Bestimmung der Titelinformationen
-        my $request=$self->{dbh}->prepare("select category,indicator,content from tit where id = ? and category in (0310,0331,0403,0412,0424,0425,0451,0455,1203,0089)") or $logger->error($DBI::errstr);
-        #    my $request=$self->{dbh}->prepare("select category,indicator,content from tit where id = ? ") or $logger->error($DBI::errstr);
+        my $request=$dbh->prepare("select category,indicator,content from tit where id = ? and category in (0310,0331,0403,0412,0424,0425,0451,0455,1203,0089)") or $logger->error($DBI::errstr);
+        #    my $request=$dbh->prepare("select category,indicator,content from tit where id = ? ") or $logger->error($DBI::errstr);
         $request->execute($id);
         
         while (my $res=$request->fetchrow_hashref){
@@ -495,7 +499,7 @@ sub get_brief_record {
         }
         
         # Bestimmung der Exemplarinformationen
-        $request=$self->{dbh}->prepare("select mex.category,mex.indicator,mex.content from mex,conn where conn.sourceid = ? and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6 and mex.category=0014") or $logger->error($DBI::errstr);
+        $request=$dbh->prepare("select mex.category,mex.indicator,mex.content from mex,conn where conn.sourceid = ? and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6 and mex.category=0014") or $logger->error($DBI::errstr);
         $request->execute($id);
         
         while (my $res=$request->fetchrow_hashref){
@@ -529,7 +533,7 @@ sub get_brief_record {
         # festgestellt, dass die Bestimmung der Information ueber conn
         # und get_*_ans_by_idn durchschnittlich ungefaehr um den Faktor 30-50
         # schneller ist als ein join ueber conn und aut (!)
-        $request=$self->{dbh}->prepare("select targetid,category,supplement from conn where sourceid=? and sourcetype=1 and targettype=2") or $logger->error($DBI::errstr);
+        $request=$dbh->prepare("select targetid,category,supplement from conn where sourceid=? and sourcetype=1 and targettype=2") or $logger->error($DBI::errstr);
         $request->execute($id);
         
         while (my $res=$request->fetchrow_hashref){
@@ -566,7 +570,7 @@ sub get_brief_record {
         }    
         
         # Bestimmung der Urheber, Koerperschaften
-        $request=$self->{dbh}->prepare("select targetid,category,supplement from conn where sourceid=? and sourcetype=1 and targettype=3") or $logger->error($DBI::errstr);
+        $request=$dbh->prepare("select targetid,category,supplement from conn where sourceid=? and sourcetype=1 and targettype=3") or $logger->error($DBI::errstr);
         $request->execute($id);
         
         while (my $res=$request->fetchrow_hashref){
@@ -706,7 +710,7 @@ sub get_brief_record {
         }    
         
         # Bestimmung der Popularitaet des Titels
-        $request=$self->{dbh}->prepare("select idcount from popularity where id=?") or $logger->error($DBI::errstr);
+        $request=$dbh->prepare("select idcount from popularity where id=?") or $logger->error($DBI::errstr);
         $request->execute($id);
         
         while (my $res=$request->fetchrow_hashref){
@@ -792,10 +796,9 @@ sub print_to_handler {
     my $logintargetdb = $user->get_targetdb_of_session($session->{ID});
 
     my ($prevurl,$nexturl)=OpenBib::Search::Util::get_result_navigation({
-        sessiondbh => $session->{dbh},
+        session    => $session,
         database   => $self->{database},
         titidn     => $self->{id},
-        sessionID  => $session->{ID},
     });
 
     my $poolname=$self->{targetdbinfo}->{dbnames}{$self->{database}};
@@ -875,6 +878,9 @@ sub _get_mex_set_by_idn {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $dbh = OpenBib::Database::DBI->connect("DBI:$self->{config}->{dbimodule}:dbname=$self->{database};host=$self->{config}->{dbhost};port=$self->{config}->{dbport}", $self->{config}->{dbuser}, $self->{config}->{dbpasswd})
+        or $logger->error_die($DBI::errstr);
+    
     my $normset_ref={};
 
     # Defaultwerte setzen
@@ -891,7 +897,7 @@ sub _get_mex_set_by_idn {
     }
 
     my $sqlrequest="select category,content,indicator from mex where id = ?";
-    my $result=$self->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
+    my $result=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $result->execute($id);
 
     while (my $res=$result->fetchrow_hashref){
@@ -1224,7 +1230,6 @@ sub to_rawdata {
 
 sub DESTROY {
     my $self = shift;
-    $self->{dbh}->disconnect();
 
     return;
 }

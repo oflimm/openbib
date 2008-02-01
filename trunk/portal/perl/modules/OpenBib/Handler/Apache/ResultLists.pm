@@ -135,7 +135,7 @@ sub handler {
         my @resultset    = ();
         my @resultlists  = ();
 
-        my $searchquery_ref = $session->get_searchquery($queryid);
+        my ($searchquery_ref,$searchquery_hits) = $session->get_searchquery($queryid);
 
         if ($config->get_system_of_db($database) eq "Z39.50"){
             my $atime=new Benchmark;
@@ -292,17 +292,14 @@ sub handler {
         $recordlist->sort({order=>$sortorder,type=>$sorttype});
         
         # Weitere Treffer Cachen.
-        
-        my $idnresult=$session->{dbh}->prepare("delete from searchresults where sessionid = ? and queryid = ? and dbname = ? and offset = ? and hitrange = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($session->{ID},$queryid,$database,$offset,$hitrange) or $logger->error($DBI::errstr);
-        
-        $idnresult=$session->{dbh}->prepare("insert into searchresults values (?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
-        my $storableres=unpack "H*",Storable::freeze($recordlist->to_list);
-        
-        $logger->debug("YAML-Dumped: ".YAML::Dump($recordlist->to_list));
-        my $num=$recordlist->size();
-        $idnresult->execute($session->{ID},$database,$offset,$hitrange,$storableres,$num,$queryid) or $logger->error($DBI::errstr);
-        $idnresult->finish();
+
+        $session->set_searchresult({
+            queryid    => $queryid,
+            recordlist => $recordlist,
+            database   => $database,
+            offset     => $offset,
+            hitrange   => $hitrange,
+        });
         
         my $loginname="";
         my $password="";
@@ -441,20 +438,9 @@ sub handler {
         my @querystrings = ();
         my @queryhits    = ();
         
-        my $idnresult=$session->{dbh}->prepare("select distinct searchresults.queryid as queryid,queries.query as query,queries.hits as hits from searchresults,queries where searchresults.sessionid = ? and searchresults.queryid=queries.queryid and searchresults.offset=0 order by queryid desc") or $logger->error($DBI::errstr);
-        $idnresult->execute($session->{ID}) or $logger->error($DBI::errstr);
-        
-        my @queries=();
-        
-        while (my $res=$idnresult->fetchrow_hashref) {
-            
-            push @queries, {
-                id          => $res->{queryid},
-                searchquery => Storable::thaw(pack "H*",$res->{query}),
-                hits        => $res->{hits},
-            };
-            
-        }
+        my @queries      = $session->get_all_searchqueries({
+            offset => '0',
+        });
         
         # Finde den aktuellen Query
         my $thisquery_ref={};
@@ -472,22 +458,8 @@ sub handler {
                 }
             }
         }
-        
-        $idnresult=$session->{dbh}->prepare("select dbname,sum(hits) as hitcount from searchresults where sessionid = ? and queryid = ? group by dbname order by hitcount desc") or $logger->error($DBI::errstr);
-        $idnresult->execute($session->{ID},@{$thisquery_ref}{id}) or $logger->error($DBI::errstr);
-        
-        my $hitcount=0;
-        my @resultdbs=();
-        
-        while (my $res=$idnresult->fetchrow_hashref) {
-            push @resultdbs, {
-                trefferdb     => decode_utf8($res->{dbname}),
-                trefferdbdesc => $targetdbinfo_ref->{dbnames}{decode_utf8($res->{dbname})},
-                trefferzahl   => decode_utf8($res->{hitcount}),
-            };
-            
-            $hitcount+=$res->{hitcount};
-        }
+
+        my ($resultdbs_ref,$hitcount)=$session->get_db_histogram_of_query(@{$thisquery_ref}{id}) ;
         
         # TT-Data erzeugen
         my $ttdata={
@@ -501,7 +473,7 @@ sub handler {
             
             qopts      => $queryoptions_ref,
             hitcount   => $hitcount,
-            resultdbs  => \@resultdbs,
+            resultdbs  => $resultdbs_ref,
             queries    => \@queries,
             config     => $config,
             msg        => $msg,

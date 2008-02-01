@@ -187,7 +187,8 @@ use vars qw(%config);
 	   # Mapping der einzelnen Kompontenten zu ihren Zugriffs-URI's
 
 	   admin_loc             => '/portal/admin',
-	   catalogue_loc         => '/portal/katalogisierung',
+           bibsonomy_loc         => '/portal/bibsonomy',
+           catalogue_loc         => '/portal/katalogisierung',
 	   circulation_loc       => '/portal/benutzerkonto',
            connector_bibmanager_loc => '/portal/connector/literaturverwaltung',
            connector_digibib_loc => '/portal/connector/digibib',
@@ -629,16 +630,16 @@ sub new {
 
     bless ($self, $class);
 
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
+    return $self;
+}
 
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
-            or $logger->error_die($DBI::errstr);
+sub _new_instance {
+    my $class = shift;
 
-    # dbh ist private Instance Variable
-    $self->{dbh}    = $dbh;
+    # Ininitalisierung mit Config-Parametern
+    my $self = \%config;
+
+    bless ($self, $class);
 
     return $self;
 }
@@ -649,7 +650,12 @@ sub get_number_of_dbs {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("select count(dbname) as rowcount from dbinfo where active=1") or $logger->error($DBI::errstr);
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $request=$dbh->prepare("select count(dbname) as rowcount from dbinfo where active=1") or $logger->error($DBI::errstr);
     $request->execute() or $logger->error($DBI::errstr);
     my $res    = $request->fetchrow_hashref;
     my $alldbs = $res->{rowcount};
@@ -664,7 +670,12 @@ sub get_number_of_all_dbs {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("select count(dbname) as rowcount from dbinfo") or $logger->error($DBI::errstr);
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+    
+    my $request=$dbh->prepare("select count(dbname) as rowcount from dbinfo") or $logger->error($DBI::errstr);
     $request->execute() or $logger->error($DBI::errstr);
     my $res    = $request->fetchrow_hashref;
     my $alldbs = $res->{rowcount};
@@ -679,7 +690,12 @@ sub get_number_of_views {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("select count(viewname) as rowcount from viewinfo where active=1") or $logger->error($DBI::errstr);
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $request=$dbh->prepare("select count(viewname) as rowcount from viewinfo where active=1") or $logger->error($DBI::errstr);
     $request->execute() or $logger->error($DBI::errstr);
     my $res      = $request->fetchrow_hashref;
     my $allviews = $res->{rowcount};
@@ -694,7 +710,12 @@ sub get_number_of_all_views {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("select count(viewname) as rowcount from viewinfo") or $logger->error($DBI::errstr);
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $request=$dbh->prepare("select count(viewname) as rowcount from viewinfo") or $logger->error($DBI::errstr);
     $request->execute() or $logger->error($DBI::errstr);
     my $res      = $request->fetchrow_hashref;
     my $allviews = $res->{rowcount};
@@ -709,7 +730,12 @@ sub get_number_of_titles {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("select sum(count) as alltitcount from titcount,dbinfo where  titcount.dbname=dbinfo.dbname and dbinfo.active=1") or $logger->error($DBI::errstr);
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $request=$dbh->prepare("select sum(count) as alltitcount from titcount,dbinfo where  titcount.dbname=dbinfo.dbname and dbinfo.active=1") or $logger->error($DBI::errstr);
     $request->execute() or $logger->error($DBI::errstr);
     my $res       = $request->fetchrow_hashref;
     my $alltitles = $res->{alltitcount};
@@ -725,13 +751,44 @@ sub get_viewdesc_from_viewname {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("select description from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+    
+    my $request=$dbh->prepare("select description from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
     $request->execute($viewname) or $logger->error($DBI::errstr);
     my $res       = $request->fetchrow_hashref;
     my $desc      = decode_utf8($res->{description}) if (defined($res->{'description'}));
     $request->finish();
     
     return $desc;
+}
+
+sub get_startpage_of_view {
+    my $self     = shift;
+    my $viewname = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $request=$dbh->prepare("select startpage from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
+    $request->execute($viewname) or $logger->error($DBI::errstr);
+    my $res            = $request->fetchrow_hashref;
+    my $startpage      = decode_utf8($res->{startpage}) if (defined($res->{'startpage'}));
+    $request->finish();
+
+    my ($start_loc,$start_stid) = split (":",$startpage);
+
+    return {
+        start_loc  => $start_loc,
+        start_stid => $start_stid,
+    };
 }
 
 sub db_exists {
@@ -741,7 +798,12 @@ sub db_exists {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("select count(dbname) as rowcount from dbinfo where dbname = ?") or $logger->error($DBI::errstr);
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $request=$dbh->prepare("select count(dbname) as rowcount from dbinfo where dbname = ?") or $logger->error($DBI::errstr);
     $request->execute($dbname) or $logger->error($DBI::errstr);
     my $res       = $request->fetchrow_hashref;
     my $rowcount  = $res->{rowcount};
@@ -757,7 +819,12 @@ sub view_exists {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("select count(viewname) as rowcount from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $request=$dbh->prepare("select count(viewname) as rowcount from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
     $request->execute($viewname) or $logger->error($DBI::errstr);
     my $res       = $request->fetchrow_hashref;
     my $rowcount  = $res->{rowcount};
@@ -783,8 +850,13 @@ sub get_valid_rsscache_entry {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
     # Bestimmung, ob ein valider Cacheeintrag existiert
-    my $request=$self->{dbh}->prepare("select content from rsscache where dbname=? and type=? and subtype = ? and tstamp > ?");
+    my $request=$dbh->prepare("select content from rsscache where dbname=? and type=? and subtype = ? and tstamp > ?");
     $request->execute($database,$type,$subtype,$expiretimedate);
 
     my $res=$request->fetchrow_arrayref;
@@ -801,8 +873,13 @@ sub get_dbs_of_view {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
     my @dblist=();
-    my $idnresult=$self->{dbh}->prepare("select viewdbs.dbname from viewdbs,dbinfo where viewdbs.viewname = ? and viewdbs.dbname=dbinfo.dbname and dbinfo.active=1 order by dbinfo.orgunit ASC, dbinfo.description ASC") or $logger->error($DBI::errstr);
+    my $idnresult=$dbh->prepare("select viewdbs.dbname from viewdbs,dbinfo where viewdbs.viewname = ? and viewdbs.dbname=dbinfo.dbname and dbinfo.active=1 order by dbinfo.orgunit ASC, dbinfo.description ASC") or $logger->error($DBI::errstr);
     $idnresult->execute($view) or $logger->error($DBI::errstr);
 
     my @idnres;
@@ -814,14 +891,115 @@ sub get_dbs_of_view {
     return @dblist;
 }
 
+sub get_rssfeeds_of_view {
+    my ($self,$viewname) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $viewrssfeed_ref  = {};
+
+    my $idnresult=$dbh->prepare("select rssfeed from viewrssfeeds where viewname=?") or $logger->error($DBI::errstr);
+    $idnresult->execute($viewname) or $logger->error($DBI::errstr);
+
+    while (my $result=$idnresult->fetchrow_hashref()) {
+        my $rssfeed = $result->{'rssfeed'};
+        $viewrssfeed_ref->{$rssfeed}=1;
+    }
+
+    return $viewrssfeed_ref;
+}
+
+sub get_rssfeed_overview {
+    my ($self) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $rssfeed_ref=[];
+    
+    my $request=$dbh->prepare("select * from rssfeeds order by dbname,type,subtype") or $logger->error($DBI::errstr);
+    $request->execute() or $logger->error($DBI::errstr);
+    while (my $result=$request->fetchrow_hashref()){
+        my $id           = decode_utf8($result->{'id'});
+        my $type         = decode_utf8($result->{'type'});
+        my $subtype      = decode_utf8($result->{'subtype'});
+        my $subtypedesc  = decode_utf8($result->{'subtypedesc'});
+        my $active       = decode_utf8($result->{'active'});
+        
+        push @$rssfeed_ref, {
+            feedid      => decode_utf8($result->{'id'}),
+            dbname      => decode_utf8($result->{'dbname'}),
+            type        => decode_utf8($result->{'type'}),
+            subtype     => decode_utf8($result->{'subtype'}),
+            subtypedesc => decode_utf8($result->{'subtypedesc'}),
+        };
+    }
+    
+    $request->finish();
+    
+    return $rssfeed_ref;
+}
+
+sub get_rssfeeds_of_db {
+    my ($self,$dbname) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $rssfeed_ref=[];
+    
+    my $request=$dbh->prepare("select * from rssfeeds where dbname = ? order by type,subtype") or $logger->error($DBI::errstr);
+    $request->execute($dbname) or $logger->error($DBI::errstr);
+    while (my $result=$request->fetchrow_hashref()){
+        my $id           = decode_utf8($result->{'id'});
+        my $type         = decode_utf8($result->{'type'});
+        my $subtype      = decode_utf8($result->{'subtype'});
+        my $subtypedesc  = decode_utf8($result->{'subtypedesc'});
+        my $active       = decode_utf8($result->{'active'});
+        
+        push @$rssfeed_ref, {
+            id          => $id,
+            type        => $type,
+            subtype     => $subtype,
+            subtypedesc => $subtypedesc,
+            active      => $active
+        };
+    }
+    
+    $request->finish();
+    
+    return $rssfeed_ref;
+}
+
 sub get_primary_rssfeed_of_view  {
     my ($self,$viewname)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
     # Assoziierten View zur Session aus Datenbank holen
-    my $idnresult=$self->{dbh}->prepare("select rssfeeds.dbname as dbname,rssfeeds.type as type, rssfeeds.subtype as subtype from rssfeeds,viewinfo where viewname = ? and rssfeeds.id = viewinfo.rssfeed and rssfeeds.active = 1") or $logger->error($DBI::errstr);
+    my $idnresult=$dbh->prepare("select rssfeeds.dbname as dbname,rssfeeds.type as type, rssfeeds.subtype as subtype from rssfeeds,viewinfo where viewname = ? and rssfeeds.id = viewinfo.rssfeed and rssfeeds.active = 1") or $logger->error($DBI::errstr);
     $idnresult->execute($viewname) or $logger->error($DBI::errstr);
   
     my $result=$idnresult->fetchrow_hashref();
@@ -857,7 +1035,12 @@ sub get_activefeeds_of_db  {
     
     my $activefeeds_ref = {};
     
-    my $request=$self->{dbh}->prepare("select type from rssfeeds where dbname \
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $request=$dbh->prepare("select type from rssfeeds where dbname \
 = ? and active = 1") or $logger->error($DBI::errstr);
     $request->execute($dbname) or $logger->error($DBI::errstr);
     
@@ -873,6 +1056,262 @@ sub get_activefeeds_of_db  {
     return $activefeeds_ref;
 }
 
+sub get_rssfeedinfo  {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $view               = exists $arg_ref->{view}
+        ? $arg_ref->{view}            : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $rssfeedinfo_ref = {};
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $sql_select="select dbinfo.dbname,dbinfo.description,dbinfo.orgunit,rssfeeds.type";
+
+    my @sql_from  = ('dbinfo','rssfeeds');
+
+    my @sql_where = ('dbinfo.active=1','rssfeeds.active=1','dbinfo.dbname=rssfeeds.dbname','rssfeeds.type = 1');
+
+    my @sql_args  = ();
+
+    if ($view){
+        push @sql_from,  'viewrssfeeds';
+        push @sql_where, ('viewrssfeeds.viewname = ?','viewrssfeeds.rssfeed=rssfeeds.id');
+        push @sql_args,  $view;
+    }
+    
+    my $sqlrequest = $sql_select.' from '.join(',',@sql_from).' where '.join(' and ',@sql_where).' order by orgunit ASC, description ASC';
+    
+    $logger->debug("SQL-Request: $sqlrequest");
+    
+    my $request=$dbh->prepare($sqlrequest);
+    $request->execute(@sql_args);
+    
+    while (my $result=$request->fetchrow_hashref){
+        my $orgunit    = decode_utf8($result->{'orgunit'});
+        my $name       = decode_utf8($result->{'description'});
+        my $pool       = decode_utf8($result->{'dbname'});
+        my $rsstype    = decode_utf8($result->{'type'});
+        
+        push @{$rssfeedinfo_ref->{$orgunit}},{
+            pool     => $pool,
+            pooldesc => $name,
+            type     => 'neuzugang',
+        };
+    }
+    
+    return $rssfeedinfo_ref;
+}
+
+sub get_dbinfo {
+    my $self   = shift;
+    my $dbname = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $request=$dbh->prepare("select * from dbinfo where dbname=?") or die "Error -- $DBI::errstr";
+    $request->execute($dbname);
+    my $result=$request->fetchrow_hashref();
+
+    my $dbinfo_ref;
+
+    $dbinfo_ref = {
+        orgunit     => decode_utf8($result->{'orgunit'}),
+        description => decode_utf8($result->{'description'}),
+        shortdesc   => decode_utf8($result->{'shortdesc'}),
+        system      => decode_utf8($result->{'system'}),
+        dbname      => decode_utf8($result->{'dbname'}),
+        sigel       => decode_utf8($result->{'sigel'}),
+        url         => decode_utf8($result->{'url'}),
+        active      => decode_utf8($result->{'active'}),
+    };
+    
+    $request->finish();
+    
+    return $dbinfo_ref;
+}
+
+sub get_dbinfo_overview {
+    my $self   = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $dbinfo_ref = [];
+
+    my $idnresult=$dbh->prepare("select dbinfo.*,titcount.count,dboptions.autoconvert from dbinfo,titcount,dboptions where dbinfo.dbname=titcount.dbname and titcount.dbname=dboptions.dbname order by orgunit,dbname") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
+    
+    my $katalog;
+    while (my $result=$idnresult->fetchrow_hashref()) {
+        my $orgunit     = decode_utf8($result->{'orgunit'});
+        my $autoconvert = decode_utf8($result->{'autoconvert'});
+        
+        my $orgunits_ref = $self->{orgunits};
+        
+        my @orgunits=@$orgunits_ref;
+        
+        foreach my $unit_ref (@orgunits) {
+            my %unit=%$unit_ref;
+            if ($unit{short} eq $orgunit) {
+                $orgunit=$unit{desc};
+            }
+        }
+        
+        my $description = decode_utf8($result->{'description'});
+        my $system      = decode_utf8($result->{'system'});
+        my $dbname      = decode_utf8($result->{'dbname'});
+        my $sigel       = decode_utf8($result->{'sigel'});
+        my $url         = decode_utf8($result->{'url'});
+        my $active      = decode_utf8($result->{'active'});
+        my $count       = decode_utf8($result->{'count'});
+        
+        if (!$description) {
+            $description="Keine Bezeichnung";
+        }
+        
+        $katalog={
+            orgunit     => $orgunit,
+            description => $description,
+            system      => $system,
+            dbname      => $dbname,
+            sigel       => $sigel,
+            active      => $active,
+            url         => $url,
+            count       => $count,
+            autoconvert => $autoconvert,
+        };
+        
+        push @{$dbinfo_ref}, $katalog;
+    }
+    
+    return $dbinfo_ref;
+}
+
+sub get_viewinfo_overview {
+    my $self   = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $viewinfo_ref = [];
+
+    my $view="";
+    
+    my $idnresult=$dbh->prepare("select * from viewinfo order by viewname") or $logger->error($DBI::errstr);
+    $idnresult->execute() or $logger->error($DBI::errstr);
+    while (my $result=$idnresult->fetchrow_hashref()) {
+        my $viewname    = decode_utf8($result->{'viewname'});
+        my $description = decode_utf8($result->{'description'});
+        my $active      = decode_utf8($result->{'active'});
+        
+        $description = (defined $description)?$description:'Keine Beschreibung';
+        
+        $active="Ja"   if ($active eq "1");
+        $active="Nein" if ($active eq "0");
+        
+        my $idnresult2=$dbh->prepare("select * from viewdbs where viewname = ? order by dbname") or $logger->error($DBI::errstr);
+        $idnresult2->execute($viewname);
+        
+        my @viewdbs=();
+        while (my $result2=$idnresult2->fetchrow_hashref()) {
+            my $dbname = decode_utf8($result2->{'dbname'});
+            push @viewdbs, $dbname;
+        }
+        
+        $idnresult2->finish();
+        
+        my $viewdb=join " ; ", @viewdbs;
+        
+        $view={
+            viewname    => $viewname,
+            description => $description,
+            active      => $active,
+            viewdb      => $viewdb,
+        };
+        
+        push @{$viewinfo_ref}, $view;
+        
+    }
+    
+    return $viewinfo_ref;
+}
+
+sub get_viewinfo {
+    my $self     = shift;
+    my $viewname = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+    
+    my $idnresult=$dbh->prepare("select * from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($viewname) or $logger->error($DBI::errstr);
+    
+    my $result=$idnresult->fetchrow_hashref();
+
+    my $viewinfo_ref = {    
+        viewname    => decode_utf8($result->{'viewname'}),
+        description => decode_utf8($result->{'description'}),
+        primrssfeed => decode_utf8($result->{'primrssfeed'}),
+        startpage   => decode_utf8($result->{'startpage'}),
+        active      => decode_utf8($result->{'active'}),
+    };
+    
+    return $viewinfo_ref;
+}
+
+sub get_viewdbs {
+    my $self     = shift;
+    my $viewname = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+    
+    my $idnresult=$dbh->prepare("select * from viewdbs where viewname = ? order by dbname") or $logger->error($DBI::errstr);
+    $idnresult->execute($viewname) or $logger->error($DBI::errstr);
+    
+    my @viewdbs=();
+    while (my $result=$idnresult->fetchrow_hashref()) {
+        my $dbname = decode_utf8($result->{'dbname'});
+        push @viewdbs, $dbname;
+    }
+    
+    return @viewdbs;
+}
+
 sub get_dboptions {
     my $self   = shift;
     my $dbname = shift;
@@ -880,7 +1319,12 @@ sub get_dboptions {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("select * from dboptions where dbname=?") or die "Error -- $DBI::errstr";
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $request=$dbh->prepare("select * from dboptions where dbname=?") or die "Error -- $DBI::errstr";
     $request->execute($dbname);
     my $result=$request->fetchrow_hashref();
 
@@ -918,7 +1362,12 @@ sub get_targetdbinfo {
   
     # Verweis: Datenbankname -> Informationen zum zugeh"origen Institut/Seminar
   
-    my $dbinforesult=$self->{dbh}->prepare("select dbname,sigel,url,description,shortdesc from dbinfo") or $logger->error($DBI::errstr);
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $dbinforesult=$dbh->prepare("select dbname,sigel,url,description,shortdesc from dbinfo") or $logger->error($DBI::errstr);
     $dbinforesult->execute() or $logger->error($DBI::errstr);;
   
     my %sigel   =();
@@ -996,7 +1445,12 @@ sub get_targetcircinfo {
     #####################################################################
     ## Ausleihkonfiguration fuer den Katalog einlesen
 
-    my $dbinforesult=$self->{dbh}->prepare("select dbname,circ,circurl,circcheckurl,circdb from dboptions where circ = 1") or $logger->error($DBI::errstr);
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $dbinforesult=$dbh->prepare("select dbname,circ,circurl,circcheckurl,circdb from dboptions where circ = 1") or $logger->error($DBI::errstr);
     $dbinforesult->execute() or $logger->error($DBI::errstr);;
 
     my %targetcircinfo=();
@@ -1021,11 +1475,45 @@ sub get_active_databases {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
     my @dblist=();
-    my $request=$self->{dbh}->prepare("select dbname from dbinfo where active=1 order by orgunit ASC, dbname ASC") or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare("select dbname from dbinfo where active=1 order by orgunit ASC, dbname ASC") or $logger->error($DBI::errstr);
     $request->execute() or $logger->error($DBI::errstr);
     while (my $res    = $request->fetchrow_hashref){
         push @dblist, $res->{dbname};
+    }
+    $request->finish();
+    
+    return @dblist;
+}
+
+sub get_active_database_names {
+    my $self = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my @dblist=();
+    my $request=$dbh->prepare("select dbname,description,orgunit from dbinfo where active=1 order by orgunit,description") or $logger->error($DBI::errstr);
+
+    $request->execute() or $logger->error($DBI::errstr);
+    while (my $result   = $request->fetchrow_hashref){
+        my $dbname      = decode_utf8($result->{'dbname'});
+        my $description = decode_utf8($result->{'description'});
+
+        push @dblist, {
+            dbname      => $dbname,
+            description => $description,
+        };
     }
     $request->finish();
     
@@ -1038,8 +1526,13 @@ sub get_active_views {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
     my @viewlist=();
-    my $request=$self->{dbh}->prepare("select viewname from viewinfo where active=1 order by description ASC") or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare("select viewname from viewinfo where active=1 order by description ASC") or $logger->error($DBI::errstr);
     $request->execute() or $logger->error($DBI::errstr);
     while (my $res    = $request->fetchrow_hashref){
         push @viewlist, $res->{viewname};
@@ -1055,8 +1548,13 @@ sub get_active_databases_of_orgunit {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
     my @dblist=();
-    my $request=$self->{dbh}->prepare("select dbname from dbinfo where active=1 and orgunit = ? order by dbname ASC") or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare("select dbname from dbinfo where active=1 and orgunit = ? order by dbname ASC") or $logger->error($DBI::errstr);
     $request->execute($orgunit) or $logger->error($DBI::errstr);
     while (my $res    = $request->fetchrow_hashref){
         push @dblist, $res->{dbname};
@@ -1072,7 +1570,12 @@ sub get_system_of_db {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $request=$self->{dbh}->prepare("select system from dbinfo where dbname = ?") or $logger->error($DBI::errstr);
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $request=$dbh->prepare("select system from dbinfo where dbname = ?") or $logger->error($DBI::errstr);
     $request->execute($dbname) or $logger->error($DBI::errstr);
     my $systemtype = "";
     while (my $res    = $request->fetchrow_hashref){
@@ -1102,7 +1605,12 @@ sub get_infomatrix_of_active_databases {
     
     $maxcolumn=(defined $maxcolumn)?$maxcolumn:$self->{databasechoice_maxcolumn};
     
-    my $idnresult=$self->{dbh}->prepare("select * from dbinfo where active=1 order by orgunit ASC, description ASC") or $logger->error($DBI::errstr);
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $idnresult=$dbh->prepare("select * from dbinfo where active=1 order by orgunit ASC, description ASC") or $logger->error($DBI::errstr);
     $idnresult->execute() or $logger->error($DBI::errstr);
 
     my @catdb=();
@@ -1177,16 +1685,6 @@ sub get_infomatrix_of_active_databases {
     }
 
     return @catdb;
-}
-
-sub DESTROY {
-    my $self = shift;
-
-    return if (!defined $self->{dbh});
-
-    $self->{dbh}->disconnect();
-
-    return;
 }
 
 1;

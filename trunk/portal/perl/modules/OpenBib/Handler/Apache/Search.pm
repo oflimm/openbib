@@ -207,7 +207,6 @@ sub handler {
         OpenBib::Search::Util::print_index_by_swt({
             swt              => $swtindex,
             dbh              => $dbh,
-            sessiondbh       => $session->{dbh},
             targetdbinfo_ref => $targetdbinfo_ref,
             queryoptions_ref => $queryoptions_ref,
             database         => $database,
@@ -513,7 +512,6 @@ sub handler {
         OpenBib::Search::Util::print_mult_tit_set_by_idn({
             titidns_ref        => \@mtitidns,
             dbh                => $dbh,
-            sessiondbh         => $session->{dbh},
             targetdbinfo_ref   => $targetdbinfo_ref,
             targetcircinfo_ref => $targetcircinfo_ref,
             queryoptions_ref   => $queryoptions_ref,
@@ -630,10 +628,7 @@ sub handler {
         my $searchquery_ref = {};
 
         if ($queryid){
-            $searchquery_ref = OpenBib::Common::Util::get_searchquery_of_queryid({
-                queryid   => $queryid,
-                sessionID => $session->{ID},
-            });
+            my ($searchquery_ref,$searchquery_hits) = $session->get_searchquery($queryid);
         }
 
         if ($config->get_system_of_db($database) eq "Z39.50"){
@@ -642,10 +637,9 @@ sub handler {
             my ($normset,$mexnormset) = $z3950dbh->get_singletitle($searchsingletit);
             
             my ($prevurl,$nexturl)=OpenBib::Search::Util::get_result_navigation({
-                sessiondbh => $session->{dbh},
+                session    => $session,
                 database   => $database,
                 titidn     => $searchsingletit,
-                sessionID  => $session->{ID},
             });
             
             my $poolname=$targetdbinfo_ref->{sigel}{

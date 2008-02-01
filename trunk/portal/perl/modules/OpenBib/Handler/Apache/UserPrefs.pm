@@ -124,97 +124,11 @@ sub handler {
     }
   
     if ($action eq "showfields") {
-        my $targetresult=$user->{dbh}->prepare("select * from fieldchoice where userid = ?") or $logger->error($DBI::errstr);
-        $targetresult->execute($user->{ID}) or $logger->error($DBI::errstr);
-    
-        my $result=$targetresult->fetchrow_hashref();
-    
-        my $showfs = decode_utf8($result->{'fs'});
-        my $fschecked="";
-        $fschecked="checked=\"checked\"" if ($showfs);
-    
-        my $showhst = decode_utf8($result->{'hst'});
-        my $hstchecked="";
-        $hstchecked="checked=\"checked\"" if ($showhst);
-
-        my $showgtquelle = decode_utf8($result->{'gtquelle'});
-        my $gtquellechecked="";
-        $gtquellechecked="checked=\"checked\"" if ($showgtquelle);
-
-        my $showinhalt = decode_utf8($result->{'inhalt'});
-        my $inhaltchecked="";
-        $inhaltchecked="checked=\"checked\"" if ($showinhalt);
-
-        my $showhststring = decode_utf8($result->{'hststring'});
-        my $hststringchecked="";
-        $hststringchecked="checked=\"checked\"" if ($showhststring);
-    
-        my $showverf = decode_utf8($result->{'verf'});
-        my $verfchecked="";
-        $verfchecked="checked=\"checked\"" if ($showverf);
-    
-        my $showkor = decode_utf8($result->{'kor'});
-        my $korchecked="";
-        $korchecked="checked=\"checked\"" if ($showkor);
-    
-        my $showswt = decode_utf8($result->{'swt'});
-        my $swtchecked="";
-        $swtchecked="checked=\"checked\"" if ($showswt);
-    
-        my $shownotation = decode_utf8($result->{'notation'});
-        my $notationchecked="";
-        $notationchecked="checked=\"checked\"" if ($shownotation);
-    
-        my $showisbn = decode_utf8($result->{'isbn'});
-        my $isbnchecked="";
-        $isbnchecked="checked=\"checked\"" if ($showisbn);
-    
-        my $showissn = decode_utf8($result->{'issn'});
-        my $issnchecked="";
-        $issnchecked="checked=\"checked\"" if ($showissn);
-    
-        my $showsign = decode_utf8($result->{'sign'});
-        my $signchecked="";
-        $signchecked="checked=\"checked\"" if ($showsign);
-    
-        my $showmart = decode_utf8($result->{'mart'});
-        my $martchecked="";
-        $martchecked="checked=\"checked\"" if ($showmart);
-    
-        my $showejahr = decode_utf8($result->{'ejahr'});
-        my $ejahrchecked="";
-        $ejahrchecked="checked=\"checked\"" if ($showejahr);
-    
-        $targetresult->finish();
-    
-        my $userresult=$user->{dbh}->prepare("select * from user where userid = ?") or $logger->error($DBI::errstr);
-        $userresult->execute($user->{ID}) or $logger->error($DBI::errstr);
-    
-        my $res=$userresult->fetchrow_hashref();
-    
-        my %userinfo=();
-
-        $userinfo{'nachname'}   = decode_utf8($res->{'nachname'});
-        $userinfo{'vorname'}    = decode_utf8($res->{'vorname'});
-        $userinfo{'strasse'}    = decode_utf8($res->{'strasse'});
-        $userinfo{'ort'}        = decode_utf8($res->{'ort'});
-        $userinfo{'plz'}        = decode_utf8($res->{'plz'});
-        $userinfo{'soll'}       = decode_utf8($res->{'soll'});
-        $userinfo{'gut'}        = decode_utf8($res->{'gut'});
-        $userinfo{'avanz'}      = decode_utf8($res->{'avanz'}); # Ausgeliehene Medien
-        $userinfo{'branz'}      = decode_utf8($res->{'branz'}); # Buchrueckforderungen
-        $userinfo{'bsanz'}      = decode_utf8($res->{'bsanz'}); # Bestellte Medien
-        $userinfo{'vmanz'}      = decode_utf8($res->{'vmanz'}); # Vormerkungen
-        $userinfo{'maanz'}      = decode_utf8($res->{'maanz'}); # ueberzogene Medien
-        $userinfo{'vlanz'}      = decode_utf8($res->{'vlanz'}); # Verlaengerte Medien
-        $userinfo{'sperre'}     = decode_utf8($res->{'sperre'});
-        $userinfo{'sperrdatum'} = decode_utf8($res->{'sperrdatum'});
-        $userinfo{'email'}      = decode_utf8($res->{'email'});
-        $userinfo{'gebdatum'}   = decode_utf8($res->{'gebdatum'});
-        $userinfo{'masktype'}   = decode_utf8($res->{'masktype'});
-
-        my $loginname           = decode_utf8($res->{'loginname'});
-        my $password            = decode_utf8($res->{'pin'});
+        my $fieldchoice_ref = $user->get_fieldchoice();
+        my $userinfo_ref    = $user->get_info();
+        
+        my $loginname           = $userinfo_ref->{'loginname'};
+        my $password            = $userinfo_ref->{'password'};
     
         my $passwortaenderung = "";
         my $loeschekennung    = "";
@@ -237,20 +151,9 @@ sub handler {
             password         => $password,
             email_valid      => $email_valid,
             targettype       => $targettype,
-            fschecked        => $fschecked,
-            hstchecked       => $hstchecked,
-            hststringchecked => $hststringchecked,
-            verfchecked      => $verfchecked,
-            korchecked       => $korchecked,
-            swtchecked       => $swtchecked,
-            notationchecked  => $notationchecked,
-            isbnchecked      => $isbnchecked,
-            issnchecked      => $issnchecked,
-            inhaltchecked    => $inhaltchecked,
-            signchecked      => $signchecked,
-            martchecked      => $martchecked,
-            ejahrchecked     => $ejahrchecked,
-            userinfo         => \%userinfo,
+            fieldchoice      => $fieldchoice_ref,
+            
+            userinfo         => $userinfo_ref,
 
             config           => $config,
             msg              => $msg,
@@ -258,9 +161,22 @@ sub handler {
         OpenBib::Common::Util::print_page($config->{tt_userprefs_tname},$ttdata,$r);
     }
     elsif ($action eq "changefields") {
-        my $targetresult=$user->{dbh}->prepare("update fieldchoice set fs = ?, hst = ?, hststring = ?, verf = ?, kor = ?, swt = ?, notation = ?, isbn = ?, issn = ?, sign = ?, mart = ?, ejahr = ?, inhalt=?, gtquelle=? where userid = ?") or $logger->error($DBI::errstr);
-        $targetresult->execute($showfs,$showhst,$showhststring,$showverf,$showkor,$showswt,$shownotation,$showisbn,$showissn,$showsign,$showmart,$showejahr,$showinhalt,$showgtquelle,$user->{ID}) or $logger->error($DBI::errstr);
-        $targetresult->finish();
+        $user->set_fieldchoice({
+            fs        => $showfs,
+            hst       => $showhst,
+            hststring => $showhststring,
+            verf      => $showverf,
+            kor       => $showkor,
+            swt       => $showswt,
+            notation  => $shownotation,
+            isbn      => $showisbn,
+            issn      => $showissn,
+            sign      => $showsign,
+            mart      => $showmart,
+            ejahr     => $showejahr,
+            inhalt    => $showinhalt,
+            gtquelle  => $showgtquelle,
+        });
 
         # TT-Data erzeugen
         my $ttdata={
@@ -286,48 +202,11 @@ sub handler {
         OpenBib::Common::Util::print_page($config->{tt_userprefs_ask_delete_tname},$ttdata,$r);
     }
     elsif ($action eq "delaccount") {
-        # Zuerst werden die Datenbankprofile geloescht
-        my $userresult;
-        $userresult=$user->{dbh}->prepare("delete from profildb using profildb,userdbprofile where userdbprofile.userid = ? and userdbprofile.profilid=profildb.profilid") or $logger->error($DBI::errstr);
-        $userresult->execute($user->{ID}) or $logger->error($DBI::errstr);
-    
-        $userresult=$user->{dbh}->prepare("delete from userdbprofile where userdbprofile.userid = ?") or $logger->error($DBI::errstr);
-        $userresult->execute($user->{ID}) or $logger->error($DBI::errstr);
-    
-        # .. dann die Suchfeldeinstellungen
-        $userresult=$user->{dbh}->prepare("delete from fieldchoice where userid = ?") or $logger->error($DBI::errstr);
-        $userresult->execute($user->{ID}) or $logger->error($DBI::errstr);
-    
-        # .. dann die Merkliste
-        $userresult=$user->{dbh}->prepare("delete from treffer where userid = ?") or $logger->error($DBI::errstr);
-        $userresult->execute($user->{ID}) or $logger->error($DBI::errstr);
-    
-        # .. dann die Verknuepfung zur Session
-        $userresult=$user->{dbh}->prepare("delete from usersession where userid = ?") or $logger->error($DBI::errstr);
-        $userresult->execute($user->{ID}) or $logger->error($DBI::errstr);
-    
-        # und schliesslich der eigentliche Benutzereintrag
-        $userresult=$user->{dbh}->prepare("delete from user where userid = ?") or $logger->error($DBI::errstr);
-        $userresult->execute($user->{ID}) or $logger->error($DBI::errstr);
-    
-        $userresult->finish();
-
+        $user->wipe_account();
+        
         # Als naechstes werden die 'normalen' Sessiondaten geloescht
-        # Zuallererst loeschen der Trefferliste fuer diese sessionID
-        my $idnresult;
-        $idnresult=$session->{dbh}->prepare("delete from treffer where sessionid = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($session->{ID}) or $logger->error($DBI::errstr);
-    
-        $idnresult=$session->{dbh}->prepare("delete from dbchoice where sessionid = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($session->{ID}) or $logger->error($DBI::errstr);
-    
-        $idnresult=$session->{dbh}->prepare("delete from searchresults where sessionid = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($session->{ID}) or $logger->error($DBI::errstr);
-    
-        $idnresult=$session->{dbh}->prepare("delete from sessionview where sessionid = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($session->{ID}) or $logger->error($DBI::errstr);
-    
-        $idnresult->finish();
+
+        $session->clear_data();
 
         # TT-Data erzeugen
         my $ttdata={
@@ -346,9 +225,9 @@ sub handler {
             return OK;
         }
     
-        my $targetresult=$user->{dbh}->prepare("update user set pin = ? where userid = ?") or $logger->error($DBI::errstr);
-        $targetresult->execute($password1,$user->{ID}) or $logger->error($DBI::errstr);
-        $targetresult->finish();
+        $user->set_credentials({
+            password => $password1,
+        });
     
         $r->internal_redirect("http://$config->{servername}$config->{userprefs_loc}?sessionID=$session->{ID}&action=showfields");
     }
@@ -357,11 +236,8 @@ sub handler {
             OpenBib::Common::Util::print_warning($msg->maketext("Es wurde keine Standard-Recherchemaske ausgewählt"),$r,$msg);
             return OK;
         }
-    
-        my $targetresult=$user->{dbh}->prepare("update user set masktype = ? where userid = ?") or $logger->error($DBI::errstr);
-        $targetresult->execute($setmask,$user->{ID}) or $logger->error($DBI::errstr);
-        $targetresult->finish();
 
+        $user->set_mask($setmask);
         $session->set_mask($setmask);
 
         $r->internal_redirect("http://$config->{servername}$config->{userprefs_loc}?sessionID=$session->{ID}&action=showfields");

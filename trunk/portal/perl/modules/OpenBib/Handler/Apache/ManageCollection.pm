@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::ManageCollection
 #
-#  Dieses File ist (C) 2001-2007 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2008 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -140,20 +140,12 @@ sub handler {
     # Einfuegen eines Titels ind die Merkliste
     if ($action eq "insert") {
         if ($user->{ID}) {
-            # Zuallererst Suchen, ob der Eintrag schon vorhanden ist.
-            my $idnresult=$user->{dbh}->prepare("select count(*) as rowcount from treffer where userid = ? and dbname = ? and singleidn = ?") or $logger->error($DBI::errstr);
-            $idnresult->execute($user->{ID},$database,$singleidn) or $logger->error($DBI::errstr);
-            my $res    = $idnresult->fetchrow_hashref;
-            my $anzahl = $res->{rowcount};
-
-            $idnresult->finish();
-
-            if ($anzahl == 0) {
-                # Zuerst Eintragen der Informationen
-                my $idnresult=$user->{dbh}->prepare("insert into treffer values (?,?,?)") or $logger->error($DBI::errstr);
-                $idnresult->execute($user->{ID},$database,$singleidn) or $logger->error($DBI::errstr);
-                $idnresult->finish();
-            }
+            $user->add_item_to_collection({
+                item => {
+                    dbname    => $database,
+                    singleidn => $singleidn,
+                },
+            });
         }
         # Anonyme Session
         else {
@@ -197,9 +189,12 @@ sub handler {
                 my ($titdb,$titid)=split(":",$tit);
 	
                 if ($user->{ID}) {
-                    my $idnresult=$user->{dbh}->prepare("delete from treffer where userid = ? and dbname = ? and singleidn = ?") or $logger->error($DBI::errstr);
-                    $idnresult->execute($user->{ID},$titdb,$titid) or $logger->error($DBI::errstr);
-                    $idnresult->finish();
+                    $user->delete_item_from_collection({
+                        item => {
+                            dbname    => $titdb,
+                            singleidn => $titid,
+                        },
+                    });
                 }
                 else {
                     $session->clear_item_in_collection({
@@ -252,20 +247,7 @@ sub handler {
         my @dbidnlist=();
         
         if ($user->{ID}) {
-            $idnresult=$user->{dbh}->prepare("select * from treffer where userid = ? order by dbname") or $logger->error($DBI::errstr);
-            $idnresult->execute($user->{ID}) or $logger->error($DBI::errstr);
-
-            while (my $result=$idnresult->fetchrow_hashref()) {
-                my $database  = decode_utf8($result->{'dbname'});
-                my $singleidn = decode_utf8($result->{'singleidn'});
-                
-                push @dbidnlist, {
-                    database  => $database,
-                    singleidn => $singleidn,
-                };
-            }
-
-            $idnresult->finish();
+            push @dbidnlist, $session->get_items_in_collection();
         }
         else {
             push @dbidnlist, $session->get_items_in_collection();
@@ -330,18 +312,7 @@ sub handler {
         else {
             # Schleife ueber alle Treffer
             if ($user->{ID}) {
-                my $idnresult=$user->{dbh}->prepare("select * from treffer where userid = ? order by dbname") or $logger->error($DBI::errstr);
-                $idnresult->execute($user->{ID}) or $logger->error($DBI::errstr);
-                while (my $result=$idnresult->fetchrow_hashref()) {
-                    my $database  = decode_utf8($result->{'dbname'});
-                    my $singleidn = decode_utf8($result->{'singleidn'});
-                    
-                    push @dbidnlist, {
-                        database  => $database,
-                        singleidn => $singleidn,
-                    };
-                }
-                $idnresult->finish();
+                push @dbidnlist, $user->get_items_in_collection();
             }
             else {
                 push @dbidnlist, $session->get_items_in_collection();
@@ -399,16 +370,8 @@ sub handler {
     }
     # Verschicken der Merkliste per Mail
     elsif ($action eq "mail") {
-        # Weg mit der Singleidn - muss spaeter gefixed werden
-        my $userresult=$user->{dbh}->prepare("select loginname from user where userid = ?") or $logger->error($DBI::errstr);
-        $userresult->execute($user->{ID}) or $logger->error($DBI::errstr);
+        my $loginname=$user->get_username();
     
-        my $loginname="";
-    
-        while(my $res=$userresult->fetchrow_hashref()){
-            $loginname = decode_utf8($res->{'loginname'});
-        }
-
         my @dbidnlist=();
         if ($singleidn && $database) {
             push @dbidnlist, {
@@ -419,20 +382,7 @@ sub handler {
         else {
             # Schleife ueber alle Treffer
             if ($user->{ID}) {
-                my $idnresult=$user->{dbh}->prepare("select * from treffer where userid = ? order by dbname") or $logger->error($DBI::errstr);
-                $idnresult->execute($user->{ID}) or $logger->error($DBI::errstr);
-
-                while (my $result=$idnresult->fetchrow_hashref()) {
-                    my $database  = decode_utf8($result->{'dbname'});
-                    my $singleidn = decode_utf8($result->{'singleidn'});
-                    
-                    push @dbidnlist, {
-                        database  => $database,
-                        singleidn => $singleidn,
-                    };
-                }
-                
-                $idnresult->finish();
+                push @dbidnlist, $user->get_items_in_collection();
             }
             else {
                 push @dbidnlist, $session->get_items_in_collection();
@@ -484,15 +434,7 @@ sub handler {
     }
     # Ausdrucken der Merkliste (HTML) ueber Browser
     elsif ($action eq "print") {
-        # Weg mit der Singleidn - muss spaeter gefixed werden
-        my $userresult=$user->{dbh}->prepare("select loginname from user where userid = ?") or $logger->error($DBI::errstr);
-        $userresult->execute($user->{ID}) or $logger->error($DBI::errstr);
-    
-        my $loginname="";
-    
-        while(my $res=$userresult->fetchrow_hashref()){
-            $loginname = decode_utf8($res->{'loginname'});
-        }
+        my $loginname=$user->get_username();
     
         my @dbidnlist=();
         if ($singleidn && $database) {
@@ -504,18 +446,7 @@ sub handler {
         else {
             # Schleife ueber alle Treffer
             if ($user->{ID}) {
-                my $idnresult=$user->{dbh}->prepare("select * from treffer where userid = ? order by dbname") or $logger->error($DBI::errstr);
-                $idnresult->execute($user->{ID}) or $logger->error($DBI::errstr);
-                while (my $result=$idnresult->fetchrow_hashref()) {
-                    my $database  = decode_utf8($result->{'dbname'});
-                    my $singleidn = decode_utf8($result->{'singleidn'});
-                    
-                    push @dbidnlist, {
-                        database  => $database,
-                        singleidn => $singleidn,
-                    };
-                }
-                $idnresult->finish();
+                push @dbidnlist, $user->get_items_in_collection();
             }
             else {
                 push @dbidnlist, $session->get_items_in_collection();

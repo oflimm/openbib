@@ -53,8 +53,6 @@ sub print_mult_tit_set_by_idn {
         ? $arg_ref->{titidns_ref}        : undef;
     my $dbh                = exists $arg_ref->{dbh}
         ? $arg_ref->{dbh}                : undef;
-    my $sessiondbh         = exists $arg_ref->{sessiondbh}
-        ? $arg_ref->{sessiondbh}         : undef;
     my $targetdbinfo_ref = exists $arg_ref->{targetdbinfo_ref}
         ? $arg_ref->{targetdbinfo_ref} : undef;
     my $targetcircinfo_ref = exists $arg_ref->{targetcircinfo_ref}
@@ -121,14 +119,12 @@ sub get_result_navigation {
     my ($arg_ref) = @_;
 
     # Set defaults
-    my $sessiondbh            = exists $arg_ref->{sessiondbh}
-        ? $arg_ref->{sessiondbh}            : undef;
+    my $session               = exists $arg_ref->{session}
+        ? $arg_ref->{session}               : undef;
     my $database              = exists $arg_ref->{database}
         ? $arg_ref->{database}              : undef;
     my $titidn                = exists $arg_ref->{titidn}
         ? $arg_ref->{titidn}                : undef;
-    my $sessionID             = exists $arg_ref->{sessionID}
-        ? $arg_ref->{sessionID}             : undef;
     my $hitrange              = exists $arg_ref->{hitrange}
         ? $arg_ref->{hitrange}              : undef;
     my $sortorder             = exists $arg_ref->{sortorder}
@@ -140,20 +136,11 @@ sub get_result_navigation {
     my $logger = get_logger();
 
     my $config = new OpenBib::Config();
-    
+
     # Bestimmen des vorigen und naechsten Treffer einer
     # vorausgegangenen Kurztitelliste
-    my $sessionresult=$sessiondbh->prepare("select lastresultset from session where sessionid = ?") or $logger->error($DBI::errstr);
-    $sessionresult->execute($sessionID) or $logger->error($DBI::errstr);
-  
-    my $result=$sessionresult->fetchrow_hashref();
-    my $lastresultstring="";
-  
-    if ($result->{'lastresultset'}) {
-        $lastresultstring = decode_utf8($result->{'lastresultset'});
-    }
-  
-    $sessionresult->finish();
+
+    my $lastresultstring = $session->get_lastresultset();
   
     my $lasttiturl="";
     my $nexttiturl="";
@@ -161,7 +148,7 @@ sub get_result_navigation {
     if ($lastresultstring=~m/(\w+:\d+)\|$database:$titidn/) {
         $lasttiturl=$1;
         my ($lastdatabase,$lastkatkey)=split(":",$lasttiturl);
-        $lasttiturl="$config->{search_loc}?sessionID=$sessionID;database=$lastdatabase;searchsingletit=$lastkatkey";
+        $lasttiturl="$config->{search_loc}?sessionID=$session->{ID};database=$lastdatabase;searchsingletit=$lastkatkey";
     }
     
     if ($lastresultstring=~m/$database:$titidn\|(\w+:\d+)/) {
@@ -170,7 +157,7 @@ sub get_result_navigation {
 
 	$logger->debug("NextDB: $nextdatabase - NextKatkey: $nextkatkey");
 
-        $nexttiturl="$config->{search_loc}?sessionID=$sessionID;database=$nextdatabase;searchsingletit=$nextkatkey";
+        $nexttiturl="$config->{search_loc}?sessionID=$session->{ID};database=$nextdatabase;searchsingletit=$nextkatkey";
     }
 
     return ($lasttiturl,$nexttiturl);
@@ -336,8 +323,6 @@ sub print_index_by_swt {
         ? $arg_ref->{swt}               : undef;
     my $dbh               = exists $arg_ref->{dbh}
         ? $arg_ref->{dbh}               : undef;
-    my $sessiondbh        = exists $arg_ref->{sessiondbh}
-        ? $arg_ref->{sessiondbh}        : undef;
     my $database          = exists $arg_ref->{database}
         ? $arg_ref->{database}          : undef;
     my $targetdbinfo_ref   = exists $arg_ref->{targetdbinfo_ref}

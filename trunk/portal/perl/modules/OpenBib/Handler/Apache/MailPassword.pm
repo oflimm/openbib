@@ -3,7 +3,7 @@
 #
 #  OpenBib::Handler::Apache::MailPassword
 #
-#  Dieses File ist (C) 2004-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2008 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -126,13 +126,8 @@ sub handler {
             OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine E-Mail Adresse eingegeben"),$r,$msg);
             return OK;
         }
-    
-        my $targetresult=$user->{dbh}->prepare("select pin from user where loginname = ?") or $logger->error($DBI::errstr);
-        $targetresult->execute($loginname) or $logger->error($DBI::errstr);
-    
-        my $result=$targetresult->fetchrow_hashref();
-        my $password = decode_utf8($result->{'pin'});
-        $targetresult->finish();
+
+        my ($dummy,$password)=$user->get_credentials({userid => $user->get_userid_for_username($loginname)});
     
         if (!$password) {
             OpenBib::Common::Util::print_warning($msg->maketext("Es existiert kein Passwort für die Kennung $loginname"),$r,$msg);

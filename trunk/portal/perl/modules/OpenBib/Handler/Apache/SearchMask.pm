@@ -127,27 +127,22 @@ sub handler {
     my $userprofile_ref = {};
 
     if ($user->{ID}) {
-        my $targetresult=$user->{dbh}->prepare("select * from fieldchoice where userid = ?") or $logger->error($DBI::errstr);
-        $targetresult->execute($user->{ID}) or $logger->error($DBI::errstr);
+        my $fieldchoice_ref = $user->get_fieldchoice();
     
-        my $result=$targetresult->fetchrow_hashref();
-    
-        $showfs        = decode_utf8($result->{'fs'});
-        $showhst       = decode_utf8($result->{'hst'});
-        $showverf      = decode_utf8($result->{'verf'});
-        $showkor       = decode_utf8($result->{'kor'});
-        $showswt       = decode_utf8($result->{'swt'});
-        $shownotation  = decode_utf8($result->{'notation'});
-        $showisbn      = decode_utf8($result->{'isbn'});
-        $showissn      = decode_utf8($result->{'issn'});
-        $showsign      = decode_utf8($result->{'sign'});
-        $showmart      = decode_utf8($result->{'mart'});
-        $showhststring = decode_utf8($result->{'hststring'});
-        $showinhalt    = decode_utf8($result->{'inhalt'});
-        $showgtquelle  = decode_utf8($result->{'gtquelle'});
-        $showejahr     = decode_utf8($result->{'ejahr'});
-
-        $targetresult->finish();
+        $showfs        = $fieldchoice_ref->{'fs'};
+        $showhst       = $fieldchoice_ref->{'hst'};
+        $showverf      = $fieldchoice_ref->{'verf'};
+        $showkor       = $fieldchoice_ref->{'kor'};
+        $showswt       = $fieldchoice_ref->{'swt'};
+        $shownotation  = $fieldchoice_ref->{'notation'};
+        $showisbn      = $fieldchoice_ref->{'isbn'};
+        $showissn      = $fieldchoice_ref->{'issn'};
+        $showsign      = $fieldchoice_ref->{'sign'};
+        $showmart      = $fieldchoice_ref->{'mart'};
+        $showhststring = $fieldchoice_ref->{'hststring'};
+        $showinhalt    = $fieldchoice_ref->{'inhalt'};
+        $showgtquelle  = $fieldchoice_ref->{'gtquelle'};
+        $showejahr     = $fieldchoice_ref->{'ejahr'};
 
         foreach my $profile_ref ($user->get_all_profiles()){
             my @profiledbs = $user->get_profiledbs_of_profileid($profile_ref->{profilid});
@@ -168,12 +163,6 @@ sub handler {
             $userprofiles="<option value=\"\">Gespeicherte Katalogprofile:</option><option value=\"\">&nbsp;</option>".$userprofiles."<option value=\"\">&nbsp;</option>";
         }
     
-        $targetresult=$user->{dbh}->prepare("select * from fieldchoice where userid = ?") or $logger->error($DBI::errstr);
-        $targetresult->execute($user->{ID}) or $logger->error($DBI::errstr);
-    
-        $result=$targetresult->fetchrow_hashref();
-    
-        $targetresult->finish();
     }
   
     my $searchquery_ref
@@ -192,16 +181,7 @@ sub handler {
 
     my $hits;
     if ($queryid ne "") {
-        my $idnresult=$session->{dbh}->prepare("select query,hits from queries where queryid = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($queryid) or $logger->error($DBI::errstr);
-    
-        my $result=$idnresult->fetchrow_hashref();
-        $searchquery_ref = Storable::thaw(pack "H*",$result->{'query'});
-        $logger->debug(YAML::Dump($searchquery_ref));
-        $hits            = decode_utf8($result->{'hits'});
-#        $query=~s/"/&quot;/g;
-
-        $idnresult->finish();
+        ($searchquery_ref,$hits) = $session->get_searchquery($queryid);
     }
 
     # Wenn Datenbanken uebergeben wurden, dann werden diese eingetragen
@@ -223,23 +203,10 @@ sub handler {
     my $alldbs     = $config->get_number_of_dbs();
     my $alldbcount = $config->get_number_of_titles();
 
-    # Ausgabe der vorhandenen queries
-    my $idnresult=$session->{dbh}->prepare("select * from queries where sessionid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($session->{ID}) or $logger->error($DBI::errstr);
-    my $anzahl=$idnresult->rows();
+    my @queries    = $session->get_all_searchqueries();
 
-    my @queries=();
-
-    while (my $result=$idnresult->fetchrow_hashref()) {
-        push @queries, {
-            id          => decode_utf8($result->{queryid}),
-            searchquery => Storable::thaw(pack "H*",$result->{query}),
-            hits        => decode_utf8($result->{hits}),
-        };
-    }
-
-    $idnresult->finish();
-
+    my $anzahl     = $#queries;
+    
     # Ausgewaehlte Datenbanken bestimmen
     my $checkeddb_ref = {};
     foreach my $dbname ($session->get_dbchoice()){

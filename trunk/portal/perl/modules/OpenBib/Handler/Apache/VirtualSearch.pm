@@ -215,16 +215,8 @@ sub handler {
                     # Benutzerspezifische Datenbankprofile
                     if ($profil=~/^user(\d+)/) {
                         my $profilid=$1;
-                        
-                        my $profilresult=$user->{dbh}->prepare("select profildb.dbname from profildb,userdbprofile where userdbprofile.userid = ? and userdbprofile.profilid = ? and userdbprofile.profilid=profildb.profilid order by dbname") or $logger->error($DBI::errstr);
-                        $profilresult->execute($user->{ID},$profilid) or $logger->error($DBI::errstr);
-                        
-                        my @poolres;
-                        while (@poolres=$profilresult->fetchrow) {
-                            push @databases, decode_utf8($poolres[0]);
-                        }
-                        $profilresult->finish();
-                        
+
+                        @databases = $user->get_profiledbs_of_profileid($profilid);
                     }
                     # oder alle
                     elsif ($profil eq "alldbs") {
@@ -244,12 +236,7 @@ sub handler {
                 
                 # Wenn Profil aufgerufen wurde, dann abspeichern fuer Recherchemaske
                 if ($profil) {
-                    my $idnresult=$session->{dbh}->prepare("delete from sessionprofile where sessionid = ? ") or $logger->error($DBI::errstr);
-                    $idnresult->execute($session->{ID}) or $logger->error($DBI::errstr);
-                    
-                    $idnresult=$session->{dbh}->prepare("insert into sessionprofile values (?,?) ") or $logger->error($DBI::errstr);
-                    $idnresult->execute($session->{ID},$profil) or $logger->error($DBI::errstr);
-                    $idnresult->finish();
+                    $session->set_profile($profil);
                 }
             }
         }
@@ -259,33 +246,11 @@ sub handler {
     
     # Abspeichern des Query und Generierung der Queryid
     if ($session->{ID} ne "-1") {
-        my $dbasesstring=join("||",sort @databases);
-        
-        my $thisquerystring=unpack "H*", Storable::freeze($searchquery_ref);
-        my $idnresult=$session->{dbh}->prepare("select count(*) as rowcount from queries where query = ? and sessionid = ? and dbases = ? and hitrange = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($thisquerystring,$session->{ID},$dbasesstring,$hitrange) or $logger->error($DBI::errstr);
-        my $res  = $idnresult->fetchrow_hashref;
-        my $rows = $res->{rowcount};
-        
-        # Neuer Query
-        if ($rows <= 0) {
-            # Abspeichern des Queries bis auf die Gesamttrefferzahl
-            $idnresult=$session->{dbh}->prepare("insert into queries (queryid,sessionid,query,hitrange,dbases) values (NULL,?,?,?,?)") or $logger->error($DBI::errstr);
-            $idnresult->execute($session->{ID},$thisquerystring,$hitrange,$dbasesstring) or $logger->error($DBI::errstr);
-        }
-        # Query existiert schon
-        else {
-            $queryalreadyexists=1;
-        }
-        
-        $idnresult=$session->{dbh}->prepare("select queryid from queries where query = ? and sessionid = ? and dbases = ? and hitrange = ?") or $logger->error($DBI::errstr);
-        $idnresult->execute($thisquerystring,$session->{ID},$dbasesstring,$hitrange) or $logger->error($DBI::errstr);
-        
-        while (my @idnres=$idnresult->fetchrow) {
-            $queryid = decode_utf8($idnres[0]);
-        }
-        
-        $idnresult->finish();
+        ($queryalreadyexists,$queryid) = $session->get_queryid({
+            databases   => \@databases,
+            searchquery => $searchquery_ref,
+            hitrange    => $hitrange,
+        });
     }
     # BEGIN Index
     ####################################################################
@@ -662,7 +627,7 @@ sub handler {
     # Array aus DB-Name und Titel-ID zur Navigation
     my @resultset=();
 
-    my $cacherequest=$session->{dbh}->prepare("insert into searchresults values (?,?,?,?,?)") or $logger->error($DBI::errstr);
+#    my $cacherequest=$session->{dbh}->prepare("insert into searchresults values (?,?,?,?,?)") or $logger->error($DBI::errstr);
 
     foreach my $database (@databases) {
         
@@ -1129,7 +1094,7 @@ sub handler {
         # flush output buffer
         $r->rflush();
     }
-    $cacherequest->finish();
+#    $cacherequest->finish();
     
     ######################################################################
     #
@@ -1178,21 +1143,17 @@ sub handler {
                 serialize => 1,
             });
 
-            my $idnresult=$session->{dbh}->prepare("update queries set hits = ? where queryid = ?") or $logger->error($DBI::errstr);
-            $idnresult->execute($gesamttreffer,$queryid) or $logger->error($DBI::errstr);
-            
-            $idnresult=$session->{dbh}->prepare("insert into searchresults values (?,?,0,?,?,?,?)") or $logger->error($DBI::errstr);
+            $session->set_hits_of_query({
+                queryid => $queryid,
+                hits    => $gesamttreffer,
+            });
 
-            foreach my $db (keys %trefferpage) {
-                my $res=$trefferpage{$db};
-
-                my $storableres=unpack "H*",Storable::freeze($res);
-
-                $logger->debug("YAML-Dumped: ".YAML::Dump($res));
-                my $num=$dbhits{$db};
-                $idnresult->execute($session->{ID},$db,$hitrange,$storableres,$num,$queryid) or $logger->error($DBI::errstr);
-            }
-            $idnresult->finish();
+            $session->set_all_searchresults({
+                queryid  => $queryid,
+                results  => \%trefferpage,
+                dbhits   => \%dbhits,
+                hitrange => $hitrange,
+            });
         }
     }
 

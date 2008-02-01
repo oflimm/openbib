@@ -47,6 +47,7 @@ use OpenBib::Search::Util;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
+use OpenBib::Record::Title;
 use OpenBib::Search::Util;
 use OpenBib::Session;
 use OpenBib::User;
@@ -159,21 +160,8 @@ sub handler {
         foreach my $review_ref (@$reviewlist_ref){
             my $titelidn = $review_ref->{titid};
             my $database = $review_ref->{titdb};
-            
-            my $dbh
-                = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-                    or $logger->error_die($DBI::errstr);
-            
-            $review_ref->{titnormset} = OpenBib::Search::Util::get_tit_listitem_by_idn({
-                titidn            => $titelidn,
-                dbh               => $dbh,
-                sessiondbh        => $session->{dbh},
-                targetdbinfo_ref  => $targetdbinfo_ref,
-                database          => $database,
-                sessionID         => $session->{ID},
-            });
-            
-            $dbh->disconnect();
+
+            $review_ref->{titnormset} = OpenBib::Record::Title->new({database=>$database})->get_brief_record({id=>$titelidn})->to_rawdata;
         }
         
         # TT-Data erzeugen
@@ -294,22 +282,8 @@ sub handler {
         {
             my $titelidn = $review_ref->{titid};
             my $database = $review_ref->{titdb};
-            
-            my $dbh
-                = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-                    or $logger->error_die($DBI::errstr);
-            
-            $review_ref->{titnormset} = OpenBib::Search::Util::get_tit_listitem_by_idn({
-                titidn            => $titelidn,
-                dbh               => $dbh,
-                sessiondbh        => $session->{dbh},
-                targetdbinfo_ref  => $targetdbinfo_ref,
-                database          => $database,
-                sessionID         => $session->{ID},
-            });
-            
-            $dbh->disconnect();
-            
+
+            $review_ref->{titnormset} = OpenBib::Record::Title->new({database=>$database})->get_brief_record({id=>$titelidn})->to_rawdata;
         }
         
         # TT-Data erzeugen

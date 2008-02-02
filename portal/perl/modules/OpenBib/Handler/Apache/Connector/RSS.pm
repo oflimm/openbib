@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Connector::RSS.pm
 #
-#  Dieses File ist (C) 2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2008 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -57,7 +57,7 @@ sub handler {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = new OpenBib::Config();
+    my $config = OpenBib::Config->instance;
     
     my $uri  = $r->parsed_uri;
     my $path = $uri->path;
@@ -87,7 +87,7 @@ sub handler {
     #####################################################################
     # Verbindung zur SQL-Datenbank herstellen
 
-    my $session = new OpenBib::Session();
+    my $session = OpenBib::Session->instance;
 
     my $targetdbinfo_ref
         = $config->get_targetdbinfo();

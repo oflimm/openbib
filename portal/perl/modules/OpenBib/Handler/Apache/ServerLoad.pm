@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::ServerLoad
 #
-#  Dieses File ist (C) 2004-2005 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2008 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -47,7 +47,7 @@ sub handler {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = new OpenBib::Config();
+    my $config = OpenBib::Config->instance;
     
     my $sessiondbstatus="offline";
 

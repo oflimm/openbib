@@ -54,7 +54,7 @@ sub handler {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = new OpenBib::Config();
+    my $config = OpenBib::Config->instance;
     
     my $uri  = $r->parsed_uri;
     my $path = $uri->path;

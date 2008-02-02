@@ -167,7 +167,7 @@ FOREACH category IN categories;
          content   = "<b>${highlightquery(searchquery,content)}</b>";
 
     CASE "T0540";
-         content   = "<a href=\"${config.redirect_loc}/${sessionID}/521/http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}\" target=\"_blank\"><img src=\"/images/openbib/wikipedia.png\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${highlightquery(searchquery,content)}";
+         content   = "<a class=\"isbn\" href=\"${config.redirect_loc}/${sessionID}/521/http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}\" target=\"_blank\"><img src=\"/images/openbib/wikipedia.png\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${highlightquery(searchquery,content)}";
 
     CASE "T0543";
          content   = "${content} (<a href=\"${config.redirect_loc}/${sessionID}/530/${config.ezb_exturl}&jq_term1=${content}\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
@@ -266,6 +266,7 @@ FOREACH category IN categories;
    END;
 END;
 -%]
+<tr><td class="category">BibSonomy-Tags</td><td><span id="bibsonomy_tags"><a href="#">Suchen?</a></span></td></tr>
 </table>
 
 [% IF config.unAPI %]

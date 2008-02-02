@@ -2,6 +2,8 @@ $(document).ready(function(){
 
 var sessionID = $("meta[@name='sessionID']").attr("content");
 
+var ISBN      = $("meta[@name='ISBN']").attr("content");
+ 
 // Begin Merkliste
 // Merklistenfuellstand aktualisieren
 // Achtung!!! Wert von managecollection_loc aus OpenBib::Config ist hier
@@ -25,6 +27,22 @@ function (txt){ $("#collectioncount").html("["+txt+"]"); });
  });
 // Ende Merkliste
 
+// Begin BibSonomy Tags
+$("#bibsonomy_tags a").click(function(){
+
+  $.get("/portal/bibsonomy?sessionID="+sessionID+";action=get_tags;titisbn="+ISBN,
+   function (xml){
+        $(xml).find('bibsonomy_tags').each(function(){
+        var item_text = $(this).text();
+
+        $("<li></li>")
+            .html(item_text)
+            .appendTo('ol');
+    });
+
+   return false;
+ });
+// Ende  BibSonomy Tags
 // --------------------------------------------------------------------------
 
 // Begin Togglen / Suchhilfe

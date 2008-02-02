@@ -174,19 +174,19 @@
 <table>
 <tr><td colspan="2"><b>[% msg.maketext("Welche Suchfelder sollen in der erweiterten<br />Recherchemaske angezeigt werden?") %]</b></td></tr>
 <tr><td colspan="2">&nbsp;</td></tr>
-<tr><td align="right"><input type="checkbox" name="showfs"        value="1" [% fschecked %] /></td><td>[% msg.maketext("Freie Suche") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showhst"       value="1" [% hstchecked %] /></td><td>[% msg.maketext("Hauptsachtitel (HST)") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showverf"      value="1" [% verfchecked %] /></td><td>[% msg.maketext("Verfasser") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showkor"       value="1" [% korchecked %] /></td><td>[% msg.maketext("K&ouml;rperschaft") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showswt"       value="1" [% swtchecked %] /></td><td>[% msg.maketext("Schlagwort") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="shownotation"  value="1" [% notationchecked %] /></td><td>[% msg.maketext("Notation") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showisbn"      value="1" [% isbnchecked %] /></td><td>[% msg.maketext("ISBN") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showissn"      value="1" [% issnchecked %] /></td><td>[% msg.maketext("ISSN") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showsign"      value="1" [% signchecked %] /></td><td>[% msg.maketext("Signatur") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showhststring" value="1" [% hststringchecked %] /></td><td>[% msg.maketext("Titel-String") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showinhalt   " value="1" [% inhaltchecked %] /></td><td>[% msg.maketext("Abstrakt/Inhalt") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showmart"      value="1" [% martchecked %] /></td><td>[% msg.maketext("Medienart") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showejahr"     value="1" [% ejahrchecked %] /></td><td>[% msg.maketext("Erscheinungsjahr") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="showfs"        value="1" [% IF fieldchoice.fs %]checked="checked"[% END %]/></td><td>[% msg.maketext("Freie Suche") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="showhst"       value="1" [% IF fieldchoice.hst %]checked="checked"[% END %] /></td><td>[% msg.maketext("Hauptsachtitel (HST)") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="showverf"      value="1" [% IF fieldchoice.verf %]checked="checked"[% END %] /></td><td>[% msg.maketext("Verfasser") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="showkor"       value="1" [% IF fieldchoice.kor %]checked="checked"[% END %] /></td><td>[% msg.maketext("K&ouml;rperschaft") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="showswt"       value="1" [% IF fieldchoice.swt %]checked="checked"[% END %] /></td><td>[% msg.maketext("Schlagwort") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="shownotation"  value="1" [% IF fieldchoice.notation %]checked="checked"[% END %] /></td><td>[% msg.maketext("Notation") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="showisbn"      value="1" [% IF fieldchoice.isbn %]checked="checked"[% END %] /></td><td>[% msg.maketext("ISBN") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="showissn"      value="1" [% IF fieldchoice.issn %]checked="checked"[% END %] /></td><td>[% msg.maketext("ISSN") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="showsign"      value="1" [% IF fieldchoice.sign %]checked="checked"[% END %] /></td><td>[% msg.maketext("Signatur") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="showhststring" value="1" [% IF fieldchoice.hststring %]checked="checked"[% END %] /></td><td>[% msg.maketext("Titel-String") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="showinhalt   " value="1" [% IF fieldchoice.inhalt %]checked="checked"[% END %] /></td><td>[% msg.maketext("Abstrakt/Inhalt") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="showmart"      value="1" [% IF fieldchoice.mart %]checked="checked"[% END %] /></td><td>[% msg.maketext("Medienart") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="showejahr"     value="1" [% IF fieldchoice.ejahr %]checked="checked"[% END %] /></td><td>[% msg.maketext("Erscheinungsjahr") %]</td></tr>
 <tr><td colspan="2">&nbsp;</td></tr>
 <tr><td colspan="2"><input type="submit" value="[% msg.maketext("Suchfelder &auml;ndern") %]" /></td></tr>
 </table>

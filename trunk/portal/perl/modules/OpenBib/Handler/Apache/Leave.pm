@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Leave
 #
-#  Dieses File ist (C) 2001-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2008 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -53,9 +53,9 @@ sub handler {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = new OpenBib::Config();
+    my $config = OpenBib::Config->instance;
     
-    my $query=Apache::Request->instance($r);
+    my $query  = Apache::Request->instance($r);
 
     my $status=$query->parse;
 
@@ -63,11 +63,11 @@ sub handler {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
 
-    my $session   = new OpenBib::Session({
+    my $session   = OpenBib::Session->instance({
         sessionID => $query->param('sessionID'),
     });
 
-    my $user      = new OpenBib::User({sessionID => $session->{ID}});
+    my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
     
     my $stylesheet = OpenBib::Common::Util::get_css_by_browsertype($r);
 

@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Redirect
 #
-#  Dieses File ist (C) 2007 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2008 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -51,7 +51,7 @@ sub handler {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = new OpenBib::Config();
+    my $config = OpenBib::Config->instance;
 
     my $uri   = $r->parsed_uri;
     my $path  = $uri->path;
@@ -84,7 +84,7 @@ sub handler {
     
     $logger->debug("SessionID: $sessionID - Type: $type - URL: $url");
 
-    my $session   = new OpenBib::Session({
+    my $session   = OpenBib::Session->instance({
         sessionID => $sessionID,
     });
     

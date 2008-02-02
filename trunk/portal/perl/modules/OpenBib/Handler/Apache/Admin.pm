@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Admin
 #
-#  Dieses File ist (C) 2004-2007 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2008 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -79,12 +79,12 @@ sub handler {
     my $session;
     
     if ($query->param('sessionID')){
-        $session   = new OpenBib::Session({
+        $session   = OpenBib::Session->instance({
             sessionID => $query->param('sessionID'),
         });
     }
     else {
-        $session = new OpenBib::Session();
+        $session = OpenBib::Session->instance;
     }
   
     # Standardwerte festlegen
@@ -1146,7 +1146,7 @@ sub editcat_change {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance();
+    my $config = OpenBib::Config->instance;
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
@@ -1417,7 +1417,7 @@ sub editlogintarget_del {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $user = OpenBib::User->instance();
+    my $user = OpenBib::User->instance;
 
     $user->delete_logintarget($targetid);
 
@@ -1430,7 +1430,7 @@ sub editlogintarget_change {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $user = new OpenBib::User();
+    my $user = OpenBib::User->instance;
 
     $user->update_logintarget({
         targetid    => $logintarget_ref->{targetid},
@@ -1451,7 +1451,7 @@ sub editlogintarget_new {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $user = new OpenBib::User();
+    my $user = OpenBib::User->instance;
 
     $user->new_logintarget({
         hostname    => $logintarget_ref->{hostname},

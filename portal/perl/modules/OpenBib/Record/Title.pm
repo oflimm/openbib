@@ -4,7 +4,7 @@
 #
 #  Titel
 #
-#  Dieses File ist (C) 2007 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2008 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -54,24 +54,25 @@ sub new {
     my ($class,$arg_ref) = @_;
 
     # Set defaults
+    my $id        = exists $arg_ref->{id}
+        ? $arg_ref->{id}             : undef;
+
     my $database  = exists $arg_ref->{database}
         ? $arg_ref->{database}       : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = new OpenBib::Config();
-    
     my $self = { };
 
     bless ($self, $class);
 
-    $self->{config}         = $config;
-    $self->{targetdbinfo}   = $self->{config}->get_targetdbinfo();
-    $self->{targetcircinfo} = $self->{config}->get_targetcircinfo();
-
     if (defined $database){
         $self->{database} = $database;
+    }
+
+    if (defined $id){
+        $self->{id}       = $database;
     }
 
     $logger->debug("Title-Record-Object created: ".YAML::Dump($self));
@@ -85,8 +86,19 @@ sub get_full_record {
     my $id                = exists $arg_ref->{id}
         ? $arg_ref->{id}                : undef;
 
+    my $dbh               = exists $arg_ref->{dbh}
+        ? $arg_ref->{dbh}               : undef;
+
     # Log4perl logger erzeugen
     my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    my $targetdbinfo_ref
+        = $config->get_targetdbinfo();
+
+    my $targetcircinfo_ref
+        = $config->get_targetcircinfo();
 
     # (Re-)Initialisierung
     delete $self->{_normset}       if (exists $self->{_normset});
@@ -100,15 +112,18 @@ sub get_full_record {
     $normset_ref->{id      } = $id;
     $normset_ref->{database} = $self->{database};
 
-    my $dbh = OpenBib::Database::DBI->connect("DBI:$self->{config}->{dbimodule}:dbname=$self->{database};host=$self->{config}->{dbhost};port=$self->{config}->{dbport}", $self->{config}->{dbuser}, $self->{config}->{dbpasswd})
-        or $logger->error_die($DBI::errstr);
+    if (!defined $dbh){
+        # Kein Spooling von DB-Handles!
+        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+            or $logger->error_die($DBI::errstr);
+    }
     
     # Titelkategorien
     {
         
         my ($atime,$btime,$timeall)=(0,0,0);
         
-        if ($self->{config}->{benchmark}) {
+        if ($config->{benchmark}) {
             $atime=new Benchmark;
         }
         
@@ -128,7 +143,7 @@ sub get_full_record {
         }
         $request->finish();
 
-        if ($self->{config}->{benchmark}) {
+        if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : $reqstring : ist ".timestr($timeall));
@@ -139,7 +154,7 @@ sub get_full_record {
     {
         my ($atime,$btime,$timeall)=(0,0,0);
         
-        if ($self->{config}->{benchmark}) {
+        if ($config->{benchmark}) {
             $atime=new Benchmark;
         }
         
@@ -177,7 +192,7 @@ sub get_full_record {
         }
         $request->finish();
         
-        if ($self->{config}->{benchmark}) {
+        if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : $reqstring : ist ".timestr($timeall));
@@ -193,7 +208,7 @@ sub get_full_record {
         my $res;
         
         # Unterordnungen
-        if ($self->{config}->{benchmark}) {
+        if ($config->{benchmark}) {
             $atime=new Benchmark;
         }
         
@@ -209,14 +224,14 @@ sub get_full_record {
             };
         }
         
-        if ($self->{config}->{benchmark}) {
+        if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : $reqstring : ist ".timestr($timeall));
         }
 
         # Ueberordnungen
-        if ($self->{config}->{benchmark}) {
+        if ($config->{benchmark}) {
             $atime=new Benchmark;
         }
 
@@ -232,7 +247,7 @@ sub get_full_record {
             };
         }
         
-        if ($self->{config}->{benchmark}) {
+        if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : $reqstring : ist ".timestr($timeall));
@@ -271,7 +286,7 @@ sub get_full_record {
     {
         my $circexlist=undef;
 
-        if (exists $self->{targetcircinfo}->{$self->{database}}{circ}) {
+        if (exists $targetcircinfo_ref->{$self->{database}}{circ}) {
 
             my $circid=(exists $normset_ref->{'T0001'}[0]{content} && $normset_ref->{'T0001'}[0]{content} > 0 && $normset_ref->{'T0001'}[0]{content} != $id )?$normset_ref->{'T0001'}[0]{content}:$id;
 
@@ -280,11 +295,11 @@ sub get_full_record {
             eval {
                 my $soap = SOAP::Lite
                     -> uri("urn:/MediaStatus")
-                        -> proxy($self->{targetcircinfo}->{$self->{database}}{circcheckurl});
+                        -> proxy($targetcircinfo_ref->{$self->{database}}{circcheckurl});
                 my $result = $soap->get_mediastatus(
                 SOAP::Data->name(parameter  =>\SOAP::Data->value(
                     SOAP::Data->name(katkey   => $circid)->type('string'),
-                    SOAP::Data->name(database => $self->{targetcircinfo}->{$self->{database}}{circdb})->type('string'))));
+                    SOAP::Data->name(database => $targetcircinfo_ref->{$self->{database}}{circdb})->type('string'))));
                 
                 unless ($result->fault) {
                     $circexlist=$result->result;
@@ -308,34 +323,34 @@ sub get_full_record {
             @circexemplarliste = @{$circexlist};
         }
         
-        if (exists $self->{targetcircinfo}->{$self->{database}}{circ}
+        if (exists $targetcircinfo_ref->{$self->{database}}{circ}
                 && $#circexemplarliste >= 0) {
             for (my $i=0; $i <= $#circexemplarliste; $i++) {
                 
                 my $bibliothek="-";
-                my $sigel=$self->{targetdbinfo}->{dbases}{$self->{database}};
+                my $sigel=$targetdbinfo_ref->{dbases}{$self->{database}};
                 
                 if (length($sigel)>0) {
-                    if (exists $self->{targetdbinfo}->{sigel}{$sigel}) {
-                        $bibliothek=$self->{targetdbinfo}->{sigel}{$sigel};
+                    if (exists $targetdbinfo_ref->{sigel}{$sigel}) {
+                        $bibliothek=$targetdbinfo_ref->{sigel}{$sigel};
                     }
                     else {
                         $bibliothek="($sigel)";
                     }
                 }
                 else {
-                    if (exists $self->{targetdbinfo}->{sigel}{$self->{targetdbinfo}->{dbases}{$self->{database}}}) {
-                        $bibliothek=$self->{targetdbinfo}->{sigel}{
-                            $self->{targetdbinfo}->{dbases}{$self->{database}}};
+                    if (exists $targetdbinfo_ref->{sigel}{$targetdbinfo_ref->{dbases}{$self->{database}}}) {
+                        $bibliothek=$targetdbinfo_ref->{sigel}{
+                            $targetdbinfo_ref->{dbases}{$self->{database}}};
                     }
                 }
                 
-                my $bibinfourl=$self->{targetdbinfo}->{bibinfo}{
-                    $self->{targetdbinfo}->{dbases}{$self->{database}}};
+                my $bibinfourl=$targetdbinfo_ref->{bibinfo}{
+                    $targetdbinfo_ref->{dbases}{$self->{database}}};
                 
                 $circexemplarliste[$i]{'Bibliothek'} = $bibliothek;
                 $circexemplarliste[$i]{'Bibinfourl'} = $bibinfourl;
-                $circexemplarliste[$i]{'Ausleihurl'} = $self->{targetcircinfo}->{$self->{database}}{circurl};
+                $circexemplarliste[$i]{'Ausleihurl'} = $targetcircinfo_ref->{$self->{database}}{circurl};
             }
         }
         else {
@@ -347,13 +362,13 @@ sub get_full_record {
     {
         my ($atime,$btime,$timeall);
         
-        if ($self->{config}->{benchmark}) {
+        if ($config->{benchmark}) {
             $atime=new Benchmark;
         }
         
         # Verbindung zur SQL-Datenbank herstellen
         my $enrichdbh
-            = DBI->connect("DBI:$self->{config}->{dbimodule}:dbname=$self->{config}->{enrichmntdbname};host=$self->{config}->{enrichmntdbhost};port=$self->{config}->{enrichmntdbport}", $self->{config}->{enrichmntdbuser}, $self->{config}->{enrichmntdbpasswd})
+            = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
                 or $logger->error_die($DBI::errstr);
         
         if (exists $normset_ref->{T0540}){
@@ -384,7 +399,7 @@ sub get_full_record {
 
         $enrichdbh->disconnect();
 
-        if ($self->{config}->{benchmark}) {
+        if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : Bestimmung von Enrich-Normdateninformationen ist ".timestr($timeall));
@@ -407,8 +422,13 @@ sub get_brief_record {
     my $id                = exists $arg_ref->{id}
         ? $arg_ref->{id}                : undef;
 
+    my $dbh               = exists $arg_ref->{dbh}
+        ? $arg_ref->{dbh}               : undef;
+
     # Log4perl logger erzeugen
     my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
 
     # (Re-)Initialisierung
     delete $self->{_normset}       if (exists $self->{_normset});
@@ -424,16 +444,19 @@ sub get_brief_record {
     $listitem_ref->{id      } = $id;
     $listitem_ref->{database} = $self->{database};
 
-    my $dbh = OpenBib::Database::DBI->connect("DBI:$self->{config}->{dbimodule}:dbname=$self->{database};host=$self->{config}->{dbhost};port=$self->{config}->{dbport}", $self->{config}->{dbuser}, $self->{config}->{dbpasswd})
+    if (!defined $dbh){
+        # Kein Spooling von DB-Handles!
+        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
         or $logger->error_die($DBI::errstr);
+    }
 
     my ($atime,$btime,$timeall)=(0,0,0);
     
-    if ($self->{config}->{benchmark}) {
+    if ($config->{benchmark}) {
         $atime  = new Benchmark;
     }
 
-    if ($self->{config}->{use_titlistitem_table}) {
+    if ($config->{use_titlistitem_table}) {
         # Bestimmung des Satzes
         my $request=$dbh->prepare("select listitem from titlistitem where id = ?") or $logger->error($DBI::errstr);
         $request->execute($id);
@@ -465,7 +488,7 @@ sub get_brief_record {
     else {
         my ($atime,$btime,$timeall)=(0,0,0);
         
-        if ($self->{config}->{benchmark}) {
+        if ($config->{benchmark}) {
             $atime  = new Benchmark;
         }
 
@@ -487,14 +510,14 @@ sub get_brief_record {
         
         $logger->debug("Titel: ".YAML::Dump($listitem_ref));
         
-        if ($self->{config}->{benchmark}) {
+        if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : Bestimmung der Titelinformationen : ist ".timestr($timeall));
         }
         
         
-        if ($self->{config}->{benchmark}) {
+        if ($config->{benchmark}) {
             $atime=new Benchmark;
         }
         
@@ -514,14 +537,14 @@ sub get_brief_record {
         }
         
         
-        if ($self->{config}->{benchmark}) {
+        if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : Bestimmung der Exemplarinformationen : ist ".timestr($timeall));
         }
         
         
-        if ($self->{config}->{benchmark}) {
+        if ($config->{benchmark}) {
             $atime=new Benchmark;
         }
         
@@ -559,13 +582,13 @@ sub get_brief_record {
             push @autkor, $content;
         }
         
-        if ($self->{config}->{benchmark}) {
+        if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : Bestimmung der Verfasserinformationen : ist ".timestr($timeall));
         }
         
-        if ($self->{config}->{benchmark}) {
+        if ($config->{benchmark}) {
             $atime=new Benchmark;
         }    
         
@@ -596,7 +619,7 @@ sub get_brief_record {
             push @autkor, $content;
         }
         
-        if ($self->{config}->{benchmark}) {
+        if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : Bestimmung der Koerperschaftsinformationen : ist ".timestr($timeall));
@@ -608,7 +631,7 @@ sub get_brief_record {
             content   => join(" ; ",@autkor),
         };
         
-        if ($self->{config}->{benchmark}) {
+        if ($config->{benchmark}) {
             $atime=new Benchmark;
         }    
         
@@ -699,13 +722,13 @@ sub get_brief_record {
             ];
         }
                 
-        if ($self->{config}->{benchmark}) {
+        if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : Bestimmung der HST-Ueberordnungsinformationen : ist ".timestr($timeall));
         }
 
-        if ($self->{config}->{benchmark}) {
+        if ($config->{benchmark}) {
             $atime=new Benchmark;
         }    
         
@@ -717,7 +740,7 @@ sub get_brief_record {
             $listitem_ref->{popularity} = $res->{idcount};
         }
         
-        if ($self->{config}->{benchmark}) {
+        if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : Bestimmung der Popularitaetsinformation : ist ".timestr($timeall));
@@ -725,7 +748,7 @@ sub get_brief_record {
 
     }
 
-    if ($self->{config}->{benchmark}) {
+    if ($config->{benchmark}) {
         $btime=new Benchmark;
         $timeall=timediff($btime,$atime);
         my $timeall=timediff($btime,$atime);
@@ -790,7 +813,12 @@ sub print_to_handler {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $user   = new OpenBib::User({sessionID => $session->{ID}});
+    my $config = OpenBib::Config->instance;
+
+    my $targetdbinfo_ref
+        = $config->get_targetdbinfo();
+    
+    my $user   = OpenBib::User->instance({sessionID => $session->{ID}});
 
     my $loginname     = $user->get_username();
     my $logintargetdb = $user->get_targetdb_of_session($session->{ID});
@@ -801,7 +829,7 @@ sub print_to_handler {
         titidn     => $self->{id},
     });
 
-    my $poolname=$self->{targetdbinfo}->{dbnames}{$self->{database}};
+    my $poolname=$targetdbinfo_ref->{dbnames}{$self->{database}};
 
     # Literaturlisten finden
 
@@ -823,7 +851,7 @@ sub print_to_handler {
         mexnormset  => $self->{_mexset},
         circset     => $self->{_circset},
         searchquery => $searchquery_ref,
-        activefeed  => $self->{config}->get_activefeeds_of_db($self->{database}),
+        activefeed  => $config->get_activefeeds_of_db($self->{database}),
 
         user          => $user,
         loginname     => $loginname,
@@ -835,12 +863,12 @@ sub print_to_handler {
         normset2bibsonomy => \&OpenBib::Common::Util::normset2bibsonomy,
 
         record      => $self,
-        config      => $self->{config},
+        config      => $config,
         
         msg         => $msg,
     };
 
-    OpenBib::Common::Util::print_page($self->{config}->{tt_search_showtitset_tname},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{tt_search_showtitset_tname},$ttdata,$r);
 
     # Log Event
 
@@ -875,11 +903,22 @@ sub _get_mex_set_by_idn {
     my $id                = exists $arg_ref->{id}
         ? $arg_ref->{id}               : undef;
 
+    my $dbh               = exists $arg_ref->{dbh}
+        ? $arg_ref->{dbh}               : undef;
+
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $dbh = OpenBib::Database::DBI->connect("DBI:$self->{config}->{dbimodule}:dbname=$self->{database};host=$self->{config}->{dbhost};port=$self->{config}->{dbport}", $self->{config}->{dbuser}, $self->{config}->{dbpasswd})
+    my $config = OpenBib::Config->instance;
+
+    my $targetdbinfo_ref
+        = $config->get_targetdbinfo();
+    
+    if (!defined $dbh){
+        # Kein Spooling von DB-Handles!
+        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
         or $logger->error_die($DBI::errstr);
+    }
     
     my $normset_ref={};
 
@@ -892,7 +931,7 @@ sub _get_mex_set_by_idn {
     $normset_ref->{X4001}{content}="";
 
     my ($atime,$btime,$timeall);
-    if ($self->{config}->{benchmark}) {
+    if ($config->{benchmark}) {
 	$atime=new Benchmark;
     }
 
@@ -914,7 +953,7 @@ sub _get_mex_set_by_idn {
         };
     }
 
-    if ($self->{config}->{benchmark}) {
+    if ($config->{benchmark}) {
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
 	$logger->info("Zeit fuer : $sqlrequest : ist ".timestr($timeall));
@@ -928,8 +967,8 @@ sub _get_mex_set_by_idn {
     # Ein im Exemplar-Datensatz gefundenes Sigel geht vor
     if (exists $normset_ref->{X3300}{content}) {
         $sigel=$normset_ref->{X3300}{content};
-        if (exists $self->{targetdbinfo}->{sigel}{$sigel}) {
-            $normset_ref->{X4000}{content}=$self->{targetdbinfo}->{sigel}{$sigel};
+        if (exists $targetdbinfo_ref->{sigel}{$sigel}) {
+            $normset_ref->{X4000}{content}=$targetdbinfo_ref->{sigel}{$sigel};
         }
         else {
             $normset_ref->{X4000}{content}= {
@@ -940,17 +979,17 @@ sub _get_mex_set_by_idn {
     }
     # sonst wird der Datenbankname zur Findung des Sigels herangezogen
     else {
-        $sigel=$self->{targetdbinfo}->{dbases}{$self->{database}};
-        if (exists $self->{targetdbinfo}->{sigel}{$sigel}) {
-            $normset_ref->{X4000}{content}=$self->{targetdbinfo}->{sigel}{$sigel};
+        $sigel=$targetdbinfo_ref->{dbases}{$self->{database}};
+        if (exists $targetdbinfo_ref->{sigel}{$sigel}) {
+            $normset_ref->{X4000}{content}=$targetdbinfo_ref->{sigel}{$sigel};
         }
     }
 
     my $bibinfourl="";
 
     # Bestimmung der Bibinfo-Url
-    if (exists $self->{targetdbinfo}->{bibinfo}{$sigel}) {
-        $normset_ref->{X4001}{content}=$self->{targetdbinfo}->{bibinfo}{$sigel};
+    if (exists $targetdbinfo_ref->{bibinfo}{$sigel}) {
+        $normset_ref->{X4001}{content}=$targetdbinfo_ref->{bibinfo}{$sigel};
     }
 
     return $normset_ref;
@@ -1226,12 +1265,6 @@ sub to_rawdata {
     else {
         return ($self->{_normset},$self->{_mexset},$self->{_circset});
     }
-}
-
-sub DESTROY {
-    my $self = shift;
-
-    return;
 }
 
 1;

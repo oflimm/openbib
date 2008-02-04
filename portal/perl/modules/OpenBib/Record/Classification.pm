@@ -4,7 +4,7 @@
 #
 #  Notation/Systematik
 #
-#  Dieses File ist (C) 2007 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2008 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -47,27 +47,27 @@ sub new {
     my ($class,$arg_ref) = @_;
 
     # Set defaults
+    my $id        = exists $arg_ref->{id}
+        ? $arg_ref->{id}             : undef;
+
     my $database  = exists $arg_ref->{database}
         ? $arg_ref->{database}       : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = new OpenBib::Config();
-    
     my $self = { };
 
     bless ($self, $class);
 
-    $self->{config}         = $config;
-
     if (defined $database){
         $self->{database} = $database;
-
-        $self->{dbh}
-            = DBI->connect("DBI:$self->{config}->{dbimodule}:dbname=$database;host=$self->{config}->{dbhost};port=$self->{config}->{dbport}", $self->{config}->{dbuser}, $self->{config}->{dbpasswd})
-                or $logger->error_die($DBI::errstr);
     }
+
+    if (defined $id){
+        $self->{id}       = $database;
+    }
+
     $logger->debug("Classification-Record-Object created: ".YAML::Dump($self));
     return $self;
 }
@@ -79,9 +79,14 @@ sub get_full_record {
     my $id                = exists $arg_ref->{id}
         ? $arg_ref->{id}                : undef;
 
+    my $dbh               = exists $arg_ref->{dbh}
+        ? $arg_ref->{dbh}               : undef;
+
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = OpenBib::Config->instance;
+    
     my $normset_ref={};
 
     $normset_ref->{id      } = $id;
@@ -89,14 +94,20 @@ sub get_full_record {
 
     my ($atime,$btime,$timeall);
     
-    if ($self->{config}->{benchmark}) {
+    if ($config->{benchmark}) {
 	$atime=new Benchmark;
+    }
+
+    if (!defined $dbh){
+        # Kein Spooling von DB-Handles!
+        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+            or $logger->error_die($DBI::errstr);
     }
 
     my $sqlrequest;
 
     $sqlrequest="select category,content,indicator from notation where id = ?";
-    my $request=$self->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($id);
 
     while (my $res=$request->fetchrow_hashref) {
@@ -110,7 +121,7 @@ sub get_full_record {
         };
     }
 
-    if ($self->{config}->{benchmark}) {
+    if ($config->{benchmark}) {
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
 	$logger->info("Benoetigte Zeit fuer '$sqlrequest' ist ".timestr($timeall));
@@ -119,13 +130,13 @@ sub get_full_record {
 	undef $timeall;
     }
 
-    if ($self->{config}->{benchmark}) {
+    if ($config->{benchmark}) {
         $atime=new Benchmark;
     }
 
     # Ausgabe der Anzahl verk"upfter Titel
     $sqlrequest="select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=5";
-    $request=$self->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
+    $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($id);
     my $res=$request->fetchrow_hashref;
     
@@ -133,7 +144,7 @@ sub get_full_record {
         content => $res->{conncount},
     };
 
-    if ($self->{config}->{benchmark}) {
+    if ($config->{benchmark}) {
 	$btime=new Benchmark;
 	$timeall=timediff($btime,$atime);
 	$logger->info("Benoetigte Zeit fuer '$sqlrequest' ist ".timestr($timeall));
@@ -156,24 +167,35 @@ sub get_name {
     my $id                = exists $arg_ref->{id}
         ? $arg_ref->{id}                : undef;
 
+    my $dbh               = exists $arg_ref->{dbh}
+        ? $arg_ref->{dbh}               : undef;
+
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = OpenBib::Config->instance;
+    
     my ($atime,$btime,$timeall);
     
-    if ($self->{config}->{benchmark}) {
+    if ($config->{benchmark}) {
 	$atime=new Benchmark;
     }
 
+    if (!defined $dbh){
+        # Kein Spooling von DB-Handles!
+        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+            or $logger->error_die($DBI::errstr);
+    }
+    
     my $sqlrequest;
 
     $sqlrequest="select content from notation where id = ? and category=0001";
-    my $request=$self->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($id);
     
     my $res=$request->fetchrow_hashref;
   
-    if ($self->{config}->{benchmark}) {
+    if ($config->{benchmark}) {
         $btime=new Benchmark;
         $timeall=timediff($btime,$atime);
         $logger->info("Benoetigte Zeit fuer '$sqlrequest' ist ".timestr($timeall));
@@ -205,16 +227,6 @@ sub name_as_string {
     my $self=shift;
     
     return $self->{name};
-}
-
-sub DESTROY {
-    my $self = shift;
-
-    if (exists $self->{dbh}){
-        $self->{dbh}->disconnect();
-    }
-
-    return;
 }
 
 1;

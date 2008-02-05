@@ -57,7 +57,7 @@ sub new {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = new OpenBib::Config();
+    my $config = OpenBib::Config->instance;
     
     my $self = { };
 

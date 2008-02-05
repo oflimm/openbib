@@ -75,7 +75,7 @@ sub print_mult_tit_set_by_idn {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = new OpenBib::Config();
+    my $config = OpenBib::Config->instance;
     
     my @titsets=();
 
@@ -135,7 +135,7 @@ sub get_result_navigation {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = new OpenBib::Config();
+    my $config = OpenBib::Config->instance;
 
     # Bestimmen des vorigen und naechsten Treffer einer
     # vorausgegangenen Kurztitelliste
@@ -179,7 +179,7 @@ sub get_index {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = new OpenBib::Config();
+    my $config = OpenBib::Config->instance;
     
     my $type_ref = {
         tit      => 1,
@@ -343,7 +343,7 @@ sub print_index_by_swt {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = new OpenBib::Config();
+    my $config = OpenBib::Config->instance;
     
     my $swtindex=OpenBib::Search::Util::get_index({
         type       => 'swt',
@@ -397,7 +397,7 @@ sub initial_search_for_titidns {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = new OpenBib::Config();
+    my $config = OpenBib::Config->instance;
     
     my ($atime,$btime,$timeall);
   
@@ -640,7 +640,7 @@ sub get_recent_titids {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = new OpenBib::Config();
+    my $config = OpenBib::Config->instance;
     
     my $request=$dbh->prepare("select id,content from tit_string where category=2 order by content desc limit $limit");
     $request->execute();
@@ -673,7 +673,7 @@ sub get_recent_titids_by_aut {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = new OpenBib::Config();
+    my $config = OpenBib::Config->instance;
     
     my $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 2 order by content desc limit $limit");
     $request->execute($id);
@@ -706,7 +706,7 @@ sub get_recent_titids_by_kor {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = new OpenBib::Config();
+    my $config = OpenBib::Config->instance;
     
     my $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 3 order by content desc limit $limit");
     $request->execute($id);
@@ -739,7 +739,7 @@ sub get_recent_titids_by_swt {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = new OpenBib::Config();
+    my $config = OpenBib::Config->instance;
     
     my $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 4 order by content desc limit $limit");
     $request->execute($id);
@@ -772,7 +772,7 @@ sub get_recent_titids_by_not {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = new OpenBib::Config();
+    my $config = OpenBib::Config->instance;
     
     my $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 5 order by content desc limit $limit");
     $request->execute($id);

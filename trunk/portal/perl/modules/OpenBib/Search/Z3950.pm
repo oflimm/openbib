@@ -76,7 +76,7 @@ sub mab2openbib_list {
 
     my $listitem_ref = {};
     
-    my $config = new OpenBib::Config();
+    my $config = OpenBib::Config->instance;
 
     my $convtab_ref = (exists $config->{convtab}{singlepool})?
         $config->{convtab}{singlepool}:$config->{convtab}{default};
@@ -189,7 +189,7 @@ sub mab2openbib_full {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = new OpenBib::Config();
+    my $config = OpenBib::Config->instance;
     
     my $listitem_ref    = {};
     my $mexlistitem_ref = [];

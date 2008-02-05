@@ -4,7 +4,7 @@
 #
 #  Titel-Liste
 #
-#  Dieses File ist (C) 2007 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2008 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -48,14 +48,10 @@ sub new {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = new OpenBib::Config();
-    
     my $self = { };
 
     bless ($self, $class);
 
-    $self->{config}         = $config;
-    $self->{targetdbinfo}   = $self->{config}->get_targetdbinfo();
     $self->{recordlist}     = [];
 
     $logger->debug("Title-RecordList-Object created: ".YAML::Dump($self));
@@ -86,13 +82,15 @@ sub sort {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = OpenBib::Config->instance;
+
     my $sortedoutputbuffer_ref = [];
 
     my $atime;
     my $btime;
     my $timeall;
 
-    if ($self->{config}->{benchmark}) {
+    if ($config->{benchmark}) {
         $atime=new Benchmark;
     }
 
@@ -142,7 +140,7 @@ sub sort {
         @$sortedoutputbuffer_ref=@{$self->{recordlist}};
     }
 
-    if ($self->{config}->{benchmark}) {
+    if ($config->{benchmark}) {
         $btime=new Benchmark;
         $timeall=timediff($btime,$atime);
         $logger->debug("Zeit fuer : sort by $type / $order : ist ".timestr($timeall));
@@ -208,7 +206,12 @@ sub print_to_handler {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $query=Apache::Request->instance($r);
+    my $config = OpenBib::Config->instance;
+
+    my $query  = Apache::Request->instance($r);
+
+    my $targetdbinfo_ref
+        = $config->get_targetdbinfo();
 
     my @itemlist=@{$self->{recordlist}};
 
@@ -221,7 +224,7 @@ sub print_to_handler {
         push @args,"$key=$value";
     }
 
-    my $baseurl="http://$self->{config}->{servername}$self->{config}->{search_loc}?".join(";",@args);
+    my $baseurl="http://$config->{servername}$config->{search_loc}?".join(";",@args);
 
     my @nav=();
 
@@ -256,7 +259,7 @@ sub print_to_handler {
 	      
         sessionID      => $sessionID,
 	      
-        targetdbinfo   => $self->{targetdbinfo},
+        targetdbinfo   => $targetdbinfo_ref,
         itemlist       => \@itemlist,
 
         baseurl        => $baseurl,
@@ -267,11 +270,11 @@ sub print_to_handler {
         offset         => $offset,
         nav            => \@nav,
 
-        config         => $self->{config},
+        config         => $config,
         msg            => $msg,
     };
 
-    OpenBib::Common::Util::print_page($self->{config}->{$template},$ttdata,$r);
+    OpenBib::Common::Util::print_page($config->{$template},$ttdata,$r);
 
     return;
 }

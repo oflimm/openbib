@@ -91,7 +91,7 @@ sub print_warning {
     # Log4perl logger erzeugen
     my $logger = get_logger();
   
-    my $config = new OpenBib::Config();
+    my $config = OpenBib::Config->instance;
     
     my $stylesheet=get_css_by_browsertype($r);
 
@@ -99,13 +99,13 @@ sub print_warning {
 
     my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
 
-    my $session = new OpenBib::Session({
+    my $session = OpenBib::Session->instance({
         sessionID => $sessionID,
     });
     
     my $view    = $session->get_viewname();
 
-    my $user    = new OpenBib::User({sessionID => $session->{ID}});
+    my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
 
     # Nutzer-DB zugreifbar? Falls nicht, dann wird der Menu-Punkt
     # Einloggen/Mein KUG automatisch deaktiviert
@@ -166,7 +166,7 @@ sub print_info {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config  = new OpenBib::Config();
+    my $config  = OpenBib::Config->instance;
     
     my $stylesheet=get_css_by_browsertype($r);
 
@@ -174,11 +174,11 @@ sub print_info {
 
     my $sessionID=($query->param('sessionID'))?$query->param('sessionID'):'';
 
-    my $session = new OpenBib::Session({sessionID => $sessionID});
+    my $session = OpenBib::Session->instance({sessionID => $sessionID});
 
     my $view    = $session->get_viewname();
 
-    my $user    = new OpenBib::User({sessionID => $session->{ID}});
+    my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
 
     # Nutzer-DB zugreifbar? Falls nicht, dann wird der Menu-Punkt
     # Einloggen/Mein KUG automatisch deaktiviert
@@ -239,14 +239,14 @@ sub print_page {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = new OpenBib::Config();
+    my $config = OpenBib::Config->instance;
     
     # View- und Datenbank-spezifisches Templating
     my $database  = $ttdata->{'database'};
     my $view      = $ttdata->{'view'};
     my $sessionID = $ttdata->{'sessionID'};
 
-    my $user      = new OpenBib::User({sessionID => $sessionID});
+    my $user      = OpenBib::User->instance({sessionID => $sessionID});
 
     # Nutzer-DB zugreifbar? Falls nicht, dann wird der Menu-Punkt
     # Einloggen/Mein KUG automatisch deaktiviert
@@ -998,7 +998,7 @@ sub get_loadbalanced_servername {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = new OpenBib::Config();
+    my $config = OpenBib::Config->instance;
     
     my $ua=new LWP::UserAgent(timeout => 5);
 

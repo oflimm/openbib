@@ -2,7 +2,7 @@
 #
 #  OpenBib::Statistics
 #
-#  Dieses File ist (C) 2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2008 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -42,7 +42,7 @@ sub new {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = new OpenBib::Config();
+    my $config = OpenBib::Config->instance;
     
     my $self = { };
 
@@ -436,7 +436,7 @@ sub log_query {
 			  'ein'   => 1,
 			  'eine'  => 1,
 			  'einer' => 1,
-			  'für'   => 1,
+			  'fÃ¼r'   => 1,
 			  'im'    => 1,
 			  'in'    => 1,
 			  'la'    => 1,

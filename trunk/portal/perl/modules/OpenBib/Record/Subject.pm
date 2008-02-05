@@ -65,7 +65,7 @@ sub new {
     }
 
     if (defined $id){
-        $self->{id}       = $database;
+        $self->{id}       = $id;
     }
 
     $logger->debug("Subject-Record-Object created: ".YAML::Dump($self));

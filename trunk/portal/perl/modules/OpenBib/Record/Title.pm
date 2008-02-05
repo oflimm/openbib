@@ -84,7 +84,8 @@ sub get_full_record {
 
     # Set defaults
     my $id                = exists $arg_ref->{id}
-        ? $arg_ref->{id}                : undef;
+        ? $arg_ref->{id}                :
+            (exists $self->{id})?$self->{id}:undef;
 
     my $dbh               = exists $arg_ref->{dbh}
         ? $arg_ref->{dbh}               : undef;
@@ -420,7 +421,8 @@ sub get_brief_record {
 
     # Set defaults
     my $id                = exists $arg_ref->{id}
-        ? $arg_ref->{id}                : undef;
+        ? $arg_ref->{id}                :
+            (exists $self->{id})?$self->{id}:undef;
 
     my $dbh               = exists $arg_ref->{dbh}
         ? $arg_ref->{dbh}               : undef;
@@ -786,6 +788,18 @@ sub get_brief_normdata {
     my ($self)=@_;
 
     return $self->{_brief_normset}
+}
+
+sub is_brief_normdata {
+    my ($self)=@_;
+
+    return (exists $self->{_brief_normset})?1:0;
+}
+
+sub is_normdata {
+    my ($self)=@_;
+
+    return (exists $self->{_normset})?1:0;
 }
 
 sub print_to_handler {

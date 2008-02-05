@@ -113,7 +113,7 @@ sub get_full_record {
     my $sqlrequest;
 
     $sqlrequest="select category,content,indicator from aut where id = ?";
-    my $request=$self->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($id);
 
     while (my $res=$request->fetchrow_hashref) {
@@ -142,7 +142,7 @@ sub get_full_record {
 
     # Ausgabe der Anzahl verkuepfter Titel
     $sqlrequest="select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=2";
-    $request=$self->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
+    $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($id);
     my $res=$request->fetchrow_hashref;
     
@@ -202,7 +202,7 @@ sub get_name {
     my $sqlrequest;
 
     $sqlrequest="select content from aut where id = ? and category=0001";
-    my $request=$self->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($id);
     
     my $res=$request->fetchrow_hashref;

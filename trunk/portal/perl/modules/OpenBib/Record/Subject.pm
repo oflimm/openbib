@@ -107,7 +107,7 @@ sub get_full_record {
     my $sqlrequest;
 
     $sqlrequest="select category,content,indicator from swt where id = ?";
-    my $request=$self->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($id);
 
     while (my $res=$request->fetchrow_hashref) {
@@ -136,7 +136,7 @@ sub get_full_record {
 
     # Ausgabe der Anzahl verk"upfter Titel
     $sqlrequest="select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=4";
-    $request=$self->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
+    $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($id);
     my $res=$request->fetchrow_hashref;
     
@@ -192,7 +192,7 @@ sub get_name {
     my $sqlrequest;
 
     $sqlrequest="select content from swt where id = ? and category=0001";
-    my $request=$self->{dbh}->prepare($sqlrequest) or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute($id);
     
     my $res=$request->fetchrow_hashref;
@@ -231,17 +231,6 @@ sub name_as_string {
     my $self=shift;
     
     return $self->{name}
-}
-
-
-sub DESTROY {
-    my $self = shift;
-
-    if (exists $self->{dbh}){
-        $self->{dbh}->disconnect();
-    }
-    
-    return;
 }
 
 1;

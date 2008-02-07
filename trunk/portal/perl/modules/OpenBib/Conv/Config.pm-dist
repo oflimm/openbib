@@ -81,8 +81,12 @@ use vars qw(%config);
 
                 '0720' => {     # Provenienz-Register
                     string => 1,
-                },
-                    
+                },                    
+            },
+            search_inhalt => {
+                '0750' => 1,    # Abstract
+                '0501' => 1,    # Richterindiz
+                '0720' => 1,    # Provenienz
             },
         },
 
@@ -267,6 +271,7 @@ use vars qw(%config);
                             
             search_isbn => {
                 '0540' => 1,    # ISBN
+		'0553' => 1,    # ArtikelNr als 13-stellige ISBN
             },
                             
             search_issn => {

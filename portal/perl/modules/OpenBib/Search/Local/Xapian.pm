@@ -131,8 +131,6 @@ sub initial_search {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
-    my $searchquery_ref   = exists $arg_ref->{searchquery_ref}
-        ? $arg_ref->{searchquery_ref} : undef;
     my $serien            = exists $arg_ref->{serien}
         ? $arg_ref->{serien}        : undef;
     my $enrich            = exists $arg_ref->{enrich}
@@ -149,7 +147,8 @@ sub initial_search {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = new OpenBib::Config();
+    my $config      = OpenBib::Config->instance;
+    my $searchquery = OpenBib::SearchQuery->instance;
     
     my ($atime,$btime,$timeall);
   
@@ -175,7 +174,7 @@ sub initial_search {
     my $stopper = new Search::Xapian::SimpleStopper(@stopwords);
     $qp->set_stopper($stopper);
     
-    my $querystring    = $searchquery_ref->{fs}{norm};
+    my $querystring    = $searchquery->get_searchfield('fs')->{norm};
 
     my ($is_singleterm) = $querystring =~m/^(\w+)$/;
 

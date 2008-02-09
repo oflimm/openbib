@@ -38,6 +38,10 @@ use Storable;
 use YAML;
 
 use OpenBib::Config;
+use OpenBib::QueryOptions;
+use OpenBib::Record::Title;
+use OpenBib::RecordList::Title;
+use OpenBib::SearchQuery;
 use OpenBib::Statistics;
 
 sub new {
@@ -156,20 +160,11 @@ sub _init_new_session {
       
             my $createtime = POSIX::strftime('%Y-%m-%d% %H:%M:%S', localtime());
 
-
-            my $queryoptions_ref={
-                hitrange  => undef,
-                offset    => undef,
-                l         => undef,
-                profil    => undef,
-                autoplus  => undef,
-                sb        => undef,
-                js        => undef,
-            };
+            my $queryoptions = OpenBib::QueryOptions->get_default_options;
 
             # Eintrag in die Datenbank
             $idnresult=$dbh->prepare("insert into session (sessionid,createtime,queryoptions) values (?,?,?)") or $logger->error($DBI::errstr);
-            $idnresult->execute($sessionID,$createtime,YAML::Dump($queryoptions_ref)) or $logger->error($DBI::errstr);
+            $idnresult->execute($sessionID,$createtime,YAML::Dump($queryoptions)) or $logger->error($DBI::errstr);
 
             
             my $request=$dbh->prepare("insert into sessionmask values (?,?)");
@@ -214,161 +209,13 @@ sub is_valid {
     return 0;
 }
 
-sub load_queryoptions {
-    my $self = shift;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;    
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    my $request=$dbh->prepare("select queryoptions from session where sessionid = ?") or $logger->error($DBI::errstr);
-
-    $request->execute($self->{ID}) or $logger->error($DBI::errstr);
-  
-    my $res=$request->fetchrow_hashref();
-
-    $logger->debug($res->{queryoptions});
-    my $queryoptions_ref = YAML::Load($res->{queryoptions});
-
-    $request->finish();
-
-    return $queryoptions_ref;
-}
-
-sub dump_queryoptions {
-    my ($self,$queryoptions_ref)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;    
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    my $request=$dbh->prepare("update session set queryoptions=? where sessionid = ?") or $logger->error($DBI::errstr);
-
-    $request->execute(YAML::Dump($queryoptions_ref),$self->{ID}) or $logger->error($DBI::errstr);
-
-    $logger->debug("Dumped Options: ".YAML::Dump($queryoptions_ref)." for session $self->{ID}");
-    $request->finish();
-
-    return;
-}
-
-sub merge_queryoptions {
-    my ($self,$options1_ref,$options2_ref)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;    
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    # Eintragungen in options1_ref werden, wenn sie in options2_ref
-    # gesetzt sind, von diesen ueberschrieben
-    
-    foreach my $key (keys %$options1_ref){
-        if (exists $options2_ref->{$key}){
-            $options1_ref->{$key}=$options2_ref->{$key};
-        }
-    }
-}
-
-sub get_queryoptions {
-    my ($self,$query) = @_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;    
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    # Hinweis: Bisher wuerde statt $query direkt das Request-Objekt $r
-    # uebergeben und an dieser Stelle wieder ein $query-Objekt via
-    # Apache::Request daraus erzeugt. Bei Requests, die via POST
-    # sowohl mit dem enctype multipart/form-data wie auch
-    # multipart/form-data abgesetzt wurden, lassen sich keine
-    # Parameter ala sessionID extrahieren.  Das ist ein grosses
-    # Problem. Andere Informationen lassen sich ueber das $r
-    # aber sehr wohl extrahieren, z.B. der Useragent.
-
-    if (!defined $self->{ID}){
-      $logger->fatal("No SessionID");
-      return {};
-    }	
-
-    # Queryoptions zur Session einladen (default: alles undef)
-    my $queryoptions_ref = $self->load_queryoptions();
-
-    my $default_queryoptions_ref={
-        hitrange  => 50,
-        offset    => 1,
-        l         => 'de',
-        profil    => '',
-        autoplus  => '',
-        sb        => 'sql',
-        js        => 0,
-    };
-
-    my $altered=0;
-    # Abgleich mit uebergebenen Parametern
-    # Uebergebene Parameter 'ueberschreiben'und gehen vor
-    foreach my $option (keys %$default_queryoptions_ref){
-        if (defined $query->param($option)){
-            # Es darf nicht hitrange = -1 (= hole alles) dauerhaft gespeichert
-            # werden - speziell nicht bei einer anfaenglichen Suche
-            # Dennoch darf - derzeit ausgehend von den Normdaten - alles
-            # geholt werden
-            unless ($option eq "hitrange" && $query->param($option) eq "-1"){
-                $queryoptions_ref->{$option}=$query->param($option);
-                $logger->debug("Option $option received via HTTP");
-                $altered=1;
-            }
-        }
-    }
-
-    # Abgleich mit Default-Werten:
-    # Verbliebene "undefined"-Werte werden mit Standard-Werten belegt
-    foreach my $option (keys %$queryoptions_ref){
-        if (!defined $queryoptions_ref->{$option}){
-            $queryoptions_ref->{$option}=$default_queryoptions_ref->{$option};
-	    $logger->debug("Option $option got default value");
-	    $altered=1;
-        }
-    }
-
-    if ($altered){
-      $self->dump_queryoptions($queryoptions_ref);
-      $logger->debug("Options changed and dumped to DB");
-    }
-
-    return $queryoptions_ref;
-}
-
 sub get_viewname {
     my ($self)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;    
+    my $config = OpenBib::Config->instance;
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
@@ -794,30 +641,6 @@ sub get_max_queryid {
     return $maxid;
 }
 
-sub get_searchquery {
-    my ($self,$queryid)=@_;
-
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $config = OpenBib::Config->instance;    
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    my $idnresult=$dbh->prepare("select query,hits from queries where sessionID = ? and queryid = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($self->{ID},$queryid) or $logger->error($DBI::errstr);
-    my $res = $idnresult->fetchrow_hashref();
-    my $searchquery_ref = Storable::thaw(pack "H*", decode_utf8($res->{query}));
-    my $hits            = decode_utf8($res->{'hits'});
-
-    $idnresult->finish();
-
-    return ($searchquery_ref,$hits);
-}
-
 sub get_all_searchqueries {
     my ($self,$arg_ref)=@_;
 
@@ -897,7 +720,7 @@ sub get_items_in_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;    
+    my $config = OpenBib::Config->instance;
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
@@ -906,22 +729,21 @@ sub get_items_in_collection {
 
     my $idnresult=$dbh->prepare("select dbname,singleidn from treffer where sessionid = ? order by dbname") or $logger->error($DBI::errstr);
     $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
-
-    my  @items=();
     
+    my $recordlist = new OpenBib::RecordList::Title();
+
+    return $recordlist if (!defined $dbh);
+
     while(my $result = $idnresult->fetchrow_hashref){
         my $database  = decode_utf8($result->{'dbname'});
         my $singleidn = decode_utf8($result->{'singleidn'});
-        
-        push @items, {
-            database  => $database,
-            singleidn => $singleidn,
-        };
+
+        $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $singleidn}));
     }
     
     $idnresult->finish();
     
-    return @items;
+    return $recordlist;
 }
 
 sub set_item_in_collection {
@@ -937,7 +759,7 @@ sub set_item_in_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;    
+    my $config = OpenBib::Config->instance;
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
@@ -1242,9 +1064,6 @@ sub get_queryid {
     my $databases_ref      = exists $arg_ref->{databases}
         ? $arg_ref->{databases}               : undef;
     
-    my $searchquery_ref    = exists $arg_ref->{searchquery}
-        ? $arg_ref->{searchquery}             : undef;
-
     my $hitrange           = exists $arg_ref->{hitrange}
         ? $arg_ref->{hitrange}                : undef;
 
@@ -1253,6 +1072,8 @@ sub get_queryid {
 
     my $config = OpenBib::Config->instance;
 
+    my $searchquery = OpenBib::SearchQuery->instance;
+    
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
@@ -1263,7 +1084,7 @@ sub get_queryid {
 
     my $dbasesstring=join("||",sort @{$databases_ref});
     
-    my $thisquerystring=unpack "H*", Storable::freeze($searchquery_ref);
+    my $thisquerystring=unpack "H*", Storable::freeze($searchquery->get_searchquery);
     my $idnresult=$dbh->prepare("select count(*) as rowcount from queries where query = ? and sessionid = ? and dbases = ? and hitrange = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($thisquerystring,$self->{ID},$dbasesstring,$hitrange) or $logger->error($DBI::errstr);
     my $res  = $idnresult->fetchrow_hashref;

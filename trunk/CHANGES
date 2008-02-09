@@ -1,3 +1,10 @@
+Version 2.2:
+
+- Verzicht auf Frames und damit Erhoehung der Barrierefreiheit.
+- Litaraturlisten. Nutzer koennen nun eigene Literaturlisten (privat
+  und oeffentlich) anlegen und auf diese von ueberall ueber PermaLinks
+  zugreifen. 
+
 Version 2.1:
 
 - Tag-Editor. Nutzer koennen nun einzelne ihrer Tags umbenennen

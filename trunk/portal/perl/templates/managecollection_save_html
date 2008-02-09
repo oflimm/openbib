@@ -43,8 +43,8 @@
 	  <p />
 [% IF type == 'HTML' %]
 	  <table>
-[%- FOREACH titset IN collection -%]
-[% PROCESS common/subtemplate name="managecollection_tit_as_html" database="${titset.database}" %]
+[%- FOREACH record IN recordlist.get_records -%]
+[% PROCESS common/subtemplate name="managecollection_tit_as_html" database="${record.database}" %]
 [%- END -%]
          </table>
 [% END %]

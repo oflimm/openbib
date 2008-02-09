@@ -12,66 +12,12 @@
 #
 #######################################################################
 -%]
-[%- FOREACH titset IN collection -%]
-[%- normset    = titset.tit -%]
-[%- mexnormset = titset.mex -%]
-[%-
-
-endnotecategories = {
-        'T0100' => '%A',    # Author
-        'T0101' => '%A',    # Person
-        'T0103' => '%A',    # Celebr. Person 
-        'T0200' => '%C',    # Corporate Author
-        'T0331' => '%T',    # Title of the article or book
-        'T0451' => '%S',    # Title of the serie
-        'T0590' => '%J',    # Journal containing the article
-        '3'     => '%B',    # Journal Title (refer: Book containing article)
-        'T0519' => '%R',    # Report, paper, or thesis type
-        'T0455' => '%V',    # Volume 
-        'T0089' => '%N',    # Number with volume
-        '7'     => '%E',    # Editor of book containing article
-        '8'     => '%P',    # Page number(s)
-        'T0412' => '%I',    # Issuer. This is the publisher
-        'T0410' => '%C',    # City where published. This is the publishers address
-        'T0425' => '%D',    # Date of publication
-        'T0424' => '%D',    # Date of publication
-        '11'    => '%O',    # Other information which is printed after the reference
-        '12'    => '%K',    # Keywords used by refer to help locate the reference
-        '13'    => '%L',    # Label used to number references when the -k flag of refer is used
-        'T0540' => '%X',    # Abstract. This is not normally printed in a reference
-        'T0543' => '%X',    # Abstract. This is not normally printed in a reference
-        'T0750' => '%X',    # Abstract. This is not normally printed in a reference
-        '15'    => '%W',    # Where the item can be found (physical location of item)
-        'T0433' => '%Z',    # Pages in the entire document. Tib reserves this for special use
-        'T0403' => '%7',    # Edition
-        '17'    => '%Y',    # Series Editor
-};
-
-FOREACH category IN categories;
-    FOREACH item IN normset.$category;
-    content = item.content;
-
-    IF endnotecategories.$category ;    
-      thiscategory = endnotecategories.${category} ;
-
-    IF normset.${"T0335"}.first.content && category == 'T0331';
-      titsup = normset.${"T0335"}.first.content;
-      content = "${content} : ${titsup}";
-    END ; 
--%]
-[% thiscategory %] [% content %]
-[% END -%]
-[% END -%]
-[%- END -%]
-[%- IF mexnormset.size > 0 -%]
-[%- FOREACH mex IN mexnormset -%]
-%W [% mex.${"X4000"}.content.full %] / [% mex.${"X0016"}.content %] / [% mex.${"X0014"}.content %]
-[% END %]
-[%- END -%]
+[%- FOREACH record IN recordlist.get_records -%]
+[% record.to_endnote %]
 [%   IF show_bibsonomy %]
 </pre>
 <p />
-<img style="vertical-align: bottom;" src="/images/openbib/share.png" alt="Share this"/>&nbsp;<a href="[% config.redirect_loc %]/[% sessionID %]/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=[% normset2bibtex(normset) | uri | replace('&','%26') %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a>
+<img style="vertical-align: bottom;" src="/images/openbib/share.png" alt="Share this"/>&nbsp;<a href="[% config.redirect_loc %]/[% sessionID %]/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=[% record.to_bibtex | uri | replace('&','%26') %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a>
 <p />
 <p />
 <pre>

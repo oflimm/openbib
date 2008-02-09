@@ -25,7 +25,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="http://[% config.servername %][% config.externaljump_loc %]?sessionID=[% sessionID %];queryid=[% queryid %];action=action=Weiter+als+externe+Recherche">[% msg.maketext("Sprung in externe Recherchequellen") %]</a></li>
+   <li><a class="active" href="http://[% config.servername %][% config.externaljump_loc %]?sessionID=[% sessionID %];queryid=[% thisquery.get_id %];action=action=Weiter+als+externe+Recherche">[% msg.maketext("Sprung in externe Recherchequellen") %]</a></li>
 </ul>
 
 <div class="content">
@@ -46,46 +46,47 @@
 <tr><td class="boxedclear" style="font-size:0.9em">
 <table>
 <tr><td>
-[%- IF thisquery.searchquery.fs.val -%]
-&nbsp;FS: [% thisquery.searchquery.fs.val %] 
+[%- searchquery = thisquery.get_searchquery -%]
+[%- IF searchquery.fs.val -%]
+&nbsp;FS: [% searchquery.fs.val %] 
 [%- END -%]
-[%- IF thisquery.searchquery.verf.val -%]
-&nbsp;AUT: [% thisquery.searchquery.verf.val %]
+[%- IF searchquery.verf.val -%]
+&nbsp;AUT: [% searchquery.verf.val %]
 [%- END -%]
-[%- IF thisquery.searchquery.hst.val -%]
-&nbsp;HST: [% thisquery.searchquery.hst.val %]
+[%- IF searchquery.hst.val -%]
+&nbsp;HST: [% searchquery.hst.val %]
 [%- END -%]
-[%- IF thisquery.searchquery.swt.val -%]
-&nbsp;SWT: [% thisquery.searchquery.swt.val %]
+[%- IF searchquery.swt.val -%]
+&nbsp;SWT: [% searchquery.swt.val %]
 [%- END -%]
-[%- IF thisquery.searchquery.kor.val -%]
-&nbsp;KOR: [% thisquery.searchquery.kor.val %]
+[%- IF searchquery.kor.val -%]
+&nbsp;KOR: [% searchquery.kor.val %]
 [%- END -%]
-[%- IF thisquery.searchquery.notation.val -%]
-&nbsp;NOT: [% thisquery.searchquery.notation.val %] 
+[%- IF searchquery.notation.val -%]
+&nbsp;NOT: [% searchquery.notation.val %] 
 [%- END -%]
-[%- IF thisquery.searchquery.sign.val -%]
-&nbsp;SIG: [% thisquery.searchquery.sign.val %]
+[%- IF searchquery.sign.val -%]
+&nbsp;SIG: [% searchquery.sign.val %]
 [%- END -%]
-[%- IF thisquery.searchquery.ejahr.val -%]
-&nbsp;EJAHR: [% thisquery.searchquery.ejahr.val %]
+[%- IF searchquery.ejahr.val -%]
+&nbsp;EJAHR: [% searchquery.ejahr.val %]
 [%- END -%]
-[%- IF thisquery.searchquery.isbn.val -%]
-&nbsp;ISBN: [% thisquery.searchquery.isbn.val %]
+[%- IF searchquery.isbn.val -%]
+&nbsp;ISBN: [% searchquery.isbn.val %]
 [%- END -%]
-[%- IF thisquery.searchquery.issn.val -%]
-&nbsp;ISSN: [% thisquery.searchquery.issn.val %]
+[%- IF searchquery.issn.val -%]
+&nbsp;ISSN: [% searchquery.issn.val %]
 [%- END -%]
-[%- IF thisquery.searchquery.mart.val -%]
-&nbsp;MART: [% thisquery.searchquery.mart.val %]
+[%- IF searchquery.mart.val -%]
+&nbsp;MART: [% searchquery.mart.val %]
 [%- END -%]
-[%- IF thisquery.searchquery.hststring.val -%]
-&nbsp;HSTR: [% thisquery.searchquery.hststring.val %] 
+[%- IF searchquery.hststring.val -%]
+&nbsp;HSTR: [% searchquery.hststring.val %] 
 [%- END -%]
-[%- IF thisquery.hits -%]
+[%- IF thisquery.get_hits -%]
  = [% thisquery.hits %] Treffer
 [%- END -%]
-</td><td>=&gt;</td><td><a href="http://[% config.servername %][% config.resultlists_loc %]?sessionID=[% sessionID %]&action=choice&queryid=[% queryid %]">[% msg.maketext("Sprung zur Trefferliste im KUG") %]</a></td></tr>
+</td><td>=&gt;</td><td><a href="http://[% config.servername %][% config.resultlists_loc %]?sessionID=[% sessionID %]&action=choice&queryid=[% thisquery.get_id %]">[% msg.maketext("Sprung zur Trefferliste im KUG") %]</a></td></tr>
 </table>
 </td></tr>
 </table>
@@ -99,27 +100,27 @@
 <table>
 <tr><td><img src="/images/openbib/external/digibib.gif" alt="DigiBib-Logo" />&nbsp;&nbsp;</td><td><b>[% msg.maketext("Digitale Bibliothek / Monographien (Fernleihe)") %]</b></td><td>=&gt;</td><td>
 
-[% IF thisquery.searchquery.verf.val != '' || thisquery.searchquery.hst.val != '' || thisquery.searchquery.hststring.val != '' || thisquery.searchquery.kor.val != '' || thisquery.searchquery.isbn.val != '' %]
-<a href="[% config.redirect_loc %]/[% sessionID %]/540/[% config.hbzmonofernleih_exturl %]&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_HBZ=on&D_PARAM_QUERY_bzAU=[% thisquery.searchquery.verf.val %]&D_PARAM_QUERY_azTI=[% thisquery.searchquery.hst.val %]%20[% thisquery.searchquery.hststring.val %]&D_PARAM_QUERY_czCO=[% thisquery.searchquery.kor.val %]&D_PARAM_QUERY_fzIB=[% thisquery.searchquery.isbn.val %]&D_PARAM_QUERY_hzYR=[% thisquery.searchquery.ejahr.val %][% authurl %]" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a>
+[% IF searchquery.verf.val != '' || searchquery.hst.val != '' || searchquery.hststring.val != '' || searchquery.kor.val != '' || searchquery.isbn.val != '' %]
+<a href="[% config.redirect_loc %]/[% sessionID %]/540/[% config.hbzmonofernleih_exturl %]&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_HBZ=on&D_PARAM_QUERY_bzAU=[% searchquery.verf.val %]&D_PARAM_QUERY_azTI=[% searchquery.hst.val %]%20[% searchquery.hststring.val %]&D_PARAM_QUERY_czCO=[% searchquery.kor.val %]&D_PARAM_QUERY_fzIB=[% searchquery.isbn.val %]&D_PARAM_QUERY_hzYR=[% searchquery.ejahr.val %][% authurl %]" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a>
 [% ELSE %]
-<a href="[% config.redirect_loc %]/[% sessionID %]/540/[% config.hbzmonofernleih_exturl %]&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_HBZ=on&D_PARAM_QUERY_bzAU=[% thisquery.searchquery.verf.val %]&D_PARAM_QUERY_azTI=[% thisquery.searchquery.hst.val %]%20[% thisquery.searchquery.hststring.val %]&D_PARAM_QUERY_czCO=[% thisquery.searchquery.kor.val %]&D_PARAM_QUERY_fzIB=[% thisquery.searchquery.isbn.val %]&D_PARAM_QUERY_hzYR=[% thisquery.searchquery.ejahr.val %][% authurl %]" target="_blank"><span class="warning">[% msg.maketext("Aufruf ohne &Uuml;bernahme von Suchbegriffen") %]</span></a>
+<a href="[% config.redirect_loc %]/[% sessionID %]/540/[% config.hbzmonofernleih_exturl %]&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_HBZ=on&D_PARAM_QUERY_bzAU=[% searchquery.verf.val %]&D_PARAM_QUERY_azTI=[% searchquery.hst.val %]%20[% searchquery.hststring.val %]&D_PARAM_QUERY_czCO=[% searchquery.kor.val %]&D_PARAM_QUERY_fzIB=[% searchquery.isbn.val %]&D_PARAM_QUERY_hzYR=[% searchquery.ejahr.val %][% authurl %]" target="_blank"><span class="warning">[% msg.maketext("Aufruf ohne &Uuml;bernahme von Suchbegriffen") %]</span></a>
 [% END %]
 
 </td><td>[ [% msg.maketext("&Uuml;bernommene Felder: Titel, Person, K&ouml;rperschaft, ISBN, Erscheinungsjahr") %]]</td></tr>
 <tr><td><img src="/images/openbib/external/digibib.gif" alt="DigiBib-Logo" />&nbsp;&nbsp;</td><td><b>[% msg.maketext("Digitale Bibliothek / Zeitschriften (Aufsatzlieferung)") %]</b></td><td>=&gt;</td><td>
 
-[% IF thisquery.searchquery.hst.val != '' || thisquery.searchquery.hststring.val != '' || thisquery.searchquery.kor.val != '' || thisquery.searchquery.issn.val != '' %]
-<a href="[% config.redirect_loc %]/[% sessionID %]/541/[% config.hbzzeitfernleih_exturl %]&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_ZDB=on&D_PARAM_QUERY_azTI=[% thisquery.searchquery.hst.val %]%20[% thisquery.searchquery.hststring.val %]&D_PARAM_QUERY_czCO=[% thisquery.searchquery.kor.val %]&D_PARAM_QUERY_gzIS=[% thisquery.searchquery.issn.val %][% authurl %]" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a>
+[% IF searchquery.hst.val != '' || searchquery.hststring.val != '' || searchquery.kor.val != '' || searchquery.issn.val != '' %]
+<a href="[% config.redirect_loc %]/[% sessionID %]/541/[% config.hbzzeitfernleih_exturl %]&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_ZDB=on&D_PARAM_QUERY_azTI=[% searchquery.hst.val %]%20[% searchquery.hststring.val %]&D_PARAM_QUERY_czCO=[% searchquery.kor.val %]&D_PARAM_QUERY_gzIS=[% searchquery.issn.val %][% authurl %]" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a>
 [% ELSE %]
-<a href="[% config.redirect_loc %]/[% sessionID %]/541/[% config.hbzzeitfernleih_exturl %]&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_ZDB=on&D_PARAM_QUERY_azTI=[% thisquery.searchquery.hst.val %]%20[% thisquery.searchquery.hststring.val %]&D_PARAM_QUERY_czCO=[% thisquery.searchquery.kor.val %]&D_PARAM_QUERY_gzIS=[% thisquery.searchquery.issn.val %][% authurl %]" target="_blank"><span class="warning">[% msg.maketext("Aufruf ohne &Uuml;bernahme von Suchbegriffen") %]</span></a>
+<a href="[% config.redirect_loc %]/[% sessionID %]/541/[% config.hbzzeitfernleih_exturl %]&D_PARAM_SEARCH_RLBKO=on&D_PARAM_SERVICEGROUP1.SERVICE.SEARCH_ZDB=on&D_PARAM_QUERY_azTI=[% searchquery.hst.val %]%20[% searchquery.hststring.val %]&D_PARAM_QUERY_czCO=[% searchquery.kor.val %]&D_PARAM_QUERY_gzIS=[% searchquery.issn.val %][% authurl %]" target="_blank"><span class="warning">[% msg.maketext("Aufruf ohne &Uuml;bernahme von Suchbegriffen") %]</span></a>
 [% END %]
 
 </td><td>[ [% msg.maketext("&Uuml;bernommene Felder: Titel, K&ouml;rperschaft, ISSN") %]]</td></tr>
 <tr><td></td><td></td><td></td><td></td></tr>
 <tr><td><img src="/images/openbib/external/ezb.gif" alt="DBIS-Logo" />&nbsp;&nbsp;</td><td><b>[% msg.maketext("Datenbankinformationssystem (DBIS)") %]</b></td><td>=&gt;</td><td>
 
-[% IF thisquery.searchquery.hst.val != '' || thisquery.searchquery.hststring.val != ''%]
-<a href="[% config.redirect_loc %]/[% sessionID %]/531/http://www.bibliothek.uni-regensburg.de/dbinfo/suche.phtml?bib_id=usb_k&colors=63&Suchwort=[% thisquery.searchquery.hst.val %]%20[% thisquery.searchquery.hststring.val %]&lett=fs" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a>
+[% IF searchquery.hst.val != '' || searchquery.hststring.val != ''%]
+<a href="[% config.redirect_loc %]/[% sessionID %]/531/http://www.bibliothek.uni-regensburg.de/dbinfo/suche.phtml?bib_id=usb_k&colors=63&Suchwort=[% searchquery.hst.val %]%20[% searchquery.hststring.val %]&lett=fs" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a>
 [% ELSE %]
 <a href="[% config.redirect_loc %]/[% sessionID %]/531/http://www.bibliothek.uni-regensburg.de/dbinfo/suche.phtml?bib_id=usb_k&colors=63&ocolors=40&lett=a" target="_blank"><span class="warning">[% msg.maketext("Aufruf ohne &Uuml;bernahme von Suchbegriffen") %]</span></a>
 [% END %]
@@ -128,8 +129,8 @@
 <tr><td></td><td></td><td></td><td></td></tr>
 <tr><td><img src="/images/openbib/external/ezb.gif" alt="EZB-Logo" />&nbsp;&nbsp;</td><td><b>[% msg.maketext("Elektronische Zeitschriftendatenbank (EZB)") %]</b></td><td>=&gt;</td><td>
 
-[% IF thisquery.searchquery.hst.val != '' || thisquery.searchquery.hststring.val != '' || thisquery.searchquery.issn.val != '' %]
-<a href="[% config.redirect_loc %]/[% sessionID %]/530/[% config.ezb_exturl %]&jq_term1=[% thisquery.searchquery.issn.val %]&jq_term2=[% thisquery.searchquery.hst.val %]%20[% thisquery.searchquery.hststring.val %]" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a></td>
+[% IF searchquery.hst.val != '' || searchquery.hststring.val != '' || searchquery.issn.val != '' %]
+<a href="[% config.redirect_loc %]/[% sessionID %]/530/[% config.ezb_exturl %]&jq_term1=[% searchquery.issn.val %]&jq_term2=[% searchquery.hst.val %]%20[% searchquery.hststring.val %]" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a></td>
 [% ELSE %]
 <a href="[% config.redirect_loc %]/[% sessionID %]/530/http://rzblx1.uni-regensburg.de/ezeit/fl.phtml?bibid=USBK&colors=7&lang=de" target="_blank"><span class="warning">[% msg.maketext("Aufruf ohne &Uuml;bernahme von Suchbegriffen") %]</span></a>
 [% END %]
@@ -138,8 +139,8 @@
 <tr><td></td><td></td><td></td><td></td></tr>
 <tr><td><img src="/images/openbib/external/medpilot.gif" alt="MedPilot-Logo" />&nbsp;&nbsp;</td><td><b>[% msg.maketext("MedPilot") %]</td><td>=&gt;</td><td>
 
-[% IF thisquery.searchquery.hst.val != '' || thisquery.searchquery.hststring.val != ''%]
-<a href="[% config.redirect_loc %]/[% sessionID %]/533/http://www.medpilot.de/medptools/cgi-bin/mpsearch.pl?q=[% thisquery.searchquery.hst.val %]%20[% thisquery.searchquery.hststring.val %]&Suche=Suchen" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a>
+[% IF searchquery.hst.val != '' || searchquery.hststring.val != ''%]
+<a href="[% config.redirect_loc %]/[% sessionID %]/533/http://www.medpilot.de/medptools/cgi-bin/mpsearch.pl?q=[% searchquery.hst.val %]%20[% searchquery.hststring.val %]&Suche=Suchen" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a>
 [% ELSE %]
 <a href="[% config.redirect_loc %]/[% sessionID %]/533/[http://www.medpilot.de/" target="_blank"><span class="warning">[% msg.maketext("Aufruf ohne &Uuml;bernahme von Suchbegriffen") %]</span></a>
 [% END %]

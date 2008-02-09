@@ -12,12 +12,12 @@
 #
 #######################################################################
 -%]
-[% FOREACH titset IN collection %]
-<tr class="titlerow"><td>[% msg.maketext("Titel") %] [% loop.count %] [% msg.maketext("aus:") %] [% titset.dbdesc.full %]</td></tr>
+[% FOREACH record IN recordlist %]
+<tr class="titlerow"><td>[% msg.maketext("Titel") %] [% loop.count %] [% msg.maketext("aus:") %] [% dbinfotable.dbinfo.${record.database}.full %]</td></tr>
 <tr><td>
-[% normset    = titset.tit %]
-[% mexnormset = titset.mex %]
-[% circset    = titset.circ %]
+[% normset    = record.get_normdata %]
+[% mexnormset = record.get_mexdata  %]
+[% circset    = record.get_circdata %]
 
 <!-- Title begins here -->
 <table width="100%">

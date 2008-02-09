@@ -81,7 +81,8 @@ sub get_full_record {
 
     # Set defaults
     my $id                = exists $arg_ref->{id}
-        ? $arg_ref->{id}                : undef;
+        ? $arg_ref->{id}                :
+            (exists $self->{id})?$self->{id}:undef;
 
     my $dbh               = exists $arg_ref->{dbh}
         ? $arg_ref->{dbh}               : undef;
@@ -161,7 +162,9 @@ sub get_full_record {
 
     $request->finish();
 
-    $self->{normset}=$normset_ref;
+    $logger->debug(YAML::Dump($normset_ref));
+    
+    $self->{_normset}=$normset_ref;
 
     return $self;
 }
@@ -169,7 +172,7 @@ sub get_full_record {
 sub to_rawdata {
     my ($self) = @_;
 
-    return $self->{normset};
+    return $self->{_normset};
 }
 
 sub get_name {

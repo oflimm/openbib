@@ -77,7 +77,8 @@ sub get_full_record {
 
     # Set defaults
     my $id                = exists $arg_ref->{id}
-        ? $arg_ref->{id}                : undef;
+        ? $arg_ref->{id}                :
+            (exists $self->{id})?$self->{id}:undef;
 
     my $dbh               = exists $arg_ref->{dbh}
         ? $arg_ref->{dbh}               : undef;

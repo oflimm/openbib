@@ -38,6 +38,8 @@ use YAML;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::Record::Title;
+use OpenBib::RecordList::Title;
 
 sub new {
     my ($class,$arg_ref) = @_;
@@ -626,7 +628,7 @@ sub get_titles_of_tag {
     my $logger = get_logger();
 
     my $config = OpenBib::Config->instance;
-    
+
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
@@ -659,7 +661,7 @@ sub get_titles_of_tag {
         $limits="limit $offset,$hitrange";
     }
 
-    my $titles_ref = [];
+    my $recordlist = new OpenBib::RecordList::Title();
 
     # Bestimmung der Titel
     $sqlrequest="select distinct titid,titdb from tittag where tagid=?";
@@ -684,14 +686,11 @@ sub get_titles_of_tag {
     
     
     while (my $res=$request->fetchrow_hashref){
-        push @{$titles_ref}, {
-            id       => $res->{titid},
-            dbname   => $res->{titdb}
-        };
+        $recordlist->add(new OpenBib::Record::Title({database => $res->{titdb} , id => $res->{titid}}));
     }
     $request->finish();
     
-    return ($titles_ref,$hits);
+    return ($recordlist,$hits);
 }
 
 sub get_number_of_users {
@@ -2112,33 +2111,30 @@ sub get_items_in_collection {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;    
+    my $config = OpenBib::Config->instance;
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    return () if (!defined $dbh);
+    my $recordlist = new OpenBib::RecordList::Title();
+
+    return $recordlist if (!defined $dbh);
 
     my $idnresult=$dbh->prepare("select * from treffer where userid = ? order by dbname") or $logger->error($DBI::errstr);
     $idnresult->execute($self->{ID}) or $logger->error($DBI::errstr);
 
-    my  @items=();
-    
     while(my $result = $idnresult->fetchrow_hashref){
         my $database  = decode_utf8($result->{'dbname'});
         my $singleidn = decode_utf8($result->{'singleidn'});
         
-        push @items, {
-            database  => $database,
-            singleidn => $singleidn,
-        };
+        $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $singleidn}));
     }
     
     $idnresult->finish();
     
-    return @items;
+    return $recordlist;
 }
 
 sub add_item_to_collection {

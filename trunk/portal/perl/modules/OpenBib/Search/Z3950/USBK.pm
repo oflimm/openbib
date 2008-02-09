@@ -2,7 +2,7 @@
 #
 #  OpenBib::Search::Z3950::USBK
 #
-#  Dieses File ist (C) 2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2008 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -46,9 +46,10 @@ use SOAP::Lite;
 use Storable;
 use YAML ();
 
-use OpenBib::Search::Z3950::USBK::Config;
-use OpenBib::RecordList::Title;
 use OpenBib::Config;
+use OpenBib::RecordList::Title;
+use OpenBib::Search::Z3950::USBK::Config;
+use OpenBib::SearchQuery;
 
 sub new {
     my ($class) = @_;
@@ -76,12 +77,13 @@ sub new {
 }
 
 sub search {
-    my ($self,$searchquery_ref)=@_;
+    my ($self)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config  =  new OpenBib::Config();
+    my $config       =  OpenBib::Config->instance;
+    my $searchquery  =  OpenBib::SearchQuery->instance;
 
     my $pqfpath = (-e "$config->{base_dir}/conf/cql/USBK/pqf.properties")?"$config->{base_dir}/conf/cql/USBK/pqf.properties":"$config->{base_dir}/conf/cql/pqf.properties";
     
@@ -89,20 +91,20 @@ sub search {
 
     my @querystrings=();
     
-    if ($searchquery_ref->{fs}{val}){
-        push @querystrings, "free all \"".$searchquery_ref->{fs}{val}."\"";
+    if ($searchquery->get_searchfield('fs')->{val}){
+        push @querystrings, "free all \"".$searchquery->get_searchfield('fs')->{val}."\"";
     }
-    if ($searchquery_ref->{verf}{val}){
-        push @querystrings, $searchquery_ref->{verf}{bool}." author all \"".$searchquery_ref->{verf}{val}."\"";
+    if ($searchquery->get_searchfield('verf')->{val}){
+        push @querystrings, $searchquery->get_searchfield('verf')->{bool}." author all \"".$searchquery->get_searchfield('verf')->{val}."\"";
     }
-    if ($searchquery_ref->{hst}{val}){
-        push @querystrings, $searchquery_ref->{hst}{bool}." title all \"".$searchquery_ref->{hst}{val}."\"";
+    if ($searchquery->get_searchfield('hst')->{val}){
+        push @querystrings, $searchquery->get_searchfield('hst')->{bool}." title all \"".$searchquery->get_searchfield('hst')->{val}."\"";
     }
-    if ($searchquery_ref->{swt}{val}){
-        push @querystrings, $searchquery_ref->{verf}{bool}." subject all \"".$searchquery_ref->{swt}{val}."\"";
+    if ($searchquery->get_searchfield('swt')->{val}){
+        push @querystrings, $searchquery->get_searchfield('verf')->{bool}." subject all \"".$searchquery->get_searchfield('swt')->{val}."\"";
     }
-    if ($searchquery_ref->{kor}{val}){
-        push @querystrings, $searchquery_ref->{kor}{bool}." corp all \"".$searchquery_ref->{kor}{val}."\"";
+    if ($searchquery->get_searchfield('kor')->{val}){
+        push @querystrings, $searchquery->get_searchfield('kor')->{bool}." corp all \"".$searchquery->get_searchfield('kor')->{val}."\"";
     }
 
     my $querystring  = join(" ",@querystrings);
@@ -112,7 +114,7 @@ sub search {
     my $query = new ZOOM::Query::CQL2RPN($querystring, $self->{conn});
 
     #    my $query = new ZOOM::Query::CQL($querystring);
-#    my $querystring = new ZOOM::Query::CQL(lc($searchquery_ref->{fs}{norm}));
+#    my $querystring = new ZOOM::Query::CQL(lc($searchquery->get_searchfield('{fs}{norm}));
 
     my $resultset = $self->{conn}->search($query) or $logger->error_die("Search Error: ".$self->{conn}->errmsg());
 

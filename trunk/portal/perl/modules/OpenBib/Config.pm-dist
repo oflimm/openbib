@@ -989,6 +989,38 @@ sub get_rssfeeds_of_db {
     return $rssfeed_ref;
 }
 
+sub get_rssfeeds_of_db_by_type {
+    my ($self,$dbname) = @_;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $rssfeed_ref  = {};
+
+    my $request=$dbh->prepare("select * from rssfeeds where dbname = ? order by type,subtype") or $logger->error($DBI::errstr);
+    $request->execute($dbname) or $logger->error($DBI::errstr);
+    while (my $result=$request->fetchrow_hashref()){
+        my $type         = $result->{'type'};
+        my $subtype      = $result->{'subtype'};
+        my $subtypedesc  = $result->{'subtypedesc'};
+        my $active       = $result->{'active'};
+        
+        push @{$rssfeed_ref->{$type}}, {
+            subtype     => $subtype,
+            subtypedesc => $subtypedesc,
+            active      => $active
+        };
+    }
+    $request->finish();
+    
+    return $rssfeed_ref;
+}
+
 sub get_primary_rssfeed_of_view  {
     my ($self,$viewname)=@_;
 
@@ -1351,124 +1383,6 @@ sub get_dboptions {
     $request->finish();
     
     return $dboptions_ref;
-}
-
-sub get_targetdbinfo {
-    my $self = shift;
-    
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    #####################################################################
-    # Dynamische Definition diverser Variablen
-  
-    # Verweis: Datenbankname -> Informationen zum zugeh"origen Institut/Seminar
-  
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    my $dbinforesult=$dbh->prepare("select dbname,sigel,url,description,shortdesc from dbinfo") or $logger->error($DBI::errstr);
-    $dbinforesult->execute() or $logger->error($DBI::errstr);;
-  
-    my %sigel   =();
-    my %bibinfo =();
-    my %dbinfo  =();
-    my %dbases  =();
-    my %dbnames =();
-
-    while (my $result=$dbinforesult->fetchrow_hashref()) {
-        my $dbname      = decode_utf8($result->{'dbname'});
-        my $sigel       = decode_utf8($result->{'sigel'});
-        my $url         = decode_utf8($result->{'url'});
-        my $description = decode_utf8($result->{'description'});
-        my $shortdesc   = decode_utf8($result->{'shortdesc'});
-    
-        ##################################################################### 
-        ## Wandlungstabelle Bibliothekssigel <-> Bibliotheksname
-    
-        $sigel{"$sigel"} = {
-			    full  => $description,
-			    short => $shortdesc,
-			   };
-    
-        #####################################################################
-        ## Wandlungstabelle Bibliothekssigel <-> Informations-URL
-    
-        $bibinfo{"$sigel"} = "$url";
-    
-        #####################################################################
-        ## Wandlungstabelle  Name SQL-Datenbank <-> Datenbankinfo
-    
-        # Wenn ein URL fuer die Datenbankinformation definiert ist, dann wird
-        # damit verlinkt
-    
-        if ($url ne "") {
-            $dbinfo{"$dbname"} = {
-				  full  => "<a href=\"$url\" target=\"_blank\">$description</a>",
-				  short => "<a href=\"$url\" target=\"_blank\">$shortdesc</a>",
-				 };
-        } else {
-            $dbinfo{"$dbname"} = {
-				  full  => "$description",
-				  short => "$shortdesc",
-				 };
-        }
-    
-        #####################################################################
-        ## Wandlungstabelle  Name SQL-Datenbank <-> Bibliothekssigel
-    
-        $dbases{"$dbname"}       = "$sigel";
-
-        $dbnames{"$dbname"}      = {
-				    full => $description,
-				    short => $shortdesc,
-				   };
-    }
-  
-    $dbinforesult->finish;
-    
-    return {
-        sigel   => \%sigel,
-        bibinfo => \%bibinfo,
-        dbinfo  => \%dbinfo,
-        dbases  => \%dbases,
-        dbnames => \%dbnames,
-    };
-}
-
-sub get_targetcircinfo {
-    my $self = shift;
-    
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    #####################################################################
-    ## Ausleihkonfiguration fuer den Katalog einlesen
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
-            or $logger->error_die($DBI::errstr);
-
-    my $dbinforesult=$dbh->prepare("select dbname,circ,circurl,circcheckurl,circdb from dboptions where circ = 1") or $logger->error($DBI::errstr);
-    $dbinforesult->execute() or $logger->error($DBI::errstr);;
-
-    my %targetcircinfo=();
-    
-    while (my $result=$dbinforesult->fetchrow_hashref()) {
-        my $dbname                             = decode_utf8($result->{'dbname'});
-
-        $targetcircinfo{$dbname}{circ}         = decode_utf8($result->{'circ'});
-        $targetcircinfo{$dbname}{circurl}      = decode_utf8($result->{'circurl'});
-        $targetcircinfo{$dbname}{circcheckurl} = decode_utf8($result->{'circcheckurl'});
-        $targetcircinfo{$dbname}{circdb}       = decode_utf8($result->{'circdb'});
-    }
-
-    $dbinforesult->finish();
-
-    return \%targetcircinfo;
 }
 
 sub get_active_databases {

@@ -46,7 +46,9 @@ use Template;
 use OpenBib::Search::Util;
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
+use OpenBib::QueryOptions;
 use OpenBib::Session;
 use OpenBib::User;
 
@@ -119,19 +121,14 @@ sub handler {
     ###########                                               ###########
     ############## B E G I N N  P R O G R A M M F L U S S ###############
     ###########                                               ###########
-  
-    my $queryoptions_ref
-        = $session->get_queryoptions($query);
+
+    my $queryoptions = OpenBib::QueryOptions->instance($query);
     
     # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
-    my $targetdbinfo_ref
-        = $config->get_targetdbinfo();
 
-    my $targetcircinfo_ref
-        = $config->get_targetcircinfo();
+    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
 
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
@@ -244,7 +241,7 @@ sub handler {
                   
                     user         => $user,
                     litlist      => $singlelitlist,
-                    targetdbinfo => $targetdbinfo_ref,
+                    targetdbinfo => $dbinfotable,
                     targettype   => $targettype,
                     
                     config     => $config,
@@ -284,22 +281,22 @@ sub handler {
             my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
             
 	    my $singlelitlist = {
-                itemlist => $user->get_litlistentries({litlistid => $litlistid}),
+                itemlist   => $user->get_litlistentries({litlistid => $litlistid}),
                 properties => $litlist_properties_ref,
             };
 
 	    # TT-Data erzeugen
 	    my $ttdata={
-                view       => $view,
-                stylesheet => $stylesheet,
-                sessionID  => $session->{ID},
+                view         => $view,
+                stylesheet   => $stylesheet,
+                sessionID    => $session->{ID},
                 
-                user       => $user,
-                litlist    => $singlelitlist,
-                targetdbinfo  => $targetdbinfo_ref,
+                user         => $user,
+                litlist      => $singlelitlist,
+                targetdbinfo => $dbinfotable,
                 
-                config     => $config,
-                msg        => $msg,
+                config       => $config,
+                msg          => $msg,
             };
 	    
 	    OpenBib::Common::Util::print_page($config->{tt_litlists_show_singlelist_tname},$ttdata,$r);

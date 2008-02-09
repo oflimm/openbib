@@ -48,11 +48,14 @@ use YAML();
 use OpenBib::Common::Stopwords;
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
+use OpenBib::QueryOptions;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
 use OpenBib::ResultLists::Util;
 use OpenBib::Search::Util;
+use OpenBib::SearchQuery;
 use OpenBib::Session;
 use OpenBib::User;
 
@@ -96,11 +99,10 @@ sub handler {
     my $sb           = $query->param('sb')           || 'sql';
     my $action       = $query->param('action')       || '';
 
-    my $queryoptions_ref
-        = $session->get_queryoptions($query);
+    my $queryoptions = OpenBib::QueryOptions->instance($query);
 
     # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
   
     if (!$session->is_valid()){
@@ -117,8 +119,7 @@ sub handler {
         $view=$session->get_viewname();
     }
 
-    my $targetdbinfo_ref
-        = $config->get_targetdbinfo();
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     if ($session->get_number_of_items_in_resultlist() <= 0) {
         OpenBib::Common::Util::print_warning($msg->maketext("Derzeit existiert (noch) keine Trefferliste"),$r,$msg);
@@ -135,7 +136,9 @@ sub handler {
         my @resultset    = ();
         my @resultlists  = ();
 
-        my ($searchquery_ref,$searchquery_hits) = $session->get_searchquery($queryid);
+        my $searchquery = OpenBib::SearchQuery->instance;
+
+        $searchquery->load({sessionID => $session->{ID}, queryid => $queryid});
 
         if ($config->get_system_of_db($database) eq "Z39.50"){
             my $atime=new Benchmark;
@@ -146,7 +149,7 @@ sub handler {
             
             my $z3950dbh = new OpenBib::Search::Z3950($database);
 
-            $z3950dbh->search($searchquery_ref);
+            $z3950dbh->search($searchquery);
             $z3950dbh->{rs}->option(elementSetName => "B");
             
             my $fullresultcount = $z3950dbh->{rs}->size();
@@ -178,7 +181,7 @@ sub handler {
                 
             }
         }
-        elsif ($queryoptions_ref->{sb} eq 'xapian'){
+        elsif ($queryoptions->get_option('sb') eq 'xapian'){
             # Xapian
             
             my $atime=new Benchmark;
@@ -189,8 +192,6 @@ sub handler {
             my $request = new OpenBib::Search::Local::Xapian();
             
             $request->initial_search({
-                searchquery_ref => $searchquery_ref,
-                
                 serien          => 0,
                 dbh             => $dbh,
                 database        => $database,
@@ -233,7 +234,7 @@ sub handler {
                 }
             } 
         }
-        elsif ($queryoptions_ref->{sb} eq 'sql'){
+        elsif ($queryoptions->get_option('sb') eq 'sql'){
 
             my $dbh
                 = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
@@ -242,8 +243,6 @@ sub handler {
             my $atime=new Benchmark;
             
             my $result_ref=OpenBib::Search::Util::initial_search_for_titidns({
-                searchquery_ref => $searchquery_ref,
-                
                 serien          => 0,
                 dbh             => $dbh,
                 hitrange        => $hitrange,
@@ -331,14 +330,15 @@ sub handler {
             sessionID      => $session->{ID},
             
             resultlists    => \@resultlists,
-            dbinfo         => $targetdbinfo_ref->{dbinfo},
+
+            dbinfotable     => $dbinfotable,
             
             loginname      => $loginname,
             password       => $password,
 
             query          => $query,
             
-            qopts          => $queryoptions_ref,
+            qopts          => $queryoptions->get_options,
             database       => $database,
             queryid        => $queryid,
             offset         => $offset,
@@ -372,16 +372,14 @@ sub handler {
             my $recordlist = new OpenBib::RecordList::Title();
 
             $recordlist->add_from_storable($storable_ref);
-                
-            # Sortierung des Outputbuffers
-            
+
             $recordlist->sort({order=>$sortorder,type=>$sorttype});
 
             my $treffer=$recordlist->size();
-            
+
             push @resultlists, {
                 database   => $database,
-                resultlist => $recordlist->to_list,
+                recordlist => $recordlist,
             };
 
             
@@ -410,9 +408,9 @@ sub handler {
             sessionID      => $session->{ID},
 
             query          => $query,
-            qopts          => $queryoptions_ref,
+            qopts          => $queryoptions->get_options,
             resultlists    => \@resultlists,
-            dbinfo         => $targetdbinfo_ref->{dbinfo},
+            dbinfotable    => $dbinfotable,
             
             loginname      => $loginname,
             password       => $password,
@@ -471,7 +469,7 @@ sub handler {
             thisquery  => $thisquery_ref,
             queryid    => $queryid,
             
-            qopts      => $queryoptions_ref,
+            qopts      => $queryoptions->get_options,
             hitcount   => $hitcount,
             resultdbs  => $resultdbs_ref,
             queries    => \@queries,
@@ -530,8 +528,8 @@ sub handler {
                 stylesheet     => $stylesheet,
                 sessionID      => $session->{ID},
                 
-                resultlist     => $recordlist->to_list,
-                targetdbinfo   => $targetdbinfo_ref,
+                recordlist     => $recordlist,
+                dbinfotable    => $dbinfotable,
                 
                 loginname      => $loginname,
                 password       => $password,
@@ -540,7 +538,7 @@ sub handler {
 
                 offset         => $offset,
                 hitrange       => $hitrange,
-                qopts          => $queryoptions_ref,
+                qopts          => $queryoptions->get_options,
                 
                 config         => $config,
                 msg            => $msg,
@@ -580,7 +578,7 @@ sub handler {
 
                 push @resultlists, {
                     database   => $database,
-                    resultlist => $recordlist->to_list,
+                    recordlist => $recordlist,
                     offsets    => \@offsets,
                 };
 
@@ -603,11 +601,11 @@ sub handler {
                 sessionID      => $session->{ID},
                 
                 resultlists    => \@resultlists,
-                targetdbinfo   => $targetdbinfo_ref,
+                dbinfotable    => $dbinfotable,
 
                 offset         => $offset,
                 hitrange       => $hitrange,
-                qopts          => $queryoptions_ref,
+                qopts          => $queryoptions->get_options,
                 
                 loginname      => $loginname,
                 password       => $password,

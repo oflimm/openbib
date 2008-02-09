@@ -47,6 +47,7 @@ use Template;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
+use OpenBib::QueryOptions;
 use OpenBib::Session;
 use OpenBib::User;
 
@@ -96,12 +97,11 @@ sub handler {
     my $password      = ($query->param('password'))?$query->param('password'):'';
     my $password1     = ($query->param('password1'))?$query->param('password1'):'';
     my $password2     = ($query->param('password2'))?$query->param('password2'):'';
-  
-    my $queryoptions_ref
-        = $session->get_queryoptions($query);
+
+    my $queryoptions = OpenBib::QueryOptions->instance($query);
 
     # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     if (!$session->is_valid()){

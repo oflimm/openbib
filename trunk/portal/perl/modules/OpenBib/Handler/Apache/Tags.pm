@@ -46,7 +46,9 @@ use Template;
 use OpenBib::Search::Util;
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
+use OpenBib::QueryOptions;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
 use OpenBib::Session;
@@ -118,19 +120,12 @@ sub handler {
     ###########                                               ###########
     ############## B E G I N N  P R O G R A M M F L U S S ###############
     ###########                                               ###########
-  
-    my $queryoptions_ref
-        = $session->get_queryoptions($query);
+
+    my $queryoptions = OpenBib::QueryOptions->instance($query);
 
     # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
-    my $targetdbinfo_ref
-        = $config->get_targetdbinfo();
-
-    my $targetcircinfo_ref
-        = $config->get_targetcircinfo();
 
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
@@ -253,7 +248,8 @@ sub handler {
     }
     
     if ($searchtitoftag) {
-        my @titelidns = ();
+        my $recordlist;
+
         my $hits      = 0;
 
         if ($searchtitoftag =~ /^\d+$/){
@@ -267,83 +263,42 @@ sub handler {
 
                 my $titles_ref;
 
-                ($titles_ref,$hits)= $user->get_titles_of_tag({
+                ($recordlist,$hits)= $user->get_titles_of_tag({
                     loginname => $loginname,
                     tagid     => $searchtitoftag,
                     offset    => $offset,
                     hitrange  => $hitrange,
                 });
-
-                @titelidns = @{$titles_ref};
             }
             else {
-                my $titles_ref;
-
-                ($titles_ref,$hits)= $user->get_titles_of_tag({
+                ($recordlist,$hits)= $user->get_titles_of_tag({
                     tagid     => $searchtitoftag,
                     database  => $database,
                     offset    => $offset,
                     hitrange  => $hitrange,
                 });
-
-                @titelidns = @{$titles_ref};
             }
         }
 
-        $logger->debug("Titel-IDs: ".YAML::Dump(\@titelidns));
+        $logger->debug("Titel-IDs: ".YAML::Dump($recordlist->to_ids));
+        
+        $recordlist->print_to_handler({
+            database         => $database,
+            sortorder        => $sortorder,
+            sorttype         => $sorttype,
+            apachereq        => $r,
+            stylesheet       => $stylesheet,
+            view             => $view,
+            hits             => $hits,
+            offset           => $offset,
+            hitrange         => $hitrange,
 
-        if ($#titelidns == -1) {
-            OpenBib::Common::Util::print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"),$r,$msg);
-            return OK;
-        }
-        else {
-            my $recordlist = new OpenBib::RecordList::Title();
+            query            => $query,
+            template         => 'tt_tags_showtitlist_tname',
+            location         => 'tags_loc',
 
-            my ($atime,$btime,$timeall);
-      
-            if ($config->{benchmark}) {
-                $atime=new Benchmark;
-            }
-      
-            foreach my $titel (@titelidns) {
-                my $titelidn = $titel->{id};
-                my $database = $titel->{dbname};
-
-                $recordlist->add(OpenBib::Record::Title->new({database=>$database})->get_brief_record({id=>$titelidn})->to_rawdata);
-            }
-
-            if ($config->{benchmark}) {
-                $btime   = new Benchmark;
-                $timeall = timediff($btime,$atime);
-                $logger->info("Zeit fuer : ".($recordlist->size())." Titel : ist ".timestr($timeall));
-                undef $atime;
-                undef $btime;
-                undef $timeall;
-            }
-
-            $recordlist->sort({order=>$sortorder,type=>$sorttype});
-
-            $session->updatelastresultset($recordlist->to_ids);
-
-            $recordlist->print_to_handler({
-                queryoptions_ref => $queryoptions_ref,
-                database         => $database,
-                sessionID        => $session->{ID},
-                apachereq        => $r,
-                stylesheet       => $stylesheet,
-                view             => $view,
-                hits             => $hits,
-                offset           => $offset,
-                hitrange         => $hitrange,
-
-                query            => $query,
-                template         => 'tt_tags_showtitlist_tname',
-                location         => 'tags_loc',
-
-                msg              => $msg,
-            });
-            
-        }	
+            msg              => $msg,
+        });
     }
 
     return OK;

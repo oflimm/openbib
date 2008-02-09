@@ -45,6 +45,7 @@ use POSIX;
 use OpenBib::Common::Util();
 use OpenBib::Config();
 use OpenBib::L10N;
+use OpenBib::QueryOptions;
 use OpenBib::Session;
 
 sub handler {
@@ -67,11 +68,10 @@ sub handler {
 
     my $fs   = decode_utf8($query->param('fs')) || $query->param('fs')      || '';
 
-    my $queryoptions_ref
-        = $session->get_queryoptions($query);
+    my $queryoptions = OpenBib::QueryOptions->instance($query);
 
     # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
     
     my $database        = ($query->param('database'))?$query->param('database'):'';

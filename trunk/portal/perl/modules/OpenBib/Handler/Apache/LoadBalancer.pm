@@ -43,10 +43,11 @@ use IO::Socket;
 use LWP::UserAgent;
 use Log::Log4perl qw(get_logger :levels);
 
-use OpenBib::LoadBalancer::Util();
-use OpenBib::Common::Util();
-use OpenBib::Config();
+use OpenBib::LoadBalancer::Util;
+use OpenBib::Common::Util;
+use OpenBib::Config;
 use OpenBib::L10N;
+use OpenBib::QueryOptions;
 use OpenBib::Session;
 
 sub handler {
@@ -69,11 +70,10 @@ sub handler {
         sessionID => -1,
     });
 
-    my $queryoptions_ref
-        = $session->get_queryoptions($query);
+    my $queryoptions = OpenBib::QueryOptions->instance($query);
 
     # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     my $urlquery=$r->args;      #query->url(-query=>1);

@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Circulation
 #
-#  Dieses File ist (C) 2004-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2008 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -48,7 +48,9 @@ use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::Config::CirculationInfoTable;
 use OpenBib::L10N;
+use OpenBib::QueryOptions;
 use OpenBib::Session;
 use OpenBib::User;
 
@@ -87,11 +89,10 @@ sub handler {
     my $ausgabeort    = ($query->param('aort'       ))?$query->param('aort'):0;
     my $zweigstelle   = ($query->param('zst'        ))?$query->param('zst'):0;
 
-    my $queryoptions_ref
-        = $session->get_queryoptions($query);
+    my $queryoptions = OpenBib::QueryOptions->instance($query);
 
     # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
     
     if (!$session->is_valid()){
@@ -129,7 +130,8 @@ sub handler {
   
     my ($loginname,$password) = $user->get_credentials();
     my $database              = $user->get_targetdb_of_session($session->{ID});
-    my $targetcircinfo_ref    = $config->get_targetcircinfo();
+
+    my $circinfotable         = OpenBib::Config::CirculationInfoTable->instance;
 
     if ($action eq "showcirc") {
 
@@ -138,12 +140,12 @@ sub handler {
       
             my $soap = SOAP::Lite
                 -> uri("urn:/Circulation")
-                    -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
+                    -> proxy($circinfotable->{$database}{circcheckurl});
             my $result = $soap->get_reservations(
                 SOAP::Data->name(parameter  =>\SOAP::Data->value(
                     SOAP::Data->name(username => $loginname)->type('string'),
                     SOAP::Data->name(password => $password)->type('string'),
-                    SOAP::Data->name(database => $targetcircinfo_ref->{$database}{circdb})->type('string'))));
+                    SOAP::Data->name(database => $circinfotable->{$database}{circdb})->type('string'))));
       
             unless ($result->fault) {
                 $circexlist=$result->result;
@@ -186,12 +188,12 @@ sub handler {
       
             my $soap = SOAP::Lite
                 -> uri("urn:/Circulation")
-                    -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
+                    -> proxy($circinfotable->{$database}{circcheckurl});
             my $result = $soap->get_reminders(
                 SOAP::Data->name(parameter  =>\SOAP::Data->value(
                     SOAP::Data->name(username => $loginname)->type('string'),
                     SOAP::Data->name(password => $password)->type('string'),
-                    SOAP::Data->name(database => $targetcircinfo_ref->{$database}{circdb})->type('string'))));
+                    SOAP::Data->name(database => $circinfotable->{$database}{circdb})->type('string'))));
       
             unless ($result->fault) {
                 $circexlist=$result->result;
@@ -231,12 +233,12 @@ sub handler {
       
             my $soap = SOAP::Lite
                 -> uri("urn:/Circulation")
-                    -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
+                    -> proxy($circinfotable->{$database}{circcheckurl});
             my $result = $soap->get_orders(
                 SOAP::Data->name(parameter  =>\SOAP::Data->value(
                     SOAP::Data->name(username => $loginname)->type('string'),
                     SOAP::Data->name(password => $password)->type('string'),
-                    SOAP::Data->name(database => $targetcircinfo_ref->{$database}{circdb})->type('string'))));
+                    SOAP::Data->name(database => $circinfotable->{$database}{circdb})->type('string'))));
       
             unless ($result->fault) {
                 $circexlist=$result->result;
@@ -275,12 +277,12 @@ sub handler {
       
             my $soap = SOAP::Lite
                 -> uri("urn:/Circulation")
-                    -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
+                    -> proxy($circinfotable->{$database}{circcheckurl});
             my $result = $soap->get_borrows(
                 SOAP::Data->name(parameter  =>\SOAP::Data->value(
                     SOAP::Data->name(username => $loginname)->type('string'),
                     SOAP::Data->name(password => $password)->type('string'),
-                    SOAP::Data->name(database => $targetcircinfo_ref->{$database}{circdb})->type('string'))));
+                    SOAP::Data->name(database => $circinfotable->{$database}{circdb})->type('string'))));
       
             unless ($result->fault) {
                 $circexlist=$result->result;
@@ -340,7 +342,7 @@ sub handler {
         
         my $soap = SOAP::Lite
             -> uri("urn:/Circulation")
-                -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
+                -> proxy($circinfotable->{$database}{circcheckurl});
         my $result = $soap->make_reservation(
             SOAP::Data->name(parameter  =>\SOAP::Data->value(
                 SOAP::Data->name(username     => $loginname)->type('string'),
@@ -348,7 +350,7 @@ sub handler {
                 SOAP::Data->name(mediennummer => $mediennummer)->type('string'),
                 SOAP::Data->name(ausgabeort   => $ausgabeort)->type('string'),
                 SOAP::Data->name(zweigstelle  => $zweigstelle)->type('string'),
-                SOAP::Data->name(database     => $targetcircinfo_ref->{$database}{circdb})->type('string'))));
+                SOAP::Data->name(database     => $circinfotable->{$database}{circdb})->type('string'))));
         
         unless ($result->fault) {
             $circexlist=$result->result;
@@ -393,14 +395,14 @@ sub handler {
         
         my $soap = SOAP::Lite
             -> uri("urn:/Circulation")
-                -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
+                -> proxy($circinfotable->{$database}{circcheckurl});
         my $result = $soap->cancel_reservation(
             SOAP::Data->name(parameter  =>\SOAP::Data->value(
                 SOAP::Data->name(username     => $loginname)->type('string'),
                 SOAP::Data->name(password     => $password)->type('string'),
                 SOAP::Data->name(mediennummer => $mediennummer)->type('string'),
                 SOAP::Data->name(zweigstelle  => $zweigstelle)->type('string'),
-                SOAP::Data->name(database     => $targetcircinfo_ref->{$database}{circdb})->type('string'))));
+                SOAP::Data->name(database     => $circinfotable->{$database}{circdb})->type('string'))));
         
         unless ($result->fault) {
             $circexlist=$result->result;
@@ -435,7 +437,7 @@ sub handler {
         
         my $soap = SOAP::Lite
             -> uri("urn:/Circulation")
-                -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
+                -> proxy($circinfotable->{$database}{circcheckurl});
         my $result = $soap->make_order(
             SOAP::Data->name(parameter  =>\SOAP::Data->value(
                 SOAP::Data->name(username     => $loginname)->type('string'),
@@ -443,7 +445,7 @@ sub handler {
                 SOAP::Data->name(mediennummer => $mediennummer)->type('string'),
                 SOAP::Data->name(ausgabeort   => $ausgabeort)->type('string'),
                 SOAP::Data->name(zweigstelle  => $zweigstelle)->type('string'),
-                SOAP::Data->name(database     => $targetcircinfo_ref->{$database}{circdb})->type('string'))));
+                SOAP::Data->name(database     => $circinfotable->{$database}{circdb})->type('string'))));
         
         unless ($result->fault) {
             $circexlist=$result->result;
@@ -486,12 +488,12 @@ sub handler {
 
         my $soap = SOAP::Lite
             -> uri("urn:/Circulation")
-                -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
+                -> proxy($circinfotable->{$database}{circcheckurl});
         my $result = $soap->renew_loans(
             SOAP::Data->name(parameter  =>\SOAP::Data->value(
                 SOAP::Data->name(username     => $loginname)->type('string'),
                 SOAP::Data->name(password     => $password)->type('string'),
-                SOAP::Data->name(database     => $targetcircinfo_ref->{$database}{circdb})->type('string'))));
+                SOAP::Data->name(database     => $circinfotable->{$database}{circdb})->type('string'))));
         
         unless ($result->fault) {
             $circexlist=$result->result;

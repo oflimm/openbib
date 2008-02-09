@@ -46,8 +46,11 @@ use Template;
 use XML::RSS;
 
 use OpenBib::Config;
+use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Common::Util;
 use OpenBib::L10N;
+use OpenBib::Record::Title;
+use OpenBib::RecordList::Title;
 use OpenBib::Search::Util;
 use OpenBib::Session;
 
@@ -87,15 +90,12 @@ sub handler {
     #####################################################################
     # Verbindung zur SQL-Datenbank herstellen
 
-    my $session = OpenBib::Session->instance;
-
-    my $targetdbinfo_ref
-        = $config->get_targetdbinfo();
-
+    my $session     = OpenBib::Session->instance;
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     # Check
 
-    if (! exists $config->{rss_types}{$type} || ! exists $targetdbinfo_ref->{dbnames}{$database}{full}){
+    if (! exists $config->{rss_types}{$type} || ! exists $dbinfotable->{dbnames}{$database}{full}){
         OpenBib::Common::Util::print_warning("RSS-Feed ungueltig",$r);
     }
 
@@ -175,7 +175,7 @@ sub handler {
         
         $logger->debug("Update des RSS-Caches");
         
-        my $dbdesc=$targetdbinfo_ref->{dbnames}{$database}{full};
+        my $dbdesc=$dbinfotable->{dbnames}{$database}{full};
    
         my $rss = new XML::RSS ( version => '1.0' );
         
@@ -188,64 +188,57 @@ sub handler {
 
         $logger->debug("DB: $database Type: $type Subtype: $subtype");
         
-        my $titlist_ref=();
+        my $recordlist;
 
         # Letzte 50 Neuaufnahmen
         if ($type == 1){
-            $titlist_ref=OpenBib::Search::Util::get_recent_titids({
-                dbh   => $dbh,
-                id    => $subtype,
-                limit => 50,
+            $recordlist=OpenBib::Search::Util::get_recent_titids({
+                id       => $subtype,
+                database => $database,
+                limit    => 50,
             });
         }
         # Letzte 50 Neuaufnahmen zu Verfasser/Person mit Id subtypeid
         elsif ($type == 2 && $subtype){
-            $titlist_ref=OpenBib::Search::Util::get_recent_titids_by_aut({
-                dbh   => $dbh,
-                id    => $subtype,
-                limit => 50,
+            $recordlist=OpenBib::Search::Util::get_recent_titids_by_aut({
+                id       => $subtype,
+                database => $database,
+                limit    => 50,
             });
         }
         # Letzte 50 Neuaufnahmen zu Koerperschaft/Urheber mit Id subtypeid
         elsif ($type == 3 && $subtype){
-            $titlist_ref=OpenBib::Search::Util::get_recent_titids_by_kor({
-                dbh   => $dbh,
-                id    => $subtype,
-                limit => 50,
+            $recordlist=OpenBib::Search::Util::get_recent_titids_by_kor({
+                id       => $subtype,
+                database => $database,
+                limit    => 50,
             });
         }
         # Letzte 50 Neuaufnahmen zu Schlagwort mit Id subtypeid
         elsif ($type == 4 && $subtype){
-            $titlist_ref=OpenBib::Search::Util::get_recent_titids_by_swt({
-                dbh   => $dbh,
-                id    => $subtype,
-                limit => 50,
+            $recordlist=OpenBib::Search::Util::get_recent_titids_by_swt({
+                id       => $subtype,
+                database => $database,
+                limit    => 50,
             });
         }
         # Letzte 50 Neuaufnahmen zu Systematik mit Id subtypeid
         elsif ($type == 5 && $subtype){
-            $titlist_ref=OpenBib::Search::Util::get_recent_titids_by_not({
-                dbh   => $dbh,
-                id    => $subtype,
-                limit => 50,
+            $recordlist=OpenBib::Search::Util::get_recent_titids_by_not({
+                id       => $subtype,
+                database => $database,
+                limit    => 50,
             });
         }
 
 
-        $logger->debug("Titel-ID's".YAML::Dump($titlist_ref));
+        $logger->debug("Titel-ID's".YAML::Dump($recordlist));
         
-        foreach my $title_ref (@$titlist_ref){
-            my $tititem_ref=OpenBib::Search::Util::get_tit_listitem_by_idn({
-                titidn            => $title_ref->{id},
-                dbh               => $dbh,
-                sessiondbh        => $session->{dbh},
-                database          => $database,
-                sessionID         => '-1',
-                targetdbinfo_ref  => $targetdbinfo_ref,
-            });
+        foreach my $record ($recordlist->get_records){
+            $record->get_brief_record;
             
             my $desc  = "";
-            my $title = $tititem_ref->{'T0331'}[0]{content};
+            my $title = $record->get_category({category => 'T0331', indicator => 1});
             
             my $itemtemplatename = $config->{tt_connector_rss_item_tname};
             my $itemtemplate = Template->new({
@@ -253,8 +246,6 @@ sub handler {
                     INCLUDE_PATH   => $config->{tt_include_path},
                     ABSOLUTE       => 1,
                 }) ],
-#                INCLUDE_PATH   => $config->{tt_include_path},
-#                ABSOLUTE       => 1,
                 RECURSION      => 1,
                 OUTPUT         => \$desc,
             });
@@ -262,8 +253,7 @@ sub handler {
             
             # TT-Data erzeugen
             my $ttdata={
-                item            => $tititem_ref,
-                date            => $title_ref->{date},
+                record          => $record,
                 msg             => $msg,
             };
             
@@ -277,7 +267,7 @@ sub handler {
             $logger->debug("Adding $title / $desc");
             $rss->add_item(
                 title       => $title,
-                link        => "http://".$config->{loadbalancerservername}.$config->{loadbalancer_loc}."?view=$database;database=$database;searchsingletit=".$title_ref->{id},
+                link        => "http://".$config->{loadbalancerservername}.$config->{loadbalancer_loc}."?view=$database;database=$database;searchsingletit=".$record->{id},
                 description => $desc
             );
         }

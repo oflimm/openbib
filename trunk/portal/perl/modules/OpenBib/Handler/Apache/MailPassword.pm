@@ -47,6 +47,7 @@ use POSIX;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
+use OpenBib::QueryOptions;
 use OpenBib::Session;
 use OpenBib::User;
 
@@ -79,12 +80,11 @@ sub handler {
     my $targetid  = ($query->param('targetid'))?$query->param('targetid'):'none';
     my $loginname = ($query->param('loginname'))?$query->param('loginname'):'';
     my $password  = ($query->param('password'))?$query->param('password'):'';
-  
-    my $queryoptions_ref
-        = $session->get_queryoptions($query);
+
+    my $queryoptions = OpenBib::QueryOptions->instance($query);
 
     # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
     
     if (!$session->is_valid()){

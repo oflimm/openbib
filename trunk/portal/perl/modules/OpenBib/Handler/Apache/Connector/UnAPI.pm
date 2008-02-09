@@ -68,9 +68,6 @@ sub handler {
     my $unapiid        = $query->param('id')              || '';
     my $format         = $query->param('format')          || '';
 
-    my $targetdbinfo_ref
-        = $config->get_targetdbinfo();
-
     my $lang = "de"; # TODO: Ausweitung auf andere Sprachen
 
     # Message Katalog laden
@@ -92,20 +89,17 @@ sub handler {
                 
                 $logger->debug("Database: $database - ID: $idn");
 
-                $record     = new OpenBib::Record::Title({database=>$database})->get_full_record({id=>$idn})
+                $record     = new OpenBib::Record::Title({database=>$database, id=>$idn})->get_full_record
                 
             }
 
-            if (!exists $record->get_normdata->{id}){
+            if (!$record->record_exists){
                 return HTTP_NOT_FOUND;
             }
             
             my $ttdata={
-                database        => $database,
-                id              => $idn,
-                normset         => $record->get_normdata,
-                normset2bibtex  => \&OpenBib::Common::Util::normset2bibtex,
-                
+                record          => $record,
+
                 config          => $config,
                 msg             => $msg,
             };
@@ -125,7 +119,6 @@ sub handler {
             
             my %format_info = (
                 bibtex => 'text/plain',
-                mods   => 'application/xml',
             );
             
             # Dann Ausgabe des neuen Headers
@@ -146,7 +139,6 @@ sub handler {
         }
     }
     else {
-
         my $ttdata={
             unapiid         => $unapiid,
             config          => $config,

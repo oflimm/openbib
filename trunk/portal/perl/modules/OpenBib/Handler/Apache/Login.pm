@@ -47,8 +47,10 @@ use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::Config::CirculationInfoTable;
 use OpenBib::Login::Util;
 use OpenBib::L10N;
+use OpenBib::QueryOptions;
 use OpenBib::Session;
 use OpenBib::User;
 
@@ -89,12 +91,11 @@ sub handler {
     my $do_login       = $query->param('do_login')        || '';
     my $do_auth        = $query->param('do_auth' )        || '';
     my $do_loginfailed = $query->param('do_loginfailed')  || '';
-    
-    my $queryoptions_ref
-        = $session->get_queryoptions($query);
+
+    my $queryoptions = OpenBib::QueryOptions->instance($query);
     
     # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     if (!$session->is_valid()){
@@ -161,17 +162,16 @@ sub handler {
         $logger->debug("Hostname: $hostname Port: $port Username: $username DB: $db Description: $description Type: $type");
         
         ## Ausleihkonfiguration fuer den Katalog einlesen
-        my $targetcircinfo_ref
-            = $config->get_targetcircinfo();
+        my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
 
         if ($type eq "olws") {
-            $logger->debug("Trying to authenticate via OLWS: ".YAML::Dump($targetcircinfo_ref));
+            $logger->debug("Trying to authenticate via OLWS: ".YAML::Dump($circinfotable));
             
             my $userinfo_ref=OpenBib::Login::Util::authenticate_olws_user({
                 username      => $loginname,
                 pin           => $password,
-                circcheckurl  => $targetcircinfo_ref->{$db}{circcheckurl},
-                circdb        => $targetcircinfo_ref->{$db}{circdb},
+                circcheckurl  => $circinfotable->{$db}{circcheckurl},
+                circdb        => $circinfotable->{$db}{circdb},
             });
         
             my %userinfo=%$userinfo_ref;

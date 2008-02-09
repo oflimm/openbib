@@ -47,7 +47,11 @@ use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
+use OpenBib::QueryOptions;
+use OpenBib::Record::Title;
+use OpenBib::RecordList::Title;
 use OpenBib::Search::Util;
 use OpenBib::Session;
 use OpenBib::User;
@@ -83,14 +87,10 @@ sub handler {
     my $database  = $query->param('database');
     my $type      = $query->param('type')||'HTML';
 
-
-    $logger->debug("SessionID: ".$session->{ID});
-
-    my $queryoptions_ref
-        = $session->get_queryoptions($query);
+    my $queryoptions = OpenBib::QueryOptions->instance($query);
 
     # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     if (!$session->is_valid()){
@@ -119,64 +119,37 @@ sub handler {
         return OK;
     }	
 
-    my $targetdbinfo_ref
-        = $config->get_targetdbinfo();
-    
-    my $targetcircinfo_ref
-        = $config->get_targetcircinfo();
+    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
 
-    my @dbidnlist=();
+    my $recordlist = new OpenBib::RecordList::Title();
     
     if ($singleidn && $database) {
-        push @dbidnlist, {
-            database  => $database,
-            singleidn => $singleidn,
-        };
+        $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $singleidn}));
     }
     else {
-        # Schleife ueber alle Treffer
-        my $idnresult="";
-
         if ($user->{ID}) {
-            push @dbidnlist, $session->get_items_in_collection();
+            $recordlist = $user->get_items_in_collection();
         }
         else {
-            push @dbidnlist, $session->get_items_in_collection()
+            $recordlist = $session->get_items_in_collection()
         }
-    }      
-
-    my @collection=();
-    
-    foreach my $dbidn_ref (@dbidnlist) {
-        my $database  = $dbidn_ref->{database};
-        my $singleidn = $dbidn_ref->{singleidn};
-
-        my $record = OpenBib::Record::Title->new({database=>$database})
-            ->get_full_record({id=>$singleidn});
-        
-        $logger->debug("Merklistensatz geholt");
-      
-        push @collection, {
-            database => $database,
-            dbdesc   => $targetdbinfo_ref->{dbinfo}{$database},
-            titidn   => $singleidn,
-            tit      => $record->get_normdata,
-            mex      => $record->get_mexdata,
-            circ     => $record->get_circdata,
-        };
     }
+
+    $recordlist->get_full_records;
     
     # TT-Data erzeugen
     
     my $ttdata={
-        view       => $view,
-        stylesheet => $stylesheet,
-        sessionID  => $session->{ID},
-	qopts      => $queryoptions_ref,
-        type       => $type,
-        collection => \@collection,
-        config     => $config,
-        msg        => $msg,
+        view        => $view,
+        stylesheet  => $stylesheet,
+        sessionID   => $session->{ID},
+	qopts       => $queryoptions->get_options,
+        type        => $type,
+        recordlist  => $recordlist,
+        dbinfotable => $dbinfotable,
+        
+        config      => $config,
+        msg         => $msg,
     };
 
     my $maildata="";

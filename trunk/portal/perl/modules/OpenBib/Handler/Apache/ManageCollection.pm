@@ -44,8 +44,12 @@ use POSIX;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::ManageCollection::Util;
+use OpenBib::QueryOptions;
+use OpenBib::Record::Title;
+use OpenBib::RecordList::Title;
 use OpenBib::Session;
 use OpenBib::User;
 
@@ -86,25 +90,18 @@ sub handler {
     my $type                    = $query->param('type')                    || 'HTML';
     my $littype                 = $query->param('littype')                 || 1;
 
-    my $queryoptions_ref
-        = $session->get_queryoptions($query);
+    my $queryoptions = OpenBib::QueryOptions->instance($query);
     
     # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
     
     # Ab hier ist in $user->{ID} entweder die gueltige Userid oder nichts, wenn
     # die Session nicht authentifiziert ist
 
-    $logger->debug(YAML::Dump($queryoptions_ref));
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-    my $targetdbinfo_ref
-        = $config->get_targetdbinfo();
-
-    my $targetcircinfo_ref
-        = $config->get_targetcircinfo();
-
-    if (!$session->is_valid()){
+    if (!$session->is_valid()) {
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
         return OK;
     }
@@ -113,13 +110,12 @@ sub handler {
 
     if ($query->param('view')) {
         $view=$query->param('view');
-    }
-    else {
+    } else {
         $view=$session->get_viewname();
     }
 
     $logger->debug(":".$user->is_authenticated.":$do_addlitlist");
-    if (! $user->is_authenticated && $do_addlitlist){
+    if (! $user->is_authenticated && $do_addlitlist) {
         # Aufruf-URL
         my $return_url = $r->parsed_uri->unparse;
 
@@ -171,8 +167,7 @@ sub handler {
                 # Anzahl Eintraege der privaten Merkliste bestimmen
                 # Zuallererst Suchen, wieviele Titel in der Merkliste vorhanden sind.
                 $anzahl =    $user->get_number_of_items_in_collection();
-            }
-            else {
+            } else {
                 #  Zuallererst Suchen, wieviele Titel in der Merkliste vorhanden sind.
                 $anzahl = $session->get_number_of_items_in_collection();
             }
@@ -195,8 +190,7 @@ sub handler {
                             singleidn => $titid,
                         },
                     });
-                }
-                else {
+                } else {
                     $session->clear_item_in_collection({
                         database => $titdb,
                         id       => $titid,
@@ -213,83 +207,60 @@ sub handler {
             $r->internal_redirect($redirecturl);
             return OK;
         }
-	elsif ($do_litlist_addentry) {
-	  my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
+        elsif ($do_litlist_addentry) {
+            my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
 
-	  foreach my $tit ($query->param('titid')) {
-	    my ($titdb,$titid)=split(":",$tit);
+            foreach my $tit ($query->param('titid')) {
+                my ($titdb,$titid)=split(":",$tit);
 	    
-	    if ($litlist_properties_ref->{userid} eq $user->{ID}){
-	      $user->add_litlistentry({ titid => $titid, titdb => $titdb, litlistid => $litlistid});
-	    }
-	  }
+                if ($litlist_properties_ref->{userid} eq $user->{ID}) {
+                    $user->add_litlistentry({ titid => $titid, titdb => $titdb, litlistid => $litlistid});
+                }
+            }
 
-	  $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage&litlistid=$litlistid&do_showlitlist=1");
-	  return OK;
+            $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage&litlistid=$litlistid&do_showlitlist=1");
+            return OK;
 
 	}
-	elsif ($do_addlitlist) {
-	  if (!$title){
-	    OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."),$r,$msg);
+        elsif ($do_addlitlist) {
+            if (!$title) {
+                OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."),$r,$msg);
 	    
-	    return OK;
-	  }
+                return OK;
+            }
 	  
-	  $user->add_litlist({ title =>$title, type => $littype});
+            $user->add_litlist({ title =>$title, type => $littype});
 
-	  $r->internal_redirect("http://$config->{servername}$config->{managecollection_loc}?sessionID=$session->{ID}&action=show&type=HTML");
-	  return OK;
+            $r->internal_redirect("http://$config->{servername}$config->{managecollection_loc}?sessionID=$session->{ID}&action=show&type=HTML");
+            return OK;
 	}
 
-        # Schleife ueber alle Treffer
-        my $idnresult="";
+        my $recordlist = new OpenBib::RecordList::Title();
 
-        my @dbidnlist=();
-        
         if ($user->{ID}) {
-            push @dbidnlist, $session->get_items_in_collection();
+            $recordlist = $user->get_items_in_collection();
         }
         else {
-            push @dbidnlist, $session->get_items_in_collection();
+            $recordlist = $session->get_items_in_collection();
         }
 
-        my @collection=();
-
-        if ($#dbidnlist < 0){
+        if ($recordlist->size() == 0) {
             OpenBib::Common::Util::print_warning($msg->maketext("Derzeit ist Ihre Merkliste leer"),$r,$msg);
             return OK;
         }
-        
-        foreach my $dbidn_ref (@dbidnlist) {
-            my $database  = $dbidn_ref->{database};
-            my $singleidn = $dbidn_ref->{singleidn};
 
-            my $record = OpenBib::Record::Title->new({database=>$database})
-                      ->get_full_record({id=>$singleidn});
-            
-            $logger->debug("Merklistensatz geholt");
-  
-            push @collection, {
-                database => $database,
-                dbdesc   => $targetdbinfo_ref->{dbinfo}{$database},
-                titidn   => $singleidn,
-                tit      => $record->get_normdata,
-                mex      => $record->get_mexdata,
-                circ     => $record->get_circdata,
-            };
-        }
-    
+        $recordlist->get_full_records;
+
         # TT-Data erzeugen
         my $ttdata={
             view              => $view,
             stylesheet        => $stylesheet,
             sessionID         => $session->{ID},
-            qopts             => $queryoptions_ref,
+            qopts             => $queryoptions->get_options,
             type              => $type,
             show              => $show,
-            collection        => \@collection,
-            targetdbinfo      => $targetdbinfo_ref,
-            normset2bibtex    => \&OpenBib::Common::Util::normset2bibtex,
+            recordlist        => $recordlist,
+            dbinfotable       => $dbinfotable,
 
 	    user              => $user,
             config            => $config,
@@ -300,199 +271,100 @@ sub handler {
         return OK;
     }
     # Abspeichern der Merkliste
-    elsif ($action eq "save") {
-        my @dbidnlist=();
-    
-        if ($singleidn && $database) {
-            push @dbidnlist, {
-                database  => $database,
-                singleidn => $singleidn,
-            };
-        }
-        else {
-            # Schleife ueber alle Treffer
-            if ($user->{ID}) {
-                push @dbidnlist, $user->get_items_in_collection();
-            }
-            else {
-                push @dbidnlist, $session->get_items_in_collection();
-            }
-        }
-        
-        my @collection=();
-    
-        foreach my $dbidn_ref (@dbidnlist) {
-            my $database  = $dbidn_ref->{database};
-            my $singleidn = $dbidn_ref->{singleidn};
-
-            my $record = OpenBib::Record::Title->new({database=>$database})
-                      ->get_full_record({id=>$singleidn});
-      
-            $logger->info("Merklistensatz geholt");
-      
-            push @collection, {
-                database => $database,
-                dbdesc   => $targetdbinfo_ref->{dbinfo}{$database},
-                titidn   => $singleidn,
-                tit      => $record->get_normdata,
-                mex      => $record->get_mexdata,
-                circ     => $record->get_circdata,
-            };
-        }
-    
-        # TT-Data erzeugen
-        my $ttdata={
-            view       => $view,
-            stylesheet => $stylesheet,
-            sessionID  => $session->{ID},
-            qopts      => $queryoptions_ref,		
-            type       => $type,
-            show       => $show,
-            collection => \@collection,
-            normset2bibtex    => \&OpenBib::Common::Util::normset2bibtex,
-
-            config     => $config,
-            msg        => $msg,
-        };
-    
-        if ($type eq "HTML") {
-      
-            print $r->header_out("Content-Type" => "text/html");
-            print $r->header_out("Content-Disposition" => "attachment;filename=\"kugliste.html\"");
-            OpenBib::Common::Util::print_page($config->{tt_managecollection_save_html_tname},$ttdata,$r);
-        }
-        else {
-            print $r->header_out("Content-Type" => "text/plain");
-            print $r->header_out("Content-Disposition" => "attachment;filename=\"kugliste.txt\"");
-            OpenBib::Common::Util::print_page($config->{tt_managecollection_save_plain_tname},$ttdata,$r);
-        }
-        return OK;
-    }
-    # Verschicken der Merkliste per Mail
-    elsif ($action eq "mail") {
+    elsif ($action eq "save" || $action eq "print" || $action eq "mail") {
         my $loginname=$user->get_username();
-    
-        my @dbidnlist=();
+
+        my $recordlist = new OpenBib::RecordList::Title();
+
         if ($singleidn && $database) {
-            push @dbidnlist, {
-                database  => $database,
-                singleidn => $singleidn,
-            };
+            $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $singleidn}));
         }
         else {
-            # Schleife ueber alle Treffer
             if ($user->{ID}) {
-                push @dbidnlist, $user->get_items_in_collection();
+                $recordlist = $user->get_items_in_collection();
             }
             else {
-                push @dbidnlist, $session->get_items_in_collection();
+                $recordlist = $session->get_items_in_collection()
             }
-
         }
 
-        my @collection=();
-    
-        foreach my $dbidn_ref (@dbidnlist) {
-            my $database  = $dbidn_ref->{database};
-            my $singleidn = $dbidn_ref->{singleidn};
+        $recordlist->get_full_records;
 
-            my $record = OpenBib::Record::Title->new({database=>$database})
-                      ->get_full_record({id=>$singleidn});
-      
-            $logger->debug("Merklistensatz geholt");
-      
-            push @collection, {
-                database => $database,
-                dbdesc   => $targetdbinfo_ref->{dbinfo}{$database},
-                titidn   => $singleidn,
-                tit      => $record->get_normdata,
-                mex      => $record->get_mexdata,
-                circ     => $record->get_circdata,
+        if ($action eq "save"){
+            # TT-Data erzeugen
+            my $ttdata={
+                view        => $view,
+                stylesheet  => $stylesheet,
+                sessionID   => $session->{ID},
+                qopts       => $queryoptions->get_options,		
+                type        => $type,
+                show        => $show,
+                recordlist  => $recordlist,
+                dbinfotable => $dbinfotable,
+                
+                config     => $config,
+                msg        => $msg,
             };
-        }
-    
-        # TT-Data erzeugen
-        my $ttdata={
-            view       => $view,
-            stylesheet => $stylesheet,
-            sessionID  => $session->{ID},
-            qopts      => $queryoptions_ref,				
-            type       => $type,
-            show       => $show,
-            loginname  => $loginname,
-            singleidn  => $singleidn,
-            database   => $database,
-            collection => \@collection,
-            normset2bibtex    => \&OpenBib::Common::Util::normset2bibtex,
 
-            config     => $config,
-            msg        => $msg,
-        };
-    
-        OpenBib::Common::Util::print_page($config->{tt_managecollection_mail_tname},$ttdata,$r);
-        return OK;
+            if ($type eq "HTML") {
+                print $r->header_out("Content-Type" => "text/html");
+                print $r->header_out("Content-Disposition" => "attachment;filename=\"kugliste.html\"");
+                OpenBib::Common::Util::print_page($config->{tt_managecollection_save_html_tname},$ttdata,$r);
+            }
+            else {
+                print $r->header_out("Content-Type" => "text/plain");
+                print $r->header_out("Content-Disposition" => "attachment;filename=\"kugliste.txt\"");
+                OpenBib::Common::Util::print_page($config->{tt_managecollection_save_plain_tname},$ttdata,$r);
+            }
+            return OK;
+        }
+        elsif ($action eq "print"){
+            # TT-Data erzeugen
+            my $ttdata={
+                view       => $view,
+                stylesheet => $stylesheet,		
+                sessionID  => $session->{ID},
+                qopts      => $queryoptions->get_options,		
+                type       => $type,
+                show       => $show,
+                loginname  => $loginname,
+                singleidn  => $singleidn,
+                database   => $database,
+                recordlist => $recordlist,
+                dbinfotable => $dbinfotable,
+
+                config     => $config,
+                msg        => $msg,
+            };
+            
+            OpenBib::Common::Util::print_page($config->{tt_managecollection_print_tname},$ttdata,$r);
+            return OK;
+        }
+        elsif ($action eq "mail"){
+            # TT-Data erzeugen
+            my $ttdata={
+                view        => $view,
+                stylesheet  => $stylesheet,
+                sessionID   => $session->{ID},
+                qopts       => $queryoptions->get_options,				
+                type        => $type,
+                show        => $show,
+                loginname   => $loginname,
+                singleidn   => $singleidn,
+                database    => $database,
+                recordlist  => $recordlist,
+                dbinfotable => $dbinfotable,
+                
+                config      => $config,
+                msg         => $msg,
+            };
+            
+            OpenBib::Common::Util::print_page($config->{tt_managecollection_mail_tname},$ttdata,$r);
+            return OK;
+        }
     }
-    # Ausdrucken der Merkliste (HTML) ueber Browser
-    elsif ($action eq "print") {
-        my $loginname=$user->get_username();
-    
-        my @dbidnlist=();
-        if ($singleidn && $database) {
-            push @dbidnlist, {
-                database  => $database,
-                singleidn => $singleidn,
-            };
-        }
-        else {
-            # Schleife ueber alle Treffer
-            if ($user->{ID}) {
-                push @dbidnlist, $user->get_items_in_collection();
-            }
-            else {
-                push @dbidnlist, $session->get_items_in_collection();
-            }
-        }
-
-        my @collection=();
-    
-        foreach my $dbidn_ref (@dbidnlist) {
-            my $database  = $dbidn_ref->{database};
-            my $singleidn = $dbidn_ref->{singleidn};
-
-            my $record = OpenBib::Record::Title->new({database=>$database})
-                      ->get_full_record({id=>$singleidn});
-      
-            $logger->info("Merklistensatz geholt");
-      
-            push @collection, {
-                database => $database,
-                dbdesc   => $targetdbinfo_ref->{dbinfo}{$database},
-                titidn   => $singleidn,
-                tit      => $record->get_normdata,
-                mex      => $record->get_mexdata,
-                circ     => $record->get_circdata,
-            };
-        }
-    
-        # TT-Data erzeugen
-        my $ttdata={
-            view       => $view,
-            stylesheet => $stylesheet,		
-            sessionID  => $session->{ID},
-            qopts      => $queryoptions_ref,		
-            type       => $type,
-            show       => $show,
-            loginname  => $loginname,
-            singleidn  => $singleidn,
-            database   => $database,
-            collection => \@collection,
-            normset2bibtex    => \&OpenBib::Common::Util::normset2bibtex,
-
-            config     => $config,
-            msg        => $msg,
-        };
-    
-        OpenBib::Common::Util::print_page($config->{tt_managecollection_print_tname},$ttdata,$r);
+    else {
+        OpenBib::Common::Util::print_warning($msg->maketext("Unerlaubte Aktion"),$r,$msg);
         return OK;
     }
     return OK;

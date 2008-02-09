@@ -43,6 +43,7 @@ use DBI;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
 use OpenBib::Search::Util;
@@ -174,11 +175,7 @@ sub handler {
     $query->param('boolmart'      => $query->param('bool11')) if ($query->param('bool11'));
     $query->param('boolhststring' => $query->param('bool12')) if ($query->param('bool12'));
 
-    my $queryoptions_ref
-        = $session->get_queryoptions($query);
-
-    my $targetdbinfo_ref
-        = $config->get_targetdbinfo();
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     my $searchquery_ref
         = OpenBib::Common::Util::get_searchquery($r);
@@ -412,7 +409,7 @@ sub handler {
         
         # TT-Data erzeugen
         my $ttdata={
-            targetdbinfo    => $targetdbinfo_ref,
+            targetdbinfo    => $dbinfotable,
             resultlist      => \@ergebnisse,#[$liststart..$listend],
 
             utf2iso      => sub {
@@ -526,7 +523,7 @@ sub handler {
             has_sb       => $has_sb,
             sbitem       => $sbrecord->get_normdata,
             sbitemmex    => $sbrecord->get_mexdata,
-            targetdbinfo => $targetdbinfo_ref,
+            targetdbinfo => $dbinfotable,
             database     => $database,
 
             utf2iso      => sub {

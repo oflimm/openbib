@@ -45,6 +45,7 @@ use Template;
 
 use OpenBib::Config;
 use OpenBib::L10N;
+use OpenBib::QueryOptions;
 use OpenBib::Session;
 use OpenBib::User;
 
@@ -64,7 +65,7 @@ sub handler {
     
     my $query  = Apache::Request->instance($r);
 
-    my $status=$query->parse;
+    my $status = $query->parse;
 
     if ($status) {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
@@ -97,20 +98,13 @@ sub handler {
     ###########                                               ###########
     ############## B E G I N N  P R O G R A M M F L U S S ###############
     ###########                                               ###########
-  
-    my $queryoptions_ref
-        = $session->get_queryoptions($query);
+
+    my $queryoptions = OpenBib::QueryOptions->instance($query);
 
     # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
     
-    my $targetdbinfo_ref
-        = $config->get_targetdbinfo();
-
-    my $targetcircinfo_ref
-        = $config->get_targetcircinfo();
-
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
 

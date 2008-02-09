@@ -48,6 +48,8 @@ use YAML;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
+use OpenBib::QueryOptions;
+use OpenBib::SearchQuery;
 use OpenBib::Session;
 use OpenBib::User;
 
@@ -75,19 +77,17 @@ sub handler {
     
     my $useragent=$r->subprocess_env('HTTP_USER_AGENT');
   
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
+    my $stylesheet = OpenBib::Common::Util::get_css_by_browsertype($r);
   
     my @databases = ($query->param('database'))?$query->param('database'):();
     my $singleidn = $query->param('singleidn') || '';
     my $setmask   = $query->param('setmask') || '';
     my $action    = ($query->param('action'))?$query->param('action'):'';
 
-    my $queryoptions_ref
-        = $session->get_queryoptions($query);
+    my $queryoptions = OpenBib::QueryOptions->instance($query);
 
-    $logger->debug(YAML::Dump($queryoptions_ref));
     # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
     if (!$session->is_valid()){
@@ -164,12 +164,18 @@ sub handler {
         }
     
     }
-  
-    my $searchquery_ref
-        = OpenBib::Common::Util::get_searchquery($r);
+
+    my $queryid     = $query->param('queryid') || '';
     
-    my $queryid       = $query->param('queryid') || '';
-  
+    my $searchquery = OpenBib::SearchQuery->instance;
+
+    if ($queryid ne "") {
+        $searchquery->load({sessionID => $session->{ID}, queryid => $queryid});
+    }
+    else {
+        $searchquery->set_from_apache_request($r);
+    }
+    
     my $viewdesc      = $config->get_viewdesc_from_viewname($view);
 
     if ($setmask) {
@@ -177,11 +183,6 @@ sub handler {
     }
     else {
         $setmask = $session->get_mask();
-    }
-
-    my $hits;
-    if ($queryid ne "") {
-        ($searchquery_ref,$hits) = $session->get_searchquery($queryid);
     }
 
     # Wenn Datenbanken uebergeben wurden, dann werden diese eingetragen
@@ -243,8 +244,8 @@ sub handler {
         showgtquelle  => $showgtquelle,
         showejahr     => $showejahr,
 
-        searchquery   => $searchquery_ref,
-        qopts         => $queryoptions_ref,
+        searchquery   => $searchquery->get_searchquery,
+        qopts         => $queryoptions->get_options,
 
         iso2utf      => sub {
             my $string=shift;

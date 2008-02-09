@@ -51,11 +51,14 @@ use OpenBib::VirtualSearch::Util;
 use OpenBib::Common::Util;
 use OpenBib::Common::Stopwords;
 use OpenBib::Config;
+use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
+use OpenBib::QueryOptions;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
 use OpenBib::Search::Local::Xapian;
 use OpenBib::Search::Z3950;
+use OpenBib::SearchQuery;
 use OpenBib::Session;
 use OpenBib::Template::Provider;
 use OpenBib::User;
@@ -114,21 +117,16 @@ sub handler {
     my $drilldown_cloud       = $query->param('dd_cloud')       || 0;     # Cloud?
     my $drilldown_categorized = $query->param('dd_categorized') || 0;     # Categorized?
 
-    my $queryoptions_ref
-        = $session->get_queryoptions($query);
+    my $queryoptions = OpenBib::QueryOptions->instance($query);
 
     # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
 
-    my $targetdbinfo_ref
-        = $config->get_targetdbinfo();
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+    my $searchquery = OpenBib::SearchQuery->instance;
 
-    my $targetcircinfo_ref
-        = $config->get_targetcircinfo();
-
-    my $searchquery_ref
-        = OpenBib::Common::Util::get_searchquery($r);
+    $searchquery->set_from_apache_request($r);
 
     my $is_orgunit=0;
 
@@ -176,6 +174,7 @@ sub handler {
     # Wenn Datenbanken uebergeben werden, dann wird nur
     # in diesen gesucht.
     if ($#databases != -1) {
+        $logger->debug("Selecting databases received via CGI");
         # Wenn Datenbanken explizit ueber das Suchformular uebergeben werden,
         # dann werden diese als neue Datenbankauswahl gesetzt
         
@@ -195,20 +194,24 @@ sub handler {
         # z.B. wenn direkt von extern fuer einen View eine Recherche gestartet werden soll,
         # dann wird in den Datenbanken des View recherchiert
         if ($view && !($searchall||$searchprofile||$verfindex||$korindex||$swtindex||$notindex)){
+            $logger->debug("Selecting databases of view");
             @databases = $config->get_dbs_of_view($view);
         }
         
         else {
             if ($searchall) {
+                $logger->debug("Selecting all active databases");
                 @databases = $config->get_active_databases();
             }
             elsif ($searchprofile || $verfindex || $korindex || $swtindex || $notindex) {
                 if ($profil eq "dbauswahl") {
+                    $logger->debug("Selecting databases of users choice");
                     # Eventuell bestehende Auswahl zuruecksetzen
                     @databases = $session->get_dbchoice();
                 }
                 # Wenn ein anderes Profil als 'dbauswahl' ausgewaehlt wuerde
                 elsif ($profil) {
+                    $logger->debug("Selecting databases of profile");
                     # Eventuell bestehende Auswahl zuruecksetzen
                     @databases=();
                     
@@ -248,7 +251,6 @@ sub handler {
     if ($session->{ID} ne "-1") {
         ($queryalreadyexists,$queryid) = $session->get_queryid({
             databases   => \@databases,
-            searchquery => $searchquery_ref,
             hitrange    => $hitrange,
         });
     }
@@ -259,10 +261,10 @@ sub handler {
 
     if ($verfindex || $korindex || $swtindex || $notindex) {
         my $contentreq =
-            ($verfindex)?$searchquery_ref->{verf    }{norm}:
-            ($korindex )?$searchquery_ref->{kor     }{norm}:
-            ($swtindex )?$searchquery_ref->{swt     }{norm}:
-            ($notindex )?$searchquery_ref->{notation}{norm}:undef;
+            ($verfindex)?$searchquery->get_searchfield('verf    ')->{norm}:
+            ($korindex )?$searchquery->get_searchfield('kor     ')->{norm}:
+            ($swtindex )?$searchquery->get_searchfield('swt     ')->{norm}:
+            ($notindex )?$searchquery->get_searchfield('notation')->{norm}:undef;
 
         my $type =
             ($verfindex)?'aut':
@@ -332,7 +334,7 @@ sub handler {
 
                 push @{$index{$item_ref->{content}}{databases}}, {
                     'dbname'   => $database,
-                    'dbdesc'   => $targetdbinfo_ref->{dbnames}{$database},
+                    'dbdesc'   => $dbinfotable->{dbnames}{$database},
                     'id'       => $item_ref->{id},
                     'titcount' => $item_ref->{titcount},
                 };
@@ -405,7 +407,7 @@ sub handler {
             stylesheet => $stylesheet,		
             sessionID  => $session->{ID},
 
-            qopts      => $queryoptions_ref,
+            qopts      => $queryoptions->get_options,
             
             resulttime => $resulttime,
             contentreq => $contentreq,
@@ -433,80 +435,80 @@ sub handler {
 
     my $firstsql;
 
-    if ($searchquery_ref->{fs  }{norm}) {
+    if ($searchquery->get_searchfield('fs')->{norm}) {
         $firstsql=1;
     }
 
-    if ($searchquery_ref->{verf}{norm}) {
+    if ($searchquery->get_searchfield('verf')->{norm}) {
         $firstsql=1;
     }
 
-    if ($searchquery_ref->{kor }{norm}) {
+    if ($searchquery->get_searchfield('kor')->{norm}) {
         $firstsql=1;
     }
 
-    if ($searchquery_ref->{hst }{norm}) {
+    if ($searchquery->get_searchfield('hst')->{norm}) {
         $firstsql=1;
     }
 
-    if ($searchquery_ref->{swt}{norm}) {
+    if ($searchquery->get_searchfield('swt')->{norm}) {
         $firstsql=1;
     }
 
-    if ($searchquery_ref->{notation}{norm}) {
+    if ($searchquery->get_searchfield('notation')->{norm}) {
         $firstsql=1;
     }
 
-    if ($searchquery_ref->{sign}{norm}) {
+    if ($searchquery->get_searchfield('sign')->{norm}) {
         $firstsql=1;
     }
 
-    if ($searchquery_ref->{isbn}{norm}) {
+    if ($searchquery->get_searchfield('isbn')->{norm}) {
         $firstsql=1;
     }
 
-    if ($searchquery_ref->{issn}{norm}) {
+    if ($searchquery->get_searchfield('issn')->{norm}) {
         $firstsql=1;
     }
 
-    if ($searchquery_ref->{mart}{norm}) {
+    if ($searchquery->get_searchfield('mart')->{norm}) {
         $firstsql=1;
     }
 
-    if ($searchquery_ref->{hststring}{norm}) {
+    if ($searchquery->get_searchfield('hststring')->{norm}) {
         $firstsql=1;
     }
 
-    if ($searchquery_ref->{inhalt}{norm}) {
+    if ($searchquery->get_searchfield('inhalt')->{norm}) {
         $firstsql=1;
     }
     
-    if ($searchquery_ref->{gtquelle}{norm}) {
+    if ($searchquery->get_searchfield('gtquelle')->{norm}) {
         $firstsql=1;
     }
 
-    if ($searchquery_ref->{ejahr}{norm}){
+    if ($searchquery->get_searchfield('ejahr')->{norm}){
         $firstsql=1;
     }
     
-    if ($searchquery_ref->{ejahr}{norm}) {
-        my ($ejtest)=$searchquery_ref->{ejahr}{norm}=~/.*(\d\d\d\d).*/;
+    if ($searchquery->get_searchfield('ejahr')->{norm}) {
+        my ($ejtest)=$searchquery->get_searchfield('ejahr')->{norm}=~/.*(\d\d\d\d).*/;
         if (!$ejtest) {
             OpenBib::Common::Util::print_warning($msg->maketext("Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."),$r,$msg);
             return OK;
         }
     }
 
-    if ($searchquery_ref->{ejahr}{bool} eq "OR") {
-        if ($searchquery_ref->{ejahr}{norm}) {
+    if ($searchquery->get_searchfield('ejahr')->{bool} eq "OR") {
+        if ($searchquery->get_searchfield('ejahr')->{norm}) {
             OpenBib::Common::Util::print_warning($msg->maketext("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."),$r,$msg);
             return OK;
         }
     }
 
 
-    if ($searchquery_ref->{ejahr}{bool} eq "AND") {
-        if ($searchquery_ref->{ejahr}{norm}) {
+    if ($searchquery->get_searchfield('ejahr')->{bool} eq "AND") {
+        if ($searchquery->get_searchfield('ejahr')->{norm}) {
             if (!$firstsql) {
                 OpenBib::Common::Util::print_warning($msg->maketext("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."),$r,$msg);
                 return OK;
@@ -562,7 +564,7 @@ sub handler {
         loginname      => $loginname,
         password       => $password,
 
-        searchquery    => $searchquery_ref,
+        searchquery    => $searchquery->get_searchquery,
         query          => $query,
 
         queryid        => $queryid,
@@ -596,7 +598,7 @@ sub handler {
 
         my $sqlquerystring  = "select isbn from search where match (content) against (? in boolean mode) limit 2000";
         my $request         = $enrichdbh->prepare($sqlquerystring);
-        $request->execute($searchquery_ref->{hst}{norm}." ".$searchquery_ref->{fs}{norm});
+        $request->execute($searchquery->get_searchfield('hst')->{norm}." ".$searchquery->get_searchfield('fs')->{norm});
         while (my $res=$request->fetchrow_arrayref){
             push @{$enrichkeys_ref}, $res->[0];
         }
@@ -632,7 +634,7 @@ sub handler {
     foreach my $database (@databases) {
         
         # Trefferliste
-        my $recordlist = new OpenBib::RecordList::Title();
+        my $recordlist;
 
         if ($config->get_system_of_db($database) eq "Z39.50"){
             my $atime=new Benchmark;
@@ -642,7 +644,7 @@ sub handler {
             # $hitrange = 10;
             my $z3950dbh = new OpenBib::Search::Z3950($database);
 
-            $z3950dbh->search($searchquery_ref);
+            $z3950dbh->search;
             $z3950dbh->{rs}->option(elementSetName => "B");
             
             my $fullresultcount = $z3950dbh->{rs}->size();
@@ -706,13 +708,13 @@ sub handler {
                     sessionID       => $session->{ID},
                     database        => $database,
                     
-                    dbinfo          => $targetdbinfo_ref->{dbinfo}{$database},
+                    dbinfo          => $dbinfotable->{dbinfo}{$database},
                     
                     treffer         => $treffer,
                     
                     database        => $database,
                     queryid         => $queryid,
-                    qopts           => $queryoptions_ref,
+                    qopts           => $queryoptions->get_options,
                     fullresultcount => $fullresultcount,
                     resultlist      => $recordlist->to_list,
                     
@@ -743,7 +745,9 @@ sub handler {
 
             if ($sb eq 'xapian') {
                 # Xapian
-            
+
+                $recordlist = new OpenBib::RecordList::Title();
+
                 my $atime=new Benchmark;
 
                 $logger->debug("Creating Xapian DB-Object for database $database");
@@ -761,8 +765,6 @@ sub handler {
                     my $request = new OpenBib::Search::Local::Xapian();
                     
                     $request->initial_search({
-                        searchquery_ref => $searchquery_ref,
-                        
                         serien          => $serien,
                         dbh             => $dbh,
                         database        => $database,
@@ -920,7 +922,7 @@ sub handler {
                             view            => $view,
                             sessionID       => $session->{ID},
                             
-                            dbinfo          => $targetdbinfo_ref->{dbinfo}{$database},
+                            dbinfo          => $dbinfotable->{dbinfo}{$database},
                             
                             treffer         => $treffer,
                             
@@ -932,7 +934,7 @@ sub handler {
                             fullresultcount => $fullresultcount,
                             resultlist      => $recordlist->to_list,
                             
-                            qopts           => $queryoptions_ref,
+                            qopts           => $queryoptions->get_options,
                             drilldown             => $drilldown,
                             drilldown_cloud       => $drilldown_cloud,
                             drilldown_categorized => $drilldown_categorized,
@@ -965,31 +967,24 @@ sub handler {
 
             if ($sb eq 'sql' || $fallbacksb eq 'sql') {
                 # SQL
-
-                my $dbh
-                    = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-                        or $logger->error_die($DBI::errstr);
             
                 my $atime=new Benchmark;
             
-                my $result_ref=OpenBib::Search::Util::initial_search_for_titidns({
-                    searchquery_ref => $searchquery_ref,
-
+                my ($recordlist,$fullresultcount) = OpenBib::Search::Util::initial_search_for_titidns({
                     serien          => $serien,
-                    dbh             => $dbh,
+
+                    database        => $database,
+
                     hitrange        => $hitrange,
 
                     enrich          => $enrich,
                     enrichkeys_ref  => $enrichkeys_ref,
                 });
 
-                my @tidns           = @{$result_ref->{titidns_ref}};
-                my $fullresultcount = $result_ref->{fullresultcount};
-
-                $logger->debug("Treffer-Ids in $database:".join(",",@tidns));
+                $logger->debug("Treffer-Ids in $database:".$recordlist->to_ids);
 
                 # Wenn mindestens ein Treffer gefunden wurde
-                if ($#tidns >= 0) {
+                if ($recordlist->size() > 0) {
 
                     my $a2time;
             
@@ -997,11 +992,8 @@ sub handler {
                         $a2time=new Benchmark;
                     }
 
-                    my $record     = new OpenBib::Record::Title({database=>$database});
-
-                    foreach my $idn (@tidns) {
-                        $recordlist->add($record->get_brief_record({id=>$idn})->to_rawdata);
-                    }
+                    # Kurztitelinformationen fuer RecordList laden
+                    $recordlist->get_brief_records;
 
                     my $btime      = new Benchmark;
                     my $timeall    = timediff($btime,$atime);
@@ -1050,13 +1042,13 @@ sub handler {
                         view            => $view,
                         sessionID       => $session->{ID},
 		  
-                        dbinfo          => $targetdbinfo_ref->{dbinfo}{$database},
+                        dbinfo          => $dbinfotable->{dbinfo}{$database},
 
                         treffer         => $treffer,
 
                         database        => $database,
                         queryid         => $queryid,
-                        qopts           => $queryoptions_ref,
+                        qopts           => $queryoptions->get_options,
                         fullresultcount => $fullresultcount,
                         resultlist      => $recordlist->to_list,
 
@@ -1080,7 +1072,6 @@ sub handler {
                     undef $timeall;
 
                 }
-                $dbh->disconnect;
                 undef $atime;
             }
         }
@@ -1118,13 +1109,13 @@ sub handler {
         if (!$queryalreadyexists) {
             # Jetzt update der Trefferinformationen
             my $dbasesstring=join("||",sort @databases);
-            my $thisquerystring=unpack "H*", Storable::freeze($searchquery_ref);
+            my $thisquerystring=unpack "H*", Storable::freeze($searchquery->get_searchquery);
 
             # Wurde in allen Katalogen recherchiert?
 
             my $alldbcount = $config->get_number_of_dbs();
 
-            my $searchquery_log_ref = $searchquery_ref;
+            my $searchquery_log_ref = $searchquery->get_searchquery;
 
             if ($#databases+1 == $alldbcount){
                 $searchquery_log_ref->{alldbases} = 1;
@@ -1184,7 +1175,7 @@ sub handler {
         loginname     => $loginname,
         password      => $password,
         
-        searchquery   => $searchquery_ref,
+        searchquery   => $searchquery->get_searchquery,
         query         => $query,
         queryid       => $queryid,
 

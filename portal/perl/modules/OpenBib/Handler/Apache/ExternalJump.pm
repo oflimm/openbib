@@ -47,6 +47,8 @@ use Template;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
+use OpenBib::QueryOptions;
+use OpenBib::SearchQuery;
 use OpenBib::Session;
 use OpenBib::User;
 
@@ -105,11 +107,10 @@ sub handler {
     my $boolhststring = $query->param('boolhststring') || '';
     my $queryid       = $query->param('queryid')       || '';
 
-    my $queryoptions_ref
-        = $session->get_queryoptions($query);
+    my $queryoptions = OpenBib::QueryOptions->instance($query);
     
     # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
     
     if (!$session->is_valid()){
@@ -127,11 +128,11 @@ sub handler {
     }
 
     my $viewdesc = $config->get_viewdesc_from_viewname($view);
-  
-    my ($searchquery_ref,$hits);
+
+    my $searchquery = OpenBib::SearchQuery->instance;
 
     if ($queryid ne "") {
-        ($searchquery_ref,$hits) = $session->get_searchquery($queryid);
+        $searchquery->load({sessionID => $session->{ID}, queryid => $queryid});
     }
     else {
         OpenBib::Common::Util::print_warning($msg->maketext("Keine gültige Anfrage-ID"),$r,$msg);
@@ -160,12 +161,8 @@ sub handler {
         stylesheet   => $stylesheet,
         viewdesc     => $viewdesc,
         sessionID    => $session->{ID},
-        queryid      => $queryid,
 	      
-	thisquery    => {
-			 searchquery => $searchquery_ref,
-			 hits        => $hits,
-			},
+	thisquery    => $searchquery,
 
         authurl      => $authurl,
 	      

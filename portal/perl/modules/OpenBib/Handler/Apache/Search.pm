@@ -46,13 +46,17 @@ use Template;
 use OpenBib::Search::Util;
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::Config::CirculationInfoTable;
+use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
+use OpenBib::QueryOptions;
 use OpenBib::Record::Title;
 use OpenBib::Record::Person;
 use OpenBib::Record::CorporateBody;
 use OpenBib::Record::Subject;
 use OpenBib::Record::Classification;
 use OpenBib::RecordList::Title;
+use OpenBib::SearchQuery;
 use OpenBib::Session;
 
 my $benchmark;
@@ -165,19 +169,15 @@ sub handler {
     my $dbh
         = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
             or $logger->error_die($DBI::errstr);
-  
-    my $queryoptions_ref
-        = $session->get_queryoptions($query);
+
+    my $queryoptions = OpenBib::QueryOptions->instance($query);
 
     # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
-    my $targetdbinfo_ref
-        = $config->get_targetdbinfo();
 
-    my $targetcircinfo_ref
-        = $config->get_targetcircinfo();
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
+    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
 
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
@@ -207,10 +207,7 @@ sub handler {
         OpenBib::Search::Util::print_index_by_swt({
             swt              => $swtindex,
             dbh              => $dbh,
-            targetdbinfo_ref => $targetdbinfo_ref,
-            queryoptions_ref => $queryoptions_ref,
             database         => $database,
-            sessionID        => $session->{ID},
             apachereq        => $r,
             stylesheet       => $stylesheet,
             view             => $view,
@@ -227,10 +224,10 @@ sub handler {
         if (($generalsearch=~/^verf/)||($generalsearch=~/^pers/)) {
             my $verfidn=$query->param("$generalsearch");
 
-            my $normset=OpenBib::Record::Person->new({database => $database})->get_full_record({id => $verfidn})->to_rawdata;
+            my $normset=OpenBib::Record::Person->new({database => $database, id => $verfidn})->get_full_record({dbh => $dbh})->to_rawdata;
             
-	    my $poolname=$targetdbinfo_ref->{sigel}{
-	      $targetdbinfo_ref->{dbases}{$database}};
+	    my $poolname=$dbinfotable->{sigel}{
+	      $dbinfotable->{dbases}{$database}};
             
             # TT-Data erzeugen
             my $ttdata={
@@ -238,7 +235,7 @@ sub handler {
                 stylesheet       => $stylesheet,
                 database         => $database,
 		poolname         => $poolname,
-                queryoptions_ref => $queryoptions_ref,
+                queryoptions_ref => $queryoptions->get_options,
                 sessionID        => $session->{ID},
                 normset          => $normset,
                 
@@ -250,6 +247,8 @@ sub handler {
         }
     
         if ($generalsearch=~/^supertit/) {
+            my $recordlist = new OpenBib::RecordList::Title();
+
             my $supertitidn = $query->param("$generalsearch");
             my $hits        = 0;
 
@@ -271,79 +270,31 @@ sub handler {
             $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
             $request->execute($supertitidn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
 
-            my @titidns=();
-            
             while (my $res=$request->fetchrow_hashref) {
-                push @titidns, $res->{targetid};
+                $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{targetid}}));
             }
 
             $request->finish();
             
-            if ($#titidns == -1) {
-                OpenBib::Common::Util::print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"),$r,$msg);
-                return OK;
-            }
-      
-            if ($#titidns == 0) {
-                OpenBib::Record::Title->new({database=>$database})
-                      ->get_full_record({id=>$titidns[0]})
-                          ->print_to_handler({
-                              session            => $session,
-                              queryoptions_ref   => $queryoptions_ref,
-                              apachereq          => $r,
-                              stylesheet         => $stylesheet,
-                              view               => $view,
-                              msg                => $msg,
-                          });
-                
-                return OK;
-            }
-      
-            if ($#titidns > 0) {
-                my ($atime,$btime,$timeall);
-                
-                if ($config->{benchmark}) {
-                    $atime=new Benchmark;
-                }
-                
-                my $recordlist = new OpenBib::RecordList::Title();
-                my $record     = new OpenBib::Record::Title({database=>$database});
-                
-                foreach my $idn (@titidns) {
-                    $recordlist->add($record->get_brief_record({id=>$idn})->to_rawdata);
-                }
+            $recordlist->print_to_handler({
+                database         => $database,
+                sortorder        => $sortorder,
+                sorttype         => $sorttype,
+                apachereq        => $r,
+                stylesheet       => $stylesheet,
+                view             => $view,
+                hits             => $hits,
+                offset           => $offset,
+                hitrange         => $hitrange,
+                msg              => $msg,
+            });
 
-                if ($config->{benchmark}) {
-                    $btime   = new Benchmark;
-                    $timeall = timediff($btime,$atime);
-                    $logger->info("Zeit fuer : ".($recordlist->size())." Titel : ist ".timestr($timeall));
-                    undef $atime;
-                    undef $btime;
-                    undef $timeall;
-                }
-
-                $recordlist->sort({order=>$sortorder,type=>$sorttype});
-
-                $recordlist->print_to_handler({
-                    queryoptions_ref => $queryoptions_ref,
-                    database         => $database,
-                    sessionID        => $session->{ID},
-                    apachereq        => $r,
-                    stylesheet       => $stylesheet,
-                    view             => $view,
-                    hits             => $hits,
-                    offset           => $offset,
-                    hitrange         => $hitrange,
-                    msg              => $msg,
-                });
-
-                $session->updatelastresultset($recordlist->to_ids);
-                
-                return OK;
-            }
+            return OK;
         }
 
         if ($generalsearch=~/^subtit/) {
+            my $recordlist = new OpenBib::RecordList::Title();
+
             my $subtitidn=$query->param("$generalsearch");
             my $hits        = 0;
 
@@ -367,83 +318,33 @@ sub handler {
             my @titidns=();
             
             while (my $res=$request->fetchrow_hashref) {
-                push @titidns, $res->{sourceid};
+                $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{sourceid}}));
             }
 
             $request->finish();
-            
-            if ($#titidns == -1) {
-                OpenBib::Common::Util::print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"),$r,$msg);
-                return OK;
-            }
-      
-            if ($#titidns == 0) {
-                OpenBib::Record::Title->new({database=>$database})
-                      ->get_full_record({id=>$titidns[0]})
-                          ->print_to_handler({
-                              session            => $session,
-                              queryoptions_ref   => $queryoptions_ref,
-                              apachereq          => $r,
-                              stylesheet         => $stylesheet,
-                              view               => $view,
-                              msg                => $msg,
-                          });
-                
-                return OK;
-            }
-      
-            if ($#titidns > 0) {
-                my ($atime,$btime,$timeall);
-                
-                if ($config->{benchmark}) {
-                    $atime=new Benchmark;
-                }
 
-                my $recordlist = new OpenBib::RecordList::Title();
-                my $record     = new OpenBib::Record::Title({database=>$database});
-                
-                foreach my $idn (@titidns) {
-                    $recordlist->add($record->get_brief_record({id=>$idn})->to_rawdata);
-                }
-                
-                if ($config->{benchmark}) {
-                    $btime   = new Benchmark;
-                    $timeall = timediff($btime,$atime);
-                    $logger->info("Zeit fuer : ".($recordlist->get_number)." Titel : ist ".timestr($timeall));
-                    undef $atime;
-                    undef $btime;
-                    undef $timeall;
-                }
+            $recordlist->print_to_handler({
+                database         => $database,
+                sortorder        => $sortorder,
+                sorttype         => $sorttype,
+                apachereq        => $r,
+                stylesheet       => $stylesheet,
+                view             => $view,
+                hits             => $hits,
+                offset           => $offset,
+                hitrange         => $hitrange,
+                msg              => $msg,
+            });
 
-                $recordlist->sort({order=>$sortorder,type=>$sorttype});
-
-                $recordlist->print_to_handler({
-                    queryoptions_ref => $queryoptions_ref,
-                    database         => $database,
-                    sessionID        => $session->{ID},
-                    apachereq        => $r,
-                    stylesheet       => $stylesheet,
-                    view             => $view,
-                    hits             => $hits,
-                    offset           => $offset,
-                    hitrange         => $hitrange,
-                    msg              => $msg,
-                });
-
-                $session->updatelastresultset($recordlist->to_ids);
-                
-                return OK;
-            }
+            return OK;
         }
 
         if ($generalsearch=~/^hst/) {
             my $titidn=$query->param("$generalsearch");
 
-            OpenBib::Record::Title->new({database=>$database})
-                  ->get_full_record({id=>$titidn})
+            OpenBib::Record::Title->new({database=>$database, id=>$titidn})
+                  ->get_full_record({dbh => $dbh})
                       ->print_to_handler({
-                          session            => $session,
-                          queryoptions_ref   => $queryoptions_ref,
                           apachereq          => $r,
                           stylesheet         => $stylesheet,
                           view               => $view,
@@ -456,10 +357,10 @@ sub handler {
         if ($generalsearch=~/^swt/) {
             my $swtidn=$query->param("$generalsearch");
 
-            my $normset=OpenBib::Record::Subject->new({database => $database})->get_full_record({id => $swtidn})->to_rawdata;
+            my $normset=OpenBib::Record::Subject->new({database => $database, id => $swtidn})->get_full_record({dbh => $dbh})->to_rawdata;
 
-	    my $poolname=$targetdbinfo_ref->{sigel}{
-	      $targetdbinfo_ref->{dbases}{$database}};
+	    my $poolname=$dbinfotable->{sigel}{
+	      $dbinfotable->{dbases}{$database}};
 
             # TT-Data erzeugen
             my $ttdata={
@@ -467,7 +368,7 @@ sub handler {
                 stylesheet => $stylesheet,
                 database   => $database,
 	        poolname   => $poolname,
-                qopts      => $queryoptions_ref,
+                qopts      => $queryoptions->get_options,
                 sessionID  => $session->{ID},
                 normset    => $normset,
 
@@ -481,10 +382,10 @@ sub handler {
         if ($generalsearch=~/^not/) {
             my $notidn=$query->param("notation");
             
-            my $normset=OpenBib::Record::Classification->new({database => $database})->get_full_record({id => $notidn})->to_rawdata;
+            my $normset=OpenBib::Record::Classification->new({database => $database, id => $notidn})->get_full_record({dbh => $dbh})->to_rawdata;
 
-	    my $poolname=$targetdbinfo_ref->{sigel}{
-	      $targetdbinfo_ref->{dbases}{$database}};
+	    my $poolname=$dbinfotable->{sigel}{
+	      $dbinfotable->{dbases}{$database}};
 
             # TT-Data erzeugen
             my $ttdata={
@@ -492,7 +393,7 @@ sub handler {
                 stylesheet => $stylesheet,
                 database   => $database,
 		poolname   => $poolname,
-                qopts      => $queryoptions_ref,
+                qopts      => $queryoptions->get_options,
                 sessionID  => $session->{ID},
                 normset    => $normset,
                 
@@ -512,11 +413,7 @@ sub handler {
         OpenBib::Search::Util::print_mult_tit_set_by_idn({
             titidns_ref        => \@mtitidns,
             dbh                => $dbh,
-            targetdbinfo_ref   => $targetdbinfo_ref,
-            targetcircinfo_ref => $targetcircinfo_ref,
-            queryoptions_ref   => $queryoptions_ref,
             database           => $database,
-            sessionID          => $session->{ID},
             apachereq          => $r,
             stylesheet         => $stylesheet,
             view               => $view,
@@ -625,10 +522,10 @@ sub handler {
     if ($searchsingletit) {
         # Zuerst die zugehoerige Suchanfrage bestimmen
 
-        my $searchquery_ref = {};
+        my $searchquery = OpenBib::SearchQuery->instance;
 
         if ($queryid){
-            my ($searchquery_ref,$searchquery_hits) = $session->get_searchquery($queryid);
+            $searchquery->load({sessionID => $session->{ID}, queryid => $queryid});
         }
 
         if ($config->get_system_of_db($database) eq "Z39.50"){
@@ -642,8 +539,8 @@ sub handler {
                 titidn     => $searchsingletit,
             });
             
-            my $poolname=$targetdbinfo_ref->{sigel}{
-                $targetdbinfo_ref->{dbases}{$database}};
+            my $poolname=$dbinfotable->{sigel}{
+                $dbinfotable->{dbases}{$database}};
             
             # TT-Data erzeugen
             my $ttdata={
@@ -653,14 +550,14 @@ sub handler {
                 poolname    => $poolname,
                 prevurl     => $prevurl,
                 nexturl     => $nexturl,
-                qopts       => $queryoptions_ref,
+                qopts       => $queryoptions->get_options,
                 sessionID   => $session->{ID},
                 titidn      => $searchsingletit,
                 normset     => $normset,
                 mexnormset  => $mexnormset,
                 circset     => {},
 
-                searchquery => $searchquery_ref,
+                searchquery => $searchquery,
                 
                 config      => $config,
                 msg         => $msg,
@@ -669,13 +566,8 @@ sub handler {
             OpenBib::Common::Util::print_page($config->{tt_search_showtitset_tname},$ttdata,$r);
         }
         else {
-            OpenBib::Record::Title->new({database=>$database})
-                  ->get_full_record({id=>$searchsingletit})
-                      ->print_to_handler({
-                          session            => $session,
-                          queryoptions_ref   => $queryoptions_ref,
-                          searchquery_ref    => $searchquery_ref,
-                          queryid            => $queryid,
+            OpenBib::Record::Title->new({database => $database, id => $searchsingletit})
+                  ->get_full_record({dbh => $dbh})->print_to_handler({
                           apachereq          => $r,
                           stylesheet         => $stylesheet,
                           view               => $view,
@@ -688,10 +580,10 @@ sub handler {
   
     #####################################################################
     if ($searchsingleswt) {
-        my $normset=OpenBib::Record::Subject->new({database => $database})->get_full_record({id => $searchsingleswt})->to_rawdata;
+        my $normset=OpenBib::Record::Subject->new({database => $database, id => $searchsingleswt})->get_full_record({dbh => $dbh})->to_rawdata;
         
-	my $poolname=$targetdbinfo_ref->{sigel}{
-	  $targetdbinfo_ref->{dbases}{$database}};
+	my $poolname=$dbinfotable->{sigel}{
+	  $dbinfotable->{dbases}{$database}};
 
         # TT-Data erzeugen
         my $ttdata={
@@ -699,7 +591,7 @@ sub handler {
             stylesheet => $stylesheet,
             database   => $database,
             poolname   => $poolname,
-            qopts      => $queryoptions_ref,
+            qopts      => $queryoptions->get_options,
             sessionID  => $session->{ID},
             normset    => $normset,
             
@@ -712,10 +604,10 @@ sub handler {
   
     ######################################################################
     if ($searchsinglekor) {
-        my $normset=OpenBib::Record::CorporateBody->new({database => $database})->get_full_record({id => $searchsinglekor})->to_rawdata;  
+        my $normset=OpenBib::Record::CorporateBody->new({database => $database, id => $searchsinglekor})->get_full_record({dbh => $dbh})->to_rawdata;  
         
-	my $poolname=$targetdbinfo_ref->{sigel}{
-	  $targetdbinfo_ref->{dbases}{$database}};
+	my $poolname=$dbinfotable->{sigel}{
+	  $dbinfotable->{dbases}{$database}};
 
         # TT-Data erzeugen
         my $ttdata={
@@ -723,7 +615,7 @@ sub handler {
             stylesheet => $stylesheet,
             database   => $database,
 	    poolname   => $poolname,
-            qopts      => $queryoptions_ref,
+            qopts      => $queryoptions->get_options,
             sessionID  => $session->{ID},
             normset    => $normset,
             
@@ -736,10 +628,10 @@ sub handler {
     
     ######################################################################
     if ($searchsinglenot) {
-        my $normset=OpenBib::Record::Classification->new({database => $database})->get_full_record({id => $searchsinglenot})->to_rawdata;
+        my $normset=OpenBib::Record::Classification->new({database => $database, id => $searchsinglenot})->get_full_record({dbh => $dbh})->to_rawdata;
 	
-	my $poolname=$targetdbinfo_ref->{sigel}{
-	  $targetdbinfo_ref->{dbases}{$database}};
+	my $poolname=$dbinfotable->{sigel}{
+	  $dbinfotable->{dbases}{$database}};
 
         # TT-Data erzeugen
         my $ttdata={
@@ -747,7 +639,7 @@ sub handler {
             stylesheet => $stylesheet,
             database   => $database,
             poolname   => $poolname,
-            qopts      => $queryoptions_ref,
+            qopts      => $queryoptions->get_options,
             sessionID  => $session->{ID},
             normset    => $normset,
             
@@ -760,10 +652,10 @@ sub handler {
   
     #####################################################################
     if ($searchsingleaut) {
-        my $normset=OpenBib::Record::Person->new({database => $database})->get_full_record({id => $searchsingleaut})->to_rawdata;
+        my $normset=OpenBib::Record::Person->new({database => $database, id => $searchsingleaut})->get_full_record()->to_rawdata;
 
-        my $poolname=$targetdbinfo_ref->{sigel}{
-            $targetdbinfo_ref->{dbases}{$database}};
+        my $poolname=$dbinfotable->{sigel}{
+            $dbinfotable->{dbases}{$database}};
         
         # TT-Data erzeugen
         my $ttdata={
@@ -771,7 +663,7 @@ sub handler {
             stylesheet => $stylesheet,
             database   => $database,
             poolname   => $poolname,
-            qopts      => $queryoptions_ref,
+            qopts      => $queryoptions->get_options,
             sessionID  => $session->{ID},
             normset    => $normset,
             
@@ -783,7 +675,8 @@ sub handler {
     }
     
     if ($searchtitofaut) {
-        my @titelidns = ();
+        my $recordlist = new OpenBib::RecordList::Title();
+
         my $hits      = 0;
 
         # Verfasser-Id numerisch, dann Titel zu von entsprechendem Normdaten
@@ -807,7 +700,7 @@ sub handler {
             
             
             while (my $res=$request->fetchrow_hashref){
-                push @titelidns, $res->{sourceid};
+                $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{sourceid}}));
             }
             $request->finish();            
         }
@@ -824,78 +717,31 @@ sub handler {
             $request->execute($searchtitofaut);
             
             while (my $res=$request->fetchrow_hashref){
-                push @titelidns, $res->{id};
+                $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{id}}));
             }        
             $request->finish();
         }
         
-        if ($#titelidns == -1) {
-            OpenBib::Common::Util::print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"),$r,$msg);
-            return OK;
-        }
-    
-        if ($#titelidns == 0) {
-            OpenBib::Record::Title->new({database=>$database})
-                  ->get_full_record({id=>$titelidns[0]})
-                      ->print_to_handler({
-                          session            => $session,
-                          queryoptions_ref   => $queryoptions_ref,
-                          apachereq          => $r,
-                          stylesheet         => $stylesheet,
-                          view               => $view,
-                          msg                => $msg,
-                      });
+        $recordlist->print_to_handler({
+            database         => $database,
+            sortorder        => $sortorder,
+            sorttype         => $sorttype,
+            apachereq        => $r,
+            stylesheet       => $stylesheet,
+            view             => $view,
+            hits             => $hits,
+            offset           => $offset,
+            hitrange         => $hitrange,
+            msg              => $msg,
+        });
 
-            return OK;
-        }
-    
-        if ($#titelidns > 0) {
-            my ($atime,$btime,$timeall);
-      
-            if ($config->{benchmark}) {
-                $atime=new Benchmark;
-            }
-
-            my $recordlist = new OpenBib::RecordList::Title();
-            my $record     = new OpenBib::Record::Title({database=>$database});
-            
-            foreach my $idn (@titelidns) {
-                $recordlist->add($record->get_brief_record({id=>$idn})->to_rawdata);
-            }
-            
-            if ($config->{benchmark}) {
-                $btime   = new Benchmark;
-                $timeall = timediff($btime,$atime);
-                $logger->info("Zeit fuer : ".($recordlist->get_number)." Titel : ist ".timestr($timeall));
-                undef $atime;
-                undef $btime;
-                undef $timeall;
-            }
-            
-            $recordlist->sort({order=>$sortorder,type=>$sorttype});
-            
-            $recordlist->print_to_handler({
-                queryoptions_ref => $queryoptions_ref,
-                database         => $database,
-                sessionID        => $session->{ID},
-                apachereq        => $r,
-                stylesheet       => $stylesheet,
-                view             => $view,
-                hits             => $hits,
-                offset           => $offset,
-                hitrange         => $hitrange,
-                msg              => $msg,
-            });
-            
-            $session->updatelastresultset($recordlist->to_ids);
-            
-            return OK;
-        }	
+        return OK;
     }
   
     #####################################################################
     if ($searchtitofurhkor) {
-        my @titelidns = ();
+        my $recordlist = new OpenBib::RecordList::Title();
+
         my $hits      = 0;
 
         # Koerperschafts-Id numerisch, dann Titel zu von entsprechendem Normdaten
@@ -918,7 +764,7 @@ sub handler {
             $request->execute($searchtitofurhkor);
             
             while (my $res=$request->fetchrow_hashref){
-                push @titelidns, $res->{sourceid};
+                $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{sourceid}}));
             }
             $request->finish();            
         }
@@ -935,78 +781,31 @@ sub handler {
             $request->execute($searchtitofurhkor);
             
             while (my $res=$request->fetchrow_hashref){
-                push @titelidns, $res->{id};
+                $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{id}}));
             }        
             $request->finish();
         }
 
-        
-        if ($#titelidns == -1) {
-            OpenBib::Common::Util::print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"),$r,$msg);
-            return OK;
-        }
+        $recordlist->print_to_handler({
+            database         => $database,
+            sortorder        => $sortorder,
+            sorttype         => $sorttype,
+            apachereq        => $r,
+            stylesheet       => $stylesheet,
+            view             => $view,
+            hits             => $hits,
+            offset           => $offset,
+            hitrange         => $hitrange,
+            msg              => $msg,
+        });
 
-        if ($#titelidns == 0) {
-            OpenBib::Record::Title->new({database=>$database})
-                  ->get_full_record({id=>$titelidns[0]})
-                      ->print_to_handler({
-                          session            => $session,
-                          queryoptions_ref   => $queryoptions_ref,
-                          apachereq          => $r,
-                          stylesheet         => $stylesheet,
-                          view               => $view,
-                          msg                => $msg,
-                      });
-
-            return OK;
-        }
-        if ($#titelidns > 0) {
-            my ($atime,$btime,$timeall);
-      
-            if ($config->{benchmark}) {
-                $atime=new Benchmark;
-            }
-
-            my $recordlist = new OpenBib::RecordList::Title();
-            my $record     = new OpenBib::Record::Title({database=>$database});
-            
-            foreach my $idn (@titelidns) {
-                $recordlist->add($record->get_brief_record({id=>$idn})->to_rawdata);
-            }
-            
-            if ($config->{benchmark}) {
-                $btime   = new Benchmark;
-                $timeall = timediff($btime,$atime);
-                $logger->info("Zeit fuer : ".($recordlist->get_number)." Titel : ist ".timestr($timeall));
-                undef $atime;
-                undef $btime;
-                undef $timeall;
-            }
-
-            $recordlist->sort({order=>$sortorder,type=>$sorttype});
-            
-            $recordlist->print_to_handler({
-                queryoptions_ref => $queryoptions_ref,
-                database         => $database,
-                sessionID        => $session->{ID},
-                apachereq        => $r,
-                stylesheet       => $stylesheet,
-                view             => $view,
-                hits             => $hits,
-                offset           => $offset,
-                hitrange         => $hitrange,
-                msg              => $msg,
-            });
-            
-            $session->updatelastresultset($recordlist->to_ids);
-
-            return OK;
-        }	
+        return OK;
     }
   
     #######################################################################
     if ($searchtitofswt) {
-        my @titelidns = ();
+        my $recordlist = new OpenBib::RecordList::Title();
+
         my $hits      = 0;
 
         # Schlagwort-Id numerisch, dann Titel zu von entsprechendem Normdaten
@@ -1029,7 +828,7 @@ sub handler {
             $request->execute($searchtitofswt);
             
             while (my $res=$request->fetchrow_hashref){
-                push @titelidns, $res->{sourceid};
+                $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{sourceid}}));
             }
             $request->finish();            
         }
@@ -1046,76 +845,32 @@ sub handler {
             $request->execute($searchtitofswt);
             
             while (my $res=$request->fetchrow_hashref){
-                push @titelidns, $res->{id};
+                $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{id}}));
             }        
             $request->finish();
         }
-                
-        if ($#titelidns == -1) {
-            OpenBib::Common::Util::print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"),$r,$msg);
-            return OK;
-        }
-        if ($#titelidns == 0) {
-            OpenBib::Record::Title->new({database=>$database})
-                  ->get_full_record({id=>$titelidns[0]})
-                      ->print_to_handler({
-                          session            => $session,
-                          queryoptions_ref   => $queryoptions_ref,
-                          apachereq          => $r,
-                          stylesheet         => $stylesheet,
-                          view               => $view,
-                          msg                => $msg,
-                      });
 
-            return OK;
-        }
-        if ($#titelidns > 0) {
-            my ($atime,$btime,$timeall);
-      
-            if ($config->{benchmark}) {
-                $atime=new Benchmark;
-            }
+        $recordlist->print_to_handler({
+            database         => $database,
+            sortorder        => $sortorder,
+            sorttype         => $sorttype,
+            apachereq        => $r,
+            stylesheet       => $stylesheet,
+            view             => $view,
+            hits             => $hits,
+            offset           => $offset,
+            hitrange         => $hitrange,
+            msg              => $msg,
+        });
 
-            my $recordlist = new OpenBib::RecordList::Title();
-            my $record     = new OpenBib::Record::Title({database=>$database});
-            
-            foreach my $idn (@titelidns) {
-                $recordlist->add($record->get_brief_record({id=>$idn})->to_rawdata);
-            }
-            
-            if ($config->{benchmark}) {
-                $btime   = new Benchmark;
-                $timeall = timediff($btime,$atime);
-                $logger->info("Zeit fuer : ".($recordlist->get_number)." Titel : ist ".timestr($timeall));
-                undef $atime;
-                undef $btime;
-                undef $timeall;
-            }
-            
-            $recordlist->sort({order=>$sortorder,type=>$sorttype});
-            
-            $recordlist->print_to_handler({
-                queryoptions_ref => $queryoptions_ref,
-                database         => $database,
-                sessionID        => $session->{ID},
-                apachereq        => $r,
-                stylesheet       => $stylesheet,
-                view             => $view,
-                hits             => $hits,
-                offset           => $offset,
-                hitrange         => $hitrange,
-                msg              => $msg,
-            });
-            
-            $session->updatelastresultset($recordlist->to_ids);
-            
-            return OK;
-        }	
+        
+        return OK;
     }
   
     #######################################################################
     if ($searchtitofnot) {
-        my @titelidns = ();
+        my $recordlist = new OpenBib::RecordList::Title();
+
         my $hits      = 0;
 
         # Notations-Id numerisch, dann Titel zu von entsprechendem Normdaten
@@ -1138,7 +893,7 @@ sub handler {
             $request->execute($searchtitofnot);
 
             while (my $res=$request->fetchrow_hashref){
-                push @titelidns, $res->{sourceid};
+                $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{sourceid}}));
             }
             $request->finish();
         }
@@ -1155,80 +910,33 @@ sub handler {
             $request->execute($searchtitofnot);
             
             while (my $res=$request->fetchrow_hashref){
-                push @titelidns, $res->{id};
+                $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{id}}));
             }        
             $request->finish();
         }
-            
-        if ($#titelidns == -1) {
-            OpenBib::Common::Util::print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"),$r,$msg);
-            return OK;
-        }
-    
-        if ($#titelidns == 0) {
-            OpenBib::Record::Title->new({database=>$database})
-                  ->get_full_record({id=>$titelidns[0]})
-                      ->print_to_handler({
-                          session            => $session,
-                          queryoptions_ref   => $queryoptions_ref,
-                          apachereq          => $r,
-                          stylesheet         => $stylesheet,
-                          view               => $view,
-                          msg                => $msg,
-                      });
 
-            return OK;
-        }
-    
-        if ($#titelidns > 0) {
-            my ($atime,$btime,$timeall);
-      
-            if ($config->{benchmark}) {
-                $atime=new Benchmark;
-            }
+        $recordlist->print_to_handler({
+            database         => $database,
+            sortorder        => $sortorder,
+            sorttype         => $sorttype,
+            apachereq        => $r,
+            stylesheet       => $stylesheet,
+            view             => $view,
+            hits             => $hits,
+            offset           => $offset,
+            hitrange         => $hitrange,
+            msg              => $msg,
+        });
 
-            my $recordlist = new OpenBib::RecordList::Title();
-            my $record     = new OpenBib::Record::Title({database=>$database});
-            
-            foreach my $idn (@titelidns) {
-                $recordlist->add($record->get_brief_record({id=>$idn})->to_rawdata);
-            }
-            
-            if ($config->{benchmark}) {
-                $btime   = new Benchmark;
-                $timeall = timediff($btime,$atime);
-                $logger->info("Zeit fuer : ".($recordlist->get_number)." Titel : ist ".timestr($timeall));
-                undef $atime;
-                undef $btime;
-                undef $timeall;
-            }
-            
-            $recordlist->sort({order=>$sortorder,type=>$sorttype});
-            
-            $recordlist->print_to_handler({
-                queryoptions_ref => $queryoptions_ref,
-                database         => $database,
-                sessionID        => $session->{ID},
-                apachereq        => $r,
-                stylesheet       => $stylesheet,
-                view             => $view,
-                hits             => $hits,
-                offset           => $offset,
-                hitrange         => $hitrange,
-                msg              => $msg,
-            });
-            
-            $session->updatelastresultset($recordlist->to_ids);
-            
-            return OK;
-        }	
+        return OK;
     }
 
     #######################################################################
     # Titel zu einem gegebenen Kategorie-Inhalt
-    # Voraussetzung: Diese Kategorie muss String-Invertiert sein (Config.pm)
+    # Voraussetzung: Diese Kategorie muss String-Invertiert sein (Conv::Config.pm)
     if ($searchtitofcnt) {
-        my @titelidns = ();
+        my $recordlist = new OpenBib::RecordList::Title();
+
         my $hits      = 0;
 
         $searchtitofcnt = OpenBib::Common::Util::grundform({
@@ -1285,8 +993,7 @@ sub handler {
 
             $logger->debug("$thiscategory/$targettype/$searchtitofcnt");
             while (my $res=$request->fetchrow_hashref){
-                $logger->debug("Pushing: $res->{sourceid}");
-                push @titelidns, $res->{sourceid};
+                $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{sourceid}}));
             }
             
             # Bestimmung der Titelzahl
@@ -1304,7 +1011,7 @@ sub handler {
             $request->execute($thiscategory,$searchtitofcnt);
             
             while (my $res=$request->fetchrow_hashref){
-                push @titelidns, $res->{id};
+                $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{id}}));
             }        
             
             # Bestimmung der Titelzahl
@@ -1317,69 +1024,20 @@ sub handler {
             $request->finish();
         }
 
-        $logger->debug(YAML::Dump(\@titelidns));
-        if ($#titelidns == -1) {
-            OpenBib::Common::Util::print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"),$r,$msg);
-            return OK;
-        }
-    
-        if ($#titelidns == 0) {
-            OpenBib::Record::Title->new({database=>$database})
-                  ->get_full_record({id=>$titelidns[0]})
-                      ->print_to_handler({
-                          session            => $session,
-                          queryoptions_ref   => $queryoptions_ref,
-                          apachereq          => $r,
-                          stylesheet         => $stylesheet,
-                          view               => $view,
-                          msg                => $msg,
-                      });
+        $recordlist->print_to_handler({
+            database         => $database,
+            sortorder        => $sortorder,
+            sorttype         => $sorttype,
+            apachereq        => $r,
+            stylesheet       => $stylesheet,
+            view             => $view,
+            hits             => $hits,
+            offset           => $offset,
+            hitrange         => $hitrange,
+            msg              => $msg,
+        });
 
-            return OK;
-        }
-    
-        if ($#titelidns > 0) {
-            my ($atime,$btime,$timeall);
-      
-            if ($config->{benchmark}) {
-                $atime=new Benchmark;
-            }
-
-            my $recordlist = new OpenBib::RecordList::Title();
-            my $record     = new OpenBib::Record::Title({database=>$database});
-            
-            foreach my $idn (@titelidns) {
-                $recordlist->add($record->get_brief_record({id=>$idn})->to_rawdata);
-            }
-            
-            if ($config->{benchmark}) {
-                $btime   = new Benchmark;
-                $timeall = timediff($btime,$atime);
-                $logger->info("Zeit fuer : ".($recordlist->get_number)." Titel : ist ".timestr($timeall));
-                undef $atime;
-                undef $btime;
-                undef $timeall;
-            }
-            
-            $recordlist->sort({order=>$sortorder,type=>$sorttype});
-            
-            $recordlist->print_to_handler({
-                queryoptions_ref => $queryoptions_ref,
-                database         => $database,
-                sessionID        => $session->{ID},
-                apachereq        => $r,
-                stylesheet       => $stylesheet,
-                view             => $view,
-                hits             => $hits,
-                offset           => $offset,
-                hitrange         => $hitrange,
-                msg              => $msg,
-            });
-            
-            $session->updatelastresultset($recordlist->to_ids);
-
-            return OK;
-        }	
+        return OK;
     }
 
     #######################################################################
@@ -1476,7 +1134,7 @@ sub handler {
             stylesheet => $stylesheet,
             database   => $database,
             browsecat  => $browsecat,
-            qopts      => $queryoptions_ref,
+            qopts      => $queryoptions->get_options,
             sessionID  => $session->{ID},
             browselist => $browselist_ref,
             hits       => $hits,

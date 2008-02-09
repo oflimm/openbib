@@ -46,7 +46,9 @@ use Template;
 use OpenBib::Search::Util;
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
+use OpenBib::QueryOptions;
 use OpenBib::Record::Title;
 use OpenBib::Search::Util;
 use OpenBib::Session;
@@ -113,19 +115,14 @@ sub handler {
     ###########                                               ###########
     ############## B E G I N N  P R O G R A M M F L U S S ###############
     ###########                                               ###########
-  
-    my $queryoptions_ref
-        = $session->get_queryoptions($query);
+
+    my $queryoptions = OpenBib::QueryOptions->instance($query);
 
     # Message Katalog laden
-    my $msg = OpenBib::L10N->get_handle($queryoptions_ref->{l}) || $logger->error("L10N-Fehler");
+    my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
-    
-    my $targetdbinfo_ref
-        = $config->get_targetdbinfo();
 
-    my $targetcircinfo_ref
-        = $config->get_targetcircinfo();
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     if (!$session->is_valid()){
         OpenBib::Common::Util::print_warning($msg->maketext("Ungültige Session"),$r,$msg);
@@ -168,10 +165,10 @@ sub handler {
         my $ttdata={
             view             => $view,
             stylesheet       => $stylesheet,
-            queryoptions_ref => $queryoptions_ref,
+            queryoptions_ref => $queryoptions->get_options,
             sessionID        => $session->{ID},
             targettype       => $targettype,
-            targetdbinfo     => $targetdbinfo_ref,
+            targetdbinfo     => $dbinfotable,
             reviews          => $reviewlist_ref,
 
             config           => $config,
@@ -290,10 +287,10 @@ sub handler {
         my $ttdata={
             view             => $view,
             stylesheet       => $stylesheet,
-            queryoptions_ref => $queryoptions_ref,
+            queryoptions_ref => $queryoptions->get_options,
             sessionID        => $session->{ID},
             targettype       => $targettype,
-            targetdbinfo     => $targetdbinfo_ref,
+            targetdbinfo     => $dbinfotable,
             review           => $review_ref,
 
             config           => $config,

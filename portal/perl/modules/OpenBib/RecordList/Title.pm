@@ -42,6 +42,9 @@ use SOAP::Lite;
 use Storable;
 use YAML ();
 
+use OpenBib::QueryOptions;
+use OpenBib::Session;
+
 sub new {    
     my ($class) = @_;
 
@@ -53,6 +56,7 @@ sub new {
     bless ($self, $class);
 
     $self->{recordlist}     = [];
+    $self->{_size}          = 0;
 
     $logger->debug("Title-RecordList-Object created: ".YAML::Dump($self));
     return $self;
@@ -62,12 +66,18 @@ sub add {
     my ($self,$record)=@_;
 
     push @{$self->{recordlist}}, $record;
+
+    $self->{_size}=$self->{_size}+1;
 }
 
 sub add_from_storable {
     my ($self,$storable_ref)=@_;
+    
+    foreach my $record_ref (@{$storable_ref}){
+        $self->add(new OpenBib::Record::Title({database => $record_ref->{database}, id => $record_ref->{id}})->set_brief_normdata_from_storable($record_ref));
+    }
 
-    push @{$self->{recordlist}}, @{$storable_ref};
+    return;
 }
 
 sub sort {
@@ -176,12 +186,8 @@ sub print_to_handler {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $queryoptions_ref  = exists $arg_ref->{queryoptions_ref}
-        ? $arg_ref->{queryoptions_ref}  : undef;
     my $database          = exists $arg_ref->{database}
         ? $arg_ref->{database}          : undef;
-    my $sessionID         = exists $arg_ref->{sessionID}
-        ? $arg_ref->{sessionID}         : undef;
     my $r                 = exists $arg_ref->{apachereq}
         ? $arg_ref->{apachereq}         : undef;
     my $stylesheet        = exists $arg_ref->{stylesheet}
@@ -190,6 +196,10 @@ sub print_to_handler {
         ? $arg_ref->{hits}              : -1;
     my $hitrange          = exists $arg_ref->{hitrange}
         ? $arg_ref->{hitrange}          : 50;
+    my $sortorder         = exists $arg_ref->{sortorder}
+        ? $arg_ref->{sortorder}         : 'up';
+    my $sorttype          = exists $arg_ref->{sorttype}
+        ? $arg_ref->{sorttype}          : 'author';
     my $offset            = exists $arg_ref->{offset}
         ? $arg_ref->{offset}            : undef;
     my $view              = exists $arg_ref->{view}
@@ -206,84 +216,146 @@ sub print_to_handler {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config       = OpenBib::Config->instance;
+    my $session      = OpenBib::Session->instance;
+    my $queryoptions = OpenBib::QueryOptions->instance;
 
     my $query  = Apache::Request->instance($r);
 
     my $targetdbinfo_ref
         = $config->get_targetdbinfo();
 
-    my @itemlist=@{$self->{recordlist}};
-
-    # Navigationselemente erzeugen
-    my %args=$r->args;
-    delete $args{offset};
-    delete $args{hitrange};
-    my @args=();
-    while (my ($key,$value)=each %args) {
-        push @args,"$key=$value";
+    if ($self->size() == 0) {
+        OpenBib::Common::Util::print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"),$r,$msg);
     }
-
-    my $baseurl="http://$config->{servername}$config->{search_loc}?".join(";",@args);
-
-    my @nav=();
-
-    if ($hitrange > 0) {
-        for (my $i=0; $i <= $hits-1; $i+=$hitrange) {
-            my $active=0;
-
-            if ($i == $offset) {
-                $active=1;
-            }
-
-            my $item={
-		start  => $i+1,
-		end    => ($i+$hitrange>$hits)?$hits:$i+$hitrange,
-		url    => $baseurl.";hitrange=$hitrange;offset=$i",
-		active => $active,
-            };
-            push @nav,$item;
+    elsif ($self->size() == 1) {
+        my $record = $self->{recordlist}[0];
+        $record->get_full_record->print_to_handler({
+            apachereq          => $r,
+            stylesheet         => $stylesheet,
+            view               => $view,
+            msg                => $msg,
+        });
+    }
+    elsif ($self->size() > 1) {
+        my ($atime,$btime,$timeall);
+        
+        if ($config->{benchmark}) {
+            $atime=new Benchmark;
         }
-    }
 
-    # TT-Data erzeugen
-    my $ttdata={
-        lang           => $lang,
-        view           => $view,
-        stylesheet     => $stylesheet,
-        sessionID      => $sessionID,
-	      
-        database       => $database,
-
-        hits           => $hits,
-	      
-        sessionID      => $sessionID,
-	      
-        targetdbinfo   => $targetdbinfo_ref,
-        itemlist       => \@itemlist,
-
-        baseurl        => $baseurl,
-
-        qopts          => $queryoptions_ref,
-        query          => $query,
-        hitrange       => $hitrange,
-        offset         => $offset,
-        nav            => \@nav,
-
-        config         => $config,
-        msg            => $msg,
-    };
-
-    OpenBib::Common::Util::print_page($config->{$template},$ttdata,$r);
-
+        # Kurztitelinformationen fuer RecordList laden
+        $self->get_brief_records;
+        
+        if ($config->{benchmark}) {
+            $btime   = new Benchmark;
+            $timeall = timediff($btime,$atime);
+            $logger->info("Zeit fuer : ".($self->get_number)." Titel : ist ".timestr($timeall));
+            undef $atime;
+            undef $btime;
+            undef $timeall;
+        }
+        
+        $self->sort({order=>$sortorder,type=>$sorttype});
+        
+        my @itemlist=@{$self->{recordlist}};
+        
+        # Navigationselemente erzeugen
+        my %args=$r->args;
+        delete $args{offset};
+        delete $args{hitrange};
+        my @args=();
+        while (my ($key,$value)=each %args) {
+            push @args,"$key=$value";
+        }
+        
+        my $baseurl="http://$config->{servername}$config->{search_loc}?".join(";",@args);
+        
+        my @nav=();
+        
+        if ($hitrange > 0) {
+            for (my $i=0; $i <= $hits-1; $i+=$hitrange) {
+                my $active=0;
+                
+                if ($i == $offset) {
+                    $active=1;
+                }
+                
+                my $item={
+                    start  => $i+1,
+                    end    => ($i+$hitrange>$hits)?$hits:$i+$hitrange,
+                    url    => $baseurl.";hitrange=$hitrange;offset=$i",
+                    active => $active,
+                };
+                push @nav,$item;
+            }
+        }
+        
+        # TT-Data erzeugen
+        my $ttdata={
+            lang           => $lang,
+            view           => $view,
+            stylesheet     => $stylesheet,
+            sessionID      => $session->{ID},
+            
+            database       => $database,
+            
+            hits           => $hits,
+            
+            targetdbinfo   => $targetdbinfo_ref,
+            itemlist       => \@itemlist,
+            recordlist     => $self,
+            
+            baseurl        => $baseurl,
+            
+            qopts          => $queryoptions->get_options,
+            query          => $query,
+            hitrange       => $hitrange,
+            offset         => $offset,
+            nav            => \@nav,
+            
+            config         => $config,
+            msg            => $msg,
+        };
+        
+        OpenBib::Common::Util::print_page($config->{$template},$ttdata,$r);
+        
+        $session->updatelastresultset($self->to_ids);
+    }	
+    
     return;
 }
 
 sub size {
-    my ($self,$arg_ref)=@_;
+    my ($self)=@_;
 
-    my @list=@{$self->{recordlist}};
-    return $#list+1;
+    return $self->{_size};
+}
+
+sub get_brief_records {
+    my ($self) = @_;
+
+    foreach my $record ($self->get_records) {
+        $record->get_brief_record;
+    }
+
+    return $self;
+}
+
+sub get_full_records {
+    my ($self) = @_;
+
+    foreach my $record ($self->get_records) {
+        $record->get_full_record;
+    }
+
+    return $self;
+}
+
+sub get_records {
+    my ($self) = @_;
+
+    return @{$self->{recordlist}};
 }
 
 sub _by_yearofpub {

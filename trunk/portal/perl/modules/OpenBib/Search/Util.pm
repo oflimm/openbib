@@ -2,7 +2,7 @@
 #
 #  OpenBib::Search::Util
 #
-#  Dieses File ist (C) 2004-2007 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2008 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -43,9 +43,15 @@ use YAML ();
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::Config::CirculationInfoTable;
+use OpenBib::Config::DatabaseInfoTable;
+use OpenBib::QueryOptions;
+use OpenBib::Record::Title;
+use OpenBib::RecordList::Title;
+use OpenBib::Session;
 use OpenBib::VirtualSearch::Util;
 
-sub print_mult_tit_set_by_idn { 
+sub print_mult_tit_set_by_idn {
     my ($arg_ref) = @_;
 
     # Set defaults
@@ -53,16 +59,8 @@ sub print_mult_tit_set_by_idn {
         ? $arg_ref->{titidns_ref}        : undef;
     my $dbh                = exists $arg_ref->{dbh}
         ? $arg_ref->{dbh}                : undef;
-    my $targetdbinfo_ref = exists $arg_ref->{targetdbinfo_ref}
-        ? $arg_ref->{targetdbinfo_ref} : undef;
-    my $targetcircinfo_ref = exists $arg_ref->{targetcircinfo_ref}
-        ? $arg_ref->{targetcircinfo_ref} : undef;
-    my $queryoptions_ref   = exists $arg_ref->{queryoptions_ref}
-        ? $arg_ref->{queryoptions_ref}  : undef;
     my $database           = exists $arg_ref->{database}
         ? $arg_ref->{database}           : undef;
-    my $sessionID          = exists $arg_ref->{sessionID}
-        ? $arg_ref->{sessionID}          : undef;
     my $r                  = exists $arg_ref->{apachereq}
         ? $arg_ref->{apachereq}          : undef;
     my $stylesheet         = exists $arg_ref->{stylesheet}
@@ -75,8 +73,12 @@ sub print_mult_tit_set_by_idn {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
+    my $config        = OpenBib::Config->instance;
+    my $session       = OpenBib::Session->instance;
+    my $queryoptions  = OpenBib::QueryOptions->instance;
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
+    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
+
     my @titsets=();
 
     my $record = new OpenBib::Record::Title({database=>$database});
@@ -93,8 +95,8 @@ sub print_mult_tit_set_by_idn {
         push @titsets, $thisset;
     }
 
-    my $poolname=$targetdbinfo_ref->{sigel}{
-        $targetdbinfo_ref->{dbases}{$database}};
+    my $poolname=$dbinfotable->{sigel}{
+        $dbinfotable->{dbases}{$database}};
 
     # TT-Data erzeugen
     my $ttdata={
@@ -102,8 +104,8 @@ sub print_mult_tit_set_by_idn {
         stylesheet => $stylesheet,
         database   => $database,
         poolname   => $poolname,
-        qopts      => $queryoptions_ref,
-        sessionID  => $sessionID,
+        qopts      => $queryoptions->get_options,
+        sessionID  => $session->{ID},
         titsets    => \@titsets,
 
         config     => $config,
@@ -119,8 +121,6 @@ sub get_result_navigation {
     my ($arg_ref) = @_;
 
     # Set defaults
-    my $session               = exists $arg_ref->{session}
-        ? $arg_ref->{session}               : undef;
     my $database              = exists $arg_ref->{database}
         ? $arg_ref->{database}              : undef;
     my $titidn                = exists $arg_ref->{titidn}
@@ -135,7 +135,8 @@ sub get_result_navigation {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config  = OpenBib::Config->instance;
+    my $session = OpenBib::Session->instance;
 
     # Bestimmen des vorigen und naechsten Treffer einer
     # vorausgegangenen Kurztitelliste
@@ -325,12 +326,6 @@ sub print_index_by_swt {
         ? $arg_ref->{dbh}               : undef;
     my $database          = exists $arg_ref->{database}
         ? $arg_ref->{database}          : undef;
-    my $targetdbinfo_ref   = exists $arg_ref->{targetdbinfo_ref}
-        ? $arg_ref->{targetdbinfo_ref}  : undef;
-    my $queryoptions_ref   = exists $arg_ref->{queryoptions_ref}
-        ? $arg_ref->{queryoptions_ref}  : undef;
-    my $sessionID         = exists $arg_ref->{sessionID}
-        ? $arg_ref->{sessionID}         : undef;
     my $r                 = exists $arg_ref->{apachereq}
         ? $arg_ref->{apachereq}         : undef;
     my $stylesheet        = exists $arg_ref->{stylesheet}
@@ -343,7 +338,10 @@ sub print_index_by_swt {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config       = OpenBib::Config->instance;
+    my $session      = OpenBib::Session->instance;
+    my $queryoptions = OpenBib::QueryOptions->instance;
+    my $dbinfotable  = OpenBib::Config::DatabaseInfoTable->instance;
     
     my $swtindex=OpenBib::Search::Util::get_index({
         type       => 'swt',
@@ -352,7 +350,7 @@ sub print_index_by_swt {
         dbh        => $dbh,
     });
 
-    my $poolname=$targetdbinfo_ref->{sigel}{$targetdbinfo_ref->{dbases}{$database}};
+    my $poolname=$dbinfotable->{sigel}{$dbinfotable->{dbases}{$database}};
 
     # TT-Data erzeugen
     my $ttdata={
@@ -360,8 +358,8 @@ sub print_index_by_swt {
         stylesheet => $stylesheet,
         database   => $database,
         poolname   => $poolname,
-        qopts      => $queryoptions_ref,
-        sessionID  => $sessionID,
+        qopts      => $queryoptions->get_options,
+        sessionID  => $session->{ID},
         swt        => $swt,
         swtindex   => $swtindex,
 
@@ -379,8 +377,6 @@ sub initial_search_for_titidns {
     my ($arg_ref) = @_;
 
     # Set defaults
-    my $searchquery_ref   = exists $arg_ref->{searchquery_ref}
-        ? $arg_ref->{searchquery_ref} : undef;
     my $serien            = exists $arg_ref->{serien}
         ? $arg_ref->{serien}        : undef;
     my $enrich            = exists $arg_ref->{enrich}
@@ -389,6 +385,8 @@ sub initial_search_for_titidns {
         ? $arg_ref->{enrichkeys_ref}: undef;
     my $dbh               = exists $arg_ref->{dbh}
         ? $arg_ref->{dbh}           : undef;
+    my $database          = exists $arg_ref->{database}
+        ? $arg_ref->{database}      : undef;
     my $hitrange          = exists $arg_ref->{hitrange}
         ? $arg_ref->{hitrange}      : 50;
     my $offset            = exists $arg_ref->{offset}
@@ -397,134 +395,30 @@ sub initial_search_for_titidns {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
+    my $config      = OpenBib::Config->instance;
+    my $searchquery = OpenBib::SearchQuery->instance;
+
+    if (!defined $dbh){
+        # Kein Spooling von DB-Handles!
+        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+            or $logger->error_die($DBI::errstr);
+    }
+
     my ($atime,$btime,$timeall);
   
     if ($config->{benchmark}) {
         $atime=new Benchmark;
     }
     
-    # Aufbau des sqlquerystrings
-    my $sqlselect = "";
-    my $sqlfrom   = "";
-    my $sqlwhere  = "";
+    my $request = $dbh->prepare($searchquery->get_sql_querystring({
+        serien   => $serien,
+        offset   => $offset,
+        hitrange => $hitrange,
+    }));
 
-    my @sqlwhere = ();
-    my @sqlfrom  = ('search');
-    my @sqlargs  = ();
-
-    my $notfirstsql=0;
-    
-    if ($searchquery_ref->{fs}{norm}) {	
-        push @sqlwhere, $searchquery_ref->{fs}{bool}." match (verf,hst,kor,swt,notation,sign,inhalt,isbn,issn,ejahrft) against (? IN BOOLEAN MODE)";
-        push @sqlargs, $searchquery_ref->{fs}{norm};
-    }
-   
-    if ($searchquery_ref->{verf}{norm}) {	
-        push @sqlwhere, $searchquery_ref->{verf}{bool}." match (verf) against (? IN BOOLEAN MODE)";
-        push @sqlargs,  $searchquery_ref->{verf}{norm};
-    }
-  
-    if ($searchquery_ref->{hst}{norm}) {
-        push @sqlwhere, $searchquery_ref->{hst}{bool}." match (hst) against (? IN BOOLEAN MODE)";
-        push @sqlargs,  $searchquery_ref->{hst}{norm};
-    }
-  
-    if ($searchquery_ref->{swt}{norm}) {
-        push @sqlwhere, $searchquery_ref->{swt}{bool}." match (swt) against (? IN BOOLEAN MODE)";
-        push @sqlargs,  $searchquery_ref->{swt}{norm};
-    }
-  
-    if ($searchquery_ref->{kor}{norm}) {
-        push @sqlwhere, $searchquery_ref->{kor}{bool}." match (kor) against (? IN BOOLEAN MODE)";
-        push @sqlargs,  $searchquery_ref->{kor}{norm};
-    }
-  
-    my $notfrom="";
-  
-    if ($searchquery_ref->{notation}{norm}) {
-        # Spezielle Trunkierung
-        $searchquery_ref->{notation}{norm} =~ s/\*$/%/;
-
-        push @sqlfrom,  "notation_string";
-        push @sqlfrom,  "conn";
-        push @sqlwhere, $searchquery_ref->{notation}{bool}." (notation_string.content like ? and conn.sourcetype=1 and conn.targettype=5 and conn.targetid=notation_string.id and search.verwidn=conn.sourceid)";
-        push @sqlargs,  $searchquery_ref->{notation}{norm};
-    }
-  
-    my $signfrom="";
-  
-    if ($searchquery_ref->{sign}{norm}) {
-        # Spezielle Trunkierung
-        $searchquery_ref->{sign}{norm} =~ s/\*$/%/;
-
-        push @sqlfrom,  "mex_string";
-        push @sqlfrom,  "conn";
-        push @sqlwhere, $searchquery_ref->{sign}{bool}." (mex_string.content like ? and mex_string.category=0014 and conn.sourcetype=1 and conn.targettype=6 and conn.targetid=mex_string.id and search.verwidn=conn.sourceid)";
-        push @sqlargs,  $searchquery_ref->{sign}{norm};
-    }
-  
-    if ($searchquery_ref->{isbn}{norm}) {
-        push @sqlwhere, $searchquery_ref->{isbn}{bool}." match (isbn) against (? IN BOOLEAN MODE)";
-        push @sqlargs,  $searchquery_ref->{isbn}{norm};
-    }
-  
-    if ($searchquery_ref->{issn}{norm}) {
-        push @sqlwhere, $searchquery_ref->{issn}{bool}." match (issn) against (? IN BOOLEAN MODE)";
-        push @sqlargs,  $searchquery_ref->{issn}{norm};
-    }
-  
-    if ($searchquery_ref->{mart}{norm}) {
-        push @sqlwhere, $searchquery_ref->{mart}{bool}."  match (artinh) against (? IN BOOLEAN MODE)";
-        push @sqlargs,  $searchquery_ref->{mart}{norm};
-    }
-  
-    if ($searchquery_ref->{hststring}{norm}) {
-        # Spezielle Trunkierung
-        $searchquery_ref->{hststring}{norm} =~ s/\*$/%/;
-
-        push @sqlfrom,  "tit_string";
-        push @sqlwhere, $searchquery_ref->{hststring}{bool}." (tit_string.content like ? and tit_string.category in (0331,0310,0304,0370,0341) and search.verwidn=tit_string.id)";
-        push @sqlargs,  $searchquery_ref->{hststring}{norm};
-    }
-
-    if ($searchquery_ref->{inhalt}{norm}) {
-        push @sqlwhere, $searchquery_ref->{inhalt}{bool}."  match (inhalt) against (? IN BOOLEAN MODE)";
-        push @sqlargs,  $searchquery_ref->{inhalt}{norm};
-    }
-    
-    if ($searchquery_ref->{gtquelle}{norm}) {
-        push @sqlwhere, $searchquery_ref->{gtquelle}{bool}."  match (gtquelle) against (? IN BOOLEAN MODE)";
-        push @sqlargs,  $searchquery_ref->{gtquelle}{norm};
-    }
-  
-    if ($searchquery_ref->{ejahr}{norm}) {
-        push @sqlwhere, $searchquery_ref->{ejahr}{bool}." ejahr ".$searchquery_ref->{ejahr}{arg}." ?";
-        push @sqlargs,  $searchquery_ref->{ejahr}{norm};
-    }
-
-    if ($serien){
-        push @sqlfrom,  "conn";
-        push @sqlwhere, "and (conn.targetid=search.verwidn and conn.targettype=1 and conn.sourcetype=1)";
-    }
+    $request->execute($searchquery->get_sql_queryargs);
 
     my @tempidns=();
-    
-    my $sqlwherestring  = join(" ",@sqlwhere);
-    $sqlwherestring     =~s/^(?:AND|OR|NOT) //;
-    my $sqlfromstring   = join(", ",@sqlfrom);
-
-    if ($offset >= 0){
-        $offset=$offset.",";
-    }
-    
-    my $sqlquerystring  = "select distinct verwidn from $sqlfromstring where $sqlwherestring limit $offset$hitrange";
-
-    $logger->debug("QueryString: ".$sqlquerystring);
-    my $request         = $dbh->prepare($sqlquerystring);
-
-    $request->execute(@sqlargs);
 
     while (my $res=$request->fetchrow_arrayref){
         push @tempidns, $res->[0];
@@ -533,7 +427,7 @@ sub initial_search_for_titidns {
     if ($config->{benchmark}) {
         $btime=new Benchmark;
         $timeall=timediff($btime,$atime);
-        $logger->info("Zeit fuer : initital_search_for_titidns / $sqlquerystring -> ".($#tempidns+1)." : ist ".timestr($timeall));
+        $logger->info("Zeit fuer : initital_search_for_titidns -> ".($#tempidns+1)." : ist ".timestr($timeall));
         undef $atime;
         undef $btime;
         undef $timeall;
@@ -571,59 +465,51 @@ sub initial_search_for_titidns {
     my %schon_da=();
     my $count=0;
     my @tidns=grep {! $schon_da{$_}++ } @tempidns;
-    @tidns=splice(@tidns,0,$hitrange);
+
+    my $recordlist = new OpenBib::RecordList::Title();
+
+    foreach my $id (splice(@tidns,0,$hitrange)){
+        $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $id}));
+    }
     
+    my $fullresultcount = $recordlist->size();
     
-    my $fullresultcount=$#tidns+1;
-    
-    $logger->info("Fulltext-Query: $sqlquerystring");
-  
-    $logger->info("Treffer: ".($#tidns+1)." von ".$fullresultcount);
+    $logger->info("Treffer: ".$recordlist->size()." von ".$fullresultcount);
 
     # Wenn hitrange Treffer gefunden wurden, ist es wahrscheinlich, dass
     # die wirkliche Trefferzahl groesser ist.
     # Diese wird daher getrennt bestimmt, damit sie dem Benutzer als
     # Hilfestellung fuer eine Praezisierung seiner Suchanfrage
     # ausgegeben werden kann
-    if ($#tidns+1 > $hitrange){ # ueberspringen
-    #    if ($#tidns+1 == $hitrange){
+#     if ($#tidns+1 > $hitrange){ # ueberspringen
 
-        if ($config->{benchmark}) {
-            $atime=new Benchmark;
-        }
+#         if ($config->{benchmark}) {
+#             $atime=new Benchmark;
+#         }
         
-        my $sqlresultcount = "select count(verwidn) as resultcount from $sqlfromstring where $sqlwherestring";
-#        my $sqlresultcount = "select verwidn from $sqlfromstring where $sqlwherestring";
-        $request         = $dbh->prepare($sqlresultcount);
+#         my $sqlresultcount = "select count(verwidn) as resultcount from $sqlfromstring where $sqlwherestring";
+#         $request         = $dbh->prepare($sqlresultcount);
         
-        $request->execute(@sqlargs);
+#         $request->execute(@sqlargs);
         
-        my $fullres         = $request->fetchrow_hashref;
-        $fullresultcount = $fullres->{resultcount};
+#         my $fullres         = $request->fetchrow_hashref;
+#         $fullresultcount = $fullres->{resultcount};
 
-#        $fullresultcount = 0;
-
-#        while ($request->fetchrow_array){
-#            $fullresultcount++;
-#        }
         
-        if ($config->{benchmark}) {
-            $btime=new Benchmark;
-            $timeall=timediff($btime,$atime);
-            $logger->info("Zeit fuer : initital_search_for_titidns / $sqlresultcount -> $fullresultcount : ist ".timestr($timeall));
-            undef $atime;
-            undef $btime;
-            undef $timeall;
-        }
+#         if ($config->{benchmark}) {
+#             $btime=new Benchmark;
+#             $timeall=timediff($btime,$atime);
+#             $logger->info("Zeit fuer : initital_search_for_titidns / $sqlresultcount -> $fullresultcount : ist ".timestr($timeall));
+#             undef $atime;
+#             undef $btime;
+#             undef $timeall;
+#         }
         
-    }
+#     }
 
     $request->finish();
     
-    return {
-        fullresultcount => $fullresultcount,
-        titidns_ref     => \@tidns
-    };
+    return ($recordlist,$fullresultcount);
 }
 
 sub get_recent_titids {
@@ -634,6 +520,8 @@ sub get_recent_titids {
         ? $arg_ref->{dbh}                 : undef;
     my $id                     = exists $arg_ref->{id}
         ? $arg_ref->{id}                  : undef;
+    my $database               = exists $arg_ref->{database}
+        ? $arg_ref->{database}            : undef;
     my $limit                  = exists $arg_ref->{limit}
         ? $arg_ref->{limit}               : undef;
 
@@ -641,22 +529,25 @@ sub get_recent_titids {
     my $logger = get_logger();
 
     my $config = OpenBib::Config->instance;
-    
+
+    if (!defined $dbh){
+        # Kein Spooling von DB-Handles!
+        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+            or $logger->error_die($DBI::errstr);
+    }
+
     my $request=$dbh->prepare("select id,content from tit_string where category=2 order by content desc limit $limit");
     $request->execute();
 
-    my @titlist=();
-    
+    my $recordlist = new OpenBib::RecordList::Title();
+
     while (my $res=$request->fetchrow_hashref()){
-        push @titlist, {
-            id   => $res->{id},
-            date => $res->{content},
-        };
+        $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{id}, date => $res->{content}}));
     }
     
     $dbh->disconnect;
 
-    return \@titlist;
+    return $recordlist;
 }
 
 sub get_recent_titids_by_aut {
@@ -667,6 +558,8 @@ sub get_recent_titids_by_aut {
         ? $arg_ref->{dbh}                 : undef;
     my $id                     = exists $arg_ref->{id}
         ? $arg_ref->{id}                  : undef;
+    my $database               = exists $arg_ref->{database}
+        ? $arg_ref->{database}            : undef;
     my $limit                  = exists $arg_ref->{limit}
         ? $arg_ref->{limit}               : undef;
 
@@ -675,21 +568,24 @@ sub get_recent_titids_by_aut {
 
     my $config = OpenBib::Config->instance;
     
+    if (!defined $dbh){
+        # Kein Spooling von DB-Handles!
+        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+            or $logger->error_die($DBI::errstr);
+    }
+
     my $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 2 order by content desc limit $limit");
     $request->execute($id);
 
-    my @titlist=();
-    
+    my $recordlist = new OpenBib::RecordList::Title();
+
     while (my $res=$request->fetchrow_hashref()){
-        push @titlist, {
-            id   => $res->{id},
-            date => $res->{content},
-        };
+        $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{id}, date => $res->{content}}));
     }
     
     $dbh->disconnect;
 
-    return \@titlist;
+    return $recordlist;
 }
 
 sub get_recent_titids_by_kor {
@@ -700,6 +596,8 @@ sub get_recent_titids_by_kor {
         ? $arg_ref->{dbh}                 : undef;
     my $id                     = exists $arg_ref->{id}
         ? $arg_ref->{id}                  : undef;
+    my $database               = exists $arg_ref->{database}
+        ? $arg_ref->{database}            : undef;
     my $limit                  = exists $arg_ref->{limit}
         ? $arg_ref->{limit}               : undef;
 
@@ -708,21 +606,24 @@ sub get_recent_titids_by_kor {
 
     my $config = OpenBib::Config->instance;
     
+    if (!defined $dbh){
+        # Kein Spooling von DB-Handles!
+        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+            or $logger->error_die($DBI::errstr);
+    }
+
     my $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 3 order by content desc limit $limit");
     $request->execute($id);
 
-    my @titlist=();
+    my $recordlist = new OpenBib::RecordList::Title();
     
     while (my $res=$request->fetchrow_hashref()){
-        push @titlist, {
-            id   => $res->{id},
-            date => $res->{content},
-        };
+        $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{id}, date => $res->{content}}));
     }
     
     $dbh->disconnect;
 
-    return \@titlist;
+    return $recordlist;
 }
 
 sub get_recent_titids_by_swt {
@@ -733,6 +634,8 @@ sub get_recent_titids_by_swt {
         ? $arg_ref->{dbh}                 : undef;
     my $id                     = exists $arg_ref->{id}
         ? $arg_ref->{id}                  : undef;
+    my $database               = exists $arg_ref->{database}
+        ? $arg_ref->{database}            : undef;
     my $limit                  = exists $arg_ref->{limit}
         ? $arg_ref->{limit}               : undef;
 
@@ -741,21 +644,24 @@ sub get_recent_titids_by_swt {
 
     my $config = OpenBib::Config->instance;
     
+    if (!defined $dbh){
+        # Kein Spooling von DB-Handles!
+        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+            or $logger->error_die($DBI::errstr);
+    }
+
     my $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 4 order by content desc limit $limit");
     $request->execute($id);
 
-    my @titlist=();
+    my $recordlist = new OpenBib::RecordList::Title();
     
     while (my $res=$request->fetchrow_hashref()){
-        push @titlist, {
-            id   => $res->{id},
-            date => $res->{content},
-        };
+        $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{id}, date => $res->{content}}));
     }
     
     $dbh->disconnect;
 
-    return \@titlist;
+    return $recordlist;
 }
 
 sub get_recent_titids_by_not {
@@ -766,6 +672,8 @@ sub get_recent_titids_by_not {
         ? $arg_ref->{dbh}                 : undef;
     my $id                     = exists $arg_ref->{id}
         ? $arg_ref->{id}                  : undef;
+    my $database               = exists $arg_ref->{database}
+        ? $arg_ref->{database}            : undef;
     my $limit                  = exists $arg_ref->{limit}
         ? $arg_ref->{limit}               : undef;
 
@@ -774,21 +682,24 @@ sub get_recent_titids_by_not {
 
     my $config = OpenBib::Config->instance;
     
+    if (!defined $dbh){
+        # Kein Spooling von DB-Handles!
+        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+            or $logger->error_die($DBI::errstr);
+    }
+
     my $request=$dbh->prepare("select tit_string.id as id,tit_string.content as content from tit_string,conn where conn.targetid = ? and tit_string.category=2 and tit_string.id=conn.sourceid and conn.sourcetype = 1 and conn.targettype = 5 order by content desc limit $limit");
     $request->execute($id);
 
-    my @titlist=();
-    
+    my $recordlist = new OpenBib::RecordList::Title();
+
     while (my $res=$request->fetchrow_hashref()){
-        push @titlist, {
-            id   => $res->{id},
-            date => $res->{content},
-        };
+        $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{id}, date => $res->{content}}));
     }
     
     $dbh->disconnect;
 
-    return \@titlist;
+    return $recordlist;
 }
 
 1;

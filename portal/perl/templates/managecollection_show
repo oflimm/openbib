@@ -99,8 +99,8 @@ M&ouml;chten Sie eine neue <select name="littype"><option value="1">&ouml;ffentl
 <p />
 	  <table width="100%">
             <tr class="titlerow"><td><input type="checkbox" name="collection" value="select" onclick="update_collection(this.form, this.checked,'collection_item')" /></td><td><b>Alle Eintr&auml;ge ausw&auml;hlen</b></td></tr>
-[%- FOREACH titset IN collection -%]
-  [%- PROCESS common/subtemplate name="managecollection_tit_as_html" database="${titset.database}" show_bibsonomy=1 -%]
+[%- FOREACH record IN recordlist.get_records -%]
+  [%- PROCESS common/subtemplate name="managecollection_tit_as_html" database="${record.database}" show_bibsonomy=1 -%]
 [%- END -%]
 	  </table>
 

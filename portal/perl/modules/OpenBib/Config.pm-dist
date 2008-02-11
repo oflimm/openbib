@@ -36,6 +36,8 @@ use Apache::Reload;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 
+use OpenBib::Database::DBI;
+
 use vars qw(%config);
   
 %config = (

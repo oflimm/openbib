@@ -415,11 +415,11 @@ use vars qw(%config);
                 '3007' => 1, # Unbekannt (Standort?)
                 '3750' => 1, # Nicht mehr existent
                 '4711' => 1, # Unbekannt
-                '4712' => 1, # Markierung Econbiz (wi, so, wiso)
-                '4715' => 1, # Markierung EDZ
-                '4717' => 1, # Markierung Fachbibliothek Versicherungswissenschaft
-                '4720' => 1, # Testdaten Inhaltsverzeichnis-Scans
-                '4725' => 1, # Temporaeres Schlagwort
+                #'4712' => 1, # Markierung Econbiz (wi, so, wiso)
+                #'4715' => 1, # Markierung EDZ
+                #'4717' => 1, # Markierung Fachbibliothek Versicherungswissenschaft
+                #'4720' => 1, # Testdaten Inhaltsverzeichnis-Scans
+                #'4725' => 1, # Temporaeres Schlagwort
                 #    '0800' => 1, # Medianart (TODO: spaeter pro Pool Listen konfigurierbar machen)
                 #    '1600' => 1, # Hinweis auf Pseudo-Orte (TODO: Zweigstellen, Lesesaaltheke etc.)
                 #    '1673' => 1, # Veranstaltungsort (TODO)

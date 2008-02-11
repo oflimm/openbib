@@ -38,6 +38,7 @@ use Storable;
 use YAML;
 
 use OpenBib::Config;
+use OpenBib::Database::DBI;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;

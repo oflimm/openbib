@@ -39,6 +39,7 @@ use Storable;
 use YAML;
 
 use OpenBib::Config;
+use OpenBib::Database::DBI;
 use OpenBib::Session;
 
 sub _new_instance {

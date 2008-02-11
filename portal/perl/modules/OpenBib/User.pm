@@ -38,6 +38,7 @@ use YAML;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::Database::DBI;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
 

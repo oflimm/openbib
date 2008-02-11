@@ -353,7 +353,7 @@ autoconv-sikis.pl - Automatische Konvertierung von SIKIS-Daten
    Optionen:
    -help                 : Diese Informationsseite
        
-   -get-from-remote      : Hole Pool automatisch ueber das Netz
+   -sync                 : Hole Pool automatisch ueber das Netz
    --single-pool=...     : Angegebenen Datenpool verwenden
 
    Datenbankabhaengige Filter:

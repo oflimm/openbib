@@ -358,6 +358,22 @@ sub get_records {
     return @{$self->{recordlist}};
 }
 
+sub get_titlecount_per_db {
+    my ($self) = @_;
+
+    my $count_per_db_ref = {};
+    foreach my $record ($self->get_records) {
+        if (!exists $count_per_db_ref->{$record->{database}}){
+            $count_per_db_ref->{$record->{database}}=1;
+        }
+        else {
+            $count_per_db_ref->{$record->{database}}++;
+        }
+    }
+    
+    return $count_per_db_ref;
+}
+
 sub _by_yearofpub {
     my %line1=%$a;
     my %line2=%$b;

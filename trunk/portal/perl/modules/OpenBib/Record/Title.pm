@@ -428,6 +428,44 @@ sub get_full_record {
                 }
 
                 $self->{_same_records} = $same_recordlist;
+
+                # Anreicherung mit 'aehnlichen' (=andere Auflage, Sprache) Titeln aus allen Katalogen
+                my $similar_recordlist = new OpenBib::RecordList::Title();
+                
+                $reqstring="select isbn from similar_isbn where match (isbn) against (?)";
+                $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
+                $request->execute($isbn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+                
+                my $similar_isbn_ref = {};
+                while (my $res=$request->fetchrow_hashref) {
+                    my $similarisbnstring = $res->{isbn};
+                    foreach my $similarisbn (split(':',$similarisbnstring)){
+                        $similar_isbn_ref->{$similarisbn}=1 if ($similarisbn ne $isbn);
+                    }
+                }
+
+                my @similar_args = keys %$similar_isbn_ref;
+                
+                my $in_select_string = join(',',map {'?'} @similar_args);
+
+                $logger->debug("InSelect $in_select_string");
+                
+                $reqstring="select distinct id,dbname from all_isbn where isbn in ($in_select_string) order by dbname";
+
+                $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
+                $request->execute(@similar_args) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+
+                while (my $res=$request->fetchrow_hashref) {
+                    my $id         = $res->{id};
+                    my $database   = $res->{dbname};
+
+                    $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
+                }
+
+                $similar_recordlist->get_brief_records;
+                
+                $self->{_similar_records} = $similar_recordlist;
+
                 $request->finish();
                 $logger->debug("Enrich: $isbn -> $reqstring");
             }
@@ -438,7 +476,7 @@ sub get_full_record {
         if ($config->{benchmark}) {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
-            $logger->info("Zeit fuer : Bestimmung von Enrich-Normdateninformationen ist ".timestr($timeall));
+            $logger->info("Zeit fuer : Bestimmung von Enrich-Informationen ist ".timestr($timeall));
             undef $atime;
             undef $btime;
             undef $timeall;
@@ -829,6 +867,12 @@ sub get_same_records {
     my ($self)=@_;
 
     return $self->{_same_records}
+}
+
+sub get_similar_records {
+    my ($self)=@_;
+
+    return $self->{_similar_records}
 }
 
 sub get_brief_normdata {

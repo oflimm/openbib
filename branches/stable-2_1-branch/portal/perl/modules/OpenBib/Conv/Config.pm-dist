@@ -266,7 +266,6 @@ use vars qw(%config);
                 '0341' => 1,    # PSTVorlage
                 '0361' => 1,    # Vorlage beigefuegtes Werk
                 '0370' => 1,    # WST
-                '0412' => 1,    # Verlag
             },
                             
             search_isbn => {

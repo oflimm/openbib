@@ -60,6 +60,11 @@ else {
 my $maxidns=0;
 my $allidns=0;
 
+# Verbindung zur SQL-Datenbank herstellen
+my $configdbh
+    = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
+    or $logger->error_die($DBI::errstr);
+
 foreach $database (@databases){
   my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or die "could not connect";
     
@@ -74,11 +79,11 @@ foreach $database (@databases){
 
   $allidns=$allidns+$maxidns;
 
-  $idnresult=$config->{dbh}->prepare("delete from titcount where dbname=?") or die "Error -- $DBI::errstr";
+  $idnresult=$configdbh->prepare("delete from titcount where dbname=?") or die "Error -- $DBI::errstr";
 
   $idnresult->execute($database);
   
-  $idnresult=$config->{dbh}->prepare("insert into titcount values (?,?)") or die "Error -- $DBI::errstr";
+  $idnresult=$configdbh->prepare("insert into titcount values (?,?)") or die "Error -- $DBI::errstr";
   $idnresult->execute($database,$maxidns);
   
   print "$database -> $maxidns\n";
@@ -90,11 +95,12 @@ foreach $database (@databases){
 if ($singlepool eq ""){
   my $notexist=0;
   
-  $idnresult=$config->{dbh}->prepare("delete from titcount where dbname='alldbs'") or die "Error -- $DBI::errstr";
+  $idnresult=$configdbh->prepare("delete from titcount where dbname='alldbs'") or die "Error -- $DBI::errstr";
   $idnresult->execute();
   
-  $idnresult=$config->{dbh}->prepare("insert into titcount values ('alldbs',?)") or die "Error -- $DBI::errstr";
+  $idnresult=$configdbh->prepare("insert into titcount values ('alldbs',?)") or die "Error -- $DBI::errstr";
   $idnresult->execute($allidns);
 }
 
+$configdbh->disconnect();
 

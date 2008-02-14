@@ -1146,6 +1146,39 @@ sub get_rssfeedinfo  {
     return $rssfeedinfo_ref;
 }
 
+sub update_rsscache {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $database               = exists $arg_ref->{database}
+        ? $arg_ref->{database}        : undef;
+    my $type                   = exists $arg_ref->{type}
+        ? $arg_ref->{type}            : undef;
+    my $subtype                = exists $arg_ref->{subtype}
+        ? $arg_ref->{subtype}         : undef;
+    my $rssfeed                = exists $arg_ref->{rssfeed}
+        ? $arg_ref->{rssfeed}         : undef;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config{dbimodule}:dbname=$config{configdbname};host=$config{configdbhost};port=$config{configdbport}", $config{configdbuser}, $config{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+    
+    # Etwaig vorhandenen Eintrag loeschen
+    my $request=$dbh->prepare("delete from rsscache where dbname=? and type=? and subtype = ?");
+    $request->execute($database,$type,$subtype);
+    
+    $request=$dbh->prepare("insert into rsscache values (?,NULL,?,?,?)");
+    $request->execute($database,$type,$subtype,$rssfeed);
+    
+    $request->finish();
+
+    return $self;
+}
+
 sub get_dbinfo {
     my $self   = shift;
     my $dbname = shift;

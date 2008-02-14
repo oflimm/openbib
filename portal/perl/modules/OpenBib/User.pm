@@ -667,9 +667,8 @@ sub get_titles_of_tag {
     # Bestimmung der Titel
     $sqlrequest="select distinct titid,titdb from tittag where tagid=?";
     @sqlargs = ();
+    push @sqlargs, $tagid;
     
-    $sqlrequest="select distinct titid,titdb from tittag where tagid=? and loginname=? $limits";
-
     if ($loginname) {
         $sqlrequest.=" and loginname=?";
         push @sqlargs, $loginname;
@@ -685,10 +684,12 @@ sub get_titles_of_tag {
     $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $request->execute(@sqlargs);
     
-    
     while (my $res=$request->fetchrow_hashref){
         $recordlist->add(new OpenBib::Record::Title({database => $res->{titdb} , id => $res->{titid}}));
     }
+
+    $recordlist->get_brief_records;
+    
     $request->finish();
     
     return ($recordlist,$hits);

@@ -1928,9 +1928,6 @@ sub get_litlistentries {
 
     my $litlistitems_ref = [];
 
-    my $targetdbinfo_ref
-        = $config->get_targetdbinfo();
-
     while (my $result=$request->fetchrow_hashref){
       my $titelidn  = decode_utf8($result->{titid});
       my $database  = decode_utf8($result->{titdb});
@@ -1942,11 +1939,7 @@ sub get_litlistentries {
 	
       push @$litlistitems_ref, {            
 				id        => $titelidn,
-				title     => OpenBib::Search::Util::get_tit_listitem_by_idn({
-                    titidn            => $titelidn,
-                    dbh               => $dbh,
-                    database          => $database,
-											    }),
+				title     => OpenBib::Record::Title->new({id =>$titelidn, database => $database})->get_brief_record->get_brief_normdata,
 				tstamp    => $tstamp,
 			       };
       $dbh->disconnect();
@@ -2869,7 +2862,7 @@ sub get_mask {
 
     $userresult->finish();
 
-    return $masktype;
+    return ($masktype)?$masktype:'simple';
 }
 
 sub set_mask {

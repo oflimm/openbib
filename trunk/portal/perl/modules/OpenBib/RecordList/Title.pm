@@ -42,6 +42,7 @@ use SOAP::Lite;
 use Storable;
 use YAML ();
 
+use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
 
@@ -220,10 +221,8 @@ sub print_to_handler {
     my $session      = OpenBib::Session->instance;
     my $queryoptions = OpenBib::QueryOptions->instance;
 
-    my $query  = Apache::Request->instance($r);
-
-    my $targetdbinfo_ref
-        = $config->get_targetdbinfo();
+    my $query       = Apache::Request->instance($r);
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     if ($self->size() == 0) {
         OpenBib::Common::Util::print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"),$r,$msg);
@@ -302,7 +301,7 @@ sub print_to_handler {
             
             hits           => $hits,
             
-            targetdbinfo   => $targetdbinfo_ref,
+            targetdbinfo   => $dbinfotable,
             itemlist       => \@itemlist,
             recordlist     => $self,
             

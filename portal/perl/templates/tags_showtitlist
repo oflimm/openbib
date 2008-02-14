@@ -89,8 +89,8 @@
 [% END %]
 
 [% listrow = 'listrow1' %]
-[% FOREACH item IN itemlist %]
-
+[% FOREACH record IN recordlist.get_records %]
+[%- item = record.get_brief_normdata -%]
 [%# Verfasser konstruieren %]
 [%- persons = [] -%]
 [%- FOREACH part IN item.${'P0100'}  -%]

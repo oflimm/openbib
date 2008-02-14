@@ -38,6 +38,7 @@ use Storable;
 use YAML;
 
 use OpenBib::Config;
+use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Database::DBI;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Title;
@@ -369,7 +370,7 @@ sub get_mask {
     my $setmask = decode_utf8($result->{'masktype'});
     
     $idnresult->finish();
-    return $setmask;
+    return ($setmask)?$setmask:'simple';
 }
 
 sub set_mask {
@@ -1254,10 +1255,8 @@ sub get_db_histogram_of_query {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;    
-
-    my $targetdbinfo_ref
-        = $config->get_targetdbinfo();
+    my $config      = OpenBib::Config->instance;    
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
@@ -1273,7 +1272,7 @@ sub get_db_histogram_of_query {
     while (my $res=$idnresult->fetchrow_hashref) {
         push @resultdbs, {
             trefferdb     => decode_utf8($res->{dbname}),
-            trefferdbdesc => $targetdbinfo_ref->{dbnames}{decode_utf8($res->{dbname})},
+            trefferdbdesc => $dbinfotable->{dbnames}{decode_utf8($res->{dbname})},
             trefferzahl   => decode_utf8($res->{hitcount}),
         };
         

@@ -257,8 +257,6 @@ sub print_to_handler {
         
         $self->sort({order=>$sortorder,type=>$sorttype});
         
-        my @itemlist=@{$self->{recordlist}};
-        
         # Navigationselemente erzeugen
         my %args=$r->args;
         delete $args{offset};
@@ -302,7 +300,7 @@ sub print_to_handler {
             hits           => $hits,
             
             targetdbinfo   => $dbinfotable,
-            itemlist       => \@itemlist,
+
             recordlist     => $self,
             
             baseurl        => $baseurl,

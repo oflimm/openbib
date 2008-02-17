@@ -1,7 +1,53 @@
-# Versionsnummer
+#        Versionsnummer
 version: OpenBib v2.2
-# Unter diesem Namen wird der lokale Server angesprochen
+#        Unter diesem Namen wird der lokale Server angesprochen
 servername: server.openbib.org
+#        Unter diesem Name wird der Servers, der die Lastverteilung
+#        vornimmt, angesprochen
+loadbalancer_loc: /portal/lastverteilung
+loadbalancerservername: loadbalancer.openbib.org
+# Auf folgende Server werden die Benutzer verteilt
+loadbalancertargets:
+  - target1.openbib.org
+  - target2.openbib.org
+#        Name des Datenbanksystems und des verwendeten DBI/DBD-Moduls
+dbms: mysql
+dbimodule: mysql
+#       Einstellungen fuer den Zugriff auf die Katalog-Datenbanken
+dbhost: localhost
+dbport: 3306
+dbuser: root
+dbpasswd: StrengGeheim
+#       Einstellungen fuer den Zugriff auf die Session-Datenbank
+sessiondbhost: localhost
+sessiondbport: 3306
+sessiondbname: session
+sessiondbuser: root
+sessiondbpasswd: StrengGeheim
+#       Einstellungen fuer den Zugriff auf die Config-Datenbank
+configdbhost: localhost
+configdbport: 3306
+configdbname: config
+configdbuser: root
+configdbpasswd: StrengGeheim
+#       Einstellungen fuer den Zugriff auf die UserProfile-Datenbank
+userdbhost: localhost
+userdbport: 3306
+userdbname: kuguser
+userdbuser: root
+userdbpasswd: StrengGeheim
+#       Einstellungen fuer den Zugriff auf die Enrichmnt-Datenbank
+enrichmntdbhost: localhost
+enrichmntdbport: 3306
+enrichmntdbname: enrichmnt
+enrichmntdbuser: root
+enrichmntdbpasswd: StrengGeheim
+#       Einstellungen fuer den Zugriff auf die Statistik-Datenbank
+statisticsdbhost: localhost
+statisticsdbport: 3306
+statisticsdbname: statistics
+statisticsdbuser: root
+statisticsdbpasswd: StrengGeheim
 
 admin_email: admin@openbib.org
 admin_loc: /portal/admin
@@ -93,11 +139,6 @@ categorymapping:
   richter:
     T0501: 1
 circulation_loc: /portal/benutzerkonto
-configdbhost: localhost
-configdbname: config
-configdbpasswd: StrengGeheim
-configdbport: 3306
-configdbuser: root
 connector_bibmanager_loc: /portal/connector/literaturverwaltung
 connector_digibib_loc: /portal/connector/digibib
 connector_olws_loc: /portal/connector/olws
@@ -112,13 +153,7 @@ databasechoice_loc: /portal/katalogauswahl
 databasechoice_maxcolumn: 3
 databaseprofile_loc: /portal/katalogprofile
 dbdesc_dir: /opt/openbib/db
-dbhost: localhost
-dbimodule: mysql
 dbis_exturl: http://www.bibliothek.uni-regensburg.de/dbinfo/?bib_id=usb_k
-dbms: mysql
-dbpasswd: StrengGeheim
-dbport: 3306
-dbuser: root
 dispatchquery_loc: /portal/anfrageverteilen
 document_root_path: /var/www
 drilldown: 1
@@ -132,11 +167,6 @@ drilldown_option:
   categorized_year: 1
   cloud: 1
   cloud_min: 6
-enrichmntdbhost: localhost
-enrichmntdbname: enrichmnt
-enrichmntdbpasswd: StrengGeheim
-enrichmntdbport: 3306
-enrichmntdbuser: root
 externaljump_loc: /portal/externersprung
 ezb_exturl: http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?bibid=USBK&colors=7&lang=de&jq_type1=IS&jq_bool2=AND&jq_not2=+&jq_type2=KT&jq_bool3=AND&jq_not3=+&jq_type3=PU&jq_term3=&offset=-1&hits_per_page=50&search_journal=Suche+starten&Notations%5B%5D=all&selected_colors%5B%5D=1&selected_colors%5B%5D=2&selected_colors%5B%5D=4
 hbzmonofernleih_exturl: http://www.digibib.net/Digibib?SERVICE=TEMPLATE&SUBSERVICE=JUMPTO&DEST_SERVICE=TEMPLATE&DEST_SUBSERVICE=ILL_FRAME&DEST_MAINFRAMESUBSERVICE=MSEARCH_ILLSEARCH_MONO&LOCATION=038
@@ -154,11 +184,6 @@ distadmin:
 leave_loc: /portal/beenden
 litlists: 1
 litlists_loc: /portal/literaturlisten
-loadbalancer_loc: /portal/lastverteilung
-loadbalancerservername: loadbalancer.openbib.org
-loadbalancertargets:
-  - target1.openbib.org
-  - target2.openbib.org
 locale_base_path: /opt/openbib/locales
 log4perl_path: /opt/openbib/conf/portal.log4perl
 login_active: 1
@@ -208,18 +233,8 @@ search_loc: /portal/recherche
 searchmask_loc: /portal/eingabe
 selfreg_loc: /portal/selbstregistrierung
 serverload_loc: /portal/getload
-sessiondbhost: localhost
-sessiondbname: session
-sessiondbpasswd: StrengGeheim
-sessiondbport: 3306
-sessiondbuser: root
 social_tagging: 1
 startopac_loc: /portal/opac
-statisticsdbhost: localhost
-statisticsdbname: statistics
-statisticsdbpasswd: StrengGeheim
-statisticsdbport: 3306
-statisticsdbuser: root
 stopword_filename: /opt/openbib/ft/stopwords.txt
 tags_loc: /portal/tags
 testsystem: 0
@@ -367,11 +382,6 @@ unAPI: 1
 unAPI_formats:
   bibtex: 1
 use_titlistitem_table: 1
-userdbhost: localhost
-userdbname: kuguser
-userdbpasswd: StrengGeheim
-userdbport: 3306
-userdbuser: root
 userprefs_loc: /portal/benutzereinstellungen
 userreviews_loc: /portal/benutzerbewertungen
 virtualsearch_loc: /portal/virtuellerecherche

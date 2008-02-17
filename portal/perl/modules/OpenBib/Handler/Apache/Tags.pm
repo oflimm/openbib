@@ -248,7 +248,7 @@ sub handler {
     }
     
     if ($searchtitoftag) {
-        my $recordlist;
+        my $recordlist = new OpenBib::RecordList::Title;
 
         my $hits      = 0;
 

@@ -99,6 +99,9 @@ sub handler {
     my $do_showcat      = $query->param('do_showcat')      || '';
     my $do_editcat      = $query->param('do_editcat')      || '';
     my $do_editcat_rss  = $query->param('do_editcat_rss')  || '';
+    my $do_showprofile  = $query->param('do_showprofile')  || '';
+    my $do_saveprofile  = $query->param('do_saveprofile')  || '';
+    my $do_delprofile   = $query->param('do_delprofile')  || '';
     my $do_showviews    = $query->param('do_showviews')    || '';
     my $do_editview     = $query->param('do_editview')     || '';
     my $do_editview_rss = $query->param('do_editview_rss') || '';
@@ -132,6 +135,11 @@ sub handler {
 
     my $viewname        = $query->param('viewname')        || '';
     my @viewdb          = ($query->param('viewdb'))?$query->param('viewdb'):();
+
+    # Profile
+    my @databases       = ($query->param('database'))?$query->param('database'):();
+    my $newprofile      = $query->param('newprofile') || '';
+    my $profilid        = $query->param('profilid')   || '';
 
     # dboptions
     my $host            = $query->param('host')            || '';
@@ -488,6 +496,99 @@ sub handler {
         };
     
         OpenBib::Common::Util::print_page($config->{tt_admin_showcat_tname},$ttdata,$r);
+    }
+    elsif ($do_showprofile) {
+        my $profilname="";
+
+        my $checkeddb_ref={};
+        
+        if ($profilid) {
+            # Zuerst Profil-Description zur ID holen
+            $profilname = $config->get_profilename_of_profileid($profilid);
+
+            foreach my $dbname ($config->get_profiledbs_of_profileid($profilid)){
+                $checkeddb_ref->{$dbname}=1;
+            }
+        }
+    
+        my @userdbprofiles = $user->get_all_profiles;
+        my $targettype     = $user->get_targettype_of_session($session->{ID});
+
+        my $maxcolumn      = $config->{databasechoice_maxcolumn};
+        my @catdb          = $config->get_infomatrix_of_active_databases({session => $session, checkeddb_ref => $checkeddb_ref});
+
+        # TT-Data erzeugen
+        my $colspan=$maxcolumn*3;
+    
+        my $ttdata={
+            view           => $viewname,
+            stylesheet     => $stylesheet,
+            sessionID      => $session->{ID},
+            targettype     => $targettype,
+            profilname     => $profilname,
+            userdbprofiles => \@userdbprofiles,
+            maxcolumn      => $maxcolumn,
+            colspan        => $colspan,
+            catdb          => \@catdb,
+            config         => $config,
+            msg            => $msg,
+        };
+    
+        OpenBib::Common::Util::print_page($config->{tt_databaseprofile_tname},$ttdata,$r);
+        return OK;
+    }
+
+    #####################################################################   
+    # Abspeichern eines Profils
+    #####################################################################   
+
+    elsif ($do_saveprofile) {
+    
+        # Wurde ueberhaupt ein Profilname eingegeben?
+        if (!$newprofile) {
+            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keinen Profilnamen eingegeben!"),$r,$msg);
+            return OK;
+        }
+
+        my $profilid = $user->dbprofile_exists($newprofile);
+
+        # Wenn noch keine Profilid (=kein Profil diesen Namens)
+        # existiert, dann wird eins erzeugt.
+        unless ($profilid) {
+            $profilid = $user->new_dbprofile($newprofile);
+        }
+    
+        # Jetzt habe ich eine profilid und kann Eintragen
+        # Auswahl wird immer durch aktuelle ueberschrieben.
+        # Daher erst potentiell loeschen
+        $user->delete_profiledbs($profilid);
+    
+        foreach my $database (@databases) {
+            # ... und dann eintragen
+            $user->add_profiledb($profilid,$database);
+        }
+        $r->internal_redirect("http://$config->{servername}$config->{databaseprofile_loc}?sessionID=$session->{ID}&do_showprofile=1");
+    }
+    # Loeschen eines Profils
+    elsif ($do_delprofile) {
+        $user->delete_dbprofile($profilid);
+        $user->delete_profiledbs($profilid);
+
+        $r->internal_redirect("http://$config->{servername}$config->{databaseprofile_loc}?sessionID=$session->{ID}&do_showprofile=1");
+    }
+    elsif ($do_showprofile) {
+        my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+
+        my $ttdata={
+            stylesheet  => $stylesheet,
+            sessionID   => $session->{ID},
+            dbinfotable => $dbinfotable,
+
+            config      => $config,
+            msg         => $msg,
+        };
+    
+        OpenBib::Common::Util::print_page($config->{tt_admin_databaseprofile_tname},$ttdata,$r);
     }
     elsif ($do_showviews) {
         my $viewinfo_ref = $config->get_viewinfo_overview();

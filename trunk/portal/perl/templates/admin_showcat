@@ -24,6 +24,7 @@
 
 <ul class="tabbingmenu">
    <li><a class="active" href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">[% msg.maketext("Kataloge") %]</a></li>
+   <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showprofile=1">Profile</a></li>
    <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">[% msg.maketext("Views") %]</a></li>
    <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">[% msg.maketext("Sessions") %]</a></li>
    <li><a                href="http://[% config.servername %][% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1">[% msg.maketext("Statistik") %]</a></li>

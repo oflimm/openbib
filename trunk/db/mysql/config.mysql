@@ -48,6 +48,26 @@ DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 ;
 
+DROP TABLE IF EXISTS dbprofile;
+CREATE TABLE dbprofile (
+ profilid    BIGINT AUTO_INCREMENT PRIMARY KEY,
+ profilename TEXT,
+ INDEX (profilid)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+DROP TABLE IF EXISTS profiledb;
+CREATE TABLE profiledb (
+ profilid BIGINT NOT NULL,
+ dbname   TEXT,
+ INDEX (profilid)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
 drop table IF EXISTS titcount;
 create table titcount (
  dbname VARCHAR(255),

@@ -50,22 +50,22 @@
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.2.4&nbsp;&nbsp;&nbsp;<a href="#indexsuche">Such-Index</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.2.5&nbsp;&nbsp;&nbsp;<a href="#beispiele">Beispiele</a></td></tr>
          <tr><td align="right">3</td><td><a href="#allghinweisesuche">Weitere allgemeine Hinweise zur Suchanfrage</a></td></tr>
-         <tr><td align="right">4</td><td><a href="#perskug">Mein KUG</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/anmeldung.html" target="tutorial">[zum Tutorial]</a></td></tr>
-         <tr><td align="right">5</td><td><a href="#buchstandort">Standort des Buches</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/standortsuche.html" target="tutorial">[zum Tutorial]</td></tr>
-         <tr><td align="right">6</td><td><a href="#treffermerkliste">Treffer- und Merkliste</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/merkliste.html" target="tutorial">[zum Tutorial]</a></td></tr>
+         <tr><td align="right">4</td><td><a href="#perskug">Mein KUG</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/meinkuganmelden.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>
+         <tr><td align="right">5</td><td><a href="#buchstandort">Standort des Buches</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/standortsuche.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></td></tr>
+         <tr><td align="right">6</td><td><a href="#treffermerkliste">Treffer- und Merkliste</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/merkliste.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>
 
-         <tr><td align="right">7</td><td><a href="#externesuche">Sprung in externe Recherchequellen</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/externerecherche.html" target="tutorial">[zum Tutorial]</a></td></tr>
+         <tr><td align="right">7</td><td><a href="#externesuche">Sprung in externe Recherchequellen</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/externerecherche.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>
          <tr><td align="right">8</td><td><a href="#enrichment">Ergebnisanreicherung</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;8.1&nbsp;<a href="#enrichtoc">Digitalisierte Inhaltsverzeichnisse</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/inhaltsverz.html" target="tutorial">[zum Tutorial]</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;8.1&nbsp;<a href="#enrichtoc">Digitalisierte Inhaltsverzeichnisse</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/inhaltsverz.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;8.2&nbsp;<a href="#enrichrelevance">Weitere potentiell interessante Titel (Recommender-Funktion)</a></td></tr>
          <tr><td align="right">9</td><td><a href="#popularity">Popularit&auml;ts-Funktionen</a></td></tr>
 
-         <tr><td align="right">10</td><td><a href="#rssfeeds">RSS-Feeds (abonnierbare Informations-Kan&auml;le)</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/rss.html" target="tutorial">[zum Tutorial]</a></td></tr>
+         <tr><td align="right">10</td><td><a href="#rssfeeds">RSS-Feeds (abonnierbare Informations-Kan&auml;le)</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/rss.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;10.1&nbsp;<a href="#rssarten">Angebotene Arten an RSS-Feeds</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;10.2&nbsp;<a href="#rssinstall">Beispiel: Installation von Feedview f&uuml;r den Browser Firefox</a></td></tr>
          <tr><td align="right">11</td><td><a href="#mashups">Mashups mit Sozialer Software</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.1&nbsp;<a href="#bibsonomy">Integration von BibSonomy</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/bibsonomy.html" target="tutorial">[zum Tutorial]</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.2&nbsp;<a href="#wikipedia">Integration der Wikipedia <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/w.html" target="tutorial">[zum Tutorial]</a></a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.1&nbsp;<a href="#bibsonomy">Integration von BibSonomy</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/bibsonomy.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.2&nbsp;<a href="#wikipedia">Integration der Wikipedia</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/w.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>
 
          <tr><td align="right">12</td><td><a href="#uebersichten">&Uuml;bersichten</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;12.1&nbsp;<a href="#wolken">Wolken</a></td></tr>
@@ -481,8 +481,8 @@ Sie <b>anonym</b> in dieser Sitzung gesammelt haben, erhalten. Sie werden Ihnen 
 die <b>persönliche</b> Liste übertragen.</li>
 
 <li>Sie können jeden Titel in den Katalogen <b>taggen</b> <a
-class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/taggen.html"
-target="tutorial">[zum Tutorial]</a>, d.h. mit einem eigenen Etikett
+class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/meinkugtaggen.html"
+target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a>, d.h. mit einem eigenen Etikett
 (= Schlagwort/Tag) versehen. Diese Tags sind einzelne Worte, die Sie
 mit Leerzeichen getrennt eingeben müssen. Zur Vereinheitlichung der
 Tags werden sie automatisch normiert - d.h. Umlaute werden aufgelöst,
@@ -496,13 +496,15 @@ Kurztitel-Liste aller Titel, die sie mit dem jeweiligen Tag versehen
 haben.</li>
 
 <li>Wenn Sie sich mit Ihrem USB-Ausweis anmelden, können Sie aus dem KUG heraus
-eine Fernleihe  <a class="tutorial"
+eine <b>Fernleihe</b>  <a class="tutorial"
 href="http://kug.ub.uni-koeln.de/tutorials/fernleihe.html"
-target="tutorial">[zum Tutorial]</a> starten, ohne sich zuvor nochmals authentifizieren zu müssen.</li>
+target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a> starten, ohne sich zuvor nochmals authentifizieren zu müssen.</li>
 
 <li>Beim Einloggen mit Ihrem Bibliotheksausweis erhalten Sie sofort einen
 Überblick über Ihre Personendaten und Ausleihinformationen. (Rubik
-<b>Grundeinstellungen</b>). Stimmt Ihre Adresse noch? Sind Sie gesperrt? Wieviel
+<b>Grundeinstellungen</b> <a
+class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/meinkuggrundeinstellungen.html"
+target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a>). Stimmt Ihre Adresse noch? Sind Sie gesperrt? Wieviel
 Bücher haben Sie ausgeliehen, vorgemerkt, bestellt oder überzogen? Müssen Sie
 Gebühren bezahlen? Welche Recherchemaske möchten Sie bei Ihrer Suche
 standardmäßig verwenden, welche Suchfelder? Bei Unstimmigkeiten in den
@@ -515,7 +517,9 @@ Gebühren. Ihre Medien verlängern oder eine Vormerkung stornieren können Sie h
 jedoch nicht. Wechseln Sie dazu in den Katalog der betreffenden
 Bibliothek.</li>
 
-<li>Unter der Rubrik <b>Katalogprofile</b> können Sie sich beliebige Kataloge
+<li>Unter der Rubrik <b>Katalogprofile</b> <a
+class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/meinkugkatalogprofil.html"
+target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a>können Sie sich beliebige Kataloge
 zusammenstellen und unter einem Namen abspeichern. In der Komplexen Recherche greifen
 Sie unter <b>Profil</b> auf sie zurück. Möchten Sie sie
 ändern bzw. löschen, wählen Sie Ihr Profil aus der Select-Box (Rubrik
@@ -638,7 +642,7 @@ Popularit&auml;ts-Funktionen an. Es sind dies
 
 <ul>
 <li><b>Top 20</b> Pro Katalog lassen sich die 20 meist aufgerufenen
-Titel unter dem Reiter <a href="#sichten">&Uuml;bersichten</a> anzeigen. <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/top20.html" target="tutorial">[zum Tutorial]</a></li>
+Titel unter dem Reiter <a href="#sichten">&Uuml;bersichten</a> anzeigen. <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/top20.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></li>
 <li><b>Sortierung nach Popularit&auml;t</b> In jeder Titel-Liste
 lassen sich die Titel nach Popularit&auml;t - entsprechend der
 konkreten Aufrufe - (sinnvollerweise absteigend) sortieren. Die Popularit&auml;t eines Titels finden
@@ -818,17 +822,20 @@ Im KUG werden derzeit folgende Arten von RSS-Feeds angeboten:
      Funktionselemente verwendet. Es sind dies:
     </p>
     <table>
-     <tr><td align="center"><img src="/images/openbib/3d-file-blue-clipboard.png" alt="In die Merkliste" border="0" /></td><td>Titel in die Merkliste eintragen <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/merkliste.html" target="tutorial">[zum Tutorial]</a></td></tr>
+     <tr><td align="center"><img src="/images/openbib/3d-file-blue-clipboard.png" alt="In die Merkliste" border="0" /></td><td>Titel in die Merkliste eintragen <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/merkliste.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>
 
-     <tr><td align="center"><img src="/images/openbib/3d-file-blue-mailbox.png" alt="Als Mail verschicken" border="0" /></td><td>Titel(liste) als Mail verschicken <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/speichern.html" target="tutorial">[zum Tutorial]</a></td></tr>
-     <tr><td align="center"><img src="/images/openbib/3d-file-blue-disk35.png" alt="Abspeichern" border="0" /></td><td>Titel(liste) abspeichern <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/speichern.html" target="tutorial">[zum Tutorial]</a></td></tr>   
-     <tr><td align="center"><img src="/images/openbib/3d-file-blue-printer.png" alt="Ausdrucken" border="0" /></td><td>Titel(liste) ausdrucken, bzw. in einer Druckansicht darstellen <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/drucken.html" target="tutorial">[zum Tutorial]</a></td></tr>   
-     <tr><td align="center"><img src="/images/openbib/rssfeed.png"  alt="RSS-Feed" border="0" /></td><td>RSS-Feed <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/rss.html" target="tutorial">[zum Tutorial]</a></td></tr>   
-     <tr><td align="center"><img src="/images/openbib/share.png"  alt="An BibSonomy senden" border="0" /></td><td>An BibSonomy senden <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/bibsonomy.html" target="tutorial">[zum Tutorial]</a></td></tr>   
-     <tr><td align="center"><img src="/images/openbib/top20-12px.png"  alt="Top 20" border="0" /></td><td>Anzeige der Top 20 meist aufgerufenen Titel im entsprechenden Katalog <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/top20.html" target="tutorial">[zum Tutorial]</a></td></tr>   
+     <tr><td align="center"><img src="/images/openbib/3d-file-blue-mailbox.png" alt="Als Mail verschicken" border="0" /></td><td>Titel(liste) als Mail verschicken <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/speichern.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>
+     <tr><td align="center"><img src="/images/openbib/3d-file-blue-disk35.png" alt="Abspeichern" border="0" /></td><td>Titel(liste) abspeichern <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/speichern.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>   
+     <tr><td align="center"><img src="/images/openbib/3d-file-blue-printer.png" alt="Ausdrucken" border="0" /></td><td>Titel(liste) ausdrucken, bzw. in einer Druckansicht darstellen <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/drucken.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>   
+     <tr><td align="center"><img src="/images/openbib/rssfeed.png"  alt="RSS-Feed" border="0" /></td><td>RSS-Feed <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/rss.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>   
+     <tr><td align="center"><img src="/images/openbib/share.png"  alt="An BibSonomy senden" border="0" /></td><td>An BibSonomy senden <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/bibsonomy.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>   
+     <tr><td align="center"><img src="/images/openbib/top20-12px.png"  alt="Top 20" border="0" /></td><td>Anzeige der Top 20 meist aufgerufenen Titel im entsprechenden Katalog <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/top20.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>   
      <tr><td align="center"><img src="/images/openbib/3d-file-blue-permalink.png" alt="Permanenter Link" /></td><td>Permanenter Link zu diesem Titel</td></tr>
      <tr><td align="center"><img src="/images/openbib/info.png" alt="Kontextsensitive Hilfe" /></td><td>Kontextsensitive Hilfe</td></tr>   
-    </table>
+     <tr><td align="center"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></td><td>Interaktives Tutorium</td></tr>
+     <tr><td align="center"><img src="/images/openbib/wikipedia.png" alt="Wikipedia" /></td><td>Wikipedia</td></tr>
+     <tr><td align="center"><span class="globalsearch">G</span></td><td>Suche &uuml;ber alle Kataloge</td></tr>
+  </table>
 
     <h1 id="verlinkung">14 Verlinkung und Lastverteilung des KUG</h1>
 

@@ -100,7 +100,7 @@ if ($type == 1){
                 or $logger->error_die($DBI::errstr);
         
         my $bestof_ref=[];
-        my $request=$statistics->{dbh}->prepare("select katkey, count(id) as idcount from relevance where origin=2 and dbname=? group by id order by idcount desc limit 20");
+        my $request=$statistics->{dbh}->prepare("select katkey, count(id) as idcount from relevance where origin=2 and dbname=? and DATE_SUB(CURDATE(),INTERVAL 6 MONTH) <= tstamp group by id order by idcount desc limit 20");
         $request->execute($database);
         while (my $result=$request->fetchrow_hashref){
             my $katkey = $result->{katkey};

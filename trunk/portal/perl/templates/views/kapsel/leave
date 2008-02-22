@@ -25,14 +25,14 @@
   <center>
     <p style="font-size:1.5em">
       [% msg.maketext("Ihre Sitzung wurde beendet.") %]<br />
-        <br />Vielen Dank f&uuml;r Ihren Besuch der Europ&auml;ischen St&auml;dte- und Landschaftsdarstellungen<br /> des 16. und 17. Jahrhunderts.
+        <br />Vielen Dank f&uuml;r Ihren Besuch der Kapselkataloge der<br />Sammlung K&ouml;lner Zeitungsausschnitte<br /> 1840-1975
 
     </p>
   </center>
 
   <center>
     <p>
-      <a href="http://landschaftsbilder.ub.uni-koeln.de/" target="_parent"><span style="font-size:2em">[% msg.maketext("Neue Sitzung beginnen") %]</span></a>
+      <a href="http://kug.ub.uni-koeln.de/portal/lastverteilung?view=kapsel" target="_parent"><span style="font-size:2em">[% msg.maketext("Neue Sitzung beginnen") %]</span></a>
     </p>
   </center>
 <br />

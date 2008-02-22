@@ -445,32 +445,35 @@ sub get_full_record {
                 }
 
                 my @similar_args = keys %$similar_isbn_ref;
+
+                if (@similar_args){
+                    my $in_select_string = join(',',map {'?'} @similar_args);
+                    
+                    $logger->debug("InSelect $in_select_string");
+                    
+                    $reqstring="select distinct id,dbname from all_isbn where isbn in ($in_select_string) order by dbname";
+                    
+                    $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
+                    $request->execute(@similar_args) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+                    
+                    while (my $res=$request->fetchrow_hashref) {
+                        my $id         = $res->{id};
+                        my $database   = $res->{dbname};
+                        
+                        $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
+                    }
+                    
+		}
                 
-                my $in_select_string = join(',',map {'?'} @similar_args);
-
-                $logger->debug("InSelect $in_select_string");
-                
-                $reqstring="select distinct id,dbname from all_isbn where isbn in ($in_select_string) order by dbname";
-
-                $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
-                $request->execute(@similar_args) or $logger->error("Request: $reqstring - ".$DBI::errstr);
-
-                while (my $res=$request->fetchrow_hashref) {
-                    my $id         = $res->{id};
-                    my $database   = $res->{dbname};
-
-                    $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
-                }
-
-                $similar_recordlist->get_brief_records;
+		$similar_recordlist->get_brief_records;
                 
                 $self->{_similar_records} = $similar_recordlist;
-
+                
                 $request->finish();
                 $logger->debug("Enrich: $isbn -> $reqstring");
             }
         }
-
+        
         $enrichdbh->disconnect();
 
         if ($config->{benchmark}) {

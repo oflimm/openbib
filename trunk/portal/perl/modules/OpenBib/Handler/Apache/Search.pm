@@ -37,6 +37,7 @@ use utf8;
 use Apache::Constants qw(:common);
 use Apache::Reload;
 use Apache::Request ();
+use Benchmark ':hireswallclock';
 use Encode 'decode_utf8';
 use DBI;
 use Log::Log4perl qw(get_logger :levels);
@@ -58,12 +59,6 @@ use OpenBib::Record::Classification;
 use OpenBib::RecordList::Title;
 use OpenBib::SearchQuery;
 use OpenBib::Session;
-
-my $benchmark;
-
-if ($OpenBib::Config::config{benchmark}) {
-    use Benchmark ':hireswallclock';
-}
 
 sub handler {
     my $r=shift;

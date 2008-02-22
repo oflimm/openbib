@@ -33,6 +33,7 @@ use utf8;
 use Apache::Constants qw(:common);
 use Apache::Reload;
 use Apache::Request ();
+use Benchmark ':hireswallclock';
 use DBI;
 use Digest::MD5();
 use Encode 'decode_utf8';
@@ -45,12 +46,6 @@ use YAML ();
 use OpenBib::Config;
 use OpenBib::Template::Provider;
 use OpenBib::Session;
-
-my $benchmark;
-
-if ($OpenBib::Config::config{benchmark}) {
-    use Benchmark ':hireswallclock';
-}
 
 sub get_css_by_browsertype {
     my ($r)=@_;

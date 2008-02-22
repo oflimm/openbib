@@ -323,7 +323,7 @@ sub print_to_handler {
     return;
 }
 
-sub size {
+sub get_size {
     my ($self)=@_;
 
     return $self->{_size};

@@ -32,6 +32,7 @@ use utf8;
 
 use Apache::Reload;
 use Apache::Request ();
+use Benchmark ':hireswallclock';
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use Search::Xapian;
@@ -41,16 +42,6 @@ use YAML ();
 
 use OpenBib::Config;
 use OpenBib::Common::Util;
-
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-use vars qw(%config);
-
-*config = \%OpenBib::Config::config;
-
-if ($OpenBib::Config::config{benchmark}){
-    use Benchmark ':hireswallclock';
-}
 
 sub new {
     my $class = shift;
@@ -152,7 +143,7 @@ sub initial_search {
     
     my ($atime,$btime,$timeall);
   
-    if ($config{benchmark}) {
+    if ($config->{benchmark}) {
         $atime=new Benchmark;
     }
 

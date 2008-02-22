@@ -32,6 +32,7 @@ use utf8;
 
 use Apache::Reload;
 use Apache::Request ();
+use Benchmark ':hireswallclock';
 use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
@@ -40,16 +41,6 @@ use Storable;
 use YAML ();
 
 use OpenBib::Config;
-
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-use vars qw(%config);
-
-*config = \%OpenBib::Config::config;
-
-if ($OpenBib::Config::config{benchmark}){
-    use Benchmark ':hireswallclock';
-}
 
 
 1;

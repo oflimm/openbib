@@ -1,198 +1,75 @@
-#        Versionsnummer
+# Versionsnummer
 version: OpenBib v2.2
-#        Unter diesem Namen wird der lokale Server angesprochen
+
+# Unter diesem Namen wird der lokale Server angesprochen
 servername: server.openbib.org
-#        Unter diesem Name wird der Servers, der die Lastverteilung
-#        vornimmt, angesprochen
-loadbalancer_loc: /portal/lastverteilung
+
+# Unter diesem Name wird der Servers, der die Lastverteilung
+# vornimmt, angesprochen
 loadbalancerservername: loadbalancer.openbib.org
+
 # Auf folgende Server werden die Benutzer verteilt
 loadbalancertargets:
   - target1.openbib.org
   - target2.openbib.org
-#        Name des Datenbanksystems und des verwendeten DBI/DBD-Moduls
+
+# Name des Datenbanksystems und des verwendeten DBI/DBD-Moduls
 dbms: mysql
 dbimodule: mysql
-#       Einstellungen fuer den Zugriff auf die Katalog-Datenbanken
+
+# Einstellungen fuer den Zugriff auf die Katalog-Datenbanken
 dbhost: localhost
 dbport: 3306
 dbuser: root
 dbpasswd: StrengGeheim
-#       Einstellungen fuer den Zugriff auf die Session-Datenbank
+
+# Einstellungen fuer den Zugriff auf die Session-Datenbank
 sessiondbhost: localhost
 sessiondbport: 3306
 sessiondbname: session
 sessiondbuser: root
 sessiondbpasswd: StrengGeheim
-#       Einstellungen fuer den Zugriff auf die Config-Datenbank
+
+# Einstellungen fuer den Zugriff auf die Config-Datenbank
 configdbhost: localhost
 configdbport: 3306
 configdbname: config
 configdbuser: root
 configdbpasswd: StrengGeheim
-#       Einstellungen fuer den Zugriff auf die UserProfile-Datenbank
+
+# Einstellungen fuer den Zugriff auf die UserProfile-Datenbank
 userdbhost: localhost
 userdbport: 3306
 userdbname: kuguser
 userdbuser: root
 userdbpasswd: StrengGeheim
-#       Einstellungen fuer den Zugriff auf die Enrichmnt-Datenbank
+
+# Einstellungen fuer den Zugriff auf die Enrichmnt-Datenbank
 enrichmntdbhost: localhost
 enrichmntdbport: 3306
 enrichmntdbname: enrichmnt
 enrichmntdbuser: root
 enrichmntdbpasswd: StrengGeheim
-#       Einstellungen fuer den Zugriff auf die Statistik-Datenbank
+
+# Einstellungen fuer den Zugriff auf die Statistik-Datenbank
 statisticsdbhost: localhost
 statisticsdbport: 3306
 statisticsdbname: statistics
 statisticsdbuser: root
 statisticsdbpasswd: StrengGeheim
 
-admin_email: admin@openbib.org
-admin_loc: /portal/admin
-adminpasswd: StrengGeheim
+# Benutzer und Passwort fuer die Administration
 adminuser: adminuser
-autoconv_dir: /opt/openbib/autoconv
-base_dir: /opt/openbib
-benchmark: 0
-best_of:
-  3:
-    cloud: log
-  4:
-    cloud: linear
-  5:
-    cloud: linear
-  6:
-    cloud: linear
-  7:
-    cloud: linear
-  8:
-    cloud: log
-bibsonomy_api_key: ''
-bibsonomy_api_user: ''
-bibsonomy_loc: /portal/bibsonomy
-catalogue_loc: /portal/katalogisierung
-categorymapping:
-  einbaende:
-    T0100: 1
-    T0101: 1
-    T0200: 1
-    T0331: 1
-    T0335: 1
-    T0361: 1
-    T0370: 1
-    T0410: 1
-    T0413: 1
-    T0424: 1
-    T0425: 1
-    T0435: 1
-    T0501: 1
-    T0508: 1
-    T0700: 1
-    T0710: 1
-    T0750: 1
-  inst450:
-    T0100: 1
-    T0101: 1
-    T0200: 1
-    T0201: 1
-    T0501: 1
-    T0509: 1
-    T0525: 1
-  kapsel:
-    T0331: 1
-    T0700: 1
-  landschaft:
-    T0100: 1
-    T0200: 1
-    T0331: 1
-    T0334: 1
-    T0407: 1
-    T0425: 1
-    T0591: 1
-    T0594: 1
-    T0595: 1
-    T0700: 1
-    T0710: 1
-    T0750: 1
-  portrait:
-    T0100: 1
-    T0101: 1
-    T0102: 1
-    T0103: 1
-    T0200: 1
-    T0201: 1
-    T0331: 1
-    T0334: 1
-    T0424: 1
-    T0425: 1
-    T0501: 1
-    T0508: 1
-    T0559: 1
-    T0662: 1
-    T0700: 1
-    T0710: 1
-    T0800: 1
-    T3000: 1
-    T3001: 1
-  richter:
-    T0501: 1
-circulation_loc: /portal/benutzerkonto
-connector_bibmanager_loc: /portal/connector/literaturverwaltung
-connector_digibib_loc: /portal/connector/digibib
-connector_olws_loc: /portal/connector/olws
-connector_permalink_loc: /portal/connector/permalink
-connector_rss_loc: /portal/connector/rss
-connector_ukonline_loc: /portal/connector/uk-online
-connector_unapi_loc: /portal/connector/unapi
-contact_email: contact@openbib.org
-conv_dir: /opt/openbib/conv
-css_loc: /styles
-databasechoice_loc: /portal/katalogauswahl
-databasechoice_maxcolumn: 3
-databaseprofile_loc: /portal/katalogprofile
-dbdesc_dir: /opt/openbib/db
-dbis_exturl: http://www.bibliothek.uni-regensburg.de/dbinfo/?bib_id=usb_k
-dispatchquery_loc: /portal/anfrageverteilen
-document_root_path: /var/www
-drilldown: 1
-drilldown_option:
-  categorized: 1
-  categorized_aut: 1
-  categorized_mart: 1
-  categorized_not: 1
-  categorized_spr: 1
-  categorized_swt: 1
-  categorized_year: 1
-  cloud: 1
-  cloud_min: 6
-externaljump_loc: /portal/externersprung
-ezb_exturl: http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?bibid=USBK&colors=7&lang=de&jq_type1=IS&jq_bool2=AND&jq_not2=+&jq_type2=KT&jq_bool3=AND&jq_not3=+&jq_type3=PU&jq_term3=&offset=-1&hits_per_page=50&search_journal=Suche+starten&Notations%5B%5D=all&selected_colors%5B%5D=1&selected_colors%5B%5D=2&selected_colors%5B%5D=4
-hbzmonofernleih_exturl: http://www.digibib.net/Digibib?SERVICE=TEMPLATE&SUBSERVICE=JUMPTO&DEST_SERVICE=TEMPLATE&DEST_SUBSERVICE=ILL_FRAME&DEST_MAINFRAMESUBSERVICE=MSEARCH_ILLSEARCH_MONO&LOCATION=038
-hbzzeitfernleih_exturl: http://www.digibib.net/Digibib?SERVICE=TEMPLATE&SUBSERVICE=JUMPTO&DEST_SERVICE=TEMPLATE&DEST_SUBSERVICE=ILL_FRAME&DEST_MAINFRAMESUBSERVICE=MSEARCH_ILLSEARCH_ARTICLE&LOCATION=038
-image_root_path: /var/www/images/openbib
-info_loc: /portal/info
-lang:
-  - de
-  - en
+adminpasswd: StrengGeheim
+
+# Verteilte Administration mit einer Masteradmin?
 distadmin:
   master: admin.openbib.org
   slave:
     - slaveadmin1.openbib.org
     - slaveadmin2.openbib.org
-leave_loc: /portal/beenden
-litlists: 1
-litlists_loc: /portal/literaturlisten
-locale_base_path: /opt/openbib/locales
-log4perl_path: /opt/openbib/conf/portal.log4perl
-login_active: 1
-login_loc: /portal/login
-mail_prog: /bin/mailx
-mailcollection_loc: /portal/merklistemailen
-mailpassword_loc: /portal/passwortmailen
-managecollection_loc: /portal/merkliste
-newsflash: 0
+
+# Organisationseinheiten der Kataloge (z.B. Fakultaeten)
 orgunits:
   - desc: 'Fakultätsungebunden'
     nr: 0
@@ -218,9 +95,8 @@ orgunits:
   - desc: Externe Kataloge
     nr: 7
     short: 7extern
-redirect_loc: /portal/weiterleitung
-resultlists_loc: /portal/trefferlisten
-reviews: 1
+
+# RSS-Typen
 rss_types:
   neuerwerbung: 99
   neuzugang: 1
@@ -228,17 +104,94 @@ rss_types:
   neuzugang_nach_kor: 3
   neuzugang_nach_swt: 4
   neuzugang_nach_sys: 5
+
+# Spracheinstellungen
+lang:
+  - de
+  - en
+
+# Mapping der einzelnen Kompontenten zu ihren Zugriffs-URI's
+admin_loc: /portal/admin
+bibsonomy_loc: /portal/bibsonomy
+catalogue_loc: /portal/katalogisierung
+circulation_loc: /portal/benutzerkonto
+connector_bibmanager_loc: /portal/connector/literaturverwaltung
+connector_digibib_loc: /portal/connector/digibib
+connector_olws_loc: /portal/connector/olws
+connector_permalink_loc: /portal/connector/permalink
+connector_rss_loc: /portal/connector/rss
+connector_ukonline_loc: /portal/connector/uk-online
+connector_unapi_loc: /portal/connector/unapi
+databasechoice_loc: /portal/katalogauswahl
+databaseprofile_loc: /portal/katalogprofile
+dispatchquery_loc: /portal/anfrageverteilen
+externaljump_loc: /portal/externersprung
+info_loc: /portal/info
+leave_loc: /portal/beenden
+litlists_loc: /portal/literaturlisten
+loadbalancer_loc: /portal/lastverteilung
+login_loc: /portal/login
+mailcollection_loc: /portal/merklistemailen
+mailpassword_loc: /portal/passwortmailen
+managecollection_loc: /portal/merkliste
+redirect_loc: /portal/weiterleitung
+resultlists_loc: /portal/trefferlisten
 rssfeeds_loc: /portal/rssfeeds
 search_loc: /portal/recherche
 searchmask_loc: /portal/eingabe
 selfreg_loc: /portal/selbstregistrierung
 serverload_loc: /portal/getload
-social_tagging: 1
 startopac_loc: /portal/opac
-stopword_filename: /opt/openbib/ft/stopwords.txt
 tags_loc: /portal/tags
-testsystem: 0
-tool_dir: /opt/openbib/bin
+userprefs_loc: /portal/benutzereinstellungen
+userreviews_loc: /portal/benutzerbewertungen
+virtualsearch_loc: /portal/virtuellerecherche
+
+css_loc: /styles
+
+# Programm zum Versenden von Mails
+mail_prog: /bin/mailx
+
+# Email-Adressen fuer den Admin und generellen Kontakt
+admin_email: admin@openbib.org
+contact_email: contact@openbib.org
+
+# Externe Links zum direkten Einsprung in die Digitale
+# Bibliothek NRW: In die Funktionen Monographien-Fernleihe 
+# sowie elektr. Aufsatz/Zeitschriftenlieferungen (Medea) 
+# fuer den entsprechenden Standort (hier 038)
+hbzmonofernleih_exturl: http://www.digibib.net/Digibib?SERVICE=TEMPLATE&SUBSERVICE=JUMPTO&DEST_SERVICE=TEMPLATE&DEST_SUBSERVICE=ILL_FRAME&DEST_MAINFRAMESUBSERVICE=MSEARCH_ILLSEARCH_MONO&LOCATION=038
+hbzzeitfernleih_exturl: http://www.digibib.net/Digibib?SERVICE=TEMPLATE&SUBSERVICE=JUMPTO&DEST_SERVICE=TEMPLATE&DEST_SUBSERVICE=ILL_FRAME&DEST_MAINFRAMESUBSERVICE=MSEARCH_ILLSEARCH_ARTICLE&LOCATION=038
+
+# Externer Link zur Elektronischen ZeitschriftenBibliothek (EZB)
+# fuer den entsprechenden Standort (hier USBK)
+ezb_exturl: http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?bibid=USBK&colors=7&lang=de&jq_type1=IS&jq_bool2=AND&jq_not2=+&jq_type2=KT&jq_bool3=AND&jq_not3=+&jq_type3=PU&jq_term3=&offset=-1&hits_per_page=50&search_journal=Suche+starten&Notations%5B%5D=all&selected_colors%5B%5D=1&selected_colors%5B%5D=2&selected_colors%5B%5D=4
+
+# Externer Link zum DatenBankInfoSystem (DBIS)
+dbis_exturl: http://www.bibliothek.uni-regensburg.de/dbinfo/?bib_id=usb_k
+
+# Pfad zur Konfigurationsdatei von Log4Perl
+log4perl_path: /opt/openbib/conf/portal.log4perl
+
+# Pfad zu den lokalisierten Message-Dateien
+locale_base_path: /opt/openbib/locales
+
+# Pfad zu den Portal-Templates (Template Toolkit)
+tt_include_path: /opt/openbib/templates
+
+# xapian index basepath
+xapian_index_base_path: /opt/openbib/ft/xapian/index
+xapian_option:
+  maxmatch: 2000
+
+# Stopwort-Liste
+stopword_filename: /opt/openbib/ft/stopwords.txt
+
+# Pfade zum Document und Image Root
+document_root_path: /var/www
+image_root_path: /var/www/images/openbib
+
+# Mapping der einzelnen Kompontenten zu ihren Templates
 tt_admin_editcat_rss_tname: admin_editcat_rss
 tt_admin_editcat_tname: admin_editcat
 tt_admin_editlogintarget_tname: admin_editlogintarget
@@ -291,7 +244,6 @@ tt_databasechoice_tname: databasechoice
 tt_databaseprofile_tname: databaseprofile
 tt_error_tname: error
 tt_externaljump_tname: externaljump
-tt_include_path: /opt/openbib/templates
 tt_info_10_tname: info_10
 tt_info_11_tname: info_11
 tt_info_12_tname: info_12
@@ -378,14 +330,141 @@ tt_virtualsearch_showkorindex_tname: virtualsearch_showkorindex
 tt_virtualsearch_shownotindex_tname: virtualsearch_shownotindex
 tt_virtualsearch_showswtindex_tname: virtualsearch_showswtindex
 tt_virtualsearch_showverfindex_tname: virtualsearch_showverfindex
+
+# Anzahl der Spalten bei der Datenbankauswahlseite
+databasechoice_maxcolumn: 3
+
+# Verschiedene Pfadangaben
+autoconv_dir: /opt/openbib/autoconv
+base_dir: /opt/openbib
+conv_dir: /opt/openbib/conv
+dbdesc_dir: /opt/openbib/db
+tool_dir: /opt/openbib/bin
+
+# Zugriffsinformationen fuer das BibSonomy-API
+bibsonomy_api_key: ''
+bibsonomy_api_user: ''
+
+# Aktivierung verschiedener Funktionalitaeten
+login_active: 1
+newsflash: 0
+
+# Sollen Performance-Benchmarks durchgefuehrt werden
+benchmark: 0
+
+# Kurztiteltabelle verwenden?
+use_titlistitem_table: 1
+
+# Testsystem
+testsystem: 0
+
+# Drill-Down
+drilldown: 1
+drilldown_option:
+  categorized: 1
+  categorized_aut: 1
+  categorized_mart: 1
+  categorized_not: 1
+  categorized_spr: 1
+  categorized_swt: 1
+  categorized_year: 1
+  cloud: 1
+  cloud_min: 6
+
+# Generierte BestOf-Daten
+best_of:
+  3:
+    cloud: log
+  4:
+    cloud: linear
+  5:
+    cloud: linear
+  6:
+    cloud: linear
+  7:
+    cloud: linear
+  8:
+    cloud: log
+
+# Social-Tagging
+social_tagging: 1
+
+# Literaturlisten
+litlists: 1
+
+# Reviews/Ratings
+reviews: 1
+
+# unAPI
 unAPI: 1
 unAPI_formats:
   bibtex: 1
-use_titlistitem_table: 1
-userprefs_loc: /portal/benutzereinstellungen
-userreviews_loc: /portal/benutzerbewertungen
-virtualsearch_loc: /portal/virtuellerecherche
-xapian_index_base_path: /opt/openbib/ft/xapian/index
-xapian_option:
-  maxmatch: 2000
+
+# Katalogabhaengige Kategorie-Mappings
+categorymapping:
+  einbaende:
+    T0100: 1
+    T0101: 1
+    T0200: 1
+    T0331: 1
+    T0335: 1
+    T0361: 1
+    T0370: 1
+    T0410: 1
+    T0413: 1
+    T0424: 1
+    T0425: 1
+    T0435: 1
+    T0501: 1
+    T0508: 1
+    T0700: 1
+    T0710: 1
+    T0750: 1
+  inst450:
+    T0100: 1
+    T0101: 1
+    T0200: 1
+    T0201: 1
+    T0501: 1
+    T0509: 1
+    T0525: 1
+  kapsel:
+    T0331: 1
+    T0700: 1
+  landschaft:
+    T0100: 1
+    T0200: 1
+    T0331: 1
+    T0334: 1
+    T0407: 1
+    T0425: 1
+    T0591: 1
+    T0594: 1
+    T0595: 1
+    T0700: 1
+    T0710: 1
+    T0750: 1
+  portrait:
+    T0100: 1
+    T0101: 1
+    T0102: 1
+    T0103: 1
+    T0200: 1
+    T0201: 1
+    T0331: 1
+    T0334: 1
+    T0424: 1
+    T0425: 1
+    T0501: 1
+    T0508: 1
+    T0559: 1
+    T0662: 1
+    T0700: 1
+    T0710: 1
+    T0800: 1
+    T3000: 1
+    T3001: 1
+  richter:
+    T0501: 1
+
 

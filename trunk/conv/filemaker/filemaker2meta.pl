@@ -33,6 +33,7 @@ use utf8;
 use Encode;
 
 use XML::Twig;
+use YAML;
 
 use vars qw(@autbuffer @autdubbuf);
 use vars qw(@korbuffer @kordubbuf);
@@ -53,6 +54,9 @@ $swtidx=0;
 $titdublastidx=1;
 $titidx=0;
 
+$mexidn=1;
+$mexidx=0;
+
 @autbuffer=();
 @autdubbuf=();
 @korbuffer=();
@@ -61,17 +65,35 @@ $titidx=0;
 @swtdubbuf=();
 @titbuffer=();
 @titdubbuf=();
+@mexbuffer=();
+
+%metadata=();
+%metaidx=0;
+
+# my $twig_meta= XML::Twig->new(
+#    TwigHandlers => {
+#      "/FMPXMLRESULT/METADATA/FIELD" => \&parse_metadata
+#    },
+#  );
+
+# # Metadata einlesen
+# $twig_meta->safe_parsefile($inputfile);
+
+# print YAML::Dump(\%metadata);
+
+# exit;
+
 
 my $twig= XML::Twig->new(
    TwigHandlers => {
-     "/FMPXMLRESULT/RESULTSET/ROW" => \&parse_titset
+     "/FMPXMLRESULT/METADATA/FIELD" => \&parse_metadata,
+     "/FMPXMLRESULT/RESULTSET/ROW" => \&parse_titset,
    },
  );
 
 
 print STDERR "Daten werden eingelesen und geparsed\n";
-
-$twig->parsefile($inputfile);
+$twig->safe_parsefile($inputfile);
 
 print STDERR "Verfasser werden ausgegeben\n";
 
@@ -89,6 +111,25 @@ print STDERR "Titel werden ausgegeben\n";
 
 ausgabetitfile();
 
+print STDERR "Exemplardaten werden ausgegeben\n";
+
+ausgabemexfile();
+
+sub parse_metadata {
+    my($t, $field)= @_;
+
+    my $att=$field->{'att'}->{'NAME'};
+
+    $metadata{$att}=int($metaidx);
+
+    print "Mapping Category $att to index $metaidx\n";
+    
+    $metaidx++;
+    # Release memory of processed tree
+    # up to here
+    $t->purge();
+}
+
 sub parse_titset {
     my($t, $titset)= @_;
 
@@ -99,32 +140,63 @@ sub parse_titset {
     my @cols=$titset->children('COL');
     
     # Verfasser/Personen
-    if($cols[2]->first_child('DATA')->text()) {
-        my @verfasser=split (";",$cols[2]->first_child('DATA')->text());
-        foreach my $singleverf (@verfasser){
+    # Autor
+    my @verfasser=();
+    if($cols[$metadata{'Autor'}]->first_child('DATA')->text()) {
+        for my $singleverf (split (";",$cols[$metadata{'Autor'}]->first_child('DATA')->text())){
             # Inhalt bereinigen
             $singleverf=~s/\s*:\s*$//;
             $singleverf=~s/. -$//;
-            $singleverf=~s/^\s*//;
-            $singleverf=~s/\s*$//;
-            
-            my $autidn=get_autidn($singleverf);
-            if ($autidn > 0){
-                $autbuffer[$autidx++]="0000:".$autidn;
-                $autbuffer[$autidx++]="0001:".$singleverf;
-                $autbuffer[$autidx++]="9999:";
-            }
-            else {
-                $autidn=(-1)*$autidn;
-            }
-
-            $titbuffer[$titidx++]="0100:IDN: ".$autidn;
+            $singleverf=~s/^\s+//;
+            $singleverf=~s/\s+$//;
+            push @verfasser, $singleverf;
         }
     }
 
+    # AutorJap
+    if($cols[$metadata{'AutorJap'}]->first_child('DATA')->text()) {
+        for my $singleverf (split (";",$cols[$metadata{'AutorJap'}]->first_child('DATA')->text())){
+            # Inhalt bereinigen
+            $singleverf=~s/\s*:\s*$//;
+            $singleverf=~s/. -$//;
+            $singleverf=~s/^\s+//;
+            $singleverf=~s/\s+$//;
+            push @verfasser, $singleverf;
+        }
+    }
+
+    # AV
+    if($cols[$metadata{'AV'}]->first_child('DATA')->text()) {
+        for my $singleverf (split (";",$cols[$metadata{'AV'}]->first_child('DATA')->text())){
+            # Inhalt bereinigen
+            $singleverf=~s/\s*:\s*$//;
+            $singleverf=~s/. -$//;
+            $singleverf=~s/^\s+//;
+            $singleverf=~s/\s+$//;
+            push @verfasser, $singleverf;
+        }
+    }
+
+    my %seen_terms = ();
+    my @unique_verfasser = grep { ! $seen_terms{$_} ++ } @verfasser;
+
+    foreach my $singleverf (@unique_verfasser){        
+        my $autidn=get_autidn($singleverf);
+        if ($autidn > 0){
+            $autbuffer[$autidx++]="0000:".$autidn;
+            $autbuffer[$autidx++]="0001:".$singleverf;
+            $autbuffer[$autidx++]="9999:";
+        }
+        else {
+            $autidn=(-1)*$autidn;
+        }
+        
+        $titbuffer[$titidx++]="0100:IDN: ".$autidn;
+    }
+
     # Schlagworte
-    if($cols[19]->first_child('DATA')->text()) {
-        my $swtans_all=$cols[19]->text();
+    if($cols[$metadata{'Schlagwort'}]->first_child('DATA')->text()) {
+        my $swtans_all=$cols[$metadata{'Schlagwort'}]->text();
 
         if ($swtans_all){
             my @swts = split(" +",$swtans_all);
@@ -148,37 +220,134 @@ sub parse_titset {
     # Titelkategorien
 
     # Titel
-    if($cols[24]->first_child('DATA')->text()) {
-        $titbuffer[$titidx++]="0331:".$cols[24]->first_child('DATA')->text();
+    my @titel=();
+    if($cols[$metadata{'Titel'}]->first_child('DATA')->text()) {
+        push @titel, $cols[$metadata{'Titel'}]->first_child('DATA')->text();
     }
-
+    # Titel Jap
+    if($cols[$metadata{'TitelJap'}]->first_child('DATA')->text()) {
+        push @titel, $cols[$metadata{'TitelJap'}]->first_child('DATA')->text();
+    }
+    if (@titel){
+        $titbuffer[$titidx++]="0331:".join(' / ',@titel);
+    }
+    
     # Ausgabe
-    if($cols[1]->first_child('DATA')->text()){
-        $titbuffer[$titidx++]="0403:".$cols[1]->first_child('DATA')->text();
+    if($cols[$metadata{'Ausgabe'}]->first_child('DATA')->text()){
+        $titbuffer[$titidx++]="0403:".$cols[$metadata{'Ausgabe'}]->first_child('DATA')->text();
     }
 
     # Verlag
-    if($cols[26]->first_child('DATA')->text()){
-        $titbuffer[$titidx++]="0412:".$cols[26]->first_child('DATA')->text();
+    my @verlag=();
+    if($cols[$metadata{'Verlag'}]->first_child('DATA')->text()){
+        push @verlag, $cols[$metadata{'Verlag'}]->first_child('DATA')->text();
     }
-
+    if($cols[$metadata{'VerlJap'}]->first_child('DATA')->text()){
+        push @verlag, $cols[$metadata{'VerlJap'}]->first_child('DATA')->text();
+    }
+    if (@verlag){
+        $titbuffer[$titidx++]="0412:".join(' / ',@verlag);
+    }
+    
     # Verlagsort
-    if($cols[16]->first_child('DATA')->text()){
-        $titbuffer[$titidx++]="0410:".$cols[16]->first_child('DATA')->text();
+    my @verlagsorte=();
+    if($cols[$metadata{'Ort'}]->first_child('DATA')->text()){
+        push @verlagsorte, $cols[$metadata{'Ort'}]->first_child('DATA')->text();
+    }
+    if($cols[$metadata{'OrtJap'}]->first_child('DATA')->text()){
+        push @verlagsorte, $cols[$metadata{'OrtJap'}]->first_child('DATA')->text();
+    }
+    if (@verlagsorte){
+        $titbuffer[$titidx++]="0410:".join(' / ',@verlagsorte);
     }
 
     # Umfang/Format
-    if($cols[14]->first_child('DATA')->text()){
-        $titbuffer[$titidx++]="0433:".$cols[14]->first_child('DATA')->text();
+    if($cols[$metadata{'Kollation'}]->first_child('DATA')->text()){
+        $titbuffer[$titidx++]="0433:".$cols[$metadata{'Kollation'}]->first_child('DATA')->text();
     }
 
     # Jahr
-    if($cols[12]->first_child('DATA')->text()){
-        $titbuffer[$titidx++]="0425:".$cols[12]->first_child('DATA')->text();
+    if($cols[$metadata{'Jahr'}]->first_child('DATA')->text()){
+        $titbuffer[$titidx++]="0425:".$cols[$metadata{'Jahr'}]->first_child('DATA')->text();
+    }
+
+    # Gesamttitel / Reihe
+    my @gesamttitel=();
+    if($cols[$metadata{'Gesamttitel'}]->first_child('DATA')->text()){
+        push @gesamttitel, $cols[$metadata{'Gesamttitel'}]->first_child('DATA')->text();
+    }
+    if($cols[$metadata{'GesamtJap'}]->first_child('DATA')->text()){
+        push @gesamttitel, $cols[$metadata{'GesamtJap'}]->first_child('DATA')->text();
+    }
+    if($cols[$metadata{'Reihe'}]->first_child('DATA')->text()){
+        push @gesamttitel, $cols[$metadata{'Reihe'}]->first_child('DATA')->text();
+    }
+    if($cols[$metadata{'ReiheJap'}]->first_child('DATA')->text()){
+        push @gesamttitel, $cols[$metadata{'ReiheJap'}]->first_child('DATA')->text();
+    }
+    if (@gesamttitel){
+        $titbuffer[$titidx++]="0451:".join(' / ',@gesamttitel);
+    }
+    
+    if($cols[$metadata{'Sprache'}]->first_child('DATA')->text()){
+        $titbuffer[$titidx++]="0015:".$cols[$metadata{'Sprache'}]->first_child('DATA')->text();
+    }
+
+    if($cols[$metadata{'Nummer'}]->first_child('DATA')->text()){
+        $titbuffer[$titidx++]="0089:".$cols[$metadata{'Nummer'}]->first_child('DATA')->text();
+    }
+
+    if($cols[$metadata{'Fußnote'}]->first_child('DATA')->text()){
+        $titbuffer[$titidx++]="0501:".$cols[$metadata{'Fußnote'}]->first_child('DATA')->text();
+    }
+
+    if($cols[$metadata{'Inventar'}]->first_child('DATA')->text()){
+        $titbuffer[$titidx++]="0005.001:".$cols[$metadata{'Inventar'}]->first_child('DATA')->text();
+    }
+
+    # Quelle
+    if($cols[$metadata{'Jg,Heft,Bd'}]->first_child('DATA')->text()){
+        $titbuffer[$titidx++]="0590:".$cols[$metadata{'Jg,Heft,Bd'}]->first_child('DATA')->text();
+    }
+
+    # ISBN
+    if($cols[$metadata{'ISBN'}]->first_child('DATA')->text()){
+        $titbuffer[$titidx++]="0540:".$cols[$metadata{'ISBN'}]->first_child('DATA')->text();
+    }
+
+    # Datum
+    if($cols[$metadata{'Datum'}]->first_child('DATA')->text()){
+        $titbuffer[$titidx++]="0002:".$cols[$metadata{'Datum'}]->first_child('DATA')->text();
+    }
+
+    if($cols[$metadata{'Standort'}]->first_child('DATA')->text()){
+        $titbuffer[$titidx++]="0016.001:".$cols[$metadata{'Standort'}]->first_child('DATA')->text();
+    }
+    
+    if($cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text()){
+        $titbuffer[$titidx++]="0014.001:".$cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text();
     }
 
     $titbuffer[$titidx++]="9999:";
-    
+
+    # Exemplardaten
+    if ($cols[$metadata{'Signatur'}]->first_child('DATA')->text() || $cols[$metadata{'Standort'}]->first_child('DATA')->text()){
+
+        $mexbuffer[$mexidx++]="0000:$mexidn";
+        $mexbuffer[$mexidx++]="0004:$id";
+
+        if($cols[$metadata{'Standort'}]->first_child('DATA')->text()){
+            $mexbuffer[$mexidx++]="0016.001:".$cols[$metadata{'Standort'}]->first_child('DATA')->text();
+        }
+
+        if($cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text()){
+            $mexbuffer[$mexidx++]="0014.001:".$cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text();
+        }
+        $mexbuffer[$mexidx++]="9999:";
+        $mexidn++;
+    }
+
+
     # Release memory of processed tree
     # up to here
     $t->purge();
@@ -272,7 +441,7 @@ sub ausgabetitfile
 }
 
 sub ausgabemexfile {
-    open(MEX,">:utf8","mex.exp");
+    open(MEX,">:utf8","unload.MEX");
     $i=0;
     while ($i < $mexidx){
 	print MEX $mexbuffer[$i],"\n";

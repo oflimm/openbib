@@ -6,7 +6,7 @@
 #
 #  Abzug eines OAI-Repositories
 #
-#  Dieses File ist (C) 2003-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2003-2008 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -34,15 +34,6 @@
 use Getopt::Long;
 
 use OAI2::Harvester;
-
-use OpenBib::Config;
-
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
 
 &GetOptions("oaiurl=s" => \$oaiurl,
 	    );

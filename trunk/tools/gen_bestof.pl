@@ -5,7 +5,7 @@
 #
 #  Erzeugen von BestOf-Analysen aus Relevance-Statistik-Daten
 #
-#  Dieses File ist (C) 2006-2007 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2008 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -74,7 +74,7 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-my $config     = new OpenBib::Config();
+my $config     = OpenBib::Config->instance;
 my $statistics = new OpenBib::Statistics();
 
 if (!$type){
@@ -100,7 +100,7 @@ if ($type == 1){
                 or $logger->error_die($DBI::errstr);
         
         my $bestof_ref=[];
-        my $request=$statistics->{dbh}->prepare("select katkey, count(id) as idcount from relevance where origin=2 and dbname=? group by id order by idcount desc limit 20");
+        my $request=$statistics->{dbh}->prepare("select katkey, count(id) as idcount from relevance where origin=2 and dbname=? and DATE_SUB(CURDATE(),INTERVAL 6 MONTH) <= tstamp group by id order by idcount desc limit 20");
         $request->execute($database);
         while (my $result=$request->fetchrow_hashref){
             my $katkey = $result->{katkey};

@@ -6,7 +6,7 @@
 #
 #  Inkrementelles Update einer Datenbank ueber OLWS
 #
-#  Dieses File ist (C) 2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2008 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -49,11 +49,7 @@ use OpenBib::Common::Stopwords;
 use OpenBib::Config;
 use OpenBib::Conv::Config;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-use vars qw(%config);
-
-*config = \%OpenBib::Config::config;
+my $config = OpenBib::Config->instance;
 
 my ($singlepool,$fromdate,$todate,$logfile);
 
@@ -87,15 +83,15 @@ my $conv_config = new OpenBib::Conv::Config({dbname => $singlepool});
 
 # Verbindung zur SQL-Datenbank herstellen
 my $sessiondbh
-    = DBI->connect("DBI:$config{dbimodule}:dbname=$config{sessiondbname};host=$config{sessiondbhost};port=$config{sessiondbport}", $config{sessiondbuser}, $config{sessiondbpasswd})
+    = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
     or $logger->error_die($DBI::errstr);
 
 #my $dbh
-#    = DBI->connect("DBI:$config{dbimodule}:dbname=$database;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+#    = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
 #    or $logger->error_die($DBI::errstr);
 
 my $dbh
-    = DBI->connect("DBI:$config{dbimodule}:dbname=$singlepool;host=localhost;port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+    = DBI->connect("DBI:$config->{dbimodule}:dbname=$singlepool;host=localhost;port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
     or $logger->error_die($DBI::errstr);
 
 my $targetcircinfo_ref

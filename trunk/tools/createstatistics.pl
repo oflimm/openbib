@@ -6,7 +6,7 @@
 #
 #  Erzeugung der Statistics-Datenbank
 #
-#  Dieses File ist (C) 2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2008 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -33,18 +33,13 @@
 
 use OpenBib::Config;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
+my $config = OpenBib::Config->instance;
 
 # Anlegen des Mysql-Pools
 
-system("/usr/bin/mysqladmin -u $config{'statisticsdbuser'} --password=$config{'statisticsdbpasswd'} create $config{'statisticsdbname'}");
+system("/usr/bin/mysqladmin -u $config->{'statisticsdbuser'} --password=$config->{'statisticsdbpasswd'} create $config->{'statisticsdbname'}");
 
 # Einladen der Datenbankdefinitionen
 
-system("/usr/bin/mysql -u $config{'statisticsdbuser'} --password=$config{'statisticsdbpasswd'} $config{'statisticsdbname'} < $config{'dbdesc_dir'}/mysql/statistics.mysql");
+system("/usr/bin/mysql -u $config->{'statisticsdbuser'} --password=$config->{'statisticsdbpasswd'} $config->{'statisticsdbname'} < $config->{'dbdesc_dir'}/mysql/statistics.mysql");
 

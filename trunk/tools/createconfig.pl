@@ -6,7 +6,7 @@
 #
 #  Erzeugung der Config-Datenbank
 #
-#  Dieses File ist (C) 2001-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2008 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -33,18 +33,13 @@
 
 use OpenBib::Config;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
+my $config = OpenBib::Config->instance;
 
 # Anlegen der Config-DB
 
-system("/usr/bin/mysqladmin -u $config{'configdbuser'} --password=$config{'configdbpasswd'} create $config{'configdbname'}");
+system("/usr/bin/mysqladmin -u $config->{'configdbuser'} --password=$config->{'configdbpasswd'} create $config->{'configdbname'}");
 
 # Einladen der Datenbankdefinitionen
 
-system("/usr/bin/mysql -u $config{'configdbuser'} --password=$config{'configdbpasswd'} $config{'configdbname'} < $config{'dbdesc_dir'}/mysql/config.mysql");
+system("/usr/bin/mysql -u $config->{'configdbuser'} --password=$config->{'configdbpasswd'} $config->{'configdbname'} < $config->{'dbdesc_dir'}/mysql/config.mysql");
 

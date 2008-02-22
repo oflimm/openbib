@@ -6,7 +6,7 @@
 #  Erzeugen von Popularitaetsinformationen zu Titeln und Anreicherung
 #  im Katalog durch separate popularity-Tabelle
 #
-#  Dieses File ist (C) 2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2008 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -43,12 +43,7 @@ use OpenBib::Config;
 use OpenBib::Statistics;
 use OpenBib::Search::Util;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
+my $config = OpenBib::Config->instance;
 
 my ($pool,$help,$logfile);
 
@@ -100,7 +95,7 @@ while (my $res    = $request->fetchrow_hashref){
 $request->finish();
 
 my $dbh
-    = DBI->connect("DBI:$config{dbimodule}:dbname=$pool;host=$config{dbhost};port=$config{dbport}", $config{dbuser}, $config{dbpasswd})
+    = DBI->connect("DBI:$config->{dbimodule}:dbname=$pool;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
     or $logger->error_die($DBI::errstr);
 
 $request=$dbh->do("truncate table popularity");

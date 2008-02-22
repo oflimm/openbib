@@ -6,7 +6,7 @@
 #
 #  Erzeugung der Enrichmnt-Datenbank
 #
-#  Dieses File ist (C) 2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006-2008 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -33,18 +33,13 @@
 
 use OpenBib::Config;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
+my $config = OpenBib::Config->instance;
 
 # Anlegen des Mysql-Pools
 
-system("/usr/bin/mysqladmin -u $config{'enrichmntdbuser'} --password=$config{'enrichmntdbpasswd'} create $config{'enrichmntdbname'}");
+system("/usr/bin/mysqladmin -u $config->{'enrichmntdbuser'} --password=$config->{'enrichmntdbpasswd'} create $config->{'enrichmntdbname'}");
 
 # Einladen der Datenbankdefinitionen
 
-system("/usr/bin/mysql -u $config{'enrichmntdbuser'} --password=$config{'enrichmntdbpasswd'} $config{'enrichmntdbname'} < $config{'dbdesc_dir'}/mysql/enrichmnt.mysql");
+system("/usr/bin/mysql -u $config->{'enrichmntdbuser'} --password=$config->{'enrichmntdbpasswd'} $config->{'enrichmntdbname'} < $config->{'dbdesc_dir'}/mysql/enrichmnt.mysql");
 

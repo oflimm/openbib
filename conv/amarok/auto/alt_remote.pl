@@ -6,7 +6,7 @@
 #
 #  Holen per sql und konvertieren der Amarok-Daten
 #
-#  Dieses File ist (C) 2004-2006 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2008 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -33,16 +33,11 @@
 
 use OpenBib::Config;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
+my $config = OpenBib::Config->instance;
 
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
-
-my $rootdir       = $config{'autoconv_dir'};
+my $rootdir       = $config->{'autoconv_dir'};
 my $pooldir       = $rootdir."/pools";
-my $konvdir       = $config{'conv_dir'};
+my $konvdir       = $config->{'conv_dir'};
 
 my $pool          = $ARGV[0];
 

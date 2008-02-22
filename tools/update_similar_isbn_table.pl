@@ -46,13 +46,6 @@ use OpenBib::Search::Util;
 
 our ($enrichdbh,$enrichrequest);
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
-
 my ($filename,$help,$logfile);
 
 &GetOptions("filename=s"      => \$filename,
@@ -83,7 +76,7 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-my $config = new OpenBib::Config;
+my $config = OpenBib::Config->instance;
 
 $enrichdbh     = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd}) or die "could not connect";
 

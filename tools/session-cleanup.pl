@@ -6,7 +6,7 @@
 #
 #  Loeschung alter Sessions
 #
-#  Dieses File ist (C) 2003-2007 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2003-2008 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -40,7 +40,7 @@ use OpenBib::Config;
 use OpenBib::Session;
 use OpenBib::User;
 
-my $config = new OpenBib::Config();
+my $config = OpenBib::Config->instance;
 
 #####################################################################
 # Verbindung zur SQL-Datenbank herstellen

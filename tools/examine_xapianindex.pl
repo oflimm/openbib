@@ -4,7 +4,7 @@
 #
 #  examine_xapianindex.pl
 #
-#  Dieses File ist (C) 2007 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2007-2008 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -63,7 +63,7 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-my $config = new OpenBib::Config();
+my $config = OpenBib::Config->instance;
 
 if (!$database || !$titid){
   $logger->fatal("Kein Pool mit --single-pool= oder kein Titel mit --titid= ausgewaehlt");

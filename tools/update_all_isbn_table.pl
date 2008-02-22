@@ -43,12 +43,7 @@ use OpenBib::Config;
 use OpenBib::Statistics;
 use OpenBib::Search::Util;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
+my $config = OpenBib::Config->instance;
 
 my ($singlepool,$help,$logfile,$incr);
 
@@ -80,8 +75,6 @@ Log::Log4perl::init(\$log4Perl_config);
 
 # Log4perl logger erzeugen
 my $logger = get_logger();
-
-my $config = new OpenBib::Config;
 
 my @databases=();
 

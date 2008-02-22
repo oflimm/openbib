@@ -35,20 +35,16 @@ use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Config;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
-
 sub benachrichtigung {
     my ($message)=@_;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = OpenBib::Config->instance;
+    
     # Benachrichtigung via mail
-    open(MAIL,"| $config{mail_prog} -s \"KUG-Probleme\" $config{admin_email}") or $logger->error_die("Problem-Mail konnte nicht verschickt werden");
+    open(MAIL,"| $config->{mail_prog} -s \"KUG-Probleme\" $config->{admin_email}") or $logger->error_die("Problem-Mail konnte nicht verschickt werden");
     print MAIL << "MAILENDE";
 Es ist ein Problem mit dem KUG aufgetreten.
 

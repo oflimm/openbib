@@ -6,7 +6,7 @@
 #
 #  Erzeugung einer Katalog-Datenbank
 #
-#  Dieses File ist (C) 1997-2004 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2008 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -35,21 +35,16 @@ $pool=$ARGV[0];
 
 use OpenBib::Config;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-
-use vars qw(%config);
-
-*config=\%OpenBib::Config::config;
+my $config = OpenBib::Config->instance;
 
 # Anlegen des Mysql-Pools
 
-system("/usr/bin/mysqladmin -u $config{'dbuser'} --password=$config{'dbpasswd'} create $pool");
+system("/usr/bin/mysqladmin -u $config->{'dbuser'} --password=$config->{'dbpasswd'} create $pool");
 
 # Einladen der Datenbankdefinitionen
 
-system("/usr/bin/mysql -u $config{'dbuser'} --password=$config{'dbpasswd'} $pool < $config{'dbdesc_dir'}/mysql/pool.mysql");
+system("/usr/bin/mysql -u $config->{'dbuser'} --password=$config->{'dbpasswd'} $pool < $config->{'dbdesc_dir'}/mysql/pool.mysql");
 
 # Anlegen des Verzeichnisses zur lokalen Speicherung der Daten
 
-system("mkdir -p $config{'autoconv_dir'}/pools/$pool");
+system("mkdir -p $config->{'autoconv_dir'}/pools/$pool");

@@ -38,12 +38,6 @@ use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Config;
 
-# Importieren der Konfigurationsdaten als Globale Variablen
-# in diesem Namespace
-use vars qw(%config);
-
-*config = \%OpenBib::Config::config;
-
 use base 'Locale::Maketext';
 
 # Locale::Maketext::Lexicon und Template Toolkit:
@@ -59,7 +53,7 @@ use base 'Locale::Maketext';
 #    "${alldbcount}"
 
 use Locale::Maketext::Lexicon {
-    '*'        => [Gettext => "$OpenBib::Config::config{locale_base_path}/*/LC_MESSAGES/openbib.po"],
+    '*'        => [Gettext => OpenBib::Config->instance->{locale_base_path}."/*/LC_MESSAGES/openbib.po"],
 #   _style     => 'gettext', # fuer korrektes TT-handling irrelevant
     _decode    => 1,         # UTF-8 handling on
 #   _use_fuzzy => 1,         # Fuzzy-Matching off
@@ -71,7 +65,8 @@ sub failure_handler {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    $logger->info(ref($failing_msg), $key);
+    $logger->error(ref($failing_msg), $key);
+
     return "No translation available";
 }
 

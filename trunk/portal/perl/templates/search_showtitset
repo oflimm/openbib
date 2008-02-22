@@ -310,7 +310,7 @@ Dieser Titel befindet sich in folgenden Literaturlisten:
 [% END %]
 <p />
 
-[% IF same_records.size > 0 %]
+[% IF same_records.get_size > 0 %]
 <table width="100%">
 <tr><th>Dieser Titel in anderen Katalogen&nbsp;<span id="samerecord_toggle"></span></th></tr>
 <tr><td id="samerecord" class="boxedclear">
@@ -328,8 +328,7 @@ KUG-Katalogen vorhanden:
 [% END %]
 
 <p />
-
-[% IF similar_records.size > 0 %]
+[% IF similar_records.get_size > 0 %]
 <table width="100%">
 <tr><th>Andere Ausgaben dieses Titels (Sprache, Auflage usw.)&nbsp;<span id="similarrecord_toggle"></span></th></tr>
 <tr><td id="similarrecord" class="boxedclear">

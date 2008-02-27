@@ -938,121 +938,121 @@ sub handler {
         }
     }
     elsif ($do_exploresessions) {
+        # Verbindung zur SQL-Datenbank herstellen
+        my $statisticsdbh
+            = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
+                or $logger->error($DBI::errstr);
+        
         if ($do_show) {
-
-	  my $statistics = new OpenBib::Statistics();
-
-	  my $serialized_type_ref = {
-				     1  => 1,
-				     10 => 1,
-				    };
-
-
-	  my $idnresult=$statistics->{dbh}->prepare("select * from eventlog where sessionid = ? order by tstamp ASC") or $logger->error($DBI::errstr);
-	  $idnresult->execute($singlesessionid) or $logger->error($DBI::errstr);
-	  
-	  my @events = ();
-
-	  while (my $result=$idnresult->fetchrow_hashref()) {
-            my $type        = decode_utf8($result->{'type'});
-            my $tstamp      = decode_utf8($result->{'tstamp'});
-            my $content     = decode_utf8($result->{'content'});
-	    
-
-
-	    if (exists $serialized_type_ref->{$type}){
-	      $content=Storable::thaw(pack "H*", $content);
-	    }
-
-            push @events, {
-			   type => $type,
-			   content => $content,
-			   createtime => $tstamp,
-			  };
-	  }
-	  
-	  
-	  my $ttdata={
-		      stylesheet => $stylesheet,
-		      
-		      session    => $session,
-		      sessionID  => $session->{ID},
-		      
-		      singlesessionid => $singlesessionid,
-
-		      events     => \@events,
-
-		      clientip   => $clientip,
-		      fromdate   => $fromdate,
-		      todate     => $todate,
-		      
-		      config     => $config,
-		      msg        => $msg,
-		     };
-	  
-	  $stid=~s/[^0-9]//g;
-	  
-	  my $templatename = ($stid)?"tt_admin_exploresessions_show".$stid."_tname":"tt_admin_exploresessions_show_tname";
-	  
-	  OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
-	  
-	  return OK;
-	    
-
-	}
-        else {
-
-	  unless ($fromdate && $todate){
-            OpenBib::Common::Util::print_warning($msg->maketext("Bitte geben Sie ein Anfangs- sowie ein End-Datum an!"),$r,$msg);
+            my $serialized_type_ref = {
+                1  => 1,
+                10 => 1,
+            };
+            
+            
+            my $idnresult=$statisticsdbh->prepare("select * from eventlog where sessionid = ? order by tstamp ASC") or $logger->error($DBI::errstr);
+            $idnresult->execute($singlesessionid) or $logger->error($DBI::errstr);
+            
+            my @events = ();
+            
+            while (my $result=$idnresult->fetchrow_hashref()) {
+                my $type        = decode_utf8($result->{'type'});
+                my $tstamp      = decode_utf8($result->{'tstamp'});
+                my $content     = decode_utf8($result->{'content'});
+                
+                
+                
+                if (exists $serialized_type_ref->{$type}){
+                    $content=Storable::thaw(pack "H*", $content);
+                }
+                
+                push @events, {
+                    type => $type,
+                    content => $content,
+                    createtime => $tstamp,
+                };
+            }
+            
+            
+            my $ttdata={
+                stylesheet => $stylesheet,
+                
+                session    => $session,
+                sessionID  => $session->{ID},
+                
+                singlesessionid => $singlesessionid,
+                
+                events     => \@events,
+                
+                clientip   => $clientip,
+                fromdate   => $fromdate,
+                todate     => $todate,
+                
+                config     => $config,
+                msg        => $msg,
+            };
+            
+            $stid=~s/[^0-9]//g;
+            
+            my $templatename = ($stid)?"tt_admin_exploresessions_show".$stid."_tname":"tt_admin_exploresessions_show_tname";
+            
+            OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+            
             return OK;
 	    
-	  }
-
-	  my $statistics = new OpenBib::Statistics();
-	  
-	  # Eventtyp 102 = Client-IP
-	  my $sqlstring="select sessionid,tstamp from eventlog where type=102 and content = ? and tstamp > ? and tstamp < ?";
-	  
-	  $logger->debug("$sqlstring - $clientip / $fromdate / $todate");
-
-	  my $idnresult=$statistics->{dbh}->prepare($sqlstring) or $logger->error($DBI::errstr);
-	  $idnresult->execute($clientip,$fromdate,$todate) or $logger->error($DBI::errstr);
-	  my @sessions=();
-	  
-	  while (my $result=$idnresult->fetchrow_hashref()) {
-            my $singlesessionid = decode_utf8($result->{'sessionid'});
-            my $tstamp          = decode_utf8($result->{'tstamp'});
-	    
-            push @sessions, {
-			     sessionid  => $singlesessionid,
-			     createtime => $tstamp,
-			    };
-	  }
-	  
-	  
-	  my $ttdata={
-		      stylesheet => $stylesheet,
-		      
-		      session    => $session,
-		      sessionID  => $session->{ID},
-		      
-		      sessions   => \@sessions,
-	
-		      clientip   => $clientip,
-		      fromdate   => $fromdate,
-		      todate     => $todate,
-
-		      config     => $config,
-		      msg        => $msg,
-		     };
-	  
-	  $stid=~s/[^0-9]//g;
-	  
-	  my $templatename = ($stid)?"tt_admin_exploresessions_list".$stid."_tname":"tt_admin_exploresessions_list_tname";
-	  
-	  OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
-	  
-	  return OK;
+            
+	}
+        else {
+            
+            unless ($fromdate && $todate){
+                OpenBib::Common::Util::print_warning($msg->maketext("Bitte geben Sie ein Anfangs- sowie ein End-Datum an!"),$r,$msg);
+                return OK;
+                
+            }
+            
+            # Eventtyp 102 = Client-IP
+            my $sqlstring="select sessionid,tstamp from eventlog where type=102 and content = ? and tstamp > ? and tstamp < ?";
+            
+            $logger->debug("$sqlstring - $clientip / $fromdate / $todate");
+            
+            my $idnresult=$statisticsdbh->prepare($sqlstring) or $logger->error($DBI::errstr);
+            $idnresult->execute($clientip,$fromdate,$todate) or $logger->error($DBI::errstr);
+            my @sessions=();
+            
+            while (my $result=$idnresult->fetchrow_hashref()) {
+                my $singlesessionid = decode_utf8($result->{'sessionid'});
+                my $tstamp          = decode_utf8($result->{'tstamp'});
+                
+                push @sessions, {
+                    sessionid  => $singlesessionid,
+                    createtime => $tstamp,
+                };
+            }
+            
+            
+            my $ttdata={
+                stylesheet => $stylesheet,
+                
+                session    => $session,
+                sessionID  => $session->{ID},
+                
+                sessions   => \@sessions,
+                
+                clientip   => $clientip,
+                fromdate   => $fromdate,
+                todate     => $todate,
+                
+                config     => $config,
+                msg        => $msg,
+            };
+            
+            $stid=~s/[^0-9]//g;
+            
+            my $templatename = ($stid)?"tt_admin_exploresessions_list".$stid."_tname":"tt_admin_exploresessions_list_tname";
+            
+            OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+            
+            return OK;
 	}
     }
     elsif ($do_showstat) {

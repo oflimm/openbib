@@ -30,11 +30,14 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
+use base qw(Apache::Singleton);
+
 use Encode qw(decode_utf8 encode_utf8);
 use Log::Log4perl qw(get_logger :levels);
 use Storable ();
 
 use OpenBib::Config;
+use OpenBib::Database::DBI;
 
 sub new {
     my ($class) = @_;
@@ -42,18 +45,9 @@ sub new {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
-    
     my $self = { };
 
     bless ($self, $class);
-
-    # Verbindung zur SQL-Datenbank herstellen
-    my $dbh
-        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
-            or $logger->error($DBI::errstr);
-
-    $self->{dbh}       = $dbh;
 
     return $self;
 }
@@ -78,9 +72,16 @@ sub store_relevance {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    return undef unless (defined $id && defined $dbname && defined $katkey && defined $type && defined $self->{dbh});
+    my $config = OpenBib::Config->instance;    
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return undef unless (defined $id && defined $dbname && defined $katkey && defined $type && defined $dbh);
     
-    my $request=$self->{dbh}->prepare("insert into relevance values (?,?,?,?,?,?)") or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare("insert into relevance values (?,?,?,?,?,?)") or $logger->error($DBI::errstr);
     $request->execute($tstamp,$id,$isbn,$dbname,$katkey,$type) or $logger->error($DBI::errstr);
     return;
 }
@@ -99,18 +100,25 @@ sub store_result {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = OpenBib::Config->instance;    
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
+            or $logger->error($DBI::errstr);
+
     $logger->debug("About to store result");
 
-    return undef unless (defined $id && defined $type && defined $data_ref && defined $self->{dbh});
+    return undef unless (defined $id && defined $type && defined $data_ref && defined $dbh);
     
-    my $request=$self->{dbh}->prepare("delete from result_data where id=? and type=?") or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare("delete from result_data where id=? and type=?") or $logger->error($DBI::errstr);
     $request->execute($id,$type) or $logger->error($DBI::errstr);
 
     $logger->debug("Storing:\n".YAML::Dump($data_ref));
 
     my $datastring=unpack "H*", Storable::freeze($data_ref);
     
-    $request=$self->{dbh}->prepare("insert into result_data values (?,NULL,?,?)") or $logger->error($DBI::errstr);
+    $request=$dbh->prepare("insert into result_data values (?,NULL,?,?)") or $logger->error($DBI::errstr);
     $request->execute($id,$type,$datastring) or $logger->error($DBI::errstr);
 
     return;
@@ -128,10 +136,17 @@ sub get_result {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = OpenBib::Config->instance;    
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
+            or $logger->error($DBI::errstr);
+
     return undef unless (defined $id && defined $type);
     
     my $sqlstatement="select data from result_data where id=? and type=?";
-    my $request=$self->{dbh}->prepare($sqlstatement) or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare($sqlstatement) or $logger->error($DBI::errstr);
     $request->execute($id,$type) or $logger->error($DBI::errstr);
 
     $logger->debug("$sqlstatement - $id / $type");
@@ -169,6 +184,13 @@ sub log_event {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = OpenBib::Config->instance;    
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
+            or $logger->error($DBI::errstr);
+
     # Moegliche Event-Typen
     #
     # Recherchen:
@@ -196,7 +218,7 @@ sub log_event {
     # 541 => HBZ-Dokumentenlieferung
     # 550 => WebOPAC
     
-    my $request=$self->{dbh}->prepare("insert into eventlog values (?,?,?,?)") or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare("insert into eventlog values (?,?,?,?)") or $logger->error($DBI::errstr);
     $request->execute($sessionID,$tstamp,$type,$content) or $logger->error($DBI::errstr);
     $request->finish;
 
@@ -218,6 +240,13 @@ sub get_number_of_event {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;    
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
+            or $logger->error($DBI::errstr);
 
     my $sqlstring="select count(tstamp) as rowcount, min(tstamp) as mintstamp from eventlog";
 
@@ -245,7 +274,7 @@ sub get_number_of_event {
     }
 
     $logger->debug($sqlstring." ".join(" - ",@sqlargs));
-    my $request=$self->{dbh}->prepare($sqlstring) or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare($sqlstring) or $logger->error($DBI::errstr);
     $request->execute(@sqlargs) or $logger->error($DBI::errstr);
     
     my $res        = $request->fetchrow_hashref;
@@ -274,11 +303,18 @@ sub get_number_of_queries_by_category {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = OpenBib::Config->instance;    
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
+            or $logger->error($DBI::errstr);
+
     return 0 if (!$category);
 
     my $sqlstring="select count(tstamp) as rowcount, min(tstamp) as mintstamp from querycategory where $category = 1";
 
-    my $request=$self->{dbh}->prepare($sqlstring) or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare($sqlstring) or $logger->error($DBI::errstr);
     $request->execute() or $logger->error($DBI::errstr);
     
     my $res        = $request->fetchrow_hashref;
@@ -310,6 +346,13 @@ sub get_ranking_of_event {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = OpenBib::Config->instance;    
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
+            or $logger->error($DBI::errstr);
+
     my $sqlstring="select count(content) as rowcount, content, min(tstamp) as mintstamp from eventlog";
 
     my @sqlwhere = ();
@@ -333,7 +376,7 @@ sub get_ranking_of_event {
     }
 
     $logger->debug($sqlstring." ".join(" - ",@sqlargs));
-    my $request=$self->{dbh}->prepare($sqlstring) or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare($sqlstring) or $logger->error($DBI::errstr);
     $request->execute(@sqlargs) or $logger->error($DBI::errstr);
 
     my @ranking=();
@@ -371,6 +414,13 @@ sub log_query {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;    
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
+            or $logger->error($DBI::errstr);
 
     # Moegliche Queryterm-Typen
     #
@@ -450,8 +500,8 @@ sub log_query {
 			  'zur'   => 1,
 			 };
 
-    my $termrequest     = $self->{dbh}->prepare("insert into queryterm values (?,?,?,?)") or $logger->error($DBI::errstr);
-    my $categoryrequest = $self->{dbh}->prepare("insert into querycategory values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
+    my $termrequest     = $dbh->prepare("insert into queryterm values (?,?,?,?)") or $logger->error($DBI::errstr);
+    my $categoryrequest = $dbh->prepare("insert into querycategory values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
 
     foreach my $cat (keys %$cat2type_ref){
         my $thiscategory_terms = $searchquery_ref->{$cat}->{val};
@@ -524,6 +574,13 @@ sub get_sequencestat_of_event {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    my $config = OpenBib::Config->instance;    
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
+            or $logger->error($DBI::errstr);
+
     my $sqlstring="";
 
     my @x_values = ();
@@ -571,7 +628,7 @@ sub get_sequencestat_of_event {
       push @sqlargs, $thisyear;
     }
 
-    my $request=$self->{dbh}->prepare($sqlstring) or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare($sqlstring) or $logger->error($DBI::errstr);
     $request->execute(@sqlargs) or $logger->error($DBI::errstr);
 
     $logger->debug($sqlstring." ".join("/",@sqlargs));
@@ -587,16 +644,6 @@ sub get_sequencestat_of_event {
     $logger->debug(YAML::Dump($values_ref));
 
     return $values_ref;
-}
-
-sub DESTROY {
-    my $self = shift;
-
-    return if (!defined $self->{dbh});
-
-    $self->{dbh}->disconnect();
-
-    return;
 }
 
 1;

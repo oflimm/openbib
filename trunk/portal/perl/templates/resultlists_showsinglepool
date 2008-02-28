@@ -64,7 +64,7 @@
 [%- FOREACH result IN resultlists -%]
 [%-     recordlist = result.recordlist -%]
 [%-     database   = result.database -%]
-<tr class="titlerow"><td>&nbsp;</td><td><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% dbinfotable.dbinfo.$database.full %]</td><td align="right" colspan="3"><strong>[% recordlist.size %] Treffer</strong></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
+<tr class="titlerow"><td>&nbsp;</td><td><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% dbinfotable.dbinfo.$database.full %]</td><td align="right" colspan="3"><strong>[% recordlist.get_size %] Treffer</strong></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
 [%-     IF offsets -%]
 <tr class="titlerow"><td>&nbsp;</td><td colspan="4">
 [%          FOREACH singleoffset IN offsets %]

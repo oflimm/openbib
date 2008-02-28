@@ -40,6 +40,7 @@ use YAML;
 
 use OpenBib::Common::Util;
 use OpenBib::Common::Stopwords;
+use OpenBib::Config;
 use OpenBib::Conv::Config;
 use OpenBib::Statistics;
 
@@ -50,6 +51,7 @@ my ($singlepool,$reducemem,$addsuperpers);
 	    "single-pool=s" => \$singlepool,
 	    );
 
+my $config      = OpenBib::Config->instance;
 my $conv_config = new OpenBib::Conv::Config({dbname => $singlepool});
 
 my $dir=`pwd`;
@@ -64,9 +66,12 @@ my %listitemdata_superid    = ();
 my %listitemdata_popularity = ();
 my %normdata                = ();
 
-my $statistics = new OpenBib::Statistics();
+# Verbindung zur SQL-Datenbank herstellen
+my $statisticsdbh
+    = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
+    or $logger->error($DBI::errstr);
 
-my $request=$statistics->{dbh}->prepare("select katkey, count(katkey) as kcount from relevance where origin=2 and dbname=? group by katkey");
+my $request=$statisticsdbh->prepare("select katkey, count(katkey) as kcount from relevance where origin=2 and dbname=? group by katkey");
 $request->execute($singlepool);
 
 open(OUTPOP,    ">:utf8","popularity.mysql")     || die "OUTPOP konnte nicht geoeffnet werden";

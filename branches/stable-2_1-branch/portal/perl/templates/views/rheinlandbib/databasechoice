@@ -60,6 +60,7 @@ Datenbanken zu recherchieren.
 thisdb = {
             'gleuel'   => 1,
             'gdonck'   => 1,
+            'gbroich'  => 1,
             'kwinter'  => 1,
             'kempen'   => 1,
             'kevelaer' => 1,

@@ -224,10 +224,10 @@ sub print_to_handler {
     my $query       = Apache::Request->instance($r);
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-    if ($self->size() == 0) {
+    if ($self->get_size() == 0) {
         OpenBib::Common::Util::print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"),$r,$msg);
     }
-    elsif ($self->size() == 1) {
+    elsif ($self->get_size() == 1) {
         my $record = $self->{recordlist}[0];
         $record->get_full_record->print_to_handler({
             apachereq          => $r,
@@ -236,7 +236,7 @@ sub print_to_handler {
             msg                => $msg,
         });
     }
-    elsif ($self->size() > 1) {
+    elsif ($self->get_size() > 1) {
         my ($atime,$btime,$timeall);
         
         if ($config->{benchmark}) {

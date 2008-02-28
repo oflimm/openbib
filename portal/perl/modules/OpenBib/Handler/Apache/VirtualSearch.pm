@@ -671,8 +671,8 @@ sub handler {
                     my $b2time     = new Benchmark;
                     my $timeall2   = timediff($b2time,$a2time);
                     
-                    $logger->info("Zeit fuer : ".($recordlist->size())." Titel (holen)       : ist ".timestr($timeall2));
-                    $logger->info("Zeit fuer : ".($recordlist->size())." Titel (suchen+holen): ist ".timestr($timeall));
+                    $logger->info("Zeit fuer : ".($recordlist->get_size())." Titel (holen)       : ist ".timestr($timeall2));
+                    $logger->info("Zeit fuer : ".($recordlist->get_size())." Titel (suchen+holen): ist ".timestr($timeall));
                 }
 
                 $recordlist->sort({order=>$sortorder,type=>$sorttype});
@@ -680,7 +680,7 @@ sub handler {
                 # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
                 push @resultset, @{$recordlist->to_ids};
                 
-                my $treffer=$recordlist->size();
+                my $treffer=$recordlist->get_size();
                 
                 my $itemtemplatename=$config->{tt_virtualsearch_result_item_tname};
                 if ($view && -e "$config->{tt_include_path}/views/$view/$itemtemplatename") {
@@ -716,7 +716,7 @@ sub handler {
                     queryid         => $queryid,
                     qopts           => $queryoptions->get_options,
                     fullresultcount => $fullresultcount,
-                    resultlist      => $recordlist->to_list,
+                    recordlist      => $recordlist,
                     
                     sorttype        => $sorttype,
                     sortorder       => $sortorder,
@@ -730,7 +730,7 @@ sub handler {
                     return SERVER_ERROR;
                 };
                 
-                $trefferpage{$database} = $recordlist->to_list;
+                $trefferpage{$database} = $recordlist;
                 $dbhits     {$database} = $treffer;
                 $gesamttreffer          = $gesamttreffer+$treffer;
                 
@@ -803,40 +803,41 @@ sub handler {
                                 my $titlistitem_raw = pack "H*", $document->get_data();
                                 my $titlistitem_ref = Storable::thaw($titlistitem_raw);
 
-                                $recordlist->add($titlistitem_ref);
+                                $recordlist->add(new OpenBib::Record::Title({database => $titlistitem_ref->{database}, id => $titlistitem_ref->{id}})->set_brief_normdata_from_storable($titlistitem_ref));
                             }
                             $mcount++;
                         }
                         
                         my $termweight_ref={};
-
+                        
                         my $drilldowntime;
                         
                         if ($drilldown) {
                             my $ddatime   = new Benchmark;
-
+                            
                             if ($drilldown_categorized){
                                 # Transformation Hash->Array zur Sortierung
                                 
                                 my $tmp_category_map_ref = $request->{categories};
-
+                                
                                 foreach my $type (keys %{$tmp_category_map_ref}){
                                     my $contents_ref = [] ;
                                     foreach my $content (keys %{$tmp_category_map_ref->{$type}}){
-				      my $normcontent = OpenBib::Common::Util::grundform({											  content   => decode_utf8($content),
-																						  searchreq => 1,
-											 });
-
+                                        my $normcontent = OpenBib::Common::Util::grundform({
+                                          content   => decode_utf8($content),
+                                          searchreq => 1,
+                                      });
+                                      
 				      $normcontent=~s/\W/_/g;
-                                        push @{$contents_ref}, [
-                                            decode_utf8($content),
-                                            $tmp_category_map_ref->{$type}{$content},
-					    $normcontent,
-                                        ];
-                                    }
-
+                                      push @{$contents_ref}, [
+                                          decode_utf8($content),
+                                          $tmp_category_map_ref->{$type}{$content},
+                                          $normcontent,
+                                      ];
+                                  }
+                                    
                                     $logger->debug(YAML::Dump($contents_ref));
-
+                                    
                                     # Schwartz'ian Transform
                                     
                                     @{$category_map_ref->{$type}} = map { $_->[0] }
@@ -894,7 +895,7 @@ sub handler {
                         # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
                         push @resultset, @{$recordlist->to_ids};
                         
-                        my $treffer=$recordlist->size();
+                        my $treffer=$recordlist->get_size();
                         
                         my $itemtemplatename=$config->{tt_virtualsearch_result_item_tname};
                         if ($view && -e "$config->{tt_include_path}/views/$view/$itemtemplatename") {
@@ -932,7 +933,7 @@ sub handler {
 			    category_map    => $category_map_ref,
 
                             fullresultcount => $fullresultcount,
-                            resultlist      => $recordlist->to_list,
+                            recordlist      => $recordlist,
                             
                             qopts           => $queryoptions->get_options,
                             drilldown             => $drilldown,
@@ -955,7 +956,7 @@ sub handler {
                             return SERVER_ERROR;
                         };
                         
-                        $trefferpage{$database} = $recordlist->to_list;
+                        $trefferpage{$database} = $recordlist;
                         $dbhits     {$database} = $treffer;
                         $gesamttreffer          = $gesamttreffer+$treffer;
                         
@@ -984,7 +985,7 @@ sub handler {
                 $logger->debug("Treffer-Ids in $database:".$recordlist->to_ids);
 
                 # Wenn mindestens ein Treffer gefunden wurde
-                if ($recordlist->size() > 0) {
+                if ($recordlist->get_size() > 0) {
 
                     my $a2time;
             
@@ -1004,8 +1005,8 @@ sub handler {
                         my $b2time     = new Benchmark;
                         my $timeall2   = timediff($b2time,$a2time);
 
-                        $logger->info("Zeit fuer : ".($recordlist->size())." Titel (holen)       : ist ".timestr($timeall2));
-                        $logger->info("Zeit fuer : ".($recordlist->size())." Titel (suchen+holen): ist ".timestr($timeall));
+                        $logger->info("Zeit fuer : ".($recordlist->get_size())." Titel (holen)       : ist ".timestr($timeall2));
+                        $logger->info("Zeit fuer : ".($recordlist->get_size())." Titel (suchen+holen): ist ".timestr($timeall));
                     }
 
                     $recordlist->sort({order=>$sortorder,type=>$sorttype});
@@ -1013,7 +1014,7 @@ sub handler {
                     # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
                     push @resultset, @{$recordlist->to_ids};
 	    
-                    my $treffer=$recordlist->size();
+                    my $treffer=$recordlist->get_size();
 
                     my $itemtemplatename=$config->{tt_virtualsearch_result_item_tname};
                     if ($view && -e "$config->{tt_include_path}/views/$view/$itemtemplatename") {
@@ -1050,7 +1051,7 @@ sub handler {
                         queryid         => $queryid,
                         qopts           => $queryoptions->get_options,
                         fullresultcount => $fullresultcount,
-                        resultlist      => $recordlist->to_list,
+                        recordlist      => $recordlist,
 
                         sorttype        => $sorttype,
                         sortorder       => $sortorder,
@@ -1064,7 +1065,7 @@ sub handler {
                         return SERVER_ERROR;
                     };
 
-                    $trefferpage{$database} = $recordlist->to_list;
+                    $trefferpage{$database} = $recordlist;
                     $dbhits     {$database} = $treffer;
                     $gesamttreffer          = $gesamttreffer+$treffer;
 

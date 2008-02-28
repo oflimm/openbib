@@ -472,9 +472,9 @@ sub initial_search_for_titidns {
         $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $id}));
     }
     
-    my $fullresultcount = $recordlist->size();
+    my $fullresultcount = $recordlist->get_size();
     
-    $logger->info("Treffer: ".$recordlist->size()." von ".$fullresultcount);
+    $logger->info("Treffer: ".$recordlist->get_size()." von ".$fullresultcount);
 
     # Wenn hitrange Treffer gefunden wurden, ist es wahrscheinlich, dass
     # die wirkliche Trefferzahl groesser ist.

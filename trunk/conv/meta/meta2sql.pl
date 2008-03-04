@@ -33,6 +33,7 @@ use utf8;
 use Business::ISBN;
 use DB_File;
 use Getopt::Long;
+use Log::Log4perl qw(get_logger :levels);
 use MIME::Base64 ();
 use MLDBM qw(DB_File Storable);
 use Storable ();
@@ -44,15 +45,35 @@ use OpenBib::Config;
 use OpenBib::Conv::Config;
 use OpenBib::Statistics;
 
-my ($singlepool,$reducemem,$addsuperpers);
+my ($singlepool,$reducemem,$addsuperpers,$logfile);
 
 &GetOptions("reduce-mem"    => \$reducemem,
             "add-superpers" => \$addsuperpers,
 	    "single-pool=s" => \$singlepool,
+            "logfile=s"     => \$logfile,
 	    );
 
 my $config      = OpenBib::Config->instance;
 my $conv_config = new OpenBib::Conv::Config({dbname => $singlepool});
+
+$logfile=($logfile)?$logfile:"/var/log/openbib/meta2sql-$singlepool.log";
+
+my $log4Perl_config = << "L4PCONF";
+log4perl.rootLogger=DEBUG, LOGFILE, Screen
+log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
+log4perl.appender.LOGFILE.filename=$logfile
+log4perl.appender.LOGFILE.mode=append
+log4perl.appender.LOGFILE.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.LOGFILE.layout.ConversionPattern=%d [%c]: %m%n
+log4perl.appender.Screen=Log::Dispatch::Screen
+log4perl.appender.Screen.layout=Log::Log4perl::Layout::PatternLayout
+log4perl.appender.Screen.layout.ConversionPattern=%d [%c]: %m%n
+L4PCONF
+
+Log::Log4perl::init(\$log4Perl_config);
+
+# Log4perl logger erzeugen
+my $logger = get_logger();
 
 my $dir=`pwd`;
 chop $dir;
@@ -148,7 +169,7 @@ my $stammdateien_ref = {
 
 
 foreach my $type (keys %{$stammdateien_ref}){
-  print STDERR "Bearbeite $stammdateien_ref->{$type}{infile} / $stammdateien_ref->{$type}{outfile}\n";
+  $logger->info("Bearbeite $stammdateien_ref->{$type}{infile} / $stammdateien_ref->{$type}{outfile}");
 
   open(IN ,       "<:utf8",$stammdateien_ref->{$type}{infile} )        || die "IN konnte nicht geoeffnet werden";
   open(OUT,       ">:utf8",$stammdateien_ref->{$type}{outfile})        || die "OUT konnte nicht geoeffnet werden";
@@ -248,7 +269,7 @@ $stammdateien_ref->{mex} = {
     inverted_ref   => $conv_config->{inverted_mex},
 };
 
-print STDERR "Bearbeite mex.exp\n";
+$logger->info("Bearbeite mex.exp");
 
 open(IN ,          "<:utf8","mex.exp"         ) || die "IN konnte nicht geoeffnet werden";
 open(OUT,          ">:utf8","mex.mysql"       ) || die "OUT konnte nicht geoeffnet werden";
@@ -349,7 +370,8 @@ $stammdateien_ref->{tit} = {
 };
 
 if ($addsuperpers){
-    print STDERR "1. Durchgang: Uebergeordnete Titel-ID's finden\n";
+    $logger->info("Option addsuperpers ist aktiviert");
+    $logger->info("1. Durchgang: Uebergeordnete Titel-ID's finden");
     open(IN ,           "<:utf8","tit.exp"          ) || die "IN konnte nicht geoeffnet werden";
 
     while (my $line=<IN>){
@@ -360,7 +382,7 @@ if ($addsuperpers){
     }
     close(IN);
 
-    print STDERR "2. Durchgang: Verfasser-ID's in uebergeordneten Titeln finden\n";
+    $logger->info("2. Durchgang: Verfasser-ID's in uebergeordneten Titeln finden");
     open(IN ,           "<:utf8","tit.exp"          ) || die "IN konnte nicht geoeffnet werden";
 
     my ($id,@persids);
@@ -386,7 +408,7 @@ if ($addsuperpers){
     close(IN);
 }
 
-print STDERR "Bearbeite tit.exp\n";
+$logger->info("Bearbeite tit.exp");
 
 open(IN ,           "<:utf8","tit.exp"          ) || die "IN konnte nicht geoeffnet werden";
 open(OUT,           ">:utf8","tit.mysql"        ) || die "OUT konnte nicht geoeffnet werden";
@@ -413,6 +435,7 @@ my @titswt    = ();
 my @autkor    = ();
 
 my $listitem_ref={};
+my $thisitem_ref={};
 
 my $normdata_ref={};
 
@@ -444,6 +467,7 @@ while (my $line=<IN>){
         @superids  = ();
 
         $listitem_ref={};
+        $thisitem_ref={};
 
         $normdata_ref={};
 
@@ -490,14 +514,6 @@ while (my $line=<IN>){
         @temp=();
         foreach my $item (@swt){
             push @temp, join(" ",@{$stammdateien_ref->{swt}{data}{$item}});
-
-            push @{$listitem_ref->{T0710}}, {
-                id          => $item,
-                type        => 'swt',
-                content     => $listitemdata_swt{$item}{content},
-                contentnorm => $listitemdata_swt{$item}{contentnorm},
-            };
-
         }
         push @temp, join(" ",@titswt);
         my $swt      = join(" ",@temp);
@@ -525,7 +541,7 @@ while (my $line=<IN>){
 
         # Listitem zusammensetzen
 
-                # Konzeptionelle Vorgehensweise fuer die korrekte Anzeige eines Titel in
+        # Konzeptionelle Vorgehensweise fuer die korrekte Anzeige eines Titel in
         # der Kurztitelliste:
         #
         # 1. Fall: Es existiert ein HST
@@ -559,21 +575,22 @@ while (my $line=<IN>){
         #
         if (!exists $listitem_ref->{T0331}) {
             # UnterFall 2.1:
-            if (exists $listitem_ref->{'T0089'}) {
-                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0089}[0]{content};
+            if (exists $thisitem_ref->{'T0089'}) {
+                $listitem_ref->{T0331}[0]{content}=$thisitem_ref->{T0089}[0]{content};
             }
             # Unterfall 2.2:
-            elsif (exists $listitem_ref->{T0455}) {
-                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0455}[0]{content};
+            elsif (exists $thisitem_ref->{T0455}) {
+                $listitem_ref->{T0331}[0]{content}=$thisitem_ref->{T0455}[0]{content};
             }
             # Unterfall 2.3:
-            elsif (exists $listitem_ref->{T0451}) {
-                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T0451}[0]{content};
+            elsif (exists $thisitem_ref->{T0451}) {
+                $listitem_ref->{T0331}[0]{content}=$thisitem_ref->{T0451}[0]{content};
             }
             # Unterfall 2.4:
-            elsif (exists $listitem_ref->{T1203}) {
-                $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T1203}[0]{content};
-            } else {
+            elsif (exists $thisitem_ref->{T1203}) {
+                $listitem_ref->{T0331}[0]{content}=$thisitem_ref->{T1203}[0]{content};
+            }
+            else {
                 $listitem_ref->{T0331}[0]{content}="Kein HST/AST vorhanden";
             }
         }
@@ -590,18 +607,18 @@ while (my $line=<IN>){
         # Dann: Setze diese Bandzahl
 
         # Fall 1:
-        if (exists $listitem_ref->{'T0089'}) {
+        if (exists $thisitem_ref->{'T0089'}) {
             $listitem_ref->{T5100}= [
                 {
-                    content => $listitem_ref->{T0089}[0]{content}
+                    content => $thisitem_ref->{T0089}[0]{content}
                 }
             ];
         }
         # Fall 2:
-        elsif (exists $listitem_ref->{T0455}) {
+        elsif (exists $thisitem_ref->{T0455}) {
             $listitem_ref->{T5100}= [
                 {
-                    content => $listitem_ref->{T0455}[0]{content}
+                    content => $thisitem_ref->{T0455}[0]{content}
                 }
             ];
         }
@@ -663,15 +680,20 @@ while (my $line=<IN>){
         # Kategorien in der Blacklist werden generell nicht uebernommen
         next CATLINE if (exists $stammdateien_ref->{tit}{blacklist_ref}->{$category});
 
+        # Alle Kategorien werden gemerkt
+        push @{$thisitem_ref->{"T".$category}}, {
+            indicator => $indicator,
+            content   => $content,
+        };
+
         # Kategorien in listitemcat werden fuer die Kurztitelliste verwendet
         if (exists $conv_config->{listitemcat}{$category}){
             push @{$listitem_ref->{"T".$category}}, {
                 indicator => $indicator,
                 content   => $content,
             };
-    
         };
-        
+
         my $contentnorm   = "";
         my $contentnormft = "";
 
@@ -712,21 +734,28 @@ while (my $line=<IN>){
             my $supplement = "";
             my $category   = "0100";
 
-            push @verf, $targetid;
-
-            my $content = $listitemdata_aut{$targetid};
-
-            push @{$listitem_ref->{P0100}}, {
-                id      => $targetid,
-                type    => 'aut',
-                content => $content,
-            };
-
-            push @{$normdata_ref->{verf}}, $content;
-
-            push @autkor, $content;
-
-            print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
+            # auch wirklich existiert -> schlechte Katalogisate
+            if (exists $listitemdata_aut{$targetid}){
+                push @verf, $targetid;
+                
+                my $content = $listitemdata_aut{$targetid};
+                
+                push @{$listitem_ref->{P0100}}, {
+                    id      => $targetid,
+                    type    => 'aut',
+                    content => $content,
+                };
+                
+                push @{$normdata_ref->{verf}}, $content;
+                
+                push @autkor, $content;
+                
+                print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            }
+            else {
+                $logger->error("PER ID $targetid doesn't exist in TIT ID $id");
+            }
         }
         elsif ($category=~m/^0101/){
             my ($targetid)  = $content=~m/^IDN: (\d+)/;
@@ -741,22 +770,29 @@ while (my $line=<IN>){
             
             my $category="0101";
 
-            push @verf, $targetid;
-
-            my $content = $listitemdata_aut{$targetid};
-            
-            push @{$listitem_ref->{P0101}}, {
-                id         => $targetid,
-                type       => 'aut',
-                content    => $content,
-                supplement => $supplement,
-            };
-
-            push @{$normdata_ref->{verf}}, $content;
-
-            push @autkor, $content;
-            
-            print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
+            # auch wirklich existiert -> schlechte Katalogisate
+            if (exists $listitemdata_aut{$targetid}){
+                push @verf, $targetid;
+                
+                my $content = $listitemdata_aut{$targetid};
+                
+                push @{$listitem_ref->{P0101}}, {
+                    id         => $targetid,
+                    type       => 'aut',
+                    content    => $content,
+                    supplement => $supplement,
+                };
+                
+                push @{$normdata_ref->{verf}}, $content;
+                
+                push @autkor, $content;
+                
+                print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            }
+            else {
+                $logger->error("PER ID $targetid doesn't exist in TIT ID $id");
+            }
         }
         elsif ($category=~m/^0102/){
             my ($targetid)  = $content=~m/^IDN: (\d+)/;
@@ -771,22 +807,29 @@ while (my $line=<IN>){
             
             my $category="0102";
 
-            push @verf, $targetid;
-
-            my $content = $listitemdata_aut{$targetid};
-            
-            push @{$listitem_ref->{P0102}}, {
-                id         => $targetid,
-                type       => 'aut',
-                content    => $content,
-                supplement => $supplement,
-            };
-
-            push @{$normdata_ref->{verf}}, $content;
-
-            push @autkor, $content;
-            
-            print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
+            # auch wirklich existiert -> schlechte Katalogisate
+            if (exists $listitemdata_aut{$targetid}){
+                push @verf, $targetid;
+                
+                my $content = $listitemdata_aut{$targetid};
+                
+                push @{$listitem_ref->{P0102}}, {
+                    id         => $targetid,
+                    type       => 'aut',
+                    content    => $content,
+                    supplement => $supplement,
+                };
+                
+                push @{$normdata_ref->{verf}}, $content;
+                
+                push @autkor, $content;
+                
+                print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            }
+            else {
+                $logger->error("PER ID $targetid doesn't exist in TIT ID $id");
+            }
         }
         elsif ($category=~m/^0103/){
             my ($targetid)  = $content=~m/^IDN: (\d+)/;
@@ -801,22 +844,29 @@ while (my $line=<IN>){
 
             my $category="0103";
 
-            push @verf, $targetid;
-
-            my $content = $listitemdata_aut{$targetid};
+            # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
+            # auch wirklich existiert -> schlechte Katalogisate
+            if (exists $listitemdata_aut{$targetid}){
+                push @verf, $targetid;
+                
+                my $content = $listitemdata_aut{$targetid};
+                
+                push @{$listitem_ref->{P0103}}, {
+                    id         => $targetid,
+                    type       => 'aut',
+                    content    => $content,
+                    supplement => $supplement,
+                };
+                
+                push @{$normdata_ref->{verf}}, $content;
+                
+                push @autkor, $content;
             
-            push @{$listitem_ref->{P0103}}, {
-                id         => $targetid,
-                type       => 'aut',
-                content    => $content,
-                supplement => $supplement,
-            };
-
-            push @{$normdata_ref->{verf}}, $content;
-
-            push @autkor, $content;
-            
-            print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+                print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            }
+            else {
+                $logger->error("PER ID $targetid doesn't exist in TIT ID $id");
+            }
         }
         elsif ($category=~m/^0200/){
             my ($targetid) = $content=~m/^IDN: (\d+)/;
@@ -826,19 +876,26 @@ while (my $line=<IN>){
             my $supplement = "";
             my $category   = "0200";
 
-            push @kor, $targetid;
-
-            my $content = $listitemdata_kor{$targetid};
-            
-            push @{$listitem_ref->{C0200}}, {
-                id         => $targetid,
-                type       => 'kor',
-                content    => $content,
-            };
-
-            push @autkor, $content;
-            
-            print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
+            # auch wirklich existiert -> schlechte Katalogisate
+            if (exists $listitemdata_kor{$targetid}){
+                push @kor, $targetid;
+                
+                my $content = $listitemdata_kor{$targetid};
+                
+                push @{$listitem_ref->{C0200}}, {
+                    id         => $targetid,
+                    type       => 'kor',
+                    content    => $content,
+                };
+                
+                push @autkor, $content;
+                
+                print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            }
+            else {
+                $logger->error("KOR ID $targetid doesn't exist in TIT ID $id");
+            }
         }
         elsif ($category=~m/^0201/){
             my ($targetid) = $content=~m/^IDN: (\d+)/;
@@ -848,19 +905,26 @@ while (my $line=<IN>){
             my $supplement = "";
             my $category   = "0201";
 
-            push @kor, $targetid;
-
-            my $content = $listitemdata_kor{$targetid};
-
-            push @{$listitem_ref->{C0201}}, {
-                id         => $targetid,
-                type       => 'kor',
-                content    => $content,
-            };
-
-            push @autkor, $content;
-            
-            print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
+            # auch wirklich existiert -> schlechte Katalogisate
+            if (exists $listitemdata_kor{$targetid}){
+                push @kor, $targetid;
+                
+                my $content = $listitemdata_kor{$targetid};
+                
+                push @{$listitem_ref->{C0201}}, {
+                    id         => $targetid,
+                    type       => 'kor',
+                    content    => $content,
+                };
+                
+                push @autkor, $content;
+                
+                print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            }
+            else {
+                $logger->error("KOR ID $targetid doesn't exist in TIT ID $id");
+            }
         }
         elsif ($category=~m/^0700/){
             my ($targetid) = $content=~m/^IDN: (\d+)/;
@@ -870,13 +934,20 @@ while (my $line=<IN>){
             my $supplement = "";
             my $category   = "0700";
 
-            push @notation, $targetid;
-
-            my $content = $listitemdata_not{$targetid};
-            
-            push @{$normdata_ref->{notation}}, $content;
-
-            print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
+            # auch wirklich existiert -> schlechte Katalogisate
+            if (exists $listitemdata_not{$targetid}){
+                push @notation, $targetid;
+                
+                my $content = $listitemdata_not{$targetid};
+                
+                push @{$normdata_ref->{notation}}, $content;
+                
+                print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            }
+            else {
+                $logger->error("SYS ID $targetid doesn't exist in TIT ID $id");
+            }
         }
         elsif ($category=~m/^0710/){
             my ($targetid) = $content=~m/^IDN: (\d+)/;
@@ -886,13 +957,20 @@ while (my $line=<IN>){
             my $supplement = "";
             my $category   = "0710";
 
-            push @swt, $targetid;
-            
-            my $content = $listitemdata_swt{$targetid}->{content};
-
-            push @{$normdata_ref->{swt}}, $content;
-
-            print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
+            # auch wirklich existiert -> schlechte Katalogisate
+            if (exists $listitemdata_swt{$targetid}){
+                push @swt, $targetid;
+                
+                my $content = $listitemdata_swt{$targetid}->{content};
+                
+                push @{$normdata_ref->{swt}}, $content;
+                
+                print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            }
+            else {
+                $logger->error("SWT ID $targetid doesn't exist in TIT ID $id");
+            }
         }
         elsif ($category=~m/^0902/){
             my ($targetid) = $content=~m/^IDN: (\d+)/;
@@ -902,9 +980,16 @@ while (my $line=<IN>){
             my $supplement = "";
             my $category   = "0902";
 
-            push @swt, $targetid;
-            
-            print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
+            # auch wirklich existiert -> schlechte Katalogisate
+            if (exists $listitemdata_swt{$targetid}){
+                push @swt, $targetid;
+                
+                print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            }
+            else {
+                $logger->error("SWT ID $targetid doesn't exist in TIT ID $id");
+            }
         }
         elsif ($category=~m/^0907/){
             my ($targetid) = $content=~m/^IDN: (\d+)/;
@@ -913,10 +998,17 @@ while (my $line=<IN>){
             my $sourcetype = 1; # TIT
             my $supplement = "";
             my $category   = "0907";
-
-            push @swt, $targetid;
-
-            print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            
+            # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
+            # auch wirklich existiert -> schlechte Katalogisate
+            if (exists $listitemdata_swt{$targetid}){
+                push @swt, $targetid;
+                
+                print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            }
+            else {
+                $logger->error("SWT ID $targetid doesn't exist in TIT ID $id");
+            }
         }
         elsif ($category=~m/^0912/){
             my ($targetid) = $content=~m/^IDN: (\d+)/;
@@ -925,10 +1017,17 @@ while (my $line=<IN>){
             my $sourcetype = 1; # TIT
             my $supplement = "";
             my $category   = "0912";
+            
+            # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
+            # auch wirklich existiert -> schlechte Katalogisate
+            if (exists $listitemdata_swt{$targetid}){
+                push @swt, $targetid;
 
-            push @swt, $targetid;
-
-            print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+                print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            }
+            else {
+                $logger->error("SWT ID $targetid doesn't exist in TIT ID $id");
+            }
         }
         elsif ($category=~m/^0917/){
             my ($targetid) = $content=~m/^IDN: (\d+)/;
@@ -938,9 +1037,16 @@ while (my $line=<IN>){
             my $supplement = "";
             my $category   = "0917";
 
-            push @swt, $targetid;
-
-            print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
+            # auch wirklich existiert -> schlechte Katalogisate
+            if (exists $listitemdata_swt{$targetid}){
+                push @swt, $targetid;
+                
+                print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            }
+            else {
+                $logger->error("SWT ID $targetid doesn't exist in TIT ID $id");
+            }
         }
         elsif ($category=~m/^0922/){
             my ($targetid) = $content=~m/^IDN: (\d+)/;
@@ -950,9 +1056,16 @@ while (my $line=<IN>){
             my $supplement = "";
             my $category   = "0922";
 
-            push @swt, $targetid;
-
-            print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
+            # auch wirklich existiert -> schlechte Katalogisate
+            if (exists $listitemdata_swt{$targetid}){
+                push @swt, $targetid;
+                
+                print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            }
+            else {
+                $logger->error("SWT ID $targetid doesn't exist in TIT ID $id");
+            }
         }
         elsif ($category=~m/^0927/){
             my ($targetid) = $content=~m/^IDN: (\d+)/;
@@ -962,9 +1075,16 @@ while (my $line=<IN>){
             my $supplement = "";
             my $category   = "0927";
 
-            push @swt, $targetid;
+            # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
+            # auch wirklich existiert -> schlechte Katalogisate
+            if (exists $listitemdata_swt{$targetid}){
+                push @swt, $targetid;
 
-            print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+                print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            }
+            else {
+                $logger->error("SWT ID $targetid doesn't exist in TIT ID $id");
+            }
         }
         elsif ($category=~m/^0932/){
             my ($targetid) = $content=~m/^IDN: (\d+)/;
@@ -974,9 +1094,16 @@ while (my $line=<IN>){
             my $supplement = "";
             my $category   = "0932";
 
-            push @swt, $targetid;
-
-            print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
+            # auch wirklich existiert -> schlechte Katalogisate
+            if (exists $listitemdata_swt{$targetid}){
+                push @swt, $targetid;
+                
+                print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            }
+            else {
+                $logger->error("SWT ID $targetid doesn't exist in TIT ID $id");
+            }
         }
         elsif ($category=~m/^0937/){
             my ($targetid) = $content=~m/^IDN: (\d+)/;
@@ -986,9 +1113,16 @@ while (my $line=<IN>){
             my $supplement = "";
             my $category   = "0937";
 
-            push @swt, $targetid;
-
-            print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
+            # auch wirklich existiert -> schlechte Katalogisate
+            if (exists $listitemdata_swt{$targetid}){
+                push @swt, $targetid;
+                
+                print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            }
+            else {
+                $logger->error("SWT ID $targetid doesn't exist in TIT ID $id");
+            }
         }
         elsif ($category=~m/^0942/){
             my ($targetid) = $content=~m/^IDN: (\d+)/;
@@ -998,9 +1132,16 @@ while (my $line=<IN>){
             my $supplement = "";
             my $category   = "0942";
 
-            push @swt, $targetid;
-
-            print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
+            # auch wirklich existiert -> schlechte Katalogisate
+            if (exists $listitemdata_swt{$targetid}){
+                push @swt, $targetid;
+                
+                print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            }
+            else {
+                $logger->error("SWT ID $targetid doesn't exist in TIT ID $id");
+            }
         }
         elsif ($category=~m/^0947/){
             my ($targetid) = $content=~m/^IDN: (\d+)/;
@@ -1010,9 +1151,16 @@ while (my $line=<IN>){
             my $supplement = "";
             my $category   = "0947";
 
-            push @swt, $targetid;
-
-            print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            # Es ist nicht selbstverstaendlich, dass ein verknuepfter Titel
+            # auch wirklich existiert -> schlechte Katalogisate
+            if (exists $listitemdata_swt{$targetid}){
+                push @swt, $targetid;
+                
+                print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
+            }
+            else {
+                $logger->error("SWT ID $targetid doesn't exist in TIT ID $id");
+            }
         }
         # Titeldaten
         else {

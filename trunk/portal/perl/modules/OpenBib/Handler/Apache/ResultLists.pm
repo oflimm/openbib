@@ -53,7 +53,6 @@ use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
-use OpenBib::ResultLists::Util;
 use OpenBib::Search::Util;
 use OpenBib::SearchQuery;
 use OpenBib::Session;

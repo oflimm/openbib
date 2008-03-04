@@ -52,13 +52,12 @@ sub new {
 
     my $self = $config->{convtab}{default};
 
-    if (defined $dbname){
+    if (defined $dbname && exists $config->{convtab}{$dbname}){
         foreach my $type (keys %$self){
             $self->{$type} = $config->{convtab}{$dbname}{$type} if (exists $config->{convtab}{$dbname}{$type});
         }
     }
 
-    print YAML::Dump($config);
     bless ($self, $class);
 
     return $self;
@@ -81,7 +80,7 @@ sub _new_instance {
 
     my $self = $config->{convtab}{default};
 
-    if (defined $dbname){
+    if (defined $dbname && exists $config->{convtab}{$dbname}){
         foreach my $type (keys %$self){
             $self->{$type} = $config->{convtab}{$dbname}{$type} if (exists $config->{convtab}{$dbname}{$type});
         }

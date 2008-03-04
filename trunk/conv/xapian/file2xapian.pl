@@ -60,7 +60,7 @@ if ($help){
     print_help();
 }
 
-$logfile=($logfile)?$logfile:'/var/log/openbib/db2xapian.log';
+$logfile=($logfile)?$logfile:'/var/log/openbib/file2xapian.log';
 
 my $log4Perl_config = << "L4PCONF";
 log4perl.rootLogger=DEBUG, LOGFILE, Screen
@@ -394,7 +394,7 @@ untie(%xapian_idmapping);
 
 sub print_help {
     print << "ENDHELP";
-db2xapian.pl - Datenbank-Konnektor zum Aufbau eines Xapian-Index
+file2xapian.pl - Datenbank-Konnektor zum Aufbau eines Xapian-Index
 
    Optionen:
    -help                 : Diese Informationsseite

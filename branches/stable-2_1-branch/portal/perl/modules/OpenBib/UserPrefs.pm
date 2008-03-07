@@ -249,6 +249,7 @@ sub handler {
             isbnchecked      => $isbnchecked,
             issnchecked      => $issnchecked,
             inhaltchecked    => $inhaltchecked,
+            gtquellechecked  => $gtquellechecked,
             signchecked      => $signchecked,
             martchecked      => $martchecked,
             ejahrchecked     => $ejahrchecked,

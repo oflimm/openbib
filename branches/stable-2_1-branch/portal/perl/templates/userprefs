@@ -181,7 +181,8 @@
 <tr><td align="right"><input type="checkbox" name="showissn"      value="1" [% issnchecked %] /></td><td>[% msg.maketext("ISSN") %]</td></tr>
 <tr><td align="right"><input type="checkbox" name="showsign"      value="1" [% signchecked %] /></td><td>[% msg.maketext("Signatur") %]</td></tr>
 <tr><td align="right"><input type="checkbox" name="showhststring" value="1" [% hststringchecked %] /></td><td>[% msg.maketext("Titel-String") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="showinhalt   " value="1" [% inhaltchecked %] /></td><td>[% msg.maketext("Abstrakt/Inhalt") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="showinhalt"    value="1" [% inhaltchecked %] /></td><td>[% msg.maketext("Abstrakt/Inhalt") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="showgtquelle"      value="1" [% gtquellechecked %] /></td><td>[% msg.maketext("Serie/Band/Quelle") %]</td></tr>
 <tr><td align="right"><input type="checkbox" name="showmart"      value="1" [% martchecked %] /></td><td>[% msg.maketext("Medienart") %]</td></tr>
 <tr><td align="right"><input type="checkbox" name="showejahr"     value="1" [% ejahrchecked %] /></td><td>[% msg.maketext("Erscheinungsjahr") %]</td></tr>
 <tr><td colspan="2">&nbsp;</td></tr>

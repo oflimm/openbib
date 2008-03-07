@@ -116,7 +116,7 @@ sub handler {
 
     # Wenn die Session schon authentifiziert ist, dann wird
     # wird in die Benutzereinstellungen gesprungen
-    if ($user->{ID}){
+    if ($user->{ID} && !$validtarget){
 
         $r->internal_redirect("http://$config->{servername}$config->{userprefs_loc}?sessionID=$session->{ID};view=$view;action=showfields");
 

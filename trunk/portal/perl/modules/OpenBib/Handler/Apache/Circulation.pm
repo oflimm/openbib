@@ -127,7 +127,15 @@ sub handler {
         }
         return OK;
     }
-  
+    # wenn der Benutzer bereits fuer ein anderes Target authentifiziert ist
+    else {
+        if ($validtarget && $validtarget ne $sessionlogintarget){
+            $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1;type=circulation;validtarget=$validtarget");
+            return OK;
+        }
+        
+    }
+    
     my ($loginname,$password) = $user->get_credentials();
     my $database              = $user->get_targetdb_of_session($session->{ID});
 

@@ -47,7 +47,7 @@
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.2.1&nbsp;&nbsp;&nbsp;<a href="#recherchekomplexallgemein">Allgemeine Informationen</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.2.2&nbsp;&nbsp;&nbsp;<a href="#suchlogikkomplex">Suchlogik</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.2.3&nbsp;&nbsp;&nbsp;<a href="#auswahl">Katalogauswahl</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.2.4&nbsp;&nbsp;&nbsp;<a href="#indexsuche">Such-Index</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.2.4&nbsp;&nbsp;&nbsp;<a href="#indexsuche">Such-Index</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/indexsuche.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.2.5&nbsp;&nbsp;&nbsp;<a href="#beispiele">Beispiele</a></td></tr>
          <tr><td align="right">3</td><td><a href="#allghinweisesuche">Weitere allgemeine Hinweise zur Suchanfrage</a></td></tr>
          <tr><td align="right">4</td><td><a href="#perskug">Mein KUG</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/meinkuganmelden.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>
@@ -103,7 +103,7 @@
       jedoch in der entsprechenden Kategorie auf das gro&szlig;e
       
       <span style="font-family:Arial,helv,Helvetica,Verdana; font-size:110%;
-	    color=blue;">G</span> (G = Globale Suche innerhalb aller Kataloge),
+	    color=blue;">G</span> (G = Globale Suche innerhalb aller Kataloge <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/g.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a>),
       werden Ihnen die zugeh&ouml;rigen Titel in <b>allen</b> Katalogen
       angezeigt. Somit haben Sie die Wahl, ob Sie, ausgehend von einem
       Treffer, <b>katalogspezifisch</b> oder <b>katalog&uuml;bergreifend</b>

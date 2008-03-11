@@ -227,7 +227,7 @@ sub handler {
 
                     $logger->debug("Pushing titlistitem_ref:\n".YAML::Dump($titlistitem_ref));
 
-                    $recordlist->add($titlistitem_ref);
+                    $recordlist->add(new OpenBib::Record::Title({database => $titlistitem_ref->{database}, id => $titlistitem_ref->{id}})->set_brief_normdata_from_storable($titlistitem_ref));
 
                     $mcount++;
                 }
@@ -266,9 +266,11 @@ sub handler {
                 my $record     = new OpenBib::Record::Title({database=>$database});
 
                 foreach my $idn (@tidns) {
-                    $recordlist->add($record->get_brief_record({id=>$idn})->to_rawdata);
+                    $recordlist->add(new OpenBib::Record::Title({database=>$database, id=>$idn}));
                 }
 
+                $recordlist->get_brief_records;
+                
                 my $btime      = new Benchmark;
                 my $timeall    = timediff($btime,$atime);
                 my $resulttime = timestr($timeall,"nop");
@@ -313,7 +315,7 @@ sub handler {
         
         push @resultlists, {
             database   => $database,
-            resultlist => $recordlist->to_list,
+            recordlist => $recordlist,
         };
         
         my @offsets = $session->get_resultlists_offsets({
@@ -330,7 +332,7 @@ sub handler {
             
             resultlists    => \@resultlists,
 
-            dbinfotable     => $dbinfotable,
+            dbinfotable    => $dbinfotable,
             
             loginname      => $loginname,
             password       => $password,
@@ -366,12 +368,10 @@ sub handler {
             database => $database,
             offset   => $offset,
         })){
-            my $storable_ref=Storable::thaw(pack "H*", $searchresult);
+            my $recordlist = Storable::thaw(pack "H*", $searchresult);
 
-            my $recordlist = new OpenBib::RecordList::Title();
-
-            $recordlist->add_from_storable($storable_ref);
-
+            $logger->debug("Recordlist: ".YAML::Dump($recordlist));
+            
             $recordlist->sort({order=>$sortorder,type=>$sorttype});
 
             my $treffer=$recordlist->size();
@@ -502,12 +502,11 @@ sub handler {
             foreach my $item_ref ($session->get_all_items_in_resultlist({
                 queryid => $queryid,
             })) {
-                my $storable_ref=Storable::thaw(pack "H*", $item_ref->{searchresult});
-
-                $recordlist->add_from_storable($storable_ref);
+                # Alle gecacheten Recordlisten werden zu dieser hinzugefuegt
+                $recordlist->add($item_ref->{searchresult});
             }
             
-            my $treffer=$recordlist->size();
+            my $treffer=$recordlist->get_size();
             
             # Sortierung
 
@@ -555,15 +554,9 @@ sub handler {
             foreach my $item_ref ($session->get_all_items_in_resultlist({
                 queryid => $queryid,
             })) {
-                my $storable_ref=Storable::thaw(pack "H*", $item_ref->{searchresult});
-                
-                my $database=$item_ref->{dbname};
-
-                my $recordlist = new OpenBib::RecordList::Title();
-
-                $recordlist->add_from_storable($storable_ref);
-
-                my $treffer=$recordlist->size();
+                my $recordlist = $item_ref->{searchresult};
+                my $database   = $item_ref->{dbname};
+                my $treffer    = $recordlist->get_size();
                 
                 # Sortierung
 

@@ -834,7 +834,7 @@ Im KUG werden derzeit folgende Arten von RSS-Feeds angeboten:
      <tr><td align="center"><img src="/images/openbib/info.png" alt="Kontextsensitive Hilfe" /></td><td>Kontextsensitive Hilfe</td></tr>   
      <tr><td align="center"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></td><td>Interaktives Tutorium</td></tr>
      <tr><td align="center"><img src="/images/openbib/wikipedia.png" alt="Wikipedia" /></td><td>Wikipedia</td></tr>
-     <tr><td align="center"><span class="globalsearch">G</span></td><td>Suche &uuml;ber alle Kataloge</td></tr>
+     <tr><td align="center"><span class="globalsearch">G</span></td><td>Suche &uuml;ber alle Kataloge <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/g.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>
   </table>
 
     <h1 id="verlinkung">14 Verlinkung und Lastverteilung des KUG</h1>

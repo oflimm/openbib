@@ -63,9 +63,9 @@
 </form>
 
 <table>
-
+<tr class="titlerow"><td>&nbsp;</td><td><b>Katalog</b></td><td><b>Titel<b></td><td align="right" colspan="3"><strong>[% recordlist.get_size %] [% msg.maketext("Treffer") %]</strong></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
 [% listrow = 'listrow1' %]
-[% FOREACH record IN recordlist.get_records
+[% FOREACH record IN recordlist.get_records %]
 [%  item = record.to_rawdata %]
 [%# Verfasser konstruieren %]
 [%- persons = [] -%]

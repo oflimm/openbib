@@ -46,7 +46,7 @@ use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
 
-sub new {    
+sub new {
     my ($class) = @_;
 
     # Log4perl logger erzeugen
@@ -64,21 +64,18 @@ sub new {
 }
 
 sub add {
-    my ($self,$record)=@_;
+    my ($self,$records)=@_;
 
-    push @{$self->{recordlist}}, $record;
-
-    $self->{_size}=$self->{_size}+1;
-}
-
-sub add_from_storable {
-    my ($self,$storable_ref)=@_;
-    
-    foreach my $record_ref (@{$storable_ref}){
-        $self->add(new OpenBib::Record::Title({database => $record_ref->{database}, id => $record_ref->{id}})->set_brief_normdata_from_storable($record_ref));
+    # Einzelner Titel
+    if    (ref($records) eq "OpenBib::Record::Title"){
+        push @{$self->{recordlist}}, $records;
+        $self->{_size}=$self->{_size}+1;
     }
-
-    return;
+    # Titelliste
+    elsif (ref($records) eq "OpenBib::RecordList::Title"){
+       push @{$self->{recordlist}}, $records->get_records;
+       $self->{_size}=$self->{_size}+$records->get_size();
+    }
 }
 
 sub sort {
@@ -254,6 +251,8 @@ sub print_to_handler {
             undef $btime;
             undef $timeall;
         }
+
+        $logger->debug("Sorting $sorttype with order $sortorder");
         
         $self->sort({order=>$sortorder,type=>$sorttype});
         
@@ -372,8 +371,8 @@ sub get_titlecount_per_db {
 }
 
 sub _by_yearofpub {
-    my %line1=%$a;
-    my %line2=%$b;
+    my %line1=%{$a->get_brief_normdata()};
+    my %line2=%{$b->get_brief_normdata()};
 
     my $line1=(exists $line1{T0425}[0]{content} && defined $line1{T0425}[0]{content})?_cleanrl($line1{T0425}[0]{content}):"";
     my $line2=(exists $line2{T0425}[0]{content} && defined $line2{T0425}[0]{content})?_cleanrl($line2{T0425}[0]{content}):"";
@@ -388,8 +387,8 @@ sub _by_yearofpub {
 }
 
 sub _by_yearofpub_down {
-    my %line1=%$a;
-    my %line2=%$b;
+    my %line1=%{$a->get_brief_normdata()};
+    my %line2=%{$b->get_brief_normdata()};
 
     my $line1=(exists $line1{T0425}[0]{content} && defined $line1{T0425}[0]{content})?_cleanrl($line1{T0425}[0]{content}):"";
     my $line2=(exists $line2{T0425}[0]{content} && defined $line2{T0425}[0]{content})?_cleanrl($line2{T0425}[0]{content}):"";
@@ -405,8 +404,8 @@ sub _by_yearofpub_down {
 
 
 sub _by_publisher {
-    my %line1=%$a;
-    my %line2=%$b;
+    my %line1=%{$a->get_brief_normdata()};
+    my %line2=%{$b->get_brief_normdata()};
 
     my $line1=(exists $line1{T0412}[0]{content} && defined $line1{T0412}[0]{content})?_cleanrl($line1{T0412}[0]{content}):"";
     my $line2=(exists $line2{T0412}[0]{content} && defined $line2{T0412}[0]{content})?_cleanrl($line2{T0412}[0]{content}):"";
@@ -415,8 +414,8 @@ sub _by_publisher {
 }
 
 sub _by_publisher_down {
-    my %line1=%$a;
-    my %line2=%$b;
+    my %line1=%{$a->get_brief_normdata()};
+    my %line2=%{$b->get_brief_normdata()};
 
     my $line1=(exists $line1{T0412}[0]{content} && defined $line1{T0412}[0]{content})?_cleanrl($line1{T0412}[0]{content}):"";
     my $line2=(exists $line2{T0412}[0]{content} && defined $line2{T0412}[0]{content})?_cleanrl($line2{T0412}[0]{content}):"";
@@ -425,8 +424,8 @@ sub _by_publisher_down {
 }
 
 sub _by_signature {
-    my %line1=%$a;
-    my %line2=%$b;
+    my %line1=%{$a->get_brief_normdata()};
+    my %line2=%{$b->get_brief_normdata()};
 
     # Sortierung anhand erster Signatur
     my $line1=(exists $line1{X0014}[0]{content} && defined $line1{X0014}[0]{content})?_cleanrl($line1{X0014}[0]{content}):"0";
@@ -436,8 +435,8 @@ sub _by_signature {
 }
 
 sub _by_signature_down {
-    my %line1=%$a;
-    my %line2=%$b;
+    my %line1=%{$a->get_brief_normdata()};
+    my %line2=%{$b->get_brief_normdata()};
 
     # Sortierung anhand erster Signatur
     my $line1=(exists $line1{X0014}[0]{content} && defined $line1{X0014}[0]{content})?_cleanrl($line1{X0014}[0]{content}):"";
@@ -447,8 +446,8 @@ sub _by_signature_down {
 }
 
 sub _by_author {
-    my %line1=%$a;
-    my %line2=%$b;
+    my %line1=%{$a->get_brief_normdata()};
+    my %line2=%{$b->get_brief_normdata()};
 
     my $line1=(exists $line1{PC0001}[0]{content} && defined $line1{PC0001}[0]{content})?_cleanrl($line1{PC0001}[0]{content}):"";
     my $line2=(exists $line2{PC0001}[0]{content} && defined $line2{PC0001}[0]{content})?_cleanrl($line2{PC0001}[0]{content}):"";
@@ -457,8 +456,8 @@ sub _by_author {
 }
 
 sub _by_author_down {
-    my %line1=%$a;
-    my %line2=%$b;
+    my %line1=%{$a->get_brief_normdata()};
+    my %line2=%{$b->get_brief_normdata()};
 
     my $line1=(exists $line1{PC0001}[0]{content} && defined $line1{PC0001}[0]{content})?_cleanrl($line1{PC0001}[0]{content}):"";
     my $line2=(exists $line2{PC0001}[0]{content} && defined $line2{PC0001}[0]{content})?_cleanrl($line2{PC0001}[0]{content}):"";
@@ -467,8 +466,8 @@ sub _by_author_down {
 }
 
 sub _by_title {
-    my %line1=%$a;
-    my %line2=%$b;
+    my %line1=%{$a->get_brief_normdata()};
+    my %line2=%{$b->get_brief_normdata()};
 
     my $line1=(exists $line1{T0331}[0]{content} && defined $line1{T0331}[0]{content})?_cleanrl($line1{T0331}[0]{content}):"";
     my $line2=(exists $line2{T0331}[0]{content} && defined $line2{T0331}[0]{content})?_cleanrl($line2{T0331}[0]{content}):"";
@@ -477,8 +476,8 @@ sub _by_title {
 }
 
 sub _by_title_down {
-    my %line1=%$a;
-    my %line2=%$b;
+    my %line1=%{$a->get_brief_normdata()};
+    my %line2=%{$b->get_brief_normdata()};
 
     my $line1=(exists $line1{T0331}[0]{content} && defined $line1{T0331}[0]{content})?_cleanrl($line1{T0331}[0]{content}):"";
     my $line2=(exists $line2{T0331}[0]{content} && defined $line2{T0331}[0]{content})?_cleanrl($line2{T0331}[0]{content}):"";
@@ -487,8 +486,8 @@ sub _by_title_down {
 }
 
 sub _by_order {
-    my %line1=%$a;
-    my %line2=%$b;
+    my %line1=%{$a->get_brief_normdata()};
+    my %line2=%{$b->get_brief_normdata()};
 
     my $line1=(exists $line1{T5100}[0]{content} && defined $line1{T5100}[0]{content})?cleanrl($line1{T5100}[0]{content}):"";
     my $line2=(exists $line2{T5100}[0]{content} && defined $line2{T5100}[0]{content})?cleanrl($line2{T5100}[0]{content}):"";
@@ -521,8 +520,8 @@ sub _by_order {
 }
 
 sub _by_order_down {
-    my %line1=%$a;
-    my %line2=%$b;
+    my %line1=%{$a->get_brief_normdata()};
+    my %line2=%{$b->get_brief_normdata()};
 
     my $line1=(exists $line1{T5100}[0]{content} && defined $line1{T5100}[0]{content})?cleanrl($line1{T5100}[0]{content}):"";
     my $line2=(exists $line2{T5100}[0]{content} && defined $line2{T5100}[0]{content})?cleanrl($line2{T5100}[0]{content}):"";
@@ -555,8 +554,8 @@ sub _by_order_down {
 }
 
 sub _by_popularity {
-    my %line1=%$a;
-    my %line2=%$b;
+    my %line1=%{$a->get_brief_normdata()};
+    my %line2=%{$b->get_brief_normdata()};
 
     my $line1=(exists $line1{popularity} && defined $line1{popularity})?_cleanrl($line1{popularity}):"";
     my $line2=(exists $line2{popularity} && defined $line2{popularity})?_cleanrl($line2{popularity}):"";
@@ -568,8 +567,8 @@ sub _by_popularity {
 }
 
 sub _by_popularity_down {
-    my %line1=%$a;
-    my %line2=%$b;
+    my %line1=%{$a->get_brief_normdata()};
+    my %line2=%{$b->get_brief_normdata()};
 
     my $line1=(exists $line1{popularity} && defined $line1{popularity})?_cleanrl($line1{popularity}):"";
     my $line2=(exists $line2{popularity} && defined $line2{popularity})?_cleanrl($line2{popularity}):"";
@@ -583,10 +582,10 @@ sub _by_popularity_down {
 sub _cleanrl {
     my ($line)=@_;
 
-    $line=~s/Ü/Ue/g;
-    $line=~s/Ä/Ae/g;
-    $line=~s/Ö/Oe/g;
     $line=lc($line);
+    $line=~s/ü/ue/g;
+    $line=~s/ä/ae/g;
+    $line=~s/ö/oe/g;
     $line=~s/&(.)uml;/$1e/g;
     $line=~s/^ +//g;
     $line=~s/^¬//g;

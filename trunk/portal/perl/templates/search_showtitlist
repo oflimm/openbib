@@ -40,6 +40,8 @@
 [%- IF query.param('searchtitofurhkor') -%]<input type="hidden" name="searchtitofurhkor" value="[% query.param('searchtitofurhkor') %]" />[% END %]
 [%- IF query.param('searchtitofnot')    -%]<input type="hidden" name="searchtitofnot" value="[% query.param('searchtitofnot') %]" />[% END %]
 [%- IF query.param('searchtitofswt')    -%]<input type="hidden" name="searchtitofswt" value="[% query.param('searchtitofswt') %]" />[% END %]
+[%- IF query.param('searchtitofcnt')    -%]<input type="hidden" name="searchtitofcnt" value="[% query.param('searchtitofcnt') %]" />[% END %]
+[%- IF query.param('category')          -%]<input type="hidden" name="category" value="[% query.param('category') %]" />[% END %]
 
 <table width="100%">
 <tr><th>[% msg.maketext("Optionen") %]</th></tr>

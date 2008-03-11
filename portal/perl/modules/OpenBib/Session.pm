@@ -548,7 +548,7 @@ sub get_items_in_resultlist_per_db {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;    
+    my $config = OpenBib::Config->instance;
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
@@ -576,6 +576,8 @@ sub get_items_in_resultlist_per_db {
     }
     $idnresult->finish();
 
+    $logger->debug(\@resultlist);
+    
     return @resultlist;
 }
 
@@ -589,7 +591,7 @@ sub get_all_items_in_resultlist {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;    
+    my $config = OpenBib::Config->instance;
 
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
@@ -611,7 +613,7 @@ sub get_all_items_in_resultlist {
         if (exists $searchresult_ref->{$dbname}){
             push @resultlist, {
                 dbname       => $dbname,
-                searchresult => $searchresult_ref->{$dbname},
+                searchresult => Storable::thaw(pack "H*",$searchresult_ref->{$dbname}),
             };
         }
     }

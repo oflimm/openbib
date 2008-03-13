@@ -108,6 +108,7 @@ sub handler {
             sessionID  => $session->{ID},
 
             config     => $config,
+            user       => $user,
             msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config->{tt_selfreg_tname},$ttdata,$r);
@@ -161,6 +162,7 @@ sub handler {
             loginname  => $loginname,
 	      
             config     => $config,
+            user       => $user,
             msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config->{tt_selfreg_success_tname},$ttdata,$r);

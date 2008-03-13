@@ -149,6 +149,7 @@ sub handler {
         dbinfotable => $dbinfotable,
         
         config      => $config,
+        user        => $user,
         msg         => $msg,
     };
 

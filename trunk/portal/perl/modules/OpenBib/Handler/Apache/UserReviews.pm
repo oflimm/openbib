@@ -167,6 +167,7 @@ sub handler {
             reviews          => $reviewlist_ref,
 
             config           => $config,
+            user             => $user,
             msg              => $msg,
         };
 
@@ -289,6 +290,7 @@ sub handler {
             review           => $review_ref,
 
             config           => $config,
+            user             => $user,
             msg              => $msg,
         };
 

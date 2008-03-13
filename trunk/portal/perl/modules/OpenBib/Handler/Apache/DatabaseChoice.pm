@@ -68,6 +68,8 @@ sub handler {
         sessionID => $query->param('sessionID'),
     });
 
+    my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
+
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
     # CGI-Uebergabe
@@ -149,6 +151,7 @@ sub handler {
             colspan    => $colspan,
             catdb      => \@catdb,
             config     => $config,
+            user       => $user,
             msg        => $msg,
         };
     

@@ -150,6 +150,7 @@ sub handler {
             colspan        => $colspan,
             catdb          => \@catdb,
             config         => $config,
+            user           => $user,
             msg            => $msg,
         };
     

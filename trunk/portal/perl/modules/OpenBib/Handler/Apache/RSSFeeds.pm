@@ -68,7 +68,9 @@ sub handler {
     my $session   = OpenBib::Session->instance({
         sessionID => $query->param('sessionID'),
     });
-    
+
+    my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
+
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
     my $queryoptions = OpenBib::QueryOptions->instance($query);
@@ -103,6 +105,7 @@ sub handler {
         stylesheet  => $stylesheet,
         sessionID   => $session->{ID},
         config      => $config,
+        user        => $user,
         msg         => $msg,
     };
 

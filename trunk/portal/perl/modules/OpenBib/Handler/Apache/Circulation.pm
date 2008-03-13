@@ -185,6 +185,7 @@ sub handler {
                 show_corporate_banner => 0,
                 show_foot_banner      => 1,
                 config       => $config,
+                user         => $user,
                 msg          => $msg,
             };
       
@@ -231,6 +232,7 @@ sub handler {
                 show_corporate_banner => 0,
                 show_foot_banner      => 1,
                 config     => $config,
+                user       => $user,
                 msg        => $msg,
             };
       
@@ -275,6 +277,7 @@ sub handler {
                 show_corporate_banner => 0,
                 show_foot_banner      => 1,
                 config     => $config,
+                user       => $user,
                 msg        => $msg,
             };
       
@@ -321,6 +324,7 @@ sub handler {
                 show_corporate_banner => 0,
                 show_foot_banner      => 1,
                 config     => $config,
+                user       => $user,
                 msg        => $msg,
             };
       
@@ -377,6 +381,7 @@ sub handler {
             result     => $circexlist,
             
             config     => $config,
+            user       => $user,
             msg        => $msg,
         };
         
@@ -472,6 +477,7 @@ sub handler {
             result     => $circexlist,
             
             config     => $config,
+            user       => $user,
             msg        => $msg,
         };
         
@@ -520,6 +526,7 @@ sub handler {
             result     => $circexlist,
             
             config     => $config,
+            user       => $user,
             msg        => $msg,
         };
         

@@ -216,6 +216,7 @@ sub print_to_handler {
 
     my $config       = OpenBib::Config->instance;
     my $session      = OpenBib::Session->instance;
+    my $user         = OpenBib::User->instance;
     my $queryoptions = OpenBib::QueryOptions->instance;
 
     my $query       = Apache::Request->instance($r);
@@ -311,6 +312,7 @@ sub print_to_handler {
             nav            => \@nav,
             
             config         => $config,
+            user           => $user,
             msg            => $msg,
         };
         

@@ -114,6 +114,7 @@ sub handler {
             loginname  => $loginname,
 
             config     => $config,
+            user       => $user,
             msg        => $msg,
         };
 
@@ -140,6 +141,7 @@ sub handler {
 	my $mainttdata = {
                           loginname => $loginname,
                           password  => $password,
+                          user      => $user,
 			  msg       => $msg,
 			 };
 
@@ -186,6 +188,7 @@ sub handler {
             stylesheet => $stylesheet,
 
             config     => $config,
+            user       => $user,
             msg        => $msg,
         };
 

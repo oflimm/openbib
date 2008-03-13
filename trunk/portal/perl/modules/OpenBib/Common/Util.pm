@@ -141,6 +141,7 @@ sub print_warning {
         sessionID  => $session->{ID},
         errmsg     => $warning,
         config     => $config,
+        user       => $user,
         msg        => $msg,
     };
   
@@ -214,6 +215,7 @@ sub print_info {
         loginname  => $loginname,
         info_msg   => $info,
         config     => $config,
+        user       => $user,
         msg        => $msg,
     };
   

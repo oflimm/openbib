@@ -156,6 +156,7 @@ sub handler {
             userinfo         => $userinfo_ref,
 
             config           => $config,
+            user             => $user,
             msg              => $msg,
         };
         OpenBib::Common::Util::print_page($config->{tt_userprefs_tname},$ttdata,$r);
@@ -185,6 +186,7 @@ sub handler {
             sessionID  => $session->{ID},
 
             config     => $config,
+            user       => $user,
             msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config->{tt_userprefs_changefields_tname},$ttdata,$r);
@@ -197,6 +199,7 @@ sub handler {
             sessionID  => $session->{ID},
 
             config     => $config,
+            user       => $user,
             msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config->{tt_userprefs_ask_delete_tname},$ttdata,$r);
@@ -215,6 +218,7 @@ sub handler {
             sessionID  => $session->{ID},
 
             config     => $config,
+            user       => $user,
             msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config->{tt_userprefs_userdeleted_tname},$ttdata,$r);

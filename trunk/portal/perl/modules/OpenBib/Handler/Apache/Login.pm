@@ -136,6 +136,7 @@ sub handler {
             loginname    => $loginname,
             return_url   => $return_url,
             config       => $config,
+            user         => $user,
             msg          => $msg,
         };
     

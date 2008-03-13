@@ -262,6 +262,7 @@ sub handler {
         colspan       => $colspan,
         
         config        => $config,
+        user          => $user,
         msg           => $msg,
     };
 

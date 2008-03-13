@@ -80,6 +80,8 @@ sub handler {
         sessionID => $query->param('sessionID'),
     });
 
+    my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
+
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
   
     #####################################################################
@@ -235,6 +237,7 @@ sub handler {
                 normset          => $normset,
                 
                 config     => $config,
+                user       => $user,
                 msg        => $msg,
             };
             OpenBib::Common::Util::print_page($config->{tt_search_showautset_tname},$ttdata,$r);
@@ -368,6 +371,7 @@ sub handler {
                 normset    => $normset,
 
                 config     => $config,
+                user       => $user,
                 msg        => $msg,
             };
             OpenBib::Common::Util::print_page($config->{tt_search_showswtset_tname},$ttdata,$r);
@@ -393,6 +397,7 @@ sub handler {
                 normset    => $normset,
                 
                 config     => $config,
+                user       => $user,
                 msg        => $msg,
             };
             OpenBib::Common::Util::print_page($config->{tt_search_shownotset_tname},$ttdata,$r);
@@ -555,6 +560,7 @@ sub handler {
                 searchquery => $searchquery,
                 
                 config      => $config,
+                user        => $user,
                 msg         => $msg,
             };
             
@@ -591,6 +597,7 @@ sub handler {
             normset    => $normset,
             
             config     => $config,
+            user       => $user,
             msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config->{tt_search_showswtset_tname},$ttdata,$r);
@@ -615,6 +622,7 @@ sub handler {
             normset    => $normset,
             
             config     => $config,
+            user       => $user,
             msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config->{tt_search_showkorset_tname},$ttdata,$r);
@@ -639,6 +647,7 @@ sub handler {
             normset    => $normset,
             
             config     => $config,
+            user       => $user,
             msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config->{tt_search_shownotset_tname},$ttdata,$r);
@@ -663,6 +672,7 @@ sub handler {
             normset    => $normset,
             
             config     => $config,
+            user       => $user,
             msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config->{tt_search_showautset_tname},$ttdata,$r);
@@ -906,7 +916,7 @@ sub handler {
             
             while (my $res=$request->fetchrow_hashref){
                 $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $res->{id}}));
-            }        
+            }
             $request->finish();
         }
 
@@ -1135,6 +1145,7 @@ sub handler {
             hits       => $hits,
             
             config     => $config,
+            user       => $user,
             msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config->{"tt_search_browse_".$type."_tname"},$ttdata,$r);

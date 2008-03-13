@@ -980,7 +980,6 @@ sub print_to_handler {
         searchquery => $searchquery,
         activefeed  => $config->get_activefeeds_of_db($self->{database}),
 
-        user          => $user,
         loginname     => $loginname,
         logintargetdb => $logintargetdb,
 
@@ -989,7 +988,7 @@ sub print_to_handler {
 
         record      => $self,
         config      => $config,
-        
+        user        => $user,
         msg         => $msg,
     };
 

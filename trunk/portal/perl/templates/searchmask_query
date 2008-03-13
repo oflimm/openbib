@@ -55,5 +55,5 @@
 <tr><td class="category">[% msg.maketext("Jahr") %]</td><td class="category">und<input type="hidden" name="boolejahr" value="AND" /></td><td><input type="text" name="ejahr" value="[% searchquery.ejahr.val | html %]" size="4" maxlength="4" />&nbsp;<select name="ejahrop"><option value="eq" selected="selected">genau</option><option value="gt">jünger</option><option value="lt">älter</option></select></td><td></td><td></td></tr>
 [% END %]
 
-<tr><td class="category">[% msg.maketext("Eingrenzung auf Gesamttitel (Serien)") %]&nbsp;([% msg.maketext("Serien") %])</td><td class="category">und</td><td><input type="checkbox" name="serien" /></td><td></td><td></td></tr>
+<tr><td class="category">[% msg.maketext("Eingrenzung auf Gesamttitel (Serien)") %])</td><td class="category">und</td><td><input type="checkbox" name="serien" /></td><td></td><td></td></tr>
 </table>

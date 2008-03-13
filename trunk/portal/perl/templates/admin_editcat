@@ -157,7 +157,7 @@ selected
 <tr><th>[% msg.maketext("Ausleih-Einstellungen") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 <table>
-<tr><td><b>[% msg.maketext("Sprung in WebOPAC") %]</b></td><td><select name="circ"><option value="0"
+<tr><td><b>[% msg.maketext("Zugriff &uuml;ber OLWS") %]</b></td><td><select name="circ"><option value="0"
 
 [% IF katalog.circconfig.circ == '0' %]
 selected
@@ -170,9 +170,9 @@ selected
 [% END %]
 
 >[% msg.maketext("Ja") %]</option></td></tr>
-<tr><td><b>[% msg.maketext("DB-Name im Lokalsystem") %]</b></td><td><input type="text" size="50" name="circdb" value="[% katalog.circconfig.circdb %]" /></td></tr>
+<tr><td><b>[% msg.maketext("OLWS DB-Name im Lokalsystem") %]</b></td><td><input type="text" size="50" name="circdb" value="[% katalog.circconfig.circdb %]" /></td></tr>
+<tr><td><b>[% msg.maketext("OLWS Zugriffs-URL") %]</b></td><td><input type="text" size="50" name="circcheckurl" value="[% katalog.circconfig.circcheckurl %]" /></td></tr>
 <tr><td><b>[% msg.maketext("WebOPAC-URL") %]</b></td><td><input type="text" size="50" name="circurl" value="[% katalog.circconfig.circurl %]" /></td></tr>
-<tr><td><b>[% msg.maketext("Bestands-&Uuml;berpr&uuml;fungs-URL") %]</b></td><td><input type="text" size="50" name="circcheckurl" value="[% katalog.circconfig.circcheckurl %]" /></td></tr>
 </table>
 </td></tr>
 </table>

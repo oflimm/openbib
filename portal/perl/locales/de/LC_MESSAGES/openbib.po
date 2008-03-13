@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2008-03-13 10:34+0100\n"
+"PO-Revision-Date: 2008-03-13 10:42+0100\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team:  <l10n@openbib.org>\n"
 "MIME-Version: 1.0\n"
@@ -1626,6 +1626,10 @@ msgstr "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
 msgid "Hier suchen Sie in allen Katalogen auf einmal"
 msgstr "Hier suchen Sie in allen Katalogen auf einmal"
 
+#: ../templates/mainnavigation:28
+msgid "Hilfe"
+msgstr "Hilfe"
+
 #: ../templates/databasechoice:51 ../templates/externaljump:36
 #: ../templates/login:44 ../templates/login_circulation:42
 #: ../templates/mailpassword:35 ../templates/rssfeeds:25
@@ -2076,7 +2080,8 @@ msgstr "Katalog"
 msgid "Katalog bearbeiten"
 msgstr "Katalog bearbeiten"
 
-#: ../templates/databasechoice:39 ../templates/views/kug/searchmask:232
+#: ../templates/databasechoice:39 ../templates/mainnavigation:16
+#: ../templates/views/kug/searchmask:232
 #: ../templates/views/rheinlandbib/databasechoice:39
 msgid "Katalogauswahl"
 msgstr "Katalogauswahl"
@@ -2541,6 +2546,10 @@ msgstr "Medienart"
 msgid "Mehrfachauswahl"
 msgstr "Mehrfachauswahl"
 
+#: ../templates/mainnavigation:22 ../templates/mainnavigation:24
+msgid "Mein KUG"
+msgstr "Mein KUG"
+
 #: ../templates/info_12:39
 msgid "Meistgenutzte Kataloge"
 msgstr "Meistgenutzte Kataloge"
@@ -2549,7 +2558,7 @@ msgstr "Meistgenutzte Kataloge"
 msgid "Meldung"
 msgstr "Meldung"
 
-#: ../templates/managecollection_save_html:30
+#: ../templates/mainnavigation:16 ../templates/managecollection_save_html:30
 #: ../templates/managecollection_show:44
 #: ../templates/views/einbaende/managecollection_show:33
 msgid "Merkliste"
@@ -2833,6 +2842,7 @@ msgid "Protokoll"
 msgstr "Protokoll"
 
 #: ../templates/admin_showcat:74 ../templates/admin_showviews:62
+#: ../templates/mainnavigation:19
 msgid "RSS"
 msgstr "RSS"
 
@@ -2848,7 +2858,7 @@ msgstr "RSS-Einstellungen für View"
 msgid "RSS-Feed zu diesem View"
 msgstr "RSS-Feed zu diesem View"
 
-#: ../templates/admin_editsession:58
+#: ../templates/admin_editsession:58 ../templates/mainnavigation:16
 msgid "Recherche"
 msgstr "Recherche"
 
@@ -3046,7 +3056,6 @@ msgstr "Selbstregistrierung"
 msgid "Serie/Band/Quelle"
 msgstr "Serie/Band/Quelle"
 
-#: ../templates/searchmask_query:58
 #: ../templates/views/inst501/searchmask_query:54
 #: ../templates/views/richter/searchmask_query:48
 msgid "Serien"
@@ -3371,6 +3380,10 @@ msgstr "Sigel"
 #: ../templates/views/richter/searchmask_query:29
 msgid "Signatur"
 msgstr "Signatur"
+
+#: ../templates/mainnavigation:28
+msgid "Sitzung beenden"
+msgstr "Sitzung beenden"
 
 #: ../templates/userprefs:100
 msgid "Soll"
@@ -4972,7 +4985,8 @@ msgstr "Top 20"
 msgid "Treffer"
 msgstr "Treffer"
 
-#: ../templates/resultlists_choice:27 ../templates/resultlists_showall:26
+#: ../templates/mainnavigation:16 ../templates/resultlists_choice:27
+#: ../templates/resultlists_showall:26
 #: ../templates/resultlists_showall_sortall:26
 #: ../templates/resultlists_showsinglepool:26
 #: ../templates/views/einbaende/resultlists_showall:31
@@ -4985,6 +4999,10 @@ msgstr "Treffer"
 #: ../templates/virtualsearch_result_start:26
 msgid "Trefferliste"
 msgstr "Trefferliste"
+
+#: ../templates/mainnavigation:28
+msgid "Tutorien"
+msgstr "Tutorien"
 
 #: ../templates/admin_showlogintarget:49 ../templates/admin_showlogintarget:67
 msgid "Typ"

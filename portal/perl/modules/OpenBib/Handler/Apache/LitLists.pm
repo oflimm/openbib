@@ -240,6 +240,7 @@ sub handler {
                     targettype   => $targettype,
                     
                     config     => $config,
+                    user       => $user,
                     msg        => $msg,
                 };
               
@@ -264,6 +265,7 @@ sub handler {
                 user       => $user,
                 targettype => $targettype,
                 config     => $config,
+                user       => $user,
                 msg        => $msg,
             };
 
@@ -291,6 +293,7 @@ sub handler {
                 targetdbinfo => $dbinfotable,
                 
                 config       => $config,
+                user         => $user,
                 msg          => $msg,
             };
 	    

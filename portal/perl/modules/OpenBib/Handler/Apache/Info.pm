@@ -114,6 +114,7 @@ sub handler {
         useragent     => $useragent,
         config        => $config,
         statistics    => $statistics,
+        user       => $user,
         msg           => $msg,
     };
 

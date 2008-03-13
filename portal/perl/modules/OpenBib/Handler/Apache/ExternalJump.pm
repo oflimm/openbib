@@ -167,6 +167,7 @@ sub handler {
         authurl      => $authurl,
 	      
         config       => $config,
+        user         => $user,
         msg          => $msg,
     };
 

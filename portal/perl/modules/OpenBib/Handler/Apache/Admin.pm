@@ -212,7 +212,7 @@ sub handler {
         dbname      => $dbname,
         sigel       => $sigel,
         url         => $url,
-        active      => $active,        
+        active      => $active,
     };
         
     my $thisdboptions_ref = {
@@ -228,7 +228,7 @@ sub handler {
         swtfilename  => $swtfilename,
         notfilename  => $notfilename,
         mexfilename  => $mexfilename,
-        autoconvert  => $autoconvert,        
+        autoconvert  => $autoconvert,
         circ         => $circ,
         circurl      => $circurl,
         circcheckurl => $circcheckurl,
@@ -253,6 +253,7 @@ sub handler {
         my $ttdata={
             stylesheet => $stylesheet,
             config     => $config,
+            user       => $user,
             msg        => $msg,
         };
     
@@ -283,6 +284,7 @@ sub handler {
             stylesheet => $stylesheet,
             sessionID  => $session->{ID},
             config     => $config,
+            user       => $user,
             msg        => $msg,
         };
     
@@ -316,6 +318,9 @@ sub handler {
         }
         elsif ($do_change) {
             $logger->debug("do_editcat: $do_editcat do_change: $do_change");
+
+            $logger->debug("Info: ".YAML::Dump($thisdbinfo_ref));
+            $logger->debug("Options: ".YAML::Dump($thisdboptions_ref));
 
             editcat_change($thisdbinfo_ref,$thisdboptions_ref);
 
@@ -428,6 +433,7 @@ sub handler {
                 katalog    => $katalog,
 		  
                 config     => $config,
+                user       => $user,
                 msg        => $msg,
             };
       
@@ -477,6 +483,7 @@ sub handler {
                 katalog    => $katalog,
                 
                 config     => $config,
+                user       => $user,
                 msg        => $msg,
             };
             
@@ -492,6 +499,7 @@ sub handler {
             kataloge   => $dbinfo_ref,
 
             config     => $config,
+            user       => $user,
             msg        => $msg,
         };
     
@@ -531,6 +539,7 @@ sub handler {
             colspan        => $colspan,
             catdb          => \@catdb,
             config         => $config,
+            user           => $user,
             msg            => $msg,
         };
     
@@ -585,6 +594,7 @@ sub handler {
             dbinfotable => $dbinfotable,
 
             config      => $config,
+            user        => $user,
             msg         => $msg,
         };
     
@@ -598,6 +608,7 @@ sub handler {
             sessionID  => $session->{ID},
             views      => $viewinfo_ref,
             config     => $config,
+            user       => $user,
             msg        => $msg,
         };
     
@@ -714,6 +725,7 @@ sub handler {
                 view       => $view,
 		  
                 config     => $config,
+                user       => $user,
                 msg        => $msg,
             };
       
@@ -810,6 +822,7 @@ sub handler {
               allrssfeeds => $allrssfeed_ref,
 
               config      => $config,
+              user        => $user,
               msg         => $msg,
           };
           
@@ -870,6 +883,7 @@ sub handler {
             kataloge   => \@kataloge,
 
             config     => $config,
+            user       => $user,
             msg        => $msg,
         };
     
@@ -890,6 +904,7 @@ sub handler {
             sessions   => \@sessions,
 
             config     => $config,
+            user       => $user,
             msg        => $msg,
         };
 
@@ -929,6 +944,7 @@ sub handler {
                 queries    => \@queries,
 
                 config     => $config,
+                user       => $user,
                 msg        => $msg,
             };
 
@@ -989,6 +1005,7 @@ sub handler {
                 todate     => $todate,
                 
                 config     => $config,
+                user       => $user,
                 msg        => $msg,
             };
             
@@ -1043,6 +1060,7 @@ sub handler {
                 todate     => $todate,
                 
                 config     => $config,
+                user       => $user,
                 msg        => $msg,
             };
             
@@ -1197,6 +1215,7 @@ sub handler {
             sessionID  => $session->{ID},
             
             config     => $config,
+            user       => $user,
             msg        => $msg,
         };
       
@@ -1246,7 +1265,7 @@ sub editcat_change {
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
-
+    
     my $config = OpenBib::Config->instance;
 
     # Verbindung zur SQL-Datenbank herstellen
@@ -1254,13 +1273,19 @@ sub editcat_change {
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $idnresult=$dbh->prepare("update dbinfo set orgunit = ?, description = ?, shortdesc = ?, system = ?, sigel = ?, url = ?, active = ? where dbname = ?") or $logger->error($DBI::errstr); # 
-    $idnresult->execute($dbinfo_ref->{orgunit},$dbinfo_ref->{description},$dbinfo_ref->{shortdesc},$dbinfo_ref->{system},$dbinfo_ref->{sigel},$dbinfo_ref->{url},$dbinfo_ref->{active},$dbinfo_ref->{dbname}) or $logger->error($DBI::errstr);
-    $idnresult->finish();
-    
-    $idnresult=$dbh->prepare("update dboptions set protocol = ?, host = ?, remotepath = ?, remoteuser = ?, remotepasswd = ?, titfilename = ?, autfilename = ?, korfilename = ?, swtfilename = ?, notfilename = ?, mexfilename = ?, filename = ?, autoconvert = ?, circ = ?, circurl = ?, circcheckurl = ?, circdb = ? where dbname= ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($dboptions_ref->{protocol},$dboptions_ref->{host},$dboptions_ref->{remotepath},$dboptions_ref->{remoteuser},$dboptions_ref->{remotepasswd},$dboptions_ref->{titfilename},$dboptions_ref->{autfilename},$dboptions_ref->{korfilename},$dboptions_ref->{swtfilename},$dboptions_ref->{notfilename},$dboptions_ref->{mexfilename},$dboptions_ref->{filename},$dboptions_ref->{autoconvert},$dboptions_ref->{circ},$dboptions_ref->{circurl},$dboptions_ref->{circcheckurl},$dboptions_ref->{circdb},$dbinfo_ref->{dbname}) or $logger->error($DBI::errstr);
-    $idnresult->finish();
+    my $request=$dbh->prepare("update dbinfo set orgunit = ?, description = ?, shortdesc = ?, system = ?, sigel = ?, url = ?, active = ? where dbname = ?") or $logger->error($DBI::errstr); # 
+    $request->execute($dbinfo_ref->{orgunit},$dbinfo_ref->{description},$dbinfo_ref->{shortdesc},$dbinfo_ref->{system},$dbinfo_ref->{sigel},$dbinfo_ref->{url},$dbinfo_ref->{active},$dbinfo_ref->{dbname}) or $logger->error($DBI::errstr);
+
+    # Konvertierung
+    $request=$dbh->prepare("update dboptions set protocol = ?, host = ?, remotepath = ?, remoteuser = ?, remotepasswd = ?, titfilename = ?, autfilename = ?, korfilename = ?, swtfilename = ?, notfilename = ?, mexfilename = ?, filename = ?, autoconvert = ? where dbname= ?") or $logger->error($DBI::errstr);
+    $request->execute($dboptions_ref->{protocol},$dboptions_ref->{host},$dboptions_ref->{remotepath},$dboptions_ref->{remoteuser},$dboptions_ref->{remotepasswd},$dboptions_ref->{titfilename},$dboptions_ref->{autfilename},$dboptions_ref->{korfilename},$dboptions_ref->{swtfilename},$dboptions_ref->{notfilename},$dboptions_ref->{mexfilename},$dboptions_ref->{filename},$dboptions_ref->{autoconvert},$dbinfo_ref->{dbname}) or $logger->error($DBI::errstr);
+
+    # OLWS
+    $request=$dbh->prepare("update dboptions set circ = ?, circurl = ?, circcheckurl=?, circdb = ? where dbname= ?") or $logger->error($DBI::errstr);
+    $request->execute($dboptions_ref->{circ},$dboptions_ref->{circurl},$dboptions_ref->{circcheckurl},$dboptions_ref->{circdb},$dbinfo_ref->{dbname}) or $logger->error($DBI::errstr);
+
+    $request->finish();
+
     return;
 }
 

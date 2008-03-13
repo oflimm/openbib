@@ -74,13 +74,13 @@ sub handler {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
 
-    my $session   = OpenBib::Session->instance({
+    my $session    = OpenBib::Session->instance({
         sessionID => $query->param('sessionID'),
     });
 
-    my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
+    my $user       = OpenBib::User->instance({sessionID => $session->{ID}});
     
-    my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
+    my $stylesheet = OpenBib::Common::Util::get_css_by_browsertype($r);
   
     # CGI-Input auslesen
   
@@ -346,6 +346,7 @@ sub handler {
             hitrange       => $hitrange,
             offsets        => \@offsets,
             config         => $config,
+            user           => $user,
             msg            => $msg,
         };
         
@@ -420,6 +421,7 @@ sub handler {
             hitrange       => $hitrange,
             offsets        => \@offsets,
             config         => $config,
+            user           => $user,
             msg            => $msg,
         };
         
@@ -473,6 +475,7 @@ sub handler {
             resultdbs  => $resultdbs_ref,
             queries    => \@queries,
             config     => $config,
+            user       => $user,
             msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config->{tt_resultlists_choice_tname},$ttdata,$r);
@@ -539,6 +542,7 @@ sub handler {
                 qopts          => $queryoptions->get_options,
                 
                 config         => $config,
+                user           => $user,
                 msg            => $msg,
             };
             
@@ -607,6 +611,7 @@ sub handler {
                 query          => $query,
                 
                 config         => $config,
+                user           => $user,
                 msg            => $msg,
             };
             

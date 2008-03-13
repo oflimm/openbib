@@ -218,6 +218,7 @@ sub handler {
             loginname  => $loginname,
             user       => $user,
             config     => $config,
+            user       => $user,
             msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config->{tt_tags_editusertags_tname},$ttdata,$r);
@@ -237,6 +238,7 @@ sub handler {
             loginname  => $loginname,
             user       => $user,
             config     => $config,
+            user       => $user,
             msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config->{tt_tags_showusertags_tname},$ttdata,$r);

@@ -109,6 +109,7 @@ sub handler {
         view       => $view,
         stylesheet => $stylesheet,
         config     => $config,
+        user       => $user,
         msg        => $msg,
     };
   

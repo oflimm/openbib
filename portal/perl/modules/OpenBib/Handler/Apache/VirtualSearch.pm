@@ -418,6 +418,7 @@ sub handler {
             baseurl    => $baseurl,
             profil     => $profil,
             config     => $config,
+            user       => $user,
             msg        => $msg,
         };
 
@@ -570,6 +571,7 @@ sub handler {
         queryid        => $queryid,
         
         config         => $config,
+        user           => $user,
         msg            => $msg,
     };
 
@@ -722,6 +724,7 @@ sub handler {
                     sortorder       => $sortorder,
                     resulttime      => $resulttime,
                     config          => $config,
+                    user            => $user,
                     msg             => $msg,
                 };
                 
@@ -948,6 +951,7 @@ sub handler {
                             resulttime      => $resulttime,
                             drilldowntime   => $drilldowntime,
                             config          => $config,
+                            user            => $user,
                             msg             => $msg,
                         };
                         
@@ -1057,6 +1061,7 @@ sub handler {
                         sortorder       => $sortorder,
                         resulttime      => $resulttime,
                         config          => $config,
+                        user            => $user,
                         msg             => $msg,
                     };
 
@@ -1181,6 +1186,7 @@ sub handler {
         queryid       => $queryid,
 
         config        => $config,
+        user          => $user,
         msg           => $msg,
     };
 

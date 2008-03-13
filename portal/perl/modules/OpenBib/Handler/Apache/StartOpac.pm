@@ -169,10 +169,13 @@ sub handler {
 
     $logger->debug("StartOpac-sID: $session->{ID}");
 
+    # Standard-URL
     my $redirecturl = "$config->{searchmask_loc}?sessionID=$session->{ID};view=$view;setmask=$setmask";
 
     my $viewstartpage_ref = $config->get_startpage_of_view($view);
 
+    $logger->debug(YAML::Dump($viewstartpage_ref));
+    
     if ($viewstartpage_ref->{start_loc}){
         $redirecturl = "$config->{$viewstartpage_ref->{start_loc}}?sessionID=$session->{ID};view=$view";
 

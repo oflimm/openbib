@@ -244,7 +244,7 @@ sub handler {
             $recordlist = $session->get_items_in_collection();
         }
 
-        if ($recordlist->size() == 0) {
+        if ($recordlist->get_size() == 0) {
             OpenBib::Common::Util::print_warning($msg->maketext("Derzeit ist Ihre Merkliste leer"),$r,$msg);
             return OK;
         }
@@ -264,6 +264,7 @@ sub handler {
 
 	    user              => $user,
             config            => $config,
+            user              => $user,
             msg               => $msg,
         };
     

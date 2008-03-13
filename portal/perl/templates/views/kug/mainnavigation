@@ -11,6 +11,7 @@
 #
 #######################################################################
 -%]
+[%- username = user.get_username -%]
 <div id="mainnavigation">
 <div id="mainnavigation_left">
 <a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %]">[% msg.maketext("Recherche") %]</a>&nbsp;::&nbsp;<a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];action=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a>&nbsp;::&nbsp;<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;view=[% view %]">[% msg.maketext("Merkliste") %] <span id="collectioncount"></span></a>

@@ -129,6 +129,7 @@
 ../templates/mailpassword
 ../templates/mailpassword_mail_main
 ../templates/mailpassword_success
+../templates/mainnavigation
 ../templates/managecollection_mail
 ../templates/managecollection_print
 ../templates/managecollection_save_html

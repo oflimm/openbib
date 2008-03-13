@@ -775,6 +775,10 @@ msgstr ""
 msgid "Hier suchen Sie in allen Katalogen auf einmal"
 msgstr ""
 
+#: ../templates/mainnavigation:28
+msgid "Hilfe"
+msgstr ""
+
 #: ../templates/databasechoice:51 ../templates/externaljump:36 ../templates/login:44 ../templates/login_circulation:42 ../templates/mailpassword:35 ../templates/rssfeeds:25 ../templates/selfreg:34 ../templates/views/rheinlandbib/databasechoice:51
 msgid "Hinweis"
 msgstr ""
@@ -922,7 +926,7 @@ msgstr ""
 msgid "Katalog bearbeiten"
 msgstr ""
 
-#: ../templates/databasechoice:39 ../templates/views/kug/searchmask:232 ../templates/views/rheinlandbib/databasechoice:39
+#: ../templates/databasechoice:39 ../templates/mainnavigation:16 ../templates/views/kug/searchmask:232 ../templates/views/rheinlandbib/databasechoice:39
 msgid "Katalogauswahl"
 msgstr ""
 
@@ -1083,6 +1087,10 @@ msgstr ""
 msgid "Mehrfachauswahl"
 msgstr ""
 
+#: ../templates/mainnavigation:22 ../templates/mainnavigation:24
+msgid "Mein KUG"
+msgstr ""
+
 #: ../templates/info_12:39
 msgid "Meistgenutzte Kataloge"
 msgstr ""
@@ -1091,7 +1099,7 @@ msgstr ""
 msgid "Meldung"
 msgstr ""
 
-#: ../templates/managecollection_save_html:30 ../templates/managecollection_show:44 ../templates/views/einbaende/managecollection_show:33
+#: ../templates/mainnavigation:16 ../templates/managecollection_save_html:30 ../templates/managecollection_show:44 ../templates/views/einbaende/managecollection_show:33
 msgid "Merkliste"
 msgstr ""
 
@@ -1303,7 +1311,7 @@ msgstr ""
 msgid "Protokoll"
 msgstr ""
 
-#: ../templates/admin_showcat:74 ../templates/admin_showviews:62
+#: ../templates/admin_showcat:74 ../templates/admin_showviews:62 ../templates/mainnavigation:19
 msgid "RSS"
 msgstr ""
 
@@ -1319,7 +1327,7 @@ msgstr ""
 msgid "RSS-Feed zu diesem View"
 msgstr ""
 
-#: ../templates/admin_editsession:58
+#: ../templates/admin_editsession:58 ../templates/mainnavigation:16
 msgid "Recherche"
 msgstr ""
 
@@ -1448,7 +1456,7 @@ msgstr ""
 msgid "Serie/Band/Quelle"
 msgstr ""
 
-#: ../templates/searchmask_query:58 ../templates/views/inst501/searchmask_query:54 ../templates/views/richter/searchmask_query:48
+#: ../templates/views/inst501/searchmask_query:54 ../templates/views/richter/searchmask_query:48
 msgid "Serien"
 msgstr ""
 
@@ -1609,6 +1617,10 @@ msgstr ""
 
 #: ../templates/circset:16 ../templates/circulation:56 ../templates/circulation_orders:52 ../templates/circulation_remind:71 ../templates/circulation_reserv:52 ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:143 ../templates/database/einbaende/search_showtitset:254 ../templates/database/landschaft/search_showtitset:153 ../templates/database/portrait/search_showtitset:153 ../templates/managecollection_tit_as_html:62 ../templates/mexset:2 ../templates/search_showmulttitset:109 ../templates/searchmask_query:35 ../templates/userprefs:185 ../templates/views/einbaende/searchmask_simple:121 ../templates/views/inst501/searchmask_query:35 ../templates/views/portrait/searchmask_query:29 ../templates/views/richter/searchmask_query:29
 msgid "Signatur"
+msgstr ""
+
+#: ../templates/mainnavigation:28
+msgid "Sitzung beenden"
 msgstr ""
 
 #: ../templates/userprefs:100
@@ -2531,8 +2543,12 @@ msgstr ""
 msgid "Treffer"
 msgstr ""
 
-#: ../templates/resultlists_choice:27 ../templates/resultlists_showall:26 ../templates/resultlists_showall_sortall:26 ../templates/resultlists_showsinglepool:26 ../templates/views/einbaende/resultlists_showall:31 ../templates/views/einbaende/resultlists_showall_sortall:30 ../templates/views/einbaende/resultlists_showsinglepool:30 ../templates/views/einbaende/virtualsearch_result_start:31 ../templates/views/kapsel/resultlists_showall:26 ../templates/views/kapsel/resultlists_showsinglepool:26 ../templates/views/portrait/resultlists_showsinglepool:26 ../templates/virtualsearch_result_start:26
+#: ../templates/mainnavigation:16 ../templates/resultlists_choice:27 ../templates/resultlists_showall:26 ../templates/resultlists_showall_sortall:26 ../templates/resultlists_showsinglepool:26 ../templates/views/einbaende/resultlists_showall:31 ../templates/views/einbaende/resultlists_showall_sortall:30 ../templates/views/einbaende/resultlists_showsinglepool:30 ../templates/views/einbaende/virtualsearch_result_start:31 ../templates/views/kapsel/resultlists_showall:26 ../templates/views/kapsel/resultlists_showsinglepool:26 ../templates/views/portrait/resultlists_showsinglepool:26 ../templates/virtualsearch_result_start:26
 msgid "Trefferliste"
+msgstr ""
+
+#: ../templates/mainnavigation:28
+msgid "Tutorien"
 msgstr ""
 
 #: ../templates/admin_showlogintarget:49 ../templates/admin_showlogintarget:67

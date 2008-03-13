@@ -149,44 +149,6 @@ Nutzern verwendeten Suchbegriffe anbieten.
 <p />
 
 <table width="100%">
-<tr><th>Wolke der von Nutzern verwendeten Suchbegriffe in der Kategorie <emph>Personen</emph></th></tr>
-<tr><td class="boxedclear">
-<!-- Beginn Tag-Cloud -->
-[%
-   css_classes = [
-        'fast-nicht-genutzt',
-        'nicht-sehr-genutzt',
-        'etwas-genutzt',
-        'genutzt',
-        'sehr-viel-genutzt',
-        'ultra-genutzt',
-        'am-meisten-genutzt',
-   ];
-%]
-
-[%- IF resultlist.verf.size > 5 -%]
-<ol class="cloud">
-[%- FOREACH thisitem IN resultlist.verf -%]
-[% item      = thisitem.item;
-   id        = thisitem.id;
-   itemcount = thisitem.count;
-   classnr   = thisitem.class;
-   itemclass = css_classes.$classnr;
-%]
-<li class="[% itemclass %]"><span>[% itemcount %] Nutzer verwendeten  
-den Suchbegriff </span><a href="#" title="[% itemcount %] Nutzer verwendeten  
-den Suchbegriff [% item %]">[% item %]</a></li>
-[% END %]
-</ol>
-[% ELSE %]
-Leider k&ouml;nnen wir Ihnen keine Wolke der von
-Nutzern verwendeten Suchbegriffe anbieten.
-[% END %]
-</td></tr>
-</table>
-<p />
-
-<table width="100%">
 <tr><th>Wolke der von Nutzern verwendeten Suchbegriffe in der Kategorie <emph>Schlagworte</emph></th></tr>
 <tr><td class="boxedclear">
 <!-- Beginn Tag-Cloud -->

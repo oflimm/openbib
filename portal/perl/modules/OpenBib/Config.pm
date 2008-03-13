@@ -209,6 +209,8 @@ sub get_startpage_of_view {
     my $startpage      = decode_utf8($res->{startpage}) if (defined($res->{'startpage'}));
     $request->finish();
 
+    $logger->debug("Got Startpage $startpage");
+    
     my ($start_loc,$start_stid) = split (":",$startpage);
 
     return {
@@ -835,6 +837,10 @@ sub get_dboptions {
         notfilename   => $result->{'notfilename'},
         mexfilename   => $result->{'mexfilename'},
         autoconvert   => $result->{'autoconvert'},
+        circ          => $result->{'circ'},
+        circurl       => $result->{'circurl'},
+        circcheckurl  => $result->{'circcheckurl'},
+        circdb        => $result->{'circdb'},
     };
     
     $request->finish();

@@ -105,9 +105,9 @@
                 'T1664', # msg.maketext("T1664") Provenienz 
                 'T2662', # msg.maketext("T2662") USB EDVurl
                 'T2663', # msg.maketext("T2663") USB URLInfo
-                'T3001', # msg.maketext("T3001") TOC-URL / HTML
+                #'T3001', # msg.maketext("T3001") TOC-URL / HTML
                 #'T3002', # msg.maketext("T3002") TOC-URL / TIFF
-                'T3003', # msg.maketext("T3003") TOC-URL / PDF
+                #'T3003', # msg.maketext("T3003") TOC-URL / PDF
                 'T1600', # msg.maketext("T1600") Hinweis
                 'T4500', # msg.maketext("T4500") Nutzer-Tags
                 'T5001', # msg.maketext("T5001") Anzahl uebergeordn. Werke

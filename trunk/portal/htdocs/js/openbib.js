@@ -3,7 +3,10 @@ $(document).ready(function(){
 var sessionID = $("meta[@name='sessionID']").attr("content");
 
 var ISBN      = $("meta[@name='ISBN']").attr("content");
- 
+
+// Focus auf erstes Eingabefeld
+$(":input:visible:enabled:first").focus();
+
 // Begin Merkliste
 // Merklistenfuellstand aktualisieren
 // Achtung!!! Wert von managecollection_loc aus OpenBib::Config ist hier

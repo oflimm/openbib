@@ -96,7 +96,8 @@
                  'Sammlung Mevissen',
                  'Sammlung Oidtman',
                  'Sammlung Wolff',
-                 'Stadtbibliothek Köln',                  
+                 'Stadtbibliothek Köln',
+                 'Evangelische Bibliothek',
                 ];
 %]
 <table width="100%">

@@ -22,25 +22,25 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a                href="http://[% config.servername %][% config.userprefs_loc %]?sessionID=[% sessionID %];action=showfields">[% msg.maketext("Grundeinstellungen") %]</a></li>
+   <li><a                href="[% config.userprefs_loc %]?sessionID=[% sessionID %];action=showfields">[% msg.maketext("Grundeinstellungen") %]</a></li>
 [%- IF config.litlists -%]
-   <li><a class="active" href="http://[% config.servername %][% config.litlists_loc %]?sessionID=[% sessionID %];action=manage">Literaturlisten</a></li>
+   <li><a class="active" href="[% config.litlists_loc %]?sessionID=[% sessionID %];action=manage">Literaturlisten</a></li>
 [%- END -%]
-   <li><a                href="http://[% config.servername %][% config.tags_loc %]?sessionID=[% sessionID %];show_usertags=1">Tags</a></li>
+   <li><a                href="[% config.tags_loc %]?sessionID=[% sessionID %];show_usertags=1">Tags</a></li>
 [%- IF config.reviews -%]
-   <li><a                href="http://[% config.servername %][% config.userreviews_loc %]?sessionID=[% sessionID %];do_show=1">Rezensionen</a></li>
+   <li><a                href="[% config.userreviews_loc %]?sessionID=[% sessionID %];do_show=1">Rezensionen</a></li>
 [%- END -%]
 [% IF targettype != 'self' %]
-   <li><a                href="http://[% config.servername %][% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc">[% msg.maketext("Benutzerkonto") %]</a></li>
+   <li><a                href="[% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc">[% msg.maketext("Benutzerkonto") %]</a></li>
 [% END %]
-   <li><a                href="http://[% config.servername %][% config.databaseprofile_loc %]?sessionID=[% sessionID %];do_showprofile=1">[% msg.maketext("Katalogprofile") %]</a></li>
+   <li><a                href="[% config.databaseprofile_loc %]?sessionID=[% sessionID %];do_showprofile=1">[% msg.maketext("Katalogprofile") %]</a></li>
 </ul>
 
 <div class="content">
 
 <p />
 
-<form method="get" action="http://[% config.servername %][%config.litlists_loc %]">
+<form method="get" action="[%config.litlists_loc %]">
 <input type="hidden" name="action"     value="manage" />
 <input type="hidden" name="sessionID"  value="[% sessionID %]" />
 <input type="hidden" name="litlistid"  value="[% litlist.properties.id %]" />
@@ -124,7 +124,7 @@ type="submit" name="do_changelist" value="[% msg.maketext("&Auml;ndern") %]" /><
 [%- signatur = signaturen.join(' ; ') -%]
 
 <tr class="[% listrow %]"><td class="listnr">[% loop.count+offset %]</td><td colspan="2"><span class="rlauthor">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;sorttype=[% sorttype %];database=[% item.${"database"} %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
-class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span><br />aus:&nbsp;<i>[% targetdbinfo.dbinfo.${item.database}.full %]</i></td><td><td align="left"><b>[% signatur %]</b></td><td class="popularitycount">[% item.popularity %]</td><td>[% fullitem.tstamp %]</td><td><a href="http://[% config.servername %][% config.litlists_loc %]?sessionID=[% sessionID
+class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span><br />aus:&nbsp;<i>[% targetdbinfo.dbinfo.${item.database}.full %]</i></td><td><td align="left"><b>[% signatur %]</b></td><td class="popularitycount">[% item.popularity %]</td><td>[% fullitem.tstamp %]</td><td><a href="[% config.litlists_loc %]?sessionID=[% sessionID
 %]&action=manage;litlistid=[% litlist.properties.id %];do_delentry=1;titid=[% item.id %];titdb=[% item.${"database"} %]"><b>Entfernen</b></a></td></tr>
 
 [% IF listrow == 'listrow1' %]

@@ -33,8 +33,8 @@
 
 <ul class="tabbingmenu">
    <li><a class="active" href="[% config.login_loc %]?sessionID=[% sessionID %];view=[% view %];do_login=1">[% msg.maketext("Login") %]</a></li>
-   <li><a                href="http://[% config.servername %][% config.selfreg_loc %]?sessionID=[% sessionID %];action=show">[% msg.maketext("Selbstregistrierung") %]</a></li>
-   <li><a                href="http://[% config.servername %][% config.mailpassword_loc %]?sessionID=[% sessionID %];action=show">[% msg.maketext("Passwort vergessen?") %]</a></li>
+   <li><a                href="[% config.selfreg_loc %]?sessionID=[% sessionID %];action=show">[% msg.maketext("Selbstregistrierung") %]</a></li>
+   <li><a                href="[% config.mailpassword_loc %]?sessionID=[% sessionID %];action=show">[% msg.maketext("Passwort vergessen?") %]</a></li>
 </ul>
 
 <div class="content">

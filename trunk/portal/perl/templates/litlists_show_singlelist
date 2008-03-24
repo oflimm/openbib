@@ -22,7 +22,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="http://[% config.servername %][% config.litlists_loc %]?sessionID=[% sessionID %];action=show;litlistid=[% litlist.properties.id %]">Literaturliste</a></li>
+   <li><a class="active" href="[% config.litlists_loc %]?sessionID=[% sessionID %];action=show;litlistid=[% litlist.properties.id %]">Literaturliste</a></li>
 </ul>
 
 <div class="content">

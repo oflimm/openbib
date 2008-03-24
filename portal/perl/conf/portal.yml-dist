@@ -301,6 +301,7 @@ tt_search_browse_kor_tname: search_browse_kor
 tt_search_browse_not_tname: search_browse_not
 tt_search_browse_swt_tname: search_browse_swt
 tt_search_browse_tit_tname: search_browse_tit
+tt_search_olws_browse_tname: search_olws_browse
 tt_search_showautset_tname: search_showautset
 tt_search_showkorset_tname: search_showkorset
 tt_search_showmulttitset_tname: search_showmulttitset

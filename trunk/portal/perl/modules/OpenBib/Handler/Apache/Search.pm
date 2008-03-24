@@ -146,11 +146,19 @@ sub handler {
     my $searchtitofcnt    = $query->param('searchtitofcnt')    || '';
 
     my $browsecat         = $query->param('browsecat')         || '';
+    my $browsecontent     = $query->param('browsecontent')     || '';
     my $category          = $query->param('category')          || '';
+
+    my $olws              = $query->param('olws')              || 0;
+    my $olws_action       = $query->param('olws_action')       || '';
+    my $collection        = $query->param('collection')        || '';
 
     my $queryid           = $query->param('queryid')           || '';
 
     my $no_log            = $query->param('no_log')            || '';
+
+    # Sub-Template ID
+    my $stid              = $query->param('stid')              || '';
 
     #####                                                          ######
     ####### E N D E  V A R I A B L E N D E K L A R A T I O N E N ########
@@ -196,6 +204,74 @@ sub handler {
     #####################################################################
     ## Eigentliche Suche (default)
 
+    # Suche ueber OLWS (urn:/Viewer)
+    
+    if ($olws){
+        if (exists $circinfotable->{$database} && exists $circinfotable->{$database}{circcheckurl}){
+	    my $poolname=$dbinfotable->{sigel}{
+	      $dbinfotable->{dbases}{$database}};
+            
+            if ($olws_action eq "browse"){
+
+                $logger->debug("Endpoint: ".$circinfotable->{$database}{circcheckurl});
+                my $soapresult;
+                eval {
+                    my $soap = SOAP::Lite
+                        -> uri("urn:/Viewer")
+                            -> proxy($circinfotable->{$database}{circcheckurl});
+
+                    my $result = $soap->browse(
+                        SOAP::Data->name(parameter  =>\SOAP::Data->value(
+                            SOAP::Data->name(collection => $collection)->type('string'),
+                            SOAP::Data->name(category   => $browsecat)->type('string'),
+                            SOAP::Data->name(content    => $browsecontent)->type('string'))));
+                    
+                    unless ($result->fault) {
+                        $soapresult=$result->result;
+                    }
+                    else {
+                        $logger->error("SOAP Viewer Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+                    }
+                };
+                
+                if ($@){
+                    $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
+                }
+
+                $logger->debug("OLWS".YAML::Dump($soapresult));
+
+                # TT-Data erzeugen
+                my $ttdata={
+                    view        => $view,
+                    stylesheet  => $stylesheet,
+                    database    => $database,
+                    poolname    => $poolname,
+                    qopts       => $queryoptions->get_options,
+                    sessionID   => $session->{ID},
+                    result      => $soapresult,
+
+                    collection    => $collection,
+                    browsecontent => $browsecontent,
+                    browsecat     => $browsecat,
+
+                    config      => $config,
+                    user        => $user,
+                    msg         => $msg,
+                };
+                
+                OpenBib::Common::Util::print_page($config->{tt_search_olws_browse_tname},$ttdata,$r);
+                
+                return OK;
+            }
+            
+            my $soap = SOAP::Lite
+                -> uri("urn:/Viewer")
+                    -> proxy($circinfotable->{$database}{circcheckurl});
+
+        }
+    }
+
+    
     #####################################################################
     ## Schlagwortindex
   
@@ -518,7 +594,7 @@ sub handler {
 #    }
   
     #####################################################################
-  
+    
     if ($searchsingletit) {
         # Zuerst die zugehoerige Suchanfrage bestimmen
 
@@ -1035,6 +1111,7 @@ sub handler {
             sorttype         => $sorttype,
             apachereq        => $r,
             stylesheet       => $stylesheet,
+            template         => 'tt_search_showtitlist_of_cnt_tname',
             view             => $view,
             hits             => $hits,
             offset           => $offset,

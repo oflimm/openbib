@@ -53,7 +53,7 @@
 
 [% IF queries.size > 0 %]
 
-<form method="get" id="queries" action="http://[% config.servername %][% config.dispatchquery_loc %]">
+<form method="get" id="queries" action="[% config.dispatchquery_loc %]">
 <table width="100%">
 <tr><th>[% msg.maketext("Suchhistorie") %]</th></tr>
 <tr><td class="boxed">
@@ -71,7 +71,7 @@
 <p />
 <p />
 
-<form method="get" id="openbib" action="http://[% config.servername %][% config.virtualsearch_loc %]">
+<form method="get" id="openbib" action="[% config.virtualsearch_loc %]">
 <input type="hidden" name="view"      value="[% view %]" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="sb"        value="sql" />

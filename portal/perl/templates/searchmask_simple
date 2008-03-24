@@ -52,7 +52,7 @@
 [% PROCESS common/subtemplate name="newsflash" %]
 [% END %]
 
-<form method="get" id="openbib" action="http://[% config.servername %][% config.virtualsearch_loc %]">
+<form method="get" id="openbib" action="[% config.virtualsearch_loc %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="hitrange"  value="50" />
 <input type="hidden" name="view"      value="[% view %]" />
@@ -156,7 +156,7 @@
 
 [% IF queries.size > 0 %]
 
-<form method="get" id="queries" action="http://[% config.servername %][% config.dispatchquery_loc %]">
+<form method="get" id="queries" action="[% config.dispatchquery_loc %]">
 <table width="100%">
 <tr><th style="text-align: center">[% msg.maketext("Rufen Sie hier die Ergebnisse früherer Recherchen auf") %]</th></tr>
 <tr><td align="center" class="boxed">

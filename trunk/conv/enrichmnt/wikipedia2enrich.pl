@@ -49,7 +49,7 @@ use vars qw($counter);
 # Autoflush
 $|=1;
 
-my ($help,$lang,$filename,$logfile);
+my ($help,$importyml,$lang,$filename,$logfile);
 
 my $lang2cat_ref = {
     'de' => '4200',
@@ -58,6 +58,7 @@ my $lang2cat_ref = {
 };
 
 &GetOptions("help"       => \$help,
+            "import-yml" => \$importyml,
             "lang=s"     => \$lang,
 	    "filename=s" => \$filename,
             "logfile=s"  => \$logfile,
@@ -95,26 +96,38 @@ my $enrichdbh
     or $logger->error_die($DBI::errstr);
 
 # Zuerst alle Anreicherungen loeschen
-# Origin 30 = Wikipedia-DE
-my $deleterequest=$enrichdbh->prepare("delete from normdata where category = ? and origin=30");
+# Origin 30 = Wikipedia
+my $deleterequest = $enrichdbh->prepare("delete from normdata where category = ? and origin=30");
 $deleterequest->execute($lang2cat_ref->{$lang});
-
-my $insertrequest=$enrichdbh->prepare("insert into normdata values (?,30,?,?,?)");
-
-my $twig= XML::Twig->new(
-   TwigHandlers => {
-     "/mediawiki/siteinfo" => \&parse_siteinfo,
-     "/mediawiki/page" => \&parse_page,
-   },
- );
+my $insertrequest = $enrichdbh->prepare("insert into normdata values (?,30,?,?,?)");
 
 $isbn_ref = {};
-$counter  = 1;
 
-$logger->info("Datei $filename einlesen");
+if ($importyml){
+    $logger->info("Einladen der Daten aus YAML-Datei $filename");
+    $isbn_ref = YAML::LoadFile($filename);
+}
+else {
 
-$twig->safe_parsefile($filename);
-#$twig->parsefile($filename);
+   my $twig= XML::Twig->new(
+      TwigHandlers => {
+        "/mediawiki/siteinfo" => \&parse_siteinfo,
+        "/mediawiki/page"     => \&parse_page,
+      },
+    );
+
+
+   $counter  = 1;
+
+   $logger->info("Datei $filename einlesen");
+
+   $twig->safe_parsefile($filename);
+   #$twig->parsefile($filename);
+
+   $logger->info("In yml-Datei speichern");
+
+   YAML::DumpFile("wikipedia-isbn-$lang.yml",$isbn_ref);
+}
 
 $logger->info("In Datenbank speichern");
 
@@ -126,9 +139,6 @@ foreach my $isbn (keys %$isbn_ref){
     }
 }
 
-$logger->info("Abspeichern");
-
-YAML::DumpFile("wikipedia-isbn-$lang.yml",$isbn_ref);
 
 $logger->info("Ende und aus");
 
@@ -226,12 +236,22 @@ wikipedia2enrich.pl - Einspielen von Wikipedia-Artikeln in Anreicherungs-DB
 
    Optionen:
    -help                 : Diese Informationsseite
-       
-   --filename=...        : Dateiname des wikipedia-Dumps im XML-Format
+
+   -import-yml           : Import der YAML-Datei
+   --filename=...        : Dateiname des wikipedia-Dumps im XML-Format bzw.
+                           der YAML-Datei mit den bereits verarbeiteten Daten
    --logfile=...         : Name der Log-Datei
    --lang=\[de\|en\|fr\]     : Sprache
 
+       
+Bsp:
+  1) Analyse eines Wikipedia Dumps
 
+     wikipedia2enrich.pl --filename=frwiki-20080305-pages-articles.xml --lang=fr
+
+  2) Einladen der generierten
+
+     wikipedia2enrich.pl -import-yml --filename=wikipedia-isbn-fr.yml --lang=fr
 ENDHELP
     exit;
 }

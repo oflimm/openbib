@@ -273,6 +273,24 @@ FOREACH category IN categories;
 END;
 -%]
 <tr><td class="category">BibSonomy-Tags</td><td><span id="bibsonomy_tags"><a href="#">Suchen?</a></span></td></tr>
+[% IF normset.${"T4200"} %]
+<tr><td class="category">Wikipedia-Artikel (deutsch)</td><td>
+[%- FOREACH item IN normset.${"T4200"}-%]
+<a href="http://de.wikipedia.org/wiki/[% item.content | uri %]" target="_blank">[% item.content %]</a>&nbsp;&nbsp;
+[%- END -%]</td></tr>
+[% END %]
+[% IF normset.${"T4201"} %]
+<tr><td class="category">Wikipedia-Artikel (englisch)</td><td>
+[%- FOREACH item IN normset.${"T4201"}-%]
+<a href="http://en.wikipedia.org/wiki/[% item.content | uri %]" target="_blank">[% item.content %]</a>&nbsp;&nbsp;
+[%- END -%]</td></tr>
+[% END %]
+[% IF normset.${"T4202"} %]
+<tr><td class="category">Wikipedia-Artikel (franz.)</td><td>
+[%- FOREACH item IN normset.${"T4202"}-%]
+<a href="http://fr.wikipedia.org/wiki/[% item.content | uri %]" target="_blank">[% item.content %]</a>&nbsp;&nbsp;
+[%- END -%]</td></tr>
+[% END %]
 </table>
 
 [% IF config.unAPI %]

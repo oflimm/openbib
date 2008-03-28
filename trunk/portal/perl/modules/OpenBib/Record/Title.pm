@@ -34,6 +34,7 @@ use utf8;
 
 use Apache::Reload;
 use Benchmark ':hireswallclock';
+use Business::ISBN;
 use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
@@ -390,15 +391,38 @@ sub get_full_record {
         push @isbn_refs, @{$normset_ref->{T0540}} if (exists $normset_ref->{T0540});
         push @isbn_refs, @{$normset_ref->{T0553}} if (exists $normset_ref->{T0553});
 
+        $logger->debug(YAML::Dump(\@isbn_refs));
+        
         if (@isbn_refs){
-            foreach my $isbn_ref (@isbn_refs){
+            my @isbn_refs_tmp = ();
+            # Normierung auf ISBN-13
 
-                my $isbn=$isbn_ref->{content};
-             
-                $isbn =~s/ //g;
-                $isbn =~s/-//g;
-                $isbn=~s/([A-Z])/\l$1/g;
-                        
+            foreach my $isbn_ref (@isbn_refs){
+                my $thisisbn = $isbn_ref->{content};
+
+                # Alternative ISBN zur Rechercheanrei
+                my $isbn     = Business::ISBN->new($thisisbn);
+
+                if (defined $isbn && $isbn->is_valid){
+                    $thisisbn = $isbn->as_isbn13->as_string;
+                }
+
+                push @isbn_refs_tmp, OpenBib::Common::Util::grundform({
+                    category => '0540',
+                    content  => $thisisbn,
+                });
+
+            }
+            
+            # Dubletten Bereinigen
+            my %seen_isbns = ();
+            
+            @isbn_refs = grep { ! $seen_isbns{$_} ++ } @isbn_refs_tmp;
+
+            $logger->debug(YAML::Dump(\@isbn_refs));
+
+            foreach my $isbn (@isbn_refs){
+
                 my $reqstring="select category,content from normdata where isbn=? order by category,indicator";
                 my $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
                 $request->execute($isbn) or $logger->error("Request: $reqstring - ".$DBI::errstr);

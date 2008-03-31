@@ -58,7 +58,7 @@
 -->
 
 [%# USE dumper;
-  # dumper.dump(normset) ;%]
+  # dumper.dump(normset) ; %]
 <table cellpadding="2">
 <tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
 <tr><td class="category">id</td><td>[% normset.id %]</td></tr>
@@ -151,7 +151,7 @@ FOREACH category IN categories;
     CASE "T0543";
          content   = "${content} (<a href=\"${config.redirect_loc}/${sessionID}/530/${config.ezb_exturl}&jq_term1=${content}\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
 
-    CASE [ "T0662" "T2662" "T3001" "T3002" "T3003" ];
+    CASE [ "T0662" "T2662" ];
          thisindicator = item.indicator ;
          thiscontent   = '' ;
          IF category == 'T0662' ;
@@ -166,12 +166,6 @@ FOREACH category IN categories;
                 thiscontent = thisitem.content ;
              END ;
            END ;
-         ELSIF category == 'T3001' ;
-            thiscontent = "<img src=\"/images/openbib/html.png\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (&Uuml;bersicht)";
-            content     = "${config.redirect_loc}/${sessionID}/501/${content}" ;
-         ELSIF category == 'T3003' ;
-            thiscontent = "<img src=\"/images/openbib/pdf-document.png\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)";
-            content     = "${config.redirect_loc}/${sessionID}/501/${content}" ;
          END ;
          IF thiscontent ;
             IF content.match('digitool.hbz-nrw.de') ;
@@ -182,6 +176,11 @@ FOREACH category IN categories;
          ELSE ;
             content   = "<a href=\"${content}\" target=\"_blank\">${highlightquery(searchquery,content)}</a>";
          END ;
+
+    CASE "T4110";
+         thiscontent   = "<img src=\"/images/openbib/pdf-document.png\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)";
+         content       = "${config.redirect_loc}/${sessionID}/500/${content}" ;
+         content       = "<a href=\"${content}\" target=\"_blank\">${thiscontent}</a>";
 
     CASE [ "T0710" "T0902" "T0907" "T0912" "T0917" "T0922" "T0927" "T0932" "T0937" "T0942" "T0947" ];
          thisid     = item.id;
@@ -245,6 +244,24 @@ FOREACH category IN categories;
    END;
 END;
 -%]
+[% IF normset.${"T4200"} %]
+<tr><td class="category">Wikipedia-Artikel (deutsch)</td><td>
+[%- FOREACH item IN normset.${"T4200"}-%]
+<a href="http://de.wikipedia.org/wiki/[% item.content | uri %]" target="_blank">[% item.content %]</a>&nbsp;&nbsp;
+[%- END -%]</td></tr>
+[% END %]
+[% IF normset.${"T4201"} %]
+<tr><td class="category">Wikipedia-Artikel (englisch)</td><td>
+[%- FOREACH item IN normset.${"T4201"}-%]
+<a href="http://en.wikipedia.org/wiki/[% item.content | uri %]" target="_blank">[% item.content %]</a>&nbsp;&nbsp;
+[%- END -%]</td></tr>
+[% END %]
+[% IF normset.${"T4202"} %]
+<tr><td class="category">Wikipedia-Artikel (franz.)</td><td>
+[%- FOREACH item IN normset.${"T4202"}-%]
+<a href="http://fr.wikipedia.org/wiki/[% item.content | uri %]" target="_blank">[% item.content %]</a>&nbsp;&nbsp;
+[%- END -%]</td></tr>
+[% END %]
 </table>
 
 [% IF config.unAPI %]

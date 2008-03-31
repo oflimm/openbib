@@ -33,6 +33,7 @@ use utf8;
 use Apache::Reload;
 use Apache::Request ();
 use Benchmark ':hireswallclock';
+use Business::ISBN;
 use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
@@ -1471,15 +1472,42 @@ sub get_tit_set_by_idn {
             = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
                 or $logger->error_die($DBI::errstr);
 
-        if (exists $normset_ref->{T0540}){
-            foreach my $isbn_ref (@{$normset_ref->{T0540}}){
+        my @isbn_refs = ();
+        push @isbn_refs, @{$normset_ref->{T0540}} if (exists $normset_ref->{T0540});
+        push @isbn_refs, @{$normset_ref->{T0553}} if (exists $normset_ref->{T0553});
 
-                my $isbn=$isbn_ref->{content};
+        $logger->debug(YAML::Dump(\@isbn_refs));
+        
+        if (@isbn_refs){
+            my @isbn_refs_tmp = ();
+            # Normierung auf ISBN-13
+            
+            foreach my $isbn_ref (@isbn_refs){
+                my $thisisbn = $isbn_ref->{content};
                 
-                $isbn =~s/ //g;
-                $isbn =~s/-//g;
-                $isbn=~s/([A-Z])/\l$1/g;
-                
+                # Alternative ISBN zur Rechercheanrei
+                my $isbn     = Business::ISBN->new($thisisbn);
+
+                if (defined $isbn && $isbn->is_valid){
+                    $thisisbn = $isbn->as_isbn13->as_string;
+                }
+
+                push @isbn_refs_tmp, OpenBib::Common::Util::grundform({
+                    category => '0540',
+                    content  => $thisisbn,
+                });
+
+            }
+            
+            # Dubletten Bereinigen
+            my %seen_isbns = ();
+            
+            @isbn_refs = grep { ! $seen_isbns{$_} ++ } @isbn_refs_tmp;
+
+            $logger->debug(YAML::Dump(\@isbn_refs));
+        
+            foreach my $isbn (@isbn_refs){
+
                 my $reqstring="select category,content from normdata where isbn=? order by category,indicator";
                 my $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
                 $request->execute($isbn) or $logger->error("Request: $reqstring - ".$DBI::errstr);

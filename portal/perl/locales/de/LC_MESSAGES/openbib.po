@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
 #
-# Oliver Flimm <flimm@openbib.org>, 2006, 2007.
+# Oliver Flimm <flimm@openbib.org>, 2006, 2007, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2008-02-07 15:27+0100\n"
-"Last-Translator: \n"
-"Language-Team:  <en@li.org>\n"
+"PO-Revision-Date: 2008-03-31 13:52+0200\n"
+"Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
+"Language-Team:  <l10n@openbib.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -29,7 +29,7 @@ msgstr "${category}"
 #: ../templates/database/portrait/search_showtitset:136
 #: ../templates/managecollection_tit_as_html:51
 #: ../templates/managecollection_tit_as_text:34
-#: ../templates/search_showmulttitset:93 ../templates/search_showtitset:243
+#: ../templates/search_showmulttitset:93 ../templates/search_showtitset:242
 msgid "${thiscategory}"
 msgstr "${thiscategory}"
 
@@ -330,7 +330,7 @@ msgstr "Ausleih-Einstellungen"
 #: ../templates/database/portrait/search_showtitset:162
 #: ../templates/managecollection_tit_as_html:76
 #: ../templates/managecollection_tit_as_html_simple:60
-#: ../templates/search_showmulttitset:124 ../templates/search_showtitset:265
+#: ../templates/search_showmulttitset:124 ../templates/search_showtitset:282
 msgid "Ausleihe/Exemplare"
 msgstr "Ausleihe/Exemplare"
 
@@ -1133,7 +1133,7 @@ msgid "Geben Sie hier den Notationsanfang ein"
 msgstr "Geben Sie hier den Notationsanfang ein"
 
 #: ../templates/search_showswtindex:75 ../templates/search_showtitlist:178
-#: ../templates/search_showtitset:598
+#: ../templates/search_showtitset:615
 #: ../templates/views/kapsel/search_showtitlist:168
 #: ../templates/virtualsearch_showswtindex:46
 msgid "Geben Sie hier den Schlagwortanfang ein"
@@ -3025,7 +3025,7 @@ msgstr "Schlagworte"
 msgid "Schlagwortindex"
 msgstr "Schlagwortindex"
 
-#: ../templates/search_showtitset:597
+#: ../templates/search_showtitset:614
 msgid "Schlagwortindex diese Katalogs"
 msgstr "Schlagwortindex diese Katalogs"
 
@@ -3657,7 +3657,7 @@ msgid "Suche starten"
 msgstr "Suche starten"
 
 #: ../templates/search_showswtindex:75 ../templates/search_showtitlist:178
-#: ../templates/search_showtitset:598
+#: ../templates/search_showtitset:615
 #: ../templates/views/einbaende/searchframe_simple:30
 #: ../templates/views/kapsel/search_showtitlist:168
 #: ../templates/views/kapsel/searchframe:61
@@ -4502,22 +4502,22 @@ msgstr "Redaktionelle Bemerkungen"
 msgid "T0538"
 msgstr "Angabe Vervielfältigungsart"
 
-#: ../templates/database/inst001/visible_categories_titset:102
+#: ../templates/database/inst001/visible_categories_titset:103
 #: ../templates/database/kapsel/visible_categories_titset:100
 #: ../templates/database/richter/visible_categories_titset:102
-#: ../templates/visible_categories_titset:102
+#: ../templates/visible_categories_titset:103
 msgid "T0540"
 msgstr "ISBN"
 
-#: ../templates/database/inst001/visible_categories_titset:103
+#: ../templates/database/inst001/visible_categories_titset:104
 #: ../templates/database/kapsel/visible_categories_titset:101
 #: ../templates/database/richter/visible_categories_titset:104
-#: ../templates/visible_categories_titset:104
+#: ../templates/visible_categories_titset:105
 msgid "T0543"
 msgstr "ISSN"
 
 #: ../templates/database/richter/visible_categories_titset:103
-#: ../templates/visible_categories_titset:103
+#: ../templates/visible_categories_titset:104
 msgid "T0553"
 msgstr "ISBN"
 
@@ -4648,11 +4648,11 @@ msgstr "EDV Material"
 msgid "T0655"
 msgstr "EDV Adress"
 
-#: ../templates/database/inst001/visible_categories_titset:104
+#: ../templates/database/inst001/visible_categories_titset:105
 #: ../templates/database/kapsel/visible_categories_titset:102
 #: ../templates/database/landschaft/visible_categories_titset:85
 #: ../templates/database/richter/visible_categories_titset:105
-#: ../templates/visible_categories_titset:105
+#: ../templates/visible_categories_titset:106
 msgid "T0662"
 msgstr "URL"
 
@@ -4835,28 +4835,28 @@ msgstr "Schlagwort RSWK"
 msgid "T1202"
 msgstr "Bestand Bemerkung"
 
-#: ../templates/database/inst001/visible_categories_titset:111
+#: ../templates/database/inst001/visible_categories_titset:109
 msgid "T1600"
 msgstr "Hinweis"
 
-#: ../templates/database/inst001/visible_categories_titset:105
+#: ../templates/database/inst001/visible_categories_titset:106
 #: ../templates/database/kapsel/visible_categories_titset:103
 #: ../templates/database/richter/visible_categories_titset:106
-#: ../templates/visible_categories_titset:106
+#: ../templates/visible_categories_titset:107
 msgid "T1664"
 msgstr "Provenienz"
 
-#: ../templates/database/inst001/visible_categories_titset:106
+#: ../templates/database/inst001/visible_categories_titset:107
 #: ../templates/database/kapsel/visible_categories_titset:104
 #: ../templates/database/richter/visible_categories_titset:107
-#: ../templates/visible_categories_titset:107
+#: ../templates/visible_categories_titset:108
 msgid "T2662"
 msgstr "USB URL"
 
-#: ../templates/database/inst001/visible_categories_titset:107
+#: ../templates/database/inst001/visible_categories_titset:108
 #: ../templates/database/kapsel/visible_categories_titset:105
 #: ../templates/database/richter/visible_categories_titset:108
-#: ../templates/visible_categories_titset:108
+#: ../templates/visible_categories_titset:109
 msgid "T2663"
 msgstr "USB URL-Info"
 
@@ -4868,11 +4868,9 @@ msgstr "Besitzer"
 msgid "T3000-portrait"
 msgstr "Besitzer"
 
-#: ../templates/database/inst001/visible_categories_titset:108
 #: ../templates/database/kapsel/visible_categories_titset:106
 #: ../templates/database/landschaft/visible_categories_titset:35
 #: ../templates/database/richter/visible_categories_titset:109
-#: ../templates/visible_categories_titset:109
 msgid "T3001"
 msgstr "TOC / HTML"
 
@@ -4880,46 +4878,51 @@ msgstr "TOC / HTML"
 msgid "T3001-portrait"
 msgstr "Fr&uuml;here Signatur"
 
-#: ../templates/database/inst001/visible_categories_titset:109
 #: ../templates/database/kapsel/visible_categories_titset:107
 #: ../templates/database/richter/visible_categories_titset:110
-#: ../templates/visible_categories_titset:110
 msgid "T3002"
 msgstr "TOC / TIFF"
 
-#: ../templates/database/inst001/visible_categories_titset:110
 #: ../templates/database/kapsel/visible_categories_titset:108
 #: ../templates/database/richter/visible_categories_titset:111
-#: ../templates/visible_categories_titset:111
 msgid "T3003"
 msgstr "TOC / PDF"
 
-#: ../templates/database/inst001/visible_categories_titset:112
+#: ../templates/database/inst001/visible_categories_titset:102
+#: ../templates/visible_categories_titset:102
+msgid "T4100"
+msgstr "Basisklassifikation"
+
+#: ../templates/visible_categories_titset:110
+msgid "T4110"
+msgstr "Inhaltsverzeichnis"
+
+#: ../templates/database/inst001/visible_categories_titset:110
 #: ../templates/database/richter/visible_categories_titset:112
-#: ../templates/visible_categories_titset:112
+#: ../templates/visible_categories_titset:111
 msgid "T4500"
 msgstr "Nutzer-Tags"
 
 #: ../templates/database/einbaende/visible_categories_titset:24
-#: ../templates/database/inst001/visible_categories_titset:113
+#: ../templates/database/inst001/visible_categories_titset:111
 #: ../templates/database/kapsel/visible_categories_titset:109
 #: ../templates/database/richter/visible_categories_titset:113
-#: ../templates/visible_categories_titset:113
+#: ../templates/visible_categories_titset:112
 msgid "T5001"
 msgstr "Anzahl Gesamttitel"
 
 #: ../templates/database/einbaende/visible_categories_titset:25
-#: ../templates/database/inst001/visible_categories_titset:114
+#: ../templates/database/inst001/visible_categories_titset:112
 #: ../templates/database/kapsel/visible_categories_titset:110
 #: ../templates/database/richter/visible_categories_titset:114
-#: ../templates/visible_categories_titset:114
+#: ../templates/visible_categories_titset:113
 msgid "T5002"
 msgstr "Anzahl Bände/Stücke"
 
-#: ../templates/database/inst001/visible_categories_titset:115
+#: ../templates/database/inst001/visible_categories_titset:113
 #: ../templates/database/kapsel/visible_categories_titset:111
 #: ../templates/database/richter/visible_categories_titset:115
-#: ../templates/visible_categories_titset:115
+#: ../templates/visible_categories_titset:114
 msgid "T5100"
 msgstr "Zählung"
 

@@ -84,7 +84,7 @@
 
     FOREACH mex IN itemmex ;
 
-       catname  = mex.${"X4000"}.content.short ;
+       catname  = utf2iso(mex.${"X4000"}.content.short) ;
        caturl   = mex.${"X4001"}.content ;
        verlauf  = mex.${"X1204"}.content ;
        signatur = mex.${"X0014"}.content ;

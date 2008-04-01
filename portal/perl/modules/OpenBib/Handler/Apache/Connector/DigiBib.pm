@@ -47,6 +47,7 @@ use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
 use OpenBib::Search::Util;
+use OpenBib::SearchQuery;
 use OpenBib::Session;
 use OpenBib::VirtualSearch::Util;
 
@@ -70,6 +71,10 @@ sub handler {
 
     my $session = OpenBib::Session->instance;
 
+    # Message Katalog laden
+    my $msg = OpenBib::L10N->get_handle('de') || $logger->error("L10N-Fehler");
+    $msg->fail_with( \&OpenBib::L10N::failure_handler );
+    
     # CGI-Input auslesen
     
     #####################################################################
@@ -175,31 +180,15 @@ sub handler {
     $query->param('boolmart'      => $query->param('bool11')) if ($query->param('bool11'));
     $query->param('boolhststring' => $query->param('bool12')) if ($query->param('bool12'));
 
+    # Automatische Und-Verknuepfung der Suchterme aktivieren
+    $query->param('autoplus' => 1);
+
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-    my $searchquery_ref
-        = OpenBib::Common::Util::get_searchquery($r);
+    my $searchquery = OpenBib::SearchQuery->instance;
 
-    # Autoplus einfuegen
+    $searchquery->set_from_apache_request($r);
 
-    $searchquery_ref->{fs      }{norm} = OpenBib::VirtualSearch::Util::conv2autoplus($searchquery_ref->{fs      }{norm}) if ($searchquery_ref->{fs      }{norm});
-    $searchquery_ref->{verf    }{norm} = OpenBib::VirtualSearch::Util::conv2autoplus($searchquery_ref->{verf    }{norm}) if ($searchquery_ref->{verf    }{norm});
-    $searchquery_ref->{hst     }{norm} = OpenBib::VirtualSearch::Util::conv2autoplus($searchquery_ref->{hst     }{norm}) if ($searchquery_ref->{hst     }{norm});
-    $searchquery_ref->{kor     }{norm} = OpenBib::VirtualSearch::Util::conv2autoplus($searchquery_ref->{kor     }{norm}) if ($searchquery_ref->{kor     }{norm});
-    $searchquery_ref->{swt     }{norm} = OpenBib::VirtualSearch::Util::conv2autoplus($searchquery_ref->{swt     }{norm}) if ($searchquery_ref->{swt     }{norm});
-    $searchquery_ref->{isbn    }{norm} = OpenBib::VirtualSearch::Util::conv2autoplus($searchquery_ref->{isbn    }{norm}) if ($searchquery_ref->{isbn    }{norm});
-    $searchquery_ref->{issn    }{norm} = OpenBib::VirtualSearch::Util::conv2autoplus($searchquery_ref->{issn    }{norm}) if ($searchquery_ref->{issn    }{norm});
-    $searchquery_ref->{gtquelle}{norm} = OpenBib::VirtualSearch::Util::conv2autoplus($searchquery_ref->{gtquelle}{norm}) if ($searchquery_ref->{gtquelle}{norm});
-
-    if (!$sortorder){
-        if ($sorttype eq "ejahr"){
-            $sortorder="down";
-        }
-        else {
-            $sortorder="up";
-        }
-    }
-        
     # Bestimmung der Datenbanken, in denen gesucht werden soll
     my @databases = $config->get_dbs_of_view($view);
     
@@ -209,111 +198,117 @@ sub handler {
         print $r->send_http_header("text/html");
         
         # Folgende nicht erlaubte Anfragen werden sofort ausgesondert
-        
+
         my $firstsql;
-        
-        if ($searchquery_ref->{fs  }{norm}) {
+
+        if ($searchquery->get_searchfield('fs')->{norm}) {
             $firstsql=1;
         }
         
-        if ($searchquery_ref->{verf}{norm}) {
+        if ($searchquery->get_searchfield('verf')->{norm}) {
             $firstsql=1;
         }
         
-        if ($searchquery_ref->{kor }{norm}) {
+        if ($searchquery->get_searchfield('kor')->{norm}) {
             $firstsql=1;
         }
         
-        if ($searchquery_ref->{hst }{norm}) {
+        if ($searchquery->get_searchfield('hst')->{norm}) {
             $firstsql=1;
         }
         
-        if ($searchquery_ref->{swt}{norm}) {
+        if ($searchquery->get_searchfield('swt')->{norm}) {
             $firstsql=1;
         }
         
-        if ($searchquery_ref->{notation}{norm}) {
+        if ($searchquery->get_searchfield('notation')->{norm}) {
             $firstsql=1;
         }
         
-        if ($searchquery_ref->{sign}{norm}) {
+        if ($searchquery->get_searchfield('sign')->{norm}) {
             $firstsql=1;
         }
         
-        if ($searchquery_ref->{isbn}{norm}) {
+        if ($searchquery->get_searchfield('isbn')->{norm}) {
             $firstsql=1;
         }
         
-        if ($searchquery_ref->{issn}{norm}) {
+        if ($searchquery->get_searchfield('issn')->{norm}) {
             $firstsql=1;
         }
         
-        if ($searchquery_ref->{mart}{norm}) {
+        if ($searchquery->get_searchfield('mart')->{norm}) {
             $firstsql=1;
         }
         
-        if ($searchquery_ref->{hststring}{norm}) {
+        if ($searchquery->get_searchfield('hststring')->{norm}) {
             $firstsql=1;
         }
         
-        if ($searchquery_ref->{ejahr}{norm}){
+        if ($searchquery->get_searchfield('inhalt')->{norm}) {
             $firstsql=1;
         }
         
-        if ($searchquery_ref->{ejahr}{norm}) {
-            my ($ejtest)=$searchquery_ref->{ejahr}{norm}=~/.*(\d\d\d\d).*/;
+        if ($searchquery->get_searchfield('gtquelle')->{norm}) {
+            $firstsql=1;
+        }
+        
+        if ($searchquery->get_searchfield('ejahr')->{norm}){
+            $firstsql=1;
+        }
+        
+        if ($searchquery->get_searchfield('ejahr')->{norm}) {
+            my ($ejtest)=$searchquery->get_searchfield('ejahr')->{norm}=~/.*(\d\d\d\d).*/;
             if (!$ejtest) {
+                OpenBib::Common::Util::print_warning($msg->maketext("Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."),$r,$msg);
                 return OK;
             }
         }
         
-        if ($searchquery_ref->{ejahr}{bool} eq "OR") {
-            if ($searchquery_ref->{ejahr}{norm}) {
+        if ($searchquery->get_searchfield('ejahr')->{bool} eq "OR") {
+            if ($searchquery->get_searchfield('ejahr')->{norm}) {
+                OpenBib::Common::Util::print_warning($msg->maketext("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."),$r,$msg);
                 return OK;
             }
         }
         
         
-        if ($searchquery_ref->{ejahr}{bool} eq "AND") {
-            if ($searchquery_ref->{ejahr}{norm}) {
+        if ($searchquery->get_searchfield('ejahr')->{bool} eq "AND") {
+            if ($searchquery->get_searchfield('ejahr')->{norm}) {
                 if (!$firstsql) {
+                    OpenBib::Common::Util::print_warning($msg->maketext("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."),$r,$msg);
                     return OK;
                 }
             }
         }
         
         if (!$firstsql) {
+            OpenBib::Common::Util::print_warning($msg->maketext("Es wurde kein Suchkriterium eingegeben."),$r,$msg);
             return OK;
         }
         
-        
         my @ergebnisse;
-                
+
         foreach my $database (@databases){
-            my $dbh   = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
-
-            my $result_ref=OpenBib::Search::Util::initial_search_for_titidns({
-                searchquery_ref => $searchquery_ref,
-
+            my ($recordlist,$fullresultcount) = OpenBib::Search::Util::initial_search_for_titidns({
                 serien          => $serien,
-                dbh             => $dbh,
-                maxhits         => $maxhits,
+                
+                database        => $database,
+                
+                hitrange        => $hitrange,
 
+                maxhits         => $maxhits,
+                
                 enrich          => 0,
                 enrichkeys_ref  => [],
             });
-
-            my @tidns           = @{$result_ref->{titidns_ref}};
-            my $fullresultcount = $result_ref->{fullresultcount};
             
-            if ($#tidns >= 0){
+            $logger->debug("Treffer-Ids in $database:".$recordlist->to_ids);
 
-                my $recordlist = new OpenBib::RecordList::Title();
-                my $record     = new OpenBib::Record::Title({database=>$database});
-
-                foreach my $idn (@tidns) {
-                    $recordlist->add($record->get_brief_record({id=>$idn})->to_rawdata);
-                }
+            # Wenn mindestens ein Treffer gefunden wurde
+            if ($recordlist->get_size() > 0) {
+                # Kurztitelinformationen fuer RecordList laden
+                $recordlist->get_brief_records;
                 
                 $recordlist->sort({order=>$sortorder,type=>$sorttype});
                 
@@ -334,7 +329,7 @@ sub handler {
 
         my $alldbcount = $config->get_number_of_dbs();
 
-        my $searchquery_log_ref = $searchquery_ref;
+        my $searchquery_log_ref = $searchquery->get_searchquery;
 
         if ($#databases+1 == $alldbcount){
             $searchquery_log_ref->{alldbases} = 1;
@@ -518,11 +513,9 @@ sub handler {
         
         # TT-Data erzeugen
         my $ttdata={
-            item         => $record->get_normdata,
-            itemmex      => $record->get_mexdata,
+            record       => $record,
             has_sb       => $has_sb,
-            sbitem       => $sbrecord->get_normdata,
-            sbitemmex    => $sbrecord->get_mexdata,
+            sbrecord     => $sbrecord,
             targetdbinfo => $dbinfotable,
             database     => $database,
 

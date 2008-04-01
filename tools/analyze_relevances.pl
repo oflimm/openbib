@@ -3,7 +3,7 @@
 #
 #  analyze_relevances.pl
 #
-#  Dieses File ist (C) 2006-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2006 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -24,11 +24,14 @@
 #
 #####################################################################   
 
+use Business::ISBN;
 use DBI;
 use YAML;
 use OpenBib::Config;
+use OpenBib::Common::Util;
+use OpenBib::Search::Util;
 
-my $config = new OpenBib::Config();
+my $config=new OpenBib::Config();
 
 # Verbindung zur SQL-Datenbank herstellen
 my $enrichdbh
@@ -43,7 +46,19 @@ $request->execute();
 
 # Bestimme Nutzungsinformationen fuer jede ISBN
 while (my $result=$request->fetchrow_hashref){
-    my $isbn = $result->{isbn};
+    my $isbn13 = $isbn = $result->{isbn};
+
+    # Alternative ISBN zur Rechercheanrei
+    my $isbnXX = Business::ISBN->new($isbn);
+
+    if (defined $isbnXX && $isbnXX->is_valid){
+        $isbn13 = $isbnXX->as_isbn13->as_string;
+    }
+
+    $isbn13 = OpenBib::Common::Util::grundform({
+        category => '0540',
+        content  => $isbn13,
+    });
 
     # Bestimme alle Nutzer, die diese ISBN ausgeliehen haben
     my $request=$statdbh->prepare("select distinct id from relevance where isbn=?");
@@ -126,17 +141,22 @@ while (my $result=$request->fetchrow_hashref){
                     print STDERR "$_";
                     next REFERENCES;
                 }
-                
-                my $dbrequest=$dbh->prepare("select content from tit where id=? and category=?");
-                $dbrequest->execute($item_ref->{katkey},331);
-                
-                my $result=$dbrequest->fetchrow_hashref();
-                my $hst=$result->{content};
-                                
+
+                my $tititem = OpenBib::Search::Util::get_tit_listitem_by_idn({
+                    titidn   => $item_ref->{katkey},
+                    database => $item_ref->{dbname},
+                    dbh      => $dbh,
+                });
+
+#                print YAML::Dump($tititem);
+                my $content = << "CONTENT";
+<span class="rlauthor">$tititem->{PC0001}[0]{content}</span></strong><br /><strong><span class="rltitle">$tititem->{T0331}[0]{content}</span></strong>, <span class="rlpublisher">$tititem->{T0412}[0]{content}</span> <span class="rlyearofpub">$tititem->{T0425}[0]{content}</span> ($references_ref->{count}&nbsp;Nutzer)
+CONTENT
                 $count++;
-                if ($hst && $item_ref->{isbn}){                
-                    $request2->execute($isbn,50,4000,$count,$item_ref->{isbn});
-                    $request2->execute($isbn,50,4001,$count,$hst);
+               
+                if ($tititem->{T0331} && $item_ref->{isbn}){                
+                    $request2->execute($isbn13,50,4000,$count,$item_ref->{isbn});
+                    $request2->execute($isbn13,50,4001,$count,$content);
                 }
                 last if ($count > 5);
             }

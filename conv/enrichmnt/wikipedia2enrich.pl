@@ -133,7 +133,8 @@ $logger->info("In Datenbank speichern");
 
 foreach my $isbn (keys %$isbn_ref){
     my $indicator=1;
-    foreach my $articlename (@{$isbn_ref->{$isbn}}){
+    my @sorted_articles = sort @{$isbn_ref->{$isbn}};
+    foreach my $articlename (@sorted_articles){
         $insertrequest->execute($isbn,$lang2cat_ref->{$lang},$indicator,$articlename);
         $indicator++;
     }

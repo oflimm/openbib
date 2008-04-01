@@ -63,9 +63,18 @@ Datenbanken zu recherchieren.") %]
 <tr class="titlerow"><td colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /><b>[% msg.maketext("Alle Kataloge") %]</b></td></tr>
 
 [%- FOREACH category = config.orgunits -%]
+[%- is_empty = 1 ;
+    FOREACH db = catdb ;
+      IF db.category == category.short && db.db != '' ; 
+        is_empty = 0 ;
+      END ;
+    END ;
+-%]
+[%- IF NOT is_empty -%]
 [%- IF category.nr >= 1 -%]
 <tr><td colspan="[% colspan %]">&nbsp;</td></tr>
 [%- END -%]
+
 <tr class="titlerow"><td colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst[% category.nr %]" onclick="update_fak(this.form, this.checked,'inst[% category.nr %]')" title="inst" /><b>[% category.desc %]</b></td></tr>
 
 [%- FOREACH db = catdb -%]
@@ -92,6 +101,7 @@ Datenbanken zu recherchieren.") %]
 
 [%- END -%]
 </tr>
+[%- END -%]
 [%- END -%]
 [%- END -%]
 [%- END -%]

@@ -39,9 +39,11 @@
 <tr><th>[% msg.maketext("Neuen View anlegen") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 <table>
-<tr><td><b>[% msg.maketext("Viewname") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td><td></td></tr>
+<tr><td><b>[% msg.maketext("Viewname") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Katalog-Profile") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td><td></td></tr>
 <tr><td><input type="text" name="viewname" /></td><td><input type="text" name="description" size="20" />
-</td><td><select name=active><option value="1">[% msg.maketext("Ja") %]</option><option value="0" selected>[% msg.maketext("Nein") %]</option></select></td><td><input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></td></tr>
+</td>
+<td><select name="profilename">[% FOREACH profile IN config.get_profileinfo_overview %]<option value="[% profile.profilename %]" [% IF view.profilename == profile.profilename %] selected="selected"[% END %]>[% profile.description %]</option>[% END %]</select></td>
+<td><select name=active><option value="1">[% msg.maketext("Ja") %]</option><option value="0" selected>[% msg.maketext("Nein") %]</option></select></td><td><input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></td></tr>
 </table>
 </td></tr>
 </table>

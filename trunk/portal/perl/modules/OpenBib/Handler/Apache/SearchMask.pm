@@ -215,7 +215,7 @@ sub handler {
     }
     
     my $maxcolumn = 1;
-    my @catdb     = $config->get_infomatrix_of_active_databases({session => $session, checkeddb_ref => $checkeddb_ref, maxcolumn => $maxcolumn});
+    my @catdb     = $config->get_infomatrix_of_active_databases({session => $session, checkeddb_ref => $checkeddb_ref, maxcolumn => $maxcolumn, view => $view});
     my $colspan   = $maxcolumn*3;
     
     # TT-Data erzeugen

@@ -11,6 +11,8 @@
 #
 #######################################################################
 -%]
+[%- item         = record.get_normdata -%]
+[%- itemmex      = record.get_mexdata -%]
 [%# Verfasser konstruieren %]
 [%- persons = [] -%]
 [%- FOREACH part IN item.${'T0100'}  -%]
@@ -84,7 +86,7 @@
 
     FOREACH mex IN itemmex ;
 
-       catname  = mex.${"X4000"}.content.short ;
+       catname  = utf2iso(mex.${"X4000"}.content.short) ;
        caturl   = mex.${"X4001"}.content ;
        verlauf  = mex.${"X1204"}.content ;
        signatur = mex.${"X0014"}.content ;
@@ -162,6 +164,8 @@
 <LI> AUH=[% utf2iso(autorlink) %]
 <LI> TIH=[% utf2iso(titellink) %]
 [% IF has_sb %]
+[%- sbitem         = sbrecord.get_normdata -%]
+[%- sbitemmex      = sbrecord.get_mexdata -%]
 [%# Verfasser konstruieren %]
 [%- persons = [] -%]
 [%- FOREACH part IN sbitem.${'T0100'}  -%]

@@ -138,7 +138,7 @@ sub handler {
         }
         
         my $maxcolumn = $config->{databasechoice_maxcolumn};
-        my @catdb     = $config->get_infomatrix_of_active_databases({session => $session, checkeddb_ref => $checkeddb_ref});
+        my @catdb     = $config->get_infomatrix_of_active_databases({session => $session, checkeddb_ref => $checkeddb_ref, view => $view });
         
         # TT-Data erzeugen
         my $colspan=$maxcolumn*3;

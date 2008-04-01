@@ -178,7 +178,7 @@ FOREACH category IN categories;
     CASE "T0543";
          content   = "${content} (<a href=\"${config.redirect_loc}/${sessionID}/530/${config.ezb_exturl}&jq_term1=${content}\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
 
-    CASE [ "T0662" "T2662" "T3001" "T3002" "T3003" ];
+    CASE [ "T0662" "T2662" ];
          thisindicator = item.indicator ;
          thiscontent   = '' ;
          IF category == 'T0662' ;
@@ -193,22 +193,22 @@ FOREACH category IN categories;
                 thiscontent = thisitem.content ;
              END ;
            END ;
-         ELSIF category == 'T3001' ;
-            thiscontent = "<img src=\"/images/openbib/html.png\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (&Uuml;bersicht)";
-            content     = "${config.redirect_loc}/${sessionID}/501/${content}" ;
-         ELSIF category == 'T3003' ;
-            thiscontent = "<img src=\"/images/openbib/pdf-document.png\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)";
-            content     = "${config.redirect_loc}/${sessionID}/501/${content}" ;
          END ;
          IF thiscontent ;
             IF content.match('digitool.hbz-nrw.de') ;
-               thiscontent = '<img src="/images/openbib/pdf-document.png" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format/DigiTool)' ;
+               thiscontent = '<img src="/images/openbib/pdf-document.png" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)' ;
                content     = "${config.redirect_loc}/${sessionID}/500/${content}" ;
             END ;
             content   = "<a href=\"${content}\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
          ELSE ;
             content   = "<a href=\"${content}\" target=\"_blank\">${highlightquery(searchquery,content)}</a>";
          END ;
+
+    CASE "T4110";
+         thisindicator = item.indicator ;
+         thiscontent   = "<img src=\"/images/openbib/pdf-document.png\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)";
+         content       = "${config.redirect_loc}/${sessionID}/500/${content}" ;
+         content       = "<a href=\"${content}\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
 
     CASE [ "T0710" "T0902" "T0907" "T0912" "T0917" "T0922" "T0927" "T0932" "T0937" "T0942" "T0947" ];
          thisid     = item.id;

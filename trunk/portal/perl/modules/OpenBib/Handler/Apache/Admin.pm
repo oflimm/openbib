@@ -47,6 +47,7 @@ use Template;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
@@ -99,9 +100,8 @@ sub handler {
     my $do_showcat      = $query->param('do_showcat')      || '';
     my $do_editcat      = $query->param('do_editcat')      || '';
     my $do_editcat_rss  = $query->param('do_editcat_rss')  || '';
-    my $do_showprofile  = $query->param('do_showprofile')  || '';
-    my $do_saveprofile  = $query->param('do_saveprofile')  || '';
-    my $do_delprofile   = $query->param('do_delprofile')  || '';
+    my $do_showprofiles = $query->param('do_showprofiles') || '';
+    my $do_editprofile  = $query->param('do_editprofile')  || '';
     my $do_showviews    = $query->param('do_showviews')    || '';
     my $do_editview     = $query->param('do_editview')     || '';
     my $do_editview_rss = $query->param('do_editview_rss') || '';
@@ -137,9 +137,10 @@ sub handler {
     my @viewdb          = ($query->param('viewdb'))?$query->param('viewdb'):();
 
     # Profile
+    my $profilename     = $query->param('profilename')     || '';
+    my @profiledb       = ($query->param('profiledb'))?$query->param('profiledb'):();
+
     my @databases       = ($query->param('database'))?$query->param('database'):();
-    my $newprofile      = $query->param('newprofile') || '';
-    my $profilid        = $query->param('profilid')   || '';
 
     # dboptions
     my $host            = $query->param('host')            || '';
@@ -505,100 +506,110 @@ sub handler {
     
         OpenBib::Common::Util::print_page($config->{tt_admin_showcat_tname},$ttdata,$r);
     }
-    elsif ($do_showprofile) {
-        my $profilname="";
+    elsif ($do_showprofiles) {
+        my $profileinfo_ref = $config->get_profileinfo_overview();
 
-        my $checkeddb_ref={};
-        
-        if ($profilid) {
-            # Zuerst Profil-Description zur ID holen
-            $profilname = $config->get_profilename_of_profileid($profilid);
-
-            foreach my $dbname ($config->get_profiledbs_of_profileid($profilid)){
-                $checkeddb_ref->{$dbname}=1;
-            }
-        }
-    
-        my @userdbprofiles = $user->get_all_profiles;
-        my $targettype     = $user->get_targettype_of_session($session->{ID});
-
-        my $maxcolumn      = $config->{databasechoice_maxcolumn};
-        my @catdb          = $config->get_infomatrix_of_active_databases({session => $session, checkeddb_ref => $checkeddb_ref});
-
-        # TT-Data erzeugen
-        my $colspan=$maxcolumn*3;
-    
         my $ttdata={
-            view           => $viewname,
-            stylesheet     => $stylesheet,
-            sessionID      => $session->{ID},
-            targettype     => $targettype,
-            profilname     => $profilname,
-            userdbprofiles => \@userdbprofiles,
-            maxcolumn      => $maxcolumn,
-            colspan        => $colspan,
-            catdb          => \@catdb,
-            config         => $config,
-            user           => $user,
-            msg            => $msg,
+            stylesheet => $stylesheet,
+            sessionID  => $session->{ID},
+            profiles   => $profileinfo_ref,
+            config     => $config,
+            user       => $user,
+            msg        => $msg,
         };
     
-        OpenBib::Common::Util::print_page($config->{tt_databaseprofile_tname},$ttdata,$r);
-        return OK;
+        OpenBib::Common::Util::print_page($config->{tt_admin_showprofiles_tname},$ttdata,$r);
     }
-
-    #####################################################################   
-    # Abspeichern eines Profils
-    #####################################################################   
-
-    elsif ($do_saveprofile) {
+    elsif ($do_editprofile) {
     
-        # Wurde ueberhaupt ein Profilname eingegeben?
-        if (!$newprofile) {
-            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keinen Profilnamen eingegeben!"),$r,$msg);
+        # Zuerst schauen, ob Aktionen gefordert sind
+    
+        if ($do_del) {
+	    editprofile_del($profilename);
+
+	    my $ret_ref = dist_cmd("editprofile_del",{ profilename => $profilename }) if ($do_dist);
+
+            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showprofiles=1");
+            return OK;
+      
+        }
+        elsif ($do_change) {
+	    editprofile_change({
+                profilename => $profilename,
+                description => $description,
+                profiledb   => \@profiledb,
+            });
+            
+	    my $ret_ref = dist_cmd("editprofile_change",{ 
+                profilename => $profilename,
+                description => $description,
+                profiledb   => \@profiledb,
+                viewname    => $viewname,
+            }) if ($do_dist);
+
+            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showprofiles=1");
+      
             return OK;
         }
+        elsif ($do_new) {
 
-        my $profilid = $user->dbprofile_exists($newprofile);
+            if ($profilename eq "" || $description eq "") {
 
-        # Wenn noch keine Profilid (=kein Profil diesen Namens)
-        # existiert, dann wird eins erzeugt.
-        unless ($profilid) {
-            $profilid = $user->new_dbprofile($newprofile);
+                OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."),$r,$msg);
+
+                return OK;
+            }
+
+	    my $ret = editprofile_new({
+                profilename => $profilename,
+                description => $description,
+            });
+
+	    my $ret_ref = dist_cmd("editprofile_new",{ 
+                profilename => $profilename,
+                description => $description,
+            }) if ($do_dist);
+
+	    if ($ret == -1){
+	      OpenBib::Common::Util::print_warning($msg->maketext("Es existiert bereits ein View unter diesem Namen"),$r,$msg);
+	      return OK;
+	    }
+
+            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editprofile=1&do_edit=1&profilename=$profilename");
+            return OK;
+        }
+        elsif ($do_edit) {
+
+	    my $profileinfo_ref = $config->get_profileinfo($profilename);
+
+            my $profilename = $profileinfo_ref->{'profilename'};
+            my $description = $profileinfo_ref->{'description'};
+            
+            my @profiledbs  = $config->get_profiledbs($profilename);
+
+            my $profile={
+		profilename  => $profilename,
+		description  => $description,
+		profiledbs   => \@profiledbs,
+            };
+
+            my $ttdata={
+                stylesheet => $stylesheet,
+                sessionID  => $session->{ID},
+
+                profile    => $profile,
+
+                dbnames    => \@dbnames,
+
+                config     => $config,
+                user       => $user,
+                msg        => $msg,
+            };
+      
+            OpenBib::Common::Util::print_page($config->{tt_admin_editprofile_tname},$ttdata,$r);
+      
         }
     
-        # Jetzt habe ich eine profilid und kann Eintragen
-        # Auswahl wird immer durch aktuelle ueberschrieben.
-        # Daher erst potentiell loeschen
-        $user->delete_profiledbs($profilid);
-    
-        foreach my $database (@databases) {
-            # ... und dann eintragen
-            $user->add_profiledb($profilid,$database);
-        }
-        $r->internal_redirect("http://$config->{servername}$config->{databaseprofile_loc}?sessionID=$session->{ID}&do_showprofile=1");
-    }
-    # Loeschen eines Profils
-    elsif ($do_delprofile) {
-        $user->delete_dbprofile($profilid);
-        $user->delete_profiledbs($profilid);
-
-        $r->internal_redirect("http://$config->{servername}$config->{databaseprofile_loc}?sessionID=$session->{ID}&do_showprofile=1");
-    }
-    elsif ($do_showprofile) {
-        my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
-
-        my $ttdata={
-            stylesheet  => $stylesheet,
-            sessionID   => $session->{ID},
-            dbinfotable => $dbinfotable,
-
-            config      => $config,
-            user        => $user,
-            msg         => $msg,
-        };
-    
-        OpenBib::Common::Util::print_page($config->{tt_admin_databaseprofile_tname},$ttdata,$r);
     }
     elsif ($do_showviews) {
         my $viewinfo_ref = $config->get_viewinfo_overview();
@@ -615,7 +626,6 @@ sub handler {
         OpenBib::Common::Util::print_page($config->{tt_admin_showviews_tname},$ttdata,$r);
     }
     elsif ($do_editview) {
-    
         # Zuerst schauen, ob Aktionen gefordert sind
     
         if ($do_del) {
@@ -635,6 +645,7 @@ sub handler {
 			     primrssfeed => $primrssfeed,
                              start_loc   => $viewstart_loc,
                              start_stid  => $viewstart_stid,
+                             profilename => $profilename,
 			     viewdb      => \@viewdb,
 			     rssfeeds    => \@rssfeeds,
 			    });
@@ -646,6 +657,7 @@ sub handler {
 						      primrssfeed => $primrssfeed,
                                                       start_loc   => $viewstart_loc,
                                                       start_stid  => $viewstart_stid,
+                                                      profilename => $profilename,
 						      viewdb      => \@viewdb,
 						      rssfeeds    => \@rssfeeds,
 						     }) if ($do_dist);
@@ -656,9 +668,9 @@ sub handler {
         }
         elsif ($do_new) {
 
-            if ($viewname eq "" || $description eq "") {
+            if ($viewname eq "" || $description eq "" || $profilename eq "") {
 
-                OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen mindestens einen Viewnamen und eine Beschreibung eingeben."),$r,$msg);
+                OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen mindestens einen Viewnamen, eine Beschreibung sowie ein Katalog-Profil eingeben."),$r,$msg);
 
                 return OK;
             }
@@ -666,13 +678,14 @@ sub handler {
 	    my $ret = editview_new({
 				    viewname    => $viewname,
 				    description => $description,
+                                    profilename => $profilename,
 				    active      => $active,
 				   });
 
 	    my $ret_ref = dist_cmd("editview_new",{ 
 						   viewname    => $viewname,
 						   description => $description,
-						   active      => $active,
+                                                   profilename => $profilename,						   active      => $active,
                                                    start_loc   => $viewstart_loc,
                                                    start_stid  => $viewstart_stid,
 						  }) if ($do_dist);
@@ -686,6 +699,7 @@ sub handler {
             return OK;
         }
         elsif ($do_edit) {
+            my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
 	    my $viewinfo_ref = $config->get_viewinfo($viewname);
 
@@ -693,15 +707,17 @@ sub handler {
             my $description = $viewinfo_ref->{'description'};
             my $primrssfeed = $viewinfo_ref->{'primrssfeed'};
             my $startpage   = $viewinfo_ref->{'startpage'};
+            my $profilename = $viewinfo_ref->{'profilename'};
             my $active      = $viewinfo_ref->{'active'};
-
+             
             my ($start_loc,$start_stid) = split (":",$startpage);
-            
+
+            my @profiledbs       = $config->get_profiledbs($profilename);
+
             my @viewdbs          = $config->get_viewdbs($viewname);
 
             my $all_rssfeeds_ref = $config->get_rssfeed_overview();
             
-
             my $viewrssfeed_ref=$config->get_rssfeeds_of_view($viewname);
 
             my $view={
@@ -710,6 +726,7 @@ sub handler {
 		active       => $active,
                 start_loc    => $start_loc,
                 start_stid   => $start_stid,
+                profilename  => $profilename,
 		viewdbs      => \@viewdbs,
                 allrssfeeds  => $all_rssfeeds_ref,
                 viewrssfeed  => $viewrssfeed_ref,
@@ -720,10 +737,12 @@ sub handler {
                 stylesheet => $stylesheet,
                 sessionID  => $session->{ID},
 		  
-                dbnames    => \@dbnames,
+                dbnames    => \@profiledbs,
 
                 view       => $view,
-		  
+
+                dbinfotable => $dbinfotable,
+                
                 config     => $config,
                 user       => $user,
                 msg        => $msg,
@@ -1400,6 +1419,8 @@ sub editview_change {
         ? $arg_ref->{start_loc}           : undef;
     my $start_stid             = exists $arg_ref->{start_stid}
         ? $arg_ref->{start_stid}          : undef;
+    my $profilename            = exists $arg_ref->{profilename}
+        ? $arg_ref->{profilename}         : undef;
     my $rssfeeds_ref           = exists $arg_ref->{rssfeeds}
         ? $arg_ref->{rssfeeds}            : undef;
 
@@ -1420,8 +1441,8 @@ sub editview_change {
     
     # Zuerst die Aenderungen in der Tabelle Viewinfo vornehmen
     
-    my $idnresult=$dbh->prepare("update viewinfo set description = ?, startpage = ?, active = ? where viewname = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($description,$startpage,$active,$viewname) or $logger->error($DBI::errstr);
+    my $idnresult=$dbh->prepare("update viewinfo set description = ?, startpage = ?, profilename = ?, active = ? where viewname = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($description,$startpage,$profilename,$active,$viewname) or $logger->error($DBI::errstr);
     
     # Primary RSS-Feed fuer Autodiscovery eintragen
     if ($primrssfeed){
@@ -1464,6 +1485,8 @@ sub editview_new {
         ? $arg_ref->{viewname}            : undef;
     my $description            = exists $arg_ref->{description}
         ? $arg_ref->{description}         : undef;
+    my $profilename            = exists $arg_ref->{profilename}
+        ? $arg_ref->{profilename}         : undef;
     my $active                 = exists $arg_ref->{active}
         ? $arg_ref->{active}              : undef;
 
@@ -1487,8 +1510,8 @@ sub editview_new {
       return -1;
     }
     
-    $idnresult=$dbh->prepare("insert into viewinfo values (?,?,NULL,'',?)") or $logger->error($DBI::errstr);
-    $idnresult->execute($viewname,$description,$active) or $logger->error($DBI::errstr);
+    $idnresult=$dbh->prepare("insert into viewinfo values (?,?,NULL,'',?,?)") or $logger->error($DBI::errstr);
+    $idnresult->execute($viewname,$description,$profilename,$active) or $logger->error($DBI::errstr);
     
     return;
 }
@@ -1533,6 +1556,108 @@ sub editview_rss_change {
       }
       $request->finish();
     }
+    
+    return;
+}
+
+sub editprofile_del {
+    my ($profilename)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $idnresult=$dbh->prepare("delete from profileinfo where profilename = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($profilename) or $logger->error($DBI::errstr);
+    $idnresult=$dbh->prepare("delete from profiledbs where profilename = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($profilename) or $logger->error($DBI::errstr);
+    $idnresult->finish();
+
+    return;
+}
+
+sub editprofile_change {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $profilename            = exists $arg_ref->{profilename}
+        ? $arg_ref->{profilename}         : undef;
+    my $description            = exists $arg_ref->{description}
+        ? $arg_ref->{description}         : undef;
+    my $profiledb_ref          = exists $arg_ref->{profiledb}
+        ? $arg_ref->{profiledb}           : undef;
+
+    my @profiledb = (defined $profiledb_ref)?@$profiledb_ref:();
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    # Zuerst die Aenderungen in der Tabelle Profileinfo vornehmen
+    
+    my $idnresult=$dbh->prepare("update profileinfo set description = ? where profilename = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($description,$profilename) or $logger->error($DBI::errstr);
+    
+    # Datenbanken zunaechst loeschen
+    
+    $idnresult=$dbh->prepare("delete from profiledbs where profilename = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($profilename) or $logger->error($DBI::errstr);
+    
+    
+    # Dann die zugehoerigen Datenbanken eintragen
+    foreach my $singleprofiledb (@profiledb) {
+        $idnresult=$dbh->prepare("insert into profiledbs values (?,?)") or $logger->error($DBI::errstr);
+        $idnresult->execute($profilename,$singleprofiledb) or $logger->error($DBI::errstr);
+    }
+    
+    $idnresult->finish();
+
+    return;
+}
+
+sub editprofile_new {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $profilename            = exists $arg_ref->{profilename}
+        ? $arg_ref->{profilename}            : undef;
+    my $description            = exists $arg_ref->{description}
+        ? $arg_ref->{description}         : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $idnresult=$dbh->prepare("select count(*) as rowcount from profileinfo where profilename = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($profilename) or $logger->error($DBI::errstr);
+    my $res=$idnresult->fetchrow_hashref;
+    my $rows=$res->{rowcount};
+    
+    if ($rows > 0) {
+      $idnresult->finish();
+      return -1;
+    }
+    
+    $idnresult=$dbh->prepare("insert into profileinfo values (?,?)") or $logger->error($DBI::errstr);
+    $idnresult->execute($profilename,$description) or $logger->error($DBI::errstr);
     
     return;
 }

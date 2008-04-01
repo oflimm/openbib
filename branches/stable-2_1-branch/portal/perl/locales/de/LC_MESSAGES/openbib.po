@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2008-03-31 13:52+0200\n"
+"PO-Revision-Date: 2008-04-01 09:50+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team:  <l10n@openbib.org>\n"
 "MIME-Version: 1.0\n"
@@ -433,6 +433,10 @@ msgstr "Besitzende Bibliothek"
 msgid "Besonderheit bei Feldern mit"
 msgstr "Besonderheit bei Feldern mit"
 
+#: ../templates/mexset:2
+msgid "Bestand"
+msgstr "Bestand"
+
 #: ../templates/admin_editcat:175
 msgid "Bestands-&Uuml;berpr&uuml;fungs-URL"
 msgstr "Bestands-&Uuml;berpr&uuml;fungs-URL"
@@ -440,7 +444,7 @@ msgstr "Bestands-&Uuml;berpr&uuml;fungs-URL"
 #: ../templates/database/einbaende/managecollection_tit_as_html:65
 #: ../templates/database/einbaende/search_showtitset:137
 #: ../templates/managecollection_tit_as_html:61
-#: ../templates/managecollection_tit_as_html_simple:45 ../templates/mexset:2
+#: ../templates/managecollection_tit_as_html_simple:45
 #: ../templates/search_showmulttitset:103
 msgid "Bestandsverlauf"
 msgstr "Bestandsverlauf"

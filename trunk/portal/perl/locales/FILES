@@ -41,6 +41,7 @@
 ../modules/OpenBib/VirtualSearch/Util.pm
 ../templates/admin_editcat
 ../templates/admin_editcat_rss
+../templates/admin_editprofile
 ../templates/admin_editsession
 ../templates/admin_editview
 ../templates/admin_editview_rss
@@ -52,6 +53,7 @@
 ../templates/admin_showcat
 ../templates/admin_showimx
 ../templates/admin_showlogintarget
+../templates/admin_showprofiles
 ../templates/admin_showsessions
 ../templates/admin_showsessions_1
 ../templates/admin_showstat

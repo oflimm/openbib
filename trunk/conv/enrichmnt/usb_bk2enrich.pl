@@ -31,6 +31,7 @@ use YAML;
 use DBI;
 
 use Business::ISBN;
+use Encode 'decode_utf8';
 use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
 
@@ -99,8 +100,8 @@ else {
     $request->execute();
     
     while (my $res=$request->fetchrow_hashref){
-        my $isbn=$res->{isbn};
-        my $bk  =$res->{bk};
+        my $isbn = decode_utf8($res->{isbn});
+        my $bk   = decode_utf8($res->{bk});
         
         my $isbnXX = Business::ISBN->new($isbn);
         

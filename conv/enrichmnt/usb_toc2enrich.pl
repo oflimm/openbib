@@ -32,6 +32,7 @@ use YAML;
 use DBI;
 
 use Business::ISBN;
+use Encode 'decode_utf8';
 use Getopt::Long;
 use Log::Log4perl qw(get_logger :levels);
 
@@ -100,8 +101,8 @@ else {
     $request->execute();
     
     while (my $res=$request->fetchrow_hashref){
-        my $isbn   = $res->{isbn};
-        my $tocurl = $res->{tocurl};
+        my $isbn   = decode_utf8($res->{isbn});
+        my $tocurl = decode_utf8($res->{tocurl});
         
         my $isbnXX = Business::ISBN->new($isbn);
         
@@ -128,7 +129,6 @@ $deleterequest->execute();
 $logger->info("Einladen der neuen Daten in die Datenbank");
 
 foreach my $thisisbn (keys %{$isbn_ref}){
-
     my $indicator = 1;
 
     # Dublette Inhalte entfernen

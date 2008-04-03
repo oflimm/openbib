@@ -195,6 +195,7 @@ image_root_path: /var/www/images/openbib
 tt_admin_editcat_rss_tname: admin_editcat_rss
 tt_admin_editcat_tname: admin_editcat
 tt_admin_editlogintarget_tname: admin_editlogintarget
+tt_admin_editprofile_tname: admin_editprofile
 tt_admin_editsession_tname: admin_editsession
 tt_admin_editview_rss_tname: admin_editview_rss
 tt_admin_editview_tname: admin_editview
@@ -204,7 +205,7 @@ tt_admin_loggedin_tname: admin_loggedin
 tt_admin_login_tname: admin_login
 tt_admin_logout_tname: admin_logout
 tt_admin_showcat_tname: admin_showcat
-tt_admin_showprofile_tname: admin_showprofile
+tt_admin_showprofiles_tname: admin_showprofiles
 tt_admin_showlogintarget_tname: admin_showlogintarget
 tt_admin_showsessions_1_tname: admin_showsessions_1
 tt_admin_showsessions_tname: admin_showsessions
@@ -309,6 +310,7 @@ tt_search_shownotset_tname: search_shownotset
 tt_search_showswtindex_tname: search_showswtindex
 tt_search_showswtset_tname: search_showswtset
 tt_search_showtitlist_tname: search_showtitlist
+tt_search_showtitlist_of_cnt_tname: search_showtitlist_of_cnt
 tt_search_showtitset_tname: search_showtitset
 tt_searchmask_advanced_tname: searchmask
 tt_searchmask_simple_tname: searchmask_simple

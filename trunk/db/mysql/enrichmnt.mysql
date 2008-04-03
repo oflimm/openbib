@@ -23,7 +23,9 @@ create table normdata (
  indicator     SMALLINT,
  content       TEXT NOT NULL,
  index         (isbn),
- index         (origin)
+ index         (origin),
+ index         (category),
+ index         (content(20))
 )
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci

@@ -969,6 +969,29 @@ sub get_active_databases {
     return @dblist;
 }
 
+sub get_active_databases_of_systemprofile {
+    my $self = shift;
+    my $view = shift;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$self->{dbimodule}:dbname=$self->{configdbname};host=$self->{configdbhost};port=$self->{configdbport}", $self->{configdbuser}, $self->{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my @dblist=();
+    my $request=$dbh->prepare("select dbinfo.dbname as dbname from dbinfo,viewinfo,profiledbs where dbinfo.active=1 and dbinfo.dbname=profiledbs.dbname and profiledbs.profilename=viewinfo.profilename and viewinfo.viewname = ? order by orgunit ASC, dbname ASC") or $logger->error($DBI::errstr);
+    $request->execute($view) or $logger->error($DBI::errstr);
+    while (my $res    = $request->fetchrow_hashref){
+        push @dblist, $res->{dbname};
+    }
+    $request->finish();
+    
+    return @dblist;
+}
+
 sub get_active_database_names {
     my $self = shift;
     
@@ -1275,5 +1298,19 @@ sub get_infomatrix_of_all_databases {
     return @catdb;
 }
 
+sub load_bk {
+    my ($self) = @_;
+
+    $YAML::Syck::ImplicitTyping  = 1;
+    $YAML::Syck::ImplicitUnicode = 1;
+
+    return YAML::Syck::LoadFile("/opt/openbib/conf/bk.yml");    
+}
+
+sub get_enrichmnt_object {
+    my ($self) = @_;
+
+    return OpenBib::Enrichment->instance;
+}
 
 1;

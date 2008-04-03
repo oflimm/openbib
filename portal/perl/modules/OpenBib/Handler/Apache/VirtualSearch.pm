@@ -200,8 +200,14 @@ sub handler {
         
         else {
             if ($searchall) {
-                $logger->debug("Selecting all active databases");
-                @databases = $config->get_active_databases();
+                if ($view){
+                    $logger->debug("Selecting all active databases of views systemprofile");
+                    @databases = $config->get_active_databases_of_systemprofile($view);
+                }
+                else {
+                    $logger->debug("Selecting all active databases");
+                    @databases = $config->get_active_databases();
+                }
             }
             elsif ($searchprofile || $verfindex || $korindex || $swtindex || $notindex) {
                 if ($profil eq "dbauswahl") {
@@ -211,7 +217,7 @@ sub handler {
                 }
                 # Wenn ein anderes Profil als 'dbauswahl' ausgewaehlt wuerde
                 elsif ($profil) {
-                    $logger->debug("Selecting databases of profile");
+                    $logger->debug("Selecting databases of userprofile");
                     # Eventuell bestehende Auswahl zuruecksetzen
                     @databases=();
                     
@@ -224,7 +230,14 @@ sub handler {
                     # oder alle
                     elsif ($profil eq "alldbs") {
                         # Alle Datenbanken
-                        @databases = $config->get_active_databases();
+                        if ($view){
+                            $logger->debug("Selecting all active databases of views systemprofile");
+                            @databases = $config->get_active_databases_of_systemprofile($view);
+                        }
+                        else {
+                            $logger->debug("Selecting all active databases");
+                            @databases = $config->get_active_databases();
+                        }
                     }
                     # ansonsten orgunit
                     else {

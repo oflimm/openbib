@@ -32,6 +32,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
+use Business::ISBN;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use Benchmark ':hireswallclock';
@@ -40,9 +41,10 @@ use Getopt::Long;
 use YAML;
 use XML::Twig;
 
+use OpenBib::Common::Util;
 use OpenBib::Config;
-use OpenBib::Statistics;
 use OpenBib::Search::Util;
+use OpenBib::Statistics;
 
 our ($enrichdbh,$enrichrequest);
 
@@ -105,7 +107,26 @@ sub parse_work {
 
     foreach my $isbn ($work->children('isbn')){
         unless (exists $isbn->{'att'}->{'uncertain'}){
-            push @similar_isbns, $isbn->text();
+            my $thisisbn = $isbn->text();
+            
+            # Normierung auf ISBN13
+            my $isbn13 = Business::ISBN->new($thisisbn);
+            
+            if (defined $isbn13 && $isbn13->is_valid){
+                $thisisbn = $isbn13->as_isbn13->as_string;
+            }
+            else {
+                next;
+            }
+            
+            # Normierung als String
+            $thisisbn = OpenBib::Common::Util::grundform({
+                category => '0540',
+                content  => $thisisbn,
+            });
+
+
+            push @similar_isbns, $thisisbn;
         }
     }
 

@@ -32,6 +32,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
+use Business::ISBN;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use Benchmark ':hireswallclock';
@@ -40,6 +41,7 @@ use Getopt::Long;
 use YAML;
 
 use OpenBib::Config;
+use OpenBib::Common::Util;
 use OpenBib::Statistics;
 use OpenBib::Search::Util;
 
@@ -98,7 +100,6 @@ my $delrequest    = $enrichdbh->prepare("delete from all_isbn where dbname=?");
 foreach my $database (@databases){
     $logger->info("Getting ISBNs from database $database and adding to enrichmntdb");
 
-    next if ($database eq "inst001");
     my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or die "could not connect";
     
     my $sqlrequest = "select t1.id as id,t1.content as isbn,t2.content as thisdate from tit_string as t1 left join tit_string as t2 on t1.id=t2.id where t2.category = 2 and t1.category in (540,553)";
@@ -121,10 +122,27 @@ foreach my $database (@databases){
     $request->execute(@sqlargs);
     
     while (my $result=$request->fetchrow_hashref()){
-        my $id   = $result->{id};
-        my $isbn = $result->{isbn};
-        my $date = $result->{thisdate};
-        $enrichrequest->execute($isbn,$database,$id,$date);
+        my $id       = $result->{id};
+        my $thisisbn = $result->{isbn};
+        my $date     = $result->{thisdate};
+
+        # Normierung auf ISBN13
+        my $isbn13 = Business::ISBN->new($thisisbn);
+        
+        if (defined $isbn13 && $isbn13->is_valid){
+            $thisisbn = $isbn13->as_isbn13->as_string;
+        }
+        else {
+            next;
+        }
+
+        # Normierung als String
+        $thisisbn = OpenBib::Common::Util::grundform({
+            category => '0540',
+            content  => $thisisbn,
+        });
+
+        $enrichrequest->execute($thisisbn,$database,$id,$date);
     }
     
     $dbh->disconnect();

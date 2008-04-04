@@ -173,8 +173,8 @@ sub handler {
                     my $b2time     = new Benchmark;
                     my $timeall2   = timediff($b2time,$a2time);
                     
-                    $logger->info("Zeit fuer : ".($recordlist->size())." Titel (holen)       : ist ".timestr($timeall2));
-                    $logger->info("Zeit fuer : ".($recordlist->size())." Titel (suchen+holen): ist ".timestr($timeall));
+                    $logger->info("Zeit fuer : ".($recordlist->get_size())." Titel (holen)       : ist ".timestr($timeall2));
+                    $logger->info("Zeit fuer : ".($recordlist->get_size())." Titel (suchen+holen): ist ".timestr($timeall));
                 }
                 
                 
@@ -280,8 +280,8 @@ sub handler {
                     my $b2time     = new Benchmark;
                     my $timeall2   = timediff($b2time,$a2time);
                     
-                    $logger->info("Zeit fuer : ".($recordlist->size())." Titel (holen)       : ist ".timestr($timeall2));
-                    $logger->info("Zeit fuer : ".($recordlist->size())." Titel (suchen+holen): ist ".timestr($timeall));
+                    $logger->info("Zeit fuer : ".($recordlist->get_size())." Titel (holen)       : ist ".timestr($timeall2));
+                    $logger->info("Zeit fuer : ".($recordlist->get_size())." Titel (suchen+holen): ist ".timestr($timeall));
                 }
             }
         }
@@ -375,7 +375,7 @@ sub handler {
             
             $recordlist->sort({order=>$sortorder,type=>$sorttype});
 
-            my $treffer=$recordlist->size();
+            my $treffer=$recordlist->get_size();
 
             push @resultlists, {
                 database   => $database,

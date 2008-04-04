@@ -204,14 +204,16 @@ FOREACH category IN categories;
             content   = "<a href=\"${content}\" target=\"_blank\">${highlightquery(searchquery,content)}</a>";
          END ;
 
-    CASE "T4100";
+    CASE "E4100";
+         localurl    = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchtitofcnt=${content};category=${category};hitrange=${qopts.hitrange}";
          bklookup    = config.load_bk ;
          bkdesc      = bklookup.${content};
+         content     = "<a href=\"${localurl}\">${content}</a>";
          IF bkdesc.defined ;
             content   = "${content} (${bkdesc})" ;
          END ;
 
-    CASE "T4110";
+    CASE "E4110";
          thisindicator = item.indicator ;
          thiscontent   = "<img src=\"/images/openbib/pdf-document.png\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)";
          content       = "${config.redirect_loc}/${sessionID}/500/${content}" ;
@@ -280,25 +282,28 @@ FOREACH category IN categories;
 END;
 -%]
 <tr><td class="category">BibSonomy-Tags</td><td><span id="bibsonomy_tags"><a href="#">Suchen?</a></span></td></tr>
-[% IF normset.${"T4200"} %]
-<tr><td class="category">Wikipedia-Artikel (deutsch)</td><td>
-[%- FOREACH item IN normset.${"T4200"}-%]
-<a href="http://de.wikipedia.org/wiki/[% item.content | uri %]" target="_blank">[% item.content %]</a>&nbsp;&nbsp;
-[%- END -%]</td></tr>
-[% END %]
-[% IF normset.${"T4201"} %]
-<tr><td class="category">Wikipedia-Artikel (englisch)</td><td>
-[%- FOREACH item IN normset.${"T4201"}-%]
-<a href="http://en.wikipedia.org/wiki/[% item.content | uri %]" target="_blank">[% item.content %]</a>&nbsp;&nbsp;
-[%- END -%]</td></tr>
-[% END %]
-[% IF normset.${"T4202"} %]
-<tr><td class="category">Wikipedia-Artikel (franz.)</td><td>
-[%- FOREACH item IN normset.${"T4202"}-%]
-<a href="http://fr.wikipedia.org/wiki/[% item.content | uri %]" target="_blank">[% item.content %]</a>&nbsp;&nbsp;
-[%- END -%]</td></tr>
-[% END %]
 </table>
+
+[%- IF normset.${"E4200"} || normset.${"E4201"} || normset.${"E4202"} %]
+<p class="wikipediamashup">
+<img src="/images/openbib/wikipedia.png" alt="Mashup mit Wikipedia" /> Dieses Buch ist in Wikipedia erw&auml;hnt unter:&nbsp;
+[%-   IF normset.${"E4200"} %]
+[%-    FOREACH item IN normset.${"E4200"}-%]
+<a href="http://de.wikipedia.org/wiki/[% item.content | uri %]" title="Deutsche Wikipedia: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
+[%-    END -%]
+[%-   END %]
+[%-   IF normset.${"E4201"} %]
+[%-     FOREACH item IN normset.${"E4201"}-%]
+<a href="http://en.wikipedia.org/wiki/[% item.content | uri %]" title="Englische Wikipedia: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
+[%-     END -%]
+[%-   END %]
+[%-   IF normset.${"E4202"} %]
+[%-     FOREACH item IN normset.${"E4202"}-%]
+<a href="http://fr.wikipedia.org/wiki/[% item.content | uri %]" title="Franz&ouml;sische Wikipedia: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
+[%-     END -%]
+[%-   END -%]
+</p>
+[% END %]
 
 [% IF config.unAPI %]
 <abbr class="unapi-id" title="[% record.database %]:[% record.id %]"></abbr>
@@ -379,15 +384,15 @@ Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere Aufl
 </table>
 [% END %]
 
-[% IF normset.exists('T4000') %]
+[% IF normset.exists('E4000') %]
 <p />
 <table width="100%">
 <tr><th>Das könnte Sie interessieren:</th></tr>
 <tr><td class="boxedclear">
 Nutzer, die diesen Titel ausgew&auml;hlt haben, interessierten sich auch f&uuml;r die folgenden Titel. <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#enrichrelevance">Weitere Informationen</a> finden Sie in der Suchhilfe.
 <table>
-[%-   isbnitems = normset.${"T4000"} -%]
-[%-   hstitems  = normset.${"T4001"} -%]
+[%-   isbnitems = normset.${"E4000"} -%]
+[%-   hstitems  = normset.${"E4001"} -%]
 [%- FOREACH isbnitem IN isbnitems -%]
 [%-   isbnidx = loop.index -%]
 [%-   hstitem = hstitems.${isbnidx} -%]

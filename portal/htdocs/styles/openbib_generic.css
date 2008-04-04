@@ -22,7 +22,7 @@ h3, h4, h5 {
 
 body {
   color: black;
-  font-size: 0.9em;
+  font-size: 0.8em;
   background-color: #ffffff;
   font-family: Arial,helv,Helvetica,Verdana,sans-serif;
   padding: 0px;
@@ -379,6 +379,10 @@ dt.review {
 .reviewrating {
   font-weight:bold;
   font-size: 1.1em;
+}
+
+.wikipediamashup {
+  font-size:0.8em;
 }
 
 /* Kopf */

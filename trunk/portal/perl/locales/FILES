@@ -156,6 +156,7 @@
 ../templates/search_showswtindex
 ../templates/search_showswtset
 ../templates/search_showtitlist
+../templates/search_showtitlist_of_cnt
 ../templates/search_showtitset
 ../templates/searchmask
 ../templates/searchmask_options

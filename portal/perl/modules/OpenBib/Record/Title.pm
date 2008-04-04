@@ -429,7 +429,7 @@ sub get_full_record {
                 
                 # Anreicherung der Normdaten
                 while (my $res=$request->fetchrow_hashref) {
-                    my $category   = "T".sprintf "%04d",$res->{category };
+                    my $category   = "E".sprintf "%04d",$res->{category };
                     my $content    =        decode_utf8($res->{content});
                 
                     push @{$normset_ref->{$category}}, {
@@ -985,7 +985,7 @@ sub print_to_handler {
     my $ttdata={
         view        => $view,
         stylesheet  => $stylesheet,
-#        database    => $self->{database},
+        database    => $self->{database}, # Zwingend wegen common/subtemplate
         dbinfotable => $dbinfotable,
         poolname    => $poolname,
         prevurl     => $prevurl,

@@ -244,25 +244,28 @@ FOREACH category IN categories;
    END;
 END;
 -%]
-[% IF normset.${"T4200"} %]
-<tr><td class="category">Wikipedia-Artikel (deutsch)</td><td>
-[%- FOREACH item IN normset.${"T4200"}-%]
-<a href="http://de.wikipedia.org/wiki/[% item.content | uri %]" target="_blank">[% item.content %]</a>&nbsp;&nbsp;
-[%- END -%]</td></tr>
-[% END %]
-[% IF normset.${"T4201"} %]
-<tr><td class="category">Wikipedia-Artikel (englisch)</td><td>
-[%- FOREACH item IN normset.${"T4201"}-%]
-<a href="http://en.wikipedia.org/wiki/[% item.content | uri %]" target="_blank">[% item.content %]</a>&nbsp;&nbsp;
-[%- END -%]</td></tr>
-[% END %]
-[% IF normset.${"T4202"} %]
-<tr><td class="category">Wikipedia-Artikel (franz.)</td><td>
-[%- FOREACH item IN normset.${"T4202"}-%]
-<a href="http://fr.wikipedia.org/wiki/[% item.content | uri %]" target="_blank">[% item.content %]</a>&nbsp;&nbsp;
-[%- END -%]</td></tr>
-[% END %]
 </table>
+
+[%- IF normset.${"E4200"} || normset.${"E4201"} || normset.${"E4202"} %]
+<p class="wikipediamashup">
+<img src="/images/openbib/wikipedia.png" alt="Mashup mit Wikipedia" /> Dieses Buch ist in Wikipedia erw&auml;hnt unter:&nbsp;
+[%-   IF normset.${"E4200"} %]
+[%-    FOREACH item IN normset.${"E4200"}-%]
+<a href="http://de.wikipedia.org/wiki/[% item.content | uri %]" title="Deutsche Wikipedia: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
+[%-    END -%]
+[%-   END %]
+[%-   IF normset.${"E4201"} %]
+[%-     FOREACH item IN normset.${"E4201"}-%]
+<a href="http://en.wikipedia.org/wiki/[% item.content | uri %]" title="Englische Wikipedia: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
+[%-     END -%]
+[%-   END %]
+[%-   IF normset.${"E4202"} %]
+[%-     FOREACH item IN normset.${"E4202"}-%]
+<a href="http://fr.wikipedia.org/wiki/[% item.content | uri %]" title="Franz&ouml;sische Wikipedia: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
+[%-     END -%]
+[%-   END -%]
+</p>
+[% END %]
 
 [% IF config.unAPI %]
 <abbr class="unapi-id" title="[% normset.database %]:[% normset.id %]"></abbr>

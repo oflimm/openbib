@@ -246,21 +246,21 @@ END;
 -%]
 </table>
 
-[%- IF normset.${"E4200"} || normset.${"E4201"} || normset.${"E4202"} %]
+[%- IF normset.${"T4200"} || normset.${"T4201"} || normset.${"T4202"} %]
 <p class="wikipediamashup">
 <img src="/images/openbib/wikipedia.png" alt="Mashup mit Wikipedia" /> Dieses Buch ist in Wikipedia erw&auml;hnt unter:&nbsp;
-[%-   IF normset.${"E4200"} %]
-[%-    FOREACH item IN normset.${"E4200"}-%]
+[%-   IF normset.${"T4200"} %]
+[%-    FOREACH item IN normset.${"T4200"}-%]
 <a href="http://de.wikipedia.org/wiki/[% item.content | uri %]" title="Deutsche Wikipedia: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
 [%-    END -%]
 [%-   END %]
-[%-   IF normset.${"E4201"} %]
-[%-     FOREACH item IN normset.${"E4201"}-%]
+[%-   IF normset.${"T4201"} %]
+[%-     FOREACH item IN normset.${"T4201"}-%]
 <a href="http://en.wikipedia.org/wiki/[% item.content | uri %]" title="Englische Wikipedia: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
 [%-     END -%]
 [%-   END %]
-[%-   IF normset.${"E4202"} %]
-[%-     FOREACH item IN normset.${"E4202"}-%]
+[%-   IF normset.${"T4202"} %]
+[%-     FOREACH item IN normset.${"T4202"}-%]
 <a href="http://fr.wikipedia.org/wiki/[% item.content | uri %]" title="Franz&ouml;sische Wikipedia: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
 [%-     END -%]
 [%-   END -%]

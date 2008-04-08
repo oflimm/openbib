@@ -142,9 +142,13 @@
 [% IF searchquery.hst.val != '' || searchquery.hststring.val != ''%]
 <a href="[% config.redirect_loc %]/[% sessionID %]/533/http://www.medpilot.de/medptools/cgi-bin/mpsearch.pl?q=[% searchquery.hst.val %]%20[% searchquery.hststring.val %]&Suche=Suchen" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a>
 [% ELSE %]
-<a href="[% config.redirect_loc %]/[% sessionID %]/533/[http://www.medpilot.de/" target="_blank"><span class="warning">[% msg.maketext("Aufruf ohne &Uuml;bernahme von Suchbegriffen") %]</span></a>
+<a href="[% config.redirect_loc %]/[% sessionID %]/533/http://www.medpilot.de/" target="_blank"><span class="warning">[% msg.maketext("Aufruf ohne &Uuml;bernahme von Suchbegriffen") %]</span></a>
 [% END %]
 </td><td>[ [% msg.maketext("&Uuml;bernommene Felder: Titel") %] ]</td></tr>
+<tr><td></td><td></td><td></td><td></td></tr>
+<tr><td><img src="/images/openbib/external/retro-philfak.png" alt="Digitalisierter Kartenkatalog der Philosophischen Fakult&auml;t" />&nbsp;&nbsp;</td><td><b>[% msg.maketext("Kartenkatalog Philosoph. Fakultät") %]</td><td>=&gt;</td><td>
+<a href="[% config.redirect_loc %]/[% sessionID %]/534/http://retro-philfak.ub.uni-koeln.de/" target="_blank">[% msg.maketext("Sprung in externe Recherche") %]</a>
+</td><td>[ [% msg.maketext("&Uuml;bernommene Felder: Keine") %] ]</td></tr>
 </table>
 
 </td></tr>

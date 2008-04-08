@@ -104,6 +104,7 @@ sub handler {
         531 => 1, # DBIS
         532 => 1, # Kartenkatalog Philfak
         533 => 1, # MedPilot
+        534 => 1, # Digitaler Kartenkatalog der Philfak
         540 => 1, # HBZ-Monofernleihe
         541 => 1, # HBZ-Dokumentenlieferung
         550 => 1, # WebOPAC

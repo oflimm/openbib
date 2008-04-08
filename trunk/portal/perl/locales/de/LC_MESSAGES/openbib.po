@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2008-04-04 12:38+0200\n"
-"Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
-"Language-Team:  <l10n@openbib.org>\n"
+"PO-Revision-Date: 2008-04-08 13:54+0200\n"
+"Last-Translator: \n"
+"Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -52,6 +52,10 @@ msgstr "&Uuml;bernahme der Anfrage in externe Recherchequellen"
 #: ../templates/admin_editcat_rss:335
 msgid "&Uuml;bernahme der F&auml;cherstruktur der Erwerbung"
 msgstr "&Uuml;bernahme der F&auml;cherstruktur der Erwerbung"
+
+#: ../templates/externaljump:151
+msgid "&Uuml;bernommene Felder: Keine"
+msgstr "&Uuml;bernommene Felder: Keine"
 
 #: ../templates/externaljump:128 ../templates/externaljump:147
 msgid "&Uuml;bernommene Felder: Titel"
@@ -697,6 +701,7 @@ msgstr "E-Mail"
 msgid "E-Mail-Adresse"
 msgstr "E-Mail-Adresse"
 
+#: ../templates/database/inst001/visible_categories_titset:109
 #: ../templates/visible_categories_titset:102
 msgid "E4100"
 msgstr "Basis-Klassifikation"
@@ -1720,6 +1725,10 @@ msgstr "Ihre Suchanfrage im KUG Recherche-Portal"
 msgid "Import-Einstellungen"
 msgstr "Import-Einstellungen"
 
+#: ../templates/search_showtitset:67
+msgid "In Google BookSearch vorhanden?"
+msgstr "In Google BookSearch vorhanden?"
+
 #: ../templates/searchmask:134 ../templates/searchmask:98
 #: ../templates/searchmask_simple:149 ../templates/views/edz/searchmask:113
 #: ../templates/views/edz/searchmask:149
@@ -2076,6 +2085,10 @@ msgstr "KUG Benutzerinformationen"
 #: ../templates/info:26 ../templates/info_1:26 ../templates/info_2:26
 msgid "KUG-Versionen"
 msgstr "KUG-Versionen"
+
+#: ../templates/externaljump:149
+msgid "Kartenkatalog Philosoph. Fakultät"
+msgstr "Kartenkatalog Philosoph. Fakultät"
 
 #: ../templates/resultlists_choice:87
 msgid "Katalog"
@@ -3548,7 +3561,7 @@ msgstr "Sprach-Icon für %1"
 
 #: ../templates/externaljump:104 ../templates/externaljump:113
 #: ../templates/externaljump:123 ../templates/externaljump:133
-#: ../templates/externaljump:143
+#: ../templates/externaljump:143 ../templates/externaljump:150
 msgid "Sprung in externe Recherche"
 msgstr "Sprung in externe Recherche"
 
@@ -4863,10 +4876,6 @@ msgstr "TOC / TIFF"
 #: ../templates/database/richter/visible_categories_titset:111
 msgid "T3003"
 msgstr "TOC / PDF"
-
-#: ../templates/database/inst001/visible_categories_titset:109
-msgid "T4100"
-msgstr "Basis-Klassifikation"
 
 #: ../templates/database/inst001/visible_categories_titset:110
 #: ../templates/database/richter/visible_categories_titset:112

@@ -39,6 +39,10 @@ msgstr ""
 msgid "&Uuml;bernahme der F&auml;cherstruktur der Erwerbung"
 msgstr ""
 
+#: ../templates/externaljump:151
+msgid "&Uuml;bernommene Felder: Keine"
+msgstr ""
+
 #: ../templates/externaljump:128 ../templates/externaljump:147
 msgid "&Uuml;bernommene Felder: Titel"
 msgstr ""
@@ -468,7 +472,7 @@ msgstr ""
 msgid "E-Mail-Adresse"
 msgstr ""
 
-#: ../templates/visible_categories_titset:102
+#: ../templates/database/inst001/visible_categories_titset:109 ../templates/visible_categories_titset:102
 msgid "E4100"
 msgstr ""
 
@@ -846,6 +850,10 @@ msgstr ""
 msgid "Import-Einstellungen"
 msgstr ""
 
+#: ../templates/search_showtitset:67
+msgid "In Google BookSearch vorhanden?"
+msgstr ""
+
 #: ../templates/searchmask:134 ../templates/searchmask:98 ../templates/searchmask_simple:149 ../templates/views/edz/searchmask:113 ../templates/views/edz/searchmask:149 ../templates/views/edz/searchmask_simple:159 ../templates/views/gdonck/searchmask:129 ../templates/views/gdonck/searchmask:93 ../templates/views/gdonck/searchmask_simple:95 ../templates/views/gleuel/searchmask:129 ../templates/views/gleuel/searchmask:93 ../templates/views/gleuel/searchmask_simple:95 ../templates/views/inst404/searchmask:114 ../templates/views/inst404/searchmask:150 ../templates/views/inst404/searchmask_simple:165 ../templates/views/inst405/searchmask:118 ../templates/views/inst405/searchmask:154 ../templates/views/inst405/searchmask_simple:165 ../templates/views/inst406/searchmask:109 ../templates/views/inst406/searchmask:145 ../templates/views/inst406/searchmask_simple:159 ../templates/views/inst410/searchmask:111 ../templates/views/inst410/searchmask:147 ../templates/views/inst410/searchmask_simple:157 ../templates/views/inst411/searchmask:112 ../templates/views/inst411/searchmask:148 ../templates/views/inst411/searchmask_simple:159 ../templates/views/inst412/searchmask:113 ../templates/views/inst412/searchmask:149 ../templates/views/inst412/searchmask_simple:158 ../templates/views/inst413/searchmask:129 ../templates/views/inst413/searchmask:93 ../templates/views/inst413/searchmask_simple:139 ../templates/views/inst415/searchmask:114 ../templates/views/inst415/searchmask:150 ../templates/views/inst415/searchmask_simple:159 ../templates/views/inst419/searchmask:113 ../templates/views/inst419/searchmask:149 ../templates/views/inst420/searchmask:115 ../templates/views/inst420/searchmask:151 ../templates/views/inst420/searchmask_simple:160 ../templates/views/inst425/searchmask:113 ../templates/views/inst425/searchmask:149 ../templates/views/inst425/searchmask_simple:157 ../templates/views/inst426/searchmask:113 ../templates/views/inst426/searchmask:149 ../templates/views/inst426/searchmask_simple:158 ../templates/views/inst430/searchmask:115 ../templates/views/inst430/searchmask:151 ../templates/views/inst430/searchmask_simple:160 ../templates/views/inst431/searchmask:112 ../templates/views/inst431/searchmask:148 ../templates/views/inst431/searchmask_simple:157 ../templates/views/inst460/searchmask:113 ../templates/views/inst460/searchmask:149 ../templates/views/inst460/searchmask_simple:158 ../templates/views/inst501/searchmask:134 ../templates/views/inst501/searchmask:98 ../templates/views/kapsel/searchmask:100 ../templates/views/kempen/searchmask:129 ../templates/views/kempen/searchmask:93 ../templates/views/kempen/searchmask_simple:95 ../templates/views/kevelaer/searchmask:129 ../templates/views/kevelaer/searchmask:93 ../templates/views/kevelaer/searchmask_simple:95 ../templates/views/kug/searchmask:179 ../templates/views/kug/searchmask:198 ../templates/views/kug/searchmask:307 ../templates/views/kug/searchmask_simple:96 ../templates/views/kwinter/searchmask:129 ../templates/views/kwinter/searchmask:93 ../templates/views/kwinter/searchmask_simple:95 ../templates/views/landschaft/searchmask:100 ../templates/views/portrait/searchmask:131 ../templates/views/rheinlandbib/searchmask:121 ../templates/views/rheinlandbib/searchmask:85 ../templates/views/rheinlandbib/searchmask_simple:87 ../templates/views/richter/searchmask_simple:126 ../templates/views/xanten/searchmask:129 ../templates/views/xanten/searchmask:93 ../templates/views/xanten/searchmask_simple:95
 msgid "In allen Katalogen suchen"
 msgstr ""
@@ -916,6 +924,10 @@ msgstr ""
 
 #: ../templates/info:26 ../templates/info_1:26 ../templates/info_2:26
 msgid "KUG-Versionen"
+msgstr ""
+
+#: ../templates/externaljump:149
+msgid "Kartenkatalog Philosoph. Fakultät"
 msgstr ""
 
 #: ../templates/resultlists_choice:87
@@ -1682,7 +1694,7 @@ msgstr ""
 msgid "Sprach-Icon für %1"
 msgstr ""
 
-#: ../templates/externaljump:104 ../templates/externaljump:113 ../templates/externaljump:123 ../templates/externaljump:133 ../templates/externaljump:143
+#: ../templates/externaljump:104 ../templates/externaljump:113 ../templates/externaljump:123 ../templates/externaljump:133 ../templates/externaljump:143 ../templates/externaljump:150
 msgid "Sprung in externe Recherche"
 msgstr ""
 
@@ -2469,10 +2481,6 @@ msgstr ""
 
 #: ../templates/database/kapsel/visible_categories_titset:108 ../templates/database/richter/visible_categories_titset:111
 msgid "T3003"
-msgstr ""
-
-#: ../templates/database/inst001/visible_categories_titset:109
-msgid "T4100"
 msgstr ""
 
 #: ../templates/database/inst001/visible_categories_titset:110 ../templates/database/richter/visible_categories_titset:112 ../templates/visible_categories_titset:111

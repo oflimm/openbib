@@ -1,3 +1,4 @@
+# translation of openbib.po to german
 # translation of openbib.po to
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
@@ -7,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2008-04-01 09:50+0200\n"
+"PO-Revision-Date: 2008-04-08 14:05+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
-"Language-Team:  <l10n@openbib.org>\n"
+"Language-Team: german <l10n@openbib.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -48,6 +49,10 @@ msgstr "&Uuml;bernahme der Anfrage in externe Recherchequellen"
 #: ../templates/admin_editcat_rss:334
 msgid "&Uuml;bernahme der F&auml;cherstruktur der Erwerbung"
 msgstr "&Uuml;bernahme der F&auml;cherstruktur der Erwerbung"
+
+#: ../templates/externaljump:144
+msgid "&Uuml;bernommene Felder: Keine"
+msgstr "&Uuml;bernommene Felder: Keine"
 
 #: ../templates/externaljump:121 ../templates/externaljump:140
 msgid "&Uuml;bernommene Felder: Titel"
@@ -330,7 +335,7 @@ msgstr "Ausleih-Einstellungen"
 #: ../templates/database/portrait/search_showtitset:162
 #: ../templates/managecollection_tit_as_html:76
 #: ../templates/managecollection_tit_as_html_simple:60
-#: ../templates/search_showmulttitset:124 ../templates/search_showtitset:282
+#: ../templates/search_showmulttitset:124 ../templates/search_showtitset:285
 msgid "Ausleihe/Exemplare"
 msgstr "Ausleihe/Exemplare"
 
@@ -848,7 +853,7 @@ msgstr "Erfolgreiche Aktion"
 msgid "Erfolgsmeldung"
 msgstr "Erfolgsmeldung"
 
-#: ../templates/searchframe_options:4 ../templates/userprefs:186
+#: ../templates/searchframe_options:4 ../templates/userprefs:187
 #: ../templates/views/gdonck/searchframe_options:4
 #: ../templates/views/gleuel/searchframe_options:4
 #: ../templates/views/kempen/searchframe_options:4
@@ -929,7 +934,7 @@ msgstr "Es wurde kein Suchkriterium eingegeben."
 msgid "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
 msgstr "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
 
-#: ../modules/OpenBib/UserPrefs.pm:359
+#: ../modules/OpenBib/UserPrefs.pm:360
 msgid "Es wurde keine Standard-Recherchemaske ausgewählt"
 msgstr "Es wurde keine Standard-Recherchemaske ausgewählt"
 
@@ -1066,11 +1071,11 @@ msgstr "Freie Suche"
 #: ../templates/views/kevelaer/searchframe:138
 #: ../templates/views/kevelaer/searchframe_simple:120
 #: ../templates/views/kug/searchframe:317
-#: ../templates/views/kug/searchframe_simple:120
+#: ../templates/views/kug/searchframe_simple:121
 #: ../templates/views/kwinter/searchframe:138
 #: ../templates/views/kwinter/searchframe_simple:120
 #: ../templates/views/landschaft/searchframe:103
-#: ../templates/views/portrait/searchframe:133
+#: ../templates/views/portrait/searchframe:134
 #: ../templates/views/rheinlandbib/searchframe:127
 #: ../templates/views/rheinlandbib/searchframe_simple:109
 #: ../templates/views/richter/searchframe:123
@@ -1136,8 +1141,8 @@ msgstr "Geben Sie hier den Körperschaftsanfang ein"
 msgid "Geben Sie hier den Notationsanfang ein"
 msgstr "Geben Sie hier den Notationsanfang ein"
 
-#: ../templates/search_showswtindex:75 ../templates/search_showtitlist:178
-#: ../templates/search_showtitset:615
+#: ../templates/search_showswtindex:75 ../templates/search_showtitlist:180
+#: ../templates/search_showtitset:618
 #: ../templates/views/kapsel/search_showtitlist:168
 #: ../templates/virtualsearch_showswtindex:46
 msgid "Geben Sie hier den Schlagwortanfang ein"
@@ -1371,8 +1376,8 @@ msgstr ""
 #: ../templates/views/landschaft/searchframe:90
 #: ../templates/views/landschaft/searchframe:94
 #: ../templates/views/landschaft/searchframe_simple:51
-#: ../templates/views/portrait/searchframe:120
-#: ../templates/views/portrait/searchframe:124
+#: ../templates/views/portrait/searchframe:121
+#: ../templates/views/portrait/searchframe:125
 #: ../templates/views/portrait/searchframe:66
 #: ../templates/views/portrait/searchframe_simple:58
 #: ../templates/views/rheinlandbib/searchframe:115
@@ -1538,8 +1543,8 @@ msgstr "Hier löschen Sie die Eingabefelder"
 #: ../templates/views/landschaft/searchframe:90
 #: ../templates/views/landschaft/searchframe:94
 #: ../templates/views/landschaft/searchframe_simple:51
-#: ../templates/views/portrait/searchframe:120
-#: ../templates/views/portrait/searchframe:124
+#: ../templates/views/portrait/searchframe:121
+#: ../templates/views/portrait/searchframe:125
 #: ../templates/views/portrait/searchframe:66
 #: ../templates/views/portrait/searchframe_simple:58
 #: ../templates/views/rheinlandbib/searchframe:115
@@ -1632,7 +1637,7 @@ msgstr "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
 #: ../templates/views/kwinter/searchframe:91
 #: ../templates/views/kwinter/searchframe_simple:89
 #: ../templates/views/landschaft/searchframe:94
-#: ../templates/views/portrait/searchframe:124
+#: ../templates/views/portrait/searchframe:125
 #: ../templates/views/rheinlandbib/searchframe:119
 #: ../templates/views/rheinlandbib/searchframe:83
 #: ../templates/views/rheinlandbib/searchframe_simple:81
@@ -1688,13 +1693,11 @@ msgstr "Hostname"
 
 #: ../templates/searchframe_query:27 ../templates/userprefs:180
 #: ../templates/views/inst501/searchframe_query:27
-#: ../templates/views/kapsel/searchframe_query:23
 msgid "ISBN"
 msgstr "ISBN"
 
 #: ../templates/searchframe_query:31 ../templates/userprefs:181
 #: ../templates/views/inst501/searchframe_query:31
-#: ../templates/views/kapsel/searchframe_query:27
 msgid "ISSN"
 msgstr "ISSN"
 
@@ -1814,7 +1817,7 @@ msgstr "Import-Einstellungen"
 #: ../templates/views/kwinter/searchframe:91
 #: ../templates/views/kwinter/searchframe_simple:89
 #: ../templates/views/landschaft/searchframe:94
-#: ../templates/views/portrait/searchframe:124
+#: ../templates/views/portrait/searchframe:125
 #: ../templates/views/rheinlandbib/searchframe:119
 #: ../templates/views/rheinlandbib/searchframe:83
 #: ../templates/views/rheinlandbib/searchframe_simple:81
@@ -1966,7 +1969,7 @@ msgstr "In ausgewählten Katalogen suchen"
 #: ../templates/resultlists_showall:127
 #: ../templates/resultlists_showall_sortall:114
 #: ../templates/resultlists_showsinglepool:129
-#: ../templates/search_showtitlist:147 ../templates/search_showtitset:34
+#: ../templates/search_showtitlist:149 ../templates/search_showtitset:34
 #: ../templates/views/einbaende/resultlists_showall:126
 #: ../templates/views/einbaende/resultlists_showall_sortall:103
 #: ../templates/views/einbaende/resultlists_showsinglepool:124
@@ -2006,7 +2009,6 @@ msgstr "In welchen Katalogen möchten Sie suchen"
 #: ../templates/views/einbaende/searchframe_simple:111
 #: ../templates/views/einbaende/searchframe_simple:99
 #: ../templates/views/inst501/searchframe_query:11
-#: ../templates/views/kapsel/searchframe_query:11
 #: ../templates/views/portrait/searchframe_query:13
 #: ../templates/views/richter/searchframe_query:13
 #: ../templates/virtualsearch_showkorindex:46
@@ -2075,7 +2077,7 @@ msgstr "Ja"
 
 #: ../templates/searchframe_query:55
 #: ../templates/views/inst501/searchframe_query:51
-#: ../templates/views/kapsel/searchframe_query:47
+#: ../templates/views/kapsel/searchframe_query:23
 #: ../templates/views/landschaft/searchframe_query:27
 #: ../templates/views/portrait/searchframe_query:35
 #: ../templates/views/richter/searchframe_query:45
@@ -2110,6 +2112,10 @@ msgstr "KUG Benutzerinformationen"
 #: ../templates/helpframe_2:20
 msgid "KUG-Versionen"
 msgstr "KUG-Versionen"
+
+#: ../templates/externaljump:142
+msgid "Kartenkatalog Philosoph. Fakultät"
+msgstr "Kartenkatalog Philosoph. Fakultät"
 
 #: ../templates/resultlists_choice:81
 msgid "Katalog"
@@ -2146,7 +2152,7 @@ msgstr "Kataloge"
 
 #: ../templates/databasechoice:54 ../templates/databasechoice:95
 #: ../templates/views/rheinlandbib/databasechoice:54
-#: ../templates/views/rheinlandbib/databasechoice:83
+#: ../templates/views/rheinlandbib/databasechoice:84
 msgid "Kataloge auswählen"
 msgstr "Kataloge auswählen"
 
@@ -2209,7 +2215,6 @@ msgstr "Klicken Sie nun %1hier%2, um sich anzumelden."
 
 #: ../templates/searchframe_query:39
 #: ../templates/views/inst501/searchframe_query:39
-#: ../templates/views/kapsel/searchframe_query:35
 #: ../templates/views/richter/searchframe_query:33
 msgid "Kompletter Titel"
 msgstr "Kompletter Titel"
@@ -2362,7 +2367,7 @@ msgstr "Lokale Signatur      "
 #: ../templates/managecollection_show:61 ../templates/resultlists_showall:53
 #: ../templates/resultlists_showall_sortall:56
 #: ../templates/resultlists_showsinglepool:54
-#: ../templates/search_showtitlist:58
+#: ../templates/search_showtitlist:60
 #: ../templates/views/einbaende/managecollection_show:57
 #: ../templates/views/einbaende/resultlists_showall:54
 #: ../templates/views/einbaende/resultlists_showall_sortall:53
@@ -2521,8 +2526,8 @@ msgstr "Los"
 #: ../templates/views/landschaft/searchframe:90
 #: ../templates/views/landschaft/searchframe:94
 #: ../templates/views/landschaft/searchframe_simple:51
-#: ../templates/views/portrait/searchframe:120
-#: ../templates/views/portrait/searchframe:124
+#: ../templates/views/portrait/searchframe:121
+#: ../templates/views/portrait/searchframe:125
 #: ../templates/views/portrait/searchframe:66
 #: ../templates/views/portrait/searchframe_simple:58
 #: ../templates/views/rheinlandbib/searchframe:115
@@ -2570,16 +2575,15 @@ msgstr "Maximale Trefferzahl pro Katalog"
 msgid "MedPilot"
 msgstr "MedPilot"
 
-#: ../templates/searchframe_query:51 ../templates/userprefs:185
+#: ../templates/searchframe_query:51 ../templates/userprefs:186
 #: ../templates/views/inst501/searchframe_query:47
-#: ../templates/views/kapsel/searchframe_query:43
 #: ../templates/views/richter/searchframe_query:41
 msgid "Medienart"
 msgstr "Medienart"
 
 #: ../templates/database/landschaft/search_showtitlist:160
 #: ../templates/database/portrait/search_showtitlist:160
-#: ../templates/search_showtitlist:160
+#: ../templates/search_showtitlist:162
 #: ../templates/views/kapsel/search_showtitlist:150
 msgid "Mehrfachauswahl"
 msgstr "Mehrfachauswahl"
@@ -2700,7 +2704,7 @@ msgstr "Neuaufnahmen nach Systematik"
 msgid "Neuaufnahmen nach Verfasser"
 msgstr "Neuaufnahmen nach Verfasser"
 
-#: ../templates/views/kapsel/leave:33 ../templates/views/landschaft/leave:33
+#: ../templates/views/kapsel/leave:34 ../templates/views/landschaft/leave:33
 #: ../templates/views/portrait/leave:33
 msgid "Neue Sitzung beginnen"
 msgstr "Neue Sitzung beginnen"
@@ -2734,7 +2738,6 @@ msgid "Not-Datei"
 msgstr "Not-Datei"
 
 #: ../templates/searchframe_query:23 ../templates/userprefs:179
-#: ../templates/views/kapsel/searchframe_query:19
 #: ../templates/virtualsearch_shownotindex:46
 msgid "Notation"
 msgstr "Notation"
@@ -2763,7 +2766,7 @@ msgstr "Nutzerverwaltung"
 #: ../templates/managecollection_show:55 ../templates/resultlists_showall:33
 #: ../templates/resultlists_showall_sortall:36
 #: ../templates/resultlists_showsinglepool:35
-#: ../templates/search_showtitlist:39
+#: ../templates/search_showtitlist:41
 #: ../templates/views/einbaende/managecollection_show:51
 #: ../templates/views/einbaende/resultlists_showall:39
 #: ../templates/views/einbaende/resultlists_showall_sortall:38
@@ -3012,7 +3015,7 @@ msgstr "Anzahl Titel"
 
 #: ../templates/search_showswtindex:35 ../templates/userprefs:178
 #: ../templates/views/inst501/searchframe_query:19
-#: ../templates/views/kapsel/searchframe_query:15
+#: ../templates/views/kapsel/searchframe_query:19
 #: ../templates/views/richter/searchframe_query:21
 #: ../templates/virtualsearch_showswtindex:46
 msgid "Schlagwort"
@@ -3029,11 +3032,11 @@ msgstr "Schlagworte"
 msgid "Schlagwortindex"
 msgstr "Schlagwortindex"
 
-#: ../templates/search_showtitset:614
+#: ../templates/search_showtitset:617
 msgid "Schlagwortindex diese Katalogs"
 msgstr "Schlagwortindex diese Katalogs"
 
-#: ../templates/search_showswtindex:75 ../templates/search_showtitlist:178
+#: ../templates/search_showswtindex:75 ../templates/search_showtitlist:180
 #: ../templates/views/kapsel/search_showtitlist:168
 msgid "Schlagwortindex dieses Katalogs"
 msgstr "Schlagwortindex dieses Katalogs"
@@ -3111,14 +3114,12 @@ msgstr "Sekunden"
 msgid "Selbstregistrierung"
 msgstr "Selbstregistrierung"
 
-#: ../templates/searchframe_query:47
+#: ../templates/searchframe_query:47 ../templates/userprefs:185
 #: ../templates/views/inst501/searchframe_query:43
-#: ../templates/views/kapsel/searchframe_query:39
 #: ../templates/views/richter/searchframe_query:37
 msgid "Serie/Band/Quelle"
 msgstr "Serie/Band/Quelle"
 
-#: ../templates/searchframe_query:58
 #: ../templates/views/inst501/searchframe_query:54
 #: ../templates/views/richter/searchframe_query:48
 msgid "Serien"
@@ -3245,7 +3246,7 @@ msgstr "Sie haben ein falsches Passwort eingegeben"
 msgid "Sie haben eine ungültige Mailadresse eingegeben."
 msgstr "Sie haben eine ungültige Mailadresse eingegeben."
 
-#: ../modules/OpenBib/UserPrefs.pm:347
+#: ../modules/OpenBib/UserPrefs.pm:348
 msgid ""
 "Sie haben entweder kein Passwort eingegeben oder die beiden Passworte "
 "stimmen nicht überein"
@@ -3429,7 +3430,6 @@ msgstr "Sigel"
 #: ../templates/userprefs:182
 #: ../templates/views/einbaende/searchframe_simple:115
 #: ../templates/views/inst501/searchframe_query:35
-#: ../templates/views/kapsel/searchframe_query:31
 #: ../templates/views/portrait/searchframe_query:29
 #: ../templates/views/richter/searchframe_query:29
 msgid "Signatur"
@@ -3473,7 +3473,7 @@ msgstr ""
 #: ../templates/resultlists_showall:35
 #: ../templates/resultlists_showall_sortall:38
 #: ../templates/resultlists_showsinglepool:37
-#: ../templates/search_showtitlist:41
+#: ../templates/search_showtitlist:43
 #: ../templates/views/einbaende/virtualsearch_result_start:41
 #: ../templates/views/kapsel/resultlists_showall:35
 #: ../templates/views/kapsel/resultlists_showsinglepool:37
@@ -3569,7 +3569,7 @@ msgstr "Sprung in WebOPAC"
 
 #: ../templates/externaljump:106 ../templates/externaljump:116
 #: ../templates/externaljump:126 ../templates/externaljump:136
-#: ../templates/externaljump:97
+#: ../templates/externaljump:143 ../templates/externaljump:97
 msgid "Sprung in externe Recherche"
 msgstr "Sprung in externe Recherche"
 
@@ -3660,8 +3660,8 @@ msgstr "Suchbegriffe"
 msgid "Suche starten"
 msgstr "Suche starten"
 
-#: ../templates/search_showswtindex:75 ../templates/search_showtitlist:178
-#: ../templates/search_showtitset:615
+#: ../templates/search_showswtindex:75 ../templates/search_showtitlist:180
+#: ../templates/search_showtitset:618
 #: ../templates/views/einbaende/searchframe_simple:30
 #: ../templates/views/kapsel/search_showtitlist:168
 #: ../templates/views/kapsel/searchframe:61
@@ -3672,8 +3672,8 @@ msgstr "Suche starten"
 #: ../templates/views/landschaft/searchframe:90
 #: ../templates/views/landschaft/searchframe:94
 #: ../templates/views/landschaft/searchframe_simple:51
-#: ../templates/views/portrait/searchframe:120
-#: ../templates/views/portrait/searchframe:124
+#: ../templates/views/portrait/searchframe:121
+#: ../templates/views/portrait/searchframe:125
 #: ../templates/views/portrait/searchframe:66
 #: ../templates/views/portrait/searchframe_simple:58
 msgid "Suchen"
@@ -3698,7 +3698,7 @@ msgstr ""
 "Suchen Sie in den %1elektronisch verf&uuml;gbaren Zeitschriften%2 der "
 "Universit&auml;tsbibliothek nach dem Zeitschriftentitel."
 
-#: ../templates/userprefs:188
+#: ../templates/userprefs:189
 msgid "Suchfelder &auml;ndern"
 msgstr "Suchfelder &auml;ndern"
 
@@ -3794,7 +3794,7 @@ msgstr "Suchhistorie"
 #: ../templates/views/kevelaer/searchframe:114
 #: ../templates/views/kug/searchframe:202
 #: ../templates/views/kwinter/searchframe:114
-#: ../templates/views/portrait/searchframe:111
+#: ../templates/views/portrait/searchframe:112
 #: ../templates/views/rheinlandbib/searchframe:106
 #: ../templates/views/xanten/searchframe:114
 msgid "Suchoptionen"
@@ -4996,7 +4996,7 @@ msgstr "Titelaufnahme"
 #: ../templates/database/einbaende/search_showtitlist:61
 #: ../templates/database/landschaft/search_showtitlist:69
 #: ../templates/database/portrait/search_showtitlist:69
-#: ../templates/search_showtitlist:70
+#: ../templates/search_showtitlist:72
 #: ../templates/views/kapsel/search_showtitlist:70
 msgid "Titelliste"
 msgstr "Titelliste"
@@ -5038,7 +5038,7 @@ msgstr "Top 20"
 #: ../templates/database/portrait/search_showtitlist:90
 #: ../templates/database/portrait/virtualsearch_result_item:16
 #: ../templates/resultlists_choice:81 ../templates/resultlists_showall:59
-#: ../templates/search_showtitlist:75 ../templates/search_showtitlist:91
+#: ../templates/search_showtitlist:77 ../templates/search_showtitlist:93
 #: ../templates/select_queries:60
 #: ../templates/views/einbaende/resultlists_showall:60
 #: ../templates/views/einbaende/virtualsearch_result_item:20
@@ -5160,8 +5160,8 @@ msgstr "Umfang des KUG: %1 Titel in %2 Katalogen"
 msgid "Und-Verknüpfung innerhalb eines Suchfeldes"
 msgstr "Und-Verknüpfung innerhalb eines Suchfeldes"
 
-#: ../modules/OpenBib/Circulation.pm:373 ../modules/OpenBib/SelfReg.pm:186
-#: ../modules/OpenBib/UserPrefs.pm:372
+#: ../modules/OpenBib/Circulation.pm:381 ../modules/OpenBib/SelfReg.pm:186
+#: ../modules/OpenBib/UserPrefs.pm:373
 msgid "Unerlaubte Aktion"
 msgstr "Unerlaubte Aktion"
 
@@ -5190,7 +5190,7 @@ msgstr "Ungültige Session"
 
 #: ../templates/databasechoice:54 ../templates/databasechoice:95
 #: ../templates/views/rheinlandbib/databasechoice:54
-#: ../templates/views/rheinlandbib/databasechoice:83
+#: ../templates/views/rheinlandbib/databasechoice:84
 msgid "Ursprüngliche Auswahl wiederherstellen"
 msgstr "Ursprüngliche Auswahl wiederherstellen"
 
@@ -5517,7 +5517,7 @@ msgstr "Zur&uuml;ck zur %1Suchanfrage%2"
 #: ../templates/resultlists_showall:47
 #: ../templates/resultlists_showall_sortall:50
 #: ../templates/resultlists_showsinglepool:49
-#: ../templates/search_showtitlist:53 ../templates/searchframe_options:4
+#: ../templates/search_showtitlist:55 ../templates/searchframe_options:4
 #: ../templates/views/einbaende/resultlists_showall:52
 #: ../templates/views/einbaende/resultlists_showall_sortall:51
 #: ../templates/views/einbaende/resultlists_showsinglepool:51
@@ -5545,7 +5545,7 @@ msgstr "absteigend"
 #: ../templates/resultlists_showall:46
 #: ../templates/resultlists_showall_sortall:49
 #: ../templates/resultlists_showsinglepool:48
-#: ../templates/search_showtitlist:52 ../templates/searchframe_options:4
+#: ../templates/search_showtitlist:54 ../templates/searchframe_options:4
 #: ../templates/views/einbaende/resultlists_showall:51
 #: ../templates/views/einbaende/resultlists_showall_sortall:50
 #: ../templates/views/einbaende/resultlists_showsinglepool:50
@@ -5616,7 +5616,7 @@ msgstr "nach Fert.Jahr"
 #: ../templates/drilldown_categorized:52 ../templates/resultlists_showall:40
 #: ../templates/resultlists_showall_sortall:43
 #: ../templates/resultlists_showsinglepool:42
-#: ../templates/search_showtitlist:46
+#: ../templates/search_showtitlist:48
 #: ../templates/views/kapsel/resultlists_showall:40
 #: ../templates/views/kapsel/resultlists_showsinglepool:42
 #: ../templates/views/kapsel/search_showtitlist:46
@@ -5634,7 +5634,7 @@ msgstr "nach Medienart"
 #: ../templates/resultlists_showall:37
 #: ../templates/resultlists_showall_sortall:40
 #: ../templates/resultlists_showsinglepool:39
-#: ../templates/search_showtitlist:43
+#: ../templates/search_showtitlist:45
 #: ../templates/views/kapsel/resultlists_showall:37
 #: ../templates/views/kapsel/resultlists_showsinglepool:39
 #: ../templates/views/kapsel/search_showtitlist:43
@@ -5661,7 +5661,7 @@ msgstr "nach Personen"
 #: ../templates/resultlists_showall:43
 #: ../templates/resultlists_showall_sortall:46
 #: ../templates/resultlists_showsinglepool:45
-#: ../templates/search_showtitlist:49
+#: ../templates/search_showtitlist:51
 #: ../templates/views/einbaende/resultlists_showall:48
 #: ../templates/views/einbaende/resultlists_showall_sortall:47
 #: ../templates/views/einbaende/resultlists_showsinglepool:47
@@ -5680,7 +5680,7 @@ msgstr "nach Popularit&auml;t"
 #: ../templates/resultlists_showall:42
 #: ../templates/resultlists_showall_sortall:45
 #: ../templates/resultlists_showsinglepool:44
-#: ../templates/search_showtitlist:48
+#: ../templates/search_showtitlist:50
 #: ../templates/views/einbaende/resultlists_showall:47
 #: ../templates/views/einbaende/resultlists_showall_sortall:46
 #: ../templates/views/einbaende/resultlists_showsinglepool:46
@@ -5710,7 +5710,7 @@ msgstr "nach Themen"
 #: ../templates/resultlists_showall:38
 #: ../templates/resultlists_showall_sortall:41
 #: ../templates/resultlists_showsinglepool:40
-#: ../templates/search_showtitlist:44
+#: ../templates/search_showtitlist:46
 #: ../templates/views/kapsel/resultlists_showall:38
 #: ../templates/views/kapsel/resultlists_showsinglepool:40
 #: ../templates/views/kapsel/search_showtitlist:44
@@ -5733,7 +5733,7 @@ msgstr "nach Titel/Z&auml;hlung"
 #: ../templates/resultlists_showall:41
 #: ../templates/resultlists_showall_sortall:44
 #: ../templates/resultlists_showsinglepool:43
-#: ../templates/search_showtitlist:47
+#: ../templates/search_showtitlist:49
 #: ../templates/views/einbaende/resultlists_showall:46
 #: ../templates/views/einbaende/resultlists_showall_sortall:45
 #: ../templates/views/einbaende/resultlists_showsinglepool:45
@@ -5749,7 +5749,7 @@ msgstr "nach Verlag"
 #: ../templates/resultlists_showall:39
 #: ../templates/resultlists_showall_sortall:42
 #: ../templates/resultlists_showsinglepool:41
-#: ../templates/search_showtitlist:45
+#: ../templates/search_showtitlist:47
 #: ../templates/views/kapsel/resultlists_showall:39
 #: ../templates/views/kapsel/resultlists_showsinglepool:41
 #: ../templates/views/kapsel/search_showtitlist:45
@@ -5766,7 +5766,7 @@ msgstr "nein"
 #: ../templates/resultlists_showall:50
 #: ../templates/resultlists_showall_sortall:53
 #: ../templates/resultlists_showsinglepool:52
-#: ../templates/search_showtitlist:56 ../templates/searchframe_options:4
+#: ../templates/search_showtitlist:58 ../templates/searchframe_options:4
 #: ../templates/views/gdonck/searchframe_options:4
 #: ../templates/views/gleuel/searchframe_options:4
 #: ../templates/views/kapsel/resultlists_showall:50

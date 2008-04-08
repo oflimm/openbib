@@ -117,6 +117,7 @@ catalogue_loc: /portal/katalogisierung
 circulation_loc: /portal/benutzerkonto
 connector_bibmanager_loc: /portal/connector/literaturverwaltung
 connector_digibib_loc: /portal/connector/digibib
+connector_googlebooksearch_loc: /portal/connector/googlebooksearch
 connector_olws_loc: /portal/connector/olws
 connector_permalink_loc: /portal/connector/permalink
 connector_rss_loc: /portal/connector/rss

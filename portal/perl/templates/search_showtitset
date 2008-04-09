@@ -51,11 +51,9 @@
 <tr><th>[% msg.maketext("Titelaufnahme") %]</th></tr>
 <tr><td class="boxedclear">
 
-<!--
 <div style="float:right;padding:10px">
       <a href="http://books.google.com/books?vid=ISBN[%normset.${"T0540"}.first.content %]" target="_blank" title="Google BookSearch"><img src="[% config.connector_availabilityimage_loc %]?action=lookup;isbn=[% normset.${"T0540"}.first.content %];target=gbs" border="0" /></a>&nbsp;
 </div>
--->
 
 [%# USE dumper;
   # dumper.dump(normset) ; %]

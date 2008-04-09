@@ -1,6 +1,6 @@
 ####################################################################
 #
-#  OpenBib::Handler::Apache::Connector::AvailabilityImage
+#  OpenBib::Connector::AvailabilityImage
 #
 #  Dieses File ist (C) 2008 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Connector::AvailabilityImage;
+package OpenBib::Connector::AvailabilityImage;
 
 use strict;
 use warnings;

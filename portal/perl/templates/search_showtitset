@@ -64,8 +64,7 @@
 <tr><td class="boxedclear">
 
 <div style="float:right;padding:10px">
-        <!-- <img src="[% config.connector_googlebooksearch_loc %]?action=lookup;isbn=[% normset.${"T0540"}.first.content %];format=thumbnail" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /><br/>-->
-        <a href="http://books.google.com/books?vid=ISBN[% normset.${"T0540"}.first.content %]" target="_blank" title="Google BookSearch"><img src="[% config.connector_googlebooksearch_loc %]?action=lookup;isbn=[% normset.${"T0540"}.first.content %]" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a>&nbsp;
+        <a href="http://books.google.com/books?vid=ISBN[% normset.${"T0540"}.first.content %]" target="_blank" title="Google BookSearch"><img src="[% config.connector_availabilityimage_loc %]?action=lookup;isbn=[% normset.${"T0540"}.first.content %];target=gbs" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a>&nbsp;
         <!-- <img src="[% config.connector_amazon_loc %]/image/[%# normset.${"T0540"}.first.content.replace('-','') %]" title="Titelbild; (c) beim Verlag; bereitgestellt durch Amazon" />-->
 </div>
 

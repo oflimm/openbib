@@ -42,7 +42,7 @@
          <tr><td align="right">2</td><td><a href="#recherche">Recherchearten</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.1&nbsp;<a href="#rechercheeinfach">Einfache Recherche</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.1.1&nbsp;&nbsp;&nbsp;<a href="#rechercheeinfachallgemein">Allgemeine Informationen</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.1.2&nbsp;&nbsp;&nbsp;<a href="#suchlogikeinfach">Suchlogik</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.1.2&nbsp;&nbsp;&nbsp;<a href="#suchlogikeinfach">Suchlogik</a>  <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/sachlichesuche.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.2&nbsp;<a href="#recherchekomplex">Komplexe Recherche</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.2.1&nbsp;&nbsp;&nbsp;<a href="#recherchekomplexallgemein">Allgemeine Informationen</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;2.2.2&nbsp;&nbsp;&nbsp;<a href="#suchlogikkomplex">Suchlogik</a></td></tr>

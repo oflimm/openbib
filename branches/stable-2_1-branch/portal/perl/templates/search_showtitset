@@ -53,7 +53,7 @@
 
 <!--
 <div style="float:right;padding:10px">
-<img src="[%# config.connector_amazon_loc %]/image/[%# normset.${"T0540"}.first.content.replace('-','') %]" title="Titelbild; (c) beim Verlag; bereitgestellt durch Amazon" />
+      <a href="http://books.google.com/books?vid=ISBN[%normset.${"T0540"}.first.content %]" target="_blank" title="Google BookSearch"><img src="[% config.connector_availabilityimage_loc %]?action=lookup;isbn=[% normset.${"T0540"}.first.content %];target=gbs" border="0" /></a>&nbsp;
 </div>
 -->
 

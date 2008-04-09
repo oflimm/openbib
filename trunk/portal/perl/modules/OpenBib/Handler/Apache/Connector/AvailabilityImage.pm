@@ -1,6 +1,6 @@
 ####################################################################
 #
-#  OpenBib::Handler::Apache::Connector::GoogleBookSearch
+#  OpenBib::Handler::Apache::Connector::AvailabilityImage
 #
 #  Dieses File ist (C) 2008 Oliver Flimm <flimm@openbib.org>
 #
@@ -27,7 +27,7 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
-package OpenBib::Handler::Apache::Connector::GoogleBookSearch;
+package OpenBib::Handler::Apache::Connector::AvailabilityImage;
 
 use strict;
 use warnings;
@@ -70,10 +70,10 @@ sub handler {
 
     my $action         = $query->param('action')          || 'lookup';
     my $isbn           = $query->param('isbn')            || '';
-    my $format         = $query->param('format')          || '';
+    my $target         = $query->param('target')          || 'gbs';
     
     if ($action eq "lookup"){
-        # Alternative ISBN zur Rechercheanrei
+        # Normierung auf ISBN13
         my $isbnXX     = Business::ISBN->new($isbn);
         
         if (defined $isbnXX && $isbnXX->is_valid){
@@ -89,56 +89,62 @@ sub handler {
             content  => $isbn,
         });
 
-        my $ua       = LWP::UserAgent->new();
-        $ua->agent('Mozilla/5.0');
-        my $url      ="http://books.google.com/books?jscmd=viewapi&bibkeys=ISBN$isbn";
-#        my $url      = "http://books.google.com/books?vid=ISBN$isbn";
-        my $request  = HTTP::Request->new('GET', $url);
-        my $response = $ua->request($request);
-
-        if ( $response->is_error() ) {
-            $logger->info("ISBN $isbn NOT found in Google BookSearch");
-            $logger->debug("Error-Code:".$response->code());
-            $logger->debug("Fehlermeldung:".$response->message());
-        }
-        else {
-            $logger->info("ISBN $isbn found in Google BookSearch");
-            $logger->debug($response->content());
-
-            my ($json_result) = $response->content() =~/^var _GBSBookInfo = (.+);$/;
-
-            my $json = new JSON;
-            my $gbs_result = {};
-
-            eval {
-                $gbs_result = $json->jsonToObj($json_result);
-            };
+        if ($target eq "gbs"){
+            my $ua       = LWP::UserAgent->new();
+            $ua->agent('Mozilla/5.0');
+            my $url      ="http://books.google.com/books?jscmd=viewapi&bibkeys=ISBN$isbn";
+            #        my $url      = "http://books.google.com/books?vid=ISBN$isbn";
+            my $request  = HTTP::Request->new('GET', $url);
+            my $response = $ua->request($request);
             
-            $logger->debug("GBS".YAML::Dump($gbs_result));
-            
-            
-            if ($format eq "thumbnail"){
-                my $thumbnailurl=$gbs_result->{"ISBN$isbn"}{thumbnail_url};
+            if ( $response->is_error() ) {
+                $logger->info("ISBN $isbn NOT found in Google BookSearch");
+                $logger->debug("Error-Code:".$response->code());
+                $logger->debug("Fehlermeldung:".$response->message());
 
-                if ($thumbnailurl){
-                    $thumbnailurl=~s/x26/\&/g;
-                    
-                    $logger->debug("Thumb:".$thumbnailurl);
-                    $r->content_type('image/jpeg');
-                    $r->header_out(Location => $thumbnailurl);
-                    
-                    return REDIRECT;
-                }
+                $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");                
+                return OK;                
             }
             else {
-                $r->internal_redirect("http://$config->{servername}/images/openbib/gbs.png");
-                return OK;
+                $logger->info("ISBN $isbn found in Google BookSearch");
+                $logger->debug($response->content());
+                
+                my ($json_result) = $response->content() =~/^var _GBSBookInfo = (.+);$/;
+                
+                my $json = new JSON;
+                my $gbs_result = {};
+                
+                eval {
+                    $gbs_result = $json->jsonToObj($json_result);
+                };
+                
+                $logger->debug("GBS".YAML::Dump($gbs_result));
+                
+                my $type = $gbs_result->{"ISBN$isbn"}{preview};
+                
+                if ($type eq "noview"){
+                    $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");
+                    #$r->internal_redirect("http://$config->{servername}/images/openbib/gbs-noview.png");
+                    return OK;
+                }
+                elsif ($type eq "partial"){
+                    $r->internal_redirect("http://$config->{servername}/images/openbib/gbs-partial.png");
+                    return OK;
+                }
+                elsif ($type eq "full"){
+                    $r->internal_redirect("http://$config->{servername}/images/openbib/gbs-full.png");
+                    return OK;
+                }
+                else {
+                    $r->internal_redirect("http://$config->{servername}/images/openbib/gbs.png");
+                    return OK;
+                }
             }
         }
     }
-
+    
     $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");
-
+    
     return OK;
 }
 

@@ -248,9 +248,11 @@ sub log_event {
     # Redirects 
     # 500 => TOC / hbz-Server
     # 501 => TOC / ImageWaere-Server
+    # 502 => USB ebook Vollzugriff
     # 510 => BibSonomy
     # 520 => Wikipedia / Personen
     # 521 => Wikipedia / ISBN
+    # 522 => Wikipedia / Artikel
     # 530 => EZB
     # 531 => DBIS
     # 532 => Kartenkatalog Philfak

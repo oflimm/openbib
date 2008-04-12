@@ -97,9 +97,11 @@ sub handler {
     my $valid_redirection_type_ref = {
         500 => 1, # TOC / hbz-Server
         501 => 1, # TOC / ImageWaere-Server
+	502 => 1, # USB ebook Vollzugriff
         510 => 1, # BibSonomy
         520 => 1, # Wikipedia / Personen
         521 => 1, # Wikipedia / ISBN
+        522 => 1, # Wikipedia / Artikel
         530 => 1, # EZB
         531 => 1, # DBIS
         532 => 1, # Kartenkatalog Philfak

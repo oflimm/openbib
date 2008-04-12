@@ -549,6 +549,67 @@ if ($type == 8){
     }
 }
 
+# Typ 9 => Meistvorkommende Erscheinungsjahre pro Datenbank
+if ($type == 9){
+    my @databases = ();
+
+    if ($singlepool){
+        push @databases, $singlepool;
+    }
+    else {
+        @databases=$config->get_active_databases();
+    }
+    
+    foreach my $database (@databases){
+        $logger->info("Generating Type 9 BestOf-Values for database $database");
+
+        my $maxcount=0;
+	my $mincount=999999999;
+
+        my $dbh
+            = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+                or $logger->error_die($DBI::errstr);
+        
+        my $bestof_ref=[];
+        my $request=$dbh->prepare("select count(distinct id) as scount, content from tit where category=425 and content regexp ? group by content order by scount DESC");
+        $request->execute("^[0-9][0-9][0-9][0-9]\$");
+        while (my $result=$request->fetchrow_hashref){
+            my $content = decode_utf8($result->{content});
+            my $count   = $result->{scount};
+            if ($maxcount < $count){
+                $maxcount = $count;
+            }
+
+            if ($mincount > $count){
+                $mincount = $count;
+            }
+            
+            push @$bestof_ref, {
+                item  => $content,
+                count => $count,
+            };
+        }
+
+	$bestof_ref = gen_cloud_class({
+				       items => $bestof_ref, 
+				       min   => $mincount, 
+				       max   => $maxcount, 
+				       type  => $config->{best_of}{$type}{cloud}});
+
+        my $sortedbestof_ref ;
+        @{$sortedbestof_ref} = map { $_->[0] }
+            sort { $a->[1] cmp $b->[1] }
+                map { [$_, $_->{item}] }
+                    @{$bestof_ref};
+        
+        $statistics->store_result({
+            type => 9,
+            id   => $database,
+            data => $sortedbestof_ref,
+        });
+    }
+}
+
 sub gen_cloud_class {
     my ($arg_ref) = @_;
     
@@ -624,6 +685,7 @@ gen_bestof.pl - Erzeugen von BestOf-Analysen aus Relevance-Statistik-Daten
    6 => Meistgenutzte Verfasser/Personen pro Katalog (Wolke)
    7 => Nutzer-Tags pro Katalog (Wolke)
    8 => Suchbegriffe pro View (Wolke)
+   9 => Meistvorkommende Erscheinungsjahre pro Katalog (Wolke)
        
 ENDHELP
     exit;

@@ -63,9 +63,9 @@ einem Normdaten-Eintrag verkn&uuml;pft wurden, umso grösser wird der zugehörig
 <p />
 
 [%
-  catdb = config.get_infomatrix_of_active_databases(session);
+  catdb     = config.get_infomatrix_of_active_databases({session => session, view => view});
   maxcolumn = config.databasechoice_maxcolumn;
-  colspan = config.databasechoice_maxcolumn * 3;
+  colspan   = config.databasechoice_maxcolumn * 3;
 %]
 <table>
 [%- FOREACH category = config.orgunits -%]

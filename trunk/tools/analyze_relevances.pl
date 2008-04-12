@@ -150,11 +150,11 @@ while (my $result=$request->fetchrow_hashref){
 
 #                print YAML::Dump($tititem);
                 my $content = << "CONTENT";
-<span class="rlauthor">$tititem->{PC0001}[0]{content}</span></strong><br /><strong><span class="rltitle">$tititem->{T0331}[0]{content}</span></strong>, <span class="rlpublisher">$tititem->{T0412}[0]{content}</span> <span class="rlyearofpub">$tititem->{T0425}[0]{content}</span> ($references_ref->{count}&nbsp;Nutzer)
+<span class="rlauthor">$tititem->{PC0001}[0]{content}</span><br /><strong><span class="rltitle">$tititem->{T0331}[0]{content}</span></strong>, <span class="rlpublisher">$tititem->{T0412}[0]{content}</span> <span class="rlyearofpub">$tititem->{T0425}[0]{content}</span> ($references_ref->{count}&nbsp;Nutzer)
 CONTENT
                 $count++;
                
-                if ($tititem->{T0331} && $item_ref->{isbn}){                
+                if ($tititem->{T0331} && $item_ref->{isbn}){
                     $request2->execute($isbn13,50,4000,$count,$item_ref->{isbn});
                     $request2->execute($isbn13,50,4001,$count,$content);
                 }

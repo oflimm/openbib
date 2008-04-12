@@ -33,7 +33,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=14" title="Katalogname"><span class="dbdescshort">[% config.get_targetdbinfo.dbnames.${database}.short %]</span></a></li>
+   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=14" title="Katalogname"><span class="dbdescshort">[% dbinfotable.dbnames.${database}.short %]</span></a></li>
 </ul>
 
 <div class="content">
@@ -47,14 +47,7 @@
 <div class="content">
 <p />
 
-<ul class="tabbingmenu">
-   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=14" title="Schlagworte">Schlagworte</a></li>
-   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=16" title="Systematiken/Notationen">Systematiken/Notationen</a></li>
-   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=17" title="K&ouml;rperschaften/Institutionen">K&ouml;rperschaften/Institutionen</a></li>
-   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=18" title="Personen">Personen</a></li>
-[% IF config.social_tagging %]   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=19" title="Nutzer-Tags">Nutzer-Tags</a></li>[% END %]
-[% IF viewdbs.size == 1     %]   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=40" title="Suchbegriffe">Suchbegriffe</a></li>[% END %]
-</ul>
+[% PROCESS common/subtemplate name="clouds_navigation" active=17 %] 
 
 <div class="content">
 <p />

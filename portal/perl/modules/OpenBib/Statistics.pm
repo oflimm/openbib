@@ -115,6 +115,12 @@ sub store_result {
     $request->execute($id,$type) or $logger->error($DBI::errstr);
 
     $logger->debug("Storing:\n".YAML::Dump($data_ref));
+    $logger->debug(ref $data_ref);
+    
+    if (ref $data_ref eq "ARRAY" && !@$data_ref){
+        $logger->debug("Aborting: No Data");
+        return;
+    }
 
     my $datastring=unpack "H*", Storable::freeze($data_ref);
     
@@ -163,6 +169,41 @@ sub get_result {
     $logger->debug(YAML::Dump($data_ref));
     
     return $data_ref;
+}
+
+sub result_exists {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $id                = exists $arg_ref->{id}
+        ? $arg_ref->{id           } : undef;
+    my $type              = exists $arg_ref->{type}
+        ? $arg_ref->{type  }        : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;    
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return 0 unless (defined $id && defined $type);
+    
+    my $sqlstatement="select count(data) as resultcount from result_data where id=? and type=? and length(data) > 300";
+    my $request=$dbh->prepare($sqlstatement) or $logger->error($DBI::errstr);
+    $request->execute($id,$type) or $logger->error($DBI::errstr);
+
+    $logger->debug("$sqlstatement - $id / $type");
+
+    my $result=$request->fetchrow_hashref;
+    my $resultcount  = $result->{resultcount};
+
+    $logger->debug("Found: $resultcount");
+    
+    return $resultcount;
 }
 
 sub log_event {

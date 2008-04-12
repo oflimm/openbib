@@ -272,6 +272,7 @@ tt_info_34_tname: info_34
 tt_info_35_tname: info_35
 tt_info_3_tname: info_3
 tt_info_40_tname: info_40
+tt_info_9_tname: info_9
 tt_info_message_tname: info_message
 tt_info_tname: info
 tt_leave_tname: leave
@@ -388,6 +389,8 @@ best_of:
   7:
     cloud: linear
   8:
+    cloud: log
+  9:
     cloud: log
 
 # Social-Tagging

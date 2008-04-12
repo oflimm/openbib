@@ -16,7 +16,6 @@
 <body>
 [%
       viewlist     = config.get_active_views();
-      targetdbinfo = config.get_targetdbinfo.dbnames;
 %]
 
 [% PROCESS common/subtemplate name="corporate_banner" %] 
@@ -74,7 +73,7 @@ eine &Uuml;bersicht aller vorhandenen Spezial-Sichten.
 <span style="font-size:1.2em">Kataloge dieser Spezial-Sicht:</span>
 <ul>
 [% FOREACH dbname IN config.get_dbs_of_view(viewname) %]
-<li>[% targetdbinfo.${dbname}.short %]</li>
+<li>[% dbinfotable.dbnames.${dbname}.short %]</li>
 [% END %]
 </ul>
 <p />

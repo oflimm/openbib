@@ -64,10 +64,8 @@
 <tr><td class="boxedclear">
 
 <div style="float:right;padding:10px">
-        <a href="http://books.google.com/books?vid=ISBN[% normset.${"T0540"}.first.content %]" target="_blank" title="Google BookSearch"><img src="[% config.connector_availabilityimage_loc %]?action=lookup;isbn=[% normset.${"T0540"}.first.content %];target=gbs" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a>&nbsp;
-        <!-- <img src="[% config.connector_amazon_loc %]/image/[%# normset.${"T0540"}.first.content.replace('-','') %]" title="Titelbild; (c) beim Verlag; bereitgestellt durch Amazon" />-->
+       <a href="http://books.google.com/books?vid=ISBN[% normset.${"T0540"}.first.content %]" target="_blank" title="Google BookSearch"><img src="[% config.connector_availabilityimage_loc %]?action=lookup;isbn=[% normset.${"T0540"}.first.content %];target=gbs" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a>&nbsp;
 </div>
-
 
 [% 
    IF config.litlists ;
@@ -218,6 +216,11 @@ FOREACH category IN categories;
          thiscontent   = "<img src=\"/images/openbib/pdf-document.png\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)";
          content       = "${config.redirect_loc}/${sessionID}/500/${content}" ;
          content       = "<a href=\"${content}\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
+
+    CASE "E4120";
+         thiscontent   = "<img src=\"/images/openbib/pdf-document.png\" />&nbsp;Als E-Book im Vollzugriff verf&uuml;gbar";
+	 content       = "${config.redirect_loc}/${sessionID}/503/${content}" ;
+	 content       = "<a href=\"${content}\" target=\"_blank\">${thiscontent}</a>";
 
     CASE [ "T0710" "T0902" "T0907" "T0912" "T0917" "T0922" "T0927" "T0932" "T0937" "T0942" "T0947" ];
          thisid     = item.id;

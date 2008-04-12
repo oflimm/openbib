@@ -136,7 +136,8 @@ sub handler {
                     return OK;
                 }
                 else {
-                    $r->internal_redirect("http://$config->{servername}/images/openbib/gbs.png");
+                    $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");
+                    #$r->internal_redirect("http://$config->{servername}/images/openbib/gbs.png");
                     return OK;
                 }
             }

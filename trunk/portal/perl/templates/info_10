@@ -18,10 +18,6 @@
       resultlist = statistics.get_result(funcargs);
 %]
 
-[%# USE dumper;
-#dumper.dump( config.get_targetdbinfo);
-%]
-
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
 [% PROCESS common/subtemplate name="mainnavigation" %] 
@@ -29,7 +25,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=10" title="Katalogname"><span class="dbdescshort">[% config.get_targetdbinfo.dbnames.${database}.short %]</span></a></li>
+   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=10" title="Katalogname"><span class="dbdescshort">[% dbinfotable.dbnames.${database}.short %]</span></a></li>
 </ul>
 
 <div class="content">

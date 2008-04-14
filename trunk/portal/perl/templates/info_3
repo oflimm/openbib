@@ -139,6 +139,45 @@ target="_blank">Edlef Stabenau im netbib-Weblog</a> am 21.9.2006</dd>
 <tr><th>Verschiedenes</th></tr>
 <tr><td class="boxed">
 <dl>
+<dt>Heidrun Wiesenm&uuml;ller: Neue Trends und alte Desiderate - Der OPAC der Zukunft</dt>
+<dd>[...]Es ist sicher kein Wunder, dass besonders innovative Kataloge häufig Eigenentwicklungen sind - z.B. der
+XOPAC der UB Karlsruhe oder das Programm OpenBib, auf dem der Kölner UniversitätsGesamtkatalog (KUG) basiert.[...]Es folgte ein weiterer Vortrag
+von Dr. Peter Kostädt über das derzeit sicher prominenteste
+deutsche Beispiel für einen Katalog mit Web 2.0-Features: den
+von Oliver Flimm entwickelten Kölner Universitäts-Gesamt-
+katalog (KUG)5. Beispielsweise ist im KUG nicht nur eine
+Empfehlungsfunktion (wie man sie z.B. von Amazon kennt)
+integriert, sondern auch die sehr nützliche Option, Trefferlisten
+nach Popularität sortieren zu lassen. In der personalisierten
+Version (?Mein KUG“) kann man eigene Tags vergeben und
+dabei entscheiden, ob diese auch für andere Nutzer sichtbar
+sein sollen. Ebenso trifft man im KUG auf die von vielen
+Web 2.0-Anwendungen bekannte Darstellung in Form von
+?Wortwolken“, z.B. für die am häufigsten vergebenen Schlag-
+wörter oder Nutzer-Tags. Die in den Titelaufnahmen vorkom-
+menden Personen sind in Form eines Mashups mit Wikipedia
+verlinkt, und mit einem einzigen Klick lassen sich die biblio-
+graphischen Angaben eines gefundenen Titels an den
+Bookmarking-Dienst BibSonomy senden. Über RSS-Feeds
+kann man z.B. alle Neuzugänge zu einem bestimmten Schlag-
+wort oder von einem bestimmten Verfasser abonnieren.
+[...]
+<p />
+<a href="http://www.vdb-online.org/publikationen/vdb-mitteilungen/vdb-mitteilungen-2008-1.pdf" target="_blank">VDB-Mitteilungen 2008/1</a>
+</dd>
+<dt>Pierre Gavin: Eine neue OPAC-Generation : Das wiedergefundene verlorene Paradies?</dt>
+<dd><a href="http://campus.hesge.ch/id_bilingue/doc/projekte/acueil_praesentationen/ACUEIL_opac_paradis_retrouveDE.pdf" target="_blank">Folien</a> aus: Workshop « OPACs – Utilisateurs – Interfaces » 19 mars 2008 à Berne BNS
+</dd>
+<dt>Cristian Cabezas Mardones: Biblioteca 2.0 - Explicada por ejemplos</dt>
+<dd><a href="http://www.slideshare.net/rdonoso/biblioteca-20-230139/" target="_blank">Folien</a></dd>
+<dt>Dídac Margaix-Arnal: El Opac 2.0 - las tecnologías de la Web 2.0 aplicadas a los catálogos</dt>
+<dd>
+[...]Este catálogo colectivo ha sido construido con la aplicación de software libre OpenBib. Presenta funcionalidades
+sociales basadas en tres aspectos básicos: etiquetas para mejorar las búsquedas, recomendaciones basadas en
+la actividad de los usuarios e interoperabilidad del sistema con otras herramientas como Wikipedia y BibSonomy[...]
+<p />
+<a href="http://www.calsi.org/2007/wp-content/uploads/2007/11/didac_margaix.pdf" target="_blank">PDF</a>&nbsp;<a href="http://www.slideshare.net/calsi/el-opac-20las-tecnologas-de-la-web-20-aplicadas-a-los-catlogos-bibliogrficos" target="_blank">Folien</a>
+</dd>
 
 <dt>Jürgen Plieninger, Edlef Stabenau, Lambert Heller: Never run a
 changing system? - Über die Chancen des Einsatzes "Sozialer Software" in der Bibliotheksarbeit</dt>

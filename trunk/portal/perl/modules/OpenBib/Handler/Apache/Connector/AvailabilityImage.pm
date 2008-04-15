@@ -142,6 +142,24 @@ sub handler {
                 }
             }
         }
+        elsif ($target eq "ebook"){
+            # Verbindung zur SQL-Datenbank herstellen
+            my $enrichdbh
+                = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
+                    or $logger->error_die($DBI::errstr);
+
+            my $sql_request = "select count(isbn) as ebcount from normdata where isbn=? and origin=20 and category=4120";
+            my $request=$enrichdbh->prepare($sql_request);
+            $request->execute($isbn);
+            my $result =$request->fetchrow_hashref;
+
+            if ($result->{ebcount} > 0){
+                $logger->info("ISBN $isbn found for USB Ebooks");
+                $r->internal_redirect("http://$config->{servername}/images/openbib/usb_ebook.png");
+                return OK;
+            }
+            
+        }
     }
     
     $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");

@@ -80,7 +80,7 @@ sub handler {
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
     # Sub-Template ID
-    my $stid     = $query->param('stid') || '';
+    my $stid     = $query->param('stid')     || '';
     my $database = $query->param('database') || '';
 
     my $queryoptions = OpenBib::QueryOptions->instance($query);
@@ -108,6 +108,7 @@ sub handler {
     # TT-Data erzeugen
     my $ttdata={
         database      => $database,
+        query         => $query,
         view          => $view,
         stylesheet    => $stylesheet,
         viewdesc      => $viewdesc,

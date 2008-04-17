@@ -56,7 +56,8 @@ $bufferidx=0;
 # Kategorieflags
 
 %autkonv=(
-    'Autor'   => '0101:', # Person
+    'Autor'       => '0100:', # Verfasser
+    'Herausgeber' => '0101:', # Person
 );
 
 %korkonv=(

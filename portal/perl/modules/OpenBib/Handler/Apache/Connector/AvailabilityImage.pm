@@ -70,26 +70,30 @@ sub handler {
 
     my $action         = $query->param('action')          || 'lookup';
     my $isbn           = $query->param('isbn')            || '';
+    my $bibkey         = $query->param('bibkey')          || '';
     my $target         = $query->param('target')          || 'gbs';
     
     if ($action eq "lookup"){
-        # Normierung auf ISBN13
-        my $isbnXX     = Business::ISBN->new($isbn);
-        
-        if (defined $isbnXX && $isbnXX->is_valid){
-            $isbn = $isbnXX->as_isbn13->as_string;
-        }
-        else {
-            $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");
-             return OK;
-         }
-        
-        $isbn = OpenBib::Common::Util::grundform({
-            category => '0540',
-            content  => $isbn,
-        });
 
-        if ($target eq "gbs"){
+        if ($isbn){
+            # Normierung auf ISBN13
+            my $isbnXX     = Business::ISBN->new($isbn);
+            
+            if (defined $isbnXX && $isbnXX->is_valid){
+                $isbn = $isbnXX->as_isbn13->as_string;
+            }
+            else {
+                $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");
+                return OK;
+            }
+            
+            $isbn = OpenBib::Common::Util::grundform({
+                category => '0540',
+                content  => $isbn,
+            });
+        }
+        
+        if ($target eq "gbs" && $isbn){
             my $ua       = LWP::UserAgent->new();
             $ua->agent('Mozilla/5.0');
             my $url      ="http://books.google.com/books?jscmd=viewapi&bibkeys=ISBN$isbn";
@@ -138,6 +142,33 @@ sub handler {
                 else {
                     $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");
                     #$r->internal_redirect("http://$config->{servername}/images/openbib/gbs.png");
+                    return OK;
+                }
+            }
+        }
+        elsif ($target eq "bibsonomy" && $bibkey){
+            my $ua       = LWP::UserAgent->new();
+            $ua->agent('Mozilla/5.0');
+            my $url      ="http://www.bibsonomy.org/swrc/bibtex/$bibkey";
+
+            my $request  = HTTP::Request->new('GET', $url);
+            my $response = $ua->request($request);
+            
+            if ( $response->is_error() ) {
+                $logger->info("Bibkey $bibkey NOT found in BibSonomy");
+                $logger->debug("Error-Code:".$response->code());
+                $logger->debug("Fehlermeldung:".$response->message());
+
+                $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");                
+                return OK;                
+            }
+            else {
+                $logger->info("Bibkey $bibkey found in BibSonomy");
+                $logger->debug($response->content());
+                
+                my $content = $response->content();
+                if ($content=~/rdf:Description/){                    
+                    $r->internal_redirect("http://$config->{servername}/images/openbib/bibsonomy_available.png");
                     return OK;
                 }
             }

@@ -457,7 +457,7 @@ if ($type == 7){
     }
 }
 
-# Typ 8 => Meistgenutzte Suchbegriffe
+# Typ 8 => Meistgenutzte Suchbegriffe pro View
 if ($type == 8){
     my @views = ();
 
@@ -607,6 +607,116 @@ if ($type == 9){
             id   => $database,
             data => $sortedbestof_ref,
         });
+    }
+}
+
+# Typ 10 => Titel nach BK pro View
+if ($type == 10){
+    my @views = ();
+
+    if ($singleview){
+        push @views, $singleview;
+    }
+    else {
+        @views=$config->get_active_views();
+    }
+
+    foreach my $view (@views){
+        $logger->info("Generating Type 10 BestOf-Values for view $view");
+
+        my @databases = $config->get_dbs_of_view($view);
+        
+        # Verbindung zur SQL-Datenbank herstellen
+        my $enrichdbh
+            = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
+                or $logger->error_die($DBI::errstr);
+
+        my $bk_ref = {};
+
+        my $in_select_string = join(',',map {'?'} @databases);
+        my $sqlstring="select count(distinct ai.dbname, ai.id) as bkcount,n.content as bk from all_isbn as ai, normdata as n where n.category=4100 and n.isbn=ai.isbn and ai.dbname in ($in_select_string) group by n.content";
+        my $request=$enrichdbh->prepare($sqlstring) or $logger->error($DBI::errstr);
+        $request->execute(@databases);
+
+        while (my $result=$request->fetchrow_hashref){
+            my $bk      = $result->{bk};
+            my $bkcount = $result->{bkcount};
+
+            my $base_bk = substr($bk,0,2);
+
+            if (exists $bk_ref->{$base_bk}){
+                $bk_ref->{$base_bk} = $bk_ref->{$base_bk}+$bkcount;
+            }
+            else {
+                $bk_ref->{$base_bk} = $bkcount;
+            }
+            $bk_ref->{$bk}          = $bkcount;
+        }
+        
+        $logger->debug(YAML::Dump($bk_ref));
+
+        $statistics->store_result({
+            type => 10,
+            id   => $view,
+            data => $bk_ref,
+        });
+    }
+}
+
+# Typ 11 => Titel nach BK pro Katalog pro Sicht
+if ($type == 11){
+    my @views = ();
+
+    if ($singleview){
+        push @views, $singleview;
+    }
+    else {
+        @views=$config->get_active_views();
+    }
+
+    foreach my $view (@views){
+        next if ($view eq "kug");
+        $logger->info("Generating Type 11 BestOf-Values for view $view");
+
+        my @databases = $config->get_dbs_of_view($view);
+        
+        # Verbindung zur SQL-Datenbank herstellen
+        my $enrichdbh
+            = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
+                or $logger->error_die($DBI::errstr);
+
+        my $bk_ref = {};
+
+        foreach my $database (@databases){
+            $logger->info("Generating BK's for database $database");
+            my $sqlstring="select count(distinct ai.id) as bkcount,n.content as bk from all_isbn as ai, normdata as n where n.category=4100 and n.isbn=ai.isbn and ai.dbname=? group by n.content";
+            my $request=$enrichdbh->prepare($sqlstring) or $logger->error($DBI::errstr);
+            $request->execute($database);
+            
+            while (my $result=$request->fetchrow_hashref){
+                my $bk      = $result->{bk};
+                my $bkcount = $result->{bkcount};
+                
+                my $base_bk = substr($bk,0,2);
+                
+                if (exists $bk_ref->{$base_bk} && exists $bk_ref->{$base_bk}{$database}){
+                    $bk_ref->{$base_bk}{$database} = $bk_ref->{$base_bk}{$database}+$bkcount;
+                }
+                else {
+                    $bk_ref->{$base_bk}{$database} = $bkcount;
+                }
+                $bk_ref->{$bk}{$database} = $bkcount;
+            }
+        }
+
+        $logger->info(YAML::Dump($bk_ref));
+
+        $statistics->store_result({
+            type => 11,
+            id   => $view,
+            data => $bk_ref,
+        });
+
     }
 }
 

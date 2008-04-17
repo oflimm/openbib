@@ -35,12 +35,13 @@ use Apache::Reload;
 use Apache::Request ();
 use Benchmark ':hireswallclock';
 use DBI;
-use Digest::MD5();
-use Encode 'decode_utf8';
+use Digest::MD5 qw(md5_hex);
+use Encode qw/decode_utf8 encode_utf8/;
 use Log::Log4perl qw(get_logger :levels);
 use POSIX();
 use String::Tokenizer;
 use Template;
+use Unicode::Semantics;
 use YAML ();
 
 use OpenBib::Config;
@@ -898,6 +899,66 @@ sub utf2bibtex {
     $string=~s/ß/{\\"s}/g;
 
     return $string;
+}
+
+sub gen_bibkey {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $normdata_ref  = exists $arg_ref->{normdata}
+        ? $arg_ref->{normdata}             : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return "" unless (defined $normdata_ref);
+    
+    # Verfasser und Herausgeber konstruieren
+    my $authors_ref=[];
+    my $editors_ref=[];
+    foreach my $category (qw/T0100 T0101/){
+        next if (!exists $normdata_ref->{$category});
+        foreach my $part_ref (@{$normdata_ref->{$category}}){
+            my $single_person = lc($part_ref->{content});
+            $single_person    =~ s/[^0-9\p{L}\. ]+//g;
+            my ($lastname,$firstname) = split(/\s+/,$single_person);
+
+            $logger->debug("Bibkey: $firstname $lastname");
+            $single_person    = substr($firstname,0,1).".".$lastname;
+            
+            if ($part_ref->{supplement} =~ /Hrsg/){
+                push @$editors_ref, $single_person;
+            }
+            else {
+                push @$editors_ref, $single_person;
+            }
+        }
+    }
+
+    my $persons_ref=(@$authors_ref)?$authors_ref:
+    (@$editors_ref)?$editors_ref:();
+
+    my $author = "";
+    $author    = "[".join(",", sort(@$persons_ref))."]" if (@$persons_ref);
+
+    # Titel
+    my $title  = (exists $normdata_ref->{T0331})?lc($normdata_ref->{T0331}[0]{content}):"";
+    $title     =~ s/[^0-9\p{L}\x{C4}]+//g;
+
+    # Jahr
+    my $year   = (exists $normdata_ref->{T0425})?$normdata_ref->{T0425}[0]{content}:undef;
+    $year      =~ s/[^0-9]+//g;
+
+    my $bibkey_base = $title." ".$author." ".$year;
+
+    $logger->debug("Bibkey-Base: $bibkey_base");
+
+    if ($author && $title && $year){
+        return "1".md5_hex(encode_utf8($bibkey_base));
+    }
+    else {
+        return "";
+    }
 }
 
 1;

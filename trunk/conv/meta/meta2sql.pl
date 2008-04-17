@@ -39,6 +39,7 @@ use MLDBM qw(DB_File Storable);
 use Storable ();
 use YAML;
 
+use OpenBib::Bibkey;
 use OpenBib::Common::Util;
 use OpenBib::Common::Stopwords;
 use OpenBib::Config;
@@ -664,6 +665,17 @@ while (my $line=<IN>){
         print TITLISTITEM "$id$listitem\n";
 
 	$normdata{$id} = $normdata_ref; 
+
+        # Bibkey bestimmen, wenn keine ISBN vorhanden ist
+
+        if (!exists $thisitem_ref->{T0540} && !exists $thisitem_ref->{T0553}){
+            my $bibkey = OpenBib::Common::Util::gen_bibkey({ normdata => $thisitem_ref});
+
+            if ($bibkey){
+                print OUT       "$id50501$bibkey\n";
+            }
+        }
+        
         next CATLINE;
     }
     elsif ($line=~m/^(\d+)\.(\d+):(.*?)$/){
@@ -679,12 +691,6 @@ while (my $line=<IN>){
         
         # Kategorien in der Blacklist werden generell nicht uebernommen
         next CATLINE if (exists $stammdateien_ref->{tit}{blacklist_ref}->{$category});
-
-        # Alle Kategorien werden gemerkt
-        push @{$thisitem_ref->{"T".$category}}, {
-            indicator => $indicator,
-            content   => $content,
-        };
 
         # Kategorien in listitemcat werden fuer die Kurztitelliste verwendet
         if (exists $conv_config->{listitemcat}{$category}){
@@ -741,6 +747,11 @@ while (my $line=<IN>){
                 
                 my $content = $listitemdata_aut{$targetid};
                 
+                push @{$thisitem_ref->{"T".$category}}, {
+                    indicator => $indicator,
+                    content   => $content,
+                };
+
                 push @{$listitem_ref->{P0100}}, {
                     id      => $targetid,
                     type    => 'aut',
@@ -777,6 +788,12 @@ while (my $line=<IN>){
                 
                 my $content = $listitemdata_aut{$targetid};
                 
+                push @{$thisitem_ref->{"T".$category}}, {
+                    indicator  => $indicator,
+                    content    => $content,
+                    supplement => $supplement,
+                };
+
                 push @{$listitem_ref->{P0101}}, {
                     id         => $targetid,
                     type       => 'aut',
@@ -1236,6 +1253,12 @@ while (my $line=<IN>){
         }
         # Titeldaten
         else {
+            # Alle Kategorien werden gemerkt
+            push @{$thisitem_ref->{"T".$category}}, {
+                indicator => $indicator,
+                content   => $content,
+            };
+
             if (   exists $conv_config->{search_ejahr    }{$category}){
                 push @ejahr, OpenBib::Common::Util::grundform({
                     category => $category,

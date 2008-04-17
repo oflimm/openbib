@@ -1169,6 +1169,15 @@ sub highlightquery {
     return $content;
 }
 
+sub to_bibkey {
+    my ($self) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    return OpenBib::Common::Util::gen_bibkey({ normdata => $self->{_normset}});
+}
+
 sub to_endnote {
     my ($self) = @_;
 

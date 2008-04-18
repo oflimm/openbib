@@ -22,12 +22,12 @@
 
 <div id="maincontent">
 
-[%# USE dumper;dumper.dump(titles)%]
+<ul class="tabbingmenu">
+   <li><a class="active" href="#"><span class="dbdescshort">Titel zum Tag <i>[% tag %]</i> in BibSonomy</span></a></li>
+</ul>
 
-<!-- Title begins here -->
-<table width="100%" cellpadding="2">
-<tr><th>Titel zum Tag <i>[% tag %]</i> in BibSonomy</th></tr>
-<tr><td class="boxedclear">
+<div class="content">
+
 [% alltags = [] %]
 [% FOREACH thistitle IN titles %]
 [%   FOREACH tag IN thistitle.tags %]
@@ -104,10 +104,6 @@ Tags: [% FOREACH tag IN thistitle.tags %]<a href="[% config.bibsonomy_loc %]?ses
 [% END %]
 
 [% END %]
-</table>
-<p/>
-
-</td></tr>
 </table>
 <p/>
 

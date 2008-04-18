@@ -25,17 +25,17 @@
 
 <div id="maincontent">
 
-<!-- Title begins here -->
-<table width="100%" cellpadding="2">
-<tr><th>Tags in BibSonomy</th></tr>
-<tr><td class="boxedclear">
+<ul class="tabbingmenu">
+   <li><a class="active" href="#"><span class="dbdescshort">Tags in BibSonomy</span></a></li>
+</ul>
+
+<div class="content">
 <p/>
 [% FOREACH tag IN tags %]
 <a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];tag=[% tag.name |uri %];action=get_tit_of_tag">[% tag.name %]</a><br/>
 [% END %]
 <p/>
 
-</td></tr>
 </div>
 <p />
 

@@ -63,10 +63,8 @@ sub new {
 
     bless ($self, $class);
     
-    $self->{config}  = $config;
-
-    $api_user = (defined $api_user)?$api_user:(defined $self->{config}->{bibsonomy_api_user})?$self->{config}->{bibsonomy_api_user}:undef;
-    $api_key  = (defined $api_key )?$api_key :(defined $self->{config}->{bibsonomy_api_key} )?$self->{config}->{bibsonomy_api_key} :undef;
+    $api_user = (defined $api_user)?$api_user:(defined $config->{bibsonomy_api_user})?$config->{bibsonomy_api_user}:undef;
+    $api_key  = (defined $api_key )?$api_key :(defined $config->{bibsonomy_api_key} )?$config->{bibsonomy_api_key} :undef;
 
     $self->{client}  = LWP::UserAgent->new;            # HTTP client
 
@@ -85,8 +83,8 @@ sub get_posts {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
-    my $isbn  = exists $arg_ref->{isbn}
-        ? $arg_ref->{isbn}       : undef;
+    my $bibkey = exists $arg_ref->{bibkey}
+        ? $arg_ref->{bibkey}     : undef;
 
     my $tag  = exists $arg_ref->{tag}
         ? $arg_ref->{tag}        : undef;
@@ -95,9 +93,12 @@ sub get_posts {
     my $logger = get_logger();
     
     my $url;
+
+    my @titles = ();
     
-    if (defined $isbn){
-        $url='http://www.bibsonomy.org/api/posts?resourcetype=bibtex&search="'.$isbn.'"';
+    if (defined $bibkey && $bibkey=~/^1[0-9a-f]{32}$/){
+        substr($bibkey,0,1)=""; # Remove leading 1
+        $url='http://www.bibsonomy.org/api/posts?resourcetype=bibtex&resource="'.$bibkey.'"';
     }
     elsif (defined $tag){
         $url='http://www.bibsonomy.org/api/posts?tags='.$tag.'&resourcetype=bibtex';
@@ -116,13 +117,9 @@ sub get_posts {
     my $tree   = $parser->parse_string($response);
     my $root   = $tree->getDocumentElement;
 
-    if ($root->findvalue('/bibsonomy/@stat') eq "ok"){
-        $self->{posts} = [];
+    unless ($root->findvalue('/bibsonomy/@stat') eq "ok"){
+        return ();
     }
-    else {
-        return $self;
-    }   
-
 
     if ($root->findvalue('/bibsonomy/posts/@next')){
         $self->{next} = $root->findvalue('/bibsonomy/posts/@next');
@@ -150,13 +147,69 @@ sub get_posts {
         $singlepost_ref->{record}->{T0662}     = $post_node->findvalue('bibtex/@href');
         $singlepost_ref->{record}->{T0800}     = $post_node->findvalue('bibtex/@entrytype');
 
-        push @{$self->{posts}}, $singlepost_ref;
+        push @titles, $singlepost_ref;
     }
 
     
-    $logger->debug("Response / Posts: ".YAML::Dump($self->{posts}));
+    $logger->debug("Response / Posts: ".YAML::Dump(\@titles));
     
-    return $self;
+    return @titles;
+}
+
+sub get_tags {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $bibkey = exists $arg_ref->{bibkey}
+        ? $arg_ref->{bibkey}     : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $url;
+
+    my @tags = ();
+    
+    if (defined $bibkey && $bibkey=~/^1[0-9a-f]{32}$/){
+        substr($bibkey,0,1)=""; # Remove leading 1
+        $url="http://www.bibsonomy.org/api/tags?resourcetype=bibtex&resource=$bibkey";
+    }
+    else {
+        return $self;
+    }
+
+    $logger->debug("Request: $url");
+    
+    my $response = $self->{client}->get($url)->content;
+    
+    $logger->debug("Response: $response");
+
+        $logger->debug("Response: $response");
+    
+    my $parser = XML::LibXML->new();
+    my $tree   = $parser->parse_string($response);
+    my $root   = $tree->getDocumentElement;
+
+    unless ($root->findvalue('/bibsonomy/@stat') eq "ok"){
+        return ();
+    }
+
+    foreach my $tag_node ($root->findnodes('/bibsonomy/tags/tag')) {
+        my $singletag_ref = {} ;
+
+        $singletag_ref->{name}        = $tag_node->findvalue('@name');
+        $singletag_ref->{href}        = $tag_node->findvalue('@href');
+        $singletag_ref->{usercount}   = $tag_node->findvalue('@usercount');
+        $singletag_ref->{globalcount} = $tag_node->findvalue('@globalcount');
+        
+        push @tags, $singletag_ref;
+    }
+
+    
+    $logger->debug("Response / Posts: ".YAML::Dump(\@tags));
+
+    
+    return @tags;
 }
 
 sub get_tags_of_posts {

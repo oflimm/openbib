@@ -666,14 +666,13 @@ while (my $line=<IN>){
 
 	$normdata{$id} = $normdata_ref; 
 
-        # Bibkey bestimmen, wenn keine ISBN vorhanden ist
+        # Immer Bibkey bestimmen, auch wenn ISBN vorhanden ist
+        # Damit werden Lookups anhand des BibSonomy-Bibkeys moeglich
 
-        if (!exists $thisitem_ref->{T0540} && !exists $thisitem_ref->{T0553}){
-            my $bibkey = OpenBib::Common::Util::gen_bibkey({ normdata => $thisitem_ref});
-
-            if ($bibkey){
-                print OUT       "$id50501$bibkey\n";
-            }
+        my $bibkey = OpenBib::Common::Util::gen_bibkey({ normdata => $thisitem_ref});
+        
+        if ($bibkey){
+            print OUT       "$id50501$bibkey\n";
         }
         
         next CATLINE;

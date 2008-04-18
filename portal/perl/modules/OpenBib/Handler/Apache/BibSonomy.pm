@@ -44,6 +44,8 @@ use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Template;
 
+use OpenBib::BibSonomy;
+use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
@@ -81,7 +83,11 @@ sub handler {
     my $sorttype       = $query->param('sorttype')         || "author";
     my $sortorder      = $query->param('sortorder')        || "up";
     my $titisbn        = $query->param('titisbn')          || '';
+    my $bibkey         = $query->param('bibkey')           || '';
+    my $isbn           = $query->param('isbn')             || '';
+    my $format         = decode_utf8($query->param('format')) || '';
     my $tag            = decode_utf8($query->param('tag')) || '';
+    my $stid           = $query->param('stid')             || '';
 
 
     my $action         = decode_utf8($query->param('action')) || '';
@@ -95,6 +101,8 @@ sub handler {
     ###########                                               ###########
 
     my $queryoptions = OpenBib::QueryOptions->instance($query);
+
+    my $useragent=$r->subprocess_env('HTTP_USER_AGENT');
 
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
@@ -116,21 +124,62 @@ sub handler {
     }
 
     if ($action eq "get_tags"){
-        if ($titisbn){
-            my @tags = OpenBib::BibSonomy->new()->get_posts({ isbn => $titisbn })->get_tags_of_posts();
+        if (defined $bibkey && $bibkey=~/^1[0-9a-f]{32}$/){
+            my @tags = OpenBib::BibSonomy->new()->get_tags({ bibkey => $bibkey });
 
-            # Start der Ausgabe mit korrektem Header
-            print $r->send_http_header("text/plain");
-
-            print "<bibsonomy_tags>\n";
-            foreach my $tag (@tags){
-                print "   <bibsonomy_tag>$tag</bibsonomy_tag>\n";
-            }
-            print "</bibsonomy_tags>\n";
+            $logger->debug(\@tags);
+            
+            # TT-Data erzeugen
+            my $ttdata={
+                tags          => \@tags,
+                view          => $view,
+                stylesheet    => $stylesheet,
+                sessionID     => $session->{ID},
+                session       => $session,
+                useragent     => $useragent,
+                config        => $config,
+                msg           => $msg,
+            };
+            
+            $stid=~s/[^0-9]//g;
+            
+            my $templatename = ($stid)?"tt_bibsonomy_showtags_".$stid."_tname":"tt_bibsonomy_showtags_tname";
+            
+            OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+            
+            return OK;
         }
-
-        return OK;
     }
+    elsif ($action eq "get_tit_of_tag"){
+        if ($tag){
+            my @titles = OpenBib::BibSonomy->new()->get_posts({ tag => $tag });
+            
+            $logger->debug(\@titles);
+            
+            # TT-Data erzeugen
+            my $ttdata={
+                titles        => \@titles,
+                tag           => $tag,
+                view          => $view,
+                stylesheet    => $stylesheet,
+                sessionID     => $session->{ID},
+                session       => $session,
+                useragent     => $useragent,
+                config        => $config,
+                msg           => $msg,
+            };
+            
+            $stid=~s/[^0-9]//g;
+            
+            my $templatename = ($stid)?"tt_bibsonomy_showtitlist_".$stid."_tname":"tt_bibsonomy_showtitlist_tname";
+            
+            OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+            
+            return OK;
+        }
+    }
+
+    OpenBib::Common::Util::print_warning($msg->maketext("Keine gültige Aktion"),$r,$msg);
 
     return OK;
 }

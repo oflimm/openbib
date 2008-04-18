@@ -21,8 +21,8 @@
     <meta http-equiv="Expires"       content="Thu, 01 Dec 1970 12:00:00 GMT" />
 [% END %]
     <meta name="sessionID"           content="[% sessionID %]" />
-[% IF normset.${"T0540"}.first.content %]
-    <meta name="ISBN"                content="[% normset.${"T0540"}.first.content %]" />
+[% IF record %]
+    <meta name="Bibkey"              content="[% record.to_bibkey %]" />
 [% END %]
 <link href="/images/openbib/favicon.ico" rel="shortcut icon" />
 [% IF view && primrssfeed %]

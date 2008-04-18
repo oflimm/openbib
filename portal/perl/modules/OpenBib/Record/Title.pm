@@ -391,6 +391,8 @@ sub get_full_record {
         push @isbn_refs, @{$normset_ref->{T0540}} if (exists $normset_ref->{T0540});
         push @isbn_refs, @{$normset_ref->{T0553}} if (exists $normset_ref->{T0553});
 
+        my $bibkey    = $normset_ref->{T5050}[0]{content};
+        
         $logger->debug(YAML::Dump(\@isbn_refs));
         
         if (@isbn_refs){
@@ -496,6 +498,21 @@ sub get_full_record {
                 $request->finish();
                 $logger->debug("Enrich: $isbn -> $reqstring");
             }
+        }
+        elsif ($bibkey){
+            my $reqstring="select category,content from normdata where isbn=? order by category,indicator";
+            my $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
+            $request->execute($bibkey) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+            
+            # Anreicherung der Normdaten
+            while (my $res=$request->fetchrow_hashref) {
+                my $category   = "E".sprintf "%04d",$res->{category };
+                my $content    =        decode_utf8($res->{content});
+                
+                push @{$normset_ref->{$category}}, {
+                    content    => $content,
+                };
+            }            
         }
         
         $enrichdbh->disconnect();

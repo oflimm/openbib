@@ -923,37 +923,46 @@ sub gen_bibkey {
             $single_person    =~ s/[^0-9\p{L}\. ]+//g;
             my ($lastname,$firstname) = split(/\s+/,$single_person);
 
-            $logger->debug("Bibkey: $firstname $lastname");
-            $single_person    = substr($firstname,0,1).".".$lastname;
-            
-            if ($part_ref->{supplement} =~ /Hrsg/){
+            if (defined $firstname){
+                if ($firstname eq $lastname){
+                    $single_person    = $lastname;
+                }
+                else {
+                    $single_person    = substr($firstname,0,1).".".$lastname;
+                }
+            }
+            else {
+                $single_person    = $lastname;
+            }
+
+            if (exists $part_ref->{supplement} && $part_ref->{supplement} =~ /Hrsg/){
                 push @$editors_ref, $single_person;
             }
             else {
-                push @$editors_ref, $single_person;
+                push @$authors_ref, $single_person;
             }
         }
     }
 
     my $persons_ref=(@$authors_ref)?$authors_ref:
-    (@$editors_ref)?$editors_ref:();
+    (@$editors_ref)?$editors_ref:[];
 
     my $author = "";
     $author    = "[".join(",", sort(@$persons_ref))."]" if (@$persons_ref);
 
     # Titel
     my $title  = (exists $normdata_ref->{T0331})?lc($normdata_ref->{T0331}[0]{content}):"";
-    $title     =~ s/[^0-9\p{L}\x{C4}]+//g;
+    $title     =~ s/[^0-9\p{L}\x{C4}]+//g if ($title);
 
     # Jahr
     my $year   = (exists $normdata_ref->{T0425})?$normdata_ref->{T0425}[0]{content}:undef;
-    $year      =~ s/[^0-9]+//g;
-
-    my $bibkey_base = $title." ".$author." ".$year;
-
-    $logger->debug("Bibkey-Base: $bibkey_base");
+    $year      =~ s/[^0-9]+//g if ($year);
 
     if ($author && $title && $year){
+        my $bibkey_base = $title." ".$author." ".$year;
+
+        #$logger->debug("Bibkey-Base: $bibkey_base");
+
         return "1".md5_hex(encode_utf8($bibkey_base));
     }
     else {

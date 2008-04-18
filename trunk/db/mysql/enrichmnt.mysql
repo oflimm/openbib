@@ -4,7 +4,7 @@
 
 drop table IF EXISTS search;
 create table search (
-isbn      CHAR(14) NOT NULL,
+isbn      VARCHAR(33) NOT NULL,
 origin    SMALLINT,
 content   TEXT,
 index     (isbn),
@@ -17,7 +17,7 @@ PACK_KEYS=1;
 
 drop table IF EXISTS normdata;
 create table normdata (
- isbn          CHAR(14) NOT NULL,
+ isbn          VARCHAR(33) NOT NULL,
  origin        SMALLINT,
  category      SMALLINT NOT NULL,
  indicator     SMALLINT,
@@ -33,7 +33,7 @@ PACK_KEYS=1;
 
 drop table IF EXISTS all_isbn;
 create table all_isbn (
- isbn          CHAR(14) NOT NULL,
+ isbn          VARCHAR(33) NOT NULL,
  dbname        VARCHAR(25) NOT NULL,
  id            BIGINT NOT NULL,
  tstamp        DATETIME,

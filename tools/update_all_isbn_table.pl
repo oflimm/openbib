@@ -104,12 +104,14 @@ foreach my $database (@databases){
     
     my $sqlrequest = "select t1.id as id,t1.content as isbn,t2.content as thisdate from tit_string as t1 left join tit_string as t2 on t1.id=t2.id where t2.category = 2 and t1.category in (540,553)";
     my @sqlargs    = ();
+    my $lastdate   = "";
+
     if ($incr){
         my $request=$enrichdbh->request("select max(tstamp) as lastdate from all_isbn where database=?");
         
         my $result=$request->fetchrow_hashref;
         
-        my $lastdate=$result->{'lastdate'};
+        $lastdate=$result->{'lastdate'};
         
         $sqlrequest.=" and t2.content > ?";
         push @sqlargs, $lastdate;
@@ -144,6 +146,22 @@ foreach my $database (@databases){
 
         $enrichrequest->execute($thisisbn,$database,$id,$date);
     }
+
+    $logger->info("Getting Bibkeys from database $database and adding to enrichmntdb");
+
+    $sqlrequest = "select t1.id as id,t1.content as bibkey,t2.content as thisdate from tit as t1 left join tit as t2 on t1.id=t2.id where t2.category = 2 and t1.category=5050";
+    
+    $request=$dbh->prepare($sqlrequest);
+    $request->execute(@sqlargs);
+    
+    while (my $result=$request->fetchrow_hashref()){
+        my $id       = $result->{id};
+        my $bibkey   = $result->{bibkey};
+        my $date     = $result->{thisdate};
+
+        $enrichrequest->execute($bibkey,$database,$id,$date);
+    }
+
     
     $dbh->disconnect();
 }

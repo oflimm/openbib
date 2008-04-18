@@ -133,6 +133,7 @@ sub handler {
             my $ttdata={
                 tags          => \@tags,
                 view          => $view,
+                format        => $format,
                 stylesheet    => $stylesheet,
                 sessionID     => $session->{ID},
                 session       => $session,
@@ -160,6 +161,7 @@ sub handler {
             my $ttdata={
                 titles        => \@titles,
                 tag           => $tag,
+                format        => $format,
                 view          => $view,
                 stylesheet    => $stylesheet,
                 sessionID     => $session->{ID},

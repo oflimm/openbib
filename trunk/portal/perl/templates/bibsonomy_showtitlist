@@ -28,6 +28,36 @@
 <table width="100%" cellpadding="2">
 <tr><th>Titel zum Tag <i>[% tag %]</i> in BibSonomy</th></tr>
 <tr><td class="boxedclear">
+[% alltags = [] %]
+[% FOREACH thistitle IN titles %]
+[%   FOREACH tag IN thistitle.tags %]
+[%     alltags.push(tag) %]
+[%   END %]
+[% END %]
+
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+<tr><td class="boxedfull" align="left">
+
+[% FOREACH tag IN alltags.unique.sort %]
+<a onclick="insert_tag(event); return false;" class="tag" style="display: inline; cursor: pointer;" onMouseOver="oldColor=this.style.backgroundColor; this.style.backgroundColor='lightblue';" onMouseOut="this.style.backgroundColor=oldColor;">[% tag %]</a>&nbsp;
+[% END %]
+<p />
+
+<form method="get" action="[% config.bibsonomy_loc %]">
+<input type="hidden" name="sessionID"  value="[% sessionID %]" />
+<input type="hidden" name="action"     value="get_tit_of_tag" />
+
+
+<table>
+<tr><td>Tags</td><td>&nbsp;<input
+type="text" name="tag" value="" id="inputfield" size="20" maxlength="200" title="[% msg.maketext("Geben Sie hier einen oder mehrere Tags ein") %]" />&nbsp;<input type="submit" value="[% msg.maketext("Suchen") %]" />&nbsp;</td></tr>
+</table>
+
+</form>
+</td></tr>
+</table>
+
+
 <p/>
 <table>
 [% FOREACH thistitle IN titles %]
@@ -64,7 +94,7 @@
 <tr class="[% listrow %]"><td colspan="2"><span class="rlauthor">[% person %]</span><br /><strong><span class="rltitle">[% title %]</span></strong>, <span
 class="rlpublisher">[% publisher %]</span> <span
 class="rlyearofpub">[% yearofpub %]</span><br />
-Tags: [% FOREACH tag IN thistitle.tags %]<a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];tag=[% tag |uri %];action=get_tit_of_tag">[% tag %]</a>&nbsp;&nbsp;[% END %]
+Tags: [% FOREACH tag IN thistitle.tags %]<a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];tag=[% tag |uri %];action=get_tit_of_tag">[% tag %]</a>&nbsp;&nbsp; [% END %]
 </td></tr>
 
 [% IF listrow == 'listrow1' %]

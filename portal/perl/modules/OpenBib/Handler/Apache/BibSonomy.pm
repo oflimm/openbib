@@ -85,6 +85,8 @@ sub handler {
     my $titisbn        = $query->param('titisbn')          || '';
     my $bibkey         = $query->param('bibkey')           || '';
     my $isbn           = $query->param('isbn')             || '';
+    my $start          = $query->param('start')           || '';
+    my $end            = $query->param('end')             || '';
     my $format         = decode_utf8($query->param('format')) || '';
     my $tag            = decode_utf8($query->param('tag')) || '';
     my $stid           = $query->param('stid')             || '';
@@ -124,8 +126,9 @@ sub handler {
     }
 
     if ($action eq "get_tags"){
-        if (defined $bibkey && $bibkey=~/^1[0-9a-f]{32}$/){
-            my @tags = OpenBib::BibSonomy->new()->get_tags({ bibkey => $bibkey });
+        if (defined $bibkey){
+            my @tags = ();
+            @tags = OpenBib::BibSonomy->new()->get_tags({ bibkey => $bibkey }) if ($bibkey=~/^1[0-9a-f]{32}$/);
 
             $logger->debug(\@tags);
             
@@ -153,13 +156,13 @@ sub handler {
     }
     elsif ($action eq "get_tit_of_tag"){
         if ($tag){
-            my @titles = OpenBib::BibSonomy->new()->get_posts({ tag => $tag });
+            my $posts_ref = OpenBib::BibSonomy->new()->get_posts({ tag => $tag ,start => $start, end => $end });
             
-            $logger->debug(\@titles);
+            $logger->debug($posts_ref);
             
             # TT-Data erzeugen
             my $ttdata={
-                titles        => \@titles,
+                posts         => $posts_ref,
                 tag           => $tag,
                 format        => $format,
                 view          => $view,

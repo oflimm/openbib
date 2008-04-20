@@ -89,12 +89,18 @@ sub get_posts {
     my $tag  = exists $arg_ref->{tag}
         ? $arg_ref->{tag}        : undef;
 
+    my $start  = exists $arg_ref->{start}
+        ? $arg_ref->{start}      : undef;
+
+    my $end    = exists $arg_ref->{end}
+        ? $arg_ref->{end}        : undef;
+
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
     my $url;
 
-    my @titles = ();
+    my $titles_ref = [];
     
     if (defined $bibkey && $bibkey=~/^1[0-9a-f]{32}$/){
         substr($bibkey,0,1)=""; # Remove leading 1
@@ -102,6 +108,9 @@ sub get_posts {
     }
     elsif (defined $tag){
         $url='http://www.bibsonomy.org/api/posts?tags='.$tag.'&resourcetype=bibtex';
+        if (defined $start && defined $end){
+            $url.="&start=$start&end=$end";
+        }
     }
     else {
         return $self;
@@ -121,8 +130,11 @@ sub get_posts {
         return ();
     }
 
+    my $next_start = "";
+    my $next_end   = "";
     if ($root->findvalue('/bibsonomy/posts/@next')){
-        $self->{next} = $root->findvalue('/bibsonomy/posts/@next');
+        my $next = $root->findvalue('/bibsonomy/posts/@next');     
+        ($next_start,$next_end) = $next =~/start=(\d+).*?end=(\d+)/; 
     }
 
     foreach my $post_node ($root->findnodes('/bibsonomy/posts/post')) {
@@ -147,13 +159,19 @@ sub get_posts {
         $singlepost_ref->{record}->{T0662}     = $post_node->findvalue('bibtex/@href');
         $singlepost_ref->{record}->{T0800}     = $post_node->findvalue('bibtex/@entrytype');
 
-        push @titles, $singlepost_ref;
+        push @{$titles_ref}, $singlepost_ref;
     }
 
     
-    $logger->debug("Response / Posts: ".YAML::Dump(\@titles));
+    $logger->debug("Response / Posts: ".YAML::Dump($titles_ref));
     
-    return @titles;
+    return {
+        recordlist => $titles_ref,
+        next       => {
+            start => $next_start,
+            end   => $next_end,
+        },
+    };
 }
 
 sub get_tags {
@@ -175,7 +193,7 @@ sub get_tags {
         $url="http://www.bibsonomy.org/api/tags?resourcetype=bibtex&resource=$bibkey";
     }
     else {
-        return $self;
+        return ();
     }
 
     $logger->debug("Request: $url");

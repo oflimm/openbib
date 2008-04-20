@@ -29,7 +29,7 @@
 <div class="content">
 
 [% alltags = [] %]
-[% FOREACH thistitle IN titles %]
+[% FOREACH thistitle IN posts.recordlist %]
 [%   FOREACH tag IN thistitle.tags %]
 [%     alltags.push(tag) %]
 [%   END %]
@@ -60,7 +60,7 @@ type="text" name="tag" value="" id="inputfield" size="20" maxlength="200" title=
 
 <p/>
 <table>
-[% FOREACH thistitle IN titles %]
+[% FOREACH thistitle IN posts.recordlist %]
 [% item = thistitle.record %]
 [%# Verfasser konstruieren %]
 [%- persons = [] -%]
@@ -106,6 +106,10 @@ Tags: [% FOREACH tag IN thistitle.tags %]<a href="[% config.bibsonomy_loc %]?ses
 [% END %]
 </table>
 <p/>
+
+[% IF posts.next.start %]
+<a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];tag=[% tag|uri %];action=get_tit_of_tag;start=[% posts.next.start %];end=[% posts.next.end %]">Weiter</a>
+[% END %]
 
 </div>
 

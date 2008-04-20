@@ -143,7 +143,9 @@ sub get_posts {
         $singlepost_ref->{user} = $post_node->findvalue('user/@name');
 
         $singlepost_ref->{desc} = $post_node->findvalue('@description');
-        
+
+        $singlepost_ref->{bibkey} = "1".$post_node->findvalue('bibtex/@interhash');
+
         $singlepost_ref->{tags} = [];
         
         foreach my $tag_node ($post_node->findnodes('tag')){
@@ -151,6 +153,7 @@ sub get_posts {
         }
 
         $singlepost_ref->{record}->{T0100}     = $post_node->findvalue('bibtex/@author');
+        $singlepost_ref->{record}->{T0101}     = $post_node->findvalue('bibtex/@editor');
         $singlepost_ref->{record}->{T0331}     = $post_node->findvalue('bibtex/@title');
         $singlepost_ref->{record}->{T0403}     = $post_node->findvalue('bibtex/@edition');
         $singlepost_ref->{record}->{T0410}     = $post_node->findvalue('bibtex/@address');

@@ -157,6 +157,37 @@ sub handler {
     elsif ($action eq "get_tit_of_tag"){
         if ($tag){
             my $posts_ref = OpenBib::BibSonomy->new()->get_posts({ tag => $tag ,start => $start, end => $end });
+
+            # Anreichern mit KUG-Verfuegbarkeit
+
+            # Verbindung zur SQL-Datenbank herstellen
+            my $enrichdbh
+            = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
+                or $logger->error_die($DBI::errstr);
+
+            my $request = $enrichdbh->prepare("select distinct dbname from all_isbn where isbn=?");
+
+            $logger->debug(YAML::Dump($posts_ref));
+            foreach my $post_ref (@{$posts_ref->{recordlist}}){
+                my $bibkey = $post_ref->{bibkey};
+                $request->execute($bibkey);
+                $logger->debug("Single Post:".YAML::Dump($post_ref));
+                $logger->debug("Single Post-Bibkey:$bibkey");
+                my @local_dbs = ();
+                while (my $result=$request->fetchrow_hashref){
+                    push @local_dbs,$result->{dbname};
+                }
+                if (@local_dbs){
+                    $post_ref->{local_availability} = 1;
+                    $post_ref->{local_dbs}          = \@local_dbs;
+                    
+                }
+                else {
+                    $post_ref->{local_availability} = 0;
+                }       
+            }
+
+            $enrichdbh->disconnect;
             
             $logger->debug($posts_ref);
             

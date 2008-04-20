@@ -672,6 +672,7 @@ while (my $line=<IN>){
         
         if ($bibkey){
             print OUT       "$id50501$bibkey\n";
+            print OUTSTRING "$id5050$bibkey\n";
         }
         
         next CATLINE;

@@ -30,16 +30,16 @@
 
 [% alltags = [] %]
 [% FOREACH thistitle IN posts.recordlist %]
-[%   FOREACH tag IN thistitle.tags %]
-[%     alltags.push(tag) %]
+[%   FOREACH thistag IN thistitle.tags %]
+[%     alltags.push(thistag) %]
 [%   END %]
 [% END %]
 
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
 <tr><td class="boxedfull" align="left">
 
-[% FOREACH tag IN alltags.unique.sort %]
-<a onclick="insert_tag(event); return false;" class="tag" style="display: inline; cursor: pointer;" onMouseOver="oldColor=this.style.backgroundColor; this.style.backgroundColor='lightblue';" onMouseOut="this.style.backgroundColor=oldColor;">[% tag %]</a>&nbsp;
+[% FOREACH thistag IN alltags.unique.sort %]
+<a onclick="insert_tag(event); return false;" class="tag" style="display: inline; cursor: pointer;" onMouseOver="oldColor=this.style.backgroundColor; this.style.backgroundColor='lightblue';" onMouseOut="this.style.backgroundColor=oldColor;">[% thistag %]</a>&nbsp;
 [% END %]
 <p />
 

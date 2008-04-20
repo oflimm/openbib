@@ -47,6 +47,7 @@ use Template;
 use OpenBib::BibSonomy;
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
@@ -58,7 +59,8 @@ sub handler {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config      = OpenBib::Config->instance;
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     
     my $query  = Apache::Request->instance($r);
 
@@ -196,6 +198,7 @@ sub handler {
                 posts         => $posts_ref,
                 tag           => $tag,
                 format        => $format,
+                dbinfotable   => $dbinfotable,
                 view          => $view,
                 stylesheet    => $stylesheet,
                 sessionID     => $session->{ID},

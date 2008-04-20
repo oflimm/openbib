@@ -95,7 +95,7 @@ type="text" name="tag" value="" id="inputfield" size="20" maxlength="200" title=
 <tr class="[% listrow %]"><td colspan="2"><span class="rlauthor">[% person %]</span><br /><strong><span class="rltitle">[% title %]</span></strong>, <span
 class="rlpublisher">[% publisher %]</span> <span
 class="rlyearofpub">[% yearofpub %]</span><br />
-Tags: [% FOREACH tag IN thistitle.tags %]<a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];tag=[% tag |uri %];action=get_tit_of_tag">[% tag %]</a>&nbsp;&nbsp; [% END %]<br/>
+Tags: [% FOREACH thistag IN thistitle.tags %]<a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];tag=[% thistag |uri %];action=get_tit_of_tag">[% thistag %]</a>&nbsp;&nbsp; [% END %]<br/>
 [% IF thistitle.local_availability %]<span style="color:green">Dieser Titel ist in den Katalogen
 des KUG verf&uuml;gbar</span><br/>(&nbsp;&nbsp;[% FOREACH dbname IN
 thistitle.local_dbs %]<a href="[% config.search_loc %]?sessionID=[% sessionID %];database=[% dbname %];searchtitofcnt=[% thistitle.bibkey %];category=T5050">[% dbinfotable.dbnames.${dbname}.short %]</a>&nbsp;&nbsp;[% END %])<br/>[% ELSE %]<span

@@ -39,7 +39,6 @@ use MLDBM qw(DB_File Storable);
 use Storable ();
 use YAML;
 
-use OpenBib::Bibkey;
 use OpenBib::Common::Util;
 use OpenBib::Common::Stopwords;
 use OpenBib::Config;

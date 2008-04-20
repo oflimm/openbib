@@ -5,7 +5,8 @@ var sessionID = $("meta[@name='sessionID']").attr("content");
 var Bibkey    = $("meta[@name='Bibkey']").attr("content");
 
 // Focus auf erstes Eingabefeld
-$(":input:visible:enabled:first").focus();
+//$(":input:visible:enabled:first").focus();
+$("input[@name='fs']").focus();
 
 // Begin Merkliste
 // Merklistenfuellstand aktualisieren

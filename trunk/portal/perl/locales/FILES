@@ -1,4 +1,5 @@
 ../modules/OpenBib/Handler/Apache/Admin.pm
+../modules/OpenBib/Handler/Apache/BibSonomy.pm
 ../modules/OpenBib/Handler/Apache/Circulation.pm
 ../modules/OpenBib/Common/Util.pm
 ../modules/OpenBib/Config.pm
@@ -65,6 +66,8 @@
 ../templates/admin_showuser
 ../templates/admin_showviews
 ../templates/admin_showviews
+../templates/bibsonomy_showtags
+../templates/bibsonomy_showtitlist
 ../templates/circset
 ../templates/circulation
 ../templates/circulation_orders
@@ -118,6 +121,10 @@
 ../templates/info_19
 ../templates/info_2
 ../templates/info_40
+../templates/info_50
+../templates/info_51
+../templates/info_52
+../templates/info_9
 ../templates/info_message
 ../templates/leave
 ../templates/litlists_manage_lists

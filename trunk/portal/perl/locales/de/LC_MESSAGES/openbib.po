@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2008-04-08 13:54+0200\n"
+"PO-Revision-Date: 2008-04-21 13:29+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -29,7 +29,7 @@ msgstr "${category}"
 #: ../templates/database/portrait/search_showtitset:142
 #: ../templates/managecollection_tit_as_html:52
 #: ../templates/managecollection_tit_as_text:34
-#: ../templates/search_showmulttitset:99 ../templates/search_showtitset:279
+#: ../templates/search_showmulttitset:99 ../templates/search_showtitset:288
 msgid "${thiscategory}"
 msgstr "${thiscategory}"
 
@@ -149,7 +149,7 @@ msgid "Aktuelle Recherche"
 msgstr "Aktuelle Recherche"
 
 #: ../templates/databasechoice:63 ../templates/databaseprofile:88
-#: ../templates/searchmask_options:18 ../templates/searchmask_simple:122
+#: ../templates/searchmask_options:18 ../templates/searchmask_simple:123
 #: ../templates/views/edz/searchmask_simple:132
 #: ../templates/views/inst404/searchmask_simple:138
 #: ../templates/views/inst405/searchmask_simple:138
@@ -165,7 +165,7 @@ msgstr "Aktuelle Recherche"
 #: ../templates/views/inst430/searchmask_simple:133
 #: ../templates/views/inst431/searchmask_simple:130
 #: ../templates/views/inst460/searchmask_simple:131
-#: ../templates/views/kug/searchmask:252 ../templates/views/kug/searchmask:264
+#: ../templates/views/kug/searchmask:253 ../templates/views/kug/searchmask:265
 #: ../templates/views/rheinlandbib/databasechoice:63
 #: ../templates/views/richter/searchmask_simple:99
 msgid "Alle Kataloge"
@@ -191,7 +191,7 @@ msgstr "Als Mail verschicken"
 msgid "Als Permanenten Link verwenden"
 msgstr "Als Permanenten Link verwenden"
 
-#: ../templates/searchmask:65 ../templates/views/edz/searchmask:65
+#: ../templates/searchmask:66 ../templates/views/edz/searchmask:65
 #: ../templates/views/gdonck/searchmask:65
 #: ../templates/views/gleuel/searchmask:65
 #: ../templates/views/inst404/searchmask:65
@@ -213,7 +213,7 @@ msgstr "Als Permanenten Link verwenden"
 #: ../templates/views/kapsel/searchmask:49
 #: ../templates/views/kempen/searchmask:65
 #: ../templates/views/kevelaer/searchmask:65
-#: ../templates/views/kug/searchmask:149
+#: ../templates/views/kug/searchmask:150
 #: ../templates/views/kwinter/searchmask:65
 #: ../templates/views/landschaft/searchmask:49
 #: ../templates/views/portrait/searchmask:54
@@ -337,7 +337,7 @@ msgstr "Ausleih-Einstellungen"
 #: ../templates/database/portrait/search_showtitset:168
 #: ../templates/managecollection_tit_as_html:77
 #: ../templates/managecollection_tit_as_html_simple:60
-#: ../templates/search_showmulttitset:130 ../templates/search_showtitset:335
+#: ../templates/search_showmulttitset:130 ../templates/search_showtitset:344
 msgid "Ausleihe/Exemplare"
 msgstr "Ausleihe/Exemplare"
 
@@ -710,6 +710,10 @@ msgstr "Basis-Klassifikation"
 msgid "E4110"
 msgstr "Inhaltsverzeichnis"
 
+#: ../templates/visible_categories_titset:111
+msgid "E4120"
+msgstr "Volltext-URL"
+
 #. ("$loginname","<a href=\"http://$config->{servername}$config->{selfreg_loc}?sessionID=$session->{ID};view=$view;action=show\">","</a>")
 #: ../modules/OpenBib/Handler/Apache/SelfReg.pm:134
 msgid ""
@@ -744,7 +748,8 @@ msgstr ""
 "Medium ist leider nicht m&ouml;glich!"
 
 #: ../templates/info_11:25 ../templates/info_12:29 ../templates/info_13:25
-#: ../templates/info_15:38 ../templates/searchmask:44
+#: ../templates/info_15:37 ../templates/info_50:29 ../templates/info_51:36
+#: ../templates/info_52:36 ../templates/searchmask:44
 #: ../templates/searchmask_simple:44 ../templates/views/edz/searchmask:44
 #: ../templates/views/edz/searchmask_simple:44
 #: ../templates/views/einbaende/searchmask_simple:29
@@ -975,7 +980,7 @@ msgstr "Fakult&auml;t"
 msgid "Fakultät"
 msgstr "Fakultät"
 
-#: ../templates/searchmask_options:19 ../templates/searchmask_simple:123
+#: ../templates/searchmask_options:19 ../templates/searchmask_simple:124
 #: ../templates/views/edz/searchmask_simple:133
 #: ../templates/views/inst404/searchmask_simple:139
 #: ../templates/views/inst405/searchmask_simple:139
@@ -1029,7 +1034,7 @@ msgid "Freie Suche"
 msgstr "Freie Suche"
 
 #. ("<a href=\"http://www.ub.uni-koeln.de/usb-cgi/zms_makeEmail.pl?adr0=kug\" target=\"_blank\">","</a>")
-#: ../templates/searchmask:144 ../templates/searchmask_simple:180
+#: ../templates/searchmask:145 ../templates/searchmask_simple:181
 #: ../templates/views/edz/searchmask:159
 #: ../templates/views/edz/searchmask_simple:190
 #: ../templates/views/gdonck/searchmask:140
@@ -1071,8 +1076,8 @@ msgstr "Freie Suche"
 #: ../templates/views/kempen/searchmask_simple:126
 #: ../templates/views/kevelaer/searchmask:140
 #: ../templates/views/kevelaer/searchmask_simple:126
-#: ../templates/views/kug/searchmask:319
-#: ../templates/views/kug/searchmask_simple:127
+#: ../templates/views/kug/searchmask:320
+#: ../templates/views/kug/searchmask_simple:128
 #: ../templates/views/kwinter/searchmask:140
 #: ../templates/views/kwinter/searchmask_simple:126
 #: ../templates/views/landschaft/searchmask:109
@@ -1100,7 +1105,7 @@ msgstr ""
 "g&uuml;ltige Email-Adresse ein und danach zwei Mal Ihr selbst gew&auml;hltes "
 "Passwort. Danach best&auml;tigen Sie bitte mit <b>Registrieren</b>."
 
-#: ../templates/searchmask_simple:100
+#: ../templates/searchmask_simple:101
 #: ../templates/views/edz/searchmask_simple:110
 #: ../templates/views/einbaende/searchmask_simple:65
 #: ../templates/views/gdonck/searchmask_simple:76
@@ -1121,7 +1126,7 @@ msgstr ""
 #: ../templates/views/inst460/searchmask_simple:109
 #: ../templates/views/kempen/searchmask_simple:76
 #: ../templates/views/kevelaer/searchmask_simple:76
-#: ../templates/views/kug/searchmask_simple:84
+#: ../templates/views/kug/searchmask_simple:85
 #: ../templates/views/kwinter/searchmask_simple:76
 #: ../templates/views/rheinlandbib/searchmask_simple:68
 #: ../templates/views/richter/searchmask_simple:77
@@ -1144,7 +1149,7 @@ msgid "Geben Sie hier den Notationsanfang ein"
 msgstr "Geben Sie hier den Notationsanfang ein"
 
 #: ../templates/search_showswtindex:81 ../templates/search_showtitlist:186
-#: ../templates/search_showtitset:712
+#: ../templates/search_showtitset:721
 #: ../templates/views/kapsel/search_showtitlist:174
 #: ../templates/virtualsearch_showswtindex:52
 msgid "Geben Sie hier den Schlagwortanfang ein"
@@ -1153,6 +1158,10 @@ msgstr "Geben Sie hier den Schlagwortanfang ein"
 #: ../templates/virtualsearch_showverfindex:52
 msgid "Geben Sie hier den Verfasseranfang ein"
 msgstr "Geben Sie hier den Verfasseranfang ein"
+
+#: ../templates/bibsonomy_showtitlist:54
+msgid "Geben Sie hier einen oder mehrere Tags ein"
+msgstr "Geben Sie hier einen oder mehrere Tags ein"
 
 #: ../templates/userprefs:73
 msgid "Geburtsdatum"
@@ -1234,9 +1243,9 @@ msgstr ""
 "m&ouml;glich. Sie k&ouml;nnen jedoch das Trunkierungszeichen am Ende\n"
 "Ihrer Eingabe hinzuf&uuml;gen (z.B. KA 15*)."
 
-#: ../templates/searchmask:130 ../templates/searchmask:134
-#: ../templates/searchmask:92 ../templates/searchmask:98
-#: ../templates/searchmask_simple:143 ../templates/searchmask_simple:149
+#: ../templates/searchmask:131 ../templates/searchmask:135
+#: ../templates/searchmask:93 ../templates/searchmask:99
+#: ../templates/searchmask_simple:144 ../templates/searchmask_simple:150
 #: ../templates/views/edz/searchmask:107 ../templates/views/edz/searchmask:113
 #: ../templates/views/edz/searchmask:145 ../templates/views/edz/searchmask:149
 #: ../templates/views/edz/searchmask_simple:153
@@ -1362,9 +1371,9 @@ msgstr ""
 #: ../templates/views/kevelaer/searchmask:93
 #: ../templates/views/kevelaer/searchmask_simple:89
 #: ../templates/views/kevelaer/searchmask_simple:95
-#: ../templates/views/kug/searchmask:179 ../templates/views/kug/searchmask:198
-#: ../templates/views/kug/searchmask:307
-#: ../templates/views/kug/searchmask_simple:96
+#: ../templates/views/kug/searchmask:180 ../templates/views/kug/searchmask:199
+#: ../templates/views/kug/searchmask:308
+#: ../templates/views/kug/searchmask_simple:97
 #: ../templates/views/kwinter/searchmask:125
 #: ../templates/views/kwinter/searchmask:129
 #: ../templates/views/kwinter/searchmask:87
@@ -1398,9 +1407,9 @@ msgstr ""
 msgid "Hier löschen Sie die Eingabefelder"
 msgstr "Hier löschen Sie die Eingabefelder"
 
-#: ../templates/searchmask:130 ../templates/searchmask:134
-#: ../templates/searchmask:92 ../templates/searchmask:98
-#: ../templates/searchmask_simple:143 ../templates/searchmask_simple:149
+#: ../templates/searchmask:131 ../templates/searchmask:135
+#: ../templates/searchmask:93 ../templates/searchmask:99
+#: ../templates/searchmask_simple:144 ../templates/searchmask_simple:150
 #: ../templates/views/edz/searchmask:107 ../templates/views/edz/searchmask:113
 #: ../templates/views/edz/searchmask:145 ../templates/views/edz/searchmask:149
 #: ../templates/views/edz/searchmask_simple:153
@@ -1526,8 +1535,8 @@ msgstr "Hier löschen Sie die Eingabefelder"
 #: ../templates/views/kevelaer/searchmask:93
 #: ../templates/views/kevelaer/searchmask_simple:89
 #: ../templates/views/kevelaer/searchmask_simple:95
-#: ../templates/views/kug/searchmask:179 ../templates/views/kug/searchmask:198
-#: ../templates/views/kug/searchmask:307
+#: ../templates/views/kug/searchmask:180 ../templates/views/kug/searchmask:199
+#: ../templates/views/kug/searchmask:308
 #: ../templates/views/kwinter/searchmask:125
 #: ../templates/views/kwinter/searchmask:129
 #: ../templates/views/kwinter/searchmask:87
@@ -1561,8 +1570,8 @@ msgstr "Hier löschen Sie die Eingabefelder"
 msgid "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
 msgstr "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
 
-#: ../templates/searchmask:134 ../templates/searchmask:98
-#: ../templates/searchmask_simple:149 ../templates/views/edz/searchmask:113
+#: ../templates/searchmask:135 ../templates/searchmask:99
+#: ../templates/searchmask_simple:150 ../templates/views/edz/searchmask:113
 #: ../templates/views/edz/searchmask:149
 #: ../templates/views/edz/searchmask_simple:159
 #: ../templates/views/gdonck/searchmask:129
@@ -1624,9 +1633,9 @@ msgstr "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
 #: ../templates/views/kevelaer/searchmask:129
 #: ../templates/views/kevelaer/searchmask:93
 #: ../templates/views/kevelaer/searchmask_simple:95
-#: ../templates/views/kug/searchmask:179 ../templates/views/kug/searchmask:198
-#: ../templates/views/kug/searchmask:307
-#: ../templates/views/kug/searchmask_simple:96
+#: ../templates/views/kug/searchmask:180 ../templates/views/kug/searchmask:199
+#: ../templates/views/kug/searchmask:308
+#: ../templates/views/kug/searchmask_simple:97
 #: ../templates/views/kwinter/searchmask:129
 #: ../templates/views/kwinter/searchmask:93
 #: ../templates/views/kwinter/searchmask_simple:95
@@ -1725,12 +1734,16 @@ msgstr "Ihre Suchanfrage im KUG Recherche-Portal"
 msgid "Import-Einstellungen"
 msgstr "Import-Einstellungen"
 
-#: ../templates/search_showtitset:67
+#: ../templates/search_showtitset:71
+msgid "In BibSonomy vorhanden?"
+msgstr "In BibSonomy vorhanden?"
+
+#: ../templates/search_showtitset:68
 msgid "In Google BookSearch vorhanden?"
 msgstr "In Google BookSearch vorhanden?"
 
-#: ../templates/searchmask:134 ../templates/searchmask:98
-#: ../templates/searchmask_simple:149 ../templates/views/edz/searchmask:113
+#: ../templates/searchmask:135 ../templates/searchmask:99
+#: ../templates/searchmask_simple:150 ../templates/views/edz/searchmask:113
 #: ../templates/views/edz/searchmask:149
 #: ../templates/views/edz/searchmask_simple:159
 #: ../templates/views/gdonck/searchmask:129
@@ -1792,9 +1805,9 @@ msgstr "In Google BookSearch vorhanden?"
 #: ../templates/views/kevelaer/searchmask:129
 #: ../templates/views/kevelaer/searchmask:93
 #: ../templates/views/kevelaer/searchmask_simple:95
-#: ../templates/views/kug/searchmask:179 ../templates/views/kug/searchmask:198
-#: ../templates/views/kug/searchmask:307
-#: ../templates/views/kug/searchmask_simple:96
+#: ../templates/views/kug/searchmask:180 ../templates/views/kug/searchmask:199
+#: ../templates/views/kug/searchmask:308
+#: ../templates/views/kug/searchmask_simple:97
 #: ../templates/views/kwinter/searchmask:129
 #: ../templates/views/kwinter/searchmask:93
 #: ../templates/views/kwinter/searchmask_simple:95
@@ -1810,9 +1823,9 @@ msgstr "In Google BookSearch vorhanden?"
 msgid "In allen Katalogen suchen"
 msgstr "In allen Katalogen suchen"
 
-#: ../templates/searchmask:130 ../templates/searchmask:134
-#: ../templates/searchmask:92 ../templates/searchmask:98
-#: ../templates/searchmask_simple:143 ../templates/searchmask_simple:149
+#: ../templates/searchmask:131 ../templates/searchmask:135
+#: ../templates/searchmask:93 ../templates/searchmask:99
+#: ../templates/searchmask_simple:144 ../templates/searchmask_simple:150
 #: ../templates/views/edz/searchmask:107 ../templates/views/edz/searchmask:113
 #: ../templates/views/edz/searchmask:145 ../templates/views/edz/searchmask:149
 #: ../templates/views/edz/searchmask_simple:153
@@ -1922,8 +1935,8 @@ msgstr "In allen Katalogen suchen"
 #: ../templates/views/kevelaer/searchmask:129
 #: ../templates/views/kevelaer/searchmask:93
 #: ../templates/views/kevelaer/searchmask_simple:95
-#: ../templates/views/kug/searchmask:179 ../templates/views/kug/searchmask:198
-#: ../templates/views/kug/searchmask:307
+#: ../templates/views/kug/searchmask:180 ../templates/views/kug/searchmask:199
+#: ../templates/views/kug/searchmask:308
 #: ../templates/views/kwinter/searchmask:129
 #: ../templates/views/kwinter/searchmask:93
 #: ../templates/views/kwinter/searchmask_simple:95
@@ -1965,7 +1978,7 @@ msgstr "In ausgewählten Katalogen suchen"
 msgid "In die Merkliste"
 msgstr "In die Merkliste"
 
-#: ../templates/searchmask_simple:107
+#: ../templates/searchmask_simple:108
 #: ../templates/views/edz/searchmask_simple:117
 #: ../templates/views/inst404/searchmask_simple:123
 #: ../templates/views/inst405/searchmask_simple:123
@@ -2010,7 +2023,7 @@ msgstr "Information"
 #: ../templates/managecollection_tit_as_html_simple:28
 #: ../templates/search_showautset:31 ../templates/search_showkorset:32
 #: ../templates/search_showmulttitset:41 ../templates/search_shownotset:31
-#: ../templates/search_showswtset:33 ../templates/search_showtitset:90
+#: ../templates/search_showswtset:33 ../templates/search_showtitset:93
 msgid "Inhalt"
 msgstr "Inhalt"
 
@@ -2119,7 +2132,7 @@ msgid "Katalog-Profile"
 msgstr "Katalog-Profile"
 
 #: ../templates/databasechoice:39 ../templates/mainnavigation:17
-#: ../templates/views/kug/searchmask:232
+#: ../templates/views/kug/searchmask:233
 #: ../templates/views/rheinlandbib/databasechoice:39
 msgid "Katalogauswahl"
 msgstr "Katalogauswahl"
@@ -2171,7 +2184,7 @@ msgstr "Katalogprofile"
 #: ../templates/managecollection_tit_as_html_simple:28
 #: ../templates/search_showautset:31 ../templates/search_showkorset:32
 #: ../templates/search_showmulttitset:41 ../templates/search_shownotset:31
-#: ../templates/search_showswtset:33 ../templates/search_showtitset:90
+#: ../templates/search_showswtset:33 ../templates/search_showtitset:93
 #: ../templates/views/portrait/searchmask_query:2
 #: ../templates/views/richter/searchmask_query:2
 msgid "Kategorie"
@@ -2185,6 +2198,7 @@ msgstr "Kein prim&auml;rer RSS-Feed ausgew&auml;hlt"
 msgid "Keine Titelid, Titel-Datenbank oder Literaturliste vorhanden."
 msgstr "Keine Titelid, Titel-Datenbank oder Literaturliste vorhanden."
 
+#: ../modules/OpenBib/Handler/Apache/BibSonomy.pm:287
 #: ../modules/OpenBib/Handler/Apache/DatabaseProfile.pm:201
 msgid "Keine gültige Aktion"
 msgstr "Keine gültige Aktion"
@@ -2221,7 +2235,8 @@ msgid "Kompletter Titel"
 msgstr "Kompletter Titel"
 
 #: ../templates/info_11:26 ../templates/info_12:30 ../templates/info_13:26
-#: ../templates/info_15:39 ../templates/searchmask:45
+#: ../templates/info_15:38 ../templates/info_50:30 ../templates/info_51:37
+#: ../templates/info_52:37 ../templates/searchmask:45
 #: ../templates/searchmask_simple:45 ../templates/views/edz/searchmask:45
 #: ../templates/views/edz/searchmask_simple:45
 #: ../templates/views/einbaende/searchmask_simple:30
@@ -2387,9 +2402,9 @@ msgstr "Lokale Signatur      "
 msgid "Los"
 msgstr "Los"
 
-#: ../templates/searchmask:130 ../templates/searchmask:134
-#: ../templates/searchmask:92 ../templates/searchmask:98
-#: ../templates/searchmask_simple:143 ../templates/searchmask_simple:149
+#: ../templates/searchmask:131 ../templates/searchmask:135
+#: ../templates/searchmask:93 ../templates/searchmask:99
+#: ../templates/searchmask_simple:144 ../templates/searchmask_simple:150
 #: ../templates/views/edz/searchmask:107 ../templates/views/edz/searchmask:113
 #: ../templates/views/edz/searchmask:145 ../templates/views/edz/searchmask:149
 #: ../templates/views/edz/searchmask_simple:153
@@ -2515,9 +2530,9 @@ msgstr "Los"
 #: ../templates/views/kevelaer/searchmask:93
 #: ../templates/views/kevelaer/searchmask_simple:89
 #: ../templates/views/kevelaer/searchmask_simple:95
-#: ../templates/views/kug/searchmask:179 ../templates/views/kug/searchmask:198
-#: ../templates/views/kug/searchmask:307
-#: ../templates/views/kug/searchmask_simple:96
+#: ../templates/views/kug/searchmask:180 ../templates/views/kug/searchmask:199
+#: ../templates/views/kug/searchmask:308
+#: ../templates/views/kug/searchmask_simple:97
 #: ../templates/views/kwinter/searchmask:125
 #: ../templates/views/kwinter/searchmask:129
 #: ../templates/views/kwinter/searchmask:87
@@ -2896,6 +2911,10 @@ msgstr "Projekt"
 msgid "Protokoll"
 msgstr "Protokoll"
 
+#: ../templates/bibsonomy_showtitlist:62
+msgid "Publikationen"
+msgstr "Publikationen"
+
 #: ../templates/admin_showcat:74 ../templates/admin_showviews:65
 #: ../templates/mainnavigation:20
 msgid "RSS"
@@ -2937,7 +2956,7 @@ msgstr "Registrieren"
 msgid "Richter-Systematik"
 msgstr "Richter-Systematik"
 
-#: ../templates/searchmask_simple:161
+#: ../templates/searchmask_simple:162
 #: ../templates/views/edz/searchmask_simple:171
 #: ../templates/views/einbaende/searchmask_simple:88
 #: ../templates/views/gdonck/searchmask_simple:107
@@ -2958,7 +2977,7 @@ msgstr "Richter-Systematik"
 #: ../templates/views/inst460/searchmask_simple:170
 #: ../templates/views/kempen/searchmask_simple:107
 #: ../templates/views/kevelaer/searchmask_simple:107
-#: ../templates/views/kug/searchmask_simple:107
+#: ../templates/views/kug/searchmask_simple:108
 #: ../templates/views/kwinter/searchmask_simple:107
 #: ../templates/views/rheinlandbib/searchmask_simple:99
 #: ../templates/views/richter/searchmask_simple:138
@@ -3023,7 +3042,7 @@ msgstr "Schlagworte"
 msgid "Schlagwortindex"
 msgstr "Schlagwortindex"
 
-#: ../templates/search_showtitset:711
+#: ../templates/search_showtitset:720
 msgid "Schlagwortindex diese Katalogs"
 msgstr "Schlagwortindex diese Katalogs"
 
@@ -3182,15 +3201,15 @@ msgstr ""
 "gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen "
 "Katalogen suchen</a>."
 
-#: ../templates/views/kug/searchmask:157
-#: ../templates/views/kug/searchmask_simple:71
+#: ../templates/views/kug/searchmask:158
+#: ../templates/views/kug/searchmask_simple:72
 msgid "Sie haben JavaScript deaktiviert"
 msgstr "Sie haben JavaScript deaktiviert"
 
 #. ("<a href=\"${config.startopac_loc}?view=${view}\" target=\"_parent\">","</a>")
 #. ("<a href=\"${startopac_loc}?view=\" target=\"_top\"","</a>")
-#: ../templates/views/kug/searchmask:159
-#: ../templates/views/kug/searchmask_simple:73
+#: ../templates/views/kug/searchmask:160
+#: ../templates/views/kug/searchmask_simple:74
 msgid ""
 "Sie haben JavaScript in Ihrem Browser\n"
 "deaktiviert. Daher k&ouml;nnen Sie auf dieser Seite die Profilauswahl\n"
@@ -3296,7 +3315,7 @@ msgstr ""
 "erfolgreich authentifiziert werden"
 
 #. ("${viewdesc}","<a href=\"${config.databasechoice_loc}?sessionID=${sessionID};view=${view}\">","</a>")
-#: ../templates/searchmask:85 ../templates/searchmask_simple:85
+#: ../templates/searchmask:86 ../templates/searchmask_simple:86
 #: ../templates/views/edz/searchmask:88
 #: ../templates/views/edz/searchmask_simple:82
 #: ../templates/views/inst404/searchmask:85
@@ -3337,7 +3356,7 @@ msgstr ""
 "recherchieren, oder die Suche auf weitere %2Kataloge%3 ausdehnen."
 
 #. ("${alldbs}","<a href=\"${config.databasechoice_loc}?sessionID=${sessionID};view=${view}\">","</a>")
-#: ../templates/searchmask:95 ../templates/searchmask_simple:93
+#: ../templates/searchmask:96 ../templates/searchmask_simple:94
 #: ../templates/views/edz/searchmask:110
 #: ../templates/views/edz/searchmask_simple:103
 #: ../templates/views/gdonck/searchmask:90
@@ -3503,7 +3522,7 @@ msgid "Sperre"
 msgstr "Sperre"
 
 #. (l)
-#: ../templates/circulation_make_reserv:28 ../templates/info_15:32
+#: ../templates/circulation_make_reserv:28 ../templates/info_15:31
 #: ../templates/login:29 ../templates/login_circulation:29
 #: ../templates/searchmask:31 ../templates/searchmask_simple:31
 #: ../templates/views/edz/searchmask:31
@@ -3615,7 +3634,7 @@ msgstr "Stelle"
 msgid "Strasse"
 msgstr "Strasse"
 
-#: ../templates/searchmask:104 ../templates/views/edz/searchmask:119
+#: ../templates/searchmask:105 ../templates/views/edz/searchmask:119
 #: ../templates/views/gdonck/searchmask:99
 #: ../templates/views/gleuel/searchmask:99
 #: ../templates/views/inst404/searchmask:120
@@ -3637,7 +3656,7 @@ msgstr "Strasse"
 #: ../templates/views/kapsel/searchmask:72
 #: ../templates/views/kempen/searchmask:99
 #: ../templates/views/kevelaer/searchmask:99
-#: ../templates/views/kug/searchmask:190
+#: ../templates/views/kug/searchmask:191
 #: ../templates/views/kwinter/searchmask:99
 #: ../templates/views/landschaft/searchmask:72
 #: ../templates/views/portrait/searchmask:77
@@ -3647,8 +3666,8 @@ msgstr "Strasse"
 msgid "Suchbegriffe"
 msgstr "Suchbegriffe"
 
-#: ../templates/search_showswtindex:81 ../templates/search_showtitlist:186
-#: ../templates/search_showtitset:712
+#: ../templates/bibsonomy_showtitlist:54 ../templates/search_showswtindex:81
+#: ../templates/search_showtitlist:186 ../templates/search_showtitset:721
 #: ../templates/views/kapsel/search_showtitlist:174
 #: ../templates/views/kapsel/searchmask:100
 #: ../templates/views/kapsel/searchmask:67
@@ -3689,11 +3708,11 @@ msgid "Suchfelder &auml;ndern"
 msgstr "Suchfelder &auml;ndern"
 
 #: ../templates/info:24 ../templates/info_1:24 ../templates/info_2:24
-#: ../templates/views/kug/searchmask:213
+#: ../templates/views/kug/searchmask:214
 msgid "Suchhilfe"
 msgstr "Suchhilfe"
 
-#: ../templates/searchmask:104 ../templates/views/edz/searchmask:119
+#: ../templates/searchmask:105 ../templates/views/edz/searchmask:119
 #: ../templates/views/gdonck/searchmask:99
 #: ../templates/views/gleuel/searchmask:99
 #: ../templates/views/inst404/searchmask:120
@@ -3724,7 +3743,7 @@ msgstr "Suchhilfe"
 msgid "Suchhinweise"
 msgstr "Suchhinweise"
 
-#: ../templates/searchmask:58 ../templates/views/edz/searchmask:58
+#: ../templates/searchmask:59 ../templates/views/edz/searchmask:58
 #: ../templates/views/gdonck/searchmask:58
 #: ../templates/views/gleuel/searchmask:58
 #: ../templates/views/inst404/searchmask:58
@@ -3746,7 +3765,7 @@ msgstr "Suchhinweise"
 #: ../templates/views/kapsel/searchmask:42
 #: ../templates/views/kempen/searchmask:58
 #: ../templates/views/kevelaer/searchmask:58
-#: ../templates/views/kug/searchmask:142
+#: ../templates/views/kug/searchmask:143
 #: ../templates/views/kwinter/searchmask:58
 #: ../templates/views/landschaft/searchmask:42
 #: ../templates/views/portrait/searchmask:47
@@ -3756,7 +3775,7 @@ msgstr "Suchhinweise"
 msgid "Suchhistorie"
 msgstr "Suchhistorie"
 
-#: ../templates/searchmask:121 ../templates/views/edz/searchmask:136
+#: ../templates/searchmask:122 ../templates/views/edz/searchmask:136
 #: ../templates/views/gdonck/searchmask:116
 #: ../templates/views/gleuel/searchmask:116
 #: ../templates/views/inst404/searchmask:137
@@ -3777,7 +3796,7 @@ msgstr "Suchhistorie"
 #: ../templates/views/inst501/searchmask:121
 #: ../templates/views/kempen/searchmask:116
 #: ../templates/views/kevelaer/searchmask:116
-#: ../templates/views/kug/searchmask:204
+#: ../templates/views/kug/searchmask:205
 #: ../templates/views/kwinter/searchmask:116
 #: ../templates/views/portrait/searchmask:118
 #: ../templates/views/rheinlandbib/searchmask:108
@@ -4879,15 +4898,15 @@ msgstr "TOC / PDF"
 
 #: ../templates/database/inst001/visible_categories_titset:110
 #: ../templates/database/richter/visible_categories_titset:112
-#: ../templates/visible_categories_titset:111
+#: ../templates/visible_categories_titset:112
 msgid "T4500"
-msgstr "Nutzer-Tags"
+msgstr "KUG Nutzer-Tags"
 
 #: ../templates/database/einbaende/visible_categories_titset:24
 #: ../templates/database/inst001/visible_categories_titset:111
 #: ../templates/database/kapsel/visible_categories_titset:109
 #: ../templates/database/richter/visible_categories_titset:113
-#: ../templates/visible_categories_titset:112
+#: ../templates/visible_categories_titset:113
 msgid "T5001"
 msgstr "Anzahl Gesamttitel"
 
@@ -4895,14 +4914,14 @@ msgstr "Anzahl Gesamttitel"
 #: ../templates/database/inst001/visible_categories_titset:112
 #: ../templates/database/kapsel/visible_categories_titset:110
 #: ../templates/database/richter/visible_categories_titset:114
-#: ../templates/visible_categories_titset:113
+#: ../templates/visible_categories_titset:114
 msgid "T5002"
 msgstr "Anzahl Bände/Stücke"
 
 #: ../templates/database/inst001/visible_categories_titset:113
 #: ../templates/database/kapsel/visible_categories_titset:111
 #: ../templates/database/richter/visible_categories_titset:115
-#: ../templates/visible_categories_titset:114
+#: ../templates/visible_categories_titset:115
 msgid "T5100"
 msgstr "Zählung"
 
@@ -4992,11 +5011,11 @@ msgstr "Titelzahl"
 msgid "Titelzugriffe"
 msgstr "Titelzugriffe"
 
-#: ../templates/info_10:40 ../templates/info_11:36 ../templates/info_12:31
-#: ../templates/info_13:36 ../templates/info_14:44 ../templates/info_15:49
+#: ../templates/info_10:36 ../templates/info_11:36 ../templates/info_12:31
+#: ../templates/info_13:36 ../templates/info_14:44 ../templates/info_15:48
 #: ../templates/info_16:44 ../templates/info_17:44 ../templates/info_18:44
-#: ../templates/info_19:44 ../templates/search_showtitset:44
-#: ../templates/views/kapsel/info_18:44
+#: ../templates/info_19:44 ../templates/info_9:44
+#: ../templates/search_showtitset:44 ../templates/views/kapsel/info_18:44
 msgid "Top 20"
 msgstr "Top 20"
 
@@ -5078,7 +5097,7 @@ msgid "Um sich wieder einzuloggen folgen Sie bitte %1diesem Link%2."
 msgstr "Um sich wieder einzuloggen folgen Sie bitte %1diesem Link%2."
 
 #. ("${alldbcount}","${alldbs}")
-#: ../templates/searchmask:142 ../templates/searchmask_simple:177
+#: ../templates/searchmask:143 ../templates/searchmask_simple:178
 #: ../templates/views/edz/searchmask:157
 #: ../templates/views/edz/searchmask_simple:187
 #: ../templates/views/inst404/searchmask:158
@@ -5111,8 +5130,8 @@ msgstr "Um sich wieder einzuloggen folgen Sie bitte %1diesem Link%2."
 #: ../templates/views/inst460/searchmask:157
 #: ../templates/views/inst460/searchmask_simple:186
 #: ../templates/views/inst501/searchmask:142
-#: ../templates/views/kug/searchmask:220
-#: ../templates/views/kug/searchmask_simple:123
+#: ../templates/views/kug/searchmask:221
+#: ../templates/views/kug/searchmask_simple:124
 msgid "Umfang des KUG: %1 Titel in %2 Katalogen"
 msgstr "Umfang des KUG: %1 Titel in %2 Katalogen"
 
@@ -5140,12 +5159,13 @@ msgstr "Unerlaubte Aktion"
 msgid "Ungültige Aktion"
 msgstr "Ungültige Aktion"
 
+#: ../modules/OpenBib/Handler/Apache/BibSonomy.pm:117
 #: ../modules/OpenBib/Handler/Apache/Circulation.pm:99
 #: ../modules/OpenBib/Handler/Apache/DatabaseChoice.pm:101
 #: ../modules/OpenBib/Handler/Apache/DatabaseProfile.pm:97
 #: ../modules/OpenBib/Handler/Apache/DispatchQuery.pm:87
 #: ../modules/OpenBib/Handler/Apache/ExternalJump.pm:117
-#: ../modules/OpenBib/Handler/Apache/Info.pm:91
+#: ../modules/OpenBib/Handler/Apache/Info.pm:93
 #: ../modules/OpenBib/Handler/Apache/Leave.pm:82
 #: ../modules/OpenBib/Handler/Apache/LitLists.pm:129
 #: ../modules/OpenBib/Handler/Apache/Login.pm:102
@@ -5295,6 +5315,10 @@ msgstr "W&auml;hlen Sie ein anzuzeigendes oder zu l&ouml;schendes Profil aus"
 msgid "Wartungsarbeiten"
 msgstr "Wartungsarbeiten"
 
+#: ../templates/bibsonomy_showtitlist:63
+msgid "Web"
+msgstr "Web"
+
 #: ../templates/admin_editcat:176
 msgid "WebOPAC-URL"
 msgstr "WebOPAC-URL"
@@ -5311,7 +5335,7 @@ msgstr ""
 msgid "Weiter"
 msgstr "Weiter"
 
-#: ../templates/searchmask:65 ../templates/views/edz/searchmask:65
+#: ../templates/searchmask:66 ../templates/views/edz/searchmask:65
 #: ../templates/views/gdonck/searchmask:65
 #: ../templates/views/gleuel/searchmask:65
 #: ../templates/views/inst404/searchmask:65
@@ -5332,7 +5356,7 @@ msgstr "Weiter"
 #: ../templates/views/inst501/searchmask:65
 #: ../templates/views/kempen/searchmask:65
 #: ../templates/views/kevelaer/searchmask:65
-#: ../templates/views/kug/searchmask:149
+#: ../templates/views/kug/searchmask:150
 #: ../templates/views/kwinter/searchmask:65
 #: ../templates/views/rheinlandbib/searchmask:57
 #: ../templates/views/richter/searchmask:71
@@ -5425,7 +5449,7 @@ msgstr "Zugemailte Merkliste"
 msgid "Zugriff &uuml;ber OLWS"
 msgstr "Zugriff &uuml;ber OLWS"
 
-#: ../templates/searchmask:65 ../templates/searchmask_simple:167
+#: ../templates/searchmask:66 ../templates/searchmask_simple:168
 #: ../templates/views/edz/searchmask:65
 #: ../templates/views/edz/searchmask_simple:177
 #: ../templates/views/einbaende/searchmask_simple:94
@@ -5469,8 +5493,8 @@ msgstr "Zugriff &uuml;ber OLWS"
 #: ../templates/views/kempen/searchmask_simple:113
 #: ../templates/views/kevelaer/searchmask:65
 #: ../templates/views/kevelaer/searchmask_simple:113
-#: ../templates/views/kug/searchmask:149
-#: ../templates/views/kug/searchmask_simple:113
+#: ../templates/views/kug/searchmask:150
+#: ../templates/views/kug/searchmask_simple:114
 #: ../templates/views/kwinter/searchmask:65
 #: ../templates/views/kwinter/searchmask_simple:113
 #: ../templates/views/landschaft/searchmask:49

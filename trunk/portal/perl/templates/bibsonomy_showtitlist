@@ -23,7 +23,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="#"><span class="dbdescshort">Titel zum Tag <i>[% tag %]</i> in BibSonomy</span></a></li>
+   <li><a class="active" href="#"><span class="dbdescshort">Quellen zum [% IF tag %]Tag <i>[% tag %]</i>[% ELSIF bsuser %]Nutzer <i>[% bsuser %]</i>[% END %] in BibSonomy</span></a></li>
 </ul>
 
 <div class="content">
@@ -46,6 +46,7 @@
 <form method="get" action="[% config.bibsonomy_loc %]">
 <input type="hidden" name="sessionID"  value="[% sessionID %]" />
 <input type="hidden" name="action"     value="get_tit_of_tag" />
+<input type="hidden" name="type"       value="[% type %]" />
 
 
 <table>
@@ -57,51 +58,35 @@ type="text" name="tag" value="" id="inputfield" size="20" maxlength="200" title=
 </td></tr>
 </table>
 
+<ul class="tabbingmenu">
+   <li><a [% IF type == 'bibtex' %]class="active"[% END %] href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];[% IF tag %]tag=[% tag %];action=get_tit_of_tag;[% ELSIF bsuser %]bsuser=[% bsuser %];action=get_tit_of_user;[% END %]type=bibtex">[% msg.maketext("Publikationen") %]</a></li>
+   <li><a [% IF type == 'bookmark' %]class="active"[% END %] href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];[% IF tag %]tag=[% tag %];action=get_tit_of_tag;[% ELSIF bsuser %]bsuser=[% bsuser %];action=get_tit_of_user;[% END %]type=bookmark">[% msg.maketext("Web") %]</a></li>
+</ul>
+
+<div class="content">
 
 <p/>
+[% IF posts.recordlist.size > 0 %]
 <table>
-[% listrow = 'listrow1' %]
-[% FOREACH thistitle IN posts.recordlist %]
-[% item = thistitle.record %]
-[%# Verfasser konstruieren %]
-[%- persons = [] -%]
-[%- FOREACH part IN item.${'P0100'}  -%]
-[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
-[%#- persons.push("${part.content}") -%]
-[%- END -%]
-[%- FOREACH part IN item.${'P0101'}  -%]
-[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
-[%#- persons.push("${part.content}") -%]
-[%- END -%]
-[%- FOREACH part IN item.${'C0200'}  -%]
-[%#- persons.push("${part.content}") -%]
-[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
-[%- END -%]
-[%- FOREACH part IN item.${'C0201'}  -%]
-[%#- persons.push("${part.content}") -%]
-[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
-[%- END -%]
-[%- person = item.${'T0100'} -%]
-
-[%# Titel konstruieren %]
-[%- title = item.${'T0331'} -%]
-
-[%# Verlage konstruieren %]
-[%- publisher = item.${'T0412'} -%]
-
-[%# Ejahr konstruieren %]
-[%- yearofpub = item.${'T0425'} -%]
-
-<tr class="[% listrow %]"><td colspan="2"><span class="rlauthor">[% person %]</span><br /><strong><span class="rltitle">[% title %]</span></strong>, <span
-class="rlpublisher">[% publisher %]</span> <span
-class="rlyearofpub">[% yearofpub %]</span><br />
-Tags: [% FOREACH thistag IN thistitle.tags %]<a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];tag=[% thistag |uri %];action=get_tit_of_tag">[% thistag %]</a>&nbsp;&nbsp; [% END %]<br/>
+[%- listrow = 'listrow1' -%]
+[%- FOREACH thistitle IN posts.recordlist -%]
+[%- record = thistitle.record -%]
+[% IF type == 'bibtex' %]
+<tr class="[% listrow %]"><td colspan="2"><span class="rlauthor">[% record.${'author'} %]&nbsp;[% record.${'editor'} %]</span><br /><strong><span class="rltitle">[% record.${'title'} %]</span></strong>, <span class="rlpublisher">[% record.${'publisher'} %]</span> <span class="rlyearofpub">[% record.${'year'} %]</span><br />
+Tags: [% FOREACH thistag IN thistitle.tags %]<a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];tag=[% thistag %];action=get_tit_of_tag;type=[% type %]">[% thistag %]</a>&nbsp;&nbsp; [% END %]&#124;&nbsp;&nbsp;Nutzer: <a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];bsuser=[% thistitle.user %];action=get_tit_of_user;type=[% type %]">[% thistitle.user %]</a><br/>
 [% IF thistitle.local_availability %]<span style="color:green">Dieser Titel ist in den Katalogen
 des KUG verf&uuml;gbar</span><br/>(&nbsp;&nbsp;[% FOREACH dbname IN
 thistitle.local_dbs %]<a href="[% config.search_loc %]?sessionID=[% sessionID %];database=[% dbname %];searchtitofcnt=[% thistitle.bibkey %];category=T5050">[% dbinfotable.dbnames.${dbname}.short %]</a>&nbsp;&nbsp;[% END %])<br/>[% ELSE %]<span
 style="color:red">Dieser Titel konnte nicht in den Katalogen
 des KUG gefunden werden. Er kann dennoch in anderer Schreibweise existieren!</span><br/>[% END %]
 </td></tr>
+[% ELSIF type == 'bookmark' %]
+<tr class="[% listrow %]"><td colspan="2"><b><a href="[% record.${'url'} %]" target="_blank">[%
+record.${'title'} %]</a></b><br />
+[%- IF thistitle.${'desc'} -%][% thistitle.${'desc'} %]<br/>[%- END -%]
+Tags: [% FOREACH thistag IN thistitle.tags %]<a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];tag=[% thistag %];action=get_tit_of_tag;type=[% type %]">[% thistag %]</a>&nbsp;&nbsp; [% END %]&#124;&nbsp;&nbsp;Nutzer: <a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];bsuser=[% thistitle.user %];action=get_tit_of_user;type=[% type %]">[% thistitle.user %]</a><br/>
+</td></tr>
+[% END %]
 
 [% IF listrow == 'listrow1' %]
 [% listrow = 'listrow2' %]
@@ -111,12 +96,16 @@ des KUG gefunden werden. Er kann dennoch in anderer Schreibweise existieren!</sp
 
 [% END %]
 </table>
+[% ELSE %]
+<h1>Es sind keine Quellen verf&uuml;gbar.</h1>
+[% END %]
 <p/>
 
 [% IF posts.next.start %]
-<a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];tag=[% tag|uri %];action=get_tit_of_tag;start=[% posts.next.start %];end=[% posts.next.end %]">Weiter</a>
+<a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];[% IF tag %]tag=[% tag %];action=get_tit_of_tag;[% ELSIF bsuser %]bsuser=[% bsuser %];action=get_tit_of_user;[% END %]start=[% posts.next.start %];end=[% posts.next.end %];type=[% type %]">Weiter</a>
 [% END %]
 
+</div>
 </div>
 
 <p />

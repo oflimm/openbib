@@ -38,7 +38,7 @@ use Apache::Constants qw(:common);
 use Apache::Reload;
 use Apache::Request ();
 use Benchmark ':hireswallclock';
-use Encode 'decode_utf8';
+use Encode qw/decode_utf8 encode_utf8/;
 use DBI;
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
@@ -91,8 +91,9 @@ sub handler {
     my $end            = $query->param('end')             || '';
     my $format         = decode_utf8($query->param('format')) || '';
     my $tag            = decode_utf8($query->param('tag')) || '';
+    my $type           = decode_utf8($query->param('type')) || 'bibtex';
+    my $bsuser         = decode_utf8($query->param('bsuser')) || '';
     my $stid           = $query->param('stid')             || '';
-
 
     my $action         = decode_utf8($query->param('action')) || '';
     
@@ -158,7 +159,70 @@ sub handler {
     }
     elsif ($action eq "get_tit_of_tag"){
         if ($tag){
-            my $posts_ref = OpenBib::BibSonomy->new()->get_posts({ tag => $tag ,start => $start, end => $end });
+            my $posts_ref = OpenBib::BibSonomy->new()->get_posts({ tag => encode_utf8($tag) ,start => $start, end => $end , type => $type});
+            
+            if ($type eq "bibtex"){
+                # Anreichern mit KUG-Verfuegbarkeit
+
+                # Verbindung zur SQL-Datenbank herstellen
+                my $enrichdbh
+                = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
+                    or $logger->error_die($DBI::errstr);
+
+                my $request = $enrichdbh->prepare("select distinct dbname from all_isbn where isbn=?");
+
+                $logger->debug(YAML::Dump($posts_ref));
+                foreach my $post_ref (@{$posts_ref->{recordlist}}){
+                    my $bibkey = $post_ref->{bibkey};
+                    $request->execute($bibkey);
+                    $logger->debug("Single Post:".YAML::Dump($post_ref));
+                    $logger->debug("Single Post-Bibkey:$bibkey");
+                    my @local_dbs = ();
+                    while (my $result=$request->fetchrow_hashref){
+                        push @local_dbs,$result->{dbname};
+                    }
+                    if (@local_dbs){
+                        $post_ref->{local_availability} = 1;
+                        $post_ref->{local_dbs}          = \@local_dbs;
+                    
+                    }
+                    else {
+                        $post_ref->{local_availability} = 0;
+                    }       
+                }
+                $enrichdbh->disconnect;
+            }
+
+            $logger->debug(YAML::Dump($posts_ref));
+            
+            # TT-Data erzeugen
+            my $ttdata={
+                posts         => $posts_ref,
+                tag           => $tag,
+                type          => $type,
+                format        => $format,
+                dbinfotable   => $dbinfotable,
+                view          => $view,
+                stylesheet    => $stylesheet,
+                sessionID     => $session->{ID},
+                session       => $session,
+                useragent     => $useragent,
+                config        => $config,
+                msg           => $msg,
+            };
+            
+            $stid=~s/[^0-9]//g;
+            
+            my $templatename = ($stid)?"tt_bibsonomy_showtitlist_".$stid."_tname":"tt_bibsonomy_showtitlist_tname";
+            
+            OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+            
+            return OK;
+        }
+    }
+    elsif ($action eq "get_tit_of_user"){
+        if ($bsuser){
+            my $posts_ref = OpenBib::BibSonomy->new()->get_posts({ user => $bsuser ,start => $start, end => $end , type => $type});
 
             # Anreichern mit KUG-Verfuegbarkeit
 
@@ -191,13 +255,15 @@ sub handler {
 
             $enrichdbh->disconnect;
             
-            $logger->debug($posts_ref);
+            $logger->debug(YAML::Dump($posts_ref));
             
             # TT-Data erzeugen
             my $ttdata={
                 posts         => $posts_ref,
                 tag           => $tag,
+                bsuser        => $bsuser,
                 format        => $format,
+                type          => $type,
                 dbinfotable   => $dbinfotable,
                 view          => $view,
                 stylesheet    => $stylesheet,

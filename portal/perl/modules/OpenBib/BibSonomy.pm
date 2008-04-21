@@ -86,18 +86,29 @@ sub get_posts {
     my $bibkey = exists $arg_ref->{bibkey}
         ? $arg_ref->{bibkey}     : undef;
 
-    my $tag  = exists $arg_ref->{tag}
+    my $tag    = exists $arg_ref->{tag}
         ? $arg_ref->{tag}        : undef;
+
+    my $user   = exists $arg_ref->{user}
+        ? $arg_ref->{user}       : undef;
+
+    my $type   = exists $arg_ref->{type}
+        ? $arg_ref->{type}       : 'bibtex';
 
     my $start  = exists $arg_ref->{start}
         ? $arg_ref->{start}      : undef;
 
     my $end    = exists $arg_ref->{end}
         ? $arg_ref->{end}        : undef;
-
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
+
+    my %valid_type = (
+        'bibtex'   => 'bibtex',
+        'bookmark' => 'bookmark',
+    );
+
     my $url;
 
     my $titles_ref = [];
@@ -107,7 +118,13 @@ sub get_posts {
         $url='http://www.bibsonomy.org/api/posts?resourcetype=bibtex&resource="'.$bibkey.'"';
     }
     elsif (defined $tag){
-        $url='http://www.bibsonomy.org/api/posts?tags='.$tag.'&resourcetype=bibtex';
+        $url='http://www.bibsonomy.org/api/posts?tags='.$tag.'&resourcetype='.$valid_type{$type};
+        if ($start && $end){
+            $url.="&start=$start&end=$end";
+        }
+    }
+    elsif (defined $user){
+        $url='http://www.bibsonomy.org/api/posts?user='.$user.'&resourcetype='.$valid_type{$type};
         if (defined $start && defined $end){
             $url.="&start=$start&end=$end";
         }
@@ -117,8 +134,8 @@ sub get_posts {
     }
 
     $logger->debug("Request: $url");
-    
-    my $response = $self->{client}->get($url)->content;
+
+    my $response = $self->{client}->get($url)->decoded_content(charset => 'utf-8');
 
     $logger->debug("Response: $response");
     
@@ -144,23 +161,28 @@ sub get_posts {
 
         $singlepost_ref->{desc} = $post_node->findvalue('@description');
 
-        $singlepost_ref->{bibkey} = "1".$post_node->findvalue('bibtex/@interhash');
-
         $singlepost_ref->{tags} = [];
         
         foreach my $tag_node ($post_node->findnodes('tag')){
             push @{$singlepost_ref->{tags}}, $tag_node->getAttribute('name');
         }
 
-        $singlepost_ref->{record}->{T0100}     = $post_node->findvalue('bibtex/@author');
-        $singlepost_ref->{record}->{T0101}     = $post_node->findvalue('bibtex/@editor');
-        $singlepost_ref->{record}->{T0331}     = $post_node->findvalue('bibtex/@title');
-        $singlepost_ref->{record}->{T0403}     = $post_node->findvalue('bibtex/@edition');
-        $singlepost_ref->{record}->{T0410}     = $post_node->findvalue('bibtex/@address');
-        $singlepost_ref->{record}->{T0412}     = $post_node->findvalue('bibtex/@publisher');
-        $singlepost_ref->{record}->{T0425}     = $post_node->findvalue('bibtex/@year');
-        $singlepost_ref->{record}->{T0662}     = $post_node->findvalue('bibtex/@href');
-        $singlepost_ref->{record}->{T0800}     = $post_node->findvalue('bibtex/@entrytype');
+        if ($type eq "bibtex"){
+            $singlepost_ref->{bibkey}              = "1".$post_node->findvalue('bibtex/@interhash');
+            $singlepost_ref->{record}->{author}    = $post_node->findvalue('bibtex/@author');
+            $singlepost_ref->{record}->{editor}    = $post_node->findvalue('bibtex/@editor');
+            $singlepost_ref->{record}->{title}     = $post_node->findvalue('bibtex/@title');
+            $singlepost_ref->{record}->{edition}   = $post_node->findvalue('bibtex/@edition');
+            $singlepost_ref->{record}->{address}   = $post_node->findvalue('bibtex/@address');
+            $singlepost_ref->{record}->{publisher} = $post_node->findvalue('bibtex/@publisher');
+            $singlepost_ref->{record}->{year}      = $post_node->findvalue('bibtex/@year');
+            $singlepost_ref->{record}->{href}      = $post_node->findvalue('bibtex/@href');
+            $singlepost_ref->{record}->{entrytype} = $post_node->findvalue('bibtex/@entrytype');
+        }
+        elsif ($type eq "bookmark"){
+            $singlepost_ref->{record}->{url}       = $post_node->findvalue('bookmark/@url');
+            $singlepost_ref->{record}->{title}     = $post_node->findvalue('bookmark/@title');
+        }
 
         push @{$titles_ref}, $singlepost_ref;
     }
@@ -183,7 +205,10 @@ sub get_tags {
     # Set defaults
     my $bibkey = exists $arg_ref->{bibkey}
         ? $arg_ref->{bibkey}     : undef;
-
+    
+    my $local_tags_ref = exists $arg_ref->{local_tags}
+        ? $arg_ref->{local_tags} : undef;
+        
     # Log4perl logger erzeugen
     my $logger = get_logger();
     
@@ -205,8 +230,6 @@ sub get_tags {
     
     $logger->debug("Response: $response");
 
-        $logger->debug("Response: $response");
-    
     my $parser = XML::LibXML->new();
     my $tree   = $parser->parse_string($response);
     my $root   = $tree->getDocumentElement;

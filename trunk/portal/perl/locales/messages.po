@@ -63,6 +63,10 @@ msgstr ""
 msgid "&Uuml;bersicht"
 msgstr ""
 
+#: ../templates/searchmask:47 ../templates/searchmask_simple:47 ../templates/views/kug/searchmask_simple:37
+msgid "&Uuml;bersichten"
+msgstr ""
+
 #: ../templates/search_info:36
 msgid "(Notation, Signatur, Titel-String):"
 msgstr ""
@@ -753,6 +757,11 @@ msgstr ""
 #: ../templates/login:117
 #. ("<a href=\"http://${config.servername}${config.mailpassword_loc}?sessionID=${sessionID};action=show\">","</a>")
 msgid "Haben Sie Ihr Passwort vergessen, dann klicken Sie es sich %1<b>hier</b>%2 per E-Mail zusenden lassen"
+msgstr ""
+
+#: ../templates/views/kug/searchmask_simple:126
+#. ("<a href=\"http://www.ub.uni-koeln.de/service/kurse/kug/index_ger.html\" target=\"_blank\">","</a>")
+msgid "Haben Sie Rechercheprobleme?!? Wollen Sie den KUG besser kennenlernen und effizienter nutzen?! Wir bieten laufend %1KUG-Schulungen%2 an!"
 msgstr ""
 
 #: ../templates/virtualsearch_more_search_tips:37
@@ -1577,7 +1586,7 @@ msgid "Sie haben entweder kein Passwort oder keinen Loginnamen eingegeben"
 msgstr ""
 
 #: ../modules/OpenBib/Handler/Apache/LitLists.pm:182
-msgid "Sie haben entweder keine entsprechende List oder Titel und Datenbank existieren nicht."
+msgid "Sie haben entweder keine entsprechende Liste eingegeben oder Titel und Datenbank existieren nicht."
 msgstr ""
 
 #: ../modules/OpenBib/Handler/Apache/LitLists.pm:216
@@ -1793,6 +1802,10 @@ msgstr ""
 
 #: ../templates/admin_editcat:56 ../templates/admin_showcat:47 ../templates/admin_showcat:74
 msgid "System"
+msgstr ""
+
+#: ../templates/searchmask:46 ../templates/searchmask_simple:46 ../templates/views/kug/searchmask_simple:36
+msgid "Systematisches Bl&auml;ttern"
 msgstr ""
 
 #: ../templates/database/inst001/visible_categories_titset:84 ../templates/database/inst450/visible_categories_titset:33 ../templates/database/richter/visible_categories_titset:84 ../templates/visible_categories_titset:84

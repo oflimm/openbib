@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2008-04-21 13:29+0200\n"
+"PO-Revision-Date: 2008-04-22 13:34+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -80,6 +80,11 @@ msgstr ""
 #: ../templates/admin_showlogintarget:35 ../templates/admin_showuser:35
 msgid "&Uuml;bersicht"
 msgstr "&Uuml;bersicht"
+
+#: ../templates/searchmask:47 ../templates/searchmask_simple:47
+#: ../templates/views/kug/searchmask_simple:37
+msgid "&Uuml;bersichten"
+msgstr "&Uuml;bersichten"
 
 #: ../templates/search_info:36
 msgid "(Notation, Signatur, Titel-String):"
@@ -1208,6 +1213,15 @@ msgid ""
 msgstr ""
 "Haben Sie Ihr Passwort vergessen, dann klicken Sie es sich %1<b>hier</b>%2 "
 "per E-Mail zusenden lassen"
+
+#. ("<a href=\"http://www.ub.uni-koeln.de/service/kurse/kug/index_ger.html\" target=\"_blank\">","</a>")
+#: ../templates/views/kug/searchmask_simple:126
+msgid ""
+"Haben Sie Rechercheprobleme?!? Wollen Sie den KUG besser kennenlernen und "
+"effizienter nutzen?! Wir bieten laufend %1KUG-Schulungen%2 an!"
+msgstr ""
+"Haben Sie Rechercheprobleme?!? Wollen Sie den KUG besser kennenlernen und "
+"effizienter nutzen?! Wir bieten laufend %1KUG-Schulungen%2 an!"
 
 #. ("<a href=\"${config.redirect_loc}/${sessionID}/531/${config.dbis_exturl}\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>")
 #: ../templates/virtualsearch_more_search_tips:37
@@ -3255,11 +3269,11 @@ msgstr "Sie haben entweder kein Passwort oder keinen Loginnamen eingegeben"
 
 #: ../modules/OpenBib/Handler/Apache/LitLists.pm:182
 msgid ""
-"Sie haben entweder keine entsprechende List oder Titel und Datenbank "
-"existieren nicht."
+"Sie haben entweder keine entsprechende Liste eingegeben oder Titel und "
+"Datenbank existieren nicht."
 msgstr ""
-"Sie haben entweder keine entsprechende List oder Titel und Datenbank "
-"existieren nicht."
+"Sie haben entweder keine entsprechende Liste eingegeben oder Titel und "
+"Datenbank existieren nicht."
 
 #: ../modules/OpenBib/Handler/Apache/LitLists.pm:216
 msgid ""
@@ -3818,6 +3832,11 @@ msgstr "Swt-Datei"
 #: ../templates/admin_showcat:74
 msgid "System"
 msgstr "System"
+
+#: ../templates/searchmask:46 ../templates/searchmask_simple:46
+#: ../templates/views/kug/searchmask_simple:36
+msgid "Systematisches Bl&auml;ttern"
+msgstr "Systematisches Bl&auml;ttern"
 
 #: ../templates/database/inst001/visible_categories_titset:84
 #: ../templates/database/inst450/visible_categories_titset:33

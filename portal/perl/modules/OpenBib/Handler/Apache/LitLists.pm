@@ -179,7 +179,7 @@ sub handler {
 	elsif ($do_addentry) {
             
             if (!$litlistid || !$titid || !$titdb ){
-                OpenBib::Common::Util::print_warning($msg->maketext("Sie haben entweder keine entsprechende List oder Titel und Datenbank existieren nicht."),$r,$msg);
+                OpenBib::Common::Util::print_warning($msg->maketext("Sie haben entweder keine entsprechende Liste eingegeben oder Titel und Datenbank existieren nicht."),$r,$msg);
                 
                 return OK;
             }

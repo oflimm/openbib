@@ -61,9 +61,10 @@
 [%# USE dumper; dumper.dump(resultlists)%]
 <table>
 
-[% FOREACH result IN resultlists %]
-[%-     database = result.database -%]
-<tr class="titlerow"><td>&nbsp;</td><td><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% dbinfo.$database.full %]</td><td align="right" colspan="4"><strong>[% result.resultlist.size %] Treffer</strong></td></tr>
+[%- FOREACH result IN resultlists -%]
+[%-     recordlist = result.recordlist -%]
+[%-     database   = result.database -%]
+<tr class="titlerow"><td>&nbsp;</td><td><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% dbinfo.$database.full %]</td><td align="right" colspan="4"><strong>[% recordlist.get_size %] Treffer</strong></td></tr>
 [%-     IF offsets -%]
 <tr class="titlerow"><td>&nbsp;</td><td colspan="4">
 [%          FOREACH singleoffset IN offsets %]
@@ -80,7 +81,8 @@
 </td><td>&nbsp;</td></tr>
 [%-     END -%]
 
-[% FOREACH item IN result.resultlist %]
+[%- FOREACH record IN recordlist.get_records -%]
+[%- item = record.to_rawdata -%]
 [% listrow = 'listrow1' %]
 
 [%# Verfasser konstruieren %]

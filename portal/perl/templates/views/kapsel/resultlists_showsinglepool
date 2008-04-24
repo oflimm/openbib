@@ -62,8 +62,9 @@
 <table>
 
 [%- FOREACH result IN resultlists -%]
-[%-     database = result.database -%]
-<tr class="titlerow"><td>&nbsp;</td><td colspan="3"><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% dbinfo.$database.full %]</td><td align="right" colspan="2"><strong>[% result.resultlist.size %] Treffer</strong></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
+[%-     recordlist = result.recordlist -%]
+[%-     database   = result.database -%]
+<tr class="titlerow"><td>&nbsp;</td><td colspan="3"><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% dbinfo.$database.full %]</td><td align="right" colspan="2"><strong>[% recordlist.get_size %] Treffer</strong></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
 [%-     IF offsets -%]
 <tr class="titlerow"><td>&nbsp;</td><td colspan="3">
 [%          FOREACH singleoffset IN offsets %]
@@ -82,7 +83,8 @@
 
 
 [%-     listrow = 'listrow1' -%]
-[%-     FOREACH item IN result.resultlist -%]
+[%-     FOREACH record IN recordlist.get_records -%]
+[%-         item = record.to_rawdata -%]
 [%-         # Verfasser konstruieren -%]
 [%-         persons = [] -%]
 [%-         FOREACH part IN item.${'P0100'}  -%]

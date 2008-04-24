@@ -62,7 +62,8 @@
 <table>
 
 [% listrow = 'listrow1' %]
-[% FOREACH item IN resultlist %]
+[% FOREACH record IN recordlist.get_records %]
+[%- item = record.to_rawdata -%]
 [%# IF offset >= 0 && hitrange > 0 %]
 [%# IF loop.count >= offset && loop.count < offset+hitrange %]
 

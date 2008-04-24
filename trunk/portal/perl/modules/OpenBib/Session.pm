@@ -1222,7 +1222,7 @@ sub set_searchresult {
     my $storableres=unpack "H*",Storable::freeze($recordlist->to_list);
     
     $logger->debug("YAML-Dumped: ".YAML::Dump($recordlist->to_list));
-    my $num=$recordlist->size();
+    my $num=$recordlist->get_size();
     $idnresult->execute($self->{ID},$database,$offset,$hitrange,$storableres,$num,$queryid) or $logger->error($DBI::errstr);
     $idnresult->finish();
 

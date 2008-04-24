@@ -665,14 +665,14 @@ while (my $line=<IN>){
 
 	$normdata{$id} = $normdata_ref; 
 
-        # Immer Bibkey bestimmen, auch wenn ISBN vorhanden ist
-        # Damit werden Lookups anhand des BibSonomy-Bibkeys moeglich
-
-        my $bibkey = OpenBib::Common::Util::gen_bibkey({ normdata => $thisitem_ref});
+        # Kategorie 5050 wird *immer* angereichert. Die Invertierung ist konfigurabel
+        my $bibkey_base = OpenBib::Common::Util::gen_bibkey_base({ normdata => $thisitem_ref});
+        my $bibkey      = OpenBib::Common::Util::gen_bibkey({ bibkey_base => $bibkey_base });
         
         if ($bibkey){
-            print OUT       "$id50501$bibkey\n";
-            print OUTSTRING "$id5050$bibkey\n";
+            print OUT       "$id50501$bibkey\n";            
+            print OUTSTRING "$id5050$bibkey\n" if (exists $stammdateien_ref->{tit}{inverted_ref}->{'5050'}{string});
+            print OUTSTRING "$id5051$bibkey_base\n" if (exists $stammdateien_ref->{tit}{inverted_ref}->{'5051'}{string});
         }
         
         next CATLINE;

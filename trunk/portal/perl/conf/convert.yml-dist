@@ -197,6 +197,10 @@ convtab:
         string: 1
       '0540':         # ISBN
         string: 1
+      '5050':         # Bibkey
+        string: 1
+      '5051':         # Bibkey Base
+        string: 1
 # Kategorien fuer die Anzeige in der Kurztitelanzeige
     listitemcat:
       '0310': 1

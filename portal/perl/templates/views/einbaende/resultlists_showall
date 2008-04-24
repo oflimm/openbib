@@ -62,8 +62,9 @@
 
 <table>
 [% FOREACH result IN resultlists %]
-[%-     database = result.database %]
-<tr class="titlerow"><td>&nbsp;</td><td><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% targetdbinfo.dbinfo.$database.full %]</td><td align="right" colspan="4"><strong>[% result.resultlist.size %] [% msg.maketext("Treffer") %]</strong></td></tr>
+[%-     recordlist = result.recordlist %]
+[%-     database   = result.database %]
+<tr class="titlerow"><td>&nbsp;</td><td><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% targetdbinfo.dbinfo.$database.full %]</td><td align="right" colspan="4"><strong>[% recordlist.get_size %] [% msg.maketext("Treffer") %]</strong></td></tr>
 [%-     IF result.offsets -%]
 <tr class="titlerow"><td>&nbsp;</td><td colspan="4">
 [%          FOREACH singleoffset IN result.offsets %]
@@ -81,7 +82,8 @@
 [%-     END -%]
 
 [% listrow = 'listrow1' %]
-[% FOREACH item IN result.resultlist %]
+[% FOREACH record IN recordlist.get_records %]
+[%- item = record.to_rawdata -%]
 [%# IF offset >= 0 && hitrange > 0 %]
 [%# IF loop.count >= offset && loop.count < offset+hitrange %]
 

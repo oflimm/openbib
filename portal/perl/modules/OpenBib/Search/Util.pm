@@ -1395,25 +1395,33 @@ sub get_tit_set_by_idn {
         my $circexlist=undef;
         
         if (exists $targetcircinfo_ref->{$database}{circ}) {
-
+            
             my $circid=(exists $normset_ref->{'T0001'}[0]{content} && $normset_ref->{'T0001'}[0]{content} > 0 && $normset_ref->{'T0001'}[0]{content} != $titidn )?$normset_ref->{'T0001'}[0]{content}:$titidn;
-
+            
             $logger->debug("Katkey: $titidn - Circ-ID: $circid");
 
-            my $soap = SOAP::Lite
-                -> uri("urn:/MediaStatus")
-                    -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
-            my $result = $soap->get_mediastatus(
-                SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                    SOAP::Data->name(katkey   => $circid)->type('string'),
-                    SOAP::Data->name(database => $targetcircinfo_ref->{$database}{circdb})->type('string'))));
+            eval {
+                
+                my $soap = SOAP::Lite
+                    -> uri("urn:/MediaStatus")
+                        -> proxy($targetcircinfo_ref->{$database}{circcheckurl});
+                my $result = $soap->get_mediastatus(
+                    SOAP::Data->name(parameter  =>\SOAP::Data->value(
+                        SOAP::Data->name(katkey   => $circid)->type('string'),
+                        SOAP::Data->name(database => $targetcircinfo_ref->{$database}{circdb})->type('string'))));
+                
+                unless ($result->fault) {
+                    $circexlist=$result->result;
+                }
+                else {
+                    $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+                }
+            };
             
-            unless ($result->fault) {
-                $circexlist=$result->result;
-            }
-            else {
-                $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-            }
+            if ($@){
+                $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
+	    }
+
         }
         
         # Bei einer Ausleihbibliothek haben - falls Exemplarinformationen

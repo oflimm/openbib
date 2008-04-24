@@ -42,6 +42,7 @@ use SOAP::Lite;
 use Storable;
 use YAML ();
 
+use OpenBib::Config::CirculationInfoTable;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::QueryOptions;
 use OpenBib::Session;
@@ -219,8 +220,9 @@ sub print_to_handler {
     my $user         = OpenBib::User->instance;
     my $queryoptions = OpenBib::QueryOptions->instance;
 
-    my $query       = Apache::Request->instance($r);
-    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+    my $query         = Apache::Request->instance($r);
+    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
 
     if ($self->get_size() == 0) {
         OpenBib::Common::Util::print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"),$r,$msg);
@@ -253,6 +255,40 @@ sub print_to_handler {
             undef $timeall;
         }
 
+        $logger->debug("OLWS:".$query->param('olws'));
+        # Anreicherung mit OLWS-Daten
+        if ($query->param('olws') eq "Viewer"){            
+            foreach my $record ($self->get_records()){
+                if (exists $circinfotable->{$record->{database}} && exists $circinfotable->{$record->{database}}{circcheckurl}){
+                    $logger->debug("Endpoint: ".$circinfotable->{$record->{database}}{circcheckurl});
+                    my $soapresult;
+                    eval {
+                        my $soap = SOAP::Lite
+                            -> uri("urn:/Viewer")
+                                -> proxy($circinfotable->{$record->{database}}{circcheckurl});
+                        
+                        my $result = $soap->get_item_info(
+                            SOAP::Data->name(parameter  =>\SOAP::Data->value(
+                                SOAP::Data->name(collection => $circinfotable->{$record->{database}}{circdb})->type('string'),
+                                SOAP::Data->name(item       => $record->{id})->type('string'))));
+                        
+                        unless ($result->fault) {
+                            $soapresult=$result->result;
+                        }
+                        else {
+                            $logger->error("SOAP Viewer Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+                        }
+                    };
+                    
+                    if ($@){
+                        $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
+                    }
+                    
+                    $record->{olws}=$soapresult;
+                }
+            }
+        }
+        
         $logger->debug("Sorting $sorttype with order $sortorder");
         
         $self->sort({order=>$sortorder,type=>$sorttype});

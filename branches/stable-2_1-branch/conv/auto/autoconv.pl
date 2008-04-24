@@ -186,6 +186,12 @@ my $atime = new Benchmark;
     $resulttime    =~s/(\d+\.\d+) .*/$1/;
 
     $logger->info("### $singlepool: Benoetigte Zeit -> $resulttime");
+
+    if (! -e "$rootdir/data/$singlepool/tit.exp" || ! -s "$rootdir/data/$singlepool/tit.exp"){
+        $logger->error("### $singlepool: Keine Daten vorhanden");
+        
+        goto CLEANUP;
+    }
 }
     
 # Konvertierung aus dem Meta- in das SQL-Einladeformat
@@ -333,7 +339,9 @@ ENDE
 
     $logger->info("### $singlepool: Benoetigte Zeit -> $resulttime");     
 }
-    
+
+CLEANUP:
+
 $logger->info("### $singlepool: Cleanup");
 
 system("$mysqladminexe drop   $singlepooltmp");

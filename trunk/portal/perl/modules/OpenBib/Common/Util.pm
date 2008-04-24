@@ -901,7 +901,7 @@ sub utf2bibtex {
     return $string;
 }
 
-sub gen_bibkey {
+sub gen_bibkey_base {
     my ($arg_ref) = @_;
 
     # Set defaults
@@ -959,10 +959,31 @@ sub gen_bibkey {
     $year      =~ s/[^0-9]+//g if ($year);
 
     if ($author && $title && $year){
-        my $bibkey_base = $title." ".$author." ".$year;
+        return $title." ".$author." ".$year;
+    }
+    else {
+        return "";
+    }
+}
 
-        #$logger->debug("Bibkey-Base: $bibkey_base");
+sub gen_bibkey {
+    my ($arg_ref) = @_;
 
+    # Set defaults
+    my $normdata_ref  = exists $arg_ref->{normdata}
+        ? $arg_ref->{normdata}             : undef;
+
+    my $bibkey_base   = exists $arg_ref->{bibkey_base}
+        ? $arg_ref->{bibkey_base}          : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    if ($normdata_ref){
+        $bibkey_base = OpenBib::Common::Util::gen_bibkey_base({normdata => $normdata_ref});
+    }
+    
+    if ($bibkey_base){
         return "1".md5_hex(encode_utf8($bibkey_base));
     }
     else {

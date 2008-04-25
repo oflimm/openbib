@@ -319,6 +319,7 @@ tt_search_showswtset_tname: search_showswtset
 tt_search_showtitlist_tname: search_showtitlist
 tt_search_showtitlist_of_cnt_tname: search_showtitlist_of_cnt
 tt_search_showtitset_tname: search_showtitset
+tt_search_showtitset_1_tname: search_showtitset_1
 tt_searchmask_advanced_tname: searchmask
 tt_searchmask_simple_tname: searchmask_simple
 tt_selfreg_success_tname: selfreg_success

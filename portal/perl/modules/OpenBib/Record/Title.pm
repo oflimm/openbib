@@ -526,7 +526,7 @@ sub get_full_record {
             undef $timeall;
         }
     }
-    
+
     $logger->debug(YAML::Dump($normset_ref));
     ($self->{_normset},$self->{_mexset},$self->{_circset},$self->{_exists})=($normset_ref,$mexnormset_ref,\@circexemplarliste,$record_exists);
 
@@ -976,12 +976,16 @@ sub print_to_handler {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config       = OpenBib::Config->instance;
-    my $session      = OpenBib::Session->instance;
-    my $queryoptions = OpenBib::QueryOptions->instance;
-    my $dbinfotable  = OpenBib::Config::DatabaseInfoTable->instance;
-    my $user         = OpenBib::User->instance;
-    my $searchquery  = OpenBib::SearchQuery->instance;
+    my $config        = OpenBib::Config->instance;
+    my $session       = OpenBib::Session->instance;
+    my $queryoptions  = OpenBib::QueryOptions->instance;
+    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
+    my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
+    my $user          = OpenBib::User->instance;
+    my $searchquery   = OpenBib::SearchQuery->instance;
+    my $query         = Apache::Request->instance($r);
+
+    my $stid          = $query->param('stid')              || '';
 
     my $loginname     = $user->get_username();
     my $logintargetdb = $user->get_targetdb_of_session($session->{ID});
@@ -997,7 +1001,39 @@ sub print_to_handler {
     # Literaturlisten finden
 
     my $litlists_ref = $user->get_litlists_of_tit({titid => $self->{id}, titdb => $self->{database}});
-    
+
+    $logger->debug("OLWS:".$query->param('olws'));
+    # Anreicherung mit OLWS-Daten
+    if ($query->param('olws') eq "Viewer"){
+        if (exists $circinfotable->{$self->{database}} && exists $circinfotable->{$self->{database}}{circcheckurl}){
+            $logger->debug("Endpoint: ".$circinfotable->{$self->{database}}{circcheckurl});
+            my $soapresult;
+            eval {
+                my $soap = SOAP::Lite
+                    -> uri("urn:/Viewer")
+                        -> proxy($circinfotable->{$self->{database}}{circcheckurl});
+                
+                my $result = $soap->get_item_info(
+                    SOAP::Data->name(parameter  =>\SOAP::Data->value(
+                        SOAP::Data->name(collection => $circinfotable->{$self->{database}}{circdb})->type('string'),
+                        SOAP::Data->name(item       => $self->{id})->type('string'))));
+                
+                unless ($result->fault) {
+                    $soapresult=$result->result;
+                }
+                else {
+                    $logger->error("SOAP Viewer Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+                }
+            };
+            
+            if ($@){
+                $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
+            }
+            
+            $self->{olws}=$soapresult;
+        }
+    }
+
     # TT-Data erzeugen
     my $ttdata={
         view        => $view,
@@ -1033,7 +1069,10 @@ sub print_to_handler {
         msg         => $msg,
     };
 
-    OpenBib::Common::Util::print_page($config->{tt_search_showtitset_tname},$ttdata,$r);
+    $stid=~s/[^0-9]//g;
+    my $templatename = ($stid)?"tt_search_showtitset_".$stid."_tname":"tt_search_showtitset_tname";
+    
+    OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
 
     # Log Event
 

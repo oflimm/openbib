@@ -34,6 +34,155 @@
 
 <h1>KUG-Versionen</h1>
 
+<h2 id="kugv2.2">Neuerungen mit Version 2.2 (geplante Umstellung am 2.6.2008)</h2>
+
+<h3>Integration des Ausleihsystems</h3>
+
+<p>
+Erweiterung der Integration des Ausleihsystems durch Web-Services um
+Bestellungen, Stornierungen und Verlängerungen.
+</p>
+
+<h3>Literaturlisten</h3>
+
+<p> Nutzer können nun eigene Literaturlisten (privat und öffentlich)
+anlegen und auf diese von überall über PermaLinks zugreifen. </p>
+
+<p>
+<a href="http://kug4.ub.uni-koeln.de/portal/connector/permalink/3146/1/6/kug/index.html" target="_blank">Beispiel</a>
+</p>
+
+<h3>Systematisches Blättern</h3>
+
+<p>
+Aufgrund einer zentralen Datenbasis von derzeit knapp 160.000 Titeln
+(geplant ist ein Ausbau auf mehrere Millionen Titel) kann nun
+katalogübergreifend anhand der <a
+href="http://de.wikipedia.org/wiki/Basisklassifikation"
+target="_blank">Basisklassifikation</a> systematisch und thematisch
+auf Titel zugegriffen werden.
+</p>
+
+<h3>Weitere Anreicherungen</h3>
+
+<p> Die zentrale Anreicherung der Katalogdaten für alle Kateloge des
+KUG wurde um weitere Inhalte erweitert. Dazu gehört die Anreicherung
+</p>
+
+<ul>
+
+<li>mit der Basisklassifikation. Darüber lassen sich
+nun in einem Katalog andere thematisch benachbarte Titel finden</li>
+
+<li>mit dem <a
+href="http://www.gbv.de/wikis/cls/Bibliographic_Hash_Key"
+target="_blank">Bibkey</a>, einem bibliographischen "Fingerabdruck"
+des Titels, über den die systemübergreifende Titelidentifikation,
+z.B. zwischen dem KUG und BibSonomy, ermöglicht wird.</li>
+
+<li>mit E-Book URLs, falls die USB den entsprechenden Titel als E-Book
+erworben hat. Damit besteht z.B. auch von einer Titelaufnahme der
+Druck-Ausgabe in einem Institutskatalog sofort der Zugriff auf den
+Volltext. Für diesen Zugriff gelten die mit dem E-Book erworbenen
+Beschränkungen (nur vom Campus)</li>
+
+</ul>
+
+<p> Wurde bisher für zentrale Anreicherungen ausschliesslich auf die
+ISBN zurückgegriffen, so wird der Zugriff nun alternativ - für den
+Fall einer nicht vorhandenen ISBN - um den Bibkey erweitert.  </p>
+
+<h3>Integration der Quellen in BibSonomy</h3>
+
+<p> Die in BibSonomy enthaltenen Quellen - Publikationen wie auch
+Webseiten - werden vollintegriert in den KUG nun über Schlagworte/Tags
+thematisch erschlossen. Ausgehend von einer Titelliste besteht der
+Zugriff zusätzlich auf Titel eines zugehörigen Nutzers (von BibSonomy)
+wie auch auf Titel, die durch Angabe mehrerer Tags eingegrenzt werden
+können. Bei Publikationen wird zusätzlich instantan überprüft, ob der
+jeweilige Titel in Katalogen des KUG enthalten ist und diese
+Verfügbarkeitsinformation in der Titel-Anzeige ausgegeben. </p>
+
+<p>
+<a href="http://kug4.ub.uni-koeln.de/portal/connector/permalink/inst006/6439/1/kug/index.html" target="_blank">Beispiel</a>
+</p>
+
+<h3>Titel in anderen Ausgaben und anderen Katalogen</h3>
+
+<p>
+Für viele Titel werden nun auch auf andere Ausgaben (andere Auflage,
+Sprache usw.) direkt in der Einzeltreffer-Anzeige verwiesen. Ebenso
+wird dort nun auch direkt auf andere KUG-Kataloge verwiesen, die
+diese Ausgabe des Titels besitzen. 
+</p>
+
+<p>
+<a href="http://kug4.ub.uni-koeln.de/portal/connector/permalink/inst001/6017416/1/kug/index.html" target="_blank">Beispiel</a>
+</p>
+
+<h3>Erweiterte und verbesserte Wort-Wolken</h3>
+
+<p> Die Wort-Wolken wurden um eine Aufschluesselung des Bestandes nach
+Erscheinungsjahren erweitert. Grundsätzlich werden nun nur noch die
+Wort-Wolken angezeigt, die über Daten verfügen und damit überhaupt
+existieren.  </p>
+
+<h3>Verfügbarkeit des Titels in Google Book Search (zurückportiert
+nach Version 2.1) und BibSonomy</h3>
+
+<p> Der KUG wurde um eine Integration von Google Book Search
+erweitert. Dabei haben wir eine Art 'Ampel-System' wie das der EZB
+integriert.
+</p>
+<p>
+Konkret wird bei einem Einzeltreffer im KUG entsprechend dessen ISBN
+nach Zusatzinformationen bei Google Book Search gesucht und dem Nutzer
+mit einem Bild eine Rueckmeldung ueber deren Verfuegbarkeit gegeben.
+</p>
+<ul>
+
+<li>Falls der Text dort im Vollzugriff vorliegt, wird das Book Search Bild
+um den gruenen Text 'Vollzugriff' ergaenzt.</li>
+
+<li>Falls Teile des Textes (Inhaltsverzeichnisse, Probekapitel, Verweise
+auf weitere Ausgaben, Zitate usw.) verfuegbar sind, wird das Book
+Search Bild um den orangenen Text 'Teilzugriff' ergaenzt.</li>
+
+<li>Falls das Buch bei Google Book Search nicht vorhanden ist bzw. dort
+kein 'Mehrwert' existiert, dann erscheint die Verlinkung von Google
+Book Search nicht.</li>
+</ul>
+
+<p>
+Ebenso wird dem Nutzer nun mit einem entsprechenden Bild die
+Verf&uuml;gbarkeit des Titels in BibSonomy angezeigt.
+</p>
+
+<h3>Verzicht auf Frames</h3>
+
+<p>Die Nutzung von Frames innerhalb der KUG-Anwendung wurde
+entfernt. Damit konnte die Barrierefreiheit des KUG erhöht
+werden. Ebenso ist nun eine uneingeschränkte Nutzung des KUG im Rahmen
+der freien Bibliographie-Verwaltungssoftware <a
+href="http://www.zotero.org/" target="_blank">Zotero</a> möglich.</p>
+
+<h3>Verwendung von JavaScript und AJAX</h3>
+
+<p> Der KUG wurde um die Verwendung von JavaScript und AJAX
+erweitert. Dies wurde so realisiert, dass alle Recherche- und
+Informationsmöglichkeiten auch mit aus Sicherheitsgründen
+abgeschalteten JavaScript im Web-Browser weiterhin nutzbar sind. Für
+alle anderen Nutzer mit aktiviertem JavaScript konnte dadurch die
+Bedienbarkeit des KUG an einigen Stellen verbessert werden. </p>
+
+<p> Rufen Sie als Beispiel <a
+href="http://kug4.ub.uni-koeln.de/portal/connector/permalink/inst006/6439/1/kug/index.html"
+target="_blank">folgenden Titel</a> einmal mit aktiviertem und einmal
+mit deaktivierter JavaScript-Unterstützung Ihres Browsers auf.  </p>
+
+<p>Darüber hinaus wurden weitere tiefgreifende Änderungen im Fundament
+der Anwendung vorgenommen, wie eine Umstellung auf diverse neue Objekte</p>
+
 <h2 id="kugv2.1">Neuerungen mit Version 2.1 (Umstellung am 14.10.2007)</h2>
 
 <h3>Vormerkungen</h3>

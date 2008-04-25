@@ -53,9 +53,8 @@
 </table>
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="http://kug.ub.uni-koeln.de/portal/recherche?sessionID=[% sessionID %];search=Mehrfachauswahl;searchmode=2;rating=0;bookinfo=0;hitrange=-1;sorttype=;sortorder=;database=einbaende;searchsingletit=[% titidn %]">[% msg.maketext("Textangaben") %]</a></li>   
-   <li><a href="http://einbandsammlung.ub.uni-koeln.de/opendia/viewer?collection=einbaende;item=[% titidn %];action=showsingleitem;view=kug;remotehost=[% config.servername %];remoteview=[% view %];sessionID=[% sessionID %]">[% msg.maketext("Einband-Abbildungen") %]</a></li>
-
+   <li><a class="active" href="http://[% config.loadbalancerservername %]/portal/recherche?sessionID=[% sessionID %];database=einbaende;searchsingletit=[% titidn %]">[% msg.maketext("Textangaben") %]</a></li>   
+   <li><a                href="http://[% config.loadbalancerservername %]/portal/recherche?sessionID=[% sessionID %];database=einbaende;searchsingletit=[% titidn %];stid=1;olws=Viewer">[% msg.maketext("Einband-Abbildungen") %]</a></li>
 </ul>
 
 <div class="content">

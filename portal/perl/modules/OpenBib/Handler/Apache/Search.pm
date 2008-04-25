@@ -258,9 +258,11 @@ sub handler {
                     user        => $user,
                     msg         => $msg,
                 };
-                
-                OpenBib::Common::Util::print_page($config->{tt_search_olws_browse_tname},$ttdata,$r);
-                
+
+                $stid=~s/[^0-9]//g;
+                my $templatename = ($stid)?"tt_search_olws_browse_".$stid."_tname":"tt_search_olws_browse_tname";
+
+                OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
                 return OK;
             }
             
@@ -316,7 +318,11 @@ sub handler {
                 user       => $user,
                 msg        => $msg,
             };
-            OpenBib::Common::Util::print_page($config->{tt_search_showautset_tname},$ttdata,$r);
+
+            $stid=~s/[^0-9]//g;
+            my $templatename = ($stid)?"tt_search_showautset_".$stid."_tname":"tt_search_showautset_tname";
+            
+            OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
             return OK;
         }
     
@@ -450,7 +456,11 @@ sub handler {
                 user       => $user,
                 msg        => $msg,
             };
-            OpenBib::Common::Util::print_page($config->{tt_search_showswtset_tname},$ttdata,$r);
+
+            $stid=~s/[^0-9]//g;
+            my $templatename = ($stid)?"tt_search_showswtset_".$stid."_tname":"tt_search_showswtset_tname";
+
+            OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
             return OK;
         }
     
@@ -476,7 +486,11 @@ sub handler {
                 user       => $user,
                 msg        => $msg,
             };
-            OpenBib::Common::Util::print_page($config->{tt_search_shownotset_tname},$ttdata,$r);
+
+            $stid=~s/[^0-9]//g;
+            my $templatename = ($stid)?"tt_search_shownotset_".$stid."_tname":"tt_search_shownotset_tname";
+            
+            OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
             return OK;
         }
     
@@ -639,8 +653,12 @@ sub handler {
                 user        => $user,
                 msg         => $msg,
             };
+
+            $stid=~s/[^0-9]//g;
+            my $templatename = ($stid)?"tt_search_showtitset_".$stid."_tname":"tt_search_showtitset_tname";
             
-            OpenBib::Common::Util::print_page($config->{tt_search_showtitset_tname},$ttdata,$r);
+            OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+
         }
         else {
             OpenBib::Record::Title->new({database => $database, id => $searchsingletit})

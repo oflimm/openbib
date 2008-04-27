@@ -1494,10 +1494,12 @@ sub to_tags {
     foreach my $category (qw/T0710 T0902 T0907 T0912 T0917 T0922 T0927 T0932 T0937 T0942 T0947/){
         next if (!exists $self->{_normset}->{$category});
         foreach my $part_ref (@{$self->{_normset}->{$category}}){
-            push @$keywords_ref, OpenBib::Common::Util::grundform({
-                tagging => 1,
-                content => $part_ref->{content},
-            });
+            foreach my $content_part (split('\s+',$part_ref->{content})){
+                push @$keywords_ref, OpenBib::Common::Util::grundform({
+                    tagging => 1,
+                    content => $content_part,
+                });
+            }
         }
     }
     my $keyword = join(' ',@$keywords_ref);

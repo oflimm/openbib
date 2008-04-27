@@ -257,7 +257,6 @@ a:active.invisible {
 }
 
 .content {
-
   font-family: Arial,helv,Helvetica,Verdana,sans-serif;
   background: #EDEBE3;
   padding: 5px;
@@ -266,9 +265,23 @@ a:active.invisible {
   z-index: 2;	
 }
 
-#mainnavigation { 
+#maincontent{
+  width: 99%;
+  position: absolute;
+  top: 150px;
+  left: 0;
+  background: #EDEBE3;
+  padding: 5px;
+}
+
+#mainnavigation{
+  width: 99%;
+  position: absolute;
+  top: 120px;
+  left: 1;
   border: 1px solid #666;
   background: #FFFDF3; 
+  padding: 0px;
 }
 
 #mainnavigation a:link {
@@ -291,5 +304,41 @@ a:active.invisible {
 .dbdescshort {
   font-size:1.2em;
   font-weight:bold;
+}
+
+.cloud {
+  margin:0;
+  padding:0;
+}
+.cloud li {
+  margin:0;
+  padding:0;
+  display: inline;
+}
+.cloud span {
+  position: absolute;
+  left: -999px;
+  width: 990px;
+}
+.cloud .fast-nicht-genutzt {
+  font-size: 0.6em;
+}
+.cloud .nicht-sehr-genutzt {
+  font-size: 0.9em;
+}
+.cloud .etwas-genutzt {
+  font-size: 1.2em;
+}
+.cloud .genutzt {
+  font-size: 1.5em;
+}
+.cloud .sehr-viel-genutzt {
+  font-size: 1.8em;
+}
+.cloud .ultra-genutzt {
+  font-size: 2.1em;
+}
+.cloud .am-meisten-genutzt {
+  font-size: 2.3em;
 }
 

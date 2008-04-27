@@ -31,7 +31,7 @@
 </div>
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="#1">Vormerkung</a></li>
+   <li><a class="active" href="#1">[% msg.maketext("Vormerkung") %]</a></li>
 </ul>
 
 <div class="content">

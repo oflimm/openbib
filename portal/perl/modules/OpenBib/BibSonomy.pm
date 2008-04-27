@@ -211,9 +211,16 @@ sub get_tags {
         
     # Log4perl logger erzeugen
     my $logger = get_logger();
-    
-    my $url;
 
+    # Zuerst Dubletten entfernen, um unnoetige Anfragen auszuschliessen:
+
+    # Dubletten entfernen
+    my %seen_tags = ();
+
+    my @unique_tags = grep { ! $seen_tags{lc($_)} ++ } @{$tags_ref};
+
+    my $url;
+    
     my @tags = ();
     
     if (defined $bibkey && $bibkey=~/^1[0-9a-f]{32}$/){
@@ -246,8 +253,8 @@ sub get_tags {
         }
     }
     
-    if (@$tags_ref) {
-        foreach my $tag (@$tags_ref){
+    if (@unique_tags) {
+        foreach my $tag (@unique_tags){
             substr($bibkey,0,1)=""; # Remove leading 1
             $url="http://www.bibsonomy.org/api/tags/$tag";
             $logger->debug("Request: $url");
@@ -275,10 +282,10 @@ sub get_tags {
         }
     }
 
-    # Dubletten entfernen
-    my %seen_tags = ();
+    # Wiederum Dubletten (Bibkey <> Schlagworte) entfernen
+    %seen_tags = ();
 
-    my @unique_tags= grep { ! $seen_tags{lc($_->{name})} ++ } @tags;
+    @unique_tags= grep { ! $seen_tags{lc($_->{name})} ++ } @tags;
     
     return @unique_tags;
 }

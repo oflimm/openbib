@@ -25,6 +25,13 @@
 [% PROCESS common/subtemplate name="testsystem_info" %]
 [% END %]
 
+[%
+  viewdbs = [];
+  IF view ;
+    viewdbs = config.get_dbs_of_view(view);
+  END ;
+%]
+
 <ul class="tabbingmenu">
    <li><a class="active" href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
    <li><a                href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>

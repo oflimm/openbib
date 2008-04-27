@@ -30,6 +30,13 @@
 
 [% PROCESS common/subtemplate name="mainnavigation" %] 
 
+[%
+  viewdbs = [];
+  IF view ;
+    viewdbs = config.get_dbs_of_view(view);
+  END ;
+%]
+
 <div id="maincontent">
 
 <ul class="tabbingmenu">

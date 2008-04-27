@@ -85,7 +85,9 @@
 ../templates/connector_rss_item
 ../templates/corporate_banner
 ../templates/database/einbaende/managecollection_tit_as_html
+../templates/database/einbaende/drilldown_categorized
 ../templates/database/einbaende/search_showtitlist
+../templates/database/einbaende/search_showtitlist_of_cnt
 ../templates/database/einbaende/search_showtitset
 ../templates/database/einbaende/visible_categories_coverset
 ../templates/database/einbaende/visible_categories_titset

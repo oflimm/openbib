@@ -91,6 +91,7 @@ sub handler {
     my $end            = $query->param('end')             || '';
     my $format         = decode_utf8($query->param('format')) || '';
     my $tag            = decode_utf8($query->param('tag')) || '';
+    my $tags           = decode_utf8($query->param('tags')) || '';
     my $type           = decode_utf8($query->param('type')) || 'bibtex';
     my $bsuser         = decode_utf8($query->param('bsuser')) || '';
     my $stid           = $query->param('stid')             || '';
@@ -129,9 +130,10 @@ sub handler {
     }
 
     if ($action eq "get_tags"){
-        if (defined $bibkey){
+        my @local_tags=split('\s+',$tags);
+        if (defined $bibkey || @local_tags){
             my @tags = ();
-            @tags = OpenBib::BibSonomy->new()->get_tags({ bibkey => $bibkey }) if ($bibkey=~/^1[0-9a-f]{32}$/);
+            @tags = OpenBib::BibSonomy->new()->get_tags({ bibkey => $bibkey, tags => \@local_tags}) if ($bibkey=~/^1[0-9a-f]{32}$/);
 
             $logger->debug(\@tags);
             

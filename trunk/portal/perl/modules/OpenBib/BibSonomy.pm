@@ -203,11 +203,11 @@ sub get_tags {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
-    my $bibkey = exists $arg_ref->{bibkey}
+    my $bibkey   = exists $arg_ref->{bibkey}
         ? $arg_ref->{bibkey}     : undef;
     
-    my $local_tags_ref = exists $arg_ref->{local_tags}
-        ? $arg_ref->{local_tags} : undef;
+    my $tags_ref = exists $arg_ref->{tags}
+        ? $arg_ref->{tags}       : undef;
         
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -219,67 +219,74 @@ sub get_tags {
     if (defined $bibkey && $bibkey=~/^1[0-9a-f]{32}$/){
         substr($bibkey,0,1)=""; # Remove leading 1
         $url="http://www.bibsonomy.org/api/tags?resourcetype=bibtex&resource=$bibkey";
-    }
-    else {
-        return ();
-    }
-
-    $logger->debug("Request: $url");
-    
-    my $response = $self->{client}->get($url)->content;
-    
-    $logger->debug("Response: $response");
-
-    my $parser = XML::LibXML->new();
-    my $tree   = $parser->parse_string($response);
-    my $root   = $tree->getDocumentElement;
-
-    unless ($root->findvalue('/bibsonomy/@stat') eq "ok"){
-        return ();
-    }
-
-    foreach my $tag_node ($root->findnodes('/bibsonomy/tags/tag')) {
-        my $singletag_ref = {} ;
-
-        $singletag_ref->{name}        = $tag_node->findvalue('@name');
-        $singletag_ref->{href}        = $tag_node->findvalue('@href');
-        $singletag_ref->{usercount}   = $tag_node->findvalue('@usercount');
-        $singletag_ref->{globalcount} = $tag_node->findvalue('@globalcount');
+        $logger->debug("Request: $url");
         
-        push @tags, $singletag_ref;
+        my $response = $self->{client}->get($url)->content;
+        
+        $logger->debug("Response: $response");
+        
+        my $parser = XML::LibXML->new();
+        my $tree   = $parser->parse_string($response);
+        my $root   = $tree->getDocumentElement;
+        
+        unless ($root->findvalue('/bibsonomy/@stat') eq "ok"){
+            return ();
+        }
+        
+        foreach my $tag_node ($root->findnodes('/bibsonomy/tags/tag')) {
+            my $singletag_ref = {} ;
+            
+            $singletag_ref->{name}        = $tag_node->findvalue('@name');
+            $singletag_ref->{href}        = $tag_node->findvalue('@href');
+            $singletag_ref->{usercount}   = $tag_node->findvalue('@usercount');
+            $singletag_ref->{globalcount} = $tag_node->findvalue('@globalcount');
+            
+            push @tags, $singletag_ref;
+        }
+        
+        
+        $logger->debug("Response / Posts: ".YAML::Dump(\@tags));
     }
 
-    
-    $logger->debug("Response / Posts: ".YAML::Dump(\@tags));
-
-    
-    return @tags;
-}
-
-sub get_tags_of_posts {
-    my $self     = shift;
-
-    my @tags = ();
-    foreach my $singlepost_ref (@{$self->{posts}}){
-        push @tags, @{$singlepost_ref->{tags}};
+    if (@$tags_ref) {
+        foreach my $tag (@$tags_ref){
+            substr($bibkey,0,1)=""; # Remove leading 1
+            $url="http://www.bibsonomy.org/api/tags/$tag";
+            $logger->debug("Request: $url");
+            
+            my $response = $self->{client}->get($url)->content;
+        
+            $logger->debug("Response: $response");
+            
+            my $parser = XML::LibXML->new();
+            my $tree   = $parser->parse_string($response);
+            my $root   = $tree->getDocumentElement;
+            
+            unless ($root->findvalue('/bibsonomy/@stat') eq "ok"){
+                return ();
+            }
+            
+            foreach my $tag_node ($root->findnodes('/bibsonomy/tag')) {
+                my $singletag_ref = {} ;
+                
+                $singletag_ref->{name}        = $tag_node->findvalue('@name');
+                $singletag_ref->{href}        = $tag_node->findvalue('@href');
+                $singletag_ref->{usercount}   = $tag_node->findvalue('@usercount');
+                $singletag_ref->{globalcount} = $tag_node->findvalue('@globalcount');
+                
+                push @tags, $singletag_ref;
+            }
+        }
     }
 
+    # Dubletten entfernen
+    my %seen_tags = ();
+
+    my @unique_tags= grep { ! $seen_tags{$_->{name}} ++ } @tags;
     
-    return @tags;
+    return @unique_tags;
 }
 
-sub get_records_of_posts {
-    my $self     = shift;
-
-    my @records = ();
-    foreach my $singlepost_ref (@{$self->{posts}}){
-        push @records, $singlepost_ref->{record};
-    }
-                                
-    return @records;
-    
-    return;
-}
 
 sub DESTROY {
     my $self = shift;

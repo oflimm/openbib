@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2008-04-22 13:34+0200\n"
-"Last-Translator: \n"
-"Language-Team:  <en@li.org>\n"
+"PO-Revision-Date: 2008-04-27 18:24+0200\n"
+"Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
+"Language-Team:  <l10n@openbib.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -519,9 +519,8 @@ msgstr ""
 "Auskunft der Bibliothek."
 
 #: ../templates/views/einbaende/searchmask_simple:38
-#, fuzzy
 msgid "Bl&auml;ttern"
-msgstr "&Auml;ndern"
+msgstr "Bl&auml;ttern"
 
 #: ../templates/visible_categories_korset:16
 msgid "C0001"
@@ -684,13 +683,15 @@ msgstr "Diese Session ist nicht authentifiziert."
 
 #: ../templates/bibsonomy_showtitlist:77
 msgid "Dieser Titel ist in den Katalogen des KUG verf&uuml;gbar"
-msgstr ""
+msgstr "Dieser Titel ist in den Katalogen des KUG verf&uuml;gbar"
 
 #: ../templates/bibsonomy_showtitlist:79
 msgid ""
 "Dieser Titel konnte nicht in den Katalogen des KUG gefunden werden. Er kann "
 "dennoch in anderer Schreibweise existieren!"
 msgstr ""
+"Dieser Titel konnte nicht in den Katalogen des KUG gefunden werden. Er kann "
+"dennoch in anderer Schreibweise existieren!"
 
 #: ../templates/circulation_make_reserv:53
 msgid "Dieses Medium ist direkt ausleihbar"
@@ -927,10 +928,8 @@ msgid "Es existiert kein Passwort für die Kennung $loginname"
 msgstr "Es existiert kein Passwort für die Kennung $loginname"
 
 #: ../templates/admin_editcat_rss:176
-msgid ""
-"Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
-msgstr ""
-"Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
+msgid "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
+msgstr "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
 
 #: ../templates/admin_editcat_rss:233
 msgid "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach Schlagwort"
@@ -953,15 +952,12 @@ msgid "Es sind keine Gebühren angefallen."
 msgstr "Es sind keine Gebühren angefallen."
 
 #: ../templates/bibsonomy_showtitlist:98
-#, fuzzy
 msgid "Es sind keine Quellen verf&uuml;gbar."
-msgstr "Es sind keine Gebühren angefallen."
+msgstr "Es sind keine Quellen verf&uuml;gbar."
 
 #: ../modules/OpenBib/Handler/Apache/SelfReg.pm:118
-msgid ""
-"Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
-msgstr ""
-"Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
+msgid "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
+msgstr "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
 
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:286
 #: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:534
@@ -1203,11 +1199,11 @@ msgstr "Gebühr"
 
 #: ../templates/circulation:52
 msgid "Gesamtkonto verl&auml;ngern"
-msgstr ""
+msgstr "Gesamtkonto verl&auml;ngern"
 
 #: ../templates/circulation:52
 msgid "Gesamtkonto-Verl&auml;ngerung"
-msgstr ""
+msgstr "Gesamtkonto-Verl&auml;ngerung"
 
 #: ../templates/circulation_make_reserv:48
 msgid "Grund:"
@@ -2800,9 +2796,8 @@ msgid "Notation"
 msgstr "Notation"
 
 #: ../templates/bibsonomy_showtitlist:76
-#, fuzzy
 msgid "Nutzer"
-msgstr "Nutzername"
+msgstr "Nutzer"
 
 #: ../templates/admin_showlogintarget:49 ../templates/admin_showlogintarget:67
 msgid "Nutzername"
@@ -2972,12 +2967,12 @@ msgstr "Publikationen"
 #. (${bsuser})
 #: ../templates/bibsonomy_showtitlist:26
 msgid "Quellen des Nutzers <i>%1</i> in BibSonomy"
-msgstr ""
+msgstr "Quellen des Nutzers <i>%1</i> in BibSonomy"
 
 #. (${tag})
 #: ../templates/bibsonomy_showtitlist:26
 msgid "Quellen zum Tag <i>%1</i> in BibSonomy"
-msgstr ""
+msgstr "Quellen zum Tag <i>%1</i> in BibSonomy"
 
 #: ../templates/admin_showcat:74 ../templates/admin_showviews:65
 #: ../templates/mainnavigation:20
@@ -3017,9 +3012,8 @@ msgid "Registrieren"
 msgstr "Registrieren"
 
 #: ../templates/circulation:27 ../templates/circulation_orders:27
-#, fuzzy
 msgid "Rezensionen"
-msgstr "Personen"
+msgstr "Rezensionen"
 
 #: ../templates/views/richter/searchmask_query:25
 msgid "Richter-Systematik"
@@ -3254,10 +3248,8 @@ msgstr "Sie greifen auf eine nicht autorisierte Session zu"
 
 #. ("<a href=\"${config.info_loc}?sessionID=${sessionID};view=${view}#meinkugvorteile\">","</a>")
 #: ../templates/login:46
-msgid ""
-"Sie haben %1Vorteile%2, wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden."
-msgstr ""
-"Sie haben %1Vorteile%2, wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden."
+msgid "Sie haben %1Vorteile%2, wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden."
+msgstr "Sie haben %1Vorteile%2, wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden."
 
 #. ("<a href=\"$config->{databasechoice_loc}?sessionID=$session->{ID}\" target=\"body\">","</a>")
 #: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:249
@@ -3480,25 +3472,20 @@ msgid "Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."
 msgstr "Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."
 
 #: ../modules/OpenBib/Handler/Apache/LitLists.pm:164
-msgid ""
-"Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
-msgstr ""
-"Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
+msgid "Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
+msgstr "Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:1170
 msgid "Sie müssen mindestens eine Beschreibung eingeben."
 msgstr "Sie müssen mindestens eine Beschreibung eingeben."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:340
-msgid ""
-"Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
-msgstr ""
-"Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
+msgid "Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
+msgstr "Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:558
 msgid "Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."
-msgstr ""
-"Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."
+msgstr "Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:673
 msgid ""
@@ -5010,12 +4997,11 @@ msgstr "Zählung"
 #: ../templates/bibsonomy_showtitlist:53 ../templates/bibsonomy_showtitlist:85
 #: ../templates/circulation:26 ../templates/circulation_orders:26
 msgid "Tags"
-msgstr ""
+msgstr "Tags"
 
 #: ../templates/bibsonomy_showtags:33
-#, fuzzy
 msgid "Tags in BibSonomy"
-msgstr "An BibSonomy senden"
+msgstr "Tags in BibSonomy"
 
 #: ../templates/testsystem_info:15
 msgid "Testsystem - Nicht f&uuml;r den produktiven Einsatz bestimmt"
@@ -5065,7 +5051,7 @@ msgstr "Titel/Merkliste via Mail verschicken"
 
 #: ../templates/bibsonomy_showtags:20
 msgid "Titel/Schlagworte nicht in BibSonomy enthalten"
-msgstr ""
+msgstr "Titel/Schlagworte nicht in BibSonomy enthalten"
 
 #: ../templates/circulation:56 ../templates/circulation_orders:52
 #: ../templates/circulation_remind:71 ../templates/circulation_reserv:52
@@ -5383,9 +5369,8 @@ msgid "Vorheriger Titel"
 msgstr "Vorheriger Titel"
 
 #: ../templates/circulation_make_reserv:34
-#, fuzzy
 msgid "Vormerkung"
-msgstr "Vormerkungen"
+msgstr "Vormerkung"
 
 #: ../templates/circulation_make_reserv:64
 msgid "Vormerkung erfolgreich durchgef&uuml;hrt"
@@ -5684,9 +5669,8 @@ msgid "aus:"
 msgstr "aus:"
 
 #: ../templates/circulation:52
-#, fuzzy
 msgid "durchf&uuml;hren"
-msgstr "Offene Geb&uuml;hren"
+msgstr "durchf&uuml;hren"
 
 #: ../templates/managecollection_show:67
 msgid "entfernen"
@@ -5725,12 +5709,11 @@ msgstr "mit Grund"
 
 #: ../templates/database/einbaende/drilldown_categorized:10
 msgid "nach Buchbinder/Werkst&auml;tten"
-msgstr ""
+msgstr "nach Buchbinder/Werkst&auml;tten"
 
 #: ../templates/database/einbaende/drilldown_categorized:38
-#, fuzzy
 msgid "nach Einband"
-msgstr "nach Signatur"
+msgstr "nach Einband"
 
 #: ../templates/database/einbaende/search_showtitlist:48
 #: ../templates/views/einbaende/resultlists_showall:51
@@ -5758,9 +5741,8 @@ msgid "nach Jahr"
 msgstr "nach Jahr"
 
 #: ../templates/database/einbaende/drilldown_categorized:24
-#, fuzzy
 msgid "nach Jahrhundert"
-msgstr "nach Jahr"
+msgstr "nach Jahrhundert"
 
 #: ../templates/database/einbaende/drilldown_categorized:66
 #: ../templates/drilldown_categorized:66
@@ -5965,3 +5947,4 @@ msgstr "Übernehmen"
 #: ../templates/circulation_remind:40 ../templates/circulation_reserv:40
 msgid "Überziehungen / Gebühren"
 msgstr "Überziehungen / Gebühren"
+

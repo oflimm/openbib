@@ -261,6 +261,8 @@ sub print_page {
     }
 
     $ttdata->{'loginname'} = $loginname;
+
+    $logger->debug("Using base Template $templatename");
     
     if ($view && -e "$config->{tt_include_path}/views/$view/$templatename") {
         $templatename="views/$view/$templatename";
@@ -271,7 +273,7 @@ sub print_page {
         $templatename="database/$database/$templatename";
     }
 
-    $logger->debug("Using Template $templatename");
+    $logger->debug("Using database/view specific Template $templatename");
   
     my $template = Template->new({ 
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({

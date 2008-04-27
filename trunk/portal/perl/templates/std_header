@@ -23,6 +23,7 @@
     <meta name="sessionID"           content="[% sessionID %]" />
 [% IF record %]
     <meta name="Bibkey"              content="[% record.to_bibkey %]" />
+    <meta name="Tags"                content="[% record.to_tags %]" />
 [% END %]
 <link href="/images/openbib/favicon.ico" rel="shortcut icon" />
 [% IF view && primrssfeed %]

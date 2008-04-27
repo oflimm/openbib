@@ -290,7 +290,7 @@ FOREACH category IN categories;
    END;
 END;
 -%]
-<tr><td class="category">BibSonomy-Tags</td><td><span id="bibsonomy_tags"><a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];bibkey=[% record.to_bibkey %];action=get_tags">Suchen?</a></span></td></tr>
+<tr><td class="category">BibSonomy-Tags</td><td><span id="bibsonomy_tags"><a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];bibkey=[% record.to_bibkey %];tags=[% record.to_tags | uri %];action=get_tags">Suchen?</a></span></td></tr>
 </table>
 
 [%- IF normset.${"E4200"} || normset.${"E4201"} || normset.${"E4202"} %]

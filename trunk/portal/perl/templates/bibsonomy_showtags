@@ -17,7 +17,7 @@
 <a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];tag=[% tag.name |uri %];action=get_tit_of_tag">[% tag.name %]</a>&nbsp;
 [% END %]
 [% ELSE %]
-Titel nicht in BibSonomy enthalten
+[% msg.maketext("Titel nicht in BibSonomy enthalten") %]
 [% END %]
 [%- ELSE -%]
 [% PROCESS common/subtemplate name="std_header" %]
@@ -30,7 +30,7 @@ Titel nicht in BibSonomy enthalten
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="#"><span class="dbdescshort">Tags in BibSonomy</span></a></li>
+   <li><a class="active" href="#"><span class="dbdescshort">[% msg.maketext("Tags in BibSonomy") %]</span></a></li>
 </ul>
 
 <div class="content">

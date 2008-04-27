@@ -23,7 +23,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="#"><span class="dbdescshort">Quellen zum [% IF tag %]Tag <i>[% tag %]</i>[% ELSIF bsuser %]Nutzer <i>[% bsuser %]</i>[% END %] in BibSonomy</span></a></li>
+   <li><a class="active" href="#"><span class="dbdescshort">[% IF tag %][% msg.maketext("Quellen zum Tag <i>[_1]</i> in BibSonomy",${tag}) %][% ELSIF bsuser %][% msg.maketext("Quellen des Nutzers <i>[_1]</i> in BibSonomy",${bsuser}) %][% END %]</span></a></li>
 </ul>
 
 <div class="content">
@@ -50,7 +50,7 @@
 
 
 <table>
-<tr><td>Tags</td><td>&nbsp;<input
+<tr><td>[% msg.maketext("Tags") %]</td><td>&nbsp;<input
 type="text" name="tag" value="" id="inputfield" size="20" maxlength="200" title="[% msg.maketext("Geben Sie hier einen oder mehrere Tags ein") %]" />&nbsp;<input type="submit" value="[% msg.maketext("Suchen") %]" />&nbsp;</td></tr>
 </table>
 
@@ -73,18 +73,16 @@ type="text" name="tag" value="" id="inputfield" size="20" maxlength="200" title=
 [%- record = thistitle.record -%]
 [% IF type == 'bibtex' %]
 <tr class="[% listrow %]"><td colspan="2"><span class="rlauthor">[% record.${'author'} %]&nbsp;[% record.${'editor'} %]</span><br /><strong><span class="rltitle">[% record.${'title'} %]</span></strong>, <span class="rlpublisher">[% record.${'publisher'} %]</span> <span class="rlyearofpub">[% record.${'year'} %]</span><br />
-Tags: [% FOREACH thistag IN thistitle.tags %]<a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];tag=[% thistag %];action=get_tit_of_tag;type=[% type %]">[% thistag %]</a>&nbsp;&nbsp; [% END %]&#124;&nbsp;&nbsp;Nutzer: <a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];bsuser=[% thistitle.user %];action=get_tit_of_user;type=[% type %]">[% thistitle.user %]</a><br/>
-[% IF thistitle.local_availability %]<span style="color:green">Dieser Titel ist in den Katalogen
-des KUG verf&uuml;gbar</span><br/>(&nbsp;&nbsp;[% FOREACH dbname IN
+Tags: [% FOREACH thistag IN thistitle.tags %]<a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];tag=[% thistag %];action=get_tit_of_tag;type=[% type %]">[% thistag %]</a>&nbsp;&nbsp; [% END %]&#124;&nbsp;&nbsp;[% msg.maketext("Nutzer") %]: <a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];bsuser=[% thistitle.user %];action=get_tit_of_user;type=[% type %]">[% thistitle.user %]</a><br/>
+[% IF thistitle.local_availability %]<span style="color:green">[% msg.maketext("Dieser Titel ist in den Katalogen des KUG verf&uuml;gbar") %]</span><br/>(&nbsp;&nbsp;[% FOREACH dbname IN
 thistitle.local_dbs %]<a href="[% config.search_loc %]?sessionID=[% sessionID %];database=[% dbname %];searchtitofcnt=[% thistitle.bibkey %];category=T5050">[% dbinfotable.dbnames.${dbname}.short %]</a>&nbsp;&nbsp;[% END %])<br/>[% ELSE %]<span
-style="color:red">Dieser Titel konnte nicht in den Katalogen
-des KUG gefunden werden. Er kann dennoch in anderer Schreibweise existieren!</span><br/>[% END %]
+style="color:red">[% msg.maketext("Dieser Titel konnte nicht in den Katalogen des KUG gefunden werden. Er kann dennoch in anderer Schreibweise existieren!") %]</span><br/>[% END %]
 </td></tr>
 [% ELSIF type == 'bookmark' %]
 <tr class="[% listrow %]"><td colspan="2"><b><a href="[% record.${'url'} %]" target="_blank">[%
 record.${'title'} %]</a></b><br />
 [%- IF thistitle.${'desc'} -%][% thistitle.${'desc'} %]<br/>[%- END -%]
-Tags: [% FOREACH thistag IN thistitle.tags %]<a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];tag=[% thistag %];action=get_tit_of_tag;type=[% type %]">[% thistag %]</a>&nbsp;&nbsp; [% END %]&#124;&nbsp;&nbsp;Nutzer: <a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];bsuser=[% thistitle.user %];action=get_tit_of_user;type=[% type %]">[% thistitle.user %]</a><br/>
+[% msg.maketext("Tags") %]: [% FOREACH thistag IN thistitle.tags %]<a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];tag=[% thistag %];action=get_tit_of_tag;type=[% type %]">[% thistag %]</a>&nbsp;&nbsp; [% END %]&#124;&nbsp;&nbsp;Nutzer: <a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];bsuser=[% thistitle.user %];action=get_tit_of_user;type=[% type %]">[% thistitle.user %]</a><br/>
 </td></tr>
 [% END %]
 
@@ -97,7 +95,7 @@ Tags: [% FOREACH thistag IN thistitle.tags %]<a href="[% config.bibsonomy_loc %]
 [% END %]
 </table>
 [% ELSE %]
-<h1>Es sind keine Quellen verf&uuml;gbar.</h1>
+<h1>[% msg.maketext("Es sind keine Quellen verf&uuml;gbar.") %]</h1>
 [% END %]
 <p/>
 

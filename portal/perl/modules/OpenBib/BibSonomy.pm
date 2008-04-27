@@ -278,7 +278,7 @@ sub get_tags {
     # Dubletten entfernen
     my %seen_tags = ();
 
-    my @unique_tags= grep { ! $seen_tags{$_->{name}} ++ } @tags;
+    my @unique_tags= grep { ! $seen_tags{lc($_->{name})} ++ } @tags;
     
     return @unique_tags;
 }

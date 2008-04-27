@@ -229,25 +229,23 @@ sub get_tags {
         my $tree   = $parser->parse_string($response);
         my $root   = $tree->getDocumentElement;
         
-        unless ($root->findvalue('/bibsonomy/@stat') eq "ok"){
-            return ();
-        }
-        
-        foreach my $tag_node ($root->findnodes('/bibsonomy/tags/tag')) {
-            my $singletag_ref = {} ;
+        if ($root->findvalue('/bibsonomy/@stat') eq "ok"){
+            foreach my $tag_node ($root->findnodes('/bibsonomy/tags/tag')) {
+                my $singletag_ref = {} ;
+                
+                $singletag_ref->{name}        = $tag_node->findvalue('@name');
+                $singletag_ref->{href}        = $tag_node->findvalue('@href');
+                $singletag_ref->{usercount}   = $tag_node->findvalue('@usercount');
+                $singletag_ref->{globalcount} = $tag_node->findvalue('@globalcount');
+                
+                push @tags, $singletag_ref;
+            }
             
-            $singletag_ref->{name}        = $tag_node->findvalue('@name');
-            $singletag_ref->{href}        = $tag_node->findvalue('@href');
-            $singletag_ref->{usercount}   = $tag_node->findvalue('@usercount');
-            $singletag_ref->{globalcount} = $tag_node->findvalue('@globalcount');
             
-            push @tags, $singletag_ref;
+            $logger->debug("Response / Posts: ".YAML::Dump(\@tags));
         }
-        
-        
-        $logger->debug("Response / Posts: ".YAML::Dump(\@tags));
     }
-
+    
     if (@$tags_ref) {
         foreach my $tag (@$tags_ref){
             substr($bibkey,0,1)=""; # Remove leading 1
@@ -262,19 +260,17 @@ sub get_tags {
             my $tree   = $parser->parse_string($response);
             my $root   = $tree->getDocumentElement;
             
-            unless ($root->findvalue('/bibsonomy/@stat') eq "ok"){
-                return ();
-            }
-            
-            foreach my $tag_node ($root->findnodes('/bibsonomy/tag')) {
-                my $singletag_ref = {} ;
-                
-                $singletag_ref->{name}        = $tag_node->findvalue('@name');
-                $singletag_ref->{href}        = $tag_node->findvalue('@href');
-                $singletag_ref->{usercount}   = $tag_node->findvalue('@usercount');
-                $singletag_ref->{globalcount} = $tag_node->findvalue('@globalcount');
-                
-                push @tags, $singletag_ref;
+            if ($root->findvalue('/bibsonomy/@stat') eq "ok"){
+                foreach my $tag_node ($root->findnodes('/bibsonomy/tag')) {
+                    my $singletag_ref = {} ;
+                    
+                    $singletag_ref->{name}        = $tag_node->findvalue('@name');
+                    $singletag_ref->{href}        = $tag_node->findvalue('@href');
+                    $singletag_ref->{usercount}   = $tag_node->findvalue('@usercount');
+                    $singletag_ref->{globalcount} = $tag_node->findvalue('@globalcount');
+                    
+                    push @tags, $singletag_ref;
+                }
             }
         }
     }

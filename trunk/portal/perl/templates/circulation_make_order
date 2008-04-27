@@ -68,13 +68,13 @@ Mediums ist leider nicht m&ouml;glich!") %]
 <p />
 <p/ >
 [% IF result.OpacBestellung.Verfasser %]
-Verfasser: [% result.OpacBestellung.Verfasser %]<br />
+[% msg.maketext("Verfasser") %]: [% result.OpacBestellung.Verfasser %]<br />
 [% END %]
 [% IF result.OpacBestellung.Titel %]
-Titel: [% result.OpacBestellung.Titel %]<br />
+[% msg.maketext("Titel") %]: [% result.OpacBestellung.Titel %]<br />
 [% END %]
 [% IF result.OpacBestellung.AusgabeOrtBez %]
-Der Titel ist hier abholbar: [% result.OpacBestellung.AusgabeOrtBez %]
+[% msg.maketext("Der Titel ist hier abholbar") %]: [% result.OpacBestellung.AusgabeOrtBez %]
 [% END %]
 [% successstring %]
 </td></tr>

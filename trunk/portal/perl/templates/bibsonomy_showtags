@@ -17,7 +17,7 @@
 <a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];tag=[% tag.name |uri %];action=get_tit_of_tag">[% tag.name %]</a>&nbsp;
 [% END %]
 [% ELSE %]
-[% msg.maketext("Titel nicht in BibSonomy enthalten") %]
+[% msg.maketext("Titel/Schlagworte nicht in BibSonomy enthalten") %]
 [% END %]
 [%- ELSE -%]
 [% PROCESS common/subtemplate name="std_header" %]

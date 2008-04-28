@@ -3,6 +3,7 @@ $(document).ready(function(){
 var sessionID = $("meta[@name='sessionID']").attr("content");
 
 var Bibkey    = $("meta[@name='Bibkey']").attr("content");
+var Tags      = $("meta[@name='Tags']").attr("content");
 
 // Focus auf erstes Eingabefeld
 //$(":input:visible:enabled:first").focus();
@@ -32,7 +33,7 @@ function (txt){ $("#collectioncount").html("["+txt+"]"); });
 // Ende Merkliste
 
 // Begin BibSonomy Tags
-$.get("/portal/bibsonomy?sessionID="+sessionID+";action=get_tags;format=ajax;bibkey="+Bibkey,
+$.get("/portal/bibsonomy?sessionID="+sessionID+";action=get_tags;format=ajax;bibkey="+Bibkey+";tags="+Tags,
 function (txt){
  $("#bibsonomy_tags").html(txt); 
 }

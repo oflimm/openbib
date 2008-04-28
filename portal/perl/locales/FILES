@@ -297,8 +297,11 @@
 ../templates/views/landschaft/std_footer
 ../templates/views/landschaft/virtualsearch_more_search_tips
 ../templates/views/portrait/corporate_banner
+../templates/views/portrait/clouds_navigation
 ../templates/views/portrait/info_20
+../templates/views/portrait/info_30
 ../templates/views/portrait/leave
+../templates/views/portrait/mainnavigation
 ../templates/views/portrait/resultlists_showsinglepool
 ../templates/views/portrait/search_browse_tit
 ../templates/views/portrait/searchmask

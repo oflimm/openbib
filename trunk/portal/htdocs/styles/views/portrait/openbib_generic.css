@@ -266,9 +266,23 @@ a:active.invisible {
   z-index: 2;	
 }
 
+#maincontent{
+  width: 99%;
+  position: absolute;
+  top: 165px;
+  left: 0;
+  background: #FAF8CC;
+  padding: 5px;
+}
+
 #mainnavigation { 
+  width: 99%;
+  position: absolute;
+  top: 135px;
+  left: 1;
   border: 1px solid #666;
   background: #FFFDF3; 
+  padding: 0px;
 }
 
 #mainnavigation a:link {

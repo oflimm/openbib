@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2008-04-27 18:24+0200\n"
-"Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
-"Language-Team:  <l10n@openbib.org>\n"
+"PO-Revision-Date: 2008-04-28 15:12+0200\n"
+"Last-Translator: \n"
+"Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -29,7 +29,7 @@ msgstr "${category}"
 #: ../templates/database/portrait/search_showtitset:146
 #: ../templates/managecollection_tit_as_html:52
 #: ../templates/managecollection_tit_as_text:34
-#: ../templates/search_showmulttitset:99 ../templates/search_showtitset:288
+#: ../templates/search_showmulttitset:99 ../templates/search_showtitset:294
 msgid "${thiscategory}"
 msgstr "${thiscategory}"
 
@@ -81,7 +81,8 @@ msgstr ""
 msgid "&Uuml;bersicht"
 msgstr "&Uuml;bersicht"
 
-#: ../templates/searchmask:47 ../templates/searchmask_simple:47
+#: ../templates/info_13:28 ../templates/info_15:39 ../templates/searchmask:47
+#: ../templates/searchmask_simple:47
 #: ../templates/views/einbaende/searchmask_simple:39
 #: ../templates/views/kug/searchmask_simple:37
 msgid "&Uuml;bersichten"
@@ -304,6 +305,10 @@ msgstr ""
 "RSS-Feeds abonnieren. Dazu kopieren Sie bitte den jeweiligen URL von\n"
 "dieser Seite und kopieren ihn in Ihr RSS-Leseprogramm."
 
+#: ../templates/info_15:84
+msgid "Aufruf dieser Spezial-Sicht"
+msgstr "Aufruf dieser Spezial-Sicht"
+
 #: ../templates/externaljump:106 ../templates/externaljump:115
 #: ../templates/externaljump:125 ../templates/externaljump:135
 #: ../templates/externaljump:145
@@ -343,7 +348,7 @@ msgstr "Ausleih-Einstellungen"
 #: ../templates/database/portrait/search_showtitset:172
 #: ../templates/managecollection_tit_as_html:77
 #: ../templates/managecollection_tit_as_html_simple:60
-#: ../templates/search_showmulttitset:130 ../templates/search_showtitset:344
+#: ../templates/search_showmulttitset:130 ../templates/search_showtitset:350
 msgid "Ausleihe/Exemplare"
 msgstr "Ausleihe/Exemplare"
 
@@ -421,6 +426,10 @@ msgstr "Bereits existierende Kataloge"
 #: ../templates/admin_showviews:59
 msgid "Bereits existierende Views"
 msgstr "Bereits existierende Views"
+
+#: ../templates/views/portrait/clouds_navigation:16
+msgid "Beruf / Weltanschauung"
+msgstr "Beruf / Weltanschauung"
 
 #: ../templates/views/portrait/searchmask_query:25
 msgid "Beruf/Weltanschauung"
@@ -1175,7 +1184,7 @@ msgid "Geben Sie hier den Notationsanfang ein"
 msgstr "Geben Sie hier den Notationsanfang ein"
 
 #: ../templates/search_showswtindex:81 ../templates/search_showtitlist:186
-#: ../templates/search_showtitset:721
+#: ../templates/search_showtitset:727
 #: ../templates/views/kapsel/search_showtitlist:174
 #: ../templates/virtualsearch_showswtindex:52
 msgid "Geben Sie hier den Schlagwortanfang ein"
@@ -1273,6 +1282,10 @@ msgstr ""
 #: ../templates/userprefs:178
 msgid "Hauptsachtitel (HST)"
 msgstr "Hauptsachtitel (HST)"
+
+#: ../templates/views/portrait/mainnavigation:17
+msgid "Hauptseite"
+msgstr "Hauptseite"
 
 #: ../templates/search_info:37
 msgid ""
@@ -1695,13 +1708,15 @@ msgid "Hier suchen Sie in allen Katalogen auf einmal"
 msgstr "Hier suchen Sie in allen Katalogen auf einmal"
 
 #: ../templates/mainnavigation:29
+#: ../templates/views/portrait/mainnavigation:17
 msgid "Hilfe"
 msgstr "Hilfe"
 
 #: ../templates/databasechoice:51 ../templates/externaljump:36
-#: ../templates/login:44 ../templates/login_circulation:42
-#: ../templates/mailpassword:35 ../templates/rssfeeds:25
-#: ../templates/selfreg:34 ../templates/views/rheinlandbib/databasechoice:51
+#: ../templates/info_13:52 ../templates/login:44
+#: ../templates/login_circulation:42 ../templates/mailpassword:35
+#: ../templates/rssfeeds:25 ../templates/selfreg:34
+#: ../templates/views/rheinlandbib/databasechoice:51
 msgid "Hinweis"
 msgstr "Hinweis"
 
@@ -1777,11 +1792,11 @@ msgstr "Ihre Suchanfrage im KUG Recherche-Portal"
 msgid "Import-Einstellungen"
 msgstr "Import-Einstellungen"
 
-#: ../templates/search_showtitset:71
+#: ../templates/search_showtitset:74
 msgid "In BibSonomy vorhanden?"
 msgstr "In BibSonomy vorhanden?"
 
-#: ../templates/search_showtitset:68
+#: ../templates/search_showtitset:70
 msgid "In Google BookSearch vorhanden?"
 msgstr "In Google BookSearch vorhanden?"
 
@@ -2066,7 +2081,7 @@ msgstr "Information"
 #: ../templates/managecollection_tit_as_html_simple:28
 #: ../templates/search_showautset:31 ../templates/search_showkorset:32
 #: ../templates/search_showmulttitset:41 ../templates/search_shownotset:31
-#: ../templates/search_showswtset:33 ../templates/search_showtitset:93
+#: ../templates/search_showswtset:33 ../templates/search_showtitset:97
 msgid "Inhalt"
 msgstr "Inhalt"
 
@@ -2120,6 +2135,7 @@ msgstr "Jahr"
 
 #: ../templates/database/landschaft/virtualsearch_result_item:142
 #: ../templates/database/portrait/virtualsearch_result_item:142
+#: ../templates/views/portrait/clouds_navigation:19
 #: ../templates/views/portrait/virtualsearch_result_item:136
 msgid "Jahre"
 msgstr "Jahre"
@@ -2174,8 +2190,8 @@ msgstr "Katalog-Profil bearbeiten"
 msgid "Katalog-Profile"
 msgstr "Katalog-Profile"
 
-#: ../templates/databasechoice:39 ../templates/mainnavigation:17
-#: ../templates/views/kug/searchmask:233
+#: ../templates/databasechoice:39 ../templates/info_13:44
+#: ../templates/mainnavigation:17 ../templates/views/kug/searchmask:233
 #: ../templates/views/rheinlandbib/databasechoice:39
 msgid "Katalogauswahl"
 msgstr "Katalogauswahl"
@@ -2209,6 +2225,10 @@ msgstr "Kataloge"
 msgid "Kataloge auswählen"
 msgstr "Kataloge auswählen"
 
+#: ../templates/info_15:73
+msgid "Kataloge dieser Spezial-Sicht"
+msgstr "Kataloge dieser Spezial-Sicht"
+
 #: ../templates/circulation:29 ../templates/circulation_orders:29
 #: ../templates/circulation_remind:29 ../templates/circulation_reserv:29
 #: ../templates/databaseprofile:53 ../templates/litlists_manage_lists:36
@@ -2227,7 +2247,7 @@ msgstr "Katalogprofile"
 #: ../templates/managecollection_tit_as_html_simple:28
 #: ../templates/search_showautset:31 ../templates/search_showkorset:32
 #: ../templates/search_showmulttitset:41 ../templates/search_shownotset:31
-#: ../templates/search_showswtset:33 ../templates/search_showtitset:93
+#: ../templates/search_showswtset:33 ../templates/search_showtitset:97
 #: ../templates/views/portrait/searchmask_query:2
 #: ../templates/views/richter/searchmask_query:2
 msgid "Kategorie"
@@ -2373,6 +2393,38 @@ msgstr "Körperschaft/Institution"
 #: ../templates/databaseprofile:72
 msgid "L&ouml;schung des ausgew&auml;hlten Profils"
 msgstr "L&ouml;schung des ausgew&auml;hlten Profils"
+
+#: ../templates/info_9:84
+msgid ""
+"Leider k&ouml;nnen wir Ihnen für diesen Katalog keine\n"
+"Wolke der Erscheinungsjahre anbieten."
+msgstr ""
+"Leider k&ouml;nnen wir Ihnen für diesen Katalog keine\n"
+"Wolke der Erscheinungsjahre anbieten."
+
+#: ../templates/info_14:84 ../templates/info_17:84 ../templates/info_18:84
+msgid ""
+"Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r h&auml;"
+"fige Begriffe diese Kategorie anbieten."
+msgstr ""
+"Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r h&auml;"
+"fige Begriffe diese Kategorie anbieten."
+
+#: ../templates/info_16:84
+msgid ""
+"Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r h&auml;"
+"fige Begriffe dieser Kategorie anbieten."
+msgstr ""
+"Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r h&auml;"
+"fige Begriffe dieser Kategorie anbieten."
+
+#: ../templates/info_19:85
+msgid ""
+"Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r von "
+"Nutzern vergebene Tags anbieten."
+msgstr ""
+"Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r von "
+"Nutzern vergebene Tags anbieten."
 
 #: ../templates/circulation_remind:71
 msgid "Leihfristende"
@@ -2619,6 +2671,10 @@ msgstr "Löschen"
 msgid "M&ouml;chten Sie Ihre Suchanfrage pr&auml;zisieren?"
 msgstr "M&ouml;chten Sie Ihre Suchanfrage pr&auml;zisieren?"
 
+#: ../templates/views/portrait/clouds_navigation:18
+msgid "Maler / Zeichner"
+msgstr "Maler / Zeichner"
+
 #: ../templates/searchmask_options:2
 #: ../templates/views/gdonck/searchmask_options:2
 #: ../templates/views/gleuel/searchmask_options:2
@@ -2665,6 +2721,7 @@ msgstr "Meldung"
 #: ../templates/mainnavigation:17 ../templates/managecollection_save_html:30
 #: ../templates/managecollection_show:44
 #: ../templates/views/einbaende/managecollection_show:33
+#: ../templates/views/portrait/mainnavigation:16
 msgid "Merkliste"
 msgstr "Merkliste"
 
@@ -2705,6 +2762,20 @@ msgstr "Anzahl Titel"
 #: ../templates/userprefs:71
 msgid "Nachname"
 msgstr "Nachname"
+
+#: ../templates/info_15:57
+msgid ""
+"Neben dem Standard-KUG mit allen Katalogen gibt es eine Vielzahl an\n"
+"Spezial-Sichten, bei denen z.B. bestimmte Kataloge vorausgew&auml;hlt\n"
+"sind, die weitergehende Informationen anbieten oder ein\n"
+"eigenst&auml;ndiges Fach-Portal bilden. Auf dieser Seite finden Sie\n"
+"eine &Uuml;bersicht aller vorhandenen Spezial-Sichten."
+msgstr ""
+"Neben dem Standard-KUG mit allen Katalogen gibt es eine Vielzahl an\n"
+"Spezial-Sichten, bei denen z.B. bestimmte Kataloge vorausgew&auml;hlt\n"
+"sind, die weitergehende Informationen anbieten oder ein\n"
+"eigenst&auml;ndiges Fach-Portal bilden. Auf dieser Seite finden Sie\n"
+"eine &Uuml;bersicht aller vorhandenen Spezial-Sichten."
 
 #: ../templates/admin_editcat:144 ../templates/admin_editcat:167
 #: ../templates/admin_editcat:93 ../templates/admin_editcat_rss:131
@@ -2798,6 +2869,10 @@ msgstr "Notation"
 #: ../templates/bibsonomy_showtitlist:76
 msgid "Nutzer"
 msgstr "Nutzer"
+
+#: ../templates/views/portrait/clouds_navigation:20
+msgid "Nutzer-Tags"
+msgstr "Nutzer-Tags"
 
 #: ../templates/admin_showlogintarget:49 ../templates/admin_showlogintarget:67
 msgid "Nutzername"
@@ -2953,12 +3028,17 @@ msgid "Profilmanagement"
 msgstr "Profilmanagement"
 
 #: ../templates/info:25 ../templates/info_1:25 ../templates/info_2:25
+#: ../templates/views/portrait/mainnavigation:17
 msgid "Projekt"
 msgstr "Projekt"
 
 #: ../templates/admin_editcat:107
 msgid "Protokoll"
 msgstr "Protokoll"
+
+#: ../templates/views/portrait/clouds_navigation:17
+msgid "Provenienz"
+msgstr "Provenienz"
 
 #: ../templates/bibsonomy_showtitlist:62
 msgid "Publikationen"
@@ -2976,6 +3056,7 @@ msgstr "Quellen zum Tag <i>%1</i> in BibSonomy"
 
 #: ../templates/admin_showcat:74 ../templates/admin_showviews:65
 #: ../templates/mainnavigation:20
+#: ../templates/views/portrait/mainnavigation:17
 msgid "RSS"
 msgstr "RSS"
 
@@ -2992,6 +3073,7 @@ msgid "RSS-Feed zu diesem View"
 msgstr "RSS-Feed zu diesem View"
 
 #: ../templates/admin_editsession:59 ../templates/mainnavigation:17
+#: ../templates/views/portrait/mainnavigation:16
 msgid "Recherche"
 msgstr "Recherche"
 
@@ -3003,6 +3085,7 @@ msgstr "Recherchemaske festlegen"
 msgid "Recherchen"
 msgstr "Recherchen"
 
+#: ../templates/views/portrait/clouds_navigation:15
 #: ../templates/views/portrait/searchmask_query:21
 msgid "Region"
 msgstr "Region"
@@ -3105,7 +3188,7 @@ msgstr "Schlagworte"
 msgid "Schlagwortindex"
 msgstr "Schlagwortindex"
 
-#: ../templates/search_showtitset:720
+#: ../templates/search_showtitset:726
 msgid "Schlagwortindex diese Katalogs"
 msgstr "Schlagwortindex diese Katalogs"
 
@@ -3221,6 +3304,10 @@ msgstr "Session-ID"
 #: ../templates/admin_showviews:27
 msgid "Sessions"
 msgstr "Sessions"
+
+#: ../templates/info_13:36 ../templates/info_15:47
+msgid "Sichten"
+msgstr "Sichten"
 
 #: ../templates/testsystem_info:17
 msgid ""
@@ -3525,6 +3612,7 @@ msgid "Signatur"
 msgstr "Signatur"
 
 #: ../templates/mainnavigation:29
+#: ../templates/views/portrait/mainnavigation:17
 msgid "Sitzung beenden"
 msgstr "Sitzung beenden"
 
@@ -3698,7 +3786,8 @@ msgstr "Stelle"
 msgid "Strasse"
 msgstr "Strasse"
 
-#: ../templates/searchmask:105 ../templates/views/edz/searchmask:119
+#: ../templates/info_13:45 ../templates/searchmask:105
+#: ../templates/views/edz/searchmask:119
 #: ../templates/views/gdonck/searchmask:99
 #: ../templates/views/gleuel/searchmask:99
 #: ../templates/views/inst404/searchmask:120
@@ -3723,6 +3812,7 @@ msgstr "Strasse"
 #: ../templates/views/kug/searchmask:191
 #: ../templates/views/kwinter/searchmask:99
 #: ../templates/views/landschaft/searchmask:72
+#: ../templates/views/portrait/clouds_navigation:21
 #: ../templates/views/portrait/searchmask:77
 #: ../templates/views/rheinlandbib/searchmask:91
 #: ../templates/views/richter/searchmask:100
@@ -3731,7 +3821,7 @@ msgid "Suchbegriffe"
 msgstr "Suchbegriffe"
 
 #: ../templates/bibsonomy_showtitlist:54 ../templates/search_showswtindex:81
-#: ../templates/search_showtitlist:186 ../templates/search_showtitset:721
+#: ../templates/search_showtitlist:186 ../templates/search_showtitset:727
 #: ../templates/views/kapsel/search_showtitlist:174
 #: ../templates/views/kapsel/searchmask:100
 #: ../templates/views/kapsel/searchmask:67
@@ -3883,7 +3973,8 @@ msgstr "Swt-Datei"
 msgid "System"
 msgstr "System"
 
-#: ../templates/searchmask:46 ../templates/searchmask_simple:46
+#: ../templates/info_13:27 ../templates/searchmask:46
+#: ../templates/searchmask_simple:46
 #: ../templates/views/kug/searchmask_simple:36
 msgid "Systematisches Bl&auml;ttern"
 msgstr "Systematisches Bl&auml;ttern"
@@ -5062,7 +5153,7 @@ msgstr "Titelangaben"
 #: ../templates/database/portrait/search_showtitset:54
 #: ../templates/managecollection_tit_as_html:23
 #: ../templates/managecollection_tit_as_html_simple:24
-#: ../templates/search_showmulttitset:37 ../templates/search_showtitset:63
+#: ../templates/search_showmulttitset:37 ../templates/search_showtitset:65
 msgid "Titelaufnahme"
 msgstr "Titelaufnahme"
 
@@ -5094,7 +5185,7 @@ msgid "Titelzugriffe"
 msgstr "Titelzugriffe"
 
 #: ../templates/info_10:36 ../templates/info_11:36 ../templates/info_12:31
-#: ../templates/info_13:36 ../templates/info_14:44 ../templates/info_15:48
+#: ../templates/info_13:37 ../templates/info_14:44 ../templates/info_15:48
 #: ../templates/info_16:44 ../templates/info_17:44 ../templates/info_18:44
 #: ../templates/info_19:44 ../templates/info_9:44
 #: ../templates/search_showtitset:44 ../templates/views/kapsel/info_18:44
@@ -5139,6 +5230,7 @@ msgstr "Treffer"
 #: ../templates/views/einbaende/virtualsearch_result_start:31
 #: ../templates/views/kapsel/resultlists_showall:26
 #: ../templates/views/kapsel/resultlists_showsinglepool:26
+#: ../templates/views/portrait/mainnavigation:16
 #: ../templates/views/portrait/resultlists_showsinglepool:26
 #: ../templates/virtualsearch_result_start:26
 msgid "Trefferliste"
@@ -5397,6 +5489,27 @@ msgstr "Vorname"
 msgid "W&auml;hlen Sie ein anzuzeigendes oder zu l&ouml;schendes Profil aus"
 msgstr "W&auml;hlen Sie ein anzuzeigendes oder zu l&ouml;schendes Profil aus"
 
+#. ("<img src=\"/images/openbib/wikipedia.png\" alt=\"Mashup mitWikipedia\" />","<a href=\"http://de.wikipedia.org/wiki/Wortwolke\" target=\"_blank\">engl. tag cloud</a>")
+#: ../templates/info_13:55
+msgid ""
+"W&auml;hlen Sie einen Katalog aus, um f&uuml;r diesen eine\n"
+"<b>&Uuml;bersicht der 200 am h&auml;ufigsten verwendeten\n"
+"Normdaten-Eintr&auml;ge f&uuml;r Schlagworte,\n"
+"Systematiken/Notationen, K&ouml;rperschaften/Institutionen sowie Personen</"
+"b> in der Form einer\n"
+"Wortwolke (%1&nbsp;%2) zu erhalten. Je mehr Titel mit\n"
+"einem Normdaten-Eintrag verkn&uuml;pft wurden, umso grösser wird der "
+"zugehörige Normdaten-Eintrag dargestellt."
+msgstr ""
+"W&auml;hlen Sie einen Katalog aus, um f&uuml;r diesen eine\n"
+"<b>&Uuml;bersicht der 200 am h&auml;ufigsten verwendeten\n"
+"Normdaten-Eintr&auml;ge f&uuml;r Schlagworte,\n"
+"Systematiken/Notationen, K&ouml;rperschaften/Institutionen sowie Personen</"
+"b> in der Form einer\n"
+"Wortwolke (%1&nbsp;%2) zu erhalten. Je mehr Titel mit\n"
+"einem Normdaten-Eintrag verkn&uuml;pft wurden, umso grösser wird der "
+"zugehörige Normdaten-Eintrag dargestellt."
+
 #: ../templates/loadbalancer:23
 msgid "Wartungsarbeiten"
 msgstr "Wartungsarbeiten"
@@ -5453,6 +5566,10 @@ msgstr "Weiter als externe Recherche"
 #: ../templates/virtualsearch_more_search_tips:24
 msgid "Weitergehende Suchhinweise"
 msgstr "Weitergehende Suchhinweise"
+
+#: ../templates/info_15:81
+msgid "Weiterleitungs-Icon"
+msgstr "Weiterleitungs-Icon"
 
 #: ../templates/userprefs:153
 msgid "Welche Recherchemaske soll verwendet werden?"
@@ -5518,6 +5635,28 @@ msgstr ""
 #: ../templates/loadbalancer:28
 msgid "Wir bitten um Ihr Verst&auml;ndnis. Vielen Dank."
 msgstr "Wir bitten um Ihr Verst&auml;ndnis. Vielen Dank."
+
+#: ../templates/info_18:56
+msgid "Wolke der h&auml;ufigsten Begriffe"
+msgstr "Wolke der h&auml;ufigsten Begriffe"
+
+#: ../templates/info_9:56
+msgid "Wolke der h&auml;ufigsten Erscheinungsjahre"
+msgstr "Wolke der h&auml;ufigsten Erscheinungsjahre"
+
+#: ../templates/info_14:56
+msgid "Wolke der häufigsten Begriffe"
+msgstr "Wolke der häufigsten Begriffe"
+
+#: ../templates/info_19:56
+msgid "Wolke der von Nutzern vergebenen Tags"
+msgstr "Wolke der von Nutzern vergebenen Tags"
+
+#: ../templates/info_13:35 ../templates/info_14:43 ../templates/info_15:46
+#: ../templates/info_16:43 ../templates/info_17:43 ../templates/info_18:43
+#: ../templates/info_19:43 ../templates/info_9:43
+msgid "Wolken"
+msgstr "Wolken"
 
 #: ../templates/admin_editview_rss:68
 msgid "Wählen Sie bitte einen View aus:"

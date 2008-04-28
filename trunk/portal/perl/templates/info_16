@@ -40,8 +40,8 @@
 <p />
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=14" title="Wolken">Wolken</a></li>
-   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=10" title="Top 20">[% msg.maketext("Top 20") %]</a></li>
+   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=14" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a></li>
+   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=10" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></li>
 </ul>
 
 <div class="content">
@@ -53,7 +53,7 @@
 <p />
 
 <table width="100%">
-<tr><th>Wolke der h&auml;ufigsten Systematiken/Notationen</th></tr>
+<tr><th>Wolke der h&auml;ufigsten Begriffe</th></tr>
 <tr><td class="boxedclear">
 <!-- Beginn Tag-Cloud -->
 [%
@@ -81,8 +81,7 @@ verkn&uuml;pft mit </span><a href="[% config.virtualsearch_loc %]?sessionID=[% s
 [% END %]
 </ol>
 [% ELSE %]
-Leider k&ouml;nnen wir Ihnen für diesen Katalog keine Wolke der Systematiken/Notationen
-anbieten.
+[% msg.maketext("Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r h&auml;fige Begriffe dieser Kategorie anbieten.") %]
 [% END %]
 </td></tr>
 </table>

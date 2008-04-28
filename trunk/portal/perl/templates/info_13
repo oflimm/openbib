@@ -24,15 +24,16 @@
 <ul class="tabbingmenu">
    <li><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
    <li><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
-   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
+   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=50" title="[% msg.maketext("Systematisches Bl&auml;ttern")" %]">[% msg.maketext("Systematisches Bl&auml;ttern") %]</a></li>
+   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="[% msg.maketext("&Uuml;bersichten") %]">[% msg.maketext("&Uuml;bersichten") %]</a></li>
 </ul>
 
 <div class="content">
 <p />
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="Wolken">Wolken</a></li>
-   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=15" title="Sichten">Sichten</a></li>
+   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a></li>
+   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=15" title="[% msg.maketext("Sichten") %]">[% msg.maketext("Sichten") %]</a></li>
    <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=11" title="Top 20">[% msg.maketext("Top 20") %]</a></li>
 </ul>
 
@@ -40,24 +41,23 @@
 <p />
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="Katalogauswahl">Katalogauswahl</a></li>
-   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=40" title="Suchbegriffe">Suchbegriffe</a></li>
+   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="[% msg.maketext("Katalogauswahl") %]">[% msg.maketext("Katalogauswahl") %]</a></li>
+   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=40" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a></li>
 </ul>
 
 <div class="content">
 <p />
 
 <table width="100%">
-<tr><th>Hinweis</th></tr>
+<tr><th>[% msg.maketext("Hinweis") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
-W&auml;hlen Sie einen Katalog aus, um f&uuml;r diesen eine
+[% msg.maketext("W&auml;hlen Sie einen Katalog aus, um f&uuml;r diesen eine
 <b>&Uuml;bersicht der 200 am h&auml;ufigsten verwendeten
 Normdaten-Eintr&auml;ge f&uuml;r Schlagworte,
 Systematiken/Notationen, K&ouml;rperschaften/Institutionen sowie Personen</b> in der Form einer
-Wortwolke (<img src="/images/openbib/wikipedia.png" alt="Mashup mit
-Wikipedia" />&nbsp;<a href="http://de.wikipedia.org/wiki/Wortwolke"
-target="_blank">engl. tag cloud</a>) zu erhalten. Je mehr Titel mit
-einem Normdaten-Eintrag verkn&uuml;pft wurden, umso grösser wird der zugehörige Normdaten-Eintrag dargestellt.
+Wortwolke ([_1]&nbsp;[_2]) zu erhalten. Je mehr Titel mit
+einem Normdaten-Eintrag verkn&uuml;pft wurden, umso grösser wird der zugehörige Normdaten-Eintrag dargestellt.","<img src=\"/images/openbib/wikipedia.png\" alt=\"Mashup mit
+Wikipedia\" />","<a href=\"http://de.wikipedia.org/wiki/Wortwolke\" target=\"_blank\">engl. tag cloud</a>") %]
 </td></tr>
 </table>
 <p />

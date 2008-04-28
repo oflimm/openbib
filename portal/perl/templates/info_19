@@ -40,8 +40,8 @@
 <p />
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=14" title="Wolken">Wolken</a></li>
-   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=10" title="Top 20">[% msg.maketext("Top 20") %]</a></li>
+   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=14" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a></li>
+   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=10" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></li>
 </ul>
 
 <div class="content">
@@ -53,7 +53,7 @@
 <p />
 
 <table width="100%">
-<tr><th>Wolke der von Nutzern vergebenen Tags</th></tr>
+<tr><th>[% msg.maketext("Wolke der von Nutzern vergebenen Tags") %]</th></tr>
 <tr><td class="boxedclear">
 <!-- Beginn Tag-Cloud -->
 [%
@@ -82,8 +82,7 @@ verkn&uuml;pft mit </span><a href="[% config.tags_loc %]?sessionID=[% sessionID 
 [% END %]
 </ol>
 [% ELSE %]
-Leider k&ouml;nnen wir Ihnen für diesen Katalog keine Wolke der von
-Nutzern vergebenen Tags anbieten.
+[% msg.maketext("Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r von Nutzern vergebene Tags anbieten.") %]
 [% END %]
 </td></tr>
 </table>

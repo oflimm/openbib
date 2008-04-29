@@ -298,6 +298,7 @@
 ../templates/views/landschaft/virtualsearch_more_search_tips
 ../templates/views/portrait/corporate_banner
 ../templates/views/portrait/clouds_navigation
+../templates/views/portrait/drilldown_categorized
 ../templates/views/portrait/info_20
 ../templates/views/portrait/info_30
 ../templates/views/portrait/leave

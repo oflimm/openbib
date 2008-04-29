@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2008-04-28 15:12+0200\n"
+"PO-Revision-Date: 2008-04-29 07:50+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1171,7 +1171,7 @@ msgstr "Geben Sie hier Ihre Suchbegriffe ein"
 
 #: ../templates/views/kapsel/searchmask_simple:57
 #: ../templates/views/landschaft/searchmask_simple:49
-#: ../templates/views/portrait/searchmask_simple:56
+#: ../templates/views/portrait/searchmask_simple:65
 msgid "Geben Sie hier bitte Ihre Suchbegriffe ein"
 msgstr "Geben Sie hier bitte Ihre Suchbegriffe ein"
 
@@ -1443,7 +1443,7 @@ msgstr ""
 #: ../templates/views/portrait/searchmask:127
 #: ../templates/views/portrait/searchmask:131
 #: ../templates/views/portrait/searchmask:72
-#: ../templates/views/portrait/searchmask_simple:64
+#: ../templates/views/portrait/searchmask_simple:73
 #: ../templates/views/rheinlandbib/searchmask:117
 #: ../templates/views/rheinlandbib/searchmask:121
 #: ../templates/views/rheinlandbib/searchmask:79
@@ -1606,7 +1606,7 @@ msgstr "Hier löschen Sie die Eingabefelder"
 #: ../templates/views/portrait/searchmask:127
 #: ../templates/views/portrait/searchmask:131
 #: ../templates/views/portrait/searchmask:72
-#: ../templates/views/portrait/searchmask_simple:64
+#: ../templates/views/portrait/searchmask_simple:73
 #: ../templates/views/rheinlandbib/searchmask:117
 #: ../templates/views/rheinlandbib/searchmask:121
 #: ../templates/views/rheinlandbib/searchmask:79
@@ -2642,7 +2642,7 @@ msgstr "Los"
 #: ../templates/views/portrait/searchmask:127
 #: ../templates/views/portrait/searchmask:131
 #: ../templates/views/portrait/searchmask:72
-#: ../templates/views/portrait/searchmask_simple:64
+#: ../templates/views/portrait/searchmask_simple:73
 #: ../templates/views/rheinlandbib/searchmask:117
 #: ../templates/views/rheinlandbib/searchmask:121
 #: ../templates/views/rheinlandbib/searchmask:79
@@ -3133,7 +3133,7 @@ msgstr "Rufen Sie hier die Ergebnisse früherer Recherchen auf"
 
 #: ../templates/views/kapsel/searchmask_simple:75
 #: ../templates/views/landschaft/searchmask_simple:67
-#: ../templates/views/portrait/searchmask_simple:74
+#: ../templates/views/portrait/searchmask_simple:83
 msgid "Rufen Sie hier die Ergebnisse frührerer Recherchen auf"
 msgstr "Rufen Sie hier die Ergebnisse frührerer Recherchen auf"
 
@@ -3834,7 +3834,7 @@ msgstr "Suchbegriffe"
 #: ../templates/views/portrait/searchmask:127
 #: ../templates/views/portrait/searchmask:131
 #: ../templates/views/portrait/searchmask:72
-#: ../templates/views/portrait/searchmask_simple:64
+#: ../templates/views/portrait/searchmask_simple:73
 msgid "Suchen"
 msgstr "Suchen"
 
@@ -5236,6 +5236,10 @@ msgstr "Treffer"
 msgid "Trefferliste"
 msgstr "Trefferliste"
 
+#: ../templates/views/portrait/drilldown_categorized:3
+msgid "Treffermenge&nbsp;eingrenzen"
+msgstr "Treffermenge&nbsp;eingrenzen"
+
 #: ../templates/mainnavigation:29
 msgid "Tutorien"
 msgstr "Tutorien"
@@ -5725,7 +5729,7 @@ msgstr "Zugriff &uuml;ber OLWS"
 #: ../templates/views/landschaft/searchmask:49
 #: ../templates/views/landschaft/searchmask_simple:73
 #: ../templates/views/portrait/searchmask:54
-#: ../templates/views/portrait/searchmask_simple:80
+#: ../templates/views/portrait/searchmask_simple:89
 #: ../templates/views/rheinlandbib/searchmask:57
 #: ../templates/views/rheinlandbib/searchmask_simple:105
 #: ../templates/views/richter/searchmask:71
@@ -5846,6 +5850,10 @@ msgstr "mind."
 msgid "mit Grund"
 msgstr "mit Grund"
 
+#: ../templates/views/portrait/drilldown_categorized:38
+msgid "nach Beruf/Weltanschauung"
+msgstr "nach Beruf/Weltanschauung"
+
 #: ../templates/database/einbaende/drilldown_categorized:10
 msgid "nach Buchbinder/Werkst&auml;tten"
 msgstr "nach Buchbinder/Werkst&auml;tten"
@@ -5874,6 +5882,7 @@ msgstr "nach Fert.Jahr"
 #: ../templates/views/kapsel/resultlists_showall:46
 #: ../templates/views/kapsel/resultlists_showsinglepool:48
 #: ../templates/views/kapsel/search_showtitlist:52
+#: ../templates/views/portrait/drilldown_categorized:52
 #: ../templates/views/portrait/resultlists_showsinglepool:47
 #: ../templates/virtualsearch_result_start:48
 msgid "nach Jahr"
@@ -5913,6 +5922,7 @@ msgid "nach Person/Region"
 msgstr "nach Person/Region"
 
 #: ../templates/drilldown_categorized:10
+#: ../templates/views/portrait/drilldown_categorized:10
 msgid "nach Personen"
 msgstr "nach Personen"
 
@@ -5937,6 +5947,14 @@ msgstr "nach Personen"
 msgid "nach Popularit&auml;t"
 msgstr "nach Popularit&auml;t"
 
+#: ../templates/views/portrait/drilldown_categorized:66
+msgid "nach Portraitart"
+msgstr "nach Portraitart"
+
+#: ../templates/views/portrait/drilldown_categorized:24
+msgid "nach Regionen"
+msgstr "nach Regionen"
+
 #: ../templates/database/einbaende/search_showtitlist:50
 #: ../templates/database/einbaende/search_showtitlist_of_cnt:57
 #: ../templates/database/landschaft/search_showtitlist:53
@@ -5960,6 +5978,7 @@ msgstr "nach Signatur"
 
 #: ../templates/database/einbaende/drilldown_categorized:80
 #: ../templates/drilldown_categorized:80
+#: ../templates/views/portrait/drilldown_categorized:80
 msgid "nach Sprache"
 msgstr "nach Sprache"
 

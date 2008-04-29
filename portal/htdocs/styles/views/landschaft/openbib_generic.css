@@ -278,7 +278,29 @@ a:active.invisible {
   color:#990000;
 }
 
+.drilldown_categorized {
+  background: #EDEBE3;
+}
+
+.thumbnail {
+  text-align: center;
+}
+
+#maincontent{
+  width: 99%;
+  position: absolute;
+  top: 165px;
+  left: 0;
+  background: #EDEBE3 ;
+  padding: 5px;
+}
+
 #mainnavigation { 
+  width: 99%;
+  position: absolute;
+  top: 135px;
+  left: 1;
+  padding: 0px;
   border: 1px solid #666;
   background: #FFFDF3; 
 }

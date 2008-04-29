@@ -264,6 +264,10 @@ a:active.invisible {
   color:#990000;
 }
 
+.drilldown_categorized {
+  background: white;
+}
+
 #maincontent{
   width: 99%;
   position: absolute;

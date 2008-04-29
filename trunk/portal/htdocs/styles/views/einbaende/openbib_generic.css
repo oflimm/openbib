@@ -265,6 +265,18 @@ a:active.invisible {
   z-index: 2;	
 }
 
+.queryhighlight {
+  color:#990000;
+}
+
+.drilldown_categorized {
+  background: #EDEBE3;
+}
+
+.thumbnail {
+  text-align: center;
+}
+
 #maincontent{
   width: 99%;
   position: absolute;

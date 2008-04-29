@@ -266,6 +266,18 @@ a:active.invisible {
   z-index: 2;	
 }
 
+.queryhighlight {
+  color:#990000;
+}
+
+.thumbnail {
+  text-align: center;
+}
+
+.drilldown_categorized {
+  background: #FAF8CC;
+}
+
 #maincontent{
   width: 99%;
   position: absolute;

@@ -112,6 +112,46 @@ my $titdefs_ref = {
         mult   => 1,
         ref    => 'aut',
     },
+    '112' => {            # name der 4. person in ansetzungsform
+        newcat => '0100', # verfasser
+        mult   => 1,
+        ref    => 'aut',
+    },
+    '116' => {            # name der 5. person in ansetzungsform
+        newcat => '0100', # verfasser
+        mult   => 1,
+        ref    => 'aut',
+    },
+    '120' => {            # name der 6. person in ansetzungsform
+        newcat => '0100', # verfasser
+        mult   => 1,
+        ref    => 'aut',
+    },
+    '124' => {            # name der 7. person in ansetzungsform
+        newcat => '0100', # verfasser
+        mult   => 1,
+        ref    => 'aut',
+    },
+    '128' => {            # name der 8. person in ansetzungsform
+        newcat => '0100', # verfasser
+        mult   => 1,
+        ref    => 'aut',
+    },
+    '132' => {            # name der 9. person in ansetzungsform
+        newcat => '0100', # verfasser
+        mult   => 1,
+        ref    => 'aut',
+    },
+    '136' => {            # name der 10. person in ansetzungsform
+        newcat => '0100', # verfasser
+        mult   => 1,
+        ref    => 'aut',
+    },
+    '140' => {            # name der 11. person in ansetzungsform
+        newcat => '0100', # verfasser
+        mult   => 1,
+        ref    => 'aut',
+    },
     '200' => {            # name der 1. koerperschaft in ansetzungsform
         newcat => '0200', # koerperschaft
         mult   => 1,
@@ -123,6 +163,26 @@ my $titdefs_ref = {
         ref    => 'kor',
     },
     '208' => {            # name der 3. koerperschaft in ansetzungsform
+        newcat => '0200', # koerperschaft
+        mult   => 1,
+        ref    => 'kor',
+    },
+    '212' => {            # name der 4. koerperschaft in ansetzungsform
+        newcat => '0200', # koerperschaft
+        mult   => 1,
+        ref    => 'kor',
+    },
+    '216' => {            # name der 5. koerperschaft in ansetzungsform
+        newcat => '0200', # koerperschaft
+        mult   => 1,
+        ref    => 'kor',
+    },
+    '220' => {            # name der 6. koerperschaft in ansetzungsform
+        newcat => '0200', # koerperschaft
+        mult   => 1,
+        ref    => 'kor',
+    },
+    '224' => {            # name der 7. koerperschaft in ansetzungsform
         newcat => '0200', # koerperschaft
         mult   => 1,
         ref    => 'kor',

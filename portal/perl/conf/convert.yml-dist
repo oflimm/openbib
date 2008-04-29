@@ -197,6 +197,8 @@ convtab:
         string: 1
       '0540':         # ISBN
         string: 1
+      '0800':         # Medienart
+        string: 1
       '5050':         # Bibkey
         string: 1
       '5051':         # Bibkey Base

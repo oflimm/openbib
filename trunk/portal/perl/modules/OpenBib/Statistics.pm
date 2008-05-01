@@ -138,6 +138,8 @@ sub get_result {
         ? $arg_ref->{id           } : undef;
     my $type              = exists $arg_ref->{type}
         ? $arg_ref->{type  }        : undef;
+    my $hashkey           = exists $arg_ref->{hashkey}
+        ? $arg_ref->{hashkey}       : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -167,6 +169,13 @@ sub get_result {
     }
 
     $logger->debug(YAML::Dump($data_ref));
+
+    $logger->debug("Ref: ".(ref $data_ref)." - $hashkey");
+
+    if (ref $data_ref eq "HASH" && $hashkey){
+        $logger->debug("Returning Ref: ".(ref $data_ref)." - $hashkey");
+        return $data_ref->{$hashkey};
+    }
     
     return $data_ref;
 }

@@ -17,7 +17,7 @@
 [%
   thisbk     = query.param("category");
   bks        = config.load_bk;
-  thisbklist = statistics.get_result({id => view, type => 11}); 
+  thisbklist = statistics.get_result({id => view, type => 11, hashkey => thisbk }); 
 %]
 [%
   viewdbs = [];
@@ -41,10 +41,10 @@
 
 <div class="content">
 <p />
-[%# USE dumper;dumper.dump(dbinfotable)%]
+[%# USE dumper;dumper.dump(thisbklist)%]
 <h1>[% thisbk %] / [% bks.${thisbk} %]</h1>
 <table>
-[% FOREACH bkinfo IN thisbklist.${thisbk} %]
+[% FOREACH bkinfo IN thisbklist %]
 [%   thisdb    = bkinfo.key %]
 [%   thiscount = bkinfo.value %]
 <tr><td><a href="[% config.search_loc %]?sessionID=[% sessionID %];database=[% thisdb %];searchtitofcnt=[% thisbk %];category=E4100;hitrange=50">[% dbinfotable.dbnames.${thisdb}.short %]</a></td><td align="right"><b>[% thiscount%]</b> Treffer</td></tr>

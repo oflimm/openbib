@@ -129,6 +129,7 @@ sub handler {
                 }
                 elsif ($type eq "partial"){
                     $r->internal_redirect("http://$config->{servername}/images/openbib/gbs-partial.png");
+                    $logger->error("http://$config->{servername}/images/openbib/gbs-partial.png");
                     return OK;
                 }
                 elsif ($type eq "full"){

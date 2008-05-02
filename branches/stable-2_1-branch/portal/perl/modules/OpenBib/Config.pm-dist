@@ -585,6 +585,11 @@ tt_connector_digibib_result_start_tname  => 'connector_digibib_result_start',
                    'T0595' => 1,
                },
 
+               nationallizenzen => {
+                   'T0662' => 1,
+                   'T0663' => 1,
+               },
+
                portrait => {
                    'T0100' => 1,
                    'T0101' => 1,

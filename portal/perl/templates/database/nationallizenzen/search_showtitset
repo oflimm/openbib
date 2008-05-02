@@ -153,7 +153,7 @@ FOREACH category IN categories;
          content   = "${content} (<a href=\"${config.redirect_loc}/${sessionID}/530/${config.ezb_exturl}&jq_term1=${content}\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
 
     CASE "T0662";
-         content   = "<a href=\"${content}\" target=\"_blank\">Greifen Sie hier online auf den Volltext zu</a>";
+         content   = "<a href=\"${config.redirect_loc}/${sessionID}/503/${content}\" target=\"_blank\">Greifen Sie hier online auf den Volltext zu</a>";
 
     CASE "T4110";
          thiscontent   = "<img src=\"/images/openbib/pdf-document.png\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)";

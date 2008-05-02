@@ -256,6 +256,14 @@ a:active.invisible {
   background: #FAF8CC; 
 }
 
+.thumbnail {
+  text-align: center;
+}
+
+.drilldown_categorized {
+  background: #FAF8CC;
+}
+
 .content {
 
   font-family: Arial,helv,Helvetica,Verdana,sans-serif;

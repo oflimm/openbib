@@ -185,6 +185,8 @@ sub log_event {
     # Redirects 
     # 500 => TOC / hbz-Server
     # 501 => TOC / ImageWaere-Server
+    # 502 => USB E-Book / Vollzugriff
+    # 503 => Nationallizenzen / Vollzugriff
     # 510 => BibSonomy
     # 520 => Wikipedia / Personen
     # 521 => Wikipedia / ISBN
@@ -436,7 +438,7 @@ sub log_query {
 			  'ein'   => 1,
 			  'eine'  => 1,
 			  'einer' => 1,
-			  'für'   => 1,
+			  'fÃ¼r'   => 1,
 			  'im'    => 1,
 			  'in'    => 1,
 			  'la'    => 1,

@@ -92,6 +92,8 @@
 ../templates/database/landschaft/search_showtitset
 ../templates/database/landschaft/virtualsearch_result_item
 ../templates/database/landschaft/visible_categories_titset
+../templates/database/nationallizenzen/search_showtitset
+../templates/database/nationallizenzen/visible_categories_titset
 ../templates/database/portrait/search_showtitlist
 ../templates/database/portrait/search_showtitset
 ../templates/database/portrait/virtualsearch_result_item

@@ -80,6 +80,8 @@
 ../templates/connector_permalink
 ../templates/connector_rss_item
 ../templates/corporate_banner
+../templates/database/ebooks/search_showtitset
+../templates/database/ebooks/visible_categories_titset
 ../templates/database/einbaende/managecollection_tit_as_html
 ../templates/database/einbaende/search_showtitlist
 ../templates/database/einbaende/search_showtitset
@@ -315,7 +317,6 @@
 ../templates/views/portrait/searchframe_simple
 ../templates/views/portrait/startopac
 ../templates/views/portrait/std_footer
-../templates/views/portrait/virtualsearch_result_item
 ../templates/views/rheinlandbib/corporate_banner
 ../templates/views/rheinlandbib/databasechoice
 ../templates/views/rheinlandbib/frameset

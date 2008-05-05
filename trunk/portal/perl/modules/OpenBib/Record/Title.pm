@@ -1234,6 +1234,32 @@ sub to_bibkey {
     return OpenBib::Common::Util::gen_bibkey({ normdata => $self->{_normset}});
 }
 
+sub to_normalized_isbn13 {
+    my ($self) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $thisisbn = $self->{_normset}{"T0540"}[0]{content};
+
+    $logger->debug("ISBN: $thisisbn");
+
+    # Normierung auf ISBN13
+
+    my $isbn     = Business::ISBN->new($thisisbn);
+    
+    if (defined $isbn && $isbn->is_valid){
+        $thisisbn = $isbn->as_isbn13->as_string;
+    }
+    
+    $thisisbn = OpenBib::Common::Util::grundform({
+        category => '0540',
+        content  => $thisisbn,
+    });
+    
+    return $thisisbn;
+}
+
 sub to_endnote {
     my ($self) = @_;
 

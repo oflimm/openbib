@@ -5,19 +5,19 @@ convtab:
   default:
     blacklist_aut:
       '0100': 1        # Aufnahmedatum
-      '0101': 1        # Aenderungsdatum
+#      '0101': 1        # Aenderungsdatum
     blacklist_kor:
       '0100': 1        # Aufnahmedatum
-      '0101': 1        # Aenderungsdatum
+#      '0101': 1        # Aenderungsdatum
     blacklist_not:
       '0100': 1        # Aufnahmedatum
-      '0101': 1        # Aenderungsdatum
+#      '0101': 1        # Aenderungsdatum
     blacklist_swt:
       '0100': 1        # Aufnahmedatum
-      '0101': 1        # Aenderungsdatum
+#      '0101': 1        # Aenderungsdatum
     blacklist_tit:
-     #'0002': 1        # Aufnahmedatum
-      '0003': 1        # Aenderungsdatum        
+#      '0002': 1        # Aufnahmedatum
+#      '0003': 1        # Aenderungsdatum        
       '0005': 1        # Inventarnummer (in mex vorhanden)
       '0009': 1        # Herkunft
       '0010': 1        # Fremdnummer
@@ -205,12 +205,19 @@ convtab:
         string: 1
 # Kategorien fuer die Anzeige in der Kurztitelanzeige
     listitemcat:
+      '0100': 1
+      '0101': 1
+      '0102': 1
+      '0103': 1
+      '0200': 1
+      '0201': 1
       '0310': 1
       '0331': 1
       '0403': 1
       '0412': 1
       '0424': 1
       '0425': 1
+      '0540': 1
       '1203': 1
 # In die initiale Volltextsuche werden neben den bereits definierten
 # Normdateikategorien inverted_*_ref folgende weitere Kategorien aus dem

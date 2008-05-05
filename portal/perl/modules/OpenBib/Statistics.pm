@@ -258,6 +258,7 @@ sub log_event {
     # 500 => TOC / hbz-Server
     # 501 => TOC / ImageWaere-Server
     # 502 => USB ebook Vollzugriff
+    # 503 => Nationallizenzen Vollzugriff
     # 510 => BibSonomy
     # 520 => Wikipedia / Personen
     # 521 => Wikipedia / ISBN

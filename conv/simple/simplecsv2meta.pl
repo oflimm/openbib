@@ -64,13 +64,16 @@ $bufferidx=0;
 );
 
 %notkonv=(
-    'Paket1'               => '0700',
+    'Paket'                => '0700:',
+    'Paket1'               => '0700:',
+    'Paket2'               => '0700:',
+    'Paket3'               => '0700:',
 );
 
 %swtkonv=(
-    'Subject'              => '0710',
-    'Subject2'              => '0710',
-    'Subject3'              => '0710',
+    'Subject'               => '0710:',
+    'Subject2'              => '0710:',
+    'Subject3'              => '0710:',
 );
 
 # Kategoriemappings
@@ -81,6 +84,7 @@ $bufferidx=0;
     'Untertitel'           => '0370:',
     'Auflage'              => '0403:',
     'PrintISBN'            => '0540:',
+    'OEBISBN'              => '0540:',
     'EBookISBN'            => '0553:',
     'Erscheinungsjahr'     => '0425:',
 #    'DOI'                  => '',
@@ -137,10 +141,13 @@ $notdublastidx=1;
 $swtdublastidx=1;
 
 while (my $result=$request->fetchrow_hashref){
-    $titbuffer[$titidx++]=sprintf "0000:%d", $titidn;
+    $titbuffer[$titidx++]=sprintf "0000:%d", $result->{'Nr'};
 
     foreach my $kateg (keys %titelkonv){
         my $content = $result->{$kateg};
+
+	$content=~s/uhttp:/http:/;
+
         if ($result->{$kateg}){
             $titbuffer[$titidx++]=$titelkonv{$kateg}.$content;
         }
@@ -172,7 +179,7 @@ while (my $result=$request->fetchrow_hashref){
                     $autidn=(-1)*$autidn;
                 }
                 
-                $titbuffer[$titidx++]="0101:IDN: ".$autidn;
+                $titbuffer[$titidx++]=$autkonv{$kateg}."IDN: ".$autidn;
         }
         }
         # Autoren abarbeiten Ende
@@ -195,7 +202,7 @@ while (my $result=$request->fetchrow_hashref){
                 $koridn=(-1)*$koridn;
             }
             
-            $titbuffer[$titidx++]="0200:IDN: ".$koridn;
+            $titbuffer[$titidx++]=$korkonv{$kateg}."IDN: ".$koridn;
         }
     }
     # Koerperschaften abarbeiten Ende
@@ -218,7 +225,7 @@ while (my $result=$request->fetchrow_hashref){
                 $notidn=(-1)*$notidn;
             }
             
-            $titbuffer[$titidx++]="0700:IDN: ".$notidn;
+            $titbuffer[$titidx++]=$notkonv{$kateg}."IDN: ".$notidn;
         }
     }
     # Notationen abarbeiten Ende
@@ -239,7 +246,7 @@ while (my $result=$request->fetchrow_hashref){
             else {
                 $swtidn=(-1)*$swtidn;
             }
-            $titbuffer[$titidx++]="0710:IDN: ".$swtidn;
+            $titbuffer[$titidx++]=$swtkonv{$kateg}."IDN: ".$swtidn;
         }
     }
     # Schlagworte abarbeiten Ende

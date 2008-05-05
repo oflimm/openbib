@@ -64,9 +64,9 @@
 [%- FOREACH result IN resultlists -%]
 [%-     recordlist = result.recordlist -%]
 [%-     database   = result.database -%]
-<tr class="titlerow"><td>&nbsp;</td><td><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% dbinfotable.dbinfo.$database.full %]</td><td align="right" colspan="3"><strong>[% recordlist.get_size %] Treffer</strong></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
+<tr class="titlerow"><td>&nbsp;</td><td colspan="3"><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% dbinfotable.dbinfo.$database.full %]</td><td align="right" colspan="2"><strong>[% recordlist.get_size %] Treffer</strong></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
 [%-     IF offsets -%]
-<tr class="titlerow"><td>&nbsp;</td><td colspan="4">
+<tr class="titlerow"><td>&nbsp;</td><td colspan="5">
 [%          FOREACH singleoffset IN offsets %]
 [%-             IF singleoffset.type == 'getnext' -%]
 <a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];database=[% database %];queryid=[% queryid %];action=getnext;offset=[% singleoffset.offset %];hitrange=[% hitrange %];sb=[% qopts.sb %]">[Weitere Treffer...]</a>
@@ -133,7 +133,10 @@
 [%-             signaturen.push("${part.content}") -%]
 [%-         END -%]
 [%-         signatur = signaturen.join(' ; ') -%]
-<tr class="[% listrow %]"><td class="listnr">[% loop.count+offset %]</td><td colspan="2"><span class="rlauthor">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;sorttype=[%
+[%-         isbn     = item.${"T0540"}.first.content.replace('-','') -%]
+
+[%-          -%]
+<tr class="[% listrow %]"><td class="listnr">[% loop.count+offset %]</td><td class="thumbnail">[% IF (config.coverscans.all || config.coverscans.${database}) && isbn %]<a href="[% config.coverscans_credits_exturl.replace('ISBNINHERE', isbn) %]"><img src="[% config.coverscans_exturl.replace('ISBNINHERE', isbn) %]" /></a>[% ELSE %]&nbsp;[% END %]</td><td colspan="2"><span class="rlauthor">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;sorttype=[%
 sorttype %];database=[% item.${"database"} %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></td><td><span class="rlcollect"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="/images/openbib/3d-file-blue-clipboard.png" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a></span></td><td align="left"><b>[% signatur %]</b></td><td class="popularitycount">[% item.popularity %]</td></tr>
 [%-         IF listrow == 'listrow1' %]
 [%-             listrow = 'listrow2' %]

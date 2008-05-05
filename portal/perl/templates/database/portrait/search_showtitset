@@ -72,7 +72,7 @@ Bestellung in den Lesesaal Historische Sammlungen:
    FOREACH mex IN mexnormset ;
    signaturen.push(mex.${"X0014"}.content);
    END %]
-<form style="font-size:0.7em" method="get" id="queries" action="http://kug4.ub.uni-koeln.de/cgi-bin/portrait_bestellung.pl">
+<form style="font-size:0.7em" method="get" action="http://kug.ub.uni-koeln.de/cgi-bin/portrait_bestellung.pl">
 <input type="hidden" name="titel"    value="[% normset.${"T0331"}.first.content %]"/>
 <input type="hidden" name="signatur" value="[% signaturen.join(' ; ') %]"/>
 <input type="hidden" name="person"   value="[% normset.${"T0102"}.first.content %]"/>

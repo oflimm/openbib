@@ -58,6 +58,7 @@
 </table>
 
 [% bibkey = record.to_bibkey %]
+[%- isbn  = item.${"T0540"}.first.content.replace('-','') -%]
 
 <p />
 <!-- Title begins here -->
@@ -66,8 +67,13 @@
 <tr><td class="boxedclear">
 
 <div style="float:right;padding:10px;">
+[% IF (config.coverscans.all || config.coverscans.${database}) && isbn %]
 <p>
-<a href="http://books.google.com/books?vid=ISBN[% normset.${"T0540"}.first.content %]" target="_blank" title="Google BookSearch"><img src="[% config.connector_availabilityimage_loc %]?action=lookup;isbn=[% normset.${"T0540"}.first.content %];target=gbs" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a><br/>
+<a href="[% config.coverscans_credits_exturl.replace('ISBNINHERE',isbn) %]"><img src="[% config.coverscans_full_exturl.replace('ISBNINHERE',isbn) %]" /></a>
+</p>
+[% END %
+<p>
+<a href="http://books.google.com/books?vid=ISBN[% isbn %]" target="_blank" title="Google BookSearch"><img src="[% config.connector_availabilityimage_loc %]?action=lookup;isbn=[% normset.${"T0540"}.first.content %];target=gbs" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a><br/>
 </p>
 <p>
 [%- IF bibkey -%]

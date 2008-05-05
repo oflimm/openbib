@@ -71,8 +71,9 @@ align="right" colspan="2"><strong>[%- IF treffer == qopts.hitrange && qopts.sb =
 [%- signaturen.push("${part.content}") -%]
 [%- END -%]
 [%- signatur = signaturen.join(' ; ') -%]
+[%- isbn     = item.${"T0540"}.first.content.replace('-','') -%]
 
-<tr class="[% listrow %]"><td class="listnr">[% loop.count %]</td><td>&nbsp;</td><td colspan="2"><span class="rlperson">[% person
+<tr class="[% listrow %]"><td class="listnr">[% loop.count %]</td><td class="thumbnail">[% IF (config.coverscans.all || config.coverscans.${database}) && isbn %]<a href="[% config.coverscans_credits_exturl.replace('ISBNINHERE', isbn) %]"><img src="[% config.coverscans_exturl.replace('ISBNINHERE', isbn) %]" /></a>[% ELSE %]&nbsp;[% END %]</td><td colspan="2"><span class="rlperson">[% person
 %]</span><br /><a href="[% config.search_loc %]?sessionID=[%
 sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id
 %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span

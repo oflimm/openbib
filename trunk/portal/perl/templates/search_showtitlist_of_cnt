@@ -80,8 +80,8 @@
 
 <table cellpadding="2">
 [% IF offset >= 0 && hitrange > 0 %]
-<tr class="titlerow"><td>&nbsp;</td><td><span class="rldbase"><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% targetdbinfo.dbinfo.$database.full %]</span></td><td align="left" colspan="3"><span class="rlhits"><strong>[% recordlist.get_size %]/[% hits %] [% msg.maketext("Treffer") %]</strong></span></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
-<tr class="titlerow"><td>&nbsp;</td><td>
+<tr class="titlerow"><td>&nbsp;</td><td colspan="3"><span class="rldbase"><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% targetdbinfo.dbinfo.$database.full %]</span></td><td align="left" colspan="3"><span class="rlhits"><strong>[% recordlist.get_size %]/[% hits %] [% msg.maketext("Treffer") %]</strong></span></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
+<tr class="titlerow"><td>&nbsp;</td><td colspan="3">
 [%- FOREACH navitem IN nav -%]
 <a href="[% navitem.url %]">
 [%- IF navitem.active -%]
@@ -94,9 +94,9 @@
 [%- IF hits <= 1000 -%]
 <a href="[% baseurl %];hitrange=-1;offset=0">[ Alles ]</a>
 [%- END -%]
-</td><td align="left" colspan="3"></td><td></td></tr>
+</td><td align="left" colspan="2"></td><td></td></tr>
 [% ELSE %]
-<tr class="titlerow"><td>&nbsp;</td><td><span class="rldbase"><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% targetdbinfo.dbinfo.$database.full %]</span></td><td align="left" colspan="3"><span class="rlhits"><strong>[% recordlist.get_size %] [% msg.maketext("Treffer") %]</strong></span></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
+<tr class="titlerow"><td>&nbsp;</td><td colspan="3"><span class="rldbase"><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% targetdbinfo.dbinfo.$database.full %]</span></td><td align="left" colspan="2"><span class="rlhits"><strong>[% recordlist.get_size %] [% msg.maketext("Treffer") %]</strong></span></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
 [% END %]
 
 [% listrow = 'listrow1' %]
@@ -150,8 +150,9 @@
 [%- signaturen.push("${part.content}") -%]
 [%- END -%]
 [%- signatur = signaturen.join(' ; ') -%]
+[%- isbn     = item.${"T0540"}.first.content.replace('-','') -%]
 
-<tr class="[% listrow %]"><td class="listnr"><input type="checkbox" name="searchmultipletit" value="[% item.id %]" /></td><td colspan="2"><span class="rlauthor">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;sorttype=[% sorttype %];database=[% item.${"database"} %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
+<tr class="[% listrow %]"><td class="listnr"><input type="checkbox" name="searchmultipletit" value="[% item.id %]" /></td><td class="thumbnail">[% IF (config.coverscans.all || config.coverscans.${database}) && isbn %]<a href="[% config.coverscans_credits_exturl.replace('ISBNINHERE', isbn) %]"><img src="[% config.coverscans_exturl.replace('ISBNINHERE', isbn) %]" /></a>[% ELSE %]&nbsp;[% END %]</td><td colspan="2"><span class="rlauthor">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;sorttype=[% sorttype %];database=[% item.${"database"} %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
 class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></td><td><span class="rlcollect"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="/images/openbib/3d-file-blue-clipboard.png" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a></span></td><td align="left"><b>[% signatur %]</b></td><td class="popularitycount">[% item.popularity %]</td></tr>
 
 [% IF listrow == 'listrow1' %]

@@ -171,6 +171,11 @@ ezb_exturl: http://rzblx1.uni-regensburg.de/ezeit/searchres.phtml?bibid=USBK&col
 # Externer Link zum DatenBankInfoSystem (DBIS)
 dbis_exturl: http://www.bibliothek.uni-regensburg.de/dbinfo/?bib_id=usb_k
 
+# Externer Link zur Cover-Scan Anreicherung (ISBNINHERE wird durch ISBN ersetzt)
+coverscans_exturl: http://media.lob.de/image.php?pic=ISBNINHERE.jpg&size=80
+coverscans_full_exturl: http://media.lob.de/image.php?pic=ISBNINHERE.jpg&size=100
+coverscans_credits_exturl: http://www.lob.de/
+
 # Pfad zur Konfigurationsdatei von Log4Perl
 log4perl_path: /opt/openbib/conf/portal.log4perl
 
@@ -408,13 +413,21 @@ litlists: 1
 # Reviews/Ratings
 reviews: 1
 
+# Cover-Scans
+coverscans:
+  inst001: 1
+
 # unAPI
 unAPI: 1
 unAPI_formats:
   bibtex: 1
+  mods: 1
+  oai_dc: 1
 
 # Katalogabhaengige Kategorie-Mappings
 categorymapping:
+  ebooks:
+    T0662: 1
   einbaende:
     T0100: 1
     T0101: 1
@@ -457,6 +470,9 @@ categorymapping:
     T0700: 1
     T0710: 1
     T0750: 1
+  nationallizenzen:
+    T0662: 1
+    T0663: 1
   portrait:
     T0100: 1
     T0101: 1

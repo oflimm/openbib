@@ -15,6 +15,8 @@
 [% normset    = record.get_normdata %]
 [% mexnormset = record.get_mexdata %]
 [% circset    = record.get_circdata %]
+[%- isbn  = normset.${"T0540"}.first.content.replace('-','') -%]
+
 <tr class="titlerow"><td><input type="checkbox" name="titid" value="[% record.database %]:[% record.id %]"  title="collection_item" /></td><td>[% msg.maketext("aus:") %] [% dbinfotable.dbinfo.${record.database}.full %]</td></tr>
 <tr><td>&nbsp;</td><td>
 <!-- Title begins here -->
@@ -22,6 +24,21 @@
 <table width="100%">
 <tr><th>[% msg.maketext("Titelaufnahme") %]</th></tr>
 <tr><td class="boxedclear">
+<div style="float:right;padding:10px;">
+[% IF (config.coverscans.all || config.coverscans.${database}) && isbn %]
+<p>
+<a href="[% config.coverscans_credits_exturl.replace('ISBNINHERE',isbn) %]" target="_blank"><img src="[% config.coverscans_full_exturl.replace('ISBNINHERE',isbn) %]" title="[% config.coverscans_creditstext_exturl %]" /></a>
+</p>
+[% END %]
+<p>
+<a href="http://books.google.com/books?vid=ISBN[% isbn %]" target="_blank" title="Google BookSearch"><img src="[% config.connector_availabilityimage_loc %]?action=lookup;isbn=[% normset.${"T0540"}.first.content %];target=gbs" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a><br/>
+</p>
+<p>
+[%- IF bibkey -%]
+<a href="http://www.bibsonomy.org/bibtex/[% bibkey %]" target="_blank" title="BibSonomy"><img src="[% config.connector_availabilityimage_loc %]?action=lookup;bibkey=[% bibkey %];target=bibsonomy" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a><br/>
+[%- END -%]
+</p>
+</div>
 
 <table cellpadding="2">
 <tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>

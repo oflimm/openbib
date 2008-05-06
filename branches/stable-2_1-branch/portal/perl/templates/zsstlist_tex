@@ -134,6 +134,15 @@
 [% FOREACH item IN thistitset.${"T0543"} %]
    ISSN & [% item.content %]\\
 [% END %]
+[% FOREACH item IN thistitset.${"T0531"} %]
+   Früher u.d.T. & [% item.content %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0532"} %]
+   Teilw. u.d.T. & [% item.content %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0533"} %]
+   Später u.d.T. & [% item.content %]\\
+[% END %]
 \end{tabular}
 
 [% IF thismexset %]

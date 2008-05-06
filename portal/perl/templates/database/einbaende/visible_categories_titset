@@ -17,6 +17,7 @@
                 'T0331', # msg.maketext("T0331-einbaende") Titel
                 'T0335', # msg.maketext("T0335-einbaende") Untertitel
                 'T0410', # msg.maketext("T0410-einbaende") Ersch-Ort
+                'T0412', # msg.maketext("T0412") Verlag
                 'T0413', # msg.maketext("T0413-einbaende") Drucker
                 'T0424', # msg.maketext("T0424-einbaende") E-Jahr
                 'T0361', # msg.maketext("T0361-einbaende") Beibände

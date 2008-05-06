@@ -69,7 +69,7 @@
 <div style="float:right;padding:10px;">
 [% IF (config.coverscans.all || config.coverscans.${database}) && isbn %]
 <p>
-<a href="[% config.coverscans_credits_exturl.replace('ISBNINHERE',isbn) %]"><img src="[% config.coverscans_full_exturl.replace('ISBNINHERE',isbn) %]" /></a>
+<a href="[% config.coverscans_credits_exturl.replace('ISBNINHERE',isbn) %]" target="_blank"><img src="[% config.coverscans_full_exturl.replace('ISBNINHERE',isbn) %]" title="[% config.coverscans_creditstext_exturl %]" /></a>
 </p>
 [% END %]
 <p>

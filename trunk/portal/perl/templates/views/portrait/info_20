@@ -20,6 +20,13 @@
 
 <div id="maincontent">
 
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=20" title="Die Portrait-Sammlung">Die Portrait-Sammlung</a></li>
+   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=21" title="Weitere Portrait-Quellen">Weitere Portrait-Quellen</a></li>
+</ul>
+
+<div class="content">
+
 <h1>Die Porträtsammlung der USB Köln</h1>
 
 <table cellpadding="10">
@@ -61,5 +68,10 @@ Region und Bildtexte erfasst.
 </table>
 
 <p />
+
+</div>
+
+<p />
+
 
 [% PROCESS common/subtemplate name="std_footer" %]

@@ -817,7 +817,7 @@ sub get_brief_record {
             elsif (exists $listitem_ref->{T1203}) {
                 $listitem_ref->{T0331}[0]{content}=$listitem_ref->{T1203}[0]{content};
             } else {
-                $listitem_ref->{T0331}[0]{content}="Kein HST/AST vorhanden";
+                $listitem_ref->{T0331}[0]{content}="Kein Titel vorhanden";
             }
         }
 

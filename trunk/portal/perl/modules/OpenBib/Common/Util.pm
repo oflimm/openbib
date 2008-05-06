@@ -993,6 +993,25 @@ sub gen_bibkey {
     }
 }
 
+sub to_isbn13 {
+    my ($thisisbn) = @_;
+
+    return undef unless (defined $thisisbn);
+    
+    # Normierung auf ISBN13
+    my $isbn     = Business::ISBN->new($thisisbn);
+    
+    if (defined $isbn && $isbn->is_valid){
+        $thisisbn = $isbn->as_isbn13->as_string;
+    }
+    
+    $thisisbn = OpenBib::Common::Util::grundform({
+        category => '0540',
+        content  => $thisisbn,
+    });
+
+    return $thisisbn;
+}
 1;
 __END__
 

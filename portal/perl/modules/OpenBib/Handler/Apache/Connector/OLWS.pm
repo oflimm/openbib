@@ -43,6 +43,7 @@ use SOAP::Transport::HTTP;
 my $server = SOAP::Transport::HTTP::Apache
     -> dispatch_with({
         'urn:/Admin'          => 'OpenBib::Connector::OLWS::Admin',
+        'urn:/Enrichment'     => 'OpenBib::Connector::OLWS::Enrichment',
     });
 
 sub handler {

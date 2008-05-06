@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: helpframe_3
+# Templatename: info_20
 #
 # Typ         : Mastertemplate
 #
@@ -20,7 +20,7 @@
 
 <div id="maincontent">
 
-<h1>Die Sammlung Kölner Zeitungsausschnitte</h1>
+<h1>Die Kölner Sammlung von Zeitungsausschnitten</h1>
 
 <table cellpadding="10">
 
@@ -70,15 +70,15 @@ an der Lesesaaltheke zur Einsichtnahme bereitgehalten.
 
 <p>
 Erschlossen wird die Sammlung durch den sog. Kapselkatalog, einem
-handschriftlichen, 73 Bände umfassenden Verzeichnis, in dem die
+handschriftlichen, 70 Bände umfassenden Verzeichnis, in dem die
 Artikel nach Schlagworten geordnet und mit den entsprechenden Band-
-und Seitenangeben versehen erfaßt wurden. Dieser Kapselkatalog
+und Seitenangaben versehen erfasst wurden. Dieser Kapselkatalog
 befindet sich in einem Regal gegenüber der Lesesaal-Theke.
 </p>
 
 <p>
 Der Kapselkatalog wird seit 2006 in eine Datenbank eingebracht, die
-nun für den Buchstabe A im Rahmen des Kölner
+nun für die Buchstaben A-E (Stand: Februar 2008) im Rahmen des Kölner
 Universitätsgesamtkataloges vorliegt.  In der Datenbank können Sie
 sich nach verschiedenen Suchkriterien die gewünschten Artikel
 heraussuchen, notieren sich den Band und die Nummer (z.B. Merlo4,125
@@ -86,9 +86,8 @@ oder II.71,598), sowie die entsprechende Filmrollennummer und erhalten
 dann an der Lesesaal-Ausgabe den gewünschten Mikrofilm mit dem
 Volltext des Artikels.  Mikrofilm-Lesegeräte stehen Ihnen in unserem
 Lesesaal zur Verfügung.  Über unseren Reader-Printer haben Sie
-zusätzlich die Möglichkeit, den Artikel in Papierform ausdrucken.
+zusätzlich die Möglichkeit, den Artikel in Papierform auszudrucken.
 </p>
-
 
 <p />
 

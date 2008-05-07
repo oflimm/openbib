@@ -14,6 +14,14 @@
 [% PROCESS common/subtemplate name="std_header" %]
   <body>
 
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=20">Die Portraitsammlung</a></li>
+   <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=21">Andere Portrait-Quellen</a></li>
+</ul>
+
+<div class="content">
+<p />
+
 <h1>Die Portraitsammlung der USB Köln</h1>
 
 <table cellpadding="10">
@@ -53,6 +61,8 @@ Region und Bildtexte erfasst.
 </p>
 </td></tr>
 </table>
+
+</div>
 
 <p />
 

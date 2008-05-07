@@ -141,6 +141,10 @@ $notdublastidx=1;
 $swtdublastidx=1;
 
 while (my $result=$request->fetchrow_hashref){
+    # DFG-Nationallizenzen ausfiltern
+
+    next if ($result->{Hosting}=~/DFGNet1000/);
+
     $titbuffer[$titidx++]=sprintf "0000:%d", $result->{'Nr'};
 
     foreach my $kateg (keys %titelkonv){

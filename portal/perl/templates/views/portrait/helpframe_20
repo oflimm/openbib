@@ -30,20 +30,21 @@
 
 <td> <center> <img src="/images/openbib/views/portrait/portrait.jpg"
 alt="Portrait von J. Heinr. Richartz" /><br /><br /><i
-style="font-size:0.8em">Johann Heinrich Richartz - Stahlstich um 1850</i></center>
+style="font-size:0.8em">Johann Heinrich Richartz<br />Stahlstich um 1850</i></center>
 </td>
 
 <td valign="top">
-<p>
-Die USB Köln besitzt eine ansehnliche Sammlung von Portraits
-aus dem 16. bis 20. Jahrhundert. Die Portraits stammen aus den
-Sammlungen Oidtmann, Mevissen, Dirksen, Wolff und der ehemaligen
-Stadtbibliothek Köln. Es handelt sich um Kupfer- und Stahlstiche,
-Schabkunst, Lithografien, Radierungen und Fotografien. Die meisten der
+
+<p> Die USB Köln besitzt eine ansehnliche Sammlung von Portraits aus
+dem 16. bis 20. Jahrhundert. Die Portraits stammen aus den
+Privatsammlungen Oidtmann, Mevissen, Dirksen und Wolff sowie aus der
+ehemaligen Stadtbibliothek Köln und der Evangelischen Bibliothek
+Köln. Es handelt sich um Kupfer- und Stahlstiche, Schabkunst,
+Lithografien, Radierungen und Fotografien. Die meisten der
 abgebildeten Personen aus den Beständen der Stadtbibliothek Köln sind
 auf ganz unterschiedliche Art und Weise mit der Stadt und / oder dem
-Erzbistum Köln und dem Rheinland verbunden gewesen.
-<p/>
+Erzbistum Köln und dem Rheinland verbunden gewesen.  <p/>
+
 <p>
 Die Portraits der
 Sammlungen Oidtmann und Mevissen zeigen Persönlichkeiten aus dem
@@ -54,10 +55,15 @@ und Mäzene, Adelige und Feldherren.
 </p>
 <p>
 Anfang April 2006 wurde das
-Projekt gestartet. Die Erfassung der Portraits erfolgt zunächst durch
-die Katalogisierung der Bilder. Neben den reinen Katalogdaten werden
+Projekt gestartet. Die Erfassung der Portraits erfolgte zunächst durch
+die Katalogisierung der Bilder. Neben den reinen Katalogdaten wurden
 weitere Informationen wie Lebensdaten, Beruf und Weltanschauung,
 Region und Bildtexte erfasst.
+</p>
+<p>
+Mit der aktuellen Ausstellung <a href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=31">"Von Angesicht zu Angesicht - Portraits
+aus den Sammlungen der USB Köln"</a> wird das Projekt nach 2 Jahren
+erfolgreich abgeschlossen.
 </p>
 </td></tr>
 </table>

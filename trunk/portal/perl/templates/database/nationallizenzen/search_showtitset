@@ -1,0 +1,737 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showtitset
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Titel-Normdatensatzes
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title = "Recherche in Katalog: ${poolname.short}" unapi=1 %]
+
+<body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %]
+
+[% normset      = record.get_normdata %]
+[% mexnormset   = record.get_mexdata %]
+[% cirset       = record.get_circdata %] 
+[% same_records    = record.get_same_records %]
+[% similar_records = record.get_similar_records %]
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="#"><span class="dbdescshort">[% poolname.short %]</span></a></li>
+</ul>
+
+<div class="content">
+
+<table width="100%"  class="titlenav">
+<tr>
+[%- IF prevurl -%]
+<td align="left"><a href="[% prevurl %];queryid=[% queryid %]">[[% msg.maketext("Vorheriger Titel") %]]</a></td>
+[%- ELSE -%]
+<td align="left"><span style="color:slategrey">[[% msg.maketext("Vorheriger Titel") %]]</span></td>
+[%- END -%]
+<td align="center">
+	<a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% record.database %];stid=10" title="Top 20"><img src="/images/openbib/top20-12px.png" alt="[% msg.maketext("Top 20") %]" border="0" /></a>&nbsp;
+        <a href="[% config.redirect_loc %]/[% sessionID %]/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=[% record.to_bibtex | uri | replace('&','%26') %]" target="bibsonomy" valign="top"><img src="/images/openbib/share.png" alt="An BibSonomy senden" title="An BibSonomy senden" /></a>&nbsp;
+	<span class="rlcollect"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% record.database %];singleidn=[% record.id %]" target="collectionstatus" title="In die Merkliste"><img src="/images/openbib/3d-file-blue-clipboard.png" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a></span>&nbsp;
+        <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=mail;database=[% record.database %];singleidn=[% record.id %]" title="Als Mail verschicken"><img src="/images/openbib/3d-file-blue-mailbox.png" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></a>&nbsp;
+        <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=save;database=[% record.database %];singleidn=[% record.id %]" target="save" title="Abspeichern"><img src="/images/openbib/3d-file-blue-disk35.png" alt="[% msg.maketext("Abspeichern") %]" border="0" /></a>&nbsp;
+        <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=print;database=[% record.database %];singleidn=[% record.id %]" target="print" title="Ausdrucken"><img src="/images/openbib/3d-file-blue-printer.png" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></a>&nbsp;
+        <a href="http://[% config.loadbalancerservername %][% config.connector_permalink_loc %]/[% record.database %]/[% record.id %]/1/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="Permanenter Link"><img src="/images/openbib/3d-file-blue-permalink.png" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a>&nbsp;
+</td>
+[%- IF nexturl -%]
+<td align="right"><a href="[% nexturl %];queryid=[% queryid %]">[[% msg.maketext("N&auml;chster Titel") %]]</a></td>
+[%- ELSE -%]
+<td align="right"><span style="color:slategrey">[[% msg.maketext("N&auml;chster Titel") %]]</span></td>
+[%- END -%]
+</tr>
+</table>
+
+[% bibkey = record.to_bibkey %]
+
+<p />
+<!-- Title begins here -->
+<table width="100%" cellpadding="2">
+<tr><th>[% msg.maketext("Titelaufnahme") %]</th>[% IF litlists.size > 0 %]<td width="5">&nbsp;</td><td width="200">&nbsp;</td>[% END %]</tr>
+<tr><td class="boxedclear">
+
+<div style="float:right;padding:10px;">
+<p style="font-size:0.8em">
+Finanziert von:<br/>
+<a href="http://www.dfg.de/" target="_blank" title="Finanziert von der DFG"><img src="/images/openbib/dfg.gif" border="0" /></a>&nbsp;
+</p>
+<p>
+[%- IF bibkey -%]
+<a href="http://www.bibsonomy.org/bibtex/[% bibkey %]" target="_blank" title="BibSonomy"><img src="[% config.connector_availabilityimage_loc %]?action=lookup;bibkey=[% bibkey %];target=bibsonomy" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a><br/>
+[%- END -%]
+</p>
+</div>
+
+[% 
+   IF config.litlists ;
+      litlists = user.get_litlists();
+
+      IF litlists.size > 0 ;
+%]
+<form method="get" action="[%config.litlists_loc %]">
+<input type="hidden" name="action"          value="manage" />
+<input type="hidden" name="titid"           value="[% record.id %]" />
+<input type="hidden" name="titdb"           value="[% record.database %]" />
+<input type="hidden" name="sessionID"       value="[% sessionID %]" />
+Diesen Titel in die Literaturliste <select name="litlistid">[% FOREACH litlist IN litlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select>&nbsp;<input type="submit" name="do_addentry" value="&uuml;bernehmen" />
+</form>
+<p />
+[%    END %]
+[% END %]
+
+<table cellpadding="2">
+<tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
+<tr><td class="category">id</td><td>[% record.id %]</td></tr>
+[%- IF bibkey -%]
+<tr><td class="category">bibkey</td><td>[% bibkey %]</td></tr>
+[%- END -%]
+
+[% PROCESS common/subtemplate name="visible_categories_titset" %]
+
+[%
+  css_classes = [
+        'fast-nicht-genutzt',
+        'nicht-sehr-genutzt',
+        'etwas-genutzt',
+        'genutzt',
+        'sehr-viel-genutzt',
+        'ultra-genutzt',
+        'am-meisten-genutzt',
+  ];
+%]
+
+[%
+   all_tags = user.get_all_tags_of_tit({ titid => record.id, titdb => record.database });
+
+   IF config.social_tagging ;
+
+     IF all_tags.size > 0 ;
+
+     alltags_cloud = "<ol class=\"cloud\">\n" ;
+
+     FOREACH thisitem IN all_tags ;
+       item          = thisitem.name;
+       itemcount     = thisitem.count;
+       classnr       = thisitem.class;
+       itemid        = thisitem.id;
+       itemclass     = css_classes.$classnr;
+
+       alltags_cloud = "${alltags_cloud}\n<li class=\"${itemclass}\"><span>${itemcount} Titel sind verkn&uuml;pft mit dem Tag </span><a href=\"${config.tags_loc}?sessionID=${sessionID};searchtitoftag=${itemid}\" class=\"tag\" title=\"${itemcount} Titel sind verkn&uuml;pft mit dem Tag ${item}\">${item}</a></li>" ;
+     END ;
+     alltags_cloud = "${alltags_cloud}\n</ol>" ;
+     cloud_item = {
+                    content => alltags_cloud,
+                  } ;
+     normset.${"T4500"} = [ cloud_item ];
+   END ;
+END ;
+%]
+
+[%-
+FOREACH category IN categories;
+    FOREACH item IN normset.$category;
+    content = item.content;
+
+    SWITCH category;
+
+    CASE [ "T0100" "T0101" "T0103" ];
+         thisid     = item.id;
+         IF NOT thisid.match('^\d+$');
+             thisid = item.content;
+         END;
+
+         wikicontent = content.split(', ').reverse.join(' ');
+         wikicontent = wikicontent.replace('¬','');
+
+         rssfeed = "" ;
+         IF activefeed.2 ;
+             rssfeed = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_aut/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+         END ;
+         globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;verf=%22${item.content}%22";
+         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchsingleaut=${thisid}";
+         content   = "${rssfeed}<a href=\"${config.redirect_loc}/${sessionID}/520/http://de.wikipedia.org/wiki/Spezial:Search?search=${wikicontent}&amp;go=Artikel\" target=\"_blank\"><img src=\"/images/openbib/wikipedia.png\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+
+    CASE [ "T0200" "T0201" ];
+         thisid     = item.id;
+         IF NOT thisid.match('^\d+$');
+             thisid = item.content;
+         END;
+
+         rssfeed = "" ;
+         IF activefeed.3 ;
+             rssfeed = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_kor/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+         END ;
+         globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;kor=%22${item.content}%22";
+         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchsinglekor=${thisid}";
+         content   = "${rssfeed}<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+
+    CASE "T0331";
+         content   = "<b>${highlightquery(searchquery,content)}</b>";
+
+    CASE "T0540";
+         content   = "<a class=\"isbn\" href=\"${config.redirect_loc}/${sessionID}/521/http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}\" target=\"_blank\"><img src=\"/images/openbib/wikipedia.png\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${highlightquery(searchquery,content)}";
+
+    CASE "T0543";
+         content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${config.redirect_loc}/${sessionID}/530/${config.ezb_exturl}&jq_term1=${content}\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
+
+    CASE [ "T0662" "T2662" ];
+         thisindicator = item.indicator ;
+         thiscontent   = '' ;
+         IF category == 'T0662' ;
+           FOREACH thisitem IN normset.${"T0663"} ;
+             IF thisitem.indicator == thisindicator ;
+                thiscontent = thisitem.content ;
+             END ;
+           END ;
+         ELSIF category == 'T2662' ;
+           FOREACH thisitem IN normset.${"T2663"} ;
+             IF thisitem.indicator == thisindicator ;
+                thiscontent = thisitem.content ;
+             END ;
+           END ;
+         END ;
+         IF thiscontent ;
+            IF content.match('digitool.hbz-nrw.de') ;
+               thiscontent = '<img src="/images/openbib/pdf-document.png" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)' ;
+               content     = "${config.redirect_loc}/${sessionID}/500/${content}" ;
+            END ;
+            content   = "<a href=\"${content}\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
+         ELSE ;
+            content   = "<a href=\"${content}\" target=\"_blank\">${highlightquery(searchquery,content)}</a>";
+         END ;
+
+    CASE "E4100";
+         localurl    = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchtitofcnt=${content};category=${category};hitrange=${qopts.hitrange}";
+         bklookup    = config.load_bk ;
+         bkdesc      = bklookup.${content};
+         content     = "<a href=\"${localurl}\">${content}</a>";
+         IF bkdesc.defined ;
+            content   = "${content} (${bkdesc})" ;
+         END ;
+
+    CASE "E4110";
+         thisindicator = item.indicator ;
+         thiscontent   = "<img src=\"/images/openbib/pdf-document.png\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)";
+         content       = "${config.redirect_loc}/${sessionID}/500/${content}" ;
+         content       = "<a href=\"${content}\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
+
+    CASE "E4120";
+         thiscontent   = "<img src=\"/images/openbib/pdf-document.png\" />&nbsp;Als E-Book im Vollzugriff verf&uuml;gbar";
+	 content       = "${config.redirect_loc}/${sessionID}/503/${content}" ;
+	 content       = "<a href=\"${content}\" target=\"_blank\">${thiscontent}</a>";
+
+    CASE [ "T0710" "T0902" "T0907" "T0912" "T0917" "T0922" "T0927" "T0932" "T0937" "T0942" "T0947" ];
+         thisid     = item.id;
+         IF NOT thisid.match('^\d+$');
+             thisid = item.content;
+         END;
+
+         rssfeed = "" ;
+         IF activefeed.4 ;
+             rssfeed = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_swt/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+         END ;
+         globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;swt=%22${item.content}%22";
+         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchsingleswt=${thisid}";
+         content   = " ${rssfeed}<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+
+    CASE "T0700";
+         thisid     = item.id;
+         IF NOT thisid.match('^\d+$');
+             thisid = item.content;
+         END;
+
+         rssfeed = "" ;
+         IF activefeed.5 ;
+             rssfeed = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_sys/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+         END ;
+         localurl  = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchsinglenot=${thisid}";
+         content   = " ${rssfeed}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+
+    CASE "T1600";
+         IF content.match('Sie einen Bestellschein aus');
+             content = "${content} Ebenso können Sie eine Mail an die <a href=\"http://www.ub.uni-koeln.de/res/listen_e_mail/ortsleihe/index_ger.html\" target=\"_blank\">Ortsleihe</a> schicken";
+         END;
+
+    CASE "T4500";
+         # Dummy-Eintrag, damit dieser Eintrag nicht vom higlightquery
+         # erwischt wird
+         content   = content ;
+
+    CASE "T5001";
+         content   = "<img style=\"vertical-align:bottom\" src=\"/images/openbib/2rightarrow.png\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.search_loc}?sessionID=${sessionID};database=${record.database};supertit=${record.id};generalsearch=supertit\"><span style=\"font-size:1.4em\">${content}</span></a>";
+
+    CASE "T5002";
+         content   = "<img style=\"vertical-align:bottom\" src=\"/images/openbib/2rightarrow.png\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.search_loc}?sessionID=${sessionID};database=${record.database};subtit=${record.id};generalsearch=subtit\"><span style=\"font-size:1.4em\">${content}</span></a>";
+
+    CASE ;
+         content   = highlightquery(searchquery,item.content);
+   END;
+
+   # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+   # in Config.pm fuer die entsprechende Datenbank definiert
+   # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+   # kodiert.
+   thiscategory = category ;
+   IF config.categorymapping.${record.database}.$category ;
+     thiscategory = "${category}-${record.database}" ;
+   END;
+
+-%]
+<tr><td class="category">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
+[%
+   END;
+END;
+-%]
+<tr><td class="category">BibSonomy-Tags</td><td><span id="bibsonomy_tags"><a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];bibkey=[% bibkey %];tags=[% record.to_tags | uri %];action=get_tags">Suchen?</a></span></td></tr>
+</table>
+
+[%- IF normset.${"E4200"} || normset.${"E4201"} || normset.${"E4202"} %]
+<p class="wikipediamashup">
+<img src="/images/openbib/wikipedia.png" alt="Mashup mit Wikipedia" /> Dieses Buch ist in Wikipedia erw&auml;hnt unter:&nbsp;
+[%-   IF normset.${"E4200"} %]
+[%-    FOREACH item IN normset.${"E4200"}-%]
+<a href="http://de.wikipedia.org/wiki/[% item.content | uri %]" title="Deutsche Wikipedia: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
+[%-    END -%]
+[%-   END %]
+[%-   IF normset.${"E4201"} %]
+[%-     FOREACH item IN normset.${"E4201"}-%]
+<a href="http://en.wikipedia.org/wiki/[% item.content | uri %]" title="Englische Wikipedia: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
+[%-     END -%]
+[%-   END %]
+[%-   IF normset.${"E4202"} %]
+[%-     FOREACH item IN normset.${"E4202"}-%]
+<a href="http://fr.wikipedia.org/wiki/[% item.content | uri %]" title="Franz&ouml;sische Wikipedia: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
+[%-     END -%]
+[%-   END -%]
+</p>
+[% END %]
+
+[% IF config.unAPI %]
+<abbr class="unapi-id" title="[% record.database %]:[% record.id %]"></abbr>
+[% END %]
+
+[% IF mexnormset.size > 0 %]
+<p />
+[% PROCESS common/subtemplate name="mexset" %]
+[% END %]
+
+</td>
+[% IF litlists.size > 0 %]<td></td><td class="boxedfull" valign="top" style="font-size:0.8em">
+Dieser Titel befindet sich in folgenden Literaturlisten:
+
+<ul>
+[% FOREACH litlist IN litlists%]
+<li><a href="[% config.litlists_loc %]?sessionID=[% sessionID
+%];action=show;litlistid=[% litlist.id %]">[% litlist.title %]</a></li>
+[% END %]
+</ul>
+
+</td>[% END %]
+</tr>
+</table>
+
+[% IF circset.size > 0 %]
+<p />
+<table width="100%">
+<tr><th>[% msg.maketext("Ausleihe/Exemplare") %]</th></tr>
+<tr><td class="boxedclear">
+[% PROCESS common/subtemplate name="circset" %]
+</td></tr>
+</table>
+[% END %]
+<p />
+
+[% IF same_records.get_size > 0 %]
+<table width="100%">
+<tr><th>Dieser Titel in anderen Katalogen&nbsp;<span id="samerecord_toggle"></span></th></tr>
+<tr><td id="samerecord" class="boxedclear">
+Titel mit der ISBN dieses Titels sind auch in folgenden anderen
+KUG-Katalogen vorhanden:
+<p />
+<ol>
+[% FOREACH same_record IN same_records.get_records %]
+[% same_url = "${config.search_loc}?sessionID=${sessionID};database=${same_record.database};searchsingletit=${same_record.id}" %]
+<li><a href="[% same_url %]">[% dbinfotable.dbnames.${same_record.database}.short %]</a></li>
+[% END %]
+</ol>
+</td></tr>
+</table>
+[% END %]
+
+<p />
+[% IF similar_records.get_size > 0 %]
+<table width="100%">
+<tr><th>Andere Ausgaben dieses Titels (Sprache, Auflage usw.)&nbsp;<span id="similarrecord_toggle"></span></th></tr>
+<tr><td id="similarrecord" class="boxedclear">
+Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere Auflage usw.) in den KUG-Katalogen:
+<p />
+<ol>
+[% FOREACH similar_record IN similar_records.get_records %]
+[% item = similar_record.get_brief_normdata %]
+[% similar_url = "${config.search_loc}?sessionID=${sessionID};database=${similar_record.database};searchsingletit=${similar_record.id}" %]
+[%# Titel konstruieren %]
+[%- title = item.${'T0331'}.first.content -%]
+[%- IF item.${'T0310'}.first.content -%]
+[%- title = item.${'T0310'}.first.content -%]
+[%- END -%]
+[%# Ejahr konstruieren %]
+[%- yearofpub = item.${'T0425'}.first.content -%]
+[%# Edition konstruieren %]
+[%- edition   = item.${'T0403'}.first.content -%]
+<li><a href="[% similar_url %]"><i>[% title %]</i>[% IF edition %], [% edition %][% END %][% IF yearofpub %] ([% yearofpub %])[% END %]</a><br />aus: [% dbinfotable.dbnames.${similar_record.database}.short %]</li>
+[% END %]
+</ol>
+</td></tr>
+</table>
+[% END %]
+
+[% IF normset.exists('E4000') %]
+<p />
+<table width="100%">
+<tr><th>Das könnte Sie interessieren:</th></tr>
+<tr><td class="boxedclear">
+Nutzer, die diesen Titel ausgew&auml;hlt haben, interessierten sich auch f&uuml;r die folgenden Titel. <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#enrichrelevance">Weitere Informationen</a> finden Sie in der Suchhilfe.
+<table>
+[%-   isbnitems = normset.${"E4000"} -%]
+[%-   hstitems  = normset.${"E4001"} -%]
+[%- FOREACH isbnitem IN isbnitems -%]
+[%-   isbnidx = loop.index -%]
+[%-   hstitem = hstitems.${isbnidx} -%]
+[%-   globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;isbn=${isbnitem.content}" -%]
+[%-   IF hstitem.content.defined -%]
+<tr><td><a href="[% globalurl %]"><span class="globalsearch">G</span></a></td><td>[% hstitem.content %]</td></tr>
+[%-   END -%]
+[%- END -%]
+</table>
+</td></tr>
+</table>
+[% END %]
+
+<!-- Begin: Tagging -->
+<p />
+<table width="100%">
+<tr><th>Eigene Tags vergeben&nbsp;<span id="newtags_toggle"></span></th></tr>
+<tr><td id="newtags" class="boxedclear">
+
+[%
+  private_tags_of_tit = [];
+  IF loginname ;
+    private_tags_of_tit = user.get_private_tags_of_tit({ titid => record.id, titdb => record.database, loginname => loginname  });
+  END ;
+%]
+
+[%  IF private_tags_of_tit.size <= 0  %]
+
+<table width="100%">
+<tr><td valign="top">
+
+<table width="100%">
+<tr><th>Eingabe neuer Tags</th></tr>
+<tr><td class="boxedclear">
+
+<form method="get" action="[% config.tags_loc %]">
+<input type="hidden" name="sessionID"  value="[% sessionID %]" />
+<input type="hidden" name="titdb"      value="[% record.database %]" />
+<input type="hidden" name="titid"      value="[% record.id %]" />
+<input type="hidden" name="queryid"    value="[% queryid %]" />
+<input type="hidden" name="titisbn"    value="[% normset.${"T0540"}.first.content.replace('-','') %]" />
+<input type="text"   name="tags"       value="" size="60" maxlength="200" id="inputfield"/><p />Typ:&nbsp;<select name="type"><option value="1" selected="selected">&ouml;ffentlich</option><option value="2">privat</option></select>&nbsp;<input type="submit" name="do_add" value="Hinzuf&uuml;gen" />
+</form>
+
+</td></tr>
+</table>
+
+</td><td valign="top">
+
+[%
+    IF loginname ;
+      private_tags = user.get_private_tags({ loginname => loginname  });
+
+%]
+
+<table width="100%">
+<tr><th>Übernahme eigener Tags</th></tr>
+<tr><td class="boxedclear">
+
+<!-- Beginn Tag-Cloud -->
+
+[%-   IF private_tags.size > 0 -%]
+<ol class="cloud">
+[%-     FOREACH thisitem IN private_tags -%]
+[%        item      = thisitem.name;
+          itemcount = thisitem.count;
+          classnr   = thisitem.class;
+          itemid    = thisitem.id;
+          itemclass = css_classes.$classnr;
+%]
+<li class="[% itemclass %]"><span>[% itemcount %] Titel sind
+verkn&uuml;pft mit dem Tag </span><a onclick="insert_tag(event); return false;" class="tag" style="display: inline; cursor: pointer;" onMouseOver="oldColor=this.style.backgroundColor; this.style.backgroundColor='lightblue';" onMouseOut="this.style.backgroundColor=oldColor;" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
+[%      END %]
+</ol>
+[%    ELSE %]
+Bisher haben Sie noch keine Tags vergeben.
+[%    END %]
+
+</td></tr>
+</table>
+[%  END %]
+<p />
+
+[%  IF config.social_tagging && all_tags.size > 0 %]
+<p />
+<!-- Beginn generelle Tag-Uebernahme -->
+<table width="100%">
+<tr><th>Übernahme bereits von Nutzern vergebener Tags</th></tr>
+<tr><td class="boxedclear">
+
+<ol class="cloud">
+[%-   FOREACH thisitem IN all_tags -%]
+[%      item      = thisitem.name;
+        itemcount = thisitem.count;
+        classnr   = thisitem.class;
+        itemid    = thisitem.id;
+        itemclass = css_classes.$classnr;
+%]
+<li class="[% itemclass %]"><span>[% itemcount %] Titel sind
+verkn&uuml;pft mit dem Tag </span><a onclick="insert_tag(event); return false;" class="tag" style="display: inline; cursor: pointer;"  onMouseOver="oldColor=this.style.backgroundColor; this.style.backgroundColor='lightblue';" onMouseOut="this.style.backgroundColor=oldColor;" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
+[%    END %]
+</ol>
+
+</td></tr>
+</table>
+[%  END %]
+<!-- Ende generelle Tag-Uebernahme -->
+
+</td></tr>
+</table>
+
+[%ELSIF loginname && private_tags_of_tit.size > 0 %]
+
+<table width="100%">
+<tr><td valign="top">
+
+<table width="100%">
+<tr><th>Eigene Tags</th></tr>
+<tr><td class="boxedclear">
+[%  my_tags = [] %]
+[%- FOREACH tag IN private_tags_of_tit -%]
+<a href="[% config.tags_loc %]?sessionID=[% sessionID %];searchtitoftag=[% tag.id %];private_tags=1">[% tag.name %]</a>&nbsp;
+[%    my_tags.push("${tag.name}") %]
+[%- END -%]
+
+<p />
+
+<form method="get" action="[% config.tags_loc %]">
+<input type="hidden" name="sessionID"  value="[% sessionID %]" />
+<input type="hidden" name="titdb"      value="[% record.database %]" />
+<input type="hidden" name="titid"      value="[% record.id %]" />
+<input type="hidden" name="queryid"    value="[% queryid %]" />
+<input type="hidden" name="titisbn"    value="[% normset.${"T0540"}.first.content.replace('-','') %]" />
+<input type="text"   name="tags"       value="[% my_tags.join(' ') %]" size="60" maxlength="200" />&nbsp;&nbsp;Typ:&nbsp;<select name="type"><option value="1" [% IF private_tags.first.type == 1 %]selected="selected"[% END %]>&ouml;ffentlich</option><option value="2" [% IF private_tags.first.type == 2 %]selected="selected"[% END %]>privat</option></select>&nbsp;&nbsp;&nbsp;<input type="submit" name="do_add" value="&Auml;ndern" />&nbsp;<input type="submit" name="do_del" value="L&ouml;schen" />
+</form>
+
+</td></tr>
+</table>
+
+</td><td valign="top">
+
+[%
+    IF loginname ;
+      private_tags = user.get_private_tags({ loginname => loginname  });
+
+%]
+
+<table width="100%">
+<tr><th>Übernahme eigener Tags</th></tr>
+<tr><td class="boxedclear">
+
+<!-- Beginn Tag-Cloud -->
+
+[%-   IF private_tags.size > 0 -%]
+<ol class="cloud">
+[%-     FOREACH thisitem IN private_tags -%]
+[%        item      = thisitem.name;
+          itemcount = thisitem.count;
+          classnr   = thisitem.class;
+          itemid    = thisitem.id;
+          itemclass = css_classes.$classnr;
+%]
+<li class="[% itemclass %]"><span>[% itemcount %] Titel sind
+verkn&uuml;pft mit dem Tag </span><a onclick="insert_tag(event); return false;" class="tag" style="display: inline; cursor: pointer;" onMouseOver="oldColor=this.style.backgroundColor; this.style.backgroundColor='lightblue';" onMouseOut="this.style.backgroundColor=oldColor;" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
+[%      END %]
+</ol>
+[%    ELSE %]
+Bisher haben Sie noch keine Tags vergeben.
+[%    END %]
+
+</td></tr>
+</table>
+[%  END %]
+<p />
+
+[%  IF config.social_tagging && all_tags.size > 0 %]
+<p />
+<!-- Beginn generelle Tag-Uebernahme -->
+<table width="100%">
+<tr><th>Übernahme bereits von Nutzern vergebener Tags</th></tr>
+<tr><td class="boxedclear">
+
+<ol class="cloud">
+[%-   FOREACH thisitem IN all_tags -%]
+[%      item      = thisitem.name;
+        itemcount = thisitem.count;
+        classnr   = thisitem.class;
+        itemid    = thisitem.id;
+        itemclass = css_classes.$classnr;
+%]
+<li class="[% itemclass %]"><span>[% itemcount %] Titel sind
+verkn&uuml;pft mit dem Tag </span><a onclick="insert_tag(event); return false;" class="tag" style="display: inline; cursor: pointer;"  onMouseOver="oldColor=this.style.backgroundColor; this.style.backgroundColor='lightblue';" onMouseOut="this.style.backgroundColor=oldColor;" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
+[%    END %]
+</ol>
+
+</td></tr>
+</table>
+[%  END %]
+<!-- Ende generelle Tag-Uebernahme -->
+
+</td></tr>
+</table>
+
+[%END %]
+
+</td></tr>
+</table>
+<!-- End: Tagging -->
+
+<!-- Begin: Reviews -->
+[% IF config.reviews %]
+
+[% IF   loginname %]
+
+[% ownreviewid = user.tit_reviewed_by_user({ titid => record.id, titdb => record.database, loginname => loginname }); %]
+
+<p />
+
+[% IF NOT ownreviewid %]
+<form method="get" action="[% config.userreviews_loc %]">
+<input type="hidden" name="sessionID"  value="[% sessionID %]" />
+<input type="hidden" name="titdb"      value="[% record.database %]" />
+<input type="hidden" name="titid"      value="[% record.id %]" />
+<input type="hidden" name="queryid"    value="[% queryid %]" />
+<input type="hidden" name="titisbn"    value="[% normset.${"T0540"}.first.content.replace('-','') %]" />
+
+<table width="100%">
+<tr><th>Neue Bewertung/Rezension <span id="newreview_toggle"></span></th></tr>
+<tr><td id="newreview" class="boxedclear">
+
+<h3>Bewertung</h3>
+<table>
+<tr><td>schlecht&nbsp;<input type="radio"
+name="rating" value="0"/>&nbsp;<input type="radio" name="rating"
+value="1"/>&nbsp;<input type="radio" name="rating"
+value="2"/>&nbsp;<input type="radio" name="rating"
+value="3" checked="checked"/>&nbsp;<input type="radio" name="rating"
+value="4"/>&nbsp;<input type="radio" name="rating"
+value="5"/>&nbsp;sehr gut</td></tr>
+</table>
+
+<h3>Rezension</h3>
+<table>
+<tr><td><b>Pseudonym</b></td><td><input type="text" name="nickname"
+value="" size="30" maxlength="30" /></td></tr>
+<tr><td><b>Titel</b></td><td><input type="text" name="title"
+value="" size="30" maxlength="100" /></td></tr>
+<tr><td><b>Text</b></td><td><textarea cols="80" rows="10"
+name="review"></textarea></td></tr>
+</table>
+<p />
+<input type="submit" name="do_add" value="Aufnehmen"/>&nbsp;&nbsp;<input type="reset" value="Löschen"/>
+</td></tr>
+</table>
+
+</form>
+[% END %]
+
+[%   END %]
+
+[%   reviews = user.get_reviews_of_tit({ titid => record.id, titdb => record.database }); %]
+
+[%   IF reviews.size > 0 %]
+
+<p />
+
+<table width="100%">
+<tr><th>Bewertungen/Rezensionen von Nutzern <span id="allreviews_toggle"></span></th></tr>
+<tr><td id="allreviews" class="boxedclear">
+<!-- Beginn Reviews -->
+
+<dl class="reviews">
+[%- FOREACH item IN reviews -%]
+<dt class="review">[% IF item.votes.all > 0 %][% item.votes.positive%]
+von [% item.votes.all %] Nutzer fanden die folgende Rezension hilfreich: <p />[% END %]<span class="reviewtitle">[% item.title %]</span> von <span class="reviewnick">[% IF item.nickname %][% item.nickname %][% ELSE %]Unbekannt[% END %]</span>&nbsp;&nbsp;(Bewertung: <span class="reviewrating">[% item.rating %]</span>)</dt>
+<dd class="review">[%    IF item.review %][% item.review %][% END %]
+[% IF item.id == ownreviewid %]
+<p />
+<a href="[% config.userreviews_loc %]?sessionID=[% sessionID
+%];reviewid=[% item.id %];do_edit=1">Eigenen Review
+bearbeiten</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
+href="[% config.userreviews_loc %]?sessionID=[% sessionID
+%];reviewid=[% item.id %];do_del=1">Eigenen Review l&ouml;schen</a>
+[% ELSIF loginname %]
+<p />
+War diese Rezension hilfreich?&nbsp;<a href="[% config.userreviews_loc %]?sessionID=[% sessionID
+%];titid=[% record.id %];titdb=[% record.database %];queryid=[% queryid %];reviewid=[% item.id %];do_vote=1;rating=1">Ja</a>&nbsp;&nbsp;
+<a href="[% config.userreviews_loc %]?sessionID=[% sessionID
+%];titid=[% record.id %];titdb=[% record.database %];queryid=[% queryid %];reviewid=[% item.id %];do_vote=1;rating=0">Nein</a>
+[% END %]
+</dd>
+[%  END %]
+</dl>
+
+</td></tr>
+</table>
+
+[%   END %]
+
+[% END %]
+
+<!-- End: Reviews -->
+
+<!-- Title ends here -->
+
+<p />
+
+<hr />
+
+<form method="get" action="[% config.search_loc %]">
+<input type="hidden" name="sessionID"  value="[% sessionID %]" />
+<input type="hidden" name="hitrange"   value="[% qopts.hitrange %]" />
+<input type="hidden" name="database"   value="[% record.database %]" />
+
+<table>
+<tr><td class="category">[% msg.maketext("Schlagwortindex diese Katalogs") %]</td><td>&nbsp;<input
+type="text" name="swtindex" value="" size="4" maxlength="50" title="[% msg.maketext("Geben Sie hier den Schlagwortanfang ein") %]" />&nbsp;<input type="submit" value="[% msg.maketext("Suchen") %]" />&nbsp;</td></tr>
+</table>
+
+</form>
+
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

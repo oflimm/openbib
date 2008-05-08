@@ -72,7 +72,7 @@ Bestellung in den Lesesaal Historische Sammlungen:
 <input type="hidden" name="person"   value="[% normset.${"T0102"}.first.content %]"/>
 <table>
 <tr><td>Benutzernummer:</td><td><input type="text" name="bnr"/></td></tr>
-<tr><td>Opac-Pin:</td><td><input type="password" name="password"/></td></tr>
+<tr><td>Kennwort (6-stellig):</td><td><input type="password" name="password"/></td></tr>
 <tr><td colspan="2"><input type="submit" value="Bestellen"/></td></tr>
 </table>
 </form>

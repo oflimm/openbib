@@ -1,0 +1,99 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_33
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=30">Ansprechpartner</a></li>
+   <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=31">Aktuelle Ausstellung</a></li>
+   <li><a class="active" href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];stid=32">FAQ</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<h1>FAQ 1. Was bedeuten die verschiedenen Klammern?</h1>
+
+<h2>Eckige Klammern []</h2>
+
+<ul>
+<li>[] werden für den ermittelten Inhalt einer Kategorie verwendet. Es handelt sich um Informationen, die weder im Portrait noch in der Legende des Bildes
+enthalten sind. Beispiel: Portrait der Anna Maria van Schurman. Der Name der abgebildeten Person ist nicht im Portrait enthalten. Er wurde folglich 
+ermittelt und derart dargestellt: [Anna Maria van Schurman]</li>
+
+<li>[] in eckigen Klammern einfügter Text weist auf verschiedene Schreibweisen hin. So wird neben der Vorlageform auch die Ansetzungsform angegeben und für
+die Recherche suchbar gemacht. Beispielsweise im Widmungsgedicht für Anna Maria van Schurman: "Wie oyt [oijt] dit aerdig beelt' sult' komen aen te schouwen, 
+Hout vast, dat gy [gij] hier siet een roem voor alle vrouwen ..." </li>
+
+<li>[] werden verwendet um das Erscheinungsjahr zu verdeutlichen. Es ist häufig nicht möglich, Portraits genau zu datieren. In diesen Fällen ist das 
+Erscheinungsjahr fingiert und in eckige Klammern gefasst. Beispiel: [ca. 1650]. Um eine Recherche mit dem Erscheinungsjahr eingrenzen zu können, wurde die
+Angabe ein weiteres Mal ohne Klammern erfasst.</li>
+</ul>
+
+<h2>Runde Klammern ()</h2>
+
+<ul>
+<li>() werden für sämtliche Klammern der Vorlage genutzt, unabhängig von der ursprünglichen Darstellung der Klammern im Legendentext. 
+</li>
+<li>() werden in der Lebensbeschreibung für die Angabe der biographischen Quelle genutzt. Zum Beispiel: (Quellen: Mortzfeld; Wikipedia) 
+</li>
+</ul>
+
+<h2>Winkelklammern &lt;&gt;</h2>
+
+<ul>
+<li>&lt;&gt; dienen als Ordnungshilfe um eine Person oder eine Körperschaft zu individualisieren. </li>
+</ul>
+
+Beispiele für Personennamen: 
+
+<pre>
+Bruyn, Bartholomäus <der Jüngere>
+Anna Katharina <Österreich, Erzherzogin, 1566-1621>
+Anna Katharina <Österreich, Erzherzogin, 1584-1649>
+Klemens August <Köln, Erzbischof>
+</pre>
+
+Beispiele für Körperschaftsnamen: 
+
+<pre>
+Königliche Akademie der Wissenschaften <Berlin>
+Universität <Altdorf, Nürnberg>
+Universität <Köln>
+Westfälischer Friedenskongress <1648, Münster, Westfalen>
+</pre>
+
+<h1>FAQ 2. Warum wurde kein Bild angezeigt?</h1>
+
+<p>
+Vor der Digitalisierung der Portraits erfolgt die Katalogisierung der Bilder. Zur Zeit finden Sie ca. 120 Titelaufnahmen ohne Abbildungen im Katalog. Diese Aufnahmen 
+sind entsprechend gekennzeichnet. Mit Abschluss der Digitaliserungsarbeiten (ca. August 2008) stehen auch diese Portraits online zur Verfügung. 
+Falls Sie ein solches Portrait ansehen möchten, nutzten Sie bitte die Bestellfunktion.
+. 
+</p>
+
+<h1>FAQ 3: Kann ich Ergänzungen zu den bestehenden Angaben machen?</h1>
+
+<p>
+Sie haben weitere Hinweise zu einem Portrait? Wir würden uns freuen, wenn Sie sich mit uns in Verbindung setzen!
+</p>
+<p>
+Bitte schreiben Sie eine Mail an: portraitsammlung@ub.uni-koeln.de
+</p>
+
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

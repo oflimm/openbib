@@ -25,35 +25,35 @@
 
 <h1>FAQ 1. Was bedeuten die verschiedenen Klammern?</h1>
 
-<h2>Eckige Klammern []</h2>
+<h2>Eckige Klammern [&nbsp;]</h2>
 
 <ul>
-<li>[] werden für den ermittelten Inhalt einer Kategorie verwendet. Es handelt sich um Informationen, die weder im Portrait noch in der Legende des Bildes
+<li>[&nbsp;] werden für den ermittelten Inhalt einer Kategorie verwendet. Es handelt sich um Informationen, die weder im Portrait noch in der Legende des Bildes
 enthalten sind. Beispiel: Portrait der Anna Maria van Schurman. Der Name der abgebildeten Person ist nicht im Portrait enthalten. Er wurde folglich 
 ermittelt und derart dargestellt: [Anna Maria van Schurman]</li>
 
-<li>[] in eckigen Klammern einfügter Text weist auf verschiedene Schreibweisen hin. So wird neben der Vorlageform auch die Ansetzungsform angegeben und für
+<li>[&nbsp;] in eckigen Klammern einfügter Text weist auf verschiedene Schreibweisen hin. So wird neben der Vorlageform auch die Ansetzungsform angegeben und für
 die Recherche suchbar gemacht. Beispielsweise im Widmungsgedicht für Anna Maria van Schurman: "Wie oyt [oijt] dit aerdig beelt' sult' komen aen te schouwen, 
 Hout vast, dat gy [gij] hier siet een roem voor alle vrouwen ..." </li>
 
-<li>[] werden verwendet um das Erscheinungsjahr zu verdeutlichen. Es ist häufig nicht möglich, Portraits genau zu datieren. In diesen Fällen ist das 
+<li>[&nbsp;] werden verwendet um das Erscheinungsjahr zu verdeutlichen. Es ist häufig nicht möglich, Portraits genau zu datieren. In diesen Fällen ist das 
 Erscheinungsjahr fingiert und in eckige Klammern gefasst. Beispiel: [ca. 1650]. Um eine Recherche mit dem Erscheinungsjahr eingrenzen zu können, wurde die
 Angabe ein weiteres Mal ohne Klammern erfasst.</li>
 </ul>
 
-<h2>Runde Klammern ()</h2>
+<h2>Runde Klammern (&nbsp;)</h2>
 
 <ul>
-<li>() werden für sämtliche Klammern der Vorlage genutzt, unabhängig von der ursprünglichen Darstellung der Klammern im Legendentext. 
+<li>(&nbsp;) werden für sämtliche Klammern der Vorlage genutzt, unabhängig von der ursprünglichen Darstellung der Klammern im Legendentext. 
 </li>
-<li>() werden in der Lebensbeschreibung für die Angabe der biographischen Quelle genutzt. Zum Beispiel: (Quellen: Mortzfeld; Wikipedia) 
+<li>(&nbsp;) werden in der Lebensbeschreibung für die Angabe der biographischen Quelle genutzt. Zum Beispiel: (Quellen: Mortzfeld; Wikipedia) 
 </li>
 </ul>
 
-<h2>Winkelklammern &lt;&gt;</h2>
+<h2>Winkelklammern &lt;&nbsp;&gt;</h2>
 
 <ul>
-<li>&lt;&gt; dienen als Ordnungshilfe um eine Person oder eine Körperschaft zu individualisieren. </li>
+<li>&lt;&nbsp;&gt; dienen als Ordnungshilfe um eine Person oder eine Körperschaft zu individualisieren. </li>
 </ul>
 
 Beispiele für Personennamen: 

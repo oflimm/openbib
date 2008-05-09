@@ -41,20 +41,13 @@
 <div class="content">
 <p />
 
-<ul class="tabbingmenu">
-   <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=14" target="body" title="Schlagworte">Schlagworte</a></li>
-   <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=16" target="body" title="Systematiken/Notationen">Systematiken/Notationen</a></li>
-   <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=17" target="body" title="K&ouml;rperschaften/Institutionen">K&ouml;rperschaften/Institutionen</a></li>
-   <li><a class="active" href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=18" target="body" title="Personen">Personen</a></li>
-[% IF config.social_tagging %]   <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=19" target="body" title="Nutzer-Tags">Nutzer-Tags</a></li>[% END %]
-[% IF viewdbs.size == 1     %]   <li><a                href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=40" target="body" title="Suchbegriffe">Suchbegriffe</a></li>[% END %]
-</ul>
+[% PROCESS common/subtemplate name="clouds_navigation" active=18 %]
 
 <div class="content">
 <p />
 
 <table width="100%">
-<tr><th>Wolke der h&auml;ufigsten Personen</th></tr>
+<tr><th>Wolke der h&auml;ufigsten Begriffe</th></tr>
 <tr><td class="boxedclear">
 <!-- Beginn Tag-Cloud -->
 [%
@@ -82,8 +75,8 @@ verkn&uuml;pft mit </span><a href="[% config.virtualsearch_loc %]?sessionID=[% s
 [% END %]
 </ol>
 [% ELSE %]
-Leider k&ouml;nnen wir Ihnen für diesen Katalog keine Wolke der Personen
-anbieten.
+Leider k&ouml;nnen wir Ihnen für diesen Katalog keine Wolke der
+h&auml;ufigsten Begriffe anbieten.
 [% END %]
 </td></tr>
 </table>

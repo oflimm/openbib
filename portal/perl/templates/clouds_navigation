@@ -15,7 +15,7 @@
    <li><a [% IF active == 14 %]class="active"[% END %] href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=14" target="body" title="Schlagworte">Schlagworte</a></li>
    <li><a [% IF active == 16 %]class="active"[% END %] href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=16" target="body" title="Systematiken/Notationen">Systematiken/Notationen</a></li>
    <li><a [% IF active == 17 %]class="active"[% END %] href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=17" target="body" title="K&ouml;rperschaften/Institutionen">K&ouml;rperschaften/Institutionen</a></li>
-   <li><a [% IF active == 18 %]class="active"[% END %] href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=18" target="body" title=">Personen">>Personen</a></li>
+   <li><a [% IF active == 18 %]class="active"[% END %] href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=18" target="body" title="Personen">Personen</a></li>
 [% IF config.social_tagging %]   <li><a [% IF active == 19 %]class="active"[% END %] href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=19" target="body" title="Nutzer-Tags">Nutzer-Tags</a></li>[% END %]
 [% IF viewdbs.size == 1     %]   <li><a [% IF active == 40 %]class="active"[% END %] href="[% config.helpframe_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=40" target="body" title="Suchbegriffe">Suchbegriffe</a></li>[% END %]
 </ul>

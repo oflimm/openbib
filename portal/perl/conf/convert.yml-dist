@@ -259,6 +259,29 @@ convtab:
 ##############################################################################
 # Sonderanpassungen fuer einzelne Kataloge
 ##############################################################################
+  alff:
+    listitemcat:
+      '0100': 1
+      '0101': 1
+      '0102': 1
+      '0103': 1
+      '0200': 1
+      '0201': 1
+      '0310': 1
+      '0331': 1
+      '0403': 1
+      '0412': 1
+      '0424': 1
+      '0425': 1
+      '0540': 1
+      '1203': 1
+      '2662': 1
+  nationallizenzen:
+    search_gtquelle:
+      '0089': 1       # Bandkennzeichen
+      '0451': 1       # Gesamttitel
+      '0508': 1       # Sammlung
+      '0590': 1       # Serie/Band
   richter:
     inverted_tit:
       '0002':         # Aufnahmedatum
@@ -289,3 +312,49 @@ convtab:
       '0501': 1       # Richterindiz
       '0720': 1       # Provenienz
       '0750': 1       # Abstract
+  einbaende:
+    inverted_tit:
+      '0002':         # Aufnahmedatum
+        string: 1
+      '0304':         # EST
+        ft: 1
+        string: 1
+      '0310':         # AST
+        ft: 1
+        string: 1
+      '0331':         # HST
+        ft: 1
+        string: 1
+      '0335':         # Zusatz zum HST
+        ft: 1
+        string: 0
+      '0341':         # PSTVorlage
+        ft: 1
+        string: 1
+      '0370':         # WST
+        ft: 1
+        string: 1
+      '0540':         # ISBN
+        string: 1
+      '0413':         # Provenienz-Register
+        string: 1
+    search_inhalt:
+      '0501': 1       # Richterindiz
+      '0720': 1       # Provenienz
+      '0750': 1       # Abstract
+# Kategorien fuer die Anzeige in der Kurztitelanzeige
+    listitemcat:
+      '0014': 1
+      '0101': 1
+      '0200': 1
+      '0310': 1
+      '0331': 1
+      '0403': 1
+      '0412': 1
+      '0413': 1
+      '0424': 1
+      '0425': 1
+      '0435': 1
+      '0700': 1
+      '0710': 1
+      '1203': 1

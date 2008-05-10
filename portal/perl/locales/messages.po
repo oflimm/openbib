@@ -19,7 +19,7 @@ msgstr ""
 msgid "${category}"
 msgstr ""
 
-#: ../templates/database/einbaende/managecollection_tit_as_html:111 ../templates/database/einbaende/managecollection_tit_as_html:55 ../templates/database/einbaende/search_showtitset:132 ../templates/database/einbaende/search_showtitset:236 ../templates/database/landschaft/search_showtitset:142 ../templates/database/portrait/search_showtitset:146 ../templates/managecollection_tit_as_html:52 ../templates/managecollection_tit_as_text:34 ../templates/search_showmulttitset:99 ../templates/search_showtitset:294
+#: ../templates/database/ebooks/search_showtitset:277 ../templates/database/einbaende/managecollection_tit_as_html:111 ../templates/database/einbaende/managecollection_tit_as_html:55 ../templates/database/einbaende/search_showtitset:132 ../templates/database/einbaende/search_showtitset:236 ../templates/database/landschaft/search_showtitset:142 ../templates/database/nationallizenzen/search_showtitset:295 ../templates/database/portrait/search_showtitset:164 ../templates/managecollection_tit_as_html:69 ../templates/managecollection_tit_as_text:34 ../templates/search_showmulttitset:99 ../templates/search_showtitset:300
 msgid "${thiscategory}"
 msgstr ""
 
@@ -83,7 +83,7 @@ msgstr ""
 msgid "Abschicken"
 msgstr ""
 
-#: ../templates/database/einbaende/search_showtitset:44 ../templates/database/landschaft/search_showtitset:40 ../templates/database/portrait/search_showtitset:40 ../templates/managecollection_show:88 ../templates/search_showtitset:48 ../templates/views/einbaende/managecollection_show:71
+#: ../templates/database/ebooks/search_showtitset:48 ../templates/database/einbaende/search_showtitset:44 ../templates/database/landschaft/search_showtitset:40 ../templates/database/nationallizenzen/search_showtitset:48 ../templates/database/portrait/search_showtitset:40 ../templates/managecollection_show:88 ../templates/search_showtitset:48 ../templates/views/einbaende/managecollection_show:71
 msgid "Abspeichern"
 msgstr ""
 
@@ -127,11 +127,11 @@ msgstr ""
 msgid "Allgemeine Informationen"
 msgstr ""
 
-#: ../templates/database/einbaende/search_showtitset:43 ../templates/database/landschaft/search_showtitset:39 ../templates/database/portrait/search_showtitset:39 ../templates/managecollection_show:87 ../templates/search_showtitset:47 ../templates/views/einbaende/managecollection_show:70
+#: ../templates/database/ebooks/search_showtitset:47 ../templates/database/einbaende/search_showtitset:43 ../templates/database/landschaft/search_showtitset:39 ../templates/database/nationallizenzen/search_showtitset:47 ../templates/database/portrait/search_showtitset:39 ../templates/managecollection_show:87 ../templates/search_showtitset:47 ../templates/views/einbaende/managecollection_show:70
 msgid "Als Mail verschicken"
 msgstr ""
 
-#: ../templates/search_showtitset:50
+#: ../templates/database/ebooks/search_showtitset:50 ../templates/database/nationallizenzen/search_showtitset:50 ../templates/search_showtitset:50
 msgid "Als Permanenten Link verwenden"
 msgstr ""
 
@@ -143,7 +143,7 @@ msgstr ""
 msgid "Als User-Agent verwenden Sie"
 msgstr ""
 
-#: ../templates/managecollection_tit_as_bibtex:20 ../templates/managecollection_tit_as_endnote:20 ../templates/managecollection_tit_as_html:140 ../templates/managecollection_tit_as_text:49
+#: ../templates/managecollection_tit_as_bibtex:20 ../templates/managecollection_tit_as_endnote:20 ../templates/managecollection_tit_as_html:157 ../templates/managecollection_tit_as_text:49
 msgid "An BibSonomy senden"
 msgstr ""
 
@@ -190,7 +190,7 @@ msgstr ""
 msgid "Aufruf ohne &Uuml;bernahme von Suchbegriffen"
 msgstr ""
 
-#: ../templates/database/einbaende/search_showtitset:45 ../templates/database/landschaft/search_showtitset:41 ../templates/database/portrait/search_showtitset:41 ../templates/search_showtitset:49
+#: ../templates/database/ebooks/search_showtitset:49 ../templates/database/einbaende/search_showtitset:45 ../templates/database/landschaft/search_showtitset:41 ../templates/database/nationallizenzen/search_showtitset:49 ../templates/database/portrait/search_showtitset:41 ../templates/search_showtitset:49
 msgid "Ausdrucken"
 msgstr ""
 
@@ -214,7 +214,7 @@ msgstr ""
 msgid "Ausleih-Einstellungen"
 msgstr ""
 
-#: ../templates/database/einbaende/managecollection_tit_as_html:125 ../templates/database/einbaende/search_showtitset:249 ../templates/database/landschaft/search_showtitset:168 ../templates/database/portrait/search_showtitset:172 ../templates/managecollection_tit_as_html:77 ../templates/managecollection_tit_as_html_simple:60 ../templates/search_showmulttitset:130 ../templates/search_showtitset:350
+#: ../templates/database/ebooks/search_showtitset:333 ../templates/database/einbaende/managecollection_tit_as_html:125 ../templates/database/einbaende/search_showtitset:249 ../templates/database/landschaft/search_showtitset:168 ../templates/database/nationallizenzen/search_showtitset:351 ../templates/database/portrait/search_showtitset:190 ../templates/managecollection_tit_as_html:94 ../templates/managecollection_tit_as_html_simple:60 ../templates/search_showmulttitset:130 ../templates/search_showtitset:356
 msgid "Ausleihe/Exemplare"
 msgstr ""
 
@@ -298,7 +298,7 @@ msgstr ""
 msgid "Beschreibung"
 msgstr ""
 
-#: ../templates/circset:16 ../templates/database/einbaende/managecollection_tit_as_html:129 ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:142 ../templates/database/einbaende/search_showtitset:253 ../templates/database/landschaft/search_showtitset:153 ../templates/database/portrait/search_showtitset:157 ../templates/managecollection_tit_as_html:62 ../templates/managecollection_tit_as_html_simple:45 ../templates/managecollection_tit_as_text:39 ../templates/mexset:2 ../templates/search_showmulttitset:109
+#: ../templates/circset:16 ../templates/database/einbaende/managecollection_tit_as_html:129 ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:142 ../templates/database/einbaende/search_showtitset:253 ../templates/database/landschaft/search_showtitset:153 ../templates/database/portrait/search_showtitset:175 ../templates/managecollection_tit_as_html:79 ../templates/managecollection_tit_as_html_simple:45 ../templates/managecollection_tit_as_text:39 ../templates/mexset:2 ../templates/search_showmulttitset:109
 msgid "Besitzende Bibliothek"
 msgstr ""
 
@@ -306,7 +306,7 @@ msgstr ""
 msgid "Besonderheit bei Feldern mit"
 msgstr ""
 
-#: ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:142 ../templates/managecollection_tit_as_html:62 ../templates/managecollection_tit_as_html_simple:45 ../templates/mexset:2 ../templates/search_showmulttitset:109
+#: ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:142 ../templates/managecollection_tit_as_html:79 ../templates/managecollection_tit_as_html_simple:45 ../templates/mexset:2 ../templates/search_showmulttitset:109
 msgid "Bestandsverlauf"
 msgstr ""
 
@@ -480,10 +480,6 @@ msgstr ""
 msgid "Digitale Bibliothek / Zeitschriften (Aufsatzlieferung)"
 msgstr ""
 
-#: ../templates/database/landschaft/virtualsearch_result_item:159 ../templates/database/portrait/virtualsearch_result_item:159 ../templates/views/portrait/virtualsearch_result_item:153
-msgid "Drill-Down"
-msgstr ""
-
 #: ../templates/managecollection_print:30
 msgid "Druckansicht Titel"
 msgstr ""
@@ -496,15 +492,15 @@ msgstr ""
 msgid "E-Mail-Adresse"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:109 ../templates/visible_categories_titset:102
+#: ../templates/database/ebooks/visible_categories_titset:102 ../templates/database/inst001/visible_categories_titset:109 ../templates/database/nationallizenzen/visible_categories_titset:102 ../templates/visible_categories_titset:102
 msgid "E4100"
 msgstr ""
 
-#: ../templates/visible_categories_titset:110
+#: ../templates/database/ebooks/visible_categories_titset:110 ../templates/database/nationallizenzen/visible_categories_titset:111 ../templates/visible_categories_titset:110
 msgid "E4110"
 msgstr ""
 
-#: ../templates/visible_categories_titset:111
+#: ../templates/database/ebooks/visible_categories_titset:111 ../templates/database/nationallizenzen/visible_categories_titset:112 ../templates/visible_categories_titset:111
 msgid "E4120"
 msgstr ""
 
@@ -737,7 +733,7 @@ msgstr ""
 msgid "Geben Sie hier den Notationsanfang ein"
 msgstr ""
 
-#: ../templates/search_showswtindex:81 ../templates/search_showtitlist:186 ../templates/search_showtitset:727 ../templates/views/kapsel/search_showtitlist:174 ../templates/virtualsearch_showswtindex:52
+#: ../templates/database/ebooks/search_showtitset:710 ../templates/database/nationallizenzen/search_showtitset:728 ../templates/search_showswtindex:81 ../templates/search_showtitlist:187 ../templates/search_showtitset:733 ../templates/views/kapsel/search_showtitlist:174 ../templates/virtualsearch_showswtindex:52
 msgid "Geben Sie hier den Schlagwortanfang ein"
 msgstr ""
 
@@ -903,11 +899,11 @@ msgstr ""
 msgid "Import-Einstellungen"
 msgstr ""
 
-#: ../templates/search_showtitset:74
+#: ../templates/database/ebooks/search_showtitset:80 ../templates/database/nationallizenzen/search_showtitset:75 ../templates/managecollection_tit_as_html:38 ../templates/search_showtitset:80
 msgid "In BibSonomy vorhanden?"
 msgstr ""
 
-#: ../templates/search_showtitset:70
+#: ../templates/database/ebooks/search_showtitset:76 ../templates/managecollection_tit_as_html:34 ../templates/search_showtitset:76
 msgid "In Google BookSearch vorhanden?"
 msgstr ""
 
@@ -919,7 +915,7 @@ msgstr ""
 msgid "In ausgewählten Katalogen suchen"
 msgstr ""
 
-#: ../templates/database/einbaende/search_showtitlist:150 ../templates/database/einbaende/search_showtitset:42 ../templates/database/landschaft/search_showtitlist:153 ../templates/database/landschaft/search_showtitset:38 ../templates/database/landschaft/virtualsearch_result_item:76 ../templates/database/portrait/search_showtitlist:153 ../templates/database/portrait/search_showtitset:38 ../templates/database/portrait/virtualsearch_result_item:76 ../templates/resultlists_showall:135 ../templates/resultlists_showall_sortall:120 ../templates/resultlists_showsinglepool:137 ../templates/search_showtitlist:155 ../templates/search_showtitlist_of_cnt:155 ../templates/search_showtitset:46 ../templates/views/einbaende/resultlists_showall:134 ../templates/views/einbaende/resultlists_showall_sortall:110 ../templates/views/einbaende/resultlists_showsinglepool:132 ../templates/views/einbaende/virtualsearch_result_item:73 ../templates/views/kapsel/resultlists_showall:135 ../templates/views/kapsel/resultlists_showsinglepool:138 ../templates/views/kapsel/search_showtitlist:143 ../templates/views/portrait/resultlists_showsinglepool:127 ../templates/views/portrait/virtualsearch_result_item:70 ../templates/virtualsearch_result_item:79
+#: ../templates/database/ebooks/search_showtitset:46 ../templates/database/einbaende/search_showtitlist:150 ../templates/database/einbaende/search_showtitset:42 ../templates/database/landschaft/search_showtitlist:153 ../templates/database/landschaft/search_showtitset:38 ../templates/database/landschaft/virtualsearch_result_item:79 ../templates/database/nationallizenzen/search_showtitset:46 ../templates/database/portrait/search_showtitlist:153 ../templates/database/portrait/search_showtitset:38 ../templates/database/portrait/virtualsearch_result_item:79 ../templates/resultlists_showall:137 ../templates/resultlists_showall_sortall:122 ../templates/resultlists_showsinglepool:140 ../templates/search_showtitlist:156 ../templates/search_showtitlist_of_cnt:156 ../templates/search_showtitset:46 ../templates/views/einbaende/resultlists_showall:134 ../templates/views/einbaende/resultlists_showall_sortall:110 ../templates/views/einbaende/resultlists_showsinglepool:132 ../templates/views/einbaende/virtualsearch_result_item:73 ../templates/views/kapsel/resultlists_showall:135 ../templates/views/kapsel/resultlists_showsinglepool:138 ../templates/views/kapsel/search_showtitlist:143 ../templates/views/portrait/resultlists_showsinglepool:127 ../templates/virtualsearch_result_item:80
 msgid "In die Merkliste"
 msgstr ""
 
@@ -935,7 +931,7 @@ msgstr ""
 msgid "Information"
 msgstr ""
 
-#: ../templates/database/einbaende/managecollection_tit_as_html:27 ../templates/database/einbaende/managecollection_tit_as_html:83 ../templates/database/einbaende/search_showtitset:167 ../templates/database/einbaende/search_showtitset:69 ../templates/database/landschaft/search_showtitset:67 ../templates/database/portrait/search_showtitset:71 ../templates/managecollection_tit_as_html:27 ../templates/managecollection_tit_as_html_simple:28 ../templates/search_showautset:31 ../templates/search_showkorset:32 ../templates/search_showmulttitset:41 ../templates/search_shownotset:31 ../templates/search_showswtset:33 ../templates/search_showtitset:97
+#: ../templates/database/ebooks/search_showtitset:103 ../templates/database/einbaende/managecollection_tit_as_html:27 ../templates/database/einbaende/managecollection_tit_as_html:83 ../templates/database/einbaende/search_showtitset:167 ../templates/database/einbaende/search_showtitset:69 ../templates/database/landschaft/search_showtitset:67 ../templates/database/nationallizenzen/search_showtitset:98 ../templates/database/portrait/search_showtitset:89 ../templates/managecollection_tit_as_html:44 ../templates/managecollection_tit_as_html_simple:28 ../templates/search_showautset:31 ../templates/search_showkorset:32 ../templates/search_showmulttitset:41 ../templates/search_shownotset:31 ../templates/search_showswtset:33 ../templates/search_showtitset:103
 msgid "Inhalt"
 msgstr ""
 
@@ -947,7 +943,7 @@ msgstr ""
 msgid "Institutionen"
 msgstr ""
 
-#: ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:142 ../templates/managecollection_tit_as_html:62 ../templates/managecollection_tit_as_html_simple:45 ../templates/mexset:2 ../templates/search_showmulttitset:109
+#: ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:142 ../templates/managecollection_tit_as_html:79 ../templates/managecollection_tit_as_html_simple:45 ../templates/mexset:2 ../templates/search_showmulttitset:109
 msgid "Inventarnummer"
 msgstr ""
 
@@ -963,16 +959,12 @@ msgstr ""
 msgid "Jahr"
 msgstr ""
 
-#: ../templates/database/landschaft/virtualsearch_result_item:142 ../templates/database/portrait/virtualsearch_result_item:142 ../templates/views/portrait/clouds_navigation:19 ../templates/views/portrait/virtualsearch_result_item:136
+#: ../templates/views/portrait/clouds_navigation:19
 msgid "Jahre"
 msgstr ""
 
 #: ../templates/userprefs:180 ../templates/virtualsearch_showkorindex:52
 msgid "K&ouml;rperschaft"
-msgstr ""
-
-#: ../templates/database/landschaft/virtualsearch_result_item:105 ../templates/database/portrait/virtualsearch_result_item:105 ../templates/views/portrait/virtualsearch_result_item:99
-msgid "K&ouml;rperschaften"
 msgstr ""
 
 #: ../templates/userprefs:43
@@ -1031,7 +1023,7 @@ msgstr ""
 msgid "Katalogprofile"
 msgstr ""
 
-#: ../templates/database/einbaende/managecollection_tit_as_html:27 ../templates/database/einbaende/managecollection_tit_as_html:83 ../templates/database/einbaende/search_showtitset:167 ../templates/database/einbaende/search_showtitset:69 ../templates/database/landschaft/search_showtitset:67 ../templates/database/portrait/search_showtitset:71 ../templates/managecollection_tit_as_html:27 ../templates/managecollection_tit_as_html_simple:28 ../templates/search_showautset:31 ../templates/search_showkorset:32 ../templates/search_showmulttitset:41 ../templates/search_shownotset:31 ../templates/search_showswtset:33 ../templates/search_showtitset:97 ../templates/views/portrait/searchmask_query:2 ../templates/views/richter/searchmask_query:2
+#: ../templates/database/ebooks/search_showtitset:103 ../templates/database/einbaende/managecollection_tit_as_html:27 ../templates/database/einbaende/managecollection_tit_as_html:83 ../templates/database/einbaende/search_showtitset:167 ../templates/database/einbaende/search_showtitset:69 ../templates/database/landschaft/search_showtitset:67 ../templates/database/nationallizenzen/search_showtitset:98 ../templates/database/portrait/search_showtitset:89 ../templates/managecollection_tit_as_html:44 ../templates/managecollection_tit_as_html_simple:28 ../templates/search_showautset:31 ../templates/search_showkorset:32 ../templates/search_showmulttitset:41 ../templates/search_shownotset:31 ../templates/search_showswtset:33 ../templates/search_showtitset:103 ../templates/views/portrait/searchmask_query:2 ../templates/views/richter/searchmask_query:2
 msgid "Kategorie"
 msgstr ""
 
@@ -1190,7 +1182,7 @@ msgstr ""
 msgid "Medienart"
 msgstr ""
 
-#: ../templates/database/landschaft/search_showtitlist:166 ../templates/database/portrait/search_showtitlist:166 ../templates/search_showtitlist:168 ../templates/search_showtitlist_of_cnt:168 ../templates/views/kapsel/search_showtitlist:156
+#: ../templates/database/landschaft/search_showtitlist:166 ../templates/search_showtitlist:169 ../templates/search_showtitlist_of_cnt:169 ../templates/views/kapsel/search_showtitlist:156
 msgid "Mehrfachauswahl"
 msgstr ""
 
@@ -1218,7 +1210,7 @@ msgstr ""
 msgid "Möchten Sie diesen ändern?"
 msgstr ""
 
-#: ../templates/database/einbaende/search_showtitset:48 ../templates/database/einbaende/search_showtitset:50 ../templates/database/landschaft/search_showtitset:44 ../templates/database/landschaft/search_showtitset:46 ../templates/database/portrait/search_showtitset:44 ../templates/database/portrait/search_showtitset:46 ../templates/search_showtitset:53 ../templates/search_showtitset:55
+#: ../templates/database/ebooks/search_showtitset:53 ../templates/database/ebooks/search_showtitset:55 ../templates/database/einbaende/search_showtitset:48 ../templates/database/einbaende/search_showtitset:50 ../templates/database/landschaft/search_showtitset:44 ../templates/database/landschaft/search_showtitset:46 ../templates/database/nationallizenzen/search_showtitset:53 ../templates/database/nationallizenzen/search_showtitset:55 ../templates/database/portrait/search_showtitset:44 ../templates/database/portrait/search_showtitset:46 ../templates/search_showtitset:53 ../templates/search_showtitset:55
 msgid "N&auml;chster Titel"
 msgstr ""
 
@@ -1549,7 +1541,7 @@ msgstr ""
 msgid "Schlagwort"
 msgstr ""
 
-#: ../templates/database/landschaft/virtualsearch_result_item:130 ../templates/database/portrait/virtualsearch_result_item:130 ../templates/searchmask_query:19 ../templates/views/portrait/virtualsearch_result_item:124
+#: ../templates/searchmask_query:19
 msgid "Schlagworte"
 msgstr ""
 
@@ -1557,11 +1549,11 @@ msgstr ""
 msgid "Schlagwortindex"
 msgstr ""
 
-#: ../templates/search_showtitset:726
+#: ../templates/database/ebooks/search_showtitset:709 ../templates/database/nationallizenzen/search_showtitset:727 ../templates/search_showtitset:732
 msgid "Schlagwortindex diese Katalogs"
 msgstr ""
 
-#: ../templates/search_showswtindex:81 ../templates/search_showtitlist:186 ../templates/views/kapsel/search_showtitlist:174
+#: ../templates/search_showswtindex:81 ../templates/search_showtitlist:187 ../templates/views/kapsel/search_showtitlist:174
 msgid "Schlagwortindex dieses Katalogs"
 msgstr ""
 
@@ -1598,7 +1590,7 @@ msgstr ""
 msgid "Seit"
 msgstr ""
 
-#: ../templates/database/landschaft/virtualsearch_result_item:159 ../templates/database/landschaft/virtualsearch_result_item:83 ../templates/database/portrait/virtualsearch_result_item:159 ../templates/database/portrait/virtualsearch_result_item:83 ../templates/views/einbaende/virtualsearch_result_item:80 ../templates/views/portrait/virtualsearch_result_item:153 ../templates/views/portrait/virtualsearch_result_item:77 ../templates/virtualsearch_result_item:86 ../templates/virtualsearch_showkorindex:38 ../templates/virtualsearch_shownotindex:38 ../templates/virtualsearch_showswtindex:38 ../templates/virtualsearch_showverfindex:38
+#: ../templates/database/landschaft/virtualsearch_result_item:86 ../templates/database/portrait/virtualsearch_result_item:86 ../templates/views/einbaende/virtualsearch_result_item:80 ../templates/virtualsearch_result_item:87 ../templates/virtualsearch_showkorindex:38 ../templates/virtualsearch_shownotindex:38 ../templates/virtualsearch_showswtindex:38 ../templates/virtualsearch_showverfindex:38
 msgid "Sekunden"
 msgstr ""
 
@@ -1777,7 +1769,7 @@ msgstr ""
 msgid "Sigel"
 msgstr ""
 
-#: ../templates/circset:16 ../templates/circulation:56 ../templates/circulation_orders:52 ../templates/circulation_remind:71 ../templates/circulation_reserv:52 ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:142 ../templates/database/einbaende/search_showtitset:253 ../templates/database/landschaft/search_showtitset:153 ../templates/database/portrait/search_showtitset:157 ../templates/managecollection_tit_as_html:62 ../templates/mexset:2 ../templates/search_showmulttitset:109 ../templates/searchmask_query:35 ../templates/userprefs:185 ../templates/views/inst501/searchmask_query:35 ../templates/views/portrait/searchmask_query:29 ../templates/views/richter/searchmask_query:29
+#: ../templates/circset:16 ../templates/circulation:56 ../templates/circulation_orders:52 ../templates/circulation_remind:71 ../templates/circulation_reserv:52 ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:142 ../templates/database/einbaende/search_showtitset:253 ../templates/database/landschaft/search_showtitset:153 ../templates/database/portrait/search_showtitset:175 ../templates/managecollection_tit_as_html:79 ../templates/mexset:2 ../templates/search_showmulttitset:109 ../templates/searchmask_query:35 ../templates/userprefs:185 ../templates/views/inst501/searchmask_query:35 ../templates/views/portrait/searchmask_query:29 ../templates/views/richter/searchmask_query:29
 msgid "Signatur"
 msgstr ""
 
@@ -1832,7 +1824,7 @@ msgstr ""
 msgid "Sprung zur Trefferliste im KUG"
 msgstr ""
 
-#: ../templates/circset:16 ../templates/database/einbaende/managecollection_tit_as_html:129 ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:142 ../templates/database/einbaende/search_showtitset:253 ../templates/managecollection_tit_as_html:62 ../templates/managecollection_tit_as_html_simple:45 ../templates/mexset:2 ../templates/search_showmulttitset:109
+#: ../templates/circset:16 ../templates/database/einbaende/managecollection_tit_as_html:129 ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:142 ../templates/database/einbaende/search_showtitset:253 ../templates/managecollection_tit_as_html:79 ../templates/managecollection_tit_as_html_simple:45 ../templates/mexset:2 ../templates/search_showmulttitset:109
 msgid "Standort"
 msgstr ""
 
@@ -1860,7 +1852,7 @@ msgstr ""
 msgid "Suchbegriffe"
 msgstr ""
 
-#: ../templates/bibsonomy_showtitlist:54 ../templates/search_showswtindex:81 ../templates/search_showtitlist:186 ../templates/search_showtitset:727 ../templates/views/kapsel/search_showtitlist:174 ../templates/views/kapsel/searchmask:100 ../templates/views/kapsel/searchmask:67 ../templates/views/kapsel/searchmask:96 ../templates/views/kapsel/searchmask_simple:65 ../templates/views/landschaft/searchmask:100 ../templates/views/landschaft/searchmask:67 ../templates/views/landschaft/searchmask:96 ../templates/views/landschaft/searchmask_simple:57 ../templates/views/portrait/searchmask:127 ../templates/views/portrait/searchmask:131 ../templates/views/portrait/searchmask:72 ../templates/views/portrait/searchmask_simple:73
+#: ../templates/bibsonomy_showtitlist:54 ../templates/database/ebooks/search_showtitset:710 ../templates/database/nationallizenzen/search_showtitset:728 ../templates/search_showswtindex:81 ../templates/search_showtitlist:187 ../templates/search_showtitset:733 ../templates/views/kapsel/search_showtitlist:174 ../templates/views/kapsel/searchmask:100 ../templates/views/kapsel/searchmask:67 ../templates/views/kapsel/searchmask:96 ../templates/views/kapsel/searchmask_simple:65 ../templates/views/landschaft/searchmask:100 ../templates/views/landschaft/searchmask:67 ../templates/views/landschaft/searchmask:96 ../templates/views/landschaft/searchmask_simple:57 ../templates/views/portrait/searchmask:127 ../templates/views/portrait/searchmask:131 ../templates/views/portrait/searchmask:72 ../templates/views/portrait/searchmask_simple:73
 msgid "Suchen"
 msgstr ""
 
@@ -1893,10 +1885,6 @@ msgstr ""
 msgid "Suchoptionen"
 msgstr ""
 
-#: ../templates/database/landschaft/virtualsearch_result_item:88 ../templates/database/portrait/virtualsearch_result_item:88 ../templates/views/portrait/virtualsearch_result_item:82
-msgid "Suchverfeinerung mit relevanten Begriffen"
-msgstr ""
-
 #: ../templates/admin_editcat:131
 msgid "Swt-Datei"
 msgstr ""
@@ -1909,23 +1897,23 @@ msgstr ""
 msgid "Systematisches Bl&auml;ttern"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:84 ../templates/database/inst450/visible_categories_titset:33 ../templates/database/richter/visible_categories_titset:84 ../templates/visible_categories_titset:84
+#: ../templates/database/ebooks/visible_categories_titset:84 ../templates/database/inst001/visible_categories_titset:84 ../templates/database/inst450/visible_categories_titset:33 ../templates/database/nationallizenzen/visible_categories_titset:84 ../templates/database/richter/visible_categories_titset:84 ../templates/visible_categories_titset:84
 msgid "T0015"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:88 ../templates/database/kapsel/visible_categories_titset:86 ../templates/database/richter/visible_categories_titset:88 ../templates/visible_categories_titset:88
+#: ../templates/database/ebooks/visible_categories_titset:88 ../templates/database/inst001/visible_categories_titset:88 ../templates/database/kapsel/visible_categories_titset:86 ../templates/database/nationallizenzen/visible_categories_titset:88 ../templates/database/richter/visible_categories_titset:88 ../templates/visible_categories_titset:88
 msgid "T0026"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:47 ../templates/database/kapsel/visible_categories_titset:46 ../templates/database/richter/visible_categories_titset:46 ../templates/visible_categories_titset:46
+#: ../templates/database/ebooks/visible_categories_titset:46 ../templates/database/inst001/visible_categories_titset:47 ../templates/database/kapsel/visible_categories_titset:46 ../templates/database/nationallizenzen/visible_categories_titset:46 ../templates/database/richter/visible_categories_titset:46 ../templates/visible_categories_titset:46
 msgid "T0035"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:21 ../templates/database/inst450/visible_categories_titset:27 ../templates/database/kapsel/visible_categories_titset:21 ../templates/database/richter/visible_categories_titset:21 ../templates/visible_categories_titset:21
+#: ../templates/database/ebooks/visible_categories_titset:21 ../templates/database/inst001/visible_categories_titset:21 ../templates/database/inst450/visible_categories_titset:27 ../templates/database/kapsel/visible_categories_titset:21 ../templates/database/nationallizenzen/visible_categories_titset:21 ../templates/database/richter/visible_categories_titset:21 ../templates/visible_categories_titset:21
 msgid "T0089"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:16 ../templates/database/kapsel/visible_categories_titset:16 ../templates/database/richter/visible_categories_titset:16 ../templates/visible_categories_titset:16
+#: ../templates/database/ebooks/visible_categories_titset:16 ../templates/database/inst001/visible_categories_titset:16 ../templates/database/kapsel/visible_categories_titset:16 ../templates/database/nationallizenzen/visible_categories_titset:16 ../templates/database/richter/visible_categories_titset:16 ../templates/visible_categories_titset:16
 msgid "T0100"
 msgstr ""
 
@@ -1945,7 +1933,7 @@ msgstr ""
 msgid "T0100-portrait"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:17 ../templates/database/kapsel/visible_categories_titset:17 ../templates/database/landschaft/visible_categories_titset:18 ../templates/database/richter/visible_categories_titset:17 ../templates/visible_categories_titset:17
+#: ../templates/database/ebooks/visible_categories_titset:17 ../templates/database/inst001/visible_categories_titset:17 ../templates/database/kapsel/visible_categories_titset:17 ../templates/database/landschaft/visible_categories_titset:18 ../templates/database/nationallizenzen/visible_categories_titset:17 ../templates/database/richter/visible_categories_titset:17 ../templates/visible_categories_titset:17
 msgid "T0101"
 msgstr ""
 
@@ -1969,7 +1957,7 @@ msgstr ""
 msgid "T0102-portrait"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:18 ../templates/database/kapsel/visible_categories_titset:18 ../templates/database/landschaft/visible_categories_titset:19 ../templates/database/richter/visible_categories_titset:18 ../templates/visible_categories_titset:18
+#: ../templates/database/ebooks/visible_categories_titset:18 ../templates/database/inst001/visible_categories_titset:18 ../templates/database/kapsel/visible_categories_titset:18 ../templates/database/landschaft/visible_categories_titset:19 ../templates/database/nationallizenzen/visible_categories_titset:18 ../templates/database/richter/visible_categories_titset:18 ../templates/visible_categories_titset:18
 msgid "T0103"
 msgstr ""
 
@@ -1977,7 +1965,7 @@ msgstr ""
 msgid "T0103-portrait"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:19 ../templates/database/kapsel/visible_categories_titset:19 ../templates/database/richter/visible_categories_titset:19 ../templates/visible_categories_titset:19
+#: ../templates/database/ebooks/visible_categories_titset:19 ../templates/database/inst001/visible_categories_titset:19 ../templates/database/kapsel/visible_categories_titset:19 ../templates/database/nationallizenzen/visible_categories_titset:19 ../templates/database/richter/visible_categories_titset:19 ../templates/visible_categories_titset:19
 msgid "T0200"
 msgstr ""
 
@@ -1997,7 +1985,7 @@ msgstr ""
 msgid "T0200-portrait"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:20 ../templates/database/kapsel/visible_categories_titset:20 ../templates/database/richter/visible_categories_titset:20 ../templates/visible_categories_titset:20
+#: ../templates/database/ebooks/visible_categories_titset:20 ../templates/database/inst001/visible_categories_titset:20 ../templates/database/kapsel/visible_categories_titset:20 ../templates/database/nationallizenzen/visible_categories_titset:20 ../templates/database/richter/visible_categories_titset:20 ../templates/visible_categories_titset:20
 msgid "T0201"
 msgstr ""
 
@@ -2009,19 +1997,19 @@ msgstr ""
 msgid "T0201-portrait"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:25 ../templates/database/kapsel/visible_categories_titset:25 ../templates/database/richter/visible_categories_titset:25 ../templates/visible_categories_titset:25
+#: ../templates/database/ebooks/visible_categories_titset:25 ../templates/database/inst001/visible_categories_titset:25 ../templates/database/kapsel/visible_categories_titset:25 ../templates/database/nationallizenzen/visible_categories_titset:25 ../templates/database/richter/visible_categories_titset:25 ../templates/visible_categories_titset:25
 msgid "T0300"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:23 ../templates/database/kapsel/visible_categories_titset:23 ../templates/database/richter/visible_categories_titset:23 ../templates/visible_categories_titset:23
+#: ../templates/database/ebooks/visible_categories_titset:23 ../templates/database/inst001/visible_categories_titset:23 ../templates/database/kapsel/visible_categories_titset:23 ../templates/database/nationallizenzen/visible_categories_titset:23 ../templates/database/richter/visible_categories_titset:23 ../templates/visible_categories_titset:23
 msgid "T0304"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:22 ../templates/database/kapsel/visible_categories_titset:22 ../templates/database/richter/visible_categories_titset:22 ../templates/visible_categories_titset:22
+#: ../templates/database/ebooks/visible_categories_titset:22 ../templates/database/inst001/visible_categories_titset:22 ../templates/database/kapsel/visible_categories_titset:22 ../templates/database/nationallizenzen/visible_categories_titset:22 ../templates/database/richter/visible_categories_titset:22 ../templates/visible_categories_titset:22
 msgid "T0310"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:24 ../templates/database/inst450/visible_categories_titset:20 ../templates/database/richter/visible_categories_titset:24 ../templates/visible_categories_titset:24
+#: ../templates/database/ebooks/visible_categories_titset:24 ../templates/database/inst001/visible_categories_titset:24 ../templates/database/inst450/visible_categories_titset:20 ../templates/database/nationallizenzen/visible_categories_titset:24 ../templates/database/richter/visible_categories_titset:24 ../templates/visible_categories_titset:24
 msgid "T0331"
 msgstr ""
 
@@ -2041,11 +2029,11 @@ msgstr ""
 msgid "T0331-portrait"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:29 ../templates/database/kapsel/visible_categories_titset:28 ../templates/database/richter/visible_categories_titset:28 ../templates/visible_categories_titset:28
+#: ../templates/database/ebooks/visible_categories_titset:28 ../templates/database/inst001/visible_categories_titset:29 ../templates/database/kapsel/visible_categories_titset:28 ../templates/database/nationallizenzen/visible_categories_titset:28 ../templates/database/richter/visible_categories_titset:28 ../templates/visible_categories_titset:28
 msgid "T0333"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:51 ../templates/database/kapsel/visible_categories_titset:50 ../templates/database/richter/visible_categories_titset:50 ../templates/visible_categories_titset:50
+#: ../templates/database/ebooks/visible_categories_titset:50 ../templates/database/inst001/visible_categories_titset:51 ../templates/database/kapsel/visible_categories_titset:50 ../templates/database/nationallizenzen/visible_categories_titset:50 ../templates/database/richter/visible_categories_titset:50 ../templates/visible_categories_titset:50
 msgid "T0334"
 msgstr ""
 
@@ -2057,7 +2045,7 @@ msgstr ""
 msgid "T0334-portrait"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:30 ../templates/database/kapsel/visible_categories_titset:29 ../templates/database/portrait/visible_categories_titset:21 ../templates/database/richter/visible_categories_titset:29 ../templates/visible_categories_titset:29
+#: ../templates/database/ebooks/visible_categories_titset:29 ../templates/database/inst001/visible_categories_titset:30 ../templates/database/kapsel/visible_categories_titset:29 ../templates/database/nationallizenzen/visible_categories_titset:29 ../templates/database/portrait/visible_categories_titset:21 ../templates/database/richter/visible_categories_titset:29 ../templates/visible_categories_titset:29
 msgid "T0335"
 msgstr ""
 
@@ -2065,11 +2053,11 @@ msgstr ""
 msgid "T0335-einbaende"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:27 ../templates/database/kapsel/visible_categories_titset:27 ../templates/database/richter/visible_categories_titset:27 ../templates/visible_categories_titset:27
+#: ../templates/database/ebooks/visible_categories_titset:27 ../templates/database/inst001/visible_categories_titset:27 ../templates/database/kapsel/visible_categories_titset:27 ../templates/database/nationallizenzen/visible_categories_titset:27 ../templates/database/richter/visible_categories_titset:27 ../templates/visible_categories_titset:27
 msgid "T0341"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:33 ../templates/database/kapsel/visible_categories_titset:32 ../templates/database/landschaft/visible_categories_titset:30 ../templates/database/richter/visible_categories_titset:32 ../templates/visible_categories_titset:32
+#: ../templates/database/ebooks/visible_categories_titset:32 ../templates/database/inst001/visible_categories_titset:33 ../templates/database/kapsel/visible_categories_titset:32 ../templates/database/landschaft/visible_categories_titset:30 ../templates/database/nationallizenzen/visible_categories_titset:32 ../templates/database/richter/visible_categories_titset:32 ../templates/visible_categories_titset:32
 msgid "T0359"
 msgstr ""
 
@@ -2077,39 +2065,39 @@ msgstr ""
 msgid "T0359-portrait"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:34 ../templates/database/kapsel/visible_categories_titset:33 ../templates/database/richter/visible_categories_titset:33 ../templates/visible_categories_titset:33
+#: ../templates/database/ebooks/visible_categories_titset:33 ../templates/database/inst001/visible_categories_titset:34 ../templates/database/kapsel/visible_categories_titset:33 ../templates/database/nationallizenzen/visible_categories_titset:33 ../templates/database/richter/visible_categories_titset:33 ../templates/visible_categories_titset:33
 msgid "T0360"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:28 ../templates/database/inst001/visible_categories_titset:31 ../templates/database/kapsel/visible_categories_titset:30 ../templates/database/richter/visible_categories_titset:30 ../templates/visible_categories_titset:30
+#: ../templates/database/ebooks/visible_categories_titset:30 ../templates/database/inst001/visible_categories_titset:28 ../templates/database/inst001/visible_categories_titset:31 ../templates/database/kapsel/visible_categories_titset:30 ../templates/database/nationallizenzen/visible_categories_titset:30 ../templates/database/richter/visible_categories_titset:30 ../templates/visible_categories_titset:30
 msgid "T0361"
 msgstr ""
 
-#: ../templates/database/einbaende/visible_categories_titset:22
+#: ../templates/database/einbaende/visible_categories_titset:23
 msgid "T0361-einbaende"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:32 ../templates/database/kapsel/visible_categories_titset:31 ../templates/database/richter/visible_categories_titset:31 ../templates/visible_categories_titset:31
+#: ../templates/database/ebooks/visible_categories_titset:31 ../templates/database/inst001/visible_categories_titset:32 ../templates/database/kapsel/visible_categories_titset:31 ../templates/database/nationallizenzen/visible_categories_titset:31 ../templates/database/richter/visible_categories_titset:31 ../templates/visible_categories_titset:31
 msgid "T0365"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:26 ../templates/database/kapsel/visible_categories_titset:26 ../templates/database/richter/visible_categories_titset:26 ../templates/visible_categories_titset:26
+#: ../templates/database/ebooks/visible_categories_titset:26 ../templates/database/inst001/visible_categories_titset:26 ../templates/database/kapsel/visible_categories_titset:26 ../templates/database/nationallizenzen/visible_categories_titset:26 ../templates/database/richter/visible_categories_titset:26 ../templates/visible_categories_titset:26
 msgid "T0370"
 msgstr ""
 
-#: ../templates/database/einbaende/visible_categories_titset:23
+#: ../templates/database/einbaende/visible_categories_titset:24
 msgid "T0370-einbaende"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:35 ../templates/database/kapsel/visible_categories_titset:34 ../templates/database/richter/visible_categories_titset:34 ../templates/visible_categories_titset:34
+#: ../templates/database/ebooks/visible_categories_titset:34 ../templates/database/inst001/visible_categories_titset:35 ../templates/database/kapsel/visible_categories_titset:34 ../templates/database/nationallizenzen/visible_categories_titset:34 ../templates/database/richter/visible_categories_titset:34 ../templates/visible_categories_titset:34
 msgid "T0403"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:40 ../templates/database/kapsel/visible_categories_titset:39 ../templates/database/richter/visible_categories_titset:39 ../templates/visible_categories_titset:39
+#: ../templates/database/ebooks/visible_categories_titset:39 ../templates/database/inst001/visible_categories_titset:40 ../templates/database/kapsel/visible_categories_titset:39 ../templates/database/nationallizenzen/visible_categories_titset:39 ../templates/database/richter/visible_categories_titset:39 ../templates/visible_categories_titset:39
 msgid "T0405"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:57 ../templates/database/kapsel/visible_categories_titset:56 ../templates/database/richter/visible_categories_titset:56 ../templates/visible_categories_titset:56
+#: ../templates/database/ebooks/visible_categories_titset:56 ../templates/database/inst001/visible_categories_titset:57 ../templates/database/kapsel/visible_categories_titset:56 ../templates/database/nationallizenzen/visible_categories_titset:56 ../templates/database/richter/visible_categories_titset:56 ../templates/visible_categories_titset:56
 msgid "T0407"
 msgstr ""
 
@@ -2117,7 +2105,7 @@ msgstr ""
 msgid "T0407-landschaft"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:36 ../templates/database/inst450/visible_categories_titset:21 ../templates/database/kapsel/visible_categories_titset:35 ../templates/database/landschaft/visible_categories_titset:37 ../templates/database/portrait/visible_categories_titset:30 ../templates/database/richter/visible_categories_titset:35 ../templates/visible_categories_titset:35
+#: ../templates/database/ebooks/visible_categories_titset:35 ../templates/database/inst001/visible_categories_titset:36 ../templates/database/inst450/visible_categories_titset:21 ../templates/database/kapsel/visible_categories_titset:35 ../templates/database/landschaft/visible_categories_titset:37 ../templates/database/nationallizenzen/visible_categories_titset:35 ../templates/database/portrait/visible_categories_titset:30 ../templates/database/richter/visible_categories_titset:35 ../templates/visible_categories_titset:35
 msgid "T0410"
 msgstr ""
 
@@ -2125,23 +2113,23 @@ msgstr ""
 msgid "T0410-einbaende"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:37 ../templates/database/inst450/visible_categories_titset:22 ../templates/database/kapsel/visible_categories_titset:36 ../templates/database/landschaft/visible_categories_titset:38 ../templates/database/portrait/visible_categories_titset:31 ../templates/database/richter/visible_categories_titset:36 ../templates/visible_categories_titset:36
+#: ../templates/database/ebooks/visible_categories_titset:36 ../templates/database/einbaende/visible_categories_titset:20 ../templates/database/inst001/visible_categories_titset:37 ../templates/database/inst450/visible_categories_titset:22 ../templates/database/kapsel/visible_categories_titset:36 ../templates/database/landschaft/visible_categories_titset:38 ../templates/database/nationallizenzen/visible_categories_titset:36 ../templates/database/portrait/visible_categories_titset:31 ../templates/database/richter/visible_categories_titset:36 ../templates/visible_categories_titset:36
 msgid "T0412"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:46 ../templates/database/kapsel/visible_categories_titset:45 ../templates/database/richter/visible_categories_titset:45 ../templates/visible_categories_titset:45
+#: ../templates/database/ebooks/visible_categories_titset:45 ../templates/database/inst001/visible_categories_titset:46 ../templates/database/kapsel/visible_categories_titset:45 ../templates/database/nationallizenzen/visible_categories_titset:45 ../templates/database/richter/visible_categories_titset:45 ../templates/visible_categories_titset:45
 msgid "T0413"
 msgstr ""
 
-#: ../templates/database/einbaende/visible_categories_titset:20
+#: ../templates/database/einbaende/visible_categories_titset:21
 msgid "T0413-einbaende"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:39 ../templates/database/kapsel/visible_categories_titset:38 ../templates/database/landschaft/visible_categories_titset:39 ../templates/database/richter/visible_categories_titset:38 ../templates/visible_categories_titset:38
+#: ../templates/database/ebooks/visible_categories_titset:38 ../templates/database/inst001/visible_categories_titset:39 ../templates/database/kapsel/visible_categories_titset:38 ../templates/database/landschaft/visible_categories_titset:39 ../templates/database/nationallizenzen/visible_categories_titset:38 ../templates/database/richter/visible_categories_titset:38 ../templates/visible_categories_titset:38
 msgid "T0424"
 msgstr ""
 
-#: ../templates/database/einbaende/visible_categories_titset:21
+#: ../templates/database/einbaende/visible_categories_titset:22
 msgid "T0424-einbaende"
 msgstr ""
 
@@ -2149,7 +2137,7 @@ msgstr ""
 msgid "T0424-portrait"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:38 ../templates/database/inst450/visible_categories_titset:23 ../templates/database/kapsel/visible_categories_titset:37 ../templates/database/richter/visible_categories_titset:37 ../templates/visible_categories_titset:37
+#: ../templates/database/ebooks/visible_categories_titset:37 ../templates/database/inst001/visible_categories_titset:38 ../templates/database/inst450/visible_categories_titset:23 ../templates/database/kapsel/visible_categories_titset:37 ../templates/database/nationallizenzen/visible_categories_titset:37 ../templates/database/richter/visible_categories_titset:37 ../templates/visible_categories_titset:37
 msgid "T0425"
 msgstr ""
 
@@ -2165,15 +2153,15 @@ msgstr ""
 msgid "T0425-portrait"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:50 ../templates/database/inst450/visible_categories_titset:24 ../templates/database/kapsel/visible_categories_titset:49 ../templates/database/landschaft/visible_categories_titset:40 ../templates/database/portrait/visible_categories_titset:34 ../templates/database/richter/visible_categories_titset:49 ../templates/visible_categories_titset:49
+#: ../templates/database/ebooks/visible_categories_titset:49 ../templates/database/inst001/visible_categories_titset:50 ../templates/database/inst450/visible_categories_titset:24 ../templates/database/kapsel/visible_categories_titset:49 ../templates/database/landschaft/visible_categories_titset:40 ../templates/database/nationallizenzen/visible_categories_titset:49 ../templates/database/portrait/visible_categories_titset:34 ../templates/database/richter/visible_categories_titset:49 ../templates/visible_categories_titset:49
 msgid "T0433"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:45 ../templates/database/inst001/visible_categories_titset:58 ../templates/database/kapsel/visible_categories_titset:44 ../templates/database/kapsel/visible_categories_titset:57 ../templates/database/landschaft/visible_categories_titset:42 ../templates/database/portrait/visible_categories_titset:36 ../templates/database/richter/visible_categories_titset:44 ../templates/database/richter/visible_categories_titset:57 ../templates/visible_categories_titset:44 ../templates/visible_categories_titset:57
+#: ../templates/database/ebooks/visible_categories_titset:44 ../templates/database/ebooks/visible_categories_titset:57 ../templates/database/inst001/visible_categories_titset:45 ../templates/database/inst001/visible_categories_titset:58 ../templates/database/kapsel/visible_categories_titset:44 ../templates/database/kapsel/visible_categories_titset:57 ../templates/database/landschaft/visible_categories_titset:42 ../templates/database/nationallizenzen/visible_categories_titset:44 ../templates/database/nationallizenzen/visible_categories_titset:57 ../templates/database/portrait/visible_categories_titset:36 ../templates/database/richter/visible_categories_titset:44 ../templates/database/richter/visible_categories_titset:57 ../templates/visible_categories_titset:44 ../templates/visible_categories_titset:57
 msgid "T0434"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:48 ../templates/database/kapsel/visible_categories_titset:47 ../templates/database/richter/visible_categories_titset:47 ../templates/visible_categories_titset:47
+#: ../templates/database/ebooks/visible_categories_titset:47 ../templates/database/inst001/visible_categories_titset:48 ../templates/database/kapsel/visible_categories_titset:47 ../templates/database/nationallizenzen/visible_categories_titset:47 ../templates/database/richter/visible_categories_titset:47 ../templates/visible_categories_titset:47
 msgid "T0435"
 msgstr ""
 
@@ -2181,15 +2169,15 @@ msgstr ""
 msgid "T0435-einbaende"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:59 ../templates/database/kapsel/visible_categories_titset:58 ../templates/database/richter/visible_categories_titset:58 ../templates/visible_categories_titset:58
+#: ../templates/database/ebooks/visible_categories_titset:58 ../templates/database/inst001/visible_categories_titset:59 ../templates/database/kapsel/visible_categories_titset:58 ../templates/database/nationallizenzen/visible_categories_titset:58 ../templates/database/richter/visible_categories_titset:58 ../templates/visible_categories_titset:58
 msgid "T0437"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:54 ../templates/database/inst450/visible_categories_titset:25 ../templates/database/kapsel/visible_categories_titset:53 ../templates/database/richter/visible_categories_titset:53 ../templates/visible_categories_titset:53
+#: ../templates/database/ebooks/visible_categories_titset:53 ../templates/database/inst001/visible_categories_titset:54 ../templates/database/inst450/visible_categories_titset:25 ../templates/database/kapsel/visible_categories_titset:53 ../templates/database/nationallizenzen/visible_categories_titset:53 ../templates/database/richter/visible_categories_titset:53 ../templates/visible_categories_titset:53
 msgid "T0451"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:60 ../templates/database/kapsel/visible_categories_titset:59 ../templates/database/landschaft/visible_categories_titset:31 ../templates/visible_categories_titset:59
+#: ../templates/database/ebooks/visible_categories_titset:59 ../templates/database/inst001/visible_categories_titset:60 ../templates/database/kapsel/visible_categories_titset:59 ../templates/database/landschaft/visible_categories_titset:31 ../templates/database/nationallizenzen/visible_categories_titset:59 ../templates/visible_categories_titset:59
 msgid "T0501"
 msgstr ""
 
@@ -2213,23 +2201,23 @@ msgstr ""
 msgid "T0502"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:87 ../templates/database/kapsel/visible_categories_titset:85 ../templates/database/richter/visible_categories_titset:87 ../templates/visible_categories_titset:87
+#: ../templates/database/ebooks/visible_categories_titset:87 ../templates/database/inst001/visible_categories_titset:87 ../templates/database/kapsel/visible_categories_titset:85 ../templates/database/nationallizenzen/visible_categories_titset:87 ../templates/database/richter/visible_categories_titset:87 ../templates/visible_categories_titset:87
 msgid "T0503"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:61 ../templates/database/kapsel/visible_categories_titset:60 ../templates/database/landschaft/visible_categories_titset:44 ../templates/database/portrait/visible_categories_titset:38 ../templates/database/richter/visible_categories_titset:60 ../templates/visible_categories_titset:60
+#: ../templates/database/ebooks/visible_categories_titset:60 ../templates/database/inst001/visible_categories_titset:61 ../templates/database/kapsel/visible_categories_titset:60 ../templates/database/landschaft/visible_categories_titset:44 ../templates/database/nationallizenzen/visible_categories_titset:60 ../templates/database/portrait/visible_categories_titset:38 ../templates/database/richter/visible_categories_titset:60 ../templates/visible_categories_titset:60
 msgid "T0504"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:62 ../templates/database/kapsel/visible_categories_titset:61 ../templates/database/landschaft/visible_categories_titset:45 ../templates/database/portrait/visible_categories_titset:39 ../templates/database/richter/visible_categories_titset:61 ../templates/visible_categories_titset:61
+#: ../templates/database/ebooks/visible_categories_titset:61 ../templates/database/inst001/visible_categories_titset:62 ../templates/database/kapsel/visible_categories_titset:61 ../templates/database/landschaft/visible_categories_titset:45 ../templates/database/nationallizenzen/visible_categories_titset:61 ../templates/database/portrait/visible_categories_titset:39 ../templates/database/richter/visible_categories_titset:61 ../templates/visible_categories_titset:61
 msgid "T0505"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:63 ../templates/database/kapsel/visible_categories_titset:62 ../templates/database/richter/visible_categories_titset:62 ../templates/visible_categories_titset:62
+#: ../templates/database/ebooks/visible_categories_titset:62 ../templates/database/inst001/visible_categories_titset:63 ../templates/database/kapsel/visible_categories_titset:62 ../templates/database/nationallizenzen/visible_categories_titset:62 ../templates/database/richter/visible_categories_titset:62 ../templates/visible_categories_titset:62
 msgid "T0507"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:49 ../templates/database/kapsel/visible_categories_titset:48 ../templates/database/landschaft/visible_categories_titset:84 ../templates/database/richter/visible_categories_titset:48 ../templates/visible_categories_titset:48
+#: ../templates/database/ebooks/visible_categories_titset:48 ../templates/database/inst001/visible_categories_titset:49 ../templates/database/kapsel/visible_categories_titset:48 ../templates/database/landschaft/visible_categories_titset:84 ../templates/database/nationallizenzen/visible_categories_titset:48 ../templates/database/richter/visible_categories_titset:48 ../templates/visible_categories_titset:48
 msgid "T0508"
 msgstr ""
 
@@ -2241,7 +2229,7 @@ msgstr ""
 msgid "T0508-portrait"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:64 ../templates/database/kapsel/visible_categories_titset:63 ../templates/database/landschaft/visible_categories_titset:46 ../templates/database/richter/visible_categories_titset:63 ../templates/visible_categories_titset:63
+#: ../templates/database/ebooks/visible_categories_titset:63 ../templates/database/inst001/visible_categories_titset:64 ../templates/database/kapsel/visible_categories_titset:63 ../templates/database/landschaft/visible_categories_titset:46 ../templates/database/nationallizenzen/visible_categories_titset:63 ../templates/database/richter/visible_categories_titset:63 ../templates/visible_categories_titset:63
 msgid "T0509"
 msgstr ""
 
@@ -2253,35 +2241,35 @@ msgstr ""
 msgid "T0509-portrait"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:65 ../templates/database/kapsel/visible_categories_titset:64 ../templates/database/landschaft/visible_categories_titset:47 ../templates/database/portrait/visible_categories_titset:41 ../templates/database/richter/visible_categories_titset:64 ../templates/visible_categories_titset:64
+#: ../templates/database/ebooks/visible_categories_titset:64 ../templates/database/inst001/visible_categories_titset:65 ../templates/database/kapsel/visible_categories_titset:64 ../templates/database/landschaft/visible_categories_titset:47 ../templates/database/nationallizenzen/visible_categories_titset:64 ../templates/database/portrait/visible_categories_titset:41 ../templates/database/richter/visible_categories_titset:64 ../templates/visible_categories_titset:64
 msgid "T0510"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:66 ../templates/database/kapsel/visible_categories_titset:65 ../templates/database/landschaft/visible_categories_titset:48 ../templates/database/portrait/visible_categories_titset:42 ../templates/database/richter/visible_categories_titset:65 ../templates/visible_categories_titset:65
+#: ../templates/database/ebooks/visible_categories_titset:65 ../templates/database/inst001/visible_categories_titset:66 ../templates/database/kapsel/visible_categories_titset:65 ../templates/database/landschaft/visible_categories_titset:48 ../templates/database/nationallizenzen/visible_categories_titset:65 ../templates/database/portrait/visible_categories_titset:42 ../templates/database/richter/visible_categories_titset:65 ../templates/visible_categories_titset:65
 msgid "T0511"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:67 ../templates/database/kapsel/visible_categories_titset:66 ../templates/database/landschaft/visible_categories_titset:49 ../templates/database/portrait/visible_categories_titset:43 ../templates/database/richter/visible_categories_titset:66 ../templates/visible_categories_titset:66
+#: ../templates/database/ebooks/visible_categories_titset:66 ../templates/database/inst001/visible_categories_titset:67 ../templates/database/kapsel/visible_categories_titset:66 ../templates/database/landschaft/visible_categories_titset:49 ../templates/database/nationallizenzen/visible_categories_titset:66 ../templates/database/portrait/visible_categories_titset:43 ../templates/database/richter/visible_categories_titset:66 ../templates/visible_categories_titset:66
 msgid "T0512"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:68 ../templates/database/kapsel/visible_categories_titset:67 ../templates/database/landschaft/visible_categories_titset:50 ../templates/database/portrait/visible_categories_titset:44 ../templates/database/richter/visible_categories_titset:67 ../templates/visible_categories_titset:67
+#: ../templates/database/ebooks/visible_categories_titset:67 ../templates/database/inst001/visible_categories_titset:68 ../templates/database/kapsel/visible_categories_titset:67 ../templates/database/landschaft/visible_categories_titset:50 ../templates/database/nationallizenzen/visible_categories_titset:67 ../templates/database/portrait/visible_categories_titset:44 ../templates/database/richter/visible_categories_titset:67 ../templates/visible_categories_titset:67
 msgid "T0513"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:69 ../templates/database/kapsel/visible_categories_titset:68 ../templates/database/landschaft/visible_categories_titset:51 ../templates/database/portrait/visible_categories_titset:45 ../templates/database/richter/visible_categories_titset:68 ../templates/visible_categories_titset:68
+#: ../templates/database/ebooks/visible_categories_titset:68 ../templates/database/inst001/visible_categories_titset:69 ../templates/database/kapsel/visible_categories_titset:68 ../templates/database/landschaft/visible_categories_titset:51 ../templates/database/nationallizenzen/visible_categories_titset:68 ../templates/database/portrait/visible_categories_titset:45 ../templates/database/richter/visible_categories_titset:68 ../templates/visible_categories_titset:68
 msgid "T0515"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:85 ../templates/database/kapsel/visible_categories_titset:83 ../templates/database/richter/visible_categories_titset:85 ../templates/visible_categories_titset:85
+#: ../templates/database/ebooks/visible_categories_titset:85 ../templates/database/inst001/visible_categories_titset:85 ../templates/database/kapsel/visible_categories_titset:83 ../templates/database/nationallizenzen/visible_categories_titset:85 ../templates/database/richter/visible_categories_titset:85 ../templates/visible_categories_titset:85
 msgid "T0516"
 msgstr ""
 
-#: ../templates/database/richter/visible_categories_titset:69 ../templates/visible_categories_titset:69
+#: ../templates/database/ebooks/visible_categories_titset:69 ../templates/database/nationallizenzen/visible_categories_titset:69 ../templates/database/richter/visible_categories_titset:69 ../templates/visible_categories_titset:69
 msgid "T0517"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:81 ../templates/database/kapsel/visible_categories_titset:80 ../templates/database/richter/visible_categories_titset:81 ../templates/visible_categories_titset:81
+#: ../templates/database/ebooks/visible_categories_titset:81 ../templates/database/inst001/visible_categories_titset:81 ../templates/database/kapsel/visible_categories_titset:80 ../templates/database/nationallizenzen/visible_categories_titset:81 ../templates/database/richter/visible_categories_titset:81 ../templates/visible_categories_titset:81
 msgid "T0519"
 msgstr ""
 
@@ -2289,15 +2277,15 @@ msgstr ""
 msgid "T0521"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:70 ../templates/database/kapsel/visible_categories_titset:69 ../templates/database/landschaft/visible_categories_titset:53 ../templates/database/portrait/visible_categories_titset:47 ../templates/database/richter/visible_categories_titset:70 ../templates/visible_categories_titset:70
+#: ../templates/database/ebooks/visible_categories_titset:70 ../templates/database/inst001/visible_categories_titset:70 ../templates/database/kapsel/visible_categories_titset:69 ../templates/database/landschaft/visible_categories_titset:53 ../templates/database/nationallizenzen/visible_categories_titset:70 ../templates/database/portrait/visible_categories_titset:47 ../templates/database/richter/visible_categories_titset:70 ../templates/visible_categories_titset:70
 msgid "T0522"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:41 ../templates/database/kapsel/visible_categories_titset:40 ../templates/database/richter/visible_categories_titset:40 ../templates/visible_categories_titset:40
+#: ../templates/database/ebooks/visible_categories_titset:40 ../templates/database/inst001/visible_categories_titset:41 ../templates/database/kapsel/visible_categories_titset:40 ../templates/database/nationallizenzen/visible_categories_titset:40 ../templates/database/richter/visible_categories_titset:40 ../templates/visible_categories_titset:40
 msgid "T0523"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:71 ../templates/database/kapsel/visible_categories_titset:70 ../templates/database/landschaft/visible_categories_titset:54 ../templates/database/portrait/visible_categories_titset:48 ../templates/database/richter/visible_categories_titset:71 ../templates/visible_categories_titset:71
+#: ../templates/database/ebooks/visible_categories_titset:71 ../templates/database/inst001/visible_categories_titset:71 ../templates/database/kapsel/visible_categories_titset:70 ../templates/database/landschaft/visible_categories_titset:54 ../templates/database/nationallizenzen/visible_categories_titset:71 ../templates/database/portrait/visible_categories_titset:48 ../templates/database/richter/visible_categories_titset:71 ../templates/visible_categories_titset:71
 msgid "T0525"
 msgstr ""
 
@@ -2305,39 +2293,39 @@ msgstr ""
 msgid "T0525-inst450"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:75 ../templates/database/kapsel/visible_categories_titset:74 ../templates/database/landschaft/visible_categories_titset:55 ../templates/database/portrait/visible_categories_titset:49 ../templates/database/richter/visible_categories_titset:75 ../templates/visible_categories_titset:75
+#: ../templates/database/ebooks/visible_categories_titset:75 ../templates/database/inst001/visible_categories_titset:75 ../templates/database/kapsel/visible_categories_titset:74 ../templates/database/landschaft/visible_categories_titset:55 ../templates/database/nationallizenzen/visible_categories_titset:75 ../templates/database/portrait/visible_categories_titset:49 ../templates/database/richter/visible_categories_titset:75 ../templates/visible_categories_titset:75
 msgid "T0527"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:76 ../templates/database/kapsel/visible_categories_titset:75 ../templates/database/landschaft/visible_categories_titset:56 ../templates/database/portrait/visible_categories_titset:50 ../templates/database/richter/visible_categories_titset:76 ../templates/visible_categories_titset:76
+#: ../templates/database/ebooks/visible_categories_titset:76 ../templates/database/inst001/visible_categories_titset:76 ../templates/database/kapsel/visible_categories_titset:75 ../templates/database/landschaft/visible_categories_titset:56 ../templates/database/nationallizenzen/visible_categories_titset:76 ../templates/database/portrait/visible_categories_titset:50 ../templates/database/richter/visible_categories_titset:76 ../templates/visible_categories_titset:76
 msgid "T0529"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:77 ../templates/database/kapsel/visible_categories_titset:76 ../templates/database/landschaft/visible_categories_titset:57 ../templates/database/portrait/visible_categories_titset:51 ../templates/database/richter/visible_categories_titset:77 ../templates/visible_categories_titset:77
+#: ../templates/database/ebooks/visible_categories_titset:77 ../templates/database/inst001/visible_categories_titset:77 ../templates/database/kapsel/visible_categories_titset:76 ../templates/database/landschaft/visible_categories_titset:57 ../templates/database/nationallizenzen/visible_categories_titset:77 ../templates/database/portrait/visible_categories_titset:51 ../templates/database/richter/visible_categories_titset:77 ../templates/visible_categories_titset:77
 msgid "T0530"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:78 ../templates/database/kapsel/visible_categories_titset:77 ../templates/database/landschaft/visible_categories_titset:58 ../templates/database/portrait/visible_categories_titset:52 ../templates/database/richter/visible_categories_titset:78 ../templates/visible_categories_titset:78
+#: ../templates/database/ebooks/visible_categories_titset:78 ../templates/database/inst001/visible_categories_titset:78 ../templates/database/kapsel/visible_categories_titset:77 ../templates/database/landschaft/visible_categories_titset:58 ../templates/database/nationallizenzen/visible_categories_titset:78 ../templates/database/portrait/visible_categories_titset:52 ../templates/database/richter/visible_categories_titset:78 ../templates/visible_categories_titset:78
 msgid "T0531"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:79 ../templates/database/kapsel/visible_categories_titset:78 ../templates/database/landschaft/visible_categories_titset:59 ../templates/database/portrait/visible_categories_titset:53 ../templates/database/richter/visible_categories_titset:79 ../templates/visible_categories_titset:79
+#: ../templates/database/ebooks/visible_categories_titset:79 ../templates/database/inst001/visible_categories_titset:79 ../templates/database/kapsel/visible_categories_titset:78 ../templates/database/landschaft/visible_categories_titset:59 ../templates/database/nationallizenzen/visible_categories_titset:79 ../templates/database/portrait/visible_categories_titset:53 ../templates/database/richter/visible_categories_titset:79 ../templates/visible_categories_titset:79
 msgid "T0532"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:80 ../templates/database/kapsel/visible_categories_titset:79 ../templates/database/landschaft/visible_categories_titset:60 ../templates/database/portrait/visible_categories_titset:54 ../templates/database/richter/visible_categories_titset:80 ../templates/visible_categories_titset:80
+#: ../templates/database/ebooks/visible_categories_titset:80 ../templates/database/inst001/visible_categories_titset:80 ../templates/database/kapsel/visible_categories_titset:79 ../templates/database/landschaft/visible_categories_titset:60 ../templates/database/nationallizenzen/visible_categories_titset:80 ../templates/database/portrait/visible_categories_titset:54 ../templates/database/richter/visible_categories_titset:80 ../templates/visible_categories_titset:80
 msgid "T0533"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:72 ../templates/database/kapsel/visible_categories_titset:71 ../templates/database/landschaft/visible_categories_titset:61 ../templates/database/portrait/visible_categories_titset:55 ../templates/database/richter/visible_categories_titset:72 ../templates/visible_categories_titset:72
+#: ../templates/database/ebooks/visible_categories_titset:72 ../templates/database/inst001/visible_categories_titset:72 ../templates/database/kapsel/visible_categories_titset:71 ../templates/database/landschaft/visible_categories_titset:61 ../templates/database/nationallizenzen/visible_categories_titset:72 ../templates/database/portrait/visible_categories_titset:55 ../templates/database/richter/visible_categories_titset:72 ../templates/visible_categories_titset:72
 msgid "T0534"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:73 ../templates/database/kapsel/visible_categories_titset:72 ../templates/database/landschaft/visible_categories_titset:62 ../templates/database/portrait/visible_categories_titset:56 ../templates/database/richter/visible_categories_titset:73 ../templates/visible_categories_titset:73
+#: ../templates/database/ebooks/visible_categories_titset:73 ../templates/database/inst001/visible_categories_titset:73 ../templates/database/kapsel/visible_categories_titset:72 ../templates/database/landschaft/visible_categories_titset:62 ../templates/database/nationallizenzen/visible_categories_titset:73 ../templates/database/portrait/visible_categories_titset:56 ../templates/database/richter/visible_categories_titset:73 ../templates/visible_categories_titset:73
 msgid "T0535"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:74 ../templates/database/kapsel/visible_categories_titset:73 ../templates/database/landschaft/visible_categories_titset:63 ../templates/database/portrait/visible_categories_titset:57 ../templates/database/richter/visible_categories_titset:74 ../templates/visible_categories_titset:74
+#: ../templates/database/ebooks/visible_categories_titset:74 ../templates/database/inst001/visible_categories_titset:74 ../templates/database/kapsel/visible_categories_titset:73 ../templates/database/landschaft/visible_categories_titset:63 ../templates/database/nationallizenzen/visible_categories_titset:74 ../templates/database/portrait/visible_categories_titset:57 ../templates/database/richter/visible_categories_titset:74 ../templates/visible_categories_titset:74
 msgid "T0536"
 msgstr ""
 
@@ -2349,15 +2337,15 @@ msgstr ""
 msgid "T0538"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:102 ../templates/database/kapsel/visible_categories_titset:100 ../templates/database/richter/visible_categories_titset:102 ../templates/visible_categories_titset:103
+#: ../templates/database/ebooks/visible_categories_titset:103 ../templates/database/inst001/visible_categories_titset:102 ../templates/database/kapsel/visible_categories_titset:100 ../templates/database/nationallizenzen/visible_categories_titset:103 ../templates/database/richter/visible_categories_titset:102 ../templates/visible_categories_titset:103
 msgid "T0540"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:103 ../templates/database/kapsel/visible_categories_titset:101 ../templates/database/richter/visible_categories_titset:104 ../templates/visible_categories_titset:105
+#: ../templates/database/ebooks/visible_categories_titset:105 ../templates/database/inst001/visible_categories_titset:103 ../templates/database/kapsel/visible_categories_titset:101 ../templates/database/nationallizenzen/visible_categories_titset:105 ../templates/database/richter/visible_categories_titset:104 ../templates/visible_categories_titset:105
 msgid "T0543"
 msgstr ""
 
-#: ../templates/database/richter/visible_categories_titset:103 ../templates/visible_categories_titset:104
+#: ../templates/database/ebooks/visible_categories_titset:104 ../templates/database/nationallizenzen/visible_categories_titset:104 ../templates/database/richter/visible_categories_titset:103 ../templates/visible_categories_titset:104
 msgid "T0553"
 msgstr ""
 
@@ -2369,11 +2357,11 @@ msgstr ""
 msgid "T0580"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:55 ../templates/database/inst450/visible_categories_titset:26 ../templates/database/kapsel/visible_categories_titset:54 ../templates/database/landschaft/visible_categories_titset:68 ../templates/database/portrait/visible_categories_titset:62 ../templates/database/richter/visible_categories_titset:54 ../templates/visible_categories_titset:54
+#: ../templates/database/ebooks/visible_categories_titset:54 ../templates/database/inst001/visible_categories_titset:55 ../templates/database/inst450/visible_categories_titset:26 ../templates/database/kapsel/visible_categories_titset:54 ../templates/database/landschaft/visible_categories_titset:68 ../templates/database/nationallizenzen/visible_categories_titset:54 ../templates/database/portrait/visible_categories_titset:62 ../templates/database/richter/visible_categories_titset:54 ../templates/visible_categories_titset:54
 msgid "T0590"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:42 ../templates/database/kapsel/visible_categories_titset:41 ../templates/database/portrait/visible_categories_titset:63 ../templates/database/richter/visible_categories_titset:41 ../templates/visible_categories_titset:41
+#: ../templates/database/ebooks/visible_categories_titset:41 ../templates/database/inst001/visible_categories_titset:42 ../templates/database/kapsel/visible_categories_titset:41 ../templates/database/nationallizenzen/visible_categories_titset:41 ../templates/database/portrait/visible_categories_titset:63 ../templates/database/richter/visible_categories_titset:41 ../templates/visible_categories_titset:41
 msgid "T0591"
 msgstr ""
 
@@ -2389,7 +2377,7 @@ msgstr ""
 msgid "T0593"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:43 ../templates/database/kapsel/visible_categories_titset:42 ../templates/database/portrait/visible_categories_titset:66 ../templates/database/richter/visible_categories_titset:42 ../templates/visible_categories_titset:42
+#: ../templates/database/ebooks/visible_categories_titset:42 ../templates/database/inst001/visible_categories_titset:43 ../templates/database/kapsel/visible_categories_titset:42 ../templates/database/nationallizenzen/visible_categories_titset:42 ../templates/database/portrait/visible_categories_titset:66 ../templates/database/richter/visible_categories_titset:42 ../templates/visible_categories_titset:42
 msgid "T0594"
 msgstr ""
 
@@ -2397,7 +2385,7 @@ msgstr ""
 msgid "T0594-landschaft"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:44 ../templates/database/kapsel/visible_categories_titset:43 ../templates/database/portrait/visible_categories_titset:67 ../templates/database/richter/visible_categories_titset:43 ../templates/visible_categories_titset:43
+#: ../templates/database/ebooks/visible_categories_titset:43 ../templates/database/inst001/visible_categories_titset:44 ../templates/database/kapsel/visible_categories_titset:43 ../templates/database/nationallizenzen/visible_categories_titset:43 ../templates/database/portrait/visible_categories_titset:67 ../templates/database/richter/visible_categories_titset:43 ../templates/visible_categories_titset:43
 msgid "T0595"
 msgstr ""
 
@@ -2421,23 +2409,23 @@ msgstr ""
 msgid "T0599"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:56 ../templates/database/kapsel/visible_categories_titset:55 ../templates/database/richter/visible_categories_titset:55 ../templates/visible_categories_titset:55
+#: ../templates/database/ebooks/visible_categories_titset:55 ../templates/database/inst001/visible_categories_titset:56 ../templates/database/kapsel/visible_categories_titset:55 ../templates/database/nationallizenzen/visible_categories_titset:55 ../templates/database/richter/visible_categories_titset:55 ../templates/visible_categories_titset:55
 msgid "T0600"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:82 ../templates/database/kapsel/visible_categories_titset:81 ../templates/database/landschaft/visible_categories_titset:73 ../templates/database/portrait/visible_categories_titset:72 ../templates/database/richter/visible_categories_titset:82 ../templates/visible_categories_titset:82
+#: ../templates/database/ebooks/visible_categories_titset:82 ../templates/database/inst001/visible_categories_titset:82 ../templates/database/kapsel/visible_categories_titset:81 ../templates/database/landschaft/visible_categories_titset:73 ../templates/database/nationallizenzen/visible_categories_titset:82 ../templates/database/portrait/visible_categories_titset:72 ../templates/database/richter/visible_categories_titset:82 ../templates/visible_categories_titset:82
 msgid "T0619"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:83 ../templates/database/kapsel/visible_categories_titset:82 ../templates/database/landschaft/visible_categories_titset:74 ../templates/database/portrait/visible_categories_titset:73 ../templates/database/richter/visible_categories_titset:83 ../templates/visible_categories_titset:83
+#: ../templates/database/ebooks/visible_categories_titset:83 ../templates/database/inst001/visible_categories_titset:83 ../templates/database/kapsel/visible_categories_titset:82 ../templates/database/landschaft/visible_categories_titset:74 ../templates/database/nationallizenzen/visible_categories_titset:83 ../templates/database/portrait/visible_categories_titset:73 ../templates/database/richter/visible_categories_titset:83 ../templates/visible_categories_titset:83
 msgid "T0646"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:52 ../templates/database/kapsel/visible_categories_titset:51 ../templates/database/richter/visible_categories_titset:51 ../templates/visible_categories_titset:51
+#: ../templates/database/ebooks/visible_categories_titset:51 ../templates/database/inst001/visible_categories_titset:52 ../templates/database/kapsel/visible_categories_titset:51 ../templates/database/nationallizenzen/visible_categories_titset:51 ../templates/database/richter/visible_categories_titset:51 ../templates/visible_categories_titset:51
 msgid "T0652"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:53 ../templates/database/kapsel/visible_categories_titset:52 ../templates/database/landschaft/visible_categories_titset:75 ../templates/database/portrait/visible_categories_titset:74 ../templates/database/richter/visible_categories_titset:52 ../templates/visible_categories_titset:52
+#: ../templates/database/ebooks/visible_categories_titset:52 ../templates/database/inst001/visible_categories_titset:53 ../templates/database/kapsel/visible_categories_titset:52 ../templates/database/landschaft/visible_categories_titset:75 ../templates/database/nationallizenzen/visible_categories_titset:52 ../templates/database/portrait/visible_categories_titset:74 ../templates/database/richter/visible_categories_titset:52 ../templates/visible_categories_titset:52
 msgid "T0655"
 msgstr ""
 
@@ -2445,8 +2433,20 @@ msgstr ""
 msgid "T0662"
 msgstr ""
 
+#: ../templates/database/ebooks/visible_categories_titset:106
+msgid "T0662-ebooks"
+msgstr ""
+
+#: ../templates/database/nationallizenzen/visible_categories_titset:106
+msgid "T0662-nationallizenzen"
+msgstr ""
+
 #: ../templates/database/portrait/visible_categories_titset:86
 msgid "T0662-portrait"
+msgstr ""
+
+#: ../templates/database/nationallizenzen/visible_categories_titset:107
+msgid "T0663-nationallizenzen"
 msgstr ""
 
 #: ../templates/database/landschaft/visible_categories_titset:76 ../templates/database/portrait/visible_categories_titset:75
@@ -2469,7 +2469,7 @@ msgstr ""
 msgid "T0675"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:101 ../templates/database/richter/visible_categories_titset:101 ../templates/visible_categories_titset:101
+#: ../templates/database/ebooks/visible_categories_titset:101 ../templates/database/inst001/visible_categories_titset:101 ../templates/database/nationallizenzen/visible_categories_titset:101 ../templates/database/richter/visible_categories_titset:101 ../templates/visible_categories_titset:101
 msgid "T0700"
 msgstr ""
 
@@ -2489,7 +2489,7 @@ msgstr ""
 msgid "T0700-portrait"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:90 ../templates/database/inst450/visible_categories_titset:34 ../templates/database/kapsel/visible_categories_titset:88 ../templates/database/richter/visible_categories_titset:90 ../templates/visible_categories_titset:90
+#: ../templates/database/ebooks/visible_categories_titset:90 ../templates/database/inst001/visible_categories_titset:90 ../templates/database/inst450/visible_categories_titset:34 ../templates/database/kapsel/visible_categories_titset:88 ../templates/database/nationallizenzen/visible_categories_titset:90 ../templates/database/richter/visible_categories_titset:90 ../templates/visible_categories_titset:90
 msgid "T0710"
 msgstr ""
 
@@ -2505,7 +2505,7 @@ msgstr ""
 msgid "T0710-portrait"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:86 ../templates/database/kapsel/visible_categories_titset:84 ../templates/database/richter/visible_categories_titset:86 ../templates/visible_categories_titset:86
+#: ../templates/database/ebooks/visible_categories_titset:86 ../templates/database/inst001/visible_categories_titset:86 ../templates/database/kapsel/visible_categories_titset:84 ../templates/database/nationallizenzen/visible_categories_titset:86 ../templates/database/richter/visible_categories_titset:86 ../templates/visible_categories_titset:86
 msgid "T0750"
 msgstr ""
 
@@ -2517,7 +2517,7 @@ msgstr ""
 msgid "T0750-landschaft"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:89 ../templates/database/inst450/visible_categories_titset:32 ../templates/database/kapsel/visible_categories_titset:87 ../templates/database/landschaft/visible_categories_titset:81 ../templates/database/richter/visible_categories_titset:89 ../templates/visible_categories_titset:89
+#: ../templates/database/ebooks/visible_categories_titset:89 ../templates/database/inst001/visible_categories_titset:89 ../templates/database/inst450/visible_categories_titset:32 ../templates/database/kapsel/visible_categories_titset:87 ../templates/database/landschaft/visible_categories_titset:81 ../templates/database/nationallizenzen/visible_categories_titset:89 ../templates/database/richter/visible_categories_titset:89 ../templates/visible_categories_titset:89
 msgid "T0800"
 msgstr ""
 
@@ -2529,43 +2529,43 @@ msgstr ""
 msgid "T0840"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:91 ../templates/database/kapsel/visible_categories_titset:89 ../templates/database/richter/visible_categories_titset:91 ../templates/visible_categories_titset:91
+#: ../templates/database/ebooks/visible_categories_titset:91 ../templates/database/inst001/visible_categories_titset:91 ../templates/database/kapsel/visible_categories_titset:89 ../templates/database/nationallizenzen/visible_categories_titset:91 ../templates/database/richter/visible_categories_titset:91 ../templates/visible_categories_titset:91
 msgid "T0902"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:92 ../templates/database/kapsel/visible_categories_titset:90 ../templates/database/richter/visible_categories_titset:92 ../templates/visible_categories_titset:92
+#: ../templates/database/ebooks/visible_categories_titset:92 ../templates/database/inst001/visible_categories_titset:92 ../templates/database/kapsel/visible_categories_titset:90 ../templates/database/nationallizenzen/visible_categories_titset:92 ../templates/database/richter/visible_categories_titset:92 ../templates/visible_categories_titset:92
 msgid "T0907"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:93 ../templates/database/kapsel/visible_categories_titset:91 ../templates/database/richter/visible_categories_titset:93 ../templates/visible_categories_titset:93
+#: ../templates/database/ebooks/visible_categories_titset:93 ../templates/database/inst001/visible_categories_titset:93 ../templates/database/kapsel/visible_categories_titset:91 ../templates/database/nationallizenzen/visible_categories_titset:93 ../templates/database/richter/visible_categories_titset:93 ../templates/visible_categories_titset:93
 msgid "T0912"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:94 ../templates/database/kapsel/visible_categories_titset:92 ../templates/database/richter/visible_categories_titset:94 ../templates/visible_categories_titset:94
+#: ../templates/database/ebooks/visible_categories_titset:94 ../templates/database/inst001/visible_categories_titset:94 ../templates/database/kapsel/visible_categories_titset:92 ../templates/database/nationallizenzen/visible_categories_titset:94 ../templates/database/richter/visible_categories_titset:94 ../templates/visible_categories_titset:94
 msgid "T0917"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:95 ../templates/database/kapsel/visible_categories_titset:93 ../templates/database/richter/visible_categories_titset:95 ../templates/visible_categories_titset:95
+#: ../templates/database/ebooks/visible_categories_titset:95 ../templates/database/inst001/visible_categories_titset:95 ../templates/database/kapsel/visible_categories_titset:93 ../templates/database/nationallizenzen/visible_categories_titset:95 ../templates/database/richter/visible_categories_titset:95 ../templates/visible_categories_titset:95
 msgid "T0922"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:96 ../templates/database/kapsel/visible_categories_titset:94 ../templates/database/richter/visible_categories_titset:96 ../templates/visible_categories_titset:96
+#: ../templates/database/ebooks/visible_categories_titset:96 ../templates/database/inst001/visible_categories_titset:96 ../templates/database/kapsel/visible_categories_titset:94 ../templates/database/nationallizenzen/visible_categories_titset:96 ../templates/database/richter/visible_categories_titset:96 ../templates/visible_categories_titset:96
 msgid "T0927"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:97 ../templates/database/kapsel/visible_categories_titset:95 ../templates/database/richter/visible_categories_titset:97 ../templates/visible_categories_titset:97
+#: ../templates/database/ebooks/visible_categories_titset:97 ../templates/database/inst001/visible_categories_titset:97 ../templates/database/kapsel/visible_categories_titset:95 ../templates/database/nationallizenzen/visible_categories_titset:97 ../templates/database/richter/visible_categories_titset:97 ../templates/visible_categories_titset:97
 msgid "T0932"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:98 ../templates/database/kapsel/visible_categories_titset:96 ../templates/database/richter/visible_categories_titset:98 ../templates/visible_categories_titset:98
+#: ../templates/database/ebooks/visible_categories_titset:98 ../templates/database/inst001/visible_categories_titset:98 ../templates/database/kapsel/visible_categories_titset:96 ../templates/database/nationallizenzen/visible_categories_titset:98 ../templates/database/richter/visible_categories_titset:98 ../templates/visible_categories_titset:98
 msgid "T0937"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:99 ../templates/database/kapsel/visible_categories_titset:97 ../templates/database/richter/visible_categories_titset:99 ../templates/visible_categories_titset:99
+#: ../templates/database/ebooks/visible_categories_titset:99 ../templates/database/inst001/visible_categories_titset:99 ../templates/database/kapsel/visible_categories_titset:97 ../templates/database/nationallizenzen/visible_categories_titset:99 ../templates/database/richter/visible_categories_titset:99 ../templates/visible_categories_titset:99
 msgid "T0942"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:100 ../templates/database/kapsel/visible_categories_titset:98 ../templates/database/richter/visible_categories_titset:100 ../templates/visible_categories_titset:100
+#: ../templates/database/ebooks/visible_categories_titset:100 ../templates/database/inst001/visible_categories_titset:100 ../templates/database/kapsel/visible_categories_titset:98 ../templates/database/nationallizenzen/visible_categories_titset:100 ../templates/database/richter/visible_categories_titset:100 ../templates/visible_categories_titset:100
 msgid "T0947"
 msgstr ""
 
@@ -2577,15 +2577,15 @@ msgstr ""
 msgid "T1600"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:105 ../templates/database/kapsel/visible_categories_titset:103 ../templates/database/richter/visible_categories_titset:106 ../templates/visible_categories_titset:107
+#: ../templates/database/ebooks/visible_categories_titset:107 ../templates/database/inst001/visible_categories_titset:105 ../templates/database/kapsel/visible_categories_titset:103 ../templates/database/nationallizenzen/visible_categories_titset:108 ../templates/database/richter/visible_categories_titset:106 ../templates/visible_categories_titset:107
 msgid "T1664"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:106 ../templates/database/kapsel/visible_categories_titset:104 ../templates/database/richter/visible_categories_titset:107 ../templates/visible_categories_titset:108
+#: ../templates/database/ebooks/visible_categories_titset:108 ../templates/database/inst001/visible_categories_titset:106 ../templates/database/kapsel/visible_categories_titset:104 ../templates/database/nationallizenzen/visible_categories_titset:109 ../templates/database/richter/visible_categories_titset:107 ../templates/visible_categories_titset:108
 msgid "T2662"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:107 ../templates/database/kapsel/visible_categories_titset:105 ../templates/database/richter/visible_categories_titset:108 ../templates/visible_categories_titset:109
+#: ../templates/database/ebooks/visible_categories_titset:109 ../templates/database/inst001/visible_categories_titset:107 ../templates/database/kapsel/visible_categories_titset:105 ../templates/database/nationallizenzen/visible_categories_titset:110 ../templates/database/richter/visible_categories_titset:108 ../templates/visible_categories_titset:109
 msgid "T2663"
 msgstr ""
 
@@ -2613,19 +2613,19 @@ msgstr ""
 msgid "T3003"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:110 ../templates/database/richter/visible_categories_titset:112 ../templates/visible_categories_titset:112
+#: ../templates/database/ebooks/visible_categories_titset:112 ../templates/database/inst001/visible_categories_titset:110 ../templates/database/nationallizenzen/visible_categories_titset:113 ../templates/database/richter/visible_categories_titset:112 ../templates/visible_categories_titset:112
 msgid "T4500"
 msgstr ""
 
-#: ../templates/database/einbaende/visible_categories_titset:24 ../templates/database/inst001/visible_categories_titset:111 ../templates/database/kapsel/visible_categories_titset:109 ../templates/database/richter/visible_categories_titset:113 ../templates/visible_categories_titset:113
+#: ../templates/database/ebooks/visible_categories_titset:113 ../templates/database/einbaende/visible_categories_titset:25 ../templates/database/inst001/visible_categories_titset:111 ../templates/database/kapsel/visible_categories_titset:109 ../templates/database/nationallizenzen/visible_categories_titset:114 ../templates/database/richter/visible_categories_titset:113 ../templates/visible_categories_titset:113
 msgid "T5001"
 msgstr ""
 
-#: ../templates/database/einbaende/visible_categories_titset:25 ../templates/database/inst001/visible_categories_titset:112 ../templates/database/kapsel/visible_categories_titset:110 ../templates/database/richter/visible_categories_titset:114 ../templates/visible_categories_titset:114
+#: ../templates/database/ebooks/visible_categories_titset:114 ../templates/database/einbaende/visible_categories_titset:26 ../templates/database/inst001/visible_categories_titset:112 ../templates/database/kapsel/visible_categories_titset:110 ../templates/database/nationallizenzen/visible_categories_titset:115 ../templates/database/richter/visible_categories_titset:114 ../templates/visible_categories_titset:114
 msgid "T5002"
 msgstr ""
 
-#: ../templates/database/inst001/visible_categories_titset:113 ../templates/database/kapsel/visible_categories_titset:111 ../templates/database/richter/visible_categories_titset:115 ../templates/visible_categories_titset:115
+#: ../templates/database/ebooks/visible_categories_titset:115 ../templates/database/inst001/visible_categories_titset:113 ../templates/database/kapsel/visible_categories_titset:111 ../templates/database/nationallizenzen/visible_categories_titset:116 ../templates/database/richter/visible_categories_titset:115 ../templates/visible_categories_titset:115
 msgid "T5100"
 msgstr ""
 
@@ -2649,7 +2649,7 @@ msgstr ""
 msgid "Tit-Datei"
 msgstr ""
 
-#: ../templates/database/landschaft/virtualsearch_result_item:118 ../templates/database/portrait/virtualsearch_result_item:118 ../templates/managecollection_tit_as_html_simple:16 ../templates/searchmask_options:4 ../templates/views/gdonck/searchmask_options:4 ../templates/views/gleuel/searchmask_options:4 ../templates/views/kempen/searchmask_options:4 ../templates/views/kevelaer/searchmask_options:4 ../templates/views/kug/searchmask_options:4 ../templates/views/kwinter/searchmask_options:4 ../templates/views/portrait/searchmask_options:4 ../templates/views/portrait/virtualsearch_result_item:112 ../templates/views/rheinlandbib/searchmask_options:4 ../templates/views/xanten/searchmask_options:4
+#: ../templates/managecollection_tit_as_html_simple:16 ../templates/searchmask_options:4 ../templates/views/gdonck/searchmask_options:4 ../templates/views/gleuel/searchmask_options:4 ../templates/views/kempen/searchmask_options:4 ../templates/views/kevelaer/searchmask_options:4 ../templates/views/kug/searchmask_options:4 ../templates/views/kwinter/searchmask_options:4 ../templates/views/portrait/searchmask_options:4 ../templates/views/rheinlandbib/searchmask_options:4 ../templates/views/xanten/searchmask_options:4
 msgid "Titel"
 msgstr ""
 
@@ -2677,7 +2677,7 @@ msgstr ""
 msgid "Titelangaben"
 msgstr ""
 
-#: ../templates/database/landschaft/search_showtitset:54 ../templates/database/portrait/search_showtitset:54 ../templates/managecollection_tit_as_html:23 ../templates/managecollection_tit_as_html_simple:24 ../templates/search_showmulttitset:37 ../templates/search_showtitset:65
+#: ../templates/database/ebooks/search_showtitset:66 ../templates/database/landschaft/search_showtitset:54 ../templates/database/nationallizenzen/search_showtitset:65 ../templates/database/portrait/search_showtitset:54 ../templates/managecollection_tit_as_html:25 ../templates/managecollection_tit_as_html_simple:24 ../templates/search_showmulttitset:37 ../templates/search_showtitset:66
 msgid "Titelaufnahme"
 msgstr ""
 
@@ -2701,11 +2701,11 @@ msgstr ""
 msgid "Titelzugriffe"
 msgstr ""
 
-#: ../templates/info_10:36 ../templates/info_11:36 ../templates/info_12:31 ../templates/info_13:37 ../templates/info_14:44 ../templates/info_15:48 ../templates/info_16:44 ../templates/info_17:44 ../templates/info_18:44 ../templates/info_19:44 ../templates/info_9:44 ../templates/search_showtitset:44 ../templates/views/kapsel/info_18:44
+#: ../templates/database/ebooks/search_showtitset:44 ../templates/database/nationallizenzen/search_showtitset:44 ../templates/info_10:36 ../templates/info_11:36 ../templates/info_12:31 ../templates/info_13:37 ../templates/info_14:44 ../templates/info_15:48 ../templates/info_16:44 ../templates/info_17:44 ../templates/info_18:44 ../templates/info_19:44 ../templates/info_9:44 ../templates/search_showtitset:44 ../templates/views/kapsel/info_18:44
 msgid "Top 20"
 msgstr ""
 
-#: ../templates/admin_editsession:59 ../templates/database/einbaende/search_showtitlist:73 ../templates/database/einbaende/search_showtitlist:88 ../templates/database/landschaft/search_showtitlist:80 ../templates/database/landschaft/search_showtitlist:96 ../templates/database/landschaft/virtualsearch_result_item:16 ../templates/database/portrait/search_showtitlist:80 ../templates/database/portrait/search_showtitlist:96 ../templates/database/portrait/virtualsearch_result_item:16 ../templates/resultlists_choice:87 ../templates/resultlists_showall:66 ../templates/resultlists_showall_sortall:66 ../templates/search_showtitlist:83 ../templates/search_showtitlist:99 ../templates/search_showtitlist_of_cnt:83 ../templates/search_showtitlist_of_cnt:99 ../templates/select_queries:60 ../templates/views/einbaende/resultlists_showall:67 ../templates/views/einbaende/virtualsearch_result_item:20 ../templates/views/kapsel/resultlists_showall:65 ../templates/views/kapsel/search_showtitlist:81 ../templates/views/kapsel/search_showtitlist:97 ../templates/views/portrait/virtualsearch_result_item:16 ../templates/virtualsearch_result_item:16 ../templates/virtualsearch_showkorindex:25 ../templates/virtualsearch_shownotindex:25 ../templates/virtualsearch_showswtindex:25 ../templates/virtualsearch_showverfindex:25
+#: ../templates/admin_editsession:59 ../templates/database/einbaende/search_showtitlist:73 ../templates/database/einbaende/search_showtitlist:88 ../templates/database/landschaft/search_showtitlist:80 ../templates/database/landschaft/search_showtitlist:96 ../templates/database/landschaft/virtualsearch_result_item:16 ../templates/database/portrait/search_showtitlist:80 ../templates/database/portrait/search_showtitlist:96 ../templates/database/portrait/virtualsearch_result_item:16 ../templates/resultlists_choice:87 ../templates/resultlists_showall:66 ../templates/resultlists_showall_sortall:66 ../templates/search_showtitlist:83 ../templates/search_showtitlist:99 ../templates/search_showtitlist_of_cnt:83 ../templates/search_showtitlist_of_cnt:99 ../templates/select_queries:60 ../templates/views/einbaende/resultlists_showall:67 ../templates/views/einbaende/virtualsearch_result_item:20 ../templates/views/kapsel/resultlists_showall:65 ../templates/views/kapsel/search_showtitlist:81 ../templates/views/kapsel/search_showtitlist:97 ../templates/virtualsearch_result_item:16 ../templates/virtualsearch_showkorindex:25 ../templates/virtualsearch_shownotindex:25 ../templates/virtualsearch_showswtindex:25 ../templates/virtualsearch_showverfindex:25
 msgid "Treffer"
 msgstr ""
 
@@ -2713,7 +2713,7 @@ msgstr ""
 msgid "Trefferliste"
 msgstr ""
 
-#: ../templates/views/portrait/drilldown_categorized:3
+#: ../templates/database/portrait/drilldown_categorized:3
 msgid "Treffermenge&nbsp;eingrenzen"
 msgstr ""
 
@@ -2767,7 +2767,7 @@ msgstr ""
 msgid "Ursprüngliche Auswahl wiederherstellen"
 msgstr ""
 
-#: ../templates/database/landschaft/virtualsearch_result_item:93 ../templates/database/portrait/virtualsearch_result_item:93 ../templates/userprefs:179 ../templates/views/portrait/virtualsearch_result_item:87 ../templates/virtualsearch_showverfindex:52
+#: ../templates/userprefs:179 ../templates/virtualsearch_showverfindex:52
 msgid "Verfasser"
 msgstr ""
 
@@ -2823,7 +2823,7 @@ msgstr ""
 msgid "Vorgemerkt"
 msgstr ""
 
-#: ../templates/database/einbaende/search_showtitset:37 ../templates/database/einbaende/search_showtitset:39 ../templates/database/landschaft/search_showtitset:33 ../templates/database/landschaft/search_showtitset:35 ../templates/database/portrait/search_showtitset:33 ../templates/database/portrait/search_showtitset:35 ../templates/search_showtitset:39 ../templates/search_showtitset:41
+#: ../templates/database/ebooks/search_showtitset:39 ../templates/database/ebooks/search_showtitset:41 ../templates/database/einbaende/search_showtitset:37 ../templates/database/einbaende/search_showtitset:39 ../templates/database/landschaft/search_showtitset:33 ../templates/database/landschaft/search_showtitset:35 ../templates/database/nationallizenzen/search_showtitset:39 ../templates/database/nationallizenzen/search_showtitset:41 ../templates/database/portrait/search_showtitset:33 ../templates/database/portrait/search_showtitset:35 ../templates/search_showtitset:39 ../templates/search_showtitset:41
 msgid "Vorheriger Titel"
 msgstr ""
 
@@ -2994,7 +2994,7 @@ msgstr ""
 msgid "aufsteigend"
 msgstr ""
 
-#: ../templates/database/einbaende/managecollection_tit_as_html:16 ../templates/managecollection_tit_as_html:18 ../templates/managecollection_tit_as_html_simple:16
+#: ../templates/database/einbaende/managecollection_tit_as_html:16 ../templates/managecollection_tit_as_html:20 ../templates/managecollection_tit_as_html_simple:16
 msgid "aus:"
 msgstr ""
 
@@ -3022,7 +3022,7 @@ msgstr ""
 msgid "katalogübergreifend"
 msgstr ""
 
-#: ../templates/database/landschaft/virtualsearch_result_item:16 ../templates/database/portrait/virtualsearch_result_item:16 ../templates/resultlists_choice:96 ../templates/views/einbaende/virtualsearch_result_item:20 ../templates/views/portrait/virtualsearch_result_item:16 ../templates/virtualsearch_result_item:16
+#: ../templates/database/landschaft/virtualsearch_result_item:16 ../templates/database/portrait/virtualsearch_result_item:16 ../templates/resultlists_choice:96 ../templates/views/einbaende/virtualsearch_result_item:20 ../templates/virtualsearch_result_item:16
 msgid "mind."
 msgstr ""
 
@@ -3030,7 +3030,7 @@ msgstr ""
 msgid "mit Grund"
 msgstr ""
 
-#: ../templates/views/portrait/drilldown_categorized:38
+#: ../templates/database/portrait/drilldown_categorized:38
 msgid "nach Beruf/Weltanschauung"
 msgstr ""
 
@@ -3046,7 +3046,7 @@ msgstr ""
 msgid "nach Fert.Jahr"
 msgstr ""
 
-#: ../templates/database/einbaende/drilldown_categorized:52 ../templates/database/einbaende/search_showtitlist_of_cnt:55 ../templates/database/landschaft/search_showtitlist:51 ../templates/database/portrait/search_showtitlist:51 ../templates/drilldown_categorized:52 ../templates/resultlists_showall:46 ../templates/resultlists_showall_sortall:49 ../templates/resultlists_showsinglepool:48 ../templates/search_showtitlist:54 ../templates/search_showtitlist_of_cnt:54 ../templates/views/kapsel/resultlists_showall:46 ../templates/views/kapsel/resultlists_showsinglepool:48 ../templates/views/kapsel/search_showtitlist:52 ../templates/views/portrait/drilldown_categorized:52 ../templates/views/portrait/resultlists_showsinglepool:47 ../templates/virtualsearch_result_start:48
+#: ../templates/database/einbaende/drilldown_categorized:52 ../templates/database/einbaende/search_showtitlist_of_cnt:55 ../templates/database/landschaft/search_showtitlist:51 ../templates/database/portrait/drilldown_categorized:52 ../templates/database/portrait/search_showtitlist:51 ../templates/drilldown_categorized:52 ../templates/resultlists_showall:46 ../templates/resultlists_showall_sortall:49 ../templates/resultlists_showsinglepool:48 ../templates/search_showtitlist:54 ../templates/search_showtitlist_of_cnt:54 ../templates/views/kapsel/resultlists_showall:46 ../templates/views/kapsel/resultlists_showsinglepool:48 ../templates/views/kapsel/search_showtitlist:52 ../templates/views/portrait/resultlists_showsinglepool:47 ../templates/virtualsearch_result_start:48
 msgid "nach Jahr"
 msgstr ""
 
@@ -3054,7 +3054,7 @@ msgstr ""
 msgid "nach Jahrhundert"
 msgstr ""
 
-#: ../templates/database/einbaende/drilldown_categorized:66 ../templates/drilldown_categorized:66
+#: ../templates/database/einbaende/drilldown_categorized:66 ../templates/database/portrait/drilldown_categorized:66 ../templates/drilldown_categorized:66
 msgid "nach Medienart"
 msgstr ""
 
@@ -3066,7 +3066,7 @@ msgstr ""
 msgid "nach Person/Region"
 msgstr ""
 
-#: ../templates/drilldown_categorized:10 ../templates/views/portrait/drilldown_categorized:10
+#: ../templates/database/portrait/drilldown_categorized:10 ../templates/drilldown_categorized:10
 msgid "nach Personen"
 msgstr ""
 
@@ -3074,11 +3074,7 @@ msgstr ""
 msgid "nach Popularit&auml;t"
 msgstr ""
 
-#: ../templates/views/portrait/drilldown_categorized:66
-msgid "nach Portraitart"
-msgstr ""
-
-#: ../templates/views/portrait/drilldown_categorized:24
+#: ../templates/database/portrait/drilldown_categorized:24
 msgid "nach Regionen"
 msgstr ""
 
@@ -3086,7 +3082,7 @@ msgstr ""
 msgid "nach Signatur"
 msgstr ""
 
-#: ../templates/database/einbaende/drilldown_categorized:80 ../templates/drilldown_categorized:80 ../templates/views/portrait/drilldown_categorized:80
+#: ../templates/database/einbaende/drilldown_categorized:80 ../templates/database/portrait/drilldown_categorized:80 ../templates/drilldown_categorized:80
 msgid "nach Sprache"
 msgstr ""
 
@@ -3122,7 +3118,7 @@ msgstr ""
 msgid "pro Katalog"
 msgstr ""
 
-#: ../templates/database/landschaft/virtualsearch_result_item:16 ../templates/database/portrait/virtualsearch_result_item:16 ../templates/views/einbaende/virtualsearch_result_item:20 ../templates/views/portrait/virtualsearch_result_item:16 ../templates/virtualsearch_result_item:16
+#: ../templates/database/landschaft/virtualsearch_result_item:16 ../templates/database/portrait/virtualsearch_result_item:16 ../templates/views/einbaende/virtualsearch_result_item:20 ../templates/virtualsearch_result_item:16
 msgid "von"
 msgstr ""
 

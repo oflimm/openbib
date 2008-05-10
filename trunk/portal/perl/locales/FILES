@@ -84,6 +84,8 @@
 ../templates/connector_permalink
 ../templates/connector_rss_item
 ../templates/corporate_banner
+../templates/database/ebooks/search_showtitset
+../templates/database/ebooks/visible_categories_titset
 ../templates/database/einbaende/managecollection_tit_as_html
 ../templates/database/einbaende/drilldown_categorized
 ../templates/database/einbaende/search_showtitlist
@@ -98,6 +100,9 @@
 ../templates/database/landschaft/search_showtitset
 ../templates/database/landschaft/virtualsearch_result_item
 ../templates/database/landschaft/visible_categories_titset
+../templates/database/nationallizenzen/search_showtitset
+../templates/database/nationallizenzen/visible_categories_titset
+../templates/database/portrait/drilldown_categorized
 ../templates/database/portrait/search_showtitlist
 ../templates/database/portrait/search_showtitset
 ../templates/database/portrait/virtualsearch_result_item
@@ -298,7 +303,6 @@
 ../templates/views/landschaft/virtualsearch_more_search_tips
 ../templates/views/portrait/corporate_banner
 ../templates/views/portrait/clouds_navigation
-../templates/views/portrait/drilldown_categorized
 ../templates/views/portrait/info_20
 ../templates/views/portrait/info_30
 ../templates/views/portrait/leave
@@ -311,7 +315,6 @@
 ../templates/views/portrait/searchmask_simple
 ../templates/views/portrait/startopac
 ../templates/views/portrait/std_footer
-../templates/views/portrait/virtualsearch_result_item
 ../templates/views/rheinlandbib/corporate_banner
 ../templates/views/rheinlandbib/databasechoice
 ../templates/views/rheinlandbib/info_20

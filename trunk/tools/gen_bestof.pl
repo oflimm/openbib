@@ -40,6 +40,7 @@ use YAML;
 
 use OpenBib::Config;
 use OpenBib::Statistics;
+use OpenBib::Record::Title;
 use OpenBib::Search::Util;
 
 my ($type,$singlepool,$singleview,$help,$logfile);
@@ -77,6 +78,11 @@ my $logger = get_logger();
 my $config     = OpenBib::Config->instance;
 my $statistics = new OpenBib::Statistics();
 
+# Verbindung zur SQL-Datenbank herstellen
+my $statisticsdbh
+    = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
+    or $logger->error($DBI::errstr);
+
 if (!$type){
   $logger->fatal("Kein Type mit --type= ausgewaehlt");
   exit;
@@ -100,17 +106,13 @@ if ($type == 1){
                 or $logger->error_die($DBI::errstr);
         
         my $bestof_ref=[];
-        my $request=$statistics->{dbh}->prepare("select katkey, count(id) as idcount from relevance where origin=2 and dbname=? and DATE_SUB(CURDATE(),INTERVAL 6 MONTH) <= tstamp group by id order by idcount desc limit 20");
+        my $request=$statisticsdbh->prepare("select katkey, count(id) as idcount from relevance where origin=2 and dbname=? and DATE_SUB(CURDATE(),INTERVAL 6 MONTH) <= tstamp group by id order by idcount desc limit 20");
         $request->execute($database);
         while (my $result=$request->fetchrow_hashref){
             my $katkey = $result->{katkey};
             my $count  = $result->{idcount};
 
-            my $item = OpenBib::Search::Util::get_tit_listitem_by_idn({
-                titidn            => $katkey,
-                dbh               => $dbh,
-                database          => $database,
-            });
+            my $item=OpenBib::Record::Title->new({database => $database, id => $katkey})->get_full_record({dbh => $dbh})->to_rawdata;
 
             push @$bestof_ref, {
                 item  => $item,
@@ -131,7 +133,7 @@ if ($type == 2){
     $logger->info("Generating Type 2 BestOf-Values for all databases");
     
     my $bestof_ref=[];
-    my $request=$statistics->{dbh}->prepare("select dbname, count(katkey) as kcount from relevance where origin=2 group by dbname order by kcount desc limit 20");
+    my $request=$statisticsdbh->prepare("select dbname, count(katkey) as kcount from relevance where origin=2 group by dbname order by kcount desc limit 20");
     $request->execute();
     while (my $result=$request->fetchrow_hashref){
         my $dbname = $result->{dbname};
@@ -505,7 +507,7 @@ if ($type == 8){
 	    push @sqlargs, $cat2type_ref->{$category}; 
 	  }
 
-	  my $request=$statistics->{dbh}->prepare($sqlstring);
+	  my $request=$statisticsdbh->prepare($sqlstring);
 	  $request->execute(@sqlargs);
 	  while (my $result=$request->fetchrow_hashref){
             my $content = decode_utf8($result->{content});
@@ -796,6 +798,8 @@ gen_bestof.pl - Erzeugen von BestOf-Analysen aus Relevance-Statistik-Daten
    7 => Nutzer-Tags pro Katalog (Wolke)
    8 => Suchbegriffe pro View (Wolke)
    9 => Meistvorkommende Erscheinungsjahre pro Katalog (Wolke)
+  10 => Titel nach BK pro View
+  11 => Titel nach BK pro Katalog pro Sicht
        
 ENDHELP
     exit;

@@ -415,16 +415,15 @@ sub get_full_record {
                 });
 
             }
-            
+
             # Dubletten Bereinigen
             my %seen_isbns = ();
             
             @isbn_refs = grep { ! $seen_isbns{$_} ++ } @isbn_refs_tmp;
 
             $logger->debug(YAML::Dump(\@isbn_refs));
-
+           
             foreach my $isbn (@isbn_refs){
-
                 my $reqstring="select category,content from normdata where isbn=? order by category,indicator";
                 my $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
                 $request->execute($isbn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
@@ -433,28 +432,28 @@ sub get_full_record {
                 while (my $res=$request->fetchrow_hashref) {
                     my $category   = "E".sprintf "%04d",$res->{category };
                     my $content    =        decode_utf8($res->{content});
-                
+                    
                     push @{$normset_ref->{$category}}, {
                         content    => $content,
                     };
                 }
-
+                
                 # Anreicherung mit 'gleichen' (=gleiche ISBN) Titeln aus anderen Katalogen
                 my $same_recordlist = new OpenBib::RecordList::Title();
-
-                $reqstring="select id,dbname from all_isbn where isbn=? and dbname != ? and id != ?";
+                
+                $reqstring="select distinct id,dbname from all_isbn where isbn=? and dbname != ? and id != ?";
                 $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
                 $request->execute($isbn,$self->{database},$self->{id}) or $logger->error("Request: $reqstring - ".$DBI::errstr);
-
+                
                 while (my $res=$request->fetchrow_hashref) {
                     my $id         = $res->{id};
                     my $database   = $res->{dbname};
-
+                    
                     $same_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
                 }
-
+                
                 $self->{_same_records} = $same_recordlist;
-
+                
                 # Anreicherung mit 'aehnlichen' (=andere Auflage, Sprache) Titeln aus allen Katalogen
                 my $similar_recordlist = new OpenBib::RecordList::Title();
                 
@@ -469,9 +468,9 @@ sub get_full_record {
                         $similar_isbn_ref->{$similarisbn}=1 if ($similarisbn ne $isbn);
                     }
                 }
-
+                
                 my @similar_args = keys %$similar_isbn_ref;
-
+                
                 if (@similar_args){
                     my $in_select_string = join(',',map {'?'} @similar_args);
                     
@@ -489,9 +488,9 @@ sub get_full_record {
                         $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
                     }
                     
-		}
-                
-		$similar_recordlist->get_brief_records;
+                }
+                    
+                $similar_recordlist->get_brief_records;
                 
                 $self->{_similar_records} = $similar_recordlist;
                 

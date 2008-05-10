@@ -1290,10 +1290,12 @@
 '54.52': Software engineering
 '54.53': Programmiersprachen
 '54.54': Betriebssysteme
+'54.55': 'Auszeichnungssprachen'
 '54.59': 'Programmierung: Sonstiges'
 '54.61': Datenverarbeitungsmanagement
 '54.62': Datenstrukturen
 '54.64': Datenbanken
+'54.65': 'Webentwicklung, Webanwendungen'
 '54.70': 'Computermethodik: Allgemeines'
 '54.71': Logikprogrammierung
 '54.72': Künstliche Intelligenz
@@ -1305,6 +1307,7 @@
 '54.80': Angewandte Informatik
 '54.81': Anwendungssoftware
 '54.82': Textverarbeitung
+'54.84': Webmanagement
 '54.87': Multimedia
 '54.88': Computer in der Freizeit
 '54.89': 'Angewandte Informatik: Sonstiges'

@@ -11,7 +11,11 @@ CREATE TABLE session (
  benutzerpin   TEXT,
  queryoptions  TEXT,
  returnurl     TEXT,
- INDEX (sessionid),
+
+ bibsonomy_user TEXT,
+ bibsonomy_key  TEXT,
+
+INDEX (sessionid),
  INDEX (benutzernr(255))
 );
 

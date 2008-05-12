@@ -2811,6 +2811,68 @@ sub set_fieldchoice {
     return;
 }
 
+sub get_bibsonomy {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return undef if (!defined $dbh);
+
+    my $targetresult=$dbh->prepare("select bibsonomy_sync,bibsonomy_user,bibsonomy_key from user where userid = ?") or $logger->error($DBI::errstr);
+    $targetresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+    
+    my $result=$targetresult->fetchrow_hashref();
+
+    my $bibsonomy_ref = {
+        sync      => decode_utf8($result->{'bibsonomy_sync'}),
+        user      => decode_utf8($result->{'bibsonomy_user'}),
+        key       => decode_utf8($result->{'bibsonomy_key'}),
+    };
+    
+    $targetresult->finish();
+    
+    return $bibsonomy_ref;
+}
+
+sub set_bibsonomy {
+    my ($self,$arg_ref)=@_;
+
+    my $sync      = exists $arg_ref->{sync}
+        ? $arg_ref->{sync}            : 'off';
+    my $user      = exists $arg_ref->{user}
+        ? $arg_ref->{user}            : undef;
+    my $key       = exists $arg_ref->{key}
+        ? $arg_ref->{key}             : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return undef if (!defined $dbh);
+
+    my $targetresult=$dbh->prepare("update user set bibsonomy_sync = ?, bibsonomy_user = ?, bibsonomy_key = ? where userid = ?") or $logger->error($DBI::errstr);
+    $targetresult->execute($sync,$user,$key,$self->{ID}) or $logger->error($DBI::errstr);
+    $targetresult->finish();
+    
+    return;
+}
+
 sub get_id_of_selfreg_logintarget {
     my ($self)=@_;
 

@@ -89,7 +89,7 @@
 
 <p />
 
-<form method="post" action="https://[% config.servername %][% config.login_loc %]" enctype="application/x-www-form-urlencoded" target="_parent">
+<form method="post" action="[% IF config.use_https %]https[%- ELSE -%]http[%- END -%]://[% config.servername %][% config.login_loc %]" enctype="application/x-www-form-urlencoded" target="_parent">
 <input type="hidden" name="do_auth"   value="1" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="view"      value="[% view %]" />

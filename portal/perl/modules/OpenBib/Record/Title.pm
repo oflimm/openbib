@@ -40,6 +40,7 @@ use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use SOAP::Lite;
 use Storable;
+use XML::LibXML;
 use YAML ();
 
 use OpenBib::BibSonomy;
@@ -1324,6 +1325,192 @@ sub to_endnote {
     return join("\n",@$endnote_ref);
 }
 
+
+sub to_bibsonomy_post {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $utf8               = exists $arg_ref->{utf8}
+        ? $arg_ref->{utf8}               : 0;
+
+    my $doc = XML::LibXML::Document->new();
+    my $root = $doc->createElement('bibsonomy');
+    $doc->setDocumentElement($root);
+    my $post = $doc->createElement('post');
+    $root->appendChild($post);
+    my $bibtex = $doc->createElement('bibtex');
+    
+    # Verfasser und Herausgeber konstruieren
+    my $authors_ref=[];
+    my $editors_ref=[];
+    foreach my $category (qw/T0100 T0101/){
+        next if (!exists $self->{_normset}->{$category});
+        foreach my $part_ref (@{$self->{_normset}->{$category}}){
+            if ($part_ref->{supplement} =~ /Hrsg/){
+                push @$editors_ref, utf2bibtex($part_ref->{content},$utf8);
+            }
+            else {
+                push @$authors_ref, utf2bibtex($part_ref->{content},$utf8);
+            }
+        }
+    }
+    my $author = join(' and ',@$authors_ref);
+    my $editor = join(' and ',@$editors_ref);
+
+    # Schlagworte
+    my $keywords_ref=[];
+    foreach my $category (qw/T0710 T0902 T0907 T0912 T0917 T0922 T0927 T0932 T0937 T0942 T0947/){
+        next if (!exists $self->{_normset}->{$category});
+        foreach my $part_ref (@{$self->{_normset}->{$category}}){
+            push @$keywords_ref, utf2bibtex($part_ref->{content},$utf8);
+        }
+    }
+    my $keyword = join(' ; ',@$keywords_ref);
+    
+    # Auflage
+    my $edition   = (exists $self->{_normset}->{T0403})?utf2bibtex($self->{_normset}->{T0403}[0]{content},$utf8):'';
+
+    # Verleger
+    my $publisher = (exists $self->{_normset}->{T0412})?utf2bibtex($self->{_normset}->{T0412}[0]{content},$utf8):'';
+
+    # Verlagsort
+    my $address   = (exists $self->{_normset}->{T0410})?utf2bibtex($self->{_normset}->{T0410}[0]{content},$utf8):'';
+
+    # Titel
+    my $title     = (exists $self->{_normset}->{T0331})?utf2bibtex($self->{_normset}->{T0331}[0]{content},$utf8):'';
+
+    # Zusatz zum Titel
+    my $titlesup  = (exists $self->{_normset}->{T0335})?utf2bibtex($self->{_normset}->{T0335}[0]{content},$utf8):'';
+
+    if ($title && $titlesup){
+        $title = "$title : $titlesup";
+    }
+
+    # Jahr
+    my $year      = (exists $self->{_normset}->{T0425})?utf2bibtex($self->{_normset}->{T0425}[0]{content},$utf8):'';
+
+    # ISBN
+    my $isbn      = (exists $self->{_normset}->{T0540})?utf2bibtex($self->{_normset}->{T0540}[0]{content},$utf8):'';
+
+    # ISSN
+    my $issn      = (exists $self->{_normset}->{T0543})?utf2bibtex($self->{_normset}->{T0543}[0]{content},$utf8):'';
+
+    # Sprache
+    my $language  = (exists $self->{_normset}->{T0516})?utf2bibtex($self->{_normset}->{T0516}[0]{content},$utf8):'';
+
+    # Abstract
+    my $abstract  = (exists $self->{_normset}->{T0750})?utf2bibtex($self->{_normset}->{T0750}[0]{content},$utf8):'';
+
+    # Origin
+    my $origin    = (exists $self->{_normset}->{T0590})?utf2bibtex($self->{_normset}->{T0590}[0]{content},$utf8):'';
+
+    if ($author){
+        $bibtex->setAttribute("author",$author);
+    }
+    if ($editor){
+        $bibtex->setAttribute("editor",$editor);
+    }
+    if ($edition){
+        $bibtex->setAttribute("edition",$edition);
+    }
+    if ($publisher){
+        $bibtex->setAttribute("publisher",$publisher);
+    }
+    if ($address){
+        $bibtex->setAttribute("address",$address);
+    }
+    if ($title){
+        $bibtex->setAttribute("title",$title);
+    }
+    if ($year){
+        $bibtex->setAttribute("year",$year);
+    }
+    if ($isbn){
+        $bibtex->setAttribute("misc",'ISBN = {'.$isbn.'}');
+    }
+    if ($issn){
+        $bibtex->setAttribute("misc",'ISSN = {'.$issn.'}');
+    }
+    if ($keyword){
+        $bibtex->setAttribute("keywords",$keyword);
+    }
+    if ($language){
+        $bibtex->setAttribute("language",$language);
+    }
+    if ($abstract){
+        $bibtex->setAttribute("abstract",$abstract);
+    }
+
+    if ($origin){
+        # Pages
+        if ($origin=~/ ; (S\. *\d+.*)$/){
+            $bibtex->setAttribute("pages",$1);
+        }
+        elsif ($origin=~/, (S\. *\d+.*)$/){
+            $bibtex->setAttribute("pages",$1);
+        }
+
+        # Journal and/or Volume
+        if ($origin=~/^(.+?) ; (.*?) ; S\. *\d+.*$/){
+            my $journal = $1;
+            my $volume  = $2;
+
+            $journal =~ s/ \/ .*$//;
+            $bibtex->setAttribute("journal",$journal);
+            $bibtex->setAttribute("volume",$volume);
+        }
+        elsif ($origin=~/^(.+?)\. (.*?), (\d\d\d\d), S\. *\d+.*$/){
+            my $journal = $1;
+            my $volume  = $2;
+            my $year    = $3;
+
+            $journal =~ s/ \/ .*$//;
+            $bibtex->setAttribute("journal",$journal);
+            $bibtex->setAttribute("volume",$volume);
+        }
+        elsif ($origin=~/^(.+?)\. (.*?), S\. *\d+.*$/){
+            my $journal = $1;
+            my $volume  = $2;
+
+            $journal =~ s/ \/ .*$//;
+            $bibtex->setAttribute("journal",$journal);
+            $bibtex->setAttribute("volume",$volume);
+        }
+        elsif ($origin=~/^(.+?) ; (.*?), S\. *\d+.*$/){
+            my $journal = $1;
+            my $volume  = $2;
+
+            $journal =~ s/ \/ .*$//;
+            $bibtex->setAttribute("journal",$journal);
+            $bibtex->setAttribute("volume",$volume);
+        }
+        elsif ($origin=~/^(.*?) ; S\. *\d+.*$/){
+            my $journal = $1;
+
+            $journal =~ s/ \/ .*$//;
+            $bibtex->setAttribute("journal",$journal);
+        }
+    }
+
+    my $identifier=substr($author,0,4).substr($title,0,4).$year;
+    $identifier=~s/[^A-Za-z0-9]//g;
+
+    $bibtex->setAttribute("bibtexKey",$identifier);
+
+    if ($origin){
+        $bibtex->setAttribute("entrytype",'article');
+    }
+    elsif ($isbn){
+        $bibtex->setAttribute("entrytype",'book');
+    }
+    else {
+        $bibtex->setAttribute("entrytype",'book');
+    }
+
+    $post->appendChild($bibtex);
+    
+    return $doc->toString();
+}
 
 sub to_bibtex {
     my ($self,$arg_ref) = @_;

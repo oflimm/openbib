@@ -359,7 +359,7 @@ sub change_post {
         }
 
         # Aendern in BibSonomy
-        my $url = "http://www.bibsonomy.org/api/users/flimm/posts/".$posts_ref->{recordlist}[0]{intrahash};
+        my $url = "http://www.bibsonomy.org/api/users/".$self->{api_user}."/posts/".$posts_ref->{recordlist}[0]{intrahash};
 ;
 
         $logger->debug($url);
@@ -448,7 +448,7 @@ sub new_post {
     $logger->debug($doc->toString());
 
     # Anlegen in BibSonomy
-    my $url = "http://www.bibsonomy.org/api/users/flimm/posts";
+    my $url = "http://www.bibsonomy.org/api/users/".$self->{api_user}."/posts";
 ;
 
     $logger->debug($url);

@@ -31,6 +31,9 @@ CREATE TABLE user (
 
  masktype   TEXT,
 
+ bibsonomy_user TEXT,
+ bibsonomy_key  TEXT,
+
  INDEX (userid)
 )
 DEFAULT CHARACTER SET utf8

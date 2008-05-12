@@ -36,6 +36,7 @@ use Encode qw(decode_utf8 encode_utf8);
 use Log::Log4perl qw(get_logger :levels);
 use YAML;
 
+use OpenBib::BibSonomy;
 use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Database::DBI;
@@ -1404,11 +1405,11 @@ sub get_private_tagged_titles {
     $request->execute($loginname) or $logger->error($DBI::errstr);
 
     my $taglist_ref = {};
-    my $maxcount = 0;
+
     while (my $result=$request->fetchrow_hashref){
         my $tag       = decode_utf8($result->{tag});
         my $id        = $result->{titid};
-        my $database  = $result->{titid};
+        my $database  = $result->{titdb};
 
         unless (exists $taglist_ref->{$database}{$id}){
             $taglist_ref->{$database}{$id} = [];
@@ -2926,6 +2927,12 @@ sub initial_sync_to_bibsonomy {
 
     my $config = OpenBib::Config->instance;
 
+    my $bibsonomy_ref = $self->get_bibsonomy;
+
+    return unless ($bibsonomy_ref->{user} || $bibsonomy_ref->{key});
+        
+    my $bibsonomy = new OpenBib::BibSonomy({api_user => $bibsonomy_ref->{user}, api_key => $bibsonomy_ref->{key}});
+
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
@@ -2937,7 +2944,6 @@ sub initial_sync_to_bibsonomy {
     
     my $titles_ref = $self->get_private_tagged_titles({loginname => $loginname});
 
-    
     return;
 }
 

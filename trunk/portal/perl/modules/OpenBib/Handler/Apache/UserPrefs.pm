@@ -201,6 +201,11 @@ sub handler {
             user      => $bibsonomy_user,
             key       => $bibsonomy_key,
         });
+
+        if ($bibsonomy_sync eq "on"){
+            $user->initial_sync_to_bibsonomy;
+        }
+        
         $r->internal_redirect("http://$config->{servername}$config->{userprefs_loc}?sessionID=$session->{ID}&action=showfields");
     }
     elsif ($action eq "delaccount_ask") {

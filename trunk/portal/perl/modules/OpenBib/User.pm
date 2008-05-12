@@ -1376,6 +1376,51 @@ sub get_private_tags {
     return $taglist_ref;
 }
 
+sub get_private_tagged_titles {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $loginname           = exists $arg_ref->{loginname}
+        ? $arg_ref->{loginname}           : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    $logger->debug("loginname: $loginname");
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return [] if (!defined $dbh);
+
+    #return if (!$titid || !$titdb || !$loginname || !$tags);
+
+    my $request=$dbh->prepare("select t.tag, tt.titid, tt.titdb from tags as t, tittag as tt where t.id=tt.tagid and tt.loginname=? group by tt.tagid order by t.tag") or $logger->error($DBI::errstr);
+    $request->execute($loginname) or $logger->error($DBI::errstr);
+
+    my $taglist_ref = {};
+    my $maxcount = 0;
+    while (my $result=$request->fetchrow_hashref){
+        my $tag       = decode_utf8($result->{tag});
+        my $id        = $result->{titid};
+        my $database  = $result->{titid};
+
+        unless (exists $taglist_ref->{$database}{$id}){
+            $taglist_ref->{$database}{$id} = [];
+        }
+        
+        push @{$taglist_ref->{$database}{$id}}, $tag;
+    }
+
+    $logger->debug("Private Tags: ".YAML::Dump($taglist_ref));
+    return $taglist_ref;
+}
+
 sub vote_for_review {
     my ($self,$arg_ref)=@_;
 
@@ -2869,6 +2914,29 @@ sub set_bibsonomy {
     my $targetresult=$dbh->prepare("update user set bibsonomy_sync = ?, bibsonomy_user = ?, bibsonomy_key = ? where userid = ?") or $logger->error($DBI::errstr);
     $targetresult->execute($sync,$user,$key,$self->{ID}) or $logger->error($DBI::errstr);
     $targetresult->finish();
+    
+    return;
+}
+
+sub initial_sync_to_bibsonomy {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    return undef if (!defined $dbh);
+
+    my $loginname = $self->get_username;
+    
+    my $titles_ref = $self->get_private_tagged_titles({loginname => $loginname});
+
     
     return;
 }

@@ -33,6 +33,7 @@ CREATE TABLE user (
 
  bibsonomy_user TEXT,
  bibsonomy_key  TEXT,
+ bibsonomy_sync TEXT,
 
  INDEX (userid)
 )

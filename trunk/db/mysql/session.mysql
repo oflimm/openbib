@@ -14,6 +14,7 @@ CREATE TABLE session (
 
  bibsonomy_user TEXT,
  bibsonomy_key  TEXT,
+ bibsonomy_sync TEXT,
 
 INDEX (sessionid),
  INDEX (benutzernr(255))

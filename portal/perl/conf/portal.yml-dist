@@ -371,6 +371,10 @@ benchmark: 0
 # Kurztiteltabelle verwenden?
 use_titlistitem_table: 1
 
+# https fuer Admin und Nutzer verwenden
+use_https: 1
+use_admin_https: 1
+
 # Testsystem
 testsystem: 0
 

@@ -43,6 +43,7 @@ use XML::LibXML;
 use YAML ();
 
 use OpenBib::Config;
+use OpenBib::Record::Title;
 
 sub new {
     my ($class,$arg_ref) = @_;
@@ -63,8 +64,8 @@ sub new {
 
     bless ($self, $class);
     
-    $api_user = (defined $api_user)?$api_user:(defined $config->{bibsonomy_api_user})?$config->{bibsonomy_api_user}:undef;
-    $api_key  = (defined $api_key )?$api_key :(defined $config->{bibsonomy_api_key} )?$config->{bibsonomy_api_key} :undef;
+    $self->{api_user} = (defined $api_user)?$api_user:(defined $config->{bibsonomy_api_user})?$config->{bibsonomy_api_user}:undef;
+    $self->{api_key}  = (defined $api_key )?$api_key :(defined $config->{bibsonomy_api_key} )?$config->{bibsonomy_api_key} :undef;
 
     $self->{client}  = LWP::UserAgent->new;            # HTTP client
 
@@ -73,7 +74,7 @@ sub new {
     $self->{client}->credentials(                      # HTTP authentication
         'www.bibsonomy.org:80',
         'BibSonomyWebService',
-        $api_user => $api_key
+        $self->{api_user} => $self->{api_key}
     );
 
     return $self;
@@ -109,13 +110,21 @@ sub get_posts {
         'bookmark' => 'bookmark',
     );
 
+    if (defined $user && $user eq "self"){
+        $user = $self->{api_user};
+    }
+    
     my $url;
 
     my $titles_ref = [];
     
-    if (defined $bibkey && $bibkey=~/^1[0-9a-f]{32}$/){
+    if (defined $bibkey && $bibkey=~/^1[0-9a-f]{32}$ && !defined $user/){
         substr($bibkey,0,1)=""; # Remove leading 1
         $url='http://www.bibsonomy.org/api/posts?resourcetype=bibtex&resource="'.$bibkey.'"';
+    }
+    elsif (defined $bibkey && $bibkey=~/^1[0-9a-f]{32}$/ && defined $user){
+        substr($bibkey,0,1)=""; # Remove leading 1
+        $url="http://www.bibsonomy.org/api/posts?resourcetype=bibtex&resource=$bibkey&user=$user";
     }
     elsif (defined $tag){
         $url='http://www.bibsonomy.org/api/posts?tags='.$tag.'&resourcetype='.$valid_type{$type};
@@ -123,7 +132,7 @@ sub get_posts {
             $url.="&start=$start&end=$end";
         }
     }
-    elsif (defined $user){
+    elsif (!defined $bibkey && defined $user){
         $url='http://www.bibsonomy.org/api/posts?user='.$user.'&resourcetype='.$valid_type{$type};
         if (defined $start && defined $end){
             $url.="&start=$start&end=$end";
@@ -155,6 +164,7 @@ sub get_posts {
     }
 
     foreach my $post_node ($root->findnodes('/bibsonomy/posts/post')) {
+
         my $singlepost_ref = {} ;
 
         $singlepost_ref->{user} = $post_node->findvalue('user/@name');
@@ -169,6 +179,8 @@ sub get_posts {
 
         if ($type eq "bibtex"){
             $singlepost_ref->{bibkey}              = "1".$post_node->findvalue('bibtex/@interhash');
+            $singlepost_ref->{interhash}           = $post_node->findvalue('bibtex/@interhash');
+            $singlepost_ref->{intrahash}           = $post_node->findvalue('bibtex/@intrahash');
             $singlepost_ref->{record}->{author}    = $post_node->findvalue('bibtex/@author');
             $singlepost_ref->{record}->{editor}    = $post_node->findvalue('bibtex/@editor');
             $singlepost_ref->{record}->{title}     = $post_node->findvalue('bibtex/@title');
@@ -178,6 +190,7 @@ sub get_posts {
             $singlepost_ref->{record}->{year}      = $post_node->findvalue('bibtex/@year');
             $singlepost_ref->{record}->{href}      = $post_node->findvalue('bibtex/@href');
             $singlepost_ref->{record}->{entrytype} = $post_node->findvalue('bibtex/@entrytype');
+            $singlepost_ref->{xmldata}             = $post_node->toString();
         }
         elsif ($type eq "bookmark"){
             $singlepost_ref->{record}->{url}       = $post_node->findvalue('bookmark/@url');
@@ -290,6 +303,173 @@ sub get_tags {
     return @unique_tags;
 }
 
+sub change_post {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $bibkey   = exists $arg_ref->{bibkey}
+        ? $arg_ref->{bibkey}     : undef;
+
+    my $tags_ref = exists $arg_ref->{tags}
+        ? $arg_ref->{tags}        : undef;
+
+    my $type     = exists $arg_ref->{type}
+        ? $arg_ref->{type}       : 'bibtex';
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my %valid_type = (
+        'bibtex'   => 'bibtex',
+        'bookmark' => 'bookmark',
+    );
+
+    my $posts_ref = $self->get_posts({ user => 'self', bibkey => $bibkey});
+
+    if (@{$posts_ref->{recordlist}}){
+        my $postxml = $posts_ref->{recordlist}[0]{xmldata};
+
+        # Existierende XML-Daten einlesen
+        my $xmldata = XML::LibXML->new();
+        my $tree       = $xmldata->parse_string($postxml);
+        my $postnode   = $tree->getDocumentElement;
+    
+        $logger->debug($postnode->toString());
+
+        # Daraus geaenderte Daten generieren
+        my $newdata = XML::LibXML::Document->new();
+        my $root = $newdata->createElement('bibsonomy');
+        $newdata->setDocumentElement($root);
+        $root->appendChild($postnode);
+
+        $postnode->removeAttribute('postingdate');
+    
+        # Tags, viewability aktualisieren
+    
+        # Zuerst loeschen
+        foreach my $tag_node ($root->findnodes('/bibsonomy/post/tag')) {
+            $postnode->removeChild($tag_node);
+        }
+
+        # dann neue Eintragen;
+        foreach my $new_tag (@{$tags_ref}){
+            my $thistag = $newdata->createElement('tag');
+            $thistag->setAttribute('name',$new_tag);
+            $postnode->appendChild($thistag);
+        }
+
+        # Aendern in BibSonomy
+        my $url = "http://www.bibsonomy.org/api/users/flimm/posts/".$posts_ref->{recordlist}[0]{intrahash};
+;
+
+        $logger->debug($url);
+        
+        my $req = new HTTP::Request 'PUT' => $url;
+        $req->content($newdata->toString());
+
+        my $response = $self->{client}->request($req)->decoded_content(charset => 'utf-8');
+
+        $logger->debug("Response: $response");
+
+        my $resultparser = XML::LibXML->new();
+        my $rstree   = $resultparser->parse_string($response);
+        my $rsroot   = $rstree->getDocumentElement;
+        
+        if ($root->findvalue('/bibsonomy/@stat') eq "ok"){
+            return 1;
+        }
+        else {
+            return 0;
+        }
+    }
+    
+    return 0;
+}
+
+sub new_post {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $tags_ref = exists $arg_ref->{tags}
+        ? $arg_ref->{tags}        : undef;
+
+    my $type     = exists $arg_ref->{type}
+        ? $arg_ref->{type}       : 'bibtex';
+
+    my $visibility = exists $arg_ref->{visibility}
+        ? $arg_ref->{visibility} : 'public';
+
+    my $database = exists $arg_ref->{database}
+        ? $arg_ref->{database}   : undef;
+
+    my $id       = exists $arg_ref->{id}
+        ? $arg_ref->{id}         : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my %valid_type = (
+        'bibtex'   => 'bibtex',
+        'bookmark' => 'bookmark',
+    );
+
+    my $record  = new OpenBib::Record::Title({ database => $database , id => $id})->get_full_record;    
+    my $postxml = $record->to_bibsonomy_post;
+
+    # Post-XML aus dem Record extrahieren
+    my $xmldata    = XML::LibXML->new();    
+    my $tree       = $xmldata->parse_string($postxml);
+    my $bibsonomy  = $tree->getDocumentElement;
+    my $post       = $bibsonomy->firstChild;
+
+    # Request aufbauen
+    my $doc = XML::LibXML::Document->new();
+    my $root = $doc->createElement('bibsonomy');
+    $doc->setDocumentElement($root);
+    $root->appendChild($post);
+
+    # User
+    my $user = $doc->createElement('user');
+    $user->setAttribute('name',$self->{api_user});
+    $post->appendChild($user);
+
+    # Visibility
+    my $vis = $doc->createElement('group');
+    $vis->setAttribute('name',$visibility);
+    $post->appendChild($vis);
+
+    # Tags
+    foreach my $new_tag (@{$tags_ref}){
+        my $thistag = $doc->createElement('tag');
+        $thistag->setAttribute('name',$new_tag);
+        $post->appendChild($thistag);
+    }
+    
+    $logger->debug($doc->toString());
+
+    # Anlegen in BibSonomy
+    my $url = "http://www.bibsonomy.org/api/users/flimm/posts";
+;
+
+    $logger->debug($url);
+    my $req = new HTTP::Request 'POST' => $url;
+    $req->content($doc->toString());
+
+    my $response = $self->{client}->request($req)->decoded_content(charset => 'utf-8');
+
+    $logger->debug("Response: $response");
+
+    my $resultparser = XML::LibXML->new();
+    my $rstree   = $resultparser->parse_string($response);
+    my $rsroot   = $rstree->getDocumentElement;
+    
+    if ($root->findvalue('/bibsonomy/@stat') eq "ok"){
+        return 1;
+    }
+    else{
+       return 0;
+    }
+}
 
 sub DESTROY {
     my $self = shift;

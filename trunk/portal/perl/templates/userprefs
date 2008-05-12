@@ -163,6 +163,21 @@
 >[% msg.maketext("Erweitere Recherchemaske") %]</option></select>&nbsp;&nbsp;<input type="submit" value="[% msg.maketext("Recherchemaske festlegen") %]" /></td></tr>
 </table>
 </form>
+<p />
+<form method="post" action="[% config.userprefs_loc %]" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="action"    value="changebibsonomy" />
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+[% bibsonomy = user.get_bibsonomy %]
+<table>
+<tr><td colspan="2"><b>[% msg.maketext("Soll ein Abgleich zu BibSonomy erfolgen?") %]</b></td></tr>
+<tr><td colspan="2">&nbsp;</td></tr>
+<tr><td>Abgleich zu BibSonomy</td><td><input type="checkbox" name="bibsonomy_sync" [% IF bibsonomy.sync == 'on' %]checked="checked"[% END %]/></td></tr>
+<tr><td>BibSonomy-API-User</td><td><input type="text" name="bibsonomy_user" value="[% bibsonomy.user %]"/></td></tr>
+<tr><td>BibSonomy-API-Key</td><td><input type="text" name="bibsonomy_key" value="[% bibsonomy.key %]"/></td></tr>
+<tr><td colspan="2">&nbsp;</td></tr>
+<tr><td colspan="2"><input type="submit" value="[% msg.maketext("&Auml;ndern") %]" /></td></tr>
+</table>
+</form>
 </td>
 
 <td>&nbsp;&nbsp;&nbsp;</td>

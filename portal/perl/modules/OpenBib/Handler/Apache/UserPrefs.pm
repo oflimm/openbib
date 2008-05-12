@@ -90,6 +90,10 @@ sub handler {
     my $showmart      = ($query->param('showmart'))?$query->param('showmart'):'0';
     my $showejahr     = ($query->param('showejahr'))?$query->param('showejahr'):'0';
 
+    my $bibsonomy_sync = ($query->param('bibsonomy_sync'))?$query->param('bibsonomy_sync'):'off';
+    my $bibsonomy_user = ($query->param('bibsonomy_user'))?$query->param('bibsonomy_user'):0;
+    my $bibsonomy_key  = ($query->param('bibsonomy_key'))?$query->param('bibsonomy_key'):0;
+
     my $setmask       = ($query->param('setmask'))?$query->param('setmask'):'';
     my $action        = ($query->param('action'))?$query->param('action'):'none';
     my $targetid      = ($query->param('targetid'))?$query->param('targetid'):'none';
@@ -190,6 +194,14 @@ sub handler {
             msg        => $msg,
         };
         OpenBib::Common::Util::print_page($config->{tt_userprefs_changefields_tname},$ttdata,$r);
+    }
+    elsif ($action eq "changebibsonomy") {
+        $user->set_bibsonomy({
+            sync      => $bibsonomy_sync,
+            user      => $bibsonomy_user,
+            key       => $bibsonomy_key,
+        });
+        $r->internal_redirect("http://$config->{servername}$config->{userprefs_loc}?sessionID=$session->{ID}&action=showfields");
     }
     elsif ($action eq "delaccount_ask") {
         # TT-Data erzeugen

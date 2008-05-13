@@ -143,7 +143,7 @@ sub handler {
         # ab jetzt ist klar, dass es den Benutzer noch nicht gibt.
         # Jetzt eintragen und session mit dem Benutzer assoziieren;
 
-        $userresult=$user->{dbh}->prepare("insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','',?,'')") or $logger->error($DBI::errstr);
+        $userresult=$user->{dbh}->prepare("insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','',?,'','','','')") or $logger->error($DBI::errstr);
         $userresult->execute($loginname,$password1,$loginname) or $logger->error($DBI::errstr);
 
         $userresult=$user->{dbh}->prepare("select userid from user where loginname = ?") or $logger->error($DBI::errstr);

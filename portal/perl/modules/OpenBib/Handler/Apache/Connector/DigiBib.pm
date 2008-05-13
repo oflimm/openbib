@@ -308,7 +308,7 @@ sub handler {
             # Wenn mindestens ein Treffer gefunden wurde
             if ($recordlist->get_size() > 0) {
                 # Kurztitelinformationen fuer RecordList laden
-                $recordlist->get_brief_records;
+                $recordlist->load_brief_records;
                 
                 $recordlist->sort({order=>$sortorder,type=>$sorttype});
                 
@@ -455,7 +455,7 @@ sub handler {
         my $dbh   = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
 
         my $record = OpenBib::Record::Title->new({database=>$database})
-                      ->get_full_record({id=>$idn});
+                      ->load_full_record({id=>$idn});
 
         $session->log_event({
             type      => 10,
@@ -488,7 +488,7 @@ sub handler {
             $logger->debug("Sbid ist $sbid");
             if ($sbid){
                 $sbrecord = OpenBib::Record::Title->new({database=>$database})
-                    ->get_full_record({id=>$sbid});
+                    ->load_full_record({id=>$sbid});
 
                 $has_sb=1;
             }

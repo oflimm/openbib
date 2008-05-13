@@ -94,7 +94,7 @@ sub new {
     return $self;
 }
 
-sub get_full_record {
+sub load_full_record {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
@@ -491,7 +491,7 @@ sub get_full_record {
                     
                 }
                     
-                $similar_recordlist->get_brief_records;
+                $similar_recordlist->load_brief_records;
                 
                 $self->{_similar_records} = $similar_recordlist;
                 
@@ -533,7 +533,7 @@ sub get_full_record {
     return $self;
 }
 
-sub get_brief_record {
+sub load_brief_record {
     my ($self,$arg_ref) = @_;
 
     # Set defaults

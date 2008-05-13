@@ -243,7 +243,7 @@ sub _get_records {
 	
       push @{$self->{_litlist}}, {            
 #				  id        => $titelidn,
-				  record => OpenBib::Record::Title->new({id => $titelidn, database => $database})->get_brief_record,
+				  record => OpenBib::Record::Title->new({id => $titelidn, database => $database})->load_brief_record,
 				  tstamp    => $tstamp,
 
 #				  id        => $titelidn,

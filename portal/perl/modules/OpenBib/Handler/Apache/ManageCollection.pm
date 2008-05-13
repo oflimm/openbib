@@ -249,7 +249,7 @@ sub handler {
             return OK;
         }
 
-        $recordlist->get_full_records;
+        $recordlist->load_full_records;
 
         # TT-Data erzeugen
         my $ttdata={
@@ -289,7 +289,7 @@ sub handler {
             }
         }
 
-        $recordlist->get_full_records;
+        $recordlist->load_full_records;
 
         if ($action eq "save"){
             # TT-Data erzeugen

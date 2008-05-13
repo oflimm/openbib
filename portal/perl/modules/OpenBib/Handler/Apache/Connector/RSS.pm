@@ -235,7 +235,7 @@ sub handler {
         $logger->debug("Titel-ID's".YAML::Dump($recordlist));
         
         foreach my $record ($recordlist->get_records){
-            $record->get_brief_record;
+            $record->load_brief_record;
             
             my $desc  = "";
             my $title = $record->get_category({category => 'T0331', indicator => 1});

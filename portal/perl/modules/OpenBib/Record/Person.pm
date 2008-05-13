@@ -76,7 +76,7 @@ sub new {
     return $self;
 }
 
-sub get_full_record {
+sub load_full_record {
     my ($self,$arg_ref) = @_;
 
     # Set defaults

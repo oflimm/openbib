@@ -299,7 +299,7 @@ sub handler {
         if (($generalsearch=~/^verf/)||($generalsearch=~/^pers/)) {
             my $verfidn=$query->param("$generalsearch");
 
-            my $normset=OpenBib::Record::Person->new({database => $database, id => $verfidn})->get_full_record({dbh => $dbh})->to_rawdata;
+            my $normset=OpenBib::Record::Person->new({database => $database, id => $verfidn})->load_full_record({dbh => $dbh})->to_rawdata;
             
 	    my $poolname=$dbinfotable->{sigel}{
 	      $dbinfotable->{dbases}{$database}};
@@ -423,7 +423,7 @@ sub handler {
             my $titidn=$query->param("$generalsearch");
 
             OpenBib::Record::Title->new({database=>$database, id=>$titidn})
-                  ->get_full_record({dbh => $dbh})
+                  ->load_full_record({dbh => $dbh})
                       ->print_to_handler({
                           apachereq          => $r,
                           stylesheet         => $stylesheet,
@@ -437,7 +437,7 @@ sub handler {
         if ($generalsearch=~/^swt/) {
             my $swtidn=$query->param("$generalsearch");
 
-            my $normset=OpenBib::Record::Subject->new({database => $database, id => $swtidn})->get_full_record({dbh => $dbh})->to_rawdata;
+            my $normset=OpenBib::Record::Subject->new({database => $database, id => $swtidn})->load_full_record({dbh => $dbh})->to_rawdata;
 
 	    my $poolname=$dbinfotable->{sigel}{
 	      $dbinfotable->{dbases}{$database}};
@@ -467,7 +467,7 @@ sub handler {
         if ($generalsearch=~/^not/) {
             my $notidn=$query->param("notation");
             
-            my $normset=OpenBib::Record::Classification->new({database => $database, id => $notidn})->get_full_record({dbh => $dbh})->to_rawdata;
+            my $normset=OpenBib::Record::Classification->new({database => $database, id => $notidn})->load_full_record({dbh => $dbh})->to_rawdata;
 
 	    my $poolname=$dbinfotable->{sigel}{
 	      $dbinfotable->{dbases}{$database}};
@@ -662,7 +662,7 @@ sub handler {
         }
         else {
             OpenBib::Record::Title->new({database => $database, id => $searchsingletit})
-                  ->get_full_record({dbh => $dbh})->print_to_handler({
+                  ->load_full_record({dbh => $dbh})->print_to_handler({
                           apachereq          => $r,
                           stylesheet         => $stylesheet,
                           view               => $view,
@@ -675,7 +675,7 @@ sub handler {
   
     #####################################################################
     if ($searchsingleswt) {
-        my $normset=OpenBib::Record::Subject->new({database => $database, id => $searchsingleswt})->get_full_record({dbh => $dbh})->to_rawdata;
+        my $normset=OpenBib::Record::Subject->new({database => $database, id => $searchsingleswt})->load_full_record({dbh => $dbh})->to_rawdata;
         
 	my $poolname=$dbinfotable->{sigel}{
 	  $dbinfotable->{dbases}{$database}};
@@ -700,7 +700,7 @@ sub handler {
   
     ######################################################################
     if ($searchsinglekor) {
-        my $normset=OpenBib::Record::CorporateBody->new({database => $database, id => $searchsinglekor})->get_full_record({dbh => $dbh})->to_rawdata;  
+        my $normset=OpenBib::Record::CorporateBody->new({database => $database, id => $searchsinglekor})->load_full_record({dbh => $dbh})->to_rawdata;  
         
 	my $poolname=$dbinfotable->{sigel}{
 	  $dbinfotable->{dbases}{$database}};
@@ -725,7 +725,7 @@ sub handler {
     
     ######################################################################
     if ($searchsinglenot) {
-        my $normset=OpenBib::Record::Classification->new({database => $database, id => $searchsinglenot})->get_full_record({dbh => $dbh})->to_rawdata;
+        my $normset=OpenBib::Record::Classification->new({database => $database, id => $searchsinglenot})->load_full_record({dbh => $dbh})->to_rawdata;
 	
 	my $poolname=$dbinfotable->{sigel}{
 	  $dbinfotable->{dbases}{$database}};
@@ -750,7 +750,7 @@ sub handler {
   
     #####################################################################
     if ($searchsingleaut) {
-        my $normset=OpenBib::Record::Person->new({database => $database, id => $searchsingleaut})->get_full_record()->to_rawdata;
+        my $normset=OpenBib::Record::Person->new({database => $database, id => $searchsingleaut})->load_full_record()->to_rawdata;
 
         my $poolname=$dbinfotable->{sigel}{
             $dbinfotable->{dbases}{$database}};

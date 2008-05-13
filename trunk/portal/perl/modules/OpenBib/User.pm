@@ -245,7 +245,7 @@ sub add {
     
     return undef if (!defined $dbh);
 
-    my $userresult=$dbh->prepare("insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','',?,'')") or $logger->error($DBI::errstr);
+    my $userresult=$dbh->prepare("insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','',?,'','','','')") or $logger->error($DBI::errstr);
     $userresult->execute($loginname,$password,$email) or $logger->error($DBI::errstr);
 
     $userresult->finish();
@@ -1001,6 +1001,7 @@ sub add_tags {
     my $request=$dbh->prepare("delete from tittag where loginname = ? and titid=? and titdb=?") or $logger->error($DBI::errstr);
     $request->execute($loginname, $titid, $titdb) or $logger->error($DBI::errstr);
 
+    my $tags_ref = [];
     foreach my $tag (@taglist){
 
         # Normierung
@@ -1009,6 +1010,8 @@ sub add_tags {
             tagging  => 1,
         });
 
+        push @$tags_ref, $tag;
+        
         $request=$dbh->prepare("select id from tags where tag = ?") or $logger->error($DBI::errstr);
         $request->execute($tag) or $logger->error($DBI::errstr);
 
@@ -1042,6 +1045,41 @@ sub add_tags {
             $request->execute($tagid,$titid,$titisbn,$titdb,$loginname,$type) or $logger->error($DBI::errstr);
         }
         
+    }
+
+    my $bibsonomy_ref = $self->get_bibsonomy;
+
+    return unless ($bibsonomy_ref->{user} || $bibsonomy_ref->{key} || $bibsonomy_ref->{sync});
+        
+    my $bibsonomy = new OpenBib::BibSonomy({api_user => $bibsonomy_ref->{user}, api_key => $bibsonomy_ref->{key}});
+
+    # Sync mit BibSonomy, falls gewuenscht
+    $logger->debug("Syncing single title to BibSonomy");
+
+    my $visibility =
+        ($type == 1)?'public':
+            ($type == 2)?'private':'private';
+    
+    # 1) Ueberpruefen, ob Titel bereits existiert
+    
+    my $record    = new OpenBib::Record::Title({ database => $titdb , id => $titid})->get_full_record;
+    my $bibkey    = $record->to_bibkey;
+    
+    my $posts_ref = $bibsonomy->get_posts({ user => 'self', bibkey => $bibkey});
+    
+    $logger->debug("Bibkey: $bibkey");
+    # 2) ja, dann Tags und Sichtbarkeit anpassen
+    if (exists $posts_ref->{recordlist} && @{$posts_ref->{recordlist}}){
+        $logger->debug("Syncing Tags and Visibility $titdb:$titid");
+        $bibsonomy->change_post({ tags => $tags_ref, bibkey => $bibkey, visibility => $visibility });
+    }
+    # 3) nein, dann mit Tags neu anlegen
+    else {
+        if (@$tags_ref){
+            $logger->debug("Syncing Record $titdb:$titid");
+            $logger->debug("Tags".YAML::Dump($tags_ref));
+            $bibsonomy->new_post({ tags => $tags_ref, record => $record, visibility => $visibility });
+        }
     }
 
     return;
@@ -1401,7 +1439,7 @@ sub get_private_tagged_titles {
 
     #return if (!$titid || !$titdb || !$loginname || !$tags);
 
-    my $request=$dbh->prepare("select t.tag, tt.titid, tt.titdb from tags as t, tittag as tt where t.id=tt.tagid and tt.loginname=? group by tt.tagid order by t.tag") or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare("select t.tag, tt.titid, tt.titdb, tt.type from tags as t, tittag as tt where t.id=tt.tagid and tt.loginname=? group by tt.tagid order by t.tag") or $logger->error($DBI::errstr);
     $request->execute($loginname) or $logger->error($DBI::errstr);
 
     my $taglist_ref = {};
@@ -1410,12 +1448,15 @@ sub get_private_tagged_titles {
         my $tag       = decode_utf8($result->{tag});
         my $id        = $result->{titid};
         my $database  = $result->{titdb};
+        my $type      = $result->{type};
 
-        unless (exists $taglist_ref->{$database}{$id}){
-            $taglist_ref->{$database}{$id} = [];
+        $taglist_ref->{$database}{$id}{visibility} = $type;
+        
+        unless (exists $taglist_ref->{$database}{$id}{tags}){
+            $taglist_ref->{$database}{$id}{tags} = [];
         }
         
-        push @{$taglist_ref->{$database}{$id}}, $tag;
+        push @{$taglist_ref->{$database}{$id}{tags}}, $tag;
     }
 
     $logger->debug("Private Tags: ".YAML::Dump($taglist_ref));
@@ -1955,6 +1996,12 @@ sub get_litlistentries {
     my $litlistid           = exists $arg_ref->{litlistid}
         ? $arg_ref->{litlistid}           : undef;
 
+    my $sorttype            = exists $arg_ref->{sorttype}
+        ? $arg_ref->{sorttype}            : undef;
+
+    my $sortorder           = exists $arg_ref->{sortorder}
+        ? $arg_ref->{sortorder}           : undef;
+
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
@@ -1973,7 +2020,7 @@ sub get_litlistentries {
     my $request=$dbh->prepare("select titid,titdb,tstamp from litlistitems where litlistid=?") or $logger->error($DBI::errstr);
     $request->execute($litlistid) or $logger->error($DBI::errstr);
 
-    my $litlistitems_ref = [];
+    my $recordlist = new OpenBib::RecordList::Title();
 
     while (my $result=$request->fetchrow_hashref){
       my $titelidn  = decode_utf8($result->{titid});
@@ -1983,16 +2030,18 @@ sub get_litlistentries {
       my $dbh
 	= DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
 	    or $logger->error_die($DBI::errstr);
-	
-      push @$litlistitems_ref, {            
-				id        => $titelidn,
-				title     => OpenBib::Record::Title->new({id =>$titelidn, database => $database})->get_brief_record->get_brief_normdata,
-				tstamp    => $tstamp,
-			       };
+
+      my $record = OpenBib::Record::Title->new({id =>$titelidn, database => $database})->get_brief_record;
+      $record->{tstamp} = $tstamp;
+
+      $recordlist->add($record);
+
       $dbh->disconnect();
     }
-    
-    return $litlistitems_ref;
+
+    $recordlist->sort({order=>$sortorder,type=>$sorttype});
+        
+    return $recordlist;
 }
 
 sub get_number_of_litlistentries {
@@ -2919,7 +2968,7 @@ sub set_bibsonomy {
     return;
 }
 
-sub initial_sync_to_bibsonomy {
+sub sync_all_to_bibsonomy {
     my ($self)=@_;
 
     # Log4perl logger erzeugen
@@ -2933,6 +2982,7 @@ sub initial_sync_to_bibsonomy {
         
     my $bibsonomy = new OpenBib::BibSonomy({api_user => $bibsonomy_ref->{user}, api_key => $bibsonomy_ref->{key}});
 
+    $logger->debug("Syncing all to BibSonomy");
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
@@ -2940,10 +2990,39 @@ sub initial_sync_to_bibsonomy {
 
     return undef if (!defined $dbh);
 
-    my $loginname = $self->get_username;
-    
+    my $loginname  = $self->get_username;
     my $titles_ref = $self->get_private_tagged_titles({loginname => $loginname});
 
+    foreach my $database (keys %$titles_ref){
+        foreach my $id (keys %{$titles_ref->{$database}}){
+            my $tags_ref   = $titles_ref->{$database}{$id}{tags};
+            my $visibility =
+                ($titles_ref->{$database}{$id}{visibility} == 1)?'public':
+                    ($titles_ref->{$database}{$id}{visibility} == 2)?'private':'private';
+
+            # 1) Ueberpruefen, ob Titel bereits existiert
+
+            my $record    = new OpenBib::Record::Title({ database => $database , id => $id})->get_full_record;
+            my $bibkey    = $record->to_bibkey;
+            
+            my $posts_ref = $bibsonomy->get_posts({ user => 'self', bibkey => $bibkey});
+
+            $logger->debug("Bibkey: $bibkey");
+            # 2) ja, dann unangetastet lassen
+            if (exists $posts_ref->{recordlist} && @{$posts_ref->{recordlist}}){
+                $logger->debug("NOT syncing Record $database:$id");
+            }
+            # 3) nein, dann mit Tags neu anlegen
+            else {
+                if (@$tags_ref){
+                    $logger->debug("Syncing Record $database:$id");
+                    $logger->debug("Tags".YAML::Dump($tags_ref));
+                    $bibsonomy->new_post({ tags => $tags_ref, record => $record, visibility => $visibility });
+                }
+            }
+        }
+    }
+    
     return;
 }
 

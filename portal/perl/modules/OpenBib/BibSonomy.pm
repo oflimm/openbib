@@ -316,6 +316,9 @@ sub change_post {
     my $type     = exists $arg_ref->{type}
         ? $arg_ref->{type}       : 'bibtex';
 
+    my $visibility = exists $arg_ref->{visibility}
+        ? $arg_ref->{visibility} : 'public';
+
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -390,19 +393,22 @@ sub new_post {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
-    my $tags_ref = exists $arg_ref->{tags}
-        ? $arg_ref->{tags}        : undef;
+    my $tags_ref   = exists $arg_ref->{tags}
+        ? $arg_ref->{tags}       : undef;
 
-    my $type     = exists $arg_ref->{type}
+    my $type       = exists $arg_ref->{type}
         ? $arg_ref->{type}       : 'bibtex';
 
     my $visibility = exists $arg_ref->{visibility}
         ? $arg_ref->{visibility} : 'public';
 
-    my $database = exists $arg_ref->{database}
+    my $record     = exists $arg_ref->{record}
+        ? $arg_ref->{record  }   : undef;
+
+    my $database   = exists $arg_ref->{database}
         ? $arg_ref->{database}   : undef;
 
-    my $id       = exists $arg_ref->{id}
+    my $id         = exists $arg_ref->{id}
         ? $arg_ref->{id}         : undef;
 
     # Log4perl logger erzeugen
@@ -413,7 +419,10 @@ sub new_post {
         'bookmark' => 'bookmark',
     );
 
-    my $record  = new OpenBib::Record::Title({ database => $database , id => $id})->get_full_record;    
+    unless (defined $record){
+        $record  = new OpenBib::Record::Title({ database => $database , id => $id})->get_full_record;    
+    }
+    
     my $postxml = $record->to_bibsonomy_post;
 
     # Post-XML aus dem Record extrahieren
@@ -427,6 +436,9 @@ sub new_post {
     my $root = $doc->createElement('bibsonomy');
     $doc->setDocumentElement($root);
     $root->appendChild($post);
+
+    # Beschreibung
+    $post->setAttribute('description',"KUG Recherche-Portal");
 
     # User
     my $user = $doc->createElement('user');

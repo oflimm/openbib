@@ -420,7 +420,7 @@ sub new_post {
     );
 
     unless (defined $record){
-        $record  = new OpenBib::Record::Title({ database => $database , id => $id})->get_full_record;    
+        $record  = new OpenBib::Record::Title({ database => $database , id => $id})->load_full_record;    
     }
     
     my $postxml = $record->to_bibsonomy_post;

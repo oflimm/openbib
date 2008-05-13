@@ -84,7 +84,7 @@ sub print_mult_tit_set_by_idn {
     my $record = new OpenBib::Record::Title({database=>$database});
 
     foreach my $titidn (@$titidns_ref) {
-        $record->get_full_record({id=>$titidn});
+        $record->load_full_record({id=>$titidn});
 
         my $thisset={
             titidn     => $titidn,

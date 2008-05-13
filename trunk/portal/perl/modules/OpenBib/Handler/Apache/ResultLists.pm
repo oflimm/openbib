@@ -269,7 +269,7 @@ sub handler {
                     $recordlist->add(new OpenBib::Record::Title({database=>$database, id=>$idn}));
                 }
 
-                $recordlist->get_brief_records;
+                $recordlist->load_brief_records;
                 
                 my $btime      = new Benchmark;
                 my $timeall    = timediff($btime,$atime);

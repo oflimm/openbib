@@ -89,7 +89,7 @@ sub handler {
                 
                 $logger->debug("Database: $database - ID: $idn");
 
-                $record     = new OpenBib::Record::Title({database=>$database, id=>$idn})->get_full_record
+                $record     = new OpenBib::Record::Title({database=>$database, id=>$idn})->load_full_record
                 
             }
 

@@ -689,7 +689,7 @@ sub get_titles_of_tag {
         $recordlist->add(new OpenBib::Record::Title({database => $res->{titdb} , id => $res->{titid}}));
     }
 
-    $recordlist->get_brief_records;
+    $recordlist->load_brief_records;
     
     $request->finish();
     
@@ -1062,7 +1062,7 @@ sub add_tags {
     
     # 1) Ueberpruefen, ob Titel bereits existiert
     
-    my $record    = new OpenBib::Record::Title({ database => $titdb , id => $titid})->get_full_record;
+    my $record    = new OpenBib::Record::Title({ database => $titdb , id => $titid})->load_full_record;
     my $bibkey    = $record->to_bibkey;
     
     my $posts_ref = $bibsonomy->get_posts({ user => 'self', bibkey => $bibkey});
@@ -2031,7 +2031,7 @@ sub get_litlistentries {
 	= DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
 	    or $logger->error_die($DBI::errstr);
 
-      my $record = OpenBib::Record::Title->new({id =>$titelidn, database => $database})->get_brief_record;
+      my $record = OpenBib::Record::Title->new({id =>$titelidn, database => $database})->load_brief_record;
       $record->{tstamp} = $tstamp;
 
       $recordlist->add($record);
@@ -3002,7 +3002,7 @@ sub sync_all_to_bibsonomy {
 
             # 1) Ueberpruefen, ob Titel bereits existiert
 
-            my $record    = new OpenBib::Record::Title({ database => $database , id => $id})->get_full_record;
+            my $record    = new OpenBib::Record::Title({ database => $database , id => $id})->load_full_record;
             my $bibkey    = $record->to_bibkey;
             
             my $posts_ref = $bibsonomy->get_posts({ user => 'self', bibkey => $bibkey});

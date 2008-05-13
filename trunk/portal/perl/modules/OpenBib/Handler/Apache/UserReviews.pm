@@ -153,7 +153,7 @@ sub handler {
             my $titelidn = $review_ref->{titid};
             my $database = $review_ref->{titdb};
 
-            $review_ref->{titnormset} = OpenBib::Record::Title->new({database=>$database})->get_brief_record({id=>$titelidn})->to_rawdata;
+            $review_ref->{titnormset} = OpenBib::Record::Title->new({database=>$database})->load_brief_record({id=>$titelidn})->to_rawdata;
         }
         
         # TT-Data erzeugen
@@ -276,7 +276,7 @@ sub handler {
             my $titelidn = $review_ref->{titid};
             my $database = $review_ref->{titdb};
 
-            $review_ref->{titnormset} = OpenBib::Record::Title->new({database=>$database})->get_brief_record({id=>$titelidn})->to_rawdata;
+            $review_ref->{titnormset} = OpenBib::Record::Title->new({database=>$database})->load_brief_record({id=>$titelidn})->to_rawdata;
         }
         
         # TT-Data erzeugen

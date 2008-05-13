@@ -1011,7 +1011,7 @@ sub handler {
                     }
 
                     # Kurztitelinformationen fuer RecordList laden
-                    $recordlist->get_brief_records;
+                    $recordlist->load_brief_records;
 
                     my $btime      = new Benchmark;
                     my $timeall    = timediff($btime,$atime);

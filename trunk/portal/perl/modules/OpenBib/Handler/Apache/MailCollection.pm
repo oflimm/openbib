@@ -135,7 +135,7 @@ sub handler {
         }
     }
 
-    $recordlist->get_full_records;
+    $recordlist->load_full_records;
     
     # TT-Data erzeugen
     

@@ -112,7 +112,7 @@ if ($type == 1){
             my $katkey = $result->{katkey};
             my $count  = $result->{idcount};
 
-            my $item=OpenBib::Record::Title->new({database => $database, id => $katkey})->get_full_record({dbh => $dbh})->to_rawdata;
+            my $item=OpenBib::Record::Title->new({database => $database, id => $katkey})->load_full_record({dbh => $dbh})->to_rawdata;
 
             push @$bestof_ref, {
                 item  => $item,

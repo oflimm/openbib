@@ -235,7 +235,7 @@ sub print_to_handler {
     }
     elsif ($self->get_size() == 1) {
         my $record = $self->{recordlist}[0];
-        $record->get_full_record->print_to_handler({
+        $record->load_full_record->print_to_handler({
             apachereq          => $r,
             stylesheet         => $stylesheet,
             view               => $view,
@@ -250,7 +250,7 @@ sub print_to_handler {
         }
 
         # Kurztitelinformationen fuer RecordList laden
-        $self->get_brief_records;
+        $self->load_brief_records;
         
         if ($config->{benchmark}) {
             $btime   = new Benchmark;
@@ -372,21 +372,21 @@ sub get_size {
     return $self->{_size};
 }
 
-sub get_brief_records {
+sub load_brief_records {
     my ($self) = @_;
 
     foreach my $record ($self->get_records) {
-        $record->get_brief_record;
+        $record->load_brief_record;
     }
 
     return $self;
 }
 
-sub get_full_records {
+sub load_full_records {
     my ($self) = @_;
 
     foreach my $record ($self->get_records) {
-        $record->get_full_record;
+        $record->load_full_record;
     }
 
     return $self;

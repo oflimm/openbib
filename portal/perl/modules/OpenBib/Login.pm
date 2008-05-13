@@ -208,7 +208,7 @@ sub handler {
                 # Eintragen, wenn noch nicht existent
                 if ($rows <= 0) {
                     # Neuen Satz eintragen
-                    $userresult=$user->{dbh}->prepare("insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','','','')") or $logger->error($DBI::errstr);
+                    $userresult=$user->{dbh}->prepare("insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','','','','','','')") or $logger->error($DBI::errstr);
                     $userresult->execute($loginname,$password) or $logger->error($DBI::errstr);
                 }
                 else {

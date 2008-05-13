@@ -1382,9 +1382,12 @@ sub to_bibsonomy_post {
     # Zusatz zum Titel
     my $titlesup  = (exists $self->{_normset}->{T0335})?utf2bibtex($self->{_normset}->{T0335}[0]{content},$utf8):'';
 
-    if ($title && $titlesup){
-        $title = "$title : $titlesup";
-    }
+    #    Folgende Erweiterung um titlesup ist nuetzlich, laeuft aber der
+    #    Bibkey-Bildung entgegen
+
+#    if ($title && $titlesup){
+#        $title = "$title : $titlesup";
+#    }
 
     # Jahr
     my $year      = (exists $self->{_normset}->{T0425})?utf2bibtex($self->{_normset}->{T0425}[0]{content},$utf8):'';
@@ -1562,10 +1565,11 @@ sub to_bibtex {
 
     # Zusatz zum Titel
     my $titlesup  = (exists $self->{_normset}->{T0335})?utf2bibtex($self->{_normset}->{T0335}[0]{content},$utf8):'';
-
-    if ($title && $titlesup){
-        $title = "$title : $titlesup";
-    }
+#    Folgende Erweiterung um titlesup ist nuetzlich, laeuft aber der
+#    Bibkey-Bildung entgegen
+#    if ($title && $titlesup){
+#        $title = "$title : $titlesup";
+#    }
 
     # Jahr
     my $year      = (exists $self->{_normset}->{T0425})?utf2bibtex($self->{_normset}->{T0425}[0]{content},$utf8):'';

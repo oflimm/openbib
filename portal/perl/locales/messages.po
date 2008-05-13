@@ -19,11 +19,11 @@ msgstr ""
 msgid "${category}"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:277 ../templates/database/einbaende/managecollection_tit_as_html:111 ../templates/database/einbaende/managecollection_tit_as_html:55 ../templates/database/einbaende/search_showtitset:132 ../templates/database/einbaende/search_showtitset:236 ../templates/database/landschaft/search_showtitset:142 ../templates/database/nationallizenzen/search_showtitset:295 ../templates/database/portrait/search_showtitset:164 ../templates/managecollection_tit_as_html:69 ../templates/managecollection_tit_as_text:34 ../templates/search_showmulttitset:99 ../templates/search_showtitset:300
+#: ../templates/database/ebooks/search_showtitset:277 ../templates/database/einbaende/managecollection_tit_as_html:111 ../templates/database/einbaende/managecollection_tit_as_html:55 ../templates/database/einbaende/search_showtitset:132 ../templates/database/einbaende/search_showtitset:236 ../templates/database/landschaft/search_showtitset:142 ../templates/database/nationallizenzen/search_showtitset:272 ../templates/database/portrait/search_showtitset:164 ../templates/managecollection_tit_as_html:69 ../templates/managecollection_tit_as_text:34 ../templates/search_showmulttitset:99 ../templates/search_showtitset:300
 msgid "${thiscategory}"
 msgstr ""
 
-#: ../templates/litlists_manage_singlelist:54
+#: ../templates/litlists_manage_singlelist:54 ../templates/userprefs:184
 msgid "&Auml;ndern"
 msgstr ""
 
@@ -79,6 +79,10 @@ msgstr ""
 msgid "Abb."
 msgstr ""
 
+#: ../templates/userprefs:180
+msgid "Abgleich zu BibSonomy"
+msgstr ""
+
 #: ../templates/managecollection_mail:45
 msgid "Abschicken"
 msgstr ""
@@ -91,7 +95,7 @@ msgstr ""
 msgid "Abspeicherung eines neuen oder bestehenden Profils"
 msgstr ""
 
-#: ../templates/searchmask_query:43 ../templates/userprefs:187
+#: ../templates/searchmask_query:43 ../templates/userprefs:215
 msgid "Abstrakt/Inhalt"
 msgstr ""
 
@@ -121,6 +125,10 @@ msgstr ""
 
 #: ../templates/resultlists_choice:88
 msgid "Alle Treffer"
+msgstr ""
+
+#: ../templates/userprefs:189
+msgid "Alle getaggten Titel jetzt zu BibSonomy &uuml;bertragen"
 msgstr ""
 
 #: ../templates/admin_editsession:40
@@ -214,7 +222,7 @@ msgstr ""
 msgid "Ausleih-Einstellungen"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:333 ../templates/database/einbaende/managecollection_tit_as_html:125 ../templates/database/einbaende/search_showtitset:249 ../templates/database/landschaft/search_showtitset:168 ../templates/database/nationallizenzen/search_showtitset:351 ../templates/database/portrait/search_showtitset:190 ../templates/managecollection_tit_as_html:94 ../templates/managecollection_tit_as_html_simple:60 ../templates/search_showmulttitset:130 ../templates/search_showtitset:356
+#: ../templates/database/ebooks/search_showtitset:333 ../templates/database/einbaende/managecollection_tit_as_html:125 ../templates/database/einbaende/search_showtitset:249 ../templates/database/landschaft/search_showtitset:168 ../templates/database/nationallizenzen/search_showtitset:328 ../templates/database/portrait/search_showtitset:190 ../templates/managecollection_tit_as_html:94 ../templates/managecollection_tit_as_html_simple:60 ../templates/search_showmulttitset:130 ../templates/search_showtitset:356
 msgid "Ausleihe/Exemplare"
 msgstr ""
 
@@ -334,6 +342,18 @@ msgstr ""
 
 #: ../templates/managecollection_mail:42
 msgid "Betreff"
+msgstr ""
+
+#: ../templates/userprefs:173
+msgid "BibSonomy"
+msgstr ""
+
+#: ../templates/userprefs:182
+msgid "BibSonomy-API-Key"
+msgstr ""
+
+#: ../templates/userprefs:181
+msgid "BibSonomy-API-User"
 msgstr ""
 
 #: ../templates/views/portrait/searchmask_query:9
@@ -456,7 +476,7 @@ msgstr ""
 msgid "Die beiden eingegebenen Passworte stimmen nicht überein."
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/UserPrefs.pm:122
+#: ../modules/OpenBib/Handler/Apache/UserPrefs.pm:126
 msgid "Diese Session ist nicht authentifiziert."
 msgstr ""
 
@@ -531,7 +551,7 @@ msgstr ""
 msgid "Einfache Recherche"
 msgstr ""
 
-#: ../templates/userprefs:159
+#: ../templates/userprefs:162
 msgid "Einfache Recherchemaske"
 msgstr ""
 
@@ -575,7 +595,7 @@ msgstr ""
 msgid "Erfolgsmeldung"
 msgstr ""
 
-#: ../templates/searchmask_options:4 ../templates/userprefs:190 ../templates/views/gdonck/searchmask_options:4 ../templates/views/gleuel/searchmask_options:4 ../templates/views/kempen/searchmask_options:4 ../templates/views/kevelaer/searchmask_options:4 ../templates/views/kug/searchmask_options:4 ../templates/views/kwinter/searchmask_options:4 ../templates/views/portrait/searchmask_options:4 ../templates/views/rheinlandbib/searchmask_options:4 ../templates/views/xanten/searchmask_options:4
+#: ../templates/searchmask_options:4 ../templates/userprefs:218 ../templates/views/gdonck/searchmask_options:4 ../templates/views/gleuel/searchmask_options:4 ../templates/views/kempen/searchmask_options:4 ../templates/views/kevelaer/searchmask_options:4 ../templates/views/kug/searchmask_options:4 ../templates/views/kwinter/searchmask_options:4 ../templates/views/portrait/searchmask_options:4 ../templates/views/rheinlandbib/searchmask_options:4 ../templates/views/xanten/searchmask_options:4
 msgid "Erscheinungsjahr"
 msgstr ""
 
@@ -583,7 +603,7 @@ msgstr ""
 msgid "Erscheinungsverlauf  "
 msgstr ""
 
-#: ../templates/userprefs:163
+#: ../templates/userprefs:166
 msgid "Erweitere Recherchemaske"
 msgstr ""
 
@@ -647,7 +667,7 @@ msgstr ""
 msgid "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/UserPrefs.pm:240
+#: ../modules/OpenBib/Handler/Apache/UserPrefs.pm:257
 msgid "Es wurde keine Standard-Recherchemaske ausgewählt"
 msgstr ""
 
@@ -704,7 +724,7 @@ msgstr ""
 msgid "Fernleihbestellung"
 msgstr ""
 
-#: ../templates/searchmask_query:3 ../templates/userprefs:177 ../templates/views/inst501/searchmask_query:3 ../templates/views/kapsel/searchmask_query:3 ../templates/views/landschaft/searchmask_query:3 ../templates/views/portrait/searchmask_query:5 ../templates/views/richter/searchmask_query:5
+#: ../templates/searchmask_query:3 ../templates/userprefs:205 ../templates/views/inst501/searchmask_query:3 ../templates/views/kapsel/searchmask_query:3 ../templates/views/landschaft/searchmask_query:3 ../templates/views/portrait/searchmask_query:5 ../templates/views/richter/searchmask_query:5
 msgid "Freie Suche"
 msgstr ""
 
@@ -733,7 +753,7 @@ msgstr ""
 msgid "Geben Sie hier den Notationsanfang ein"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:710 ../templates/database/nationallizenzen/search_showtitset:728 ../templates/search_showswtindex:81 ../templates/search_showtitlist:187 ../templates/search_showtitset:733 ../templates/views/kapsel/search_showtitlist:174 ../templates/virtualsearch_showswtindex:52
+#: ../templates/database/ebooks/search_showtitset:710 ../templates/database/nationallizenzen/search_showtitset:705 ../templates/search_showswtindex:81 ../templates/search_showtitlist:187 ../templates/search_showtitset:733 ../templates/views/kapsel/search_showtitlist:174 ../templates/virtualsearch_showswtindex:52
 msgid "Geben Sie hier den Schlagwortanfang ein"
 msgstr ""
 
@@ -804,7 +824,7 @@ msgstr ""
 msgid "Haben Sie sich schon &uuml;ber die Selbstregistrierung eine Kennung eingerichtet? Wenn nicht, so k&ouml;nnen Sie sich %1hier%2 registrierten."
 msgstr ""
 
-#: ../templates/userprefs:178
+#: ../templates/userprefs:206
 msgid "Hauptsachtitel (HST)"
 msgstr ""
 
@@ -851,11 +871,11 @@ msgstr ""
 msgid "Hostname"
 msgstr ""
 
-#: ../templates/searchmask_query:27 ../templates/userprefs:183 ../templates/views/inst501/searchmask_query:27
+#: ../templates/searchmask_query:27 ../templates/userprefs:211 ../templates/views/inst501/searchmask_query:27
 msgid "ISBN"
 msgstr ""
 
-#: ../templates/searchmask_query:31 ../templates/userprefs:184 ../templates/views/inst501/searchmask_query:31
+#: ../templates/searchmask_query:31 ../templates/userprefs:212 ../templates/views/inst501/searchmask_query:31
 msgid "ISSN"
 msgstr ""
 
@@ -963,7 +983,7 @@ msgstr ""
 msgid "Jahre"
 msgstr ""
 
-#: ../templates/userprefs:180 ../templates/virtualsearch_showkorindex:52
+#: ../templates/userprefs:208 ../templates/virtualsearch_showkorindex:52
 msgid "K&ouml;rperschaft"
 msgstr ""
 
@@ -1178,7 +1198,7 @@ msgstr ""
 msgid "MedPilot"
 msgstr ""
 
-#: ../templates/searchmask_query:51 ../templates/userprefs:189 ../templates/views/inst501/searchmask_query:47 ../templates/views/richter/searchmask_query:41
+#: ../templates/searchmask_query:51 ../templates/userprefs:217 ../templates/views/inst501/searchmask_query:47 ../templates/views/richter/searchmask_query:41
 msgid "Medienart"
 msgstr ""
 
@@ -1307,7 +1327,7 @@ msgstr ""
 msgid "Not-Datei"
 msgstr ""
 
-#: ../templates/searchmask_query:23 ../templates/userprefs:182 ../templates/virtualsearch_shownotindex:52
+#: ../templates/searchmask_query:23 ../templates/userprefs:210 ../templates/virtualsearch_shownotindex:52
 msgid "Notation"
 msgstr ""
 
@@ -1473,7 +1493,11 @@ msgstr ""
 msgid "Recherche"
 msgstr ""
 
-#: ../templates/userprefs:163
+#: ../templates/userprefs:150
+msgid "Recherchemaske"
+msgstr ""
+
+#: ../templates/userprefs:166
 msgid "Recherchemaske festlegen"
 msgstr ""
 
@@ -1537,7 +1561,7 @@ msgstr ""
 msgid "S5000"
 msgstr ""
 
-#: ../templates/search_showswtindex:41 ../templates/userprefs:181 ../templates/views/inst501/searchmask_query:19 ../templates/views/kapsel/searchmask_query:19 ../templates/views/richter/searchmask_query:21 ../templates/virtualsearch_showswtindex:52
+#: ../templates/search_showswtindex:41 ../templates/userprefs:209 ../templates/views/inst501/searchmask_query:19 ../templates/views/kapsel/searchmask_query:19 ../templates/views/richter/searchmask_query:21 ../templates/virtualsearch_showswtindex:52
 msgid "Schlagwort"
 msgstr ""
 
@@ -1549,7 +1573,7 @@ msgstr ""
 msgid "Schlagwortindex"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:709 ../templates/database/nationallizenzen/search_showtitset:727 ../templates/search_showtitset:732
+#: ../templates/database/ebooks/search_showtitset:709 ../templates/database/nationallizenzen/search_showtitset:704 ../templates/search_showtitset:732
 msgid "Schlagwortindex diese Katalogs"
 msgstr ""
 
@@ -1598,7 +1622,7 @@ msgstr ""
 msgid "Selbstregistrierung"
 msgstr ""
 
-#: ../templates/searchmask_query:47 ../templates/userprefs:188 ../templates/views/inst501/searchmask_query:43 ../templates/views/richter/searchmask_query:37
+#: ../templates/searchmask_query:47 ../templates/userprefs:216 ../templates/views/inst501/searchmask_query:43 ../templates/views/richter/searchmask_query:37
 msgid "Serie/Band/Quelle"
 msgstr ""
 
@@ -1670,7 +1694,7 @@ msgstr ""
 msgid "Sie haben eine ungültige Mailadresse eingegeben."
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/UserPrefs.pm:228
+#: ../modules/OpenBib/Handler/Apache/UserPrefs.pm:245
 msgid "Sie haben entweder kein Passwort eingegeben oder die beiden Passworte stimmen nicht überein"
 msgstr ""
 
@@ -1769,7 +1793,7 @@ msgstr ""
 msgid "Sigel"
 msgstr ""
 
-#: ../templates/circset:16 ../templates/circulation:56 ../templates/circulation_orders:52 ../templates/circulation_remind:71 ../templates/circulation_reserv:52 ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:142 ../templates/database/einbaende/search_showtitset:253 ../templates/database/landschaft/search_showtitset:153 ../templates/database/portrait/search_showtitset:175 ../templates/managecollection_tit_as_html:79 ../templates/mexset:2 ../templates/search_showmulttitset:109 ../templates/searchmask_query:35 ../templates/userprefs:185 ../templates/views/inst501/searchmask_query:35 ../templates/views/portrait/searchmask_query:29 ../templates/views/richter/searchmask_query:29
+#: ../templates/circset:16 ../templates/circulation:56 ../templates/circulation_orders:52 ../templates/circulation_remind:71 ../templates/circulation_reserv:52 ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:142 ../templates/database/einbaende/search_showtitset:253 ../templates/database/landschaft/search_showtitset:153 ../templates/database/portrait/search_showtitset:175 ../templates/managecollection_tit_as_html:79 ../templates/mexset:2 ../templates/search_showmulttitset:109 ../templates/searchmask_query:35 ../templates/userprefs:213 ../templates/views/inst501/searchmask_query:35 ../templates/views/portrait/searchmask_query:29 ../templates/views/richter/searchmask_query:29
 msgid "Signatur"
 msgstr ""
 
@@ -1852,7 +1876,7 @@ msgstr ""
 msgid "Suchbegriffe"
 msgstr ""
 
-#: ../templates/bibsonomy_showtitlist:54 ../templates/database/ebooks/search_showtitset:710 ../templates/database/nationallizenzen/search_showtitset:728 ../templates/search_showswtindex:81 ../templates/search_showtitlist:187 ../templates/search_showtitset:733 ../templates/views/kapsel/search_showtitlist:174 ../templates/views/kapsel/searchmask:100 ../templates/views/kapsel/searchmask:67 ../templates/views/kapsel/searchmask:96 ../templates/views/kapsel/searchmask_simple:65 ../templates/views/landschaft/searchmask:100 ../templates/views/landschaft/searchmask:67 ../templates/views/landschaft/searchmask:96 ../templates/views/landschaft/searchmask_simple:57 ../templates/views/portrait/searchmask:127 ../templates/views/portrait/searchmask:131 ../templates/views/portrait/searchmask:72 ../templates/views/portrait/searchmask_simple:73
+#: ../templates/bibsonomy_showtitlist:54 ../templates/database/ebooks/search_showtitset:710 ../templates/database/nationallizenzen/search_showtitset:705 ../templates/search_showswtindex:81 ../templates/search_showtitlist:187 ../templates/search_showtitset:733 ../templates/views/kapsel/search_showtitlist:174 ../templates/views/kapsel/searchmask:100 ../templates/views/kapsel/searchmask:67 ../templates/views/kapsel/searchmask:96 ../templates/views/kapsel/searchmask_simple:65 ../templates/views/landschaft/searchmask:100 ../templates/views/landschaft/searchmask:67 ../templates/views/landschaft/searchmask:96 ../templates/views/landschaft/searchmask_simple:57 ../templates/views/portrait/searchmask:127 ../templates/views/portrait/searchmask:131 ../templates/views/portrait/searchmask:72 ../templates/views/portrait/searchmask_simple:73
 msgid "Suchen"
 msgstr ""
 
@@ -1865,7 +1889,11 @@ msgstr ""
 msgid "Suchen Sie in den %1elektronisch verf&uuml;gbaren Zeitschriften%2 der Universit&auml;tsbibliothek nach dem Zeitschriftentitel."
 msgstr ""
 
-#: ../templates/userprefs:192
+#: ../templates/userprefs:199
+msgid "Suchfelder"
+msgstr ""
+
+#: ../templates/userprefs:220
 msgid "Suchfelder &auml;ndern"
 msgstr ""
 
@@ -2661,7 +2689,7 @@ msgstr ""
 msgid "Titel-Daten"
 msgstr ""
 
-#: ../templates/userprefs:186
+#: ../templates/userprefs:214
 msgid "Titel-String"
 msgstr ""
 
@@ -2751,7 +2779,7 @@ msgstr ""
 msgid "Und-Verknüpfung innerhalb eines Suchfeldes"
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/Circulation.pm:536 ../modules/OpenBib/Handler/Apache/ManageCollection.pm:368 ../modules/OpenBib/Handler/Apache/SelfReg.pm:171 ../modules/OpenBib/Handler/Apache/UserPrefs.pm:250
+#: ../modules/OpenBib/Handler/Apache/Circulation.pm:536 ../modules/OpenBib/Handler/Apache/ManageCollection.pm:368 ../modules/OpenBib/Handler/Apache/SelfReg.pm:171 ../modules/OpenBib/Handler/Apache/UserPrefs.pm:267
 msgid "Unerlaubte Aktion"
 msgstr ""
 
@@ -2759,7 +2787,7 @@ msgstr ""
 msgid "Ungültige Aktion"
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/BibSonomy.pm:118 ../modules/OpenBib/Handler/Apache/Circulation.pm:99 ../modules/OpenBib/Handler/Apache/DatabaseChoice.pm:101 ../modules/OpenBib/Handler/Apache/DatabaseProfile.pm:97 ../modules/OpenBib/Handler/Apache/DispatchQuery.pm:87 ../modules/OpenBib/Handler/Apache/ExternalJump.pm:117 ../modules/OpenBib/Handler/Apache/Info.pm:93 ../modules/OpenBib/Handler/Apache/Leave.pm:82 ../modules/OpenBib/Handler/Apache/LitLists.pm:129 ../modules/OpenBib/Handler/Apache/Login.pm:102 ../modules/OpenBib/Handler/Apache/MailCollection.pm:97 ../modules/OpenBib/Handler/Apache/MailPassword.pm:91 ../modules/OpenBib/Handler/Apache/ManageCollection.pm:105 ../modules/OpenBib/Handler/Apache/RSSFeeds.pm:83 ../modules/OpenBib/Handler/Apache/Redirect.pm:92 ../modules/OpenBib/Handler/Apache/ResultLists.pm:108 ../modules/OpenBib/Handler/Apache/Search.pm:188 ../modules/OpenBib/Handler/Apache/SearchMask.pm:94 ../modules/OpenBib/Handler/Apache/SelfReg.pm:90 ../modules/OpenBib/Handler/Apache/Tags.pm:126 ../modules/OpenBib/Handler/Apache/UserPrefs.pm:108 ../modules/OpenBib/Handler/Apache/UserReviews.pm:123 ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:144
+#: ../modules/OpenBib/Handler/Apache/BibSonomy.pm:118 ../modules/OpenBib/Handler/Apache/Circulation.pm:99 ../modules/OpenBib/Handler/Apache/DatabaseChoice.pm:101 ../modules/OpenBib/Handler/Apache/DatabaseProfile.pm:97 ../modules/OpenBib/Handler/Apache/DispatchQuery.pm:87 ../modules/OpenBib/Handler/Apache/ExternalJump.pm:117 ../modules/OpenBib/Handler/Apache/Info.pm:93 ../modules/OpenBib/Handler/Apache/Leave.pm:82 ../modules/OpenBib/Handler/Apache/LitLists.pm:129 ../modules/OpenBib/Handler/Apache/Login.pm:102 ../modules/OpenBib/Handler/Apache/MailCollection.pm:97 ../modules/OpenBib/Handler/Apache/MailPassword.pm:91 ../modules/OpenBib/Handler/Apache/ManageCollection.pm:105 ../modules/OpenBib/Handler/Apache/RSSFeeds.pm:83 ../modules/OpenBib/Handler/Apache/Redirect.pm:92 ../modules/OpenBib/Handler/Apache/ResultLists.pm:108 ../modules/OpenBib/Handler/Apache/Search.pm:188 ../modules/OpenBib/Handler/Apache/SearchMask.pm:94 ../modules/OpenBib/Handler/Apache/SelfReg.pm:90 ../modules/OpenBib/Handler/Apache/Tags.pm:126 ../modules/OpenBib/Handler/Apache/UserPrefs.pm:112 ../modules/OpenBib/Handler/Apache/UserReviews.pm:123 ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:144
 msgid "Ungültige Session"
 msgstr ""
 
@@ -2767,7 +2795,7 @@ msgstr ""
 msgid "Ursprüngliche Auswahl wiederherstellen"
 msgstr ""
 
-#: ../templates/userprefs:179 ../templates/virtualsearch_showverfindex:52
+#: ../templates/userprefs:207 ../templates/virtualsearch_showverfindex:52
 msgid "Verfasser"
 msgstr ""
 
@@ -2900,12 +2928,8 @@ msgstr ""
 msgid "Weiterleitungs-Icon"
 msgstr ""
 
-#: ../templates/userprefs:153
+#: ../templates/userprefs:156
 msgid "Welche Recherchemaske soll verwendet werden?"
-msgstr ""
-
-#: ../templates/userprefs:175
-msgid "Welche Suchfelder sollen in der erweiterten<br />Recherchemaske angezeigt werden?"
 msgstr ""
 
 #: ../templates/admin_editview:120

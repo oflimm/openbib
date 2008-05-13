@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2008-05-08 08:05+0200\n"
+"PO-Revision-Date: 2008-05-13 11:34+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -27,7 +27,7 @@ msgstr "${category}"
 #: ../templates/database/einbaende/search_showtitset:132
 #: ../templates/database/einbaende/search_showtitset:236
 #: ../templates/database/landschaft/search_showtitset:142
-#: ../templates/database/nationallizenzen/search_showtitset:295
+#: ../templates/database/nationallizenzen/search_showtitset:272
 #: ../templates/database/portrait/search_showtitset:164
 #: ../templates/managecollection_tit_as_html:69
 #: ../templates/managecollection_tit_as_text:34
@@ -35,7 +35,7 @@ msgstr "${category}"
 msgid "${thiscategory}"
 msgstr "${thiscategory}"
 
-#: ../templates/litlists_manage_singlelist:54
+#: ../templates/litlists_manage_singlelist:54 ../templates/userprefs:184
 msgid "&Auml;ndern"
 msgstr "&Auml;ndern"
 
@@ -110,6 +110,10 @@ msgstr ""
 msgid "Abb."
 msgstr "Abb."
 
+#: ../templates/userprefs:180
+msgid "Abgleich zu BibSonomy"
+msgstr "Abgleich zu BibSonomy"
+
 #: ../templates/managecollection_mail:45
 msgid "Abschicken"
 msgstr "Abschicken"
@@ -128,7 +132,7 @@ msgstr "Abspeichern"
 msgid "Abspeicherung eines neuen oder bestehenden Profils"
 msgstr "Abspeicherung eines neuen oder bestehenden Profils"
 
-#: ../templates/searchmask_query:43 ../templates/userprefs:187
+#: ../templates/searchmask_query:43 ../templates/userprefs:215
 msgid "Abstrakt/Inhalt"
 msgstr "Abstrakt/Inhalt"
 
@@ -185,6 +189,10 @@ msgstr "Alle Kataloge"
 #: ../templates/resultlists_choice:88
 msgid "Alle Treffer"
 msgstr "Alle Treffer"
+
+#: ../templates/userprefs:189
+msgid "Alle getaggten Titel jetzt zu BibSonomy &uuml;bertragen"
+msgstr "Alle getaggten Titel jetzt zu BibSonomy &uuml;bertragen"
 
 #: ../templates/admin_editsession:40
 msgid "Allgemeine Informationen"
@@ -356,7 +364,7 @@ msgstr "Ausleih-Einstellungen"
 #: ../templates/database/einbaende/managecollection_tit_as_html:125
 #: ../templates/database/einbaende/search_showtitset:249
 #: ../templates/database/landschaft/search_showtitset:168
-#: ../templates/database/nationallizenzen/search_showtitset:351
+#: ../templates/database/nationallizenzen/search_showtitset:328
 #: ../templates/database/portrait/search_showtitset:190
 #: ../templates/managecollection_tit_as_html:94
 #: ../templates/managecollection_tit_as_html_simple:60
@@ -517,6 +525,18 @@ msgstr "Bestellungen"
 #: ../templates/managecollection_mail:42
 msgid "Betreff"
 msgstr "Betreff"
+
+#: ../templates/userprefs:173
+msgid "BibSonomy"
+msgstr "BibSonomy"
+
+#: ../templates/userprefs:182
+msgid "BibSonomy-API-Key"
+msgstr "BibSonomy-API-Key"
+
+#: ../templates/userprefs:181
+msgid "BibSonomy-API-User"
+msgstr "BibSonomy-API-User"
 
 #: ../templates/views/portrait/searchmask_query:9
 msgid "Bildtitelwort(e)"
@@ -698,7 +718,7 @@ msgstr "Die Vormerkung wurde erfolgreich durchgef&uuml;hrt."
 msgid "Die beiden eingegebenen Passworte stimmen nicht überein."
 msgstr "Die beiden eingegebenen Passworte stimmen nicht überein."
 
-#: ../modules/OpenBib/Handler/Apache/UserPrefs.pm:122
+#: ../modules/OpenBib/Handler/Apache/UserPrefs.pm:126
 msgid "Diese Session ist nicht authentifiziert."
 msgstr "Diese Session ist nicht authentifiziert."
 
@@ -858,7 +878,7 @@ msgstr ""
 msgid "Einfache Recherche"
 msgstr "Einfache Recherche"
 
-#: ../templates/userprefs:159
+#: ../templates/userprefs:162
 msgid "Einfache Recherchemaske"
 msgstr "Einfache Recherchemaske"
 
@@ -906,7 +926,7 @@ msgstr "Erfolgreiche Aktion"
 msgid "Erfolgsmeldung"
 msgstr "Erfolgsmeldung"
 
-#: ../templates/searchmask_options:4 ../templates/userprefs:190
+#: ../templates/searchmask_options:4 ../templates/userprefs:218
 #: ../templates/views/gdonck/searchmask_options:4
 #: ../templates/views/gleuel/searchmask_options:4
 #: ../templates/views/kempen/searchmask_options:4
@@ -923,7 +943,7 @@ msgstr "Erscheinungsjahr"
 msgid "Erscheinungsverlauf  "
 msgstr "Erscheinungsverlauf  "
 
-#: ../templates/userprefs:163
+#: ../templates/userprefs:166
 msgid "Erweitere Recherchemaske"
 msgstr "Erweitere Recherchemaske"
 
@@ -949,10 +969,8 @@ msgid "Es existiert kein Passwort für die Kennung $loginname"
 msgstr "Es existiert kein Passwort für die Kennung $loginname"
 
 #: ../templates/admin_editcat_rss:176
-msgid ""
-"Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
-msgstr ""
-"Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
+msgid "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
+msgstr "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
 
 #: ../templates/admin_editcat_rss:233
 msgid "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach Schlagwort"
@@ -979,10 +997,8 @@ msgid "Es sind keine Quellen verf&uuml;gbar."
 msgstr "Es sind keine Quellen verf&uuml;gbar."
 
 #: ../modules/OpenBib/Handler/Apache/SelfReg.pm:118
-msgid ""
-"Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
-msgstr ""
-"Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
+msgid "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
+msgstr "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
 
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:286
 #: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:534
@@ -993,7 +1009,7 @@ msgstr "Es wurde kein Suchkriterium eingegeben."
 msgid "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
 msgstr "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
 
-#: ../modules/OpenBib/Handler/Apache/UserPrefs.pm:240
+#: ../modules/OpenBib/Handler/Apache/UserPrefs.pm:257
 msgid "Es wurde keine Standard-Recherchemaske ausgewählt"
 msgstr "Es wurde keine Standard-Recherchemaske ausgewählt"
 
@@ -1075,7 +1091,7 @@ msgstr "Felder leeren"
 msgid "Fernleihbestellung"
 msgstr "Fernleihbestellung"
 
-#: ../templates/searchmask_query:3 ../templates/userprefs:177
+#: ../templates/searchmask_query:3 ../templates/userprefs:205
 #: ../templates/views/inst501/searchmask_query:3
 #: ../templates/views/kapsel/searchmask_query:3
 #: ../templates/views/landschaft/searchmask_query:3
@@ -1200,7 +1216,7 @@ msgid "Geben Sie hier den Notationsanfang ein"
 msgstr "Geben Sie hier den Notationsanfang ein"
 
 #: ../templates/database/ebooks/search_showtitset:710
-#: ../templates/database/nationallizenzen/search_showtitset:728
+#: ../templates/database/nationallizenzen/search_showtitset:705
 #: ../templates/search_showswtindex:81 ../templates/search_showtitlist:187
 #: ../templates/search_showtitset:733
 #: ../templates/views/kapsel/search_showtitlist:174
@@ -1297,7 +1313,7 @@ msgstr ""
 "Haben Sie sich schon &uuml;ber die Selbstregistrierung eine Kennung "
 "eingerichtet? Wenn nicht, so k&ouml;nnen Sie sich %1hier%2 registrierten."
 
-#: ../templates/userprefs:178
+#: ../templates/userprefs:206
 msgid "Hauptsachtitel (HST)"
 msgstr "Hauptsachtitel (HST)"
 
@@ -1751,12 +1767,12 @@ msgstr ""
 msgid "Hostname"
 msgstr "Hostname"
 
-#: ../templates/searchmask_query:27 ../templates/userprefs:183
+#: ../templates/searchmask_query:27 ../templates/userprefs:211
 #: ../templates/views/inst501/searchmask_query:27
 msgid "ISBN"
 msgstr "ISBN"
 
-#: ../templates/searchmask_query:31 ../templates/userprefs:184
+#: ../templates/searchmask_query:31 ../templates/userprefs:212
 #: ../templates/views/inst501/searchmask_query:31
 msgid "ISSN"
 msgstr "ISSN"
@@ -2163,7 +2179,7 @@ msgstr "Jahr"
 msgid "Jahre"
 msgstr "Jahre"
 
-#: ../templates/userprefs:180 ../templates/virtualsearch_showkorindex:52
+#: ../templates/userprefs:208 ../templates/virtualsearch_showkorindex:52
 msgid "K&ouml;rperschaft"
 msgstr "K&ouml;rperschaft"
 
@@ -2711,7 +2727,7 @@ msgstr "Maximale Trefferzahl pro Katalog"
 msgid "MedPilot"
 msgstr "MedPilot"
 
-#: ../templates/searchmask_query:51 ../templates/userprefs:189
+#: ../templates/searchmask_query:51 ../templates/userprefs:217
 #: ../templates/views/inst501/searchmask_query:47
 #: ../templates/views/richter/searchmask_query:41
 msgid "Medienart"
@@ -2883,7 +2899,7 @@ msgstr "Neues Katalog-Profil anlegen"
 msgid "Not-Datei"
 msgstr "Not-Datei"
 
-#: ../templates/searchmask_query:23 ../templates/userprefs:182
+#: ../templates/searchmask_query:23 ../templates/userprefs:210
 #: ../templates/virtualsearch_shownotindex:52
 msgid "Notation"
 msgstr "Notation"
@@ -3099,7 +3115,11 @@ msgstr "RSS-Feed zu diesem View"
 msgid "Recherche"
 msgstr "Recherche"
 
-#: ../templates/userprefs:163
+#: ../templates/userprefs:150
+msgid "Recherchemaske"
+msgstr "Recherchemaske"
+
+#: ../templates/userprefs:166
 msgid "Recherchemaske festlegen"
 msgstr "Recherchemaske festlegen"
 
@@ -3191,7 +3211,7 @@ msgstr "Später"
 msgid "S5000"
 msgstr "Anzahl Titel"
 
-#: ../templates/search_showswtindex:41 ../templates/userprefs:181
+#: ../templates/search_showswtindex:41 ../templates/userprefs:209
 #: ../templates/views/inst501/searchmask_query:19
 #: ../templates/views/kapsel/searchmask_query:19
 #: ../templates/views/richter/searchmask_query:21
@@ -3208,7 +3228,7 @@ msgid "Schlagwortindex"
 msgstr "Schlagwortindex"
 
 #: ../templates/database/ebooks/search_showtitset:709
-#: ../templates/database/nationallizenzen/search_showtitset:727
+#: ../templates/database/nationallizenzen/search_showtitset:704
 #: ../templates/search_showtitset:732
 msgid "Schlagwortindex diese Katalogs"
 msgstr "Schlagwortindex diese Katalogs"
@@ -3287,7 +3307,7 @@ msgstr "Sekunden"
 msgid "Selbstregistrierung"
 msgstr "Selbstregistrierung"
 
-#: ../templates/searchmask_query:47 ../templates/userprefs:188
+#: ../templates/searchmask_query:47 ../templates/userprefs:216
 #: ../templates/views/inst501/searchmask_query:43
 #: ../templates/views/richter/searchmask_query:37
 msgid "Serie/Band/Quelle"
@@ -3352,10 +3372,8 @@ msgstr "Sie greifen auf eine nicht autorisierte Session zu"
 
 #. ("<a href=\"${config.info_loc}?sessionID=${sessionID};view=${view}#meinkugvorteile\">","</a>")
 #: ../templates/login:46
-msgid ""
-"Sie haben %1Vorteile%2, wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden."
-msgstr ""
-"Sie haben %1Vorteile%2, wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden."
+msgid "Sie haben %1Vorteile%2, wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden."
+msgstr "Sie haben %1Vorteile%2, wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden."
 
 #. ("<a href=\"$config->{databasechoice_loc}?sessionID=$session->{ID}\" target=\"body\">","</a>")
 #: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:249
@@ -3410,7 +3428,7 @@ msgstr "Sie haben ein falsches Passwort eingegeben"
 msgid "Sie haben eine ungültige Mailadresse eingegeben."
 msgstr "Sie haben eine ungültige Mailadresse eingegeben."
 
-#: ../modules/OpenBib/Handler/Apache/UserPrefs.pm:228
+#: ../modules/OpenBib/Handler/Apache/UserPrefs.pm:245
 msgid ""
 "Sie haben entweder kein Passwort eingegeben oder die beiden Passworte "
 "stimmen nicht überein"
@@ -3578,25 +3596,20 @@ msgid "Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."
 msgstr "Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."
 
 #: ../modules/OpenBib/Handler/Apache/LitLists.pm:164
-msgid ""
-"Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
-msgstr ""
-"Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
+msgid "Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
+msgstr "Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:1170
 msgid "Sie müssen mindestens eine Beschreibung eingeben."
 msgstr "Sie müssen mindestens eine Beschreibung eingeben."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:340
-msgid ""
-"Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
-msgstr ""
-"Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
+msgid "Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
+msgstr "Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:558
 msgid "Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."
-msgstr ""
-"Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."
+msgstr "Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:673
 msgid ""
@@ -3629,7 +3642,7 @@ msgstr "Sigel"
 #: ../templates/database/portrait/search_showtitset:175
 #: ../templates/managecollection_tit_as_html:79 ../templates/mexset:2
 #: ../templates/search_showmulttitset:109 ../templates/searchmask_query:35
-#: ../templates/userprefs:185 ../templates/views/inst501/searchmask_query:35
+#: ../templates/userprefs:213 ../templates/views/inst501/searchmask_query:35
 #: ../templates/views/portrait/searchmask_query:29
 #: ../templates/views/richter/searchmask_query:29
 msgid "Signatur"
@@ -3846,7 +3859,7 @@ msgstr "Suchbegriffe"
 
 #: ../templates/bibsonomy_showtitlist:54
 #: ../templates/database/ebooks/search_showtitset:710
-#: ../templates/database/nationallizenzen/search_showtitset:728
+#: ../templates/database/nationallizenzen/search_showtitset:705
 #: ../templates/search_showswtindex:81 ../templates/search_showtitlist:187
 #: ../templates/search_showtitset:733
 #: ../templates/views/kapsel/search_showtitlist:174
@@ -3884,7 +3897,11 @@ msgstr ""
 "Suchen Sie in den %1elektronisch verf&uuml;gbaren Zeitschriften%2 der "
 "Universit&auml;tsbibliothek nach dem Zeitschriftentitel."
 
-#: ../templates/userprefs:192
+#: ../templates/userprefs:199
+msgid "Suchfelder"
+msgstr "Suchfelder"
+
+#: ../templates/userprefs:220
 msgid "Suchfelder &auml;ndern"
 msgstr "Suchfelder &auml;ndern"
 
@@ -4191,7 +4208,7 @@ msgstr "Titel"
 
 #: ../templates/database/kapsel/visible_categories_titset:24
 msgid "T0331-kapsel"
-msgstr "Quelle"
+msgstr "Titel"
 
 #: ../templates/database/landschaft/visible_categories_titset:20
 msgid "T0331-landschaft"
@@ -5355,7 +5372,7 @@ msgstr "Titel pro Katalog"
 msgid "Titel-Daten"
 msgstr "Titel-Daten"
 
-#: ../templates/userprefs:186
+#: ../templates/userprefs:214
 msgid "Titel-String"
 msgstr "Titel-String"
 
@@ -5555,7 +5572,7 @@ msgstr "Und-Verknüpfung innerhalb eines Suchfeldes"
 #: ../modules/OpenBib/Handler/Apache/Circulation.pm:536
 #: ../modules/OpenBib/Handler/Apache/ManageCollection.pm:368
 #: ../modules/OpenBib/Handler/Apache/SelfReg.pm:171
-#: ../modules/OpenBib/Handler/Apache/UserPrefs.pm:250
+#: ../modules/OpenBib/Handler/Apache/UserPrefs.pm:267
 msgid "Unerlaubte Aktion"
 msgstr "Unerlaubte Aktion"
 
@@ -5583,7 +5600,7 @@ msgstr "Ungültige Aktion"
 #: ../modules/OpenBib/Handler/Apache/SearchMask.pm:94
 #: ../modules/OpenBib/Handler/Apache/SelfReg.pm:90
 #: ../modules/OpenBib/Handler/Apache/Tags.pm:126
-#: ../modules/OpenBib/Handler/Apache/UserPrefs.pm:108
+#: ../modules/OpenBib/Handler/Apache/UserPrefs.pm:112
 #: ../modules/OpenBib/Handler/Apache/UserReviews.pm:123
 #: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:144
 msgid "Ungültige Session"
@@ -5595,7 +5612,7 @@ msgstr "Ungültige Session"
 msgid "Ursprüngliche Auswahl wiederherstellen"
 msgstr "Ursprüngliche Auswahl wiederherstellen"
 
-#: ../templates/userprefs:179 ../templates/virtualsearch_showverfindex:52
+#: ../templates/userprefs:207 ../templates/virtualsearch_showverfindex:52
 msgid "Verfasser"
 msgstr "Verfasser"
 
@@ -5801,17 +5818,9 @@ msgstr "Weitergehende Suchhinweise"
 msgid "Weiterleitungs-Icon"
 msgstr "Weiterleitungs-Icon"
 
-#: ../templates/userprefs:153
+#: ../templates/userprefs:156
 msgid "Welche Recherchemaske soll verwendet werden?"
 msgstr "Welche Recherchemaske soll verwendet werden?"
-
-#: ../templates/userprefs:175
-msgid ""
-"Welche Suchfelder sollen in der erweiterten<br />Recherchemaske angezeigt "
-"werden?"
-msgstr ""
-"Welche Suchfelder sollen in der erweiterten<br />Recherchemaske angezeigt "
-"werden?"
 
 #: ../templates/admin_editview:120
 msgid ""
@@ -6327,10 +6336,3 @@ msgstr "Übernehmen"
 msgid "Überziehungen / Gebühren"
 msgstr "Überziehungen / Gebühren"
 
-#, fuzzy
-#~ msgid "T4100"
-#~ msgstr "Basis-Klassifikation"
-
-#, fuzzy
-#~ msgid "T4110"
-#~ msgstr "Inhaltsverzeichnis"

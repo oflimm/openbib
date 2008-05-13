@@ -37,11 +37,41 @@
 <tr><th>[% litlist.properties.title %]&nbsp;<a href="http://[% config.loadbalancerservername %][% config.connector_permalink_loc %]/[% litlist.properties.userid %]/[% litlist.properties.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="Permanenter Link"><img src="/images/openbib/3d-file-blue-permalink.png" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a></th></tr>
 <tr><td class="boxedclear">
 
+<form method="get" action="[% config.litlists_loc %]">
+<input type="hidden" name="sessionID"       value="[% sessionID %]" />
+<input type="hidden" name="litlistid"       value="[% litlist.properties.id %]" />
+<input type="hidden" name="sortall"         value="1" />
+<input type="hidden" name="do_showlitlist"  value="1" />
+<input type="hidden" name="action"          value="manage" />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Optionen") %]</th></tr>
+<tr><td class="boxed">
+<b>[% msg.maketext("Sortierung") %]:</b>&nbsp;
+<select name="sorttype">
+  <option value="author"[%- IF query.param('sorttype') == 'author' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Person") %]</option>
+  <option value="title"[%- IF query.param('sorttype') == 'title' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel") %]</option>
+  <option value="order"[%- IF query.param('sorttype') == 'order' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Z&auml;hlung") %]</option>
+  <option value="yearofpub"[%- IF query.param('sorttype') == 'yearofpub' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]</option>
+  <option value="publisher"[%- IF query.param('sorttype') == 'publisher' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Verlag") %]</option>
+  <option value="signature"[%- IF query.param('sorttype') == 'signature' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Signatur") %]</option>
+  <option value="popularity"[%- IF query.param('sorttype') == 'popularity' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Popularit&auml;t") %]</option>
+  <option value="tstamp"[%- IF query.param('sorttype') == 'tstamp' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Zeitstempel") %]</option>
+</select>&nbsp;
+<select name="sortorder">
+  <option value="up"[%- IF query.param('sortorder') == 'up' -%] selected="selected"[%- END -%]>[% msg.maketext("aufsteigend") %]</option>
+  <option value="down"[%- IF query.param('sortorder') == 'down' -%] selected="selected"[%- END -%]>[% msg.maketext("absteigend") %]</option>
+</select>
+&nbsp;<input type="submit" value="[% msg.maketext("Los") %]" /></td></tr></table><p />
+</form>
+
+<p />
+
 <table cellpadding="2">
 
 [% listrow = 'listrow1' %]
-[% FOREACH fullitem IN litlist.itemlist %]
-[% item = fullitem.title %]
+[% FOREACH record IN litlist.recordlist.get_records %]
+[% item = record.get_brief_normdata %]
 
 [%# Verfasser konstruieren %]
 [%- persons = [] -%]
@@ -91,9 +121,10 @@
 [%- signaturen.push("${part.content}") -%]
 [%- END -%]
 [%- signatur = signaturen.join(' ; ') -%]
+[%- isbn     = item.${"T0540"}.first.content.replace('-','') -%]
 
-<tr class="[% listrow %]"><td class="listnr">[% loop.count+offset %]</td><td colspan="2"><span class="rlauthor">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;sorttype=[% sorttype %];database=[% item.${"database"} %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
-class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span><br />aus:&nbsp;<i>[% targetdbinfo.dbinfo.${item.database}.full %]</i></td><td><td align="left"><b>[% signatur %]</b></td><td class="popularitycount">[% item.popularity %]</td><td>[% fullitem.tstamp %]</td></tr>
+<tr class="[% listrow %]"><td class="listnr">[% loop.count+offset %]</td><td class="thumbnail">[% IF (config.coverscans.all || config.coverscans.${record.database}) && isbn %]<a href="[% config.coverscans_credits_exturl.replace('ISBNINHERE', isbn) %]" target="_blank" ><img src="[% config.coverscans_exturl.replace('ISBNINHERE', isbn) %]" title="[% config.coverscans_creditstext_exturl %]" /></a>[% ELSE %]&nbsp;[% END %]</td><td><span class="rlauthor">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;sorttype=[% sorttype %];database=[% item.${"database"} %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
+class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span><br />aus:&nbsp;<i>[% targetdbinfo.dbinfo.${item.database}.full %]</i></td><td><td align="left"><b>[% signatur %]</b></td><td class="popularitycount">[% item.popularity %]</td><td>[% record.tstamp %]</td></tr>
 
 [% IF listrow == 'listrow1' %]
 [% listrow = 'listrow2' %]

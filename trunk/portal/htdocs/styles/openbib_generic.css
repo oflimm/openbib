@@ -158,6 +158,20 @@ td.boxedclear {
   border-bottom-width: 1px;
 }
 
+td.options {
+  padding: 5px;
+  background-color: white;
+  border-left-style: solid;
+  border-left-color: lightblue;
+  border-left-width: 1px;
+  border-right-style: solid;
+  border-right-color: lightblue;
+  border-right-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: lightblue;
+  border-bottom-width: 1px;
+}
+
 .titlenav {
   padding: 5px;
   background-color: white;

@@ -50,6 +50,7 @@ use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
+use OpenBib::RecordList::Title;
 use OpenBib::Session;
 use OpenBib::User;
 
@@ -225,15 +226,17 @@ sub handler {
                 my $targettype    = $user->get_targettype_of_session($session->{ID});
 
                 my $singlelitlist = {
-                    itemlist => $user->get_litlistentries({litlistid => $litlistid}),
+                    recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $sortorder, sorttype => $sorttype }),
                     properties => $litlist_properties_ref,
                 };
+
                 # TT-Data erzeugen
                 my $ttdata={
                     view       => $view,
                     stylesheet => $stylesheet,
                     sessionID  => $session->{ID},
-                  
+
+                    query        => $query,
                     user         => $user,
                     litlist      => $singlelitlist,
                     targetdbinfo => $dbinfotable,
@@ -245,7 +248,8 @@ sub handler {
                 };
               
                 OpenBib::Common::Util::print_page($config->{tt_litlists_manage_singlelist_tname},$ttdata,$r);
-            } else {
+            }
+            else {
                 OpenBib::Common::Util::print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."),$r,$msg);
             }
             return OK;
@@ -278,7 +282,7 @@ sub handler {
             my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
             
 	    my $singlelitlist = {
-                itemlist   => $user->get_litlistentries({litlistid => $litlistid}),
+                recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $sortorder, sorttype => $sorttype}),
                 properties => $litlist_properties_ref,
             };
 
@@ -287,7 +291,8 @@ sub handler {
                 view         => $view,
                 stylesheet   => $stylesheet,
                 sessionID    => $session->{ID},
-                
+
+                query        => $query,
                 user         => $user,
                 litlist      => $singlelitlist,
                 targetdbinfo => $dbinfotable,

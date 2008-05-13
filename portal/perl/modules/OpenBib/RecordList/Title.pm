@@ -145,6 +145,12 @@ sub sort {
     elsif ($type eq "popularity" && $order eq "down") {
         @$sortedoutputbuffer_ref=sort _by_popularity_down @{$self->{recordlist}};
     }
+    elsif ($type eq "tstamp" && $order eq "up") {
+        @$sortedoutputbuffer_ref=sort _by_tstamp @{$self->{recordlist}};
+    }
+    elsif ($type eq "tstamp" && $order eq "down") {
+        @$sortedoutputbuffer_ref=sort _by_tstamp_down @{$self->{recordlist}};
+    }
     else {
         @$sortedoutputbuffer_ref=@{$self->{recordlist}};
     }
@@ -615,6 +621,26 @@ sub _by_popularity_down {
     $line2=0 if (!defined $line2 || $line2 eq "");
 
     $line2 <=> $line1;
+}
+
+sub _by_tstamp {
+    my $line1=(exists $a->{tstamp} && defined $a->{tstamp})?$a->{tstamp}:"";
+    my $line2=(exists $b->{tstamp} && defined $b->{tstamp})?$b->{tstamp}:"";
+
+    $line1=0 if (!defined $line1 || $line1 eq "");
+    $line2=0 if (!defined $line2 || $line2 eq "");
+
+    $line1 cmp $line2;
+}
+
+sub _by_tstamp_down {
+    my $line1=(exists $a->{tstamp} && defined $a->{tstamp})?$a->{tstamp}:"";
+    my $line2=(exists $b->{tstamp} && defined $b->{tstamp})?$b->{tstamp}:"";
+ 
+    $line1=0 if (!defined $line1 || $line1 eq "");
+    $line2=0 if (!defined $line2 || $line2 eq "");
+
+    $line2 cmp $line1;
 }
 
 sub _cleanrl {

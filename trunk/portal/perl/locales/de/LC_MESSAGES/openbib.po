@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2008-05-13 11:34+0200\n"
+"PO-Revision-Date: 2008-05-14 13:40+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -35,7 +35,7 @@ msgstr "${category}"
 msgid "${thiscategory}"
 msgstr "${thiscategory}"
 
-#: ../templates/litlists_manage_singlelist:54 ../templates/userprefs:184
+#: ../templates/litlists_manage_singlelist:54 ../templates/userprefs:182
 msgid "&Auml;ndern"
 msgstr "&Auml;ndern"
 
@@ -110,7 +110,7 @@ msgstr ""
 msgid "Abb."
 msgstr "Abb."
 
-#: ../templates/userprefs:180
+#: ../templates/userprefs:178
 msgid "Abgleich zu BibSonomy"
 msgstr "Abgleich zu BibSonomy"
 
@@ -132,7 +132,7 @@ msgstr "Abspeichern"
 msgid "Abspeicherung eines neuen oder bestehenden Profils"
 msgstr "Abspeicherung eines neuen oder bestehenden Profils"
 
-#: ../templates/searchmask_query:43 ../templates/userprefs:215
+#: ../templates/searchmask_query:43 ../templates/userprefs:213
 msgid "Abstrakt/Inhalt"
 msgstr "Abstrakt/Inhalt"
 
@@ -190,7 +190,7 @@ msgstr "Alle Kataloge"
 msgid "Alle Treffer"
 msgstr "Alle Treffer"
 
-#: ../templates/userprefs:189
+#: ../templates/userprefs:187
 msgid "Alle getaggten Titel jetzt zu BibSonomy &uuml;bertragen"
 msgstr "Alle getaggten Titel jetzt zu BibSonomy &uuml;bertragen"
 
@@ -210,7 +210,7 @@ msgstr "Als Mail verschicken"
 
 #: ../templates/database/ebooks/search_showtitset:50
 #: ../templates/database/nationallizenzen/search_showtitset:50
-#: ../templates/search_showtitset:50
+#: ../templates/litlists_manage_lists:79 ../templates/search_showtitset:50
 msgid "Als Permanenten Link verwenden"
 msgstr "Als Permanenten Link verwenden"
 
@@ -526,15 +526,15 @@ msgstr "Bestellungen"
 msgid "Betreff"
 msgstr "Betreff"
 
-#: ../templates/userprefs:173
+#: ../templates/userprefs:171
 msgid "BibSonomy"
 msgstr "BibSonomy"
 
-#: ../templates/userprefs:182
+#: ../templates/userprefs:180
 msgid "BibSonomy-API-Key"
 msgstr "BibSonomy-API-Key"
 
-#: ../templates/userprefs:181
+#: ../templates/userprefs:179
 msgid "BibSonomy-API-User"
 msgstr "BibSonomy-API-User"
 
@@ -878,7 +878,7 @@ msgstr ""
 msgid "Einfache Recherche"
 msgstr "Einfache Recherche"
 
-#: ../templates/userprefs:162
+#: ../templates/userprefs:160
 msgid "Einfache Recherchemaske"
 msgstr "Einfache Recherchemaske"
 
@@ -926,7 +926,7 @@ msgstr "Erfolgreiche Aktion"
 msgid "Erfolgsmeldung"
 msgstr "Erfolgsmeldung"
 
-#: ../templates/searchmask_options:4 ../templates/userprefs:218
+#: ../templates/searchmask_options:4 ../templates/userprefs:216
 #: ../templates/views/gdonck/searchmask_options:4
 #: ../templates/views/gleuel/searchmask_options:4
 #: ../templates/views/kempen/searchmask_options:4
@@ -943,7 +943,7 @@ msgstr "Erscheinungsjahr"
 msgid "Erscheinungsverlauf  "
 msgstr "Erscheinungsverlauf  "
 
-#: ../templates/userprefs:166
+#: ../templates/userprefs:164
 msgid "Erweitere Recherchemaske"
 msgstr "Erweitere Recherchemaske"
 
@@ -1091,7 +1091,7 @@ msgstr "Felder leeren"
 msgid "Fernleihbestellung"
 msgstr "Fernleihbestellung"
 
-#: ../templates/searchmask_query:3 ../templates/userprefs:205
+#: ../templates/searchmask_query:3 ../templates/userprefs:203
 #: ../templates/views/inst501/searchmask_query:3
 #: ../templates/views/kapsel/searchmask_query:3
 #: ../templates/views/landschaft/searchmask_query:3
@@ -1313,7 +1313,7 @@ msgstr ""
 "Haben Sie sich schon &uuml;ber die Selbstregistrierung eine Kennung "
 "eingerichtet? Wenn nicht, so k&ouml;nnen Sie sich %1hier%2 registrierten."
 
-#: ../templates/userprefs:206
+#: ../templates/userprefs:204
 msgid "Hauptsachtitel (HST)"
 msgstr "Hauptsachtitel (HST)"
 
@@ -1767,18 +1767,18 @@ msgstr ""
 msgid "Hostname"
 msgstr "Hostname"
 
-#: ../templates/searchmask_query:27 ../templates/userprefs:211
+#: ../templates/searchmask_query:27 ../templates/userprefs:209
 #: ../templates/views/inst501/searchmask_query:27
 msgid "ISBN"
 msgstr "ISBN"
 
-#: ../templates/searchmask_query:31 ../templates/userprefs:212
+#: ../templates/searchmask_query:31 ../templates/userprefs:210
 #: ../templates/views/inst501/searchmask_query:31
 msgid "ISSN"
 msgstr "ISSN"
 
-#: ../modules/OpenBib/Handler/Apache/LitLists.pm:249
-#: ../modules/OpenBib/Handler/Apache/LitLists.pm:303
+#: ../modules/OpenBib/Handler/Apache/LitLists.pm:253
+#: ../modules/OpenBib/Handler/Apache/LitLists.pm:308
 msgid "Ihnen geh&ouml;rt diese Literaturliste nicht."
 msgstr "Ihnen geh&ouml;rt diese Literaturliste nicht."
 
@@ -2179,7 +2179,7 @@ msgstr "Jahr"
 msgid "Jahre"
 msgstr "Jahre"
 
-#: ../templates/userprefs:208 ../templates/virtualsearch_showkorindex:52
+#: ../templates/userprefs:206 ../templates/virtualsearch_showkorindex:52
 msgid "K&ouml;rperschaft"
 msgstr "K&ouml;rperschaft"
 
@@ -2292,7 +2292,7 @@ msgstr "Kategorie"
 msgid "Kein prim&auml;rer RSS-Feed ausgew&auml;hlt"
 msgstr "Kein prim&auml;rer RSS-Feed ausgew&auml;hlt"
 
-#: ../modules/OpenBib/Handler/Apache/LitLists.pm:199
+#: ../modules/OpenBib/Handler/Apache/LitLists.pm:200
 msgid "Keine Titelid, Titel-Datenbank oder Literaturliste vorhanden."
 msgstr "Keine Titelid, Titel-Datenbank oder Literaturliste vorhanden."
 
@@ -2515,6 +2515,8 @@ msgstr "Lokale Signatur      "
 #: ../templates/database/einbaende/search_showtitlist_of_cnt:67
 #: ../templates/database/landschaft/search_showtitlist:63
 #: ../templates/database/portrait/search_showtitlist:63
+#: ../templates/litlists_manage_singlelist:96
+#: ../templates/litlists_show_singlelist:65
 #: ../templates/resultlists_showall:59
 #: ../templates/resultlists_showall_sortall:62
 #: ../templates/resultlists_showsinglepool:60
@@ -2727,7 +2729,7 @@ msgstr "Maximale Trefferzahl pro Katalog"
 msgid "MedPilot"
 msgstr "MedPilot"
 
-#: ../templates/searchmask_query:51 ../templates/userprefs:217
+#: ../templates/searchmask_query:51 ../templates/userprefs:215
 #: ../templates/views/inst501/searchmask_query:47
 #: ../templates/views/richter/searchmask_query:41
 msgid "Medienart"
@@ -2899,7 +2901,7 @@ msgstr "Neues Katalog-Profil anlegen"
 msgid "Not-Datei"
 msgstr "Not-Datei"
 
-#: ../templates/searchmask_query:23 ../templates/userprefs:210
+#: ../templates/searchmask_query:23 ../templates/userprefs:208
 #: ../templates/virtualsearch_shownotindex:52
 msgid "Notation"
 msgstr "Notation"
@@ -2947,6 +2949,8 @@ msgstr "Offene Geb&uuml;hren"
 #: ../templates/database/einbaende/search_showtitlist_of_cnt:48
 #: ../templates/database/landschaft/search_showtitlist:45
 #: ../templates/database/portrait/search_showtitlist:45
+#: ../templates/litlists_manage_singlelist:79
+#: ../templates/litlists_show_singlelist:48
 #: ../templates/managecollection_show:61 ../templates/resultlists_showall:39
 #: ../templates/resultlists_showall_sortall:42
 #: ../templates/resultlists_showsinglepool:41
@@ -3003,6 +3007,10 @@ msgstr "Passwort per Mail schicken"
 #: ../templates/selfreg_success:27
 msgid "Passwort vergessen?"
 msgstr "Passwort vergessen?"
+
+#: ../templates/litlists_show_singlelist:65
+msgid "Permanenter Link"
+msgstr "Permanenter Link"
 
 #: ../templates/views/inst501/searchmask_query:11
 #: ../templates/views/kapsel/searchmask_query:11
@@ -3119,7 +3127,7 @@ msgstr "Recherche"
 msgid "Recherchemaske"
 msgstr "Recherchemaske"
 
-#: ../templates/userprefs:166
+#: ../templates/userprefs:164
 msgid "Recherchemaske festlegen"
 msgstr "Recherchemaske festlegen"
 
@@ -3211,7 +3219,7 @@ msgstr "Später"
 msgid "S5000"
 msgstr "Anzahl Titel"
 
-#: ../templates/search_showswtindex:41 ../templates/userprefs:209
+#: ../templates/search_showswtindex:41 ../templates/userprefs:207
 #: ../templates/views/inst501/searchmask_query:19
 #: ../templates/views/kapsel/searchmask_query:19
 #: ../templates/views/richter/searchmask_query:21
@@ -3307,7 +3315,7 @@ msgstr "Sekunden"
 msgid "Selbstregistrierung"
 msgstr "Selbstregistrierung"
 
-#: ../templates/searchmask_query:47 ../templates/userprefs:216
+#: ../templates/searchmask_query:47 ../templates/userprefs:214
 #: ../templates/views/inst501/searchmask_query:43
 #: ../templates/views/richter/searchmask_query:37
 msgid "Serie/Band/Quelle"
@@ -3440,7 +3448,7 @@ msgstr ""
 msgid "Sie haben entweder kein Passwort oder keinen Loginnamen eingegeben"
 msgstr "Sie haben entweder kein Passwort oder keinen Loginnamen eingegeben"
 
-#: ../modules/OpenBib/Handler/Apache/LitLists.pm:182
+#: ../modules/OpenBib/Handler/Apache/LitLists.pm:183
 msgid ""
 "Sie haben entweder keine entsprechende Liste eingegeben oder Titel und "
 "Datenbank existieren nicht."
@@ -3448,7 +3456,7 @@ msgstr ""
 "Sie haben entweder keine entsprechende Liste eingegeben oder Titel und "
 "Datenbank existieren nicht."
 
-#: ../modules/OpenBib/Handler/Apache/LitLists.pm:216
+#: ../modules/OpenBib/Handler/Apache/LitLists.pm:217
 msgid ""
 "Sie haben entweder keine entsprechende Liste oder Sie sind nicht "
 "authentifiziert."
@@ -3590,12 +3598,12 @@ msgstr ""
 "Sie können entweder durch entsprechende Auswahl in den insgesamt %1 "
 "einzelnen %2Katalogen%3 recherchieren oder auch sofort in allen zusammen."
 
-#: ../modules/OpenBib/Handler/Apache/LitLists.pm:150
+#: ../modules/OpenBib/Handler/Apache/LitLists.pm:151
 #: ../modules/OpenBib/Handler/Apache/ManageCollection.pm:227
 msgid "Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."
 msgstr "Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."
 
-#: ../modules/OpenBib/Handler/Apache/LitLists.pm:164
+#: ../modules/OpenBib/Handler/Apache/LitLists.pm:165
 msgid "Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
 msgstr "Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
 
@@ -3642,7 +3650,7 @@ msgstr "Sigel"
 #: ../templates/database/portrait/search_showtitset:175
 #: ../templates/managecollection_tit_as_html:79 ../templates/mexset:2
 #: ../templates/search_showmulttitset:109 ../templates/searchmask_query:35
-#: ../templates/userprefs:213 ../templates/views/inst501/searchmask_query:35
+#: ../templates/userprefs:211 ../templates/views/inst501/searchmask_query:35
 #: ../templates/views/portrait/searchmask_query:29
 #: ../templates/views/richter/searchmask_query:29
 msgid "Signatur"
@@ -3673,6 +3681,8 @@ msgstr ""
 #: ../templates/database/einbaende/search_showtitlist_of_cnt:50
 #: ../templates/database/landschaft/search_showtitlist:47
 #: ../templates/database/portrait/search_showtitlist:47
+#: ../templates/litlists_manage_singlelist:81
+#: ../templates/litlists_show_singlelist:50
 #: ../templates/resultlists_showall:41
 #: ../templates/resultlists_showall_sortall:44
 #: ../templates/resultlists_showsinglepool:43
@@ -3897,11 +3907,11 @@ msgstr ""
 "Suchen Sie in den %1elektronisch verf&uuml;gbaren Zeitschriften%2 der "
 "Universit&auml;tsbibliothek nach dem Zeitschriftentitel."
 
-#: ../templates/userprefs:199
+#: ../templates/userprefs:197
 msgid "Suchfelder"
 msgstr "Suchfelder"
 
-#: ../templates/userprefs:220
+#: ../templates/userprefs:218
 msgid "Suchfelder &auml;ndern"
 msgstr "Suchfelder &auml;ndern"
 
@@ -5372,7 +5382,7 @@ msgstr "Titel pro Katalog"
 msgid "Titel-Daten"
 msgstr "Titel-Daten"
 
-#: ../templates/userprefs:214
+#: ../templates/userprefs:212
 msgid "Titel-String"
 msgstr "Titel-String"
 
@@ -5588,7 +5598,7 @@ msgstr "Ungültige Aktion"
 #: ../modules/OpenBib/Handler/Apache/ExternalJump.pm:117
 #: ../modules/OpenBib/Handler/Apache/Info.pm:93
 #: ../modules/OpenBib/Handler/Apache/Leave.pm:82
-#: ../modules/OpenBib/Handler/Apache/LitLists.pm:129
+#: ../modules/OpenBib/Handler/Apache/LitLists.pm:130
 #: ../modules/OpenBib/Handler/Apache/Login.pm:102
 #: ../modules/OpenBib/Handler/Apache/MailCollection.pm:97
 #: ../modules/OpenBib/Handler/Apache/MailPassword.pm:91
@@ -5612,7 +5622,7 @@ msgstr "Ungültige Session"
 msgid "Ursprüngliche Auswahl wiederherstellen"
 msgstr "Ursprüngliche Auswahl wiederherstellen"
 
-#: ../templates/userprefs:207 ../templates/virtualsearch_showverfindex:52
+#: ../templates/userprefs:205 ../templates/virtualsearch_showverfindex:52
 msgid "Verfasser"
 msgstr "Verfasser"
 
@@ -5818,10 +5828,6 @@ msgstr "Weitergehende Suchhinweise"
 msgid "Weiterleitungs-Icon"
 msgstr "Weiterleitungs-Icon"
 
-#: ../templates/userprefs:156
-msgid "Welche Recherchemaske soll verwendet werden?"
-msgstr "Welche Recherchemaske soll verwendet werden?"
-
 #: ../templates/admin_editview:120
 msgid ""
 "Welcher RSS-Feed soll der prim&auml;re Feed f&uuml;r das Browser Auto-"
@@ -5980,10 +5986,16 @@ msgstr "Zur Trefferliste"
 msgid "Zur&uuml;ck zur %1Suchanfrage%2"
 msgstr "Zur&uuml;ck zur %1Suchanfrage%2"
 
+#: ../templates/litlists_show_singlelist:65
+msgid "[PermaLink]"
+msgstr "[PermaLink]"
+
 #: ../templates/database/einbaende/search_showtitlist:55
 #: ../templates/database/einbaende/search_showtitlist_of_cnt:62
 #: ../templates/database/landschaft/search_showtitlist:58
 #: ../templates/database/portrait/search_showtitlist:58
+#: ../templates/litlists_manage_singlelist:94
+#: ../templates/litlists_show_singlelist:63
 #: ../templates/resultlists_showall:53
 #: ../templates/resultlists_showall_sortall:56
 #: ../templates/resultlists_showsinglepool:55
@@ -6014,6 +6026,8 @@ msgstr "absteigend"
 #: ../templates/database/einbaende/search_showtitlist_of_cnt:61
 #: ../templates/database/landschaft/search_showtitlist:57
 #: ../templates/database/portrait/search_showtitlist:57
+#: ../templates/litlists_manage_singlelist:93
+#: ../templates/litlists_show_singlelist:62
 #: ../templates/resultlists_showall:52
 #: ../templates/resultlists_showall_sortall:55
 #: ../templates/resultlists_showsinglepool:54
@@ -6109,7 +6123,10 @@ msgstr "nach Fert.Jahr"
 #: ../templates/database/landschaft/search_showtitlist:51
 #: ../templates/database/portrait/drilldown_categorized:52
 #: ../templates/database/portrait/search_showtitlist:51
-#: ../templates/drilldown_categorized:52 ../templates/resultlists_showall:46
+#: ../templates/drilldown_categorized:52
+#: ../templates/litlists_manage_singlelist:86
+#: ../templates/litlists_show_singlelist:55
+#: ../templates/resultlists_showall:46
 #: ../templates/resultlists_showall_sortall:49
 #: ../templates/resultlists_showsinglepool:48
 #: ../templates/search_showtitlist:54
@@ -6135,6 +6152,8 @@ msgstr "nach Medienart"
 #: ../templates/database/einbaende/search_showtitlist_of_cnt:52
 #: ../templates/database/landschaft/search_showtitlist:49
 #: ../templates/database/portrait/search_showtitlist:49
+#: ../templates/litlists_manage_singlelist:83
+#: ../templates/litlists_show_singlelist:52
 #: ../templates/resultlists_showall:43
 #: ../templates/resultlists_showall_sortall:46
 #: ../templates/resultlists_showsinglepool:45
@@ -6165,6 +6184,8 @@ msgstr "nach Personen"
 #: ../templates/database/einbaende/search_showtitlist_of_cnt:58
 #: ../templates/database/landschaft/search_showtitlist:54
 #: ../templates/database/portrait/search_showtitlist:54
+#: ../templates/litlists_manage_singlelist:89
+#: ../templates/litlists_show_singlelist:58
 #: ../templates/resultlists_showall:49
 #: ../templates/resultlists_showall_sortall:52
 #: ../templates/resultlists_showsinglepool:51
@@ -6190,6 +6211,8 @@ msgstr "nach Regionen"
 #: ../templates/database/einbaende/search_showtitlist_of_cnt:57
 #: ../templates/database/landschaft/search_showtitlist:53
 #: ../templates/database/portrait/search_showtitlist:53
+#: ../templates/litlists_manage_singlelist:88
+#: ../templates/litlists_show_singlelist:57
 #: ../templates/resultlists_showall:48
 #: ../templates/resultlists_showall_sortall:51
 #: ../templates/resultlists_showsinglepool:50
@@ -6224,6 +6247,8 @@ msgstr "nach Themen"
 #: ../templates/database/einbaende/search_showtitlist_of_cnt:53
 #: ../templates/database/landschaft/search_showtitlist:50
 #: ../templates/database/portrait/search_showtitlist:50
+#: ../templates/litlists_manage_singlelist:84
+#: ../templates/litlists_show_singlelist:53
 #: ../templates/resultlists_showall:44
 #: ../templates/resultlists_showall_sortall:47
 #: ../templates/resultlists_showsinglepool:46
@@ -6249,6 +6274,8 @@ msgstr "nach Titel/Z&auml;hlung"
 #: ../templates/database/einbaende/search_showtitlist_of_cnt:56
 #: ../templates/database/landschaft/search_showtitlist:52
 #: ../templates/database/portrait/search_showtitlist:52
+#: ../templates/litlists_manage_singlelist:87
+#: ../templates/litlists_show_singlelist:56
 #: ../templates/resultlists_showall:47
 #: ../templates/resultlists_showall_sortall:50
 #: ../templates/resultlists_showsinglepool:49
@@ -6267,6 +6294,8 @@ msgid "nach Verlag"
 msgstr "nach Verlag"
 
 #: ../templates/database/einbaende/search_showtitlist_of_cnt:54
+#: ../templates/litlists_manage_singlelist:85
+#: ../templates/litlists_show_singlelist:54
 #: ../templates/resultlists_showall:45
 #: ../templates/resultlists_showall_sortall:48
 #: ../templates/resultlists_showsinglepool:47
@@ -6278,6 +6307,11 @@ msgstr "nach Verlag"
 #: ../templates/virtualsearch_result_start:47
 msgid "nach Z&auml;hlung"
 msgstr "nach Z&auml;hlung"
+
+#: ../templates/litlists_manage_singlelist:90
+#: ../templates/litlists_show_singlelist:59
+msgid "nach Zeitstempel"
+msgstr "nach Zeitstempel"
 
 #: ../templates/userprefs:87
 msgid "nein"

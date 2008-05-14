@@ -23,7 +23,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="#"><span class="dbdescshort">[% IF tag %][% msg.maketext("Quellen zum Tag <i>[_1]</i> in BibSonomy",${tag}) %][% ELSIF bsuser %][% msg.maketext("Quellen des Nutzers <i>[_1]</i> in BibSonomy",${bsuser}) %][% END %]</span></a></li>
+   <li><a class="active" href="#"><span class="dbdescshort">[% IF tag %][% msg.maketext("Quellen zum Tag <i>[_1]</i> in BibSonomy",tag) %][% ELSIF bsuser %][% msg.maketext("Quellen des Nutzers <i>[_1]</i> in BibSonomy",bsuser) %][% END %]</span></a></li>
 </ul>
 
 <div class="content">

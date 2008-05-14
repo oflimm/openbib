@@ -30,11 +30,11 @@
 <p />
 
 [%# USE dumper; dumper.dump(litlist)%]
-[% IF litlist.itemlist.size > 0 %]
+[% IF litlist.recordlist.size > 0 %]
 
 <!-- Titlelist begins here -->
 <table width="100%">
-<tr><th>[% litlist.properties.title %]&nbsp;<a href="http://[% config.loadbalancerservername %][% config.connector_permalink_loc %]/[% litlist.properties.userid %]/[% litlist.properties.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="Permanenter Link"><img src="/images/openbib/3d-file-blue-permalink.png" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a></th></tr>
+<tr><th>[% litlist.properties.title %]</th></tr>
 <tr><td class="boxedclear">
 
 <form method="get" action="[% config.litlists_loc %]">
@@ -47,6 +47,7 @@
 <table width="100%">
 <tr><th>[% msg.maketext("Optionen") %]</th></tr>
 <tr><td class="boxed">
+<table><tr><td>
 <b>[% msg.maketext("Sortierung") %]:</b>&nbsp;
 <select name="sorttype">
   <option value="author"[%- IF query.param('sorttype') == 'author' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Person") %]</option>
@@ -62,7 +63,10 @@
   <option value="up"[%- IF query.param('sortorder') == 'up' -%] selected="selected"[%- END -%]>[% msg.maketext("aufsteigend") %]</option>
   <option value="down"[%- IF query.param('sortorder') == 'down' -%] selected="selected"[%- END -%]>[% msg.maketext("absteigend") %]</option>
 </select>
-&nbsp;<input type="submit" value="[% msg.maketext("Los") %]" /></td></tr></table><p />
+&nbsp;<input type="submit" value="[% msg.maketext("Los") %]" />
+</td><td>&nbsp;&nbsp;<b>&#124;</b>&nbsp;&nbsp;</td><td><b>PermaLink:&nbsp;&nbsp;</b></td><td valign="bottom"><a href="http://[% config.loadbalancerservername %][% config.connector_permalink_loc %]/[% litlist.properties.userid %]/[% litlist.properties.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]"><img src="/images/openbib/3d-file-blue-permalink.png" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a></td></tr>
+</table>
+</td></tr></table><p />
 </form>
 
 <p />
@@ -123,7 +127,7 @@
 [%- signatur = signaturen.join(' ; ') -%]
 [%- isbn     = item.${"T0540"}.first.content.replace('-','') -%]
 
-<tr class="[% listrow %]"><td class="listnr">[% loop.count+offset %]</td><td class="thumbnail">[% IF (config.coverscans.all || config.coverscans.${record.database}) && isbn %]<a href="[% config.coverscans_credits_exturl.replace('ISBNINHERE', isbn) %]" target="_blank" ><img src="[% config.coverscans_exturl.replace('ISBNINHERE', isbn) %]" title="[% config.coverscans_creditstext_exturl %]" /></a>[% ELSE %]&nbsp;[% END %]</td><td><span class="rlauthor">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;sorttype=[% sorttype %];database=[% item.${"database"} %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
+<tr class="[% listrow %]"><td class="listnr">[% loop.count+offset %]</td><td class="thumbnail">[% IF (config.coverscans.all || config.coverscans.${record.database}) && isbn %]<a href="[% config.coverscans_credits_exturl.replace('ISBNINHERE', isbn) %]" target="_blank" ><img src="[% config.coverscans_exturl.replace('ISBNINHERE', isbn) %]" title="[% config.coverscans_creditstext_exturl %]" /></a>[% ELSE %]&nbsp;[% END %]</td><td><span class="rlauthor">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];database=[% item.${"database"} %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
 class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span><br />aus:&nbsp;<i>[% targetdbinfo.dbinfo.${item.database}.full %]</i></td><td><td align="left"><b>[% signatur %]</b></td><td class="popularitycount">[% item.popularity %]</td><td>[% record.tstamp %]</td></tr>
 
 [% IF listrow == 'listrow1' %]

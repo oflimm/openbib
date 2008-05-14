@@ -92,10 +92,12 @@ Beschränkungen (nur vom Campus)</li>
 ISBN zurückgegriffen, so wird der Zugriff nun alternativ - für den
 Fall einer nicht vorhandenen ISBN - um den Bibkey erweitert.  </p>
 
-<h3>Integration der Quellen in BibSonomy</h3>
+<h3>Tiefere Integration von BibSonomy</h3>
+
+<h4>Thematische Integration weiterer Quellen</h4>
 
 <p> Die in BibSonomy enthaltenen Quellen - Publikationen wie auch
-Webseiten - werden vollintegriert in den KUG nun über Schlagworte/Tags
+Webseiten - werden vollintegriert in den KUG über Schlagworte/Tags
 thematisch erschlossen. Ausgehend von einer Titelliste besteht der
 Zugriff zusätzlich auf Titel eines zugehörigen Nutzers (von BibSonomy)
 wie auch auf Titel, die durch Angabe mehrerer Tags eingegrenzt werden
@@ -106,6 +108,17 @@ Verfügbarkeitsinformation in der Titel-Anzeige ausgegeben. </p>
 <p>
 <a href="http://kug4.ub.uni-koeln.de/portal/connector/permalink/inst006/6439/1/kug/index.html" target="_blank">Beispiel</a>
 </p>
+
+<h4>Automatische Spiegelung von Titeln beim Tagging im KUG nach BibSonomy</h4>
+
+<p> Wenn Titel im KUG getaggt werden, k&ouml;nnen diese Titel
+inkl. Tags und Sichtbarkeitsinformationen (privat/&ouml;ffentlich)
+automatisch in eine entsprechenden BibSonomy-Kennung eingespielt und
+damit effektiv gespiegelt werden. Der Nutzer sucht und erschliesst
+also Titel durch Tagging in der KUG-Oberfl&auml;che, findet diese dann
+aber auch in BibSonomy wieder und kann damit die dort vorhandenen weitergehenden
+M&ouml;glichkeiten nutzen </p>
+
 
 <h3>Titel in anderen Ausgaben und anderen Katalogen</h3>
 

@@ -136,6 +136,7 @@
 ../templates/leave
 ../templates/litlists_manage_lists
 ../templates/litlists_manage_singlelist
+../templates/litlists_show_singlelist
 ../templates/loadbalancer
 ../templates/login
 ../templates/login_circulation

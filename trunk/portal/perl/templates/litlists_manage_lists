@@ -40,7 +40,7 @@
 
 <p />
 
-<form method="get" action="[%config.litlists_loc %]">
+<form method="get" action="[% config.litlists_loc %]">
 <input type="hidden" name="action"     value="manage" />
 <input type="hidden" name="sessionID"  value="[% sessionID %]" />
 
@@ -66,7 +66,7 @@ type="submit" name="do_addlist" value="[% msg.maketext("Neu") %]" /></td></tr>
 <tr><th>Bereits existierende Literaturlisten</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 <table>
-<tr class="titlerow"><td><b>Titel der Literaturliste</b></td><td><b>Sichtbarkeit</b></td><td><b>Titelzahl</b></td><td><b>Angelegt</b></td></tr>
+<tr class="titlerow"><td><b>Titel der Literaturliste</b></td><td><b>Sichtbarkeit</b></td><td><b>Titelzahl</b></td><td><b>Angelegt</b></td><td><b>Permalink</b></td></tr>
 [% listrow = 'listrow1' %]
 [% FOREACH litlist IN litlists %]
 <tr class="[% listrow %]"><td><a href="http://[%
@@ -76,7 +76,7 @@ config.servername %][% config.litlists_loc %]?sessionID=[% sessionID
 [% ELSE %] 
 privat
 [% END %]
-</td><td>[% litlist.itemcount %]</td><td>[% litlist.tstamp %]</td></tr>
+</td><td>[% litlist.itemcount %]</td><td>[% litlist.tstamp %]</td><td align="center">[% IF litlist.type == 1 %]<a href="http://[% config.loadbalancerservername %][% config.connector_permalink_loc %]/[% litlist.userid %]/[% litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="Permanenter Link"><img src="/images/openbib/3d-file-blue-permalink.png" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a>[% ELSE %]&nbsp;[%- END -%]</td></tr>
 
 [% IF listrow == 'listrow1' %]
 [% listrow = 'listrow2' %]

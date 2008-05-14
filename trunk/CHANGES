@@ -4,9 +4,9 @@ Version 2.2:
 - Refactoring in neue Objekte (Record, RecordList, SearchQuery usw.)
 - Integration des Ausleihsystems durch Web-Services (Bestellen, Vormerken, 
   Stornieren, Verlaengern)
-- Litaraturlisten. Nutzer koennen nun eigene Literaturlisten (privat
-  und oeffentlich) anlegen und auf diese von ueberall ueber PermaLinks
-  zugreifen. 
+- Literaturlisten. Nutzer koennen nun eigene Literaturlisten (privat
+  und oeffentlich) anlegen und auf die als oeffentlich
+  gekennzeichneten von ueberall ueber PermaLinks zugreifen. 
 - Verfuegbarkeitsanzeige eines Titels als Bild in Google Book Search
   und BibSonomy
 - Wortwolke fuer die Verteilung der Erscheinungsjahre in einem Katalog
@@ -20,6 +20,25 @@ Version 2.2:
   Anreicherungskonzept und ISBN
 - Systematisches Blaettern anhand der BK. Virtuell realisiert ueber
   zentrales Anreicherungskonzept und ISBN
+- Optionale Einbindung von Cover-Scans
+- Tiefere Integration von BibSonomy:
+
+  a) Erschliessung neuer Quellen:
+
+     Es werden nun automatisch ueber ein
+     Vorkommen eines Titels oder seiner Schlagworte in BibSonomy weitere
+     Quellen (Publikationen und Webseiten) in OpenBib integriert. Bei
+     den ueber diese Tags thematisch gefundenen Publikationen wird
+     dann anhand eines bibliograph. Fingerabdrucks (Bibkey) nach der
+     Existenz jener Titel in den Katalogen des KUG's gesucht und diese
+     gegebenenfalls angezeigt.
+
+  b) Automatische Spiegelung von Titeln beim Tagging im KUG nach BibSonomy
+
+     Wenn Titel im KUG getaggt werden, koennen diese Titel inkl. Tags
+     und Sichtbarkeitsinformationen automatisch in eine
+     entsprechenden BibSonomy-Kennung eingespielt und damit effektiv
+     gespiegelt werden.
 
 Version 2.1:
 

@@ -94,15 +94,40 @@ else {
 # Haeufigkeit von ISBNs im KUG:
 # select isbn,count(dbname) as dbcount from all_isbn group by isbn order by dbcount desc limit 10
 
-my $enrichdbh     = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd}) or die "could not connect";
-my $enrichrequest = $enrichdbh->prepare("insert into all_isbn values (?,?,?,?)");
-my $delrequest    = $enrichdbh->prepare("delete from all_isbn where dbname=?");
+my $enrichdbh         = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd}) or die "could not connect";
+my $enrichrequest     = $enrichdbh->prepare("insert into all_isbn values (?,?,?,?)");
+my $delrequest        = $enrichdbh->prepare("delete from all_isbn where dbname=?");
+
+my $insertion_date_available = 0;
+
 foreach my $database (@databases){
     $logger->info("Getting ISBNs from database $database and adding to enrichmntdb");
 
     my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or die "could not connect";
+
+    my $enriched_id_ref = {};
+
+    {
+        my $insertdaterequest = $dbh->prepare("select count(*) as insertdatecount from tit where category=2");
+        $insertdaterequest->execute();
+        
+        my $insertdateresult=$insertdaterequest->fetchrow_hashref;
+        $insertion_date_available = $insertdateresult->{insertdatecount};
+        
+        $insertdaterequest->finish;
+    }
     
+    if (!$insertion_date_available && $incr){
+        $logger->fatal("Inkrementelle Updates werden fuer die Datenbank $database nicht unterstuetzt");
+        next;
+    }
+
     my $sqlrequest = "select t1.id as id,t1.content as isbn,t2.content as thisdate from tit_string as t1 left join tit_string as t2 on t1.id=t2.id where t2.category = 2 and t1.category in (540,553)";
+
+    if (!$insertion_date_available){
+        $sqlrequest = "select id, content as isbn from tit where category in (540,553)";
+    }
+
     my @sqlargs    = ();
     my $lastdate   = "";
 
@@ -122,11 +147,12 @@ foreach my $database (@databases){
     
     my $request=$dbh->prepare($sqlrequest);
     $request->execute(@sqlargs);
-    
+
+    my $isbn_insertcount = 0;
     while (my $result=$request->fetchrow_hashref()){
         my $id       = $result->{id};
         my $thisisbn = $result->{isbn};
-        my $date     = $result->{thisdate};
+        my $date     = $result->{thisdate} || 0;
 
         # Normierung auf ISBN13
         my $isbn13 = Business::ISBN->new($thisisbn);
@@ -145,24 +171,40 @@ foreach my $database (@databases){
         });
 
         $enrichrequest->execute($thisisbn,$database,$id,$date);
+
+        $enriched_id_ref->{$id}=1;
+
+        $isbn_insertcount++;
     }
 
+    $logger->info("$isbn_insertcount ISBN's inserted");
+    
     $logger->info("Getting Bibkeys from database $database and adding to enrichmntdb");
 
     $sqlrequest = "select t1.id as id,t1.content as bibkey,t2.content as thisdate from tit as t1 left join tit as t2 on t1.id=t2.id where t2.category = 2 and t1.category=5050";
-    
+
+    if (!$insertion_date_available){
+        $sqlrequest = "select id, content as isbn from tit where category=5050";
+    }
+
     $request=$dbh->prepare($sqlrequest);
     $request->execute(@sqlargs);
     
+    my $bibkey_insertcount = 0;
     while (my $result=$request->fetchrow_hashref()){
         my $id       = $result->{id};
         my $bibkey   = $result->{bibkey};
-        my $date     = $result->{thisdate};
+        my $date     = $result->{thisdate} || 0;
 
-        $enrichrequest->execute($bibkey,$database,$id,$date);
+        if (!exists $enriched_id_ref->{$id} && $bibkey){
+            $enrichrequest->execute($bibkey,$database,$id,$date);
+            $bibkey_insertcount++;
+        }
     }
 
-    
+    $logger->info("$bibkey_insertcount Bibkeys inserted");
+
+    $request->finish;
     $dbh->disconnect();
 }
 

@@ -84,16 +84,16 @@
 
 [% 
    IF config.litlists ;
-      litlists = user.get_litlists();
+      userlitlists = user.get_litlists();
 
-      IF litlists.size > 0 ;
+      IF userlitlists.size > 0 ;
 %]
 <form method="get" action="[%config.litlists_loc %]">
 <input type="hidden" name="action"          value="manage" />
 <input type="hidden" name="titid"           value="[% record.id %]" />
 <input type="hidden" name="titdb"           value="[% record.database %]" />
 <input type="hidden" name="sessionID"       value="[% sessionID %]" />
-Diesen Titel in die Literaturliste <select name="litlistid">[% FOREACH litlist IN litlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select>&nbsp;<input type="submit" name="do_addentry" value="&uuml;bernehmen" />
+Diesen Titel in die Literaturliste <select name="litlistid">[% FOREACH litlist IN userlitlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select>&nbsp;<input type="submit" name="do_addentry" value="&uuml;bernehmen" />
 </form>
 <p />
 [%    END %]
@@ -340,7 +340,7 @@ END;
 Dieser Titel befindet sich in folgenden Literaturlisten:
 
 <ul>
-[% FOREACH litlist IN litlists%]
+[% FOREACH litlist IN litlists %]
 <li><a href="[% config.litlists_loc %]?sessionID=[% sessionID
 %];action=show;litlistid=[% litlist.id %]">[% litlist.title %]</a></li>
 [% END %]

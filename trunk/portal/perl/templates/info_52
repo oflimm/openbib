@@ -17,7 +17,7 @@
 [%
   thisbk     = query.param("category");
   bks        = config.load_bk;
-  thisbklist = statistics.get_result({id => view, type => 11, hashkey => thisbk }); 
+  thisbklist = statistics.get_result({id => view, type => 11, subkey => thisbk }); 
 %]
 [%
   viewdbs = [];

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2008-05-14 13:40+0200\n"
+"PO-Revision-Date: 2008-05-15 09:16+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -210,7 +210,8 @@ msgstr "Als Mail verschicken"
 
 #: ../templates/database/ebooks/search_showtitset:50
 #: ../templates/database/nationallizenzen/search_showtitset:50
-#: ../templates/litlists_manage_lists:79 ../templates/search_showtitset:50
+#: ../templates/litlists_manage_lists:79
+#: ../templates/litlists_show_singlelist:67 ../templates/search_showtitset:50
 msgid "Als Permanenten Link verwenden"
 msgstr "Als Permanenten Link verwenden"
 
@@ -2516,7 +2517,7 @@ msgstr "Lokale Signatur      "
 #: ../templates/database/landschaft/search_showtitlist:63
 #: ../templates/database/portrait/search_showtitlist:63
 #: ../templates/litlists_manage_singlelist:96
-#: ../templates/litlists_show_singlelist:65
+#: ../templates/litlists_show_singlelist:66
 #: ../templates/resultlists_showall:59
 #: ../templates/resultlists_showall_sortall:62
 #: ../templates/resultlists_showsinglepool:60
@@ -3008,7 +3009,7 @@ msgstr "Passwort per Mail schicken"
 msgid "Passwort vergessen?"
 msgstr "Passwort vergessen?"
 
-#: ../templates/litlists_show_singlelist:65
+#: ../templates/litlists_show_singlelist:67
 msgid "Permanenter Link"
 msgstr "Permanenter Link"
 
@@ -3090,12 +3091,12 @@ msgstr "Provenienz"
 msgid "Publikationen"
 msgstr "Publikationen"
 
-#. (${bsuser})
+#. (bsuser)
 #: ../templates/bibsonomy_showtitlist:26
 msgid "Quellen des Nutzers <i>%1</i> in BibSonomy"
 msgstr "Quellen des Nutzers <i>%1</i> in BibSonomy"
 
-#. (${tag})
+#. (tag)
 #: ../templates/bibsonomy_showtitlist:26
 msgid "Quellen zum Tag <i>%1</i> in BibSonomy"
 msgstr "Quellen zum Tag <i>%1</i> in BibSonomy"
@@ -3682,7 +3683,7 @@ msgstr ""
 #: ../templates/database/landschaft/search_showtitlist:47
 #: ../templates/database/portrait/search_showtitlist:47
 #: ../templates/litlists_manage_singlelist:81
-#: ../templates/litlists_show_singlelist:50
+#: ../templates/litlists_show_singlelist:51
 #: ../templates/resultlists_showall:41
 #: ../templates/resultlists_showall_sortall:44
 #: ../templates/resultlists_showsinglepool:43
@@ -5911,6 +5912,14 @@ msgstr "Wählen Sie bitte einen View aus:"
 msgid "Zeitschriftenartikel"
 msgstr "Zeitschriftenartikel"
 
+#: ../templates/bibsonomy_showtags:37
+msgid ""
+"Zu diesem Titel bzw. seinen Schlagworten konnten in BibSonomy folgende Tags "
+"gefunden werden."
+msgstr ""
+"Zu diesem Titel bzw. seinen Schlagworten konnten in BibSonomy folgende Tags "
+"gefunden werden."
+
 #: ../templates/mailcollection_mail_html:26
 msgid "Zugemailte Merkliste"
 msgstr "Zugemailte Merkliste"
@@ -5986,16 +5995,12 @@ msgstr "Zur Trefferliste"
 msgid "Zur&uuml;ck zur %1Suchanfrage%2"
 msgstr "Zur&uuml;ck zur %1Suchanfrage%2"
 
-#: ../templates/litlists_show_singlelist:65
-msgid "[PermaLink]"
-msgstr "[PermaLink]"
-
 #: ../templates/database/einbaende/search_showtitlist:55
 #: ../templates/database/einbaende/search_showtitlist_of_cnt:62
 #: ../templates/database/landschaft/search_showtitlist:58
 #: ../templates/database/portrait/search_showtitlist:58
 #: ../templates/litlists_manage_singlelist:94
-#: ../templates/litlists_show_singlelist:63
+#: ../templates/litlists_show_singlelist:64
 #: ../templates/resultlists_showall:53
 #: ../templates/resultlists_showall_sortall:56
 #: ../templates/resultlists_showsinglepool:55
@@ -6027,7 +6032,7 @@ msgstr "absteigend"
 #: ../templates/database/landschaft/search_showtitlist:57
 #: ../templates/database/portrait/search_showtitlist:57
 #: ../templates/litlists_manage_singlelist:93
-#: ../templates/litlists_show_singlelist:62
+#: ../templates/litlists_show_singlelist:63
 #: ../templates/resultlists_showall:52
 #: ../templates/resultlists_showall_sortall:55
 #: ../templates/resultlists_showsinglepool:54
@@ -6125,7 +6130,7 @@ msgstr "nach Fert.Jahr"
 #: ../templates/database/portrait/search_showtitlist:51
 #: ../templates/drilldown_categorized:52
 #: ../templates/litlists_manage_singlelist:86
-#: ../templates/litlists_show_singlelist:55
+#: ../templates/litlists_show_singlelist:56
 #: ../templates/resultlists_showall:46
 #: ../templates/resultlists_showall_sortall:49
 #: ../templates/resultlists_showsinglepool:48
@@ -6153,7 +6158,7 @@ msgstr "nach Medienart"
 #: ../templates/database/landschaft/search_showtitlist:49
 #: ../templates/database/portrait/search_showtitlist:49
 #: ../templates/litlists_manage_singlelist:83
-#: ../templates/litlists_show_singlelist:52
+#: ../templates/litlists_show_singlelist:53
 #: ../templates/resultlists_showall:43
 #: ../templates/resultlists_showall_sortall:46
 #: ../templates/resultlists_showsinglepool:45
@@ -6185,7 +6190,7 @@ msgstr "nach Personen"
 #: ../templates/database/landschaft/search_showtitlist:54
 #: ../templates/database/portrait/search_showtitlist:54
 #: ../templates/litlists_manage_singlelist:89
-#: ../templates/litlists_show_singlelist:58
+#: ../templates/litlists_show_singlelist:59
 #: ../templates/resultlists_showall:49
 #: ../templates/resultlists_showall_sortall:52
 #: ../templates/resultlists_showsinglepool:51
@@ -6212,7 +6217,7 @@ msgstr "nach Regionen"
 #: ../templates/database/landschaft/search_showtitlist:53
 #: ../templates/database/portrait/search_showtitlist:53
 #: ../templates/litlists_manage_singlelist:88
-#: ../templates/litlists_show_singlelist:57
+#: ../templates/litlists_show_singlelist:58
 #: ../templates/resultlists_showall:48
 #: ../templates/resultlists_showall_sortall:51
 #: ../templates/resultlists_showsinglepool:50
@@ -6248,7 +6253,7 @@ msgstr "nach Themen"
 #: ../templates/database/landschaft/search_showtitlist:50
 #: ../templates/database/portrait/search_showtitlist:50
 #: ../templates/litlists_manage_singlelist:84
-#: ../templates/litlists_show_singlelist:53
+#: ../templates/litlists_show_singlelist:54
 #: ../templates/resultlists_showall:44
 #: ../templates/resultlists_showall_sortall:47
 #: ../templates/resultlists_showsinglepool:46
@@ -6275,7 +6280,7 @@ msgstr "nach Titel/Z&auml;hlung"
 #: ../templates/database/landschaft/search_showtitlist:52
 #: ../templates/database/portrait/search_showtitlist:52
 #: ../templates/litlists_manage_singlelist:87
-#: ../templates/litlists_show_singlelist:56
+#: ../templates/litlists_show_singlelist:57
 #: ../templates/resultlists_showall:47
 #: ../templates/resultlists_showall_sortall:50
 #: ../templates/resultlists_showsinglepool:49
@@ -6295,7 +6300,7 @@ msgstr "nach Verlag"
 
 #: ../templates/database/einbaende/search_showtitlist_of_cnt:54
 #: ../templates/litlists_manage_singlelist:85
-#: ../templates/litlists_show_singlelist:54
+#: ../templates/litlists_show_singlelist:55
 #: ../templates/resultlists_showall:45
 #: ../templates/resultlists_showall_sortall:48
 #: ../templates/resultlists_showsinglepool:47
@@ -6309,7 +6314,7 @@ msgid "nach Z&auml;hlung"
 msgstr "nach Z&auml;hlung"
 
 #: ../templates/litlists_manage_singlelist:90
-#: ../templates/litlists_show_singlelist:59
+#: ../templates/litlists_show_singlelist:60
 msgid "nach Zeitstempel"
 msgstr "nach Zeitstempel"
 

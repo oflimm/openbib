@@ -69,7 +69,7 @@ sub new {
 
     $self->{client}  = LWP::UserAgent->new;            # HTTP client
 
-    $logger->debug("Authenticating with credentials $api_user/$api_key");
+    $logger->debug("Authenticating with credentials $self->{api_user}/$self->{api_key}");
     
     $self->{client}->credentials(                      # HTTP authentication
         'www.bibsonomy.org:80',

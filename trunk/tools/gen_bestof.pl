@@ -677,7 +677,7 @@ if ($type == 11){
     }
 
     foreach my $view (@views){
-        next if ($view eq "kug");
+#        next if ($view eq "kug");
         $logger->info("Generating Type 11 BestOf-Values for view $view");
 
         my @databases = $config->get_dbs_of_view($view);
@@ -711,13 +711,16 @@ if ($type == 11){
             }
         }
 
-        $logger->info(YAML::Dump($bk_ref));
-
-        $statistics->store_result({
-            type => 11,
-            id   => $view,
-            data => $bk_ref,
-        });
+        foreach my $bk (keys %{$bk_ref}){
+            $statistics->store_result({
+                type   => 11,
+                subkey => $bk,
+                id     => $view,
+                data   => $bk_ref->{$bk},
+            });
+            
+            $logger->info(YAML::Dump($bk_ref->{$bk}));
+        }
 
     }
 }

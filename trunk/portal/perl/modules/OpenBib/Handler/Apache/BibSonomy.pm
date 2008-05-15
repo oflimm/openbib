@@ -135,7 +135,7 @@ sub handler {
             my @tags = ();
             @tags = OpenBib::BibSonomy->new()->get_tags({ bibkey => $bibkey, tags => \@local_tags}) if ($bibkey=~/^1[0-9a-f]{32}$/);
 
-            $logger->debug(\@tags);
+            $logger->debug(YAML::Dump(\@tags));
             
             # TT-Data erzeugen
             my $ttdata={

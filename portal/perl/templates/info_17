@@ -81,7 +81,7 @@ verkn&uuml;pft mit </span><a href="[% config.virtualsearch_loc %]?sessionID=[% s
 [% END %]
 </ol>
 [% ELSE %]
-[% msg.maketext("Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r h&auml;fige Begriffe diese Kategorie anbieten.") %]
+[% msg.maketext("Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r h&auml;ufige Begriffe diese Kategorie anbieten.") %]
 [% END %]
 </td></tr>
 </table>

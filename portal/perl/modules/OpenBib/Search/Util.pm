@@ -414,9 +414,9 @@ sub initial_search_for_titidns {
         serien   => $serien,
         offset   => $offset,
         hitrange => $hitrange,
-    }));
+    })) or $logger->error("Database: $database - ".$DBI::errstr);
 
-    $request->execute($searchquery->get_sql_queryargs);
+    $request->execute($searchquery->get_sql_queryargs) or $logger->error("Database: $database - ".$DBI::errstr);
 
     my @tempidns=();
 

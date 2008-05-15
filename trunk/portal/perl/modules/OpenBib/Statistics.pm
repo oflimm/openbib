@@ -92,8 +92,13 @@ sub store_result {
     # Set defaults
     my $id                = exists $arg_ref->{id}
         ? $arg_ref->{id           } : undef;
+
     my $type              = exists $arg_ref->{type}
         ? $arg_ref->{type  }        : undef;
+
+    my $subkey            = exists $arg_ref->{subkey}
+        ? $arg_ref->{subkey  }      : '';
+
     my $data_ref          = exists $arg_ref->{data}
         ? $arg_ref->{data  }        : undef;
 
@@ -110,9 +115,17 @@ sub store_result {
     $logger->debug("About to store result");
 
     return undef unless (defined $id && defined $type && defined $data_ref && defined $dbh);
+
+    my $sqlstatement = "delete from result_data where id=? and type=?";
+    my @sql_args     = ($id,$type);
+
+    if ($subkey){
+        $sqlstatement .= " and subkey=?";
+        push @sql_args, $subkey;
+    }
     
-    my $request=$dbh->prepare("delete from result_data where id=? and type=?") or $logger->error($DBI::errstr);
-    $request->execute($id,$type) or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare($sqlstatement) or $logger->error($DBI::errstr);
+    $request->execute(@sql_args) or $logger->error($DBI::errstr);
 
     $logger->debug("Storing:\n".YAML::Dump($data_ref));
     $logger->debug(ref $data_ref);
@@ -124,8 +137,8 @@ sub store_result {
 
     my $datastring=unpack "H*", Storable::freeze($data_ref);
     
-    $request=$dbh->prepare("insert into result_data values (?,NULL,?,?)") or $logger->error($DBI::errstr);
-    $request->execute($id,$type,$datastring) or $logger->error($DBI::errstr);
+    $request=$dbh->prepare("insert into result_data values (?,NULL,?,?,?)") or $logger->error($DBI::errstr);
+    $request->execute($id,$type,$subkey,$datastring) or $logger->error($DBI::errstr);
 
     return;
 }
@@ -138,6 +151,8 @@ sub get_result {
         ? $arg_ref->{id           } : undef;
     my $type              = exists $arg_ref->{type}
         ? $arg_ref->{type  }        : undef;
+    my $subkey            = exists $arg_ref->{subkey}
+        ? $arg_ref->{subkey  }      : '';
     my $hashkey           = exists $arg_ref->{hashkey}
         ? $arg_ref->{hashkey}       : undef;
 
@@ -153,9 +168,16 @@ sub get_result {
 
     return undef unless (defined $id && defined $type);
     
-    my $sqlstatement="select data from result_data where id=? and type=?";
+    my $sqlstatement = "select data from result_data where id=? and type=?";
+    my @sql_args     = ($id,$type);
+
+    if ($subkey){
+        $sqlstatement .= " and subkey=?";
+        push @sql_args, $subkey;
+    }
+
     my $request=$dbh->prepare($sqlstatement) or $logger->error($DBI::errstr);
-    $request->execute($id,$type) or $logger->error($DBI::errstr);
+    $request->execute(@sql_args) or $logger->error($DBI::errstr);
 
     $logger->debug("$sqlstatement - $id / $type");
 
@@ -170,10 +192,10 @@ sub get_result {
 
     $logger->debug(YAML::Dump($data_ref));
 
-    $logger->debug("Ref: ".(ref $data_ref)." - $hashkey");
+    $logger->debug("Ref: ".(ref $data_ref));
 
     if (ref $data_ref eq "HASH" && $hashkey){
-        $logger->debug("Returning Ref: ".(ref $data_ref)." - $hashkey");
+        $logger->debug("Returning Ref: ".(ref $data_ref));
         return $data_ref->{$hashkey};
     }
     

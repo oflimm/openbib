@@ -23,9 +23,11 @@ CREATE TABLE result_data (
  id          VARCHAR(100),
  tstamp      TIMESTAMP,
  type        INT,
+ subkey      VARCHAR(50),
  data        MEDIUMBLOB,
  INDEX (id),
  INDEX (tstamp),
+ INDEX (subkey),
  INDEX (type)
 )
 PACK_KEYS=1;

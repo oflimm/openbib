@@ -261,9 +261,8 @@ sub print_to_handler {
             undef $timeall;
         }
 
-        $logger->debug("OLWS:".$query->param('olws'));
         # Anreicherung mit OLWS-Daten
-        if ($query->param('olws') eq "Viewer"){            
+        if (defined $query->param('olws') && $query->param('olws') eq "Viewer"){            
             foreach my $record ($self->get_records()){
                 if (exists $circinfotable->{$record->{database}} && exists $circinfotable->{$record->{database}}{circcheckurl}){
                     $logger->debug("Endpoint: ".$circinfotable->{$record->{database}}{circcheckurl});

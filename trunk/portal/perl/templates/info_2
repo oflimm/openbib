@@ -32,18 +32,16 @@
 
 <p />
 
-<h1>KUG-Versionen</h1>
+<h1 id="kugv2.2">Neuerungen mit Version 2.2 (geplante Umstellung am 16.6.2008)</h1>
 
-<h2 id="kugv2.2">Neuerungen mit Version 2.2 (geplante Umstellung am 2.6.2008)</h2>
-
-<h3>Integration des Ausleihsystems</h3>
+<h2>Integration des Ausleihsystems</h2>
 
 <p>
 Erweiterung der Integration des Ausleihsystems durch Web-Services um
 Bestellungen, Stornierungen und Verlängerungen.
 </p>
 
-<h3>Literaturlisten</h3>
+<h2>Literaturlisten</h2>
 
 <p> Nutzer können nun eigene Literaturlisten (privat und öffentlich)
 anlegen und auf diese von überall über PermaLinks zugreifen. </p>
@@ -52,7 +50,7 @@ anlegen und auf diese von überall über PermaLinks zugreifen. </p>
 <a href="http://kug4.ub.uni-koeln.de/portal/connector/permalink/3146/1/6/kug/index.html" target="_blank">Beispiel</a>
 </p>
 
-<h3>Systematisches Blättern</h3>
+<h2>Systematisches Blättern</h2>
 
 <p>
 Aufgrund einer zentralen Datenbasis von derzeit knapp 160.000 Titeln
@@ -63,7 +61,7 @@ target="_blank">Basisklassifikation</a> systematisch und thematisch
 auf Titel zugegriffen werden.
 </p>
 
-<h3>Weitere Anreicherungen</h3>
+<h2>Weitere Anreicherungen</h2>
 
 <p> Die zentrale Anreicherung der Katalogdaten für alle Kateloge des
 KUG wurde um weitere Inhalte erweitert. Dazu gehört die Anreicherung
@@ -92,9 +90,9 @@ Beschränkungen (nur vom Campus)</li>
 ISBN zurückgegriffen, so wird der Zugriff nun alternativ - für den
 Fall einer nicht vorhandenen ISBN - um den Bibkey erweitert.  </p>
 
-<h3>Tiefere Integration von BibSonomy</h3>
+<h2>Tiefere Integration von BibSonomy</h2>
 
-<h4>Thematische Integration weiterer Quellen</h4>
+<h3>Thematische Integration weiterer Quellen</h3>
 
 <p> Die in BibSonomy enthaltenen Quellen - Publikationen wie auch
 Webseiten - werden vollintegriert in den KUG über Schlagworte/Tags
@@ -109,7 +107,7 @@ Verfügbarkeitsinformation in der Titel-Anzeige ausgegeben. </p>
 <a href="http://kug4.ub.uni-koeln.de/portal/connector/permalink/inst006/6439/1/kug/index.html" target="_blank">Beispiel</a>
 </p>
 
-<h4>Automatische Spiegelung von Titeln beim Tagging im KUG nach BibSonomy</h4>
+<h3>Automatische Spiegelung von Titeln beim Tagging im KUG nach BibSonomy</h3>
 
 <p> Wenn Titel im KUG getaggt werden, k&ouml;nnen diese Titel
 inkl. Tags und Sichtbarkeitsinformationen (privat/&ouml;ffentlich)
@@ -120,7 +118,7 @@ aber auch in BibSonomy wieder und kann damit die dort vorhandenen weitergehenden
 M&ouml;glichkeiten nutzen </p>
 
 
-<h3>Titel in anderen Ausgaben und anderen Katalogen</h3>
+<h2>Titel in anderen Ausgaben und anderen Katalogen</h2>
 
 <p>
 Für viele Titel werden nun auch auf andere Ausgaben (andere Auflage,
@@ -133,15 +131,15 @@ diese Ausgabe des Titels besitzen.
 <a href="http://kug4.ub.uni-koeln.de/portal/connector/permalink/inst001/6017416/1/kug/index.html" target="_blank">Beispiel</a>
 </p>
 
-<h3>Erweiterte und verbesserte Wort-Wolken</h3>
+<h2>Erweiterte und verbesserte Wort-Wolken</h2>
 
 <p> Die Wort-Wolken wurden um eine Aufschluesselung des Bestandes nach
 Erscheinungsjahren erweitert. Grundsätzlich werden nun nur noch die
 Wort-Wolken angezeigt, die über Daten verfügen und damit überhaupt
 existieren.  </p>
 
-<h3>Verfügbarkeit des Titels in Google Book Search (zurückportiert
-nach Version 2.1) und BibSonomy</h3>
+<h2>Verfügbarkeit des Titels in Google Book Search (zurückportiert
+nach Version 2.1) und BibSonomy</h2>
 
 <p> Der KUG wurde um eine Integration von Google Book Search
 erweitert. Dabei haben wir eine Art 'Ampel-System' wie das der EZB
@@ -171,7 +169,7 @@ Ebenso wird dem Nutzer nun mit einem entsprechenden Bild die
 Verf&uuml;gbarkeit des Titels in BibSonomy angezeigt.
 </p>
 
-<h3>Verzicht auf Frames</h3>
+<h2>Verzicht auf Frames</h2>
 
 <p>Die Nutzung von Frames innerhalb der KUG-Anwendung wurde
 entfernt. Damit konnte die Barrierefreiheit des KUG erhöht
@@ -179,7 +177,7 @@ werden. Ebenso ist nun eine uneingeschränkte Nutzung des KUG im Rahmen
 der freien Bibliographie-Verwaltungssoftware <a
 href="http://www.zotero.org/" target="_blank">Zotero</a> möglich.</p>
 
-<h3>Verwendung von JavaScript und AJAX</h3>
+<h2>Verwendung von JavaScript und AJAX</h2>
 
 <p> Der KUG wurde um die Verwendung von JavaScript und AJAX
 erweitert. Dies wurde so realisiert, dass alle Recherche- und
@@ -196,9 +194,9 @@ mit deaktivierter JavaScript-Unterstützung Ihres Browsers auf.  </p>
 <p>Darüber hinaus wurden weitere tiefgreifende Änderungen im Fundament
 der Anwendung vorgenommen, wie eine Umstellung auf diverse neue Objekte</p>
 
-<h2 id="kugv2.1">Neuerungen mit Version 2.1 (Umstellung am 14.10.2007)</h2>
+<h1 id="kugv2.1">Neuerungen mit Version 2.1 (Umstellung am 14.10.2007)</h1>
 
-<h3>Vormerkungen</h3>
+<h2>Vormerkungen</h2>
 
 <p>
 Bisher konnte man bei Instituten, die eine elektronische Ausleihe
@@ -211,7 +209,7 @@ hat den Vorteil, dass Nutzer nach der Recherche f&uuml;r Vormerkungen
 nicht mehr in eine andere Anwendung wechseln m&uuml;ssen.
 </p>
 
-<h3>Kategorie-basierte Suchverfeinerungen (Drill-Downs)</h3>
+<h2>Kategorie-basierte Suchverfeinerungen (Drill-Downs)</h2>
 
 <p>Bei der einfachen Recherche werden verschiedene kategorisierte
 Inhalte nun direkt vollst&auml;ndig aus dem Suchmaschinen-Index geholt
@@ -220,13 +218,13 @@ rechten Bildschirmrand mit der Anzahl verkn&uuml;pfter Titel
 angezeigt. Sie sollen dem unge&uuml;bten Benutzer helfen, die
 angezeigte Treffermenge bei Bedarf einzugrenzen.  </p>
 
-<h3>Social-Tagging</h3>
+<h2>Social-Tagging</h2>
 
 <p>D.h. die von Nutzern vergebenen &ouml;ffentlichen Tags werden nun
 allen Nutzern angezeigt. Damit besteht &uuml;ber die Tags ein
 Zugriff auf inhaltlich benachbarte Titel</p>
 
-<h3>Kontextsensitive Hilfe</h3>
+<h2>Kontextsensitive Hilfe</h2>
 
 <p> Wir haben begonnen, eine kontextbezogene Hilfe in den KUG
 einzubauen.  Diese erkennen Sie an einem Fragezeichen <img
@@ -234,14 +232,14 @@ src="/images/openbib/info.png" /> am rechten Bildschirmrand. &Uuml;ber
 dieses Fragezeichen k&ouml;nnen Sie zielgenau in den entsprechenden
 Abschnitt der Hilfeseite gelangen.  </p>
 
-<h3>Such-Wolken</h3>
+<h2>Such-Wolken</h2>
 
 <p> Die von Nutzern verwendeten Suchbegriffe bei der Recherche werden
 nun f&uuml;r jede Spezial- (Instituts-) Sicht ausgewertet und in Form
 einer Wolke dargestellt. Diese finden Sie unter &Uuml;bersichten ->
 Wolken -> Suchbegriffe.  </p>
 
-<h3>PermaLink</h3>
+<h2>PermaLink</h2>
 
 <p>Einzelne Titel-S&auml;tze k&ouml;nnen nun unter einem einheitlichen
 URL verlinkt werden - &auml;hnlich Blog-Eintr&auml;gen. D.h. bei einer
@@ -250,7 +248,7 @@ src="/images/openbib/3d-file-blue-permalink.png" border="0" />. Wenn
 Sie darauf klicken, &ouml;ffnet sich in einem neuen Fenster der
 verlinkbare permanente URL zu diesem Titel in dieser Sicht.  </p>
 
-<h3>Recherche-Anreicherungen</h3>
+<h2>Recherche-Anreicherungen</h2>
 
 <p>Um zu den vom Nutzer gew&uuml;nschten Recherche-Ergebnisse zu gelangen,
 werden die zugrunde liegenden Daten f&uuml;r die Recherche intern um
@@ -274,24 +272,24 @@ entsprechenden Treffer nun gefunden, was bei korrekter Katalogisierung
 in der Regel nicht der Fall w&auml;re</li>-->
 </ul>
 
-<h3>Virtueller Notations-Index</h3>
+<h2>Virtueller Notations-Index</h2>
 
 <p> Die schon vorhandenen virtuellen Indizes für Personen,
 Institutionen und Schlagworte wurden um einen Index für Notationen
 erweitert.  </p>
 
-<h3>Optimierung des Wortwolken-Algorithmus.</h3>
+<h2>Optimierung des Wortwolken-Algorithmus.</h2>
 
 <p>Bei den Wortwolken (Tag-Clouds) in den &Uuml;bersichten verwenden
 wir nun statt eines linearen einen logarithmischen
 Algorithmus. Dadurch werden dominierende Begriffe weniger hoch
 gewichtet und es kommt zu "ausgewogeneren" Wolken.</p>
 
-<h3>Tag-Editor</h3>
+<h2>Tag-Editor</h2>
 
 <p>Nutzer können nun einzelne ihrer Tags umbenennen.</p>
 
-<h3>unAPI</h3>
+<h2>unAPI</h2>
 
 <p>Bereitstellung bibliographischer Informations-Objekte &uuml;ber <a
 href="http://unapi.info" target="_blank">unAPI</a> z.B. zur
@@ -306,11 +304,11 @@ den Benutzer unsichtbar im Fundament der Anwendung vorgenommen.
 
 </p>
 
-<h2 id="kugv2.0">Neuerungen mit Version 2.0 (Umstellung am 19.3.2007)</h2>
+<h1 id="kugv2.0">Neuerungen mit Version 2.0 (Umstellung am 19.3.2007)</h1>
 
-<h3>Darstellung der vergebenen Schlagworte, Notationen, Körperschaften
+<h2>Darstellung der vergebenen Schlagworte, Notationen, Körperschaften
 sowie Personen als Wortwolken
-(Tag-Clouds)</h3>
+(Tag-Clouds)</h2>
 
 <p>
 F&uuml;r jeden Katalog kann - soweit dort verschlagwortet wird - eine
@@ -321,7 +319,7 @@ Schlagwort dargestellt. Gleiches gilt für Notationen, Körperschaften
 und Personen.
 </p>
 
-<h3>Tagging</h3>
+<h2>Tagging</h2>
 
 <p> Angemeldete Nutzer können nun alle im KUG gefundenen Titel
 'taggen', d.h. mit einem eigenen Etikett (= Schlagwort/Tag)
@@ -342,7 +340,7 @@ für nicht authentifizierte Nutzer dargestellt - so erhalten auch sie
 Zugriff auf alle mit dem jeweiligen Tag verknüpften Titel.
 </p>
 
-<h3>Mashup mit Wikipedia</h3>
+<h2>Mashup mit Wikipedia</h2>
 
 <p>
 In der Einzeltreffer-Anzeige werden Personen sowie ISBNs
@@ -357,7 +355,7 @@ kann, ohne sich mit der jeweiligen Suchoberfläche auseinandersetzen zu
 müssen.
 </p>
 
-<h3>&Uuml;bersicht der Spezial-Sichten des KUG</h3>
+<h2>&Uuml;bersicht der Spezial-Sichten des KUG</h2>
 
 <p>
 Neben dem Standard-KUG mit allen Katalogen gibt es eine Vielzahl an
@@ -369,7 +367,7 @@ an zentraler Stelle aufgef&uuml;hrt.
 </p>
 
 
-<h3>Unicode</h3>
+<h2>Unicode</h2>
 
 <p>
 Das System verarbeitet nun grunds&auml;tzlich alle bibliographischen
@@ -377,7 +375,7 @@ Daten im Unicode-Format. Damit wird der Grundstein f&uuml;r die
 Integration von CJK-Datenbest&auml;nden gelegt.
 </p>
 
-<h3>Mehrsprachigkeit</h3>
+<h2>Mehrsprachigkeit</h2>
 
 <p>
 Mit der Einführungen von GNU gettext als Mechanismus zur
@@ -386,7 +384,7 @@ auch in den Templates - gewinnt das System die Fähigkeit diese Texte
 in verschiedenen Sprachen auszugeben.
 </p>
 
-<h3>Restrukturierung der bibliographischen Datenstrukturen</h3>
+<h2>Restrukturierung der bibliographischen Datenstrukturen</h2>
 
 <p>
 Es wurde eine grunds&auml;tzliche Restrukturierung der verwendeten
@@ -402,7 +400,7 @@ Titel-Stringsuche auf weitere Kategorien jenseits des HST ausgedehnt
 werden.
 </p>
 
-<h3>Verwendung von Suchmaschinen-Technologie</h3>      
+<h2>Verwendung von Suchmaschinen-Technologie</h2>      
 
 <p>
 Durch die Verwendung von Suchmaschinen-Technologie basierend auf der
@@ -415,8 +413,8 @@ angeboten werden. Xapian wird z.B. von der Webpr&auml;senz der Zeitung
 "Die Zeit" eingesetzt.
 </p>
 
-<h3>Parametrisierbare Import-Schnittstelle mit Plugin-Mechanismus<!-- und
-Live-Update--></h3> 
+<h2>Parametrisierbare Import-Schnittstelle mit Plugin-Mechanismus<!-- und
+Live-Update--></h2> 
 
 <p>
 Auf der Grundlage des auf MAB2 basierten Meta-Datenformates wird das
@@ -433,7 +431,7 @@ auch live inkrementell aggregiert und in der zugehörigen KUG-Datenbank
 aktualisiert werden. -->
 </p>
 
-<h3>Verarbeitung beliebiger Meta-Datenformate</h3> 
+<h2>Verarbeitung beliebiger Meta-Datenformate</h2> 
 
 <p>
 Jenseits des verwendeten MAB2-Datenformats können nun beliebige
@@ -443,7 +441,7 @@ mit der parametrisierbaren Import-Schnittstelle.
 </p>
 
 
-<h3>Weitere nutzerspezifische Verbesserungen</h3>
+<h2>Weitere nutzerspezifische Verbesserungen</h2>
 
 F&uuml;r den Benutzer direkt sichtbar wurde u.a. folgendes ge&auml;ndert:
 
@@ -484,10 +482,10 @@ Wiederum wurden wesentliche Entwicklungen und Verbesserungen f&uuml;r
 den Benutzer unsichtbar im Fundament der Anwendung vorgenommen.
 </p>
 
-<h2 id="kugv1.2.3">Neuerungen mit Version 1.2.3 (Umstellung am 18.12.2006)</h2>
+<h1 id="kugv1.2.3">Neuerungen mit Version 1.2.3 (Umstellung am 18.12.2006)</h1>
 
-<h3>Recommender-Funktion mit Titelvorschl&auml;gen '...das k&ouml;nnte Sie interessieren' durch
-Nutzungsanalysen</h3>
+<h2>Recommender-Funktion mit Titelvorschl&auml;gen '...das k&ouml;nnte Sie interessieren' durch
+Nutzungsanalysen</h2>
 
 <p>
 Durch statistische Auswertungen des Ausleihverhaltens im Bestand der
@@ -501,7 +499,7 @@ f&uuml;r interessant befunden wurden. (R&uuml;ckportiert von Version
 2.0)
 </p>
 
-<h3>Popularit&auml;ts-Funktionen</h3>
+<h2>Popularit&auml;ts-Funktionen</h2>
 
 <p>
 Durch eine Analyse des Nutzungsverhaltens - &auml;hnlich wie bei der
@@ -515,7 +513,7 @@ Popularit&auml;t der Titel sortieren. Damit k&ouml;nnen Nutzer direkt vom
 Nutzungsverhalten anderer Nutzer profitieren. (R&uuml;ckportiert von Version 2.0)
 </p>
 
-<h3>Integration mit Social-Software / BibSonomy</h3>
+<h2>Integration mit Social-Software / BibSonomy</h2>
 
 <p>
 In der Einzeltreffer-Anzeige wie auch in der Merkliste k&ouml;nnen
@@ -528,7 +526,7 @@ von Bibliographie-Listen und deren Austausch/Verbreitung spezialisiert
 ist. (R&uuml;ckportiert von Version 2.0)
 </p>
 
-<h3>Standardkonformit&auml;t zu XHTML 1.0 transitional</h3>
+<h2>Standardkonformit&auml;t zu XHTML 1.0 transitional</h2>
 
 <p>
 Alle Templates des KUG wurden entsprechend &uuml;berarbeitet, so dass
@@ -536,9 +534,9 @@ nun &uuml;berall die Standardkonformit&auml;t entsprechend dem
 W3C-Validator gegeben ist.
 </p>
 
-<h2 id="kugv1.2.2">Neuerungen mit Version 1.2.2 (Umstellung am 4.4.2006)</h2>
+<h1 id="kugv1.2.2">Neuerungen mit Version 1.2.2 (Umstellung am 4.4.2006)</h1>
 
-<h3>RSS-Feeds (Abonnierbare Nachrichtenkan&auml;le)</h3>
+<h2>RSS-Feeds (Abonnierbare Nachrichtenkan&auml;le)</h2>
 
 <p>
 Die letzten 50 Neuzug&auml;nge (alle, zu einem Verfasser oder einer
@@ -548,7 +546,7 @@ href="http://de.wikipedia.org/wiki/RSS-Feed"
 target="_blank">RSS-Feed</a> abonnieren. (R&uuml;ckportiert von Version 2.0)
 </p>
 
-<h3>Ergebnisanreicherung durch gescannte Inhaltsverzeichnisse</h3>      
+<h2>Ergebnisanreicherung durch gescannte Inhaltsverzeichnisse</h2>      
 
 <p>
 Wenn uns zu einem Titel digitalisierte Inhaltsverzeichnisse zur
@@ -556,9 +554,9 @@ Verf&uuml;gung stehen, dann werden sie katalog&uuml;bergreifend in der
 Titelanzeige verlinkt. (R&uuml;ckportiert von Version 2.0)
 </p>
 
-<h2 id="kugv1.2.1">Neuerungen mit Version 1.2.1 (Umstellung am 7.9.2005)</h2>
+<h1 id="kugv1.2.1">Neuerungen mit Version 1.2.1 (Umstellung am 7.9.2005)</h1>
 
-<h3>Virtueller Index</h3>
+<h2>Virtueller Index</h2>
 
 F&uuml;r die Verfasser, K&ouml;rperschaften sowie Schlagworte wurde
 ein virtueller Index als Wortanfangssuche in den ausgew&auml;hlten
@@ -573,7 +571,7 @@ Dar&uuml;berhinaus wurden wesentliche Entwicklungen f&uuml;r den Benutzer unsich
 <li>Weitgehende Umstellung auf CSS</li>
 </ul>
 
-<h2 id="kugv1.2">Neuerungen mit Version 1.2 (Umstellung am 2.5.2005)</h2>
+<h1 id="kugv1.2">Neuerungen mit Version 1.2 (Umstellung am 2.5.2005)</h1>
 
 Die augenf&auml;lligste &Auml;nderung ist eine grunds&auml;tzliche &Uuml;berarbeitung der
 Benutzeroberfl&auml;che im Hinblick auf eine klarere Strukturierung. Hierzu
@@ -585,7 +583,7 @@ Anwendung integriert.
 Weitere funktionale Erweiterungen sind:
 
 
-<h3>Einf&uuml;hrung einer 'einfachen Suchmaske'</h3>
+<h2>Einf&uuml;hrung einer 'einfachen Suchmaske'</h2>
 
 Vielfacher Wunsch war eine 'Verschlankung' der Suchmaske, um unn&ouml;tigen
 Ballast wie Hilfetexte zu vermeiden. Ebenso ist eine neue oder schlankere
@@ -602,7 +600,7 @@ einer Sitzung bis zur Neuauswahl einer anderen bestehen. Schliesslich kann
 der Benutzer nach erfolgreichem Login seine preferierte Suchmaske in 'Mein
 KUG' festlegen.
 
-<h3>Einf&uuml;hrung von viewspezifischen Templates im Kontext der Recherchemasken</h3>
+<h2>Einf&uuml;hrung von viewspezifischen Templates im Kontext der Recherchemasken</h2>
 
 Es ist nun m&ouml;glich f&uuml;r jeden View (Institutssicht) ein Template mit
 weitergehenden Informationen zu definieren, das in die Recherchemaske
@@ -614,7 +612,7 @@ View des Instituts f&uuml;r Deutsche Sprache und Literatur unter:
 <p />
 <a href="http://kug.ub.uni-koeln.de/portal/lastverteilung?view=inst405">http://kug.ub.uni-koeln.de/portal/lastverteilung?view=inst405</a>
 
-<h3>Sprung in externe Recherchequellen</h3>
+<h2>Sprung in externe Recherchequellen</h2>
 
 Die Suchhistorie wurde um zus&auml;tzliche Funktionen erweitert. So kann man
 dort &uuml;ber 'Zur Trefferliste' direkt zur Trefferliste vorangegangener
@@ -627,9 +625,9 @@ als externe Recherchequellen die Digitale Bibliothek
 (EZB), das DatenBankInformationsSystem (DBIS) sowie MedPilot im Rahmen der
 bereits eingegebenen Suchfelder zur Verf&uuml;gung.
 
-<h3>Neukonzeption bei der Interaktion mit einem Sisis SunRise Ausleihsystem</h3>
+<h2>Neukonzeption bei der Interaktion mit einem Sisis SunRise Ausleihsystem</h2>
 
-<h4>Anzeige aller Exemplare in einem ausgew&auml;hlten Katalogsatz</h4>
+<h3>Anzeige aller Exemplare in einem ausgew&auml;hlten Katalogsatz</h3>
 
 Neben den katalogisierten bibliographischen Exemplardaten (Signatur,
 Standort, etc) werden nun *alle* zugeh&ouml;rigen Ausleihdaten angezeigt. Dazu
@@ -639,7 +637,7 @@ die Recherche nach dem Titel 'Kernphysik' und dem Verfasser 'Marmier' im
 Katalog der Lehrbuchsammlung.
 
 
-<h4>Schnellere Authentifizierung</h4>
+<h3>Schnellere Authentifizierung</h3>
 
 Die Authentifizierung wurde stark beschleunigt. Ebenso werden dem Benutzer
 weitere Informationen dargestellt. Damit ist ihm z.B. sofort ersichtlich, ob
@@ -648,26 +646,26 @@ kann er seine aktuelle Anschrift auf Aktualit&auml;t pr&uuml;fen und sich
 gegebenenfalls zwecks Korrektur an die Auskunft der jeweiligen Bibliothek
 wenden, um einer etwaigen zuk&uuml;nftigen Sperrung zu entgehen.
 
-<h4>Benutzerkontos</h4>
+<h3>Benutzerkontos</h3>
 
 Der Benutzer kann nun eine Aufstellung seiner ausgeliehenen, vorgemerkten,
 bestellten und &uuml;berzogenen Medien bzw. anfallenden Geb&uuml;hren bekommen.
 
-<h3>Bildung von 'Teil-Katalogen'</h3>
+<h2>Bildung von 'Teil-Katalogen'</h2>
 
 Anhand von Standorten ist es nun m&ouml;glich *abgeschlossene* Teilkataloge zu
 bilden. &Uuml;ber diesen Weg wird derzeit der Teilkatalog 'USB K&ouml;ln /
 Lehrbuchsammlung' erstellt
 
 
-<h3>Speicherung des verwendeten Recherche-Profils</h3>
+<h2>Speicherung des verwendeten Recherche-Profils</h2>
 
 Ein f&uuml;r die Suche ausgew&auml;hltes Rechercheprofil ist nun bei nachfolgenden
 Recherchen innerhalb der bestehenden Session vorausgew&auml;hlt. Eine
 Katalogauswahl f&uuml;hrt unmittelbar dazu, dass diese als Rechercheprofil
 zun&auml;chst vorausgew&auml;hlt ist.
 
-<h3>Anzeige des authentifizierten Benutzers</h3>
+<h2>Anzeige des authentifizierten Benutzers</h2>
 
 Nach erfolgreicher Authentifikation am KUG wird die Nutzerkennung
 durchg&auml;ngig angezeigt.
@@ -677,26 +675,26 @@ Dar&uuml;berhinaus haben sich auch diesmal wieder wesentliche &Auml;nderungen un
 der Oberfl&auml;che abgespielt:
 
 
-<h3>&Uuml;berarbeitung der Stylesheets</h3>
+<h2>&Uuml;berarbeitung der Stylesheets</h2>
 
 Neben einer generellen &Uuml;berarbeitung der CSS wurde die bereits vorhandene
 Browser-Weiche speziell f&uuml;r die Nutzung des Internet Explorers &uuml;berarbeitet.
 
-<h3>Kopplung zu den Sisis SunRise Ausleihsystemen &uuml;ber WebServices.</h3>
+<h2>Kopplung zu den Sisis SunRise Ausleihsystemen &uuml;ber WebServices.</h2>
 
 Aus Gr&uuml;nden der Performance und Flexibilit&auml;t wurde die Kommunikation zum
 Ausleihsystem auf eigens entwickelte WebServices umgestellt.
 
-<h3>Einf&uuml;hrung eines Logging-Frameworks</h3>
+<h2>Einf&uuml;hrung eines Logging-Frameworks</h2>
 
 Zum besseren Monitoring des KUG-Portals wurde das Logging-Framework log4Perl
 fl&auml;chendeckend eingef&uuml;hrt.
 
-<h3>&Uuml;berarbeitung im Hinblick auf SQL-Injection-Angriffe</h3>
+<h2>&Uuml;berarbeitung im Hinblick auf SQL-Injection-Angriffe</h2>
 
 <p />
 
-<h2 id="kugv1.1">Neuerungen mit Version 1.1 (Umstellung am 31.1.2005)</h2>
+<h1 id="kugv1.1">Neuerungen mit Version 1.1 (Umstellung am 31.1.2005)</h1>
 
 Die wesentlichen &Auml;nderungen haben sich mit Beibehaltung bestehender
 Funktionalit&auml;t vor allem im 'Unterbau' abgespielt. Hier wurden massive
@@ -726,7 +724,7 @@ dabei u.a.:
   werden, ob ein Titel nun auch im KUG erscheinen soll oder nicht.</li>
 </ul>
 
-<h2>Neuerungen mit Version 1.0 (Umstellung am 23.8.2004)</h2>
+<h1>Neuerungen mit Version 1.0 (Umstellung am 23.8.2004)</h1>
 
 In der Version 1.0 wurden folgende Änderungen und Erweiterungen vorgenommen:
 
@@ -743,7 +741,7 @@ In der Version 1.0 wurden folgende Änderungen und Erweiterungen vorgenommen:
 <li>Erweiterung um Tooltips </li>
 </ul>
 
-<h2>Version 0.9 (Umstellung am 23.3.2004)</h2>
+<h1>Version 0.9 (Umstellung am 23.3.2004)</h1>
 
 Ablösung des bisherigen Recherche-Portals durch die Weiterentwicklung des seit 1997 eingesetzten KVIK im Rahmen des Lokalsystem-Updates auf die Version V3.0A20. 
 

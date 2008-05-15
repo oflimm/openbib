@@ -394,7 +394,7 @@ sub load_full_record {
 
         my $bibkey    = $normset_ref->{T5050}[0]{content};
         
-        $logger->debug(YAML::Dump(\@isbn_refs));
+        $logger->debug("Enrichment ISBN's ".YAML::Dump(\@isbn_refs));
         
         if (@isbn_refs){
             my @isbn_refs_tmp = ();
@@ -1002,9 +1002,8 @@ sub print_to_handler {
 
     my $litlists_ref = $user->get_litlists_of_tit({titid => $self->{id}, titdb => $self->{database}});
 
-    $logger->debug("OLWS:".$query->param('olws'));
     # Anreicherung mit OLWS-Daten
-    if ($query->param('olws') eq "Viewer"){
+    if (defined $query->param('olws') && $query->param('olws') eq "Viewer"){
         if (exists $circinfotable->{$self->{database}} && exists $circinfotable->{$self->{database}}{circcheckurl}){
             $logger->debug("Endpoint: ".$circinfotable->{$self->{database}}{circcheckurl});
             my $soapresult;

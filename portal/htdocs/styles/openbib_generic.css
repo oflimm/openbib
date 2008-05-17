@@ -265,7 +265,7 @@ a:active.invisible {
 }
 
 .content {
-  position: static
+  position: static;
   font-family: Arial,helv,Helvetica,Verdana,sans-serif;
   background: #ffffff;
   padding: 5px;

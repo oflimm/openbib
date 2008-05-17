@@ -84,35 +84,49 @@ my @install_dirs = (
 );
 
 my %cvs_links = (
-    "$cwd/portal/perl/templates"            => "/opt/openbib/templates",
-    "$cwd/tools"                            => "/opt/openbib/bin",
-    "$cwd/portal/perl/locales"              => "/opt/openbib/locales",
-    "$cwd/conv/oai/harvestOAI.pl"           => "/opt/openbib/conv/harvestOAI.pl",
-    "$cwd/conv/oai/oai2meta.pl"             => "/opt/openbib/conv/oai2meta.pl",
-    "$cwd/conv/meta/meta2mex.pl"            => "/opt/openbib/conv/meta2mex.pl",
-    "$cwd/conv/meta/meta2sql.pl"            => "/opt/openbib/conv/meta2sql.pl",
-    "$cwd/conv/olws/olws_updatedb.pl"       => "/opt/openbib/conv/olws_updatedb.pl",
-    "$cwd/conv/lidos/lidos2meta.pl"         => "/opt/openbib/conv/lidos2meta.pl",
-    "$cwd/conv/econbiz/econbiz2meta.pl"     => "/opt/openbib/conv/econbiz2meta.pl",
-    "$cwd/conv/filemaker/filemaker2meta.pl" => "/opt/openbib/conv/filemaker2meta.pl",
-    "$cwd/conv/simple/simple2meta.pl"       => "/opt/openbib/conv/simple2meta.pl",
-    "$cwd/conv/xapian/db2xapian.pl"         => "/opt/openbib/conv/db2xapian.pl",
-    "$cwd/conv/xapian/file2xapian.pl"       => "/opt/openbib/conv/file2xapian.pl",
-    "$cwd/conv/auto/autoconv.pl"            => "/opt/openbib/autoconv/bin/autoconv.pl",
-    "$cwd/db/mysql"                         => "/opt/openbib/db/mysql",
-    "$cwd/portal/perl/modules/OpenBib"      => "/usr/local/lib/site_perl/OpenBib",
-    "$cwd/portal/apache/openbib.conf"       => "$confd/openbib.conf",
-    "$cwd/portal/htdocs/styles"             => "$documentroot/styles",
-    "$cwd/portal/htdocs/images"             => "$documentroot/images",
+    "$cwd/portal/perl/templates"              => "/opt/openbib/templates",
+    "$cwd/tools"                              => "/opt/openbib/bin",
+    "$cwd/portal/perl/locales"                => "/opt/openbib/locales",
+    "$cwd/conv/aleph/alephseq2meta.pl"        => "/opt/openbib/conv/alephseq2meta.pl",
+    "$cwd/conv/aleph/alephmab2meta.pl"        => "/opt/openbib/conv/alephmab2meta.pl",
+    "$cwd/conv/amarok/amarok_mysql2meta.pl"   => "/opt/openbib/conv/amarok_mysql2meta.pl",
+    "$cwd/conv/sikis/bcp2meta.pl"             => "/opt/openbib/conv/bcp2meta.pl",
+    "$cwd/conv/enrichmnt/usb_bk2enrich.pl"    => "/opt/openbib/conv/usb_bk2enrich.pl",
+    "$cwd/conv/enrichmnt/usb_eb2enrich.pl"    => "/opt/openbib/conv/usb_eb2enrich.pl",
+    "$cwd/conv/enrichmnt/usb_toc2enrich.pl"   => "/opt/openbib/conv/usb_toc2enrich.pl",
+    "$cwd/conv/enrichmnt/natliz_eb2enrich.pl" => "/opt/openbib/conv/natliz_eb2enrich.pl",
+    "$cwd/conv/tellico/tellico_music2meta.pl" => "/opt/openbib/conv/tellico_music2meta.pl",
+    "$cwd/conv/oai/harvestOAI.pl"             => "/opt/openbib/conv/harvestOAI.pl",
+    "$cwd/conv/oai/oai2meta.pl"               => "/opt/openbib/conv/oai2meta.pl",
+    "$cwd/conv/meta/meta2mex.pl"              => "/opt/openbib/conv/meta2mex.pl",
+    "$cwd/conv/meta/meta2sql.pl"              => "/opt/openbib/conv/meta2sql.pl",
+    "$cwd/conv/olws/olws_updatedb.pl"         => "/opt/openbib/conv/olws_updatedb.pl",
+    "$cwd/conv/lidos/lidos2meta.pl"           => "/opt/openbib/conv/lidos2meta.pl",
+    "$cwd/conv/lidos/lidos32meta.pl"          => "/opt/openbib/conv/lidos32meta.pl",
+    "$cwd/conv/econbiz/econbiz2meta.pl"       => "/opt/openbib/conv/econbiz2meta.pl",
+    "$cwd/conv/filemaker/filemaker2meta.pl"   => "/opt/openbib/conv/filemaker2meta.pl",
+    "$cwd/conv/simple/simple2meta.pl"         => "/opt/openbib/conv/simple2meta.pl",
+    "$cwd/conv/simple/simplecsv2meta.pl"      => "/opt/openbib/conv/simplecsv2meta.pl",
+    "$cwd/conv/xapian/db2xapian.pl"           => "/opt/openbib/conv/db2xapian.pl",
+    "$cwd/conv/xapian/file2xapian.pl"         => "/opt/openbib/conv/file2xapian.pl",
+    "$cwd/conv/auto/autoconv.pl"              => "/opt/openbib/autoconv/bin/autoconv.pl",
+    "$cwd/db/mysql"                           => "/opt/openbib/db/mysql",
+    "$cwd/portal/perl/modules/OpenBib"        => "/usr/local/lib/site_perl/OpenBib",
+    "$cwd/portal/apache/openbib.conf"         => "$confd/openbib.conf",
+    "$cwd/portal/htdocs/js"                   => "$documentroot/js",
+    "$cwd/portal/htdocs/styles"               => "$documentroot/styles",
+    "$cwd/portal/htdocs/images"               => "$documentroot/images",
 );
 
 my %copy_files = (
     "$cwd/portal/perl/conf/portal.log4perl"                => "/opt/openbib/conf/portal.log4perl",
-    "$cwd/portal/perl/modules/OpenBib/Config.pm-dist"      => "$cwd/portal/perl/modules/OpenBib/Config.pm",
-    "$cwd/portal/perl/modules/OpenBib/Conv/Config.pm-dist" => "$cwd/portal/perl/modules/OpenBib/Conv/Config.pm",
+    "$cwd/portal/perl/conf/portal.yml-dist"                => "/opt/openbib/conf/portal.yml",
+    "$cwd/portal/perl/conf/convert.yml-dist"               => "/opt/openbib/conf/convert.yml",
     "$cwd/portal/perl/modules/OpenBib/Search/Z3950/USBK/Config.pm-dist"
                                                            => "$cwd/portal/perl/modules/OpenBib/Search/Z3950/USBK/Config.pm",
 );
+
+print "Ursprungsverzeichnis $cwd\n";
 
 print "Erzeuge Verzeichnisse\n";
 
@@ -125,9 +139,12 @@ foreach my $dir (@install_dirs){
 print "Erzeuge Links ins CVS\n";
 
 while (my ($from,$to) = each %cvs_links){
-    if (! -e $to ){
-        system("ln -s $from $to");
+    if (-e $to ){
+        system("rm $to");
+        print "Loesche $to\n";
     }
+
+    system("ln -s $from $to");
 }
 
 print "Kopiere Dateien vom CVS\n";
@@ -143,7 +160,9 @@ print "Fertig.\n\n";
 print << "HINWEIS";
 Bitte passen Sie nun die Datei
 
-    $cwd/portal/perl/modules/OpenBib/Config.pm
+    /opt/openbib/conf/portal.yml bzw.
+
+    /opt/openbib/conf/convert.yml
 
 entsprechend Ihren eigenen Beduerfnissen an.
 

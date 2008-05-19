@@ -43,9 +43,9 @@ use OpenBib::Config;
 
 my $config = new OpenBib::Config;
 
-my $pool=($ARGV[0])?$ARGV[0]:'audiosmlg';
+my $database=($ARGV[0])?$ARGV[0]:'audiosmlg';
 
-my $dboptions_ref = $config->get_dboptions($pool);
+my $dboptions_ref = $config->get_dboptions($database);
 
 my $dbuser    = $dboptions_ref->{'remoteuser'};
 my $dbpasswd  = $dboptions_ref->{'remotepasswd'};

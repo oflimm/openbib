@@ -45,18 +45,18 @@ use OpenBib::Config;
 use OpenBib::Conv::Config;
 use OpenBib::Statistics;
 
-my ($singlepool,$reducemem,$addsuperpers,$logfile);
+my ($database,$reducemem,$addsuperpers,$logfile);
 
 &GetOptions("reduce-mem"    => \$reducemem,
             "add-superpers" => \$addsuperpers,
-	    "single-pool=s" => \$singlepool,
+	    "database=s"    => \$database,
             "logfile=s"     => \$logfile,
 	    );
 
 my $config      = OpenBib::Config->instance;
-my $conv_config = new OpenBib::Conv::Config({dbname => $singlepool});
+my $conv_config = new OpenBib::Conv::Config({dbname => $database});
 
-$logfile=($logfile)?$logfile:"/var/log/openbib/meta2sql-$singlepool.log";
+$logfile=($logfile)?$logfile:"/var/log/openbib/meta2sql-$database.log";
 
 my $log4Perl_config = << "L4PCONF";
 log4perl.rootLogger=DEBUG, LOGFILE, Screen
@@ -93,7 +93,7 @@ my $statisticsdbh
     or $logger->error($DBI::errstr);
 
 my $request=$statisticsdbh->prepare("select katkey, count(katkey) as kcount from relevance where origin=2 and dbname=? group by katkey");
-$request->execute($singlepool);
+$request->execute($database);
 
 open(OUTPOP,    ">:utf8","popularity.mysql")     || die "OUTPOP konnte nicht geoeffnet werden";
 while (my $res    = $request->fetchrow_hashref){
@@ -472,7 +472,7 @@ while (my $line=<IN>){
         $normdata_ref={};
 
         $listitem_ref->{id}       = $id;
-        $listitem_ref->{database} = $singlepool;
+        $listitem_ref->{database} = $database;
 
         if (exists $listitemdata_popularity{$id}){
             $listitem_ref->{popularity} = $listitemdata_popularity{$id};

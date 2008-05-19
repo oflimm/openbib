@@ -43,11 +43,11 @@ use OpenBib::Statistics;
 use OpenBib::Record::Title;
 use OpenBib::Search::Util;
 
-my ($type,$singlepool,$singleview,$help,$logfile);
+my ($type,$database,$view,$help,$logfile);
 
 &GetOptions("type=s"          => \$type,
-            "single-pool=s"   => \$singlepool,
-            "single-view=s"   => \$singleview,
+            "database=s"      => \$database,
+            "view=s"          => \$view,
             "logfile=s"       => \$logfile,
 	    "help"            => \$help
 	    );
@@ -92,8 +92,8 @@ if (!$type){
 if ($type == 1){
     my @databases = ();
 
-    if ($singlepool){
-        push @databases, $singlepool;
+    if ($database){
+        push @databases, $database;
     }
     else {
         @databases=$config->get_active_databases();
@@ -156,8 +156,8 @@ if ($type == 2){
 if ($type == 3){
     my @databases = ();
 
-    if ($singlepool){
-        push @databases, $singlepool;
+    if ($database){
+        push @databases, $database;
     }
     else {
         @databases=$config->get_active_databases();
@@ -217,8 +217,8 @@ if ($type == 3){
 if ($type == 4){
     my @databases = ();
 
-    if ($singlepool){
-        push @databases, $singlepool;
+    if ($database){
+        push @databases, $database;
     }
     else {
         @databases=$config->get_active_databases();
@@ -278,8 +278,8 @@ if ($type == 4){
 if ($type == 5){
     my @databases = ();
 
-    if ($singlepool){
-        push @databases, $singlepool;
+    if ($database){
+        push @databases, $database;
     }
     else {
         @databases=$config->get_active_databases();
@@ -339,8 +339,8 @@ if ($type == 5){
 if ($type == 6){
     my @databases = ();
 
-    if ($singlepool){
-        push @databases, $singlepool;
+    if ($database){
+        push @databases, $database;
     }
     else {
         @databases=$config->get_active_databases();
@@ -400,8 +400,8 @@ if ($type == 6){
 if ($type == 7){
     my @databases = ();
 
-    if ($singlepool){
-        push @databases, $singlepool;
+    if ($database){
+        push @databases, $database;
     }
     else {
         @databases=$config->get_active_databases();
@@ -463,8 +463,8 @@ if ($type == 7){
 if ($type == 8){
     my @views = ();
 
-    if ($singleview){
-        push @views, $singleview;
+    if ($view){
+        push @views, $view;
     }
     else {
         @views=$config->get_active_views();
@@ -555,8 +555,8 @@ if ($type == 8){
 if ($type == 9){
     my @databases = ();
 
-    if ($singlepool){
-        push @databases, $singlepool;
+    if ($database){
+        push @databases, $database;
     }
     else {
         @databases=$config->get_active_databases();
@@ -616,8 +616,8 @@ if ($type == 9){
 if ($type == 10){
     my @views = ();
 
-    if ($singleview){
-        push @views, $singleview;
+    if ($view){
+        push @views, $view;
     }
     else {
         @views=$config->get_active_views();
@@ -669,8 +669,8 @@ if ($type == 10){
 if ($type == 11){
     my @views = ();
 
-    if ($singleview){
-        push @views, $singleview;
+    if ($view){
+        push @views, $view;
     }
     else {
         @views=$config->get_active_views();
@@ -786,7 +786,7 @@ gen_bestof.pl - Erzeugen von BestOf-Analysen aus Relevance-Statistik-Daten
 
    Optionen:
    -help                 : Diese Informationsseite
-   --single-pool=...     : Einzelner Katalog
+   --database=...        : Einzelner Katalog
    --logfile=...         : Alternatives Logfile
    --type=...            : BestOf-Typ
 

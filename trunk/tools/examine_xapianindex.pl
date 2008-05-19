@@ -42,7 +42,7 @@ use OpenBib::Config;
 
 my ($database,$help,$titid);
 
-&GetOptions("single-pool=s"   => \$database,
+&GetOptions("database=s"      => \$database,
             "titid=s"         => \$titid,
 	    "help"            => \$help
 	    );
@@ -66,7 +66,7 @@ my $logger = get_logger();
 my $config = OpenBib::Config->instance;
 
 if (!$database || !$titid){
-  $logger->fatal("Kein Pool mit --single-pool= oder kein Titel mit --titid= ausgewaehlt");
+  $logger->fatal("Kein Katalog mit --database= oder kein Titel mit --titid= ausgewaehlt");
   exit;
 }
 
@@ -94,7 +94,7 @@ examine_xapianindex.pl - Ausgabe des Term-Index von Xapian zu einem
    -help                 : Diese Informationsseite
        
    --titid=              : Titelid
-   --single-pool=...     : Angegebenen Datenpool verwenden
+   --database=...        : Angegebenen Datenpool verwenden
 
 ENDHELP
     exit;

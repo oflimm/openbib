@@ -45,9 +45,9 @@ use OpenBib::Search::Util;
 
 my $config = OpenBib::Config->instance;
 
-my ($pool,$help,$logfile);
+my ($database,$help,$logfile);
 
-&GetOptions("single-pool=s"   => \$pool,
+&GetOptions("database=s"      => \$database,
             "logfile=s"       => \$logfile,
 	    "help"            => \$help
 	    );
@@ -77,13 +77,13 @@ my $logger = get_logger();
 
 my $statistics = new OpenBib::Statistics();
 
-if (!$pool){
-  $logger->fatal("Kein Pool mit --single-pool= ausgewaehlt");
+if (!$database){
+  $logger->fatal("Kein Pool mit --database= ausgewaehlt");
   exit;
 }
 
 my $request=$statistics->{dbh}->prepare("select katkey, count(katkey) as kcount from relevance where origin=2 and dbname=? group by katkey");
-$request->execute($pool);
+$request->execute($database);
 
 my @popularity=();
 while (my $res    = $request->fetchrow_hashref){
@@ -95,7 +95,7 @@ while (my $res    = $request->fetchrow_hashref){
 $request->finish();
 
 my $dbh
-    = DBI->connect("DBI:$config->{dbimodule}:dbname=$pool;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+    = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
     or $logger->error_die($DBI::errstr);
 
 $request=$dbh->do("truncate table popularity");
@@ -105,7 +105,7 @@ foreach my $item_ref (@popularity){
     $request->execute($item_ref->{id},$item_ref->{idcount});
 }
 
-$logger->info("Inserted ".($#popularity+1)." popularity titlesets into pool $pool");
+$logger->info("Inserted ".($#popularity+1)." popularity titlesets into pool $database");
 
 $request->finish();
 $dbh->disconnect();
@@ -117,7 +117,7 @@ gen_popularity.pl - Erzeugen Popularitaetsinformationen pro Titel
    Optionen:
    -help                 : Diese Informationsseite
        
-   --single-pool=...     : Datenbankname
+   --database=...        : Datenbankname
 
 
 ENDHELP

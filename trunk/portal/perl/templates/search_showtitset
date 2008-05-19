@@ -236,7 +236,7 @@ FOREACH category IN categories;
          content       = "<a href=\"${content}\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
 
     CASE "E4120";
-         thiscontent   = "<img src=\"/images/openbib/pdf-document.png\" />&nbsp;Als E-Book im Vollzugriff verf&uuml;gbar";
+         thiscontent   = "Greifen Sie hier online auf den Volltext zu";
 	 content       = "${config.redirect_loc}/${sessionID}/503/${content}" ;
 	 content       = "<a href=\"${content}\" target=\"_blank\">${thiscontent}</a>";
 

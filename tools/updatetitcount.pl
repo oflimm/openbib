@@ -38,8 +38,9 @@ use Getopt::Long;
 use OpenBib::Config;
 
 # Definition der Programm-Optionen
+my ($database);
 
-&GetOptions("single-pool=s" => \$singlepool
+&GetOptions("database=s" => \$database
 	    );
 
 my $config = OpenBib::Config->instance;
@@ -49,8 +50,8 @@ my @databases=();
 # Wenn ein Katalog angegeben wurde, werden nur in ihm die Titel gezaehlt
 # und der Counter aktualisiert
 
-if ($singlepool ne ""){
-    @databases=("$singlepool");
+if ($database ne ""){
+    @databases=("$database");
 }
 # Ansonsten werden alle als Aktiv markierten Kataloge aktualisiert
 else {
@@ -92,7 +93,7 @@ foreach $database (@databases){
   
 }
 
-if ($singlepool eq ""){
+if ($database eq ""){
   my $notexist=0;
   
   $idnresult=$configdbh->prepare("delete from titcount where dbname='alldbs'") or die "Error -- $DBI::errstr";

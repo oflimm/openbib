@@ -47,7 +47,7 @@ use OpenBib::Common::Util;
 
 my ($database,$help,$logfile,$withfields);
 
-&GetOptions("single-pool=s"   => \$database,
+&GetOptions("database=s"      => \$database,
             "logfile=s"       => \$logfile,
             "with-fields"     => \$withfields,
 	    "help"            => \$help
@@ -79,7 +79,7 @@ my $logger = get_logger();
 my $config = new OpenBib::Config();
 
 if (!$database){
-  $logger->fatal("Kein Pool mit --single-pool= ausgewaehlt");
+  $logger->fatal("Kein Pool mit --database= ausgewaehlt");
   exit;
 }
 
@@ -276,7 +276,7 @@ db2xapian.pl - Datenbank-Konnektor zum Aufbau eines Xapian-Index
    -help                 : Diese Informationsseite
        
    -with-fields          : Aufbau von einzelnen Suchfeldern (nicht default)
-   --single-pool=...     : Angegebenen Datenpool verwenden
+   --database=...        : Angegebenen Datenpool verwenden
 
 ENDHELP
     exit;

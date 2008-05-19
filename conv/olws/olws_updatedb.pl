@@ -51,15 +51,15 @@ use OpenBib::Conv::Config;
 
 my $config = OpenBib::Config->instance;
 
-my ($singlepool,$fromdate,$todate,$logfile);
+my ($database,$fromdate,$todate,$logfile);
 
 &GetOptions(
-    "single-pool=s" => \$singlepool,
+    "database=s"    => \$database,
     "from-date=s"   => \$fromdate,
     "to-date=s"     => \$todate,
 );
 
-if (!$singlepool || !$fromdate || !$todate){
+if (!$database || !$fromdate || !$todate){
     print_help();
 }
 
@@ -79,7 +79,7 @@ Log::Log4perl::init(\$log4Perl_config);
 # Log4perl logger erzeugen
 my $logger = get_logger();
 
-my $conv_config = new OpenBib::Conv::Config({dbname => $singlepool});
+my $conv_config = new OpenBib::Conv::Config({dbname => $database});
 
 # Verbindung zur SQL-Datenbank herstellen
 my $sessiondbh
@@ -91,7 +91,7 @@ my $sessiondbh
 #    or $logger->error_die($DBI::errstr);
 
 my $dbh
-    = DBI->connect("DBI:$config->{dbimodule}:dbname=$singlepool;host=localhost;port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+    = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=localhost;port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
     or $logger->error_die($DBI::errstr);
 
 my $targetcircinfo_ref
@@ -100,7 +100,7 @@ my $targetcircinfo_ref
 
 my $relevant_titids_ref= get_relevant_titids({
     sessiondbh         => $sessiondbh,
-    database           => $singlepool,
+    database           => $database,
     targetcircinfo_ref => $targetcircinfo_ref,
 });
 
@@ -111,7 +111,7 @@ foreach my $titid (@{$relevant_titids_ref}){
     process_raw_title({
         dbh                => $dbh,
         sessiondbh         => $sessiondbh,
-        database           => $singlepool,
+        database           => $database,
         targetcircinfo_ref => $targetcircinfo_ref,
         titid              => $titid,
     });
@@ -1235,7 +1235,7 @@ olws_updatedb.pl - Inkrementelles Update einer Datenbank ueber OLWS
 
 Parameter sind:
 
- --single-pool : Name der lokalen Datenbank
+ --database : Name der lokalen Datenbank
  --from-date   : Anfangsdatum des Datumsbereichs zur Aktualisierung
  --to-date     : Enddatum des Datumsbereichs zur Aktualisierung
 
@@ -1245,7 +1245,7 @@ Logging erfolgt nach:
       
 Beispiel:
 
-olws_updatedb.pl --single-pool=inst001 --from-date="20060609" --to-date="20060609"
+olws_updatedb.pl --database=inst001 --from-date="20060609" --to-date="20060609"
 
 HELP
     exit;
@@ -1270,11 +1270,11 @@ __END__
 
 =head1 SYNOPSIS
 
- olws_updatedb.pl --single-pool=inst001 --from-date="20060609" --to-date="20060609"
+ olws_updatedb.pl --database=inst001 --from-date="20060609" --to-date="20060609"
 
  Parameter sind:
 
- --single-pool : Name der lokalen Datenbank
+ --database    : Name der lokalen Datenbank
  --from-date   : Anfangsdatum des Datumsbereichs zur Aktualisierung
  --to-date     : Enddatum des Datumsbereichs zur Aktualisierung
  --log-file    : Alternatives Log-File

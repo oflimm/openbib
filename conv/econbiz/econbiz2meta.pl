@@ -43,12 +43,12 @@ use OpenBib::Config;
 
 my $config = new OpenBib::Config;
 
-my $pool=($ARGV[0])?$ARGV[0]:'econbiz';
+my $database=($ARGV[0])?$ARGV[0]:'econbiz';
 
 my $dbimodule = "Pg";    # Pg (PostgreSQL)
 my $port      = "5432";  # Pg:5432
 
-my $dboptions_ref = $config->get_dboptions($pool);
+my $dboptions_ref = $config->get_dboptions($database);
 
 my $dbuser    = $dboptions_ref->{'remoteuser'};
 my $dbpasswd  = $dboptions_ref->{'remotepasswd'};

@@ -47,9 +47,9 @@ use OpenBib::Search::Util;
 
 my $config = OpenBib::Config->instance;
 
-my ($singlepool,$help,$logfile,$incr);
+my ($database,$help,$logfile,$incr);
 
-&GetOptions("single-pool=s"   => \$singlepool,
+&GetOptions("database=s"      => \$database,
             "logfile=s"       => \$logfile,
             "incr"            => \$incr,
 	    "help"            => \$help
@@ -83,8 +83,8 @@ my @databases=();
 # Wenn ein Katalog angegeben wurde, werden nur in ihm die Titel gezaehlt
 # und der Counter aktualisiert
 
-if ($singlepool ne ""){
-    @databases=("$singlepool");
+if ($database ne ""){
+    @databases=("$database");
 }
 # Ansonsten werden alle als Aktiv markierten Kataloge aktualisiert
 else {
@@ -221,7 +221,7 @@ update_all_isbn_table.pl - Aktualisierung der all_isbn-Tabelle, in der die ISBN'
    Optionen:
    -help                 : Diese Informationsseite
        
-   --single-pool=...     : Datenbankname
+   --database=...        : Datenbankname
    -incr                 : Incrementell (sonst alles)
 
 

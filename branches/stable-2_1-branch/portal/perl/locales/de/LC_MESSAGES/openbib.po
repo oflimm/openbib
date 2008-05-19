@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2008-05-09 10:09+0200\n"
+"PO-Revision-Date: 2008-05-19 11:23+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: german <l10n@openbib.org>\n"
 "MIME-Version: 1.0\n"
@@ -803,7 +803,7 @@ msgstr ""
 #: ../templates/views/landschaft/search_browse_tit:19
 #: ../templates/views/landschaft/searchframe:19
 #: ../templates/views/landschaft/searchframe_simple:19
-#: ../templates/views/portrait/search_browse_tit:19
+#: ../templates/views/portrait/search_browse_tit:26
 #: ../templates/views/portrait/searchframe:26
 #: ../templates/views/portrait/searchframe_simple:26
 #: ../templates/views/rheinlandbib/searchframe:35
@@ -2288,7 +2288,7 @@ msgstr "Kompletter Titel"
 #: ../templates/views/landschaft/search_browse_tit:20
 #: ../templates/views/landschaft/searchframe:20
 #: ../templates/views/landschaft/searchframe_simple:20
-#: ../templates/views/portrait/search_browse_tit:20
+#: ../templates/views/portrait/search_browse_tit:27
 #: ../templates/views/portrait/searchframe:27
 #: ../templates/views/portrait/searchframe_simple:27
 #: ../templates/views/rheinlandbib/searchframe:36
@@ -4112,7 +4112,7 @@ msgstr "Vorl.Unterreihe"
 msgid "T0361"
 msgstr "Beigefügte Werke"
 
-#: ../templates/database/einbaende/visible_categories_titset:22
+#: ../templates/database/einbaende/visible_categories_titset:23
 msgid "T0361-einbaende"
 msgstr "Beibände"
 
@@ -4134,7 +4134,7 @@ msgstr "Gemeins. Angaben"
 msgid "T0370"
 msgstr "Weiterer Titel"
 
-#: ../templates/database/einbaende/visible_categories_titset:23
+#: ../templates/database/einbaende/visible_categories_titset:24
 msgid "T0370-einbaende"
 msgstr "Provenienz"
 
@@ -4186,6 +4186,7 @@ msgid "T0410-einbaende"
 msgstr "Ersch-Ort"
 
 #: ../templates/database/ebooks/visible_categories_titset:36
+#: ../templates/database/einbaende/visible_categories_titset:20
 #: ../templates/database/inst001/visible_categories_titset:37
 #: ../templates/database/inst450/visible_categories_titset:22
 #: ../templates/database/kapsel/visible_categories_titset:36
@@ -4206,7 +4207,7 @@ msgstr "Verlag"
 msgid "T0413"
 msgstr "Drucker"
 
-#: ../templates/database/einbaende/visible_categories_titset:20
+#: ../templates/database/einbaende/visible_categories_titset:21
 msgid "T0413-einbaende"
 msgstr "Drucker"
 
@@ -4220,7 +4221,7 @@ msgstr "Drucker"
 msgid "T0424"
 msgstr "Ans. Ersch. Jahr"
 
-#: ../templates/database/einbaende/visible_categories_titset:21
+#: ../templates/database/einbaende/visible_categories_titset:22
 msgid "T0424-einbaende"
 msgstr "E-Jahr"
 
@@ -5113,31 +5114,35 @@ msgstr "Basisklassifikation"
 msgid "T4110"
 msgstr "Inhaltsverzeichnis"
 
+#: ../templates/visible_categories_titset:111
+msgid "T4120"
+msgstr "Volltext-URL"
+
 #: ../templates/database/ebooks/visible_categories_titset:111
 #: ../templates/database/inst001/visible_categories_titset:110
 #: ../templates/database/nationallizenzen/visible_categories_titset:111
 #: ../templates/database/richter/visible_categories_titset:112
-#: ../templates/visible_categories_titset:111
+#: ../templates/visible_categories_titset:112
 msgid "T4500"
 msgstr "Nutzer-Tags"
 
 #: ../templates/database/ebooks/visible_categories_titset:112
-#: ../templates/database/einbaende/visible_categories_titset:24
+#: ../templates/database/einbaende/visible_categories_titset:25
 #: ../templates/database/inst001/visible_categories_titset:111
 #: ../templates/database/kapsel/visible_categories_titset:109
 #: ../templates/database/nationallizenzen/visible_categories_titset:112
 #: ../templates/database/richter/visible_categories_titset:113
-#: ../templates/visible_categories_titset:112
+#: ../templates/visible_categories_titset:113
 msgid "T5001"
 msgstr "Anzahl Gesamttitel"
 
 #: ../templates/database/ebooks/visible_categories_titset:113
-#: ../templates/database/einbaende/visible_categories_titset:25
+#: ../templates/database/einbaende/visible_categories_titset:26
 #: ../templates/database/inst001/visible_categories_titset:112
 #: ../templates/database/kapsel/visible_categories_titset:110
 #: ../templates/database/nationallizenzen/visible_categories_titset:113
 #: ../templates/database/richter/visible_categories_titset:114
-#: ../templates/visible_categories_titset:113
+#: ../templates/visible_categories_titset:114
 msgid "T5002"
 msgstr "Anzahl Bände/Stücke"
 
@@ -5146,7 +5151,7 @@ msgstr "Anzahl Bände/Stücke"
 #: ../templates/database/kapsel/visible_categories_titset:111
 #: ../templates/database/nationallizenzen/visible_categories_titset:114
 #: ../templates/database/richter/visible_categories_titset:115
-#: ../templates/visible_categories_titset:114
+#: ../templates/visible_categories_titset:115
 msgid "T5100"
 msgstr "Zählung"
 

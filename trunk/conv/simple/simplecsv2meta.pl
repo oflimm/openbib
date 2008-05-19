@@ -64,7 +64,7 @@ $bufferidx=0;
 );
 
 %notkonv=(
-    'Paket'                => '0700:',
+#    'Paket'                => '0700:',
     'Paket1'               => '0700:',
     'Paket2'               => '0700:',
     'Paket3'               => '0700:',

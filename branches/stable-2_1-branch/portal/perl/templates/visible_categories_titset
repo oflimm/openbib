@@ -108,6 +108,7 @@
                 'T2662', # msg.maketext("T2662") USB EDVurl
                 'T2663', # msg.maketext("T2663") USB URLInfo
                 'T4110', # msg.maketext("T4110") TOC-URL / PDF
+                'T4120', # msg.maketext("T4120") Ebook-URL
                 'T4500', # msg.maketext("T4500") Nutzer-Tags
                 'T5001', # msg.maketext("T5001") Anzahl uebergeordn. Werke
                 'T5002', # msg.maketext("T5002") Anzahl untergeordn. Werke

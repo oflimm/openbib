@@ -44,5 +44,5 @@ my $pool          = $ARGV[0];
 
 print "### $pool: Alternative Umwandlung\n";
 
-system("cd $rootdir/data/$pool ; $meta2sqlexe -reduce-mem -add-superpers --single-pool=$pool");
+system("cd $rootdir/data/$pool ; $meta2sqlexe -reduce-mem -add-superpers --database=$pool");
 

@@ -180,6 +180,11 @@ FOREACH category IN categories;
          content       = "${config.redirect_loc}/${sessionID}/500/${content}" ;
          content       = "<a href=\"${content}\" target=\"_blank\">${thiscontent}</a>";
 
+    CASE "T4120";
+         thiscontent   = "Greifen Sie hier online auf den Volltext zu";
+         content       = "${config.redirect_loc}/${sessionID}/503/${content}" ;
+         content       = "<a href=\"${content}\" target=\"_blank\">${thiscontent}</a>";
+
     CASE [ "T0710" "T0902" "T0907" "T0912" "T0917" "T0922" "T0927" "T0932" "T0937" "T0942" "T0947" ];
          thisid     = item.id;
          IF NOT thisid.match('^\d+$');

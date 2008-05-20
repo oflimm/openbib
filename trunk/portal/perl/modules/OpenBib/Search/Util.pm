@@ -398,10 +398,19 @@ sub initial_search_for_titidns {
     my $config      = OpenBib::Config->instance;
     my $searchquery = OpenBib::SearchQuery->instance;
 
+    my $recordlist = new OpenBib::RecordList::Title();
+
+
     if (!defined $dbh){
-        # Kein Spooling von DB-Handles!
-        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-            or $logger->error_die($DBI::errstr);
+        eval {
+            # Kein Spooling von DB-Handles!
+            $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd});
+        };
+
+        if ($@){
+           $logger->error($DBI::errstr);          
+           return ($recordlist,0);
+        }
     }
 
     my ($atime,$btime,$timeall);
@@ -410,13 +419,13 @@ sub initial_search_for_titidns {
         $atime=new Benchmark;
     }
     
-    my $request = $dbh->prepare($searchquery->get_sql_querystring({
+    my $request = $dbh->prepare($searchquery->to_sql_querystring({
         serien   => $serien,
         offset   => $offset,
         hitrange => $hitrange,
     })) or $logger->error("Database: $database - ".$DBI::errstr);
 
-    $request->execute($searchquery->get_sql_queryargs) or $logger->error("Database: $database - ".$DBI::errstr);
+    $request->execute($searchquery->to_sql_queryargs) or $logger->error("Database: $database - ".$DBI::errstr);
 
     my @tempidns=();
 
@@ -465,8 +474,6 @@ sub initial_search_for_titidns {
     my %schon_da=();
     my $count=0;
     my @tidns=grep {! $schon_da{$_}++ } @tempidns;
-
-    my $recordlist = new OpenBib::RecordList::Title();
 
     foreach my $id (splice(@tidns,0,$hitrange)){
         $recordlist->add(new OpenBib::Record::Title({ database => $database , id => $id}));

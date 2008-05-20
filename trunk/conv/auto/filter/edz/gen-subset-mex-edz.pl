@@ -82,8 +82,8 @@ my @circexemplarliste=@$circexlist;
 
 print "### edz: $#circexemplarliste Titel gefunden\n";
 
-foreach my $singleex (@circexemplarliste) {
-  $titidns{$singleex}=1;
+foreach my $singleex_ref (@circexemplarliste) {
+  $titidns{$singleex->{Katkey}}=1;
 }
 
 my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=inst001;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);

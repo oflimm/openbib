@@ -50,6 +50,7 @@ use OpenBib::QueryOptions;
 use OpenBib::Session;
 use OpenBib::Statistics;
 use OpenBib::User;
+use OpenBib::Template::Utilities;
 
 sub handler {
     my $r=shift;
@@ -60,6 +61,7 @@ sub handler {
     my $config      = OpenBib::Config->instance;
     my $statistics  = new OpenBib::Statistics();
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
+    my $utils       = new OpenBib::Template::Utilities;
 
     my $query       = Apache::Request->instance($r);
 
@@ -118,6 +120,7 @@ sub handler {
         config        => $config,
         dbinfotable   => $dbinfotable,
         statistics    => $statistics,
+        utils         => $utils,
         user          => $user,
         msg           => $msg,
     };

@@ -165,13 +165,16 @@ sub initial_search {
     my $stopper = new Search::Xapian::SimpleStopper(@stopwords);
     $qp->set_stopper($stopper);
     
-    my $querystring    = $searchquery->get_searchfield('fs')->{norm};
+#    my $querystring    = $searchquery->get_searchfield('fs')->{norm};
+    my $querystring    = $searchquery->to_xapian_querystring;
 
     my ($is_singleterm) = $querystring =~m/^(\w+)$/;
 
     # Explizites Setzen der Datenbank fuer FLAG_WILDCARD
     $qp->set_database($dbh);
     $qp->set_default_op(Search::Xapian::OP_AND);
+    $qp->add_prefix('id'       ,'Q');
+
     $qp->add_prefix('inauth'   ,'X1');
     $qp->add_prefix('intitle'  ,'X2');
     $qp->add_prefix('incorp'   ,'X3');
@@ -188,6 +191,7 @@ sub initial_search {
     $qp->add_prefix('ddtyp'   ,'D4');
     $qp->add_prefix('ddyear'  ,'D5');
     $qp->add_prefix('ddspr'   ,'D6');
+    $qp->add_prefix('ddcorp'  ,'D7');
     
     my $category_map_ref = {};
     my $enq       = $dbh->enquire($qp->parse_query($querystring,Search::Xapian::FLAG_WILDCARD|Search::Xapian::FLAG_LOVEHATE|Search::Xapian::FLAG_BOOLEAN));

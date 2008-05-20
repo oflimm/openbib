@@ -77,7 +77,7 @@
    itemclass = css_classes.$classnr;
 %]
 <li class="[% itemclass %]"><span>[% itemcount %] Titel sind
-verkn&uuml;pft mit </span><a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=sql;kor=%22[% item.replace('"','') %]%22;database=[% database %];searchprofile=1" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% item %]">[% item %]</a></li>
+verkn&uuml;pft mit </span><a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=xapian;[%- IF config.drilldown && itemcount < config.xapian_option.maxmatch -%]drilldown=1;[%- IF config.drilldown_option.cloud -%]dd_cloud=1;[%- END -%][%- IF config.drilldown_option.categorized -%]dd_categorized=1;[%- END -%][%- END -%]fs=ddcorp:[% utils.normalize_drilldown(item) %];database=[% database %];searchprofile=1" class="tag" title="[% itemcount %] Titel sind verkn&uuml;pft mit [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

@@ -572,7 +572,7 @@ sub get_searchterms {
     return $term_ref;
 }
 
-sub get_sql_querystring {
+sub to_sql_querystring {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
@@ -698,7 +698,7 @@ sub get_sql_querystring {
     return $sqlquerystring;
 }
 
-sub get_sql_queryargs {
+sub to_sql_queryargs {
     my ($self) = @_;
     
     my @sqlargs  = ();
@@ -767,5 +767,70 @@ sub get_sql_queryargs {
 
     return @sqlargs;
 }
+
+sub to_xapian_querystring {
+    my ($self) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Aufbau des xapianquerystrings
+    my @xapianquerystrings = ();
+    my $xapianquerystring  = "";
+
+    my $ops_ref = {
+        'AND'     => '+',
+        'AND NOT' => '-',
+        'OR'      => '',
+    };
+
+    my $fields_ref = [
+        'fs',
+        'verf',
+        'hst',
+        'swt',
+        'kor',
+        'notation',
+        'sign',
+        'isbn',
+        'issn',
+        'mart',
+        'hststring',
+        'inhalt',
+        'gtquelle',
+        'ejahr',
+    ];
+
+    my $prefix_ref = {
+        'verf'     => 'inauth:',
+        'hst'      => 'intitle:',
+        'kor'      => 'incorp:',
+        'swt'      => 'insubj:',
+        'notation' => 'insys:',
+        'isbn'     => 'inisbn:',
+        'issn'     => 'inissn:',
+    };
+    
+    foreach my $field (@{$fields_ref}){
+        my $searchtermstring = $self->{_searchquery}->{$field}->{norm};
+        my $searchtermop     = $ops_ref->{$self->{_searchquery}->{$field}->{bool}};
+        if ($searchtermstring) {
+            my @searchterms = split('\s+',$searchtermstring);
+            foreach my $searchterm (@searchterms){
+                $searchterm=$prefix_ref->{$field}.$searchterm;
+                                             
+            }
+            $searchtermstring = join(' ',@searchterms);
+            $xapianquerystring = "$searchtermop($searchtermstring)";
+            push @xapianquerystrings, $xapianquerystring;
+        }
+    }
+
+    $xapianquerystring = join(" ",@xapianquerystrings);
+
+    $logger->debug("Xapian-Querystring: $xapianquerystring");
+    return $xapianquerystring;
+}
+
 
 1;

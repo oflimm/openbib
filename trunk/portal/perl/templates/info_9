@@ -76,8 +76,7 @@
    classnr   = thisitem.class;
    itemclass = css_classes.$classnr;
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Erscheinungsjahr
-</span><a href="#" class="tag" title="[% itemcount %] Titel haben das Erscheinungsjahr [% item %]">[% item %]</a></li>
+<li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Erscheinungsjahr</span><a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=xapian;[%- IF config.drilldown && itemcount < config.xapian_option.maxmatch -%]drilldown=1;[%- IF config.drilldown_option.cloud -%]dd_cloud=1;[%- END -%][%- IF config.drilldown_option.categorized -%]dd_categorized=1;[%- END -%][%- END -%]fs=ddyear:[% utils.normalize_drilldown(item) %];database=[% database %];searchprofile=1" class="tag" title="[% itemcount %] Titel haben das Erscheinungsjahr [% item %]">[% item %]</a></li>
 [% END %]
 </ol>
 [% ELSE %]

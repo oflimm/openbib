@@ -904,7 +904,9 @@ while (my $line=<IN>){
                     type       => 'kor',
                     content    => $content,
                 } if (exists $conv_config->{listitemcat}{'0200'});
-                
+
+                push @{$normdata_ref->{kor}}, $content;
+
                 push @autkor, $content;
                 
                 print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
@@ -933,7 +935,9 @@ while (my $line=<IN>){
                     type       => 'kor',
                     content    => $content,
                 } if (exists $conv_config->{listitemcat}{'0201'});
-                
+
+                push @{$normdata_ref->{kor}}, $content;
+
                 push @autkor, $content;
                 
                 print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";

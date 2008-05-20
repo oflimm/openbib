@@ -241,7 +241,15 @@ my $count = 1;
 	        type    => "drilldown",
                 cat     => 'spr',
             },
+            {
+                # Koerperschaft
+                prefix  => "D7",
+	        type    => "drilldown",
+                cat     => 'kor',
+            },
         ];
+
+        $doc->add_term("Q".$s_id);
 
         my $seen_token_ref = {};
         
@@ -311,7 +319,9 @@ my $count = 1;
 		  $field="$tokinfo_ref->{prefix}$field";
 
                   # Begrenzung der keys auf FLINT_BTREE_MAX_KEY_LEN Zeichen
-		  next if (length($field) > $DRILLDOWN_MAX_KEY_LEN);
+		  if (length($field) > $DRILLDOWN_MAX_KEY_LEN){
+                      $field=substr($field,0,$DRILLDOWN_MAX_KEY_LEN);
+                  }
 
 		  $doc->add_term($field);
 	        }
@@ -348,6 +358,11 @@ my $count = 1;
                 # Sprache
                 id   => 6,
                 type => 'spr',
+            },
+            {
+                # Sprache
+                id   => 7,
+                type => 'kor',
             },
             
         ];

@@ -124,6 +124,7 @@ sub handler {
     my $tosearch   = $query->param('tosearch')   || '';
     my $view       = $query->param('view')       || 'institute';
     my $serien     = $query->param('serien')     || 0;
+    my $sb         = $query->param('sb')         || 'xapian';
 
     # Loggen des Recherche-Einstiegs ueber Connector (1=DigiBib)
 
@@ -180,9 +181,11 @@ sub handler {
     $query->param('boolmart'      => $query->param('bool11')) if ($query->param('bool11'));
     $query->param('boolhststring' => $query->param('bool12')) if ($query->param('bool12'));
 
-    # Automatische Und-Verknuepfung der Suchterme aktivieren
-    $query->param('autoplus' => 1);
-
+    if ($sb eq "sql"){
+        # Automatische Und-Verknuepfung der Suchterme aktivieren
+        $query->param('autoplus' => 1);
+    }
+    
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     my $searchquery = OpenBib::SearchQuery->instance;
@@ -191,131 +194,211 @@ sub handler {
 
     # Bestimmung der Datenbanken, in denen gesucht werden soll
     my @databases = $config->get_dbs_of_view($view);
+
+    my $treffercount = 0;
     
     if ($tosearch eq "Trefferliste") {
-
+        
+        my $fallbacksb;
+        
         # Start der Ausgabe mit korrektem Header
         print $r->send_http_header("text/html");
         
-        # Folgende nicht erlaubte Anfragen werden sofort ausgesondert
+        my @ergebnisse;
+        my $recordlist;
+        
+        if ($sb eq "xapian"){
+            $recordlist = new OpenBib::RecordList::Title();
 
-        my $firstsql;
+            my $dbh;
 
-        if ($searchquery->get_searchfield('fs')->{norm}) {
-            $firstsql=1;
-        }
-        
-        if ($searchquery->get_searchfield('verf')->{norm}) {
-            $firstsql=1;
-        }
-        
-        if ($searchquery->get_searchfield('kor')->{norm}) {
-            $firstsql=1;
-        }
-        
-        if ($searchquery->get_searchfield('hst')->{norm}) {
-            $firstsql=1;
-        }
-        
-        if ($searchquery->get_searchfield('swt')->{norm}) {
-            $firstsql=1;
-        }
-        
-        if ($searchquery->get_searchfield('notation')->{norm}) {
-            $firstsql=1;
-        }
-        
-        if ($searchquery->get_searchfield('sign')->{norm}) {
-            $firstsql=1;
-        }
-        
-        if ($searchquery->get_searchfield('isbn')->{norm}) {
-            $firstsql=1;
-        }
-        
-        if ($searchquery->get_searchfield('issn')->{norm}) {
-            $firstsql=1;
-        }
-        
-        if ($searchquery->get_searchfield('mart')->{norm}) {
-            $firstsql=1;
-        }
-        
-        if ($searchquery->get_searchfield('hststring')->{norm}) {
-            $firstsql=1;
-        }
-        
-        if ($searchquery->get_searchfield('inhalt')->{norm}) {
-            $firstsql=1;
-        }
-        
-        if ($searchquery->get_searchfield('gtquelle')->{norm}) {
-            $firstsql=1;
-        }
-        
-        if ($searchquery->get_searchfield('ejahr')->{norm}){
-            $firstsql=1;
-        }
-        
-        if ($searchquery->get_searchfield('ejahr')->{norm}) {
-            my ($ejtest)=$searchquery->get_searchfield('ejahr')->{norm}=~/.*(\d\d\d\d).*/;
-            if (!$ejtest) {
-                OpenBib::Common::Util::print_warning($msg->maketext("Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."),$r,$msg);
-                return OK;
+            foreach my $database (@databases){
+                if (!defined $dbh){
+                    # Erstes Objekt erzeugen,
+                    
+                    $logger->debug("Creating Xapian DB-Object for database $database");                
+                    
+                    eval {
+                        $dbh = new Search::Xapian::Database ( $config->{xapian_index_base_path}."/".$database) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+                    };
+                    
+                    if ($@){
+                        $logger->error("Database: $database - :".$@);
+                        $fallbacksb="sql";
+                    }
+                }
+                else {
+                    $logger->debug("Adding database $database");
+
+                    eval {
+                        $dbh->add_database(new Search::Xapian::Database( $config->{xapian_index_base_path}."/".$database));
+                    };
+
+                    if ($@){
+                        $logger->error("Database: $database - :".$@);
+                        $fallbacksb="sql";
+                    }                        
+                }
             }
-        }
-        
-        if ($searchquery->get_searchfield('ejahr')->{bool} eq "OR") {
-            if ($searchquery->get_searchfield('ejahr')->{norm}) {
-                OpenBib::Common::Util::print_warning($msg->maketext("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."),$r,$msg);
-                return OK;
+
+            if (!$fallbacksb){
+                my $request = new OpenBib::Search::Local::Xapian();
+                
+                $request->initial_search({
+                    serien          => $serien,
+                    dbh             => $dbh,
+                    database        => $database,
+                    
+                    enrich          => undef,
+                    enrichkeys_ref  => undef,
+                    dd_categorized  => 0,
+                });
+                
+                $treffercount = $request->{resultcount};
+                
+                $logger->info($treffercount . " results found");
+                
+                if ($treffercount >= 1) {
+                    my @matches = $request->matches;
+                    my $i = 0; 
+                    foreach my $match (@matches) {
+                        last if ($i > $maxhits);
+                        my $document        = $match->get_document();
+                        my $titlistitem_raw = pack "H*", $document->get_data();
+                        my $titlistitem_ref = Storable::thaw($titlistitem_raw);
+                        
+                        $recordlist->add(new OpenBib::Record::Title({database => $titlistitem_ref->{database}, id => $titlistitem_ref->{id}})->set_brief_normdata_from_storable($titlistitem_ref));
+                        $i++;
+                    }
+                    
+                    $recordlist->sort({order=>$sortorder,type=>$sorttype});
+                    
+                    # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
+                    push @ergebnisse, @{$recordlist->to_list};
+                }
             }
-        }
-        
-        
-        if ($searchquery->get_searchfield('ejahr')->{bool} eq "AND") {
+        }            
+
+        if ($sb eq "sql"  || $fallbacksb eq 'sql'){
+            # Folgende nicht erlaubte Anfragen werden sofort ausgesondert
+            
+            my $firstsql;
+            
+            if ($searchquery->get_searchfield('fs')->{norm}) {
+                $firstsql=1;
+            }
+            
+            if ($searchquery->get_searchfield('verf')->{norm}) {
+                $firstsql=1;
+            }
+            
+            if ($searchquery->get_searchfield('kor')->{norm}) {
+                $firstsql=1;
+            }
+            
+            if ($searchquery->get_searchfield('hst')->{norm}) {
+                $firstsql=1;
+            }
+            
+            if ($searchquery->get_searchfield('swt')->{norm}) {
+                $firstsql=1;
+            }
+            
+            if ($searchquery->get_searchfield('notation')->{norm}) {
+                $firstsql=1;
+            }
+            
+            if ($searchquery->get_searchfield('sign')->{norm}) {
+                $firstsql=1;
+            }
+            
+            if ($searchquery->get_searchfield('isbn')->{norm}) {
+                $firstsql=1;
+            }
+            
+            if ($searchquery->get_searchfield('issn')->{norm}) {
+                $firstsql=1;
+            }
+            
+            if ($searchquery->get_searchfield('mart')->{norm}) {
+                $firstsql=1;
+            }
+            
+            if ($searchquery->get_searchfield('hststring')->{norm}) {
+                $firstsql=1;
+            }
+            
+            if ($searchquery->get_searchfield('inhalt')->{norm}) {
+                $firstsql=1;
+            }
+            
+            if ($searchquery->get_searchfield('gtquelle')->{norm}) {
+                $firstsql=1;
+            }
+            
+            if ($searchquery->get_searchfield('ejahr')->{norm}){
+                $firstsql=1;
+            }
+            
             if ($searchquery->get_searchfield('ejahr')->{norm}) {
-                if (!$firstsql) {
+                my ($ejtest)=$searchquery->get_searchfield('ejahr')->{norm}=~/.*(\d\d\d\d).*/;
+                if (!$ejtest) {
+                    OpenBib::Common::Util::print_warning($msg->maketext("Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."),$r,$msg);
+                    return OK;
+                }
+            }
+            
+            if ($searchquery->get_searchfield('ejahr')->{bool} eq "OR") {
+                if ($searchquery->get_searchfield('ejahr')->{norm}) {
                     OpenBib::Common::Util::print_warning($msg->maketext("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."),$r,$msg);
                     return OK;
                 }
             }
-        }
-        
-        if (!$firstsql) {
-            OpenBib::Common::Util::print_warning($msg->maketext("Es wurde kein Suchkriterium eingegeben."),$r,$msg);
-            return OK;
-        }
-        
-        my @ergebnisse;
-
-        foreach my $database (@databases){
-            my ($recordlist,$fullresultcount) = OpenBib::Search::Util::initial_search_for_titidns({
-                serien          => $serien,
-                
-                database        => $database,
-                
-                hitrange        => $hitrange,
-
-                maxhits         => $maxhits,
-                
-                enrich          => 0,
-                enrichkeys_ref  => [],
-            });
             
-            $logger->debug("Treffer-Ids in $database:".$recordlist->to_ids);
-
-            # Wenn mindestens ein Treffer gefunden wurde
-            if ($recordlist->get_size() > 0) {
-                # Kurztitelinformationen fuer RecordList laden
-                $recordlist->load_brief_records;
-                
-                $recordlist->sort({order=>$sortorder,type=>$sorttype});
-                
-                push @ergebnisse, @{$recordlist->to_list};
+            
+            if ($searchquery->get_searchfield('ejahr')->{bool} eq "AND") {
+                if ($searchquery->get_searchfield('ejahr')->{norm}) {
+                    if (!$firstsql) {
+                        OpenBib::Common::Util::print_warning($msg->maketext("Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."),$r,$msg);
+                        return OK;
+                    }
+                }
             }
-        }
+            
+            if (!$firstsql) {
+                OpenBib::Common::Util::print_warning($msg->maketext("Es wurde kein Suchkriterium eingegeben."),$r,$msg);
+                return OK;
+            }
+            
+            foreach my $database (@databases){
+                my ($recordlist,$fullresultcount) = OpenBib::Search::Util::initial_search_for_titidns({
+                    serien          => $serien,
+                    
+                    database        => $database,
+                    
+                    hitrange        => $hitrange,
+                    
+                    maxhits         => $maxhits,
+                    
+                    enrich          => 0,
+                    enrichkeys_ref  => [],
+                });
+                
+                $logger->debug("Treffer-Ids in $database:".$recordlist->to_ids);
+                
+                # Wenn mindestens ein Treffer gefunden wurde
+                if ($recordlist->get_size() > 0) {
+                    # Kurztitelinformationen fuer RecordList laden
+                    $recordlist->load_brief_records;
+                    
+                    $recordlist->sort({order=>$sortorder,type=>$sorttype});
+                    
+                    push @ergebnisse, @{$recordlist->to_list};
+                }
+            }
 
+            $treffercount=$#ergebnisse+1;
+        }
         
         # Dann den eigenen URL bestimmen
         my $myself="http://".$r->hostname.$r->uri."?".$r->args;
@@ -323,8 +406,6 @@ sub handler {
         $myself=~s/;/&/g;
         $myself=~s!:8008/!/!;
         
-        my $treffercount=$#ergebnisse+1;
-
         # Wurde in allen Katalogen recherchiert?
 
         my $alldbcount = $config->get_number_of_dbs();

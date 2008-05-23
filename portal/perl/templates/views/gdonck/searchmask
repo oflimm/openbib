@@ -28,7 +28,7 @@
 [% IF config.lang.size > 1 %]
 <div id="langchoice">
 [%   FOREACH l IN config.lang %]
-<a href="[% config.searchmask_loc %];sessionID=[% sessionID %];setmask=simple;l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+<a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];setmask=simple;l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 </div>
 [% END %]

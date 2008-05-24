@@ -196,7 +196,7 @@ foreach my $database (@databases){
         my $bibkey   = $result->{bibkey};
         my $date     = $result->{thisdate} || 0;
 
-        if (!exists $enriched_id_ref->{$id} && $bibkey){
+        if ($bibkey){
             $enrichrequest->execute($bibkey,$database,$id,$date);
             $bibkey_insertcount++;
         }

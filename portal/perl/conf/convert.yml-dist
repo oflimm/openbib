@@ -16,8 +16,8 @@ convtab:
       '0100': 1        # Aufnahmedatum
 #      '0101': 1        # Aenderungsdatum
     blacklist_tit:
-#      '0002': 1        # Aufnahmedatum
-#      '0003': 1        # Aenderungsdatum        
+     #'0002': 1        # Aufnahmedatum
+     #'0003': 1        # Aenderungsdatum        
       '0005': 1        # Inventarnummer (in mex vorhanden)
       '0009': 1        # Herkunft
       '0010': 1        # Fremdnummer
@@ -107,11 +107,11 @@ convtab:
       '3007': 1        # Unbekannt (Standort?)
       '3750': 1        # Nicht mehr existent
       '4711': 1        # Unbekannt
-      '4712': 1        # Markierung Econbiz (wi, so, wiso)
-      '4715': 1        # Markierung EDZ
-      '4717': 1        # Markierung Fachbibliothek Versicherungswissenschaft
-      '4720': 1        # Testdaten Inhaltsverzeichnis-Scans
-      '4725': 1        # Temporaeres Schlagwort
+     #'4712': 1        # Markierung Econbiz (wi, so, wiso)
+     #'4715': 1        # Markierung EDZ
+     #'4717': 1        # Markierung Fachbibliothek Versicherungswissenschaft
+     #'4720': 1        # Testdaten Inhaltsverzeichnis-Scans
+     #'4725': 1        # Temporaeres Schlagwort
 # Kategorien, die in den einzelnen Normdaten indexiert werden
     inverted_aut:
       '0001':         # Ansetzung

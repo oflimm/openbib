@@ -249,11 +249,12 @@ my $count = 1;
             },
         ];
 
-        $doc->add_term("Q".$s_id);
-
         my $seen_token_ref = {};
         
         my $doc=Search::Xapian::Document->new();
+
+        # ID des Satzes recherchierbar machen
+        $doc->add_term("Q".$s_id);
 
         foreach my $tokinfo_ref (@$tokinfos_ref) {
 

@@ -307,20 +307,20 @@ END;
 
 [%- IF normset.${"E4200"} || normset.${"E4201"} || normset.${"E4202"} %]
 <p class="wikipediamashup">
-<img src="/images/openbib/wikipedia.png" alt="Mashup mit Wikipedia" /> Dieses Buch ist in Wikipedia erw&auml;hnt unter:&nbsp;
+<img src="/images/openbib/wikipedia.png" alt="[% msg.maketext("Mashup mit Wikipedia") %]" /> [% msg.maketext("Dieses Buch ist in Wikipedia erw&auml;hnt unter") %]:&nbsp;
 [%-   IF normset.${"E4200"} %]
 [%-    FOREACH item IN normset.${"E4200"}-%]
-<a href="http://de.wikipedia.org/wiki/[% item.content | uri %]" title="Deutsche Wikipedia: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
+<a href="http://de.wikipedia.org/wiki/[% item.content | uri %]" title="[% msg.maketext("Deutsche Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
 [%-    END -%]
 [%-   END %]
 [%-   IF normset.${"E4201"} %]
 [%-     FOREACH item IN normset.${"E4201"}-%]
-<a href="http://en.wikipedia.org/wiki/[% item.content | uri %]" title="Englische Wikipedia: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
+<a href="http://en.wikipedia.org/wiki/[% item.content | uri %]" title="[% msg.maketext("Englische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(en)</a>&nbsp;&nbsp;
 [%-     END -%]
 [%-   END %]
 [%-   IF normset.${"E4202"} %]
 [%-     FOREACH item IN normset.${"E4202"}-%]
-<a href="http://fr.wikipedia.org/wiki/[% item.content | uri %]" title="Franz&ouml;sische Wikipedia: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
+<a href="http://fr.wikipedia.org/wiki/[% item.content | uri %]" title="[% msg.maketext("Franz&ouml;sische Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(fr)</a>&nbsp;&nbsp;
 [%-     END -%]
 [%-   END -%]
 </p>
@@ -337,7 +337,7 @@ END;
 
 </td>
 [% IF litlists.size > 0 %]<td></td><td class="boxedfull" valign="top" style="font-size:0.8em">
-Dieser Titel befindet sich in folgenden Literaturlisten:
+[% msg.maketext("Dieser Titel befindet sich in folgenden Literaturlisten") %]:
 
 <ul>
 [% FOREACH litlist IN litlists %]
@@ -363,10 +363,9 @@ Dieser Titel befindet sich in folgenden Literaturlisten:
 
 [% IF same_records.get_size > 0 %]
 <table width="100%">
-<tr><th>Dieser Titel in anderen Katalogen&nbsp;<span id="samerecord_toggle"></span></th></tr>
+<tr><th>[% msg.maketext("Dieser Titel in anderen Katalogen") %]&nbsp;<span id="samerecord_toggle"></span></th></tr>
 <tr><td id="samerecord" class="boxedclear">
-Titel mit der ISBN dieses Titels sind auch in folgenden anderen
-KUG-Katalogen vorhanden:
+[% msg.maketext("Titel mit der ISBN dieses Titels sind auch in folgenden anderen KUG-Katalogen vorhanden") %]:
 <p />
 <ol>
 [% FOREACH same_record IN same_records.get_records %]
@@ -381,9 +380,9 @@ KUG-Katalogen vorhanden:
 <p />
 [% IF similar_records.get_size > 0 %]
 <table width="100%">
-<tr><th>Andere Ausgaben dieses Titels (Sprache, Auflage usw.)&nbsp;<span id="similarrecord_toggle"></span></th></tr>
+<tr><th>[% msg.maketext("Andere Ausgaben dieses Titels (Sprache, Auflage usw.)") %]&nbsp;<span id="similarrecord_toggle"></span></th></tr>
 <tr><td id="similarrecord" class="boxedclear">
-Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere Auflage usw.) in den KUG-Katalogen:
+[% msg.maketext("Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere Auflage usw.) in den KUG-Katalogen") %]:
 <p />
 <ol>
 [% FOREACH similar_record IN similar_records.get_records %]
@@ -408,9 +407,9 @@ Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere Aufl
 [% IF normset.exists('E4000') %]
 <p />
 <table width="100%">
-<tr><th>Das könnte Sie interessieren:</th></tr>
+<tr><th>[% msg.maketext("Das könnte Sie interessieren") %]:</th></tr>
 <tr><td class="boxedclear">
-Nutzer, die diesen Titel ausgew&auml;hlt haben, interessierten sich auch f&uuml;r die folgenden Titel. <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#enrichrelevance">Weitere Informationen</a> finden Sie in der Suchhilfe.
+[% msg.maketext("Nutzer, die diesen Titel ausgew&auml;hlt haben, interessierten sich auch f&uuml;r die folgenden Titel. [_1]Weitere Informationen[_2] finden Sie in der Suchhilfe","<a href=\"${config.info_loc}?sessionID=${sessionID};view=${view}#enrichrelevance\">","</a>") %].
 <table>
 [%-   isbnitems = normset.${"E4000"} -%]
 [%-   hstitems  = normset.${"E4001"} -%]
@@ -430,7 +429,7 @@ Nutzer, die diesen Titel ausgew&auml;hlt haben, interessierten sich auch f&uuml;
 <!-- Begin: Tagging -->
 <p />
 <table width="100%">
-<tr><th>Eigene Tags vergeben&nbsp;<span id="newtags_toggle"></span></th></tr>
+<tr><th>[% msg.maketext("Eigene Tags vergeben") %]&nbsp;<span id="newtags_toggle"></span></th></tr>
 <tr><td id="newtags" class="boxedclear">
 
 [%
@@ -446,7 +445,7 @@ Nutzer, die diesen Titel ausgew&auml;hlt haben, interessierten sich auch f&uuml;
 <tr><td valign="top">
 
 <table width="100%">
-<tr><th>Eingabe neuer Tags</th></tr>
+<tr><th>[% msg.maketext("Eingabe neuer Tags") %]</th></tr>
 <tr><td class="boxedclear">
 
 <form method="get" action="[% config.tags_loc %]">
@@ -470,7 +469,7 @@ Nutzer, die diesen Titel ausgew&auml;hlt haben, interessierten sich auch f&uuml;
 %]
 
 <table width="100%">
-<tr><th>Übernahme eigener Tags</th></tr>
+<tr><th>[% msg.maketext("Übernahme eigener Tags") %]</th></tr>
 <tr><td class="boxedclear">
 
 <!-- Beginn Tag-Cloud -->
@@ -489,7 +488,7 @@ verkn&uuml;pft mit dem Tag </span><a onclick="insert_tag(event); return false;" 
 [%      END %]
 </ol>
 [%    ELSE %]
-Bisher haben Sie noch keine Tags vergeben.
+[% msg.maketext("Bisher haben Sie noch keine Tags vergeben.") %]
 [%    END %]
 
 </td></tr>
@@ -501,7 +500,7 @@ Bisher haben Sie noch keine Tags vergeben.
 <p />
 <!-- Beginn generelle Tag-Uebernahme -->
 <table width="100%">
-<tr><th>Übernahme bereits von Nutzern vergebener Tags</th></tr>
+<tr><th>[% msg.maketext("Übernahme bereits von Nutzern vergebener Tags") %]</th></tr>
 <tr><td class="boxedclear">
 
 <ol class="cloud">
@@ -531,7 +530,7 @@ verkn&uuml;pft mit dem Tag </span><a onclick="insert_tag(event); return false;" 
 <tr><td valign="top">
 
 <table width="100%">
-<tr><th>Eigene Tags</th></tr>
+<tr><th>[% msg.maketext("Eigene Tags") %]</th></tr>
 <tr><td class="boxedclear">
 [%  my_tags = [] %]
 [%- FOREACH tag IN private_tags_of_tit -%]
@@ -562,7 +561,7 @@ verkn&uuml;pft mit dem Tag </span><a onclick="insert_tag(event); return false;" 
 %]
 
 <table width="100%">
-<tr><th>Übernahme eigener Tags</th></tr>
+<tr><th>[% msg.maketext("Übernahme eigener Tags") %]</th></tr>
 <tr><td class="boxedclear">
 
 <!-- Beginn Tag-Cloud -->
@@ -581,7 +580,7 @@ verkn&uuml;pft mit dem Tag </span><a onclick="insert_tag(event); return false;" 
 [%      END %]
 </ol>
 [%    ELSE %]
-Bisher haben Sie noch keine Tags vergeben.
+[% msg.maketext("Bisher haben Sie noch keine Tags vergeben.") %]
 [%    END %]
 
 </td></tr>
@@ -593,7 +592,7 @@ Bisher haben Sie noch keine Tags vergeben.
 <p />
 <!-- Beginn generelle Tag-Uebernahme -->
 <table width="100%">
-<tr><th>Übernahme bereits von Nutzern vergebener Tags</th></tr>
+<tr><th>[% msg.maketext("Übernahme bereits von Nutzern vergebener Tags") %]</th></tr>
 <tr><td class="boxedclear">
 
 <ol class="cloud">
@@ -641,31 +640,31 @@ verkn&uuml;pft mit dem Tag </span><a onclick="insert_tag(event); return false;" 
 <input type="hidden" name="titisbn"    value="[% normset.${"T0540"}.first.content.replace('-','') %]" />
 
 <table width="100%">
-<tr><th>Neue Bewertung/Rezension <span id="newreview_toggle"></span></th></tr>
+<tr><th>[% msg.maketext("Neue Bewertung/Rezension") %]<span id="newreview_toggle"></span></th></tr>
 <tr><td id="newreview" class="boxedclear">
 
-<h3>Bewertung</h3>
+<h3>[% msg.maketext("Bewertung") %]</h3>
 <table>
-<tr><td>schlecht&nbsp;<input type="radio"
+<tr><td>[% msg.maketext("schlecht") %]&nbsp;<input type="radio"
 name="rating" value="0"/>&nbsp;<input type="radio" name="rating"
 value="1"/>&nbsp;<input type="radio" name="rating"
 value="2"/>&nbsp;<input type="radio" name="rating"
 value="3" checked="checked"/>&nbsp;<input type="radio" name="rating"
 value="4"/>&nbsp;<input type="radio" name="rating"
-value="5"/>&nbsp;sehr gut</td></tr>
+value="5"/>&nbsp;[% msg.maketext("sehr gut") %]</td></tr>
 </table>
 
-<h3>Rezension</h3>
+<h3>[% msg.maketext("Rezension") %]</h3>
 <table>
-<tr><td><b>Pseudonym</b></td><td><input type="text" name="nickname"
+<tr><td><b>[% msg.maketext("Pseudonym") %]</b></td><td><input type="text" name="nickname"
 value="" size="30" maxlength="30" /></td></tr>
-<tr><td><b>Titel</b></td><td><input type="text" name="title"
+<tr><td><b>[% msg.maketext("Titel") %]</b></td><td><input type="text" name="title"
 value="" size="30" maxlength="100" /></td></tr>
-<tr><td><b>Text</b></td><td><textarea cols="80" rows="10"
+<tr><td><b>[% msg.maketext("Text") %]</b></td><td><textarea cols="80" rows="10"
 name="review"></textarea></td></tr>
 </table>
 <p />
-<input type="submit" name="do_add" value="Aufnehmen"/>&nbsp;&nbsp;<input type="reset" value="Löschen"/>
+<input type="submit" name="do_add" value="[% msg.maketext("Aufnehmen") %]"/>&nbsp;&nbsp;<input type="reset" value="[% msg.maketext("Löschen") %]"/>
 </td></tr>
 </table>
 
@@ -681,7 +680,7 @@ name="review"></textarea></td></tr>
 <p />
 
 <table width="100%">
-<tr><th>Bewertungen/Rezensionen von Nutzern <span id="allreviews_toggle"></span></th></tr>
+<tr><th>[% msg.maketext("Bewertungen/Rezensionen von Nutzern") %]<span id="allreviews_toggle"></span></th></tr>
 <tr><td id="allreviews" class="boxedclear">
 <!-- Beginn Reviews -->
 
@@ -693,16 +692,15 @@ von [% item.votes.all %] Nutzer fanden die folgende Rezension hilfreich: <p />[%
 [% IF item.id == ownreviewid %]
 <p />
 <a href="[% config.userreviews_loc %]?sessionID=[% sessionID
-%];reviewid=[% item.id %];do_edit=1">Eigenen Review
-bearbeiten</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
+%];reviewid=[% item.id %];do_edit=1">[% msg.maketext("Eigenen Review bearbeiten") %]</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a
 href="[% config.userreviews_loc %]?sessionID=[% sessionID
-%];reviewid=[% item.id %];do_del=1">Eigenen Review l&ouml;schen</a>
+%];reviewid=[% item.id %];do_del=1">[% msg.maketext("Eigenen Review l&ouml;schen") %]</a>
 [% ELSIF loginname %]
 <p />
-War diese Rezension hilfreich?&nbsp;<a href="[% config.userreviews_loc %]?sessionID=[% sessionID
-%];titid=[% record.id %];titdb=[% record.database %];queryid=[% queryid %];reviewid=[% item.id %];do_vote=1;rating=1">Ja</a>&nbsp;&nbsp;
+[% msg.maketext("War diese Rezension hilfreich?") %]&nbsp;<a href="[% config.userreviews_loc %]?sessionID=[% sessionID
+%];titid=[% record.id %];titdb=[% record.database %];queryid=[% queryid %];reviewid=[% item.id %];do_vote=1;rating=1">[% msg.maketext("Ja") %]</a>&nbsp;&nbsp;
 <a href="[% config.userreviews_loc %]?sessionID=[% sessionID
-%];titid=[% record.id %];titdb=[% record.database %];queryid=[% queryid %];reviewid=[% item.id %];do_vote=1;rating=0">Nein</a>
+%];titid=[% record.id %];titdb=[% record.database %];queryid=[% queryid %];reviewid=[% item.id %];do_vote=1;rating=0">[% msg.maketext("Nein") %]</a>
 [% END %]
 </dd>
 [%  END %]

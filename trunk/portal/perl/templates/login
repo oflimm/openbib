@@ -55,7 +55,7 @@
 <input type="hidden" name="view"      value="[% view %]" />
 
 <table width="100%">
-<tr><th>Login mit einem Benutzerausweis</th></tr>
+<tr><th>[% msg.maketext("Login mit einem Benutzerausweis") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:9pt">
 
 <p />
@@ -95,7 +95,7 @@
 <input type="hidden" name="view"      value="[% view %]" />
 
 <table width="100%">
-<tr><th>Login ohne Benutzerausweis</th></tr>
+<tr><th>[% msg.maketext("Login ohne Benutzerausweis") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:9pt">
 <p />
 [% msg.maketext("Haben Sie sich schon &uuml;ber die Selbstregistrierung eine Kennung eingerichtet? Wenn nicht, so k&ouml;nnen Sie sich [_1]hier[_2] registrierten.","<a href=\"${config.selfreg_loc}?sessionID=${sessionID};view=${view};action=show\">","</a>") %]

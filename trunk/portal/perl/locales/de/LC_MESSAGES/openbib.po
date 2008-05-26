@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2008-05-23 15:30+0200\n"
+"PO-Revision-Date: 2008-05-26 12:12+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -31,11 +31,31 @@ msgstr "${category}"
 #: ../templates/database/portrait/search_showtitset:164
 #: ../templates/managecollection_tit_as_html:69
 #: ../templates/managecollection_tit_as_text:34
-#: ../templates/search_showmulttitset:99 ../templates/search_showtitset:300
+#: ../templates/search_showmulttitset:99 ../templates/search_showtitset:303
 msgid "${thiscategory}"
 msgstr "${thiscategory}"
 
-#: ../templates/litlists_manage_singlelist:54 ../templates/userprefs:182
+#. (item.votes.positive,item.votes.all)
+#: ../templates/search_showtitset:689
+msgid ""
+"%1\n"
+"von %2 Nutzer fanden die folgende Rezension hilfreich:"
+msgstr ""
+"%1\n"
+"von %2 Nutzer fanden die folgende Rezension hilfreich:"
+
+#. (itemcount)
+#: ../templates/search_showtitset:489 ../templates/search_showtitset:517
+#: ../templates/search_showtitset:581 ../templates/search_showtitset:609
+msgid ""
+"%1 Titel sind\n"
+"verkn&uuml;pft mit dem Tag"
+msgstr ""
+"%1 Titel sind\n"
+"verkn&uuml;pft mit dem Tag"
+
+#: ../templates/litlists_manage_singlelist:54
+#: ../templates/search_showtitset:552 ../templates/userprefs:182
 msgid "&Auml;ndern"
 msgstr "&Auml;ndern"
 
@@ -87,9 +107,14 @@ msgstr "&Uuml;bersicht"
 #: ../templates/info_51:39 ../templates/info_52:39 ../templates/searchmask:47
 #: ../templates/searchmask_simple:47
 #: ../templates/views/einbaende/searchmask_simple:39
+#: ../templates/views/kug/searchmask:127
 #: ../templates/views/kug/searchmask_simple:37
 msgid "&Uuml;bersichten"
 msgstr "&Uuml;bersichten"
+
+#: ../templates/search_showtitset:460 ../templates/search_showtitset:552
+msgid "&ouml;ffentlich"
+msgstr "&ouml;ffentlich"
 
 #: ../templates/search_info:36
 msgid "(Notation, Signatur, Titel-String):"
@@ -256,6 +281,7 @@ msgstr "Als User-Agent verwenden Sie"
 #: ../templates/managecollection_tit_as_endnote:20
 #: ../templates/managecollection_tit_as_html:157
 #: ../templates/managecollection_tit_as_text:49
+#: ../templates/search_showtitset:45
 msgid "An BibSonomy senden"
 msgstr "An BibSonomy senden"
 
@@ -269,7 +295,7 @@ msgstr ""
 "Suchanfrage im KUG Recherche-Portal diese auf weitere externe Kataloge "
 "ausdehnen."
 
-#: ../templates/search_showtitset:383
+#: ../templates/search_showtitset:386
 msgid "Andere Ausgaben dieses Titels (Sprache, Auflage usw.)"
 msgstr "Andere Ausgaben dieses Titels (Sprache, Auflage usw.)"
 
@@ -378,7 +404,7 @@ msgstr "Ausleih-Einstellungen"
 #: ../templates/database/portrait/search_showtitset:190
 #: ../templates/managecollection_tit_as_html:94
 #: ../templates/managecollection_tit_as_html_simple:60
-#: ../templates/search_showmulttitset:130 ../templates/search_showtitset:356
+#: ../templates/search_showmulttitset:130 ../templates/search_showtitset:359
 msgid "Ausleihe/Exemplare"
 msgstr "Ausleihe/Exemplare"
 
@@ -421,6 +447,10 @@ msgstr "B&uuml;cher"
 #: ../templates/admin_showsessions:51
 msgid "Beginn"
 msgstr "Beginn"
+
+#: ../templates/search_showtitset:152
+msgid "Begriff in allen Katalogen suchen"
+msgstr "Begriff in allen Katalogen suchen"
 
 #: ../templates/admin_showsessions:51
 msgid "Benutzer"
@@ -536,7 +566,7 @@ msgstr "Bestellungen"
 msgid "Betreff"
 msgstr "Betreff"
 
-#: ../templates/search_showtitset:646
+#: ../templates/search_showtitset:649
 msgid "Bewertung"
 msgstr "Bewertung"
 
@@ -544,7 +574,7 @@ msgstr "Bewertung"
 msgid "Bewertungen/Rezensionen von Nutzern"
 msgstr "Bewertungen/Rezensionen von Nutzern"
 
-#: ../templates/userprefs:171
+#: ../templates/search_showtitset:80 ../templates/userprefs:171
 msgid "BibSonomy"
 msgstr "BibSonomy"
 
@@ -560,7 +590,7 @@ msgstr "BibSonomy-API-User"
 msgid "Bildtitelwort(e)"
 msgstr "Bildtitelwort(e)"
 
-#: ../templates/search_showtitset:491 ../templates/search_showtitset:583
+#: ../templates/search_showtitset:494 ../templates/search_showtitset:586
 msgid "Bisher haben Sie noch keine Tags vergeben."
 msgstr "Bisher haben Sie noch keine Tags vergeben."
 
@@ -644,7 +674,7 @@ msgstr ""
 "Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese "
 "Einschränkung."
 
-#: ../templates/search_showtitset:410
+#: ../templates/search_showtitset:413
 msgid "Das könnte Sie interessieren"
 msgstr "Das könnte Sie interessieren"
 
@@ -705,7 +735,7 @@ msgstr "Derzeit existiert (noch) keine Trefferliste"
 msgid "Derzeit ist Ihre Merkliste leer"
 msgstr "Derzeit ist Ihre Merkliste leer"
 
-#: ../templates/search_showtitset:313
+#: ../templates/search_showtitset:316
 msgid "Deutsche Wikipedia"
 msgstr "Deutsche Wikipedia"
 
@@ -752,11 +782,11 @@ msgstr "Die beiden eingegebenen Passworte stimmen nicht überein."
 msgid "Diese Session ist nicht authentifiziert."
 msgstr "Diese Session ist nicht authentifiziert."
 
-#: ../templates/search_showtitset:340
+#: ../templates/search_showtitset:343
 msgid "Dieser Titel befindet sich in folgenden Literaturlisten"
 msgstr "Dieser Titel befindet sich in folgenden Literaturlisten"
 
-#: ../templates/search_showtitset:366
+#: ../templates/search_showtitset:369
 msgid "Dieser Titel in anderen Katalogen"
 msgstr "Dieser Titel in anderen Katalogen"
 
@@ -772,7 +802,7 @@ msgstr ""
 "Dieser Titel konnte nicht in den Katalogen des KUG gefunden werden. Er kann "
 "dennoch in anderer Schreibweise existieren!"
 
-#: ../templates/search_showtitset:310
+#: ../templates/search_showtitset:313
 msgid "Dieses Buch ist in Wikipedia erw&auml;hnt unter"
 msgstr "Dieses Buch ist in Wikipedia erw&auml;hnt unter"
 
@@ -819,11 +849,11 @@ msgstr "Inhaltsverzeichnis"
 msgid "E4120"
 msgstr "Volltext-URL"
 
-#: ../templates/search_showtitset:533
+#: ../templates/search_showtitset:536
 msgid "Eigene Tags"
 msgstr "Eigene Tags"
 
-#: ../templates/search_showtitset:432
+#: ../templates/search_showtitset:435
 msgid "Eigene Tags vergeben"
 msgstr "Eigene Tags vergeben"
 
@@ -940,7 +970,7 @@ msgstr "Einfache Recherche"
 msgid "Einfache Recherchemaske"
 msgstr "Einfache Recherchemaske"
 
-#: ../templates/search_showtitset:448
+#: ../templates/search_showtitset:451
 msgid "Eingabe neuer Tags"
 msgstr "Eingabe neuer Tags"
 
@@ -963,7 +993,7 @@ msgstr "Einstellungen"
 msgid "Elektronische Zeitschriftendatenbank (EZB)"
 msgstr "Elektronische Zeitschriftendatenbank (EZB)"
 
-#: ../templates/search_showtitset:318
+#: ../templates/search_showtitset:321
 msgid "Englische Wikipedia"
 msgstr "Englische Wikipedia"
 
@@ -1157,7 +1187,7 @@ msgstr "Felder leeren"
 msgid "Fernleihbestellung"
 msgstr "Fernleihbestellung"
 
-#: ../templates/search_showtitset:323
+#: ../templates/search_showtitset:326
 msgid "Franz&ouml;sische Wikipedia"
 msgstr "Franz&ouml;sische Wikipedia"
 
@@ -1317,6 +1347,10 @@ msgstr "Gesamtkonto verl&auml;ngern"
 #: ../templates/circulation:52
 msgid "Gesamtkonto-Verl&auml;ngerung"
 msgstr "Gesamtkonto-Verl&auml;ngerung"
+
+#: ../templates/search_showtitset:76
+msgid "Google Book Search"
+msgstr "Google Book Search"
 
 #: ../templates/circulation_make_reserv:48
 msgid "Grund:"
@@ -1832,6 +1866,10 @@ msgid ""
 msgstr ""
 "Hinweise und Beispiele zu weiteren\n"
 "Suchm&ouml;glichkeiten erhalten Sie %1hier%2"
+
+#: ../templates/search_showtitset:460
+msgid "Hinzuf&uuml;gen"
+msgstr "Hinzuf&uuml;gen"
 
 #: ../templates/admin_showlogintarget:49 ../templates/admin_showlogintarget:67
 msgid "Hostname"
@@ -2501,6 +2539,10 @@ msgstr "Körperschaft"
 msgid "Körperschaft/Institution"
 msgstr "Körperschaft/Institution"
 
+#: ../templates/search_showtitset:552
+msgid "L&ouml;schen"
+msgstr "L&ouml;schen"
+
 #: ../templates/databaseprofile:72
 msgid "L&ouml;schung des ausgew&auml;hlten Profils"
 msgstr "L&ouml;schung des ausgew&auml;hlten Profils"
@@ -2797,7 +2839,7 @@ msgstr "M&ouml;chten Sie Ihre Suchanfrage pr&auml;zisieren?"
 msgid "Maler / Zeichner"
 msgstr "Maler / Zeichner"
 
-#: ../templates/search_showtitset:310
+#: ../templates/search_showtitset:313
 msgid "Mashup mit Wikipedia"
 msgstr "Mashup mit Wikipedia"
 
@@ -2954,7 +2996,7 @@ msgstr "Neuaufnahmen nach Systematik"
 msgid "Neuaufnahmen nach Verfasser"
 msgstr "Neuaufnahmen nach Verfasser"
 
-#: ../templates/search_showtitset:643
+#: ../templates/search_showtitset:646
 msgid "Neue Bewertung/Rezension"
 msgstr "Neue Bewertung/Rezension"
 
@@ -3005,7 +3047,7 @@ msgid "Nutzer"
 msgstr "Nutzer"
 
 #. ("<a href=\"${config.info_loc}?sessionID=${sessionID};view=${view}#enrichrelevance\">","</a>")
-#: ../templates/search_showtitset:412
+#: ../templates/search_showtitset:415
 msgid ""
 "Nutzer, die diesen Titel ausgew&auml;hlt haben, interessierten sich auch "
 "f&uuml;r die folgenden Titel. %1Weitere Informationen%2 finden Sie in der "
@@ -3114,7 +3156,7 @@ msgstr "Passwort per Mail schicken"
 msgid "Passwort vergessen?"
 msgstr "Passwort vergessen?"
 
-#: ../templates/litlists_show_singlelist:67
+#: ../templates/litlists_show_singlelist:67 ../templates/search_showtitset:50
 msgid "Permanenter Link"
 msgstr "Permanenter Link"
 
@@ -3192,7 +3234,7 @@ msgstr "Protokoll"
 msgid "Provenienz"
 msgstr "Provenienz"
 
-#: ../templates/search_showtitset:659
+#: ../templates/search_showtitset:662
 msgid "Pseudonym"
 msgstr "Pseudonym"
 
@@ -3254,7 +3296,7 @@ msgstr "Region"
 msgid "Registrieren"
 msgstr "Registrieren"
 
-#: ../templates/search_showtitset:657
+#: ../templates/search_showtitset:660
 msgid "Rezension"
 msgstr "Rezension"
 
@@ -4141,7 +4183,7 @@ msgstr "Systematiken/Notationen"
 
 #: ../templates/info_13:27 ../templates/info_50:31 ../templates/info_51:38
 #: ../templates/info_52:38 ../templates/searchmask:46
-#: ../templates/searchmask_simple:46
+#: ../templates/searchmask_simple:46 ../templates/views/kug/searchmask:126
 #: ../templates/views/kug/searchmask_simple:36
 msgid "Systematisches Bl&auml;ttern"
 msgstr "Systematisches Bl&auml;ttern"
@@ -5470,7 +5512,7 @@ msgstr "Tags in BibSonomy"
 msgid "Testsystem - Nicht f&uuml;r den produktiven Einsatz bestimmt"
 msgstr "Testsystem - Nicht f&uuml;r den produktiven Einsatz bestimmt"
 
-#: ../templates/search_showtitset:663
+#: ../templates/search_showtitset:664
 msgid "Text"
 msgstr "Text"
 
@@ -5483,7 +5525,7 @@ msgid "Tit-Datei"
 msgstr "Tit-Datei"
 
 #: ../templates/managecollection_tit_as_html_simple:16
-#: ../templates/search_showtitset:661 ../templates/searchmask_options:4
+#: ../templates/search_showtitset:663 ../templates/searchmask_options:4
 #: ../templates/views/gdonck/searchmask_options:4
 #: ../templates/views/gleuel/searchmask_options:4
 #: ../templates/views/kempen/searchmask_options:4
@@ -5496,7 +5538,7 @@ msgstr "Tit-Datei"
 msgid "Titel"
 msgstr "Titel"
 
-#: ../templates/search_showtitset:368
+#: ../templates/search_showtitset:371
 msgid ""
 "Titel mit der ISBN dieses Titels sind auch in folgenden anderen KUG-"
 "Katalogen vorhanden"
@@ -5631,6 +5673,10 @@ msgstr "Tutorien"
 #: ../templates/admin_showlogintarget:50 ../templates/admin_showlogintarget:68
 msgid "Typ"
 msgstr "Typ"
+
+#: ../templates/search_showtitset:460 ../templates/search_showtitset:552
+msgid "Typ:"
+msgstr "Typ:"
 
 #: ../templates/admin_editcat:82 ../templates/admin_showcat:48
 #: ../templates/admin_showcat:74
@@ -6054,7 +6100,7 @@ msgstr ""
 "Zu diesem Titel bzw. seinen Schlagworten konnten in BibSonomy folgende Tags "
 "gefunden werden."
 
-#: ../templates/search_showtitset:385
+#: ../templates/search_showtitset:388
 msgid ""
 "Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere "
 "Auflage usw.) in den KUG-Katalogen"
@@ -6464,6 +6510,10 @@ msgstr "nach Zeitstempel"
 msgid "nein"
 msgstr "nein"
 
+#: ../templates/search_showtitset:460 ../templates/search_showtitset:552
+msgid "privat"
+msgstr "privat"
+
 #: ../templates/database/einbaende/search_showtitlist_of_cnt:65
 #: ../templates/database/landschaft/search_showtitlist:61
 #: ../templates/database/portrait/search_showtitlist:61
@@ -6488,11 +6538,11 @@ msgstr "nein"
 msgid "pro Katalog"
 msgstr "pro Katalog"
 
-#: ../templates/search_showtitset:648
+#: ../templates/search_showtitset:651
 msgid "schlecht"
 msgstr "schlecht"
 
-#: ../templates/search_showtitset:654
+#: ../templates/search_showtitset:657
 msgid "sehr gut"
 msgstr "sehr gut"
 
@@ -6516,11 +6566,11 @@ msgstr "wiederholt"
 msgid "Ändern"
 msgstr "Ändern"
 
-#: ../templates/search_showtitset:503 ../templates/search_showtitset:595
+#: ../templates/search_showtitset:506 ../templates/search_showtitset:598
 msgid "Übernahme bereits von Nutzern vergebener Tags"
 msgstr "Übernahme bereits von Nutzern vergebener Tags"
 
-#: ../templates/search_showtitset:472 ../templates/search_showtitset:564
+#: ../templates/search_showtitset:475 ../templates/search_showtitset:567
 msgid "Übernahme eigener Tags"
 msgstr "Übernahme eigener Tags"
 

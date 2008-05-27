@@ -41,13 +41,13 @@
 <td align="left"><span style="color:slategrey">[[% msg.maketext("Vorheriger Titel") %]]</span></td>
 [%- END -%]
 <td align="center">
-	<a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% record.database %];stid=10" title="Top 20"><img src="/images/openbib/top20-12px.png" alt="[% msg.maketext("Top 20") %]" border="0" /></a>&nbsp;
-        <a href="[% config.redirect_loc %]/[% sessionID %]/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=[% record.to_bibtex | uri | replace('&','%26') %]" target="bibsonomy" valign="top"><img src="/images/openbib/share.png" alt="An BibSonomy senden" title="An BibSonomy senden" /></a>&nbsp;
-	<span class="rlcollect"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% record.database %];singleidn=[% record.id %]" target="collectionstatus" title="In die Merkliste"><img src="/images/openbib/3d-file-blue-clipboard.png" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a></span>&nbsp;
-        <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=mail;database=[% record.database %];singleidn=[% record.id %]" title="Als Mail verschicken"><img src="/images/openbib/3d-file-blue-mailbox.png" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></a>&nbsp;
-        <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=save;database=[% record.database %];singleidn=[% record.id %]" target="save" title="Abspeichern"><img src="/images/openbib/3d-file-blue-disk35.png" alt="[% msg.maketext("Abspeichern") %]" border="0" /></a>&nbsp;
-        <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=print;database=[% record.database %];singleidn=[% record.id %]" target="print" title="Ausdrucken"><img src="/images/openbib/3d-file-blue-printer.png" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></a>&nbsp;
-        <a href="http://[% config.loadbalancerservername %][% config.connector_permalink_loc %]/[% record.database %]/[% record.id %]/1/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="Permanenter Link"><img src="/images/openbib/3d-file-blue-permalink.png" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a>&nbsp;
+	<a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% record.database %];stid=10" title="[% msg.maketext("Top 20") %]"><img src="/images/openbib/top20-12px.png" alt="[% msg.maketext("Top 20") %]" border="0" /></a>&nbsp;
+        <a href="[% config.redirect_loc %]/[% sessionID %]/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=[% record.to_bibtex | uri | replace('&','%26') %]" target="bibsonomy" valign="top"><img src="/images/openbib/share.png" alt="An BibSonomy senden" title="[% msg.maketext("An BibSonomy senden") %]" /></a>&nbsp;
+	<span class="rlcollect"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% record.database %];singleidn=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="/images/openbib/3d-file-blue-clipboard.png" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a></span>&nbsp;
+        <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=mail;database=[% record.database %];singleidn=[% record.id %]" title="[% msg.maketext("Als Mail verschicken") %]"><img src="/images/openbib/3d-file-blue-mailbox.png" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></a>&nbsp;
+        <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=save;database=[% record.database %];singleidn=[% record.id %]" target="save" title="[% msg.maketext("Abspeichern") %]"><img src="/images/openbib/3d-file-blue-disk35.png" alt="[% msg.maketext("Abspeichern") %]" border="0" /></a>&nbsp;
+        <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=print;database=[% record.database %];singleidn=[% record.id %]" target="print" title="[% msg.maketext("Ausdrucken") %]"><img src="/images/openbib/3d-file-blue-printer.png" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></a>&nbsp;
+        <a href="http://[% config.loadbalancerservername %][% config.connector_permalink_loc %]/[% record.database %]/[% record.id %]/1/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]"><img src="/images/openbib/3d-file-blue-permalink.png" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a>&nbsp;
 </td>
 [%- IF nexturl -%]
 <td align="right"><a href="[% nexturl %];queryid=[% queryid %]">[[% msg.maketext("N&auml;chster Titel") %]]</a></td>
@@ -73,11 +73,11 @@
 </p>
 [% END %]
 <p>
-<a href="http://books.google.com/books?vid=ISBN[% isbn %]" target="_blank" title="Google BookSearch"><img src="[% config.connector_availabilityimage_loc %]?action=lookup;isbn=[% normset.${"T0540"}.first.content %];target=gbs" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a><br/>
+<a href="http://books.google.com/books?vid=ISBN[% isbn %]" target="_blank" title="[% msg.maketext("Google Book Search") %]"><img src="[% config.connector_availabilityimage_loc %]?action=lookup;isbn=[% normset.${"T0540"}.first.content %];target=gbs" alt="[% msg.maketext("In Google BookSearch vorhanden?") %]" border="0" /></a><br/>
 </p>
 <p>
 [%- IF bibkey -%]
-<a href="http://www.bibsonomy.org/bibtex/[% bibkey %]" target="_blank" title="BibSonomy"><img src="[% config.connector_availabilityimage_loc %]?action=lookup;bibkey=[% bibkey %];target=bibsonomy" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a><br/>
+<a href="http://www.bibsonomy.org/bibtex/[% bibkey %]" target="_blank" title="[% msg.maketext("BibSonomy") %]"><img src="[% config.connector_availabilityimage_loc %]?action=lookup;bibkey=[% bibkey %];target=bibsonomy" alt="[% msg.maketext("In BibSonomy vorhanden?") %]" border="0" /></a><br/>
 [%- END -%]
 </p>
 </div>
@@ -148,6 +148,9 @@ END ;
 %]
 
 [%-
+
+globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
+
 FOREACH category IN categories;
     FOREACH item IN normset.$category;
     content = item.content;
@@ -169,7 +172,7 @@ FOREACH category IN categories;
          END ;
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;verf=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchsingleaut=${thisid}";
-         content   = "${rssfeed}<a href=\"${config.redirect_loc}/${sessionID}/520/http://de.wikipedia.org/wiki/Spezial:Search?search=${wikicontent}&amp;go=Artikel\" target=\"_blank\"><img src=\"/images/openbib/wikipedia.png\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+         content   = "${rssfeed}<a href=\"${config.redirect_loc}/${sessionID}/520/http://de.wikipedia.org/wiki/Spezial:Search?search=${wikicontent}&amp;go=Artikel\" target=\"_blank\"><img src=\"/images/openbib/wikipedia.png\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
          thisid     = item.id;
@@ -183,7 +186,7 @@ FOREACH category IN categories;
          END ;
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;kor=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchsinglekor=${thisid}";
-         content   = "${rssfeed}<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+         content   = "${rssfeed}<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE "T0331";
          content   = "<b>${highlightquery(searchquery,content)}</b>";
@@ -252,7 +255,7 @@ FOREACH category IN categories;
          END ;
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;swt=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchsingleswt=${thisid}";
-         content   = " ${rssfeed}<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+         content   = " ${rssfeed}<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE "T0700";
          thisid     = item.id;
@@ -454,7 +457,7 @@ END;
 <input type="hidden" name="titid"      value="[% record.id %]" />
 <input type="hidden" name="queryid"    value="[% queryid %]" />
 <input type="hidden" name="titisbn"    value="[% normset.${"T0540"}.first.content.replace('-','') %]" />
-<input type="text"   name="tags"       value="" size="60" maxlength="200" id="inputfield"/><p />Typ:&nbsp;<select name="type"><option value="1" selected="selected">&ouml;ffentlich</option><option value="2">privat</option></select>&nbsp;<input type="submit" name="do_add" value="Hinzuf&uuml;gen" />
+<input type="text"   name="tags"       value="" size="60" maxlength="200" id="inputfield"/><p />[% msg.maketext("Typ:") %]&nbsp;<select name="type"><option value="1" selected="selected">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select>&nbsp;<input type="submit" name="do_add" value="[% msg.maketext("Hinzuf&uuml;gen") %]" />
 </form>
 
 </td></tr>
@@ -483,8 +486,8 @@ END;
           itemid    = thisitem.id;
           itemclass = css_classes.$classnr;
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Titel sind
-verkn&uuml;pft mit dem Tag </span><a onclick="insert_tag(event); return false;" class="tag" style="display: inline; cursor: pointer;" onMouseOver="oldColor=this.style.backgroundColor; this.style.backgroundColor='lightblue';" onMouseOut="this.style.backgroundColor=oldColor;" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
+<li class="[% itemclass %]"><span>[% msg.maketext("[_1] Titel sind
+verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); return false;" class="tag" style="display: inline; cursor: pointer;" onMouseOver="oldColor=this.style.backgroundColor; this.style.backgroundColor='lightblue';" onMouseOut="this.style.backgroundColor=oldColor;" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
 [%      END %]
 </ol>
 [%    ELSE %]
@@ -511,8 +514,8 @@ verkn&uuml;pft mit dem Tag </span><a onclick="insert_tag(event); return false;" 
         itemid    = thisitem.id;
         itemclass = css_classes.$classnr;
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Titel sind
-verkn&uuml;pft mit dem Tag </span><a onclick="insert_tag(event); return false;" class="tag" style="display: inline; cursor: pointer;"  onMouseOver="oldColor=this.style.backgroundColor; this.style.backgroundColor='lightblue';" onMouseOut="this.style.backgroundColor=oldColor;" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
+<li class="[% itemclass %]"><span>[% msg.maketext("[_1] Titel sind
+verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); return false;" class="tag" style="display: inline; cursor: pointer;"  onMouseOver="oldColor=this.style.backgroundColor; this.style.backgroundColor='lightblue';" onMouseOut="this.style.backgroundColor=oldColor;" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
 [%    END %]
 </ol>
 
@@ -546,7 +549,7 @@ verkn&uuml;pft mit dem Tag </span><a onclick="insert_tag(event); return false;" 
 <input type="hidden" name="titid"      value="[% record.id %]" />
 <input type="hidden" name="queryid"    value="[% queryid %]" />
 <input type="hidden" name="titisbn"    value="[% normset.${"T0540"}.first.content.replace('-','') %]" />
-<input type="text"   name="tags"       value="[% my_tags.join(' ') %]" size="60" maxlength="200" />&nbsp;&nbsp;Typ:&nbsp;<select name="type"><option value="1" [% IF private_tags.first.type == 1 %]selected="selected"[% END %]>&ouml;ffentlich</option><option value="2" [% IF private_tags.first.type == 2 %]selected="selected"[% END %]>privat</option></select>&nbsp;&nbsp;&nbsp;<input type="submit" name="do_add" value="&Auml;ndern" />&nbsp;<input type="submit" name="do_del" value="L&ouml;schen" />
+<input type="text"   name="tags"       value="[% my_tags.join(' ') %]" size="60" maxlength="200" />&nbsp;&nbsp;[% msg.maketext("Typ:") %]&nbsp;<select name="type"><option value="1" [% IF private_tags.first.type == 1 %]selected="selected"[% END %]>[% msg.maketext("&ouml;ffentlich") %]</option><option value="2" [% IF private_tags.first.type == 2 %]selected="selected"[% END %]>[% msg.maketext("privat") %]</option></select>&nbsp;&nbsp;&nbsp;<input type="submit" name="do_add" value="[% msg.maketext("&Auml;ndern") %]" />&nbsp;<input type="submit" name="do_del" value="[% msg.maketext("L&ouml;schen") %]" />
 </form>
 
 </td></tr>
@@ -575,8 +578,8 @@ verkn&uuml;pft mit dem Tag </span><a onclick="insert_tag(event); return false;" 
           itemid    = thisitem.id;
           itemclass = css_classes.$classnr;
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Titel sind
-verkn&uuml;pft mit dem Tag </span><a onclick="insert_tag(event); return false;" class="tag" style="display: inline; cursor: pointer;" onMouseOver="oldColor=this.style.backgroundColor; this.style.backgroundColor='lightblue';" onMouseOut="this.style.backgroundColor=oldColor;" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
+<li class="[% itemclass %]"><span>[% msg.maketext("[_1] Titel sind
+verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); return false;" class="tag" style="display: inline; cursor: pointer;" onMouseOver="oldColor=this.style.backgroundColor; this.style.backgroundColor='lightblue';" onMouseOut="this.style.backgroundColor=oldColor;" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
 [%      END %]
 </ol>
 [%    ELSE %]
@@ -603,8 +606,8 @@ verkn&uuml;pft mit dem Tag </span><a onclick="insert_tag(event); return false;" 
         itemid    = thisitem.id;
         itemclass = css_classes.$classnr;
 %]
-<li class="[% itemclass %]"><span>[% itemcount %] Titel sind
-verkn&uuml;pft mit dem Tag </span><a onclick="insert_tag(event); return false;" class="tag" style="display: inline; cursor: pointer;"  onMouseOver="oldColor=this.style.backgroundColor; this.style.backgroundColor='lightblue';" onMouseOut="this.style.backgroundColor=oldColor;" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
+<li class="[% itemclass %]"><span>[% msg.maketext("[_1] Titel sind
+verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); return false;" class="tag" style="display: inline; cursor: pointer;"  onMouseOver="oldColor=this.style.backgroundColor; this.style.backgroundColor='lightblue';" onMouseOut="this.style.backgroundColor=oldColor;" title="[% itemcount %] Titel sind verkn&uuml;pft mit dem Tag [% item %]">[% item %]</a></li>
 [%    END %]
 </ol>
 
@@ -656,12 +659,9 @@ value="5"/>&nbsp;[% msg.maketext("sehr gut") %]</td></tr>
 
 <h3>[% msg.maketext("Rezension") %]</h3>
 <table>
-<tr><td><b>[% msg.maketext("Pseudonym") %]</b></td><td><input type="text" name="nickname"
-value="" size="30" maxlength="30" /></td></tr>
-<tr><td><b>[% msg.maketext("Titel") %]</b></td><td><input type="text" name="title"
-value="" size="30" maxlength="100" /></td></tr>
-<tr><td><b>[% msg.maketext("Text") %]</b></td><td><textarea cols="80" rows="10"
-name="review"></textarea></td></tr>
+<tr><td><b>[% msg.maketext("Pseudonym") %]</b></td><td><input type="text" name="nickname" value="" size="30" maxlength="30" /></td></tr>
+<tr><td><b>[% msg.maketext("Titel") %]</b></td><td><input type="text" name="title" value="" size="30" maxlength="100" /></td></tr>
+<tr><td><b>[% msg.maketext("Text") %]</b></td><td><textarea cols="80" rows="10" name="review"></textarea></td></tr>
 </table>
 <p />
 <input type="submit" name="do_add" value="[% msg.maketext("Aufnehmen") %]"/>&nbsp;&nbsp;<input type="reset" value="[% msg.maketext("Löschen") %]"/>
@@ -686,8 +686,8 @@ name="review"></textarea></td></tr>
 
 <dl class="reviews">
 [%- FOREACH item IN reviews -%]
-<dt class="review">[% IF item.votes.all > 0 %][% item.votes.positive%]
-von [% item.votes.all %] Nutzer fanden die folgende Rezension hilfreich: <p />[% END %]<span class="reviewtitle">[% item.title %]</span> von <span class="reviewnick">[% IF item.nickname %][% item.nickname %][% ELSE %]Unbekannt[% END %]</span>&nbsp;&nbsp;(Bewertung: <span class="reviewrating">[% item.rating %]</span>)</dt>
+<dt class="review">[% IF item.votes.all > 0 %][% msg.maketext("[_1]
+von [_2] Nutzer fanden die folgende Rezension hilfreich:",item.votes.positive,item.votes.all) %]<p />[% END %]<span class="reviewtitle">[% item.title %]</span> von <span class="reviewnick">[% IF item.nickname %][% item.nickname %][% ELSE %]Unbekannt[% END %]</span>&nbsp;&nbsp;(Bewertung: <span class="reviewrating">[% item.rating %]</span>)</dt>
 <dd class="review">[%    IF item.review %][% item.review %][% END %]
 [% IF item.id == ownreviewid %]
 <p />

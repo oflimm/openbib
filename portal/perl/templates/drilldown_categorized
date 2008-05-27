@@ -1,6 +1,6 @@
 [%     IF drilldown_categorized && fullresultcount >= 10 %]
 <table width="100%">
-<tr><th colspan="4" style="font-size:0.9em">Treffermenge eingrenzen&nbsp;</th></tr>
+<tr><th colspan="4" style="font-size:0.9em">[% msg.maketext("Treffermenge eingrenzen") %]&nbsp;</th></tr>
 <tr><td colspan="4" class="boxedclear" style="font-size:0.8em;">
 
 <table>

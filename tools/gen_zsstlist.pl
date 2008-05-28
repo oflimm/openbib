@@ -37,6 +37,7 @@ use Getopt::Long;
 use OpenBib::Config;
 use OpenBib::Search::Util;
 use OpenBib::Template::Provider;
+use OpenBib::Common::Stopwords;
 
 use DBI;
 use Encode 'decode_utf8';
@@ -364,6 +365,9 @@ sub by_title {
 
     my $line1=(exists $line1{titset}{T0331}[0]{content} && defined $line1{titset}{T0331}[0]{content})?cleanrl($line1{titset}{T0331}[0]{content}):"";
     my $line2=(exists $line2{titset}{T0331}[0]{content} && defined $line2{titset}{T0331}[0]{content})?cleanrl($line2{titset}{T0331}[0]{content}):"";
+
+    $line1=OpenBib::Common::Stopwords::strip_first_stopword($line1);
+    $line2=OpenBib::Common::Stopwords::strip_first_stopword($line2);
 
     $line1 cmp $line2;
 }

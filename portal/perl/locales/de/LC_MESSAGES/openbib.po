@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2008-05-19 11:23+0200\n"
+"PO-Revision-Date: 2008-05-28 14:49+0200\n"
 "Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
 "Language-Team: german <l10n@openbib.org>\n"
 "MIME-Version: 1.0\n"
@@ -32,7 +32,7 @@ msgstr "${category}"
 #: ../templates/database/portrait/search_showtitset:158
 #: ../templates/managecollection_tit_as_html:51
 #: ../templates/managecollection_tit_as_text:34
-#: ../templates/search_showmulttitset:93 ../templates/search_showtitset:240
+#: ../templates/search_showmulttitset:93 ../templates/search_showtitset:245
 msgid "${thiscategory}"
 msgstr "${thiscategory}"
 
@@ -347,7 +347,7 @@ msgstr "Ausleih-Einstellungen"
 #: ../templates/database/portrait/search_showtitset:184
 #: ../templates/managecollection_tit_as_html:76
 #: ../templates/managecollection_tit_as_html_simple:60
-#: ../templates/search_showmulttitset:124 ../templates/search_showtitset:283
+#: ../templates/search_showmulttitset:124 ../templates/search_showtitset:288
 msgid "Ausleihe/Exemplare"
 msgstr "Ausleihe/Exemplare"
 
@@ -786,9 +786,6 @@ msgstr ""
 #: ../templates/views/inst460/searchframe:42
 #: ../templates/views/inst460/searchframe_simple:38
 #: ../templates/views/inst501/searchframe:42
-#: ../templates/views/kapsel/helpframe_14:30
-#: ../templates/views/kapsel/helpframe_15:23
-#: ../templates/views/kapsel/helpframe_16:30
 #: ../templates/views/kapsel/search_browse_tit:19
 #: ../templates/views/kapsel/searchframe:19
 #: ../templates/views/kapsel/searchframe_simple:19
@@ -1154,7 +1151,7 @@ msgstr "Geben Sie hier den Notationsanfang ein"
 #: ../templates/database/ebooks/search_showtitset:593
 #: ../templates/database/nationallizenzen/search_showtitset:596
 #: ../templates/search_showswtindex:75 ../templates/search_showtitlist:180
-#: ../templates/search_showtitset:616
+#: ../templates/search_showtitset:621
 #: ../templates/views/kapsel/search_showtitlist:168
 #: ../templates/virtualsearch_showswtindex:46
 msgid "Geben Sie hier den Schlagwortanfang ein"
@@ -2271,9 +2268,6 @@ msgstr "Kompletter Titel"
 #: ../templates/views/inst460/searchframe:43
 #: ../templates/views/inst460/searchframe_simple:39
 #: ../templates/views/inst501/searchframe:43
-#: ../templates/views/kapsel/helpframe_14:31
-#: ../templates/views/kapsel/helpframe_15:24
-#: ../templates/views/kapsel/helpframe_16:31
 #: ../templates/views/kapsel/search_browse_tit:20
 #: ../templates/views/kapsel/searchframe:20
 #: ../templates/views/kapsel/searchframe_simple:20
@@ -2654,6 +2648,7 @@ msgstr "Möchten Sie diesen ändern?"
 msgid "N&auml;chster Titel"
 msgstr "N&auml;chster Titel"
 
+#: ../templates/database/kapsel/visible_categories_notset:17
 #: ../templates/visible_categories_notset:17
 msgid "N0001"
 msgstr "Ansetzung"
@@ -2662,10 +2657,15 @@ msgstr "Ansetzung"
 msgid "N0002"
 msgstr "Ansetzung"
 
+#: ../templates/database/kapsel/visible_categories_notset:18
+msgid "N0102-kapsel"
+msgstr "Verweisung"
+
 #: ../templates/visible_categories_notset:19
 msgid "N0103"
 msgstr "Verweisform"
 
+#: ../templates/database/kapsel/visible_categories_notset:19
 #: ../templates/visible_categories_notset:20
 msgid "N5000"
 msgstr "Anzahl Titel"
@@ -3001,12 +3001,17 @@ msgstr "Rufen Sie hier die Ergebnisse frührerer Recherchen auf"
 msgid "S&auml;mtliche zugeordnete RSS-Feeds f&uuml;r diesen View"
 msgstr "S&auml;mtliche zugeordnete RSS-Feeds f&uuml;r diesen View"
 
+#: ../templates/database/kapsel/visible_categories_swtset:16
 #: ../templates/visible_categories_swtset:16
 msgid "S0001"
 msgstr "Ansetzung"
 
 #: ../templates/visible_categories_swtset:17
 msgid "S0102"
+msgstr "Verweisung"
+
+#: ../templates/database/kapsel/visible_categories_swtset:17
+msgid "S0103-kapsel"
 msgstr "Verweisung"
 
 #: ../templates/visible_categories_swtset:18
@@ -3025,13 +3030,14 @@ msgstr "Früher"
 msgid "S0119"
 msgstr "Später"
 
+#: ../templates/database/kapsel/visible_categories_swtset:18
 #: ../templates/visible_categories_swtset:22
 msgid "S5000"
 msgstr "Anzahl Titel"
 
 #: ../templates/search_showswtindex:35 ../templates/userprefs:178
 #: ../templates/views/inst501/searchframe_query:19
-#: ../templates/views/kapsel/searchframe_query:19
+#: ../templates/views/kapsel/searchframe_query:15
 #: ../templates/views/richter/searchframe_query:21
 #: ../templates/virtualsearch_showswtindex:46
 msgid "Schlagwort"
@@ -3048,7 +3054,7 @@ msgstr "Schlagwortindex"
 
 #: ../templates/database/ebooks/search_showtitset:592
 #: ../templates/database/nationallizenzen/search_showtitset:595
-#: ../templates/search_showtitset:615
+#: ../templates/search_showtitset:620
 msgid "Schlagwortindex diese Katalogs"
 msgstr "Schlagwortindex diese Katalogs"
 
@@ -3676,7 +3682,7 @@ msgstr "Suche starten"
 #: ../templates/database/ebooks/search_showtitset:593
 #: ../templates/database/nationallizenzen/search_showtitset:596
 #: ../templates/search_showswtindex:75 ../templates/search_showtitlist:180
-#: ../templates/search_showtitset:616
+#: ../templates/search_showtitset:621
 #: ../templates/views/einbaende/searchframe_simple:30
 #: ../templates/views/kapsel/search_showtitlist:168
 #: ../templates/views/kapsel/searchframe:61
@@ -5251,7 +5257,7 @@ msgstr "Titelzugriffe"
 #: ../templates/helpframe_14:38 ../templates/helpframe_15:43
 #: ../templates/helpframe_16:38 ../templates/helpframe_17:38
 #: ../templates/helpframe_18:38 ../templates/helpframe_19:38
-#: ../templates/search_showtitset:32 ../templates/views/kapsel/helpframe_18:38
+#: ../templates/search_showtitset:32
 msgid "Top 20"
 msgstr "Top 20"
 

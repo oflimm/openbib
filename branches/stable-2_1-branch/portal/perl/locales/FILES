@@ -90,6 +90,8 @@
 ../templates/database/inst001/visible_categories_titset
 ../templates/database/inst450/visible_categories_titset
 ../templates/database/kapsel/visible_categories_titset
+../templates/database/kapsel/visible_categories_notset
+../templates/database/kapsel/visible_categories_swtset
 ../templates/database/landschaft/search_showtitlist
 ../templates/database/landschaft/search_showtitset
 ../templates/database/landschaft/virtualsearch_result_item
@@ -244,10 +246,7 @@
 ../templates/views/kapsel/corporate_banner
 ../templates/views/kapsel/frameset
 ../templates/views/kapsel/headerframe
-../templates/views/kapsel/helpframe_14
-../templates/views/kapsel/helpframe_15
-../templates/views/kapsel/helpframe_16
-../templates/views/kapsel/helpframe_18
+../templates/views/kapsel/clouds_navigation
 ../templates/views/kapsel/helpframe_20
 ../templates/views/kapsel/leave
 ../templates/views/kapsel/resultlists_showall

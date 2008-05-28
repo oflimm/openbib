@@ -12,11 +12,11 @@
 [% END %]
 
 [% IF showswt %]
-<tr><td class="category">Systematik</td><td class="category"><select name="boolswt"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="swt" value="[% searchquery.swt.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+<tr><td class="category">[% msg.maketext("Schlagwort") %]</td><td class="category"><select name="boolswt"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="swt" value="[% searchquery.swt.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 [% END %]
 
 [% IF shownotation %]
-<tr><td class="category">[% msg.maketext("Schlagwort") %]</td><td class="category"><select name="boolnotation"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="notation" value="[% searchquery.notation.val | html %]" size="30" maxlength="200" /></td><td><span class="warning">*</span></td></tr>
+<tr><td class="category">Systematik</td><td class="category"><select name="boolnotation"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="notation" value="[% searchquery.notation.val | html %]" size="30" maxlength="200" /></td><td><span class="warning">*</span></td></tr>
 [% END %]
 
 [% IF showejahr %]

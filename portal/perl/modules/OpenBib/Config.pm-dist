@@ -31,6 +31,7 @@ no warnings 'redefine';
 use utf8;
 
 use Apache::Reload;
+use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 
@@ -535,6 +536,10 @@ tt_connector_digibib_result_start_tname  => 'connector_digibib_result_start',
 	   # Katalogabhaengige Kategorie-Mappings
 
 	   categorymapping => {
+               ebooks => {
+                   'T0662' => 1,
+                },
+
                einbaende => {
                    'T0100' => 1,
                    'T0101' => 1,

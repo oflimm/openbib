@@ -1025,7 +1025,10 @@ sub log_event {
     # 540 => HBZ-Monofernleihe
     # 541 => HBZ-Dokumentenlieferung
     # 550 => WebOPAC
-
+    #
+    # 800 => Aufruf Literaturliste
+    # 801 => Aufruf RSS-Feeds
+    
     my $log_only_unique_ref = {
 			     10 => 1,
 			    };

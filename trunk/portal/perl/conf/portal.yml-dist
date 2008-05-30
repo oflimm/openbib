@@ -459,8 +459,8 @@ categorymapping:
     T0509: 1
     T0525: 1
   kapsel:
-    T0331: 1
-    T0700: 1
+    S0103: 1
+    N0102: 1
   landschaft:
     T0100: 1
     T0200: 1

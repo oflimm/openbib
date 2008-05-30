@@ -264,6 +264,42 @@ a:active.invisible {
   width:800px;
 }
 
+.nojs_hidden {
+  display: none;
+}
+
+.nojs_show {
+  display: block;
+
+}
+
+h2[class=nojs_show] {
+  width: 99%;
+  padding: 2px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom-style: dashed;
+  border-bottom-color: lightblue;
+  border-bottom-width: 1px;
+}
+
+.discover_sources {
+  padding: 5px;
+  background-color: white;
+  border-top-style: solid;
+  border-top-color: lightblue;
+  border-top-width: 1px;
+  border-left-style: solid;
+  border-left-color: lightblue;
+  border-left-width: 1px;
+  border-right-style: solid;
+  border-right-color: lightblue;
+  border-right-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: lightblue;
+  border-bottom-width: 1px;  
+}
+
 .content {
   position: static;
   font-family: Arial,helv,Helvetica,Verdana,sans-serif;

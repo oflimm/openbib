@@ -9,7 +9,18 @@ var Tags      = $("meta[@name='Tags']").attr("content");
 //$(":input:visible:enabled:first").focus();
 $("input[@name='fs']").focus();
 
-// Begin Merkliste
+// Tabs fuer weitere Informationen
+$('#additional_title_info > ul').tabs();
+
+ // Tabs fuer weitere Informationen
+$('#additional_title_info_vert').accordion();
+
+// nojs_* modifizieren fuer JavaScript-Version der Seite
+
+$('.nojs_hidden').css('display','block');
+$('.nojs_show').css('display','none');
+
+ // Begin Merkliste
 // Merklistenfuellstand aktualisieren
 // Achtung!!! Wert von managecollection_loc aus OpenBib::Config ist hier
 // fest eingetragen und muss gegebenenfalls angepasst werden

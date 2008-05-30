@@ -276,6 +276,25 @@ convtab:
       '0540': 1
       '1203': 1
       '2662': 1
+  kapsel:
+    inverted_not:
+      '0001':         # Ansetzung
+        ft: 1
+        init: 1
+        string: 1
+      '0102':         # Verweisform
+        ft: 1
+        init: 1
+        string: 1
+    inverted_swt:
+      '0001':         # Ansetzung
+        ft: 1
+        init: 1
+        string: 1
+      '0103':         # Verweisform
+        ft: 1
+        init: 1
+        string: 1
   nationallizenzen:
     search_gtquelle:
       '0089': 1       # Bandkennzeichen

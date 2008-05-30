@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2008-05-26 12:13+0200\n"
+"PO-Revision-Date: 2008-05-27 09:33+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -26,6 +26,7 @@ msgstr "${category}"
 #: ../templates/database/einbaende/managecollection_tit_as_html:55
 #: ../templates/database/einbaende/search_showtitset:132
 #: ../templates/database/einbaende/search_showtitset:236
+#: ../templates/database/inst006/search_showtitset:303
 #: ../templates/database/landschaft/search_showtitset:142
 #: ../templates/database/nationallizenzen/search_showtitset:272
 #: ../templates/database/portrait/search_showtitset:164
@@ -36,6 +37,7 @@ msgid "${thiscategory}"
 msgstr "${thiscategory}"
 
 #. (item.votes.positive,item.votes.all)
+#: ../templates/database/inst006/search_showtitset:694
 #: ../templates/search_showtitset:689
 msgid ""
 "%1\n"
@@ -45,6 +47,10 @@ msgstr ""
 "of %2 users:"
 
 #. (itemcount)
+#: ../templates/database/inst006/search_showtitset:494
+#: ../templates/database/inst006/search_showtitset:522
+#: ../templates/database/inst006/search_showtitset:586
+#: ../templates/database/inst006/search_showtitset:614
 #: ../templates/search_showtitset:489 ../templates/search_showtitset:517
 #: ../templates/search_showtitset:581 ../templates/search_showtitset:609
 msgid ""
@@ -52,6 +58,7 @@ msgid ""
 "verkn&uuml;pft mit dem Tag"
 msgstr "%1 titles are connected with the tag"
 
+#: ../templates/database/inst006/search_showtitset:557
 #: ../templates/litlists_manage_singlelist:54
 #: ../templates/search_showtitset:552 ../templates/userprefs:182
 msgid "&Auml;ndern"
@@ -106,6 +113,8 @@ msgstr "Overview"
 msgid "&Uuml;bersichten"
 msgstr "Overviews"
 
+#: ../templates/database/inst006/search_showtitset:465
+#: ../templates/database/inst006/search_showtitset:557
 #: ../templates/search_showtitset:460 ../templates/search_showtitset:552
 msgid "&ouml;ffentlich"
 msgstr "public"
@@ -140,6 +149,7 @@ msgstr "Send"
 
 #: ../templates/database/ebooks/search_showtitset:48
 #: ../templates/database/einbaende/search_showtitset:44
+#: ../templates/database/inst006/search_showtitset:48
 #: ../templates/database/landschaft/search_showtitset:40
 #: ../templates/database/nationallizenzen/search_showtitset:48
 #: ../templates/database/portrait/search_showtitset:40
@@ -220,6 +230,7 @@ msgstr "General informations"
 
 #: ../templates/database/ebooks/search_showtitset:47
 #: ../templates/database/einbaende/search_showtitset:43
+#: ../templates/database/inst006/search_showtitset:47
 #: ../templates/database/landschaft/search_showtitset:39
 #: ../templates/database/nationallizenzen/search_showtitset:47
 #: ../templates/database/portrait/search_showtitset:39
@@ -229,6 +240,7 @@ msgid "Als Mail verschicken"
 msgstr "Send as e-mail"
 
 #: ../templates/database/ebooks/search_showtitset:50
+#: ../templates/database/inst006/search_showtitset:50
 #: ../templates/database/nationallizenzen/search_showtitset:50
 #: ../templates/litlists_manage_lists:79
 #: ../templates/litlists_show_singlelist:67 ../templates/search_showtitset:50
@@ -271,6 +283,7 @@ msgstr "As template for search request"
 msgid "Als User-Agent verwenden Sie"
 msgstr "Your user-agent is"
 
+#: ../templates/database/inst006/search_showtitset:45
 #: ../templates/managecollection_tit_as_bibtex:20
 #: ../templates/managecollection_tit_as_endnote:20
 #: ../templates/managecollection_tit_as_html:157
@@ -287,6 +300,10 @@ msgid ""
 msgstr ""
 "At this point you can broaden your (probably negative) search request to "
 "more catalogues."
+
+#: ../templates/database/inst006/search_showtitset:381
+msgid "Andere Ausgaben"
+msgstr "Other editions"
 
 #: ../templates/search_showtitset:386
 msgid "Andere Ausgaben dieses Titels (Sprache, Auflage usw.)"
@@ -342,6 +359,7 @@ msgstr ""
 "At this page you can subscribe to RSS-feeds of several catalogues. To do so, "
 "please copy the corresponding URL from this page to your RSS-reader program."
 
+#: ../templates/database/inst006/search_showtitset:672
 #: ../templates/search_showtitset:667
 msgid "Aufnehmen"
 msgstr "Save"
@@ -358,6 +376,7 @@ msgstr "Use without aquisition of search terms"
 
 #: ../templates/database/ebooks/search_showtitset:49
 #: ../templates/database/einbaende/search_showtitset:45
+#: ../templates/database/inst006/search_showtitset:49
 #: ../templates/database/landschaft/search_showtitset:41
 #: ../templates/database/nationallizenzen/search_showtitset:49
 #: ../templates/database/portrait/search_showtitset:41
@@ -388,6 +407,7 @@ msgstr "Circulation-Options"
 #: ../templates/database/ebooks/search_showtitset:333
 #: ../templates/database/einbaende/managecollection_tit_as_html:125
 #: ../templates/database/einbaende/search_showtitset:249
+#: ../templates/database/inst006/search_showtitset:359
 #: ../templates/database/landschaft/search_showtitset:168
 #: ../templates/database/nationallizenzen/search_showtitset:328
 #: ../templates/database/portrait/search_showtitset:190
@@ -437,6 +457,7 @@ msgstr "Books"
 msgid "Beginn"
 msgstr "Start"
 
+#: ../templates/database/inst006/search_showtitset:152
 #: ../templates/search_showtitset:152
 msgid "Begriff in allen Katalogen suchen"
 msgstr "Search this term in all catalogues"
@@ -555,14 +576,21 @@ msgstr "Orderings"
 msgid "Betreff"
 msgstr "Subject"
 
+#: ../templates/database/inst006/search_showtitset:654
 #: ../templates/search_showtitset:649
 msgid "Bewertung"
 msgstr "Score"
 
+#: ../templates/database/inst006/search_showtitset:375
+msgid "Bewertungen/Rezensionen"
+msgstr "Ratings/reviews"
+
+#: ../templates/database/inst006/search_showtitset:688
 #: ../templates/search_showtitset:683
 msgid "Bewertungen/Rezensionen von Nutzern"
 msgstr "Score/reviews from users"
 
+#: ../templates/database/inst006/search_showtitset:80
 #: ../templates/search_showtitset:80 ../templates/userprefs:171
 msgid "BibSonomy"
 msgstr "BibSonomy"
@@ -579,6 +607,8 @@ msgstr "BibSonomy-API-User"
 msgid "Bildtitelwort(e)"
 msgstr "Words in the image title"
 
+#: ../templates/database/inst006/search_showtitset:499
+#: ../templates/database/inst006/search_showtitset:591
 #: ../templates/search_showtitset:494 ../templates/search_showtitset:586
 msgid "Bisher haben Sie noch keine Tags vergeben."
 msgstr "You didn't enter any tags."
@@ -718,6 +748,7 @@ msgstr "At the moment there doesn't exist a result list (yet)"
 msgid "Derzeit ist Ihre Merkliste leer"
 msgstr "At the moment your list of interest is empty"
 
+#: ../templates/database/inst006/search_showtitset:316
 #: ../templates/search_showtitset:316
 msgid "Deutsche Wikipedia"
 msgstr "German Wikipedia"
@@ -764,6 +795,7 @@ msgstr "The two passwords are different."
 msgid "Diese Session ist nicht authentifiziert."
 msgstr "The session is not authenticated."
 
+#: ../templates/database/inst006/search_showtitset:343
 #: ../templates/search_showtitset:343
 msgid "Dieser Titel befindet sich in folgenden Literaturlisten"
 msgstr "This title is available in the following literature lists"
@@ -784,6 +816,7 @@ msgstr ""
 "This title cannot be found in catalogues of KUG. Nevertheless it can might "
 "exist in another notation."
 
+#: ../templates/database/inst006/search_showtitset:313
 #: ../templates/search_showtitset:313
 msgid "Dieses Buch ist in Wikipedia erw&auml;hnt unter"
 msgstr "This title is referenced in Wikipedia in"
@@ -831,6 +864,7 @@ msgstr "Table of contents"
 msgid "E4120"
 msgstr "Fulltext-URL"
 
+#: ../templates/database/inst006/search_showtitset:541
 #: ../templates/search_showtitset:536
 msgid "Eigene Tags"
 msgstr "Your tags"
@@ -839,10 +873,12 @@ msgstr "Your tags"
 msgid "Eigene Tags vergeben"
 msgstr "Enter your tags"
 
+#: ../templates/database/inst006/search_showtitset:700
 #: ../templates/search_showtitset:695
 msgid "Eigenen Review bearbeiten"
 msgstr "Edit your review"
 
+#: ../templates/database/inst006/search_showtitset:702
 #: ../templates/search_showtitset:697
 msgid "Eigenen Review l&ouml;schen"
 msgstr "Remove your review"
@@ -949,6 +985,7 @@ msgstr "Simple Search"
 msgid "Einfache Recherchemaske"
 msgstr "Simple search mask"
 
+#: ../templates/database/inst006/search_showtitset:456
 #: ../templates/search_showtitset:451
 msgid "Eingabe neuer Tags"
 msgstr "Enter new tags"
@@ -972,6 +1009,11 @@ msgstr "Preferences"
 msgid "Elektronische Zeitschriftendatenbank (EZB)"
 msgstr "Elektronic journal database (EZB)"
 
+#: ../templates/database/inst006/search_showtitset:371
+msgid "Empfehlungen"
+msgstr "Recommendations"
+
+#: ../templates/database/inst006/search_showtitset:321
 #: ../templates/search_showtitset:321
 msgid "Englische Wikipedia"
 msgstr "English Wikipedia"
@@ -1164,6 +1206,7 @@ msgstr "Erase fields"
 msgid "Fernleihbestellung"
 msgstr "Interlibrary loan request"
 
+#: ../templates/database/inst006/search_showtitset:326
 #: ../templates/search_showtitset:326
 msgid "Franz&ouml;sische Wikipedia"
 msgstr "French Wikipedia"
@@ -1292,6 +1335,7 @@ msgid "Geben Sie hier den Notationsanfang ein"
 msgstr "Please insert the beginning of the classification"
 
 #: ../templates/database/ebooks/search_showtitset:710
+#: ../templates/database/inst006/search_showtitset:736
 #: ../templates/database/nationallizenzen/search_showtitset:705
 #: ../templates/search_showswtindex:81 ../templates/search_showtitlist:187
 #: ../templates/search_showtitset:731
@@ -1324,6 +1368,7 @@ msgstr "Renew all titles in your account"
 msgid "Gesamtkonto-Verl&auml;ngerung"
 msgstr "Renew whole account"
 
+#: ../templates/database/inst006/search_showtitset:76
 #: ../templates/search_showtitset:76
 msgid "Google Book Search"
 msgstr "Google Book Search"
@@ -1403,7 +1448,10 @@ msgid ""
 "Kombination mehrerer Worte im Eingabefeld ist <b>nicht</b>\n"
 "m&ouml;glich. Sie k&ouml;nnen jedoch das Trunkierungszeichen am Ende\n"
 "Ihrer Eingabe hinzuf&uuml;gen (z.B. KA 15*)."
-msgstr "Phrase search is the default in this search field. You can't use boolean expression in here, but you can add the truncation mark at the end of your input (e.g. KA 15*)"
+msgstr ""
+"Phrase search is the default in this search field. You can't use boolean "
+"expression in here, but you can add the truncation mark at the end of your "
+"input (e.g. KA 15*)"
 
 #: ../templates/searchmask:131 ../templates/searchmask:135
 #: ../templates/searchmask:93 ../templates/searchmask:99
@@ -1833,6 +1881,7 @@ msgid ""
 "Suchm&ouml;glichkeiten erhalten Sie %1hier%2"
 msgstr "There are hints and examples for more types of searches %1available%2"
 
+#: ../templates/database/inst006/search_showtitset:465
 #: ../templates/search_showtitset:460
 msgid "Hinzuf&uuml;gen"
 msgstr "Add"
@@ -1901,6 +1950,7 @@ msgid "Import-Einstellungen"
 msgstr "Import-Options"
 
 #: ../templates/database/ebooks/search_showtitset:80
+#: ../templates/database/inst006/search_showtitset:80
 #: ../templates/database/nationallizenzen/search_showtitset:75
 #: ../templates/managecollection_tit_as_html:38
 #: ../templates/search_showtitset:80
@@ -1908,6 +1958,7 @@ msgid "In BibSonomy vorhanden?"
 msgstr "Available in BibSonomy?"
 
 #: ../templates/database/ebooks/search_showtitset:76
+#: ../templates/database/inst006/search_showtitset:76
 #: ../templates/managecollection_tit_as_html:34
 #: ../templates/search_showtitset:76
 msgid "In Google BookSearch vorhanden?"
@@ -1993,6 +2044,10 @@ msgstr "Available in Google Book Search?"
 #: ../templates/views/xanten/searchmask_simple:95
 msgid "In allen Katalogen suchen"
 msgstr "Search in all catalogues"
+
+#: ../templates/database/inst006/search_showtitset:378
+msgid "In anderen Katalogen"
+msgstr "In other catalogues"
 
 #: ../templates/searchmask:131 ../templates/searchmask:135
 #: ../templates/searchmask:93 ../templates/searchmask:99
@@ -2125,6 +2180,7 @@ msgstr "Search in selected catalogues"
 #: ../templates/database/ebooks/search_showtitset:46
 #: ../templates/database/einbaende/search_showtitlist:150
 #: ../templates/database/einbaende/search_showtitset:42
+#: ../templates/database/inst006/search_showtitset:46
 #: ../templates/database/landschaft/search_showtitlist:153
 #: ../templates/database/landschaft/search_showtitset:38
 #: ../templates/database/landschaft/virtualsearch_result_item:79
@@ -2190,6 +2246,7 @@ msgstr "Information"
 #: ../templates/database/einbaende/managecollection_tit_as_html:83
 #: ../templates/database/einbaende/search_showtitset:167
 #: ../templates/database/einbaende/search_showtitset:69
+#: ../templates/database/inst006/search_showtitset:103
 #: ../templates/database/landschaft/search_showtitset:67
 #: ../templates/database/nationallizenzen/search_showtitset:98
 #: ../templates/database/portrait/search_showtitset:89
@@ -2227,8 +2284,9 @@ msgstr "Inventory number     "
 #: ../templates/admin_editcat_rss:308 ../templates/admin_editcat_rss:80
 #: ../templates/admin_editview:52 ../templates/admin_showcat:57
 #: ../templates/admin_showcat:84 ../templates/admin_showcat:91
-#: ../templates/admin_showviews:47 ../templates/search_showtitset:701
-#: ../templates/searchmask_options:29
+#: ../templates/admin_showviews:47
+#: ../templates/database/inst006/search_showtitset:706
+#: ../templates/search_showtitset:701 ../templates/searchmask_options:29
 #: ../templates/views/gdonck/searchmask_options:5
 #: ../templates/views/gleuel/searchmask_options:5
 #: ../templates/views/kempen/searchmask_options:5
@@ -2355,6 +2413,7 @@ msgstr "Catalogue profiles"
 #: ../templates/database/einbaende/managecollection_tit_as_html:83
 #: ../templates/database/einbaende/search_showtitset:167
 #: ../templates/database/einbaende/search_showtitset:69
+#: ../templates/database/inst006/search_showtitset:103
 #: ../templates/database/landschaft/search_showtitset:67
 #: ../templates/database/nationallizenzen/search_showtitset:98
 #: ../templates/database/portrait/search_showtitset:89
@@ -2503,6 +2562,7 @@ msgstr "Corporate body"
 msgid "Körperschaft/Institution"
 msgstr "Corporate body/institution"
 
+#: ../templates/database/inst006/search_showtitset:557
 #: ../templates/search_showtitset:552
 msgid "L&ouml;schen"
 msgstr "Remove"
@@ -2785,6 +2845,7 @@ msgstr "Reset"
 
 #: ../templates/admin_editcat:185 ../templates/admin_editcat_rss:341
 #: ../templates/admin_editprofile:78 ../templates/admin_editview:146
+#: ../templates/database/inst006/search_showtitset:672
 #: ../templates/search_showtitset:667
 msgid "Löschen"
 msgstr "Delete"
@@ -2797,6 +2858,7 @@ msgstr "Would you like to refine your search request"
 msgid "Maler / Zeichner"
 msgstr "Painter/Drawer"
 
+#: ../templates/database/inst006/search_showtitset:313
 #: ../templates/search_showtitset:313
 msgid "Mashup mit Wikipedia"
 msgstr "Mashup with Wikipedia"
@@ -2862,6 +2924,8 @@ msgstr "Would you like to change it?"
 #: ../templates/database/ebooks/search_showtitset:55
 #: ../templates/database/einbaende/search_showtitset:48
 #: ../templates/database/einbaende/search_showtitset:50
+#: ../templates/database/inst006/search_showtitset:53
+#: ../templates/database/inst006/search_showtitset:55
 #: ../templates/database/landschaft/search_showtitset:44
 #: ../templates/database/landschaft/search_showtitset:46
 #: ../templates/database/nationallizenzen/search_showtitset:53
@@ -2899,7 +2963,11 @@ msgid ""
 "sind, die weitergehende Informationen anbieten oder ein\n"
 "eigenst&auml;ndiges Fach-Portal bilden. Auf dieser Seite finden Sie\n"
 "eine &Uuml;bersicht aller vorhandenen Spezial-Sichten."
-msgstr "Apart from standard KUG with all catalogues there exist a lot of other special views with preselected catalogues and additional information. Some of these even build a separate portal. On this page we give you an overview of all available special views."
+msgstr ""
+"Apart from standard KUG with all catalogues there exist a lot of other "
+"special views with preselected catalogues and additional information. Some "
+"of these even build a separate portal. On this page we give you an overview "
+"of all available special views."
 
 #: ../templates/admin_editcat:144 ../templates/admin_editcat:167
 #: ../templates/admin_editcat:93 ../templates/admin_editcat_rss:131
@@ -2907,8 +2975,9 @@ msgstr "Apart from standard KUG with all catalogues there exist a lot of other s
 #: ../templates/admin_editcat_rss:302 ../templates/admin_editcat_rss:74
 #: ../templates/admin_editview:56 ../templates/admin_showcat:58
 #: ../templates/admin_showcat:86 ../templates/admin_showcat:93
-#: ../templates/admin_showviews:47 ../templates/search_showtitset:703
-#: ../templates/searchmask_options:29
+#: ../templates/admin_showviews:47
+#: ../templates/database/inst006/search_showtitset:708
+#: ../templates/search_showtitset:703 ../templates/searchmask_options:29
 #: ../templates/views/gdonck/searchmask_options:5
 #: ../templates/views/gleuel/searchmask_options:5
 #: ../templates/views/kempen/searchmask_options:5
@@ -2949,6 +3018,7 @@ msgstr "New titles per subject category"
 msgid "Neuaufnahmen nach Verfasser"
 msgstr "New titles per author"
 
+#: ../templates/database/inst006/search_showtitset:651
 #: ../templates/search_showtitset:646
 msgid "Neue Bewertung/Rezension"
 msgstr "New rating/review"
@@ -3000,6 +3070,7 @@ msgid "Nutzer"
 msgstr "User"
 
 #. ("<a href=\"${config.info_loc}?sessionID=${sessionID};view=${view}#enrichrelevance\">","</a>")
+#: ../templates/database/inst006/search_showtitset:425
 #: ../templates/search_showtitset:415
 msgid ""
 "Nutzer, die diesen Titel ausgew&auml;hlt haben, interessierten sich auch "
@@ -3108,6 +3179,7 @@ msgstr "Send password by mail"
 msgid "Passwort vergessen?"
 msgstr "Forgotten password?"
 
+#: ../templates/database/inst006/search_showtitset:50
 #: ../templates/litlists_show_singlelist:67 ../templates/search_showtitset:50
 msgid "Permanenter Link"
 msgstr "PermaLink"
@@ -3186,6 +3258,7 @@ msgstr "Protocol"
 msgid "Provenienz"
 msgstr "Provenance"
 
+#: ../templates/database/inst006/search_showtitset:667
 #: ../templates/search_showtitset:662
 msgid "Pseudonym"
 msgstr "Pseudonym"
@@ -3248,6 +3321,7 @@ msgstr "Region"
 msgid "Registrieren"
 msgstr "Register"
 
+#: ../templates/database/inst006/search_showtitset:665
 #: ../templates/search_showtitset:660
 msgid "Rezension"
 msgstr "Review"
@@ -3344,6 +3418,7 @@ msgid "Schlagwortindex"
 msgstr "Index of subject headings"
 
 #: ../templates/database/ebooks/search_showtitset:709
+#: ../templates/database/inst006/search_showtitset:735
 #: ../templates/database/nationallizenzen/search_showtitset:704
 #: ../templates/search_showtitset:730
 msgid "Schlagwortindex diese Katalogs"
@@ -3959,6 +4034,7 @@ msgstr "Search terms"
 
 #: ../templates/bibsonomy_showtitlist:54
 #: ../templates/database/ebooks/search_showtitset:710
+#: ../templates/database/inst006/search_showtitset:736
 #: ../templates/database/nationallizenzen/search_showtitset:705
 #: ../templates/search_showswtindex:81 ../templates/search_showtitlist:187
 #: ../templates/search_showtitset:731
@@ -5433,6 +5509,10 @@ msgstr "# of dependent titles"
 msgid "T5100"
 msgstr "Common numbering"
 
+#: ../templates/database/inst006/search_showtitset:373
+msgid "Tagging"
+msgstr "Tagging"
+
 #: ../templates/bibsonomy_showtitlist:53 ../templates/bibsonomy_showtitlist:85
 #: ../templates/circulation:26 ../templates/circulation_orders:26
 msgid "Tags"
@@ -5446,6 +5526,7 @@ msgstr "Tags in BibSonomy"
 msgid "Testsystem - Nicht f&uuml;r den produktiven Einsatz bestimmt"
 msgstr "Title/Subject headings not available in Bibsonomy"
 
+#: ../templates/database/inst006/search_showtitset:669
 #: ../templates/search_showtitset:664
 msgid "Text"
 msgstr "Text"
@@ -5458,6 +5539,7 @@ msgstr "Text information"
 msgid "Tit-Datei"
 msgstr "Tit-File"
 
+#: ../templates/database/inst006/search_showtitset:668
 #: ../templates/managecollection_tit_as_html_simple:16
 #: ../templates/search_showtitset:663 ../templates/searchmask_options:4
 #: ../templates/views/gdonck/searchmask_options:4
@@ -5472,6 +5554,7 @@ msgstr "Tit-File"
 msgid "Titel"
 msgstr "Title"
 
+#: ../templates/database/inst006/search_showtitset:387
 #: ../templates/search_showtitset:371
 msgid ""
 "Titel mit der ISBN dieses Titels sind auch in folgenden anderen KUG-"
@@ -5505,6 +5588,7 @@ msgid "Titelangaben"
 msgstr "Title information"
 
 #: ../templates/database/ebooks/search_showtitset:66
+#: ../templates/database/inst006/search_showtitset:66
 #: ../templates/database/landschaft/search_showtitset:54
 #: ../templates/database/nationallizenzen/search_showtitset:65
 #: ../templates/database/portrait/search_showtitset:54
@@ -5542,6 +5626,7 @@ msgid "Titelzugriffe"
 msgstr "Title accesses"
 
 #: ../templates/database/ebooks/search_showtitset:44
+#: ../templates/database/inst006/search_showtitset:44
 #: ../templates/database/nationallizenzen/search_showtitset:44
 #: ../templates/info_10:36 ../templates/info_11:36 ../templates/info_12:31
 #: ../templates/info_13:37 ../templates/info_14:44 ../templates/info_15:48
@@ -5594,6 +5679,10 @@ msgstr "Hits"
 msgid "Trefferliste"
 msgstr "Resultlist"
 
+#: ../templates/drilldown_categorized:3
+msgid "Treffermenge eingrenzen"
+msgstr "Refine results"
+
 #: ../templates/database/portrait/drilldown_categorized:3
 msgid "Treffermenge&nbsp;eingrenzen"
 msgstr "Refine results"
@@ -5606,6 +5695,8 @@ msgstr "Tutorials"
 msgid "Typ"
 msgstr "Type"
 
+#: ../templates/database/inst006/search_showtitset:465
+#: ../templates/database/inst006/search_showtitset:557
 #: ../templates/search_showtitset:460 ../templates/search_showtitset:552
 msgid "Typ:"
 msgstr "Type:"
@@ -5806,6 +5897,8 @@ msgstr "Booked"
 #: ../templates/database/ebooks/search_showtitset:41
 #: ../templates/database/einbaende/search_showtitset:37
 #: ../templates/database/einbaende/search_showtitset:39
+#: ../templates/database/inst006/search_showtitset:39
+#: ../templates/database/inst006/search_showtitset:41
 #: ../templates/database/landschaft/search_showtitset:33
 #: ../templates/database/landschaft/search_showtitset:35
 #: ../templates/database/nationallizenzen/search_showtitset:39
@@ -5856,8 +5949,12 @@ msgid ""
 "Wortwolke (%1&nbsp;%2) zu erhalten. Je mehr Titel mit\n"
 "einem Normdaten-Eintrag verkn&uuml;pft wurden, umso grösser wird der "
 "zugehörige Normdaten-Eintrag dargestellt."
-msgstr "Please select a catalogue to view on overview of its <b>200 most used tems in several categories as a tag cloud (%1&nbsp;%2)</b>.  The more titles are connected to a term the bigger the corresponding term gets displayed."
+msgstr ""
+"Please select a catalogue to view on overview of its <b>200 most used tems "
+"in several categories as a tag cloud (%1&nbsp;%2)</b>.  The more titles are "
+"connected to a term the bigger the corresponding term gets displayed."
 
+#: ../templates/database/inst006/search_showtitset:705
 #: ../templates/search_showtitset:700
 msgid "War diese Rezension hilfreich?"
 msgstr "Is this review helpful?"
@@ -5935,7 +6032,11 @@ msgid ""
 "<b>Index</b>. Sie erhalten dann eine Liste der entsprechenden\n"
 "Normdaten aus der Datenbank, die mit dem von Ihnen eingegebenen\n"
 "Begriff beginnen."
-msgstr "To view an index please enter your search term in the following search fields: Person, corporate body/institution, subject headings. After selecting <b>Index</b> you'll get a list of the corresponding terms beginning with your search term from each of the databases."
+msgstr ""
+"To view an index please enter your search term in the following search "
+"fields: Person, corporate body/institution, subject headings. After "
+"selecting <b>Index</b> you'll get a list of the corresponding terms "
+"beginning with your search term from each of the databases."
 
 #: ../templates/search_info:14
 msgid ""
@@ -5945,7 +6046,12 @@ msgid ""
 "<b>ODER-Verkn&uuml;pfung</b>, deaktivieren Sie die Suchoption\n"
 "<b>UND-Verkn&uuml;pfung innerhalb eines Suchfeldes</b>: der eine\n"
 "<b>oder</b> der andere Begriff ist enthalten."
-msgstr "Terms entered into a search field will be searched with boolean <b>AND</b> as our default - all terms have to exists in the title. To search with boolean <b>OR</b> as a default please deactive the search option <b>AND-relation in a search field</b> - at least one search term has to exist in the title."
+msgstr ""
+"Terms entered into a search field will be searched with boolean <b>AND</b> "
+"as our default - all terms have to exists in the title. To search with "
+"boolean <b>OR</b> as a default please deactive the search option <b>AND-"
+"relation in a search field</b> - at least one search term has to exist in "
+"the title."
 
 #. ("<a href=\"http://${config.loadbalancerservername}${config.loadbalancer_loc}?view=${view}\">","</a>")
 #: ../templates/userprefs_userdeleted:31
@@ -5996,6 +6102,7 @@ msgstr ""
 "For this title and its subject headings the following tags could be found in "
 "BibSonomy."
 
+#: ../templates/database/inst006/search_showtitset:400
 #: ../templates/search_showtitset:388
 msgid ""
 "Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere "
@@ -6406,6 +6513,8 @@ msgstr "by timestamp"
 msgid "nein"
 msgstr "no"
 
+#: ../templates/database/inst006/search_showtitset:465
+#: ../templates/database/inst006/search_showtitset:557
 #: ../templates/search_showtitset:460 ../templates/search_showtitset:552
 msgid "privat"
 msgstr "private"
@@ -6434,10 +6543,12 @@ msgstr "private"
 msgid "pro Katalog"
 msgstr "per catalogue"
 
+#: ../templates/database/inst006/search_showtitset:656
 #: ../templates/search_showtitset:651
 msgid "schlecht"
 msgstr "bad"
 
+#: ../templates/database/inst006/search_showtitset:662
 #: ../templates/search_showtitset:657
 msgid "sehr gut"
 msgstr "very good"
@@ -6462,10 +6573,14 @@ msgstr "repeated"
 msgid "Ändern"
 msgstr "Change"
 
+#: ../templates/database/inst006/search_showtitset:511
+#: ../templates/database/inst006/search_showtitset:603
 #: ../templates/search_showtitset:506 ../templates/search_showtitset:598
 msgid "Übernahme bereits von Nutzern vergebener Tags"
 msgstr "Transfer already used tags of other users"
 
+#: ../templates/database/inst006/search_showtitset:480
+#: ../templates/database/inst006/search_showtitset:572
 #: ../templates/search_showtitset:475 ../templates/search_showtitset:567
 msgid "Übernahme eigener Tags"
 msgstr "Transfer your own tags"

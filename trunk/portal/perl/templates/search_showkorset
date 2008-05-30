@@ -44,8 +44,18 @@ FOREACH category IN categories;
     CASE "C5000";
          content   = "<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchtitofurhkor=${normset.id};offset=0;hitrange=${qopts.hitrange}\">${content}</a>";
     END;
+
+   # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+   # in Config.pm fuer die entsprechende Datenbank definiert
+   # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+   # kodiert.
+   thiscategory = category ;
+   IF config.categorymapping.${record.database}.$category ;
+     thiscategory = "${category}-${record.database}" ;
+   END;
+
 -%]
-<tr><td class="category">[% msg.maketext("${category}") %]</td><td>[% content %]</td></tr>
+<tr><td class="category">[% msg.maketext("${thiscategory}") %]</td><td>[% content %]</td></tr>
 [%-
    END;
 END;

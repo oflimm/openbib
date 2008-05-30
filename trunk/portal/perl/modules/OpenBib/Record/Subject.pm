@@ -163,13 +163,14 @@ sub load_full_record {
     return $self;
 }
 
-sub get_name {
+sub load_name {
     my ($self,$arg_ref) = @_;
 
     # Set defaults
     my $id                = exists $arg_ref->{id}
-        ? $arg_ref->{id}                : undef;
-
+        ? $arg_ref->{id}                :
+            (exists $self->{id})?$self->{id}:undef;
+    
     my $dbh               = exists $arg_ref->{dbh}
         ? $arg_ref->{dbh}               : undef;
 
@@ -207,12 +208,13 @@ sub get_name {
         undef $timeall;
     }
     
-    my $schlagwort;
+    my $schlagwort="";
   
     if ($res->{content}) {
         $schlagwort = decode_utf8($res->{content});
     }
-  
+
+    $logger->debug("Schlagwort-Name: $schlagwort");
     $request->finish();
   
     $self->{name}=$schlagwort;

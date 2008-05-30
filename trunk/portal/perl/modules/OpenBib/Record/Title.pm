@@ -197,7 +197,7 @@ sub load_full_record {
             my $content = "";
             if (defined $recordclass){
                 my $record=$recordclass->new({database=>$self->{database}});
-                $record->get_name({id=>$targetid});
+                $record->load_name({dbh => $dbh, id=>$targetid});
                 $content=$record->name_as_string;
             }
             
@@ -696,7 +696,7 @@ sub load_brief_record {
                 $supplement=" ".decode_utf8($res->{supplement});
             }
 
-            my $content=OpenBib::Record::Person->new({database => $self->{database}})->get_name({id => $targetid})->name_as_string.$supplement;
+            my $content=OpenBib::Record::Person->new({database => $self->{database}})->load_name({dbh => $dbh, id => $targetid})->name_as_string.$supplement;
 
             # Kategorieweise Abspeichern
             push @{$listitem_ref->{$category}}, {
@@ -733,7 +733,7 @@ sub load_brief_record {
                 $supplement.=" ".decode_utf8($res->{supplement});
             }
 
-            my $content=OpenBib::Record::CorporateBody->new({database => $self->{database}})->get_name({id => $targetid})->name_as_string.$supplement;
+            my $content=OpenBib::Record::CorporateBody->new({database => $self->{database}})->load_name({dbh => $dbh, id => $targetid})->name_as_string.$supplement;
             
             # Kategorieweise Abspeichern
             push @{$listitem_ref->{$category}}, {

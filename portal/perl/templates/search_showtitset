@@ -63,7 +63,7 @@
 <p />
 <!-- Title begins here -->
 <table width="100%" cellpadding="2">
-<tr><th>[% msg.maketext("Titelaufnahme") %]</th>[% IF litlists.size > 0 %]<td width="5">&nbsp;</td><td width="200">&nbsp;</td>[% END %]</tr>
+<tr><th>[% msg.maketext("Titelaufnahme") %]</th>[% IF litlists.size > 0 || all_tags.size > 0 || alltags_cloud %]<td width="5">&nbsp;</td><td width="200">&nbsp;</td>[% END %]</tr>
 <tr><td class="boxedclear">
 
 <div style="float:right;padding:10px;">
@@ -82,29 +82,9 @@
 </p>
 </div>
 
-[% 
-   IF config.litlists ;
-      userlitlists = user.get_litlists();
-
-      IF userlitlists.size > 0 ;
-%]
-<form method="get" action="[%config.litlists_loc %]">
-<input type="hidden" name="action"          value="manage" />
-<input type="hidden" name="titid"           value="[% record.id %]" />
-<input type="hidden" name="titdb"           value="[% record.database %]" />
-<input type="hidden" name="sessionID"       value="[% sessionID %]" />
-Diesen Titel in die Literaturliste <select name="litlistid">[% FOREACH litlist IN userlitlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select>&nbsp;<input type="submit" name="do_addentry" value="&uuml;bernehmen" />
-</form>
-<p />
-[%    END %]
-[% END %]
-
 <table cellpadding="2">
 <tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
 <tr><td class="category">id</td><td>[% record.id %]</td></tr>
-[%- IF bibkey -%]
-<tr><td class="category">bibkey</td><td>[% bibkey %]</td></tr>
-[%- END -%]
 
 [% PROCESS common/subtemplate name="visible_categories_titset" %]
 
@@ -305,7 +285,9 @@ FOREACH category IN categories;
    END;
 END;
 -%]
-<tr><td class="category">BibSonomy-Tags</td><td><span id="bibsonomy_tags"><a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];bibkey=[% bibkey %];tags=[% record.to_tags | uri %];action=get_tags">Suchen?</a></span></td></tr>
+[%- IF bibkey -%]
+<tr><td class="category">bibkey</td><td>[% bibkey %]</td></tr>
+[%- END -%]
 </table>
 
 [%- IF normset.${"E4200"} || normset.${"E4201"} || normset.${"E4202"} %]
@@ -339,17 +321,53 @@ END;
 [% END %]
 
 </td>
-[% IF litlists.size > 0 %]<td></td><td class="boxedfull" valign="top" style="font-size:0.8em">
+[% IF litlists.size > 0 %]<td></td><td valign="top" style="font-size:0.9em">
+<div class="discover_sources">
+<table width="100%">
+<b>Entdecke weitere Titel &uuml;ber:</b><p/>
+<!-- Anfang Literaturlisten -->
+[% IF litlists.size > 0 %]
+<tr><td style="background:lightblue;font-weight:bold">[% msg.maketext("Literaturlisten") %]</td></tr>
+<tr><td>
 [% msg.maketext("Dieser Titel befindet sich in folgenden Literaturlisten") %]:
-
 <ul>
 [% FOREACH litlist IN litlists %]
 <li><a href="[% config.litlists_loc %]?sessionID=[% sessionID
 %];action=show;litlistid=[% litlist.id %]">[% litlist.title %]</a></li>
 [% END %]
 </ul>
+</td></tr>
+<tr><td></td></tr>
+[% END %]
+<!-- Ende Literaturlisten -->
 
-</td>[% END %]
+<!-- Anfang KUG-Tags -->
+[% IF all_tags.size > 0 %]
+<tr><td style="background:lightblue;font-weight:bold">[% msg.maketext("Lokale Tags") %]</td></tr>
+<tr><td>
+[% alltags_cloud %]
+</td></tr>
+<tr><td></td></tr>
+<tr><td></td></tr>
+[% END %]
+<!-- Ende KUG-Tags -->
+
+<!-- Anfang BibSonomy-Tags -->
+[% IF alltags_cloud %]
+<tr><td style="background:lightblue;font-weight:bold">[% msg.maketext("BibSonomy Tags") %]</td></tr>
+<tr><td>
+<span id="bibsonomy_tags"><a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];bibkey=[% bibkey %];tags=[% record.to_tags | uri %];action=get_tags">Suchen?</a></span>
+</td></tr>
+<tr><td></td></tr>
+<tr><td></td></tr>
+[% END %]
+<!-- Ende BibSonomy-Tags -->
+
+</table>
+
+</div>
+</td>
+[% END %]
 </tr>
 </table>
 
@@ -364,55 +382,35 @@ END;
 [% END %]
 <p />
 
-[% IF same_records.get_size > 0 %]
-<table width="100%">
-<tr><th>[% msg.maketext("Dieser Titel in anderen Katalogen") %]&nbsp;<span id="samerecord_toggle"></span></th></tr>
-<tr><td id="samerecord" class="boxedclear">
-[% msg.maketext("Titel mit der ISBN dieses Titels sind auch in folgenden anderen KUG-Katalogen vorhanden") %]:
-<p />
-<ol>
-[% FOREACH same_record IN same_records.get_records %]
-[% same_url = "${config.search_loc}?sessionID=${sessionID};database=${same_record.database};searchsingletit=${same_record.id}" %]
-<li><a href="[% same_url %]">[% dbinfotable.dbnames.${same_record.database}.short %]</a></li>
-[% END %]
-</ol>
-</td></tr>
-</table>
-[% END %]
+<div id="additional_title_info">
 
-<p />
+[%   reviews = user.get_reviews_of_tit({ titid => record.id, titdb => record.database }); %]
+
+<ul class="nojs_hidden">
+[% IF normset.exists('E4000') %]
+<li><a href="#recomendations"><span>[% msg.maketext("Empfehlungen") %]</span></a></li>
+[% END %]
+<li><a href="#tagging"><span>[% msg.maketext("Tagging") %]</span></a></li>
+[% IF config.litlists %]
+<li><a href="#litlists"><span>[% msg.maketext("Literaturliste") %]</span></a></li>
+[% END %]
+[% IF config.reviews %]
+<li><a href="#reviews"><span>[% msg.maketext("Bewertungen/Rezensionen") %]</span></a></li>
+[% END %]
+[% IF same_records.get_size > 0 %]
+<li><a href="#same_records"><span>[% msg.maketext("In anderen Katalogen") %]</span></a></li>
+[% END %]
 [% IF similar_records.get_size > 0 %]
-<table width="100%">
-<tr><th>[% msg.maketext("Andere Ausgaben dieses Titels (Sprache, Auflage usw.)") %]&nbsp;<span id="similarrecord_toggle"></span></th></tr>
-<tr><td id="similarrecord" class="boxedclear">
-[% msg.maketext("Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere Auflage usw.) in den KUG-Katalogen") %]:
-<p />
-<ol>
-[% FOREACH similar_record IN similar_records.get_records %]
-[% item = similar_record.get_brief_normdata %]
-[% similar_url = "${config.search_loc}?sessionID=${sessionID};database=${similar_record.database};searchsingletit=${similar_record.id}" %]
-[%# Titel konstruieren %]
-[%- title = item.${'T0331'}.first.content -%]
-[%- IF item.${'T0310'}.first.content -%]
-[%- title = item.${'T0310'}.first.content -%]
-[%- END -%]
-[%# Ejahr konstruieren %]
-[%- yearofpub = item.${'T0425'}.first.content -%]
-[%# Edition konstruieren %]
-[%- edition   = item.${'T0403'}.first.content -%]
-<li><a href="[% similar_url %]"><i>[% title %]</i>[% IF edition %], [% edition %][% END %][% IF yearofpub %] ([% yearofpub %])[% END %]</a><br />aus: [% dbinfotable.dbnames.${similar_record.database}.short %]</li>
+<li><a href="#similar_records"><span>[% msg.maketext("Andere Ausgaben") %]</span></a></li>
 [% END %]
-</ol>
-</td></tr>
-</table>
-[% END %]
+</ul>
 
 [% IF normset.exists('E4000') %]
-<p />
-<table width="100%">
-<tr><th>[% msg.maketext("Das könnte Sie interessieren") %]:</th></tr>
-<tr><td class="boxedclear">
+<h2 class="nojs_show">[% msg.maketext("Empfehlungen") %]</h2>
+
+<div id="recomendations">
 [% msg.maketext("Nutzer, die diesen Titel ausgew&auml;hlt haben, interessierten sich auch f&uuml;r die folgenden Titel. [_1]Weitere Informationen[_2] finden Sie in der Suchhilfe","<a href=\"${config.info_loc}?sessionID=${sessionID};view=${view}#enrichrelevance\">","</a>") %].
+<p />
 <table>
 [%-   isbnitems = normset.${"E4000"} -%]
 [%-   hstitems  = normset.${"E4001"} -%]
@@ -425,16 +423,11 @@ END;
 [%-   END -%]
 [%- END -%]
 </table>
-</td></tr>
-</table>
+</div>
 [% END %]
 
+<div id="tagging">
 <!-- Begin: Tagging -->
-<p />
-<table width="100%">
-<tr><th>[% msg.maketext("Eigene Tags vergeben") %]&nbsp;<span id="newtags_toggle"></span></th></tr>
-<tr><td id="newtags" class="boxedclear">
-
 [%
   private_tags_of_tit = [];
   IF loginname ;
@@ -443,6 +436,7 @@ END;
 %]
 
 [%  IF private_tags_of_tit.size <= 0  %]
+<h2 class="nojs_show">[% msg.maketext("Tagging") %]</h2>
 
 <table width="100%">
 <tr><td valign="top">
@@ -527,7 +521,8 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 </td></tr>
 </table>
 
-[%ELSIF loginname && private_tags_of_tit.size > 0 %]
+[% ELSIF loginname && private_tags_of_tit.size > 0 %]
+<h2 class="nojs_show"></h2>
 
 <table width="100%">
 <tr><td valign="top">
@@ -621,12 +616,38 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 
 [%END %]
 
-</td></tr>
-</table>
 <!-- End: Tagging -->
+</div>
+
+[% IF config.litlists %]
+<div id="litlists">
+[%
+      userlitlists = user.get_litlists();
+
+      IF userlitlists.size > 0 ;
+%]
+
+<form method="get" action="[% config.litlists_loc %]">
+<input type="hidden" name="action"          value="manage" />
+<input type="hidden" name="titid"           value="[% record.id %]" />
+<input type="hidden" name="titdb"           value="[% record.database %]" />
+<input type="hidden" name="sessionID"       value="[% sessionID %]" />
+Diesen Titel in die Literaturliste <select name="litlistid">[% FOREACH litlist IN userlitlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select>&nbsp;<input type="submit" name="do_addentry" value="&uuml;bernehmen" />
+</form>
+<p />
+[% ELSE %]
+Sie haben bisher noch keine Literaturlisten eingerichtet. Bitte gehen
+Sie zu MeinKUG und legen dort eine oder mehrere Literaturlisten an.
+[% END %]
+</div>
+[% END %]
+
 
 <!-- Begin: Reviews -->
 [% IF config.reviews %]
+<h2 class="nojs_show">[% msg.maketext("Bewertungen/Rezensionen") %]</h2>
+
+<div id="reviews">
 
 [% IF   loginname %]
 
@@ -673,8 +694,6 @@ value="5"/>&nbsp;[% msg.maketext("sehr gut") %]</td></tr>
 
 [%   END %]
 
-[%   reviews = user.get_reviews_of_tit({ titid => record.id, titdb => record.database }); %]
-
 [%   IF reviews.size > 0 %]
 
 <p />
@@ -710,10 +729,51 @@ href="[% config.userreviews_loc %]?sessionID=[% sessionID
 </table>
 
 [%   END %]
-
+</div>
 [% END %]
 
 <!-- End: Reviews -->
+
+[% IF same_records.get_size > 0 %]
+<h2 class="nojs_show">[% msg.maketext("In anderen Katalogen") %]</h2>
+
+<div id="same_records">
+[% msg.maketext("Titel mit der ISBN dieses Titels sind auch in folgenden anderen KUG-Katalogen vorhanden") %]:
+<p />
+<ol>
+[% FOREACH same_record IN same_records.get_records %]
+[% same_url = "${config.search_loc}?sessionID=${sessionID};database=${same_record.database};searchsingletit=${same_record.id}" %]
+<li><a href="[% same_url %]">[% dbinfotable.dbnames.${same_record.database}.short %]</a></li>
+[% END %]
+</ol>
+</div>
+[% END %]
+
+[% IF similar_records.get_size > 0 %]
+<h2 class="nojs_show">[% msg.maketext("Andere Ausgaben") %]</h2>
+
+<div id="similar_records">
+[% msg.maketext("Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere Auflage usw.) in den KUG-Katalogen") %]:
+<p />
+<ol>
+[% FOREACH similar_record IN similar_records.get_records %]
+[% item = similar_record.get_brief_normdata %]
+[% similar_url = "${config.search_loc}?sessionID=${sessionID};database=${similar_record.database};searchsingletit=${similar_record.id}" %]
+[%# Titel konstruieren %]
+[%- title = item.${'T0331'}.first.content -%]
+[%- IF item.${'T0310'}.first.content -%]
+[%- title = item.${'T0310'}.first.content -%]
+[%- END -%]
+[%# Ejahr konstruieren %]
+[%- yearofpub = item.${'T0425'}.first.content -%]
+[%# Edition konstruieren %]
+[%- edition   = item.${'T0403'}.first.content -%]
+<li><a href="[% similar_url %]"><i>[% title %]</i>[% IF edition %], [% edition %][% END %][% IF yearofpub %] ([% yearofpub %])[% END %]</a><br />aus: [% dbinfotable.dbnames.${similar_record.database}.short %]</li>
+[% END %]
+</ol>
+</div>
+[% END %]
+</div>
 
 <!-- Title ends here -->
 

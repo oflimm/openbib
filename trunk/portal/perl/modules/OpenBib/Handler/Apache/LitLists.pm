@@ -194,7 +194,8 @@ sub handler {
             $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage&do_showlitlist=1&litlistid=$litlistid");
             return OK;
 	  
-	} elsif ($do_delentry) {
+	}
+        elsif ($do_delentry) {
 	  
             if (!$titid || !$titdb || !$litlistid) {
                 OpenBib::Common::Util::print_warning($msg->maketext("Keine Titelid, Titel-Datenbank oder Literaturliste vorhanden."),$r,$msg);
@@ -211,7 +212,8 @@ sub handler {
             $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage&litlistid=$litlistid&do_showlitlist=1");
             return OK;
 	  
-	} elsif ($do_showlitlist) {
+	}
+        elsif ($do_showlitlist) {
 	  
             if (!$litlistid || !$user->{ID} ) {
                 OpenBib::Common::Util::print_warning($msg->maketext("Sie haben entweder keine entsprechende Liste oder Sie sind nicht authentifiziert."),$r,$msg);
@@ -254,7 +256,8 @@ sub handler {
             }
             return OK;
 	  
-        } else {
+        }
+        else {
             
             my $litlists   = $user->get_litlists();
             my $targettype = $user->get_targettype_of_session($session->{ID});
@@ -276,7 +279,8 @@ sub handler {
             OpenBib::Common::Util::print_page($config->{tt_litlists_manage_lists_tname},$ttdata,$r);
             return OK;
 	}
-    } elsif ($action eq "show") {
+    }
+    elsif ($action eq "show") {
         if ($user->litlist_is_public({litlistid => $litlistid}) || $user->{ID} eq $user->get_litlist_owner({litlistid => $litlistid})) {
         
             my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
@@ -286,6 +290,12 @@ sub handler {
                 properties => $litlist_properties_ref,
             };
 
+            # Aufruf der Literaturlisten loggen
+            $session->log_event({
+                type      => 800,
+                content   => $litlistid,
+            });
+            
 	    # TT-Data erzeugen
 	    my $ttdata={
                 view         => $view,

@@ -49,6 +49,10 @@ use OpenBib::Config;
 use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::Common::Util;
 use OpenBib::L10N;
+use OpenBib::Record::Person;
+use OpenBib::Record::CorporateBody;
+use OpenBib::Record::Subject;
+use OpenBib::Record::Classification;
 use OpenBib::Record::Title;
 use OpenBib::RecordList::Title;
 use OpenBib::Search::Util;
@@ -157,20 +161,20 @@ sub handler {
         };
 
         if    ($type == 2){
-            $rssfeedinfo_ref->{2}->{channel_title}.=" '".OpenBib::Search::Util::get_aut_ans_by_idn($subtype,$dbh)."'";
-            $rssfeedinfo_ref->{2}->{channel_desc} .=" '".OpenBib::Search::Util::get_aut_ans_by_idn($subtype,$dbh)."'";
+            $rssfeedinfo_ref->{2}->{channel_title}.=" '".OpenBib::Record::Person->new({database => $database, id => $subtype})->load_name({dbh => $dbh})->name_as_string."'";
+            $rssfeedinfo_ref->{2}->{channel_desc} .=" '".OpenBib::Record::Person->new({database => $database, id => $subtype})->load_name({dbh => $dbh})->name_as_string."'";
         }
         elsif ($type == 3){
-            $rssfeedinfo_ref->{3}->{channel_title}.=" '".OpenBib::Search::Util::get_kor_ans_by_idn($subtype,$dbh)."'";
-            $rssfeedinfo_ref->{3}->{channel_desc} .=" '".OpenBib::Search::Util::get_kor_ans_by_idn($subtype,$dbh)."'";
+            $rssfeedinfo_ref->{3}->{channel_title}.=" '".OpenBib::Record::CorporateBody->new({database => $database, id => $subtype})->load_name({dbh => $dbh})->name_as_string."'";
+            $rssfeedinfo_ref->{3}->{channel_desc} .=" '".OpenBib::Record::CorporateBody->new({database => $database, id => $subtype})->load_name({dbh => $dbh})->name_as_string."'";
         }
         elsif ($type == 4){
-            $rssfeedinfo_ref->{4}->{channel_title}.=" '".OpenBib::Search::Util::get_swt_ans_by_idn($subtype,$dbh)."'";
-            $rssfeedinfo_ref->{4}->{channel_desc} .=" '".OpenBib::Search::Util::get_swt_ans_by_idn($subtype,$dbh)."'";
+            $rssfeedinfo_ref->{4}->{channel_title}.=" '".OpenBib::Record::Subject->new({database => $database, id => $subtype})->load_name({dbh => $dbh})->name_as_string."'";
+            $rssfeedinfo_ref->{4}->{channel_desc} .=" '".OpenBib::Record::Subject->new({database => $database, id => $subtype})->load_name({dbh => $dbh})->name_as_string."'";
         }
         elsif ($type == 5){
-            $rssfeedinfo_ref->{5}->{channel_title}.=" '".OpenBib::Search::Util::get_not_ans_by_idn($subtype,$dbh)."'";
-            $rssfeedinfo_ref->{5}->{channel_desc} .=" '".OpenBib::Search::Util::get_not_ans_by_idn($subtype,$dbh)."'";
+            $rssfeedinfo_ref->{5}->{channel_title}.=" '".OpenBib::Record::Classification->new({database => $database, id => $subtype})->load_name({dbh => $dbh})->name_as_string."'";
+            $rssfeedinfo_ref->{5}->{channel_desc} .=" '".OpenBib::Record::Classification->new({database => $database, id => $subtype})->load_name({dbh => $dbh})->name_as_string."'";
         }
         
         $logger->debug("Update des RSS-Caches");
@@ -183,7 +187,7 @@ sub handler {
             title         => "$dbdesc: ".$rssfeedinfo_ref->{$type}{channel_title},
             link          => "http://".$config->{loadbalancerservername}.$config->{loadbalancer_loc}."?view=$database",
             language      => "de",
-            description   => $rssfeedinfo_ref->{$type}{channel_desc}." '$dbdesc'",
+            description   => $rssfeedinfo_ref->{$type}{channel_desc},
         );
 
         $logger->debug("DB: $database Type: $type Subtype: $subtype");
@@ -290,6 +294,12 @@ sub handler {
     print $r->send_http_header("application/xml");
 
     print $rss_content;
+
+    # Aufruf des Feeds loggen
+    $session->log_event({
+        type      => 801,
+        content   => "$database:$type:$subtype",
+    });
 
     return OK;
 }

@@ -49,8 +49,12 @@
   [%- END -%]
 
     </style>
-    <script language="JavaScript" type="text/javascript" src="/js/jquery-1.2.1.min.js"></script>
+    <script language="JavaScript" type="text/javascript" src="/js/jquery-1.2.6.pack.js"></script>
+    <script language="JavaScript" type="text/javascript" src="/js/jquery-ui-personalized-1.5b3.packed.js"></script>
     <script language="JavaScript" type="text/javascript" src="/js/openbib.js"></script>
+
+  <link rel="stylesheet" href="[% "${config.css_loc}/ui.tabs.css" %]" type="text/css" media="print, projection, screen">
+  <link rel="stylesheet" href="[% "${config.css_loc}/ui.accordion.css" %]" type="text/css" media="print, projection, screen">
 
     <title>KUG - K&ouml;lner Universit&auml;tsGesamtkatalog</title>
   </head>

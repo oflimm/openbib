@@ -30,6 +30,7 @@ use YAML;
 use OpenBib::Config;
 use OpenBib::Common::Util;
 use OpenBib::Search::Util;
+use OpenBib::Record::Title;
 
 my $config=new OpenBib::Config();
 
@@ -142,19 +143,15 @@ while (my $result=$request->fetchrow_hashref){
                     next REFERENCES;
                 }
 
-                my $tititem = OpenBib::Search::Util::get_tit_listitem_by_idn({
-                    titidn   => $item_ref->{katkey},
-                    database => $item_ref->{dbname},
-                    dbh      => $dbh,
-                });
+                my $tititem_ref = OpenBib::Record::Title->new({database => $item_ref->{dbname}, id => $item_ref->{katkey}})->load_full_record({dbh => $dbh})->get_normdata;
 
-#                print YAML::Dump($tititem);
+#                print YAML::Dump($tititem_ref);
                 my $content = << "CONTENT";
-<span class="rlauthor">$tititem->{PC0001}[0]{content}</span><br /><strong><span class="rltitle">$tititem->{T0331}[0]{content}</span></strong>, <span class="rlpublisher">$tititem->{T0412}[0]{content}</span> <span class="rlyearofpub">$tititem->{T0425}[0]{content}</span> ($references_ref->{count}&nbsp;Nutzer)
+<span class="rlauthor">$tititem_ref->{PC0001}[0]{content}</span><br /><strong><span class="rltitle">$tititem_ref->{T0331}[0]{content}</span></strong>, <span class="rlpublisher">$tititem_ref->{T0412}[0]{content}</span> <span class="rlyearofpub">$tititem_ref->{T0425}[0]{content}</span> ($references_ref->{count}&nbsp;Nutzer)
 CONTENT
                 $count++;
                
-                if ($tititem->{T0331} && $item_ref->{isbn}){
+                if ($tititem_ref->{T0331} && $item_ref->{isbn}){
                     $request2->execute($isbn13,50,4000,$count,$item_ref->{isbn});
                     $request2->execute($isbn13,50,4001,$count,$content);
                 }

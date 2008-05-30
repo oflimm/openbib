@@ -31,8 +31,8 @@
 <div class="content">
 
 <ul class="tabbingmenu">
-   <li><a[%- IF browsecat == 'T0700' -%] class="active"[%- END -%] href="[% config.search_loc %]?sessionID=[% sessionID %];view=[% view %];database=kapsel;browsecat=T0700">Systematik</a></li>
    <li><a[%- IF browsecat == 'T0710' -%] class="active"[%- END -%] href="[% config.search_loc %]?sessionID=[% sessionID %];view=[% view %];database=kapsel;browsecat=T0710">Schlagwort</a></li>
+   <li><a[%- IF browsecat == 'T0700' -%] class="active"[%- END -%] href="[% config.search_loc %]?sessionID=[% sessionID %];view=[% view %];database=kapsel;browsecat=T0700">Systematik</a></li>
    <li><a[%- IF browsecat == 'T0101' -%] class="active"[%- END -%] href="[% config.search_loc %]?sessionID=[% sessionID %];view=[% view %];database=kapsel;browsecat=T0101">Personen</a></li>
 </ul>
 

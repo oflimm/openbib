@@ -31,12 +31,26 @@
 # Einladen der benoetigten Perl-Module
 #####################################################################
 
+use strict;
+use warnings;
+use utf8;
+
 use Getopt::Long;
 use DBI;
+use YAML;
 
 use OpenBib::Config;
 
+our (@autdubbuf,@kordubbuf,@swtdubbuf,@notdubbuf);
+
+@autdubbuf = ();
+@kordubbuf = ();
+@swtdubbuf = ();
+@notdubbuf = ();
+
 my $config = OpenBib::Config->instance;
+
+my ($filename);
 
 &GetOptions(
 	    "filename=s"       => \$filename,
@@ -51,26 +65,25 @@ HELP
 exit;
 }
 
-$bufferidx=0;
-
 # Kategorieflags
 
-%autkonv=(
+my %autkonv=(
     'Autor'       => '0100:', # Verfasser
     'Herausgeber' => '0101:', # Person
 );
 
-%korkonv=(
+my %korkonv=(
 );
 
-%notkonv=(
+my %notkonv=(
 #    'Paket'                => '0700:',
     'Paket1'               => '0700:',
     'Paket2'               => '0700:',
     'Paket3'               => '0700:',
 );
 
-%swtkonv=(
+my %swtkonv=(
+    'Paket'                 => '0710:', # GBV-Schlagwoerter
     'Subject'               => '0710:',
     'Subject2'              => '0710:',
     'Subject3'              => '0710:',
@@ -78,7 +91,7 @@ $bufferidx=0;
 
 # Kategoriemappings
 
-%titelkonv=(
+my %titelkonv=(
     'Titel'                => '0331:',
     'Serientitel'          => '0451:',
     'Untertitel'           => '0370:',
@@ -97,63 +110,43 @@ $bufferidx=0;
 
 # Einlesen und Reorganisieren
 
+DBI->trace(2);
+
 my $dbh = DBI->connect("DBI:CSV:");
 $dbh->{'csv_tables'}->{'data'} = {
     'eol' => "\n",
-    'sep_char' => "\t",
+    'sep_char' => ",",
     'quote_char' => "\"",
     'escape_char' => undef,
     'file' => "$filename",
 };
 
-my $request = $dbh->prepare("select * from data");
+$dbh->{'RaiseError'} = 1;
+
+my $request = $dbh->prepare("select * from data") || die $dbh->errstr;
 $request->execute();
 
-#######################################################################
-# Umwandeln
-
-$titidn=1;
-$titidx=0;
-
-$autidn=1;
-$autidx=0;
-
-$swtidn=1;
-$swtidx=0;
-
-$mexidn=1;
-$mexidx=0;
-
-$koridn=1;
-$koridx=0;
-
-$notidn=1;
-$notidx=0;
-
-$tempidx=0;
-
-$i=0;
-$ti=0;
-
-$autdublastidx=1;
-$kordublastidx=1;
-$notdublastidx=1;
-$swtdublastidx=1;
+open (TIT,     ">:utf8","unload.TIT");
+open (AUT,     ">:utf8","unload.PER");
+open (KOR,     ">:utf8","unload.KOE");
+open (NOTATION,">:utf8","unload.SYS");
+open (SWT,     ">:utf8","unload.SWD");
 
 while (my $result=$request->fetchrow_hashref){
     # DFG-Nationallizenzen ausfiltern
 
+#    print YAML::Dump($result),"\n";
+    
     next if ($result->{Hosting}=~/DFGNet1000/);
 
-    $titbuffer[$titidx++]=sprintf "0000:%d", $result->{'Nr'};
+    printf TIT "0000:%d\n", $result->{'Nr'};
 
     foreach my $kateg (keys %titelkonv){
         my $content = $result->{$kateg};
 
-	$content=~s/uhttp:/http:/;
-
-        if ($result->{$kateg}){
-            $titbuffer[$titidx++]=$titelkonv{$kateg}.$content;
+        if ($content){
+            $content=~s/uhttp:/http:/;
+            print TIT $titelkonv{$kateg}.$content."\n";
         }
     }
 
@@ -161,7 +154,7 @@ while (my $result=$request->fetchrow_hashref){
     foreach my $kateg (keys %autkonv){
         my $content = $result->{$kateg};
         
-        if ($result->{$kateg}){
+        if ($content){
             my @authors = ();
             if ($content=~/; /){
                 @authors = split('; ',$content);
@@ -171,19 +164,19 @@ while (my $result=$request->fetchrow_hashref){
             }
             
             foreach my $singleauthor (@authors){
-                $autidn=get_autidn($singleauthor);
+                my $autidn=get_autidn($singleauthor);
                 
                 if ($autidn > 0){
-                    $autbuffer[$autidx++]="0000:".$autidn;
-                    $autbuffer[$autidx++]="0001:".$singleauthor;
-                    $autbuffer[$autidx++]="9999:";
+                    print AUT "0000:$autidn\n";
+                    print AUT "0001:$singleauthor\n";
+                    print AUT "9999:\n";
                     
                 }
                 else {
                     $autidn=(-1)*$autidn;
                 }
                 
-                $titbuffer[$titidx++]=$autkonv{$kateg}."IDN: ".$autidn;
+                print TIT $autkonv{$kateg}."IDN: $autidn\n";
         }
         }
         # Autoren abarbeiten Ende
@@ -193,20 +186,20 @@ while (my $result=$request->fetchrow_hashref){
     foreach my $kateg (keys %korkonv){
         my $content = $result->{$kateg};
         
-        if ($result->{$kateg}){
-            $koridn=get_koridn($content);
+        if ($content){
+            my $koridn=get_koridn($content);
             
             if ($koridn > 0){
-                $korbuffer[$koridx++]="0000:".$koridn;
-                $korbuffer[$koridx++]="0001:".$content;
-                $korbuffer[$koridx++]="9999:";
+                print KOR "0000:$koridn\n";
+                print KOR "0001:$content\n";
+                print KOR "9999:\n";
                 
             }
             else {
                 $koridn=(-1)*$koridn;
             }
             
-            $titbuffer[$titidx++]=$korkonv{$kateg}."IDN: ".$koridn;
+            print TIT $korkonv{$kateg}."IDN: $koridn\n";
         }
     }
     # Koerperschaften abarbeiten Ende
@@ -216,20 +209,20 @@ while (my $result=$request->fetchrow_hashref){
     foreach my $kateg (keys %notkonv){
         my $content = $result->{$kateg};
         
-        if ($result->{$kateg}){
-            $notidn=get_notidn($content);
+        if ($content){
+            my $notidn=get_notidn($content);
             
             if ($notidn > 0){
-                $notbuffer[$notidx++]="0000:".$notidn;
-                $notbuffer[$notidx++]="0001:".$content;
-                $notbuffer[$notidx++]="9999:";
+                print NOTATION "0000:$notidn\n";
+                print NOTATION "0001:$content\n";
+                print NOTATION "9999:\n";
                 
             }
             else {
                 $notidn=(-1)*$notidn;
             }
             
-            $titbuffer[$titidx++]=$notkonv{$kateg}."IDN: ".$notidn;
+            print TIT $notkonv{$kateg}."IDN: $notidn\n";
         }
     }
     # Notationen abarbeiten Ende
@@ -237,193 +230,131 @@ while (my $result=$request->fetchrow_hashref){
     # Schlagworte abarbeiten Anfang
     foreach my $kateg (keys %swtkonv){
         my $content = $result->{$kateg};
-        
-        if ($result->{$kateg}){
-            $swtidn=get_swtidn($content);
-            
-            if ($swtidn > 0){	  
-                $swtbuffer[$swtidx++]="0000:".$swtidn;
-                $tempbuffer[$ti]=~s/\*/\//g;
-                $swtbuffer[$swtidx++]="0001:".$content;
-                $swtbuffer[$swtidx++]="9999:";
+
+        if ($content){
+            my @subjects = ();
+            if ($content=~/;\+/){
+                @subjects = split(';\s+',$content);
             }
             else {
-                $swtidn=(-1)*$swtidn;
+                push @subjects, $content;
             }
-            $titbuffer[$titidx++]=$swtkonv{$kateg}."IDN: ".$swtidn;
+            
+            foreach my $singlesubject (@subjects){
+                my $swtidn=get_swtidn($singlesubject);
+                
+                if ($swtidn > 0){	  
+                    print SWT "0000:$swtidn\n";
+                    print SWT "0001:$singlesubject\n";
+                    print SWT "9999:\n";
+                }
+                else {
+                    $swtidn=(-1)*$swtidn;
+                }
+                print TIT $swtkonv{$kateg}."IDN: $swtidn\n";
+            }
         }
     }
     # Schlagworte abarbeiten Ende
-
-    $titbuffer[$titidx++]="9999:";
-
-    $titidn++;
-}
-  
-$lasttitidx=$titidx;
-$lastautidx=$autidx;
-$lastnotidx=$notidx;
-$lastmexidx=$mexidx;
-$lastkoridx=$koridx;
-$lastswtidx=$swtidx;
-
-# Ausgabe der EXP-Dateien
-
-ausgabetitfile();
-ausgabeautfile();
-ausgabekorfile();
-ausgabenotfile();
-ausgabeswtfile();
-
-close(DAT);
-
-sub ausgabetitfile {
-  open (TIT,">:utf8","unload.TIT");
-  $i=0;
-  while ($i < $lasttitidx){
-    print TIT $titbuffer[$i],"\n";
-    $i++;
-  }
-  close(TIT);
+    print ".";
+    print TIT "9999:\n";
 }
 
-sub ausgabeautfile {
-  open(AUT,">:utf8","unload.PER");
-  $i=0;
-  while ($i < $lastautidx){
-    print AUT $autbuffer[$i],"\n";
-    $i++;
-  }
-  close(AUT);
-}
-
-sub ausgabekorfile {
-  open(KOR,">:utf8","unload.KOE");
-  $i=0;
-  while ($i < $lastkoridx){
-    print KOR $korbuffer[$i],"\n";
-    $i++;
-  }
-  close(KOR);
-}
-
-sub ausgabenotfile {
-  open(NOTATION,">:utf8","unload.SYS");
-  $i=0;
-  while ($i < $lastnotidx){
-    print NOTATION $notbuffer[$i],"\n";
-    $i++;
-  }
-  close(NOTATION);
-}
-
-sub ausgabeswtfile {
-  open(SWT,">:utf8","unload.SWD");
-  $i=0;
-  while ($i < $lastswtidx) {
-    print SWT $swtbuffer[$i],"\n";
-    $i++;
-  }
-  close(SWT);
-}
+close(TIT);
+close(AUT);
+close(KOR);
+close(NOTATION);
+close(SWT);
 
 sub get_autidn {
-  ($autans)=@_;
-  
-  $autdubidx=$startautidn;
-  $autdubidn=0;
-  #  print "Autans: $autans\n";
-  
-  while ($autdubidx < $autdublastidx){
-    if ($autans eq $autdubbuf[$autdubidx]){
-      $autdubidn=(-1)*$autdubidx;      
-      
-      #      print "AutIDN schon vorhanden: $autdubidn\n";
+    my ($autans)=@_;
+
+#    print "AUT $autans\n";
+
+    my $autdubidx=1;
+    my $autdubidn=0;
+
+#    print "AUT",YAML::Dump(\@autdubbuf),"\n";
+
+    while ($autdubidx <= $#autdubbuf){
+        if ($autans eq $autdubbuf[$autdubidx]){
+            $autdubidn=(-1)*$autdubidx;      
+        }
+        $autdubidx++;
     }
-    $autdubidx++;
-  }
-  if (!$autdubidn){
-    $autdubbuf[$autdublastidx]=$autans;
-    $autdubidn=$autdublastidx;
-    #    print "AutIDN noch nicht vorhanden: $autdubidn\n";
-    $autdublastidx++;
+    if (!$autdubidn){
+        $autdubbuf[$autdubidx]=$autans;
+        $autdubidn=$autdubidx;
+    }
+
+#    print "AUT",YAML::Dump(\@autdubbuf),"\n";
     
-  }
-  return $autdubidn;
+#    print $autdubidn,"\n";
+    return $autdubidn;
 }
 
 sub get_swtidn {
-  ($swtans)=@_;
-  
-  $swtdubidx=$startswtidn;
-  $swtdubidn=0;
-  #  print "Swtans: $swtans\n";
-  
-  while ($swtdubidx < $swtdublastidx){
-    if ($swtans eq $swtdubbuf[$swtdubidx]){
-      $swtdubidn=(-1)*$swtdubidx;      
-      
-#            print "SwtIDN schon vorhanden: $swtdubidn, $swtdublastidx\n";
-    }
-    $swtdubidx++;
-  }
-  if (!$swtdubidn){
-    $swtdubbuf[$swtdublastidx]=$swtans;
-    $swtdubidn=$swtdublastidx;
-#        print "SwtIDN noch nicht vorhanden: $swtdubidn, $swtdubidx, $swtdublastidx\n";
-    $swtdublastidx++;
+    my ($swtans)=@_;
+
+#    print "SWT $swtans\n";
     
-  }
-  return $swtdubidn;
+    my $swtdubidx=1;
+    my $swtdubidn=0;
+
+#    print "SWT", YAML::Dump(\@swtdubbuf),"\n";
+    
+    while ($swtdubidx <= $#swtdubbuf){
+        if ($swtans eq $swtdubbuf[$swtdubidx]){
+            $swtdubidn=(-1)*$swtdubidx;      
+        }
+        $swtdubidx++;
+    }
+    if (!$swtdubidn){
+        $swtdubbuf[$swtdubidx]=$swtans;
+        $swtdubidn=$swtdubidx;
+    }
+#    print $swtdubidn,"\n";
+
+#    print "SWT", YAML::Dump(\@swtdubbuf),"\n";
+#    print "-----\n";
+    return $swtdubidn;
 }
 
 sub get_koridn {
-  ($korans)=@_;
-  
-  $kordubidx=$startkoridn;
-  $kordubidn=0;
-  #  print "Korans: $korans\n";
-  
-  while ($kordubidx < $kordublastidx){
-    if ($korans eq $kordubbuf[$kordubidx]){
-      $kordubidn=(-1)*$kordubidx;      
-      
-      #      print "KorIDN schon vorhanden: $kordubidn\n";
-    }
-    $kordubidx++;
-  }
-  if (!$kordubidn){
-    $kordubbuf[$kordublastidx]=$korans;
-    $kordubidn=$kordublastidx;
-    #    print "KorIDN noch nicht vorhanden: $kordubidn\n";
-    $kordublastidx++;
+    my ($korans)=@_;
     
-  }
-  return $kordubidn;
+    my $kordubidx=1;
+    my $kordubidn=0;
+    
+    while ($kordubidx <= $#kordubbuf){
+        if ($korans eq $kordubbuf[$kordubidx]){
+            $kordubidn=(-1)*$kordubidx;      
+        }
+        $kordubidx++;
+    }
+    if (!$kordubidn){
+        $kordubbuf[$kordubidx]=$korans;
+        $kordubidn=$kordubidx;
+    }
+    return $kordubidn;
 }
 
 sub get_notidn {
-  ($notans)=@_;
-  
-  $notdubidx=$startnotidn;
-  $notdubidn=0;
-  #  print "Notans: $notans\n";
-  
-  while ($notdubidx < $notdublastidx){
-    if ($notans eq $notdubbuf[$notdubidx]){
-      $notdubidn=(-1)*$notdubidx;      
-      
-      #      print "NotIDN schon vorhanden: $notdubidn\n";
-    }
-    $notdubidx++;
-  }
-  if (!$notdubidn){
-    $notdubbuf[$notdublastidx]=$notans;
-    $notdubidn=$notdublastidx;
-    #    print "NotIDN noch nicht vorhanden: $notdubidn\n";
-    $notdublastidx++;
+    my ($notans)=@_;
     
-  }
-  return $notdubidn;
+    my $notdubidx=1;
+    my $notdubidn=0;
+    
+    while ($notdubidx <= $#notdubbuf){
+        if ($notans eq $notdubbuf[$notdubidx]){
+            $notdubidn=(-1)*$notdubidx;      
+        }
+        $notdubidx++;
+    }
+    if (!$notdubidn){
+        $notdubbuf[$notdubidx]=$notans;
+        $notdubidn=$notdubidx;
+    }
+    return $notdubidn;
 }
 

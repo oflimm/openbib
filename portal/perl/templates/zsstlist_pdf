@@ -46,7 +46,7 @@
 
   \vspace{1cm}
 
-  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{20}{20pt}\selectfont [% targetdbinfo.sigel.${sigel}.full %]\\[3mm]Sigel: 38/[% sigel %]}
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{20}{20pt}\selectfont [% dbinfotable.sigel.${sigel}.full %]\\[3mm]Sigel: 38/[% sigel %]}
 
   \vspace{2cm}
 
@@ -160,9 +160,9 @@ http://www.ub.uni-koeln.de/dezkat/content/bibliotheksfuehrer/sigel/index_ger.htm
 
 \section*{Aufstellung der Zeitschriften}
 
-[% FOREACH normset IN titlist %]
-[% thistitset = normset.titset %]
-[% thismexset = normset.mexset %]
+[% FOREACH record IN recordlist %]
+[% thistitset = record.get_normdata %]
+[% thismexset = record.get_mexdata %]
 
 \begin{shadowenv}
 \begin{tabular}{lp{10cm}}

@@ -257,7 +257,9 @@ a:active.invisible {
 }
 
 #langchoice {
-  float: right;
+  position: absolute;
+  top: 15px;
+  right: 5px;  
 }
 
 .infotext {

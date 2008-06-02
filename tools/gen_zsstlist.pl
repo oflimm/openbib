@@ -35,6 +35,11 @@ use utf8;
 
 use Getopt::Long;
 use OpenBib::Config;
+use OpenBib::Config::DatabaseInfoTable;
+use OpenBib::Record::Person;
+use OpenBib::Record::CorporateBody;
+use OpenBib::Record::Subject;
+use OpenBib::Record::Classification;
 use OpenBib::Search::Util;
 use OpenBib::Template::Provider;
 
@@ -70,11 +75,10 @@ if ($mode ne "tex" && $mode ne "pdf"){
   exit;
 }
 
-my $config = OpenBib::Config->instance;
+my $config      = OpenBib::Config->instance;
+my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
-my $targetdbinfo_ref = $config->get_targetdbinfo();
-
-my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=instzs;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
+my $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=instzs;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or $logger->error_die($DBI::errstr);
 
 my %titidns = ();
 
@@ -86,8 +90,6 @@ $request->execute($sigel) or $logger->error($DBI::errstr);;
 
 while (my $result=$request->fetchrow_hashref()){
     $mexidns{$result->{'id'}}=1;
-#    $titidns{$result->{'titidn'}}=1;
-    #  print $result->{'titidn'};
 }
 
 {
@@ -103,133 +105,38 @@ while (my $result=$request->fetchrow_hashref()){
     }
 }
 
-my @titlist = ();
-
 my $externzahl=0;
 
+my @recordlist = ();
+
 foreach $titidn (keys %titidns){
+    my $record = new OpenBib::Record::Title({database => 'instzs', id => $titidn})->load_full_record();
 
-  my $normset_ref={};
+    my $mexnormdata_ref = $record->get_mexdata;
 
-  $normset_ref->{id      } = $titidn;
-  $normset_ref->{database} = "instzs";
+    print YAML::Dump($record);
+    # Titel auch in anderen Bibliotheken?
 
+    my $is_extern=0;
 
-  # Titelkategorien
-  {
+    foreach my $mexitem_ref (@$mexnormdata_ref){
+        if (exists $mexitem_ref->{X3300}{content}){
+            if ($mexnormset_ref->{X3300}{content} ne $sigel){
+                $is_extern=1;
+            }
+        }
+    }
 
-      my $reqstring="select * from tit where id = ?";
-      my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
-      $request->execute($titidn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
-      
-      while (my $res=$request->fetchrow_hashref) {
-          my $category  = "T".sprintf "%04d",$res->{category };
-          my $indicator =        decode_utf8($res->{indicator});
-          my $content   =        decode_utf8($res->{content  });
-          
-          push @{$normset_ref->{$category}}, {
-              indicator => $indicator,
-              content   => filterchars($content),
-          };
-      }
-      $request->finish();
-  }
+    if ($is_extern == 1){
+        $externzahl++;
+    }
 
-  
-  # Verknuepfte Normdaten
-  {
-      my $reqstring="select category,targetid,targettype,supplement from conn where sourceid=? and sourcetype=1 and targettype IN (2,3,4,5)";
-      my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
-      $request->execute($titidn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
-      
-      while (my $res=$request->fetchrow_hashref) {
-          my $category   = "T".sprintf "%04d",$res->{category };
-          my $targetid   =        decode_utf8($res->{targetid  });
-          my $targettype =                    $res->{targettype};
-          my $supplement =        decode_utf8($res->{supplement});
-          
-          # Korrektes UTF-8 Encoding Flag wird in get_*_ans_*
-          # vorgenommen
-          
-          my $content    =
-              ($targettype == 2 )?OpenBib::Search::Util::get_aut_ans_by_idn($targetid,$dbh):
-                  ($targettype == 3 )?OpenBib::Search::Util::get_kor_ans_by_idn($targetid,$dbh):
-                      ($targettype == 4 )?OpenBib::Search::Util::get_swt_ans_by_idn($targetid,$dbh):
-                          ($targettype == 5 )?OpenBib::Search::Util::get_not_ans_by_idn($targetid,$dbh):'Error';
-
-          push @{$normset_ref->{$category}}, {
-              id         => $targetid,
-              content    => filterchars($content),
-              supplement => filterchars($supplement),
-          };
-      }
-      $request->finish();
-      
-  }
-
-  my $is_extern=0;
-  
-  # Exemplardaten
-  my @mexnormset=();
-  {
-      
-      my $reqstring="select distinct targetid from conn where sourceid= ? and sourcetype=1 and targettype=6";
-      my $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
-      $request->execute($titidn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
-      
-      my @verknmex=();
-      while (my $res=$request->fetchrow_hashref){
-          push @verknmex, decode_utf8($res->{targetid});
-      }
-      $request->finish();
-      
-      if ($#verknmex >= 0) {
-          foreach my $mexsatz (@verknmex) {
-              my $mexnormset_ref = OpenBib::Search::Util::get_mex_set_by_idn({
-                  mexidn             => $mexsatz,
-                  dbh                => $dbh,
-                  targetdbinfo_ref   => $targetdbinfo_ref,
-                  targetcircinfo_ref => $targetcircinfo_ref,
-                  database           => $database,
-                  sessionID          => $sessionID,
-              });
-
-              if (exists $mexnormset_ref->{X3300}{content}){
-                  if ($mexnormset_ref->{X3300}{content} ne $sigel){
-                      $is_extern=1;      
-                  }
-              }
-              
-              foreach my $category (keys %$mexnormset_ref){
-                  if (exists $mexnormset_ref->{$category}{content}){
-                      $mexnormset_ref->{$category}{content}=filterchars($mexnormset_ref->{$category}{content});
-                  }
-              }
-              
-              push @mexnormset, $mexnormset_ref;
-          }
-      }
-      
-  }
-
-  if ($is_extern == 1){
-      $externzahl++;
-  }
-
-  push @titlist, {
-      titset => $normset_ref,
-      mexset => \@mexnormset,
-  };
-  
-  #  print YAML::Dump($normset_ref);
-  
+    push @recordlist, $record;
 }
 
 # Sortierung
 
-my @sortedoutputbuffer=sort by_title @titlist;
-
-#print STDERR YAML::Dump(\@sortedoutputbuffer);
+my @sortedrecordlist = sort by_title @recordlist;
 
 my $outputbasename="zsstlist-$sigel";
 
@@ -251,11 +158,13 @@ my $template = Template->new({
 
 my $ttdata = {
     sigel        => $sigel,
-    targetdbinfo => $targetdbinfo_ref,
-    titlist      => \@sortedoutputbuffer,
+    dbinfotable  => $dbinfotable,
+    recordlist   => \@sortedrecordlist,
     showall      => $showall,
-    gesamtzahl   => $#titlist+1,
+    gesamtzahl   => $recordlist->get_size,
     externzahl   => $externzahl,
+
+    filterchars  => \&filterchars,
 };
 
 $template->process("zsstlist_$mode", $ttdata) || do { 
@@ -359,11 +268,11 @@ sub filterchars {
 # }
 
 sub by_title {
-    my %line1=%$a;
-    my %line2=%$b;
+    my %line1=%{$a->get_normdata()};
+    my %line2=%{$b->get_normdata()};
 
-    my $line1=(exists $line1{titset}{T0331}[0]{content} && defined $line1{titset}{T0331}[0]{content})?cleanrl($line1{titset}{T0331}[0]{content}):"";
-    my $line2=(exists $line2{titset}{T0331}[0]{content} && defined $line2{titset}{T0331}[0]{content})?cleanrl($line2{titset}{T0331}[0]{content}):"";
+    my $line1=(exists $line1{T0331}[0]{content} && defined $line1{T0331}[0]{content})?cleanrl($line1{T0331}[0]{content}):"";
+    my $line2=(exists $line2{T0331}[0]{content} && defined $line2{T0331}[0]{content})?cleanrl($line2{T0331}[0]{content}):"";
 
     $line1 cmp $line2;
 }

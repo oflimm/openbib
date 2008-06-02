@@ -24,11 +24,11 @@
 <ul class="tabbingmenu">
    <li><a                href="[% config.userprefs_loc %]?sessionID=[% sessionID %];action=showfields">[% msg.maketext("Grundeinstellungen") %]</a></li>
 [%- IF config.litlists -%]
-   <li><a class="active" href="[% config.litlists_loc %]?sessionID=[% sessionID %];action=manage">Literaturlisten</a></li>
+   <li><a class="active" href="[% config.litlists_loc %]?sessionID=[% sessionID %];action=manage">[% msg.maketext("Literaturlisten") %]</a></li>
 [%- END -%]
-   <li><a                href="[% config.tags_loc %]?sessionID=[% sessionID %];show_usertags=1">Tags</a></li>
+   <li><a                href="[% config.tags_loc %]?sessionID=[% sessionID %];show_usertags=1">[% msg.maketext("Tags") %]</a></li>
 [%- IF config.reviews -%]
-   <li><a                href="[% config.userreviews_loc %]?sessionID=[% sessionID %];do_show=1">Rezensionen</a></li>
+   <li><a                href="[% config.userreviews_loc %]?sessionID=[% sessionID %];do_show=1">[% msg.maketext("Rezensionen") %]</a></li>
 [%- END -%]
 [% IF targettype != 'self' %]
    <li><a                href="[% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc">[% msg.maketext("Benutzerkonto") %]</a></li>
@@ -46,11 +46,11 @@
 <input type="hidden" name="litlistid"  value="[% litlist.properties.id %]" />
 
 <table width="100%">
-<tr><th>Einstellungen &auml;ndern</th></tr>
+<tr><th>[% msg.maketext("Einstellungen &auml;ndern") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 <table>
-<tr><td><b>Titel der Liste</b></td><td><b>Sichtbarkeit</b></td></tr>
-<tr><td><input type="text" name="title" value="[% litlist.properties.title %]"/></td><td><select name="type"><option value="1" [% IF litlist.properties.type == 1%] selected="selected"[% END %]>&ouml;ffentlich</option><option value="2"[% IF litlist.properties.type == 2 %] selected="selected"[% END %]>privat</option></select></td><td><input
+<tr><td><b>[% msg.maketext("Titel der Liste") %]</b></td><td><b>[% msg.maketext("Sichtbarkeit") %]</b></td></tr>
+<tr><td><input type="text" name="title" value="[% litlist.properties.title %]"/></td><td><select name="type"><option value="1" [% IF litlist.properties.type == 1%] selected="selected"[% END %]>[% msg.maketext("&ouml;ffentlich") %]</option><option value="2"[% IF litlist.properties.type == 2 %] selected="selected"[% END %]>[% msg.maketext("privat") %]</option></select></td><td><input
 type="submit" name="do_changelist" value="[% msg.maketext("&Auml;ndern") %]" /></td></tr>
 </table>
 </td></tr>
@@ -155,7 +155,7 @@ type="submit" name="do_changelist" value="[% msg.maketext("&Auml;ndern") %]" /><
 
 <tr class="[% listrow %]"><td class="listnr">[% loop.count+offset %]</td><td class="thumbnail">[% IF (config.coverscans.all || config.coverscans.${record.database}) && isbn %]<a href="[% config.coverscans_credits_exturl.replace('ISBNINHERE', isbn) %]" target="_blank" ><img src="[% config.coverscans_exturl.replace('ISBNINHERE', isbn) %]" title="[% config.coverscans_creditstext_exturl %]" /></a>[% ELSE %]&nbsp;[% END %]</td><td><span class="rlauthor">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;sorttype=[% sorttype %];database=[% item.${"database"} %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
 class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span><br />aus:&nbsp;<i>[% targetdbinfo.dbinfo.${item.database}.full %]</i></td><td><td align="left"><b>[% signatur %]</b></td><td class="popularitycount">[% item.popularity %]</td><td>[% record.tstamp %]</td><td><a href="[% config.litlists_loc %]?sessionID=[% sessionID
-%]&action=manage;litlistid=[% litlist.properties.id %];do_delentry=1;titid=[% item.id %];titdb=[% item.${"database"} %]"><b>Entfernen</b></a></td></tr>
+%]&action=manage;litlistid=[% litlist.properties.id %];do_delentry=1;titid=[% item.id %];titdb=[% item.${"database"} %]"><b>[% msg.maketext("Entfernen") %]</b></a></td></tr>
 
 [% IF listrow == 'listrow1' %]
 [% listrow = 'listrow2' %]

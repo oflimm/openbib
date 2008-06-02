@@ -1847,8 +1847,61 @@ sub add_litlist {
     # Ratings sind Zahlen und Reviews, Titel sowie Nicknames bestehen nur aus Text
     $title    =~s/[^-+\p{Alphabetic}0-9\/:. '()"\?!]//g;
     
-    my $request=$dbh->prepare("insert into litlists (userid,title,type) values (?,?,?)") or $logger->error($DBI::errstr);
+
+    # Schon vorhanden
+    my $request=$dbh->prepare("select id from litlists where userid = ? and title = ? and type = ?");
+    $request->execute($self->{ID},$title,$type);
+
+    my $result=$request->fetchrow_hashref;
+    my $litlistid = $result->{id};
+
+    return $litlistid if ($litlistid);
+
+    $request=$dbh->prepare("insert into litlists (userid,title,type) values (?,?,?)") or $logger->error($DBI::errstr);
     $request->execute($self->{ID},$title,$type) or $logger->error($DBI::errstr);
+
+    # Litlist-ID bestimmen und zurueckgeben
+
+    $request=$dbh->prepare("select id from litlists where userid = ? and title = ? and type = ?");
+    $request->execute($self->{ID},$title,$type);
+
+    $result=$request->fetchrow_hashref;
+    $litlistid = $result->{id};
+
+    return $litlistid;
+}
+
+sub del_litlist {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $litlistid           = exists $arg_ref->{litlistid}
+        ? $arg_ref->{litlistid}           : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return if (!defined $dbh);
+
+    return if (!$litlistid);
+
+    my $litlist_properties_ref = $self->get_litlist_properties({litlistid => $litlistid});
+
+    return unless ($litlist_properties_ref->{userid} eq $self->{ID});
+    
+    my $request=$dbh->prepare("delete from litlistitems where litlistid=?") or $logger->error($DBI::errstr);
+    $request->execute($litlistid) or $logger->error($DBI::errstr);
+
+    $request=$dbh->prepare("delete from litlists where id=?") or $logger->error($DBI::errstr);
+    $request->execute($litlistid) or $logger->error($DBI::errstr);
 
     return;
 }
@@ -2184,11 +2237,8 @@ sub get_litlists_of_tit {
     my $litlists_ref = [];
 
     while (my $result=$request->fetchrow_hashref){
-        push @$litlists_ref, {
-            id     => $result->{id},
-            userid => $result->{userid},
-            type   => $result->{type},
-            title  => $result->{title},
+        if ($self->{ID} eq $result->{userid} || $result->{type} eq 1){
+            push @$litlists_ref, $self->get_litlist_properties({litlistid => $result->{id}});
         };
     }
 

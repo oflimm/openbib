@@ -19,13 +19,21 @@
 
 [% PROCESS common/subtemplate name="mainnavigation" %]
 
-[% normset      = record.get_normdata %]
-[% mexnormset   = record.get_mexdata %]
-[% cirset       = record.get_circdata %] 
+[% normset         = record.get_normdata %]
+[% mexnormset      = record.get_mexdata %]
+[% cirset          = record.get_circdata %] 
 [% same_records    = record.get_same_records %]
 [% similar_records = record.get_similar_records %]
 
 <div id="maincontent">
+
+[% IF config.lang.size > 1 %]
+<div id="langchoice">
+[%   FOREACH l IN config.lang %]
+<a href="[% config.search_loc %]?sessionID=[% sessionID %];database=[% record.database %];searchsingletit=[% record.id %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[%   END %]
+</div>
+[% END %]
 
 <ul class="tabbingmenu">
    <li><a class="active" href="#"><span class="dbdescshort">[% poolname.short %]</span></a></li>
@@ -321,19 +329,21 @@ END;
 [% END %]
 
 </td>
-[% IF litlists.size > 0 %]<td></td><td valign="top" style="font-size:0.9em">
+[% IF litlists.size > 0  || all_tags.size > 0 || alltags_cloud %]<td></td><td valign="top" style="font-size:0.9em">
 <div class="discover_sources">
 <table width="100%">
-<b>Entdecke weitere Titel &uuml;ber:</b><p/>
+<b>[% msg.maketext("Entdecken Sie weitere Titel &uuml;ber:") %]</b><p/>
 <!-- Anfang Literaturlisten -->
 [% IF litlists.size > 0 %]
 <tr><td style="background:lightblue;font-weight:bold">[% msg.maketext("Literaturlisten") %]</td></tr>
 <tr><td>
-[% msg.maketext("Dieser Titel befindet sich in folgenden Literaturlisten") %]:
-<ul>
+<!--[% msg.maketext("Dieser Titel befindet sich in folgenden Literaturlisten") %]:-->
+[%# USE dumper;dumper.dump(litlists)%]
+<ul style="list-style-type: square">
 [% FOREACH litlist IN litlists %]
 <li><a href="[% config.litlists_loc %]?sessionID=[% sessionID
-%];action=show;litlistid=[% litlist.id %]">[% litlist.title %]</a></li>
+%];action=show;litlistid=[% litlist.id %]">[% litlist.title
+%]</a>&nbsp;([% litlist.itemcount %])</li>
 [% END %]
 </ul>
 </td></tr>
@@ -343,7 +353,7 @@ END;
 
 <!-- Anfang KUG-Tags -->
 [% IF all_tags.size > 0 %]
-<tr><td style="background:lightblue;font-weight:bold">[% msg.maketext("Lokale Tags") %]</td></tr>
+<tr><td style="background:lightblue;font-weight:bold">[% msg.maketext("KUG Tags") %]</td></tr>
 <tr><td>
 [% alltags_cloud %]
 </td></tr>
@@ -621,24 +631,27 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 
 [% IF config.litlists %]
 <div id="litlists">
+<form method="get" action="[% config.litlists_loc %]">
+<input type="hidden" name="action"          value="manage" />
+<input type="hidden" name="titid"           value="[% record.id %]" />
+<input type="hidden" name="titdb"           value="[% record.database %]" />
+<input type="hidden" name="sessionID"       value="[% sessionID %]" />
+
 [%
       userlitlists = user.get_litlists();
 
       IF userlitlists.size > 0 ;
 %]
 
-<form method="get" action="[% config.litlists_loc %]">
-<input type="hidden" name="action"          value="manage" />
-<input type="hidden" name="titid"           value="[% record.id %]" />
-<input type="hidden" name="titdb"           value="[% record.database %]" />
-<input type="hidden" name="sessionID"       value="[% sessionID %]" />
-Diesen Titel in die Literaturliste <select name="litlistid">[% FOREACH litlist IN userlitlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select>&nbsp;<input type="submit" name="do_addentry" value="&uuml;bernehmen" />
+[% msg.maketext("&Uuml;bernahme dieses Titels in die bestehende Literaturliste: ") %]<select name="litlistid">[% FOREACH litlist IN userlitlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select>&nbsp;&uuml;bernehmen&nbsp;<input type="submit" name="do_addentry" value="[% msg.maketext("Los") %]" />
+<p />
+[% END %]
+[% msg.maketext("&Uuml;bernahme dieses Titels in eine neue Literaturliste: ") %] <input type="text" name="title" /> <select name="littype"><option value="1">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select> <input type="submit" name="do_addlist" value="[% msg.maketext("Los") %]" />
+<p />
+
 </form>
 <p />
-[% ELSE %]
-Sie haben bisher noch keine Literaturlisten eingerichtet. Bitte gehen
-Sie zu MeinKUG und legen dort eine oder mehrere Literaturlisten an.
-[% END %]
+
 </div>
 [% END %]
 

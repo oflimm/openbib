@@ -104,6 +104,7 @@ sub handler {
     my $queryid        = $query->param('queryid')     || '';
 
     my $do_addlist     = $query->param('do_addlist')     || '';
+    my $do_dellist     = $query->param('do_dellist')     || '';
     my $do_addentry    = $query->param('do_addentry')    || '';
     my $do_showlitlist = $query->param('do_showlitlist') || '';
     my $do_changelist  = $query->param('do_changelist')  || '';
@@ -142,6 +143,19 @@ sub handler {
     }
 
     my $user = OpenBib::User->instance({sessionID => $session->{ID}});
+    
+    if (! $user->{ID} && $do_addlist){
+        # Aufruf-URL
+        my $return_url = $r->parsed_uri->unparse;
+
+        # Return-URL in der Session abspeichern
+
+        $session->set_returnurl($return_url);
+
+        $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1");
+
+        return OK;
+    }
 
     if ($action eq "manage" && $user->{ID}){
         
@@ -153,13 +167,29 @@ sub handler {
                 return OK;
             }
             
-            $user->add_litlist({ title =>$title, type => $type});
+            my $litlistid = $user->add_litlist({ title =>$title, type => $type});
+
+            # Wenn zusaetzlich ein Titel-Eintrag uebergeben wird, dann wird dieser auch
+            # der soeben erzeugten Literaturliste hinzugefuegt.
+            if ($titid && $titdb && $litlistid){
+                $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage&do_addentry=1&titid=$titid&titdb=$titdb&litlistid=$litlistid");
+            }
             
             $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage");
             return OK;
             
 	}
-	if ($do_changelist) {
+
+	if ($do_dellist) {
+            
+            $user->del_litlist({ litlistid => $litlistid});
+
+            $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage");
+            return OK;
+            
+	}
+
+        if ($do_changelist) {
             
             if (!$title || !$type || !$litlistid){
                 OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."),$r,$msg);

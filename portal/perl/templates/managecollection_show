@@ -64,7 +64,7 @@ function update_collection(yourform, checked, item) {
 		      <tr>
 			<td>
 [%- IF type == 'HTML' -%]
-[% IF show == 'short'%]<b>Kurztitel</b>[% ELSE %]<a href="[% managecollection_loc%]?sessionID=[% sessionID %];action=show;type=HTML;show=short">Kurztitel</a>[% END %]&nbsp;&#124;&nbsp;[% IF show == 'full' %]<b>Volltitel</b>[% ELSE %]<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=HTML;show=full">Volltitel</a>[% END %]&nbsp;<b>&#124;</b>&nbsp;<b>Ausgew&auml;hlte Titel</b> aus der Merkliste <input type="submit" name="do_collection_delentry" value="[% msg.maketext("entfernen") %]" />
+[% IF show == 'short'%]<b>[% msg.maketext("Kurztitel") %]</b>[% ELSE %]<a href="[% managecollection_loc%]?sessionID=[% sessionID %];action=show;type=HTML;show=short">[% msg.maketext("Kurztitel") %]</a>[% END %]&nbsp;&#124;&nbsp;[% IF show == 'full' %]<b>[% msg.maketext("Volltitel") %]</b>[% ELSE %]<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=HTML;show=full">[% msg.maketext("Volltitel") %]</a>[% END %]&nbsp;<b>&#124;</b>&nbsp;[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> aus der Merkliste entfernen") %] <input type="submit" name="do_collection_delentry" value="[% msg.maketext("Los") %]" />
 [% 
    IF config.litlists ;
 
@@ -75,7 +75,7 @@ function update_collection(yourform, checked, item) {
 
       IF litlists.size > 0 ;
 %]
-&nbsp;<b>&#124;</b>&nbsp;in die <a href="[% config.litlists_loc %]?sessionID=[% sessionID %];action=manage">Literaturliste</a> <select name="litlistid">[% FOREACH litlist IN litlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select>&nbsp;<input type="submit" name="do_litlist_addentry" value="&uuml;bernehmen" /></li>
+&nbsp;<b>&#124;</b>&nbsp;[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> in die bestehende Literaturliste &uuml;bernehmen: ") %]<select name="litlistid">[% FOREACH litlist IN userlitlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select>&nbsp;&uuml;bernehmen&nbsp;<input type="submit" name="do_litlist_addentry" value="[% msg.maketext("Los") %]" /></li>
 [%    END %]
 [% END %]
 [%- ELSE -%]
@@ -95,7 +95,7 @@ function update_collection(yourform, checked, item) {
 	  
 	  <p />
 [% IF type == 'HTML' %]
-M&ouml;chten Sie eine neue <select name="littype"><option value="1">&ouml;ffentliche</option><option value="2">private</option></select> Literaturliste unter dem Namen <input type="text" name="title" /> <input type="submit" name="do_addlitlist" value="anlegen" />
+[% msg.maketext("Anlegen einer neuen Literaturliste: ") %] <input type="text" name="title" /> <select name="littype"><option value="1">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select> <input type="submit" name="do_addlitlist" value="[% msg.maketext("Los") %]" />
 <p />
 	  <table width="100%">
             <tr class="titlerow"><td><input type="checkbox" name="collection" value="select" onclick="update_collection(this.form, this.checked,'collection_item')" /></td><td><b>Alle Eintr&auml;ge ausw&auml;hlen</b></td></tr>

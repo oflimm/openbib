@@ -22,7 +22,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.litlists_loc %]?sessionID=[% sessionID %];action=show;litlistid=[% litlist.properties.id %]">Literaturliste</a></li>
+   <li><a class="active" href="[% config.litlists_loc %]?sessionID=[% sessionID %];action=show;litlistid=[% litlist.properties.id %]">[% msg.maketext("Literaturliste") %]</a></li>
 </ul>
 
 <div class="content">
@@ -64,7 +64,7 @@
   <option value="down"[%- IF query.param('sortorder') == 'down' -%] selected="selected"[%- END -%]>[% msg.maketext("absteigend") %]</option>
 </select>
 &nbsp;<input type="submit" value="[% msg.maketext("Los") %]" />
-</td><td>&nbsp;&nbsp;<b>&#124;</b>&nbsp;&nbsp;</td><td><b>PermaLink:&nbsp;&nbsp;</b></td><td valign="bottom"><a href="http://[% config.loadbalancerservername %][% config.connector_permalink_loc %]/[% litlist.properties.userid %]/[% litlist.properties.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]"><img src="/images/openbib/3d-file-blue-permalink.png" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a></td></tr>
+</td><td>&nbsp;&nbsp;<b>&#124;</b>&nbsp;&nbsp;</td><td><b>[% msg.maketext("PermaLink") %]:&nbsp;&nbsp;</b></td><td valign="bottom"><a href="http://[% config.loadbalancerservername %][% config.connector_permalink_loc %]/[% litlist.properties.userid %]/[% litlist.properties.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]"><img src="/images/openbib/3d-file-blue-permalink.png" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a></td></tr>
 </table>
 </td></tr></table><p />
 </form>

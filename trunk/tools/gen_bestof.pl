@@ -42,6 +42,7 @@ use OpenBib::Config;
 use OpenBib::Statistics;
 use OpenBib::Record::Title;
 use OpenBib::Search::Util;
+use OpenBib::User;
 
 my ($type,$database,$view,$help,$logfile);
 
@@ -76,6 +77,7 @@ Log::Log4perl::init(\$log4Perl_config);
 my $logger = get_logger();
 
 my $config     = OpenBib::Config->instance;
+my $user       = OpenBib::User->instance;
 my $statistics = new OpenBib::Statistics();
 
 # Verbindung zur SQL-Datenbank herstellen
@@ -725,6 +727,61 @@ if ($type == 11){
     }
 }
 
+# Typ 12 => Meistaufgerufene Literaturlisten
+if ($type == 12){
+
+    my $dbh
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    $logger->info("Generating Type 12 BestOf-Values");
+
+    my $maxcount=0;
+    my $mincount=999999999;
+    
+    my $bestof_ref=[];
+    my $request = $dbh->prepare("select content as id, count(content) as scount from eventlog where type = 800 group by content order by scount DESC limit 200");
+    $request->execute();
+    while (my $result=$request->fetchrow_hashref){
+        my $properties_ref = $user->get_litlist_properties({ litlistid => $result->{id}});
+        my $content        = $properties_ref->{title};
+        my $id             = $result->{id};
+        my $count          = $result->{scount};
+        if ($maxcount < $count){
+            $maxcount = $count;
+        }
+        
+        if ($mincount > $count){
+            $mincount = $count;
+        }
+        
+        push @$bestof_ref, {
+            item       => $content,
+            id         => $id,
+            count      => $count,
+            properties => $properties_ref,
+        };
+    }
+    
+    $bestof_ref = gen_cloud_class({
+        items => $bestof_ref, 
+        min   => $mincount, 
+        max   => $maxcount, 
+        type  => $config->{best_of}{$type}{cloud}});
+    
+    my $sortedbestof_ref ;
+    @{$sortedbestof_ref} = map { $_->[0] }
+        sort { $a->[1] cmp $b->[1] }
+            map { [$_, $_->{item}] }
+                @{$bestof_ref};
+    
+    $statistics->store_result({
+        type => 12,
+        id   => 'litlist_usage',
+        data => $sortedbestof_ref,
+    });
+}
+
 sub gen_cloud_class {
     my ($arg_ref) = @_;
     
@@ -803,6 +860,7 @@ gen_bestof.pl - Erzeugen von BestOf-Analysen aus Relevance-Statistik-Daten
    9 => Meistvorkommende Erscheinungsjahre pro Katalog (Wolke)
   10 => Titel nach BK pro View
   11 => Titel nach BK pro Katalog pro Sicht
+  12 => Meistaufgerufene Literaturlisten
        
 ENDHELP
     exit;

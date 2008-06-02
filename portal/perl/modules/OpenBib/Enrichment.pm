@@ -35,6 +35,7 @@ use base qw(Apache::Singleton);
 use Business::ISBN;
 use Encode qw(decode_utf8 encode_utf8);
 use Log::Log4perl qw(get_logger :levels);
+use MLDBM qw(DB_File Storable);
 use Storable ();
 
 use OpenBib::Config;
@@ -172,6 +173,62 @@ sub get_similar_isbns {
     }
 
     return $similar_isbn_ref;
+}
+
+sub normdata_to_bdb {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $filename       = exists $arg_ref->{filename}
+        ? $arg_ref->{filename}        : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
+            or $logger->error($DBI::errstr);
+    
+    return {} unless (defined $filename && defined $dbh);
+
+    my %enrichmntdata           = ();
+    
+    tie %enrichmntdata,           'MLDBM', "$filename"
+    or die "Could not tie enrichment data.\n";
+
+    my $sql_request = "select * from normdata";
+
+    my $request = $dbh->prepare($sql_request);
+    $request->execute();
+
+    while (my $result = $request->fetchrow_hashref){
+        my $isbn     = $result->{isbn};
+        my $category = $result->{category};
+        my $content  = $result->{content};
+
+        
+        if (! exists $enrichmntdata{$isbn}){
+            push @{$enrichmntdata{$isbn}{$category}}, $content;
+            next;
+        }
+
+        if (! exists $enrichmntdata{$isbn}{$category}){
+            push @{$enrichmntdata{$isbn}{$category}}, $content;
+            next;
+        }
+
+        my $newcontent_ref = $enrichmntdata{$isbn}{$category};
+        
+        push @{$newcontent_ref->{$category}}, $content;
+
+        $enrichmntdata{$isbn}=$newcontent_ref;
+    }
+
+    $request->finish();
+    $dbh->disconnect;
 }
 
 1;

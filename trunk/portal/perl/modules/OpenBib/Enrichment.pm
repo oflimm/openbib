@@ -197,7 +197,7 @@ sub normdata_to_bdb {
     my %enrichmntdata           = ();
     
     tie %enrichmntdata,           'MLDBM', "$filename"
-    or die "Could not tie enrichment data.\n";
+        or die "Could not tie enrichment data.\n";
 
     my $sql_request = "select * from normdata";
 
@@ -209,22 +209,27 @@ sub normdata_to_bdb {
         my $category = $result->{category};
         my $content  = $result->{content};
 
-        
         if (! exists $enrichmntdata{$isbn}){
-            push @{$enrichmntdata{$isbn}{$category}}, $content;
+            $enrichmntdata{$isbn} = {
+                "$category" => [ $content ],
+            } ;
             next;
         }
 
         if (! exists $enrichmntdata{$isbn}{$category}){
-            push @{$enrichmntdata{$isbn}{$category}}, $content;
+            $enrichmntdata{$isbn} = {
+                "$category" => [ $content ],
+            } ;
             next;
         }
 
         my $newcontent_ref = $enrichmntdata{$isbn}{$category};
         
-        push @{$newcontent_ref->{$category}}, $content;
+        push @{$newcontent_ref}, $content;
 
-        $enrichmntdata{$isbn}=$newcontent_ref;
+        $enrichmntdata{$isbn} = {
+            "$category" => $newcontent_ref,
+        };
     }
 
     $request->finish();

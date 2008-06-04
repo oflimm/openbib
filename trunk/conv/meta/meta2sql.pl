@@ -6,7 +6,7 @@
 #
 #  Generierung von SQL-Einladedateien aus dem Meta-Format
 #
-#  Dieses File ist (C) 1997-2007 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 1997-2008 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -29,6 +29,8 @@
 
 use 5.008001;
 use utf8;
+#use strict;
+#use warnings;
 
 use Business::ISBN;
 use DB_File;
@@ -86,6 +88,7 @@ my %listitemdata_mex        = ();
 my %listitemdata_superid    = ();
 my %listitemdata_popularity = ();
 my %normdata                = ();
+my %enrichmntdata           = ();
 
 # Verbindung zur SQL-Datenbank herstellen
 my $statisticsdbh
@@ -127,6 +130,18 @@ if ($reducemem){
 
 tie %normdata,                'MLDBM', "./normdata.db"
     or die "Could not tie normdata.\n";
+
+my $local_enrichmnt  = 0;
+my $enrichmntdumpdir = $config->{autoconv_dir}."/data/enrichment";
+
+if (exists $conv_config->{local_enrichmnt} && -e "$enrichmntdumpdir/enrichmntdata.db"){
+    tie %enrichmntdata,           'MLDBM', "$enrichmntdumpdir/enrichmntdata.db"
+        or die "Could not tie enrichment data.\n";
+
+    $local_enrichmnt = 1;
+
+    $logger->info("Lokale Einspielung mit zentralen Anreicherungsdaten aktiviert");
+}
 
 my $stammdateien_ref = {
     aut => {
@@ -433,6 +448,8 @@ my @titverf   = ();
 my @titkor    = ();
 my @titswt    = ();
 my @autkor    = ();
+my @inhalt    = ();
+my @superids  = ();
 
 my $listitem_ref={};
 my $thisitem_ref={};
@@ -482,11 +499,71 @@ while (my $line=<IN>){
     }
     elsif ($line=~m/^9999:/){
 
+        # Personen der Ueberordnung anreichern (Schiller-Raeuber)
         if ($addsuperpers){
             foreach my $superid (@superids){
                 if (exists $listitemdata_superid{$superid}){
                     my @superpersids = split (":",$listitemdata_superid{$superid}); 
                     push @verf, @superpersids;
+                }
+            }
+        }
+
+        # Zentrale Anreicherungsdaten lokal einspielen
+        if ($local_enrichmnt && exists $normdata_ref->{isbn13}){
+            foreach my $category (keys %{$conv_config->{local_enrichmnt}}){
+                if (exists $enrichmntdata{$normdata_ref->{isbn13}}{$category}){
+                    my $indicator = 1;
+                    foreach my $content (@{$enrichmntdata{$normdata_ref->{isbn13}}{$category}}){
+                        my $contentnormtmp = OpenBib::Common::Util::grundform({
+                            category => $category,
+                            content  => $content,
+                        });
+
+                        #$logger->debug("Id: $id - Adding $category -> $content");
+                        print OUT       "$id$category$indicator$content\n";
+                        $indicator++;
+                        # Normierung (String/Fulltext) der als invertierbar definierten Kategorien
+                        if (exists $stammdateien_ref->{tit}{inverted_ref}->{$category}){
+                            if ($stammdateien_ref->{tit}{inverted_ref}->{$category}->{string}){
+                                print OUTSTRING "$id$category$contentnormtmp\n";
+                            }
+                            
+                            if ($stammdateien_ref->{tit}{inverted_ref}->{$category}->{ft}){
+                                print OUTFT     "$id$category$contentnormtmp\n";
+                            }
+                        }
+                        
+                            
+                        if (exists $conv_config->{'search_hst'}{$category}){
+                            push @hst, $contentnormtmp;
+                        }
+                        if (exists $conv_config->{'search_ejahr'}{$category}){
+                            push @ejahr, $contentnormtmp;
+                        }
+                        if (exists $conv_config->{'search_ejahrft'}{$category}){
+                            push @ejahrft, $contentnormtmp;
+                        }
+                        if (exists $conv_config->{'search_gtquelle'}{$category}){
+                            push @gtquelle, $contentnormtmp;
+                        }
+                        if (exists $conv_config->{'search_inhalt'}{$category}){
+                            $logger->debug("Id: $id - Adding $category -> Inhalt: $contentnormtmp");
+                            push @inhalt, $contentnormtmp;
+                        }
+                        if (exists $conv_config->{'search_artinh'}{$category}){
+                            push @artinh, $contentnormtmp;
+                        }
+                        if (exists $conv_config->{'search_verf'}{$category}){
+                            push @titverf, $contentnormtmp;
+                        }
+                        if (exists $conv_config->{'search_kor'}{$category}){
+                            push @titkor, $contentnormtmp;
+                        }
+                        if (exists $conv_config->{'search_swt'}{$category}){
+                            push @titswt, $contentnormtmp;
+                        }
+                    }
                 }
             }
         }
@@ -1314,6 +1391,13 @@ while (my $line=<IN>){
                     }
 
                     if (defined $isbnXX){
+                        if (!exists $normdata_ref->{isbn13}){
+                            $normdata_ref->{isbn13} = OpenBib::Common::Util::grundform({
+                                category => $category,
+                                content  => $isbnXX->as_isbn13->as_string,
+                            });
+                        }
+
                         push @isbn,      OpenBib::Common::Util::grundform({
                             category => $category,
                             content  => $isbnXX->as_string,

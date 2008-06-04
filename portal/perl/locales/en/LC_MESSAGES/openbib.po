@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2008-06-02 16:03+0200\n"
+"PO-Revision-Date: 2008-06-03 08:34+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1013,7 +1013,7 @@ msgstr "English Wikipedia"
 
 #: ../templates/search_showtitset:335
 msgid "Entdecken Sie weitere Titel &uuml;ber:"
-msgstr "Discover other titles with:"
+msgstr "Discover other titles using:"
 
 #: ../templates/litlists_manage_lists:79
 #: ../templates/litlists_manage_singlelist:158

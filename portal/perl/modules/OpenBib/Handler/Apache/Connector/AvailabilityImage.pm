@@ -68,6 +68,12 @@ sub handler {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
 
+    my $useragent=$r->subprocess_env('HTTP_USER_AGENT') || 'Mozilla/5.0';
+    my $client_ip="";
+    if ($r->header_in('X-Forwarded-For') =~ /([^,\s]+)$/) {
+        $client_ip=$1;
+    }
+
     my $action         = $query->param('action')          || 'lookup';
     my $isbn           = $query->param('isbn')            || '';
     my $bibkey         = $query->param('bibkey')          || '';
@@ -95,7 +101,8 @@ sub handler {
         
         if ($target eq "gbs" && $isbn){
             my $ua       = LWP::UserAgent->new();
-            $ua->agent('Mozilla/5.0');
+            $ua->agent($useragent);
+            $ua->default_header('X-Forwarded-For' => $client_ip) if ($client_ip);
             my $url      ="http://books.google.com/books?jscmd=viewapi&bibkeys=ISBN$isbn";
             #        my $url      = "http://books.google.com/books?vid=ISBN$isbn";
             my $request  = HTTP::Request->new('GET', $url);
@@ -148,7 +155,8 @@ sub handler {
         }
         elsif ($target eq "bibsonomy" && $bibkey){
             my $ua       = LWP::UserAgent->new();
-            $ua->agent('Mozilla/5.0');
+            $ua->agent($useragent);
+            $ua->default_header('X-Forwarded-For' => $client_ip) if ($client_ip);
             my $url      ="http://www.bibsonomy.org/swrc/bibtex/$bibkey";
 
             my $request  = HTTP::Request->new('GET', $url);

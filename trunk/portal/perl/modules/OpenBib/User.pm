@@ -2237,7 +2237,7 @@ sub get_litlists_of_tit {
     my $litlists_ref = [];
 
     while (my $result=$request->fetchrow_hashref){
-        if ($self->{ID} eq $result->{userid} || $result->{type} eq 1){
+        if ((defined $self->{ID} && defined $result->{userid} && $self->{ID} eq $result->{userid}) || (defined $result->{type} && $result->{type} eq "1")){
             push @$litlists_ref, $self->get_litlist_properties({litlistid => $result->{id}});
         };
     }

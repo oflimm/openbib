@@ -105,10 +105,12 @@ sub load_full_record {
 	$atime=new Benchmark;
     }
 
+    my $local_dbh = 0;
     if (!defined $dbh){
         # Kein Spooling von DB-Handles!
         $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
             or $logger->error_die($DBI::errstr);
+        $local_dbh = 1;
     }
     
     my $sqlrequest;
@@ -161,6 +163,7 @@ sub load_full_record {
     }
 
     $request->finish();
+    $dbh->disconnect() if ($local_dbh);
 
     $logger->debug(YAML::Dump($normset_ref));
     
@@ -197,10 +200,12 @@ sub load_name {
 	$atime=new Benchmark;
     }
 
+    my $local_dbh = 0;
     if (!defined $dbh){
         # Kein Spooling von DB-Handles!
         $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
             or $logger->error_die($DBI::errstr);
+        $local_dbh = 1;
     }
     
     my $sqlrequest;
@@ -226,7 +231,8 @@ sub load_name {
     }
 
     $request->finish();
-
+    $dbh->disconnect() if ($local_dbh);
+    
     $self->{name}=$ans;
 
     return $self;

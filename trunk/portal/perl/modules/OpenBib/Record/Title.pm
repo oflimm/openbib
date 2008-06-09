@@ -127,10 +127,12 @@ sub load_full_record {
     $normset_ref->{id      } = $id;
     $normset_ref->{database} = $self->{database};
 
+    my $local_dbh = 0;
     if (!defined $dbh){
         # Kein Spooling von DB-Handles!
         $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
             or $logger->error_die($DBI::errstr);
+        $local_dbh = 1;
     }
     
     # Titelkategorien
@@ -527,6 +529,8 @@ sub load_full_record {
         }
     }
 
+    $dbh->disconnect() if ($local_dbh);
+    
     $logger->debug(YAML::Dump($normset_ref));
     ($self->{_normset},$self->{_mexset},$self->{_circset},$self->{_exists})=($normset_ref,$mexnormset_ref,\@circexemplarliste,$record_exists);
 
@@ -566,10 +570,12 @@ sub load_brief_record {
     $listitem_ref->{id      } = $id;
     $listitem_ref->{database} = $self->{database};
 
+    my $local_dbh = 0;
     if (!defined $dbh){
         # Kein Spooling von DB-Handles!
         $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-        or $logger->error_die($DBI::errstr);
+            or $logger->error_die($DBI::errstr);
+        $local_dbh = 1;
     }
 
     my ($atime,$btime,$timeall)=(0,0,0);
@@ -882,6 +888,8 @@ sub load_brief_record {
         $logger->info("Zeit fuer : Bestimmung der gesamten Informationen         : ist ".timestr($timeall));
     }
 
+    $dbh->disconnect() if ($local_dbh);
+    
     $logger->debug(YAML::Dump($listitem_ref));
 
     ($self->{_brief_normset},$self->{_exists})=($listitem_ref,$record_exists);
@@ -1115,10 +1123,12 @@ sub _get_mex_set_by_idn {
     my $config      = OpenBib::Config->instance;
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     
+    my $local_dbh = 0;
     if (!defined $dbh){
         # Kein Spooling von DB-Handles!
         $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
         or $logger->error_die($DBI::errstr);
+        $local_dbh = 1;
     }
     
     my $normset_ref={};
@@ -1193,6 +1203,8 @@ sub _get_mex_set_by_idn {
         $normset_ref->{X4001}{content}=$dbinfotable->{bibinfo}{$sigel};
     }
 
+    $dbh->disconnect() if ($local_dbh);
+    
     return $normset_ref;
 }
 

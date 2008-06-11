@@ -237,7 +237,7 @@ sub handler {
 
             $logger->debug(YAML::Dump($posts_ref));
             foreach my $post_ref (@{$posts_ref->{recordlist}}){
-                my $bibkey = $post_ref->{bibkey};
+                my $bibkey = $post_ref->{bibkey} || 'undefined';
                 $request->execute($bibkey);
                 $logger->debug("Single Post:".YAML::Dump($post_ref));
                 $logger->debug("Single Post-Bibkey:$bibkey");

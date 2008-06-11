@@ -150,7 +150,7 @@ sub initial_search {
     my $qp = new Search::Xapian::QueryParser() || $logger->fatal("Couldn't open/create Xapian DB $!\n");
 
     my @stopwords = ();
-    if (exists $config->{stopword_filename}){
+    if (exists $config->{stopword_filename} && -e $config->{stopword_filename}){
         open(SW,$config->{stopword_filename});
         while (my $stopword=<SW>){
             chomp $stopword ;

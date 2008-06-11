@@ -51,7 +51,7 @@ sub _new_instance {
     my $config  = OpenBib::Config->instance;
     my $session = OpenBib::Session->instance;
 
-    $logger->debug("SessionID:".$session->{ID});
+    $logger->debug("SessionID:".$session->{ID}) if (defined $session->{ID});
 
     my $self = {};
 

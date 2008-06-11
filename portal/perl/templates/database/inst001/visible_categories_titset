@@ -105,7 +105,7 @@
                 'T0662', # msg.maketext("T0662") EDVurl
                 'T1664', # msg.maketext("T1664") Provenienz 
                 'T2662', # msg.maketext("T2662") USB EDVurl
-                'T2663', # msg.maketext("T2663") USB URLInfo
+                #'T2663', # msg.maketext("T2663") USB URLInfo
                 'T1600', # msg.maketext("T1600") Hinweis
                 'T4500', # msg.maketext("T4500") Nutzer-Tags
                 'T5001', # msg.maketext("T5001") Anzahl uebergeordn. Werke

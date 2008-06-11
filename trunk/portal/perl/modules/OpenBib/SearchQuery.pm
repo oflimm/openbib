@@ -812,13 +812,14 @@ sub to_xapian_querystring {
     };
     
     foreach my $field (@{$fields_ref}){
-        my $searchtermstring = $self->{_searchquery}->{$field}->{norm};
-        my $searchtermop     = $ops_ref->{$self->{_searchquery}->{$field}->{bool}};
+        my $searchtermstring = (defined $self->{_searchquery}->{$field}->{norm})?$self->{_searchquery}->{$field}->{norm}:'';
+        my $searchtermop     = (defined $self->{_searchquery}->{$field}->{bool} && defined $ops_ref->{$self->{_searchquery}->{$field}->{bool}})?$ops_ref->{$self->{_searchquery}->{$field}->{bool}}:'';
         if ($searchtermstring) {
             my @searchterms = split('\s+',$searchtermstring);
+
+            # Inhalte von @searchterms mit Suchprefix bestuecken
             foreach my $searchterm (@searchterms){
-                $searchterm=$prefix_ref->{$field}.$searchterm;
-                                             
+                $searchterm=$prefix_ref->{$field}.$searchterm if (exists $prefix_ref->{$field});
             }
             $searchtermstring = join(' ',@searchterms);
             $xapianquerystring = "$searchtermop($searchtermstring)";

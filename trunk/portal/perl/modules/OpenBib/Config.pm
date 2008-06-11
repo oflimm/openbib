@@ -209,9 +209,10 @@ sub get_startpage_of_view {
     my $startpage      = decode_utf8($res->{startpage}) if (defined($res->{'startpage'}));
     $request->finish();
 
-    $logger->debug("Got Startpage $startpage");
+    $logger->debug("Got Startpage $startpage") if (defined $startpage);
     
-    my ($start_loc,$start_stid) = split (":",$startpage);
+    my ($start_loc,$start_stid) = ('','');
+    ($start_loc,$start_stid)    = split (":",$startpage) if ($startpage);
 
     return {
         start_loc  => $start_loc,

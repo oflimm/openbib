@@ -45,11 +45,12 @@ use Log::Log4perl qw(get_logger :levels);
 
 use OpenBib::Config;
 
-my ($database,$sync,$help,$logfile);
+my ($database,$sync,$genmex,$help,$logfile);
 
 &GetOptions("database=s"      => \$database,
             "logfile=s"       => \$logfile,
 	    "sync"            => \$sync,
+            "gen-mex"         => \$genmex,
 	    "help"            => \$help
 	    );
 
@@ -165,7 +166,7 @@ my $atime = new Benchmark;
         system("mkdir $rootdir/data/$database");
     }
     
-    system("cd $pooldir/$database/ ; zcat $dboptions_ref->{titfilename} | $meta2mexexe");
+    system("cd $pooldir/$database/ ; zcat $dboptions_ref->{titfilename} | $meta2mexexe") if ($genmex);
     
     if ($database && -e "$config->{autoconv_dir}/filter/$database/pre_move.pl"){
         $logger->info("### $database: Verwende Plugin pre_move.pl");

@@ -25,7 +25,7 @@
    <li><a class="active" href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
    <li><a                href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
    <li><a                href="[% config.search_loc %]?sessionID=[% sessionID %];view=[% view %];database=kapsel;browsecat=T0710" title="Register">Register</a></li>
-   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=kapsel;stid=16" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
+   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=kapsel;stid=14" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
 </ul>
 
 <div class="content">

@@ -3,6 +3,11 @@ convtab:
 # Standardwerte
 ##############################################################################
   default:
+    local_enrichmnt:
+      '4100': 1        # BK
+      '4201': 1        # Wikipedia
+      '4202': 1        # Wikipedia
+      '4203': 1        # Wikipedia
     blacklist_aut:
       '0100': 1        # Aufnahmedatum
 #      '0101': 1        # Aenderungsdatum
@@ -199,6 +204,8 @@ convtab:
         string: 1
       '0800':         # Medienart
         string: 1
+      '4100':         # BK
+        string: 1
       '5050':         # Bibkey
         string: 1
       '5051':         # Bibkey Base
@@ -244,6 +251,9 @@ convtab:
       '0370': 1       # WST
     search_inhalt:
       '0750': 1       # Abstract
+      '4201': 1       # Wikipedia
+      '4202': 1       # Wikipedia
+      '4203': 1       # Wikipedia
     search_isbn:
       '0540': 1       # ISBN
       '0553': 1       # ArtikelNr als 13-stellige ISBN

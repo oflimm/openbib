@@ -55,15 +55,11 @@
 <tr><td class="boxedclear">
 
 <div style="float:right;padding:10px">
-<a class="invisible" href="http://portraitsammlung.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait_web.jpg"><img src="http://portraitsammlung.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait_web.jpg" height="300" title="(c) "/></a>
+<a class="invisible" href="http://portraitsammlung.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait_web.jpg"><img src="http://portraitsammlung.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait_web.jpg" height="300" /></a>
 <p>
 <a href="http://portraitsammlung.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait_web.jpg"><span style="font-size:0.7em">Als JPG-Datei (Vorschau)</span></a>
 <br /><br />
 <a href="http://portraitsammlung.ub.uni-koeln.de/digiarchive/portrait/[% normset.id %]/portrait.tif"><span style="font-size:0.7em">Als Tiff-Datei (Original)</span></a>
-</p>
-<p style="font-size:0.7em">
-© Universitäts- und Stadtbibliothek Köln<br/>
-Lizensierbar unter der <a href="http://creativecommons.org/licenses/by-nc-nd/2.0/de/" target="_blank">Creative Commons by-nc-nd Lizenz</a>
 </p>
 <p style="font-size:0.7em;font-weight:bold;">
 Bestellung in den Lesesaal Historische Sammlungen:

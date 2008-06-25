@@ -21,4 +21,6 @@ DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 ;
 
-alter table viewinfo add profilename varchar(20) after startpage;
+alter table viewinfo add start_loc text after rssfeed;
+alter table viewinfo add start_stid text after start_loc;
+alter table viewinfo add profilename varchar(20) after start_stid;

@@ -680,7 +680,9 @@ sub handler {
 				    description => $description,
                                     profilename => $profilename,
 				    active      => $active,
-				   });
+                                    start_loc   => $viewstart_loc,
+                                    start_stid  => $viewstart_stid,
+                                });
 
 	    my $ret_ref = dist_cmd("editview_new",{ 
 						   viewname    => $viewname,
@@ -706,12 +708,11 @@ sub handler {
             my $viewname    = $viewinfo_ref->{'viewname'};
             my $description = $viewinfo_ref->{'description'};
             my $primrssfeed = $viewinfo_ref->{'primrssfeed'};
-            my $startpage   = $viewinfo_ref->{'startpage'};
+            my $start_loc   = $viewinfo_ref->{'start_loc'};
+            my $start_stid  = $viewinfo_ref->{'start_stid'};
             my $profilename = $viewinfo_ref->{'profilename'};
             my $active      = $viewinfo_ref->{'active'};
              
-            my ($start_loc,$start_stid) = split (":",$startpage);
-
             my @profiledbs       = $config->get_profiledbs($profilename);
 
             my @viewdbs          = $config->get_viewdbs($viewname);
@@ -1437,12 +1438,10 @@ sub editview_change {
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $startpage = "$start_loc:$start_stid";
-    
     # Zuerst die Aenderungen in der Tabelle Viewinfo vornehmen
     
-    my $idnresult=$dbh->prepare("update viewinfo set description = ?, startpage = ?, profilename = ?, active = ? where viewname = ?") or $logger->error($DBI::errstr);
-    $idnresult->execute($description,$startpage,$profilename,$active,$viewname) or $logger->error($DBI::errstr);
+    my $idnresult=$dbh->prepare("update viewinfo set description = ?, start_loc = ?, start_stid = ?, profilename = ?, active = ? where viewname = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($description,$start_loc,$start_stid,$profilename,$active,$viewname) or $logger->error($DBI::errstr);
     
     # Primary RSS-Feed fuer Autodiscovery eintragen
     if ($primrssfeed){
@@ -1487,6 +1486,10 @@ sub editview_new {
         ? $arg_ref->{description}         : undef;
     my $profilename            = exists $arg_ref->{profilename}
         ? $arg_ref->{profilename}         : undef;
+    my $start_loc              = exists $arg_ref->{start_loc}
+        ? $arg_ref->{start_loc}           : undef;
+    my $start_stid             = exists $arg_ref->{stid_loc}
+        ? $arg_ref->{start_stid}           : undef;
     my $active                 = exists $arg_ref->{active}
         ? $arg_ref->{active}              : undef;
 
@@ -1510,8 +1513,8 @@ sub editview_new {
       return -1;
     }
     
-    $idnresult=$dbh->prepare("insert into viewinfo values (?,?,NULL,'',?,?)") or $logger->error($DBI::errstr);
-    $idnresult->execute($viewname,$description,$profilename,$active) or $logger->error($DBI::errstr);
+    $idnresult=$dbh->prepare("insert into viewinfo values (?,?,NULL,?,?,?,?)") or $logger->error($DBI::errstr);
+    $idnresult->execute($viewname,$description,$start_loc,$start_stid,$profilename,$active) or $logger->error($DBI::errstr);
     
     return;
 }

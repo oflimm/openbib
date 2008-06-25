@@ -582,7 +582,10 @@ sub to_sql_querystring {
         ? $arg_ref->{offset}              : 0;
     my $hitrange               = exists $arg_ref->{hitrange}
         ? $arg_ref->{hitrange}            : 50;
-    
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
     # Aufbau des sqlquerystrings
     my $sqlselect = "";
     my $sqlfrom   = "";
@@ -695,12 +698,17 @@ sub to_sql_querystring {
     
     my $sqlquerystring  = "select distinct verwidn from $sqlfromstring where $sqlwherestring limit $offset$hitrange";
 
+    $logger->debug("Querystring: $sqlquerystring");
+    
     return $sqlquerystring;
 }
 
 sub to_sql_queryargs {
     my ($self) = @_;
-    
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
     my @sqlargs  = ();
 
     if ($self->{_searchquery}->{fs}->{norm}) {	
@@ -765,6 +773,8 @@ sub to_sql_queryargs {
         push @sqlargs,  $self->{_searchquery}->{ejahr}->{norm};
     }
 
+    $logger->debug("Queryargs: ".join(';',@sqlargs));
+    
     return @sqlargs;
 }
 

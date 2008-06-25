@@ -400,25 +400,25 @@ h2[class=nojs_show] {
   width: 990px;
 }
 .cloud .fast-nicht-genutzt {
-  font-size: 0.6em;
+  font-size: 0.7em;
 }
 .cloud .nicht-sehr-genutzt {
-  font-size: 0.9em;
+  font-size: 1.0em;
 }
 .cloud .etwas-genutzt {
-  font-size: 1.2em;
+  font-size: 1.3em;
 }
 .cloud .genutzt {
   font-size: 1.5em;
 }
 .cloud .sehr-viel-genutzt {
-  font-size: 1.8em;
+  font-size: 1.9em;
 }
 .cloud .ultra-genutzt {
-  font-size: 2.1em;
+  font-size: 2.2em;
 }
 .cloud .am-meisten-genutzt {
-  font-size: 2.3em;
+  font-size: 2.4em;
 }
 
 dt.review {

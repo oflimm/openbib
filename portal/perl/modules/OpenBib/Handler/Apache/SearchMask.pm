@@ -169,7 +169,7 @@ sub handler {
     
     my $searchquery = OpenBib::SearchQuery->instance;
 
-    if ($queryid ne "") {
+    if ($queryid) {
         $searchquery->load({sessionID => $session->{ID}, queryid => $queryid});
     }
     else {

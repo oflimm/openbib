@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2008-06-02 16:02+0200\n"
+"PO-Revision-Date: 2008-06-17 18:07+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -114,6 +114,7 @@ msgstr "&Uuml;bersicht"
 #: ../templates/info_13:28 ../templates/info_15:39 ../templates/info_50:32
 #: ../templates/info_51:39 ../templates/info_52:39 ../templates/searchmask:47
 #: ../templates/searchmask_simple:47
+#: ../templates/views/einbaende/searchmask:46
 #: ../templates/views/einbaende/searchmask_simple:39
 #: ../templates/views/kug/searchmask:127
 #: ../templates/views/kug/searchmask_simple:37
@@ -265,6 +266,7 @@ msgid "Als Permanenten Link verwenden"
 msgstr "Als Permanenten Link verwenden"
 
 #: ../templates/searchmask:66 ../templates/views/edz/searchmask:65
+#: ../templates/views/einbaende/searchmask:65
 #: ../templates/views/gdonck/searchmask:65
 #: ../templates/views/gleuel/searchmask:65
 #: ../templates/views/inst404/searchmask:65
@@ -638,7 +640,7 @@ msgid "Bisher haben Sie noch keine Tags vergeben."
 msgstr "Bisher haben Sie noch keine Tags vergeben."
 
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:346
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:511
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:512
 msgid "Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."
 msgstr "Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."
 
@@ -654,6 +656,7 @@ msgstr ""
 "Bitte wenden Sie sich bei Unstimmigkeiten in Ihren Personendaten an die "
 "Auskunft der Bibliothek."
 
+#: ../templates/views/einbaende/searchmask:45
 #: ../templates/views/einbaende/searchmask_simple:38
 msgid "Bl&auml;ttern"
 msgstr "Bl&auml;ttern"
@@ -704,8 +707,8 @@ msgstr ""
 
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:353
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:362
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:518
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:527
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:519
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:528
 msgid ""
 "Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und "
 "mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die "
@@ -750,7 +753,7 @@ msgstr ""
 "Denken Sie daran, dass nur wenige Bibliotheken Ihre Aufs&auml;tze in Ihrem "
 "Katalog aufnehmen"
 
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:310
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:311
 msgid ""
 "Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank "
 "zur Suche im Index ausgewählt wurde."
@@ -907,6 +910,10 @@ msgstr ""
 "Passwort vergessen? Dann gehen Sie bitte %2zurück%3 und lassen es sich "
 "zumailen."
 
+#: ../templates/views/einbaende/searchmask:126
+msgid "Einband"
+msgstr "Einband"
+
 #: ../templates/database/einbaende/search_showtitset:57
 msgid "Einband-Abbildungen"
 msgstr "Einband-Abbildungen"
@@ -934,6 +941,7 @@ msgstr ""
 #: ../templates/info_52:36 ../templates/searchmask:44
 #: ../templates/searchmask_simple:44 ../templates/views/edz/searchmask:44
 #: ../templates/views/edz/searchmask_simple:44
+#: ../templates/views/einbaende/searchmask:43
 #: ../templates/views/einbaende/searchmask_simple:36
 #: ../templates/views/gdonck/searchmask:44
 #: ../templates/views/gdonck/searchmask_simple:44
@@ -1143,7 +1151,7 @@ msgid "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
 msgstr "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
 
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:369
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:534
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:535
 msgid "Es wurde kein Suchkriterium eingegeben."
 msgstr "Es wurde kein Suchkriterium eingegeben."
 
@@ -1160,7 +1168,7 @@ msgstr "Es wurde keine Standard-Recherchemaske ausgewählt"
 msgid "Es wurden keine Treffer gefunden"
 msgstr "Es wurden keine Treffer gefunden"
 
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:305
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:306
 msgid ""
 "F&uuml;r die Nutzung der Index-Funktion m&uuml;ssen Sie einen Begriff "
 "eingegeben"
@@ -1238,6 +1246,7 @@ msgid "Franz&ouml;sische Wikipedia"
 msgstr "Franz&ouml;sische Wikipedia"
 
 #: ../templates/searchmask_query:3 ../templates/userprefs:203
+#: ../templates/views/einbaende/searchmask:106
 #: ../templates/views/inst501/searchmask_query:3
 #: ../templates/views/kapsel/searchmask_query:3
 #: ../templates/views/landschaft/searchmask_query:3
@@ -1250,6 +1259,7 @@ msgstr "Freie Suche"
 #: ../templates/searchmask:145 ../templates/searchmask_simple:181
 #: ../templates/views/edz/searchmask:159
 #: ../templates/views/edz/searchmask_simple:190
+#: ../templates/views/einbaende/searchmask:152
 #: ../templates/views/gdonck/searchmask:140
 #: ../templates/views/gdonck/searchmask_simple:126
 #: ../templates/views/gleuel/searchmask:140
@@ -1490,6 +1500,8 @@ msgstr ""
 #: ../templates/views/edz/searchmask:145 ../templates/views/edz/searchmask:149
 #: ../templates/views/edz/searchmask_simple:153
 #: ../templates/views/edz/searchmask_simple:159
+#: ../templates/views/einbaende/searchmask:145
+#: ../templates/views/einbaende/searchmask:95
 #: ../templates/views/einbaende/searchmask_simple:84
 #: ../templates/views/gdonck/searchmask:125
 #: ../templates/views/gdonck/searchmask:129
@@ -1654,6 +1666,8 @@ msgstr "Hier löschen Sie die Eingabefelder"
 #: ../templates/views/edz/searchmask:145 ../templates/views/edz/searchmask:149
 #: ../templates/views/edz/searchmask_simple:153
 #: ../templates/views/edz/searchmask_simple:159
+#: ../templates/views/einbaende/searchmask:145
+#: ../templates/views/einbaende/searchmask:95
 #: ../templates/views/einbaende/searchmask_simple:84
 #: ../templates/views/gdonck/searchmask:125
 #: ../templates/views/gdonck/searchmask:129
@@ -1949,6 +1963,7 @@ msgid "Ihr vergessenes KUG-Passwort"
 msgstr "Ihr vergessenes KUG-Passwort"
 
 #: ../templates/managecollection_mail:38
+#: ../templates/views/einbaende/searchmask:103
 #: ../templates/views/portrait/searchmask_query:2
 #: ../templates/views/richter/searchmask_query:2
 msgid "Ihre Eingabe"
@@ -2259,6 +2274,10 @@ msgid "In welchen Katalogen möchten Sie suchen"
 msgstr "In welchen Katalogen möchten Sie suchen"
 
 #: ../templates/searchmask_query:11 ../templates/searchmask_query:23
+#: ../templates/views/einbaende/searchmask:114
+#: ../templates/views/einbaende/searchmask:118
+#: ../templates/views/einbaende/searchmask:122
+#: ../templates/views/einbaende/searchmask:126
 #: ../templates/views/inst501/searchmask_query:11
 #: ../templates/views/portrait/searchmask_query:13
 #: ../templates/views/richter/searchmask_query:13
@@ -2343,6 +2362,10 @@ msgstr "Jahr"
 #: ../templates/views/portrait/clouds_navigation:19
 msgid "Jahre"
 msgstr "Jahre"
+
+#: ../templates/views/einbaende/searchmask:122
+msgid "Jahrhundert"
+msgstr "Jahrhundert"
 
 #: ../templates/userprefs:206 ../templates/virtualsearch_showkorindex:52
 msgid "K&ouml;rperschaft"
@@ -2457,6 +2480,7 @@ msgstr "Katalogprofile"
 #: ../templates/search_showautset:31 ../templates/search_showkorset:32
 #: ../templates/search_showmulttitset:41 ../templates/search_shownotset:31
 #: ../templates/search_showswtset:33 ../templates/search_showtitset:94
+#: ../templates/views/einbaende/searchmask:103
 #: ../templates/views/portrait/searchmask_query:2
 #: ../templates/views/richter/searchmask_query:2
 msgid "Kategorie"
@@ -2511,6 +2535,7 @@ msgstr "Kompletter Titel"
 #: ../templates/info_52:37 ../templates/searchmask:45
 #: ../templates/searchmask_simple:45 ../templates/views/edz/searchmask:45
 #: ../templates/views/edz/searchmask_simple:45
+#: ../templates/views/einbaende/searchmask:44
 #: ../templates/views/einbaende/searchmask_simple:37
 #: ../templates/views/gdonck/searchmask:45
 #: ../templates/views/gdonck/searchmask_simple:45
@@ -2641,7 +2666,7 @@ msgstr ""
 "Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r von "
 "Nutzern vergebene Tags anbieten."
 
-#: ../templates/info_41:67
+#: ../templates/info_41:68
 msgid ""
 "Leider k&ouml;nnen wir Ihnen keine Wolke der meist genutzten Literaturlisten "
 "anbieten."
@@ -2662,8 +2687,8 @@ msgstr "Letzte 50 Neuaufnahmen"
 msgid "Literaturliste"
 msgstr "Literaturliste"
 
-#: ../templates/databaseprofile:46 ../templates/info_41:30
-#: ../templates/litlists_manage_lists:27
+#: ../templates/clouds_navigation:21 ../templates/databaseprofile:46
+#: ../templates/info_41:30 ../templates/litlists_manage_lists:27
 #: ../templates/litlists_manage_singlelist:27
 #: ../templates/search_showtitset:338 ../templates/userprefs:26
 msgid "Literaturlisten"
@@ -2748,6 +2773,8 @@ msgstr "Los"
 #: ../templates/views/edz/searchmask:145 ../templates/views/edz/searchmask:149
 #: ../templates/views/edz/searchmask_simple:153
 #: ../templates/views/edz/searchmask_simple:159
+#: ../templates/views/einbaende/searchmask:145
+#: ../templates/views/einbaende/searchmask:95
 #: ../templates/views/einbaende/searchmask_simple:84
 #: ../templates/views/gdonck/searchmask:125
 #: ../templates/views/gdonck/searchmask:129
@@ -3260,6 +3287,7 @@ msgstr "PermaLink"
 msgid "Permanenter Link"
 msgstr "Permanenter Link"
 
+#: ../templates/views/einbaende/searchmask:114
 #: ../templates/views/inst501/searchmask_query:11
 #: ../templates/views/kapsel/searchmask_query:11
 #: ../templates/views/portrait/searchmask_query:13
@@ -3390,6 +3418,7 @@ msgstr "Recherchemaske festlegen"
 msgid "Recherchen"
 msgstr "Recherchen"
 
+#: ../templates/views/einbaende/searchmask:118
 #: ../templates/views/portrait/clouds_navigation:15
 #: ../templates/views/portrait/searchmask_query:21
 msgid "Region"
@@ -3923,7 +3952,8 @@ msgstr "Sigel"
 #: ../templates/database/portrait/search_showtitset:175
 #: ../templates/managecollection_tit_as_html:79 ../templates/mexset:2
 #: ../templates/search_showmulttitset:109 ../templates/searchmask_query:35
-#: ../templates/userprefs:211 ../templates/views/inst501/searchmask_query:35
+#: ../templates/userprefs:211 ../templates/views/einbaende/searchmask:130
+#: ../templates/views/inst501/searchmask_query:35
 #: ../templates/views/portrait/searchmask_query:29
 #: ../templates/views/richter/searchmask_query:29
 msgid "Signatur"
@@ -4106,8 +4136,9 @@ msgstr "Stelle"
 msgid "Strasse"
 msgstr "Strasse"
 
-#: ../templates/clouds_navigation:21 ../templates/info_13:45
+#: ../templates/clouds_navigation:22 ../templates/info_13:45
 #: ../templates/searchmask:105 ../templates/views/edz/searchmask:119
+#: ../templates/views/einbaende/searchmask:100
 #: ../templates/views/gdonck/searchmask:99
 #: ../templates/views/gleuel/searchmask:99
 #: ../templates/views/inst404/searchmask:120
@@ -4140,6 +4171,11 @@ msgstr "Strasse"
 #: ../templates/views/xanten/searchmask:99
 msgid "Suchbegriffe"
 msgstr "Suchbegriffe"
+
+#: ../templates/views/einbaende/searchmask:145
+#: ../templates/views/einbaende/searchmask:95
+msgid "Suche starten"
+msgstr "Suche starten"
 
 #: ../templates/bibsonomy_showtitlist:54
 #: ../templates/database/ebooks/search_showtitset:710
@@ -4226,6 +4262,7 @@ msgid "Suchhinweise"
 msgstr "Suchhinweise"
 
 #: ../templates/searchmask:59 ../templates/views/edz/searchmask:58
+#: ../templates/views/einbaende/searchmask:58
 #: ../templates/views/gdonck/searchmask:58
 #: ../templates/views/gleuel/searchmask:58
 #: ../templates/views/inst404/searchmask:58
@@ -5693,6 +5730,10 @@ msgstr "Titel-String"
 msgid "Titel/Merkliste via Mail verschicken"
 msgstr "Titel/Merkliste via Mail verschicken"
 
+#: ../templates/views/einbaende/searchmask:110
+msgid "Titel/Provenienz"
+msgstr "Titel/Provenienz"
+
 #: ../templates/bibsonomy_showtags:20
 msgid "Titel/Schlagworte nicht in BibSonomy enthalten"
 msgstr "Titel/Schlagworte nicht in BibSonomy enthalten"
@@ -5938,6 +5979,7 @@ msgstr "Ursprüngliche Auswahl wiederherstellen"
 msgid "Verfasser"
 msgstr "Verfasser"
 
+#: ../templates/views/einbaende/searchmask:103
 #: ../templates/views/portrait/searchmask_query:2
 #: ../templates/views/richter/searchmask_query:2
 msgid "Verknüpfung"
@@ -6262,6 +6304,7 @@ msgstr "Zugriff &uuml;ber OLWS"
 #: ../templates/searchmask:66 ../templates/searchmask_simple:168
 #: ../templates/views/edz/searchmask:65
 #: ../templates/views/edz/searchmask_simple:177
+#: ../templates/views/einbaende/searchmask:65
 #: ../templates/views/einbaende/searchmask_simple:101
 #: ../templates/views/gdonck/searchmask:65
 #: ../templates/views/gdonck/searchmask_simple:113

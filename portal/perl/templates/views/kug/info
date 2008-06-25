@@ -52,21 +52,26 @@
          <tr><td align="right">3</td><td><a href="#allghinweisesuche">Weitere allgemeine Hinweise zur Suchanfrage</a></td></tr>
          <tr><td align="right">4</td><td><a href="#perskug">Mein KUG</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/meinkuganmelden.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>
          <tr><td align="right">5</td><td><a href="#buchstandort">Standort des Buches</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/standortsuche.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></td></tr>
-         <tr><td align="right">6</td><td><a href="#treffermerkliste">Treffer- und Merkliste</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/merkliste.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>
+         <tr><td align="right">6</td><td><a href="#treffermerkliste">Treffer-, Merk- und Literaturlisten</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/merkliste.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>
 
          <tr><td align="right">7</td><td><a href="#externesuche">Sprung in externe Recherchequellen</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/externerecherche.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>
          <tr><td align="right">8</td><td><a href="#enrichment">Ergebnisanreicherung</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;8.1&nbsp;<a href="#enrichtoc">Digitalisierte Inhaltsverzeichnisse</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/inhaltsverz.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;8.2&nbsp;<a href="#enrichrelevance">Weitere potentiell interessante Titel (Recommender-Funktion)</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;8.3&nbsp;<a href="#enrichweitere">Weitere Anreicherungen</a></td></tr>
+
          <tr><td align="right">9</td><td><a href="#popularity">Popularit&auml;ts-Funktionen</a></td></tr>
 
          <tr><td align="right">10</td><td><a href="#rssfeeds">RSS-Feeds (abonnierbare Informations-Kan&auml;le)</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/rss.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;10.1&nbsp;<a href="#rssarten">Angebotene Arten an RSS-Feeds</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;10.2&nbsp;<a href="#rssinstall">Beispiel: Installation von Feedview f&uuml;r den Browser Firefox</a></td></tr>
-         <tr><td align="right">11</td><td><a href="#mashups">Mashups mit Sozialer Software</a></td></tr>
+         <tr><td align="right">11</td><td><a href="#mashups">Mashups mit Sozialer Software und externen Diensten</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.1&nbsp;<a href="#bibsonomy">Integration von BibSonomy</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/bibsonomy.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.2&nbsp;<a href="#wikipedia">Integration der Wikipedia</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/w.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.1.1&nbsp;&nbsp;&nbsp;<a href="#bibsonomyquellen">Thematische Integration weiterer Quellen</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.1.2&nbsp;&nbsp;&nbsp;<a href="#bibsonomyspiegelung">Automatische Spiegelung von Titeln beim Tagging im KUG nach BibSonomy</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/bibsonomyabgleich.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>
 
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.2&nbsp;<a href="#wikipedia">Integration der Wikipedia</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/w.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.3&nbsp;<a href="#gbs">Integration der Google Book Search</a></td></tr>
          <tr><td align="right">12</td><td><a href="#uebersichten">&Uuml;bersichten</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;12.1&nbsp;<a href="#wolken">Wolken</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;12.2&nbsp;<a href="#sichten">Sichten</a></td></tr>
@@ -559,35 +564,45 @@ zukünftige Recherchen.</li>
         sie hier vormerken.
      </p>
 
-     <h1 id="treffermerkliste">6 Treffer- und Merkliste</h1>
+     <h1 id="treffermerkliste">6 Treffer-, Merk- und Literaturlisten</h1>
 
       <p>
-      Der Link "Trefferliste" gibt Ihnen die aktuelle Suchanfrage an und darunter die Treffermenge insgesamt und die der
+      Der Link "<b>Trefferliste</b>" gibt Ihnen die aktuelle Suchanfrage an und darunter die Treffermenge insgesamt und die der
       verschiedenen Datenbanken. Durch Ihre Auswahl gelangen Sie auf die betreffende Kurztitelliste. Ihre Kurztitelliste
       k&ouml;nnen Sie noch einmal umsortieren lassen, indem Sie Ihre
 gew&uuml;nschten Ordnungskriterien (Person, Titel usw. und Anzeige "Pro Katalog" oder "Katalog&uuml;bergreifend") festlegen und Ihre Wahl durch "Los"
       best&auml;tigen.
       </p>
 
-      <p> Wenn Sie sich eine Merkliste zusammenstellen m&ouml;chten,
+      <p> Wenn Sie sich eine <b>Merkliste</b> zusammenstellen m&ouml;chten,
       klicken Sie auf das "Notizblock"-Icon. Dieses ist sowohl von der
       Kurztitelliste direkt m&ouml;glich als auch von der
-      ausf&uuml;hrlichen Titelaufnahme. &Uuml;ber den
-      "Zur&uuml;ck-Button" Ihres Browsers gelangen Sie wieder vom
-      ausf&uuml;hrlichen Titel in die Kurztitelliste, um weitere Titel
-      auszuw&auml;hlen. Die Zahl hinter "Merkliste" gibt Ihnen die
-      Anzahl der gespeicherten Titel an. Beim Zur&uuml;ckgehen
-      &uuml;ber den Browser wird diese Zahl zur&uuml;ckgez&auml;hlt,
-      obwohl der gespeicherte Titel in der Liste erhalten
-      bleibt. Titel einer weiteren Suchanfrage k&ouml;nnen Sie
-      ebenfalls in die Merkliste &uuml;bernehmen. In der Liste finden
-      Sie alle wichtigen bibliographischen Angaben mit dem Hinweis auf
-      die besitzende Bibliothek und die Signatur.  </p>
+      ausf&uuml;hrlichen Titelaufnahme. Merklisten bieten sich
+      f&uuml;r das "schnelle Einsammeln" von Titeln an, um diese in
+      einem sp&auml;teren Schritt z.B. mit Tags thematisch zu
+      organisieren oder in eigene Literaturlisten
+      aufzunehmen. &Uuml;ber den "Zur&uuml;ck-Button" Ihres Browsers
+      gelangen Sie wieder vom ausf&uuml;hrlichen Titel in die
+      Kurztitelliste, um weitere Titel auszuw&auml;hlen. Die Zahl
+      hinter "Merkliste" gibt Ihnen die Anzahl der gespeicherten Titel
+      an. Beim Zur&uuml;ckgehen &uuml;ber den Browser wird diese Zahl
+      zur&uuml;ckgez&auml;hlt, obwohl der gespeicherte Titel in der
+      Liste erhalten bleibt. Titel einer weiteren Suchanfrage
+      k&ouml;nnen Sie ebenfalls in die Merkliste &uuml;bernehmen. In
+      der Liste finden Sie alle wichtigen bibliographischen Angaben
+      mit dem Hinweis auf die besitzende Bibliothek und die Signatur.
+      </p>
 
       <p>
       Sie k&ouml;nnen sie sich in den Formaten HTML, Text oder EndNote erstellen und dann &uuml;ber die entsprechenden
       Icons ausdrucken, speichern oder als E-Mail versenden.
       </p>
+
+      <p>In <b>Literaturlisten</b> k&ouml;nnen Sie verschiedene Titel
+      explizit unter einer "&Uuml;berschrift" f&uuml;r einen privaten
+      oder &ouml;ffentlichen Zugriff zusammenfassen. &Ouml;ffentliche
+      Literaturlisten k&ouml;nnen Sie &uuml;ber einen PermaLink auch
+      auf externen Seiten verlinken.  <a href="http://kug5.ub.uni-koeln.de/portal/connector/permalink/3146/4/6/kug/index.html" target="_blank">Beispiel</a></p>
 
       <h1 id="externesuche">7 Sprung in externe Recherchequellen</h1>
       <p>
@@ -613,6 +628,31 @@ Derzeit werden folgende externe Recherchequellen angeboten:
      zentrale Anreicherungsdatenbank bereitgestellt, in der sie,
      bezogen auf eine vorhandene ISBN, abgelegt werden.  </p>
 
+     <p>
+     Zusätzlich sind weitere "automatische Anreicherungen" u.a. für eine bessere Recherchierbarkeit der Titel integriert:
+
+     <ul>
+
+     <li>Anreicherung mit der 13- und 10-stelligen ISBN. Bei einem
+     konkreten Titel wird zu einer vorhandenen 10-stelligen ISBN
+     automatisch auch die zugehörige 13-stellige ISBN suchbar gemacht
+     - und umgekehrt. Damit können nun insbesondere auch Titel mit
+     13-stelliger ISBN gefunden werden - wie sie z.B. seit dem
+     1.1.2007 in Verlagskatalogen in Verwendung sind - wenn bei der
+     Erfassung im Katalog lediglich die 10-stellige ISBN bekannt
+     war.</li>
+
+     <li>Anreicherung mit den Verfassern der Überordnung. Damit können
+     nun auch Schillers Räuber korrekt gefunden und das
+     sog. Schiller-Räuber-Problem gelöst werden.</li>
+
+     <li>Anreicherung mit dem Bibkey, dem bibliographischen
+     "Fingerabdruck" des Titels, über den die systemübergreifende
+     Titelidentifikation, z.B. zwischen OpenBib und BibSonomy,
+     ermöglicht wird.</li>
+
+     </ul>
+
       <h2 id="enrichtoc">8.1 Digitalisierte Inhaltsverzeichnisse</h2>
 
      <p> Im Rahmen eines Projektes wurden Inhaltsverzeichnisse von
@@ -626,14 +666,41 @@ Derzeit werden folgende externe Recherchequellen angeboten:
      m&ouml;glich.</p>
 
       <h2 id="enrichrelevance">8.2 Potentiell interessante andere Titel</h2>
+
+      <p> Durch statistische Auswertungen des Ausleihverhaltens im
+      Bestand der USB sowie des Nutzungsverhaltens im KUG werden zu
+      einem gegebenen Titel gewichtete nutzer- bzw. sessionspezifische
+      Überschneidungsmengen mit anderen ausgeliehenen/-gewählten
+      Titeln bestimmt. Dadurch bekommt der Nutzer weitere Titel
+      angezeigt, die von anderen Nutzern im Kontext des aktuellen
+      Titels für interessant befunden wurden.  </p>
+
+      <h2 id="enrichweitere">8.3 Weitere Anreicherungen</h2>
       <p>
-      Durch statistische Auswertungen des Ausleihverhaltens im Bestand
-der USB sowie des Nutzungsverhaltens im KUG werden zu einem gegebenen
-Titel gewichtete nutzer- bzw. sessionspezifische Überschneidungsmengen mit
-anderen ausgeliehenen/-gewählten Titeln bestimmt. Dadurch bekommt der
-Nutzer weitere Titel angezeigt, die von anderen Nutzern im
-Kontext des aktuellen Titels für interessant befunden wurden.
+      Weitere Anreicherung sind:
       </p>
+
+      <ul>
+
+      <li>mit der Basisklassifikation. Darüber lassen sich nun in
+      einem Katalog andere thematisch benachbarte Titel finden.</li>
+
+      <li>mit E-Book URLs, falls die USB den entsprechenden Titel als
+      E-Book erworben hat. Damit besteht z.B. auch von einer
+      Titelaufnahme der Druck-Ausgabe in einem Institutskatalog sofort
+      der Zugriff auf den Volltext. Für diesen Zugriff gelten die mit
+      dem E-Book erworbenen Beschränkungen (nur vom Campus).</li>
+
+      </ul>
+
+      <p> Wurde bisher für zentrale Anreicherungen ausschliesslich auf
+      die ISBN zurückgegriffen, so wird der Zugriff nun alternativ -
+      für den Fall einer nicht vorhandenen ISBN - um den Bibkey
+      erweitert.</p>
+
+      Weitere Informationen erhalten Sie im <a
+      href="http://blog.openbib.org/2008/06/18/zentrale-kataloganreicherung/"
+      target="_blank">OpenBibBlog</a>.
 
  <h1 id="popularity">9 Popularit&auml;ts-Funktionen</h1>
 
@@ -761,7 +828,7 @@ Im KUG werden derzeit folgende Arten von RSS-Feeds angeboten:
         Neuzug&auml;nge eines Kataloges</b>) abonnieren k&ouml;nnen.
       </p>
 
-      <h1 id="mashups">11 Mashups mit Sozialer Software</h1>
+      <h1 id="mashups">11 Mashups mit Sozialer Software und externen Diensten</h1>
 
       <h2 id="bibsonomy">11.1 Integration mit BibSonomy</h2>
      <p>
@@ -776,7 +843,41 @@ Im KUG werden derzeit folgende Arten von RSS-Feeds angeboten:
 
      </p>
 
-      <h2 id="wikipedia">11.2 Integration der Wikipedia</h2>
+      <h3 id="bibsonomyquellen">11.1.1 Thematische Integration weiterer
+      Quellen</h3>
+
+      <p> Die in BibSonomy enthaltenen Quellen - Publikationen wie
+      auch Webseiten - werden vollintegriert und über Schlagworte/Tags
+      thematisch erschlossen, im KUG angeboten.  </p>
+
+      <p>Wenn man in der Rubrik "BibSonomy Tags" der
+      Einzeltrefferanzeige auf ein angebotenes Tag / Schlagwort
+      klickt, dann öffnet sich eine Trefferliste aller öffentlich mit
+      diesem Begriff getaggten Titel aller Bibsonomy-Nutzer. Bei den
+      angebotenen Publikationen wird augenblicklich überprüft, ob der
+      jeweilige Titel in Katalogen des KUG enthalten ist und diese
+      Verfügbarkeitsinformation in der Titel-Anzeige ausgegeben.  </p>
+
+      <p> Ein Beispiel hierfür ist <a
+      href="http://kug5.ub.uni-koeln.de/portal/connector/permalink/inst006/6439/1/kug/index.html"
+      target="_blank">dieser Titel</a>.</p>
+     
+      <h3 id="bibsonomyspiegelung">11.1.2 Automatische Spiegelung von Titeln beim Tagging im KUG nach BibSonomy</h3>
+
+      <p>Wenn Titel im KUG getaggt werden, können diese Titel
+      inkl. Tags und Sichtbarkeitsinformationen (privat/öffentlich)
+      automatisch in eine entsprechenden BibSonomy-Kennung eingespielt
+      und damit effektiv gespiegelt werden. Der Nutzer sucht und
+      erschliesst also Titel durch Tagging in der KUG-Oberfläche,
+      findet diese dann aber auch in BibSonomy wieder und kann damit
+      die dort vorhandenen weitergehenden Möglichkeiten nutzen </p>
+
+      <p> Weitere Informationen hierzu erhalten Sie im <a
+      href="http://blog.openbib.org/2008/05/28/wege-aus-dem-datensilo-bibliothekskatalog-am-beispiel-von-openbib-und-bibsonomy/"
+      target="_blank">OpenBibBlog</a>.  </p>
+      </p>
+
+     <h2 id="wikipedia">11.2 Integration der Wikipedia</h2>
 
      <p> In der Einzeltreffer-Anzeige werden Personen sowie ISBNs
      direkt in die Wikipedia verlinkt. Wenn Sie Informationen zu einer
@@ -790,20 +891,53 @@ Im KUG werden derzeit folgende Arten von RSS-Feeds angeboten:
      mit der jeweiligen Suchoberfläche auseinandersetzen zu müssen.
      </p>
 
+     <p>
+     Darüber hinaus werden Verweise zu Artikeln in der Wikipedia
+     aufgeführt, die den aktuellen Titel über seine ISBN referenzieren. 
+     </p>
+
      <p> Doch beachten Sie, dass die Beitrage unter Umst&auml;nden
      nicht wissenschaftlich gepr&uuml;ft sein k&ouml;nnten.  </p>
+
+     <h2 id="gbs">11.3 Integration mit Google Book Search</h2>
+
+     <p> Der KUG wurde um eine Integration von Google Book Search
+     erweitert. Dabei haben wir zur Anzeige von Verfügbarkeiten des
+     Titels ein bildbasiertes 'Ampel-System' wie das der
+     Elektronischen Zeitschriftenbibliothek (EZB) integriert.  </p>
+
+     <p> Konkret wird bei einem Einzeltreffer im KUG entsprechend
+     dessen ISBN nach Zusatzinformationen bei Google Book Search
+     gesucht und dem Nutzer mit einem Bild eine Rückmeldung über deren
+     Verfügbarkeit gegeben.  </p>
+
+     <ul>
+
+     <li>Falls der Text dort im Vollzugriff vorliegt, wird das Book
+     Search Bild um den grünen Text 'Vollzugriff' ergänzt.</li>
+
+     <li>Falls Teile des Textes (Inhaltsverzeichnisse, Probekapitel,
+     Verweise auf weitere Ausgaben, Zitate usw.) verfügbar sind, wird
+     das Book Search Bild um den orangenen Text 'Teilzugriff'
+     ergänzt.</li>
+
+     <li>Falls das Buch bei Google Book Search nicht vorhanden ist
+     bzw. dort kein 'Mehrwert' existiert, dann erscheint die
+     Verlinkung von Google Book Search nicht.</li>
+
+     </ul>
+
+
 
       <h1 id="uebersichten">12 &Uuml;bersichten</h1>
       <h2 id="wolken">12.1 Wolken</h2>
 
-      <p> Für jeden Katalog kann - soweit dort
-      verschlagwortet wird - eine Übersicht der 200
-      am häufigsten vergebenen Schlagworte in der
-      Form einer Wortwolke (engl. tag cloud) dargestellt werden. Je
-      mehr Titel entsprechend verschlagwortet wurden, umso
-      grösser wird das zugehörige
-      Schlagwort dargestellt.
-      </p>
+      <p> Für jeden Katalog kann - soweit dort verschlagwortet wird -
+      eine Übersicht der 200 am häufigsten vergebenen Schlagworte und
+      verschiedenen anderen Kategorien in der Form einer Wortwolke
+      (engl. tag cloud) dargestellt werden. Je mehr Titel entsprechend
+      verschlagwortet wurden, umso grösser wird das zugehörige
+      Schlagwort dargestellt.  </p>
 
       <h2 id="sichten">12.2 Sichten</h2>
 

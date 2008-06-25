@@ -272,11 +272,12 @@ sub handler {
     # Wenn ein kataloguebergreifender Index ausgewaehlt wurde
     ####################################################################
 
+    $logger->debug(YAML::Dump($searchquery));
     if ($verfindex || $korindex || $swtindex || $notindex) {
         my $contentreq =
-            ($verfindex)?$searchquery->get_searchfield('verf    ')->{norm}:
-            ($korindex )?$searchquery->get_searchfield('kor     ')->{norm}:
-            ($swtindex )?$searchquery->get_searchfield('swt     ')->{norm}:
+            ($verfindex)?$searchquery->get_searchfield('verf'    )->{norm}:
+            ($korindex )?$searchquery->get_searchfield('kor'     )->{norm}:
+            ($swtindex )?$searchquery->get_searchfield('swt'     )->{norm}:
             ($notindex )?$searchquery->get_searchfield('notation')->{norm}:undef;
 
         my $type =

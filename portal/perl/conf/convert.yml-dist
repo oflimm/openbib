@@ -342,35 +342,8 @@ convtab:
       '0720': 1       # Provenienz
       '0750': 1       # Abstract
   einbaende:
-    inverted_tit:
-      '0002':         # Aufnahmedatum
-        string: 1
-      '0304':         # EST
-        ft: 1
-        string: 1
-      '0310':         # AST
-        ft: 1
-        string: 1
-      '0331':         # HST
-        ft: 1
-        string: 1
-      '0335':         # Zusatz zum HST
-        ft: 1
-        string: 0
-      '0341':         # PSTVorlage
-        ft: 1
-        string: 1
-      '0370':         # WST
-        ft: 1
-        string: 1
-      '0540':         # ISBN
-        string: 1
-      '0413':         # Provenienz-Register
-        string: 1
-    search_inhalt:
-      '0501': 1       # Richterindiz
-      '0720': 1       # Provenienz
-      '0750': 1       # Abstract
+    search_gtquelle:
+      '0304': 1       # Werkzeug
 # Kategorien fuer die Anzeige in der Kurztitelanzeige
     listitemcat:
       '0014': 1

@@ -203,17 +203,15 @@ sub get_startpage_of_view {
         = OpenBib::Database::DBI->connect("DBI:$self->{dbimodule}:dbname=$self->{configdbname};host=$self->{configdbhost};port=$self->{configdbport}", $self->{configdbuser}, $self->{configdbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $request=$dbh->prepare("select startpage from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare("select start_loc,start_stid from viewinfo where viewname = ?") or $logger->error($DBI::errstr);
     $request->execute($viewname) or $logger->error($DBI::errstr);
     my $res            = $request->fetchrow_hashref;
-    my $startpage      = decode_utf8($res->{startpage}) if (defined($res->{'startpage'}));
+    my $start_loc      = decode_utf8($res->{start_loc}) if (defined($res->{'start_loc'}));
+    my $start_stid     = decode_utf8($res->{start_stid}) if (defined($res->{'start_stid'}));
     $request->finish();
 
-    $logger->debug("Got Startpage $startpage") if (defined $startpage);
+    $logger->debug("Got Startpage $start_loc / $start_stid") if (defined $start_loc || defined $start_stid);
     
-    my ($start_loc,$start_stid) = ('','');
-    ($start_loc,$start_stid)    = split (":",$startpage) if ($startpage);
-
     return {
         start_loc  => $start_loc,
         start_stid => $start_stid,
@@ -873,7 +871,8 @@ sub get_viewinfo {
         viewname    => decode_utf8($result->{'viewname'}),
         description => decode_utf8($result->{'description'}),
         primrssfeed => decode_utf8($result->{'primrssfeed'}),
-        startpage   => decode_utf8($result->{'startpage'}),
+        start_loc   => decode_utf8($result->{'start_loc'}),
+        start_stid  => decode_utf8($result->{'start_stid'}),
         profilename => decode_utf8($result->{'profilename'}),
         active      => decode_utf8($result->{'active'}),
     };

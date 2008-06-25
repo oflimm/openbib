@@ -84,7 +84,8 @@ CREATE TABLE viewinfo (
  viewname    VARCHAR(20),
  description TEXT,
  rssfeed     BIGINT,
- startpage   TEXT,
+ start_loc   TEXT,
+ start_stid  TEXT,
  profilename VARCHAR(20),
  active      BOOL,
 

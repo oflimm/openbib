@@ -19,6 +19,13 @@
 
 [% PROCESS common/subtemplate name="mainnavigation" %] 
 
+[%
+  viewdbs = [];
+  IF view ;
+    viewdbs = config.get_dbs_of_view(view);
+  END ;
+%]
+
 <div id="maincontent">
 
 <ul class="tabbingmenu">
@@ -41,7 +48,7 @@
 <div class="content">
 <p />
 <p />
-
+[%# USE dumper;dumper.dump(browselist) %]
 <table width="100%">
 [% FOREACH item IN browselist %]
 [%- querycat = '' -%]

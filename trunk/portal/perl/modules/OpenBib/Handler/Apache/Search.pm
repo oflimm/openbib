@@ -143,7 +143,7 @@ sub handler {
     my $searchtitofurhkor = $query->param('searchtitofurhkor') || '';
     my $searchtitofnot    = $query->param('searchtitofnot')    || '';
     my $searchtitofswt    = $query->param('searchtitofswt')    || '';
-    my $searchtitofcnt    = $query->param('searchtitofcnt')    || '';
+    my $searchtitofcnt    = decode_utf8($query->param('searchtitofcnt'))    || '';
 
     my $browsecat         = $query->param('browsecat')         || '';
     my $browsecontent     = $query->param('browsecontent')     || '';

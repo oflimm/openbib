@@ -116,23 +116,23 @@
 <tr><td><b>Id</b></td><td colspan="2">[% item.${'id'} %]</td></tr>
 
 [%- FOREACH part IN item.${'P0101'}  -%]
-<tr><td><b>Buchbinder/Werkstatt</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content | uri %];database=einbaende;category=T0101;olws=Viewer">[% part.content %]</a></td></tr>
+<tr><td><b>Buchbinder/Werkstatt</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content %];database=einbaende;category=T0101;olws=Viewer">[% part.content %]</a></td></tr>
 [%- END -%]
 
 [%- FOREACH part IN item.${'N0700'}  -%]
-<tr><td><b>Einband</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content | uri %];database=einbaende;category=T0700;olws=Viewer">[% part.content %]</a></td></tr>
+<tr><td><b>Einband</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content %];database=einbaende;category=T0700;olws=Viewer">[% part.content %]</a></td></tr>
 [%- END -%]
 
 [%- FOREACH part IN item.${'S0710'}  -%]
-<tr><td><b>Jahrhundert</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content | uri %];database=einbaende;category=T0710;olws=Viewer">[% part.content %]</a></td></tr>
+<tr><td><b>Jahrhundert</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content %];database=einbaende;category=T0710;olws=Viewer">[% part.content %]</a></td></tr>
 [%- END -%]
 
 [%- FOREACH part IN item.${'C0200'}  -%]
-<tr><td><b>Region</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content | uri %];database=einbaende;category=T0200;olws=Viewer">[% part.content %]</a></td></tr>
+<tr><td><b>Region</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content %];database=einbaende;category=T0200;olws=Viewer">[% part.content %]</a></td></tr>
 [%- END -%]
 
 [%- FOREACH part IN item.${'T0413'}  -%]
-<tr><td><b>Drucker/Verleger/Verlag</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content | uri %];database=einbaende;category=T0413;olws=Viewer">[% part.content %]</a></td></tr>
+<tr><td><b>Drucker/Verleger/Verlag</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content %];database=einbaende;category=T0413;olws=Viewer">[% part.content %]</a></td></tr>
 [%- END -%]
 
 [%- FOREACH part IN item.${'T0435'}  -%]

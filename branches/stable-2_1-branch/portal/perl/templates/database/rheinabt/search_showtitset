@@ -274,7 +274,7 @@ END;
 <abbr class="unapi-id" title="[% normset.database %]:[% normset.id %]"></abbr>
 [% END %]
 
-[% IF mexnormset.size > 0 && circset <= 0 %]
+[% IF mexnormset.size > 0 && circset.size <= 0 %]
 <p />
 [% PROCESS common/subtemplate name="mexset" %]
 [% END %]

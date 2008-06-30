@@ -67,7 +67,7 @@
 [%- IF browsecat == 'T0413' -%]
 [%- querycat = ";verf=${item}" -%]
 [%- END %]
-<tr><td><a href="[% config.search_loc%]?sessionID=[% sessionID %];view=[% view %];searchtitofcnt=[% item | uri %];database=einbaende;category=[% browsecat %];olws=Viewer">[% item %]</a></td>
+<tr><td><a href="[% config.search_loc%]?sessionID=[% sessionID %];view=[% view %];searchtitofcnt=[% item %];database=einbaende;category=[% browsecat %];stid=1;olws=Viewer">[% item %]</a></td>
 [% IF querycat%]
 <td align="right" style="font-weight:bold">&nbsp;&nbsp;&nbsp;<a
 href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced[% querycat | replace('[(]

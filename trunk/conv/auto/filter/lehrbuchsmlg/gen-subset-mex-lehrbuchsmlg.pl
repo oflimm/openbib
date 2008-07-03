@@ -65,7 +65,7 @@ my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=inst001;host=$config->{dbh
 
 print "### $pool: Bestimme Titel-ID's anhand des Standortes\n";
 
-my $request=$dbh->prepare("select distinct conn.sourceid as titid from conn,mex where mex.category=16 and mex.content='USB-Lehrbuchsammlung' and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6") or $logger->error($DBI::errstr);
+my $request=$dbh->prepare("select distinct conn.sourceid as titid from conn,mex where mex.category=16 and mex.content='Hauptabteilung / Lehrbuchsammlung' and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6") or $logger->error($DBI::errstr);
 
 $request->execute() or $logger->error($DBI::errstr);;
 

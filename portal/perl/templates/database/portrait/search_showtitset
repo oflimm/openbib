@@ -81,6 +81,8 @@ Bestellung in den Lesesaal Historische Sammlungen:
 </form>
 </div>
 
+<div style="float:left;max-width:70%">
+
 <table cellpadding="2">
 <tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Inhalt") %]</td></tr>
 <tr><td class="category">id</td><td>[% normset.id %]</td></tr>
@@ -164,7 +166,6 @@ END;
 -%]
 </table>
 
-
 [% IF mexnormset.size > 0 %]
 <p />
 <table width="100%">
@@ -176,6 +177,8 @@ END;
 [% END %]
 </table>
 [% END %]
+
+</div>
 
 </td></tr>
 </table>

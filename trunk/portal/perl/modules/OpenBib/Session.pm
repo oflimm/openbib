@@ -550,12 +550,14 @@ sub get_items_in_resultlist_per_db {
 
     my $config = OpenBib::Config->instance;
 
+    my @resultlist=();
+
+    return @resultlist if (!defined $self->{ID} || !defined $database || !defined $queryid);
+    
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
-
-    my @resultlist=();
 
     my $sqlrequest="select searchresult from searchresults where sessionid = ? and dbname = ? and queryid = ?";
     my @sqlargs=($self->{ID},$database,$queryid);
@@ -566,9 +568,10 @@ sub get_items_in_resultlist_per_db {
     }
     else {
         $sqlrequest.=" order by ASC";
+        $offset = 0;
     }
     
-    $logger->debug("SQL-Request: $sqlrequest / $self->{ID} - $database - $queryid - $offset - $hitrange");
+    $logger->debug("SQL-Request: $sqlrequest / $self->{ID} - $database - $queryid - $offset");
     my $idnresult=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
     $idnresult->execute(@sqlargs) or $logger->error($DBI::errstr);
     while (my $res = $idnresult->fetchrow_hashref()){
@@ -1224,9 +1227,9 @@ sub set_searchresult {
     $idnresult->execute($self->{ID},$queryid,$database,$offset,$hitrange) or $logger->error($DBI::errstr);
     
     $idnresult=$dbh->prepare("insert into searchresults values (?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
-    my $storableres=unpack "H*",Storable::freeze($recordlist->to_list);
+    my $storableres=unpack "H*",Storable::freeze($recordlist);
     
-    $logger->debug("YAML-Dumped: ".YAML::Dump($recordlist->to_list));
+    $logger->debug("YAML-Dumped: ".YAML::Dump($recordlist));
     my $num=$recordlist->get_size();
     $idnresult->execute($self->{ID},$database,$offset,$hitrange,$storableres,$num,$queryid) or $logger->error($DBI::errstr);
     $idnresult->finish();

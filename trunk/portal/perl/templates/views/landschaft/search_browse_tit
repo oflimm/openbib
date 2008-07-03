@@ -45,7 +45,7 @@
 
 <table width="100%">
 [% FOREACH item IN browselist %]
-<tr><td><a href="[% config.search_loc%]?sessionID=[% sessionID %];view=[% view %];database=landschaft;searchtitofcnt=[% item | uri %];category=[% browsecat %]">[% item %]</a></td></tr>
+<tr><td><a href="[% config.search_loc%]?sessionID=[% sessionID %];view=[% view %];database=landschaft;searchtitofcnt=[% item %];category=[% browsecat %]">[% item %]</a></td></tr>
 [% END %]
 </table>
 

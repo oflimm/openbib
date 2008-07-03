@@ -105,7 +105,7 @@
 <tr><td class="boxed">
 <table>
 [% FOREACH sammlung IN sammlungen %]
-<tr><td><a style="font-weight:bold" href="[% config.search_loc%]?sessionID=[% sessionID %];view=[% view %];database=portrait;searchtitofcnt=[% sammlung | uri %];category=T0200">[% sammlung %]</a></td></tr>
+<tr><td><a style="font-weight:bold" href="[% config.search_loc%]?sessionID=[% sessionID %];view=[% view %];database=portrait;searchtitofcnt=[% sammlung %];category=T0200">[% sammlung %]</a></td></tr>
 [% END %]
 </table>
 </td></tr>

@@ -626,9 +626,6 @@ sub handler {
             $btime=new Benchmark;
             $timeall=timediff($btime,$atime);
             $logger->info("Zeit fuer : Bestimmung von enrichkeys ist ".timestr($timeall));
-            undef $atime;
-            undef $btime;
-            undef $timeall;
         }
 
         $logger->debug("Enrich-Keys: ".join(" ",@{$enrichkeys_ref}));
@@ -641,6 +638,8 @@ sub handler {
     ######################################################################
     # Schleife ueber alle Datenbanken 
     ######################################################################
+
+    my $atime=new Benchmark;
 
     # Array aus DB-Name und Titel-ID zur Navigation
     my @resultset=();
@@ -754,6 +753,8 @@ sub handler {
                 undef $btime;
                 undef $timeall;
                 
+                # flush output buffer
+                $r->rflush();
             }
         }
         else {
@@ -904,6 +905,8 @@ sub handler {
                             my $ddtimeall     = timediff($ddbtime,$ddatime);
                             $drilldowntime    = timestr($ddtimeall,"nop");
                             $drilldowntime    =~s/(\d+\.\d+) .*/$1/;
+
+                            $logger->debug("Zeit fuer Drilldowns $drilldowntime");
                         }
 
                         $recordlist->sort({order=>$sortorder,type=>$sorttype});
@@ -980,6 +983,9 @@ sub handler {
                         
                         undef $btime;
                         undef $timeall;
+
+                        # flush output buffer
+                        $r->rflush();
                     }
                 }
             }
@@ -1091,8 +1097,9 @@ sub handler {
                     undef $btime;
                     undef $timeall;
 
+                    # flush output buffer
+                    $r->rflush();
                 }
-                undef $atime;
             }
         }
         # Cachen des Ergebnisses
@@ -1102,11 +1109,17 @@ sub handler {
 #            my $num=$#resultlist+1;
 #            $cacherequest->execute($session->{ID},$database,$storableres,$num,$queryid) or $logger->error($DBI::errstr);
 #        }
-        # flush output buffer
-        $r->rflush();
+
     }
 #    $cacherequest->finish();
     
+
+    if ($config->{benchmark}) {
+        my $btime=new Benchmark;
+        my $timeall=timediff($btime,$atime);
+        $logger->info("Zeit fuer : Bestimmung fuer Suche ueber alle Datenbanken ist ".timestr($timeall));
+    }
+
     ######################################################################
     #
     # ENDE Anfrage an Datenbanken schicken und Ergebnisse einsammeln

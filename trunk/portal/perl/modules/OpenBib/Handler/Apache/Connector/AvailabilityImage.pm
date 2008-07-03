@@ -131,7 +131,7 @@ sub handler {
                 
                 $logger->debug("GBS".YAML::Dump($gbs_result));
                 
-                my $type = $gbs_result->{"ISBN$isbn"}{preview};
+                my $type = $gbs_result->{"ISBN$isbn"}{preview} || '';
                 
                 if ($type eq "noview"){
                     $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");

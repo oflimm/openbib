@@ -204,6 +204,7 @@
 ../templates/views/einbaende/resultlists_showsinglepool
 ../templates/views/einbaende/searchmask_simple
 ../templates/views/einbaende/searchmask
+../templates/views/einbaende/search_browse_tit
 ../templates/views/einbaende/startopac
 ../templates/views/einbaende/std_footer
 ../templates/views/einbaende/virtualsearch_result_end

@@ -72,7 +72,8 @@ sub _new_instance {
 
 sub get_number_of_dbs {
     my $self = shift;
-
+    my $profilename = shift;
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -81,8 +82,16 @@ sub get_number_of_dbs {
         = OpenBib::Database::DBI->connect("DBI:$self->{dbimodule}:dbname=$self->{configdbname};host=$self->{configdbhost};port=$self->{configdbport}", $self->{configdbuser}, $self->{configdbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $request=$dbh->prepare("select count(dbname) as rowcount from dbinfo where active=1") or $logger->error($DBI::errstr);
-    $request->execute() or $logger->error($DBI::errstr);
+    my $request;
+    if ($profilename){
+        $request=$dbh->prepare("select count(profiledbs.dbname) as rowcount from profiledbs,dbinfo where profilename = ? and dbinfo.dbname=profiledbs.dbname and dbinfo.active = 1") or $logger->error($DBI::errstr);
+        $request->execute($profilename) or $logger->error($DBI::errstr);
+    }
+    else {
+        $request=$dbh->prepare("select count(dbname) as rowcount from dbinfo where dbinfo.active = 1") or $logger->error($DBI::errstr);
+        $request->execute() or $logger->error($DBI::errstr);
+    }
+    
     my $res    = $request->fetchrow_hashref;
     my $alldbs = $res->{rowcount};
     $request->finish();
@@ -92,7 +101,7 @@ sub get_number_of_dbs {
 
 sub get_number_of_all_dbs {
     my $self = shift;
-
+    
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
@@ -152,6 +161,7 @@ sub get_number_of_all_views {
 
 sub get_number_of_titles {
     my $self = shift;
+    my $profilename = shift;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -161,8 +171,16 @@ sub get_number_of_titles {
         = OpenBib::Database::DBI->connect("DBI:$self->{dbimodule}:dbname=$self->{configdbname};host=$self->{configdbhost};port=$self->{configdbport}", $self->{configdbuser}, $self->{configdbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $request=$dbh->prepare("select sum(count) as alltitcount from titcount,dbinfo where  titcount.dbname=dbinfo.dbname and dbinfo.active=1") or $logger->error($DBI::errstr);
-    $request->execute() or $logger->error($DBI::errstr);
+    my $request;
+    if ($profilename){
+        $request=$dbh->prepare("select sum(count) as alltitcount from titcount,dbinfo,profiledbs where profiledbs.profilename = ? and profiledbs.dbname=titcount.dbname and titcount.dbname=dbinfo.dbname and dbinfo.active=1") or $logger->error($DBI::errstr);
+        $request->execute($profilename) or $logger->error($DBI::errstr);
+    }
+    else {
+        $request=$dbh->prepare("select sum(count) as alltitcount from titcount,dbinfo where titcount.dbname=dbinfo.dbname and dbinfo.active=1") or $logger->error($DBI::errstr);
+        $request->execute($profilename) or $logger->error($DBI::errstr);
+    }
+
     my $res       = $request->fetchrow_hashref;
     my $alltitles = $res->{alltitcount};
     $request->finish();
@@ -210,7 +228,8 @@ sub get_startpage_of_view {
     my $start_stid     = decode_utf8($res->{start_stid}) if (defined($res->{'start_stid'}));
     $request->finish();
 
-    $logger->debug("Got Startpage $start_loc / $start_stid") if (defined $start_loc || defined $start_stid);
+    $logger->debug("Got Startpage $start_loc") if (defined $start_loc);
+    $logger->debug("Got StartStid $start_stid") if (defined $start_stid);
     
     return {
         start_loc  => $start_loc,

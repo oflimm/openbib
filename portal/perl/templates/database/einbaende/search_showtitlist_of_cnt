@@ -76,7 +76,7 @@
 
 <!-- Titlelist begins here -->
 <table width="100%">
-<tr><th>Suche nach '[% query.param('searchtitofcnt') %]' / [% recordlist.get_size %] Treffer </th></tr>
+<tr><th>Suche nach '[% searchtitofcnt %]' / [% recordlist.get_size %] Treffer </th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 [%#  USE dumper;dumper.dump(recordlist)%]
 <table  width="100%" cellpadding="2">

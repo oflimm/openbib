@@ -371,7 +371,7 @@ sub handler {
         })){
             my $recordlist = Storable::thaw(pack "H*", $searchresult);
 
-            $logger->debug("Recordlist: ".YAML::Dump($recordlist));
+            $logger->debug("Recordlist for queryid $queryid and offset $offset: ".YAML::Dump($recordlist));
             
             $recordlist->sort({order=>$sortorder,type=>$sorttype});
 

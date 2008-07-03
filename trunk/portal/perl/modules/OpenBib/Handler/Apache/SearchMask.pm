@@ -201,8 +201,8 @@ sub handler {
         push @$dbchoice_ref, $dbname;
     }
 
-    my $alldbs     = $config->get_number_of_dbs();
-    my $alldbcount = $config->get_number_of_titles();
+    my $alldbs     = $config->get_number_of_dbs($config->get_viewinfo($view)->{profilename});
+    my $alldbcount = $config->get_number_of_titles($config->get_viewinfo($view)->{profilename});
 
     my @queries    = $session->get_all_searchqueries();
 

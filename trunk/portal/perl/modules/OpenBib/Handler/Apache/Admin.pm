@@ -1277,6 +1277,7 @@ sub editcat_del {
         # Und nun auch die Datenbank komplett loeschen
         system("$config->{tool_dir}/destroypool.pl $dbname > /dev/null 2>&1");
     }
+
     return;
 }
 
@@ -1516,7 +1517,7 @@ sub editview_new {
     $idnresult=$dbh->prepare("insert into viewinfo values (?,?,NULL,?,?,?,?)") or $logger->error($DBI::errstr);
     $idnresult->execute($viewname,$description,$start_loc,$start_stid,$profilename,$active) or $logger->error($DBI::errstr);
     
-    return;
+    return 1;
 }
 
 sub editview_rss_change {
@@ -1662,7 +1663,7 @@ sub editprofile_new {
     $idnresult=$dbh->prepare("insert into profileinfo values (?,?)") or $logger->error($DBI::errstr);
     $idnresult->execute($profilename,$description) or $logger->error($DBI::errstr);
     
-    return;
+    return 1;
 }
 
 sub editlogintarget_del {

@@ -579,8 +579,10 @@ sub log_query {
     my $categoryrequest = $dbh->prepare("insert into querycategory values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
 
     foreach my $cat (keys %$cat2type_ref){
-        my $thiscategory_terms = $searchquery_ref->{$cat}->{val};
-	
+        my $thiscategory_terms = (defined $searchquery_ref->{$cat}->{val})?$searchquery_ref->{$cat}->{val}:'';
+
+        next if (!$thiscategory_terms);
+        
 	$thiscategory_terms    =~s/[^\p{Alphabetic}0-9 ]//g;
 	$thiscategory_terms    = lc($thiscategory_terms);
 

@@ -230,6 +230,8 @@ sub print_to_handler {
     my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
     my $circinfotable = OpenBib::Config::CirculationInfoTable->instance;
 
+    my $searchtitofcnt = decode_utf8($query->param('searchtitofcnt'))    || '';
+
     if ($self->get_size() == 0) {
         OpenBib::Common::Util::print_info($msg->maketext("Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"),$r,$msg);
     }
@@ -255,7 +257,7 @@ sub print_to_handler {
         if ($config->{benchmark}) {
             $btime   = new Benchmark;
             $timeall = timediff($btime,$atime);
-            $logger->info("Zeit fuer : ".($self->get_number)." Titel : ist ".timestr($timeall));
+            $logger->info("Zeit fuer : ".($self->get_size)." Titel : ist ".timestr($timeall));
             undef $atime;
             undef $btime;
             undef $timeall;
@@ -331,6 +333,7 @@ sub print_to_handler {
         
         # TT-Data erzeugen
         my $ttdata={
+            searchtitofcnt => $searchtitofcnt,
             lang           => $lang,
             view           => $view,
             stylesheet     => $stylesheet,

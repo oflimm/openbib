@@ -721,7 +721,7 @@ if ($type == 11){
                 data   => $bk_ref->{$bk},
             });
             
-            $logger->info(YAML::Dump($bk_ref->{$bk}));
+            $logger->debug(YAML::Dump($bk_ref->{$bk}));
         }
 
     }
@@ -814,7 +814,7 @@ sub gen_cloud_class {
 
 	foreach my $item_ref (@$items_ref){
 	  my $done = 0;
-	  
+	
 	  for (my $class=0 ; $class<=6 ; $class++){
 	    if ((100 * log($item_ref->{count} + 2) <= $thresholds[$class]) && !$done){
 	      $item_ref->{class} = $class;

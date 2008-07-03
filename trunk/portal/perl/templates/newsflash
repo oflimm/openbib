@@ -15,14 +15,26 @@
 <tr><th style="color:red">Aktuelles</th></tr>
 <tr><td class="boxedclear">
 <ul>
-<li>Seit dem 14.10.2007 ist eine neue KUG-Version mit einigen
-<a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[%
-view %];stid=2"">Verbesserungen</a> (Suchverfeinerung
-usw.) aktiv.
-<li>Bitte aktualisieren Sie den Kopfbereich des KUG in Ihrem Browser,
-falls Sie dort Darstellungsprobleme beobachten wie z.B. fehlende Logos usw. Im
-Firefox-Browser ist dies z.B. mit 'Rechter Klick &uuml;ber dem
-Kopfbereich->Aktueller Frame->Frame neuladen' m&ouml;glich.</li>
+
+<li>Seit dem 7.7.2008 ist eine neue KUG-Version mit einigen <a
+href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view
+%];stid=2">Verbesserungen</a> (Literaturlisten, BibSonomy, Verzicht
+auf Frames, englische Sprachversion usw.) aktiv.</li>
+
+<li>Damit Sie sich im KUG besser zurecht finden, bieten wir sowohl
+f&uuml;r den Einstieg in die Nutzung von BibSonomy ein Tutorium <a
+class="tutorial"
+href="http://kug.ub.uni-koeln.de/tutorials/bibsonomy.html"
+target="tutorial"><img src="/images/openbib/tutorial.png"
+alt="Interaktives Tutorium" /></a> an, wie auch f&uuml;r die
+&Uuml;bernahme von Tags samt zugeh&ouml;rigen Titeln aus dem KUG nach
+BibSonomy <a class="tutorial"
+href="http://kug.ub.uni-koeln.de/tutorials/bibsonomyabgleich.html"
+target="tutorial"><img src="/images/openbib/tutorial.png"
+alt="Interaktives Tutorium" /></a>. Weitere Tutorien finden Sie in der
+<a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view
+%]">Suchhilfe</a>.</li>
+
 </ul>
 </td></tr>
 </table>

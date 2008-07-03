@@ -1,3 +1,4 @@
+[% IF circset.size <= 0 %]
 <table width="100%">
 <tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="250">[% msg.maketext("Standort") %]</td><td width="250">[% msg.maketext("Signatur") %]</td><td width="230">[% msg.maketext("Bestandsverlauf") %]</td></tr>
 
@@ -57,3 +58,4 @@ nach Bestellung</i>, siehe B&auml;nde)
 
 [% END %]
 </table>
+[% END %]

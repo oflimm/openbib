@@ -362,7 +362,9 @@ sub set_from_apache_request {
     delete $self->{_hits}          if (exists $self->{_hits});
     delete $self->{_searchquery}   if (exists $self->{_searchquery});
     delete $self->{_id}            if (exists $self->{_id});
-    
+
+    $self->{_searchquery} = {};
+        
     if ($fs){
       $self->{_searchquery}->{fs}={
 			      val   => $fs,

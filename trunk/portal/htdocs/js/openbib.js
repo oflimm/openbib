@@ -24,12 +24,14 @@ $('.nojs_show').css('display','none');
 // Merklistenfuellstand aktualisieren
 // Achtung!!! Wert von managecollection_loc aus OpenBib::Config ist hier
 // fest eingetragen und muss gegebenenfalls angepasst werden
+ if (sessionID){
 $.get("/portal/merkliste?sessionID="+sessionID+";action=show;do_collection_showcount=1",
 function (txt){
  $("#collectioncount").html("["+txt+"]"); 
 }
 );
-
+ }
+ 
 $(".rlcollect a").click(function(){
 
    // Insert-Funktion aufrufen

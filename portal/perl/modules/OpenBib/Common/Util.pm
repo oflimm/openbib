@@ -409,187 +409,187 @@ sub grundform {
     $content=~s/è/e/g;
     $content=~s/ê/e/g;
     $content=~s/ë/e/g;
-    $content=~s/\u0113/e/g; # Kl. e mit Ueberstrich/Macron
-    $content=~s/\u0115/e/g; # Kl. e mit Hacek/Breve
-    $content=~s/\u011b/e/g; # Kl. e mit Caron
-    $content=~s/\u0117/e/g; # Kl. e mit Punkt
+    $content=~s/\x{113}/e/g; # Kl. e mit Ueberstrich/Macron
+    $content=~s/\x{115}/e/g; # Kl. e mit Hacek/Breve
+    $content=~s/\x{11b}/e/g; # Kl. e mit Caron
+    $content=~s/\x{117}/e/g; # Kl. e mit Punkt
     
     $content=~s/É/E/g;
     $content=~s/È/E/g;
     $content=~s/Ê/E/g;
     $content=~s/Ë/E/g;
-    $content=~s/\u0112/E/g; # Gr. E mit Ueberstrich/Macron
-    $content=~s/\u0114/E/g; # Gr. E mit Hacek/Breve
-    $content=~s/\u011a/E/g; # Gr. E mit Caron
-    $content=~s/\u0116/E/g; # Gr. E mit Punkt
+    $content=~s/\x{112}/E/g; # Gr. E mit Ueberstrich/Macron
+    $content=~s/\x{114}/E/g; # Gr. E mit Hacek/Breve
+    $content=~s/\x{11a}/E/g; # Gr. E mit Caron
+    $content=~s/\x{116}/E/g; # Gr. E mit Punkt
     
     $content=~s/á/a/g;
     $content=~s/à/a/g;
     $content=~s/â/a/g;
     $content=~s/ã/a/g;
     $content=~s/å/a/g;
-    $content=~s/\u0101/a/g; # Kl. a mit Ueberstrich/Macron
-    $content=~s/\u0103/a/g; # Kl. a mit Hacek/Breve
+    $content=~s/\x{101}/a/g; # Kl. a mit Ueberstrich/Macron
+    $content=~s/\x{103}/a/g; # Kl. a mit Hacek/Breve
     
     $content=~s/Á/A/g;
     $content=~s/À/A/g;
     $content=~s/Â/A/g;
     $content=~s/Ã/A/g;
     $content=~s/Å/A/g;
-    $content=~s/\u0100/A/g; # Gr. A mit Ueberstrich/Macron
-    $content=~s/\u0102/A/g; # Gr. A mit Hacek/Breve
+    $content=~s/\x{100}/A/g; # Gr. A mit Ueberstrich/Macron
+    $content=~s/\x{102}/A/g; # Gr. A mit Hacek/Breve
     
     $content=~s/ó/o/g;
     $content=~s/ò/o/g;
     $content=~s/ô/o/g;
     $content=~s/õ/o/g;
-    $content=~s/\u014d/o/g; # Kl. o mit Ueberstrich/Macron
-    $content=~s/\u014f/o/g; # Kl. o mit Hacek/Breve
-    $content=~s/\u0151/o/g; # Kl. o mit Doppel-Acute
+    $content=~s/\x{14d}/o/g; # Kl. o mit Ueberstrich/Macron
+    $content=~s/\x{14f}/o/g; # Kl. o mit Hacek/Breve
+    $content=~s/\x{151}/o/g; # Kl. o mit Doppel-Acute
     
     $content=~s/Ó/O/g;
     $content=~s/Ò/O/g;
     $content=~s/Ô/O/g;
     $content=~s/Õ/O/g;
-    $content=~s/\u014c/O/g; # Gr. O mit Ueberstrich/Macron
-    $content=~s/\u014e/O/g; # Gr. O mit Hacek/Breve
-    $content=~s/\u0150/O/g; # Gr. O mit Doppel-Acute
+    $content=~s/\x{14c}/O/g; # Gr. O mit Ueberstrich/Macron
+    $content=~s/\x{14e}/O/g; # Gr. O mit Hacek/Breve
+    $content=~s/\x{150}/O/g; # Gr. O mit Doppel-Acute
     
     $content=~s/í/i/g;
     $content=~s/ì/i/g;
     $content=~s/î/i/g;
     $content=~s/ï/i/g;
-    $content=~s/\u0131/i/g; # Kl. punktloses i
-    $content=~s/\u012b/i/g; # Kl. i mit Ueberstrich/Macron
-    $content=~s/\u012d/i/g; # Kl. i mit Hacek/Breve
+    $content=~s/\x{131}/i/g; # Kl. punktloses i
+    $content=~s/\x{12b}/i/g; # Kl. i mit Ueberstrich/Macron
+    $content=~s/\x{12d}/i/g; # Kl. i mit Hacek/Breve
 
     
     $content=~s/Í/I/g;
     $content=~s/Ì/I/g;
     $content=~s/Î/I/g;
     $content=~s/Ï/I/g;
-    $content=~s/\u0130/I/g; # Gr. I mit Punkt
-    $content=~s/\u012a/I/g; # Gr. i mit Ueberstrich/Macron
-    $content=~s/\u012c/I/g; # Gr. i mit Hacek/Breve
+    $content=~s/\x{130}/I/g; # Gr. I mit Punkt
+    $content=~s/\x{12a}/I/g; # Gr. i mit Ueberstrich/Macron
+    $content=~s/\x{12c}/I/g; # Gr. i mit Hacek/Breve
 
     $content=~s/Ú/U/g;
     $content=~s/Ù/U/g;
     $content=~s/Û/U/g;
-    $content=~s/\u0168/U/g; # Gr. U mit Tilde
-    $content=~s/\u016a/U/g; # Gr. U mit Ueberstrich/Macron
-    $content=~s/\u016c/U/g; # Gr. U mit Hacek/Breve
-    $content=~s/\u0170/U/g; # Gr. U mit Doppel-Acute
-    $content=~s/\u016e/U/g; # Gr. U mit Ring oben
+    $content=~s/\x{168}/U/g; # Gr. U mit Tilde
+    $content=~s/\x{16a}/U/g; # Gr. U mit Ueberstrich/Macron
+    $content=~s/\x{16c}/U/g; # Gr. U mit Hacek/Breve
+    $content=~s/\x{170}/U/g; # Gr. U mit Doppel-Acute
+    $content=~s/\x{16e}/U/g; # Gr. U mit Ring oben
 
     $content=~s/ú/u/g;
     $content=~s/ù/u/g;
     $content=~s/û/u/g;
-    $content=~s/\u0169/u/g; # Kl. u mit Tilde
-    $content=~s/\u016b/u/g; # Kl. u mit Ueberstrich/Macron
-    $content=~s/\u016d/u/g; # Kl. u mit Hacek/Breve
-    $content=~s/\u0171/u/g; # Kl. u mit Doppel-Acute
-    $content=~s/\u016f/u/g; # Kl. u mit Ring oben
+    $content=~s/\x{169}/u/g; # Kl. u mit Tilde
+    $content=~s/\x{16b}/u/g; # Kl. u mit Ueberstrich/Macron
+    $content=~s/\x{16d}/u/g; # Kl. u mit Hacek/Breve
+    $content=~s/\x{171}/u/g; # Kl. u mit Doppel-Acute
+    $content=~s/\x{16f}/u/g; # Kl. u mit Ring oben
 
     $content=~s/ø/o/g;
     $content=~s/Ø/o/g;
 
     $content=~s/ñ/n/g;
-    $content=~s/\u0144/n/g; # Kl. n mit Acute
-    $content=~s/\u0146/n/g; # Kl. n mit Cedille
-    $content=~s/\u0148/n/g; # Kl. n mit Caron
+    $content=~s/\x{144}/n/g; # Kl. n mit Acute
+    $content=~s/\x{146}/n/g; # Kl. n mit Cedille
+    $content=~s/\x{148}/n/g; # Kl. n mit Caron
 
     $content=~s/Ñ/N/g;
-    $content=~s/\u0143/N/g; # Gr. N mit Acute
-    $content=~s/\u0145/N/g; # Gr. N mit Cedille
-    $content=~s/\u0147/N/g; # Gr. N mit Caron
+    $content=~s/\x{143}/N/g; # Gr. N mit Acute
+    $content=~s/\x{145}/N/g; # Gr. N mit Cedille
+    $content=~s/\x{147}/N/g; # Gr. N mit Caron
 
-    $content=~s/\u0155/r/g; # Kl. r mit Acute
-    $content=~s/\u0157/r/g; # Kl. r mit Cedille
-    $content=~s/\u0159/r/g; # Kl. r mit Caron
+    $content=~s/\x{155}/r/g; # Kl. r mit Acute
+    $content=~s/\x{157}/r/g; # Kl. r mit Cedille
+    $content=~s/\x{159}/r/g; # Kl. r mit Caron
 
-    $content=~s/\u0154/R/g; # Gr. R mit Acute
-    $content=~s/\u0156/R/g; # Gr. R mit Cedille
-    $content=~s/\u0158/R/g; # Gr. R mit Caron
+    $content=~s/\x{154}/R/g; # Gr. R mit Acute
+    $content=~s/\x{156}/R/g; # Gr. R mit Cedille
+    $content=~s/\x{158}/R/g; # Gr. R mit Caron
 
-    $content=~s/\u015b/s/g; # Kl. s mit Acute
-    $content=~s/\u015d/s/g; # Kl. s mit Circumflexe
-    $content=~s/\u015f/s/g; # Kl. s mit Cedille
+    $content=~s/\x{15b}/s/g; # Kl. s mit Acute
+    $content=~s/\x{15d}/s/g; # Kl. s mit Circumflexe
+    $content=~s/\x{15f}/s/g; # Kl. s mit Cedille
     $content=~s/š/s/g; # Kl. s mit Caron
 
-    $content=~s/\u015a/S/g; # Gr. S mit Acute
-    $content=~s/\u015c/S/g; # Gr. S mit Circumflexe
-    $content=~s/\u015e/S/g; # Gr. S mit Cedille
+    $content=~s/\x{15a}/S/g; # Gr. S mit Acute
+    $content=~s/\x{15c}/S/g; # Gr. S mit Circumflexe
+    $content=~s/\x{15e}/S/g; # Gr. S mit Cedille
     $content=~s/Š/S/g; # Gr. S mit Caron
 
-    $content=~s/\u0167/t/g; # Kl. t mit Mittelstrich
-    $content=~s/\u0163/t/g; # Kl. t mit Cedille
-    $content=~s/\u0165/t/g; # Kl. t mit Caron
+    $content=~s/\x{167}/t/g; # Kl. t mit Mittelstrich
+    $content=~s/\x{163}/t/g; # Kl. t mit Cedille
+    $content=~s/\x{165}/t/g; # Kl. t mit Caron
 
-    $content=~s/\u0166/T/g; # Gr. T mit Mittelstrich
-    $content=~s/\u0162/T/g; # Gr. T mit Cedille
-    $content=~s/\u0164/T/g; # Gr. T mit Caron
+    $content=~s/\x{166}/T/g; # Gr. T mit Mittelstrich
+    $content=~s/\x{162}/T/g; # Gr. T mit Cedille
+    $content=~s/\x{164}/T/g; # Gr. T mit Caron
 
-    $content=~s/\u017a/z/g; # Kl. z mit Acute
-    $content=~s/\u017c/z/g; # Kl. z mit Punkt oben
+    $content=~s/\x{17a}/z/g; # Kl. z mit Acute
+    $content=~s/\x{17c}/z/g; # Kl. z mit Punkt oben
     $content=~s/ž/z/g; # Kl. z mit Caron
 
-    $content=~s/\u0179/Z/g; # Gr. Z mit Acute
-    $content=~s/\u017b/Z/g; # Gr. Z mit Punkt oben
+    $content=~s/\x{179}/Z/g; # Gr. Z mit Acute
+    $content=~s/\x{17b}/Z/g; # Gr. Z mit Punkt oben
     $content=~s/Ž/Z/g; # Gr. Z mit Caron
 
     $content=~s/ç/c/g;
-    $content=~s/\u0107/c/g; # Kl. c mit Acute
-    $content=~s/\u0108/c/g; # Kl. c mit Circumflexe
-    $content=~s/\u010b/c/g; # Kl. c mit Punkt oben
-    $content=~s/\u010d/c/g; # Kl. c mit Caron
+    $content=~s/\x{107}/c/g; # Kl. c mit Acute
+    $content=~s/\x{108}/c/g; # Kl. c mit Circumflexe
+    $content=~s/\x{10b}/c/g; # Kl. c mit Punkt oben
+    $content=~s/\x{10d}/c/g; # Kl. c mit Caron
     
     $content=~s/Ç/c/g;
-    $content=~s/\u0106/C/g; # Gr. C mit Acute
-    $content=~s/\u0108/C/g; # Gr. C mit Circumflexe
-    $content=~s/\u010a/C/g; # Gr. C mit Punkt oben
-    $content=~s/\u010c/C/g; # Gr. C mit Caron
+    $content=~s/\x{106}/C/g; # Gr. C mit Acute
+    $content=~s/\x{108}/C/g; # Gr. C mit Circumflexe
+    $content=~s/\x{10a}/C/g; # Gr. C mit Punkt oben
+    $content=~s/\x{10c}/C/g; # Gr. C mit Caron
 
-    $content=~s/\u010f/d/g; # Kl. d mit Caron
-    $content=~s/\u010e/D/g; # Gr. D mit Caron
+    $content=~s/\x{10f}/d/g; # Kl. d mit Caron
+    $content=~s/\x{10e}/D/g; # Gr. D mit Caron
 
-    $content=~s/\u0123/g/g; # Kl. g mit Cedille
-    $content=~s/\u011f/g/g; # Kl. g mit Breve
-    $content=~s/\u011d/g/g; # Kl. g mit Circumflexe
-    $content=~s/\u0121/g/g; # Kl. g mit Punkt oben
+    $content=~s/\x{123}/g/g; # Kl. g mit Cedille
+    $content=~s/\x{11f}/g/g; # Kl. g mit Breve
+    $content=~s/\x{11d}/g/g; # Kl. g mit Circumflexe
+    $content=~s/\x{121}/g/g; # Kl. g mit Punkt oben
 
-    $content=~s/\u0122/G/g; # Gr. G mit Cedille
-    $content=~s/\u011e/G/g; # Gr. G mit Breve
-    $content=~s/\u011c/G/g; # Gr. G mit Circumflexe
-    $content=~s/\u0120/G/g; # Gr. G mit Punkt oben
+    $content=~s/\x{122}/G/g; # Gr. G mit Cedille
+    $content=~s/\x{11e}/G/g; # Gr. G mit Breve
+    $content=~s/\x{11c}/G/g; # Gr. G mit Circumflexe
+    $content=~s/\x{120}/G/g; # Gr. G mit Punkt oben
 
-    $content=~s/\u0127/h/g; # Kl. h mit Ueberstrich
-    $content=~s/\u0126/H/g; # Gr. H mit Ueberstrich
+    $content=~s/\x{127}/h/g; # Kl. h mit Ueberstrich
+    $content=~s/\x{126}/H/g; # Gr. H mit Ueberstrich
 
-    $content=~s/\u0137/k/g; # Kl. k mit Cedille
-    $content=~s/\u0136/K/g; # Gr. K mit Cedille
+    $content=~s/\x{137}/k/g; # Kl. k mit Cedille
+    $content=~s/\x{136}/K/g; # Gr. K mit Cedille
 
-    $content=~s/\u013c/l/g; # Kl. l mit Cedille
-    $content=~s/\u013a/l/g; # Kl. l mit Acute
-    $content=~s/\u013e/l/g; # Kl. l mit Caron
-    $content=~s/\u0140/l/g; # Kl. l mit Punkt mittig
-    $content=~s/\u0142/l/g; # Kl. l mit Querstrich
+    $content=~s/\x{13c}/l/g; # Kl. l mit Cedille
+    $content=~s/\x{13a}/l/g; # Kl. l mit Acute
+    $content=~s/\x{13e}/l/g; # Kl. l mit Caron
+    $content=~s/\x{140}/l/g; # Kl. l mit Punkt mittig
+    $content=~s/\x{142}/l/g; # Kl. l mit Querstrich
 
-    $content=~s/\u013b/L/g; # Gr. L mit Cedille
-    $content=~s/\u0139/L/g; # Gr. L mit Acute
-    $content=~s/\u013d/L/g; # Gr. L mit Caron
-    $content=~s/\u013f/L/g; # Gr. L mit Punkt mittig
-    $content=~s/\u0141/L/g; # Gr. L mit Querstrick
+    $content=~s/\x{13b}/L/g; # Gr. L mit Cedille
+    $content=~s/\x{139}/L/g; # Gr. L mit Acute
+    $content=~s/\x{13d}/L/g; # Gr. L mit Caron
+    $content=~s/\x{13f}/L/g; # Gr. L mit Punkt mittig
+    $content=~s/\x{141}/L/g; # Gr. L mit Querstrick
 
     $content=~s/\u20ac/e/g;   # Euro-Zeichen
-    $content=~s/\u0152/oe/g;  # OE-Ligatur
-    $content=~s/\u0153/oe/g;  # oe-Ligatur
+    $content=~s/\x{152}/oe/g;  # OE-Ligatur
+    $content=~s/\x{153}/oe/g;  # oe-Ligatur
     $content=~s/Æ/ae/g;       # AE-Ligatur
     $content=~s/æ/ae/g;       # ae-Ligatur
-    $content=~s/\u0160/s/g;   # S hacek
-    $content=~s/\u0161/s/g;   # s hacek
-    $content=~s/\u017d/z/g;   # Z hacek
-    $content=~s/\u017e/z/g;   # z hacek
-    $content=~s/\u0178/y/g;   # Y Umlaut
+    $content=~s/\x{160}/s/g;   # S hacek
+    $content=~s/\x{161}/s/g;   # s hacek
+    $content=~s/\x{17d}/z/g;   # Z hacek
+    $content=~s/\x{17e}/z/g;   # z hacek
+    $content=~s/\x{178}/y/g;   # Y Umlaut
     $content=~s/¡/i/g;        # i Ueberstrich
     $content=~s/¢/c/g;        # Cent
     $content=~s/£/l/g;        # Pfund
@@ -597,7 +597,7 @@ sub grundform {
     $content=~s/µ/u/g;        # Mikro
     
     $content=~s/Ð/e/g;        # Gr. Islaend. E (durchgestrichenes D)
-    $content=~s/\u0111/e/g;   # Kl. Islaend. e ? (durchgestrichenes d)
+    $content=~s/\x{111}/e/g;   # Kl. Islaend. e ? (durchgestrichenes d)
 
     $content=~s/Ý/y/g;
     $content=~s/ý/y/g;

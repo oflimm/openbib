@@ -8,7 +8,7 @@
 #  Konvertierung in das Meta-Format und Ablage in einem
 #  Web-Verzeichnis zur Abholung von OpenBib-Rechner(n)
 #
-#  Copyright 2003 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2003-2008 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -28,6 +28,9 @@
 #  MA 02139, USA.
 #
 #####################################################################
+
+echo "Start des Entladens: "
+date
 
 # Uebergabe des Datenbank/Pool-Namens als Parameter
 
@@ -75,6 +78,9 @@ rm $BCPPATH/koe_daten.bcp
 rm $BCPPATH/swd_daten.bcp
 rm $BCPPATH/sys_daten.bcp
 rm $BCPPATH/titel_daten.bcp
+rm $BCPPATH/d01buch.bcp
+rm $BCPPATH/d50zweig.bcp
+rm $BCPPATH/d60abteil.bcp
 
 # Entladen der sik_fstab plus Normdateien mit bcp
 
@@ -84,12 +90,27 @@ $SYBPATH/OCS-12_5/bin/bcp $pool.sisis.per_daten out $BCPPATH/per_daten.bcp -b 10
 $SYBPATH/OCS-12_5/bin/bcp $pool.sisis.koe_daten out $BCPPATH/koe_daten.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
 $SYBPATH/OCS-12_5/bin/bcp $pool.sisis.swd_daten out $BCPPATH/swd_daten.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
 $SYBPATH/OCS-12_5/bin/bcp $pool.sisis.sys_daten out $BCPPATH/sys_daten.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
+$SYBPATH/OCS-12_5/bin/bcp $pool.sisis.d01buch out $BCPPATH/d01buch.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
+$SYBPATH/OCS-12_5/bin/bcp $pool.sisis.d50zweig out $BCPPATH/d50zweig.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
+$SYBPATH/OCS-12_5/bin/bcp $pool.sisis.d60abteil out $BCPPATH/d60abteil.bcp -b 10000 -c -t"" -U $SYBASEUSER -P $SYBASEPASS -S $SYBASESERVER -N
+
+echo "Ende des Entladens: "
+date
+
+echo Titelsaetze entladen: `cat $BCPPATH/titel_daten.bcp | grep "^[0-9]*0" | wc -l`
+echo Davon excluded      : `wc -l $BCPPATH/titel_exclude.bcp`
 
 # Blobs extrahieren und in das Meta-Format konvertieren
 
 cd $IMXBASEPATH/$pool/
 
+echo "Start der Konvertierung: "
+date
+
 /pfad/zu/bcp2meta.pl 2> /dev/null
+
+echo "Ende der Konvertierung: "
+date
 
 # Und hinterher wieder aufraeumen
 
@@ -99,5 +120,9 @@ rm $BCPPATH/koe_daten.bcp
 rm $BCPPATH/swd_daten.bcp
 rm $BCPPATH/sys_daten.bcp
 rm $BCPPATH/titel_daten.bcp
+rm $BCPPATH/d01buch.bcp
+rm $BCPPATH/d50zweig.bcp
+rm $BCPPATH/d60abteil.bcp
+
 
 

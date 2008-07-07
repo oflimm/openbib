@@ -234,28 +234,26 @@ sub handler {
             } 
         }
         elsif ($queryoptions->get_option('sb') eq 'sql'){
-
-            my $dbh
-                = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-                    or $logger->error_die($DBI::errstr);
+            # SQL
             
             my $atime=new Benchmark;
             
-            my $result_ref=OpenBib::Search::Util::initial_search_for_titidns({
+            my ($thisrecordlist,$fullresultcount) = OpenBib::Search::Util::initial_search_for_titidns({
                 serien          => 0,
-                dbh             => $dbh,
+
+                database        => $database,
+                
                 hitrange        => $hitrange,
                 offset          => $offset,
                 
                 enrich          => 0,
                 enrichkeys_ref  => {},
             });
-            
-            my @tidns           = @{$result_ref->{titidns_ref}};
-            my $fullresultcount = $result_ref->{fullresultcount};
+
+            $recordlist=$thisrecordlist;
             
             # Wenn mindestens ein Treffer gefunden wurde
-            if ($#tidns >= 0) {
+            if ($recordlist->get_size() > 0) {
                 
                 my $a2time;
                 
@@ -263,14 +261,9 @@ sub handler {
                     $a2time=new Benchmark;
                 }
 
-                my $record     = new OpenBib::Record::Title({database=>$database});
-
-                foreach my $idn (@tidns) {
-                    $recordlist->add(new OpenBib::Record::Title({database=>$database, id=>$idn}));
-                }
-
+                # Kurztitelinformationen fuer RecordList laden
                 $recordlist->load_brief_records;
-                
+
                 my $btime      = new Benchmark;
                 my $timeall    = timediff($btime,$atime);
                 my $resulttime = timestr($timeall,"nop");

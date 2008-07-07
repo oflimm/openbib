@@ -42,7 +42,7 @@
 <div class="content">
 <p />
 [%# USE dumper;dumper.dump(thisbklist)%]
-<h1>[% thisbk %] / [% bks.${thisbk} %]</h1>
+<h1>[% thisbk %] / [% bks.${thisbk.chunk(2).first} %] / [% bks.${thisbk} %]</h1>
 <table>
 [% FOREACH bkinfo IN thisbklist %]
 [%   thisdb    = bkinfo.key %]

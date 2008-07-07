@@ -88,13 +88,6 @@
 [%# Ejahr konstruieren %]
 [%- yearofpub = item.${'T0425'}.first.content -%]
 
-[%# Signaturen konstruieren %]
-[%- signaturen = [] -%]
-[%- FOREACH part IN item.${'X0014'} -%]
-[%- signaturen.push("${part.content}") -%]
-[%- END -%]
-[%- signatur = signaturen.join(' ; ') -%]
-
 <tr><td><b>[% loop.count %]</b></td><td><span class="rlperson">[% person
 %]</span><br /><a href="[% config.search_loc %]?sessionID=[%
 sessionID %];database=[% item.database %];searchsingletit=[% item.id

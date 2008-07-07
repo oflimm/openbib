@@ -41,6 +41,8 @@
 
 <div class="content">
 <p />
+
+<h1>[% thisbk %] / [% bks.${thisbk} %]</h1>
 [%
 bklist = [];
 FOREACH bk IN bks;

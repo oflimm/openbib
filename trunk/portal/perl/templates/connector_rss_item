@@ -53,7 +53,7 @@
 [%- FOREACH part IN item.${'X0014'} -%]
 [%- signaturen.push("${part.content}") -%]
 [%- END -%]
-[%- signatur = signaturen.join(' ; ') -%]
+[%- signatur = signaturen.sort.unique.join(' ; ') -%]
 [%- IF person -%]
 [% person %]<br />
 [%- END -%]

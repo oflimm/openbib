@@ -55,7 +55,7 @@
 [%- FOREACH part IN item.${'X0014'} -%]
 [%- signaturen.push("${part.content}") -%]
 [%- END -%]
-[%- signatur = signaturen.join(' ; ') -%]
+[%- signatur = signaturen.sort.unique.join(' ; ') -%]
 <tr><td>[% IF person %][% person %][% ELSE %]Nicht vorhanden[% END %]</td><td><a href="http://kug.ub.uni-koeln.de/portal/lastverteilung?view=lehrbuchsmlg&database=lehrbuchsmlg&searchsingletit=[% item.id %]" target="_blank"><b>[% IF title %][% title %][% ELSE %]Nicht vorhanden[% END %]</b></a></td><td>[% yearofpub %]</td><td><b>[% signatur %]</b></td></tr>
 [%    END %]
 </table>

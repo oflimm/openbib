@@ -129,7 +129,7 @@
 [%- FOREACH part IN item.${'X0014'} -%]
 [%- signaturen.push("${part.content}") -%]
 [%- END -%]
-[%- signatur = signaturen.join(' ; ') -%]
+[%- signatur = signaturen.sort.unique.join(' ; ') -%]
 
 <tr class="[% listrow %]"><td class="listnr">[% loop.count+offset %]</td><td>&nbsp;
 </td><td colspan="2"><span class="rlauthor">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;sorttype=[% sorttype %];database=[% item.${"database"} %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></td><td><span class="rlcollect"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="/images/openbib/3d-file-blue-clipboard.png" alt="In die Merkliste" border="0" /></a></span></td><td align="left"><b>[% signatur %]</b></td><td class="popularitycount">[% item.popularity %]</td></tr>

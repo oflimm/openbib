@@ -148,7 +148,7 @@ END;
 [%-   signaturen.push(normset.${'X0014'}.content) -%]
 [%- END -%]
 [%- END -%]
-[%- signatur = signaturen.join(' ; ') -%]
+[%- signatur = signaturen.sort.unique.join(' ; ') -%]
 <span class="rlauthor">[% person %]</span><br /><strong><span class="rltitle">[% title %]</span></strong>, <span
 class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>, <b>[% signatur %]</b><br />
 [% END %]

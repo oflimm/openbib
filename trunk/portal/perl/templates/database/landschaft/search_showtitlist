@@ -146,7 +146,7 @@
 [%- FOREACH part IN item.${'X0014'} -%]
 [%- signaturen.push("${part.content}") -%]
 [%- END -%]
-[%- signatur = signaturen.join(' ; ') -%]
+[%- signatur = signaturen.sort.unique.join(' ; ') -%]
 
 <tr class="[% listrow %]"><td class="listnr"><input type="checkbox" name="searchmultipletit" value="[% item.id %]" /></td><td><img src="http://landschaftsbilder.ub.uni-koeln.de/digiarchive/landschaft/[% item.id %]/landschaft_thumb.jpg"/>
 </td><td colspan="2"><span class="rlauthor">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;sorttype=[% sorttype %];database=[% item.${"database"} %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span

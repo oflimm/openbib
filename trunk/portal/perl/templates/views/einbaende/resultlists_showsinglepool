@@ -122,7 +122,7 @@
 [%- FOREACH part IN item.${'X0014'} -%]
 [%- signaturen.push("${part.content}") -%]
 [%- END -%]
-[%- signatur = signaturen.join(' ; ') -%]
+[%- signatur = signaturen.sort.unique.join(' ; ') -%]
 
 <tr class="[% listrow %]"><td class="listnr">[% loop.count %]</td><td colspan="2"><span class="rlauthor">[% person
 %]</span><br /><a href="[% config.search_loc %]?sessionID=[%

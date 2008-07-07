@@ -114,7 +114,7 @@
 [%- FOREACH part IN item.${'X0014'} -%]
 [%- signaturen.push("${part.content}") -%]
 [%- END -%]
-[%- signatur = signaturen.join(' ; ') -%]
+[%- signatur = signaturen.sort.unique.join(' ; ') -%]
 
 [% database = item.database %]
 [% isbn     = item.${"T0540"}.first.content.replace('-','') %]

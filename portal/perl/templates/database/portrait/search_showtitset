@@ -70,7 +70,7 @@ Bestellung in den Lesesaal Historische Sammlungen:
    END %]
 <form style="font-size:0.7em" method="get" action="http://kug.ub.uni-koeln.de/cgi-bin/portrait_bestellung.pl">
 <input type="hidden" name="titel"    value="[% normset.${"T0331"}.first.content %]"/>
-<input type="hidden" name="signatur" value="[% signaturen.join(' ; ') %]"/>
+<input type="hidden" name="signatur" value="[% signaturen.sort.unique.join(' ; ') %]"/>
 <input type="hidden" name="person"   value="[% normset.${"T0102"}.first.content %]"/>
 <table>
 <tr><td>Benutzernummer:</td><td><input type="text" name="bnr"/></td></tr>

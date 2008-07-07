@@ -94,7 +94,7 @@
 [%- FOREACH part IN item.titnormset.${'X0014'} -%]
 [%- signaturen.push("${part.content}") -%]
 [%- END -%]
-[%- signatur = signaturen.join(' ; ') -%]
+[%- signatur = signaturen.sort.unique.join(' ; ') -%]
 
 <tr><td class="boxed">
 

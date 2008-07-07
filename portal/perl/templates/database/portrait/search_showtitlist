@@ -146,7 +146,7 @@
 [%- FOREACH part IN item.${'X0014'} -%]
 [%- signaturen.push("${part.content}") -%]
 [%- END -%]
-[%- signatur = signaturen.join(' ; ') -%]
+[%- signatur = signaturen.sort.unique.join(' ; ') -%]
 
 <tr class="[% listrow %]"><td class="listnr">&nbsp;</td><td class="thumbnail"><img src="http://portraitsammlung.ub.uni-koeln.de/digiarchive/portrait/[% item.id %]/portrait_thumb.jpg"/>
 </td><td colspan="2"><span class="rlauthor">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;sorttype=[% sorttype %];database=[% item.${"database"} %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span

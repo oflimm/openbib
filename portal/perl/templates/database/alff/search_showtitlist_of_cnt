@@ -149,7 +149,7 @@
 [%- FOREACH part IN item.${'X0014'} -%]
 [%- signaturen.push("${part.content}") -%]
 [%- END -%]
-[%- signatur = signaturen.join(' ; ') -%]
+[%- signatur = signaturen.sort.unique.join(' ; ') -%]
 [%- isbn     = item.${"T0540"}.first.content.replace('-','') -%]
 
 <tr class="[% listrow %]"><td class="listnr"><input type="checkbox" name="searchmultipletit" value="[% item.id %]" /></td><td class="thumbnail"><img src="[% item.${'T2662'}.first.content %]"/></td><td colspan="2"><span class="rlauthor">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;sorttype=[% sorttype %];database=[% item.${"database"} %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span

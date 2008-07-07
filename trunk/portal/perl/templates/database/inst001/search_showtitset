@@ -218,7 +218,7 @@ FOREACH category IN categories;
          bklookup    = config.load_bk ;
          bkdesc      = bklookup.${content};
          content     = "<a href=\"${localurl}\">${content}</a>";
-         IF bkdesc.defined ;
+         IF bkdesc ;
             content   = "${content} (${bkdesc})" ;
          END ;
 
@@ -264,7 +264,7 @@ FOREACH category IN categories;
 
          content   = " ${rssfeed}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
-         IF bkdesc.defined ;
+         IF bkdesc ;
             content   = "${content} (${bkdesc})" ;
          END ;
 

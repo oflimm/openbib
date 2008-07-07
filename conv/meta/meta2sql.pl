@@ -61,7 +61,7 @@ my $conv_config = new OpenBib::Conv::Config({dbname => $database});
 $logfile=($logfile)?$logfile:"/var/log/openbib/meta2sql-$database.log";
 
 my $log4Perl_config = << "L4PCONF";
-log4perl.rootLogger=DEBUG, LOGFILE, Screen
+log4perl.rootLogger=INFO, LOGFILE, Screen
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
 log4perl.appender.LOGFILE.filename=$logfile
 log4perl.appender.LOGFILE.mode=append
@@ -520,7 +520,7 @@ while (my $line=<IN>){
                             content  => $content,
                         });
 
-                        #$logger->debug("Id: $id - Adding $category -> $content");
+                        $logger->debug("Id: $id - Adding $category -> $content");
                         print OUT       "$id$category$indicator$content\n";
                         $indicator++;
                         # Normierung (String/Fulltext) der als invertierbar definierten Kategorien
@@ -533,8 +533,6 @@ while (my $line=<IN>){
                                 print OUTFT     "$id$category$contentnormtmp\n";
                             }
                         }
-                        
-                            
                         if (exists $conv_config->{'search_hst'}{$category}){
                             push @hst, $contentnormtmp;
                         }
@@ -548,7 +546,6 @@ while (my $line=<IN>){
                             push @gtquelle, $contentnormtmp;
                         }
                         if (exists $conv_config->{'search_inhalt'}{$category}){
-                            $logger->debug("Id: $id - Adding $category -> Inhalt: $contentnormtmp");
                             push @inhalt, $contentnormtmp;
                         }
                         if (exists $conv_config->{'search_artinh'}{$category}){

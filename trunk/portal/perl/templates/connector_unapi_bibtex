@@ -1,1 +1,1 @@
-[% record->as_bibtex({ utf8 => 1} ) %]
+[% record.to_bibtex({ utf8 => 1}) %]

@@ -284,6 +284,7 @@
 ../templates/views/kevelaer/searchmask_simple
 ../templates/views/kevelaer/std_footer
 ../templates/views/kevelaer/virtualsearch_more_search_tips
+../templates/views/kug/info
 ../templates/views/kug/searchmask
 ../templates/views/kug/searchmask_options
 ../templates/views/kug/searchmask_simple

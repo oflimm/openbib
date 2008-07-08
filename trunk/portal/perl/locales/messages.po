@@ -37,8 +37,22 @@ msgid ""
 "verkn&uuml;pft mit dem Tag"
 msgstr ""
 
+#: ../templates/views/kug/info:712
+msgid ""
+"&Auml;hnlich der Recommender-Funktion bietet der KUG verschiedene\n"
+"Popularit&auml;ts-Funktionen an. Es sind dies"
+msgstr ""
+
 #: ../templates/database/ebooks/search_showtitset:534 ../templates/database/nationallizenzen/search_showtitset:540 ../templates/litlists_manage_singlelist:54 ../templates/search_showtitset:557 ../templates/userprefs:182
 msgid "&Auml;ndern"
+msgstr ""
+
+#: ../templates/views/kug/info:828
+msgid ""
+"&Uuml;ber die Hauptrubrik <i>RSS</i> gelangen Sie auf eine Seite, auf\n"
+"      der Sie allgemeine RSS-Feeds (d.h. Feeds, die nicht an Normdaten\n"
+"      gebunden sind, sondern lediglich <b>die letzten 50\n"
+"        Neuzug&auml;nge eines Kataloges</b>) abonnieren k&ouml;nnen."
 msgstr ""
 
 #: ../templates/admin_login:25
@@ -89,7 +103,7 @@ msgstr ""
 msgid "&Uuml;bersicht"
 msgstr ""
 
-#: ../templates/info_13:28 ../templates/info_15:30 ../templates/info_50:32 ../templates/info_51:39 ../templates/info_52:39 ../templates/searchmask:47 ../templates/searchmask_simple:47 ../templates/views/einbaende/search_browse_tit:35 ../templates/views/einbaende/searchmask:46 ../templates/views/einbaende/searchmask_simple:39 ../templates/views/kug/searchmask:127 ../templates/views/kug/searchmask_simple:37
+#: ../templates/info_13:28 ../templates/info_15:30 ../templates/info_50:32 ../templates/info_51:39 ../templates/info_52:39 ../templates/searchmask:47 ../templates/searchmask_simple:47 ../templates/views/einbaende/search_browse_tit:35 ../templates/views/einbaende/searchmask:46 ../templates/views/einbaende/searchmask_simple:39 ../templates/views/kug/info:85 ../templates/views/kug/info:935 ../templates/views/kug/searchmask:127 ../templates/views/kug/searchmask_simple:37
 msgid "&Uuml;bersichten"
 msgstr ""
 
@@ -109,8 +123,123 @@ msgstr ""
 msgid "<b>Ausgew&auml;hlte Titel</b> in die bestehende Literaturliste &uuml;bernehmen: "
 msgstr ""
 
+#: ../templates/views/kug/info:241
+msgid ""
+"<b>Besonderheit bei den Feldern mit <b>*</b>:</b><br /> Da\n"
+"f&uuml;r die Suche in den Feldern Notation, Signatur und Kompletter Titel im Gegensatz\n"
+"zu den anderen Feldern eine Volltextsuche wenig Sinn macht, sondern\n"
+"nur eine Titelanfangs-Suche, stehen in diesen Feldern keine\n"
+"Boole'schen Suchoperatoren zur Verf&uuml;gung. Lediglich der\n"
+"Abk&uuml;rzungsoperator <b>*</b> ist erlaubt."
+msgstr ""
+
 #: ../templates/views/einbaende/std_footer:17
 msgid "<b>KUG</b> und <b>Digitale Einband-Sammlung</b> sind Dienste der Universit&auml;ts- und Stadtbibliothek K&ouml;ln"
+msgstr ""
+
+#: ../templates/views/kug/info:718
+msgid ""
+"<b>Sortierung nach Popularit&auml;t</b> In jeder Titel-Liste\n"
+"lassen sich die Titel nach Popularit&auml;t - entsprechend der\n"
+"konkreten Aufrufe - (sinnvollerweise absteigend) sortieren. Die Popularit&auml;t eines Titels finden\n"
+"Sie in der mit <b>P</b> ausgezeichneten Spalte der Ergebnistabelle. Damit k&ouml;nnen Nutzer direkt vom Nutzungsverhalten anderer Nutzer profitieren."
+msgstr ""
+
+#: ../templates/views/kug/info:716
+#. ("<a href=\"#sichten\">","</a>","<a class=\"tutorial\" href=\"http://kug.ub.uni-koeln.de/tutorials/top20.html\" target=\"tutorial\"><img src=\"/images/openbib/tutorial.png\" /></a>")
+msgid ""
+"<b>Top 20</b> Pro Katalog lassen sich die 20 meist aufgerufenen\n"
+"Titel unter dem Reiter %1&Uuml;bersichten%2 anzeigen. %3"
+msgstr ""
+
+#: ../templates/views/kug/info:391
+msgid ""
+"<b>Verwenden Sie nur sinntragende Worte</b> und <b>nicht</b>\n"
+"      den gesamten Titel eines Buches (mit Ausnahme der Suche als\n"
+"Kompletter Titel). F&uuml;r die Suche nach dem Titel 'Die\n"
+"      unertr&auml;gliche Leichtigkeit des Seins' w&auml;re daher\n"
+"      folgende Suchanfrage (in der UND-Standardeinstellung) sinnvoll:\n"
+"      <b>unertr&auml;gliche leichtigkeit seins</b> "
+msgstr ""
+
+#: ../templates/views/kug/info:215
+msgid ""
+"<b>Wort1</b> <b>Wort2</b> (Wort1 oder Wort2 oder beide sollen enthalten sein)<br />\n"
+"         z.B.: <b>kernighan ritchie</b> (es werden alle Titel angezeigt, die von mindestens einem der beiden Autoren verfasst wurden)"
+msgstr ""
+
+#: ../templates/views/kug/info:158 ../templates/views/kug/info:204
+msgid ""
+"<b>Wort1</b> <b>Wort2</b> (Wort1 und Wort2 m&uuml;ssen enthalten sein)<br />\n"
+"\n"
+"         z.B.: <b>kernighan ritchie</b> (von beiden Autoren verfasste Titel werden angezeigt)"
+msgstr ""
+
+#: ../templates/views/kug/info:313
+#. ("\"","\"")
+msgid "<tt>%1Goethe-Jahrbuch%2</tt> oder"
+msgstr ""
+
+#: ../templates/views/kug/info:289
+#. ("\"","\"")
+msgid "<tt>%1kernighan, brian%2</tt> (= Phrasensuche) oder"
+msgstr ""
+
+#: ../templates/views/kug/info:372
+msgid ""
+"<tt>+(Kinder* Jugendliche*) +Drogen* +(Behandlung*\n"
+"          Therapie*)</tt> (Innerhalb der Klammern gilt die ODER-,\n"
+"          dazwischen die UND-Verkn&uuml;pfung)"
+msgstr ""
+
+#: ../templates/views/kug/info:314
+msgid "<tt>+Goethe +Jahrbuch</tt> oder"
+msgstr ""
+
+#: ../templates/views/kug/info:290
+msgid "<tt>+kernighan +brian</tt> (= UND-Verkn&uuml;pfung) oder"
+msgstr ""
+
+#: ../templates/views/kug/info:345
+msgid "<tt>+programmi* +perl</tt> (= UND-Verkn&uuml;pfung) oder"
+msgstr ""
+
+#: ../templates/views/kug/info:360
+msgid "<tt>+programmi* -perl</tt> (= UND NICHT-Verkn&uuml;pfung) oder"
+msgstr ""
+
+#: ../templates/views/kug/info:315
+msgid ""
+"<tt>Goethe Jahrbuch</tt> bei aktivierter Suchoption\n"
+"'UND-Verkn&uuml;pfung innerhalb eines Suchfeldes in den Suchoptionen'"
+msgstr ""
+
+#: ../templates/views/kug/info:291
+msgid ""
+"<tt>kernighan brian</tt> (= UND-Verkn&uuml;pfung) bei\n"
+"               aktivierter Suchoption 'UND-Verkn&uuml;pfung innerhalb eines\n"
+"               Suchfeldes in den Suchoptionen'"
+msgstr ""
+
+#: ../templates/views/kug/info:302
+msgid ""
+"<tt>kernighan miller</tt>  (= ODER-Verkn&uuml;pfung)\n"
+"bei <b>deaktivierter</b> Suchoption 'UND-Verkn&uuml;pfung innerhalb\n"
+"eines Suchfeldes in den Suchoptionen'"
+msgstr ""
+
+#: ../templates/views/kug/info:361
+msgid ""
+"<tt>programmi* -perl</tt> (= UND\n"
+"NICHT-Verkn&uuml;pfung) bei aktivierter Suchoption\n"
+"'UND-Verkn&uuml;pfung innerhalb eines Suchfeldes in den Suchoptionen'"
+msgstr ""
+
+#: ../templates/views/kug/info:346
+msgid ""
+"<tt>programmi* perl</tt> (= UND-Verkn&uuml;pfung) bei\n"
+"aktivierter Suchoption 'UND-Verkn&uuml;pfung innerhalb eines\n"
+"Suchfeldes in den Suchoptionen'"
 msgstr ""
 
 #: ../templates/views/einbaende/resultlists_showall:134 ../templates/views/einbaende/resultlists_showall_sortall:110 ../templates/views/einbaende/resultlists_showsinglepool:132 ../templates/views/einbaende/virtualsearch_result_item:73
@@ -169,8 +298,31 @@ msgstr ""
 msgid "Alle getaggten Titel jetzt zu BibSonomy &uuml;bertragen"
 msgstr ""
 
-#: ../templates/admin_editsession:40
+#: ../templates/views/kug/info:51 ../templates/views/kug/info:98
+msgid "Allgemeine Hinweise zum KUG"
+msgstr ""
+
+#: ../templates/admin_editsession:40 ../templates/views/kug/info:133 ../templates/views/kug/info:166 ../templates/views/kug/info:54 ../templates/views/kug/info:57
 msgid "Allgemeine Informationen"
+msgstr ""
+
+#: ../templates/views/kug/info:110
+#. ("<a class=\"tutorial\" href=\"http://kug.ub.uni-koeln.de/tutorials/g.html\" target=\"tutorial\"><img src=\"/images/openbib/tutorial.png\" alt=\"Interaktives Tutorium\" /></a>")
+msgid ""
+"Als Ergebnis einer Recherche erhalten Sie eine\n"
+"      Liste aller Treffer, sortiert nach den einzelnen\n"
+"      Katalogen. Durch Anwahl eines Titels springen Sie direkt zur\n"
+"      Titelaufnahme im entsprechenden Katalog. Klicken Sie dort dann\n"
+"      z. B. auf den Verfasser, erhalten Sie weitere Werke des\n"
+"      Verfassers in diesem Katalog. Klicken Sie auf den\n"
+"      Gesamttitel, werden Ihnen die einzelnen B&auml;nde angezeigt,\n"
+"      jeweils immer innerhalb des betreffenden Katalogs. Klicken Sie\n"
+"      jedoch in der entsprechenden Kategorie auf das gro&szlig;e      \n"
+"      <b>G</b> (G = Globale Suche innerhalb aller Kataloge %1),\n"
+"      werden Ihnen die zugeh&ouml;rigen Titel in <b>allen</b> Katalogen\n"
+"      angezeigt. Somit haben Sie die Wahl, ob Sie, ausgehend von einem\n"
+"      Treffer, <b>katalogspezifisch</b> oder <b>katalog&uuml;bergreifend</b>\n"
+"      recherchieren."
 msgstr ""
 
 #: ../templates/database/ebooks/search_showtitset:55 ../templates/database/einbaende/search_showtitset:43 ../templates/database/landschaft/search_showtitset:39 ../templates/database/nationallizenzen/search_showtitset:55 ../templates/database/portrait/search_showtitset:39 ../templates/managecollection_show:87 ../templates/search_showtitset:55 ../templates/views/einbaende/managecollection_show:70
@@ -189,7 +341,7 @@ msgstr ""
 msgid "Als User-Agent verwenden Sie"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:53 ../templates/database/nationallizenzen/search_showtitset:53 ../templates/managecollection_tit_as_bibtex:20 ../templates/managecollection_tit_as_endnote:20 ../templates/managecollection_tit_as_html:157 ../templates/managecollection_tit_as_text:49 ../templates/search_showtitset:53
+#: ../templates/database/ebooks/search_showtitset:53 ../templates/database/nationallizenzen/search_showtitset:53 ../templates/managecollection_tit_as_bibtex:20 ../templates/managecollection_tit_as_endnote:20 ../templates/managecollection_tit_as_html:157 ../templates/managecollection_tit_as_text:49 ../templates/search_showtitset:53 ../templates/views/kug/info:969
 msgid "An BibSonomy senden"
 msgstr ""
 
@@ -199,6 +351,10 @@ msgstr ""
 
 #: ../templates/database/ebooks/search_showtitset:391 ../templates/database/ebooks/search_showtitset:743 ../templates/database/nationallizenzen/search_showtitset:397 ../templates/database/nationallizenzen/search_showtitset:749 ../templates/search_showtitset:414 ../templates/search_showtitset:766
 msgid "Andere Ausgaben"
+msgstr ""
+
+#: ../templates/views/kug/info:759 ../templates/views/kug/info:76
+msgid "Angebotene Arten an RSS-Feeds"
 msgstr ""
 
 #: ../templates/litlists_manage_lists:69
@@ -217,12 +373,47 @@ msgstr ""
 msgid "Anmeldeziele"
 msgstr ""
 
+#: ../templates/views/kug/info:653
+msgid ""
+"Anreicherung mit dem Bibkey, dem bibliographischen\n"
+"     <i>Fingerabdruck</i> des Titels, über den die systemübergreifende\n"
+"     Titelidentifikation, z.B. zwischen OpenBib und BibSonomy,\n"
+"     ermöglicht wird."
+msgstr ""
+
+#: ../templates/views/kug/info:649
+msgid ""
+"Anreicherung mit den Verfassern der Überordnung. Damit können\n"
+"     nun auch Schillers Räuber korrekt gefunden und das\n"
+"     sog. Schiller-Räuber-Problem gelöst werden."
+msgstr ""
+
+#: ../templates/views/kug/info:640
+msgid ""
+"Anreicherung mit der 13- und 10-stelligen ISBN. Bei einem\n"
+"     konkreten Titel wird zu einer vorhandenen 10-stelligen ISBN\n"
+"     automatisch auch die zugehörige 13-stellige ISBN suchbar gemacht\n"
+"     - und umgekehrt. Damit können nun insbesondere auch Titel mit\n"
+"     13-stelliger ISBN gefunden werden - wie sie z.B. seit dem\n"
+"     1.1.2007 in Verlagskatalogen in Verwendung sind - wenn bei der\n"
+"     Erfassung im Katalog lediglich die 10-stellige ISBN bekannt\n"
+"     war."
+msgstr ""
+
 #: ../templates/admin_editsession:46
 msgid "Anzahl Recherchen"
 msgstr ""
 
+#: ../templates/views/kug/info:970
+msgid "Anzeige der Top 20 meist aufgerufenen Titel im entsprechenden Katalog"
+msgstr ""
+
 #: ../templates/databaseprofile:72
 msgid "Anzeige des ausgew&auml;hlten Profils"
+msgstr ""
+
+#: ../templates/views/kug/info:36
+msgid "Artikel/Stimmen"
 msgstr ""
 
 #: ../templates/databasechoice:53 ../templates/views/rheinlandbib/databasechoice:53
@@ -308,8 +499,18 @@ msgstr ""
 msgid "Autokonvertierung (cron)"
 msgstr ""
 
+#: ../templates/views/kug/info:81 ../templates/views/kug/info:868
+msgid "Automatische Spiegelung von Titeln beim Tagging im KUG nach BibSonomy"
+msgstr ""
+
 #: ../templates/virtualsearch_more_search_tips:27
 msgid "B&uuml;cher"
+msgstr ""
+
+#: ../templates/views/kug/info:385
+msgid ""
+"Beachten Sie, dass nur einige Bibliotheken die Aufs&auml;tze\n"
+"      im Online-Katalog aufnehmen."
 msgstr ""
 
 #: ../templates/admin_exploresessions_list:53 ../templates/admin_showsessions:51
@@ -318,6 +519,65 @@ msgstr ""
 
 #: ../templates/database/ebooks/search_showtitset:140 ../templates/database/nationallizenzen/search_showtitset:144 ../templates/search_showtitset:140
 msgid "Begriff in allen Katalogen suchen"
+msgstr ""
+
+#: ../templates/views/kug/info:209
+msgid ""
+"Bei <b>Deaktivierung</b> der Einstellung <i>automatische\n"
+"      UND-Verkn&uuml;pfung innerhalb eines Suchfeldes</i> in den\n"
+"      Suchoptionen gilt eine <b>automatische\n"
+"      ODER-Verkn&uuml;pfung</b>:"
+msgstr ""
+
+#: ../templates/views/kug/info:427
+msgid ""
+"Bei der Eingabe m&uuml;ssen folgende Zeichen mit ihrem entsprechenden\n"
+"        Grundbuchstaben gesucht werden:"
+msgstr ""
+
+#: ../templates/views/kug/info:406
+msgid ""
+"Bei der Suche im Personenfeld werden nicht nur Verfasser,\n"
+"      sondern auch andere Personen (Hrsg., gefeierte Personen ...)\n"
+"      gesucht. Geben Sie jedoch keine abgek&uuml;rzten Vornamen\n"
+"      ein. Suchen Sie Titel von 2 Personen, k&ouml;nnen Sie beide Namen\n"
+"      eingeben. Suchen Sie eine bestimmte Person, geben Sie den Namen\n"
+"      besser als Phrase in der Komplexen Recherche ein,\n"
+"      z.B."
+msgstr ""
+
+#: ../templates/views/kug/info:414
+msgid ""
+"Bei der Suche im Titelfeld werden nicht nur Hauptsachtitel,\n"
+"      sondern auch andere Titel (Parallel-, Nebentitel, ...) \n"
+"      gesucht."
+msgstr ""
+
+#: ../templates/views/kug/info:403
+msgid ""
+"Bei der Suche wird nicht zwischen Gro&szlig;- und\n"
+"        Kleinschreibung unterschieden."
+msgstr ""
+
+#: ../templates/views/kug/info:514
+#. ("<aclass=\"tutorial\" href=\"http://kug.ub.uni-koeln.de/tutorials/meinkuggrundeinstellungen.html\"target=\"tutorial\"><img src=\"/images/openbib/tutorial.png\" alt=\"Interaktives Tutorium\" /></a>")
+msgid ""
+"Beim Einloggen mit Ihrem Bibliotheksausweis erhalten Sie sofort einen\n"
+"Überblick über Ihre Personendaten und Ausleihinformationen. (Rubik\n"
+"<b>Grundeinstellungen</b> %1). Stimmt Ihre Adresse noch? Sind Sie gesperrt? Wieviel\n"
+"Bücher haben Sie ausgeliehen, vorgemerkt, bestellt oder überzogen? Müssen Sie\n"
+"Gebühren bezahlen? Welche Recherchemaske möchten Sie bei Ihrer Suche\n"
+"standardmäßig verwenden, welche Suchfelder? Bei Unstimmigkeiten in den\n"
+"Personendaten wenden Sie sich bitte an die Auskunft der betreffenden\n"
+"Bibliothek."
+msgstr ""
+
+#: ../templates/views/kug/info:77 ../templates/views/kug/info:807
+msgid "Beispiel: Installation von Feedview f&uuml;r den Browser Firefox"
+msgstr ""
+
+#: ../templates/views/kug/info:281 ../templates/views/kug/info:61
+msgid "Beispiele"
 msgstr ""
 
 #: ../templates/admin_showsessions:51
@@ -434,6 +694,10 @@ msgstr ""
 msgid "BibSonomy-API-User"
 msgstr ""
 
+#: ../templates/views/kug/info:89 ../templates/views/kug/info:956
+msgid "Bildliche Funktionselemente"
+msgstr ""
+
 #: ../templates/views/portrait/searchmask_query:9
 msgid "Bildtitelwort(e)"
 msgstr ""
@@ -494,8 +758,57 @@ msgstr ""
 msgid "DB-Name"
 msgstr ""
 
+#: ../templates/views/kug/info:253
+msgid ""
+"Da die meisten Nutzer in allen\n"
+"      Katalogen suchen möchten, sind diese voreingestellt. Klicken Sie\n"
+"      zweimal auf <i>Alle Kataloge</i> (auf der rechten Seite unter\n"
+"      <i>Katalogauswahl</i>) oder wählen Sie das Profil <i>Katalogauswahl\n"
+"      löschen</i> aus, so werden alle Kataloge demarkiert, und Sie können\n"
+"      Ihre Auswahl treffen, indem Sie entweder bestimmte Kataloge oder\n"
+"      ein schon bestehendes Profil auswählen. Dann f&uuml;llen Sie die\n"
+"      Suchmaske aus und klicken auf <i>In ausgew&auml;hlten Katalogen\n"
+"      suchen</i>. Um sich bei der Katalogauswahl langes Scrollen zu\n"
+"      ersparen, k&ouml;nnen Sie diese dauerhaft in <i>Mein KUG</i> als\n"
+"      Katalogprofil festlegen."
+msgstr ""
+
 #: ../templates/mailpassword:37
 msgid "Damit Ihnen Ihr im Rahmen der Selbstregistrierung vergebenes Passwort per E-Mail zugeschickt werden kann, geben Sie bitte Ihre dort verwendete E-Mail-Adresse ein."
+msgstr ""
+
+#: ../templates/views/kug/info:143
+msgid ""
+"Damit Sie nicht mit &uuml;berdimensionierten Trefferlisten\n"
+"       konfrontiert werden, <b>ist die maximale Treffermenge pro\n"
+"       Katalog zun&auml;chst immer auf 50 begrenzt</b>. Für jeden\n"
+"       Katalog können Sie jedoch sukzessife auf die jeweils nächsten\n"
+"       50 Treffer durch Klick auf <emph>Weitere Treffer</emph>\n"
+"       zugreifen."
+msgstr ""
+
+#: ../templates/views/kug/info:467
+msgid ""
+"Darüber hinaus besteht für alle anderen ohne Benutzernummer (aber natürlich auch\n"
+"für die mit) die Möglichkeit, sich mit ihrer e-Mail-Adresse und einem eigenen\n"
+"Passwort beim System zu registrieren (über die Rubrik <b>Selbstregistrierung</b>).\n"
+"Falls Sie dieses Passwort vergessen haben, können Sie es sich über die Rubrik\n"
+"<b>Passwort vergessen?</b> per e-Mail zuschicken lassen."
+msgstr ""
+
+#: ../templates/views/kug/info:898
+msgid ""
+"Darüber hinaus werden Verweise zu Artikeln in der Wikipedia\n"
+"     aufgeführt, die den aktuellen Titel über seine ISBN referenzieren."
+msgstr ""
+
+#: ../templates/views/kug/info:445
+#. ("<a href=\"${config.info_loc}?sessionID=${sessionID};view=${view}#perskug\">","</a>")
+msgid "Das <b>Suchprofil</b> zeigt Ihnen Ihre ausgew&auml;hlten Datenbanken an. Dar&uuml;ber hinaus k&ouml;nnen sie hier auch voreingestellte Fakult&auml;tsprofile sowie von Ihnen abgelegte pers&ouml;nliche Suchprofile (siehe: %1Mein KUG%2) für die 'Suche in einzelnen Katalogen' ausw&auml;hlen."
+msgstr ""
+
+#: ../templates/views/kug/info:981
+msgid "Das KUG Recherche-Portal ist mit einer zentralen Lastverteilung ausgestattet. Entsprechend der Belastung (und Funktionsf&auml;higkeit) werden Sie auf derzeit einen von drei KUG-Servern (kug1 bis kug3) weitergeleitet. Ebenso werden aus Wartungsgr&uuml;nden oder Problemen einzelne KUG-Server von uns aus der Lastverteilung genommen. Aus diesem Grund ist es sehr problematisch, direkt einen der drei Server zu verlinken (z.B. als URL <tt>http://kug3.ub.uni-koeln.de/portal/opac?view=</tt>) Verwenden Sie daher bitte <b>immer</b> die offiziellen Einsprung-URL's in den KUG. Es sind dies"
 msgstr ""
 
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:353 ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:362 ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:519 ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:528
@@ -506,7 +819,7 @@ msgstr ""
 msgid "Datenbanken"
 msgstr ""
 
-#: ../templates/externaljump:120
+#: ../templates/externaljump:120 ../templates/views/kug/info:622
 msgid "Datenbankinformationssystem (DBIS)"
 msgstr ""
 
@@ -520,6 +833,23 @@ msgstr ""
 
 #: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:311
 msgid "Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche im Index ausgewählt wurde."
+msgstr ""
+
+#: ../templates/views/kug/info:907
+msgid ""
+"Der KUG wurde um eine Integration von Google Book Search\n"
+"     erweitert. Dabei haben wir zur Anzeige von Verfügbarkeiten des\n"
+"     Titels ein bildbasiertes 'Ampel-System' wie das der\n"
+"     Elektronischen Zeitschriftenbibliothek (EZB) integriert."
+msgstr ""
+
+#: ../templates/views/kug/info:574
+msgid ""
+"Der Link <i>Trefferliste</i> gibt Ihnen die aktuelle Suchanfrage an und darunter die Treffermenge insgesamt und die der\n"
+"      verschiedenen Datenbanken. Durch Ihre Auswahl gelangen Sie auf die betreffende Kurztitelliste. Ihre Kurztitelliste\n"
+"      k&ouml;nnen Sie noch einmal umsortieren lassen, indem Sie Ihre\n"
+"gew&uuml;nschten Ordnungskriterien (Person, Titel usw. und Anzeige <i>Pro Katalog</i> oder <i>Katalog&uuml;bergreifend</i>) festlegen und Ihre Wahl durch <i>Los</i>\n"
+"      best&auml;tigen."
 msgstr ""
 
 #: ../modules/OpenBib/Handler/Apache/ManageCollection.pm:154
@@ -538,6 +868,10 @@ msgstr ""
 msgid "Derzeit ist Ihre Merkliste leer"
 msgstr ""
 
+#: ../templates/views/kug/info:617
+msgid "Derzeit werden folgende externe Recherchequellen angeboten:"
+msgstr ""
+
 #: ../templates/database/ebooks/search_showtitset:283 ../templates/database/nationallizenzen/search_showtitset:289 ../templates/search_showtitset:306
 msgid "Deutsche Wikipedia"
 msgstr ""
@@ -546,12 +880,46 @@ msgstr ""
 msgid "Die 20 meist genutzten Kataloge bezogen auf die Titelzugriffe"
 msgstr ""
 
+#: ../templates/views/kug/info:447
+msgid ""
+"Die <b>Suchhistorie</b> listet Ihnen Ihre schon gestellten\n"
+"        Suchanfragen auf mit der Angabe der Trefferzahl. So\n"
+"        k&ouml;nnen Sie in der Komplexen Recherche eine alte\n"
+"        Suchanfrage anklicken und als Suchvorlage erneut in das\n"
+"        Suchformular &uuml;bertragen."
+msgstr ""
+
 #: ../templates/views/richter/std_footer:17
 msgid "Die <b>Virtuelle Bibliothek Elise und Helene Richter</b> ist Teil der NS-Provenienzforschung in der USB K&ouml;ln"
 msgstr ""
 
+#: ../templates/views/kug/info:197
+msgid ""
+"Die <b>automatische UND-Verkn&uuml;pfung</b> ist innerhalb eines\n"
+"      Suchfeldes in den Suchoptionen voreingestellt, so dass Sie alle\n"
+"      relevanten Suchbegriffe mit Leerzeichen getrennt ohne\n"
+"      zus&auml;tzliche Operatoren eingeben k&ouml;nnen."
+msgstr ""
+
 #: ../templates/userprefs_changefields:28
 msgid "Die Einstellung Ihrer Suchfelder wurde erfolgreich vorgenommen. Klicken Sie nun bitte auf 'Recherche' in der Navigationsleiste, um die neuen Suchfeldauswahl zu verwenden."
+msgstr ""
+
+#: ../templates/views/kug/info:630
+msgid ""
+"Die Ergebnisse werden datenbankübergreifend durch zusätzliche\n"
+"     Informationen angereichert. Diese Informationen werden über eine\n"
+"     zentrale Anreicherungsdatenbank bereitgestellt, in der sie,\n"
+"     bezogen auf eine vorhandene ISBN, abgelegt werden."
+msgstr ""
+
+#: ../templates/views/kug/info:556
+msgid ""
+"Die Signatur (= Standort des Buches innerhalb der Bibliothek) ist meistens schon in\n"
+"      der Kurztitelliste aufgef&uuml;hrt. Wenn das nicht der Fall sein sollte, gelangen Sie durch Anklicken\n"
+"      des Titels in die ausf&uuml;hrliche Titelaufnahme, in der sie\n"
+"        bei der Kategorie <i>B&auml;nde/St&uuml;cke</i> oder <i>Anzahl Gesamttitel</i> (durch Klicken auf die\n"
+"        dahinter angegebenen Zahl der verkn&uuml;pften Titel) aufgef&uuml;hrt ist."
 msgstr ""
 
 #: ../templates/views/einbaende/std_footer:20 ../templates/views/richter/std_footer:20
@@ -566,8 +934,92 @@ msgstr ""
 msgid "Die beiden eingegebenen Passworte stimmen nicht überein."
 msgstr ""
 
+#: ../templates/views/kug/info:186
+msgid ""
+"Die einzelnen Suchfelder (Freie Suche, Titelworte, Person\n"
+"      etc.) sind standardm&auml;ssig &uuml;ber eine\n"
+"      <i>UND-Verkn&uuml;pfung</i> verbunden, möglich ist jedoch auch eine\n"
+"      <i>ODER-</i> sowie eine <i>UND NICHT-Verkn&uuml;pfung</i>. W&auml;hlen Sie\n"
+"      hierzu die entsprechende Verkn&uuml;pfungsart aus dem\n"
+"      Pull-Down-Men&uuml; hinter dem jeweiligen Suchfeld."
+msgstr ""
+
+#: ../templates/views/kug/info:852
+msgid ""
+"Die in BibSonomy enthaltenen Quellen - Publikationen wie\n"
+"      auch Webseiten - werden vollintegriert und über Schlagworte/Tags\n"
+"      thematisch erschlossen, im KUG angeboten."
+msgstr ""
+
+#: ../templates/views/kug/info:765
+msgid "Die letzten 50 Neuzug&auml;nge in einem Katalog"
+msgstr ""
+
+#: ../templates/views/kug/info:771
+msgid ""
+"Die letzten 50 Neuzug&auml;nge in einem Katalog von einem\n"
+"          Verfasser oder einer Person"
+msgstr ""
+
+#: ../templates/views/kug/info:777
+msgid ""
+"Die letzten 50 Neuzug&auml;nge in einem Katalog von einer \n"
+"           K&ouml;rperschaft oder einer Institution"
+msgstr ""
+
+#: ../templates/views/kug/info:782
+msgid ""
+"Die letzten 50 Neuzug&auml;nge in einem Katalog zu einem\n"
+"          Schlagwort"
+msgstr ""
+
+#: ../templates/views/kug/info:788
+msgid ""
+"Die letzten 50 Neuzug&auml;nge in einem Katalog zu einer\n"
+"          Notation (Systematik)"
+msgstr ""
+
+#: ../templates/views/kug/info:169
+msgid ""
+"Diese Recherchemaske bietet vielf&auml;ltige Suchfelder und\n"
+"         -optionen an. Anders als in der Einfachen Recherche kommt\n"
+"         hier keine Suchmaschinen-Technologie zum Einsatz."
+msgstr ""
+
 #: ../modules/OpenBib/Handler/Apache/UserPrefs.pm:126
 msgid "Diese Session ist nicht authentifiziert."
+msgstr ""
+
+#: ../templates/views/kug/info:779
+msgid ""
+"Dieser Feed erscheint in der Einzeltitelanzeige jeweils vor\n"
+"        den Kategorien K&ouml;rperschaft/Urheber."
+msgstr ""
+
+#: ../templates/views/kug/info:774
+msgid ""
+"Dieser Feed erscheint in der Einzeltitelanzeige jeweils vor\n"
+"        den Kategorien Verfasser/Person."
+msgstr ""
+
+#: ../templates/views/kug/info:791
+msgid ""
+"Dieser Feed erscheint in der Einzeltitelanzeige jeweils vor\n"
+"        der Kategorie Notation."
+msgstr ""
+
+#: ../templates/views/kug/info:785
+msgid ""
+"Dieser Feed erscheint in der Einzeltitelanzeige jeweils vor\n"
+"        der Kategorie Schlagwort."
+msgstr ""
+
+#: ../templates/views/kug/info:766
+msgid ""
+"Dieser Feed wird in vielen Institutssichten sowohl\n"
+"          f&uuml;r automatische Browsererkennung (dynamische\n"
+"          Lesezeichen in Firefox ab Version 1.5) sowie &uuml;ber den\n"
+"          Hauptmenu-Eintrag <b>RSS</b> angeboten"
 msgstr ""
 
 #: ../templates/database/ebooks/search_showtitset:317 ../templates/database/nationallizenzen/search_showtitset:323 ../templates/search_showtitset:340
@@ -594,8 +1046,31 @@ msgstr ""
 msgid "Digitale Bibliothek / Monographien (Fernleihe)"
 msgstr ""
 
+#: ../templates/views/kug/info:620
+msgid "Digitale Bibliothek / Monographien (f&uuml;r die Fernleihe von Monographien)"
+msgstr ""
+
 #: ../templates/externaljump:110
 msgid "Digitale Bibliothek / Zeitschriften (Aufsatzlieferung)"
+msgstr ""
+
+#: ../templates/views/kug/info:621
+msgid "Digitale Bibliothek / Zeitschriften (f&uuml;r die Lieferung von Zeitschriftenaufs&auml;tzen)"
+msgstr ""
+
+#: ../templates/views/kug/info:625
+#. ("<a class=\"tutorial\" href=\"http://kug.ub.uni-koeln.de/tutorials/kartenkat.html\" target=\"tutorial\"><img src=\"/images/openbib/tutorial.png\" /></a>")
+msgid "Digitaler Kartenkatalog der Philosophischen Fakutl&auml;t %1"
+msgstr ""
+
+#: ../templates/views/kug/info:660 ../templates/views/kug/info:69
+msgid "Digitalisierte Inhaltsverzeichnisse"
+msgstr ""
+
+#: ../templates/views/kug/info:902
+msgid ""
+"Doch beachten Sie, dass die Beitrage unter Umst&auml;nden\n"
+"     nicht wissenschaftlich gepr&uuml;ft sein k&ouml;nnten."
 msgstr ""
 
 #: ../templates/managecollection_print:30
@@ -604,6 +1079,17 @@ msgstr ""
 
 #: ../templates/views/einbaende/search_browse_tit:45
 msgid "Drucker/Verleger/Verlag"
+msgstr ""
+
+#: ../templates/views/kug/info:674
+msgid ""
+"Durch statistische Auswertungen des Ausleihverhaltens im\n"
+"      Bestand der USB sowie des Nutzungsverhaltens im KUG werden zu\n"
+"      einem gegebenen Titel gewichtete nutzer- bzw. sessionspezifische\n"
+"      Überschneidungsmengen mit anderen ausgeliehenen/-gewählten\n"
+"      Titeln bestimmt. Dadurch bekommt der Nutzer weitere Titel\n"
+"      angezeigt, die von anderen Nutzern im Kontext des aktuellen\n"
+"      Titels für interessant befunden wurden."
 msgstr ""
 
 #: ../templates/userprefs:81
@@ -638,6 +1124,11 @@ msgstr ""
 msgid "Eigenen Review l&ouml;schen"
 msgstr ""
 
+#: ../templates/views/kug/info:866
+#. ("<a      href=\"http://kug5.ub.uni-koeln.de/portal/connector/permalink/inst006/6439/1/kug/index.html\"      target=\"_blank\">","</a>")
+msgid "Ein Beispiel hierfür ist %1dieser Titel%2."
+msgstr ""
+
 #: ../modules/OpenBib/Handler/Apache/SelfReg.pm:134
 #. ("$loginname","<a href=\"http://$config->{servername}$config->{selfreg_loc}?sessionID=$session->{ID};view=$view;action=show\">","</a>")
 msgid "Ein Benutzer mit dem Namen %1 existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte %2zurück%3 und lassen es sich zumailen."
@@ -665,7 +1156,7 @@ msgid ""
 "Medium ist leider nicht m&ouml;glich!"
 msgstr ""
 
-#: ../templates/info_11:25 ../templates/info_12:29 ../templates/info_13:25 ../templates/info_15:28 ../templates/info_50:29 ../templates/info_51:36 ../templates/info_52:36 ../templates/searchmask:44 ../templates/searchmask_simple:44 ../templates/views/edz/searchmask:44 ../templates/views/edz/searchmask_simple:44 ../templates/views/einbaende/search_browse_tit:32 ../templates/views/einbaende/searchmask:43 ../templates/views/einbaende/searchmask_simple:36 ../templates/views/gdonck/searchmask:44 ../templates/views/gdonck/searchmask_simple:44 ../templates/views/gleuel/searchmask:44 ../templates/views/gleuel/searchmask_simple:44 ../templates/views/inst404/searchmask:44 ../templates/views/inst404/searchmask_simple:44 ../templates/views/inst405/searchmask:44 ../templates/views/inst405/searchmask_simple:44 ../templates/views/inst406/searchmask:44 ../templates/views/inst406/searchmask_simple:44 ../templates/views/inst410/searchmask:44 ../templates/views/inst410/searchmask_simple:44 ../templates/views/inst411/searchmask:44 ../templates/views/inst411/searchmask_simple:45 ../templates/views/inst412/searchmask:44 ../templates/views/inst412/searchmask_simple:44 ../templates/views/inst413/searchmask:44 ../templates/views/inst413/searchmask_simple:44 ../templates/views/inst415/searchmask:44 ../templates/views/inst415/searchmask_simple:44 ../templates/views/inst419/searchmask:44 ../templates/views/inst420/searchmask:44 ../templates/views/inst420/searchmask_simple:44 ../templates/views/inst425/searchmask:44 ../templates/views/inst425/searchmask_simple:44 ../templates/views/inst426/searchmask:44 ../templates/views/inst426/searchmask_simple:44 ../templates/views/inst430/searchmask:44 ../templates/views/inst430/searchmask_simple:44 ../templates/views/inst431/searchmask:44 ../templates/views/inst431/searchmask_simple:44 ../templates/views/inst460/searchmask:44 ../templates/views/inst460/searchmask_simple:44 ../templates/views/inst501/searchmask:44 ../templates/views/kapsel/search_browse_tit:25 ../templates/views/kapsel/searchmask:25 ../templates/views/kapsel/searchmask_simple:25 ../templates/views/kempen/searchmask:44 ../templates/views/kempen/searchmask_simple:44 ../templates/views/kevelaer/searchmask:44 ../templates/views/kevelaer/searchmask_simple:44 ../templates/views/kug/searchmask:124 ../templates/views/kug/searchmask_simple:34 ../templates/views/kwinter/searchmask:44 ../templates/views/kwinter/searchmask_simple:44 ../templates/views/landschaft/search_browse_tit:25 ../templates/views/landschaft/searchmask:25 ../templates/views/landschaft/searchmask_simple:25 ../templates/views/portrait/search_browse_tit:25 ../templates/views/portrait/searchmask:32 ../templates/views/portrait/searchmask_simple:32 ../templates/views/rheinlandbib/searchmask:37 ../templates/views/rheinlandbib/searchmask_simple:37 ../templates/views/richter/searchmask:49 ../templates/views/richter/searchmask_simple:44 ../templates/views/xanten/searchmask:44 ../templates/views/xanten/searchmask_simple:44
+#: ../templates/info_11:25 ../templates/info_12:29 ../templates/info_13:25 ../templates/info_15:28 ../templates/info_50:29 ../templates/info_51:36 ../templates/info_52:36 ../templates/searchmask:44 ../templates/searchmask_simple:44 ../templates/views/edz/searchmask:44 ../templates/views/edz/searchmask_simple:44 ../templates/views/einbaende/search_browse_tit:32 ../templates/views/einbaende/searchmask:43 ../templates/views/einbaende/searchmask_simple:36 ../templates/views/gdonck/searchmask:44 ../templates/views/gdonck/searchmask_simple:44 ../templates/views/gleuel/searchmask:44 ../templates/views/gleuel/searchmask_simple:44 ../templates/views/inst404/searchmask:44 ../templates/views/inst404/searchmask_simple:44 ../templates/views/inst405/searchmask:44 ../templates/views/inst405/searchmask_simple:44 ../templates/views/inst406/searchmask:44 ../templates/views/inst406/searchmask_simple:44 ../templates/views/inst410/searchmask:44 ../templates/views/inst410/searchmask_simple:44 ../templates/views/inst411/searchmask:44 ../templates/views/inst411/searchmask_simple:45 ../templates/views/inst412/searchmask:44 ../templates/views/inst412/searchmask_simple:44 ../templates/views/inst413/searchmask:44 ../templates/views/inst413/searchmask_simple:44 ../templates/views/inst415/searchmask:44 ../templates/views/inst415/searchmask_simple:44 ../templates/views/inst419/searchmask:44 ../templates/views/inst420/searchmask:44 ../templates/views/inst420/searchmask_simple:44 ../templates/views/inst425/searchmask:44 ../templates/views/inst425/searchmask_simple:44 ../templates/views/inst426/searchmask:44 ../templates/views/inst426/searchmask_simple:44 ../templates/views/inst430/searchmask:44 ../templates/views/inst430/searchmask_simple:44 ../templates/views/inst431/searchmask:44 ../templates/views/inst431/searchmask_simple:44 ../templates/views/inst460/searchmask:44 ../templates/views/inst460/searchmask_simple:44 ../templates/views/inst501/searchmask:44 ../templates/views/kapsel/search_browse_tit:25 ../templates/views/kapsel/searchmask:25 ../templates/views/kapsel/searchmask_simple:25 ../templates/views/kempen/searchmask:44 ../templates/views/kempen/searchmask_simple:44 ../templates/views/kevelaer/searchmask:44 ../templates/views/kevelaer/searchmask_simple:44 ../templates/views/kug/info:131 ../templates/views/kug/info:53 ../templates/views/kug/searchmask:124 ../templates/views/kug/searchmask_simple:34 ../templates/views/kwinter/searchmask:44 ../templates/views/kwinter/searchmask_simple:44 ../templates/views/landschaft/search_browse_tit:25 ../templates/views/landschaft/searchmask:25 ../templates/views/landschaft/searchmask_simple:25 ../templates/views/portrait/search_browse_tit:25 ../templates/views/portrait/searchmask:32 ../templates/views/portrait/searchmask_simple:32 ../templates/views/rheinlandbib/searchmask:37 ../templates/views/rheinlandbib/searchmask_simple:37 ../templates/views/richter/searchmask:49 ../templates/views/richter/searchmask_simple:44 ../templates/views/xanten/searchmask:44 ../templates/views/xanten/searchmask_simple:44
 msgid "Einfache Recherche"
 msgstr ""
 
@@ -695,6 +1186,11 @@ msgstr ""
 
 #: ../templates/externaljump:130
 msgid "Elektronische Zeitschriftendatenbank (EZB)"
+msgstr ""
+
+#: ../templates/views/kug/info:623
+#. ("<a class=\"tutorial\" href=\"http://kug.ub.uni-koeln.de/tutorials/e-journal.html\" target=\"tutorial\"><img src=\"/images/openbib/tutorial.png\" /></a>")
+msgid "Elektronische Zeitschriftendatenbank (EZB) %1"
 msgstr ""
 
 #: ../templates/database/ebooks/search_showtitset:378 ../templates/database/ebooks/search_showtitset:396 ../templates/database/nationallizenzen/search_showtitset:384 ../templates/database/nationallizenzen/search_showtitset:402 ../templates/search_showtitset:401 ../templates/search_showtitset:419
@@ -735,6 +1231,10 @@ msgstr ""
 
 #: ../templates/admin_loggedin:35 ../templates/userprefs_changefields:26 ../templates/userprefs_userdeleted:27
 msgid "Erfolgsmeldung"
+msgstr ""
+
+#: ../templates/views/kug/info:628 ../templates/views/kug/info:68
+msgid "Ergebnisanreicherung"
 msgstr ""
 
 #: ../templates/searchmask_options:4 ../templates/userprefs:216 ../templates/views/gdonck/searchmask_options:4 ../templates/views/gleuel/searchmask_options:4 ../templates/views/kempen/searchmask_options:4 ../templates/views/kevelaer/searchmask_options:4 ../templates/views/kug/searchmask_options:4 ../templates/views/kwinter/searchmask_options:4 ../templates/views/portrait/searchmask_options:4 ../templates/views/rheinlandbib/searchmask_options:4 ../templates/views/xanten/searchmask_options:4
@@ -789,6 +1289,12 @@ msgstr ""
 msgid "Es existiert noch kein prim&auml;rer RSS-Feed f&uuml;r diesen View"
 msgstr ""
 
+#: ../templates/views/kug/info:388
+msgid ""
+"Es k&ouml;nnen nur Begriffe recherchiert werden, die aus\n"
+"      mindestens zwei Zeichen (Buchstaben/Ziffern) bestehen."
+msgstr ""
+
 #: ../templates/circulation_remind:48
 msgid "Es sind keine Gebühren angefallen."
 msgstr ""
@@ -817,6 +1323,31 @@ msgstr ""
 msgid "Es wurden keine Treffer gefunden"
 msgstr ""
 
+#: ../templates/views/kug/info:812
+#. ("<a      href=\"https://addons.mozilla.org/en-US/firefox/addon/445\"      target=\"_blank\">Link</a>","<img src=\"/images/openbib/rssfeed.png\" alt=\"RSS-Icon\"      />")
+msgid ""
+"F&uuml;r die Installation bei Firefox-Browsern bis Version\n"
+"      1.5 rufen Sie bitte diesen %1 zu der Firefox-Erweiterung Feedview auf\n"
+"      und klicken dort auf <i>Install Now</i>. Es &ouml;ffnet sich dann ein\n"
+"      Fenster. In diesem best&auml;tigen Sie bitte die\n"
+"      Installation. Nach dem Neustart von Firefox und einem Klick auf\n"
+"      eines der %2-Icons im KUG &ouml;ffnet sich der entsprechende RSS-Feed."
+msgstr ""
+
+#: ../templates/views/kug/info:269
+msgid ""
+"F&uuml;r die Kategorien Person,\n"
+"      K&ouml;rperschaft/Institution und Schlagwort ist eine\n"
+"      Index-Suche m&ouml;glich. Sie erhalten dann eine &Uuml;bersicht\n"
+"      von den zutreffenden Ansetzungsformen der Normeintr&auml;ge. Die\n"
+"      hier eingegebenen Begriffe werden im Volltext gesucht, d.h. sie\n"
+"      werden z.B. auch innerhalb von Schlagwort-Ketten\n"
+"      gefunden. M&ouml;chten Sie hingegen eine Wortanfangssuche\n"
+"      durchf&uuml;hren, so stellen Sie dem Suchbegriff bitte das\n"
+"      Zeichen <b>^</b> voran (z.B. ^frauenbildung*). Mit * k&ouml;nnen\n"
+"      Sie wie gewohnt den entsprechenden Begriff trunkieren."
+msgstr ""
+
 #: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:306
 msgid "F&uuml;r die Nutzung der Index-Funktion m&uuml;ssen Sie einen Begriff eingegeben"
 msgstr ""
@@ -840,6 +1371,27 @@ msgstr ""
 
 #: ../templates/searchmask_options:19 ../templates/searchmask_simple:124 ../templates/views/edz/searchmask_simple:133 ../templates/views/inst404/searchmask_simple:139 ../templates/views/inst405/searchmask_simple:139 ../templates/views/inst406/searchmask_simple:133 ../templates/views/inst410/searchmask_simple:131 ../templates/views/inst411/searchmask_simple:133 ../templates/views/inst412/searchmask_simple:132 ../templates/views/inst413/searchmask_simple:113 ../templates/views/inst415/searchmask_simple:133 ../templates/views/inst420/searchmask_simple:134 ../templates/views/inst425/searchmask_simple:131 ../templates/views/inst426/searchmask_simple:132 ../templates/views/inst430/searchmask_simple:134 ../templates/views/inst431/searchmask_simple:131 ../templates/views/inst460/searchmask_simple:132 ../templates/views/richter/searchmask_simple:100
 msgid "Fakultäten"
+msgstr ""
+
+#: ../templates/views/kug/info:922
+msgid ""
+"Falls Teile des Textes (Inhaltsverzeichnisse, Probekapitel,\n"
+"     Verweise auf weitere Ausgaben, Zitate usw.) verfügbar sind, wird\n"
+"     das Book Search Bild um den orangenen Text 'Teilzugriff'\n"
+"     ergänzt."
+msgstr ""
+
+#: ../templates/views/kug/info:927
+msgid ""
+"Falls das Buch bei Google Book Search nicht vorhanden ist\n"
+"     bzw. dort kein 'Mehrwert' existiert, dann erscheint die\n"
+"     Verlinkung von Google Book Search nicht."
+msgstr ""
+
+#: ../templates/views/kug/info:919
+msgid ""
+"Falls der Text dort im Vollzugriff vorliegt, wird das Book\n"
+"     Search Bild um den grünen Text 'Vollzugriff' ergänzt."
 msgstr ""
 
 #: ../templates/databaseprofile:66
@@ -866,6 +1418,10 @@ msgstr ""
 msgid "Fernleihbestellung"
 msgstr ""
 
+#: ../templates/views/kug/info:1033
+msgid "Fragen und Anmerkungen richten Sie bitte an:"
+msgstr ""
+
 #: ../templates/database/ebooks/search_showtitset:293 ../templates/database/nationallizenzen/search_showtitset:299 ../templates/search_showtitset:316
 msgid "Franz&ouml;sische Wikipedia"
 msgstr ""
@@ -877,6 +1433,16 @@ msgstr ""
 #: ../templates/searchmask:145 ../templates/searchmask_simple:181 ../templates/views/edz/searchmask:159 ../templates/views/edz/searchmask_simple:190 ../templates/views/einbaende/searchmask:152 ../templates/views/gdonck/searchmask:140 ../templates/views/gdonck/searchmask_simple:126 ../templates/views/gleuel/searchmask:140 ../templates/views/gleuel/searchmask_simple:126 ../templates/views/inst404/searchmask:160 ../templates/views/inst404/searchmask_simple:196 ../templates/views/inst405/searchmask:164 ../templates/views/inst405/searchmask_simple:196 ../templates/views/inst406/searchmask:155 ../templates/views/inst406/searchmask_simple:190 ../templates/views/inst410/searchmask:157 ../templates/views/inst410/searchmask_simple:188 ../templates/views/inst411/searchmask:158 ../templates/views/inst411/searchmask_simple:190 ../templates/views/inst412/searchmask:159 ../templates/views/inst412/searchmask_simple:189 ../templates/views/inst413/searchmask:139 ../templates/views/inst413/searchmask_simple:170 ../templates/views/inst415/searchmask:160 ../templates/views/inst415/searchmask_simple:190 ../templates/views/inst419/searchmask:159 ../templates/views/inst420/searchmask:161 ../templates/views/inst420/searchmask_simple:191 ../templates/views/inst425/searchmask:159 ../templates/views/inst425/searchmask_simple:188 ../templates/views/inst426/searchmask:159 ../templates/views/inst426/searchmask_simple:189 ../templates/views/inst430/searchmask:161 ../templates/views/inst430/searchmask_simple:191 ../templates/views/inst431/searchmask:158 ../templates/views/inst431/searchmask_simple:188 ../templates/views/inst460/searchmask:159 ../templates/views/inst460/searchmask_simple:189 ../templates/views/inst501/searchmask:144 ../templates/views/kapsel/searchmask:109 ../templates/views/kempen/searchmask:140 ../templates/views/kempen/searchmask_simple:126 ../templates/views/kevelaer/searchmask:140 ../templates/views/kevelaer/searchmask_simple:126 ../templates/views/kug/searchmask:320 ../templates/views/kug/searchmask_simple:128 ../templates/views/kwinter/searchmask:140 ../templates/views/kwinter/searchmask_simple:126 ../templates/views/landschaft/searchmask:109 ../templates/views/portrait/searchmask:140 ../templates/views/rheinlandbib/searchmask:129 ../templates/views/rheinlandbib/searchmask_simple:115 ../templates/views/richter/searchmask:125 ../templates/views/richter/searchmask_simple:154 ../templates/views/xanten/searchmask:140 ../templates/views/xanten/searchmask_simple:126
 #. ("<a href=\"http://www.ub.uni-koeln.de/usb-cgi/zms_makeEmail.pl?adr0=kug\" target=\"_blank\">","</a>")
 msgid "Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter %1 kug@ub.uni-koeln.de %2 erreichen."
+msgstr ""
+
+#: ../templates/views/kug/info:938
+msgid ""
+"Für jeden Katalog kann - soweit dort verschlagwortet wird -\n"
+"      eine Übersicht der 200 am häufigsten vergebenen Schlagworte und\n"
+"      verschiedenen anderen Kategorien in der Form einer Wortwolke\n"
+"      (engl. tag cloud) dargestellt werden. Je mehr Titel entsprechend\n"
+"      verschlagwortet wurden, umso grösser wird das zugehörige\n"
+"      Schlagwort dargestellt."
 msgstr ""
 
 #: ../templates/database/nationallizenzen/search_showtitset:146
@@ -921,6 +1487,10 @@ msgstr ""
 
 #: ../templates/circulation_remind:111 ../templates/circulation_remind:71
 msgid "Gebühr"
+msgstr ""
+
+#: ../templates/views/kug/info:984
+msgid "Gesamt-KUG"
 msgstr ""
 
 #: ../templates/circulation:52
@@ -970,11 +1540,31 @@ msgstr ""
 msgid "Haben Sie Rechercheprobleme?!? Wollen Sie den KUG besser kennenlernen und effizienter nutzen?! Wir bieten laufend %1KUG-Schulungen%2 an!"
 msgstr ""
 
+#: ../templates/views/kug/info:797
+msgid ""
+"Haben Sie im KUG recherchiert, sind in einer Bibliothek\n"
+"        f&uuml;ndig geworden und interessieren sich f&uuml;r neu\n"
+"        angeschaffte Medien zu einem der gefundenen Autoren,\n"
+"        K&ouml;rperschaften, Schlagworten oder Notation, klicken Sie\n"
+"        auf das entsprechende RSS-Feed-Icon. Es &ouml;ffnet sich Ihre\n"
+"        Liste. Voraussetzung: Sie haben vorher einen <i>Feedreader</i>\n"
+"        installiert."
+msgstr ""
+
 #: ../templates/virtualsearch_more_search_tips:37
 #. ("<a href=\"${config.redirect_loc}/${sessionID}/531/${config.dbis_exturl}\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>")
 msgid ""
 "Haben Sie sich &uuml;ber unser\n"
 "%1Datenbankangebot%2 informiert? Auch hier finden Sie Volltexte."
+msgstr ""
+
+#: ../templates/views/kug/info:475
+msgid ""
+"Haben Sie sich mit Ihrer Benutzernummer der Bibliothek angemeldet, ist Ihr\n"
+"Passwort automatisch Ihr Geburtsdatum in 6-stelliger Zahl (z. B.: Geburtsdatum:\n"
+"5. März 1975 ; Passwort: 050375), wenn Sie es nicht geändert haben. Sollten Sie\n"
+"sich damit nicht einloggen können, wenden Sie sich an die Auskunft oder\n"
+"Anmeldung der betreffenden Bibliothek."
 msgstr ""
 
 #: ../templates/login:101
@@ -998,8 +1588,20 @@ msgid ""
 "Ihrer Eingabe hinzuf&uuml;gen (z.B. KA 15*)."
 msgstr ""
 
+#: ../templates/views/kug/info:175
+msgid ""
+"Hier k&ouml;nnen Sie auch\n"
+"        Ihre Kataloge festlegen, in denen Sie suchen m&ouml;chten. Sie\n"
+"        stellen Ihre Suchanfrage und schicken sie mit <i>In\n"
+"        ausgew&auml;hlten Katalogen suchen</i> ab."
+msgstr ""
+
 #: ../templates/searchmask:131 ../templates/searchmask:135 ../templates/searchmask:93 ../templates/searchmask:99 ../templates/searchmask_simple:144 ../templates/searchmask_simple:150 ../templates/views/edz/searchmask:107 ../templates/views/edz/searchmask:113 ../templates/views/edz/searchmask:145 ../templates/views/edz/searchmask:149 ../templates/views/edz/searchmask_simple:153 ../templates/views/edz/searchmask_simple:159 ../templates/views/einbaende/searchmask:145 ../templates/views/einbaende/searchmask:95 ../templates/views/einbaende/searchmask_simple:84 ../templates/views/gdonck/searchmask:125 ../templates/views/gdonck/searchmask:129 ../templates/views/gdonck/searchmask:87 ../templates/views/gdonck/searchmask:93 ../templates/views/gdonck/searchmask_simple:89 ../templates/views/gdonck/searchmask_simple:95 ../templates/views/gleuel/searchmask:125 ../templates/views/gleuel/searchmask:129 ../templates/views/gleuel/searchmask:87 ../templates/views/gleuel/searchmask:93 ../templates/views/gleuel/searchmask_simple:89 ../templates/views/gleuel/searchmask_simple:95 ../templates/views/inst404/searchmask:108 ../templates/views/inst404/searchmask:114 ../templates/views/inst404/searchmask:146 ../templates/views/inst404/searchmask:150 ../templates/views/inst404/searchmask_simple:159 ../templates/views/inst404/searchmask_simple:165 ../templates/views/inst405/searchmask:112 ../templates/views/inst405/searchmask:118 ../templates/views/inst405/searchmask:150 ../templates/views/inst405/searchmask:154 ../templates/views/inst405/searchmask_simple:159 ../templates/views/inst405/searchmask_simple:165 ../templates/views/inst406/searchmask:102 ../templates/views/inst406/searchmask:109 ../templates/views/inst406/searchmask:141 ../templates/views/inst406/searchmask:145 ../templates/views/inst406/searchmask_simple:153 ../templates/views/inst406/searchmask_simple:159 ../templates/views/inst410/searchmask:105 ../templates/views/inst410/searchmask:111 ../templates/views/inst410/searchmask:143 ../templates/views/inst410/searchmask:147 ../templates/views/inst410/searchmask_simple:151 ../templates/views/inst410/searchmask_simple:157 ../templates/views/inst411/searchmask:106 ../templates/views/inst411/searchmask:112 ../templates/views/inst411/searchmask:144 ../templates/views/inst411/searchmask:148 ../templates/views/inst411/searchmask_simple:153 ../templates/views/inst411/searchmask_simple:159 ../templates/views/inst412/searchmask:107 ../templates/views/inst412/searchmask:113 ../templates/views/inst412/searchmask:145 ../templates/views/inst412/searchmask:149 ../templates/views/inst412/searchmask_simple:152 ../templates/views/inst412/searchmask_simple:158 ../templates/views/inst413/searchmask:125 ../templates/views/inst413/searchmask:129 ../templates/views/inst413/searchmask:87 ../templates/views/inst413/searchmask:93 ../templates/views/inst413/searchmask_simple:133 ../templates/views/inst413/searchmask_simple:139 ../templates/views/inst415/searchmask:108 ../templates/views/inst415/searchmask:114 ../templates/views/inst415/searchmask:146 ../templates/views/inst415/searchmask:150 ../templates/views/inst415/searchmask_simple:153 ../templates/views/inst415/searchmask_simple:159 ../templates/views/inst419/searchmask:107 ../templates/views/inst419/searchmask:113 ../templates/views/inst419/searchmask:145 ../templates/views/inst419/searchmask:149 ../templates/views/inst420/searchmask:109 ../templates/views/inst420/searchmask:115 ../templates/views/inst420/searchmask:147 ../templates/views/inst420/searchmask:151 ../templates/views/inst420/searchmask_simple:154 ../templates/views/inst420/searchmask_simple:160 ../templates/views/inst425/searchmask:107 ../templates/views/inst425/searchmask:113 ../templates/views/inst425/searchmask:145 ../templates/views/inst425/searchmask:149 ../templates/views/inst425/searchmask_simple:151 ../templates/views/inst425/searchmask_simple:157 ../templates/views/inst426/searchmask:107 ../templates/views/inst426/searchmask:113 ../templates/views/inst426/searchmask:145 ../templates/views/inst426/searchmask:149 ../templates/views/inst426/searchmask_simple:152 ../templates/views/inst426/searchmask_simple:158 ../templates/views/inst430/searchmask:109 ../templates/views/inst430/searchmask:115 ../templates/views/inst430/searchmask:147 ../templates/views/inst430/searchmask:151 ../templates/views/inst430/searchmask_simple:154 ../templates/views/inst430/searchmask_simple:160 ../templates/views/inst431/searchmask:106 ../templates/views/inst431/searchmask:112 ../templates/views/inst431/searchmask:144 ../templates/views/inst431/searchmask:148 ../templates/views/inst431/searchmask_simple:151 ../templates/views/inst431/searchmask_simple:157 ../templates/views/inst460/searchmask:107 ../templates/views/inst460/searchmask:113 ../templates/views/inst460/searchmask:145 ../templates/views/inst460/searchmask:149 ../templates/views/inst460/searchmask_simple:152 ../templates/views/inst460/searchmask_simple:158 ../templates/views/inst501/searchmask:130 ../templates/views/inst501/searchmask:134 ../templates/views/inst501/searchmask:92 ../templates/views/inst501/searchmask:98 ../templates/views/kapsel/searchmask:100 ../templates/views/kapsel/searchmask:67 ../templates/views/kapsel/searchmask:96 ../templates/views/kapsel/searchmask_simple:65 ../templates/views/kempen/searchmask:125 ../templates/views/kempen/searchmask:129 ../templates/views/kempen/searchmask:87 ../templates/views/kempen/searchmask:93 ../templates/views/kempen/searchmask_simple:89 ../templates/views/kempen/searchmask_simple:95 ../templates/views/kevelaer/searchmask:125 ../templates/views/kevelaer/searchmask:129 ../templates/views/kevelaer/searchmask:87 ../templates/views/kevelaer/searchmask:93 ../templates/views/kevelaer/searchmask_simple:89 ../templates/views/kevelaer/searchmask_simple:95 ../templates/views/kug/searchmask:180 ../templates/views/kug/searchmask:199 ../templates/views/kug/searchmask:308 ../templates/views/kug/searchmask_simple:97 ../templates/views/kwinter/searchmask:125 ../templates/views/kwinter/searchmask:129 ../templates/views/kwinter/searchmask:87 ../templates/views/kwinter/searchmask:93 ../templates/views/kwinter/searchmask_simple:89 ../templates/views/kwinter/searchmask_simple:95 ../templates/views/landschaft/searchmask:100 ../templates/views/landschaft/searchmask:67 ../templates/views/landschaft/searchmask:96 ../templates/views/landschaft/searchmask_simple:57 ../templates/views/portrait/searchmask:127 ../templates/views/portrait/searchmask:131 ../templates/views/portrait/searchmask:72 ../templates/views/portrait/searchmask_simple:73 ../templates/views/rheinlandbib/searchmask:117 ../templates/views/rheinlandbib/searchmask:121 ../templates/views/rheinlandbib/searchmask:79 ../templates/views/rheinlandbib/searchmask:85 ../templates/views/rheinlandbib/searchmask_simple:81 ../templates/views/rheinlandbib/searchmask_simple:87 ../templates/views/richter/searchmask:118 ../templates/views/richter/searchmask:95 ../templates/views/richter/searchmask_simple:120 ../templates/views/richter/searchmask_simple:126 ../templates/views/xanten/searchmask:125 ../templates/views/xanten/searchmask:129 ../templates/views/xanten/searchmask:87 ../templates/views/xanten/searchmask:93 ../templates/views/xanten/searchmask_simple:89 ../templates/views/xanten/searchmask_simple:95
 msgid "Hier löschen Sie die Eingabefelder"
+msgstr ""
+
+#: ../templates/views/kug/info:217
+msgid "Hier sind auch Suchanfragen mit kombinierten UND- und ODER-Verkn&uuml;pfungen unter Verwendung von Klammern m&ouml;glich (siehe Beispiel 7)"
 msgstr ""
 
 #: ../templates/searchmask:131 ../templates/searchmask:135 ../templates/searchmask:93 ../templates/searchmask:99 ../templates/searchmask_simple:144 ../templates/searchmask_simple:150 ../templates/views/edz/searchmask:107 ../templates/views/edz/searchmask:113 ../templates/views/edz/searchmask:145 ../templates/views/edz/searchmask:149 ../templates/views/edz/searchmask_simple:153 ../templates/views/edz/searchmask_simple:159 ../templates/views/einbaende/searchmask:145 ../templates/views/einbaende/searchmask:95 ../templates/views/einbaende/searchmask_simple:84 ../templates/views/gdonck/searchmask:125 ../templates/views/gdonck/searchmask:129 ../templates/views/gdonck/searchmask:87 ../templates/views/gdonck/searchmask:93 ../templates/views/gdonck/searchmask_simple:89 ../templates/views/gdonck/searchmask_simple:95 ../templates/views/gleuel/searchmask:125 ../templates/views/gleuel/searchmask:129 ../templates/views/gleuel/searchmask:87 ../templates/views/gleuel/searchmask:93 ../templates/views/gleuel/searchmask_simple:89 ../templates/views/gleuel/searchmask_simple:95 ../templates/views/inst404/searchmask:108 ../templates/views/inst404/searchmask:114 ../templates/views/inst404/searchmask:146 ../templates/views/inst404/searchmask:150 ../templates/views/inst404/searchmask_simple:159 ../templates/views/inst404/searchmask_simple:165 ../templates/views/inst405/searchmask:112 ../templates/views/inst405/searchmask:118 ../templates/views/inst405/searchmask:150 ../templates/views/inst405/searchmask:154 ../templates/views/inst405/searchmask_simple:159 ../templates/views/inst405/searchmask_simple:165 ../templates/views/inst406/searchmask:102 ../templates/views/inst406/searchmask:109 ../templates/views/inst406/searchmask:141 ../templates/views/inst406/searchmask:145 ../templates/views/inst406/searchmask_simple:153 ../templates/views/inst406/searchmask_simple:159 ../templates/views/inst410/searchmask:105 ../templates/views/inst410/searchmask:111 ../templates/views/inst410/searchmask:143 ../templates/views/inst410/searchmask:147 ../templates/views/inst410/searchmask_simple:151 ../templates/views/inst410/searchmask_simple:157 ../templates/views/inst411/searchmask:106 ../templates/views/inst411/searchmask:112 ../templates/views/inst411/searchmask:144 ../templates/views/inst411/searchmask:148 ../templates/views/inst411/searchmask_simple:153 ../templates/views/inst411/searchmask_simple:159 ../templates/views/inst412/searchmask:107 ../templates/views/inst412/searchmask:113 ../templates/views/inst412/searchmask:145 ../templates/views/inst412/searchmask:149 ../templates/views/inst412/searchmask_simple:152 ../templates/views/inst412/searchmask_simple:158 ../templates/views/inst413/searchmask:125 ../templates/views/inst413/searchmask:129 ../templates/views/inst413/searchmask:87 ../templates/views/inst413/searchmask:93 ../templates/views/inst413/searchmask_simple:133 ../templates/views/inst413/searchmask_simple:139 ../templates/views/inst415/searchmask:108 ../templates/views/inst415/searchmask:114 ../templates/views/inst415/searchmask:146 ../templates/views/inst415/searchmask:150 ../templates/views/inst415/searchmask_simple:153 ../templates/views/inst415/searchmask_simple:159 ../templates/views/inst419/searchmask:107 ../templates/views/inst419/searchmask:113 ../templates/views/inst419/searchmask:145 ../templates/views/inst419/searchmask:149 ../templates/views/inst420/searchmask:109 ../templates/views/inst420/searchmask:115 ../templates/views/inst420/searchmask:147 ../templates/views/inst420/searchmask:151 ../templates/views/inst420/searchmask_simple:154 ../templates/views/inst420/searchmask_simple:160 ../templates/views/inst425/searchmask:107 ../templates/views/inst425/searchmask:113 ../templates/views/inst425/searchmask:145 ../templates/views/inst425/searchmask:149 ../templates/views/inst425/searchmask_simple:151 ../templates/views/inst425/searchmask_simple:157 ../templates/views/inst426/searchmask:107 ../templates/views/inst426/searchmask:113 ../templates/views/inst426/searchmask:145 ../templates/views/inst426/searchmask:149 ../templates/views/inst426/searchmask_simple:152 ../templates/views/inst426/searchmask_simple:158 ../templates/views/inst430/searchmask:109 ../templates/views/inst430/searchmask:115 ../templates/views/inst430/searchmask:147 ../templates/views/inst430/searchmask:151 ../templates/views/inst430/searchmask_simple:154 ../templates/views/inst430/searchmask_simple:160 ../templates/views/inst431/searchmask:106 ../templates/views/inst431/searchmask:112 ../templates/views/inst431/searchmask:144 ../templates/views/inst431/searchmask:148 ../templates/views/inst431/searchmask_simple:151 ../templates/views/inst431/searchmask_simple:157 ../templates/views/inst460/searchmask:107 ../templates/views/inst460/searchmask:113 ../templates/views/inst460/searchmask:145 ../templates/views/inst460/searchmask:149 ../templates/views/inst460/searchmask_simple:152 ../templates/views/inst460/searchmask_simple:158 ../templates/views/inst501/searchmask:130 ../templates/views/inst501/searchmask:134 ../templates/views/inst501/searchmask:92 ../templates/views/inst501/searchmask:98 ../templates/views/kapsel/searchmask:100 ../templates/views/kapsel/searchmask:67 ../templates/views/kapsel/searchmask:96 ../templates/views/kapsel/searchmask_simple:65 ../templates/views/kempen/searchmask:125 ../templates/views/kempen/searchmask:129 ../templates/views/kempen/searchmask:87 ../templates/views/kempen/searchmask:93 ../templates/views/kempen/searchmask_simple:89 ../templates/views/kempen/searchmask_simple:95 ../templates/views/kevelaer/searchmask:125 ../templates/views/kevelaer/searchmask:129 ../templates/views/kevelaer/searchmask:87 ../templates/views/kevelaer/searchmask:93 ../templates/views/kevelaer/searchmask_simple:89 ../templates/views/kevelaer/searchmask_simple:95 ../templates/views/kug/searchmask:180 ../templates/views/kug/searchmask:199 ../templates/views/kug/searchmask:308 ../templates/views/kwinter/searchmask:125 ../templates/views/kwinter/searchmask:129 ../templates/views/kwinter/searchmask:87 ../templates/views/kwinter/searchmask:93 ../templates/views/kwinter/searchmask_simple:89 ../templates/views/kwinter/searchmask_simple:95 ../templates/views/landschaft/searchmask:100 ../templates/views/landschaft/searchmask:67 ../templates/views/landschaft/searchmask:96 ../templates/views/landschaft/searchmask_simple:57 ../templates/views/portrait/searchmask:127 ../templates/views/portrait/searchmask:131 ../templates/views/portrait/searchmask:72 ../templates/views/portrait/searchmask_simple:73 ../templates/views/rheinlandbib/searchmask:117 ../templates/views/rheinlandbib/searchmask:121 ../templates/views/rheinlandbib/searchmask:79 ../templates/views/rheinlandbib/searchmask:85 ../templates/views/rheinlandbib/searchmask_simple:81 ../templates/views/rheinlandbib/searchmask_simple:87 ../templates/views/richter/searchmask:118 ../templates/views/richter/searchmask:95 ../templates/views/richter/searchmask_simple:120 ../templates/views/richter/searchmask_simple:126 ../templates/views/xanten/searchmask:125 ../templates/views/xanten/searchmask:129 ../templates/views/xanten/searchmask:87 ../templates/views/xanten/searchmask:93 ../templates/views/xanten/searchmask_simple:89 ../templates/views/xanten/searchmask_simple:95
@@ -1014,7 +1616,7 @@ msgstr ""
 msgid "Hilfe"
 msgstr ""
 
-#: ../templates/databasechoice:51 ../templates/externaljump:36 ../templates/info_13:52 ../templates/info_15:46 ../templates/login:44 ../templates/login_circulation:33 ../templates/mailpassword:35 ../templates/rssfeeds:25 ../templates/selfreg:34 ../templates/views/rheinlandbib/databasechoice:51
+#: ../templates/databasechoice:51 ../templates/externaljump:36 ../templates/info_13:53 ../templates/info_15:46 ../templates/login:44 ../templates/login_circulation:33 ../templates/mailpassword:35 ../templates/rssfeeds:25 ../templates/selfreg:34 ../templates/views/rheinlandbib/databasechoice:51
 msgid "Hinweis"
 msgstr ""
 
@@ -1049,6 +1651,10 @@ msgstr ""
 msgid "Ihnen geh&ouml;rt diese Literaturliste nicht."
 msgstr ""
 
+#: ../templates/views/kug/info:128
+msgid "Ihnen stehen f&uuml;r Ihre Suchanfragen zwei Recherchemasken zur Verf&uuml;gung:"
+msgstr ""
+
 #: ../templates/mailpassword_success:28
 msgid "Ihr Passwort wurde an Sie verschickt."
 msgstr ""
@@ -1069,6 +1675,15 @@ msgstr ""
 msgid "Ihre Mailadresse"
 msgstr ""
 
+#: ../templates/views/kug/info:488
+msgid ""
+"Ihre Merkliste in <b>Mein KUG</b> bleibt Ihnen auch über das Ende einer\n"
+"Recherchesitzung hinaus erhalten - für einen beliebig langen Zeitraum! Sollten\n"
+"Sie sich erst später in <b>Mein KUG</b> einloggen, bleiben Ihnen die Einträge, die\n"
+"Sie <b>anonym</b> in dieser Sitzung gesammelt haben, erhalten. Sie werden Ihnen in\n"
+"die <b>persönliche</b> Liste übertragen."
+msgstr ""
+
 #: ../templates/mailcollection_success:28
 msgid "Ihre Merkliste wurde an Sie per Mail versendet."
 msgstr ""
@@ -1081,8 +1696,73 @@ msgstr ""
 msgid "Ihre Suchanfrage im KUG Recherche-Portal"
 msgstr ""
 
+#: ../templates/views/kug/info:136
+msgid ""
+"Ihre eingegebenen Suchbegriffe werden in <b>allen</b>\n"
+"        m&ouml;glichen Suchkategorien und in allen verf&uuml;gbaren\n"
+"        Datenbanken mit Suchmaschinen-Technologie recherchiert.  Wenn\n"
+"        Sie einzelne Kataloge ausw&auml;hlen m&ouml;chten, gehen Sie\n"
+"        in die Komplexe Recherche."
+msgstr ""
+
+#: ../templates/views/kug/info:459
+msgid ""
+"Ihren personalisierten KUG erreichen Sie über den Punkt <b>Mein KUG</b> in der\n"
+"KUG-Navigationsleiste. Sie gelangen in eine Anmeldemaske und entscheiden, mit\n"
+"welcher Identität (=Anmeldeziel) Sie sich anmelden wollen. Zur Auswahl stehen\n"
+"insbesondere Benutzernummern der USB oder der Institute, die eine\n"
+"Online-Ausleihe betreiben."
+msgstr ""
+
+#: ../templates/views/kug/info:418
+msgid ""
+"Im Feld Serie/Band/Quelle k&ouml;nnen Sie einen bestimmten\n"
+"      Band aus einer Serie oder, wenn eine Bibliothek Aufs&auml;tze\n"
+"      verzeichnet hat, nach der <b>Quelle</b> (Werk, in dem die\n"
+"      Aufs&auml;tze enthalten sind) suchen."
+msgstr ""
+
+#: ../templates/views/kug/info:749
+msgid ""
+"Im Gegensatz zu einer gew&ouml;hnlichen Pr&auml;sentation\n"
+"&uuml;ber Webseiten bieten RSS-Feeds durch die geschickte Verwaltung\n"
+"&uuml;ber spezialisierte Programme f&uuml;r Sie deutlich mehr\n"
+"Nutzungsm&ouml;glichkeiten. So k&ouml;nnen solche Programme sich um\n"
+"die Sichtung der Daten k&uuml;mmern, schon aufgerufene Titel von den\n"
+"noch nicht aufgerufenen farblich trennen, Informationen archivieren,\n"
+"Data-Mining in Verbindung mit spezialisierter Suchtechnologie\n"
+"einsetzen, usw."
+msgstr ""
+
+#: ../templates/views/kug/info:762
+msgid "Im KUG werden derzeit folgende Arten von RSS-Feeds angeboten:"
+msgstr ""
+
+#: ../templates/views/kug/info:662
+msgid ""
+"Im Rahmen eines Projektes wurden Inhaltsverzeichnisse von\n"
+"     mehr als 200000 Monographien der USB eingescannt und für alle im\n"
+"     KUG beteiligten Bibliotheken nutzbar gemacht. Wenn ein\n"
+"     Inhaltsverzeichnis zu einem Buch existiert, dann wird dies in der\n"
+"     Kategorie <b>TOC / Übersicht</b>, <b>TOC / PDF</b>\n"
+"     bzw. <b>URL</b> (unter der Bezeichnung Digitalisiertes\n"
+"     Inhaltsverzeichnis (PDF-Format/DigiTool)) verlinkt. Die Suche in\n"
+"     den Inhaltsverzeichnissen ist im KUG (derzeit) nicht\n"
+"     m&ouml;glich."
+msgstr ""
+
 #: ../templates/admin_editcat:104
 msgid "Import-Einstellungen"
+msgstr ""
+
+#: ../templates/views/kug/info:605
+#. ("<a href=\"http://kug5.ub.uni-koeln.de/portal/connector/permalink/3146/4/6/kug/index.html\" target=\"_blank\">","</a>")
+msgid ""
+"In <b>Literaturlisten</b> k&ouml;nnen Sie verschiedene Titel\n"
+"      explizit unter einer <i>&Uuml;berschrift</i> f&uuml;r einen privaten\n"
+"      oder &ouml;ffentlichen Zugriff zusammenfassen. &Ouml;ffentliche\n"
+"      Literaturlisten k&ouml;nnen Sie &uuml;ber einen PermaLink auch\n"
+"      auf externen Seiten verlinken.  %1Beispiel%2"
 msgstr ""
 
 #: ../templates/database/ebooks/search_showtitset:88 ../templates/database/nationallizenzen/search_showtitset:92 ../templates/managecollection_tit_as_html:38 ../templates/search_showtitset:88
@@ -1105,8 +1785,65 @@ msgstr ""
 msgid "In ausgewählten Katalogen suchen"
 msgstr ""
 
+#: ../templates/views/kug/info:958
+msgid ""
+"In den Kurztrefferlisten, den einzelnen Titeln, der Merkliste\n"
+"     oder anderen Stellen im KUG werden verschiedene bildliche\n"
+"     Funktionselemente verwendet. Es sind dies:"
+msgstr ""
+
+#: ../templates/views/kug/info:152
+msgid ""
+"In der Einfachen Recherche werden alle eingegebenen Begriffe\n"
+"      automatisch UND-verkn&uuml;pft und in den Kategorien Person,\n"
+"      K&ouml;rperschaft, Schlagwort, Notation, ISBN/ISSN, Signatur\n"
+"      und Jahr gesucht."
+msgstr ""
+
+#: ../templates/views/kug/info:885
+msgid ""
+"In der Einzeltreffer-Anzeige werden Personen sowie ISBNs\n"
+"     direkt in die Wikipedia verlinkt. Wenn Sie Informationen zu einer\n"
+"     Person oder einem Verfasser benötigen, k&ouml;nnen Sie direkt\n"
+"     eine Recherche nach der ensprechenden Person in der Wikipedia\n"
+"     starten. Ebenso k&ouml;nnen Sie bei vorhandener ISBN den\n"
+"     ISBN-Suchservice der Wikipedia nutzen. Damit stehen Ihnen\n"
+"     automatisch verschiedene Verbundkataloge, Buchhändler,\n"
+"     Antiquariate usw. zur Verfügung, bei denen Sie direkt nach dem\n"
+"     aktuell ausgewählten Titel recherchieren k&ouml;nnen, ohne sich\n"
+"     mit der jeweiligen Suchoberfläche auseinandersetzen zu müssen."
+msgstr ""
+
+#: ../templates/views/kug/info:839
+#. ("<a href=\"http://www.bibsonomy.org/\"     target=\"_blank\">BibSonomy</a>")
+msgid ""
+"In der Einzeltreffer-Anzeige wie auch in der Merkliste\n"
+"     k&ouml;nnen Sie die bibliographischen Angaben eines Titels durch\n"
+"     Klicken auf den entsprechenden Link bzw. das entsprechende Icon\n"
+"     (s.u.) an BibSonomy senden. %1 ist ein freier Social Bookmarking\n"
+"     Dienst, der jedoch auch auf die Verwaltung von\n"
+"     Bibliographie-Listen und deren Austausch/Verbreitung\n"
+"     spezialisiert ist."
+msgstr ""
+
+#: ../templates/views/kug/info:613
+msgid "In der Recherchemaske finden Sie unter 'Suchhistorie' eine Aufstellung Ihrer bisherigen Recherche-Anfragen. An dieser Stelle k&ouml;nnen Sie f&uuml;r den Fall, dass eine Anfrage nicht die gew&uuml;nschten Ergebnisse lieferte, diese auf weitere externe Recherchequellen ausweiten. Nach der Auswahl der betreffenden Recherche und Aktivierung von 'Weiter als externe Recherche' gelangen Sie auf eine Seite, auf der zus&auml;tzliche Recherchequellen angeboten werden. Jede dieser Recherchequellen stellt eine Recherche nach bestimmten Suchfeldern zur Verf&uuml;gung. Entsprechend der bei Ihrer KUG-Recherche gew&auml;hlten Suchfelder sind unter 'Übernahme der Anfrage in externe Recherchequellen' verschiedene Links aktiviert. Wenn die Suchfelder/Kategorien Ihrer ausgew&auml;hlten Anfrage nicht von einer externen Recherchequelle verarbeitet werden k&ouml;nnen, erscheint anstelle des Links die rote Meldung '<i>Ungeeignete Suchfelder</i>'. Bei der Aktivierung eines entsprechenden Links springen Sie sofort zur entsprechenden Recherche in der externen Quelle. Dabei wird sowohl Ihre Suchanfrage wie auch eine etwaige Authentifizierung am KUG mit weitergereicht."
+msgstr ""
+
 #: ../templates/database/ebooks/search_showtitset:54 ../templates/database/einbaende/search_showtitlist:155 ../templates/database/einbaende/search_showtitset:42 ../templates/database/landschaft/search_showtitlist:153 ../templates/database/landschaft/search_showtitset:38 ../templates/database/landschaft/virtualsearch_result_item:79 ../templates/database/nationallizenzen/search_showtitset:54 ../templates/database/portrait/search_showtitlist:153 ../templates/database/portrait/search_showtitset:38 ../templates/database/portrait/virtualsearch_result_item:79 ../templates/resultlists_showall:137 ../templates/resultlists_showall_sortall:122 ../templates/resultlists_showsinglepool:140 ../templates/search_showtitlist:156 ../templates/search_showtitlist_of_cnt:156 ../templates/search_showtitset:54 ../templates/views/einbaende/resultlists_showall:134 ../templates/views/einbaende/resultlists_showall_sortall:110 ../templates/views/einbaende/resultlists_showsinglepool:132 ../templates/views/einbaende/virtualsearch_result_item:73 ../templates/views/kapsel/resultlists_showall:135 ../templates/views/kapsel/resultlists_showsinglepool:137 ../templates/views/kapsel/search_showtitlist:156 ../templates/views/portrait/resultlists_showsinglepool:127 ../templates/virtualsearch_result_item:80
 msgid "In die Merkliste"
+msgstr ""
+
+#: ../templates/views/kug/info:728
+#. ("<a href=\"http://de.wikipedia.org/wiki/RSS-Feed\"target=\"_blank\">","</a>","<img src=\"/images/openbib/rssfeed.png\"/>")
+msgid ""
+"In einem ausgew&auml;hlten Katalog oder einer Institutssicht werden\n"
+"sog. %1RSS-Feeds%2 angeboten.  Diese erm&ouml;glichen es\n"
+"Ihnen im KUG, sich die letzten 50 Neuzug&auml;nge (generell oder\n"
+"eingeschr&auml;nkt auf den Inhalt einer Kategorie) in einem Katalog\n"
+"anzeigen zu lassen. Sie sind erkennbar durch das bildliche\n"
+"Funktionselement %3, das mit dem\n"
+"entsprechenden RSS-Feed verlinkt ist."
 msgstr ""
 
 #: ../templates/searchmask_simple:108 ../templates/views/edz/searchmask_simple:117 ../templates/views/inst404/searchmask_simple:123 ../templates/views/inst405/searchmask_simple:123 ../templates/views/inst406/searchmask_simple:117 ../templates/views/inst410/searchmask_simple:115 ../templates/views/inst411/searchmask_simple:117 ../templates/views/inst412/searchmask_simple:116 ../templates/views/inst413/searchmask_simple:97 ../templates/views/inst415/searchmask_simple:117 ../templates/views/inst420/searchmask_simple:118 ../templates/views/inst425/searchmask_simple:115 ../templates/views/inst426/searchmask_simple:116 ../templates/views/inst430/searchmask_simple:118 ../templates/views/inst431/searchmask_simple:115 ../templates/views/inst460/searchmask_simple:116 ../templates/views/richter/searchmask_simple:84
@@ -1125,12 +1862,40 @@ msgstr ""
 msgid "Inhalt"
 msgstr ""
 
+#: ../templates/views/kug/info:50
+msgid "Inhaltsverzeichnis"
+msgstr ""
+
 #: ../templates/admin_showsessions:52
 msgid "Initiale Suchen"
 msgstr ""
 
 #: ../templates/searchmask_query:15
 msgid "Institutionen"
+msgstr ""
+
+#: ../templates/views/kug/info:84
+msgid "Integration der Google Book Search"
+msgstr ""
+
+#: ../templates/views/kug/info:83 ../templates/views/kug/info:883
+msgid "Integration der Wikipedia"
+msgstr ""
+
+#: ../templates/views/kug/info:836
+msgid "Integration mit BibSonomy"
+msgstr ""
+
+#: ../templates/views/kug/info:905
+msgid "Integration mit Google Book Search"
+msgstr ""
+
+#: ../templates/views/kug/info:79
+msgid "Integration von BibSonomy"
+msgstr ""
+
+#: ../templates/views/kug/info:58 ../templates/views/kug/info:60 ../templates/views/kug/info:63 ../templates/views/kug/info:64 ../templates/views/kug/info:65 ../templates/views/kug/info:67 ../templates/views/kug/info:69 ../templates/views/kug/info:75 ../templates/views/kug/info:79 ../templates/views/kug/info:81 ../templates/views/kug/info:83 ../templates/views/kug/info:973
+msgid "Interaktives Tutorium"
 msgstr ""
 
 #: ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:142 ../templates/managecollection_tit_as_html:79 ../templates/managecollection_tit_as_html_simple:45 ../templates/mexset:2 ../templates/search_showmulttitset:109
@@ -1169,11 +1934,15 @@ msgstr ""
 msgid "KUG Benutzerinformationen"
 msgstr ""
 
+#: ../templates/views/kug/info:91 ../templates/views/kug/info:992
+msgid "KUG Such-Plugin f&uuml;r Mozilla Firefox-Browser"
+msgstr ""
+
 #: ../templates/database/ebooks/search_showtitset:333 ../templates/database/nationallizenzen/search_showtitset:339 ../templates/search_showtitset:356
 msgid "KUG Tags"
 msgstr ""
 
-#: ../templates/info:26 ../templates/info_1:26 ../templates/info_2:26
+#: ../templates/info:26 ../templates/info_1:26 ../templates/info_2:26 ../templates/views/kug/info:35
 msgid "KUG-Versionen"
 msgstr ""
 
@@ -1197,7 +1966,7 @@ msgstr ""
 msgid "Katalog-Profile"
 msgstr ""
 
-#: ../templates/databasechoice:39 ../templates/info_13:44 ../templates/mainnavigation:17 ../templates/views/kug/searchmask:233 ../templates/views/rheinlandbib/databasechoice:39
+#: ../templates/databasechoice:39 ../templates/info_13:44 ../templates/mainnavigation:17 ../templates/views/kug/info:251 ../templates/views/kug/info:59 ../templates/views/kug/searchmask:233 ../templates/views/rheinlandbib/databasechoice:39
 msgid "Katalogauswahl"
 msgstr ""
 
@@ -1270,12 +2039,28 @@ msgstr ""
 msgid "Kompletter Titel"
 msgstr ""
 
-#: ../templates/info_11:26 ../templates/info_12:30 ../templates/info_13:26 ../templates/info_15:29 ../templates/info_50:30 ../templates/info_51:37 ../templates/info_52:37 ../templates/searchmask:45 ../templates/searchmask_simple:45 ../templates/views/edz/searchmask:45 ../templates/views/edz/searchmask_simple:45 ../templates/views/einbaende/search_browse_tit:33 ../templates/views/einbaende/searchmask:44 ../templates/views/einbaende/searchmask_simple:37 ../templates/views/gdonck/searchmask:45 ../templates/views/gdonck/searchmask_simple:45 ../templates/views/gleuel/searchmask:45 ../templates/views/gleuel/searchmask_simple:45 ../templates/views/inst404/searchmask:45 ../templates/views/inst404/searchmask_simple:45 ../templates/views/inst405/searchmask:45 ../templates/views/inst405/searchmask_simple:45 ../templates/views/inst406/searchmask:45 ../templates/views/inst406/searchmask_simple:45 ../templates/views/inst410/searchmask:45 ../templates/views/inst410/searchmask_simple:45 ../templates/views/inst411/searchmask:45 ../templates/views/inst411/searchmask_simple:46 ../templates/views/inst412/searchmask:45 ../templates/views/inst412/searchmask_simple:45 ../templates/views/inst413/searchmask:45 ../templates/views/inst413/searchmask_simple:45 ../templates/views/inst415/searchmask:45 ../templates/views/inst415/searchmask_simple:45 ../templates/views/inst419/searchmask:45 ../templates/views/inst420/searchmask:45 ../templates/views/inst420/searchmask_simple:45 ../templates/views/inst425/searchmask:45 ../templates/views/inst425/searchmask_simple:45 ../templates/views/inst426/searchmask:45 ../templates/views/inst426/searchmask_simple:45 ../templates/views/inst430/searchmask:45 ../templates/views/inst430/searchmask_simple:45 ../templates/views/inst431/searchmask:45 ../templates/views/inst431/searchmask_simple:45 ../templates/views/inst460/searchmask:45 ../templates/views/inst460/searchmask_simple:45 ../templates/views/inst501/searchmask:45 ../templates/views/kapsel/search_browse_tit:26 ../templates/views/kapsel/searchmask:26 ../templates/views/kapsel/searchmask_simple:26 ../templates/views/kempen/searchmask:45 ../templates/views/kempen/searchmask_simple:45 ../templates/views/kevelaer/searchmask:45 ../templates/views/kevelaer/searchmask_simple:45 ../templates/views/kug/searchmask:125 ../templates/views/kug/searchmask_simple:35 ../templates/views/kwinter/searchmask:45 ../templates/views/kwinter/searchmask_simple:45 ../templates/views/landschaft/search_browse_tit:26 ../templates/views/landschaft/searchmask:26 ../templates/views/landschaft/searchmask_simple:26 ../templates/views/portrait/search_browse_tit:26 ../templates/views/portrait/searchmask:33 ../templates/views/portrait/searchmask_simple:33 ../templates/views/rheinlandbib/searchmask:38 ../templates/views/rheinlandbib/searchmask_simple:38 ../templates/views/richter/searchmask:50 ../templates/views/richter/searchmask_simple:45 ../templates/views/xanten/searchmask:45 ../templates/views/xanten/searchmask_simple:45
+#: ../templates/info_11:26 ../templates/info_12:30 ../templates/info_13:26 ../templates/info_15:29 ../templates/info_50:30 ../templates/info_51:37 ../templates/info_52:37 ../templates/searchmask:45 ../templates/searchmask_simple:45 ../templates/views/edz/searchmask:45 ../templates/views/edz/searchmask_simple:45 ../templates/views/einbaende/search_browse_tit:33 ../templates/views/einbaende/searchmask:44 ../templates/views/einbaende/searchmask_simple:37 ../templates/views/gdonck/searchmask:45 ../templates/views/gdonck/searchmask_simple:45 ../templates/views/gleuel/searchmask:45 ../templates/views/gleuel/searchmask_simple:45 ../templates/views/inst404/searchmask:45 ../templates/views/inst404/searchmask_simple:45 ../templates/views/inst405/searchmask:45 ../templates/views/inst405/searchmask_simple:45 ../templates/views/inst406/searchmask:45 ../templates/views/inst406/searchmask_simple:45 ../templates/views/inst410/searchmask:45 ../templates/views/inst410/searchmask_simple:45 ../templates/views/inst411/searchmask:45 ../templates/views/inst411/searchmask_simple:46 ../templates/views/inst412/searchmask:45 ../templates/views/inst412/searchmask_simple:45 ../templates/views/inst413/searchmask:45 ../templates/views/inst413/searchmask_simple:45 ../templates/views/inst415/searchmask:45 ../templates/views/inst415/searchmask_simple:45 ../templates/views/inst419/searchmask:45 ../templates/views/inst420/searchmask:45 ../templates/views/inst420/searchmask_simple:45 ../templates/views/inst425/searchmask:45 ../templates/views/inst425/searchmask_simple:45 ../templates/views/inst426/searchmask:45 ../templates/views/inst426/searchmask_simple:45 ../templates/views/inst430/searchmask:45 ../templates/views/inst430/searchmask_simple:45 ../templates/views/inst431/searchmask:45 ../templates/views/inst431/searchmask_simple:45 ../templates/views/inst460/searchmask:45 ../templates/views/inst460/searchmask_simple:45 ../templates/views/inst501/searchmask:45 ../templates/views/kapsel/search_browse_tit:26 ../templates/views/kapsel/searchmask:26 ../templates/views/kapsel/searchmask_simple:26 ../templates/views/kempen/searchmask:45 ../templates/views/kempen/searchmask_simple:45 ../templates/views/kevelaer/searchmask:45 ../templates/views/kevelaer/searchmask_simple:45 ../templates/views/kug/info:164 ../templates/views/kug/info:56 ../templates/views/kug/searchmask:125 ../templates/views/kug/searchmask_simple:35 ../templates/views/kwinter/searchmask:45 ../templates/views/kwinter/searchmask_simple:45 ../templates/views/landschaft/search_browse_tit:26 ../templates/views/landschaft/searchmask:26 ../templates/views/landschaft/searchmask_simple:26 ../templates/views/portrait/search_browse_tit:26 ../templates/views/portrait/searchmask:33 ../templates/views/portrait/searchmask_simple:33 ../templates/views/rheinlandbib/searchmask:38 ../templates/views/rheinlandbib/searchmask_simple:38 ../templates/views/richter/searchmask:50 ../templates/views/richter/searchmask_simple:45 ../templates/views/xanten/searchmask:45 ../templates/views/xanten/searchmask_simple:45
 msgid "Komplexe Recherche"
+msgstr ""
+
+#: ../templates/views/kug/info:912
+msgid ""
+"Konkret wird bei einem Einzeltreffer im KUG entsprechend\n"
+"     dessen ISBN nach Zusatzinformationen bei Google Book Search\n"
+"     gesucht und dem Nutzer mit einem Bild eine Rückmeldung über deren\n"
+"     Verfügbarkeit gegeben."
 msgstr ""
 
 #: ../templates/virtualsearch_more_search_tips:26
 msgid "Konnten Sie das von Ihnen gesuchte Buch oder den von Ihnen gesuchten Zeitschriftenartikel nicht im KUG finden?"
+msgstr ""
+
+#: ../templates/views/kug/info:1031 ../templates/views/kug/info:92
+msgid "Kontakt"
+msgstr ""
+
+#: ../templates/views/kug/info:972
+msgid "Kontextsensitive Hilfe"
 msgstr ""
 
 #: ../templates/admin_editcat:130
@@ -1340,7 +2125,7 @@ msgstr ""
 msgid "Literaturliste"
 msgstr ""
 
-#: ../templates/clouds_navigation:21 ../templates/database/ebooks/search_showtitset:315 ../templates/database/nationallizenzen/search_showtitset:321 ../templates/databaseprofile:46 ../templates/info_41:30 ../templates/litlists_manage_lists:27 ../templates/litlists_manage_singlelist:27 ../templates/search_showtitset:338 ../templates/userprefs:26
+#: ../templates/database/ebooks/search_showtitset:315 ../templates/database/nationallizenzen/search_showtitset:321 ../templates/databaseprofile:46 ../templates/info_13:45 ../templates/info_41:30 ../templates/litlists_manage_lists:27 ../templates/litlists_manage_singlelist:27 ../templates/search_showtitset:338 ../templates/userprefs:26
 msgid "Literaturlisten"
 msgstr ""
 
@@ -1400,11 +2185,15 @@ msgstr ""
 msgid "Mashup mit Wikipedia"
 msgstr ""
 
+#: ../templates/views/kug/info:78 ../templates/views/kug/info:834
+msgid "Mashups mit Sozialer Software und externen Diensten"
+msgstr ""
+
 #: ../templates/searchmask_options:2 ../templates/views/gdonck/searchmask_options:2 ../templates/views/gleuel/searchmask_options:2 ../templates/views/kempen/searchmask_options:2 ../templates/views/kevelaer/searchmask_options:2 ../templates/views/kug/searchmask_options:2 ../templates/views/kwinter/searchmask_options:2 ../templates/views/portrait/searchmask_options:2 ../templates/views/rheinlandbib/searchmask_options:2 ../templates/views/xanten/searchmask_options:2
 msgid "Maximale Trefferzahl pro Katalog"
 msgstr ""
 
-#: ../templates/externaljump:140
+#: ../templates/externaljump:140 ../templates/views/kug/info:624
 msgid "MedPilot"
 msgstr ""
 
@@ -1416,7 +2205,7 @@ msgstr ""
 msgid "Mehrfachauswahl"
 msgstr ""
 
-#: ../templates/mainnavigation:23 ../templates/mainnavigation:25
+#: ../templates/mainnavigation:23 ../templates/mainnavigation:25 ../templates/views/kug/info:456 ../templates/views/kug/info:63
 msgid "Mein KUG"
 msgstr ""
 
@@ -1434,6 +2223,17 @@ msgstr ""
 
 #: ../templates/admin_editcat:133
 msgid "Mex-Datei"
+msgstr ""
+
+#: ../templates/views/kug/info:100
+msgid ""
+"Mit dem KUG ist eine simultane Suche in den Katalogen\n"
+"      <b>aller</b> beteiligten Bibliotheken m&ouml;glich oder in\n"
+"      <b>einzelnen</b>, vorher von Ihnen ausgesuchten. Falls sie sich\n"
+"      beim KUG unter <b>Login</b> erfolgreich authentifiziert haben,\n"
+"      k&ouml;nnen Sie einzelne ausgew&auml;hlte Kataloge\n"
+"      dar&uuml;ber hinaus auch in dauerhaft gespeicherten Suchprofilen\n"
+"      organisieren."
 msgstr ""
 
 #: ../templates/admin_editview_rss:72
@@ -1464,8 +2264,29 @@ msgstr ""
 msgid "N5000"
 msgstr ""
 
+#: ../templates/views/kug/info:546
+msgid ""
+"Nach Ihrer Sucheingabe erhalten Sie eine Kurztitelliste, die, wenn Sie in mehreren Datenbanken\n"
+"      gleichzeitig gesucht haben, geordnet ist nach den unterschiedlichen Bibliotheken. Um die Adresse\n"
+"      und die &Ouml;ffnungszeiten einer Bibliothek zu erfahren, klicken Sie auf den Namen der betreffenden\n"
+"      Datenbank. Einige Bibliotheken besitzen zusammen einen gemeinsamen Datenpool, z. B. die der\n"
+"      Erziehungswissenschaftlichen Fakult&auml;t. In diesem Fall merken Sie sich die Zahl vor der Signatur,\n"
+"      die die genaue Bibliothek angibt, klicken auf <i>Humanswiss. Fakult&auml;t</i> und suchen sich Ihre\n"
+"      Bibliothekskennzahl."
+msgstr ""
+
 #: ../templates/userprefs:71
 msgid "Nachname"
+msgstr ""
+
+#: ../templates/views/kug/info:947
+msgid ""
+"Neben dem Standard-KUG mit allen Katalogen gibt es eine\n"
+"      Vielzahl an Spezial-Sichten, bei denen z.B. bestimmte Kataloge\n"
+"      vorausgewählt sind, die weitergehende Informationen anbieten\n"
+"      oder ein eigenständiges Fach-Portal bilden. Diese für den Nutzer\n"
+"      oft unsichtbaren speziellen Einstiegspunkte in verschiedene\n"
+"      KUG-Varianten werden an dieser zentralen Stelle aufgeführt."
 msgstr ""
 
 #: ../templates/info_15:48
@@ -1638,6 +2459,10 @@ msgstr ""
 msgid "Permanenter Link"
 msgstr ""
 
+#: ../templates/views/kug/info:971
+msgid "Permanenter Link zu diesem Titel"
+msgstr ""
+
 #: ../templates/views/einbaende/searchmask:114 ../templates/views/inst501/searchmask_query:11 ../templates/views/kapsel/searchmask_query:11 ../templates/views/portrait/searchmask_query:13 ../templates/views/richter/searchmask_query:13
 msgid "Person"
 msgstr ""
@@ -1654,12 +2479,27 @@ msgstr ""
 msgid "Personendaten"
 msgstr ""
 
+#: ../templates/views/kug/info:234
+#. ("<b>\"","\"</b>","<b>\"","\"</b>")
+msgid ""
+"Phrasensuche: %1Wort1 Wort2%2 (Wort1 und Wort2 m&uuml;ssen in dieser Reihenfolge enthalten sein)<br />\n"
+"           z.B: %3kernighan, brian%4 (alle Titel von Brian Kernighan)"
+msgstr ""
+
+#: ../templates/views/kug/info:709 ../templates/views/kug/info:73
+msgid "Popularit&auml;ts-Funktionen"
+msgstr ""
+
 #: ../templates/admin_showlogintarget:49 ../templates/admin_showlogintarget:67
 msgid "Port"
 msgstr ""
 
 #: ../templates/views/portrait/searchmask_query:32
 msgid "Portraitart"
+msgstr ""
+
+#: ../templates/views/kug/info:672
+msgid "Potentiell interessante andere Titel"
 msgstr ""
 
 #: ../templates/admin_editview_rss:46
@@ -1686,7 +2526,7 @@ msgstr ""
 msgid "Profilmanagement"
 msgstr ""
 
-#: ../templates/info:25 ../templates/info_1:25 ../templates/info_2:25 ../templates/views/kapsel/mainnavigation:17 ../templates/views/portrait/mainnavigation:17
+#: ../templates/info:25 ../templates/info_1:25 ../templates/info_2:25 ../templates/views/kapsel/mainnavigation:17 ../templates/views/kug/info:34 ../templates/views/portrait/mainnavigation:17
 msgid "Projekt"
 msgstr ""
 
@@ -1728,12 +2568,37 @@ msgstr ""
 msgid "RSS-Einstellungen für View"
 msgstr ""
 
+#: ../templates/views/kug/info:968
+msgid "RSS-Feed"
+msgstr ""
+
 #: ../templates/admin_editview:93
 msgid "RSS-Feed zu diesem View"
 msgstr ""
 
+#: ../templates/views/kug/info:726 ../templates/views/kug/info:75
+msgid "RSS-Feeds (abonnierbare Informations-Kan&auml;le)"
+msgstr ""
+
+#: ../templates/views/kug/info:739
+#. ("<ahref=\"https://addons.mozilla.org/en-US/firefox/addon/445\"target=\"_blank\">FeedView</a>","<a href=\"http://www.mozilla.org/\" target=\"_blank\">Firefox</a>")
+msgid ""
+"RSS-Feeds selbst sind inhaltlich\n"
+"in XML kodiert, so dass zu ihrer Nutzung entsprechende Programme\n"
+"(Feedreader, Aggregatorprogramm) ben&ouml;tigt werden. Im\n"
+"einfachsten Fall ist dies ein einfaches Anzeige-Programm wie z.B. die\n"
+"Erweiterung %1 f&uuml;r den Browser %2. Dar&uuml;ber hinaus stehen eine Vielzahl\n"
+"an spezialisierten RSS-Feed-Readern f&uuml;r verschiedenste\n"
+"Plattformen (Windows, Linux, Mac) zur Verf&uuml;gung, deren\n"
+"Funktionsumfang weit &uuml;ber die einfache Anzeige hinausgeht."
+msgstr ""
+
 #: ../templates/admin_editsession:59 ../templates/mainnavigation:17 ../templates/views/kapsel/mainnavigation:16 ../templates/views/portrait/mainnavigation:16
 msgid "Recherche"
+msgstr ""
+
+#: ../templates/views/kug/info:126 ../templates/views/kug/info:52
+msgid "Recherchearten"
 msgstr ""
 
 #: ../templates/userprefs:150
@@ -1901,7 +2766,7 @@ msgstr ""
 msgid "Sichtbarkeit"
 msgstr ""
 
-#: ../templates/info_13:36 ../templates/info_15:38
+#: ../templates/info_13:36 ../templates/info_15:38 ../templates/views/kug/info:87 ../templates/views/kug/info:945
 msgid "Sichten"
 msgstr ""
 
@@ -2002,6 +2867,12 @@ msgstr ""
 msgid "Sie haben sich nicht authentifiziert."
 msgstr ""
 
+#: ../templates/views/kug/info:601
+msgid ""
+"Sie k&ouml;nnen sie sich in den Formaten HTML, Text oder EndNote erstellen und dann &uuml;ber die entsprechenden\n"
+"      Icons ausdrucken, speichern oder als E-Mail versenden."
+msgstr ""
+
 #: ../modules/OpenBib/Handler/Apache/Login.pm:283
 msgid "Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht erfolgreich authentifiziert werden"
 msgstr ""
@@ -2014,6 +2885,66 @@ msgstr ""
 #: ../templates/searchmask:96 ../templates/searchmask_simple:94 ../templates/views/edz/searchmask:110 ../templates/views/edz/searchmask_simple:103 ../templates/views/gdonck/searchmask:90 ../templates/views/gleuel/searchmask:90 ../templates/views/inst404/searchmask:111 ../templates/views/inst404/searchmask_simple:109 ../templates/views/inst405/searchmask:115 ../templates/views/inst405/searchmask_simple:109 ../templates/views/inst406/searchmask:106 ../templates/views/inst406/searchmask_simple:103 ../templates/views/inst410/searchmask:108 ../templates/views/inst410/searchmask_simple:101 ../templates/views/inst411/searchmask:109 ../templates/views/inst411/searchmask_simple:103 ../templates/views/inst412/searchmask:110 ../templates/views/inst412/searchmask_simple:102 ../templates/views/inst413/searchmask:90 ../templates/views/inst413/searchmask_simple:83 ../templates/views/inst415/searchmask:111 ../templates/views/inst415/searchmask_simple:103 ../templates/views/inst419/searchmask:110 ../templates/views/inst420/searchmask:112 ../templates/views/inst420/searchmask_simple:104 ../templates/views/inst425/searchmask:110 ../templates/views/inst425/searchmask_simple:101 ../templates/views/inst426/searchmask:110 ../templates/views/inst426/searchmask_simple:102 ../templates/views/inst430/searchmask:112 ../templates/views/inst430/searchmask_simple:104 ../templates/views/inst431/searchmask:109 ../templates/views/inst431/searchmask_simple:101 ../templates/views/inst460/searchmask:110 ../templates/views/inst460/searchmask_simple:102 ../templates/views/inst501/searchmask:95 ../templates/views/kempen/searchmask:90 ../templates/views/kevelaer/searchmask:90 ../templates/views/kwinter/searchmask:90 ../templates/views/rheinlandbib/searchmask:82 ../templates/views/xanten/searchmask:90
 #. ("${alldbs}","<a href=\"${config.databasechoice_loc}?sessionID=${sessionID};view=${view}\">","</a>")
 msgid "Sie können entweder durch entsprechende Auswahl in den insgesamt %1 einzelnen %2Katalogen%3 recherchieren oder auch sofort in allen zusammen."
+msgstr ""
+
+#: ../templates/views/kug/info:495
+#. ("<a class=\"tutorial\" href=\"http://kug.ub.uni-koeln.de/tutorials/meinkugtaggen.html\"target=\"tutorial\"><img src=\"/images/openbib/tutorial.png\" alt=\"Interaktives Tutorium\" /></a>")
+msgid ""
+"Sie können jeden Titel in den Katalogen <b>taggen</b> %1, d.h. mit einem eigenen Etikett\n"
+"(= Schlagwort/Tag) versehen. Diese Tags sind einzelne Worte, die Sie\n"
+"mit Leerzeichen getrennt eingeben müssen. Zur Vereinheitlichung der\n"
+"Tags werden sie automatisch normiert - d.h. Umlaute werden aufgelöst,\n"
+"es wird Kleinschreibung verwendet und unerwünschte Zeichen werden\n"
+"eliminiert (erlaubt sind Alphanumerische Zeichen sowie +-_.). Unter\n"
+"dem Reiter 'Tags' erhalten Sie dann in 'Mein KUG' eine Übersicht aller\n"
+"von Ihnen verwendeten Tags in Form einer Wortwolke - je mehr Titel sie\n"
+"mit einem entsprechenden Tag versehen haben, desto grösser wird es\n"
+"dargestellt. Durch einen Klick auf einen Tag erhalten Sie eine\n"
+"Kurztitel-Liste aller Titel, die sie mit dem jeweiligen Tag versehen\n"
+"haben."
+msgstr ""
+
+#: ../templates/views/kug/info:340
+msgid ""
+"Sie m&ouml;chten nach den B&uuml;chern &uuml;ber das\n"
+"      <tt>Programmieren</tt> mit der Sprache <tt>Perl</tt> suchen. Da sie auch englische\n"
+"      B&uuml;cher finden wollen, verwenden sie den <b>*</b> als\n"
+"      Wildcard. Sie k&ouml;nnen dann Folgendes in die <i>Freie Suche</i> eingeben:"
+msgstr ""
+
+#: ../templates/views/kug/info:321
+msgid ""
+"Sie m&ouml;chten nach den B&uuml;chern &uuml;ber das\n"
+"      <tt>Programmieren</tt> suchen. Um auch englische B&uuml;cher zu\n"
+"      finden, verwenden sie den <b>*</b> als Wildcard, da in diesem Fall\n"
+"      die W&ouml;rter <tt>programmieren</tt> und <tt>programming</tt>\n"
+"\n"
+"      den gleichen Substring <tt>programmi</tt> beinhalten. Sie\n"
+"      k&ouml;nnen dann, um auch gleichzeitig im Titel- und Schlagwortfeld zu\n"
+"      suchen, Folgendes in die <i>Freie Suche</i> eingeben:"
+msgstr ""
+
+#: ../templates/views/kug/info:353
+msgid ""
+"Sie m&ouml;chten nach den B&uuml;chern &uuml;ber das\n"
+"      <tt>Programmieren</tt>, jedoch <strong>nicht</strong> mit der Sprache\n"
+"      <tt>Perl</tt> suchen. Da sie auch englische B&uuml;cher finden wollen,\n"
+"      verwenden sie den <b>*</b> als Wildcard. Sie k&ouml;nnen dann\n"
+"      Folgendes in die <i>Freie Suche</i> eingeben:"
+msgstr ""
+
+#: ../templates/views/kug/info:297
+msgid ""
+"Sie m&ouml;chten nach den B&uuml;chern von\n"
+"        <tt>Kernighan</tt> <b>oder</b> <tt>Miller</tt> suchen. Sie k&ouml;nnen\n"
+"        dann Folgendes in das Personenfeld eingeben:"
+msgstr ""
+
+#: ../templates/views/kug/info:284
+msgid ""
+"Sie m&ouml;chten nach den B&uuml;chern von <tt>Brian\n"
+"          Kernighan</tt> suchen. Sie k&ouml;nnen dann Folgendes in das\n"
+"        Personenfeld eingeben:"
 msgstr ""
 
 #: ../modules/OpenBib/Handler/Apache/LitLists.pm:165 ../modules/OpenBib/Handler/Apache/ManageCollection.pm:227
@@ -2048,6 +2979,17 @@ msgstr ""
 msgid "Sie sind nun als Administrator eingeloggt."
 msgstr ""
 
+#: ../templates/views/kug/info:369
+msgid "Sie suchen Literatur zur Drogenproblematik bei Kindern oder Jugendlichen, speziell zur Therapie oder Behandlung.<br />Sie gehen in die Komplexe Recherche, deaktivieren die Einstellung <i>automatische UND-Verkn&uuml;pfung innerhalb eines Suchfeldes</i> und geben ein:"
+msgstr ""
+
+#: ../templates/views/kug/info:308
+msgid ""
+"Sie suchen das <tt>Goethe-Jahrbuch</tt>. Der Bindestrich\n"
+"        zwischen zwei Begriffen wird als Leerzeichen\n"
+"        interpretiert.. Daher geben Sie in das Titelfeld ein:"
+msgstr ""
+
 #: ../templates/admin_editcat:81 ../templates/admin_showcat:48 ../templates/admin_showcat:74
 msgid "Sigel"
 msgstr ""
@@ -2058,6 +3000,12 @@ msgstr ""
 
 #: ../templates/mainnavigation:29 ../templates/views/kapsel/mainnavigation:17 ../templates/views/portrait/mainnavigation:17
 msgid "Sitzung beenden"
+msgstr ""
+
+#: ../templates/views/kug/info:483
+msgid ""
+"Sobald Sie sich erfolgreich authentifiziert haben, können Sie die Vorteile von\n"
+"<b>Mein KUG</b> nutzen:"
 msgstr ""
 
 #: ../templates/userprefs:100
@@ -2090,7 +3038,11 @@ msgstr ""
 msgid "Sperre"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:33 ../templates/database/nationallizenzen/search_showtitset:33 ../templates/login:29 ../templates/search_showtitset:33 ../templates/searchmask:31 ../templates/searchmask_simple:31 ../templates/views/edz/searchmask:31 ../templates/views/edz/searchmask_simple:31 ../templates/views/gdonck/searchmask:31 ../templates/views/gdonck/searchmask_simple:31 ../templates/views/gleuel/searchmask:31 ../templates/views/gleuel/searchmask_simple:31 ../templates/views/inst404/searchmask:31 ../templates/views/inst404/searchmask_simple:31 ../templates/views/inst405/searchmask:31 ../templates/views/inst405/searchmask_simple:31 ../templates/views/inst406/searchmask:31 ../templates/views/inst406/searchmask_simple:31 ../templates/views/inst410/searchmask:31 ../templates/views/inst410/searchmask_simple:31 ../templates/views/inst411/searchmask:31 ../templates/views/inst411/searchmask_simple:32 ../templates/views/inst412/searchmask:31 ../templates/views/inst412/searchmask_simple:31 ../templates/views/inst413/searchmask:31 ../templates/views/inst413/searchmask_simple:31 ../templates/views/inst415/searchmask:31 ../templates/views/inst415/searchmask_simple:31 ../templates/views/inst419/searchmask:31 ../templates/views/inst420/searchmask:31 ../templates/views/inst420/searchmask_simple:31 ../templates/views/inst425/searchmask:31 ../templates/views/inst425/searchmask_simple:31 ../templates/views/inst426/searchmask:31 ../templates/views/inst426/searchmask_simple:31 ../templates/views/inst430/searchmask:31 ../templates/views/inst430/searchmask_simple:31 ../templates/views/inst431/searchmask:31 ../templates/views/inst431/searchmask_simple:31 ../templates/views/inst460/searchmask:31 ../templates/views/inst460/searchmask_simple:31 ../templates/views/inst501/searchmask:31 ../templates/views/kempen/searchmask:31 ../templates/views/kempen/searchmask_simple:31 ../templates/views/kevelaer/searchmask:31 ../templates/views/kevelaer/searchmask_simple:31 ../templates/views/kug/searchmask:118 ../templates/views/kug/searchmask_simple:28 ../templates/views/kwinter/searchmask:31 ../templates/views/kwinter/searchmask_simple:31 ../templates/views/rheinlandbib/searchmask:31 ../templates/views/rheinlandbib/searchmask_simple:31 ../templates/views/richter/searchmask:36 ../templates/views/richter/searchmask_simple:31 ../templates/views/xanten/searchmask:31 ../templates/views/xanten/searchmask_simple:31
+#: ../templates/views/kug/info:987
+msgid "Spezifische KUG-Sichten"
+msgstr ""
+
+#: ../templates/database/ebooks/search_showtitset:33 ../templates/database/nationallizenzen/search_showtitset:33 ../templates/login:29 ../templates/search_showtitset:33 ../templates/searchmask:31 ../templates/searchmask_simple:31 ../templates/views/edz/searchmask:31 ../templates/views/edz/searchmask_simple:31 ../templates/views/gdonck/searchmask:31 ../templates/views/gdonck/searchmask_simple:31 ../templates/views/gleuel/searchmask:31 ../templates/views/gleuel/searchmask_simple:31 ../templates/views/inst404/searchmask:31 ../templates/views/inst404/searchmask_simple:31 ../templates/views/inst405/searchmask:31 ../templates/views/inst405/searchmask_simple:31 ../templates/views/inst406/searchmask:31 ../templates/views/inst406/searchmask_simple:31 ../templates/views/inst410/searchmask:31 ../templates/views/inst410/searchmask_simple:31 ../templates/views/inst411/searchmask:31 ../templates/views/inst411/searchmask_simple:32 ../templates/views/inst412/searchmask:31 ../templates/views/inst412/searchmask_simple:31 ../templates/views/inst413/searchmask:31 ../templates/views/inst413/searchmask_simple:31 ../templates/views/inst415/searchmask:31 ../templates/views/inst415/searchmask_simple:31 ../templates/views/inst419/searchmask:31 ../templates/views/inst420/searchmask:31 ../templates/views/inst420/searchmask_simple:31 ../templates/views/inst425/searchmask:31 ../templates/views/inst425/searchmask_simple:31 ../templates/views/inst426/searchmask:31 ../templates/views/inst426/searchmask_simple:31 ../templates/views/inst430/searchmask:31 ../templates/views/inst430/searchmask_simple:31 ../templates/views/inst431/searchmask:31 ../templates/views/inst431/searchmask_simple:31 ../templates/views/inst460/searchmask:31 ../templates/views/inst460/searchmask_simple:31 ../templates/views/inst501/searchmask:31 ../templates/views/kempen/searchmask:31 ../templates/views/kempen/searchmask_simple:31 ../templates/views/kevelaer/searchmask:31 ../templates/views/kevelaer/searchmask_simple:31 ../templates/views/kug/info:27 ../templates/views/kug/searchmask:118 ../templates/views/kug/searchmask_simple:28 ../templates/views/kwinter/searchmask:31 ../templates/views/kwinter/searchmask_simple:31 ../templates/views/rheinlandbib/searchmask:31 ../templates/views/rheinlandbib/searchmask_simple:31 ../templates/views/richter/searchmask:36 ../templates/views/richter/searchmask_simple:31 ../templates/views/xanten/searchmask:31 ../templates/views/xanten/searchmask_simple:31
 #. (l)
 msgid "Sprach-Icon für %1"
 msgstr ""
@@ -2099,7 +3051,7 @@ msgstr ""
 msgid "Sprung in externe Recherche"
 msgstr ""
 
-#: ../templates/externaljump:28
+#: ../templates/externaljump:28 ../templates/views/kug/info:611 ../templates/views/kug/info:67
 msgid "Sprung in externe Recherchequellen"
 msgstr ""
 
@@ -2113,6 +3065,10 @@ msgstr ""
 
 #: ../templates/managecollection_tit_as_text:40
 msgid "Standort             "
+msgstr ""
+
+#: ../templates/views/kug/info:543 ../templates/views/kug/info:64
+msgid "Standort des Buches"
 msgstr ""
 
 #: ../templates/admin_editcat:27 ../templates/admin_editcat_rss:28 ../templates/admin_editprofile:27 ../templates/admin_editsession:28 ../templates/admin_editview:27 ../templates/admin_editview_rss:27 ../templates/admin_exploresessions_list:28 ../templates/admin_exploresessions_show:28 ../templates/admin_loggedin:27 ../templates/admin_showcat:30 ../templates/admin_showlogintarget:27 ../templates/admin_showprofiles:28 ../templates/admin_showsessions:28 ../templates/admin_showsessions_1:28 ../templates/admin_showstat:29 ../templates/admin_showstat_1:29 ../templates/admin_showstat_2:29 ../templates/admin_showstat_3:29 ../templates/admin_showstat_4:29 ../templates/admin_showstat_5:29 ../templates/admin_showuser:27 ../templates/admin_showviews:28
@@ -2131,8 +3087,16 @@ msgstr ""
 msgid "Strasse"
 msgstr ""
 
-#: ../templates/clouds_navigation:22 ../templates/info_13:45 ../templates/searchmask:105 ../templates/views/edz/searchmask:119 ../templates/views/einbaende/searchmask:100 ../templates/views/gdonck/searchmask:99 ../templates/views/gleuel/searchmask:99 ../templates/views/inst404/searchmask:120 ../templates/views/inst405/searchmask:124 ../templates/views/inst406/searchmask:115 ../templates/views/inst410/searchmask:117 ../templates/views/inst411/searchmask:118 ../templates/views/inst412/searchmask:119 ../templates/views/inst413/searchmask:99 ../templates/views/inst415/searchmask:120 ../templates/views/inst419/searchmask:119 ../templates/views/inst420/searchmask:121 ../templates/views/inst425/searchmask:119 ../templates/views/inst426/searchmask:119 ../templates/views/inst430/searchmask:121 ../templates/views/inst431/searchmask:118 ../templates/views/inst460/searchmask:119 ../templates/views/inst501/searchmask:104 ../templates/views/kapsel/clouds_navigation:21 ../templates/views/kapsel/searchmask:72 ../templates/views/kempen/searchmask:99 ../templates/views/kevelaer/searchmask:99 ../templates/views/kug/searchmask:191 ../templates/views/kwinter/searchmask:99 ../templates/views/landschaft/searchmask:72 ../templates/views/portrait/clouds_navigation:21 ../templates/views/portrait/searchmask:77 ../templates/views/rheinlandbib/searchmask:91 ../templates/views/richter/searchmask:100 ../templates/views/xanten/searchmask:99
+#: ../templates/views/kug/info:267 ../templates/views/kug/info:60
+msgid "Such-Index"
+msgstr ""
+
+#: ../templates/clouds_navigation:21 ../templates/info_13:46 ../templates/searchmask:105 ../templates/views/edz/searchmask:119 ../templates/views/einbaende/searchmask:100 ../templates/views/gdonck/searchmask:99 ../templates/views/gleuel/searchmask:99 ../templates/views/inst404/searchmask:120 ../templates/views/inst405/searchmask:124 ../templates/views/inst406/searchmask:115 ../templates/views/inst410/searchmask:117 ../templates/views/inst411/searchmask:118 ../templates/views/inst412/searchmask:119 ../templates/views/inst413/searchmask:99 ../templates/views/inst415/searchmask:120 ../templates/views/inst419/searchmask:119 ../templates/views/inst420/searchmask:121 ../templates/views/inst425/searchmask:119 ../templates/views/inst426/searchmask:119 ../templates/views/inst430/searchmask:121 ../templates/views/inst431/searchmask:118 ../templates/views/inst460/searchmask:119 ../templates/views/inst501/searchmask:104 ../templates/views/kapsel/clouds_navigation:21 ../templates/views/kapsel/searchmask:72 ../templates/views/kempen/searchmask:99 ../templates/views/kevelaer/searchmask:99 ../templates/views/kug/searchmask:191 ../templates/views/kwinter/searchmask:99 ../templates/views/landschaft/searchmask:72 ../templates/views/portrait/clouds_navigation:21 ../templates/views/portrait/searchmask:77 ../templates/views/rheinlandbib/searchmask:91 ../templates/views/richter/searchmask:100 ../templates/views/xanten/searchmask:99
 msgid "Suchbegriffe"
+msgstr ""
+
+#: ../templates/views/kug/info:975
+msgid "Suche &uuml;ber alle Kataloge"
 msgstr ""
 
 #: ../templates/views/einbaende/searchmask:145 ../templates/views/einbaende/searchmask:95
@@ -2160,7 +3124,7 @@ msgstr ""
 msgid "Suchfelder &auml;ndern"
 msgstr ""
 
-#: ../templates/info:24 ../templates/info_1:24 ../templates/info_2:24 ../templates/views/kug/searchmask:214
+#: ../templates/info:24 ../templates/info_1:24 ../templates/info_2:24 ../templates/views/kug/info:33 ../templates/views/kug/searchmask:214
 msgid "Suchhilfe"
 msgstr ""
 
@@ -2170,6 +3134,10 @@ msgstr ""
 
 #: ../templates/searchmask:59 ../templates/views/edz/searchmask:58 ../templates/views/einbaende/searchmask:58 ../templates/views/gdonck/searchmask:58 ../templates/views/gleuel/searchmask:58 ../templates/views/inst404/searchmask:58 ../templates/views/inst405/searchmask:58 ../templates/views/inst406/searchmask:58 ../templates/views/inst410/searchmask:58 ../templates/views/inst411/searchmask:58 ../templates/views/inst412/searchmask:58 ../templates/views/inst413/searchmask:58 ../templates/views/inst415/searchmask:58 ../templates/views/inst419/searchmask:58 ../templates/views/inst420/searchmask:58 ../templates/views/inst425/searchmask:58 ../templates/views/inst426/searchmask:58 ../templates/views/inst430/searchmask:58 ../templates/views/inst431/searchmask:58 ../templates/views/inst460/searchmask:58 ../templates/views/inst501/searchmask:58 ../templates/views/kapsel/searchmask:42 ../templates/views/kempen/searchmask:58 ../templates/views/kevelaer/searchmask:58 ../templates/views/kug/searchmask:143 ../templates/views/kwinter/searchmask:58 ../templates/views/landschaft/searchmask:42 ../templates/views/portrait/searchmask:47 ../templates/views/rheinlandbib/searchmask:50 ../templates/views/richter/searchmask:64 ../templates/views/xanten/searchmask:58
 msgid "Suchhistorie"
+msgstr ""
+
+#: ../templates/views/kug/info:150 ../templates/views/kug/info:181 ../templates/views/kug/info:55 ../templates/views/kug/info:58
+msgid "Suchlogik"
 msgstr ""
 
 #: ../templates/searchmask:122 ../templates/views/edz/searchmask:136 ../templates/views/gdonck/searchmask:116 ../templates/views/gleuel/searchmask:116 ../templates/views/inst404/searchmask:137 ../templates/views/inst405/searchmask:141 ../templates/views/inst406/searchmask:132 ../templates/views/inst410/searchmask:134 ../templates/views/inst411/searchmask:135 ../templates/views/inst412/searchmask:136 ../templates/views/inst413/searchmask:116 ../templates/views/inst415/searchmask:137 ../templates/views/inst419/searchmask:136 ../templates/views/inst420/searchmask:138 ../templates/views/inst425/searchmask:136 ../templates/views/inst426/searchmask:136 ../templates/views/inst430/searchmask:138 ../templates/views/inst431/searchmask:135 ../templates/views/inst460/searchmask:136 ../templates/views/inst501/searchmask:121 ../templates/views/kempen/searchmask:116 ../templates/views/kevelaer/searchmask:116 ../templates/views/kug/searchmask:205 ../templates/views/kwinter/searchmask:116 ../templates/views/portrait/searchmask:118 ../templates/views/rheinlandbib/searchmask:108 ../templates/views/xanten/searchmask:116
@@ -2944,6 +3912,16 @@ msgstr ""
 msgid "Textangaben"
 msgstr ""
 
+#: ../templates/views/kug/info:849
+msgid ""
+"Thematische Integration weiterer\n"
+"      Quellen"
+msgstr ""
+
+#: ../templates/views/kug/info:80
+msgid "Thematische Integration weiterer Quellen"
+msgstr ""
+
 #: ../templates/admin_editcat:128
 msgid "Tit-Datei"
 msgstr ""
@@ -2960,12 +3938,28 @@ msgstr ""
 msgid "Titel der Literaturliste"
 msgstr ""
 
+#: ../templates/views/kug/info:963
+msgid "Titel in die Merkliste eintragen"
+msgstr ""
+
 #: ../templates/database/ebooks/search_showtitset:731 ../templates/database/nationallizenzen/search_showtitset:737 ../templates/search_showtitset:754
 msgid "Titel mit der ISBN dieses Titels sind auch in folgenden anderen KUG-Katalogen vorhanden"
 msgstr ""
 
 #: ../templates/info_12:38
 msgid "Titel pro Katalog"
+msgstr ""
+
+#: ../templates/views/kug/info:966
+msgid "Titel(liste) abspeichern"
+msgstr ""
+
+#: ../templates/views/kug/info:965
+msgid "Titel(liste) als Mail verschicken"
+msgstr ""
+
+#: ../templates/views/kug/info:967
+msgid "Titel(liste) ausdrucken, bzw. in einer Druckansicht darstellen"
 msgstr ""
 
 #: ../templates/database/einbaende/managecollection_tit_as_html:23 ../templates/database/einbaende/search_showtitset:65
@@ -3024,6 +4018,10 @@ msgstr ""
 msgid "Treffer"
 msgstr ""
 
+#: ../templates/views/kug/info:571 ../templates/views/kug/info:65
+msgid "Treffer-, Merk- und Literaturlisten"
+msgstr ""
+
 #: ../templates/mainnavigation:17 ../templates/resultlists_choice:27 ../templates/resultlists_showall:26 ../templates/resultlists_showall_sortall:26 ../templates/resultlists_showsinglepool:26 ../templates/views/einbaende/resultlists_showall:31 ../templates/views/einbaende/resultlists_showall_sortall:30 ../templates/views/einbaende/resultlists_showsinglepool:30 ../templates/views/einbaende/virtualsearch_result_start:31 ../templates/views/kapsel/mainnavigation:16 ../templates/views/kapsel/resultlists_showall:26 ../templates/views/kapsel/resultlists_showsinglepool:26 ../templates/views/portrait/mainnavigation:16 ../templates/views/portrait/resultlists_showsinglepool:26 ../templates/virtualsearch_result_start:26
 msgid "Trefferliste"
 msgstr ""
@@ -3036,6 +4034,13 @@ msgstr ""
 msgid "Treffermenge&nbsp;eingrenzen"
 msgstr ""
 
+#: ../templates/views/kug/info:236
+msgid ""
+"Trunkierung oder Wildcard: <b>*</b><br />\n"
+"\n"
+"           z.B: <b>program*</b> (alle Titel, die mit program beginnen und beliebig enden, wie programming, programme, programm usw.)"
+msgstr ""
+
 #: ../templates/mainnavigation:29
 msgid "Tutorien"
 msgstr ""
@@ -3046,6 +4051,19 @@ msgstr ""
 
 #: ../templates/database/ebooks/search_showtitset:441 ../templates/database/ebooks/search_showtitset:534 ../templates/database/nationallizenzen/search_showtitset:447 ../templates/database/nationallizenzen/search_showtitset:540 ../templates/search_showtitset:464 ../templates/search_showtitset:557
 msgid "Typ:"
+msgstr ""
+
+#: ../templates/views/kug/info:231
+msgid ""
+"UND NICHT-Verkn&uuml;pfung: <b>+Wort1 -Wort2</b> (Wort1 muss enthalten sein, Wort2 darf nicht enthalten sein<br />\n"
+"           z.B: <b>+kernighan -ritchie</b> (alle Titel von Kernighan, aber nicht von Ritchie)"
+msgstr ""
+
+#: ../templates/views/kug/info:228
+msgid ""
+"UND-Verkn&uuml;pfung: <b>+Wort1 +Wort2</b><br />\n"
+"\n"
+"           z.B: <b>+kernighan +ritchie</b> (alle von beiden Autoren verfasste Titel werden angezeigt)"
 msgstr ""
 
 #: ../templates/admin_editcat:82 ../templates/admin_showcat:48 ../templates/admin_showcat:74
@@ -3070,6 +4088,13 @@ msgstr ""
 msgid "Umfang des KUG: %1 Titel in %2 Katalogen"
 msgstr ""
 
+#: ../templates/views/kug/info:222
+msgid ""
+"Unabh&auml;ngig von aktivierter oder deaktivierter\n"
+"        <i>UND-Verkn&uuml;pfung innerhalb eines Suchfeldes</i> k&ouml;nnen\n"
+"        folgende Operatoren bzw. Zeichen verwendet werden:"
+msgstr ""
+
 #: ../templates/searchmask_options:29 ../templates/views/gdonck/searchmask_options:5 ../templates/views/gleuel/searchmask_options:5 ../templates/views/kempen/searchmask_options:5 ../templates/views/kevelaer/searchmask_options:5 ../templates/views/kug/searchmask_options:5 ../templates/views/kwinter/searchmask_options:5 ../templates/views/portrait/searchmask_options:5 ../templates/views/rheinlandbib/searchmask_options:5 ../templates/views/xanten/searchmask_options:5
 msgid "Und-Verknüpfung innerhalb eines Suchfeldes"
 msgstr ""
@@ -3086,6 +4111,39 @@ msgstr ""
 msgid "Ungültige Session"
 msgstr ""
 
+#: ../templates/views/kug/info:439
+msgid ""
+"Unter <b>Sortierung nach</b> erfolgt die Einstellung der\n"
+"        Sortierung nach Person/K&ouml;rperschaft, Titel, Z&auml;hlung,\n"
+"        Jahr, Verlag, Signatur und Popularit&auml;t (auf- oder\n"
+"        absteigend), Anzeige pro Katalog oder\n"
+"        katalog&uuml;bergreifend"
+msgstr ""
+
+#: ../templates/views/kug/info:523
+msgid ""
+"Unter der Rubrik <b>Benutzerkonto</b> erhalten Sie ausführliche Angaben zu Ihren\n"
+"Ausleihen (Buchtitel mit Rückgabetermin), Bestellungen, Vormerkungen und\n"
+"Gebühren. Ihre Medien verlängern oder eine Vormerkung stornieren können Sie hier\n"
+"jedoch nicht. Wechseln Sie dazu in den Katalog der betreffenden\n"
+"Bibliothek."
+msgstr ""
+
+#: ../templates/views/kug/info:531
+#. ("<aclass=\"tutorial\" href=\"http://kug.ub.uni-koeln.de/tutorials/meinkugkatalogprofil.html\"target=\"tutorial\"><img src=\"/images/openbib/tutorial.png\" alt=\"Interaktives Tutorium\" /></a>")
+msgid ""
+"Unter der Rubrik <b>Katalogprofile</b> %1 können Sie sich beliebige Kataloge\n"
+"zusammenstellen und unter einem Namen abspeichern. In der Komplexen Recherche greifen\n"
+"Sie unter <b>Profil</b> auf sie zurück. Möchten Sie sie\n"
+"ändern bzw. löschen, wählen Sie Ihr Profil aus der Select-Box (Rubrik\n"
+"Katalogprofile) und klicken auf <b>Profil anzeigen</b>. Der Profilname wird\n"
+"automatisch in das Abspeicher-Textfeld eingetragen. Es erscheint die\n"
+"Katalogauswahl mit den markierten Katalogen, deren Auswahl Sie gemäß Ihrer\n"
+"Wünsche ändern und unter gleichem bzw. mit neuem Namen abspeichern können. Ihre\n"
+"Profildefinitionen und Suchfeldeinstellungen bleiben gespeichert, auch für\n"
+"zukünftige Recherchen."
+msgstr ""
+
 #: ../templates/databasechoice:111 ../templates/databasechoice:60 ../templates/views/rheinlandbib/databasechoice:60 ../templates/views/rheinlandbib/databasechoice:92
 msgid "Ursprüngliche Auswahl wiederherstellen"
 msgstr ""
@@ -3094,8 +4152,22 @@ msgstr ""
 msgid "Verfasser"
 msgstr ""
 
+#: ../templates/views/kug/info:193
+msgid ""
+"Verkn&uuml;pfungen innerhalb eines\n"
+"      Suchfeldes (ausser bei <b>*</b>, d.h. den Feldern Notation, Signatur und Kompletter Titel)"
+msgstr ""
+
+#: ../templates/views/kug/info:183
+msgid "Verkn&uuml;pfungen mehrerer Suchfelder"
+msgstr ""
+
 #: ../templates/views/einbaende/searchmask:103 ../templates/views/portrait/searchmask_query:2 ../templates/views/richter/searchmask_query:2
 msgid "Verknüpfung"
+msgstr ""
+
+#: ../templates/views/kug/info:90 ../templates/views/kug/info:978
+msgid "Verlinkung und Lastverteilung des KUG"
 msgstr ""
 
 #: ../templates/leave:27
@@ -3182,7 +4254,7 @@ msgstr ""
 msgid "W&auml;hlen Sie ein anzuzeigendes oder zu l&ouml;schendes Profil aus"
 msgstr ""
 
-#: ../templates/info_13:55
+#: ../templates/info_13:56
 #. ("<img src=\"/images/openbib/wikipedia.png\" alt=\"Mashup mitWikipedia\" />","<a href=\"http://de.wikipedia.org/wiki/Wortwolke\" target=\"_blank\">engl. tag cloud</a>")
 msgid ""
 "W&auml;hlen Sie einen Katalog aus, um f&uuml;r diesen eine\n"
@@ -3223,6 +4295,32 @@ msgstr ""
 msgid "Weiter als externe Recherche"
 msgstr ""
 
+#: ../templates/views/kug/info:684
+msgid "Weitere Anreicherung sind:"
+msgstr ""
+
+#: ../templates/views/kug/info:682 ../templates/views/kug/info:71
+msgid "Weitere Anreicherungen"
+msgstr ""
+
+#: ../templates/views/kug/info:707
+#. ("<a      href=\"http://blog.openbib.org/2008/06/18/zentrale-kataloganreicherung/\"      target=\"_blank\">OpenBibBlog</a>")
+msgid "Weitere Informationen erhalten Sie im %1"
+msgstr ""
+
+#: ../templates/views/kug/info:880
+#. ("<a      href=\"http://blog.openbib.org/2008/05/28/wege-aus-dem-datensilo-bibliothekskatalog-am-beispiel-von-openbib-und-bibsonomy/\"      target=\"_blank\">OpenBibBlog</a>")
+msgid "Weitere Informationen hierzu erhalten Sie im %1."
+msgstr ""
+
+#: ../templates/views/kug/info:381 ../templates/views/kug/info:62
+msgid "Weitere allgemeine Hinweise zur Suchanfrage"
+msgstr ""
+
+#: ../templates/views/kug/info:70
+msgid "Weitere potentiell interessante Titel (Recommender-Funktion)"
+msgstr ""
+
 #: ../templates/virtualsearch_more_search_tips:24
 msgid "Weitergehende Suchhinweise"
 msgstr ""
@@ -3235,6 +4333,32 @@ msgstr ""
 msgid "Welcher RSS-Feed soll der prim&auml;re Feed f&uuml;r das Browser Auto-Discovery sein"
 msgstr ""
 
+#: ../templates/views/kug/info:398
+msgid ""
+"Wenn Ihre Suchanfrage l&auml;nger als das Eingabefeld ist,\n"
+"        schreiben Sie ruhig weiter. Der Anfang der Zeile wird zwar aus dem\n"
+"        Feld geschoben, aber richtig und vollst&auml;ndig an die Datenbank\n"
+"        &uuml;bergeben. Insgesamt sind so bis zu 200 Zeichen in den Eingabefeldern m&ouml;glich."
+msgstr ""
+
+#: ../templates/views/kug/info:332
+msgid ""
+"Wenn Sie Ihren Suchbegriff in das Titelfeld eingeben, werden Ihnen Treffer\n"
+"        angezeigt, die diesen Begriff im Titel enthalten (also als Stichwort).\n"
+"        Geben Sie Ihren Suchbegriff im Schlagwortfeld ein, muss dieses Schlagwort vom\n"
+"        Bearbeiter nach inhaltlichen Kriterien des Werkes vergeben worden sein."
+msgstr ""
+
+#: ../templates/views/kug/info:820
+msgid ""
+"Wenn Sie Mozille Firefox in der Version 2.x verwenden, dann\n"
+"      benötigen Sie kein Plugin. Sie können dort in den\n"
+"      Browser-Einstellungen unter <i>Feeds</i> einfach <i>Feed abonnieren\n"
+"      mit</i> aktivieren und dort <i>Keine Anwendung gewählt</i> auswählen -\n"
+"      ohne dort wirklich eine Anwendung auszuwählen (!). Dann zeigt\n"
+"      auch Firefox ab Version 2.x den Feed wie gewünscht an."
+msgstr ""
+
 #: ../templates/search_info:25
 msgid ""
 "Wenn Sie den Index aufrufen m&ouml;chten,</b> <br /> dann\n"
@@ -3243,6 +4367,27 @@ msgid ""
 "<b>Index</b>. Sie erhalten dann eine Liste der entsprechenden\n"
 "Normdaten aus der Datenbank, die mit dem von Ihnen eingegebenen\n"
 "Begriff beginnen."
+msgstr ""
+
+#: ../templates/views/kug/info:1024
+#. ("<a    href=\"http://www.mozilla.org/products/firefox/\"    target=\"_blank\">Mozilla Firefox</a>","<a    href=\"javascript:addEngine('KUG','jpg','Academic')
+msgid ""
+"Wenn Sie den Internet-Browser %1 verwenden, dann k&ouml;nnen\n"
+"    Sie f&uuml;r ihn von %2hier%3 das\n"
+"    KUG Such-Plugin installieren (Achtung! Zur Installation muss\n"
+"    JavaScript aktiviert sein und Sie m&uuml;ssen Schreibberechtigung\n"
+"    im searchplugins-Verzeichnis von Firefox besitzen)"
+msgstr ""
+
+#: ../templates/views/kug/info:563
+#. ("<img style=\"vertical-align:bottom\" src=\"/images/openbib/2rightarrow.png\" />")
+msgid ""
+"Wenn Sie einen Titel aus der USB K&ouml;ln ben&ouml;tigen, rufen Sie die ausf&uuml;hrliche Titelaufnahme auf und gelangen\n"
+"      &uuml;ber den Link %1 <b>Weiter</b> (unter <i>Ausleihsystem</i>) in den Online-Katalog der Universit&auml;ts-\n"
+"      und Stadtbibliothek. Hier ist dann, wenn es sich um Medien im\n"
+"        geschlossenen Magazinbereich handelt, eine Bestellung\n"
+"        m&ouml;glich. Bei bereits verliehenen Medien k&ouml;nnen Sie\n"
+"        sie hier vormerken."
 msgstr ""
 
 #: ../templates/search_info:14
@@ -3255,9 +4400,59 @@ msgid ""
 "<b>oder</b> der andere Begriff ist enthalten."
 msgstr ""
 
+#: ../templates/views/kug/info:581
+msgid ""
+"Wenn Sie sich eine <b>Merkliste</b> zusammenstellen m&ouml;chten,\n"
+"      klicken Sie auf das <i>Notizblock</i>-Icon. Dieses ist sowohl von der\n"
+"      Kurztitelliste direkt m&ouml;glich als auch von der\n"
+"      ausf&uuml;hrlichen Titelaufnahme. Merklisten bieten sich\n"
+"      f&uuml;r das <i>schnelle Einsammeln</i> von Titeln an, um diese in\n"
+"      einem sp&auml;teren Schritt z.B. mit Tags thematisch zu\n"
+"      organisieren oder in eigene Literaturlisten\n"
+"      aufzunehmen. &Uuml;ber den <i>Zur&uuml;ck-Button</i> Ihres Browsers\n"
+"      gelangen Sie wieder vom ausf&uuml;hrlichen Titel in die\n"
+"      Kurztitelliste, um weitere Titel auszuw&auml;hlen. Die Zahl\n"
+"      hinter <i>Merkliste</i> gibt Ihnen die Anzahl der gespeicherten Titel\n"
+"      an. Beim Zur&uuml;ckgehen &uuml;ber den Browser wird diese Zahl\n"
+"      zur&uuml;ckgez&auml;hlt, obwohl der gespeicherte Titel in der\n"
+"      Liste erhalten bleibt. Titel einer weiteren Suchanfrage\n"
+"      k&ouml;nnen Sie ebenfalls in die Merkliste &uuml;bernehmen. In\n"
+"      der Liste finden Sie alle wichtigen bibliographischen Angaben\n"
+"      mit dem Hinweis auf die besitzende Bibliothek und die Signatur."
+msgstr ""
+
+#: ../templates/views/kug/info:509
+#. ("<a class=\"tutorial\" href=\"http://kug.ub.uni-koeln.de/tutorials/fernleihe.html\"target=\"tutorial\"><img src=\"/images/openbib/tutorial.png\" alt=\"Interaktives Tutorium\" /></a>")
+msgid ""
+"Wenn Sie sich mit Ihrem USB-Ausweis anmelden, können Sie aus dem KUG heraus\n"
+"eine <b>Fernleihe</b> %1 starten, ohne sich zuvor nochmals authentifizieren zu müssen."
+msgstr ""
+
 #: ../templates/userprefs_userdeleted:31
 #. ("<a href=\"http://${config.loadbalancerservername}${config.loadbalancer_loc}?view=${view}\">","</a>")
 msgid "Wenn Sie weiter im KUG recherchieren m&ouml;chten, so klicken Sie bitte %1<b>hier</b>[_2}, um eine neue Sitzung zu beginnen."
+msgstr ""
+
+#: ../templates/views/kug/info:870
+msgid ""
+"Wenn Titel im KUG getaggt werden, können diese Titel\n"
+"      inkl. Tags und Sichtbarkeitsinformationen (privat/öffentlich)\n"
+"      automatisch in eine entsprechenden BibSonomy-Kennung eingespielt\n"
+"      und damit effektiv gespiegelt werden. Der Nutzer sucht und\n"
+"      erschliesst also Titel durch Tagging in der KUG-Oberfläche,\n"
+"      findet diese dann aber auch in BibSonomy wieder und kann damit\n"
+"      die dort vorhandenen weitergehenden Möglichkeiten nutzen"
+msgstr ""
+
+#: ../templates/views/kug/info:856
+msgid ""
+"Wenn man in der Rubrik <i>BibSonomy Tags</i> der\n"
+"      Einzeltrefferanzeige auf ein angebotenes Tag / Schlagwort\n"
+"      klickt, dann öffnet sich eine Trefferliste aller öffentlich mit\n"
+"      diesem Begriff getaggten Titel aller Bibsonomy-Nutzer. Bei den\n"
+"      angebotenen Publikationen wird augenblicklich überprüft, ob der\n"
+"      jeweilige Titel in Katalogen des KUG enthalten ist und diese\n"
+"      Verfügbarkeitsinformation in der Titel-Anzeige ausgegeben."
 msgstr ""
 
 #: ../templates/loadbalancer:28
@@ -3284,8 +4479,23 @@ msgstr ""
 msgid "Wolke der von Nutzern vergebenen Tags"
 msgstr ""
 
-#: ../templates/info_13:35 ../templates/info_14:43 ../templates/info_15:37 ../templates/info_16:43 ../templates/info_17:43 ../templates/info_18:43 ../templates/info_19:43 ../templates/info_9:43
+#: ../templates/info_13:35 ../templates/info_14:43 ../templates/info_15:37 ../templates/info_16:43 ../templates/info_17:43 ../templates/info_18:43 ../templates/info_19:43 ../templates/info_9:43 ../templates/views/kug/info:86 ../templates/views/kug/info:936
 msgid "Wolken"
+msgstr ""
+
+#: ../templates/views/kug/info:423
+msgid ""
+"Wollen Sie die Suche mit einem Erscheinungsjahr kombinieren, f&uuml;llen\n"
+"        Sie bitte zus&auml;tzlich das Feld <i>Jahr</i> (genau/j&uuml;nger/&auml;lter) aus.\n"
+"        Eine Suche nur mit dem Jahr ist nicht m&ouml;glich."
+msgstr ""
+
+#: ../templates/views/kug/info:700
+msgid ""
+"Wurde bisher für zentrale Anreicherungen ausschliesslich auf\n"
+"      die ISBN zurückgegriffen, so wird der Zugriff nun alternativ -\n"
+"      für den Fall einer nicht vorhandenen ISBN - um den Bibkey\n"
+"      erweitert."
 msgstr ""
 
 #: ../templates/admin_editview_rss:68
@@ -3319,6 +4529,10 @@ msgstr ""
 #: ../templates/virtualsearch_result_end:15 ../templates/virtualsearch_result_end:17
 #. ("<a href=\"${config.searchmask_loc}?sessionID=${sessionID};view=${view};queryid=${queryid}\">","</a>")
 msgid "Zur&uuml;ck zur %1Suchanfrage%2"
+msgstr ""
+
+#: ../templates/views/kug/info:636
+msgid "Zusätzlich sind weitere <i>automatische Anreicherungen</i> u.a. für eine bessere Recherchierbarkeit der Titel integriert:"
 msgstr ""
 
 #: ../templates/database/einbaende/search_showtitlist:60 ../templates/database/einbaende/search_showtitlist_of_cnt:62 ../templates/database/landschaft/search_showtitlist:58 ../templates/database/portrait/search_showtitlist:58 ../templates/litlists_manage_singlelist:94 ../templates/litlists_show_singlelist:64 ../templates/resultlists_showall:53 ../templates/resultlists_showall_sortall:56 ../templates/resultlists_showsinglepool:55 ../templates/search_showtitlist:61 ../templates/search_showtitlist_of_cnt:61 ../templates/searchmask_options:4 ../templates/views/einbaende/resultlists_showall:58 ../templates/views/einbaende/resultlists_showall_sortall:57 ../templates/views/einbaende/resultlists_showsinglepool:57 ../templates/views/einbaende/virtualsearch_result_start:58 ../templates/views/gdonck/searchmask_options:4 ../templates/views/gleuel/searchmask_options:4 ../templates/views/kapsel/resultlists_showall:53 ../templates/views/kapsel/resultlists_showsinglepool:55 ../templates/views/kapsel/search_showtitlist:61 ../templates/views/kempen/searchmask_options:4 ../templates/views/kevelaer/searchmask_options:4 ../templates/views/kug/searchmask_options:4 ../templates/views/kwinter/searchmask_options:4 ../templates/views/portrait/resultlists_showsinglepool:54 ../templates/views/portrait/searchmask_options:4 ../templates/views/rheinlandbib/searchmask_options:4 ../templates/views/xanten/searchmask_options:4 ../templates/virtualsearch_result_start:55
@@ -3357,8 +4571,23 @@ msgstr ""
 msgid "mind."
 msgstr ""
 
+#: ../templates/views/kug/info:692
+msgid ""
+"mit E-Book URLs, falls die USB den entsprechenden Titel als\n"
+"      E-Book erworben hat. Damit besteht z.B. auch von einer\n"
+"      Titelaufnahme der Druck-Ausgabe in einem Institutskatalog sofort\n"
+"      der Zugriff auf den Volltext. Für diesen Zugriff gelten die mit\n"
+"      dem E-Book erworbenen Beschränkungen (nur vom Campus)."
+msgstr ""
+
 #: ../templates/userprefs:85
 msgid "mit Grund"
+msgstr ""
+
+#: ../templates/views/kug/info:689
+msgid ""
+"mit der Basisklassifikation. Darüber lassen sich nun in\n"
+"      einem Katalog andere thematisch benachbarte Titel finden."
 msgstr ""
 
 #: ../templates/database/portrait/drilldown_categorized:38
@@ -3463,6 +4692,10 @@ msgstr ""
 
 #: ../templates/database/ebooks/search_showtitset:668 ../templates/database/nationallizenzen/search_showtitset:674 ../templates/search_showtitset:691
 msgid "sehr gut"
+msgstr ""
+
+#: ../templates/views/kug/info:433 ../templates/views/kug/info:434 ../templates/views/kug/info:435
+msgid "suchen mit:"
 msgstr ""
 
 #: ../templates/database/landschaft/virtualsearch_result_item:16 ../templates/database/portrait/virtualsearch_result_item:16 ../templates/views/einbaende/virtualsearch_result_item:20 ../templates/virtualsearch_result_item:16

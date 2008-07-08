@@ -68,7 +68,7 @@
          <tr><td align="right">11</td><td><a href="#mashups">Mashups mit Sozialer Software und externen Diensten</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.1&nbsp;<a href="#bibsonomy">Integration von BibSonomy</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/bibsonomy.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.1.1&nbsp;&nbsp;&nbsp;<a href="#bibsonomyquellen">Thematische Integration weiterer Quellen</a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.1.2&nbsp;&nbsp;&nbsp;<a href="#bibsonomyspiegelung">Automatische Spiegelung von Titeln beim Tagging im KUG nach BibSonomy</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/bibsonomyabgleich.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.1.2&nbsp;&nbsp;&nbsp;<a href="#bibsonomyspiegelung">Automatische Spiegelung von Titeln beim Tagging im KUG nach BibSonomy</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/kugbibsonomyabgleich.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>
 
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.2&nbsp;<a href="#wikipedia">Integration der Wikipedia</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/w.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.3&nbsp;<a href="#gbs">Integration der Google Book Search</a></td></tr>
@@ -598,11 +598,17 @@ gew&uuml;nschten Ordnungskriterien (Person, Titel usw. und Anzeige "Pro Katalog"
       Icons ausdrucken, speichern oder als E-Mail versenden.
       </p>
 
-      <p>In <b>Literaturlisten</b> k&ouml;nnen Sie verschiedene Titel
-      explizit unter einer "&Uuml;berschrift" f&uuml;r einen privaten
-      oder &ouml;ffentlichen Zugriff zusammenfassen. &Ouml;ffentliche
-      Literaturlisten k&ouml;nnen Sie &uuml;ber einen PermaLink auch
-      auf externen Seiten verlinken.  <a href="http://kug5.ub.uni-koeln.de/portal/connector/permalink/3146/4/6/kug/index.html" target="_blank">Beispiel</a></p>
+      <p>In <b>Literaturlisten</b> <a class="tutorial"
+      href="http://kug.ub.uni-koeln.de/tutorials/literaturlisten.html"
+      target="tutorial"><img src="/images/openbib/tutorial.png"
+      alt="Interaktives Tutorium" /></a> k&ouml;nnen Sie verschiedene
+      Titel explizit unter einer "&Uuml;berschrift" f&uuml;r einen
+      privaten oder &ouml;ffentlichen Zugriff
+      zusammenfassen. &Ouml;ffentliche Literaturlisten k&ouml;nnen Sie
+      &uuml;ber einen PermaLink auch auf externen Seiten verlinken.
+      <a
+      href="http://kug5.ub.uni-koeln.de/portal/connector/permalink/3146/4/6/kug/index.html"
+      target="_blank">Beispiel</a></p>
 
       <h1 id="externesuche">7 Sprung in externe Recherchequellen</h1>
       <p>

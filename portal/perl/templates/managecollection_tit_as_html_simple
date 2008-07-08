@@ -12,7 +12,8 @@
 #
 #######################################################################
 -%]
-[% FOREACH record IN recordlist %]
+
+[% FOREACH record IN recordlist.get_records %]
 <tr class="titlerow"><td>[% msg.maketext("Titel") %] [% loop.count %] [% msg.maketext("aus:") %] [% dbinfotable.dbinfo.${record.database}.full %]</td></tr>
 <tr><td>
 [% normset    = record.get_normdata %]

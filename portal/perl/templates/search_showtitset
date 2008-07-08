@@ -212,7 +212,7 @@ FOREACH category IN categories;
          END ;
 
     CASE "E4100";
-         localurl    = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchtitofcnt=${content};category=${category};hitrange=${qopts.hitrange}";
+         localurl    = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchtitofcnt=${content.replace('&amp;','%26')};category=${category};hitrange=${qopts.hitrange}";
          bklookup    = config.load_bk ;
          bkdesc      = bklookup.${content};
          content     = "<a href=\"${localurl}\">${content}</a>";

@@ -16,20 +16,24 @@
 <tr><td class="boxedclear">
 <ul>
 
-<li>Seit dem 7.7.2008 ist eine neue KUG-Version mit einigen <a
+<li>Seit dem 8.7.2008 ist eine neue KUG-Version mit einigen <a
 href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view
 %];stid=2">Verbesserungen</a> (Literaturlisten, BibSonomy, Verzicht
 auf Frames, englische Sprachversion usw.) aktiv.</li>
 
-<li>Damit Sie sich im KUG besser zurecht finden, bieten wir sowohl
-f&uuml;r den Einstieg in die Nutzung von BibSonomy ein Tutorium <a
-class="tutorial"
+<li>Damit Sie sich im KUG besser zurecht finden, bieten wir Ihnen
+verschiedene neue Tutorien an. Es ist dies jeweils ein Tutorium
+f&uuml;r den Einstieg in die Nutzung von BibSonomy <a class="tutorial"
 href="http://kug.ub.uni-koeln.de/tutorials/bibsonomy.html"
 target="tutorial"><img src="/images/openbib/tutorial.png"
-alt="Interaktives Tutorium" /></a> an, wie auch f&uuml;r die
+alt="Interaktives Tutorium" /></a>, ein Tutorium f&uuml;r die
 &Uuml;bernahme von Tags samt zugeh&ouml;rigen Titeln aus dem KUG nach
 BibSonomy <a class="tutorial"
-href="http://kug.ub.uni-koeln.de/tutorials/bibsonomyabgleich.html"
+href="http://kug.ub.uni-koeln.de/tutorials/kugbibsonomyabgleich.html"
+target="tutorial"><img src="/images/openbib/tutorial.png"
+alt="Interaktives Tutorium" /></a> sowie ein Tutorium f&uuml;r die Nutzung der
+Literaturlisten <a class="tutorial"
+href="http://kug.ub.uni-koeln.de/tutorials/literaturlisten.html"
 target="tutorial"><img src="/images/openbib/tutorial.png"
 alt="Interaktives Tutorium" /></a>. Weitere Tutorien finden Sie in der
 <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view

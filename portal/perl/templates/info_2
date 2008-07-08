@@ -32,7 +32,7 @@
 
 <p />
 
-<h1 id="kugv2.2">Neuerungen mit Version 2.2 (geplante Umstellung am 7.7.2008)</h1>
+<h1 id="kugv2.2">Neuerungen mit Version 2.2 (Umstellung am 8.7.2008)</h1>
 
 <h2>Integration des Ausleihsystems</h2>
 
@@ -47,7 +47,7 @@ Bestellungen, Stornierungen und Verlängerungen.
 anlegen und auf diese von überall über PermaLinks zugreifen. </p>
 
 <p>
-<a href="http://kug4.ub.uni-koeln.de/portal/connector/permalink/3146/1/6/kug/index.html" target="_blank">Beispiel</a>
+<a href="http://kug.ub.uni-koeln.de/portal/connector/permalink/3146/1/6/kug/index.html" target="_blank">Beispiel</a>
 </p>
 
 <h2>Systematisches Blättern</h2>
@@ -104,7 +104,7 @@ jeweilige Titel in Katalogen des KUG enthalten ist und diese
 Verfügbarkeitsinformation in der Titel-Anzeige ausgegeben. </p>
 
 <p>
-<a href="http://kug4.ub.uni-koeln.de/portal/connector/permalink/inst006/6439/1/kug/index.html" target="_blank">Beispiel</a>
+<a href="http://kug.ub.uni-koeln.de/portal/connector/permalink/inst006/6439/1/kug/index.html" target="_blank">Beispiel</a>
 </p>
 
 <h3>Automatische Spiegelung von Titeln beim Tagging im KUG nach BibSonomy</h3>
@@ -128,7 +128,7 @@ diese Ausgabe des Titels besitzen.
 </p>
 
 <p>
-<a href="http://kug4.ub.uni-koeln.de/portal/connector/permalink/inst001/6017416/1/kug/index.html" target="_blank">Beispiel</a>
+<a href="http://kug.ub.uni-koeln.de/portal/connector/permalink/inst001/6017416/1/kug/index.html" target="_blank">Beispiel</a>
 </p>
 
 <h2>Erweiterte und verbesserte Wort-Wolken</h2>
@@ -187,7 +187,7 @@ alle anderen Nutzer mit aktiviertem JavaScript konnte dadurch die
 Bedienbarkeit des KUG an einigen Stellen verbessert werden. </p>
 
 <p> Rufen Sie als Beispiel <a
-href="http://kug4.ub.uni-koeln.de/portal/connector/permalink/inst006/6439/1/kug/index.html"
+href="http://kug.ub.uni-koeln.de/portal/connector/permalink/inst006/6439/1/kug/index.html"
 target="_blank">folgenden Titel</a> einmal mit aktiviertem und einmal
 mit deaktivierter JavaScript-Unterstützung Ihres Browsers auf.  </p>
 

@@ -178,7 +178,7 @@ sub get_number_of_titles {
     }
     else {
         $request=$dbh->prepare("select sum(count) as alltitcount from titcount,dbinfo where titcount.dbname=dbinfo.dbname and dbinfo.active=1") or $logger->error($DBI::errstr);
-        $request->execute($profilename) or $logger->error($DBI::errstr);
+        $request->execute() or $logger->error($DBI::errstr);
     }
 
     my $res       = $request->fetchrow_hashref;

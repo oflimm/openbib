@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2008-07-07 17:48+0200\n"
+"PO-Revision-Date: 2008-07-09 17:02+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -81,7 +81,7 @@ msgstr "&Auml;ndern"
 
 #: ../templates/views/kug/info:434
 msgid "&Iuml; <i>suchen mit:</i> I"
-msgstr ""
+msgstr "&Iuml; <i>suchen mit:</i> I"
 
 #: ../templates/views/kug/info:828
 msgid ""
@@ -169,11 +169,11 @@ msgstr "&Uuml;bersichten"
 
 #: ../templates/views/kug/info:433
 msgid "&iuml; <i>suchen mit:</i> i"
-msgstr ""
+msgstr "&iuml; <i>suchen mit:</i> i"
 
 #: ../templates/views/kug/info:435
 msgid "&ntilde; <i>suchen mit:</i> n"
-msgstr ""
+msgstr "&ntilde; <i>suchen mit:</i> n"
 
 #: ../templates/database/ebooks/search_showtitset:441
 #: ../templates/database/ebooks/search_showtitset:534
@@ -573,7 +573,7 @@ msgstr "Als User-Agent verwenden Sie"
 
 #: ../templates/views/kug/info:431
 msgid "Also:"
-msgstr ""
+msgstr "Also:"
 
 #: ../templates/database/ebooks/search_showtitset:53
 #: ../templates/database/nationallizenzen/search_showtitset:53
@@ -1643,10 +1643,8 @@ msgid "Digitale Bibliothek / Monographien (Fernleihe)"
 msgstr "Digitale Bibliothek / Monographien (Fernleihe)"
 
 #: ../templates/views/kug/info:620
-msgid ""
-"Digitale Bibliothek / Monographien (f&uuml;r die Fernleihe von Monographien)"
-msgstr ""
-"Digitale Bibliothek / Monographien (f&uuml;r die Fernleihe von Monographien)"
+msgid "Digitale Bibliothek / Monographien (f&uuml;r die Fernleihe von Monographien)"
+msgstr "Digitale Bibliothek / Monographien (f&uuml;r die Fernleihe von Monographien)"
 
 #: ../templates/externaljump:110
 msgid "Digitale Bibliothek / Zeitschriften (Aufsatzlieferung)"
@@ -1995,10 +1993,8 @@ msgid "Es existiert kein Passwort für die Kennung $loginname"
 msgstr "Es existiert kein Passwort für die Kennung $loginname"
 
 #: ../templates/admin_editcat_rss:176
-msgid ""
-"Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
-msgstr ""
-"Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
+msgid "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
+msgstr "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
 
 #: ../templates/admin_editcat_rss:233
 msgid "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach Schlagwort"
@@ -2033,10 +2029,8 @@ msgid "Es sind keine Quellen verf&uuml;gbar."
 msgstr "Es sind keine Quellen verf&uuml;gbar."
 
 #: ../modules/OpenBib/Handler/Apache/SelfReg.pm:118
-msgid ""
-"Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
-msgstr ""
-"Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
+msgid "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
+msgstr "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
 
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:369
 #: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:535
@@ -5228,10 +5222,8 @@ msgstr "Sie greifen auf eine nicht autorisierte Session zu"
 
 #. ("<a href=\"${config.info_loc}?sessionID=${sessionID};view=${view}#meinkugvorteile\">","</a>")
 #: ../templates/login:46
-msgid ""
-"Sie haben %1Vorteile%2, wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden."
-msgstr ""
-"Sie haben %1Vorteile%2, wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden."
+msgid "Sie haben %1Vorteile%2, wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden."
+msgstr "Sie haben %1Vorteile%2, wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden."
 
 #. ("<a href=\"$config->{databasechoice_loc}?sessionID=$session->{ID}\" target=\"body\">","</a>")
 #: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:249
@@ -5571,25 +5563,20 @@ msgid "Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."
 msgstr "Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."
 
 #: ../modules/OpenBib/Handler/Apache/LitLists.pm:195
-msgid ""
-"Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
-msgstr ""
-"Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
+msgid "Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
+msgstr "Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:1171
 msgid "Sie müssen mindestens eine Beschreibung eingeben."
 msgstr "Sie müssen mindestens eine Beschreibung eingeben."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:340
-msgid ""
-"Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
-msgstr ""
-"Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
+msgid "Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
+msgstr "Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:558
 msgid "Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."
-msgstr ""
-"Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."
+msgstr "Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:673
 msgid ""
@@ -8898,7 +8885,7 @@ msgstr "sehr gut"
 
 #: ../templates/views/kug/info:437
 msgid "usw. usf."
-msgstr ""
+msgstr "usw. usf."
 
 #: ../templates/database/landschaft/virtualsearch_result_item:16
 #: ../templates/database/portrait/virtualsearch_result_item:16
@@ -8945,5 +8932,3 @@ msgstr "Übernehmen"
 msgid "Überziehungen / Gebühren"
 msgstr "Überziehungen / Gebühren"
 
-#~ msgid "suchen mit:"
-#~ msgstr "suchen mit:"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2008-07-07 18:41+0200\n"
+"PO-Revision-Date: 2008-07-09 17:00+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: ../templates/managecollection_tit_as_html_simple:37
+#: ../templates/managecollection_tit_as_html_simple:38
 msgid "${category}"
 msgstr "${category}"
 
@@ -67,8 +67,8 @@ msgid ""
 "&Auml;hnlich der Recommender-Funktion bietet der KUG verschiedene\n"
 "Popularit&auml;ts-Funktionen an. Es sind dies"
 msgstr ""
-"The KUG's popularity function is very similar to the recommended entries"
-"function. It comprises:"
+"The KUG's popularity function is very similar to the recommended "
+"entriesfunction. It comprises:"
 
 #: ../templates/database/ebooks/search_showtitset:534
 #: ../templates/database/nationallizenzen/search_showtitset:540
@@ -77,6 +77,10 @@ msgstr ""
 msgid "&Auml;ndern"
 msgstr "Change"
 
+#: ../templates/views/kug/info:434
+msgid "&Iuml; <i>suchen mit:</i> I"
+msgstr "Substitute I for &Iuml;"
+
 #: ../templates/views/kug/info:828
 msgid ""
 "&Uuml;ber die Hauptrubrik <i>RSS</i> gelangen Sie auf eine Seite, auf\n"
@@ -84,8 +88,8 @@ msgid ""
 "      gebunden sind, sondern lediglich <b>die letzten 50\n"
 "        Neuzug&auml;nge eines Kataloges</b>) abonnieren k&ouml;nnen."
 msgstr ""
-"The main link <i>RSS</i> will take you to a page where you can subscribe to"
-"general RSS-feeds (i.e. feeds unconnected to a specific search query, e.g."
+"The main link <i>RSS</i> will take you to a page where you can subscribe "
+"togeneral RSS-feeds (i.e. feeds unconnected to a specific search query, e.g."
 "the most recent 50 entries in a catalog)."
 
 #: ../templates/admin_login:25
@@ -156,6 +160,14 @@ msgstr "Overview"
 msgid "&Uuml;bersichten"
 msgstr "Overviews"
 
+#: ../templates/views/kug/info:433
+msgid "&iuml; <i>suchen mit:</i> i"
+msgstr "Substitute i for &iuml;"
+
+#: ../templates/views/kug/info:435
+msgid "&ntilde; <i>suchen mit:</i> n"
+msgstr "Substitute n for &ntilde;"
+
 #: ../templates/database/ebooks/search_showtitset:441
 #: ../templates/database/ebooks/search_showtitset:534
 #: ../templates/database/ebooks/search_showtitset:626
@@ -169,59 +181,13 @@ msgstr "Overviews"
 msgid "&ouml;ffentlich"
 msgstr "public"
 
-#: ../templates/views/kug/info:302
-msgid ""
-"(= ODER-Verkn&uuml;pfung)\n"
-"bei <b>deaktivierter</b> Suchoption 'UND-Verkn&uuml;pfung innerhalb\n"
-"eines Suchfeldes in den Suchoptionen'"
-msgstr ""
-
-#: ../templates/views/kug/info:289
-msgid "(= Phrasensuche) oder"
-msgstr ""
-
-#: ../templates/views/kug/info:361
-msgid ""
-"(= UND\n"
-"NICHT-Verkn&uuml;pfung) bei aktivierter Suchoption\n"
-"'UND-Verkn&uuml;pfung innerhalb eines Suchfeldes in den Suchoptionen'"
-msgstr ""
-
-#: ../templates/views/kug/info:360
-msgid "(= UND NICHT-Verkn&uuml;pfung) oder"
-msgstr ""
-
-#: ../templates/views/kug/info:291
-msgid ""
-"(= UND-Verkn&uuml;pfung) bei\n"
-"               aktivierter Suchoption 'UND-Verkn&uuml;pfung innerhalb eines\n"
-"               Suchfeldes in den Suchoptionen'"
-msgstr ""
-
-#: ../templates/views/kug/info:346
-msgid ""
-"(= UND-Verkn&uuml;pfung) bei\n"
-"aktivierter Suchoption 'UND-Verkn&uuml;pfung innerhalb eines\n"
-"Suchfeldes in den Suchoptionen'"
-msgstr ""
-
-#: ../templates/views/kug/info:290 ../templates/views/kug/info:345
-msgid "(= UND-Verkn&uuml;pfung) oder"
-msgstr ""
-
-#: ../templates/views/kug/info:373
-msgid ""
-"(Innerhalb der Klammern gilt die ODER-,\n"
-"          dazwischen die UND-Verkn&uuml;pfung)"
-msgstr ""
-
 #: ../templates/search_info:36
 msgid "(Notation, Signatur, Titel-String):"
 msgstr "(classification, location mark, title string)"
 
 #: ../templates/managecollection_show:67
 msgid "<b>Ausgew&auml;hlte Titel</b> aus der Merkliste entfernen"
-msgstr "Delete <b>selected titles</b> from Watch List"
+msgstr "Delete <b>selected titles</b> from List of Interest"
 
 #: ../templates/managecollection_show:78
 msgid ""
@@ -239,6 +205,10 @@ msgid ""
 "Boole'schen Suchoperatoren zur Verf&uuml;gung. Lediglich der\n"
 "Abk&uuml;rzungsoperator <b>*</b> ist erlaubt."
 msgstr ""
+"<b>Special Features for Boxes with *</b>:<br/>As a full-text search would "
+"make little sense for the search options'notation', 'location mark' and "
+"'complete title', Boolean operators havebeen disabled in the respective "
+"boxes. Only the truncation operator <b>*</b> isallowed."
 
 #: ../templates/views/einbaende/std_footer:17
 msgid ""
@@ -257,6 +227,10 @@ msgid ""
 "Sie in der mit <b>P</b> ausgezeichneten Spalte der Ergebnistabelle. Damit "
 "k&ouml;nnen Nutzer direkt vom Nutzungsverhalten anderer Nutzer profitieren."
 msgstr ""
+"<b>Sort by Popularity</b>: On the search results page you can sort the entries"
+"   by popularity (most sensibly in descending order). The popularity of an"
+"   entry is displayed in the column headed <b>P</b>. This allows you profit"
+"   directly from the search and borrowing habits of other users."
 
 #. ("<a href=\"#sichten\">","</a>","<a class=\"tutorial\" href=\"http://kug.ub.uni-koeln.de/tutorials/top20.html\" target=\"tutorial\"><img src=\"/images/openbib/tutorial.png\" /></a>")
 #: ../templates/views/kug/info:716
@@ -264,6 +238,8 @@ msgid ""
 "<b>Top 20</b> Pro Katalog lassen sich die 20 meist aufgerufenen\n"
 "Titel unter dem Reiter %1&Uuml;bersichten%2 anzeigen. %3"
 msgstr ""
+"<b>Top 20</b>: The most popular 20 entries for each catalog can be displayed by"
+"   clicking on the tab %1Summary%2. %3"
 
 #: ../templates/views/kug/info:391
 msgid ""
@@ -274,6 +250,11 @@ msgid ""
 "      folgende Suchanfrage (in der UND-Standardeinstellung) sinnvoll:\n"
 "      <b>unertr&auml;gliche leichtigkeit seins</b> "
 msgstr ""
+"<b>Restrict your search to meaningful words</b> unless you use the search "
+"field   'complete title'. For example, to search for the book 'The "
+"Unbearable   Lightness of Being' the following search string would be "
+"sensible (with   the standard AND setting activated): <b>unbearable "
+"lightness being</b>"
 
 #: ../templates/views/kug/info:215
 msgid ""
@@ -282,6 +263,9 @@ msgid ""
 "         z.B.: <b>kernighan ritchie</b> (es werden alle Titel angezeigt, die "
 "von mindestens einem der beiden Autoren verfasst wurden)"
 msgstr ""
+"<b>Word1</b> <b>Word2</b> (Word1 or Word2, or both, must be contained)<br/"
+">   e.g. <b>kernighan ritchie</b> (all entries are displayed that were "
+"written by at least one of these authors)"
 
 #: ../templates/views/kug/info:158 ../templates/views/kug/info:204
 msgid ""
@@ -291,8 +275,91 @@ msgid ""
 "         z.B.: <b>kernighan ritchie</b> (von beiden Autoren verfasste Titel "
 "werden angezeigt)"
 msgstr ""
-"<b>Word1</b> <b>Word2</b> (i.e. Word1 and Word2 must be contained) <br /> "
-"e.g.: <b>kernighan ritchie</b> (entries by both authors are displayed)"
+"<b>Word1</b> <b>Word2</b> (i.e. Word1 and Word2 must be contained) <br /> e."
+"g.: <b>kernighan ritchie</b> (entries by both authors are displayed)"
+
+#. ("\"","\"")
+#: ../templates/views/kug/info:313
+msgid "<tt>%1Goethe-Jahrbuch%2</tt> oder"
+msgstr "<tt>%1Goethe-Jahrbuch%2</tt> or"
+
+#. ("\"","\"")
+#: ../templates/views/kug/info:289
+msgid "<tt>%1kernighan, brian%2</tt> (= Phrasensuche) oder"
+msgstr "<tt>%1kernighan, brian%2</tt> (= exact phrase) or"
+
+#: ../templates/views/kug/info:372
+msgid ""
+"<tt>+(Kinder* Jugendliche*) +Drogen* +(Behandlung*\n"
+"          Therapie*)</tt> (Innerhalb der Klammern gilt die ODER-,\n"
+"          dazwischen die UND-Verkn&uuml;pfung)"
+msgstr ""
+"<tt>+(child* adolescen* teen*) +drug* +(treat* therap*)</tt> (The OR-        "
+"operator is active within the brackets and the AND-operator is        active "
+"in between."
+
+#: ../templates/views/kug/info:314
+msgid "<tt>+Goethe +Jahrbuch</tt> oder"
+msgstr "<tt>+Goethe +Jahrbuch</tt> or"
+
+#: ../templates/views/kug/info:290
+msgid "<tt>+kernighan +brian</tt> (= UND-Verkn&uuml;pfung) oder"
+msgstr "<tt>+kernighan +brian</tt> (= AND operator) or"
+
+#: ../templates/views/kug/info:345
+msgid "<tt>+programmi* +perl</tt> (= UND-Verkn&uuml;pfung) oder"
+msgstr "<tt>+programmi* +perl</tt> (= AND-operator) or"
+
+#: ../templates/views/kug/info:360
+msgid "<tt>+programmi* -perl</tt> (= UND NICHT-Verkn&uuml;pfung) oder"
+msgstr "<tt>+programmi* -perl</tt> (= AND NOT-operator) or"
+
+#: ../templates/views/kug/info:315
+msgid ""
+"<tt>Goethe Jahrbuch</tt> bei aktivierter Suchoption\n"
+"'UND-Verkn&uuml;pfung innerhalb eines Suchfeldes in den Suchoptionen'"
+msgstr ""
+"<tt>Goethe Jahrbuch</tt> when the search option <i>automatic AND-operator "
+"within        search fields</i> is <b>activated</b> (default setting)"
+
+#: ../templates/views/kug/info:291
+msgid ""
+"<tt>kernighan brian</tt> (= UND-Verkn&uuml;pfung) bei\n"
+"               aktivierter Suchoption 'UND-Verkn&uuml;pfung innerhalb eines\n"
+"               Suchfeldes in den Suchoptionen'"
+msgstr ""
+"<tt>kernighan brian</tt> (= AND-operator) when the search option "
+"<i>automatic        AND-operator within search fields</i> is <b>activated</"
+"b> (default setting)"
+
+#: ../templates/views/kug/info:302
+msgid ""
+"<tt>kernighan miller</tt>  (= ODER-Verkn&uuml;pfung)\n"
+"bei <b>deaktivierter</b> Suchoption 'UND-Verkn&uuml;pfung innerhalb\n"
+"eines Suchfeldes in den Suchoptionen'"
+msgstr ""
+"<tt>kernighan miller</tt> (= OR-operator) when the search option automatic "
+"AND-operator within search fields is <b>deactivated</b>"
+
+#: ../templates/views/kug/info:361
+msgid ""
+"<tt>programmi* -perl</tt> (= UND\n"
+"NICHT-Verkn&uuml;pfung) bei aktivierter Suchoption\n"
+"'UND-Verkn&uuml;pfung innerhalb eines Suchfeldes in den Suchoptionen'"
+msgstr ""
+"<tt>programmi* -perl</tt> (= AND NOT-operator) when the search option "
+"<i>automatic AND-operator within search fields</i> is <b>activated</b> "
+"(default setting)"
+
+#: ../templates/views/kug/info:346
+msgid ""
+"<tt>programmi* perl</tt> (= UND-Verkn&uuml;pfung) bei\n"
+"aktivierter Suchoption 'UND-Verkn&uuml;pfung innerhalb eines\n"
+"Suchfeldes in den Suchoptionen'"
+msgstr ""
+"<tt> programmi* perl</tt> (= AND-operator) when the search option "
+"<i>automatic AND-operator within search fields</i> is <b>activated</b> "
+"(default setting)"
 
 #: ../templates/views/einbaende/resultlists_showall:134
 #: ../templates/views/einbaende/resultlists_showall_sortall:110
@@ -414,16 +481,15 @@ msgid ""
 "b>\n"
 "      recherchieren."
 msgstr ""
-"Your search"
-"results are displayed on a results page, sorted by catalog. If you click on"
-"an entry you will be directed to its entry page inside the corresponding"
-"catalog. On that page, if you click on the author's name, for example, all"
-"other entries by that author listed in that catalog will be displayed."
-"Clicking on the link 'all results' brings up a list of other works by that"
-"author, however only in the selected catalog. To perform a search in all"
-"catalogs, click on the capital <b>G</b> (G=global search in all catalogs %1) located"
-"next to an author's name. This gives you the choice to search either"
-"<b>catalog-specifically</b> or <b>globally</b>."
+"Your searchresults are displayed on a results page, sorted by catalog. If "
+"you click onan entry you will be directed to its entry page inside the "
+"correspondingcatalog. On that page, if you click on the author's name, for "
+"example, allother entries by that author listed in that catalog will be "
+"displayed.Clicking on the link 'all results' brings up a list of other works "
+"by thatauthor, however only in the selected catalog. To perform a search in "
+"allcatalogs, click on the capital <b>G</b> (G=global search in all catalogs %"
+"1) locatednext to an author's name. This gives you the choice to search "
+"either<b>catalog-specifically</b> or <b>globally</b>."
 
 #: ../templates/database/ebooks/search_showtitset:55
 #: ../templates/database/einbaende/search_showtitset:43
@@ -479,6 +545,10 @@ msgstr "As template for search request"
 msgid "Als User-Agent verwenden Sie"
 msgstr "Your user-agent is"
 
+#: ../templates/views/kug/info:431
+msgid "Also:"
+msgstr "So:"
+
 #: ../templates/database/ebooks/search_showtitset:53
 #: ../templates/database/nationallizenzen/search_showtitset:53
 #: ../templates/managecollection_tit_as_bibtex:20
@@ -533,14 +603,14 @@ msgid ""
 "     <i>Fingerabdruck</i> des Titels, über den die systemübergreifende\n"
 "     Titelidentifikation, z.B. zwischen OpenBib und BibSonomy,\n"
 "     ermöglicht wird."
-msgstr ""
+msgstr "Enhancement with a bibkey, a bibliographic <i>fingerprint</i> of a given title that can be used to identify it across separate systems, eg. between OpenBib and BibSonomy."
 
 #: ../templates/views/kug/info:649
 msgid ""
 "Anreicherung mit den Verfassern der Überordnung. Damit können\n"
 "     nun auch Schillers Räuber korrekt gefunden und das\n"
 "     sog. Schiller-Räuber-Problem gelöst werden."
-msgstr ""
+msgstr "Enhancements with authors of the main title. This solves the so called Schiller-Räuber-problem in german library systems."
 
 #: ../templates/views/kug/info:640
 msgid ""
@@ -552,7 +622,7 @@ msgid ""
 "     1.1.2007 in Verlagskatalogen in Verwendung sind - wenn bei der\n"
 "     Erfassung im Katalog lediglich die 10-stellige ISBN bekannt\n"
 "     war."
-msgstr ""
+msgstr "Enhancement with ISBN10 and ISBN13. A given title with a ISBN10 can also be retrieved with the corresponding ISBN13 and vice versa. So you can now find titles with ISBN13, eg. used in catalogues of publishers since 1.1.2007, that were catalogued at a time when only a ISBN10 was known."
 
 #: ../templates/admin_editsession:46
 msgid "Anzahl Recherchen"
@@ -655,7 +725,7 @@ msgstr "Circulation-Options"
 #: ../templates/database/nationallizenzen/search_showtitset:370
 #: ../templates/database/portrait/search_showtitset:189
 #: ../templates/managecollection_tit_as_html:94
-#: ../templates/managecollection_tit_as_html_simple:60
+#: ../templates/managecollection_tit_as_html_simple:61
 #: ../templates/search_showmulttitset:130 ../templates/search_showtitset:387
 msgid "Ausleihe/Exemplare"
 msgstr "Loan/Copies"
@@ -703,7 +773,9 @@ msgstr "Books"
 msgid ""
 "Beachten Sie, dass nur einige Bibliotheken die Aufs&auml;tze\n"
 "      im Online-Katalog aufnehmen."
-msgstr "Please note that not all libraries enter single articles into their online catalogs."
+msgstr ""
+"Please note that not all libraries enter single articles into their online "
+"catalogs."
 
 #: ../templates/admin_exploresessions_list:53
 #: ../templates/admin_showsessions:51
@@ -723,16 +795,16 @@ msgid ""
 "      Suchoptionen gilt eine <b>automatische\n"
 "      ODER-Verkn&uuml;pfung</b>:"
 msgstr ""
-"By <b>deactivating</b> the setting <i>automatic AND-operator within search fields</i>,"
-"the OR-operator becomes the default setting."
+"By <b>deactivating</b> the setting <i>automatic AND-operator within search "
+"fields</i>,the OR-operator becomes the default setting."
 
 #: ../templates/views/kug/info:427
 msgid ""
 "Bei der Eingabe m&uuml;ssen folgende Zeichen mit ihrem entsprechenden\n"
 "        Grundbuchstaben gesucht werden:"
 msgstr ""
-"To search for any of the following symbols please use the appropriate"
-"   base letter:"
+"To search for any of the following symbols please use the appropriate   base "
+"letter:"
 
 #: ../templates/views/kug/info:406
 msgid ""
@@ -744,12 +816,12 @@ msgid ""
 "      besser als Phrase in der Komplexen Recherche ein,\n"
 "      z.B."
 msgstr ""
-"The search field 'author/name' is not limited to authors. Other persons"
-"   (eg. editor, dedicatee of a festschrift etc.) are listed in the results"
-"   too. But do not enter abbreviated first names. If you are looking for a"
-"   book by two authors you can type in both names. If you are looking for a"
-"   specific person, it would be better to type in the name as an exact"
-"   phrase, e.g. "
+"The search field 'author/name' is not limited to authors. Other persons   "
+"(eg. editor, dedicatee of a festschrift etc.) are listed in the results   "
+"too. But do not enter abbreviated first names. If you are looking for a   "
+"book by two authors you can type in both names. If you are looking for a   "
+"specific person, it would be better to type in the name as an exact   "
+"phrase, e.g. "
 
 #: ../templates/views/kug/info:414
 msgid ""
@@ -757,17 +829,17 @@ msgid ""
 "      sondern auch andere Titel (Parallel-, Nebentitel, ...) \n"
 "      gesucht."
 msgstr ""
-"When you use the 'title' field, the search engine also not only scours"
-"   the main titles but also goes through other titles, such as parallel"
-"   titles or variant titles."
+"When you use the 'title' field, the search engine also not only scours   the "
+"main titles but also goes through other titles, such as parallel   titles or "
+"variant titles."
 
 #: ../templates/views/kug/info:403
 msgid ""
 "Bei der Suche wird nicht zwischen Gro&szlig;- und\n"
 "        Kleinschreibung unterschieden."
 msgstr ""
-"The search engine is not case sensitive, so it doesn't matter if you"
-"   type in upper or lower case."
+"The search engine is not case sensitive, so it doesn't matter if you   type "
+"in upper or lower case."
 
 #. ("<aclass=\"tutorial\" href=\"http://kug.ub.uni-koeln.de/tutorials/meinkuggrundeinstellungen.html\"target=\"tutorial\"><img src=\"/images/openbib/tutorial.png\" alt=\"Interaktives Tutorium\" /></a>")
 #: ../templates/views/kug/info:514
@@ -783,14 +855,14 @@ msgid ""
 "Personendaten wenden Sie sich bitte an die Auskunft der betreffenden\n"
 "Bibliothek."
 msgstr ""
-"By logging in with your library card you have immediate access to a"
-"   summary of your contact information and your account activity (tab: <b>Basic"
-"   Settings</b> %1). Is your address up to date? Has your account been suspended?"
-"   How many books have you recently checked out, reserved, ordered or are"
-"   any overdue? Do you have to pay any fees? Which search form would you"
-"   like as your default setting, which search fields? If you see any"
-"   discrepancies in your account information please contact the information"
-"   desk of the respective library."
+"By logging in with your library card you have immediate access to a   "
+"summary of your contact information and your account activity (tab: "
+"<b>Basic   Settings</b> %1). Is your address up to date? Has your account "
+"been suspended?   How many books have you recently checked out, reserved, "
+"ordered or are   any overdue? Do you have to pay any fees? Which search form "
+"would you   like as your default setting, which search fields? If you see "
+"any   discrepancies in your account information please contact the "
+"information   desk of the respective library."
 
 #: ../templates/views/kug/info:77 ../templates/views/kug/info:807
 msgid "Beispiel: Installation von Feedview f&uuml;r den Browser Firefox"
@@ -864,7 +936,7 @@ msgstr "Description"
 #: ../templates/database/landschaft/search_showtitset:153
 #: ../templates/database/portrait/search_showtitset:172
 #: ../templates/managecollection_tit_as_html:79
-#: ../templates/managecollection_tit_as_html_simple:45
+#: ../templates/managecollection_tit_as_html_simple:46
 #: ../templates/managecollection_tit_as_text:39 ../templates/mexset:2
 #: ../templates/search_showmulttitset:109
 msgid "Besitzende Bibliothek"
@@ -877,7 +949,7 @@ msgstr "Characteristics of fields with"
 #: ../templates/database/einbaende/managecollection_tit_as_html:65
 #: ../templates/database/einbaende/search_showtitset:142
 #: ../templates/managecollection_tit_as_html:79
-#: ../templates/managecollection_tit_as_html_simple:45 ../templates/mexset:2
+#: ../templates/managecollection_tit_as_html_simple:46 ../templates/mexset:2
 #: ../templates/search_showmulttitset:109
 msgid "Bestandsverlauf"
 msgstr "History of holdings"
@@ -1047,14 +1119,14 @@ msgid ""
 "      ersparen, k&ouml;nnen Sie diese dauerhaft in <i>Mein KUG</i> als\n"
 "      Katalogprofil festlegen."
 msgstr ""
-"As most users wish to search in all catalogs, this option is pre-selected."
-"By clicking twice on the box <i>All Catalogs</i> (on the right side under"
-"<i>Catalog Selection</i>) or choosing the option <i>Deselect All</i>, all catalogs"
-"can be deselected and you can either select catalogs individually or by"
-"picking a pre-existing profile from the drop-down menu. Then fill out the"
-"search form and click on <i>search in selected catalogs</i>. To spare yourself"
-"excess scrolling you can permanently save your selection in <i>My KUG</i> as a"
-"catalog profile."
+"As most users wish to search in all catalogs, this option is pre-selected.By "
+"clicking twice on the box <i>All Catalogs</i> (on the right side under "
+"<i>Catalog Selection</i>) or choosing the option <i>Deselect All</i>, all "
+"catalogscan be deselected and you can either select catalogs individually or "
+"bypicking a pre-existing profile from the drop-down menu. Then fill out "
+"thesearch form and click on <i>search in selected catalogs</i>. To spare "
+"yourselfexcess scrolling you can permanently save your selection in <i>My "
+"KUG</i> as acatalog profile."
 
 #: ../templates/mailpassword:37
 msgid ""
@@ -1074,10 +1146,9 @@ msgid ""
 "       50 Treffer durch Klick auf <emph>Weitere Treffer</emph>\n"
 "       zugreifen."
 msgstr ""
-"For ease"
-"of use, the maximum number of hits displayed per results page is limited to"
-"50. By clicking on 'More Results' you can view the following 50 hits for"
-"each catalog."
+"For easeof use, the maximum number of hits displayed per results page is "
+"limited to50. By clicking on 'More Results' you can view the following 50 "
+"hits foreach catalog."
 
 #: ../templates/views/kug/info:467
 msgid ""
@@ -1091,17 +1162,19 @@ msgid ""
 "Rubrik\n"
 "<b>Passwort vergessen?</b> per e-Mail zuschicken lassen."
 msgstr ""
-"Anyone without a USB user number (and of course anyone who has one) has the"
-"option to sign-up with their e-mail address and a unique password (under"
-"the heading <b>self-registration</b>). If you should ever forget your password you"
-"can have it sent to you via e-mail by following the link underneath the"
-"login form."
+"Anyone without a USB user number (and of course anyone who has one) has "
+"theoption to sign-up with their e-mail address and a unique password "
+"(underthe heading <b>self-registration</b>). If you should ever forget your "
+"password youcan have it sent to you via e-mail by following the link "
+"underneath thelogin form."
 
 #: ../templates/views/kug/info:898
 msgid ""
 "Darüber hinaus werden Verweise zu Artikeln in der Wikipedia\n"
 "     aufgeführt, die den aktuellen Titel über seine ISBN referenzieren."
-msgstr "Furthermore links to articles in Wikipedia are shown that reference the current title by ISBN."
+msgstr ""
+"Furthermore links to articles in Wikipedia are shown that reference the "
+"current title by ISBN."
 
 #. ("<a href=\"${config.info_loc}?sessionID=${sessionID};view=${view}#perskug\">","</a>")
 #: ../templates/views/kug/info:445
@@ -1111,9 +1184,10 @@ msgid ""
 "tsprofile sowie von Ihnen abgelegte pers&ouml;nliche Suchprofile (siehe: %"
 "1Mein KUG%2) für die 'Suche in einzelnen Katalogen' ausw&auml;hlen."
 msgstr ""
-"Your <b>search profile</b> displays your database selections. Also, you can"
-"   choose from a range of faculty profiles or your own personalized search"
-"   profiles (see: [_1]My KUG[_2]) for the 'search in individual catalogs' settings."
+"Your <b>search profile</b> displays your database selections. Also, you "
+"can   choose from a range of faculty profiles or your own personalized "
+"search   profiles (see: %1My KUG%2) for the 'search in individual "
+"catalogs' settings."
 
 #: ../templates/views/kug/info:981
 msgid ""
@@ -1127,10 +1201,13 @@ msgid ""
 "Verwenden Sie daher bitte <b>immer</b> die offiziellen Einsprung-URL's in "
 "den KUG. Es sind dies"
 msgstr ""
-"The KUG Search Portal is suited with a central load sharing system."
-"Depending on the current server load you will be redirected to one of three"
-"KUG servers (kug1 - kug3). Sometimes we have to remove one of the servers from the system for maintenance. Therefore it is very problematic to link directly to one of the three servers (e.g. http://kug3.ub.uni-koeln.de/portal/opac?view=kug). Please always use the official entry point"
-"URLs to access the KUG. These are:"
+"The KUG Search Portal is suited with a central load sharing system.Depending "
+"on the current server load you will be redirected to one of threeKUG servers "
+"(kug1 - kug3). Sometimes we have to remove one of the servers from the "
+"system for maintenance. Therefore it is very problematic to link directly to "
+"one of the three servers (e.g. http://kug3.ub.uni-koeln.de/portal/opac?"
+"view=kug). Please always use the official entry pointURLs to access the KUG. "
+"These are:"
 
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:353
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:362
@@ -1153,7 +1230,7 @@ msgstr "Databases"
 
 #: ../templates/externaljump:120 ../templates/views/kug/info:622
 msgid "Datenbankinformationssystem (DBIS)"
-msgstr "DataBaseInformationSystem (DBIS)"
+msgstr "Database Information System (DBIS)"
 
 #: ../templates/databaseprofile:75
 msgid ""
@@ -1189,7 +1266,7 @@ msgid ""
 "     erweitert. Dabei haben wir zur Anzeige von Verfügbarkeiten des\n"
 "     Titels ein bildbasiertes 'Ampel-System' wie das der\n"
 "     Elektronischen Zeitschriftenbibliothek (EZB) integriert."
-msgstr ""
+msgstr "Google Book Search had been added to KUG. To show the availability we introduced an image-based system like EZB (library of electronic journals)"
 
 #: ../templates/views/kug/info:574
 msgid ""
@@ -1203,16 +1280,16 @@ msgid ""
 "durch <i>Los</i>\n"
 "      best&auml;tigen."
 msgstr ""
-"The link <i>Hit List</i> shows you the current search query and underneath it, the"
-"number of hits globally and per database. From here you can click on a"
-"catalog to display the respective list of search results. You can sort the"
-"results differently by adjusting the sorting parameters (author/name, title"
-"etc. and display <i>by catalog</i> or <i>globally</i>) confirming your selection by"
-"clicking <i>Go</i>."
+"The link <i>Hit List</i> shows you the current search query and underneath "
+"it, thenumber of hits globally and per database. From here you can click on "
+"acatalog to display the respective list of search results. You can sort "
+"theresults differently by adjusting the sorting parameters (author/name, "
+"titleetc. and display <i>by catalog</i> or <i>globally</i>) confirming your "
+"selection byclicking <i>Go</i>."
 
 #: ../modules/OpenBib/Handler/Apache/ManageCollection.pm:154
 msgid "Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."
-msgstr "The title has been added to your Watch List."
+msgstr "The title has been added to your List of Interest."
 
 #: ../templates/databaseprofile:83
 msgid "Derzeit angezeigtes Profil"
@@ -1224,7 +1301,7 @@ msgstr "At the moment there doesn't exist a result list (yet)"
 
 #: ../modules/OpenBib/Handler/Apache/ManageCollection.pm:248
 msgid "Derzeit ist Ihre Merkliste leer"
-msgstr "At the moment your Watch List is empty"
+msgstr "At the moment your List of Interest is empty"
 
 #: ../templates/views/kug/info:617
 msgid "Derzeit werden folgende externe Recherchequellen angeboten:"
@@ -1248,8 +1325,9 @@ msgid ""
 "        Suchanfrage anklicken und als Suchvorlage erneut in das\n"
 "        Suchformular &uuml;bertragen."
 msgstr ""
-"The <b>search history</b> provides you with a list of your previous searches with the number of hits. On the Advanced Search screen you can click on"
-" an old search to transfer your old search parameters into the search form."
+"The <b>search history</b> provides you with a list of your previous searches "
+"with the number of hits. On the Advanced Search screen you can click on an "
+"old search to transfer your old search parameters into the search form."
 
 #: ../templates/views/richter/std_footer:17
 msgid ""
@@ -1266,9 +1344,9 @@ msgid ""
 "      relevanten Suchbegriffe mit Leerzeichen getrennt ohne\n"
 "      zus&auml;tzliche Operatoren eingeben k&ouml;nnen."
 msgstr ""
-"The automatic AND-operator is the standard setting within a given search"
-"field, so that all relevant search items can be entered without using any"
-"operators."
+"The automatic AND-operator is the standard setting within a given "
+"searchfield, so that all relevant search items can be entered without using "
+"anyoperators."
 
 #: ../templates/userprefs_changefields:28
 msgid ""
@@ -1286,6 +1364,9 @@ msgid ""
 "     zentrale Anreicherungsdatenbank bereitgestellt, in der sie,\n"
 "     bezogen auf eine vorhandene ISBN, abgelegt werden."
 msgstr ""
+"The results are enhanced with additional information across databases. This"
+"information is provided by a central enhancement database where the entries"
+"are stored according to existing ISBN numbers."
 
 #: ../templates/views/kug/info:556
 msgid ""
@@ -1299,6 +1380,11 @@ msgid ""
 "        dahinter angegebenen Zahl der verkn&uuml;pften Titel) aufgef&uuml;"
 "hrt ist."
 msgstr ""
+"The location mark (=location of a book in a given"
+"library) is usually displayed in the results summary. If this should not be"
+"the case, you can access the detailed entry by clicking on the title, where"
+"it is listed under the heading <i>volumes/items</i> or 'number of collective"
+"titles' (by clicking the highlighted number of linked entries)."
 
 #: ../templates/views/einbaende/std_footer:20
 #: ../templates/views/richter/std_footer:20
@@ -1327,45 +1413,45 @@ msgid ""
 "      hierzu die entsprechende Verkn&uuml;pfungsart aus dem\n"
 "      Pull-Down-Men&uuml; hinter dem jeweiligen Suchfeld."
 msgstr ""
-"The individual search fields (free search, title words, author/name etc.)"
-"are connected by the AND-operator by default, but you can also select the"
-"OR-operator or the AND NOT-operator. To do so, choose an operator from the"
-"drop-down menu behind the corresponding search field."
+"The individual search fields (free search, title words, author/name etc.)are "
+"connected by the AND-operator by default, but you can also select theOR-"
+"operator or the AND NOT-operator. To do so, choose an operator from thedrop-"
+"down menu behind the corresponding search field."
 
 #: ../templates/views/kug/info:852
 msgid ""
 "Die in BibSonomy enthaltenen Quellen - Publikationen wie\n"
 "      auch Webseiten - werden vollintegriert und über Schlagworte/Tags\n"
 "      thematisch erschlossen, im KUG angeboten."
-msgstr ""
+msgstr "The additional source - publications and web pages - in BibSonomy are presented fully integrated in KUG."
 
 #: ../templates/views/kug/info:765
 msgid "Die letzten 50 Neuzug&auml;nge in einem Katalog"
-msgstr ""
+msgstr "50  Most Recent Entries in a Catalog"
 
 #: ../templates/views/kug/info:771
 msgid ""
 "Die letzten 50 Neuzug&auml;nge in einem Katalog von einem\n"
 "          Verfasser oder einer Person"
-msgstr ""
+msgstr "50 Most Recent Entries in a Catalog by an Author"
 
 #: ../templates/views/kug/info:777
 msgid ""
 "Die letzten 50 Neuzug&auml;nge in einem Katalog von einer \n"
 "           K&ouml;rperschaft oder einer Institution"
-msgstr ""
+msgstr "50 Most Recent Entries in a Catalog from an Institution"
 
 #: ../templates/views/kug/info:782
 msgid ""
 "Die letzten 50 Neuzug&auml;nge in einem Katalog zu einem\n"
 "          Schlagwort"
-msgstr ""
+msgstr "50 Most Recent Entries in a Catalog under a Subject Heading"
 
 #: ../templates/views/kug/info:788
 msgid ""
 "Die letzten 50 Neuzug&auml;nge in einem Katalog zu einer\n"
 "          Notation (Systematik)"
-msgstr ""
+msgstr "50 Most Recent Entries in a Catalog under a notation (classificatory)"
 
 #: ../templates/views/kug/info:169
 msgid ""
@@ -1373,8 +1459,8 @@ msgid ""
 "         -optionen an. Anders als in der Einfachen Recherche kommt\n"
 "         hier keine Suchmaschinen-Technologie zum Einsatz."
 msgstr ""
-"This search form offers a variety of search fields and options. Unlike in"
-"the Simple Search, search engine technology is not used here."
+"This search form offers a variety of search fields and options. Unlike inthe "
+"Simple Search, search engine technology is not used here."
 
 #: ../modules/OpenBib/Handler/Apache/UserPrefs.pm:126
 msgid "Diese Session ist nicht authentifiziert."
@@ -1385,24 +1471,32 @@ msgid ""
 "Dieser Feed erscheint in der Einzeltitelanzeige jeweils vor\n"
 "        den Kategorien K&ouml;rperschaft/Urheber."
 msgstr ""
+"This feed is displayed on the detailed entry screen before the category"
+"institution."
 
 #: ../templates/views/kug/info:774
 msgid ""
 "Dieser Feed erscheint in der Einzeltitelanzeige jeweils vor\n"
 "        den Kategorien Verfasser/Person."
 msgstr ""
+"This feed is displayed on the detailed entry screen before the category"
+"author/name."
 
 #: ../templates/views/kug/info:791
 msgid ""
 "Dieser Feed erscheint in der Einzeltitelanzeige jeweils vor\n"
 "        der Kategorie Notation."
 msgstr ""
+"This feed is displayed on the detailed entry screen before the category"
+"notation."
 
 #: ../templates/views/kug/info:785
 msgid ""
 "Dieser Feed erscheint in der Einzeltitelanzeige jeweils vor\n"
 "        der Kategorie Schlagwort."
 msgstr ""
+"This feed is displayed on the detailed entry screen before the category"
+"subject heading."
 
 #: ../templates/views/kug/info:766
 msgid ""
@@ -1411,6 +1505,9 @@ msgid ""
 "          Lesezeichen in Firefox ab Version 1.5) sowie &uuml;ber den\n"
 "          Hauptmenu-Eintrag <b>RSS</b> angeboten"
 msgstr ""
+"This feed is available on a number of department entry points, both for"
+"automatic browser recognition (dynamic bookmarks with Firefox 1.5 or"
+"higher) and the main menu entry <b>RSS</b>."
 
 #: ../templates/database/ebooks/search_showtitset:317
 #: ../templates/database/nationallizenzen/search_showtitset:323
@@ -1445,26 +1542,23 @@ msgid "Digitale Bibliothek / Monographien (Fernleihe)"
 msgstr "Digital library / Monographs (ILL)"
 
 #: ../templates/views/kug/info:620
-#, fuzzy
 msgid "Digitale Bibliothek / Monographien (f&uuml;r die Fernleihe von Monographien)"
-msgstr "Digital library / Monographs (ILL)"
+msgstr "Digital Library/ Monographs (for Interlibrary loan of monographs)"
 
 #: ../templates/externaljump:110
 msgid "Digitale Bibliothek / Zeitschriften (Aufsatzlieferung)"
 msgstr "Digital library / Journals (Electronic journal delivery)"
 
 #: ../templates/views/kug/info:621
-#, fuzzy
 msgid ""
 "Digitale Bibliothek / Zeitschriften (f&uuml;r die Lieferung von "
 "Zeitschriftenaufs&auml;tzen)"
-msgstr "Digital library / Journals (Electronic journal delivery)"
+msgstr "Digital Library/ Journals (for delivery of journal articles)"
 
 #. ("<a class=\"tutorial\" href=\"http://kug.ub.uni-koeln.de/tutorials/kartenkat.html\" target=\"tutorial\"><img src=\"/images/openbib/tutorial.png\" /></a>")
 #: ../templates/views/kug/info:625
-#, fuzzy
 msgid "Digitaler Kartenkatalog der Philosophischen Fakutl&auml;t %1"
-msgstr "Digital card catalogue (faculty of arts)"
+msgstr "Digital Card Catalog of the Philosophical Faculty %1"
 
 #: ../templates/views/kug/info:660 ../templates/views/kug/info:69
 msgid "Digitalisierte Inhaltsverzeichnisse"
@@ -1475,6 +1569,8 @@ msgid ""
 "Doch beachten Sie, dass die Beitrage unter Umst&auml;nden\n"
 "     nicht wissenschaftlich gepr&uuml;ft sein k&ouml;nnten."
 msgstr ""
+"Please note that Wikipedia is not peer-reviewed and some articles may not"
+"meet academic standards."
 
 #: ../templates/managecollection_print:30
 msgid "Druckansicht Titel"
@@ -1494,6 +1590,10 @@ msgid ""
 "      angezeigt, die von anderen Nutzern im Kontext des aktuellen\n"
 "      Titels für interessant befunden wurden."
 msgstr ""
+"Statistical surveys of library users' borrowing habits as well as KUG user"
+"data indicate which other books readers of a given book also could be"
+"interested in. This allows us to show you other books which may interest"
+"you in the context of the entry currently being displayed"
 
 #: ../templates/userprefs:81
 msgid "E-Mail"
@@ -1543,7 +1643,7 @@ msgstr "Remove your review"
 #. ("<a      href=\"http://kug5.ub.uni-koeln.de/portal/connector/permalink/inst006/6439/1/kug/index.html\"      target=\"_blank\">","</a>")
 #: ../templates/views/kug/info:866
 msgid "Ein Beispiel hierfür ist %1dieser Titel%2."
-msgstr ""
+msgstr "An example is %1this title%2."
 
 #. ("$loginname","<a href=\"http://$config->{servername}$config->{selfreg_loc}?sessionID=$session->{ID};view=$view;action=show\">","</a>")
 #: ../modules/OpenBib/Handler/Apache/SelfReg.pm:134
@@ -1572,7 +1672,7 @@ msgstr "Data of bindings"
 #: ../templates/managecollection_show:82
 #: ../templates/views/einbaende/managecollection_show:65
 msgid "Eine Bearbeitung ist nur bei 'HTML' m&ouml;glich"
-msgstr "Actions only availible when using 'HTML'"
+msgstr "Actions only available when using 'HTML'"
 
 #: ../templates/circulation_make_reserv:36
 msgid ""
@@ -1684,9 +1784,8 @@ msgstr "Elektronic journal database (EZB)"
 
 #. ("<a class=\"tutorial\" href=\"http://kug.ub.uni-koeln.de/tutorials/e-journal.html\" target=\"tutorial\"><img src=\"/images/openbib/tutorial.png\" /></a>")
 #: ../templates/views/kug/info:623
-#, fuzzy
 msgid "Elektronische Zeitschriftendatenbank (EZB) %1"
-msgstr "Elektronic journal database (EZB)"
+msgstr "Electronic Journal Database (EZB) %1"
 
 #: ../templates/database/ebooks/search_showtitset:378
 #: ../templates/database/ebooks/search_showtitset:396
@@ -1808,7 +1907,7 @@ msgstr "There doesn't exist a primary RSS-feed for this view"
 msgid ""
 "Es k&ouml;nnen nur Begriffe recherchiert werden, die aus\n"
 "      mindestens zwei Zeichen (Buchstaben/Ziffern) bestehen."
-msgstr ""
+msgstr "All search terms must consist of at least two characters   (letters/numbers)"
 
 #: ../templates/circulation_remind:48
 msgid "Es sind keine Gebühren angefallen."
@@ -1850,6 +1949,10 @@ msgid ""
 "      Installation. Nach dem Neustart von Firefox und einem Klick auf\n"
 "      eines der %2-Icons im KUG &ouml;ffnet sich der entsprechende RSS-Feed."
 msgstr ""
+"To install the extension Feedview in Firefox versions lower than 1.5 please"
+"follow this %1 and click on <i>Install Now</i>. A new window will open. Please"
+"confirm the installation here. After you restart Firefox and click on one"
+"of the %2 icons in KUG, the respective RSS-feed will open."
 
 #: ../templates/views/kug/info:269
 msgid ""
@@ -1864,6 +1967,13 @@ msgid ""
 "      Zeichen <b>^</b> voran (z.B. ^frauenbildung*). Mit * k&ouml;nnen\n"
 "      Sie wie gewohnt den entsprechenden Begriff trunkieren."
 msgstr ""
+"It is possible to perform an index search for the categories author/name,"
+"institution und subject heading. This displays a list of possible termsfrom "
+"the KUG index, listed by catalog. All queries entered here undergo afull-"
+"text search, i.e. subject heading chains are searched as well. If youwould "
+"like to limit your search to the beginning of a word, please type thesymbol "
+"<b>^</b> ahead of your search query (e.g. ^education*). As before, you "
+"cantruncate the word with a *."
 
 #: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:306
 msgid ""
@@ -1918,20 +2028,20 @@ msgid ""
 "     Verweise auf weitere Ausgaben, Zitate usw.) verfügbar sind, wird\n"
 "     das Book Search Bild um den orangenen Text 'Teilzugriff'\n"
 "     ergänzt."
-msgstr ""
+msgstr "A yellow text 'Teilzugriff' (partial access) is added to the Book Search icon, when parts of the text (ToC, example chapters, etc.) are available."
 
 #: ../templates/views/kug/info:927
 msgid ""
 "Falls das Buch bei Google Book Search nicht vorhanden ist\n"
 "     bzw. dort kein 'Mehrwert' existiert, dann erscheint die\n"
 "     Verlinkung von Google Book Search nicht."
-msgstr ""
+msgstr "No Book Search icon is shown, when the book isn't available in Google Book Search and the user don't get any added value."
 
 #: ../templates/views/kug/info:919
 msgid ""
 "Falls der Text dort im Vollzugriff vorliegt, wird das Book\n"
 "     Search Bild um den grünen Text 'Vollzugriff' ergänzt."
-msgstr ""
+msgstr "The green text 'Vollzugriff' (Fulltext) is added to the Book Search icon, when text ist available as full text. "
 
 #: ../templates/databaseprofile:66
 msgid "Falls leer, so geben Sie hier bitte einen neuen Profilnamen ein"
@@ -1959,7 +2069,7 @@ msgstr "Interlibrary loan request"
 
 #: ../templates/views/kug/info:1033
 msgid "Fragen und Anmerkungen richten Sie bitte an:"
-msgstr ""
+msgstr "Please send questions and feedback to:"
 
 #: ../templates/database/ebooks/search_showtitset:293
 #: ../templates/database/nationallizenzen/search_showtitset:299
@@ -2049,6 +2159,9 @@ msgid ""
 "      verschlagwortet wurden, umso grösser wird das zugehörige\n"
 "      Schlagwort dargestellt."
 msgstr ""
+"Every catalog that uses subject headings has a tag cloud of its 200 most"
+"common ones. The more entries are linked to a certain tag, the larger it"
+"will appear in the cloud."
 
 #: ../templates/database/nationallizenzen/search_showtitset:146
 msgid ""
@@ -2138,7 +2251,7 @@ msgstr "Fee"
 
 #: ../templates/views/kug/info:984
 msgid "Gesamt-KUG"
-msgstr ""
+msgstr "Global-KUG"
 
 #: ../templates/circulation:52
 msgid "Gesamtkonto verl&auml;ngern"
@@ -2211,6 +2324,11 @@ msgid ""
 "        Liste. Voraussetzung: Sie haben vorher einen <i>Feedreader</i>\n"
 "        installiert."
 msgstr ""
+"If your KUG search yielded something of interest in one of our libraries"
+"and you are interested in being informed about new media related to that"
+"author, institution, subject heading or notation, then click on the"
+"respective RSS-feed icon. Your list will open. Please note that you will"
+"require a <i>feed reader</i>."
 
 #. ("<a href=\"${config.redirect_loc}/${sessionID}/531/${config.dbis_exturl}\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>")
 #: ../templates/virtualsearch_more_search_tips:37
@@ -2231,6 +2349,11 @@ msgid ""
 "sich damit nicht einloggen können, wenden Sie sich an die Auskunft oder\n"
 "Anmeldung der betreffenden Bibliothek."
 msgstr ""
+"If you log in with your library user number your password is automatically"
+"your date of birth as a six-digit number (ddmmyy: e.g. DOB: March 5, 1975 ;"
+"password: 050375), unless you have previously changed it. If for some"
+"reason you cannot log in please contact the information or registration"
+"desk of the respective library."
 
 #. ("<a href=\"${config.selfreg_loc}?sessionID=${sessionID};view=${view};action=show\">","</a>")
 #: ../templates/login:101
@@ -2267,8 +2390,8 @@ msgid ""
 "        stellen Ihre Suchanfrage und schicken sie mit <i>In\n"
 "        ausgew&auml;hlten Katalogen suchen</i> ab."
 msgstr ""
-"You can also select which catalogs you would like to search. To perform"
-"your search, click <i>Search in Selected Catalogs</i>."
+"You can also select which catalogs you would like to search. To performyour "
+"search, click <i>Search in Selected Catalogs</i>."
 
 #: ../templates/searchmask:131 ../templates/searchmask:135
 #: ../templates/searchmask:93 ../templates/searchmask:99
@@ -2441,6 +2564,8 @@ msgid ""
 "Hier sind auch Suchanfragen mit kombinierten UND- und ODER-Verkn&uuml;"
 "pfungen unter Verwendung von Klammern m&ouml;glich (siehe Beispiel 7)"
 msgstr ""
+"Complex searches containing combinations of AND and OR operators by using "
+"brackets are possible here (see example 7)"
 
 #: ../templates/searchmask:131 ../templates/searchmask:135
 #: ../templates/searchmask:93 ../templates/searchmask:99
@@ -2777,10 +2902,14 @@ msgid ""
 "Ihnen in\n"
 "die <b>persönliche</b> Liste übertragen."
 msgstr ""
+"Your list of interest is saved in <b>My KUG</b> even after the end of your session -"
+"   you can use it as long as you want! Even if you log on to <b>My KUG</b> later"
+"   on, all the entries that have accumulated <b>anonymously</b> during that session"
+"   will be added to your <b>personal</b> list."
 
 #: ../templates/mailcollection_success:28
 msgid "Ihre Merkliste wurde an Sie per Mail versendet."
-msgstr "Your Watch List has been sent to you by mail."
+msgstr "Your List of Interest has been sent to you by mail."
 
 #: ../templates/leave:26 ../templates/views/einbaende/leave:27
 #: ../templates/views/gdonck/leave:27 ../templates/views/gleuel/leave:27
@@ -2804,9 +2933,9 @@ msgid ""
 "        Sie einzelne Kataloge ausw&auml;hlen m&ouml;chten, gehen Sie\n"
 "        in die Komplexe Recherche."
 msgstr ""
-"Your queries are run through all possible categories and all available"
-"databases with search engine technology. Should you wish to single out"
-"certain catalogs for your search, please use the Advanced Search."
+"Your queries are run through all possible categories and all "
+"availabledatabases with search engine technology. Should you wish to single "
+"outcertain catalogs for your search, please use the Advanced Search."
 
 #: ../templates/views/kug/info:459
 msgid ""
@@ -2819,6 +2948,10 @@ msgid ""
 "insbesondere Benutzernummern der USB oder der Institute, die eine\n"
 "Online-Ausleihe betreiben."
 msgstr ""
+"You can access your personal KUG by following the link <b>My KUG</b> in the KUG-"
+"navigation bar. You will be directed to the login form and can decide which"
+"identity to log in under. You can select the University Library (USB) or"
+"institutes that conduct online reservations."
 
 #: ../templates/views/kug/info:418
 msgid ""
@@ -2827,6 +2960,9 @@ msgid ""
 "      verzeichnet hat, nach der <b>Quelle</b> (Werk, in dem die\n"
 "      Aufs&auml;tze enthalten sind) suchen."
 msgstr ""
+"With the search field 'series/volume/source' you can search for a   specific "
+"volume of a series or the published source for an article (only   for "
+"libraries that list individual articles)."
 
 #: ../templates/views/kug/info:749
 msgid ""
@@ -2839,10 +2975,15 @@ msgid ""
 "Data-Mining in Verbindung mit spezialisierter Suchtechnologie\n"
 "einsetzen, usw."
 msgstr ""
+"Unlike regular website presentations, RSS-feeds in conjunction with"
+"specialized programs offer a far greater variety of usage options. For"
+"example they can manage the data you view, use different colors for links"
+"you have and haven't accessed, archive information, use data-mining with"
+"specialized search engine technology etc."
 
 #: ../templates/views/kug/info:762
 msgid "Im KUG werden derzeit folgende Arten von RSS-Feeds angeboten:"
-msgstr ""
+msgstr "The KUG currently offers the following types of RSS-Feeds:"
 
 #: ../templates/views/kug/info:662
 msgid ""
@@ -2856,6 +2997,12 @@ msgid ""
 "     den Inhaltsverzeichnissen ist im KUG (derzeit) nicht\n"
 "     m&ouml;glich."
 msgstr ""
+"As part of a project, 200,000 tables of content of the University Library's"
+"collection of monographs were scanned in and made available for all the"
+"libraries participating in the KUG. If a book's table of contents is on"
+"file it will be linked in the category TOC / Summary, TOC / PDF or URL"
+"(under the heading Digital Table of Contents (PDF/Digitool)). Currently it"
+"is not possible to search within tables of content in the KUG."
 
 #: ../templates/admin_editcat:104
 msgid "Import-Einstellungen"
@@ -2869,7 +3016,7 @@ msgid ""
 "      oder &ouml;ffentlichen Zugriff zusammenfassen. &Ouml;ffentliche\n"
 "      Literaturlisten k&ouml;nnen Sie &uuml;ber einen PermaLink auch\n"
 "      auf externen Seiten verlinken.  %1Beispiel%2"
-msgstr ""
+msgstr "You can collect specific titles in <b>literature lists</b> and group them under a common <i>headline</i> for private or public use. Literature lists defined as public can be accessed from anywhere with a PermaLink, that you can use in external web pages. %1Example%2"
 
 #: ../templates/database/ebooks/search_showtitset:88
 #: ../templates/database/nationallizenzen/search_showtitset:92
@@ -3108,6 +3255,8 @@ msgid ""
 "     oder anderen Stellen im KUG werden verschiedene bildliche\n"
 "     Funktionselemente verwendet. Es sind dies:"
 msgstr ""
+"Icons are employed on the results pages, the individual entry pages, the"
+"list of interest and other places in the KUG. They mean:"
 
 #: ../templates/views/kug/info:152
 msgid ""
@@ -3116,9 +3265,9 @@ msgid ""
 "      K&ouml;rperschaft, Schlagwort, Notation, ISBN/ISSN, Signatur\n"
 "      und Jahr gesucht."
 msgstr ""
-"In the Basic Search all queries entered automatically use the AND-operator"
-"and the search is performed in the categories author/name, institution,"
-"subject heading, notation, ISBN/ISSN, location mark and year."
+"In the Basic Search all queries entered automatically use the AND-"
+"operatorand the search is performed in the categories author/name, "
+"institution,subject heading, notation, ISBN/ISSN, location mark and year."
 
 #: ../templates/views/kug/info:885
 msgid ""
@@ -3133,6 +3282,12 @@ msgid ""
 "     aktuell ausgewählten Titel recherchieren k&ouml;nnen, ohne sich\n"
 "     mit der jeweiligen Suchoberfläche auseinandersetzen zu müssen."
 msgstr ""
+"On the individual entry page all names and ISBNs directly link to"
+"Wikipedia. If you need information regarding an author you can start your"
+"research there. Similarly, you can make easy use of Wikipedia's ISBN search"
+"function which helps you to search libraries, online booksellers (first and"
+"second hand) etc. without having to work your way through their own"
+"websites."
 
 #. ("<a href=\"http://www.bibsonomy.org/\"     target=\"_blank\">BibSonomy</a>")
 #: ../templates/views/kug/info:839
@@ -3145,6 +3300,10 @@ msgid ""
 "     Bibliographie-Listen und deren Austausch/Verbreitung\n"
 "     spezialisiert ist."
 msgstr ""
+"On the individual entry page as well as on your watch list you can send the"
+"bibliographical information for an entry to BibSonomy by clicking on the"
+"icon. %1 is a free social bookmarking service specialized on"
+"managing and sharing bibliography lists."
 
 #: ../templates/views/kug/info:613
 msgid ""
@@ -3165,6 +3324,19 @@ msgid ""
 "externen Quelle. Dabei wird sowohl Ihre Suchanfrage wie auch eine etwaige "
 "Authentifizierung am KUG mit weitergereicht."
 msgstr ""
+"In the search form under 'search history' you will find a list of all your"
+"previous search queries. In case a query didn't yield the desired result"
+"you can expand your range to include external services. After you pick a"
+"relevant search and activate 'Continue as an External Search', you will be"
+"directed to a page offering you a list of additional services. Each of"
+"these external search engines offers a variety of different search fields."
+"Depending on the field you used for your KUG search, a number of links will"
+"be activated under 'Use Query For External Search'. If the search"
+"fields/categories of the search you selected do not match those of the"
+"external search engine, the message <i>Incompatible Search Fields</i> will be"
+"displayed in red lettering. By activating a link you will be brought"
+"directly to the external search results page. Both your search query and,"
+"if available, your KUG login data will be transmitted."
 
 #: ../templates/database/ebooks/search_showtitset:54
 #: ../templates/database/einbaende/search_showtitlist:155
@@ -3192,7 +3364,7 @@ msgstr ""
 #: ../templates/views/portrait/resultlists_showsinglepool:127
 #: ../templates/virtualsearch_result_item:80
 msgid "In die Merkliste"
-msgstr "Add to Watch List"
+msgstr "Add to List of Interest"
 
 #. ("<a href=\"http://de.wikipedia.org/wiki/RSS-Feed\"target=\"_blank\">","</a>","<img src=\"/images/openbib/rssfeed.png\"/>")
 #: ../templates/views/kug/info:728
@@ -3205,6 +3377,10 @@ msgid ""
 "Funktionselement %3, das mit dem\n"
 "entsprechenden RSS-Feed verlinkt ist."
 msgstr ""
+"%1RSS Feeds%2 are offered in your selected catalog or on a given institute"
+"page. If you subscribe to one of these you can see the catalog's 50 most"
+"recent entries (globally or limited to the contents of a category). You can"
+"find them by clicking on the %3 icon links to the respective RSS-feed. "
 
 #: ../templates/searchmask_simple:108
 #: ../templates/views/edz/searchmask_simple:117
@@ -3254,7 +3430,7 @@ msgstr "Information"
 #: ../templates/database/nationallizenzen/search_showtitset:98
 #: ../templates/database/portrait/search_showtitset:87
 #: ../templates/managecollection_tit_as_html:44
-#: ../templates/managecollection_tit_as_html_simple:28
+#: ../templates/managecollection_tit_as_html_simple:29
 #: ../templates/search_showautset:31 ../templates/search_showkorset:32
 #: ../templates/search_showmulttitset:41 ../templates/search_shownotset:31
 #: ../templates/search_showswtset:33 ../templates/search_showtitset:94
@@ -3263,7 +3439,7 @@ msgstr "Content"
 
 #: ../templates/views/kug/info:50
 msgid "Inhaltsverzeichnis"
-msgstr "Table of Content"
+msgstr "Table of Contents"
 
 #: ../templates/admin_showsessions:52
 msgid "Initiale Suchen"
@@ -3305,7 +3481,7 @@ msgstr "Interactive tutorial"
 #: ../templates/database/einbaende/managecollection_tit_as_html:65
 #: ../templates/database/einbaende/search_showtitset:142
 #: ../templates/managecollection_tit_as_html:79
-#: ../templates/managecollection_tit_as_html_simple:45 ../templates/mexset:2
+#: ../templates/managecollection_tit_as_html_simple:46 ../templates/mexset:2
 #: ../templates/search_showmulttitset:109
 msgid "Inventarnummer"
 msgstr "Inventory number"
@@ -3386,7 +3562,7 @@ msgstr "KUG versions"
 
 #: ../templates/externaljump:149
 msgid "Kartenkatalog Philosoph. Fakultät"
-msgstr "Digital card catalogue (faculty of arts)"
+msgstr "Digital Card Catalog of the Philosophical Faculty"
 
 #: ../templates/resultlists_choice:87
 msgid "Katalog"
@@ -3473,7 +3649,7 @@ msgstr "Catalogue profiles"
 #: ../templates/database/nationallizenzen/search_showtitset:98
 #: ../templates/database/portrait/search_showtitset:87
 #: ../templates/managecollection_tit_as_html:44
-#: ../templates/managecollection_tit_as_html_simple:28
+#: ../templates/managecollection_tit_as_html_simple:29
 #: ../templates/search_showautset:31 ../templates/search_showkorset:32
 #: ../templates/search_showmulttitset:41 ../templates/search_shownotset:31
 #: ../templates/search_showswtset:33 ../templates/search_showtitset:94
@@ -3602,7 +3778,7 @@ msgid ""
 "     dessen ISBN nach Zusatzinformationen bei Google Book Search\n"
 "     gesucht und dem Nutzer mit einem Bild eine Rückmeldung über deren\n"
 "     Verfügbarkeit gegeben."
-msgstr ""
+msgstr "In the title entry we look for additional information from Google Book Search with the given ISBN. The user gets feedback on the availability of these informations with a corresponding picture."
 
 #: ../templates/virtualsearch_more_search_tips:26
 msgid ""
@@ -3616,7 +3792,7 @@ msgstr "Contact"
 
 #: ../templates/views/kug/info:972
 msgid "Kontextsensitive Hilfe"
-msgstr ""
+msgstr "Context Sensitive Help"
 
 #: ../templates/admin_editcat:130
 msgid "Kor-Datei"
@@ -3745,7 +3921,7 @@ msgid "Lokal"
 msgstr "Local"
 
 #: ../templates/database/einbaende/managecollection_tit_as_html:129
-#: ../templates/managecollection_tit_as_html_simple:45
+#: ../templates/managecollection_tit_as_html_simple:46
 msgid "Lokale Signatur"
 msgstr "Local location mark"
 
@@ -4024,7 +4200,7 @@ msgstr "Message"
 #: ../templates/views/kapsel/mainnavigation:16
 #: ../templates/views/portrait/mainnavigation:16
 msgid "Merkliste"
-msgstr "Watch List"
+msgstr "List of Interest"
 
 #: ../templates/admin_editcat:133
 msgid "Mex-Datei"
@@ -4040,10 +4216,10 @@ msgid ""
 "      dar&uuml;ber hinaus auch in dauerhaft gespeicherten Suchprofilen\n"
 "      organisieren."
 msgstr ""
-"The KUG allows you to simultaneously search the catalogs of all"
-"participating libraries or individual ones of your choosing. If you have"
-"already used the login function to access your KUG-account, you can store"
-"your preferred catalogs in permanently savable search profiles."
+"The KUG allows you to simultaneously search the catalogs of allparticipating "
+"libraries or individual ones of your choosing. If you havealready used the "
+"login function to access your KUG-account, you can storeyour preferred "
+"catalogs in permanently savable search profiles."
 
 #: ../templates/admin_editview_rss:72
 msgid "Möchten Sie diesen ändern?"
@@ -4061,7 +4237,7 @@ msgstr "Would you like to change it?"
 #: ../templates/database/portrait/search_showtitset:46
 #: ../templates/search_showtitset:61 ../templates/search_showtitset:63
 msgid "N&auml;chster Titel"
-msgstr "Next"
+msgstr "Next title"
 
 #: ../templates/database/kapsel/visible_categories_notset:17
 #: ../templates/visible_categories_notset:17
@@ -4101,13 +4277,20 @@ msgid ""
 "Fakult&auml;t</i> und suchen sich Ihre\n"
 "      Bibliothekskennzahl."
 msgstr ""
+"After you have submitted your search query you will be presented with a"
+"list of entries, which, depending on whether you searched in multiple"
+"databases, are sorted by library. To find out the address and opening times"
+"of a library, click on the name of the corresponding database. Some"
+"libraries use a common data pool, e.g. the Pedagogical Faculty. In that"
+"case, please note down the number in front of the location mark that"
+"indicates the exact library, click on Pedagogical Faculty and look for the"
+"required library code."
 
 #: ../templates/userprefs:71
 msgid "Nachname"
 msgstr "Surname"
 
 #: ../templates/views/kug/info:947
-#, fuzzy
 msgid ""
 "Neben dem Standard-KUG mit allen Katalogen gibt es eine\n"
 "      Vielzahl an Spezial-Sichten, bei denen z.B. bestimmte Kataloge\n"
@@ -4116,10 +4299,11 @@ msgid ""
 "      oft unsichtbaren speziellen Einstiegspunkte in verschiedene\n"
 "      KUG-Varianten werden an dieser zentralen Stelle aufgeführt."
 msgstr ""
-"Apart from standard KUG with all catalogues there exist a lot of other "
-"special views with preselected catalogues and additional information. Some "
-"of these even build a separate portal. On this page we give you an overview "
-"of all available special views."
+"Besides the standard-KUG there are a number of special entry points that"
+"may offer certain catalogs as the default selection, provide additional"
+"information on a subject or function as a quasi-independent department"
+"portal. These entry points into different KUG-variants, which are often"
+"invisible to the user, are centrally listed here."
 
 #: ../templates/info_15:48
 msgid ""
@@ -4367,9 +4551,8 @@ msgid "Permanenter Link"
 msgstr "PermaLink"
 
 #: ../templates/views/kug/info:971
-#, fuzzy
 msgid "Permanenter Link zu diesem Titel"
-msgstr "PermaLink"
+msgstr "Permanent Link to This Entry"
 
 #: ../templates/views/einbaende/searchmask:114
 #: ../templates/views/inst501/searchmask_query:11
@@ -4408,6 +4591,9 @@ msgid ""
 "Reihenfolge enthalten sein)<br />\n"
 "           z.B: %3kernighan, brian%4 (alle Titel von Brian Kernighan)"
 msgstr ""
+"Exact phrase: %1Word1 Word2%2 (Word1 and Word2 must be contained in that   "
+"specific order)<br/>   e.g. %3kernighan, brian%4 (all entries by Brian "
+"Kernighan)"
 
 #: ../templates/views/kug/info:709 ../templates/views/kug/info:73
 msgid "Popularit&auml;ts-Funktionen"
@@ -4500,7 +4686,7 @@ msgstr "RSS-settings for view"
 
 #: ../templates/views/kug/info:968
 msgid "RSS-Feed"
-msgstr ""
+msgstr "RSS-Feed"
 
 #: ../templates/admin_editview:93
 msgid "RSS-Feed zu diesem View"
@@ -4523,6 +4709,13 @@ msgid ""
 "Plattformen (Windows, Linux, Mac) zur Verf&uuml;gung, deren\n"
 "Funktionsumfang weit &uuml;ber die einfache Anzeige hinausgeht."
 msgstr ""
+"The RSS-"
+"Feeds themselves are coded in XML, so in order to access them you will need"
+"an appropriate program (feed reader, aggregator program). Usually a simple"
+"display program such as the %1 extension for %2 will suffice."
+"But there are also a variety of specialized RSS-feed readers for all the"
+"various platforms (Windows, Linux, Max) that go beyond basic display"
+"functions."
 
 #: ../templates/admin_editsession:59 ../templates/mainnavigation:17
 #: ../templates/views/kapsel/mainnavigation:16
@@ -4692,7 +4885,7 @@ msgid ""
 msgstr ""
 "Dear ladies and gentlemen,\n"
 "\n"
-"your Watch List from KUG\n"
+"your List of Interest from KUG\n"
 "\n"
 "Regards,\n"
 "\n"
@@ -4933,6 +5126,9 @@ msgid ""
 "und dann &uuml;ber die entsprechenden\n"
 "      Icons ausdrucken, speichern oder als E-Mail versenden."
 msgstr ""
+"You can display your selection in the formats HTML, Text or EndNote and"
+"then, by clicking on the appropriate icon, either print it, save it, or"
+"send it via e-mail."
 
 #: ../modules/OpenBib/Handler/Apache/Login.pm:283
 msgid ""
@@ -5046,6 +5242,17 @@ msgid ""
 "Kurztitel-Liste aller Titel, die sie mit dem jeweiligen Tag versehen\n"
 "haben."
 msgstr ""
+"You can give every title in the catalogs its own <b>tag</b> (=subject heading)."
+"   These tags are words that have to be typed in separated by spaces. In"
+"   order to standardize the tags the system automatically norms them, i.e."
+"   umlauts are broken down, impermissible symbols are eliminated (all"
+"   alphanumeric symbols plus +-_. are allowed) and lower case is implemented"
+"   throughout. If you look under the tab 'tags' in My KUG you can see a"
+"   summary of all your tags in form of a tag cloud - the size of a word in"
+"   the cloud depends on the number of entries you have given that tag. The"
+"   larger a tag's font size, the more entries are connected to it. By"
+"   clicking on a tag you will receive a list of all entries that you tagged"
+"   accordingly."
 
 #: ../templates/views/kug/info:340
 msgid ""
@@ -5056,6 +5263,9 @@ msgid ""
 "      Wildcard. Sie k&ouml;nnen dann Folgendes in die <i>Freie Suche</i> "
 "eingeben:"
 msgstr ""
+"You would like to find books about the programming language Perl.      Since "
+"you also want to find English language books, use the <b>*</b> as a      "
+"wildcard. You can type the following into the <i>free search</i> field:"
 
 #: ../templates/views/kug/info:321
 msgid ""
@@ -5069,6 +5279,12 @@ msgid ""
 "zu\n"
 "      suchen, Folgendes in die <i>Freie Suche</i> eingeben:"
 msgstr ""
+"You would like to search for books about <tt>programming</tt>. To "
+"include      English and German books you could use the <b>*</b> as a "
+"wildcard to exploit      the fact that the words <tt>programmieren</tt> and "
+"<tt>programming</tt> both contain      the common substring <tt>programmi</"
+"tt>. And if you would like to look in both      the title and the subject "
+"headings, type the following into the <i>free      search</i> field:"
 
 #: ../templates/views/kug/info:353
 msgid ""
@@ -5079,6 +5295,10 @@ msgid ""
 "      verwenden sie den <b>*</b> als Wildcard. Sie k&ouml;nnen dann\n"
 "      Folgendes in die <i>Freie Suche</i> eingeben:"
 msgstr ""
+"You want to search for books about <tt>programming</tt>, but "
+"<strong>specifically not</strong>      with <tt>Perl</tt>. As you would like "
+"to find both English and German language      books, use the <b>*</b> as a "
+"wildcard. You can type the following into the      <i>free search</i> field:"
 
 #: ../templates/views/kug/info:297
 msgid ""
@@ -5087,6 +5307,8 @@ msgid ""
 "nnen\n"
 "        dann Folgendes in das Personenfeld eingeben:"
 msgstr ""
+"You would like to look for books by <tt>Kernighan</tt> and/or <tt>Miller</"
+"tt>. You can      type the following into the author/name search field:"
 
 #: ../templates/views/kug/info:284
 msgid ""
@@ -5094,6 +5316,9 @@ msgid ""
 "          Kernighan</tt> suchen. Sie k&ouml;nnen dann Folgendes in das\n"
 "        Personenfeld eingeben:"
 msgstr ""
+"You would like to look for books by the computer scientist <tt>Brian "
+"Kernighan</tt>.      Then you can enter the following into the author /name "
+"search field:"
 
 #: ../modules/OpenBib/Handler/Apache/LitLists.pm:165
 #: ../modules/OpenBib/Handler/Apache/ManageCollection.pm:227
@@ -5139,6 +5364,10 @@ msgid ""
 "Recherche, deaktivieren die Einstellung <i>automatische UND-Verkn&uuml;pfung "
 "innerhalb eines Suchfeldes</i> und geben ein:"
 msgstr ""
+"You are interested in literature about drug related issues with      "
+"children and adolescents, especially regarding therapy or treatment.<br/"
+">      You go to Advanced Search, deactivate the option <i>automatic "
+"AND-      operator within search fields</i> and type in:"
 
 #: ../templates/views/kug/info:308
 msgid ""
@@ -5146,6 +5375,9 @@ msgid ""
 "        zwischen zwei Begriffen wird als Leerzeichen\n"
 "        interpretiert.. Daher geben Sie in das Titelfeld ein:"
 msgstr ""
+"You are searching for the <tt>Goethe-Jahrbuch</tt> (Goethe-annual). The "
+"hyphen is read as a space by the search engine. Therefore you can type the "
+"following into the title field:"
 
 #: ../templates/admin_editcat:81 ../templates/admin_showcat:48
 #: ../templates/admin_showcat:74
@@ -5180,6 +5412,8 @@ msgid ""
 "von\n"
 "<b>Mein KUG</b> nutzen:"
 msgstr ""
+"As soon as the system has authenticated your login data successfully you"
+"can make use of the advantages of <b>My KUG</b>:"
 
 #: ../templates/userprefs:100
 msgid "Soll"
@@ -5240,7 +5474,7 @@ msgstr "Lockout"
 
 #: ../templates/views/kug/info:987
 msgid "Spezifische KUG-Sichten"
-msgstr ""
+msgstr "Specific KUG entry points, called <i>views</i>:"
 
 #. (l)
 #: ../templates/database/ebooks/search_showtitset:33
@@ -5321,7 +5555,7 @@ msgstr "Jump to KUG's result list"
 #: ../templates/database/einbaende/search_showtitset:142
 #: ../templates/database/einbaende/search_showtitset:253
 #: ../templates/managecollection_tit_as_html:79
-#: ../templates/managecollection_tit_as_html_simple:45 ../templates/mexset:2
+#: ../templates/managecollection_tit_as_html_simple:46 ../templates/mexset:2
 #: ../templates/search_showmulttitset:109
 msgid "Standort"
 msgstr "Location"
@@ -5403,7 +5637,7 @@ msgstr "Search terms"
 
 #: ../templates/views/kug/info:975
 msgid "Suche &uuml;ber alle Kataloge"
-msgstr ""
+msgstr "Search in all Catalogs"
 
 #: ../templates/views/einbaende/searchmask:145
 #: ../templates/views/einbaende/searchmask:95
@@ -6938,7 +7172,7 @@ msgstr "Tit-File"
 
 #: ../templates/database/ebooks/search_showtitset:674
 #: ../templates/database/nationallizenzen/search_showtitset:680
-#: ../templates/managecollection_tit_as_html_simple:16
+#: ../templates/managecollection_tit_as_html_simple:17
 #: ../templates/search_showtitset:697 ../templates/searchmask_options:4
 #: ../templates/views/gdonck/searchmask_options:4
 #: ../templates/views/gleuel/searchmask_options:4
@@ -6963,7 +7197,7 @@ msgstr "Title of literature list"
 
 #: ../templates/views/kug/info:963
 msgid "Titel in die Merkliste eintragen"
-msgstr "Add to Watch List"
+msgstr "Add to List of Interest"
 
 #: ../templates/database/ebooks/search_showtitset:731
 #: ../templates/database/nationallizenzen/search_showtitset:737
@@ -6978,18 +7212,16 @@ msgid "Titel pro Katalog"
 msgstr "Titles per catalogue"
 
 #: ../templates/views/kug/info:966
-#, fuzzy
 msgid "Titel(liste) abspeichern"
-msgstr "Save profile"
+msgstr "Save Entry (List)"
 
 #: ../templates/views/kug/info:965
-#, fuzzy
 msgid "Titel(liste) als Mail verschicken"
-msgstr "Send title/list of interest by mail "
+msgstr "Send Entry (List) by Mail"
 
 #: ../templates/views/kug/info:967
 msgid "Titel(liste) ausdrucken, bzw. in einer Druckansicht darstellen"
-msgstr ""
+msgstr "Print Entry (List); Show Print View"
 
 #: ../templates/database/einbaende/managecollection_tit_as_html:23
 #: ../templates/database/einbaende/search_showtitset:65
@@ -7002,7 +7234,7 @@ msgstr "Title-string"
 
 #: ../templates/managecollection_mail:28
 msgid "Titel/Merkliste via Mail verschicken"
-msgstr "Send title/Watch List by mail "
+msgstr "Send title/List of Interest by mail "
 
 #: ../templates/views/einbaende/searchmask:110
 msgid "Titel/Provenienz"
@@ -7022,7 +7254,7 @@ msgstr "Title information"
 #: ../templates/database/nationallizenzen/search_showtitset:74
 #: ../templates/database/portrait/search_showtitset:54
 #: ../templates/managecollection_tit_as_html:25
-#: ../templates/managecollection_tit_as_html_simple:24
+#: ../templates/managecollection_tit_as_html_simple:25
 #: ../templates/search_showmulttitset:37 ../templates/search_showtitset:74
 msgid "Titelaufnahme"
 msgstr "Title entry"
@@ -7093,7 +7325,7 @@ msgstr "Hits"
 
 #: ../templates/views/kug/info:571 ../templates/views/kug/info:65
 msgid "Treffer-, Merk- und Literaturlisten"
-msgstr "Hit Lists, Watch Lists and Literature Lists"
+msgstr "Hit Lists, List of Interests and Literature Lists"
 
 #: ../templates/mainnavigation:17 ../templates/resultlists_choice:27
 #: ../templates/resultlists_showall:26
@@ -7127,6 +7359,9 @@ msgid ""
 "           z.B: <b>program*</b> (alle Titel, die mit program beginnen und "
 "beliebig enden, wie programming, programme, programm usw.)"
 msgstr ""
+"Truncation or wildcard: <b>*</b><br/>   e.g. <b>program*</b> (all entries "
+"beginning with the stem 'programm-' while   leaving the ending open: e.g. "
+"programming, programme or the German   programm etc.)"
 
 #: ../templates/mainnavigation:29
 msgid "Tutorien"
@@ -7151,6 +7386,9 @@ msgid ""
 "           z.B: <b>+kernighan -ritchie</b> (alle Titel von Kernighan, aber "
 "nicht von Ritchie)"
 msgstr ""
+"AND NOT-operator: <b>+Word1 -Word2</b> (Word1 must be contained, Word2 "
+"must   not)<br/>   e.g. <b>+kernighan -ritchie</b>(all entries by Kernighan, "
+"but not by Ritchie)"
 
 #: ../templates/views/kug/info:228
 msgid ""
@@ -7159,6 +7397,8 @@ msgid ""
 "           z.B: <b>+kernighan +ritchie</b> (alle von beiden Autoren "
 "verfasste Titel werden angezeigt)"
 msgstr ""
+"AND-operator: <b>+Word1 +Word2</b><br/>   e.g. +kernighan +ritchie (all "
+"entries by both authors are displayed)"
 
 #: ../templates/admin_editcat:82 ../templates/admin_showcat:48
 #: ../templates/admin_showcat:74
@@ -7227,6 +7467,9 @@ msgid ""
 "        <i>UND-Verkn&uuml;pfung innerhalb eines Suchfeldes</i> k&ouml;nnen\n"
 "        folgende Operatoren bzw. Zeichen verwendet werden:"
 msgstr ""
+"Regardless of whether the option <i>automatic AND-operator within "
+"searchfields</i> is activated or not, the following operators or symbols can "
+"be used:"
 
 #: ../templates/searchmask_options:29
 #: ../templates/views/gdonck/searchmask_options:5
@@ -7286,6 +7529,10 @@ msgid ""
 "        absteigend), Anzeige pro Katalog oder\n"
 "        katalog&uuml;bergreifend"
 msgstr ""
+"With the option <b>sort by</b> you can rearrange your search results by"
+"   person/institution, title, numbering, year, publisher, location mark and"
+"   popularity (in ascending or descending order), sorted by catalog or"
+"   globally."
 
 #: ../templates/views/kug/info:523
 msgid ""
@@ -7297,6 +7544,10 @@ msgid ""
 "jedoch nicht. Wechseln Sie dazu in den Katalog der betreffenden\n"
 "Bibliothek."
 msgstr ""
+"The tab <b>User Account</b> contains detailed information regarding your"
+"   current loans, (book titles with due date), orders, reservations and"
+"   fees. However, you cannot extend your media or cancel a reservation from"
+"   here. To do so, please log in to the catalog of the respective library."
 
 #. ("<aclass=\"tutorial\" href=\"http://kug.ub.uni-koeln.de/tutorials/meinkugkatalogprofil.html\"target=\"tutorial\"><img src=\"/images/openbib/tutorial.png\" alt=\"Interaktives Tutorium\" /></a>")
 #: ../templates/views/kug/info:531
@@ -7315,6 +7566,16 @@ msgid ""
 "Profildefinitionen und Suchfeldeinstellungen bleiben gespeichert, auch für\n"
 "zukünftige Recherchen."
 msgstr ""
+"The tab <b>Catalog Profiles</b> %1 allows for you to compile selections of"
+"   catalogs of your choosing and to save them under a name. In the Advanced"
+"   Search you can access them under <b>Profile</b>. If you would like to modify or"
+"   delete them, pick your profile from the select box (tab: Catalog"
+"   Profiles) and click on Display Profile. The profile name will be"
+"   automatically placed in the Save As... field. The respective catalog"
+"   selection will be displayed which you can modify as you see fit. When you"
+"   are finished you can save your new selection under the same name or a"
+"   different name. Your profile definitions and search field settings will"
+"   remain stored for future searches."
 
 #: ../templates/databasechoice:111 ../templates/databasechoice:60
 #: ../templates/views/rheinlandbib/databasechoice:60
@@ -7332,6 +7593,8 @@ msgid ""
 "      Suchfeldes (ausser bei <b>*</b>, d.h. den Feldern Notation, Signatur "
 "und Kompletter Titel)"
 msgstr ""
+"Operators Within a Search Field (unless marked by an asterisk <b>*</b>,i.e. "
+"the boxes: notation, location mark, complete title)"
 
 #: ../templates/views/kug/info:183
 msgid "Verkn&uuml;pfungen mehrerer Suchfelder"
@@ -7534,9 +7797,8 @@ msgid "Weiter als externe Recherche"
 msgstr "Next as external search request"
 
 #: ../templates/views/kug/info:684
-#, fuzzy
 msgid "Weitere Anreicherung sind:"
-msgstr "Other Types of Content Enrichment"
+msgstr "Other Types of Enhancements:"
 
 #: ../templates/views/kug/info:682 ../templates/views/kug/info:71
 msgid "Weitere Anreicherungen"
@@ -7545,12 +7807,12 @@ msgstr "Other Types of Content Enrichment"
 #. ("<a      href=\"http://blog.openbib.org/2008/06/18/zentrale-kataloganreicherung/\"      target=\"_blank\">OpenBibBlog</a>")
 #: ../templates/views/kug/info:707
 msgid "Weitere Informationen erhalten Sie im %1"
-msgstr ""
+msgstr "More information is available from %1"
 
 #. ("<a      href=\"http://blog.openbib.org/2008/05/28/wege-aus-dem-datensilo-bibliothekskatalog-am-beispiel-von-openbib-und-bibsonomy/\"      target=\"_blank\">OpenBibBlog</a>")
 #: ../templates/views/kug/info:880
 msgid "Weitere Informationen hierzu erhalten Sie im %1."
-msgstr ""
+msgstr "More information is available from %1."
 
 #: ../templates/views/kug/info:381 ../templates/views/kug/info:62
 msgid "Weitere allgemeine Hinweise zur Suchanfrage"
@@ -7582,6 +7844,10 @@ msgid ""
 "        &uuml;bergeben. Insgesamt sind so bis zu 200 Zeichen in den "
 "Eingabefeldern m&ouml;glich."
 msgstr ""
+"Don't worry if your search string is longer than the actual box, just   "
+"carry on writing. The beginning of the line may not be visible any more,   "
+"but it will still be transmitted to the database correctly and   completely. "
+"You can type a maximum of 200 characters into each search   field."
 
 #: ../templates/views/kug/info:332
 msgid ""
@@ -7593,6 +7859,10 @@ msgid ""
 "        Bearbeiter nach inhaltlichen Kriterien des Werkes vergeben worden "
 "sein."
 msgstr ""
+"If you enter this search string into the 'title' field, hits      containing "
+"this item in the title will be displayed. If you type your      search query "
+"into the 'subject heading' field, then the search results      are linked to "
+"the subject heading thematically, as categorized by      library staff."
 
 #: ../templates/views/kug/info:820
 msgid ""
@@ -7604,6 +7874,11 @@ msgid ""
 "      ohne dort wirklich eine Anwendung auszuwählen (!). Dann zeigt\n"
 "      auch Firefox ab Version 2.x den Feed wie gewünscht an."
 msgstr ""
+"If you are using Mozilla Firefox version 2.x or higher you do not require a"
+"plug-in. Go to the menu 'tab' in the browser options and simply activate"
+"<i>Subscribe to the feed using</i> and select <i>No application selected</i> -"
+"without actually selecting an application (!). Then Firefox 2.x will show"
+"the feed as requested."
 
 #: ../templates/search_info:25
 msgid ""
@@ -7628,6 +7903,10 @@ msgid ""
 "    JavaScript aktiviert sein und Sie m&uuml;ssen Schreibberechtigung\n"
 "    im searchplugins-Verzeichnis von Firefox besitzen)"
 msgstr ""
+"If you are using the Internet browser %1, you can add the KUG"
+"Search Plug-in by clicking %2here%3 (Please note: to install this plug-in,"
+"JavaScript must be active and you will need administrator access rights for"
+"the searchplugins-file in Firefox)."
 
 #. ("<img style=\"vertical-align:bottom\" src=\"/images/openbib/2rightarrow.png\" />")
 #: ../templates/views/kug/info:563
@@ -7641,6 +7920,11 @@ msgid ""
 "        m&ouml;glich. Bei bereits verliehenen Medien k&ouml;nnen Sie\n"
 "        sie hier vormerken."
 msgstr ""
+"If you require a book from the University Library of Cologne (USB), pull up"
+"the detailed entry and use the link %1 Continue (under Library Loan System) to"
+"gain access to the online catalog of the University and City Library. From"
+"here you can order media located in the closed stacks. You can also place a"
+"reservation on currently checked out media."
 
 #: ../templates/search_info:14
 msgid ""
@@ -7677,6 +7961,15 @@ msgid ""
 "      der Liste finden Sie alle wichtigen bibliographischen Angaben\n"
 "      mit dem Hinweis auf die besitzende Bibliothek und die Signatur."
 msgstr ""
+"If you would like to compile a <b>list of interest</b> click on the Clipboard icon. This"
+"is accessible from the results page as well as the detailed entry pages. By"
+"using your browser's back button you can return to the results page to"
+"select other entries. The number behind 'Watch List' reflects the number of"
+"saved items. By using the back button this number may appear to have been"
+"set back, but the saved item will remain in your list nonetheless. Entries"
+"from other searches can also be added to the watch list. In the list you"
+"will find all important bibliographic data with a reference to the library"
+"in possession of the book and its location mark."
 
 #. ("<a class=\"tutorial\" href=\"http://kug.ub.uni-koeln.de/tutorials/fernleihe.html\"target=\"tutorial\"><img src=\"/images/openbib/tutorial.png\" alt=\"Interaktives Tutorium\" /></a>")
 #: ../templates/views/kug/info:509
@@ -7685,6 +7978,8 @@ msgid ""
 "eine <b>Fernleihe</b> %1 starten, ohne sich zuvor nochmals authentifizieren "
 "zu müssen."
 msgstr ""
+"If you are logged in under your USB user number, you can initiate an <b>interlibrary loan</b> %1 from the KUG system without having to enter your"
+"   password again."
 
 #. ("<a href=\"http://${config.loadbalancerservername}${config.loadbalancer_loc}?view=${view}\">","</a>")
 #: ../templates/userprefs_userdeleted:31
@@ -7702,7 +7997,7 @@ msgid ""
 "      erschliesst also Titel durch Tagging in der KUG-Oberfläche,\n"
 "      findet diese dann aber auch in BibSonomy wieder und kann damit\n"
 "      die dort vorhandenen weitergehenden Möglichkeiten nutzen"
-msgstr ""
+msgstr "When tagging titles in KUG they can be automatically uploaded/mirrored to BibSonomy including tags and visibility information (private/public). The user works and tags in the KUG interface, but finds them in BibSonomy too and can use its additional services."
 
 #: ../templates/views/kug/info:856
 msgid ""
@@ -7713,7 +8008,7 @@ msgid ""
 "      angebotenen Publikationen wird augenblicklich überprüft, ob der\n"
 "      jeweilige Titel in Katalogen des KUG enthalten ist und diese\n"
 "      Verfügbarkeitsinformation in der Titel-Anzeige ausgegeben."
-msgstr ""
+msgstr "When you click on the subject headings/tag in the tab <i>BibSonomy Tags</i> of the title entry you get a list of all titles that are tagged correspondingly in BibSonomy by all its users. In this list you get instant feedback on the local availability of the resource in KUG."
 
 #: ../templates/loadbalancer:28
 msgid "Wir bitten um Ihr Verst&auml;ndnis. Vielen Dank."
@@ -7753,6 +8048,9 @@ msgid ""
 "&auml;lter) aus.\n"
 "        Eine Suche nur mit dem Jahr ist nicht m&ouml;glich."
 msgstr ""
+"To restrict your search to a certain year of publication, please fill   out "
+"the search field 'year' (exact/before/after). It is not possible to   search "
+"exclusively by year."
 
 #: ../templates/views/kug/info:700
 msgid ""
@@ -7760,7 +8058,7 @@ msgid ""
 "      die ISBN zurückgegriffen, so wird der Zugriff nun alternativ -\n"
 "      für den Fall einer nicht vorhandenen ISBN - um den Bibkey\n"
 "      erweitert."
-msgstr ""
+msgstr "Until now only the ISBN13 was used for central enhancements. Additionally a bibkey is now used when there is no ISBN."
 
 #: ../templates/admin_editview_rss:68
 msgid "Wählen Sie bitte einen View aus:"
@@ -7790,7 +8088,7 @@ msgstr ""
 
 #: ../templates/mailcollection_mail_html:26
 msgid "Zugemailte Merkliste"
-msgstr "Mailed Watch List"
+msgstr "Mailed List of Interest"
 
 #: ../templates/admin_editcat:161
 msgid "Zugriff &uuml;ber OLWS"
@@ -7868,7 +8166,7 @@ msgstr "Back to %1search query%2"
 msgid ""
 "Zusätzlich sind weitere <i>automatische Anreicherungen</i> u.a. für eine "
 "bessere Recherchierbarkeit der Titel integriert:"
-msgstr ""
+msgstr "Additionally other <i>automatic enhancements</i>, eg. for a better searchability of titles are integrated:"
 
 #: ../templates/database/einbaende/search_showtitlist:60
 #: ../templates/database/einbaende/search_showtitlist_of_cnt:62
@@ -7936,15 +8234,9 @@ msgstr "ascending"
 
 #: ../templates/database/einbaende/managecollection_tit_as_html:16
 #: ../templates/managecollection_tit_as_html:20
-#: ../templates/managecollection_tit_as_html_simple:16
+#: ../templates/managecollection_tit_as_html_simple:17
 msgid "aus:"
 msgstr "from:"
-
-#: ../templates/views/kug/info:315
-msgid ""
-"bei aktivierter Suchoption\n"
-"'UND-Verkn&uuml;pfung innerhalb eines Suchfeldes in den Suchoptionen'"
-msgstr ""
 
 #: ../templates/circulation:52
 msgid "durchf&uuml;hren"
@@ -7983,7 +8275,7 @@ msgid ""
 "      Titelaufnahme der Druck-Ausgabe in einem Institutskatalog sofort\n"
 "      der Zugriff auf den Volltext. Für diesen Zugriff gelten die mit\n"
 "      dem E-Book erworbenen Beschränkungen (nur vom Campus)."
-msgstr ""
+msgstr "with links to e-books, when they were aquired by the USB K&ouml;n. So in every institute catalogue that owns the print edition the corresponding link to the e-book is automatically added. Access restrictions might apply to e-books (only accessible from campus)."
 
 #: ../templates/userprefs:85
 msgid "mit Grund"
@@ -7993,7 +8285,7 @@ msgstr "with reason"
 msgid ""
 "mit der Basisklassifikation. Darüber lassen sich nun in\n"
 "      einem Katalog andere thematisch benachbarte Titel finden."
-msgstr ""
+msgstr "Enhancement with basic classification. Now you can find related titles in a given catalogue."
 
 #: ../templates/database/portrait/drilldown_categorized:38
 msgid "nach Beruf/Weltanschauung"
@@ -8214,10 +8506,6 @@ msgstr "by timestamp"
 msgid "nein"
 msgstr "no"
 
-#: ../templates/views/kug/info:313 ../templates/views/kug/info:314
-msgid "oder"
-msgstr ""
-
 #: ../templates/database/ebooks/search_showtitset:441
 #: ../templates/database/ebooks/search_showtitset:534
 #: ../templates/database/ebooks/search_showtitset:626
@@ -8268,10 +8556,9 @@ msgstr "bad"
 msgid "sehr gut"
 msgstr "very good"
 
-#: ../templates/views/kug/info:433 ../templates/views/kug/info:434
-#: ../templates/views/kug/info:435
-msgid "suchen mit:"
-msgstr ""
+#: ../templates/views/kug/info:437
+msgid "usw. usf."
+msgstr "etc."
 
 #: ../templates/database/landschaft/virtualsearch_result_item:16
 #: ../templates/database/portrait/virtualsearch_result_item:16

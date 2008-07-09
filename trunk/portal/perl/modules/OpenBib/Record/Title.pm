@@ -1176,8 +1176,8 @@ sub _get_mex_set_by_idn {
     my $sigel      = "";
     # Bestimmung des Bibliotheksnamens
     # Ein im Exemplar-Datensatz gefundenes Sigel geht vor
-    if (exists $normset_ref->{X3300}{content}) {
-        $sigel=$normset_ref->{X3300}{content};
+    if (exists $normset_ref->{X3330}{content}) {
+        $sigel=$normset_ref->{X3330}{content};
         if (exists $dbinfotable->{sigel}{$sigel}) {
             $normset_ref->{X4000}{content}=$dbinfotable->{sigel}{$sigel};
         }
@@ -1204,6 +1204,8 @@ sub _get_mex_set_by_idn {
     }
 
     $dbh->disconnect() if ($local_dbh);
+
+    $logger->debug(YAML::Dump($normset_ref));
     
     return $normset_ref;
 }

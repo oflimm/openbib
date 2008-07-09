@@ -141,14 +141,14 @@
 Sigel & Signatur & Standort & Bestandsverlauf \\
 [%   FOREACH item IN thismexset %]
 [%     IF showall %]
-[%       IF item.${"X3300"}.content == sigel %]
-\textbf{[% item.${"X3300"}.content %]} & [% item.${"X0014"}.content %] & [% item.${"X0005"}.content %] & [% item.${"X1204"}.content %]\\
+[%       IF item.${"X3330"}.content == sigel %]
+\textbf{[% item.${"X3330"}.content %]} & [% item.${"X0014"}.content %] & [% item.${"X0005"}.content %] & [% item.${"X1204"}.content %]\\
 [%       ELSE %]
-[% item.${"X3300"}.content %] & [% item.${"X0014"}.content %] & [% item.${"X0005"}.content %] & [% item.${"X1204"}.content %]\\
+[% item.${"X3330"}.content %] & [% item.${"X0014"}.content %] & [% item.${"X0005"}.content %] & [% item.${"X1204"}.content %]\\
 [%       END %]
 [%     ELSE %]
-[%       IF item.${"X3300"}.content == sigel %]
-[% item.${"X3300"}.content %] & [% item.${"X0014"}.content %] & [% item.${"X0005"}.content %] & [% item.${"X1204"}.content %]\\
+[%       IF item.${"X3330"}.content == sigel %]
+[% item.${"X3330"}.content %] & [% item.${"X0014"}.content %] & [% item.${"X0005"}.content %] & [% item.${"X1204"}.content %]\\
 [%       END %]
 [%     END %]
 [%   END %]

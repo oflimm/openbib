@@ -46,11 +46,13 @@ function (txt){ $("#collectioncount").html("["+txt+"]"); });
 // Ende Merkliste
 
 // Begin BibSonomy Tags
-$.get("/portal/bibsonomy?sessionID="+sessionID+";action=get_tags;format=ajax;bibkey="+Bibkey+";tags="+Tags,
-function (txt){
- $("#bibsonomy_tags").html(txt); 
-}
-);
+ if (Bibkey || Tags){
+   $.get("/portal/bibsonomy?sessionID="+sessionID+";action=get_tags;format=ajax;bibkey="+Bibkey+";tags="+Tags,
+         function (txt){
+           $("#bibsonomy_tags").html(txt); 
+         }
+         );
+ }
 
 //$("#bibsonomy_tags a").click(function(){
 

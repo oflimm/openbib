@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: helpframe_3
+# Templatename: helpframe_33
 #
 # Typ         : Mastertemplate
 #
@@ -22,6 +22,8 @@
 
 <ul class="tabbingmenu">
    <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=30">Ansprechpartner</a></li>
+   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=31">Aktuelle Ausstellung</a></li>
+   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=32">FAQ</a></li>
 </ul>
 
 <div class="content">
@@ -29,35 +31,52 @@
 
 <h1>Ansprechpartner</h1>
 
-<h2>Inhaltliche Realisierung</h2>
-
 <table>
-<tr>
-<td><b>Christiane Hoffrath</b><br />
-Abt. Universit&auml;tsGesamtKatalog<br />
-Tel:   0221/470-3306<br />
-Email: <a href="mailto:hoffrath@ub.uni-koeln.de">hoffrath@ub.uni-koeln.de</a></td>
-</tr>
-</table>
-
-<br />
-<br />
-
-<h2>Technische Realisierung</h2>
-
-<table>
-<tr><td><b>Oliver Flimm</b><br />
+<tr><th>Inhaltliche Realisierung</th><th></th><th>Technische Realisierung</th></tr>
+<tr><td valign="top">
+<b>Ernst Stinner</b><br />
+Formale und inhaltliche Erfassung<br />
+Projekt Portraitsammlung<br />
+Tel.: 0221/470-3343<br />
+Email: stinner@ub.uni-koeln.de<br />
+<p>
+<b>Christiane Hoffrath</b><br />
+Koordination und Workflow<br />
+Dezernat Medienbearbeitung, bibl. Dienstleistungen<br />
+Tel.: 0221/470-3306</br>
+Email: hoffrath@ub.uni-koeln.de</br>
+</p>
+<p>
+<b>Irene Bischoff</b><br />
+Portraitbestellungen<br />
+Dezernat Historische Sammlungen<br />
+Tel: 0221/470-2389<br />
+Email: bischoff@ub.uni-koeln.de<br />
+</p>
+</td>
+<td>&nbsp;&nbsp;</td>
+<td valign="top">
+<b>Oliver Flimm</b><br />
 Programmierung<br />
-Abt.EDV<br />
-Tel:   0221/470-3330<br />
-Email: <a href="mailto:flimm@ub.uni-koeln.de">flimm@ub.uni-koeln.de</a></td>
-</tr>
+Dezernat Datenverarbeitung<br />
+Tel.: 0221/470-3330<br />
+Email: flimm@ub.uni-koeln.de<br />
+<p>
+<b>Freya Hunold</b><br />
+Buchbindearbeiten<br />
+Dezernat Bestanderhaltung<br />
+Tel.: 0221/470-3527<br />
+Email: hunold@ub.uni-koeln.de<br />
+</p>
+<p>
+<b>Sophia Falk und Wolfgang Schneider</b><br />
+Digiatisierung<br />
+Dezernat Bestanderhaltung<br />
+Tel.: 0221/470-3750<br />
+Email: fotostell@ub.uni-koeln.de<br />
+<p>
+</td></tr>
 </table>
-<br />
-<br />
-<br />
-
-
 
 </div>
 

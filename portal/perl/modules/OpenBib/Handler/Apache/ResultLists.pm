@@ -88,6 +88,7 @@ sub handler {
     my $sortall      = ($query->param('sortall'))?$query->param('sortall'):'0';
     my $sortorder    = ($query->param('sortorder'))?$query->param('sortorder'):'up';
     my $autoplus     = $query->param('autoplus')     || '';
+    my $combinedbs   = $query->param('combinedbs')   || 0;
     my $queryid      = $query->param('queryid')      || '';
     my $offset       = (defined $query->param('offset'))?$query->param('offset'):0;
     ($offset)=$offset=~/^(-?\d+)$/; # offset muss numerisch sein (SQL-Injection)

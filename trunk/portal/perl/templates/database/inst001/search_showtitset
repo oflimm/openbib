@@ -392,13 +392,7 @@ END;
 </table>
 
 [% IF circset.size > 0 %]
-<p />
-<table width="100%">
-<tr><th>[% msg.maketext("Ausleihe/Exemplare") %]</th></tr>
-<tr><td class="boxedclear">
 [% PROCESS common/subtemplate name="circset" %]
-</td></tr>
-</table>
 [% END %]
 <p />
 

@@ -60,7 +60,23 @@
 -%]
 <tr align="center"><td><a href="http://www.ub.uni-koeln.de/" target="_blank"><strong>USB K&ouml;ln</strong></a></td><td>[% mex.Standort %]</td>
 <td><strong>[% IF mex.Signatur.match('#$') && mex.Exemplar %][% mex.Signatur %][% mex.Exemplar %][% ELSE %][% mex.Signatur %][% END %]</strong></td>
-<td><strong>[% mex.Status %]</strong></td>
+<td><strong>
+[% IF mex.AquisitionStatuscode %]
+[%   IF mex.AquisitionStatuscode <= 2 %]
+bestellt beim Lieferanten
+[%   ELSIF mex.AquisitionStatuscode <= 4 %]
+im Gesch&auml;ftsgang
+[%   ELSIF mex.AquisitionStatuscode == 5 %]
+beim Lieferanten storniert
+[%   ELSIF mex.AquisitionStatuscode <= 8 %]
+beim Lieferanten reklamiert
+[%   ELSIF mex.AquisitionStatuscode == 9 %]
+ausgeschieden
+[%   END %]
+[% ELSE %]
+[% mex.Status %]
+[% END %]
+</strong></td>
 <td class="circurl">
 [%
      IF mex.Ausleihurl %]

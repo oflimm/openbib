@@ -92,10 +92,10 @@
 </table>
 [% ELSE %]
 <table width="100%">
-<tr><th>Neuerwerbung</th></tr>
+<tr><th>[% msg.maketext("Neuerwerbung") %]</th></tr>
 <tr><td class="boxedclear">
 <table width="100%">
-<tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="120">Erwerbungsstatus</td><td width="110">[% msg.maketext("Ausleihsystem") %]</td></tr>
+<tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="120">[% msg.maketext("Erwerbungsstatus") %]</td><td width="110">[% msg.maketext("Ausleihsystem") %]</td></tr>
 
 [% FOREACH mex IN circset ;
     IF mex.Ausleihurl ;
@@ -104,15 +104,15 @@
 <tr align="center"><td><a href="http://www.ub.uni-koeln.de/"
 target="_blank"><strong>USB K&ouml;ln</strong></a></td><td>
 [%   IF mex.AquisitionStatuscode <= 2 %]
-bestellt beim Lieferanten
+[% msg.maketext("bestellt beim Lieferanten") %]
 [%   ELSIF mex.AquisitionStatuscode <= 4 %]
-im Gesch&auml;ftsgang
+[% msg.maketext("im Gesch&auml;ftsgang") %]
 [%   ELSIF mex.AquisitionStatuscode == 5 %]
-beim Lieferanten storniert
+[% msg.maketext("beim Lieferanten storniert") %]
 [%   ELSIF mex.AquisitionStatuscode <= 8 %]
-beim Lieferanten reklamiert
+[% msg.maketext("beim Lieferanten reklamiert") %]
 [%   ELSIF mex.AquisitionStatuscode == 9 %]
-ausgeschieden
+[% msg.maketext("ausgeschieden") %]
 [%   END %]
 </td><td class="circurl">
 [%  IF mex.Ausleihurl %]

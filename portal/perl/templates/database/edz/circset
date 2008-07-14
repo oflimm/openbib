@@ -13,14 +13,19 @@
 -%]
 [%
  Aquisition = 0;
+
  FOREACH mex IN circset ;
     IF mex.AquisitionStatuscode >= 1 ;
        Aquisition = 1;
     END ;
- END;
+ END ;
 
+ IF normset.${"T5002"}.first.content.defined ;
+    Aquisition = 2 ;
+ END ;
 %]
 <p />
+
 [% IF Aquisition == 0 %]
 <table width="100%">
 <tr><th>[% msg.maketext("Ausleihe/Exemplare") %]</th></tr>
@@ -90,7 +95,7 @@
 </table>
 </td></tr>
 </table>
-[% ELSE %]
+[% ELSIF Aquisition == 1 %]
 <table width="100%">
 <tr><th>[% msg.maketext("Neuerwerbung") %]</th></tr>
 <tr><td class="boxedclear">

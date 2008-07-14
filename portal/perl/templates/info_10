@@ -49,7 +49,6 @@
 <table width="100%">
 <tr><th>Die 20 meist aufgerufenen Titel</th></tr>
 <tr><td class="boxedclear">
-[% USE dumper;dumper.dump(resultlist) %]
 <table>
 <!-- Beginn Result Item -->
 [%- FOREACH thisitem IN resultlist -%]

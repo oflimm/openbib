@@ -93,7 +93,11 @@
 ../templates/database/einbaende/search_showtitset
 ../templates/database/einbaende/visible_categories_coverset
 ../templates/database/einbaende/visible_categories_titset
+../templates/database/inst001/drilldown_categorized
+../templates/database/inst001/mexset
+../templates/database/inst001/search_showtitset
 ../templates/database/inst001/visible_categories_titset
+../templates/database/inst001/circset
 ../templates/database/inst450/visible_categories_titset
 ../templates/database/kapsel/visible_categories_titset
 ../templates/database/kapsel/visible_categories_notset

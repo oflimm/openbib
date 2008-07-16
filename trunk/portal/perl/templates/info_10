@@ -51,6 +51,8 @@
 <tr><td class="boxedclear">
 <table>
 <!-- Beginn Result Item -->
+[% listrow = 'listrow1' %]
+
 [%- FOREACH thisitem IN resultlist -%]
 [% record    = thisitem.item;
    itemcount = thisitem.count;
@@ -88,13 +90,21 @@
 
 [%# Ejahr konstruieren %]
 [%- yearofpub = item.${'T0425'}.first.content -%]
+[%- isbn      = item.${"T0540"}.first.content.replace('-','') -%]
 
-<tr><td><b>[% loop.count %]</b></td><td><span class="rlperson">[% person
+<tr class="[% listrow %]"><td><b>[% loop.count %]</b></td><td class="thumbnail">[% IF (config.coverscans.all || config.coverscans.${database}) && isbn %]<a href="[% config.coverscans_credits_exturl.replace('ISBNINHERE', isbn) %]" target="_blank" ><img src="[% config.coverscans_exturl.replace('ISBNINHERE', isbn) %]" title="[% config.coverscans_creditstext_exturl %]" /></a>[% ELSE %]&nbsp;[% END %]</td><td><span class="rlperson">[% person
 %]</span><br /><a href="[% config.search_loc %]?sessionID=[%
 sessionID %];database=[% item.database %];searchsingletit=[% item.id
 %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
 class="rlpublisher">[% publisher %]</span> <span
 class="rlyearofpub">[% yearofpub %]</span></td><td><b>[% itemcount %]&nbsp;Nutzer</b></td></tr>
+
+[% IF listrow == 'listrow1' %]
+[% listrow = 'listrow2' %]
+[% ELSE %]
+[% listrow = 'listrow1' %]
+[% END %]
+
 [% END %]
 </table>
 </td></tr>

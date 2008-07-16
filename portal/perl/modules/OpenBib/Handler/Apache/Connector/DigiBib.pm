@@ -199,7 +199,7 @@ sub handler {
     
     if ($tosearch eq "Trefferliste") {
         
-        my $fallbacksb;
+        my $fallbacksb = "";
         
         # Start der Ausgabe mit korrektem Header
         print $r->send_http_header("text/html");

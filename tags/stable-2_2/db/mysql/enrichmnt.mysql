@@ -1,0 +1,55 @@
+-------------------------------------------------
+--------------- T A B E L L E N -----------------
+-------------------------------------------------
+
+drop table IF EXISTS search;
+create table search (
+isbn      VARCHAR(33) NOT NULL,
+origin    SMALLINT,
+content   TEXT,
+index     (isbn),
+index     (origin),
+FULLTEXT  (content)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+drop table IF EXISTS normdata;
+create table normdata (
+ isbn          VARCHAR(33) NOT NULL,
+ origin        SMALLINT,
+ category      SMALLINT NOT NULL,
+ indicator     SMALLINT,
+ content       TEXT NOT NULL,
+ index         (isbn),
+ index         (origin),
+ index         (category),
+ index         (content(20))
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+drop table IF EXISTS all_isbn;
+create table all_isbn (
+ isbn          VARCHAR(33) NOT NULL,
+ dbname        VARCHAR(25) NOT NULL,
+ id            BIGINT NOT NULL,
+ tstamp        DATETIME,
+ index         (isbn),
+ index         (dbname)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+drop table IF EXISTS similar_isbn;
+create table similar_isbn (
+ isbn          TEXT NOT NULL,
+ origin        SMALLINT,
+FULLTEXT      (isbn)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;

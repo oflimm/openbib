@@ -1,0 +1,22 @@
+[%#-
+#######################################################################
+#
+# Templatename: visible_categories_notset
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabekategorien fuer einen einzelnen Notations- bzw.
+# Systematiksatz
+#
+#######################################################################
+-%]
+[%# Ausgabekategorien %]
+[% categories = [
+                 'N0001', # msg.maketext("N0001") Ansetzung 
+                 'N0102', # msg.maketext("N0102-kapsel") Verweisform
+                 'N5000', # msg.maketext("N5000") Anzahl Titel
+                ];
+
+%]

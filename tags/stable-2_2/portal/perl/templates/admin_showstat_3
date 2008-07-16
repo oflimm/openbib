@@ -1,0 +1,86 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_showstat
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersicht der wichtigsten statistischen Daten sowie
+# Verweise auf andere Sub-Templates (via stid = sub-template-id) mit
+# weiteren statistischen Auswertungen.
+#
+#######################################################################
+-%]
+[% PROCESS std_header title='KUG Administration - Grundlegende Statistikinformationen' %]
+
+  <body>
+
+[% PROCESS corporate_banner %]
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">[% msg.maketext("Kataloge") %]</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showprofiles=1">[% msg.maketext("Katalog-Profile") %]</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">[% msg.maketext("Views") %]</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">[% msg.maketext("Sessions") %]</a></li>
+   <li><a class="active" href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1">[% msg.maketext("Statistik") %]</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showuser=1">[% msg.maketext("Nutzerverwaltung") %]</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">[% msg.maketext("Logout") %]</a></li>
+</ul>
+
+<div class="content">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1">Allgemein</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=1">Weiterleitungen</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=2">Views</a></li>
+   <li><a class="active" href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=3">Recherchen</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=4">Klienten</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=5">Browser</a></li>
+</ul>
+
+<div class="content">
+
+<table width="100%">
+<tr><th>Verwendete Recherche-Art</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td>Einfache Recherche</td><td><b>[% ret = statistics.get_number_of_event({ type => 20, content => 1 }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
+<tr><td>Komplexe Recherche</td><td><b>[% ret = statistics.get_number_of_event({ type => 20, content => 2 }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
+<tr><td>Externer Suchschlitz</td><td><b>[% ret = statistics.get_number_of_event({ type => 20, content => 3 }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
+<tr><td>Externer Connector (DigiBib/uk-online/Citavi)</td><td><b>[% ret = statistics.get_number_of_event({ type => 22, content => 1 }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
+</table>
+</td></tr>
+</table>
+
+<p />
+
+<table width="100%">
+<tr><th>Verwendete Kategorien</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td>Freie Suche</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'fs' }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
+<tr><td>Titelworte</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'hst' }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
+<tr><td>Personen</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'verf' }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
+<tr><td>K&ouml;rperschaften</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'kor' }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
+<tr><td>Schlagworte</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'swt' }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
+<tr><td>Notationen</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'notation' }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
+<tr><td>ISBN</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'isbn' }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
+<tr><td>ISSN</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'issn' }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
+<tr><td>Signatur</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'sign' }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
+<tr><td>Kompletter Titel</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'hststring' }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
+<tr><td>Serie/Band/Quelle</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'gtquelle' }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
+<tr><td>Jahr</td><td><b>[% ret = statistics.get_number_of_queries_by_category({ category => 'ejahr' }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
+</table>
+</td></td>
+</table>
+
+</div>
+</div>
+
+<p />
+
+[% PROCESS std_footer %]

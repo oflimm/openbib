@@ -1,0 +1,182 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showtitset
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe eines Titel-Normdatensatzes
+#
+# Anpassungen:
+#
+# - Erweiterung um Tabbing-Menu zu OpenDIA
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title = "Recherche in Katalog: $poolname" %]
+
+<body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="#"><span class="dbdescshort">[% poolname.short %]</span></a></li>
+</ul>
+
+<div class="content">
+
+<table width="100%"  class="titlenav">
+<tr>
+[%- IF prevurl -%]
+<td align="left"><a href="[% prevurl %];queryid=[% queryid %];stid=1;olws=Viewer">[[% msg.maketext("Vorheriger Titel") %]]</a></td>
+[%- ELSE -%]
+<td align="left"><span style="color:slategrey">[[% msg.maketext("Vorheriger Titel") %]]</span></td>
+[%- END -%]
+<td align="center">
+<!--	<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% database %];singleidn=[% titidn %]" target="header" title="In die Merkliste"><img src="/images/openbib/3d-file-blue-clipboard.png" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>&nbsp;
+        <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=mail;database=[% database %];singleidn=[% titidn %]" title="Als Mail verschicken"><img src="/images/openbib/3d-file-blue-mailbox.png" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></a>&nbsp;
+        <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=save;database=[% database %];singleidn=[% titidn %]" target="save" title="Abspeichern"><img src="/images/openbib/3d-file-blue-disk35.png" alt="[% msg.maketext("Abspeichern") %]" border="0" /></a>&nbsp;
+        <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=print;database=[% database %];singleidn=[% titidn %]" target="print" title="Ausdrucken"><img src="/images/openbib/3d-file-blue-printer.png" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></a>&nbsp;
+-->
+</td>
+[%- IF nexturl -%]
+<td align="right"><a href="[% nexturl %];queryid=[% queryid %];stid=1;olws=Viewer">[[% msg.maketext("N&auml;chster Titel") %]]</a></td>
+[%- ELSE -%]
+<td align="right"><span style="color:slategrey">[[% msg.maketext("N&auml;chster Titel") %]]</span></td>
+[%- END -%]
+</tr>
+</table>
+
+<ul class="tabbingmenu">
+   <li><a                href="http://[% config.loadbalancerservername %]/portal/recherche?sessionID=[% sessionID %];database=einbaende;searchsingletit=[% titidn %]">[% msg.maketext("Textangaben") %]</a></li>   
+   <li><a class="active" href="http://[% config.loadbalancerservername %]/portal/recherche?sessionID=[% sessionID %];database=einbaende;searchsingletit=[% titidn %];stid=1">[% msg.maketext("Einband-Abbildungen") %]</a></li>
+
+</ul>
+
+<div class="content">
+[%# USE dumper;dumper.dump(record)%]
+[%- item = record.get_normdata -%]
+<!-- Anfang Bilder -->
+<table width="100%">
+<tr><th>Bilder des Einbandes</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+
+<table width="100%">
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td colspan="2">&nbsp;</td></tr>
+<tr><td><b>Id</b></td><td colspan="2">[% item.${'id'} %]</td></tr>
+
+[%- FOREACH part IN item.${'T0101'}  -%]
+<tr><td><b>Buchbinder/Werkstatt</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0101;olws=Viewer">[% part.content %]</a></td></tr>
+[%- END -%]
+
+[%- FOREACH part IN item.${'T0700'}  -%]
+<tr><td><b>Einband</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0700;olws=Viewer">[% part.content %]</a></td></tr>
+[%- END -%]
+
+[%- FOREACH part IN item.${'T0710'}  -%]
+<tr><td><b>Jahrhundert</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0710;olws=Viewer">[% part.content %]</a></td></tr>
+[%- END -%]
+
+[%- FOREACH part IN item.${'T0200'}  -%]
+<tr><td><b>Region</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0200;olws=Viewer">[% part.content %]</a></td></tr>
+[%- END -%]
+
+[%- FOREACH part IN item.${'T0413'}  -%]
+<tr><td><b>Drucker/Verleger/Verlag</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0413;olws=Viewer">[% part.content %]</td></tr>
+[%- END -%]
+
+[%- FOREACH part IN item.${'T0435'}  -%]
+<tr><td><b>Ma&szlig;e</b></td><td colspan="2">[% part.content %]</td></tr>
+[%- END -%]
+
+[%- FOREACH part IN item.${'X0014'}  -%]
+<tr><td><b>Signatur</b></td><td colspan="2">[% part.content %]</td></tr>
+[%- END -%]
+
+<tr><td><b>Anzahl Abbildungen</b></td><td colspan="2">[% record.olws.images.size %]</td></tr>
+
+[%- IF record.olws.pdf -%]
+<tr><td><b>Beschreibung als PDF</b></td><td colspan="2"><a href="http://einbandsammlung.ub.uni-koeln.de/digiarchive/einbaende/[% record.id %]/[% record.id %].pdf">[ Download ]</a></td></tr>
+<tr><td width="200"></td><td colspan="2"></td></tr>
+[%- ELSE  -%]
+<tr><td width="200"></td><td colspan="2"></td></tr>
+[%- END -%]
+
+[%- IF record.olws.biobibliographie -%]
+<tr><td><b>Biobibliographie als PDF</b></td><td colspan="2"><a href="http://[% config.servername %]/digiarchive/einbaende/[% item %]/biobibliographie.pdf">[ Download ]</a></td></tr>
+<tr><td width="200"></td><td colspan="2"></td></tr>
+[%- ELSE -%]
+<tr><td width="200"></td><td colspan="2"></td></tr>
+[%- END -%]
+<tr><td colspan="3">&nbsp;</td></tr>
+</table>
+
+<!-- Ende Bilder -->
+<table width="100%">
+[%- listrow = 'listrow1' -%]
+[%- FOREACH thisimage IN record.olws.images %]
+<tr class="[% listrow %]"><td align="center">
+[%- IF thisimage.thumb -%]
+ <a class="invisible" href="http://einbandsammlung.ub.uni-koeln.de/digiarchive/[% record.database %]/[% record.id %]/
+[%- IF thisimage.web -%]
+[%- thisimage.web -%]
+[%- ELSE -%]
+[%- thisimage.name -%]
+[%- END -%]
+"><img src="http://einbandsammlung.ub.uni-koeln.de/digiarchive/[% record.database %]/[% record.id %]/[% thisimage.thumb %]" alt="Bild [% thisimage.name %]" /></a>
+[%- END -%]
+</td><td>[ <a href="http://einbandsammlung.ub.uni-koeln.de/digiarchive/[% record.database %]/[% record.id %]/[% thisimage.name %]">Vollbild</a> ]</td><td align="left">
+<table cellpadding="5">
+[%- FOREACH cat IN thisimage.meta -%]
+[%- category =  cat.key -%]
+[%- content  =  cat.value -%]
+[%- IF category == 'M0435' -%]
+<tr><td><b>Ma&szlig;e</b></td><td align="left">[% content | html %]</td></tr>
+[%- END -%]
+[%- END -%]
+
+[%- FOREACH cat IN thisimage.meta -%]
+[%- category =  cat.key -%]
+[%- content  =  cat.value -%]
+[%- IF category == 'M0750' -%]
+<tr><td><b>Beschreibung</b></td><td align="left">[% content | html %]</td></tr>
+[%- END -%]
+[%- END -%]
+
+[%- FOREACH cat IN thisimage.meta -%]
+[%- category =  cat.key -%]
+[%- content  =  cat.value -%]
+[%- IF category == 'M0501' -%]
+<tr><td><b>Quelle</b></td><td align="left">[% content | html %]</td></tr>
+[%- END -%]
+[%- END -%]
+
+</table>
+</td><td><table><tr><td><span style="text-size:0.9em"><b>Aufl&ouml;sung</b></span></td><td>[% thisimage.res %]</td></tr><tr><td><span style="text-size:0.9em"><b>Dateigr&ouml;&szlig;e</b></span></td><td>[% thisimage.size / 1048576 |format ('%4.2f') %] MB</td></tr></table></td><tr>
+[%- IF listrow == 'listrow1' -%]
+[%- listrow = 'listrow2' -%]
+[%- ELSE -%]
+[%- listrow = 'listrow1' -%]
+[%- END -%]
+
+[%- END -%]
+
+</td></tr>
+</table>
+
+</table>
+<!-- Ende Bilder -->
+
+</div>
+</div>
+
+<p />
+
+
+[% PROCESS common/subtemplate name="std_footer" %]

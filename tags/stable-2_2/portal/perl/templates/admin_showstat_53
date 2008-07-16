@@ -1,0 +1,71 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_showstat
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersicht der wichtigsten statistischen Daten sowie
+# Verweise auf andere Sub-Templates (via stid = sub-template-id) mit
+# weiteren statistischen Auswertungen.
+#
+#######################################################################
+-%]
+[% PROCESS std_header title='KUG Administration - Grundlegende Statistikinformationen' %]
+
+  <body>
+
+[% PROCESS corporate_banner %]
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">[% msg.maketext("Kataloge") %]</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showprofiles=1">[% msg.maketext("Katalog-Profile") %]</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">[% msg.maketext("Views") %]</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">[% msg.maketext("Sessions") %]</a></li>
+   <li><a class="active" href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1">[% msg.maketext("Statistik") %]</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showuser=1">[% msg.maketext("Nutzerverwaltung") %]</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">[% msg.maketext("Logout") %]</a></li>
+</ul>
+
+<div class="content">
+
+<table width="100%">
+<tr><th>Entwicklung der Einzeltrefferaufrufe nach Monaten eines Jahres</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+[% TRY %]
+[%   USE dir = Directory("${config.image_root_path}/graph/monthly/fulltitle") %]
+[%   FOREACH file = dir.files %]
+<img src="/images/openbib/graph/monthly/fulltitle/[% file.name %]" />
+[%   END %]
+[% CATCH Directory %] 
+Es existieren keine entsprechenden Grafiken.
+[% END %]
+</td></td>
+</table>
+
+<p />
+
+<table width="100%">
+<tr><th>Entwicklung der Einzeltrefferaufrufe nach Tagen eines Monats</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+[% TRY %]
+[%   USE dir = Directory("${config.image_root_path}/graph/daily/fulltitle") %]
+[%   FOREACH file = dir.files %]
+<img src="/images/openbib/graph/daily/fulltitle/[% file.name %]" />
+<p />
+[%   END %]
+[% CATCH Directory %] 
+Es existieren keine entsprechenden Grafiken.
+[% END %]
+</td></td>
+</table>
+
+</div>
+
+<p />
+
+[% PROCESS std_footer %]

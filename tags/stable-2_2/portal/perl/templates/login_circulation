@@ -1,0 +1,77 @@
+[%#-
+#######################################################################
+#
+# Templatename: login_circulation
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Eingabemaske fuer die Authentifizierung am Portal
+# entsprechend des fuer die Ausleihaktion validen Authentifizierungs-Ziels
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="#">[% msg.maketext("Login") %]</a></li>
+</ul>
+
+<div class="content">
+
+<p />
+<table width="100%">
+<tr><th>[% msg.maketext("Hinweis") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:9pt">
+F&uuml;r die von Ihnen gew&uuml;nsche Ausleih-Funktion (Vormerken
+usw.) m&uuml;ssen Sie sich an dem Ausleihsystem der besitzenden
+Bibliothek authentifizieren.
+</td></tr>
+</table>
+
+<p />
+
+<form method="post" action="[% config.login_loc %]" enctype="application/x-www-form-urlencoded" target="_parent">
+<input type="hidden" name="do_auth"   value="1" />
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<input type="hidden" name="view"      value="[% view %]" />
+
+<table width="100%">
+<tr><th>Login mit einem Benutzerausweis</th></tr>
+<tr><td class="boxedclear" style="font-size:9pt">
+
+<p />
+
+<table>
+<tr><td align="right"><b>[% msg.maketext("Anmeldeziel")
+%]:</b></td><td>
+<select name="targetid">
+[%- FOREACH target IN logintargets -%]
+[%-   IF target.dbname == validtarget -%]
+<option value="[% target.id %]">[% target.description %]</option>
+[%-   END -%]
+[%- END -%]
+</select>
+</td></tr>
+<tr><td align="right"><b>[% msg.maketext("Benutzernummer") %]</b></td><td><input type="text" name="loginname" value="[% loginname %]" /></td></tr>
+<tr><td align="right"><b>[% msg.maketext("Passwort") %]</b></td><td><input type="password" name="password" /></td></tr>
+<tr><td></td><td><input type="submit" value="[% msg.maketext("Einloggen") %]" /></td><td></td></tr>
+</table>
+</td></tr>
+</table>
+
+</form>
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

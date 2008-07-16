@@ -1,0 +1,162 @@
+\documentclass[11pt, twoside, a4paper, BCOR8mm, DIV12, bibtotoc,idxtotoc]{scrbook}
+\usepackage{german}
+\usepackage{typearea}
+\usepackage{longtable}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage[latin1]{inputenc}
+
+% Zusaetzliche Picture-Umgebungen (z.B. shadowenv)
+\usepackage{picins}
+
+% Header anpassbar
+\usepackage{fancyhdr}
+
+% Headings umdefinieren
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[RO]{\nouppercase{\rightmark}}
+\fancyhead[LE]{\nouppercase{\leftmark}}
+\fancyfoot[RO, LE]{\thepage}
+
+%\addtolength{\headwidth}{\marginparsep}
+%\addtolength{\headwidth}{\marginparwidth}
+\addtolength{\headwidth}{1cm}
+
+\parindent0.0mm
+\parskip0.3cm    
+\typearea{13}
+
+\begin{document}
+
+\frontmatter
+
+\begin{titlepage}
+
+\begin{center}
+\rule[-.1in]{16cm}{1mm}\\[3mm]
+{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{20}{20pt}\selectfont
+  USB Köln $\bullet$ Abt. UniversitätsGesamtKatalog}\\[-2mm]
+\rule[-.1in]{16cm}{1mm}
+
+\vspace{5cm}
+
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{30}{30pt}\selectfont Liste der Zeitschriften in der ZDB\\[3mm][% targetdbinfo.sigel.${sigel}.full %]\\[3mm] Sigel: 38/[% sigel %]}
+
+  \vspace{2cm}
+
+  Ein Service der Abt. UniversitätsGesamtKatalog\\
+  Stand: \today
+
+\end{center}
+
+\newpage 
+
+\vspace{12cm}
+
+  \begin{tabular}[t]{ll}
+    AnsprechpartnerInnen : & Abt. UniversitätsGesamtKatalog (UGK)  \\
+    Telefon : & 0221-470 3306 \\
+    Fax     : & 0221-470 5166 \\
+    E-Mail  : & gk@ub.uni-koeln.de \\
+  \end{tabular}
+
+\end{titlepage}
+
+
+
+
+%\thispagestyle{empty}
+
+%\begin{verbatim}
+
+
+%Copyright (c) 2005 Oliver Flimm <flimm@openbib.org>
+
+%Es wird die Erlaubnis gegeben dieses Dokument zu kopieren, verteilen 
+%und/oder zu veraendern unter den Bedingungen der GNU Free
+%Documentation License, Version 1.1 oder einer spaeteren, von der Free 
+%Software Foundation veroeffentlichten Version; mit den
+%Unveraenderlichen Abschnitten DEREN TITEL AUFGEZAEHLT sind, mit den 
+%Vorderseitentexten die AUFGEZAEHLT sind, und mit den Rueckseitentexten
+%die AUFGEZAEHLT sind. Eine Kopie dieser Lizenz ist in dem Abschnitt 
+%enthalten, der mit "GNU Free Documentation License"
+%\end{verbatim}
+
+\mainmatter
+
+\section*{Allgemeine Informationen}
+
+\begin{description}
+\item[Gesamtzahl der Zeitschriften] [% gesamtzahl %]
+\item[Davon sind auch in anderen Bibliotheken vorhanden] [% externzahl %]
+\end{description}
+
+\section*{Aufstellung der Zeitschriften}
+
+[% FOREACH normset IN titlist %]
+[% thistitset = normset.titset %]
+[% thismexset = normset.mexset %]
+
+\begin{shadowenv}
+\begin{tabular}{lp{10cm}}
+[% FOREACH item IN thistitset.${"T0572"} %]
+  \textbf{ZDB-Id} & \textbf{[% item.content %]}\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0200"} %]
+  Urheber & [% item.content %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0201"} %]
+  Körperschaft & [% item.content %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0310"} %]
+  AST & [% item.content %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0331"} %]
+  HST & [% item.content %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0335"} %]
+   Zusatz zum HST & [% item.content %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0370"} %]
+   WST & [% item.content %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0412"} %]
+   Verlag     & [% item.content %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0410"} %]
+   Verlagsort & [% item.content %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0405"} %]
+   Erschverlauf & [% item.content %]\\
+[% END %]
+[% FOREACH item IN thistitset.${"T0543"} %]
+   ISSN & [% item.content %]\\
+[% END %]
+\end{tabular}
+
+[% IF thismexset %]
+\begin{tabular}{cccp{10cm}}
+Sigel & Signatur & Standort & Bestandsverlauf \\
+[%   FOREACH item IN thismexset %]
+[%     IF showall %]
+[%       IF item.${"X3330"}.content == sigel %]
+\textbf{[% item.${"X3330"}.content %]} & [% item.${"X0014"}.content %] & [% item.${"X0005"}.content %] & [% item.${"X1204"}.content %]\\
+[%       ELSE %]
+[% item.${"X3330"}.content %] & [% item.${"X0014"}.content %] & [% item.${"X0005"}.content %] & [% item.${"X1204"}.content %]\\
+[%       END %]
+[%     ELSE %]
+[%       IF item.${"X3330"}.content == sigel %]
+[% item.${"X3330"}.content %] & [% item.${"X0014"}.content %] & [% item.${"X0005"}.content %] & [% item.${"X1204"}.content %]\\
+[%       END %]
+[%     END %]
+[%   END %]
+\end{tabular}
+[% END %]
+\end{shadowenv}
+
+[% END %]
+
+\end{document}
+

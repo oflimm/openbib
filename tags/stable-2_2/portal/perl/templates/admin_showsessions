@@ -1,0 +1,69 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_showsessions
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller aktuell bestehenden Sessions
+# mit ihren wichtigsten Informationen
+#
+#######################################################################
+-%]
+[% PROCESS std_header title='KUG Administration - Bestehende Sessions anzeigen' %]
+
+  <body>
+
+[% PROCESS corporate_banner %]
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">[% msg.maketext("Kataloge") %]</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showprofiles=1">[% msg.maketext("Katalog-Profile") %]</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">[% msg.maketext("Views") %]</a></li>
+   <li><a class="active" href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">[% msg.maketext("Sessions") %]</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1">[% msg.maketext("Statistik") %]</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showuser=1">[% msg.maketext("Nutzerverwaltung") %]</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">[% msg.maketext("Logout") %]</a></li>
+</ul>
+
+<div class="content">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">Aktive Sessions (lokal)</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1;stid=1">Explorer</a></li>
+</ul>
+
+<div class="content">
+
+<form method="get" action="[%config.admin_loc %]">
+<input type="hidden" name="do_editsession" value="1" />
+<input type="hidden" name="sessionID"      value="[% sessionID %]" />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Bestehende Sessions") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+
+<table cellpadding="2">
+<tr><td><b>[% msg.maketext("Session-ID") %]</b></td><td><b>[% msg.maketext("Beginn") %]</b></td><td align="middle"><b>[% msg.maketext("Benutzer") %]</b></td><td align="middle">
+<b>[% msg.maketext("Initiale Suchen") %]</b></td></tr>
+
+[% FOREACH session IN sessions %]
+
+<tr><td><a href="[%config.admin_loc %]?sessionID=[% sessionID %];do_editsession=1;do_show=1;singlesessionid=[% session.singlesessionid %]">[% session.singlesessionid %]</a></td><td>[% session.createtime %]</td><td align="middle">[% session.benutzernr %]</td><td align="middle">[% session.numqueries %]</td></tr>
+
+[% END %]
+
+</table>
+</td></tr>
+</table>
+
+</div>
+</div>
+
+<p />
+
+[% PROCESS std_footer %]

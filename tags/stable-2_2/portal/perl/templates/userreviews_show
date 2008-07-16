@@ -1,0 +1,132 @@
+[%#-
+#######################################################################
+#
+# Templatename: userreviews_show
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Rezensionen eines Benutzers fuer diesen in Mein KUG
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.userprefs_loc %]?sessionID=[% sessionID %];action=showfields">[% msg.maketext("Grundeinstellungen") %]</a></li>
+[%- IF config.litlists -%]
+   <li><a                href="[% config.litlists_loc %]?sessionID=[% sessionID %];action=manage">Literaturlisten</a></li>
+[%- END -%]
+   <li><a                href="[% config.tags_loc %]?sessionID=[% sessionID %];show_usertags=1">Tags</a></li>
+   <li><a class="active" href="[% config.userreviews_loc %]?sessionID=[% sessionID %];do_show=1">Rezensionen</a></li>
+[% IF targettype != 'self' %]
+   <li><a                href="[% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc">[% msg.maketext("Benutzerkonto") %]</a></li>
+[% END %]
+   <li><a                href="[% config.databaseprofile_loc %]?sessionID=[% sessionID %];do_showprofile=1">[% msg.maketext("Katalogprofile") %]</a></li>
+</ul>
+
+<div class="content">
+
+<p />
+<table width="100%">
+<tr><th>Eigene Rezensionen</th></tr>
+<tr><td class="boxedclear">
+
+[%- IF reviews.size > 0 -%]
+<!-- Begin Reviews -->
+
+<table>
+[%- FOREACH item IN reviews -%]
+
+[%# Verfasser konstruieren %]
+[%- persons = [] -%]
+[%- FOREACH part IN item.titnormset.${'P0100'}  -%]
+[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.titnormset.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.titnormset.${'P0101'}  -%]
+[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.titnormset.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.titnormset.${'C0200'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.titnormset.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- END -%]
+[%- FOREACH part IN item.titnormset.${'C0201'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.titnormset.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- END -%]
+[%- person = persons.join(' ; ') -%]
+
+[%# Titel konstruieren %]
+[%- title = item.titnormset.${'T0331'}.first.content -%]
+[%- IF item.titnormset.${'T0310'}.first.content -%]
+[%- title = item.titnormset.${'T0310'}.first.content -%]
+[%- END -%]
+
+[%# Einbeziehung der Zaehlfelder T5100 %]
+[%- IF title && item.titnormset.${'T5100'}.first.content -%]
+[%-    order = item.titnormset.${'T5100'}.first.content -%]
+[%-    IF title == order -%]
+[%-      title = "${order}."-%]
+[%-    ELSE -%]
+[%-      title = "${order}. ${title}" -%]
+[%-    END -%]
+[%- END -%]
+
+[%# Verlage konstruieren %]
+[%- publisher = item.titnormset.${'T0412'}.first.content -%]
+
+[%# Ejahr konstruieren %]
+[%- yearofpub = item.titnormset.${'T0425'}.first.content -%]
+
+[%# Signaturen konstruieren %]
+[%- signaturen = [] -%]
+[%- FOREACH part IN item.titnormset.${'X0014'} -%]
+[%- signaturen.push("${part.content}") -%]
+[%- END -%]
+[%- signatur = signaturen.sort.unique.join(' ; ') -%]
+
+<tr><td class="boxed">
+
+<span class="reviewtitle">[% item.title %]</span> von <span class="reviewnick">[% IF item.nickname %][% item.nickname %][% ELSE %]Unbekannt[% END %]</span>&nbsp;&nbsp;(Bewertung: <span class="reviewrating">[% item.rating %]</span>)</dt>
+
+<p />[%    IF item.review %][% item.review %][% END %]
+
+<p>
+<a href="[% config.userreviews_loc %]?sessionID=[% sessionID %];reviewid=[% item.id %];do_edit=1">Bearbeiten</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="[% config.userreviews_loc %]?sessionID=[% sessionID %];reviewid=[% item.id %];do_del=1">L&ouml;schen</a>
+</p>
+
+<p>
+Rezension von:
+</p>
+<span class="rlauthor">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;sorttype=[% sorttype %];database=[% item.titnormset.${"database"} %];searchsingletit=[% item.titnormset.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
+class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span><br />aus:&nbsp;<i>[% targetdbinfo.dbinfo.${item.titnormset.database}.full %]</i>
+
+</td></tr>
+<tr><td></td></tr>
+[%  END %]
+</table>
+<!-- End Reviews -->
+
+[% ELSE %]
+Bisher haben Sie noch keine Rezensionen geschrieben oder Bewertungen vergeben.
+[% END %]
+</td></tr>
+</table>
+<p />
+
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

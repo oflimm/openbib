@@ -1,0 +1,118 @@
+Version 2.2:
+
+- Verzicht auf Frames und damit Erhoehung der Barrierefreiheit.
+- Refactoring in neue Objekte (Record, RecordList, SearchQuery usw.)
+- Integration des Ausleihsystems durch Web-Services (Bestellen, Vormerken, 
+  Stornieren, Verlaengern)
+- Literaturlisten. Nutzer koennen nun eigene Literaturlisten (privat
+  und oeffentlich) anlegen und auf die als oeffentlich
+  gekennzeichneten von ueberall ueber PermaLinks zugreifen. 
+- Verfuegbarkeitsanzeige eines Titels als Bild in Google Book Search
+  und BibSonomy
+- Wortwolke fuer die Verteilung der Erscheinungsjahre in einem Katalog
+- Es werden nur noch die Wortwolken angezeigt, die auch existieren
+- Katalog-Profile. Mit diesen kann definiert werden, welche Kataloge
+  in einer spezifischen Sicht insgesamt zur Verfuegung stehen
+- Anzeige anderer Ausgaben eines Werkes (via thingISBN). Virtuell
+  realisiert ueber zentrales Anreicherungskonzept und ISBN
+- Anzeige anderer Kataloge des KUG, in denen der jeweilige Titel
+  vorhanden ist. Virtuell realisiert ueber zentrales
+  Anreicherungskonzept und ISBN
+- Systematisches Blaettern anhand der BK. Virtuell realisiert ueber
+  zentrales Anreicherungskonzept und ISBN
+- Optionale Einbindung von Cover-Scans
+- Tiefere Integration von BibSonomy:
+
+  a) Erschliessung neuer Quellen:
+
+     Es werden nun automatisch ueber ein
+     Vorkommen eines Titels oder seiner Schlagworte in BibSonomy weitere
+     Quellen (Publikationen und Webseiten) in OpenBib integriert. Bei
+     den ueber diese Tags thematisch gefundenen Publikationen wird
+     dann anhand eines bibliograph. Fingerabdrucks (Bibkey) nach der
+     Existenz jener Titel in den Katalogen des KUG's gesucht und diese
+     gegebenenfalls angezeigt.
+
+  b) Automatische Spiegelung von Titeln beim Tagging im KUG nach BibSonomy
+
+     Wenn Titel im KUG getaggt werden, koennen diese Titel inkl. Tags
+     und Sichtbarkeitsinformationen automatisch in eine
+     entsprechenden BibSonomy-Kennung eingespielt und damit effektiv
+     gespiegelt werden.
+
+Version 2.1:
+
+- Tag-Editor. Nutzer koennen nun einzelne ihrer Tags umbenennen
+- Rezensionen und Bewertungen. Angemeldete Nutzer koennen nun entsprechendes
+  Feedback geben
+- Bewertung der Rezensionen/Bewertungen durch angemeldete Nutzer zur 
+  Beurteilung der Nuetzlichkeit der betreffenden Rezension/Bewertung
+- PermaLink. Einzelne Normdaten-Saetze koennen nun unter einem einheitlichen
+  URL verlinkt werden - aehnlich Blog-Eintraegen
+- unAPI. Bereitstellung Bibliographischer Informations-Objekte z.B. zur
+  strukturierten Uebernahme/Verarbeitung durch externe Programme wie
+  z.B. Zotero (www.zotero.org)
+- Such-Wolken. Darstellung der von Nutzern verwendeten Suchbegriffe im
+  jeweiligen View in einer Wolken-Ansicht
+- Statistiken in der Web-Administration. Allgemeine Statistiken des Portals
+  sowie zum Aufruf externer Dienste (ueber den Redirektor) und der Nutzung
+  der Views. Generierung von Grafiken zur Auswertung der zeitlichen Entwicklung
+  der beobachteten Werte. 
+- Benutzer-Verwaltung in der Web-Administration. Es koennen nun auch die
+  Anmeldeziele fuer die Benutzer dort verwaltet werden.
+- Virtueller Notations-Index. 
+- Optimierung der kategorie-basierten Drill-Downs. Die kategorisierten
+  Inhalte werden nun direkt vollstaendig aus dem Xapian-Index geholt.
+- Optimierung des Suchwolken-Algorithmus.
+- Nachgeschaltete Authentifizierung bei Vormerkungen und Tagging
+
+Version 2.0:
+
+- Durchgaengige Verwendung des UTF8-Encodings
+- Mehrsprachigkeit durch gettext/maketext
+- Optionale Verwendung der Xapian-Suchmaschinentechnologie
+- Experimenteller Zugriff auf Z39.50-Datenbanken
+- Durchgaengige Blaetter-Funktion in den Treffermengen bzgl. hitrange-Parameter
+- Recherche in Serie/Band/Quelle (Kategorien 089,451,590)
+- Beschraenkung einer Recherche auf Ueberordnungen
+- Neues MAB2-orientiertes internes Standard-Metadaten-Format
+- Alternative Metadaten-Formate sind moeglich
+- Parametrisierbare Konvertierungsschnittstelle (Filter/Plugins)
+- Inkrementelles Live-Update der SQL-Datenbanken über OLWS
+- Eventlogging in Session->Statistik-Datenbank
+- Recommender-Funktion (zurueckportiert nach 1.2.3)
+- Popularitaets-Funktionen (Top 20, Sortierung ; zurueckportiert nach 1.2.3)
+- Katalogauswahl kann alternativ nun auch direkt in die Rechercheseite
+  integriert werden
+- RSS-Feeds fuer Neuzugaenge (zurueckportiert nach 1.2.2)
+- Ergebnisanreicherung (zurueckportiert nach 1.2.2)
+- Extener DigiBib-Connector als mod_perl-Handler (zurueckportiert nach 1.2.2)
+- Ausgabe der Bandangaben in den Kurztitellisten. Getrennte Sortierung nach
+  Bandzaehlung und Titel (alphabetisch)
+- Schneller Zugriff auf Kurztitel-Informationen durch neue titlistitem-Tabelle
+- Integration des Logging-Frameworks in die Programme zur automatischen
+  Konvertierung sowie Anreichern mit Popularitaetsinformationen
+- Erweiterung um das BibTeX-Format fuer die Merklisten
+- Uebernahme von Merklisteneintraegen im BibTeX-Format nach BibSonomy
+  (www.bibsonomy.org)
+- Highlighting der Suchbegriffe in der Einzeltitelanzeige
+- Ausweitung der Titel-String-Suche auf weitere Kategorien
+- Browsing ueber die Inhalte beliebiger Kategorien - es kann auf alle
+  Inhalte einer Kategorie zugegriffen werden (normdatenuebergreifend). Damit 
+  koennen z.B.  Register realisiert werden (Portrait-Sammlung, 
+  Landschaftsbilder)
+- Titelrecherche bei gegebenem Inhalt einer Kategorie. Damit koennen fuer
+  beliebige Kategorien Verknuepfungen zu anderen Titeln mit gleichem
+  Kategorieinhalt realisiert werden.
+- Mashup mit Wikipedia bei Personen/ISBN's
+- Social-Tagging. Benutzer koennen nun einzelne Titel selbst mit
+  Mini-Schlagworten (engl. tags) versehen
+- Einfuehrung von Tag-Clouds:
+  a) Schlagwort-Wolken zur Uebersicht bezogen auf einen
+     Katalog. Ebenso fuer die anderen Normdaten (Personen,
+     Koerperschaften, Notationen)
+  b) Begriffs-Wolken bezogen auf die relevantesten Terme einer Recherche-
+     Treffermenge zur Suchverfeinerung
+  c) Tag-Clouds fuer die von Nutzern vergebenen und als oeffentlich
+     deklarierten Tags fuer Titel im KUG
+

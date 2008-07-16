@@ -1,0 +1,329 @@
+[%#-
+#######################################################################
+#
+# Templatename: searchframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der erweiterten Suchmaske
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" disable_cache_control=1 %]
+
+  <body>
+
+<script language="JavaScript" type="text/javascript">
+<!--
+
+function update_fak(yourform, checked, fak) {
+    for (var i = 0; i < yourform.elements.length; i++) {
+         if (yourform.elements[i].title.indexOf(fak) != -1) {
+              yourform.elements[i].checked = checked;
+         }
+    }
+}
+
+function clear_alldbs(yourform) {
+    for (var i = 0; i < yourform.elements.length; i++) {
+         if (yourform.elements[i].name.indexOf('database') != -1) {
+              yourform.elements[i].checked = '';
+         }
+         if (yourform.elements[i].name.indexOf('fakult') != -1) {
+              yourform.elements[i].checked = '';
+         }
+    }
+}
+
+function update_dbchoice(yourform, value) {
+
+[% FOREACH profile IN userprofile %]
+[%     pid   = profile.key %]
+[%     pdata = profile.value %]
+    user[% pid %] = ['[%-  pdata.databases.join("','") -%]'] ;
+[% END %]
+
+    dbchoice = ['[%-  dbchoice.join("','") -%]'] ;
+
+    if (value == "alldbs"){
+       update_fak(yourform, 'checked', 'inst');
+    }
+[% FOREACH unit IN config.orgunits %]
+    else if (value == "[% unit.short %]"){
+       clear_alldbs(yourform);
+       update_fak(yourform, 'checked', 'inst[% unit.nr %]');
+    }
+[% END %]
+[% FOREACH profile IN userprofile %]
+[%     pid   = profile.key %]
+    else if (value =="user[% pid %]"){
+       clear_alldbs(yourform);
+       for (var i = 0; i < yourform.elements.length; i++) {
+           if (yourform.elements[i].name.indexOf('database') != -1) {
+              for (var j = 0; j < user[% pid %].length; j++){
+                 if (user[% pid %][j].indexOf(yourform.elements[i].value) != -1) {
+                    yourform.elements[i].checked = 'checked';
+                 }
+              }
+           }
+       }
+    }
+[% END %]
+    else if (value == 'dbauswahl'){
+       clear_alldbs(yourform);
+       for (var i = 0; i < yourform.elements.length; i++) {
+           if (yourform.elements[i].name.indexOf('database') != -1) {
+              for (var j = 0; j < dbchoice.length; j++){
+                 if (dbchoice[j].indexOf(yourform.elements[i].value) != -1) {
+                    yourform.elements[i].checked = 'checked';
+                 }
+              }
+           }
+       }
+    }
+    else if (value == 'cleardbs'){
+       clear_alldbs(yourform);
+    }
+}
+
+function submitViaEnter(evt){
+  evt = (evt) ?  evt : event;
+  var target = (evt.target) ? evt.target : evt.srcElement;
+  var form = target.form;
+  var charCode = (evt.charCode) ? evt.charCode :
+      ((evt.which) ? evt.which : evt.keyCode);
+  if (charCode == 13 || charCode == 3){
+     form.submit();
+     return false;
+  }
+  return true;
+}
+
+
+// -->
+</script>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<div id="langchoice">
+<a href="[% config.info_loc %]?sessionID=[% sessionID %]#recherchekomplex"><img src="/images/openbib/info.png"></a>&nbsp;
+[% IF config.lang.size > 1 %]
+[%   FOREACH l IN config.lang %]
+<a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];setmask=simple;l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[%   END %]
+[% END %]
+</div>
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
+   <li><a class="active" href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
+   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=50" title="[% msg.maketext("Systematisches Bl&auml;ttern") %]">[% msg.maketext("Systematisches Bl&auml;ttern") %]</a></li>
+   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="[% msg.maketext("&Uuml;bersichten") %]">[% msg.maketext("&Uuml;bersichten") %]</a></li>
+</ul>
+
+<div class="content">
+
+[% IF config.testsystem %]
+[% PROCESS common/subtemplate name="testsystem_info" %]
+[% END %]
+
+<p />
+<p />
+
+[% IF queries.size > 0 %]
+
+<form method="get" id="queries" action="http://[% config.servername %][% config.dispatchquery_loc %]">
+<table width="100%">
+<tr><th>[% msg.maketext("Suchhistorie") %]</th></tr>
+<tr><td class="boxed">
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<input type="hidden" name="view"      value="[% view %]" />
+
+[% PROCESS common/subtemplate name="select_queries" %]
+
+<input type="submit" name="do_newquery" value="[% msg.maketext("Als Suchvorlage") %]" />&nbsp;&nbsp;<input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" />&nbsp;&nbsp;<input type="submit" name="do_externalquery" value="[% msg.maketext("Weiter als externe Recherche") %]" style="background-color:#99CCFF" />
+</td></tr>
+</table>
+</form>
+[% END %]
+
+<noscript>
+<table>
+<tr><th>[% msg.maketext("Sie haben JavaScript deaktiviert") %]</th></tr>
+<tr><td class="boxed" valign="top" style="font-size:0.8em">
+[% msg.maketext("Sie haben JavaScript in Ihrem Browser
+deaktiviert. Daher k&ouml;nnen Sie auf dieser Seite die Profilauswahl
+nicht verwenden. Alternativ k&ouml;nnen Sie eine [_1]alternative Version[_2]
+nutzen, bei der die Verwendung von JavaScript minimiert ist.","<a href=\"${config.startopac_loc}?view=${view}\" target=\"_parent\">","</a>") %]
+</td></tr>
+</table>
+</noscript>
+
+<p />
+<p />
+<p />
+
+<form method="post" id="openbib" action="http://[% config.servername %][% config.virtualsearch_loc %]" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="view"      value="[% view %]" />
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<input type="hidden" name="sb"        value="sql" />
+<input type="hidden" name="st"        value="2" />
+
+<p />
+<table class="submitbuttons">
+  <tr><td><noscript><input type="submit" title="[% msg.maketext("Hier suchen Sie in allen Katalogen auf einmal") %]" name="searchall" value="[% msg.maketext("In allen Katalogen suchen") %]" /></noscript></td><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" /></td><td><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" class="button">[% msg.maketext("Lösche Eingabemaske") %]</a></td></tr>
+</table>
+<p />
+
+
+<table width="100%">
+<tr><td valign="top">
+
+<!-- Erste Spalte -->
+
+<table>
+<tr><th>[% msg.maketext("Suchbegriffe") %]</th></tr>
+<tr><td class="boxed" valign="top" style="font-size:0.8em">
+[% PROCESS common/subtemplate name="searchmask_query" %]
+</td></tr>
+</table>
+
+<p />
+<table class="submitbuttons">
+  <tr><td><noscript><input type="submit" title="[% msg.maketext("Hier suchen Sie in allen Katalogen auf einmal") %]" name="searchall" value="[% msg.maketext("In allen Katalogen suchen") %]" /></noscript></td><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" /></td><td><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" class="button">[% msg.maketext("Lösche Eingabemaske") %]</a></td></tr>
+</table>
+
+<p />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Suchoptionen") %]&nbsp;<span id="searchoptions_toggle"></span></th></tr>
+<tr><td class="boxed" id="searchoptions" style="font-size:0.8em;">
+[% PROCESS common/subtemplate name="searchmask_options" %]
+</td></tr>
+</table>
+
+<p />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Suchhilfe") %]&nbsp;<span id="searchinfo_toggle"></span></th></tr>
+<tr><td class="boxed" id="searchinfo" style="font-size:0.8em;">
+[% PROCESS common/subtemplate name="search_info" %]
+</td></tr>
+</table>
+
+<p />
+<b>[% msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount}","${alldbs}") %]</b>
+<p />
+
+</td>
+
+<!-- Zweite Spalte / Leer -->
+<td width="25">&nbsp;</td>
+
+<!-- Dritte Spalte--> 
+<td valign="top">
+
+<table>
+<tr><th>[% msg.maketext("Katalogauswahl") %]</th></tr>
+<tr><td class="boxed" valign="top" style="font-size:0.8em">
+
+[%# USE dumper; dumper.dump(userprofile) %]
+<table>
+<tr><td colspan="[% colspan %]"><b>Profil:</b>&nbsp;<select name="js_profil" onchange="update_dbchoice(this.form,this.options[this.selectedIndex].value)" >
+<option value="">W&auml;hlen Sie hier ein bestehendes Profil aus</option>
+<option value="cleardbs">Katalogauswahl l&ouml;schen</option>
+[%- IF dbchoice.size > 0 -%]
+<option value="dbauswahl"[%- IF prevprofile == 'dbauswahl' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
+[% END %]
+[%- FOREACH profile IN userprofile -%]
+[%     pid   = profile.key %]
+[%     pdata = profile.value %]
+<option value="user[% pid %]"[%- IF prevprofile == 'user${pid}' -%] selected="selected"[%- END -%]>Benutzerdefiniert: [% pdata.name %]</option>
+[%  END %]
+<option value="alldbs"
+[%- IF prevprofile == 'alldbs' -%]
+ selected="selected"
+[%- END -%]
+>[% msg.maketext("Alle Kataloge") %]</option>
+[% FOREACH unit IN config.orgunits %]
+<option value="[% unit.short %]"
+[%- IF prevprofile == unit.short -%]
+ selected="selected"
+[%- END -%]
+>[% unit.desc %]</option>
+[% END %]
+</select></td></tr>
+</table>
+
+<table>
+<tr class="titlerow"><td colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /><b>[% msg.maketext("Alle Kataloge") %]</b></td></tr>
+
+[%- FOREACH category = config.orgunits -%]
+[%- IF category.nr >= 1 -%]
+<tr><td colspan="[% colspan %]">&nbsp;</td></tr>
+[%- END -%]
+<tr class="titlerow"><td colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst[% category.nr %]" onclick="update_fak(this.form, this.checked,'inst[% category.nr %]')" title="inst" /><b>[% category.desc %]</b></td></tr>
+
+[%- FOREACH db IN catdb -%]
+[%- IF db.category == category.short -%]
+[%- IF db.column == 1 -%]
+<tr><td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% db.url %]" target="_blank">[% db.name %]</a></td>
+[%- END -%]
+[%- IF db.column > 1 && db.column < maxcolumn -%]
+[%- IF db.db -%]
+<td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% db.url %]" target="_blank">[% db.name %]</a></td>
+[%- ELSE -%]
+<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+[%- END -%]
+
+[%- END -%]
+[%- IF db.column == maxcolumn -%]
+[%- IF db.column != 1 -%]
+
+[%- IF db.db -%]
+<td><input type="checkbox" name="database" value="[% db.db %]" title="inst[% category.nr %]" [% IF db.checked %]checked="checked"[% END %]/></td><td bgcolor="[% db.systemtype %]">&nbsp;</td><td><a href="[% db.url %]" target="_blank">[% db.name %]</a></td>
+[%- ELSE -%]
+<td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+[%- END -%]
+
+[%- END -%]
+</tr>
+[%- END -%]
+[%- END -%]
+[%- END -%]
+[%- END -%]
+</table>
+
+</td></tr>
+</table>
+
+<p />
+<table class="submitbuttons">
+  <tr><td><noscript><input type="submit" title="[% msg.maketext("Hier suchen Sie in allen Katalogen auf einmal") %]" name="searchall" value="[% msg.maketext("In allen Katalogen suchen") %]" /></noscript></td><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" /></td><td><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" class="button">[% msg.maketext("Lösche Eingabemaske") %]</a></td></tr>
+</table>
+
+</td></tr>
+</table>
+
+<p />
+
+</form>
+
+<p />
+
+[% msg.maketext("Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter [_1] kug@ub.uni-koeln.de [_2] erreichen.","<a href=\"http://www.ub.uni-koeln.de/usb-cgi/zms_makeEmail.pl?adr0=kug\" target=\"_blank\">","</a>") %]
+
+</div>
+
+  <!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
+  <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

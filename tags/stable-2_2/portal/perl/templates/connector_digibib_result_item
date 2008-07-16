@@ -1,0 +1,66 @@
+[%#-
+#######################################################################
+#
+# Templatename: connector_digibib_result_item
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Treffer in der Kurztitelanzeige
+#
+#######################################################################
+-%]
+[%- FOREACH result IN resultlist -%]
+[%- item = result.get_brief_normdata -%]
+[%# Verfasser konstruieren %]
+[%- persons = [] -%]
+[%- FOREACH part IN item.${'P0100'}  -%]
+[%#- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.${'P0101'}  -%]
+[%#- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.${'C0200'}  -%]
+[%- persons.push("${part.content}") -%]
+[%#- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- END -%]
+[%- FOREACH part IN item.${'C0201'}  -%]
+[%- persons.push("${part.content}") -%]
+[%#- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- END -%]
+[%- person = persons.join(' ; ') -%]
+[%# Titel konstruieren %]
+[%- title = item.${'T0331'}.first.content -%]
+[%- IF item.${'T0310'}.first.content -%]
+[%- title = item.${'T0310'}.first.content -%]
+[%- END -%]
+[%# Verlage konstruieren %]
+[%- publisher = item.${'T0412'}.first.content -%]
+[%# Ejahr konstruieren %]
+[%- yearofpub = item.${'T0425'}.first.content -%]
+[%# Signaturen konstruieren %]
+[%- signaturen = [] -%]
+[%- FOREACH part IN item.${'X0014'} -%]
+[%- signaturen.push("${part.content}") -%]
+[%- END -%]
+[%- signatur = signaturen.sort.unique.join(' ; ') -%]
+[%- location = targetdbinfo.dbinfo.${item.database}.short -%]
+[%
+IF signatur ;
+  location = "${location}: ${signatur}";
+END;
+
+%]
+<LI><UL>
+<LI> DB=KVIK
+<LI> AU=[% utf2iso(person) %]
+<LI> TI=[% utf2iso(title) %]
+<LI> YR=[% utf2iso(yearofpub) %]
+<LI> URL=database=[% item.database %]&idn=[% item.id %]&tosearch=Langanzeige
+<LI> LO=[% utf2iso(location) %]
+<LI> LNK=
+</UL>
+[%- END -%]

@@ -1,0 +1,62 @@
+[% SET title='KUG Administration - Import' %]
+[% SET show_foot_banner = 1 %]
+[% PROCESS std_header %]
+
+  <body>
+
+[% PROCESS corporate_banner %]
+
+<div id="maincontent">
+
+<table width="100%">
+<tr>
+  <td align="left"><a href="[% config.admin_loc %]?sessionID=[% sessionID %]&action=showcat">Kataloge</a>&nbsp;&nbsp;&nbsp;<a href="[% config.admin_loc %]?sessionID=[% sessionID %]&action=showviews">Views</a>&nbsp;&nbsp;&nbsp;<a href="[%
+config.admin_loc %]?sessionID=[% sessionID %]&action=showsession">Sessions</a>&nbsp;&nbsp;&nbsp;<a href="[% config.admin_loc %]?sessionID=[% sessionID %]&action=showimx"><b>Import</b></a></td><td>&nbsp;&nbsp;&nbsp;</td><td>&nbsp;</td><td
+align="right"><a href="[% config.admin_loc %]?sessionID=[% sessionID %]&action=logout"><b>Logout</b></a>&nbsp;</td>
+</tr>
+</table>
+
+<hr />
+
+<form method="get" action="[%config.admin_loc %]">
+<input type="hidden" name="action" value="imximport" />
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+
+<table width="100%">
+<tr><th>Automatische Importe veranlassen</th></tr>
+<tr><td class="boxedclear" style="font-size:12pt">
+<b>Katalogauswahl zu diesem View</b><br /><br />
+
+<select name="viewdb" multiple="multiple">
+
+[% FOREACH singledb IN dbnames %]
+
+<option value="[% singledb.dbname %]"
+
+[% FOREACH checkeddb IN view.viewdbs %]
+
+[% IF singledb.dbname == checkeddb %]
+selected="selected"
+[% END %]
+
+[% END %]
+
+>[% singledb.description %]</option>
+
+[% END %]
+
+
+<select>
+
+<p />
+<table width="100%">
+<tr><td align="left"><input type="submit" name="imxaction"
+value="&Auml;ndern" /></td><td>&nbsp;</td><td align="right"><input type="submit" name="viewaction" value="L&ouml;schen" /></td></tr>
+</table>
+</td></tr>
+</table>
+
+</form>
+<p />
+
+[% PROCESS std_footer %]

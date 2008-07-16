@@ -1,0 +1,158 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe_20
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<p />
+
+<h1>Die Digitale Einbandsammlung der Universitäts- und Stadtbibliothek stellt sich vor</h1>
+
+Vom spätgotischen Kettenbuch bis hin zu den experimentellen
+zeitgenössischen Einbänden verwahrt die Bibliothek schützens- und
+erhaltenswerte Zeugnisse gediegener Handwerkskunst, künstlerischer
+Inspiration und verlegerischer Sorgfalt.
+
+<table cellpadding="10">
+<tr><td>
+<img src="http://tsipouro.ub.uni-koeln.de/images/opendia/prachteinband2.jpg" alt="Prachteinband" />
+</td>
+<td>
+<p>
+Silbergetriebene und prunkvoll mit Edelsteinen und Elfenbein bestückte
+Prachteinbände wird man in der USB Köln vergeblich suchen, dennoch
+hütet sie einen prächtigen Einbandbestand.
+</p>
+<p>
+
+Die regionalgeschichtlich bedeutsamen Gebrauchseinbände der Kölner
+Buchbinder des 15. bis 17. Jahrhunderts umschließen etliche Drucke aus
+klösterlichem Eigentum und dem Besitz der Kölner Rats; kunstvoll zu
+repräsentativen Zwecken eingebundene Bücher aus aller Welt stammen
+meist aus Stiftungen und den Kollektionen der Kölner Sammler. Noch
+heute (ver)bergen die Bestände der alten Kölner Stadtbibliothek die
+lange als banal erachteten, mittlerweile aber sehr geschätzten
+historistischen Hand- und Verlagseinbände, und schließlich vertreten
+bemerkenswerte Einbandentwürfe und die kreativen Arbeiten der
+Hausbuchbinderei die moderne Einbandkunst.
+</p>
+<p>
+Von den bisher bekannten wenigstens 800 Arbeiten fanden nur 215 in der
+vorgesehenen, knapp bemessenen Räumlichkeit für die Einbandsammlung
+Aufstellung, die restlichen sind über die verschlossenen Trakte des
+Magazins verstreut und nur über sporadisch erschienene (nach neueren
+Erkenntnissen teilweise veraltete) Veröffentlichungen und
+Ausstellungskataloge nachgewiesen (s. Dokumentation). Ein
+Einbandkatalog existierte bisher nicht. Die Mitarbeiterinnen der
+Einbandstelle widmeten sich in den Jahren 2003 bis 2005 der
+Dokumentation der 215 gemeinsam aufgestellten Bände der
+Einbandsammlung. Nach und nach sollten diese Arbeiten in einem Katalog
+Aufnahme finden, der sich später mit den übrigen, über die Literatur
+bekannten Einbänden erweitern und vervollständigen ließ.
+</p>
+
+</td>
+</tr>
+</table>
+<p>
+<b>Eine <a href="http://einbandsammlung.ub.uni-koeln.de/" target="_top">Einbanddatenbank</a>, die in absehbarer Zeit alle historisch
+relevanten, erhaltenswerten und künstlerischen Bucheinbände aus dem
+Bestand der USB erfassen und erschließen wird, vermittelt nun die
+ersten Resultate.</b>
+</p>
+<p>
+Neben Abbildungen liefert sie die Titelangaben, den Standort, die
+Provenienz und die technischen Buchdaten, die Quellen und vorhandenes
+oder ermitteltes Informationsmaterial. In die Datenbank aufgenommene
+Einbände derselben Werkstatt verknüpft ein Link; weitere Arbeiten des
+Betriebes sind ohne Abbildung verzeichnet.
+
+</p>
+<p>
+In der Funktion "Blättern" bietet die Recherche bereits heute über
+ihre Titelleisten die Möglichkeit des Einbandvergleichs der
+verschiedenen Regionen und Epochen, kontinuierlich erweitert listet
+sie alsbald auch die verschiedenen Arbeiten eines Buchbinders und die
+Produkte einer Werkstatt auf.  Zum Schutz der Bände wurde bisher
+weitgehend auf das Anfertigen von Durchreibungen verzichtet, dafür
+rücken Scans mit Maßangaben die Einbanddetails ins rechte Licht.
+</p>
+<p>
+Neben ihren Nachweisfunktionen leistet die Datenbank noch weitere
+Dienste: Sie stellt die Einbände der USB als Gegenstand
+wissenschaftlicher Forschungen und Projekte im Bereich der Kunst-,
+Kultur- und Regionalgeschichte, der profanen Geschichte und auf den
+Gebieten der Genealogie und Buchforschung zur Diskussion.
+</p>
+<p>
+Gleichzeitig richtet sie sich an interessierte Laien und
+Bücherliebhaber. Hier will sie mit ihren Bildern und dem Angebot, sich
+spielerisch per Mouse-Click durch die digitale Einbandsammlung zu
+bewegen, das Interesse für die nicht selten bemerkenswerte
+Buchgeschichte wecken und ganz allgemein den Einblick in die
+Vielseitigkeit des Bibliotheksbestands vertiefen.
+</p>
+<p>
+Aus den Kollektionen privater Sammler stammen die kostbarsten Stücke
+der Einbandsammlung. Hier bringt das Projekt in seiner repräsentativen
+Darstellung die Wertschätzung der USB für die ihr anvertrauten
+Bestände zum Ausdruck. Es sei darauf hingewiesen, dass die
+Hausbuchbinderei für alle der in die digitale Einbandsammlung
+aufgenommenen Originale eine individuelle Schutzkassette fertigt und
+die Benutzung der Bände nur im beaufsichtigten Lesesaal für
+Historische Sammlungen möglich ist. Auch werden alle schützens- und
+erhaltenswerten Einbände demnächst komplett an einem geeigneten
+Magazinstandort Aufstellung finden.
+</p>
+<p>
+Die Förderung des künstlerischen Bucheinbands verdeutlichen die
+Arbeiten der Hausbuchbinderei. Ein im Binde-Report veröffentlichtes
+Plädoyer, die Biblioteken mögen die moderne Einbandkunst fördern,
+stieß nicht auf taube Ohren. Da der Etat den Ankauf dieser Arbeiten
+aber nicht vorsieht, und die Bibliothek ihre Aufgabe auch nie in der
+gezielten Sammeltätigkeit kostspieliger Einbandraritäten sah,
+beauftragt sie nun die Hausbuchbinder zu besonderen Gelegenheiten mit
+der Fertigung künstlerischer Einbände nach freiem Entwurf. Sie betont
+damit im Rahmen ihrer Möglichkeiten die Pflege und Qualität der
+hauseigenen Einbandtradition und hebt das Ansehen der Werkstatt in
+ihrer Funktion als Ausbildungsbetrieb.
+</p>
+<p>
+Das Gemeinschaftsprojekt des Hauses stellt sich zunächst mit etwa 140
+Exponaten aus den Katalogen "Vom Kettenbuch zur Collage", "Schätze aus
+der Einbandsammlung der USB" und einigen Bänden aus dem sekretierten
+Bestand vor. Fotografien und Scans fertigte die Fotostelle des Hauses;
+für die Konzeption, die Möglichkeit der Katalogisierung und die
+ansprechende Gestaltung, die allein auf die im Hause vorhandenen
+Möglichkeiten zurückgreift, sorgten aus dem Kreise der Kollegen
+Christiane Hoffrath und Oliver Flimm. Die Mitarbeiterinnen der
+Einbandstelle übernehmen die Verantwortung für die Eingabe und die
+Inhalte. Um das Tagesgeschäft der Abteilung zu gewährleisten und dabei
+aber auch die Projektarbeit zügig zu verfolgen, ist ein erheblicher
+Einsatz erforderlich, der sich nicht nur auf die Dienststunden
+beschränkt. Damit sich der Aufwand lohnt und möglichst allgemein zum
+Vorteil gereicht, würden sich die Bearbeiterinnen über Resonanz und
+Unterstützung freuen. Kritik, Korrekturen und Verbesserungsvorschläge
+aus Fachkreisen wären der weiteren Entwicklung und Qualität der
+digitalen Einbandsammlung unbedingt zuträglich.
+</p>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

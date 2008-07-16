@@ -1,0 +1,105 @@
+[%#-
+#######################################################################
+#
+# Templatename: litlists_manage_lists
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Neuanlegen und Ausgabe bestehender Literaturlisten
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.userprefs_loc %]?sessionID=[% sessionID %];action=showfields">[% msg.maketext("Grundeinstellungen") %]</a></li>
+[%- IF config.litlists -%]
+   <li><a class="active" href="[% config.litlists_loc %]?sessionID=[% sessionID %];action=manage">[% msg.maketext("Literaturlisten") %]</a></li>
+[%- END -%]
+   <li><a                href="[% config.tags_loc %]?sessionID=[% sessionID %];show_usertags=1">[% msg.maketext("Tags") %]</a></li>
+[%- IF config.reviews -%]
+   <li><a                href="[% config.userreviews_loc %]?sessionID=[% sessionID %];do_show=1">[% msg.maketext("Rezensionen") %]</a></li>
+[%- END -%]
+[% IF targettype != 'self' %]
+   <li><a                href="[% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc">[% msg.maketext("Benutzerkonto") %]</a></li>
+[% END %]
+   <li><a                href="[% config.databaseprofile_loc %]?sessionID=[% sessionID %];do_showprofile=1">[% msg.maketext("Katalogprofile") %]</a></li>
+</ul>
+
+<div class="content">
+
+<p />
+
+<form method="get" action="[% config.litlists_loc %]">
+<input type="hidden" name="action"     value="manage" />
+<input type="hidden" name="sessionID"  value="[% sessionID %]" />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Neue Literaturliste anlegen") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td><b>[% msg.maketext("Titel der Liste") %]</b></td><td><b>[% msg.maketext("Sichtbarkeit") %]</b></td></tr>
+<tr><td><input type="text" name="title" /></td><td><select name="type"><option value="1">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select></td><td><input
+type="submit" name="do_addlist" value="[% msg.maketext("Neu") %]" /></td></tr>
+</table>
+</td></tr>
+</table>
+
+</form>
+
+<p />
+
+[%# USE dumper ; dumper.dump(litlists) %]
+[% IF litlists.size > 0 %]
+
+<table width="100%">
+<tr><th>[% msg.maketext("Bereits existierende Literaturlisten") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr class="titlerow"><td><b>[% msg.maketext("Titel der Literaturliste") %]</b></td><td><b>[% msg.maketext("Sichtbarkeit") %]</b></td><td><b>[% msg.maketext("Titelzahl") %]</b></td><td><b>[% msg.maketext("Angelegt") %]</b></td><td><b>[% msg.maketext("Permalink") %]</b></td><td></td></tr>
+[% listrow = 'listrow1' %]
+[% FOREACH litlist IN litlists %]
+<tr class="[% listrow %]"><td><a href="http://[%
+config.servername %][% config.litlists_loc %]?sessionID=[% sessionID
+%]&action=manage;litlistid=[% litlist.id %];do_showlitlist=1"><b>[% litlist.title %]</b></a></td><td>[% IF litlist.type == 1 %]
+[% msg.maketext("&ouml;ffentlich") %]
+[% ELSE %] 
+[% msg.maketext("privat") %]
+[% END %]
+</td><td>[% litlist.itemcount %]</td><td>[% litlist.tstamp %]</td><td align="center">[% IF litlist.type == 1 %]<a href="http://[% config.loadbalancerservername %][% config.connector_permalink_loc %]/[% litlist.userid %]/[% litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="Permanenter Link"><img src="/images/openbib/3d-file-blue-permalink.png" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a>[% ELSE %]&nbsp;[%- END -%]</td><td><a href="[% config.litlists_loc %]?sessionID=[% sessionID %]&action=manage;litlistid=[% litlist.id %];do_dellist=1"><b>[% msg.maketext("Entfernen") %]</b></a></td></tr>
+
+[% IF listrow == 'listrow1' %]
+[% listrow = 'listrow2' %]
+[% ELSE %]
+[% listrow = 'listrow1' %]
+[% END %]
+
+[% END %]
+
+</table>
+
+[% END %]
+
+</td></tr>
+</table>
+
+</div>
+
+<p />
+
+
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

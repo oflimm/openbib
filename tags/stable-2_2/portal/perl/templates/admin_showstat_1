@@ -1,0 +1,72 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_showstat
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersicht der wichtigsten statistischen Daten sowie
+# Verweise auf andere Sub-Templates (via stid = sub-template-id) mit
+# weiteren statistischen Auswertungen.
+#
+#######################################################################
+-%]
+[% PROCESS std_header title='KUG Administration - Grundlegende Statistikinformationen' %]
+
+  <body>
+
+[% PROCESS corporate_banner %]
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">[% msg.maketext("Kataloge") %]</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showprofiles=1">[% msg.maketext("Katalog-Profile") %]</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">[% msg.maketext("Views") %]</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">[% msg.maketext("Sessions") %]</a></li>
+   <li><a class="active" href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1">[% msg.maketext("Statistik") %]</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showuser=1">[% msg.maketext("Nutzerverwaltung") %]</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">[% msg.maketext("Logout") %]</a></li>
+</ul>
+
+<div class="content">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1">Allgemein</a></li>
+   <li><a class="active" href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=1">Weiterleitungen</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=2">Views</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=3">Recherchen</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=4">Klienten</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=5">Browser</a></li>
+</ul>
+
+<div class="content">
+
+<table width="100%">
+<tr><th>Aufrufe externer Seiten &uuml;ber Weiterleitungen aus dem KUG</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td>Anzahl Aufrufe von TOC / hbz-Server</td><td><b>[% ret = statistics.get_number_of_event({ type => 500 }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
+<tr><td>Anzahl Aufrufe von TOC / ImageWare-Server</td><td><b>[% ret = statistics.get_number_of_event({ type => 501 }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
+<tr><td>Anzahl Aufrufe BibSonomy</td><td><b>[% ret = statistics.get_number_of_event({ type => 510 }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
+<tr><td>Anzahl Aufrufe von Wikipedia / Personen</td><td><b>[% ret = statistics.get_number_of_event({ type => 520 }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
+<tr><td>Anzahl Aufrufe von Wikipedia / ISBN-Suche</td><td><b>[% ret = statistics.get_number_of_event({ type => 521 }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
+<tr><td>Anzahl Aufrufe von EZB</td><td><b>[% ret = statistics.get_number_of_event({ type => 530 }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
+<tr><td>Anzahl Aufrufe von DBIS</td><td><b>[% ret = statistics.get_number_of_event({ type => 531 }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
+<tr><td>Anzahl Aufrufe der Kartenkataloge/PhilFak</td><td><b>[% ret = statistics.get_number_of_event({ type => 532 }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
+<tr><td>Anzahl Aufrufe von MedPilot</td><td><b>[% ret = statistics.get_number_of_event({ type => 533 }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
+<tr><td>Anzahl Aufrufe der hbz Mono-Fernleihe</td><td><b>[% ret = statistics.get_number_of_event({ type => 540 }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
+<tr><td>Anzahl Aufrufe der hbz Artikel-Fernleihe</td><td><b>[% ret = statistics.get_number_of_event({ type => 541 }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
+<tr><td>Anzahl Aufrufe des WebOPACs</td><td><b>[% ret = statistics.get_number_of_event({ type => 550 }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
+</table>
+</td></td>
+</table>
+
+</div>
+</div>
+
+<p />
+
+[% PROCESS std_footer %]

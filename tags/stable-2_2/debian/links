@@ -1,0 +1,2 @@
+etc/openbib/openbib.conf        etc/apache-perl/conf.d/openbib.conf
+etc/openbib/Config.pm           usr/share/perl5/OpenBib/Config.pm

@@ -1,0 +1,71 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_showstat
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersicht der wichtigsten statistischen Daten sowie
+# Verweise auf andere Sub-Templates (via stid = sub-template-id) mit
+# weiteren statistischen Auswertungen.
+#
+#######################################################################
+-%]
+[% PROCESS std_header title='KUG Administration - Grundlegende Statistikinformationen' %]
+
+  <body>
+
+[% PROCESS corporate_banner %]
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showcat=1">[% msg.maketext("Kataloge") %]</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showprofiles=1">[% msg.maketext("Katalog-Profile") %]</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showviews=1">[% msg.maketext("Views") %]</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">[% msg.maketext("Sessions") %]</a></li>
+   <li><a class="active" href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1">[% msg.maketext("Statistik") %]</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showuser=1">[% msg.maketext("Nutzerverwaltung") %]</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_logout=1">[% msg.maketext("Logout") %]</a></li>
+</ul>
+
+<div class="content">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1">Allgemein</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=1">Weiterleitungen</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=2">Views</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=3">Recherchen</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=4">Klienten</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=5">Browser</a></li>
+</ul>
+
+<div class="content">
+
+<table width="100%">
+<tr><th>Allgemeine Statistikdaten zum KUG</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td>Anzahl der Titels&auml;tze</td><td><b>[% config.get_number_of_titles %]</b></td><td></td></tr>
+<tr><td>Anzahl der Kataloge (aktiv/gesamt)</td><td><b>[% config.get_number_of_dbs %] / [% config.get_number_of_all_dbs %]</b></td><td></td></tr>
+<tr><td>Anzahl der Spezialsichten (aktiv/gesamt)</td><td><b>[% config.get_number_of_views %] / [% config.get_number_of_all_views %]</b></td><td></td><td>&nbsp;&nbsp;<img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=52">Grafik</a></td></tr>
+<tr><td>Anzahl aller Events</td><td><b>[% ret = statistics.get_number_of_event({}) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td></tr>
+<tr><td>Anzahl Recherchen mit Benutzereingabe</td><td><b>[% ret = statistics.get_number_of_event({ type => 1 }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td><td>&nbsp;&nbsp;<img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=51">Grafik</a></td></tr>
+<tr><td>Anzahl Einzeltrefferaufrufe</td><td><b>[% ret = statistics.get_number_of_event({ type => 10 }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td><td>&nbsp;&nbsp;<img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=53">Grafik</a></td></tr>
+<tr><td>Anzahl Sessions</td><td><b>[% ret = statistics.get_number_of_event({ type => 102 }) %][% ret.number %]</b></td><td>(seit [% ret.since %])</td><td>&nbsp;&nbsp;<img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=50">Grafik</a></td></tr>
+<tr><td>Anzahl vergebener Tags / Titel / Nutzer</td><td><b>[% user.get_number_of_tags %] / [% user.get_number_of_tagged_titles %] / [% user.get_number_of_tagging_users %]</b></td><td></td></tr>
+<tr><td>Anzahl der Nutzer</td><td><b>[% user.get_number_of_users %]</b></td><td></td></tr>
+<tr><td>Anzahl der Suchprofile von Nutzern</td><td><b>[% user.get_number_of_dbprofiles %]</b></td><td></td></tr>
+<tr><td>Anzahl der Merklisten von Nutzern (Eintr&auml;ge/Nutzer)</td><td><b>[% user.get_number_of_collection_entries %] / [% user.get_number_of_collections %]</b></td><td></td></tr> 
+</table>
+</td></td>
+</table>
+
+</div>
+</div>
+
+<p />
+
+[% PROCESS std_footer %]

@@ -1,0 +1,33 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_logout
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Meldung beim erfolgreichen Verlassen der Administration
+#
+#######################################################################
+-%]
+[% PROCESS std_header title='KUG Administration - Abmeldung' %]
+
+  <body>
+
+[% PROCESS corporate_banner %]
+
+<div id="maincontent">
+
+<table width="100%">
+<tr><th>[% msg.maketext("Logout erfolgreich") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+
+[% msg.maketext("Um sich wieder einzuloggen folgen Sie bitte [_1]diesem Link[_2].","<a href=\"http://${config.servername}${config.admin_loc}?do_loginmask=1\">","</a>") %]
+
+</td></tr>
+</table>
+
+<p />
+
+[% PROCESS std_footer %]

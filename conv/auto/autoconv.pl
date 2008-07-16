@@ -104,10 +104,6 @@ if (!$config->db_exists($database)){
 
 my $dboptions_ref = $config->get_dboptions($database);
 
-my $dbh           = DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
-    or $logger->error_die($DBI::errstr);
-
-
 $logger->info("### POOL $database");
 
 my $atime = new Benchmark;
@@ -287,30 +283,7 @@ my $atime = new Benchmark;
 
     $logger->info("### $database: Benoetigte Zeit -> $resulttime");     
 }
-
-# Potentiell Blockierende Prozesse entfernen
-
-{
-    $logger->info("### $database: Marodierende Processe auf der Datenbank toeten");
-
-    my $request=$dbh->prepare("show processlist");
-    $request->execute();
-    
-    while (my $result=$request->fetchrow_hashref){
-        my $id    = $result->{Id}    || 'n/a';
-        my $db    = $result->{db}    || 'n/a';
-        my $time  = $result->{Time}  || 'n/a';
-        my $state = $result->{State} || 'n/a';
-        my $info  = $result->{Info}  || 'n/a';
-        
-        next unless ($db eq $database);
-
-        my $request2=$dbh->prepare("kill ?");
-        $request2->execute($id);
-        $logger->error("Killed process Id: $id - Db: $db - Time: $time - State: $state - Info: $info");
-    }
-}
-
+ 
 # Tabellen aus temporaerer Datenbank in finale Datenbank verschieben
 
 {

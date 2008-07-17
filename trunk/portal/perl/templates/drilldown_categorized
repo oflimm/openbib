@@ -1,95 +1,245 @@
 [%     IF drilldown_categorized && fullresultcount >= 10 %]
-<table width="100%">
-<tr><th colspan="4" style="font-size:0.9em">[% msg.maketext("Treffermenge eingrenzen") %]&nbsp;</th></tr>
-<tr><td colspan="4" class="boxedclear" style="font-size:0.8em;">
+<script type="text/javascript">
+$(document).ready(function(){
+
+// Begin Togglen / Drilldown Personen
+// Bild setzen
+$("#dd_aut_[% database %]_toggle").html("<b>[% msg.maketext("[Mehr]") %]</b>")
+// Zuerst verstecken
+$("#dd_aut_[% database %]").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#dd_aut_[% database %]_toggle").click(function(){
+ $("#dd_aut_[% database %]").toggle();
+ $("#dd_aut_[% database %]_toggle").html("");
+});
+
+// Begin Togglen / Drilldown Koerperschaften
+// Bild setzen
+$("#dd_kor_[% database %]_toggle").html("<b>[% msg.maketext("[Mehr]") %]</b>")
+// Zuerst verstecken
+$("#dd_kor_[% database %]").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#dd_kor_[% database %]_toggle").click(function(){
+ $("#dd_kor_[% database %]").toggle();
+ $("#dd_kor_[% database %]_toggle").html("");
+});
+
+// Begin Togglen / Drilldown Schlagworte
+// Bild setzen
+$("#dd_swt_[% database %]_toggle").html("<b>[% msg.maketext("[Mehr]") %]</b>")
+// Zuerst verstecken
+$("#dd_swt_[% database %]").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#dd_swt_[% database %]_toggle").click(function(){
+ $("#dd_swt_[% database %]").toggle();
+ $("#dd_swt_[% database %]_toggle").html("");
+});
+
+// Begin Togglen / Drilldown Systematik
+// Bild setzen
+$("#dd_not_[% database %]_toggle").html("<b>[% msg.maketext("[Mehr]") %]</b>")
+// Zuerst verstecken
+$("#dd_not_[% database %]").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#dd_not_[% database %]_toggle").click(function(){
+ $("#dd_not_[% database %]").toggle();
+ $("#dd_not_[% database %]_toggle").html("");
+});
+
+// Begin Togglen / Drilldown Jahr
+// Bild setzen
+$("#dd_year_[% database %]_toggle").html("<b>[% msg.maketext("[Mehr]") %]</b>")
+// Zuerst verstecken
+$("#dd_year_[% database %]").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#dd_year_[% database %]_toggle").click(function(){
+ $("#dd_year_[% database %]").toggle();
+ $("#dd_year_[% database %]_toggle").html("");
+});
+
+// Begin Togglen / Drilldown Medienart
+// Bild setzen
+$("#dd_mart_[% database %]_toggle").html("<b>[% msg.maketext("[Mehr]") %]</b>")
+// Zuerst verstecken
+$("#dd_mart_[% database %]").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#dd_mart_[% database %]_toggle").click(function(){
+ $("#dd_mart_[% database %]").toggle();
+ $("#dd_mart_[% database %]_toggle").html("");
+});
+
+// Begin Togglen / Drilldown Sprache
+// Bild setzen
+$("#dd_spr_[% database %]_toggle").html("<b>[% msg.maketext("[Mehr]") %]</b>")
+// Zuerst verstecken
+$("#dd_spr_[% database %]").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#dd_spr_[% database %]_toggle").click(function(){
+ $("#dd_spr_[% database %]").toggle();
+ $("#dd_spr_[% database %]_toggle").html("");
+});
+// Ende Togglen / Drilldown Sprache
+
+});
+
+</script>
 
 <table>
-<tr><td valign="top">
+<tr><th style="font-size:0.9em">[% msg.maketext("Treffermenge eingrenzen") %]&nbsp;</th></tr>
+<tr><td class="boxedclear" style="font-size:0.8em;">
+
+<table>
+
 [%         IF config.drilldown_option.categorized_aut && category_map.3.size > 0 %]
+<tr><td valign="top">
 <table width="100%">
 <tr><th>[% msg.maketext("nach Personen") %]</th></tr>
 <tr><td class="boxedclear">
 [%             FOREACH termitem IN category_map.3 ;
-                  LAST IF loop.count > 5 ;
+                  LAST IF loop.count > 25 ;
 %]
+[% IF category_map.3.size > 5 && loop.count == 5 %]
+<span id="dd_aut_[% database %]_toggle"></span>
+<div id="dd_aut_[% database %]">
+[% END %]
 <a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=ddper:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
+[% IF category_map.3.size > 5 %]
+</div>
+[% END %]
 </td></tr>
 </table>
-[%         END %]
 </td></tr>
+[%         END %]
+[%         IF config.drilldown_option.categorized_kor && category_map.7.size > 0 %]
 <tr><td valign="top">
+<table width="100%">
+<tr><th>[% msg.maketext("nach K&ouml;perschaften") %]</th></tr>
+<tr><td class="boxedclear">
+[%             FOREACH termitem IN category_map.7 ;
+                  LAST IF loop.count > 25 ;
+%]
+[% IF category_map.7.size > 5 && loop.count == 5 %]
+<span id="dd_kor_[% database %]_toggle"></span>
+<div id="dd_kor_[% database %]">
+[% END %]
+<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=ddcorp:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
+[%             END %]
+[% IF category_map.7.size > 5 %]
+</div>
+[% END %]
+</td></tr>
+</table>
+</td></tr>
+[%         END %]
 [%         IF config.drilldown_option.categorized_swt && category_map.1.size > 0 %]
+<tr><td valign="top">
 <table width="100%">
 <tr><th>[% msg.maketext("nach Themen") %]</th></tr>
 <tr><td class="boxedclear">
 [%             FOREACH termitem IN category_map.1 ;
-                  LAST IF loop.count > 5 ;
+                  LAST IF loop.count > 25 ;
 %]
+[% IF category_map.1.size > 5 && loop.count == 5 %]
+<span id="dd_swt_[% database %]_toggle"></span>
+<div id="dd_swt_[% database %]">
+[% END %]
 <a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=ddswt:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
+[% IF category_map.1.size > 5 %]
+</div>
+[% END %]
 </td></tr>
 </table>
-[%         END %]
 </td></tr>
-<tr><td valign="top">
+[%         END %]
 [%         IF config.drilldown_option.categorized_not && category_map.2.size > 0 %]
+<tr><td valign="top">
 <table width="100%">
 <tr><th>[% msg.maketext("nach Systematik") %]</th></tr>
 <tr><td class="boxedclear">
 [%             FOREACH termitem IN category_map.2 ;
-                  LAST IF loop.count > 5 ;
+                  LAST IF loop.count > 25 ;
  %]
+[% IF category_map.2.size > 5 && loop.count == 5 %]
+<span id="dd_not_[% database %]_toggle"></span>
+<div id="dd_not_[% database %]">
+[% END %]
 <a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=ddnot:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
+[% IF category_map.2.size > 5 %]
+</div>
+[% END %]
 </td></tr>
 </table>
-[%         END %]
 </td></tr>
-<tr><td valign="top">
+[%         END %]
 [%         IF config.drilldown_option.categorized_year && category_map.5.size > 0 %]
+<tr><td valign="top">
 <table width="100%">
 <tr><th>[% msg.maketext("nach Jahr") %]</th></tr>
 <tr><td class="boxedclear">
 [%             FOREACH termitem IN category_map.5 ;
-                  LAST IF loop.count > 5 ;
+                  LAST IF loop.count > 25 ;
  %]
+[% IF category_map.5.size > 5 && loop.count == 5 %]
+<span id="dd_year_[% database %]_toggle"></span>
+<div id="dd_year_[% database %]">
+[% END %]
 <a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=ddyear:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1%])<br />
 [%             END %]
+[% IF category_map.5.size > 5 %]
+</div>
+[% END %]
 </td></tr>
 </table>
-[%         END %]
 </td></tr>
-<tr><td valign="top">
+[%         END %]
 [%         IF config.drilldown_option.categorized_mart && category_map.4.size > 0 %]
+<tr><td valign="top">
 <table width="100%">
 <tr><th>[% msg.maketext("nach Medienart") %]</th></tr>
 <tr><td class="boxedclear">
 [%             FOREACH termitem IN category_map.4 ;
-                  LAST IF loop.count > 5 ;
+                  LAST IF loop.count > 25 ;
  %]
+[% IF category_map.4.size > 5 && loop.count == 5 %]
+<span id="dd_mart_[% database %]_toggle"></span>
+<div id="dd_mart_[% database %]">
+[% END %]
 <a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=ddtyp:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
+[% IF category_map.4.size > 5 %]
+</div>
+[% END %]
 </td></tr>
 </table>
-[%        END %]
 </td></tr>
-<tr><td valign="top">
+[%         END %]
 [%         IF config.drilldown_option.categorized_spr && category_map.6.size > 0 %]
+<tr><td valign="top">
 <table width="100%">
 <tr><th>[% msg.maketext("nach Sprache") %]</th></tr>
 <tr><td class="boxedclear">
 [%             FOREACH termitem IN category_map.6 ;
-                  LAST IF loop.count > 5 ;
+                  LAST IF loop.count > 25 ;
  %]
+[% IF category_map.6.size > 5 && loop.count == 5 %]
+<span id="dd_spr_[% database %]_toggle"></span>
+<div id="dd_spr_[% database %]">
+[% END %]
 <a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];sb=xapian;drilldown=1;dd_categorized=1;dd_cloud=1;searchprofile=1;dbauswahl=1;database=[% database %];fs=ddspr:[% termitem.2 %] [% lastquery %]">[% termitem.0 %]</a>&nbsp;([% termitem.1 %])<br />
 [%             END %]
+[% IF category_map.6.size > 5 %]
+</div>
+[% END %]
 </td></tr>
 </table>
-[%        END %]
 
 </td></tr>
+[%        END %]
 </table>
+
 </td></tr>
 </table>
 [%    END %]

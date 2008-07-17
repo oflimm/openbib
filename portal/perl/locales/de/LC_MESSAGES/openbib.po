@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2008-07-14 08:38+0200\n"
+"PO-Revision-Date: 2008-07-17 16:31+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -792,7 +792,7 @@ msgstr "Ausleih-Einstellungen"
 #: ../templates/database/ebooks/search_showtitset:364
 #: ../templates/database/einbaende/managecollection_tit_as_html:125
 #: ../templates/database/einbaende/search_showtitset:249
-#: ../templates/database/inst001/circset:26
+#: ../templates/database/inst001/circset:31
 #: ../templates/database/landschaft/search_showtitset:168
 #: ../templates/database/nationallizenzen/search_showtitset:370
 #: ../templates/database/portrait/search_showtitset:189
@@ -818,12 +818,12 @@ msgstr "Ausleihinformationen"
 #: ../templates/circset:16
 #: ../templates/database/einbaende/managecollection_tit_as_html:129
 #: ../templates/database/einbaende/search_showtitset:253
-#: ../templates/database/inst001/circset:29
+#: ../templates/database/inst001/circset:34
 msgid "Ausleihstatus"
 msgstr "Ausleihstatus"
 
-#: ../templates/circset:16 ../templates/database/inst001/circset:29
-#: ../templates/database/inst001/circset:98
+#: ../templates/circset:16 ../templates/database/inst001/circset:103
+#: ../templates/database/inst001/circset:34
 msgid "Ausleihsystem"
 msgstr "Ausleihsystem"
 
@@ -1016,8 +1016,8 @@ msgstr "Beschreibung"
 #: ../templates/database/einbaende/managecollection_tit_as_html:65
 #: ../templates/database/einbaende/search_showtitset:142
 #: ../templates/database/einbaende/search_showtitset:253
-#: ../templates/database/inst001/circset:29
-#: ../templates/database/inst001/circset:98
+#: ../templates/database/inst001/circset:103
+#: ../templates/database/inst001/circset:34
 #: ../templates/database/inst001/mexset:3
 #: ../templates/database/landschaft/search_showtitset:153
 #: ../templates/database/portrait/search_showtitset:172
@@ -2031,7 +2031,7 @@ msgstr "Erscheinungsverlauf  "
 msgid "Erweitere Recherchemaske"
 msgstr "Erweitere Recherchemaske"
 
-#: ../templates/database/inst001/circset:98
+#: ../templates/database/inst001/circset:103
 msgid "Erwerbungsstatus"
 msgstr "Erwerbungsstatus"
 
@@ -4705,7 +4705,7 @@ msgstr "Neuen Katalog anlegen"
 msgid "Neuen View anlegen"
 msgstr "Neuen View anlegen"
 
-#: ../templates/database/inst001/circset:95
+#: ../templates/database/inst001/circset:100
 msgid "Neuerwerbung"
 msgstr "Neuerwerbung"
 
@@ -5740,7 +5740,7 @@ msgstr "Sigel"
 #: ../templates/database/einbaende/managecollection_tit_as_html:65
 #: ../templates/database/einbaende/search_showtitset:142
 #: ../templates/database/einbaende/search_showtitset:253
-#: ../templates/database/inst001/circset:29
+#: ../templates/database/inst001/circset:34
 #: ../templates/database/inst001/mexset:3
 #: ../templates/database/landschaft/search_showtitset:153
 #: ../templates/database/portrait/search_showtitset:172
@@ -5910,7 +5910,7 @@ msgstr "Sprung zur Trefferliste im KUG"
 #: ../templates/database/einbaende/managecollection_tit_as_html:65
 #: ../templates/database/einbaende/search_showtitset:142
 #: ../templates/database/einbaende/search_showtitset:253
-#: ../templates/database/inst001/circset:29
+#: ../templates/database/inst001/circset:34
 #: ../templates/database/inst001/mexset:3
 #: ../templates/managecollection_tit_as_html:79
 #: ../templates/managecollection_tit_as_html_simple:46 ../templates/mexset:2
@@ -7720,7 +7720,7 @@ msgid "Trefferliste"
 msgstr "Trefferliste"
 
 #: ../templates/database/inst001/drilldown_categorized:3
-#: ../templates/drilldown_categorized:3
+#: ../templates/drilldown_categorized:88
 msgid "Treffermenge eingrenzen"
 msgstr "Treffermenge eingrenzen"
 
@@ -8174,8 +8174,8 @@ msgstr ""
 "Wegen eines unerwarteten Problems kann der KUG in den n&auml;chsten Minuten\n"
 "leider nicht genutzt werden."
 
-#: ../templates/circset:24 ../templates/database/inst001/circset:119
-#: ../templates/database/inst001/circset:80
+#: ../templates/circset:24 ../templates/database/inst001/circset:124
+#: ../templates/database/inst001/circset:85
 msgid "Weiter"
 msgstr "Weiter"
 
@@ -8631,6 +8631,13 @@ msgstr ""
 "Zusätzlich sind weitere <i>automatische Anreicherungen</i> u.a. für eine "
 "bessere Recherchierbarkeit der Titel integriert:"
 
+#: ../templates/drilldown_categorized:18 ../templates/drilldown_categorized:29
+#: ../templates/drilldown_categorized:40 ../templates/drilldown_categorized:51
+#: ../templates/drilldown_categorized:62 ../templates/drilldown_categorized:7
+#: ../templates/drilldown_categorized:73
+msgid "[Mehr]"
+msgstr "[Mehr]"
+
 #: ../templates/database/einbaende/search_showtitlist:60
 #: ../templates/database/einbaende/search_showtitlist_of_cnt:62
 #: ../templates/database/landschaft/search_showtitlist:58
@@ -8701,19 +8708,19 @@ msgstr "aufsteigend"
 msgid "aus:"
 msgstr "aus:"
 
-#: ../templates/database/inst001/circset:115
+#: ../templates/database/inst001/circset:120
 msgid "ausgeschieden"
 msgstr "ausgeschieden"
 
-#: ../templates/database/inst001/circset:113
+#: ../templates/database/inst001/circset:118
 msgid "beim Lieferanten reklamiert"
 msgstr "beim Lieferanten reklamiert"
 
-#: ../templates/database/inst001/circset:111
+#: ../templates/database/inst001/circset:116
 msgid "beim Lieferanten storniert"
 msgstr "beim Lieferanten storniert"
 
-#: ../templates/database/inst001/circset:107
+#: ../templates/database/inst001/circset:112
 msgid "bestellt beim Lieferanten"
 msgstr "bestellt beim Lieferanten"
 
@@ -8725,7 +8732,7 @@ msgstr "durchf&uuml;hren"
 msgid "gefunden werden."
 msgstr "gefunden werden."
 
-#: ../templates/database/inst001/circset:109
+#: ../templates/database/inst001/circset:114
 msgid "im Gesch&auml;ftsgang"
 msgstr "im Gesch&auml;ftsgang"
 
@@ -8803,7 +8810,7 @@ msgstr "nach Fert.Jahr"
 #: ../templates/database/landschaft/search_showtitlist:51
 #: ../templates/database/portrait/drilldown_categorized:52
 #: ../templates/database/portrait/search_showtitlist:51
-#: ../templates/drilldown_categorized:52
+#: ../templates/drilldown_categorized:180
 #: ../templates/litlists_manage_singlelist:86
 #: ../templates/litlists_show_singlelist:56
 #: ../templates/resultlists_showall:46
@@ -8823,10 +8830,14 @@ msgstr "nach Jahr"
 msgid "nach Jahrhundert"
 msgstr "nach Jahrhundert"
 
+#: ../templates/drilldown_categorized:117
+msgid "nach K&ouml;perschaften"
+msgstr "nach K&ouml;perschaften"
+
 #: ../templates/database/einbaende/drilldown_categorized:66
 #: ../templates/database/inst001/drilldown_categorized:70
 #: ../templates/database/portrait/drilldown_categorized:66
-#: ../templates/drilldown_categorized:66
+#: ../templates/drilldown_categorized:201
 msgid "nach Medienart"
 msgstr "nach Medienart"
 
@@ -8858,7 +8869,7 @@ msgstr "nach Person/Region"
 
 #: ../templates/database/inst001/drilldown_categorized:10
 #: ../templates/database/portrait/drilldown_categorized:10
-#: ../templates/drilldown_categorized:10
+#: ../templates/drilldown_categorized:96
 msgid "nach Personen"
 msgstr "nach Personen"
 
@@ -8915,17 +8926,17 @@ msgstr "nach Signatur"
 #: ../templates/database/einbaende/drilldown_categorized:80
 #: ../templates/database/inst001/drilldown_categorized:84
 #: ../templates/database/portrait/drilldown_categorized:80
-#: ../templates/drilldown_categorized:80
+#: ../templates/drilldown_categorized:222
 msgid "nach Sprache"
 msgstr "nach Sprache"
 
 #: ../templates/database/inst001/drilldown_categorized:42
-#: ../templates/drilldown_categorized:38
+#: ../templates/drilldown_categorized:159
 msgid "nach Systematik"
 msgstr "nach Systematik"
 
 #: ../templates/database/inst001/drilldown_categorized:24
-#: ../templates/drilldown_categorized:24
+#: ../templates/drilldown_categorized:138
 msgid "nach Themen"
 msgstr "nach Themen"
 

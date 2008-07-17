@@ -4,7 +4,7 @@ $(document).ready(function(){
 
 // Begin Togglen / Drilldown Personen
 // Bild setzen
-$("#dd_aut_[% database %]_toggle").html("<b>[% msg.maketext("[Mehr]") %]</b>")
+$("#dd_aut_[% database %]_toggle").html("<b>[Mehr]</b>")
 // Zuerst verstecken
 $("#dd_aut_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -15,7 +15,7 @@ $("#dd_aut_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Drilldown Koerperschaften
 // Bild setzen
-$("#dd_kor_[% database %]_toggle").html("<b>[% msg.maketext("[Mehr]") %]</b>")
+$("#dd_kor_[% database %]_toggle").html("<b>[Mehr]</b>")
 // Zuerst verstecken
 $("#dd_kor_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -26,7 +26,7 @@ $("#dd_kor_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Drilldown Schlagworte
 // Bild setzen
-$("#dd_swt_[% database %]_toggle").html("<b>[% msg.maketext("[Mehr]") %]</b>")
+$("#dd_swt_[% database %]_toggle").html("<b>[Mehr]</b>")
 // Zuerst verstecken
 $("#dd_swt_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -37,7 +37,7 @@ $("#dd_swt_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Drilldown Systematik
 // Bild setzen
-$("#dd_not_[% database %]_toggle").html("<b>[% msg.maketext("[Mehr]") %]</b>")
+$("#dd_not_[% database %]_toggle").html("<b>[Mehr]</b>")
 // Zuerst verstecken
 $("#dd_not_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -48,7 +48,7 @@ $("#dd_not_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Drilldown Jahr
 // Bild setzen
-$("#dd_year_[% database %]_toggle").html("<b>[% msg.maketext("[Mehr]") %]</b>")
+$("#dd_year_[% database %]_toggle").html("<b>[Mehr]</b>")
 // Zuerst verstecken
 $("#dd_year_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -59,7 +59,7 @@ $("#dd_year_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Drilldown Medienart
 // Bild setzen
-$("#dd_mart_[% database %]_toggle").html("<b>[% msg.maketext("[Mehr]") %]</b>")
+$("#dd_mart_[% database %]_toggle").html("<b>[Mehr]</b>")
 // Zuerst verstecken
 $("#dd_mart_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -70,7 +70,7 @@ $("#dd_mart_[% database %]_toggle").click(function(){
 
 // Begin Togglen / Drilldown Sprache
 // Bild setzen
-$("#dd_spr_[% database %]_toggle").html("<b>[% msg.maketext("[Mehr]") %]</b>")
+$("#dd_spr_[% database %]_toggle").html("<b>[Mehr]</b>")
 // Zuerst verstecken
 $("#dd_spr_[% database %]").hide();
 // und bei Klick Sichtbarkeit togglen

@@ -483,7 +483,7 @@ msgstr ""
 msgid "Ausleih-Einstellungen"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:364 ../templates/database/einbaende/managecollection_tit_as_html:125 ../templates/database/einbaende/search_showtitset:249 ../templates/database/inst001/circset:26 ../templates/database/landschaft/search_showtitset:168 ../templates/database/nationallizenzen/search_showtitset:370 ../templates/database/portrait/search_showtitset:189 ../templates/managecollection_tit_as_html:94 ../templates/managecollection_tit_as_html_simple:61 ../templates/search_showmulttitset:130 ../templates/search_showtitset:387
+#: ../templates/database/ebooks/search_showtitset:364 ../templates/database/einbaende/managecollection_tit_as_html:125 ../templates/database/einbaende/search_showtitset:249 ../templates/database/inst001/circset:31 ../templates/database/landschaft/search_showtitset:168 ../templates/database/nationallizenzen/search_showtitset:370 ../templates/database/portrait/search_showtitset:189 ../templates/managecollection_tit_as_html:94 ../templates/managecollection_tit_as_html_simple:61 ../templates/search_showmulttitset:130 ../templates/search_showtitset:387
 msgid "Ausleihe/Exemplare"
 msgstr ""
 
@@ -499,11 +499,11 @@ msgstr ""
 msgid "Ausleihinformationen"
 msgstr ""
 
-#: ../templates/circset:16 ../templates/database/einbaende/managecollection_tit_as_html:129 ../templates/database/einbaende/search_showtitset:253 ../templates/database/inst001/circset:29
+#: ../templates/circset:16 ../templates/database/einbaende/managecollection_tit_as_html:129 ../templates/database/einbaende/search_showtitset:253 ../templates/database/inst001/circset:34
 msgid "Ausleihstatus"
 msgstr ""
 
-#: ../templates/circset:16 ../templates/database/inst001/circset:29 ../templates/database/inst001/circset:98
+#: ../templates/circset:16 ../templates/database/inst001/circset:103 ../templates/database/inst001/circset:34
 msgid "Ausleihsystem"
 msgstr ""
 
@@ -644,7 +644,7 @@ msgstr ""
 msgid "Beschreibung"
 msgstr ""
 
-#: ../templates/circset:16 ../templates/database/einbaende/managecollection_tit_as_html:129 ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:142 ../templates/database/einbaende/search_showtitset:253 ../templates/database/inst001/circset:29 ../templates/database/inst001/circset:98 ../templates/database/inst001/mexset:3 ../templates/database/landschaft/search_showtitset:153 ../templates/database/portrait/search_showtitset:172 ../templates/managecollection_tit_as_html:79 ../templates/managecollection_tit_as_html_simple:46 ../templates/managecollection_tit_as_text:39 ../templates/mexset:2 ../templates/search_showmulttitset:109
+#: ../templates/circset:16 ../templates/database/einbaende/managecollection_tit_as_html:129 ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:142 ../templates/database/einbaende/search_showtitset:253 ../templates/database/inst001/circset:103 ../templates/database/inst001/circset:34 ../templates/database/inst001/mexset:3 ../templates/database/landschaft/search_showtitset:153 ../templates/database/portrait/search_showtitset:172 ../templates/managecollection_tit_as_html:79 ../templates/managecollection_tit_as_html_simple:46 ../templates/managecollection_tit_as_text:39 ../templates/mexset:2 ../templates/search_showmulttitset:109
 msgid "Besitzende Bibliothek"
 msgstr ""
 
@@ -1265,7 +1265,7 @@ msgstr ""
 msgid "Erweitere Recherchemaske"
 msgstr ""
 
-#: ../templates/database/inst001/circset:98
+#: ../templates/database/inst001/circset:103
 msgid "Erwerbungsstatus"
 msgstr ""
 
@@ -2374,7 +2374,7 @@ msgstr ""
 msgid "Neuen View anlegen"
 msgstr ""
 
-#: ../templates/database/inst001/circset:95
+#: ../templates/database/inst001/circset:100
 msgid "Neuerwerbung"
 msgstr ""
 
@@ -3018,7 +3018,7 @@ msgstr ""
 msgid "Sigel"
 msgstr ""
 
-#: ../templates/circset:16 ../templates/circulation:56 ../templates/circulation_orders:52 ../templates/circulation_remind:71 ../templates/circulation_reserv:52 ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:142 ../templates/database/einbaende/search_showtitset:253 ../templates/database/inst001/circset:29 ../templates/database/inst001/mexset:3 ../templates/database/landschaft/search_showtitset:153 ../templates/database/portrait/search_showtitset:172 ../templates/managecollection_tit_as_html:79 ../templates/mexset:2 ../templates/search_showmulttitset:109 ../templates/searchmask_query:35 ../templates/userprefs:211 ../templates/views/einbaende/searchmask:130 ../templates/views/inst501/searchmask_query:35 ../templates/views/portrait/searchmask_query:29 ../templates/views/richter/searchmask_query:29
+#: ../templates/circset:16 ../templates/circulation:56 ../templates/circulation_orders:52 ../templates/circulation_remind:71 ../templates/circulation_reserv:52 ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:142 ../templates/database/einbaende/search_showtitset:253 ../templates/database/inst001/circset:34 ../templates/database/inst001/mexset:3 ../templates/database/landschaft/search_showtitset:153 ../templates/database/portrait/search_showtitset:172 ../templates/managecollection_tit_as_html:79 ../templates/mexset:2 ../templates/search_showmulttitset:109 ../templates/searchmask_query:35 ../templates/userprefs:211 ../templates/views/einbaende/searchmask:130 ../templates/views/inst501/searchmask_query:35 ../templates/views/portrait/searchmask_query:29 ../templates/views/richter/searchmask_query:29
 msgid "Signatur"
 msgstr ""
 
@@ -3083,7 +3083,7 @@ msgstr ""
 msgid "Sprung zur Trefferliste im KUG"
 msgstr ""
 
-#: ../templates/circset:16 ../templates/database/einbaende/managecollection_tit_as_html:129 ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:142 ../templates/database/einbaende/search_showtitset:253 ../templates/database/inst001/circset:29 ../templates/database/inst001/mexset:3 ../templates/managecollection_tit_as_html:79 ../templates/managecollection_tit_as_html_simple:46 ../templates/mexset:2 ../templates/search_showmulttitset:109
+#: ../templates/circset:16 ../templates/database/einbaende/managecollection_tit_as_html:129 ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:142 ../templates/database/einbaende/search_showtitset:253 ../templates/database/inst001/circset:34 ../templates/database/inst001/mexset:3 ../templates/managecollection_tit_as_html:79 ../templates/managecollection_tit_as_html_simple:46 ../templates/mexset:2 ../templates/search_showmulttitset:109
 msgid "Standort"
 msgstr ""
 
@@ -4050,7 +4050,7 @@ msgstr ""
 msgid "Trefferliste"
 msgstr ""
 
-#: ../templates/database/inst001/drilldown_categorized:3 ../templates/drilldown_categorized:3
+#: ../templates/database/inst001/drilldown_categorized:3 ../templates/drilldown_categorized:88
 msgid "Treffermenge eingrenzen"
 msgstr ""
 
@@ -4311,7 +4311,7 @@ msgid ""
 "leider nicht genutzt werden."
 msgstr ""
 
-#: ../templates/circset:24 ../templates/database/inst001/circset:119 ../templates/database/inst001/circset:80
+#: ../templates/circset:24 ../templates/database/inst001/circset:124 ../templates/database/inst001/circset:85
 msgid "Weiter"
 msgstr ""
 
@@ -4559,6 +4559,10 @@ msgstr ""
 msgid "Zusätzlich sind weitere <i>automatische Anreicherungen</i> u.a. für eine bessere Recherchierbarkeit der Titel integriert:"
 msgstr ""
 
+#: ../templates/drilldown_categorized:18 ../templates/drilldown_categorized:29 ../templates/drilldown_categorized:40 ../templates/drilldown_categorized:51 ../templates/drilldown_categorized:62 ../templates/drilldown_categorized:7 ../templates/drilldown_categorized:73
+msgid "[Mehr]"
+msgstr ""
+
 #: ../templates/database/einbaende/search_showtitlist:60 ../templates/database/einbaende/search_showtitlist_of_cnt:62 ../templates/database/landschaft/search_showtitlist:58 ../templates/database/portrait/search_showtitlist:58 ../templates/litlists_manage_singlelist:94 ../templates/litlists_show_singlelist:64 ../templates/resultlists_showall:53 ../templates/resultlists_showall_sortall:56 ../templates/resultlists_showsinglepool:55 ../templates/search_showtitlist:61 ../templates/search_showtitlist_of_cnt:61 ../templates/searchmask_options:4 ../templates/views/einbaende/resultlists_showall:58 ../templates/views/einbaende/resultlists_showall_sortall:57 ../templates/views/einbaende/resultlists_showsinglepool:57 ../templates/views/einbaende/virtualsearch_result_start:58 ../templates/views/gdonck/searchmask_options:4 ../templates/views/gleuel/searchmask_options:4 ../templates/views/kapsel/resultlists_showall:53 ../templates/views/kapsel/resultlists_showsinglepool:55 ../templates/views/kapsel/search_showtitlist:61 ../templates/views/kempen/searchmask_options:4 ../templates/views/kevelaer/searchmask_options:4 ../templates/views/kug/searchmask_options:4 ../templates/views/kwinter/searchmask_options:4 ../templates/views/portrait/resultlists_showsinglepool:54 ../templates/views/portrait/searchmask_options:4 ../templates/views/rheinlandbib/searchmask_options:4 ../templates/views/xanten/searchmask_options:4 ../templates/virtualsearch_result_start:55
 msgid "absteigend"
 msgstr ""
@@ -4571,19 +4575,19 @@ msgstr ""
 msgid "aus:"
 msgstr ""
 
-#: ../templates/database/inst001/circset:115
+#: ../templates/database/inst001/circset:120
 msgid "ausgeschieden"
 msgstr ""
 
-#: ../templates/database/inst001/circset:113
+#: ../templates/database/inst001/circset:118
 msgid "beim Lieferanten reklamiert"
 msgstr ""
 
-#: ../templates/database/inst001/circset:111
+#: ../templates/database/inst001/circset:116
 msgid "beim Lieferanten storniert"
 msgstr ""
 
-#: ../templates/database/inst001/circset:107
+#: ../templates/database/inst001/circset:112
 msgid "bestellt beim Lieferanten"
 msgstr ""
 
@@ -4595,7 +4599,7 @@ msgstr ""
 msgid "gefunden werden."
 msgstr ""
 
-#: ../templates/database/inst001/circset:109
+#: ../templates/database/inst001/circset:114
 msgid "im Gesch&auml;ftsgang"
 msgstr ""
 
@@ -4650,7 +4654,7 @@ msgstr ""
 msgid "nach Fert.Jahr"
 msgstr ""
 
-#: ../templates/database/einbaende/drilldown_categorized:52 ../templates/database/einbaende/search_showtitlist_of_cnt:55 ../templates/database/inst001/drilldown_categorized:56 ../templates/database/landschaft/search_showtitlist:51 ../templates/database/portrait/drilldown_categorized:52 ../templates/database/portrait/search_showtitlist:51 ../templates/drilldown_categorized:52 ../templates/litlists_manage_singlelist:86 ../templates/litlists_show_singlelist:56 ../templates/resultlists_showall:46 ../templates/resultlists_showall_sortall:49 ../templates/resultlists_showsinglepool:48 ../templates/search_showtitlist:54 ../templates/search_showtitlist_of_cnt:54 ../templates/views/kapsel/resultlists_showall:46 ../templates/views/kapsel/resultlists_showsinglepool:48 ../templates/views/kapsel/search_showtitlist:54 ../templates/views/portrait/resultlists_showsinglepool:47 ../templates/virtualsearch_result_start:48
+#: ../templates/database/einbaende/drilldown_categorized:52 ../templates/database/einbaende/search_showtitlist_of_cnt:55 ../templates/database/inst001/drilldown_categorized:56 ../templates/database/landschaft/search_showtitlist:51 ../templates/database/portrait/drilldown_categorized:52 ../templates/database/portrait/search_showtitlist:51 ../templates/drilldown_categorized:180 ../templates/litlists_manage_singlelist:86 ../templates/litlists_show_singlelist:56 ../templates/resultlists_showall:46 ../templates/resultlists_showall_sortall:49 ../templates/resultlists_showsinglepool:48 ../templates/search_showtitlist:54 ../templates/search_showtitlist_of_cnt:54 ../templates/views/kapsel/resultlists_showall:46 ../templates/views/kapsel/resultlists_showsinglepool:48 ../templates/views/kapsel/search_showtitlist:54 ../templates/views/portrait/resultlists_showsinglepool:47 ../templates/virtualsearch_result_start:48
 msgid "nach Jahr"
 msgstr ""
 
@@ -4658,7 +4662,11 @@ msgstr ""
 msgid "nach Jahrhundert"
 msgstr ""
 
-#: ../templates/database/einbaende/drilldown_categorized:66 ../templates/database/inst001/drilldown_categorized:70 ../templates/database/portrait/drilldown_categorized:66 ../templates/drilldown_categorized:66
+#: ../templates/drilldown_categorized:117
+msgid "nach K&ouml;perschaften"
+msgstr ""
+
+#: ../templates/database/einbaende/drilldown_categorized:66 ../templates/database/inst001/drilldown_categorized:70 ../templates/database/portrait/drilldown_categorized:66 ../templates/drilldown_categorized:201
 msgid "nach Medienart"
 msgstr ""
 
@@ -4670,7 +4678,7 @@ msgstr ""
 msgid "nach Person/Region"
 msgstr ""
 
-#: ../templates/database/inst001/drilldown_categorized:10 ../templates/database/portrait/drilldown_categorized:10 ../templates/drilldown_categorized:10
+#: ../templates/database/inst001/drilldown_categorized:10 ../templates/database/portrait/drilldown_categorized:10 ../templates/drilldown_categorized:96
 msgid "nach Personen"
 msgstr ""
 
@@ -4686,15 +4694,15 @@ msgstr ""
 msgid "nach Signatur"
 msgstr ""
 
-#: ../templates/database/einbaende/drilldown_categorized:80 ../templates/database/inst001/drilldown_categorized:84 ../templates/database/portrait/drilldown_categorized:80 ../templates/drilldown_categorized:80
+#: ../templates/database/einbaende/drilldown_categorized:80 ../templates/database/inst001/drilldown_categorized:84 ../templates/database/portrait/drilldown_categorized:80 ../templates/drilldown_categorized:222
 msgid "nach Sprache"
 msgstr ""
 
-#: ../templates/database/inst001/drilldown_categorized:42 ../templates/drilldown_categorized:38
+#: ../templates/database/inst001/drilldown_categorized:42 ../templates/drilldown_categorized:159
 msgid "nach Systematik"
 msgstr ""
 
-#: ../templates/database/inst001/drilldown_categorized:24 ../templates/drilldown_categorized:24
+#: ../templates/database/inst001/drilldown_categorized:24 ../templates/drilldown_categorized:138
 msgid "nach Themen"
 msgstr ""
 

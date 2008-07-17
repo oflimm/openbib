@@ -37,14 +37,14 @@ An dieser Stelle entsteht der Virtuelle Katalog der Bibliothek von Elise und Hel
 <br />
 <br />
 
-<table width="100%" cellpadding="10">
+<table width="100%">
 <tr align="center">
-  <td><img src="/images/openbib/views/richter/EliseRichteralt.jpg" width="250" height="353" border="1"></td>
-  <td><img src="/images/openbib/views/richter/HeleneRichter1.jpg" width="250" height="353" border="1"> </td>
+  <td><img src="/images/openbib/views/richter/EliseRichteralt.jpg" width="250" height="353" border="1"><p /><span style="font-size:0.9em;text-align:center">&copy; Handschriftensammlung der Wien-Bibliothek</span></td>
+  <td><img src="/images/openbib/views/richter/HeleneRichter.jpg" width="250" height="353" border="1"><p /><span style="font-size:0.9em;text-align:center">&copy; &Ouml;sterreichische Nationalbibliothek</span></td>
 </tr>
 <tr align="center">
-  <td>Prof. Dr. Elise Richter</td>
-  <td>Dr. h.c. Helene Richter</td>
+  <td><span style="font-size:1.1em;text-align:center">Prof. Dr. Elise Richter</span></td>
+  <td><span style="font-size:1.1em;text-align:center">Dr. h.c. Helene Richter</span></td>
 </tr>
 </table>
 

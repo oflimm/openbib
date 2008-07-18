@@ -84,6 +84,7 @@
 ../templates/connector_permalink
 ../templates/connector_rss_item
 ../templates/corporate_banner
+../templates/database/audiosmlg/drilldown_categorized
 ../templates/database/ebooks/search_showtitset
 ../templates/database/ebooks/visible_categories_titset
 ../templates/database/einbaende/managecollection_tit_as_html

@@ -103,7 +103,7 @@ $("#dd_db_[% database %]_toggle").click(function(){
 <table>
 
 [% request_base = "sb=xapian;drilldown=1;dd_categorized=1;";
-   IF combineddbs ;
+   IF combinedbs ;
       request_base = "${request_base}combinedbs=1;";
       IF searchall ;
          request_base = "${request_base}searchall=1;";
@@ -116,7 +116,7 @@ $("#dd_db_[% database %]_toggle").click(function(){
       request_base = "${request_base}searchprofile=1;dbauswahl=1;database=${database};";
    END ;
 %] 
-[%         IF combineddbs == 1 && category_map.8.size > 0 %]
+[%         IF combinedbs == 1 && category_map.8.size > 0 %]
 <tr><td valign="top">
 <table width="100%">
 <tr><th id="dd_db_[% database %]_anchor">[% msg.maketext("nach Katalog") %]</th></tr>

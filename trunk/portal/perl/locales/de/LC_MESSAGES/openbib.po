@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2008-07-17 16:31+0200\n"
+"PO-Revision-Date: 2008-07-18 09:42+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2324,7 +2324,7 @@ msgstr "Freie Suche"
 #: ../templates/views/kevelaer/searchmask:140
 #: ../templates/views/kevelaer/searchmask_simple:126
 #: ../templates/views/kug/searchmask:320
-#: ../templates/views/kug/searchmask_simple:128
+#: ../templates/views/kug/searchmask_simple:130
 #: ../templates/views/kwinter/searchmask:140
 #: ../templates/views/kwinter/searchmask_simple:126
 #: ../templates/views/landschaft/searchmask:109
@@ -2399,7 +2399,7 @@ msgstr ""
 #: ../templates/views/inst460/searchmask_simple:109
 #: ../templates/views/kempen/searchmask_simple:76
 #: ../templates/views/kevelaer/searchmask_simple:76
-#: ../templates/views/kug/searchmask_simple:85
+#: ../templates/views/kug/searchmask_simple:84
 #: ../templates/views/kwinter/searchmask_simple:76
 #: ../templates/views/rheinlandbib/searchmask_simple:68
 #: ../templates/views/richter/searchmask_simple:77
@@ -2509,7 +2509,7 @@ msgstr ""
 "per E-Mail zusenden lassen"
 
 #. ("<a href=\"http://www.ub.uni-koeln.de/service/kurse/kug/index_ger.html\" target=\"_blank\">","</a>")
-#: ../templates/views/kug/searchmask_simple:126
+#: ../templates/views/kug/searchmask_simple:128
 msgid ""
 "Haben Sie Rechercheprobleme?!? Wollen Sie den KUG besser kennenlernen und "
 "effizienter nutzen?! Wir bieten laufend %1KUG-Schulungen%2 an!"
@@ -2735,7 +2735,7 @@ msgstr ""
 #: ../templates/views/kevelaer/searchmask_simple:95
 #: ../templates/views/kug/searchmask:180 ../templates/views/kug/searchmask:199
 #: ../templates/views/kug/searchmask:308
-#: ../templates/views/kug/searchmask_simple:97
+#: ../templates/views/kug/searchmask_simple:99
 #: ../templates/views/kwinter/searchmask:125
 #: ../templates/views/kwinter/searchmask:129
 #: ../templates/views/kwinter/searchmask:87
@@ -3007,7 +3007,7 @@ msgstr "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
 #: ../templates/views/kevelaer/searchmask_simple:95
 #: ../templates/views/kug/searchmask:180 ../templates/views/kug/searchmask:199
 #: ../templates/views/kug/searchmask:308
-#: ../templates/views/kug/searchmask_simple:97
+#: ../templates/views/kug/searchmask_simple:99
 #: ../templates/views/kwinter/searchmask:129
 #: ../templates/views/kwinter/searchmask:93
 #: ../templates/views/kwinter/searchmask_simple:95
@@ -3336,7 +3336,7 @@ msgstr "In Google BookSearch vorhanden?"
 #: ../templates/views/kevelaer/searchmask_simple:95
 #: ../templates/views/kug/searchmask:180 ../templates/views/kug/searchmask:199
 #: ../templates/views/kug/searchmask:308
-#: ../templates/views/kug/searchmask_simple:97
+#: ../templates/views/kug/searchmask_simple:99
 #: ../templates/views/kwinter/searchmask:129
 #: ../templates/views/kwinter/searchmask:93
 #: ../templates/views/kwinter/searchmask_simple:95
@@ -4378,7 +4378,7 @@ msgstr "Los"
 #: ../templates/views/kevelaer/searchmask_simple:95
 #: ../templates/views/kug/searchmask:180 ../templates/views/kug/searchmask:199
 #: ../templates/views/kug/searchmask:308
-#: ../templates/views/kug/searchmask_simple:97
+#: ../templates/views/kug/searchmask_simple:99
 #: ../templates/views/kwinter/searchmask:125
 #: ../templates/views/kwinter/searchmask:129
 #: ../templates/views/kwinter/searchmask:87
@@ -5113,7 +5113,7 @@ msgstr "Richter-Systematik"
 #: ../templates/views/inst460/searchmask_simple:170
 #: ../templates/views/kempen/searchmask_simple:107
 #: ../templates/views/kevelaer/searchmask_simple:107
-#: ../templates/views/kug/searchmask_simple:108
+#: ../templates/views/kug/searchmask_simple:110
 #: ../templates/views/kwinter/searchmask_simple:107
 #: ../templates/views/rheinlandbib/searchmask_simple:99
 #: ../templates/views/richter/searchmask_simple:138
@@ -5352,14 +5352,14 @@ msgstr ""
 "Katalogen suchen</a>."
 
 #: ../templates/views/kug/searchmask:158
-#: ../templates/views/kug/searchmask_simple:72
+#: ../templates/views/kug/searchmask_simple:71
 msgid "Sie haben JavaScript deaktiviert"
 msgstr "Sie haben JavaScript deaktiviert"
 
 #. ("<a href=\"${config.startopac_loc}?view=${view}\" target=\"_parent\">","</a>")
 #. ("<a href=\"${startopac_loc}?view=\" target=\"_top\"","</a>")
 #: ../templates/views/kug/searchmask:160
-#: ../templates/views/kug/searchmask_simple:74
+#: ../templates/views/kug/searchmask_simple:73
 msgid ""
 "Sie haben JavaScript in Ihrem Browser\n"
 "deaktiviert. Daher k&ouml;nnen Sie auf dieser Seite die Profilauswahl\n"
@@ -7719,8 +7719,9 @@ msgstr "Treffer-, Merk- und Literaturlisten"
 msgid "Trefferliste"
 msgstr "Trefferliste"
 
+#: ../templates/database/audiosmlg/drilldown_categorized:100
 #: ../templates/database/inst001/drilldown_categorized:3
-#: ../templates/drilldown_categorized:88
+#: ../templates/drilldown_categorized:100
 msgid "Treffermenge eingrenzen"
 msgstr "Treffermenge eingrenzen"
 
@@ -7843,7 +7844,7 @@ msgstr "Um sich wieder einzuloggen folgen Sie bitte %1diesem Link%2."
 #: ../templates/views/inst460/searchmask_simple:186
 #: ../templates/views/inst501/searchmask:142
 #: ../templates/views/kug/searchmask:221
-#: ../templates/views/kug/searchmask_simple:124
+#: ../templates/views/kug/searchmask_simple:126
 msgid "Umfang des KUG: %1 Titel in %2 Katalogen"
 msgstr "Umfang des KUG: %1 Titel in %2 Katalogen"
 
@@ -8601,7 +8602,7 @@ msgstr "Zugriff &uuml;ber OLWS"
 #: ../templates/views/kevelaer/searchmask:65
 #: ../templates/views/kevelaer/searchmask_simple:113
 #: ../templates/views/kug/searchmask:150
-#: ../templates/views/kug/searchmask_simple:114
+#: ../templates/views/kug/searchmask_simple:116
 #: ../templates/views/kwinter/searchmask:65
 #: ../templates/views/kwinter/searchmask_simple:113
 #: ../templates/views/landschaft/searchmask:49
@@ -8630,13 +8631,6 @@ msgid ""
 msgstr ""
 "Zusätzlich sind weitere <i>automatische Anreicherungen</i> u.a. für eine "
 "bessere Recherchierbarkeit der Titel integriert:"
-
-#: ../templates/drilldown_categorized:18 ../templates/drilldown_categorized:29
-#: ../templates/drilldown_categorized:40 ../templates/drilldown_categorized:51
-#: ../templates/drilldown_categorized:62 ../templates/drilldown_categorized:7
-#: ../templates/drilldown_categorized:73
-msgid "[Mehr]"
-msgstr "[Mehr]"
 
 #: ../templates/database/einbaende/search_showtitlist:60
 #: ../templates/database/einbaende/search_showtitlist_of_cnt:62
@@ -8784,6 +8778,10 @@ msgstr ""
 "mit der Basisklassifikation. Darüber lassen sich nun in\n"
 "      einem Katalog andere thematisch benachbarte Titel finden."
 
+#: ../templates/database/audiosmlg/drilldown_categorized:150
+msgid "nach Album"
+msgstr "nach Album"
+
 #: ../templates/database/portrait/drilldown_categorized:38
 msgid "nach Beruf/Weltanschauung"
 msgstr "nach Beruf/Weltanschauung"
@@ -8804,13 +8802,22 @@ msgstr "nach Einband"
 msgid "nach Fert.Jahr"
 msgstr "nach Fert.Jahr"
 
+#: ../templates/database/audiosmlg/drilldown_categorized:192
+msgid "nach Genre"
+msgstr "nach Genre"
+
+#: ../templates/database/audiosmlg/drilldown_categorized:129
+msgid "nach Interpret/Gruppe"
+msgstr "nach Interpret/Gruppe"
+
+#: ../templates/database/audiosmlg/drilldown_categorized:213
 #: ../templates/database/einbaende/drilldown_categorized:52
 #: ../templates/database/einbaende/search_showtitlist_of_cnt:55
 #: ../templates/database/inst001/drilldown_categorized:56
 #: ../templates/database/landschaft/search_showtitlist:51
 #: ../templates/database/portrait/drilldown_categorized:52
 #: ../templates/database/portrait/search_showtitlist:51
-#: ../templates/drilldown_categorized:180
+#: ../templates/drilldown_categorized:213
 #: ../templates/litlists_manage_singlelist:86
 #: ../templates/litlists_show_singlelist:56
 #: ../templates/resultlists_showall:46
@@ -8830,14 +8837,20 @@ msgstr "nach Jahr"
 msgid "nach Jahrhundert"
 msgstr "nach Jahrhundert"
 
-#: ../templates/drilldown_categorized:117
+#: ../templates/drilldown_categorized:150
 msgid "nach K&ouml;perschaften"
 msgstr "nach K&ouml;perschaften"
 
+#: ../templates/database/audiosmlg/drilldown_categorized:108
+#: ../templates/drilldown_categorized:108
+msgid "nach Katalog"
+msgstr "nach Katalog"
+
+#: ../templates/database/audiosmlg/drilldown_categorized:234
 #: ../templates/database/einbaende/drilldown_categorized:66
 #: ../templates/database/inst001/drilldown_categorized:70
 #: ../templates/database/portrait/drilldown_categorized:66
-#: ../templates/drilldown_categorized:201
+#: ../templates/drilldown_categorized:234
 msgid "nach Medienart"
 msgstr "nach Medienart"
 
@@ -8869,7 +8882,7 @@ msgstr "nach Person/Region"
 
 #: ../templates/database/inst001/drilldown_categorized:10
 #: ../templates/database/portrait/drilldown_categorized:10
-#: ../templates/drilldown_categorized:96
+#: ../templates/drilldown_categorized:129
 msgid "nach Personen"
 msgstr "nach Personen"
 
@@ -8923,20 +8936,22 @@ msgstr "nach Regionen"
 msgid "nach Signatur"
 msgstr "nach Signatur"
 
+#: ../templates/database/audiosmlg/drilldown_categorized:255
 #: ../templates/database/einbaende/drilldown_categorized:80
 #: ../templates/database/inst001/drilldown_categorized:84
 #: ../templates/database/portrait/drilldown_categorized:80
-#: ../templates/drilldown_categorized:222
+#: ../templates/drilldown_categorized:255
 msgid "nach Sprache"
 msgstr "nach Sprache"
 
 #: ../templates/database/inst001/drilldown_categorized:42
-#: ../templates/drilldown_categorized:159
+#: ../templates/drilldown_categorized:192
 msgid "nach Systematik"
 msgstr "nach Systematik"
 
+#: ../templates/database/audiosmlg/drilldown_categorized:171
 #: ../templates/database/inst001/drilldown_categorized:24
-#: ../templates/drilldown_categorized:138
+#: ../templates/drilldown_categorized:171
 msgid "nach Themen"
 msgstr "nach Themen"
 

@@ -256,6 +256,9 @@ my $count = 1;
         # ID des Satzes recherchierbar machen
         $doc->add_term("Q".$s_id);
 
+        # Katalogname des Satzes recherchierbar machen
+        $doc->add_term("D8".$database);
+
         foreach my $tokinfo_ref (@$tokinfos_ref) {
 
             if ($tokinfo_ref->{type} eq 'index'){
@@ -361,14 +364,22 @@ my $count = 1;
                 type => 'spr',
             },
             {
-                # Sprache
+                # Koerperschaft
                 id   => 7,
                 type => 'kor',
+            },
+            {
+                # Katalog
+                id   => 8,
+                type => 'database',
             },
             
         ];
         
         foreach my $type_ref (@{$value_type_ref}){
+            # Datenbankname
+            $doc->add_value($type_ref->{id},encode_utf8($database)) if ($type_ref->{type} eq "database" && $database);
+            
             next if (!exists $normdata{$s_id}->{$type_ref->{type}});
 
             my %seen_terms = ();

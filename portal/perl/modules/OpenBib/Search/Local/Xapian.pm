@@ -192,6 +192,7 @@ sub initial_search {
     $qp->add_prefix('ddyear'  ,'D5');
     $qp->add_prefix('ddspr'   ,'D6');
     $qp->add_prefix('ddcorp'  ,'D7');
+    $qp->add_prefix('dddb'    ,'D8');
     
     my $category_map_ref = {};
     my $enq       = $dbh->enquire($qp->parse_query($querystring,Search::Xapian::FLAG_WILDCARD|Search::Xapian::FLAG_LOVEHATE|Search::Xapian::FLAG_BOOLEAN));
@@ -206,6 +207,8 @@ sub initial_search {
     push @decider_types, 4 if ($config->{drilldown_option}{categorized_mart});
     push @decider_types, 5 if ($config->{drilldown_option}{categorized_year});
     push @decider_types, 6 if ($config->{drilldown_option}{categorized_spr});
+    push @decider_types, 7 if ($config->{drilldown_option}{categorized_kor});
+    push @decider_types, 8;# if ($config->{drilldown_option}{categorized_database});
 
     my $decider_ref = sub {
       foreach my $value (@decider_types){

@@ -134,6 +134,13 @@ sub load_full_record {
             or $logger->error_die($DBI::errstr);
         $local_dbh = 1;
     }
+
+    unless (defined $self->{id} && defined $self->{database}){
+        ($self->{_normset},$self->{_mexset},$self->{_circset},$self->{_exists})=({},(),[],$record_exists);
+
+        $logger->error("Incomplete Record-Information Id: $self->{id} Database: $self->{database}");
+        return $self;
+    }
     
     # Titelkategorien
     {

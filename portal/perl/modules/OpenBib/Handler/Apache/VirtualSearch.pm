@@ -115,7 +115,6 @@ sub handler {
     my $sb            = $query->param('sb')            || 'sql'; # Search backend
     my $st            = $query->param('st')            || '';    # Search type (1=simple,2=complex)    
     my $drilldown             = $query->param('drilldown')      || 0;     # Drill-Down?
-    my $drilldown_cloud       = $query->param('dd_cloud')       || 0;     # Cloud?
     my $drilldown_categorized = $query->param('dd_categorized') || 0;     # Categorized?
 
     my $queryoptions = OpenBib::QueryOptions->instance($query);
@@ -126,9 +125,7 @@ sub handler {
 
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
     my $searchquery = OpenBib::SearchQuery->instance;
-
-    $searchquery->set_from_apache_request($r);
-
+    
     my $is_orgunit=0;
 
   ORGUNIT_SEARCH:
@@ -261,13 +258,23 @@ sub handler {
 
     my $queryalreadyexists = 0;
     
-    # Abspeichern des Query und Generierung der Queryid
-    if ($session->{ID} ne "-1") {
-        ($queryalreadyexists,$queryid) = $session->get_queryid({
-            databases   => \@databases,
-            hitrange    => $hitrange,
-        });
+    if ($queryid){
+        $searchquery->load({sessionID => $session->{ID}, queryid => $queryid});
+
+        $queryalreadyexists = 1;
     }
+    else {
+        $searchquery->set_from_apache_request($r,\@databases);
+
+        # Abspeichern des Query und Generierung der Queryid
+        if ($session->{ID} ne "-1") {
+            ($queryalreadyexists,$queryid) = $session->get_queryid({
+                databases   => \@databases,
+                hitrange    => $hitrange,
+            });
+        }
+    }
+        
     # BEGIN Index
     ####################################################################
     # Wenn ein kataloguebergreifender Index ausgewaehlt wurde
@@ -643,7 +650,9 @@ sub handler {
     my $atime=new Benchmark;
 
     # Array aus DB-Name und Titel-ID zur Navigation
-    my @resultset  = ();
+    my @resultset   = ();
+    my @resultlists = ();
+
     my $fallbacksb = "";
 
 #    my $cacherequest=$session->{dbh}->prepare("insert into searchresults values (?,?,?,?,?)") or $logger->error($DBI::errstr);
@@ -719,28 +728,26 @@ sub handler {
                 
                 if ($fullresultcount >= 1) {
                     
-                    my $rset=Search::Xapian::RSet->new() if ($drilldown && $drilldown_cloud);
+                    my $range_start = $offset;
+                    my $range_end   = $offset+$hitrange;
                     my $mcount=0;
                     
                     foreach my $match ($request->matches) {
-                        # Fuer Drilldowns (Tag-Cloud) werden die ersten
-                        # 200 Treffer analysiert
-                        last if ($drilldown && $drilldown_cloud && $mcount >= 200);
-                        
-                        $rset->add_document($match->get_docid) if ($drilldown && $drilldown_cloud);
-                        # Es werden immer nur $hitrange Titelinformationen
-                        # zur Ausgabe aus dem MSet herausgeholt
-                        if ($mcount < $hitrange) {
-                            my $document        = $match->get_document();
-                            my $titlistitem_raw = pack "H*", $document->get_data();
-                            my $titlistitem_ref = Storable::thaw($titlistitem_raw);
-                            
-                            $recordlist->add(new OpenBib::Record::Title({database => $titlistitem_ref->{database}, id => $titlistitem_ref->{id}})->set_brief_normdata_from_storable($titlistitem_ref));
+                        if ($mcount <  $range_start){
+                            $mcount++;
+                            next;
                         }
+
+                        last if ($mcount >= $range_end);
+
+                        my $document        = $match->get_document();
+                        my $titlistitem_raw = pack "H*", $document->get_data();
+                        my $titlistitem_ref = Storable::thaw($titlistitem_raw);
+                        
+                        $recordlist->add(new OpenBib::Record::Title({database => $titlistitem_ref->{database}, id => $titlistitem_ref->{id}})->set_brief_normdata_from_storable($titlistitem_ref));
+
                         $mcount++;
                     }
-                    
-                    my $termweight_ref={};
                     
                     my $drilldowntime;
                     
@@ -778,40 +785,7 @@ sub handler {
                                             @{$contents_ref};
                             }
                             
-                        }
-                        
-                        if ($drilldown_cloud) {
-                            my $esetrange = ($fullresultcount < 50)?$fullresultcount-1:200;
-                            my $eterms    = $request->enq->get_eset($esetrange,$rset);
-                            my $iter=$eterms->begin();
-                            
-                            while ($iter != $eterms->end()) {
-                                my $term   = $iter->get_termname();
-                                my $weight = $iter->get_weight();
-                                
-                                $logger->debug("Got relevant term $term with weight $weight");
-                                my $thisterm = $term;
-                                
-                                if ($term=~/X\d+(.+)/) {
-                                    $thisterm=$1;
-                                }
-                                
-                                if (exists $termweight_ref->{$thisterm}) {
-                                    $termweight_ref->{$thisterm}+=$weight;
-                                }
-                                else {
-                                    $termweight_ref->{$thisterm}=$weight;
-                                }
-                                
-                                $iter++;
-                            }
-                            
-                            {
-                                my $ddbtime       = new Benchmark;
-                                my $ddtimeall     = timediff($ddbtime,$ddatime);
-                                $logger->debug("ESet-Time: ".timestr($ddtimeall,"nop"));
-                            }
-                        }
+                        }                        
                         
                         $logger->debug(YAML::Dump($recordlist->to_list));
                         
@@ -823,10 +797,30 @@ sub handler {
                     
                     $recordlist->sort({order=>$sortorder,type=>$sorttype});
                     
+                    # Weitere Treffer Cachen.
+                    
+                    $session->set_searchresult({
+                        queryid    => $queryid,
+                        recordlist => $recordlist,
+                        database   => 'combined',
+                        offset     => $offset,
+                        hitrange   => $hitrange,
+                    });
                     
                     # Nach der Sortierung in Resultset eintragen zur spaeteren Navigation
                     push @resultset, @{$recordlist->to_ids};
+
+                    push @resultlists, {
+                        database   => 'combined',
+                        recordlist => $recordlist,
+                    };
                     
+                    my @offsets = $session->get_resultlists_offsets({
+                        database  => 'combined',
+                        queryid   => $queryid,
+                        hitrange  => $hitrange,
+                    });
+
                     my $treffer=$recordlist->get_size();
                     
                     my $itemtemplatename=$config->{tt_virtualsearch_result_combined_tname};
@@ -852,12 +846,16 @@ sub handler {
                     my $ttdata={
                         view            => $view,
                         sessionID       => $session->{ID},
+
+                        searchall       => $searchall,
                         
                         dbinfotable     => $dbinfotable,
+
+                        searchquery     => $searchquery,
                         
                         treffer         => $treffer,
                         
-#                        database        => $database,
+                        #databases       => \@databases,
                         queryid         => $queryid,
                         
                         category_map    => $category_map_ref,
@@ -867,11 +865,12 @@ sub handler {
                         
                         qopts           => $queryoptions->get_options,
                         drilldown             => $drilldown,
-                        drilldown_cloud       => $drilldown_cloud,
                         drilldown_categorized => $drilldown_categorized,
-                        
-                        cloud           => gen_cloud_absolute({dbh => $dbh, term_ref => $termweight_ref}),
-                        
+
+                        offset         => $offset,
+                        hitrange       => $hitrange,
+                        offsets        => \@offsets,
+
                         lastquery       => $request->querystring,
                         sorttype        => $sorttype,
                         sortorder       => $sortorder,
@@ -1057,15 +1056,9 @@ sub handler {
 
                         if ($fullresultcount >= 1) {
 
-                            my $rset=Search::Xapian::RSet->new() if ($drilldown && $drilldown_cloud);
                             my $mcount=0;
 
                             foreach my $match ($request->matches) {
-                                # Fuer Drilldowns (Tag-Cloud) werden die ersten
-                                # 200 Treffer analysiert
-                                last if ($drilldown && $drilldown_cloud && $mcount >= 200);
-
-                                $rset->add_document($match->get_docid) if ($drilldown && $drilldown_cloud);
                                 # Es werden immer nur $hitrange Titelinformationen
                                 # zur Ausgabe aus dem MSet herausgeholt
                                 if ($mcount < $hitrange) {
@@ -1117,38 +1110,6 @@ sub handler {
                                     }
 
                                 }
-
-                                if ($drilldown_cloud) {
-                                    my $esetrange = ($fullresultcount < 50)?$fullresultcount-1:200;
-                                    my $eterms    = $request->enq->get_eset($esetrange,$rset);
-                                    my $iter=$eterms->begin();
-                                
-                                    while ($iter != $eterms->end()) {
-                                        my $term   = $iter->get_termname();
-                                        my $weight = $iter->get_weight();
-                                    
-                                        $logger->debug("Got relevant term $term with weight $weight");
-                                        my $thisterm = $term;
-                                    
-                                        if ($term=~/X\d+(.+)/) {
-                                            $thisterm=$1;
-                                        }
-
-                                        if (exists $termweight_ref->{$thisterm}) {
-                                            $termweight_ref->{$thisterm}+=$weight;
-                                        } else {
-                                            $termweight_ref->{$thisterm}=$weight;
-                                        }
-                                    
-                                        $iter++;
-                                    }
-
-                                    {
-                                        my $ddbtime       = new Benchmark;
-                                        my $ddtimeall     = timediff($ddbtime,$ddatime);
-                                        $logger->debug("ESet-Time: ".timestr($ddtimeall,"nop"));
-                                    }
-                                }
                             
                                 $logger->debug(YAML::Dump($recordlist->to_list));
 
@@ -1193,7 +1154,8 @@ sub handler {
                             my $ttdata={
                                 view            => $view,
                                 sessionID       => $session->{ID},
-                            
+
+                                dbinfotable     => $dbinfotable,
                                 dbinfo          => $dbinfotable->{dbinfo}{$database},
                             
                                 treffer         => $treffer,
@@ -1208,7 +1170,6 @@ sub handler {
                             
                                 qopts           => $queryoptions->get_options,
                                 drilldown             => $drilldown,
-                                drilldown_cloud       => $drilldown_cloud,
                                 drilldown_categorized => $drilldown_categorized,
 
                                 cloud           => gen_cloud_absolute({dbh => $dbh, term_ref => $termweight_ref}),

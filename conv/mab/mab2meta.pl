@@ -413,6 +413,56 @@ my $titdefs_ref = {
         mult   => 1,
         ref    => 'swt',
     },
+    '902' => {            # schlagwoerter und schlagwortketten
+        newcat => '0710', # schlagwoerter und schlagwortketten
+        mult   => 1,
+        ref    => 'swt',
+    },
+    '907' => {            # schlagwoerter und schlagwortketten
+        newcat => '0710', # schlagwoerter und schlagwortketten
+        mult   => 1,
+        ref    => 'swt',
+    },
+    '912' => {            # schlagwoerter und schlagwortketten
+        newcat => '0710', # schlagwoerter und schlagwortketten
+        mult   => 1,
+        ref    => 'swt',
+    },
+    '917' => {            # schlagwoerter und schlagwortketten
+        newcat => '0710', # schlagwoerter und schlagwortketten
+        mult   => 1,
+        ref    => 'swt',
+    },
+    '922' => {            # schlagwoerter und schlagwortketten
+        newcat => '0710', # schlagwoerter und schlagwortketten
+        mult   => 1,
+        ref    => 'swt',
+    },
+    '927' => {            # schlagwoerter und schlagwortketten
+        newcat => '0710', # schlagwoerter und schlagwortketten
+        mult   => 1,
+        ref    => 'swt',
+    },
+    '932' => {            # schlagwoerter und schlagwortketten
+        newcat => '0710', # schlagwoerter und schlagwortketten
+        mult   => 1,
+        ref    => 'swt',
+    },
+    '937' => {            # schlagwoerter und schlagwortketten
+        newcat => '0710', # schlagwoerter und schlagwortketten
+        mult   => 1,
+        ref    => 'swt',
+    },
+    '942' => {            # schlagwoerter und schlagwortketten
+        newcat => '0710', # schlagwoerter und schlagwortketten
+        mult   => 1,
+        ref    => 'swt',
+    },
+    '947' => {            # schlagwoerter und schlagwortketten
+        newcat => '0710', # schlagwoerter und schlagwortketten
+        mult   => 1,
+        ref    => 'swt',
+    },
     '750' => {            # Abstrakt 
         newcat => '0750',  # Abstrakt
         mult   => 1,
@@ -464,6 +514,12 @@ foreach my $rawrec (@mab2titdata){
 
         if ($category =~ /^540$/){
             $content=~s/^ISBN //;
+        }
+
+        if ($category =~ /^9[01234][27]$/){
+            $content=~s/^\s+?\|//;
+            $content=~s/^\d*\s+\d{7}-\d\s+//;
+            $content=~s/^\s+?\w+?\s+//;
         }
 
         # Standard-Konvertierung mit perkonv

@@ -52,6 +52,7 @@ sub _new_instance {
     my $logger = get_logger();
 
     my $self = {
+        _databases => [],
         _searchquery => {
             fs   => {
                 norm => '',
@@ -132,7 +133,7 @@ sub _new_instance {
 }
 
 sub set_from_apache_request {
-    my ($self,$r)=@_;
+    my ($self,$r,$dbases_ref)=@_;
     
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -478,6 +479,10 @@ sub set_from_apache_request {
 			   };
     }
 
+    if (defined $dbases_ref){
+        $self->{_databases}=$dbases_ref;
+    }
+    
     return $self;
 }
 
@@ -500,7 +505,7 @@ sub load  {
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $idnresult=$dbh->prepare("select query,hits from queries where sessionID = ? and queryid = ?") or $logger->error($DBI::errstr);
+    my $idnresult=$dbh->prepare("select query,hits,dbases from queries where sessionID = ? and queryid = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($sessionID,$queryid) or $logger->error($DBI::errstr);
     my $res = $idnresult->fetchrow_hashref();
 
@@ -508,6 +513,9 @@ sub load  {
     $self->{_searchquery} = Storable::thaw(pack "H*", decode_utf8($res->{query}));
     $self->{_hits}        = decode_utf8($res->{'hits'});
 
+    my @databases         = split("||",$res->{dbases});
+    $self->{_databases}   = \@databases;
+    
     $idnresult->finish();
 
     return $self;
@@ -530,6 +538,12 @@ sub get_id {
     my ($self)=@_;
 
     return $self->{_id};
+}
+
+sub get_databases {
+    my ($self)=@_;
+
+    return $self->{_databases};
 }
 
 sub get_searchfield {

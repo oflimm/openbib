@@ -1,9 +1,9 @@
 [%#-
 #######################################################################
 #
-# Templatename: virtualsearch_result_item
+# Templatename: virtualsearch_result_combined
 #
-# Typ         : Mastertemplate (2/3)
+# Typ         : Mastertemplate (optional 2/3)
 #
 # Aufgabe:
 #
@@ -11,8 +11,25 @@
 #
 #######################################################################
 -%]
+[%# USE dumper;dumper.dump(offsets) %]
 <!-- Beginn Result Item -->
-<tr class="titlerow"><td>&nbsp;</td><td colspan="3">[%- IF treffer == qopts.hitrange -%]<b>[1 - [% qopts.hitrange %]]</b>&nbsp;<a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];combined=1;queryid=[% queryid %];action=getnext;offset=[% qopts.hitrange %];hitrange=[% qopts.hitrange %];sb=[% qopts.sb %]">[weitere Treffer...]</a>[% END %]</td><td align="right" colspan="2"><strong>[% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %]</strong></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td><td rowspan="[% IF fullresultcount <= qopts.hitrange %][% fullresultcount+3 %][% ELSE %][% qopts.hitrange+4 %][% END %]" valign="top" class="drilldown_categorized">[% IF drilldown && fullresultcount >= 10 && fullresultcount <= config.xapian_option.maxmatch %][% PROCESS common/subtemplate name="drilldown_categorized" %][% PROCESS common/subtemplate name="drilldown_cloud" %][% END %]</td></tr>
+<!-- <tr class="titlerow"><td>&nbsp;</td><td colspan="3">[%- IF treffer == qopts.hitrange -%]<b>[1 - [% qopts.hitrange %]]</b>&nbsp;<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];combinedbs=1;queryid=[% queryid %];offset=[% qopts.hitrange %];hitrange=[% qopts.hitrange %];sb=[% qopts.sb %]">[weitere Treffer...]</a>[% END %]</td><td align="right" colspan="2"><strong>[% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %]</strong></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td><td rowspan="[% IF fullresultcount <= qopts.hitrange %][% fullresultcount+3 %][% ELSE %][% qopts.hitrange+4 %][% END %]" valign="top" class="drilldown_categorized">[% IF drilldown && fullresultcount >= 10 && fullresultcount <= config.xapian_option.maxmatch %][% PROCESS common/subtemplate name="drilldown_categorized" combinedbs=1 %][% END %]</td></tr>-->
+[%-     IF offsets -%]
+<tr class="titlerow"><td>&nbsp;</td><td colspan="3">
+[%          FOREACH singleoffset IN offsets %]
+[%-             IF singleoffset.type == 'getnext' -%]
+<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];drilldown=1;dd_categorized=1;combinedbs=1;queryid=[% queryid %];offset=[% singleoffset.offset %];hitrange=[% hitrange %];sb=[% qopts.sb %]">[Weitere Treffer...]</a>
+[%-             ELSE -%]
+[%-                 IF singleoffset.offset == offset -%]
+<b>[[% singleoffset.start %] - [% singleoffset.end %]]</b>&nbsp;
+[%-                 ELSE -%]
+<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];drilldown=1;dd_categorized=1;combinedbs=1;queryid=[% queryid %];offset=[% singleoffset.offset %];hitrange=[% hitrange %];sb=[% qopts.sb %]">[[% singleoffset.start %] - [% singleoffset.end %]]</a>&nbsp;
+[%-                 END -%]
+[%-             END -%]
+[%-         END -%]
+</td><td align="right" colspan="2"><strong>[% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %]</strong></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td><td rowspan="[% IF fullresultcount <= qopts.hitrange %][% fullresultcount+3 %][% ELSE %][% qopts.hitrange+4 %][% END %]" valign="top" class="drilldown_categorized">[% IF drilldown && fullresultcount >= 10 && fullresultcount <= config.xapian_option.maxmatch %][% PROCESS common/subtemplate name="drilldown_categorized" combinedbs=1 %][% END %]</td></tr>
+[%-     END -%]
+
 [% listrow = 'listrow2' %]
 [%- FOREACH record IN recordlist.get_records -%]
 [%- item = record.get_brief_normdata -%]
@@ -73,7 +90,7 @@
 %]</span><br /><a href="[% config.search_loc %]?sessionID=[%
 sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id
 %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
-class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></td><td><span class="rlcollect"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="/images/openbib/3d-file-blue-clipboard.png" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a></span></td><td align="left"><b>[% signatur %]</b></td><td class="popularitycount">[% item.popularity %]</td></tr>
+class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span><br />aus: [% dbinfotable.dbinfo.${record.database}.full %]</td><td><span class="rlcollect"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="/images/openbib/3d-file-blue-clipboard.png" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a></span></td><td align="left"><b>[% signatur %]</b></td><td class="popularitycount">[% item.popularity %]</td></tr>
 [%- IF listrow == 'listrow1' -%]
 [%- listrow = 'listrow2' -%]
 [%- ELSE -%]

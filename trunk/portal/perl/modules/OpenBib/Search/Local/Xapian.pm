@@ -244,7 +244,7 @@ sub initial_search {
 
     my @matches   = ($dd_categorized)?$enq->matches(0,$maxmatch,$decider_ref):$enq->matches(0,$maxmatch);
 
-    $logger->debug("DB: $database");
+    $logger->debug("DB: $database") if (defined $database);
     
     $logger->debug("Matches: ".YAML::Dump(\@matches));
 
@@ -271,7 +271,7 @@ sub initial_search {
 
     $logger->info("Running query ".$self->{_querystring});
 
-    $logger->info("Found ".scalar(@matches)." matches in database $database");
+    $logger->info("Found ".scalar(@matches)." matches in database $database") if (defined $database);
     return;
 }
 

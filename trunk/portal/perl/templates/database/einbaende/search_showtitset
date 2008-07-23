@@ -53,8 +53,8 @@
 </table>
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="http://[% config.loadbalancerservername %]/portal/recherche?sessionID=[% sessionID %];database=einbaende;searchsingletit=[% titidn %]">[% msg.maketext("Textangaben") %]</a></li>   
-   <li><a                href="http://[% config.loadbalancerservername %]/portal/recherche?sessionID=[% sessionID %];database=einbaende;searchsingletit=[% titidn %];stid=1;olws=Viewer">[% msg.maketext("Einband-Abbildungen") %]</a></li>
+   <li><a class="active" href="[% config.search_loc %]?sessionID=[% sessionID %];database=einbaende;searchsingletit=[% titidn %]">[% msg.maketext("Textangaben") %]</a></li>   
+   <li><a                href="[% config.search_loc %]?sessionID=[% sessionID %];database=einbaende;searchsingletit=[% titidn %];stid=1;olws=Viewer">[% msg.maketext("Einband-Abbildungen") %]</a></li>
 </ul>
 
 <div class="content">

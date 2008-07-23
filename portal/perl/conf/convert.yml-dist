@@ -200,6 +200,8 @@ convtab:
       '0370':         # WST
         ft: 1
         string: 1
+      '0413':         # Drucker
+        string: 1
       '0540':         # ISBN
         string: 1
       '0800':         # Medienart

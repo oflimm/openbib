@@ -726,7 +726,7 @@ msgstr ""
 msgid "Bitte bookmarken unter:"
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:346 ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:513
+#: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:346 ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:520
 msgid "Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."
 msgstr ""
 
@@ -827,7 +827,7 @@ msgstr ""
 msgid "Das KUG Recherche-Portal ist mit einer zentralen Lastverteilung ausgestattet. Entsprechend der Belastung (und Funktionsf&auml;higkeit) werden Sie auf derzeit einen von drei KUG-Servern (kug1 bis kug3) weitergeleitet. Ebenso werden aus Wartungsgr&uuml;nden oder Problemen einzelne KUG-Server von uns aus der Lastverteilung genommen. Aus diesem Grund ist es sehr problematisch, direkt einen der drei Server zu verlinken (z.B. als URL <tt>http://kug3.ub.uni-koeln.de/portal/opac?view=</tt>) Verwenden Sie daher bitte <b>immer</b> die offiziellen Einsprung-URL's in den KUG. Es sind dies"
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:353 ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:362 ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:520 ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:529
+#: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:353 ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:362 ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:527 ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:536
 msgid "Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese Einschränkung."
 msgstr ""
 
@@ -847,7 +847,7 @@ msgstr ""
 msgid "Denken Sie daran, dass nur wenige Bibliotheken Ihre Aufs&auml;tze in Ihrem Katalog aufnehmen"
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:312
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:319
 msgid "Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank zur Suche im Index ausgewählt wurde."
 msgstr ""
 
@@ -1327,7 +1327,7 @@ msgstr ""
 msgid "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:369 ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:536
+#: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:369 ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:543
 msgid "Es wurde kein Suchkriterium eingegeben."
 msgstr ""
 
@@ -1368,7 +1368,7 @@ msgid ""
 "      Sie wie gewohnt den entsprechenden Begriff trunkieren."
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:307
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:314
 msgid "F&uuml;r die Nutzung der Index-Funktion m&uuml;ssen Sie einen Begriff eingegeben"
 msgstr ""
 
@@ -2807,7 +2807,7 @@ msgstr ""
 msgid "Sie haben %1Vorteile%2, wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden."
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:250
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:247
 #. ("<a href=\"$config->{databasechoice_loc}?sessionID=$session->{ID}\" target=\"body\">","</a>")
 msgid "Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie keine %1Kataloge%2 oder Suchprofile ausgewählt haben. Bitte wählen Sie die gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen Katalogen suchen</a>."
 msgstr ""
@@ -4131,7 +4131,7 @@ msgstr ""
 msgid "Ungültige Aktion"
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/BibSonomy.pm:118 ../modules/OpenBib/Handler/Apache/Circulation.pm:99 ../modules/OpenBib/Handler/Apache/DatabaseChoice.pm:101 ../modules/OpenBib/Handler/Apache/DatabaseProfile.pm:97 ../modules/OpenBib/Handler/Apache/DispatchQuery.pm:87 ../modules/OpenBib/Handler/Apache/ExternalJump.pm:117 ../modules/OpenBib/Handler/Apache/Info.pm:95 ../modules/OpenBib/Handler/Apache/Leave.pm:82 ../modules/OpenBib/Handler/Apache/LitLists.pm:131 ../modules/OpenBib/Handler/Apache/Login.pm:102 ../modules/OpenBib/Handler/Apache/MailCollection.pm:97 ../modules/OpenBib/Handler/Apache/MailPassword.pm:91 ../modules/OpenBib/Handler/Apache/ManageCollection.pm:105 ../modules/OpenBib/Handler/Apache/RSSFeeds.pm:83 ../modules/OpenBib/Handler/Apache/Redirect.pm:92 ../modules/OpenBib/Handler/Apache/ResultLists.pm:109 ../modules/OpenBib/Handler/Apache/Search.pm:188 ../modules/OpenBib/Handler/Apache/SearchMask.pm:94 ../modules/OpenBib/Handler/Apache/SelfReg.pm:90 ../modules/OpenBib/Handler/Apache/Tags.pm:126 ../modules/OpenBib/Handler/Apache/UserPrefs.pm:112 ../modules/OpenBib/Handler/Apache/UserReviews.pm:123 ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:145
+#: ../modules/OpenBib/Handler/Apache/BibSonomy.pm:118 ../modules/OpenBib/Handler/Apache/Circulation.pm:99 ../modules/OpenBib/Handler/Apache/DatabaseChoice.pm:101 ../modules/OpenBib/Handler/Apache/DatabaseProfile.pm:97 ../modules/OpenBib/Handler/Apache/DispatchQuery.pm:87 ../modules/OpenBib/Handler/Apache/ExternalJump.pm:117 ../modules/OpenBib/Handler/Apache/Info.pm:95 ../modules/OpenBib/Handler/Apache/Leave.pm:82 ../modules/OpenBib/Handler/Apache/LitLists.pm:131 ../modules/OpenBib/Handler/Apache/Login.pm:102 ../modules/OpenBib/Handler/Apache/MailCollection.pm:97 ../modules/OpenBib/Handler/Apache/MailPassword.pm:91 ../modules/OpenBib/Handler/Apache/ManageCollection.pm:105 ../modules/OpenBib/Handler/Apache/RSSFeeds.pm:83 ../modules/OpenBib/Handler/Apache/Redirect.pm:92 ../modules/OpenBib/Handler/Apache/ResultLists.pm:109 ../modules/OpenBib/Handler/Apache/Search.pm:188 ../modules/OpenBib/Handler/Apache/SearchMask.pm:94 ../modules/OpenBib/Handler/Apache/SelfReg.pm:90 ../modules/OpenBib/Handler/Apache/Tags.pm:126 ../modules/OpenBib/Handler/Apache/UserPrefs.pm:112 ../modules/OpenBib/Handler/Apache/UserReviews.pm:123 ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:142
 msgid "Ungültige Session"
 msgstr ""
 
@@ -4662,7 +4662,7 @@ msgstr ""
 msgid "nach Interpret/Gruppe"
 msgstr ""
 
-#: ../templates/database/audiosmlg/drilldown_categorized:213 ../templates/database/einbaende/drilldown_categorized:52 ../templates/database/einbaende/search_showtitlist_of_cnt:55 ../templates/database/inst001/drilldown_categorized:56 ../templates/database/landschaft/search_showtitlist:51 ../templates/database/portrait/drilldown_categorized:52 ../templates/database/portrait/search_showtitlist:51 ../templates/drilldown_categorized:213 ../templates/litlists_manage_singlelist:86 ../templates/litlists_show_singlelist:56 ../templates/resultlists_showall:46 ../templates/resultlists_showall_sortall:49 ../templates/resultlists_showsinglepool:48 ../templates/search_showtitlist:54 ../templates/search_showtitlist_of_cnt:54 ../templates/views/kapsel/resultlists_showall:46 ../templates/views/kapsel/resultlists_showsinglepool:48 ../templates/views/kapsel/search_showtitlist:54 ../templates/views/portrait/resultlists_showsinglepool:47 ../templates/virtualsearch_result_start:48
+#: ../templates/database/audiosmlg/drilldown_categorized:213 ../templates/database/einbaende/drilldown_categorized:52 ../templates/database/einbaende/search_showtitlist_of_cnt:55 ../templates/database/inst001/drilldown_categorized:56 ../templates/database/landschaft/search_showtitlist:51 ../templates/database/portrait/drilldown_categorized:52 ../templates/database/portrait/search_showtitlist:51 ../templates/drilldown_categorized:227 ../templates/litlists_manage_singlelist:86 ../templates/litlists_show_singlelist:56 ../templates/resultlists_showall:46 ../templates/resultlists_showall_sortall:49 ../templates/resultlists_showsinglepool:48 ../templates/search_showtitlist:54 ../templates/search_showtitlist_of_cnt:54 ../templates/views/kapsel/resultlists_showall:46 ../templates/views/kapsel/resultlists_showsinglepool:48 ../templates/views/kapsel/search_showtitlist:54 ../templates/views/portrait/resultlists_showsinglepool:47 ../templates/virtualsearch_result_start:48
 msgid "nach Jahr"
 msgstr ""
 
@@ -4670,15 +4670,15 @@ msgstr ""
 msgid "nach Jahrhundert"
 msgstr ""
 
-#: ../templates/drilldown_categorized:150
+#: ../templates/drilldown_categorized:164
 msgid "nach K&ouml;perschaften"
 msgstr ""
 
-#: ../templates/database/audiosmlg/drilldown_categorized:108 ../templates/drilldown_categorized:108
+#: ../templates/database/audiosmlg/drilldown_categorized:108 ../templates/drilldown_categorized:122
 msgid "nach Katalog"
 msgstr ""
 
-#: ../templates/database/audiosmlg/drilldown_categorized:234 ../templates/database/einbaende/drilldown_categorized:66 ../templates/database/inst001/drilldown_categorized:70 ../templates/database/portrait/drilldown_categorized:66 ../templates/drilldown_categorized:234
+#: ../templates/database/audiosmlg/drilldown_categorized:234 ../templates/database/einbaende/drilldown_categorized:66 ../templates/database/inst001/drilldown_categorized:70 ../templates/database/portrait/drilldown_categorized:66 ../templates/drilldown_categorized:248
 msgid "nach Medienart"
 msgstr ""
 
@@ -4690,7 +4690,7 @@ msgstr ""
 msgid "nach Person/Region"
 msgstr ""
 
-#: ../templates/database/inst001/drilldown_categorized:10 ../templates/database/portrait/drilldown_categorized:10 ../templates/drilldown_categorized:129
+#: ../templates/database/inst001/drilldown_categorized:10 ../templates/database/portrait/drilldown_categorized:10 ../templates/drilldown_categorized:143
 msgid "nach Personen"
 msgstr ""
 
@@ -4706,15 +4706,15 @@ msgstr ""
 msgid "nach Signatur"
 msgstr ""
 
-#: ../templates/database/audiosmlg/drilldown_categorized:255 ../templates/database/einbaende/drilldown_categorized:80 ../templates/database/inst001/drilldown_categorized:84 ../templates/database/portrait/drilldown_categorized:80 ../templates/drilldown_categorized:255
+#: ../templates/database/audiosmlg/drilldown_categorized:255 ../templates/database/einbaende/drilldown_categorized:80 ../templates/database/inst001/drilldown_categorized:84 ../templates/database/portrait/drilldown_categorized:80 ../templates/drilldown_categorized:269
 msgid "nach Sprache"
 msgstr ""
 
-#: ../templates/database/inst001/drilldown_categorized:42 ../templates/drilldown_categorized:192
+#: ../templates/database/inst001/drilldown_categorized:42 ../templates/drilldown_categorized:206
 msgid "nach Systematik"
 msgstr ""
 
-#: ../templates/database/audiosmlg/drilldown_categorized:171 ../templates/database/inst001/drilldown_categorized:24 ../templates/drilldown_categorized:171
+#: ../templates/database/audiosmlg/drilldown_categorized:171 ../templates/database/inst001/drilldown_categorized:24 ../templates/drilldown_categorized:185
 msgid "nach Themen"
 msgstr ""
 

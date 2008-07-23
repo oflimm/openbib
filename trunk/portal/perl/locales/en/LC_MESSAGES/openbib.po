@@ -1,3 +1,4 @@
+# translation of topenbib.po to
 # translation of openbib.po to
 # This file is distributed under the same license as the PACKAGE package.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
@@ -7,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2008-07-18 09:42+0200\n"
+"PO-Revision-Date: 2008-07-21 17:29+0200\n"
 "Last-Translator: \n"
-"Language-Team:  <en@li.org>\n"
+"Language-Team:  <flimm@openbib.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -45,7 +46,7 @@ msgid ""
 "%1\n"
 "von %2 Nutzer fanden die folgende Rezension hilfreich:"
 msgstr ""
-"The following review is considered helpful by %1\n"
+"The following review was considered helpful by %1\n"
 "of %2 users:"
 
 #. (itemcount)
@@ -103,7 +104,7 @@ msgstr ""
 msgid ""
 "&Uuml;ber diese Authentifizierungsseite k&ouml;nnen Sie sich als "
 "Administrator anmelden."
-msgstr "From this authentication page you can log in as the administrator."
+msgstr "From this authentication page you can log in as administrator."
 
 #: ../templates/externaljump:97
 msgid "&Uuml;bernahme der Anfrage in externe Recherchequellen"
@@ -151,7 +152,8 @@ msgstr "Acquired categories: title, coporate body, ISSN"
 msgid ""
 "&Uuml;bernommene Felder: Titel, Person, K&ouml;rperschaft, ISBN, "
 "Erscheinungsjahr"
-msgstr "Acquired categories: title, author, corporate body, ISBN, year of publication"
+msgstr ""
+"Acquired categories: title, author, corporate body, ISBN, year of publication"
 
 #: ../templates/admin_showlogintarget:35 ../templates/admin_showuser:35
 msgid "&Uuml;bersicht"
@@ -477,7 +479,7 @@ msgstr "General Information"
 #: ../templates/views/kug/info:133 ../templates/views/kug/info:166
 #: ../templates/views/kug/info:54 ../templates/views/kug/info:57
 msgid "Allgemeine Informationen"
-msgstr "General informations"
+msgstr "General information"
 
 #. ("<a class=\"tutorial\" href=\"http://kug.ub.uni-koeln.de/tutorials/g.html\" target=\"tutorial\"><img src=\"/images/openbib/tutorial.png\" alt=\"Interaktives Tutorium\" /></a>")
 #: ../templates/info:110 ../templates/views/kug/info:110
@@ -618,7 +620,7 @@ msgstr "Authentication target"
 
 #: ../templates/admin_showlogintarget:36 ../templates/admin_showuser:36
 msgid "Anmeldeziele"
-msgstr "Authentication target"
+msgstr "Authentication targets"
 
 #: ../templates/info:653 ../templates/views/kug/info:653
 msgid ""
@@ -688,13 +690,13 @@ msgid ""
 "Datenbanken zu recherchieren."
 msgstr ""
 "On this page you can select separate catalogues as your search targets. With "
-"activated JavaScript it is sufficient to click on the button in the colored "
+"activated JavaScript it is sufficient to click the button in the colored "
 "category area to select all corresponding catalogues.<p /> After your "
 "selection please activate <b>Select catalogues</b>. Then you'll jump to the "
-"search page to insert your search terms. The selection of catalogues you "
-"just made is preselected in <b>Search profile</b>. You'll just have to "
-"activate <b>Search in selected catalogues</b> to send your request to the "
-"selected catalogues."
+"search page to enter your search terms. The selection of catalogues you just "
+"made is preselected in <b>Search profile</b>. You'll just have to activate "
+"<b>Search in selected catalogues</b> to send your request to the selected "
+"catalogues."
 
 #: ../templates/rssfeeds:27
 msgid ""
@@ -714,7 +716,7 @@ msgstr "Save"
 
 #: ../templates/info_15:75
 msgid "Aufruf dieser Spezial-Sicht"
-msgstr "Invocation of this view"
+msgstr "Use of this view"
 
 #: ../templates/externaljump:106 ../templates/externaljump:115
 #: ../templates/externaljump:125 ../templates/externaljump:135
@@ -750,7 +752,7 @@ msgstr "Date of issue/booking date"
 
 #: ../templates/admin_editcat:158
 msgid "Ausleih-Einstellungen"
-msgstr "Circulation-Options"
+msgstr "Circulation options"
 
 #: ../templates/database/ebooks/search_showtitset:364
 #: ../templates/database/einbaende/managecollection_tit_as_html:125
@@ -926,7 +928,7 @@ msgstr "User account"
 
 #: ../templates/admin_login:32 ../templates/userprefs:47
 msgid "Benutzername"
-msgstr "Username"
+msgstr "User name"
 
 #: ../templates/login:79 ../templates/login_circulation:65
 msgid "Benutzernummer"
@@ -1029,7 +1031,7 @@ msgstr ""
 #: ../templates/circulation_remind:39 ../templates/circulation_reserv:39
 #: ../templates/userprefs:128
 msgid "Bestellungen"
-msgstr "Orderings"
+msgstr "Orders"
 
 #: ../templates/managecollection_mail:42
 msgid "Betreff"
@@ -1040,7 +1042,7 @@ msgstr "Subject"
 #: ../templates/database/nationallizenzen/search_showtitset:666
 #: ../templates/search_showtitset:683
 msgid "Bewertung"
-msgstr "Score"
+msgstr "Rating"
 
 #: ../templates/database/ebooks/search_showtitset:385
 #: ../templates/database/ebooks/search_showtitset:638
@@ -1057,7 +1059,7 @@ msgstr "Ratings/reviews"
 #: ../templates/database/nationallizenzen/search_showtitset:698
 #: ../templates/search_showtitset:715
 msgid "Bewertungen/Rezensionen von Nutzern"
-msgstr "Score/reviews from users"
+msgstr "Ratings/reviews from users"
 
 #: ../templates/database/ebooks/search_showtitset:88
 #: ../templates/database/inst001/search_showtitset:90
@@ -1079,7 +1081,7 @@ msgstr "BibSonomy API-Key"
 
 #: ../templates/userprefs:179
 msgid "BibSonomy-API-User"
-msgstr "BibSonomy-API-User"
+msgstr "BibSonomy API-User"
 
 #: ../templates/info:89 ../templates/info:956 ../templates/views/kug/info:89
 #: ../templates/views/kug/info:956
@@ -1105,13 +1107,13 @@ msgid "Bitte bookmarken unter:"
 msgstr "Please bookmark as:"
 
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:346
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:513
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:520
 msgid "Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."
 msgstr "Please enter a four digit number as the year of publication."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:1045
 msgid "Bitte geben Sie ein Anfangs- sowie ein End-Datum an!"
-msgstr "Please enter start and end date!"
+msgstr "Please enter start and end dates!"
 
 #: ../templates/userprefs:92
 msgid ""
@@ -1188,8 +1190,8 @@ msgid ""
 "Mail zugeschickt werden kann, geben Sie bitte Ihre dort verwendete E-Mail-"
 "Adresse ein."
 msgstr ""
-"Please enter your e-mail address as your user name, so we can mail your "
-"password regarding the self registration to you."
+"Please enter your e-mail address as user name, so that we can mail your "
+"password to you for self-registration."
 
 #: ../templates/info:143 ../templates/views/kug/info:143
 msgid ""
@@ -1265,17 +1267,17 @@ msgstr ""
 
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:353
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:362
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:520
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:529
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:527
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:536
 msgid ""
 "Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und "
 "mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die "
 "Teffermengen zu gro&szlig; werden. Wir bitten um Verständnis für diese "
 "Einschränkung."
 msgstr ""
-"The search term for the year of publication is only considered in "
-"combination with the AND-operation and at least another search term. "
-"Otherwise the result list can become too big."
+"The search term -year of publication- is only considered in combination with "
+"the AND-operation and at least another search term. Otherwise the result "
+"list can become too long."
 
 #: ../templates/admin_editsession:59 ../templates/admin_showprofiles:63
 #: ../templates/admin_showviews:65
@@ -1285,7 +1287,7 @@ msgstr "Databases"
 #: ../templates/externaljump:120 ../templates/info:622
 #: ../templates/views/kug/info:622
 msgid "Datenbankinformationssystem (DBIS)"
-msgstr "Database Information System (DBIS)"
+msgstr "DataBaseInformationSystem (DBIS)"
 
 #: ../templates/databaseprofile:75
 msgid ""
@@ -1305,15 +1307,16 @@ msgstr ""
 msgid ""
 "Denken Sie daran, dass nur wenige Bibliotheken Ihre Aufs&auml;tze in Ihrem "
 "Katalog aufnehmen"
-msgstr "Please remember that only a few libraries have articles in their catalogues"
+msgstr ""
+"Please remember that only a few libraries have articles in their catalogues"
 
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:312
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:319
 msgid ""
 "Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank "
 "zur Suche im Index ausgewählt wurde."
 msgstr ""
-"This search term has to consist of at least 3 characters, in case more than "
-"one catalogue is selected for your search request."
+"This search term has to consist of at least 3 characters if more than one "
+"catalogue has been selected for your search request."
 
 #: ../templates/info:907 ../templates/views/kug/info:907
 msgid ""
@@ -1346,7 +1349,7 @@ msgstr ""
 
 #: ../modules/OpenBib/Handler/Apache/ManageCollection.pm:154
 msgid "Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."
-msgstr "The title has been added to your List of Interest."
+msgstr "The title has been added to your list of interest."
 
 #: ../templates/databaseprofile:83
 msgid "Derzeit angezeigtes Profil"
@@ -1354,11 +1357,11 @@ msgstr "Currently shown profile"
 
 #: ../modules/OpenBib/Handler/Apache/ResultLists.pm:125
 msgid "Derzeit existiert (noch) keine Trefferliste"
-msgstr "At the moment there doesn't exist a result list (yet)"
+msgstr "At the moment no result list exists (yet)"
 
 #: ../modules/OpenBib/Handler/Apache/ManageCollection.pm:248
 msgid "Derzeit ist Ihre Merkliste leer"
-msgstr "At the moment your List of Interest is empty"
+msgstr "At the moment your list of interest is empty"
 
 #: ../templates/info:617 ../templates/views/kug/info:617
 msgid "Derzeit werden folgende externe Recherchequellen angeboten:"
@@ -1392,8 +1395,8 @@ msgid ""
 "Die <b>Virtuelle Bibliothek Elise und Helene Richter</b> ist Teil der NS-"
 "Provenienzforschung in der USB K&ouml;ln"
 msgstr ""
-"Die <b>Virtuelle Bibliothek Elise und Helene Richter</b> ist Teil der NS-"
-"Provenienzforschung in der USB K&ouml;ln"
+"The <b>Virtuelle Bibliothek Elise und Helene Richter</b> is part of the Nazi "
+"provenance research in the USB K&ouml;ln"
 
 #: ../templates/info:197 ../templates/views/kug/info:197
 msgid ""
@@ -1412,7 +1415,7 @@ msgid ""
 "nun bitte auf 'Recherche' in der Navigationsleiste, um die neuen "
 "Suchfeldauswahl zu verwenden."
 msgstr ""
-"The configuration of your search categories is successful. Please click on "
+"The configuration of your search categories was successful. Please click on "
 "'Search' in your navigation menu to use the new choice of search categories."
 
 #: ../templates/info:630 ../templates/views/kug/info:630
@@ -1450,8 +1453,8 @@ msgid ""
 "Die USB K&ouml;ln ist nicht f&uuml;r die Inhalte fremder Seiten "
 "verantwortlich, die Sie &uuml;ber einen Link erreichen!"
 msgstr ""
-"The USB K&ouml;ln is not liable for foreign content you can access with a "
-"link!"
+"The USB K&ouml;ln is not liable for the content of foreign webpages that can "
+"be accessed with a link!"
 
 #: ../templates/circulation_make_reserv:57
 msgid "Die Vormerkung wurde erfolgreich durchgef&uuml;hrt."
@@ -1459,7 +1462,7 @@ msgstr "Your reservation was successful."
 
 #: ../modules/OpenBib/Handler/Apache/SelfReg.pm:123
 msgid "Die beiden eingegebenen Passworte stimmen nicht überein."
-msgstr "The two passwords are different."
+msgstr "The two passwords you entered are different."
 
 #: ../templates/info:186 ../templates/views/kug/info:186
 msgid ""
@@ -1524,7 +1527,7 @@ msgstr ""
 
 #: ../modules/OpenBib/Handler/Apache/UserPrefs.pm:126
 msgid "Diese Session ist nicht authentifiziert."
-msgstr "The session is not authenticated."
+msgstr "This session is not authenticated."
 
 #: ../templates/info:779 ../templates/views/kug/info:779
 msgid ""
@@ -1578,22 +1581,22 @@ msgstr "This title is available in the following literature lists"
 
 #: ../templates/bibsonomy_showtitlist:77
 msgid "Dieser Titel ist in den Katalogen des KUG verf&uuml;gbar"
-msgstr "This title is availabe in catalogues of KUG"
+msgstr "This title is availabe in the catalogues of KUG"
 
 #: ../templates/bibsonomy_showtitlist:79
 msgid ""
 "Dieser Titel konnte nicht in den Katalogen des KUG gefunden werden. Er kann "
 "dennoch in anderer Schreibweise existieren!"
 msgstr ""
-"This title cannot be found in catalogues of KUG. Nevertheless it can might "
-"exist in another notation."
+"This title cannot be found in the catalogues of KUG. Nevertheless it might "
+"exist with another spelling!"
 
 #: ../templates/database/ebooks/search_showtitset:280
 #: ../templates/database/inst001/search_showtitset:313
 #: ../templates/database/nationallizenzen/search_showtitset:286
 #: ../templates/search_showtitset:303
 msgid "Dieses Buch ist in Wikipedia erw&auml;hnt unter"
-msgstr "This title is referenced in Wikipedia in"
+msgstr "This title is referenced in Wikipedia under"
 
 #: ../templates/circulation_make_reserv:44
 msgid "Dieses Medium ist direkt ausleihbar"
@@ -1604,7 +1607,8 @@ msgid "Digitale Bibliothek / Monographien (Fernleihe)"
 msgstr "Digital library / Monographs (ILL)"
 
 #: ../templates/info:620 ../templates/views/kug/info:620
-msgid "Digitale Bibliothek / Monographien (f&uuml;r die Fernleihe von Monographien)"
+msgid ""
+"Digitale Bibliothek / Monographien (f&uuml;r die Fernleihe von Monographien)"
 msgstr "Digital Library/ Monographs (for Interlibrary loan of monographs)"
 
 #: ../templates/externaljump:110
@@ -1718,8 +1722,8 @@ msgid ""
 "Passwort vergessen? Dann gehen Sie bitte %2zurück%3 und lassen es sich "
 "zumailen."
 msgstr ""
-"A user with the name %1 already exists. Forgotten password? Then %2return%2 "
-"an mail it back to you."
+"A user with the name %1 already exists. Did you perhaps forgot your "
+"password? Then go %2back%3 and let it sent by e-mail to you."
 
 #: ../templates/views/einbaende/search_browse_tit:42
 #: ../templates/views/einbaende/searchmask:126
@@ -1738,7 +1742,7 @@ msgstr "Data of bindings"
 #: ../templates/managecollection_show:82
 #: ../templates/views/einbaende/managecollection_show:65
 msgid "Eine Bearbeitung ist nur bei 'HTML' m&ouml;glich"
-msgstr "Actions only available when using 'HTML'"
+msgstr "Editing only available when using 'HTML'"
 
 #: ../templates/circulation_make_reserv:36
 msgid ""
@@ -1814,11 +1818,11 @@ msgstr "A reservation for the requested medium was not successful!"
 #: ../templates/views/xanten/searchmask:44
 #: ../templates/views/xanten/searchmask_simple:44
 msgid "Einfache Recherche"
-msgstr "Basic Search"
+msgstr "Simple search"
 
 #: ../templates/userprefs:160
 msgid "Einfache Recherchemaske"
-msgstr "Basic search mask"
+msgstr "Simple search mask"
 
 #: ../templates/database/ebooks/search_showtitset:432
 #: ../templates/database/inst001/search_showtitset:459
@@ -1886,7 +1890,7 @@ msgstr "Remove"
 
 #: ../templates/admin_editcat:122
 msgid "Entfernter Nutzername"
-msgstr "Remote Username"
+msgstr "Remote username"
 
 #: ../templates/admin_editcat:120
 msgid "Entfernter Rechnername"
@@ -1954,14 +1958,15 @@ msgstr "There already exists a view with this name"
 
 #: ../templates/admin_editview_rss:70
 msgid "Es existiert bereits ein prim&auml;rer RSS-Feed f&uuml;r diesen View"
-msgstr "There already exists  a primary RSS-feed for this view"
+msgstr "There already exists a primary RSS-feed for this view"
 
 #: ../modules/OpenBib/Handler/Apache/MailPassword.pm:134
 msgid "Es existiert kein Passwort für die Kennung $loginname"
-msgstr "A password doesn't exists for the login $loginname"
+msgstr "For the login $loginname no password exists."
 
 #: ../templates/admin_editcat_rss:176
-msgid "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
+msgid ""
+"Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
 msgstr "Right now there's no RSS-Feed for new titles per corporate name"
 
 #: ../templates/admin_editcat_rss:233
@@ -1978,13 +1983,14 @@ msgstr "Right now there's no RSS-Feed for new titles"
 
 #: ../templates/admin_editview_rss:66
 msgid "Es existiert noch kein prim&auml;rer RSS-Feed f&uuml;r diesen View"
-msgstr "There doesn't exist a primary RSS-feed for this view"
+msgstr "Right now there's no primary RSS-feed for this view"
 
 #: ../templates/info:388 ../templates/views/kug/info:388
 msgid ""
 "Es k&ouml;nnen nur Begriffe recherchiert werden, die aus\n"
 "      mindestens zwei Zeichen (Buchstaben/Ziffern) bestehen."
-msgstr "All search terms must consist of at least two characters   (letters/numbers)"
+msgstr ""
+"All search terms must consist of at least two characters   (letters/numbers)"
 
 #: ../templates/circulation_remind:48
 msgid "Es sind keine Gebühren angefallen."
@@ -1995,17 +2001,18 @@ msgid "Es sind keine Quellen verf&uuml;gbar."
 msgstr "No sources available."
 
 #: ../modules/OpenBib/Handler/Apache/SelfReg.pm:118
-msgid "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
-msgstr "Either you didn't enter a username or two passwords "
+msgid ""
+"Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
+msgstr "You either didn't enter a username or less than two passwords "
 
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:369
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:536
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:543
 msgid "Es wurde kein Suchkriterium eingegeben."
 msgstr "You didn't enter any search criteria."
 
 #: ../modules/OpenBib/Handler/Apache/Search.pm:1279
 msgid "Es wurde kein Treffer zu Ihrer Suchanfrage in der Datenbank gefunden"
-msgstr "No hits available in the catalogue for you search request"
+msgstr "No hits available in the catalogue for your search request"
 
 #: ../modules/OpenBib/Handler/Apache/UserPrefs.pm:257
 msgid "Es wurde keine Standard-Recherchemaske ausgewählt"
@@ -2052,7 +2059,7 @@ msgstr ""
 "<b>^</b> ahead of your search query (e.g. ^education*). As before, you can "
 "truncate the word with a *."
 
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:307
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:314
 msgid ""
 "F&uuml;r die Nutzung der Index-Funktion m&uuml;ssen Sie einen Begriff "
 "eingegeben"
@@ -2128,7 +2135,7 @@ msgstr ""
 
 #: ../templates/databaseprofile:66
 msgid "Falls leer, so geben Sie hier bitte einen neuen Profilnamen ein"
-msgstr "Please insert new profile name if empty"
+msgstr "Please enter a new profile name if empty"
 
 #: ../modules/OpenBib/Handler/Apache/Login.pm:286
 msgid "Falscher Fehler-Code"
@@ -2231,7 +2238,7 @@ msgid ""
 "Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns "
 "unter %1 kug@ub.uni-koeln.de %2 erreichen."
 msgstr ""
-"For suggestions to improve this service and in case of technical problems "
+"For suggestions to improve our services and in case of technical problems "
 "you can contact us via %1 kug@ub.uni-koeln.de %2."
 
 #: ../templates/info:938 ../templates/views/kug/info:938
@@ -2262,8 +2269,8 @@ msgid ""
 "g&uuml;ltige Email-Adresse ein und danach zwei Mal Ihr selbst gew&auml;hltes "
 "Passwort. Danach best&auml;tigen Sie bitte mit <b>Registrieren</b>."
 msgstr ""
-"For the self registration pleasy enter your valid e-mail address and two "
-"times a password of you choice. Then confirm you input with <b>Register</b>."
+"For self registration pleasy enter your valid e-mail address and two times a "
+"password of you choice. Then confirm you input with <b>Register</b>."
 
 #: ../templates/searchmask_simple:101
 #: ../templates/views/edz/searchmask_simple:110
@@ -2292,21 +2299,21 @@ msgstr ""
 #: ../templates/views/richter/searchmask_simple:77
 #: ../templates/views/xanten/searchmask_simple:76
 msgid "Geben Sie hier Ihre Suchbegriffe ein"
-msgstr "Please insert your search terms"
+msgstr "Please enter your search terms"
 
 #: ../templates/views/kapsel/searchmask_simple:57
 #: ../templates/views/landschaft/searchmask_simple:49
 #: ../templates/views/portrait/searchmask_simple:65
 msgid "Geben Sie hier bitte Ihre Suchbegriffe ein"
-msgstr "Please insert your search terms here"
+msgstr "Please enter your search terms here"
 
 #: ../templates/virtualsearch_showkorindex:52
 msgid "Geben Sie hier den Körperschaftsanfang ein"
-msgstr "Please insert the beginning of the corporate body"
+msgstr "Please enter the beginning of the corporate body"
 
 #: ../templates/virtualsearch_shownotindex:52
 msgid "Geben Sie hier den Notationsanfang ein"
-msgstr "Please insert the beginning of the classification"
+msgstr "Please enter the beginning of the classification"
 
 #: ../templates/database/ebooks/search_showtitset:781
 #: ../templates/database/inst001/search_showtitset:808
@@ -2316,15 +2323,15 @@ msgstr "Please insert the beginning of the classification"
 #: ../templates/views/kapsel/search_showtitlist:187
 #: ../templates/virtualsearch_showswtindex:52
 msgid "Geben Sie hier den Schlagwortanfang ein"
-msgstr "Please insert the beginning of the subject heading"
+msgstr "Please enter the beginning of the subject heading"
 
 #: ../templates/virtualsearch_showverfindex:52
 msgid "Geben Sie hier den Verfasseranfang ein"
-msgstr "Please insert the beginning of the author"
+msgstr "Please enter the beginning of the author"
 
 #: ../templates/bibsonomy_showtitlist:54
 msgid "Geben Sie hier einen oder mehrere Tags ein"
-msgstr "Please insert one or more tags"
+msgstr "Please enter one or more tags"
 
 #: ../templates/userprefs:73
 msgid "Geburtsdatum"
@@ -2382,14 +2389,14 @@ msgstr "HTTP"
 msgid ""
 "Haben Sie Ihr Passwort vergessen, dann finden Sie hier %1weitere "
 "Informationen%2."
-msgstr "Forgotten password? There is %1further information%2 available."
+msgstr "Forgotten password? Here %1further information%2 is available."
 
 #. ("<a href=\"http://${config.servername}${config.mailpassword_loc}?sessionID=${sessionID};action=show\">","</a>")
 #: ../templates/login:117
 msgid ""
 "Haben Sie Ihr Passwort vergessen, dann klicken Sie es sich %1<b>hier</b>%2 "
 "per E-Mail zusenden lassen"
-msgstr "Forgotten password? Then click %1here%2 to send it back to you"
+msgstr "Forgotten password? Then click %1here%2 to e-mail it to yourself."
 
 #. ("<a href=\"http://www.ub.uni-koeln.de/service/kurse/kug/index_ger.html\" target=\"_blank\">","</a>")
 #: ../templates/views/kug/searchmask_simple:128
@@ -2422,8 +2429,8 @@ msgid ""
 "Haben Sie sich &uuml;ber unser\n"
 "%1Datenbankangebot%2 informiert? Auch hier finden Sie Volltexte."
 msgstr ""
-"Are you informed of ouf other %1available databases%2? There you can "
-"directly access the full text."
+"Do you know of our other %1available databases%2? There you can directly "
+"access the full text."
 
 #: ../templates/info:475 ../templates/views/kug/info:475
 msgid ""
@@ -2466,8 +2473,8 @@ msgid ""
 "Ihrer Eingabe hinzuf&uuml;gen (z.B. KA 15*)."
 msgstr ""
 "Phrase search is the default in this search field. You can't use boolean "
-"expression in here, but you can add the truncation mark at the end of your "
-"input (e.g. KA 15*)"
+"expressions here, but you can add the truncation mark at the end of your "
+"input (e.g. KA 15*)."
 
 #: ../templates/info:175 ../templates/views/kug/info:175
 msgid ""
@@ -2816,7 +2823,8 @@ msgstr ""
 #: ../templates/views/xanten/searchmask_simple:89
 #: ../templates/views/xanten/searchmask_simple:95
 msgid "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
-msgstr "Here you search in our choice of catalogue and your catalogue profiles"
+msgstr ""
+"Here you can search in your choice of catalogue,  catalogue profiles, resp."
 
 #: ../templates/searchmask:135 ../templates/searchmask:99
 #: ../templates/searchmask_simple:150 ../templates/views/edz/searchmask:113
@@ -2917,7 +2925,7 @@ msgstr "Hint"
 msgid ""
 "Hinweise und Beispiele zu weiteren\n"
 "Suchm&ouml;glichkeiten erhalten Sie %1hier%2"
-msgstr "There are hints and examples for more types of searches %1available%2"
+msgstr "Hints and examples for more types of searches are available %1here%2."
 
 #: ../templates/database/ebooks/search_showtitset:441
 #: ../templates/database/inst001/search_showtitset:468
@@ -2996,7 +3004,7 @@ msgstr ""
 
 #: ../templates/mailcollection_success:28
 msgid "Ihre Merkliste wurde an Sie per Mail versendet."
-msgstr "Your List of Interest has been sent to you by mail."
+msgstr "Your list of interest has been sent to you by e-mail."
 
 #: ../templates/leave:26 ../templates/views/einbaende/leave:27
 #: ../templates/views/gdonck/leave:27 ../templates/views/gleuel/leave:27
@@ -3006,7 +3014,7 @@ msgstr "Your List of Interest has been sent to you by mail."
 #: ../templates/views/rheinlandbib/leave:27
 #: ../templates/views/richter/leave:27 ../templates/views/xanten/leave:27
 msgid "Ihre Sitzung wurde beendet."
-msgstr "Your session is closed."
+msgstr "Your session was closed."
 
 #: ../templates/externaljump:45
 msgid "Ihre Suchanfrage im KUG Recherche-Portal"
@@ -3093,7 +3101,7 @@ msgstr ""
 
 #: ../templates/admin_editcat:104
 msgid "Import-Einstellungen"
-msgstr "Import-Options"
+msgstr "Import-Settings"
 
 #. ("<a href=\"http://kug5.ub.uni-koeln.de/portal/connector/permalink/3146/4/6/kug/index.html\" target=\"_blank\">","</a>")
 #: ../templates/info:605 ../templates/views/kug/info:605
@@ -3459,7 +3467,7 @@ msgstr ""
 #: ../templates/views/portrait/resultlists_showsinglepool:127
 #: ../templates/virtualsearch_result_item:80
 msgid "In die Merkliste"
-msgstr "Add to List of Interest"
+msgstr "Add to list of interest"
 
 #. ("<a href=\"http://de.wikipedia.org/wiki/RSS-Feed\"target=\"_blank\">","</a>","<img src=\"/images/openbib/rssfeed.png\"/>")
 #: ../templates/info:728 ../templates/views/kug/info:728
@@ -3666,7 +3674,7 @@ msgstr "KUG versions"
 
 #: ../templates/externaljump:149
 msgid "Kartenkatalog Philosoph. Fakultät"
-msgstr "Digital Card Catalog of the Philosophical Faculty"
+msgstr "Digital card catalogue (faculty of arts)"
 
 #: ../templates/resultlists_choice:87
 msgid "Katalog"
@@ -3702,7 +3710,7 @@ msgstr "Catalogue profile"
 #: ../templates/views/kug/searchmask:233
 #: ../templates/views/rheinlandbib/databasechoice:39
 msgid "Katalogauswahl"
-msgstr "Choice of Catalogues"
+msgstr "Choice of catalogues"
 
 #: ../templates/admin_editprofile:51
 msgid "Katalogauswahl zu diesem Profil"
@@ -3877,7 +3885,7 @@ msgstr "Full title"
 #: ../templates/views/xanten/searchmask:45
 #: ../templates/views/xanten/searchmask_simple:45
 msgid "Komplexe Recherche"
-msgstr "Advanced Search"
+msgstr "Complex Search"
 
 #: ../templates/info:912 ../templates/views/kug/info:912
 msgid ""
@@ -3935,7 +3943,7 @@ msgstr "Remove"
 
 #: ../templates/databaseprofile:72
 msgid "L&ouml;schung des ausgew&auml;hlten Profils"
-msgstr "Removal of the selected profile"
+msgstr "Removal of selected profile"
 
 #: ../templates/info_9:83
 msgid ""
@@ -3949,19 +3957,22 @@ msgstr ""
 msgid ""
 "Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r h&auml;"
 "ufige Begriffe diese Kategorie anbieten."
-msgstr "Unfortunately we cannot present a cloud of relevant terms for this category."
+msgstr ""
+"Unfortunately we cannot present a cloud of relevant terms for this category."
 
 #: ../templates/info_16:83
 msgid ""
 "Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r h&auml;"
 "ufige Begriffe dieser Kategorie anbieten."
-msgstr "Unfortunately we cannot present a cloud of relevant terms for this category."
+msgstr ""
+"Unfortunately we cannot present a cloud of relevant terms for this category."
 
 #: ../templates/info_19:85
 msgid ""
 "Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r von "
 "Nutzern vergebene Tags anbieten."
-msgstr "Unfortunately we cannot present a cloud of user tags for this catalogue."
+msgstr ""
+"Unfortunately we cannot present a cloud of user tags for this catalogue."
 
 #: ../templates/info_41:68
 msgid ""
@@ -4252,7 +4263,7 @@ msgstr "Delete"
 
 #: ../templates/virtualsearch_result_end:17
 msgid "M&ouml;chten Sie Ihre Suchanfrage pr&auml;zisieren?"
-msgstr "Would you like to refine your search request"
+msgstr "Would you like to refine your search request?"
 
 #: ../templates/views/portrait/clouds_navigation:18
 msgid "Maler / Zeichner"
@@ -4435,10 +4446,10 @@ msgid ""
 "eigenst&auml;ndiges Fach-Portal bilden. Auf dieser Seite finden Sie\n"
 "eine &Uuml;bersicht aller vorhandenen Spezial-Sichten."
 msgstr ""
-"Apart from standard KUG with all catalogues there exist a lot of other "
-"special views with preselected catalogues and additional information. Some "
-"of these even build a separate portal. On this page we give you an overview "
-"of all available special views."
+"Apart from the standard KUG with all catalogues there exist a lot of special "
+"views with preselected catalogues and additional information. Some of these "
+"even present a separate portal. On this page we give you an overview of all "
+"available special views."
 
 #: ../templates/admin_editcat:144 ../templates/admin_editcat:167
 #: ../templates/admin_editcat:93 ../templates/admin_editcat_rss:131
@@ -4473,7 +4484,7 @@ msgstr "New"
 
 #: ../templates/admin_editcat_rss:47
 msgid "Neuaufnahmen (generell)"
-msgstr "New Titles (general)"
+msgstr "New titles (general)"
 
 #: ../templates/admin_editcat_rss:161
 msgid "Neuaufnahmen nach K&ouml;rperschaft"
@@ -4562,8 +4573,8 @@ msgid ""
 "f&uuml;r die folgenden Titel. %1Weitere Informationen%2 finden Sie in der "
 "Suchhilfe"
 msgstr ""
-"User who selected this title were also interested in the following titles. %"
-"1Further information%2 is available on the help page"
+"User who selected this title were also interested in the following titles. %%"
+"1Further information%2 is available on the help page."
 
 #: ../templates/clouds_navigation:20
 #: ../templates/views/kapsel/clouds_navigation:20
@@ -4573,7 +4584,7 @@ msgstr "Tags"
 
 #: ../templates/admin_showlogintarget:49 ../templates/admin_showlogintarget:67
 msgid "Nutzername"
-msgstr "Username"
+msgstr "User name"
 
 #: ../templates/admin_editcat:28 ../templates/admin_editcat_rss:29
 #: ../templates/admin_editprofile:28 ../templates/admin_editsession:29
@@ -4592,7 +4603,7 @@ msgstr "User administration"
 
 #: ../templates/admin_editcat:174
 msgid "OLWS DB-Name im Lokalsystem"
-msgstr "OLWS DB-name in local system"
+msgstr "OLWS DB-name in the local system"
 
 #: ../templates/admin_editcat:175
 msgid "OLWS Zugriffs-URL"
@@ -4600,7 +4611,7 @@ msgstr "OLWS target URL"
 
 #: ../templates/userprefs:117
 msgid "Offene Geb&uuml;hren"
-msgstr "Open fees"
+msgstr "Remaining fees"
 
 #: ../templates/database/einbaende/search_showtitlist:47
 #: ../templates/database/einbaende/search_showtitlist_of_cnt:48
@@ -4822,7 +4833,7 @@ msgstr "RSS-Feed"
 
 #: ../templates/admin_editview:93
 msgid "RSS-Feed zu diesem View"
-msgstr "RSS feed of thie view"
+msgstr "RSS feed of this view"
 
 #: ../templates/info:726 ../templates/info:75 ../templates/views/kug/info:726
 #: ../templates/views/kug/info:75
@@ -4932,7 +4943,7 @@ msgstr "Richter-classification"
 #: ../templates/views/richter/searchmask_simple:138
 #: ../templates/views/xanten/searchmask_simple:107
 msgid "Rufen Sie hier die Ergebnisse früherer Recherchen auf"
-msgstr "Here you can get to the results of previous queries"
+msgstr "Here you can get the results of previous queries"
 
 #: ../templates/views/kapsel/searchmask_simple:75
 #: ../templates/views/landschaft/searchmask_simple:67
@@ -5019,7 +5030,7 @@ msgid ""
 msgstr ""
 "Dear ladies and gentlemen,\n"
 "\n"
-"your List of Interest from KUG\n"
+"please find attached your list of interest from KUG.\n"
 "\n"
 "Regards,\n"
 "\n"
@@ -5044,7 +5055,7 @@ msgid ""
 msgstr ""
 "Dear %1,\n"
 "\n"
-"you requested your forgotten password for KUG (http://kug.ub.uni-koeln.de)\n"
+"you requested your forgotten password for KUG (http://kug.ub.uni-koeln.de).\n"
 "\n"
 "Here are the requested informations:\n"
 "\n"
@@ -5068,7 +5079,7 @@ msgstr "Since"
 #: ../templates/virtualsearch_showswtindex:38
 #: ../templates/virtualsearch_showverfindex:38
 msgid "Sekunden"
-msgstr "seconds"
+msgstr "Seconds"
 
 #: ../templates/login:36 ../templates/mailpassword:27 ../templates/selfreg:26
 #: ../templates/selfreg_success:26
@@ -5132,9 +5143,10 @@ msgid ""
 "aktuelle Version auf diesem System nicht eingefroren und in eine offiziell "
 "bekanntgegebene und &ouml;ffentliche finale Testphase &uuml;bergegangen ist."
 msgstr ""
-"Right now you are using our development system that is not intended for "
-"productive use. Nevertheless you can test the most recent KUG features. "
-"Because KUG continously gets extended error messages are quite possible."
+"Right now you are using our development system which is not intended for "
+"productive use. Instead here you can test the most recent KUG features. "
+"Because this version of KUG is continously extended error messages are quite "
+"possible."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:302
 msgid "Sie greifen auf eine nicht autorisierte Session zu"
@@ -5142,20 +5154,21 @@ msgstr "You are accessing an unauthorized session"
 
 #. ("<a href=\"${config.info_loc}?sessionID=${sessionID};view=${view}#meinkugvorteile\">","</a>")
 #: ../templates/login:46
-msgid "Sie haben %1Vorteile%2, wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden."
+msgid ""
+"Sie haben %1Vorteile%2, wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden."
 msgstr "You have %1advantages%2 when you log in via <b>My KUG</b>."
 
 #. ("<a href=\"$config->{databasechoice_loc}?sessionID=$session->{ID}\" target=\"body\">","</a>")
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:250
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:247
 msgid ""
 "Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie "
 "keine %1Kataloge%2 oder Suchprofile ausgewählt haben. Bitte wählen Sie die "
 "gewünschten Kataloge/Suchprofile aus oder betätigen Sie <b>In allen "
 "Katalogen suchen</a>."
 msgstr ""
-"You clicked on <b>Search in selected catalogue</b>, although you didn't "
-"select %1catalogues%2 or search profiles. Please select a suitable catalogue/"
-"search profile or click on <b>Search in all catalogues</b>"
+"You clicked on <b>Search in selected catalogues</b>, although you didn't "
+"select any %1catalogues%2 or search profiles. Please select suitable "
+"catalogues/search profiles or click on <b>Search in all catalogues</b>."
 
 #: ../templates/views/kug/searchmask:158
 #: ../templates/views/kug/searchmask_simple:71
@@ -5174,13 +5187,14 @@ msgid ""
 msgstr ""
 "You didn't activate JavaScript in your Browser.\n"
 "As a result you can't use the choice of profiles on this page. You can also "
-"use an %1alternative version%2 with minimized usage of JavaScript."
+"use an %1alternative version%2 of this page with minimized usage of "
+"JavaScript."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:270
 msgid ""
 "Sie haben als Benutzer entweder keinen oder nicht den Admin-Benutzer "
 "eingegeben"
-msgstr "You didn;t enter any or not the correct admin username"
+msgstr "You didn't enter any or not the correct admin username"
 
 #: ../templates/circulation_make_reserv:42
 msgid "Sie haben dieses Medium bereits vorgemerkt"
@@ -5198,7 +5212,7 @@ msgstr "You entered a wrong e-mail address."
 msgid ""
 "Sie haben entweder kein Passwort eingegeben oder die beiden Passworte "
 "stimmen nicht überein"
-msgstr "You either entered no passowrd or both passwords didn't match."
+msgstr "You either entered no password or the two passwords didn't match."
 
 #: ../modules/OpenBib/Handler/Apache/Login.pm:280
 msgid "Sie haben entweder kein Passwort oder keinen Loginnamen eingegeben"
@@ -5209,14 +5223,15 @@ msgid ""
 "Sie haben entweder keine entsprechende Liste eingegeben oder Titel und "
 "Datenbank existieren nicht."
 msgstr ""
-"You either didn't enter an appropriate list or title and database don't "
+"You either didn't enter an appropriate list or the title and database don't "
 "exist."
 
 #: ../modules/OpenBib/Handler/Apache/LitLists.pm:249
 msgid ""
 "Sie haben entweder keine entsprechende Liste oder Sie sind nicht "
 "authentifiziert."
-msgstr "You either don't own the corresponding list or you are not authenticated."
+msgstr ""
+"You either don't own the corresponding list or you are not authenticated."
 
 #: ../templates/circulation:48
 msgid "Sie haben keine Ausleihen getätigt."
@@ -5269,7 +5284,8 @@ msgstr ""
 msgid ""
 "Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht "
 "erfolgreich authentifiziert werden"
-msgstr "You can't get authorized successfully by your user name and password."
+msgstr ""
+"You could not get authorized successfully with your user name and password."
 
 #. ("${viewdesc}","<a href=\"${config.databasechoice_loc}?sessionID=${sessionID};view=${view}\">","</a>")
 #: ../templates/searchmask:86 ../templates/searchmask_simple:86
@@ -5458,10 +5474,11 @@ msgstr ""
 #: ../modules/OpenBib/Handler/Apache/LitLists.pm:165
 #: ../modules/OpenBib/Handler/Apache/ManageCollection.pm:227
 msgid "Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."
-msgstr "You have to enter a title for you literature list."
+msgstr "You have to enter a title for your literature list."
 
 #: ../modules/OpenBib/Handler/Apache/LitLists.pm:195
-msgid "Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
+msgid ""
+"Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
 msgstr "You have to enter a title or type for your literature list."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:1171
@@ -5469,7 +5486,8 @@ msgid "Sie müssen mindestens eine Beschreibung eingeben."
 msgstr "You have to enter at least a description."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:340
-msgid "Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
+msgid ""
+"Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
 msgstr "You have to enter at least a catalogue name and a description."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:558
@@ -5486,11 +5504,11 @@ msgstr ""
 
 #: ../templates/selfreg_success:33
 msgid "Sie sind erfolgreich registriert"
-msgstr "The registration is successful"
+msgstr "Your registration was successful"
 
 #: ../templates/admin_loggedin:37
 msgid "Sie sind nun als Administrator eingeloggt."
-msgstr "You are no logged in as the administrator."
+msgstr "You are no logged in as administrator."
 
 #: ../templates/info:369 ../templates/views/kug/info:369
 msgid ""
@@ -5814,9 +5832,9 @@ msgid ""
 "Leider sind noch nicht alle B&uuml;cher elektronisch erfasst und damit &uuml;"
 "ber den KUG recherchierbar."
 msgstr ""
-"Please search in the digital card cataloque of the appropriate library. "
-"Unfortunately not all books are electronically available and therefore "
-"cannot be be found in KUG."
+"Please use the digital card cataloque of the appropriate library. "
+"Unfortunately not all books are electronically available and therefore some "
+"cannot be found in KUG."
 
 #. ("<a href=\"${config.redirect_loc}/${sessionID}/530/${config.ezb_exturl}&jq_term1=${searchquery.issn.val}&jq_term2=${searchquery.hst.val}%20${searchquery.hststring.val}\" target=\"_blank\"><span style=\"font-size:1.2em\">","</span></a>")
 #: ../templates/virtualsearch_more_search_tips:36
@@ -5824,8 +5842,8 @@ msgid ""
 "Suchen Sie in den %1elektronisch verf&uuml;gbaren Zeitschriften%2 der "
 "Universit&auml;tsbibliothek nach dem Zeitschriftentitel."
 msgstr ""
-"Please search in all %1electronically available journals%2 of the library "
-"for the name of the journal."
+"Please use the list of %1electronically available journals%2 of the library "
+"to search for the name of the journal."
 
 #: ../templates/userprefs:197
 msgid "Suchfelder"
@@ -6208,7 +6226,7 @@ msgstr "Subtitle"
 #: ../templates/database/richter/visible_categories_titset:27
 #: ../templates/visible_categories_titset:27
 msgid "T0341"
-msgstr "Parellell title"
+msgstr "Parallel title"
 
 #: ../templates/database/ebooks/visible_categories_titset:32
 #: ../templates/database/inst001/visible_categories_titset:33
@@ -6368,7 +6386,7 @@ msgstr "Year"
 #: ../templates/database/richter/visible_categories_titset:37
 #: ../templates/visible_categories_titset:37
 msgid "T0425"
-msgstr "Yeaf of publication"
+msgstr "Year of publication"
 
 #: ../templates/database/einbaende/visible_categories_coverset:19
 msgid "T0425-einbaende"
@@ -7355,7 +7373,8 @@ msgstr "Add to List of Interest"
 msgid ""
 "Titel mit der ISBN dieses Titels sind auch in folgenden anderen KUG-"
 "Katalogen vorhanden"
-msgstr "Titles with this ISBN are also available in the following KUG-catalogues"
+msgstr ""
+"Titles with this ISBN are also available in the following KUG-catalogues"
 
 #: ../templates/info_12:38
 msgid "Titel pro Katalog"
@@ -7384,7 +7403,7 @@ msgstr "Title-string"
 
 #: ../templates/managecollection_mail:28
 msgid "Titel/Merkliste via Mail verschicken"
-msgstr "Send title/List of Interest by mail "
+msgstr "Send title/list of interest by mail "
 
 #: ../templates/views/einbaende/searchmask:110
 msgid "Titel/Provenienz"
@@ -7495,7 +7514,7 @@ msgstr "Hit Lists, List of Interests and Literature Lists"
 #: ../templates/views/portrait/resultlists_showsinglepool:26
 #: ../templates/virtualsearch_result_start:26
 msgid "Trefferliste"
-msgstr "Hit List"
+msgstr "Result list"
 
 #: ../templates/database/audiosmlg/drilldown_categorized:100
 #: ../templates/database/inst001/drilldown_categorized:3
@@ -7572,7 +7591,8 @@ msgstr "To edit an already existing view please select the view name."
 msgid ""
 "Um einen bereits existierendes Katalog-Profil zu bearbeiten klicken Sie "
 "bitte auf den Profil-Namen."
-msgstr "To edit an already existing catalogue profile please select the profile name."
+msgstr ""
+"To edit an already existing catalogue profile please select the profile name."
 
 #. ("<a href=\"http://${config.servername}${config.admin_loc}?do_loginmask=1\">","</a>")
 #: ../templates/admin_logout:26
@@ -7674,7 +7694,7 @@ msgstr "Invalid action"
 #: ../modules/OpenBib/Handler/Apache/Tags.pm:126
 #: ../modules/OpenBib/Handler/Apache/UserPrefs.pm:112
 #: ../modules/OpenBib/Handler/Apache/UserReviews.pm:123
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:145
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:142
 msgid "Ungültige Session"
 msgstr "Invalid session"
 
@@ -7772,7 +7792,7 @@ msgstr "Load Sharing in the KUG"
 msgid ""
 "Vielen Dank f&uuml;r Ihren Besuch beim K&ouml;lner Universit&auml;"
 "tsGesamtkatalog."
-msgstr "Thank you for using K&ouml;lner Universit&auml;tsGesamtkatalog."
+msgstr "Thank you for using the K&ouml;lner Universit&auml;tsGesamtkatalog."
 
 #: ../templates/views/portrait/leave:28
 msgid "Vielen Dank f&uuml;r Ihren Besuch der Portrait-Sammlung."
@@ -7788,7 +7808,7 @@ msgstr "Thank you for using 'Virtuelle Bibliothek Elise und Helene Richter'."
 msgid ""
 "Vielen Dank f&uuml;r Ihren Besuch in der digitalen Einband-Sammlung der USB "
 "K&ouml;ln."
-msgstr "Thank you for using 'Digitale Einband-Sammlung der USB K&ouml;ln."
+msgstr "Thank you for using 'Digitale Einband-Sammlung der USB K&ouml;ln'."
 
 #: ../templates/admin_editview:40
 msgid "View bearbeiten"
@@ -7797,7 +7817,7 @@ msgstr "Edit view"
 #: ../templates/admin_editview:43 ../templates/admin_showviews:43
 #: ../templates/admin_showviews:65
 msgid "Viewname"
-msgstr "Viewname"
+msgstr "View name"
 
 #: ../templates/admin_editcat:25 ../templates/admin_editcat_rss:26
 #: ../templates/admin_editprofile:25 ../templates/admin_editsession:26
@@ -7824,7 +7844,7 @@ msgstr "Virtual index of subjects"
 
 #: ../templates/virtualsearch_shownotindex:25
 msgid "Virtueller Systematikindex"
-msgstr "Virtual index of classification"
+msgstr "Virtual index of classifications"
 
 #: ../templates/virtualsearch_showverfindex:25
 msgid "Virtueller Verfasserindex"
@@ -7836,7 +7856,7 @@ msgstr "Full title"
 
 #: ../templates/userprefs:109
 msgid "Vorgemerkt"
-msgstr "Booked"
+msgstr "Reserved"
 
 #: ../templates/database/ebooks/search_showtitset:47
 #: ../templates/database/ebooks/search_showtitset:49
@@ -7895,16 +7915,16 @@ msgid ""
 "einem Normdaten-Eintrag verkn&uuml;pft wurden, umso grösser wird der "
 "zugehörige Normdaten-Eintrag dargestellt."
 msgstr ""
-"Please select a catalogue to view on overview of its <b>200 most used tems "
-"in several categories as a tag cloud (%1&nbsp;%2)</b>.  The more titles are "
-"connected to a term the bigger the corresponding term gets displayed."
+"Please select a catalogue to see an overview of its <b>200 most used tems in "
+"several categories as a tag cloud (%1&nbsp;%2)</b>.  The more titles are "
+"connected to a term the bigger the corresponding term is displayed."
 
 #: ../templates/database/ebooks/search_showtitset:709
 #: ../templates/database/inst001/search_showtitset:736
 #: ../templates/database/nationallizenzen/search_showtitset:715
 #: ../templates/search_showtitset:732
 msgid "War diese Rezension hilfreich?"
-msgstr "Is this review helpful?"
+msgstr "Was this review helpful?"
 
 #: ../templates/loadbalancer:23
 msgid "Wartungsarbeiten"
@@ -7922,7 +7942,8 @@ msgstr "WebOPAC-URL"
 msgid ""
 "Wegen eines unerwarteten Problems kann der KUG in den n&auml;chsten Minuten\n"
 "leider nicht genutzt werden."
-msgstr "Due to an enexpectant event the KUG cannot be used for the next few minutes."
+msgstr ""
+"Due to an unexpectant event the KUG cannot be used for the next few minutes."
 
 #: ../templates/circset:24 ../templates/database/inst001/circset:124
 #: ../templates/database/inst001/circset:85
@@ -8055,8 +8076,8 @@ msgid ""
 msgstr ""
 "To view an index please enter your search term in the following search "
 "fields: Person, corporate body/institution, subject headings. After "
-"selecting <b>Index</b> you'll get a list of the corresponding terms "
-"beginning with your search term from each of the databases."
+"selecting <b>Index</b> you'll get a list of corresponding terms beginning "
+"with your search term from each of the databases."
 
 #. ("<a    href=\"http://www.mozilla.org/products/firefox/\"    target=\"_blank\">Mozilla Firefox</a>","<a    href=\"javascript:addEngine('KUG','jpg','Academic')
 #: ../templates/info:1024 ../templates/views/kug/info:1024
@@ -8100,10 +8121,9 @@ msgid ""
 "<b>oder</b> der andere Begriff ist enthalten."
 msgstr ""
 "Terms entered into a search field will be searched with boolean <b>AND</b> "
-"as our default - all terms have to exists in the title. To search with "
-"boolean <b>OR</b> as a default please deactive the search option <b>AND-"
-"relation in a search field</b> - at least one search term has to exist in "
-"the title."
+"as default - all terms have to exists in the title. To search with boolean "
+"<b>OR</b> as default please deactivate the search option <b>AND-relation in "
+"a search field</b> - at least one search term has to exist in the title."
 
 #: ../templates/info:581 ../templates/views/kug/info:581
 msgid ""
@@ -8152,7 +8172,8 @@ msgstr ""
 msgid ""
 "Wenn Sie weiter im KUG recherchieren m&ouml;chten, so klicken Sie bitte %"
 "1<b>hier</b>[_2}, um eine neue Sitzung zu beginnen."
-msgstr "To continue using KUG please click %1<b>here</b>[_2} to start a new session."
+msgstr ""
+"To continue using KUG please click %1<b>here</b>[_2} to start a new session."
 
 #: ../templates/info:870 ../templates/views/kug/info:870
 msgid ""
@@ -8186,7 +8207,7 @@ msgstr ""
 
 #: ../templates/loadbalancer:28
 msgid "Wir bitten um Ihr Verst&auml;ndnis. Vielen Dank."
-msgstr "We ask for your understanding. Thank you."
+msgstr "Thank you for your understanding."
 
 #: ../templates/info_18:56
 msgid "Wolke der h&auml;ufigsten Begriffe"
@@ -8194,7 +8215,7 @@ msgstr "Cloud of relevant terms"
 
 #: ../templates/info_9:56
 msgid "Wolke der h&auml;ufigsten Erscheinungsjahre"
-msgstr "Cloud of the most frequent years of publication"
+msgstr "Cloud of most frequent years of publication"
 
 #: ../templates/info_14:56
 msgid "Wolke der häufigsten Begriffe"
@@ -8206,7 +8227,7 @@ msgstr "Cloud of the most frequently used literature lists"
 
 #: ../templates/info_19:56
 msgid "Wolke der von Nutzern vergebenen Tags"
-msgstr "Cloud of the most frequently used tags"
+msgstr "Cloud of most frequently used tags"
 
 #: ../templates/info:86 ../templates/info:936 ../templates/info_13:35
 #: ../templates/info_14:43 ../templates/info_15:37 ../templates/info_16:43
@@ -8266,7 +8287,7 @@ msgstr ""
 
 #: ../templates/mailcollection_mail_html:26
 msgid "Zugemailte Merkliste"
-msgstr "Mailed List of Interest"
+msgstr "Mailed list of interest"
 
 #: ../templates/admin_editcat:161
 msgid "Zugriff &uuml;ber OLWS"
@@ -8332,7 +8353,7 @@ msgstr "Access via OLWS"
 #: ../templates/views/xanten/searchmask:65
 #: ../templates/views/xanten/searchmask_simple:113
 msgid "Zur Trefferliste"
-msgstr "To resultlist"
+msgstr "To result list"
 
 #. ("<a href=\"${config.searchmask_loc}?sessionID=${sessionID};view=${view};queryid=${queryid}\">","</a>")
 #: ../templates/virtualsearch_result_end:15
@@ -8448,7 +8469,8 @@ msgstr "in internal course of business"
 
 #: ../templates/std_footer:17 ../templates/views/portrait/std_footer:17
 msgid "ist ein Dienst der Universitäts- und Stadtbibliothek Köln"
-msgstr "is a public service of the Central Library of the University of Cologne"
+msgstr ""
+"is a public service of the Central Library of the University of Cologne"
 
 #: ../templates/userprefs:85
 msgid "ja, seit"
@@ -8532,7 +8554,7 @@ msgstr "by musicion/group"
 #: ../templates/database/landschaft/search_showtitlist:51
 #: ../templates/database/portrait/drilldown_categorized:52
 #: ../templates/database/portrait/search_showtitlist:51
-#: ../templates/drilldown_categorized:213
+#: ../templates/drilldown_categorized:227
 #: ../templates/litlists_manage_singlelist:86
 #: ../templates/litlists_show_singlelist:56
 #: ../templates/resultlists_showall:46
@@ -8552,12 +8574,12 @@ msgstr "by year"
 msgid "nach Jahrhundert"
 msgstr "by century"
 
-#: ../templates/drilldown_categorized:150
+#: ../templates/drilldown_categorized:164
 msgid "nach K&ouml;perschaften"
 msgstr "by corporate body"
 
 #: ../templates/database/audiosmlg/drilldown_categorized:108
-#: ../templates/drilldown_categorized:108
+#: ../templates/drilldown_categorized:122
 msgid "nach Katalog"
 msgstr "by catalogue"
 
@@ -8565,7 +8587,7 @@ msgstr "by catalogue"
 #: ../templates/database/einbaende/drilldown_categorized:66
 #: ../templates/database/inst001/drilldown_categorized:70
 #: ../templates/database/portrait/drilldown_categorized:66
-#: ../templates/drilldown_categorized:234
+#: ../templates/drilldown_categorized:248
 msgid "nach Medienart"
 msgstr "by type of media"
 
@@ -8597,7 +8619,7 @@ msgstr "by person/region"
 
 #: ../templates/database/inst001/drilldown_categorized:10
 #: ../templates/database/portrait/drilldown_categorized:10
-#: ../templates/drilldown_categorized:129
+#: ../templates/drilldown_categorized:143
 msgid "nach Personen"
 msgstr "by person"
 
@@ -8655,18 +8677,18 @@ msgstr "by location mark"
 #: ../templates/database/einbaende/drilldown_categorized:80
 #: ../templates/database/inst001/drilldown_categorized:84
 #: ../templates/database/portrait/drilldown_categorized:80
-#: ../templates/drilldown_categorized:255
+#: ../templates/drilldown_categorized:269
 msgid "nach Sprache"
 msgstr "by language"
 
 #: ../templates/database/inst001/drilldown_categorized:42
-#: ../templates/drilldown_categorized:192
+#: ../templates/drilldown_categorized:206
 msgid "nach Systematik"
 msgstr "by classification"
 
 #: ../templates/database/audiosmlg/drilldown_categorized:171
 #: ../templates/database/inst001/drilldown_categorized:24
-#: ../templates/drilldown_categorized:171
+#: ../templates/drilldown_categorized:185
 msgid "nach Themen"
 msgstr "by subject"
 
@@ -8851,3 +8873,23 @@ msgstr "Copy"
 msgid "Überziehungen / Gebühren"
 msgstr "Overdue/Fees"
 
+#~ msgid "Andere Ausgaben dieses Titels (Sprache, Auflage usw.)"
+#~ msgstr "Other manifestations of this work (language, edition, ...) "
+
+#~ msgid "Bl&auml;ttern"
+#~ msgstr "Browse"
+
+#~ msgid "Das könnte Sie interessieren"
+#~ msgstr "Other interesting titles"
+
+#~ msgid "Dieser Titel in anderen Katalogen"
+#~ msgstr "This title in other catalogues"
+
+#~ msgid "Eigene Tags vergeben"
+#~ msgstr "Enter your tags"
+
+#~ msgid "T0700-kapsel"
+#~ msgstr "Subject headings"
+
+#~ msgid "entfernen"
+#~ msgstr "delete"

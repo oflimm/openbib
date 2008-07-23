@@ -151,6 +151,12 @@ sub sort {
     elsif ($type eq "tstamp" && $order eq "down") {
         @$sortedoutputbuffer_ref=sort _by_tstamp_down @{$self->{recordlist}};
     }
+    elsif ($type eq "relevance" && $order eq "up") {
+        @$sortedoutputbuffer_ref=@{$self->{recordlist}};
+    }
+    elsif ($type eq "relevance" && $order eq "down") {
+        @$sortedoutputbuffer_ref=reverse @{$self->{recordlist}};
+    }
     else {
         @$sortedoutputbuffer_ref=@{$self->{recordlist}};
     }

@@ -603,7 +603,7 @@ sub grundform {
     $content=~s/ý/y/g;
     $content=~s/Þ/th/g;       # Gr. Thorn
     $content=~s/þ/th/g;       # kl. Thorn
-    $content=~s/ð/eth/g;      # eth
+    $content=~s/ð/d/g;      # eth
 
     return $content;
 }

@@ -717,7 +717,7 @@ while (my $line=<IN>){
         # - Data::Dumper verwenden, da hier ASCII herauskommt
         # - in MLDB auslagern
         # - Kategorien als eigene Spalten
-
+        
         
         my $listitem = Storable::freeze($listitem_ref);
 
@@ -791,7 +791,7 @@ while (my $line=<IN>){
                 $contentnormft = $contentnormtmp;
             }
         }
-
+        
         # Verknuepfungen
         if ($category=~m/^0004/){
             my ($targetid) = $content=~m/^(\d+)/;
@@ -1091,11 +1091,15 @@ while (my $line=<IN>){
             if (exists $listitemdata_swt{$targetid}){
                 push @swt, $targetid;
 
+                my $content = $listitemdata_swt{$targetid}->{content};
+
                 push @{$listitem_ref->{S0902}}, {
                     id         => $targetid,
                     type       => 'swt',
                     content    => $content,
                 } if (exists $conv_config->{listitemcat}{'0902'});
+
+                push @{$normdata_ref->{swt}}, $content;
 
                 print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
             }
@@ -1115,13 +1119,17 @@ while (my $line=<IN>){
             # auch wirklich existiert -> schlechte Katalogisate
             if (exists $listitemdata_swt{$targetid}){
                 push @swt, $targetid;
-                
+
+                my $content = $listitemdata_swt{$targetid}->{content};
+
                 push @{$listitem_ref->{S0907}}, {
                     id         => $targetid,
                     type       => 'swt',
                     content    => $content,
                 } if (exists $conv_config->{listitemcat}{'0907'});
 
+                push @{$normdata_ref->{swt}}, $content;
+                
                 print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
             }
             else {
@@ -1141,11 +1149,15 @@ while (my $line=<IN>){
             if (exists $listitemdata_swt{$targetid}){
                 push @swt, $targetid;
 
+                my $content = $listitemdata_swt{$targetid}->{content};
+
                 push @{$listitem_ref->{S0912}}, {
                     id         => $targetid,
                     type       => 'swt',
                     content    => $content,
                 } if (exists $conv_config->{listitemcat}{'0912'});
+
+                push @{$normdata_ref->{swt}}, $content;
 
                 print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
             }
@@ -1165,13 +1177,17 @@ while (my $line=<IN>){
             # auch wirklich existiert -> schlechte Katalogisate
             if (exists $listitemdata_swt{$targetid}){
                 push @swt, $targetid;
-                
+
+                my $content = $listitemdata_swt{$targetid}->{content};
+
                 push @{$listitem_ref->{S0917}}, {
                     id         => $targetid,
                     type       => 'swt',
                     content    => $content,
                 } if (exists $conv_config->{listitemcat}{'0917'});
 
+                push @{$normdata_ref->{swt}}, $content;
+                
                 print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
             }
             else {
@@ -1190,12 +1206,16 @@ while (my $line=<IN>){
             # auch wirklich existiert -> schlechte Katalogisate
             if (exists $listitemdata_swt{$targetid}){
                 push @swt, $targetid;
-                
+
+                my $content = $listitemdata_swt{$targetid}->{content};
+
                 push @{$listitem_ref->{S0922}}, {
                     id         => $targetid,
                     type       => 'swt',
                     content    => $content,
                 } if (exists $conv_config->{listitemcat}{'0922'});
+
+                push @{$normdata_ref->{swt}}, $content;
 
                 print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
             }
@@ -1216,11 +1236,15 @@ while (my $line=<IN>){
             if (exists $listitemdata_swt{$targetid}){
                 push @swt, $targetid;
 
+                my $content = $listitemdata_swt{$targetid}->{content};
+
                 push @{$listitem_ref->{S0927}}, {
                     id         => $targetid,
                     type       => 'swt',
                     content    => $content,
                 } if (exists $conv_config->{listitemcat}{'0927'});
+
+                push @{$normdata_ref->{swt}}, $content;
 
                 print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
             }
@@ -1240,12 +1264,16 @@ while (my $line=<IN>){
             # auch wirklich existiert -> schlechte Katalogisate
             if (exists $listitemdata_swt{$targetid}){
                 push @swt, $targetid;
-                
+
+                my $content = $listitemdata_swt{$targetid}->{content};
+
                 push @{$listitem_ref->{S0932}}, {
                     id         => $targetid,
                     type       => 'swt',
                     content    => $content,
                 } if (exists $conv_config->{listitemcat}{'0932'});
+
+                push @{$normdata_ref->{swt}}, $content;
 
                 print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
             }
@@ -1265,12 +1293,16 @@ while (my $line=<IN>){
             # auch wirklich existiert -> schlechte Katalogisate
             if (exists $listitemdata_swt{$targetid}){
                 push @swt, $targetid;
-                
+
+                my $content = $listitemdata_swt{$targetid}->{content};
+
                 push @{$listitem_ref->{S0937}}, {
                     id         => $targetid,
                     type       => 'swt',
                     content    => $content,
                 } if (exists $conv_config->{listitemcat}{'0937'});
+
+                push @{$normdata_ref->{swt}}, $content;
 
                 print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
             }
@@ -1290,12 +1322,16 @@ while (my $line=<IN>){
             # auch wirklich existiert -> schlechte Katalogisate
             if (exists $listitemdata_swt{$targetid}){
                 push @swt, $targetid;
-                
+
+                my $content = $listitemdata_swt{$targetid}->{content};
+
                 push @{$listitem_ref->{S0942}}, {
                     id         => $targetid,
                     type       => 'swt',
                     content    => $content,
                 } if (exists $conv_config->{listitemcat}{'0942'});
+
+                push @{$normdata_ref->{swt}}, $content;
 
                 print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
             }
@@ -1315,12 +1351,16 @@ while (my $line=<IN>){
             # auch wirklich existiert -> schlechte Katalogisate
             if (exists $listitemdata_swt{$targetid}){
                 push @swt, $targetid;
-                
+
+                my $content = $listitemdata_swt{$targetid}->{content};
+
                 push @{$listitem_ref->{S0947}}, {
                     id         => $targetid,
                     type       => 'swt',
                     content    => $content,
                 } if (exists $conv_config->{listitemcat}{'0947'});
+
+                push @{$normdata_ref->{swt}}, $content;
 
                 print OUTCONNECTION "$category$sourceid$sourcetype$targetid$targettype$supplement\n";
             }

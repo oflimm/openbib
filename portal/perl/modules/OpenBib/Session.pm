@@ -611,16 +611,26 @@ sub get_all_items_in_resultlist {
     
     my @resultlist=();
 
-    # Sortieren von Searchresults gemaess Ordnung der DBnames in ihren OrgUnits
-    foreach my $dbname ($config->get_active_databases()){
-        if (exists $searchresult_ref->{$dbname}){
-            push @resultlist, {
-                dbname       => $dbname,
-                searchresult => Storable::thaw(pack "H*",$searchresult_ref->{$dbname}),
-            };
+    if (exists $searchresult_ref->{'combined'}){
+        push @resultlist, {
+            dbname       => 'combined',
+            searchresult => Storable::thaw(pack "H*",$searchresult_ref->{'combined'}),
+        };        
+    }
+    else {
+        # Sortieren von Searchresults gemaess Ordnung der DBnames in ihren OrgUnits
+        foreach my $dbname ($config->get_active_databases()){
+            if (exists $searchresult_ref->{$dbname}){
+                push @resultlist, {
+                    dbname       => $dbname,
+                    searchresult => Storable::thaw(pack "H*",$searchresult_ref->{$dbname}),
+                };
+            }
         }
     }
-
+    
+    $logger->debug("Ergebnisliste zu Queryid $queryid: ".YAML::Dump(\@resultlist));
+    
     $idnresult->finish();
 
     return @resultlist;
@@ -1235,6 +1245,49 @@ sub set_searchresult {
     $idnresult->finish();
 
     return;
+}
+
+sub get_searchresult {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $queryid          = exists $arg_ref->{queryid}
+        ? $arg_ref->{queryid}               : undef;
+
+    my $database         = exists $arg_ref->{database}
+        ? $arg_ref->{database}              : undef;
+
+    my $offset           = exists $arg_ref->{offset}
+        ? $arg_ref->{offset}                : undef;
+    
+    my $hitrange         = exists $arg_ref->{hitrange}
+        ? $arg_ref->{hitrange}              : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{sessiondbname};host=$config->{sessiondbhost};port=$config->{sessiondbport}", $config->{sessiondbuser}, $config->{sessiondbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $request=$dbh->prepare("select searchresult from searchresults where sessionid = ? and queryid = ? and dbname = ? and offset = ? and hitrange = ?") or $logger->error($DBI::errstr);
+    $request->execute($self->{ID},$queryid,$database,$offset,$hitrange) or $logger->error($DBI::errstr);
+
+    my $result=$request->fetchrow_hashref;
+
+    my $recordlist = new OpenBib::RecordList::Title;
+
+    if ($result->{searchresult}){
+        $logger->debug("Suchergebnis vorhanden: $result->{searchresult}");
+        $recordlist=Storable::thaw(pack "H*", $result->{searchresult});  
+    }   
+
+    $logger->debug("Suchergebnis: ".YAML::Dump($recordlist));
+    
+    return $recordlist;
 }
 
 sub get_returnurl {

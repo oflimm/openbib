@@ -374,6 +374,22 @@ sub print_to_handler {
     return;
 }
 
+sub set_from_storable {
+    my ($self,$storable_ref)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    if (exists $self->{_exists} && exists $self->{recordlist}){
+        $self->{recordlist} = $storable_ref->{recordlist};
+        $self->{_size}      = $storable_ref->{_size};
+    }
+
+    $logger->debug(YAML::Dump($self));    
+
+    return $self;
+}
+
 sub get_size {
     my ($self)=@_;
 

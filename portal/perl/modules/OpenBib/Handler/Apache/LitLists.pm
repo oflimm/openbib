@@ -269,6 +269,7 @@ sub handler {
                     sessionID  => $session->{ID},
 
                     query        => $query,
+                    qopts        => $queryoptions->get_options,
                     user         => $user,
                     litlist      => $singlelitlist,
                     targetdbinfo => $dbinfotable,
@@ -299,6 +300,7 @@ sub handler {
                 sessionID  => $session->{ID},
 		      
                 litlists   => $litlists,
+                qopts      => $queryoptions->get_options,
                 user       => $user,
                 targettype => $targettype,
                 config     => $config,
@@ -333,6 +335,7 @@ sub handler {
                 sessionID    => $session->{ID},
 
                 query        => $query,
+                qopts        => $queryoptions->get_options,
                 user         => $user,
                 litlist      => $singlelitlist,
                 targetdbinfo => $dbinfotable,

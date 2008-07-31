@@ -29,14 +29,12 @@
 
 <p />
 <p />
-<form method="get" action="[% config.resultlists_loc %]">
-<input type="hidden" name="offset"     value="[% query.param('offset') %]" />
-<input type="hidden" name="hitrange"   value="[% query.param('hitrange') %]" />
-<input type="hidden" name="action"     value="showall" />
-<input type="hidden" name="sessionID"  value="[% query.param('sessionID') %]" />
-<input type="hidden" name="queryid"    value="[% queryid %]" />
-<input type="hidden" name="sortall"    value="0" />
-<input type="hidden" name="combinedbs" value="[% query.param('combinedbs') %]" />
+<form method="get" action="[% config.virtualsearch_loc %]">
+[%- FOREACH qparam IN query.param -%]
+[%-   IF qparam != 'sortorder' && qparam != 'sorttype' %]
+<input type="hidden" name="[% qparam %]" value="[% query.param(qparam) %]" />
+[%-   END -%]
+[%- END -%]
 
 <table width="100%">
 <tr><th>[% msg.maketext("Optionen") %]</th></tr>

@@ -124,10 +124,6 @@ sub initial_search {
     # Set defaults
     my $serien            = exists $arg_ref->{serien}
         ? $arg_ref->{serien}        : undef;
-    my $enrich            = exists $arg_ref->{enrich}
-        ? $arg_ref->{enrich}        : undef;
-    my $enrichkeys_ref    = exists $arg_ref->{enrichkeys_ref}
-        ? $arg_ref->{enrichkeys_ref}: undef;
     my $dbh               = exists $arg_ref->{dbh}
         ? $arg_ref->{dbh}           : undef;
     my $database          = exists $arg_ref->{database}

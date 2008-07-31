@@ -81,7 +81,11 @@ tie %xapian_idmapping, 'DB_File', $config->{'autoconv_dir'}."/pools/$database/xa
 
 my $docid=$xapian_idmapping{$titid};
 
-system("delve -r $titid ".$config->{xapian_index_base_path}."/$database");
+unless ($docid){
+    $logger->error_die("Keine Doc-ID zu diesem Titel gefunden");
+}
+
+system("delve -r $docid ".$config->{xapian_index_base_path}."/$database");
 
 untie(%xapian_idmapping);
 

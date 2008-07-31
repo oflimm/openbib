@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2008-07-21 17:29+0200\n"
+"PO-Revision-Date: 2008-07-31 15:12+0200\n"
 "Last-Translator: \n"
-"Language-Team:  <flimm@openbib.org>\n"
+"Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -152,8 +152,7 @@ msgstr "Acquired categories: title, coporate body, ISSN"
 msgid ""
 "&Uuml;bernommene Felder: Titel, Person, K&ouml;rperschaft, ISBN, "
 "Erscheinungsjahr"
-msgstr ""
-"Acquired categories: title, author, corporate body, ISBN, year of publication"
+msgstr "Acquired categories: title, author, corporate body, ISBN, year of publication"
 
 #: ../templates/admin_showlogintarget:35 ../templates/admin_showuser:35
 msgid "&Uuml;bersicht"
@@ -525,7 +524,7 @@ msgstr "Send as e-mail"
 #: ../templates/database/inst001/search_showtitset:60
 #: ../templates/database/nationallizenzen/search_showtitset:58
 #: ../templates/litlists_manage_lists:79
-#: ../templates/litlists_show_singlelist:67 ../templates/search_showtitset:58
+#: ../templates/litlists_show_singlelist:73 ../templates/search_showtitset:58
 msgid "Als Permanenten Link verwenden"
 msgstr "Use as permanent link"
 
@@ -1107,7 +1106,7 @@ msgid "Bitte bookmarken unter:"
 msgstr "Please bookmark as:"
 
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:346
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:520
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:519
 msgid "Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."
 msgstr "Please enter a four digit number as the year of publication."
 
@@ -1150,6 +1149,11 @@ msgstr "C0111"
 #: ../templates/visible_categories_korset:21
 msgid "C5000"
 msgstr "C5000"
+
+#: ../templates/litlists_show_singlelist:69
+#: ../templates/virtualsearch_result_start:69
+msgid "Cover-Ansicht"
+msgstr "Cover view"
 
 #: ../templates/admin_editcat:136
 msgid "DB-Datei"
@@ -1267,8 +1271,8 @@ msgstr ""
 
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:353
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:362
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:527
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:536
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:526
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:535
 msgid ""
 "Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und "
 "mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die "
@@ -1307,10 +1311,9 @@ msgstr ""
 msgid ""
 "Denken Sie daran, dass nur wenige Bibliotheken Ihre Aufs&auml;tze in Ihrem "
 "Katalog aufnehmen"
-msgstr ""
-"Please remember that only a few libraries have articles in their catalogues"
+msgstr "Please remember that only a few libraries have articles in their catalogues"
 
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:319
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:318
 msgid ""
 "Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank "
 "zur Suche im Index ausgewählt wurde."
@@ -1607,8 +1610,7 @@ msgid "Digitale Bibliothek / Monographien (Fernleihe)"
 msgstr "Digital library / Monographs (ILL)"
 
 #: ../templates/info:620 ../templates/views/kug/info:620
-msgid ""
-"Digitale Bibliothek / Monographien (f&uuml;r die Fernleihe von Monographien)"
+msgid "Digitale Bibliothek / Monographien (f&uuml;r die Fernleihe von Monographien)"
 msgstr "Digital Library/ Monographs (for Interlibrary loan of monographs)"
 
 #: ../templates/externaljump:110
@@ -1965,8 +1967,7 @@ msgid "Es existiert kein Passwort für die Kennung $loginname"
 msgstr "For the login $loginname no password exists."
 
 #: ../templates/admin_editcat_rss:176
-msgid ""
-"Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
+msgid "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
 msgstr "Right now there's no RSS-Feed for new titles per corporate name"
 
 #: ../templates/admin_editcat_rss:233
@@ -1989,8 +1990,7 @@ msgstr "Right now there's no primary RSS-feed for this view"
 msgid ""
 "Es k&ouml;nnen nur Begriffe recherchiert werden, die aus\n"
 "      mindestens zwei Zeichen (Buchstaben/Ziffern) bestehen."
-msgstr ""
-"All search terms must consist of at least two characters   (letters/numbers)"
+msgstr "All search terms must consist of at least two characters   (letters/numbers)"
 
 #: ../templates/circulation_remind:48
 msgid "Es sind keine Gebühren angefallen."
@@ -2001,12 +2001,11 @@ msgid "Es sind keine Quellen verf&uuml;gbar."
 msgstr "No sources available."
 
 #: ../modules/OpenBib/Handler/Apache/SelfReg.pm:118
-msgid ""
-"Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
+msgid "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
 msgstr "You either didn't enter a username or less than two passwords "
 
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:369
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:543
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:542
 msgid "Es wurde kein Suchkriterium eingegeben."
 msgstr "You didn't enter any search criteria."
 
@@ -2059,7 +2058,7 @@ msgstr ""
 "<b>^</b> ahead of your search query (e.g. ^education*). As before, you can "
 "truncate the word with a *."
 
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:314
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:313
 msgid ""
 "F&uuml;r die Nutzung der Index-Funktion m&uuml;ssen Sie einen Begriff "
 "eingegeben"
@@ -2318,7 +2317,7 @@ msgstr "Please enter the beginning of the classification"
 #: ../templates/database/ebooks/search_showtitset:781
 #: ../templates/database/inst001/search_showtitset:808
 #: ../templates/database/nationallizenzen/search_showtitset:787
-#: ../templates/search_showswtindex:81 ../templates/search_showtitlist:187
+#: ../templates/search_showswtindex:81 ../templates/search_showtitlist:193
 #: ../templates/search_showtitset:804
 #: ../templates/views/kapsel/search_showtitlist:187
 #: ../templates/virtualsearch_showswtindex:52
@@ -2823,8 +2822,7 @@ msgstr ""
 #: ../templates/views/xanten/searchmask_simple:89
 #: ../templates/views/xanten/searchmask_simple:95
 msgid "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
-msgstr ""
-"Here you can search in your choice of catalogue,  catalogue profiles, resp."
+msgstr "Here you can search in your choice of catalogue,  catalogue profiles, resp."
 
 #: ../templates/searchmask:135 ../templates/searchmask:99
 #: ../templates/searchmask_simple:150 ../templates/views/edz/searchmask:113
@@ -2952,8 +2950,8 @@ msgstr "ISBN"
 msgid "ISSN"
 msgstr "ISSN"
 
-#: ../modules/OpenBib/Handler/Apache/LitLists.pm:285
-#: ../modules/OpenBib/Handler/Apache/LitLists.pm:348
+#: ../modules/OpenBib/Handler/Apache/LitLists.pm:286
+#: ../modules/OpenBib/Handler/Apache/LitLists.pm:351
 msgid "Ihnen geh&ouml;rt diese Literaturliste nicht."
 msgstr "You don't own this literature list."
 
@@ -3451,11 +3449,11 @@ msgstr ""
 #: ../templates/database/portrait/search_showtitlist:153
 #: ../templates/database/portrait/search_showtitset:38
 #: ../templates/database/portrait/virtualsearch_result_item:79
-#: ../templates/resultlists_showall:137
-#: ../templates/resultlists_showall_sortall:122
-#: ../templates/resultlists_showsinglepool:140
-#: ../templates/search_showtitlist:156
-#: ../templates/search_showtitlist_of_cnt:156
+#: ../templates/resultlists_showall:143
+#: ../templates/resultlists_showall_sortall:128
+#: ../templates/resultlists_showsinglepool:146
+#: ../templates/search_showtitlist:162
+#: ../templates/search_showtitlist_of_cnt:162
 #: ../templates/search_showtitset:54
 #: ../templates/views/einbaende/resultlists_showall:134
 #: ../templates/views/einbaende/resultlists_showall_sortall:110
@@ -3465,7 +3463,7 @@ msgstr ""
 #: ../templates/views/kapsel/resultlists_showsinglepool:137
 #: ../templates/views/kapsel/search_showtitlist:156
 #: ../templates/views/portrait/resultlists_showsinglepool:127
-#: ../templates/virtualsearch_result_item:80
+#: ../templates/virtualsearch_result_item:76
 msgid "In die Merkliste"
 msgstr "Add to list of interest"
 
@@ -3957,22 +3955,19 @@ msgstr ""
 msgid ""
 "Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r h&auml;"
 "ufige Begriffe diese Kategorie anbieten."
-msgstr ""
-"Unfortunately we cannot present a cloud of relevant terms for this category."
+msgstr "Unfortunately we cannot present a cloud of relevant terms for this category."
 
 #: ../templates/info_16:83
 msgid ""
 "Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r h&auml;"
 "ufige Begriffe dieser Kategorie anbieten."
-msgstr ""
-"Unfortunately we cannot present a cloud of relevant terms for this category."
+msgstr "Unfortunately we cannot present a cloud of relevant terms for this category."
 
 #: ../templates/info_19:85
 msgid ""
 "Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r von "
 "Nutzern vergebene Tags anbieten."
-msgstr ""
-"Unfortunately we cannot present a cloud of user tags for this catalogue."
+msgstr "Unfortunately we cannot present a cloud of user tags for this catalogue."
 
 #: ../templates/info_41:68
 msgid ""
@@ -3989,6 +3984,16 @@ msgstr "End of loan period"
 #: ../templates/rssfeeds:47 ../templates/rssfeeds:75
 msgid "Letzte 50 Neuaufnahmen"
 msgstr "Newest 50 catalogue entries"
+
+#: ../templates/litlists_show_singlelist:69
+#: ../templates/virtualsearch_result_start:69
+msgid "Liste"
+msgstr "List"
+
+#: ../templates/litlists_show_singlelist:69
+#: ../templates/virtualsearch_result_start:69
+msgid "Listen-Ansicht"
+msgstr "List view"
 
 #: ../templates/database/ebooks/search_showtitset:382
 #: ../templates/database/inst001/search_showtitset:409
@@ -4065,7 +4070,7 @@ msgstr "Local location mark  "
 #: ../templates/database/nationallizenzen/search_showtitset:632
 #: ../templates/database/portrait/search_showtitlist:63
 #: ../templates/litlists_manage_singlelist:96
-#: ../templates/litlists_show_singlelist:66
+#: ../templates/litlists_show_singlelist:65
 #: ../templates/managecollection_show:67 ../templates/managecollection_show:78
 #: ../templates/managecollection_show:98 ../templates/resultlists_showall:59
 #: ../templates/resultlists_showall_sortall:62
@@ -4082,7 +4087,7 @@ msgstr "Local location mark  "
 #: ../templates/views/kapsel/resultlists_showsinglepool:60
 #: ../templates/views/kapsel/search_showtitlist:66
 #: ../templates/views/portrait/resultlists_showsinglepool:59
-#: ../templates/virtualsearch_result_start:61
+#: ../templates/virtualsearch_result_start:65
 msgid "Los"
 msgstr "Go"
 
@@ -4306,8 +4311,8 @@ msgid "Medienart"
 msgstr "Type of media"
 
 #: ../templates/database/landschaft/search_showtitlist:166
-#: ../templates/search_showtitlist:169
-#: ../templates/search_showtitlist_of_cnt:169
+#: ../templates/search_showtitlist:175
+#: ../templates/search_showtitlist_of_cnt:175
 #: ../templates/views/kapsel/search_showtitlist:169
 msgid "Mehrfachauswahl"
 msgstr "Multiple selection"
@@ -4633,7 +4638,7 @@ msgstr "Remaining fees"
 #: ../templates/views/kapsel/resultlists_showsinglepool:41
 #: ../templates/views/kapsel/search_showtitlist:47
 #: ../templates/views/portrait/resultlists_showsinglepool:41
-#: ../templates/virtualsearch_result_start:41
+#: ../templates/virtualsearch_result_start:42
 msgid "Optionen"
 msgstr "Options"
 
@@ -4676,7 +4681,7 @@ msgstr "Send password by mail"
 msgid "Passwort vergessen?"
 msgstr "Forgotten password?"
 
-#: ../templates/litlists_show_singlelist:67
+#: ../templates/litlists_show_singlelist:73
 msgid "PermaLink"
 msgstr "PermaLink"
 
@@ -4687,7 +4692,7 @@ msgstr "PermaLink"
 #: ../templates/database/ebooks/search_showtitset:58
 #: ../templates/database/inst001/search_showtitset:60
 #: ../templates/database/nationallizenzen/search_showtitset:58
-#: ../templates/litlists_show_singlelist:67 ../templates/search_showtitset:58
+#: ../templates/litlists_show_singlelist:73 ../templates/search_showtitset:58
 msgid "Permanenter Link"
 msgstr "PermaLink"
 
@@ -5013,7 +5018,7 @@ msgstr "Index of subject headings"
 msgid "Schlagwortindex diese Katalogs"
 msgstr "Index of subject headings for this catalogue"
 
-#: ../templates/search_showswtindex:81 ../templates/search_showtitlist:187
+#: ../templates/search_showswtindex:81 ../templates/search_showtitlist:193
 #: ../templates/views/kapsel/search_showtitlist:187
 msgid "Schlagwortindex dieses Katalogs"
 msgstr "Index of subject headings for this catalogue"
@@ -5073,7 +5078,7 @@ msgstr "Since"
 #: ../templates/database/landschaft/virtualsearch_result_item:86
 #: ../templates/database/portrait/virtualsearch_result_item:86
 #: ../templates/views/einbaende/virtualsearch_result_item:80
-#: ../templates/virtualsearch_result_item:87
+#: ../templates/virtualsearch_result_item:83
 #: ../templates/virtualsearch_showkorindex:38
 #: ../templates/virtualsearch_shownotindex:38
 #: ../templates/virtualsearch_showswtindex:38
@@ -5154,12 +5159,11 @@ msgstr "You are accessing an unauthorized session"
 
 #. ("<a href=\"${config.info_loc}?sessionID=${sessionID};view=${view}#meinkugvorteile\">","</a>")
 #: ../templates/login:46
-msgid ""
-"Sie haben %1Vorteile%2, wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden."
+msgid "Sie haben %1Vorteile%2, wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden."
 msgstr "You have %1advantages%2 when you log in via <b>My KUG</b>."
 
 #. ("<a href=\"$config->{databasechoice_loc}?sessionID=$session->{ID}\" target=\"body\">","</a>")
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:247
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:246
 msgid ""
 "Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie "
 "keine %1Kataloge%2 oder Suchprofile ausgewählt haben. Bitte wählen Sie die "
@@ -5230,8 +5234,7 @@ msgstr ""
 msgid ""
 "Sie haben entweder keine entsprechende Liste oder Sie sind nicht "
 "authentifiziert."
-msgstr ""
-"You either don't own the corresponding list or you are not authenticated."
+msgstr "You either don't own the corresponding list or you are not authenticated."
 
 #: ../templates/circulation:48
 msgid "Sie haben keine Ausleihen getätigt."
@@ -5284,8 +5287,7 @@ msgstr ""
 msgid ""
 "Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht "
 "erfolgreich authentifiziert werden"
-msgstr ""
-"You could not get authorized successfully with your user name and password."
+msgstr "You could not get authorized successfully with your user name and password."
 
 #. ("${viewdesc}","<a href=\"${config.databasechoice_loc}?sessionID=${sessionID};view=${view}\">","</a>")
 #: ../templates/searchmask:86 ../templates/searchmask_simple:86
@@ -5477,8 +5479,7 @@ msgid "Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."
 msgstr "You have to enter a title for your literature list."
 
 #: ../modules/OpenBib/Handler/Apache/LitLists.pm:195
-msgid ""
-"Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
+msgid "Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
 msgstr "You have to enter a title or type for your literature list."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:1171
@@ -5486,8 +5487,7 @@ msgid "Sie müssen mindestens eine Beschreibung eingeben."
 msgstr "You have to enter at least a description."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:340
-msgid ""
-"Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
+msgid "Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
 msgstr "You have to enter at least a catalogue name and a description."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:558
@@ -5589,7 +5589,7 @@ msgstr "Please use * as the <b>truncation mark</b>."
 #: ../templates/database/landschaft/search_showtitlist:47
 #: ../templates/database/portrait/search_showtitlist:47
 #: ../templates/litlists_manage_singlelist:81
-#: ../templates/litlists_show_singlelist:51
+#: ../templates/litlists_show_singlelist:50
 #: ../templates/resultlists_showall:41
 #: ../templates/resultlists_showall_sortall:44
 #: ../templates/resultlists_showsinglepool:43
@@ -5600,7 +5600,7 @@ msgstr "Please use * as the <b>truncation mark</b>."
 #: ../templates/views/kapsel/resultlists_showsinglepool:43
 #: ../templates/views/kapsel/search_showtitlist:49
 #: ../templates/views/portrait/resultlists_showsinglepool:43
-#: ../templates/virtualsearch_result_start:43
+#: ../templates/virtualsearch_result_start:44
 msgid "Sortierung"
 msgstr "Alphabetic sorting"
 
@@ -5808,7 +5808,7 @@ msgstr "Search"
 #: ../templates/database/ebooks/search_showtitset:781
 #: ../templates/database/inst001/search_showtitset:808
 #: ../templates/database/nationallizenzen/search_showtitset:787
-#: ../templates/search_showswtindex:81 ../templates/search_showtitlist:187
+#: ../templates/search_showswtindex:81 ../templates/search_showtitlist:193
 #: ../templates/search_showtitset:804
 #: ../templates/views/kapsel/search_showtitlist:187
 #: ../templates/views/kapsel/searchmask:100
@@ -7373,8 +7373,7 @@ msgstr "Add to List of Interest"
 msgid ""
 "Titel mit der ISBN dieses Titels sind auch in folgenden anderen KUG-"
 "Katalogen vorhanden"
-msgstr ""
-"Titles with this ISBN are also available in the following KUG-catalogues"
+msgstr "Titles with this ISBN are also available in the following KUG-catalogues"
 
 #: ../templates/info_12:38
 msgid "Titel pro Katalog"
@@ -7432,8 +7431,8 @@ msgstr "Title entry"
 #: ../templates/database/einbaende/search_showtitlist:77
 #: ../templates/database/landschaft/search_showtitlist:75
 #: ../templates/database/portrait/search_showtitlist:75
-#: ../templates/search_showtitlist:78
-#: ../templates/search_showtitlist_of_cnt:78
+#: ../templates/search_showtitlist:84
+#: ../templates/search_showtitlist_of_cnt:84
 #: ../templates/views/kapsel/search_showtitlist:78
 msgid "Titelliste"
 msgstr "Title list"
@@ -7476,11 +7475,11 @@ msgstr "Top 20"
 #: ../templates/database/portrait/search_showtitlist:80
 #: ../templates/database/portrait/search_showtitlist:96
 #: ../templates/database/portrait/virtualsearch_result_item:16
-#: ../templates/resultlists_choice:87 ../templates/resultlists_showall:66
-#: ../templates/resultlists_showall_sortall:66
-#: ../templates/search_showtitlist:83 ../templates/search_showtitlist:99
-#: ../templates/search_showtitlist_of_cnt:83
-#: ../templates/search_showtitlist_of_cnt:99 ../templates/select_queries:60
+#: ../templates/resultlists_choice:87 ../templates/resultlists_showall:72
+#: ../templates/resultlists_showall_sortall:72
+#: ../templates/search_showtitlist:105 ../templates/search_showtitlist:89
+#: ../templates/search_showtitlist_of_cnt:105
+#: ../templates/search_showtitlist_of_cnt:89 ../templates/select_queries:60
 #: ../templates/views/einbaende/resultlists_showall:67
 #: ../templates/views/einbaende/virtualsearch_result_item:20
 #: ../templates/views/kapsel/resultlists_showall:65
@@ -7591,8 +7590,7 @@ msgstr "To edit an already existing view please select the view name."
 msgid ""
 "Um einen bereits existierendes Katalog-Profil zu bearbeiten klicken Sie "
 "bitte auf den Profil-Namen."
-msgstr ""
-"To edit an already existing catalogue profile please select the profile name."
+msgstr "To edit an already existing catalogue profile please select the profile name."
 
 #. ("<a href=\"http://${config.servername}${config.admin_loc}?do_loginmask=1\">","</a>")
 #: ../templates/admin_logout:26
@@ -7694,7 +7692,7 @@ msgstr "Invalid action"
 #: ../modules/OpenBib/Handler/Apache/Tags.pm:126
 #: ../modules/OpenBib/Handler/Apache/UserPrefs.pm:112
 #: ../modules/OpenBib/Handler/Apache/UserReviews.pm:123
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:142
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:141
 msgid "Ungültige Session"
 msgstr "Invalid session"
 
@@ -7942,8 +7940,7 @@ msgstr "WebOPAC-URL"
 msgid ""
 "Wegen eines unerwarteten Problems kann der KUG in den n&auml;chsten Minuten\n"
 "leider nicht genutzt werden."
-msgstr ""
-"Due to an unexpectant event the KUG cannot be used for the next few minutes."
+msgstr "Due to an unexpectant event the KUG cannot be used for the next few minutes."
 
 #: ../templates/circset:24 ../templates/database/inst001/circset:124
 #: ../templates/database/inst001/circset:85
@@ -8172,8 +8169,7 @@ msgstr ""
 msgid ""
 "Wenn Sie weiter im KUG recherchieren m&ouml;chten, so klicken Sie bitte %"
 "1<b>hier</b>[_2}, um eine neue Sitzung zu beginnen."
-msgstr ""
-"To continue using KUG please click %1<b>here</b>[_2} to start a new session."
+msgstr "To continue using KUG please click %1<b>here</b>[_2} to start a new session."
 
 #: ../templates/info:870 ../templates/views/kug/info:870
 msgid ""
@@ -8374,7 +8370,7 @@ msgstr ""
 #: ../templates/database/landschaft/search_showtitlist:58
 #: ../templates/database/portrait/search_showtitlist:58
 #: ../templates/litlists_manage_singlelist:94
-#: ../templates/litlists_show_singlelist:64
+#: ../templates/litlists_show_singlelist:63
 #: ../templates/resultlists_showall:53
 #: ../templates/resultlists_showall_sortall:56
 #: ../templates/resultlists_showsinglepool:55
@@ -8397,7 +8393,7 @@ msgstr ""
 #: ../templates/views/portrait/searchmask_options:4
 #: ../templates/views/rheinlandbib/searchmask_options:4
 #: ../templates/views/xanten/searchmask_options:4
-#: ../templates/virtualsearch_result_start:55
+#: ../templates/virtualsearch_result_start:57
 msgid "absteigend"
 msgstr "descending"
 
@@ -8406,7 +8402,7 @@ msgstr "descending"
 #: ../templates/database/landschaft/search_showtitlist:57
 #: ../templates/database/portrait/search_showtitlist:57
 #: ../templates/litlists_manage_singlelist:93
-#: ../templates/litlists_show_singlelist:63
+#: ../templates/litlists_show_singlelist:62
 #: ../templates/resultlists_showall:52
 #: ../templates/resultlists_showall_sortall:55
 #: ../templates/resultlists_showsinglepool:54
@@ -8429,7 +8425,7 @@ msgstr "descending"
 #: ../templates/views/portrait/searchmask_options:4
 #: ../templates/views/rheinlandbib/searchmask_options:4
 #: ../templates/views/xanten/searchmask_options:4
-#: ../templates/virtualsearch_result_start:54
+#: ../templates/virtualsearch_result_start:56
 msgid "aufsteigend"
 msgstr "ascending"
 
@@ -8469,8 +8465,7 @@ msgstr "in internal course of business"
 
 #: ../templates/std_footer:17 ../templates/views/portrait/std_footer:17
 msgid "ist ein Dienst der Universitäts- und Stadtbibliothek Köln"
-msgstr ""
-"is a public service of the Central Library of the University of Cologne"
+msgstr "is a public service of the Central Library of the University of Cologne"
 
 #: ../templates/userprefs:85
 msgid "ja, seit"
@@ -8478,7 +8473,7 @@ msgstr "yes, since"
 
 #: ../templates/resultlists_showall:57
 #: ../templates/resultlists_showall_sortall:60
-#: ../templates/virtualsearch_result_start:59
+#: ../templates/virtualsearch_result_start:62
 msgid "katalogübergreifend"
 msgstr "spanning several catalogues"
 
@@ -8556,7 +8551,7 @@ msgstr "by musicion/group"
 #: ../templates/database/portrait/search_showtitlist:51
 #: ../templates/drilldown_categorized:227
 #: ../templates/litlists_manage_singlelist:86
-#: ../templates/litlists_show_singlelist:56
+#: ../templates/litlists_show_singlelist:55
 #: ../templates/resultlists_showall:46
 #: ../templates/resultlists_showall_sortall:49
 #: ../templates/resultlists_showsinglepool:48
@@ -8566,7 +8561,7 @@ msgstr "by musicion/group"
 #: ../templates/views/kapsel/resultlists_showsinglepool:48
 #: ../templates/views/kapsel/search_showtitlist:54
 #: ../templates/views/portrait/resultlists_showsinglepool:47
-#: ../templates/virtualsearch_result_start:48
+#: ../templates/virtualsearch_result_start:50
 msgid "nach Jahr"
 msgstr "by year"
 
@@ -8595,7 +8590,7 @@ msgstr "by type of media"
 #: ../templates/database/landschaft/search_showtitlist:49
 #: ../templates/database/portrait/search_showtitlist:49
 #: ../templates/litlists_manage_singlelist:83
-#: ../templates/litlists_show_singlelist:53
+#: ../templates/litlists_show_singlelist:52
 #: ../templates/resultlists_showall:43
 #: ../templates/resultlists_showall_sortall:46
 #: ../templates/resultlists_showsinglepool:45
@@ -8605,7 +8600,7 @@ msgstr "by type of media"
 #: ../templates/views/kapsel/resultlists_showsinglepool:45
 #: ../templates/views/kapsel/search_showtitlist:51
 #: ../templates/views/portrait/resultlists_showsinglepool:45
-#: ../templates/virtualsearch_result_start:45
+#: ../templates/virtualsearch_result_start:47
 msgid "nach Person"
 msgstr "by person"
 
@@ -8628,7 +8623,7 @@ msgstr "by person"
 #: ../templates/database/landschaft/search_showtitlist:54
 #: ../templates/database/portrait/search_showtitlist:54
 #: ../templates/litlists_manage_singlelist:89
-#: ../templates/litlists_show_singlelist:59
+#: ../templates/litlists_show_singlelist:58
 #: ../templates/resultlists_showall:49
 #: ../templates/resultlists_showall_sortall:52
 #: ../templates/resultlists_showsinglepool:51
@@ -8642,7 +8637,7 @@ msgstr "by person"
 #: ../templates/views/kapsel/resultlists_showsinglepool:51
 #: ../templates/views/kapsel/search_showtitlist:57
 #: ../templates/views/portrait/resultlists_showsinglepool:50
-#: ../templates/virtualsearch_result_start:51
+#: ../templates/virtualsearch_result_start:53
 msgid "nach Popularit&auml;t"
 msgstr "by popularity"
 
@@ -8650,12 +8645,16 @@ msgstr "by popularity"
 msgid "nach Regionen"
 msgstr "by regions"
 
+#: ../templates/virtualsearch_result_start:46
+msgid "nach Relevanz"
+msgstr "by relevance"
+
 #: ../templates/database/einbaende/search_showtitlist:55
 #: ../templates/database/einbaende/search_showtitlist_of_cnt:57
 #: ../templates/database/landschaft/search_showtitlist:53
 #: ../templates/database/portrait/search_showtitlist:53
 #: ../templates/litlists_manage_singlelist:88
-#: ../templates/litlists_show_singlelist:58
+#: ../templates/litlists_show_singlelist:57
 #: ../templates/resultlists_showall:48
 #: ../templates/resultlists_showall_sortall:51
 #: ../templates/resultlists_showsinglepool:50
@@ -8669,7 +8668,7 @@ msgstr "by regions"
 #: ../templates/views/kapsel/resultlists_showsinglepool:50
 #: ../templates/views/kapsel/search_showtitlist:56
 #: ../templates/views/portrait/resultlists_showsinglepool:49
-#: ../templates/virtualsearch_result_start:50
+#: ../templates/virtualsearch_result_start:52
 msgid "nach Signatur"
 msgstr "by location mark"
 
@@ -8696,7 +8695,7 @@ msgstr "by subject"
 #: ../templates/database/landschaft/search_showtitlist:50
 #: ../templates/database/portrait/search_showtitlist:50
 #: ../templates/litlists_manage_singlelist:84
-#: ../templates/litlists_show_singlelist:54
+#: ../templates/litlists_show_singlelist:53
 #: ../templates/resultlists_showall:44
 #: ../templates/resultlists_showall_sortall:47
 #: ../templates/resultlists_showsinglepool:46
@@ -8706,7 +8705,7 @@ msgstr "by subject"
 #: ../templates/views/kapsel/resultlists_showsinglepool:46
 #: ../templates/views/kapsel/search_showtitlist:52
 #: ../templates/views/portrait/resultlists_showsinglepool:46
-#: ../templates/virtualsearch_result_start:46
+#: ../templates/virtualsearch_result_start:48
 msgid "nach Titel"
 msgstr "by title"
 
@@ -8723,7 +8722,7 @@ msgstr "by title/numbering"
 #: ../templates/database/landschaft/search_showtitlist:52
 #: ../templates/database/portrait/search_showtitlist:52
 #: ../templates/litlists_manage_singlelist:87
-#: ../templates/litlists_show_singlelist:57
+#: ../templates/litlists_show_singlelist:56
 #: ../templates/resultlists_showall:47
 #: ../templates/resultlists_showall_sortall:50
 #: ../templates/resultlists_showsinglepool:49
@@ -8737,13 +8736,13 @@ msgstr "by title/numbering"
 #: ../templates/views/kapsel/resultlists_showsinglepool:49
 #: ../templates/views/kapsel/search_showtitlist:55
 #: ../templates/views/portrait/resultlists_showsinglepool:48
-#: ../templates/virtualsearch_result_start:49
+#: ../templates/virtualsearch_result_start:51
 msgid "nach Verlag"
 msgstr "per publisher"
 
 #: ../templates/database/einbaende/search_showtitlist_of_cnt:54
 #: ../templates/litlists_manage_singlelist:85
-#: ../templates/litlists_show_singlelist:55
+#: ../templates/litlists_show_singlelist:54
 #: ../templates/resultlists_showall:45
 #: ../templates/resultlists_showall_sortall:48
 #: ../templates/resultlists_showsinglepool:47
@@ -8752,12 +8751,12 @@ msgstr "per publisher"
 #: ../templates/views/kapsel/resultlists_showall:45
 #: ../templates/views/kapsel/resultlists_showsinglepool:47
 #: ../templates/views/kapsel/search_showtitlist:53
-#: ../templates/virtualsearch_result_start:47
+#: ../templates/virtualsearch_result_start:49
 msgid "nach Z&auml;hlung"
 msgstr "by numbering"
 
 #: ../templates/litlists_manage_singlelist:90
-#: ../templates/litlists_show_singlelist:60
+#: ../templates/litlists_show_singlelist:59
 msgid "nach Zeitstempel"
 msgstr "by timestamp"
 
@@ -8802,7 +8801,7 @@ msgstr "private"
 #: ../templates/views/portrait/searchmask_options:4
 #: ../templates/views/rheinlandbib/searchmask_options:4
 #: ../templates/views/xanten/searchmask_options:4
-#: ../templates/virtualsearch_result_start:58
+#: ../templates/virtualsearch_result_start:61
 msgid "pro Katalog"
 msgstr "per catalogue"
 
@@ -8873,23 +8872,3 @@ msgstr "Copy"
 msgid "Überziehungen / Gebühren"
 msgstr "Overdue/Fees"
 
-#~ msgid "Andere Ausgaben dieses Titels (Sprache, Auflage usw.)"
-#~ msgstr "Other manifestations of this work (language, edition, ...) "
-
-#~ msgid "Bl&auml;ttern"
-#~ msgstr "Browse"
-
-#~ msgid "Das könnte Sie interessieren"
-#~ msgstr "Other interesting titles"
-
-#~ msgid "Dieser Titel in anderen Katalogen"
-#~ msgstr "This title in other catalogues"
-
-#~ msgid "Eigene Tags vergeben"
-#~ msgstr "Enter your tags"
-
-#~ msgid "T0700-kapsel"
-#~ msgstr "Subject headings"
-
-#~ msgid "entfernen"
-#~ msgstr "delete"

@@ -379,10 +379,6 @@ sub initial_search_for_titidns {
     # Set defaults
     my $serien            = exists $arg_ref->{serien}
         ? $arg_ref->{serien}        : undef;
-    my $enrich            = exists $arg_ref->{enrich}
-        ? $arg_ref->{enrich}        : undef;
-    my $enrichkeys_ref    = exists $arg_ref->{enrichkeys_ref}
-        ? $arg_ref->{enrichkeys_ref}: undef;
     my $dbh               = exists $arg_ref->{dbh}
         ? $arg_ref->{dbh}           : undef;
     my $database          = exists $arg_ref->{database}
@@ -440,34 +436,6 @@ sub initial_search_for_titidns {
         undef $atime;
         undef $btime;
         undef $timeall;
-    }
-
-    if ($enrich){
-        my ($atime,$btime,$timeall);
-        
-        if ($config->{benchmark}) {
-            $atime=new Benchmark;
-        }
-        
-        my $request=$dbh->prepare("select id as verwidn from tit_string where tit_string.content = ?");
-        foreach my $enrichkey (@$enrichkeys_ref){
-            $request->execute($enrichkey);
-            while(my $res=$request->fetchrow_arrayref){
-                push @tempidns, $res->[0];
-            }
-        }
-
-        $request->finish();
-
-        if ($config->{benchmark}) {
-            $btime=new Benchmark;
-            $timeall=timediff($btime,$atime);
-            $logger->info("Zeit fuer : enrich -> ".($#tempidns+1)."/".(scalar @$enrichkeys_ref)." : ist ".timestr($timeall));
-            undef $atime;
-            undef $btime;
-            undef $timeall;
-        }
-
     }
 
     # Entfernen mehrfacher verwidn's unter Beruecksichtigung von $hitrange

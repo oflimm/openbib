@@ -42,7 +42,7 @@
 <input type="hidden" name="litlistid"       value="[% litlist.properties.id %]" />
 <input type="hidden" name="sortall"         value="1" />
 <input type="hidden" name="do_showlitlist"  value="1" />
-<input type="hidden" name="action"          value="manage" />
+<input type="hidden" name="action"          value="show" />
 
 <table width="100%">
 <tr><th>[% msg.maketext("Optionen") %]</th></tr>

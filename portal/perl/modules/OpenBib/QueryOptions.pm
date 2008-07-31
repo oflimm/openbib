@@ -192,6 +192,7 @@ sub get_default_options {
         autoplus  => '',
         sb        => 'sql',
         js        => 0,
+        listtype  => 'cover',
     };
 
 };

@@ -82,13 +82,24 @@
 &nbsp;HSTR: [% thisquery.searchquery.hststring.val %] 
 [%- END -%]
 )</td></tr>
+
+[% combinedbs = 0 ;
+   FOREACH resultdb IN resultdbs ;
+      IF resultdb.trefferdb == 'combined' ;
+         combinedbs = 1;
+      END ;
+   END ;
+%]
 <tr><td colspan="2"></td></tr>
 
 <tr><td>[% msg.maketext("Katalog") %]</td><td>[% msg.maketext("Treffer") %]</td></tr>
+[% IF combinedbs %]
+<tr><td class="listrow2"><a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];drilldown=1;dd_categorized=1;combinedbs=1;queryid=[% thisquery.id %];offset=0;hitrange=[% hitrange %];sb=[% qopts.sb %]"><b>[% msg.maketext("Alle Treffer") %]</b></a></td><td align="right">[% hitcount %]</td></tr>
+[% ELSE %]
 <tr><td class="listrow2"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];action=showall;sortall=0;sorttype=author;queryid=[% thisquery.id %];view=[% view %];offset=0"><b>[% msg.maketext("Alle Treffer") %]</b></a></td><td align="right">[% hitcount %]</td></tr>
       
 <tr><td class="listrow1">&nbsp;</td><td align="right">&nbsp;</td></tr>
-      
+
 [% listrow = 'listrow2' %]
 [% FOREACH resultdb IN resultdbs %]
 <tr><td class="[% listrow %]"><a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];database=[% resultdb.trefferdb %];action=showrange;offset=0;queryid=[% thisquery.id %]"><b>[% resultdb.trefferdbdesc.full %]</b></a></td><td align="right">
@@ -101,6 +112,7 @@
 [% listrow = 'listrow2' %]
 [% ELSE %]
 [% listrow = 'listrow1' %]
+[% END %]
 [% END %]
 
 [% END %]

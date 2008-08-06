@@ -35,9 +35,10 @@ use strict;
 use warnings;
 use utf8;
 
+use Encode 'decode';
 use Getopt::Long;
 use DBI;
-use YAML;
+use YAML::Syck;
 
 use OpenBib::Config;
 
@@ -50,75 +51,38 @@ our (@autdubbuf,@kordubbuf,@swtdubbuf,@notdubbuf);
 
 my $config = OpenBib::Config->instance;
 
-my ($filename);
+my ($inputfile,$configfile);
 
 &GetOptions(
-	    "filename=s"       => \$filename,
+	    "inputfile=s"          => \$inputfile,
+            "configfile=s"         => \$configfile,
 	    );
 
-if (!$filename){
+if (!$inputfile && !$configfile){
     print << "HELP";
 simplecsv2meta.pl - Aufrufsyntax
 
-    simplecsv2meta.pl --filename=xxx
+    simplecsv2meta.pl --inputfile=xxx --configfile=yyy.yml
 HELP
 exit;
 }
 
-# Kategorieflags
-
-my %autkonv=(
-    'Autor'       => '0100:', # Verfasser
-    'Herausgeber' => '0101:', # Person
-);
-
-my %korkonv=(
-);
-
-my %notkonv=(
-#    'Paket'                => '0700:',
-    'Paket1'               => '0700:',
-    'Paket2'               => '0700:',
-    'Paket3'               => '0700:',
-);
-
-my %swtkonv=(
-    'Paket'                 => '0710:', # GBV-Schlagwoerter
-    'Subject'               => '0710:',
-    'Subject2'              => '0710:',
-    'Subject3'              => '0710:',
-);
-
-# Kategoriemappings
-
-my %titelkonv=(
-    'Titel'                => '0331:',
-    'Serientitel'          => '0451:',
-    'Untertitel'           => '0370:',
-    'Auflage'              => '0403:',
-    'PrintISBN'            => '0540:',
-    'OEBISBN'              => '0540:',
-    'EBookISBN'            => '0553:',
-    'Erscheinungsjahr'     => '0425:',
-#    'DOI'                  => '',
-    'Hosting'              => '0508:',
-    'Kurzbeschreibung'     => '0750:',
-    'URL'                  => '0662:',
-    'Verlag'               => '0412:',
-    'Erscheinungsdatum'    => '0002:',
-);
+# Ininitalisierung mit Config-Parametern
+my $convconfig = YAML::Syck::LoadFile($configfile);
 
 # Einlesen und Reorganisieren
 
-DBI->trace(2);
+if (defined $convconfig->{tracelevel} && $convconfig->{tracelevel} >= 0){
+    DBI->trace($convconfig->{tracelevel});
+}
 
 my $dbh = DBI->connect("DBI:CSV:");
 $dbh->{'csv_tables'}->{'data'} = {
-    'eol' => "\n",
-    'sep_char' => ",",
-    'quote_char' => "\"",
-    'escape_char' => undef,
-    'file' => "$filename",
+    'eol'         => $convconfig->{csv}{eol},
+    'sep_char'    => $convconfig->{csv}{sep_char},
+    'quote_char'  => $convconfig->{csv}{quote_char},
+    'escape_char' => $convconfig->{csv}{escape_char},
+    'file'        => "$inputfile",
 };
 
 $dbh->{'RaiseError'} = 1;
@@ -132,27 +96,28 @@ open (KOR,     ">:utf8","unload.KOE");
 open (NOTATION,">:utf8","unload.SYS");
 open (SWT,     ">:utf8","unload.SWD");
 
+my $titid = 1;
+
 while (my $result=$request->fetchrow_hashref){
-    # DFG-Nationallizenzen ausfiltern
+    if ($convconfig->{uniqueidfield}){
+        printf TIT "0000:%d\n", $result->{$convconfig->{uniqueidfield}};
+    }
+    else {
+        printf TIT "0000:%d\n", $titid++;
+    }
 
-#    print YAML::Dump($result),"\n";
-    
-    next if ($result->{Hosting}=~/DFGNet1000/);
-
-    printf TIT "0000:%d\n", $result->{'Nr'};
-
-    foreach my $kateg (keys %titelkonv){
-        my $content = $result->{$kateg};
+    foreach my $kateg (keys %{$convconfig->{title}}){
+        my $content = decode($convconfig->{encoding},$result->{$kateg});
 
         if ($content){
             $content=~s/uhttp:/http:/;
-            print TIT $titelkonv{$kateg}.$content."\n";
+            print TIT $convconfig->{title}{$kateg}.$content."\n";
         }
     }
 
     # Autoren abarbeiten Anfang
-    foreach my $kateg (keys %autkonv){
-        my $content = $result->{$kateg};
+    foreach my $kateg (keys %{$convconfig->{pers}}){
+        my $content = decode($convconfig->{encoding},$result->{$kateg});
         
         if ($content){
             my @authors = ();
@@ -176,15 +141,15 @@ while (my $result=$request->fetchrow_hashref){
                     $autidn=(-1)*$autidn;
                 }
                 
-                print TIT $autkonv{$kateg}."IDN: $autidn\n";
+                print TIT $convconfig->{pers}{$kateg}."IDN: $autidn\n";
         }
         }
         # Autoren abarbeiten Ende
     }
     # Koerperschaften abarbeiten Anfang
 
-    foreach my $kateg (keys %korkonv){
-        my $content = $result->{$kateg};
+    foreach my $kateg (keys %{$convconfig->{corp}}){
+        my $content = decode($convconfig->{encoding},$result->{$kateg});
         
         if ($content){
             my $koridn=get_koridn($content);
@@ -199,15 +164,15 @@ while (my $result=$request->fetchrow_hashref){
                 $koridn=(-1)*$koridn;
             }
             
-            print TIT $korkonv{$kateg}."IDN: $koridn\n";
+            print TIT $convconfig->{corp}{$kateg}."IDN: $koridn\n";
         }
     }
     # Koerperschaften abarbeiten Ende
 
 
     # Notationen abarbeiten Anfang
-    foreach my $kateg (keys %notkonv){
-        my $content = $result->{$kateg};
+    foreach my $kateg (keys %{$convconfig->{sys}}){
+        my $content = decode($convconfig->{encoding},$result->{$kateg});
         
         if ($content){
             my $notidn=get_notidn($content);
@@ -222,14 +187,14 @@ while (my $result=$request->fetchrow_hashref){
                 $notidn=(-1)*$notidn;
             }
             
-            print TIT $notkonv{$kateg}."IDN: $notidn\n";
+            print TIT $convconfig->{sys}{$kateg}."IDN: $notidn\n";
         }
     }
     # Notationen abarbeiten Ende
 
     # Schlagworte abarbeiten Anfang
-    foreach my $kateg (keys %swtkonv){
-        my $content = $result->{$kateg};
+    foreach my $kateg (keys %{$convconfig->{subj}}){
+        my $content = decode($convconfig->{encoding},$result->{$kateg});
 
         if ($content){
             my @subjects = ();
@@ -251,12 +216,11 @@ while (my $result=$request->fetchrow_hashref){
                 else {
                     $swtidn=(-1)*$swtidn;
                 }
-                print TIT $swtkonv{$kateg}."IDN: $swtidn\n";
+                print TIT $convconfig->{subj}{$kateg}."IDN: $swtidn\n";
             }
         }
     }
     # Schlagworte abarbeiten Ende
-    print ".";
     print TIT "9999:\n";
 }
 

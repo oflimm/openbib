@@ -266,9 +266,8 @@ sub handler {
                 return SERVER_ERROR;
             };
             
-            $logger->debug("Desc: $desc");
-            
-            $logger->debug("Adding $title / $desc");
+            $logger->debug("Adding $title / $desc") if (defined $title && defined $desc);
+
             $rss->add_item(
                 title       => $title,
                 link        => "http://".$config->{loadbalancerservername}.$config->{loadbalancer_loc}."?view=$database;database=$database;searchsingletit=".$record->{id},

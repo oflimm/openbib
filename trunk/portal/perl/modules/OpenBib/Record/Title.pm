@@ -127,6 +127,13 @@ sub load_full_record {
     $normset_ref->{id      } = $id;
     $normset_ref->{database} = $self->{database};
 
+    unless (defined $self->{id} && defined $self->{database}){
+        ($self->{_normset},$self->{_mexset},$self->{_circset},$self->{_exists})=({},(),[],$record_exists);
+
+        $logger->error("Incomplete Record-Information Id: ".((defined $self->{id})?$self->{id}:'none')." Database: ".((defined $self->{database})?$self->{database}:'none'));
+        return $self;
+    }
+
     my $local_dbh = 0;
     if (!defined $dbh){
         # Kein Spooling von DB-Handles!
@@ -135,13 +142,6 @@ sub load_full_record {
         $local_dbh = 1;
     }
 
-    unless (defined $self->{id} && defined $self->{database}){
-        ($self->{_normset},$self->{_mexset},$self->{_circset},$self->{_exists})=({},(),[],$record_exists);
-
-        $logger->error("Incomplete Record-Information Id: $self->{id} Database: $self->{database}");
-        return $self;
-    }
-    
     # Titelkategorien
     {
         

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2008-07-31 15:12+0200\n"
+"PO-Revision-Date: 2008-08-06 12:40+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -460,7 +460,7 @@ msgstr "This search"
 msgid "Alle Kataloge"
 msgstr "All Catalogues"
 
-#: ../templates/resultlists_choice:88
+#: ../templates/resultlists_choice:97 ../templates/resultlists_choice:99
 msgid "Alle Treffer"
 msgstr "All hits"
 
@@ -524,6 +524,7 @@ msgstr "Send as e-mail"
 #: ../templates/database/inst001/search_showtitset:60
 #: ../templates/database/nationallizenzen/search_showtitset:58
 #: ../templates/litlists_manage_lists:79
+#: ../templates/litlists_manage_singlelist:105
 #: ../templates/litlists_show_singlelist:73 ../templates/search_showtitset:58
 msgid "Als Permanenten Link verwenden"
 msgstr "Use as permanent link"
@@ -1150,8 +1151,14 @@ msgstr "C0111"
 msgid "C5000"
 msgstr "C5000"
 
+#: ../templates/litlists_manage_singlelist:100
 #: ../templates/litlists_show_singlelist:69
-#: ../templates/virtualsearch_result_start:69
+#: ../templates/resultlists_showall:63
+#: ../templates/resultlists_showall_sortall:66
+#: ../templates/resultlists_showsinglepool:64
+#: ../templates/search_showtitlist:70
+#: ../templates/search_showtitlist_of_cnt:70
+#: ../templates/virtualsearch_result_start:66
 msgid "Cover-Ansicht"
 msgstr "Cover view"
 
@@ -1886,7 +1893,7 @@ msgid "Entdecken Sie weitere Titel &uuml;ber:"
 msgstr "Discover other titles using:"
 
 #: ../templates/litlists_manage_lists:79
-#: ../templates/litlists_manage_singlelist:158
+#: ../templates/litlists_manage_singlelist:169
 msgid "Entfernen"
 msgstr "Remove"
 
@@ -3674,7 +3681,7 @@ msgstr "KUG versions"
 msgid "Kartenkatalog Philosoph. Fakultät"
 msgstr "Digital card catalogue (faculty of arts)"
 
-#: ../templates/resultlists_choice:87
+#: ../templates/resultlists_choice:95
 msgid "Katalog"
 msgstr "Catalogue"
 
@@ -3742,6 +3749,10 @@ msgstr "Select catalogues"
 #: ../templates/info_15:64
 msgid "Kataloge dieser Spezial-Sicht"
 msgstr "Catalogues of this view"
+
+#: ../templates/views/kug/searchmask_simple:92
+msgid "Kataloge kombinieren"
+msgstr "Combined catalogues "
 
 #: ../templates/circulation:29 ../templates/circulation_orders:29
 #: ../templates/circulation_remind:29 ../templates/circulation_reserv:29
@@ -3985,13 +3996,25 @@ msgstr "End of loan period"
 msgid "Letzte 50 Neuaufnahmen"
 msgstr "Newest 50 catalogue entries"
 
+#: ../templates/litlists_manage_singlelist:100
 #: ../templates/litlists_show_singlelist:69
-#: ../templates/virtualsearch_result_start:69
+#: ../templates/resultlists_showall:63
+#: ../templates/resultlists_showall_sortall:66
+#: ../templates/resultlists_showsinglepool:64
+#: ../templates/search_showtitlist:70
+#: ../templates/search_showtitlist_of_cnt:70
+#: ../templates/virtualsearch_result_start:66
 msgid "Liste"
 msgstr "List"
 
+#: ../templates/litlists_manage_singlelist:100
 #: ../templates/litlists_show_singlelist:69
-#: ../templates/virtualsearch_result_start:69
+#: ../templates/resultlists_showall:63
+#: ../templates/resultlists_showall_sortall:66
+#: ../templates/resultlists_showsinglepool:64
+#: ../templates/search_showtitlist:70
+#: ../templates/search_showtitlist_of_cnt:70
+#: ../templates/virtualsearch_result_start:66
 msgid "Listen-Ansicht"
 msgstr "List view"
 
@@ -4087,7 +4110,7 @@ msgstr "Local location mark  "
 #: ../templates/views/kapsel/resultlists_showsinglepool:60
 #: ../templates/views/kapsel/search_showtitlist:66
 #: ../templates/views/portrait/resultlists_showsinglepool:59
-#: ../templates/virtualsearch_result_start:65
+#: ../templates/virtualsearch_result_start:62
 msgid "Los"
 msgstr "Go"
 
@@ -4322,6 +4345,10 @@ msgstr "Multiple selection"
 #: ../templates/views/kug/info:63
 msgid "Mein KUG"
 msgstr "My KUG"
+
+#: ../templates/virtualsearch_result_start:73
+msgid "Meinten Sie vielleicht:"
+msgstr "Did you mean:"
 
 #: ../templates/info_12:39
 msgid "Meistgenutzte Kataloge"
@@ -4638,7 +4665,7 @@ msgstr "Remaining fees"
 #: ../templates/views/kapsel/resultlists_showsinglepool:41
 #: ../templates/views/kapsel/search_showtitlist:47
 #: ../templates/views/portrait/resultlists_showsinglepool:41
-#: ../templates/virtualsearch_result_start:42
+#: ../templates/virtualsearch_result_start:41
 msgid "Optionen"
 msgstr "Options"
 
@@ -4681,6 +4708,7 @@ msgstr "Send password by mail"
 msgid "Passwort vergessen?"
 msgstr "Forgotten password?"
 
+#: ../templates/litlists_manage_singlelist:105
 #: ../templates/litlists_show_singlelist:73
 msgid "PermaLink"
 msgstr "PermaLink"
@@ -4692,6 +4720,7 @@ msgstr "PermaLink"
 #: ../templates/database/ebooks/search_showtitset:58
 #: ../templates/database/inst001/search_showtitset:60
 #: ../templates/database/nationallizenzen/search_showtitset:58
+#: ../templates/litlists_manage_singlelist:105
 #: ../templates/litlists_show_singlelist:73 ../templates/search_showtitset:58
 msgid "Permanenter Link"
 msgstr "PermaLink"
@@ -5600,7 +5629,7 @@ msgstr "Please use * as the <b>truncation mark</b>."
 #: ../templates/views/kapsel/resultlists_showsinglepool:43
 #: ../templates/views/kapsel/search_showtitlist:49
 #: ../templates/views/portrait/resultlists_showsinglepool:43
-#: ../templates/virtualsearch_result_start:44
+#: ../templates/virtualsearch_result_start:43
 msgid "Sortierung"
 msgstr "Alphabetic sorting"
 
@@ -7309,7 +7338,7 @@ msgstr "Tags in BibSonomy"
 
 #: ../templates/testsystem_info:15
 msgid "Testsystem - Nicht f&uuml;r den produktiven Einsatz bestimmt"
-msgstr "Title/Subject headings not available in Bibsonomy"
+msgstr "Development system - Not intended for regular use"
 
 #: ../templates/database/ebooks/search_showtitset:675
 #: ../templates/database/inst001/search_showtitset:702
@@ -7475,7 +7504,7 @@ msgstr "Top 20"
 #: ../templates/database/portrait/search_showtitlist:80
 #: ../templates/database/portrait/search_showtitlist:96
 #: ../templates/database/portrait/virtualsearch_result_item:16
-#: ../templates/resultlists_choice:87 ../templates/resultlists_showall:72
+#: ../templates/resultlists_choice:95 ../templates/resultlists_showall:72
 #: ../templates/resultlists_showall_sortall:72
 #: ../templates/search_showtitlist:105 ../templates/search_showtitlist:89
 #: ../templates/search_showtitlist_of_cnt:105
@@ -8393,7 +8422,7 @@ msgstr ""
 #: ../templates/views/portrait/searchmask_options:4
 #: ../templates/views/rheinlandbib/searchmask_options:4
 #: ../templates/views/xanten/searchmask_options:4
-#: ../templates/virtualsearch_result_start:57
+#: ../templates/virtualsearch_result_start:56
 msgid "absteigend"
 msgstr "descending"
 
@@ -8425,7 +8454,7 @@ msgstr "descending"
 #: ../templates/views/portrait/searchmask_options:4
 #: ../templates/views/rheinlandbib/searchmask_options:4
 #: ../templates/views/xanten/searchmask_options:4
-#: ../templates/virtualsearch_result_start:56
+#: ../templates/virtualsearch_result_start:55
 msgid "aufsteigend"
 msgstr "ascending"
 
@@ -8459,6 +8488,10 @@ msgstr "execute"
 msgid "gefunden werden."
 msgstr "could be found."
 
+#: ../templates/views/kug/searchmask_simple:93
+msgid "getrennte Kataloge"
+msgstr "Seperate catalogues"
+
 #: ../templates/database/inst001/circset:114
 msgid "im Gesch&auml;ftsgang"
 msgstr "in internal course of business"
@@ -8473,13 +8506,13 @@ msgstr "yes, since"
 
 #: ../templates/resultlists_showall:57
 #: ../templates/resultlists_showall_sortall:60
-#: ../templates/virtualsearch_result_start:62
+#: ../templates/virtualsearch_result_start:60
 msgid "katalogübergreifend"
 msgstr "spanning several catalogues"
 
 #: ../templates/database/landschaft/virtualsearch_result_item:16
 #: ../templates/database/portrait/virtualsearch_result_item:16
-#: ../templates/resultlists_choice:96
+#: ../templates/resultlists_choice:107
 #: ../templates/views/einbaende/virtualsearch_result_item:20
 #: ../templates/virtualsearch_result_item:16
 msgid "mind."
@@ -8561,7 +8594,7 @@ msgstr "by musicion/group"
 #: ../templates/views/kapsel/resultlists_showsinglepool:48
 #: ../templates/views/kapsel/search_showtitlist:54
 #: ../templates/views/portrait/resultlists_showsinglepool:47
-#: ../templates/virtualsearch_result_start:50
+#: ../templates/virtualsearch_result_start:49
 msgid "nach Jahr"
 msgstr "by year"
 
@@ -8600,7 +8633,7 @@ msgstr "by type of media"
 #: ../templates/views/kapsel/resultlists_showsinglepool:45
 #: ../templates/views/kapsel/search_showtitlist:51
 #: ../templates/views/portrait/resultlists_showsinglepool:45
-#: ../templates/virtualsearch_result_start:47
+#: ../templates/virtualsearch_result_start:46
 msgid "nach Person"
 msgstr "by person"
 
@@ -8637,7 +8670,7 @@ msgstr "by person"
 #: ../templates/views/kapsel/resultlists_showsinglepool:51
 #: ../templates/views/kapsel/search_showtitlist:57
 #: ../templates/views/portrait/resultlists_showsinglepool:50
-#: ../templates/virtualsearch_result_start:53
+#: ../templates/virtualsearch_result_start:52
 msgid "nach Popularit&auml;t"
 msgstr "by popularity"
 
@@ -8645,7 +8678,7 @@ msgstr "by popularity"
 msgid "nach Regionen"
 msgstr "by regions"
 
-#: ../templates/virtualsearch_result_start:46
+#: ../templates/virtualsearch_result_start:45
 msgid "nach Relevanz"
 msgstr "by relevance"
 
@@ -8668,7 +8701,7 @@ msgstr "by relevance"
 #: ../templates/views/kapsel/resultlists_showsinglepool:50
 #: ../templates/views/kapsel/search_showtitlist:56
 #: ../templates/views/portrait/resultlists_showsinglepool:49
-#: ../templates/virtualsearch_result_start:52
+#: ../templates/virtualsearch_result_start:51
 msgid "nach Signatur"
 msgstr "by location mark"
 
@@ -8705,7 +8738,7 @@ msgstr "by subject"
 #: ../templates/views/kapsel/resultlists_showsinglepool:46
 #: ../templates/views/kapsel/search_showtitlist:52
 #: ../templates/views/portrait/resultlists_showsinglepool:46
-#: ../templates/virtualsearch_result_start:48
+#: ../templates/virtualsearch_result_start:47
 msgid "nach Titel"
 msgstr "by title"
 
@@ -8736,7 +8769,7 @@ msgstr "by title/numbering"
 #: ../templates/views/kapsel/resultlists_showsinglepool:49
 #: ../templates/views/kapsel/search_showtitlist:55
 #: ../templates/views/portrait/resultlists_showsinglepool:48
-#: ../templates/virtualsearch_result_start:51
+#: ../templates/virtualsearch_result_start:50
 msgid "nach Verlag"
 msgstr "per publisher"
 
@@ -8751,7 +8784,7 @@ msgstr "per publisher"
 #: ../templates/views/kapsel/resultlists_showall:45
 #: ../templates/views/kapsel/resultlists_showsinglepool:47
 #: ../templates/views/kapsel/search_showtitlist:53
-#: ../templates/virtualsearch_result_start:49
+#: ../templates/virtualsearch_result_start:48
 msgid "nach Z&auml;hlung"
 msgstr "by numbering"
 
@@ -8801,7 +8834,7 @@ msgstr "private"
 #: ../templates/views/portrait/searchmask_options:4
 #: ../templates/views/rheinlandbib/searchmask_options:4
 #: ../templates/views/xanten/searchmask_options:4
-#: ../templates/virtualsearch_result_start:61
+#: ../templates/virtualsearch_result_start:59
 msgid "pro Katalog"
 msgstr "per catalogue"
 

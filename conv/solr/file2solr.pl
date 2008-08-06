@@ -172,10 +172,12 @@ my $atime = new Benchmark;
 
         foreach my $spr (@{$normdata{$s_id}{spr}}){
             print SOLR "<field name=\"spr_facet\">$spr</field>\n";
+            last;
         }
 
         foreach my $year (@{$normdata{$s_id}{year}}){
             print SOLR "<field name=\"year_facet\">$year</field>\n";
+            last;
         }
 
         foreach my $notation (@{$normdata{$s_id}{notation}}){
@@ -188,6 +190,7 @@ my $atime = new Benchmark;
 
         foreach my $mart (@{$normdata{$s_id}{mart}}){
             print SOLR "<field name=\"mart_facet\">$mart</field>\n";
+            last;
         }
 
         print SOLR "<field name=\"data\">$listitem</field>\n";

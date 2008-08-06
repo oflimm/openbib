@@ -1,0 +1,38 @@
+# Encoding der Daten
+encoding: utf8
+
+# Tracelevel
+tracelevel:
+
+# CSV-Parameter
+csv:
+  'eol': "\n"
+  'sep_char': "#"
+  'quote_char': "\""
+  'escape_char': "\""
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: 'ID'
+
+# Personen
+pers:
+  'Author': '0100:'        # Verfasser
+
+# Koerperschaften
+corp:
+
+# Systematik
+sys: 
+
+# Schlagworte
+subj:
+  'keyword': '0710:'
+
+# Titel
+title:
+  'Title': '0331:'
+  'Year': '0425:'
+  'Number': '0010:'
+  'Publisher': '0412:'
+  'Place': '0410:'
+  'pages': '0433:'

@@ -33,11 +33,14 @@ use utf8;
 use base qw(Apache::Singleton);
 
 use Apache::Request ();
+use Benchmark ':hireswallclock';
 use DBI;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
 use Storable;
 use String::Tokenizer;
+use Text::Aspell;
+use Search::Xapian;
 use YAML;
 
 use OpenBib::Common::Util;
@@ -859,5 +862,131 @@ sub to_xapian_querystring {
     return $xapianquerystring;
 }
 
+sub get_spelling_suggestion {
+    my ($self,$lang) = @_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    my $suggestions_ref = {};
+    my $searchterms_ref = $self->get_searchterms;
+
+    my $speller = Text::Aspell->new;
+
+    $speller->set_option('lang','de_DE');
+    $speller->set_option('sug-mode','normal');
+    $speller->set_option('ignore-case','true');
+    
+    # Kombinierter Datenbank-Handle fuer Xapian generieren, um spaeter damit Term-Frequenzen abfragen zu koennen
+    my $dbh;            
+    foreach my $database (@{$self->{_databases}}) {
+        $logger->debug("Adding Xapian DB-Object for database $database");
+        
+        if (!defined $dbh){
+            # Erstes Objekt erzeugen,
+            
+            $logger->debug("Creating Xapian DB-Object for database $database");                
+            
+            eval {
+                $dbh = new Search::Xapian::Database ( $config->{xapian_index_base_path}."/".$database) || $logger->fatal("Couldn't open/create Xapian DB $!\n");
+            };
+            
+            if ($@){
+                $logger->error("Database: $database - :".$@." falling back to sql Backend");
+            }
+        }
+        else {
+            $logger->debug("Adding database $database");
+            
+            eval {
+                $dbh->add_database(new Search::Xapian::Database( $config->{xapian_index_base_path}."/".$database));
+            };
+            
+            if ($@){
+                $logger->error("Database: $database - :".$@);
+            }                        
+        }
+    }
+                          
+    my $atime=new Benchmark;
+                          
+    # Bestimmung moeglicher Rechtschreibvorschlaege fuer die einzelnen Begriffe
+    foreach my $term (@{$searchterms_ref}){
+        # Nur Vorschlaege sammeln, wenn der Begriff nicht im Woerterbuch vorkommt
+        my @aspell_suggestions = ($speller->check($term))?():$speller->suggest( $term );
+
+        my $valid_suggestions_ref  = [];
+        my $sorted_suggestions_ref = [];
+
+        if (defined $dbh){
+            my $this_term = OpenBib::Common::Util::grundform({
+                content   => $term,
+                searchreq => 1,
+            });
+            
+            my $this_termfreq = $dbh->get_termfreq($this_term);            
+
+            # Verwende die 5 besten Vorschlaege
+            foreach my $suggested_term (@aspell_suggestions[0..4]){
+                next unless ($suggested_term);
+                my $suggested_term = OpenBib::Common::Util::grundform({
+                    content   => $suggested_term,
+                    searchreq => 1,
+                });
+
+                my $termfreq = $dbh->get_termfreq($suggested_term);            
+
+                # Nur Worte, die haeufiger als der Suchbegriff vorkommen, werden beruecksichtigt
+                push @{$valid_suggestions_ref}, {
+                    val  => $suggested_term,
+                    freq => $termfreq,
+                } if ($termfreq > $this_termfreq);                
+            }
+            
+            $logger->info(YAML::Dump($valid_suggestions_ref));
+            
+            @{$sorted_suggestions_ref} =
+                map { $_->[0] }
+                    sort { $b->[1] <=> $a->[1] }
+                        map { [$_, $_->{freq}] } @{$valid_suggestions_ref};
+
+            $suggestions_ref->{$term} = $sorted_suggestions_ref;
+        }        
+    }
+
+    # Suchvorschlag nur dann, wenn mindestens einer der Begriffe
+    # a) nicht im Woerterbuch ist *und*
+    # b) seine Termfrequest nicht hoeher als die Vorschlaege sind
+    my $have_suggestion = 0;
+    foreach my $term (@{$searchterms_ref}){
+        # Mindestens ein Suchvorschlag?
+        if (exists $suggestions_ref->{$term}[0]){
+            $have_suggestion = 1;
+        }
+    }
+
+    my $suggestion_string="";
+    if ($have_suggestion){
+        foreach my $term (@{$searchterms_ref}){
+            if (exists $suggestions_ref->{$term}[0]{val}){
+                $suggestion_string.=" ".$suggestions_ref->{$term}[0]{val};
+            }
+            else {
+                $suggestion_string.=" $term";
+            }
+        }
+    }
+    
+    my $btime      = new Benchmark;
+    my $timeall    = timediff($btime,$atime);
+    my $resulttime = timestr($timeall,"nop");
+    $resulttime    =~s/(\d+\.\d+) .*/$1/;
+    
+    $logger->info("Spelling suggestions took $resulttime seconds");
+
+    return $suggestion_string;
+}
 
 1;

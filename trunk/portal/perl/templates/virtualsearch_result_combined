@@ -65,8 +65,15 @@
 <p />
 </form>
 
+[% suggestion = searchquery.get_spelling_suggestion %]
+[% IF suggestion %]
+[% msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% virtualsearch_loc %]?sessionID=[% sessionID %];hitrange=[% query.param('hitrange') %]&view=[% view %];sorttype=relevance;sortorder=down;sb=xapian;st=[% query.param('st') %];drilldown=1;dd_categorized=1;autoplus=0;combinedbs=[% query.param('combinedbs') %];searchall=1;fs=[% suggestion %]">[% suggestion %]</b>
+[% END %]
 
 <table>
+[% IF fullresultcount == 0 %]
+<tr><td colspan="7"><span style="font-size:1.7em;font-face:bold">[% msg.maketext("Es wurden keine Treffer gefunden") %] : [% msg.maketext("Zur&uuml;ck zur [_1]Suchanfrage[_2]","<a href=\"${config.searchmask_loc}?sessionID=${sessionID};view=${view};queryid=${queryid}\">","</a>") %]</span></td></tr>
+[% ELSE %]
 [%# USE dumper;dumper.dump(offsets) %]
 <!-- Beginn Result Item -->
 <!-- <tr class="titlerow"><td>&nbsp;</td><td colspan="3">[%- IF treffer == qopts.hitrange -%]<b>[1 - [% qopts.hitrange %]]</b>&nbsp;<a href="[% config.virtualsearch_loc %]?sessionID=[% sessionID %];combinedbs=1;queryid=[% queryid %];offset=[% qopts.hitrange %];hitrange=[% qopts.hitrange %];sb=[% qopts.sb %]">[weitere Treffer...]</a>[% END %]</td><td align="right" colspan="2"><strong>[% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %]</strong></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td><td rowspan="[% IF fullresultcount <= qopts.hitrange %][% fullresultcount+3 %][% ELSE %][% qopts.hitrange+4 %][% END %]" valign="top" class="drilldown_categorized">[% IF drilldown && fullresultcount >= 10 && fullresultcount <= config.xapian_option.maxmatch %][% PROCESS common/subtemplate name="drilldown_categorized" combinedbs=1 %][% END %]</td></tr>-->
@@ -153,9 +160,6 @@
 <tr><td colspan="7">&nbsp;</td></tr>
 <!-- Ende Result Item -->
 
-[% IF gesamttreffer == 0 %]
-<tr><td colspan="7"><span style="font-size:1.7em;font-face:bold">[% msg.maketext("Es wurden keine Treffer gefunden") %] : [% msg.maketext("Zur&uuml;ck zur [_1]Suchanfrage[_2]","<a href=\"${config.searchmask_loc}?sessionID=${sessionID};view=${view};queryid=${queryid}\">","</a>") %]</span></td></tr>
-[% ELSE %]
 <tr><td colspan="7"><span style="font-size:1.5em;font-face:bold">[% msg.maketext("M&ouml;chten Sie Ihre Suchanfrage pr&auml;zisieren?") %] : [% msg.maketext("Zur&uuml;ck zur [_1]Suchanfrage[_2]","<a href=\"${config.searchmask_loc}?sessionID=${sessionID};view=${view};queryid=${queryid}\">","</a>") %]</span></td></tr>
 [% END %]
 </table>

@@ -593,6 +593,9 @@ sub handler {
                     offset     => $offset,
                     hitrange   => $hitrange,
                 });
+
+                $fullresultcount = $recordlist->get_size();
+                
             }
 
             my $btime      = new Benchmark;
@@ -872,6 +875,8 @@ sub handler {
             password       => $password,
             
             searchquery    => $searchquery->get_searchquery,
+            sq             => $searchquery,
+            
             query          => $query,
 
             qopts           => $queryoptions->get_options,
@@ -1032,7 +1037,8 @@ sub handler {
                     if ($@) {
                         $logger->error("Database: $database - :".$@);
                         $fallbacksb="sql";
-                    } else {
+                    }
+                    else {
                         my $request = new OpenBib::Search::Local::Xapian();
                     
                         $request->initial_search({

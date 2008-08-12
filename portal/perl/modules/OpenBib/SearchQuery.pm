@@ -917,6 +917,8 @@ sub get_spelling_suggestion {
         # Nur Vorschlaege sammeln, wenn der Begriff nicht im Woerterbuch vorkommt
         my @aspell_suggestions = ($speller->check($term))?():$speller->suggest( $term );
 
+        $logger->debug("Aspell suggestions".YAML::Dump(\@aspell_suggestions));
+
         my $valid_suggestions_ref  = [];
         my $sorted_suggestions_ref = [];
 
@@ -947,12 +949,13 @@ sub get_spelling_suggestion {
             
             $logger->info(YAML::Dump($valid_suggestions_ref));
             
-            @{$sorted_suggestions_ref} =
-                map { $_->[0] }
-                    sort { $b->[1] <=> $a->[1] }
-                        map { [$_, $_->{freq}] } @{$valid_suggestions_ref};
+             @{$sorted_suggestions_ref} =
+                 map { $_->[0] }
+                     sort { $b->[1] <=> $a->[1] }
+                         map { [$_, $_->{freq}] } @{$valid_suggestions_ref};
 
             $suggestions_ref->{$term} = $sorted_suggestions_ref;
+#            $suggestions_ref->{$term} = $valid_suggestions_ref;
         }        
     }
 

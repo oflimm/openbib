@@ -592,6 +592,8 @@ sub load_brief_record {
     }
 
     if ($config->{use_titlistitem_table}) {
+        $logger->debug("Getting cached titlistitem");
+        
         # Bestimmung des Satzes
         my $request=$dbh->prepare("select listitem from titlistitem where id = ?") or $logger->error($DBI::errstr);
         $request->execute($id);

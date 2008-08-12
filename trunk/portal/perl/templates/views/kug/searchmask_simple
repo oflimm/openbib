@@ -47,12 +47,21 @@
 [% PROCESS common/subtemplate name="newsflash" %]
 [% END %]
 
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#input_box").autocomplete("[% config.connector_spellcheck_loc %]", {
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+})
+</script>
+
 <form method="get" id="openbib" action="http://[% config.servername %][% config.virtualsearch_loc %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="hitrange"  value="50" />
 <input type="hidden" name="view"      value="[% view %]" />
-<input type="hidden" name="sorttype"  value="author" />
-<input type="hidden" name="sortorder" value="up" />
+<input type="hidden" name="sorttype"  value="relevance" />
+<input type="hidden" name="sortorder" value="down" />
 <input type="hidden" name="sb"        value="xapian" />
 <input type="hidden" name="st"        value="1" />
 [% IF config.drilldown %]
@@ -65,7 +74,6 @@
 <input type="hidden" name="dd_categorized" value="1" />
 [% END %]
 <input type="hidden" name="autoplus"  value="0" />
-
 <p />
 <noscript>
 <table>
@@ -84,12 +92,17 @@ nutzen, bei der die Verwendung von JavaScript minimiert ist.","<a href=\"${start
 <table width="100%">
 <tr><th style="text-align: center">[% msg.maketext("Geben Sie hier Ihre Suchbegriffe ein") %]</th></tr>
 <tr><td class="boxed" valign="top" align="center">
-<input type="text" name="fs" value="[% searchquery.fs.val | html %]" size="80" maxlength="200" />
+<input id="input_box" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="80" maxlength="200" />
 </td></tr>
 </table>
 
+<!--
 <p />
-
+<center><select name="combinedbs"><option value="1"
+selected="selected">[% msg.maketext("Kataloge kombinieren") %]</option><option
+value="0">[% msg.maketext("getrennte Kataloge") %]</option></select>
+</center>
+-->
 <p />
 
 <center>

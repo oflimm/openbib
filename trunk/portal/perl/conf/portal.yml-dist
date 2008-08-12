@@ -121,6 +121,7 @@ connector_digibib_loc: /portal/connector/digibib
 connector_olws_loc: /portal/connector/olws
 connector_permalink_loc: /portal/connector/permalink
 connector_rss_loc: /portal/connector/rss
+connector_spellcheck_loc: /portal/connector/spellcheck
 connector_ukonline_loc: /portal/connector/uk-online
 connector_unapi_loc: /portal/connector/unapi
 databasechoice_loc: /portal/katalogauswahl

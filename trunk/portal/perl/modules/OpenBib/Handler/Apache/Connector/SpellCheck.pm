@@ -86,30 +86,42 @@ sub handler {
     
     return OK unless ($word);
 
-    my $speller = Text::Aspell->new;
-
-    $speller->set_option('lang','de_DE');
-    $speller->set_option('sug-mode','normal');
-    $speller->set_option('ignore-case','true');
-    $speller->set_option('encoding','utf-8');
+    my @aspell_languages = ('de','en');
     
     # Nur Vorschlaege sammeln, wenn der Begriff nicht im Woerterbuch vorkommt
-    my @aspell_suggestions = ($speller->check($word))?():$speller->suggest( $word );
+    my @aspell_suggestions = ();
 
-    # Filtere Profanities
+    foreach my $aspell_language (@aspell_languages){
+        my $speller = Text::Aspell->new;
+        
+        $speller->set_option('sug-mode','normal');
+        $speller->set_option('ignore-case','true');
+        $speller->set_option('encoding','utf-8');
+        $speller->set_option('lang',$aspell_language);
 
-    @aspell_suggestions = grep {! $profanities_ref->{$_}} @aspell_suggestions;
-    
+        my @this_aspell_suggestions=($speller->check($word))?():$speller->suggest( $word );
+
+        # Filtere Profanities
+        @this_aspell_suggestions = grep {! $profanities_ref->{$_}} @this_aspell_suggestions;
+
+        # Maximal 5 Vorschlaege pro Sprache
+        if ($#this_aspell_suggestions > 6){
+            push @aspell_suggestions, @this_aspell_suggestions[0..6];
+        }
+        else {
+            push @aspell_suggestions, @this_aspell_suggestions;
+        }
+
+        $logger->debug("Found corrections for $word in language $aspell_language: ".join(',',@aspell_suggestions));
+    }
+
     print $r->send_http_header("text/plain");
     
     if (@aspell_suggestions){
-        $logger->debug("Found corrections for $word: ".join(',',@aspell_suggestions));
-        
         $r->print(join("\n",map {decode_utf8($_)} @aspell_suggestions));
-#        $r->print(join("\n",@aspell_suggestions);
     }
     else {
-        $logger->debug("Found $word in dictionary");
+        $logger->debug("Found $word in dictionary or no suggestions");
     }
 
 

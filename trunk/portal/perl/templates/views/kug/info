@@ -81,7 +81,7 @@
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.1.2&nbsp;&nbsp;&nbsp;<a href="#bibsonomyspiegelung">[% msg.maketext("Automatische Spiegelung von Titeln beim Tagging im KUG nach BibSonomy") %]</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/bibsonomyabgleich.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="[% msg.maketext("Interaktives Tutorium") %]" /></a></td></tr>
 
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.2&nbsp;<a href="#wikipedia">[% msg.maketext("Integration der Wikipedia") %]</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/w.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="[% msg.maketext("Interaktives Tutorium") %]" /></a></td></tr>
-         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.3&nbsp;<a href="#gbs">[% msg.maketext("Integration der Google Book Search") %]</a></td></tr>
+         <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;11.3&nbsp;<a href="#gbs">[% msg.maketext("Integration der Google Book Search") %]</a> <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/googlebooksearchbibsonomy.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="[% msg.maketext("Interaktives Tutorium") %]" /></a></td></tr>
          <tr><td align="right">12</td><td><a href="#uebersichten">[% msg.maketext("&Uuml;bersichten") %]</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;12.1&nbsp;<a href="#wolken">[% msg.maketext("Wolken") %]</a></td></tr>
          <tr><td align="right"></td><td>&nbsp;&nbsp;&nbsp;12.2&nbsp;<a href="#sichten">[% msg.maketext("Sichten") %]</a></td></tr>
@@ -902,7 +902,7 @@ einsetzen, usw.") %]
      <p> [% msg.maketext("Doch beachten Sie, dass die Beitrage unter Umst&auml;nden
      nicht wissenschaftlich gepr&uuml;ft sein k&ouml;nnten.") %]</p>
 
-     <h2 id="gbs">11.3 [% msg.maketext("Integration mit Google Book Search") %]</h2>
+     <h2 id="gbs">11.3 [% msg.maketext("Integration mit Google Book Search") %] <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/googlebooksearchbibsonomy.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="[% msg.maketext("Interaktives Tutorium") %]" /></a></h2>
 
      <p> [% msg.maketext("Der KUG wurde um eine Integration von Google Book Search
      erweitert. Dabei haben wir zur Anzeige von Verfügbarkeiten des

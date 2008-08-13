@@ -90,6 +90,7 @@ sub handler {
     
     # Nur Vorschlaege sammeln, wenn der Begriff nicht im Woerterbuch vorkommt
     my @aspell_suggestions = ();
+    my %have_suggestion    = ();
 
     foreach my $aspell_language (@aspell_languages){
         my $speller = Text::Aspell->new;
@@ -102,9 +103,11 @@ sub handler {
         my @this_aspell_suggestions=($speller->check($word))?():$speller->suggest( $word );
 
         # Filtere Profanities
-        @this_aspell_suggestions = grep {! $profanities_ref->{$_}} @this_aspell_suggestions;
+        @this_aspell_suggestions =
+            grep {! $have_suggestion{lc($_)} ++}
+                grep {! $profanities_ref->{$_}} @this_aspell_suggestions;
 
-        # Maximal 5 Vorschlaege pro Sprache
+        # Maximal 7 Vorschlaege pro Sprache
         if ($#this_aspell_suggestions > 6){
             push @aspell_suggestions, @this_aspell_suggestions[0..6];
         }

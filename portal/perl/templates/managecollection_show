@@ -75,7 +75,7 @@ function update_collection(yourform, checked, item) {
 
       IF litlists.size > 0 ;
 %]
-&nbsp;<b>&#124;</b>&nbsp;[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> in die bestehende Literaturliste &uuml;bernehmen: ") %]<select name="litlistid">[% FOREACH litlist IN userlitlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select>&nbsp;&uuml;bernehmen&nbsp;<input type="submit" name="do_litlist_addentry" value="[% msg.maketext("Los") %]" /></li>
+&nbsp;<b>&#124;</b>&nbsp;[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> in die bestehende Literaturliste &uuml;bernehmen: ") %]<select name="litlistid">[% FOREACH litlist IN litlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select>&nbsp;&uuml;bernehmen&nbsp;<input type="submit" name="do_litlist_addentry" value="[% msg.maketext("Los") %]" /></li>
 [%    END %]
 [% END %]
 [%- ELSE -%]

@@ -77,9 +77,8 @@
 [%# URL's konstruieren %]
 [%- urls = [] -%]
 [%- FOREACH part IN item.${'T0662'}  -%]
-[%- urls.push("<a href=\"${part.content}\" target=\"_blank\">${part.content}</a>")-%]
+[%- urls.push(part.content)-%]
 [%- END -%]
-[%- url  = urls.join(' ; ') -%]
 [%-
 
     location = {} ;
@@ -160,7 +159,9 @@
 <LI> IS=[% utf2iso(issn)                       # ISSN %]
 <LI> LO=[% utf2iso(locationstring)             # Locations mit Signatur und Bestandsverlauf%]
 <LI> FN=[% utf2iso(fussnote)                   # Fussnote %]
-<LI> OLL=[% utf2iso(url)                       # URL %]
+[%- FOREACH url IN urls -%]
+<LI> LNK[% loop.count %]=[% utf2iso(url)       # URL %]
+[%- END -%]
 <LI> AUH=[% utf2iso(autorlink) %]
 <LI> TIH=[% utf2iso(titellink) %]
 [% IF has_sb %]

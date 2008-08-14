@@ -102,10 +102,11 @@ sub handler {
 
         my @this_aspell_suggestions=($speller->check($word))?():$speller->suggest( $word );
 
-        # Filtere Profanities
+        # Filtern
         @this_aspell_suggestions =
-            grep {! $have_suggestion{lc($_)} ++}
-                grep {! $profanities_ref->{$_}} @this_aspell_suggestions;
+                            grep {! $have_suggestion{lc($_)} ++}                              # Doppelte Vorschlaege herausfiltern
+                                grep {! /[ -']/ }                                             # Vorschlaege mit speziellen Zeichen herausfiltern
+                                    grep {! $profanities_ref->{$_}} @this_aspell_suggestions; # Unerwuenschte Vorschlaege herausfiltern
 
         # Maximal 7 Vorschlaege pro Sprache
         if ($#this_aspell_suggestions > 6){

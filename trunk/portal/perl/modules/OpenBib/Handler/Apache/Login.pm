@@ -239,12 +239,19 @@ sub handler {
             # Jetzt wird die bestehende Trefferliste uebernommen.
             # Gehe ueber alle Eintraege der Trefferliste
 
-            my @existing_collection = $session->get_items_in_collection();
+            my $recordlist_existing_collection = $session->get_items_in_collection();
 
-            foreach my $item_ref (@existing_collection){
+            $logger->debug("Items in Session: ".YAML::Dump($recordlist_existing_collection));
+            
+            foreach my $record (@{$recordlist_existing_collection->to_list}){
+                $logger->debug("Adding item to personal collection of user $userid: ".YAML::Dump($record));
+
                 $user->add_item_to_collection({
                     userid => $userid,
-                    item   => $item_ref
+                    item   => {
+                        dbname     => $record->{database},
+                        singleidn  => $record->{id},
+                    },
                 });
             }
             

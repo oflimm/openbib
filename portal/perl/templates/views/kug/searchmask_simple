@@ -50,6 +50,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
   $("#input_box").autocomplete("[% config.connector_spellcheck_loc %]", {
+                selectFirst: false,
                 minChars: 3,
                 multiple: true,                
                 multipleSeparator: ' '});

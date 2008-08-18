@@ -531,6 +531,19 @@ sub get_searchquery {
     return $self->{_searchquery};
 }
 
+sub to_cgi_params {
+    my ($self)=@_;
+
+    my @cgiparams = ();
+
+    foreach my $param (keys %{$self->{_searchquery}}){
+        push @cgiparams, "bool$param=".$self->{_searchquery}->{$param}{bool};
+        push @cgiparams, "$param=".$self->{_searchquery}->{$param}{val};
+    }
+    
+    return join(";",@cgiparams);
+}
+
 sub get_hits {
     my ($self)=@_;
 

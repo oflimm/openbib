@@ -41,6 +41,7 @@ use DBI;
 use Email::Valid;               # EMail-Adressen testen
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
+use Captcha::reCAPTCHA;
 use POSIX;
 
 use OpenBib::Common::Util;
@@ -70,17 +71,27 @@ sub handler {
         sessionID => $query->param('sessionID'),
     });
 
+    my $recaptcha = Captcha::reCAPTCHA->new;
+
     my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
     
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
-    my $action    = ($query->param('action'))?$query->param('action'):'none';
-    my $targetid  = ($query->param('targetid'))?$query->param('targetid'):'none';
-    my $loginname = ($query->param('loginname'))?$query->param('loginname'):'';
-    my $password1 = ($query->param('password1'))?$query->param('password1'):'';
-    my $password2 = ($query->param('password2'))?$query->param('password2'):'';
+    my $action              = ($query->param('action'))?$query->param('action'):'none';
+    my $targetid            = ($query->param('targetid'))?$query->param('targetid'):'none';
+    my $loginname           = ($query->param('loginname'))?$query->param('loginname'):'';
+    my $password1           = ($query->param('password1'))?$query->param('password1'):'';
+    my $password2           = ($query->param('password2'))?$query->param('password2'):'';
+    my $recaptcha_challenge = $query->param('recaptcha_challenge_field');
+    my $recaptcha_response  = $query->param('recaptcha_response_field');
 
     my $queryoptions = OpenBib::QueryOptions->instance($query);
+
+    # Wenn der Request ueber einen Proxy kommt, dann urspruengliche
+    # Client-IP setzen
+    if ($r->header_in('X-Forwarded-For') =~ /([^,\s]+)$/) {
+        $r->connection->remote_ip($1);
+    }
 
     # Message Katalog laden
     my $msg = OpenBib::L10N->get_handle($queryoptions->get_option('l')) || $logger->error("L10N-Fehler");
@@ -107,6 +118,8 @@ sub handler {
             stylesheet => $stylesheet,
             sessionID  => $session->{ID},
 
+            recaptcha  => $recaptcha,
+            
             config     => $config,
             user       => $user,
             msg        => $msg,
@@ -132,6 +145,17 @@ sub handler {
 
         if ($user->user_exists($loginname)) {
             OpenBib::Common::Util::print_warning($msg->maketext("Ein Benutzer mit dem Namen [_1] existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte [_2]zurück[_3] und lassen es sich zumailen.","$loginname","<a href=\"http://$config->{servername}$config->{selfreg_loc}?sessionID=$session->{ID};view=$view;action=show\">","</a>"),$r,$msg);
+            return OK;
+        }
+
+        # Recaptcha pruefen
+        my $recaptcha_result = $recaptcha->check_answer(
+            $config->{recaptcha_private_key}, $r->connection->remote_ip,
+            $recaptcha_challenge, $recaptcha_response
+        );
+
+        unless ( $recaptcha_result->{is_valid} ) {
+            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte [_1]zurück[_2] und versuchen Sie es erneut.","<a href=\"http://$config->{servername}$config->{selfreg_loc}?sessionID=$session->{ID};view=$view;action=show\">","</a>"),$r,$msg);
             return OK;
         }
 

@@ -115,6 +115,7 @@
 ../templates/database/portrait/virtualsearch_result_item
 ../templates/database/portrait/visible_categories_titset
 ../templates/database/richter/visible_categories_titset
+../templates/database/umschlaege/visible_categories_titset
 ../templates/databasechoice
 ../templates/databaseprofile
 ../templates/drilldown_categorized

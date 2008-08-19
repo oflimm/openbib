@@ -43,10 +43,15 @@
 <input type="hidden" name="action"    value="auth" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <table>
+<tr><td>
+<table>
 <tr><td align="right"><b>[% msg.maketext("E-Mail-Adresse") %]:</b></td><td><input type="text" name="loginname" /></td></tr>
 <tr><td align="right"><b>[% msg.maketext("Passwort") %]:</b></td><td><input type="password" name="password1" /></td></tr>
 <tr><td align="right"><b>[% msg.maketext("Passwort (wiederholt)") %]:</b></td><td><input type="password" name="password2" /></td></tr>
 <tr><td></td><td><input type="submit" value="[% msg.maketext("Registrieren") %]" /></td></tr>
+</table>
+</td>
+<td>[% recaptcha.get_html(config.${"recaptcha_public_key"}) %]<td></tr>
 </table>
 <p />
 </form>

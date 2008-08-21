@@ -1104,7 +1104,11 @@ sub get_queryid {
     my $queryid            = 0;
     my $queryalreadyexists = 0;
 
-    my $dbasesstring=join("||",sort @{$databases_ref});
+    # Wenn man databases_ref hier sortiert und in VirtualSearch.pm sortiert, dann koennen anhand von Suchanfrage und Datenbankauswahl auch
+    # bei gleicher aber permutierter Datenbankliste die entsprechende queryid gefunden werden, allerdings kann man dann
+    # diese Liste nicht mehr fuer wiederholte Anfrage (Listentyp) verwenden, da sich dann
+    # durch die Sortierung die Reihenfolge geaendert hat. Daher wird hier nicht mehr sortiert
+    my $dbasesstring=join("||",@{$databases_ref});
     
     my $thisquerystring=unpack "H*", Storable::freeze($searchquery->get_searchquery);
     my $idnresult=$dbh->prepare("select count(*) as rowcount from queries where query = ? and sessionid = ? and dbases = ? and hitrange = ?") or $logger->error($DBI::errstr);

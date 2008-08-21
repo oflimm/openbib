@@ -36,9 +36,6 @@
 
 <p />
 
-<form method="post" action="[% config.userprefs_loc %]" enctype="application/x-www-form-urlencoded">
-<input type="hidden" name="sessionID" value="[% sessionID %]" />
-
 <table width="100%">
 <tr><th>[% msg.maketext("KUG Benutzerinformationen") %]</th></tr>
 <tr><td class="boxed" 

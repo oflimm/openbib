@@ -163,6 +163,14 @@ sub handler {
                 content   => $sb,
     });
 
+    my $queryalreadyexists = 0;
+
+    if ($queryid){
+        $searchquery->load({sessionID => $session->{ID}, queryid => $queryid});
+
+        $queryalreadyexists = 1;
+    }
+
     # BEGIN DB-Bestimmung
     ####################################################################
     # Bestimmung der Datenbanken, in denen gesucht werden soll
@@ -196,7 +204,11 @@ sub handler {
         }
         
         else {
-            if ($searchall) {
+            if ($queryid){
+                my $databases_ref = $searchquery->get_databases;
+                @databases = @{$databases_ref};
+            }
+            elsif ($searchall) {
                 if ($view){
                     $logger->debug("Selecting all active databases of views systemprofile");
                     @databases = $config->get_active_databases_of_systemprofile($view);
@@ -255,14 +267,7 @@ sub handler {
         }
     }
 
-    my $queryalreadyexists = 0;
-    
-    if ($queryid){
-        $searchquery->load({sessionID => $session->{ID}, queryid => $queryid});
-
-        $queryalreadyexists = 1;
-    }
-    else {
+    unless ($queryid) {
         $searchquery->set_from_apache_request($r,\@databases);
 
         # Abspeichern des Query und Generierung der Queryid
@@ -877,9 +882,10 @@ sub handler {
             searchquery    => $searchquery->get_searchquery,
             sq             => $searchquery,
             
+            queryid        => $queryid,
             query          => $query,
 
-            qopts           => $queryoptions->get_options,
+            qopts          => $queryoptions->get_options,
             
             queryid        => $queryid,
             
@@ -1391,7 +1397,9 @@ sub handler {
     # Neuer Query
     if (!$queryalreadyexists) {
         # Jetzt update der Trefferinformationen
-        my $dbasesstring=join("||",sort @databases);
+        my $dbasesstring=join("||",@databases);
+
+        $logger->debug("Databases for this query: $dbasesstring");
         my $thisquerystring=unpack "H*", Storable::freeze($searchquery->get_searchquery);
         
         # Wurde in allen Katalogen recherchiert?

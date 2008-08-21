@@ -51,7 +51,8 @@
 <tr><td></td><td><input type="submit" value="[% msg.maketext("Registrieren") %]" /></td></tr>
 </table>
 </td>
-<td>[% recaptcha.get_html(config.${"recaptcha_public_key"}) %]<td></tr>
+[%- recaptcha_options = { lang => lang, theme => 'white' } -%]
+<td>[% recaptcha.get_html(config.${"recaptcha_public_key"},'',0,recaptcha_options) %]<td></tr>
 </table>
 <p />
 </form>

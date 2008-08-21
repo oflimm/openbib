@@ -119,7 +119,8 @@ sub handler {
             sessionID  => $session->{ID},
 
             recaptcha  => $recaptcha,
-            
+
+            lang       => $queryoptions->get_option('l'),
             config     => $config,
             user       => $user,
             msg        => $msg,

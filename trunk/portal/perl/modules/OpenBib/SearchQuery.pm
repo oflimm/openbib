@@ -516,7 +516,11 @@ sub load  {
     $self->{_searchquery} = Storable::thaw(pack "H*", decode_utf8($res->{query}));
     $self->{_hits}        = decode_utf8($res->{'hits'});
 
-    my @databases         = split("||",$res->{dbases});
+    $logger->debug("Stored Databases as string: ".$res->{dbases});
+    
+    my @databases         = split('\|\|',$res->{dbases});
+
+    $logger->debug("Stored Databases: ".join(',',@databases));
     $self->{_databases}   = \@databases;
     
     $idnresult->finish();
@@ -985,14 +989,16 @@ sub get_spelling_suggestion {
 
     my $suggestion_string="";
     if ($have_suggestion){
+        my @tmpsuggestions = ();
         foreach my $term (@{$searchterms_ref}){
             if (exists $suggestions_ref->{$term}[0]{val}){
-                $suggestion_string.=" ".$suggestions_ref->{$term}[0]{val};
+                push @tmpsuggestions, $suggestions_ref->{$term}[0]{val};
             }
             else {
-                $suggestion_string.=" $term";
+                push @tmpsuggestions, $term;
             }
         }
+        $suggestion_string = join(' ',@tmpsuggestions);
     }
     
     my $btime      = new Benchmark;

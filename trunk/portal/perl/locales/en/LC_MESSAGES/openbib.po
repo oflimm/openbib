@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2008-08-19 15:56+0200\n"
+"PO-Revision-Date: 2008-08-22 12:17+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -81,7 +81,7 @@ msgstr ""
 #: ../templates/database/inst001/search_showtitset:561
 #: ../templates/database/nationallizenzen/search_showtitset:540
 #: ../templates/litlists_manage_singlelist:54
-#: ../templates/search_showtitset:557 ../templates/userprefs:182
+#: ../templates/search_showtitset:557 ../templates/userprefs:179
 msgid "&Auml;ndern"
 msgstr "Change"
 
@@ -383,7 +383,7 @@ msgstr ""
 msgid "Abb."
 msgstr "fig."
 
-#: ../templates/userprefs:178
+#: ../templates/userprefs:175
 msgid "Abgleich zu BibSonomy"
 msgstr "Mirror to BibSonomy"
 
@@ -406,7 +406,7 @@ msgstr "Save"
 msgid "Abspeicherung eines neuen oder bestehenden Profils"
 msgstr "Save new or already existing profile"
 
-#: ../templates/searchmask_query:43 ../templates/userprefs:213
+#: ../templates/searchmask_query:43 ../templates/userprefs:210
 msgid "Abstrakt/Inhalt"
 msgstr "Abstract/Content"
 
@@ -464,7 +464,7 @@ msgstr "All Catalogues"
 msgid "Alle Treffer"
 msgstr "All hits"
 
-#: ../templates/userprefs:187
+#: ../templates/userprefs:184
 msgid "Alle getaggten Titel jetzt zu BibSonomy &uuml;bertragen"
 msgstr "Mirror all tagged titles to BibSonomy"
 
@@ -734,7 +734,7 @@ msgstr "Use without aquisition of search terms"
 msgid "Ausdrucken"
 msgstr "Print"
 
-#: ../templates/userprefs:103
+#: ../templates/userprefs:100
 msgid "Ausgeliehen"
 msgstr "Borrowed"
 
@@ -776,7 +776,7 @@ msgstr "Loan"
 msgid "Ausleihfrist"
 msgstr "Loan period"
 
-#: ../templates/userprefs:68
+#: ../templates/userprefs:65
 msgid "Ausleihinformationen"
 msgstr "Loan information"
 
@@ -926,7 +926,7 @@ msgstr "User"
 msgid "Benutzerkonto"
 msgstr "User account"
 
-#: ../templates/admin_login:32 ../templates/userprefs:47
+#: ../templates/admin_login:32 ../templates/userprefs:44
 msgid "Benutzername"
 msgstr "User name"
 
@@ -1029,7 +1029,7 @@ msgstr ""
 
 #: ../templates/circulation:39 ../templates/circulation_orders:39
 #: ../templates/circulation_remind:39 ../templates/circulation_reserv:39
-#: ../templates/userprefs:128
+#: ../templates/userprefs:125
 msgid "Bestellungen"
 msgstr "Orders"
 
@@ -1064,7 +1064,7 @@ msgstr "Ratings/reviews from users"
 #: ../templates/database/ebooks/search_showtitset:88
 #: ../templates/database/inst001/search_showtitset:90
 #: ../templates/database/nationallizenzen/search_showtitset:92
-#: ../templates/search_showtitset:88 ../templates/userprefs:171
+#: ../templates/search_showtitset:88 ../templates/userprefs:168
 msgid "BibSonomy"
 msgstr "BibSonomy"
 
@@ -1075,11 +1075,11 @@ msgstr "BibSonomy"
 msgid "BibSonomy Tags"
 msgstr "BibSonomy Tags"
 
-#: ../templates/userprefs:180
+#: ../templates/userprefs:177
 msgid "BibSonomy-API-Key"
 msgstr "BibSonomy API-Key"
 
-#: ../templates/userprefs:179
+#: ../templates/userprefs:176
 msgid "BibSonomy-API-User"
 msgstr "BibSonomy API-User"
 
@@ -1107,7 +1107,7 @@ msgid "Bitte bookmarken unter:"
 msgstr "Please bookmark as:"
 
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:346
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:519
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:524
 msgid "Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."
 msgstr "Please enter a four digit number as the year of publication."
 
@@ -1115,7 +1115,7 @@ msgstr "Please enter a four digit number as the year of publication."
 msgid "Bitte geben Sie ein Anfangs- sowie ein End-Datum an!"
 msgstr "Please enter start and end dates!"
 
-#: ../templates/userprefs:92
+#: ../templates/userprefs:89
 msgid ""
 "Bitte wenden Sie sich bei Unstimmigkeiten in Ihren Personendaten an die "
 "Auskunft der Bibliothek."
@@ -1278,8 +1278,8 @@ msgstr ""
 
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:353
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:362
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:526
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:535
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:531
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:540
 msgid ""
 "Das Suchkriterium Jahr ist nur in Verbindung mit der UND-Verknüpfung und "
 "mindestens einem weiteren angegebenen Suchbegriff möglich, da sonst die "
@@ -1320,7 +1320,7 @@ msgid ""
 "Katalog aufnehmen"
 msgstr "Please remember that only a few libraries have articles in their catalogues"
 
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:318
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:323
 msgid ""
 "Der Begriff muss mindestens 3 Zeichen umfassen, wenn mehr als eine Datenbank "
 "zur Suche im Index ausgewählt wurde."
@@ -1470,7 +1470,7 @@ msgstr ""
 msgid "Die Vormerkung wurde erfolgreich durchgef&uuml;hrt."
 msgstr "Your reservation was successful."
 
-#: ../modules/OpenBib/Handler/Apache/SelfReg.pm:136
+#: ../modules/OpenBib/Handler/Apache/SelfReg.pm:137
 msgid "Die beiden eingegebenen Passworte stimmen nicht überein."
 msgstr "The two passwords you entered are different."
 
@@ -1671,11 +1671,11 @@ msgstr ""
 "interested in. This allows us to show you other books which may interest you "
 "in the context of the entry currently being displayed."
 
-#: ../templates/userprefs:81
+#: ../templates/userprefs:78
 msgid "E-Mail"
 msgstr "E-mail"
 
-#: ../templates/login:112 ../templates/mailpassword:46 ../templates/selfreg:48
+#: ../templates/login:112 ../templates/mailpassword:46 ../templates/selfreg:52
 msgid "E-Mail-Adresse"
 msgstr "E-mail address"
 
@@ -1728,7 +1728,7 @@ msgid "Ein Beispiel hierfür ist %1dieser Titel%2."
 msgstr "An example is %1this title%2."
 
 #. ("$loginname","<a href=\"http://$config->{servername}$config->{selfreg_loc}?sessionID=$session->{ID};view=$view;action=show\">","</a>")
-#: ../modules/OpenBib/Handler/Apache/SelfReg.pm:147
+#: ../modules/OpenBib/Handler/Apache/SelfReg.pm:148
 msgid ""
 "Ein Benutzer mit dem Namen %1 existiert bereits. Haben Sie vielleicht Ihr "
 "Passwort vergessen? Dann gehen Sie bitte %2zurück%3 und lassen es sich "
@@ -1832,7 +1832,7 @@ msgstr "A reservation for the requested medium was not successful!"
 msgid "Einfache Recherche"
 msgstr "Simple search"
 
-#: ../templates/userprefs:160
+#: ../templates/userprefs:157
 msgid "Einfache Recherchemaske"
 msgstr "Simple search mask"
 
@@ -1854,7 +1854,7 @@ msgstr "Restrict to main entries (series)"
 msgid "Einloggen"
 msgstr "Log In"
 
-#: ../templates/userprefs:144
+#: ../templates/userprefs:141
 msgid "Einstellungen"
 msgstr "Preferences"
 
@@ -1930,7 +1930,7 @@ msgstr "Success"
 msgid "Ergebnisanreicherung"
 msgstr "Search Result Enhancement"
 
-#: ../templates/searchmask_options:4 ../templates/userprefs:216
+#: ../templates/searchmask_options:4 ../templates/userprefs:213
 #: ../templates/views/gdonck/searchmask_options:4
 #: ../templates/views/gleuel/searchmask_options:4
 #: ../templates/views/kempen/searchmask_options:4
@@ -1947,7 +1947,7 @@ msgstr "Year of publication"
 msgid "Erscheinungsverlauf  "
 msgstr "Flow of publication  "
 
-#: ../templates/userprefs:164
+#: ../templates/userprefs:161
 msgid "Erweitere Recherchemaske"
 msgstr "Advanced search mask"
 
@@ -2010,12 +2010,12 @@ msgstr "No fees generated."
 msgid "Es sind keine Quellen verf&uuml;gbar."
 msgstr "No sources available."
 
-#: ../modules/OpenBib/Handler/Apache/SelfReg.pm:131
+#: ../modules/OpenBib/Handler/Apache/SelfReg.pm:132
 msgid "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
 msgstr "You either didn't enter a username or less than two passwords "
 
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:369
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:542
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:547
 msgid "Es wurde kein Suchkriterium eingegeben."
 msgstr "You didn't enter any search criteria."
 
@@ -2068,7 +2068,7 @@ msgstr ""
 "<b>^</b> ahead of your search query (e.g. ^education*). As before, you can "
 "truncate the word with a *."
 
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:313
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:318
 msgid ""
 "F&uuml;r die Nutzung der Index-Funktion m&uuml;ssen Sie einen Begriff "
 "eingegeben"
@@ -2177,7 +2177,7 @@ msgstr "Please send questions and feedback to:"
 msgid "Franz&ouml;sische Wikipedia"
 msgstr "French Wikipedia"
 
-#: ../templates/searchmask_query:3 ../templates/userprefs:203
+#: ../templates/searchmask_query:3 ../templates/userprefs:200
 #: ../templates/views/einbaende/searchmask:106
 #: ../templates/views/inst501/searchmask_query:3
 #: ../templates/views/kapsel/searchmask_query:3
@@ -2272,14 +2272,19 @@ msgstr ""
 "Fulltext access? green=free / yellow=location dependant / green-yellow-"
 "red=volume dependant - Link opens in new window"
 
+#. ("<a href=\"http://de.wikipedia.org/wiki/CAPTCHA\" target=\"_blank\"","</a>")
 #: ../templates/selfreg:36
 msgid ""
-"Geben Sie f&uuml;r die Selbstregistrierung bitte als Benutzername Ihre "
-"g&uuml;ltige Email-Adresse ein und danach zwei Mal Ihr selbst gew&auml;hltes "
-"Passwort. Danach best&auml;tigen Sie bitte mit <b>Registrieren</b>."
+"Geben Sie f&uuml;r die Selbstregistrierung bitte als\n"
+"Benutzername Ihre g&uuml;ltige Email-Adresse ein und danach zwei Mal\n"
+"Ihr selbst gew&auml;hltes Passwort. Zur Absicherung gegen einen\n"
+"automatisierten Missbrauch wird ein sog. %1CAPTCHA%2 verwendet. Daher m&uuml;"
+"ssen Sie zus&auml;tzlich die zwei\n"
+"verfremdet dargestellten Worte korrekt eingeben. Danach best&auml;tigen Sie "
+"bitte mit <b>Registrieren</b>."
 msgstr ""
 "For self registration pleasy enter your valid e-mail address and two times a "
-"password of you choice. Then confirm you input with <b>Register</b>."
+"password of you choice. To prohibit automated abuse we use a so called %1CAPTCHA%2. Therefore you also have to enter the two distorted words correctly. Then confirm your input with <b>Register</b>."
 
 #: ../templates/searchmask_simple:101
 #: ../templates/views/edz/searchmask_simple:110
@@ -2342,7 +2347,7 @@ msgstr "Please enter the beginning of the author"
 msgid "Geben Sie hier einen oder mehrere Tags ein"
 msgstr "Please enter one or more tags"
 
-#: ../templates/userprefs:73
+#: ../templates/userprefs:70
 msgid "Geburtsdatum"
 msgstr "Date of birth"
 
@@ -2385,7 +2390,7 @@ msgstr "Reason:"
 msgid "Grundeinstellungen"
 msgstr "Basic settings"
 
-#: ../templates/userprefs:99
+#: ../templates/userprefs:96
 msgid "Guthaben"
 msgstr "Funds"
 
@@ -2466,7 +2471,7 @@ msgstr ""
 "Did you already apply for an account via self registration? If not self "
 "registration is available %1here%2."
 
-#: ../templates/userprefs:204
+#: ../templates/userprefs:201
 msgid "Hauptsachtitel (HST)"
 msgstr "Main title"
 
@@ -2950,12 +2955,12 @@ msgstr "Home"
 msgid "Hostname"
 msgstr "Hostname"
 
-#: ../templates/searchmask_query:27 ../templates/userprefs:209
+#: ../templates/searchmask_query:27 ../templates/userprefs:206
 #: ../templates/views/inst501/searchmask_query:27
 msgid "ISBN"
 msgstr "ISBN"
 
-#: ../templates/searchmask_query:31 ../templates/userprefs:210
+#: ../templates/searchmask_query:31 ../templates/userprefs:207
 #: ../templates/views/inst501/searchmask_query:31
 msgid "ISSN"
 msgstr "ISSN"
@@ -3651,7 +3656,7 @@ msgstr "Years"
 msgid "Jahrhundert"
 msgstr "Century"
 
-#: ../templates/userprefs:206 ../templates/virtualsearch_showkorindex:52
+#: ../templates/userprefs:203 ../templates/virtualsearch_showkorindex:52
 msgid "K&ouml;rperschaft"
 msgstr "Corporate body"
 
@@ -3660,7 +3665,7 @@ msgstr "Corporate body"
 msgid "K&ouml;rperschaften/Institutionen"
 msgstr "Corporate body/Institution"
 
-#: ../templates/userprefs:43
+#: ../templates/userprefs:40
 msgid "KUG Benutzerinformationen"
 msgstr "KUG user information"
 
@@ -3807,7 +3812,7 @@ msgstr "Invalid action or session"
 msgid "Keine gültige Anfrage-ID"
 msgstr "Invalid request id"
 
-#: ../templates/userprefs:50
+#: ../templates/userprefs:47
 msgid "Kennung l&ouml;schen"
 msgstr "Remove account"
 
@@ -4331,7 +4336,7 @@ msgstr "Maximum hits per catalogue"
 msgid "MedPilot"
 msgstr "MedPilot"
 
-#: ../templates/searchmask_query:51 ../templates/userprefs:215
+#: ../templates/searchmask_query:51 ../templates/userprefs:212
 #: ../templates/views/inst501/searchmask_query:47
 #: ../templates/views/richter/searchmask_query:41
 msgid "Medienart"
@@ -4455,7 +4460,7 @@ msgstr ""
 "down the number in front of the location mark that indicates the exact "
 "library, click on Pedagogical Faculty and look for the required library code."
 
-#: ../templates/userprefs:71
+#: ../templates/userprefs:68
 msgid "Nachname"
 msgstr "Surname"
 
@@ -4590,7 +4595,7 @@ msgstr "Create new catalogue profile"
 msgid "Not-Datei"
 msgstr "Not-File"
 
-#: ../templates/searchmask_query:23 ../templates/userprefs:208
+#: ../templates/searchmask_query:23 ../templates/userprefs:205
 #: ../templates/virtualsearch_shownotindex:52
 msgid "Notation"
 msgstr "Classification"
@@ -4645,7 +4650,7 @@ msgstr "OLWS DB-name in the local system"
 msgid "OLWS Zugriffs-URL"
 msgstr "OLWS target URL"
 
-#: ../templates/userprefs:117
+#: ../templates/userprefs:114
 msgid "Offene Geb&uuml;hren"
 msgstr "Remaining fees"
 
@@ -4673,7 +4678,7 @@ msgstr "Remaining fees"
 msgid "Optionen"
 msgstr "Options"
 
-#: ../templates/userprefs:75
+#: ../templates/userprefs:72
 msgid "Ort"
 msgstr "City"
 
@@ -4690,16 +4695,16 @@ msgid "P5000"
 msgstr "# of titles"
 
 #: ../templates/admin_login:33 ../templates/login:113 ../templates/login:80
-#: ../templates/login_circulation:66 ../templates/selfreg:49
-#: ../templates/userprefs:56
+#: ../templates/login_circulation:66 ../templates/selfreg:53
+#: ../templates/userprefs:53
 msgid "Passwort"
 msgstr "Password"
 
-#: ../templates/userprefs:56
+#: ../templates/userprefs:53
 msgid "Passwort &auml;ndern"
 msgstr "Change password"
 
-#: ../templates/selfreg:50
+#: ../templates/selfreg:54
 msgid "Passwort (wiederholt)"
 msgstr "Password (again)"
 
@@ -4759,7 +4764,7 @@ msgstr "Person/Corporate Body"
 msgid "Personen"
 msgstr "Persons"
 
-#: ../templates/userprefs:68
+#: ../templates/userprefs:65
 msgid "Personendaten"
 msgstr "Personal data"
 
@@ -4908,11 +4913,11 @@ msgstr "Search"
 msgid "Recherchearten"
 msgstr "Search Options"
 
-#: ../templates/userprefs:150
+#: ../templates/userprefs:147
 msgid "Recherchemaske"
 msgstr "Search mask"
 
-#: ../templates/userprefs:164
+#: ../templates/userprefs:161
 msgid "Recherchemaske festlegen"
 msgstr "Define search mask"
 
@@ -4933,7 +4938,7 @@ msgstr "Region"
 msgid "Register"
 msgstr "Register"
 
-#: ../templates/selfreg:51
+#: ../templates/selfreg:55
 msgid "Registrieren"
 msgstr "Register"
 
@@ -5027,7 +5032,7 @@ msgstr "Later"
 msgid "S5000"
 msgstr "# of titles"
 
-#: ../templates/search_showswtindex:41 ../templates/userprefs:207
+#: ../templates/search_showswtindex:41 ../templates/userprefs:204
 #: ../templates/views/inst501/searchmask_query:19
 #: ../templates/views/kapsel/searchmask_query:15
 #: ../templates/views/richter/searchmask_query:21
@@ -5124,7 +5129,7 @@ msgstr "Seconds"
 msgid "Selbstregistrierung"
 msgstr "Self registration"
 
-#: ../templates/searchmask_query:47 ../templates/userprefs:214
+#: ../templates/searchmask_query:47 ../templates/userprefs:211
 #: ../templates/views/inst501/searchmask_query:43
 #: ../templates/views/richter/searchmask_query:37
 msgid "Serie/Band/Quelle"
@@ -5196,7 +5201,7 @@ msgid "Sie haben %1Vorteile%2, wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden.
 msgstr "You have %1advantages%2 when you log in via <b>My KUG</b>."
 
 #. ("<a href=\"$config->{databasechoice_loc}?sessionID=$session->{ID}\" target=\"body\">","</a>")
-#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:246
+#: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:258
 msgid ""
 "Sie haben <b>In ausgewählten Katalogen suchen</b> angeklickt, obwohl sie "
 "keine %1Kataloge%2 oder Suchprofile ausgewählt haben. Bitte wählen Sie die "
@@ -5238,13 +5243,11 @@ msgid "Sie haben dieses Medium bereits vorgemerkt"
 msgstr "This medium is already reserved for you"
 
 #. ("<a href=\"http://$config->{servername}$config->{selfreg_loc}?sessionID=$session->{ID};view=$view;action=show\">","</a>")
-#: ../modules/OpenBib/Handler/Apache/SelfReg.pm:158
+#: ../modules/OpenBib/Handler/Apache/SelfReg.pm:159
 msgid ""
 "Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte %1zurück%2 und "
 "versuchen Sie es erneut."
-msgstr ""
-"You just entered a wrong captcha! Please %1return%2 and correct your "
-"input."
+msgstr "You just entered a wrong captcha! Please %1return%2 and correct your input."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:275
 msgid "Sie haben ein falsches Passwort eingegeben"
@@ -5299,7 +5302,7 @@ msgid "Sie haben keine Vormerkungen getätigt."
 msgstr "No reservations available."
 
 #. ("<a href=\"http://$config->{servername}$config->{selfreg_loc}?sessionID=$session->{ID}&action=show\">","</a>")
-#: ../modules/OpenBib/Handler/Apache/SelfReg.pm:142
+#: ../modules/OpenBib/Handler/Apache/SelfReg.pm:143
 msgid ""
 "Sie haben keine gütige Mailadresse eingegeben. Gehen Sie bitte %1zurück%2 "
 "und korrigieren Sie Ihre Eingabe"
@@ -5591,7 +5594,7 @@ msgstr "Library-Code"
 #: ../templates/database/portrait/search_showtitset:172
 #: ../templates/managecollection_tit_as_html:79 ../templates/mexset:2
 #: ../templates/search_showmulttitset:109 ../templates/searchmask_query:35
-#: ../templates/userprefs:211 ../templates/views/einbaende/searchmask:130
+#: ../templates/userprefs:208 ../templates/views/einbaende/searchmask:130
 #: ../templates/views/inst501/searchmask_query:35
 #: ../templates/views/portrait/searchmask_query:29
 #: ../templates/views/richter/searchmask_query:29
@@ -5612,7 +5615,7 @@ msgstr ""
 "As soon as the system has authenticated your login data successfully you can "
 "make use of the advantages of <b>My KUG</b>:"
 
-#: ../templates/userprefs:100
+#: ../templates/userprefs:97
 msgid "Soll"
 msgstr "Debit"
 
@@ -5665,7 +5668,7 @@ msgstr "Order by"
 msgid "Sortierung:"
 msgstr "Alphabetic sorting:"
 
-#: ../templates/userprefs:83
+#: ../templates/userprefs:80
 msgid "Sperre"
 msgstr "Lockout"
 
@@ -5792,7 +5795,7 @@ msgstr "Status"
 msgid "Stelle"
 msgstr "Position"
 
-#: ../templates/userprefs:74
+#: ../templates/userprefs:71
 msgid "Strasse"
 msgstr "Street"
 
@@ -5887,11 +5890,11 @@ msgstr ""
 "Please use the list of %1electronically available journals%2 of the library "
 "to search for the name of the journal."
 
-#: ../templates/userprefs:197
+#: ../templates/userprefs:194
 msgid "Suchfelder"
 msgstr "Search fields"
 
-#: ../templates/userprefs:218
+#: ../templates/userprefs:215
 msgid "Suchfelder &auml;ndern"
 msgstr "Alter search fields"
 
@@ -6025,7 +6028,7 @@ msgstr "Systematic browsing"
 #: ../templates/database/inst450/visible_categories_titset:33
 #: ../templates/database/nationallizenzen/visible_categories_titset:84
 #: ../templates/database/richter/visible_categories_titset:84
-#: ../templates/database/umschlaege/visible_categories_titset:84
+#: ../templates/database/umschlaege/visible_categories_titset:85
 #: ../templates/visible_categories_titset:84
 msgid "T0015"
 msgstr "Language"
@@ -6035,7 +6038,7 @@ msgstr "Language"
 #: ../templates/database/kapsel/visible_categories_titset:86
 #: ../templates/database/nationallizenzen/visible_categories_titset:88
 #: ../templates/database/richter/visible_categories_titset:88
-#: ../templates/database/umschlaege/visible_categories_titset:88
+#: ../templates/database/umschlaege/visible_categories_titset:89
 #: ../templates/visible_categories_titset:88
 msgid "T0026"
 msgstr "Added entry"
@@ -6045,7 +6048,7 @@ msgstr "Added entry"
 #: ../templates/database/kapsel/visible_categories_titset:46
 #: ../templates/database/nationallizenzen/visible_categories_titset:46
 #: ../templates/database/richter/visible_categories_titset:46
-#: ../templates/database/umschlaege/visible_categories_titset:46
+#: ../templates/database/umschlaege/visible_categories_titset:47
 #: ../templates/visible_categories_titset:46
 msgid "T0035"
 msgstr "Country of publication"
@@ -6056,7 +6059,7 @@ msgstr "Country of publication"
 #: ../templates/database/kapsel/visible_categories_titset:21
 #: ../templates/database/nationallizenzen/visible_categories_titset:21
 #: ../templates/database/richter/visible_categories_titset:21
-#: ../templates/database/umschlaege/visible_categories_titset:21
+#: ../templates/database/umschlaege/visible_categories_titset:22
 #: ../templates/visible_categories_titset:21
 msgid "T0089"
 msgstr "Volume"
@@ -6086,7 +6089,7 @@ msgstr "Artist"
 msgid "T0100-portrait"
 msgstr "Painter/Drawer"
 
-#: ../templates/database/umschlaege/visible_categories_titset:16
+#: ../templates/database/umschlaege/visible_categories_titset:18
 msgid "T0100-umschlaege"
 msgstr "Author"
 
@@ -6096,7 +6099,7 @@ msgstr "Author"
 #: ../templates/database/landschaft/visible_categories_titset:18
 #: ../templates/database/nationallizenzen/visible_categories_titset:17
 #: ../templates/database/richter/visible_categories_titset:17
-#: ../templates/database/umschlaege/visible_categories_titset:17
+#: ../templates/database/umschlaege/visible_categories_titset:19
 #: ../templates/visible_categories_titset:17
 msgid "T0101"
 msgstr "Person"
@@ -6127,7 +6130,7 @@ msgstr "Displayed person"
 #: ../templates/database/landschaft/visible_categories_titset:19
 #: ../templates/database/nationallizenzen/visible_categories_titset:18
 #: ../templates/database/richter/visible_categories_titset:18
-#: ../templates/database/umschlaege/visible_categories_titset:18
+#: ../templates/database/umschlaege/visible_categories_titset:20
 #: ../templates/visible_categories_titset:18
 msgid "T0103"
 msgstr "Celebrated person"
@@ -6162,7 +6165,7 @@ msgstr "Topographic classification"
 msgid "T0200-portrait"
 msgstr "Provenance"
 
-#: ../templates/database/umschlaege/visible_categories_titset:19
+#: ../templates/database/umschlaege/visible_categories_titset:16
 msgid "T0200-umschlaege"
 msgstr "Related to cover art"
 
@@ -6171,7 +6174,7 @@ msgstr "Related to cover art"
 #: ../templates/database/kapsel/visible_categories_titset:20
 #: ../templates/database/nationallizenzen/visible_categories_titset:20
 #: ../templates/database/richter/visible_categories_titset:20
-#: ../templates/database/umschlaege/visible_categories_titset:20
+#: ../templates/database/umschlaege/visible_categories_titset:21
 #: ../templates/visible_categories_titset:20
 msgid "T0201"
 msgstr "Corporate Body"
@@ -6189,7 +6192,7 @@ msgstr "Corporate body"
 #: ../templates/database/kapsel/visible_categories_titset:25
 #: ../templates/database/nationallizenzen/visible_categories_titset:25
 #: ../templates/database/richter/visible_categories_titset:25
-#: ../templates/database/umschlaege/visible_categories_titset:25
+#: ../templates/database/umschlaege/visible_categories_titset:26
 #: ../templates/visible_categories_titset:25
 msgid "T0300"
 msgstr "Statement of collective uniform title"
@@ -6199,7 +6202,7 @@ msgstr "Statement of collective uniform title"
 #: ../templates/database/kapsel/visible_categories_titset:23
 #: ../templates/database/nationallizenzen/visible_categories_titset:23
 #: ../templates/database/richter/visible_categories_titset:23
-#: ../templates/database/umschlaege/visible_categories_titset:23
+#: ../templates/database/umschlaege/visible_categories_titset:24
 #: ../templates/visible_categories_titset:23
 msgid "T0304"
 msgstr "Uniform title"
@@ -6209,7 +6212,7 @@ msgstr "Uniform title"
 #: ../templates/database/kapsel/visible_categories_titset:22
 #: ../templates/database/nationallizenzen/visible_categories_titset:22
 #: ../templates/database/richter/visible_categories_titset:22
-#: ../templates/database/umschlaege/visible_categories_titset:22
+#: ../templates/database/umschlaege/visible_categories_titset:23
 #: ../templates/visible_categories_titset:22
 msgid "T0310"
 msgstr "Supplied title"
@@ -6219,7 +6222,7 @@ msgstr "Supplied title"
 #: ../templates/database/inst450/visible_categories_titset:20
 #: ../templates/database/nationallizenzen/visible_categories_titset:24
 #: ../templates/database/richter/visible_categories_titset:24
-#: ../templates/database/umschlaege/visible_categories_titset:24
+#: ../templates/database/umschlaege/visible_categories_titset:25
 #: ../templates/visible_categories_titset:24
 msgid "T0331"
 msgstr "Title"
@@ -6245,7 +6248,7 @@ msgstr "Image title"
 #: ../templates/database/kapsel/visible_categories_titset:28
 #: ../templates/database/nationallizenzen/visible_categories_titset:28
 #: ../templates/database/richter/visible_categories_titset:28
-#: ../templates/database/umschlaege/visible_categories_titset:28
+#: ../templates/database/umschlaege/visible_categories_titset:29
 #: ../templates/visible_categories_titset:28
 msgid "T0333"
 msgstr "Title"
@@ -6255,7 +6258,7 @@ msgstr "Title"
 #: ../templates/database/kapsel/visible_categories_titset:50
 #: ../templates/database/nationallizenzen/visible_categories_titset:50
 #: ../templates/database/richter/visible_categories_titset:50
-#: ../templates/database/umschlaege/visible_categories_titset:50
+#: ../templates/database/umschlaege/visible_categories_titset:51
 #: ../templates/visible_categories_titset:50
 msgid "T0334"
 msgstr "Material type"
@@ -6274,7 +6277,7 @@ msgstr "Material"
 #: ../templates/database/nationallizenzen/visible_categories_titset:29
 #: ../templates/database/portrait/visible_categories_titset:21
 #: ../templates/database/richter/visible_categories_titset:29
-#: ../templates/database/umschlaege/visible_categories_titset:29
+#: ../templates/database/umschlaege/visible_categories_titset:30
 #: ../templates/visible_categories_titset:29
 msgid "T0335"
 msgstr "Other title information"
@@ -6288,7 +6291,7 @@ msgstr "Subtitle"
 #: ../templates/database/kapsel/visible_categories_titset:27
 #: ../templates/database/nationallizenzen/visible_categories_titset:27
 #: ../templates/database/richter/visible_categories_titset:27
-#: ../templates/database/umschlaege/visible_categories_titset:27
+#: ../templates/database/umschlaege/visible_categories_titset:28
 #: ../templates/visible_categories_titset:27
 msgid "T0341"
 msgstr "Parallel title"
@@ -6299,7 +6302,7 @@ msgstr "Parallel title"
 #: ../templates/database/landschaft/visible_categories_titset:30
 #: ../templates/database/nationallizenzen/visible_categories_titset:32
 #: ../templates/database/richter/visible_categories_titset:32
-#: ../templates/database/umschlaege/visible_categories_titset:32
+#: ../templates/database/umschlaege/visible_categories_titset:33
 #: ../templates/visible_categories_titset:32
 msgid "T0359"
 msgstr "Author/corp. body statement"
@@ -6313,7 +6316,7 @@ msgstr "Descriptive form"
 #: ../templates/database/kapsel/visible_categories_titset:33
 #: ../templates/database/nationallizenzen/visible_categories_titset:33
 #: ../templates/database/richter/visible_categories_titset:33
-#: ../templates/database/umschlaege/visible_categories_titset:33
+#: ../templates/database/umschlaege/visible_categories_titset:34
 #: ../templates/visible_categories_titset:33
 msgid "T0360"
 msgstr "Subseries"
@@ -6324,7 +6327,7 @@ msgstr "Subseries"
 #: ../templates/database/kapsel/visible_categories_titset:30
 #: ../templates/database/nationallizenzen/visible_categories_titset:30
 #: ../templates/database/richter/visible_categories_titset:30
-#: ../templates/database/umschlaege/visible_categories_titset:30
+#: ../templates/database/umschlaege/visible_categories_titset:31
 #: ../templates/visible_categories_titset:30
 msgid "T0361"
 msgstr "Attached works"
@@ -6338,7 +6341,7 @@ msgstr "Attached volumes"
 #: ../templates/database/kapsel/visible_categories_titset:31
 #: ../templates/database/nationallizenzen/visible_categories_titset:31
 #: ../templates/database/richter/visible_categories_titset:31
-#: ../templates/database/umschlaege/visible_categories_titset:31
+#: ../templates/database/umschlaege/visible_categories_titset:32
 #: ../templates/visible_categories_titset:31
 msgid "T0365"
 msgstr "Remainder of title for whole item"
@@ -6348,7 +6351,7 @@ msgstr "Remainder of title for whole item"
 #: ../templates/database/kapsel/visible_categories_titset:26
 #: ../templates/database/nationallizenzen/visible_categories_titset:26
 #: ../templates/database/richter/visible_categories_titset:26
-#: ../templates/database/umschlaege/visible_categories_titset:26
+#: ../templates/database/umschlaege/visible_categories_titset:27
 #: ../templates/visible_categories_titset:26
 msgid "T0370"
 msgstr "Other titles"
@@ -6362,7 +6365,7 @@ msgstr "Provenance"
 #: ../templates/database/kapsel/visible_categories_titset:34
 #: ../templates/database/nationallizenzen/visible_categories_titset:34
 #: ../templates/database/richter/visible_categories_titset:34
-#: ../templates/database/umschlaege/visible_categories_titset:34
+#: ../templates/database/umschlaege/visible_categories_titset:35
 #: ../templates/visible_categories_titset:34
 msgid "T0403"
 msgstr "Edition"
@@ -6372,7 +6375,7 @@ msgstr "Edition"
 #: ../templates/database/kapsel/visible_categories_titset:39
 #: ../templates/database/nationallizenzen/visible_categories_titset:39
 #: ../templates/database/richter/visible_categories_titset:39
-#: ../templates/database/umschlaege/visible_categories_titset:39
+#: ../templates/database/umschlaege/visible_categories_titset:40
 #: ../templates/visible_categories_titset:39
 msgid "T0405"
 msgstr "Dates/periods of publication"
@@ -6382,7 +6385,7 @@ msgstr "Dates/periods of publication"
 #: ../templates/database/kapsel/visible_categories_titset:56
 #: ../templates/database/nationallizenzen/visible_categories_titset:56
 #: ../templates/database/richter/visible_categories_titset:56
-#: ../templates/database/umschlaege/visible_categories_titset:56
+#: ../templates/database/umschlaege/visible_categories_titset:57
 #: ../templates/visible_categories_titset:56
 msgid "T0407"
 msgstr "Measure"
@@ -6399,7 +6402,7 @@ msgstr "Height x width"
 #: ../templates/database/nationallizenzen/visible_categories_titset:35
 #: ../templates/database/portrait/visible_categories_titset:30
 #: ../templates/database/richter/visible_categories_titset:35
-#: ../templates/database/umschlaege/visible_categories_titset:35
+#: ../templates/database/umschlaege/visible_categories_titset:36
 #: ../templates/visible_categories_titset:35
 msgid "T0410"
 msgstr "Place of publication"
@@ -6417,7 +6420,7 @@ msgstr "Place"
 #: ../templates/database/nationallizenzen/visible_categories_titset:36
 #: ../templates/database/portrait/visible_categories_titset:31
 #: ../templates/database/richter/visible_categories_titset:36
-#: ../templates/database/umschlaege/visible_categories_titset:36
+#: ../templates/database/umschlaege/visible_categories_titset:37
 #: ../templates/visible_categories_titset:36
 msgid "T0412"
 msgstr "Publisher"
@@ -6427,7 +6430,7 @@ msgstr "Publisher"
 #: ../templates/database/kapsel/visible_categories_titset:45
 #: ../templates/database/nationallizenzen/visible_categories_titset:45
 #: ../templates/database/richter/visible_categories_titset:45
-#: ../templates/database/umschlaege/visible_categories_titset:45
+#: ../templates/database/umschlaege/visible_categories_titset:46
 #: ../templates/visible_categories_titset:45
 msgid "T0413"
 msgstr "Printer"
@@ -6442,7 +6445,7 @@ msgstr "Printer"
 #: ../templates/database/landschaft/visible_categories_titset:39
 #: ../templates/database/nationallizenzen/visible_categories_titset:38
 #: ../templates/database/richter/visible_categories_titset:38
-#: ../templates/database/umschlaege/visible_categories_titset:38
+#: ../templates/database/umschlaege/visible_categories_titset:39
 #: ../templates/visible_categories_titset:38
 msgid "T0424"
 msgstr "Year of publication"
@@ -6461,7 +6464,7 @@ msgstr "Year"
 #: ../templates/database/kapsel/visible_categories_titset:37
 #: ../templates/database/nationallizenzen/visible_categories_titset:37
 #: ../templates/database/richter/visible_categories_titset:37
-#: ../templates/database/umschlaege/visible_categories_titset:37
+#: ../templates/database/umschlaege/visible_categories_titset:38
 #: ../templates/visible_categories_titset:37
 msgid "T0425"
 msgstr "Year of publication"
@@ -6486,7 +6489,7 @@ msgstr "Year"
 #: ../templates/database/nationallizenzen/visible_categories_titset:49
 #: ../templates/database/portrait/visible_categories_titset:34
 #: ../templates/database/richter/visible_categories_titset:49
-#: ../templates/database/umschlaege/visible_categories_titset:49
+#: ../templates/database/umschlaege/visible_categories_titset:50
 #: ../templates/visible_categories_titset:49
 msgid "T0433"
 msgstr "Extent of item"
@@ -6503,8 +6506,8 @@ msgstr "Extent of item"
 #: ../templates/database/portrait/visible_categories_titset:36
 #: ../templates/database/richter/visible_categories_titset:44
 #: ../templates/database/richter/visible_categories_titset:57
-#: ../templates/database/umschlaege/visible_categories_titset:44
-#: ../templates/database/umschlaege/visible_categories_titset:57
+#: ../templates/database/umschlaege/visible_categories_titset:45
+#: ../templates/database/umschlaege/visible_categories_titset:58
 #: ../templates/visible_categories_titset:44
 #: ../templates/visible_categories_titset:57
 msgid "T0434"
@@ -6515,7 +6518,7 @@ msgstr "Illustration statement"
 #: ../templates/database/kapsel/visible_categories_titset:47
 #: ../templates/database/nationallizenzen/visible_categories_titset:47
 #: ../templates/database/richter/visible_categories_titset:47
-#: ../templates/database/umschlaege/visible_categories_titset:47
+#: ../templates/database/umschlaege/visible_categories_titset:48
 #: ../templates/visible_categories_titset:47
 msgid "T0435"
 msgstr "Dimensions"
@@ -6529,7 +6532,7 @@ msgstr "Dimensions"
 #: ../templates/database/kapsel/visible_categories_titset:58
 #: ../templates/database/nationallizenzen/visible_categories_titset:58
 #: ../templates/database/richter/visible_categories_titset:58
-#: ../templates/database/umschlaege/visible_categories_titset:58
+#: ../templates/database/umschlaege/visible_categories_titset:59
 #: ../templates/visible_categories_titset:58
 msgid "T0437"
 msgstr "Accompanying material"
@@ -6540,7 +6543,7 @@ msgstr "Accompanying material"
 #: ../templates/database/kapsel/visible_categories_titset:53
 #: ../templates/database/nationallizenzen/visible_categories_titset:53
 #: ../templates/database/richter/visible_categories_titset:53
-#: ../templates/database/umschlaege/visible_categories_titset:53
+#: ../templates/database/umschlaege/visible_categories_titset:54
 #: ../templates/visible_categories_titset:53
 msgid "T0451"
 msgstr "Series title"
@@ -6550,7 +6553,7 @@ msgstr "Series title"
 #: ../templates/database/kapsel/visible_categories_titset:59
 #: ../templates/database/landschaft/visible_categories_titset:31
 #: ../templates/database/nationallizenzen/visible_categories_titset:59
-#: ../templates/database/umschlaege/visible_categories_titset:59
+#: ../templates/database/umschlaege/visible_categories_titset:60
 #: ../templates/visible_categories_titset:59
 msgid "T0501"
 msgstr "General note, unstructured"
@@ -6581,7 +6584,7 @@ msgstr "Uniform title note"
 #: ../templates/database/kapsel/visible_categories_titset:85
 #: ../templates/database/nationallizenzen/visible_categories_titset:87
 #: ../templates/database/richter/visible_categories_titset:87
-#: ../templates/database/umschlaege/visible_categories_titset:87
+#: ../templates/database/umschlaege/visible_categories_titset:88
 #: ../templates/visible_categories_titset:87
 msgid "T0503"
 msgstr "Note on german translation"
@@ -6593,7 +6596,7 @@ msgstr "Note on german translation"
 #: ../templates/database/nationallizenzen/visible_categories_titset:60
 #: ../templates/database/portrait/visible_categories_titset:38
 #: ../templates/database/richter/visible_categories_titset:60
-#: ../templates/database/umschlaege/visible_categories_titset:60
+#: ../templates/database/umschlaege/visible_categories_titset:61
 #: ../templates/visible_categories_titset:60
 msgid "T0504"
 msgstr "Parallel titles note"
@@ -6605,7 +6608,7 @@ msgstr "Parallel titles note"
 #: ../templates/database/nationallizenzen/visible_categories_titset:61
 #: ../templates/database/portrait/visible_categories_titset:39
 #: ../templates/database/richter/visible_categories_titset:61
-#: ../templates/database/umschlaege/visible_categories_titset:61
+#: ../templates/database/umschlaege/visible_categories_titset:62
 #: ../templates/visible_categories_titset:61
 msgid "T0505"
 msgstr "Variant titles note"
@@ -6615,7 +6618,7 @@ msgstr "Variant titles note"
 #: ../templates/database/kapsel/visible_categories_titset:62
 #: ../templates/database/nationallizenzen/visible_categories_titset:62
 #: ../templates/database/richter/visible_categories_titset:62
-#: ../templates/database/umschlaege/visible_categories_titset:62
+#: ../templates/database/umschlaege/visible_categories_titset:63
 #: ../templates/visible_categories_titset:62
 msgid "T0507"
 msgstr "Other title information note"
@@ -6626,7 +6629,7 @@ msgstr "Other title information note"
 #: ../templates/database/landschaft/visible_categories_titset:84
 #: ../templates/database/nationallizenzen/visible_categories_titset:48
 #: ../templates/database/richter/visible_categories_titset:48
-#: ../templates/database/umschlaege/visible_categories_titset:48
+#: ../templates/database/umschlaege/visible_categories_titset:49
 #: ../templates/visible_categories_titset:48
 msgid "T0508"
 msgstr "Source"
@@ -6645,7 +6648,7 @@ msgstr "Source of entry note"
 #: ../templates/database/landschaft/visible_categories_titset:46
 #: ../templates/database/nationallizenzen/visible_categories_titset:63
 #: ../templates/database/richter/visible_categories_titset:63
-#: ../templates/database/umschlaege/visible_categories_titset:63
+#: ../templates/database/umschlaege/visible_categories_titset:64
 #: ../templates/visible_categories_titset:63
 msgid "T0509"
 msgstr "Issuing body note"
@@ -6665,7 +6668,7 @@ msgstr "Issuing body note"
 #: ../templates/database/nationallizenzen/visible_categories_titset:64
 #: ../templates/database/portrait/visible_categories_titset:41
 #: ../templates/database/richter/visible_categories_titset:64
-#: ../templates/database/umschlaege/visible_categories_titset:64
+#: ../templates/database/umschlaege/visible_categories_titset:65
 #: ../templates/visible_categories_titset:64
 msgid "T0510"
 msgstr "Edition statement note"
@@ -6677,7 +6680,7 @@ msgstr "Edition statement note"
 #: ../templates/database/nationallizenzen/visible_categories_titset:65
 #: ../templates/database/portrait/visible_categories_titset:42
 #: ../templates/database/richter/visible_categories_titset:65
-#: ../templates/database/umschlaege/visible_categories_titset:65
+#: ../templates/database/umschlaege/visible_categories_titset:66
 #: ../templates/visible_categories_titset:65
 msgid "T0511"
 msgstr "Imprint note"
@@ -6689,7 +6692,7 @@ msgstr "Imprint note"
 #: ../templates/database/nationallizenzen/visible_categories_titset:66
 #: ../templates/database/portrait/visible_categories_titset:43
 #: ../templates/database/richter/visible_categories_titset:66
-#: ../templates/database/umschlaege/visible_categories_titset:66
+#: ../templates/database/umschlaege/visible_categories_titset:67
 #: ../templates/visible_categories_titset:66
 msgid "T0512"
 msgstr "Physical description note"
@@ -6701,7 +6704,7 @@ msgstr "Physical description note"
 #: ../templates/database/nationallizenzen/visible_categories_titset:67
 #: ../templates/database/portrait/visible_categories_titset:44
 #: ../templates/database/richter/visible_categories_titset:67
-#: ../templates/database/umschlaege/visible_categories_titset:67
+#: ../templates/database/umschlaege/visible_categories_titset:68
 #: ../templates/visible_categories_titset:67
 msgid "T0513"
 msgstr "Alterations on imprint note"
@@ -6713,7 +6716,7 @@ msgstr "Alterations on imprint note"
 #: ../templates/database/nationallizenzen/visible_categories_titset:68
 #: ../templates/database/portrait/visible_categories_titset:45
 #: ../templates/database/richter/visible_categories_titset:68
-#: ../templates/database/umschlaege/visible_categories_titset:68
+#: ../templates/database/umschlaege/visible_categories_titset:69
 #: ../templates/visible_categories_titset:68
 msgid "T0515"
 msgstr "Series title note"
@@ -6723,7 +6726,7 @@ msgstr "Series title note"
 #: ../templates/database/kapsel/visible_categories_titset:83
 #: ../templates/database/nationallizenzen/visible_categories_titset:85
 #: ../templates/database/richter/visible_categories_titset:85
-#: ../templates/database/umschlaege/visible_categories_titset:85
+#: ../templates/database/umschlaege/visible_categories_titset:86
 #: ../templates/visible_categories_titset:85
 msgid "T0516"
 msgstr "Language"
@@ -6731,7 +6734,7 @@ msgstr "Language"
 #: ../templates/database/ebooks/visible_categories_titset:69
 #: ../templates/database/nationallizenzen/visible_categories_titset:69
 #: ../templates/database/richter/visible_categories_titset:69
-#: ../templates/database/umschlaege/visible_categories_titset:69
+#: ../templates/database/umschlaege/visible_categories_titset:70
 #: ../templates/visible_categories_titset:69
 msgid "T0517"
 msgstr "Contents note"
@@ -6741,7 +6744,7 @@ msgstr "Contents note"
 #: ../templates/database/kapsel/visible_categories_titset:80
 #: ../templates/database/nationallizenzen/visible_categories_titset:81
 #: ../templates/database/richter/visible_categories_titset:81
-#: ../templates/database/umschlaege/visible_categories_titset:81
+#: ../templates/database/umschlaege/visible_categories_titset:82
 #: ../templates/visible_categories_titset:81
 msgid "T0519"
 msgstr "Dissertation note"
@@ -6758,7 +6761,7 @@ msgstr "Contents note"
 #: ../templates/database/nationallizenzen/visible_categories_titset:70
 #: ../templates/database/portrait/visible_categories_titset:47
 #: ../templates/database/richter/visible_categories_titset:70
-#: ../templates/database/umschlaege/visible_categories_titset:70
+#: ../templates/database/umschlaege/visible_categories_titset:71
 #: ../templates/visible_categories_titset:70
 msgid "T0522"
 msgstr "Split note for serials"
@@ -6768,7 +6771,7 @@ msgstr "Split note for serials"
 #: ../templates/database/kapsel/visible_categories_titset:40
 #: ../templates/database/nationallizenzen/visible_categories_titset:40
 #: ../templates/database/richter/visible_categories_titset:40
-#: ../templates/database/umschlaege/visible_categories_titset:40
+#: ../templates/database/umschlaege/visible_categories_titset:41
 #: ../templates/visible_categories_titset:40
 msgid "T0523"
 msgstr "Frequency of publication"
@@ -6780,7 +6783,7 @@ msgstr "Frequency of publication"
 #: ../templates/database/nationallizenzen/visible_categories_titset:71
 #: ../templates/database/portrait/visible_categories_titset:48
 #: ../templates/database/richter/visible_categories_titset:71
-#: ../templates/database/umschlaege/visible_categories_titset:71
+#: ../templates/database/umschlaege/visible_categories_titset:72
 #: ../templates/visible_categories_titset:71
 msgid "T0525"
 msgstr "Statements of source note"
@@ -6796,7 +6799,7 @@ msgstr "Places"
 #: ../templates/database/nationallizenzen/visible_categories_titset:75
 #: ../templates/database/portrait/visible_categories_titset:49
 #: ../templates/database/richter/visible_categories_titset:75
-#: ../templates/database/umschlaege/visible_categories_titset:75
+#: ../templates/database/umschlaege/visible_categories_titset:76
 #: ../templates/visible_categories_titset:75
 msgid "T0527"
 msgstr "Issued with note"
@@ -6808,7 +6811,7 @@ msgstr "Issued with note"
 #: ../templates/database/nationallizenzen/visible_categories_titset:76
 #: ../templates/database/portrait/visible_categories_titset:50
 #: ../templates/database/richter/visible_categories_titset:76
-#: ../templates/database/umschlaege/visible_categories_titset:76
+#: ../templates/database/umschlaege/visible_categories_titset:77
 #: ../templates/visible_categories_titset:76
 msgid "T0529"
 msgstr "Title of serially published supplementary items note"
@@ -6820,7 +6823,7 @@ msgstr "Title of serially published supplementary items note"
 #: ../templates/database/nationallizenzen/visible_categories_titset:77
 #: ../templates/database/portrait/visible_categories_titset:51
 #: ../templates/database/richter/visible_categories_titset:77
-#: ../templates/database/umschlaege/visible_categories_titset:77
+#: ../templates/database/umschlaege/visible_categories_titset:78
 #: ../templates/visible_categories_titset:77
 msgid "T0530"
 msgstr "Related files note"
@@ -6832,7 +6835,7 @@ msgstr "Related files note"
 #: ../templates/database/nationallizenzen/visible_categories_titset:78
 #: ../templates/database/portrait/visible_categories_titset:52
 #: ../templates/database/richter/visible_categories_titset:78
-#: ../templates/database/umschlaege/visible_categories_titset:78
+#: ../templates/database/umschlaege/visible_categories_titset:79
 #: ../templates/visible_categories_titset:78
 msgid "T0531"
 msgstr "Earlier edition"
@@ -6844,7 +6847,7 @@ msgstr "Earlier edition"
 #: ../templates/database/nationallizenzen/visible_categories_titset:79
 #: ../templates/database/portrait/visible_categories_titset:53
 #: ../templates/database/richter/visible_categories_titset:79
-#: ../templates/database/umschlaege/visible_categories_titset:79
+#: ../templates/database/umschlaege/visible_categories_titset:80
 #: ../templates/visible_categories_titset:79
 msgid "T0532"
 msgstr "Earlier title"
@@ -6856,7 +6859,7 @@ msgstr "Earlier title"
 #: ../templates/database/nationallizenzen/visible_categories_titset:80
 #: ../templates/database/portrait/visible_categories_titset:54
 #: ../templates/database/richter/visible_categories_titset:80
-#: ../templates/database/umschlaege/visible_categories_titset:80
+#: ../templates/database/umschlaege/visible_categories_titset:81
 #: ../templates/visible_categories_titset:80
 msgid "T0533"
 msgstr "Later edition"
@@ -6868,7 +6871,7 @@ msgstr "Later edition"
 #: ../templates/database/nationallizenzen/visible_categories_titset:72
 #: ../templates/database/portrait/visible_categories_titset:55
 #: ../templates/database/richter/visible_categories_titset:72
-#: ../templates/database/umschlaege/visible_categories_titset:72
+#: ../templates/database/umschlaege/visible_categories_titset:73
 #: ../templates/visible_categories_titset:72
 msgid "T0534"
 msgstr "Concordance of titles"
@@ -6880,7 +6883,7 @@ msgstr "Concordance of titles"
 #: ../templates/database/nationallizenzen/visible_categories_titset:73
 #: ../templates/database/portrait/visible_categories_titset:56
 #: ../templates/database/richter/visible_categories_titset:73
-#: ../templates/database/umschlaege/visible_categories_titset:73
+#: ../templates/database/umschlaege/visible_categories_titset:74
 #: ../templates/visible_categories_titset:73
 msgid "T0535"
 msgstr "Number of copies"
@@ -6892,7 +6895,7 @@ msgstr "Number of copies"
 #: ../templates/database/nationallizenzen/visible_categories_titset:74
 #: ../templates/database/portrait/visible_categories_titset:57
 #: ../templates/database/richter/visible_categories_titset:74
-#: ../templates/database/umschlaege/visible_categories_titset:74
+#: ../templates/database/umschlaege/visible_categories_titset:75
 #: ../templates/visible_categories_titset:74
 msgid "T0536"
 msgstr "Projected publication date"
@@ -6953,7 +6956,7 @@ msgstr "Other standard numbers"
 #: ../templates/database/nationallizenzen/visible_categories_titset:54
 #: ../templates/database/portrait/visible_categories_titset:62
 #: ../templates/database/richter/visible_categories_titset:54
-#: ../templates/database/umschlaege/visible_categories_titset:54
+#: ../templates/database/umschlaege/visible_categories_titset:55
 #: ../templates/visible_categories_titset:54
 msgid "T0590"
 msgstr "Title source"
@@ -6964,7 +6967,7 @@ msgstr "Title source"
 #: ../templates/database/nationallizenzen/visible_categories_titset:41
 #: ../templates/database/portrait/visible_categories_titset:63
 #: ../templates/database/richter/visible_categories_titset:41
-#: ../templates/database/umschlaege/visible_categories_titset:41
+#: ../templates/database/umschlaege/visible_categories_titset:42
 #: ../templates/visible_categories_titset:41
 msgid "T0591"
 msgstr "Author source"
@@ -6989,7 +6992,7 @@ msgstr "Edition statement of source"
 #: ../templates/database/nationallizenzen/visible_categories_titset:42
 #: ../templates/database/portrait/visible_categories_titset:66
 #: ../templates/database/richter/visible_categories_titset:42
-#: ../templates/database/umschlaege/visible_categories_titset:42
+#: ../templates/database/umschlaege/visible_categories_titset:43
 #: ../templates/visible_categories_titset:42
 msgid "T0594"
 msgstr "Publication place of source"
@@ -7004,7 +7007,7 @@ msgstr "Territory"
 #: ../templates/database/nationallizenzen/visible_categories_titset:43
 #: ../templates/database/portrait/visible_categories_titset:67
 #: ../templates/database/richter/visible_categories_titset:43
-#: ../templates/database/umschlaege/visible_categories_titset:43
+#: ../templates/database/umschlaege/visible_categories_titset:44
 #: ../templates/visible_categories_titset:43
 msgid "T0595"
 msgstr "Publication year of source"
@@ -7038,7 +7041,7 @@ msgstr "Standard numbers of source"
 #: ../templates/database/kapsel/visible_categories_titset:55
 #: ../templates/database/nationallizenzen/visible_categories_titset:55
 #: ../templates/database/richter/visible_categories_titset:55
-#: ../templates/database/umschlaege/visible_categories_titset:55
+#: ../templates/database/umschlaege/visible_categories_titset:56
 #: ../templates/visible_categories_titset:55
 msgid "T0600"
 msgstr "Reference"
@@ -7050,7 +7053,7 @@ msgstr "Reference"
 #: ../templates/database/nationallizenzen/visible_categories_titset:82
 #: ../templates/database/portrait/visible_categories_titset:72
 #: ../templates/database/richter/visible_categories_titset:82
-#: ../templates/database/umschlaege/visible_categories_titset:82
+#: ../templates/database/umschlaege/visible_categories_titset:83
 #: ../templates/visible_categories_titset:82
 msgid "T0619"
 msgstr "Year of publication"
@@ -7062,7 +7065,7 @@ msgstr "Year of publication"
 #: ../templates/database/nationallizenzen/visible_categories_titset:83
 #: ../templates/database/portrait/visible_categories_titset:73
 #: ../templates/database/richter/visible_categories_titset:83
-#: ../templates/database/umschlaege/visible_categories_titset:83
+#: ../templates/database/umschlaege/visible_categories_titset:84
 #: ../templates/visible_categories_titset:83
 msgid "T0646"
 msgstr "Holding information of original of microfilming"
@@ -7072,7 +7075,7 @@ msgstr "Holding information of original of microfilming"
 #: ../templates/database/kapsel/visible_categories_titset:51
 #: ../templates/database/nationallizenzen/visible_categories_titset:51
 #: ../templates/database/richter/visible_categories_titset:51
-#: ../templates/database/umschlaege/visible_categories_titset:51
+#: ../templates/database/umschlaege/visible_categories_titset:52
 #: ../templates/visible_categories_titset:51
 msgid "T0652"
 msgstr "Specific material designation / file type"
@@ -7084,7 +7087,7 @@ msgstr "Specific material designation / file type"
 #: ../templates/database/nationallizenzen/visible_categories_titset:52
 #: ../templates/database/portrait/visible_categories_titset:74
 #: ../templates/database/richter/visible_categories_titset:52
-#: ../templates/database/umschlaege/visible_categories_titset:52
+#: ../templates/database/umschlaege/visible_categories_titset:53
 #: ../templates/visible_categories_titset:52
 msgid "T0655"
 msgstr "Electronic location / access"
@@ -7183,7 +7186,7 @@ msgstr "Secondary iconographic subject headings"
 msgid "T0710-portrait"
 msgstr "Region"
 
-#: ../templates/database/umschlaege/visible_categories_titset:90
+#: ../templates/database/umschlaege/visible_categories_titset:17
 msgid "T0710-umschlaege"
 msgstr "Cooperation"
 
@@ -7192,7 +7195,7 @@ msgstr "Cooperation"
 #: ../templates/database/kapsel/visible_categories_titset:84
 #: ../templates/database/nationallizenzen/visible_categories_titset:86
 #: ../templates/database/richter/visible_categories_titset:86
-#: ../templates/database/umschlaege/visible_categories_titset:86
+#: ../templates/database/umschlaege/visible_categories_titset:87
 #: ../templates/visible_categories_titset:86
 msgid "T0750"
 msgstr "Abstract"
@@ -7212,7 +7215,7 @@ msgstr "Transcription"
 #: ../templates/database/landschaft/visible_categories_titset:81
 #: ../templates/database/nationallizenzen/visible_categories_titset:89
 #: ../templates/database/richter/visible_categories_titset:89
-#: ../templates/database/umschlaege/visible_categories_titset:89
+#: ../templates/database/umschlaege/visible_categories_titset:90
 #: ../templates/visible_categories_titset:89
 msgid "T0800"
 msgstr "Type of publication"
@@ -7544,7 +7547,7 @@ msgstr "Print Entry (List); Show Print View"
 msgid "Titel-Daten"
 msgstr "Title-data"
 
-#: ../templates/userprefs:212
+#: ../templates/userprefs:209
 msgid "Titel-String"
 msgstr "Title-string"
 
@@ -7809,7 +7812,7 @@ msgstr "AND-relation in a search field"
 
 #: ../modules/OpenBib/Handler/Apache/Circulation.pm:536
 #: ../modules/OpenBib/Handler/Apache/ManageCollection.pm:368
-#: ../modules/OpenBib/Handler/Apache/SelfReg.pm:195
+#: ../modules/OpenBib/Handler/Apache/SelfReg.pm:196
 #: ../modules/OpenBib/Handler/Apache/UserPrefs.pm:267
 msgid "Unerlaubte Aktion"
 msgstr "Invalid action"
@@ -7906,7 +7909,7 @@ msgstr ""
 msgid "Ursprüngliche Auswahl wiederherstellen"
 msgstr "Reset to previous choices"
 
-#: ../templates/userprefs:205 ../templates/virtualsearch_showverfindex:52
+#: ../templates/userprefs:202 ../templates/virtualsearch_showverfindex:52
 msgid "Verfasser"
 msgstr "Author"
 
@@ -8000,7 +8003,7 @@ msgstr "Virtual index of authors"
 msgid "Volltitel"
 msgstr "Full title"
 
-#: ../templates/userprefs:109
+#: ../templates/userprefs:106
 msgid "Vorgemerkt"
 msgstr "Reserved"
 
@@ -8041,7 +8044,7 @@ msgstr "Reservations"
 msgid "Vormerkungsfrist"
 msgstr "Reservation period"
 
-#: ../templates/userprefs:72
+#: ../templates/userprefs:69
 msgid "Vorname"
 msgstr "First name"
 
@@ -8619,7 +8622,7 @@ msgstr "in internal course of business"
 msgid "ist ein Dienst der Universitäts- und Stadtbibliothek Köln"
 msgstr "is a public service of the Central Library of the University of Cologne"
 
-#: ../templates/userprefs:85
+#: ../templates/userprefs:82
 msgid "ja, seit"
 msgstr "yes, since"
 
@@ -8650,7 +8653,7 @@ msgstr ""
 "to the e-book is automatically added. Access restrictions might apply to e-"
 "books (only accessible from campus)."
 
-#: ../templates/userprefs:85
+#: ../templates/userprefs:82
 msgid "mit Grund"
 msgstr "with reason"
 
@@ -8912,7 +8915,7 @@ msgstr "by numbering"
 msgid "nach Zeitstempel"
 msgstr "by timestamp"
 
-#: ../templates/userprefs:87
+#: ../templates/userprefs:84
 msgid "nein"
 msgstr "no"
 
@@ -8982,7 +8985,7 @@ msgstr "etc."
 msgid "von"
 msgstr "from"
 
-#: ../templates/userprefs:56
+#: ../templates/userprefs:53
 msgid "wiederholt"
 msgstr "repeated"
 

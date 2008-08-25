@@ -33,7 +33,11 @@
 <table width="100%">
 <tr><th>[% msg.maketext("Hinweis") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
-[% msg.maketext("Geben Sie f&uuml;r die Selbstregistrierung bitte als Benutzername Ihre g&uuml;ltige Email-Adresse ein und danach zwei Mal Ihr selbst gew&auml;hltes Passwort. Danach best&auml;tigen Sie bitte mit <b>Registrieren</b>.") %]
+[% msg.maketext("Geben Sie f&uuml;r die Selbstregistrierung bitte als
+Benutzername Ihre g&uuml;ltige Email-Adresse ein und danach zwei Mal
+Ihr selbst gew&auml;hltes Passwort. Zur Absicherung gegen einen
+automatisierten Missbrauch wird ein sog. [_1]CAPTCHA[_2] verwendet. Daher m&uuml;ssen Sie zus&auml;tzlich die zwei
+verfremdet dargestellten Worte korrekt eingeben. Danach best&auml;tigen Sie bitte mit <b>Registrieren</b>.","<a href=\"http://de.wikipedia.org/wiki/CAPTCHA\" target=\"_blank\">","</a>") %]
 </td></tr>
 </table>
 <br />

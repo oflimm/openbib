@@ -152,7 +152,8 @@ msgstr "Acquired categories: title, coporate body, ISSN"
 msgid ""
 "&Uuml;bernommene Felder: Titel, Person, K&ouml;rperschaft, ISBN, "
 "Erscheinungsjahr"
-msgstr "Acquired categories: title, author, corporate body, ISBN, year of publication"
+msgstr ""
+"Acquired categories: title, author, corporate body, ISBN, year of publication"
 
 #: ../templates/admin_showlogintarget:35 ../templates/admin_showuser:35
 msgid "&Uuml;bersicht"
@@ -1318,7 +1319,8 @@ msgstr ""
 msgid ""
 "Denken Sie daran, dass nur wenige Bibliotheken Ihre Aufs&auml;tze in Ihrem "
 "Katalog aufnehmen"
-msgstr "Please remember that only a few libraries have articles in their catalogues"
+msgstr ""
+"Please remember that only a few libraries have articles in their catalogues"
 
 #: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:323
 msgid ""
@@ -1617,7 +1619,8 @@ msgid "Digitale Bibliothek / Monographien (Fernleihe)"
 msgstr "Digital library / Monographs (ILL)"
 
 #: ../templates/info:620 ../templates/views/kug/info:620
-msgid "Digitale Bibliothek / Monographien (f&uuml;r die Fernleihe von Monographien)"
+msgid ""
+"Digitale Bibliothek / Monographien (f&uuml;r die Fernleihe von Monographien)"
 msgstr "Digital Library/ Monographs (for Interlibrary loan of monographs)"
 
 #: ../templates/externaljump:110
@@ -1977,7 +1980,8 @@ msgid "Es existiert kein Passwort für die Kennung $loginname"
 msgstr "For the login $loginname no password exists."
 
 #: ../templates/admin_editcat_rss:176
-msgid "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
+msgid ""
+"Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
 msgstr "Right now there's no RSS-Feed for new titles per corporate name"
 
 #: ../templates/admin_editcat_rss:233
@@ -2000,7 +2004,8 @@ msgstr "Right now there's no primary RSS-feed for this view"
 msgid ""
 "Es k&ouml;nnen nur Begriffe recherchiert werden, die aus\n"
 "      mindestens zwei Zeichen (Buchstaben/Ziffern) bestehen."
-msgstr "All search terms must consist of at least two characters   (letters/numbers)"
+msgstr ""
+"All search terms must consist of at least two characters   (letters/numbers)"
 
 #: ../templates/circulation_remind:48
 msgid "Es sind keine Gebühren angefallen."
@@ -2011,7 +2016,8 @@ msgid "Es sind keine Quellen verf&uuml;gbar."
 msgstr "No sources available."
 
 #: ../modules/OpenBib/Handler/Apache/SelfReg.pm:132
-msgid "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
+msgid ""
+"Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
 msgstr "You either didn't enter a username or less than two passwords "
 
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:369
@@ -2272,7 +2278,7 @@ msgstr ""
 "Fulltext access? green=free / yellow=location dependant / green-yellow-"
 "red=volume dependant - Link opens in new window"
 
-#. ("<a href=\"http://de.wikipedia.org/wiki/CAPTCHA\" target=\"_blank\"","</a>")
+#. ("<a href=\"http://de.wikipedia.org/wiki/CAPTCHA\" target=\"_blank\">","</a>")
 #: ../templates/selfreg:36
 msgid ""
 "Geben Sie f&uuml;r die Selbstregistrierung bitte als\n"
@@ -2284,7 +2290,9 @@ msgid ""
 "bitte mit <b>Registrieren</b>."
 msgstr ""
 "For self registration pleasy enter your valid e-mail address and two times a "
-"password of you choice. To prohibit automated abuse we use a so called %1CAPTCHA%2. Therefore you also have to enter the two distorted words correctly. Then confirm your input with <b>Register</b>."
+"password of you choice. To prohibit automated abuse we use a so called %"
+"1CAPTCHA%2. Therefore you also have to enter the two distorted words "
+"correctly. Then confirm your input with <b>Register</b>."
 
 #: ../templates/searchmask_simple:101
 #: ../templates/views/edz/searchmask_simple:110
@@ -2837,7 +2845,8 @@ msgstr ""
 #: ../templates/views/xanten/searchmask_simple:89
 #: ../templates/views/xanten/searchmask_simple:95
 msgid "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
-msgstr "Here you can search in your choice of catalogue,  catalogue profiles, resp."
+msgstr ""
+"Here you can search in your choice of catalogue,  catalogue profiles, resp."
 
 #: ../templates/searchmask:135 ../templates/searchmask:99
 #: ../templates/searchmask_simple:150 ../templates/views/edz/searchmask:113
@@ -3975,19 +3984,22 @@ msgstr ""
 msgid ""
 "Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r h&auml;"
 "ufige Begriffe diese Kategorie anbieten."
-msgstr "Unfortunately we cannot present a cloud of relevant terms for this category."
+msgstr ""
+"Unfortunately we cannot present a cloud of relevant terms for this category."
 
 #: ../templates/info_16:83
 msgid ""
 "Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r h&auml;"
 "ufige Begriffe dieser Kategorie anbieten."
-msgstr "Unfortunately we cannot present a cloud of relevant terms for this category."
+msgstr ""
+"Unfortunately we cannot present a cloud of relevant terms for this category."
 
 #: ../templates/info_19:85
 msgid ""
 "Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r von "
 "Nutzern vergebene Tags anbieten."
-msgstr "Unfortunately we cannot present a cloud of user tags for this catalogue."
+msgstr ""
+"Unfortunately we cannot present a cloud of user tags for this catalogue."
 
 #: ../templates/info_41:68
 msgid ""
@@ -5197,7 +5209,8 @@ msgstr "You are accessing an unauthorized session"
 
 #. ("<a href=\"${config.info_loc}?sessionID=${sessionID};view=${view}#meinkugvorteile\">","</a>")
 #: ../templates/login:46
-msgid "Sie haben %1Vorteile%2, wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden."
+msgid ""
+"Sie haben %1Vorteile%2, wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden."
 msgstr "You have %1advantages%2 when you log in via <b>My KUG</b>."
 
 #. ("<a href=\"$config->{databasechoice_loc}?sessionID=$session->{ID}\" target=\"body\">","</a>")
@@ -5247,7 +5260,8 @@ msgstr "This medium is already reserved for you"
 msgid ""
 "Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte %1zurück%2 und "
 "versuchen Sie es erneut."
-msgstr "You just entered a wrong captcha! Please %1return%2 and correct your input."
+msgstr ""
+"You just entered a wrong captcha! Please %1return%2 and correct your input."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:275
 msgid "Sie haben ein falsches Passwort eingegeben"
@@ -5279,7 +5293,8 @@ msgstr ""
 msgid ""
 "Sie haben entweder keine entsprechende Liste oder Sie sind nicht "
 "authentifiziert."
-msgstr "You either don't own the corresponding list or you are not authenticated."
+msgstr ""
+"You either don't own the corresponding list or you are not authenticated."
 
 #: ../templates/circulation:48
 msgid "Sie haben keine Ausleihen getätigt."
@@ -5332,7 +5347,8 @@ msgstr ""
 msgid ""
 "Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht "
 "erfolgreich authentifiziert werden"
-msgstr "You could not get authorized successfully with your user name and password."
+msgstr ""
+"You could not get authorized successfully with your user name and password."
 
 #. ("${viewdesc}","<a href=\"${config.databasechoice_loc}?sessionID=${sessionID};view=${view}\">","</a>")
 #: ../templates/searchmask:86 ../templates/searchmask_simple:86
@@ -5524,7 +5540,8 @@ msgid "Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."
 msgstr "You have to enter a title for your literature list."
 
 #: ../modules/OpenBib/Handler/Apache/LitLists.pm:195
-msgid "Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
+msgid ""
+"Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
 msgstr "You have to enter a title or type for your literature list."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:1171
@@ -5532,7 +5549,8 @@ msgid "Sie müssen mindestens eine Beschreibung eingeben."
 msgstr "You have to enter at least a description."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:340
-msgid "Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
+msgid ""
+"Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
 msgstr "You have to enter at least a catalogue name and a description."
 
 #: ../modules/OpenBib/Handler/Apache/Admin.pm:558
@@ -7524,7 +7542,8 @@ msgstr "Add to List of Interest"
 msgid ""
 "Titel mit der ISBN dieses Titels sind auch in folgenden anderen KUG-"
 "Katalogen vorhanden"
-msgstr "Titles with this ISBN are also available in the following KUG-catalogues"
+msgstr ""
+"Titles with this ISBN are also available in the following KUG-catalogues"
 
 #: ../templates/info_12:38
 msgid "Titel pro Katalog"
@@ -7741,7 +7760,8 @@ msgstr "To edit an already existing view please select the view name."
 msgid ""
 "Um einen bereits existierendes Katalog-Profil zu bearbeiten klicken Sie "
 "bitte auf den Profil-Namen."
-msgstr "To edit an already existing catalogue profile please select the profile name."
+msgstr ""
+"To edit an already existing catalogue profile please select the profile name."
 
 #. ("<a href=\"http://${config.servername}${config.admin_loc}?do_loginmask=1\">","</a>")
 #: ../templates/admin_logout:26
@@ -8091,7 +8111,8 @@ msgstr "WebOPAC-URL"
 msgid ""
 "Wegen eines unerwarteten Problems kann der KUG in den n&auml;chsten Minuten\n"
 "leider nicht genutzt werden."
-msgstr "Due to an unexpectant event the KUG cannot be used for the next few minutes."
+msgstr ""
+"Due to an unexpectant event the KUG cannot be used for the next few minutes."
 
 #: ../templates/circset:24 ../templates/database/inst001/circset:124
 #: ../templates/database/inst001/circset:85
@@ -8320,7 +8341,8 @@ msgstr ""
 msgid ""
 "Wenn Sie weiter im KUG recherchieren m&ouml;chten, so klicken Sie bitte %"
 "1<b>hier</b>[_2}, um eine neue Sitzung zu beginnen."
-msgstr "To continue using KUG please click %1<b>here</b>[_2} to start a new session."
+msgstr ""
+"To continue using KUG please click %1<b>here</b>[_2} to start a new session."
 
 #: ../templates/info:870 ../templates/views/kug/info:870
 msgid ""
@@ -8620,7 +8642,8 @@ msgstr "in internal course of business"
 
 #: ../templates/std_footer:17 ../templates/views/portrait/std_footer:17
 msgid "ist ein Dienst der Universitäts- und Stadtbibliothek Köln"
-msgstr "is a public service of the Central Library of the University of Cologne"
+msgstr ""
+"is a public service of the Central Library of the University of Cologne"
 
 #: ../templates/userprefs:82
 msgid "ja, seit"
@@ -9026,4 +9049,3 @@ msgstr "Copy"
 #: ../templates/circulation_remind:40 ../templates/circulation_reserv:40
 msgid "Überziehungen / Gebühren"
 msgstr "Overdue/Fees"
-

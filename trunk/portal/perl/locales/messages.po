@@ -1474,7 +1474,7 @@ msgid "Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig
 msgstr ""
 
 #: ../templates/selfreg:36
-#. ("<a href=\"http://de.wikipedia.org/wiki/CAPTCHA\" target=\"_blank\"","</a>")
+#. ("<a href=\"http://de.wikipedia.org/wiki/CAPTCHA\" target=\"_blank\">","</a>")
 msgid ""
 "Geben Sie f&uuml;r die Selbstregistrierung bitte als\n"
 "Benutzername Ihre g&uuml;ltige Email-Adresse ein und danach zwei Mal\n"

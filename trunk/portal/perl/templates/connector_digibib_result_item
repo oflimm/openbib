@@ -41,6 +41,11 @@
 [%- publisher = item.${'T0412'}.first.content -%]
 [%# Ejahr konstruieren %]
 [%- yearofpub = item.${'T0425'}.first.content -%]
+[%# URL's konstruieren %]
+[%- urls = [] -%]
+[%- FOREACH part IN item.${'T0662'}  -%]
+[%- urls.push(part.content)-%]
+[%- END -%]
 [%# Signaturen konstruieren %]
 [%- signaturen = [] -%]
 [%- FOREACH part IN item.${'X0014'} -%]
@@ -61,6 +66,8 @@ END;
 <LI> YR=[% utf2iso(yearofpub) %]
 <LI> URL=database=[% item.database %]&idn=[% item.id %]&tosearch=Langanzeige
 <LI> LO=[% utf2iso(location) %]
-<LI> LNK=
+[%- FOREACH url IN urls %]
+<LI> LNK[% loop.count %]=[% utf2iso(url)       # URL %]
+[%- END %]
 </UL>
 [%- END -%]

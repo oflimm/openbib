@@ -71,6 +71,14 @@
 <p />
 <p />
 
+
+<p />
+<p />
+
+<table>
+<tr><th>[% msg.maketext("Einband") %]</th><td></td><th>[% msg.maketext("Werkzeug") %]</th></tr>
+<tr><td class="boxed" valign="top">
+
 <form method="get" id="openbib" action="http://[% config.servername %][% config.virtualsearch_loc %]">
 <input type="hidden" name="hitrange"  value="50" />
 <input type="hidden" name="view"      value="[% view %]" />
@@ -88,17 +96,17 @@
 <input type="hidden" name="dd_categorized" value="1" />
 [% END %]
 
-<p />
-<p />
-
 <table>
   <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suche starten") %]" />&nbsp;<input type="reset" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" value="[% msg.maketext("Lösche Eingabemaske") %]"></td></tr>
 </table>
 
 <p />
-<table width="100%">
-<tr><th>[% msg.maketext("Suchbegriffe") %]</th></tr>
-<tr><td class="boxed" valign="top">
+
+<input type="hidden" name="sorttype"  value="yearofpub" />
+<input type="hidden" name="sortorder" value="up" />
+<input type="hidden" name="autoplus"  value="1" />
+<input type="hidden" name="profil"    value="dbauswahl" />
+
 <table>
 <tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Verknüpfung") %]</td><td>[% msg.maketext("Ihre Eingabe") %]</td><td></td></tr>
 
@@ -132,7 +140,59 @@
 
 </table>
 
-</td></tr>
+<input type="hidden" name="sorttype"  value="yearofpub" />
+<input type="hidden" name="sortorder" value="up" />
+<input type="hidden" name="autoplus"  value="1" />
+<input type="hidden" name="profil"    value="dbauswahl" />
+
+<p />
+<table>
+  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suche starten") %]" />&nbsp;<input type="reset" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" value="[% msg.maketext("Lösche Eingabemaske") %]" /></td></tr>
+</table>
+</form>
+
+<td>&nbsp;&nbsp;</td>
+<td class="boxed" valign="top">
+
+<form method="get" id="openbib" action="http://[% config.servername %][% config.virtualsearch_loc %]">
+<input type="hidden" name="hitrange"  value="50" />
+<input type="hidden" name="view"      value="[% view %]" />
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<input type="hidden" name="database"  value="einbaende" />
+<input type="hidden" name="sb"        value="sql" />
+<input type="hidden" name="st"        value="1" />
+[% IF config.drilldown %]
+<input type="hidden" name="drilldown"      value="1" />
+[% END %]
+[% IF config.drilldown_option.cloud %]
+<input type="hidden" name="dd_cloud"       value="1" />
+[% END %]
+[% IF config.drilldown_option.categorized %]
+<input type="hidden" name="dd_categorized" value="1" />
+[% END %]
+
+<table>
+  <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suche starten") %]" />&nbsp;<input type="reset" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" value="[% msg.maketext("Lösche Eingabemaske") %]" /></td></tr>
+</table>
+
+<p />
+
+<table>
+<tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Verknüpfung") %]</td><td>[% msg.maketext("Ihre Eingabe") %]</td><td></td></tr>
+
+<tr><td class="category">[% msg.maketext("Name") %]</td><td class="category"><select name="boolhst"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="hst" value="[% searchquery.hst.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+<tr><td class="category">[% msg.maketext("Motiv") %]</td><td class="category"><select name="boolgtquelle"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="gtquelle" value="[% searchquery.gtquelle.val | html %]" size="30" maxlength="200" /></td><td></td><td></td></tr>
+
+[% IF showverf %]
+<tr><td class="category">[% msg.maketext("Werkstatt") %]</td><td class="category"><select name="boolverf"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="verf" value="[% searchquery.verf.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+[% END %]
+
+[% IF showsign %]
+<tr><td class="category">[% msg.maketext("Signatur") %]</td><td class="category"><select name="boolsign"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="sign" value="[% searchquery.sign.val | html %]" size="30" maxlength="200" /></td><td><span class="warning">*</span></td></tr>
+[% END %]
+
+<tr><td class="category">[% msg.maketext("Art") %]</td><td class="category"><input type="hidden" name="boolmart" value="AND"></td><td><select name="mart"><option value="Rolle">Rolle</option><option value="Platte">Platte</option><option value="Einzelstempel">Einzelstempel</option></select>&nbsp;</td><td></td><td></td></tr>
+
 </table>
 
 <input type="hidden" name="sorttype"  value="yearofpub" />
@@ -145,6 +205,10 @@
   <tr><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suche starten") %]" />&nbsp;<input type="reset" title="[% msg.maketext("Hier löschen Sie die Eingabefelder") %]" value="[% msg.maketext("Lösche Eingabemaske") %]" /></td></tr>
 </table>
 </form>
+
+</td>
+</tr>
+</table>
 
 <p />
 <p />

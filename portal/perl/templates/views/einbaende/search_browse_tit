@@ -43,6 +43,8 @@
    <li><a[%- IF browsecat == 'T0200' -%] class="active"[%- END -%] href="[% config.search_loc %]?sessionID=[% sessionID %];view=[% view %];database=einbaende;browsecat=T0200">[% msg.maketext("Region") %]</a></li>
    <li><a[%- IF browsecat == 'T0710' -%] class="active"[%- END -%] href="[% config.search_loc %]?sessionID=[% sessionID %];view=[% view %];database=einbaende;browsecat=T0710">[% msg.maketext("Jahrhundert") %]</a></li>
    <li><a[%- IF browsecat == 'T0413' -%] class="active"[%- END -%] href="[% config.search_loc %]?sessionID=[% sessionID %];view=[% view %];database=einbaende;browsecat=T0413">[% msg.maketext("Drucker/Verleger/Verlag") %]</a></li>
+   <li><a[%- IF browsecat == 'T0304' -%] class="active"[%- END -%] href="[% config.search_loc %]?sessionID=[% sessionID %];view=[% view %];database=einbaende;browsecat=T0304">[% msg.maketext("Motiv/Werkzeug") %]</a></li>
+   <li><a[%- IF browsecat == 'T0102' -%] class="active"[%- END -%] href="[% config.search_loc %]?sessionID=[% sessionID %];view=[% view %];database=einbaende;browsecat=T0102">[% msg.maketext("Werkstatt/Werkzeug") %]</a></li>
 </ul>
 
 <div class="content">
@@ -53,6 +55,9 @@
 [% FOREACH item IN browselist %]
 [%- querycat = '' -%]
 [%- IF browsecat == 'T0101' -%]
+[%- querycat = ";verf=${item}" -%]
+[%- END %]
+[%- IF browsecat == 'T0102' -%]
 [%- querycat = ";verf=${item}" -%]
 [%- END %]
 [%- IF browsecat == 'T0700' %]
@@ -66,6 +71,9 @@
 [%- END -%]
 [%- IF browsecat == 'T0413' -%]
 [%- querycat = ";verf=${item}" -%]
+[%- END %]
+[%- IF browsecat == 'T0304' -%]
+[%- querycat = ";hst=${item}" -%]
 [%- END %]
 <tr><td><a href="[% config.search_loc%]?sessionID=[% sessionID %];view=[% view %];searchtitofcnt=[% item.replace('&amp;','%26') %];database=einbaende;category=[% browsecat %];stid=1;olws=Viewer">[% item %]</a></td>
 [% IF querycat%]

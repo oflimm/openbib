@@ -53,16 +53,128 @@
 </tr>
 </table>
 
+[%- item = record.get_normdata -%]
+
 <ul class="tabbingmenu">
+[% IF item.${'T0800'}.first.content.match('(Platte|Einzelstempel|Rolle)',1) %]
+   <li><a                href="[% config.search_loc %]?sessionID=[% sessionID %];database=einbaende;searchsingletit=[% titidn %]">[% msg.maketext("Textangaben") %]</a></li>   
+   <li><a class="active" href="[% config.search_loc %]?sessionID=[% sessionID %];database=einbaende;searchsingletit=[% titidn %];stid=1;olws=Viewer">[% msg.maketext("Werkzeug-Abbildungen") %]</a></li>
+[% ELSE %]
    <li><a                href="[% config.search_loc %]?sessionID=[% sessionID %];database=einbaende;searchsingletit=[% titidn %]">[% msg.maketext("Textangaben") %]</a></li>   
    <li><a class="active" href="[% config.search_loc %]?sessionID=[% sessionID %];database=einbaende;searchsingletit=[% titidn %];stid=1;olws=Viewer">[% msg.maketext("Einband-Abbildungen") %]</a></li>
-
+[% END %]
 </ul>
 
 <div class="content">
 [%# USE dumper;dumper.dump(record)%]
-[%- item = record.get_normdata -%]
-<!-- Anfang Bilder -->
+[% IF item.${'T0800'}.first.content.match('(Platte|Einzelstempel|Rolle)',1) %]
+<!-- Anfang Werkzeug-Bilder -->
+<table width="100%">
+<tr><th>Bilder des Werkzeuges</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+
+<table width="100%">
+<tr><td>&nbsp;</td><td colspan="2">&nbsp;</td></tr>
+<tr><td><b>Id</b></td><td colspan="2">[% item.${'id'} %]</td></tr>
+
+[%- FOREACH part IN item.${'T0102'}  -%]
+<tr><td><b>Werkstatt</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0102;olws=Viewer;stid=1">[% part.content %]</a></td></tr>
+[%- END -%]
+
+[%- FOREACH part IN item.${'T0310'}  -%]
+<tr><td><b>Name</b></td><td colspan="2"><b>[% part.content %]</b></td></tr>
+[%- END -%]
+
+[%- FOREACH part IN item.${'T0304'}  -%]
+<tr><td><b>Motiv</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0304;olws=Viewer;stid=1">[% part.content %]</a></td></tr>
+[%- END -%]
+
+[%- FOREACH part IN item.${'T0335'}  -%]
+<tr><td><b>Motivbeschreibung</b></td><td colspan="2">[% part.content %]</td></tr>
+[%- END -%]
+
+[%- FOREACH part IN item.${'T0501'}  -%]
+<tr><td><b>Quellen</b></td><td colspan="2">[% part.content %]</td></tr>
+[%- END -%]
+
+[%- FOREACH part IN item.${'T0508'}  -%]
+<tr><td><b>Bibl. Nachweis</b></td><td colspan="2">[% part.content %]</td></tr>
+[%- END -%]
+
+[%- FOREACH part IN item.${'T0435'}  -%]
+<tr><td><b>Ma&szlig;e</b></td><td colspan="2">[% part.content %]</td></tr>
+[%- END -%]
+
+[%- FOREACH part IN item.${'T0800'}  -%]
+<tr><td><b>Art</b></td><td colspan="2">[% part.content %]</td></tr>
+[%- END -%]
+
+[%- FOREACH part IN item.${'X0014'}  -%]
+<tr><td><b>Signatur</b></td><td colspan="2">[% part.content %]</td></tr>
+[%- END -%]
+
+<tr><td><b>Anzahl Abbildungen</b></td><td colspan="2">[% record.olws.images.size %]</td></tr>
+
+<tr><td colspan="3">&nbsp;</td></tr>
+</table>
+
+<!-- Ende Bilder -->
+<table width="100%">
+[%- listrow = 'listrow1' -%]
+[%- FOREACH thisimage IN record.olws.images %]
+<tr class="[% listrow %]"><td align="center">
+[%- IF thisimage.thumb -%]
+ <a class="invisible" href="http://einbandsammlung.ub.uni-koeln.de/digiarchive/[% record.database %]/[% record.id %]/
+[%- IF thisimage.web -%]
+[%- thisimage.web -%]
+[%- ELSE -%]
+[%- thisimage.name -%]
+[%- END -%]
+"><img src="http://einbandsammlung.ub.uni-koeln.de/digiarchive/[% record.database %]/[% record.id %]/[% thisimage.thumb %]" alt="Bild [% thisimage.name %]" /></a>
+[%- END -%]
+</td><td>[ <a href="http://einbandsammlung.ub.uni-koeln.de/digiarchive/[% record.database %]/[% record.id %]/[% thisimage.name %]">Vollbild</a> ]</td><td align="left">
+<table cellpadding="5">
+[%- FOREACH cat IN thisimage.meta -%]
+[%- category =  cat.key -%]
+[%- content  =  cat.value -%]
+[%- IF category == 'M0435' -%]
+<tr><td><b>Ma&szlig;e</b></td><td align="left">[% content | html %]</td></tr>
+[%- END -%]
+[%- END -%]
+
+[%- FOREACH cat IN thisimage.meta -%]
+[%- category =  cat.key -%]
+[%- content  =  cat.value -%]
+[%- IF category == 'M0750' -%]
+<tr><td><b>Beschreibung</b></td><td align="left">[% content | html %]</td></tr>
+[%- END -%]
+[%- END -%]
+
+[%- FOREACH cat IN thisimage.meta -%]
+[%- category =  cat.key -%]
+[%- content  =  cat.value -%]
+[%- IF category == 'M0501' -%]
+<tr><td><b>Quelle</b></td><td align="left">[% content | html %]</td></tr>
+[%- END -%]
+[%- END -%]
+
+</table>
+</td><td><table><tr><td><span style="text-size:0.9em"><b>Aufl&ouml;sung</b></span></td><td>[% thisimage.res %]</td></tr><tr><td><span style="text-size:0.9em"><b>Dateigr&ouml;&szlig;e</b></span></td><td>[% thisimage.size / 1048576 |format ('%4.2f') %] MB</td></tr></table></td><tr>
+[%- IF listrow == 'listrow1' -%]
+[%- listrow = 'listrow2' -%]
+[%- ELSE -%]
+[%- listrow = 'listrow1' -%]
+[%- END -%]
+
+[%- END -%]
+
+</td></tr>
+</table>
+
+</table>
+<!-- Ende Werkzeug-Bilder -->
+[% ELSE %]
+<!-- Anfang Einband-Bilder -->
 <table width="100%">
 <tr><th>Bilder des Einbandes</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
@@ -171,8 +283,8 @@
 </table>
 
 </table>
-<!-- Ende Bilder -->
-
+<!-- Ende Einband-Bilder -->
+[% END %]
 </div>
 </div>
 

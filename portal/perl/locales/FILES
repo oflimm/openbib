@@ -92,8 +92,10 @@
 ../templates/database/einbaende/search_showtitlist
 ../templates/database/einbaende/search_showtitlist_of_cnt
 ../templates/database/einbaende/search_showtitset
+../templates/database/einbaende/search_showtitset_1
 ../templates/database/einbaende/visible_categories_coverset
 ../templates/database/einbaende/visible_categories_titset
+../templates/database/einbaende/visible_categories_toolset
 ../templates/database/inst001/drilldown_categorized
 ../templates/database/inst001/mexset
 ../templates/database/inst001/search_showtitset

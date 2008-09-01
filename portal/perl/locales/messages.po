@@ -19,7 +19,7 @@ msgstr ""
 msgid "${category}"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:268 ../templates/database/einbaende/managecollection_tit_as_html:111 ../templates/database/einbaende/managecollection_tit_as_html:55 ../templates/database/einbaende/search_showtitset:132 ../templates/database/einbaende/search_showtitset:236 ../templates/database/inst001/search_showtitset:301 ../templates/database/landschaft/search_showtitset:142 ../templates/database/nationallizenzen/search_showtitset:274 ../templates/database/portrait/search_showtitset:162 ../templates/managecollection_tit_as_html:69 ../templates/managecollection_tit_as_text:34 ../templates/search_showautset:57 ../templates/search_showkorset:58 ../templates/search_showmulttitset:99 ../templates/search_shownotset:57 ../templates/search_showswtset:59 ../templates/search_showtitset:291
+#: ../templates/database/ebooks/search_showtitset:268 ../templates/database/einbaende/managecollection_tit_as_html:111 ../templates/database/einbaende/managecollection_tit_as_html:55 ../templates/database/einbaende/search_showtitset:137 ../templates/database/einbaende/search_showtitset:215 ../templates/database/einbaende/search_showtitset:319 ../templates/database/inst001/search_showtitset:301 ../templates/database/landschaft/search_showtitset:142 ../templates/database/nationallizenzen/search_showtitset:274 ../templates/database/portrait/search_showtitset:162 ../templates/managecollection_tit_as_html:69 ../templates/managecollection_tit_as_text:34 ../templates/search_showautset:57 ../templates/search_showkorset:58 ../templates/search_showmulttitset:99 ../templates/search_shownotset:57 ../templates/search_showswtset:59 ../templates/search_showtitset:291
 msgid "${thiscategory}"
 msgstr ""
 
@@ -79,7 +79,7 @@ msgstr ""
 msgid "&Uuml;bernahme dieses Titels in eine neue Literaturliste: "
 msgstr ""
 
-#: ../templates/views/einbaende/search_browse_tit:74
+#: ../templates/views/einbaende/search_browse_tit:82
 msgid "&Uuml;bernahme&nbsp;in&nbsp;Recherche"
 msgstr ""
 
@@ -254,7 +254,7 @@ msgid ""
 "Suchfeldes in den Suchoptionen'"
 msgstr ""
 
-#: ../templates/views/einbaende/resultlists_showall:134 ../templates/views/einbaende/resultlists_showall_sortall:110 ../templates/views/einbaende/resultlists_showsinglepool:132 ../templates/views/einbaende/virtualsearch_result_item:73
+#: ../templates/views/einbaende/resultlists_showall:134 ../templates/views/einbaende/resultlists_showall_sortall:110 ../templates/views/einbaende/resultlists_showsinglepool:132 ../templates/views/einbaende/virtualsearch_result_item:80
 msgid "Abb."
 msgstr ""
 
@@ -266,7 +266,7 @@ msgstr ""
 msgid "Abschicken"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:56 ../templates/database/einbaende/search_showtitset:44 ../templates/database/inst001/search_showtitset:58 ../templates/database/landschaft/search_showtitset:40 ../templates/database/nationallizenzen/search_showtitset:56 ../templates/database/portrait/search_showtitset:40 ../templates/managecollection_show:88 ../templates/search_showtitset:56 ../templates/views/einbaende/managecollection_show:71
+#: ../templates/database/ebooks/search_showtitset:56 ../templates/database/einbaende/search_showtitset:44 ../templates/database/einbaende/search_showtitset_1:44 ../templates/database/inst001/search_showtitset:58 ../templates/database/landschaft/search_showtitset:40 ../templates/database/nationallizenzen/search_showtitset:56 ../templates/database/portrait/search_showtitset:40 ../templates/managecollection_show:88 ../templates/search_showtitset:56 ../templates/views/einbaende/managecollection_show:71
 msgid "Abspeichern"
 msgstr ""
 
@@ -286,7 +286,7 @@ msgstr ""
 msgid "Administrations-Login"
 msgstr ""
 
-#: ../templates/database/einbaende/managecollection_tit_as_html:129 ../templates/database/einbaende/search_showtitset:253
+#: ../templates/database/einbaende/managecollection_tit_as_html:129 ../templates/database/einbaende/search_showtitset:336
 msgid "Aktion"
 msgstr ""
 
@@ -337,11 +337,11 @@ msgid ""
 "      recherchieren."
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:55 ../templates/database/einbaende/search_showtitset:43 ../templates/database/inst001/search_showtitset:57 ../templates/database/landschaft/search_showtitset:39 ../templates/database/nationallizenzen/search_showtitset:55 ../templates/database/portrait/search_showtitset:39 ../templates/managecollection_show:87 ../templates/search_showtitset:55 ../templates/views/einbaende/managecollection_show:70
+#: ../templates/database/ebooks/search_showtitset:55 ../templates/database/einbaende/search_showtitset:43 ../templates/database/einbaende/search_showtitset_1:43 ../templates/database/inst001/search_showtitset:57 ../templates/database/landschaft/search_showtitset:39 ../templates/database/nationallizenzen/search_showtitset:55 ../templates/database/portrait/search_showtitset:39 ../templates/managecollection_show:87 ../templates/search_showtitset:55 ../templates/views/einbaende/managecollection_show:70
 msgid "Als Mail verschicken"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:58 ../templates/database/inst001/search_showtitset:60 ../templates/database/nationallizenzen/search_showtitset:58 ../templates/litlists_manage_lists:79 ../templates/litlists_manage_singlelist:105 ../templates/litlists_show_singlelist:73 ../templates/search_showtitset:58
+#: ../templates/database/ebooks/search_showtitset:58 ../templates/database/einbaende/search_showtitset:46 ../templates/database/inst001/search_showtitset:60 ../templates/database/nationallizenzen/search_showtitset:58 ../templates/litlists_manage_lists:79 ../templates/litlists_manage_singlelist:105 ../templates/litlists_show_singlelist:73 ../templates/search_showtitset:58
 msgid "Als Permanenten Link verwenden"
 msgstr ""
 
@@ -428,6 +428,10 @@ msgstr ""
 msgid "Anzeige des ausgew&auml;hlten Profils"
 msgstr ""
 
+#: ../templates/views/einbaende/searchmask:194
+msgid "Art"
+msgstr ""
+
 #: ../templates/info:36 ../templates/views/kug/info:36
 msgid "Artikel/Stimmen"
 msgstr ""
@@ -459,7 +463,7 @@ msgstr ""
 msgid "Aufruf ohne &Uuml;bernahme von Suchbegriffen"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:57 ../templates/database/einbaende/search_showtitset:45 ../templates/database/inst001/search_showtitset:59 ../templates/database/landschaft/search_showtitset:41 ../templates/database/nationallizenzen/search_showtitset:57 ../templates/database/portrait/search_showtitset:41 ../templates/search_showtitset:57
+#: ../templates/database/ebooks/search_showtitset:57 ../templates/database/einbaende/search_showtitset:45 ../templates/database/einbaende/search_showtitset_1:45 ../templates/database/inst001/search_showtitset:59 ../templates/database/landschaft/search_showtitset:41 ../templates/database/nationallizenzen/search_showtitset:57 ../templates/database/portrait/search_showtitset:41 ../templates/search_showtitset:57
 msgid "Ausdrucken"
 msgstr ""
 
@@ -483,7 +487,7 @@ msgstr ""
 msgid "Ausleih-Einstellungen"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:364 ../templates/database/einbaende/managecollection_tit_as_html:125 ../templates/database/einbaende/search_showtitset:249 ../templates/database/inst001/circset:31 ../templates/database/landschaft/search_showtitset:168 ../templates/database/nationallizenzen/search_showtitset:370 ../templates/database/portrait/search_showtitset:189 ../templates/managecollection_tit_as_html:94 ../templates/managecollection_tit_as_html_simple:61 ../templates/search_showmulttitset:130 ../templates/search_showtitset:387
+#: ../templates/database/ebooks/search_showtitset:364 ../templates/database/einbaende/managecollection_tit_as_html:125 ../templates/database/einbaende/search_showtitset:332 ../templates/database/inst001/circset:31 ../templates/database/landschaft/search_showtitset:168 ../templates/database/nationallizenzen/search_showtitset:370 ../templates/database/portrait/search_showtitset:189 ../templates/managecollection_tit_as_html:94 ../templates/managecollection_tit_as_html_simple:61 ../templates/search_showmulttitset:130 ../templates/search_showtitset:387
 msgid "Ausleihe/Exemplare"
 msgstr ""
 
@@ -499,7 +503,7 @@ msgstr ""
 msgid "Ausleihinformationen"
 msgstr ""
 
-#: ../templates/circset:16 ../templates/database/einbaende/managecollection_tit_as_html:129 ../templates/database/einbaende/search_showtitset:253 ../templates/database/inst001/circset:34
+#: ../templates/circset:16 ../templates/database/einbaende/managecollection_tit_as_html:129 ../templates/database/einbaende/search_showtitset:336 ../templates/database/inst001/circset:34
 msgid "Ausleihstatus"
 msgstr ""
 
@@ -644,7 +648,7 @@ msgstr ""
 msgid "Beschreibung"
 msgstr ""
 
-#: ../templates/circset:16 ../templates/database/einbaende/managecollection_tit_as_html:129 ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:142 ../templates/database/einbaende/search_showtitset:253 ../templates/database/inst001/circset:103 ../templates/database/inst001/circset:34 ../templates/database/inst001/mexset:3 ../templates/database/landschaft/search_showtitset:153 ../templates/database/portrait/search_showtitset:172 ../templates/managecollection_tit_as_html:79 ../templates/managecollection_tit_as_html_simple:46 ../templates/managecollection_tit_as_text:39 ../templates/mexset:2 ../templates/search_showmulttitset:109
+#: ../templates/circset:16 ../templates/database/einbaende/managecollection_tit_as_html:129 ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:225 ../templates/database/einbaende/search_showtitset:336 ../templates/database/inst001/circset:103 ../templates/database/inst001/circset:34 ../templates/database/inst001/mexset:3 ../templates/database/landschaft/search_showtitset:153 ../templates/database/portrait/search_showtitset:172 ../templates/managecollection_tit_as_html:79 ../templates/managecollection_tit_as_html_simple:46 ../templates/managecollection_tit_as_text:39 ../templates/mexset:2 ../templates/search_showmulttitset:109
 msgid "Besitzende Bibliothek"
 msgstr ""
 
@@ -652,8 +656,8 @@ msgstr ""
 msgid "Besonderheit bei Feldern mit"
 msgstr ""
 
-#: ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:142 ../templates/database/inst001/mexset:3 ../templates/managecollection_tit_as_html:79 ../templates/managecollection_tit_as_html_simple:46 ../templates/mexset:2 ../templates/search_showmulttitset:109
-msgid "Bestandsverlauf"
+#: ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:225 ../templates/database/inst001/mexset:3 ../templates/managecollection_tit_as_html:79 ../templates/managecollection_tit_as_html_simple:46 ../templates/mexset:2 ../templates/search_showmulttitset:109
+msgid "Bestand"
 msgstr ""
 
 #: ../templates/admin_showsessions:47
@@ -1154,15 +1158,15 @@ msgstr ""
 msgid "Ein Benutzer mit dem Namen %1 existiert bereits. Haben Sie vielleicht Ihr Passwort vergessen? Dann gehen Sie bitte %2zurück%3 und lassen es sich zumailen."
 msgstr ""
 
-#: ../templates/views/einbaende/search_browse_tit:42 ../templates/views/einbaende/searchmask:126
+#: ../templates/views/einbaende/search_browse_tit:42 ../templates/views/einbaende/searchmask:134 ../templates/views/einbaende/searchmask:79
 msgid "Einband"
 msgstr ""
 
-#: ../templates/database/einbaende/search_showtitset:57
+#: ../templates/database/einbaende/search_showtitset:61 ../templates/database/einbaende/search_showtitset_1:64
 msgid "Einband-Abbildungen"
 msgstr ""
 
-#: ../templates/database/einbaende/managecollection_tit_as_html:79 ../templates/database/einbaende/search_showtitset:163
+#: ../templates/database/einbaende/managecollection_tit_as_html:79 ../templates/database/einbaende/search_showtitset:246
 msgid "Einband-Daten"
 msgstr ""
 
@@ -1450,11 +1454,11 @@ msgstr ""
 msgid "Franz&ouml;sische Wikipedia"
 msgstr ""
 
-#: ../templates/searchmask_query:3 ../templates/userprefs:200 ../templates/views/einbaende/searchmask:106 ../templates/views/inst501/searchmask_query:3 ../templates/views/kapsel/searchmask_query:3 ../templates/views/landschaft/searchmask_query:3 ../templates/views/portrait/searchmask_query:5 ../templates/views/richter/searchmask_query:5
+#: ../templates/searchmask_query:3 ../templates/userprefs:200 ../templates/views/einbaende/searchmask:114 ../templates/views/inst501/searchmask_query:3 ../templates/views/kapsel/searchmask_query:3 ../templates/views/landschaft/searchmask_query:3 ../templates/views/portrait/searchmask_query:5 ../templates/views/richter/searchmask_query:5
 msgid "Freie Suche"
 msgstr ""
 
-#: ../templates/searchmask:145 ../templates/searchmask_simple:181 ../templates/views/edz/searchmask:159 ../templates/views/edz/searchmask_simple:190 ../templates/views/einbaende/searchmask:152 ../templates/views/gdonck/searchmask:140 ../templates/views/gdonck/searchmask_simple:126 ../templates/views/gleuel/searchmask:140 ../templates/views/gleuel/searchmask_simple:126 ../templates/views/inst404/searchmask:160 ../templates/views/inst404/searchmask_simple:196 ../templates/views/inst405/searchmask:164 ../templates/views/inst405/searchmask_simple:196 ../templates/views/inst406/searchmask:155 ../templates/views/inst406/searchmask_simple:190 ../templates/views/inst410/searchmask:157 ../templates/views/inst410/searchmask_simple:188 ../templates/views/inst411/searchmask:158 ../templates/views/inst411/searchmask_simple:190 ../templates/views/inst412/searchmask:159 ../templates/views/inst412/searchmask_simple:189 ../templates/views/inst413/searchmask:139 ../templates/views/inst413/searchmask_simple:170 ../templates/views/inst415/searchmask:160 ../templates/views/inst415/searchmask_simple:190 ../templates/views/inst419/searchmask:159 ../templates/views/inst420/searchmask:161 ../templates/views/inst420/searchmask_simple:191 ../templates/views/inst425/searchmask:159 ../templates/views/inst425/searchmask_simple:188 ../templates/views/inst426/searchmask:159 ../templates/views/inst426/searchmask_simple:189 ../templates/views/inst430/searchmask:161 ../templates/views/inst430/searchmask_simple:191 ../templates/views/inst431/searchmask:158 ../templates/views/inst431/searchmask_simple:188 ../templates/views/inst460/searchmask:159 ../templates/views/inst460/searchmask_simple:189 ../templates/views/inst501/searchmask:144 ../templates/views/kapsel/searchmask:109 ../templates/views/kempen/searchmask:140 ../templates/views/kempen/searchmask_simple:126 ../templates/views/kevelaer/searchmask:140 ../templates/views/kevelaer/searchmask_simple:126 ../templates/views/kug/searchmask:320 ../templates/views/kug/searchmask_simple:142 ../templates/views/kwinter/searchmask:140 ../templates/views/kwinter/searchmask_simple:126 ../templates/views/landschaft/searchmask:109 ../templates/views/portrait/searchmask:140 ../templates/views/rheinlandbib/searchmask:129 ../templates/views/rheinlandbib/searchmask_simple:115 ../templates/views/richter/searchmask:125 ../templates/views/richter/searchmask_simple:154 ../templates/views/xanten/searchmask:140 ../templates/views/xanten/searchmask_simple:126
+#: ../templates/searchmask:145 ../templates/searchmask_simple:181 ../templates/views/edz/searchmask:159 ../templates/views/edz/searchmask_simple:190 ../templates/views/einbaende/searchmask:216 ../templates/views/gdonck/searchmask:140 ../templates/views/gdonck/searchmask_simple:126 ../templates/views/gleuel/searchmask:140 ../templates/views/gleuel/searchmask_simple:126 ../templates/views/inst404/searchmask:160 ../templates/views/inst404/searchmask_simple:196 ../templates/views/inst405/searchmask:164 ../templates/views/inst405/searchmask_simple:196 ../templates/views/inst406/searchmask:155 ../templates/views/inst406/searchmask_simple:190 ../templates/views/inst410/searchmask:157 ../templates/views/inst410/searchmask_simple:188 ../templates/views/inst411/searchmask:158 ../templates/views/inst411/searchmask_simple:190 ../templates/views/inst412/searchmask:159 ../templates/views/inst412/searchmask_simple:189 ../templates/views/inst413/searchmask:139 ../templates/views/inst413/searchmask_simple:170 ../templates/views/inst415/searchmask:160 ../templates/views/inst415/searchmask_simple:190 ../templates/views/inst419/searchmask:159 ../templates/views/inst420/searchmask:161 ../templates/views/inst420/searchmask_simple:191 ../templates/views/inst425/searchmask:159 ../templates/views/inst425/searchmask_simple:188 ../templates/views/inst426/searchmask:159 ../templates/views/inst426/searchmask_simple:189 ../templates/views/inst430/searchmask:161 ../templates/views/inst430/searchmask_simple:191 ../templates/views/inst431/searchmask:158 ../templates/views/inst431/searchmask_simple:188 ../templates/views/inst460/searchmask:159 ../templates/views/inst460/searchmask_simple:189 ../templates/views/inst501/searchmask:144 ../templates/views/kapsel/searchmask:109 ../templates/views/kempen/searchmask:140 ../templates/views/kempen/searchmask_simple:126 ../templates/views/kevelaer/searchmask:140 ../templates/views/kevelaer/searchmask_simple:126 ../templates/views/kug/searchmask:320 ../templates/views/kug/searchmask_simple:142 ../templates/views/kwinter/searchmask:140 ../templates/views/kwinter/searchmask_simple:126 ../templates/views/landschaft/searchmask:109 ../templates/views/portrait/searchmask:140 ../templates/views/rheinlandbib/searchmask:129 ../templates/views/rheinlandbib/searchmask_simple:115 ../templates/views/richter/searchmask:125 ../templates/views/richter/searchmask_simple:154 ../templates/views/xanten/searchmask:140 ../templates/views/xanten/searchmask_simple:126
 #. ("<a href=\"http://www.ub.uni-koeln.de/usb-cgi/zms_makeEmail.pl?adr0=kug\" target=\"_blank\">","</a>")
 msgid "Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter %1 kug@ub.uni-koeln.de %2 erreichen."
 msgstr ""
@@ -1626,7 +1630,7 @@ msgid ""
 "        ausgew&auml;hlten Katalogen suchen</i> ab."
 msgstr ""
 
-#: ../templates/searchmask:131 ../templates/searchmask:135 ../templates/searchmask:93 ../templates/searchmask:99 ../templates/searchmask_simple:144 ../templates/searchmask_simple:150 ../templates/views/edz/searchmask:107 ../templates/views/edz/searchmask:113 ../templates/views/edz/searchmask:145 ../templates/views/edz/searchmask:149 ../templates/views/edz/searchmask_simple:153 ../templates/views/edz/searchmask_simple:159 ../templates/views/einbaende/searchmask:145 ../templates/views/einbaende/searchmask:95 ../templates/views/einbaende/searchmask_simple:84 ../templates/views/gdonck/searchmask:125 ../templates/views/gdonck/searchmask:129 ../templates/views/gdonck/searchmask:87 ../templates/views/gdonck/searchmask:93 ../templates/views/gdonck/searchmask_simple:89 ../templates/views/gdonck/searchmask_simple:95 ../templates/views/gleuel/searchmask:125 ../templates/views/gleuel/searchmask:129 ../templates/views/gleuel/searchmask:87 ../templates/views/gleuel/searchmask:93 ../templates/views/gleuel/searchmask_simple:89 ../templates/views/gleuel/searchmask_simple:95 ../templates/views/inst404/searchmask:108 ../templates/views/inst404/searchmask:114 ../templates/views/inst404/searchmask:146 ../templates/views/inst404/searchmask:150 ../templates/views/inst404/searchmask_simple:159 ../templates/views/inst404/searchmask_simple:165 ../templates/views/inst405/searchmask:112 ../templates/views/inst405/searchmask:118 ../templates/views/inst405/searchmask:150 ../templates/views/inst405/searchmask:154 ../templates/views/inst405/searchmask_simple:159 ../templates/views/inst405/searchmask_simple:165 ../templates/views/inst406/searchmask:102 ../templates/views/inst406/searchmask:109 ../templates/views/inst406/searchmask:141 ../templates/views/inst406/searchmask:145 ../templates/views/inst406/searchmask_simple:153 ../templates/views/inst406/searchmask_simple:159 ../templates/views/inst410/searchmask:105 ../templates/views/inst410/searchmask:111 ../templates/views/inst410/searchmask:143 ../templates/views/inst410/searchmask:147 ../templates/views/inst410/searchmask_simple:151 ../templates/views/inst410/searchmask_simple:157 ../templates/views/inst411/searchmask:106 ../templates/views/inst411/searchmask:112 ../templates/views/inst411/searchmask:144 ../templates/views/inst411/searchmask:148 ../templates/views/inst411/searchmask_simple:153 ../templates/views/inst411/searchmask_simple:159 ../templates/views/inst412/searchmask:107 ../templates/views/inst412/searchmask:113 ../templates/views/inst412/searchmask:145 ../templates/views/inst412/searchmask:149 ../templates/views/inst412/searchmask_simple:152 ../templates/views/inst412/searchmask_simple:158 ../templates/views/inst413/searchmask:125 ../templates/views/inst413/searchmask:129 ../templates/views/inst413/searchmask:87 ../templates/views/inst413/searchmask:93 ../templates/views/inst413/searchmask_simple:133 ../templates/views/inst413/searchmask_simple:139 ../templates/views/inst415/searchmask:108 ../templates/views/inst415/searchmask:114 ../templates/views/inst415/searchmask:146 ../templates/views/inst415/searchmask:150 ../templates/views/inst415/searchmask_simple:153 ../templates/views/inst415/searchmask_simple:159 ../templates/views/inst419/searchmask:107 ../templates/views/inst419/searchmask:113 ../templates/views/inst419/searchmask:145 ../templates/views/inst419/searchmask:149 ../templates/views/inst420/searchmask:109 ../templates/views/inst420/searchmask:115 ../templates/views/inst420/searchmask:147 ../templates/views/inst420/searchmask:151 ../templates/views/inst420/searchmask_simple:154 ../templates/views/inst420/searchmask_simple:160 ../templates/views/inst425/searchmask:107 ../templates/views/inst425/searchmask:113 ../templates/views/inst425/searchmask:145 ../templates/views/inst425/searchmask:149 ../templates/views/inst425/searchmask_simple:151 ../templates/views/inst425/searchmask_simple:157 ../templates/views/inst426/searchmask:107 ../templates/views/inst426/searchmask:113 ../templates/views/inst426/searchmask:145 ../templates/views/inst426/searchmask:149 ../templates/views/inst426/searchmask_simple:152 ../templates/views/inst426/searchmask_simple:158 ../templates/views/inst430/searchmask:109 ../templates/views/inst430/searchmask:115 ../templates/views/inst430/searchmask:147 ../templates/views/inst430/searchmask:151 ../templates/views/inst430/searchmask_simple:154 ../templates/views/inst430/searchmask_simple:160 ../templates/views/inst431/searchmask:106 ../templates/views/inst431/searchmask:112 ../templates/views/inst431/searchmask:144 ../templates/views/inst431/searchmask:148 ../templates/views/inst431/searchmask_simple:151 ../templates/views/inst431/searchmask_simple:157 ../templates/views/inst460/searchmask:107 ../templates/views/inst460/searchmask:113 ../templates/views/inst460/searchmask:145 ../templates/views/inst460/searchmask:149 ../templates/views/inst460/searchmask_simple:152 ../templates/views/inst460/searchmask_simple:158 ../templates/views/inst501/searchmask:130 ../templates/views/inst501/searchmask:134 ../templates/views/inst501/searchmask:92 ../templates/views/inst501/searchmask:98 ../templates/views/kapsel/searchmask:100 ../templates/views/kapsel/searchmask:67 ../templates/views/kapsel/searchmask:96 ../templates/views/kapsel/searchmask_simple:65 ../templates/views/kempen/searchmask:125 ../templates/views/kempen/searchmask:129 ../templates/views/kempen/searchmask:87 ../templates/views/kempen/searchmask:93 ../templates/views/kempen/searchmask_simple:89 ../templates/views/kempen/searchmask_simple:95 ../templates/views/kevelaer/searchmask:125 ../templates/views/kevelaer/searchmask:129 ../templates/views/kevelaer/searchmask:87 ../templates/views/kevelaer/searchmask:93 ../templates/views/kevelaer/searchmask_simple:89 ../templates/views/kevelaer/searchmask_simple:95 ../templates/views/kug/searchmask:180 ../templates/views/kug/searchmask:199 ../templates/views/kug/searchmask:308 ../templates/views/kug/searchmask_simple:111 ../templates/views/kwinter/searchmask:125 ../templates/views/kwinter/searchmask:129 ../templates/views/kwinter/searchmask:87 ../templates/views/kwinter/searchmask:93 ../templates/views/kwinter/searchmask_simple:89 ../templates/views/kwinter/searchmask_simple:95 ../templates/views/landschaft/searchmask:100 ../templates/views/landschaft/searchmask:67 ../templates/views/landschaft/searchmask:96 ../templates/views/landschaft/searchmask_simple:57 ../templates/views/portrait/searchmask:127 ../templates/views/portrait/searchmask:131 ../templates/views/portrait/searchmask:72 ../templates/views/portrait/searchmask_simple:73 ../templates/views/rheinlandbib/searchmask:117 ../templates/views/rheinlandbib/searchmask:121 ../templates/views/rheinlandbib/searchmask:79 ../templates/views/rheinlandbib/searchmask:85 ../templates/views/rheinlandbib/searchmask_simple:81 ../templates/views/rheinlandbib/searchmask_simple:87 ../templates/views/richter/searchmask:118 ../templates/views/richter/searchmask:95 ../templates/views/richter/searchmask_simple:120 ../templates/views/richter/searchmask_simple:126 ../templates/views/xanten/searchmask:125 ../templates/views/xanten/searchmask:129 ../templates/views/xanten/searchmask:87 ../templates/views/xanten/searchmask:93 ../templates/views/xanten/searchmask_simple:89 ../templates/views/xanten/searchmask_simple:95
+#: ../templates/searchmask:131 ../templates/searchmask:135 ../templates/searchmask:93 ../templates/searchmask:99 ../templates/searchmask_simple:144 ../templates/searchmask_simple:150 ../templates/views/edz/searchmask:107 ../templates/views/edz/searchmask:113 ../templates/views/edz/searchmask:145 ../templates/views/edz/searchmask:149 ../templates/views/edz/searchmask_simple:153 ../templates/views/edz/searchmask_simple:159 ../templates/views/einbaende/searchmask:100 ../templates/views/einbaende/searchmask:150 ../templates/views/einbaende/searchmask:175 ../templates/views/einbaende/searchmask:205 ../templates/views/einbaende/searchmask_simple:84 ../templates/views/gdonck/searchmask:125 ../templates/views/gdonck/searchmask:129 ../templates/views/gdonck/searchmask:87 ../templates/views/gdonck/searchmask:93 ../templates/views/gdonck/searchmask_simple:89 ../templates/views/gdonck/searchmask_simple:95 ../templates/views/gleuel/searchmask:125 ../templates/views/gleuel/searchmask:129 ../templates/views/gleuel/searchmask:87 ../templates/views/gleuel/searchmask:93 ../templates/views/gleuel/searchmask_simple:89 ../templates/views/gleuel/searchmask_simple:95 ../templates/views/inst404/searchmask:108 ../templates/views/inst404/searchmask:114 ../templates/views/inst404/searchmask:146 ../templates/views/inst404/searchmask:150 ../templates/views/inst404/searchmask_simple:159 ../templates/views/inst404/searchmask_simple:165 ../templates/views/inst405/searchmask:112 ../templates/views/inst405/searchmask:118 ../templates/views/inst405/searchmask:150 ../templates/views/inst405/searchmask:154 ../templates/views/inst405/searchmask_simple:159 ../templates/views/inst405/searchmask_simple:165 ../templates/views/inst406/searchmask:102 ../templates/views/inst406/searchmask:109 ../templates/views/inst406/searchmask:141 ../templates/views/inst406/searchmask:145 ../templates/views/inst406/searchmask_simple:153 ../templates/views/inst406/searchmask_simple:159 ../templates/views/inst410/searchmask:105 ../templates/views/inst410/searchmask:111 ../templates/views/inst410/searchmask:143 ../templates/views/inst410/searchmask:147 ../templates/views/inst410/searchmask_simple:151 ../templates/views/inst410/searchmask_simple:157 ../templates/views/inst411/searchmask:106 ../templates/views/inst411/searchmask:112 ../templates/views/inst411/searchmask:144 ../templates/views/inst411/searchmask:148 ../templates/views/inst411/searchmask_simple:153 ../templates/views/inst411/searchmask_simple:159 ../templates/views/inst412/searchmask:107 ../templates/views/inst412/searchmask:113 ../templates/views/inst412/searchmask:145 ../templates/views/inst412/searchmask:149 ../templates/views/inst412/searchmask_simple:152 ../templates/views/inst412/searchmask_simple:158 ../templates/views/inst413/searchmask:125 ../templates/views/inst413/searchmask:129 ../templates/views/inst413/searchmask:87 ../templates/views/inst413/searchmask:93 ../templates/views/inst413/searchmask_simple:133 ../templates/views/inst413/searchmask_simple:139 ../templates/views/inst415/searchmask:108 ../templates/views/inst415/searchmask:114 ../templates/views/inst415/searchmask:146 ../templates/views/inst415/searchmask:150 ../templates/views/inst415/searchmask_simple:153 ../templates/views/inst415/searchmask_simple:159 ../templates/views/inst419/searchmask:107 ../templates/views/inst419/searchmask:113 ../templates/views/inst419/searchmask:145 ../templates/views/inst419/searchmask:149 ../templates/views/inst420/searchmask:109 ../templates/views/inst420/searchmask:115 ../templates/views/inst420/searchmask:147 ../templates/views/inst420/searchmask:151 ../templates/views/inst420/searchmask_simple:154 ../templates/views/inst420/searchmask_simple:160 ../templates/views/inst425/searchmask:107 ../templates/views/inst425/searchmask:113 ../templates/views/inst425/searchmask:145 ../templates/views/inst425/searchmask:149 ../templates/views/inst425/searchmask_simple:151 ../templates/views/inst425/searchmask_simple:157 ../templates/views/inst426/searchmask:107 ../templates/views/inst426/searchmask:113 ../templates/views/inst426/searchmask:145 ../templates/views/inst426/searchmask:149 ../templates/views/inst426/searchmask_simple:152 ../templates/views/inst426/searchmask_simple:158 ../templates/views/inst430/searchmask:109 ../templates/views/inst430/searchmask:115 ../templates/views/inst430/searchmask:147 ../templates/views/inst430/searchmask:151 ../templates/views/inst430/searchmask_simple:154 ../templates/views/inst430/searchmask_simple:160 ../templates/views/inst431/searchmask:106 ../templates/views/inst431/searchmask:112 ../templates/views/inst431/searchmask:144 ../templates/views/inst431/searchmask:148 ../templates/views/inst431/searchmask_simple:151 ../templates/views/inst431/searchmask_simple:157 ../templates/views/inst460/searchmask:107 ../templates/views/inst460/searchmask:113 ../templates/views/inst460/searchmask:145 ../templates/views/inst460/searchmask:149 ../templates/views/inst460/searchmask_simple:152 ../templates/views/inst460/searchmask_simple:158 ../templates/views/inst501/searchmask:130 ../templates/views/inst501/searchmask:134 ../templates/views/inst501/searchmask:92 ../templates/views/inst501/searchmask:98 ../templates/views/kapsel/searchmask:100 ../templates/views/kapsel/searchmask:67 ../templates/views/kapsel/searchmask:96 ../templates/views/kapsel/searchmask_simple:65 ../templates/views/kempen/searchmask:125 ../templates/views/kempen/searchmask:129 ../templates/views/kempen/searchmask:87 ../templates/views/kempen/searchmask:93 ../templates/views/kempen/searchmask_simple:89 ../templates/views/kempen/searchmask_simple:95 ../templates/views/kevelaer/searchmask:125 ../templates/views/kevelaer/searchmask:129 ../templates/views/kevelaer/searchmask:87 ../templates/views/kevelaer/searchmask:93 ../templates/views/kevelaer/searchmask_simple:89 ../templates/views/kevelaer/searchmask_simple:95 ../templates/views/kug/searchmask:180 ../templates/views/kug/searchmask:199 ../templates/views/kug/searchmask:308 ../templates/views/kug/searchmask_simple:111 ../templates/views/kwinter/searchmask:125 ../templates/views/kwinter/searchmask:129 ../templates/views/kwinter/searchmask:87 ../templates/views/kwinter/searchmask:93 ../templates/views/kwinter/searchmask_simple:89 ../templates/views/kwinter/searchmask_simple:95 ../templates/views/landschaft/searchmask:100 ../templates/views/landschaft/searchmask:67 ../templates/views/landschaft/searchmask:96 ../templates/views/landschaft/searchmask_simple:57 ../templates/views/portrait/searchmask:127 ../templates/views/portrait/searchmask:131 ../templates/views/portrait/searchmask:72 ../templates/views/portrait/searchmask_simple:73 ../templates/views/rheinlandbib/searchmask:117 ../templates/views/rheinlandbib/searchmask:121 ../templates/views/rheinlandbib/searchmask:79 ../templates/views/rheinlandbib/searchmask:85 ../templates/views/rheinlandbib/searchmask_simple:81 ../templates/views/rheinlandbib/searchmask_simple:87 ../templates/views/richter/searchmask:118 ../templates/views/richter/searchmask:95 ../templates/views/richter/searchmask_simple:120 ../templates/views/richter/searchmask_simple:126 ../templates/views/xanten/searchmask:125 ../templates/views/xanten/searchmask:129 ../templates/views/xanten/searchmask:87 ../templates/views/xanten/searchmask:93 ../templates/views/xanten/searchmask_simple:89 ../templates/views/xanten/searchmask_simple:95
 msgid "Hier löschen Sie die Eingabefelder"
 msgstr ""
 
@@ -1634,7 +1638,7 @@ msgstr ""
 msgid "Hier sind auch Suchanfragen mit kombinierten UND- und ODER-Verkn&uuml;pfungen unter Verwendung von Klammern m&ouml;glich (siehe Beispiel 7)"
 msgstr ""
 
-#: ../templates/searchmask:131 ../templates/searchmask:135 ../templates/searchmask:93 ../templates/searchmask:99 ../templates/searchmask_simple:144 ../templates/searchmask_simple:150 ../templates/views/edz/searchmask:107 ../templates/views/edz/searchmask:113 ../templates/views/edz/searchmask:145 ../templates/views/edz/searchmask:149 ../templates/views/edz/searchmask_simple:153 ../templates/views/edz/searchmask_simple:159 ../templates/views/einbaende/searchmask:145 ../templates/views/einbaende/searchmask:95 ../templates/views/einbaende/searchmask_simple:84 ../templates/views/gdonck/searchmask:125 ../templates/views/gdonck/searchmask:129 ../templates/views/gdonck/searchmask:87 ../templates/views/gdonck/searchmask:93 ../templates/views/gdonck/searchmask_simple:89 ../templates/views/gdonck/searchmask_simple:95 ../templates/views/gleuel/searchmask:125 ../templates/views/gleuel/searchmask:129 ../templates/views/gleuel/searchmask:87 ../templates/views/gleuel/searchmask:93 ../templates/views/gleuel/searchmask_simple:89 ../templates/views/gleuel/searchmask_simple:95 ../templates/views/inst404/searchmask:108 ../templates/views/inst404/searchmask:114 ../templates/views/inst404/searchmask:146 ../templates/views/inst404/searchmask:150 ../templates/views/inst404/searchmask_simple:159 ../templates/views/inst404/searchmask_simple:165 ../templates/views/inst405/searchmask:112 ../templates/views/inst405/searchmask:118 ../templates/views/inst405/searchmask:150 ../templates/views/inst405/searchmask:154 ../templates/views/inst405/searchmask_simple:159 ../templates/views/inst405/searchmask_simple:165 ../templates/views/inst406/searchmask:102 ../templates/views/inst406/searchmask:109 ../templates/views/inst406/searchmask:141 ../templates/views/inst406/searchmask:145 ../templates/views/inst406/searchmask_simple:153 ../templates/views/inst406/searchmask_simple:159 ../templates/views/inst410/searchmask:105 ../templates/views/inst410/searchmask:111 ../templates/views/inst410/searchmask:143 ../templates/views/inst410/searchmask:147 ../templates/views/inst410/searchmask_simple:151 ../templates/views/inst410/searchmask_simple:157 ../templates/views/inst411/searchmask:106 ../templates/views/inst411/searchmask:112 ../templates/views/inst411/searchmask:144 ../templates/views/inst411/searchmask:148 ../templates/views/inst411/searchmask_simple:153 ../templates/views/inst411/searchmask_simple:159 ../templates/views/inst412/searchmask:107 ../templates/views/inst412/searchmask:113 ../templates/views/inst412/searchmask:145 ../templates/views/inst412/searchmask:149 ../templates/views/inst412/searchmask_simple:152 ../templates/views/inst412/searchmask_simple:158 ../templates/views/inst413/searchmask:125 ../templates/views/inst413/searchmask:129 ../templates/views/inst413/searchmask:87 ../templates/views/inst413/searchmask:93 ../templates/views/inst413/searchmask_simple:133 ../templates/views/inst413/searchmask_simple:139 ../templates/views/inst415/searchmask:108 ../templates/views/inst415/searchmask:114 ../templates/views/inst415/searchmask:146 ../templates/views/inst415/searchmask:150 ../templates/views/inst415/searchmask_simple:153 ../templates/views/inst415/searchmask_simple:159 ../templates/views/inst419/searchmask:107 ../templates/views/inst419/searchmask:113 ../templates/views/inst419/searchmask:145 ../templates/views/inst419/searchmask:149 ../templates/views/inst420/searchmask:109 ../templates/views/inst420/searchmask:115 ../templates/views/inst420/searchmask:147 ../templates/views/inst420/searchmask:151 ../templates/views/inst420/searchmask_simple:154 ../templates/views/inst420/searchmask_simple:160 ../templates/views/inst425/searchmask:107 ../templates/views/inst425/searchmask:113 ../templates/views/inst425/searchmask:145 ../templates/views/inst425/searchmask:149 ../templates/views/inst425/searchmask_simple:151 ../templates/views/inst425/searchmask_simple:157 ../templates/views/inst426/searchmask:107 ../templates/views/inst426/searchmask:113 ../templates/views/inst426/searchmask:145 ../templates/views/inst426/searchmask:149 ../templates/views/inst426/searchmask_simple:152 ../templates/views/inst426/searchmask_simple:158 ../templates/views/inst430/searchmask:109 ../templates/views/inst430/searchmask:115 ../templates/views/inst430/searchmask:147 ../templates/views/inst430/searchmask:151 ../templates/views/inst430/searchmask_simple:154 ../templates/views/inst430/searchmask_simple:160 ../templates/views/inst431/searchmask:106 ../templates/views/inst431/searchmask:112 ../templates/views/inst431/searchmask:144 ../templates/views/inst431/searchmask:148 ../templates/views/inst431/searchmask_simple:151 ../templates/views/inst431/searchmask_simple:157 ../templates/views/inst460/searchmask:107 ../templates/views/inst460/searchmask:113 ../templates/views/inst460/searchmask:145 ../templates/views/inst460/searchmask:149 ../templates/views/inst460/searchmask_simple:152 ../templates/views/inst460/searchmask_simple:158 ../templates/views/inst501/searchmask:130 ../templates/views/inst501/searchmask:134 ../templates/views/inst501/searchmask:92 ../templates/views/inst501/searchmask:98 ../templates/views/kapsel/searchmask:100 ../templates/views/kapsel/searchmask:67 ../templates/views/kapsel/searchmask:96 ../templates/views/kapsel/searchmask_simple:65 ../templates/views/kempen/searchmask:125 ../templates/views/kempen/searchmask:129 ../templates/views/kempen/searchmask:87 ../templates/views/kempen/searchmask:93 ../templates/views/kempen/searchmask_simple:89 ../templates/views/kempen/searchmask_simple:95 ../templates/views/kevelaer/searchmask:125 ../templates/views/kevelaer/searchmask:129 ../templates/views/kevelaer/searchmask:87 ../templates/views/kevelaer/searchmask:93 ../templates/views/kevelaer/searchmask_simple:89 ../templates/views/kevelaer/searchmask_simple:95 ../templates/views/kug/searchmask:180 ../templates/views/kug/searchmask:199 ../templates/views/kug/searchmask:308 ../templates/views/kwinter/searchmask:125 ../templates/views/kwinter/searchmask:129 ../templates/views/kwinter/searchmask:87 ../templates/views/kwinter/searchmask:93 ../templates/views/kwinter/searchmask_simple:89 ../templates/views/kwinter/searchmask_simple:95 ../templates/views/landschaft/searchmask:100 ../templates/views/landschaft/searchmask:67 ../templates/views/landschaft/searchmask:96 ../templates/views/landschaft/searchmask_simple:57 ../templates/views/portrait/searchmask:127 ../templates/views/portrait/searchmask:131 ../templates/views/portrait/searchmask:72 ../templates/views/portrait/searchmask_simple:73 ../templates/views/rheinlandbib/searchmask:117 ../templates/views/rheinlandbib/searchmask:121 ../templates/views/rheinlandbib/searchmask:79 ../templates/views/rheinlandbib/searchmask:85 ../templates/views/rheinlandbib/searchmask_simple:81 ../templates/views/rheinlandbib/searchmask_simple:87 ../templates/views/richter/searchmask:118 ../templates/views/richter/searchmask:95 ../templates/views/richter/searchmask_simple:120 ../templates/views/richter/searchmask_simple:126 ../templates/views/xanten/searchmask:125 ../templates/views/xanten/searchmask:129 ../templates/views/xanten/searchmask:87 ../templates/views/xanten/searchmask:93 ../templates/views/xanten/searchmask_simple:89 ../templates/views/xanten/searchmask_simple:95
+#: ../templates/searchmask:131 ../templates/searchmask:135 ../templates/searchmask:93 ../templates/searchmask:99 ../templates/searchmask_simple:144 ../templates/searchmask_simple:150 ../templates/views/edz/searchmask:107 ../templates/views/edz/searchmask:113 ../templates/views/edz/searchmask:145 ../templates/views/edz/searchmask:149 ../templates/views/edz/searchmask_simple:153 ../templates/views/edz/searchmask_simple:159 ../templates/views/einbaende/searchmask:100 ../templates/views/einbaende/searchmask:150 ../templates/views/einbaende/searchmask:175 ../templates/views/einbaende/searchmask:205 ../templates/views/einbaende/searchmask_simple:84 ../templates/views/gdonck/searchmask:125 ../templates/views/gdonck/searchmask:129 ../templates/views/gdonck/searchmask:87 ../templates/views/gdonck/searchmask:93 ../templates/views/gdonck/searchmask_simple:89 ../templates/views/gdonck/searchmask_simple:95 ../templates/views/gleuel/searchmask:125 ../templates/views/gleuel/searchmask:129 ../templates/views/gleuel/searchmask:87 ../templates/views/gleuel/searchmask:93 ../templates/views/gleuel/searchmask_simple:89 ../templates/views/gleuel/searchmask_simple:95 ../templates/views/inst404/searchmask:108 ../templates/views/inst404/searchmask:114 ../templates/views/inst404/searchmask:146 ../templates/views/inst404/searchmask:150 ../templates/views/inst404/searchmask_simple:159 ../templates/views/inst404/searchmask_simple:165 ../templates/views/inst405/searchmask:112 ../templates/views/inst405/searchmask:118 ../templates/views/inst405/searchmask:150 ../templates/views/inst405/searchmask:154 ../templates/views/inst405/searchmask_simple:159 ../templates/views/inst405/searchmask_simple:165 ../templates/views/inst406/searchmask:102 ../templates/views/inst406/searchmask:109 ../templates/views/inst406/searchmask:141 ../templates/views/inst406/searchmask:145 ../templates/views/inst406/searchmask_simple:153 ../templates/views/inst406/searchmask_simple:159 ../templates/views/inst410/searchmask:105 ../templates/views/inst410/searchmask:111 ../templates/views/inst410/searchmask:143 ../templates/views/inst410/searchmask:147 ../templates/views/inst410/searchmask_simple:151 ../templates/views/inst410/searchmask_simple:157 ../templates/views/inst411/searchmask:106 ../templates/views/inst411/searchmask:112 ../templates/views/inst411/searchmask:144 ../templates/views/inst411/searchmask:148 ../templates/views/inst411/searchmask_simple:153 ../templates/views/inst411/searchmask_simple:159 ../templates/views/inst412/searchmask:107 ../templates/views/inst412/searchmask:113 ../templates/views/inst412/searchmask:145 ../templates/views/inst412/searchmask:149 ../templates/views/inst412/searchmask_simple:152 ../templates/views/inst412/searchmask_simple:158 ../templates/views/inst413/searchmask:125 ../templates/views/inst413/searchmask:129 ../templates/views/inst413/searchmask:87 ../templates/views/inst413/searchmask:93 ../templates/views/inst413/searchmask_simple:133 ../templates/views/inst413/searchmask_simple:139 ../templates/views/inst415/searchmask:108 ../templates/views/inst415/searchmask:114 ../templates/views/inst415/searchmask:146 ../templates/views/inst415/searchmask:150 ../templates/views/inst415/searchmask_simple:153 ../templates/views/inst415/searchmask_simple:159 ../templates/views/inst419/searchmask:107 ../templates/views/inst419/searchmask:113 ../templates/views/inst419/searchmask:145 ../templates/views/inst419/searchmask:149 ../templates/views/inst420/searchmask:109 ../templates/views/inst420/searchmask:115 ../templates/views/inst420/searchmask:147 ../templates/views/inst420/searchmask:151 ../templates/views/inst420/searchmask_simple:154 ../templates/views/inst420/searchmask_simple:160 ../templates/views/inst425/searchmask:107 ../templates/views/inst425/searchmask:113 ../templates/views/inst425/searchmask:145 ../templates/views/inst425/searchmask:149 ../templates/views/inst425/searchmask_simple:151 ../templates/views/inst425/searchmask_simple:157 ../templates/views/inst426/searchmask:107 ../templates/views/inst426/searchmask:113 ../templates/views/inst426/searchmask:145 ../templates/views/inst426/searchmask:149 ../templates/views/inst426/searchmask_simple:152 ../templates/views/inst426/searchmask_simple:158 ../templates/views/inst430/searchmask:109 ../templates/views/inst430/searchmask:115 ../templates/views/inst430/searchmask:147 ../templates/views/inst430/searchmask:151 ../templates/views/inst430/searchmask_simple:154 ../templates/views/inst430/searchmask_simple:160 ../templates/views/inst431/searchmask:106 ../templates/views/inst431/searchmask:112 ../templates/views/inst431/searchmask:144 ../templates/views/inst431/searchmask:148 ../templates/views/inst431/searchmask_simple:151 ../templates/views/inst431/searchmask_simple:157 ../templates/views/inst460/searchmask:107 ../templates/views/inst460/searchmask:113 ../templates/views/inst460/searchmask:145 ../templates/views/inst460/searchmask:149 ../templates/views/inst460/searchmask_simple:152 ../templates/views/inst460/searchmask_simple:158 ../templates/views/inst501/searchmask:130 ../templates/views/inst501/searchmask:134 ../templates/views/inst501/searchmask:92 ../templates/views/inst501/searchmask:98 ../templates/views/kapsel/searchmask:100 ../templates/views/kapsel/searchmask:67 ../templates/views/kapsel/searchmask:96 ../templates/views/kapsel/searchmask_simple:65 ../templates/views/kempen/searchmask:125 ../templates/views/kempen/searchmask:129 ../templates/views/kempen/searchmask:87 ../templates/views/kempen/searchmask:93 ../templates/views/kempen/searchmask_simple:89 ../templates/views/kempen/searchmask_simple:95 ../templates/views/kevelaer/searchmask:125 ../templates/views/kevelaer/searchmask:129 ../templates/views/kevelaer/searchmask:87 ../templates/views/kevelaer/searchmask:93 ../templates/views/kevelaer/searchmask_simple:89 ../templates/views/kevelaer/searchmask_simple:95 ../templates/views/kug/searchmask:180 ../templates/views/kug/searchmask:199 ../templates/views/kug/searchmask:308 ../templates/views/kwinter/searchmask:125 ../templates/views/kwinter/searchmask:129 ../templates/views/kwinter/searchmask:87 ../templates/views/kwinter/searchmask:93 ../templates/views/kwinter/searchmask_simple:89 ../templates/views/kwinter/searchmask_simple:95 ../templates/views/landschaft/searchmask:100 ../templates/views/landschaft/searchmask:67 ../templates/views/landschaft/searchmask:96 ../templates/views/landschaft/searchmask_simple:57 ../templates/views/portrait/searchmask:127 ../templates/views/portrait/searchmask:131 ../templates/views/portrait/searchmask:72 ../templates/views/portrait/searchmask_simple:73 ../templates/views/rheinlandbib/searchmask:117 ../templates/views/rheinlandbib/searchmask:121 ../templates/views/rheinlandbib/searchmask:79 ../templates/views/rheinlandbib/searchmask:85 ../templates/views/rheinlandbib/searchmask_simple:81 ../templates/views/rheinlandbib/searchmask_simple:87 ../templates/views/richter/searchmask:118 ../templates/views/richter/searchmask:95 ../templates/views/richter/searchmask_simple:120 ../templates/views/richter/searchmask_simple:126 ../templates/views/xanten/searchmask:125 ../templates/views/xanten/searchmask:129 ../templates/views/xanten/searchmask:87 ../templates/views/xanten/searchmask:93 ../templates/views/xanten/searchmask_simple:89 ../templates/views/xanten/searchmask_simple:95
 msgid "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
 msgstr ""
 
@@ -1693,7 +1697,7 @@ msgstr ""
 msgid "Ihr vergessenes KUG-Passwort"
 msgstr ""
 
-#: ../templates/managecollection_mail:38 ../templates/views/einbaende/searchmask:103 ../templates/views/portrait/searchmask_query:2 ../templates/views/richter/searchmask_query:2
+#: ../templates/managecollection_mail:38 ../templates/views/einbaende/searchmask:111 ../templates/views/einbaende/searchmask:181 ../templates/views/portrait/searchmask_query:2 ../templates/views/richter/searchmask_query:2
 msgid "Ihre Eingabe"
 msgstr ""
 
@@ -1860,7 +1864,7 @@ msgstr ""
 msgid "In der Recherchemaske finden Sie unter 'Suchhistorie' eine Aufstellung Ihrer bisherigen Recherche-Anfragen. An dieser Stelle k&ouml;nnen Sie f&uuml;r den Fall, dass eine Anfrage nicht die gew&uuml;nschten Ergebnisse lieferte, diese auf weitere externe Recherchequellen ausweiten. Nach der Auswahl der betreffenden Recherche und Aktivierung von 'Weiter als externe Recherche' gelangen Sie auf eine Seite, auf der zus&auml;tzliche Recherchequellen angeboten werden. Jede dieser Recherchequellen stellt eine Recherche nach bestimmten Suchfeldern zur Verf&uuml;gung. Entsprechend der bei Ihrer KUG-Recherche gew&auml;hlten Suchfelder sind unter 'Übernahme der Anfrage in externe Recherchequellen' verschiedene Links aktiviert. Wenn die Suchfelder/Kategorien Ihrer ausgew&auml;hlten Anfrage nicht von einer externen Recherchequelle verarbeitet werden k&ouml;nnen, erscheint anstelle des Links die rote Meldung '<i>Ungeeignete Suchfelder</i>'. Bei der Aktivierung eines entsprechenden Links springen Sie sofort zur entsprechenden Recherche in der externen Quelle. Dabei wird sowohl Ihre Suchanfrage wie auch eine etwaige Authentifizierung am KUG mit weitergereicht."
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:54 ../templates/database/einbaende/search_showtitlist:155 ../templates/database/einbaende/search_showtitset:42 ../templates/database/inst001/search_showtitset:56 ../templates/database/landschaft/search_showtitlist:153 ../templates/database/landschaft/search_showtitset:38 ../templates/database/landschaft/virtualsearch_result_item:79 ../templates/database/nationallizenzen/search_showtitset:54 ../templates/database/portrait/search_showtitlist:153 ../templates/database/portrait/search_showtitset:38 ../templates/database/portrait/virtualsearch_result_item:79 ../templates/resultlists_showall:143 ../templates/resultlists_showall_sortall:128 ../templates/resultlists_showsinglepool:146 ../templates/search_showtitlist:162 ../templates/search_showtitlist_of_cnt:162 ../templates/search_showtitset:54 ../templates/views/einbaende/resultlists_showall:134 ../templates/views/einbaende/resultlists_showall_sortall:110 ../templates/views/einbaende/resultlists_showsinglepool:132 ../templates/views/einbaende/virtualsearch_result_item:73 ../templates/views/kapsel/resultlists_showall:135 ../templates/views/kapsel/resultlists_showsinglepool:137 ../templates/views/kapsel/search_showtitlist:156 ../templates/views/portrait/resultlists_showsinglepool:127 ../templates/virtualsearch_result_item:76
+#: ../templates/database/ebooks/search_showtitset:54 ../templates/database/einbaende/search_showtitlist:155 ../templates/database/einbaende/search_showtitset:42 ../templates/database/einbaende/search_showtitset_1:42 ../templates/database/inst001/search_showtitset:56 ../templates/database/landschaft/search_showtitlist:153 ../templates/database/landschaft/search_showtitset:38 ../templates/database/landschaft/virtualsearch_result_item:79 ../templates/database/nationallizenzen/search_showtitset:54 ../templates/database/portrait/search_showtitlist:153 ../templates/database/portrait/search_showtitset:38 ../templates/database/portrait/virtualsearch_result_item:79 ../templates/resultlists_showall:143 ../templates/resultlists_showall_sortall:128 ../templates/resultlists_showsinglepool:146 ../templates/search_showtitlist:162 ../templates/search_showtitlist_of_cnt:162 ../templates/search_showtitset:54 ../templates/views/einbaende/resultlists_showall:134 ../templates/views/einbaende/resultlists_showall_sortall:110 ../templates/views/einbaende/resultlists_showsinglepool:132 ../templates/views/einbaende/virtualsearch_result_item:80 ../templates/views/kapsel/resultlists_showall:135 ../templates/views/kapsel/resultlists_showsinglepool:137 ../templates/views/kapsel/search_showtitlist:156 ../templates/views/portrait/resultlists_showsinglepool:127 ../templates/virtualsearch_result_item:76
 msgid "In die Merkliste"
 msgstr ""
 
@@ -1880,7 +1884,7 @@ msgstr ""
 msgid "In welchen Katalogen möchten Sie suchen"
 msgstr ""
 
-#: ../templates/searchmask_query:11 ../templates/searchmask_query:23 ../templates/views/einbaende/searchmask:114 ../templates/views/einbaende/searchmask:118 ../templates/views/einbaende/searchmask:122 ../templates/views/einbaende/searchmask:126 ../templates/views/inst501/searchmask_query:11 ../templates/views/portrait/searchmask_query:13 ../templates/views/richter/searchmask_query:13 ../templates/virtualsearch_showkorindex:52 ../templates/virtualsearch_shownotindex:52 ../templates/virtualsearch_showswtindex:52 ../templates/virtualsearch_showverfindex:52
+#: ../templates/searchmask_query:11 ../templates/searchmask_query:23 ../templates/views/einbaende/searchmask:122 ../templates/views/einbaende/searchmask:126 ../templates/views/einbaende/searchmask:130 ../templates/views/einbaende/searchmask:134 ../templates/views/inst501/searchmask_query:11 ../templates/views/portrait/searchmask_query:13 ../templates/views/richter/searchmask_query:13 ../templates/virtualsearch_showkorindex:52 ../templates/virtualsearch_shownotindex:52 ../templates/virtualsearch_showswtindex:52 ../templates/virtualsearch_showverfindex:52
 msgid "Index"
 msgstr ""
 
@@ -1888,7 +1892,7 @@ msgstr ""
 msgid "Information"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:94 ../templates/database/einbaende/managecollection_tit_as_html:27 ../templates/database/einbaende/managecollection_tit_as_html:83 ../templates/database/einbaende/search_showtitset:167 ../templates/database/einbaende/search_showtitset:69 ../templates/database/inst001/search_showtitset:96 ../templates/database/landschaft/search_showtitset:67 ../templates/database/nationallizenzen/search_showtitset:98 ../templates/database/portrait/search_showtitset:87 ../templates/managecollection_tit_as_html:44 ../templates/managecollection_tit_as_html_simple:29 ../templates/search_showautset:31 ../templates/search_showkorset:32 ../templates/search_showmulttitset:41 ../templates/search_shownotset:31 ../templates/search_showswtset:33 ../templates/search_showtitset:94
+#: ../templates/database/ebooks/search_showtitset:94 ../templates/database/einbaende/managecollection_tit_as_html:27 ../templates/database/einbaende/managecollection_tit_as_html:83 ../templates/database/einbaende/search_showtitset:152 ../templates/database/einbaende/search_showtitset:250 ../templates/database/einbaende/search_showtitset:74 ../templates/database/inst001/search_showtitset:96 ../templates/database/landschaft/search_showtitset:67 ../templates/database/nationallizenzen/search_showtitset:98 ../templates/database/portrait/search_showtitset:87 ../templates/managecollection_tit_as_html:44 ../templates/managecollection_tit_as_html_simple:29 ../templates/search_showautset:31 ../templates/search_showkorset:32 ../templates/search_showmulttitset:41 ../templates/search_shownotset:31 ../templates/search_showswtset:33 ../templates/search_showtitset:94
 msgid "Inhalt"
 msgstr ""
 
@@ -1924,11 +1928,11 @@ msgstr ""
 msgid "Integration von BibSonomy"
 msgstr ""
 
-#: ../templates/info:58 ../templates/info:60 ../templates/info:63 ../templates/info:64 ../templates/info:65 ../templates/info:67 ../templates/info:69 ../templates/info:75 ../templates/info:79 ../templates/info:81 ../templates/info:83 ../templates/info:973 ../templates/views/kug/info:58 ../templates/views/kug/info:60 ../templates/views/kug/info:63 ../templates/views/kug/info:64 ../templates/views/kug/info:65 ../templates/views/kug/info:67 ../templates/views/kug/info:69 ../templates/views/kug/info:75 ../templates/views/kug/info:79 ../templates/views/kug/info:81 ../templates/views/kug/info:83 ../templates/views/kug/info:84 ../templates/views/kug/info:905 ../templates/views/kug/info:973
+#: ../templates/info:58 ../templates/info:60 ../templates/info:63 ../templates/info:64 ../templates/info:65 ../templates/info:67 ../templates/info:69 ../templates/info:75 ../templates/info:79 ../templates/info:81 ../templates/info:83 ../templates/info:973 ../templates/views/kug/info:58 ../templates/views/kug/info:60 ../templates/views/kug/info:63 ../templates/views/kug/info:64 ../templates/views/kug/info:65 ../templates/views/kug/info:67 ../templates/views/kug/info:69 ../templates/views/kug/info:696 ../templates/views/kug/info:75 ../templates/views/kug/info:79 ../templates/views/kug/info:81 ../templates/views/kug/info:83 ../templates/views/kug/info:84 ../templates/views/kug/info:905 ../templates/views/kug/info:973
 msgid "Interaktives Tutorium"
 msgstr ""
 
-#: ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:142 ../templates/managecollection_tit_as_html:79 ../templates/managecollection_tit_as_html_simple:46 ../templates/mexset:2 ../templates/search_showmulttitset:109
+#: ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:225 ../templates/managecollection_tit_as_html:79 ../templates/managecollection_tit_as_html_simple:46 ../templates/mexset:2 ../templates/search_showmulttitset:109
 msgid "Inventarnummer"
 msgstr ""
 
@@ -1948,7 +1952,7 @@ msgstr ""
 msgid "Jahre"
 msgstr ""
 
-#: ../templates/views/einbaende/search_browse_tit:44 ../templates/views/einbaende/searchmask:122
+#: ../templates/views/einbaende/search_browse_tit:44 ../templates/views/einbaende/searchmask:130
 msgid "Jahrhundert"
 msgstr ""
 
@@ -2028,7 +2032,7 @@ msgstr ""
 msgid "Katalogprofile"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:94 ../templates/database/einbaende/managecollection_tit_as_html:27 ../templates/database/einbaende/managecollection_tit_as_html:83 ../templates/database/einbaende/search_showtitset:167 ../templates/database/einbaende/search_showtitset:69 ../templates/database/inst001/search_showtitset:96 ../templates/database/landschaft/search_showtitset:67 ../templates/database/nationallizenzen/search_showtitset:98 ../templates/database/portrait/search_showtitset:87 ../templates/managecollection_tit_as_html:44 ../templates/managecollection_tit_as_html_simple:29 ../templates/search_showautset:31 ../templates/search_showkorset:32 ../templates/search_showmulttitset:41 ../templates/search_shownotset:31 ../templates/search_showswtset:33 ../templates/search_showtitset:94 ../templates/views/einbaende/searchmask:103 ../templates/views/portrait/searchmask_query:2 ../templates/views/richter/searchmask_query:2
+#: ../templates/database/ebooks/search_showtitset:94 ../templates/database/einbaende/managecollection_tit_as_html:27 ../templates/database/einbaende/managecollection_tit_as_html:83 ../templates/database/einbaende/search_showtitset:152 ../templates/database/einbaende/search_showtitset:250 ../templates/database/einbaende/search_showtitset:74 ../templates/database/inst001/search_showtitset:96 ../templates/database/landschaft/search_showtitset:67 ../templates/database/nationallizenzen/search_showtitset:98 ../templates/database/portrait/search_showtitset:87 ../templates/managecollection_tit_as_html:44 ../templates/managecollection_tit_as_html_simple:29 ../templates/search_showautset:31 ../templates/search_showkorset:32 ../templates/search_showmulttitset:41 ../templates/search_shownotset:31 ../templates/search_showswtset:33 ../templates/search_showtitset:94 ../templates/views/einbaende/searchmask:111 ../templates/views/einbaende/searchmask:181 ../templates/views/portrait/searchmask_query:2 ../templates/views/richter/searchmask_query:2
 msgid "Kategorie"
 msgstr ""
 
@@ -2207,7 +2211,7 @@ msgstr ""
 msgid "Los"
 msgstr ""
 
-#: ../templates/searchmask:131 ../templates/searchmask:135 ../templates/searchmask:93 ../templates/searchmask:99 ../templates/searchmask_simple:144 ../templates/searchmask_simple:150 ../templates/views/edz/searchmask:107 ../templates/views/edz/searchmask:113 ../templates/views/edz/searchmask:145 ../templates/views/edz/searchmask:149 ../templates/views/edz/searchmask_simple:153 ../templates/views/edz/searchmask_simple:159 ../templates/views/einbaende/searchmask:145 ../templates/views/einbaende/searchmask:95 ../templates/views/einbaende/searchmask_simple:84 ../templates/views/gdonck/searchmask:125 ../templates/views/gdonck/searchmask:129 ../templates/views/gdonck/searchmask:87 ../templates/views/gdonck/searchmask:93 ../templates/views/gdonck/searchmask_simple:89 ../templates/views/gdonck/searchmask_simple:95 ../templates/views/gleuel/searchmask:125 ../templates/views/gleuel/searchmask:129 ../templates/views/gleuel/searchmask:87 ../templates/views/gleuel/searchmask:93 ../templates/views/gleuel/searchmask_simple:89 ../templates/views/gleuel/searchmask_simple:95 ../templates/views/inst404/searchmask:108 ../templates/views/inst404/searchmask:114 ../templates/views/inst404/searchmask:146 ../templates/views/inst404/searchmask:150 ../templates/views/inst404/searchmask_simple:159 ../templates/views/inst404/searchmask_simple:165 ../templates/views/inst405/searchmask:112 ../templates/views/inst405/searchmask:118 ../templates/views/inst405/searchmask:150 ../templates/views/inst405/searchmask:154 ../templates/views/inst405/searchmask_simple:159 ../templates/views/inst405/searchmask_simple:165 ../templates/views/inst406/searchmask:102 ../templates/views/inst406/searchmask:109 ../templates/views/inst406/searchmask:141 ../templates/views/inst406/searchmask:145 ../templates/views/inst406/searchmask_simple:153 ../templates/views/inst406/searchmask_simple:159 ../templates/views/inst410/searchmask:105 ../templates/views/inst410/searchmask:111 ../templates/views/inst410/searchmask:143 ../templates/views/inst410/searchmask:147 ../templates/views/inst410/searchmask_simple:151 ../templates/views/inst410/searchmask_simple:157 ../templates/views/inst411/searchmask:106 ../templates/views/inst411/searchmask:112 ../templates/views/inst411/searchmask:144 ../templates/views/inst411/searchmask:148 ../templates/views/inst411/searchmask_simple:153 ../templates/views/inst411/searchmask_simple:159 ../templates/views/inst412/searchmask:107 ../templates/views/inst412/searchmask:113 ../templates/views/inst412/searchmask:145 ../templates/views/inst412/searchmask:149 ../templates/views/inst412/searchmask_simple:152 ../templates/views/inst412/searchmask_simple:158 ../templates/views/inst413/searchmask:125 ../templates/views/inst413/searchmask:129 ../templates/views/inst413/searchmask:87 ../templates/views/inst413/searchmask:93 ../templates/views/inst413/searchmask_simple:133 ../templates/views/inst413/searchmask_simple:139 ../templates/views/inst415/searchmask:108 ../templates/views/inst415/searchmask:114 ../templates/views/inst415/searchmask:146 ../templates/views/inst415/searchmask:150 ../templates/views/inst415/searchmask_simple:153 ../templates/views/inst415/searchmask_simple:159 ../templates/views/inst419/searchmask:107 ../templates/views/inst419/searchmask:113 ../templates/views/inst419/searchmask:145 ../templates/views/inst419/searchmask:149 ../templates/views/inst420/searchmask:109 ../templates/views/inst420/searchmask:115 ../templates/views/inst420/searchmask:147 ../templates/views/inst420/searchmask:151 ../templates/views/inst420/searchmask_simple:154 ../templates/views/inst420/searchmask_simple:160 ../templates/views/inst425/searchmask:107 ../templates/views/inst425/searchmask:113 ../templates/views/inst425/searchmask:145 ../templates/views/inst425/searchmask:149 ../templates/views/inst425/searchmask_simple:151 ../templates/views/inst425/searchmask_simple:157 ../templates/views/inst426/searchmask:107 ../templates/views/inst426/searchmask:113 ../templates/views/inst426/searchmask:145 ../templates/views/inst426/searchmask:149 ../templates/views/inst426/searchmask_simple:152 ../templates/views/inst426/searchmask_simple:158 ../templates/views/inst430/searchmask:109 ../templates/views/inst430/searchmask:115 ../templates/views/inst430/searchmask:147 ../templates/views/inst430/searchmask:151 ../templates/views/inst430/searchmask_simple:154 ../templates/views/inst430/searchmask_simple:160 ../templates/views/inst431/searchmask:106 ../templates/views/inst431/searchmask:112 ../templates/views/inst431/searchmask:144 ../templates/views/inst431/searchmask:148 ../templates/views/inst431/searchmask_simple:151 ../templates/views/inst431/searchmask_simple:157 ../templates/views/inst460/searchmask:107 ../templates/views/inst460/searchmask:113 ../templates/views/inst460/searchmask:145 ../templates/views/inst460/searchmask:149 ../templates/views/inst460/searchmask_simple:152 ../templates/views/inst460/searchmask_simple:158 ../templates/views/inst501/searchmask:130 ../templates/views/inst501/searchmask:134 ../templates/views/inst501/searchmask:92 ../templates/views/inst501/searchmask:98 ../templates/views/kapsel/searchmask:100 ../templates/views/kapsel/searchmask:67 ../templates/views/kapsel/searchmask:96 ../templates/views/kapsel/searchmask_simple:65 ../templates/views/kempen/searchmask:125 ../templates/views/kempen/searchmask:129 ../templates/views/kempen/searchmask:87 ../templates/views/kempen/searchmask:93 ../templates/views/kempen/searchmask_simple:89 ../templates/views/kempen/searchmask_simple:95 ../templates/views/kevelaer/searchmask:125 ../templates/views/kevelaer/searchmask:129 ../templates/views/kevelaer/searchmask:87 ../templates/views/kevelaer/searchmask:93 ../templates/views/kevelaer/searchmask_simple:89 ../templates/views/kevelaer/searchmask_simple:95 ../templates/views/kug/searchmask:180 ../templates/views/kug/searchmask:199 ../templates/views/kug/searchmask:308 ../templates/views/kug/searchmask_simple:111 ../templates/views/kwinter/searchmask:125 ../templates/views/kwinter/searchmask:129 ../templates/views/kwinter/searchmask:87 ../templates/views/kwinter/searchmask:93 ../templates/views/kwinter/searchmask_simple:89 ../templates/views/kwinter/searchmask_simple:95 ../templates/views/landschaft/searchmask:100 ../templates/views/landschaft/searchmask:67 ../templates/views/landschaft/searchmask:96 ../templates/views/landschaft/searchmask_simple:57 ../templates/views/portrait/searchmask:127 ../templates/views/portrait/searchmask:131 ../templates/views/portrait/searchmask:72 ../templates/views/portrait/searchmask_simple:73 ../templates/views/rheinlandbib/searchmask:117 ../templates/views/rheinlandbib/searchmask:121 ../templates/views/rheinlandbib/searchmask:79 ../templates/views/rheinlandbib/searchmask:85 ../templates/views/rheinlandbib/searchmask_simple:81 ../templates/views/rheinlandbib/searchmask_simple:87 ../templates/views/richter/searchmask:118 ../templates/views/richter/searchmask:95 ../templates/views/richter/searchmask_simple:120 ../templates/views/richter/searchmask_simple:126 ../templates/views/xanten/searchmask:125 ../templates/views/xanten/searchmask:129 ../templates/views/xanten/searchmask:87 ../templates/views/xanten/searchmask:93 ../templates/views/xanten/searchmask_simple:89 ../templates/views/xanten/searchmask_simple:95
+#: ../templates/searchmask:131 ../templates/searchmask:135 ../templates/searchmask:93 ../templates/searchmask:99 ../templates/searchmask_simple:144 ../templates/searchmask_simple:150 ../templates/views/edz/searchmask:107 ../templates/views/edz/searchmask:113 ../templates/views/edz/searchmask:145 ../templates/views/edz/searchmask:149 ../templates/views/edz/searchmask_simple:153 ../templates/views/edz/searchmask_simple:159 ../templates/views/einbaende/searchmask:100 ../templates/views/einbaende/searchmask:150 ../templates/views/einbaende/searchmask:175 ../templates/views/einbaende/searchmask:205 ../templates/views/einbaende/searchmask_simple:84 ../templates/views/gdonck/searchmask:125 ../templates/views/gdonck/searchmask:129 ../templates/views/gdonck/searchmask:87 ../templates/views/gdonck/searchmask:93 ../templates/views/gdonck/searchmask_simple:89 ../templates/views/gdonck/searchmask_simple:95 ../templates/views/gleuel/searchmask:125 ../templates/views/gleuel/searchmask:129 ../templates/views/gleuel/searchmask:87 ../templates/views/gleuel/searchmask:93 ../templates/views/gleuel/searchmask_simple:89 ../templates/views/gleuel/searchmask_simple:95 ../templates/views/inst404/searchmask:108 ../templates/views/inst404/searchmask:114 ../templates/views/inst404/searchmask:146 ../templates/views/inst404/searchmask:150 ../templates/views/inst404/searchmask_simple:159 ../templates/views/inst404/searchmask_simple:165 ../templates/views/inst405/searchmask:112 ../templates/views/inst405/searchmask:118 ../templates/views/inst405/searchmask:150 ../templates/views/inst405/searchmask:154 ../templates/views/inst405/searchmask_simple:159 ../templates/views/inst405/searchmask_simple:165 ../templates/views/inst406/searchmask:102 ../templates/views/inst406/searchmask:109 ../templates/views/inst406/searchmask:141 ../templates/views/inst406/searchmask:145 ../templates/views/inst406/searchmask_simple:153 ../templates/views/inst406/searchmask_simple:159 ../templates/views/inst410/searchmask:105 ../templates/views/inst410/searchmask:111 ../templates/views/inst410/searchmask:143 ../templates/views/inst410/searchmask:147 ../templates/views/inst410/searchmask_simple:151 ../templates/views/inst410/searchmask_simple:157 ../templates/views/inst411/searchmask:106 ../templates/views/inst411/searchmask:112 ../templates/views/inst411/searchmask:144 ../templates/views/inst411/searchmask:148 ../templates/views/inst411/searchmask_simple:153 ../templates/views/inst411/searchmask_simple:159 ../templates/views/inst412/searchmask:107 ../templates/views/inst412/searchmask:113 ../templates/views/inst412/searchmask:145 ../templates/views/inst412/searchmask:149 ../templates/views/inst412/searchmask_simple:152 ../templates/views/inst412/searchmask_simple:158 ../templates/views/inst413/searchmask:125 ../templates/views/inst413/searchmask:129 ../templates/views/inst413/searchmask:87 ../templates/views/inst413/searchmask:93 ../templates/views/inst413/searchmask_simple:133 ../templates/views/inst413/searchmask_simple:139 ../templates/views/inst415/searchmask:108 ../templates/views/inst415/searchmask:114 ../templates/views/inst415/searchmask:146 ../templates/views/inst415/searchmask:150 ../templates/views/inst415/searchmask_simple:153 ../templates/views/inst415/searchmask_simple:159 ../templates/views/inst419/searchmask:107 ../templates/views/inst419/searchmask:113 ../templates/views/inst419/searchmask:145 ../templates/views/inst419/searchmask:149 ../templates/views/inst420/searchmask:109 ../templates/views/inst420/searchmask:115 ../templates/views/inst420/searchmask:147 ../templates/views/inst420/searchmask:151 ../templates/views/inst420/searchmask_simple:154 ../templates/views/inst420/searchmask_simple:160 ../templates/views/inst425/searchmask:107 ../templates/views/inst425/searchmask:113 ../templates/views/inst425/searchmask:145 ../templates/views/inst425/searchmask:149 ../templates/views/inst425/searchmask_simple:151 ../templates/views/inst425/searchmask_simple:157 ../templates/views/inst426/searchmask:107 ../templates/views/inst426/searchmask:113 ../templates/views/inst426/searchmask:145 ../templates/views/inst426/searchmask:149 ../templates/views/inst426/searchmask_simple:152 ../templates/views/inst426/searchmask_simple:158 ../templates/views/inst430/searchmask:109 ../templates/views/inst430/searchmask:115 ../templates/views/inst430/searchmask:147 ../templates/views/inst430/searchmask:151 ../templates/views/inst430/searchmask_simple:154 ../templates/views/inst430/searchmask_simple:160 ../templates/views/inst431/searchmask:106 ../templates/views/inst431/searchmask:112 ../templates/views/inst431/searchmask:144 ../templates/views/inst431/searchmask:148 ../templates/views/inst431/searchmask_simple:151 ../templates/views/inst431/searchmask_simple:157 ../templates/views/inst460/searchmask:107 ../templates/views/inst460/searchmask:113 ../templates/views/inst460/searchmask:145 ../templates/views/inst460/searchmask:149 ../templates/views/inst460/searchmask_simple:152 ../templates/views/inst460/searchmask_simple:158 ../templates/views/inst501/searchmask:130 ../templates/views/inst501/searchmask:134 ../templates/views/inst501/searchmask:92 ../templates/views/inst501/searchmask:98 ../templates/views/kapsel/searchmask:100 ../templates/views/kapsel/searchmask:67 ../templates/views/kapsel/searchmask:96 ../templates/views/kapsel/searchmask_simple:65 ../templates/views/kempen/searchmask:125 ../templates/views/kempen/searchmask:129 ../templates/views/kempen/searchmask:87 ../templates/views/kempen/searchmask:93 ../templates/views/kempen/searchmask_simple:89 ../templates/views/kempen/searchmask_simple:95 ../templates/views/kevelaer/searchmask:125 ../templates/views/kevelaer/searchmask:129 ../templates/views/kevelaer/searchmask:87 ../templates/views/kevelaer/searchmask:93 ../templates/views/kevelaer/searchmask_simple:89 ../templates/views/kevelaer/searchmask_simple:95 ../templates/views/kug/searchmask:180 ../templates/views/kug/searchmask:199 ../templates/views/kug/searchmask:308 ../templates/views/kug/searchmask_simple:111 ../templates/views/kwinter/searchmask:125 ../templates/views/kwinter/searchmask:129 ../templates/views/kwinter/searchmask:87 ../templates/views/kwinter/searchmask:93 ../templates/views/kwinter/searchmask_simple:89 ../templates/views/kwinter/searchmask_simple:95 ../templates/views/landschaft/searchmask:100 ../templates/views/landschaft/searchmask:67 ../templates/views/landschaft/searchmask:96 ../templates/views/landschaft/searchmask_simple:57 ../templates/views/portrait/searchmask:127 ../templates/views/portrait/searchmask:131 ../templates/views/portrait/searchmask:72 ../templates/views/portrait/searchmask_simple:73 ../templates/views/rheinlandbib/searchmask:117 ../templates/views/rheinlandbib/searchmask:121 ../templates/views/rheinlandbib/searchmask:79 ../templates/views/rheinlandbib/searchmask:85 ../templates/views/rheinlandbib/searchmask_simple:81 ../templates/views/rheinlandbib/searchmask_simple:87 ../templates/views/richter/searchmask:118 ../templates/views/richter/searchmask:95 ../templates/views/richter/searchmask_simple:120 ../templates/views/richter/searchmask_simple:126 ../templates/views/xanten/searchmask:125 ../templates/views/xanten/searchmask:129 ../templates/views/xanten/searchmask:87 ../templates/views/xanten/searchmask:93 ../templates/views/xanten/searchmask_simple:89 ../templates/views/xanten/searchmask_simple:95
 msgid "Lösche Eingabemaske"
 msgstr ""
 
@@ -2282,11 +2286,19 @@ msgid ""
 "      organisieren."
 msgstr ""
 
+#: ../templates/views/einbaende/searchmask:184
+msgid "Motiv"
+msgstr ""
+
+#: ../templates/views/einbaende/search_browse_tit:46
+msgid "Motiv/Werkzeug"
+msgstr ""
+
 #: ../templates/admin_editview_rss:72
 msgid "Möchten Sie diesen ändern?"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:61 ../templates/database/ebooks/search_showtitset:63 ../templates/database/einbaende/search_showtitset:48 ../templates/database/einbaende/search_showtitset:50 ../templates/database/inst001/search_showtitset:63 ../templates/database/inst001/search_showtitset:65 ../templates/database/landschaft/search_showtitset:44 ../templates/database/landschaft/search_showtitset:46 ../templates/database/nationallizenzen/search_showtitset:61 ../templates/database/nationallizenzen/search_showtitset:63 ../templates/database/portrait/search_showtitset:44 ../templates/database/portrait/search_showtitset:46 ../templates/search_showtitset:61 ../templates/search_showtitset:63
+#: ../templates/database/ebooks/search_showtitset:61 ../templates/database/ebooks/search_showtitset:63 ../templates/database/einbaende/search_showtitset:49 ../templates/database/einbaende/search_showtitset:51 ../templates/database/einbaende/search_showtitset_1:49 ../templates/database/einbaende/search_showtitset_1:51 ../templates/database/inst001/search_showtitset:63 ../templates/database/inst001/search_showtitset:65 ../templates/database/landschaft/search_showtitset:44 ../templates/database/landschaft/search_showtitset:46 ../templates/database/nationallizenzen/search_showtitset:61 ../templates/database/nationallizenzen/search_showtitset:63 ../templates/database/portrait/search_showtitset:44 ../templates/database/portrait/search_showtitset:46 ../templates/search_showtitset:61 ../templates/search_showtitset:63
 msgid "N&auml;chster Titel"
 msgstr ""
 
@@ -2323,6 +2335,10 @@ msgstr ""
 
 #: ../templates/userprefs:68
 msgid "Nachname"
+msgstr ""
+
+#: ../templates/views/einbaende/searchmask:183
+msgid "Name"
 msgstr ""
 
 #: ../templates/info:947 ../templates/views/kug/info:947
@@ -2505,7 +2521,7 @@ msgstr ""
 msgid "Permalink"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:58 ../templates/database/inst001/search_showtitset:60 ../templates/database/nationallizenzen/search_showtitset:58 ../templates/litlists_manage_singlelist:105 ../templates/litlists_show_singlelist:73 ../templates/search_showtitset:58
+#: ../templates/database/ebooks/search_showtitset:58 ../templates/database/einbaende/search_showtitset:46 ../templates/database/inst001/search_showtitset:60 ../templates/database/nationallizenzen/search_showtitset:58 ../templates/litlists_manage_singlelist:105 ../templates/litlists_show_singlelist:73 ../templates/search_showtitset:58
 msgid "Permanenter Link"
 msgstr ""
 
@@ -2513,7 +2529,7 @@ msgstr ""
 msgid "Permanenter Link zu diesem Titel"
 msgstr ""
 
-#: ../templates/views/einbaende/searchmask:114 ../templates/views/inst501/searchmask_query:11 ../templates/views/kapsel/searchmask_query:11 ../templates/views/portrait/searchmask_query:13 ../templates/views/richter/searchmask_query:13
+#: ../templates/views/einbaende/searchmask:122 ../templates/views/inst501/searchmask_query:11 ../templates/views/kapsel/searchmask_query:11 ../templates/views/portrait/searchmask_query:13 ../templates/views/richter/searchmask_query:13
 msgid "Person"
 msgstr ""
 
@@ -2663,7 +2679,7 @@ msgstr ""
 msgid "Recherchen"
 msgstr ""
 
-#: ../templates/views/einbaende/search_browse_tit:43 ../templates/views/einbaende/searchmask:118 ../templates/views/portrait/clouds_navigation:15 ../templates/views/portrait/searchmask_query:21
+#: ../templates/views/einbaende/search_browse_tit:43 ../templates/views/einbaende/searchmask:126 ../templates/views/portrait/clouds_navigation:15 ../templates/views/portrait/searchmask_query:21
 msgid "Region"
 msgstr ""
 
@@ -2784,7 +2800,7 @@ msgstr ""
 msgid "Seit"
 msgstr ""
 
-#: ../templates/database/landschaft/virtualsearch_result_item:86 ../templates/database/portrait/virtualsearch_result_item:86 ../templates/views/einbaende/virtualsearch_result_item:80 ../templates/virtualsearch_result_item:83 ../templates/virtualsearch_showkorindex:38 ../templates/virtualsearch_shownotindex:38 ../templates/virtualsearch_showswtindex:38 ../templates/virtualsearch_showverfindex:38
+#: ../templates/database/landschaft/virtualsearch_result_item:86 ../templates/database/portrait/virtualsearch_result_item:86 ../templates/views/einbaende/virtualsearch_result_item:87 ../templates/virtualsearch_result_item:83 ../templates/virtualsearch_showkorindex:38 ../templates/virtualsearch_shownotindex:38 ../templates/virtualsearch_showswtindex:38 ../templates/virtualsearch_showverfindex:38
 msgid "Sekunden"
 msgstr ""
 
@@ -2860,7 +2876,7 @@ msgstr ""
 msgid "Sie haben dieses Medium bereits vorgemerkt"
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/SelfReg.pm:159
+#: ../modules/OpenBib/Handler/Apache/SelfReg.pm:161
 #. ("<a href=\"http://$config->{servername}$config->{selfreg_loc}?sessionID=$session->{ID};view=$view;action=show\">","</a>")
 msgid "Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte %1zurück%2 und versuchen Sie es erneut."
 msgstr ""
@@ -3049,7 +3065,7 @@ msgstr ""
 msgid "Sigel"
 msgstr ""
 
-#: ../templates/circset:16 ../templates/circulation:56 ../templates/circulation_orders:52 ../templates/circulation_remind:71 ../templates/circulation_reserv:52 ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:142 ../templates/database/einbaende/search_showtitset:253 ../templates/database/inst001/circset:34 ../templates/database/inst001/mexset:3 ../templates/database/landschaft/search_showtitset:153 ../templates/database/portrait/search_showtitset:172 ../templates/managecollection_tit_as_html:79 ../templates/mexset:2 ../templates/search_showmulttitset:109 ../templates/searchmask_query:35 ../templates/userprefs:208 ../templates/views/einbaende/searchmask:130 ../templates/views/inst501/searchmask_query:35 ../templates/views/portrait/searchmask_query:29 ../templates/views/richter/searchmask_query:29
+#: ../templates/circset:16 ../templates/circulation:56 ../templates/circulation_orders:52 ../templates/circulation_remind:71 ../templates/circulation_reserv:52 ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:225 ../templates/database/einbaende/search_showtitset:336 ../templates/database/inst001/circset:34 ../templates/database/inst001/mexset:3 ../templates/database/landschaft/search_showtitset:153 ../templates/database/portrait/search_showtitset:172 ../templates/managecollection_tit_as_html:79 ../templates/mexset:2 ../templates/search_showmulttitset:109 ../templates/searchmask_query:35 ../templates/userprefs:208 ../templates/views/einbaende/searchmask:138 ../templates/views/einbaende/searchmask:191 ../templates/views/inst501/searchmask_query:35 ../templates/views/portrait/searchmask_query:29 ../templates/views/richter/searchmask_query:29
 msgid "Signatur"
 msgstr ""
 
@@ -3114,7 +3130,7 @@ msgstr ""
 msgid "Sprung zur Trefferliste im KUG"
 msgstr ""
 
-#: ../templates/circset:16 ../templates/database/einbaende/managecollection_tit_as_html:129 ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:142 ../templates/database/einbaende/search_showtitset:253 ../templates/database/inst001/circset:34 ../templates/database/inst001/mexset:3 ../templates/managecollection_tit_as_html:79 ../templates/managecollection_tit_as_html_simple:46 ../templates/mexset:2 ../templates/search_showmulttitset:109
+#: ../templates/circset:16 ../templates/database/einbaende/managecollection_tit_as_html:129 ../templates/database/einbaende/managecollection_tit_as_html:65 ../templates/database/einbaende/search_showtitset:225 ../templates/database/einbaende/search_showtitset:336 ../templates/database/inst001/circset:34 ../templates/database/inst001/mexset:3 ../templates/managecollection_tit_as_html:79 ../templates/managecollection_tit_as_html_simple:46 ../templates/mexset:2 ../templates/search_showmulttitset:109
 msgid "Standort"
 msgstr ""
 
@@ -3146,7 +3162,7 @@ msgstr ""
 msgid "Such-Index"
 msgstr ""
 
-#: ../templates/clouds_navigation:21 ../templates/info_13:46 ../templates/searchmask:105 ../templates/views/edz/searchmask:119 ../templates/views/einbaende/searchmask:100 ../templates/views/gdonck/searchmask:99 ../templates/views/gleuel/searchmask:99 ../templates/views/inst404/searchmask:120 ../templates/views/inst405/searchmask:124 ../templates/views/inst406/searchmask:115 ../templates/views/inst410/searchmask:117 ../templates/views/inst411/searchmask:118 ../templates/views/inst412/searchmask:119 ../templates/views/inst413/searchmask:99 ../templates/views/inst415/searchmask:120 ../templates/views/inst419/searchmask:119 ../templates/views/inst420/searchmask:121 ../templates/views/inst425/searchmask:119 ../templates/views/inst426/searchmask:119 ../templates/views/inst430/searchmask:121 ../templates/views/inst431/searchmask:118 ../templates/views/inst460/searchmask:119 ../templates/views/inst501/searchmask:104 ../templates/views/kapsel/clouds_navigation:21 ../templates/views/kapsel/searchmask:72 ../templates/views/kempen/searchmask:99 ../templates/views/kevelaer/searchmask:99 ../templates/views/kug/searchmask:191 ../templates/views/kwinter/searchmask:99 ../templates/views/landschaft/searchmask:72 ../templates/views/portrait/clouds_navigation:21 ../templates/views/portrait/searchmask:77 ../templates/views/rheinlandbib/searchmask:91 ../templates/views/richter/searchmask:100 ../templates/views/xanten/searchmask:99
+#: ../templates/clouds_navigation:21 ../templates/info_13:46 ../templates/searchmask:105 ../templates/views/edz/searchmask:119 ../templates/views/gdonck/searchmask:99 ../templates/views/gleuel/searchmask:99 ../templates/views/inst404/searchmask:120 ../templates/views/inst405/searchmask:124 ../templates/views/inst406/searchmask:115 ../templates/views/inst410/searchmask:117 ../templates/views/inst411/searchmask:118 ../templates/views/inst412/searchmask:119 ../templates/views/inst413/searchmask:99 ../templates/views/inst415/searchmask:120 ../templates/views/inst419/searchmask:119 ../templates/views/inst420/searchmask:121 ../templates/views/inst425/searchmask:119 ../templates/views/inst426/searchmask:119 ../templates/views/inst430/searchmask:121 ../templates/views/inst431/searchmask:118 ../templates/views/inst460/searchmask:119 ../templates/views/inst501/searchmask:104 ../templates/views/kapsel/clouds_navigation:21 ../templates/views/kapsel/searchmask:72 ../templates/views/kempen/searchmask:99 ../templates/views/kevelaer/searchmask:99 ../templates/views/kug/searchmask:191 ../templates/views/kwinter/searchmask:99 ../templates/views/landschaft/searchmask:72 ../templates/views/portrait/clouds_navigation:21 ../templates/views/portrait/searchmask:77 ../templates/views/rheinlandbib/searchmask:91 ../templates/views/richter/searchmask:100 ../templates/views/xanten/searchmask:99
 msgid "Suchbegriffe"
 msgstr ""
 
@@ -3154,7 +3170,7 @@ msgstr ""
 msgid "Suche &uuml;ber alle Kataloge"
 msgstr ""
 
-#: ../templates/views/einbaende/searchmask:145 ../templates/views/einbaende/searchmask:95
+#: ../templates/views/einbaende/searchmask:100 ../templates/views/einbaende/searchmask:150 ../templates/views/einbaende/searchmask:175 ../templates/views/einbaende/searchmask:205
 msgid "Suche starten"
 msgstr ""
 
@@ -3275,6 +3291,10 @@ msgstr ""
 msgid "T0102"
 msgstr ""
 
+#: ../templates/database/einbaende/visible_categories_toolset:16
+msgid "T0102-einbaende"
+msgstr ""
+
 #: ../templates/database/portrait/visible_categories_titset:16
 msgid "T0102-portrait"
 msgstr ""
@@ -3331,8 +3351,16 @@ msgstr ""
 msgid "T0304"
 msgstr ""
 
+#: ../templates/database/einbaende/visible_categories_toolset:18
+msgid "T0304-einbaende"
+msgstr ""
+
 #: ../templates/database/ebooks/visible_categories_titset:22 ../templates/database/inst001/visible_categories_titset:22 ../templates/database/kapsel/visible_categories_titset:22 ../templates/database/nationallizenzen/visible_categories_titset:22 ../templates/database/richter/visible_categories_titset:22 ../templates/database/umschlaege/visible_categories_titset:23 ../templates/visible_categories_titset:22
 msgid "T0310"
+msgstr ""
+
+#: ../templates/database/einbaende/visible_categories_toolset:17
+msgid "T0310-einbaende"
 msgstr ""
 
 #: ../templates/database/ebooks/visible_categories_titset:24 ../templates/database/inst001/visible_categories_titset:24 ../templates/database/inst450/visible_categories_titset:20 ../templates/database/nationallizenzen/visible_categories_titset:24 ../templates/database/richter/visible_categories_titset:24 ../templates/database/umschlaege/visible_categories_titset:25 ../templates/visible_categories_titset:24
@@ -3375,7 +3403,7 @@ msgstr ""
 msgid "T0335"
 msgstr ""
 
-#: ../templates/database/einbaende/visible_categories_titset:18
+#: ../templates/database/einbaende/visible_categories_titset:18 ../templates/database/einbaende/visible_categories_toolset:19
 msgid "T0335-einbaende"
 msgstr ""
 
@@ -3491,7 +3519,7 @@ msgstr ""
 msgid "T0435"
 msgstr ""
 
-#: ../templates/database/einbaende/visible_categories_coverset:21
+#: ../templates/database/einbaende/visible_categories_coverset:21 ../templates/database/einbaende/visible_categories_toolset:22
 msgid "T0435-einbaende"
 msgstr ""
 
@@ -3507,7 +3535,7 @@ msgstr ""
 msgid "T0501"
 msgstr ""
 
-#: ../templates/database/einbaende/visible_categories_coverset:23
+#: ../templates/database/einbaende/visible_categories_coverset:23 ../templates/database/einbaende/visible_categories_toolset:20
 msgid "T0501-einbaende"
 msgstr ""
 
@@ -3547,7 +3575,7 @@ msgstr ""
 msgid "T0508"
 msgstr ""
 
-#: ../templates/database/einbaende/visible_categories_coverset:24
+#: ../templates/database/einbaende/visible_categories_coverset:24 ../templates/database/einbaende/visible_categories_toolset:21
 msgid "T0508-einbaende"
 msgstr ""
 
@@ -3847,6 +3875,10 @@ msgstr ""
 msgid "T0800"
 msgstr ""
 
+#: ../templates/database/einbaende/visible_categories_toolset:23
+msgid "T0800-einbaende"
+msgstr ""
+
 #: ../templates/database/portrait/visible_categories_titset:81
 msgid "T0800-portrait"
 msgstr ""
@@ -3975,7 +4007,7 @@ msgstr ""
 msgid "Text"
 msgstr ""
 
-#: ../templates/database/einbaende/search_showtitset:56
+#: ../templates/database/einbaende/search_showtitset:57 ../templates/database/einbaende/search_showtitset:60 ../templates/database/einbaende/search_showtitset_1:60 ../templates/database/einbaende/search_showtitset_1:63
 msgid "Textangaben"
 msgstr ""
 
@@ -4029,7 +4061,7 @@ msgstr ""
 msgid "Titel(liste) ausdrucken, bzw. in einer Druckansicht darstellen"
 msgstr ""
 
-#: ../templates/database/einbaende/managecollection_tit_as_html:23 ../templates/database/einbaende/search_showtitset:65
+#: ../templates/database/einbaende/managecollection_tit_as_html:23 ../templates/database/einbaende/search_showtitset:148
 msgid "Titel-Daten"
 msgstr ""
 
@@ -4041,7 +4073,7 @@ msgstr ""
 msgid "Titel/Merkliste via Mail verschicken"
 msgstr ""
 
-#: ../templates/views/einbaende/searchmask:110
+#: ../templates/views/einbaende/searchmask:118
 msgid "Titel/Provenienz"
 msgstr ""
 
@@ -4166,7 +4198,7 @@ msgstr ""
 msgid "Und-Verknüpfung innerhalb eines Suchfeldes"
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/Circulation.pm:536 ../modules/OpenBib/Handler/Apache/ManageCollection.pm:368 ../modules/OpenBib/Handler/Apache/SelfReg.pm:196 ../modules/OpenBib/Handler/Apache/UserPrefs.pm:267
+#: ../modules/OpenBib/Handler/Apache/Circulation.pm:583 ../modules/OpenBib/Handler/Apache/ManageCollection.pm:368 ../modules/OpenBib/Handler/Apache/SelfReg.pm:199 ../modules/OpenBib/Handler/Apache/UserPrefs.pm:267
 msgid "Unerlaubte Aktion"
 msgstr ""
 
@@ -4229,7 +4261,7 @@ msgstr ""
 msgid "Verkn&uuml;pfungen mehrerer Suchfelder"
 msgstr ""
 
-#: ../templates/views/einbaende/searchmask:103 ../templates/views/portrait/searchmask_query:2 ../templates/views/richter/searchmask_query:2
+#: ../templates/views/einbaende/searchmask:111 ../templates/views/einbaende/searchmask:181 ../templates/views/portrait/searchmask_query:2 ../templates/views/richter/searchmask_query:2
 msgid "Verknüpfung"
 msgstr ""
 
@@ -4289,7 +4321,7 @@ msgstr ""
 msgid "Vorgemerkt"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:47 ../templates/database/ebooks/search_showtitset:49 ../templates/database/einbaende/search_showtitset:37 ../templates/database/einbaende/search_showtitset:39 ../templates/database/inst001/search_showtitset:49 ../templates/database/inst001/search_showtitset:51 ../templates/database/landschaft/search_showtitset:33 ../templates/database/landschaft/search_showtitset:35 ../templates/database/nationallizenzen/search_showtitset:47 ../templates/database/nationallizenzen/search_showtitset:49 ../templates/database/portrait/search_showtitset:33 ../templates/database/portrait/search_showtitset:35 ../templates/search_showtitset:47 ../templates/search_showtitset:49
+#: ../templates/database/ebooks/search_showtitset:47 ../templates/database/ebooks/search_showtitset:49 ../templates/database/einbaende/search_showtitset:37 ../templates/database/einbaende/search_showtitset:39 ../templates/database/einbaende/search_showtitset_1:37 ../templates/database/einbaende/search_showtitset_1:39 ../templates/database/inst001/search_showtitset:49 ../templates/database/inst001/search_showtitset:51 ../templates/database/landschaft/search_showtitset:33 ../templates/database/landschaft/search_showtitset:35 ../templates/database/nationallizenzen/search_showtitset:47 ../templates/database/nationallizenzen/search_showtitset:49 ../templates/database/portrait/search_showtitset:33 ../templates/database/portrait/search_showtitset:35 ../templates/search_showtitset:47 ../templates/search_showtitset:49
 msgid "Vorheriger Titel"
 msgstr ""
 
@@ -4520,6 +4552,26 @@ msgid ""
 "      angebotenen Publikationen wird augenblicklich überprüft, ob der\n"
 "      jeweilige Titel in Katalogen des KUG enthalten ist und diese\n"
 "      Verfügbarkeitsinformation in der Titel-Anzeige ausgegeben."
+msgstr ""
+
+#: ../templates/views/einbaende/searchmask:187
+msgid "Werkstatt"
+msgstr ""
+
+#: ../templates/views/einbaende/search_browse_tit:47
+msgid "Werkstatt/Werkzeug"
+msgstr ""
+
+#: ../templates/views/einbaende/searchmask:79
+msgid "Werkzeug"
+msgstr ""
+
+#: ../templates/database/einbaende/search_showtitset:58 ../templates/database/einbaende/search_showtitset_1:61
+msgid "Werkzeug-Abbildungen"
+msgstr ""
+
+#: ../templates/database/einbaende/search_showtitset:70
+msgid "Werkzeug-Daten"
 msgstr ""
 
 #: ../templates/loadbalancer:28

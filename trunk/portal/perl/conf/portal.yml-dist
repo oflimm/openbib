@@ -363,6 +363,10 @@ tool_dir: /opt/openbib/bin
 bibsonomy_api_key: ''
 bibsonomy_api_user: ''
 
+# Zugriffsinformationen fuer ReCaptcha
+recaptcha_public_key: ''
+recaptcha_private_key: ''
+
 # Aktivierung verschiedener Funktionalitaeten
 login_active: 1
 newsflash: 0

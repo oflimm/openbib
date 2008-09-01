@@ -149,17 +149,20 @@ sub handler {
             return OK;
         }
 
-        # Recaptcha pruefen
-        my $recaptcha_result = $recaptcha->check_answer(
-            $config->{recaptcha_private_key}, $r->connection->remote_ip,
-            $recaptcha_challenge, $recaptcha_response
-        );
-
-        unless ( $recaptcha_result->{is_valid} ) {
-            OpenBib::Common::Util::print_warning($msg->maketext("Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte [_1]zurück[_2] und versuchen Sie es erneut.","<a href=\"http://$config->{servername}$config->{selfreg_loc}?sessionID=$session->{ID};view=$view;action=show\">","</a>"),$r,$msg);
-            return OK;
+        # Recaptcha nur verwenden, wenn Zugriffsinformationen vorhanden sind
+        if ($config->{recaptcha_private_key}){
+            # Recaptcha pruefen
+            my $recaptcha_result = $recaptcha->check_answer(
+                $config->{recaptcha_private_key}, $r->connection->remote_ip,
+                $recaptcha_challenge, $recaptcha_response
+            );
+            
+            unless ( $recaptcha_result->{is_valid} ) {
+                OpenBib::Common::Util::print_warning($msg->maketext("Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte [_1]zurück[_2] und versuchen Sie es erneut.","<a href=\"http://$config->{servername}$config->{selfreg_loc}?sessionID=$session->{ID};view=$view;action=show\">","</a>"),$r,$msg);
+                return OK;
+            }
         }
-
+        
         # ab jetzt ist klar, dass es den Benutzer noch nicht gibt.
         # Jetzt eintragen und session mit dem Benutzer assoziieren;
 

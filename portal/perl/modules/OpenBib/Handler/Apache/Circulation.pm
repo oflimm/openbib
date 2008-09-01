@@ -145,23 +145,29 @@ sub handler {
 
         if ($circaction eq "reservations") {
             my $circexlist=undef;
-      
-            my $soap = SOAP::Lite
-                -> uri("urn:/Circulation")
-                    -> proxy($circinfotable->{$database}{circcheckurl});
-            my $result = $soap->get_reservations(
-                SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                    SOAP::Data->name(username => $loginname)->type('string'),
-                    SOAP::Data->name(password => $password)->type('string'),
-                    SOAP::Data->name(database => $circinfotable->{$database}{circdb})->type('string'))));
-      
-            unless ($result->fault) {
-                $circexlist=$result->result;
+
+            eval {
+                my $soap = SOAP::Lite
+                    -> uri("urn:/Circulation")
+                        -> proxy($circinfotable->{$database}{circcheckurl});
+                my $result = $soap->get_reservations(
+                    SOAP::Data->name(parameter  =>\SOAP::Data->value(
+                        SOAP::Data->name(username => $loginname)->type('string'),
+                        SOAP::Data->name(password => $password)->type('string'),
+                        SOAP::Data->name(database => $circinfotable->{$database}{circdb})->type('string'))));
+                
+                unless ($result->fault) {
+                    $circexlist=$result->result;
+                }
+                else {
+                    $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+                }
+            };
+            
+            if ($@){
+                $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
             }
-            else {
-                $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-            }
-      
+            
             # TT-Data erzeugen
       
             my $ttdata={
@@ -194,23 +200,29 @@ sub handler {
         }
         elsif ($circaction eq "reminders") {
             my $circexlist=undef;
-      
-            my $soap = SOAP::Lite
-                -> uri("urn:/Circulation")
-                    -> proxy($circinfotable->{$database}{circcheckurl});
-            my $result = $soap->get_reminders(
-                SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                    SOAP::Data->name(username => $loginname)->type('string'),
-                    SOAP::Data->name(password => $password)->type('string'),
-                    SOAP::Data->name(database => $circinfotable->{$database}{circdb})->type('string'))));
-      
-            unless ($result->fault) {
-                $circexlist=$result->result;
+
+            eval {
+                my $soap = SOAP::Lite
+                    -> uri("urn:/Circulation")
+                        -> proxy($circinfotable->{$database}{circcheckurl});
+                my $result = $soap->get_reminders(
+                    SOAP::Data->name(parameter  =>\SOAP::Data->value(
+                        SOAP::Data->name(username => $loginname)->type('string'),
+                        SOAP::Data->name(password => $password)->type('string'),
+                        SOAP::Data->name(database => $circinfotable->{$database}{circdb})->type('string'))));
+                
+                unless ($result->fault) {
+                    $circexlist=$result->result;
+                }
+                else {
+                    $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+                }
+            };
+
+            if ($@){
+                $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
             }
-            else {
-                $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-            }
-      
+
             # TT-Data erzeugen
       
             my $ttdata={
@@ -240,21 +252,27 @@ sub handler {
         }
         elsif ($circaction eq "orders") {
             my $circexlist=undef;
-      
-            my $soap = SOAP::Lite
-                -> uri("urn:/Circulation")
-                    -> proxy($circinfotable->{$database}{circcheckurl});
-            my $result = $soap->get_orders(
-                SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                    SOAP::Data->name(username => $loginname)->type('string'),
-                    SOAP::Data->name(password => $password)->type('string'),
-                    SOAP::Data->name(database => $circinfotable->{$database}{circdb})->type('string'))));
-      
-            unless ($result->fault) {
-                $circexlist=$result->result;
-            }
-            else {
-                $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+
+            eval {
+                my $soap = SOAP::Lite
+                    -> uri("urn:/Circulation")
+                        -> proxy($circinfotable->{$database}{circcheckurl});
+                my $result = $soap->get_orders(
+                    SOAP::Data->name(parameter  =>\SOAP::Data->value(
+                        SOAP::Data->name(username => $loginname)->type('string'),
+                        SOAP::Data->name(password => $password)->type('string'),
+                        SOAP::Data->name(database => $circinfotable->{$database}{circdb})->type('string'))));
+                
+                unless ($result->fault) {
+                    $circexlist=$result->result;
+                }
+                else {
+                    $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+                }
+            };
+            
+            if ($@){
+                $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
             }
       
             # TT-Data erzeugen
@@ -286,22 +304,28 @@ sub handler {
         else {
             my $circexlist=undef;
       
-            my $soap = SOAP::Lite
-                -> uri("urn:/Circulation")
-                    -> proxy($circinfotable->{$database}{circcheckurl});
-            my $result = $soap->get_borrows(
-                SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                    SOAP::Data->name(username => $loginname)->type('string'),
-                    SOAP::Data->name(password => $password)->type('string'),
-                    SOAP::Data->name(database => $circinfotable->{$database}{circdb})->type('string'))));
-      
-            unless ($result->fault) {
-                $circexlist=$result->result;
+            eval {
+                my $soap = SOAP::Lite
+                    -> uri("urn:/Circulation")
+                        -> proxy($circinfotable->{$database}{circcheckurl});
+                my $result = $soap->get_borrows(
+                    SOAP::Data->name(parameter  =>\SOAP::Data->value(
+                        SOAP::Data->name(username => $loginname)->type('string'),
+                        SOAP::Data->name(password => $password)->type('string'),
+                        SOAP::Data->name(database => $circinfotable->{$database}{circdb})->type('string'))));
+                
+                unless ($result->fault) {
+                    $circexlist=$result->result;
+                }
+                else {
+                    $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+                }
+            };
+            
+            if ($@){
+                $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
             }
-            else {
-                $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-            }
-      
+
             # TT-Data erzeugen
             my $ttdata={
                 view       => $view,
@@ -352,23 +376,29 @@ sub handler {
 
         $logger->info("Zweigstelle: $zweigstelle");
         
-        my $soap = SOAP::Lite
-            -> uri("urn:/Circulation")
-                -> proxy($circinfotable->{$database}{circcheckurl});
-        my $result = $soap->make_reservation(
-            SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                SOAP::Data->name(username     => $loginname)->type('string'),
-                SOAP::Data->name(password     => $password)->type('string'),
-                SOAP::Data->name(mediennummer => $mediennummer)->type('string'),
-                SOAP::Data->name(ausgabeort   => $ausgabeort)->type('string'),
-                SOAP::Data->name(zweigstelle  => $zweigstelle)->type('string'),
-                SOAP::Data->name(database     => $circinfotable->{$database}{circdb})->type('string'))));
+        eval {
+            my $soap = SOAP::Lite
+                -> uri("urn:/Circulation")
+                    -> proxy($circinfotable->{$database}{circcheckurl});
+            my $result = $soap->make_reservation(
+                SOAP::Data->name(parameter  =>\SOAP::Data->value(
+                    SOAP::Data->name(username     => $loginname)->type('string'),
+                    SOAP::Data->name(password     => $password)->type('string'),
+                    SOAP::Data->name(mediennummer => $mediennummer)->type('string'),
+                    SOAP::Data->name(ausgabeort   => $ausgabeort)->type('string'),
+                    SOAP::Data->name(zweigstelle  => $zweigstelle)->type('string'),
+                    SOAP::Data->name(database     => $circinfotable->{$database}{circdb})->type('string'))));
+            
+            unless ($result->fault) {
+                $circexlist=$result->result;
+            }
+            else {
+                $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+            }
+        };
         
-        unless ($result->fault) {
-            $circexlist=$result->result;
-        }
-        else {
-            $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+        if ($@){
+            $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
         }
         
         # TT-Data erzeugen
@@ -405,25 +435,30 @@ sub handler {
         my $circexlist=undef;
 
         $logger->info("Zweigstelle: $zweigstelle");
+
+        eval {
+            my $soap = SOAP::Lite
+                -> uri("urn:/Circulation")
+                    -> proxy($circinfotable->{$database}{circcheckurl});
+            my $result = $soap->cancel_reservation(
+                SOAP::Data->name(parameter  =>\SOAP::Data->value(
+                    SOAP::Data->name(username     => $loginname)->type('string'),
+                    SOAP::Data->name(password     => $password)->type('string'),
+                    SOAP::Data->name(mediennummer => $mediennummer)->type('string'),
+                    SOAP::Data->name(zweigstelle  => $zweigstelle)->type('string'),
+                    SOAP::Data->name(database     => $circinfotable->{$database}{circdb})->type('string'))));
+            
+            unless ($result->fault) {
+                $circexlist=$result->result;
+            }
+            else {
+                $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+            }
+        };
         
-        my $soap = SOAP::Lite
-            -> uri("urn:/Circulation")
-                -> proxy($circinfotable->{$database}{circcheckurl});
-        my $result = $soap->cancel_reservation(
-            SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                SOAP::Data->name(username     => $loginname)->type('string'),
-                SOAP::Data->name(password     => $password)->type('string'),
-                SOAP::Data->name(mediennummer => $mediennummer)->type('string'),
-                SOAP::Data->name(zweigstelle  => $zweigstelle)->type('string'),
-                SOAP::Data->name(database     => $circinfotable->{$database}{circdb})->type('string'))));
-        
-        unless ($result->fault) {
-            $circexlist=$result->result;
+        if ($@){
+            $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
         }
-        else {
-            $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-        }
-        
 
         $r->internal_redirect("http://$config->{servername}$config->{circulation_loc}?sessionID=$session->{ID};action=showcirc;circaction=reservations");
 
@@ -447,26 +482,32 @@ sub handler {
         my $circexlist=undef;
 
         $logger->info("Zweigstelle: $zweigstelle");
+
+        eval {
+            my $soap = SOAP::Lite
+                -> uri("urn:/Circulation")
+                    -> proxy($circinfotable->{$database}{circcheckurl});
+            my $result = $soap->make_order(
+                SOAP::Data->name(parameter  =>\SOAP::Data->value(
+                    SOAP::Data->name(username     => $loginname)->type('string'),
+                    SOAP::Data->name(password     => $password)->type('string'),
+                    SOAP::Data->name(mediennummer => $mediennummer)->type('string'),
+                    SOAP::Data->name(ausgabeort   => $ausgabeort)->type('string'),
+                    SOAP::Data->name(zweigstelle  => $zweigstelle)->type('string'),
+                    SOAP::Data->name(database     => $circinfotable->{$database}{circdb})->type('string'))));
+            
+            unless ($result->fault) {
+                $circexlist=$result->result;
+            }
+            else {
+                $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+            }
+        };
         
-        my $soap = SOAP::Lite
-            -> uri("urn:/Circulation")
-                -> proxy($circinfotable->{$database}{circcheckurl});
-        my $result = $soap->make_order(
-            SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                SOAP::Data->name(username     => $loginname)->type('string'),
-                SOAP::Data->name(password     => $password)->type('string'),
-                SOAP::Data->name(mediennummer => $mediennummer)->type('string'),
-                SOAP::Data->name(ausgabeort   => $ausgabeort)->type('string'),
-                SOAP::Data->name(zweigstelle  => $zweigstelle)->type('string'),
-                SOAP::Data->name(database     => $circinfotable->{$database}{circdb})->type('string'))));
-        
-        unless ($result->fault) {
-            $circexlist=$result->result;
+        if ($@){
+            $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
         }
-        else {
-            $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
-        }
-        
+
         # TT-Data erzeugen
         my $ttdata={
             view       => $view,
@@ -500,20 +541,26 @@ sub handler {
 
         my $circexlist=undef;
 
-        my $soap = SOAP::Lite
-            -> uri("urn:/Circulation")
-                -> proxy($circinfotable->{$database}{circcheckurl});
-        my $result = $soap->renew_loans(
-            SOAP::Data->name(parameter  =>\SOAP::Data->value(
-                SOAP::Data->name(username     => $loginname)->type('string'),
-                SOAP::Data->name(password     => $password)->type('string'),
-                SOAP::Data->name(database     => $circinfotable->{$database}{circdb})->type('string'))));
+        eval {
+            my $soap = SOAP::Lite
+                -> uri("urn:/Circulation")
+                    -> proxy($circinfotable->{$database}{circcheckurl});
+            my $result = $soap->renew_loans(
+                SOAP::Data->name(parameter  =>\SOAP::Data->value(
+                    SOAP::Data->name(username     => $loginname)->type('string'),
+                    SOAP::Data->name(password     => $password)->type('string'),
+                    SOAP::Data->name(database     => $circinfotable->{$database}{circdb})->type('string'))));
+            
+            unless ($result->fault) {
+                $circexlist=$result->result;
+            }
+            else {
+                $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+            }
+        };
         
-        unless ($result->fault) {
-            $circexlist=$result->result;
-        }
-        else {
-            $logger->error("SOAP MediaStatus Error", join ', ', $result->faultcode, $result->faultstring, $result->faultdetail);
+        if ($@){
+            $logger->error("SOAP-Target konnte nicht erreicht werden :".$@);
         }
         
         # TT-Data erzeugen

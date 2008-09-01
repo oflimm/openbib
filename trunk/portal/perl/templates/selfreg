@@ -55,8 +55,11 @@ verfremdet dargestellten Worte korrekt eingeben. Danach best&auml;tigen Sie bitt
 <tr><td></td><td><input type="submit" value="[% msg.maketext("Registrieren") %]" /></td></tr>
 </table>
 </td>
+[%- IF config.${"recaptcha_public_key"} -%]
 [%- recaptcha_options = { lang => lang, theme => 'white' } -%]
-<td>[% recaptcha.get_html(config.${"recaptcha_public_key"},'',0,recaptcha_options) %]<td></tr>
+<td>[% recaptcha.get_html(config.${"recaptcha_public_key"},'',0,recaptcha_options) %]<td>
+[%- END -%]
+</tr>
 </table>
 <p />
 </form>

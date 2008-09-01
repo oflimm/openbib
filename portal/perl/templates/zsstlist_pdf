@@ -212,7 +212,7 @@ http://www.ub.uni-koeln.de/dezkat/content/bibliotheksfuehrer/sigel/index_ger.htm
 
 [% IF thismexset %]
 \begin{tabular}{cccp{10cm}}
-Sigel & Signatur & Standort & Bestandsverlauf \\
+Sigel & Signatur & Standort & Bestand \\
 [%   FOREACH item IN thismexset %]
 [%     IF showall %]
 [%       IF item.${"X3330"}.content == sigel %]

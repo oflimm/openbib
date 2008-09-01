@@ -106,7 +106,7 @@ END;
 [% IF mexnormset.size > 0 %]
 <p />
 <table width="100%">
-<tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="250">[% msg.maketext("Standort") %]</td><td width="120">[% msg.maketext("Inventarnummer") %]</td><td width="250">[% msg.maketext("Signatur") %]</td><td width="230">[% msg.maketext("Bestandsverlauf") %]</td></tr>
+<tr class="titlerow" align="center"><td width="225">[% msg.maketext("Besitzende Bibliothek") %]</td><td width="250">[% msg.maketext("Standort") %]</td><td width="120">[% msg.maketext("Inventarnummer") %]</td><td width="250">[% msg.maketext("Signatur") %]</td><td width="230">[% msg.maketext("Bestand") %]</td></tr>
 
 [% FOREACH mex IN mexnormset %]
 <tr align="center"><td><strong>

@@ -693,7 +693,7 @@ gew&uuml;nschten Ordnungskriterien (Person, Titel usw. und Anzeige <i>Pro Katalo
       E-Book erworben hat. Damit besteht z.B. auch von einer
       Titelaufnahme der Druck-Ausgabe in einem Institutskatalog sofort
       der Zugriff auf den Volltext. Für diesen Zugriff gelten die mit
-      dem E-Book erworbenen Beschränkungen (nur vom Campus).") %]</li>
+      dem E-Book erworbenen Beschränkungen (nur vom Campus).") %] <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/ebooks.html" target="tutorial"><img src="/images/openbib/audiotutorial.png" alt="[% msg.maketext("Interaktives Tutorium") %]" /></a></li>
 
       </ul>
 

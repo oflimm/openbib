@@ -65,6 +65,12 @@
 </tr>
 </table>
 
+[% hinweisarray = [];
+   hinweisarray.push({ content => "Zugriff nur im Hochschulnetz der Universität Köln bzw. für autorisierte Benutzer" }) ;
+   normset.${"T0663"} = hinweisarray ;  %]
+
+[% USE dumper; dumper.dump(normset) %]
+
 [% bibkey = record.to_bibkey %]
 [%- isbn  = normset.${"T0540"}.first.content.replace('-','') -%]
 

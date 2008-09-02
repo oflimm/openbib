@@ -56,7 +56,7 @@
 [%- item = record.get_normdata -%]
 
 <ul class="tabbingmenu">
-[% IF item.${'T0800'}.first.content.match('(Platte|Einzelstempel|Rolle)',1) %]
+[% IF item.${'T0800'}.first.content.match('(Platte|Einzelstempel|Rolle|Werkzeug)',1) %]
    <li><a                href="[% config.search_loc %]?sessionID=[% sessionID %];database=einbaende;searchsingletit=[% titidn %]">[% msg.maketext("Textangaben") %]</a></li>   
    <li><a class="active" href="[% config.search_loc %]?sessionID=[% sessionID %];database=einbaende;searchsingletit=[% titidn %];stid=1;olws=Viewer">[% msg.maketext("Werkzeug-Abbildungen") %]</a></li>
 [% ELSE %]
@@ -67,7 +67,7 @@
 
 <div class="content">
 [%# USE dumper;dumper.dump(record)%]
-[% IF item.${'T0800'}.first.content.match('(Platte|Einzelstempel|Rolle)',1) %]
+[% IF item.${'T0800'}.first.content.match('(Platte|Einzelstempel|Rolle|Werkzeug)',1) %]
 <!-- Anfang Werkzeug-Bilder -->
 <table width="100%">
 <tr><th>Bilder des Werkzeuges</th></tr>

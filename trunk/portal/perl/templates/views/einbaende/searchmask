@@ -76,7 +76,7 @@
 <p />
 
 <table>
-<tr><th>[% msg.maketext("Einband") %]</th><td></td><th>[% msg.maketext("Werkzeug") %]</th></tr>
+<tr><th>[% msg.maketext("Einband") %]</th><td></td><th>[% msg.maketext("Werkzeug") %] <span style="font-size:0.8em">(in Bearbeitung)</span></th></tr>
 <tr><td class="boxed" valign="top">
 
 <form method="get" id="openbib" action="http://[% config.servername %][% config.virtualsearch_loc %]">
@@ -154,7 +154,7 @@
 <td>&nbsp;&nbsp;</td>
 <td class="boxed" valign="top">
 
-<form method="get" id="openbib" action="http://[% config.servername %][% config.virtualsearch_loc %]">
+<form method="get" id="openbib_2" action="http://[% config.servername %][% config.virtualsearch_loc %]">
 <input type="hidden" name="hitrange"  value="50" />
 <input type="hidden" name="view"      value="[% view %]" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
@@ -181,17 +181,17 @@
 <tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Verknüpfung") %]</td><td>[% msg.maketext("Ihre Eingabe") %]</td><td></td></tr>
 
 <tr><td class="category">[% msg.maketext("Name") %]</td><td class="category"><select name="boolhst"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="hst" value="[% searchquery.hst.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
-<tr><td class="category">[% msg.maketext("Motiv") %]</td><td class="category"><select name="boolgtquelle"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="gtquelle" value="[% searchquery.gtquelle.val | html %]" size="30" maxlength="200" /></td><td></td><td></td></tr>
+<tr><td class="category">[% msg.maketext("Motiv") %]</td><td class="category"><select name="boolgtquelle"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="gtquelle" value="[% searchquery.gtquelle.val | html %]" size="30" maxlength="200" /></td><td><a href="[% config.search_loc %]?sessionID=[% sessionID %];view=[% view %];database=einbaende;browsecat=T0304">[% msg.maketext("Index") %]</a></td></tr>
 
 [% IF showverf %]
-<tr><td class="category">[% msg.maketext("Werkstatt") %]</td><td class="category"><select name="boolverf"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="verf" value="[% searchquery.verf.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+<tr><td class="category">[% msg.maketext("Werkstatt") %]</td><td class="category"><select name="boolverf"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="verf" value="[% searchquery.verf.val | html %]" size="30" maxlength="200" /></td><td><a href="[% config.search_loc %]?sessionID=[% sessionID %];view=[% view %];database=einbaende;browsecat=T0102">[% msg.maketext("Index") %]</a></td></tr>
 [% END %]
 
 [% IF showsign %]
 <tr><td class="category">[% msg.maketext("Signatur") %]</td><td class="category"><select name="boolsign"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="sign" value="[% searchquery.sign.val | html %]" size="30" maxlength="200" /></td><td><span class="warning">*</span></td></tr>
 [% END %]
 
-<tr><td class="category">[% msg.maketext("Art") %]</td><td class="category"><input type="hidden" name="boolmart" value="AND"></td><td><select name="mart"><option value="Rolle">Rolle</option><option value="Platte">Platte</option><option value="Einzelstempel">Einzelstempel</option></select>&nbsp;</td><td></td><td></td></tr>
+<tr><td class="category">[% msg.maketext("Art") %]</td><td class="category"><input type="hidden" name="boolmart" value="AND"></td><td><select name="mart"><option value="Werkzeug">Alle Werkzeugarten</option><option value="Rolle">Nur Rollen</option><option value="Platte">Nur Platten</option><option value="Einzelstempel">Nur Einzelstempel</option></select>&nbsp;</td><td></td><td></td></tr>
 
 </table>
 

@@ -53,7 +53,7 @@
 </tr>
 </table>
 <ul class="tabbingmenu">
-[% IF normset.${'T0800'}.first.content.match('(Platte|Einzelstempel|Rolle)',1) %]
+[% IF normset.${'T0800'}.first.content.match('(Platte|Einzelstempel|Rolle|Werkzeug)',1) %]
    <li><a class="active" href="[% config.search_loc %]?sessionID=[% sessionID %];database=einbaende;searchsingletit=[% titidn %]">[% msg.maketext("Textangaben") %]</a></li>   
    <li><a                href="[% config.search_loc %]?sessionID=[% sessionID %];database=einbaende;searchsingletit=[% titidn %];stid=1;olws=Viewer">[% msg.maketext("Werkzeug-Abbildungen") %]</a></li>
 [% ELSE %]
@@ -64,7 +64,7 @@
 <div class="content">
 
 <p>
-[% IF normset.${'T0800'}.first.content.match('(Platte|Einzelstempel|Rolle)',1) %]
+[% IF normset.${'T0800'}.first.content.match('(Platte|Einzelstempel|Rolle|Werkzeug)',1) %]
 <!-- Title begins here -->
 <table width="100%">
 <tr><th>[% msg.maketext("Werkzeug-Daten") %]</th></tr>

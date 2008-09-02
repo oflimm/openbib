@@ -754,13 +754,16 @@ if ($type == 12){
         if ($mincount > $count){
             $mincount = $count;
         }
-        
+
+        $logger->debug(YAML::Dump($properties_ref));
+
+        # Nur oeffentliche Literaturlisten verwenden
         push @$bestof_ref, {
             item       => $content,
             id         => $id,
             count      => $count,
             properties => $properties_ref,
-        };
+        } if ($properties_ref->{type} == 1);
     }
     
     $bestof_ref = gen_cloud_class({

@@ -111,7 +111,7 @@
 "><img src="http://einbandsammlung.ub.uni-koeln.de/digiarchive/einbaende/[% record.id %]/[% record.olws.images.first.thumb %]" alt="Bild [% record.olws.images.first.name %]" /></a>
 [% END %]
 </td><td colspan="4">
-[% IF item.${'T0800'}.first.content.match('(Platte|Einzelstempel|Rolle)',1) %]
+[% IF item.${'T0800'}.first.content.match('(Platte|Einzelstempel|Rolle|Werkzeug)',1) %]
 <!-- Anfang Werkzeugliste -->
 <table>
 <tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td colspan="2">&nbsp;</td></tr>
@@ -121,7 +121,7 @@
 <tr><td><b>Werkstatt</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0102;olws=Viewer;stid=1">[% part.content %]</a></td></tr>
 [%- END -%]
 
-[%- FOREACH part IN item.${'T0451'}  -%]
+[%- FOREACH part IN item.${'T0310'}  -%]
 <tr><td><b>Name</b></td><td colspan="2"><b>[% part.content %]</b></td></tr>
 [%- END -%]
 
@@ -133,12 +133,8 @@
 <tr><td><b>Motivbeschreibung</b></td><td colspan="2">[% part.content %]</td></tr>
 [%- END -%]
 
-[%- FOREACH part IN item.${'T0501'}  -%]
-<tr><td><b>Quellen</b></td><td colspan="2">[% part.content %]</td></tr>
-[%- END -%]
-
-[%- FOREACH part IN item.${'T0508'}  -%]
-<tr><td><b>Bibl. Nachweis</b></td><td colspan="2">[% part.content %]</td></tr>
+[%- FOREACH part IN item.${'C0200'}  -%]
+<tr><td><b>Region</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0200;olws=Viewer">[% part.content %]</a></td></tr>
 [%- END -%]
 
 [%- FOREACH part IN item.${'T0435'}  -%]
@@ -156,7 +152,7 @@
 <tr><td><b>Anzahl Abbildungen</b></td><td colspan="2">[% record.olws.images.size %]</td></tr>
 
 <tr><td colspan="3">&nbsp;</td></tr>
-<tr><td colspan="3"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchsingletit=[% record.id %];database=[% record.database %];stid=1;olws=Viewer">[ Abbildung(en) ]</a></td></tr>
+<tr><td colspan="3"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchsingletit=[% record.id %];database=[% record.database %]">[ Beschreibung ]</a>&nbsp;&nbsp;<a href="[% config.search_loc%]?sessionID=[% sessionID %];searchsingletit=[% record.id %];database=[% record.database %];stid=1;olws=Viewer">[ Abbildung(en) ]</a></td></tr>
 <tr><td colspan="3">&nbsp;</td></tr>
 </table>
 <!-- Ende Werkzeugliste -->

@@ -63,7 +63,7 @@
 <tr><td valign="top">
 [%         IF config.drilldown_option.categorized_mart && category_map.4.size > 0 %]
 <table width="100%">
-<tr><th>[% msg.maketext("nach Medienart") %]</th></tr>
+<tr><th>nach Art</th></tr>
 <tr><td class="boxedclear">
 [%             FOREACH termitem IN category_map.4 ;
                   LAST IF loop.count > 5 ;

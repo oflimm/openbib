@@ -139,6 +139,8 @@
 [% END %]
 
 </table>
+<input type="hidden" name="boolmart"  value="AND">
+<input type="hidden" name="mart"      value="Einband">
 
 <input type="hidden" name="sorttype"  value="yearofpub" />
 <input type="hidden" name="sortorder" value="up" />

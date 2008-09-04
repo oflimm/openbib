@@ -93,8 +93,8 @@
 <tr><td><b>Motivbeschreibung</b></td><td colspan="2">[% part.content %]</td></tr>
 [%- END -%]
 
-[%- FOREACH part IN item.${'T0200'}  -%]
-<tr><td><b>Region</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0200;olws=Viewer">[% part.content %]</a></td></tr>
+[%- FOREACH part IN item.${'T0201'}  -%]
+<tr><td><b>Region</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0201;olws=Viewer;stid=1">[% part.content %]</a></td></tr>
 [%- END -%]
 
 [%- FOREACH part IN item.${'T0435'}  -%]
@@ -180,23 +180,23 @@
 <tr><td><b>Id</b></td><td colspan="2">[% item.${'id'} %]</td></tr>
 
 [%- FOREACH part IN item.${'T0101'}  -%]
-<tr><td><b>Buchbinder/Werkstatt</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0101;olws=Viewer">[% part.content %]</a></td></tr>
+<tr><td><b>Buchbinder/Werkstatt</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0101;olws=Viewer;stid=1">[% part.content %]</a></td></tr>
 [%- END -%]
 
 [%- FOREACH part IN item.${'T0700'}  -%]
-<tr><td><b>Einband</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0700;olws=Viewer">[% part.content %]</a></td></tr>
+<tr><td><b>Einband</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0700;olws=Viewer;stid=1">[% part.content %]</a></td></tr>
 [%- END -%]
 
 [%- FOREACH part IN item.${'T0710'}  -%]
-<tr><td><b>Jahrhundert</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0710;olws=Viewer">[% part.content %]</a></td></tr>
+<tr><td><b>Jahrhundert</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0710;olws=Viewer;stid=1">[% part.content %]</a></td></tr>
 [%- END -%]
 
 [%- FOREACH part IN item.${'T0200'}  -%]
-<tr><td><b>Region</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0200;olws=Viewer">[% part.content %]</a></td></tr>
+<tr><td><b>Region</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0200;olws=Viewer;stid=1">[% part.content %]</a></td></tr>
 [%- END -%]
 
 [%- FOREACH part IN item.${'T0413'}  -%]
-<tr><td><b>Drucker/Verleger/Verlag</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0413;olws=Viewer">[% part.content %]</td></tr>
+<tr><td><b>Drucker/Verleger/Verlag</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0413;olws=Viewer;stid=1">[% part.content %]</td></tr>
 [%- END -%]
 
 [%- FOREACH part IN item.${'T0435'}  -%]

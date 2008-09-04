@@ -1,7 +1,7 @@
 [%#-
 #######################################################################
 #
-# Templatename: visible_categories_coverset
+# Templatename: visible_categories_toolset
 #
 # Typ         : Subtemplate
 #
@@ -17,7 +17,7 @@
                 'T0310', # msg.maketext("T0310-einbaende") Titel
                 'T0304', # msg.maketext("T0304-einbaende") Motiv
                 'T0335', # msg.maketext("T0335-einbaende") Motivbeschreibung
-                'T0200', # msg.maketext("T0200-einbaende") Region
+                'T0201', # msg.maketext("T0201-einbaende") Region/Werkzeug
                 'T0750', # msg.maketext("T0750-einbaende") Beschreibung
                 'T0501', # msg.maketext("T0501-einbaende") Quellen
                 'T0508', # msg.maketext("T0508-einbaende") Bibl. Nachweis

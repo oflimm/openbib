@@ -2064,7 +2064,7 @@ sub get_other_litlists {
 
     return [] if (!$litlistid);
 
-    my $sql_stmnt = "select id,title from litlists where id != ? and userid in (select userid from litlists where id = ?) order by title";
+    my $sql_stmnt = "select id,title from litlists where type == 1 and id != ? and userid in (select userid from litlists where id = ?) order by title";
 
     my $request=$dbh->prepare($sql_stmnt) or $logger->error($DBI::errstr);
     $request->execute($litlistid,$litlistid) or $logger->error($DBI::errstr);

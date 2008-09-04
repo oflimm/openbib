@@ -133,7 +133,7 @@
 <tr><td><b>Motivbeschreibung</b></td><td colspan="2">[% part.content %]</td></tr>
 [%- END -%]
 
-[%- FOREACH part IN item.${'C0200'}  -%]
+[%- FOREACH part IN item.${'C0201'}  -%]
 <tr><td><b>Region</b></td><td colspan="2"><a href="[% config.search_loc%]?sessionID=[% sessionID %];searchtitofcnt=[% part.content.replace('&amp;','%26') %];database=einbaende;category=T0200;olws=Viewer">[% part.content %]</a></td></tr>
 [%- END -%]
 

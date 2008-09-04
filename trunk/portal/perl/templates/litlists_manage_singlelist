@@ -93,7 +93,7 @@ type="submit" name="do_changelist" value="[% msg.maketext("&Auml;ndern") %]" /><
   <option value="up"[%- IF query.param('sortorder') == 'up' -%] selected="selected"[%- END -%]>[% msg.maketext("aufsteigend") %]</option>
   <option value="down"[%- IF query.param('sortorder') == 'down' -%] selected="selected"[%- END -%]>[% msg.maketext("absteigend") %]</option>
 </select>
-&nbsp;<input type="submit" value="[% msg.maketext("Los") %]" /></td>
+&nbsp;<input type="submit" value="[% msg.maketext("Los") %]" />
 
 &nbsp;&nbsp;<b>&#124;</b>&nbsp;&nbsp;
 
@@ -104,7 +104,7 @@ type="submit" name="do_changelist" value="[% msg.maketext("&Auml;ndern") %]" /><
 
 <b>[% msg.maketext("PermaLink") %]:</b>&nbsp;<a href="http://[% config.loadbalancerservername %][% config.connector_permalink_loc %]/[% litlist.properties.userid %]/[% litlist.properties.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]"><img style="vertical-align:bottom" src="/images/openbib/3d-file-blue-permalink.png" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a></td></tr>
 [% END %]
-</tr></table><p />
+</td></tr></table><p />
 </form>
 <p />
 

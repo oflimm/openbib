@@ -182,11 +182,19 @@
 <table>
 <tr><td>[% msg.maketext("Kategorie") %]</td><td>[% msg.maketext("Verknüpfung") %]</td><td>[% msg.maketext("Ihre Eingabe") %]</td><td></td></tr>
 
+[% IF showfs %]
+<tr><td class="category">[% msg.maketext("Freie Suche") %]</td><td class="category"></td><td><input type="text" name="fs" value="[% searchquery.fs.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
+[% END %]
+
 <tr><td class="category">[% msg.maketext("Name") %]</td><td class="category"><select name="boolhst"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="hst" value="[% searchquery.hst.val | html %]" size="30" maxlength="200" /></td><td></td></tr>
 <tr><td class="category">[% msg.maketext("Motiv") %]</td><td class="category"><select name="boolgtquelle"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="gtquelle" value="[% searchquery.gtquelle.val | html %]" size="30" maxlength="200" /></td><td><a href="[% config.search_loc %]?sessionID=[% sessionID %];view=[% view %];database=einbaende;browsecat=T0304">[% msg.maketext("Index") %]</a></td></tr>
 
 [% IF showverf %]
 <tr><td class="category">[% msg.maketext("Werkstatt") %]</td><td class="category"><select name="boolverf"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="verf" value="[% searchquery.verf.val | html %]" size="30" maxlength="200" /></td><td><a href="[% config.search_loc %]?sessionID=[% sessionID %];view=[% view %];database=einbaende;browsecat=T0102">[% msg.maketext("Index") %]</a></td></tr>
+[% END %]
+
+[% IF showkor %]
+<tr><td class="category">[% msg.maketext("Region") %]</td><td class="category"><select name="boolkor"><option value="AND" selected="selected">und</option><option value="OR">oder</option><option value="NOT">und nicht</option></select></td><td><input type="text" name="kor" value="[% searchquery.kor.val | html %]" size="30" maxlength="200" /></td><td><a href="[% config.search_loc %]?sessionID=[% sessionID %];view=[% view %];database=einbaende;browsecat=T0201">[% msg.maketext("Index") %]</a></td></tr>
 [% END %]
 
 [% IF showsign %]

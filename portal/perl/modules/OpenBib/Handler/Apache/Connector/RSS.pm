@@ -243,6 +243,9 @@ sub handler {
             
             my $desc  = "";
             my $title = $record->get_category({category => 'T0331', indicator => 1});
+            my $ast   = $record->get_category({category => 'T0310', indicator => 1});
+
+            $title = $ast if ($ast);
             
             my $itemtemplatename = $config->{tt_connector_rss_item_tname};
             my $itemtemplate = Template->new({

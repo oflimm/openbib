@@ -327,27 +327,33 @@ sub handler {
                 type      => 800,
                 content   => $litlistid,
             });
-            
-	    # TT-Data erzeugen
-	    my $ttdata={
-                view         => $view,
-                stylesheet   => $stylesheet,
-                sessionID    => $session->{ID},
 
-                query        => $query,
-                qopts        => $queryoptions->get_options,
-                user         => $user,
-                litlist      => $singlelitlist,
-                targetdbinfo => $dbinfotable,
+            my $other_litlists_of_user = $user->get_other_litlists({litlistid => $litlistid});
                 
-                config       => $config,
-                user         => $user,
-                msg          => $msg,
+                # TT-Data erzeugen
+	    my $ttdata={
+                view           => $view,
+                stylesheet     => $stylesheet,
+                sessionID      => $session->{ID},
+
+                query          => $query,
+                qopts          => $queryoptions->get_options,
+                user           => $user,
+                
+                litlist        => $singlelitlist,
+                other_litlists => $other_litlists_of_user,
+                
+                targetdbinfo   => $dbinfotable,
+                
+                config         => $config,
+                user           => $user,
+                msg            => $msg,
             };
 	    
 	    OpenBib::Common::Util::print_page($config->{tt_litlists_show_singlelist_tname},$ttdata,$r);
             return OK;
-        } else {
+        }
+        else {
 	    OpenBib::Common::Util::print_warning($msg->maketext("Ihnen geh&ouml;rt diese Literaturliste nicht."),$r,$msg);
             return OK;
         }

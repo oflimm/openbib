@@ -2042,6 +2042,44 @@ sub get_litlists {
     return $litlists_ref;
 }
 
+sub get_other_litlists {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $litlistid           = exists $arg_ref->{litlistid}
+        ? $arg_ref->{litlistid}           : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return [] if (!defined $dbh);
+
+    return [] if (!$litlistid);
+
+    my $sql_stmnt = "select id,title from litlists where id != ? and userid in (select userid from litlists where id = ?) order by title";
+
+    my $request=$dbh->prepare($sql_stmnt) or $logger->error($DBI::errstr);
+    $request->execute($litlistid,$litlistid) or $logger->error($DBI::errstr);
+
+    my $litlists_ref = [];
+
+    while (my $result=$request->fetchrow_hashref){
+      my $litlistid        = $result->{id};
+      
+      push @$litlists_ref, $self->get_litlist_properties({litlistid => $litlistid});
+    }
+    
+    return $litlists_ref;
+}
+
 sub get_litlistentries {
     my ($self,$arg_ref)=@_;
 
@@ -2949,6 +2987,7 @@ sub set_fieldchoice {
 
     return undef if (!defined $dbh);
 
+    $logger->debug("update fieldchoice set fs = ?, hst = ?, hststring = ?, verf = ?, kor = ?, swt = ?, notation = ?, isbn = ?, issn = ?, sign = ?, mart = ?, ejahr = ?, inhalt=?, gtquelle=? where userid = ? - $fs,$hst,$hststring,$verf,$kor,$swt,$notation,$isbn,$issn,$sign,$mart,$ejahr,$inhalt,$gtquelle,$self->{ID}");
     my $targetresult=$dbh->prepare("update fieldchoice set fs = ?, hst = ?, hststring = ?, verf = ?, kor = ?, swt = ?, notation = ?, isbn = ?, issn = ?, sign = ?, mart = ?, ejahr = ?, inhalt=?, gtquelle=? where userid = ?") or $logger->error($DBI::errstr);
     $targetresult->execute($fs,$hst,$hststring,$verf,$kor,$swt,$notation,$isbn,$issn,$sign,$mart,$ejahr,$inhalt,$gtquelle,$self->{ID}) or $logger->error($DBI::errstr);
     $targetresult->finish();

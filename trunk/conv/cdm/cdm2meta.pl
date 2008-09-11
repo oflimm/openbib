@@ -32,36 +32,44 @@ use 5.008001;
 
 use utf8;
 
+use Encode 'decode';
+use Getopt::Long;
 use XML::Twig;
+use YAML::Syck;
 
-use vars qw(@autbuffer @autdubbuf);
-use vars qw(@korbuffer @kordubbuf);
-use vars qw(@swtbuffer @swtdubbuf);
-use vars qw(@titbuffer @titdubbuf);
-use vars qw($id);
+use OpenBib::Config;
 
-my $inputfile=$ARGV[0];
+our (@autdubbuf,@kordubbuf,@swtdubbuf,@notdubbuf);
 
-$autdublastidx=1;
-$autidx=0;
+@autdubbuf = ();
+@kordubbuf = ();
+@swtdubbuf = ();
+@notdubbuf = ();
 
-$kordublastidx=1;
-$koridx=0;
+my ($inputfile,$configfile);
 
-$swtdublastidx=1;
-$swtidx=0;
+&GetOptions(
+	    "inputfile=s"          => \$inputfile,
+            "configfile=s"         => \$configfile,
+	    );
 
-$titdublastidx=1;
-$titidx=0;
+if (!$inputfile && !$configfile){
+    print << "HELP";
+cdm2meta.pl - Aufrufsyntax
 
-@autbuffer=();
-@autdubbuf=();
-@korbuffer=();
-@kordubbuf=();
-@swtbuffer=();
-@swtdubbuf=();
-@titbuffer=();
-@titdubbuf=();
+    cdm2meta.pl --inputfile=xxx --configfile=yyy.yml
+HELP
+exit;
+}
+
+# Ininitalisierung mit Config-Parametern
+my $convconfig = YAML::Syck::LoadFile($configfile);
+
+open (TIT,     ">:utf8","unload.TIT");
+open (AUT,     ">:utf8","unload.PER");
+open (KOR,     ">:utf8","unload.KOE");
+open (NOTATION,">:utf8","unload.SYS");
+open (SWT,     ">:utf8","unload.SWD");
 
 my $twig= XML::Twig->new(
    TwigHandlers => {
@@ -72,104 +80,183 @@ my $twig= XML::Twig->new(
 
 $twig->parsefile($inputfile);
 
-ausgabeautfile();
-ausgabekorfile();
-ausgabeswtfile();
-ausgabetitfile();
-
 sub parse_titset {
     my($t, $titset)= @_;
     
-    $titbuffer[$titidx++]="0000:".$titset->first_child('cdmid')->text();
-    
-    # Verfasser/Personen
-    if(defined $titset->first_child('creator') && $titset->first_child('creator')->text()){
-        foreach my $ans (split('\s+;\s+',$titset->first_child('creator')->text())){
-            if ($ans){
-                $ans=~s/>/&gt;/g;
-                $ans=~s/</&lt;/g;
-                
-                my $idn=get_autidn($ans);
-                if ($idn > 0){
-                    $autbuffer[$autidx++]="0000:".$idn;
-                    $autbuffer[$autidx++]="0001:".$ans;
-                    $autbuffer[$autidx++]="9999:";
-                }
-                else {
-                    $idn=(-1)*$idn;
-                }
-                
-                $titbuffer[$titidx++]="0100:IDN: ".$idn;
-            }
-        }
-    }
-
-    # Titelkategorien
+    print TIT "0000:".$titset->first_child($convconfig->{uniqueidfield})->text()."\n";
 
     # Erstellungsdatum
     if(defined $titset->first_child('cdmcreated') && $titset->first_child('cdmcreated')->text()){
         my ($year,$month,$day)=split("-",$titset->first_child('cdmcreated')->text());
-        $titbuffer[$titidx++]="0002:$day.$month.$year";
+        print TIT "0002:$day.$month.$year\n";
     }
-
+    
     # Aenderungsdatum
-    if(defined $titset->first_child('cdmmodified') && $titset->first_child('cdmcreated')->text()){
-        my ($year,$month,$day)=split("-",$titset->first_child('cdmcreated')->text());
-        $titbuffer[$titidx++]="0003:$day.$month.$year";
+    if(defined $titset->first_child('cdmmodified') && $titset->first_child('cdmmodified')->text()){
+        my ($year,$month,$day)=split("-",$titset->first_child('cdmmodified')->text());
+        print TIT "0003:$day.$month.$year\n";
     }
 
-    # Titel
-    if(defined $titset->first_child('title') && $titset->first_child('title')->text()){
-        $titbuffer[$titidx++]="0331:".$titset->first_child('title')->text();
-    }
+    foreach my $kateg (keys %{$convconfig->{title}}){
+        if(defined $titset->first_child($kateg) && $titset->first_child($kateg)->text()){
+            my $content = konv($titset->first_child($kateg)->text());
+#            my $content = decode($convconfig->{encoding},$titset->first_child($kateg)->text());
+            
+            if ($content){
+                my @parts = ();
+                if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
+                    @parts = split($convconfig->{category_split_chars}{$kateg},$content);
+                }
+                else {
+                    push @parts, $content;
+                }
 
-    # Verlag
-    if(defined $titset->first_child('publisher') && $titset->first_child('publisher')->text()){
-        $titbuffer[$titidx++]="0412:".$titset->first_child('publisher')->text();
-    }
-
-    # Beschreibung/Abstract
-    if(defined $titset->first_child('description') && $titset->first_child('description')->text()){
-        $titbuffer[$titidx++]="0750:".$titset->first_child('description')->text();
+                foreach my $part (@parts){
+                    print TIT $convconfig->{title}{$kateg}.$part."\n";
+                }
+            }
+        }
     }
     
-    # Jahr
-    if(defined $titset->first_child('date') && $titset->first_child('date')->text()){
-        $titbuffer[$titidx++]="0425:".$titset->first_child('date')->text();
-    }
-    
-    # Sprache
-    if(defined $titset->first_child('language') && $titset->first_child('language')->text()){
-        $titbuffer[$titidx++]="0005:".$titset->first_child('language')->text();
+    # Autoren abarbeiten Anfang
+    foreach my $kateg (keys %{$convconfig->{pers}}){
+        if (defined $titset->first_child($kateg) && $titset->first_child($kateg)->text()){
+            my $content = konv($titset->first_child($kateg)->text());
+            #my $content = decode($convconfig->{encoding},$titset->first_child($kateg)->text());
+            
+            if ($content){
+                my @parts = ();
+                if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
+                    @parts = split($convconfig->{category_split_chars}{$kateg},$content);
+                }
+                else {
+                    push @parts, $content;
+                }
+                
+                foreach my $part (@parts){
+                    my $autidn=get_autidn($part);
+                    
+                    if ($autidn > 0){
+                        print AUT "0000:$autidn\n";
+                        print AUT "0001:$part\n";
+                        print AUT "9999:\n";
+                    }
+                    else {
+                        $autidn=(-1)*$autidn;
+                    }
+                    
+                    print TIT $convconfig->{pers}{$kateg}."IDN: $autidn\n";
+                }
+            }
+            # Autoren abarbeiten Ende
+        }
     }
 
-    # Quelle
-    if(defined $titset->first_child('relation') && $titset->first_child('relation')->text()){
-        $titbuffer[$titidx++]="0508:".$titset->first_child('relation')->text();
+    # Koerperschaften abarbeiten Anfang
+    foreach my $kateg (keys %{$convconfig->{corp}}){
+        if(defined $titset->first_child($kateg) && $titset->first_child($kateg)->text()){
+            my $content = konv($titset->first_child($kateg)->text());
+            #my $content = decode($convconfig->{encoding},$titset->first_child($kateg)->text());
+            
+            if ($content){
+                my @parts = ();
+                if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
+                    @parts = split($convconfig->{category_split_chars}{$kateg},$content);
+                }
+                else {
+                    push @parts, $content;
+                }
+                
+                foreach my $part (@parts){
+                    my $koridn=get_koridn($part);
+                
+                    if ($koridn > 0){
+                        print KOR "0000:$koridn\n";
+                        print KOR "0001:$part\n";
+                        print KOR "9999:\n";
+                    }
+                    else {
+                        $koridn=(-1)*$koridn;
+                    }
+                    
+                    print TIT $convconfig->{corp}{$kateg}."IDN: $koridn\n";
+                }
+            }
+        }
     }
+    # Koerperschaften abarbeiten Ende
 
-    # Signatur
-    if(defined $titset->first_child('unmapped') && $titset->first_child('unmapped')->text()){
-        $titbuffer[$titidx++]="0014.001:".$titset->first_child('unmapped')->text();
+    # Notationen abarbeiten Anfang
+    foreach my $kateg (keys %{$convconfig->{sys}}){
+        if(defined $titset->first_child($kateg) && $titset->first_child($kateg)->text()){
+            my $content = konv($titset->first_child($kateg)->text());
+            #my $content = decode($convconfig->{encoding},$titset->first_child($kateg)->text());
+            
+            if ($content){
+                my @parts = ();
+                if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
+                    @parts = split($convconfig->{category_split_chars}{$kateg},$content);
+                }
+                else {
+                    push @parts, $content;
+                }
+                
+                foreach my $part (@parts){
+                    my $notidn=get_notidn($part);
+                
+                    if ($notidn > 0){
+                        print NOTATION "0000:$notidn\n";
+                        print NOTATION "0001:$content\n";
+                        print NOTATION "9999:\n";
+                    }
+                    else {
+                        $notidn=(-1)*$notidn;
+                    }
+                    print TIT $convconfig->{sys}{$kateg}."IDN: $notidn\n";
+                }
+            }
+        }
     }
-
-    # CDM-Thumbnail URL
-    if(defined $titset->first_child('thumbnailURL') && $titset->first_child('thumbnailURL')->text()){
-        $titbuffer[$titidx++]="2662:".$titset->first_child('thumbnailURL')->text();
+    # Notationen abarbeiten Ende
+        
+    # Schlagworte abarbeiten Anfang
+    foreach my $kateg (keys %{$convconfig->{subj}}){
+        if(defined $titset->first_child($kateg) && $titset->first_child($kateg)->text()){
+            my $content = konv($titset->first_child($kateg)->text());
+#            $content    = decode($convconfig->{encoding},$content) if (exists $convconfig->{encoding});
+            
+            if ($content){
+                my @parts = ();
+                if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
+                    @parts = split($convconfig->{category_split_chars}{$kateg},$content);
+                }
+                else {
+                    push @parts, $content;
+                }
+                
+                foreach my $part (@parts){
+                    my $swtidn=get_swtidn($part);
+                    
+                    if ($swtidn > 0){	  
+                        print SWT "0000:$swtidn\n";
+                        print SWT "0001:$part\n";
+                        print SWT "9999:\n";
+                    }
+                    else {
+                        $swtidn=(-1)*$swtidn;
+                    }
+                    print TIT $convconfig->{subj}{$kateg}."IDN: $swtidn\n";
+                }
+            }
+        }
     }
-
-    # CDM-URL
-    if(defined $titset->first_child('viewerURL') && $titset->first_child('viewerURL')->text()){
-        $titbuffer[$titidx++]="0662:".$titset->first_child('viewerURL')->text();
-    }
-    
-    $titbuffer[$titidx++]="9999:";
+    # Schlagworte abarbeiten Ende
+    print TIT "9999:\n";
     
     # Release memory of processed tree
     # up to here
     $t->purge();
 }
-                                   
                                    
 sub get_autidn {
     ($autans)=@_;
@@ -242,54 +329,31 @@ sub get_koridn {
     return $kordubidn;
 }
 
-sub ausgabeautfile {
-    open(AUT,">:utf8","unload.PER");
-    $i=0;
-    while ($i < $autidx){
-        print AUT $autbuffer[$i],"\n";
-        $i++;
+sub get_notidn {
+    my ($notans)=@_;
+    
+    my $notdubidx=1;
+    my $notdubidn=0;
+    
+    while ($notdubidx <= $#notdubbuf){
+        if ($notans eq $notdubbuf[$notdubidx]){
+            $notdubidn=(-1)*$notdubidx;      
+        }
+        $notdubidx++;
     }
-    close(AUT);
-}
-
-sub ausgabetitfile
-{
-    open (TIT,">:utf8","unload.TIT");
-    $i=0;
-    while ($i < $titidx){
-	print TIT $titbuffer[$i],"\n";
-	$i++;
+    if (!$notdubidn){
+        $notdubbuf[$notdubidx]=$notans;
+        $notdubidn=$notdubidx;
     }
-    close(TIT);
+    return $notdubidn;
 }
 
-sub ausgabemexfile {
-    open(MEX,">:utf8","mex.exp");
-    $i=0;
-    while ($i < $mexidx){
-	print MEX $mexbuffer[$i],"\n";
-	$i++;
-    }
-    close(MEX);
-}
+sub konv {
+    my ($content)=@_;
 
-sub ausgabeswtfile {
-  open(SWT,">:utf8","unload.SWD");
-  $i=0;
-  while ($i < $swtidx) {
-      print SWT $swtbuffer[$i],"\n";
-      $i++;
-  }
-  close(SWT);
-}
+#    $content=~s/\&/&amp;/g;
+    $content=~s/>/&gt;/g;
+    $content=~s/</&lt;/g;
 
-sub ausgabekorfile {
-    open(KOR,">:utf8","unload.KOE");
-    $i=0;
-    while ($i < $koridx){
-	print KOR $korbuffer[$i],"\n";
-	$i++;
-    }
-    close(KOR);
+    return $content;
 }
-

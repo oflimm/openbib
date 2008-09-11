@@ -1,0 +1,32 @@
+# Tracelevel
+#tracelevel:
+
+# Feld der eindeutigen Titel-ID
+uniqueidfield: 'cdmid'
+
+category_split_chars:
+  'creator': '\s+;\s'
+
+# Personen
+pers:
+  'creator': '0100:'      # Verfasser
+
+# Koerperschaften
+corp:
+
+# Systematik
+sys: 
+
+# Schlagworte
+subj:
+
+# Titel
+title:
+  'title': '0331:'
+  'publisher': '0412:'
+  'description': '0750:'
+  'date': '0425:'
+  'language': '0005:'
+  'relation': '0508:'
+  'unmapped': '0014.001:'
+  'thumbnailURL': '2662:'

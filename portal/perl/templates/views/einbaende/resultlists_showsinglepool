@@ -31,23 +31,26 @@
 </ul>
 
 <div class="content">
+<p/>
+<form method="get" action="[% config.resultlists_loc %]">
 
-<FORM METHOD="GET" action="[% config.resultlists_loc %]">
-<p>
-
-<p><form method="get" action="[% hostself %]">
-[%- FOREACH i IN queryargs -%]
-<input type="hidden" name="[% i.key %]" value="[% i.value %]">
-[%- END -%]
+<input type="hidden" name="offset"    value="[% query.param('offset') %]" />
+<input type="hidden" name="hitrange"  value="[% qopts.hitrange %]" />
+<input type="hidden" name="action"    value="showrange" />
+<input type="hidden" name="database"  value="[% database %]" />
+<input type="hidden" name="sessionID" value="[% query.param('sessionID') %]" />
+<input type="hidden" name="queryid"   value="[% queryid %]" />
+<input type="hidden" name="sortall"   value="0" />
 
 <table width="100%">
 <tr><th>[% msg.maketext("Optionen") %]</th></tr>
 <tr><td class="boxed">
-<b>[% msg.maketext("Sortierung:") %]<b>&nbsp;
+<b>[% msg.maketext("Sortierung") %]:</b>&nbsp;
 <select name="sorttype">
   <option value="author"[%- IF query.param('sorttype') == 'author' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Person/Region") %]</option>
-  <option value="title"[%- IF query.param('sorttype') == 'title' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel/Z&auml;hlung") %]</option>
-  <option value="yearofpub"[%- IF query.param('sorttype') == 'yearofpub' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Fert.Jahr") %]</option>
+  <option value="title"[%- IF query.param('sorttype') == 'title' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel") %]</option>
+  <option value="order"[%- IF query.param('sorttype') == 'order' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Z&auml;hlung") %]</option>
+  <option value="yearofpub"[%- IF query.param('sorttype') == 'yearofpub' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]</option>
   <option value="publisher"[%- IF query.param('sorttype') == 'publisher' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Verlag") %]</option>
   <option value="signature"[%- IF query.param('sorttype') == 'signature' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Signatur") %]</option>
   <option value="popularity"[%- IF query.param('sorttype') == 'popularity' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Popularit&auml;t") %]</option>
@@ -56,15 +59,18 @@
   <option value="up"[%- IF query.param('sortorder') == 'up' -%] selected="selected"[%- END -%]>[% msg.maketext("aufsteigend") %]</option>
   <option value="down"[%- IF query.param('sortorder') == 'down' -%] selected="selected"[%- END -%]>[% msg.maketext("absteigend") %]</option>
 </select>
-&nbsp;<input type="submit" value="[% msg.maketext("Los") %]" /></td></tr></table><p />
+&nbsp;<input type="submit" value="[% msg.maketext("Los") %]" />
+
+</td></tr></table><p />
 </form>
+
 [%# USE dumper; dumper.dump(resultlists)%]
 <table>
 
 [%- FOREACH result IN resultlists -%]
 [%-     recordlist = result.recordlist -%]
 [%-     database   = result.database -%]
-<tr class="titlerow"><td>&nbsp;</td><td><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% dbinfo.$database.full %]</td><td align="right" colspan="4"><strong>[% recordlist.get_size %] Treffer</strong></td></tr>
+<tr class="titlerow"><td>&nbsp;</td><td><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% dbinfotable.dbinfo.$database.full %]</td><td align="right" colspan="4"><strong>[% recordlist.get_size %] Treffer</strong></td></tr>
 [%-     IF offsets -%]
 <tr class="titlerow"><td>&nbsp;</td><td colspan="4">
 [%          FOREACH singleoffset IN offsets %]
@@ -129,7 +135,9 @@
 sessionID %];search=Mehrfachauswahl;searchmode=[% searchmode %];rating=[% rating %];bookinfo=[% bookinfo %];hitrange=;sorttype=[%
 sorttype %]&database=[% item.${"database"} %];searchsingletit=[% item.id
 %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
-id="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></td><td><span class="rlcollect"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="/images/openbib/3d-file-blue-clipboard.png" alt="[% msg.maketext("In die Merkliste") %]" border=0></a></span></td><td align=left><b>[% signatur %]</b></td><td><a href="http://einbandsammlung.ub.uni-koeln.de/opendia/viewer?collection=einbaende;item=[% item.id %];action=showsingleitem;view=kug;remotehost=[% config.servername %];remoteview=[% view %];sessionID=[% sessionID %]">[&nbsp;[% msg.maketext("Abb.") %]&nbsp;]</a></td></tr>
+id="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></td><td><span class="rlcollect"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="/images/openbib/3d-file-blue-clipboard.png" alt="[% msg.maketext("In die Merkliste") %]" border=0></a></span></td><td align=left><b>[% signatur %]</b></td><td><a href="[% config.search_loc %]?sessionID=[%
+sessionID %];search=Mehrfachauswahl;searchmode=[% searchmode %];rating=[% rating %];bookinfo=[% bookinfo %];hitrange=;sorttype=[%
+sorttype %]&database=[% item.${"database"} %];searchsingletit=[% item.id %];stid=1;olws=Viewer">[&nbsp;[% msg.maketext("Abb.") %]&nbsp;]</a></td></tr>
 
 [% IF listrow == 'listrow1' %]
 [% listrow = 'listrow2' %]

@@ -4,7 +4,7 @@
 #
 #  alt_remote.pl
 #
-#  Holen via oai und konvertieren in das Meta-Format
+#  Holen via http und konvertieren in das Meta-Format
 #
 #  Dieses File ist (C) 2003-2006 Oliver Flimm <flimm@openbib.org>
 #
@@ -39,20 +39,21 @@ my $config = new OpenBib::Config();
 my $rootdir       = $config->{'autoconv_dir'};
 my $pooldir       = $rootdir."/pools";
 my $konvdir       = $config->{'conv_dir'};
-
-my $harvestoaiexe = "$config->{'conv_dir'}/harvestOAI.pl";
-my $oai2metaexe   = "$config->{'conv_dir'}/oai2meta.pl";
+my $confdir       = $config->{'base_dir'}."/conf";
+my $wgetexe       = "/usr/bin/wget -nH --cut-dirs=3";
+my $cdm2metaexe   = "$konvdir/cdm2meta.pl";
 
 my $pool          = $ARGV[0];
 
 my $dboptions_ref = $config->get_dboptions($pool);
 
-my $oaiurl        = "$dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{filename}";
+my $url        = "$dboptions_ref->{protocol}://$dboptions_ref->{host}/$dboptions_ref->{remotepath}/$dboptions_ref->{filename}";
+my $httpauthstring="";
+if ($dboptions_ref->{protocol} eq "http" && $dboptions_ref->{remoteuser} ne "" && $dboptions_ref->{remotepasswd} ne ""){
+    $httpauthstring=" --http-user=$dboptions_ref->{remoteuser} --http-passwd=$dboptions_ref->{remotepasswd}";
+}
 
-print "### $pool: Datenabzug via OAI von $oaiurl\n";
+print "### $pool: Datenabzug via http von $url\n";
 system("cd $pooldir/$pool ; rm *");
-system("$harvestoaiexe --oaiurl=\"$oaiurl\" | /bin/gzip -c > $pooldir/$pool/pool.dat.gz");
-
-system("/bin/gzip -dc $pooldir/$pool/pool.dat.gz > $pooldir/$pool/pool.dat");
-system("cd $pooldir/$pool; $oai2metaexe pool.dat ; gzip unload.*");
-system("rm $pooldir/$pool/pool.dat");
+system("$wgetexe $httpauthstring -P $pooldir/$pool/ $url > /dev/null 2>&1 ");
+system("cd $pooldir/$pool; $cdm2metaexe --inputfile=$dboptions_ref->{filename} --configfile=$confdir/$pool.yml; gzip unload.*");

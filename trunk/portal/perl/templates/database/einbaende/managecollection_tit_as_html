@@ -13,10 +13,13 @@
 # - Aenderung in zwei Abschnitte Titel-Daten und Einband-Daten
 #######################################################################
 -%]
-<tr class="titlerow"><td><input type="checkbox" name="loeschtit" value="[% titset.database %]:[% titset.titidn %]"></td><td>[% msg.maketext("aus:") %] [% titset.dbdesc.full %]<td></tr><tr><td>&nbsp;</td><td>
-[% normset    = titset.tit %]
-[% mexnormset = titset.mex %]
-[% circset    = titset.circ %]
+[% normset    = record.get_normdata %]
+[% mexnormset = record.get_mexdata %]
+[% circset    = record.get_circdata %]
+[%- isbn  = normset.${"T0540"}.first.content.replace('-','') -%]
+
+<tr class="titlerow"><td><input type="checkbox" name="titid" value="[% record.database %]:[% record.id %]"  title="collection_item" /></td><td>[% msg.maketext("aus:") %] [% dbinfotable.dbinfo.${record.database}.full %]</td></tr>
+<tr><td>&nbsp;</td><td>
 
 <!-- Title begins here -->
 <table width="100%">

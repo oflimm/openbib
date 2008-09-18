@@ -5,10 +5,10 @@
 uniqueidfield: 'cdmid'
 
 category_split_chars:
-  'creator': '\s+;\s'
-  'isbn': '\s+;\s'
-  'team': '\s+;\s'
-  'contributor': '\s+;\s'
+  'creator': '\s+;\s+'
+  'isbn': '\s+;\s+'
+  'team': '\s+;\s+'
+  'contributor': '\s+;\s+'
 
 # Personen
 pers:

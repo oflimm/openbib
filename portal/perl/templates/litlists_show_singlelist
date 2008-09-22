@@ -154,15 +154,32 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 </td></tr>
 </table>
 
-[% IF other_litlists.size > 0 %] 
+[%# USE dumper;dumper.dump(other_litlists)%]
+
+[% IF other_litlists.same_user.size > 0 || other_litlists.same_title.size > 0%] 
 <p />
 
-<table width="100%">
-<tr><th>Andere &ouml;ffentliche Literaturlisten dieses Nutzers</th></tr>
-<tr><td class="boxedclear" style="font-size:0.9em">
+<div id="additional_title_info">
+<ul>
+[% IF other_litlists.same_user.size > 0 %]
+<li><a href="#same_user"><span>Andere Listen dieses Nutzers</span></a></li>
+[% END %]
+
+[% IF other_litlists.same_title.size > 0 %]
+<li><a href="#same_title"><span>Listen mit gemeinsamen Titeln</span></a></li>
+[% END %]
+</ul>
+
+[% IF other_litlists.same_user.size > 0%] 
+
+<h2 class="nojs_show">Andere Listen dieses Nutzer</h2>
+
+<div id="same_user">
+<!-- Begin: Gleicher Nutzer -->
+
 <table>
 [% listrow = 'listrow1' %]
-[% FOREACH litlist IN other_litlists %]
+[% FOREACH litlist IN other_litlists.same_user %]
 [%   IF litlist.type == 1 %]
 <tr class="[% listrow %]"><td><a href="http://[%
 config.servername %][% config.litlists_loc %]?sessionID=[% sessionID
@@ -178,8 +195,38 @@ config.servername %][% config.litlists_loc %]?sessionID=[% sessionID
 
 </table>
 
-</td></tr>
+<!-- Ende: Gleicher Nutzer -->
+</div>
+[% END %]
+
+[% IF other_litlists.same_title.size > 0%] 
+
+<h2 class="nojs_show">Listen mit gemeinsamen Titeln</h2>
+
+<div id="same_title">
+<!-- Begin: Gleicher Nutzer -->
+
+<table>
+[% listrow = 'listrow1' %]
+[% FOREACH litlist IN other_litlists.same_title %]
+[%   IF litlist.type == 1 %]
+<tr class="[% listrow %]"><td><a href="http://[%
+config.servername %][% config.litlists_loc %]?sessionID=[% sessionID
+%]&action=show;litlistid=[% litlist.id %];do_showlitlist=1"><b>[% litlist.title %]</b></a>&nbsp([% litlist.itemcount %] Titel)</td><td align="center"><a href="http://[% config.loadbalancerservername %][% config.connector_permalink_loc %]/[% litlist.userid %]/[% litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="Permanenter Link"><img src="/images/openbib/3d-file-blue-permalink.png" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a></td></tr>
+
+[%     IF listrow == 'listrow1' %]
+[%       listrow = 'listrow2' %]
+[%     ELSE %]
+[%       listrow = 'listrow1' %]
+[%     END %]
+[%   END %]
+[% END %]
+
 </table>
+
+<!-- Ende: Gleicher Nutzer -->
+</div>
+[% END %]
 
 [% END %]
 

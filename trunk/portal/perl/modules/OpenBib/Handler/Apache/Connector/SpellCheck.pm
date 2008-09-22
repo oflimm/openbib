@@ -84,7 +84,7 @@ sub handler {
     
     my $word = $query->param('q') || '';
     
-    return OK unless ($word);
+    return OK if (!$word || $word=~/\d/);
 
     my @aspell_languages = ('de','en');
     

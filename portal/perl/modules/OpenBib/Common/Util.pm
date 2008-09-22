@@ -373,6 +373,10 @@ sub grundform {
         # Verbundene Terme splitten
         $content=~s/(\w)-(\w)/$1 $2/g;
         $content=~s/(\w)'(\w)/$1 $2/g;
+
+        # Bei Termen mit abschliessendem Bindestrich diesen entfernen
+        $content=~s/(\w)-(\s)/$1$2/g;
+        $content=~s/(\w)-$/$1/g;
     }
     elsif ($tagging){
         $content=~s/[^-+\p{Alphabetic}0-9._]//g;
@@ -386,6 +390,10 @@ sub grundform {
         $content=~s/(\w)-(\w)/$1 $2/g;
         $content=~s/(\w)'(\w)/$1 $2/g;
 
+        # Bei Termen mit abschliessendem Bindestrich diesen entfernen
+        $content=~s/(\w)-(\s)/$1$2/g;
+        $content=~s/(\w)-$/$1/g;
+        
 	# Sonderbehandlung : fuer die Indexierung (bei der Recherche wird : fuer intitle: usw. benoetigt)
 	$content=~s/:/ /g;
     }

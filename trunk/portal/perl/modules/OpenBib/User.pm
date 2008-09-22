@@ -2060,22 +2060,38 @@ sub get_other_litlists {
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
             or $logger->error($DBI::errstr);
 
-    return [] if (!defined $dbh);
+    my $litlists_ref = {
+        same_user  => [],
+        same_title => [],
+    };
 
-    return [] if (!$litlistid);
+    return $litlists_ref if (!defined $dbh || !$litlistid);
 
-    my $sql_stmnt = "select id,title from litlists where type == 1 and id != ? and userid in (select userid from litlists where id = ?) order by title";
+    # Gleicher Nutzer
+    my $sql_stmnt = "select id,title from litlists where type = 1 and id != ? and userid in (select userid from litlists where id = ?) order by title";
 
     my $request=$dbh->prepare($sql_stmnt) or $logger->error($DBI::errstr);
     $request->execute($litlistid,$litlistid) or $logger->error($DBI::errstr);
 
-    my $litlists_ref = [];
-
     while (my $result=$request->fetchrow_hashref){
       my $litlistid        = $result->{id};
       
-      push @$litlists_ref, $self->get_litlist_properties({litlistid => $litlistid});
+      push @{$litlists_ref->{same_user}}, $self->get_litlist_properties({litlistid => $litlistid});
     }
+
+    # Gleicher Titel
+    $sql_stmnt = "select distinct b.litlistid from litlistitems as a left join litlistitems as b on a.titdb=b.titdb where a.titid=b.titid and a.litlistid=? and b.litlistid!=?";
+
+    $request=$dbh->prepare($sql_stmnt) or $logger->error($DBI::errstr);
+    $request->execute($litlistid,$litlistid) or $logger->error($DBI::errstr);
+
+
+    while (my $result=$request->fetchrow_hashref){
+      my $litlistid        = $result->{litlistid};
+      
+      push @{$litlists_ref->{same_title}}, $self->get_litlist_properties({litlistid => $litlistid});
+    }
+
     
     return $litlists_ref;
 }

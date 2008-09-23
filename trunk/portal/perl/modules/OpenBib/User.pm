@@ -2088,8 +2088,8 @@ sub get_other_litlists {
 
     while (my $result=$request->fetchrow_hashref){
       my $litlistid        = $result->{litlistid};
-      
-      push @{$litlists_ref->{same_title}}, $self->get_litlist_properties({litlistid => $litlistid});
+      my $litlist_props    = $self->get_litlist_properties({litlistid => $litlistid});
+      push @{$litlists_ref->{same_title}}, $litlist_props if ($litlist_props->{type} == 1);
     }
 
     

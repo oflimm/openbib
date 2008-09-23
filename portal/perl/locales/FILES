@@ -73,7 +73,9 @@
 ../templates/circulation_orders
 ../templates/circulation_remind
 ../templates/circulation_reserv
+../templates/circulation_make_order
 ../templates/circulation_make_reserv
+../templates/circulation_renew_loans
 ../templates/clouds_navigation
 ../templates/common/navitembar
 ../templates/common/subtemplate

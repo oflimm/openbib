@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2008-09-22 09:22+0200\n"
+"PO-Revision-Date: 2008-09-23 15:25+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -592,8 +592,8 @@ msgstr "Als Mail verschicken"
 #: ../templates/database/umschlaege/search_showtitset:58
 #: ../templates/litlists_manage_lists:79
 #: ../templates/litlists_manage_singlelist:105
-#: ../templates/litlists_show_singlelist:190
-#: ../templates/litlists_show_singlelist:219
+#: ../templates/litlists_show_singlelist:186
+#: ../templates/litlists_show_singlelist:215
 #: ../templates/litlists_show_singlelist:73 ../templates/search_showtitset:58
 msgid "Als Permanenten Link verwenden"
 msgstr "Als Permanenten Link verwenden"
@@ -1143,6 +1143,14 @@ msgstr ""
 "Bestellen Sie den Artikel per %1Fernleihe%2 (Aufsatzbestellungen/ZDB) in der "
 "Digitalen Bibliothek."
 
+#: ../templates/circulation_make_order:56
+msgid "Bestellung erfolgreich durchgef&uuml;hrt"
+msgstr "Bestellung erfolgreich durchgef&uuml;hrt"
+
+#: ../templates/circulation_make_order:35
+msgid "Bestellung nicht m&ouml;glich"
+msgstr "Bestellung nicht m&ouml;glich"
+
 #: ../templates/circulation:39 ../templates/circulation_orders:39
 #: ../templates/circulation_remind:39 ../templates/circulation_reserv:39
 #: ../templates/userprefs:125
@@ -1509,6 +1517,10 @@ msgstr ""
 "durch <i>Los</i>\n"
 "      best&auml;tigen."
 
+#: ../templates/circulation_make_order:68
+msgid "Der Titel ist hier abholbar"
+msgstr "Der Titel ist hier abholbar"
+
 #: ../modules/OpenBib/Handler/Apache/ManageCollection.pm:154
 msgid "Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."
 msgstr "Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."
@@ -1574,6 +1586,10 @@ msgstr ""
 "      Suchfeldes in den Suchoptionen voreingestellt, so dass Sie alle\n"
 "      relevanten Suchbegriffe mit Leerzeichen getrennt ohne\n"
 "      zus&auml;tzliche Operatoren eingeben k&ouml;nnen."
+
+#: ../templates/circulation_make_order:58
+msgid "Die Bestellung wurde erfolgreich durchgef&uuml;hrt."
+msgstr "Die Bestellung wurde erfolgreich durchgef&uuml;hrt."
 
 #: ../templates/userprefs_changefields:28
 msgid ""
@@ -1787,6 +1803,7 @@ msgstr ""
 msgid "Dieses Buch ist in Wikipedia erw&auml;hnt unter"
 msgstr "Dieses Buch ist in Wikipedia erw&auml;hnt unter"
 
+#: ../templates/circulation_make_order:45
 #: ../templates/circulation_make_reserv:44
 msgid "Dieses Medium ist direkt ausleihbar"
 msgstr "Dieses Medium ist direkt ausleihbar"
@@ -1946,6 +1963,14 @@ msgstr "Einband-Daten"
 #: ../templates/views/umschlaege/managecollection_show:80
 msgid "Eine Bearbeitung ist nur bei 'HTML' m&ouml;glich"
 msgstr "Eine Bearbeitung ist nur bei 'HTML' m&ouml;glich"
+
+#: ../templates/circulation_make_order:37
+msgid ""
+"Eine Bestellung des von Ihnen gew&uuml;nschen\n"
+"Mediums ist leider nicht m&ouml;glich!"
+msgstr ""
+"Eine Bestellung des von Ihnen gew&uuml;nschen\n"
+"Mediums ist leider nicht m&ouml;glich!"
 
 #: ../templates/circulation_make_reserv:36
 msgid ""
@@ -2611,6 +2636,7 @@ msgstr "Google Book Search"
 msgid "Greifen Sie hier online auf den Volltext zu"
 msgstr "Greifen Sie hier online auf den Volltext zu"
 
+#: ../templates/circulation_make_order:40
 #: ../templates/circulation_make_reserv:39
 msgid "Grund:"
 msgstr "Grund:"
@@ -5677,6 +5703,10 @@ msgstr ""
 "Sie haben als Benutzer entweder keinen oder nicht den Admin-Benutzer "
 "eingegeben"
 
+#: ../templates/circulation_make_order:43
+msgid "Sie haben dieses Medium bereits bestellt"
+msgstr "Sie haben dieses Medium bereits bestellt"
+
 #: ../templates/circulation_make_reserv:42
 msgid "Sie haben dieses Medium bereits vorgemerkt"
 msgstr "Sie haben dieses Medium bereits vorgemerkt"
@@ -8007,6 +8037,7 @@ msgstr "Thematische Integration weiterer Quellen"
 msgid "Tit-Datei"
 msgstr "Tit-Datei"
 
+#: ../templates/circulation_make_order:65
 #: ../templates/database/ebooks/search_showtitset:680
 #: ../templates/database/inst001/search_showtitset:701
 #: ../templates/database/nationallizenzen/search_showtitset:680
@@ -8466,7 +8497,8 @@ msgstr ""
 msgid "Ursprüngliche Auswahl wiederherstellen"
 msgstr "Ursprüngliche Auswahl wiederherstellen"
 
-#: ../templates/userprefs:202 ../templates/virtualsearch_showverfindex:52
+#: ../templates/circulation_make_order:62 ../templates/userprefs:202
+#: ../templates/virtualsearch_showverfindex:52
 msgid "Verfasser"
 msgstr "Verfasser"
 

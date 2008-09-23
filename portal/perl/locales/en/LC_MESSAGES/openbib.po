@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2008-09-22 09:22+0200\n"
+"PO-Revision-Date: 2008-09-23 15:28+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -567,8 +567,8 @@ msgstr "Send as e-mail"
 #: ../templates/database/umschlaege/search_showtitset:58
 #: ../templates/litlists_manage_lists:79
 #: ../templates/litlists_manage_singlelist:105
-#: ../templates/litlists_show_singlelist:190
-#: ../templates/litlists_show_singlelist:219
+#: ../templates/litlists_show_singlelist:186
+#: ../templates/litlists_show_singlelist:215
 #: ../templates/litlists_show_singlelist:73 ../templates/search_showtitset:58
 msgid "Als Permanenten Link verwenden"
 msgstr "Use as permanent link"
@@ -1102,6 +1102,14 @@ msgstr ""
 "Please order this article via %1Inter Library Loan%2 (articles/ZDB) in the "
 "Digital Library (Digitale Bibliothek)"
 
+#: ../templates/circulation_make_order:56
+msgid "Bestellung erfolgreich durchgef&uuml;hrt"
+msgstr "Order sucessful"
+
+#: ../templates/circulation_make_order:35
+msgid "Bestellung nicht m&ouml;glich"
+msgstr "Order impossible"
+
 #: ../templates/circulation:39 ../templates/circulation_orders:39
 #: ../templates/circulation_remind:39 ../templates/circulation_reserv:39
 #: ../templates/userprefs:125
@@ -1445,6 +1453,10 @@ msgstr ""
 "etc. and display <i>by catalog</i> or <i>globally</i>) confirming your "
 "selection by clicking <i>Go</i>."
 
+#: ../templates/circulation_make_order:68
+msgid "Der Titel ist hier abholbar"
+msgstr "Title can be picked up here"
+
 #: ../modules/OpenBib/Handler/Apache/ManageCollection.pm:154
 msgid "Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."
 msgstr "The title has been added to your list of interest."
@@ -1507,6 +1519,10 @@ msgstr ""
 "The automatic AND-operator is the standard setting within a given search "
 "field, so that all relevant search items can be entered without using any "
 "operators."
+
+#: ../templates/circulation_make_order:58
+msgid "Die Bestellung wurde erfolgreich durchgef&uuml;hrt."
+msgstr "Your order was successful."
 
 #: ../templates/userprefs_changefields:28
 msgid ""
@@ -1700,6 +1716,7 @@ msgstr ""
 msgid "Dieses Buch ist in Wikipedia erw&auml;hnt unter"
 msgstr "This title is referenced in Wikipedia under"
 
+#: ../templates/circulation_make_order:45
 #: ../templates/circulation_make_reserv:44
 msgid "Dieses Medium ist direkt ausleihbar"
 msgstr "You can directly loan this medium"
@@ -1853,6 +1870,12 @@ msgstr "Data of bindings"
 #: ../templates/views/umschlaege/managecollection_show:80
 msgid "Eine Bearbeitung ist nur bei 'HTML' m&ouml;glich"
 msgstr "Editing only available when using 'HTML'"
+
+#: ../templates/circulation_make_order:37
+msgid ""
+"Eine Bestellung des von Ihnen gew&uuml;nschen\n"
+"Mediums ist leider nicht m&ouml;glich!"
+msgstr "An order for the requested medium was not successful!"
 
 #: ../templates/circulation_make_reserv:36
 msgid ""
@@ -2497,6 +2520,7 @@ msgstr "Google Book Search"
 msgid "Greifen Sie hier online auf den Volltext zu"
 msgstr "Get the fulltext online"
 
+#: ../templates/circulation_make_order:40
 #: ../templates/circulation_make_reserv:39
 msgid "Grund:"
 msgstr "Reason:"
@@ -5481,6 +5505,10 @@ msgid ""
 "eingegeben"
 msgstr "You didn't enter any or not the correct admin username"
 
+#: ../templates/circulation_make_order:43
+msgid "Sie haben dieses Medium bereits bestellt"
+msgstr "This medium is already ordered by you"
+
 #: ../templates/circulation_make_reserv:42
 msgid "Sie haben dieses Medium bereits vorgemerkt"
 msgstr "This medium is already reserved for you"
@@ -7786,6 +7814,7 @@ msgstr "Subject-based Integration of other Sources"
 msgid "Tit-Datei"
 msgstr "Tit-File"
 
+#: ../templates/circulation_make_order:65
 #: ../templates/database/ebooks/search_showtitset:680
 #: ../templates/database/inst001/search_showtitset:701
 #: ../templates/database/nationallizenzen/search_showtitset:680
@@ -8228,7 +8257,8 @@ msgstr ""
 msgid "Ursprüngliche Auswahl wiederherstellen"
 msgstr "Reset to previous choices"
 
-#: ../templates/userprefs:202 ../templates/virtualsearch_showverfindex:52
+#: ../templates/circulation_make_order:62 ../templates/userprefs:202
+#: ../templates/virtualsearch_showverfindex:52
 msgid "Verfasser"
 msgstr "Author"
 

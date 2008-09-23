@@ -345,7 +345,7 @@ msgstr ""
 msgid "Als Mail verschicken"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:58 ../templates/database/einbaende/search_showtitset:46 ../templates/database/inst001/search_showtitset:60 ../templates/database/nationallizenzen/search_showtitset:58 ../templates/database/umschlaege/search_showtitset:58 ../templates/litlists_manage_lists:79 ../templates/litlists_manage_singlelist:105 ../templates/litlists_show_singlelist:190 ../templates/litlists_show_singlelist:219 ../templates/litlists_show_singlelist:73 ../templates/search_showtitset:58
+#: ../templates/database/ebooks/search_showtitset:58 ../templates/database/einbaende/search_showtitset:46 ../templates/database/inst001/search_showtitset:60 ../templates/database/nationallizenzen/search_showtitset:58 ../templates/database/umschlaege/search_showtitset:58 ../templates/litlists_manage_lists:79 ../templates/litlists_manage_singlelist:105 ../templates/litlists_show_singlelist:186 ../templates/litlists_show_singlelist:215 ../templates/litlists_show_singlelist:73 ../templates/search_showtitset:58
 msgid "Als Permanenten Link verwenden"
 msgstr ""
 
@@ -690,6 +690,14 @@ msgstr ""
 msgid "Bestellen Sie den Artikel per %1Fernleihe%2 (Aufsatzbestellungen/ZDB) in der Digitalen Bibliothek."
 msgstr ""
 
+#: ../templates/circulation_make_order:56
+msgid "Bestellung erfolgreich durchgef&uuml;hrt"
+msgstr ""
+
+#: ../templates/circulation_make_order:35
+msgid "Bestellung nicht m&ouml;glich"
+msgstr ""
+
 #: ../templates/circulation:39 ../templates/circulation_orders:39 ../templates/circulation_remind:39 ../templates/circulation_reserv:39 ../templates/userprefs:125
 msgid "Bestellungen"
 msgstr ""
@@ -892,6 +900,10 @@ msgid ""
 "      best&auml;tigen."
 msgstr ""
 
+#: ../templates/circulation_make_order:68
+msgid "Der Titel ist hier abholbar"
+msgstr ""
+
 #: ../modules/OpenBib/Handler/Apache/ManageCollection.pm:154
 msgid "Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."
 msgstr ""
@@ -939,6 +951,10 @@ msgid ""
 "      Suchfeldes in den Suchoptionen voreingestellt, so dass Sie alle\n"
 "      relevanten Suchbegriffe mit Leerzeichen getrennt ohne\n"
 "      zus&auml;tzliche Operatoren eingeben k&ouml;nnen."
+msgstr ""
+
+#: ../templates/circulation_make_order:58
+msgid "Die Bestellung wurde erfolgreich durchgef&uuml;hrt."
 msgstr ""
 
 #: ../templates/userprefs_changefields:28
@@ -1078,7 +1094,7 @@ msgstr ""
 msgid "Dieses Buch ist in Wikipedia erw&auml;hnt unter"
 msgstr ""
 
-#: ../templates/circulation_make_reserv:44
+#: ../templates/circulation_make_order:45 ../templates/circulation_make_reserv:44
 msgid "Dieses Medium ist direkt ausleihbar"
 msgstr ""
 
@@ -1188,6 +1204,12 @@ msgstr ""
 
 #: ../templates/managecollection_show:82 ../templates/views/einbaende/managecollection_show:84 ../templates/views/umschlaege/managecollection_show:80
 msgid "Eine Bearbeitung ist nur bei 'HTML' m&ouml;glich"
+msgstr ""
+
+#: ../templates/circulation_make_order:37
+msgid ""
+"Eine Bestellung des von Ihnen gew&uuml;nschen\n"
+"Mediums ist leider nicht m&ouml;glich!"
 msgstr ""
 
 #: ../templates/circulation_make_reserv:36
@@ -1559,7 +1581,7 @@ msgstr ""
 msgid "Greifen Sie hier online auf den Volltext zu"
 msgstr ""
 
-#: ../templates/circulation_make_reserv:39
+#: ../templates/circulation_make_order:40 ../templates/circulation_make_reserv:39
 msgid "Grund:"
 msgstr ""
 
@@ -2892,6 +2914,10 @@ msgstr ""
 msgid "Sie haben als Benutzer entweder keinen oder nicht den Admin-Benutzer eingegeben"
 msgstr ""
 
+#: ../templates/circulation_make_order:43
+msgid "Sie haben dieses Medium bereits bestellt"
+msgstr ""
+
 #: ../templates/circulation_make_reserv:42
 msgid "Sie haben dieses Medium bereits vorgemerkt"
 msgstr ""
@@ -4053,7 +4079,7 @@ msgstr ""
 msgid "Tit-Datei"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:680 ../templates/database/inst001/search_showtitset:701 ../templates/database/nationallizenzen/search_showtitset:680 ../templates/database/umschlaege/search_showtitset:704 ../templates/managecollection_tit_as_html_simple:17 ../templates/search_showtitset:697 ../templates/searchmask_options:4 ../templates/views/gdonck/searchmask_options:4 ../templates/views/gleuel/searchmask_options:4 ../templates/views/kempen/searchmask_options:4 ../templates/views/kevelaer/searchmask_options:4 ../templates/views/kug/searchmask_options:4 ../templates/views/kwinter/searchmask_options:4 ../templates/views/portrait/searchmask_options:4 ../templates/views/rheinlandbib/searchmask_options:4 ../templates/views/umschlaege/searchmask:118 ../templates/views/xanten/searchmask_options:4
+#: ../templates/circulation_make_order:65 ../templates/database/ebooks/search_showtitset:680 ../templates/database/inst001/search_showtitset:701 ../templates/database/nationallizenzen/search_showtitset:680 ../templates/database/umschlaege/search_showtitset:704 ../templates/managecollection_tit_as_html_simple:17 ../templates/search_showtitset:697 ../templates/searchmask_options:4 ../templates/views/gdonck/searchmask_options:4 ../templates/views/gleuel/searchmask_options:4 ../templates/views/kempen/searchmask_options:4 ../templates/views/kevelaer/searchmask_options:4 ../templates/views/kug/searchmask_options:4 ../templates/views/kwinter/searchmask_options:4 ../templates/views/portrait/searchmask_options:4 ../templates/views/rheinlandbib/searchmask_options:4 ../templates/views/umschlaege/searchmask:118 ../templates/views/xanten/searchmask_options:4
 msgid "Titel"
 msgstr ""
 
@@ -4275,7 +4301,7 @@ msgstr ""
 msgid "Ursprüngliche Auswahl wiederherstellen"
 msgstr ""
 
-#: ../templates/userprefs:202 ../templates/virtualsearch_showverfindex:52
+#: ../templates/circulation_make_order:62 ../templates/userprefs:202 ../templates/virtualsearch_showverfindex:52
 msgid "Verfasser"
 msgstr ""
 

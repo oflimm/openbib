@@ -70,6 +70,7 @@ open (AUT,     ">:utf8","unload.PER");
 open (KOR,     ">:utf8","unload.KOE");
 open (NOTATION,">:utf8","unload.SYS");
 open (SWT,     ">:utf8","unload.SWD");
+open (MEX,     ">:utf8","unload.MEX");
 
 my $twig= XML::Twig->new(
    TwigHandlers => {
@@ -79,6 +80,13 @@ my $twig= XML::Twig->new(
 
 
 $twig->parsefile($inputfile);
+
+close(TIT);
+close(AUT);
+close(KOR);
+close(NOTATION);
+close(SWT);
+close(MEX);
 
 sub parse_titset {
     my($t, $titset)= @_;
@@ -251,6 +259,29 @@ sub parse_titset {
         }
     }
     # Schlagworte abarbeiten Ende
+
+    # Exemplardaten abarbeiten Anfang
+    foreach my $kateg (keys %{$convconfig->{exempl}}){
+        if(defined $titset->first_child($kateg) && $titset->first_child($kateg)->text()){
+            my $content = konv($titset->first_child($kateg)->text());
+            
+            if ($content){
+                my @parts = ();
+                if (exists $convconfig->{category_split_chars}{$kateg} && $content=~/$convconfig->{category_split_chars}{$kateg}/){
+                    @parts = split($convconfig->{category_split_chars}{$kateg},$content);
+                }
+                else {
+                    push @parts, $content;
+                }
+
+                foreach my $part (@parts){
+                    print TIT $convconfig->{title}{$kateg}.$part."\n";
+                }
+            }
+        }
+    }
+    # Exemplardaten abarbeiten Ende
+
     print TIT "9999:\n";
     
     # Release memory of processed tree

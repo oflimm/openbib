@@ -55,7 +55,15 @@ eine &Uuml;bersicht aller vorhandenen Spezial-Sichten.") %]
 <p />
 
 [% FOREACH viewname IN viewlist %]
-
+[% active_viewdbs = config.get_dbs_of_view(viewname) %]
+[%# Achtung: An TT uebergebene einelementige Listen werden vom TT
+    ungewollt als Skalar abgespeichert. Das ist ein Problem bei leeren
+    Listen, da der Skalar dann zwar definiert ist, aber leer. Wird darauf
+    eine Listen-VMethode angewand, dann wird der leere String im Listenkontext
+    zu einem leeren aber definierten ersten Listenelement- size
+    liefert faelschlicherweise 1 zurueck. Daher wird nun auf die
+    Laenge des Listenelementes geprueft %]
+[%- IF active_viewdbs.first.length > 0  -%]
 <table width="100%">
 <tr><th>[% config.get_viewdesc_from_viewname(viewname)%]</th></tr>
 <tr><td class="boxedclear">
@@ -63,7 +71,7 @@ eine &Uuml;bersicht aller vorhandenen Spezial-Sichten.") %]
 <p />
 <span style="font-size:1.2em">[% msg.maketext("Kataloge dieser Spezial-Sicht") %]:</span>
 <ul>
-[% FOREACH dbname IN config.get_dbs_of_view(viewname) %]
+[% FOREACH dbname IN active_viewdbs %]
 <li>[% dbinfotable.dbnames.${dbname}.short %]</li>
 [% END %]
 </ul>
@@ -79,7 +87,7 @@ viewname %]</b>)
 </td></tr>
 </table>
 <p />
-
+[%- END -%]
 [% END %]
 </div>
 

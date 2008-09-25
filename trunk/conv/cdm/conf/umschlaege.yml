@@ -37,6 +37,9 @@ title:
   'extent': '0435:'
   'isbn': '0540:'
   'hbzid': '0010:'
-  'shelfmark': '0014.001:'
   'thumbnailURL': '2662:'
   'viewerURL': '0662:'
+
+# Exemplare
+exempl:
+  'shelfmark': '0014.001:'

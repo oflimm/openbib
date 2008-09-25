@@ -39,12 +39,13 @@ use YAML::Syck;
 
 use OpenBib::Config;
 
-our (@autdubbuf,@kordubbuf,@swtdubbuf,@notdubbuf);
+our (@autdubbuf,@kordubbuf,@swtdubbuf,@notdubbuf,$mexidn);
 
 @autdubbuf = ();
 @kordubbuf = ();
 @swtdubbuf = ();
 @notdubbuf = ();
+$mexidn  =  1;
 
 my ($inputfile,$configfile);
 
@@ -259,7 +260,7 @@ sub parse_titset {
         }
     }
     # Schlagworte abarbeiten Ende
-
+    
     # Exemplardaten abarbeiten Anfang
     foreach my $kateg (keys %{$convconfig->{exempl}}){
         if(defined $titset->first_child($kateg) && $titset->first_child($kateg)->text()){
@@ -275,7 +276,10 @@ sub parse_titset {
                 }
 
                 foreach my $part (@parts){
+                    print MEX "0000:$mexidn\n";
+                    print MEX "0004:".$titset->first_child($convconfig->{uniqueidfield})->text()."\n";
                     print MEX $convconfig->{exempl}{$kateg}.$part."\n";
+                    print MEX "9999:\n";
                 }
             }
         }

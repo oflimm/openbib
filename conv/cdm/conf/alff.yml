@@ -28,5 +28,8 @@ title:
   'date': '0425:'
   'language': '0005:'
   'relation': '0508:'
-  'unmapped': '0014.001:'
   'thumbnailURL': '2662:'
+
+# Exemplare
+exempl:
+  'unmapped': '0014.001:'

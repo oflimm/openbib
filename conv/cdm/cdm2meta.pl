@@ -275,7 +275,7 @@ sub parse_titset {
                 }
 
                 foreach my $part (@parts){
-                    print TIT $convconfig->{title}{$kateg}.$part."\n";
+                    print MEX $convconfig->{exempl}{$kateg}.$part."\n";
                 }
             }
         }

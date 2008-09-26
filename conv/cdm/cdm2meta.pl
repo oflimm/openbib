@@ -280,6 +280,7 @@ sub parse_titset {
                     print MEX "0004:".$titset->first_child($convconfig->{uniqueidfield})->text()."\n";
                     print MEX $convconfig->{exempl}{$kateg}.$part."\n";
                     print MEX "9999:\n";
+                    $mexidn++;
                 }
             }
         }

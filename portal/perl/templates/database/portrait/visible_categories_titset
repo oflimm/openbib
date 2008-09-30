@@ -20,6 +20,7 @@
                    'T0331', # msg.maketext("T0331-portrait") Bildtitel
                    'T0335', # msg.maketext("T0335") Zusatz
                    'T0359', # msg.maketext("T0359-portrait") Vorlageform
+                   'T0403', # msg.maketext("T0403") Ausgabebezeichnung
                    'T0501', # msg.maketext("T0501-portrait") Lebensdaten
                    'T0700', # msg.maketext("T0700-portrait") Beruf / Weltanschauung
                    'T0710', # msg.maketext("T0710-portrait") Region
@@ -82,6 +83,7 @@
                    'T0840', # msg.maketext("T0840") Konkordanz
                    'T1202', # msg.maketext("T1202") Bestand Bemerkung
                    'T0200', # msg.maketext("T0200-portrait") Provenienz
+                   'T0507', # msg.maketext("T0507") Angaben HST
                    'T0508', # msg.maketext("T0508-portrait") Bibl. Nachweis
                    'T0662', # msg.maketext("T0662-portrait") Weitere Infos
                 ]

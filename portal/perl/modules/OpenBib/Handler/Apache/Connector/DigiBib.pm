@@ -165,7 +165,9 @@ sub handler {
             content   => $r->connection->remote_ip,
         });
     }
-    
+
+    my $sysprofile   = $config->get_viewinfo($view)->{profilename};
+
     # Historisch begruendetes Kompatabilitaetsmapping
     
     $query->param('boolverf'      => $query->param('bool9'))  if ($query->param('bool9'));
@@ -430,10 +432,14 @@ sub handler {
         });
         
         my $starttemplatename=$config->{tt_connector_digibib_result_start_tname};
-        if ($view && -e "$config->{tt_include_path}/views/$view/$starttemplatename") {
-            $starttemplatename="views/$view/$starttemplatename";
-        }
-                
+
+        $starttemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
+            database     => '', # Template nicht datenbankabhaengig
+            view         => $view,
+            profile      => $sysprofile,
+            templatename => $starttemplatename,
+        });
+
         # Ausgabe des ersten HTML-Bereichs
         my $starttemplate = Template->new({
             LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
@@ -451,6 +457,8 @@ sub handler {
         my $startttdata={
             treffercount   => $treffercount,
             myself         => $myself,
+            sysprofile     => $sysprofile,
+            view           => $view,
         };
         
         $starttemplate->process($starttemplatename, $startttdata) || do {
@@ -467,10 +475,14 @@ sub handler {
         my $listend   = ($offset+$listlength-1 <= $treffercount)?$offset+$listlength-2:$treffercount-1;
         
         my $itemtemplatename=$config->{tt_connector_digibib_result_item_tname};
-        if ($view && -e "$config->{tt_include_path}/views/$view/$itemtemplatename") {
-            $itemtemplatename="views/$view/$itemtemplatename";
-        }
-        
+
+        $itemtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
+            database     => '', # Template nicht datenbankabhaengig
+            view         => $view,
+            profile      => $sysprofile,
+            templatename => $itemtemplatename,
+        });
+
         my $itemtemplate = Template->new({
             LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
                 INCLUDE_PATH   => $config->{tt_include_path},
@@ -494,6 +506,8 @@ sub handler {
                 return $string;
             },
 
+            view            => $view,
+            sysprofile      => $sysprofile,
             config          => $config,
         };
         
@@ -504,9 +518,13 @@ sub handler {
         
         # Ausgabe des letzten HTML-Bereichs
         my $endtemplatename=$config->{tt_connector_digibib_result_end_tname};
-        if ($view && -e "$config->{tt_include_path}/views/$view/$endtemplatename") {
-            $endtemplatename="views/$view/$endtemplatename";
-        }
+
+        $endtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
+            database     => '', # Template nicht datenbankabhaengig
+            view         => $view,
+            profile      => $sysprofile,
+            templatename => $endtemplatename,
+        });
         
         my $endtemplate = Template->new({
             LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
@@ -521,6 +539,8 @@ sub handler {
         
         # TT-Data erzeugen
         my $endttdata={
+            view       => $view,
+            sysprofile => $sysprofile,
         };
         
         $endtemplate->process($endtemplatename, $endttdata) || do {
@@ -577,10 +597,14 @@ sub handler {
 
         # Ausgabe des letzten HTML-Bereichs
         my $templatename=$config->{tt_connector_digibib_showtitset_tname};
-        if ($view && -e "$config->{tt_include_path}/views/$view/$templatename") {
-            $templatename="views/$view/$templatename";
-        }
-        
+
+        $templatename = OpenBib::Common::Util::get_cascaded_templatepath({
+            database     => '', # Template nicht datenbankabhaengig
+            view         => $view,
+            profile      => $sysprofile,
+            templatename => $templatename,
+        });
+
         my $template = Template->new({
             LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
                 INCLUDE_PATH   => $config->{tt_include_path},
@@ -606,6 +630,9 @@ sub handler {
                 return $string;
             },
 
+            sysprofile   => $sysprofile,
+            view         => $view,
+            config       => $config,
         };
         
         $template->process($templatename, $ttdata) || do {

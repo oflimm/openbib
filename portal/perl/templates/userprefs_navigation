@@ -1,0 +1,23 @@
+[%#-
+#######################################################################
+#
+# Templatename: userprefs_navigation
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Navigations-Menu fuer Mein KUG
+#
+#######################################################################
+-%]
+<ul class="tabbingmenu">
+   <li><a [%- IF active == "userprefs" -%]class="active"[%- END -%] href="[% config.userprefs_loc %]?sessionID=[% sessionID %];action=showfields">[% msg.maketext("Grundeinstellungen") %]</a></li>
+[% IF config.litlists %]   <li><a [%- IF active == "litlists" -%] class="active"[%- END -%] href="[% config.litlists_loc %]?sessionID=[% sessionID %];action=manage">[% msg.maketext("Literaturlisten") %]</a></li>[% END %]
+   <li><a [%- IF active == "tags" -%]class="active"[%- END -%] href="[% config.tags_loc %]?sessionID=[% sessionID %];show_usertags=1">[% msg.maketext("Tags") %]</a></li>
+[% IF config.reviews %]   <li><a [%- IF active == "userreviews" -%]class="active"[%- END -%] href="[% config.userreviews_loc %]?sessionID=[% sessionID %];do_show=1">[% msg.maketext("Rezensionen") %]</a></li>[% END %]
+[% IF targettype != 'self' %]
+   <li><a [%- IF active == "circulation" -%] class="active"[%- END -%] href="[% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc">[% msg.maketext("Benutzerkonto") %]</a></li>
+[% END %]
+   <li><a [%- IF active == "databaseprofile" -%] class="active"[%- END -%] href="[% config.databaseprofile_loc %]?sessionID=[% sessionID %];do_showprofile=1">[% msg.maketext("Katalogprofile") %]</a></li>
+</ul>

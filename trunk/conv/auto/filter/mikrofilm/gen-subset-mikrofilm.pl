@@ -65,12 +65,28 @@ my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=inst001;host=$config->{dbh
 
 print "### $pool: Bestimme Titel-ID's anhand des Signaturanfangs 1X\n";
 
-my $request=$dbh->prepare("select distinct conn.sourceid as titid from conn,mex where mex.category=14 and mex.content like '1X%' and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6") or $logger->error($DBI::errstr);
+my %stage1_titidns = ();
+
+my $request=$dbh->prepare("select distinct conn.sourceid as titid from conn,mex where mex.category=14 and mex.content rlike '^1X.*' and conn.targetid=mex.id and conn.sourcetype=1 and conn.targettype=6") or $logger->error($DBI::errstr);
 
 $request->execute() or $logger->error($DBI::errstr);;
 
 while (my $result=$request->fetchrow_hashref()){
-  $titidns{$result->{'titid'}}=1;
+  $stage1_titidns{$result->{'titid'}}=1;
+}
+
+print "### $pool: Nur Saetze mit besetzter 1299 verwenden\n";
+
+my %titidns = ();
+
+my $request=$dbh->prepare("select count(category) as have_1299 from tit where id= ? and category=1299") or $logger->error($DBI::errstr);
+
+foreach my $key (keys %stage1_titidns){
+  $request->execute($key) or $logger->error($DBI::errstr);;
+
+  my $result=$request->fetchrow_hashref();
+
+  $titidns{$key}=1 if ($result->{have_1299} > 0);
 }
 
 my $count=0;
@@ -81,34 +97,21 @@ foreach my $key (keys %titidns){
 
 print "### $pool: Gefundene Titel-ID's $count\n";
 
-# $request=$dbh->prepare("select distinct id from mex where category='0016' and content='USB-Lehrbuchsammlung'") or $logger->error($DBI::errstr);
-# $request->execute();
-
-# while (my $result=$request->fetchrow_hashref()){
-#     $mexidns{$result->{'id'}}=1;
-# }
-
 # IDN's uebergeordneter Titel finden
 
 print "### $pool: Bestimme uebergeordnete/untergeordnete Titel\n";
 
-foreach $titidn (keys %titidns){
+my %tmp_titidns = %titidns;
 
-  # Ueberordnungen
-  $request=$dbh->prepare("select distinct sourceid from conn where targetid=? and sourcetype=1 and targettype=1") or $logger->error($DBI::errstr);
-  $request->execute($titidn) or $logger->error($DBI::errstr);;
-  
-  while (my $result=$request->fetchrow_hashref()){
-    $titidns{$result->{'sourceid'}}=1;
-  }
+foreach $titidn (keys %tmp_titidns){
 
-  # Unterordnungen
-  $request=$dbh->prepare("select distinct targetid from conn where sourceid=? and sourcetype=1 and targettype=1") or $logger->error($DBI::errstr);
-  $request->execute($titidn) or $logger->error($DBI::errstr);;
+   # Ueberordnungen
+   $request=$dbh->prepare("select distinct targetid from conn where sourceid=? and sourcetype=1 and targettype=1") or $logger->error($DBI::errstr);
+   $request->execute($titidn) or $logger->error($DBI::errstr);;
   
-  while (my $result=$request->fetchrow_hashref()){
-    $titidns{$result->{'targetid'}}=1;
-  }
+   while (my $result=$request->fetchrow_hashref()){
+     $titidns{$result->{'targetid'}}=1;
+   }
 
 }
 

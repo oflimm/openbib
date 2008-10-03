@@ -64,7 +64,7 @@ selected="selected"
 
 [% END %]
 
->[% singledb.description %]</option>
+>[% singledb.dbname %]: [% singledb.description %]</option>
 
 [% END %]
 

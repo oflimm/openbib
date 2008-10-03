@@ -86,6 +86,7 @@
 ../templates/connector_permalink
 ../templates/connector_rss_item
 ../templates/corporate_banner
+../templates/database/spoho/search_showtitset
 ../templates/database/audiosmlg/drilldown_categorized
 ../templates/database/ebooks/search_showtitset
 ../templates/database/ebooks/visible_categories_titset
@@ -178,6 +179,7 @@
 ../templates/managecollection_tit_as_html_simple
 ../templates/managecollection_tit_as_text
 ../templates/mexset
+../templates/profile/kuglight/info
 ../templates/resultlists_choice
 ../templates/resultlists_showall
 ../templates/resultlists_showall_sortall

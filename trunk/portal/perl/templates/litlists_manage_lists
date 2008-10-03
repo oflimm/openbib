@@ -21,20 +21,7 @@
 
 <div id="maincontent">
 
-<ul class="tabbingmenu">
-   <li><a                href="[% config.userprefs_loc %]?sessionID=[% sessionID %];action=showfields">[% msg.maketext("Grundeinstellungen") %]</a></li>
-[%- IF config.litlists -%]
-   <li><a class="active" href="[% config.litlists_loc %]?sessionID=[% sessionID %];action=manage">[% msg.maketext("Literaturlisten") %]</a></li>
-[%- END -%]
-   <li><a                href="[% config.tags_loc %]?sessionID=[% sessionID %];show_usertags=1">[% msg.maketext("Tags") %]</a></li>
-[%- IF config.reviews -%]
-   <li><a                href="[% config.userreviews_loc %]?sessionID=[% sessionID %];do_show=1">[% msg.maketext("Rezensionen") %]</a></li>
-[%- END -%]
-[% IF targettype != 'self' %]
-   <li><a                href="[% config.circulation_loc %]?sessionID=[% sessionID %];action=showcirc">[% msg.maketext("Benutzerkonto") %]</a></li>
-[% END %]
-   <li><a                href="[% config.databaseprofile_loc %]?sessionID=[% sessionID %];do_showprofile=1">[% msg.maketext("Katalogprofile") %]</a></li>
-</ul>
+[% PROCESS common/subtemplate name="userprefs_navigation" active="litlists" %] 
 
 <div class="content">
 

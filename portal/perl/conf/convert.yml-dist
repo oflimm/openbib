@@ -59,7 +59,7 @@ convtab:
       '1200': 1        # Bestandzusammenfassung (in mex verwenden wir 1204)
       '1201': 1        # Bestandsluecken (in mex verwenden wir 1204)
       '1202': 1        # Bemerkungen zum Bestand
-      '1299': 1        # ZDB Mikro
+     #'1299': 1        # ZDB Mikro
       '1527': 1        # ID der Parallelausgabe
       '1529': 1        # Fortlaufende Beilage Titel?
       '1530': 1        # ID des Bezugswerkes

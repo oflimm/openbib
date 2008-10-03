@@ -171,6 +171,8 @@ sub handler {
         $queryalreadyexists = 1;
     }
 
+    my $sysprofile   = $config->get_viewinfo($view)->{profilename};
+
     # BEGIN DB-Bestimmung
     ####################################################################
     # Bestimmung der Datenbanken, in denen gesucht werden soll
@@ -443,6 +445,7 @@ sub handler {
             hitrange   => $hitrange,
             baseurl    => $baseurl,
             profil     => $profil,
+            sysprofile => $sysprofile,
             config     => $config,
             user       => $user,
             msg        => $msg,
@@ -770,11 +773,14 @@ sub handler {
                 my $treffer=$recordlist->get_size();
                 
                 my $itemtemplatename=$config->{tt_virtualsearch_result_combined_tname};
-                
-                if ($view && -e "$config->{tt_include_path}/views/$view/$itemtemplatename") {
-                    $itemtemplatename="views/$view/$itemtemplatename";
-                }
-                
+
+                $itemtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
+                    database     => '', # Template ist nicht datenbankabhaengig
+                    view         => $view,
+                    profile      => $sysprofile,
+                    templatename => $itemtemplatename,
+                });
+
                 # Start der Ausgabe mit korrektem Header
                 print $r->send_http_header("text/html");
                 
@@ -828,6 +834,7 @@ sub handler {
                     sortorder       => $sortorder,
                     resulttime      => $resulttime,
                     drilldowntime   => $drilldowntime,
+                    sysprofile      => $sysprofile,
                     config          => $config,
                     user            => $user,
                     msg             => $msg,
@@ -850,9 +857,13 @@ sub handler {
     if (!$combinedbs || $fallbacksb){
         
         my $starttemplatename=$config->{tt_virtualsearch_result_start_tname};
-        if ($view && -e "$config->{tt_include_path}/views/$view/$starttemplatename") {
-            $starttemplatename="views/$view/$starttemplatename";
-        }
+
+        $starttemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
+            database     => '', # Template ist nicht datenbankabhaengig
+            view         => $view,
+            profile      => $sysprofile,
+            templatename => $starttemplatename,
+        });
         
         # Start der Ausgabe mit korrektem Header
         print $r->send_http_header("text/html");
@@ -888,7 +899,8 @@ sub handler {
             qopts          => $queryoptions->get_options,
             
             queryid        => $queryid,
-            
+
+            sysprofile     => $sysprofile,
             config         => $config,
             user           => $user,
             msg            => $msg,
@@ -961,17 +973,16 @@ sub handler {
                     push @resultset, @{$recordlist->to_ids};
                 
                     my $treffer=$recordlist->get_size();
-                
+
                     my $itemtemplatename=$config->{tt_virtualsearch_result_item_tname};
-                    if ($view && -e "$config->{tt_include_path}/views/$view/$itemtemplatename") {
-                        $itemtemplatename="views/$view/$itemtemplatename";
-                    }
                     
-                    # Database-Template ist spezifischer als View-Template und geht vor
-                    if ($database && -e "$config->{tt_include_path}/database/$database/$itemtemplatename") {
-                        $itemtemplatename="database/$database/$itemtemplatename";
-                    }
-                    
+                    $itemtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
+                        database     => $database,
+                        view         => $view,
+                        profile      => $sysprofile,
+                        templatename => $itemtemplatename,
+                    });
+
                     my $itemtemplate = Template->new({
                         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
                             INCLUDE_PATH   => $config->{tt_include_path},
@@ -1001,6 +1012,7 @@ sub handler {
                         sorttype        => $sorttype,
                         sortorder       => $sortorder,
                         resulttime      => $resulttime,
+                        sysprofile      => $sysprofile,
                         config          => $config,
                         user            => $user,
                         msg             => $msg,
@@ -1140,16 +1152,15 @@ sub handler {
                             push @resultset, @{$recordlist->to_ids};
                         
                             my $treffer=$recordlist->get_size();
-                        
-                            my $itemtemplatename=$config->{tt_virtualsearch_result_item_tname};
-                            if ($view && -e "$config->{tt_include_path}/views/$view/$itemtemplatename") {
-                                $itemtemplatename="views/$view/$itemtemplatename";
-                            }
 
-                            # Database-Template ist spezifischer als View-Template und geht vor
-                            if ($database && -e "$config->{tt_include_path}/database/$database/$itemtemplatename") {
-                                $itemtemplatename="database/$database/$itemtemplatename";
-                            }
+                            my $itemtemplatename=$config->{tt_virtualsearch_result_item_tname};
+
+                            $itemtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
+                                database     => $database,
+                                view         => $view,
+                                profile      => $sysprofile,
+                                templatename => $itemtemplatename,
+                            });
 
                             my $itemtemplate = Template->new({
                                 LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
@@ -1191,6 +1202,7 @@ sub handler {
                                 sortorder       => $sortorder,
                                 resulttime      => $resulttime,
                                 drilldowntime   => $drilldowntime,
+                                sysprofile      => $sysprofile,
                                 config          => $config,
                                 user            => $user,
                                 msg             => $msg,
@@ -1263,14 +1275,13 @@ sub handler {
                         my $treffer=$recordlist->get_size();
 
                         my $itemtemplatename=$config->{tt_virtualsearch_result_item_tname};
-                        if ($view && -e "$config->{tt_include_path}/views/$view/$itemtemplatename") {
-                            $itemtemplatename="views/$view/$itemtemplatename";
-                        }
-
-                        # Database-Template ist spezifischer als View-Template und geht vor
-                        if ($database && -e "$config->{tt_include_path}/database/$database/$itemtemplatename") {
-                            $itemtemplatename="database/$database/$itemtemplatename";
-                        }
+                        
+                        $itemtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
+                            database     => $database,
+                            view         => $view,
+                            profile      => $sysprofile,
+                            templatename => $itemtemplatename,
+                        });
 
                         my $itemtemplate = Template->new({
                             LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
@@ -1302,6 +1313,7 @@ sub handler {
                             sorttype        => $sorttype,
                             sortorder       => $sortorder,
                             resulttime      => $resulttime,
+                            sysprofile      => $sysprofile,
                             config          => $config,
                             user            => $user,
                             msg             => $msg,
@@ -1341,9 +1353,13 @@ sub handler {
         
         # Ausgabe des letzten HTML-Bereichs
         my $endtemplatename=$config->{tt_virtualsearch_result_end_tname};
-        if ($view && -e "$config->{tt_include_path}/views/$view/$endtemplatename") {
-            $endtemplatename="views/$view/$endtemplatename";
-        }
+
+        $endtemplatename = OpenBib::Common::Util::get_cascaded_templatepath({
+            database     => '', # Template ist nicht datenbankabhaengig
+            view         => $view,
+            profile      => $sysprofile,
+            templatename => $endtemplatename,
+        });
         
         my $endtemplate = Template->new({
             LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
@@ -1371,6 +1387,7 @@ sub handler {
             queryid       => $queryid,
             qopts         => $queryoptions->get_options,
 
+            sysprofile    => $sysprofile,
             config        => $config,
             user          => $user,
             msg           => $msg,

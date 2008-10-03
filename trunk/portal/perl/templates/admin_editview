@@ -80,7 +80,7 @@ selected="selected"
 
 [% END %]
 
->[% IF dbinfotable.dbinfo.${singledb}.short %][% dbinfotable.dbinfo.${singledb}.short %][% ELSE %][% dbinfotable.dbinfo.${singledb}.short %][% END %]</option>
+>[% singledb %]: [% IF dbinfotable.dbinfo.${singledb}.short %][% dbinfotable.dbinfo.${singledb}.short %][% ELSE %][% dbinfotable.dbinfo.${singledb}.short %][% END %]</option>
 
 [% END %]
 

@@ -243,7 +243,8 @@ sub print_page {
     my $database  = $ttdata->{'database'};
     my $view      = $ttdata->{'view'};
     my $sessionID = $ttdata->{'sessionID'};
-
+    my $sysprofile= $config->get_viewinfo($view)->{profilename};
+    
     my $user      = OpenBib::User->instance({sessionID => $sessionID});
 
     # Nutzer-DB zugreifbar? Falls nicht, dann wird der Menu-Punkt
@@ -260,18 +261,18 @@ sub print_page {
         $loginname=$user->get_username();
     }
 
-    $ttdata->{'loginname'} = $loginname;
+    # TT-Data anreichern
+    $ttdata->{'loginname'}  = $loginname;
+    $ttdata->{'sysprofile'} = $sysprofile;
 
     $logger->debug("Using base Template $templatename");
-    
-    if ($view && -e "$config->{tt_include_path}/views/$view/$templatename") {
-        $templatename="views/$view/$templatename";
-    }
 
-    # Database-Template ist spezifischer als View-Template und geht vor
-    if ($database && -e "$config->{tt_include_path}/database/$database/$templatename") {
-        $templatename="database/$database/$templatename";
-    }
+    $templatename = OpenBib::Common::Util::get_cascaded_templatepath({
+        database     => $database,
+        view         => $view,
+        profile      => $sysprofile,
+        templatename => $templatename,
+    });
 
     $logger->debug("Using database/view specific Template $templatename");
   
@@ -1020,6 +1021,65 @@ sub to_isbn13 {
 
     return $thisisbn;
 }
+
+sub get_cascaded_templatepath {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $database     = exists $arg_ref->{database}
+        ? $arg_ref->{database}             : undef;
+
+    my $view         = exists $arg_ref->{view}
+        ? $arg_ref->{view}                 : undef;
+
+    my $profile      = exists $arg_ref->{profile}
+        ? $arg_ref->{profile}              : undef;
+
+    my $templatename = exists $arg_ref->{templatename}
+        ? $arg_ref->{templatename}         : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    if (-e "$config->{tt_include_path}/profile/$profile") {
+        if ($view && -e "$config->{tt_include_path}/profile/$profile/views/$view/$templatename") {
+            $templatename="profile/$profile/views/$view/$templatename";
+        }
+
+        # Database-Template ist spezifischer als View-Template und geht vor
+        if ($database && -e "$config->{tt_include_path}/profile/$profile/database/$database/$templatename") {
+            $templatename="profile/$profile/database/$database/$templatename";
+        }
+
+        if ($view && -e "$config->{tt_include_path}/profile/$profile/$templatename") {
+            $templatename="profile/$profile/$templatename";
+        }
+
+        if ($view && -e "$config->{tt_include_path}/views/$view/$templatename") {
+            $templatename="views/$view/$templatename";
+        }
+        
+        # Database-Template ist spezifischer als View-Template und geht vor
+        if ($database && -e "$config->{tt_include_path}/database/$database/$templatename") {
+            $templatename="database/$database/$templatename";
+        }                
+    }
+    else {
+        if ($view && -e "$config->{tt_include_path}/views/$view/$templatename") {
+            $templatename="views/$view/$templatename";
+        }
+        
+        # Database-Template ist spezifischer als View-Template und geht vor
+        if ($database && -e "$config->{tt_include_path}/database/$database/$templatename") {
+            $templatename="database/$database/$templatename";
+        }
+    }
+
+    return $templatename;
+}
+
 1;
 __END__
 

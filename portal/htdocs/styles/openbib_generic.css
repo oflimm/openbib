@@ -475,6 +475,15 @@ dt.review {
   left: 15px;
 }
 
+#header_usb_siegel_light {
+  background: url(/images/openbib/kuglightlogo.png) center no-repeat;
+  width: 150px;
+  height: 68px;
+  position: absolute;
+  top: 15px;
+  left: 15px;
+}
+
 #header_uni_schriftzug {
   border-bottom: 4px solid #00089e; /* Linie im Kopf */
   padding-bottom: 3px;

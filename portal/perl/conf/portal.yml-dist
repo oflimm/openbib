@@ -116,6 +116,7 @@ bibsonomy_loc: /portal/bibsonomy
 catalogue_loc: /portal/katalogisierung
 circulation_loc: /portal/benutzerkonto
 connector_availabilityimage_loc: /portal/connector/availabilityimage
+connector_availability_loc: /portal/connector/availability
 connector_bibmanager_loc: /portal/connector/literaturverwaltung
 connector_digibib_loc: /portal/connector/digibib
 connector_olws_loc: /portal/connector/olws
@@ -241,6 +242,7 @@ tt_circulation_remind_tname: circulation_remind
 tt_circulation_renew_loans_tname: circulation_renew_loans
 tt_circulation_reserv_tname: circulation_reserv
 tt_circulation_tname: circulation
+tt_connector_availability_tname: connector_availability
 tt_connector_digibib_result_end_tname: connector_digibib_result_end
 tt_connector_digibib_result_item_tname: connector_digibib_result_item
 tt_connector_digibib_result_start_tname: connector_digibib_result_start

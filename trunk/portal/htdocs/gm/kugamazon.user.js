@@ -54,7 +54,7 @@ function()
             GM_xmlhttpRequest
             ({
                 method:'GET',
-                url: 'http://kug5.ub.uni-koeln.de/portal/connector/availabilitysummary/' + isbn,
+                url: 'http://kug5.ub.uni-koeln.de/portal/connector/availability/' + isbn,
                 onload:function(results)
                 {
                     page = results.responseText;

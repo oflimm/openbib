@@ -1,0 +1,70 @@
+[%#-
+#######################################################################
+#
+# Templatename: connector_availabilitysummery
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Verfuegbarkeitsinformationen im KUG
+#
+#######################################################################
+-%]
+<?xml version="1.0"?>
+<availability_summary key="[% key %]">
+[% IF available_recordlist.get_size > 0 %]
+<status>available</status>
+[%# USE dumper;dumper.dump(available_recordlist)%]
+<title_summary>
+[% normset = available_recordlist.get_records.first.get_brief_normdata %]
+[% IF normset.${"T0331"}.first.content %]
+  <title>[% normset.${"T0331"}.first.content %]</title>
+[% END %]
+[% FOREACH category IN [ "P0100" "P0102" "P0103" ] %]
+[%   FOREACH item IN normset.$category %]
+  <creator>[% item.content %]</creator>
+[%   END %]
+[% END %]
+  <type>text</type>
+[% IF normset.${"T0412"}.first.content %]
+  <publisher>[% normset.${"T0412"}.first.content %]</publisher>
+[% END %]
+[% IF normset.${"T0425"}.first.content %]
+  <date>[% normset.${"T0425"}.first.content %]</date>
+[% END %]
+[% IF normset.${"T0516"}.first.content %]
+  <language>[% normset.${"T0516"}.first.content %]</language>
+[% END %]
+[% FOREACH item IN normset.${"T0710"} %]
+  <subject>[% item.content %]</subject>
+[% END %]
+[% IF normset.${"T0540"}.first.content %]
+  <identifier>URN:ISBN:[% normset.${"T0540"}.first.content %]</identifier>
+[% END %]
+</title_summary>
+
+<availability size="[% available_recordlist.get_size %]">
+[% FOREACH record IN available_recordlist.get_records %]
+<catalogue>
+  <name>[% record.database %]</name>
+  <id>[% record.id %]</id>
+  <description>[% dbinfotable.dbnames.${record.database}.short %]</description>
+  <permalink>http://kug.ub.uni-koeln.de/portal/connector/permalink/[% record.database %]/[% record.id %]/1/kug/index.html</permalink>
+</catalogue>
+[% END %]
+</availability>
+[% END %]
+[% IF similar_recordlist.get_size > 0 %]
+<similar_record_availability size="[% similar_recordlist.get_size %]">
+[% FOREACH record IN similar_recordlist.get_records %]
+<catalogue>
+  <name>[% record.database %]</name>
+  <id>[% record.id %]</id>
+  <description>[% dbinfotable.dbnames.${record.database}.short %]</description>
+  <permalink>http://kug.ub.uni-koeln.de/portal/connector/permalink/[% record.database %]/[% record.id %]/1/kug/index.html</permalink>
+</catalogue>
+[% END %]
+</similar_record_availability>
+[% END %]
+</availability_summary>

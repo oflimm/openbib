@@ -1,0 +1,75 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_start
+#
+# Typ         : Mastertemplate (1/3)
+#
+# Aufgabe:
+#
+# Ausgabe des Anfangs der initialen Trefferliste
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+<body>
+
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.resultlists_loc %]?sessionID=[% sessionID %];trefferliste=choice;view=[% view %]">[% msg.maketext("Trefferliste") %]</a></li>
+</ul>
+
+<div class="content">
+
+<p />
+<p />
+<form method="get" action="[% config.resultlists_loc %]">
+<input type="hidden" name="offset"     value="[% query.param('offset') %]" />
+<input type="hidden" name="hitrange"   value="[% query.param('hitrange') %]" />
+<input type="hidden" name="action"     value="showall" />
+<input type="hidden" name="sessionID"  value="[% query.param('sessionID') %]" />
+<input type="hidden" name="queryid"    value="[% queryid %]" />
+
+<table id="options" width="100%">
+<tr><th>[% msg.maketext("Optionen") %]</th></tr>
+<tr><td class="boxed">
+<b>[% msg.maketext("Sortierung") %]:</b>&nbsp;
+<select name="sorttype">
+[% IF query.param('sb') == 'xapian' %]  <option value="relevance"[%- IF query.param('sorttype') == 'relevance' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Relevanz") %]</option>[% END %]
+  <option value="author"[%- IF query.param('sorttype') == 'author' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Person") %]</option>
+  <option value="title"[%- IF query.param('sorttype') == 'title' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel") %]</option>
+  <option value="order"[%- IF query.param('sorttype') == 'order' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Z&auml;hlung") %]</option>
+  <option value="yearofpub"[%- IF query.param('sorttype') == 'yearofpub' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]</option>
+  <option value="publisher"[%- IF query.param('sorttype') == 'publisher' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Verlag") %]</option>
+  <option value="signature"[%- IF query.param('sorttype') == 'signature' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Signatur") %]</option>
+  <option value="popularity"[%- IF query.param('sorttype') == 'popularity' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Popularit&auml;t") %]</option>
+</select>&nbsp;
+<select name="sortorder">
+  <option value="up"[%- IF query.param('sortorder') == 'up' -%] selected="selected"[%- END -%]>[% msg.maketext("aufsteigend") %]</option>
+  <option value="down"[%- IF query.param('sortorder') == 'down' -%] selected="selected"[%- END -%]>[% msg.maketext("absteigend") %]</option>
+</select>
+<select name="sortall">
+  <option value="0"[%- IF query.param('sortall') == '0' -%] selected="selected"[%- END -%]>[% msg.maketext("pro Katalog") %]</option>
+  <option value="1"[%- IF query.param('sortall') == '1' -%] selected="selected"[%- END -%]>[% msg.maketext("katalogübergreifend") %]</option>
+</select>
+&nbsp;<input type="submit" value="[% msg.maketext("Los") %]" />
+
+&nbsp;&nbsp;<b>&#124;</b>&nbsp;&nbsp;
+
+<b>[% msg.maketext("Liste") %]:</b>&nbsp;<span id="listtype_cover" [% IF qopts.listtype == 'cover' %]style="font-weight:bold"[% END %]><img style="vertical-align:bottom" src="/images/openbib/view_detailed.png" />&nbsp;<a href="[% config.virtualsearch_loc %]?[%- FOREACH qparam IN query.param -%][% IF ! qparam.match('^(listtype|bool|fs|verf|hst|hststring|gtquelle|swt|kor|sign|inhalt|isbn|issn|mart|notation|ejahr|ejahrop|database|queryid)',1) %][% qparam %]=[% query.param(qparam) %];[%- END -%][%- END -%]listtype=cover;queryid=[% queryid %]">[% msg.maketext("Cover-Ansicht") %]</a></span>&nbsp;&nbsp;<span id="listtype_list" [% IF qopts.listtype == 'list' %]style="font-weight:bold"[% END%]><img style="vertical-align:bottom" src="/images/openbib/view_text.png" />&nbsp;<a href="[% config.virtualsearch_loc %]?[%- FOREACH qparam IN query.param -%][% IF ! qparam.match('^(listtype|bool|fs|verf|hst|hststring|gtquelle|swt|kor|sign|inhalt|isbn|issn|mart|notation|ejahr|ejahrop|database|queryid)',1) %][% qparam %]=[% query.param(qparam) %];[%- END -%][%- END -%]listtype=list;queryid=[% queryid %]">[% msg.maketext("Listen-Ansicht") %]</a></span>
+
+</td></tr></table><p />
+</form>
+
+[% suggestion = sq.get_spelling_suggestion %]
+[% IF suggestion  %]
+[% msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% virtualsearch_loc %]?sessionID=[% sessionID %];hitrange=[% query.param('hitrange') %]&view=[% view %];sorttype=relevance;sortorder=down;sb=xapian;st=[% query.param('st') %];drilldown=1;dd_categorized=1;autoplus=0;combinedbs=0;searchall=1;fs=[% suggestion %]">[% suggestion %]</b>
+[% END %]
+

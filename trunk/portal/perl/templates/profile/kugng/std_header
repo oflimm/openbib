@@ -1,0 +1,68 @@
+[%#-
+#######################################################################
+#
+# Templatename: std_header
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe des Seiten-Headers
+#
+#######################################################################
+-%]
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/2002/REC-xhtml1-20020801/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+[% IF NOT disable_cache_control %]
+    <meta http-equiv="content-type"  content="text/html; charset=utf-8"/>
+    <meta http-equiv="Pragma"        content="no-cache" />
+    <meta http-equiv="Cache-Control" content="private,no-cache,no-store" />
+    <meta http-equiv="Expires"       content="Thu, 01 Dec 1970 12:00:00 GMT" />
+[% END %]
+    <meta name="sessionID"           content="[% sessionID %]" />
+[% IF record %]
+    <meta name="Bibkey"              content="[% record.to_bibkey %]" />
+    <meta name="Tags"                content="[% record.to_tags %]" />
+[% END %]
+  <link href="/images/openbib/favicon.ico" rel="shortcut icon" />
+[% IF view && primrssfeed %]
+<link rel="alternate" type="application/rss+xml" title="RDF-Datei" href="[% primrssfeed %]">
+[% END %]
+[% IF unapi && config.unAPI %]
+    <link rel="unapi-server" title="unAPI" type="application/xml" href="http://[% config.servername %][% config.connector_unapi_loc %]"/>
+[% END %]
+
+
+  [%- TRY -%]
+    [%- USE File "${config.document_root_path}${config.css_loc}/views/$view/openbib_generic.css" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/views/$view/openbib_generic.css" %]" media="all" />
+  [%- CATCH -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/openbib_generic.css" %]" media="all" />
+  [%- END -%]
+
+  [% TRY -%]
+    [%- USE File "${config.document_root_path}${config.css_loc}/views/$view/$stylesheet" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/views/$view/$stylesheet" %]" media="all" />
+  [%- CATCH -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/$stylesheet" %]" media="all" />
+  [%- END -%]
+
+  [%- TRY -%]
+    [%- USE File "${config.document_root_path}${config.css_loc}/views/$view/openbib_generic_print.css" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/views/$view/openbib_generic_print.css" %]" media="print" />
+  [%- CATCH -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/openbib_generic_print.css" %]" media="print" />
+  [%- END -%]
+
+    <script language="JavaScript" type="text/javascript" src="/js/jquery-1.2.6.pack.js"></script>
+    <script language="JavaScript" type="text/javascript" src="/js/jquery-ui-personalized-1.5b3.packed.js"></script>
+    <script language="JavaScript" type="text/javascript" src="/js/openbib.js"></script>
+    <script language="JavaScript" type="text/javascript" src="/js/jquery.autocomplete.pack.js"></script>
+
+  <link rel="stylesheet" href="[% "${config.css_loc}/jquery.autocomplete.css" %]" type="text/css" />
+  <link rel="stylesheet" href="[% "${config.css_loc}/ui.tabs.css" %]" type="text/css" media="print, projection, screen">
+
+    <title>KUG - K&ouml;lner Universit&auml;tsGesamtkatalog</title>
+
+   </head>

@@ -1,0 +1,206 @@
+[%#-
+#######################################################################
+#
+# Templatename: search_showtitlist
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe einer Titel-Kurztrefferliste
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title = 'Trefferliste'
+%]
+
+<body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="#"><span class="dbdescshort">[% targetdbinfo.dbnames.$database.short %]</span></a></li>
+</ul>
+
+<div class="content">
+<p />
+<form method="get" action="[% config.search_loc %]">
+<input type="hidden" name="offset"          value="[% offset %]" />
+<input type="hidden" name="hitrange"        value="[% IF hitrange %][% hitrange %][% ELSE %][% qopts.hitrange %][% END %]" />
+<input type="hidden" name="sessionID"       value="[% sessionID %]" />
+[%- IF query.param('database')          -%]<input type="hidden" name="database"      value="[% query.param('database') %]" />[% END %]
+[%- IF query.param('subtit')            -%]<input type="hidden" name="subtit"        value="[% query.param('subtit') %]" />[% END %]
+[%- IF query.param('supertit')          -%]<input type="hidden" name="supertit"      value="[% query.param('supertit') %]" />[% END %]
+[%- IF query.param('generalsearch')     -%]<input type="hidden" name="generalsearch" value="[% query.param('generalsearch') %]" />[% END %]
+[%- IF query.param('searchtitofaut')    -%]<input type="hidden" name="searchtitofaut" value="[% query.param('searchtitofaut') %]" />[% END %]
+[%- IF query.param('searchtitofurhkor') -%]<input type="hidden" name="searchtitofurhkor" value="[% query.param('searchtitofurhkor') %]" />[% END %]
+[%- IF query.param('searchtitofnot')    -%]<input type="hidden" name="searchtitofnot" value="[% query.param('searchtitofnot') %]" />[% END %]
+[%- IF query.param('searchtitofswt')    -%]<input type="hidden" name="searchtitofswt" value="[% query.param('searchtitofswt') %]" />[% END %]
+[%- IF query.param('searchtitofcnt')    -%]<input type="hidden" name="searchtitofcnt" value="[% query.param('searchtitofcnt') %]" />[% END %]
+[%- IF query.param('category')          -%]<input type="hidden" name="category" value="[% query.param('category') %]" />[% END %]
+
+<table width="100%">
+<tr><th>[% msg.maketext("Optionen") %]</th></tr>
+<tr><td class="boxed">
+<b>[% msg.maketext("Sortierung") %]:</b>&nbsp;
+<select name="sorttype">
+  <option value="author"[%- IF query.param('sorttype') == 'author' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Person") %]</option>
+  <option value="title"[%- IF query.param('sorttype') == 'title' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel") %]</option>
+  <option value="order"[%- IF query.param('sorttype') == 'order' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Z&auml;hlung") %]</option>
+  <option value="yearofpub"[%- IF query.param('sorttype') == 'yearofpub' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]</option>
+  <option value="publisher"[%- IF query.param('sorttype') == 'publisher' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Verlag") %]</option>
+  <option value="signature"[%- IF query.param('sorttype') == 'signature' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Signatur") %]</option>
+  <option value="popularity"[%- IF query.param('sorttype') == 'popularity' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Popularit&auml;t") %]</option>
+</select>&nbsp;
+<select name="sortorder">
+  <option value="up"[%- IF query.param('sortorder') == 'up' -%] selected="selected"[%- END -%]>[% msg.maketext("aufsteigend") %]</option>
+  <option value="down"[%- IF query.param('sortorder') == 'down' -%] selected="selected"[%- END -%]>[% msg.maketext("absteigend") %]</option>
+</select>
+<select name="sortall">
+  <option value="0" selected="selected">[% msg.maketext("pro Katalog") %]</option>
+</select>
+&nbsp;<input type="submit" value="[% msg.maketext("Los") %]" />
+
+&nbsp;&nbsp;<b>&#124;</b>&nbsp;&nbsp;
+
+<b>[% msg.maketext("Liste") %]:</b>&nbsp;<span id="listtype_cover" [% IF qopts.listtype == 'cover' %]style="font-weight:bold"[% END %]<img style="vertical-align:bottom" src="/images/openbib/view_detailed.png" />&nbsp;<a href="[% config.search_loc %]?[%- FOREACH qparam IN query.param -%][% IF qparam != 'listtype' %][% qparam %]=[% query.param(qparam) %];[%- END -%][%- END -%]listtype=cover">[% msg.maketext("Cover-Ansicht") %]</a></span>&nbsp;&nbsp;<span id="listtype_list" [% IF qopts.listtype == 'list' %]style="font-weight:bold"[% END%]<img style="vertical-align:bottom" src="/images/openbib/view_text.png" />&nbsp;<a href="[% config.search_loc %]?[%- FOREACH qparam IN query.param -%][% IF qparam != 'listtype' %][% qparam %]=[% query.param(qparam) %];[%- END -%][%- END -%]listtype=list">[% msg.maketext("Listen-Ansicht") %]</a></span>
+
+</td></tr></table><p />
+</form>
+<p />
+
+<form method="get" action="[% config.search_loc %]">
+<input type="hidden" name="database"  value="[% database %]" />
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+
+<p />
+
+<!-- Titlelist begins here -->
+<table width="100%">
+<tr><th>[% msg.maketext("Titelliste") %]</th></tr>
+<tr><td class="boxedclear">
+
+<div class="resultlist">
+  <div class="resultheader">
+    <div class="catalogue">
+[% targetdbinfo.dbinfo.$database.full %]
+    </div>
+    <div class="hits">
+[% recordlist.get_size %]  [% msg.maketext("Treffer") %]
+    </div>
+[% IF offset >= 0 && hitrange > 0 %]
+    <div class="navigation">
+[%- FOREACH navitem IN nav -%]
+<a href="[% navitem.url %]">
+[%- IF navitem.active -%]
+<b>[ [% navitem.start %]-[% navitem.end %] ]</b>
+[%- ELSE -%]
+[ [% navitem.start %]-[% navitem.end %] ]
+[%- END -%]
+</a>&nbsp;
+[%- END -%]
+[%- IF hits <= 1000 -%]
+<a href="[% baseurl %];hitrange=-1;offset=0">[ Alles ]</a>
+[%- END -%]
+    </div>
+[%-    END -%]
+  </div>
+  <div class="resultitems fullwidth">
+[% listrow = 'listrow1' %]
+[% FOREACH record IN recordlist.get_records %]
+[%- item = record.get_brief_normdata -%]
+[%# Verfasser konstruieren %]
+[%- persons = [] -%]
+[%- FOREACH part IN item.${'P0100'}  -%]
+[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.${'P0101'}  -%]
+[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.${'C0200'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- END -%]
+[%- FOREACH part IN item.${'C0201'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- END -%]
+[%- person = persons.join(' ; ') -%]
+[%# Titel konstruieren %]
+[%- title = item.${'T0331'}.first.content -%]
+[%- IF item.${'T0310'}.first.content -%]
+[%- title = item.${'T0310'}.first.content -%]
+[%- END -%]
+[%# Einbeziehung der Zaehlfelder T5100 %]
+[%- IF title && item.${'T5100'}.first.content -%]
+[%-    order = item.${'T5100'}.first.content -%]
+[%-    IF title == order -%]
+[%-      title = "${order}."-%]
+[%-    ELSE -%]
+[%-      title = "${order}. ${title}" -%]
+[%-    END -%]
+[%- END -%]
+[%# Verlage konstruieren %]
+[%- publisher = item.${'T0412'}.first.content -%]
+[%# Ejahr konstruieren %]
+[%- yearofpub = item.${'T0425'}.first.content -%]
+[%# Signaturen konstruieren %]
+[%- signaturen = [] -%]
+[%- FOREACH part IN item.${'X0014'} -%]
+[%- signaturen.push("${part.content}") -%]
+[%- END -%]
+[%- signatur = signaturen.sort.unique.join(' ; ') -%]
+[%- isbn     = item.${"T0540"}.first.content.replace('-','') -%]
+    <div class="item">
+      <div class="numbering">[% loop.count+offset %]</div>
+      <div class="thumbnail">
+    [% IF (config.coverscans.all || config.coverscans.${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.coverscans_credits_exturl.replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.coverscans_exturl.replace('ISBNINHERE', isbn) %]" title="[% config.coverscans_creditstext_exturl %]" /></a>[% ELSE %]&nbsp;[% END %]
+      </div> 
+      <div class="brieftitle">
+<span class="rlperson">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
+[%- IF item.popularity -%]<br />(Popularit&auml;t: [% item.popularity %])[%- END -%]
+      </div>
+      <div class="titlemark">[% signatur %]</div>
+      <div class="titleactions">
+<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="/images/openbib/3d-file-blue-clipboard.png" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>
+      </div>
+    </div>
+<!-- Ende einzelner Treffer -->
+[% IF listrow == 'listrow1' %]
+[% listrow = 'listrow2' %]
+[% ELSE %]
+[% listrow = 'listrow1' %]
+[% END %]
+[%- END -%]
+  </div>
+</div>
+<!-- Titlelist ends here -->
+
+</td></tr>
+</table>
+
+
+<p />
+
+<hr />
+
+<form method="get" action="[% config.search_loc %]">
+<input type="hidden" name="sessionID"  value="[% sessionID %]" />
+<input type="hidden" name="hitrange"   value="[% qopts.hitrange %]" />
+<input type="hidden" name="database"   value="[% database %]" />
+
+<table>
+<tr><td class="boxed">[% msg.maketext("Schlagwortindex dieses Katalogs") %]</td><td>&nbsp;<input type="text" name="swtindex" value="" size="4" maxlength="50" title="[% msg.maketext("Geben Sie hier den Schlagwortanfang ein") %]" />&nbsp;<input type="submit" value="[% msg.maketext("Suchen") %]" />&nbsp;</td></tr>
+</table>
+
+</form>
+</div>
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

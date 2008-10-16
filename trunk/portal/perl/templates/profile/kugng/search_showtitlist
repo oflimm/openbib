@@ -80,10 +80,6 @@
 <p />
 
 <!-- Titlelist begins here -->
-<table width="100%">
-<tr><th>[% msg.maketext("Titelliste") %]</th></tr>
-<tr><td class="boxedclear">
-
 <div class="resultlist">
   <div class="resultheader">
     <div class="catalogue">
@@ -182,24 +178,6 @@
 </div>
 <!-- Titlelist ends here -->
 
-</td></tr>
-</table>
-
-
-<p />
-
-<hr />
-
-<form method="get" action="[% config.search_loc %]">
-<input type="hidden" name="sessionID"  value="[% sessionID %]" />
-<input type="hidden" name="hitrange"   value="[% qopts.hitrange %]" />
-<input type="hidden" name="database"   value="[% database %]" />
-
-<table>
-<tr><td class="boxed">[% msg.maketext("Schlagwortindex dieses Katalogs") %]</td><td>&nbsp;<input type="text" name="swtindex" value="" size="4" maxlength="50" title="[% msg.maketext("Geben Sie hier den Schlagwortanfang ein") %]" />&nbsp;<input type="submit" value="[% msg.maketext("Suchen") %]" />&nbsp;</td></tr>
-</table>
-
-</form>
 </div>
 <p />
 

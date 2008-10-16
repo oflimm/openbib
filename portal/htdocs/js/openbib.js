@@ -13,7 +13,7 @@ $("input[@name='fs']").focus();
 $('#additional_title_info > ul').tabs();
 
  // Tabs fuer weitere Informationen
-$('#additional_title_info_vert').accordion();
+//$('#additional_title_info_vert').accordion();
 
 // nojs_* modifizieren fuer JavaScript-Version der Seite
 
@@ -157,6 +157,28 @@ $("#allreviews_toggle").click(function(){
  $("#allreviews").toggle();
 });
 // Ende Togglen / alle Reviews
+
+// Begin Togglen / Literaturlisten
+// Bild setzen
+$("#litlists_toggle").html("<img style=\"vertical-align:bottom;\" src=\"/images/openbib/toggle_plus.png\" alt=\"Literaturlisten erstellen\">")
+// Zuerst verstecken
+$("#litlists_do").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#litlists_toggle").click(function(){
+ $("#litlists_do").toggle();
+});
+// Ende Togglen / Literaturlisten
+
+// Begin Togglen / Tagging
+// Bild setzen
+$("#tagging_toggle").html("<img style=\"vertical-align:bottom;\" src=\"/images/openbib/toggle_plus.png\" alt=\"Literaturlisten erstellen\">")
+// Zuerst verstecken
+$("#tagging_do").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#tagging_toggle").click(function(){
+ $("#tagging_do").toggle();
+});
+// Ende Togglen / Tagging
  
 });
 

@@ -91,7 +91,7 @@
       </div> 
       <div class="brieftitle">
 <span class="rlperson">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
-[%- IF item.popularity -%](P:[% item.popularity %])[%- END -%]
+[%- IF item.popularity -%]<br />(Popularit&auml;t:[% item.popularity %])[%- END -%]
       </div>
       <div class="titlemark">[% signatur %]</div>
       <div class="titleactions">

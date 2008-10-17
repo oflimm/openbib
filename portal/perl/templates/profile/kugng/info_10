@@ -1,0 +1,132 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+[%
+      funcargs = { id => database, type => 1 } ;
+      resultlist = statistics.get_result(funcargs);
+%]
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=10" title="Katalogname"><span class="dbdescshort">[% dbinfotable.dbnames.${database}.short %]</span></a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=14" title="Wolken">Wolken</a></li>
+   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=10" title="Top 20">[% msg.maketext("Top 20") %]</a></li>
+</ul>
+
+<div class="content">
+<p />
+
+<!-- Titlelist begins here -->
+<div class="resultlist">
+  <div class="resultheader">
+    <div class="catalogue">
+Die 20 meist aufgerufenen Titel
+    </div>
+    <div class="hits">
+    </div>
+    <div class="navigation">
+    </div>
+  </div>
+  <div class="resultitems fullwidth[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+[% listrow = 'listrow1' %]
+[%- FOREACH thisitem IN resultlist -%]
+[% record    = thisitem.item;
+   itemcount = thisitem.count;
+   item      = record.get_brief_normdata; %]
+[%# Verfasser konstruieren %]
+[%- persons = [] -%]
+[%- FOREACH part IN item.${'P0100'}  -%]
+[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.${'P0101'}  -%]
+[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.${'C0200'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- END -%]
+[%- FOREACH part IN item.${'C0201'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- END -%]
+[%- person = persons.join(' ; ') -%]
+[%# Titel konstruieren %]
+[%- title = item.${'T0331'}.first.content -%]
+[%- IF item.${'T0310'}.first.content -%]
+[%- title = item.${'T0310'}.first.content -%]
+[%- END -%]
+[%# Einbeziehung der Zaehlfelder T5100 %]
+[%- IF title && item.${'T5100'}.first.content -%]
+[%-    order = item.${'T5100'}.first.content -%]
+[%-    IF title == order -%]
+[%-      title = "${order}."-%]
+[%-    ELSE -%]
+[%-      title = "${order}. ${title}" -%]
+[%-    END -%]
+[%- END -%]
+[%# Verlage konstruieren %]
+[%- publisher = item.${'T0412'}.first.content -%]
+[%# Ejahr konstruieren %]
+[%- yearofpub = item.${'T0425'}.first.content -%]
+[%# Signaturen konstruieren %]
+[%- signaturen = [] -%]
+[%- FOREACH part IN item.${'X0014'} -%]
+[%- signaturen.push("${part.content}") -%]
+[%- END -%]
+[%- signatur = signaturen.sort.unique.join(' ; ') -%]
+[%- isbn     = item.${"T0540"}.first.content.replace('-','') -%]
+    <div class="item">
+      <div class="numbering">[% loop.count %]</div>
+      <div class="thumbnail">
+    [% IF (config.coverscans.all || config.coverscans.${item.database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.coverscans_credits_exturl.replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.coverscans_exturl.replace('ISBNINHERE', isbn) %]" title="[% config.coverscans_creditstext_exturl %]" /></a>[% ELSE %]&nbsp;[% END %]
+      </div> 
+      <div class="brieftitle">
+<span class="rlperson">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
+[%- IF item.popularity -%]<br />(Popularit&auml;t: [% item.popularity %])[%- END -%]
+      </div>
+      <div class="titlemark">[% signatur %]</div>
+      <div class="titleactions">
+<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="/images/openbib/3d-file-blue-clipboard.png" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>
+      </div>
+    </div>
+<!-- Ende einzelner Treffer -->
+[% IF listrow == 'listrow1' %]
+[% listrow = 'listrow2' %]
+[% ELSE %]
+[% listrow = 'listrow1' %]
+[% END %]
+[%- END -%]
+  </div>
+</div>
+<!-- Titlelist ends here -->
+
+</div>
+</div>
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

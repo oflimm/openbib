@@ -1685,10 +1685,12 @@ sub editlogintarget_change {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
+    $logger->debug(YAML::Dump($logintarget_ref));
+    
     my $user = OpenBib::User->instance;
 
     $user->update_logintarget({
-        targetid    => $logintarget_ref->{targetid},
+        targetid    => $logintarget_ref->{id},
         hostname    => $logintarget_ref->{hostname},
         port        => $logintarget_ref->{port},
         username    => $logintarget_ref->{username},

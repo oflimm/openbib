@@ -11,12 +11,13 @@
 #
 #######################################################################
 -%]
+</div><!-- End maincontent -->
+
 [% IF NOT hide_foot_banner %]
-<div class="footer">
+<div class="footer"><!-- Begin footer -->
 <b>KUG</b> [% msg.maketext("ist ein Dienst der Universitäts- und Stadtbibliothek Köln") %]&nbsp;&nbsp;::&nbsp;&nbsp;realisiert mit <a href="http://www.openbib.org/" target="_blank">OpenBib</a>&nbsp;&nbsp;::&nbsp;&nbsp;<tt>[% config.version %]</tt>
-</div>
+</div><!-- End footer -->
 [% END %]
-</div>
 
 </body>
 </html>

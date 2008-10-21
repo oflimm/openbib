@@ -22,8 +22,6 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
-   <li><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
    <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="&Uuml;bersichten">&Uuml;bersichten</a></li>
 </ul>
 

@@ -15,19 +15,11 @@
 
   <body>
 
-[% PROCESS common/subtemplate name="corporate_banner" %] 
+[% PROCESS common/subtemplate name="corporate_banner" start=1 %] 
 
 [% PROCESS common/subtemplate name="mainnavigation" %] 
 
 <div id="maincontent">
-
-[% IF config.lang.size < 1 %]
-<div id="langchoice">
-[%   FOREACH l IN config.lang %]
-<a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];setmask=simple;l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
-[%   END %]
-</div>
-[% END %]
 
 [%
   viewdbs = [];
@@ -36,13 +28,13 @@
   END ;
 %]
 
-<!--<div id="testsystem">
 [% IF config.testsystem %]
-[% PROCESS common/subtemplate name="testsystem_info" %]
-[% END %]
-</div>-->
-
+<div id="testsystem">
+[%# PROCESS common/subtemplate name="testsystem_info" %]
 <p />
+</div>
+[% END %]
+
 
 <div id="searchmask"><!-- Begin searchmask -->
 <div id="searchmask_types"><!-- Begin searchmask_types -->
@@ -57,6 +49,9 @@
 
 <div id="alltypes"><!-- Begin alle Typen -->
 
+<h1>Recherchieren Sie im KUG in [% alldbcount %] Titeln und [% alldbs %] Katalogen</h1>[%# msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount}","${alldbs}") %]</b>
+
+<!--
 [% IF view %]
 
 [% IF viewtemplate %]
@@ -76,6 +71,7 @@
 </center>
 <p />
 [% END %]
+-->
 
 <form method="get" action="[% config.virtualsearch_loc %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
@@ -95,9 +91,10 @@
 <input type="hidden" name="dd_categorized" value="1" />
 [% END %]
 <input type="hidden" name="autoplus"  value="0" />
+
 <table>
-<tr><td class="bigtext">Finde</td><td><input type="text" name="fs" value="[% searchquery.fs.val | html %]" size="60" maxlength="200" />&nbsp;<input class="bigtext" type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Los") %]" /></td></tr>
-<tr><td class="bigtext">In</td><td><select name="profil">
+<tr><td class="bigtext">Finde</td><td><input id="to_focus" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="60" maxlength="200" /></td><td><input class="bigtext" type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Los") %]" /></td></tr>
+<tr><td class="bigtext">In</td><td colspan="2"><select name="profil">
 [%- IF dbchoice.size > 0 -%]
 <option value="dbauswahl"[%- IF prevprofile == 'dbauswahl' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
 [% END %]
@@ -121,12 +118,28 @@
 >- [% unit.desc %]</option>
 [% END %]
 </select></td></tr>
+<tr><td></td><td></td><td></td></tr>
 <tr><td><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]">[% msg.maketext("Neue Suche") %]</a></td><td align="right"><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Erweiterte Suche") %]</a></td></tr>
 </table>
 
-
 </form>
 
+[% IF queries.size > 0 %]
+<p />
+<form method="get" id="queries" action="[% config.dispatchquery_loc %]">
+<b>[% msg.maketext("Früherer Recherchen") %]</b>&nbsp;
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+
+[% PROCESS common/subtemplate name="select_queries" %]
+
+<input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" />
+
+</form>
+[% END %]
+
+<p />
+
+[% msg.maketext("Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter [_1] kug@ub.uni-koeln.de [_2] erreichen.","<a href=\"http://www.ub.uni-koeln.de/usb-cgi/zms_makeEmail.pl?adr0=kug\" target=\"_blank\">","</a>") %]
 
 </div><!-- End alle Typen -->
 
@@ -134,6 +147,9 @@
 
 <div id="only_serials"><!-- Begin Serials-->
 
+<h1>Recherchieren Sie im KUG in [% alldbcount %] Titeln und [% alldbs %] Katalogen</h1>[%# msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount}","${alldbs}") %]</b>
+
+<!--
 [% IF view %]
 
 [% IF viewtemplate %]
@@ -153,6 +169,7 @@
 </center>
 <p />
 [% END %]
+-->
 
 <form method="get" action="[% config.virtualsearch_loc %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
@@ -172,9 +189,12 @@
 <input type="hidden" name="dd_categorized" value="1" />
 [% END %]
 <input type="hidden" name="autoplus"  value="0" />
+<input type="hidden" name="mart"      value="Zeitschrift" />
+<input type="hidden" name="boolmart"  value="AND" />
+
 <table>
-<tr><td class="bigtext">Finde</td><td><input type="text" name="fs" value="[% searchquery.fs.val | html %]" size="60" maxlength="200" />&nbsp;<input class="bigtext" type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Nur Zeitschriften/Serien") %]" /></td></tr>
-<tr><td class="bigtext">In</td><td><select name="profil">
+<tr><td class="bigtext">Finde</td><td><input type="text" name="fs" value="[% searchquery.fs.val | html %]" size="60" maxlength="200" /></td><td><input class="bigtext" type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Nur Zeitschriften/Serien") %]" /></td></tr>
+<tr><td class="bigtext">In</td><td colspan="2"><select name="profil">
 [%- IF dbchoice.size > 0 -%]
 <option value="dbauswahl"[%- IF prevprofile == 'dbauswahl' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
 [% END %]
@@ -198,12 +218,28 @@
 >- [% unit.desc %]</option>
 [% END %]
 </select></td></tr>
-<tr><td><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]">[% msg.maketext("Neue Suche") %]</a></td><td align="right"><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Erweiterte Suche") %]</a></td></tr>
+<tr><td></td><td></td><td></td></tr>
+<tr><td><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]">[% msg.maketext("Neue Suche") %]</a></td><td align="right"><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Erweiterte Suche") %]</a></td><td></td></tr>
 </table>
-
-
 </form>
 
+[% IF queries.size > 0 %]
+<p />
+
+<form method="get" id="queries" action="[% config.dispatchquery_loc %]">
+<b>[% msg.maketext("Früherer Recherchen") %]</b>&nbsp;
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+
+[% PROCESS common/subtemplate name="select_queries" %]
+
+<input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" />
+
+</form>
+[% END %]
+
+<p />
+
+[% msg.maketext("Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter [_1] kug@ub.uni-koeln.de [_2] erreichen.","<a href=\"http://www.ub.uni-koeln.de/usb-cgi/zms_makeEmail.pl?adr0=kug\" target=\"_blank\">","</a>") %]
 
 </div><!-- End Serials -->
 
@@ -211,6 +247,9 @@
 
 <div id="only_articles"><!-- Begin nur Aufsaetze -->
 
+<h1>Recherchieren Sie im KUG in [% alldbcount %] Titeln und [% alldbs %] Katalogen</h1>[%# msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount}","${alldbs}") %]</b>
+
+<!--
 [% IF view %]
 
 [% IF viewtemplate %]
@@ -230,6 +269,7 @@
 </center>
 <p />
 [% END %]
+-->
 
 <form method="get" action="[% config.virtualsearch_loc %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
@@ -250,10 +290,11 @@
 [% END %]
 <input type="hidden" name="autoplus"  value="0" />
 <input type="hidden" name="mart"  value="Aufsatz" />
+<input type="hidden" name="boolmart"  value="AND" />
 
 <table>
-<tr><td class="bigtext">Finde</td><td><input type="text" name="fs" value="[% searchquery.fs.val | html %]" size="60" maxlength="200" />&nbsp;<input class="bigtext" type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Nur Aufsätze") %]" /></td></tr>
-<tr><td class="bigtext">In</td><td><select name="profil">
+<tr><td class="bigtext">Finde</td><td><input type="text" name="fs" value="[% searchquery.fs.val | html %]" size="60" maxlength="200" /></td><td><input class="bigtext" type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Nur Aufsätze") %]" /></td></tr>
+<tr><td class="bigtext">In</td><td colspan="2"><select name="profil">
 [%- IF dbchoice.size > 0 -%]
 <option value="dbauswahl"[%- IF prevprofile == 'dbauswahl' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
 [% END %]
@@ -277,40 +318,35 @@
 >- [% unit.desc %]</option>
 [% END %]
 </select></td></tr>
-<tr><td><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]">[% msg.maketext("Neue Suche") %]</a></td><td align="right"><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Erweiterte Suche") %]</a></td></tr>
+<tr><td></td><td></td><td></td></tr>
+<tr><td><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]">[% msg.maketext("Neue Suche") %]</a></td><td align="right"><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Erweiterte Suche") %]</a></td><td></td></tr>
 </table>
 
-</div><!-- End nur Aufsaetze -->
+<form>
 
-</div><!-- End searchmask_types -->
-
-<div id="searchmask_bottom"><!-- Begin searchmask_bottom -->
 [% IF queries.size > 0 %]
+<p />
 
 <form method="get" id="queries" action="[% config.dispatchquery_loc %]">
-<table width="100%">
-<tr><th style="text-align: center">[% msg.maketext("Rufen Sie hier die Ergebnisse früherer Recherchen auf") %]</th></tr>
-<tr><td align="center" class="boxed">
+<b>[% msg.maketext("Früherer Recherchen") %]</b>&nbsp;
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 
 [% PROCESS common/subtemplate name="select_queries" %]
 
 <input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" />
-</td></tr>
-</table>
+
 </form>
 [% END %]
 
 <p />
 
-<center>
-<b>[% msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount}","${alldbs}") %]</b>
-
-<p />
 [% msg.maketext("Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter [_1] kug@ub.uni-koeln.de [_2] erreichen.","<a href=\"http://www.ub.uni-koeln.de/usb-cgi/zms_makeEmail.pl?adr0=kug\" target=\"_blank\">","</a>") %]
-</center>
 
-</div><!-- End searchmask_bottom -->
+
+</div><!-- End nur Aufsaetze -->
+
+</div><!-- End searchmask_types -->
+
 </div><!-- End searchmask -->
 
 <div id="teaser"><!-- Begin teaser-->
@@ -377,20 +413,15 @@ Literaturlisten usw.)<p/>
 <p />
 
 <div id="overview"><!-- Begin overview-->
-<b>In den Gesamtbestand eintauchen</b> durch <a href="">Systematisches Bl&auml;ttern</a>,
-<a href="">Wolken</a>, <a href="">Literaturlisten</a>, <a
-href="">Suchbegriffe</a>, <a href="">meistgenutzte Titel</a>.<p/>
+<b>In den Gesamtbestand eintauchen</b> durch <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=50" title="[% msg.maketext("Systematisches Bl&auml;ttern") %]">Systematisches Bl&auml;ttern</a>,
+<a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="Wolken">Wolken</a>, <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=41" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a>, <a
+href="">Suchbegriffe</a>, <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=10" title="Top 20">meistgenutzte Titel</a>.<p/>
 
 </div><!-- End overview -->
 
-</div><!-- End teaser -->
-
-<div id="bottom"><!-- Begin bottom -->
   <!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
   <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
 
-</div><!-- End bottom -->
-
-</div>
+</div><!-- End teaser -->
 
 [% PROCESS common/subtemplate name="std_footer" %]

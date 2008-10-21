@@ -1,0 +1,49 @@
+[% IF start %]
+<!-- Begin Template: corporate_banner -->
+	<div id="header">
+		<a href="http://kug.ub.uni-koeln.de/" title="KUG Startseite" id="header_usb_siegel" target="_blank"></a>
+		<a href="http://www.uni-koeln.de" title="Startseite der Universität zu Köln" id="header_uni_schriftzug" target="_blank"><span>Universit&auml;t zu K&ouml;ln</span></a>
+
+		<a href="http://kug.ub.uni-koeln.de/" title="KUG Startseite" id="header_usb_schriftzug" target="_blank"><span>[% IF view %][% config.get_viewdesc_from_viewname(view) %][% ELSE %]K&ouml;lner Universit&auml;tsGesamtkatalog[% END %]</span></a>
+		<a href="http://www.uni-koeln.de" title="Startseite der Universit&auml;t zu Köln" id="header_uni_siegel" target="_blank"></a>
+
+        </div>
+<!-- End Template: corporate_banner -->
+[% ELSE %]
+<!-- Begin Template: corporate_banner -->
+	<div id="header2">
+		<div id="header_logo"><a href="http://kug.ub.uni-koeln.de/" title="KUG Startseite" id="header_usb_siegel_small" target="_blank"></a></div>
+                <div id="header_simplesearch">
+<form method="get" id="openbib" action="[% config.virtualsearch_loc %]">
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<input type="hidden" name="hitrange"  value="50" />
+<input type="hidden" name="view"      value="[% view %]" />
+<input type="hidden" name="sorttype"  value="author" />
+<input type="hidden" name="sortorder" value="up" />
+<input type="hidden" name="sb"        value="xapian" />
+<input type="hidden" name="st"        value="1" />
+[% IF config.drilldown %]
+<input type="hidden" name="drilldown"      value="1" />
+[% END %]
+[% IF config.drilldown_option.cloud %]
+<input type="hidden" name="dd_cloud"       value="1" />
+[% END %]
+[% IF config.drilldown_option.categorized %]
+<input type="hidden" name="dd_categorized" value="1" />
+[% END %]
+<input type="hidden" name="autoplus"  value="0" />
+<input type="hidden" name="profil"  value="alldbs" />
+
+<span class="bigtext">Finde</span>&nbsp;<input type="text" name="fs" value="[% searchquery.fs.val | html %]" size="40" maxlength="200" />&nbsp;&nbsp;<input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Los") %]" />&nbsp;&nbsp;<a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Erweiterte Suche") %]</a>
+[%- IF config.lang.size > 1 -%]
+<!--&nbsp;&nbsp;
+[%-   FOREACH l IN config.lang -%]
+&nbsp;<a href="[% config.search_loc %]?sessionID=[% sessionID %];database=[% record.database %];searchsingletit=[% record.id %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>
+[%-   END -%]
+-->
+[%- END -%]
+</form>
+</div>
+   </div>
+<!-- End Template: corporate_banner -->
+[% END %]

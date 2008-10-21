@@ -93,6 +93,10 @@ table {
   font-weight: bold;
 }
 
+.categoryline {
+  background:
+}
+
 .circurl { 
   font-weight:bold;
   vertical-align:center;
@@ -220,7 +224,8 @@ input, select, textarea {
   font: 100% Arial,helv,Helvetica,Verdana;
   border: 1px solid #ADD8E6;  
   color: #000000;
-  background-color: #efefef;
+  background-color: #efefef; 
+/*  background-color: aliceblue; */
   vertical-align: middle;
   margin-bottom: 1px;
 }
@@ -346,21 +351,36 @@ h2[class=nojs_show] {
 
 #maincontent{
   overflow: hidden;
-  width: 99%;
-  position: absolute;
+  width: 98%;
+/*  position: absolute;
   top: 110px;
-  left: 0;
+  left: 0; */
   background: white ;
   padding: 5px;
+  margin-top: 15px;
+  margin-left: 5px;
+}
+
+#maincontent #langchoice {
+/*  display: none; */
 }
 
 #mainnavigation{
   width: 100%;
-  position: absolute;
+/*  position: absolute;
   top: 90px;
-  left: 0;
-  background: white ;
+  left: 0; */
+  
+/*  background: aliceblue ;
   padding: 0px;
+  
+  border-top-style: solid;
+  border-top-color: lightblue;
+  border-top-width: 1px;  
+  border-bottom-style: solid;
+  border-bottom-color: lightblue;
+  border-bottom-width: 1px;   */
+
 }
 
 #mainnavigation_left{
@@ -471,9 +491,19 @@ dt.review {
 #header {
   height: 90px;
   width: 100%;
-  position: absolute;
+/*  position: absolute;
   top: 0;
-  left: 0;
+  left: 0; */
+  background: white ;
+  padding: 0px;
+}
+
+#header2 {
+  height: 65px;
+  width: 100%;
+/*  position: absolute;
+  top: 0;
+  left: 0; */
   background: white ;
   padding: 0px;
 }
@@ -491,6 +521,15 @@ dt.review {
   background: url(/images/openbib/kuglogo.png) center no-repeat;
   width: 150px;
   height: 68px;
+  position: absolute;
+  top: 10px;
+  left: 15px;
+}
+
+#header_usb_siegel_small {
+  background: url(/images/openbib/kuglogo_small.png) center no-repeat;
+  width: 100px;
+  height: 45px;
   position: absolute;
   top: 10px;
   left: 15px;
@@ -543,6 +582,35 @@ dt.review {
 #header_usb_schriftzug:focus span {
   color: #000000;
   text-decoration: underline;
+}
+
+#header2 #header_logo {
+  float: left;
+  widht: 120px;
+}
+
+#header2 #header_simplesearch {
+  float: right;
+  width: auto;
+  text-align: right;
+  vertical-align: middle;
+  padding:10px;
+  margin-top:10px;
+  margin-right: 20px;
+  
+  border-top-style: solid;
+  border-top-color: lightblue;
+  border-top-width: 1px;
+  border-left-style: solid;
+  border-left-color: lightblue;
+  border-left-width: 1px;
+  border-right-style: solid;
+  border-right-color: lightblue;
+  border-right-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: lightblue;
+  border-bottom-width: 1px;  
+
 }
 
 .listnavigation {
@@ -921,6 +989,8 @@ dt.review {
 }
 
 .footer {
+  width: 99%;
+  float: left;
   text-align: center;
 }
 
@@ -929,19 +999,19 @@ dt.review {
 }
 
 #searchmask {
-  float: left;
-  padding: 20px;
+  float: left; 
+  padding: 5px;
   width: 60%;
   background-color: white;
-  border-style: solid;
+/*  border-style: solid;
   border-color: lightblue;
   border-width: 1px;  
   -moz-border-radius: 12px;
-  -webkit-border-radius: 12px;
+  -webkit-border-radius: 12px; */
 }
 
 #searchmask_types {
-  widht:99%;
+  width:99%;
 }
 
 #searchmask_types #alltypes, #searchmask #only_articles, #searchmask #only_serials{
@@ -954,18 +1024,27 @@ dt.review {
 
 #searchmask_history {
   width: 99.5%;
-}
-
-#searchmask_query {
-  float: left;
-  padding: 20px;
-  width: 36%;
+  text-align: center;
+  height: auto;
   background-color: white;
   border-style: solid;
   border-color: lightblue;
   border-width: 1px;  
   -moz-border-radius: 12px;
-  -webkit-border-radius: 12px;
+  -webkit-border-radius: 12px; 
+
+}
+
+#searchmask_query {
+  float: left;
+  padding: 20px;
+  width: 40%;
+  background-color: white;
+/*  border-style: solid;
+  border-color: lightblue;
+  border-width: 1px;  
+  -moz-border-radius: 12px;
+  -webkit-border-radius: 12px; */
 }
 
 #searchmask_dbchoice {
@@ -973,11 +1052,9 @@ dt.review {
   padding: 20px;
   width: 50%;
   background-color: white;
-  border-style: solid;
-  border-color: lightblue;
-  border-width: 1px;  
-  -moz-border-radius: 12px;
-  -webkit-border-radius: 12px;  
+  border-left-style: dashed;
+  border-left-color: lightblue;
+  border-left-width: 1px;  
 }
 
 #teaser {
@@ -989,7 +1066,9 @@ dt.review {
   position: static;
   width:auto;
   padding: 5px;
-  background-color: white;
+/*  text-align: right; */
+/*  text-align: right; */
+/*  background-color: white;
   border-top-style: solid;
   border-top-color: lightblue;
   border-top-width: 1px;
@@ -1003,7 +1082,7 @@ dt.review {
   border-bottom-color: lightblue;
   border-bottom-width: 1px;  
   -moz-border-radius: 12px;
-  -webkit-border-radius: 12px;
+  -webkit-border-radius: 12px; */
 }
 
 #newsflash {
@@ -1058,14 +1137,29 @@ dt.review {
   width:99.9%;
 
   padding: 5px;
-
 }
 
 #searchmask_bottom {
   float:left;
+  
   width:99.9%;
 
   padding: 5px;
+
+  /*
+  border-top-style: solid;
+  border-top-color: lightblue;
+  border-top-width: 1px;
+  border-left-style: solid;
+  border-left-color: lightblue;
+  border-left-width: 1px;
+  border-right-style: solid;
+  border-right-color: lightblue;
+  border-right-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: lightblue;
+  border-bottom-width: 1px;  */
+
 }
 
 #testsystem {
@@ -1076,4 +1170,18 @@ dt.review {
 .bigtext {
   font-size: 1.6em;
   font-weight: bold;
+}
+
+#login_container {
+  width: 99%;
+}
+
+.left_side {
+  float: left;
+  width: 48%;
+}
+
+.right_side {
+  float: right;
+  width: 48%;
 }

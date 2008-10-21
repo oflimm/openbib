@@ -184,17 +184,9 @@ sub get_option {
 sub get_default_options {
     my ($class)=@_;
 
-    return {
-        hitrange  => 50,
-        offset    => 1,
-        l         => 'de',
-        profil    => '',
-        autoplus  => '',
-        sb        => 'sql',
-        js        => 0,
-        listtype  => 'cover',
-    };
+    my $config  = OpenBib::Config->instance;
 
+    return $config->{default_query_options};
 };
 
 1;

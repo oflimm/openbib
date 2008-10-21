@@ -7,10 +7,13 @@ var Tags      = $("meta[@name='Tags']").attr("content");
 
 // Focus auf erstes Eingabefeld
 //$(":input:visible:enabled:first").focus();
-$("input[@name='fs']").focus();
+$("input[@id='to_focus']").focus();
 
 // Tabs fuer weitere Informationen
 $('#additional_title_info > ul').tabs();
+
+// Tabs fuer Suchmaske nach Formaten 
+$('#searchmask_types > ul').tabs();
 
  // Tabs fuer weitere Informationen
 //$('#additional_title_info_vert').accordion();

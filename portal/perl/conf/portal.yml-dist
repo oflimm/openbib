@@ -401,6 +401,17 @@ drilldown_option:
   cloud: 1
   cloud_min: 6
 
+# Default Query-Options (Session)
+default_query_options:
+  hitrange: 50
+  offset: 1
+  l: 'de'
+  profil: ''
+  autoplus: ''
+  sb: 'sql'
+  js: 0
+  listtype: 'list'
+
 # Generierte BestOf-Daten
 best_of:
   3:

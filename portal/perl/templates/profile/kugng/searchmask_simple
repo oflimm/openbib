@@ -357,16 +357,6 @@
 <a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];setmask=simple;l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 </div>
-
-<p />
-[% END %]
-
-[% IF config.newsflash %]
-<div id="newsflash"><!-- Begin newsflash -->
-[% PROCESS common/subtemplate name="newsflash" %]
-</div><!-- End newsflash -->
-
-<p />
 [% END %]
 
 <div id="login"><!-- Begin login-->
@@ -410,18 +400,34 @@ Literaturlisten usw.)<p/>
 
 </div><!-- End login -->
 
-<p />
-
-<div id="overview"><!-- Begin overview-->
-<b>In den Gesamtbestand eintauchen</b> durch <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=50" title="[% msg.maketext("Systematisches Bl&auml;ttern") %]">Systematisches Bl&auml;ttern</a>,
-<a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="Wolken">Wolken</a>, <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=41" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a>, <a
-href="">Suchbegriffe</a>, <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=10" title="Top 20">meistgenutzte Titel</a>.<p/>
-
-</div><!-- End overview -->
-
   <!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
   <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
 
 </div><!-- End teaser -->
+
+<div id="searchmask_bottom"><!-- Begin searchmask_bottom -->
+<table width="100%" cellspacing="0" cellpadding="0">
+<tr valign="top">
+
+[% IF 1 #config.newsflash %]
+<td class="newsflash"><!-- Begin newsflash -->
+[% PROCESS common/subtemplate name="newsflash" %]
+</td><!-- End newsflash -->
+[% END %]
+
+<td class="overview"><!-- Begin overview-->
+<h3>In den Gesamtbestand eintauchen</h3>
+
+durch <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=50" title="[% msg.maketext("Systematisches Bl&auml;ttern") %]">Systematisches Bl&auml;ttern</a>,
+<a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="Wolken">Wolken</a>, <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=41" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a>, <a
+href="">Suchbegriffe</a>, <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=10" title="Top 20">meistgenutzte Titel</a>.<p/>
+
+</td><!-- End overview -->
+<td class="mostrecent"><!-- Begin Literaturlisten/Tags -->
+<h3>Legen Sie Literaturlisten an und vergeben Sie Tags</h3>
+</td><!-- End Literaturlisten/Tags -->
+</tr>
+</table>
+</div><!-- End searchmask_bottom -->
 
 [% PROCESS common/subtemplate name="std_footer" %]

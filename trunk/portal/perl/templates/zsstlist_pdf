@@ -6,7 +6,7 @@
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{textcomp}
-\usepackage[latin1]{inputenc}
+\usepackage[utf8x]{inputenc}
 
 % Zusaetzliche Picture-Umgebungen (z.B. shadowenv)
 \usepackage{picins}
@@ -37,7 +37,7 @@
 \begin{center}
 \rule[-.1in]{16cm}{1mm}\\[3mm]
 {\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{20}{20pt}\selectfont
-  USB Köln $\bullet$ Abt. UniversitätsGesamtKatalog}\\[-2mm]
+  USB K"oln $\bullet$ Abt. Universit"atsGesamtKatalog}\\[-2mm]
 \rule[-.1in]{16cm}{1mm}
 
 \vspace{5cm}
@@ -46,11 +46,11 @@
 
   \vspace{1cm}
 
-  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{20}{20pt}\selectfont [% dbinfotable.sigel.${sigel}.full %]\\[3mm]Sigel: 38/[% sigel %]}
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{20}{20pt}\selectfont [% filterchars(dbinfotable.sigel.${sigel}.full) %]\\[3mm]Sigel: 38/[% sigel %]}
 
   \vspace{2cm}
 
-  Ein Service der Abt. UniversitätsGesamtKatalog / USB Köln\\
+  Ein Service der Abt. Universit"atsGesamtKatalog / USB K"oln\\
   Stand: \today
 
 \end{center}
@@ -60,45 +60,45 @@
 Liebe Kolleginnen und Kollegen,
 
 am 01.09.2006 hat die Abt. UGK die Aufgabe der Pflege der
-Zeitschriftenbestände der Institute in der Zeitschriftendatenbank
-(ZDB) übernommen.
+Zeitschriftenbest"ande der Institute in der Zeitschriftendatenbank
+(ZDB) "ubernommen.
 
-Durch die neue KUG 2.0 Version gibt es für Sie die Möglichkeit die
-Liste Ihre Zeitschriftenbestände als PDF-Dokument von unserem Server
+Durch die neue KUG 2.0 Version gibt es f"ur Sie die M"oglichkeit die
+Liste Ihre Zeitschriftenbest"ande als PDF-Dokument von unserem Server
 herunterzuladen. Wir verschicken also keine Zeitschriftentitellisten
 mehr an Sie mit der Bitte um Korrektur, sondern Sie entscheiden, wann
-sie eine Revision Ihres Zeitschriftenbestandes durchführen wollen und
-können sich dann Ihre Liste herunterladen, ausdrucken und nach der
+sie eine Revision Ihres Zeitschriftenbestandes durchf"uhren wollen und
+k"onnen sich dann Ihre Liste herunterladen, ausdrucken und nach der
 Bearbeitung an uns schicken.
 
 \minisec{Allgemeine Hinweise zur Zeitschriftenbearbeitung:}
 
-Bei Neuen Zeitschriften, die noch nicht in der ZDB vorhanden sind,
+Bei neuen Zeitschriften, die noch nicht in der ZDB vorhanden sind,
 schicken Sie uns bitte Kopien des Titelblattes und aller relevanten
 Daten aus dem Impressum.
 
-Von Ihnen gemeldete Änderungen in der ZDB-Online sind dort auch sofort
-sichtbar. Allerdings werden diese Änderungen in der KUG-Datenbank
-\emph{Zeitschriften der Institute} erst beim vierteljährlichen Update
-angezeigt. (Vierteljährlich erhalten wir vom HBZ einen Abzug der
-ZDB-Daten für die Bestände der Kölner Instituts- und
-Seminarbibliotheken). Es nutzt also nichts nach unserer Rückmeldung
-über durchgeführte Änderungen, diese in der \emph{Zeitschriften der
+Von Ihnen gemeldete "Anderungen in der ZDB-Online sind dort auch sofort
+sichtbar. Allerdings werden diese "Anderungen in der KUG-Datenbank
+\emph{Zeitschriften der Institute} erst beim viertelj"ahrlichen Update
+angezeigt. (Viertelj"ahrlich erhalten wir vom HBZ einen Abzug der
+ZDB-Daten f"ur die Best"ande der K"olner Instituts- und
+Seminarbibliotheken). Es nutzt also nichts nach unserer R"uckmeldung
+"uber durchgef"uhrte "Anderungen, diese in der \emph{Zeitschriften der
 Institute}-Datenbank zu recherchieren. Gehen Sie dazu auf die ZDB-URL:
 \texttt{http://dispatch.opac.ddb.de/}
 
-Zusätzlich sollten Sie uns natürlich alle laufenden Bestandsänderungen
+Zus"atzlich sollten Sie uns nat"urlich alle laufenden Bestands"anderungen
 per Mail (gk@ub.uni-koeln.de ) mitteilen.
 
-Bitte beachten Sie bei Änderungsmitteilungen:
+Bitte beachten Sie bei "Anderungsmitteilungen:
 
 \begin{itemize}
 \item Geben Sie mit dem Erscheinungsjahr auch immer die
-Band/Volume-Zählung an:\newline
+Band/Volume-Z"ahlung an:\newline
 Falsch:  - 1993\newline
 Richtig: - 34.1993
 \item \lbrack{}N=34.1993\rbrack = Nicht vorhanden, d.h. der Band 34.1993 ist (komplett) nicht vorhanden.
-\item \lbrack{}L=34.1993\rbrack = Lückenhaft vorhanden, d.h. der Band 34.1993 ist nur lückenhaft vorhanden. Es fehlen einzelne Hefte.
+\item \lbrack{}L=34.1993\rbrack = L"uckenhaft vorhanden, d.h. der Band 34.1993 ist nur l"uckenhaft vorhanden. Es fehlen einzelne Hefte.
 \end{itemize}
 
 \minisec{URL der Zeitschriftenlisten}
@@ -112,7 +112,7 @@ die Best"ande anderer Institute/Seminare an der Universit"at zu K"oln
 verzeichnet sind.  \vspace{1cm}
 
   \begin{tabular}[t]{ll}
-    AnsprechpartnerInnen : & Abt. UniversitätsGesamtKatalog / USB Köln\\
+    AnsprechpartnerInnen : & Abt. Universit"atsGesamtKatalog / USB K"oln\\
     Telefon : & 0221-470 3306 \\
     Fax     : & 0221-470 5166 \\
     E-Mail  : & gk@ub.uni-koeln.de \\
@@ -154,7 +154,7 @@ online von unserer Sigel-Liste:
 
 \begin{center}
 \begin{verbatim}
-http://www.ub.uni-koeln.de/dezkat/content/bibliotheksfuehrer/sigel/index_ger.html
+http://bibliotheksfuehrer.ub.uni-koeln.de/sigel/index_ger.html
 \end{verbatim}
 \end{center}
 
@@ -167,46 +167,46 @@ http://www.ub.uni-koeln.de/dezkat/content/bibliotheksfuehrer/sigel/index_ger.htm
 \begin{shadowenv}
 \begin{tabular}{lp{10cm}}
 [% FOREACH item IN thistitset.${"T0572"} %]
-  \textbf{ZDB-Id} & \textbf{[% item.content %]}\\
+  \textbf{ZDB-Id} & \textbf{[% filterchars(item.content) %]}\\
 [% END %]
 [% FOREACH item IN thistitset.${"T0200"} %]
-  Urheber & [% item.content %]\\
+  Urheber & [% filterchars(item.content) %]\\
 [% END %]
 [% FOREACH item IN thistitset.${"T0201"} %]
-  Körperschaft & [% item.content %]\\
+  K"orperschaft & [% filterchars(item.content) %]\\
 [% END %]
 [% FOREACH item IN thistitset.${"T0310"} %]
-  AST & [% item.content %]\\
+  AST & [% filterchars(item.content) %]\\
 [% END %]
 [% FOREACH item IN thistitset.${"T0331"} %]
-  HST & [% item.content %]\\
+  HST & [% filterchars(item.content) %]\\
 [% END %]
 [% FOREACH item IN thistitset.${"T0335"} %]
-   Zusatz zum HST & [% item.content %]\\
+   Zusatz zum HST & [% filterchars(item.content) %]\\
 [% END %]
 [% FOREACH item IN thistitset.${"T0370"} %]
-   WST & [% item.content %]\\
+   WST & [% filterchars(item.content) %]\\
 [% END %]
 [% FOREACH item IN thistitset.${"T0412"} %]
-   Verlag     & [% item.content %]\\
+   Verlag     & [% filterchars(item.content) %]\\
 [% END %]
 [% FOREACH item IN thistitset.${"T0410"} %]
-   Verlagsort & [% item.content %]\\
+   Verlagsort & [% filterchars(item.content) %]\\
 [% END %]
 [% FOREACH item IN thistitset.${"T0405"} %]
-   Erschverlauf & [% item.content %]\\
+   Erschverlauf & [% filterchars(item.content) %]\\
 [% END %]
 [% FOREACH item IN thistitset.${"T0543"} %]
-   ISSN & [% item.content %]\\
+   ISSN & [% filterchars(item.content) %]\\
 [% END %]
 [% FOREACH item IN thistitset.${"T0531"} %]
-   Früher u.d.T. & [% item.content %]\\
+   Fr"uher u.d.T. & [% filterchars(item.content) %]\\
 [% END %]
 [% FOREACH item IN thistitset.${"T0532"} %]
-   Teilw. u.d.T. & [% item.content %]\\
+   Teilw. u.d.T. & [% filterchars(item.content) %]\\
 [% END %]
 [% FOREACH item IN thistitset.${"T0533"} %]
-   Später u.d.T. & [% item.content %]\\
+   Sp"ater u.d.T. & [% filterchars(item.content) %]\\
 [% END %]
 \end{tabular}
 
@@ -216,13 +216,13 @@ Sigel & Signatur & Standort & Bestand \\
 [%   FOREACH item IN thismexset %]
 [%     IF showall %]
 [%       IF item.${"X3330"}.content == sigel %]
-\textbf{[% item.${"X3330"}.content %]} & [% item.${"X0014"}.content %] & [% item.${"X0005"}.content %] & [% item.${"X1204"}.content %]\\
+\textbf{[% filterchars(item.${"X3330"}.content) %]} & [% filterchars(item.${"X0014"}.content) %] & [% filterchars(item.${"X0005"}.content) %] & [% filterchars(item.${"X1204"}.content) %]\\
 [%       ELSE %]
-[% item.${"X3330"}.content %] & [% item.${"X0014"}.content %] & [% item.${"X0005"}.content %] & [% item.${"X1204"}.content %]\\
+[% filterchars(item.${"X3330"}.content) %] & [% filterchars(item.${"X0014"}.content) %] & [% filterchars(item.${"X0005"}.content) %] & [% filterchars(item.${"X1204"}.content) %]\\
 [%       END %]
 [%     ELSE %]
 [%       IF item.${"X3330"}.content == sigel %]
-[% item.${"X3330"}.content %] & [% item.${"X0014"}.content %] & [% item.${"X0005"}.content %] & [% item.${"X1204"}.content %]\\
+[% filterchars(item.${"X3330"}.content) %] & [% filterchars(item.${"X0014"}.content) %] & [% filterchars(item.${"X0005"}.content) %] & [% filterchars(item.${"X1204"}.content) %]\\
 [%       END %]
 [%     END %]
 [%   END %]

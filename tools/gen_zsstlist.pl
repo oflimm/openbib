@@ -40,11 +40,12 @@ use OpenBib::Record::Person;
 use OpenBib::Record::CorporateBody;
 use OpenBib::Record::Subject;
 use OpenBib::Record::Classification;
+use OpenBib::RecordList::Title;
 use OpenBib::Search::Util;
 use OpenBib::Template::Provider;
 
 use DBI;
-use Encode 'decode_utf8';
+use Encode qw/decode_utf8 encode decode/;
 use Template;
 use YAML;
 
@@ -84,7 +85,7 @@ my %titidns = ();
 
 # IDN's der Exemplardaten und daran haengender Titel bestimmen
 
-my $request=$dbh->prepare("select distinct id from mex where category=3300 and content=?") or $logger->error($DBI::errstr);
+my $request=$dbh->prepare("select distinct id from mex where category=3330 and content=?") or $logger->error($DBI::errstr);
 
 $request->execute($sigel) or $logger->error($DBI::errstr);;
 
@@ -114,14 +115,16 @@ foreach $titidn (keys %titidns){
 
     my $mexnormdata_ref = $record->get_mexdata;
 
-    print YAML::Dump($record);
+    # print YAML::Dump($record);
     # Titel auch in anderen Bibliotheken?
 
     my $is_extern=0;
 
     foreach my $mexitem_ref (@$mexnormdata_ref){
-        if (exists $mexitem_ref->{X3300}{content}){
-            if ($mexnormset_ref->{X3300}{content} ne $sigel){
+        if (exists $mexitem_ref->{X3330}){
+            my $thissigel=$mexitem_ref->{X3330}{content};
+            
+            if ($thissigel ne $sigel){
                 $is_extern=1;
             }
         }
@@ -161,7 +164,7 @@ my $ttdata = {
     dbinfotable  => $dbinfotable,
     recordlist   => \@sortedrecordlist,
     showall      => $showall,
-    gesamtzahl   => $recordlist->get_size,
+    gesamtzahl   => $#recordlist+1,
     externzahl   => $externzahl,
 
     filterchars  => \&filterchars,
@@ -190,7 +193,7 @@ sub filterchars {
   $content=~s/\&lt\;/\$<\$/g;
   $content=~s/\{/\\\{/g;
   $content=~s/\}/\\\}/g;
-
+  $content=~s/#/\\\#/g;
 
   # Entfernen
   $content=~s/±//g;
@@ -209,50 +212,50 @@ sub filterchars {
   $content=~s/\&amp\;/\\&/g;
   $content=~s/\"/\'\'/g;
   $content=~s/\%/\\\%/g;
+  $content=~s/ð/d/g;      # eth
 
+  $content = encode("utf8",$content);
   # Umlaute
-  $content=~s/\&uuml\;/ü/g;
-  $content=~s/\&auml\;/ä/g;
-  $content=~s/\&Auml\;/Ä/g;
-  $content=~s/\&Uuml\;/Ü/g;
-  $content=~s/\&ouml\;/ö/g;
-  $content=~s/\&Ouml\;/Ö/g;
-  $content=~s/\&szlig\;/ß/g;
+  #$content=~s/\&uuml\;/ü/g;
+  #$content=~s/\&auml\;/ä/g;
+  #$content=~s/\&Auml\;/Ä/g;
+  #$content=~s/\&Uuml\;/Ü/g;
+  #$content=~s/\&ouml\;/ö/g;
+  #$content=~s/\&Ouml\;/Ö/g;
+  #$content=~s/\&szlig\;/ß/g;
 
   # Caron
-  $content=~s/\&#353\;/\\v\{s\}/g; # s hacek
-  $content=~s/\&#352\;/\\v\{S\}/g; # S hacek
-  $content=~s/\&#269\;/\\v\{c\}/g; # c hacek
-  $content=~s/\&#268\;/\\v\{C\}/g; # C hacek
-  $content=~s/\&#271\;/\\v\{d\}/g; # d hacek
-  $content=~s/\&#270\;/\\v\{D\}/g; # D hacek
-  $content=~s/\&#283\;/\\v\{e\}/g; # d hacek
-  $content=~s/\&#282\;/\\v\{E\}/g; # D hacek
-  $content=~s/\&#318\;/\\v\{l\}/g; # l hacek
-  $content=~s/\&#317\;/\\v\{L\}/g; # L hacek
-  $content=~s/\&#328\;/\\v\{n\}/g; # n hacek
-  $content=~s/\&#327\;/\\v\{N\}/g; # N hacek
-  $content=~s/\&#345\;/\\v\{r\}/g; # r hacek
-  $content=~s/\&#344\;/\\v\{R\}/g; # R hacek
-  $content=~s/\&#357\;/\\v\{t\}/g; # t hacek
-  $content=~s/\&#356\;/\\v\{T\}/g; # T hacek
-  $content=~s/\&#382\;/\\v\{z\}/g; # n hacek
-  $content=~s/\&#381\;/\\v\{Z\}/g; # N hacek
+  #$content=~s/\&#353\;/\\v\{s\}/g; # s hacek
+  #$content=~s/\&#352\;/\\v\{S\}/g; # S hacek
+  #$content=~s/\&#269\;/\\v\{c\}/g; # c hacek
+  #$content=~s/\&#268\;/\\v\{C\}/g; # C hacek
+  #$content=~s/\&#271\;/\\v\{d\}/g; # d hacek
+  #$content=~s/\&#270\;/\\v\{D\}/g; # D hacek
+  #$content=~s/\&#283\;/\\v\{e\}/g; # d hacek
+  #$content=~s/\&#282\;/\\v\{E\}/g; # D hacek
+  #$content=~s/\&#318\;/\\v\{l\}/g; # l hacek
+  #$content=~s/\&#317\;/\\v\{L\}/g; # L hacek
+  #$content=~s/\&#328\;/\\v\{n\}/g; # n hacek
+  #$content=~s/\&#327\;/\\v\{N\}/g; # N hacek
+  #$content=~s/\&#345\;/\\v\{r\}/g; # r hacek
+  #$content=~s/\&#344\;/\\v\{R\}/g; # R hacek
+  #$content=~s/\&#357\;/\\v\{t\}/g; # t hacek
+  #$content=~s/\&#356\;/\\v\{T\}/g; # T hacek
+  #$content=~s/\&#382\;/\\v\{z\}/g; # n hacek
+  #$content=~s/\&#381\;/\\v\{Z\}/g; # N hacek
 
   # Macron
-  $content=~s/\&#275\;/\\=\{e\}/g; # e oberstrich
-  $content=~s/\&#274\;/\\=\{E\}/g; # e oberstrich
-  $content=~s/\&#257\;/\\=\{a\}/g; # a oberstrich
-  $content=~s/\&#256\;/\\=\{A\}/g; # A oberstrich
-  $content=~s/\&#299\;/\\=\{i\}/g; # i oberstrich
-  $content=~s/\&#298\;/\\=\{I\}/g; # I oberstrich
-  $content=~s/\&#333\;/\\=\{o\}/g; # o oberstrich
-  $content=~s/\&#332\;/\\=\{O\}/g; # O oberstrich
-  $content=~s/\&#363\;/\\=\{u\}/g; # u oberstrich
-  $content=~s/\&#362\;/\\=\{U\}/g; # U oberstrich
+  #$content=~s/\&#275\;/\\=\{e\}/g; # e oberstrich
+  #$content=~s/\&#274\;/\\=\{E\}/g; # e oberstrich
+  #$content=~s/\&#257\;/\\=\{a\}/g; # a oberstrich
+  #$content=~s/\&#256\;/\\=\{A\}/g; # A oberstrich
+  #$content=~s/\&#299\;/\\=\{i\}/g; # i oberstrich
+  #$content=~s/\&#298\;/\\=\{I\}/g; # I oberstrich
+  #$content=~s/\&#333\;/\\=\{o\}/g; # o oberstrich
+  #$content=~s/\&#332\;/\\=\{O\}/g; # O oberstrich
+  #$content=~s/\&#363\;/\\=\{u\}/g; # u oberstrich
+  #$content=~s/\&#362\;/\\=\{U\}/g; # U oberstrich
 
-  $content=~s/#/\\#/g;
-  
   return $content;
 }
 

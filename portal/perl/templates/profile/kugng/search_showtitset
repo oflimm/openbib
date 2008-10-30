@@ -298,11 +298,12 @@ END;
 [%   reviews = user.get_reviews_of_tit({ titid => record.id, titdb => record.database }); %]
 
 <ul class="nojs_hidden">
-[% IF mexnormset.size > 0 %]
-<li><a href="#mexinfo"><span>Bestand</span></a></li>
-[% END %]
 [% IF circset.size > 0 %]
 <li><a href="#circinfo"><span>[% msg.maketext("Ausleihe/Exemplare") %]</span></a></li>
+[% ELSE %]
+[%   IF mexnormset.size > 0 %]
+<li><a href="#mexinfo"><span>Bestand</span></a></li>
+[%   END %]
 [% END %]
 [% IF same_records.get_size > 0 %]
 <li><a href="#same_records"><span>[% msg.maketext("In anderen Katalogen") %]</span></a></li>
@@ -315,20 +316,20 @@ END;
 [% END %]
 </ul>
 
-[% IF mexnormset.size > 0 %]
-<h2 class="nojs_show">Bestand</h2>
-
-<div id="mexinfo"><!-- Begin Bestand -->
-[% PROCESS common/subtemplate name="mexset" %]
-</div><!-- End Bestand -->
-[% END %]
-
 [% IF circset.size > 0 %]
 <h2 class="nojs_show">[% msg.maketext("Ausleihe/Exemplare") %]</h2>
 
 <div id="circinfo"><!-- Begin Circulation -->
 [% PROCESS common/subtemplate name="circset" %]
 </div><!-- End Circulation -->
+[% ELSE %]
+[%   IF mexnormset.size > 0 %]
+<h2 class="nojs_show">Bestand</h2>
+
+<div id="mexinfo"><!-- Begin Bestand -->
+[% PROCESS common/subtemplate name="mexset" %]
+</div><!-- End Bestand -->
+[%   END %]
 [% END %]
 
 <!-- Begin: Reviews -->
@@ -506,7 +507,7 @@ href="[% config.userreviews_loc %]?sessionID=[% sessionID
 <th><img src="/images/openbib/3d-file-blue-printer.png" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></th>
 <td><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=print;database=[% record.database %];singleidn=[% record.id %]" target="print" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a></td>
 <th><img src="/images/openbib/3d-file-blue-permalink.png" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></th>
-<td><a href="http://[% config.loadbalancerservername %][% config.connector_permalink_loc %]/[% record.database %]/[% record.id %]/1/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]">[% msg.maketext("Als Permanenten Link verwenden") %]</a></td>
+<td><a href="http://[% config.loadbalancerservername %][% config.connector_permalink_loc %]/[% record.database %]/[% record.id %]/1/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]">[% msg.maketext("Permanenter Link") %]</a></td>
 </tr>
 </table>
 <p />
@@ -556,7 +557,7 @@ href="[% config.userreviews_loc %]?sessionID=[% sessionID
 <input type="hidden" name="titid"      value="[% record.id %]" />
 <input type="hidden" name="queryid"    value="[% queryid %]" />
 <input type="hidden" name="titisbn"    value="[% normset.${"T0540"}.first.content.replace('-','') %]" />
-<input type="text"   name="tags"       value="" size="30" maxlength="200" id="inputfield"/><p />[% msg.maketext("Typ:") %]&nbsp;<select name="type"><option value="1" selected="selected">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select><br /><center><input type="submit" name="do_add" value="[% msg.maketext("Hinzuf&uuml;gen") %]" /></center>
+<input type="text"   name="tags"       value="" size="30" maxlength="200" id="inputfield"/><p />[% msg.maketext("Typ:") %]&nbsp;<select name="type"><option value="1" selected="selected">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select>&nbsp;<input type="submit" name="do_add" value="[% msg.maketext("Hinzuf&uuml;gen") %]" />
 </form>
 
 </td></tr>

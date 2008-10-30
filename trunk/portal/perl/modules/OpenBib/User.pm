@@ -1463,6 +1463,48 @@ sub get_private_tagged_titles {
     return $taglist_ref;
 }
 
+sub get_recent_tags {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $count        = exists $arg_ref->{count}
+        ? $arg_ref->{count}           : 5;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return [] if (!defined $dbh);
+
+#    my $sql_stmnt = "select distinct t.tag, tt.tagid from tittag as tt, tags as t where tt.type = 1 and t.id=tt.tagid order by tt.ttid DESC limit $count";
+    my $sql_stmnt = "select t.tag, t.id, count(tt.tagid) as tagcount from tags as t, tittag as tt where t.id=tt.tagid and tt.type=1 group by tt.tagid order by tt.ttid DESC limit $count";
+    my $request=$dbh->prepare($sql_stmnt) or $logger->error($DBI::errstr);
+    $request->execute() or $logger->error($DBI::errstr);
+
+    my $tags_ref = [];
+
+    while (my $result=$request->fetchrow_hashref){
+      my $id        = $result->{id};
+      my $tag       = $result->{tag};
+      my $count     = $result->{tagcount};
+      
+      push @$tags_ref, {
+          id        => $id,
+          tag       => $tag,
+          itemcount => $count,
+      };
+    }
+    
+    return $tags_ref;
+}
+
 sub vote_for_review {
     my ($self,$arg_ref)=@_;
 
@@ -2042,6 +2084,42 @@ sub get_litlists {
     return $litlists_ref;
 }
 
+sub get_recent_litlists {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $count        = exists $arg_ref->{count}
+        ? $arg_ref->{count}           : 5;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return [] if (!defined $dbh);
+
+    my $sql_stmnt = "select id from litlists where type = 1 order by id DESC limit $count";
+
+    my $request=$dbh->prepare($sql_stmnt) or $logger->error($DBI::errstr);
+    $request->execute() or $logger->error($DBI::errstr);
+
+    my $litlists_ref = [];
+
+    while (my $result=$request->fetchrow_hashref){
+      my $litlistid        = $result->{id};
+      
+      push @$litlists_ref, $self->get_litlist_properties({litlistid => $litlistid});
+    }
+    
+    return $litlists_ref;
+}
+
 sub get_other_litlists {
     my ($self,$arg_ref)=@_;
 
@@ -2534,6 +2612,8 @@ sub update_logintarget {
     $idnresult->execute($hostname,$port,$username,$dbname,$description,$type,$targetid) or $logger->error($DBI::errstr);
     $idnresult->finish();
 
+    $logger->debug("Logintarget updated");
+    
     return;
 }
 

@@ -119,7 +119,7 @@
 [% END %]
 </select></td></tr>
 <tr><td></td><td></td><td></td></tr>
-<tr><td><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]">[% msg.maketext("Neue Suche") %]</a></td><td align="right"><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Erweiterte Suche") %]</a></td></tr>
+<tr><td><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td><td align="right"><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td></tr>
 </table>
 
 </form>
@@ -219,7 +219,7 @@
 [% END %]
 </select></td></tr>
 <tr><td></td><td></td><td></td></tr>
-<tr><td><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]">[% msg.maketext("Neue Suche") %]</a></td><td align="right"><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Erweiterte Suche") %]</a></td><td></td></tr>
+<tr><td><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td><td align="right"><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td></td></tr>
 </table>
 </form>
 
@@ -319,7 +319,7 @@
 [% END %]
 </select></td></tr>
 <tr><td></td><td></td><td></td></tr>
-<tr><td><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]">[% msg.maketext("Neue Suche") %]</a></td><td align="right"><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Erweiterte Suche") %]</a></td><td></td></tr>
+<tr><td><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td><td align="right"><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td></td></tr>
 </table>
 
 <form>
@@ -345,6 +345,8 @@
 
 </div><!-- End nur Aufsaetze -->
 
+<p />
+
 </div><!-- End searchmask_types -->
 
 </div><!-- End searchmask -->
@@ -353,7 +355,7 @@
 
 [% IF config.lang.size > 1 %]
 <div id="langchoice">
-<b>Sprachen</b>&nbsp;[%   FOREACH l IN config.lang %]
+[%   FOREACH l IN config.lang %]
 <a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];setmask=simple;l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 </div>
@@ -403,6 +405,7 @@ Literaturlisten usw.)<p/>
   <!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
   <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
 
+<p />
 </div><!-- End teaser -->
 
 <div id="searchmask_bottom"><!-- Begin searchmask_bottom -->
@@ -416,7 +419,7 @@ Literaturlisten usw.)<p/>
 [% END %]
 
 <td class="overview"><!-- Begin overview-->
-<h3>In den Gesamtbestand eintauchen</h3>
+<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="&Uuml;bersichten"/>&nbsp;In den Gesamtbestand eintauchen</h3>
 
 durch <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=50" title="[% msg.maketext("Systematisches Bl&auml;ttern") %]">Systematisches Bl&auml;ttern</a>,
 <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="Wolken">Wolken</a>, <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=41" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a>, <a
@@ -424,7 +427,32 @@ href="">Suchbegriffe</a>, <a href="[% config.info_loc %]?sessionID=[% sessionID 
 
 </td><!-- End overview -->
 <td class="mostrecent"><!-- Begin Literaturlisten/Tags -->
-<h3>Legen Sie Literaturlisten an und vergeben Sie Tags</h3>
+<h3><img style="vertical-align:bottom" src="/images/openbib/note.png" alt="Notieren"/>&nbsp;Legen Sie Literaturlisten an und vergeben Sie Tags</h3>
+
+<h4>Die 5 zuletzt angelegten Literaturlisten</h4>
+
+[% lastlitlists = user.get_recent_litlists({count => 5}) %]
+
+[% IF lastlitlists.size > 0 %]
+<ul>
+[%   FOREACH litlist IN lastlitlists %]
+<li><a href="[% config.litlists_loc %]?sessionID=[% sessionID %];action=show;litlistid=[% litlist.id%];do_showlitlist=1">[% litlist.title %]</a> ([% litlist.itemcount %])</li>
+[%   END %]
+</ul>
+[% END %]
+
+<h4>Die 5 zuletzt verwendeten Tags</h4>
+
+[% lasttags = user.get_recent_tags({count => 5}) %]
+
+[% IF lasttags.size > 0 %]
+<ul>
+[%   FOREACH thistag IN lasttags %]
+<li><a href="[% config.tags_loc %]?sessionID=[% sessionID %];searchtitoftag=[% thistag.id %]">[% thistag.tag %]</a> ([% thistag.itemcount %])</li>
+[%   END %]
+</ul>
+[% END %]
+
 </td><!-- End Literaturlisten/Tags -->
 </tr>
 </table>

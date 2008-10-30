@@ -670,7 +670,7 @@ dt.review {
   position: absolute;
   top: 0;
   left: 10px;
-  width: 580px;
+  width: auto;
   font-size: 1.2em;
   font-weight: bold;
   padding: 5px;
@@ -750,7 +750,7 @@ dt.review {
   top: 5px;
   left:40px;
   width: 60px;
-  height: 85px;
+  height: 90px;
   
   background: #lightblue none repeat scroll 0 0; 
 
@@ -1000,8 +1000,8 @@ dt.review {
 
 #searchmask {
   float: left; 
-  padding: 5px;
-  width: 60%;
+  padding: 0px;
+  width: 65%;
   background-color: white;
 /*  border-style: solid;
   border-color: lightblue;
@@ -1060,13 +1060,14 @@ dt.review {
 #teaser {
   float:right;
   width: 33%;
+  bottom-margin: 0px;
 }
 
 #teaser #langchoice {
   position: static;
   width:auto;
   padding: 5px;
-/*  text-align: right; */
+  text-align: right; 
 /*  text-align: right; */
 /*  background-color: white;
   border-top-style: solid;
@@ -1085,17 +1086,9 @@ dt.review {
   -webkit-border-radius: 12px; */
 }
 
-#newsflash {
-  padding: 5px;
-  border-left: #999999;
-  border-right: #999999;
-  border-bottom: #999999;
-  -moz-border-radius: 12px;
-  -webkit-border-radius: 12px;
-}
-
 #login {
   padding: 5px;
+  height: auto;
   background-color: white;
   border-top-style: solid;
   border-top-color: lightblue;
@@ -1109,44 +1102,43 @@ dt.review {
   border-bottom-style: solid;
   border-bottom-color: lightblue;
   border-bottom-width: 1px;  
-  -moz-border-radius: 12px;
-  -webkit-border-radius: 12px;
+  -moz-border-radius-topright: 12px;
+  -webkit-border-radius-topright: 12px;
 }
 
-#overview {
-  padding: 5px;
-  background-color: white;
-  border-top-style: solid;
-  border-top-color: lightblue;
-  border-top-width: 1px;
-  border-left-style: solid;
-  border-left-color: lightblue;
-  border-left-width: 1px;
-  border-right-style: solid;
-  border-right-color: lightblue;
-  border-right-width: 1px;
-  border-bottom-style: solid;
-  border-bottom-color: lightblue;
-  border-bottom-width: 1px;  
-  -moz-border-radius: 12px;
-  -webkit-border-radius: 12px;
+
+td.newsflash {
+  width: 33%;
+  padding: 10px;
+}
+
+td.overview {
+  padding: 10px;
+  width: 33%;
+  border-left: 1px dashed #ADD8E6;
+}
+
+td.mostrecent {
+  padding: 10px;
+  width: 33%;
+  border-left: 1px dashed #ADD8E6;
 }
 
 #searchmask_types {
   float:left;
   width:99.9%;
 
-  padding: 5px;
+  padding: 0px;
 }
 
 #searchmask_bottom {
   float:left;
-  
-  width:99.9%;
+
+  width:99%;
 
   padding: 5px;
 
-  /*
+ 
   border-top-style: solid;
   border-top-color: lightblue;
   border-top-width: 1px;
@@ -1158,7 +1150,12 @@ dt.review {
   border-right-width: 1px;
   border-bottom-style: solid;
   border-bottom-color: lightblue;
-  border-bottom-width: 1px;  */
+  border-bottom-width: 1px; 
+
+  -moz-border-radius-bottomleft: 12px;
+  -webkit-border-radius-bottomleft: 12px;
+  -moz-border-radius-bottomright: 12px;
+  -webkit-border-radius-bottomright: 12px;
 
 }
 
@@ -1184,4 +1181,13 @@ dt.review {
 .right_side {
   float: right;
   width: 48%;
+}
+
+a.navlink {
+  font-weight:bold;
+  font-size:1.1em;
+}
+
+a.navlink:before {
+  content: '>>';
 }

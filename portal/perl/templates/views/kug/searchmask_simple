@@ -139,7 +139,7 @@ value="0">[% msg.maketext("getrennte Kataloge") %]</option></select>
 <p />
 [% msg.maketext("Haben Sie Rechercheprobleme?!? Wollen Sie den KUG besser kennenlernen und effizienter nutzen?! Wir bieten laufend [_1]KUG-Schulungen[_2] an!","<a href=\"http://www.ub.uni-koeln.de/service/kurse/kug/index_ger.html\" target=\"_blank\">","</a>") %]
 <p />
-[% msg.maketext("Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter [_1] kug@ub.uni-koeln.de [_2] erreichen.","<a href=\"http://www.ub.uni-koeln.de/usb-cgi/zms_makeEmail.pl?adr0=kug\" target=\"_blank\">","</a>") %]
+[% msg.maketext("Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter [_1] kug@ub.uni-koeln.de [_2] erreichen.","<a href=\"http://www.ub.uni-koeln.de/res/listen_e_mail/kug/index_ger.html\" target=\"_blank\">","</a>") %]
 <p />
 </center>
 

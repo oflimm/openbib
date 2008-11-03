@@ -586,17 +586,17 @@ dt.review {
 
 #header2 #header_logo {
   float: left;
-  widht: 120px;
+  width: 120px;
 }
 
 #header2 #header_simplesearch {
   float: right;
   width: auto;
-  text-align: right;
+/*  text-align: right; */
   vertical-align: middle;
   padding:10px;
   margin-top:10px;
-  margin-right: 20px;
+  margin-right: 20px; 
   
   border-top-style: solid;
   border-top-color: lightblue;
@@ -1165,7 +1165,6 @@ td.mostrecent {
 }
 
 .bigtext {
-  font-size: 1.6em;
   font-weight: bold;
 }
 
@@ -1188,6 +1187,6 @@ a.navlink {
   font-size:1.1em;
 }
 
-a.navlink:before {
-  content: '>>';
+a.navlink:after {
+  content: ' >>';
 }

@@ -78,6 +78,22 @@
 
 [% IF view %]
 [% msg.maketext("Sie können entweder direkt im vorausgewählten Katalog <b>[_1]</b> recherchieren, oder die Suche auf weitere [_2]Kataloge[_3] ausdehnen.","${viewdesc}","<a href=\"${config.databasechoice_loc}?sessionID=${sessionID};view=${view}\">","</a>") %]
+<p />
+Dar&uuml;berhinaus finden Sie weitere Best&auml;nde dieses Katalogs in dem
+zugeh&ouml;rigen digitalisierten Karten-Katalog
+
+<table>
+<tr>
+<td>
+<img src="/images/openbib/views/logophilfak.gif">
+</td>
+<td>
+<ul>
+<li><a href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=413r" target="_blank">Portugiesisch-Brasilianisches Institut</a>. </li>
+</ul>
+</td>
+</tr>
+</table>
 
 <p />
 <p />

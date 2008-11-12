@@ -23,7 +23,7 @@
 <div id="maincontent">
 
 <div id="langchoice">
-<a href="[% config.info_loc %]?sessionID=[% sessionID %]#perskug"><img src="/images/openbib/info.png"></a>&nbsp;
+<a href="[% config.info_loc %]?sessionID=[% sessionID %]#perskug"><img src="[% config.info_img %]"></a>&nbsp;
 [% IF config.lang.size > 1 %]
 [%   FOREACH l IN config.lang %]
 <a href="[% config.login_loc %]?sessionID=[% sessionID %];do_login=1;l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
@@ -49,7 +49,8 @@
 
 <p />
 
-<form method="post" action="[% IF config.use_https %]https[%- ELSE -%]http[%- END -%]://[% config.servername %][% config.login_loc %]" enctype="application/x-www-form-urlencoded" target="_parent">
+<form method="post" action="[% IF config.use_admin_https || config.distadmin.mas
+ter %][% IF config.use_https %]https[%- ELSE -%]http[%- END -%]://[% config.servername %][% END %][% config.login_loc %]" enctype="application/x-www-form-urlencoded" target="_parent">
 <input type="hidden" name="do_auth"   value="1" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="view"      value="[% view %]" />

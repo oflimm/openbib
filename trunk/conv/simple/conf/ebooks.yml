@@ -1,5 +1,5 @@
 # Encoding der Daten
-encoding: utf8
+encoding: iso-8859-1
 
 # Tracelevel
 tracelevel:
@@ -7,7 +7,7 @@ tracelevel:
 # CSV-Parameter
 csv:
   'eol': "\n"
-  'sep_char': ","
+  'sep_char': ":"
   'quote_char': "\""
   'escape_char': "\""
 

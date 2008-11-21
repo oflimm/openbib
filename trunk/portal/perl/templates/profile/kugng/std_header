@@ -63,6 +63,11 @@
   <link rel="stylesheet" href="[% "${config.css_loc}/jquery.autocomplete.css" %]" type="text/css" />
   <link rel="stylesheet" href="[% "${config.css_loc}/ui.tabs.css" %]" type="text/css" media="print, projection, screen">
 
+<!--[if lt IE 7.]>
+<script defer type="text/javascript" src="/js/pngfix.js"></script>
+<![endif]-->
+
+
     <title>KUG - K&ouml;lner Universit&auml;tsGesamtkatalog</title>
 
    </head>

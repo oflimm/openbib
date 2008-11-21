@@ -485,6 +485,8 @@ sub set_from_apache_request {
     if (defined $dbases_ref){
         $self->{_databases}=$dbases_ref;
     }
+
+    $logger->debug(YAML::Dump($self));
     
     return $self;
 }
@@ -855,6 +857,7 @@ sub to_xapian_querystring {
         'notation' => 'insys:',
         'isbn'     => 'inisbn:',
         'issn'     => 'inissn:',
+        'mart'     => 'ddtyp:',
     };
     
     foreach my $field (@{$fields_ref}){

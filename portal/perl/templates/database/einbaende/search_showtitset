@@ -39,11 +39,11 @@
 <td align="left"><span style="color:slategrey">[[% msg.maketext("Vorheriger Titel") %]]</span></td>
 [%- END -%]
 <td align="center">
-	<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% database %];singleidn=[% titidn %]" target="header" title="In die Merkliste"><img src="/images/openbib/3d-file-blue-clipboard.png" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>&nbsp;
-        <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=mail;database=[% database %];singleidn=[% titidn %]" title="Als Mail verschicken"><img src="/images/openbib/3d-file-blue-mailbox.png" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></a>&nbsp;
-        <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=save;database=[% database %];singleidn=[% titidn %]" target="save" title="Abspeichern"><img src="/images/openbib/3d-file-blue-disk35.png" alt="[% msg.maketext("Abspeichern") %]" border="0" /></a>&nbsp;
-        <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=print;database=[% database %];singleidn=[% titidn %]" target="print" title="Ausdrucken"><img src="/images/openbib/3d-file-blue-printer.png" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></a>&nbsp;
-        <a href="http://[% config.loadbalancerservername %][% config.connector_permalink_loc %]/[% record.database %]/[% record.id %]/1/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]"><img src="/images/openbib/3d-file-blue-permalink.png" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a>&nbsp;
+	<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% database %];singleidn=[% titidn %]" target="header" title="In die Merkliste"><img src="[% config.listofinterest_img %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>&nbsp;
+        <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=mail;database=[% database %];singleidn=[% titidn %]" title="Als Mail verschicken"><img src="[% config.mail_img %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></a>&nbsp;
+        <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=save;database=[% database %];singleidn=[% titidn %]" target="save" title="Abspeichern"><img src="[% config.save_img %]" alt="[% msg.maketext("Abspeichern") %]" border="0" /></a>&nbsp;
+        <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=print;database=[% database %];singleidn=[% titidn %]" target="print" title="Ausdrucken"><img src="[% config.print_img %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></a>&nbsp;
+        <a href="http://[% config.loadbalancerservername %][% config.connector_permalink_loc %]/[% record.database %]/[% record.id %]/1/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]"><img src="[% config.permalink_img %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a>&nbsp;
 </td>
 [%- IF nexturl -%]
 <td align="right"><a href="[% nexturl %];queryid=[% queryid %]">[[% msg.maketext("N&auml;chster Titel") %]]</a></td>
@@ -88,12 +88,12 @@ FOREACH category IN categories;
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;verf=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsingleaut=${item.id}";
          content   = "<a
-href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_aut/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\"></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_aut/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\"></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;kor=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsinglekor=${item.id}";
-         content   = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_kor/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\"></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+         content   = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_kor/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\"></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE "T0331";
          content   = "<b>${content}</b>";
@@ -105,14 +105,14 @@ href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzug
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;swt=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsingleswt=${item.id}";
          content   = " <a
-href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_swt/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\"></a>&nbsp;<a
+href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_swt/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\"></a>&nbsp;<a
 href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE "T0700";
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;notation=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsinglenot=${item.id}";
          content   = " <a
-href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_sys/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\"></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_sys/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\"></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE "T5001";
          content   = "<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};supertit=${normset.id};generalsearch=supertit\">${content}</a>";
@@ -183,12 +183,12 @@ FOREACH category IN categories;
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;verf=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsingleaut=${item.id}";
          content   = "<a
-href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_aut/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\"></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_aut/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\"></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;kor=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsinglekor=${item.id}";
-         content   = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_kor/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\"></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+         content   = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_kor/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\"></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE "T0331";
          content   = "<b>${content}</b>";
@@ -200,14 +200,14 @@ href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzug
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;swt=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsingleswt=${item.id}";
          content   = " <a
-href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_swt/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\"></a>&nbsp;<a
+href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_swt/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\"></a>&nbsp;<a
 href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE "T0700";
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;notation=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsinglenot=${item.id}";
          content   = " <a
-href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_sys/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\"></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_sys/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\"></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE "T5001";
          content   = "<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};supertit=${normset.id};generalsearch=supertit\">${content}</a>";
@@ -286,12 +286,12 @@ FOREACH category IN categories;
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;verf=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsingleaut=${item.id}";
          content   = "<a
-href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_aut/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\"></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_aut/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\"></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;kor=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsinglekor=${item.id}";
-         content   = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_kor/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\"></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+         content   = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_kor/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\"></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE "T0331";
          content   = "<b>${content}</b>";
@@ -303,14 +303,14 @@ href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzug
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;swt=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsingleswt=${item.id}";
          content   = " <a
-href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_swt/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\"></a>&nbsp;<a
+href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_swt/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\"></a>&nbsp;<a
 href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE "T0700";
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;notation=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsinglenot=${item.id}";
          content   = " <a
-href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_sys/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\"></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_sys/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\"></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE "T5001";
          content   = "<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};supertit=${normset.id};generalsearch=supertit\">${content}</a>";

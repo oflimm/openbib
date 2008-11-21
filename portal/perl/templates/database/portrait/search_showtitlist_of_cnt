@@ -80,7 +80,7 @@
 
 <table cellpadding="2">
 [% IF offset >= 0 && hitrange > 0 %]
-<tr class="titlerow"><td>&nbsp;</td><td colspan="3"><span class="rldbase"><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% targetdbinfo.dbinfo.$database.full %]</span></td><td align="left" colspan="3"><span class="rlhits"><strong>[% recordlist.get_size %]/[% hits %] [% msg.maketext("Treffer") %]</strong></span></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
+<tr class="titlerow"><td>&nbsp;</td><td colspan="3"><span class="rldbase"><img style="vertical-align:bottom" src="[% config.follow_img %]" alt="Weiterleitungs-Icon" />&nbsp;[% targetdbinfo.dbinfo.$database.full %]</span></td><td align="left" colspan="3"><span class="rlhits"><strong>[% recordlist.get_size %]/[% hits %] [% msg.maketext("Treffer") %]</strong></span></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
 <tr class="titlerow"><td>&nbsp;</td><td colspan="3">
 [%- FOREACH navitem IN nav -%]
 <a href="[% navitem.url %]">
@@ -96,7 +96,7 @@
 [%- END -%]
 </td><td align="left" colspan="3"></td><td></td></tr>
 [% ELSE %]
-<tr class="titlerow"><td colspan="2">&nbsp;</td><td><span class="rldbase"><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% targetdbinfo.dbinfo.$database.full %]</span></td><td align="left" colspan="3"><span class="rlhits"><strong>[% recordlist.get_size %] [% msg.maketext("Treffer") %]</strong></span></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
+<tr class="titlerow"><td colspan="2">&nbsp;</td><td><span class="rldbase"><img style="vertical-align:bottom" src="[% config.follow_img %]" alt="Weiterleitungs-Icon" />&nbsp;[% targetdbinfo.dbinfo.$database.full %]</span></td><td align="left" colspan="3"><span class="rlhits"><strong>[% recordlist.get_size %] [% msg.maketext("Treffer") %]</strong></span></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
 [% END %]
 
 [% listrow = 'listrow1' %]
@@ -152,7 +152,7 @@
 [%- signatur = signaturen.sort.unique.join(' ; ') -%]
 
 <tr class="[% listrow %]"><td class="listnr">&nbsp;</td><td class="thumbnail"><img src="http://portraitsammlung.ub.uni-koeln.de/digiarchive/portrait/[% item.id %]/portrait_thumb.jpg"/></td><td colspan="2"><span class="rlauthor">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;sorttype=[% sorttype %];database=[% item.${"database"} %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
-class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></td><td><span class="rlcollect"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="/images/openbib/3d-file-blue-clipboard.png" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a></span></td><td align="left"><b>[% signatur %]</b></td><td class="popularitycount">[% item.popularity %]</td></tr>
+class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></td><td><span class="rlcollect"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.listofinterest_img %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a></span></td><td align="left"><b>[% signatur %]</b></td><td class="popularitycount">[% item.popularity %]</td></tr>
 
 [% IF listrow == 'listrow1' %]
 [% listrow = 'listrow2' %]

@@ -14,7 +14,7 @@
 [% IF NOT hide_foot_banner %]
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
 <tr><td class="boxedfull" align="left"><table border="0" cellspacing="0" cellpadding="0" width="100%"><tr><td
-align="left">Die <b>Portraitsammlung</b> [% msg.maketext("ist ein Dienst der Universitäts- und Stadtbibliothek Köln") %]</td><td>&nbsp;</td><td align="right"><a class="invisible" href="http://www.openbib.org/" target="_blank"><img src="/images/openbib/openbib-powered.png" alt="Powered by OpenBib" /></a></td></tr></table></td></tr>
+align="left">Die <b>Portraitsammlung</b> [% msg.maketext("ist ein Dienst der Universitäts- und Stadtbibliothek Köln") %]</td><td>&nbsp;</td><td align="right"><a class="invisible" href="http://www.openbib.org/" target="_blank"><img src="[% config.openbib_img %]" alt="Powered by OpenBib" /></a></td></tr></table></td></tr>
 </table>
 <p />
 <tt>[% config.version %]</tt>

@@ -49,13 +49,13 @@
 <td align="left"><span style="color:slategrey">[[% msg.maketext("Vorheriger Titel") %]]</span></td>
 [%- END -%]
 <td align="center">
-<!--	    <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% record.database %];stid=10" title="[% msg.maketext("Top 20") %]"><img src="/images/openbib/top20-12px.png" alt="[% msg.maketext("Top 20") %]" border="0" /></a>&nbsp;-->
-<!--        <a href="[% config.redirect_loc %]/[% sessionID %]/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=[% record.to_bibtex | uri | replace('&','%26') %]" target="bibsonomy" valign="top"><img src="/images/openbib/share.png" alt="An BibSonomy senden" title="[% msg.maketext("An BibSonomy senden") %]" /></a>&nbsp;-->
-	<span class="rlcollect"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% record.database %];singleidn=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="/images/openbib/3d-file-blue-clipboard.png" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a></span>&nbsp;
-        <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=mail;database=[% record.database %];singleidn=[% record.id %]" title="[% msg.maketext("Als Mail verschicken") %]"><img src="/images/openbib/3d-file-blue-mailbox.png" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></a>&nbsp;
-        <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=save;database=[% record.database %];singleidn=[% record.id %]" target="save" title="[% msg.maketext("Abspeichern") %]"><img src="/images/openbib/3d-file-blue-disk35.png" alt="[% msg.maketext("Abspeichern") %]" border="0" /></a>&nbsp;
-        <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=print;database=[% record.database %];singleidn=[% record.id %]" target="print" title="[% msg.maketext("Ausdrucken") %]"><img src="/images/openbib/3d-file-blue-printer.png" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></a>&nbsp;
-<!--        <a href="http://[% config.loadbalancerservername %][% config.connector_permalink_loc %]/[% record.database %]/[% record.id %]/1/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]"><img src="/images/openbib/3d-file-blue-permalink.png" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a>&nbsp;-->
+<!--	    <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% record.database %];stid=10" title="[% msg.maketext("Top 20") %]"><img src="[% config.top20_img %]" alt="[% msg.maketext("Top 20") %]" border="0" /></a>&nbsp;-->
+<!--        <a href="[% config.redirect_loc %]/[% sessionID %]/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=[% record.to_bibtex | uri | replace('&','%26') %]" target="bibsonomy" valign="top"><img src="[% config.share_img %]" alt="An BibSonomy senden" title="[% msg.maketext("An BibSonomy senden") %]" /></a>&nbsp;-->
+	<span class="rlcollect"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% record.database %];singleidn=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.listofinterest_img %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a></span>&nbsp;
+        <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=mail;database=[% record.database %];singleidn=[% record.id %]" title="[% msg.maketext("Als Mail verschicken") %]"><img src="[% config.mail_img %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></a>&nbsp;
+        <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=save;database=[% record.database %];singleidn=[% record.id %]" target="save" title="[% msg.maketext("Abspeichern") %]"><img src="[% config.save_img %]" alt="[% msg.maketext("Abspeichern") %]" border="0" /></a>&nbsp;
+        <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=print;database=[% record.database %];singleidn=[% record.id %]" target="print" title="[% msg.maketext("Ausdrucken") %]"><img src="[% config.print_img %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></a>&nbsp;
+<!--        <a href="http://[% config.loadbalancerservername %][% config.connector_permalink_loc %]/[% record.database %]/[% record.id %]/1/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]"><img src="[% config.permalink_img %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a>&nbsp;-->
 </td>
 [%- IF nexturl -%]
 <td align="right"><a href="[% nexturl %];queryid=[% queryid %]">[[% msg.maketext("N&auml;chster Titel") %]]</a></td>
@@ -113,7 +113,7 @@ FOREACH category IN categories;
 
          rssfeed = "" ;
          IF activefeed.2 ;
-             rssfeed = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_aut/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+             rssfeed = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_aut/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;verf=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchsingleaut=${thisid}";
@@ -127,7 +127,7 @@ FOREACH category IN categories;
 
          rssfeed = "" ;
          IF activefeed.3 ;
-             rssfeed = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_kor/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+             rssfeed = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_kor/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;kor=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchsinglekor=${thisid}";
@@ -160,7 +160,7 @@ FOREACH category IN categories;
          END ;
          IF thiscontent ;
             IF content.match('digitool.hbz-nrw.de') ;
-               thiscontent = '<img src="/images/openbib/pdf-document.png" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)' ;
+               thiscontent = "<img src=\"${config.pdf_img}\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)" ;
                content     = "${config.redirect_loc}/${sessionID}/500/${content}" ;
             END ;
             content   = "<a href=\"${content}\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
@@ -179,7 +179,7 @@ FOREACH category IN categories;
 
    # CASE "E4110";
    #      thisindicator = item.indicator ;
-   #      thiscontent   = "<img src=\"/images/openbib/pdf-document.png\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)";
+   #      thiscontent   = "<img src=\"${config.pdf_img}\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)";
    #      content       = "${config.redirect_loc}/${sessionID}/500/${content}" ;
    #      content       = "<a href=\"${content}\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
 
@@ -196,7 +196,7 @@ FOREACH category IN categories;
 
          rssfeed = "" ;
          IF activefeed.4 ;
-             rssfeed = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_swt/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+             rssfeed = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_swt/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;swt=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchsingleswt=${thisid}";
@@ -210,7 +210,7 @@ FOREACH category IN categories;
 
          rssfeed = "" ;
          IF activefeed.5 ;
-             rssfeed = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_sys/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+             rssfeed = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_sys/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchsinglenot=${thisid}";
          content   = " <a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
@@ -226,10 +226,10 @@ FOREACH category IN categories;
          content   = content ;
 
     CASE "T5001";
-         content   = "<img style=\"vertical-align:bottom\" src=\"/images/openbib/2rightarrow.png\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.search_loc}?sessionID=${sessionID};database=${record.database};supertit=${record.id};generalsearch=supertit\"><span style=\"font-size:1.4em\">${content}</span></a>";
+         content   = "<img style=\"vertical-align:bottom\" src=\"${config.follow_img}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.search_loc}?sessionID=${sessionID};database=${record.database};supertit=${record.id};generalsearch=supertit\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE "T5002";
-         content   = "<img style=\"vertical-align:bottom\" src=\"/images/openbib/2rightarrow.png\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.search_loc}?sessionID=${sessionID};database=${record.database};subtit=${record.id};generalsearch=subtit\"><span style=\"font-size:1.4em\">${content}</span></a>";
+         content   = "<img style=\"vertical-align:bottom\" src=\"${config.follow_img}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.search_loc}?sessionID=${sessionID};database=${record.database};subtit=${record.id};generalsearch=subtit\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE ;
          content   = highlightquery(searchquery,item.content);

@@ -121,11 +121,11 @@ FOREACH category IN categories;
 
          rssfeed = "" ;
          IF activefeed.2 ;
-             rssfeed = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_aut/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+             rssfeed = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_aut/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;verf=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchsingleaut=${thisid}";
-         content   = "${rssfeed}<a href=\"${config.redirect_loc}/${sessionID}/520/http://de.wikipedia.org/wiki/Spezial:Search?search=${wikicontent}&amp;go=Artikel\" target=\"_blank\"><img src=\"/images/openbib/wikipedia.png\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+         content   = "${rssfeed}<a href=\"${config.redirect_loc}/${sessionID}/520/http://de.wikipedia.org/wiki/Spezial:Search?search=${wikicontent}&amp;go=Artikel\" target=\"_blank\"><img src=\"${config.wikipedia_img}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
          thisid     = item.id;
@@ -135,7 +135,7 @@ FOREACH category IN categories;
 
          rssfeed = "" ;
          IF activefeed.3 ;
-             rssfeed = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_kor/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+             rssfeed = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_kor/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;kor=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchsinglekor=${thisid}";
@@ -145,7 +145,7 @@ FOREACH category IN categories;
          content   = "<b>${highlightquery(searchquery,content)}</b>";
 
     CASE "T0540";
-         content   = "<a class=\"isbn\" href=\"${config.redirect_loc}/${sessionID}/521/http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}\" target=\"_blank\"><img src=\"/images/openbib/wikipedia.png\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${highlightquery(searchquery,content)}";
+         content   = "<a class=\"isbn\" href=\"${config.redirect_loc}/${sessionID}/521/http://de.wikipedia.org/wiki/Spezial:ISBN-Suche/${content}\" target=\"_blank\"><img src=\"${config.wikipedia_img}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;${highlightquery(searchquery,content)}";
 
     CASE "T0543";
          content = "${content} <img src=\"http://ezb.uni-regensburg.de/vascoda/get_image.php?sid=USBK:searchresults&amp;issn=${content}\" title='Geb&uuml;hrenfreier Volltext? gr&uuml;n=frei / gelb=standortabh&auml;ngig / gr&uuml;n-gelb-rot=jahrgangsabh&auml;ngig - Link &ouml;ffnet in einem neuen Fenster'> (<a href=\"${config.redirect_loc}/${sessionID}/530/${config.ezb_exturl}&jq_term1=${content}\" title=\"Verfügbarkeit in der Elektronischen Zeitschriften Bibliothek (EZB) &uuml;berpr&uuml;fen\" target=\"ezb\">als E-Journal der Uni-K&ouml;ln verf&uuml;gbar?</a>)";
@@ -168,7 +168,7 @@ FOREACH category IN categories;
          END ;
          IF thiscontent ;
             IF content.match('digitool.hbz-nrw.de') ;
-               thiscontent = '<img src="/images/openbib/pdf-document.png" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)' ;
+               thiscontent = "<img src=\"${config.pdf_img}\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)" ;
                content     = "${config.redirect_loc}/${sessionID}/500/${content}" ;
             END ;
             content   = "<a href=\"${content}\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
@@ -187,7 +187,7 @@ FOREACH category IN categories;
 
     CASE "E4110";
          thisindicator = item.indicator ;
-         thiscontent   = "<img src=\"/images/openbib/pdf-document.png\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)";
+         thiscontent   = "<img src=\"${config.pdf_img}\" />&nbsp;Digitalisiertes Inhaltsverzeichnis (PDF-Format)";
          content       = "${config.redirect_loc}/${sessionID}/500/${content}" ;
          content       = "<a href=\"${content}\" target=\"_blank\">${highlightquery(searchquery,thiscontent)}</a>";
 
@@ -204,7 +204,7 @@ FOREACH category IN categories;
 
          rssfeed = "" ;
          IF activefeed.4 ;
-             rssfeed = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_swt/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+             rssfeed = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_swt/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;swt=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchsingleswt=${thisid}";
@@ -218,7 +218,7 @@ FOREACH category IN categories;
 
          rssfeed = "" ;
          IF activefeed.5 ;
-             rssfeed = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_sys/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
+             rssfeed = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_sys/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
          END ;
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchsinglenot=${thisid}";
          content   = " ${rssfeed}<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
@@ -234,10 +234,10 @@ FOREACH category IN categories;
          content   = content ;
 
     CASE "T5001";
-         content   = "<img style=\"vertical-align:bottom\" src=\"/images/openbib/2rightarrow.png\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.search_loc}?sessionID=${sessionID};database=${record.database};supertit=${record.id};generalsearch=supertit\"><span style=\"font-size:1.4em\">${content}</span></a>";
+         content   = "<img style=\"vertical-align:bottom\" src=\"${config.follow_img}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.search_loc}?sessionID=${sessionID};database=${record.database};supertit=${record.id};generalsearch=supertit\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE "T5002";
-         content   = "<img style=\"vertical-align:bottom\" src=\"/images/openbib/2rightarrow.png\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.search_loc}?sessionID=${sessionID};database=${record.database};subtit=${record.id};generalsearch=subtit\"><span style=\"font-size:1.4em\">${content}</span></a>";
+         content   = "<img style=\"vertical-align:bottom\" src=\"${config.follow_img}\" alt=\"Weiterleitungs-Icon\" />&nbsp;<a href=\"${config.search_loc}?sessionID=${sessionID};database=${record.database};subtit=${record.id};generalsearch=subtit\"><span style=\"font-size:1.4em\">${content}</span></a>";
 
     CASE ;
          content   = highlightquery(searchquery,item.content);
@@ -274,7 +274,7 @@ END;
 
 [%- IF normset.${"E4200"} || normset.${"E4201"} || normset.${"E4202"} %]
 <p class="wikipediamashup">
-<img src="/images/openbib/wikipedia.png" alt="[% msg.maketext("Mashup mit Wikipedia") %]" /> [% msg.maketext("Dieses Buch ist in Wikipedia erw&auml;hnt unter") %]:&nbsp;
+<img src="[% config.wikipedia_img %]" alt="[% msg.maketext("Mashup mit Wikipedia") %]" /> [% msg.maketext("Dieses Buch ist in Wikipedia erw&auml;hnt unter") %]:&nbsp;
 [%-   IF normset.${"E4200"} %]
 [%-    FOREACH item IN normset.${"E4200"}-%]
 <a href="http://de.wikipedia.org/wiki/[% item.content | uri %]" title="[% msg.maketext("Deutsche Wikipedia") %]: [% item.content %]" target="_blank">[% item.content %]&nbsp;(de)</a>&nbsp;&nbsp;
@@ -472,16 +472,16 @@ href="[% config.userreviews_loc %]?sessionID=[% sessionID
 <div class="listnavigation"><!-- Begin Navigation -->
 <div class="previous_title">
 [%- IF prevurl -%]
-<a href="[% prevurl %];queryid=[% queryid %]" ><img src="/images/openbib/previous.gif" title="[[% msg.maketext("Vorheriger Titel") %]]"/></a>
+<a href="[% prevurl %];queryid=[% queryid %]" ><img src="[% config.previous_img %]" title="[[% msg.maketext("Vorheriger Titel") %]]"/></a>
 [%- ELSE -%]
-<img src="/images/openbib/no_previous.png" alt="[[% msg.maketext("Vorheriger Titel") %]]"/>
+<img src="[% config.no_previous_img %]" alt="[[% msg.maketext("Vorheriger Titel") %]]"/>
 [%- END -%]
 </div>
 <div class="next_title">
 [%- IF nexturl -%]
-<a href="[% nexturl %];queryid=[% queryid %]" ><img src="/images/openbib/next.gif" title="[[% msg.maketext("N&auml;chster Titel") %]]"/></a>
+<a href="[% nexturl %];queryid=[% queryid %]" ><img src="[% config.next_img %]" title="[[% msg.maketext("N&auml;chster Titel") %]]"/></a>
 [%- ELSE -%]
-<img src="/images/openbib/no_next.png" alt="[[% msg.maketext("N&auml;chster Titel") %]]"/>
+<img src="[% config.no_next_img %]" alt="[[% msg.maketext("N&auml;chster Titel") %]]"/>
 [%- END -%]
 </div>
 </div><!-- End Navigation -->
@@ -492,21 +492,21 @@ href="[% config.userreviews_loc %]?sessionID=[% sessionID
 <b>Behalten Sie diesen Titel:</b><p/>
 <table>
 <tr>
-<th><img src="/images/openbib/share.png" alt="An BibSonomy senden" title="[% msg.maketext("An BibSonomy senden") %]" /></th>
+<th><img src="[% config.share_img %]" alt="An BibSonomy senden" title="[% msg.maketext("An BibSonomy senden") %]" /></th>
 <td><a href="[% config.redirect_loc %]/[% sessionID %]/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=[% record.to_bibtex | uri | replace('&','%26') %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a></td>
-<th><img src="/images/openbib/3d-file-blue-clipboard.png" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></th>
+<th><img src="[% config.listofinterest_img %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></th>
 <td><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% record.database %];singleidn=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a></td>
 </tr>
 <tr>
-<th><img src="/images/openbib/3d-file-blue-mailbox.png" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></th>
+<th><img src="[% config.mail_img %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></th>
 <td><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=mail;database=[% record.database %];singleidn=[% record.id %]" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a></td>
-<th><img src="/images/openbib/3d-file-blue-disk35.png" alt="[% msg.maketext("Abspeichern") %]" border="0" /></th>
+<th><img src="[% config.save_img %]" alt="[% msg.maketext("Abspeichern") %]" border="0" /></th>
 <td><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=save;database=[% record.database %];singleidn=[% record.id %]" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a></td>
 </tr>
 <tr>
-<th><img src="/images/openbib/3d-file-blue-printer.png" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></th>
+<th><img src="[% config.print_img %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></th>
 <td><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=print;database=[% record.database %];singleidn=[% record.id %]" target="print" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a></td>
-<th><img src="/images/openbib/3d-file-blue-permalink.png" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></th>
+<th><img src="[% config.permalink_img %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></th>
 <td><a href="http://[% config.loadbalancerservername %][% config.connector_permalink_loc %]/[% record.database %]/[% record.id %]/1/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="[% msg.maketext("Permanenter Link") %]">[% msg.maketext("Permanenter Link") %]</a></td>
 </tr>
 </table>

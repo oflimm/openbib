@@ -526,7 +526,7 @@ zukünftige Recherchen.") %]</li>
       und Stadtbibliothek. Hier ist dann, wenn es sich um Medien im
         geschlossenen Magazinbereich handelt, eine Bestellung
         m&ouml;glich. Bei bereits verliehenen Medien k&ouml;nnen Sie
-        sie hier vormerken.","<img style=\"vertical-align:bottom\" src=\"/images/openbib/2rightarrow.png\" />") %]
+        sie hier vormerken.","<img style=\"vertical-align:bottom\" src=\"${config.follow_img}\" />") %]
      </p>
 
      <h1 id="treffermerkliste">6 [% msg.maketext("Treffer- und Merkliste") %]</h1>
@@ -588,13 +588,13 @@ gew&uuml;nschten Ordnungskriterien (Person, Titel usw. und Anzeige <i>Pro Katalo
      Funktionselemente verwendet. Es sind dies:") %]
     </p>
     <table>
-     <tr><td align="center"><img src="/images/openbib/3d-file-blue-clipboard.png" alt="In die Merkliste" border="0" /></td><td>[% msg.maketext("Titel in die Merkliste eintragen") %]</td></tr>
+     <tr><td align="center"><img src="[% config.listofinterest_img %]" alt="In die Merkliste" border="0" /></td><td>[% msg.maketext("Titel in die Merkliste eintragen") %]</td></tr>
 
-     <tr><td align="center"><img src="/images/openbib/3d-file-blue-mailbox.png" alt="Als Mail verschicken" border="0" /></td><td>[% msg.maketext("Titel(liste) als Mail verschicken") %]</td></tr>
-     <tr><td align="center"><img src="/images/openbib/3d-file-blue-disk35.png" alt="Abspeichern" border="0" /></td><td>[% msg.maketext("Titel(liste) abspeichern") %]</td></tr>   
-     <tr><td align="center"><img src="/images/openbib/3d-file-blue-printer.png" alt="Ausdrucken" border="0" /></td><td>[% msg.maketext("Titel(liste) ausdrucken, bzw. in einer Druckansicht darstellen") %]</td></tr>   
-     <tr><td align="center"><img src="/images/openbib/info.png" alt="Kontextsensitive Hilfe" /></td><td>[% msg.maketext("Kontextsensitive Hilfe") %]</td></tr>   
-     <tr><td align="center"><span class="globalsearch">G</span></td><td>[% msg.maketext("Suche &uuml;ber alle Kataloge") %] <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/g.html" target="tutorial"><img src="/images/openbib/tutorial.png" alt="Interaktives Tutorium" /></a></td></tr>
+     <tr><td align="center"><img src="[% config.mail_img %]" alt="Als Mail verschicken" border="0" /></td><td>[% msg.maketext("Titel(liste) als Mail verschicken") %]</td></tr>
+     <tr><td align="center"><img src="[% config.save_img %]" alt="Abspeichern" border="0" /></td><td>[% msg.maketext("Titel(liste) abspeichern") %]</td></tr>   
+     <tr><td align="center"><img src="[% config.print_img %]" alt="Ausdrucken" border="0" /></td><td>[% msg.maketext("Titel(liste) ausdrucken, bzw. in einer Druckansicht darstellen") %]</td></tr>   
+     <tr><td align="center"><img src="[% config.info_img %]" alt="Kontextsensitive Hilfe" /></td><td>[% msg.maketext("Kontextsensitive Hilfe") %]</td></tr>   
+     <tr><td align="center"><span class="globalsearch">G</span></td><td>[% msg.maketext("Suche &uuml;ber alle Kataloge") %] <a class="tutorial" href="http://kug.ub.uni-koeln.de/tutorials/g.html" target="tutorial"><img src="[% config.tutorial_img %]" alt="Interaktives Tutorium" /></a></td></tr>
   </table>
 
     <h1 id="verlinkung">9 [% msg.maketext("Verlinkung und Lastverteilung des KUG") %]</h1>

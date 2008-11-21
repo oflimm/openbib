@@ -44,7 +44,7 @@ dieser Seite und kopieren ihn in Ihr RSS-Leseprogramm.") %]
 <tr><td class="boxed" valign="top" align="left">
 <table>
 [% IF item.type == 'neuzugang' %]
-<tr><td><img src="/images/openbib/rssfeed.png" alt="RSS-Icon" /></td><td>[% msg.maketext("Letzte 50 Neuaufnahmen") %]&nbsp;(<a
+<tr><td><img src="[% config.rssfeed_img %]" alt="RSS-Icon" /></td><td>[% msg.maketext("Letzte 50 Neuaufnahmen") %]&nbsp;(<a
 href="http://[% config.loadbalancerservername %][% config.connector_rss_loc %]/[% item.type %]/[% item.pool
 %].rdf" target="_blank">http://[% config.loadbalancerservername %][% config.connector_rss_loc %]/[% item.type %]/[% item.pool %].rdf</a>)</td></tr>
 [% END %]
@@ -72,7 +72,7 @@ Keine
 <tr><td class="boxed" valign="top" align="left">
 <table>
 [% IF item.type == 'neuzugang' %]
-<tr><td><img src="/images/openbib/rssfeed.png" alt="RSS-Icon" /></td><td>[% msg.maketext("Letzte 50 Neuaufnahmen") %]&nbsp;(<a
+<tr><td><img src="[% config.rssfeed_img %]" alt="RSS-Icon" /></td><td>[% msg.maketext("Letzte 50 Neuaufnahmen") %]&nbsp;(<a
 href="http://[% config.loadbalancerservername %][% config.connector_rss_loc %]/[% item.type %]/[% item.pool
 %].rdf" target="_blank">http://[% config.loadbalancerservername %][% config.connector_rss_loc %]/[% item.type %]/[% item.pool %].rdf</a>)</td></tr>
 [% END %]

@@ -189,7 +189,7 @@
 <input type="hidden" name="dd_categorized" value="1" />
 [% END %]
 <input type="hidden" name="autoplus"  value="0" />
-<input type="hidden" name="mart"      value="Zeitschrift" />
+<input type="hidden" name="mart"      value="Zeitschrift/Serie" />
 <input type="hidden" name="boolmart"  value="AND" />
 
 <table>
@@ -289,7 +289,7 @@
 <input type="hidden" name="dd_categorized" value="1" />
 [% END %]
 <input type="hidden" name="autoplus"  value="0" />
-<input type="hidden" name="mart"  value="Aufsatz" />
+<input type="hidden" name="mart"      value="Aufsatz" />
 <input type="hidden" name="boolmart"  value="AND" />
 
 <table>
@@ -356,7 +356,7 @@
 [% IF config.lang.size > 1 %]
 <div id="langchoice">
 [%   FOREACH l IN config.lang %]
-<a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];setmask=simple;l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+<a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];setmask=simple;l=[% l %]"><img src="/images/openbib/[% l %].gif" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
 [%   END %]
 </div>
 [% END %]
@@ -419,7 +419,7 @@ Literaturlisten usw.)<p/>
 [% END %]
 
 <td class="overview"><!-- Begin overview-->
-<h3><img style="vertical-align:bottom" src="/images/openbib/search.png" alt="&Uuml;bersichten"/>&nbsp;In den Gesamtbestand eintauchen</h3>
+<h3><img style="vertical-align:bottom" src="[% config.search_img %]" alt="&Uuml;bersichten"/>&nbsp;In den Gesamtbestand eintauchen</h3>
 
 durch <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=50" title="[% msg.maketext("Systematisches Bl&auml;ttern") %]">Systematisches Bl&auml;ttern</a>,
 <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="Wolken">Wolken</a>, <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=41" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a>, <a
@@ -427,7 +427,7 @@ href="">Suchbegriffe</a>, <a href="[% config.info_loc %]?sessionID=[% sessionID 
 
 </td><!-- End overview -->
 <td class="mostrecent"><!-- Begin Literaturlisten/Tags -->
-<h3><img style="vertical-align:bottom" src="/images/openbib/note.png" alt="Notieren"/>&nbsp;Legen Sie Literaturlisten an und vergeben Sie Tags</h3>
+<h3><img style="vertical-align:bottom" src="[% config.note_img %]" alt="Notieren"/>&nbsp;Legen Sie Literaturlisten an und vergeben Sie Tags</h3>
 
 <h4>Die 5 zuletzt angelegten Literaturlisten</h4>
 

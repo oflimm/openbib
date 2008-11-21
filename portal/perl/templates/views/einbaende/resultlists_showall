@@ -69,7 +69,7 @@
 [% FOREACH result IN resultlists %]
 [%-     recordlist = result.recordlist %]
 [%-     database   = result.database %]
-<tr class="titlerow"><td>&nbsp;</td><td><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% dbinfotable.dbinfo.$database.full %]</td><td align="right" colspan="4"><strong>[% recordlist.get_size %] [% msg.maketext("Treffer") %]</strong></td></tr>
+<tr class="titlerow"><td>&nbsp;</td><td><img style="vertical-align:bottom" src="[% config.follow_img %]" alt="Weiterleitungs-Icon" />&nbsp;[% dbinfotable.dbinfo.$database.full %]</td><td align="right" colspan="4"><strong>[% recordlist.get_size %] [% msg.maketext("Treffer") %]</strong></td></tr>
 [%-     IF result.offsets -%]
 <tr class="titlerow"><td>&nbsp;</td><td colspan="4">
 [%          FOREACH singleoffset IN result.offsets %]
@@ -136,7 +136,7 @@
 sessionID %];search=Mehrfachauswahl;searchmode=[% searchmode %];rating=[% rating %];bookinfo=[% bookinfo %];hitrange=;sorttype=[%
 sorttype %]&database=[% item.${"database"} %];searchsingletit=[% item.id
 %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
-id="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></td><td><span class="rlcollect"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="/images/openbib/3d-file-blue-clipboard.png" alt="In die Merkliste" border=0></a></span></td><td align=left><b>[% signatur %]</b></td><td><a href="[% config.search_loc %]?sessionID=[%
+id="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></td><td><span class="rlcollect"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.listofinterest_img %]" alt="In die Merkliste" border=0></a></span></td><td align=left><b>[% signatur %]</b></td><td><a href="[% config.search_loc %]?sessionID=[%
 sessionID %];search=Mehrfachauswahl;searchmode=[% searchmode %];rating=[% rating %];bookinfo=[% bookinfo %];hitrange=;sorttype=[%
 sorttype %]&database=[% item.${"database"} %];searchsingletit=[% item.id %];stid=1;olws=Viewer">[&nbsp;[% msg.maketext("Abb.") %]&nbsp;]</a></td></tr>
 

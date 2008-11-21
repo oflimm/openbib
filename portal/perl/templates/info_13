@@ -57,7 +57,7 @@
 Normdaten-Eintr&auml;ge f&uuml;r Schlagworte,
 Systematiken/Notationen, K&ouml;rperschaften/Institutionen sowie Personen</b> in der Form einer
 Wortwolke ([_1]&nbsp;[_2]) zu erhalten. Je mehr Titel mit
-einem Normdaten-Eintrag verkn&uuml;pft wurden, umso grösser wird der zugehörige Normdaten-Eintrag dargestellt.","<img src=\"/images/openbib/wikipedia.png\" alt=\"Mashup mit
+einem Normdaten-Eintrag verkn&uuml;pft wurden, umso grösser wird der zugehörige Normdaten-Eintrag dargestellt.","<img src=\"${config.wikipedia_img}\" alt=\"Mashup mit
 Wikipedia\" />","<a href=\"http://de.wikipedia.org/wiki/Wortwolke\" target=\"_blank\">engl. tag cloud</a>") %]
 </td></tr>
 </table>

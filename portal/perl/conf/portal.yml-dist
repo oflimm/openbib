@@ -200,6 +200,35 @@ stopword_filename: /opt/openbib/ft/stopwords.txt
 document_root_path: /var/www
 image_root_path: /var/www/images/openbib
 
+# Verwendete Funktionsbilder
+courses_img: /images/openbib/courses.png
+delete_img: /images/openbib/cancel.png
+follow_img: /images/openbib/2rightarrow.png
+info_img: /images/openbib/info.png
+lang_de_img: /images/openbib/de.png
+lang_en_img: /images/openbib/en.png
+listofinterest_img: /images/openbib/3d-file-blue-clipboard.png
+liststyle_cover_img: /images/openbib/view_detailed.png
+liststyle_list_img: /images/openbib/view_text.png
+mail_img: /images/openbib/3d-file-blue-mailbox.png
+news_img: /images/openbib/newsflash.png
+next_img: /images/openbib/next.gif
+no_next_img: /images/openbib/no_next.png
+no_previous_img: /images/openbib/no_previous.png
+note_img: /images/openbib/note.png
+openbib_img: /images/openbib/openbib-powered.png
+pdf_img: /images/openbib/pdf-document.png
+permalink_img: /images/openbib/3d-file-blue-permalink.png
+previous_img: /images/openbib/previous.png
+print_img: /images/openbib/3d-file-blue-printer.png
+rssfeed_img: /images/openbib/rssfeed.png
+save_img: /images/openbib/3d-file-blue-disk35.png
+search_img: /images/openbib/search.png
+share_img: /images/openbib/share.png
+top20_img: /images/openbib/top20-12px.png
+tutorial_img: /images/openbib/tutorial.png
+wikipedia_img:  /images/openbib/wikipedia.png
+
 # Mapping der einzelnen Kompontenten zu ihren Templates
 tt_admin_editcat_rss_tname: admin_editcat_rss
 tt_admin_editcat_tname: admin_editcat
@@ -284,6 +313,7 @@ tt_info_34_tname: info_34
 tt_info_35_tname: info_35
 tt_info_3_tname: info_3
 tt_info_40_tname: info_40
+tt_info_41_tname: info_41
 tt_info_50_tname: info_50
 tt_info_51_tname: info_51
 tt_info_52_tname: info_52
@@ -381,6 +411,10 @@ benchmark: 0
 # Kurztiteltabelle verwenden?
 use_titlistitem_table: 1
 
+# Maximale Laenge an Personen in Kurztitelliste, ab der Personen
+# gekuerzt werden soll
+maxperslength: 100
+
 # https fuer Admin und Nutzer verwenden
 use_https: 1
 use_admin_https: 1
@@ -392,7 +426,9 @@ testsystem: 0
 drilldown: 1
 drilldown_option:
   categorized: 1
+  categorized_db: 1
   categorized_aut: 1
+  categorized_kor: 1
   categorized_mart: 1
   categorized_not: 1
   categorized_spr: 1
@@ -440,13 +476,13 @@ reviews: 1
 
 # Cover-Scans
 coverscans:
-  inst001: 1
+  all: 1
 
 # unAPI
 unAPI: 1
 unAPI_formats:
   bibtex: 1
-  mods: 1
+  mods: 0
   oai_dc: 1
 
 # Katalogabhaengige Kategorie-Mappings
@@ -456,7 +492,11 @@ categorymapping:
   einbaende:
     T0100: 1
     T0101: 1
+    T0102: 1
     T0200: 1
+    T0201: 1
+    T0304: 1
+    T0310: 1
     T0331: 1
     T0335: 1
     T0361: 1
@@ -471,6 +511,7 @@ categorymapping:
     T0700: 1
     T0710: 1
     T0750: 1
+    T0800: 1
   inst450:
     T0100: 1
     T0101: 1
@@ -520,5 +561,9 @@ categorymapping:
     T3001: 1
   richter:
     T0501: 1
+  umschlaege:
+    T0100: 1
+    T0200: 1
+    T0710: 1
 
 

@@ -750,6 +750,24 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <tr><td></td></tr>
 <!-- Ende BibSonomy-Tags -->
 
+<!-- Anfang Verwandte Themen -->
+<script language="JavaScript" type="text/javascript">
+$(document).ready(function(){
+// Begin Verwandte Themen
+  $.get("[% config.connector_similarsubjects_loc %]?sessionID=[% sessionID %];database=[% record.database%];type=tit;id=[% record.id %];format=ajax",
+         function (txt){
+           $("#similarsubjects").html(txt); 
+  });
+});
+</script>
+<tr><td class="headline">Verwandte Themen</td></tr>
+<tr><td>
+<span id="similarsubjects"><a href="[% config.connector_similarsubjects_loc %]?sessionID=[% sessionID %];database=[% record.database%];type=tit;id=[% record.id %]">Anzeigen?</a></span>
+</td></tr>
+<tr><td></td></tr>
+<tr><td></td></tr>
+<!-- Ende BibSonomy-Tags -->
+
 <!-- Anfang Empfehlungen -->
 [% IF normset.exists('E4000') %]
 <tr><td class="headline">[% msg.maketext("Empfehlungen") %]</td></tr>

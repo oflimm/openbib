@@ -154,7 +154,7 @@ class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpu
 [% END %]
 [% IF show_bibsonomy %]
 <p />
-<img style="vertical-align: bottom;" src="/images/openbib/share.png" alt="Share this"/>&nbsp;<a href="[% config.redirect_loc %]/[% sessionID %]/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=[% record.to_bibtex | uri | replace('&','%26') %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a>
+<img style="vertical-align: bottom;" src="[% config.share_img %]" alt="Share this"/>&nbsp;<a href="[% config.redirect_loc %]/[% sessionID %]/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=[% record.to_bibtex | uri | replace('&','%26') %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a>
 <p />
 [% END %]
 

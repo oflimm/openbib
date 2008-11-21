@@ -228,7 +228,7 @@ Zugriff auf inhaltlich benachbarte Titel</p>
 
 <p> Wir haben begonnen, eine kontextbezogene Hilfe in den KUG
 einzubauen.  Diese erkennen Sie an einem Fragezeichen <img
-src="/images/openbib/info.png" /> am rechten Bildschirmrand. &Uuml;ber
+src="[% config.info_img %]" /> am rechten Bildschirmrand. &Uuml;ber
 dieses Fragezeichen k&ouml;nnen Sie zielgenau in den entsprechenden
 Abschnitt der Hilfeseite gelangen.  </p>
 
@@ -244,7 +244,7 @@ Wolken -> Suchbegriffe.  </p>
 <p>Einzelne Titel-S&auml;tze k&ouml;nnen nun unter einem einheitlichen
 URL verlinkt werden - &auml;hnlich Blog-Eintr&auml;gen. D.h. bei einer
 Volltitelanzeige finden Sie ein neues Icon <img
-src="/images/openbib/3d-file-blue-permalink.png" border="0" />. Wenn
+src="[% config.permalink_img %]" border="0" />. Wenn
 Sie darauf klicken, &ouml;ffnet sich in einem neuen Fenster der
 verlinkbare permanente URL zu diesem Titel in dieser Sicht.  </p>
 

@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 
-<h3><img style="vertical-align:bottom" src="/images/openbib/newsflash.png" alt="Aktuelles">&nbsp;Aktuelles</h3>
+<h3><img style="vertical-align:bottom" src="[% config.news_img %]" alt="Aktuelles">&nbsp;Aktuelles</h3>
 
 <ul>
 

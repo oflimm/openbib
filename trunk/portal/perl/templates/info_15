@@ -77,7 +77,7 @@ eine &Uuml;bersicht aller vorhandenen Spezial-Sichten.") %]
 </ul>
 <p />
 <img style="vertical-align:bottom"
-src="/images/openbib/2rightarrow.png" alt="[% msg.maketext("Weiterleitungs-Icon") %]"
+src="[% config.follow_img %]" alt="[% msg.maketext("Weiterleitungs-Icon") %]"
 />&nbsp;<a
 href="http://kug.ub.uni-koeln.de/portal/lastverteilung?view=[%
 viewname %]" target="_blank"><b>[% msg.maketext("Aufruf dieser Spezial-Sicht") %]</b></a>

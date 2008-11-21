@@ -12,7 +12,7 @@
 #######################################################################
 -%]
 <!-- Beginn Result Item -->
-<tr class="titlerow"><td>&nbsp;</td><td colspan="3"><img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;[% dbinfo.full %]</td><td
+<tr class="titlerow"><td>&nbsp;</td><td colspan="3"><img style="vertical-align:bottom" src="[% config.follow_img %]" alt="Weiterleitungs-Icon" />&nbsp;[% dbinfo.full %]</td><td
 align="right" colspan="2"><strong>[%- IF treffer == qopts.hitrange && qopts.sb == 'sql' -%]<a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#recherche">[% msg.maketext("mind.") %]&nbsp;[% treffer %] [% msg.maketext("Treffer") %]</a>[% ELSE %][% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %][%- END -%]</strong></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
 [%- IF treffer == qopts.hitrange -%]
 <tr class="titlerow"><td>&nbsp;</td><td colspan="5"><b>[1 - [% qopts.hitrange %]]</b>&nbsp;<a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];database=[% database %];queryid=[% queryid %];action=getnext;offset=[% qopts.hitrange %];hitrange=[% qopts.hitrange %];sb=[% qopts.sb %]">[weitere Treffer...]</a></td><td>&nbsp;</td></tr>
@@ -67,7 +67,7 @@ align="right" colspan="2"><strong>[%- IF treffer == qopts.hitrange && qopts.sb =
 %]</span><br /><a href="[% config.search_loc %]?sessionID=[%
 sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id
 %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
-class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></td><td><span class="rlcollect"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="/images/openbib/3d-file-blue-clipboard.png" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a></span></td><td align="left"><b>[% signatur %]</b></td><td class="popularitycount">[% item.popularity %]</td></tr>
+class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></td><td><span class="rlcollect"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.listofinterest_img %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a></span></td><td align="left"><b>[% signatur %]</b></td><td class="popularitycount">[% item.popularity %]</td></tr>
 [%- IF listrow == 'listrow1' -%]
 [%- listrow = 'listrow2' -%]
 [%- ELSE -%]

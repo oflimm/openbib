@@ -54,12 +54,12 @@ FOREACH category IN categories;
     CASE [ "T0100" "T0101" "T0103" ];
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;verf=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsingleaut=${item.id}";
-         content   = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_aut/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\" alt=\"RSS-Icon\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+         content   = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_aut/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\" alt=\"RSS-Icon\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;kor=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsinglekor=${item.id}";
-         content   = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_kor/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\" alt=\"RSS-Icon\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+         content   = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_kor/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\" alt=\"RSS-Icon\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE "T0331";
          content   = "<b>${content}</b>";
@@ -70,13 +70,13 @@ FOREACH category IN categories;
     CASE [ "T0710" "T0902" "T0907" "T0912" "T0917" "T0922" "T0927" "T0932" "T0937" "T0942" "T0947" ];
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;swt=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsingleswt=${item.id}";
-         content   = " <a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_swt/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\" alt=\"RSS-Icon\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in
+         content   = " <a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_swt/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\" alt=\"RSS-Icon\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in
 allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE "T0700";
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;notation=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${normset.database};searchsinglenot=${item.id}";
-         content   = " <a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_sys/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"/images/openbib/rssfeed.png\" alt=\"RSS-Icon\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
+         content   = " <a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_sys/${item.id}/${normset.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\" alt=\"RSS-Icon\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"Begriff in allen Katalogen suchen\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${item.content}</a> ${item.supplement}";
 
     CASE "T5001";
          content   = "<a href=\"${config.search_loc}?sessionID=${sessionID};database=${normset.database};supertit=${normset.id};generalsearch=supertit\">${content}</a>";

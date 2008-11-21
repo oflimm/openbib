@@ -62,12 +62,12 @@
 <p />
 
 <table>
-<tr><td><b>[% msg.maketext("Viewname") %]</b></td><td><b>[% msg.maketext("RSS") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Datenbanken") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td></tr>
+<tr><td><b>[% msg.maketext("Viewname") %]</b></td><td><b>[% msg.maketext("RSS") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("Profil") %]</b></td><td><b>[% msg.maketext("Datenbanken") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td></tr>
 
 [% FOREACH view IN views %]
 
 <tr><td>[% view.viewname %]</td><td align="center"><a href="http://[%
-config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&do_editview_rss=1&viewname=[% view.viewname %];do_edit=1"><img src="/images/openbib/rssfeed.png" alt="RSS-Icon" /></a></td><td><a href="[% config.admin_loc %]?sessionID=[% sessionID %]&do_editview=1&viewname=[% view.viewname %]&do_edit=1">[% view.description %]</a></td><td>[% view.viewdb %]</td><td>[% view.active %]</td></tr>
+config.servername %][% config.admin_loc %]?sessionID=[% sessionID %]&do_editview_rss=1&viewname=[% view.viewname %];do_edit=1"><img src="[% config.rssfeed_img %]" alt="RSS-Icon" /></a></td><td><a href="[% config.admin_loc %]?sessionID=[% sessionID %]&do_editview=1&viewname=[% view.viewname %]&do_edit=1">[% view.description %]</a></td><td>[% view.profile %]</td><td>[% view.viewdb %]</td><td>[% view.active %]</td></tr>
 [% END %]
 
 </table>

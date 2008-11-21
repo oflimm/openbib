@@ -24,7 +24,7 @@
 <td class="circurl">
 [%
      IF mex.Ausleihurl %]
-   <img style="vertical-align:bottom" src="/images/openbib/2rightarrow.png" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% config.redirect_loc %]/[% sessionID %]/550/[% mex.Ausleihurl %]">[% msg.maketext("Weiter") %]</a>
+   <img style="vertical-align:bottom" src="[% config.follow_img %]" alt="Weiterleitungs-Icon" />&nbsp;<a target="_blank" href="[% config.redirect_loc %]/[% sessionID %]/550/[% mex.Ausleihurl %]">[% msg.maketext("Weiter") %]</a>
 [%   ELSE %]
 [%      IF mex.Statuscode != 0 %]
      <a href="[% config.circulation_loc %]?sessionID=[% sessionID %];action=make_reservation;mnr=[% mex.Mediennr %];zst=[% mex.Zweigstelle %];aort=[% mex.Ausgabeort %];validtarget=[% database %]" title="Titel vormerken">Vormerken</a>

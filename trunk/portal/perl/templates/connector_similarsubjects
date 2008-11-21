@@ -1,0 +1,42 @@
+[%#-
+#######################################################################
+#
+# Templatename: connector_similarsubjects
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von katalogspezifischen Wortwolken
+#
+#######################################################################
+-%]
+[%- IF format == 'ajax' -%]
+[%- IF similar_subjects.size > 1 %]
+<!-- Beginn Tag-Cloud -->
+[%
+   css_classes = [
+        'fast-nicht-genutzt',
+        'nicht-sehr-genutzt',
+        'etwas-genutzt',
+        'genutzt',
+        'sehr-viel-genutzt',
+        'ultra-genutzt',
+        'am-meisten-genutzt',
+   ];
+%]
+<ol class="cloud">
+[%- FOREACH thisitem IN similar_subjects -%]
+[% item      = thisitem.item;
+   swtid     = thisitem.id;
+   itemcount = thisitem.count;
+   classnr   = thisitem.class;
+   itemclass = css_classes.$classnr;
+%]
+<li class="[% itemclass %]"><span>[% itemcount %] Titel haben das Schlagwort</span><a href="[% config.search_loc %]?sessionID=[% sessionID %];database=[% database %];searchsingleswt=[% swtid %]" class="tag" title="[% itemcount %] Titel haben das Schlagwort [% item %]">[% item %]</a></li>
+[% END %]
+</ol>
+[% ELSE %]
+Es konnten keine verwandten Themen bestimmt werden.
+[% END %]
+[% END %]

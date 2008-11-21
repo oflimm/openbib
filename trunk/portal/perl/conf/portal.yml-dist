@@ -123,6 +123,7 @@ connector_olws_loc: /portal/connector/olws
 connector_permalink_loc: /portal/connector/permalink
 connector_locationmark_loc: /portal/connector/sykasignatur
 connector_rss_loc: /portal/connector/rss
+connector_similarsubjects_loc: /portal/connector/similarsubjects
 connector_spellcheck_loc: /portal/connector/spellcheck
 connector_ukonline_loc: /portal/connector/uk-online
 connector_unapi_loc: /portal/connector/unapi
@@ -198,7 +199,7 @@ stopword_filename: /opt/openbib/ft/stopwords.txt
 
 # Pfade zum Document und Image Root
 document_root_path: /var/www
-image_root_path: /var/www/images/openbib
+image_root_path: /usr/share/images
 
 # Verwendete Funktionsbilder
 courses_img: /images/openbib/courses.png
@@ -279,6 +280,7 @@ tt_connector_digibib_showtitset_tname: connector_digibib_showtitset
 tt_connector_locationmark_titlist_tname: connector_locationmark_titlist
 tt_connector_permalink_tname: connector_permalink
 tt_connector_rss_item_tname: connector_rss_item
+tt_connector_similarsubjects_tname: connector_similarsubjects
 tt_connector_unapi_bibtex_tname: connector_unapi_bibtex
 tt_connector_unapi_formats_tname: connector_unapi_formats
 tt_connector_unapi_mods_tname: connector_unapi_mods

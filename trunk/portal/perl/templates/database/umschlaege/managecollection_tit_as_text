@@ -12,10 +12,12 @@
 #
 #######################################################################
 -%]
-[%- FOREACH titset IN collection -%]
-[%-   normset    = titset.tit -%]
-[%-   mexnormset = titset.mex -%]
-[%    PROCESS common/subtemplate name="visible_categories_titset" %]
+[%- FOREACH record IN recordlist.get_records -%]
+[%    normset    = record.get_normdata %]
+[%    mexnormset = record.get_mexdata %]
+[%    circset    = record.get_circdata %]
+[%-   isbn  = normset.${"T0540"}.first.content.replace('-','') -%]
+[%#    PROCESS common/subtemplate name="visible_categories_titset" %]
 [%-
 
       FOREACH category IN categories;
@@ -39,7 +41,7 @@
             END;
 
 -%]
-[% msg.maketext("${thiscategory}") | format("%- 24s") %]: [% content %]
+[% msg.maketext("${thiscategory}") | format("%- 24s") %]: [% content %] - [% category %]
 [%       END -%]
 [%    END -%]
 [%    PROCESS common/subtemplate name="visible_categories_coverset" %]
@@ -82,7 +84,7 @@
 [%   IF show_bibsonomy %]
 </pre>
 <p />
-<img style="vertical-align: bottom;" src="/images/openbib/share.png" alt="Share this"/>&nbsp;<a href="http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=[% normset2bibtex(normset) | uri | replace('&','%26') %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a>
+<img style="vertical-align: bottom;" src="[% config.share_img %]" alt="Share this"/>&nbsp;<a href="http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=[% normset2bibtex(normset) | uri | replace('&','%26') %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a>
 <p />
 <p />
 <pre>

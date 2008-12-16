@@ -49,7 +49,7 @@
 
 <script type="text/javascript">
 $(document).ready(function(){
-  $("#input_box").autocomplete("[% config.connector_spellcheck_loc %]", {
+  $("#to_focus").autocomplete("[% config.connector_spellcheck_loc %]", {
                 selectFirst: false,
                 minChars: 3,
                 multiple: true,                
@@ -93,7 +93,7 @@ nutzen, bei der die Verwendung von JavaScript minimiert ist.","<a href=\"${start
 <table width="100%">
 <tr><th style="text-align: center">[% msg.maketext("Geben Sie hier Ihre Suchbegriffe ein") %]</th></tr>
 <tr><td class="boxed" valign="top" align="center">
-<input id="input_box" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="80" maxlength="200" />
+<input id="to_focus" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="80" maxlength="200" />
 </td></tr>
 </table>
 

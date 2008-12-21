@@ -121,6 +121,11 @@ sub handler {
   
     my $userprofiles  = "";
 
+    my $spelling_suggestion_ref = {
+        as_you_type => 0,
+        resultlist  => 0,
+    };
+    
     # Wurde bereits ein Profil bei einer vorangegangenen Suche ausgewaehlt?
     my $prevprofile=$session->get_profile();
 
@@ -143,6 +148,8 @@ sub handler {
         $showinhalt    = $fieldchoice_ref->{'inhalt'};
         $showgtquelle  = $fieldchoice_ref->{'gtquelle'};
         $showejahr     = $fieldchoice_ref->{'ejahr'};
+
+        $spelling_suggestion_ref = $user->get_spelling_suggestion();
 
         foreach my $profile_ref ($user->get_all_profiles()){
             my @profiledbs = $user->get_profiledbs_of_profileid($profile_ref->{profilid});
@@ -244,6 +251,8 @@ sub handler {
         showgtquelle  => $showgtquelle,
         showejahr     => $showejahr,
 
+        spelling_suggestion => $spelling_suggestion_ref,
+        
         searchquery   => $searchquery->get_searchquery,
         qopts         => $queryoptions->get_options,
 

@@ -75,6 +75,9 @@ sub handler {
     
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
+    my $as_you_type   = ($query->param('as_you_type'))?$query->param('as_you_type'):'0';
+    my $resultlist    = ($query->param('resultlist'))?$query->param('resultlist'):'0';
+
     my $showfs        = ($query->param('showfs'))?$query->param('showfs'):'0';
     my $showhst       = ($query->param('showhst'))?$query->param('showhst'):'0';
     my $showhststring = ($query->param('showhststring'))?$query->param('showhststring'):'0';
@@ -128,8 +131,9 @@ sub handler {
     }
   
     if ($action eq "showfields") {
-        my $fieldchoice_ref = $user->get_fieldchoice();
-        my $userinfo_ref    = $user->get_info();
+        my $fieldchoice_ref         = $user->get_fieldchoice();
+        my $userinfo_ref            = $user->get_info();
+        my $spelling_suggestion_ref = $user->get_spelling_suggestion();
         
         my $loginname           = $userinfo_ref->{'loginname'};
         my $password            = $userinfo_ref->{'password'};
@@ -156,6 +160,7 @@ sub handler {
             email_valid      => $email_valid,
             targettype       => $targettype,
             fieldchoice      => $fieldchoice_ref,
+            spelling_suggestion => $spelling_suggestion_ref,
             
             userinfo         => $userinfo_ref,
 
@@ -260,6 +265,14 @@ sub handler {
 
         $user->set_mask($setmask);
         $session->set_mask($setmask);
+
+        $r->internal_redirect("http://$config->{servername}$config->{userprefs_loc}?sessionID=$session->{ID}&action=showfields");
+    }
+    elsif ($action eq "changespelling") {
+        $user->set_spelling_suggestion({
+            as_you_type        => $as_you_type,
+            resultlist         => $resultlist,
+        });
 
         $r->internal_redirect("http://$config->{servername}$config->{userprefs_loc}?sessionID=$session->{ID}&action=showfields");
     }

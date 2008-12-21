@@ -84,7 +84,9 @@ sub handler {
     });
 
     my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
-    
+
+    my $spelling_suggestion_ref = $user->get_spelling_suggestion();
+
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
     # CGI-Input auslesen
@@ -897,6 +899,8 @@ sub handler {
             query          => $query,
 
             qopts          => $queryoptions->get_options,
+
+            spelling_suggestion => $spelling_suggestion_ref,
             
             queryid        => $queryid,
 

@@ -1142,6 +1142,8 @@ sub _get_mex_set_by_idn {
     
     my $normset_ref={};
 
+    $normset_ref->{id}=$id;
+    
     # Defaultwerte setzen
     $normset_ref->{X0005}{content}="-";
     $normset_ref->{X0014}{content}="-";
@@ -1150,6 +1152,7 @@ sub _get_mex_set_by_idn {
     $normset_ref->{X4000}{content}="-";
     $normset_ref->{X4001}{content}="";
 
+    
     my ($atime,$btime,$timeall);
     if ($config->{benchmark}) {
 	$atime=new Benchmark;

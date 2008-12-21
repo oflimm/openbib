@@ -47,10 +47,11 @@ use OpenBib::Config;
 use OpenBib::Conv::Config;
 use OpenBib::Statistics;
 
-my ($database,$reducemem,$addsuperpers,$logfile);
+my ($database,$reducemem,$addsuperpers,$addmediatype,$logfile);
 
 &GetOptions("reduce-mem"    => \$reducemem,
             "add-superpers" => \$addsuperpers,
+            "add-mediatype" => \$addmediatype,
 	    "database=s"    => \$database,
             "logfile=s"     => \$logfile,
 	    );
@@ -61,7 +62,7 @@ my $conv_config = new OpenBib::Conv::Config({dbname => $database});
 $logfile=($logfile)?$logfile:"/var/log/openbib/meta2sql-$database.log";
 
 my $log4Perl_config = << "L4PCONF";
-log4perl.rootLogger=INFO, LOGFILE, Screen
+log4perl.rootLogger=DEBUG, LOGFILE, Screen
 log4perl.appender.LOGFILE=Log::Log4perl::Appender::File
 log4perl.appender.LOGFILE.filename=$logfile
 log4perl.appender.LOGFILE.mode=append
@@ -509,6 +510,58 @@ while (my $line=<IN>){
             }
         }
 
+        # Medientypen erkennen und anreichern
+        if ($addmediatype){
+
+            # Zeitschriften/Serien:
+            # ISSN und/oder ZDB-ID besetzt
+            if (exists $thisitem_ref->{'T0572'} || exists $thisitem_ref->{'T0543'}) {
+                # Steht Medientyp schon auf Zeitschrift?
+                my $have_journal=0;
+                my $type_indicator = 1;
+                foreach my $item (@{$thisitem_ref->{'T0800'}}){
+                    $have_journal = 1 if ($item->{content} eq "Zeitschrift/Serie");
+                    $type_indicator++;
+                }
+
+                if (!$have_journal){
+                    push @{$normdata_ref->{mart}}, "Zeitschrift/Serie";
+
+                    print OUT       "$id800$type_indicatorZeitschrift/Serie\n";
+                    my $contentnormtmp = OpenBib::Common::Util::grundform({
+                        category => '800',
+                        content  => 'Zeitschrift/Serie',
+                    });
+                    print OUTSTRING "$id800$contentnormtmp\n";
+                }
+            }   
+
+
+            # Aufsatz
+            # HSTQuelle besetzt
+            if (exists $thisitem_ref->{'T0590'}) {
+                # Steht Medientyp schon auf Aufsatz?
+                my $have_article=0;
+                my $type_indicator = 1;
+                foreach my $item (@{$thisitem_ref->{'T0800'}}){
+                    $have_article = 1 if ($item->{content} eq "Aufsatz");
+                    $type_indicator++;
+                }
+
+                if (!$have_journal){
+                    push @{$normdata_ref->{mart}}, "Aufsatz";
+
+                    print OUT       "$id800$type_indicatorAufsatz\n";
+                    my $contentnormtmp = OpenBib::Common::Util::grundform({
+                        category => '800',
+                        content  => 'Aufsatz',
+                    });
+                    print OUTSTRING "$id800$contentnormtmp\n";
+                }
+            }   
+
+        }
+        
         # Zentrale Anreicherungsdaten lokal einspielen
         if ($local_enrichmnt && exists $normdata_ref->{isbn13}){
             foreach my $category (keys %{$conv_config->{local_enrichmnt}}){

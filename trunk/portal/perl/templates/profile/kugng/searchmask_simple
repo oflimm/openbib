@@ -49,6 +49,18 @@
 
 <div id="alltypes"><!-- Begin alle Typen -->
 
+[% IF spelling_suggestion.as_you_type %]
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#to_focus").autocomplete("[% config.connector_spellcheck_loc %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+})
+</script>
+[% END %]
+
 <h1>Recherchieren Sie im KUG in [% alldbcount %] Titeln und [% alldbs %] Katalogen</h1>[%# msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount}","${alldbs}") %]</b>
 
 <!--
@@ -147,6 +159,18 @@
 
 <div id="only_serials"><!-- Begin Serials-->
 
+[% IF spelling_suggestion.as_you_type %]
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#input_box_serials").autocomplete("[% config.connector_spellcheck_loc %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+})
+</script>
+[% END %]
+
 <h1>Recherchieren Sie im KUG in [% alldbcount %] Titeln und [% alldbs %] Katalogen</h1>[%# msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount}","${alldbs}") %]</b>
 
 <!--
@@ -189,11 +213,11 @@
 <input type="hidden" name="dd_categorized" value="1" />
 [% END %]
 <input type="hidden" name="autoplus"  value="0" />
-<input type="hidden" name="mart"      value="Zeitschrift/Serie" />
+<input type="hidden" name="mart"      value="Zeitschrift_Serie" />
 <input type="hidden" name="boolmart"  value="AND" />
 
 <table>
-<tr><td class="bigtext">Finde</td><td><input type="text" name="fs" value="[% searchquery.fs.val | html %]" size="60" maxlength="200" /></td><td><input class="bigtext" type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Nur Zeitschriften/Serien") %]" /></td></tr>
+<tr><td class="bigtext">Finde</td><td><input id="input_box_serials" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="60" maxlength="200" /></td><td><input class="bigtext" type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Nur Zeitschriften/Serien") %]" /></td></tr>
 <tr><td class="bigtext">In</td><td colspan="2"><select name="profil">
 [%- IF dbchoice.size > 0 -%]
 <option value="dbauswahl"[%- IF prevprofile == 'dbauswahl' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
@@ -247,6 +271,18 @@
 
 <div id="only_articles"><!-- Begin nur Aufsaetze -->
 
+[% IF spelling_suggestion.as_you_type %]
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#input_box_articles").autocomplete("[% config.connector_spellcheck_loc %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+})
+</script>
+[% END %]
+
 <h1>Recherchieren Sie im KUG in [% alldbcount %] Titeln und [% alldbs %] Katalogen</h1>[%# msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount}","${alldbs}") %]</b>
 
 <!--
@@ -293,7 +329,7 @@
 <input type="hidden" name="boolmart"  value="AND" />
 
 <table>
-<tr><td class="bigtext">Finde</td><td><input type="text" name="fs" value="[% searchquery.fs.val | html %]" size="60" maxlength="200" /></td><td><input class="bigtext" type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Nur Aufsätze") %]" /></td></tr>
+<tr><td class="bigtext">Finde</td><td><input id="input_box_articles" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="60" maxlength="200" /></td><td><input class="bigtext" type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Nur Aufsätze") %]" /></td></tr>
 <tr><td class="bigtext">In</td><td colspan="2"><select name="profil">
 [%- IF dbchoice.size > 0 -%]
 <option value="dbauswahl"[%- IF prevprofile == 'dbauswahl' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
@@ -425,6 +461,10 @@ durch <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];s
 <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="Wolken">Wolken</a>, <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=41" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a>, <a
 href="">Suchbegriffe</a>, <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=10" title="Top 20">meistgenutzte Titel</a>.<p/>
 
+<h3><img
+src="http://ezb.uni-regensburg.de/ezeit/vascoda/vifa/logo/ezb_234x32.gif"
+alt="Elektronische Zeitschriftenbibliothek" /></h3>
+Greifen Sie fachspezifisch auf alle <a href="[% config.ezb_loc %]?sessionID=[% sessionID %];view=[% view %];action=show_subjects">freien und lizensierten Zeitschriften</a> zu
 </td><!-- End overview -->
 <td class="mostrecent"><!-- Begin Literaturlisten/Tags -->
 <h3><img style="vertical-align:bottom" src="[% config.note_img %]" alt="Notieren"/>&nbsp;Legen Sie Literaturlisten an und vergeben Sie Tags</h3>

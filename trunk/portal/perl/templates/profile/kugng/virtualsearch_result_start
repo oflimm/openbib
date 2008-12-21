@@ -67,7 +67,7 @@
 <p/>
 
 [% suggestion = sq.get_spelling_suggestion %]
-[% IF suggestion  %]
+[% IF spelling_suggestion.resultlist && suggestion  %]
 [% msg.maketext("Meinten Sie vielleicht:") %]<b><a href="[% virtualsearch_loc %]?sessionID=[% sessionID %];hitrange=[% query.param('hitrange') %]&view=[% view %];sorttype=relevance;sortorder=down;sb=xapian;st=[% query.param('st') %];drilldown=1;dd_categorized=1;autoplus=0;combinedbs=0;searchall=1;fs=[% suggestion %]">[% suggestion %]</b>
 [% END %]
 

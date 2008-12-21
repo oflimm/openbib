@@ -738,6 +738,7 @@ sub get_viewinfo_overview {
         my $viewname    = decode_utf8($result->{'viewname'});
         my $description = decode_utf8($result->{'description'});
         my $active      = decode_utf8($result->{'active'});
+        my $profile     = decode_utf8($result->{'profilename'});
         
         $description = (defined $description)?$description:'Keine Beschreibung';
         
@@ -760,6 +761,7 @@ sub get_viewinfo_overview {
         $view={
             viewname    => $viewname,
             description => $description,
+            profile     => $profile,
             active      => $active,
             viewdb      => $viewdb,
         };

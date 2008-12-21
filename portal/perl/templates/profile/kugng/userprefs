@@ -156,6 +156,22 @@
 </table>
 <p />
 <table width="100%">
+<tr><th>[% msg.maketext("Rechtschreibvorschläge") %]</td></tr>
+<tr><td class="options">
+<form method="post" action="[% config.userprefs_loc %]" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="action"    value="changespelling" />
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<table>
+<tr><td align="right"><input type="checkbox" name="as_you_type" value="1" [% IF spelling_suggestion.as_you_type %]checked="checked"[% END %]/></td><td>[% msg.maketext("In der Recherchemaske") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="resultlist" value="1" [% IF spelling_suggestion.resultlist %]checked="checked"[% END %] /></td><td>[% msg.maketext("In der Trefferliste") %]</td></tr>
+<tr><td colspan="2">&nbsp;</td></tr>
+<tr><td colspan="2"><input type="submit" value="[% msg.maketext("&Auml;ndern") %]" /></td></tr>
+</table>
+</form>
+</td></tr>
+</table>
+<p />
+<table width="100%">
 <tr><th>[% msg.maketext("BibSonomy") %]</td></tr>
 <tr><td class="options">
 <form method="post" action="[% config.userprefs_loc %]" enctype="application/x-www-form-urlencoded">

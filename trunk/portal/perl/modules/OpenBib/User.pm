@@ -3091,6 +3091,114 @@ sub set_fieldchoice {
     return;
 }
 
+sub get_spelling_suggestion {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return undef if (!defined $dbh);
+
+    my $targetresult=$dbh->prepare("select * from spelling where userid = ?") or $logger->error($DBI::errstr);
+    $targetresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+    
+    my $result=$targetresult->fetchrow_hashref();
+
+    my $spelling_suggestion_ref = {
+        as_you_type => decode_utf8($result->{'as_you_type'}),
+        resultlist  => decode_utf8($result->{'resultlist'}),
+    };
+    
+    $targetresult->finish();
+    
+    return $spelling_suggestion_ref;
+}
+
+sub spelling_suggestion_exists {
+    my ($self,$userid)=@_;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return 0 if (!defined $dbh);
+    
+    # Ueberpruefen, ob der Benutzer schon ein Suchprofil hat
+    my $userresult=$dbh->prepare("select count(userid) as rowcount from spelling where userid = ?") or $logger->error($DBI::errstr);
+    $userresult->execute($userid) or $logger->error($DBI::errstr);
+    my $res=$userresult->fetchrow_hashref;
+
+    my $rows=$res->{rowcount};
+    
+    return ($rows > 0)?1:0;
+}
+
+sub set_default_spelling_suggestion {
+    my ($self,$userid)=@_;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return 0 if (!defined $dbh);
+
+    my $userresult=$dbh->prepare("insert into spelling values (?,1,1)") or $logger->error($DBI::errstr);
+    $userresult->execute($userid) or $logger->error($DBI::errstr);
+    
+    return;
+}
+
+sub set_spelling_suggestion {
+    my ($self,$arg_ref)=@_;
+
+    my $as_you_type = exists $arg_ref->{as_you_type}
+        ? $arg_ref->{as_you_type}     : undef;
+    my $resultlist  = exists $arg_ref->{resultlist}
+        ? $arg_ref->{resultlist}      : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return undef if (!defined $dbh);
+
+    $logger->debug("update spelling set as_you_type = ?, resultlist = ?,$self->{ID}");
+    my $targetresult=$dbh->prepare("update spelling set as_you_type = ?, resultlist = ? where userid = ?") or $logger->error($DBI::errstr);
+    $targetresult->execute($as_you_type,$resultlist,$self->{ID}) or $logger->error($DBI::errstr);
+    $targetresult->finish();
+    
+    return;
+}
+
 sub get_bibsonomy {
     my ($self)=@_;
 

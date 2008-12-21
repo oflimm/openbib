@@ -99,6 +99,18 @@ DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
 
+DROP TABLE IF EXISTS spelling;
+CREATE TABLE spelling (
+ userid    BIGINT NOT NULL,
+ as_you_type BOOL,
+ resultlist  BOOL,
+ 
+ INDEX (userid)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
 DROP TABLE IF EXISTS logintarget;
 CREATE TABLE logintarget (
  targetid    BIGINT AUTO_INCREMENT PRIMARY KEY,

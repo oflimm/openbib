@@ -1080,6 +1080,61 @@ sub get_cascaded_templatepath {
     return $templatename;
 }
 
+sub gen_cloud_class {
+    my ($arg_ref) = @_;
+    
+    # Set defaults
+    my $items_ref    = exists $arg_ref->{items}
+        ? $arg_ref->{items}   : [];
+    my $mincount     = exists $arg_ref->{min}
+        ? $arg_ref->{min}     : 0;
+    my $maxcount     = exists $arg_ref->{max}
+        ? $arg_ref->{max}     : 0;
+    my $type         = exists $arg_ref->{type}
+        ? $arg_ref->{type}    : 'log';
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    if ($type eq 'log'){
+
+      if ($maxcount-$mincount > 0){
+	
+	my $delta = ($maxcount-$mincount) / 6;
+	
+	my @thresholds = ();
+	
+	for (my $i=0 ; $i<=6 ; $i++){
+	  $thresholds[$i] = 100 * log(($mincount + $i * $delta) + 2);
+	}
+
+        $logger->debug(YAML::Dump(\@thresholds)." - $delta");
+
+	foreach my $item_ref (@$items_ref){
+	  my $done = 0;
+	
+	  for (my $class=0 ; $class<=6 ; $class++){
+	    if ((100 * log($item_ref->{count} + 2) <= $thresholds[$class]) && !$done){
+	      $item_ref->{class} = $class;
+              $logger->debug("Klasse $class gefunden");
+	      $done = 1;
+	    }
+	  }
+	}
+      }
+    }
+    elsif ($type eq 'linear'){
+      if ($maxcount-$mincount > 0){
+	foreach my $item_ref (@$items_ref){
+	  $item_ref->{class} = int(($item_ref->{count}-$mincount) / ($maxcount-$mincount) * 6);
+	}
+      }
+    }
+
+    $logger->debug(YAML::Dump($items_ref));
+    return $items_ref;
+}
+
 1;
 __END__
 

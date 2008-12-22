@@ -34,7 +34,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Constants qw(:common);
+use Apache::Constants qw(:common REDIRECT);
 use Apache::Reload;
 use Apache::Request ();
 use Benchmark ':hireswallclock';
@@ -85,6 +85,7 @@ sub handler {
     my $notation       = decode_utf8($query->param('notation')) || '';
     my $stid           = decode_utf8($query->param('stid'))     || '';
 
+    my $id             = decode_utf8($query->param('id'))       || undef;
     my $sc             = decode_utf8($query->param('sc'))       || '';
     my $lc             = decode_utf8($query->param('lc'))       || '';
     my $sindex         = decode_utf8($query->param('sindex'))   || 0;
@@ -180,6 +181,79 @@ sub handler {
         }
         else {
             OpenBib::Common::Util::print_warning($msg->maketext("Keine Notation vorhanden"),$r,$msg);                
+        }       
+    }
+    elsif ($action eq "show_journalinfo"){
+        if ($id){
+            my $journalinfo_ref = $ezb->get_journalinfo({
+                id => $id,
+            });
+            
+            $logger->debug(YAML::Dump($journalinfo_ref));
+            
+            # TT-Data erzeugen
+            my $ttdata={
+                journalinfo   => $journalinfo_ref,
+                view          => $view,
+                stylesheet    => $stylesheet,
+                sessionID     => $session->{ID},
+                session       => $session,
+                useragent     => $useragent,
+                config        => $config,
+                msg           => $msg,
+            };
+            
+            $stid=~s/[^0-9]//g;
+            
+            my $templatename = ($stid)?"tt_ezb_showjournalinfo_".$stid."_tname":"tt_ezb_showjournalinfo_tname";
+            
+            OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+            
+            return OK;
+        }
+        else {
+            OpenBib::Common::Util::print_warning($msg->maketext("Keine Journalid vorhanden"),$r,$msg);                
+        }       
+    }
+    elsif ($action eq "show_journalreadme"){
+        if ($id){
+            my $journalreadme_ref = $ezb->get_journalreadme({
+                id => $id,
+            });
+            
+            $logger->debug("ReadME-Daten: ".YAML::Dump($journalreadme_ref));
+
+            if ($journalreadme_ref->{location}){
+                $r->content_type('text/html');
+                $r->header_out(Location => $journalreadme_ref->{location});
+                
+                return REDIRECT;
+            }
+            else {
+
+                # TT-Data erzeugen
+                my $ttdata={
+                    journalreadme => $journalreadme_ref,
+                    view          => $view,
+                    stylesheet    => $stylesheet,
+                    sessionID     => $session->{ID},
+                    session       => $session,
+                    useragent     => $useragent,
+                    config        => $config,
+                    msg           => $msg,
+                };
+                
+                $stid=~s/[^0-9]//g;
+                
+                my $templatename = ($stid)?"tt_ezb_showjournalreadme_".$stid."_tname":"tt_ezb_showjournalreadme_tname";
+            
+                OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+
+                return OK;
+            }
+        }
+        else {
+            OpenBib::Common::Util::print_warning($msg->maketext("Keine Journalid vorhanden"),$r,$msg);                
         }       
     }
 

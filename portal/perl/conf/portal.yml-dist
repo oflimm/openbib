@@ -295,6 +295,8 @@ tt_error_tname: error
 tt_externaljump_tname: externaljump
 tt_ezb_showsubjects_tname: ezb_showsubjects
 tt_ezb_showjournals_tname: ezb_showjournals
+tt_ezb_showjournalinfo_tname: ezb_showjournalinfo
+tt_ezb_showjournalreadme_tname: ezb_showjournalreadme
 tt_info_10_tname: info_10
 tt_info_11_tname: info_11
 tt_info_12_tname: info_12

@@ -26,7 +26,16 @@
 
 <div class="content">
 
-[% USE dumper; dumper.dump(journals) %]
+[%# USE dumper; dumper.dump(journals) %]
+
+
+<ul class="tabbingmenu">
+[% FOREACH navitem IN journals.other_pages %]
+  <li><a [% IF navitem.desc == journals.current_page.desc %]class="active" [% END %]href="[% config.ezb_loc %]?sessionID=[% sessionID %];bibid=[% config.ezb_bibid %];colors=[% config.ezb_colors %];lang=de;notation=[% journals.subject.notation %];sc=[% navitem.sc %];lc=[% navitem.lc %];action=show_journals">[% navitem.desc %]</a></li>
+[% END %]
+</ul>
+
+<div class="content">
 
 <!-- Titlelist begins here -->
 <div class="resultlist">
@@ -35,25 +44,26 @@
 [% journals.subject.notation %]: [% journals.subject.desc %]
     </div>
     <div class="hits">
-xxx  [% msg.maketext("Zeitschriften") %]
     </div>
     <div class="navigation">
 [% FOREACH thisnav IN journals.nav %]
-<a href="[% config.ezb_loc%]?sessionID=[% sessionID %];sc=[% thisnav.sc %];lc=[% thisnav.lc %];sindex=[% thisnav.sindex %];action=show_journals">[[% (thisnav.sindex - 49) %] - [% thisnav.sindex%]]</a> 
+<a href="[% config.ezb_loc%]?sessionID=[% sessionID %];notation=[% journals.subject.notation %];sc=[% thisnav.sc %];lc=[% thisnav.lc %];sindex=[% thisnav.sindex %];action=show_journals">[[% thisnav.sindex+1 %] - [% thisnav.sindex+50 %]]</a> 
 [% END %]
     </div>
   </div>
-  <div class="resultitems fullwidth liststyle">
+  <div class="resultitems fullwidth">
 [%- FOREACH journal IN journals.journals -%]
     <div class="item">
-      <div class="numbering">[% loop.count+offset %]</div>
+      <div class="numbering">[% loop.count+journals.current_page.sindex %]</div>
       <div class="thumbnail">
-    [% IF (config.coverscans.all || config.coverscans.${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.coverscans_credits_exturl.replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.coverscans_exturl.replace('ISBNINHERE', isbn) %]" title="[% config.coverscans_creditstext_exturl %]" /></a>[% ELSE %]&nbsp;[% END %]
+<img src="/images/openbib/[%- IF journal.color.code == 1 -%]ezb_30x30_gruen2.gif[%- ELSIF journal.color.code == 2 -%]ezb_30x30_gelb2.gif[%- ELSE -%]ezb_30x30_rot12.gif[%- END -%]" />
       </div> 
       <div class="brieftitle">
 <a href="http://rzblx1.uni-regensburg.de/ezeit/warpto.phtml?bibid=[% config.ezb_bibid %]&colors=[% config.ezb_colors %]&lang=de&jour_id=[% journal.id %]">[% journal.title %]</a>
       </div>
-      <div class="titlemark"></div>
+      <div class="titlemark">
+[%- IF journal.color.code != 1 -%]<a href="[% config.ezb_loc %]?sessionID=[% sessionID %];action=show_journalreadme;id=[% journal.id %]">[ReadMe]</a>[% END %]
+      </div>
       <div class="titleactions">
 <a href="[% config.ezb_loc %]?sessionID=[% sessionID %];action=show_journalinfo;id=[% journal.id %]">[Information zur Zeitschrift]</a>
       </div>
@@ -64,6 +74,7 @@ xxx  [% msg.maketext("Zeitschriften") %]
 </div>
 <!-- Titlelist ends here -->
 
+</div>
 </div>
 <p />
 

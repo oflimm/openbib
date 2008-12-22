@@ -371,7 +371,6 @@ sub get_journalreadme {
 
     return {
         periods  => $periods_ref,
-        color    => $color,
         title    => $title,
     };
 }

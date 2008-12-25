@@ -179,6 +179,9 @@ ezb_colors: 3
 # Externer Link zum DatenBankInfoSystem (DBIS)
 dbis_exturl: http://www.bibliothek.uni-regensburg.de/dbinfo/?bib_id=usb_k
 
+dbis_bibid: usb_k
+dbis_colors: ''
+
 # Externer Link zur Cover-Scan Anreicherung (ISBNINHERE wird durch ISBN ersetzt)
 coverscans_exturl: http://media.lob.de/image.php?pic=ISBNINHERE.jpg&size=80
 coverscans_full_exturl: http://media.lob.de/image.php?pic=ISBNINHERE.jpg&size=100
@@ -293,6 +296,10 @@ tt_databasechoice_tname: databasechoice
 tt_databaseprofile_tname: databaseprofile
 tt_error_tname: error
 tt_externaljump_tname: externaljump
+tt_dbis_showsubjects_tname: dbis_showsubjects
+tt_dbis_showdbs_tname: dbis_showdbs
+tt_dbis_showdbinfo_tname: dbis_showdbinfo
+tt_dbis_showdbreadme_tname: dbis_showdbreadme
 tt_ezb_showsubjects_tname: ezb_showsubjects
 tt_ezb_showjournals_tname: ezb_showjournals
 tt_ezb_showjournalinfo_tname: ezb_showjournalinfo

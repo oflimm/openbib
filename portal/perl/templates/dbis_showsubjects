@@ -1,0 +1,43 @@
+[%#-
+#######################################################################
+#
+# Templatename: ezb_showsubjects
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der EZB Hauptkategorien
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="#"><span class="dbdescshort">[% msg.maketext("Elektronisch verf&uuml;gbare Datenbanken (DBIS)") %]</span></a></li>
+</ul>
+
+<div class="content">
+
+[%# USE dumper; dumper.dump(subjects) %]
+
+<h3>[% msg.maketext("Aufschl&uuml;sselung der Datenbanken nach Fachgebieten") %]</h3>
+<p/>
+<ul>
+[% FOREACH subject IN subjects %]
+<li><a href="[% config.dbis_loc %]?sessionID=[% sessionID %];view=[% view %];notation=[% subject.notation %];lett=[% subject.lett %];action=show_dbs">[% subject.desc %]</a> ([% subject.count %])</li>
+[% END %]
+</ul>
+<p/>
+
+</div>
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

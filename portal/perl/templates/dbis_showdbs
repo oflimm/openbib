@@ -1,0 +1,84 @@
+[%#-
+#######################################################################
+#
+# Templatename: ezb_showsubjects
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der EZB Hauptkategorien
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="#"><span class="dbdescshort">[% msg.maketext("Elektronisch verf&uuml;gbare Datenbanken (DBIS)") %]</span></a></li>
+</ul>
+
+<div class="content">
+
+<h1>[% dbs.subject.notation %]: [% dbs.subject.desc %]</h1>
+
+<table width="100%" cellpadding="2">
+<tr><th>[% msg.maketext("Zugriffsbedingungen") %]</th></tr>
+<tr><td class="boxedclear">
+[% FOREACH access IN dbs.access_info %]
+[% access_type = access.key %]
+<img src="[% dbs.access_info.${access_type}.icon_url %]" alt="[% dbs.access_info.${access_type}.desc %]" title="[% dbs.access_info.${access_type}.desc %]" />&nbsp;[% dbs.access_info.${access_type}.desc %]&nbsp;&nbsp; 
+[% END %]
+</td></tr>
+</table>
+<p />
+
+[%# USE dumper; dumper.dump(dbs) %]
+
+[% FOREACH group IN dbs.db_groups.group_order %]
+[% thisgroup = dbs.db_groups.${group} %]
+<!-- Titlelist begins here -->
+<div class="resultlist">
+  <div class="resultheader" style="height:auto">
+    <div class="catalogue">
+[%- IF group == "topdb" -%][% msg.maketext("Meistgenutzte Datenbanken") %][%- ELSIF group == "all" -%][% msg.maketext("Alle Datenbanken") %][%- ELSE -%][% dbs.db_type.${group}.desc_short %][%- END -%]
+
+    </div>
+    <div class="hits">
+[% thisgroup.count %] [% msg.maketext("Datenbanken") %]
+    </div>
+    <div class="navigation">
+<span style="font-weight:normal">[% dbs.db_type.${group}.desc %]</span><br/>&nbsp;
+    </div>
+  </div>
+  <div class="resultitems fullwidth">
+[%- FOREACH db IN thisgroup.dbs -%]
+    <div class="item">
+      <div class="numbering">[% loop.count %]</div>
+      <div class="thumbnail">
+<img src="[% dbs.access_info.${db.access}.icon_url %]" alt="[% dbs.access_info.${db.access}.desc %]" title="[% dbs.access_info.${db.access}.desc %]" />
+      </div> 
+      <div class="brieftitle">
+<a href="[% config.dbis_loc %]?sessionID=[% sessionID %];action=show_dbinfo;id=[% db.id %]">[% db.title %]</a>
+      </div>
+      <div class="titlemark">
+      </div>
+      <div class="titleactions">
+      </div>
+    </div>
+<!-- Ende einzelner Treffer -->
+[%- END -%]
+  </div>
+</div>
+<!-- Titlelist ends here -->
+[% END %]
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

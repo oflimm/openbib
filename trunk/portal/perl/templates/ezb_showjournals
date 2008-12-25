@@ -62,10 +62,10 @@
 <a href="http://rzblx1.uni-regensburg.de/ezeit/warpto.phtml?bibid=[% config.ezb_bibid %]&colors=[% config.ezb_colors %]&lang=de&jour_id=[% journal.id %]">[% journal.title %]</a>
       </div>
       <div class="titlemark">
-[%- IF journal.color.code != 1 -%]<a href="[% config.ezb_loc %]?sessionID=[% sessionID %];action=show_journalreadme;id=[% journal.id %]">[ReadMe]</a>[% END %]
+[%- IF journal.color.code != 1 -%]<a href="[% config.ezb_loc %]?sessionID=[% sessionID %];action=show_journalreadme;id=[% journal.id %]">[% msg.maketext("[ReadMe]") %]</a>[% END %]
       </div>
       <div class="titleactions">
-<a href="[% config.ezb_loc %]?sessionID=[% sessionID %];action=show_journalinfo;id=[% journal.id %]">[Information zur Zeitschrift]</a>
+<a href="[% config.ezb_loc %]?sessionID=[% sessionID %];action=show_journalinfo;id=[% journal.id %]">[% msg.maketext("[Information zur Zeitschrift]") %]</a>
       </div>
     </div>
 <!-- Ende einzelner Treffer -->

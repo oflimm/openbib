@@ -130,10 +130,17 @@
 ../templates/database/umschlaege/virtualsearch_result_item
 ../templates/databasechoice
 ../templates/databaseprofile
+../templates/dbis_showsubjects
+../templates/dbis_showdbs
+../templates/dbis_showdbinfo
 ../templates/drilldown_categorized
 ../templates/drilldown_cloud
 ../templates/error
 ../templates/externaljump
+../templates/ezb_showsubjects
+../templates/ezb_showjournals
+../templates/ezb_showjournalinfo
+../templates/ezb_showjournalreadme
 ../templates/info
 ../templates/info_1
 ../templates/info_10

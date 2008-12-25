@@ -465,6 +465,10 @@ href="">Suchbegriffe</a>, <a href="[% config.info_loc %]?sessionID=[% sessionID 
 src="http://ezb.uni-regensburg.de/ezeit/vascoda/vifa/logo/ezb_234x32.gif"
 alt="Elektronische Zeitschriftenbibliothek" /></h3>
 Greifen Sie fachspezifisch auf alle <a href="[% config.ezb_loc %]?sessionID=[% sessionID %];view=[% view %];action=show_subjects">freien und lizensierten Zeitschriften</a> zu
+
+<h3>Datenbank Informationssystem (DBIS)</h3>
+Recherchieren Sie fachspezifisch in einer Vielzahl von <a href="[% config.dbis_loc %]?sessionID=[% sessionID %];view=[% view %];action=show_subjects">freien und
+lizensierten Datenbanken</a>.
 </td><!-- End overview -->
 <td class="mostrecent"><!-- Begin Literaturlisten/Tags -->
 <h3><img style="vertical-align:bottom" src="[% config.note_img %]" alt="Notieren"/>&nbsp;Legen Sie Literaturlisten an und vergeben Sie Tags</h3>

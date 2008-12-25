@@ -155,8 +155,8 @@ sub get_journals {
     
     my $subjectinfo_ref = {};
 
-    $subjectinfo_ref->{notation} = $root->findvalue('/ezb_page/ezb_alphabetical_list/subject/@notation');
-    $subjectinfo_ref->{desc}     = $root->findvalue('/ezb_page/ezb_alphabetical_list/subject');
+    $subjectinfo_ref->{notation} = decode_utf8($root->findvalue('/ezb_page/ezb_alphabetical_list/subject/@notation'));
+    $subjectinfo_ref->{desc}     = decode_utf8($root->findvalue('/ezb_page/ezb_alphabetical_list/subject'));
 
     my $nav_ref = [];
 

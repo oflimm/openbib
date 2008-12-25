@@ -28,7 +28,7 @@
 
 [%# USE dumper; dumper.dump(subjects) %]
 
-<h3><img src="http://ezb.uni-regensburg.de/ezeit/vascoda/vifa/logo/ezb_468x64.gif" alt="Elektronische Zeitschriftenbibliothek" /></h3>
+<h3><img src="http://ezb.uni-regensburg.de/ezeit/vascoda/vifa/logo/ezb_468x64.gif" alt="[% msg.maketext("Elektronische Zeitschriftenbibliothek (EZB)") %]" /></h3>
 
 <h3>[% msg.maketext("Aufschl&uuml;sselung der Zeitschriften nach Fachgebieten") %]</h3>
 <p/>

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2008-12-23 13:58+0100\n"
+"PO-Revision-Date: 2009-01-05 09:06+0100\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -4356,7 +4356,15 @@ msgstr "Index"
 msgid "Information"
 msgstr "Information"
 
-#: ../templates/dbis_showdbinfo:24 ../templates/ezb_showjournalinfo:24
+#: ../templates/ezb_showjournals:68
+msgid "Information zur Zeitschrift"
+msgstr "Information zur Zeitschrift"
+
+#: ../templates/dbis_showdbinfo:24
+msgid "Informationen zur Datenbank"
+msgstr "Informationen zur Datenbank"
+
+#: ../templates/ezb_showjournalinfo:24
 msgid "Informationen zur Zeitschrift"
 msgstr "Informationen zur Zeitschrift"
 
@@ -6007,6 +6015,10 @@ msgstr ""
 "an spezialisierten RSS-Feed-Readern f&uuml;r verschiedenste\n"
 "Plattformen (Windows, Linux, Mac) zur Verf&uuml;gung, deren\n"
 "Funktionsumfang weit &uuml;ber die einfache Anzeige hinausgeht."
+
+#: ../templates/ezb_showjournals:65
+msgid "ReadMe"
+msgstr "ReadMe"
 
 #: ../templates/admin_editsession:59 ../templates/mainnavigation:17
 #: ../templates/profile/kuglight/mainnavigation:17
@@ -10135,14 +10147,6 @@ msgid ""
 msgstr ""
 "Zusätzlich sind weitere <i>automatische Anreicherungen</i> u.a. für eine "
 "bessere Recherchierbarkeit der Titel integriert:"
-
-#: ../templates/ezb_showjournals:68
-msgid "[Information zur Zeitschrift]"
-msgstr "[Information zur Zeitschrift]"
-
-#: ../templates/ezb_showjournals:65
-msgid "[ReadMe]"
-msgstr "[ReadMe]"
 
 #: ../templates/database/einbaende/search_showtitlist:60
 #: ../templates/database/einbaende/search_showtitlist_of_cnt:62

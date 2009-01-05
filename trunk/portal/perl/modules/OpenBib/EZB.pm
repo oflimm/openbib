@@ -342,14 +342,22 @@ sub get_journalreadme {
     $logger->debug("gereinigte Response: $response");
     
     my $parser = XML::LibXML->new();
+    $parser->recover(1);
     my $tree   = $parser->parse_string($response);
     my $root   = $tree->getDocumentElement;
 
     my $location =  $root->findvalue('/ezb_page/ezb_readme_page/location');
 
-    return {
-        location => $location
-    } if ($location);
+    if ($location){
+        # Lokaler Link in der EZB
+        unless ($location=~m/^http/){
+            $location="http://rzblx1.uni-regensburg.de/ezeit/$location";
+        }
+        
+        return {
+            location => $location
+        };
+    }
 
     my $title    =  decode_utf8($root->findvalue('/ezb_page/ezb_readme_page/journal/title'));
 
@@ -360,10 +368,10 @@ sub get_journalreadme {
     foreach my $period_node (@periods_nodes){
         my $this_period_ref = {};
 
-        $this_period_ref->{color}       = decode_utf8($period_node->('journal_color/@color'));
-        $this_period_ref->{label}       = decode_utf8($period_node->('label'));
-        $this_period_ref->{readme_link} = decode_utf8($period_node->('readme_link/@url'));
-        $this_period_ref->{warpto_link} = decode_utf8($period_node->('warpto_link/@url'));
+        $this_period_ref->{color}       = decode_utf8($period_node->findvalue('journal_color/@color'));
+        $this_period_ref->{label}       = decode_utf8($period_node->findvalue('label'));
+        $this_period_ref->{readme_link} = decode_utf8($period_node->findvalue('readme_link/@url'));
+        $this_period_ref->{warpto_link} = decode_utf8($period_node->findvalue('warpto_link/@url'));
 
         $logger->debug(YAML::Dump($this_period_ref));
         push @{$periods_ref}, $this_period_ref;

@@ -4196,7 +4196,11 @@ msgstr "Index"
 msgid "Information"
 msgstr "Information"
 
-#: ../templates/dbis_showdbinfo:24 ../templates/ezb_showjournalinfo:24
+#: ../templates/dbis_showdbinfo:24
+msgid "Informationen zur Datenbank"
+msgstr ""
+
+#: ../templates/ezb_showjournalinfo:24
 msgid "Informationen zur Zeitschrift"
 msgstr ""
 

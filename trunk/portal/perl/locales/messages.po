@@ -2029,7 +2029,15 @@ msgstr ""
 msgid "Information"
 msgstr ""
 
-#: ../templates/dbis_showdbinfo:24 ../templates/ezb_showjournalinfo:24
+#: ../templates/ezb_showjournals:68
+msgid "Information zur Zeitschrift"
+msgstr ""
+
+#: ../templates/dbis_showdbinfo:24
+msgid "Informationen zur Datenbank"
+msgstr ""
+
+#: ../templates/ezb_showjournalinfo:24
 msgid "Informationen zur Zeitschrift"
 msgstr ""
 
@@ -2826,6 +2834,10 @@ msgid ""
 "an spezialisierten RSS-Feed-Readern f&uuml;r verschiedenste\n"
 "Plattformen (Windows, Linux, Mac) zur Verf&uuml;gung, deren\n"
 "Funktionsumfang weit &uuml;ber die einfache Anzeige hinausgeht."
+msgstr ""
+
+#: ../templates/ezb_showjournals:65
+msgid "ReadMe"
 msgstr ""
 
 #: ../templates/admin_editsession:59 ../templates/mainnavigation:17 ../templates/profile/kuglight/mainnavigation:17 ../templates/views/kapsel/mainnavigation:16 ../templates/views/portrait/mainnavigation:16
@@ -4900,14 +4912,6 @@ msgstr ""
 
 #: ../templates/info:636 ../templates/views/kug/info:636
 msgid "Zusätzlich sind weitere <i>automatische Anreicherungen</i> u.a. für eine bessere Recherchierbarkeit der Titel integriert:"
-msgstr ""
-
-#: ../templates/ezb_showjournals:68
-msgid "[Information zur Zeitschrift]"
-msgstr ""
-
-#: ../templates/ezb_showjournals:65
-msgid "[ReadMe]"
 msgstr ""
 
 #: ../templates/database/einbaende/search_showtitlist:60 ../templates/database/einbaende/search_showtitlist_of_cnt:62 ../templates/database/landschaft/search_showtitlist:58 ../templates/database/portrait/search_showtitlist:58 ../templates/database/umschlaege/search_showtitlist:61 ../templates/database/umschlaege/search_showtitlist_of_cnt:61 ../templates/litlists_manage_singlelist:81 ../templates/litlists_show_singlelist:63 ../templates/profile/kuglight/virtualsearch_result_start:55 ../templates/profile/kugng/litlists_manage_singlelist:75 ../templates/profile/kugng/litlists_show_singlelist:59 ../templates/profile/kugng/resultlists_showall:52 ../templates/profile/kugng/resultlists_showall_sortall:52 ../templates/profile/kugng/resultlists_showsinglepool:53 ../templates/profile/kugng/search_showtitlist:59 ../templates/profile/kugng/tags_showtitlist:60 ../templates/profile/kugng/virtualsearch_result_combined:55 ../templates/profile/kugng/virtualsearch_result_start:54 ../templates/resultlists_showall:53 ../templates/resultlists_showall_sortall:56 ../templates/resultlists_showsinglepool:55 ../templates/search_showtitlist:61 ../templates/search_showtitlist_of_cnt:61 ../templates/searchmask_options:4 ../templates/views/einbaende/resultlists_showall:61 ../templates/views/einbaende/resultlists_showall_sortall:57 ../templates/views/einbaende/resultlists_showsinglepool:60 ../templates/views/einbaende/virtualsearch_result_start:58 ../templates/views/gdonck/searchmask_options:4 ../templates/views/gleuel/searchmask_options:4 ../templates/views/kapsel/resultlists_showall:53 ../templates/views/kapsel/resultlists_showsinglepool:55 ../templates/views/kapsel/search_showtitlist:61 ../templates/views/kempen/searchmask_options:4 ../templates/views/kevelaer/searchmask_options:4 ../templates/views/kug/searchmask_options:4 ../templates/views/kwinter/searchmask_options:4 ../templates/views/portrait/resultlists_showsinglepool:54 ../templates/views/portrait/searchmask_options:4 ../templates/views/rheinlandbib/searchmask_options:4 ../templates/views/umschlaege/resultlists_showall:58 ../templates/views/umschlaege/resultlists_showall_sortall:57 ../templates/views/umschlaege/resultlists_showsinglepool:57 ../templates/views/umschlaege/virtualsearch_result_start:58 ../templates/views/xanten/searchmask_options:4 ../templates/virtualsearch_result_start:56

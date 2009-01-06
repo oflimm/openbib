@@ -87,9 +87,41 @@ erh&auml;lt man die Titelanzahl von 2720 B&auml;nden.</p>
 
 <h1>Statistische Erfassung der Richter-Bibliothek</h1>
 
+<h2 id="Gesamtstatistik">Gesamtstatistik</h2>
+
+<img src="/images/openbib/views/richter/Gesamtstatistik.png">
+
 <h2 id="Anglistik">Anglistik</h2>
 
 <img src="/images/openbib/views/richter/Anglistik.png">
+
+<h2 id="Folklore">Folklore</h2>
+
+<img src="/images/openbib/views/richter/Folklore.png">
+
+<h2 id="Linguistik">Linguistik</h2>
+
+<img src="/images/openbib/views/richter/Linguistik.png" />
+
+<h2 id="Phonetik">Phonetik</h2>
+
+<img src="/images/openbib/views/richter/Phonetik.png" />
+
+<h2 id="Portugiesisch">Portugiesisch</h2>
+
+<img src="/images/openbib/views/richter/Portugiesisch.png">
+
+<h2 id="Provenzalisch">Provenzalisch</h2>
+
+<img src="/images/openbib/views/richter/Provenzalisch.png">
+
+<h2 id="R&auml;toromanisch">R&auml;toromanisch</h2>
+
+<img src="/images/openbib/views/richter/Raetoromanisch.png">
+
+<h2 id="Reiseb&uuml;cher">Reiseb&uuml;cher</h2>
+
+<img src="/images/openbib/views/richter/Reisebuecher.png">
 
 <h2 id="Romanistik">Romanistik</h2>
 
@@ -99,16 +131,25 @@ erh&auml;lt man die Titelanzahl von 2720 B&auml;nden.</p>
 
 <img src="/images/openbib/views/richter/Romanistik_frz_Dichtung.png" />
 
-<h2 id="Linguistik">Linguistik</h2>
-<img src="/images/openbib/views/richter/Linguistik.png" />
+<h2 id="Romanistik Italienisch">Romanistik Italienisch</h2>
 
-<h2 id="Phonetik">Phonetik</h2>
+<img src="/images/openbib/views/richter/Romanistik_Italienisch.png">
 
-<img src="/images/openbib/views/richter/Phonetik.png" />
+<h2 id="Romanistik Spanisch">Romanistik Spanisch</h2>
+
+<img src="/images/openbib/views/richter/Romanistik_Spanisch.png">
+
+<h2 id="Rum&auml;nisch">Rum&auml;nisch<h2>
+
+<img src="/images/openbib/views/richter/Rumaenisch.png">
 
 <h2 id="Sprachwissenschaft">Sprachwissenschaft</h2>
 
 <img src="/images/openbib/views/richter/Sprachwissenschaft.png" />
+
+<h2 id="Theater">Theater</h2>
+
+<img src="/images/openbib/views/richter/Theater.png">
 
 <h2 id="Woerterbuecher">W&ouml;rterb&uuml;cher</h2>
 

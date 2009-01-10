@@ -103,6 +103,8 @@ sub print_warning {
 
     my $user    = OpenBib::User->instance({sessionID => $session->{ID}});
 
+    my $sysprofile= $config->get_viewinfo($view)->{profilename};
+
     # Nutzer-DB zugreifbar? Falls nicht, dann wird der Menu-Punkt
     # Einloggen/Mein KUG automatisch deaktiviert
     
@@ -118,13 +120,16 @@ sub print_warning {
     }
 
     my $templatename = $config->{tt_error_tname};
-    
-    if ($view && -e "$config->{tt_include_path}/views/$view/$templatename") {
-        $templatename="views/$view/$templatename";
-    }
 
-    $logger->debug("Using Template $templatename");
-    
+    $templatename = OpenBib::Common::Util::get_cascaded_templatepath({
+        database     => '',
+        view         => $view,
+        profile      => $sysprofile,
+        templatename => $templatename,
+    });
+
+    $logger->debug("Using database/view specific Template $templatename");
+
     my $template = Template->new({
         LOAD_TEMPLATES => [ OpenBib::Template::Provider->new({
             INCLUDE_PATH   => $config->{tt_include_path},
@@ -137,6 +142,7 @@ sub print_warning {
     # TT-Data erzeugen
     my $ttdata={
         view       => $view,
+        sysprofile => $sysprofile,
         stylesheet => $stylesheet,
         loginname  => $loginname,
         sessionID  => $session->{ID},

@@ -96,6 +96,7 @@ sub handler {
     my $newtag         = $query->param('newtag')      || '';
     
     # Actions
+    my $show_cloud     = $query->param('show_cloud');
     my $private_tags   = $query->param('private_tags')   || 0;
     my $searchtitoftag = $query->param('searchtitoftag') || '';
     my $edit_usertags  = $query->param('edit_usertags')  || '';
@@ -234,6 +235,7 @@ sub handler {
             stylesheet => $stylesheet,
             sessionID  => $session->{ID},
 
+            show_cloud => $show_cloud,
             targettype => $targettype,
             loginname  => $loginname,
             user       => $user,

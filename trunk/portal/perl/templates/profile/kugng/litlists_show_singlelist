@@ -40,7 +40,7 @@
 <input type="hidden" name="do_showlitlist"  value="1" />
 <input type="hidden" name="action"          value="show" />
 
-<table width="100%">
+<table width="100%" class="listoptions">
 <tr><th>[% msg.maketext("Optionen") %]</th></tr>
 <tr><td class="boxed">
 <b>[% msg.maketext("Sortierung") %]:</b>&nbsp;

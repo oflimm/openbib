@@ -340,6 +340,7 @@ tt_info_tname: info
 tt_leave_tname: leave
 tt_litlists_manage_lists_tname: litlists_manage_lists
 tt_litlists_manage_singlelist_tname: litlists_manage_singlelist
+tt_litlists_show_publiclists_tname: litlists_show_publiclists
 tt_litlists_show_singlelist_tname: litlists_show_singlelist
 tt_loadbalancer_tname: loadbalancer
 tt_login_circulation_tname: login_circulation

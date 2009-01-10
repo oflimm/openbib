@@ -40,12 +40,12 @@
 <div id="searchmask_types"><!-- Begin searchmask_types -->
 
 <ul class="nojs_hidden">
-<li><a href="#alltypes"><span>Alles</span></a></li>
-<li><a href="#only_serials"><span>Zeitschriften/Serien</span></a></li>
-<li><a href="#only_articles"><span>Aufs&auml;tze</span></a></li>
+<li><a href="#alltypes"><span>[% msg.maketext("Alles") %]</span></a></li>
+<li><a href="#only_serials"><span>[% msg.maketext("Zeitschriften/Serien") %]</span></a></li>
+<li><a href="#only_articles"><span>[% msg.maketext("Aufs&auml;tze") %]</span></a></li>
 </ul>
 
-<h2 class="nojs_show">Alle Formate</h2>
+<h2 class="nojs_show">[% msg.maketext("Alle Formate") %]</h2>
 
 <div id="alltypes"><!-- Begin alle Typen -->
 
@@ -61,7 +61,7 @@ $(document).ready(function(){
 </script>
 [% END %]
 
-<h1>Recherchieren Sie im KUG in [% alldbcount %] Titeln und [% alldbs %] Katalogen</h1>[%# msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount}","${alldbs}") %]</b>
+<h1>[% msg.maketext("Recherchieren Sie im KUG in [_1] Titeln und [_2] Katalogen","${alldbcount}","${alldbs}") %]</h1>[%# msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount}","${alldbs}") %]</b>
 
 <!--
 [% IF view %]
@@ -105,15 +105,12 @@ $(document).ready(function(){
 <input type="hidden" name="autoplus"  value="0" />
 
 <table>
-<tr><td class="bigtext">Finde</td><td><input id="to_focus" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="60" maxlength="200" /></td><td><input class="bigtext" type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Los") %]" /></td></tr>
-<tr><td class="bigtext">In</td><td colspan="2"><select name="profil">
-[%- IF dbchoice.size > 0 -%]
-<option value="dbauswahl"[%- IF prevprofile == 'dbauswahl' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
-[% END %]
+<tr><td class="bigtext">[% msg.maketext("Finde") %]</td><td><input id="to_focus" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="60" maxlength="200" /></td><td><input class="bigtext" type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Los") %]" /></td></tr>
+<tr><td class="bigtext">[% msg.maketext("In") %]</td><td colspan="2"><select name="profil">
 [%- FOREACH profile IN userprofile -%]
 [%     pid   = profile.key %]
 [%     pdata = profile.value %]
-<option value="user[% pid %]"[%- IF prevprofile == 'user${pid}' -%] selected="selected"[%- END -%]>Benutzerdefiniert: [% pdata.name %]</option>
+<option value="user[% pid %]"[%- IF prevprofile == 'user${pid}' -%] selected="selected"[%- END -%]>[% msg.maketext("Benutzerdefiniert") %]: [% pdata.name %]</option>
 [%  END %]
 <option value="alldbs"
 [%- IF prevprofile == 'alldbs' -%]
@@ -131,7 +128,7 @@ $(document).ready(function(){
 [% END %]
 </select></td></tr>
 <tr><td></td><td></td><td></td></tr>
-<tr><td><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td><td align="right"><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td></tr>
+<tr><td colspan="2" align="left"><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
 </table>
 
 </form>
@@ -155,7 +152,7 @@ $(document).ready(function(){
 
 </div><!-- End alle Typen -->
 
-<h2 class="nojs_show">Zeitschriften/Serien</h2>
+<h2 class="nojs_show">[% msg.maketext("Zeitschriften/Serien") %]</h2>
 
 <div id="only_serials"><!-- Begin Serials-->
 
@@ -171,7 +168,7 @@ $(document).ready(function(){
 </script>
 [% END %]
 
-<h1>Recherchieren Sie im KUG in [% alldbcount %] Titeln und [% alldbs %] Katalogen</h1>[%# msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount}","${alldbs}") %]</b>
+<h1>[% msg.maketext("Recherchieren Sie im KUG in [_1] Titeln und [_2] Katalogen","${alldbcount}","${alldbs}") %]</h1>[%# msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount}","${alldbs}") %]</b>
 
 <!--
 [% IF view %]
@@ -217,15 +214,12 @@ $(document).ready(function(){
 <input type="hidden" name="boolmart"  value="AND" />
 
 <table>
-<tr><td class="bigtext">Finde</td><td><input id="input_box_serials" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="60" maxlength="200" /></td><td><input class="bigtext" type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Nur Zeitschriften/Serien") %]" /></td></tr>
-<tr><td class="bigtext">In</td><td colspan="2"><select name="profil">
-[%- IF dbchoice.size > 0 -%]
-<option value="dbauswahl"[%- IF prevprofile == 'dbauswahl' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
-[% END %]
+<tr><td class="bigtext">[% msg.maketext("Finde") %]</td><td><input id="input_box_serials" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="60" maxlength="200" /></td><td><input class="bigtext" type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Nur Zeitschriften/Serien") %]" /></td></tr>
+<tr><td class="bigtext">[% msg.maketext("In") %]</td><td colspan="2"><select name="profil">
 [%- FOREACH profile IN userprofile -%]
 [%     pid   = profile.key %]
 [%     pdata = profile.value %]
-<option value="user[% pid %]"[%- IF prevprofile == 'user${pid}' -%] selected="selected"[%- END -%]>Benutzerdefiniert: [% pdata.name %]</option>
+<option value="user[% pid %]"[%- IF prevprofile == 'user${pid}' -%] selected="selected"[%- END -%]>[% msg.maketext("Benutzerdefiniert") %]: [% pdata.name %]</option>
 [%  END %]
 <option value="alldbs"
 [%- IF prevprofile == 'alldbs' -%]
@@ -243,7 +237,7 @@ $(document).ready(function(){
 [% END %]
 </select></td></tr>
 <tr><td></td><td></td><td></td></tr>
-<tr><td><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td><td align="right"><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td></td></tr>
+<tr><td colspan="2" align="left"><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
 </table>
 </form>
 
@@ -267,7 +261,7 @@ $(document).ready(function(){
 
 </div><!-- End Serials -->
 
-<h2 class="nojs_show">Aufs&auml;tze</h2>
+<h2 class="nojs_show">[% msg.maketext("Aufs&auml;tze") %]</h2>
 
 <div id="only_articles"><!-- Begin nur Aufsaetze -->
 
@@ -283,7 +277,7 @@ $(document).ready(function(){
 </script>
 [% END %]
 
-<h1>Recherchieren Sie im KUG in [% alldbcount %] Titeln und [% alldbs %] Katalogen</h1>[%# msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount}","${alldbs}") %]</b>
+<h1>[% msg.maketext("Recherchieren Sie im KUG in [_1] Titeln und [_2] Katalogen","${alldbcount}","${alldbs}") %]</h1>[%# msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount}","${alldbs}") %]</b>
 
 <!--
 [% IF view %]
@@ -329,15 +323,12 @@ $(document).ready(function(){
 <input type="hidden" name="boolmart"  value="AND" />
 
 <table>
-<tr><td class="bigtext">Finde</td><td><input id="input_box_articles" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="60" maxlength="200" /></td><td><input class="bigtext" type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Nur Aufsätze") %]" /></td></tr>
-<tr><td class="bigtext">In</td><td colspan="2"><select name="profil">
-[%- IF dbchoice.size > 0 -%]
-<option value="dbauswahl"[%- IF prevprofile == 'dbauswahl' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
-[% END %]
+<tr><td class="bigtext">[% msg.maketext("Finde") %]</td><td><input id="input_box_articles" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="60" maxlength="200" /></td><td><input class="bigtext" type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Nur Aufsätze") %]" /></td></tr>
+<tr><td class="bigtext">[% msg.maketext("In") %]</td><td colspan="2"><select name="profil">
 [%- FOREACH profile IN userprofile -%]
 [%     pid   = profile.key %]
 [%     pdata = profile.value %]
-<option value="user[% pid %]"[%- IF prevprofile == 'user${pid}' -%] selected="selected"[%- END -%]>Benutzerdefiniert: [% pdata.name %]</option>
+<option value="user[% pid %]"[%- IF prevprofile == 'user${pid}' -%] selected="selected"[%- END -%]>[% msg.maketext("Benutzerdefiniert") %]: [% pdata.name %]</option>
 [%  END %]
 <option value="alldbs"
 [%- IF prevprofile == 'alldbs' -%]
@@ -355,10 +346,10 @@ $(document).ready(function(){
 [% END %]
 </select></td></tr>
 <tr><td></td><td></td><td></td></tr>
-<tr><td><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td><td align="right"><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td></td></tr>
+<tr><td colspan="2" align="left"><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
 </table>
 
-<form>
+</form>
 
 [% IF queries.size > 0 %]
 <p />
@@ -398,8 +389,8 @@ $(document).ready(function(){
 [% END %]
 
 <div id="login"><!-- Begin login-->
-<b>Einloggen</b> in Mein KUG, um personalisierte Funktionen zu nutzen (Tagging,
-Literaturlisten usw.)<p/>
+<img style="vertical-align:bottom" src="/images/openbib/persons.png" alt="[% msg.maketext("Einloggen") %]"/>&nbsp;&nbsp;[% msg.maketext("<b>Einloggen</b> in Mein KUG, um personalisierte Funktionen zu nutzen (Tagging,
+Literaturlisten usw.)<p/>") %]
 <form method="post" action="[% IF config.use_https %]https[%- ELSE -%]http[%- END -%]://[% config.servername %][% config.login_loc %]" enctype="application/x-www-form-urlencoded" target="_parent">
 <input type="hidden" name="do_auth"   value="1" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
@@ -412,12 +403,12 @@ Literaturlisten usw.)<p/>
 %]:</b></td><td>
 <select name="targetid">
 [%- FOREACH target IN logintargets -%]
-[%-   IF target.description == 'USB K&ouml;ln' -%]
-<option value="[% target.id %]">[% target.description %]</option>
+[%-   IF target.description == 'Selbstregistrierung' -%]
+<option value="[% target.id %]">[% msg.maketext("Selbstregistrierung") %]</option>
 [%-   END -%]
 [%- END -%]
 [%- FOREACH target IN logintargets -%]
-[%-   IF target.description != 'USB K&ouml;ln' -%]
+[%-   IF target.description != 'Selbstregistrierung' -%]
 <option value="[% target.id %]">[% target.description %]</option>
 [%-   END -%]
 [%- END -%]
@@ -428,13 +419,12 @@ Literaturlisten usw.)<p/>
 <tr><td></td><td><input type="submit" value="[% msg.maketext("Einloggen") %]" /></td><td></td></tr>
 </table>
 <p />
-<a href="[% config.mailpassword_loc %]?sessionID=[% sessionID %];action=show">[% msg.maketext("Passwort vergessen?") %]</a>
+<a href="[% config.selfreg_loc %]?sessionID=[% sessionID %];action=show">[% msg.maketext("Eine kostenlose Kennung einrichten") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% config.mailpassword_loc %]?sessionID=[% sessionID %];action=show">[% msg.maketext("Passwort vergessen?") %]</a>
 
 </form>
 
 <p />
 
-<a href="[% config.selfreg_loc %]?sessionID=[% sessionID %];action=show">Eine kostenlose Kennung einrichten &gt;&gt;</a>
 
 </div><!-- End login -->
 
@@ -455,25 +445,25 @@ Literaturlisten usw.)<p/>
 [% END %]
 
 <td class="overview"><!-- Begin overview-->
-<h3><img style="vertical-align:bottom" src="[% config.search_img %]" alt="&Uuml;bersichten"/>&nbsp;In den Gesamtbestand eintauchen</h3>
+<h3><img style="vertical-align:bottom" src="[% config.search_img %]" alt="[% msg.maketext("&Uuml;bersichten") %]"/>&nbsp;[% msg.maketext("In den Gesamtbestand eintauchen") %]</h3>
 
-durch <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=50" title="[% msg.maketext("Systematisches Bl&auml;ttern") %]">Systematisches Bl&auml;ttern</a>,
-<a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="Wolken">Wolken</a>, <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=41" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a>, <a
-href="">Suchbegriffe</a>, <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=10" title="Top 20">meistgenutzte Titel</a>.<p/>
+<a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=50" title="[% msg.maketext("Systematisches Bl&auml;ttern") %]">[% msg.maketext("Systematisches Bl&auml;ttern") %]</a>,
+<a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a>, <a href="[% config.litlists_loc %]?sessionID=[% sessionID %]&action=show_public_lists" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a>, <a
+href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=40" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a>, <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=10" title="Top 20">[% msg.maketext("meistgenutzte Titel") %]</a>, <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=15" title="[% msg.maketext("spezialisierte KUG-Portale") %]">[% msg.maketext("spezialisierte KUG-Portale") %]</a>.<p/>
 
 <h3><img
 src="http://ezb.uni-regensburg.de/ezeit/vascoda/vifa/logo/ezb_234x32.gif"
-alt="Elektronische Zeitschriftenbibliothek" /></h3>
-Greifen Sie fachspezifisch auf alle <a href="[% config.ezb_loc %]?sessionID=[% sessionID %];view=[% view %];action=show_subjects">freien und lizensierten Zeitschriften</a> zu
+alt="[% msg.maketext("Elektronische Zeitschriftenbibliothek (EZB)") %]" /></h3>
+[% msg.maketext("Greifen Sie fachspezifisch auf alle [_1]freien und lizensierten Zeitschriften[_2] zu","<a href=\"${config.ezb_loc}?sessionID=${sessionID};view=${view};action=show_subjects;show_cloud=1\">","</a>") %]
 
-<h3>Datenbank Informationssystem (DBIS)</h3>
-Recherchieren Sie fachspezifisch in einer Vielzahl von <a href="[% config.dbis_loc %]?sessionID=[% sessionID %];view=[% view %];action=show_subjects">freien und
-lizensierten Datenbanken</a>.
+<h3>[% msg.maketext("Datenbank Informationssystem (DBIS)") %]</h3>
+[% msg.maketext("Recherchieren Sie fachspezifisch in einer Vielzahl von [_1]freien und
+lizensierten Datenbanken[_2]","<a href=\"${config.dbis_loc}?sessionID=${sessionID};view=${view};action=show_subjects;show_cloud=1\">","</a>") %]
 </td><!-- End overview -->
 <td class="mostrecent"><!-- Begin Literaturlisten/Tags -->
-<h3><img style="vertical-align:bottom" src="[% config.note_img %]" alt="Notieren"/>&nbsp;Legen Sie Literaturlisten an und vergeben Sie Tags</h3>
+<h3><img style="vertical-align:bottom" src="[% config.note_img %]" alt="Notieren"/>&nbsp;[% msg.maketext("Legen Sie Literaturlisten an und vergeben Sie Tags") %]</h3>
 
-<h4>Die 5 zuletzt angelegten Literaturlisten</h4>
+<h4>[% msg.maketext("Die 5 zuletzt angelegten Literaturlisten") %]</h4>
 
 [% lastlitlists = user.get_recent_litlists({count => 5}) %]
 
@@ -485,7 +475,7 @@ lizensierten Datenbanken</a>.
 </ul>
 [% END %]
 
-<h4>Die 5 zuletzt verwendeten Tags</h4>
+<h4>[% msg.maketext("Die 5 zuletzt verwendeten Tags") %]</h4>
 
 [% lasttags = user.get_recent_tags({count => 5}) %]
 

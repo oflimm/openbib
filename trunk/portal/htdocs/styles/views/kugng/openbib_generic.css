@@ -32,7 +32,14 @@ h2 {
   font-family: Arial,helv,Helvetica,Verdana;
 }
 
-h3, h4, h5 { 
+h3 {
+  font-family: 'Trebuchet MS',Arial,Geneva,Helvetica;
+  font-size: 1.2em;
+  color: black;
+  font-family: Arial,helv,Helvetica,Verdana;
+}
+
+h4, h5 { 
   font-family: 'Trebuchet MS',Arial,Geneva,Helvetica;
   font-size: 1.1em;
   color: black;
@@ -1187,6 +1194,6 @@ a.navlink {
   font-size:1.1em;
 }
 
-a.navlink:after {
+/*a.navlink:after {
   content: ' >>';
-}
+}*/

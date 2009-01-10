@@ -42,6 +42,7 @@ use Storable;
 use XML::LibXML;
 use YAML ();
 
+use OpenBib::Common::Util;
 use OpenBib::Config;
 use OpenBib::Record::Title;
 
@@ -96,6 +97,9 @@ sub get_subjects {
     my $tree   = $parser->parse_string($response);
     my $root   = $tree->getDocumentElement;
 
+    my $maxcount=0;
+    my $mincount=999999999;
+
     foreach my $subject_node ($root->findnodes('/dbis_page/list_subjects_collections/list_subjects_collections_item')) {
         my $singlesubject_ref = {} ;
 
@@ -104,8 +108,22 @@ sub get_subjects {
         $singlesubject_ref->{lett}      = $subject_node->findvalue('@lett');
         $singlesubject_ref->{desc}       = decode_utf8($subject_node->textContent());
 
+        if ($maxcount < $singlesubject_ref->{count}){
+            $maxcount = $singlesubject_ref->{count};
+        }
+        
+        if ($mincount > $singlesubject_ref->{count}){
+            $mincount = $singlesubject_ref->{count};
+        }
+
         push @{$subjects_ref}, $singlesubject_ref;
     }
+
+    $subjects_ref = OpenBib::Common::Util::gen_cloud_class({
+        items => $subjects_ref, 
+        min   => $mincount, 
+        max   => $maxcount, 
+        type  => 'log'});
 
     $logger->debug(YAML::Dump($subjects_ref));
 
@@ -273,9 +291,9 @@ sub get_dbinfo {
 
     my @access_nodes = $root->findnodes('/dbis_page/details/accesses/access');
 
-    foreach my $this_node (@title_nodes){
-        $title_ref->{main}     =  decode_utf8($this_node->findvalue('@href')) if ($this_node->findvalue('@main') eq "Y");
-        push @{$title_ref->{other}}, decode_utf8($this_node->findvalue('@href')) if ($this_node->findvalue('@main') eq "N");
+    foreach my $this_node (@access_nodes){
+        $access_ref->{main}     =  decode_utf8($this_node->findvalue('@href')) if ($this_node->findvalue('@main') eq "Y");
+        push @{$access_ref->{other}}, decode_utf8($this_node->findvalue('@href')) if ($this_node->findvalue('@main') eq "N");
     }
     
     my $hints   =  decode_utf8($root->findvalue('/dbis_page/details/hints'));

@@ -82,6 +82,7 @@ sub handler {
     #####################################################################
 
     my $action         = decode_utf8($query->param('action'))   || '';
+    my $show_cloud     = decode_utf8($query->param('show_cloud'));
     my $notation       = decode_utf8($query->param('notation')) || '';
     my $stid           = decode_utf8($query->param('stid'))     || '';
 
@@ -132,6 +133,7 @@ sub handler {
             
         # TT-Data erzeugen
         my $ttdata={
+            show_cloud    => $show_cloud,
             subjects      => $subjects_ref,
             view          => $view,
             stylesheet    => $stylesheet,

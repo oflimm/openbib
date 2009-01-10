@@ -358,6 +358,27 @@ sub handler {
             return OK;
         }
     }
+    elsif ($action eq "show_public_lists") {
+        my $public_litlists_ref = $user->get_public_litlists();
+
+        # TT-Data erzeugen
+        my $ttdata={
+            view           => $view,
+            stylesheet     => $stylesheet,
+            sessionID      => $session->{ID},
+            
+            user           => $user,
+            
+            public_litlists=> $public_litlists_ref,
+                
+            config         => $config,
+            user           => $user,
+            msg            => $msg,
+        };
+	    
+        OpenBib::Common::Util::print_page($config->{tt_litlists_show_publiclists_tname},$ttdata,$r);
+        return OK;
+    }
     return OK;
 }
 

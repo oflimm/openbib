@@ -2120,6 +2120,49 @@ sub get_recent_litlists {
     return $litlists_ref;
 }
 
+sub get_public_litlists {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return [] if (!defined $dbh);
+
+    my $sql_stmnt = "select id from litlists where type = 1";
+
+    my $request=$dbh->prepare($sql_stmnt) or $logger->error($DBI::errstr);
+    $request->execute() or $logger->error($DBI::errstr);
+
+    my $litlists_ref = [];
+
+    while (my $result=$request->fetchrow_hashref){
+      my $litlistid        = $result->{id};
+
+      my $properties_ref = $self->get_litlist_properties({litlistid => $litlistid});
+      push @$litlists_ref, $properties_ref if ($properties_ref->{itemcount});
+    }
+
+    # Sortieren nach Titeln via Schwartz'ian Transform
+
+    my $sorted_litlists_ref = [];
+
+    @{$sorted_litlists_ref} = map { $_->[0] }
+        sort { $a->[1] cmp $b->[1] }
+            map { [$_, lc($_->{title})] }
+                @{$litlists_ref};
+    
+    
+    return $sorted_litlists_ref;
+}
+
 sub get_other_litlists {
     my ($self,$arg_ref)=@_;
 

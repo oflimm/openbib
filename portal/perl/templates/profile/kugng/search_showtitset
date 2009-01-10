@@ -489,10 +489,10 @@ href="[% config.userreviews_loc %]?sessionID=[% sessionID
 <p />
 
 <div class="reuse_data"><!-- Begin Reuse -->
-<b>Behalten Sie diesen Titel:</b><p/>
+<b>[% msg.maketext("Behalten Sie diesen Titel") %]:</b><p/>
 <table>
 <tr>
-<th><img src="[% config.share_img %]" alt="An BibSonomy senden" title="[% msg.maketext("An BibSonomy senden") %]" /></th>
+<th><img src="[% config.share_img %]" alt="[% msg.maketext("An BibSonomy senden") %]" title="[% msg.maketext("An BibSonomy senden") %]" /></th>
 <td><a href="[% config.redirect_loc %]/[% sessionID %]/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=[% record.to_bibtex | uri | replace('&','%26') %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a></td>
 <th><img src="[% config.listofinterest_img %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></th>
 <td><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% record.database %];singleidn=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a></td>
@@ -513,7 +513,7 @@ href="[% config.userreviews_loc %]?sessionID=[% sessionID
 <p />
 [% IF config.litlists %]
 <div class="litlists"><!-- Begin Litlist -->
-<div class="headline">Literaturliste <span id="litlists_toggle"></span></div>
+<div class="headline">[% msg.maketext("Literaturliste") %]<span id="litlists_toggle"></span></div>
 <div id="litlists_do"><!-- Begin Litlist do -->
 <form method="get" action="[% config.litlists_loc %]">
 <input type="hidden" name="action"          value="manage" />
@@ -536,7 +536,7 @@ href="[% config.userreviews_loc %]?sessionID=[% sessionID
 [% END %]
 
 <div class="tagging"><!-- Begin: Tagging -->
-<div class="headline">Tagging <span id="tagging_toggle"></span></div>
+<div class="headline">[% msg.maketext("Tagging") %]<span id="tagging_toggle"></span></div>
 <div id="tagging_do"><!-- Begin Tagging do -->
 [%
   private_tags_of_tit = [];
@@ -704,6 +704,28 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <b>[% msg.maketext("Entdecken Sie weitere Titel &uuml;ber:") %]</b><p/>
 <table width="100%">
 
+<!-- Anfang Empfehlungen -->
+[% IF normset.exists('E4000') %]
+<tr><td class="headline">[% msg.maketext("Empfehlungen") %]</td></tr>
+<tr><td>
+<table>
+[%-   isbnitems = normset.${"E4000"} -%]
+[%-   hstitems  = normset.${"E4001"} -%]
+[%- FOREACH isbnitem IN isbnitems -%]
+[%-   isbnidx = loop.index -%]
+[%-   hstitem = hstitems.${isbnidx} -%]
+[%-   globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;isbn=${isbnitem.content}" -%]
+[%-   IF hstitem.content.defined -%]
+<tr><td>[% hstitem.content %]<a href="[% globalurl %]">[suchen]</a></td></tr>
+[%-   END -%]
+[%- END -%]
+</table>
+</td></tr>
+<tr><td></td></tr>
+<tr><td></td></tr>
+[% END %]
+<!-- Ende Empfehlungen -->
+
 <!-- Anfang Literaturlisten -->
 [% IF litlists.size > 0 %]
 <tr><td class="headline">[% msg.maketext("Literaturlisten") %]</td></tr>
@@ -760,7 +782,7 @@ $(document).ready(function(){
   });
 });
 </script>
-<tr><td class="headline">Verwandte Themen</td></tr>
+<tr><td class="headline">[% msg.maketext("Verwandte Themen") %]</td></tr>
 <tr><td>
 <span id="similarsubjects"><a href="[% config.connector_similarsubjects_loc %]?sessionID=[% sessionID %];database=[% record.database%];type=tit;id=[% record.id %]">Anzeigen?</a></span>
 </td></tr>
@@ -768,32 +790,8 @@ $(document).ready(function(){
 <tr><td></td></tr>
 <!-- Ende BibSonomy-Tags -->
 
-<!-- Anfang Empfehlungen -->
-[% IF normset.exists('E4000') %]
-<tr><td class="headline">[% msg.maketext("Empfehlungen") %]</td></tr>
-<tr><td>
-<table>
-[%-   isbnitems = normset.${"E4000"} -%]
-[%-   hstitems  = normset.${"E4001"} -%]
-[%- FOREACH isbnitem IN isbnitems -%]
-[%-   isbnidx = loop.index -%]
-[%-   hstitem = hstitems.${isbnidx} -%]
-[%-   globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;isbn=${isbnitem.content}" -%]
-[%-   IF hstitem.content.defined -%]
-<tr><td>[% hstitem.content %]<a href="[% globalurl %]">[suchen]</a></td></tr>
-[%-   END -%]
-[%- END -%]
-</table>
-</td></tr>
-<tr><td></td></tr>
-<tr><td></td></tr>
-[% END %]
-<!-- Ende Empfehlungen -->
-
-
-
 <!-- Anfang Verschiedenes -->
-<tr><td class="headline">Verschiedenes</td></tr>
+<tr><td class="headline">[% msg.maketext("Verschiedenes") %]</td></tr>
 <tr><td><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% record.database %];stid=10" title="[% msg.maketext("Top 20") %]">[% msg.maketext("Top 20") %]</a></td></tr>
 
 </table>

@@ -44,7 +44,7 @@
 [%- IF query.param('searchtitofnot')    -%]<input type="hidden" name="searchtitofnot" value="[% query.param('searchtitofnot') %]" />[% END %]
 [%- IF query.param('searchtitofswt')    -%]<input type="hidden" name="searchtitofswt" value="[% query.param('searchtitofswt') %]" />[% END %]
 
-<div class="boxed">
+<div id="listoptions" class="boxed">
 <b>[% msg.maketext("Sortierung") %]:</b>&nbsp;
 <select name="sorttype">
   <option value="author"[%- IF query.param('sorttype') == 'author' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Person") %]</option>

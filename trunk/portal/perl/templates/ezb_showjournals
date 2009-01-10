@@ -59,7 +59,7 @@
 <img src="/images/openbib/[%- IF journal.color.code == 1 -%]ezb_30x30_gruen2.gif[%- ELSIF journal.color.code == 2 -%]ezb_30x30_gelb2.gif[% ELSIF journal.color.code == 3 %]ezb_30x30_gruengelb.gif[% ELSIF journal.color.code == 4 %]ezb_30x30_rot12.gif[% ELSIF journal.color.code == 5 %]ezb_30x30_gruenrot.gif[% ELSIF journal.color.code == 6 %]ezb_30x30_gelbrot.gif[%- ELSE -%]ezb_30x30_alle.gif[%- END -%]" alt="[% journal.color.desc %]" />
       </div> 
       <div class="brieftitle">
-<a href="http://rzblx1.uni-regensburg.de/ezeit/warpto.phtml?bibid=[% config.ezb_bibid %]&colors=[% config.ezb_colors %]&lang=de&jour_id=[% journal.id %]">[% journal.title %]</a>
+<a href="http://rzblx1.uni-regensburg.de/ezeit/warpto.phtml?bibid=[% config.ezb_bibid %]&colors=[% config.ezb_colors %]&lang=de&jour_id=[% journal.id %]" target="_blank">[% journal.title %]</a>
       </div>
       <div class="titlemark">
 [%- IF journal.color.code != 1 -%]<a href="[% config.ezb_loc %]?sessionID=[% sessionID %];action=show_journalreadme;id=[% journal.id %]">[[% msg.maketext("ReadMe") %]]</a>[% END %]

@@ -1,3 +1,18 @@
+Version 2.3:
+
+- Ueberarbeitung von Nutzerfuehrung und Design
+  * In der Einfachen Recherche wie auch den Drilldowns kann eine Recherche auf die Medientypen 'Zeitschrift/Serie' bzw. 'Aufsatz' beschraenkt werden.
+  * In der Einfachen Recherche sind nun auch Teilbestaende recherchierbar. Diese umfassen sowohl die einzelnen Fakultaeten, wie auch die vom Nutzer unter 'Mein KUG' angelegten Katalogprofile.
+  * auch jenseits der Recherche-Seiten ist eine Suchzeile fuer eine einfach Recherche integriert
+  * die Einstiegsseite der einfachen Recherche bietet nun einen besseren Ueberblick von den Moeglichkeiten des KUG
+  * Umstellung auf CSS von Tabellen
+  * Einfuehrung eines eigenen Druck-Stylesheets zur optimierten Druckausgabe spezielle bei Trefferlsien
+  * Die Einzeltrefferanzeige wurde komplett ueberarbeitet und die einzelnen Informationen besser gruppiert
+
+- Integration von EZB und DBIS
+- Automatische Anreicherung mit Medientypen 'Zeitschrift/Serie' bzw. 'Aufsatz'
+- Analyse verwandter Schlagworte. Ausgehend von einem Titel und den dort vorhandenen Schlagworten werden weitere Schlagworte bestimmt, die in anderen Titeln in Kombination mit Schlagworten des aktuellen Titels vorkommen.
+
 Version 2.2:
 
 - Verzicht auf Frames und damit Erhoehung der Barrierefreiheit.

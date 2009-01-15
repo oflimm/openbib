@@ -32,6 +32,69 @@
 
 <p />
 
+<h1 id="kugv2.3">Neuerungen mit Version 2.3 (noch in Entwicklung, als
+Beta-Version <a href="http://kug5.ub.uni-koeln.de/portal/opac?view=kugng" target="_blank">verf&uuml;gbar</a>)</h1>
+
+<h2>&Uuml;berarbeitung von Nutzerf&uuml;hrung und Design</h2>
+
+<p>
+Die Nutzerf&uuml;hrung wurde an verschiedenen stellen
+verbessert. Einige dieser Verbesserungen sind:
+
+<ul>
+<li>In der Einfachen Recherche wie auch den Drilldowns kann eine
+Recherche auf die Medientypen 'Zeitschrift/Serie' bzw. 'Aufsatz'
+beschr&auml;nkt werden.
+
+<li>In der Einfachen Recherche sind nun auch Teilbest&auml;nde
+recherchierbar. Diese umfassen sowohl die einzelnen Fakult&auml;ten, wie
+auch die vom Nutzer unter 'Mein KUG' angelegten Katalogprofile.
+
+<li>Auch jenseits der Recherche-Seiten ist eine Suchzeile f&uuml;r
+eine einfach Recherche integriert</li>
+
+<li>Die Einstiegsseite der einfachen
+Recherche bietet nun einen besseren &Uuml;berblick von den
+M&ouml;glichkeiten des KUG</li>
+
+<li>Die Einzeltrefferanzeige wurde komplett &uuml;berarbeitet und die
+einzelnen Informationen besser gruppiert</li>
+
+</ul>
+</p>
+
+<p>Ebenso wurde das Design zeitgem&auml;&szlig; aufgefrischt und ist
+nun &uuml;ber CSS realisiert. F&uuml;r den Ausdruck speziell von
+Trefferlisten wurde ein eigenes Druck-Stylesheet eingef&uuml;hrt, so
+dass die Listen nun auch f&uuml;r dieses Ausgabemedium optimiert
+aufbereitet werden.
+</p>
+
+<h2>Integration von EZB und DBIS</h2>
+
+<p>
+Sowohl die Elektronische ZeitschriftenBibliothek (EZB), als auch das
+Datenbank Informationssystem (DBIS), in denen eine Vielzahl freier und
+alle von der USB lizensierten Zeitschriften und Datenbanken
+nachgewiesen sind, sind nun voll in den KUG integriert und &uuml;ber
+die Einstiegsseite der einfachen Recherche sofort zugreifbar.
+</p>
+
+<h2>Automatische Anreicherung mit Medientypen</h2>
+
+<p>
+Um den Bestand noch besser zu erschliessen (s.o.), werden den einzelnen
+Katalogaufnahmen die Medientypen 'Zeitschrift/Serien' und 'Aufsatz'
+automatisch angereichert, falls diese nicht vergeben wurden. Damit
+wird sowohl die eigentliche Recherche wie auch die sp&auml;tere
+Eingrenzung &uuml;ber Medientypen als Suchverfeinerung erm&ouml;glicht.
+</p>
+
+<h2></h2>
+
+<p>
+</p>
+
 <h1 id="kugv2.2">Neuerungen mit Version 2.2 (Umstellung am 8.7.2008)</h1>
 
 <h2>Integration des Ausleihsystems</h2>

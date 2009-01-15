@@ -37,6 +37,7 @@ use utf8;
 use Apache::Constants qw(:common);
 use Apache::Reload;
 use Apache::Request ();
+use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
 use Digest::MD5;
 use Encode 'decode_utf8';
@@ -186,6 +187,7 @@ sub handler {
     # Von bis
     my $fromdate        = $query->param('fromdate') || '';
     my $todate          = $query->param('todate')   || '';
+    my $year            = $query->param('year')     || UnixDate(ParseDate("today"),"%Y");
 
     # Sub-Template ID
     my $stid            = $query->param('stid') || '';
@@ -1101,6 +1103,8 @@ sub handler {
         # TT-Data erzeugen
         my $ttdata={
                     sessionID  => $session->{ID},
+                    
+                    year       => $year,
 
 		    session    => $session,
 		    statistics => $statistics,

@@ -342,7 +342,6 @@ sub get_number_of_event {
 	push @sqlargs,  $to;
     } 
 
-
     if ($type){
         push @sqlwhere, " type = ?";
 	push @sqlargs,  $type;
@@ -417,6 +416,12 @@ sub get_number_of_queries_by_category {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
+    my $from       = exists $arg_ref->{from}
+        ? $arg_ref->{from}               : undef;
+
+    my $to       = exists $arg_ref->{to}
+        ? $arg_ref->{to}                 : undef;
+
     my $tstamp       = exists $arg_ref->{tstamp}
         ? $arg_ref->{tstamp}             : undef;
 
@@ -435,21 +440,37 @@ sub get_number_of_queries_by_category {
 
     return 0 if (!$category);
 
-    my $sqlstring="select count(tstamp) as rowcount, min(tstamp) as mintstamp from querycategory where $category = 1";
+    my $sqlstring="select count(tstamp) as rowcount from querycategory";
+
+    my @sqlwhere = ("$category = 1");
+    my @sqlargs  = ();
+
+    if ($from){
+        push @sqlwhere, " tstamp > ?";
+	push @sqlargs,  $from;
+    } 
+
+    if ($to){
+        push @sqlwhere, " tstamp < ?";
+	push @sqlargs,  $to;
+    } 
+
+    my $sqlwherestring  = join(" and ",@sqlwhere);
+
+    if ($sqlwherestring){
+      $sqlstring.=" where $sqlwherestring";
+    }
 
     my $request=$dbh->prepare($sqlstring) or $logger->error($DBI::errstr);
-    $request->execute() or $logger->error($DBI::errstr);
+    $request->execute(@sqlargs) or $logger->error($DBI::errstr);
     
     my $res        = $request->fetchrow_hashref;
     my $count      = $res->{rowcount};
-    my $mintstamp  = $res->{mintstamp};
-
 
     $request->finish;
 
     return {
 	    number => $count,
-	    since  => $mintstamp,
 	    }
 }
 
@@ -457,6 +478,12 @@ sub get_ranking_of_event {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
+    my $from       = exists $arg_ref->{from}
+        ? $arg_ref->{from}               : undef;
+
+    my $to       = exists $arg_ref->{to}
+        ? $arg_ref->{to}                 : undef;
+
     my $tstamp       = exists $arg_ref->{tstamp}
         ? $arg_ref->{tstamp}             : undef;
 
@@ -476,10 +503,20 @@ sub get_ranking_of_event {
         = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
             or $logger->error($DBI::errstr);
 
-    my $sqlstring="select count(content) as rowcount, content, min(tstamp) as mintstamp from eventlog";
+    my $sqlstring="select count(content) as rowcount, content from eventlog";
 
     my @sqlwhere = ();
     my @sqlargs  = ();
+
+    if ($from){
+        push @sqlwhere, " tstamp > ?";
+	push @sqlargs,  $from;
+    } 
+
+    if ($to){
+        push @sqlwhere, " tstamp < ?";
+	push @sqlargs,  $to;
+    } 
 
     if ($type){
         push @sqlwhere, " type = ?";
@@ -507,12 +544,10 @@ sub get_ranking_of_event {
     while (my $res = $request->fetchrow_hashref){
         my $count      = $res->{rowcount};
 	my $content    = $res->{content};
-	my $mintstamp  = $res->{mintstamp};
 
 	push @ranking, {
 			content   => $content,
 			number    => $count,
-			since     => $mintstamp,
 		       };
     }
     $request->finish;

@@ -33,6 +33,7 @@ use utf8;
 use base qw(Apache::Singleton);
 
 use Encode qw(decode_utf8 encode_utf8);
+use Date::Manip qw/ParseDate UnixDate/;
 use Log::Log4perl qw(get_logger :levels);
 use Storable ();
 
@@ -304,9 +305,12 @@ sub get_number_of_event {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
-    my $tstamp       = exists $arg_ref->{tstamp}
-        ? $arg_ref->{tstamp}             : undef;
+    my $from       = exists $arg_ref->{from}
+        ? $arg_ref->{from}               : undef;
 
+    my $to       = exists $arg_ref->{to}
+        ? $arg_ref->{to}                 : undef;
+    
     my $type         = exists $arg_ref->{type}
         ? $arg_ref->{type}               : undef;
     
@@ -316,17 +320,28 @@ sub get_number_of_event {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;    
-
+    my $config = OpenBib::Config->instance;
+    
     # Verbindung zur SQL-Datenbank herstellen
     my $dbh
         = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
             or $logger->error($DBI::errstr);
 
-    my $sqlstring="select count(tstamp) as rowcount, min(tstamp) as mintstamp from eventlog";
+    my $sqlstring="select count(tstamp) as rowcount from eventlog";
 
     my @sqlwhere = ();
     my @sqlargs  = ();
+    
+    if ($from){
+        push @sqlwhere, " tstamp > ?";
+	push @sqlargs,  $from;
+    } 
+
+    if ($to){
+        push @sqlwhere, " tstamp < ?";
+	push @sqlargs,  $to;
+    } 
+
 
     if ($type){
         push @sqlwhere, " type = ?";
@@ -348,21 +363,54 @@ sub get_number_of_event {
       $sqlstring.=" where $sqlwherestring";
     }
 
-    $logger->debug($sqlstring." ".join(" - ",@sqlargs));
+    $logger->debug($sqlstring." / ".join(" - ",@sqlargs));
     my $request=$dbh->prepare($sqlstring) or $logger->error($DBI::errstr);
     $request->execute(@sqlargs) or $logger->error($DBI::errstr);
     
     my $res        = $request->fetchrow_hashref;
     my $count      = $res->{rowcount};
-    my $mintstamp  = $res->{mintstamp};
 
+    $request->finish;
+
+    $logger->debug("Got results");
+
+    return {
+        number => $count,
+    }
+}
+
+sub get_tstamp_range_of_events {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $format     = exists $arg_ref->{format}
+        ? $arg_ref->{format}              : '%Y-%M-%d %h:%m:%s';
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+        
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{statisticsdbname};host=$config->{statisticsdbhost};port=$config->{statisticsdbport}", $config->{statisticsdbuser}, $config->{statisticsdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    my $sqlstring="select min(tstamp) as min_tstamp, max(tstamp) as max_tstamp from eventlog";
+
+    my $request=$dbh->prepare($sqlstring) or $logger->error($DBI::errstr);
+    $request->execute() or $logger->error($DBI::errstr);
+    
+    my $res        = $request->fetchrow_hashref;
+    my $min_tstamp = ParseDate($res->{min_tstamp});
+    my $max_tstamp = ParseDate($res->{max_tstamp});
 
     $request->finish;
 
     return {
-	    number => $count,
-	    since  => $mintstamp,
-	    }
+        min  => UnixDate($min_tstamp, $format),
+        max  => UnixDate($max_tstamp, $format),
+    }
 }
 
 sub get_number_of_queries_by_category {

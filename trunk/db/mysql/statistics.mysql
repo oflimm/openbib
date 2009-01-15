@@ -41,6 +41,7 @@ CREATE TABLE eventlog (
  INDEX (sessionid),
  INDEX (tstamp),
  INDEX (type),
+ INDEX (type,tstamp),
  INDEX (content(50))
 )
 PACK_KEYS=1;

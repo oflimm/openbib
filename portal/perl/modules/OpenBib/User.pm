@@ -2302,6 +2302,42 @@ sub get_number_of_litlistentries {
     return $result->{numofentries};
 }
 
+sub get_number_of_litlists {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return undef if (!defined $dbh);
+
+    my $request=$dbh->prepare("select count(id) as numoflitlists from litlists where type = 1") or $logger->error($DBI::errstr);
+    $request->execute() or $logger->error($DBI::errstr);
+
+    my $result=$request->fetchrow_hashref;
+
+    my $public_lists = $result->{numoflitlists};
+
+    $request=$dbh->prepare("select count(id) as numoflitlists from litlists where type = 2") or $logger->error($DBI::errstr);
+    $request->execute() or $logger->error($DBI::errstr);
+
+    $result=$request->fetchrow_hashref;
+
+    my $private_lists = $result->{numoflitlists};
+
+    return {
+        public  => $public_lists,
+        private => $private_lists,
+    }
+}
+
 sub get_litlist_properties {
     my ($self,$arg_ref)=@_;
 

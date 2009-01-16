@@ -760,7 +760,7 @@ href="[% config.userreviews_loc %]?sessionID=[% sessionID
 <ol>
 [% FOREACH same_record IN same_records.get_records %]
 [% same_url = "${config.search_loc}?sessionID=${sessionID};database=${same_record.database};searchsingletit=${same_record.id}" %]
-<li><a href="[% same_url %]">[% dbinfotable.dbnames.${same_record.database}.short %]</a></li>
+<li><a href="[% same_url %]">[% dbinfo.dbnames.${same_record.database}.short %]</a></li>
 [% END %]
 </ol>
 </div>
@@ -785,7 +785,7 @@ href="[% config.userreviews_loc %]?sessionID=[% sessionID
 [%- yearofpub = item.${'T0425'}.first.content -%]
 [%# Edition konstruieren %]
 [%- edition   = item.${'T0403'}.first.content -%]
-<li><a href="[% similar_url %]"><i>[% title %]</i>[% IF edition %], [% edition %][% END %][% IF yearofpub %] ([% yearofpub %])[% END %]</a><br />aus: [% dbinfotable.dbnames.${similar_record.database}.short %]</li>
+<li><a href="[% similar_url %]"><i>[% title %]</i>[% IF edition %], [% edition %][% END %][% IF yearofpub %] ([% yearofpub %])[% END %]</a><br />aus: [% dbinfo.dbnames.${similar_record.database}.short %]</li>
 [% END %]
 </ol>
 </div>

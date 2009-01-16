@@ -118,8 +118,11 @@
 
     END ;
 
+    dbdesc   = dbinfo.dbnames.${database}.short ;
+    dburl    = dbinfo.urls.${database} ;
+
     IF locations.size == 0;
-       locationstring = targetdbinfo.dbinfo.${database}.short;
+       locationstring = "<a href=\"${dburl}\" target=\"_blank\">${dbdesc}</a>";
     ELSE ;
        locationstring = locations.join("<br />");
     END ;

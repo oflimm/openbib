@@ -23,7 +23,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="#"><span class="dbdescshort">[% targetdbinfo.dbnames.$database.short %]</span></a></li>
+   <li><a class="active" href="#"><span class="dbdescshort">[% dbinfo.dbnames.$database.short %]</span></a></li>
 </ul>
 
 <div class="content">

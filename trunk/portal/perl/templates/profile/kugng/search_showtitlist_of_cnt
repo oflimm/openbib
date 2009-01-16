@@ -23,7 +23,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="#"><span class="dbdescshort">[% targetdbinfo.dbnames.$database.short %]</span></a></li>
+   <li><a class="active" href="#"><span class="dbdescshort">[% dbinfo.dbnames.$database.short %]</span></a></li>
 </ul>
 
 <div class="content">
@@ -73,10 +73,12 @@
 <p />
 
 <!-- Titlelist begins here -->
+[%- dbdesc   = dbinfo.dbnames.${database}.full -%]
+[%- dburl    = dbinfo.urls.${database} -%]
 <div class="resultlist">
   <div class="resultheader">
     <div class="catalogue">
-[% targetdbinfo.dbinfo.$database.full %]
+<a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.maxlength_dbname) %]</a>
     </div>
     <div class="hits">
 [% recordlist.get_size %]  [% msg.maketext("Treffer") %]
@@ -155,7 +157,7 @@
 <span class="rlperson">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
 [%- IF item.popularity -%]<br />(Popularit&auml;t: [% item.popularity %])[%- END -%]
       </div>
-      <div class="titlemark">[% signatur %]</div>
+      <div class="titlemark">[% signatur | truncate(config.maxlength_sign) %]</div>
       <div class="titleactions">
 <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.listofinterest_img %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>
       </div>

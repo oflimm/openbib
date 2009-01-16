@@ -17,8 +17,10 @@
 [% mexnormset = record.get_mexdata %]
 [% circset    = record.get_circdata %]
 [%- isbn  = normset.${"T0540"}.first.content.replace('-','') -%]
+[%- dbdesc   = dbinfo.dbnames.${record.database}.full -%]
+[%- dburl    = dbinfo.urls.${record.database} -%]
 
-<tr class="titlerow"><td><input type="checkbox" name="titid" value="[% record.database %]:[% record.id %]"  title="collection_item" /></td><td>[% msg.maketext("aus:") %] [% dbinfotable.dbinfo.${record.database}.full %]</td></tr>
+<tr class="titlerow"><td><input type="checkbox" name="titid" value="[% record.database %]:[% record.id %]"  title="collection_item" /></td><td>[% msg.maketext("aus:") %] <a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.maxlength_dbname) %]</a></td></tr>
 <tr><td>&nbsp;</td><td>
 
 <!-- Title begins here -->

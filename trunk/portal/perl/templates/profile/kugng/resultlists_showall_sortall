@@ -121,6 +121,8 @@ Gesamtanzeige aller Treffer
 [%-         END -%]
 [%-         signatur = signaturen.sort.unique.join(' ; ') -%]
 [%-         isbn     = item.${"T0540"}.first.content.replace('-','') -%]
+[%-         dbdesc   = dbinfo.dbnames.${record.database}.full -%]
+[%-         dburl    = dbinfo.urls.${record.database} -%]
     <div class="item">
       <div class="numbering">[% loop.count %]</div>
       <div class="thumbnail">
@@ -128,9 +130,9 @@ Gesamtanzeige aller Treffer
       </div> 
       <div class="brieftitle">
 <span class="rlperson">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
-<br />aus: [% dbinfotable.dbinfo.${record.database}.full %][%- IF item.popularity -%] (Popularit&auml;t: [% item.popularity %])[%- END -%]
+<br />[% msg.maketext("aus:") %] <a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.maxlength_dbname) %]</a>[%- IF item.popularity -%] (Popularit&auml;t: [% item.popularity %])[%- END -%]
       </div>
-      <div class="titlemark">[% signatur %]</div>
+      <div class="titlemark">[% signatur | truncate(config.maxlength_sign) %]</div>
       <div class="titleactions">
 <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.listofinterest_img %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>
       </div>

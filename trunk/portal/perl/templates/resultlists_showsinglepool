@@ -70,7 +70,10 @@
 [%- FOREACH result IN resultlists -%]
 [%-     recordlist = result.recordlist -%]
 [%-     database   = result.database -%]
-<tr class="titlerow"><td>&nbsp;</td><td colspan="3"><img style="vertical-align:bottom" src="[% config.follow_img %]" alt="Weiterleitungs-Icon" />&nbsp;[% dbinfotable.dbinfo.$database.full %]</td><td align="right" colspan="2"><strong>[% recordlist.get_size %] Treffer</strong></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
+[%-     dbdesc     = dbinfo.dbnames.${database}.full -%]
+[%-     dburl      = dbinfo.urls.${database} -%]
+
+<tr class="titlerow"><td>&nbsp;</td><td colspan="3"><img style="vertical-align:bottom" src="[% config.follow_img %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.maxlength_dbname) %]</a></td><td align="right" colspan="2"><strong>[% recordlist.get_size %] Treffer</strong></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
 [%-     IF offsets -%]
 <tr class="titlerow"><td>&nbsp;</td><td colspan="5">
 [%          FOREACH singleoffset IN offsets %]

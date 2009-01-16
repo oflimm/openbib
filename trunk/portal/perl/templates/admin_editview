@@ -35,7 +35,7 @@
 <input type="hidden" name="sessionID"   value="[% sessionID %]" />
 <input type="hidden" name="viewname"    value="[% view.viewname %]" />
 <input type="hidden" name="do_editview" value="1" />
-[%# USE dumper;dumper.dump(dbinfotable.dbinfo)%]
+
 <table width="100%">
 <tr><th>[% msg.maketext("View bearbeiten") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
@@ -80,7 +80,7 @@ selected="selected"
 
 [% END %]
 
->[% singledb %]: [% IF dbinfotable.dbinfo.${singledb}.short %][% dbinfotable.dbinfo.${singledb}.short %][% ELSE %][% dbinfotable.dbinfo.${singledb}.short %][% END %]</option>
+>[% singledb %]: [% IF dbinfo.dbnames.${singledb}.short %][% dbinfo.dbnames.${singledb}.short %][% ELSE %][% dbinfo.dbnames.${singledb}.short %][% END %]</option>
 
 [% END %]
 

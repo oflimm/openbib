@@ -46,7 +46,7 @@
 
   \vspace{1cm}
 
-  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{20}{20pt}\selectfont [% filterchars(dbinfotable.sigel.${sigel}.full) %]\\[3mm]Sigel: 38/[% sigel %]}
+  \textbf{\fontfamily{cmss}\fontseries{bx}\fontshape{n}\fontsize{20}{20pt}\selectfont [% filterchars(dbinfo.sigel.${sigel}.full) %]\\[3mm]Sigel: 38/[% sigel %]}
 
   \vspace{2cm}
 

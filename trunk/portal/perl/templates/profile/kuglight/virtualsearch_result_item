@@ -13,7 +13,9 @@
 -%]
 [%- drilldown = 0 -%]
 <!-- Beginn Result Item -->
-<tr class="titlerow"><td>&nbsp;</td><td colspan="3"><img style="vertical-align:bottom" src="[% config.follow_img %]" alt="Weiterleitungs-Icon" />&nbsp;[% dbinfo.full %]</td><td
+[%- dbdesc   = dbinfo.dbnames.${database}.full -%]
+[%- dburl    = dbinfo.urls.${database} -%]
+<tr class="titlerow"><td>&nbsp;</td><td colspan="3"><img style="vertical-align:bottom" src="[% config.follow_img %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.maxlength_dbname) %]</a></td><td
 align="right" colspan="2"><strong>[%- IF treffer == qopts.hitrange && qopts.sb == 'sql' -%]<a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#recherche">[% msg.maketext("mind.") %]&nbsp;[% treffer %] [% msg.maketext("Treffer") %]</a>[% ELSE %][% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %][%- END -%]</strong></td><td class="popularitycount"></td><td rowspan="[% IF fullresultcount <= qopts.hitrange %][% fullresultcount+3 %][% ELSE %][% qopts.hitrange+4 %][% END %]" valign="top" class="drilldown_categorized">[% IF drilldown && fullresultcount >= 10 && fullresultcount <= config.xapian_option.maxmatch %][% PROCESS common/subtemplate name="drilldown_categorized" %][% PROCESS common/subtemplate name="drilldown_cloud" %][% END %]</td></tr>
 [%- IF treffer == qopts.hitrange -%]
 <tr class="titlerow"><td>&nbsp;</td><td colspan="5"><b>[1 - [% qopts.hitrange %]]</b>&nbsp;<a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];database=[% database %];queryid=[% queryid %];action=getnext;offset=[% qopts.hitrange %];hitrange=[% qopts.hitrange %];sb=[% qopts.sb %]">[weitere Treffer...]</a></td><td>&nbsp;</td></tr>

@@ -84,6 +84,8 @@
 [%- signaturen.push("${part.content}") -%]
 [%- END -%]
 [%- signatur = signaturen.sort.unique.join(' ; ') -%]
+[%- dbdesc   = dbinfo.dbnames.${item.titnormset.database}.full -%]
+[%- dburl    = dbinfo.urls.${item.titnormset.database} -%]
 
 <tr><td class="boxed">
 
@@ -99,7 +101,7 @@
 Rezension von:
 </p>
 <span class="rlauthor">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];search=Mehrfachauswahl;sorttype=[% sorttype %];database=[% item.titnormset.${"database"} %];searchsingletit=[% item.titnormset.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
-class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span><br />aus:&nbsp;<i>[% targetdbinfo.dbinfo.${item.titnormset.database}.full %]</i>
+class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span><br />aus:&nbsp;<i><a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.maxlength_dbname) %]</a></i>
 
 </td></tr>
 <tr><td></td></tr>

@@ -52,7 +52,9 @@
 [%- signaturen.push("${part.content}") -%]
 [%- END -%]
 [%- signatur = signaturen.sort.unique.join(' ; ') -%]
-[%- location = targetdbinfo.dbinfo.${item.database}.short -%]
+[%- dbdesc   = dbinfo.dbnames.${item.database}.short -%]
+[%- dburl    = dbinfo.urls.${item.database} -%]
+[%- location = "<a href=\"${dburl}\" target=\"_blank\">${dbdesc}</a>" -%]
 [%
 IF signatur ;
   location = "${location}: ${signatur}";

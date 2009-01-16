@@ -61,7 +61,7 @@ eine &Uuml;bersicht aller vorhandenen Spezial-Sichten.") %]
 <span style="font-size:1.2em">[% msg.maketext("Kataloge dieser Spezial-Sicht") %]:</span>
 <ul>
 [% FOREACH dbname IN active_viewdbs %]
-<li>[% dbinfotable.dbnames.${dbname}.short %]</li>
+<li>[% dbinfo.dbnames.${dbname}.short %]</li>
 [% END %]
 </ul>
 <p />

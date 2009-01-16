@@ -75,7 +75,7 @@ type="text" name="tag" value="" id="inputfield" size="20" maxlength="200" title=
 <tr class="[% listrow %]"><td colspan="2"><span class="rlauthor">[% record.${'author'} %]&nbsp;[% record.${'editor'} %]</span><br /><strong><span class="rltitle">[% record.${'title'} %]</span></strong>, <span class="rlpublisher">[% record.${'publisher'} %]</span> <span class="rlyearofpub">[% record.${'year'} %]</span><br />
 Tags: [% FOREACH thistag IN thistitle.tags %]<a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];tag=[% thistag %];action=get_tit_of_tag;type=[% type %]">[% thistag %]</a>&nbsp;&nbsp; [% END %]&#124;&nbsp;&nbsp;[% msg.maketext("Nutzer") %]: <a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];bsuser=[% thistitle.user %];action=get_tit_of_user;type=[% type %]">[% thistitle.user %]</a><br/>
 [% IF thistitle.local_availability %]<span style="color:green">[% msg.maketext("Dieser Titel ist in den Katalogen des KUG verf&uuml;gbar") %]</span><br/>(&nbsp;&nbsp;[% FOREACH dbname IN
-thistitle.local_dbs %]<a href="[% config.search_loc %]?sessionID=[% sessionID %];database=[% dbname %];searchtitofcnt=[% thistitle.bibkey %];category=T5050">[% dbinfotable.dbnames.${dbname}.short %]</a>&nbsp;&nbsp;[% END %])<br/>[% ELSE %]<span
+thistitle.local_dbs %]<a href="[% config.search_loc %]?sessionID=[% sessionID %];database=[% dbname %];searchtitofcnt=[% thistitle.bibkey %];category=T5050">[% dbinfo.dbnames.${dbname}.short %]</a>&nbsp;&nbsp;[% END %])<br/>[% ELSE %]<span
 style="color:red">[% msg.maketext("Dieser Titel konnte nicht in den Katalogen des KUG gefunden werden. Er kann dennoch in anderer Schreibweise existieren!") %]</span><br/>[% END %]
 </td></tr>
 [% ELSIF type == 'bookmark' %]

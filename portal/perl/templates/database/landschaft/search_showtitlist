@@ -23,7 +23,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="#"><span class="dbdescshort">[% targetdbinfo.dbnames.$database.short %]</span></a></li>
+   <li><a class="active" href="#"><span class="dbdescshort">[% dbinfo.dbnames.$database.short %]</span></a></li>
 </ul>
 
 <div class="content">
@@ -75,9 +75,12 @@
 <tr><th>[% msg.maketext("Titelliste") %]</th></tr>
 <tr><td class="boxedclear">
 
+[%- dbdesc   = dbinfo.dbnames.${database}.full -%]
+[%- dburl    = dbinfo.urls.${database} -%]
+
 <table cellpadding="2">
 [% IF offset >= 0 && hitrange > 0 %]
-<tr class="titlerow"><td>&nbsp;</td><td colspan="3"><span class="rldbase"><img style="vertical-align:bottom" src="[% config.follow_img %]" alt="Weiterleitungs-Icon" />&nbsp;[% targetdbinfo.dbinfo.$database.full %]</span></td><td align="left" colspan="2"><span class="rlhits"><strong>[% itemlist.size %]/[% hits %] [% msg.maketext("Treffer") %]</strong></span></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
+<tr class="titlerow"><td>&nbsp;</td><td colspan="3"><span class="rldbase"><img style="vertical-align:bottom" src="[% config.follow_img %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.maxlength_dbname) %]</a></span></td><td align="left" colspan="2"><span class="rlhits"><strong>[% itemlist.size %]/[% hits %] [% msg.maketext("Treffer") %]</strong></span></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
 <tr class="titlerow"><td>&nbsp;</td><td colspan="3">
 [%- FOREACH navitem IN nav -%]
 <a href="[% navitem.url %]">
@@ -93,7 +96,7 @@
 [%- END -%]
 </td><td align="left" colspan="2"></td><td></td></tr>
 [% ELSE %]
-<tr class="titlerow"><td>&nbsp;</td><td colspan="3"><span class="rldbase"><img style="vertical-align:bottom" src="[% config.follow_img %]" alt="Weiterleitungs-Icon" />&nbsp;[% targetdbinfo.dbinfo.$database.full %]</span></td><td align="left" colspan="2"><span class="rlhits"><strong>[% itemlist.size %] [% msg.maketext("Treffer") %]</strong></span></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
+<tr class="titlerow"><td>&nbsp;</td><td colspan="3"><span class="rldbase"><img style="vertical-align:bottom" src="[% config.follow_img %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.maxlength_dbname) %]</a></span></td><td align="left" colspan="2"><span class="rlhits"><strong>[% itemlist.size %] [% msg.maketext("Treffer") %]</strong></span></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td></tr>
 [% END %]
 
 [% listrow = 'listrow1' %]

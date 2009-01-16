@@ -12,10 +12,12 @@
 #######################################################################
 -%]
 <!-- Beginn Result Item -->
+[%- dbdesc   = dbinfo.dbnames.${database}.full -%]
+[%- dburl    = dbinfo.urls.${database} -%]
 <div class="resultlist">
   <div class="resultheader">
     <div class="catalogue">
-[% dbinfo.full %]
+<a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.maxlength_dbname) %]</a>
     </div>
     <div class="hits">
 [%- IF treffer == qopts.hitrange && qopts.sb == 'sql' -%]<a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#recherche">[% msg.maketext("mind.") %]&nbsp;[% treffer %] [% msg.maketext("Treffer") %]</a>[% ELSE %][% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %][%- END -%]</strong>
@@ -47,7 +49,7 @@
 
   FOREACH part IN item.${'P0100'} ;
     thislength = part.content.length ;
-    IF (thislength+personslength) < config.maxperslength ;
+    IF (thislength+personslength) < config.maxlength_pers ;
       persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>");
       personslength = personslength+thislength ;
     ELSE ;
@@ -59,7 +61,7 @@
        part.content = "${part.content} ${part.supplement}" ;
     END ;
     thislength = part.content.length ;
-    IF (thislength+personslength) < config.maxperslength ;
+    IF (thislength+personslength) < config.maxlength_pers ;
       persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>");
       personslength = personslength+thislength ;
     ELSE ;
@@ -68,7 +70,7 @@
   END ;
   FOREACH part IN item.${'C0200'}  ;
     thislength = part.content.length ;
-    IF (thislength+personslength) < config.maxperslength ;
+    IF (thislength+personslength) < config.maxlength_pers ;
       persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>");
       personslength = personslength+thislength ;
     ELSE ;
@@ -77,7 +79,7 @@
   END ;
   FOREACH part IN item.${'C0201'}  ;
     thislength = part.content.length ;
-    IF (thislength+personslength) < config.maxperslength ;
+    IF (thislength+personslength) < config.maxlength_pers ;
       persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>");
       personslength = personslength+thislength ;
     ELSE ;
@@ -128,7 +130,7 @@
 <span class="rlperson">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
 [%- IF item.popularity -%]<br />(Popularit&auml;t:[% item.popularity %])[%- END -%]
       </div>
-      <div class="titlemark">[% signatur %]</div>
+      <div class="titlemark">[% signatur | truncate(config.maxlength_sign) %]</div>
       <div class="titleactions">
 <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.listofinterest_img %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>
       </div>

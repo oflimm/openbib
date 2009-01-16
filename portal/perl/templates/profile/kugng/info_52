@@ -44,7 +44,7 @@
 [% FOREACH bkinfo IN thisbklist %]
 [%   thisdb    = bkinfo.key %]
 [%   thiscount = bkinfo.value %]
-<tr><td><a href="[% config.search_loc %]?sessionID=[% sessionID %];database=[% thisdb %];searchtitofcnt=[% thisbk %];category=E4100;hitrange=50">[% dbinfotable.dbnames.${thisdb}.short %]</a></td><td align="right"><b>[% thiscount%]</b> Treffer</td></tr>
+<tr><td><a href="[% config.search_loc %]?sessionID=[% sessionID %];database=[% thisdb %];searchtitofcnt=[% thisbk %];category=E4100;hitrange=50">[% dbinfo.dbnames.${thisdb}.short %]</a></td><td align="right"><b>[% thiscount%]</b> Treffer</td></tr>
 [% END %]
 </table>
 

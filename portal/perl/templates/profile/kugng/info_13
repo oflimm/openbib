@@ -30,7 +30,7 @@
 
 <ul class="tabbingmenu">
    <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="[% msg.maketext("Katalogauswahl") %]">[% msg.maketext("Katalogauswahl") %]</a></li>
-[% IF statistics.result_exists({ id => 'litlist_usage', type => 12 })%][% IF config.litlists %]   <li><a [% IF active == 41 %]class="active"[% END %] href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=41" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a></li>[% END %][% END %]
+[% IF statistics.result_exists({ id => 'litlist_usage', type => 12 })%][% IF config.litlists %]   <li><a [% IF active == 41 %]class="active"[% END %] href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=41" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a></li>[% END %][% END %]
    <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=40" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a></li>
 </ul>
 

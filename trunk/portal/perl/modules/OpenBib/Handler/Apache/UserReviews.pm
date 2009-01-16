@@ -163,7 +163,7 @@ sub handler {
             queryoptions_ref => $queryoptions->get_options,
             sessionID        => $session->{ID},
             targettype       => $targettype,
-            targetdbinfo     => $dbinfotable,
+            dbinfo           => $dbinfotable,
             reviews          => $reviewlist_ref,
 
             config           => $config,
@@ -286,7 +286,7 @@ sub handler {
             queryoptions_ref => $queryoptions->get_options,
             sessionID        => $session->{ID},
             targettype       => $targettype,
-            targetdbinfo     => $dbinfotable,
+            dbinfo           => $dbinfotable,
             review           => $review_ref,
 
             config           => $config,

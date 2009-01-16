@@ -744,7 +744,7 @@ sub handler {
 
                 view       => $view,
 
-                dbinfotable => $dbinfotable,
+                dbinfo     => $dbinfotable,
                 
                 config     => $config,
                 user       => $user,

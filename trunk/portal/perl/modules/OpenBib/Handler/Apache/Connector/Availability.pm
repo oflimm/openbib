@@ -191,7 +191,7 @@ sub handler {
         $logger->debug("Enrich: $isbn -> $reqstring");
 
         $ttdata = {
-            dbinfotable          => $dbinfotable,
+            dbinfo               => $dbinfotable,
             key                  => $key,
             available_recordlist => $recordlist,
             similar_recordlist   => $similar_recordlist,

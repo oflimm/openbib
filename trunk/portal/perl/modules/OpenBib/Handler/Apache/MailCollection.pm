@@ -146,7 +146,7 @@ sub handler {
 	qopts       => $queryoptions->get_options,
         type        => $type,
         recordlist  => $recordlist,
-        dbinfotable => $dbinfotable,
+        dbinfo      => $dbinfotable,
         
         config      => $config,
         user        => $user,

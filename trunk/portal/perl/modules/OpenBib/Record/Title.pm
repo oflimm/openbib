@@ -1055,7 +1055,7 @@ sub print_to_handler {
         view        => $view,
         stylesheet  => $stylesheet,
         database    => $self->{database}, # Zwingend wegen common/subtemplate
-        dbinfotable => $dbinfotable,
+        dbinfo      => $dbinfotable,
         poolname    => $poolname,
         prevurl     => $prevurl,
         nexturl     => $nexturl,

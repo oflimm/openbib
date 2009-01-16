@@ -326,7 +326,7 @@ sub handler {
             
             resultlists    => \@resultlists,
 
-            dbinfotable    => $dbinfotable,
+            dbinfo         => $dbinfotable,
             
             loginname      => $loginname,
             password       => $password,
@@ -404,7 +404,7 @@ sub handler {
             query          => $query,
             qopts          => $queryoptions->get_options,
             resultlists    => \@resultlists,
-            dbinfotable    => $dbinfotable,
+            dbinfo         => $dbinfotable,
             
             loginname      => $loginname,
             password       => $password,
@@ -524,7 +524,7 @@ sub handler {
                 sessionID      => $session->{ID},
                 
                 recordlist     => $recordlist,
-                dbinfotable    => $dbinfotable,
+                dbinfo         => $dbinfotable,
                 
                 loginname      => $loginname,
                 password       => $password,
@@ -591,7 +591,7 @@ sub handler {
                 sessionID      => $session->{ID},
                 
                 resultlists    => \@resultlists,
-                dbinfotable    => $dbinfotable,
+                dbinfo         => $dbinfotable,
 
                 offset         => $offset,
                 hitrange       => $hitrange,

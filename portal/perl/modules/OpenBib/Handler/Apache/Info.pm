@@ -118,7 +118,7 @@ sub handler {
 	session       => $session,
         useragent     => $useragent,
         config        => $config,
-        dbinfotable   => $dbinfotable,
+        dbinfo        => $dbinfotable,
         statistics    => $statistics,
         utils         => $utils,
         user          => $user,

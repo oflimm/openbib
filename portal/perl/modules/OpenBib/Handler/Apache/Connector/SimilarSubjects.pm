@@ -93,7 +93,7 @@ sub handler {
     my $tit_swt_count_ref = {};
    
     my $maxcount=0;
-	my $mincount=999999999;
+    my $mincount=999999999;
 
     if ($type eq "swt" && $id){
         $logger->debug("Getting similar Subject Headings for Subjectid $id");

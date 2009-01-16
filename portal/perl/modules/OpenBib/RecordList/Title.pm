@@ -349,7 +349,7 @@ sub print_to_handler {
             
             hits           => $hits,
             
-            targetdbinfo   => $dbinfotable,
+            dbinfo         => $dbinfotable,
 
             recordlist     => $self,
             

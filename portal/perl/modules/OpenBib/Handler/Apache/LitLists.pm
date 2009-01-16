@@ -272,7 +272,7 @@ sub handler {
                     qopts        => $queryoptions->get_options,
                     user         => $user,
                     litlist      => $singlelitlist,
-                    targetdbinfo => $dbinfotable,
+                    dbinfo       => $dbinfotable,
                     targettype   => $targettype,
                     
                     config     => $config,
@@ -343,7 +343,7 @@ sub handler {
                 litlist        => $singlelitlist,
                 other_litlists => $other_litlists_of_user,
                 
-                targetdbinfo   => $dbinfotable,
+                dbinfo         => $dbinfotable,
                 
                 config         => $config,
                 user           => $user,

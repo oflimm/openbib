@@ -260,7 +260,7 @@ sub handler {
             type              => $type,
             show              => $show,
             recordlist        => $recordlist,
-            dbinfotable       => $dbinfotable,
+            dbinfo            => $dbinfotable,
 
 	    user              => $user,
             config            => $config,
@@ -301,7 +301,7 @@ sub handler {
                 type        => $type,
                 show        => $show,
                 recordlist  => $recordlist,
-                dbinfotable => $dbinfotable,
+                dbinfo      => $dbinfotable,
                 
                 config     => $config,
                 msg        => $msg,
@@ -332,7 +332,7 @@ sub handler {
                 singleidn  => $singleidn,
                 database   => $database,
                 recordlist => $recordlist,
-                dbinfotable => $dbinfotable,
+                dbinfo     => $dbinfotable,
 
                 config     => $config,
                 msg        => $msg,
@@ -354,7 +354,7 @@ sub handler {
                 singleidn   => $singleidn,
                 database    => $database,
                 recordlist  => $recordlist,
-                dbinfotable => $dbinfotable,
+                dbinfo      => $dbinfotable,
                 
                 config      => $config,
                 msg         => $msg,

@@ -32,6 +32,8 @@ use utf8;
 
 use Log::Log4perl qw(get_logger :levels);
 
+use OpenBib::Config::DatabaseInfoTable;
+
 # Hier folgen alle verfuegbaren Z3950-Module. Der letzte Teil des
 # Methoden-Namens gibt den Datenbanknamen dieses Kataloges in
 # der Web-Administration an
@@ -193,9 +195,9 @@ sub mab2openbib_full {
     
     my $listitem_ref    = {};
     my $mexlistitem_ref = [];
-    
-    my $targetdbinfo_ref =  $config->get_targetdbinfo();
-    
+
+    my $dbinfotable   = OpenBib::Config::DatabaseInfoTable->instance;
+
     my $convtab_ref = (exists $config->{convtab}{singlepool})?
         $config->{convtab}{singlepool}:$config->{convtab}{default};
 
@@ -294,16 +296,16 @@ sub mab2openbib_full {
                     }; 
 
                     # Es wird der Datenbankname zur Findung des Sigels herangezogen
-                    my $sigel=$targetdbinfo_ref->{dbases}{"USBK"};
-                    if (exists $targetdbinfo_ref->{sigel}{$sigel}) {
-                        $thismexlistitem_ref->{X4000}{content}=$targetdbinfo_ref->{sigel}{$sigel};
+                    my $sigel=$dbinfotable->{dbases}{"USBK"};
+                    if (exists $dbinfotable->{sigel}{$sigel}) {
+                        $thismexlistitem_ref->{X4000}{content}=$dbinfotable->{sigel}{$sigel};
                     }
                     
                     my $bibinfourl="";
                     
                     # Bestimmung der Bibinfo-Url
-                    if (exists $targetdbinfo_ref->{bibinfo}{$sigel}) {
-                        $thismexlistitem_ref->{X4001}{content}=$targetdbinfo_ref->{bibinfo}{$sigel};
+                    if (exists $dbinfotable->{bibinfo}{$sigel}) {
+                        $thismexlistitem_ref->{X4001}{content}=$dbinfotable->{bibinfo}{$sigel};
                     }
 
                     push @{$mexlistitem_ref}, $thismexlistitem_ref;

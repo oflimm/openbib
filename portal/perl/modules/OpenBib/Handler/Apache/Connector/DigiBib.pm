@@ -497,7 +497,7 @@ sub handler {
         
         # TT-Data erzeugen
         my $ttdata={
-            targetdbinfo    => $dbinfotable,
+            dbinfo          => $dbinfotable,
             resultlist      => \@ergebnisse,#[$liststart..$listend],
 
             utf2iso      => sub {
@@ -621,7 +621,7 @@ sub handler {
             record       => $record,
             has_sb       => $has_sb,
             sbrecord     => $sbrecord,
-            targetdbinfo => $dbinfotable,
+            dbinfo       => $dbinfotable,
             database     => $database,
 
             utf2iso      => sub {

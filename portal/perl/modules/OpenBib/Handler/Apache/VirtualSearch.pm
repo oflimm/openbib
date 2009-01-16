@@ -806,7 +806,7 @@ sub handler {
                     
                     searchall       => $searchall,
                     
-                    dbinfotable     => $dbinfotable,
+                    dbinfo          => $dbinfotable,
                     
                     searchquery     => $searchquery,
 
@@ -1003,7 +1003,7 @@ sub handler {
                         sessionID       => $session->{ID},
                         database        => $database,
                         
-                        dbinfo          => $dbinfotable->{dbinfo}{$database},
+                        dbinfo          => $dbinfotable,
                         
                         treffer         => $treffer,
                         
@@ -1182,8 +1182,7 @@ sub handler {
                                 view            => $view,
                                 sessionID       => $session->{ID},
 
-                                dbinfotable     => $dbinfotable,
-                                dbinfo          => $dbinfotable->{dbinfo}{$database},
+                                dbinfo          => $dbinfotable,
                             
                                 treffer         => $treffer,
                             
@@ -1304,7 +1303,7 @@ sub handler {
                             view            => $view,
                             sessionID       => $session->{ID},
 		  
-                            dbinfo          => $dbinfotable->{dbinfo}{$database},
+                            dbinfo          => $dbinfotable,
 
                             treffer         => $treffer,
 

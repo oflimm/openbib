@@ -161,7 +161,7 @@ my $template = Template->new({
 
 my $ttdata = {
     sigel        => $sigel,
-    dbinfotable  => $dbinfotable,
+    dbinfo       => $dbinfotable,
     recordlist   => \@sortedrecordlist,
     showall      => $showall,
     gesamtzahl   => $#recordlist+1,

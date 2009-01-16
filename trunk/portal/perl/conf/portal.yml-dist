@@ -429,9 +429,11 @@ benchmark: 0
 # Kurztiteltabelle verwenden?
 use_titlistitem_table: 1
 
-# Maximale Laenge an Personen in Kurztitelliste, ab der Personen
+# Maximale Laenge an Inhalt in Kurztitelliste, ab der Personen
 # gekuerzt werden soll
-maxperslength: 100
+maxlength_pers: 100
+maxlength_sign: 70
+maxlength_dbname: 70
 
 # https fuer Admin und Nutzer verwenden
 use_https: 1

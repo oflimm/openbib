@@ -86,33 +86,20 @@ sub _new_instance {
         $self->{bibinfo}->{"$sigel"} = "$url";
         
         #####################################################################
-        ## Wandlungstabelle  Name SQL-Datenbank <-> Datenbankinfo
-    
-        # Wenn ein URL fuer die Datenbankinformation definiert ist, dann wird
-        # damit verlinkt
-    
-        if ($url ne "") {
-            $self->{dbinfo}->{"$dbname"} = {
-                full  => "<a href=\"$url\" target=\"_blank\">$description</a>",
-                short => "<a href=\"$url\" target=\"_blank\">$shortdesc</a>",
-            };
-        }
-        else {
-            $self->{dbinfo}->{"$dbname"} = {
-                full  => "$description",
-                short => "$shortdesc",
-            };
-        }
-    
-        #####################################################################
         ## Wandlungstabelle  Name SQL-Datenbank <-> Bibliothekssigel
         
         $self->{dbases}->{"$dbname"}       = "$sigel";
+
+        #####################################################################
+        ## Wandlungstabelle  Name SQL-Datenbank <-> Datenbankinfo
 
         $self->{dbnames}->{"$dbname"}      = {
             full  => $description,
             short => $shortdesc,
         };
+
+        $self->{urls}->{"$dbname"}      = $url;
+
     }
   
     $dbinforesult->finish;

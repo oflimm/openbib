@@ -237,16 +237,12 @@ sub load_full_record {
         if ($config->{benchmark}) {
             $atime=new Benchmark;
         }
-        
-        $reqstring="select count(distinct targetid) as conncount from conn where sourceid=? and sourcetype=1 and targettype=1";
-        $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
-        $request->execute($id) or $logger->error("Request: $reqstring - ".$DBI::errstr);
-        
-        $res=$request->fetchrow_hashref;
 
-        if ($res->{conncount} > 0){
+        my $titcount = $self->get_number_of_titles({ type => 'sub' });
+
+        if ($titcount > 0){
             push @{$normset_ref->{T5001}}, {
-                content => $res->{conncount},
+                content => $titcount,
             };
         }
         
@@ -261,15 +257,11 @@ sub load_full_record {
             $atime=new Benchmark;
         }
 
-        $reqstring="select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=1";
-        $request=$dbh->prepare($reqstring) or $logger->error($DBI::errstr);
-        $request->execute($id) or $logger->error("Request: $reqstring - ".$DBI::errstr);
-        
-        $res=$request->fetchrow_hashref;
+        $titcount = $self->get_number_of_titles({ type => 'super' });
 
-        if ($res->{conncount} > 0){
+        if ($titcount > 0){
             push @{$normset_ref->{T5002}}, {
-                content => $res->{conncount},
+                content => $titcount,
             };
         }
         
@@ -279,8 +271,6 @@ sub load_full_record {
             $logger->info("Zeit fuer : $reqstring : ist ".timestr($timeall));
         }
 
-
-        $request->finish();
     }
 
     # Exemplardaten
@@ -1821,6 +1811,60 @@ sub get_category {
     else {
         return $self->{_normset}->{$category}->[$indicator-1]->{content};
     }
+}
+
+sub get_number_of_titles {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $id                = exists $arg_ref->{id}
+        ? $arg_ref->{id}                :
+            (exists $self->{id})?$self->{id}:undef;
+
+    my $type              = exists $arg_ref->{type}
+        ? $arg_ref->{type}              : 'sub'; # sub oder super
+
+    my $dbh               = exists $arg_ref->{dbh}
+        ? $arg_ref->{dbh}               : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    my ($atime,$btime,$timeall);
+
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
+    my $local_dbh = 0;
+    if (!defined $dbh){
+        # Kein Spooling von DB-Handles!
+        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+            or $logger->error_die($DBI::errstr);
+        $local_dbh = 1;
+    }
+    
+    my $sqlrequest;
+
+    # Ausgabe der Anzahl verk"upfter Titel
+
+    if ($type eq "sub"){
+        $sqlrequest="select count(distinct targetid) as conncount from conn where sourceid=? and sourcetype=1 and targettype=1";
+    }
+    elsif ($type eq "super"){
+        $sqlrequest="select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=1";
+    }
+    else {
+        return undef;
+    }
+    
+    my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
+    $request->execute($id);
+    my $res=$request->fetchrow_hashref;
+    
+    return $res->{conncount},
 }
 
 sub record_exists {

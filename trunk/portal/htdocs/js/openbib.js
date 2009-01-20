@@ -75,8 +75,6 @@ function (txt){ $("#collectioncount").html("["+txt+"]"); });
 // --------------------------------------------------------------------------
 
 // Begin Togglen / Suchhilfe
-// Bild setzen
-$("#searchinfo_toggle").html("<img src=\"/images/openbib/expand.png\" alt=\"Suchhilfe anzeigen\">")
 // Zuerst verstecken
 $("#searchinfo").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -88,8 +86,6 @@ $("#searchinfo_toggle").click(function(){
 // --------------------------------------------------------------------------
 
 // Begin Togglen / Suchoptionen
-// Bild setzen
-$("#searchoptions_toggle").html("<img src=\"/images/openbib/expand.png\" alt=\"Optionen anzeigen\">")
 // Zuerst verstecken
 $("#searchoptions").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -151,8 +147,6 @@ $("#newreview_toggle").click(function(){
 // --------------------------------------------------------------------------
 
 // Begin Togglen / Alle Reviews
-// Bild setzen
-$("#allreviews_toggle").html("<img src=\"/images/openbib/expand.png\" alt=\"Alle Bewertungen anzeigen\">")
 // Zuerst verstecken
 $("#allreviews").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -162,8 +156,6 @@ $("#allreviews_toggle").click(function(){
 // Ende Togglen / alle Reviews
 
 // Begin Togglen / Literaturlisten
-// Bild setzen
-$("#litlists_toggle").html("<img style=\"vertical-align:bottom;\" src=\"/images/openbib/toggle_plus.png\" alt=\"Literaturlisten erstellen\">")
 // Zuerst verstecken
 $("#litlists_do").hide();
 // und bei Klick Sichtbarkeit togglen
@@ -173,8 +165,6 @@ $("#litlists_toggle").click(function(){
 // Ende Togglen / Literaturlisten
 
 // Begin Togglen / Tagging
-// Bild setzen
-$("#tagging_toggle").html("<img style=\"vertical-align:bottom;\" src=\"/images/openbib/toggle_plus.png\" alt=\"Literaturlisten erstellen\">")
 // Zuerst verstecken
 $("#tagging_do").hide();
 // und bei Klick Sichtbarkeit togglen

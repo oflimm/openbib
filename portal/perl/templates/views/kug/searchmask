@@ -202,7 +202,7 @@ nutzen, bei der die Verwendung von JavaScript minimiert ist.","<a href=\"${confi
 <p />
 
 <table width="100%">
-<tr><th>[% msg.maketext("Suchoptionen") %]&nbsp;<span id="searchoptions_toggle"></span></th></tr>
+<tr><th><span id="searchoptions_toggle">[% msg.maketext("Suchoptionen") %]&nbsp;<img src="[% config.toggle_show_img %]" alt="Toggle" /></span></th></tr>
 <tr><td class="boxed" id="searchoptions" style="font-size:0.8em;">
 [% PROCESS common/subtemplate name="searchmask_options" %]
 </td></tr>
@@ -211,7 +211,7 @@ nutzen, bei der die Verwendung von JavaScript minimiert ist.","<a href=\"${confi
 <p />
 
 <table width="100%">
-<tr><th>[% msg.maketext("Suchhilfe") %]&nbsp;<span id="searchinfo_toggle"></span></th></tr>
+<tr><th><span id="searchinfo_toggle">[% msg.maketext("Suchhilfe") %]&nbsp;<img src="[% config.toggle_show_img %]" alt="Toggle" /></span></th></tr>
 <tr><td class="boxed" id="searchinfo" style="font-size:0.8em;">
 [% PROCESS common/subtemplate name="search_info" %]
 </td></tr>

@@ -23,6 +23,8 @@ input[type="submit"]:hover {
   background: Highlight;
   border:     1px groove Highlight;
   outline:    1px solid #000;
+  -moz-border-radius: 12px;
+  -webkit-border-radius: 12px;
 }
 
 input[type="reset"]:hover {
@@ -30,6 +32,8 @@ input[type="reset"]:hover {
   background: Highlight;
   border:     1px groove Highlight;
   outline:    1px solid #000;
+  -moz-border-radius: 12px;
+  -webkit-border-radius: 12px;
 }
 
 a.button {
@@ -43,6 +47,8 @@ a.button {
   border-color: #ADD8E6; 
   border-style: solid; 
   background:	#efefef;
+  -moz-border-radius: 12px;
+  -webkit-border-radius: 12px;
 }
 
 a.button:hover {
@@ -57,9 +63,11 @@ a.button:hover {
   border-style: solid; 
   background: Highlight;
   outline:    1px solid #000;
-
+  -moz-border-radius: 12px;
+  -webkit-border-radius: 12px;
 }
 
 a.button:active {
   border-style: inset;
 } 
+

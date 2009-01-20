@@ -101,12 +101,12 @@ table {
 }
 
 .categoryline {
-  background:
+/*  background: */
 }
 
 .circurl { 
   font-weight:bold;
-  vertical-align:center;
+  vertical-align:middle;
   font-size:1.2em;
   color:red;
 }
@@ -359,7 +359,7 @@ h2[class=nojs_show] {
 #maincontent{
   overflow: hidden;
   width: 98%;
-/*  position: absolute;
+  /*  position: absolute;
   top: 110px;
   left: 0; */
   background: white ;
@@ -645,7 +645,7 @@ dt.review {
 }
 
 .resultlist {
-  text-width: 100%;
+  width: 100%;
   overflow: hidden; 
 }
 
@@ -741,7 +741,7 @@ dt.review {
 
 .item .numbering {
   position: absolute;
-  background: #lightblue none repeat scroll 0 0;
+  background: #ffffff none repeat scroll 0 0;
   border-color:#E1E1E1;
   border-style:solid;
   border-width:1px;	
@@ -759,7 +759,7 @@ dt.review {
   width: 60px;
   height: 90px;
   
-  background: #lightblue none repeat scroll 0 0; 
+  background: none repeat scroll 0 0; 
 
 }
 
@@ -919,7 +919,7 @@ dt.review {
 }
 
 #additional_title_info {
-  text-width: 98%;
+  width: 98%;
   margin-top: 10px;
 /*  float: left; */
   /*   position:absolute;
@@ -990,8 +990,12 @@ dt.review {
   border-bottom-color: lightblue;
   border-bottom-width: 1px;
   font-weight:bold;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
+  -moz-border-radius-topright: 7px;
+  -moz-border-radius-topleft: 7px;
+  -webkit-border-radius-topright: 7px;
+  -webkit-border-radius-topleft: 7px;
+/*  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px; */
 
 }
 
@@ -1027,6 +1031,12 @@ dt.review {
 
 #searchmask_advanced {
   width: 99.5%;
+  float:left;
+  height: auto;
+/*  border-color: red;
+  border-style: solid;
+  border-width: 1px;  
+*/
 }
 
 #searchmask_history {
@@ -1067,7 +1077,7 @@ dt.review {
 #teaser {
   float:right;
   width: 33%;
-  bottom-margin: 0px;
+  margin-bottom: 0px;
 }
 
 #teaser #langchoice {

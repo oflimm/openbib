@@ -138,13 +138,10 @@ sub load_full_record {
     }
 
     # Ausgabe der Anzahl verk"upfter Titel
-    $sqlrequest="select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=3";
-    $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
-    $request->execute($id);
-    my $res=$request->fetchrow_hashref;
-    
+    my $titcount = $self->get_number_of_titles;
+
     push @{$normset_ref->{C5000}}, {
-        content => $res->{conncount},
+        content => $titcount,
     };
 
     if ($config->{benchmark}) {
@@ -224,6 +221,47 @@ sub load_name {
     $dbh->disconnect() if ($local_dbh);
     
     return $self;
+}
+
+sub get_number_of_titles {
+    my ($self,$arg_ref) = @_;
+
+    # Set defaults
+    my $id                = exists $arg_ref->{id}
+        ? $arg_ref->{id}                :
+            (exists $self->{id})?$self->{id}:undef;
+    
+    my $dbh               = exists $arg_ref->{dbh}
+        ? $arg_ref->{dbh}               : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    my ($atime,$btime,$timeall);
+
+    if ($config->{benchmark}) {
+        $atime=new Benchmark;
+    }
+
+    my $local_dbh = 0;
+    if (!defined $dbh){
+        # Kein Spooling von DB-Handles!
+        $dbh = DBI->connect("DBI:$config->{dbimodule}:dbname=$self->{database};host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd})
+            or $logger->error_die($DBI::errstr);
+        $local_dbh = 1;
+    }
+    
+    my $sqlrequest;
+
+    # Ausgabe der Anzahl verk"upfter Titel
+    $sqlrequest="select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=3";
+    my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
+    $request->execute($id);
+    my $res=$request->fetchrow_hashref;
+    
+    return $res->{conncount},
 }
 
 sub to_rawdata {

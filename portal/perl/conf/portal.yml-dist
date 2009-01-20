@@ -233,6 +233,7 @@ rssfeed_img: /images/openbib/rssfeed.png
 save_img: /images/openbib/3d-file-blue-disk35.png
 search_img: /images/openbib/search.png
 share_img: /images/openbib/share.png
+toggle_show_img: /images/openbib/toggle_plus.png
 top20_img: /images/openbib/top20-12px.png
 tutorial_img: /images/openbib/tutorial.png
 wikipedia_img:  /images/openbib/wikipedia.png

@@ -1049,7 +1049,7 @@ sub get_cascaded_templatepath {
 
     my $config = OpenBib::Config->instance;
 
-    if (-e "$config->{tt_include_path}/profile/$profile") {
+    if ($profile && -e "$config->{tt_include_path}/profile/$profile") {
         if ($view && -e "$config->{tt_include_path}/profile/$profile/views/$view/$templatename") {
             $templatename="profile/$profile/views/$view/$templatename";
         }

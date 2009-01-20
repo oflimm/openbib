@@ -1,0 +1,1 @@
+alter table eventlog add index (type,tstamp,content(10));

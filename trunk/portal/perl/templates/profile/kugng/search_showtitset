@@ -388,7 +388,7 @@ value="5"/>&nbsp;[% msg.maketext("sehr gut") %]</td></tr>
 <p />
 
 <table width="100%">
-<tr><th>[% msg.maketext("Bewertungen/Rezensionen von Nutzern") %]<span id="allreviews_toggle"></span></th></tr>
+<tr><th><span id="allreviews_toggle">[% msg.maketext("Bewertungen/Rezensionen von Nutzern") %]&nbsp;<img src="/images/openbib/toggle_plus.png" alt="Alle Bewertungen anzeigen"></span></th></tr>
 <tr><td id="allreviews" class="boxedclear">
 <!-- Beginn Reviews -->
 
@@ -513,7 +513,7 @@ href="[% config.userreviews_loc %]?sessionID=[% sessionID
 <p />
 [% IF config.litlists %]
 <div class="litlists"><!-- Begin Litlist -->
-<div class="headline">[% msg.maketext("Literaturliste") %]<span id="litlists_toggle"></span></div>
+<div class="headline"><span id="litlists_toggle">[% msg.maketext("Literaturliste") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="litlists_do"><!-- Begin Litlist do -->
 <form method="get" action="[% config.litlists_loc %]">
 <input type="hidden" name="action"          value="manage" />
@@ -536,7 +536,7 @@ href="[% config.userreviews_loc %]?sessionID=[% sessionID
 [% END %]
 
 <div class="tagging"><!-- Begin: Tagging -->
-<div class="headline">[% msg.maketext("Tagging") %]<span id="tagging_toggle"></span></div>
+<div class="headline"><span id="tagging_toggle">[% msg.maketext("Tagging") %]<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle"></span></div>
 <div id="tagging_do"><!-- Begin Tagging do -->
 [%
   private_tags_of_tit = [];

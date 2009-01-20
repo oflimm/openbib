@@ -118,7 +118,6 @@ function submitViaEnter(evt){
 <p />
 [% END %]
 
-<div id="searchmask_advanced"><!-- Begin searchmask_advanced -->
 [% IF queries.size > 0 %]
 <div id="searchmask_history"><!-- Begin searchmask_history -->
 <p />
@@ -143,6 +142,8 @@ function submitViaEnter(evt){
 <input type="hidden" name="sb"        value="sql" />
 <input type="hidden" name="st"        value="2" />
 
+<div id="searchmask_advanced"><!-- Begin searchmask_advanced -->
+
 <div id="searchmask_query"><!-- Begin searchmask_query -->
 
 <noscript>
@@ -157,11 +158,6 @@ nutzen, bei der die Verwendung von JavaScript minimiert ist.","<a href=\"${confi
 </table>
 </noscript>
 
-
-<table class="submitbuttons">
-  <tr><td><noscript><input type="submit" title="[% msg.maketext("Hier suchen Sie in allen Katalogen auf einmal") %]" name="searchall" value="[% msg.maketext("In allen Katalogen suchen") %]" /></noscript></td><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" /></td></tr>
-</table>
-<p />
 
 <!-- Erste Spalte -->
 <table width="100%">
@@ -179,8 +175,8 @@ nutzen, bei der die Verwendung von JavaScript minimiert ist.","<a href=\"${confi
 <p />
 
 <table width="100%">
-<tr><th>[% msg.maketext("Suchoptionen") %]&nbsp;<span id="searchoptions_toggle"></span></th></tr>
-<tr><td>
+<tr><th><span id="searchoptions_toggle">[% msg.maketext("Suchoptionen") %]&nbsp;<img src="[% config.toggle_show_img %]" alt="Toggle" /></span></th></tr>
+<tr><td class="boxedclear" id="searchoptions">
 [% PROCESS common/subtemplate name="searchmask_options" %]
 </td></tr>
 </table>
@@ -188,8 +184,8 @@ nutzen, bei der die Verwendung von JavaScript minimiert ist.","<a href=\"${confi
 <p />
 
 <table width="100%">
-<tr><th>[% msg.maketext("Suchhilfe") %]&nbsp;<span id="searchinfo_toggle"></span></th></tr>
-<tr><td class="boxed" id="searchinfo">
+<tr><th><span id="searchinfo_toggle">[% msg.maketext("Suchhilfe") %]&nbsp;<img src="[% config.toggle_show_img %]" alt="Toggle" /></span></th></tr>
+<tr><td class="boxedclear" id="searchinfo">
 [% PROCESS common/subtemplate name="search_info" %]
 </td></tr>
 </table>
@@ -212,12 +208,6 @@ nutzen, bei der die Verwendung von JavaScript minimiert ist.","<a href=\"${confi
 
 </div><!-- End searchmask_query -->
 <div id="searchmask_dbchoice"><!-- Begin searchmask_dbchoice -->
-
-<table class="submitbuttons">
-  <tr><td><noscript><input type="submit" title="[% msg.maketext("Hier suchen Sie in allen Katalogen auf einmal") %]" name="searchall" value="[% msg.maketext("In allen Katalogen suchen") %]" /></noscript></td><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" /></td></tr>
-</table>
-
-<p />
 
 <table>
 <tr><th>[% msg.maketext("Katalogauswahl") %]</th></tr>
@@ -297,8 +287,10 @@ nutzen, bei der die Verwendung von JavaScript minimiert ist.","<a href=\"${confi
 
 </div><!-- End searchmask_dbchoice -->
 
+</div><!-- End searchmask_advanced -->
+
 </form>
 
-</div><!-- End searchmask_advanced -->
+<p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

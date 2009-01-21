@@ -1,0 +1,73 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_showsubjects
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller eingerichteten Views
+# mit ihren wichtigsten Informationen
+#
+#######################################################################
+-%]
+[% PROCESS std_header title='KUG Administration - Katalog-Profile anzeigen' %]
+
+  <body bgcolor="#FFFFFF">
+
+[% PROCESS corporate_banner %]
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="admin_navigation" active="subjects" %] 
+
+<div class="content">
+
+<form method="get" action="[%config.admin_loc %]">
+<input type="hidden" name="do_editsubject" value="1" />
+<input type="hidden" name="sessionID"      value="[% sessionID %]" />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Neues Themengebiet anlegen") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td><b>[% msg.maketext("Themengebiet") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td></td></tr>
+<tr><td><input type="text" name="subject" /></td><td><input type="text" name="description" size="20" />
+</td><td><input type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></td></tr>
+</table>
+</td></tr>
+</table>
+
+</form>
+
+<p />
+
+[% IF subjects.size > 0 %]
+
+<table width="100%">
+<tr><th>[% msg.maketext("Bereits existierende Themengebiete") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">[% msg.maketext("Um einen bereits existierendes Themengebiet zu bearbeiten klicken Sie bitte auf den Namen.") %]
+<p />
+
+<table>
+<tr><td><b>[% msg.maketext("Themengebiet") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td></tr>
+
+[% FOREACH subject IN subjects %]
+
+<tr><td><a href="[% config.admin_loc %]?sessionID=[% sessionID %]&do_editsubject=1&subjectid=[% subject.id %]&do_edit=1">[% subject.name %]</a></td><td>[% subject.description %]</td></tr>
+
+[% END %]
+
+</table>
+
+[% END %]
+
+</td></tr>
+</table>
+
+</div>
+
+<p />
+
+[% PROCESS std_footer %]

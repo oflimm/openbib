@@ -1,3 +1,4 @@
+
 #####################################################################
 #
 #  OpenBib::User
@@ -2151,7 +2152,11 @@ sub get_recent_litlists {
 }
 
 sub get_public_litlists {
-    my ($self)=@_;
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $subjectid      = exists $arg_ref->{subjectid}
+        ? $arg_ref->{subjectid}           : undef;
 
     # Log4perl logger erzeugen
   
@@ -2166,10 +2171,21 @@ sub get_public_litlists {
 
     return [] if (!defined $dbh);
 
-    my $sql_stmnt = "select id from litlists where type = 1";
+    my $sql_stmnt = "";
+    my @sql_args  = ();
+    
+    if ($subjectid){
+        $sql_stmnt = "select distinct(ls.litlistid) as id from litlist2subject as ls, litlists as l where ls.subjectid = ? and ls.litlistid = l.id and l.type = 1";
+        push @sql_args, $subjectid;
+    }
+    else {
+        $sql_stmnt = "select id from litlists where type = 1";
+    }
 
+    $logger->debug($sql_stmnt);
+    
     my $request=$dbh->prepare($sql_stmnt) or $logger->error($DBI::errstr);
-    $request->execute() or $logger->error($DBI::errstr);
+    $request->execute(@sql_args) or $logger->error($DBI::errstr);
 
     my $litlists_ref = [];
 

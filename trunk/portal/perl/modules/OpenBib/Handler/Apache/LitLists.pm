@@ -91,7 +91,7 @@ sub handler {
     my $title          = decode_utf8($query->param('title'))        || '';
     my $type           = $query->param('type')        || 1;
     my $litlistid      = $query->param('litlistid')   || undef;
-
+    my $showsubjects   = $query->param('showsubjects') || undef;
     my @subjectids     = ($query->param('subjectids'))?$query->param('subjectids'):();
     my $subjectid      = $query->param('subjectid')   || undef;
     my $oldtag         = $query->param('oldtag')      || '';
@@ -378,6 +378,7 @@ sub handler {
             stylesheet     => $stylesheet,
             sessionID      => $session->{ID},
 
+            showsubjects   => $showsubjects,
             subjects       => $subjects_ref,
             subjectid      => $subjectid,
             user           => $user,

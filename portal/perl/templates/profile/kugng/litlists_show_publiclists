@@ -22,30 +22,33 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="<a href="[% config.litlists_loc %]?sessionID=[% sessionID %]&action=show_public_lists" title="[% msg.maketext("Alle &ouml;ffentliche Literaturlisten") %]"><span class="dbdescshort">[% msg.maketext("Alle &ouml;ffentlichen Literaturlisten") %]</span></a></li>
+   <li><a class="active" href="[% config.litlists_loc %]?sessionID=[% sessionID %]&action=show_public_lists" title="[% msg.maketext("Alle &ouml;ffentliche Literaturlisten") %]"><span class="dbdescshort">[% msg.maketext("Alle &ouml;ffentlichen Literaturlisten") %]</span></a></li>
 </ul>
 
 <div class="content">
 <p />
 
-[% IF subjectid %]<h2>[% FOREACH subject IN subjects %][% IF
-subject.id == subjectid %][% subject.name%][% END %][% END %]</h2>[% END %]
+[% IF subjectid %]<h2>[% FOREACH subject IN subjects %][% IF subject.id == subjectid %][% subject.name%][% END %][% END %]</h2>[% END %]
 <div class="boxed">
-<b>[% msg.maketext("Anzahl") %]</b>:&nbsp;[% public_litlists.size %]</h1>
+<b>Anzeige:</b>&nbsp;<a href="[% config.litlists_loc %]?sessionID=[% sessionID %];action=show_public_lists" [%- IF NOT showsubjects.defined -%]style="font-weight:bold;"[%- END -%]>Alle Listen</a>&nbsp;&#124;&nbsp;<a href="[% config.litlists_loc %]?sessionID=[% sessionID %];action=show_public_lists;showsubjects=1" [%- IF showsubjects.defined -%]style="font-weight:bold;"[%- END -%]>Themengebiete</a>&nbsp;&#124;&nbsp;<b>[% msg.maketext("Anzahl") %]</b>:&nbsp;[% public_litlists.size %]</h1>
 </div>
 
+[% IF showsubjects.defined %]
+<ul>
+[%- FOREACH subject IN subjects -%]
+<li><a <a href="[% config.litlists_loc %]?sessionID=[% sessionID %]&action=show_public_lists;subjectid=[% subject.id %]">[% subject.name %]</a> ([% subject.litlistcount%] Listen)</li>
+[% END %]
+</ul>
+[% ELSE %]
 [%# USE dumper;dumper.dump(public_litlists)%]
 <ul>
 [%- FOREACH thisitem IN public_litlists -%]
-<li><a <a href="[% config.litlists_loc %]?sessionID=[% sessionID %]&action=show;litlistid=[% thisitem.id %];do_showlitlist=1" title="[% itemcount %] Nutzer verwendeten  
-die Literaturliste [% item %]">[% thisitem.title%]</a> ([% thisitem.itemcount %])</li>
+<li><a <a href="[% config.litlists_loc %]?sessionID=[% sessionID %]&action=show;litlistid=[% thisitem.id %];do_showlitlist=1">[% thisitem.title%]</a> ([% thisitem.itemcount %] Titel)</li>
 [% END %]
 </ul>
-
+[% END %]
 <p />
 
 </div>
-
-<p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

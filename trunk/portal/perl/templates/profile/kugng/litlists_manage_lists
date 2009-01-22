@@ -35,9 +35,24 @@
 <tr><th>[% msg.maketext("Neue Literaturliste anlegen") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 <table>
-<tr><td><b>[% msg.maketext("Titel der Liste") %]</b></td><td><b>[% msg.maketext("Sichtbarkeit") %]</b></td></tr>
-<tr><td><input type="text" name="title" /></td><td><select name="type"><option value="1">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select></td><td><input
+<tr><td><b>[% msg.maketext("Titel der Liste") %]</b></td><td><b>[% msg.maketext("Sichtbarkeit") %]</b></td><td></td></tr>
+<tr><td><input type="text" name="title" size="50" /></td><td><select name="type"><option value="1">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select></td><td><input
 type="submit" name="do_addlist" value="[% msg.maketext("Neu") %]" /></td></tr>
+<tr><td colspan="3"></td></tr>
+
+<tr><td colspan="3">Ordnen Sie Ihre Literaturliste thematisch ein</td></tr>
+<tr><td colspan="3">
+<select name="subjectids" multiple="multiple">
+<option selected="selected">Keine Einordnung gew&uuml;nscht</option>
+
+[% FOREACH subject IN subjects %]
+<option value="[% subject.id %]">[% subject.name %][% IF subject.description%] ([% subject.description %])[% END %]</option>
+
+[% END %]
+
+
+</select>
+</td></tr>
 </table>
 </td></tr>
 </table>

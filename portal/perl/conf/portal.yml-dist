@@ -266,6 +266,8 @@ tt_admin_showstat_52_tname: admin_showstat_52
 tt_admin_showstat_53_tname: admin_showstat_53
 tt_admin_showstat_5_tname: admin_showstat_5
 tt_admin_showstat_tname: admin_showstat
+tt_admin_showsubjects_tname: admin_showsubjects
+tt_admin_editsubject_tname: admin_editsubject
 tt_admin_showuser_tname: admin_showuser
 tt_admin_showviews_tname: admin_showviews
 tt_bibsonomy_showtags_tname: bibsonomy_showtags

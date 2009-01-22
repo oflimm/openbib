@@ -92,6 +92,7 @@ sub handler {
     my $type           = $query->param('type')        || 1;
     my $litlistid      = $query->param('litlistid')   || undef;
 
+    my @subjectids     = ($query->param('subjectids'))?$query->param('subjectids'):();
     my $oldtag         = $query->param('oldtag')      || '';
     my $newtag         = $query->param('newtag')      || '';
     
@@ -157,6 +158,8 @@ sub handler {
         return OK;
     }
 
+    my $subjects_ref = OpenBib::User->get_subjects;
+
     if ($action eq "manage" && $user->{ID}){
         
 	if ($do_addlist) {
@@ -167,7 +170,7 @@ sub handler {
                 return OK;
             }
             
-            my $litlistid = $user->add_litlist({ title =>$title, type => $type});
+            my $litlistid = $user->add_litlist({ title =>$title, type => $type, subjectids => \@subjectids });
 
             # Wenn zusaetzlich ein Titel-Eintrag uebergeben wird, dann wird dieser auch
             # der soeben erzeugten Literaturliste hinzugefuegt.
@@ -200,7 +203,7 @@ sub handler {
             my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
             
             if ($litlist_properties_ref->{userid} eq $user->{ID}){
-                $user->change_litlist({ title => $title, type => $type, litlistid => $litlistid});
+                $user->change_litlist({ title => $title, type => $type, litlistid => $litlistid, subjectids => \@subjectids });
             }
             
             $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage");
@@ -268,6 +271,7 @@ sub handler {
                     stylesheet => $stylesheet,
                     sessionID  => $session->{ID},
 
+                    subjects     => $subjects_ref,
                     query        => $query,
                     qopts        => $queryoptions->get_options,
                     user         => $user,
@@ -298,7 +302,8 @@ sub handler {
                 view       => $view,
                 stylesheet => $stylesheet,
                 sessionID  => $session->{ID},
-		      
+
+                subjects   => $subjects_ref,
                 litlists   => $litlists,
                 qopts      => $queryoptions->get_options,
                 user       => $user,
@@ -328,6 +333,9 @@ sub handler {
                 content   => $litlistid,
             });
 
+    # Thematische Einordnung
+
+            my $litlist_subjects_ref   = OpenBib::User->get_subjects_of_litlist({id => $litlistid});
             my $other_litlists_of_user = $user->get_other_litlists({litlistid => $litlistid});
                 
                 # TT-Data erzeugen
@@ -336,6 +344,8 @@ sub handler {
                 stylesheet     => $stylesheet,
                 sessionID      => $session->{ID},
 
+                subjects       => $subjects_ref,
+                thissubjects   => $litlist_subjects_ref,
                 query          => $query,
                 qopts          => $queryoptions->get_options,
                 user           => $user,
@@ -366,7 +376,8 @@ sub handler {
             view           => $view,
             stylesheet     => $stylesheet,
             sessionID      => $session->{ID},
-            
+
+            subjects       => $subjects_ref,
             user           => $user,
             
             public_litlists=> $public_litlists_ref,

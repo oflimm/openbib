@@ -235,3 +235,25 @@ CREATE TABLE litlistitems (
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
+
+DROP TABLE IF EXISTS subjects;
+CREATE TABLE litlistsubjects (
+ id           INT(11)     NOT NULL auto_increment,
+ name         TEXT        NOT NULL default '',
+ description  TEXT        NOT NULL default '',
+ INDEX (id)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+DROP TABLE IF EXISTS litlist2subject;
+CREATE TABLE litlist2subject (
+ litlistid    INT(11)     NOT NULL,
+ subjectid    INT(11)     NOT NULL,
+ INDEX (litlistid),
+ INDEX (subjectid)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;

@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Admin
 #
-#  Dieses File ist (C) 2004-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2004-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -103,6 +103,8 @@ sub handler {
     my $do_editcat_rss  = $query->param('do_editcat_rss')  || '';
     my $do_showprofiles = $query->param('do_showprofiles') || '';
     my $do_editprofile  = $query->param('do_editprofile')  || '';
+    my $do_showsubjects = $query->param('do_showsubjects') || '';
+    my $do_editsubject  = $query->param('do_editsubject')  || '';
     my $do_showviews    = $query->param('do_showviews')    || '';
     my $do_editview     = $query->param('do_editview')     || '';
     my $do_editview_rss = $query->param('do_editview_rss') || '';
@@ -162,9 +164,10 @@ sub handler {
     my $circcheckurl    = $query->param('circcheckurl')    || '';
     my $circdb          = $query->param('circdb')          || '';
 
-    my @rssfeeds        = ($query->param('rssfeeds'))?$query->param('rssfeeds'):();
+    my $subject         = $query->param('subject')         || '';
+    my $subjectid       = $query->param('subjectid')       || '';
 
-    
+    my @rssfeeds        = ($query->param('rssfeeds'))?$query->param('rssfeeds'):();
     my $primrssfeed     = $query->param('primrssfeed')     || '';
     my $rsstype         = $query->param('rss_type')        || '';
 
@@ -609,6 +612,97 @@ sub handler {
             };
       
             OpenBib::Common::Util::print_page($config->{tt_admin_editprofile_tname},$ttdata,$r);
+      
+        }
+    
+    }
+    elsif ($do_showsubjects) {
+        my $subjects_ref = OpenBib::User->get_subjects;
+
+        my $ttdata={
+            stylesheet => $stylesheet,
+            sessionID  => $session->{ID},
+            subjects   => $subjects_ref,
+            config     => $config,
+            user       => $user,
+            msg        => $msg,
+        };
+    
+        OpenBib::Common::Util::print_page($config->{tt_admin_showsubjects_tname},$ttdata,$r);
+    }
+    elsif ($do_editsubject) {
+    
+        # Zuerst schauen, ob Aktionen gefordert sind
+    
+        if ($do_del) {
+	    editsubject_del($subject);
+
+	    my $ret_ref = dist_cmd("editsubject_del",{ id => $subjectid }) if ($do_dist);
+
+            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showsubjects=1");
+            return OK;
+      
+        }
+        elsif ($do_change) {
+	    editsubject_change({
+                name        => $subject,
+                description => $description,
+                id          => $subjectid,
+            });
+            
+	    my $ret_ref = dist_cmd("editsubject_change",{ 
+                name        => $subject,
+                description => $description,
+                id          => $subjectid,
+            }) if ($do_dist);
+
+            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showsubjects=1");
+      
+            return OK;
+        }
+        elsif ($do_new) {
+
+            if ($subject eq "") {
+
+                OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen mindestens einen Namen f&uuml;r das Themenbebiet eingeben."),$r,$msg);
+
+                return OK;
+            }
+
+	    my $ret = editsubject_new({
+                name        => $subject,
+                description => $description,
+            });
+
+	    my $ret_ref = dist_cmd("editsubject_new",{ 
+                name        => $subject,
+                description => $description,
+            }) if ($do_dist);
+
+	    if ($ret == -1){
+	      OpenBib::Common::Util::print_warning($msg->maketext("Es existiert bereits ein Themengebiet unter diesem Namen"),$r,$msg);
+	      return OK;
+	    }
+
+            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showsubjects=1");
+            return OK;
+        }
+        elsif ($do_edit) {
+
+	    my $subject_ref = OpenBib::User->get_subject({ id => $subjectid});
+
+            my $ttdata={
+                stylesheet => $stylesheet,
+                sessionID  => $session->{ID},
+
+                subject    => $subject_ref,
+
+                config     => $config,
+                user       => $user,
+                msg        => $msg,
+            };
+      
+            OpenBib::Common::Util::print_page($config->{tt_admin_editsubject_tname},$ttdata,$r);
       
         }
     
@@ -1666,6 +1760,94 @@ sub editprofile_new {
     
     $idnresult=$dbh->prepare("insert into profileinfo values (?,?)") or $logger->error($DBI::errstr);
     $idnresult->execute($profilename,$description) or $logger->error($DBI::errstr);
+    
+    return 1;
+}
+
+sub editsubject_del {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $id            = exists $arg_ref->{id};
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $request=$dbh->prepare("delete from subjects where id = ?") or $logger->error($DBI::errstr);
+    $request->execute($id) or $logger->error($DBI::errstr);
+    $request->finish();
+
+    return;
+}
+
+sub editsubject_change {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $name                   = exists $arg_ref->{name}
+        ? $arg_ref->{name}                : undef;
+    my $description            = exists $arg_ref->{description}
+        ? $arg_ref->{description}         : undef;
+    my $id                     = exists $arg_ref->{id}
+        ? $arg_ref->{id}                  : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    # Zuerst die Aenderungen in der Tabelle Profileinfo vornehmen
+    
+    my $request=$dbh->prepare("update subjects set name = ?, description = ? where id = ?") or $logger->error($DBI::errstr);
+    $request->execute($name,$description,$id) or $logger->error($DBI::errstr);
+    $request->finish();
+
+    return;
+}
+
+sub editsubject_new {
+    my ($arg_ref) = @_;
+
+    # Set defaults
+    my $name                   = exists $arg_ref->{name}
+        ? $arg_ref->{name}                : undef;
+    my $description            = exists $arg_ref->{description}
+        ? $arg_ref->{description}         : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $idnresult=$dbh->prepare("select count(*) as rowcount from subjects where name = ?") or $logger->error($DBI::errstr);
+    $idnresult->execute($name) or $logger->error($DBI::errstr);
+    my $res=$idnresult->fetchrow_hashref;
+    my $rows=$res->{rowcount};
+    
+    if ($rows > 0) {
+      $idnresult->finish();
+      return -1;
+    }
+    
+    $idnresult=$dbh->prepare("insert into subjects (name,description) values (?,?)") or $logger->error($DBI::errstr);
+    $idnresult->execute($name,$description) or $logger->error($DBI::errstr);
     
     return 1;
 }

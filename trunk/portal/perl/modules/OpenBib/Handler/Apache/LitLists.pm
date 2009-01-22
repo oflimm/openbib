@@ -93,6 +93,7 @@ sub handler {
     my $litlistid      = $query->param('litlistid')   || undef;
 
     my @subjectids     = ($query->param('subjectids'))?$query->param('subjectids'):();
+    my $subjectid      = $query->param('subjectid')   || undef;
     my $oldtag         = $query->param('oldtag')      || '';
     my $newtag         = $query->param('newtag')      || '';
     
@@ -369,7 +370,7 @@ sub handler {
         }
     }
     elsif ($action eq "show_public_lists") {
-        my $public_litlists_ref = $user->get_public_litlists();
+        my $public_litlists_ref  = $user->get_public_litlists({ subjectid => $subjectid });
 
         # TT-Data erzeugen
         my $ttdata={
@@ -378,6 +379,7 @@ sub handler {
             sessionID      => $session->{ID},
 
             subjects       => $subjects_ref,
+            subjectid      => $subjectid,
             user           => $user,
             
             public_litlists=> $public_litlists_ref,

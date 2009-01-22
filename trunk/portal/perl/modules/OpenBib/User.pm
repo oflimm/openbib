@@ -1870,6 +1870,8 @@ sub add_litlist {
         ? $arg_ref->{title}               : 'Literaturliste';
     my $type                = exists $arg_ref->{type}
         ? $arg_ref->{type}                : 1;
+    my $subjectids_ref      = exists $arg_ref->{subjectids}
+        ? $arg_ref->{subjectids}          : 1;
 
     # Log4perl logger erzeugen
   
@@ -1901,7 +1903,7 @@ sub add_litlist {
 
     $request=$dbh->prepare("insert into litlists (userid,title,type) values (?,?,?)") or $logger->error($DBI::errstr);
     $request->execute($self->{ID},$title,$type) or $logger->error($DBI::errstr);
-
+    
     # Litlist-ID bestimmen und zurueckgeben
 
     $request=$dbh->prepare("select id from litlists where userid = ? and title = ? and type = ?");
@@ -1909,6 +1911,14 @@ sub add_litlist {
 
     $result=$request->fetchrow_hashref;
     $litlistid = $result->{id};
+
+    if (@{$subjectids_ref}){
+        $request=$dbh->prepare("insert into litlist2subject (litlistid,subjectid) values (?,?)") or $logger->error($DBI::errstr);
+
+        foreach my $subjectid (@{$subjectids_ref}){
+            $request->execute($litlistid,$subjectid) or $logger->error($DBI::errstr);
+        }
+    }
 
     return $litlistid;
 }
@@ -1945,6 +1955,9 @@ sub del_litlist {
     $request=$dbh->prepare("delete from litlists where id=?") or $logger->error($DBI::errstr);
     $request->execute($litlistid) or $logger->error($DBI::errstr);
 
+    $request=$dbh->prepare("delete from litlist2subject where litlistid=?") or $logger->error($DBI::errstr);
+    $request->execute($litlistid) or $logger->error($DBI::errstr);
+
     return;
 }
 
@@ -1958,6 +1971,8 @@ sub change_litlist {
         ? $arg_ref->{title}               : 'Literaturliste';
     my $type                = exists $arg_ref->{type}
         ? $arg_ref->{type}                : undef;
+    my $subjectids_ref      = exists $arg_ref->{subjectids}
+        ? $arg_ref->{subjectids}          : undef;
 
     # Log4perl logger erzeugen
   
@@ -1979,6 +1994,21 @@ sub change_litlist {
     
     my $request=$dbh->prepare("update litlists set title=?, type=? where id=?") or $logger->error($DBI::errstr);
     $request->execute($title,$type,$litlistid) or $logger->error($DBI::errstr);
+
+    unless (ref($subjectids_ref) eq 'ARRAY') {
+        $subjectids_ref = [ $subjectids_ref ];
+    }
+    
+    if (@{$subjectids_ref}){
+        $request=$dbh->prepare("delete from litlist2subject where litlistid = ?") or $logger->error($DBI::errstr);
+        $request->execute($litlistid) or $logger->error($DBI::errstr);
+
+        $request=$dbh->prepare("insert into litlist2subject (litlistid,subjectid) values (?,?)") or $logger->error($DBI::errstr);
+
+        foreach my $subjectid (@{$subjectids_ref}){
+            $request->execute($litlistid,$subjectid) or $logger->error($DBI::errstr);
+        }
+    }
 
     return;
 }
@@ -2182,8 +2212,8 @@ sub get_other_litlists {
             or $logger->error($DBI::errstr);
 
     my $litlists_ref = {
-        same_user  => [],
-        same_title => [],
+        same_user     => [],
+        same_title    => [],
     };
 
     return $litlists_ref if (!defined $dbh || !$litlistid);
@@ -2213,7 +2243,6 @@ sub get_other_litlists {
       push @{$litlists_ref->{same_title}}, $litlist_props if ($litlist_props->{type} == 1);
     }
 
-    
     return $litlists_ref;
 }
 
@@ -2371,16 +2400,176 @@ sub get_litlist_properties {
     my $userid    = $result->{userid};
     my $itemcount = $self->get_number_of_litlistentries({litlistid => $litlistid});
 
+    $request=$dbh->prepare("select s.* from litlist2subject as ls, subjects as s where ls.litlistid=? and ls.subjectid=s.id") or $logger->error($DBI::errstr);
+    $request->execute($litlistid) or $logger->error($DBI::errstr);
+
+    my $subjects_ref          = [];
+    my $subject_selected_ref  = {};
+
+    while (my $result=$request->fetchrow_hashref){
+        my $subjectid   = $result->{id};
+        my $name        = $result->{name};
+        my $description = $result->{description};
+
+        $subject_selected_ref->{$subjectid}=1;
+        push @{$subjects_ref}, {
+            id          => $subjectid,
+            name        => $name,
+            description => $description,
+        };
+    }
+    
     my $litlist_ref = {
-			id        => $litlistid,
-			userid    => $userid,
-			title     => $title,
-			type      => $type,
-		        itemcount => $itemcount,
-			tstamp    => $tstamp,
+			id               => $litlistid,
+			userid           => $userid,
+			title            => $title,
+			type             => $type,
+		        itemcount        => $itemcount,
+			tstamp           => $tstamp,
+                        subjects         => $subjects_ref,
+                        subject_selected => $subject_selected_ref,
 		       };
 
     return $litlist_ref;
+}
+
+sub get_subjects {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return [] if (!defined $dbh);
+
+    my $request=$dbh->prepare("select * from subjects order by name") or $logger->error($DBI::errstr);
+    $request->execute() or $logger->error($DBI::errstr);
+
+    my $subjects_ref = [];
+    
+    while (my $result=$request->fetchrow_hashref){
+        push @{$subjects_ref}, {
+            id           => $result->{id},
+            name         => $result->{name},
+            description  => $result->{description},
+        };
+    }
+
+    return $subjects_ref;
+}
+
+sub get_subjects_of_litlist {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $litlistid           = exists $arg_ref->{litlistid}
+        ? $arg_ref->{litlistid}           : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return [] if (!defined $dbh);
+
+    my $request=$dbh->prepare("select * from subjects order by name") or $logger->error($DBI::errstr);
+    $request->execute() or $logger->error($DBI::errstr);
+
+    my $subjects_ref = [];
+    
+    while (my $result=$request->fetchrow_hashref){
+        push @{$subjects_ref}, {
+            id           => $result->{id},
+            name         => $result->{name},
+            description  => $result->{description},
+        };
+    }
+
+    return $subjects_ref;
+}
+
+sub set_subjects_of_litlist {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $litlistid           = exists $arg_ref->{litlistid}
+        ? $arg_ref->{litlistid}           : undef;
+
+    my $subjectids_ref      = exists $arg_ref->{subjectids}
+        ? $arg_ref->{subjectids}          : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return [] if (!defined $dbh);
+
+    my $request=$dbh->prepare("delete from litlist2subject where litlistid=?") or $logger->error($DBI::errstr);
+    $request->execute($litlistid) or $logger->error($DBI::errstr);
+
+    $request=$dbh->prepare("insert into litlist2subject values (?,?);") or $logger->error($DBI::errstr);
+
+    foreach my $subjectid (@{$subjectids_ref}){
+        $request->execute($litlistid,$subjectid) or $logger->error($DBI::errstr);
+    }
+
+    return;
+}
+
+sub get_subject {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $id           = exists $arg_ref->{id}
+        ? $arg_ref->{id}           : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return {} if (!defined $dbh);
+
+    my $request=$dbh->prepare("select * from subjects where id = ?") or $logger->error($DBI::errstr);
+    $request->execute($id) or $logger->error($DBI::errstr);
+
+    my $subject_ref;
+    
+    while (my $result=$request->fetchrow_hashref){
+        $subject_ref = {
+            id           => $result->{id},
+            name         => $result->{name},
+            description  => $result->{description},
+        };
+    }
+
+    return $subject_ref;
 }
 
 sub is_authenticated {

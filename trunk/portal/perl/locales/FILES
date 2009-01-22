@@ -45,6 +45,7 @@
 ../templates/admin_editlogintarget
 ../templates/admin_editprofile
 ../templates/admin_editsession
+../templates/admin_editsubject
 ../templates/admin_editview
 ../templates/admin_editview_rss
 ../templates/admin_exploresessions_list
@@ -64,6 +65,7 @@
 ../templates/admin_showstat_3
 ../templates/admin_showstat_4
 ../templates/admin_showstat_5
+../templates/admin_showsubjects
 ../templates/admin_showuser
 ../templates/admin_showviews
 ../templates/admin_showviews

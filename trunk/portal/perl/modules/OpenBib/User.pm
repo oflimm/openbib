@@ -2475,6 +2475,7 @@ sub get_subjects {
             id           => $result->{id},
             name         => $result->{name},
             description  => $result->{description},
+            litlistcount => OpenBib::User->get_number_of_litlists_by_subject({subjectid => $result->{id}}),
         };
     }
 
@@ -2515,6 +2516,36 @@ sub get_subjects_of_litlist {
     }
 
     return $subjects_ref;
+}
+
+sub get_number_of_litlists_by_subject {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $subjectid           = exists $arg_ref->{subjectid}
+        ? $arg_ref->{subjectid}           : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return [] if (!defined $dbh);
+
+    my $request=$dbh->prepare("select count(distinct litlistid) as llcount from litlist2subject where subjectid=?") or $logger->error($DBI::errstr);
+    $request->execute($subjectid) or $logger->error($DBI::errstr);
+
+    my $subjects_ref = [];
+    
+    my $result=$request->fetchrow_hashref;
+
+    return $result->{llcount};
 }
 
 sub set_subjects_of_litlist {

@@ -249,8 +249,6 @@ sub handler {
             return OK;
         }
 
-        $recordlist->load_full_records;
-
         # TT-Data erzeugen
         my $ttdata={
             view              => $view,

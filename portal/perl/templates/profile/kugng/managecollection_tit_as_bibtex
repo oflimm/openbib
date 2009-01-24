@@ -1,0 +1,18 @@
+[%#-
+#######################################################################
+#
+# Templatename: managecollection_tit_as_bibtex
+#
+# Typ         : Subtemplate       
+#
+# Aufgabe:
+#
+# Ausgabe *aller* Merklisten-Items im BibTeX-Format *ohne* Funktions-
+# elemente
+#
+#######################################################################
+-%]
+[%- FOREACH record IN recordlist.load_full_records.get_records -%]
+[% record.to_bibtex %]
+
+[% END -%]

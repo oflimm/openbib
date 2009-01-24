@@ -42,8 +42,7 @@ type="submit" name="do_addlist" value="[% msg.maketext("Neu") %]" /></td></tr>
 
 <tr><td colspan="3">Ordnen Sie Ihre Literaturliste thematisch ein</td></tr>
 <tr><td colspan="3">
-<select name="subjectids" multiple="multiple">
-<option selected="selected">Keine Einordnung gew&uuml;nscht</option>
+<select name="subjectids" multiple="multiple" size="5">
 
 [% FOREACH subject IN subjects %]
 <option value="[% subject.id %]">[% subject.name %][% IF subject.description%] ([% subject.description %])[% END %]</option>
@@ -97,11 +96,6 @@ config.servername %][% config.litlists_loc %]?sessionID=[% sessionID
 
 </div>
 
-<p />
-
-
 </div>
-
-<p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

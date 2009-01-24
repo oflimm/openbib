@@ -217,8 +217,12 @@
 ../templates/profile/kugng/litlists_manage_lists
 ../templates/profile/kugng/litlists_manage_singlelist
 ../templates/profile/kugng/litlists_show_singlelist
+../templates/profile/kugng/litlists_show_publiclists
 ../templates/profile/kugng/managecollection_show
 ../templates/profile/kugng/managecollection_tit_as_html
+../templates/profile/kugng/managecollection_tit_as_text
+../templates/profile/kugng/managecollection_tit_as_bibtex
+../templates/profile/kugng/managecollection_tit_as_endnote
 ../templates/profile/kugng/mexset
 ../templates/profile/kugng/newsflash
 ../templates/profile/kugng/resultlists_showall

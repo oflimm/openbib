@@ -43,8 +43,7 @@ type="submit" name="do_changelist" value="[% msg.maketext("&Auml;ndern") %]" /><
 
 <tr><td colspan="3">Ordnen Sie Ihre Literaturliste thematisch ein</td></tr>
 <tr><td colspan="3">
-<select name="subjectids" multiple="multiple">
-<option>Keine Einordnung gew&uuml;nscht</option>
+<select name="subjectids" multiple="multiple" size="5">
 
 [% FOREACH subject IN subjects %]
 <option value="[% subject.id %]"
@@ -216,7 +215,5 @@ selected="selected"
 [% END %]
 
 </div>
-
-<p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

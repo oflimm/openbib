@@ -12,6 +12,154 @@
 #
 #######################################################################
 -%]
+<!--<div class="boxed">
+
+<b>Anzeige:</b>&nbsp;[% IF show == 'short'%]<b>[% msg.maketext("Kurztitel") %]</b>[% ELSE %]<a href="[% managecollection_loc%]?sessionID=[% sessionID %];action=show;type=HTML;show=short">[% msg.maketext("Kurztitel") %]</a>[% END %]&nbsp;&#124;&nbsp;[% IF show == 'full' %]<b>[% msg.maketext("Volltitel") %]</b>[% ELSE %]<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=HTML;show=full">[% msg.maketext("Volltitel") %]</a>[% END %]
+</div>-->
+
+<p />
+
+<!-- Titlelist begins here -->
+<div class="resultlist">
+  <div class="resultheader">
+    <div class="catalogue">
+[% msg.maketext("Merkliste") %]
+    </div>
+    <div class="hits">
+[% recordlist.get_size %]  [% msg.maketext("Titel") %]
+    </div>
+    <div class="navigation">
+<input type="checkbox" name="collection" value="select" onclick="update_collection(this.form, this.checked,'collection_item')" />&nbsp;<b>Alle Eintr&auml;ge ausw&auml;hlen</b>
+    </div>
+  </div>
+  <div class="rightoptions">
+<div class="reuse_data"><!-- Begin Reuse -->
+
+<b>[% msg.maketext("Behalten Sie diese Liste") %]:</b><p/>
+
+<table>
+<tr>
+<th><img src="[% config.save_img %]" alt="[% msg.maketext("Abspeichern") %]" border="0" /></th>
+<td><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=save;type=[% type %];show=[% show %]" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a></td>
+<th><img src="[% config.print_img %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></th>
+<td><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=print;type=[% type %];show=[% show %]" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a></td>
+</tr>
+<tr>
+<th><img src="[% config.mail_img %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></th>
+<td><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=mail;type=[% type %];show=[% show %]" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a></td>
+<th></th><td></td>
+</tr>
+</table>
+
+<p />
+
+<div class="headline">[% msg.maketext("Andere Formate") %]</div>
+
+<p>
+<a href="[% config.managecollection_loc %]?sessionID=[%
+sessionID %];action=show;type=Text">Text</a>, <a
+href="[% config.managecollection_loc %]?sessionID=[% sessionID
+%];action=show;type=BibTeX">BibTeX</a>, <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=EndNote">EndNote</a> 
+</p>
+
+<div class="headline">[% msg.maketext("Literaturliste") %]</div>
+<p>
+[% 
+   IF config.litlists ;
+
+      litlists = [] ;
+      IF user.ID ;
+          litlists = user.get_litlists();
+      END ;
+
+      IF litlists.size > 0 ;
+%]
+[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> in die bestehende Literaturliste &uuml;bernehmen: ") %]<select name="litlistid">[% FOREACH litlist IN litlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select>&nbsp;<input type="submit" name="do_litlist_addentry" value="[% msg.maketext("Los") %]" />
+[%    END %]
+[% END %]
+</p>
+<p>
+[% msg.maketext("Anlegen einer neuen Literaturliste: ") %] <input type="text" name="title" /> <select name="littype"><option value="1">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select> <input type="submit" name="do_addlitlist" value="[% msg.maketext("Los") %]" />
+</p>
+
+</div>
+
+  </div>
+  <div class="resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
+[% IF show == 'short' %]
+[%- recordlist = recordlist.load_brief_records -%]
+[%- FOREACH record IN recordlist.get_records -%]
+[%- item = record.get_brief_normdata -%]
+[%# USE dumper;dumper.dump(item)%]
+[%# Verfasser konstruieren %]
+[%- persons = [] -%]
+[%- FOREACH part IN item.${'P0100'}  -%]
+[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.${'P0101'}  -%]
+[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.${'C0200'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- END -%]
+[%- FOREACH part IN item.${'C0201'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- END -%]
+[%- person = persons.join(' ; ') -%]
+[%# Titel konstruieren %]
+[%- title = item.${'T0331'}.first.content -%]
+[%- IF item.${'T0310'}.first.content -%]
+[%- title = item.${'T0310'}.first.content -%]
+[%- END -%]
+[%# Einbeziehung der Zaehlfelder T5100 %]
+[%- IF title && item.${'T5100'}.first.content -%]
+[%-    order = item.${'T5100'}.first.content -%]
+[%-    IF title == order -%]
+[%-      title = "${order}."-%]
+[%-    ELSE -%]
+[%-      title = "${order}. ${title}" -%]
+[%-    END -%]
+[%- END -%]
+[%# Verlage konstruieren %]
+[%- publisher = item.${'T0412'}.first.content -%]
+[%# Ejahr konstruieren %]
+[%- yearofpub = item.${'T0425'}.first.content -%]
+[%# Signaturen konstruieren %]
+[%- signaturen = [] -%]
+[%- FOREACH part IN item.${'X0014'} -%]
+[%- signaturen.push("${part.content}") -%]
+[%- END -%]
+[%- signatur = signaturen.sort.unique.join(' ; ') -%]
+[%- isbn     = item.${"T0540"}.first.content.replace('-','') -%]
+[%- dbdesc   = dbinfo.dbnames.${item.database}.full -%]
+[%- dburl    = dbinfo.urls.${item.database} -%]
+    <div class="item">
+      <div class="numbering"><input type="checkbox" name="titid" value="[% record.database %]:[% record.id %]"  title="collection_item" />&nbsp;[% loop.count+offset %]</div>
+      <div class="thumbnail">
+    [% IF (config.coverscans.all || config.coverscans.${database}) && isbn && qopts.listtype == 'cover' %]<a href="[% config.coverscans_credits_exturl.replace('ISBNINHERE', isbn) %]" target="_blank"><img src="[% config.coverscans_exturl.replace('ISBNINHERE', isbn) %]" title="[% config.coverscans_creditstext_exturl %]" /></a>[% ELSE %]&nbsp;[% END %]
+      </div> 
+      <div class="brieftitle">
+<span class="rlperson">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
+<br />aus:&nbsp;<i><a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.maxlength_dbname) %]</a></i>[%- IF item.popularity -%]&nbsp;(Popularit&auml;t: [% item.popularity %])[%- END -%]
+      </div>
+      <div class="titlemark">[% signatur | truncate(config.maxlength_sign) %]</div>
+      <div class="titleactions">
+[% IF show_bibsonomy %]
+<a href="[% config.redirect_loc %]/[% sessionID %]/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=[% record.load_full_record.to_bibtex | uri | replace('&','%26') %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top"><img style="vertical-align: bottom;" src="[% config.share_img %]" alt="Share this"/></a>
+[% END %]
+&nbsp;<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %]&action=show;do_collection_delentry=1;titid=[% record.database %]:[% record.id %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.delete_img %]" alt="[% msg.maketext("Entfernen") %]" /></a>
+  </div>
+    </div>
+<!-- Ende einzelner Treffer -->
+[%- END -%]
+  </div>
+[% ELSE #full%]
+[%- recordlist.load_brief_records -%]
+[%- FOREACH record IN recordlist.get_records -%]
 [% normset    = record.get_normdata %]
 [% mexnormset = record.get_mexdata %]
 [% circset    = record.get_circdata %]
@@ -22,7 +170,7 @@
 <tr><td><input type="checkbox" name="titid" value="[% record.database %]:[% record.id %]"  title="collection_item" /></td><td>[% msg.maketext("aus:") %] <a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.maxlength_dbname) %]</a></td></tr>
 <tr><td>&nbsp;</td><td>
 <!-- Title begins here -->
-[% IF show == 'full' %]
+
 <table width="100%">
 <tr><th>[% msg.maketext("Titelaufnahme") %]</th></tr>
 <tr><td class="boxedclear">
@@ -99,67 +247,9 @@ END;
 </td></tr>
 </table>
 [% END %]
-[% ELSE # show=short%]
-[%# Verfasser konstruieren %]
-[%- item = normset -%]
-[%- persons = [] -%]
-[%- FOREACH part IN item.${'T0100'}  -%]
-[%- persons.push("${part.content}")-%]
-[%#- persons.push("${part.content}") -%]
-[%- END -%]
-[%- FOREACH part IN item.${'T0101'}  -%]
-[%- persons.push("${part.content}")-%]
-[%#- persons.push("${part.content}") -%]
-[%- END -%]
-[%- FOREACH part IN item.${'T0200'}  -%]
-[%#- persons.push("${part.content}") -%]
-[%- persons.push("${part.content}")-%]
-[%- END -%]
-[%- FOREACH part IN item.${'T0201'}  -%]
-[%#- persons.push("${part.content}") -%]
-[%- persons.push("${part.content}")-%]
-[%- END -%]
-[%- person = persons.join(' ; ') -%]
 
-[%# Titel konstruieren %]
-[%- title = item.${'T0331'}.first.content -%]
-[%- IF item.${'T0310'}.first.content -%]
-[%- title = item.${'T0310'}.first.content -%]
 [%- END -%]
-
-[%# Einbeziehung der Zaehlfelder T5100 %]
-[%- IF title && item.${'T5100'}.first.content -%]
-[%-    order = item.${'T5100'}.first.content -%]
-[%-    IF title == order -%]
-[%-      title = "${order}."-%]
-[%-    ELSE -%]
-[%-      title = "${order}. ${title}" -%]
-[%-    END -%]
+</div>
 [%- END -%]
-
-[%# Verlage konstruieren %]
-[%- publisher = item.${'T0412'}.first.content -%]
-
-[%# Ejahr konstruieren %]
-[%- yearofpub = item.${'T0425'}.first.content -%]
-
-[%# Signaturen konstruieren %]
-[%- signaturen = [] -%]
-[%- FOREACH normset IN mexnormset -%]
-[%  IF normset.${'X0014'}.content %]
-[%-   signaturen.push(normset.${'X0014'}.content) -%]
-[%- END -%]
-[%- END -%]
-[%- signatur = signaturen.sort.unique.join(' ; ') -%]
-<span class="rlauthor">[% person %]</span><br /><strong><span class="rltitle">[% title %]</span></strong>, <span
-class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>, <b>[% signatur %]</b><br />
-[% END %]
-[% IF show_bibsonomy %]
-<p />
-<img style="vertical-align: bottom;" src="[% config.share_img %]" alt="Share this"/>&nbsp;<a href="[% config.redirect_loc %]/[% sessionID %]/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=[% record.to_bibtex | uri | replace('&','%26') %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a>
-<p />
-[% END %]
-
-<!-- Title ends here -->
-</td></tr>
-<tr><td></td><td></td></tr>
+<!-- Titlelist ends here -->
+</form>

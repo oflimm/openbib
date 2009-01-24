@@ -724,6 +724,14 @@ dt.review {
 
 }
 
+.resultlist .rightoptions {  
+  float: right;
+  width: 23%;
+  margin-top: 5px; 
+  margin-right: 5px; 
+  background-color: white;
+}
+
 .resultitems {
   width: 75%;
   margin-top: 5px;

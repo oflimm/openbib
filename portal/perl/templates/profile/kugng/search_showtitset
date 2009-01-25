@@ -125,7 +125,7 @@ FOREACH category IN categories;
          END ;
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;verf=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchsingleaut=${thisid}";
-         content   = "${rssfeed}<a href=\"${config.redirect_loc}/${sessionID}/520/http://de.wikipedia.org/wiki/Spezial:Search?search=${wikicontent}&amp;go=Artikel\" target=\"_blank\"><img src=\"${config.wikipedia_img}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+         content   = "${rssfeed}<a href=\"${config.redirect_loc}/${sessionID}/520/http://${qopts.l}.wikipedia.org/wiki/Spezial:Search?search=${wikicontent}&amp;go=Artikel\" target=\"_blank\"><img src=\"${config.wikipedia_img}\" alt=\"Mashup mit Wikipedia\" /></a>&nbsp;<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
 
     CASE [ "T0200" "T0201" ];
          thisid     = item.id;

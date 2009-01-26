@@ -151,16 +151,19 @@ sub handler {
 
         my %similar_done = ();
         foreach my $swtid (@swtids){
-            my $titcount = OpenBib::Record::Subject->new({database=>$database, id => $id})->get_number_of_titles;
             
+            my $titcount = OpenBib::Record::Subject->new({database=>$database, id => $swtid})->get_number_of_titles;
+
             # Nur 'praezisere' Schlagworte werden analysiert
             if ($titcount < 100){
+                #$request = $dbh->prepare("select distinct targetid as id from conn where sourcetype=1 and targettype=4 and targetid != ? and sourceid in (select sourceid from conn where sourcetype=1 and targettype=4 and targetid = ?)");
                 $request = $dbh->prepare("select distinct c2.targetid as id, count(c2.sourceid) as titcount from conn as c1 left join conn as c2 on c1.sourceid=c2.sourceid where c1.sourcetype=1 and c2.sourcetype=1 and c1.targettype=4 and c2.targettype=4 and c1.targetid=? and c2.targetid != ? group by c2.sourceid");
                 $request->execute($swtid,$swtid);
                 
                 while (my $result=$request->fetchrow_hashref){
                     my $similarid       = $result->{id};
                     my $similartitcount = $result->{titcount};
+                    #my $similartitcount = OpenBib::Record::Subject->new({database=>$database, id => $similarid})->get_number_of_titles;
                     
                     # Wenn das zu einem Schlagwort benachbarte Schlagwort schon im
                     # aktuellen Titel enthalten ist, dann ignorieren
@@ -223,12 +226,12 @@ sub handler {
                     @{$similar_subjects_ref};
 
     my $ttdata = {
-        format  => $format,
+        format           => $format,
         similar_subjects => $sorted_similar_subjects_ref,
-        database => $database,
-        sessionID => $sessionID,
-        config  => $config,
-        msg     => $msg,
+        database         => $database,
+        sessionID        => $sessionID,
+        config           => $config,
+        msg              => $msg,
     };
 
     OpenBib::Common::Util::print_page($config->{tt_connector_similarsubjects_tname},$ttdata,$r);

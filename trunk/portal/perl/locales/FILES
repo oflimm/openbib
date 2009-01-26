@@ -87,6 +87,8 @@
 ../templates/connector_digibib_result_start
 ../templates/connector_digibib_showtitset
 ../templates/connector_permalink
+../templates/connector_similarpersons
+../templates/connector_similarsubjects
 ../templates/connector_rss_item
 ../templates/corporate_banner
 ../templates/database/spoho/search_showtitset

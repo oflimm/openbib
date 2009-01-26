@@ -123,6 +123,7 @@ connector_olws_loc: /portal/connector/olws
 connector_permalink_loc: /portal/connector/permalink
 connector_locationmark_loc: /portal/connector/sykasignatur
 connector_rss_loc: /portal/connector/rss
+connector_similarpersons_loc: /portal/connector/similarpersons
 connector_similarsubjects_loc: /portal/connector/similarsubjects
 connector_spellcheck_loc: /portal/connector/spellcheck
 connector_ukonline_loc: /portal/connector/uk-online
@@ -290,6 +291,7 @@ tt_connector_digibib_showtitset_tname: connector_digibib_showtitset
 tt_connector_locationmark_titlist_tname: connector_locationmark_titlist
 tt_connector_permalink_tname: connector_permalink
 tt_connector_rss_item_tname: connector_rss_item
+tt_connector_similarpersons_tname: connector_similarpersons
 tt_connector_similarsubjects_tname: connector_similarsubjects
 tt_connector_unapi_bibtex_tname: connector_unapi_bibtex
 tt_connector_unapi_formats_tname: connector_unapi_formats

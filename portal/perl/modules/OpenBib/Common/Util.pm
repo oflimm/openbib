@@ -243,12 +243,23 @@ sub print_page {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config  = OpenBib::Config->instance;
     
     # View- und Datenbank-spezifisches Templating
     my $database  = $ttdata->{'database'};
-    my $view      = $ttdata->{'view'};
     my $sessionID = $ttdata->{'sessionID'};
+
+    my $session   = OpenBib::Session->instance({ sessionID => $sessionID });
+
+    my $view;
+    if ($ttdata->{'view'}){
+        $view = $ttdata->{'view'};
+    }
+    else {
+        $view = $session->get_viewname;
+        $ttdata->{'view'} = $view;
+    }
+
     my $sysprofile= $config->get_viewinfo($view)->{profilename};
     
     my $user      = OpenBib::User->instance({sessionID => $sessionID});

@@ -12,11 +12,6 @@
 #
 #######################################################################
 -%]
-<!--<div class="boxed">
-
-<b>Anzeige:</b>&nbsp;[% IF show == 'short'%]<b>[% msg.maketext("Kurztitel") %]</b>[% ELSE %]<a href="[% managecollection_loc%]?sessionID=[% sessionID %];action=show;type=HTML;show=short">[% msg.maketext("Kurztitel") %]</a>[% END %]&nbsp;&#124;&nbsp;[% IF show == 'full' %]<b>[% msg.maketext("Volltitel") %]</b>[% ELSE %]<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=HTML;show=full">[% msg.maketext("Volltitel") %]</a>[% END %]
-</div>-->
-
 <p />
 
 <!-- Titlelist begins here -->
@@ -33,6 +28,7 @@
     </div>
   </div>
   <div class="rightoptions">
+[% IF NOT hide_options %]
 <div class="reuse_data"><!-- Begin Reuse -->
 
 <b>[% msg.maketext("Behalten Sie diese Liste") %]:</b><p/>
@@ -56,10 +52,7 @@
 <div class="headline">[% msg.maketext("Andere Formate") %]</div>
 
 <p>
-<a href="[% config.managecollection_loc %]?sessionID=[%
-sessionID %];action=show;type=Text">Text</a>, <a
-href="[% config.managecollection_loc %]?sessionID=[% sessionID
-%];action=show;type=BibTeX">BibTeX</a>, <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=EndNote">EndNote</a> 
+[% IF show == 'full' %]<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=HTML;show=short">Listenansicht</a>,[%- ELSE -%]<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=HTML;show=full">Vollanzeige</a>,[%- END -%] <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=Text">Text</a>, <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=BibTeX">BibTeX</a>, <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=EndNote">EndNote</a> 
 </p>
 
 <div class="headline">[% msg.maketext("Literaturliste") %]</div>
@@ -83,7 +76,7 @@ href="[% config.managecollection_loc %]?sessionID=[% sessionID
 </p>
 
 </div>
-
+[% END %]
   </div>
   <div class="resultitems[% IF qopts.listtype == 'list' %] liststyle[%- END -%]">
 [% IF show == 'short' %]
@@ -158,7 +151,8 @@ href="[% config.managecollection_loc %]?sessionID=[% sessionID
 [%- END -%]
   </div>
 [% ELSE #full%]
-[%- recordlist.load_brief_records -%]
+<table>
+[%- recordlis = recordlist.load_full_records -%]
 [%- FOREACH record IN recordlist.get_records -%]
 [% normset    = record.get_normdata %]
 [% mexnormset = record.get_mexdata %]
@@ -249,7 +243,10 @@ END;
 [% END %]
 
 [%- END -%]
+<p/>
+</table>
 </div>
+
 [%- END -%]
 <!-- Titlelist ends here -->
 </form>

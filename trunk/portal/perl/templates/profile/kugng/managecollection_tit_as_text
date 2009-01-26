@@ -12,6 +12,38 @@
 #
 #######################################################################
 -%]
+[% IF NOT hide_options %]
+<div class="boxedclear" style="float:right; width: 30%"><!-- Begin Reuse -->
+
+<b>[% msg.maketext("Behalten Sie diese Liste") %]:</b><p/>
+
+<table>
+<tr>
+<th><img src="[% config.save_img %]" alt="[% msg.maketext("Abspeichern") %]" border="0" /></th>
+<td><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=save;type=[% type %];show=[% show %]" target="save" title="[% msg.maketext("Abspeichern") %]">[% msg.maketext("Abspeichern") %]</a></td>
+<th><img src="[% config.print_img %]" alt="[% msg.maketext("Ausdrucken") %]" border="0" /></th>
+<td><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=print;type=[% type %];show=[% show %]" title="[% msg.maketext("Ausdrucken") %]">[% msg.maketext("Ausdrucken") %]</a></td>
+</tr>
+<tr>
+<th><img src="[% config.mail_img %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></th>
+<td><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=mail;type=[% type %];show=[% show %]" title="[% msg.maketext("Als Mail verschicken") %]">[% msg.maketext("Als Mail verschicken") %]</a></td>
+<th></th><td></td>
+</tr>
+</table>
+
+<p />
+
+<div class="headline">[% msg.maketext("Andere Formate") %]</div>
+
+<p>
+[% IF show == 'full' %]<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=HTML;show=short">Listenansicht</a>,[%- ELSE -%]<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=HTML;show=full">Vollanzeige</a>,[%- END -%] <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=Text">Text</a>, <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=BibTeX">BibTeX</a>, <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=EndNote">EndNote</a> 
+</p>
+
+</div>
+[% END %]
+
+<div style="float:left; width: 65%;">
+<pre>
 [%- FOREACH record IN recordlist.load_full_records.get_records -%]
 [%- normset    = record.get_normdata -%]
 [%- mexnormset = record.get_mexdata -%]
@@ -45,3 +77,5 @@ FOREACH category IN categories;
 [%- END -%]
 
 [% END %]
+</pre>
+</div>

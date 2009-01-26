@@ -53,6 +53,7 @@
 ../templates/admin_loggedin
 ../templates/admin_login
 ../templates/admin_logout
+../templates/admin_navigation
 ../templates/admin_showcat
 ../templates/admin_showimx
 ../templates/admin_showlogintarget

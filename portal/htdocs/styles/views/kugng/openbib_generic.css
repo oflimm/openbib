@@ -972,6 +972,25 @@ dt.review {
   -webkit-border-radius: 12px;
 }
 
+.boxedclear {
+  padding: 5px;
+  background-color: white;
+  border-top-style: solid;
+  border-top-color: lightblue;
+  border-top-width: 1px;
+  border-left-style: solid;
+  border-left-color: lightblue;
+  border-left-width: 1px;
+  border-right-style: solid;
+  border-right-color: lightblue;
+  border-right-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: lightblue;
+  border-bottom-width: 1px;
+  -moz-border-radius: 12px;
+  -webkit-border-radius: 12px;
+}
+
 .tagging {
 /*  visibility: hidden; */
 }

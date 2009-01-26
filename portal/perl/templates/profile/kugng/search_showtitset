@@ -772,6 +772,24 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <tr><td></td></tr>
 <!-- Ende BibSonomy-Tags -->
 
+<!-- Anfang Verwandte Verfasser -->
+<script language="JavaScript" type="text/javascript">
+$(document).ready(function(){
+// Begin Verwandte Personen
+  $.get("[% config.connector_similarpersons_loc %]?sessionID=[% sessionID %];database=[% record.database%];type=tit;id=[% record.id %];format=ajax",
+         function (txt){
+           $("#similarpersons").html(txt); 
+  });
+});
+</script>
+<tr><td class="headline">[% msg.maketext("Verwandte Personen") %]</td></tr>
+<tr><td>
+<span id="similarpersons"><a href="[% config.connector_similarpersons_loc %]?sessionID=[% sessionID %];database=[% record.database%];type=tit;id=[% record.id %];format=html">Anzeigen?</a></span>
+</td></tr>
+<tr><td></td></tr>
+<tr><td></td></tr>
+<!-- Ende Verwandte Verfasser -->
+
 <!-- Anfang Verwandte Themen -->
 <script language="JavaScript" type="text/javascript">
 $(document).ready(function(){
@@ -784,11 +802,11 @@ $(document).ready(function(){
 </script>
 <tr><td class="headline">[% msg.maketext("Verwandte Themen") %]</td></tr>
 <tr><td>
-<span id="similarsubjects"><a href="[% config.connector_similarsubjects_loc %]?sessionID=[% sessionID %];database=[% record.database%];type=tit;id=[% record.id %]">Anzeigen?</a></span>
+<span id="similarsubjects"><a href="[% config.connector_similarsubjects_loc %]?sessionID=[% sessionID %];database=[% record.database%];type=tit;id=[% record.id %];format=html">Anzeigen?</a></span>
 </td></tr>
 <tr><td></td></tr>
 <tr><td></td></tr>
-<!-- Ende BibSonomy-Tags -->
+<!-- Ende Verwandte Themen -->
 
 <!-- Anfang Verschiedenes -->
 <tr><td class="headline">[% msg.maketext("Verschiedenes") %]</td></tr>
@@ -803,7 +821,5 @@ $(document).ready(function(){
 
 <!-- Title ends here -->
 </div><!-- End: Content -->
-
-<p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

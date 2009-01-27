@@ -7,7 +7,7 @@ tracelevel:
 # CSV-Parameter
 csv:
   'eol': "\n"
-  'sep_char': ":"
+  'sep_char': "\t"
   'quote_char': "\""
   'escape_char': "\""
 

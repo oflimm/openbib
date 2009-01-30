@@ -447,7 +447,7 @@ Literaturlisten usw.)<p/>") %]
 <td class="overview"><!-- Begin overview-->
 <h3><img style="vertical-align:bottom" src="[% config.search_img %]" alt="[% msg.maketext("&Uuml;bersichten") %]"/>&nbsp;[% msg.maketext("In den Gesamtbestand eintauchen") %]</h3>
 
-<a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=50" title="[% msg.maketext("Systematisches Bl&auml;ttern") %]">[% msg.maketext("Systematisches Bl&auml;ttern") %]</a>,
+<a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=53" title="[% msg.maketext("Themengebiete") %]">[% msg.maketext("Themengebiete") %]</a>,
 <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a>, <a href="[% config.litlists_loc %]?sessionID=[% sessionID %]&action=show_public_lists" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a>, <a
 href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=40" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a>, <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=10" title="Top 20">[% msg.maketext("meistgenutzte Titel") %]</a>, <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=15" title="[% msg.maketext("spezialisierte KUG-Portale") %]">[% msg.maketext("spezialisierte KUG-Portale") %]</a>.<p/>
 

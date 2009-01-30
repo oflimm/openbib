@@ -84,6 +84,7 @@ sub handler {
     # Sub-Template ID
     my $stid     = $query->param('stid')     || '';
     my $database = $query->param('database') || '';
+    my $id       = $query->param('id')       || '';
 
     my $queryoptions = OpenBib::QueryOptions->instance($query);
 
@@ -111,6 +112,7 @@ sub handler {
     my $ttdata={
         database      => $database,
         query         => $query,
+        id            => $id,
         view          => $view,
         stylesheet    => $stylesheet,
         viewdesc      => $viewdesc,

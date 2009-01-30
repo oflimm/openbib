@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2009-01-27 11:36+0100\n"
+"PO-Revision-Date: 2009-01-30 09:18+0100\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1174,6 +1174,10 @@ msgstr "Autor"
 msgid "B&uuml;cher"
 msgstr "B&uuml;cher"
 
+#: ../templates/admin_editsubject:55
+msgid "Basis-Klassifikation"
+msgstr "Basis-Klassifikation"
+
 #: ../templates/info:385 ../templates/profile/kuglight/info:365
 #: ../templates/views/kug/info:385
 msgid ""
@@ -1384,7 +1388,7 @@ msgstr "Bereits existierende Kataloge"
 msgid "Bereits existierende Literaturlisten"
 msgstr "Bereits existierende Literaturlisten"
 
-#: ../templates/admin_showsubjects:49
+#: ../templates/admin_showsubjects:50
 msgid "Bereits existierende Themengebiete"
 msgstr "Bereits existierende Themengebiete"
 
@@ -1401,12 +1405,12 @@ msgid "Beruf/Weltanschauung"
 msgstr "Beruf/Weltanschauung"
 
 #: ../templates/admin_editcat:46 ../templates/admin_editlogintarget:46
-#: ../templates/admin_editprofile:35 ../templates/admin_editsubject:35
+#: ../templates/admin_editprofile:35 ../templates/admin_editsubject:51
 #: ../templates/admin_editview:35 ../templates/admin_showcat:38
 #: ../templates/admin_showcat:66 ../templates/admin_showlogintarget:42
 #: ../templates/admin_showlogintarget:60 ../templates/admin_showprofiles:35
-#: ../templates/admin_showprofiles:55 ../templates/admin_showsubjects:35
-#: ../templates/admin_showsubjects:54 ../templates/admin_showviews:35
+#: ../templates/admin_showprofiles:55 ../templates/admin_showsubjects:36
+#: ../templates/admin_showsubjects:55 ../templates/admin_showviews:35
 #: ../templates/admin_showviews:57
 msgid "Beschreibung"
 msgstr "Beschreibung"
@@ -1600,7 +1604,7 @@ msgstr "Bitte bookmarken unter:"
 msgid "Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."
 msgstr "Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:1141
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:1149
 msgid "Bitte geben Sie ein Anfangs- sowie ein End-Datum an!"
 msgstr "Bitte geben Sie ein Anfangs- sowie ein End-Datum an!"
 
@@ -2645,20 +2649,20 @@ msgstr "Erweiterte Suche"
 msgid "Erwerbungsstatus"
 msgstr "Erwerbungsstatus"
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:1276
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:1284
 msgid "Es existiert bereits ein Anmeldeziel unter diesem Namen"
 msgstr "Es existiert bereits ein Anmeldeziel unter diesem Namen"
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:352
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:354
 msgid "Es existiert bereits ein Katalog unter diesem Namen"
 msgstr "Es existiert bereits ein Katalog unter diesem Namen"
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:683
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:691
 msgid "Es existiert bereits ein Themengebiet unter diesem Namen"
 msgstr "Es existiert bereits ein Themengebiet unter diesem Namen"
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:579
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:792
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:581
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:800
 msgid "Es existiert bereits ein View unter diesem Namen"
 msgstr "Es existiert bereits ein View unter diesem Namen"
 
@@ -4851,7 +4855,7 @@ msgstr "Keine Titelid, Titel-Datenbank oder Literaturliste vorhanden."
 msgid "Keine gültige Aktion"
 msgstr "Keine gültige Aktion"
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:1345
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:1353
 msgid "Keine gültige Aktion oder Session"
 msgstr "Keine gültige Aktion oder Session"
 
@@ -5441,7 +5445,7 @@ msgstr "Lösche Eingabemaske"
 
 #: ../templates/admin_editcat:177 ../templates/admin_editcat_rss:333
 #: ../templates/admin_editlogintarget:55 ../templates/admin_editprofile:70
-#: ../templates/admin_editsubject:43 ../templates/admin_editview:138
+#: ../templates/admin_editsubject:84 ../templates/admin_editview:138
 #: ../templates/database/ebooks/search_showtitset:684
 #: ../templates/database/inst001/search_showtitset:705
 #: ../templates/database/nationallizenzen/search_showtitset:684
@@ -5735,7 +5739,7 @@ msgstr "Nein"
 #: ../templates/admin_editcat_rss:227 ../templates/admin_editcat_rss:284
 #: ../templates/admin_editcat_rss:56 ../templates/admin_showcat:51
 #: ../templates/admin_showlogintarget:43 ../templates/admin_showprofiles:37
-#: ../templates/admin_showsubjects:37 ../templates/admin_showviews:39
+#: ../templates/admin_showsubjects:38 ../templates/admin_showviews:39
 #: ../templates/litlists_manage_lists:40
 #: ../templates/profile/kugng/litlists_manage_lists:40
 msgid "Neu"
@@ -5821,7 +5825,7 @@ msgstr "Neues Anmeldeziel anlegen"
 msgid "Neues Katalog-Profil anlegen"
 msgstr "Neues Katalog-Profil anlegen"
 
-#: ../templates/admin_showsubjects:32
+#: ../templates/admin_showsubjects:33
 msgid "Neues Themengebiet anlegen"
 msgstr "Neues Themengebiet anlegen"
 
@@ -6536,7 +6540,7 @@ msgstr ""
 "aktuelle Version auf diesem System nicht eingefroren und in eine offiziell "
 "bekanntgegebene und &ouml;ffentliche finale Testphase &uuml;bergegangen ist."
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:307
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:309
 msgid "Sie greifen auf eine nicht autorisierte Session zu"
 msgstr "Sie greifen auf eine nicht autorisierte Session zu"
 
@@ -6580,7 +6584,7 @@ msgstr ""
 "nicht verwenden. Alternativ k&ouml;nnen Sie eine %1alternative Version%2\n"
 "nutzen, bei der die Verwendung von JavaScript minimiert ist."
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:275
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:277
 msgid ""
 "Sie haben als Benutzer entweder keinen oder nicht den Admin-Benutzer "
 "eingegeben"
@@ -6605,7 +6609,7 @@ msgstr ""
 "Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte %1zurück%2 und "
 "versuchen Sie es erneut."
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:280
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:282
 msgid "Sie haben ein falsches Passwort eingegeben"
 msgstr "Sie haben ein falsches Passwort eingegeben"
 
@@ -6917,23 +6921,23 @@ msgstr "Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."
 msgid "Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
 msgstr "Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:1269
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:1277
 msgid "Sie müssen mindestens eine Beschreibung eingeben."
 msgstr "Sie müssen mindestens eine Beschreibung eingeben."
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:345
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:347
 msgid "Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
 msgstr "Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:667
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:675
 msgid "Sie müssen mindestens einen Namen f&uuml;r das Themenbebiet eingeben."
 msgstr "Sie müssen mindestens einen Namen f&uuml;r das Themenbebiet eingeben."
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:563
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:565
 msgid "Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."
 msgstr "Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:769
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:777
 msgid ""
 "Sie müssen mindestens einen Viewnamen, eine Beschreibung sowie ein Katalog-"
 "Profil eingeben."
@@ -7481,14 +7485,18 @@ msgstr "Swt-Datei"
 msgid "System"
 msgstr "System"
 
+#: ../templates/admin_showsubjects:55
+msgid "Systematik-Gruppen"
+msgstr "Systematik-Gruppen"
+
 #: ../templates/clouds_navigation:16
 msgid "Systematiken/Notationen"
 msgstr "Systematiken/Notationen"
 
 #: ../templates/info_13:27 ../templates/info_50:31 ../templates/info_51:38
-#: ../templates/info_52:38 ../templates/profile/kugng/info_50:29
-#: ../templates/profile/kugng/info_51:36 ../templates/profile/kugng/info_52:36
-#: ../templates/profile/kugng/searchmask_simple:450 ../templates/searchmask:46
+#: ../templates/info_52:38 ../templates/info_53:42
+#: ../templates/profile/kugng/info_50:29 ../templates/profile/kugng/info_51:36
+#: ../templates/profile/kugng/info_52:36 ../templates/searchmask:46
 #: ../templates/searchmask_simple:46 ../templates/views/kug/searchmask:126
 #: ../templates/views/kug/searchmask_simple:36
 msgid "Systematisches Bl&auml;ttern"
@@ -8998,16 +9006,17 @@ msgstr ""
 msgid "Thematische Integration weiterer Quellen"
 msgstr "Thematische Integration weiterer Quellen"
 
-#: ../templates/admin_editsubject:35 ../templates/admin_showsubjects:35
-#: ../templates/admin_showsubjects:54
+#: ../templates/admin_editsubject:51 ../templates/admin_showsubjects:36
+#: ../templates/admin_showsubjects:55
 msgid "Themengebiet"
 msgstr "Themengebiet"
 
-#: ../templates/admin_editsubject:32
+#: ../templates/admin_editsubject:48
 msgid "Themengebiet bearbeiten"
 msgstr "Themengebiet bearbeiten"
 
-#: ../templates/admin_navigation:21
+#: ../templates/admin_navigation:21 ../templates/info_53:42
+#: ../templates/info_54:41 ../templates/profile/kugng/searchmask_simple:450
 msgid "Themengebiete"
 msgstr "Themengebiete"
 
@@ -9363,7 +9372,7 @@ msgstr ""
 "Um einen bereits existierendes Katalog-Profil zu bearbeiten klicken Sie "
 "bitte auf den Profil-Namen."
 
-#: ../templates/admin_showsubjects:50
+#: ../templates/admin_showsubjects:51
 msgid ""
 "Um einen bereits existierendes Themengebiet zu bearbeiten klicken Sie bitte "
 "auf den Namen."
@@ -9463,7 +9472,7 @@ msgstr "Ungültige Aktion"
 #: ../modules/OpenBib/Handler/Apache/DatabaseProfile.pm:97
 #: ../modules/OpenBib/Handler/Apache/DispatchQuery.pm:87
 #: ../modules/OpenBib/Handler/Apache/ExternalJump.pm:117
-#: ../modules/OpenBib/Handler/Apache/Info.pm:95
+#: ../modules/OpenBib/Handler/Apache/Info.pm:96
 #: ../modules/OpenBib/Handler/Apache/Leave.pm:82
 #: ../modules/OpenBib/Handler/Apache/LitLists.pm:133
 #: ../modules/OpenBib/Handler/Apache/Login.pm:102
@@ -11104,7 +11113,7 @@ msgstr "wiederholt"
 #: ../templates/admin_editcat_rss:191 ../templates/admin_editcat_rss:248
 #: ../templates/admin_editcat_rss:305 ../templates/admin_editcat_rss:333
 #: ../templates/admin_editcat_rss:77 ../templates/admin_editlogintarget:55
-#: ../templates/admin_editprofile:70 ../templates/admin_editsubject:43
+#: ../templates/admin_editprofile:70 ../templates/admin_editsubject:84
 #: ../templates/admin_editview:138 ../templates/admin_editview_rss:139
 #: ../templates/admin_editview_rss:96
 msgid "Ändern"

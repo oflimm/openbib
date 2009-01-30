@@ -72,9 +72,9 @@
 </form>
 
 <div class="boxed">
-<b>Fachgebiete</b>:&nbsp;
+<b>[% msg.maketext("Themengebiete") %]</b>:&nbsp;
 [%- FOREACH subject IN litlist.properties.subjects-%]
-<a href="[% config.litlists_loc %]?sessionID=[% sessionID%];subjectid=[% subject.id %];action=show_public_lists">[% subject.name %]</a>&nbsp;&nbsp;
+<a href="[% config.info_loc %]?sessionID=[% sessionID%];stid=54;id=[% subject.id %]">[% subject.name %]</a>&nbsp;&nbsp;
 [%- END-%]
 </div>
 

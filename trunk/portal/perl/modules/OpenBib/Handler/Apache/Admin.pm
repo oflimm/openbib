@@ -40,7 +40,7 @@ use Apache::Request ();
 use Date::Manip qw/ParseDate UnixDate/;
 use DBI;
 use Digest::MD5;
-use Encode 'decode_utf8';
+use Encode qw/decode_utf8 encode_utf8/;
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use SOAP::Lite;
@@ -89,7 +89,7 @@ sub handler {
     else {
         $session = OpenBib::Session->instance;
     }
-  
+
     # Standardwerte festlegen
   
     my $adminuser   = $config->{adminuser};
@@ -128,7 +128,7 @@ sub handler {
     my $user            = $query->param('user')            || '';
     my $passwd          = $query->param('passwd')          || '';
     my $orgunit         = $query->param('orgunit')         || '';
-    my $description     = $query->param('description')     || '';
+    my $description     = decode_utf8($query->param('description'))     || '';
     my $shortdesc       = $query->param('shortdesc')       || '';
     my $system          = $query->param('system')          || '';
     my $dbname          = $query->param('dbname')          || '';
@@ -164,8 +164,10 @@ sub handler {
     my $circcheckurl    = $query->param('circcheckurl')    || '';
     my $circdb          = $query->param('circdb')          || '';
 
-    my $subject         = $query->param('subject')         || '';
+    my $subject         = decode_utf8($query->param('subject'))         || '';
     my $subjectid       = $query->param('subjectid')       || '';
+
+    my @classifications = ($query->param('classifications'))?$query->param('classifications'):();
 
     my @rssfeeds        = ($query->param('rssfeeds'))?$query->param('rssfeeds'):();
     my $primrssfeed     = $query->param('primrssfeed')     || '';
@@ -618,6 +620,7 @@ sub handler {
     }
     elsif ($do_showsubjects) {
         my $subjects_ref = OpenBib::User->get_subjects;
+        my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
 
         my $ttdata={
             stylesheet => $stylesheet,
@@ -631,6 +634,7 @@ sub handler {
         OpenBib::Common::Util::print_page($config->{tt_admin_showsubjects_tname},$ttdata,$r);
     }
     elsif ($do_editsubject) {
+        my $user       = OpenBib::User->instance({sessionID => $session->{ID}});
     
         # Zuerst schauen, ob Aktionen gefordert sind
     
@@ -645,15 +649,19 @@ sub handler {
         }
         elsif ($do_change) {
 	    editsubject_change({
-                name        => $subject,
-                description => $description,
-                id          => $subjectid,
+                name            => $subject,
+                description     => $description,
+                id              => $subjectid,
+                classifications => \@classifications,
+                type            => $type,
             });
             
 	    my $ret_ref = dist_cmd("editsubject_change",{ 
-                name        => $subject,
-                description => $description,
-                id          => $subjectid,
+                name            => $subject,
+                description     => $description,
+                id              => $subjectid,
+                classifications => \@classifications,
+                type            => $type,
             }) if ($do_dist);
 
             $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showsubjects=1");
@@ -1797,6 +1805,10 @@ sub editsubject_change {
         ? $arg_ref->{description}         : undef;
     my $id                     = exists $arg_ref->{id}
         ? $arg_ref->{id}                  : undef;
+    my $classifications_ref    = exists $arg_ref->{classifications}
+        ? $arg_ref->{classifications}     : [];
+    my $type                = exists $arg_ref->{type}
+        ? $arg_ref->{type}                : 'BK';
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -1811,8 +1823,19 @@ sub editsubject_change {
     # Zuerst die Aenderungen in der Tabelle Profileinfo vornehmen
     
     my $request=$dbh->prepare("update subjects set name = ?, description = ? where id = ?") or $logger->error($DBI::errstr);
-    $request->execute($name,$description,$id) or $logger->error($DBI::errstr);
+    $request->execute(encode_utf8($name),encode_utf8($description),$id) or $logger->error($DBI::errstr);
     $request->finish();
+
+    if (@{$classifications_ref}){       
+
+        $logger->debug("Classifications5 ".YAML::Dump($classifications_ref));
+
+        OpenBib::User->set_classifications_of_subject({
+            subjectid       => $id,
+            classifications => $classifications_ref,
+            type            => $type,
+        });
+    }
 
     return;
 }
@@ -1847,7 +1870,7 @@ sub editsubject_new {
     }
     
     $idnresult=$dbh->prepare("insert into subjects (name,description) values (?,?)") or $logger->error($DBI::errstr);
-    $idnresult->execute($name,$description) or $logger->error($DBI::errstr);
+    $idnresult->execute(encode_utf8($name),encode_utf8($description)) or $logger->error($DBI::errstr);
     
     return 1;
 }

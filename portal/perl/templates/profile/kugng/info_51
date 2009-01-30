@@ -33,13 +33,11 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];category=[% thisbk %];stid=51" title="[% msg.maketext("Systematisches Bl&auml;ttern") %]">[% msg.maketext("Systematisches Bl&auml;ttern") %]</a></li>
+   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];category=[% thisbk %];stid=51" %]">[% thisbk %] / [% bks.${thisbk} %]</a></li>
 </ul>
 
 <div class="content">
 <p />
-
-<h1>[% thisbk %] / [% bks.${thisbk} %]</h1>
 [%
 bklist = [];
 FOREACH bk IN bks;
@@ -53,16 +51,21 @@ END ;
 bklist = bklist.sort;
 
 %]
+
+<table width="100%">
+<tr><th>Katalogtitel nach Bibliothekssystematik</th></tr>
+<tr><td class="boxedclear">
+<ul>
 [% FOREACH bk IN bklist %]
 [%   IF thisbklist.${bk}.defined %] 
 [%      localurl    = "${config.search_loc}?sessionID=${sessionID};database=${viewdbs.first};searchtitofcnt=${bk};category=E4100;hitrange=${qopts.hitrange}" %]
-[% bk %] / <a href="[% IF viewdbs.size == 1 %][% localurl %][% ELSE %][% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=52;category=[% bk %][% END %]">[% bks.${bk} %]</a> ([% thisbklist.${bk}%] Titel)<br/>
+<li>[% bk %] / <a style="font-weight:bold;font-size:1.2em;" href="[% IF viewdbs.size == 1 %][% localurl %][% ELSE %][% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=52;category=[% bk %][% END %]">[% bks.${bk} %]</a> ([% thisbklist.${bk}%] Titel)</li>
 [%   END %]
 [% END %]
-
+</ul>
+</td></tr>
+</table>
 
 </div>
-
-<p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

@@ -257,3 +257,16 @@ CREATE TABLE litlist2subject (
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
+
+DROP TABLE IF EXISTS subject2classification;
+CREATE TABLE classification2subject (
+ classification VARCHAR(20) NOT NULL,
+ subjectid      INT(11)     NOT NULL,
+ type           VARCHAR(5)  NOT NULL,
+ INDEX (classification),
+ INDEX (type),
+ INDEX (subjectid)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;

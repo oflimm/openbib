@@ -2424,8 +2424,8 @@ sub get_litlist_properties {
 
     while (my $result=$request->fetchrow_hashref){
         my $subjectid   = $result->{id};
-        my $name        = $result->{name};
-        my $description = $result->{description};
+        my $name        = decode_utf8($result->{name});
+        my $description = decode_utf8($result->{description});
 
         $subject_selected_ref->{$subjectid}=1;
         push @{$subjects_ref}, {
@@ -2473,8 +2473,8 @@ sub get_subjects {
     while (my $result=$request->fetchrow_hashref){
         push @{$subjects_ref}, {
             id           => $result->{id},
-            name         => $result->{name},
-            description  => $result->{description},
+            name         => decode_utf8($result->{name}),
+            description  => decode_utf8($result->{description}),
             litlistcount => OpenBib::User->get_number_of_litlists_by_subject({subjectid => $result->{id}}),
         };
     }
@@ -2510,12 +2510,96 @@ sub get_subjects_of_litlist {
     while (my $result=$request->fetchrow_hashref){
         push @{$subjects_ref}, {
             id           => $result->{id},
-            name         => $result->{name},
-            description  => $result->{description},
+            name         => decode_utf8($result->{name}),
+            description  => decode_utf8($result->{description}),
         };
     }
 
     return $subjects_ref;
+}
+
+sub get_classifications_of_subject {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $subjectid           = exists $arg_ref->{subjectid}
+        ? $arg_ref->{subjectid}           : undef;
+
+    my $type                = exists $arg_ref->{type}
+        ? $arg_ref->{type}                : 'BK';
+    
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return [] if (!defined $dbh || !defined $subjectid);
+
+    my $request=$dbh->prepare("select * from subject2classification where subjectid = ? and type = ?") or $logger->error($DBI::errstr);
+    $request->execute($subjectid,$type) or $logger->error($DBI::errstr);
+
+    my $classifications_ref = [];
+    
+    while (my $result=$request->fetchrow_hashref){
+        push @{$classifications_ref}, $result->{classification};
+    }
+
+    $logger->debug("Got classifications ".YAML::Dump($classifications_ref));
+
+    return $classifications_ref;
+}
+
+sub set_classifications_of_subject {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $subjectid           = exists $arg_ref->{subjectid}
+        ? $arg_ref->{subjectid}           : undef;
+
+    my $classifications_ref = exists $arg_ref->{classifications}
+        ? $arg_ref->{classifications}     : undef;
+
+    my $type                = exists $arg_ref->{type}
+        ? $arg_ref->{type}                : 'BK';
+    
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return if (!defined $dbh);
+    
+    $logger->debug("Classifications4 ".YAML::Dump($classifications_ref));
+
+
+
+    unless (ref($classifications_ref) eq 'ARRAY') {
+        $classifications_ref = [ $classifications_ref ];
+    }
+
+    my $request=$dbh->prepare("delete from subject2classification where subjectid=?") or $logger->error($DBI::errstr);
+    $request->execute($subjectid) or $logger->error($DBI::errstr);
+
+    $request=$dbh->prepare("insert into subject2classification values (?,?,?);") or $logger->error($DBI::errstr);
+
+    foreach my $classification (@{$classifications_ref}){
+        $logger->debug("Adding Classification $classification of type $type");
+        $request->execute($classification,$subjectid,$type) or $logger->error($DBI::errstr);
+    }
+
+    return;
 }
 
 sub get_number_of_litlists_by_subject {
@@ -2569,7 +2653,7 @@ sub set_subjects_of_litlist {
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
             or $logger->error($DBI::errstr);
 
-    return [] if (!defined $dbh);
+    return if (!defined $dbh);
 
     my $request=$dbh->prepare("delete from litlist2subject where litlistid=?") or $logger->error($DBI::errstr);
     $request->execute($litlistid) or $logger->error($DBI::errstr);
@@ -2611,8 +2695,8 @@ sub get_subject {
     while (my $result=$request->fetchrow_hashref){
         $subject_ref = {
             id           => $result->{id},
-            name         => $result->{name},
-            description  => $result->{description},
+            name         => decode_utf8($result->{name}),
+            description  => decode_utf8($result->{description}),
         };
     }
 

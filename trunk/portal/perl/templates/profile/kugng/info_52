@@ -33,13 +33,13 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];category=[% thisbk %];stid=52" title="[% msg.maketext("Systematisches Bl&auml;ttern") %]">[% msg.maketext("Systematisches Bl&auml;ttern") %]</a></li>
+   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];category=[% thisbk %];stid=52">[% thisbk %] / [% bks.${thisbk.chunk(2).first} %] / [% bks.${thisbk} %]</a></li>
 </ul>
 
 <div class="content">
 <p />
 [%# USE dumper;dumper.dump(thisbklist)%]
-<h1>[% thisbk %] / [% bks.${thisbk.chunk(2).first} %] / [% bks.${thisbk} %]</h1>
+
 <table>
 [% FOREACH bkinfo IN thisbklist %]
 [%   thisdb    = bkinfo.key %]
@@ -49,7 +49,5 @@
 </table>
 
 </div>
-
-<p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

@@ -59,7 +59,11 @@ else {
 }
 
 my $maxidns=0;
+my $maxidns_journals=0;
+my $maxidns_articles=0;
 my $allidns=0;
+my $allidns_journals=0;
+my $allidns_articles=0;
 
 # Verbindung zur SQL-Datenbank herstellen
 my $configdbh
@@ -68,7 +72,8 @@ my $configdbh
 
 foreach $database (@databases){
   my $dbh=DBI->connect("DBI:$config->{dbimodule}:dbname=$database;host=$config->{dbhost};port=$config->{dbport}", $config->{dbuser}, $config->{dbpasswd}) or die "could not connect";
-    
+
+  # Titel bestimmen;
   $idnresult=$dbh->prepare("select count(*) as rowcount from search") or die "Error -- $DBI::errstr";
   $idnresult->execute();
 
@@ -76,18 +81,39 @@ foreach $database (@databases){
   
   $maxidns=$result->{rowcount};
 
+  # Serien/Zeitschriften bestimmen
+  $idnresult=$dbh->prepare("select count(distinct id) as rowcount from tit where category=800 and content = 'Zeitschrift/Serie'") or die "Error -- $DBI::errstr";
+  $idnresult->execute();
+
+  my $result=$idnresult->fetchrow_hashref;
+  
+  $maxidns_journals=$result->{rowcount};
+
+  # Aufsaetze bestimmen
+  $idnresult=$dbh->prepare("select count(distinct id) as rowcount from tit where category=800 and content = 'Aufsatz'") or die "Error -- $DBI::errstr";
+  $idnresult->execute();
+
+  my $result=$idnresult->fetchrow_hashref;
+  
+  $maxidns_articles=$result->{rowcount};
+
+  
   $idnresult->finish();
 
-  $allidns=$allidns+$maxidns;
+  $allidns          = $allidns+$maxidns;
+  $allidns_journals = $allidns_journals+$maxidns_journals;
+  $allidns_articles = $allidns_articles+$maxidns_articles;
 
   $idnresult=$configdbh->prepare("delete from titcount where dbname=?") or die "Error -- $DBI::errstr";
 
   $idnresult->execute($database);
   
-  $idnresult=$configdbh->prepare("insert into titcount values (?,?)") or die "Error -- $DBI::errstr";
-  $idnresult->execute($database,$maxidns);
+  $idnresult=$configdbh->prepare("insert into titcount values (?,?,?)") or die "Error -- $DBI::errstr";
+  $idnresult->execute($database,$maxidns,1);
+  $idnresult->execute($database,$maxidns_journals,2);
+  $idnresult->execute($database,$maxidns_articles,3);
   
-  print "$database -> $maxidns\n";
+  print "$database -> $maxidns / $maxidns_journals / $maxidns_articles\n";
   $idnresult->finish();
   $dbh->disconnect();
   
@@ -99,8 +125,10 @@ if ($database eq ""){
   $idnresult=$configdbh->prepare("delete from titcount where dbname='alldbs'") or die "Error -- $DBI::errstr";
   $idnresult->execute();
   
-  $idnresult=$configdbh->prepare("insert into titcount values ('alldbs',?)") or die "Error -- $DBI::errstr";
-  $idnresult->execute($allidns);
+  $idnresult=$configdbh->prepare("insert into titcount values ('alldbs',?,?)") or die "Error -- $DBI::errstr";
+  $idnresult->execute($allidns,1);
+  $idnresult->execute($allidns_journals,2);
+  $idnresult->execute($allidns_articles,3);
 }
 
 $configdbh->disconnect();

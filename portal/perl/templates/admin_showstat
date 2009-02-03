@@ -53,7 +53,7 @@
 <tr><td class="boxedclear" style="font-size:0.9em">
 
 <table>
-<tr><td>Anzahl der Titels&auml;tze</td><td><b>[% config.get_number_of_titles %]</b></td><td></td></tr>
+<tr><td>Anzahl der Titels&auml;tze (Alle/Zeitschriften-Serien/Artikel)</td><td><b>[%- titcount = config.get_number_of_titles -%][% titcount.all %] / [% titcount.serials %] / [% titcount.articles %]</b></td><td></td></tr>
 <tr><td>Anzahl der Kataloge (aktiv/gesamt)</td><td><b>[% config.get_number_of_dbs %] / [% config.get_number_of_all_dbs %]</b></td><td></td></tr>
 <tr><td>Anzahl der Spezialsichten (aktiv/gesamt)</td><td><b>[% config.get_number_of_views %] / [% config.get_number_of_all_views %]</b></td><td>&nbsp;&nbsp;<img style="vertical-align:bottom" src="[% config.follow_img %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=52">Grafik</a></td></tr>
 <tr><td>Anzahl Recherchen mit Benutzereingabe</td><td><b>[% ret = statistics.get_number_of_event({ type => 1, from => "${year}0101", to => "${year}1231"}) %][% ret.number %]</b></td><td>&nbsp;&nbsp;<img style="vertical-align:bottom" src="[% config.follow_img %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showstat=1;stid=51">Grafik</a></td></tr>

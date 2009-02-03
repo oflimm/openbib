@@ -51,6 +51,7 @@ use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::SearchQuery;
 use OpenBib::Session;
+use OpenBib::Statistics;
 use OpenBib::User;
 
 sub handler {
@@ -62,6 +63,8 @@ sub handler {
     my $config = OpenBib::Config->instance;
 
     my $query  = Apache::Request->instance($r);
+
+    my $statistics  = new OpenBib::Statistics();
 
     my $status=$query->parse;
 
@@ -270,6 +273,7 @@ sub handler {
         maxcolumn     => $maxcolumn,
         colspan       => $colspan,
         
+        statistics    => $statistics,
         config        => $config,
         user          => $user,
         msg           => $msg,

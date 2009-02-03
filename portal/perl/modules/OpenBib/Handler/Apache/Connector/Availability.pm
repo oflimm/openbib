@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Connector::Availability
 #
-#  Dieses File ist (C) 2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2008-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -97,11 +97,11 @@ sub handler {
     my $have_bibkey = 0;
     my $have_isbn   = 0;
 
-    if    ($key =~m/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/ || $key=~m/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/){
+    if    ($key =~m/^(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)/ || $key=~m/(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\d)-*(\S)$/){
         $have_isbn = 1;
         $logger->debug("$key is of type ISBN");
     }
-    elsif ($key =~m//){
+    elsif ($key =~m/^1[0-9a-f]{32}$/){
         $have_bibkey = 1;
         $logger->debug("$key is of type Bibkey");
     }
@@ -192,6 +192,95 @@ sub handler {
 
         $ttdata = {
             dbinfo               => $dbinfotable,
+            have_bibkey          => 1,
+            key                  => $key,
+            available_recordlist => $recordlist,
+            similar_recordlist   => $similar_recordlist,
+        };
+    }
+    elsif ($have_bibkey){
+
+        # Verbindung zur SQL-Datenbank herstellen
+        my $enrichdbh
+            = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
+                or $logger->error_die($DBI::errstr);
+        
+        # 1.) Ist dieser Titel im KUG vorhanden? ja/nein
+        # 2.) Wo ist er vorhanden (Katalogname/ID/PermaLink)
+        
+        my $recordlist = new OpenBib::RecordList::Title();
+
+        my $reqstring="select distinct id,dbname from all_isbn where isbn=?";
+        my $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
+        $request->execute($key) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+
+        my $this_id;
+        my $this_database;
+        while (my $res=$request->fetchrow_hashref) {
+            my $id         = $res->{id};
+            my $database   = $res->{dbname};
+
+           ($this_id,$this_database)=($id,$database);
+            $recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
+        }
+
+        $recordlist->load_brief_records;
+
+        # 3.) Gibt es andere Ausgaben, die im KUG vorhanden sind? (Katalogname/ID/PermaLink)
+        #     Das ist nur mit ISBN moeglich. Daher bestimmen, welche ISBN dem bibkey zugeordnet ist.
+
+        $reqstring="select distinct isbn from all_isbn where  id=? and dbname=?";
+        $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
+        $request->execute($this_id,$this_database) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+
+        my $isbn = "";
+        while (my $res=$request->fetchrow_hashref) {
+            $isbn       = $res->{isbn};
+        }
+        
+        # Anreicherung mit 'aehnlichen' (=andere Auflage, Sprache) Titeln aus allen Katalogen
+        my $similar_recordlist = new OpenBib::RecordList::Title();
+        
+        $reqstring="select isbn from similar_isbn where match (isbn) against (?)";
+        $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
+        $request->execute($isbn) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+        
+        my $similar_isbn_ref = {};
+        while (my $res=$request->fetchrow_hashref) {
+            my $similarisbnstring = $res->{isbn};
+            foreach my $similarisbn (split(':',$similarisbnstring)){
+                $similar_isbn_ref->{$similarisbn}=1 if ($similarisbn ne $isbn);
+            }
+        }
+        
+        my @similar_args = keys %$similar_isbn_ref;
+        
+        if (@similar_args){
+            my $in_select_string = join(',',map {'?'} @similar_args);
+            
+            $logger->debug("InSelect $in_select_string");
+            
+            $reqstring="select distinct id,dbname from all_isbn where isbn in ($in_select_string) order by dbname";
+            
+            $request=$enrichdbh->prepare($reqstring) or $logger->error($DBI::errstr);
+            $request->execute(@similar_args) or $logger->error("Request: $reqstring - ".$DBI::errstr);
+            
+            while (my $res=$request->fetchrow_hashref) {
+                my $id         = $res->{id};
+                my $database   = $res->{dbname};
+                
+                $similar_recordlist->add(new OpenBib::Record::Title({ id => $id, database => $database}));
+            }
+            
+        }
+        
+        $similar_recordlist->load_brief_records;
+        $request->finish();
+        $logger->debug("Enrich: $isbn -> $reqstring");
+
+        $ttdata = {
+            dbinfo               => $dbinfotable,
+            have_bibkey          => 1,
             key                  => $key,
             available_recordlist => $recordlist,
             similar_recordlist   => $similar_recordlist,

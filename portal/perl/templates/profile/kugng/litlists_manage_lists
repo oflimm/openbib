@@ -67,17 +67,17 @@ type="submit" name="do_addlist" value="[% msg.maketext("Neu") %]" /></td></tr>
 <tr><th>[% msg.maketext("Bereits existierende Literaturlisten") %]</th></tr>
 <tr><td class="boxedclear">
 <table>
-<tr><td class="headline"><b>[% msg.maketext("Titel der Literaturliste") %]</b></td><td class="headline"><b>[% msg.maketext("Sichtbarkeit") %]</b></td><td class="headline"><b>[% msg.maketext("Titelzahl") %]</b></td><td class="headline"><b>[% msg.maketext("Angelegt") %]</b></td><td class="headline"><b>[% msg.maketext("Permalink") %]</b></td><td></td></tr>
+<tr><td class="headline"><b>[% msg.maketext("Titel der Literaturliste") %]</b></td><td class="headline"><b>[% msg.maketext("Titelzahl") %]</b></td><td class="headline"><b>[% msg.maketext("Sichtbarkeit") %]</b></td><td class="headline"><b>[% msg.maketext("Themengebiete") %]</b></td><td class="headline"><b>[% msg.maketext("Angelegt") %]</b></td><td class="headline"><b>[% msg.maketext("Permalink") %]</b></td><td></td></tr>
 [% listrow = 'listrow1' %]
 [% FOREACH litlist IN litlists %]
 <tr class="[% listrow %]"><td><a href="http://[%
 config.servername %][% config.litlists_loc %]?sessionID=[% sessionID
-%]&action=manage;litlistid=[% litlist.id %];do_showlitlist=1"><b>[% litlist.title %]</b></a></td><td>[% IF litlist.type == 1 %]
+%]&action=manage;litlistid=[% litlist.id %];do_showlitlist=1"><b>[% litlist.title %]</b></a></td><td>[% litlist.itemcount %]</td><td>[% IF litlist.type == 1 %]
 [% msg.maketext("&ouml;ffentlich") %]
 [% ELSE %] 
 [% msg.maketext("privat") %]
 [% END %]
-</td><td>[% litlist.itemcount %]</td><td>[% litlist.tstamp %]</td><td align="center">[% IF litlist.type == 1 %]<a href="http://[% config.loadbalancerservername %][% config.connector_permalink_loc %]/[% litlist.userid %]/[% litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="Permanenter Link"><img src="[% config.permalink_img %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a>[% ELSE %]&nbsp;[%- END -%]</td><td><a href="[% config.litlists_loc %]?sessionID=[% sessionID %]&action=manage;litlistid=[% litlist.id %];do_dellist=1" title="[% msg.maketext("Entfernen") %]"><img src="[% config.delete_img %]" alt="[% msg.maketext("Entfernen") %]" /></a></td></tr>
+</td><td>[%- FOREACH subject IN litlist.subjects -%][% subject.name %]<br/>[%- END -%]</td><td>[% litlist.tstamp %]</td><td align="center">[% IF litlist.type == 1 %]<a href="http://[% config.loadbalancerservername %][% config.connector_permalink_loc %]/[% litlist.userid %]/[% litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="Permanenter Link"><img src="[% config.permalink_img %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a>[% ELSE %]&nbsp;[%- END -%]</td><td><a href="[% config.litlists_loc %]?sessionID=[% sessionID %]&action=manage;litlistid=[% litlist.id %];do_dellist=1" title="[% msg.maketext("Entfernen") %]"><img src="[% config.delete_img %]" alt="[% msg.maketext("Entfernen") %]" /></a></td></tr>
 
 [% IF listrow == 'listrow1' %]
 [% listrow = 'listrow2' %]

@@ -30,12 +30,21 @@
 
 <h3><img src="http://ezb.uni-regensburg.de/ezeit/vascoda/vifa/logo/ezb_468x64.gif" alt="Elektronische Zeitschriftenbibliothek" /></h3>
 
+<div style="width:60%;">
+<div class="right_side boxedclear" style="width:auto;">
+<span class="headline">[% msg.maketext("Recherche starten") %]</span>
+<p>
+<img style="vertical-align:bottom" src="[% config.follow_img %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="http://rzblx1.uni-regensburg.de/ezeit/warpto.phtml?bibid=[% config.ezb_bibid %]&colors=[% config.ezb_colors %]&lang=de&jour_id=[% journalinfo.id %]" target="_blank" style="font-size:1.6em">[% msg.maketext("Weiter") %]</a>
+</p>
+</div>
+
 <div class="categories"><!-- Begin Categories -->
 <table cellpadding="2">
 <tr><td class="category">id</td><td>[% journalinfo.id %]</td></tr>
 [% IF journalinfo.title %]
 <tr><td class="category">[% msg.maketext("Titel") %]</td><td>[% journalinfo.title %]</td></tr>
 [% END %]
+<!-- <tr><td class="category">[% msg.maketext("Recherche starten") %]</td><td> <img style="vertical-align:bottom" src="[% config.follow_img %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="http://rzblx1.uni-regensburg.de/ezeit/warpto.phtml?bibid=[% config.ezb_bibid %]&colors=[% config.ezb_colors %]&lang=de&jour_id=[% journalinfo.id %]" target="_blank">[% msg.maketext("Weiter") %]</a></td></tr> -->
 [% IF journalinfo.publisher %]
 <tr><td class="category">[% msg.maketext("Herausgeber/Verlag") %]</td><td>[% journalinfo.publisher %]</td></tr>
 [%   FOREACH subject IN journalinfo.subjects %]
@@ -66,6 +75,7 @@
 [% END %]
 </table>
 
+</div>
 </div>
 <p />
 

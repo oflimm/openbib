@@ -52,8 +52,10 @@ drop table IF EXISTS titcount;
 create table titcount (
  dbname VARCHAR(255),
  count  BIGINT,
-
- INDEX (dbname)
+ type   TINYINT,
+ 
+ INDEX (dbname),
+ INDEX (type)
 );
 
 drop table IF EXISTS profileinfo;

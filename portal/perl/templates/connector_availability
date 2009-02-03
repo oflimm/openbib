@@ -51,6 +51,8 @@
 [%- END %]
 [%- IF normset.${"T0540"}.first.content %]
   <identifier>URN:ISBN:[% normset.${"T0540"}.first.content %]</identifier>
+[%- ELSIF have_bibkey -%]
+  <identifier>URN:BIBKEY:[% key %]</identifier>
 [%- END -%]
 </title_summary>
 [%- END -%]

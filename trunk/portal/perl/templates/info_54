@@ -47,9 +47,9 @@
 <table width="100%">
 <tr><th>Katalogtitel nach Bibliothekssystematik</th></tr>
 <tr><td class="boxedclear">
-<ul>
+<ul class="subjectlist">
 [% FOREACH classification IN user.get_classifications_of_subject({ type => 'BK', subjectid => id}) %]
-<li>[% classification %] / <a style="font-weight:bold;font-size:1.2em;" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=51;category=[% classification %]"">[% bks.${classification} %]</a> ([% thisbklist.${classification}%] Titel)</li>
+<li>[% classification %] / <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=51;category=[% classification %]">[% bks.${classification} %]</a> ([% thisbklist.${classification}%] Titel)</li>
 [% END %]
 </ul>
 </td></tr>
@@ -62,9 +62,9 @@
 <tr><td class="boxedclear">
 [% litlists = user.get_public_litlists({ subjectid => id }) %]
 [% IF litlists.size > 1 %]
-<ul>
+<ul class="subjectlist">
 [% FOREACH thisitem IN litlists%]
-<li><a style="font-weight:bold;font-size:1.2em;" href="[% config.litlists_loc %]?sessionID=[% sessionID %]&action=show;litlistid=[% thisitem.id %];do_showlitlist=1">[% thisitem.title%]</a> ([% thisitem.itemcount %] Titel)</li>
+<li><a href="[% config.litlists_loc %]?sessionID=[% sessionID %];action=show;litlistid=[% thisitem.id %];do_showlitlist=1">[% thisitem.title%]</a> ([% thisitem.itemcount %] Titel)</li>
 [% END %]
 </ul>
 [% ELSE %]

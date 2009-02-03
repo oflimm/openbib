@@ -44,7 +44,7 @@
 
 <div class="content">
 <p />
-<ul>
+<ul class="subjectlist">
 [%- FOREACH subject IN user.get_subjects -%]
 [% titlecount = 0 ;
    thisclassifications = user.get_classifications_of_subject({ type => 'BK', subjectid => subject.id});
@@ -52,7 +52,7 @@
      titlecount = titlecount + thisbklist.${classification};
   END ;
 %]
-<li><a style="font-weight:bold;font-size:1.2em;" href="[% config.info_loc %]?sessionID=[% sessionID %];stid=54;id=[% subject.id %]">[% subject.name %]</a> ([% titlecount %] Titel in [% thisclassifications.size %] Gruppen, [% subject.litlistcount%] Literaturlisten)</li>
+<li><a href="[% config.info_loc %]?sessionID=[% sessionID %];stid=54;id=[% subject.id %]">[% subject.name %]</a> ([% titlecount %] Titel in [% thisclassifications.size %] Gruppen, [% subject.litlistcount%] Literaturlisten)</li>
 [% END %]
 </ul>
 

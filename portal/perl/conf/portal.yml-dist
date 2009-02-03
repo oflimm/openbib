@@ -212,7 +212,7 @@ image_root_path: /usr/share/images
 # Verwendete Funktionsbilder
 courses_img: /images/openbib/courses.png
 delete_img: /images/openbib/cancel.png
-follow_img: /images/openbib/2rightarrow.png
+follow_img: /images/openbib/solidrightarrow.png
 info_img: /images/openbib/info.png
 lang_de_img: /images/openbib/de.png
 lang_en_img: /images/openbib/en.png

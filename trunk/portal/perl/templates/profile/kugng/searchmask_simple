@@ -28,6 +28,11 @@
   END ;
 %]
 
+[%
+  bks         = config.load_bk;
+  thisbklist  = statistics.get_result({id => view, type => 10}); 
+%]
+
 [% IF config.testsystem %]
 <div id="testsystem">
 [%# PROCESS common/subtemplate name="testsystem_info" %]
@@ -43,6 +48,7 @@
 <li><a href="#alltypes"><span>[% msg.maketext("Alles") %]</span></a></li>
 <li><a href="#only_serials"><span>[% msg.maketext("Zeitschriften/Serien") %]</span></a></li>
 <li><a href="#only_articles"><span>[% msg.maketext("Aufs&auml;tze") %]</span></a></li>
+<li><a href="#subjects"><span>[% msg.maketext("Themengebiete") %]</span></a></li>
 </ul>
 
 <h2 class="nojs_show">[% msg.maketext("Alle Formate") %]</h2>
@@ -61,7 +67,7 @@ $(document).ready(function(){
 </script>
 [% END %]
 
-<h1>[% msg.maketext("Recherchieren Sie im KUG in [_1] Titeln und [_2] Katalogen","${alldbcount}","${alldbs}") %]</h1>[%# msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount}","${alldbs}") %]</b>
+<h1>[% msg.maketext("Recherchieren Sie im KUG in [_1] Titeln und [_2] Katalogen","${alldbcount.all}","${alldbs}") %]</h1>[%# msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount.all}","${alldbs}") %]
 
 <!--
 [% IF view %]
@@ -168,7 +174,7 @@ $(document).ready(function(){
 </script>
 [% END %]
 
-<h1>[% msg.maketext("Recherchieren Sie im KUG in [_1] Titeln und [_2] Katalogen","${alldbcount}","${alldbs}") %]</h1>[%# msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount}","${alldbs}") %]</b>
+<h1>[% msg.maketext("Recherchieren Sie im KUG in [_1] Titeln und [_2] Katalogen","${alldbcount.serials}","${alldbs}") %]</h1>[%# msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount.all}","${alldbs}") %]
 
 <!--
 [% IF view %]
@@ -277,7 +283,7 @@ $(document).ready(function(){
 </script>
 [% END %]
 
-<h1>[% msg.maketext("Recherchieren Sie im KUG in [_1] Titeln und [_2] Katalogen","${alldbcount}","${alldbs}") %]</h1>[%# msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount}","${alldbs}") %]</b>
+<h1>[% msg.maketext("Recherchieren Sie im KUG in [_1] Titeln und [_2] Katalogen","${alldbcount.articles}","${alldbs}") %]</h1>[%# msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount.all}","${alldbs}") %]
 
 <!--
 [% IF view %]
@@ -372,6 +378,24 @@ $(document).ready(function(){
 
 </div><!-- End nur Aufsaetze -->
 
+<h2 class="nojs_show">[% msg.maketext("Themengebiete") %]</h2>
+
+<div id="subjects"><!-- Begin Themengebiete -->
+
+<p />
+<ul class="subjectlist">
+[%- FOREACH subject IN user.get_subjects -%]
+[% titlecount = 0 ;
+   thisclassifications = user.get_classifications_of_subject({ type => 'BK', subjectid => subject.id});
+   FOREACH classification IN thisclassifications;
+     titlecount = titlecount + thisbklist.${classification};
+  END ;
+%]
+<li><a style="font-weight:bold;font-size:1.2em;" href="[% config.info_loc %]?sessionID=[% sessionID %];stid=54;id=[% subject.id %]">[% subject.name %]</a> ([% titlecount %] Titel in [% thisclassifications.size %] Gruppen, [% subject.litlistcount%] Literaturlisten)</li>
+[% END %]
+</ul>
+</div><!-- End Themengebiete -->
+
 <p />
 
 </div><!-- End searchmask_types -->
@@ -447,9 +471,11 @@ Literaturlisten usw.)<p/>") %]
 <td class="overview"><!-- Begin overview-->
 <h3><img style="vertical-align:bottom" src="[% config.search_img %]" alt="[% msg.maketext("&Uuml;bersichten") %]"/>&nbsp;[% msg.maketext("In den Gesamtbestand eintauchen") %]</h3>
 
-<a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=53" title="[% msg.maketext("Themengebiete") %]">[% msg.maketext("Themengebiete") %]</a>,
-<a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="[% msg.maketext("Wolken") %]">[% msg.maketext("Wolken") %]</a>, <a href="[% config.litlists_loc %]?sessionID=[% sessionID %]&action=show_public_lists" title="[% msg.maketext("Literaturlisten") %]">[% msg.maketext("Literaturlisten") %]</a>, <a
-href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=40" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a>, <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=10" title="Top 20">[% msg.maketext("meistgenutzte Titel") %]</a>, <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=15" title="[% msg.maketext("spezialisierte KUG-Portale") %]">[% msg.maketext("spezialisierte KUG-Portale") %]</a>.<p/>
+<a style="font-size: 1.3em;" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=53" title="[% msg.maketext("Themengebiete") %]">[% msg.maketext("Themengebiete") %]</a>,
+<a style="font-size: 1.5em;" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="[% msg.maketext("Wolken")
+%]">[% msg.maketext("Wolken") %]</a>, <a style="font-size: 1.4em;"href="[% config.litlists_loc %]?sessionID=[% sessionID
+%]&action=show_public_lists" title="[% msg.maketext("Literaturlisten")
+%]">[% msg.maketext("Literaturlisten") %]</a>, <a style="font-size: 1.1em;" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=40" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a>, <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=10" title="Top 20">[% msg.maketext("meistgenutzte Titel") %]</a>, <a style="font-size: 1.2em;" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=15" title="[% msg.maketext("spezialisierte KUG-Portale") %]">[% msg.maketext("spezialisierte KUG-Portale") %]</a>.<p/>
 
 <h3><img
 src="http://ezb.uni-regensburg.de/ezeit/vascoda/vifa/logo/ezb_234x32.gif"
@@ -468,19 +494,19 @@ lizensierten Datenbanken[_2]","<a href=\"${config.dbis_loc}?sessionID=${sessionI
 [% lastlitlists = user.get_recent_litlists({count => 5}) %]
 
 [% IF lastlitlists.size > 0 %]
-<ul>
+<ul class="recent_litlists">
 [%   FOREACH litlist IN lastlitlists %]
 <li><a href="[% config.litlists_loc %]?sessionID=[% sessionID %];action=show;litlistid=[% litlist.id%];do_showlitlist=1">[% litlist.title %]</a> ([% litlist.itemcount %])</li>
 [%   END %]
 </ul>
 [% END %]
 
-<h4>[% msg.maketext("Die 5 zuletzt verwendeten Tags") %]</h4>
+<h4>[% msg.maketext("Die 5 zuletzt vergebenen Tags") %]</h4>
 
 [% lasttags = user.get_recent_tags({count => 5}) %]
 
 [% IF lasttags.size > 0 %]
-<ul>
+<ul class="recent_tags">
 [%   FOREACH thistag IN lasttags %]
 <li><a href="[% config.tags_loc %]?sessionID=[% sessionID %];searchtitoftag=[% thistag.id %]">[% thistag.tag %]</a> ([% thistag.itemcount %])</li>
 [%   END %]

@@ -135,7 +135,7 @@ value="0">[% msg.maketext("getrennte Kataloge") %]</option></select>
 <p />
 
 <center>
-<b>[% msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount}","${alldbs}") %]</b>
+<b>[% msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount.all}","${alldbs}") %]</b>
 <p />
 [% msg.maketext("Haben Sie Rechercheprobleme?!? Wollen Sie den KUG besser kennenlernen und effizienter nutzen?! Wir bieten laufend [_1]KUG-Schulungen[_2] an!","<a href=\"http://www.ub.uni-koeln.de/service/kurse/kug/index_ger.html\" target=\"_blank\">","</a>") %]
 <p />

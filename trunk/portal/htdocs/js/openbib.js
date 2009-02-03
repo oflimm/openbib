@@ -15,7 +15,7 @@ $('#additional_title_info > ul').tabs();
 // Tabs fuer Suchmaske nach Formaten 
 $('#searchmask_types > ul').tabs();
 
- // Tabs fuer weitere Informationen
+// Tabs fuer weitere Informationen
 //$('#additional_title_info_vert').accordion();
 
 // nojs_* modifizieren fuer JavaScript-Version der Seite
@@ -46,6 +46,20 @@ function (txt){ $("#collectioncount").html("["+txt+"]"); });
 
    return false;
  });
+
+$("a.collection").click(function(){
+
+   // Insert-Funktion aufrufen
+   $.get(this.href);
+
+   // Merklistenfuellstand aktualisieren
+   $.get("/portal/merkliste?sessionID="+sessionID+";action=show;do_collection_showcount=1",
+function (txt){ $("#collectioncount").html("["+txt+"]"); });
+
+   return false;
+ });
+
+
 // Ende Merkliste
 
 // Begin BibSonomy Tags

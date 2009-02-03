@@ -1234,3 +1234,33 @@ a.navlink {
 /*a.navlink:after {
   content: ' >>';
 }*/
+
+ul.subjectlist {
+  padding: 5px;
+  margin-left: 5px;
+}
+
+ul.subjectlist > li {
+  text-align: left;
+  list-style: none;
+  padding: 9px 10px 0px 30px;
+  background: url(/images/openbib/solidrightarrow.png) 5px 5px no-repeat;
+}
+
+ul.subjectlist > li > a {
+  font-weight: bold;
+  font-size: 1.3em;
+}
+
+ul.recent_litlists {
+  padding: 0px;
+  margin-top: -12px;
+  margin-left: 25px;
+}
+
+ul.recent_tags {
+  padding: 0px;
+  margin-top: -12px;
+  margin-left: 25px;
+
+}

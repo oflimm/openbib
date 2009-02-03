@@ -11,7 +11,7 @@
 #
 #######################################################################
 -%]
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/2002/REC-xhtml1-20020801/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
 [% IF NOT disable_cache_control %]
@@ -27,10 +27,10 @@
 [% END %]
   <link href="/images/openbib/favicon.ico" rel="shortcut icon" />
 [% IF view && primrssfeed %]
-<link rel="alternate" type="application/rss+xml" title="RDF-Datei" href="[% primrssfeed %]">
+<link rel="alternate" type="application/rss+xml" title="RDF-Datei" href="[% primrssfeed %]" />
 [% END %]
 [% IF unapi && config.unAPI %]
-    <link rel="unapi-server" title="unAPI" type="application/xml" href="http://[% config.servername %][% config.connector_unapi_loc %]"/>
+    <link rel="unapi-server" title="unAPI" type="application/xml" href="http://[% config.servername %][% config.connector_unapi_loc %]" />
 [% END %]
 
 
@@ -61,7 +61,7 @@
     <script language="JavaScript" type="text/javascript" src="/js/jquery.autocomplete.pack.js"></script>
 
   <link rel="stylesheet" href="[% "${config.css_loc}/jquery.autocomplete.css" %]" type="text/css" />
-  <link rel="stylesheet" href="[% "${config.css_loc}/ui.tabs.css" %]" type="text/css" media="print, projection, screen">
+  <link rel="stylesheet" href="[% "${config.css_loc}/ui.tabs.css" %]" type="text/css" media="print, projection, screen" />
 
 <!--[if lt IE 7.]>
 <script defer type="text/javascript" src="/js/pngfix.js"></script>

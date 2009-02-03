@@ -96,8 +96,8 @@
 .ui-tabs-panel {
 /*    border-top: 1px solid #97a5b0; */
 /*    border: 1px solid #97a5b0; */
-    border: 1px solid lightblue;  /*
-    padding: 1em 8px;
+    border: 1px solid lightblue; 
+    /*padding: 10px; /*
     background: #fff; /* declare background color for container to avoid distorted fonts in IE while fading */
 }
 .ui-tabs-loading em {

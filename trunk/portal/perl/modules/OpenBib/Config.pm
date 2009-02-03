@@ -173,19 +173,28 @@ sub get_number_of_titles {
 
     my $request;
     if ($profilename){
-        $request=$dbh->prepare("select sum(count) as alltitcount from titcount,dbinfo,profiledbs where profiledbs.profilename = ? and profiledbs.dbname=titcount.dbname and titcount.dbname=dbinfo.dbname and dbinfo.active=1") or $logger->error($DBI::errstr);
+        $request=$dbh->prepare("select sum(count) as alltitcount, type from titcount,dbinfo,profiledbs where profiledbs.profilename = ? and profiledbs.dbname=titcount.dbname and titcount.dbname=dbinfo.dbname and dbinfo.active=1 group by titcount.type") or $logger->error($DBI::errstr);
         $request->execute($profilename) or $logger->error($DBI::errstr);
     }
     else {
-        $request=$dbh->prepare("select sum(count) as alltitcount from titcount,dbinfo where titcount.dbname=dbinfo.dbname and dbinfo.active=1") or $logger->error($DBI::errstr);
+        $request=$dbh->prepare("select sum(count) as alltitcount, type from titcount,dbinfo where titcount.dbname=dbinfo.dbname and dbinfo.active=1 group by titcount.type") or $logger->error($DBI::errstr);
         $request->execute() or $logger->error($DBI::errstr);
     }
 
-    my $res       = $request->fetchrow_hashref;
-    my $alltitles = $res->{alltitcount};
+    my $alltitles_ref = {};
+    
+    while (my $result = $request->fetchrow_hashref){
+        my $alltitles = $result->{alltitcount};
+        my $type      = $result->{type};
+
+        $alltitles_ref->{all}      = $alltitles if ($type == 1);
+        $alltitles_ref->{serials}  = $alltitles if ($type == 2);
+        $alltitles_ref->{articles} = $alltitles if ($type == 3);
+    }
+    
     $request->finish();
     
-    return $alltitles;
+    return $alltitles_ref;
 }
 
 sub get_viewdesc_from_viewname {
@@ -668,7 +677,7 @@ sub get_dbinfo_overview {
 
     my $dbinfo_ref = [];
 
-    my $idnresult=$dbh->prepare("select dbinfo.*,titcount.count,dboptions.autoconvert from dbinfo,titcount,dboptions where dbinfo.dbname=titcount.dbname and titcount.dbname=dboptions.dbname order by orgunit,dbname") or $logger->error($DBI::errstr);
+    my $idnresult=$dbh->prepare("select dbinfo.*,titcount.count,dboptions.autoconvert from dbinfo,titcount,dboptions where dbinfo.dbname=titcount.dbname and titcount.dbname=dboptions.dbname and titcount.type = 1 order by orgunit,dbname") or $logger->error($DBI::errstr);
     $idnresult->execute() or $logger->error($DBI::errstr);
     
     my $katalog;

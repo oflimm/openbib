@@ -218,7 +218,7 @@ nutzen, bei der die Verwendung von JavaScript minimiert ist.","<a href=\"${confi
 </table>
 
 <p />
-<b>[% msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount}","${alldbs}") %]</b>
+<b>[% msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount.all}","${alldbs}") %]</b>
 <p />
 
 </td>

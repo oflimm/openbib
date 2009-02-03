@@ -204,7 +204,7 @@ nutzen, bei der die Verwendung von JavaScript minimiert ist.","<a href=\"${confi
   <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
 
 <p />
-<b>[% msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount}","${alldbs}") %]</b>
+<b>[% msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount.all}","${alldbs}") %]</b>
 
 </div><!-- End searchmask_query -->
 <div id="searchmask_dbchoice"><!-- Begin searchmask_dbchoice -->

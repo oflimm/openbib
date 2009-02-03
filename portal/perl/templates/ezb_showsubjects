@@ -59,7 +59,7 @@
 </ol>
 <!-- Ende Tag-Cloud -->
 [% ELSE %]
-<ul>
+<ul class="subjectlist">
 [% FOREACH subject IN subjects %]
 <li><a href="[% config.ezb_loc %]?sessionID=[% sessionID %];view=[% view %];notation=[% subject.notation %];action=show_journals">[% subject.desc %]</a> ([% subject.count %])</li>
 [% END %]

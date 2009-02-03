@@ -33,7 +33,7 @@
 <div id="maincontent">
 
 <ul class="tabbingmenu">
-   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];category=[% thisbk %];stid=51" %]">[% thisbk %] / [% bks.${thisbk} %]</a></li>
+   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];category=[% thisbk %];stid=51">[% thisbk %] / [% bks.${thisbk} %]</a></li>
 </ul>
 
 <div class="content">
@@ -55,7 +55,7 @@ bklist = bklist.sort;
 <table width="100%">
 <tr><th>Katalogtitel nach Bibliothekssystematik</th></tr>
 <tr><td class="boxedclear">
-<ul>
+<ul class="subjectlist">
 [% FOREACH bk IN bklist %]
 [%   IF thisbklist.${bk}.defined %] 
 [%      localurl    = "${config.search_loc}?sessionID=${sessionID};database=${viewdbs.first};searchtitofcnt=${bk};category=E4100;hitrange=${qopts.hitrange}" %]

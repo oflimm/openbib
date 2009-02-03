@@ -43,12 +43,14 @@ bklist = bklist.sort;
 
 %]
 
+<ul class="subjectlist">
 [% FOREACH bk IN bklist %]
 [%   IF thisbklist.${bk}.defined %] 
-[% bk %] / <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=51;category=[% bk %]"">[% bks.${bk} %]</a> ([% thisbklist.${bk}%] Titel)<br/>
+<li>[% bk %] / <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=51;category=[% bk %]"">[% bks.${bk} %]</a> ([% thisbklist.${bk}%] Titel)</li>
 [%   END %]
 [% END %]
 [%# USE dumper; dumper.dump(thisbklist)%]
+</ul>
 
 </div>
 

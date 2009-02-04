@@ -38,9 +38,11 @@ use YAML;
 use vars qw(@autbuffer @autdubbuf);
 use vars qw(@korbuffer @kordubbuf);
 use vars qw(@swtbuffer @swtdubbuf);
-use vars qw(@titbuffer @titdubbuf);
+use vars qw(@titbuffer @titdubbuf $titcount);
 
 my $inputfile=$ARGV[0];
+
+my $titcount=0;
 
 $autdublastidx=1;
 $autidx=0;
@@ -115,6 +117,8 @@ print STDERR "Exemplardaten werden ausgegeben\n";
 
 ausgabemexfile();
 
+print STDERR "Titelzahl: $titcount\n";
+
 sub parse_metadata {
     my($t, $field)= @_;
 
@@ -122,7 +126,7 @@ sub parse_metadata {
 
     $metadata{$att}=int($metaidx);
 
-    print "Mapping Category $att to index $metaidx\n";
+    print "Mapping Category $att to index $metaidx - ".int($metaidx)."\n";
     
     $metaidx++;
     # Release memory of processed tree
@@ -133,6 +137,8 @@ sub parse_metadata {
 sub parse_titset {
     my($t, $titset)= @_;
 
+    $titcount++;
+
     my $id=$titset->{'att'}->{'RECORDID'};
 
     $titbuffer[$titidx++]="0000:".$id;
@@ -142,7 +148,7 @@ sub parse_titset {
     # Verfasser/Personen
     # Autor
     my @verfasser=();
-    if($cols[$metadata{'Autor'}]->first_child('DATA')->text()) {
+    if(exists $metadata{'Autor'} && $cols[$metadata{'Autor'}]->first_child('DATA')->text()) {
         for my $singleverf (split (";",$cols[$metadata{'Autor'}]->first_child('DATA')->text())){
             # Inhalt bereinigen
             $singleverf=~s/\s*:\s*$//;
@@ -154,7 +160,7 @@ sub parse_titset {
     }
 
     # AutorJap
-    if($cols[$metadata{'AutorJap'}]->first_child('DATA')->text()) {
+    if( exists $metadata{'AutorJap'} && $cols[$metadata{'AutorJap'}]->first_child('DATA')->text()) {
         for my $singleverf (split (";",$cols[$metadata{'AutorJap'}]->first_child('DATA')->text())){
             # Inhalt bereinigen
             $singleverf=~s/\s*:\s*$//;
@@ -166,7 +172,7 @@ sub parse_titset {
     }
 
     # AV
-    if($cols[$metadata{'AV'}]->first_child('DATA')->text()) {
+    if( exists $metadata{'AV'} && $cols[$metadata{'AV'}]->first_child('DATA')->text()) {
         for my $singleverf (split (";",$cols[$metadata{'AV'}]->first_child('DATA')->text())){
             # Inhalt bereinigen
             $singleverf=~s/\s*:\s*$//;
@@ -195,7 +201,7 @@ sub parse_titset {
     }
 
     # Schlagworte
-    if($cols[$metadata{'Schlagwort'}]->first_child('DATA')->text()) {
+    if(exists $metadata{'Schlagwort'} && $cols[$metadata{'Schlagwort'}]->first_child('DATA')->text()) {
         my $swtans_all=$cols[$metadata{'Schlagwort'}]->text();
 
         if ($swtans_all){
@@ -221,11 +227,11 @@ sub parse_titset {
 
     # Titel
     my @titel=();
-    if($cols[$metadata{'Titel'}]->first_child('DATA')->text()) {
+    if(exists $metadata{'Titel'} && $cols[$metadata{'Titel'}]->first_child('DATA')->text()) {
         push @titel, $cols[$metadata{'Titel'}]->first_child('DATA')->text();
     }
     # Titel Jap
-    if($cols[$metadata{'TitelJap'}]->first_child('DATA')->text()) {
+    if(exists $metadata{'TitelJap'} && $cols[$metadata{'TitelJap'}]->first_child('DATA')->text()) {
         push @titel, $cols[$metadata{'TitelJap'}]->first_child('DATA')->text();
     }
     if (@titel){
@@ -233,16 +239,16 @@ sub parse_titset {
     }
     
     # Ausgabe
-    if($cols[$metadata{'Ausgabe'}]->first_child('DATA')->text()){
+    if(exists $metadata{'Ausgabe'} && $cols[$metadata{'Ausgabe'}]->first_child('DATA')->text()){
         $titbuffer[$titidx++]="0403:".$cols[$metadata{'Ausgabe'}]->first_child('DATA')->text();
     }
 
     # Verlag
     my @verlag=();
-    if($cols[$metadata{'Verlag'}]->first_child('DATA')->text()){
+    if(exists $metadata{'Verlag'} && $cols[$metadata{'Verlag'}]->first_child('DATA')->text()){
         push @verlag, $cols[$metadata{'Verlag'}]->first_child('DATA')->text();
     }
-    if($cols[$metadata{'VerlJap'}]->first_child('DATA')->text()){
+    if(exists $metadata{'VerlJap'} && $cols[$metadata{'VerlJap'}]->first_child('DATA')->text()){
         push @verlag, $cols[$metadata{'VerlJap'}]->first_child('DATA')->text();
     }
     if (@verlag){
@@ -251,10 +257,10 @@ sub parse_titset {
     
     # Verlagsort
     my @verlagsorte=();
-    if($cols[$metadata{'Ort'}]->first_child('DATA')->text()){
+    if(exists $metadata{'Ort'} && $cols[$metadata{'Ort'}]->first_child('DATA')->text()){
         push @verlagsorte, $cols[$metadata{'Ort'}]->first_child('DATA')->text();
     }
-    if($cols[$metadata{'OrtJap'}]->first_child('DATA')->text()){
+    if(exists $metadata{'OrtJap'} && $cols[$metadata{'OrtJap'}]->first_child('DATA')->text()){
         push @verlagsorte, $cols[$metadata{'OrtJap'}]->first_child('DATA')->text();
     }
     if (@verlagsorte){
@@ -262,85 +268,85 @@ sub parse_titset {
     }
 
     # Umfang/Format
-    if($cols[$metadata{'Kollation'}]->first_child('DATA')->text()){
+    if(exists $metadata{'Kollation'} && $cols[$metadata{'Kollation'}]->first_child('DATA')->text()){
         $titbuffer[$titidx++]="0433:".$cols[$metadata{'Kollation'}]->first_child('DATA')->text();
     }
 
     # Jahr
-    if($cols[$metadata{'Jahr'}]->first_child('DATA')->text()){
+    if(exists $metadata{'Jahr'} && $cols[$metadata{'Jahr'}]->first_child('DATA')->text()){
         $titbuffer[$titidx++]="0425:".$cols[$metadata{'Jahr'}]->first_child('DATA')->text();
     }
 
     # Gesamttitel / Reihe
     my @gesamttitel=();
-    if($cols[$metadata{'Gesamttitel'}]->first_child('DATA')->text()){
+    if(exists $metadata{'Gesamttitel'} && $cols[$metadata{'Gesamttitel'}]->first_child('DATA')->text()){
         push @gesamttitel, $cols[$metadata{'Gesamttitel'}]->first_child('DATA')->text();
     }
-    if($cols[$metadata{'GesamtJap'}]->first_child('DATA')->text()){
+    if(exists $metadata{'GesamtJap'} && $cols[$metadata{'GesamtJap'}]->first_child('DATA')->text()){
         push @gesamttitel, $cols[$metadata{'GesamtJap'}]->first_child('DATA')->text();
     }
-    if($cols[$metadata{'Reihe'}]->first_child('DATA')->text()){
+    if(exists $metadata{'Reihe'} && $cols[$metadata{'Reihe'}]->first_child('DATA')->text()){
         push @gesamttitel, $cols[$metadata{'Reihe'}]->first_child('DATA')->text();
     }
-    if($cols[$metadata{'ReiheJap'}]->first_child('DATA')->text()){
+    if(exists $metadata{'ReiheJap'} && $cols[$metadata{'ReiheJap'}]->first_child('DATA')->text()){
         push @gesamttitel, $cols[$metadata{'ReiheJap'}]->first_child('DATA')->text();
     }
     if (@gesamttitel){
         $titbuffer[$titidx++]="0451:".join(' / ',@gesamttitel);
     }
     
-    if($cols[$metadata{'Sprache'}]->first_child('DATA')->text()){
+    if(exists $metadata{'Sprache'} && $cols[$metadata{'Sprache'}]->first_child('DATA')->text()){
         $titbuffer[$titidx++]="0015:".$cols[$metadata{'Sprache'}]->first_child('DATA')->text();
     }
 
-    if($cols[$metadata{'Nummer'}]->first_child('DATA')->text()){
+    if(exists $metadata{'Nummer'} && $cols[$metadata{'Nummer'}]->first_child('DATA')->text()){
         $titbuffer[$titidx++]="0089:".$cols[$metadata{'Nummer'}]->first_child('DATA')->text();
     }
 
-    if($cols[$metadata{'Fußnote'}]->first_child('DATA')->text()){
+    if(exists $metadata{'Fußnote'} && $cols[$metadata{'Fußnote'}]->first_child('DATA')->text()){
         $titbuffer[$titidx++]="0501:".$cols[$metadata{'Fußnote'}]->first_child('DATA')->text();
     }
 
-    if($cols[$metadata{'Inventar'}]->first_child('DATA')->text()){
+    if(exists $metadata{'Inventar'} && $cols[$metadata{'Inventar'}]->first_child('DATA')->text()){
         $titbuffer[$titidx++]="0005.001:".$cols[$metadata{'Inventar'}]->first_child('DATA')->text();
     }
 
     # Quelle
-    if($cols[$metadata{'Jg,Heft,Bd'}]->first_child('DATA')->text()){
+    if(exists $metadata{'Jg,Heft,Bd'} && $cols[$metadata{'Jg,Heft,Bd'}]->first_child('DATA')->text()){
         $titbuffer[$titidx++]="0590:".$cols[$metadata{'Jg,Heft,Bd'}]->first_child('DATA')->text();
     }
 
     # ISBN
-    if($cols[$metadata{'ISBN'}]->first_child('DATA')->text()){
+    if(exists $metadata{'ISBN'} && $cols[$metadata{'ISBN'}]->first_child('DATA')->text()){
         $titbuffer[$titidx++]="0540:".$cols[$metadata{'ISBN'}]->first_child('DATA')->text();
     }
 
     # Datum
-    if($cols[$metadata{'Datum'}]->first_child('DATA')->text()){
+    if(exists $metadata{'Datum'} && $cols[$metadata{'Datum'}]->first_child('DATA')->text()){
         $titbuffer[$titidx++]="0002:".$cols[$metadata{'Datum'}]->first_child('DATA')->text();
     }
 
-    if($cols[$metadata{'Standort'}]->first_child('DATA')->text()){
+    if(exists $metadata{'Standort'} && $cols[$metadata{'Standort'}]->first_child('DATA')->text()){
         $titbuffer[$titidx++]="0016.001:".$cols[$metadata{'Standort'}]->first_child('DATA')->text();
     }
     
-    if($cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text()){
+    if(exists $metadata{'Signatur_flach'} && $cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text()){
         $titbuffer[$titidx++]="0014.001:".$cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text();
     }
 
     $titbuffer[$titidx++]="9999:";
 
     # Exemplardaten
-    if ($cols[$metadata{'Signatur'}]->first_child('DATA')->text() || $cols[$metadata{'Standort'}]->first_child('DATA')->text()){
+    if (exists $metadata{'Signatur'} && $cols[$metadata{'Signatur'}]->first_child('DATA')->text() || $cols[$metadata{'Standort'}]->first_child('DATA')->text()){
 
         $mexbuffer[$mexidx++]="0000:$mexidn";
         $mexbuffer[$mexidx++]="0004:$id";
 
-        if($cols[$metadata{'Standort'}]->first_child('DATA')->text()){
+        if(exists $metadata{'Standort'} && $cols[$metadata{'Standort'}]->first_child('DATA')->text()){
             $mexbuffer[$mexidx++]="0016.001:".$cols[$metadata{'Standort'}]->first_child('DATA')->text();
         }
 
-        if($cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text()){
+        if(exists $metadata{'Signatur_flach'} && $cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text()){
             $mexbuffer[$mexidx++]="0014.001:".$cols[$metadata{'Signatur_flach'}]->first_child('DATA')->text();
         }
         $mexbuffer[$mexidx++]="9999:";

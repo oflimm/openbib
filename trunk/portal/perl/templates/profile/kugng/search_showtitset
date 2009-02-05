@@ -495,7 +495,7 @@ href="[% config.userreviews_loc %]?sessionID=[% sessionID
 <th><img src="[% config.share_img %]" alt="[% msg.maketext("An BibSonomy senden") %]" title="[% msg.maketext("An BibSonomy senden") %]" /></th>
 <td><a href="[% config.redirect_loc %]/[% sessionID %]/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=[% record.to_bibtex | uri | replace('&','%26') %]" target="bibsonomy" valign="top">[% msg.maketext("An BibSonomy senden") %]</a></td>
 <th><img src="[% config.listofinterest_img %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></th>
-<td><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% record.database %];singleidn=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a></td>
+<td><a class="collection" href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% record.database %];singleidn=[% record.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]">[% msg.maketext("In die Merkliste") %]</a></td>
 </tr>
 <tr>
 <th><img src="[% config.mail_img %]" alt="[% msg.maketext("Als Mail verschicken") %]" border="0" /></th>

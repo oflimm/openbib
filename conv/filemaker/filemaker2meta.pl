@@ -97,6 +97,8 @@ my $twig= XML::Twig->new(
 print STDERR "Daten werden eingelesen und geparsed\n";
 $twig->safe_parsefile($inputfile);
 
+print STDERR $@;
+
 print STDERR "Verfasser werden ausgegeben\n";
 
 ausgabeautfile();

@@ -130,6 +130,7 @@ connector_ukonline_loc: /portal/connector/uk-online
 connector_unapi_loc: /portal/connector/unapi
 databasechoice_loc: /portal/katalogauswahl
 databaseprofile_loc: /portal/katalogprofile
+dbis_loc: /portal/dbis
 dispatchquery_loc: /portal/anfrageverteilen
 externaljump_loc: /portal/externersprung
 ezb_loc: /portal/ezb
@@ -184,9 +185,10 @@ dbis_bibid: usb_k
 dbis_colors: ''
 
 # Externer Link zur Cover-Scan Anreicherung (ISBNINHERE wird durch ISBN ersetzt)
-coverscans_exturl: http://media.lob.de/image.php?pic=ISBNINHERE.jpg&size=80
-coverscans_full_exturl: http://media.lob.de/image.php?pic=ISBNINHERE.jpg&size=100
-coverscans_credits_exturl: http://www.lob.de/
+coverscans_exturl: http://media.lob.de/image.php?pic=ISBNINHERE.jpg&size=55
+coverscans_full_exturl: http://media.lob.de/image.php?pic=ISBNINHERE.jpg&size=120
+coverscans_credits_exturl: http://www.lob.de/isbn/ISBNINHERE@kug
+coverscans_creditstext_exturl: 'Zum Kauf weiter zu Lehmanns Fachbuchhandlung GmbH'
 
 # Pfad zur Konfigurationsdatei von Log4Perl
 log4perl_path: /opt/openbib/conf/portal.log4perl

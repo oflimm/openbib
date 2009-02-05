@@ -100,36 +100,39 @@ sub handler {
 
         my $titcount = OpenBib::Record::Person->new({database=>$database, id => $id})->get_number_of_titles;
 
-        my $request = $dbh->prepare("select distinct c2.targetid as id from conn as c1 left join conn as c2 on c1.sourceid=c2.sourceid where c1.sourcetype=1 and c2.sourcetype=1 and c1.targettype=2 and c2.targettype=2 and c1.targetid=? and c2.targetid != ?");
-        $request->execute($id,$id);
-
-        while (my $result=$request->fetchrow_hashref){
-            my $similarid = $result->{id};
+        # Nur 'praezisere' Verfasser werden analysiert
+        if ($titcount < 100){
+            my $request = $dbh->prepare("select distinct c2.targetid as id from conn as c1 left join conn as c2 on c1.sourceid=c2.sourceid where c1.sourcetype=1 and c2.sourcetype=1 and c1.targettype=2 and c2.targettype=2 and c1.targetid=? and c2.targetid != ?");
+            $request->execute($id,$id);
             
-            my $record=OpenBib::Record::Person->new({database=>$database});
-            $record->load_name({dbh => $dbh, id=>$similarid});
-            my $content=$record->name_as_string;
-            
-            # Ausgabe der Anzahl verk"upfter Titel
-            my $sqlrequest="select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=2";
-            my $request2=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
-            $request2->execute($similarid);
-            my $result2=$request2->fetchrow_hashref;
-            my $count = $result2->{conncount};
-            
-            if ($maxcount < $count){
-                $maxcount = $count;
+            while (my $result=$request->fetchrow_hashref){
+                my $similarid = $result->{id};
+                
+                my $record=OpenBib::Record::Person->new({database=>$database});
+                $record->load_name({dbh => $dbh, id=>$similarid});
+                my $content=$record->name_as_string;
+                
+                # Ausgabe der Anzahl verk"upfter Titel
+                my $sqlrequest="select count(distinct sourceid) as conncount from conn where targetid=? and sourcetype=1 and targettype=2";
+                my $request2=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
+                $request2->execute($similarid);
+                my $result2=$request2->fetchrow_hashref;
+                my $count = $result2->{conncount};
+                
+                if ($maxcount < $count){
+                    $maxcount = $count;
+                }
+                
+                if ($mincount > $count){
+                    $mincount = $count;
+                }
+                
+                push @{$similar_persons_ref}, {
+                    id      => $similarid,
+                    item    => $content,
+                    count   => $count,
+                };
             }
-            
-            if ($mincount > $count){
-                $mincount = $count;
-            }
-            
-            push @{$similar_persons_ref}, {
-                id      => $similarid,
-                item    => $content,
-                count   => $count,
-            };
         }
     }
 
@@ -149,47 +152,53 @@ sub handler {
         $logger->debug("Gefundene Personen-ID's: ".YAML::Dump(\@autids));
         my %similar_done = ();
         foreach my $autid (@autids){
-            #$request = $dbh->prepare("select distinct targetid as id from conn where sourcetype=1 and targettype=2 and targetid != ? and sourceid in (select sourceid from conn where sourcetype=1 and targettype =2 and targetid = ?)");
-            $request = $dbh->prepare("select distinct c2.targetid as id, count(c2.sourceid) as titcount from conn as c1 left join conn as c2 on c1.sourceid=c2.sourceid where c1.sourcetype=1 and c2.sourcetype=1 and c1.targettype=2 and c2.targettype=2 and c1.targetid=? and c2.targetid != ? group by c2.sourceid");
 
-            $request->execute($autid,$autid);
-            
-            while (my $result=$request->fetchrow_hashref){
-                my $similarid       = $result->{id};
-                my $similartitcount = $result->{titcount};
-                #my $similartitcount = OpenBib::Record::Person->new({database=>$database, id => $similarid})->get_number_of_titles;
+            my $titcount = OpenBib::Record::Subject->new({database=>$database, id => $autid})->get_number_of_titles;
+
+            # Nur 'praezisere' Autoren werden analysiert
+            if ($titcount < 100){
                 
-                # Wenn das zu einer Person eine andere gefundene Person schon im
-                # aktuellen Titel enthalten ist, dann ignorieren
-                next if (exists $autid_lookup_ref->{$similarid});
+                #$request = $dbh->prepare("select distinct targetid as id from conn where sourcetype=1 and targettype=2 and targetid != ? and sourceid in (select sourceid from conn where sourcetype=1 and targettype =2 and targetid = ?)");
+                $request = $dbh->prepare("select distinct c2.targetid as id, count(c2.sourceid) as titcount from conn as c1 left join conn as c2 on c1.sourceid=c2.sourceid where c1.sourcetype=1 and c2.sourcetype=1 and c1.targettype=2 and c2.targettype=2 and c1.targetid=? and c2.targetid != ? group by c2.sourceid");
                 
-                # Counts bzgl verschiedener Schlagworte des aktuellen Titels werden alle gezaehlt
-                if (!exists $tit_aut_count_ref->{$similarid}){
-                    $tit_aut_count_ref->{$similarid}=$similartitcount;
+                $request->execute($autid,$autid);
+                
+                while (my $result=$request->fetchrow_hashref){
+                    my $similarid       = $result->{id};
+                    my $similartitcount = $result->{titcount};
+                    #my $similartitcount = OpenBib::Record::Person->new({database=>$database, id => $similarid})->get_number_of_titles;
+                    
+                    # Wenn das zu einer Person eine andere gefundene Person schon im
+                    # aktuellen Titel enthalten ist, dann ignorieren
+                    next if (exists $autid_lookup_ref->{$similarid});
+                    
+                    # Counts bzgl verschiedener Schlagworte des aktuellen Titels werden alle gezaehlt
+                    if (!exists $tit_aut_count_ref->{$similarid}){
+                        $tit_aut_count_ref->{$similarid}=$similartitcount;
+                    }
+                    else {
+                        $tit_aut_count_ref->{$similarid}+=$similartitcount;
+                    }
+                    
+                    # Jetzt wurde gezaehlt, aber ein Eintrag muss nicht angelegt werden.
+                    if (exists $similar_done{$similarid}){
+                        next;
+                    }
+                    else {
+                        $similar_done{$similarid}=1;
+                    }
+                
+                    my $record=OpenBib::Record::Person->new({database=>$database});
+                    $record->load_name({dbh => $dbh, id=>$similarid});
+                    my $content=$record->name_as_string;
+                    
+                    push @{$similar_persons_ref}, {
+                        id      => $similarid,
+                        item    => $content,
+                        #                    count   => $count,
+                    };            
                 }
-                else {
-                    $tit_aut_count_ref->{$similarid}+=$similartitcount;
-                }
-                
-                # Jetzt wurde gezaehlt, aber ein Eintrag muss nicht angelegt werden.
-                if (exists $similar_done{$similarid}){
-                    next;
-                }
-                else {
-                    $similar_done{$similarid}=1;
-                }
-                
-                my $record=OpenBib::Record::Person->new({database=>$database});
-                $record->load_name({dbh => $dbh, id=>$similarid});
-                my $content=$record->name_as_string;
-                
-                push @{$similar_persons_ref}, {
-                    id      => $similarid,
-                    item    => $content,
-                    #                    count   => $count,
-                };            
             }
-            
         }
         
         foreach my $single_person_ref (@{$similar_persons_ref}){

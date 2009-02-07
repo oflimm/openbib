@@ -1,0 +1,3 @@
+alter table titcount add type tinyint after count;
+alter table titcount add index(type);
+update titcount set type=1;

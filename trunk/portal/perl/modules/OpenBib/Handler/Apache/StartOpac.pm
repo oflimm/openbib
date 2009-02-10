@@ -38,9 +38,10 @@ use Apache::Constants qw(:common);
 use Apache::Reload;
 use Apache::Request ();
 use DBI;
-use Encode 'decode_utf8';
+use Encode qw(decode_utf8);
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
+use URI::Escape;
 
 use OpenBib::Common::Util();
 use OpenBib::Config();
@@ -189,7 +190,7 @@ sub handler {
     }
 
     if ($fs){
-        $redirecturl = "$config->{virtualsearch_loc}?view=$view;sessionID=$session->{ID};fs=$fs;hitrange=50;sorttype=author;sortorder=up;profil=;autoplus=0;sb=xapian;st=3";
+        $redirecturl = "$config->{virtualsearch_loc}?view=$view;sessionID=$session->{ID};fs=".uri_escape($fs).";hitrange=50;sorttype=author;sortorder=up;profil=;autoplus=0;sb=xapian;st=3";
     }
 
     if ($searchlitlist){

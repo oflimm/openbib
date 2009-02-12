@@ -81,6 +81,4 @@ die Literaturliste [% item %]">[% item %] ([% properties.itemcount %])</a></li>
 </div>
 </div>
 
-<p />
-
 [% PROCESS common/subtemplate name="std_footer" %]

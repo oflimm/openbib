@@ -30,9 +30,6 @@
 
 <h3><img src="http://ezb.uni-regensburg.de/ezeit/vascoda/vifa/logo/ezb_468x64.gif" alt="Elektronische Zeitschriftenbibliothek" /></h3>
 
-
-
 </div>
-<p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

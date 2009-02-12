@@ -79,6 +79,4 @@
 <!-- Titlelist ends here -->
 [% END %]
 
-<p />
-
 [% PROCESS common/subtemplate name="std_footer" %]

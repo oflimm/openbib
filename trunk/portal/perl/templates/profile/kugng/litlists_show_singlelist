@@ -264,6 +264,4 @@ config.servername %][% config.litlists_loc %]?sessionID=[% sessionID
 
 </div>
 
-<p />
-
 [% PROCESS common/subtemplate name="std_footer" %]

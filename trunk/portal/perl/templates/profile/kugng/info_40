@@ -196,6 +196,4 @@ Nutzern verwendeten Suchbegriffe anbieten.
 </div>
 </div>
 
-<p />
-
 [% PROCESS common/subtemplate name="std_footer" %]

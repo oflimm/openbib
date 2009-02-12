@@ -150,6 +150,4 @@ Gesamtanzeige aller Treffer
 
 </div>
 
-<p />
-
 [% PROCESS common/subtemplate name="std_footer" %]

@@ -186,6 +186,5 @@ Die 20 meist aufgerufenen Titel
 </div>
 </div>
 [%- END -%]
-<p />
 
 [% PROCESS common/subtemplate name="std_footer" %]

@@ -160,6 +160,12 @@ nutzen, bei der die Verwendung von JavaScript minimiert ist.","<a href=\"${confi
 
 
 <!-- Erste Spalte -->
+<table class="submitbuttons">
+  <tr><td><noscript><input type="submit" title="[% msg.maketext("Hier suchen Sie in allen Katalogen auf einmal") %]" name="searchall" value="[% msg.maketext("In allen Katalogen suchen") %]" /></noscript></td><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" /></td></tr>
+</table>
+
+<p />
+
 <table width="100%">
 <tr><th>[% msg.maketext("Suchbegriffe") %]</th></tr>
 <tr><td>
@@ -208,6 +214,12 @@ nutzen, bei der die Verwendung von JavaScript minimiert ist.","<a href=\"${confi
 
 </div><!-- End searchmask_query -->
 <div id="searchmask_dbchoice"><!-- Begin searchmask_dbchoice -->
+
+<table class="submitbuttons">
+  <tr><td><noscript><input type="submit" title="[% msg.maketext("Hier suchen Sie in allen Katalogen auf einmal") %]" name="searchall" value="[% msg.maketext("In allen Katalogen suchen") %]" /></noscript></td><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" /></td></tr>
+</table>
+
+<p />
 
 <table>
 <tr><th>[% msg.maketext("Katalogauswahl") %]</th></tr>

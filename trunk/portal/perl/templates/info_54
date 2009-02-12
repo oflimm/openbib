@@ -45,11 +45,11 @@
 <p />
 
 <table width="100%">
-<tr><th>Katalogtitel nach Bibliothekssystematik</th></tr>
+<tr><th>[% msg.maketext("Katalogtitel nach Bibliothekssystematik") %]</th></tr>
 <tr><td class="boxedclear">
 <ul class="subjectlist">
 [% FOREACH classification IN user.get_classifications_of_subject({ type => 'BK', subjectid => id}) %]
-<li>[% classification %] / <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=51;category=[% classification %]">[% bks.${classification} %]</a> ([% thisbklist.${classification}%] Titel)</li>
+<li><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=51;category=[% classification %]">[% bks.${classification} %]</a> / [% classification %] ([% thisbklist.${classification}%] Titel)</li>
 [% END %]
 </ul>
 </td></tr>
@@ -57,21 +57,67 @@
 
 <p />
 
+[%-
+   ezb_classifications = user.get_classifications_of_subject({ type => 'EZB', subjectid => id});
+   FOREACH ezb_subject IN ezb_classifications;
+     ezb_mapping.$ezb_subject = 1;
+   END ;
+   ezb_subjects = config.get_ezb_object.get_subjects;
+-%]
+[% IF ezb_classifications.size > 0 %]
 <table width="100%">
-<tr><th>Literaturlisten</th></tr>
+<tr><th>[% msg.maketext("Elektronisch verfügbare Zeitschriften (EZB)")%]</th></tr>
 <tr><td class="boxedclear">
-[% litlists = user.get_public_litlists({ subjectid => id }) %]
-[% IF litlists.size > 1 %]
 <ul class="subjectlist">
-[% FOREACH thisitem IN litlists%]
-<li><a href="[% config.litlists_loc %]?sessionID=[% sessionID %];action=show;litlistid=[% thisitem.id %];do_showlitlist=1">[% thisitem.title%]</a> ([% thisitem.itemcount %] Titel)</li>
+[% FOREACH subject IN ezb_subjects %]
+[%   IF ezb_mapping.${subject.notation} %]
+<li><a href="[% config.ezb_loc %]?sessionID=[% sessionID %];view=[% view %];notation=[% subject.notation %];action=show_journals">[% subject.desc %]</a> / [% subject.notation %] ([% msg.maketext("[_1] Zeitschriften",subject.count) %])</li>
+[%   END %]
 [% END %]
 </ul>
-[% ELSE %]
-Es sind keine Literaturlisten diesem Themengebiet zugeordnet worden.
-[% END %]
 </td></tr>
 </table>
+
+<p />
+[% END %]
+
+[%-
+   dbis_classifications = user.get_classifications_of_subject({ type => 'DBIS', subjectid => id});
+   FOREACH dbis_subject IN dbis_classifications;
+     dbis_mapping.$dbis_subject = 1;
+   END ;
+   dbis_subjects = config.get_dbis_object.get_subjects;
+-%]
+[% IF dbis_classifications.size > 0 %]
+<table width="100%">
+<tr><th>[% msg.maketext("Elektronisch verfügbare Datenbanken (DBIS)") %]</th></tr>
+<tr><td class="boxedclear">
+<ul class="subjectlist">
+[% FOREACH subject IN dbis_subjects %]
+[%   IF dbis_mapping.${subject.notation} %]
+<li><a href="[% config.dbis_loc %]?sessionID=[% sessionID %];view=[% view %];notation=[% subject.notation %];lett=[% subject.lett %];action=show_dbs">[% subject.desc %]</a> / [% subject.notation %] ([% msg.maketext("[_1] Datenbanken",subject.count) %])</li>
+[%   END %]
+[% END %]
+</ul>
+</td></tr>
+</table>
+
+<p />
+[% END %]
+
+[% litlists = user.get_public_litlists({ subjectid => id }) %]
+[% IF litlists.size > 0 %]
+<table width="100%">
+<tr><th>[% msg.maketext("Literaturlisten") %]</th></tr>
+<tr><td class="boxedclear">
+<ul class="subjectlist">
+[% FOREACH thisitem IN litlists%]
+<li><a href="[% config.litlists_loc %]?sessionID=[% sessionID %];action=show;litlistid=[% thisitem.id %];do_showlitlist=1">[% thisitem.title%]</a> ([% msg.maketext("[_1] Titel",thisitem.itemcount) %])</li>
+[% END %]
+</ul>
+</td></tr>
+</table>
+[% END %]
 
 </div>
 

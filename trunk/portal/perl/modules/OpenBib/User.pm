@@ -2583,14 +2583,12 @@ sub set_classifications_of_subject {
     
     $logger->debug("Classifications4 ".YAML::Dump($classifications_ref));
 
-
-
     unless (ref($classifications_ref) eq 'ARRAY') {
         $classifications_ref = [ $classifications_ref ];
     }
 
-    my $request=$dbh->prepare("delete from subject2classification where subjectid=?") or $logger->error($DBI::errstr);
-    $request->execute($subjectid) or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare("delete from subject2classification where subjectid=? and type = ?") or $logger->error($DBI::errstr);
+    $request->execute($subjectid,$type) or $logger->error($DBI::errstr);
 
     $request=$dbh->prepare("insert into subject2classification values (?,?,?);") or $logger->error($DBI::errstr);
 

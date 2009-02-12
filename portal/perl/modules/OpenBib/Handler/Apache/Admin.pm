@@ -167,8 +167,8 @@ sub handler {
     my $subject         = decode_utf8($query->param('subject'))         || '';
     my $subjectid       = $query->param('subjectid')       || '';
 
-    my @classifications = ($query->param('classifications'))?$query->param('classifications'):();
-
+    my @classifications     = ($query->param('classifications'))?$query->param('classifications'):();
+    
     my @rssfeeds        = ($query->param('rssfeeds'))?$query->param('rssfeeds'):();
     my $primrssfeed     = $query->param('primrssfeed')     || '';
     my $rsstype         = $query->param('rss_type')        || '';
@@ -649,22 +649,22 @@ sub handler {
         }
         elsif ($do_change) {
 	    editsubject_change({
-                name            => $subject,
-                description     => $description,
-                id              => $subjectid,
-                classifications => \@classifications,
-                type            => $type,
+                name                 => $subject,
+                description          => $description,
+                id                   => $subjectid,
+                classifications      => \@classifications,
+                type                 => $type,
             });
             
 	    my $ret_ref = dist_cmd("editsubject_change",{ 
-                name            => $subject,
-                description     => $description,
-                id              => $subjectid,
-                classifications => \@classifications,
-                type            => $type,
+                name                 => $subject,
+                description          => $description,
+                id                   => $subjectid,
+                classifications      => \@classifications,
+                type                 => $type,
             }) if ($do_dist);
 
-            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showsubjects=1");
+            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_editsubject=1;subjectid=$subjectid;do_edit=1");
       
             return OK;
         }
@@ -1799,15 +1799,15 @@ sub editsubject_change {
     my ($arg_ref) = @_;
 
     # Set defaults
-    my $name                   = exists $arg_ref->{name}
+    my $name                     = exists $arg_ref->{name}
         ? $arg_ref->{name}                : undef;
-    my $description            = exists $arg_ref->{description}
+    my $description              = exists $arg_ref->{description}
         ? $arg_ref->{description}         : undef;
-    my $id                     = exists $arg_ref->{id}
+    my $id                       = exists $arg_ref->{id}
         ? $arg_ref->{id}                  : undef;
-    my $classifications_ref    = exists $arg_ref->{classifications}
+    my $classifications_ref      = exists $arg_ref->{classifications}
         ? $arg_ref->{classifications}     : [];
-    my $type                = exists $arg_ref->{type}
+    my $type                      = exists $arg_ref->{type}
         ? $arg_ref->{type}                : 'BK';
 
     # Log4perl logger erzeugen
@@ -1827,7 +1827,6 @@ sub editsubject_change {
     $request->finish();
 
     if (@{$classifications_ref}){       
-
         $logger->debug("Classifications5 ".YAML::Dump($classifications_ref));
 
         OpenBib::User->set_classifications_of_subject({

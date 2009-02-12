@@ -38,6 +38,7 @@
 
 <div class="content">
 
+<div class="boxedclear">
 <form method="get" action="[% config.admin_loc %]">
 <input type="hidden" name="sessionID"   value="[% sessionID %]" />
 <input type="hidden" name="subjectid" value="[% subject.id %]" />
@@ -78,6 +79,7 @@ selected="selected"
 </td>
 </tr>
 </table>
+
 <p />
 
 <table width="100%">
@@ -87,6 +89,100 @@ selected="selected"
 </table>
 
 </form>
+</div>
+
+<p/>
+<div class="boxedclear">
+<form method="get" action="[% config.admin_loc %]">
+<input type="hidden" name="sessionID"   value="[% sessionID %]" />
+<input type="hidden" name="subjectid" value="[% subject.id %]" />
+<input type="hidden" name="do_editsubject" value="1" />
+<input type="hidden" name="type"           value="EZB" />
+<input type="hidden" name="subject"        value="[% subject.name %]" />
+<input type="hidden" name="description"    value="[% subject.description %]" />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Themengebiet(e) der EZB zuordnen") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td colspan="3"><b>[% msg.maketext("Themengebiete") %]</b></td></tr>
+<tr><td colspan="3">
+<select name="classifications" multiple="multiple" size="10">
+[%-
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_subject({ type => 'EZB', subjectid => subject.id});
+      classification_selected.${classification} = 1;
+   END;
+-%]
+[% FOREACH ezb_subject IN config.get_ezb_object.get_subjects %]
+<option value="[% ezb_subject.notation %]"[% IF classification_selected.${ezb_subject.notation}  %] selected="selected"[% END %]>[% ezb_subject.notation %] [% ezb_subject.desc %]</option>
+[% END %]
+
+
+</select>
+</td>
+
+
+</tr>
+</table>
+
+<p />
+
+<table width="100%">
+<tr><td align="left"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></td><td>&nbsp;</td><td></td></tr>
+</table>
+</td></tr>
+</table>
+
+</form>
+</div>
+
+
+<p/>
+<div class="boxedclear">
+<form method="get" action="[% config.admin_loc %]">
+<input type="hidden" name="sessionID"   value="[% sessionID %]" />
+<input type="hidden" name="subjectid" value="[% subject.id %]" />
+<input type="hidden" name="do_editsubject" value="1" />
+<input type="hidden" name="type"           value="DBIS" />
+<input type="hidden" name="subject"        value="[% subject.name %]" />
+<input type="hidden" name="description"    value="[% subject.description %]" />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Themengebiet(e) von DBIS zuordnen") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+<table>
+<tr><td colspan="3"><b>[% msg.maketext("Themengebiete") %]</b></td></tr>
+<tr><td colspan="3">
+<select name="classifications" multiple="multiple" size="10">
+[%-
+   classification_selected = {};
+   FOREACH classification IN user.get_classifications_of_subject({ type => 'DBIS', subjectid => subject.id});
+      classification_selected.${classification} = 1;
+   END;
+-%]
+[% FOREACH dbis_subject IN config.get_dbis_object.get_subjects %]
+<option value="[% dbis_subject.notation %]"[% IF classification_selected.${dbis_subject.notation}  %] selected="selected"[% END %]>[% dbis_subject.notation %] [% dbis_subject.desc %]</option>
+[% END %]
+
+
+</select>
+</td>
+
+
+</tr>
+</table>
+
+<p />
+
+<table width="100%">
+<tr><td align="left"><input type="submit" name="do_change" value="[% msg.maketext("Ändern") %]" /></td><td>&nbsp;</td><td></td></tr>
+</table>
+</td></tr>
+</table>
+
+</form>
+</div>
 
 </div>
 

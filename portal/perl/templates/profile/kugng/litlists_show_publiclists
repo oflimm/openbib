@@ -30,20 +30,20 @@
 
 [% IF subjectid %]<h2>[% FOREACH subject IN subjects %][% IF subject.id == subjectid %][% subject.name%][% END %][% END %]</h2>[% END %]
 <div class="boxed">
-<b>Anzeige:</b>&nbsp;<a href="[% config.litlists_loc %]?sessionID=[% sessionID %];action=show_public_lists" [%- IF NOT showsubjects.defined -%]style="font-weight:bold;"[%- END -%]>Alle Listen</a>&nbsp;&#124;&nbsp;<a href="[% config.litlists_loc %]?sessionID=[% sessionID %];action=show_public_lists;showsubjects=1" [%- IF showsubjects.defined -%]style="font-weight:bold;"[%- END -%]>Themengebiete</a>[%- IF NOT showsubjects.defined -%]&nbsp;&#124;&nbsp;<b>[% msg.maketext("Anzahl") %]</b>:&nbsp;[% public_litlists.size %][%- END -%]</h1>
+<b>[% msg.maketext("Anzeige:") %]</b>&nbsp;<a href="[% config.litlists_loc %]?sessionID=[% sessionID %];action=show_public_lists" [%- IF NOT showsubjects.defined -%]style="font-weight:bold;"[%- END -%]>[% msg.maketext("Alle Listen") %]</a>&nbsp;&#124;&nbsp;<a href="[% config.litlists_loc %]?sessionID=[% sessionID %];action=show_public_lists;showsubjects=1" [%- IF showsubjects.defined -%]style="font-weight:bold;"[%- END -%]>[% msg.maketext("Themengebiete") %]</a>[%- IF NOT showsubjects.defined -%]&nbsp;&#124;&nbsp;<b>[% msg.maketext("Anzahl") %]</b>:&nbsp;[% public_litlists.size %][%- END -%]</h1>
 </div>
 
 [% IF showsubjects.defined %]
 <ul class="subjectlist">
 [%- FOREACH subject IN subjects -%]
-<li><a <a href="[% config.litlists_loc %]?sessionID=[% sessionID %]&action=show_public_lists;subjectid=[% subject.id %]">[% subject.name %]</a> ([% subject.litlistcount%] Listen)</li>
+<li><a <a href="[% config.litlists_loc %]?sessionID=[% sessionID %]&action=show_public_lists;subjectid=[% subject.id %]">[% subject.name %]</a> ([% msg.maketext("[_1] Listen",subject.litlistcount) %])</li>
 [% END %]
 </ul>
 [% ELSE %]
 [%# USE dumper;dumper.dump(public_litlists)%]
 <ul class="subjectlist">
 [%- FOREACH thisitem IN public_litlists -%]
-<li><a <a href="[% config.litlists_loc %]?sessionID=[% sessionID %]&action=show;litlistid=[% thisitem.id %];do_showlitlist=1">[% thisitem.title%]</a> ([% thisitem.itemcount %] Titel)</li>
+<li><a <a href="[% config.litlists_loc %]?sessionID=[% sessionID %]&action=show;litlistid=[% thisitem.id %];do_showlitlist=1">[% thisitem.title%]</a> ([% msg.maketext("[_1] Titel",thisitem.itemcount) %])</li>
 [% END %]
 </ul>
 [% END %]

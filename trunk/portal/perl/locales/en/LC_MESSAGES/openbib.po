@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2009-02-03 10:05+0100\n"
+"PO-Revision-Date: 2009-02-12 15:19+0100\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -60,6 +60,27 @@ msgstr ""
 "The following review was considered helpful by %1\n"
 "of %2 users:"
 
+#. (subject.count)
+#: ../templates/info_54:98
+msgid "%1 Datenbanken"
+msgstr "%1 databases"
+
+#. (subject.litlistcount)
+#: ../templates/profile/kugng/litlists_show_publiclists:39
+msgid "%1 Listen"
+msgstr "%1 lists"
+
+#. (thisitem.itemcount)
+#: ../templates/info_54:115
+#: ../templates/profile/kugng/litlists_show_publiclists:46
+msgid "%1 Titel"
+msgstr "%1 titles"
+
+#. (titlecount,thisclassifications.size,subject.litlistcount)
+#: ../templates/info_53:55 ../templates/profile/kugng/searchmask_simple:394
+msgid "%1 Titel in %2 Gruppen, %3 Literaturlisten"
+msgstr "%1 titles in %2 groups, %4 literature lists"
+
 #. (itemcount)
 #: ../templates/database/ebooks/search_showtitset:476
 #: ../templates/database/ebooks/search_showtitset:504
@@ -91,6 +112,11 @@ msgid ""
 "%1 Titel sind\n"
 "verkn&uuml;pft mit dem Tag"
 msgstr "%1 titles are connected with the tag"
+
+#. (subject.count)
+#: ../templates/info_54:74
+msgid "%1 Zeitschriften"
+msgstr "%1 journals"
 
 #: ../templates/info:712 ../templates/views/kug/info:712
 msgid ""
@@ -611,6 +637,10 @@ msgstr "All types"
 msgid "Alle Kataloge"
 msgstr "All Catalogues"
 
+#: ../templates/profile/kugng/litlists_show_publiclists:33
+msgid "Alle Listen"
+msgstr "All lists"
+
 #: ../templates/resultlists_choice:97 ../templates/resultlists_choice:99
 msgid "Alle Treffer"
 msgstr "All hits"
@@ -945,6 +975,10 @@ msgstr "Show the Top 20 Most Viewed Entries in this Catalog"
 msgid "Anzeige des ausgew&auml;hlten Profils"
 msgstr "Presentation of selected profile"
 
+#: ../templates/profile/kugng/litlists_show_publiclists:33
+msgid "Anzeige:"
+msgstr "View:"
+
 #: ../templates/views/einbaende/searchmask:204
 msgid "Art"
 msgstr "Type"
@@ -999,7 +1033,7 @@ msgstr "Save"
 
 #: ../templates/info_15:83 ../templates/profile/kugng/info_15:72
 msgid "Aufruf dieser Spezial-Sicht"
-msgstr "Use of this view"
+msgstr "Use this view"
 
 #: ../templates/externaljump:106 ../templates/externaljump:115
 #: ../templates/externaljump:125 ../templates/externaljump:135
@@ -1130,7 +1164,7 @@ msgstr "Author"
 msgid "B&uuml;cher"
 msgstr "Books"
 
-#: ../templates/admin_editsubject:55
+#: ../templates/admin_editsubject:56
 msgid "Basis-Klassifikation"
 msgstr "Basic Classification"
 
@@ -1354,7 +1388,7 @@ msgid "Beruf/Weltanschauung"
 msgstr "Profession/world-view"
 
 #: ../templates/admin_editcat:46 ../templates/admin_editlogintarget:46
-#: ../templates/admin_editprofile:35 ../templates/admin_editsubject:51
+#: ../templates/admin_editprofile:35 ../templates/admin_editsubject:52
 #: ../templates/admin_editview:35 ../templates/admin_showcat:38
 #: ../templates/admin_showcat:66 ../templates/admin_showlogintarget:42
 #: ../templates/admin_showlogintarget:60 ../templates/admin_showprofiles:35
@@ -1593,6 +1627,10 @@ msgstr "C0111"
 #: ../templates/visible_categories_korset:21
 msgid "C5000"
 msgstr "C5000"
+
+#: ../templates/profile/kugng/litlists_show_singlelist:65
+msgid "Cover anzeigen"
+msgstr "Show cover"
 
 #: ../templates/litlists_manage_singlelist:87
 #: ../templates/litlists_show_singlelist:69
@@ -2419,6 +2457,14 @@ msgstr "Elektronically available databases (DBIS)"
 #: ../templates/ezb_showjournalreadme:24 ../templates/ezb_showjournals:24
 #: ../templates/ezb_showsubjects:24
 msgid "Elektronisch verf&uuml;gbare Zeitschiften (EZB)"
+msgstr "Elektronically available journals (EZB)"
+
+#: ../templates/info_54:93
+msgid "Elektronisch verfügbare Datenbanken (DBIS)"
+msgstr "Elektronically available databases (DBIS)"
+
+#: ../templates/info_54:69
+msgid "Elektronisch verfügbare Zeitschriften (EZB)"
 msgstr "Elektronically available journals (EZB)"
 
 #: ../templates/ezb_showsubjects:31
@@ -4633,6 +4679,10 @@ msgstr "Combined catalogues "
 msgid "Katalogprofile"
 msgstr "Catalogue profiles"
 
+#: ../templates/info_54:48
+msgid "Katalogtitel nach Bibliothekssystematik"
+msgstr "Titles in catalogues by classification"
+
 #: ../templates/database/ebooks/search_showtitset:100
 #: ../templates/database/einbaende/managecollection_tit_as_html:32
 #: ../templates/database/einbaende/managecollection_tit_as_html:88
@@ -4664,6 +4714,10 @@ msgstr "Category"
 #: ../templates/admin_editview_rss:71
 msgid "Kein prim&auml;rer RSS-Feed ausgew&auml;hlt"
 msgstr "Primary RSS feed not selected"
+
+#: ../templates/profile/kugng/litlists_show_singlelist:65
+msgid "Keine Cover anzeigen"
+msgstr "No cover"
 
 #: ../modules/OpenBib/Handler/Apache/LitLists.pm:235
 msgid "Keine Titelid, Titel-Datenbank oder Literaturliste vorhanden."
@@ -4863,7 +4917,7 @@ msgstr "Removal of selected profile"
 msgid "Legen Sie Literaturlisten an und vergeben Sie Tags"
 msgstr "Create new literature lists and tag specific titles"
 
-#: ../templates/info_9:83
+#: ../templates/info_9:83 ../templates/profile/kugng/info_9:82
 msgid ""
 "Leider k&ouml;nnen wir Ihnen für diesen Katalog keine\n"
 "Wolke der Erscheinungsjahre anbieten."
@@ -4872,18 +4926,19 @@ msgstr ""
 "catalogue."
 
 #: ../templates/info_14:84 ../templates/info_17:84 ../templates/info_18:84
+#: ../templates/profile/kugng/info_17:83 ../templates/profile/kugng/info_18:83
 msgid ""
 "Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r h&auml;"
 "ufige Begriffe diese Kategorie anbieten."
 msgstr "Unfortunately we cannot present a cloud of relevant terms for this category."
 
-#: ../templates/info_16:83
+#: ../templates/info_16:83 ../templates/profile/kugng/info_16:82
 msgid ""
 "Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r h&auml;"
 "ufige Begriffe dieser Kategorie anbieten."
 msgstr "Unfortunately we cannot present a cloud of relevant terms for this category."
 
-#: ../templates/info_19:85
+#: ../templates/info_19:85 ../templates/profile/kugng/info_19:84
 msgid ""
 "Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r von "
 "Nutzern vergebene Tags anbieten."
@@ -4964,7 +5019,7 @@ msgstr "Literature list"
 #: ../templates/database/nationallizenzen/search_showtitset:321
 #: ../templates/database/spoho/search_showtitset:342
 #: ../templates/database/umschlaege/search_showtitset:345
-#: ../templates/info_13:45 ../templates/info_41:30
+#: ../templates/info_13:45 ../templates/info_41:30 ../templates/info_54:111
 #: ../templates/profile/kugng/info_13:33
 #: ../templates/profile/kugng/litlists_show_publiclists:25
 #: ../templates/profile/kugng/search_showtitset:731
@@ -5257,7 +5312,7 @@ msgstr "Reset"
 
 #: ../templates/admin_editcat:177 ../templates/admin_editcat_rss:333
 #: ../templates/admin_editlogintarget:55 ../templates/admin_editprofile:70
-#: ../templates/admin_editsubject:84 ../templates/admin_editview:138
+#: ../templates/admin_editsubject:86 ../templates/admin_editview:138
 #: ../templates/database/ebooks/search_showtitset:684
 #: ../templates/database/inst001/search_showtitset:705
 #: ../templates/database/nationallizenzen/search_showtitset:684
@@ -7260,9 +7315,9 @@ msgid "Systematiken/Notationen"
 msgstr "Classification"
 
 #: ../templates/info_13:27 ../templates/info_50:31 ../templates/info_51:38
-#: ../templates/info_52:38 ../templates/info_53:42
-#: ../templates/profile/kugng/info_50:29 ../templates/searchmask:46
-#: ../templates/searchmask_simple:46 ../templates/views/kug/searchmask:126
+#: ../templates/info_52:38 ../templates/profile/kugng/info_50:29
+#: ../templates/searchmask:46 ../templates/searchmask_simple:46
+#: ../templates/views/kug/searchmask:126
 #: ../templates/views/kug/searchmask_simple:36
 msgid "Systematisches Bl&auml;ttern"
 msgstr "Systematic browsing"
@@ -8769,17 +8824,27 @@ msgstr "Subject-based Integration of other Sources"
 msgid "Thematische Integration weiterer Quellen"
 msgstr "Subject-based Integration of other Sources"
 
-#: ../templates/admin_editsubject:51 ../templates/admin_showsubjects:36
+#: ../templates/admin_editsubject:52 ../templates/admin_showsubjects:36
 #: ../templates/admin_showsubjects:55
 msgid "Themengebiet"
 msgstr "Subject"
 
-#: ../templates/admin_editsubject:48
+#: ../templates/admin_editsubject:49
 msgid "Themengebiet bearbeiten"
 msgstr "Edit subjects"
 
+#: ../templates/admin_editsubject:105
+msgid "Themengebiet(e) der EZB zuordnen"
+msgstr "Assign EZB subjects"
+
+#: ../templates/admin_editsubject:152
+msgid "Themengebiet(e) von DBIS zuordnen"
+msgstr "Assign DBIS subjects"
+
+#: ../templates/admin_editsubject:108 ../templates/admin_editsubject:155
 #: ../templates/admin_navigation:21 ../templates/info_53:42
-#: ../templates/info_54:41
+#: ../templates/info_54:41 ../templates/profile/kugng/litlists_manage_lists:70
+#: ../templates/profile/kugng/litlists_show_publiclists:33
 #: ../templates/profile/kugng/litlists_show_singlelist:75
 #: ../templates/profile/kugng/searchmask_simple:381
 #: ../templates/profile/kugng/searchmask_simple:474
@@ -9889,11 +9954,11 @@ msgstr "How can I get it!"
 msgid "Wir bitten um Ihr Verst&auml;ndnis. Vielen Dank."
 msgstr "Thank you for your understanding."
 
-#: ../templates/info_18:56
+#: ../templates/info_18:56 ../templates/profile/kugng/info_18:55
 msgid "Wolke der h&auml;ufigsten Begriffe"
 msgstr "Cloud of relevant terms"
 
-#: ../templates/info_9:56
+#: ../templates/info_9:56 ../templates/profile/kugng/info_9:55
 msgid "Wolke der h&auml;ufigsten Erscheinungsjahre"
 msgstr "Cloud of most frequent years of publication"
 
@@ -9905,7 +9970,7 @@ msgstr "Cloud of relevant terms"
 msgid "Wolke der meist genutzten Literaturlisten"
 msgstr "Cloud of the most frequently used literature lists"
 
-#: ../templates/info_19:56
+#: ../templates/info_19:56 ../templates/profile/kugng/info_19:55
 msgid "Wolke der von Nutzern vergebenen Tags"
 msgstr "Cloud of most frequently used tags"
 
@@ -9913,6 +9978,9 @@ msgstr "Cloud of most frequently used tags"
 #: ../templates/info_14:43 ../templates/info_15:37 ../templates/info_16:43
 #: ../templates/info_17:43 ../templates/info_18:43 ../templates/info_19:43
 #: ../templates/info_9:43 ../templates/profile/kugng/info_13:25
+#: ../templates/profile/kugng/info_16:36 ../templates/profile/kugng/info_17:36
+#: ../templates/profile/kugng/info_18:36 ../templates/profile/kugng/info_19:36
+#: ../templates/profile/kugng/info_9:36
 #: ../templates/profile/kugng/searchmask_simple:475
 #: ../templates/profile/kugng/searchmask_simple:476
 #: ../templates/views/kug/info:86 ../templates/views/kug/info:936
@@ -10802,7 +10870,8 @@ msgstr "repeated"
 #: ../templates/admin_editcat_rss:191 ../templates/admin_editcat_rss:248
 #: ../templates/admin_editcat_rss:305 ../templates/admin_editcat_rss:333
 #: ../templates/admin_editcat_rss:77 ../templates/admin_editlogintarget:55
-#: ../templates/admin_editprofile:70 ../templates/admin_editsubject:84
+#: ../templates/admin_editprofile:70 ../templates/admin_editsubject:132
+#: ../templates/admin_editsubject:179 ../templates/admin_editsubject:86
 #: ../templates/admin_editview:138 ../templates/admin_editview_rss:139
 #: ../templates/admin_editview_rss:96
 msgid "Ändern"

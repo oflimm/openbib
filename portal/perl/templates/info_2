@@ -33,7 +33,7 @@
 <p />
 
 <h1 id="kugv2.3">Neuerungen mit Version 2.3 (noch in Entwicklung, als
-Beta-Version <a href="http://kug5.ub.uni-koeln.de/portal/opac?view=kugng" target="_blank">verf&uuml;gbar</a>)</h1>
+Beta-Version <a href="http://kug.ub.uni-koeln.de/portal/opac?view=kugng" target="_blank">verf&uuml;gbar</a>)</h1>
 
 <h2>&Uuml;berarbeitung von Nutzerf&uuml;hrung und Design</h2>
 
@@ -44,7 +44,8 @@ verbessert. Einige dieser Verbesserungen sind:
 <ul>
 <li>In der Einfachen Recherche wie auch den Drilldowns kann eine
 Recherche auf die Medientypen 'Zeitschrift/Serie' bzw. 'Aufsatz'
-beschr&auml;nkt werden.
+beschr&auml;nkt werden. Die Anzahl vorhandener Titel wird dabei
+jeweils mit ausgegeben.
 
 <li>In der Einfachen Recherche sind nun auch Teilbest&auml;nde
 recherchierbar. Diese umfassen sowohl die einzelnen Fakult&auml;ten, wie
@@ -60,7 +61,18 @@ M&ouml;glichkeiten des KUG</li>
 <li>Die Einzeltrefferanzeige wurde komplett &uuml;berarbeitet und die
 einzelnen Informationen besser gruppiert</li>
 
+<li>Die Ausgabe von Titellisten (Treffer-, Merk-, Literaturlisten
+usw.) wurden komplett &uuml;berarbeitet und dem generellen
+Listen-Design angepasst.</li>
+
+<li>Auch jenseits der eigentlichen Recherchemasken kann der Nutzer nun
+an allen Stellen im KUG &uuml;ber einen kleinen Suchschlitz weitere
+Recherchen anstossen. Um mehr Raum f&uuml;r die eigentlichen Inhalte
+zu gewinnen ging damit eine Verkleinerung des KUG-Logo-Bereiches
+einher.</li>
+
 </ul>
+
 </p>
 
 <p>Ebenso wurde das Design zeitgem&auml;&szlig; aufgefrischt und ist
@@ -90,9 +102,36 @@ wird sowohl die eigentliche Recherche wie auch die sp&auml;tere
 Eingrenzung &uuml;ber Medientypen als Suchverfeinerung erm&ouml;glicht.
 </p>
 
-<h2></h2>
+<h2>Zuordnung von Literaturlisten zu Themengebieten</h2>
 
 <p>
+Der Nutzer kann seine Literaturlisten nun einem festen Satz an
+Themengebieten zuordnen und so auch f&uuml;r andere fachlich
+erschliessen.</p><p>[<a href="http://kug.ub.uni-koeln.de/portal/connector/permalink/3146/312/6/kugng/index.html" target="_blank">Beispiel</a>]
+</p>
+
+<h2>Allgemeiner thematischer Zugriff</h2>
+
+<p>
+Auf die (systematisierten) Katalogtitel, elektronisch verf&uuml;gbaren
+Zeitschriten (EZB) und Datenbanken (DBIS) sowie die &ouml;ffentlichen
+Literaturlisten kann nun themenspezifisch als Verallgemeinerung des
+<emph>systematischen Bl&auml;tterns</emph> der Version 2.2 zugegriffen
+werden. Hierzu wurden &uuml;ber die KUG Web-Administration von
+uns geeignete Themengebiete definiert und dann den zugeh&ouml;rigen
+Basis-Klassifikationen (f&uuml;r Katalogtitel), EZB-Fachgruppen
+(f&uuml;r elektronisch verf&uuml;gbare Zeitschriften) sowie DBIS-Fachgruppen
+(f&uuml;r elektronisch verf&uuml;gbare Datenbanken) zugeordnet.
+</p>
+
+<h2>Verwandte Personen und Themen</h2>
+
+<p>
+Die Verfasser und Schlagworte eines Mediums werden nun daraufhin
+on-the-fly analysiert, welche anderen Verfasser und Schlagworte
+- bezogen auf dar&uuml;ber verfkn&uuml;pfte Titel - verwendet wurden
+und die Ergebnisse in der Einzeltrefferanzeige ausgegeben.</p><p>[<a href="http://kug.ub.uni-koeln.de/portal/connector/permalink/inst006/10847/1/kugng/index.html"
+target="_blank">Beispiel</a>]
 </p>
 
 <h1 id="kugv2.2">Neuerungen mit Version 2.2 (Umstellung am 8.7.2008)</h1>

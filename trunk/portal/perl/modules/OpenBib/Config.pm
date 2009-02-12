@@ -1343,4 +1343,16 @@ sub get_enrichmnt_object {
     return OpenBib::Enrichment->instance;
 }
 
+sub get_ezb_object {
+    my ($self) = @_;
+
+    return OpenBib::EZB->new;
+}
+
+sub get_dbis_object {
+    my ($self) = @_;
+
+    return OpenBib::DBIS->new;
+}
+
 1;

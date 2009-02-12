@@ -116,7 +116,5 @@ function update_fak(yourform, checked, fak) {
 </div>
 </form>
 
-<p />
-
 [% PROCESS common/subtemplate name="std_footer" %]
 

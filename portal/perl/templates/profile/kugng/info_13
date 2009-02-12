@@ -95,6 +95,4 @@ Wikipedia\" />","<a href=\"http://de.wikipedia.org/wiki/Wortwolke\" target=\"_bl
 </div>
 </div>
 
-<p />
-
 [% PROCESS common/subtemplate name="std_footer" %]

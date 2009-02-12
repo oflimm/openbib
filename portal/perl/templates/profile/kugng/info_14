@@ -90,6 +90,4 @@ verkn&uuml;pft mit </span><a href="[% config.virtualsearch_loc %]?sessionID=[% s
 </div>
 </div>
 
-<p />
-
 [% PROCESS common/subtemplate name="std_footer" %]

@@ -24,7 +24,7 @@
 [% recordlist.get_size %]  [% msg.maketext("Titel") %]
     </div>
     <div class="navigation">
-<input type="checkbox" name="collection" value="select" onclick="update_collection(this.form, this.checked,'collection_item')" />&nbsp;<b>Alle Eintr&auml;ge ausw&auml;hlen</b>
+<input type="checkbox" name="collection" value="select" onclick="update_collection(this.form, this.checked,'collection_item')" />&nbsp;<b>[% msg.maketext("Alle Eintr&auml;ge ausw&auml;hlen") %]</b>
     </div>
   </div>
   <div class="rightoptions">
@@ -137,7 +137,7 @@
       </div> 
       <div class="brieftitle">
 <span class="rlperson">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
-<br />aus:&nbsp;<i><a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.maxlength_dbname) %]</a></i>[%- IF item.popularity -%]&nbsp;(Popularit&auml;t: [% item.popularity %])[%- END -%]
+<br />[% msg.maketext("aus:") %]&nbsp;<i><a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.maxlength_dbname) %]</a></i>[%- IF item.popularity -%]&nbsp;(Popularit&auml;t: [% item.popularity %])[%- END -%]
       </div>
       <div class="titlemark">[% signatur | truncate(config.maxlength_sign) %]</div>
       <div class="titleactions">

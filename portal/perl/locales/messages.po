@@ -30,11 +30,36 @@ msgid ""
 "von %2 Nutzer fanden die folgende Rezension hilfreich:"
 msgstr ""
 
+#: ../templates/info_54:98
+#. (subject.count)
+msgid "%1 Datenbanken"
+msgstr ""
+
+#: ../templates/profile/kugng/litlists_show_publiclists:39
+#. (subject.litlistcount)
+msgid "%1 Listen"
+msgstr ""
+
+#: ../templates/info_54:115 ../templates/profile/kugng/litlists_show_publiclists:46
+#. (thisitem.itemcount)
+msgid "%1 Titel"
+msgstr ""
+
+#: ../templates/info_53:55 ../templates/profile/kugng/searchmask_simple:394
+#. (titlecount,thisclassifications.size,subject.litlistcount)
+msgid "%1 Titel in %2 Gruppen, %3 Literaturlisten"
+msgstr ""
+
 #: ../templates/database/ebooks/search_showtitset:476 ../templates/database/ebooks/search_showtitset:504 ../templates/database/ebooks/search_showtitset:569 ../templates/database/ebooks/search_showtitset:597 ../templates/database/inst001/search_showtitset:497 ../templates/database/inst001/search_showtitset:525 ../templates/database/inst001/search_showtitset:590 ../templates/database/inst001/search_showtitset:618 ../templates/database/nationallizenzen/search_showtitset:476 ../templates/database/nationallizenzen/search_showtitset:504 ../templates/database/nationallizenzen/search_showtitset:569 ../templates/database/nationallizenzen/search_showtitset:597 ../templates/database/spoho/search_showtitset:497 ../templates/database/spoho/search_showtitset:525 ../templates/database/spoho/search_showtitset:590 ../templates/database/spoho/search_showtitset:618 ../templates/database/umschlaege/search_showtitset:500 ../templates/database/umschlaege/search_showtitset:528 ../templates/database/umschlaege/search_showtitset:593 ../templates/database/umschlaege/search_showtitset:621 ../templates/profile/kugng/search_showtitset:587 ../templates/profile/kugng/search_showtitset:615 ../templates/profile/kugng/search_showtitset:657 ../templates/profile/kugng/search_showtitset:685 ../templates/search_showtitset:488 ../templates/search_showtitset:516 ../templates/search_showtitset:581 ../templates/search_showtitset:609
 #. (itemcount)
 msgid ""
 "%1 Titel sind\n"
 "verkn&uuml;pft mit dem Tag"
+msgstr ""
+
+#: ../templates/info_54:74
+#. (subject.count)
+msgid "%1 Zeitschriften"
 msgstr ""
 
 #: ../templates/info:712 ../templates/views/kug/info:712
@@ -324,12 +349,20 @@ msgstr ""
 msgid "Alle Datenbanken"
 msgstr ""
 
+#: ../templates/profile/kugng/managecollection_tit_as_html:27
+msgid "Alle Eintr&auml;ge ausw&auml;hlen"
+msgstr ""
+
 #: ../templates/profile/kugng/searchmask_simple:54
 msgid "Alle Formate"
 msgstr ""
 
 #: ../templates/databasechoice:63 ../templates/databaseprofile:77 ../templates/profile/kuglight/searchmask_simple:121 ../templates/profile/kugng/databasechoice:63 ../templates/profile/kugng/databaseprofile:77 ../templates/profile/kugng/searchmask_simple:125 ../templates/profile/kugng/searchmask_simple:234 ../templates/profile/kugng/searchmask_simple:343 ../templates/profile/kugng/views/kugng/searchmask:233 ../templates/profile/kugng/views/kugng/searchmask:245 ../templates/searchmask_options:18 ../templates/searchmask_simple:123 ../templates/views/edz/searchmask_simple:132 ../templates/views/inst404/searchmask_simple:138 ../templates/views/inst405/searchmask_simple:138 ../templates/views/inst406/searchmask_simple:132 ../templates/views/inst410/searchmask_simple:130 ../templates/views/inst411/searchmask_simple:132 ../templates/views/inst412/searchmask_simple:131 ../templates/views/inst413/searchmask_simple:130 ../templates/views/inst415/searchmask_simple:132 ../templates/views/inst420/searchmask_simple:133 ../templates/views/inst425/searchmask_simple:130 ../templates/views/inst426/searchmask_simple:131 ../templates/views/inst430/searchmask_simple:133 ../templates/views/inst431/searchmask_simple:130 ../templates/views/inst460/searchmask_simple:131 ../templates/views/kug/searchmask:253 ../templates/views/kug/searchmask:265 ../templates/views/rheinlandbib/databasechoice:63 ../templates/views/richter/searchmask_simple:99
 msgid "Alle Kataloge"
+msgstr ""
+
+#: ../templates/profile/kugng/litlists_show_publiclists:33
+msgid "Alle Listen"
 msgstr ""
 
 #: ../templates/resultlists_choice:97 ../templates/resultlists_choice:99
@@ -508,6 +541,10 @@ msgstr ""
 msgid "Anzeige des ausgew&auml;hlten Profils"
 msgstr ""
 
+#: ../templates/dbis_showsubjects:34 ../templates/ezb_showsubjects:36 ../templates/profile/kugng/litlists_show_publiclists:33
+msgid "Anzeige:"
+msgstr ""
+
 #: ../templates/views/einbaende/searchmask:204
 msgid "Art"
 msgstr ""
@@ -619,7 +656,7 @@ msgstr ""
 msgid "B&uuml;cher"
 msgstr ""
 
-#: ../templates/admin_editsubject:55
+#: ../templates/admin_editsubject:56
 msgid "Basis-Klassifikation"
 msgstr ""
 
@@ -776,7 +813,7 @@ msgstr ""
 msgid "Beruf/Weltanschauung"
 msgstr ""
 
-#: ../templates/admin_editcat:46 ../templates/admin_editlogintarget:46 ../templates/admin_editprofile:35 ../templates/admin_editsubject:51 ../templates/admin_editview:35 ../templates/admin_showcat:38 ../templates/admin_showcat:66 ../templates/admin_showlogintarget:42 ../templates/admin_showlogintarget:60 ../templates/admin_showprofiles:35 ../templates/admin_showprofiles:55 ../templates/admin_showsubjects:36 ../templates/admin_showsubjects:55 ../templates/admin_showviews:35 ../templates/admin_showviews:57
+#: ../templates/admin_editcat:46 ../templates/admin_editlogintarget:46 ../templates/admin_editprofile:35 ../templates/admin_editsubject:52 ../templates/admin_editview:35 ../templates/admin_showcat:38 ../templates/admin_showcat:66 ../templates/admin_showlogintarget:42 ../templates/admin_showlogintarget:60 ../templates/admin_showprofiles:35 ../templates/admin_showprofiles:55 ../templates/admin_showsubjects:36 ../templates/admin_showsubjects:55 ../templates/admin_showviews:35 ../templates/admin_showviews:57
 msgid "Beschreibung"
 msgstr ""
 
@@ -912,6 +949,10 @@ msgstr ""
 
 #: ../templates/visible_categories_korset:21
 msgid "C5000"
+msgstr ""
+
+#: ../templates/profile/kugng/litlists_show_singlelist:65
+msgid "Cover anzeigen"
 msgstr ""
 
 #: ../templates/litlists_manage_singlelist:87 ../templates/litlists_show_singlelist:69 ../templates/profile/kugng/litlists_manage_singlelist:101 ../templates/profile/kugng/litlists_show_singlelist:65 ../templates/profile/kugng/resultlists_showall:62 ../templates/profile/kugng/resultlists_showall_sortall:62 ../templates/profile/kugng/resultlists_showsinglepool:62 ../templates/profile/kugng/search_showtitlist:68 ../templates/profile/kugng/tags_showtitlist:66 ../templates/profile/kugng/virtualsearch_result_combined:61 ../templates/profile/kugng/virtualsearch_result_start:64 ../templates/resultlists_showall:63 ../templates/resultlists_showall_sortall:66 ../templates/resultlists_showsinglepool:64 ../templates/search_showtitlist:70 ../templates/search_showtitlist_of_cnt:70 ../templates/virtualsearch_result_start:66
@@ -1400,6 +1441,14 @@ msgstr ""
 
 #: ../templates/ezb_showjournalreadme:24 ../templates/ezb_showjournals:24 ../templates/ezb_showsubjects:24
 msgid "Elektronisch verf&uuml;gbare Zeitschiften (EZB)"
+msgstr ""
+
+#: ../templates/info_54:93
+msgid "Elektronisch verfügbare Datenbanken (DBIS)"
+msgstr ""
+
+#: ../templates/info_54:69
+msgid "Elektronisch verfügbare Zeitschriften (EZB)"
 msgstr ""
 
 #: ../templates/ezb_showsubjects:31 ../templates/profile/kugng/searchmask_simple:482
@@ -2304,12 +2353,20 @@ msgstr ""
 msgid "Katalogprofile"
 msgstr ""
 
+#: ../templates/info_54:48
+msgid "Katalogtitel nach Bibliothekssystematik"
+msgstr ""
+
 #: ../templates/database/ebooks/search_showtitset:100 ../templates/database/einbaende/managecollection_tit_as_html:32 ../templates/database/einbaende/managecollection_tit_as_html:88 ../templates/database/einbaende/search_showtitset:169 ../templates/database/einbaende/search_showtitset:265 ../templates/database/einbaende/search_showtitset:74 ../templates/database/inst001/search_showtitset:96 ../templates/database/landschaft/search_showtitset:67 ../templates/database/nationallizenzen/search_showtitset:98 ../templates/database/portrait/search_showtitset:87 ../templates/database/spoho/search_showtitset:98 ../templates/database/umschlaege/managecollection_tit_as_html:54 ../templates/database/umschlaege/search_showtitset:101 ../templates/managecollection_tit_as_html:46 ../templates/managecollection_tit_as_html_simple:31 ../templates/profile/kuglight/search_showtitset:78 ../templates/profile/kugng/managecollection_tit_as_html:188 ../templates/search_showautset:31 ../templates/search_showkorset:32 ../templates/search_showmulttitset:41 ../templates/search_shownotset:31 ../templates/search_showswtset:33 ../templates/search_showtitset:94 ../templates/views/einbaende/searchmask:111 ../templates/views/einbaende/searchmask:183 ../templates/views/portrait/searchmask_query:2 ../templates/views/richter/searchmask_query:2 ../templates/views/umschlaege/searchmask:111
 msgid "Kategorie"
 msgstr ""
 
 #: ../templates/admin_editview_rss:71
 msgid "Kein prim&auml;rer RSS-Feed ausgew&auml;hlt"
+msgstr ""
+
+#: ../templates/profile/kugng/litlists_show_singlelist:65
+msgid "Keine Cover anzeigen"
 msgstr ""
 
 #: ../modules/OpenBib/Handler/Apache/LitLists.pm:235
@@ -2413,21 +2470,21 @@ msgstr ""
 msgid "Legen Sie Literaturlisten an und vergeben Sie Tags"
 msgstr ""
 
-#: ../templates/info_9:83
+#: ../templates/info_9:83 ../templates/profile/kugng/info_9:82
 msgid ""
 "Leider k&ouml;nnen wir Ihnen für diesen Katalog keine\n"
 "Wolke der Erscheinungsjahre anbieten."
 msgstr ""
 
-#: ../templates/info_14:84 ../templates/info_17:84 ../templates/info_18:84
+#: ../templates/info_14:84 ../templates/info_17:84 ../templates/info_18:84 ../templates/profile/kugng/info_17:83 ../templates/profile/kugng/info_18:83
 msgid "Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r h&auml;ufige Begriffe diese Kategorie anbieten."
 msgstr ""
 
-#: ../templates/info_16:83
+#: ../templates/info_16:83 ../templates/profile/kugng/info_16:82
 msgid "Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r h&auml;ufige Begriffe dieser Kategorie anbieten."
 msgstr ""
 
-#: ../templates/info_19:85
+#: ../templates/info_19:85 ../templates/profile/kugng/info_19:84
 msgid "Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r von Nutzern vergebene Tags anbieten."
 msgstr ""
 
@@ -2443,7 +2500,7 @@ msgstr ""
 msgid "Letzte 50 Neuaufnahmen"
 msgstr ""
 
-#: ../templates/litlists_manage_singlelist:87 ../templates/litlists_show_singlelist:69 ../templates/profile/kugng/litlists_manage_singlelist:101 ../templates/profile/kugng/litlists_show_singlelist:65 ../templates/profile/kugng/resultlists_showall:62 ../templates/profile/kugng/resultlists_showall_sortall:62 ../templates/profile/kugng/resultlists_showsinglepool:62 ../templates/profile/kugng/search_showtitlist:68 ../templates/profile/kugng/tags_showtitlist:66 ../templates/profile/kugng/virtualsearch_result_combined:61 ../templates/profile/kugng/virtualsearch_result_start:64 ../templates/resultlists_showall:63 ../templates/resultlists_showall_sortall:66 ../templates/resultlists_showsinglepool:64 ../templates/search_showtitlist:70 ../templates/search_showtitlist_of_cnt:70 ../templates/virtualsearch_result_start:66
+#: ../templates/dbis_showsubjects:34 ../templates/ezb_showsubjects:36 ../templates/litlists_manage_singlelist:87 ../templates/litlists_show_singlelist:69 ../templates/profile/kugng/litlists_manage_singlelist:101 ../templates/profile/kugng/litlists_show_singlelist:65 ../templates/profile/kugng/resultlists_showall:62 ../templates/profile/kugng/resultlists_showall_sortall:62 ../templates/profile/kugng/resultlists_showsinglepool:62 ../templates/profile/kugng/search_showtitlist:68 ../templates/profile/kugng/tags_showtitlist:66 ../templates/profile/kugng/virtualsearch_result_combined:61 ../templates/profile/kugng/virtualsearch_result_start:64 ../templates/resultlists_showall:63 ../templates/resultlists_showall_sortall:66 ../templates/resultlists_showsinglepool:64 ../templates/search_showtitlist:70 ../templates/search_showtitlist_of_cnt:70 ../templates/virtualsearch_result_start:66
 msgid "Liste"
 msgstr ""
 
@@ -2455,7 +2512,7 @@ msgstr ""
 msgid "Literaturliste"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:321 ../templates/database/inst001/search_showtitset:348 ../templates/database/nationallizenzen/search_showtitset:321 ../templates/database/spoho/search_showtitset:342 ../templates/database/umschlaege/search_showtitset:345 ../templates/info_13:45 ../templates/info_41:30 ../templates/profile/kugng/info_13:33 ../templates/profile/kugng/litlists_show_publiclists:25 ../templates/profile/kugng/search_showtitset:731 ../templates/profile/kugng/searchmask_simple:477 ../templates/profile/kugng/searchmask_simple:478 ../templates/search_showtitset:338
+#: ../templates/database/ebooks/search_showtitset:321 ../templates/database/inst001/search_showtitset:348 ../templates/database/nationallizenzen/search_showtitset:321 ../templates/database/spoho/search_showtitset:342 ../templates/database/umschlaege/search_showtitset:345 ../templates/info_13:45 ../templates/info_41:30 ../templates/info_54:111 ../templates/profile/kugng/info_13:33 ../templates/profile/kugng/litlists_show_publiclists:25 ../templates/profile/kugng/search_showtitset:731 ../templates/profile/kugng/searchmask_simple:477 ../templates/profile/kugng/searchmask_simple:478 ../templates/search_showtitset:338
 msgid "Literaturlisten"
 msgstr ""
 
@@ -2499,7 +2556,7 @@ msgstr ""
 msgid "Lösche Eingabemaske"
 msgstr ""
 
-#: ../templates/admin_editcat:177 ../templates/admin_editcat_rss:333 ../templates/admin_editlogintarget:55 ../templates/admin_editprofile:70 ../templates/admin_editsubject:84 ../templates/admin_editview:138 ../templates/database/ebooks/search_showtitset:684 ../templates/database/inst001/search_showtitset:705 ../templates/database/nationallizenzen/search_showtitset:684 ../templates/database/spoho/search_showtitset:705 ../templates/database/umschlaege/search_showtitset:708 ../templates/profile/kugng/search_showtitset:377 ../templates/search_showtitset:696
+#: ../templates/admin_editcat:177 ../templates/admin_editcat_rss:333 ../templates/admin_editlogintarget:55 ../templates/admin_editprofile:70 ../templates/admin_editsubject:86 ../templates/admin_editview:138 ../templates/database/ebooks/search_showtitset:684 ../templates/database/inst001/search_showtitset:705 ../templates/database/nationallizenzen/search_showtitset:684 ../templates/database/spoho/search_showtitset:705 ../templates/database/umschlaege/search_showtitset:708 ../templates/profile/kugng/search_showtitset:377 ../templates/search_showtitset:696
 msgid "Löschen"
 msgstr ""
 
@@ -3581,7 +3638,7 @@ msgstr ""
 msgid "Systematiken/Notationen"
 msgstr ""
 
-#: ../templates/info_13:27 ../templates/info_50:31 ../templates/info_51:38 ../templates/info_52:38 ../templates/info_53:42 ../templates/profile/kugng/info_50:29 ../templates/searchmask:46 ../templates/searchmask_simple:46 ../templates/views/kug/searchmask:126 ../templates/views/kug/searchmask_simple:36
+#: ../templates/info_13:27 ../templates/info_50:31 ../templates/info_51:38 ../templates/info_52:38 ../templates/profile/kugng/info_50:29 ../templates/searchmask:46 ../templates/searchmask_simple:46 ../templates/views/kug/searchmask:126 ../templates/views/kug/searchmask_simple:36
 msgid "Systematisches Bl&auml;ttern"
 msgstr ""
 
@@ -4383,15 +4440,23 @@ msgstr ""
 msgid "Thematische Integration weiterer Quellen"
 msgstr ""
 
-#: ../templates/admin_editsubject:51 ../templates/admin_showsubjects:36 ../templates/admin_showsubjects:55
+#: ../templates/admin_editsubject:52 ../templates/admin_showsubjects:36 ../templates/admin_showsubjects:55
 msgid "Themengebiet"
 msgstr ""
 
-#: ../templates/admin_editsubject:48
+#: ../templates/admin_editsubject:49
 msgid "Themengebiet bearbeiten"
 msgstr ""
 
-#: ../templates/admin_navigation:21 ../templates/info_53:42 ../templates/info_54:41 ../templates/profile/kugng/litlists_show_singlelist:75 ../templates/profile/kugng/searchmask_simple:381 ../templates/profile/kugng/searchmask_simple:474 ../templates/profile/kugng/searchmask_simple:51
+#: ../templates/admin_editsubject:105
+msgid "Themengebiet(e) der EZB zuordnen"
+msgstr ""
+
+#: ../templates/admin_editsubject:152
+msgid "Themengebiet(e) von DBIS zuordnen"
+msgstr ""
+
+#: ../templates/admin_editsubject:108 ../templates/admin_editsubject:155 ../templates/admin_navigation:21 ../templates/info_53:42 ../templates/info_54:41 ../templates/profile/kugng/litlists_manage_lists:70 ../templates/profile/kugng/litlists_show_publiclists:33 ../templates/profile/kugng/litlists_show_singlelist:75 ../templates/profile/kugng/searchmask_simple:381 ../templates/profile/kugng/searchmask_simple:474 ../templates/profile/kugng/searchmask_simple:51
 msgid "Themengebiete"
 msgstr ""
 
@@ -5027,11 +5092,15 @@ msgstr ""
 msgid "Wir bitten um Ihr Verst&auml;ndnis. Vielen Dank."
 msgstr ""
 
-#: ../templates/info_18:56
+#: ../templates/dbis_showsubjects:34 ../templates/ezb_showsubjects:36
+msgid "Wolke"
+msgstr ""
+
+#: ../templates/info_18:56 ../templates/profile/kugng/info_18:55
 msgid "Wolke der h&auml;ufigsten Begriffe"
 msgstr ""
 
-#: ../templates/info_9:56
+#: ../templates/info_9:56 ../templates/profile/kugng/info_9:55
 msgid "Wolke der h&auml;ufigsten Erscheinungsjahre"
 msgstr ""
 
@@ -5043,11 +5112,11 @@ msgstr ""
 msgid "Wolke der meist genutzten Literaturlisten"
 msgstr ""
 
-#: ../templates/info_19:56
+#: ../templates/info_19:56 ../templates/profile/kugng/info_19:55
 msgid "Wolke der von Nutzern vergebenen Tags"
 msgstr ""
 
-#: ../templates/info:86 ../templates/info:936 ../templates/info_13:35 ../templates/info_14:43 ../templates/info_15:37 ../templates/info_16:43 ../templates/info_17:43 ../templates/info_18:43 ../templates/info_19:43 ../templates/info_9:43 ../templates/profile/kugng/info_13:25 ../templates/profile/kugng/searchmask_simple:475 ../templates/profile/kugng/searchmask_simple:476 ../templates/views/kug/info:86 ../templates/views/kug/info:936
+#: ../templates/info:86 ../templates/info:936 ../templates/info_13:35 ../templates/info_14:43 ../templates/info_15:37 ../templates/info_16:43 ../templates/info_17:43 ../templates/info_18:43 ../templates/info_19:43 ../templates/info_9:43 ../templates/profile/kugng/info_13:25 ../templates/profile/kugng/info_16:36 ../templates/profile/kugng/info_17:36 ../templates/profile/kugng/info_18:36 ../templates/profile/kugng/info_19:36 ../templates/profile/kugng/info_9:36 ../templates/profile/kugng/searchmask_simple:475 ../templates/profile/kugng/searchmask_simple:476 ../templates/views/kug/info:86 ../templates/views/kug/info:936
 msgid "Wolken"
 msgstr ""
 
@@ -5128,7 +5197,7 @@ msgstr ""
 msgid "aufsteigend"
 msgstr ""
 
-#: ../templates/database/einbaende/managecollection_tit_as_html:23 ../templates/database/umschlaege/managecollection_tit_as_html:22 ../templates/managecollection_tit_as_html:22 ../templates/managecollection_tit_as_html_simple:19 ../templates/profile/kugng/managecollection_tit_as_html:164 ../templates/profile/kugng/resultlists_showall_sortall:133 ../templates/profile/kugng/virtualsearch_result_combined:154 ../templates/resultlists_showall_sortall:130
+#: ../templates/database/einbaende/managecollection_tit_as_html:23 ../templates/database/umschlaege/managecollection_tit_as_html:22 ../templates/managecollection_tit_as_html:22 ../templates/managecollection_tit_as_html_simple:19 ../templates/profile/kugng/managecollection_tit_as_html:140 ../templates/profile/kugng/managecollection_tit_as_html:164 ../templates/profile/kugng/resultlists_showall_sortall:133 ../templates/profile/kugng/virtualsearch_result_combined:154 ../templates/resultlists_showall_sortall:130
 msgid "aus:"
 msgstr ""
 
@@ -5363,7 +5432,7 @@ msgstr ""
 msgid "wiederholt"
 msgstr ""
 
-#: ../templates/admin_editcat:177 ../templates/admin_editcat_rss:134 ../templates/admin_editcat_rss:191 ../templates/admin_editcat_rss:248 ../templates/admin_editcat_rss:305 ../templates/admin_editcat_rss:333 ../templates/admin_editcat_rss:77 ../templates/admin_editlogintarget:55 ../templates/admin_editprofile:70 ../templates/admin_editsubject:84 ../templates/admin_editview:138 ../templates/admin_editview_rss:139 ../templates/admin_editview_rss:96
+#: ../templates/admin_editcat:177 ../templates/admin_editcat_rss:134 ../templates/admin_editcat_rss:191 ../templates/admin_editcat_rss:248 ../templates/admin_editcat_rss:305 ../templates/admin_editcat_rss:333 ../templates/admin_editcat_rss:77 ../templates/admin_editlogintarget:55 ../templates/admin_editprofile:70 ../templates/admin_editsubject:132 ../templates/admin_editsubject:179 ../templates/admin_editsubject:86 ../templates/admin_editview:138 ../templates/admin_editview_rss:139 ../templates/admin_editview_rss:96
 msgid "Ändern"
 msgstr ""
 

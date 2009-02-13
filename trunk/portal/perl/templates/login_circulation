@@ -30,11 +30,11 @@
 
 <p />
 <table width="100%">
-<tr><th>[% msg.maketext("Hinweis") %]</th></tr>
+<tr><th><img style="vertical-align:bottom" src="[% config.hint_img %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Hinweis") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:9pt">
-F&uuml;r die von Ihnen gew&uuml;nsche Ausleih-Funktion (Vormerken
+[% msg.maketext("F&uuml;r die von Ihnen gew&uuml;nsche Ausleih-Funktion (Vormerken
 usw.) m&uuml;ssen Sie sich an dem Ausleihsystem der besitzenden
-Bibliothek authentifizieren.
+Bibliothek authentifizieren.") %]
 </td></tr>
 </table>
 
@@ -46,7 +46,7 @@ Bibliothek authentifizieren.
 <input type="hidden" name="view"      value="[% view %]" />
 
 <table width="100%">
-<tr><th>Login mit einem Benutzerausweis</th></tr>
+<tr><th>[% msg.maketext("Login mit einem Benutzerausweis") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:9pt">
 
 <p />

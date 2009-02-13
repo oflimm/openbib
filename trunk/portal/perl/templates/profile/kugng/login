@@ -32,7 +32,7 @@
 
 <p />
 <table width="100%">
-<tr><th>[% msg.maketext("Hinweis") %]</th></tr>
+<tr><th><img style="vertical-align:bottom" src="[% config.hint_img %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Hinweis") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:9pt">
 [% msg.maketext("Sie haben [_1]Vorteile[_2], wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden.","<a href=\"${config.info_loc}?sessionID=${sessionID};view=${view}#meinkugvorteile\">","</a>") %]
 </td></tr>

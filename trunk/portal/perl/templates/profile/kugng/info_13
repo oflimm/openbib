@@ -38,7 +38,7 @@
 <p />
 
 <table width="100%">
-<tr><th>[% msg.maketext("Hinweis") %]</th></tr>
+<tr><th><img style="vertical-align:bottom" src="[% config.hint_img %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Hinweis") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
 [% msg.maketext("W&auml;hlen Sie einen Katalog aus, um f&uuml;r diesen eine
 <b>&Uuml;bersicht der 200 am h&auml;ufigsten verwendeten

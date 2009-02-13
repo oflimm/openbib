@@ -31,7 +31,7 @@
 
 <p />
 <table width="100%">
-<tr><th>[% msg.maketext("Hinweis") %]</th></tr>
+<tr><th><img style="vertical-align:bottom" src="[% config.hint_img %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Hinweis") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
 [% msg.maketext("Geben Sie f&uuml;r die Selbstregistrierung bitte als
 Benutzername Ihre g&uuml;ltige Email-Adresse ein und danach zwei Mal

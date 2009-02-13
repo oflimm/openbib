@@ -297,6 +297,8 @@ END;
 <div id="additional_title_info"><!-- Begin Additional Title Info -->
 [%   reviews = user.get_reviews_of_tit({ titid => record.id, titdb => record.database }); %]
 
+[% IF circset.size > 0 || mexnormset.size > 0 || same.records.get_size
+> 0 || similar_records.get_size > 0 || config.reviews %]
 <ul class="nojs_hidden">
 [% IF circset.size > 0 %]
 <li><a href="#circinfo"><span>[% msg.maketext("Ausleihe/Exemplare") %]</span></a></li>
@@ -315,6 +317,7 @@ END;
 <li><a href="#reviews"><span>[% msg.maketext("Bewertungen/Rezensionen") %]</span></a></li>
 [% END %]
 </ul>
+[% END %]
 
 [% IF circset.size > 0 %]
 <h2 class="nojs_show">[% msg.maketext("Ausleihe/Exemplare") %]</h2>

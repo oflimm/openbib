@@ -22,7 +22,7 @@
 <div id="maincontent">
 
 <table width="100%">
-<tr><th>[% msg.maketext("Hinweis") %]</th></tr>
+<tr><th><img style="vertical-align:bottom" src="[% config.hint_img %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Hinweis") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
 [% msg.maketext("Auf dieser Seite k&ouml;nnen Sie f&uuml;r einige Kataloge des KUG
 RSS-Feeds abonnieren. Dazu kopieren Sie bitte den jeweiligen URL von

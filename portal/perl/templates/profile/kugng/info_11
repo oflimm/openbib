@@ -44,10 +44,10 @@
 <p />
 
 <table width="100%">
-<tr><th>Hinweis</th></tr>
+<tr><th><img style="vertical-align:bottom" src="[% config.hint_img %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Hinweis") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
-W&auml;hlen Sie einen Katalog aus, um Informationen &uuml;ber dessen
-Nutzung zu erhalten.
+[% msg.maketext("W&auml;hlen Sie einen Katalog aus, um Informationen &uuml;ber dessen
+Nutzung zu erhalten.") %]
 </td></tr>
 </table>
 <p />

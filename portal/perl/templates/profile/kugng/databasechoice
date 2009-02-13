@@ -48,7 +48,7 @@ function update_fak(yourform, checked, fak) {
 
 <p />
 <table width="100%">
-<tr><th>[% msg.maketext("Hinweis") %]</th></tr>
+<tr><th><img style="vertical-align:bottom" src="[% config.hint_img %]" alt="[% msg.maketext("Hinweis") %]"/>[% msg.maketext("Hinweis") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
 [% msg.maketext("Auf dieser Seite k&ouml;nnen Sie einzelne Kataloge als Suchziel auswählen. Bei aktiviertem JavaScript reicht ein Klick auf das Schaltelement einer übergeordneten hellblau hinterlegten Kategorie, um alle zugeh&ouml;rigen Kataloge automatisch auszuwählen<p />
 Nachdem Sie Ihre Auswahl getroffen haben aktivieren Sie bitte <b>Kataloge auswählen</b>. Sie springen dann auf die Rechercheseite und k&ouml;nnen Ihre Suchbegriffe eingeben. Ihre gerade

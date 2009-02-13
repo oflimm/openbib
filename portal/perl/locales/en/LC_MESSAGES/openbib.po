@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2009-02-12 15:19+0100\n"
+"PO-Revision-Date: 2009-02-13 14:44+0100\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -602,6 +602,10 @@ msgstr "All available public literature lists"
 msgid "Alle Datenbanken"
 msgstr "All Databases"
 
+#: ../templates/profile/kugng/managecollection_tit_as_html:27
+msgid "Alle Eintr&auml;ge ausw&auml;hlen"
+msgstr "Select all entries"
+
 #: ../templates/profile/kugng/searchmask_simple:54
 msgid "Alle Formate"
 msgstr "All types"
@@ -613,8 +617,8 @@ msgstr "All types"
 #: ../templates/profile/kugng/searchmask_simple:125
 #: ../templates/profile/kugng/searchmask_simple:234
 #: ../templates/profile/kugng/searchmask_simple:343
-#: ../templates/profile/kugng/views/kugng/searchmask:233
 #: ../templates/profile/kugng/views/kugng/searchmask:245
+#: ../templates/profile/kugng/views/kugng/searchmask:257
 #: ../templates/searchmask_options:18 ../templates/searchmask_simple:123
 #: ../templates/views/edz/searchmask_simple:132
 #: ../templates/views/inst404/searchmask_simple:138
@@ -975,6 +979,7 @@ msgstr "Show the Top 20 Most Viewed Entries in this Catalog"
 msgid "Anzeige des ausgew&auml;hlten Profils"
 msgstr "Presentation of selected profile"
 
+#: ../templates/dbis_showsubjects:34 ../templates/ezb_showsubjects:36
 #: ../templates/profile/kugng/litlists_show_publiclists:33
 msgid "Anzeige:"
 msgstr "View:"
@@ -2125,10 +2130,12 @@ msgid "Dieser Titel befindet sich in folgenden Literaturlisten"
 msgstr "This title is available in the following literature lists"
 
 #: ../templates/bibsonomy_showtitlist:77
+#: ../templates/profile/kugng/bibsonomy_showtitlist:92
 msgid "Dieser Titel ist in den Katalogen des KUG verf&uuml;gbar"
 msgstr "This title is availabe in the catalogues of KUG"
 
 #: ../templates/bibsonomy_showtitlist:79
+#: ../templates/profile/kugng/bibsonomy_showtitlist:93
 msgid ""
 "Dieser Titel konnte nicht in den Katalogen des KUG gefunden werden. Er kann "
 "dennoch in anderer Schreibweise existieren!"
@@ -2658,6 +2665,7 @@ msgid "Es sind keine Gebühren angefallen."
 msgstr "No fees generated."
 
 #: ../templates/bibsonomy_showtitlist:98
+#: ../templates/profile/kugng/bibsonomy_showtitlist:125
 msgid "Es sind keine Quellen verf&uuml;gbar."
 msgstr "No sources available."
 
@@ -2882,7 +2890,7 @@ msgstr "Earlier requests"
 #: ../templates/profile/kugng/searchmask_simple:157
 #: ../templates/profile/kugng/searchmask_simple:266
 #: ../templates/profile/kugng/searchmask_simple:376
-#: ../templates/profile/kugng/views/kugng/searchmask:200
+#: ../templates/profile/kugng/views/kugng/searchmask:206
 #: ../templates/searchmask:145 ../templates/searchmask_simple:181
 #: ../templates/views/edz/searchmask:159
 #: ../templates/views/edz/searchmask_simple:190
@@ -3048,6 +3056,7 @@ msgid "Geben Sie hier den Verfasseranfang ein"
 msgstr "Please enter the beginning of the author"
 
 #: ../templates/bibsonomy_showtitlist:54
+#: ../templates/profile/kugng/bibsonomy_showtitlist:54
 msgid "Geben Sie hier einen oder mehrere Tags ein"
 msgstr "Please enter one or more tags"
 
@@ -3426,9 +3435,11 @@ msgstr ""
 #: ../templates/profile/kugng/searchmask_simple:114
 #: ../templates/profile/kugng/searchmask_simple:223
 #: ../templates/profile/kugng/searchmask_simple:332
-#: ../templates/profile/kugng/views/kugng/searchmask:172
-#: ../templates/profile/kugng/views/kugng/searchmask:195
-#: ../templates/profile/kugng/views/kugng/searchmask:285
+#: ../templates/profile/kugng/views/kugng/searchmask:164
+#: ../templates/profile/kugng/views/kugng/searchmask:178
+#: ../templates/profile/kugng/views/kugng/searchmask:201
+#: ../templates/profile/kugng/views/kugng/searchmask:219
+#: ../templates/profile/kugng/views/kugng/searchmask:297
 #: ../templates/searchmask:131 ../templates/searchmask:135
 #: ../templates/searchmask:93 ../templates/searchmask:99
 #: ../templates/searchmask_simple:144 ../templates/searchmask_simple:150
@@ -3604,9 +3615,11 @@ msgstr "Here you can search in your choice of catalogue,  catalogue profiles, re
 #: ../templates/profile/kuglight/searchmask_simple:148
 #: ../templates/profile/kugng/searchmask:124
 #: ../templates/profile/kugng/searchmask:88
-#: ../templates/profile/kugng/views/kugng/searchmask:172
-#: ../templates/profile/kugng/views/kugng/searchmask:195
-#: ../templates/profile/kugng/views/kugng/searchmask:285
+#: ../templates/profile/kugng/views/kugng/searchmask:164
+#: ../templates/profile/kugng/views/kugng/searchmask:178
+#: ../templates/profile/kugng/views/kugng/searchmask:201
+#: ../templates/profile/kugng/views/kugng/searchmask:219
+#: ../templates/profile/kugng/views/kugng/searchmask:297
 #: ../templates/searchmask:135 ../templates/searchmask:99
 #: ../templates/searchmask_simple:150 ../templates/views/edz/searchmask:113
 #: ../templates/views/edz/searchmask:149
@@ -3963,9 +3976,11 @@ msgstr "Available in Google Book Search?"
 #: ../templates/profile/kuglight/searchmask_simple:148
 #: ../templates/profile/kugng/searchmask:124
 #: ../templates/profile/kugng/searchmask:88
-#: ../templates/profile/kugng/views/kugng/searchmask:172
-#: ../templates/profile/kugng/views/kugng/searchmask:195
-#: ../templates/profile/kugng/views/kugng/searchmask:285
+#: ../templates/profile/kugng/views/kugng/searchmask:164
+#: ../templates/profile/kugng/views/kugng/searchmask:178
+#: ../templates/profile/kugng/views/kugng/searchmask:201
+#: ../templates/profile/kugng/views/kugng/searchmask:219
+#: ../templates/profile/kugng/views/kugng/searchmask:297
 #: ../templates/searchmask:135 ../templates/searchmask:99
 #: ../templates/searchmask_simple:150 ../templates/views/edz/searchmask:113
 #: ../templates/views/edz/searchmask:149
@@ -4073,9 +4088,11 @@ msgstr "In other catalogues"
 #: ../templates/profile/kugng/searchmask:124
 #: ../templates/profile/kugng/searchmask:82
 #: ../templates/profile/kugng/searchmask:88
-#: ../templates/profile/kugng/views/kugng/searchmask:172
-#: ../templates/profile/kugng/views/kugng/searchmask:195
-#: ../templates/profile/kugng/views/kugng/searchmask:285
+#: ../templates/profile/kugng/views/kugng/searchmask:164
+#: ../templates/profile/kugng/views/kugng/searchmask:178
+#: ../templates/profile/kugng/views/kugng/searchmask:201
+#: ../templates/profile/kugng/views/kugng/searchmask:219
+#: ../templates/profile/kugng/views/kugng/searchmask:297
 #: ../templates/searchmask:131 ../templates/searchmask:135
 #: ../templates/searchmask:93 ../templates/searchmask:99
 #: ../templates/searchmask_simple:144 ../templates/searchmask_simple:150
@@ -4638,7 +4655,7 @@ msgstr "Catalogue profile"
 #: ../templates/profile/kugng/databasechoice:39
 #: ../templates/profile/kugng/info_10:139
 #: ../templates/profile/kugng/info_13:32
-#: ../templates/profile/kugng/views/kugng/searchmask:213
+#: ../templates/profile/kugng/views/kugng/searchmask:225
 #: ../templates/views/kug/info:251 ../templates/views/kug/info:59
 #: ../templates/views/kug/searchmask:233
 #: ../templates/views/rheinlandbib/databasechoice:39
@@ -4723,7 +4740,7 @@ msgstr "No cover"
 msgid "Keine Titelid, Titel-Datenbank oder Literaturliste vorhanden."
 msgstr "No title id, title database or literature list available."
 
-#: ../modules/OpenBib/Handler/Apache/BibSonomy.pm:289
+#: ../modules/OpenBib/Handler/Apache/BibSonomy.pm:290
 #: ../modules/OpenBib/Handler/Apache/DatabaseProfile.pm:201
 msgid "Keine gültige Aktion"
 msgstr "Invalid action"
@@ -4960,6 +4977,7 @@ msgstr "End of loan period"
 msgid "Letzte 50 Neuaufnahmen"
 msgstr "Newest 50 catalogue entries"
 
+#: ../templates/dbis_showsubjects:34 ../templates/ezb_showsubjects:36
 #: ../templates/litlists_manage_singlelist:87
 #: ../templates/litlists_show_singlelist:69
 #: ../templates/profile/kugng/litlists_manage_singlelist:101
@@ -4979,6 +4997,10 @@ msgstr "Newest 50 catalogue entries"
 #: ../templates/virtualsearch_result_start:66
 msgid "Liste"
 msgstr "List"
+
+#: ../templates/profile/kugng/bibsonomy_showtitlist:75
+msgid "Liste der Quellen"
+msgstr "List of sources"
 
 #: ../templates/litlists_manage_singlelist:87
 #: ../templates/litlists_show_singlelist:69
@@ -5705,6 +5727,8 @@ msgid "Nur Zeitschriften/Serien"
 msgstr "Journals/Series only"
 
 #: ../templates/bibsonomy_showtitlist:76
+#: ../templates/profile/kugng/bibsonomy_showtitlist:100
+#: ../templates/profile/kugng/bibsonomy_showtitlist:116
 msgid "Nutzer"
 msgstr "User"
 
@@ -5986,16 +6010,19 @@ msgid "Pseudonym"
 msgstr "Pseudonym"
 
 #: ../templates/bibsonomy_showtitlist:62
+#: ../templates/profile/kugng/bibsonomy_showtitlist:62
 msgid "Publikationen"
 msgstr "Publications"
 
 #. (bsuser)
 #: ../templates/bibsonomy_showtitlist:26
+#: ../templates/profile/kugng/bibsonomy_showtitlist:26
 msgid "Quellen des Nutzers <i>%1</i> in BibSonomy"
 msgstr "Sources of user <i>%1</i> in BibSonomy"
 
 #. (tag)
 #: ../templates/bibsonomy_showtitlist:26
+#: ../templates/profile/kugng/bibsonomy_showtitlist:26
 msgid "Quellen zum Tag <i>%1</i> in BibSonomy"
 msgstr "Sources of tag <i>%1</i> in BibSonomy"
 
@@ -7076,7 +7103,7 @@ msgstr "Index-Search"
 #: ../templates/profile/kugng/info_13:34
 #: ../templates/profile/kugng/searchmask:94
 #: ../templates/profile/kugng/searchmask_simple:478
-#: ../templates/profile/kugng/views/kugng/searchmask:164
+#: ../templates/profile/kugng/views/kugng/searchmask:170
 #: ../templates/searchmask:105 ../templates/views/edz/searchmask:119
 #: ../templates/views/gdonck/searchmask:99
 #: ../templates/views/gleuel/searchmask:99
@@ -7133,6 +7160,7 @@ msgstr "Search"
 #: ../templates/database/umschlaege/search_showtitlist:190
 #: ../templates/database/umschlaege/search_showtitset:811
 #: ../templates/profile/kuglight/search_showtitset:283
+#: ../templates/profile/kugng/bibsonomy_showtitlist:54
 #: ../templates/search_showswtindex:81 ../templates/search_showtitlist:196
 #: ../templates/search_showtitset:799
 #: ../templates/views/kapsel/search_showtitlist:190
@@ -7182,7 +7210,7 @@ msgstr "Alter search fields"
 
 #: ../templates/info:33 ../templates/info_1:24 ../templates/info_2:24
 #: ../templates/profile/kuglight/info:33
-#: ../templates/profile/kugng/views/kugng/searchmask:187
+#: ../templates/profile/kugng/views/kugng/searchmask:193
 #: ../templates/views/kug/info:33 ../templates/views/kug/searchmask:214
 msgid "Suchhilfe"
 msgstr "Search help"
@@ -7267,7 +7295,7 @@ msgstr "Search Operators"
 
 #: ../templates/profile/kuglight/searchmask:120
 #: ../templates/profile/kugng/searchmask:111
-#: ../templates/profile/kugng/views/kugng/searchmask:178
+#: ../templates/profile/kugng/views/kugng/searchmask:184
 #: ../templates/searchmask:122 ../templates/views/edz/searchmask:136
 #: ../templates/views/gdonck/searchmask:116
 #: ../templates/views/gleuel/searchmask:116
@@ -8786,6 +8814,9 @@ msgid "Tagging"
 msgstr "Tagging"
 
 #: ../templates/bibsonomy_showtitlist:53 ../templates/bibsonomy_showtitlist:85
+#: ../templates/profile/kugng/bibsonomy_showtitlist:100
+#: ../templates/profile/kugng/bibsonomy_showtitlist:116
+#: ../templates/profile/kugng/bibsonomy_showtitlist:53
 msgid "Tags"
 msgstr "Tags"
 
@@ -9212,7 +9243,7 @@ msgstr "Please follow %1this link%2 to login again. "
 #: ../templates/profile/kugng/searchmask_simple:177
 #: ../templates/profile/kugng/searchmask_simple:286
 #: ../templates/profile/kugng/searchmask_simple:70
-#: ../templates/profile/kugng/views/kugng/searchmask:207
+#: ../templates/profile/kugng/views/kugng/searchmask:213
 #: ../templates/searchmask:143 ../templates/searchmask_simple:178
 #: ../templates/views/edz/searchmask:157
 #: ../templates/views/edz/searchmask_simple:187
@@ -9610,6 +9641,7 @@ msgid "Wartungsarbeiten"
 msgstr "Maintenance works"
 
 #: ../templates/bibsonomy_showtitlist:63
+#: ../templates/profile/kugng/bibsonomy_showtitlist:63
 msgid "Web"
 msgstr "Web"
 
@@ -9626,6 +9658,7 @@ msgstr "Due to an unexpectant event the KUG cannot be used for the next few minu
 #: ../templates/circset:27 ../templates/database/inst001/circset:124
 #: ../templates/database/inst001/circset:85 ../templates/dbis_showdbinfo:39
 #: ../templates/ezb_showjournalinfo:37 ../templates/ezb_showjournalinfo:47
+#: ../templates/profile/kugng/bibsonomy_showtitlist:130
 #: ../templates/profile/kugng/circset:23
 msgid "Weiter"
 msgstr "Next"
@@ -9954,6 +9987,10 @@ msgstr "How can I get it!"
 msgid "Wir bitten um Ihr Verst&auml;ndnis. Vielen Dank."
 msgstr "Thank you for your understanding."
 
+#: ../templates/dbis_showsubjects:34 ../templates/ezb_showsubjects:36
+msgid "Wolke"
+msgstr "Cloud"
+
 #: ../templates/info_18:56 ../templates/profile/kugng/info_18:55
 msgid "Wolke der h&auml;ufigsten Begriffe"
 msgstr "Cloud of relevant terms"
@@ -10259,6 +10296,7 @@ msgstr "ascending"
 #: ../templates/database/umschlaege/managecollection_tit_as_html:22
 #: ../templates/managecollection_tit_as_html:22
 #: ../templates/managecollection_tit_as_html_simple:19
+#: ../templates/profile/kugng/managecollection_tit_as_html:140
 #: ../templates/profile/kugng/managecollection_tit_as_html:164
 #: ../templates/profile/kugng/resultlists_showall_sortall:133
 #: ../templates/profile/kugng/virtualsearch_result_combined:154
@@ -10819,6 +10857,10 @@ msgstr "private"
 #: ../templates/virtualsearch_result_start:59
 msgid "pro Katalog"
 msgstr "per catalogue"
+
+#: ../templates/profile/kugng/std_footer:18
+msgid "realisiert mit"
+msgstr "implemented with"
 
 #: ../templates/database/ebooks/search_showtitset:668
 #: ../templates/database/inst001/search_showtitset:689

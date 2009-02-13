@@ -208,6 +208,7 @@
 ../templates/profile/kuglight/userprefs_navigation
 ../templates/profile/kuglight/virtualsearch_result_item
 ../templates/profile/kuglight/virtualsearch_result_start
+../templates/profile/kugng/bibsonomy_showtitlist
 ../templates/profile/kugng/circset
 ../templates/profile/kugng/databasechoice
 ../templates/profile/kugng/databaseprofile

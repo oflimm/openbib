@@ -33,7 +33,7 @@
 <div class="content">
 <p/>
 <div class="boxed">
-<b>Anzeige:</b>&nbsp; <a href="[% config.tags_loc %]?sessionID=[% sessionID %];view=[% view %];show_usertags=1;show_cloud=1"[% IF show_cloud %] style="font-weight:bold"[% END %]>als Wolke</a>&nbsp;&#124;&nbsp;<a href="[% config.tags_loc %]?sessionID=[% sessionID %];view=[% view %];show_usertags=1;show_cloud=0"[% IF NOT show_cloud %] style="font-weight:bold"[% END %]>als Liste</a>
+<b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% config.tags_loc %]?sessionID=[% sessionID %];view=[% view %];show_usertags=1;show_cloud=1"[% IF show_cloud %] class="selected_item"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% config.tags_loc %]?sessionID=[% sessionID %];view=[% view %];show_usertags=1;show_cloud=0"[% IF NOT show_cloud %] class="selected_item"[% END %]>[% msg.maketext("Liste") %]</a>
 </div>
 [%
    private_tags = user.get_private_tags({ loginname => loginname  });
@@ -71,7 +71,7 @@ verkn&uuml;pft mit dem Tag </span><a href="[% config.tags_loc %]?sessionID=[% se
 [%     END %]
 </ol>
 [%   ELSE %]
-<ul>
+<ul class="subjectlist">
 [%-     FOREACH thisitem IN private_tags -%]
 [% item      = thisitem.name;
    itemcount = thisitem.count;

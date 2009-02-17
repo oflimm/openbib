@@ -229,6 +229,11 @@
 ../templates/profile/kugng/litlists_manage_singlelist
 ../templates/profile/kugng/litlists_show_singlelist
 ../templates/profile/kugng/litlists_show_publiclists
+../templates/profile/kugng/litlists_tit_as_html_short
+../templates/profile/kugng/litlists_tit_as_html_full
+../templates/profile/kugng/litlists_tit_as_text
+../templates/profile/kugng/litlists_tit_as_bibtex
+../templates/profile/kugng/litlists_tit_as_endnote
 ../templates/profile/kugng/managecollection_show
 ../templates/profile/kugng/managecollection_tit_as_html
 ../templates/profile/kugng/managecollection_tit_as_text

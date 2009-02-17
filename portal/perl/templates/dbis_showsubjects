@@ -1,13 +1,13 @@
 [%#-
 #######################################################################
 #
-# Templatename: ezb_showsubjects
+# Templatename: dbis_showsubjects
 #
 # Typ         : Mastertemplate
 #
 # Aufgabe:
 #
-# Ausgabe der EZB Hauptkategorien
+# Ausgabe der DBIS Fachgebiete
 #
 #######################################################################
 -%]
@@ -31,7 +31,7 @@
 <h3>[% msg.maketext("Aufschl&uuml;sselung der Datenbanken nach Fachgebieten") %]</h3>
 <p/>
 <div class="boxed">
-<b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% config.dbis_loc %]?sessionID=[% sessionID %];view=[% view %];action=show_subjects;show_cloud=1"[% IF show_cloud %] style="font-weight:bold"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% config.dbis_loc %]?sessionID=[% sessionID %];view=[% view %];action=show_subjects;show_cloud=0"[% IF NOT show_cloud %] style="font-weight:bold"[% END %]>[% msg.maketext("Liste") %]</a>
+<b>[% msg.maketext("Anzeige:") %]</b>&nbsp; <a href="[% config.dbis_loc %]?sessionID=[% sessionID %];view=[% view %];action=show_subjects;show_cloud=1"[% IF show_cloud %] class="selected_item"[% END %]>[% msg.maketext("Wolke") %]</a>&nbsp;&#124;&nbsp;<a href="[% config.dbis_loc %]?sessionID=[% sessionID %];view=[% view %];action=show_subjects;show_cloud=0"[% IF NOT show_cloud %] class="selected_item"[% END %]>[% msg.maketext("Liste") %]</a>
 </div>
 <p/>
 [% IF show_cloud %]

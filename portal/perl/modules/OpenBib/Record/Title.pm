@@ -1320,7 +1320,7 @@ sub to_endnote {
                 my $content = $endnote_category_map_ref->{$category}." ".$content_ref->{content};
                 
                 if ($category eq "T0331" && exists $self->{_normset}{"T0335"}){
-                    $content.=" : ".$self->{_normset}{"T0335"}[0];
+                    $content.=" : ".$self->{_normset}{"T0335"}[0]{content};
                 }
                 
                 push @{$endnote_ref}, $content;

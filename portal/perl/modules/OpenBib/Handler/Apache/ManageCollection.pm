@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::ManageCollection
 #
-#  Dieses File ist (C) 2001-2008 Oliver Flimm <flimm@openbib.org>
+#  Dieses File ist (C) 2001-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -84,10 +84,13 @@ sub handler {
     my $do_collection_showcount = $query->param('do_collection_showcount') || '';
     my $do_litlist_addentry     = $query->param('do_litlist_addentry')     || '';
     my $do_addlitlist           = $query->param('do_addlitlist')           || '';
+    my $do_addtags              = $query->param('do_addtags')              || '';
     my $title                   = $query->param('title')                   || '';
     my $action                  = $query->param('action')                  || 'show';
     my $show                    = $query->param('show')                    || 'short';
     my $type                    = $query->param('type')                    || 'HTML';
+    my $tags                    = $query->param('tags')                    || '';
+    my $tags_type               = $query->param('tags_type')               || 1;
     my $littype                 = $query->param('littype')                 || 1;
 
     my $queryoptions = OpenBib::QueryOptions->instance($query);
@@ -124,6 +127,19 @@ sub handler {
         $session->set_returnurl($return_url);
 
         $logger->debug("Nicht authentifizierter Nutzer versucht Literaturliste anzulegen");
+        $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1");
+
+        return OK;
+    }
+    elsif (! $user->is_authenticated && $do_addtags) {
+        # Aufruf-URL
+        my $return_url = $r->parsed_uri->unparse;
+
+        # Return-URL in der Session abspeichern
+
+        $session->set_returnurl($return_url);
+
+        $logger->debug("Nicht authentifizierter Nutzer versucht Tags anzulegen");
         $r->internal_redirect("http://$config->{servername}$config->{login_loc}?sessionID=$session->{ID};view=$view;do_login=1");
 
         return OK;
@@ -234,7 +250,48 @@ sub handler {
             $r->internal_redirect("http://$config->{servername}$config->{managecollection_loc}?sessionID=$session->{ID}&action=show&type=HTML");
             return OK;
 	}
+        elsif ($do_addtags) {
+            if (!$tags) {
+                OpenBib::Common::Util::print_warning($msg->maketext("Sie müssen Tags f&uuml;r die ausgew&auml;hlten Titel eingeben."),$r,$msg);
+                return OK;
+            }
 
+            if ($user->{ID}){
+                my $loginname = $user->get_username;
+                
+                if ($query->param('titid')){
+                    foreach my $tit ($query->param('titid')) {
+                        my ($titdb,$titid)=split(":",$tit);
+                        
+                        $user->add_tags({
+                            tags      => $tags,
+                            titid     => $titid,
+                            titdb     => $titdb,
+                            loginname => $loginname,
+                            type      => $tags_type,
+                        });
+                        
+                    }
+                }
+                else {
+                    OpenBib::Common::Util::print_warning($msg->maketext("Sie haben keine Titel ausgew&auml;hlt."),$r,$msg);
+                    return OK;
+                }
+            }
+            else {
+                OpenBib::Common::Util::print_warning($msg->maketext("Bitte authentifizieren Sie sich unter Mein KUG."),$r,$msg);
+            }
+            
+            my $redirecturl   = "http://$config->{servername}$config->{managecollection_loc}?sessionID=$session->{ID}";
+
+            if ($view ne "") {
+                $redirecturl.=";view=$view";
+            }
+
+            $r->internal_redirect($redirecturl);
+            return OK;
+        }
+        
         my $recordlist = new OpenBib::RecordList::Title();
 
         if ($user->{ID}) {

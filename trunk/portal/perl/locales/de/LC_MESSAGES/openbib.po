@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2009-02-13 23:34+0100\n"
-"Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
-"Language-Team:  <l10n@openbib.org>\n"
+"PO-Revision-Date: 2009-02-17 12:35+0100\n"
+"Last-Translator: \n"
+"Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -35,7 +35,9 @@ msgstr "${category}"
 #: ../templates/managecollection_tit_as_html:71
 #: ../templates/managecollection_tit_as_text:34
 #: ../templates/profile/kuglight/search_showtitset:248
-#: ../templates/profile/kugng/managecollection_tit_as_html:213
+#: ../templates/profile/kugng/litlists_tit_as_html_full:184
+#: ../templates/profile/kugng/litlists_tit_as_text:21
+#: ../templates/profile/kugng/managecollection_tit_as_html:397
 #: ../templates/profile/kugng/managecollection_tit_as_text:66
 #: ../templates/profile/kugng/search_showtitset:256
 #: ../templates/search_showautset:57 ../templates/search_showkorset:58
@@ -101,6 +103,7 @@ msgstr "%1 Titel in %2 Gruppen, %3 Literaturlisten"
 #: ../templates/database/umschlaege/search_showtitset:528
 #: ../templates/database/umschlaege/search_showtitset:593
 #: ../templates/database/umschlaege/search_showtitset:621
+#: ../templates/profile/kugng/managecollection_tit_as_html:122
 #: ../templates/profile/kugng/search_showtitset:590
 #: ../templates/profile/kugng/search_showtitset:618
 #: ../templates/profile/kugng/search_showtitset:660
@@ -133,7 +136,7 @@ msgstr ""
 #: ../templates/database/spoho/search_showtitset:561
 #: ../templates/database/umschlaege/search_showtitset:564
 #: ../templates/litlists_manage_singlelist:41
-#: ../templates/profile/kugng/litlists_manage_singlelist:41
+#: ../templates/profile/kugng/litlists_manage_singlelist:42
 #: ../templates/profile/kugng/search_showtitset:636
 #: ../templates/profile/kugng/userprefs:168
 #: ../templates/profile/kugng/userprefs:186 ../templates/search_showtitset:552
@@ -274,8 +277,9 @@ msgstr "&ntilde; <i>suchen mit:</i> n"
 #: ../templates/managecollection_show:99
 #: ../templates/profile/kugng/litlists_manage_lists:39
 #: ../templates/profile/kugng/litlists_manage_lists:76
-#: ../templates/profile/kugng/litlists_manage_singlelist:40
-#: ../templates/profile/kugng/managecollection_tit_as_html:75
+#: ../templates/profile/kugng/litlists_manage_singlelist:41
+#: ../templates/profile/kugng/managecollection_tit_as_html:77
+#: ../templates/profile/kugng/managecollection_tit_as_html:99
 #: ../templates/profile/kugng/search_showtitset:533
 #: ../templates/profile/kugng/search_showtitset:563
 #: ../templates/profile/kugng/search_showtitset:636
@@ -298,7 +302,7 @@ msgid "<b>Ausgew&auml;hlte Titel</b> aus der Merkliste entfernen"
 msgstr "<b>Ausgew&auml;hlte Titel</b> aus der Merkliste entfernen"
 
 #: ../templates/managecollection_show:79
-#: ../templates/profile/kugng/managecollection_tit_as_html:70
+#: ../templates/profile/kugng/managecollection_tit_as_html:71
 #: ../templates/views/einbaende/managecollection_show:81
 #: ../templates/views/umschlaege/managecollection_show:77
 msgid ""
@@ -307,6 +311,14 @@ msgid ""
 msgstr ""
 "<b>Ausgew&auml;hlte Titel</b> in die bestehende Literaturliste &uuml;"
 "bernehmen: "
+
+#: ../templates/profile/kugng/managecollection_tit_as_html:86
+msgid ""
+"<b>Ausgew&auml;hlte Titel</b> mit diesen Tags\n"
+"versehen: "
+msgstr ""
+"<b>Ausgew&auml;hlte Titel</b> mit diesen Tags\n"
+"versehen: "
 
 #: ../templates/info:241 ../templates/profile/kuglight/info:220
 #: ../templates/views/kug/info:241
@@ -803,10 +815,10 @@ msgstr "Als Mail verschicken"
 #: ../templates/litlists_show_singlelist:73
 #: ../templates/profile/kuglight/search_showtitset:58
 #: ../templates/profile/kugng/litlists_manage_lists:80
-#: ../templates/profile/kugng/litlists_manage_singlelist:106
-#: ../templates/profile/kugng/litlists_show_singlelist:216
-#: ../templates/profile/kugng/litlists_show_singlelist:245
-#: ../templates/profile/kugng/litlists_show_singlelist:69
+#: ../templates/profile/kugng/litlists_manage_singlelist:147
+#: ../templates/profile/kugng/litlists_show_singlelist:118
+#: ../templates/profile/kugng/litlists_show_singlelist:192
+#: ../templates/profile/kugng/litlists_show_singlelist:221
 #: ../templates/profile/kugng/search_showtitset:512
 #: ../templates/search_showtitset:58
 msgid "Als Permanenten Link verwenden"
@@ -874,9 +886,16 @@ msgstr "Am Umschlag Beteiligte"
 #: ../templates/managecollection_tit_as_html:159
 #: ../templates/managecollection_tit_as_text:49
 #: ../templates/profile/kuglight/search_showtitset:53
-#: ../templates/profile/kugng/managecollection_tit_as_html:145
+#: ../templates/profile/kugng/litlists_manage_singlelist:225
+#: ../templates/profile/kugng/litlists_tit_as_html_short:61
+#: ../templates/profile/kugng/managecollection_tit_as_html:206
+#: ../templates/profile/kugng/resultlists_showall:156
+#: ../templates/profile/kugng/resultlists_showall_sortall:137
+#: ../templates/profile/kugng/resultlists_showsinglepool:156
 #: ../templates/profile/kugng/search_showtitset:498
 #: ../templates/profile/kugng/search_showtitset:499
+#: ../templates/profile/kugng/tags_showtitlist:160
+#: ../templates/profile/kugng/virtualsearch_result_item:135
 #: ../templates/search_showtitset:53 ../templates/views/kug/info:969
 msgid "An BibSonomy senden"
 msgstr "An BibSonomy senden"
@@ -907,6 +926,8 @@ msgstr ""
 msgid "Andere Ausgaben"
 msgstr "Andere Ausgaben"
 
+#: ../templates/profile/kugng/litlists_manage_singlelist:154
+#: ../templates/profile/kugng/litlists_show_singlelist:125
 #: ../templates/profile/kugng/managecollection_tit_as_bibtex:36
 #: ../templates/profile/kugng/managecollection_tit_as_endnote:36
 #: ../templates/profile/kugng/managecollection_tit_as_html:52
@@ -933,7 +954,7 @@ msgid "Angelegt"
 msgstr "Angelegt"
 
 #: ../templates/managecollection_show:99
-#: ../templates/profile/kugng/managecollection_tit_as_html:75
+#: ../templates/profile/kugng/managecollection_tit_as_html:77
 #: ../templates/views/einbaende/managecollection_show:101
 #: ../templates/views/umschlaege/managecollection_show:97
 msgid "Anlegen einer neuen Literaturliste: "
@@ -1155,7 +1176,6 @@ msgstr "Ausleih-Einstellungen"
 #: ../templates/database/umschlaege/search_showtitset:394
 #: ../templates/managecollection_tit_as_html:96
 #: ../templates/managecollection_tit_as_html_simple:63
-#: ../templates/profile/kugng/managecollection_tit_as_html:238
 #: ../templates/profile/kugng/search_showtitset:304
 #: ../templates/profile/kugng/search_showtitset:323
 #: ../templates/search_showmulttitset:130
@@ -1243,11 +1263,14 @@ msgstr "Beginnen Sie eine neue Recherche"
 #: ../templates/database/spoho/search_showtitset:144
 #: ../templates/database/umschlaege/search_showtitset:147
 #: ../templates/profile/kuglight/search_showtitset:97
+#: ../templates/profile/kugng/litlists_tit_as_html_full:35
+#: ../templates/profile/kugng/managecollection_tit_as_html:248
 #: ../templates/profile/kugng/search_showtitset:105
 #: ../templates/search_showtitset:140
 msgid "Begriff in allen Katalogen suchen"
 msgstr "Begriff in allen Katalogen suchen"
 
+#: ../templates/profile/kugng/litlists_show_singlelist:114
 #: ../templates/profile/kugng/managecollection_tit_as_bibtex:18
 #: ../templates/profile/kugng/managecollection_tit_as_endnote:18
 #: ../templates/profile/kugng/managecollection_tit_as_html:34
@@ -1469,7 +1492,7 @@ msgstr "Beschreibung"
 #: ../templates/managecollection_tit_as_html_simple:48
 #: ../templates/managecollection_tit_as_text:39 ../templates/mexset:3
 #: ../templates/profile/kugng/circset:15
-#: ../templates/profile/kugng/managecollection_tit_as_html:223
+#: ../templates/profile/kugng/litlists_tit_as_text:26
 #: ../templates/profile/kugng/managecollection_tit_as_text:71
 #: ../templates/profile/kugng/mexset:3 ../templates/search_showmulttitset:109
 msgid "Besitzende Bibliothek"
@@ -1486,7 +1509,6 @@ msgstr "Besonderheit bei Feldern mit"
 #: ../templates/database/umschlaege/managecollection_tit_as_html:89
 #: ../templates/managecollection_tit_as_html:81
 #: ../templates/managecollection_tit_as_html_simple:48 ../templates/mexset:3
-#: ../templates/profile/kugng/managecollection_tit_as_html:223
 #: ../templates/profile/kugng/mexset:3 ../templates/search_showmulttitset:109
 msgid "Bestand"
 msgstr "Bestand"
@@ -1577,6 +1599,8 @@ msgstr "Bewertungen/Rezensionen von Nutzern"
 #: ../templates/database/nationallizenzen/search_showtitset:92
 #: ../templates/database/spoho/search_showtitset:88
 #: ../templates/database/umschlaege/search_showtitset:95
+#: ../templates/profile/kugng/litlists_tit_as_html_full:23
+#: ../templates/profile/kugng/managecollection_tit_as_html:236
 #: ../templates/profile/kugng/search_showtitset:53
 #: ../templates/profile/kugng/userprefs:175 ../templates/search_showtitset:88
 #: ../templates/userprefs:159
@@ -1627,6 +1651,7 @@ msgstr "Bildtitelwort(e)"
 #: ../templates/database/spoho/search_showtitset:595
 #: ../templates/database/umschlaege/search_showtitset:505
 #: ../templates/database/umschlaege/search_showtitset:598
+#: ../templates/profile/kugng/managecollection_tit_as_html:127
 #: ../templates/profile/kugng/search_showtitset:595
 #: ../templates/profile/kugng/search_showtitset:665
 #: ../templates/search_showtitset:493 ../templates/search_showtitset:586
@@ -1683,14 +1708,14 @@ msgstr "Früherer/Späterer Name"
 msgid "C5000"
 msgstr "Anzahl Titel"
 
-#: ../templates/profile/kugng/litlists_show_singlelist:65
+#: ../templates/profile/kugng/litlists_show_singlelist:68
 msgid "Cover anzeigen"
 msgstr "Cover anzeigen"
 
 #: ../templates/litlists_manage_singlelist:87
 #: ../templates/litlists_show_singlelist:69
-#: ../templates/profile/kugng/litlists_manage_singlelist:101
-#: ../templates/profile/kugng/litlists_show_singlelist:65
+#: ../templates/profile/kugng/litlists_manage_singlelist:104
+#: ../templates/profile/kugng/litlists_show_singlelist:68
 #: ../templates/profile/kugng/resultlists_showall:62
 #: ../templates/profile/kugng/resultlists_showall_sortall:62
 #: ../templates/profile/kugng/resultlists_showsinglepool:62
@@ -1971,6 +1996,8 @@ msgstr "Derzeit werden folgende externe Recherchequellen angeboten:"
 #: ../templates/database/nationallizenzen/search_showtitset:289
 #: ../templates/database/spoho/search_showtitset:310
 #: ../templates/database/umschlaege/search_showtitset:313
+#: ../templates/profile/kugng/litlists_tit_as_html_full:204
+#: ../templates/profile/kugng/managecollection_tit_as_html:417
 #: ../templates/profile/kugng/search_showtitset:280
 #: ../templates/search_showtitset:306
 msgid "Deutsche Wikipedia"
@@ -2244,6 +2271,8 @@ msgstr ""
 #: ../templates/database/nationallizenzen/search_showtitset:286
 #: ../templates/database/spoho/search_showtitset:307
 #: ../templates/database/umschlaege/search_showtitset:310
+#: ../templates/profile/kugng/litlists_tit_as_html_full:201
+#: ../templates/profile/kugng/managecollection_tit_as_html:414
 #: ../templates/profile/kugng/search_showtitset:277
 #: ../templates/search_showtitset:303
 msgid "Dieses Buch ist in Wikipedia erw&auml;hnt unter"
@@ -2534,6 +2563,7 @@ msgstr "Einfache Suche"
 #: ../templates/database/nationallizenzen/search_showtitset:438
 #: ../templates/database/spoho/search_showtitset:459
 #: ../templates/database/umschlaege/search_showtitset:462
+#: ../templates/profile/kugng/managecollection_tit_as_html:90
 #: ../templates/profile/kugng/search_showtitset:554
 #: ../templates/search_showtitset:450
 msgid "Eingabe neuer Tags"
@@ -2559,7 +2589,7 @@ msgid "Einstellungen"
 msgstr "Einstellungen"
 
 #: ../templates/litlists_manage_singlelist:36
-#: ../templates/profile/kugng/litlists_manage_singlelist:36
+#: ../templates/profile/kugng/litlists_manage_singlelist:37
 msgid "Einstellungen &auml;ndern"
 msgstr "Einstellungen &auml;ndern"
 
@@ -2614,6 +2644,8 @@ msgstr "Empfehlungen"
 #: ../templates/database/nationallizenzen/search_showtitset:294
 #: ../templates/database/spoho/search_showtitset:315
 #: ../templates/database/umschlaege/search_showtitset:318
+#: ../templates/profile/kugng/litlists_tit_as_html_full:209
+#: ../templates/profile/kugng/managecollection_tit_as_html:422
 #: ../templates/profile/kugng/search_showtitset:285
 #: ../templates/search_showtitset:311
 msgid "Englische Wikipedia"
@@ -2632,8 +2664,8 @@ msgstr "Entdecken Sie weitere Titel &uuml;ber:"
 #: ../templates/litlists_manage_lists:66
 #: ../templates/litlists_manage_singlelist:158
 #: ../templates/profile/kugng/litlists_manage_lists:80
-#: ../templates/profile/kugng/litlists_manage_singlelist:201
-#: ../templates/profile/kugng/managecollection_tit_as_html:147
+#: ../templates/profile/kugng/litlists_manage_singlelist:225
+#: ../templates/profile/kugng/managecollection_tit_as_html:207
 msgid "Entfernen"
 msgstr "Entfernen"
 
@@ -2682,6 +2714,7 @@ msgid "Erscheinungsjahr"
 msgstr "Erscheinungsjahr"
 
 #: ../templates/managecollection_tit_as_text:43
+#: ../templates/profile/kugng/litlists_tit_as_text:30
 #: ../templates/profile/kugng/managecollection_tit_as_text:75
 msgid "Erscheinungsverlauf  "
 msgstr "Erscheinungsverlauf  "
@@ -2984,6 +3017,8 @@ msgstr "Fragen und Anmerkungen richten Sie bitte an:"
 #: ../templates/database/nationallizenzen/search_showtitset:299
 #: ../templates/database/spoho/search_showtitset:320
 #: ../templates/database/umschlaege/search_showtitset:323
+#: ../templates/profile/kugng/litlists_tit_as_html_full:214
+#: ../templates/profile/kugng/managecollection_tit_as_html:427
 #: ../templates/profile/kugng/search_showtitset:290
 #: ../templates/search_showtitset:316
 msgid "Franz&ouml;sische Wikipedia"
@@ -3222,6 +3257,8 @@ msgstr "Gesamtkonto-Verl&auml;ngerung"
 #: ../templates/database/nationallizenzen/search_showtitset:88
 #: ../templates/database/spoho/search_showtitset:84
 #: ../templates/database/umschlaege/search_showtitset:91
+#: ../templates/profile/kugng/litlists_tit_as_html_full:19
+#: ../templates/profile/kugng/managecollection_tit_as_html:232
 #: ../templates/profile/kugng/search_showtitset:49
 #: ../templates/search_showtitset:84
 msgid "Google Book Search"
@@ -3884,6 +3921,7 @@ msgstr ""
 #: ../templates/database/nationallizenzen/search_showtitset:447
 #: ../templates/database/spoho/search_showtitset:468
 #: ../templates/database/umschlaege/search_showtitset:471
+#: ../templates/profile/kugng/managecollection_tit_as_html:99
 #: ../templates/profile/kugng/search_showtitset:563
 #: ../templates/search_showtitset:459
 msgid "Hinzuf&uuml;gen"
@@ -3916,8 +3954,8 @@ msgstr "ISBN"
 msgid "ISSN"
 msgstr "ISSN"
 
-#: ../modules/OpenBib/Handler/Apache/LitLists.pm:291
-#: ../modules/OpenBib/Handler/Apache/LitLists.pm:368
+#: ../modules/OpenBib/Handler/Apache/LitLists.pm:298
+#: ../modules/OpenBib/Handler/Apache/LitLists.pm:379
 msgid "Ihnen geh&ouml;rt diese Literaturliste nicht."
 msgstr "Ihnen geh&ouml;rt diese Literaturliste nicht."
 
@@ -4122,7 +4160,8 @@ msgstr ""
 #: ../templates/database/umschlaege/managecollection_tit_as_html:48
 #: ../templates/database/umschlaege/search_showtitset:95
 #: ../templates/managecollection_tit_as_html:40
-#: ../templates/profile/kugng/managecollection_tit_as_html:182
+#: ../templates/profile/kugng/litlists_tit_as_html_full:23
+#: ../templates/profile/kugng/managecollection_tit_as_html:236
 #: ../templates/profile/kugng/search_showtitset:53
 #: ../templates/search_showtitset:88
 msgid "In BibSonomy vorhanden?"
@@ -4135,7 +4174,8 @@ msgstr "In BibSonomy vorhanden?"
 #: ../templates/database/umschlaege/managecollection_tit_as_html:44
 #: ../templates/database/umschlaege/search_showtitset:91
 #: ../templates/managecollection_tit_as_html:36
-#: ../templates/profile/kugng/managecollection_tit_as_html:178
+#: ../templates/profile/kugng/litlists_tit_as_html_full:19
+#: ../templates/profile/kugng/managecollection_tit_as_html:232
 #: ../templates/profile/kugng/search_showtitset:49
 #: ../templates/search_showtitset:84
 msgid "In Google BookSearch vorhanden?"
@@ -4528,7 +4568,7 @@ msgstr "In der Trefferliste"
 #: ../templates/profile/kuglight/search_showtitset:54
 #: ../templates/profile/kuglight/virtualsearch_result_item:79
 #: ../templates/profile/kugng/info_10:114
-#: ../templates/profile/kugng/litlists_show_singlelist:172
+#: ../templates/profile/kugng/litlists_tit_as_html_short:61
 #: ../templates/profile/kugng/resultlists_showall:156
 #: ../templates/profile/kugng/resultlists_showall_sortall:137
 #: ../templates/profile/kugng/resultlists_showsinglepool:156
@@ -4653,7 +4693,6 @@ msgstr "Informationen zur Zeitschrift"
 #: ../templates/managecollection_tit_as_html:46
 #: ../templates/managecollection_tit_as_html_simple:31
 #: ../templates/profile/kuglight/search_showtitset:78
-#: ../templates/profile/kugng/managecollection_tit_as_html:188
 #: ../templates/search_showautset:31 ../templates/search_showkorset:32
 #: ../templates/search_showmulttitset:41 ../templates/search_shownotset:31
 #: ../templates/search_showswtset:33 ../templates/search_showtitset:94
@@ -4716,12 +4755,12 @@ msgstr "Interaktives Tutorium"
 #: ../templates/database/umschlaege/managecollection_tit_as_html:89
 #: ../templates/managecollection_tit_as_html:81
 #: ../templates/managecollection_tit_as_html_simple:48 ../templates/mexset:3
-#: ../templates/profile/kugng/managecollection_tit_as_html:223
 #: ../templates/profile/kugng/mexset:3 ../templates/search_showmulttitset:109
 msgid "Inventarnummer"
 msgstr "Inventarnummer"
 
 #: ../templates/managecollection_tit_as_text:42
+#: ../templates/profile/kugng/litlists_tit_as_text:29
 #: ../templates/profile/kugng/managecollection_tit_as_text:74
 msgid "Inventarnummer       "
 msgstr "Inventarnummer       "
@@ -4902,7 +4941,6 @@ msgstr "Katalogtitel nach Bibliothekssystematik"
 #: ../templates/managecollection_tit_as_html:46
 #: ../templates/managecollection_tit_as_html_simple:31
 #: ../templates/profile/kuglight/search_showtitset:78
-#: ../templates/profile/kugng/managecollection_tit_as_html:188
 #: ../templates/search_showautset:31 ../templates/search_showkorset:32
 #: ../templates/search_showmulttitset:41 ../templates/search_shownotset:31
 #: ../templates/search_showswtset:33 ../templates/search_showtitset:94
@@ -4918,15 +4956,15 @@ msgstr "Kategorie"
 msgid "Kein prim&auml;rer RSS-Feed ausgew&auml;hlt"
 msgstr "Kein prim&auml;rer RSS-Feed ausgew&auml;hlt"
 
-#: ../templates/profile/kugng/litlists_show_singlelist:65
+#: ../templates/profile/kugng/litlists_show_singlelist:68
 msgid "Keine Cover anzeigen"
 msgstr "Keine Cover anzeigen"
 
-#: ../modules/OpenBib/Handler/Apache/LitLists.pm:235
+#: ../modules/OpenBib/Handler/Apache/LitLists.pm:237
 msgid "Keine Titelid, Titel-Datenbank oder Literaturliste vorhanden."
 msgstr "Keine Titelid, Titel-Datenbank oder Literaturliste vorhanden."
 
-#: ../modules/OpenBib/Handler/Apache/BibSonomy.pm:290
+#: ../modules/OpenBib/Handler/Apache/BibSonomy.pm:307
 #: ../modules/OpenBib/Handler/Apache/DatabaseProfile.pm:201
 msgid "Keine gültige Aktion"
 msgstr "Keine gültige Aktion"
@@ -5091,6 +5129,12 @@ msgstr "Kurzbeschreibung"
 
 #: ../templates/managecollection_show:68
 #: ../templates/profile/kuglight/managecollection_show:68
+#: ../templates/profile/kugng/litlists_manage_singlelist:157
+#: ../templates/profile/kugng/litlists_show_singlelist:128
+#: ../templates/profile/kugng/managecollection_tit_as_bibtex:39
+#: ../templates/profile/kugng/managecollection_tit_as_endnote:39
+#: ../templates/profile/kugng/managecollection_tit_as_html:55
+#: ../templates/profile/kugng/managecollection_tit_as_text:39
 #: ../templates/views/umschlaege/managecollection_show:66
 msgid "Kurztitel"
 msgstr "Kurztitel"
@@ -5175,8 +5219,8 @@ msgstr "Letzte 50 Neuaufnahmen"
 #: ../templates/dbis_showsubjects:34 ../templates/ezb_showsubjects:36
 #: ../templates/litlists_manage_singlelist:87
 #: ../templates/litlists_show_singlelist:69
-#: ../templates/profile/kugng/litlists_manage_singlelist:101
-#: ../templates/profile/kugng/litlists_show_singlelist:65
+#: ../templates/profile/kugng/litlists_manage_singlelist:104
+#: ../templates/profile/kugng/litlists_show_singlelist:68
 #: ../templates/profile/kugng/resultlists_showall:62
 #: ../templates/profile/kugng/resultlists_showall_sortall:62
 #: ../templates/profile/kugng/resultlists_showsinglepool:62
@@ -5199,8 +5243,8 @@ msgstr "Liste der Quellen"
 
 #: ../templates/litlists_manage_singlelist:87
 #: ../templates/litlists_show_singlelist:69
-#: ../templates/profile/kugng/litlists_manage_singlelist:101
-#: ../templates/profile/kugng/litlists_show_singlelist:65
+#: ../templates/profile/kugng/litlists_manage_singlelist:104
+#: ../templates/profile/kugng/litlists_show_singlelist:68
 #: ../templates/profile/kugng/resultlists_showall:62
 #: ../templates/profile/kugng/resultlists_showall_sortall:62
 #: ../templates/profile/kugng/resultlists_showsinglepool:62
@@ -5224,8 +5268,8 @@ msgstr "Listen-Ansicht"
 #: ../templates/database/umschlaege/search_showtitset:412
 #: ../templates/litlists_manage_singlelist:55
 #: ../templates/litlists_show_singlelist:25
-#: ../templates/profile/kugng/litlists_show_singlelist:25
-#: ../templates/profile/kugng/managecollection_tit_as_html:58
+#: ../templates/profile/kugng/litlists_show_singlelist:26
+#: ../templates/profile/kugng/managecollection_tit_as_html:59
 #: ../templates/profile/kugng/search_showtitset:519
 #: ../templates/search_showtitset:400
 msgid "Literaturliste"
@@ -5278,6 +5322,7 @@ msgid "Lokale Signatur"
 msgstr "Lokale Signatur"
 
 #: ../templates/managecollection_tit_as_text:41
+#: ../templates/profile/kugng/litlists_tit_as_text:28
 #: ../templates/profile/kugng/managecollection_tit_as_text:73
 msgid "Lokale Signatur      "
 msgstr "Lokale Signatur      "
@@ -5304,10 +5349,10 @@ msgstr "Lokale Signatur      "
 #: ../templates/managecollection_show:99
 #: ../templates/profile/kuglight/managecollection_show:68
 #: ../templates/profile/kuglight/virtualsearch_result_start:61
-#: ../templates/profile/kugng/litlists_manage_singlelist:97
-#: ../templates/profile/kugng/litlists_show_singlelist:61
-#: ../templates/profile/kugng/managecollection_tit_as_html:70
-#: ../templates/profile/kugng/managecollection_tit_as_html:75
+#: ../templates/profile/kugng/litlists_manage_singlelist:100
+#: ../templates/profile/kugng/litlists_show_singlelist:64
+#: ../templates/profile/kugng/managecollection_tit_as_html:72
+#: ../templates/profile/kugng/managecollection_tit_as_html:78
 #: ../templates/profile/kugng/resultlists_showall:58
 #: ../templates/profile/kugng/resultlists_showall_sortall:58
 #: ../templates/profile/kugng/resultlists_showsinglepool:58
@@ -5555,6 +5600,8 @@ msgstr "Maler / Zeichner"
 #: ../templates/database/nationallizenzen/search_showtitset:286
 #: ../templates/database/spoho/search_showtitset:307
 #: ../templates/database/umschlaege/search_showtitset:310
+#: ../templates/profile/kugng/litlists_tit_as_html_full:201
+#: ../templates/profile/kugng/managecollection_tit_as_html:414
 #: ../templates/profile/kugng/search_showtitset:277
 #: ../templates/search_showtitset:303
 msgid "Mashup mit Wikipedia"
@@ -5993,7 +6040,7 @@ msgstr "Offene Geb&uuml;hren"
 #: ../templates/managecollection_show:62
 #: ../templates/profile/kuglight/managecollection_show:62
 #: ../templates/profile/kuglight/virtualsearch_result_start:41
-#: ../templates/profile/kugng/litlists_show_singlelist:44
+#: ../templates/profile/kugng/litlists_show_singlelist:47
 #: ../templates/profile/kugng/virtualsearch_result_combined:40
 #: ../templates/resultlists_showall:39
 #: ../templates/resultlists_showall_sortall:42
@@ -6065,8 +6112,6 @@ msgstr "Passwort vergessen?"
 
 #: ../templates/litlists_manage_singlelist:92
 #: ../templates/litlists_show_singlelist:73
-#: ../templates/profile/kugng/litlists_manage_singlelist:106
-#: ../templates/profile/kugng/litlists_show_singlelist:69
 msgid "PermaLink"
 msgstr "PermaLink"
 
@@ -6084,8 +6129,8 @@ msgstr "PermaLink"
 #: ../templates/litlists_manage_singlelist:92
 #: ../templates/litlists_show_singlelist:73
 #: ../templates/profile/kuglight/search_showtitset:58
-#: ../templates/profile/kugng/litlists_manage_singlelist:106
-#: ../templates/profile/kugng/litlists_show_singlelist:69
+#: ../templates/profile/kugng/litlists_manage_singlelist:148
+#: ../templates/profile/kugng/litlists_show_singlelist:119
 #: ../templates/profile/kugng/search_showtitset:513
 #: ../templates/search_showtitset:58
 msgid "Permanenter Link"
@@ -6602,7 +6647,7 @@ msgstr "Sessions"
 #: ../templates/litlists_manage_singlelist:39
 #: ../templates/profile/kugng/litlists_manage_lists:38
 #: ../templates/profile/kugng/litlists_manage_lists:70
-#: ../templates/profile/kugng/litlists_manage_singlelist:39
+#: ../templates/profile/kugng/litlists_manage_singlelist:40
 msgid "Sichtbarkeit"
 msgstr "Sichtbarkeit"
 
@@ -6721,7 +6766,7 @@ msgstr ""
 msgid "Sie haben entweder kein Passwort oder keinen Loginnamen eingegeben"
 msgstr "Sie haben entweder kein Passwort oder keinen Loginnamen eingegeben"
 
-#: ../modules/OpenBib/Handler/Apache/LitLists.pm:217
+#: ../modules/OpenBib/Handler/Apache/LitLists.pm:219
 msgid ""
 "Sie haben entweder keine entsprechende Liste eingegeben oder Titel und "
 "Datenbank existieren nicht."
@@ -6729,7 +6774,7 @@ msgstr ""
 "Sie haben entweder keine entsprechende Liste eingegeben oder Titel und "
 "Datenbank existieren nicht."
 
-#: ../modules/OpenBib/Handler/Apache/LitLists.pm:253
+#: ../modules/OpenBib/Handler/Apache/LitLists.pm:255
 msgid ""
 "Sie haben entweder keine entsprechende Liste oder Sie sind nicht "
 "authentifiziert."
@@ -7004,12 +7049,12 @@ msgstr ""
 "          Kernighan</tt> suchen. Sie k&ouml;nnen dann Folgendes in das\n"
 "        Personenfeld eingeben:"
 
-#: ../modules/OpenBib/Handler/Apache/LitLists.pm:169
+#: ../modules/OpenBib/Handler/Apache/LitLists.pm:171
 #: ../modules/OpenBib/Handler/Apache/ManageCollection.pm:227
 msgid "Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."
 msgstr "Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."
 
-#: ../modules/OpenBib/Handler/Apache/LitLists.pm:199
+#: ../modules/OpenBib/Handler/Apache/LitLists.pm:201
 msgid "Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
 msgstr "Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
 
@@ -7088,9 +7133,7 @@ msgstr "Sigel"
 #: ../templates/database/umschlaege/managecollection_tit_as_html:89
 #: ../templates/managecollection_tit_as_html:81 ../templates/mexset:3
 #: ../templates/profile/kuglight/userprefs:183
-#: ../templates/profile/kugng/circset:15
-#: ../templates/profile/kugng/managecollection_tit_as_html:223
-#: ../templates/profile/kugng/mexset:3
+#: ../templates/profile/kugng/circset:15 ../templates/profile/kugng/mexset:3
 #: ../templates/profile/kugng/searchmask_query:35
 #: ../templates/profile/kugng/userprefs:215
 #: ../templates/search_showmulttitset:109 ../templates/searchmask_query:35
@@ -7146,8 +7189,8 @@ msgstr ""
 #: ../templates/litlists_manage_singlelist:68
 #: ../templates/litlists_show_singlelist:50
 #: ../templates/profile/kuglight/virtualsearch_result_start:43
-#: ../templates/profile/kugng/litlists_manage_singlelist:82
-#: ../templates/profile/kugng/litlists_show_singlelist:46
+#: ../templates/profile/kugng/litlists_manage_singlelist:85
+#: ../templates/profile/kugng/litlists_show_singlelist:49
 #: ../templates/profile/kugng/resultlists_showall:40
 #: ../templates/profile/kugng/resultlists_showall_sortall:40
 #: ../templates/profile/kugng/resultlists_showsinglepool:41
@@ -7300,13 +7343,13 @@ msgstr "Sprung zur Trefferliste im KUG"
 #: ../templates/database/umschlaege/managecollection_tit_as_html:89
 #: ../templates/managecollection_tit_as_html:81
 #: ../templates/managecollection_tit_as_html_simple:48 ../templates/mexset:3
-#: ../templates/profile/kugng/circset:15
-#: ../templates/profile/kugng/managecollection_tit_as_html:223
-#: ../templates/profile/kugng/mexset:3 ../templates/search_showmulttitset:109
+#: ../templates/profile/kugng/circset:15 ../templates/profile/kugng/mexset:3
+#: ../templates/search_showmulttitset:109
 msgid "Standort"
 msgstr "Standort"
 
 #: ../templates/managecollection_tit_as_text:40
+#: ../templates/profile/kugng/litlists_tit_as_text:27
 #: ../templates/profile/kugng/managecollection_tit_as_text:72
 msgid "Standort             "
 msgstr "Standort             "
@@ -9052,6 +9095,7 @@ msgstr "Zählung"
 #: ../templates/database/spoho/search_showtitset:453
 #: ../templates/database/umschlaege/search_showtitset:410
 #: ../templates/database/umschlaege/search_showtitset:456
+#: ../templates/profile/kugng/managecollection_tit_as_html:84
 #: ../templates/profile/kugng/search_showtitset:542
 #: ../templates/search_showtitset:398 ../templates/search_showtitset:444
 msgid "Tagging"
@@ -9122,7 +9166,7 @@ msgstr "Themengebiet(e) von DBIS zuordnen"
 #: ../templates/admin_navigation:21 ../templates/info_53:42
 #: ../templates/info_54:41 ../templates/profile/kugng/litlists_manage_lists:70
 #: ../templates/profile/kugng/litlists_show_publiclists:33
-#: ../templates/profile/kugng/litlists_show_singlelist:75
+#: ../templates/profile/kugng/litlists_show_singlelist:76
 #: ../templates/profile/kugng/searchmask_simple:381
 #: ../templates/profile/kugng/searchmask_simple:474
 #: ../templates/profile/kugng/searchmask_simple:51
@@ -9141,7 +9185,7 @@ msgstr "Tit-Datei"
 #: ../templates/database/umschlaege/search_showtitset:704
 #: ../templates/dbis_showdbinfo:48 ../templates/ezb_showjournalinfo:45
 #: ../templates/managecollection_tit_as_html_simple:19
-#: ../templates/profile/kugng/litlists_manage_singlelist:121
+#: ../templates/profile/kugng/litlists_manage_singlelist:119
 #: ../templates/profile/kugng/litlists_show_singlelist:91
 #: ../templates/profile/kugng/managecollection_tit_as_html:24
 #: ../templates/profile/kugng/search_showtitset:376
@@ -9163,7 +9207,7 @@ msgstr "Titel"
 #: ../templates/litlists_manage_lists:38
 #: ../templates/litlists_manage_singlelist:39
 #: ../templates/profile/kugng/litlists_manage_lists:38
-#: ../templates/profile/kugng/litlists_manage_singlelist:39
+#: ../templates/profile/kugng/litlists_manage_singlelist:40
 msgid "Titel der Liste"
 msgstr "Titel der Liste"
 
@@ -9247,7 +9291,6 @@ msgstr "Titelangaben"
 #: ../templates/managecollection_tit_as_html:27
 #: ../templates/managecollection_tit_as_html_simple:27
 #: ../templates/profile/kuglight/search_showtitset:74
-#: ../templates/profile/kugng/managecollection_tit_as_html:169
 #: ../templates/search_showmulttitset:37 ../templates/search_showtitset:74
 msgid "Titelaufnahme"
 msgstr "Titelaufnahme"
@@ -9428,6 +9471,7 @@ msgstr "Typ"
 #: ../templates/database/spoho/search_showtitset:561
 #: ../templates/database/umschlaege/search_showtitset:471
 #: ../templates/database/umschlaege/search_showtitset:564
+#: ../templates/profile/kugng/managecollection_tit_as_html:99
 #: ../templates/profile/kugng/search_showtitset:563
 #: ../templates/profile/kugng/search_showtitset:636
 #: ../templates/search_showtitset:459 ../templates/search_showtitset:552
@@ -9575,7 +9619,7 @@ msgstr "Unerlaubte Aktion"
 msgid "Ungültige Aktion"
 msgstr "Ungültige Aktion"
 
-#: ../modules/OpenBib/Handler/Apache/BibSonomy.pm:118
+#: ../modules/OpenBib/Handler/Apache/BibSonomy.pm:121
 #: ../modules/OpenBib/Handler/Apache/Circulation.pm:99
 #: ../modules/OpenBib/Handler/Apache/DatabaseChoice.pm:101
 #: ../modules/OpenBib/Handler/Apache/DatabaseProfile.pm:97
@@ -9583,7 +9627,7 @@ msgstr "Ungültige Aktion"
 #: ../modules/OpenBib/Handler/Apache/ExternalJump.pm:117
 #: ../modules/OpenBib/Handler/Apache/Info.pm:96
 #: ../modules/OpenBib/Handler/Apache/Leave.pm:82
-#: ../modules/OpenBib/Handler/Apache/LitLists.pm:133
+#: ../modules/OpenBib/Handler/Apache/LitLists.pm:135
 #: ../modules/OpenBib/Handler/Apache/Login.pm:102
 #: ../modules/OpenBib/Handler/Apache/MailCollection.pm:97
 #: ../modules/OpenBib/Handler/Apache/MailPassword.pm:91
@@ -9748,6 +9792,10 @@ msgstr "Verwandte Personen"
 msgid "Verwandte Themen"
 msgstr "Verwandte Themen"
 
+#: ../templates/profile/kugng/litlists_manage_singlelist:143
+msgid "Verweisen Sie auf diese Liste"
+msgstr "Verweisen Sie auf diese Liste"
+
 #: ../templates/leave:27
 msgid ""
 "Vielen Dank f&uuml;r Ihren Besuch beim K&ouml;lner Universit&auml;"
@@ -9815,6 +9863,12 @@ msgstr "Virtueller Verfasserindex"
 
 #: ../templates/managecollection_show:68
 #: ../templates/profile/kuglight/managecollection_show:68
+#: ../templates/profile/kugng/litlists_manage_singlelist:157
+#: ../templates/profile/kugng/litlists_show_singlelist:128
+#: ../templates/profile/kugng/managecollection_tit_as_bibtex:39
+#: ../templates/profile/kugng/managecollection_tit_as_endnote:39
+#: ../templates/profile/kugng/managecollection_tit_as_html:55
+#: ../templates/profile/kugng/managecollection_tit_as_text:39
 #: ../templates/views/umschlaege/managecollection_show:66
 msgid "Volltitel"
 msgstr "Volltitel"
@@ -10538,8 +10592,8 @@ msgstr ""
 #: ../templates/litlists_manage_singlelist:81
 #: ../templates/litlists_show_singlelist:63
 #: ../templates/profile/kuglight/virtualsearch_result_start:55
-#: ../templates/profile/kugng/litlists_manage_singlelist:95
-#: ../templates/profile/kugng/litlists_show_singlelist:59
+#: ../templates/profile/kugng/litlists_manage_singlelist:98
+#: ../templates/profile/kugng/litlists_show_singlelist:62
 #: ../templates/profile/kugng/resultlists_showall:52
 #: ../templates/profile/kugng/resultlists_showall_sortall:52
 #: ../templates/profile/kugng/resultlists_showsinglepool:53
@@ -10586,8 +10640,8 @@ msgstr "absteigend"
 #: ../templates/litlists_manage_singlelist:80
 #: ../templates/litlists_show_singlelist:62
 #: ../templates/profile/kuglight/virtualsearch_result_start:54
-#: ../templates/profile/kugng/litlists_manage_singlelist:94
-#: ../templates/profile/kugng/litlists_show_singlelist:58
+#: ../templates/profile/kugng/litlists_manage_singlelist:97
+#: ../templates/profile/kugng/litlists_show_singlelist:61
 #: ../templates/profile/kugng/resultlists_showall:51
 #: ../templates/profile/kugng/resultlists_showall_sortall:51
 #: ../templates/profile/kugng/resultlists_showsinglepool:52
@@ -10629,8 +10683,7 @@ msgstr "aufsteigend"
 #: ../templates/database/umschlaege/managecollection_tit_as_html:22
 #: ../templates/managecollection_tit_as_html:22
 #: ../templates/managecollection_tit_as_html_simple:19
-#: ../templates/profile/kugng/managecollection_tit_as_html:140
-#: ../templates/profile/kugng/managecollection_tit_as_html:164
+#: ../templates/profile/kugng/managecollection_tit_as_html:202
 #: ../templates/profile/kugng/resultlists_showall_sortall:133
 #: ../templates/profile/kugng/virtualsearch_result_combined:154
 #: ../templates/resultlists_showall_sortall:130
@@ -10791,8 +10844,8 @@ msgstr "nach Interpret/Gruppe"
 #: ../templates/litlists_show_singlelist:55
 #: ../templates/profile/kuglight/virtualsearch_result_start:49
 #: ../templates/profile/kugng/drilldown_categorized:225
-#: ../templates/profile/kugng/litlists_manage_singlelist:87
-#: ../templates/profile/kugng/litlists_show_singlelist:51
+#: ../templates/profile/kugng/litlists_manage_singlelist:90
+#: ../templates/profile/kugng/litlists_show_singlelist:54
 #: ../templates/profile/kugng/resultlists_showall:45
 #: ../templates/profile/kugng/resultlists_showall_sortall:45
 #: ../templates/profile/kugng/resultlists_showsinglepool:46
@@ -10848,8 +10901,8 @@ msgstr "nach Medienart"
 #: ../templates/litlists_manage_singlelist:70
 #: ../templates/litlists_show_singlelist:52
 #: ../templates/profile/kuglight/virtualsearch_result_start:46
-#: ../templates/profile/kugng/litlists_manage_singlelist:84
-#: ../templates/profile/kugng/litlists_show_singlelist:48
+#: ../templates/profile/kugng/litlists_manage_singlelist:87
+#: ../templates/profile/kugng/litlists_show_singlelist:51
 #: ../templates/profile/kugng/resultlists_showall:42
 #: ../templates/profile/kugng/resultlists_showall_sortall:42
 #: ../templates/profile/kugng/resultlists_showsinglepool:43
@@ -10893,8 +10946,8 @@ msgstr "nach Personen"
 #: ../templates/database/umschlaege/search_showtitlist_of_cnt:57
 #: ../templates/litlists_manage_singlelist:76
 #: ../templates/litlists_show_singlelist:58
-#: ../templates/profile/kugng/litlists_manage_singlelist:90
-#: ../templates/profile/kugng/litlists_show_singlelist:54
+#: ../templates/profile/kugng/litlists_manage_singlelist:93
+#: ../templates/profile/kugng/litlists_show_singlelist:57
 #: ../templates/profile/kugng/resultlists_showall:48
 #: ../templates/profile/kugng/resultlists_showall_sortall:48
 #: ../templates/profile/kugng/resultlists_showsinglepool:49
@@ -10943,8 +10996,8 @@ msgstr "nach Relevanz"
 #: ../templates/litlists_manage_singlelist:75
 #: ../templates/litlists_show_singlelist:57
 #: ../templates/profile/kuglight/virtualsearch_result_start:51
-#: ../templates/profile/kugng/litlists_manage_singlelist:89
-#: ../templates/profile/kugng/litlists_show_singlelist:53
+#: ../templates/profile/kugng/litlists_manage_singlelist:92
+#: ../templates/profile/kugng/litlists_show_singlelist:56
 #: ../templates/profile/kugng/resultlists_showall:47
 #: ../templates/profile/kugng/resultlists_showall_sortall:47
 #: ../templates/profile/kugng/resultlists_showsinglepool:48
@@ -11005,8 +11058,8 @@ msgstr "nach Themen"
 #: ../templates/litlists_manage_singlelist:71
 #: ../templates/litlists_show_singlelist:53
 #: ../templates/profile/kuglight/virtualsearch_result_start:47
-#: ../templates/profile/kugng/litlists_manage_singlelist:85
-#: ../templates/profile/kugng/litlists_show_singlelist:49
+#: ../templates/profile/kugng/litlists_manage_singlelist:88
+#: ../templates/profile/kugng/litlists_show_singlelist:52
 #: ../templates/profile/kugng/resultlists_showall:43
 #: ../templates/profile/kugng/resultlists_showall_sortall:43
 #: ../templates/profile/kugng/resultlists_showsinglepool:44
@@ -11048,8 +11101,8 @@ msgstr "nach Titel/Z&auml;hlung"
 #: ../templates/litlists_manage_singlelist:74
 #: ../templates/litlists_show_singlelist:56
 #: ../templates/profile/kuglight/virtualsearch_result_start:50
-#: ../templates/profile/kugng/litlists_manage_singlelist:88
-#: ../templates/profile/kugng/litlists_show_singlelist:52
+#: ../templates/profile/kugng/litlists_manage_singlelist:91
+#: ../templates/profile/kugng/litlists_show_singlelist:55
 #: ../templates/profile/kugng/resultlists_showall:46
 #: ../templates/profile/kugng/resultlists_showall_sortall:46
 #: ../templates/profile/kugng/resultlists_showsinglepool:47
@@ -11084,8 +11137,8 @@ msgstr "nach Verlag"
 #: ../templates/litlists_manage_singlelist:72
 #: ../templates/litlists_show_singlelist:54
 #: ../templates/profile/kuglight/virtualsearch_result_start:48
-#: ../templates/profile/kugng/litlists_manage_singlelist:86
-#: ../templates/profile/kugng/litlists_show_singlelist:50
+#: ../templates/profile/kugng/litlists_manage_singlelist:89
+#: ../templates/profile/kugng/litlists_show_singlelist:53
 #: ../templates/profile/kugng/resultlists_showall:44
 #: ../templates/profile/kugng/resultlists_showall_sortall:44
 #: ../templates/profile/kugng/resultlists_showsinglepool:45
@@ -11109,8 +11162,8 @@ msgstr "nach Z&auml;hlung"
 
 #: ../templates/litlists_manage_singlelist:77
 #: ../templates/litlists_show_singlelist:59
-#: ../templates/profile/kugng/litlists_manage_singlelist:91
-#: ../templates/profile/kugng/litlists_show_singlelist:55
+#: ../templates/profile/kugng/litlists_manage_singlelist:94
+#: ../templates/profile/kugng/litlists_show_singlelist:58
 msgid "nach Zeitstempel"
 msgstr "nach Zeitstempel"
 
@@ -11147,8 +11200,9 @@ msgstr "nein"
 #: ../templates/managecollection_show:99
 #: ../templates/profile/kugng/litlists_manage_lists:39
 #: ../templates/profile/kugng/litlists_manage_lists:78
-#: ../templates/profile/kugng/litlists_manage_singlelist:40
-#: ../templates/profile/kugng/managecollection_tit_as_html:75
+#: ../templates/profile/kugng/litlists_manage_singlelist:41
+#: ../templates/profile/kugng/managecollection_tit_as_html:77
+#: ../templates/profile/kugng/managecollection_tit_as_html:99
 #: ../templates/profile/kugng/search_showtitset:533
 #: ../templates/profile/kugng/search_showtitset:563
 #: ../templates/profile/kugng/search_showtitset:636
@@ -11279,6 +11333,7 @@ msgstr "Übernahme bereits von Nutzern vergebener Tags"
 #: ../templates/database/spoho/search_showtitset:576
 #: ../templates/database/umschlaege/search_showtitset:486
 #: ../templates/database/umschlaege/search_showtitset:579
+#: ../templates/profile/kugng/managecollection_tit_as_html:108
 #: ../templates/profile/kugng/search_showtitset:576
 #: ../templates/profile/kugng/search_showtitset:646
 #: ../templates/search_showtitset:474 ../templates/search_showtitset:567

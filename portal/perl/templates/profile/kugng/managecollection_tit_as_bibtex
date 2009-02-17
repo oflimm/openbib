@@ -36,7 +36,7 @@
 <div class="headline">[% msg.maketext("Andere Formate") %]</div>
 
 <p>
-[% IF show == 'full' %]<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=HTML;show=short">Listenansicht</a>,[%- ELSE -%]<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=HTML;show=full">Vollanzeige</a>,[%- END -%] <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=Text">Text</a>, <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=BibTeX">BibTeX</a>, <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=EndNote">EndNote</a> 
+<a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=HTML;show=short"[%- IF show == 'short' && type == 'HTML'-%]class="selected_item"[%- END -%]>[% msg.maketext("Kurztitel") %]</a>, <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=HTML;show=full" [%- IF show == 'full' && type == 'HTML'-%]class="selected_item"[%- END -%]>[% msg.maketext("Volltitel") %]</a>, <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=Text" [%- IF type == 'Text'-%]class="selected_item"[%- END -%]>Text</a>, <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=BibTeX" [%- IF type == 'BibTeX'-%]class="selected_item"[%- END -%]>BibTeX</a>, <a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=show;type=EndNote" [%- IF type == 'EndNote'-%]class="selected_item"[%- END -%]>EndNote</a> 
 </p>
 
 </div>

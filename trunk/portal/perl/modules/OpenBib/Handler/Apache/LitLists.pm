@@ -90,6 +90,8 @@ sub handler {
     my $titisbn        = $query->param('titisbn')     || '';
     my $title          = decode_utf8($query->param('title'))        || '';
     my $type           = $query->param('type')        || 1;
+    my $format         = $query->param('format')      || 'HTML';
+    my $show           = $query->param('show')        || 'short';
     my $litlistid      = $query->param('litlistid')   || undef;
     my $showsubjects   = $query->param('showsubjects') || undef;
     my @subjectids     = ($query->param('subjectids'))?$query->param('subjectids'):();
@@ -262,6 +264,7 @@ sub handler {
                 my $targettype    = $user->get_targettype_of_session($session->{ID});
 
                 my $singlelitlist = {
+                    id         => $litlistid,
                     recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $sortorder, sorttype => $sorttype }),
                     properties => $litlist_properties_ref,
                 };
@@ -276,6 +279,10 @@ sub handler {
                     query        => $query,
                     qopts        => $queryoptions->get_options,
                     user         => $user,
+
+                    format         => $format,
+                    show           => $show,
+
                     litlist      => $singlelitlist,
                     dbinfo       => $dbinfotable,
                     targettype   => $targettype,
@@ -324,6 +331,7 @@ sub handler {
             my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
             
 	    my $singlelitlist = {
+                id         => $litlistid,
                 recordlist => $user->get_litlistentries({litlistid => $litlistid, sortorder => $sortorder, sorttype => $sorttype}),
                 properties => $litlist_properties_ref,
             };
@@ -350,6 +358,9 @@ sub handler {
                 query          => $query,
                 qopts          => $queryoptions->get_options,
                 user           => $user,
+
+                format         => $format,
+                show           => $show,
                 
                 litlist        => $singlelitlist,
                 other_litlists => $other_litlists_of_user,

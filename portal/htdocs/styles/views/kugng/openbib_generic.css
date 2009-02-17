@@ -1008,6 +1008,11 @@ dt.review {
   -webkit-border-radius: 5px; */
 }
 
+.selected_item {
+  font-size: 1.2em;
+  font-weight:bold;
+}
+
 .thickheadline {
   background-color: aliceblue;
   border-style: solid;

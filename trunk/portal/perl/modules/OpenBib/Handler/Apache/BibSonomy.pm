@@ -34,7 +34,7 @@ use warnings;
 no warnings 'redefine';
 use utf8;
 
-use Apache::Constants qw(:common);
+use Apache::Constants qw(:common REDIRECT);
 use Apache::Reload;
 use Apache::Request ();
 use Benchmark ':hireswallclock';
@@ -43,6 +43,7 @@ use DBI;
 use Log::Log4perl qw(get_logger :levels);
 use POSIX;
 use Template;
+use URI::Escape qw(uri_escape);
 
 use OpenBib::BibSonomy;
 use OpenBib::Common::Util;
@@ -87,8 +88,10 @@ sub handler {
     my $titisbn        = $query->param('titisbn')          || '';
     my $bibkey         = $query->param('bibkey')           || '';
     my $isbn           = $query->param('isbn')             || '';
-    my $start          = $query->param('start')           || '';
-    my $end            = $query->param('end')             || '';
+    my $start          = $query->param('start')            || '';
+    my $end            = $query->param('end')              || '';
+    my $id             = $query->param('id')               || '';
+    my $database       = $query->param('database')         || '';
     my $format         = decode_utf8($query->param('format')) || '';
     my $tag            = decode_utf8($query->param('tag')) || '';
     my $tags           = decode_utf8($query->param('tags')) || '';
@@ -286,7 +289,21 @@ sub handler {
             return OK;
         }
     }
+    elsif ($action eq "add_title"){
+        if ($id && $database){
+            my $title = uri_escape(OpenBib::Record::Title->new({id =>$id, database => $database})->load_full_record->to_bibtex);
+            
+            my $bibsonomy_uri = "$config->{redirect_loc}/$session->{ID}/510/http://www.bibsonomy.org/BibtexHandler?requTask=upload&url=http%3A%2F%2Fkug.ub.uni-koeln.de%2F&description=KUG%20Recherche-Portal&encoding=ISO-8859-1&selection=selection=$title";
 
+            $logger->debug($bibsonomy_uri);
+            
+            $r->content_type('text/html');
+            $r->header_out(Location => $bibsonomy_uri);
+            
+            return REDIRECT;
+        }
+    }
+    
     OpenBib::Common::Util::print_warning($msg->maketext("Keine gültige Aktion"),$r,$msg);
 
     return OK;

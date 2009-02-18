@@ -219,6 +219,8 @@ sub print_to_handler {
         ? $arg_ref->{template}          : 'tt_search_showtitlist_tname';
     my $location          = exists $arg_ref->{location}
         ? $arg_ref->{location}          : 'search_loc';
+    my $parameter         = exists $arg_ref->{parameter}
+        ? $arg_ref->{parameter}         : {};
     my $lang              = exists $arg_ref->{lang}
         ? $arg_ref->{lang}              : undef;
     my $msg                = exists $arg_ref->{msg}
@@ -352,7 +354,9 @@ sub print_to_handler {
             dbinfo         => $dbinfotable,
 
             recordlist     => $self,
-            
+
+            parameter      => $parameter,
+
             baseurl        => $baseurl,
             
             qopts          => $queryoptions->get_options,

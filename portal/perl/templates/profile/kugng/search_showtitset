@@ -103,6 +103,7 @@ END ;
 [%-
 
 globalsearch_i18n = msg.maketext("Begriff in allen Katalogen suchen");
+rswkswt_done      = {};
 
 FOREACH category IN categories;
     FOREACH item IN normset.$category;
@@ -202,6 +203,8 @@ FOREACH category IN categories;
              thisid = item.content;
          END;
 
+         NEXT IF rswkswt_done.${thisid} == 1;
+
          rssfeed = "" ;
          IF activefeed.4 ;
              rssfeed = "<a href=\"http://${config.loadbalancerservername}${config.connector_rss_loc}/neuzugang_nach_swt/${thisid}/${record.database}.rdf\" target=\"_blank\"><img src=\"${config.rssfeed_img}\" alt=\"RSS-Icon\" /></a>&nbsp;" ;
@@ -209,6 +212,7 @@ FOREACH category IN categories;
          globalurl = "${config.virtualsearch_loc}?sessionID=${sessionID};searchall=1;swt=%22${item.content}%22";
          localurl  = "${config.search_loc}?sessionID=${sessionID};database=${record.database};searchsingleswt=${thisid}";
          content   = " ${rssfeed}<a href=\"${globalurl}\" title=\"${globalsearch_i18n}\"><span class=\"globalsearch\">G</span></a>&nbsp;<a href=\"${localurl}\">${highlightquery(searchquery,item.content)}</a> ${item.supplement}";
+         rswkswt_done.${thisid} = 1;
 
     CASE "T0700";
          thisid     = item.id;
@@ -492,6 +496,19 @@ href="[% config.userreviews_loc %]?sessionID=[% sessionID
 <p />
 
 <div class="reuse_data"><!-- Begin Reuse -->
+[%
+  private_tags_of_tit = [];
+  IF loginname ;
+    private_tags        = user.get_private_tags({ loginname => loginname  });
+    private_tags_of_tit = user.get_private_tags_of_tit({ titid => record.id, titdb => record.database, loginname => loginname  });
+    IF private_tags_of_tit.size > 0 ;
+      my_tags = [] ;
+      FOREACH tag IN private_tags_of_tit;
+        my_tags.push("${tag.name}");
+      END;
+    END;      
+  END ;
+%]
 <b>[% msg.maketext("Behalten Sie diesen Titel") %]:</b><p/>
 <table>
 <tr>
@@ -541,12 +558,6 @@ href="[% config.userreviews_loc %]?sessionID=[% sessionID
 <div class="tagging"><!-- Begin: Tagging -->
 <div class="headline"><span id="tagging_toggle">[% msg.maketext("Tagging") %]<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle"></span></div>
 <div id="tagging_do"><!-- Begin Tagging do -->
-[%
-  private_tags_of_tit = [];
-  IF loginname ;
-    private_tags_of_tit = user.get_private_tags_of_tit({ titid => record.id, titdb => record.database, loginname => loginname  });
-  END ;
-%]
 
 [%  IF private_tags_of_tit.size <= 0  %]
 
@@ -568,8 +579,6 @@ href="[% config.userreviews_loc %]?sessionID=[% sessionID
 
 [%
     IF loginname ;
-      private_tags = user.get_private_tags({ loginname => loginname  });
-
 %]
 
 <table width="100%">
@@ -633,13 +642,11 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <input type="hidden" name="titid"      value="[% record.id %]" />
 <input type="hidden" name="queryid"    value="[% queryid %]" />
 <input type="hidden" name="titisbn"    value="[% normset.${"T0540"}.first.content.replace('-','') %]" />
-<input type="text"   name="tags"       value="[% my_tags.join(' ') %]" size="30" maxlength="200" />&nbsp;&nbsp;[% msg.maketext("Typ:") %]&nbsp;<select name="type"><option value="1" [% IF private_tags.first.type == 1 %]selected="selected"[% END %]>[% msg.maketext("&ouml;ffentlich") %]</option><option value="2" [% IF private_tags.first.type == 2 %]selected="selected"[% END %]>[% msg.maketext("privat") %]</option></select><br /><center><input type="submit" name="do_add" value="[% msg.maketext("&Auml;ndern") %]" />&nbsp;<input type="submit" name="do_del" value="[% msg.maketext("L&ouml;schen") %]" /></center>
+<input type="text"   name="tags"       value="[% my_tags.join(' ') %]" size="30" maxlength="200" id="inputfield"/>&nbsp;&nbsp;[% msg.maketext("Typ:") %]&nbsp;<select name="type"><option value="1" [% IF private_tags.first.type == 1 %]selected="selected"[% END %]>[% msg.maketext("&ouml;ffentlich") %]</option><option value="2" [% IF private_tags.first.type == 2 %]selected="selected"[% END %]>[% msg.maketext("privat") %]</option></select><br /><center><input type="submit" name="do_add" value="[% msg.maketext("&Auml;ndern") %]" />&nbsp;<input type="submit" name="do_del" value="[% msg.maketext("L&ouml;schen") %]" /></center>
 </form>
 
 [%
     IF loginname ;
-      private_tags = user.get_private_tags({ loginname => loginname  });
-
 %]
 
 <table width="100%">
@@ -753,11 +760,9 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 <tr><td>
 [% alltags_cloud %]
 [% IF loginname && private_tags_of_tit.size > 0 %]
-[%  my_tags = [] %]
 <br />davon eigene Tags:
 [%- FOREACH tag IN private_tags_of_tit -%]
 <a href="[% config.tags_loc %]?sessionID=[% sessionID %];searchtitoftag=[% tag.id %];private_tags=1">[% tag.name %]</a>&nbsp;
-[%    my_tags.push("${tag.name}") %]
 [%- END -%]
 [% END %]
 </td></tr>

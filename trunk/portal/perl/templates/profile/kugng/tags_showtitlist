@@ -158,6 +158,9 @@
       <div class="titlemark">[% signatur | truncate(config.maxlength_sign) %]</div>
       <div class="titleactions">
 <a class="collection" href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.listofinterest_img %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>&nbsp;&nbsp;<a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];action=add_title;id=[% record.id %];database=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top"><img style="vertical-align: bottom;" src="[% config.share_img %]" alt="Share this"/></a>
+[% IF parameter.private_tags %]
+&nbsp;&nbsp;<a href="[% config.tags_loc %]?sessionID=[% sessionID %]&do_del=1;tags=[% parameter.tag %];titid=[% item.id %];titdb=[% item.database %]" title="[% msg.maketext("Entfernen") %]"><img src="[% config.delete_img %]" alt="[% msg.maketext("Entfernen") %]" /></a>
+[% END %]
       </div>
     </div>
 <!-- Ende einzelner Treffer -->

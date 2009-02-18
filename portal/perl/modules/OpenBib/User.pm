@@ -608,6 +608,66 @@ sub get_number_of_tags {
     return ($numoftags)?$numoftags:0;
 }
 
+sub get_name_of_tag {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $tagid       = exists $arg_ref->{tagid}
+        ? $arg_ref->{tagid}                 : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return undef if (!defined $dbh);
+    return undef if (!defined $tagid);
+    
+    my $request=$dbh->prepare("select tag from tags where id=?") or $logger->error($DBI::errstr);
+    $request->execute($tagid) or $logger->error($DBI::errstr);
+    my $result = $request->fetchrow_hashref();
+    my $name = $result->{tag};
+
+    $request->finish();
+
+    return $name;
+}
+
+sub get_id_of_tag {
+    my ($self,$arg_ref)=@_;
+
+    # Set defaults
+    my $tag         = exists $arg_ref->{tag}
+        ? $arg_ref->{tag}                 : undef;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return undef if (!defined $dbh);
+    return undef if (!defined $tag);
+    
+    my $request=$dbh->prepare("select id from tags where tag=?") or $logger->error($DBI::errstr);
+    $request->execute($tag) or $logger->error($DBI::errstr);
+    my $result = $request->fetchrow_hashref();
+    my $id     = $result->{id};
+
+    $request->finish();
+
+    return $id;
+}
+
 sub get_titles_of_tag {
     my ($self,$arg_ref)=@_;
 
@@ -1176,6 +1236,8 @@ sub del_tags {
     my ($self,$arg_ref)=@_;
 
     # Set defaults
+    my $tags                = exists $arg_ref->{tags}
+        ? $arg_ref->{tags}                : undef;
     my $titid               = exists $arg_ref->{titid}
         ? $arg_ref->{titid}               : undef;
     my $titisbn             = exists $arg_ref->{titisbn}
@@ -1200,9 +1262,18 @@ sub del_tags {
 
     #return if (!$titid || !$titdb || !$loginname || !$tags);
 
-    my $request=$dbh->prepare("delete from tittag where titid=? and titdb=? and loginname=?") or $logger->error($DBI::errstr);
-    $request->execute($titid,$titdb,$loginname) or $logger->error($DBI::errstr);
-
+    if ($tags){
+        foreach my $tag (split("\\s+",$tags)){
+            my $tagid = $self->get_id_of_tag({tag => $tag});
+            my $request=$dbh->prepare("delete from tittag where titid=? and titdb=? and loginname=? and tagid=?") or $logger->error($DBI::errstr);
+            $request->execute($titid,$titdb,$loginname,$tagid) or $logger->error($DBI::errstr);
+        }
+    }
+    else {
+        my $request=$dbh->prepare("delete from tittag where titid=? and titdb=? and loginname=?") or $logger->error($DBI::errstr);
+        $request->execute($titid,$titdb,$loginname) or $logger->error($DBI::errstr);
+    }
+    
     return;
 }
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2009-02-17 12:36+0100\n"
+"PO-Revision-Date: 2009-02-18 15:03+0100\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -10927,7 +10927,7 @@ msgstr "per catalogue"
 
 #: ../templates/profile/kugng/std_footer:18
 msgid "realisiert mit"
-msgstr "implemented with"
+msgstr "powered by"
 
 #: ../templates/database/ebooks/search_showtitset:668
 #: ../templates/database/inst001/search_showtitset:689

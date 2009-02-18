@@ -505,16 +505,6 @@ dt.review {
   padding: 0px;
 }
 
-#header2 {
-  height: 65px;
-  width: 100%;
-/*  position: absolute;
-  top: 0;
-  left: 0; */
-  background: white ;
-  padding: 0px;
-}
-
 #header_uni_siegel {
   background: white url(/images/openbib/unisiegel.gif) center no-repeat;
   width: 120px;
@@ -589,6 +579,16 @@ dt.review {
 #header_usb_schriftzug:focus span {
   color: #000000;
   text-decoration: underline;
+}
+
+#header2 {
+  height: 65px;
+  width: 100%;
+/*  position: absolute;
+  top: 0;
+  left: 0; */
+  background: white ;
+  padding: 0px;
 }
 
 #header2 #header_logo {
@@ -1245,14 +1245,14 @@ ul.subjectlist {
   margin-left: 5px;
 }
 
-ul.subjectlist > li {
+ul.subjectlist li {
   text-align: left;
   list-style: none;
   padding: 9px 10px 0px 30px;
   background: url(/images/openbib/solidrightarrow.png) 5px 5px no-repeat;
 }
 
-ul.subjectlist > li > a {
+ul.subjectlist li a {
   font-weight: bold;
   font-size: 1.3em;
 }

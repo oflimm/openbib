@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::Tags.pm
 #
-#  Copyright 2007-2008 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2007-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -180,8 +180,14 @@ sub handler {
             titdb     => $titdb,
             loginname => $loginname,
         });
-        
-        $r->internal_redirect("http://$config->{servername}$config->{search_loc}?sessionID=$session->{ID};database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
+
+        if ($tags =~/^\w+$/){
+            my $tagid = $user->get_id_of_tag({tag => $tags});
+            $r->internal_redirect("http://$config->{servername}$config->{tags_loc}?sessionID=$session->{ID};searchtitoftag=$tagid;private_tags=1");
+        }
+        else {
+            $r->internal_redirect("http://$config->{servername}$config->{search_loc}?sessionID=$session->{ID};database=$titdb;searchsingletit=$titid;queryid=$queryid;no_log=1");
+        }
         return OK;
 
     }
@@ -248,11 +254,12 @@ sub handler {
     
     if ($searchtitoftag) {
         my $recordlist = new OpenBib::RecordList::Title;
-
-        my $hits      = 0;
-
+        my $hits       = 0;
+        my $tag        = undef;
+        
         if ($searchtitoftag =~ /^\d+$/){
             # Zuerst Gesamtzahl bestimmen
+            $tag = $user->get_name_of_tag({tagid => $searchtitoftag});
             
             if ($private_tags){
                 if (!$user->{ID}){
@@ -295,6 +302,11 @@ sub handler {
             query            => $query,
             template         => 'tt_tags_showtitlist_tname',
             location         => 'tags_loc',
+            parameter        => {
+                loginname    => $loginname,
+                tag          => $tag,
+                private_tags => $private_tags,
+            },
 
             msg              => $msg,
         });

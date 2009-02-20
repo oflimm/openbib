@@ -72,12 +72,6 @@ FOREACH category IN categories;
 END ;-%]
 </table>
 
-<p/>
-
-<div>
-<iframe src="http://www.uni-koeln.de/bin2/where.pl?geb107" height="800" width="100%">
-</div>
-
 </div>
 
 [% PROCESS common/subtemplate name="std_footer" %]

@@ -1,0 +1,83 @@
+[%#-
+#######################################################################
+#
+# Templatename: info_60
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe der Bibliotheksinformationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+[% IF config.lang.size > 1 %]
+<div id="langchoice">
+[%   FOREACH l IN config.lang %]
+<a href="[% config.info_loc %]?sessionID=[% sessionID %];id=[% id %];stid=[% stid %];l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[%   END %]
+</div>
+[% END %]
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="#"><span class="dbdescshort">[% msg.maketext("Informationen zu dieser Bibliothek") %]</span></a></li>
+</ul>
+
+<div class="content">
+
+[% PROCESS common/subtemplate name="visible_categories_libinfoset" %]
+
+<table>
+[%-
+
+libinfo = config.get_libinfo(id);
+
+FOREACH category IN categories;
+
+      FOREACH item IN libinfo.$category;
+        content = item.content;
+
+        SWITCH category;
+
+          CASE "I0010";
+            content   = "<b>${content}</b>";
+
+          CASE "I0230";
+            IF content.match('Bestand komplett erfasst');
+              content   = "<b>${content}</b>";
+            END;
+        END;
+
+        # Nachgeschaltete datenbankspezifische Kategorienamen-Mappings sind
+        # in Config.pm fuer die entsprechende Datenbank definiert
+        # und werden im Message-Katalog als <Kategorie>-<Datenbankname>
+        # kodiert.
+        thiscategory = category ;
+        IF config.categorymapping.${libinfo.database}.$category ;
+          thiscategory = "${category}-${record.database}" ;
+        END;
+-%]
+<tr><td class="category">[% msg.maketext("${thiscategory}")
+%]</td><td>[% content %]</td></tr>
+[%-   END ;
+END ;-%]
+</table>
+
+<p/>
+
+<div>
+<iframe src="http://www.uni-koeln.de/bin2/where.pl?geb107" height="800" width="100%">
+</div>
+
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

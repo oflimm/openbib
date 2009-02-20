@@ -100,6 +100,8 @@ sub handler {
     my $do_loginmask    = $query->param('do_loginmask')    || '';
     my $do_showcat      = $query->param('do_showcat')      || '';
     my $do_editcat      = $query->param('do_editcat')      || '';
+    my $do_showlibinfo  = $query->param('do_showlibinfo')  || '';
+    my $do_editlibinfo  = $query->param('do_editlibinfo')  || '';
     my $do_editcat_rss  = $query->param('do_editcat_rss')  || '';
     my $do_showprofiles = $query->param('do_showprofiles') || '';
     my $do_editprofile  = $query->param('do_editprofile')  || '';
@@ -182,8 +184,35 @@ sub handler {
     my $hostname        = $query->param('hostname')        || '';
     my $port            = $query->param('port')            || '';
     my $username        = $query->param('username')        || '';
-    my $type            = $query->param('type')             || '';
+    my $type            = $query->param('type')            || '';
 
+    # Bibliotheksinfos
+    my $li_0010         = $query->param('I0010')          || '';
+    my $li_0020         = $query->param('I0020')          || '';
+    my $li_0030         = $query->param('I0030')          || '';
+    my $li_0040         = $query->param('I0040')          || '';
+    my $li_0050         = $query->param('I0050')          || '';
+    my $li_0060         = $query->param('I0060')          || '';
+    my $li_0070         = $query->param('I0070')          || '';
+    my $li_0080         = $query->param('I0080')          || '';
+    my $li_0090         = $query->param('I0090')          || '';
+    my $li_0100         = $query->param('I0100')          || '';
+    my $li_0110         = $query->param('I0110')          || '';
+    my $li_0120         = $query->param('I0120')          || '';
+    my $li_0130         = $query->param('I0130')          || '';
+    my $li_0140         = $query->param('I0140')          || '';
+    my $li_0150         = $query->param('I0150')          || '';
+    my $li_0160         = $query->param('I0160')          || '';
+    my $li_0170         = $query->param('I0170')          || '';
+    my $li_0180         = $query->param('I0180')          || '';
+    my $li_0190         = $query->param('I0190')          || '';
+    my $li_0200         = $query->param('I0200')          || '';
+    my $li_0210         = $query->param('I0210')          || '';
+    my $li_0220         = $query->param('I0220')          || '';
+    my $li_0230         = $query->param('I0230')          || '';
+    my $li_0240         = $query->param('I0240')          || '';
+    my $li_0250         = $query->param('I0250')          || '';
+    
     my $viewstart_loc   = $query->param('viewstart_loc')             || '';
     my $viewstart_stid  = $query->param('viewstart_stid')            || '';
     
@@ -241,6 +270,34 @@ sub handler {
         circurl      => $circurl,
         circcheckurl => $circcheckurl,
         circdb       => $circdb,
+    };
+
+    my $thislibinfo_ref = {
+        I0010      => $li_0010,
+        I0020      => $li_0020,
+        I0030      => $li_0030,
+        I0040      => $li_0040,
+        I0050      => $li_0050,
+        I0060      => $li_0060,
+        I0070      => $li_0070,
+        I0080      => $li_0080,
+        I0090      => $li_0090,
+        I0100      => $li_0100,
+        I0110      => $li_0110,
+        I0120      => $li_0120,
+        I0130      => $li_0130,
+        I0140      => $li_0140,
+        I0150      => $li_0150,
+        I0160      => $li_0160,
+        I0170      => $li_0170,
+        I0180      => $li_0180,
+        I0190      => $li_0190,
+        I0200      => $li_0200,
+        I0210      => $li_0210,
+        I0220      => $li_0220,
+        I0230      => $li_0230,
+        I0240      => $li_0240,
+        I0250      => $li_0250,
     };
 
     my $thislogintarget_ref = {
@@ -512,6 +569,49 @@ sub handler {
         };
     
         OpenBib::Common::Util::print_page($config->{tt_admin_showcat_tname},$ttdata,$r);
+    }
+    elsif ($do_editlibinfo) {
+    
+        # Zuerst schauen, ob Aktionen gefordert sind
+        if ($do_del) {
+            editlibinfo_del($dbname);
+
+	    my $ret_ref = dist_cmd("editlibinfo_del",{ dbname => $dbname }) if ($do_dist);
+
+            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showcat=1");
+            return OK;
+
+        }
+        elsif ($do_change) {
+            $logger->debug("do_editlibinfo: $do_editlibinfo do_change: $do_change");
+
+            $logger->debug("Info: ".YAML::Dump($thislibinfo_ref));
+
+            editlibinfo_change($thislibinfo_ref);
+
+	    my $ret_ref = dist_cmd("editlibinfo_change",{ 
+						     libinfo    => $thislibinfo_ref,
+						 }) if ($do_dist);
+
+            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showcat=1");
+            return OK;
+        }
+        elsif ($do_edit) {
+            my $libinfo_ref = $config->get_libinfo($dbname);
+      
+            my $ttdata={
+                stylesheet => $stylesheet,
+                sessionID  => $session->{ID},
+		  
+                libinfo    => $libinfo_ref,
+		  
+                config     => $config,
+                user       => $user,
+                msg        => $msg,
+            };
+      
+            OpenBib::Common::Util::print_page($config->{tt_admin_editlibinfo_tname},$ttdata,$r);
+        }
     }
     elsif ($do_showprofiles) {
         my $profileinfo_ref = $config->get_profileinfo_overview();

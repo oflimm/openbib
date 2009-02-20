@@ -63,14 +63,16 @@ type="submit" name="do_new" value="[% msg.maketext("Neu") %]" /></td></tr>
 <tr><th>[% msg.maketext("Bereits existierende Kataloge") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 <table>
-<tr><td><b>[% msg.maketext("Fakultät") %]</b></td><td><b>[% msg.maketext("RSS") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("System") %]</b></td><td><b>[% msg.maketext("DB-Name") %]</b></td><td><b>[% msg.maketext("Sigel") %]</b></td><td><b>[% msg.maketext("URL") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td><td><b>Auto-Konv</b></td><td><b>Titel-Anzahl</b></td></tr>
+<tr><td><b>[% msg.maketext("Fakultät") %]</b></td><td><b>[% msg.maketext("Info") %]</b></td><td><b>[% msg.maketext("RSS") %]</b></td><td><b>[% msg.maketext("Beschreibung") %]</b></td><td><b>[% msg.maketext("System") %]</b></td><td><b>[% msg.maketext("DB-Name") %]</b></td><td><b>[% msg.maketext("Sigel") %]</b></td><td><b>[% msg.maketext("URL") %]</b></td><td><b>[% msg.maketext("Aktiv") %]</b></td><td><b>Auto-Konv</b></td><td><b>Titel-Anzahl</b></td></tr>
 [% FOREACH katalog IN kataloge %]
 <tr
 [% IF katalog.active == 1%]
  bgcolor="aliceblue"
 [% END %]
-><td>[% katalog.orgunit %]</td><td align="center"><a href="[% config.admin_loc %]?sessionID=[% sessionID
-%]&do_editcat_rss=1&dbname=[% katalog.dbname %];do_edit=1"><img src="[% config.rssfeed_img %]" alt="RSS-Icon" /></a></td><td><a href="[% config.admin_loc %]?sessionID=[% sessionID %]&do_editcat=1&dbname=[% katalog.dbname %];do_edit=1">[% katalog.description %]</a></td><td>[% katalog.system %]</td><td>[% katalog.dbname %]</td><td>[% katalog.sigel %]</td><td>[%katalog.url %]</td><td align="center">
+><td>[% katalog.orgunit %]</td>
+<td align="center"><a href="[% config.admin_loc %]?sessionID=[% sessionID %]&do_editlibinfo=1&dbname=[% katalog.dbname %];do_edit=1">Info</a></td>
+<td align="center"><a href="[% config.admin_loc %]?sessionID=[% sessionID %]&do_editcat_rss=1&dbname=[% katalog.dbname %];do_edit=1"><img src="[% config.rssfeed_img %]" alt="RSS-Icon" /></a></td>
+<td><a href="[% config.admin_loc %]?sessionID=[% sessionID %]&do_editcat=1&dbname=[% katalog.dbname %];do_edit=1">[% katalog.description %]</a></td><td>[% katalog.system %]</td><td>[% katalog.dbname %]</td><td>[% katalog.sigel %]</td><td>[%katalog.url %]</td><td align="center">
 
 [% IF katalog.active == 1 %]
 <span style="font-weight:bold; color:green;">[% msg.maketext("Ja") %]</span>

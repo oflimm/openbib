@@ -726,6 +726,46 @@ sub get_dbinfo_overview {
     return $dbinfo_ref;
 }
 
+sub get_libinfo {
+    my $self   = shift;
+    my $dbname = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$self->{dbimodule}:dbname=$self->{configdbname};host=$self->{configdbhost};port=$self->{configdbport}", $self->{configdbuser}, $self->{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $sqlrequest;
+
+    my $libinfo_ref={};
+
+    return {} if (!$dbname);
+    
+    $libinfo_ref->{database} = $dbname;
+
+    $sqlrequest="select category,content,indicator from libraryinfo where dbname = ?";
+    my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
+    $request->execute($dbname);
+
+    while (my $res=$request->fetchrow_hashref) {
+        my $category  = "I".sprintf "%04d",$res->{category };
+        my $indicator =         decode_utf8($res->{indicator});
+        my $content   =         decode_utf8($res->{content  });
+
+        next if ($content=~/^\s*$/);
+#        $content =~s/"/%22/g;
+        push @{$libinfo_ref->{$category}}, {
+            indicator => $indicator,
+            content   => $content,
+        };
+    }
+
+    return $libinfo_ref;
+}
+
 sub get_viewinfo_overview {
     my $self   = shift;
     

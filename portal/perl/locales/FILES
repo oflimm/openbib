@@ -42,6 +42,7 @@
 ../modules/OpenBib/VirtualSearch/Util.pm
 ../templates/admin_editcat
 ../templates/admin_editcat_rss
+../templates/admin_editlibinfo
 ../templates/admin_editlogintarget
 ../templates/admin_editprofile
 ../templates/admin_editsession
@@ -224,6 +225,7 @@
 ../templates/profile/kugng/info_50
 ../templates/profile/kugng/info_51
 ../templates/profile/kugng/info_52
+../templates/profile/kugng/info_60
 ../templates/profile/kugng/info_9
 ../templates/profile/kugng/litlists_manage_lists
 ../templates/profile/kugng/litlists_manage_singlelist
@@ -469,4 +471,5 @@
 ../templates/visible_categories_korset
 ../templates/visible_categories_notset
 ../templates/visible_categories_swtset
+../templates/visible_categories_libinfoset
 ../templates/visible_categories_titset

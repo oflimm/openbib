@@ -78,7 +78,12 @@
 <div class="resultlist">
   <div class="resultheader">
     <div class="catalogue">
-<a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.maxlength_dbname) %]</a>
+[%-   IF dburl.match('bibliotheksfuehrer') %]
+<a href="[% config.info_loc %]?sessionID=[% sessionID %];id=[% database %];stid=60">
+[%-   ELSE -%]
+<a href="[% dburl %]" target="_blank">
+[%-   END -%]
+[% dbdesc | truncate(config.maxlength_dbname) %]</a>
     </div>
     <div class="hits">
 [% recordlist.get_size %]  [% msg.maketext("Treffer") %]
@@ -159,7 +164,7 @@
       </div>
       <div class="titlemark">[% signatur | truncate(config.maxlength_sign) %]</div>
       <div class="titleactions">
-<a class="collection" href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.listofinterest_img %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>
+<a class="collection" href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.listofinterest_img %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a>&nbsp;&nbsp;<a href="[% config.bibsonomy_loc %]?sessionID=[% sessionID %];action=add_title;id=[% record.id %];database=[% record.database %]" title="[% msg.maketext("An BibSonomy senden") %]" target="bibsonomy" valign="top"><img style="vertical-align: bottom;" src="[% config.share_img %]" alt="Share this"/></a>
       </div>
     </div>
 <!-- Ende einzelner Treffer -->

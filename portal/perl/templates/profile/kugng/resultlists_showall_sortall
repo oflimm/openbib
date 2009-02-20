@@ -130,7 +130,13 @@ Gesamtanzeige aller Treffer
       </div> 
       <div class="brieftitle">
 <span class="rlperson">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
-<br />[% msg.maketext("aus:") %] <a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.maxlength_dbname) %]</a>[%- IF item.popularity -%] (Popularit&auml;t: [% item.popularity %])[%- END -%]
+<br />[% msg.maketext("aus:") %]
+[%-   IF dburl.match('bibliotheksfuehrer') %]
+<a href="[% config.info_loc %]?sessionID=[% sessionID %];id=[% record.database %];stid=60">
+[%-   ELSE -%]
+<a href="[% dburl %]" target="_blank">
+[%-   END -%]
+[% dbdesc | truncate(config.maxlength_dbname) %]</a>[%- IF item.popularity -%] (Popularit&auml;t: [% item.popularity %])[%- END -%]
       </div>
       <div class="titlemark">[% signatur | truncate(config.maxlength_sign) %]</div>
       <div class="titleactions">

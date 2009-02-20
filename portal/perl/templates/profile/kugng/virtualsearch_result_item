@@ -17,7 +17,12 @@
 <div class="resultlist">
   <div class="resultheader">
     <div class="catalogue">
-<a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.maxlength_dbname) %]</a>
+[%-   IF dburl.match('bibliotheksfuehrer') %]
+<a href="[% config.info_loc %]?sessionID=[% sessionID %];id=[% database %];stid=60">
+[%-   ELSE -%]
+<a href="[% dburl %]" target="_blank">
+[%-   END -%]
+     [% dbdesc | truncate(config.maxlength_dbname) %]</a>
     </div>
     <div class="hits">
 [%- IF treffer == qopts.hitrange && qopts.sb == 'sql' -%]<a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#recherche">[% msg.maketext("mind.") %]&nbsp;[% treffer %] [% msg.maketext("Treffer") %]</a>[% ELSE %][% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %][%- END -%]</strong>

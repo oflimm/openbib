@@ -1,0 +1,45 @@
+[%#-
+#######################################################################
+#
+# Templatename: visible_categories_libinfoset
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Definition der Ausgabekategorien fuer Informationen zu einer
+# einzelnen Bibliothek
+#
+#######################################################################
+-%]
+[%# Ausgabekategorien %]
+[% categories = [
+                'I0010', # msg.maketext("I0010") # Institutsname
+                'I0020', # msg.maketext("I0020") # Straße
+                'I0030', # msg.maketext("I0030") # Gebäude
+                'I0040', # msg.maketext("I0040") # Interaktiver Lageplan der Universität
+                'I0050', # msg.maketext("I0050") # Gemeinsame Bibliothek
+                'I0060', # msg.maketext("I0060") # Telefon
+                'I0070', # msg.maketext("I0070") # Fax
+                'I0080', # msg.maketext("I0080") # E-Mail
+                'I0090', # msg.maketext("I0090") # Internet
+                'I0100', # msg.maketext("I0100") # Auskunft / Bibliothekar(in)
+                'I0110', # msg.maketext("I0110") # Öffnungszeiten
+                'I0120', # msg.maketext("I0120") # Bestand Monos
+                'I0130', # msg.maketext("I0130") # Bestand Zeitschriften
+                'I0140', # msg.maketext("I0140") # Anzahl laufender Zeitschriften
+                'I0150', # msg.maketext("I0150") # Bestand CD's / Digitale Medien
+                'I0160', # msg.maketext("I0160") # Sonstige Bestandsangaben
+                'I0170', # msg.maketext("I0170") # Besondere Sammelgebiete
+                'I0180', # msg.maketext("I0180") # Art der Bibliothek
+                'I0190', # msg.maketext("I0190") # Neuerwerbungslisten
+                'I0200', # msg.maketext("I0200") # Kopierer / Technische Ausstattung
+                'I0260', # msg.maketext("I0260") # Art der Vernetzung
+                'I0210', # msg.maketext("I0210") # DV-Ausstattung  
+                'I0220', # msg.maketext("I0220") # Art des Systems
+                'I0230', # msg.maketext("I0230") # Online-Katalogisierung seit Erscheinungsjahr
+                'I0240', # msg.maketext("I0240") # Mitarbeit am KUG
+                'I0250', # msg.maketext("I0250") # Sigel in ZDB
+                ]
+
+%]

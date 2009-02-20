@@ -245,6 +245,7 @@ wikipedia_img:  /images/openbib/wikipedia.png
 # Mapping der einzelnen Kompontenten zu ihren Templates
 tt_admin_editcat_rss_tname: admin_editcat_rss
 tt_admin_editcat_tname: admin_editcat
+tt_admin_editlibinfo_tname: admin_editlibinfo
 tt_admin_editlogintarget_tname: admin_editlogintarget
 tt_admin_editprofile_tname: admin_editprofile
 tt_admin_editsession_tname: admin_editsession
@@ -256,6 +257,7 @@ tt_admin_loggedin_tname: admin_loggedin
 tt_admin_login_tname: admin_login
 tt_admin_logout_tname: admin_logout
 tt_admin_showcat_tname: admin_showcat
+tt_admin_showlibinfo_tname: admin_showlibinfo
 tt_admin_showprofiles_tname: admin_showprofiles
 tt_admin_showlogintarget_tname: admin_showlogintarget
 tt_admin_showsessions_1_tname: admin_showsessions_1
@@ -344,6 +346,8 @@ tt_info_51_tname: info_51
 tt_info_52_tname: info_52
 tt_info_53_tname: info_53
 tt_info_54_tname: info_54
+tt_info_60_tname: info_60
+tt_info_61_tname: info_61
 tt_info_9_tname: info_9
 tt_info_message_tname: info_message
 tt_info_tname: info

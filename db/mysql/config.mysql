@@ -48,6 +48,23 @@ DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 ;
 
+drop table IF EXISTS libraryinfo;
+create table libraryinfo (
+ dbname        VARCHAR(255) NOT NULL,
+ category      SMALLINT  NOT NULL,
+ indicator     SMALLINT,
+ content       TEXT NOT NULL,
+ INDEX         (dbname),
+ INDEX         (category),
+ INDEX         (indicator),
+ INDEX         (content(10)),
+ INDEX         (dbname,category)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+;
+
 drop table IF EXISTS titcount;
 create table titcount (
  dbname VARCHAR(255),

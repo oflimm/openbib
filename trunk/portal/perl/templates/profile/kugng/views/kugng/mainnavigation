@@ -26,7 +26,7 @@
 [%- END -%]
 &nbsp;::&nbsp;
 [% END %]
-<a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]">[% msg.maketext("Hilfe") %]</a>&nbsp;::&nbsp;<a href="http://www.ub.uni-koeln.de/dezkat/content/service/schulm/tutorial/index_ger.html" target="_blank">[% msg.maketext("Tutorien") %]</a>&nbsp;::&nbsp;<a href="[% config.leave_loc %]?sessionID=[% sessionID %];view=[% view %]" target="_parent"><b><span class="warning">[% msg.maketext("Sitzung beenden") %]
+<a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]">[% msg.maketext("Hilfe") %]</a>&nbsp;::&nbsp;<a href="[% config.info_loc %]?sessionID=[% sessionID %];stid=61">[% msg.maketext("Tutorien") %]</a>&nbsp;::&nbsp;<a href="[% config.leave_loc %]?sessionID=[% sessionID %];view=[% view %]" target="_parent"><b><span class="warning">[% msg.maketext("Sitzung beenden") %]
 [%- IF username -%]
  [[% username %]]
 [%- END -%]

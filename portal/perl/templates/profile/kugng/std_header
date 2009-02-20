@@ -33,32 +33,63 @@
     <link rel="unapi-server" title="unAPI" type="application/xml" href="http://[% config.servername %][% config.connector_unapi_loc %]" />
 [% END %]
 
-
   [%- TRY -%]
-    [%- USE File "${config.document_root_path}${config.css_loc}/views/$view/openbib_generic.css" -%]
+    [%- USE File "${config.document_root_path}${config.css_loc}/profile/$sysprofile/views/$view/openbib_generic.css" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/profile/$sysprofile/views/$view/openbib_generic.css" %]" media="all" />
+  [%- CATCH -%]        
+    [%- TRY -%]
+      [%- USE File "${config.document_root_path}${config.css_loc}/profile/$sysprofile/openbib_generic.css" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/profile/$sysprofile/openbib_generic.css" %]" media="all" />
+    [%- CATCH -%]
+      [%- TRY -%]
+        [%- USE File "${config.document_root_path}${config.css_loc}/views/$view/openbib_generic.css" -%]
     <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/views/$view/openbib_generic.css" %]" media="all" />
-  [%- CATCH -%]
+      [%- CATCH -%]
     <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/openbib_generic.css" %]" media="all" />
+      [%- END -%]
+    [%- END -%]
   [%- END -%]
 
-  [% TRY -%]
-    [%- USE File "${config.document_root_path}${config.css_loc}/views/$view/$stylesheet" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/views/$view/$stylesheet" %]" media="all" />
+
+  [%- TRY -%]
+    [%- USE File "${config.document_root_path}${config.css_loc}/profile/$sysprofile/views/$view/$stylesheet" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/profile/$sysprofile/views/$view/$stylesheet" %]" media="all" />
   [%- CATCH -%]
+    [%- TRY -%]
+      [%- USE File "${config.document_root_path}${config.css_loc}/profile/$sysprofile/$stylesheet" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/profile/$sysprofile/$stylesheet" %]" media="all" />
+    [%- CATCH -%]
+      [%- TRY -%]
+        [%- USE File "${config.document_root_path}${config.css_loc}/views/$view/$stylesheet" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/views/$view/$stylesheet" %]" media="all" />
+      [%- CATCH -%]
     <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/$stylesheet" %]" media="all" />
+      [%- END -%]
+    [%- END -%]
   [%- END -%]
 
   [%- TRY -%]
-    [%- USE File "${config.document_root_path}${config.css_loc}/views/$view/openbib_generic_print.css" -%]
-    <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/views/$view/openbib_generic_print.css" %]" media="print" />
+    [%- USE File "${config.document_root_path}${config.css_loc}/profile/$sysprofile/views/$view/openbib_generic_print.css" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/profile/$sysprofile/views/$view/openbib_generic_print.css" %]" media="print" />
   [%- CATCH -%]
+    [%- TRY -%]
+      [%- USE File "${config.document_root_path}${config.css_loc}/profile/$sysprofile/openbib_generic_print.css" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/profile/$sysprofile/openbib_generic_print.css" %]" media="print" />
+    [%- CATCH -%]
+      [%- TRY -%]
+        [%- USE File "${config.document_root_path}${config.css_loc}/views/$view/openbib_generic_print.css" -%]
+    <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/views/$view/openbib_generic_print.css" %]" media="print" />
+      [%- CATCH -%]
     <link rel="stylesheet" type="text/css" href="[% "${config.css_loc}/openbib_generic_print.css" %]" media="print" />
+      [%- END -%]
+    [%- END -%]
   [%- END -%]
 
     <script language="JavaScript" type="text/javascript" src="/js/jquery-1.2.6.pack.js"></script>
     <script language="JavaScript" type="text/javascript" src="/js/jquery-ui-personalized-1.5b3.packed.js"></script>
     <script language="JavaScript" type="text/javascript" src="/js/openbib.js"></script>
     <script language="JavaScript" type="text/javascript" src="/js/jquery.autocomplete.pack.js"></script>
+    <script language="JavaScript" type="text/javascript" src="/js/jtip.js"></script>
 
   <link rel="stylesheet" href="[% "${config.css_loc}/jquery.autocomplete.css" %]" type="text/css" />
   <link rel="stylesheet" href="[% "${config.css_loc}/ui.tabs.css" %]" type="text/css" media="print, projection, screen" />

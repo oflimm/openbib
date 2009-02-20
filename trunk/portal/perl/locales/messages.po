@@ -19,11 +19,11 @@ msgstr ""
 msgid "${category}"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:274 ../templates/database/einbaende/managecollection_tit_as_html:116 ../templates/database/einbaende/managecollection_tit_as_html:60 ../templates/database/einbaende/search_showtitset:135 ../templates/database/einbaende/search_showtitset:230 ../templates/database/einbaende/search_showtitset:332 ../templates/database/inst001/search_showtitset:301 ../templates/database/landschaft/search_showtitset:142 ../templates/database/nationallizenzen/search_showtitset:274 ../templates/database/portrait/search_showtitset:162 ../templates/database/spoho/search_showtitset:295 ../templates/database/umschlaege/managecollection_tit_as_html:79 ../templates/database/umschlaege/search_showtitset:298 ../templates/managecollection_tit_as_html:71 ../templates/managecollection_tit_as_text:34 ../templates/profile/kuglight/search_showtitset:248 ../templates/profile/kugng/litlists_tit_as_html_full:184 ../templates/profile/kugng/litlists_tit_as_text:21 ../templates/profile/kugng/managecollection_tit_as_html:397 ../templates/profile/kugng/managecollection_tit_as_text:66 ../templates/profile/kugng/search_showtitset:256 ../templates/search_showautset:57 ../templates/search_showkorset:58 ../templates/search_showmulttitset:99 ../templates/search_shownotset:57 ../templates/search_showswtset:59 ../templates/search_showtitset:291
+#: ../templates/admin_editlibinfo:53 ../templates/admin_editlibinfo:62 ../templates/database/ebooks/search_showtitset:274 ../templates/database/einbaende/managecollection_tit_as_html:116 ../templates/database/einbaende/managecollection_tit_as_html:60 ../templates/database/einbaende/search_showtitset:135 ../templates/database/einbaende/search_showtitset:230 ../templates/database/einbaende/search_showtitset:332 ../templates/database/inst001/search_showtitset:301 ../templates/database/landschaft/search_showtitset:142 ../templates/database/nationallizenzen/search_showtitset:274 ../templates/database/portrait/search_showtitset:162 ../templates/database/spoho/search_showtitset:295 ../templates/database/umschlaege/managecollection_tit_as_html:79 ../templates/database/umschlaege/search_showtitset:298 ../templates/managecollection_tit_as_html:71 ../templates/managecollection_tit_as_text:34 ../templates/profile/kuglight/search_showtitset:248 ../templates/profile/kugng/info_60:57 ../templates/profile/kugng/litlists_tit_as_html_full:184 ../templates/profile/kugng/litlists_tit_as_text:21 ../templates/profile/kugng/managecollection_tit_as_html:397 ../templates/profile/kugng/managecollection_tit_as_text:66 ../templates/profile/kugng/search_showtitset:260 ../templates/search_showautset:57 ../templates/search_showkorset:58 ../templates/search_showmulttitset:99 ../templates/search_shownotset:57 ../templates/search_showswtset:59 ../templates/search_showtitset:291
 msgid "${thiscategory}"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:704 ../templates/database/inst001/search_showtitset:725 ../templates/database/nationallizenzen/search_showtitset:704 ../templates/database/spoho/search_showtitset:725 ../templates/database/umschlaege/search_showtitset:728 ../templates/profile/kugng/search_showtitset:400 ../templates/search_showtitset:716
+#: ../templates/database/ebooks/search_showtitset:704 ../templates/database/inst001/search_showtitset:725 ../templates/database/nationallizenzen/search_showtitset:704 ../templates/database/spoho/search_showtitset:725 ../templates/database/umschlaege/search_showtitset:728 ../templates/profile/kugng/search_showtitset:404 ../templates/search_showtitset:716
 #. (item.votes.positive,item.votes.all)
 msgid ""
 "%1\n"
@@ -50,7 +50,7 @@ msgstr ""
 msgid "%1 Titel in %2 Gruppen, %3 Literaturlisten"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:476 ../templates/database/ebooks/search_showtitset:504 ../templates/database/ebooks/search_showtitset:569 ../templates/database/ebooks/search_showtitset:597 ../templates/database/inst001/search_showtitset:497 ../templates/database/inst001/search_showtitset:525 ../templates/database/inst001/search_showtitset:590 ../templates/database/inst001/search_showtitset:618 ../templates/database/nationallizenzen/search_showtitset:476 ../templates/database/nationallizenzen/search_showtitset:504 ../templates/database/nationallizenzen/search_showtitset:569 ../templates/database/nationallizenzen/search_showtitset:597 ../templates/database/spoho/search_showtitset:497 ../templates/database/spoho/search_showtitset:525 ../templates/database/spoho/search_showtitset:590 ../templates/database/spoho/search_showtitset:618 ../templates/database/umschlaege/search_showtitset:500 ../templates/database/umschlaege/search_showtitset:528 ../templates/database/umschlaege/search_showtitset:593 ../templates/database/umschlaege/search_showtitset:621 ../templates/profile/kugng/managecollection_tit_as_html:122 ../templates/profile/kugng/search_showtitset:590 ../templates/profile/kugng/search_showtitset:618 ../templates/profile/kugng/search_showtitset:660 ../templates/profile/kugng/search_showtitset:688 ../templates/search_showtitset:488 ../templates/search_showtitset:516 ../templates/search_showtitset:581 ../templates/search_showtitset:609
+#: ../templates/database/ebooks/search_showtitset:476 ../templates/database/ebooks/search_showtitset:504 ../templates/database/ebooks/search_showtitset:569 ../templates/database/ebooks/search_showtitset:597 ../templates/database/inst001/search_showtitset:497 ../templates/database/inst001/search_showtitset:525 ../templates/database/inst001/search_showtitset:590 ../templates/database/inst001/search_showtitset:618 ../templates/database/nationallizenzen/search_showtitset:476 ../templates/database/nationallizenzen/search_showtitset:504 ../templates/database/nationallizenzen/search_showtitset:569 ../templates/database/nationallizenzen/search_showtitset:597 ../templates/database/spoho/search_showtitset:497 ../templates/database/spoho/search_showtitset:525 ../templates/database/spoho/search_showtitset:590 ../templates/database/spoho/search_showtitset:618 ../templates/database/umschlaege/search_showtitset:500 ../templates/database/umschlaege/search_showtitset:528 ../templates/database/umschlaege/search_showtitset:593 ../templates/database/umschlaege/search_showtitset:621 ../templates/profile/kugng/managecollection_tit_as_html:122 ../templates/profile/kugng/search_showtitset:599 ../templates/profile/kugng/search_showtitset:627 ../templates/profile/kugng/search_showtitset:667 ../templates/profile/kugng/search_showtitset:695 ../templates/search_showtitset:488 ../templates/search_showtitset:516 ../templates/search_showtitset:581 ../templates/search_showtitset:609
 #. (itemcount)
 msgid ""
 "%1 Titel sind\n"
@@ -68,7 +68,7 @@ msgid ""
 "Popularit&auml;ts-Funktionen an. Es sind dies"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:540 ../templates/database/inst001/search_showtitset:561 ../templates/database/nationallizenzen/search_showtitset:540 ../templates/database/spoho/search_showtitset:561 ../templates/database/umschlaege/search_showtitset:564 ../templates/litlists_manage_singlelist:41 ../templates/profile/kugng/litlists_manage_singlelist:42 ../templates/profile/kugng/search_showtitset:636 ../templates/profile/kugng/userprefs:168 ../templates/profile/kugng/userprefs:186 ../templates/search_showtitset:552 ../templates/userprefs:170
+#: ../templates/database/ebooks/search_showtitset:540 ../templates/database/inst001/search_showtitset:561 ../templates/database/nationallizenzen/search_showtitset:540 ../templates/database/spoho/search_showtitset:561 ../templates/database/umschlaege/search_showtitset:564 ../templates/litlists_manage_singlelist:41 ../templates/profile/kugng/litlists_manage_singlelist:42 ../templates/profile/kugng/search_showtitset:645 ../templates/profile/kugng/userprefs:168 ../templates/profile/kugng/userprefs:186 ../templates/search_showtitset:552 ../templates/userprefs:170
 msgid "&Auml;ndern"
 msgstr ""
 
@@ -96,11 +96,11 @@ msgstr ""
 msgid "&Uuml;bernahme der F&auml;cherstruktur der Erwerbung"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:629 ../templates/database/inst001/search_showtitset:650 ../templates/database/nationallizenzen/search_showtitset:629 ../templates/database/spoho/search_showtitset:650 ../templates/database/umschlaege/search_showtitset:653 ../templates/profile/kugng/search_showtitset:531 ../templates/search_showtitset:641
+#: ../templates/database/ebooks/search_showtitset:629 ../templates/database/inst001/search_showtitset:650 ../templates/database/nationallizenzen/search_showtitset:629 ../templates/database/spoho/search_showtitset:650 ../templates/database/umschlaege/search_showtitset:653 ../templates/profile/kugng/search_showtitset:548 ../templates/search_showtitset:641
 msgid "&Uuml;bernahme dieses Titels in die bestehende Literaturliste: "
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:632 ../templates/database/inst001/search_showtitset:653 ../templates/database/nationallizenzen/search_showtitset:632 ../templates/database/spoho/search_showtitset:653 ../templates/database/umschlaege/search_showtitset:656 ../templates/profile/kugng/search_showtitset:533 ../templates/search_showtitset:644
+#: ../templates/database/ebooks/search_showtitset:632 ../templates/database/inst001/search_showtitset:653 ../templates/database/nationallizenzen/search_showtitset:632 ../templates/database/spoho/search_showtitset:653 ../templates/database/umschlaege/search_showtitset:656 ../templates/profile/kugng/search_showtitset:550 ../templates/search_showtitset:644
 msgid "&Uuml;bernahme dieses Titels in eine neue Literaturliste: "
 msgstr ""
 
@@ -144,7 +144,7 @@ msgstr ""
 msgid "&ntilde; <i>suchen mit:</i> n"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:447 ../templates/database/ebooks/search_showtitset:540 ../templates/database/ebooks/search_showtitset:632 ../templates/database/inst001/search_showtitset:468 ../templates/database/inst001/search_showtitset:561 ../templates/database/inst001/search_showtitset:653 ../templates/database/nationallizenzen/search_showtitset:447 ../templates/database/nationallizenzen/search_showtitset:540 ../templates/database/nationallizenzen/search_showtitset:632 ../templates/database/spoho/search_showtitset:468 ../templates/database/spoho/search_showtitset:561 ../templates/database/spoho/search_showtitset:653 ../templates/database/umschlaege/search_showtitset:471 ../templates/database/umschlaege/search_showtitset:564 ../templates/database/umschlaege/search_showtitset:656 ../templates/litlists_manage_lists:39 ../templates/litlists_manage_lists:62 ../templates/litlists_manage_singlelist:40 ../templates/managecollection_show:99 ../templates/profile/kugng/litlists_manage_lists:39 ../templates/profile/kugng/litlists_manage_lists:76 ../templates/profile/kugng/litlists_manage_singlelist:41 ../templates/profile/kugng/managecollection_tit_as_html:77 ../templates/profile/kugng/managecollection_tit_as_html:99 ../templates/profile/kugng/search_showtitset:533 ../templates/profile/kugng/search_showtitset:563 ../templates/profile/kugng/search_showtitset:636 ../templates/search_showtitset:459 ../templates/search_showtitset:552 ../templates/search_showtitset:644 ../templates/views/einbaende/managecollection_show:101 ../templates/views/umschlaege/managecollection_show:97
+#: ../templates/database/ebooks/search_showtitset:447 ../templates/database/ebooks/search_showtitset:540 ../templates/database/ebooks/search_showtitset:632 ../templates/database/inst001/search_showtitset:468 ../templates/database/inst001/search_showtitset:561 ../templates/database/inst001/search_showtitset:653 ../templates/database/nationallizenzen/search_showtitset:447 ../templates/database/nationallizenzen/search_showtitset:540 ../templates/database/nationallizenzen/search_showtitset:632 ../templates/database/spoho/search_showtitset:468 ../templates/database/spoho/search_showtitset:561 ../templates/database/spoho/search_showtitset:653 ../templates/database/umschlaege/search_showtitset:471 ../templates/database/umschlaege/search_showtitset:564 ../templates/database/umschlaege/search_showtitset:656 ../templates/litlists_manage_lists:39 ../templates/litlists_manage_lists:62 ../templates/litlists_manage_singlelist:40 ../templates/managecollection_show:99 ../templates/profile/kugng/litlists_manage_lists:39 ../templates/profile/kugng/litlists_manage_lists:76 ../templates/profile/kugng/litlists_manage_singlelist:41 ../templates/profile/kugng/managecollection_tit_as_html:100 ../templates/profile/kugng/managecollection_tit_as_html:79 ../templates/profile/kugng/search_showtitset:550 ../templates/profile/kugng/search_showtitset:574 ../templates/profile/kugng/search_showtitset:645 ../templates/search_showtitset:459 ../templates/search_showtitset:552 ../templates/search_showtitset:644 ../templates/views/einbaende/managecollection_show:101 ../templates/views/umschlaege/managecollection_show:97
 msgid "&ouml;ffentlich"
 msgstr ""
 
@@ -156,11 +156,11 @@ msgstr ""
 msgid "<b>Ausgew&auml;hlte Titel</b> aus der Merkliste entfernen"
 msgstr ""
 
-#: ../templates/managecollection_show:79 ../templates/profile/kugng/managecollection_tit_as_html:71 ../templates/views/einbaende/managecollection_show:81 ../templates/views/umschlaege/managecollection_show:77
+#: ../templates/managecollection_show:79 ../templates/profile/kugng/managecollection_tit_as_html:73 ../templates/views/einbaende/managecollection_show:81 ../templates/views/umschlaege/managecollection_show:77
 msgid "<b>Ausgew&auml;hlte Titel</b> in die bestehende Literaturliste &uuml;bernehmen: "
 msgstr ""
 
-#: ../templates/profile/kugng/managecollection_tit_as_html:86
+#: ../templates/profile/kugng/managecollection_tit_as_html:93
 msgid ""
 "<b>Ausgew&auml;hlte Titel</b> mit diesen Tags\n"
 "versehen: "
@@ -307,7 +307,7 @@ msgstr ""
 msgid "Abschicken"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:56 ../templates/database/einbaende/search_showtitset:44 ../templates/database/einbaende/search_showtitset_1:44 ../templates/database/inst001/search_showtitset:58 ../templates/database/landschaft/search_showtitset:40 ../templates/database/nationallizenzen/search_showtitset:56 ../templates/database/portrait/search_showtitset:40 ../templates/database/spoho/search_showtitset:56 ../templates/database/umschlaege/search_showtitset:56 ../templates/managecollection_show:89 ../templates/profile/kuglight/managecollection_show:76 ../templates/profile/kuglight/search_showtitset:56 ../templates/profile/kugng/managecollection_tit_as_bibtex:22 ../templates/profile/kugng/managecollection_tit_as_bibtex:23 ../templates/profile/kugng/managecollection_tit_as_endnote:22 ../templates/profile/kugng/managecollection_tit_as_endnote:23 ../templates/profile/kugng/managecollection_tit_as_html:38 ../templates/profile/kugng/managecollection_tit_as_html:39 ../templates/profile/kugng/managecollection_tit_as_text:22 ../templates/profile/kugng/managecollection_tit_as_text:23 ../templates/profile/kugng/search_showtitset:506 ../templates/profile/kugng/search_showtitset:507 ../templates/search_showtitset:56 ../templates/views/einbaende/managecollection_show:91 ../templates/views/umschlaege/managecollection_show:87
+#: ../templates/database/ebooks/search_showtitset:56 ../templates/database/einbaende/search_showtitset:44 ../templates/database/einbaende/search_showtitset_1:44 ../templates/database/inst001/search_showtitset:58 ../templates/database/landschaft/search_showtitset:40 ../templates/database/nationallizenzen/search_showtitset:56 ../templates/database/portrait/search_showtitset:40 ../templates/database/spoho/search_showtitset:56 ../templates/database/umschlaege/search_showtitset:56 ../templates/managecollection_show:89 ../templates/profile/kuglight/managecollection_show:76 ../templates/profile/kuglight/search_showtitset:56 ../templates/profile/kugng/managecollection_tit_as_bibtex:22 ../templates/profile/kugng/managecollection_tit_as_bibtex:23 ../templates/profile/kugng/managecollection_tit_as_endnote:22 ../templates/profile/kugng/managecollection_tit_as_endnote:23 ../templates/profile/kugng/managecollection_tit_as_html:38 ../templates/profile/kugng/managecollection_tit_as_html:39 ../templates/profile/kugng/managecollection_tit_as_text:22 ../templates/profile/kugng/managecollection_tit_as_text:23 ../templates/profile/kugng/search_showtitset:523 ../templates/profile/kugng/search_showtitset:524 ../templates/search_showtitset:56 ../templates/views/einbaende/managecollection_show:91 ../templates/views/umschlaege/managecollection_show:87
 msgid "Abspeichern"
 msgstr ""
 
@@ -428,11 +428,11 @@ msgid ""
 "      recherchieren."
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:55 ../templates/database/einbaende/search_showtitset:43 ../templates/database/einbaende/search_showtitset_1:43 ../templates/database/inst001/search_showtitset:57 ../templates/database/landschaft/search_showtitset:39 ../templates/database/nationallizenzen/search_showtitset:55 ../templates/database/portrait/search_showtitset:39 ../templates/database/spoho/search_showtitset:55 ../templates/database/umschlaege/search_showtitset:55 ../templates/managecollection_show:88 ../templates/profile/kuglight/managecollection_show:75 ../templates/profile/kuglight/search_showtitset:55 ../templates/profile/kugng/managecollection_tit_as_bibtex:28 ../templates/profile/kugng/managecollection_tit_as_bibtex:29 ../templates/profile/kugng/managecollection_tit_as_endnote:28 ../templates/profile/kugng/managecollection_tit_as_endnote:29 ../templates/profile/kugng/managecollection_tit_as_html:44 ../templates/profile/kugng/managecollection_tit_as_html:45 ../templates/profile/kugng/managecollection_tit_as_text:28 ../templates/profile/kugng/managecollection_tit_as_text:29 ../templates/profile/kugng/search_showtitset:504 ../templates/profile/kugng/search_showtitset:505 ../templates/search_showtitset:55 ../templates/views/einbaende/managecollection_show:90 ../templates/views/umschlaege/managecollection_show:86
+#: ../templates/database/ebooks/search_showtitset:55 ../templates/database/einbaende/search_showtitset:43 ../templates/database/einbaende/search_showtitset_1:43 ../templates/database/inst001/search_showtitset:57 ../templates/database/landschaft/search_showtitset:39 ../templates/database/nationallizenzen/search_showtitset:55 ../templates/database/portrait/search_showtitset:39 ../templates/database/spoho/search_showtitset:55 ../templates/database/umschlaege/search_showtitset:55 ../templates/managecollection_show:88 ../templates/profile/kuglight/managecollection_show:75 ../templates/profile/kuglight/search_showtitset:55 ../templates/profile/kugng/managecollection_tit_as_bibtex:28 ../templates/profile/kugng/managecollection_tit_as_bibtex:29 ../templates/profile/kugng/managecollection_tit_as_endnote:28 ../templates/profile/kugng/managecollection_tit_as_endnote:29 ../templates/profile/kugng/managecollection_tit_as_html:44 ../templates/profile/kugng/managecollection_tit_as_html:45 ../templates/profile/kugng/managecollection_tit_as_text:28 ../templates/profile/kugng/managecollection_tit_as_text:29 ../templates/profile/kugng/search_showtitset:521 ../templates/profile/kugng/search_showtitset:522 ../templates/search_showtitset:55 ../templates/views/einbaende/managecollection_show:90 ../templates/views/umschlaege/managecollection_show:86
 msgid "Als Mail verschicken"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:58 ../templates/database/einbaende/search_showtitset:46 ../templates/database/inst001/search_showtitset:60 ../templates/database/nationallizenzen/search_showtitset:58 ../templates/database/spoho/search_showtitset:58 ../templates/database/umschlaege/search_showtitset:58 ../templates/litlists_manage_lists:66 ../templates/litlists_manage_singlelist:92 ../templates/litlists_show_singlelist:188 ../templates/litlists_show_singlelist:217 ../templates/litlists_show_singlelist:73 ../templates/profile/kuglight/search_showtitset:58 ../templates/profile/kugng/litlists_manage_lists:80 ../templates/profile/kugng/litlists_manage_singlelist:147 ../templates/profile/kugng/litlists_show_singlelist:118 ../templates/profile/kugng/litlists_show_singlelist:192 ../templates/profile/kugng/litlists_show_singlelist:221 ../templates/profile/kugng/search_showtitset:512 ../templates/search_showtitset:58
+#: ../templates/database/ebooks/search_showtitset:58 ../templates/database/einbaende/search_showtitset:46 ../templates/database/inst001/search_showtitset:60 ../templates/database/nationallizenzen/search_showtitset:58 ../templates/database/spoho/search_showtitset:58 ../templates/database/umschlaege/search_showtitset:58 ../templates/litlists_manage_lists:66 ../templates/litlists_manage_singlelist:92 ../templates/litlists_show_singlelist:188 ../templates/litlists_show_singlelist:217 ../templates/litlists_show_singlelist:73 ../templates/profile/kuglight/search_showtitset:58 ../templates/profile/kugng/litlists_manage_lists:80 ../templates/profile/kugng/litlists_manage_singlelist:147 ../templates/profile/kugng/litlists_show_singlelist:118 ../templates/profile/kugng/litlists_show_singlelist:192 ../templates/profile/kugng/litlists_show_singlelist:221 ../templates/profile/kugng/search_showtitset:529 ../templates/search_showtitset:58
 msgid "Als Permanenten Link verwenden"
 msgstr ""
 
@@ -452,7 +452,7 @@ msgstr ""
 msgid "Am Umschlag Beteiligte"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:53 ../templates/database/inst001/search_showtitset:55 ../templates/database/nationallizenzen/search_showtitset:53 ../templates/database/spoho/search_showtitset:53 ../templates/database/umschlaege/managecollection_tit_as_html:167 ../templates/database/umschlaege/search_showtitset:53 ../templates/info:969 ../templates/managecollection_tit_as_bibtex:20 ../templates/managecollection_tit_as_endnote:20 ../templates/managecollection_tit_as_html:159 ../templates/managecollection_tit_as_text:49 ../templates/profile/kuglight/search_showtitset:53 ../templates/profile/kugng/litlists_manage_singlelist:225 ../templates/profile/kugng/litlists_tit_as_html_short:61 ../templates/profile/kugng/managecollection_tit_as_html:206 ../templates/profile/kugng/resultlists_showall:156 ../templates/profile/kugng/resultlists_showall_sortall:137 ../templates/profile/kugng/resultlists_showsinglepool:156 ../templates/profile/kugng/search_showtitset:498 ../templates/profile/kugng/search_showtitset:499 ../templates/profile/kugng/tags_showtitlist:160 ../templates/profile/kugng/virtualsearch_result_item:135 ../templates/search_showtitset:53 ../templates/views/kug/info:969
+#: ../templates/database/ebooks/search_showtitset:53 ../templates/database/inst001/search_showtitset:55 ../templates/database/nationallizenzen/search_showtitset:53 ../templates/database/spoho/search_showtitset:53 ../templates/database/umschlaege/managecollection_tit_as_html:167 ../templates/database/umschlaege/search_showtitset:53 ../templates/info:969 ../templates/managecollection_tit_as_bibtex:20 ../templates/managecollection_tit_as_endnote:20 ../templates/managecollection_tit_as_html:159 ../templates/managecollection_tit_as_text:49 ../templates/profile/kuglight/search_showtitset:53 ../templates/profile/kugng/litlists_manage_singlelist:225 ../templates/profile/kugng/litlists_tit_as_html_short:61 ../templates/profile/kugng/managecollection_tit_as_html:206 ../templates/profile/kugng/resultlists_showall:156 ../templates/profile/kugng/resultlists_showall_sortall:137 ../templates/profile/kugng/resultlists_showsinglepool:156 ../templates/profile/kugng/search_showtitset:515 ../templates/profile/kugng/search_showtitset:516 ../templates/profile/kugng/tags_showtitlist:160 ../templates/profile/kugng/virtualsearch_result_item:135 ../templates/search_showtitset:53 ../templates/views/kug/info:969
 msgid "An BibSonomy senden"
 msgstr ""
 
@@ -460,7 +460,7 @@ msgstr ""
 msgid "An dieser Stelle k&ouml;nnen Sie ausgehend von Ihrer (eventuell erfolglosen) Suchanfrage im KUG Recherche-Portal diese auf weitere externe Kataloge ausdehnen."
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:397 ../templates/database/ebooks/search_showtitset:749 ../templates/database/inst001/search_showtitset:418 ../templates/database/inst001/search_showtitset:770 ../templates/database/nationallizenzen/search_showtitset:397 ../templates/database/nationallizenzen/search_showtitset:749 ../templates/database/spoho/search_showtitset:418 ../templates/database/spoho/search_showtitset:770 ../templates/database/umschlaege/search_showtitset:421 ../templates/database/umschlaege/search_showtitset:773 ../templates/profile/kugng/search_showtitset:314 ../templates/profile/kugng/search_showtitset:445 ../templates/search_showtitset:409 ../templates/search_showtitset:761
+#: ../templates/database/ebooks/search_showtitset:397 ../templates/database/ebooks/search_showtitset:749 ../templates/database/inst001/search_showtitset:418 ../templates/database/inst001/search_showtitset:770 ../templates/database/nationallizenzen/search_showtitset:397 ../templates/database/nationallizenzen/search_showtitset:749 ../templates/database/spoho/search_showtitset:418 ../templates/database/spoho/search_showtitset:770 ../templates/database/umschlaege/search_showtitset:421 ../templates/database/umschlaege/search_showtitset:773 ../templates/profile/kugng/search_showtitset:318 ../templates/profile/kugng/search_showtitset:449 ../templates/search_showtitset:409 ../templates/search_showtitset:761
 msgid "Andere Ausgaben"
 msgstr ""
 
@@ -484,7 +484,7 @@ msgstr ""
 msgid "Angelegt"
 msgstr ""
 
-#: ../templates/managecollection_show:99 ../templates/profile/kugng/managecollection_tit_as_html:77 ../templates/views/einbaende/managecollection_show:101 ../templates/views/umschlaege/managecollection_show:97
+#: ../templates/managecollection_show:99 ../templates/profile/kugng/managecollection_tit_as_html:79 ../templates/views/einbaende/managecollection_show:101 ../templates/views/umschlaege/managecollection_show:97
 msgid "Anlegen einer neuen Literaturliste: "
 msgstr ""
 
@@ -574,7 +574,7 @@ msgid ""
 "dieser Seite und kopieren ihn in Ihr RSS-Leseprogramm."
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:684 ../templates/database/inst001/search_showtitset:705 ../templates/database/nationallizenzen/search_showtitset:684 ../templates/database/spoho/search_showtitset:705 ../templates/database/umschlaege/search_showtitset:708 ../templates/profile/kugng/search_showtitset:380 ../templates/search_showtitset:696
+#: ../templates/database/ebooks/search_showtitset:684 ../templates/database/inst001/search_showtitset:705 ../templates/database/nationallizenzen/search_showtitset:684 ../templates/database/spoho/search_showtitset:705 ../templates/database/umschlaege/search_showtitset:708 ../templates/profile/kugng/search_showtitset:384 ../templates/search_showtitset:696
 msgid "Aufnehmen"
 msgstr ""
 
@@ -598,7 +598,7 @@ msgstr ""
 msgid "Aufschl&uuml;sselung der Zeitschriften nach Fachgebieten"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:57 ../templates/database/einbaende/search_showtitset:45 ../templates/database/einbaende/search_showtitset_1:45 ../templates/database/inst001/search_showtitset:59 ../templates/database/landschaft/search_showtitset:41 ../templates/database/nationallizenzen/search_showtitset:57 ../templates/database/portrait/search_showtitset:41 ../templates/database/spoho/search_showtitset:57 ../templates/database/umschlaege/search_showtitset:57 ../templates/profile/kuglight/search_showtitset:57 ../templates/profile/kugng/managecollection_tit_as_bibtex:24 ../templates/profile/kugng/managecollection_tit_as_bibtex:25 ../templates/profile/kugng/managecollection_tit_as_endnote:24 ../templates/profile/kugng/managecollection_tit_as_endnote:25 ../templates/profile/kugng/managecollection_tit_as_html:40 ../templates/profile/kugng/managecollection_tit_as_html:41 ../templates/profile/kugng/managecollection_tit_as_text:24 ../templates/profile/kugng/managecollection_tit_as_text:25 ../templates/profile/kugng/search_showtitset:510 ../templates/profile/kugng/search_showtitset:511 ../templates/search_showtitset:57
+#: ../templates/database/ebooks/search_showtitset:57 ../templates/database/einbaende/search_showtitset:45 ../templates/database/einbaende/search_showtitset_1:45 ../templates/database/inst001/search_showtitset:59 ../templates/database/landschaft/search_showtitset:41 ../templates/database/nationallizenzen/search_showtitset:57 ../templates/database/portrait/search_showtitset:41 ../templates/database/spoho/search_showtitset:57 ../templates/database/umschlaege/search_showtitset:57 ../templates/profile/kuglight/search_showtitset:57 ../templates/profile/kugng/managecollection_tit_as_bibtex:24 ../templates/profile/kugng/managecollection_tit_as_bibtex:25 ../templates/profile/kugng/managecollection_tit_as_endnote:24 ../templates/profile/kugng/managecollection_tit_as_endnote:25 ../templates/profile/kugng/managecollection_tit_as_html:40 ../templates/profile/kugng/managecollection_tit_as_html:41 ../templates/profile/kugng/managecollection_tit_as_text:24 ../templates/profile/kugng/managecollection_tit_as_text:25 ../templates/profile/kugng/search_showtitset:527 ../templates/profile/kugng/search_showtitset:528 ../templates/search_showtitset:57
 msgid "Ausdrucken"
 msgstr ""
 
@@ -618,7 +618,7 @@ msgstr ""
 msgid "Ausleih-Einstellungen"
 msgstr ""
 
-#: ../templates/circset:16 ../templates/database/ebooks/search_showtitset:370 ../templates/database/einbaende/managecollection_tit_as_html:130 ../templates/database/einbaende/search_showtitset:345 ../templates/database/inst001/circset:31 ../templates/database/landschaft/search_showtitset:168 ../templates/database/nationallizenzen/search_showtitset:370 ../templates/database/portrait/search_showtitset:189 ../templates/database/spoho/search_showtitset:391 ../templates/database/umschlaege/managecollection_tit_as_html:104 ../templates/database/umschlaege/search_showtitset:394 ../templates/managecollection_tit_as_html:96 ../templates/managecollection_tit_as_html_simple:63 ../templates/profile/kugng/search_showtitset:304 ../templates/profile/kugng/search_showtitset:323 ../templates/search_showmulttitset:130
+#: ../templates/circset:16 ../templates/database/ebooks/search_showtitset:370 ../templates/database/einbaende/managecollection_tit_as_html:130 ../templates/database/einbaende/search_showtitset:345 ../templates/database/inst001/circset:31 ../templates/database/landschaft/search_showtitset:168 ../templates/database/nationallizenzen/search_showtitset:370 ../templates/database/portrait/search_showtitset:189 ../templates/database/spoho/search_showtitset:391 ../templates/database/umschlaege/managecollection_tit_as_html:104 ../templates/database/umschlaege/search_showtitset:394 ../templates/managecollection_tit_as_html:96 ../templates/managecollection_tit_as_html_simple:63 ../templates/profile/kugng/search_showtitset:308 ../templates/profile/kugng/search_showtitset:327 ../templates/search_showmulttitset:130
 msgid "Ausleihe/Exemplare"
 msgstr ""
 
@@ -688,7 +688,7 @@ msgstr ""
 msgid "Behalten Sie diese Liste"
 msgstr ""
 
-#: ../templates/profile/kugng/search_showtitset:495
+#: ../templates/profile/kugng/search_showtitset:512
 msgid "Behalten Sie diesen Titel"
 msgstr ""
 
@@ -869,15 +869,15 @@ msgstr ""
 msgid "Betreff"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:666 ../templates/database/inst001/search_showtitset:687 ../templates/database/nationallizenzen/search_showtitset:666 ../templates/database/spoho/search_showtitset:687 ../templates/database/umschlaege/search_showtitset:690 ../templates/profile/kugng/search_showtitset:362 ../templates/search_showtitset:678
+#: ../templates/database/ebooks/search_showtitset:666 ../templates/database/inst001/search_showtitset:687 ../templates/database/nationallizenzen/search_showtitset:666 ../templates/database/spoho/search_showtitset:687 ../templates/database/umschlaege/search_showtitset:690 ../templates/profile/kugng/search_showtitset:366 ../templates/search_showtitset:678
 msgid "Bewertung"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:391 ../templates/database/ebooks/search_showtitset:644 ../templates/database/inst001/search_showtitset:412 ../templates/database/inst001/search_showtitset:665 ../templates/database/nationallizenzen/search_showtitset:391 ../templates/database/nationallizenzen/search_showtitset:644 ../templates/database/spoho/search_showtitset:412 ../templates/database/spoho/search_showtitset:665 ../templates/database/umschlaege/search_showtitset:415 ../templates/database/umschlaege/search_showtitset:668 ../templates/profile/kugng/search_showtitset:317 ../templates/profile/kugng/search_showtitset:340 ../templates/search_showtitset:403 ../templates/search_showtitset:656
+#: ../templates/database/ebooks/search_showtitset:391 ../templates/database/ebooks/search_showtitset:644 ../templates/database/inst001/search_showtitset:412 ../templates/database/inst001/search_showtitset:665 ../templates/database/nationallizenzen/search_showtitset:391 ../templates/database/nationallizenzen/search_showtitset:644 ../templates/database/spoho/search_showtitset:412 ../templates/database/spoho/search_showtitset:665 ../templates/database/umschlaege/search_showtitset:415 ../templates/database/umschlaege/search_showtitset:668 ../templates/profile/kugng/search_showtitset:321 ../templates/profile/kugng/search_showtitset:344 ../templates/search_showtitset:403 ../templates/search_showtitset:656
 msgid "Bewertungen/Rezensionen"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:698 ../templates/database/inst001/search_showtitset:719 ../templates/database/nationallizenzen/search_showtitset:698 ../templates/database/spoho/search_showtitset:719 ../templates/database/umschlaege/search_showtitset:722 ../templates/profile/kugng/search_showtitset:394 ../templates/search_showtitset:710
+#: ../templates/database/ebooks/search_showtitset:698 ../templates/database/inst001/search_showtitset:719 ../templates/database/nationallizenzen/search_showtitset:698 ../templates/database/spoho/search_showtitset:719 ../templates/database/umschlaege/search_showtitset:722 ../templates/profile/kugng/search_showtitset:398 ../templates/search_showtitset:710
 msgid "Bewertungen/Rezensionen von Nutzern"
 msgstr ""
 
@@ -885,7 +885,7 @@ msgstr ""
 msgid "BibSonomy"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:350 ../templates/database/inst001/search_showtitset:377 ../templates/database/nationallizenzen/search_showtitset:350 ../templates/database/spoho/search_showtitset:371 ../templates/database/umschlaege/search_showtitset:374 ../templates/profile/kugng/search_showtitset:770 ../templates/search_showtitset:367
+#: ../templates/database/ebooks/search_showtitset:350 ../templates/database/inst001/search_showtitset:377 ../templates/database/nationallizenzen/search_showtitset:350 ../templates/database/spoho/search_showtitset:371 ../templates/database/umschlaege/search_showtitset:374 ../templates/profile/kugng/search_showtitset:775 ../templates/search_showtitset:367
 msgid "BibSonomy Tags"
 msgstr ""
 
@@ -895,6 +895,10 @@ msgstr ""
 
 #: ../templates/profile/kugng/userprefs:183 ../templates/userprefs:167
 msgid "BibSonomy-API-User"
+msgstr ""
+
+#: ../templates/admin_editlibinfo:34
+msgid "Bibliotheksinformationen bearbeiten"
 msgstr ""
 
 #: ../templates/database/umschlaege/managecollection_tit_as_html:30 ../templates/database/umschlaege/search_showtitset:74
@@ -909,8 +913,12 @@ msgstr ""
 msgid "Bildtitelwort(e)"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:481 ../templates/database/ebooks/search_showtitset:574 ../templates/database/inst001/search_showtitset:502 ../templates/database/inst001/search_showtitset:595 ../templates/database/nationallizenzen/search_showtitset:481 ../templates/database/nationallizenzen/search_showtitset:574 ../templates/database/spoho/search_showtitset:502 ../templates/database/spoho/search_showtitset:595 ../templates/database/umschlaege/search_showtitset:505 ../templates/database/umschlaege/search_showtitset:598 ../templates/profile/kugng/managecollection_tit_as_html:127 ../templates/profile/kugng/search_showtitset:595 ../templates/profile/kugng/search_showtitset:665 ../templates/search_showtitset:493 ../templates/search_showtitset:586
+#: ../templates/database/ebooks/search_showtitset:481 ../templates/database/ebooks/search_showtitset:574 ../templates/database/inst001/search_showtitset:502 ../templates/database/inst001/search_showtitset:595 ../templates/database/nationallizenzen/search_showtitset:481 ../templates/database/nationallizenzen/search_showtitset:574 ../templates/database/spoho/search_showtitset:502 ../templates/database/spoho/search_showtitset:595 ../templates/database/umschlaege/search_showtitset:505 ../templates/database/umschlaege/search_showtitset:598 ../templates/profile/kugng/managecollection_tit_as_html:127 ../templates/profile/kugng/search_showtitset:604 ../templates/profile/kugng/search_showtitset:672 ../templates/search_showtitset:493 ../templates/search_showtitset:586
 msgid "Bisher haben Sie noch keine Tags vergeben."
+msgstr ""
+
+#: ../modules/OpenBib/Handler/Apache/ManageCollection.pm:282
+msgid "Bitte authentifizieren Sie sich unter Mein KUG."
 msgstr ""
 
 #: ../templates/info_15:85 ../templates/profile/kugng/info_15:74
@@ -921,7 +929,7 @@ msgstr ""
 msgid "Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:1149
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:1249
 msgid "Bitte geben Sie ein Anfangs- sowie ein End-Datum an!"
 msgstr ""
 
@@ -1079,7 +1087,7 @@ msgstr ""
 msgid "Der Titel ist hier abholbar"
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/ManageCollection.pm:154
+#: ../modules/OpenBib/Handler/Apache/ManageCollection.pm:170
 msgid "Der Titel wurde zu Ihrer Merkliste hinzugef&uuml;gt."
 msgstr ""
 
@@ -1091,7 +1099,7 @@ msgstr ""
 msgid "Derzeit existiert (noch) keine Trefferliste"
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/ManageCollection.pm:248
+#: ../modules/OpenBib/Handler/Apache/ManageCollection.pm:305
 msgid "Derzeit ist Ihre Merkliste leer"
 msgstr ""
 
@@ -1099,7 +1107,7 @@ msgstr ""
 msgid "Derzeit werden folgende externe Recherchequellen angeboten:"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:289 ../templates/database/inst001/search_showtitset:316 ../templates/database/nationallizenzen/search_showtitset:289 ../templates/database/spoho/search_showtitset:310 ../templates/database/umschlaege/search_showtitset:313 ../templates/profile/kugng/litlists_tit_as_html_full:204 ../templates/profile/kugng/managecollection_tit_as_html:417 ../templates/profile/kugng/search_showtitset:280 ../templates/search_showtitset:306
+#: ../templates/database/ebooks/search_showtitset:289 ../templates/database/inst001/search_showtitset:316 ../templates/database/nationallizenzen/search_showtitset:289 ../templates/database/spoho/search_showtitset:310 ../templates/database/umschlaege/search_showtitset:313 ../templates/profile/kugng/litlists_tit_as_html_full:204 ../templates/profile/kugng/managecollection_tit_as_html:417 ../templates/profile/kugng/search_showtitset:284 ../templates/search_showtitset:306
 msgid "Deutsche Wikipedia"
 msgstr ""
 
@@ -1261,7 +1269,7 @@ msgid ""
 "          Hauptmenu-Eintrag <b>RSS</b> angeboten"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:323 ../templates/database/inst001/search_showtitset:350 ../templates/database/nationallizenzen/search_showtitset:323 ../templates/database/spoho/search_showtitset:344 ../templates/database/umschlaege/search_showtitset:347 ../templates/profile/kugng/search_showtitset:736 ../templates/search_showtitset:340
+#: ../templates/database/ebooks/search_showtitset:323 ../templates/database/inst001/search_showtitset:350 ../templates/database/nationallizenzen/search_showtitset:323 ../templates/database/spoho/search_showtitset:344 ../templates/database/umschlaege/search_showtitset:347 ../templates/profile/kugng/search_showtitset:743 ../templates/search_showtitset:340
 msgid "Dieser Titel befindet sich in folgenden Literaturlisten"
 msgstr ""
 
@@ -1273,7 +1281,7 @@ msgstr ""
 msgid "Dieser Titel konnte nicht in den Katalogen des KUG gefunden werden. Er kann dennoch in anderer Schreibweise existieren!"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:286 ../templates/database/inst001/search_showtitset:313 ../templates/database/nationallizenzen/search_showtitset:286 ../templates/database/spoho/search_showtitset:307 ../templates/database/umschlaege/search_showtitset:310 ../templates/profile/kugng/litlists_tit_as_html_full:201 ../templates/profile/kugng/managecollection_tit_as_html:414 ../templates/profile/kugng/search_showtitset:277 ../templates/search_showtitset:303
+#: ../templates/database/ebooks/search_showtitset:286 ../templates/database/inst001/search_showtitset:313 ../templates/database/nationallizenzen/search_showtitset:286 ../templates/database/spoho/search_showtitset:307 ../templates/database/umschlaege/search_showtitset:310 ../templates/profile/kugng/litlists_tit_as_html_full:201 ../templates/profile/kugng/managecollection_tit_as_html:414 ../templates/profile/kugng/search_showtitset:281 ../templates/search_showtitset:303
 msgid "Dieses Buch ist in Wikipedia erw&auml;hnt unter"
 msgstr ""
 
@@ -1359,11 +1367,11 @@ msgstr ""
 msgid "Eigene Tags"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:710 ../templates/database/inst001/search_showtitset:731 ../templates/database/nationallizenzen/search_showtitset:710 ../templates/database/spoho/search_showtitset:731 ../templates/database/umschlaege/search_showtitset:734 ../templates/profile/kugng/search_showtitset:406 ../templates/search_showtitset:722
+#: ../templates/database/ebooks/search_showtitset:710 ../templates/database/inst001/search_showtitset:731 ../templates/database/nationallizenzen/search_showtitset:710 ../templates/database/spoho/search_showtitset:731 ../templates/database/umschlaege/search_showtitset:734 ../templates/profile/kugng/search_showtitset:410 ../templates/search_showtitset:722
 msgid "Eigenen Review bearbeiten"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:712 ../templates/database/inst001/search_showtitset:733 ../templates/database/nationallizenzen/search_showtitset:712 ../templates/database/spoho/search_showtitset:733 ../templates/database/umschlaege/search_showtitset:736 ../templates/profile/kugng/search_showtitset:408 ../templates/search_showtitset:724
+#: ../templates/database/ebooks/search_showtitset:712 ../templates/database/inst001/search_showtitset:733 ../templates/database/nationallizenzen/search_showtitset:712 ../templates/database/spoho/search_showtitset:733 ../templates/database/umschlaege/search_showtitset:736 ../templates/profile/kugng/search_showtitset:412 ../templates/search_showtitset:724
 msgid "Eigenen Review l&ouml;schen"
 msgstr ""
 
@@ -1421,7 +1429,7 @@ msgstr ""
 msgid "Einfache Suche"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:438 ../templates/database/inst001/search_showtitset:459 ../templates/database/nationallizenzen/search_showtitset:438 ../templates/database/spoho/search_showtitset:459 ../templates/database/umschlaege/search_showtitset:462 ../templates/profile/kugng/managecollection_tit_as_html:90 ../templates/profile/kugng/search_showtitset:554 ../templates/search_showtitset:450
+#: ../templates/database/ebooks/search_showtitset:438 ../templates/database/inst001/search_showtitset:459 ../templates/database/nationallizenzen/search_showtitset:438 ../templates/database/spoho/search_showtitset:459 ../templates/database/umschlaege/search_showtitset:462 ../templates/profile/kugng/managecollection_tit_as_html:97 ../templates/profile/kugng/search_showtitset:565 ../templates/search_showtitset:450
 msgid "Eingabe neuer Tags"
 msgstr ""
 
@@ -1470,19 +1478,19 @@ msgstr ""
 msgid "Elektronische Zeitschriftendatenbank (EZB) %1"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:384 ../templates/database/ebooks/search_showtitset:402 ../templates/database/inst001/search_showtitset:405 ../templates/database/inst001/search_showtitset:423 ../templates/database/nationallizenzen/search_showtitset:384 ../templates/database/nationallizenzen/search_showtitset:402 ../templates/database/spoho/search_showtitset:405 ../templates/database/spoho/search_showtitset:423 ../templates/database/umschlaege/search_showtitset:408 ../templates/database/umschlaege/search_showtitset:426 ../templates/profile/kugng/search_showtitset:712 ../templates/search_showtitset:396 ../templates/search_showtitset:414
+#: ../templates/database/ebooks/search_showtitset:384 ../templates/database/ebooks/search_showtitset:402 ../templates/database/inst001/search_showtitset:405 ../templates/database/inst001/search_showtitset:423 ../templates/database/nationallizenzen/search_showtitset:384 ../templates/database/nationallizenzen/search_showtitset:402 ../templates/database/spoho/search_showtitset:405 ../templates/database/spoho/search_showtitset:423 ../templates/database/umschlaege/search_showtitset:408 ../templates/database/umschlaege/search_showtitset:426 ../templates/profile/kugng/search_showtitset:719 ../templates/search_showtitset:396 ../templates/search_showtitset:414
 msgid "Empfehlungen"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:294 ../templates/database/inst001/search_showtitset:321 ../templates/database/nationallizenzen/search_showtitset:294 ../templates/database/spoho/search_showtitset:315 ../templates/database/umschlaege/search_showtitset:318 ../templates/profile/kugng/litlists_tit_as_html_full:209 ../templates/profile/kugng/managecollection_tit_as_html:422 ../templates/profile/kugng/search_showtitset:285 ../templates/search_showtitset:311
+#: ../templates/database/ebooks/search_showtitset:294 ../templates/database/inst001/search_showtitset:321 ../templates/database/nationallizenzen/search_showtitset:294 ../templates/database/spoho/search_showtitset:315 ../templates/database/umschlaege/search_showtitset:318 ../templates/profile/kugng/litlists_tit_as_html_full:209 ../templates/profile/kugng/managecollection_tit_as_html:422 ../templates/profile/kugng/search_showtitset:289 ../templates/search_showtitset:311
 msgid "Englische Wikipedia"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:318 ../templates/database/inst001/search_showtitset:345 ../templates/database/nationallizenzen/search_showtitset:318 ../templates/database/spoho/search_showtitset:339 ../templates/database/umschlaege/search_showtitset:342 ../templates/profile/kugng/search_showtitset:707 ../templates/search_showtitset:335
+#: ../templates/database/ebooks/search_showtitset:318 ../templates/database/inst001/search_showtitset:345 ../templates/database/nationallizenzen/search_showtitset:318 ../templates/database/spoho/search_showtitset:339 ../templates/database/umschlaege/search_showtitset:342 ../templates/profile/kugng/search_showtitset:714 ../templates/search_showtitset:335
 msgid "Entdecken Sie weitere Titel &uuml;ber:"
 msgstr ""
 
-#: ../templates/litlists_manage_lists:66 ../templates/litlists_manage_singlelist:158 ../templates/profile/kugng/litlists_manage_lists:80 ../templates/profile/kugng/litlists_manage_singlelist:225 ../templates/profile/kugng/managecollection_tit_as_html:207
+#: ../templates/litlists_manage_lists:66 ../templates/litlists_manage_singlelist:158 ../templates/profile/kugng/litlists_manage_lists:80 ../templates/profile/kugng/litlists_manage_singlelist:225 ../templates/profile/kugng/managecollection_tit_as_html:207 ../templates/profile/kugng/tags_showtitlist:162
 msgid "Entfernen"
 msgstr ""
 
@@ -1534,19 +1542,19 @@ msgstr ""
 msgid "Erwerbungsstatus"
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:1284
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:1384
 msgid "Es existiert bereits ein Anmeldeziel unter diesem Namen"
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:354
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:411
 msgid "Es existiert bereits ein Katalog unter diesem Namen"
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:691
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:791
 msgid "Es existiert bereits ein Themengebiet unter diesem Namen"
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:581 ../modules/OpenBib/Handler/Apache/Admin.pm:800
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:681 ../modules/OpenBib/Handler/Apache/Admin.pm:900
 msgid "Es existiert bereits ein View unter diesem Namen"
 msgstr ""
 
@@ -1738,7 +1746,7 @@ msgstr ""
 msgid "Fragen und Anmerkungen richten Sie bitte an:"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:299 ../templates/database/inst001/search_showtitset:326 ../templates/database/nationallizenzen/search_showtitset:299 ../templates/database/spoho/search_showtitset:320 ../templates/database/umschlaege/search_showtitset:323 ../templates/profile/kugng/litlists_tit_as_html_full:214 ../templates/profile/kugng/managecollection_tit_as_html:427 ../templates/profile/kugng/search_showtitset:290 ../templates/search_showtitset:316
+#: ../templates/database/ebooks/search_showtitset:299 ../templates/database/inst001/search_showtitset:326 ../templates/database/nationallizenzen/search_showtitset:299 ../templates/database/spoho/search_showtitset:320 ../templates/database/umschlaege/search_showtitset:323 ../templates/profile/kugng/litlists_tit_as_html_full:214 ../templates/profile/kugng/managecollection_tit_as_html:427 ../templates/profile/kugng/search_showtitset:294 ../templates/search_showtitset:316
 msgid "Franz&ouml;sische Wikipedia"
 msgstr ""
 
@@ -1967,7 +1975,7 @@ msgid ""
 "Suchm&ouml;glichkeiten erhalten Sie %1hier%2"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:447 ../templates/database/inst001/search_showtitset:468 ../templates/database/nationallizenzen/search_showtitset:447 ../templates/database/spoho/search_showtitset:468 ../templates/database/umschlaege/search_showtitset:471 ../templates/profile/kugng/managecollection_tit_as_html:99 ../templates/profile/kugng/search_showtitset:563 ../templates/search_showtitset:459
+#: ../templates/database/ebooks/search_showtitset:447 ../templates/database/inst001/search_showtitset:468 ../templates/database/nationallizenzen/search_showtitset:447 ../templates/database/spoho/search_showtitset:468 ../templates/database/umschlaege/search_showtitset:471 ../templates/profile/kugng/managecollection_tit_as_html:100 ../templates/profile/kugng/search_showtitset:574 ../templates/search_showtitset:459
 msgid "Hinzuf&uuml;gen"
 msgstr ""
 
@@ -1981,6 +1989,110 @@ msgstr ""
 
 #: ../templates/admin_editlogintarget:42 ../templates/admin_showlogintarget:41 ../templates/admin_showlogintarget:59
 msgid "Hostname"
+msgstr ""
+
+#: ../templates/visible_categories_libinfoset:17
+msgid "I0010"
+msgstr ""
+
+#: ../templates/visible_categories_libinfoset:18
+msgid "I0020"
+msgstr ""
+
+#: ../templates/visible_categories_libinfoset:19
+msgid "I0030"
+msgstr ""
+
+#: ../templates/visible_categories_libinfoset:20
+msgid "I0040"
+msgstr ""
+
+#: ../templates/visible_categories_libinfoset:21
+msgid "I0050"
+msgstr ""
+
+#: ../templates/visible_categories_libinfoset:22
+msgid "I0060"
+msgstr ""
+
+#: ../templates/visible_categories_libinfoset:23
+msgid "I0070"
+msgstr ""
+
+#: ../templates/visible_categories_libinfoset:24
+msgid "I0080"
+msgstr ""
+
+#: ../templates/visible_categories_libinfoset:25
+msgid "I0090"
+msgstr ""
+
+#: ../templates/visible_categories_libinfoset:26
+msgid "I0100"
+msgstr ""
+
+#: ../templates/visible_categories_libinfoset:27
+msgid "I0110"
+msgstr ""
+
+#: ../templates/visible_categories_libinfoset:28
+msgid "I0120"
+msgstr ""
+
+#: ../templates/visible_categories_libinfoset:29
+msgid "I0130"
+msgstr ""
+
+#: ../templates/visible_categories_libinfoset:30
+msgid "I0140"
+msgstr ""
+
+#: ../templates/visible_categories_libinfoset:31
+msgid "I0150"
+msgstr ""
+
+#: ../templates/visible_categories_libinfoset:32
+msgid "I0160"
+msgstr ""
+
+#: ../templates/visible_categories_libinfoset:33
+msgid "I0170"
+msgstr ""
+
+#: ../templates/visible_categories_libinfoset:34
+msgid "I0180"
+msgstr ""
+
+#: ../templates/visible_categories_libinfoset:35
+msgid "I0190"
+msgstr ""
+
+#: ../templates/visible_categories_libinfoset:36
+msgid "I0200"
+msgstr ""
+
+#: ../templates/visible_categories_libinfoset:38
+msgid "I0210"
+msgstr ""
+
+#: ../templates/visible_categories_libinfoset:39
+msgid "I0220"
+msgstr ""
+
+#: ../templates/visible_categories_libinfoset:40
+msgid "I0230"
+msgstr ""
+
+#: ../templates/visible_categories_libinfoset:41
+msgid "I0240"
+msgstr ""
+
+#: ../templates/visible_categories_libinfoset:42
+msgid "I0250"
+msgstr ""
+
+#: ../templates/visible_categories_libinfoset:37
+msgid "I0260"
 msgstr ""
 
 #: ../templates/profile/kuglight/userprefs:181 ../templates/profile/kugng/searchmask_query:27 ../templates/profile/kugng/userprefs:213 ../templates/searchmask_query:27 ../templates/userprefs:197 ../templates/views/inst501/searchmask_query:27
@@ -2125,7 +2237,7 @@ msgstr ""
 msgid "In allen Katalogen suchen"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:394 ../templates/database/ebooks/search_showtitset:734 ../templates/database/inst001/search_showtitset:415 ../templates/database/inst001/search_showtitset:755 ../templates/database/nationallizenzen/search_showtitset:394 ../templates/database/nationallizenzen/search_showtitset:734 ../templates/database/spoho/search_showtitset:415 ../templates/database/spoho/search_showtitset:755 ../templates/database/umschlaege/search_showtitset:418 ../templates/database/umschlaege/search_showtitset:758 ../templates/profile/kugng/search_showtitset:311 ../templates/profile/kugng/search_showtitset:430 ../templates/search_showtitset:406 ../templates/search_showtitset:746
+#: ../templates/database/ebooks/search_showtitset:394 ../templates/database/ebooks/search_showtitset:734 ../templates/database/inst001/search_showtitset:415 ../templates/database/inst001/search_showtitset:755 ../templates/database/nationallizenzen/search_showtitset:394 ../templates/database/nationallizenzen/search_showtitset:734 ../templates/database/spoho/search_showtitset:415 ../templates/database/spoho/search_showtitset:755 ../templates/database/umschlaege/search_showtitset:418 ../templates/database/umschlaege/search_showtitset:758 ../templates/profile/kugng/search_showtitset:315 ../templates/profile/kugng/search_showtitset:434 ../templates/search_showtitset:406 ../templates/search_showtitset:746
 msgid "In anderen Katalogen"
 msgstr ""
 
@@ -2190,7 +2302,7 @@ msgstr ""
 msgid "In der Trefferliste"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:54 ../templates/database/einbaende/search_showtitlist:158 ../templates/database/einbaende/search_showtitset:42 ../templates/database/einbaende/search_showtitset_1:42 ../templates/database/inst001/search_showtitset:56 ../templates/database/landschaft/search_showtitlist:156 ../templates/database/landschaft/search_showtitset:38 ../templates/database/landschaft/virtualsearch_result_item:81 ../templates/database/nationallizenzen/search_showtitset:54 ../templates/database/portrait/search_showtitlist:156 ../templates/database/portrait/search_showtitset:38 ../templates/database/portrait/virtualsearch_result_item:81 ../templates/database/spoho/search_showtitset:54 ../templates/database/umschlaege/search_showtitlist:159 ../templates/database/umschlaege/search_showtitlist_of_cnt:159 ../templates/database/umschlaege/search_showtitset:54 ../templates/database/umschlaege/virtualsearch_result_item:82 ../templates/profile/kuglight/search_showtitset:54 ../templates/profile/kuglight/virtualsearch_result_item:79 ../templates/profile/kugng/info_10:114 ../templates/profile/kugng/litlists_tit_as_html_short:61 ../templates/profile/kugng/resultlists_showall:156 ../templates/profile/kugng/resultlists_showall_sortall:137 ../templates/profile/kugng/resultlists_showsinglepool:156 ../templates/profile/kugng/search_showtitlist:162 ../templates/profile/kugng/search_showtitset:500 ../templates/profile/kugng/search_showtitset:501 ../templates/profile/kugng/tags_showtitlist:160 ../templates/profile/kugng/virtualsearch_result_combined:154 ../templates/profile/kugng/virtualsearch_result_item:135 ../templates/resultlists_showall:145 ../templates/resultlists_showall_sortall:130 ../templates/resultlists_showsinglepool:149 ../templates/search_showtitlist:165 ../templates/search_showtitlist_of_cnt:165 ../templates/search_showtitset:54 ../templates/views/einbaende/resultlists_showall:141 ../templates/views/einbaende/resultlists_showall_sortall:113 ../templates/views/einbaende/resultlists_showsinglepool:140 ../templates/views/einbaende/virtualsearch_result_item:82 ../templates/views/kapsel/resultlists_showall:138 ../templates/views/kapsel/resultlists_showsinglepool:137 ../templates/views/kapsel/search_showtitlist:159 ../templates/views/portrait/resultlists_showsinglepool:127 ../templates/views/umschlaege/resultlists_showall:136 ../templates/views/umschlaege/resultlists_showall_sortall:113 ../templates/views/umschlaege/resultlists_showsinglepool:132 ../templates/virtualsearch_result_item:78
+#: ../templates/database/ebooks/search_showtitset:54 ../templates/database/einbaende/search_showtitlist:158 ../templates/database/einbaende/search_showtitset:42 ../templates/database/einbaende/search_showtitset_1:42 ../templates/database/inst001/search_showtitset:56 ../templates/database/landschaft/search_showtitlist:156 ../templates/database/landschaft/search_showtitset:38 ../templates/database/landschaft/virtualsearch_result_item:81 ../templates/database/nationallizenzen/search_showtitset:54 ../templates/database/portrait/search_showtitlist:156 ../templates/database/portrait/search_showtitset:38 ../templates/database/portrait/virtualsearch_result_item:81 ../templates/database/spoho/search_showtitset:54 ../templates/database/umschlaege/search_showtitlist:159 ../templates/database/umschlaege/search_showtitlist_of_cnt:159 ../templates/database/umschlaege/search_showtitset:54 ../templates/database/umschlaege/virtualsearch_result_item:82 ../templates/profile/kuglight/search_showtitset:54 ../templates/profile/kuglight/virtualsearch_result_item:79 ../templates/profile/kugng/info_10:114 ../templates/profile/kugng/litlists_tit_as_html_short:61 ../templates/profile/kugng/resultlists_showall:156 ../templates/profile/kugng/resultlists_showall_sortall:137 ../templates/profile/kugng/resultlists_showsinglepool:156 ../templates/profile/kugng/search_showtitlist:162 ../templates/profile/kugng/search_showtitset:517 ../templates/profile/kugng/search_showtitset:518 ../templates/profile/kugng/tags_showtitlist:160 ../templates/profile/kugng/virtualsearch_result_combined:154 ../templates/profile/kugng/virtualsearch_result_item:135 ../templates/resultlists_showall:145 ../templates/resultlists_showall_sortall:130 ../templates/resultlists_showsinglepool:149 ../templates/search_showtitlist:165 ../templates/search_showtitlist_of_cnt:165 ../templates/search_showtitset:54 ../templates/views/einbaende/resultlists_showall:141 ../templates/views/einbaende/resultlists_showall_sortall:113 ../templates/views/einbaende/resultlists_showsinglepool:140 ../templates/views/einbaende/virtualsearch_result_item:82 ../templates/views/kapsel/resultlists_showall:138 ../templates/views/kapsel/resultlists_showsinglepool:137 ../templates/views/kapsel/search_showtitlist:159 ../templates/views/portrait/resultlists_showsinglepool:127 ../templates/views/umschlaege/resultlists_showall:136 ../templates/views/umschlaege/resultlists_showall_sortall:113 ../templates/views/umschlaege/resultlists_showsinglepool:132 ../templates/virtualsearch_result_item:78
 msgid "In die Merkliste"
 msgstr ""
 
@@ -2214,8 +2326,16 @@ msgstr ""
 msgid "Index"
 msgstr ""
 
+#: ../templates/admin_showcat:66
+msgid "Info"
+msgstr ""
+
 #: ../templates/info_message:25
 msgid "Information"
+msgstr ""
+
+#: ../templates/profile/kugng/info_60:24
+msgid "Informationen zu dieser Bibliothek"
 msgstr ""
 
 #: ../templates/dbis_showdbinfo:24
@@ -2274,7 +2394,7 @@ msgstr ""
 msgid "Inventarnummer       "
 msgstr ""
 
-#: ../templates/admin_editcat:142 ../templates/admin_editcat:165 ../templates/admin_editcat:81 ../templates/admin_editcat_rss:129 ../templates/admin_editcat_rss:186 ../templates/admin_editcat_rss:243 ../templates/admin_editcat_rss:300 ../templates/admin_editcat_rss:72 ../templates/admin_editview:44 ../templates/admin_showcat:49 ../templates/admin_showcat:76 ../templates/admin_showcat:83 ../templates/admin_showviews:39 ../templates/database/ebooks/search_showtitset:716 ../templates/database/inst001/search_showtitset:737 ../templates/database/nationallizenzen/search_showtitset:716 ../templates/database/spoho/search_showtitset:737 ../templates/database/umschlaege/search_showtitset:740 ../templates/profile/kugng/search_showtitset:412 ../templates/search_showtitset:728 ../templates/searchmask_options:29 ../templates/views/gdonck/searchmask_options:5 ../templates/views/gleuel/searchmask_options:5 ../templates/views/kempen/searchmask_options:5 ../templates/views/kevelaer/searchmask_options:5 ../templates/views/kug/searchmask_options:5 ../templates/views/kwinter/searchmask_options:5 ../templates/views/portrait/searchmask_options:5 ../templates/views/rheinlandbib/searchmask_options:5 ../templates/views/xanten/searchmask_options:5
+#: ../templates/admin_editcat:142 ../templates/admin_editcat:165 ../templates/admin_editcat:81 ../templates/admin_editcat_rss:129 ../templates/admin_editcat_rss:186 ../templates/admin_editcat_rss:243 ../templates/admin_editcat_rss:300 ../templates/admin_editcat_rss:72 ../templates/admin_editview:44 ../templates/admin_showcat:49 ../templates/admin_showcat:78 ../templates/admin_showcat:85 ../templates/admin_showviews:39 ../templates/database/ebooks/search_showtitset:716 ../templates/database/inst001/search_showtitset:737 ../templates/database/nationallizenzen/search_showtitset:716 ../templates/database/spoho/search_showtitset:737 ../templates/database/umschlaege/search_showtitset:740 ../templates/profile/kugng/search_showtitset:416 ../templates/search_showtitset:728 ../templates/searchmask_options:29 ../templates/views/gdonck/searchmask_options:5 ../templates/views/gleuel/searchmask_options:5 ../templates/views/kempen/searchmask_options:5 ../templates/views/kevelaer/searchmask_options:5 ../templates/views/kug/searchmask_options:5 ../templates/views/kwinter/searchmask_options:5 ../templates/views/portrait/searchmask_options:5 ../templates/views/rheinlandbib/searchmask_options:5 ../templates/views/xanten/searchmask_options:5
 msgid "Ja"
 msgstr ""
 
@@ -2306,7 +2426,7 @@ msgstr ""
 msgid "KUG Such-Plugin f&uuml;r Mozilla Firefox-Browser"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:339 ../templates/database/inst001/search_showtitset:366 ../templates/database/nationallizenzen/search_showtitset:339 ../templates/database/spoho/search_showtitset:360 ../templates/database/umschlaege/search_showtitset:363 ../templates/profile/kugng/search_showtitset:752 ../templates/search_showtitset:356
+#: ../templates/database/ebooks/search_showtitset:339 ../templates/database/inst001/search_showtitset:366 ../templates/database/nationallizenzen/search_showtitset:339 ../templates/database/spoho/search_showtitset:360 ../templates/database/umschlaege/search_showtitset:363 ../templates/profile/kugng/search_showtitset:759 ../templates/search_showtitset:356
 msgid "KUG Tags"
 msgstr ""
 
@@ -2390,7 +2510,7 @@ msgstr ""
 msgid "Keine gültige Aktion"
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:1353
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:1453
 msgid "Keine gültige Aktion oder Session"
 msgstr ""
 
@@ -2471,7 +2591,7 @@ msgstr ""
 msgid "Körperschaft/Institution"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:540 ../templates/database/inst001/search_showtitset:561 ../templates/database/nationallizenzen/search_showtitset:540 ../templates/database/spoho/search_showtitset:561 ../templates/database/umschlaege/search_showtitset:564 ../templates/profile/kugng/search_showtitset:636 ../templates/search_showtitset:552
+#: ../templates/database/ebooks/search_showtitset:540 ../templates/database/inst001/search_showtitset:561 ../templates/database/nationallizenzen/search_showtitset:540 ../templates/database/spoho/search_showtitset:561 ../templates/database/umschlaege/search_showtitset:564 ../templates/profile/kugng/search_showtitset:645 ../templates/search_showtitset:552
 msgid "L&ouml;schen"
 msgstr ""
 
@@ -2525,11 +2645,11 @@ msgstr ""
 msgid "Listen-Ansicht"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:388 ../templates/database/inst001/search_showtitset:409 ../templates/database/nationallizenzen/search_showtitset:388 ../templates/database/spoho/search_showtitset:409 ../templates/database/umschlaege/search_showtitset:412 ../templates/litlists_manage_singlelist:55 ../templates/litlists_show_singlelist:25 ../templates/profile/kugng/litlists_show_singlelist:26 ../templates/profile/kugng/managecollection_tit_as_html:59 ../templates/profile/kugng/search_showtitset:519 ../templates/search_showtitset:400
+#: ../templates/database/ebooks/search_showtitset:388 ../templates/database/inst001/search_showtitset:409 ../templates/database/nationallizenzen/search_showtitset:388 ../templates/database/spoho/search_showtitset:409 ../templates/database/umschlaege/search_showtitset:412 ../templates/litlists_manage_singlelist:55 ../templates/litlists_show_singlelist:25 ../templates/profile/kugng/litlists_show_singlelist:26 ../templates/profile/kugng/managecollection_tit_as_html:60 ../templates/profile/kugng/search_showtitset:536 ../templates/search_showtitset:400
 msgid "Literaturliste"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:321 ../templates/database/inst001/search_showtitset:348 ../templates/database/nationallizenzen/search_showtitset:321 ../templates/database/spoho/search_showtitset:342 ../templates/database/umschlaege/search_showtitset:345 ../templates/info_13:45 ../templates/info_41:30 ../templates/info_54:111 ../templates/profile/kugng/info_13:33 ../templates/profile/kugng/litlists_show_publiclists:25 ../templates/profile/kugng/search_showtitset:734 ../templates/profile/kugng/searchmask_simple:477 ../templates/profile/kugng/searchmask_simple:478 ../templates/search_showtitset:338
+#: ../templates/database/ebooks/search_showtitset:321 ../templates/database/inst001/search_showtitset:348 ../templates/database/nationallizenzen/search_showtitset:321 ../templates/database/spoho/search_showtitset:342 ../templates/database/umschlaege/search_showtitset:345 ../templates/info_13:45 ../templates/info_41:30 ../templates/info_54:111 ../templates/profile/kugng/info_13:33 ../templates/profile/kugng/litlists_show_publiclists:25 ../templates/profile/kugng/search_showtitset:741 ../templates/profile/kugng/searchmask_simple:477 ../templates/profile/kugng/searchmask_simple:478 ../templates/search_showtitset:338
 msgid "Literaturlisten"
 msgstr ""
 
@@ -2565,7 +2685,7 @@ msgstr ""
 msgid "Lokale Signatur      "
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:629 ../templates/database/ebooks/search_showtitset:632 ../templates/database/einbaende/search_showtitlist:65 ../templates/database/einbaende/search_showtitlist_of_cnt:67 ../templates/database/inst001/search_showtitset:650 ../templates/database/inst001/search_showtitset:653 ../templates/database/landschaft/search_showtitlist:63 ../templates/database/nationallizenzen/search_showtitset:629 ../templates/database/nationallizenzen/search_showtitset:632 ../templates/database/portrait/search_showtitlist:63 ../templates/database/spoho/search_showtitset:650 ../templates/database/spoho/search_showtitset:653 ../templates/database/umschlaege/search_showtitlist:66 ../templates/database/umschlaege/search_showtitlist_of_cnt:66 ../templates/database/umschlaege/search_showtitset:653 ../templates/database/umschlaege/search_showtitset:656 ../templates/litlists_manage_singlelist:83 ../templates/litlists_show_singlelist:65 ../templates/managecollection_show:68 ../templates/managecollection_show:79 ../templates/managecollection_show:99 ../templates/profile/kuglight/managecollection_show:68 ../templates/profile/kuglight/virtualsearch_result_start:61 ../templates/profile/kugng/litlists_manage_singlelist:100 ../templates/profile/kugng/litlists_show_singlelist:64 ../templates/profile/kugng/managecollection_tit_as_html:72 ../templates/profile/kugng/managecollection_tit_as_html:78 ../templates/profile/kugng/resultlists_showall:58 ../templates/profile/kugng/resultlists_showall_sortall:58 ../templates/profile/kugng/resultlists_showsinglepool:58 ../templates/profile/kugng/search_showtitlist:64 ../templates/profile/kugng/search_showtitset:531 ../templates/profile/kugng/search_showtitset:533 ../templates/profile/kugng/searchmask_simple:114 ../templates/profile/kugng/tags_showtitlist:62 ../templates/profile/kugng/virtualsearch_result_combined:57 ../templates/profile/kugng/virtualsearch_result_start:60 ../templates/resultlists_showall:59 ../templates/resultlists_showall_sortall:62 ../templates/resultlists_showsinglepool:60 ../templates/search_showtitlist:66 ../templates/search_showtitlist_of_cnt:66 ../templates/search_showtitset:641 ../templates/search_showtitset:644 ../templates/views/einbaende/managecollection_show:101 ../templates/views/einbaende/managecollection_show:70 ../templates/views/einbaende/managecollection_show:81 ../templates/views/einbaende/resultlists_showall:63 ../templates/views/einbaende/resultlists_showall_sortall:59 ../templates/views/einbaende/resultlists_showsinglepool:62 ../templates/views/einbaende/virtualsearch_result_start:60 ../templates/views/kapsel/resultlists_showall:58 ../templates/views/kapsel/resultlists_showsinglepool:60 ../templates/views/kapsel/search_showtitlist:66 ../templates/views/portrait/resultlists_showsinglepool:59 ../templates/views/umschlaege/managecollection_show:66 ../templates/views/umschlaege/managecollection_show:77 ../templates/views/umschlaege/managecollection_show:97 ../templates/views/umschlaege/resultlists_showall:60 ../templates/views/umschlaege/resultlists_showall_sortall:59 ../templates/views/umschlaege/resultlists_showsinglepool:59 ../templates/views/umschlaege/virtualsearch_result_start:60 ../templates/virtualsearch_result_start:62
+#: ../templates/database/ebooks/search_showtitset:629 ../templates/database/ebooks/search_showtitset:632 ../templates/database/einbaende/search_showtitlist:65 ../templates/database/einbaende/search_showtitlist_of_cnt:67 ../templates/database/inst001/search_showtitset:650 ../templates/database/inst001/search_showtitset:653 ../templates/database/landschaft/search_showtitlist:63 ../templates/database/nationallizenzen/search_showtitset:629 ../templates/database/nationallizenzen/search_showtitset:632 ../templates/database/portrait/search_showtitlist:63 ../templates/database/spoho/search_showtitset:650 ../templates/database/spoho/search_showtitset:653 ../templates/database/umschlaege/search_showtitlist:66 ../templates/database/umschlaege/search_showtitlist_of_cnt:66 ../templates/database/umschlaege/search_showtitset:653 ../templates/database/umschlaege/search_showtitset:656 ../templates/litlists_manage_singlelist:83 ../templates/litlists_show_singlelist:65 ../templates/managecollection_show:68 ../templates/managecollection_show:79 ../templates/managecollection_show:99 ../templates/profile/kuglight/managecollection_show:68 ../templates/profile/kuglight/virtualsearch_result_start:61 ../templates/profile/kugng/litlists_manage_singlelist:100 ../templates/profile/kugng/litlists_show_singlelist:64 ../templates/profile/kugng/managecollection_tit_as_html:74 ../templates/profile/kugng/managecollection_tit_as_html:80 ../templates/profile/kugng/resultlists_showall:58 ../templates/profile/kugng/resultlists_showall_sortall:58 ../templates/profile/kugng/resultlists_showsinglepool:58 ../templates/profile/kugng/search_showtitlist:64 ../templates/profile/kugng/search_showtitset:548 ../templates/profile/kugng/search_showtitset:550 ../templates/profile/kugng/searchmask_simple:114 ../templates/profile/kugng/tags_showtitlist:62 ../templates/profile/kugng/virtualsearch_result_combined:57 ../templates/profile/kugng/virtualsearch_result_start:60 ../templates/resultlists_showall:59 ../templates/resultlists_showall_sortall:62 ../templates/resultlists_showsinglepool:60 ../templates/search_showtitlist:66 ../templates/search_showtitlist_of_cnt:66 ../templates/search_showtitset:641 ../templates/search_showtitset:644 ../templates/views/einbaende/managecollection_show:101 ../templates/views/einbaende/managecollection_show:70 ../templates/views/einbaende/managecollection_show:81 ../templates/views/einbaende/resultlists_showall:63 ../templates/views/einbaende/resultlists_showall_sortall:59 ../templates/views/einbaende/resultlists_showsinglepool:62 ../templates/views/einbaende/virtualsearch_result_start:60 ../templates/views/kapsel/resultlists_showall:58 ../templates/views/kapsel/resultlists_showsinglepool:60 ../templates/views/kapsel/search_showtitlist:66 ../templates/views/portrait/resultlists_showsinglepool:59 ../templates/views/umschlaege/managecollection_show:66 ../templates/views/umschlaege/managecollection_show:77 ../templates/views/umschlaege/managecollection_show:97 ../templates/views/umschlaege/resultlists_showall:60 ../templates/views/umschlaege/resultlists_showall_sortall:59 ../templates/views/umschlaege/resultlists_showsinglepool:59 ../templates/views/umschlaege/virtualsearch_result_start:60 ../templates/virtualsearch_result_start:62
 msgid "Los"
 msgstr ""
 
@@ -2573,7 +2693,7 @@ msgstr ""
 msgid "Lösche Eingabemaske"
 msgstr ""
 
-#: ../templates/admin_editcat:177 ../templates/admin_editcat_rss:333 ../templates/admin_editlogintarget:55 ../templates/admin_editprofile:70 ../templates/admin_editsubject:86 ../templates/admin_editview:138 ../templates/database/ebooks/search_showtitset:684 ../templates/database/inst001/search_showtitset:705 ../templates/database/nationallizenzen/search_showtitset:684 ../templates/database/spoho/search_showtitset:705 ../templates/database/umschlaege/search_showtitset:708 ../templates/profile/kugng/search_showtitset:380 ../templates/search_showtitset:696
+#: ../templates/admin_editcat:177 ../templates/admin_editcat_rss:333 ../templates/admin_editlibinfo:73 ../templates/admin_editlogintarget:55 ../templates/admin_editprofile:70 ../templates/admin_editsubject:86 ../templates/admin_editview:138 ../templates/database/ebooks/search_showtitset:684 ../templates/database/inst001/search_showtitset:705 ../templates/database/nationallizenzen/search_showtitset:684 ../templates/database/spoho/search_showtitset:705 ../templates/database/umschlaege/search_showtitset:708 ../templates/profile/kugng/search_showtitset:384 ../templates/search_showtitset:696
 msgid "Löschen"
 msgstr ""
 
@@ -2585,7 +2705,7 @@ msgstr ""
 msgid "Maler / Zeichner"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:286 ../templates/database/inst001/search_showtitset:313 ../templates/database/nationallizenzen/search_showtitset:286 ../templates/database/spoho/search_showtitset:307 ../templates/database/umschlaege/search_showtitset:310 ../templates/profile/kugng/litlists_tit_as_html_full:201 ../templates/profile/kugng/managecollection_tit_as_html:414 ../templates/profile/kugng/search_showtitset:277 ../templates/search_showtitset:303
+#: ../templates/database/ebooks/search_showtitset:286 ../templates/database/inst001/search_showtitset:313 ../templates/database/nationallizenzen/search_showtitset:286 ../templates/database/spoho/search_showtitset:307 ../templates/database/umschlaege/search_showtitset:310 ../templates/profile/kugng/litlists_tit_as_html_full:201 ../templates/profile/kugng/managecollection_tit_as_html:414 ../templates/profile/kugng/search_showtitset:281 ../templates/search_showtitset:303
 msgid "Mashup mit Wikipedia"
 msgstr ""
 
@@ -2660,7 +2780,7 @@ msgstr ""
 msgid "Möchten Sie diesen ändern?"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:61 ../templates/database/ebooks/search_showtitset:63 ../templates/database/einbaende/search_showtitset:49 ../templates/database/einbaende/search_showtitset:51 ../templates/database/einbaende/search_showtitset_1:49 ../templates/database/einbaende/search_showtitset_1:51 ../templates/database/inst001/search_showtitset:63 ../templates/database/inst001/search_showtitset:65 ../templates/database/landschaft/search_showtitset:44 ../templates/database/landschaft/search_showtitset:46 ../templates/database/nationallizenzen/search_showtitset:61 ../templates/database/nationallizenzen/search_showtitset:63 ../templates/database/portrait/search_showtitset:44 ../templates/database/portrait/search_showtitset:46 ../templates/database/spoho/search_showtitset:61 ../templates/database/spoho/search_showtitset:63 ../templates/database/umschlaege/search_showtitset:61 ../templates/database/umschlaege/search_showtitset:63 ../templates/profile/kuglight/search_showtitset:61 ../templates/profile/kuglight/search_showtitset:63 ../templates/profile/kugng/search_showtitset:485 ../templates/profile/kugng/search_showtitset:487 ../templates/search_showtitset:61 ../templates/search_showtitset:63
+#: ../templates/database/ebooks/search_showtitset:61 ../templates/database/ebooks/search_showtitset:63 ../templates/database/einbaende/search_showtitset:49 ../templates/database/einbaende/search_showtitset:51 ../templates/database/einbaende/search_showtitset_1:49 ../templates/database/einbaende/search_showtitset_1:51 ../templates/database/inst001/search_showtitset:63 ../templates/database/inst001/search_showtitset:65 ../templates/database/landschaft/search_showtitset:44 ../templates/database/landschaft/search_showtitset:46 ../templates/database/nationallizenzen/search_showtitset:61 ../templates/database/nationallizenzen/search_showtitset:63 ../templates/database/portrait/search_showtitset:44 ../templates/database/portrait/search_showtitset:46 ../templates/database/spoho/search_showtitset:61 ../templates/database/spoho/search_showtitset:63 ../templates/database/umschlaege/search_showtitset:61 ../templates/database/umschlaege/search_showtitset:63 ../templates/profile/kuglight/search_showtitset:61 ../templates/profile/kuglight/search_showtitset:63 ../templates/profile/kugng/search_showtitset:489 ../templates/profile/kugng/search_showtitset:491 ../templates/search_showtitset:61 ../templates/search_showtitset:63
 msgid "N&auml;chster Titel"
 msgstr ""
 
@@ -2722,7 +2842,7 @@ msgid ""
 "eine &Uuml;bersicht aller vorhandenen Spezial-Sichten."
 msgstr ""
 
-#: ../templates/admin_editcat:136 ../templates/admin_editcat:159 ../templates/admin_editcat:85 ../templates/admin_editcat_rss:123 ../templates/admin_editcat_rss:180 ../templates/admin_editcat_rss:237 ../templates/admin_editcat_rss:294 ../templates/admin_editcat_rss:66 ../templates/admin_editview:48 ../templates/admin_showcat:50 ../templates/admin_showcat:78 ../templates/admin_showcat:85 ../templates/admin_showviews:39 ../templates/database/ebooks/search_showtitset:718 ../templates/database/inst001/search_showtitset:739 ../templates/database/nationallizenzen/search_showtitset:718 ../templates/database/spoho/search_showtitset:739 ../templates/database/umschlaege/search_showtitset:742 ../templates/profile/kugng/search_showtitset:414 ../templates/search_showtitset:730 ../templates/searchmask_options:29 ../templates/views/gdonck/searchmask_options:5 ../templates/views/gleuel/searchmask_options:5 ../templates/views/kempen/searchmask_options:5 ../templates/views/kevelaer/searchmask_options:5 ../templates/views/kug/searchmask_options:5 ../templates/views/kwinter/searchmask_options:5 ../templates/views/portrait/searchmask_options:5 ../templates/views/rheinlandbib/searchmask_options:5 ../templates/views/xanten/searchmask_options:5
+#: ../templates/admin_editcat:136 ../templates/admin_editcat:159 ../templates/admin_editcat:85 ../templates/admin_editcat_rss:123 ../templates/admin_editcat_rss:180 ../templates/admin_editcat_rss:237 ../templates/admin_editcat_rss:294 ../templates/admin_editcat_rss:66 ../templates/admin_editview:48 ../templates/admin_showcat:50 ../templates/admin_showcat:80 ../templates/admin_showcat:87 ../templates/admin_showviews:39 ../templates/database/ebooks/search_showtitset:718 ../templates/database/inst001/search_showtitset:739 ../templates/database/nationallizenzen/search_showtitset:718 ../templates/database/spoho/search_showtitset:739 ../templates/database/umschlaege/search_showtitset:742 ../templates/profile/kugng/search_showtitset:418 ../templates/search_showtitset:730 ../templates/searchmask_options:29 ../templates/views/gdonck/searchmask_options:5 ../templates/views/gleuel/searchmask_options:5 ../templates/views/kempen/searchmask_options:5 ../templates/views/kevelaer/searchmask_options:5 ../templates/views/kug/searchmask_options:5 ../templates/views/kwinter/searchmask_options:5 ../templates/views/portrait/searchmask_options:5 ../templates/views/rheinlandbib/searchmask_options:5 ../templates/views/xanten/searchmask_options:5
 msgid "Nein"
 msgstr ""
 
@@ -2750,7 +2870,7 @@ msgstr ""
 msgid "Neuaufnahmen nach Verfasser"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:663 ../templates/database/inst001/search_showtitset:684 ../templates/database/nationallizenzen/search_showtitset:663 ../templates/database/spoho/search_showtitset:684 ../templates/database/umschlaege/search_showtitset:687 ../templates/profile/kugng/search_showtitset:359 ../templates/search_showtitset:675
+#: ../templates/database/ebooks/search_showtitset:663 ../templates/database/inst001/search_showtitset:684 ../templates/database/nationallizenzen/search_showtitset:663 ../templates/database/spoho/search_showtitset:684 ../templates/database/umschlaege/search_showtitset:687 ../templates/profile/kugng/search_showtitset:363 ../templates/search_showtitset:675
 msgid "Neue Bewertung/Rezension"
 msgstr ""
 
@@ -2899,7 +3019,7 @@ msgstr ""
 msgid "Permalink"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:58 ../templates/database/einbaende/search_showtitset:46 ../templates/database/inst001/search_showtitset:60 ../templates/database/nationallizenzen/search_showtitset:58 ../templates/database/spoho/search_showtitset:58 ../templates/database/umschlaege/search_showtitset:58 ../templates/litlists_manage_singlelist:92 ../templates/litlists_show_singlelist:73 ../templates/profile/kuglight/search_showtitset:58 ../templates/profile/kugng/litlists_manage_singlelist:148 ../templates/profile/kugng/litlists_show_singlelist:119 ../templates/profile/kugng/search_showtitset:513 ../templates/search_showtitset:58
+#: ../templates/database/ebooks/search_showtitset:58 ../templates/database/einbaende/search_showtitset:46 ../templates/database/inst001/search_showtitset:60 ../templates/database/nationallizenzen/search_showtitset:58 ../templates/database/spoho/search_showtitset:58 ../templates/database/umschlaege/search_showtitset:58 ../templates/litlists_manage_singlelist:92 ../templates/litlists_show_singlelist:73 ../templates/profile/kuglight/search_showtitset:58 ../templates/profile/kugng/litlists_manage_singlelist:148 ../templates/profile/kugng/litlists_show_singlelist:119 ../templates/profile/kugng/search_showtitset:530 ../templates/search_showtitset:58
 msgid "Permanenter Link"
 msgstr ""
 
@@ -2986,7 +3106,7 @@ msgstr ""
 msgid "Provenienz"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:679 ../templates/database/inst001/search_showtitset:700 ../templates/database/nationallizenzen/search_showtitset:679 ../templates/database/spoho/search_showtitset:700 ../templates/database/umschlaege/search_showtitset:703 ../templates/profile/kugng/search_showtitset:375 ../templates/search_showtitset:691
+#: ../templates/database/ebooks/search_showtitset:679 ../templates/database/inst001/search_showtitset:700 ../templates/database/nationallizenzen/search_showtitset:679 ../templates/database/spoho/search_showtitset:700 ../templates/database/umschlaege/search_showtitset:703 ../templates/profile/kugng/search_showtitset:379 ../templates/search_showtitset:691
 msgid "Pseudonym"
 msgstr ""
 
@@ -3103,7 +3223,7 @@ msgstr ""
 msgid "Registrieren"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:677 ../templates/database/inst001/search_showtitset:698 ../templates/database/nationallizenzen/search_showtitset:677 ../templates/database/spoho/search_showtitset:698 ../templates/database/umschlaege/search_showtitset:701 ../templates/profile/kugng/search_showtitset:373 ../templates/search_showtitset:689
+#: ../templates/database/ebooks/search_showtitset:677 ../templates/database/inst001/search_showtitset:698 ../templates/database/nationallizenzen/search_showtitset:677 ../templates/database/spoho/search_showtitset:698 ../templates/database/umschlaege/search_showtitset:701 ../templates/profile/kugng/search_showtitset:377 ../templates/search_showtitset:689
 msgid "Rezension"
 msgstr ""
 
@@ -3252,7 +3372,7 @@ msgstr ""
 msgid "Sie befinden sich derzeit auf einem Testsystem, das nicht f&uuml;r den produktiven Einsatz gedacht ist. Stattdessen k&ouml;nnen Sie hier die neuen in Entwicklung befindlichen Funktionen des KUG austesten. Da der KUG auf diesem System kontinuierlich verbessert wird, k&ouml;nnen w&auml;hrend dieser &Auml;nderungen zeitweise sicherlich auch schon einmal 'Internal Server Errors' beobachtet werden. Dies ist vollkommen normal, solange die aktuelle Version auf diesem System nicht eingefroren und in eine offiziell bekanntgegebene und &ouml;ffentliche finale Testphase &uuml;bergegangen ist."
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:309
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:366
 msgid "Sie greifen auf eine nicht autorisierte Session zu"
 msgstr ""
 
@@ -3280,7 +3400,7 @@ msgid ""
 "nutzen, bei der die Verwendung von JavaScript minimiert ist."
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:277
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:334
 msgid "Sie haben als Benutzer entweder keinen oder nicht den Admin-Benutzer eingegeben"
 msgstr ""
 
@@ -3297,7 +3417,7 @@ msgstr ""
 msgid "Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte %1zurück%2 und versuchen Sie es erneut."
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:282
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:339
 msgid "Sie haben ein falsches Passwort eingegeben"
 msgstr ""
 
@@ -3335,6 +3455,10 @@ msgstr ""
 
 #: ../modules/OpenBib/Handler/Apache/MailCollection.pm:113
 msgid "Sie haben keine Mailadresse eingegeben."
+msgstr ""
+
+#: ../modules/OpenBib/Handler/Apache/ManageCollection.pm:277
+msgid "Sie haben keine Titel ausgew&auml;hlt."
 msgstr ""
 
 #: ../templates/circulation_reserv:42
@@ -3434,7 +3558,11 @@ msgid ""
 "        Personenfeld eingeben:"
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/LitLists.pm:171 ../modules/OpenBib/Handler/Apache/ManageCollection.pm:227
+#: ../modules/OpenBib/Handler/Apache/ManageCollection.pm:255
+msgid "Sie müssen Tags f&uuml;r die ausgew&auml;hlten Titel eingeben."
+msgstr ""
+
+#: ../modules/OpenBib/Handler/Apache/LitLists.pm:171 ../modules/OpenBib/Handler/Apache/ManageCollection.pm:243
 msgid "Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."
 msgstr ""
 
@@ -3442,23 +3570,23 @@ msgstr ""
 msgid "Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:1277
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:1377
 msgid "Sie müssen mindestens eine Beschreibung eingeben."
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:347
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:404
 msgid "Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:675
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:775
 msgid "Sie müssen mindestens einen Namen f&uuml;r das Themenbebiet eingeben."
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:565
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:665
 msgid "Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:777
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:877
 msgid "Sie müssen mindestens einen Viewnamen, eine Beschreibung sowie ein Katalog-Profil eingeben."
 msgstr ""
 
@@ -4423,7 +4551,7 @@ msgstr ""
 msgid "T5100"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:386 ../templates/database/ebooks/search_showtitset:432 ../templates/database/inst001/search_showtitset:407 ../templates/database/inst001/search_showtitset:453 ../templates/database/nationallizenzen/search_showtitset:386 ../templates/database/nationallizenzen/search_showtitset:432 ../templates/database/spoho/search_showtitset:407 ../templates/database/spoho/search_showtitset:453 ../templates/database/umschlaege/search_showtitset:410 ../templates/database/umschlaege/search_showtitset:456 ../templates/profile/kugng/managecollection_tit_as_html:84 ../templates/profile/kugng/search_showtitset:542 ../templates/search_showtitset:398 ../templates/search_showtitset:444
+#: ../templates/database/ebooks/search_showtitset:386 ../templates/database/ebooks/search_showtitset:432 ../templates/database/inst001/search_showtitset:407 ../templates/database/inst001/search_showtitset:453 ../templates/database/nationallizenzen/search_showtitset:386 ../templates/database/nationallizenzen/search_showtitset:432 ../templates/database/spoho/search_showtitset:407 ../templates/database/spoho/search_showtitset:453 ../templates/database/umschlaege/search_showtitset:410 ../templates/database/umschlaege/search_showtitset:456 ../templates/profile/kugng/managecollection_tit_as_html:90 ../templates/profile/kugng/search_showtitset:559 ../templates/search_showtitset:398 ../templates/search_showtitset:444
 msgid "Tagging"
 msgstr ""
 
@@ -4439,7 +4567,7 @@ msgstr ""
 msgid "Testsystem - Nicht f&uuml;r den produktiven Einsatz bestimmt"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:681 ../templates/database/inst001/search_showtitset:702 ../templates/database/nationallizenzen/search_showtitset:681 ../templates/database/spoho/search_showtitset:702 ../templates/database/umschlaege/search_showtitset:705 ../templates/profile/kugng/search_showtitset:377 ../templates/search_showtitset:693
+#: ../templates/database/ebooks/search_showtitset:681 ../templates/database/inst001/search_showtitset:702 ../templates/database/nationallizenzen/search_showtitset:681 ../templates/database/spoho/search_showtitset:702 ../templates/database/umschlaege/search_showtitset:705 ../templates/profile/kugng/search_showtitset:381 ../templates/search_showtitset:693
 msgid "Text"
 msgstr ""
 
@@ -4481,7 +4609,7 @@ msgstr ""
 msgid "Tit-Datei"
 msgstr ""
 
-#: ../templates/circulation_make_order:65 ../templates/database/ebooks/search_showtitset:680 ../templates/database/inst001/search_showtitset:701 ../templates/database/nationallizenzen/search_showtitset:680 ../templates/database/spoho/search_showtitset:701 ../templates/database/umschlaege/search_showtitset:704 ../templates/dbis_showdbinfo:48 ../templates/ezb_showjournalinfo:45 ../templates/managecollection_tit_as_html_simple:19 ../templates/profile/kugng/litlists_manage_singlelist:119 ../templates/profile/kugng/litlists_show_singlelist:91 ../templates/profile/kugng/managecollection_tit_as_html:24 ../templates/profile/kugng/search_showtitset:376 ../templates/profile/kugng/tags_showtitlist:80 ../templates/search_showtitset:692 ../templates/searchmask_options:4 ../templates/views/gdonck/searchmask_options:4 ../templates/views/gleuel/searchmask_options:4 ../templates/views/kempen/searchmask_options:4 ../templates/views/kevelaer/searchmask_options:4 ../templates/views/kug/searchmask_options:4 ../templates/views/kwinter/searchmask_options:4 ../templates/views/portrait/searchmask_options:4 ../templates/views/rheinlandbib/searchmask_options:4 ../templates/views/umschlaege/searchmask:118 ../templates/views/xanten/searchmask_options:4
+#: ../templates/circulation_make_order:65 ../templates/database/ebooks/search_showtitset:680 ../templates/database/inst001/search_showtitset:701 ../templates/database/nationallizenzen/search_showtitset:680 ../templates/database/spoho/search_showtitset:701 ../templates/database/umschlaege/search_showtitset:704 ../templates/dbis_showdbinfo:48 ../templates/ezb_showjournalinfo:45 ../templates/managecollection_tit_as_html_simple:19 ../templates/profile/kugng/litlists_manage_singlelist:119 ../templates/profile/kugng/litlists_show_singlelist:91 ../templates/profile/kugng/managecollection_tit_as_html:24 ../templates/profile/kugng/search_showtitset:380 ../templates/profile/kugng/tags_showtitlist:80 ../templates/search_showtitset:692 ../templates/searchmask_options:4 ../templates/views/gdonck/searchmask_options:4 ../templates/views/gleuel/searchmask_options:4 ../templates/views/kempen/searchmask_options:4 ../templates/views/kevelaer/searchmask_options:4 ../templates/views/kug/searchmask_options:4 ../templates/views/kwinter/searchmask_options:4 ../templates/views/portrait/searchmask_options:4 ../templates/views/rheinlandbib/searchmask_options:4 ../templates/views/umschlaege/searchmask:118 ../templates/views/xanten/searchmask_options:4
 msgid "Titel"
 msgstr ""
 
@@ -4497,7 +4625,7 @@ msgstr ""
 msgid "Titel in die Merkliste eintragen"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:737 ../templates/database/inst001/search_showtitset:758 ../templates/database/nationallizenzen/search_showtitset:737 ../templates/database/spoho/search_showtitset:758 ../templates/database/umschlaege/search_showtitset:761 ../templates/profile/kugng/search_showtitset:433 ../templates/search_showtitset:749
+#: ../templates/database/ebooks/search_showtitset:737 ../templates/database/inst001/search_showtitset:758 ../templates/database/nationallizenzen/search_showtitset:737 ../templates/database/spoho/search_showtitset:758 ../templates/database/umschlaege/search_showtitset:761 ../templates/profile/kugng/search_showtitset:437 ../templates/search_showtitset:749
 msgid "Titel mit der ISBN dieses Titels sind auch in folgenden anderen KUG-Katalogen vorhanden"
 msgstr ""
 
@@ -4565,7 +4693,7 @@ msgstr ""
 msgid "Titelzugriffe"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:52 ../templates/database/inst001/search_showtitset:54 ../templates/database/nationallizenzen/search_showtitset:52 ../templates/database/spoho/search_showtitset:52 ../templates/database/umschlaege/search_showtitset:52 ../templates/info_10:36 ../templates/info_11:36 ../templates/info_12:31 ../templates/info_13:37 ../templates/info_14:44 ../templates/info_15:39 ../templates/info_16:44 ../templates/info_17:44 ../templates/info_18:44 ../templates/info_19:44 ../templates/info_9:44 ../templates/profile/kuglight/search_showtitset:52 ../templates/profile/kugng/info_10:132 ../templates/profile/kugng/info_10:29 ../templates/profile/kugng/info_11:34 ../templates/profile/kugng/search_showtitset:816 ../templates/search_showtitset:52
+#: ../templates/database/ebooks/search_showtitset:52 ../templates/database/inst001/search_showtitset:54 ../templates/database/nationallizenzen/search_showtitset:52 ../templates/database/spoho/search_showtitset:52 ../templates/database/umschlaege/search_showtitset:52 ../templates/info_10:36 ../templates/info_11:36 ../templates/info_12:31 ../templates/info_13:37 ../templates/info_14:44 ../templates/info_15:39 ../templates/info_16:44 ../templates/info_17:44 ../templates/info_18:44 ../templates/info_19:44 ../templates/info_9:44 ../templates/profile/kuglight/search_showtitset:52 ../templates/profile/kugng/info_10:132 ../templates/profile/kugng/info_10:29 ../templates/profile/kugng/info_11:34 ../templates/profile/kugng/search_showtitset:821 ../templates/search_showtitset:52
 msgid "Top 20"
 msgstr ""
 
@@ -4612,7 +4740,7 @@ msgstr ""
 msgid "Typ"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:447 ../templates/database/ebooks/search_showtitset:540 ../templates/database/inst001/search_showtitset:468 ../templates/database/inst001/search_showtitset:561 ../templates/database/nationallizenzen/search_showtitset:447 ../templates/database/nationallizenzen/search_showtitset:540 ../templates/database/spoho/search_showtitset:468 ../templates/database/spoho/search_showtitset:561 ../templates/database/umschlaege/search_showtitset:471 ../templates/database/umschlaege/search_showtitset:564 ../templates/profile/kugng/managecollection_tit_as_html:99 ../templates/profile/kugng/search_showtitset:563 ../templates/profile/kugng/search_showtitset:636 ../templates/search_showtitset:459 ../templates/search_showtitset:552
+#: ../templates/database/ebooks/search_showtitset:447 ../templates/database/ebooks/search_showtitset:540 ../templates/database/inst001/search_showtitset:468 ../templates/database/inst001/search_showtitset:561 ../templates/database/nationallizenzen/search_showtitset:447 ../templates/database/nationallizenzen/search_showtitset:540 ../templates/database/spoho/search_showtitset:468 ../templates/database/spoho/search_showtitset:561 ../templates/database/umschlaege/search_showtitset:471 ../templates/database/umschlaege/search_showtitset:564 ../templates/profile/kugng/managecollection_tit_as_html:100 ../templates/profile/kugng/search_showtitset:574 ../templates/profile/kugng/search_showtitset:645 ../templates/search_showtitset:459 ../templates/search_showtitset:552
 msgid "Typ:"
 msgstr ""
 
@@ -4666,7 +4794,7 @@ msgstr ""
 msgid "Und-Verknüpfung innerhalb eines Suchfeldes"
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/Circulation.pm:583 ../modules/OpenBib/Handler/Apache/ManageCollection.pm:366 ../modules/OpenBib/Handler/Apache/SelfReg.pm:199 ../modules/OpenBib/Handler/Apache/UserPrefs.pm:280
+#: ../modules/OpenBib/Handler/Apache/Circulation.pm:583 ../modules/OpenBib/Handler/Apache/ManageCollection.pm:423 ../modules/OpenBib/Handler/Apache/SelfReg.pm:199 ../modules/OpenBib/Handler/Apache/UserPrefs.pm:280
 msgid "Unerlaubte Aktion"
 msgstr ""
 
@@ -4674,7 +4802,7 @@ msgstr ""
 msgid "Ungültige Aktion"
 msgstr ""
 
-#: ../modules/OpenBib/Handler/Apache/BibSonomy.pm:121 ../modules/OpenBib/Handler/Apache/Circulation.pm:99 ../modules/OpenBib/Handler/Apache/DatabaseChoice.pm:101 ../modules/OpenBib/Handler/Apache/DatabaseProfile.pm:97 ../modules/OpenBib/Handler/Apache/DispatchQuery.pm:87 ../modules/OpenBib/Handler/Apache/ExternalJump.pm:117 ../modules/OpenBib/Handler/Apache/Info.pm:96 ../modules/OpenBib/Handler/Apache/Leave.pm:82 ../modules/OpenBib/Handler/Apache/LitLists.pm:135 ../modules/OpenBib/Handler/Apache/Login.pm:102 ../modules/OpenBib/Handler/Apache/MailCollection.pm:97 ../modules/OpenBib/Handler/Apache/MailPassword.pm:91 ../modules/OpenBib/Handler/Apache/ManageCollection.pm:105 ../modules/OpenBib/Handler/Apache/RSSFeeds.pm:83 ../modules/OpenBib/Handler/Apache/Redirect.pm:92 ../modules/OpenBib/Handler/Apache/ResultLists.pm:109 ../modules/OpenBib/Handler/Apache/Search.pm:188 ../modules/OpenBib/Handler/Apache/SearchMask.pm:97 ../modules/OpenBib/Handler/Apache/SelfReg.pm:101 ../modules/OpenBib/Handler/Apache/Tags.pm:127 ../modules/OpenBib/Handler/Apache/UserPrefs.pm:115 ../modules/OpenBib/Handler/Apache/UserReviews.pm:123 ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:143
+#: ../modules/OpenBib/Handler/Apache/BibSonomy.pm:121 ../modules/OpenBib/Handler/Apache/Circulation.pm:99 ../modules/OpenBib/Handler/Apache/DatabaseChoice.pm:101 ../modules/OpenBib/Handler/Apache/DatabaseProfile.pm:97 ../modules/OpenBib/Handler/Apache/DispatchQuery.pm:87 ../modules/OpenBib/Handler/Apache/ExternalJump.pm:117 ../modules/OpenBib/Handler/Apache/Info.pm:96 ../modules/OpenBib/Handler/Apache/Leave.pm:82 ../modules/OpenBib/Handler/Apache/LitLists.pm:135 ../modules/OpenBib/Handler/Apache/Login.pm:102 ../modules/OpenBib/Handler/Apache/MailCollection.pm:97 ../modules/OpenBib/Handler/Apache/MailPassword.pm:91 ../modules/OpenBib/Handler/Apache/ManageCollection.pm:108 ../modules/OpenBib/Handler/Apache/RSSFeeds.pm:83 ../modules/OpenBib/Handler/Apache/Redirect.pm:92 ../modules/OpenBib/Handler/Apache/ResultLists.pm:109 ../modules/OpenBib/Handler/Apache/Search.pm:188 ../modules/OpenBib/Handler/Apache/SearchMask.pm:97 ../modules/OpenBib/Handler/Apache/SelfReg.pm:101 ../modules/OpenBib/Handler/Apache/Tags.pm:127 ../modules/OpenBib/Handler/Apache/UserPrefs.pm:115 ../modules/OpenBib/Handler/Apache/UserReviews.pm:123 ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:143
 msgid "Ungültige Session"
 msgstr ""
 
@@ -4754,15 +4882,15 @@ msgstr ""
 msgid "Verlinkung und Lastverteilung des KUG"
 msgstr ""
 
-#: ../templates/profile/kugng/search_showtitset:815
+#: ../templates/profile/kugng/search_showtitset:820
 msgid "Verschiedenes"
 msgstr ""
 
-#: ../templates/connector_similarpersons:54 ../templates/connector_similarsubjects:56 ../templates/profile/kugng/search_showtitset:788
+#: ../templates/connector_similarpersons:54 ../templates/connector_similarsubjects:56 ../templates/profile/kugng/search_showtitset:793
 msgid "Verwandte Personen"
 msgstr ""
 
-#: ../templates/profile/kugng/search_showtitset:806
+#: ../templates/profile/kugng/search_showtitset:811
 msgid "Verwandte Themen"
 msgstr ""
 
@@ -4830,7 +4958,7 @@ msgstr ""
 msgid "Vorgemerkt"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:47 ../templates/database/ebooks/search_showtitset:49 ../templates/database/einbaende/search_showtitset:37 ../templates/database/einbaende/search_showtitset:39 ../templates/database/einbaende/search_showtitset_1:37 ../templates/database/einbaende/search_showtitset_1:39 ../templates/database/inst001/search_showtitset:49 ../templates/database/inst001/search_showtitset:51 ../templates/database/landschaft/search_showtitset:33 ../templates/database/landschaft/search_showtitset:35 ../templates/database/nationallizenzen/search_showtitset:47 ../templates/database/nationallizenzen/search_showtitset:49 ../templates/database/portrait/search_showtitset:33 ../templates/database/portrait/search_showtitset:35 ../templates/database/spoho/search_showtitset:47 ../templates/database/spoho/search_showtitset:49 ../templates/database/umschlaege/search_showtitset:47 ../templates/database/umschlaege/search_showtitset:49 ../templates/profile/kuglight/search_showtitset:47 ../templates/profile/kuglight/search_showtitset:49 ../templates/profile/kugng/search_showtitset:478 ../templates/profile/kugng/search_showtitset:480 ../templates/search_showtitset:47 ../templates/search_showtitset:49
+#: ../templates/database/ebooks/search_showtitset:47 ../templates/database/ebooks/search_showtitset:49 ../templates/database/einbaende/search_showtitset:37 ../templates/database/einbaende/search_showtitset:39 ../templates/database/einbaende/search_showtitset_1:37 ../templates/database/einbaende/search_showtitset_1:39 ../templates/database/inst001/search_showtitset:49 ../templates/database/inst001/search_showtitset:51 ../templates/database/landschaft/search_showtitset:33 ../templates/database/landschaft/search_showtitset:35 ../templates/database/nationallizenzen/search_showtitset:47 ../templates/database/nationallizenzen/search_showtitset:49 ../templates/database/portrait/search_showtitset:33 ../templates/database/portrait/search_showtitset:35 ../templates/database/spoho/search_showtitset:47 ../templates/database/spoho/search_showtitset:49 ../templates/database/umschlaege/search_showtitset:47 ../templates/database/umschlaege/search_showtitset:49 ../templates/profile/kuglight/search_showtitset:47 ../templates/profile/kuglight/search_showtitset:49 ../templates/profile/kugng/search_showtitset:482 ../templates/profile/kugng/search_showtitset:484 ../templates/search_showtitset:47 ../templates/search_showtitset:49
 msgid "Vorheriger Titel"
 msgstr ""
 
@@ -4879,7 +5007,7 @@ msgid ""
 "einem Normdaten-Eintrag verkn&uuml;pft wurden, umso grösser wird der zugehörige Normdaten-Eintrag dargestellt."
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:715 ../templates/database/inst001/search_showtitset:736 ../templates/database/nationallizenzen/search_showtitset:715 ../templates/database/spoho/search_showtitset:736 ../templates/database/umschlaege/search_showtitset:739 ../templates/profile/kugng/search_showtitset:411 ../templates/search_showtitset:727
+#: ../templates/database/ebooks/search_showtitset:715 ../templates/database/inst001/search_showtitset:736 ../templates/database/nationallizenzen/search_showtitset:715 ../templates/database/spoho/search_showtitset:736 ../templates/database/umschlaege/search_showtitset:739 ../templates/profile/kugng/search_showtitset:415 ../templates/search_showtitset:727
 msgid "War diese Rezension hilfreich?"
 msgstr ""
 
@@ -5183,7 +5311,7 @@ msgstr ""
 msgid "Zu diesem Titel bzw. seinen Schlagworten konnten in BibSonomy folgende Tags gefunden werden."
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:752 ../templates/database/inst001/search_showtitset:773 ../templates/database/nationallizenzen/search_showtitset:752 ../templates/database/spoho/search_showtitset:773 ../templates/database/umschlaege/search_showtitset:776 ../templates/profile/kugng/search_showtitset:448 ../templates/search_showtitset:764
+#: ../templates/database/ebooks/search_showtitset:752 ../templates/database/inst001/search_showtitset:773 ../templates/database/nationallizenzen/search_showtitset:752 ../templates/database/spoho/search_showtitset:773 ../templates/database/umschlaege/search_showtitset:776 ../templates/profile/kugng/search_showtitset:452 ../templates/search_showtitset:764
 msgid "Zu diesem Titel existieren folgende andere Ausgaben (andere Sprache, andere Auflage usw.) in den KUG-Katalogen"
 msgstr ""
 
@@ -5427,7 +5555,7 @@ msgstr ""
 msgid "nein"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:447 ../templates/database/ebooks/search_showtitset:540 ../templates/database/ebooks/search_showtitset:632 ../templates/database/inst001/search_showtitset:468 ../templates/database/inst001/search_showtitset:561 ../templates/database/inst001/search_showtitset:653 ../templates/database/nationallizenzen/search_showtitset:447 ../templates/database/nationallizenzen/search_showtitset:540 ../templates/database/nationallizenzen/search_showtitset:632 ../templates/database/spoho/search_showtitset:468 ../templates/database/spoho/search_showtitset:561 ../templates/database/spoho/search_showtitset:653 ../templates/database/umschlaege/search_showtitset:471 ../templates/database/umschlaege/search_showtitset:564 ../templates/database/umschlaege/search_showtitset:656 ../templates/litlists_manage_lists:39 ../templates/litlists_manage_lists:64 ../templates/litlists_manage_singlelist:40 ../templates/managecollection_show:99 ../templates/profile/kugng/litlists_manage_lists:39 ../templates/profile/kugng/litlists_manage_lists:78 ../templates/profile/kugng/litlists_manage_singlelist:41 ../templates/profile/kugng/managecollection_tit_as_html:77 ../templates/profile/kugng/managecollection_tit_as_html:99 ../templates/profile/kugng/search_showtitset:533 ../templates/profile/kugng/search_showtitset:563 ../templates/profile/kugng/search_showtitset:636 ../templates/search_showtitset:459 ../templates/search_showtitset:552 ../templates/search_showtitset:644 ../templates/views/einbaende/managecollection_show:101 ../templates/views/umschlaege/managecollection_show:97
+#: ../templates/database/ebooks/search_showtitset:447 ../templates/database/ebooks/search_showtitset:540 ../templates/database/ebooks/search_showtitset:632 ../templates/database/inst001/search_showtitset:468 ../templates/database/inst001/search_showtitset:561 ../templates/database/inst001/search_showtitset:653 ../templates/database/nationallizenzen/search_showtitset:447 ../templates/database/nationallizenzen/search_showtitset:540 ../templates/database/nationallizenzen/search_showtitset:632 ../templates/database/spoho/search_showtitset:468 ../templates/database/spoho/search_showtitset:561 ../templates/database/spoho/search_showtitset:653 ../templates/database/umschlaege/search_showtitset:471 ../templates/database/umschlaege/search_showtitset:564 ../templates/database/umschlaege/search_showtitset:656 ../templates/litlists_manage_lists:39 ../templates/litlists_manage_lists:64 ../templates/litlists_manage_singlelist:40 ../templates/managecollection_show:99 ../templates/profile/kugng/litlists_manage_lists:39 ../templates/profile/kugng/litlists_manage_lists:78 ../templates/profile/kugng/litlists_manage_singlelist:41 ../templates/profile/kugng/managecollection_tit_as_html:100 ../templates/profile/kugng/managecollection_tit_as_html:79 ../templates/profile/kugng/search_showtitset:550 ../templates/profile/kugng/search_showtitset:574 ../templates/profile/kugng/search_showtitset:645 ../templates/search_showtitset:459 ../templates/search_showtitset:552 ../templates/search_showtitset:644 ../templates/views/einbaende/managecollection_show:101 ../templates/views/umschlaege/managecollection_show:97
 msgid "privat"
 msgstr ""
 
@@ -5439,11 +5567,11 @@ msgstr ""
 msgid "realisiert mit"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:668 ../templates/database/inst001/search_showtitset:689 ../templates/database/nationallizenzen/search_showtitset:668 ../templates/database/spoho/search_showtitset:689 ../templates/database/umschlaege/search_showtitset:692 ../templates/profile/kugng/search_showtitset:364 ../templates/search_showtitset:680
+#: ../templates/database/ebooks/search_showtitset:668 ../templates/database/inst001/search_showtitset:689 ../templates/database/nationallizenzen/search_showtitset:668 ../templates/database/spoho/search_showtitset:689 ../templates/database/umschlaege/search_showtitset:692 ../templates/profile/kugng/search_showtitset:368 ../templates/search_showtitset:680
 msgid "schlecht"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:674 ../templates/database/inst001/search_showtitset:695 ../templates/database/nationallizenzen/search_showtitset:674 ../templates/database/spoho/search_showtitset:695 ../templates/database/umschlaege/search_showtitset:698 ../templates/profile/kugng/search_showtitset:370 ../templates/search_showtitset:686
+#: ../templates/database/ebooks/search_showtitset:674 ../templates/database/inst001/search_showtitset:695 ../templates/database/nationallizenzen/search_showtitset:674 ../templates/database/spoho/search_showtitset:695 ../templates/database/umschlaege/search_showtitset:698 ../templates/profile/kugng/search_showtitset:374 ../templates/search_showtitset:686
 msgid "sehr gut"
 msgstr ""
 
@@ -5463,15 +5591,15 @@ msgstr ""
 msgid "wiederholt"
 msgstr ""
 
-#: ../templates/admin_editcat:177 ../templates/admin_editcat_rss:134 ../templates/admin_editcat_rss:191 ../templates/admin_editcat_rss:248 ../templates/admin_editcat_rss:305 ../templates/admin_editcat_rss:333 ../templates/admin_editcat_rss:77 ../templates/admin_editlogintarget:55 ../templates/admin_editprofile:70 ../templates/admin_editsubject:132 ../templates/admin_editsubject:179 ../templates/admin_editsubject:86 ../templates/admin_editview:138 ../templates/admin_editview_rss:139 ../templates/admin_editview_rss:96
+#: ../templates/admin_editcat:177 ../templates/admin_editcat_rss:134 ../templates/admin_editcat_rss:191 ../templates/admin_editcat_rss:248 ../templates/admin_editcat_rss:305 ../templates/admin_editcat_rss:333 ../templates/admin_editcat_rss:77 ../templates/admin_editlibinfo:73 ../templates/admin_editlogintarget:55 ../templates/admin_editprofile:70 ../templates/admin_editsubject:132 ../templates/admin_editsubject:179 ../templates/admin_editsubject:86 ../templates/admin_editview:138 ../templates/admin_editview_rss:139 ../templates/admin_editview_rss:96
 msgid "Ändern"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:493 ../templates/database/ebooks/search_showtitset:586 ../templates/database/inst001/search_showtitset:514 ../templates/database/inst001/search_showtitset:607 ../templates/database/nationallizenzen/search_showtitset:493 ../templates/database/nationallizenzen/search_showtitset:586 ../templates/database/spoho/search_showtitset:514 ../templates/database/spoho/search_showtitset:607 ../templates/database/umschlaege/search_showtitset:517 ../templates/database/umschlaege/search_showtitset:610 ../templates/profile/kugng/search_showtitset:607 ../templates/profile/kugng/search_showtitset:677 ../templates/search_showtitset:505 ../templates/search_showtitset:598
+#: ../templates/database/ebooks/search_showtitset:493 ../templates/database/ebooks/search_showtitset:586 ../templates/database/inst001/search_showtitset:514 ../templates/database/inst001/search_showtitset:607 ../templates/database/nationallizenzen/search_showtitset:493 ../templates/database/nationallizenzen/search_showtitset:586 ../templates/database/spoho/search_showtitset:514 ../templates/database/spoho/search_showtitset:607 ../templates/database/umschlaege/search_showtitset:517 ../templates/database/umschlaege/search_showtitset:610 ../templates/profile/kugng/search_showtitset:616 ../templates/profile/kugng/search_showtitset:684 ../templates/search_showtitset:505 ../templates/search_showtitset:598
 msgid "Übernahme bereits von Nutzern vergebener Tags"
 msgstr ""
 
-#: ../templates/database/ebooks/search_showtitset:462 ../templates/database/ebooks/search_showtitset:555 ../templates/database/inst001/search_showtitset:483 ../templates/database/inst001/search_showtitset:576 ../templates/database/nationallizenzen/search_showtitset:462 ../templates/database/nationallizenzen/search_showtitset:555 ../templates/database/spoho/search_showtitset:483 ../templates/database/spoho/search_showtitset:576 ../templates/database/umschlaege/search_showtitset:486 ../templates/database/umschlaege/search_showtitset:579 ../templates/profile/kugng/managecollection_tit_as_html:108 ../templates/profile/kugng/search_showtitset:576 ../templates/profile/kugng/search_showtitset:646 ../templates/search_showtitset:474 ../templates/search_showtitset:567
+#: ../templates/database/ebooks/search_showtitset:462 ../templates/database/ebooks/search_showtitset:555 ../templates/database/inst001/search_showtitset:483 ../templates/database/inst001/search_showtitset:576 ../templates/database/nationallizenzen/search_showtitset:462 ../templates/database/nationallizenzen/search_showtitset:555 ../templates/database/spoho/search_showtitset:483 ../templates/database/spoho/search_showtitset:576 ../templates/database/umschlaege/search_showtitset:486 ../templates/database/umschlaege/search_showtitset:579 ../templates/profile/kugng/managecollection_tit_as_html:108 ../templates/profile/kugng/search_showtitset:585 ../templates/profile/kugng/search_showtitset:653 ../templates/search_showtitset:474 ../templates/search_showtitset:567
 msgid "Übernahme eigener Tags"
 msgstr ""
 

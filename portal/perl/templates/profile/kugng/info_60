@@ -14,6 +14,25 @@
 [% PROCESS common/subtemplate name="std_header" %]
   <body>
 
+[%- libinfo = config.get_libinfo(id); -%]
+
+[% IF config.google_maps_api_key && libinfo.${"I1000"}.first.content %]
+<script type="text/javascript" src="http://www.google.com/jsapi?key=[% config.google_maps_api_key %]"></script>
+
+<script type="text/javascript">
+  google.load("maps", "2");
+
+  // Call this function when the page has been loaded
+  function initialize() {
+        var map = new google.maps.Map2(document.getElementById("map"));
+        map.setCenter(new google.maps.LatLng([% libinfo.${"I1000"}.first.content %]), 15);
+        var point = new GLatLng([% libinfo.${"I1000"}.first.content %]);
+        map.addOverlay(new GMarker(point));
+  }
+  google.setOnLoadCallback(initialize);
+</script>
+[% END %]
+
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
 [% PROCESS common/subtemplate name="mainnavigation" %] 
@@ -34,12 +53,12 @@
 
 <div class="content">
 
+<div class="right_side" id="map" style="width: 400px; height: 400px"></div>
+
 [% PROCESS common/subtemplate name="visible_categories_libinfoset" %]
 
 <table>
 [%-
-
-libinfo = config.get_libinfo(id);
 
 FOREACH category IN categories;
 
@@ -71,7 +90,6 @@ FOREACH category IN categories;
 [%-   END ;
 END ;-%]
 </table>
-
 </div>
 
 [% PROCESS common/subtemplate name="std_footer" %]

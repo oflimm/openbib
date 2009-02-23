@@ -51,7 +51,7 @@ FOREACH category IN categories;
         END;
 -%]
 <tr><td class="category">[% msg.maketext("${thiscategory}")
-%]</td><td><input type="text" name="[% category %]" value="[% content %]" size="100"/></td></tr>
+%]</td><td><input type="text" name="[% category %]" value="[% content | replace('"','%22') %]" size="100"/></td></tr>
 [%-   END ;
      ELSE ;
         thiscategory = category ;

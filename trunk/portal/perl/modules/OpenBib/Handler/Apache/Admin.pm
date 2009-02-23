@@ -212,6 +212,8 @@ sub handler {
     my $li_0230         = $query->param('I0230')          || '';
     my $li_0240         = $query->param('I0240')          || '';
     my $li_0250         = $query->param('I0250')          || '';
+    my $li_0260         = $query->param('I0260')          || '';
+    my $li_1000         = $query->param('I1000')          || '';
     
     my $viewstart_loc   = $query->param('viewstart_loc')             || '';
     my $viewstart_stid  = $query->param('viewstart_stid')            || '';
@@ -298,6 +300,8 @@ sub handler {
         I0230      => $li_0230,
         I0240      => $li_0240,
         I0250      => $li_0250,
+        I0260      => $li_0260,
+        I1000      => $li_1000,
     };
 
     my $thislogintarget_ref = {
@@ -587,9 +591,10 @@ sub handler {
 
             $logger->debug("Info: ".YAML::Dump($thislibinfo_ref));
 
-            editlibinfo_change($thislibinfo_ref);
+            editlibinfo_change($dbname,$thislibinfo_ref);
 
-	    my $ret_ref = dist_cmd("editlibinfo_change",{ 
+	    my $ret_ref = dist_cmd("editlibinfo_change",{
+               
 						     libinfo    => $thislibinfo_ref,
 						 }) if ($do_dist);
 
@@ -602,7 +607,7 @@ sub handler {
             my $ttdata={
                 stylesheet => $stylesheet,
                 sessionID  => $session->{ID},
-		  
+                dbname     => $dbname,
                 libinfo    => $libinfo_ref,
 		  
                 config     => $config,
@@ -1605,6 +1610,36 @@ sub editview_del {
     $idnresult=$dbh->prepare("delete from viewdbs where viewname = ?") or $logger->error($DBI::errstr);
     $idnresult->execute($viewname) or $logger->error($DBI::errstr);
     $idnresult->finish();
+
+    return;
+}
+
+sub editlibinfo_change {
+    my ($dbname,$libinfo_ref)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $config = OpenBib::Config->instance;
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $del_request    = $dbh->prepare("delete from libraryinfo where dbname=? and category=?") or $logger->error($DBI::errstr); # 
+    my $insert_request = $dbh->prepare("insert into libraryinfo values (?,?,NULL,?)") or $logger->error($DBI::errstr); # 
+
+    foreach my $category (keys %$libinfo_ref){
+        my ($category_num)=$category=~/^I(\d+)$/;
+
+        $logger->debug("Changing Category $category_num to $libinfo_ref->{$category}");
+        $del_request->execute($dbname,$category_num);
+        $insert_request->execute($dbname,$category_num,$libinfo_ref->{$category});
+    }
+
+    $del_request->finish();
+    $insert_request->finish();
 
     return;
 }

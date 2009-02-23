@@ -40,6 +40,7 @@
                 'I0230', # msg.maketext("I0230") # Online-Katalogisierung seit Erscheinungsjahr
                 'I0240', # msg.maketext("I0240") # Mitarbeit am KUG
                 'I0250', # msg.maketext("I0250") # Sigel in ZDB
+                'I1000', # msg.maketext("I1000") # Koordinaten
                 ]
 
 %]

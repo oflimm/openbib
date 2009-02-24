@@ -154,7 +154,7 @@
       <div class="brieftitle">
 <span class="rlperson">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
 <br />aus:&nbsp;<i>
-[%-   IF dburl.match('bibliotheksfuehrer') %]
+[%-   IF dbinfo.use_libinfo.${item.database} %]
 <a href="[% config.info_loc %]?sessionID=[% sessionID %];id=[% item.database %];stid=60">
 [%-   ELSE -%]
 <a href="[% dburl %]" target="_blank">

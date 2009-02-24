@@ -62,7 +62,7 @@ sub _new_instance {
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $dbinforesult=$dbh->prepare("select dbname,sigel,url,description,shortdesc from dbinfo") or $logger->error($DBI::errstr);
+    my $dbinforesult=$dbh->prepare("select dbname,sigel,url,description,shortdesc,use_libinfo from dbinfo") or $logger->error($DBI::errstr);
     $dbinforesult->execute() or $logger->error($DBI::errstr);;
   
     while (my $result=$dbinforesult->fetchrow_hashref()) {
@@ -71,13 +71,15 @@ sub _new_instance {
         my $url         = decode_utf8($result->{'url'});
         my $description = decode_utf8($result->{'description'});
         my $shortdesc   = decode_utf8($result->{'shortdesc'});
+        my $use_libinfo = decode_utf8($result->{'use_libinfo'});
     
         ##################################################################### 
         ## Wandlungstabelle Bibliothekssigel <-> Bibliotheksname
     
         $self->{sigel}->{"$sigel"} = {
-            full  => $description,
-            short => $shortdesc,
+            full   => $description,
+            short  => $shortdesc,
+            dbname => $dbname,
         };
     
         #####################################################################
@@ -98,7 +100,8 @@ sub _new_instance {
             short => $shortdesc,
         };
 
-        $self->{urls}->{"$dbname"}      = $url;
+        $self->{urls}->{"$dbname"}        = $url;
+        $self->{use_libinfo}->{"$dbname"} = $use_libinfo;
 
     }
   

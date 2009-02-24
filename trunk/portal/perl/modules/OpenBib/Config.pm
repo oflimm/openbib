@@ -35,6 +35,8 @@ use base qw(Apache::Singleton::Process);
 use Apache::Reload;
 use Encode 'decode_utf8';
 use Log::Log4perl qw(get_logger :levels);
+use LWP;
+use URI::Escape qw(uri_escape);
 use YAML::Syck;
 
 use OpenBib::Database::DBI;
@@ -656,6 +658,7 @@ sub get_dbinfo {
         dbname      => decode_utf8($result->{'dbname'}),
         sigel       => decode_utf8($result->{'sigel'}),
         url         => decode_utf8($result->{'url'}),
+        use_libinfo => decode_utf8($result->{'use_libinfo'}),
         active      => decode_utf8($result->{'active'}),
     };
     
@@ -702,6 +705,7 @@ sub get_dbinfo_overview {
         my $sigel       = decode_utf8($result->{'sigel'});
         my $url         = decode_utf8($result->{'url'});
         my $active      = decode_utf8($result->{'active'});
+        my $use_libinfo = decode_utf8($result->{'use_libinfo'});
         my $count       = decode_utf8($result->{'count'});
         
         if (!$description) {
@@ -716,6 +720,7 @@ sub get_dbinfo_overview {
             sigel       => $sigel,
             active      => $active,
             url         => $url,
+            use_libinfo => $use_libinfo,
             count       => $count,
             autoconvert => $autoconvert,
         };
@@ -764,6 +769,35 @@ sub get_libinfo {
     }
 
     return $libinfo_ref;
+}
+
+sub have_libinfo {
+    my $self   = shift;
+    my $dbname = shift;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$self->{dbimodule}:dbname=$self->{configdbname};host=$self->{configdbhost};port=$self->{configdbport}", $self->{configdbuser}, $self->{configdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $sqlrequest;
+
+    my $libinfo_ref={};
+
+    return {} if (!$dbname);
+    
+    $libinfo_ref->{database} = $dbname;
+
+    $sqlrequest="select count(dbname) as infocount from libraryinfo where dbname = ? and content != ''";
+    my $request=$dbh->prepare($sqlrequest) or $logger->error($DBI::errstr);
+    $request->execute($dbname);
+
+    my $res=$request->fetchrow_hashref;
+
+    return $res->{infocount};
 }
 
 sub get_viewinfo_overview {
@@ -1393,6 +1427,17 @@ sub get_dbis_object {
     my ($self) = @_;
 
     return OpenBib::DBIS->new;
+}
+
+sub get_geoposition {
+    my ($self,$address)=@_;
+
+    my $ua = LWP::UserAgent->new;
+
+    my $url = "http://maps.google.com/maps/geo?q=".uri_escape($address)."&output=csv&key=".$self->{google_maps_api_key};
+        
+    my $response = $ua->get($url)->decoded_content(charset => 'utf8');
+    return $response;
 }
 
 1;

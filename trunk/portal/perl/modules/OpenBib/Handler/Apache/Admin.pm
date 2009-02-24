@@ -136,6 +136,7 @@ sub handler {
     my $dbname          = $query->param('dbname')          || '';
     my $sigel           = $query->param('sigel')           || '';
     my $url             = $query->param('url')             || '';
+    my $use_libinfo     = $query->param('use_libinfo')     || '';
     my $active          = $query->param('active')          || '';
 
     my $viewname        = $query->param('viewname')        || '';
@@ -251,6 +252,7 @@ sub handler {
         dbname      => $dbname,
         sigel       => $sigel,
         url         => $url,
+        use_libinfo => $use_libinfo,
         active      => $active,
     };
         
@@ -434,6 +436,7 @@ sub handler {
             my $dbname      = $dbinfo_ref->{'dbname'};
             my $sigel       = $dbinfo_ref->{'sigel'};
             my $url         = $dbinfo_ref->{'url'};
+            my $use_libinfo = $dbinfo_ref->{'use_libinfo'};
             my $active      = $dbinfo_ref->{'active'};
 
             my $dboptions_ref = $config->get_dboptions($dbname);
@@ -467,6 +470,7 @@ sub handler {
                 sigel       => $sigel,
                 active      => $active,
                 url         => $url,
+                use_libinfo => $use_libinfo,
 
                 imxconfig   => {
                     host         => $host,
@@ -1085,6 +1089,7 @@ sub handler {
             my $dbname      = decode_utf8($result->{'dbname'});
             my $sigel       = decode_utf8($result->{'sigel'});
             my $url         = decode_utf8($result->{'url'});
+            my $use_libinfo = decode_utf8($result->{'use_libinfo'});
             my $active      = decode_utf8($result->{'active'});
 
             $active="Ja"   if ($active eq "1");
@@ -1100,6 +1105,7 @@ sub handler {
 		sigel       => $sigel,
 		active      => $active,
 		url         => $url,
+                use_libinfo => $use_libinfo,
 		count       => $count,
             };
 
@@ -1505,8 +1511,8 @@ sub editcat_change {
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $request=$dbh->prepare("update dbinfo set orgunit = ?, description = ?, shortdesc = ?, system = ?, sigel = ?, url = ?, active = ? where dbname = ?") or $logger->error($DBI::errstr); # 
-    $request->execute($dbinfo_ref->{orgunit},$dbinfo_ref->{description},$dbinfo_ref->{shortdesc},$dbinfo_ref->{system},$dbinfo_ref->{sigel},$dbinfo_ref->{url},$dbinfo_ref->{active},$dbinfo_ref->{dbname}) or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare("update dbinfo set orgunit = ?, description = ?, shortdesc = ?, system = ?, sigel = ?, url = ?, use_libinfo = ?, active = ? where dbname = ?") or $logger->error($DBI::errstr); # 
+    $request->execute($dbinfo_ref->{orgunit},$dbinfo_ref->{description},$dbinfo_ref->{shortdesc},$dbinfo_ref->{system},$dbinfo_ref->{sigel},$dbinfo_ref->{url},$dbinfo_ref->{use_libinfo},$dbinfo_ref->{active},$dbinfo_ref->{dbname}) or $logger->error($DBI::errstr);
 
     # Konvertierung
     $request=$dbh->prepare("update dboptions set protocol = ?, host = ?, remotepath = ?, remoteuser = ?, remotepasswd = ?, titfilename = ?, autfilename = ?, korfilename = ?, swtfilename = ?, notfilename = ?, mexfilename = ?, filename = ?, autoconvert = ? where dbname= ?") or $logger->error($DBI::errstr);
@@ -1534,8 +1540,8 @@ sub editcat_new {
         = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{configdbname};host=$config->{configdbhost};port=$config->{configdbport}", $config->{configdbuser}, $config->{configdbpasswd})
             or $logger->error_die($DBI::errstr);
 
-    my $idnresult=$dbh->prepare("insert into dbinfo values (?,?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
-    $idnresult->execute($dbinfo_ref->{orgunit},$dbinfo_ref->{description},$dbinfo_ref->{shortdesc},$dbinfo_ref->{system},$dbinfo_ref->{dbname},$dbinfo_ref->{sigel},$dbinfo_ref->{url},$dbinfo_ref->{active}) or $logger->error($DBI::errstr);
+    my $idnresult=$dbh->prepare("insert into dbinfo values (?,?,?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
+    $idnresult->execute($dbinfo_ref->{orgunit},$dbinfo_ref->{description},$dbinfo_ref->{shortdesc},$dbinfo_ref->{system},$dbinfo_ref->{dbname},$dbinfo_ref->{sigel},$dbinfo_ref->{url},$dbinfo_ref->{use_libinfo},$dbinfo_ref->{active}) or $logger->error($DBI::errstr);
     $idnresult=$dbh->prepare("insert into titcount values (?,'0')") or $logger->error($DBI::errstr);
     $idnresult->execute($dbinfo_ref->{dbname}) or $logger->error($DBI::errstr);
     $idnresult=$dbh->prepare("insert into dboptions values (?,'','','','','','','','','','','','',0,0,'','','')") or $logger->error($DBI::errstr);

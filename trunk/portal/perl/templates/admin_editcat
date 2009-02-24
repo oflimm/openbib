@@ -72,17 +72,15 @@ selected
 <tr><td><b>[% msg.maketext("DB-Name") %]</b></td><td>[% katalog.dbname %]</td></tr>
 <tr><td><b>[% msg.maketext("Sigel") %]</b></td><td><input type="text" name="sigel" value="[% katalog.sigel %]" size="3" /></td></tr>
 <tr><td><b>[% msg.maketext("URL") %]</b></td><td><input type="text" name="url" value="[% katalog.url %]" size="60" /></td></tr>
+<tr><td><b>[% msg.maketext("Bibliotheksinformationen statt URL") %]</b></td><td>
+<select name="use_libinfo">
+<option value="1" [%- IF katalog.use_libinfo == 1 -%]selected[%- END -%]>[% msg.maketext("Ja") %]</option>
+<option value="0" [%- IF katalog.use_libinfo == 0 -%]selected[%- END -%]>[% msg.maketext("Nein") %]</option></select>
+</td></tr>
 <tr><td><b>[% msg.maketext("Aktiv") %]</b></td><td>
 <select name="active">
-<option value="1" 
-[% IF katalog.active == 1 %]
-selected
-[% END %]
->[% msg.maketext("Ja") %]</option><option value="0" 
-[% IF katalog.active == 0 %]
-selected
-[% END %]
->[% msg.maketext("Nein") %]</option></select>
+<option value="1" [%- IF katalog.active == 1 -%]selected[%- END -%]>[% msg.maketext("Ja") %]</option>
+<option value="0" [%- IF katalog.active == 0 -%]selected[%- END -%]>[% msg.maketext("Nein") %]</option></select>
 </td></tr>
 </table>
 <p />

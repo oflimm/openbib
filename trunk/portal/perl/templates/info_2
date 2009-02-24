@@ -134,6 +134,16 @@ und die Ergebnisse in der Einzeltrefferanzeige ausgegeben.</p><p>[<a href="http:
 target="_blank">Beispiel</a>]
 </p>
 
+<h2>Integration der Informationen des Bibliotheksf&uuml;hrers und Mashup mit Google Maps</h2>
+
+<p>
+Die Informationen des Bibliotheksf&uuml;hrers zu den einzelnen
+Instituts- und Seminarbibliotheken wurden nun vollst&auml;ndig in den
+KUG integriert. Hinzugef&uuml;gt wurde eine englische Lokalisierung
+der Kategorie-Namen sowie ein Kartenausschnitt mit der Lage der
+Bibliothek, der &uuml;ber einen Mashup mit Google Maps geliefert wird.
+</p>
+
 <h1 id="kugv2.2">Neuerungen mit Version 2.2 (Umstellung am 8.7.2008)</h1>
 
 <h2>Integration des Ausleihsystems</h2>

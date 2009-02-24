@@ -47,6 +47,7 @@ use YAML;
 
 use OpenBib::Common::Util;
 use OpenBib::Config;
+use OpenBib::Config::DatabaseInfoTable;
 use OpenBib::L10N;
 use OpenBib::QueryOptions;
 use OpenBib::SearchQuery;
@@ -60,7 +61,8 @@ sub handler {
     # Log4perl logger erzeugen
     my $logger = get_logger();
 
-    my $config = OpenBib::Config->instance;
+    my $config      = OpenBib::Config->instance;
+    my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     my $query  = Apache::Request->instance($r);
 
@@ -77,7 +79,7 @@ sub handler {
     });
 
     my $user      = OpenBib::User->instance({sessionID => $session->{ID}});
-    
+
     my $useragent=$r->subprocess_env('HTTP_USER_AGENT');
   
     my $stylesheet = OpenBib::Common::Util::get_css_by_browsertype($r);
@@ -238,6 +240,7 @@ sub handler {
         alldbcount    => $alldbcount,
         userprofile   => $userprofile_ref,
         dbchoice      => $dbchoice_ref,
+        dbinfo        => $dbinfotable,
         prevprofile   => $prevprofile,
         showfs        => $showfs,
         showhst       => $showhst,

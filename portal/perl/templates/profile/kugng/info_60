@@ -16,7 +16,7 @@
 
 [%- libinfo = config.get_libinfo(id); -%]
 
-[% IF config.google_maps_api_key && libinfo.${"I1000"}.first.content %]
+[%- IF config.google_maps_api_key && libinfo.${"I1000"}.first.content -%]
 <script type="text/javascript" src="http://www.google.com/jsapi?key=[% config.google_maps_api_key %]"></script>
 
 <script type="text/javascript">
@@ -53,7 +53,7 @@
 
 <div class="content">
 
-<div class="right_side" id="map" style="width: 400px; height: 400px"></div>
+<div class="right_side" id="map" style="width: 300px; height: 300px"></div>
 
 [% PROCESS common/subtemplate name="visible_categories_libinfoset" %]
 
@@ -63,7 +63,7 @@
 FOREACH category IN categories;
 
       FOREACH item IN libinfo.$category;
-        content = item.content;
+        content = item.content.replace('%22','"');
 
         SWITCH category;
 

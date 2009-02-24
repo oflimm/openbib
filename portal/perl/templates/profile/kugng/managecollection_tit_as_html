@@ -200,7 +200,7 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
       <div class="brieftitle">
 <span class="rlperson">[% person %]</span><br /><a href="[% config.search_loc %]?sessionID=[% sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id %]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span>    
 <br />[% msg.maketext("aus:") %]&nbsp;<i>
-[%-   IF dburl.match('bibliotheksfuehrer') %]
+[%-   IF dbinfo.use_libinfo.${record.database} %]
 <a href="[% config.info_loc %]?sessionID=[% sessionID %];id=[% record.database %];stid=60">
 [%-   ELSE -%]
 <a href="[% dburl %]" target="_blank">

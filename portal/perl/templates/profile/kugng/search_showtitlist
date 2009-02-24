@@ -78,7 +78,7 @@
 <div class="resultlist">
   <div class="resultheader">
     <div class="catalogue">
-[%-   IF dburl.match('bibliotheksfuehrer') %]
+[%-   IF dbinfo.use_libinfo.${database} %]
 <a href="[% config.info_loc %]?sessionID=[% sessionID %];id=[% database %];stid=60">
 [%-   ELSE -%]
 <a href="[% dburl %]" target="_blank">

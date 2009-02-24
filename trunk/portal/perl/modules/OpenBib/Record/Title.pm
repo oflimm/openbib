@@ -1139,9 +1139,8 @@ sub _get_mex_set_by_idn {
     $normset_ref->{X0014}{content}="-";
     $normset_ref->{X0016}{content}="-";
     $normset_ref->{X1204}{content}="-";
-    $normset_ref->{X4000}{content}="-";
-    $normset_ref->{X4001}{content}="";
-
+    $normset_ref->{X4000}{content}="-"; # Katalogname
+    $normset_ref->{X4001}{content}="";  # Katalog-URL laut Admin
     
     my ($atime,$btime,$timeall);
     if ($config->{benchmark}) {

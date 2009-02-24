@@ -34,7 +34,7 @@
 
 		<div id="header_logo"><a href="http://kug.ub.uni-koeln.de/" title="KUG Startseite" id="header_usb_siegel_small" target="_blank"></a></div>
                 <div id="header_simplesearch">
-<span class="bigtext">Finde</span>&nbsp;<input type="text" name="fs" value="[% searchquery.fs.val | html %]" size="40" maxlength="200" />&nbsp;&nbsp;<input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Los") %]" />&nbsp;&nbsp;<a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Erweiterte Suche") %]</a>
+<span class="bigtext">[% msg.maketext("Finde") %]</span>&nbsp;<input type="text" name="fs" value="[% searchquery.fs.val | html %]" size="40" maxlength="200" />&nbsp;&nbsp;<input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Los") %]" />&nbsp;&nbsp;<a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Erweiterte Suche") %]</a>
 </div>
 </form>
 

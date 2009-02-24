@@ -303,9 +303,9 @@ a:active.invisible {
   margin-top: 5px;
 }
 
-.content #langchoice {  
+/* .content #langchoice {  
   float: right;
-}
+}*/
 
 .infotext {
   width:800px;
@@ -1102,7 +1102,7 @@ dt.review {
 #searchmask_dbchoice {
   float: right;
   padding: 20px;
-  width: 50%;
+  width: 45%;
   background-color: white;
   border-left-style: dashed;
   border-left-color: lightblue;
@@ -1115,7 +1115,7 @@ dt.review {
   margin-bottom: 0px;
 }
 
-#teaser #langchoice {
+#teaser .langchoice {
   position: static;
   width:auto;
   padding: 5px;

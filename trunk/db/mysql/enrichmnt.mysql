@@ -53,3 +53,17 @@ FULLTEXT      (isbn)
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
+
+drop table IF EXISTS all_normdata;
+create table all_normdata (
+ fs            TEXT NOT NULL,
+ content       TEXT NOT NULL,
+ type          SMALLINT,
+ dbname        VARCHAR(25) NOT NULL,
+ FULLTEXT      (fs),
+ index         (dbname),
+ index         (content(20))
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;

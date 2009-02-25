@@ -121,6 +121,7 @@ connector_bibmanager_loc: /portal/connector/literaturverwaltung
 connector_digibib_loc: /portal/connector/digibib
 connector_olws_loc: /portal/connector/olws
 connector_permalink_loc: /portal/connector/permalink
+connector_livesearch_loc: /portal/connector/livesearch
 connector_locationmark_loc: /portal/connector/sykasignatur
 connector_rss_loc: /portal/connector/rss
 connector_similarpersons_loc: /portal/connector/similarpersons

@@ -149,7 +149,46 @@
 [%- IF userinfo.masktype == 'advanced' -%]
  selected="selected"
 [%- END -%]
->[% msg.maketext("Erweitere Recherchemaske") %]</option></select>&nbsp;&nbsp;<input type="submit" value="[% msg.maketext("Recherchemaske festlegen") %]" /></td></tr>
+>[% msg.maketext("Erweitere Recherchemaske") %]</option></select>&nbsp;&nbsp;<input type="submit" value="[% msg.maketext("Art der Recherchemaske festlegen") %]" /></td></tr>
+</table>
+</form>
+</td></tr>
+</table>
+<p />
+<table>
+<tr><td valign="top">
+<table width="100%">
+<tr><th>[% msg.maketext("Automatische Vorschl&auml;ge zur Suchanfrage") %]</td></tr>
+<tr><td class="options">
+<form method="post" action="[% config.userprefs_loc %]" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="action"    value="changeautocompletion" />
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<table>
+<tr><td align="left"><select name="setautocompletion"><option value="livesearch"
+[%- IF userinfo.autocompletiontype == 'livesearch' -%]
+ selected="selected"
+[%- END -%]
+>[% msg.maketext("LiveSearch") %]</option><option value="spelling"
+[%- IF userinfo.autocompletiontype == 'spelling' -%]
+ selected="selected"
+[%- END -%]
+>[% msg.maketext("Rechtschreibvorschläge") %]</option></select>&nbsp;&nbsp;<input type="submit" value="[% msg.maketext("Art der Autovervollst&auml;ndigung festlegen") %]" /></td></tr>
+</table>
+</form>
+<p />
+<table width="100%">
+<tr><th>[% msg.maketext("LiveSearch") %]<!-- <span class="formInfo"><a href="/help/livesearch_[% qopts.l %].html?width=375" class="jTip" id="one" name="Ausgabe passender Personen und Schlagworte:"><img src="[% config.info_img %]" /></a></span>--></td></tr>
+<tr><td class="options">
+<form method="post" action="[% config.userprefs_loc %]" enctype="application/x-www-form-urlencoded">
+<input type="hidden" name="action"    value="changelivesearch" />
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<table>
+<tr><td align="right"><input type="checkbox" name="livesearch_exact" value="1" [% IF livesearch.exact %]checked="checked"[% END %]/></td><td>[% msg.maketext("Exakte Übereinstimmung des Begriffes") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="livesearch_fs" value="1" [% IF livesearch.fs %]checked="checked"[% END %]/></td><td>[% msg.maketext("In der einfachen Recherche bzw. dem freien Suchfeld") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="livesearch_verf" value="1" [% IF livesearch.verf %]checked="checked"[% END %] /></td><td>[% msg.maketext("Bei der Eingabe von Personen") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="livesearch_swt" value="1" [% IF livesearch.swt %]checked="checked"[% END %] /></td><td>[% msg.maketext("Bei der Eingabe von Schlagworten") %]</td></tr>
+<tr><td colspan="2">&nbsp;</td></tr>
+<tr><td colspan="2"><input type="submit" value="[% msg.maketext("&Auml;ndern") %]" /></td></tr>
 </table>
 </form>
 </td></tr>
@@ -162,12 +201,14 @@
 <input type="hidden" name="action"    value="changespelling" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <table>
-<tr><td align="right"><input type="checkbox" name="as_you_type" value="1" [% IF spelling_suggestion.as_you_type %]checked="checked"[% END %]/></td><td>[% msg.maketext("In der Recherchemaske") %]</td></tr>
-<tr><td align="right"><input type="checkbox" name="resultlist" value="1" [% IF spelling_suggestion.resultlist %]checked="checked"[% END %] /></td><td>[% msg.maketext("In der Trefferliste") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="spelling_as_you_type" value="1" [% IF spelling_suggestion.as_you_type %]checked="checked"[% END %]/></td><td>[% msg.maketext("In der Recherchemaske") %]</td></tr>
+<tr><td align="right"><input type="checkbox" name="spelling_resultlist" value="1" [% IF spelling_suggestion.resultlist %]checked="checked"[% END %] /></td><td>[% msg.maketext("In der Trefferliste") %]</td></tr>
 <tr><td colspan="2">&nbsp;</td></tr>
 <tr><td colspan="2"><input type="submit" value="[% msg.maketext("&Auml;ndern") %]" /></td></tr>
 </table>
 </form>
+</td></tr>
+</table>
 </td></tr>
 </table>
 <p />

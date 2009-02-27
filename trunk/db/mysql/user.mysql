@@ -29,7 +29,8 @@ CREATE TABLE user (
 
  email      TEXT,
 
- masktype   TEXT,
+ masktype             TEXT,
+ autocompletiontype   TEXT,
 
  bibsonomy_user TEXT,
  bibsonomy_key  TEXT,
@@ -101,10 +102,24 @@ PACK_KEYS=1;
 
 DROP TABLE IF EXISTS spelling;
 CREATE TABLE spelling (
- userid    BIGINT NOT NULL,
+ userid      BIGINT NOT NULL,
  as_you_type BOOL,
  resultlist  BOOL,
  
+ INDEX (userid)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+DROP TABLE IF EXISTS livesearch;
+CREATE TABLE livesearch (
+ userid    BIGINT NOT NULL,
+ fs        BOOL,
+ verf      BOOL,
+ swt       BOOL,
+ exact     BOOL,
+
  INDEX (userid)
 )
 DEFAULT CHARACTER SET utf8

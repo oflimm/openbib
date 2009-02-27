@@ -55,7 +55,10 @@
 
 <div id="alltypes"><!-- Begin alle Typen -->
 
-[% IF spelling_suggestion.as_you_type %]
+[% IF user.is_authenticated %]
+[% autocompletion_type = user.get_autocompletion %]
+[% livesearch          = user.get_livesearch %]
+[% IF autocompletion_type == "spelling" && spelling_suggestion.as_you_type %]
 <script type="text/javascript">
 $(document).ready(function(){
   $("#to_focus").autocomplete("[% config.connector_spellcheck_loc %]", {
@@ -63,8 +66,48 @@ $(document).ready(function(){
                 minChars: 3,
                 multiple: true,                
                 multipleSeparator: ' '});
+  $("#input_box_serials").autocomplete("[% config.connector_spellcheck_loc %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
+  $("#input_box_articles").autocomplete("[% config.connector_spellcheck_loc %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' '});
 })
 </script>
+[% ELSIF autocompletion_type == "livesearch" && livesearch.fs %]
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#to_focus").autocomplete("[% config.connector_livesearch_loc %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  exact: "[% livesearch.exact %]"
+                }});
+  $("#input_box_serials").autocomplete("[% config.connector_livesearch_loc %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  exact: "[% livesearch.exact %]"
+                }});
+  $("#input_box_articles").autocomplete("[% config.connector_livesearch_loc %]", {
+                selectFirst: false,
+                minChars: 3,
+                multiple: true,                
+                multipleSeparator: ' ',
+                extraParams: {
+                  exact: "[% livesearch.exact %]"
+                }});
+})
+</script>
+[%   END %]
 [% END %]
 
 <h1>[% msg.maketext("Recherchieren Sie im KUG in [_1] Titeln und [_2] Katalogen","${alldbcount.all}","${alldbs}") %]</h1>[%# msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount.all}","${alldbs}") %]

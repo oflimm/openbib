@@ -1,4 +1,4 @@
-#####################################################################
+####################################################################
 #
 #  OpenBib::Handler::Apache::UserPrefs
 #
@@ -75,8 +75,13 @@ sub handler {
     
     my $stylesheet=OpenBib::Common::Util::get_css_by_browsertype($r);
 
-    my $as_you_type   = ($query->param('as_you_type'))?$query->param('as_you_type'):'0';
-    my $resultlist    = ($query->param('resultlist'))?$query->param('resultlist'):'0';
+    my $spelling_as_you_type   = ($query->param('spelling_as_you_type'))?$query->param('spelling_as_you_type'):'0';
+    my $spelling_resultlist    = ($query->param('spelling_resultlist'))?$query->param('spelling_resultlist'):'0';
+
+    my $livesearch_fs   = ($query->param('livesearch_fs'))?$query->param('livesearch_fs'):'0';
+    my $livesearch_verf = ($query->param('livesearch_verf'))?$query->param('livesearch_verf'):'0';
+    my $livesearch_swt  = ($query->param('livesearch_swt'))?$query->param('livesearch_swt'):'0';
+    my $livesearch_exact= ($query->param('livesearch_exact'))?$query->param('livesearch_exact'):'0';
 
     my $showfs        = ($query->param('showfs'))?$query->param('showfs'):'0';
     my $showhst       = ($query->param('showhst'))?$query->param('showhst'):'0';
@@ -98,6 +103,7 @@ sub handler {
     my $bibsonomy_key  = ($query->param('bibsonomy_key'))?$query->param('bibsonomy_key'):0;
 
     my $setmask       = ($query->param('setmask'))?$query->param('setmask'):'';
+    my $setautocompletion = ($query->param('setautocompletion'))?$query->param('setautocompletion'):'livesearch';
     my $action        = ($query->param('action'))?$query->param('action'):'none';
     my $targetid      = ($query->param('targetid'))?$query->param('targetid'):'none';
     my $loginname     = ($query->param('loginname'))?$query->param('loginname'):'';
@@ -134,6 +140,7 @@ sub handler {
         my $fieldchoice_ref         = $user->get_fieldchoice();
         my $userinfo_ref            = $user->get_info();
         my $spelling_suggestion_ref = $user->get_spelling_suggestion();
+        my $livesearch_ref          = $user->get_livesearch();
         
         my $loginname           = $userinfo_ref->{'loginname'};
         my $password            = $userinfo_ref->{'password'};
@@ -150,6 +157,7 @@ sub handler {
 
         # TT-Data erzeugen
         my $ttdata={
+            qopts            => $queryoptions->get_options,
             view             => $view,
             stylesheet       => $stylesheet,
             sessionID        => $session->{ID},
@@ -161,6 +169,7 @@ sub handler {
             targettype       => $targettype,
             fieldchoice      => $fieldchoice_ref,
             spelling_suggestion => $spelling_suggestion_ref,
+            livesearch       => $livesearch_ref,
             
             userinfo         => $userinfo_ref,
 
@@ -270,9 +279,24 @@ sub handler {
     }
     elsif ($action eq "changespelling") {
         $user->set_spelling_suggestion({
-            as_you_type        => $as_you_type,
-            resultlist         => $resultlist,
+            as_you_type        => $spelling_as_you_type,
+            resultlist         => $spelling_resultlist,
         });
+
+        $r->internal_redirect("http://$config->{servername}$config->{userprefs_loc}?sessionID=$session->{ID}&action=showfields");
+    }
+    elsif ($action eq "changelivesearch") {
+        $user->set_livesearch({
+            fs        => $livesearch_fs,
+            verf      => $livesearch_verf,
+            swt       => $livesearch_swt,
+            exact     => $livesearch_exact,
+        });
+
+        $r->internal_redirect("http://$config->{servername}$config->{userprefs_loc}?sessionID=$session->{ID}&action=showfields");
+    }
+    elsif ($action eq "changeautocompletion") {
+        $user->set_autocompletion($setautocompletion);
 
         $r->internal_redirect("http://$config->{servername}$config->{userprefs_loc}?sessionID=$session->{ID}&action=showfields");
     }

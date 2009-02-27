@@ -130,7 +130,14 @@ sub handler {
         as_you_type => 0,
         resultlist  => 0,
     };
-    
+
+    my $livesearch_ref = {
+        fs     => 0,
+        verf   => 0,
+        swt    => 0,
+        exact  => 1,
+    };
+
     # Wurde bereits ein Profil bei einer vorangegangenen Suche ausgewaehlt?
     my $prevprofile=$session->get_profile();
 
@@ -155,6 +162,7 @@ sub handler {
         $showejahr     = $fieldchoice_ref->{'ejahr'};
 
         $spelling_suggestion_ref = $user->get_spelling_suggestion();
+        $livesearch_ref          = $user->get_livesearch();
 
         foreach my $profile_ref ($user->get_all_profiles()){
             my @profiledbs = $user->get_profiledbs_of_profileid($profile_ref->{profilid});
@@ -258,6 +266,7 @@ sub handler {
         showejahr     => $showejahr,
 
         spelling_suggestion => $spelling_suggestion_ref,
+        livesearch          => $livesearch_ref,
         
         searchquery   => $searchquery->get_searchquery,
         qopts         => $queryoptions->get_options,

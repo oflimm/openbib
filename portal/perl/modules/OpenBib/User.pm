@@ -246,7 +246,7 @@ sub add {
     
     return undef if (!defined $dbh);
 
-    my $userresult=$dbh->prepare("insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','',?,'','','','')") or $logger->error($DBI::errstr);
+    my $userresult=$dbh->prepare("insert into user values (NULL,'',?,?,'','','','',0,'','','','','','','','','','','',?,'','','','','')") or $logger->error($DBI::errstr);
     $userresult->execute($loginname,$password,$email) or $logger->error($DBI::errstr);
 
     $userresult->finish();
@@ -3411,6 +3411,8 @@ sub get_info {
     $userinfo_ref->{'gebdatum'}   = decode_utf8($res->{'gebdatum'});
     $userinfo_ref->{'loginname'}  = decode_utf8($res->{'loginname'});
     $userinfo_ref->{'password'}   = decode_utf8($res->{'pin'});
+    $userinfo_ref->{'masktype'}   = decode_utf8($res->{'masktype'});
+    $userinfo_ref->{'autocompletiontype'} = decode_utf8($res->{'autocompletiontype'});
 
     return $userinfo_ref;
 }
@@ -3632,7 +3634,7 @@ sub set_default_spelling_suggestion {
 
     return 0 if (!defined $dbh);
 
-    my $userresult=$dbh->prepare("insert into spelling values (?,1,1)") or $logger->error($DBI::errstr);
+    my $userresult=$dbh->prepare("insert into spelling values (?,0,0)") or $logger->error($DBI::errstr);
     $userresult->execute($userid) or $logger->error($DBI::errstr);
     
     return;
@@ -3662,6 +3664,119 @@ sub set_spelling_suggestion {
     $logger->debug("update spelling set as_you_type = ?, resultlist = ?,$self->{ID}");
     my $targetresult=$dbh->prepare("update spelling set as_you_type = ?, resultlist = ? where userid = ?") or $logger->error($DBI::errstr);
     $targetresult->execute($as_you_type,$resultlist,$self->{ID}) or $logger->error($DBI::errstr);
+    $targetresult->finish();
+    
+    return;
+}
+
+sub get_livesearch {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return undef if (!defined $dbh);
+
+    my $targetresult=$dbh->prepare("select * from livesearch where userid = ?") or $logger->error($DBI::errstr);
+    $targetresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+    
+    my $result=$targetresult->fetchrow_hashref();
+
+    my $livesearch_ref = {
+        fs    => $result->{'fs'},
+        verf  => $result->{'verf'},
+        swt   => $result->{'swt'},
+        exact => $result->{'exact'},
+    };
+    
+    $targetresult->finish();
+    
+    return $livesearch_ref;
+}
+
+sub livesearch_exists {
+    my ($self,$userid)=@_;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return 0 if (!defined $dbh);
+    
+    my $userresult=$dbh->prepare("select count(userid) as rowcount from livesearch where userid = ?") or $logger->error($DBI::errstr);
+    $userresult->execute($userid) or $logger->error($DBI::errstr);
+    my $res=$userresult->fetchrow_hashref;
+
+    my $rows=$res->{rowcount};
+    
+    return ($rows > 0)?1:0;
+}
+
+sub set_default_livesearch {
+    my ($self,$userid)=@_;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return 0 if (!defined $dbh);
+
+    my $userresult=$dbh->prepare("insert into livesearch values (?,0,0,0,1)") or $logger->error($DBI::errstr);
+    $userresult->execute($userid) or $logger->error($DBI::errstr);
+    
+    return;
+}
+
+sub set_livesearch {
+    my ($self,$arg_ref)=@_;
+
+    my $fs    = exists $arg_ref->{fs}
+        ? $arg_ref->{fs}      : undef;
+    my $verf  = exists $arg_ref->{verf}
+        ? $arg_ref->{verf}    : undef;
+    my $swt   = exists $arg_ref->{swt}
+        ? $arg_ref->{swt}     : undef;
+    my $exact = exists $arg_ref->{exact}
+        ? $arg_ref->{exact}   : undef;
+
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return undef if (!defined $dbh);
+
+    $logger->debug("update livesearch set fs = ?, verf = ?, swt = ?, exact = ?, $self->{ID}");
+    my $targetresult=$dbh->prepare("update livesearch set fs = ?, verf = ?, swt = ?, exact = ? where userid = ?") or $logger->error($DBI::errstr);
+    $targetresult->execute($fs,$verf,$swt,$exact,$self->{ID}) or $logger->error($DBI::errstr);
     $targetresult->finish();
     
     return;
@@ -3860,6 +3975,61 @@ sub set_mask {
     # Update des Recherchemasken-Typs
     my $targetresult=$dbh->prepare("update user set masktype = ? where userid = ?") or $logger->error($DBI::errstr);
     $targetresult->execute($masktype,$self->{ID}) or $logger->error($DBI::errstr);
+    $targetresult->finish();
+
+    return;
+}
+
+sub get_autocompletion {
+    my ($self,$userid)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return undef if (!defined $dbh);
+
+    my $thisuserid=($userid)?$userid:$self->{ID};
+    
+    # Bestimmen des Recherchemasken-Typs
+    my $userresult=$dbh->prepare("select autocompletiontype from user where userid = ?") or $logger->error($DBI::errstr);
+
+    $userresult->execute($thisuserid) or $logger->error($DBI::errstr);
+
+    my $maskresult=$userresult->fetchrow_hashref();
+    my $autocompletiontype = decode_utf8($maskresult->{'autocompletiontype'});
+
+    $userresult->finish();
+
+    return ($autocompletiontype)?$autocompletiontype:'livesearch';
+}
+
+sub set_autocompletion {
+    my ($self,$autocompletiontype)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return undef if (!defined $dbh);
+
+    $logger->debug("Setting autocompletion type to $autocompletiontype");
+    
+    # Update des Autovervollstaendigung-Typs
+    my $targetresult=$dbh->prepare("update user set autocompletiontype = ? where userid = ?") or $logger->error($DBI::errstr);
+    $targetresult->execute($autocompletiontype,$self->{ID}) or $logger->error($DBI::errstr);
     $targetresult->finish();
 
     return;

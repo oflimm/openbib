@@ -255,6 +255,7 @@
 ../templates/profile/kugng/std_header
 ../templates/profile/kugng/tags_showtitlist
 ../templates/profile/kugng/userprefs
+../templates/profile/kugng/userprefs_navigation
 ../templates/profile/kugng/virtualsearch_result_combined
 ../templates/profile/kugng/virtualsearch_result_end
 ../templates/profile/kugng/virtualsearch_result_item

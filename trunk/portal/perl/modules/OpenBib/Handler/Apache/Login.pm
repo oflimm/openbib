@@ -240,6 +240,10 @@ sub handler {
                 $user->set_default_spelling_suggestion($userid);
             }
 
+            if (!$user->livesearch_exists($userid)) {
+                $user->set_default_livesearch($userid);
+            }
+
             # Jetzt wird die bestehende Trefferliste uebernommen.
             # Gehe ueber alle Eintraege der Trefferliste
 

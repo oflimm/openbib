@@ -31,3 +31,22 @@ CREATE TABLE litlist2subject (
 DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
+
+DROP TABLE IF EXISTS livesearch;
+CREATE TABLE livesearch (
+ userid    BIGINT NOT NULL,
+ fs        BOOL,
+ verf      BOOL,
+ swt       BOOL,
+ exact     BOOL,
+
+ INDEX (userid)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+update livesearch set exact = 1;
+
+alter table user add autocompletiontype text after masktype;
+update user set autocompletiontype = 'livesearch';

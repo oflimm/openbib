@@ -72,11 +72,17 @@ sub handler {
     my $msg = OpenBib::L10N->get_handle($lang) || $logger->error("L10N-Fehler");
     $msg->fail_with( \&OpenBib::L10N::failure_handler );
     
-    my $word = $query->param('q') || '';
-    
-    return OK if (!$word || $word=~/\d/);
+    my $word  = $query->param('q')     || '';
+    my $type  = $query->param('type')  || '';
+    my $exact = $query->param('exact') || '';
 
-    $word = "$word*";
+    if (!$word || $word=~/\d/){
+        return OK;
+    }
+
+    if (!$exact){
+        $word = "$word*";
+    }
     
     my @livesearch_suggestions = ();
 
@@ -85,18 +91,31 @@ sub handler {
         = DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{enrichmntdbname};host=$config->{enrichmntdbhost};port=$config->{enrichmntdbport}", $config->{enrichmntdbuser}, $config->{enrichmntdbpasswd})
             or $logger->error_die($DBI::errstr);
     
-    my $sql_request = "select distinct content,type from all_normdata where match (fs) against (? in boolean mode);";
-
+    my $sql_request = "select distinct content,type from all_normdata where match (fs) against (? in boolean mode)";
+    my @sql_args = ($word);
+    
+    if ($type){
+        $sql_request.=" and type = ?";
+        push @sql_args, $type;
+    }
+    
     my $request=$enrichdbh->prepare($sql_request);
 
-    $request->execute($word);
+    $request->execute(@sql_args);
 
     while (my $result=$request->fetchrow_hashref){
         my $suggestion      = $result->{content};
         my $suggestion_type = $result->{type};
 
+        $suggestion =~s/&gt;//g;
+        $suggestion =~s/&lt;//g;
+        $suggestion =~s/<//g;
+        $suggestion =~s/>//g;
+        
         push @livesearch_suggestions, $suggestion;
     }
+
+    $logger->debug("LiveSearch for word $word and type $type");
     
     print $r->send_http_header("text/plain");
     

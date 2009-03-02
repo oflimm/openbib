@@ -67,7 +67,7 @@ sub handler {
         $logger->error("Cannot parse Arguments - ".$query->notes("error-notes"));
     }
 
-    my $fs   = decode_utf8($query->param('fs')) || $query->param('fs')      || '';
+    my $fs   = $query->param('fs')      || '';
 
     my $queryoptions = OpenBib::QueryOptions->instance($query);
 

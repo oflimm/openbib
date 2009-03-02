@@ -33,7 +33,7 @@
 <p />
 
 <h1 id="kugv2.3">Neuerungen mit Version 2.3 (noch in Entwicklung, als
-Beta-Version <a href="http://kug.ub.uni-koeln.de/portal/opac?view=kugng" target="_blank">verf&uuml;gbar</a>)</h1>
+Beta-Version <a href="http://kug.ub.uni-koeln.de/portal/lastverteilung?view=kugng" target="_blank">verf&uuml;gbar</a>)</h1>
 
 <h2>&Uuml;berarbeitung von Nutzerf&uuml;hrung und Design</h2>
 
@@ -142,6 +142,11 @@ Instituts- und Seminarbibliotheken wurden nun vollst&auml;ndig in den
 KUG integriert. Hinzugef&uuml;gt wurde eine englische Lokalisierung
 der Kategorie-Namen sowie ein Kartenausschnitt mit der Lage der
 Bibliothek, der &uuml;ber einen Mashup mit Google Maps geliefert wird.
+</p>
+
+<p>
+Ausf&uuml;hrliche Informationen finden Sie im zugeh&ouml;rigen <a
+href="http://blog.openbib.org/2009/03/02/neue-version-von-kug-und-openbib-im-beta-test/" target="_blank">Blog-Eintrag</a>.
 </p>
 
 <h1 id="kugv2.2">Neuerungen mit Version 2.2 (Umstellung am 8.7.2008)</h1>

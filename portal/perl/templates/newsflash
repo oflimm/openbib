@@ -12,16 +12,18 @@
 #######################################################################
 -%]
 
-<h3><img style="vertical-align:bottom" src="[% config.news_img %]" alt="Aktuelles">&nbsp;Aktuelles</h3>
-
+<table width="100%">
+<tr><th style="color:red">Aktuelles</th></tr>
+<tr><td class="boxedclear">
 <ul>
 
-<li>Bis auf weiteres k&ouml;nnen wir Ihnen im KUG leider keine
-Cover-Bilder mehr anbieten. Wir bitten um Ihr Verst&auml;ndnis.</li>
-</ul>
+<li>Die n&auml;chste KUG-Version steht in einer <a
+href="http://kug.ub.uni-koeln.de/portal/lastverteilung?view=kugng"
+target="_blank">Beta-Version</a>
+bereit. Schauen Sie sie sich doch einmal an und schicken Ihr Feedback
+an <b>kug@ub.uni-koeln.de</b>. Weitere Informationen finden Sie im
+zugeh&ouml;rigen <a href="http://blog.openbib.org/2009/03/02/neue-version-von-kug-und-openbib-im-beta-test/" target="_blank">Blog-Eintrag</a></li>
 
-<h3><img style="vertical-align:bottom" src="/images/openbib/courses.png" alt="Schulungen"/>&nbsp;Schulungen</h3>
-
-<ul>
-<li>[% msg.maketext("Haben Sie Rechercheprobleme?!? Wollen Sie den KUG besser kennenlernen und effizienter nutzen?! Wir bieten laufend [_1]KUG-Schulungen[_2] an!","<a href=\"http://www.ub.uni-koeln.de/service/kurse/kug/index_ger.html\" target=\"_blank\">","</a>") %]</li>
 </ul>
+</td></tr>
+</table>

@@ -93,7 +93,7 @@ foreach my $katalog_ref (@$dboverview_ref){
 
     next if ($@);
     
-    my $del_request = $dbh->prepare("delete from libraryinfo where dbname = ?");
+    my $del_request = $dbh->prepare("delete from libraryinfo where dbname = ? and category < 1000");
     $del_request->execute($dbname);
     
     my $request = $dbh->prepare("insert into libraryinfo values (?,?,NULL,?)");
@@ -120,8 +120,17 @@ foreach my $katalog_ref (@$dboverview_ref){
         if ($num_category eq "120"){
             my ($num_monos)    = $content =~/(\d+)\s+Mono/;
             my ($num_zeitschr) = $content =~/(\d+)\s+Zeitsch/;
-            $request->execute($dbname,120,$num_monos);
-            $request->execute($dbname,130,$num_zeitschr);
+
+            if ($num_monos){
+                $request->execute($dbname,120,$num_monos);
+            }
+            if ($num_zeitschr){
+                $request->execute($dbname,130,$num_zeitschr);
+            }
+            if (!$num_monos && !$num_zeitschr){
+                $request->execute($dbname,120,$content);
+            }
+            
         }       
         else {
             $request->execute($dbname,$num_category,$content);

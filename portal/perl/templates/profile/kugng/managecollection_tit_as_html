@@ -135,6 +135,10 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 
 </p>
 
+<p>
+<img src="[% config.delete_img %]" alt="[% msg.maketext("Entfernen") %]" />&nbsp;[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> aus der Merkliste entfernen") %] <input type="submit" name="do_collection_delentry" value="[% msg.maketext("Los") %]" />
+</p>
+
 [% END %]
 <p/>
 </div>

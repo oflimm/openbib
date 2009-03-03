@@ -544,11 +544,13 @@ while (my $line=<IN>){
                 my $have_article=0;
                 my $type_indicator = 1;
                 foreach my $item (@{$thisitem_ref->{'T0800'}}){
-                    $have_article = 1 if ($item->{content} eq "Aufsatz");
+                    if ($item->{content} eq "Aufsatz"){
+                        $have_article = 1 ;
+                    }
                     $type_indicator++;
                 }
 
-                if (!$have_journal){
+                if (!$have_article){
                     push @{$normdata_ref->{mart}}, "Aufsatz";
 
                     print OUT       "$id800$type_indicatorAufsatz\n";

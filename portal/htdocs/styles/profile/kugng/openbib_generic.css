@@ -1276,3 +1276,8 @@ ul.recent_tags {
 #same_records, #similar_records {
   padding: 5px;
 }
+
+#listtype_cover {
+  display:none;
+}
+

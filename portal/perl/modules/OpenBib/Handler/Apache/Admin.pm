@@ -1542,8 +1542,10 @@ sub editcat_new {
 
     my $idnresult=$dbh->prepare("insert into dbinfo values (?,?,?,?,?,?,?,?,?)") or $logger->error($DBI::errstr);
     $idnresult->execute($dbinfo_ref->{orgunit},$dbinfo_ref->{description},$dbinfo_ref->{shortdesc},$dbinfo_ref->{system},$dbinfo_ref->{dbname},$dbinfo_ref->{sigel},$dbinfo_ref->{url},$dbinfo_ref->{use_libinfo},$dbinfo_ref->{active}) or $logger->error($DBI::errstr);
-    $idnresult=$dbh->prepare("insert into titcount values (?,'0')") or $logger->error($DBI::errstr);
-    $idnresult->execute($dbinfo_ref->{dbname}) or $logger->error($DBI::errstr);
+    $idnresult=$dbh->prepare("insert into titcount values (?,'0',?)") or $logger->error($DBI::errstr);
+    $idnresult->execute($dbinfo_ref->{dbname},1) or $logger->error($DBI::errstr);
+    $idnresult->execute($dbinfo_ref->{dbname},2) or $logger->error($DBI::errstr);
+    $idnresult->execute($dbinfo_ref->{dbname},3) or $logger->error($DBI::errstr);
     $idnresult=$dbh->prepare("insert into dboptions values (?,'','','','','','','','','','','','',0,0,'','','')") or $logger->error($DBI::errstr);
     $idnresult->execute($dbinfo_ref->{dbname}) or $logger->error($DBI::errstr);
     $idnresult->finish();

@@ -1,5 +1,6 @@
 [%- FOREACH record IN litlist.recordlist.load_full_records.get_records -%]
 [% activefeed = config.get_activefeeds_of_db(record.database) %]
+[% database        = record.database %]
 [% normset         = record.get_normdata %]
 [% mexnormset      = record.get_mexdata %]
 [% circset         = record.get_circdata %] 

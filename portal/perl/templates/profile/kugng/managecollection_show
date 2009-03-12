@@ -48,7 +48,7 @@ function update_collection(yourform, checked, item) {
 	
 	  <p />
 [% IF type == 'HTML' %]
-  [%- PROCESS common/subtemplate name="managecollection_tit_as_html" database="${record.database}" show_bibsonomy=1 -%]
+  [%- PROCESS common/subtemplate name="managecollection_tit_as_html"  show_bibsonomy=1 -%]
 [% ELSIF type == 'Text' %]
   [%- PROCESS common/subtemplate name="managecollection_tit_as_text" show_bibsonomy=1 -%]
 [% ELSIF type == 'BibTeX' %]

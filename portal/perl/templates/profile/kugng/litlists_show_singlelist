@@ -85,7 +85,7 @@
 <div class="resultlist">
   <div class="resultheader">
     <div class="catalogue">
-[% litlist.properties.title %]
+[% litlist.properties.title %][%- IF litlist.properties.userrole.${"librarian"} -%]&nbsp;<img src="[% config.university_img %]" title="Erstellt durch Fachpersonal der Universit&auml;t" alt="Erstellt durch Fachpersonal der Universit&auml;t" style="vertical-align:bottom"/>[%- END -%]
     </div>
     <div class="hits">
 [% litlist.recordlist.get_size %] [% msg.maketext("Titel") %]

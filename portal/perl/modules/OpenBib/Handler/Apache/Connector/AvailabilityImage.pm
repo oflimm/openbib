@@ -81,35 +81,37 @@ sub handler {
     
     if ($action eq "lookup"){
 
+        my $isbn13="";
+        
         if ($isbn){
             # Normierung auf ISBN13
             my $isbnXX     = Business::ISBN->new($isbn);
             
             if (defined $isbnXX && $isbnXX->is_valid){
-                $isbn = $isbnXX->as_isbn13->as_string;
+                $isbn13 = $isbnXX->as_isbn13->as_string;
             }
             else {
                 $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");
                 return OK;
             }
             
-            $isbn = OpenBib::Common::Util::grundform({
+            $isbn13 = OpenBib::Common::Util::grundform({
                 category => '0540',
                 content  => $isbn,
             });
         }
         
-        if ($target eq "gbs" && $isbn){
+        if ($target eq "gbs" && $isbn13){
             my $ua       = LWP::UserAgent->new();
             $ua->agent($useragent);
             $ua->default_header('X-Forwarded-For' => $client_ip) if ($client_ip);
-            my $url      ="http://books.google.com/books?jscmd=viewapi&bibkeys=ISBN$isbn";
-            #        my $url      = "http://books.google.com/books?vid=ISBN$isbn";
+            my $url      ="http://books.google.com/books?jscmd=viewapi&bibkeys=ISBN$isbn13";
+            #        my $url      = "http://books.google.com/books?vid=ISBN$isbn13";
             my $request  = HTTP::Request->new('GET', $url);
             my $response = $ua->request($request);
             
             if ( $response->is_error() ) {
-                $logger->info("ISBN $isbn NOT found in Google BookSearch");
+                $logger->info("ISBN $isbn13 NOT found in Google BookSearch");
                 $logger->debug("Error-Code:".$response->code());
                 $logger->debug("Fehlermeldung:".$response->message());
 
@@ -117,7 +119,7 @@ sub handler {
                 return OK;                
             }
             else {
-                $logger->info("ISBN $isbn found in Google BookSearch");
+                $logger->info("ISBN $isbn13 found in Google BookSearch");
                 $logger->debug($response->content());
                 
                 my ($json_result) = $response->content() =~/^var _GBSBookInfo = (.+);$/;
@@ -131,7 +133,7 @@ sub handler {
                 
                 $logger->debug("GBS".YAML::Dump($gbs_result));
                 
-                my $type = $gbs_result->{"ISBN$isbn"}{preview} || '';
+                my $type = $gbs_result->{"ISBN$isbn13"}{preview} || '';
                 
                 if ($type eq "noview"){
                     $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");
@@ -189,15 +191,80 @@ sub handler {
 
             my $sql_request = "select count(isbn) as ebcount from normdata where isbn=? and origin=20 and category=4120";
             my $request=$enrichdbh->prepare($sql_request);
-            $request->execute($isbn);
+            $request->execute($isbn13);
             my $result =$request->fetchrow_hashref;
 
             if ($result->{ebcount} > 0){
-                $logger->info("ISBN $isbn found for USB Ebooks");
+                $logger->info("ISBN $isbn13 found for USB Ebooks");
                 $r->internal_redirect("http://$config->{servername}/images/openbib/usb_ebook.png");
                 return OK;
             }
             
+        }
+        if ($target eq "ol" && $isbn){
+            my $ua       = LWP::UserAgent->new();
+            $ua->agent($useragent);
+            $ua->default_header('X-Forwarded-For' => $client_ip) if ($client_ip);
+            my $url      ="http://openlibrary.org/api/things?query=\{\"type\":\"/type/edition\", \"isbn_10\":\"$isbn\"\}";
+
+            my $request  = HTTP::Request->new('GET', $url);
+            my $response = $ua->request($request);
+            
+            if ( $response->is_error() ) {
+                $logger->info("ISBN $isbn NOT found in OpenLibrary");
+                $logger->debug("Error-Code:".$response->code());
+                $logger->debug("Fehlermeldung:".$response->message());
+
+                $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");                
+                return OK;                
+            }
+            else {
+                $logger->info("ISBN $isbn found in OpenLibrary");
+                $logger->debug($response->content());
+                
+                my ($json_result) = $response->content();
+                
+                my $json = new JSON;
+                my $ol_result = {};
+                
+                eval {
+                    $ol_result = $json->jsonToObj($json_result);
+                };
+                
+                $logger->debug("OL".YAML::Dump($ol_result));
+                
+                my $status  = $ol_result->{status} || '';
+                my $ids_ref = $ol_result->{result} || ();
+
+
+                $logger->debug("Lookup ID ".YAML::Dump($ids_ref));
+                my $url      ="http://openlibrary.org/api/get?key=$ids_ref->[0]";
+
+                $logger->debug("URI: $url");
+                my $request  = HTTP::Request->new('GET', $url);
+                my $response = $ua->request($request);
+            
+                if ( $response->is_error() ) {
+                   $logger->info("Document-Data NOT found in OpenLibrary");
+                   $logger->debug("Error-Code:".$response->code());
+                   $logger->debug("Fehlermeldung:".$response->message());
+
+                   $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");                
+                   return OK;                
+                }
+                else {
+                    my ($json_result) = $response->content();
+
+                    eval {
+                        $ol_result = $json->jsonToObj($json_result);
+                    };
+                
+                    $logger->debug("OL OBJ Data".YAML::Dump($ol_result));
+                }
+
+                $r->internal_redirect("http://$config->{servername}/images/openbib/no_img.png");
+                return OK;
+            }
         }
     }
     

@@ -47,6 +47,7 @@
 ../templates/admin_editprofile
 ../templates/admin_editsession
 ../templates/admin_editsubject
+../templates/admin_edituser
 ../templates/admin_editview
 ../templates/admin_editview_rss
 ../templates/admin_exploresessions_list
@@ -55,6 +56,7 @@
 ../templates/admin_login
 ../templates/admin_logout
 ../templates/admin_navigation
+../templates/admin_searchuser
 ../templates/admin_showcat
 ../templates/admin_showimx
 ../templates/admin_showlogintarget
@@ -69,6 +71,7 @@
 ../templates/admin_showstat_5
 ../templates/admin_showsubjects
 ../templates/admin_showuser
+../templates/admin_showuser_1
 ../templates/admin_showviews
 ../templates/admin_showviews
 ../templates/bibsonomy_showtags
@@ -261,6 +264,7 @@
 ../templates/profile/kugng/virtualsearch_result_item
 ../templates/profile/kugng/virtualsearch_result_start
 ../templates/profile/kugng/views/kugng/searchmask
+../templates/profile/kugng/views/inst431/newsflash
 ../templates/resultlists_choice
 ../templates/resultlists_showall
 ../templates/resultlists_showall_sortall

@@ -486,7 +486,7 @@ Literaturlisten usw.)<p/>") %]
 <tr><td></td><td><input type="submit" value="[% msg.maketext("Einloggen") %]" /></td><td></td></tr>
 </table>
 <p />
-<a href="[% config.selfreg_loc %]?sessionID=[% sessionID %];action=show">[% msg.maketext("Eine kostenlose Kennung einrichten") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% config.mailpassword_loc %]?sessionID=[% sessionID %];action=show">[% msg.maketext("Passwort vergessen?") %]</a>
+<a href="[% config.selfreg_loc %]?sessionID=[% sessionID %];action=show">[% msg.maketext("Kennung einrichten") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% config.mailpassword_loc %]?sessionID=[% sessionID %];action=show">[% msg.maketext("Passwort vergessen?") %]</a>
 
 </form>
 

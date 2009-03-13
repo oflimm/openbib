@@ -1,0 +1,26 @@
+[%#-
+#######################################################################
+#
+# Templatename: newsflash
+#
+# Typ         : Subtemplate
+#
+# Aufgabe:
+#
+# Ausgabe aktueller Meldungen und Hinweise
+#
+#######################################################################
+-%]
+
+<h3><img style="vertical-align:bottom" src="[% config.follow_img %]" alt="[% msg.maketext("Tip: Digitaler Kartenkatalog") %]" />&nbsp;[% msg.maketext("Weitere Best&auml;nde im Digitalen Kartenkatalog") %]</h3>
+
+Sie finden weitere Best&auml;nde dieses Katalogs in dem
+zugeh&ouml;rigen digitalisierten Karten-Katalog
+
+<ul>
+<a href="http://retro-philfak.ub.uni-koeln.de:8080/catalog/catalog/main?cn=431y" target="_blank">Ethnologie</a>. </li>
+</ul>
+
+<h3><img style="vertical-align:bottom" src="[% config.follow_img %]" alt="[% msg.maketext("Neuerwerbungslisten") %]"/>&nbsp;[% msg.maketext("Neuerwerbungslisten") %]</h3>
+
+Bei diesem Katalog werden Ihnen nach F&auml;chern organisierte <a href="http://kug.ub.uni-koeln.de/neuerwerbungslisten/inst431/index.html" target="_blank">Neuerwerbungslisten</a> angeboten.

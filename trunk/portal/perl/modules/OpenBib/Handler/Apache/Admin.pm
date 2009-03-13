@@ -95,6 +95,8 @@ sub handler {
     my $adminuser   = $config->{adminuser};
     my $adminpasswd = $config->{adminpasswd};
 
+    my $view        = $query->param('view') || $config->{adminview};
+    
     # Main-Actions
     my $do_login        = $query->param('do_login')        || '';
     my $do_loginmask    = $query->param('do_loginmask')    || '';
@@ -116,6 +118,8 @@ sub handler {
     my $do_exploresessions = $query->param('do_exploresessions') || '';
     my $do_showstat     = $query->param('do_showstat')     || '';
     my $do_showuser     = $query->param('do_showuser')     || '';
+    my $do_edituser     = $query->param('do_edituser')     || '';
+    my $do_searchuser   = $query->param('do_searchuser')   || '';
     my $do_showlogintarget  = $query->param('do_showlogintarget')     || '';
     my $do_editlogintarget  = $query->param('do_editlogintarget')     || '';
     my $do_logout       = $query->param('do_logout')       || '';
@@ -127,7 +131,8 @@ sub handler {
     my $do_edit         = $query->param('do_edit')         || '';
     my $do_show         = $query->param('do_show')         || '';
 
-    my $user            = $query->param('user')            || '';
+    # Variables
+    my $userid          = $query->param('userid')          || '';
     my $passwd          = $query->param('passwd')          || '';
     my $orgunit         = $query->param('orgunit')         || '';
     my $description     = decode_utf8($query->param('description'))     || '';
@@ -139,6 +144,12 @@ sub handler {
     my $use_libinfo     = $query->param('use_libinfo')     || '';
     my $active          = $query->param('active')          || '';
 
+    my $roleid          = $query->param('roleid')          || '';
+    my @roles           = ($query->param('roles'))?$query->param('roles'):();
+    
+    my $surname         = decode_utf8($query->param('surname'))         || '';
+    my $commonname      = decode_utf8($query->param('commonname'))      || '';
+    
     my $viewname        = $query->param('viewname')        || '';
     my @viewdb          = ($query->param('viewdb'))?$query->param('viewdb'):();
 
@@ -315,6 +326,11 @@ sub handler {
 			       description => $description,
 			       type        => $type,
 			      };
+
+    my $thisuserinfo_ref = {
+        id    => $userid,
+        roles => \@roles,
+    };
     
     # Expliziter aufruf und default bei keiner Parameteruebergabe
     if ($do_loginmask || ($r->method eq "GET" && ! scalar $r->args) ) {
@@ -322,9 +338,10 @@ sub handler {
         # TT-Data erzeugen
     
         my $ttdata={
+            view       => $view,
+            
             stylesheet => $stylesheet,
-            config     => $config,
-            user       => $user,
+            config     => $config,     
             msg        => $msg,
         };
     
@@ -336,7 +353,7 @@ sub handler {
     elsif ($do_login) {
     
         # Sessionid erzeugen
-        if ($user ne $adminuser) {
+        if ($username ne $adminuser) {
             OpenBib::Common::Util::print_warning($msg->maketext("Sie haben als Benutzer entweder keinen oder nicht den Admin-Benutzer eingegeben"),$r,$msg);
             return OK;
         }
@@ -352,10 +369,12 @@ sub handler {
         
         # TT-Data erzeugen
         my $ttdata={
+            view       => $view,
+
             stylesheet => $stylesheet,
             sessionID  => $session->{ID},
             config     => $config,
-            user       => $user,
+
             msg        => $msg,
         };
     
@@ -372,7 +391,9 @@ sub handler {
         OpenBib::Common::Util::print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"),$r,$msg);
         return OK;
     }
-  
+
+    my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
+
     $logger->debug("Server: ".$r->get_server_name);
     ###########################################################################
     if ($do_editcat) {
@@ -500,6 +521,8 @@ sub handler {
       
       
             my $ttdata={
+                view       => $view,
+
                 stylesheet => $stylesheet,
                 sessionID  => $session->{ID},
 		  
@@ -550,6 +573,8 @@ sub handler {
             
             
             my $ttdata={
+                view       => $view,
+            
                 stylesheet => $stylesheet,
                 sessionID  => $session->{ID},
                 
@@ -567,6 +592,8 @@ sub handler {
         my $dbinfo_ref = $config->get_dbinfo_overview();
 
         my $ttdata={
+            view       => $view,
+
             stylesheet => $stylesheet,
             sessionID  => $session->{ID},
             kataloge   => $dbinfo_ref,
@@ -609,6 +636,8 @@ sub handler {
             my $libinfo_ref = $config->get_libinfo($dbname);
       
             my $ttdata={
+                view       => $view,
+
                 stylesheet => $stylesheet,
                 sessionID  => $session->{ID},
                 dbname     => $dbname,
@@ -626,6 +655,8 @@ sub handler {
         my $profileinfo_ref = $config->get_profileinfo_overview();
 
         my $ttdata={
+            view       => $view,
+
             stylesheet => $stylesheet,
             sessionID  => $session->{ID},
             profiles   => $profileinfo_ref,
@@ -710,6 +741,8 @@ sub handler {
             };
 
             my $ttdata={
+                view       => $view,
+
                 stylesheet => $stylesheet,
                 sessionID  => $session->{ID},
 
@@ -729,9 +762,10 @@ sub handler {
     }
     elsif ($do_showsubjects) {
         my $subjects_ref = OpenBib::User->get_subjects;
-        my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
 
         my $ttdata={
+            view       => $view,
+
             stylesheet => $stylesheet,
             sessionID  => $session->{ID},
             subjects   => $subjects_ref,
@@ -743,8 +777,6 @@ sub handler {
         OpenBib::Common::Util::print_page($config->{tt_admin_showsubjects_tname},$ttdata,$r);
     }
     elsif ($do_editsubject) {
-        my $user       = OpenBib::User->instance({sessionID => $session->{ID}});
-    
         # Zuerst schauen, ob Aktionen gefordert sind
     
         if ($do_del) {
@@ -809,6 +841,8 @@ sub handler {
 	    my $subject_ref = OpenBib::User->get_subject({ id => $subjectid});
 
             my $ttdata={
+                view       => $view,
+
                 stylesheet => $stylesheet,
                 sessionID  => $session->{ID},
 
@@ -828,6 +862,8 @@ sub handler {
         my $viewinfo_ref = $config->get_viewinfo_overview();
 
         my $ttdata={
+            view       => $view,
+
             stylesheet => $stylesheet,
             sessionID  => $session->{ID},
             views      => $viewinfo_ref,
@@ -934,7 +970,7 @@ sub handler {
             
             my $viewrssfeed_ref=$config->get_rssfeeds_of_view($viewname);
 
-            my $view={
+            my $viewinfo={
 		viewname     => $viewname,
 		description  => $description,
 		active       => $active,
@@ -948,12 +984,14 @@ sub handler {
             };
 
             my $ttdata={
+                view       => $view,
+                
                 stylesheet => $stylesheet,
                 sessionID  => $session->{ID},
 		  
                 dbnames    => \@profiledbs,
 
-                view       => $view,
+                viewinfo   => $viewinfo,
 
                 dbinfo     => $dbinfotable,
                 
@@ -1038,7 +1076,7 @@ sub handler {
           }
 
 
-          my $view={
+          my $viewinfo_ref={
               name        => $viewname,
               description => $viewdesc,
               primrssfeed => $primrssfeed,
@@ -1047,10 +1085,12 @@ sub handler {
           
           
           my $ttdata={
+              view        => $view,
+              
               stylesheet  => $stylesheet,
               sessionID   => $session->{ID},
               
-              view        => $view,
+              viewinfo    => $viewinfo_ref,
 
               allrssfeeds => $allrssfeed_ref,
 
@@ -1113,6 +1153,8 @@ sub handler {
         }
 
         my $ttdata={
+            view       => $view,
+
             stylesheet => $stylesheet,
             sessionID  => $session->{ID},
             kataloge   => \@kataloge,
@@ -1131,6 +1173,8 @@ sub handler {
         my @sessions=$session->get_info_of_all_active_sessions();
 
         my $ttdata={
+            view       => $view,
+                
             stylesheet => $stylesheet,
 
 	    session    => $session,
@@ -1171,6 +1215,8 @@ sub handler {
             };
 
             my $ttdata={
+                view       => $view,
+
                 stylesheet => $stylesheet,
                 sessionID  => $session->{ID},
 	         
@@ -1226,6 +1272,8 @@ sub handler {
             
             
             my $ttdata={
+                view       => $view,
+
                 stylesheet => $stylesheet,
                 
                 session    => $session,
@@ -1283,6 +1331,8 @@ sub handler {
             
             
             my $ttdata={
+                view       => $view,
+
                 stylesheet => $stylesheet,
                 
                 session    => $session,
@@ -1311,21 +1361,22 @@ sub handler {
     elsif ($do_showstat) {
 
         my $statistics = new OpenBib::Statistics();
-	my $user       = OpenBib::User->instance({sessionID => $session->{ID}});
 
         # TT-Data erzeugen
         my $ttdata={
-                    sessionID  => $session->{ID},
-                    
-                    year       => $year,
-
-		    session    => $session,
-		    statistics => $statistics,
-		    user       => $user,
-		    config     => $config,
-		    msg        => $msg,
-		   };
-
+            view       => $view,
+            
+            sessionID  => $session->{ID},
+            
+            year       => $year,
+            
+            session    => $session,
+            statistics => $statistics,
+            user       => $user,
+            config     => $config,
+            msg        => $msg,
+        };
+        
 	$stid=~s/[^0-9]//g;
 
 	my $templatename = ($stid)?"tt_admin_showstat_".$stid."_tname":"tt_admin_showstat_tname";
@@ -1335,18 +1386,18 @@ sub handler {
     }
     elsif ($do_showlogintarget) {
 
-	my $user       = OpenBib::User->instance({sessionID => $session->{ID}});
-
         # TT-Data erzeugen
         my $ttdata={
-                    sessionID  => $session->{ID},
-
-		    session    => $session,
-
-		    user       => $user,
-		    config     => $config,
-		    msg        => $msg,
-		   };
+            view       => $view,
+            
+            sessionID  => $session->{ID},
+            
+            session    => $session,
+            
+            user       => $user,
+            config     => $config,
+            msg        => $msg,
+        };
 
 	$stid=~s/[^0-9]//g;
 
@@ -1357,8 +1408,6 @@ sub handler {
 
     }
     elsif ($do_editlogintarget) {
-
-	my $user       = OpenBib::User->instance({sessionID => $session->{ID}});
 
         # Zuerst schauen, ob Aktionen gefordert sind
         if ($do_del) {
@@ -1405,38 +1454,40 @@ sub handler {
             return OK;
         }
         elsif ($do_edit) {
-
-	  my $logintarget_ref = $user->get_logintarget_by_id($targetid);
-      
-	  my $ttdata={
+            
+            my $logintarget_ref = $user->get_logintarget_by_id($targetid);
+            
+            my $ttdata={
+                view       => $view,
+                
                 stylesheet  => $stylesheet,
                 sessionID   => $session->{ID},
-		  
+                
                 logintarget => $logintarget_ref,
-		  
+                
                 user        => $user,
                 config      => $config,
                 msg         => $msg,
             };
-      
+            
             OpenBib::Common::Util::print_page($config->{tt_admin_editlogintarget_tname},$ttdata,$r);
         }
     }
     elsif ($do_showuser) {
 
-	my $user       = OpenBib::User->instance({sessionID => $session->{ID}});
-
         # TT-Data erzeugen
         my $ttdata={
-                    sessionID  => $session->{ID},
-
-		    session    => $session,
-
-		    user       => $user,
-		    config     => $config,
-		    msg        => $msg,
-		   };
-
+            view       => $view,
+            
+            sessionID  => $session->{ID},
+            
+            session    => $session,
+            
+            user       => $user,
+            config     => $config,
+            msg        => $msg,
+        };
+        
 	$stid=~s/[^0-9]//g;
 
 	my $templatename = ($stid)?"tt_admin_showuser_".$stid."_tname":"tt_admin_showuser_tname";
@@ -1445,9 +1496,116 @@ sub handler {
 
 
     }
+    ###########################################################################
+    elsif ($do_edituser) {
+
+        # Zuerst schauen, ob Aktionen gefordert sind
+        if ($do_change) {
+            edituser_change($thisuserinfo_ref);
+
+	    my $ret_ref = dist_cmd("edituser_change",{ 
+						     userinfo  => $thisuserinfo_ref,
+						 }) if ($do_dist);
+
+            $r->internal_redirect("http://$config->{servername}$config->{admin_loc}?sessionID=$session->{ID}&do_showuser=1;stid=1");
+            return OK;
+        }
+        elsif ($do_edit) {
+            my $userinfo = new OpenBib::User({ID => $userid })->get_info;
+            
+            
+            my $ttdata={
+                view       => $view,
+
+                userinfo   => $userinfo,
+                
+                stylesheet => $stylesheet,
+                sessionID  => $session->{ID},
+		  
+                config     => $config,
+                user       => $user,
+                msg        => $msg,
+            };
+      
+            OpenBib::Common::Util::print_page($config->{tt_admin_edituser_tname},$ttdata,$r);
+        }
+    }
+    elsif ($do_searchuser) {
+
+        my $userlist_ref = [];
+
+        # Verbindung zur SQL-Datenbank herstellen
+        my $userdbh
+            = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+                or $logger->error_die($DBI::errstr);
+
+        my $sql_stmt = "select userid from user where ";
+        my @sql_where = ();
+        my @sql_args = ();
+
+        if ($username) {
+            push @sql_where,"loginname = ?";
+            push @sql_args, $username;
+        }
+
+        if ($commonname) {
+            push @sql_where, "nachname = ?";
+            push @sql_args, $commonname;
+        }
+
+        if ($surname) {
+            push @sql_where, "vorname = ?";
+            push @sql_args, $surname;
+        }
+
+        if (!@sql_where){
+            OpenBib::Common::Util::print_warning($msg->maketext("Bitte geben Sie einen Suchbegriff ein."),$r,$msg);
+            return OK;
+        }
+
+        $sql_stmt.=join(" and ",@sql_where);
+
+        $logger->debug($sql_stmt);
+        
+        my $request = $userdbh->prepare($sql_stmt);
+        $request->execute(@sql_args);
+
+        $logger->debug("Looking up user $username/$surname/$commonname");
+        
+        while (my $result=$request->fetchrow_hashref){
+            $logger->debug("Found ID $result->{userid}");
+            my $single_user = new OpenBib::User({ID => $result->{userid}});
+            push @$userlist_ref, $single_user->get_info;
+        }
+        
+        # TT-Data erzeugen
+        my $ttdata={
+            view       => $view,
+            
+            sessionID  => $session->{ID},
+            
+            session    => $session,
+            
+            userlist   => $userlist_ref,
+            
+            user       => $user,
+            config     => $config,
+            msg        => $msg,
+        };
+        
+	$stid=~s/[^0-9]//g;
+
+	my $templatename = ($stid)?"tt_admin_searchuser_".$stid."_tname":"tt_admin_searchuser_tname";
+
+	OpenBib::Common::Util::print_page($config->{$templatename},$ttdata,$r);
+
+
+    }
     elsif ($do_logout) {
 
         my $ttdata={
+            view       => $view,
+            
             stylesheet => $stylesheet,
             sessionID  => $session->{ID},
             
@@ -1455,15 +1613,15 @@ sub handler {
             user       => $user,
             msg        => $msg,
         };
-      
+        
         OpenBib::Common::Util::print_page($config->{tt_admin_logout_tname},$ttdata,$r);
-
+        
         $session->logout_user($adminuser);
     }
     else {
         OpenBib::Common::Util::print_warning($msg->maketext("Keine gültige Aktion oder Session"),$r,$msg);
     }
-  
+    
   LEAVEPROG: sleep 0;
   
     return OK;
@@ -2073,6 +2231,34 @@ sub editlogintarget_new {
     return;
 }
 
+sub edituser_change {
+    my ($userinfo_ref)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+    
+    my $config = OpenBib::Config->instance;
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error_die($DBI::errstr);
+
+    my $del_request    = $dbh->prepare("delete from userrole where userid=?") or $logger->error($DBI::errstr); # 
+    my $insert_request = $dbh->prepare("insert into userrole values (?,?)") or $logger->error($DBI::errstr); # 
+
+    $del_request->execute($userinfo_ref->{id});
+    
+    foreach my $roleid (@{$userinfo_ref->{roles}}){
+        $logger->debug("Adding Role $roleid to user $userinfo_ref->{id}");
+        $insert_request->execute($userinfo_ref->{id},$roleid);
+    }
+
+    $del_request->finish();
+    $insert_request->finish();
+
+    return;
+}
 
 sub dist_cmd {
   my ($cmd,$args_ref)=@_;

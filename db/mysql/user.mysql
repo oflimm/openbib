@@ -42,6 +42,28 @@ DEFAULT CHARACTER SET utf8
 COLLATE utf8_general_ci
 PACK_KEYS=1;
 
+DROP TABLE IF EXISTS role;
+CREATE TABLE role (
+  id        BIGINT AUTO_INCREMENT PRIMARY KEY,
+  role      VARCHAR(255) NOT NULL,
+  INDEX (id),
+  INDEX (role)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
+DROP TABLE IF EXISTS userrole;
+CREATE TABLE userrole (
+  userid    BIGINT NOT NULL,
+  roleid    BIGINT NOT NULL,
+  INDEX (userid),
+  INDEX (roleid)
+)
+DEFAULT CHARACTER SET utf8
+COLLATE utf8_general_ci
+PACK_KEYS=1;
+
 DROP TABLE IF EXISTS usersession;
 CREATE TABLE usersession (
   sessionid VARCHAR(255) NOT NULL,

@@ -58,9 +58,10 @@ statisticsdbname: statistics
 statisticsdbuser: root
 statisticsdbpasswd: StrengGeheim
 
-# Benutzer und Passwort fuer die Administration
+# Benutzer, Passwort und default view fuer die Administration
 adminuser: adminuser
 adminpasswd: StrengGeheim
+adminview: kugng
 
 # Verteilte Administration mit einer Masteradmin?
 distadmin:
@@ -242,6 +243,7 @@ toggle_show_img: /images/openbib/toggle_plus.png
 top20_img: /images/openbib/top20-12px.png
 tutorial_img: /images/openbib/tutorial.png
 wikipedia_img:  /images/openbib/wikipedia.png
+university_img:  /images/openbib/university.png
 
 # Mapping der einzelnen Kompontenten zu ihren Templates
 tt_admin_editcat_rss_tname: admin_editcat_rss
@@ -250,6 +252,7 @@ tt_admin_editlibinfo_tname: admin_editlibinfo
 tt_admin_editlogintarget_tname: admin_editlogintarget
 tt_admin_editprofile_tname: admin_editprofile
 tt_admin_editsession_tname: admin_editsession
+tt_admin_edituser_tname: admin_edituser
 tt_admin_editview_rss_tname: admin_editview_rss
 tt_admin_editview_tname: admin_editview
 tt_admin_exploresessions_list_tname: admin_exploresessions_list
@@ -257,6 +260,7 @@ tt_admin_exploresessions_show_tname: admin_exploresessions_show
 tt_admin_loggedin_tname: admin_loggedin
 tt_admin_login_tname: admin_login
 tt_admin_logout_tname: admin_logout
+tt_admin_searchuser_tname: admin_searchuser
 tt_admin_showcat_tname: admin_showcat
 tt_admin_showlibinfo_tname: admin_showlibinfo
 tt_admin_showprofiles_tname: admin_showprofiles
@@ -276,6 +280,7 @@ tt_admin_showstat_tname: admin_showstat
 tt_admin_showsubjects_tname: admin_showsubjects
 tt_admin_editsubject_tname: admin_editsubject
 tt_admin_showuser_tname: admin_showuser
+tt_admin_showuser_1_tname: admin_showuser_1
 tt_admin_showviews_tname: admin_showviews
 tt_bibsonomy_showtags_tname: bibsonomy_showtags
 tt_bibsonomy_showtitlist_tname: bibsonomy_showtitlist

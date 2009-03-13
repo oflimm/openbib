@@ -51,30 +51,8 @@ sub new {
     my $sessionID   = exists $arg_ref->{sessionID}
         ? $arg_ref->{sessionID}             : undef;
 
-    # Log4perl logger erzeugen
-    my $logger = get_logger();
-
-    my $self = { };
-
-    bless ($self, $class);
-
-    if (defined $sessionID){
-      my $userid = $self->get_userid_of_session($sessionID);
-      if (defined $userid){
-          $self->{ID} = $userid ;
-          $logger->debug("Got UserID $userid for session $sessionID");
-      }
-  }
-
-    return $self;
-}
-
-sub _new_instance {
-    my ($class,$arg_ref) = @_;
-
-    # Set defaults
-    my $sessionID   = exists $arg_ref->{sessionID}
-        ? $arg_ref->{sessionID}             : undef;
+    my $id          = exists $arg_ref->{ID}
+        ? $arg_ref->{ID}             : undef;
 
     # Log4perl logger erzeugen
     my $logger = get_logger();
@@ -89,6 +67,42 @@ sub _new_instance {
             $self->{ID} = $userid ;
             $logger->debug("Got UserID $userid for session $sessionID");
         }
+    }
+    elsif (defined $id) {
+        $self->{ID} = $id ;
+        $logger->debug("Got UserID $id - NO session assiziated");
+    }
+    
+    return $self;
+}
+
+sub _new_instance {
+    my ($class,$arg_ref) = @_;
+
+    # Set defaults
+    my $sessionID   = exists $arg_ref->{sessionID}
+        ? $arg_ref->{sessionID}             : undef;
+
+    my $id          = exists $arg_ref->{ID}
+        ? $arg_ref->{ID}             : undef;
+    
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $self = { };
+
+    bless ($self, $class);
+
+    if (defined $sessionID){
+        my $userid = $self->get_userid_of_session($sessionID);
+        if (defined $userid){
+            $self->{ID} = $userid ;
+            $logger->debug("Got UserID $userid for session $sessionID");
+        }
+    }
+    elsif (defined $id){
+         $self->{ID} = $id ;
+         $logger->debug("Got UserID $id - NO session assiziated");
     }
 
     return $self;
@@ -2193,6 +2207,9 @@ sub get_recent_litlists {
     my $count        = exists $arg_ref->{count}
         ? $arg_ref->{count}           : 5;
 
+    my $subjectid      = exists $arg_ref->{subjectid}
+        ? $arg_ref->{subjectid}           : undef;
+
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
@@ -2206,10 +2223,19 @@ sub get_recent_litlists {
 
     return [] if (!defined $dbh);
 
-    my $sql_stmnt = "select id from litlists where type = 1 order by id DESC limit $count";
+    my $sql_stmnt = "";
+    my @sql_args  = ();
+    
+    if ($subjectid){
+        $sql_stmnt = "select distinct(ls.litlistid) as id from litlist2subject as ls, litlists as l where ls.subjectid = ? and ls.litlistid = l.id and l.type = 1 order by l.id DESC limit $count";
+        push @sql_args, $subjectid;
+    }
+    else {
+        $sql_stmnt = "select id from litlists where type = 1 order by id DESC limit $count";
+    }
 
     my $request=$dbh->prepare($sql_stmnt) or $logger->error($DBI::errstr);
-    $request->execute() or $logger->error($DBI::errstr);
+    $request->execute(@sql_args) or $logger->error($DBI::errstr);
 
     my $litlists_ref = [];
 
@@ -2509,6 +2535,7 @@ sub get_litlist_properties {
     my $litlist_ref = {
 			id               => $litlistid,
 			userid           => $userid,
+                        userrole         => $self->get_roles_of_user($userid),
 			title            => $title,
 			type             => $type,
 		        itemcount        => $itemcount,
@@ -3392,6 +3419,7 @@ sub get_info {
     
     my $userinfo_ref={};
 
+    $userinfo_ref->{'id'}         = decode_utf8($self->{'ID'});
     $userinfo_ref->{'nachname'}   = decode_utf8($res->{'nachname'});
     $userinfo_ref->{'vorname'}    = decode_utf8($res->{'vorname'});
     $userinfo_ref->{'strasse'}    = decode_utf8($res->{'strasse'});
@@ -3414,7 +3442,81 @@ sub get_info {
     $userinfo_ref->{'masktype'}   = decode_utf8($res->{'masktype'});
     $userinfo_ref->{'autocompletiontype'} = decode_utf8($res->{'autocompletiontype'});
 
+    # Rollen
+
+    $userresult=$dbh->prepare("select * from role,userrole where userrole.userid = ? and userrole.roleid=role.id") or $logger->error($DBI::errstr);
+    $userresult->execute($self->{ID}) or $logger->error($DBI::errstr);
+
+    while (my $res=$userresult->fetchrow_hashref()){
+        $userinfo_ref->{role}{$res->{role}}=1;
+    }
+
     return $userinfo_ref;
+}
+
+sub get_all_roles {
+    my ($self)=@_;
+    
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    $logger->debug("Getting roles");
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+    
+    return [] if (!defined $dbh);
+
+    my $userresult=$dbh->prepare("select * from role") or $logger->error($DBI::errstr);
+    $userresult->execute() or $logger->error($DBI::errstr);
+
+    my $roles_ref = [];
+    while (my $res=$userresult->fetchrow_hashref()){
+        push @$roles_ref, {
+            id   => $res->{id},
+            role => $res->{role},
+        };
+    }
+
+    $logger->debug("Available roles ".YAML::Dump($roles_ref));
+    
+    return $roles_ref;
+}
+
+sub get_roles_of_user {
+    my ($self,$userid)=@_;
+    
+    # Log4perl logger erzeugen
+  
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+
+    $logger->debug("Getting roles");
+
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+    
+    return [] if (!defined $dbh);
+
+    my $userresult=$dbh->prepare("select role.role from role,userrole where userrole.userid=? and userrole.roleid=role.id") or $logger->error($DBI::errstr);
+    $userresult->execute($userid) or $logger->error($DBI::errstr);
+
+    my $role_ref = {};
+    while (my $res=$userresult->fetchrow_hashref()){
+        $role_ref->{$res->{role}}=1;
+    }
+
+    $logger->debug("Available roles ".YAML::Dump($role_ref));
+    
+    return $role_ref;
 }
 
 sub fieldchoice_exists {

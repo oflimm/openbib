@@ -514,15 +514,12 @@ Literaturlisten usw.)<p/>") %]
 <td class="overview"><!-- Begin overview-->
 <h3><img style="vertical-align:bottom" src="[% config.search_img %]" alt="[% msg.maketext("&Uuml;bersichten") %]"/>&nbsp;[% msg.maketext("In den Gesamtbestand eintauchen") %]</h3>
 
-<a style="font-size: 1.3em;" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=53" title="[% msg.maketext("Themengebiete") %]">[% msg.maketext("Themengebiete") %]</a>,
 <a style="font-size: 1.5em;" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=13" title="[% msg.maketext("Wolken")
 %]">[% msg.maketext("Wolken") %]</a>, <a style="font-size: 1.4em;"href="[% config.litlists_loc %]?sessionID=[% sessionID
 %]&action=show_public_lists" title="[% msg.maketext("Literaturlisten")
 %]">[% msg.maketext("Literaturlisten") %]</a>, <a style="font-size: 1.1em;" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=40" title="[% msg.maketext("Suchbegriffe") %]">[% msg.maketext("Suchbegriffe") %]</a>, <a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];database=[% database %];stid=10" title="Top 20">[% msg.maketext("meistgenutzte Titel") %]</a>, <a style="font-size: 1.2em;" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];stid=15" title="[% msg.maketext("spezialisierte KUG-Portale") %]">[% msg.maketext("spezialisierte KUG-Portale") %]</a>.<p/>
 
-<h3><img
-src="http://ezb.uni-regensburg.de/ezeit/vascoda/vifa/logo/ezb_234x32.gif"
-alt="[% msg.maketext("Elektronische Zeitschriftenbibliothek (EZB)") %]" /></h3>
+<h3><img src="[% msg.maketext("Elektronische Zeitschriftenbibliothek (EZB)") %]</h3>
 [% msg.maketext("Greifen Sie fachspezifisch auf alle [_1]freien und lizensierten Zeitschriften[_2] zu","<a href=\"${config.ezb_loc}?sessionID=${sessionID};view=${view};action=show_subjects;show_cloud=1\">","</a>") %]
 
 <h3>[% msg.maketext("Datenbank Informationssystem (DBIS)") %]</h3>

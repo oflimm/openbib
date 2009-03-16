@@ -12,11 +12,11 @@
 #
 #######################################################################
 -%]
-[% PROCESS std_header title='KUG Administration - Bestehende Sessions anzeigen' %]
+[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Bestehende Sessions anzeigen' %]
 
   <body>
 
-[% PROCESS corporate_banner %]
+[% PROCESS common/subtemplate name="corporate_banner" %]
 
 <div id="maincontent">
 
@@ -49,6 +49,4 @@
 </div>
 </div>
 
-<p />
-
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]

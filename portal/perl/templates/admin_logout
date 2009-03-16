@@ -11,11 +11,11 @@
 #
 #######################################################################
 -%]
-[% PROCESS std_header title='KUG Administration - Abmeldung' %]
+[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Abmeldung' %]
 
   <body>
 
-[% PROCESS corporate_banner %]
+[% PROCESS common/subtemplate name="corporate_banner" %]
 
 <div id="maincontent">
 
@@ -28,6 +28,4 @@
 </td></tr>
 </table>
 
-<p />
-
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]

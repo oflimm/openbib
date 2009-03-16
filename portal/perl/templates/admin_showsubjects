@@ -12,12 +12,12 @@
 #
 #######################################################################
 -%]
-[% PROCESS std_header title='KUG Administration - Katalog-Profile anzeigen' %]
+[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Katalog-Profile anzeigen' %]
 
   <body bgcolor="#FFFFFF">
 [% bks = config.load_bk; %]
 
-[% PROCESS corporate_banner %]
+[% PROCESS common/subtemplate name="corporate_banner" %]
 
 <div id="maincontent">
 
@@ -74,6 +74,4 @@
 
 </div>
 
-<p />
-
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]

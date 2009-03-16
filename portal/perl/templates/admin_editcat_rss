@@ -12,11 +12,11 @@
 #
 #######################################################################
 -%]
-[% PROCESS std_header title='' %]
+[% PROCESS common/subtemplate name="std_header" title='' %]
 
   <body>
 
-[% PROCESS corporate_banner %]
+[% PROCESS common/subtemplate name="corporate_banner" %]
 
 <div id="maincontent">
 
@@ -343,10 +343,6 @@ selected
 </td></tr>
 </table>
 
-
-
 </div>
 
-<p />
-
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]

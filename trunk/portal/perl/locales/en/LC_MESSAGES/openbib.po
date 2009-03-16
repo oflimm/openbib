@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: openbib\n"
 "POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"PO-Revision-Date: 2009-03-01 11:30+0100\n"
-"Last-Translator: Oliver Flimm <flimm@openbib.org>\n"
-"Language-Team:  <l10n@openbib.org>\n"
+"PO-Revision-Date: 2009-03-16 11:33+0100\n"
+"Last-Translator: \n"
+"Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -43,6 +43,7 @@ msgstr "${category}"
 #: ../templates/profile/kugng/managecollection_tit_as_html:408
 #: ../templates/profile/kugng/managecollection_tit_as_text:66
 #: ../templates/profile/kugng/search_showtitset:260
+#: ../templates/profile/kugng/views/inst431/newsflash:53
 #: ../templates/search_showautset:57 ../templates/search_showkorset:58
 #: ../templates/search_showmulttitset:99 ../templates/search_shownotset:57
 #: ../templates/search_showswtset:59 ../templates/search_showtitset:291
@@ -82,6 +83,7 @@ msgstr "%1 titles"
 
 #. (titlecount,thisclassifications.size,subject.litlistcount)
 #: ../templates/info_53:55 ../templates/profile/kugng/searchmask_simple:437
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:446
 msgid "%1 Titel in %2 Gruppen, %3 Literaturlisten"
 msgstr "%1 titles in %2 groups, %4 literature lists"
 
@@ -221,8 +223,7 @@ msgstr "Acquired categories: title, coporate body, ISSN"
 msgid ""
 "&Uuml;bernommene Felder: Titel, Person, K&ouml;rperschaft, ISBN, "
 "Erscheinungsjahr"
-msgstr ""
-"Acquired categories: title, author, corporate body, ISBN, year of publication"
+msgstr "Acquired categories: title, author, corporate body, ISBN, year of publication"
 
 #: ../templates/admin_editlogintarget:27 ../templates/admin_edituser:27
 #: ../templates/admin_searchuser:28 ../templates/admin_showlogintarget:27
@@ -233,6 +234,7 @@ msgstr "Overview"
 #: ../templates/info:85 ../templates/info:935 ../templates/info_13:28
 #: ../templates/info_15:30 ../templates/info_50:32 ../templates/info_51:39
 #: ../templates/info_52:39 ../templates/profile/kugng/searchmask_simple:515
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:524
 #: ../templates/searchmask:47 ../templates/searchmask_simple:47
 #: ../templates/views/einbaende/search_browse_tit:35
 #: ../templates/views/einbaende/searchmask:46
@@ -333,6 +335,7 @@ msgstr ""
 "boxes. Only the truncation operator <b>*</b> is allowed."
 
 #: ../templates/profile/kugng/searchmask_simple:459
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:468
 msgid ""
 "<b>Einloggen</b> in Mein KUG, um personalisierte Funktionen zu nutzen "
 "(Tagging,\n"
@@ -623,6 +626,7 @@ msgid "Alle Eintr&auml;ge ausw&auml;hlen"
 msgstr "Select all entries"
 
 #: ../templates/profile/kugng/searchmask_simple:54
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:54
 msgid "Alle Formate"
 msgstr "All types"
 
@@ -633,6 +637,9 @@ msgstr "All types"
 #: ../templates/profile/kugng/searchmask_simple:168
 #: ../templates/profile/kugng/searchmask_simple:277
 #: ../templates/profile/kugng/searchmask_simple:386
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:171
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:283
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:395
 #: ../templates/profile/kugng/views/kugng/searchmask:245
 #: ../templates/profile/kugng/views/kugng/searchmask:257
 #: ../templates/searchmask_options:18 ../templates/searchmask_simple:123
@@ -670,6 +677,7 @@ msgid "Alle getaggten Titel jetzt zu BibSonomy &uuml;bertragen"
 msgstr "Mirror all tagged titles to BibSonomy"
 
 #: ../templates/profile/kugng/searchmask_simple:48
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:48
 msgid "Alles"
 msgstr "All"
 
@@ -939,6 +947,7 @@ msgstr "Instructions"
 #: ../templates/login:103 ../templates/login:64
 #: ../templates/login_circulation:55
 #: ../templates/profile/kugng/searchmask_simple:469
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:478
 msgid "Anmeldeziel"
 msgstr "Authentication target"
 
@@ -947,7 +956,7 @@ msgid "Anmeldeziel bearbeiten"
 msgstr "Change authentication target"
 
 #: ../templates/admin_editlogintarget:28 ../templates/admin_edituser:29
-#: ../templates/admin_searchuser:29 ../templates/admin_showlogintarget:28
+#: ../templates/admin_searchuser:30 ../templates/admin_showlogintarget:29
 #: ../templates/admin_showuser:29 ../templates/admin_showuser_1:29
 msgid "Anmeldeziele"
 msgstr "Authentication targets"
@@ -1083,6 +1092,8 @@ msgstr "Use without aquisition of search terms"
 
 #: ../templates/profile/kugng/searchmask_simple:313
 #: ../templates/profile/kugng/searchmask_simple:50
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:319
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:50
 msgid "Aufs&auml;tze"
 msgstr "Articles"
 
@@ -1229,6 +1240,9 @@ msgstr "Start"
 #: ../templates/profile/kugng/searchmask_simple:180
 #: ../templates/profile/kugng/searchmask_simple:289
 #: ../templates/profile/kugng/searchmask_simple:398
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:183
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:295
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:407
 msgid "Beginnen Sie eine neue Recherche"
 msgstr "Start a new search request"
 
@@ -1391,6 +1405,9 @@ msgstr "User"
 #: ../templates/profile/kugng/searchmask_simple:162
 #: ../templates/profile/kugng/searchmask_simple:271
 #: ../templates/profile/kugng/searchmask_simple:380
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:165
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:277
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:389
 msgid "Benutzerdefiniert"
 msgstr "User defined"
 
@@ -1409,7 +1426,7 @@ msgstr "User name"
 msgid "Benutzernummer"
 msgstr "User number"
 
-#: ../templates/admin_showlogintarget:56
+#: ../templates/admin_showlogintarget:57
 msgid "Bereits existierende Anmeldeziele"
 msgstr "Already existing authentication targets"
 
@@ -1445,8 +1462,8 @@ msgstr "Profession/world-view"
 #: ../templates/admin_editcat:46 ../templates/admin_editlogintarget:46
 #: ../templates/admin_editprofile:35 ../templates/admin_editsubject:52
 #: ../templates/admin_editview:35 ../templates/admin_showcat:38
-#: ../templates/admin_showcat:66 ../templates/admin_showlogintarget:42
-#: ../templates/admin_showlogintarget:60 ../templates/admin_showprofiles:35
+#: ../templates/admin_showcat:66 ../templates/admin_showlogintarget:43
+#: ../templates/admin_showlogintarget:61 ../templates/admin_showprofiles:35
 #: ../templates/admin_showprofiles:55 ../templates/admin_showsubjects:36
 #: ../templates/admin_showsubjects:55 ../templates/admin_showviews:35
 #: ../templates/admin_showviews:57
@@ -1660,14 +1677,13 @@ msgstr "Please bookmark as:"
 msgid "Bitte geben Sie als Erscheinungsjahr eine vierstellige Zahl ein."
 msgstr "Please enter a four digit number as the year of publication."
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:1300
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:1308
 msgid "Bitte geben Sie ein Anfangs- sowie ein End-Datum an!"
 msgstr "Please enter start and end dates!"
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:1527
-#, fuzzy
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:1562
 msgid "Bitte geben Sie einen Suchbegriff ein."
-msgstr "Please enter your search terms"
+msgstr "Please enter your search term"
 
 #: ../templates/profile/kuglight/userprefs:86
 #: ../templates/profile/kugng/userprefs:80 ../templates/userprefs:80
@@ -1736,7 +1752,7 @@ msgstr "DB-File"
 
 #: ../templates/admin_editcat:72 ../templates/admin_editlogintarget:45
 #: ../templates/admin_showcat:39 ../templates/admin_showcat:66
-#: ../templates/admin_showlogintarget:41 ../templates/admin_showlogintarget:59
+#: ../templates/admin_showlogintarget:42 ../templates/admin_showlogintarget:60
 msgid "DB-Name"
 msgstr "DB-Name"
 
@@ -1863,7 +1879,8 @@ msgstr ""
 "list can become too long."
 
 #: ../templates/dbis_showdbinfo:29
-#: ../templates/profile/kugng/searchmask_simple:528
+#: ../templates/profile/kugng/searchmask_simple:525
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:535
 msgid "Datenbank Informationssystem (DBIS)"
 msgstr "DataBaseInformationSystem (DBIS)"
 
@@ -1900,8 +1917,7 @@ msgstr ""
 msgid ""
 "Denken Sie daran, dass nur wenige Bibliotheken Ihre Aufs&auml;tze in Ihrem "
 "Katalog aufnehmen"
-msgstr ""
-"Please remember that only a few libraries have articles in their catalogues"
+msgstr "Please remember that only a few libraries have articles in their catalogues"
 
 #: ../modules/OpenBib/Handler/Apache/VirtualSearch.pm:327
 msgid ""
@@ -1983,11 +1999,13 @@ msgstr "German Wikipedia"
 msgid "Die 20 meist genutzten Kataloge bezogen auf die Titelzugriffe"
 msgstr "The 20 most used catalogues regarding title access"
 
-#: ../templates/profile/kugng/searchmask_simple:535
+#: ../templates/profile/kugng/searchmask_simple:532
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:542
 msgid "Die 5 zuletzt angelegten Literaturlisten"
 msgstr "Most recent literature lists"
 
-#: ../templates/profile/kugng/searchmask_simple:547
+#: ../templates/profile/kugng/searchmask_simple:544
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:554
 msgid "Die 5 zuletzt vergebenen Tags"
 msgstr "Most recently given tags"
 
@@ -2242,8 +2260,7 @@ msgstr "Digital library / Monographs (ILL)"
 
 #: ../templates/info:620 ../templates/profile/kuglight/info:575
 #: ../templates/views/kug/info:620
-msgid ""
-"Digitale Bibliothek / Monographien (f&uuml;r die Fernleihe von Monographien)"
+msgid "Digitale Bibliothek / Monographien (f&uuml;r die Fernleihe von Monographien)"
 msgstr "Digital Library/ Monographs (for Interlibrary loan of monographs)"
 
 #: ../templates/externaljump:110
@@ -2302,7 +2319,7 @@ msgstr ""
 "interested in. This allows us to show you other books which may interest you "
 "in the context of the entry currently being displayed."
 
-#: ../templates/profile/kuglight/userprefs:75
+#: ../templates/admin_edituser:56 ../templates/profile/kuglight/userprefs:75
 #: ../templates/profile/kugng/userprefs:69 ../templates/userprefs:69
 msgid "E-Mail"
 msgstr "E-mail"
@@ -2520,6 +2537,8 @@ msgstr "Restrict to main entries (series)"
 #: ../templates/login_circulation:67
 #: ../templates/profile/kugng/searchmask_simple:459
 #: ../templates/profile/kugng/searchmask_simple:486
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:468
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:495
 msgid "Einloggen"
 msgstr "Log In"
 
@@ -2551,7 +2570,8 @@ msgid "Elektronisch verfügbare Zeitschriften (EZB)"
 msgstr "Elektronically available journals (EZB)"
 
 #: ../templates/ezb_showsubjects:31
-#: ../templates/profile/kugng/searchmask_simple:525
+#: ../templates/profile/kugng/searchmask_simple:522
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:532
 msgid "Elektronische Zeitschriftenbibliothek (EZB)"
 msgstr "Elektronic journal database (EZB)"
 
@@ -2669,6 +2689,9 @@ msgstr "Advanced search mask"
 #: ../templates/profile/kugng/searchmask_simple:180
 #: ../templates/profile/kugng/searchmask_simple:289
 #: ../templates/profile/kugng/searchmask_simple:398
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:183
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:295
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:407
 msgid "Erweiterte Suche"
 msgstr "Advanced search"
 
@@ -2676,20 +2699,20 @@ msgstr "Advanced search"
 msgid "Erwerbungsstatus"
 msgstr "Acquisition status"
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:1441
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:1444
 msgid "Es existiert bereits ein Anmeldeziel unter diesem Namen"
 msgstr "There already exists a authentication target with this name"
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:427
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:438
 msgid "Es existiert bereits ein Katalog unter diesem Namen"
 msgstr "There already exists a catalogue with this name"
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:824
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:832
 msgid "Es existiert bereits ein Themengebiet unter diesem Namen"
 msgstr "There already exists a subject with this name"
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:710
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:937
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:721
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:945
 msgid "Es existiert bereits ein View unter diesem Namen"
 msgstr "There already exists a view with this name"
 
@@ -2702,8 +2725,7 @@ msgid "Es existiert kein Passwort für die Kennung $loginname"
 msgstr "For the login $loginname no password exists."
 
 #: ../templates/admin_editcat_rss:168
-msgid ""
-"Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
+msgid "Es existiert noch kein RSS-Feed f&uuml;r Neuaufnahmen nach K&ouml;rperschaft"
 msgstr "Right now there's no RSS-Feed for new titles per corporate name"
 
 #: ../templates/admin_editcat_rss:225
@@ -2727,8 +2749,7 @@ msgstr "Right now there's no primary RSS-feed for this view"
 msgid ""
 "Es k&ouml;nnen nur Begriffe recherchiert werden, die aus\n"
 "      mindestens zwei Zeichen (Buchstaben/Ziffern) bestehen."
-msgstr ""
-"All search terms must consist of at least two characters   (letters/numbers)"
+msgstr "All search terms must consist of at least two characters   (letters/numbers)"
 
 #: ../templates/connector_similarpersons:40
 #: ../templates/connector_similarpersons:84
@@ -2753,8 +2774,7 @@ msgid "Es sind keine Quellen verf&uuml;gbar."
 msgstr "No sources available."
 
 #: ../modules/OpenBib/Handler/Apache/SelfReg.pm:132
-msgid ""
-"Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
+msgid "Es wurde entweder kein Benutzername oder keine zwei Passworte eingegeben"
 msgstr "You either didn't enter a username or less than two passwords "
 
 #: ../modules/OpenBib/Handler/Apache/Connector/DigiBib.pm:371
@@ -2863,6 +2883,9 @@ msgstr "Faculty"
 #: ../templates/profile/kugng/searchmask_simple:169
 #: ../templates/profile/kugng/searchmask_simple:278
 #: ../templates/profile/kugng/searchmask_simple:387
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:172
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:284
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:396
 #: ../templates/searchmask_options:19 ../templates/searchmask_simple:124
 #: ../templates/views/edz/searchmask_simple:133
 #: ../templates/views/inst404/searchmask_simple:139
@@ -2940,6 +2963,9 @@ msgstr "Interlibrary loan request"
 #: ../templates/profile/kugng/searchmask_simple:157
 #: ../templates/profile/kugng/searchmask_simple:266
 #: ../templates/profile/kugng/searchmask_simple:375
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:157
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:269
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:381
 msgid "Finde"
 msgstr "Find"
 
@@ -2977,6 +3003,9 @@ msgstr "Free search"
 #: ../templates/profile/kugng/searchmask_simple:188
 #: ../templates/profile/kugng/searchmask_simple:297
 #: ../templates/profile/kugng/searchmask_simple:407
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:191
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:303
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:416
 #: ../templates/profile/kugng/views/kugng/searchmask:126
 msgid "Früherer Recherchen"
 msgstr "Earlier requests"
@@ -2989,6 +3018,9 @@ msgstr "Earlier requests"
 #: ../templates/profile/kugng/searchmask_simple:200
 #: ../templates/profile/kugng/searchmask_simple:309
 #: ../templates/profile/kugng/searchmask_simple:419
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:203
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:315
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:428
 #: ../templates/profile/kugng/views/kugng/searchmask:206
 #: ../templates/searchmask:145 ../templates/searchmask_simple:181
 #: ../templates/views/edz/searchmask:159
@@ -3159,7 +3191,7 @@ msgstr "Please enter the beginning of the author"
 msgid "Geben Sie hier einen oder mehrere Tags ein"
 msgstr "Please enter one or more tags"
 
-#: ../templates/profile/kuglight/userprefs:67
+#: ../templates/admin_edituser:45 ../templates/profile/kuglight/userprefs:67
 #: ../templates/profile/kugng/userprefs:61 ../templates/userprefs:61
 msgid "Geburtsdatum"
 msgstr "Date of birth"
@@ -3168,10 +3200,9 @@ msgstr "Date of birth"
 msgid "Gebühr"
 msgstr "Fee"
 
-#: ../templates/admin_searchuser:38
-#, fuzzy
+#: ../templates/admin_searchuser:39
 msgid "Gefundene Nutzer"
-msgstr "could be found."
+msgstr "Found users"
 
 #: ../templates/info:984 ../templates/profile/kuglight/info:606
 #: ../templates/views/kug/info:984
@@ -3199,7 +3230,8 @@ msgid "Google Book Search"
 msgstr "Google Book Search"
 
 #. ("<a href=\"${config.ezb_loc}?sessionID=${sessionID};view=${view};action=show_subjects;show_cloud=1\">","</a>")
-#: ../templates/profile/kugng/searchmask_simple:526
+#: ../templates/profile/kugng/searchmask_simple:523
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:533
 msgid ""
 "Greifen Sie fachspezifisch auf alle %1freien und lizensierten Zeitschriften%"
 "2 zu"
@@ -3542,6 +3574,9 @@ msgstr ""
 #: ../templates/profile/kugng/searchmask_simple:157
 #: ../templates/profile/kugng/searchmask_simple:266
 #: ../templates/profile/kugng/searchmask_simple:375
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:157
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:269
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:381
 #: ../templates/profile/kugng/views/kugng/searchmask:164
 #: ../templates/profile/kugng/views/kugng/searchmask:178
 #: ../templates/profile/kugng/views/kugng/searchmask:201
@@ -3715,8 +3750,7 @@ msgstr ""
 #: ../templates/views/xanten/searchmask_simple:89
 #: ../templates/views/xanten/searchmask_simple:95
 msgid "Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen"
-msgstr ""
-"Here you can search in your choice of catalogue,  catalogue profiles, resp."
+msgstr "Here you can search in your choice of catalogue,  catalogue profiles, resp."
 
 #: ../templates/profile/kuglight/searchmask:133
 #: ../templates/profile/kuglight/searchmask:97
@@ -3856,11 +3890,12 @@ msgstr "Home"
 msgid "Homepage"
 msgstr "Homepage"
 
-#: ../templates/admin_editlogintarget:42 ../templates/admin_showlogintarget:41
-#: ../templates/admin_showlogintarget:59
+#: ../templates/admin_editlogintarget:42 ../templates/admin_showlogintarget:42
+#: ../templates/admin_showlogintarget:60
 msgid "Hostname"
 msgstr "Hostname"
 
+#: ../templates/profile/kugng/views/inst431/newsflash:19
 #: ../templates/visible_categories_libinfoset:17
 msgid "I0010"
 msgstr "Name of institute"
@@ -3869,6 +3904,7 @@ msgstr "Name of institute"
 msgid "I0020"
 msgstr "Street"
 
+#: ../templates/profile/kugng/views/inst431/newsflash:20
 #: ../templates/visible_categories_libinfoset:19
 msgid "I0030"
 msgstr "Building"
@@ -3901,6 +3937,7 @@ msgstr "Internet"
 msgid "I0100"
 msgstr "Help desk / librarian"
 
+#: ../templates/profile/kugng/views/inst431/newsflash:21
 #: ../templates/visible_categories_libinfoset:27
 msgid "I0110"
 msgstr "Business hours"
@@ -4145,6 +4182,9 @@ msgstr "Import-Settings"
 #: ../templates/profile/kugng/searchmask_simple:158
 #: ../templates/profile/kugng/searchmask_simple:267
 #: ../templates/profile/kugng/searchmask_simple:376
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:158
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:270
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:382
 msgid "In"
 msgstr "In"
 
@@ -4442,6 +4482,7 @@ msgid "In ausgewählten Katalogen suchen"
 msgstr "Search in selected catalogues"
 
 #: ../templates/profile/kugng/searchmask_simple:515
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:524
 msgid "In den Gesamtbestand eintauchen"
 msgstr "Dive into the structure and contents of our catalogues"
 
@@ -4976,7 +5017,7 @@ msgstr "No title id, title database or literature list available."
 msgid "Keine gültige Aktion"
 msgstr "Invalid action"
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:1587
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:1622
 msgid "Keine gültige Aktion oder Session"
 msgstr "Invalid action or session"
 
@@ -4986,13 +5027,14 @@ msgstr "Invalid request id"
 
 #: ../templates/admin_showuser_1:42
 #: ../templates/profile/kugng/searchmask_simple:484
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:493
 msgid "Kennung"
 msgstr "Account"
 
 #: ../templates/profile/kugng/searchmask_simple:489
-#, fuzzy
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:498
 msgid "Kennung einrichten"
-msgstr "Create a free account"
+msgstr "Create account"
 
 #: ../templates/profile/kuglight/userprefs:44
 #: ../templates/profile/kugng/userprefs:38 ../templates/userprefs:38
@@ -5173,7 +5215,8 @@ msgstr "Remove"
 msgid "L&ouml;schung des ausgew&auml;hlten Profils"
 msgstr "Removal of selected profile"
 
-#: ../templates/profile/kugng/searchmask_simple:533
+#: ../templates/profile/kugng/searchmask_simple:530
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:540
 msgid "Legen Sie Literaturlisten an und vergeben Sie Tags"
 msgstr "Create new literature lists and tag specific titles"
 
@@ -5190,22 +5233,19 @@ msgstr ""
 msgid ""
 "Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r h&auml;"
 "ufige Begriffe diese Kategorie anbieten."
-msgstr ""
-"Unfortunately we cannot present a cloud of relevant terms for this category."
+msgstr "Unfortunately we cannot present a cloud of relevant terms for this category."
 
 #: ../templates/info_16:83 ../templates/profile/kugng/info_16:82
 msgid ""
 "Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r h&auml;"
 "ufige Begriffe dieser Kategorie anbieten."
-msgstr ""
-"Unfortunately we cannot present a cloud of relevant terms for this category."
+msgstr "Unfortunately we cannot present a cloud of relevant terms for this category."
 
 #: ../templates/info_19:85 ../templates/profile/kugng/info_19:84
 msgid ""
 "Leider k&ouml;nnen wir Ihnen in diesem Katalog keine Wolke f&uuml;r von "
 "Nutzern vergebene Tags anbieten."
-msgstr ""
-"Unfortunately we cannot present a cloud of user tags for this catalogue."
+msgstr "Unfortunately we cannot present a cloud of user tags for this catalogue."
 
 #: ../templates/info_41:68
 msgid ""
@@ -5291,9 +5331,11 @@ msgstr "Literature list"
 #: ../templates/profile/kugng/info_13:33
 #: ../templates/profile/kugng/litlists_show_publiclists:25
 #: ../templates/profile/kugng/search_showtitset:741
+#: ../templates/profile/kugng/searchmask_simple:519
 #: ../templates/profile/kugng/searchmask_simple:520
-#: ../templates/profile/kugng/searchmask_simple:521
 #: ../templates/profile/kugng/userprefs_navigation:16
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:529
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:530
 #: ../templates/search_showtitset:338
 msgid "Literaturlisten"
 msgstr "Literature lists"
@@ -5340,7 +5382,7 @@ msgstr "Local location mark"
 msgid "Lokale Signatur      "
 msgstr "Local location mark  "
 
-#: ../templates/admin_showuser_1:45
+#: ../templates/admin_edituser:87 ../templates/admin_showuser_1:45
 #: ../templates/database/ebooks/search_showtitset:629
 #: ../templates/database/ebooks/search_showtitset:632
 #: ../templates/database/einbaende/search_showtitlist:65
@@ -5376,6 +5418,7 @@ msgstr "Local location mark  "
 #: ../templates/profile/kugng/search_showtitset:550
 #: ../templates/profile/kugng/searchmask_simple:157
 #: ../templates/profile/kugng/tags_showtitlist:62
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:157
 #: ../templates/profile/kugng/virtualsearch_result_combined:57
 #: ../templates/profile/kugng/virtualsearch_result_start:60
 #: ../templates/resultlists_showall:59
@@ -5654,6 +5697,18 @@ msgstr "MedPilot"
 msgid "Medienart"
 msgstr "Type of media"
 
+#: ../templates/profile/kugng/drilldown_categorized:18
+#: ../templates/profile/kugng/drilldown_categorized:29
+#: ../templates/profile/kugng/drilldown_categorized:40
+#: ../templates/profile/kugng/drilldown_categorized:51
+#: ../templates/profile/kugng/drilldown_categorized:62
+#: ../templates/profile/kugng/drilldown_categorized:7
+#: ../templates/profile/kugng/drilldown_categorized:73
+#: ../templates/profile/kugng/drilldown_categorized:85
+#: ../templates/profile/kugng/views/inst431/newsflash:62
+msgid "Mehr"
+msgstr "More"
+
 #: ../templates/database/landschaft/search_showtitlist:169
 #: ../templates/database/umschlaege/search_showtitlist:172
 #: ../templates/database/umschlaege/search_showtitlist_of_cnt:172
@@ -5808,7 +5863,7 @@ msgstr ""
 "down the number in front of the location mark that indicates the exact "
 "library, click on Pedagogical Faculty and look for the required library code."
 
-#: ../templates/profile/kuglight/userprefs:65
+#: ../templates/admin_edituser:39 ../templates/profile/kuglight/userprefs:65
 #: ../templates/profile/kugng/userprefs:59 ../templates/userprefs:59
 msgid "Nachname"
 msgstr "Surname"
@@ -5876,7 +5931,7 @@ msgstr "No"
 #: ../templates/admin_editcat_rss:113 ../templates/admin_editcat_rss:170
 #: ../templates/admin_editcat_rss:227 ../templates/admin_editcat_rss:284
 #: ../templates/admin_editcat_rss:56 ../templates/admin_showcat:51
-#: ../templates/admin_showlogintarget:43 ../templates/admin_showprofiles:37
+#: ../templates/admin_showlogintarget:44 ../templates/admin_showprofiles:37
 #: ../templates/admin_showsubjects:38 ../templates/admin_showviews:39
 #: ../templates/litlists_manage_lists:40
 #: ../templates/profile/kugng/litlists_manage_lists:40
@@ -5936,6 +5991,9 @@ msgstr "Start new session"
 #: ../templates/profile/kugng/searchmask_simple:180
 #: ../templates/profile/kugng/searchmask_simple:289
 #: ../templates/profile/kugng/searchmask_simple:398
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:183
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:295
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:407
 msgid "Neue Suche"
 msgstr "New search request"
 
@@ -5955,12 +6013,11 @@ msgstr "New aquisition"
 msgid "Neuerwerbungen"
 msgstr "New aquisitions"
 
-#: ../templates/profile/kugng/views/inst431/newsflash:24
-#, fuzzy
+#: ../templates/profile/kugng/views/inst431/newsflash:74
 msgid "Neuerwerbungslisten"
 msgstr "New aquisitions"
 
-#: ../templates/admin_showlogintarget:38
+#: ../templates/admin_showlogintarget:39
 msgid "Neues Anmeldeziel anlegen"
 msgstr "Create new authentication target"
 
@@ -5984,29 +6041,30 @@ msgid "Notation"
 msgstr "Classification"
 
 #: ../templates/profile/kugng/searchmask_simple:375
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:381
 msgid "Nur Aufsätze"
 msgstr "Articles only"
 
 #: ../templates/profile/kugng/searchmask_simple:266
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:269
 msgid "Nur Zeitschriften/Serien"
 msgstr "Journals/Series only"
 
-#: ../templates/admin_searchuser:41 ../templates/bibsonomy_showtitlist:76
+#: ../templates/admin_searchuser:42 ../templates/bibsonomy_showtitlist:76
 #: ../templates/profile/kugng/bibsonomy_showtitlist:100
 #: ../templates/profile/kugng/bibsonomy_showtitlist:116
 msgid "Nutzer"
 msgstr "User"
 
 #: ../templates/admin_showuser_1:39
-#, fuzzy
 msgid "Nutzer suchen"
-msgstr "New search request"
+msgstr "Search user"
 
-#: ../templates/admin_edituser:28 ../templates/admin_showuser:28
+#: ../templates/admin_edituser:28 ../templates/admin_searchuser:29
+#: ../templates/admin_showlogintarget:28 ../templates/admin_showuser:28
 #: ../templates/admin_showuser_1:28
-#, fuzzy
 msgid "Nutzer suchen/bearbeiten"
-msgstr "Journals/Series only"
+msgstr "Search/edit user"
 
 #. ("<a href=\"${config.info_loc}?sessionID=${sessionID};view=${view}#enrichrelevance\">","</a>")
 #: ../templates/database/ebooks/search_showtitset:405
@@ -6029,8 +6087,8 @@ msgstr ""
 msgid "Nutzer-Tags"
 msgstr "Tags"
 
-#: ../templates/admin_editlogintarget:44 ../templates/admin_showlogintarget:41
-#: ../templates/admin_showlogintarget:59
+#: ../templates/admin_editlogintarget:44 ../templates/admin_showlogintarget:42
+#: ../templates/admin_showlogintarget:60
 msgid "Nutzername"
 msgstr "User name"
 
@@ -6087,7 +6145,7 @@ msgstr "Remaining fees"
 msgid "Optionen"
 msgstr "Options"
 
-#: ../templates/profile/kuglight/userprefs:69
+#: ../templates/admin_edituser:50 ../templates/profile/kuglight/userprefs:69
 #: ../templates/profile/kugng/userprefs:63 ../templates/userprefs:63
 msgid "Ort"
 msgstr "City"
@@ -6108,8 +6166,9 @@ msgstr "# of titles"
 #: ../templates/login_circulation:66
 #: ../templates/profile/kuglight/userprefs:50
 #: ../templates/profile/kugng/searchmask_simple:485
-#: ../templates/profile/kugng/userprefs:44 ../templates/selfreg:53
-#: ../templates/userprefs:44
+#: ../templates/profile/kugng/userprefs:44
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:494
+#: ../templates/selfreg:53 ../templates/userprefs:44
 msgid "Passwort"
 msgstr "Password"
 
@@ -6127,8 +6186,9 @@ msgid "Passwort per Mail schicken"
 msgstr "Send password by mail"
 
 #: ../templates/login:37 ../templates/mailpassword:28
-#: ../templates/profile/kugng/searchmask_simple:489 ../templates/selfreg:27
-#: ../templates/selfreg_success:27
+#: ../templates/profile/kugng/searchmask_simple:489
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:498
+#: ../templates/selfreg:27 ../templates/selfreg_success:27
 msgid "Passwort vergessen?"
 msgstr "Forgotten password?"
 
@@ -6190,7 +6250,7 @@ msgstr "Person/Corporate Body"
 msgid "Personen"
 msgstr "Persons"
 
-#: ../templates/profile/kuglight/userprefs:62
+#: ../templates/admin_edituser:35 ../templates/profile/kuglight/userprefs:62
 #: ../templates/profile/kugng/userprefs:56 ../templates/userprefs:56
 msgid "Personendaten"
 msgstr "Personal data"
@@ -6212,8 +6272,8 @@ msgstr ""
 msgid "Popularit&auml;ts-Funktionen"
 msgstr "Popularity-Functions"
 
-#: ../templates/admin_editlogintarget:43 ../templates/admin_showlogintarget:41
-#: ../templates/admin_showlogintarget:59
+#: ../templates/admin_editlogintarget:43 ../templates/admin_showlogintarget:42
+#: ../templates/admin_showlogintarget:60
 msgid "Port"
 msgstr "Port"
 
@@ -6383,7 +6443,8 @@ msgid "Recherchen"
 msgstr "Search requests"
 
 #. ("<a href=\"${config.dbis_loc}?sessionID=${sessionID};view=${view};action=show_subjects;show_cloud=1\">","</a>")
-#: ../templates/profile/kugng/searchmask_simple:529
+#: ../templates/profile/kugng/searchmask_simple:526
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:536
 msgid ""
 "Recherchieren Sie fachspezifisch in einer Vielzahl von %1freien und\n"
 "lizensierten Datenbanken%2"
@@ -6395,6 +6456,9 @@ msgstr "Browse all available %1free and licensed databases%2 by subject."
 #: ../templates/profile/kugng/searchmask_simple:113
 #: ../templates/profile/kugng/searchmask_simple:220
 #: ../templates/profile/kugng/searchmask_simple:329
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:113
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:223
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:335
 msgid "Recherchieren Sie im KUG in %1 Titeln und %2 Katalogen"
 msgstr "Search KUG with its %1 titles in %2 catalogues"
 
@@ -6445,6 +6509,10 @@ msgstr "Reviews"
 #: ../templates/views/richter/searchmask_query:25
 msgid "Richter-Systematik"
 msgstr "Richter-classification"
+
+#: ../templates/admin_edituser:75
+msgid "Rolle zuordnen"
+msgstr "Assign role"
 
 #: ../templates/profile/kuglight/searchmask_simple:160
 #: ../templates/searchmask_simple:162
@@ -6631,8 +6699,9 @@ msgid "Sekunden"
 msgstr "Seconds"
 
 #: ../templates/login:36 ../templates/mailpassword:27
-#: ../templates/profile/kugng/searchmask_simple:474 ../templates/selfreg:26
-#: ../templates/selfreg_success:26
+#: ../templates/profile/kugng/searchmask_simple:474
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:483
+#: ../templates/selfreg:26 ../templates/selfreg_success:26
 msgid "Selbstregistrierung"
 msgstr "Self registration"
 
@@ -6692,14 +6761,13 @@ msgstr ""
 "Because this version of KUG is continously extended error messages are quite "
 "possible."
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:382
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:391
 msgid "Sie greifen auf eine nicht autorisierte Session zu"
 msgstr "You are accessing an unauthorized session"
 
 #. ("<a href=\"${config.info_loc}?sessionID=${sessionID};view=${view}#meinkugvorteile\">","</a>")
 #: ../templates/login:46
-msgid ""
-"Sie haben %1Vorteile%2, wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden."
+msgid "Sie haben %1Vorteile%2, wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden."
 msgstr "You have %1advantages%2 when you log in via <b>My KUG</b>."
 
 #. ("<a href=\"$config->{databasechoice_loc}?sessionID=$session->{ID}\" target=\"body\">","</a>")
@@ -6736,7 +6804,7 @@ msgstr ""
 "use an %1alternative version%2 of this page with minimized usage of "
 "JavaScript."
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:348
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:357
 msgid ""
 "Sie haben als Benutzer entweder keinen oder nicht den Admin-Benutzer "
 "eingegeben"
@@ -6755,10 +6823,9 @@ msgstr "This medium is already reserved for you"
 msgid ""
 "Sie haben ein falsches Captcha eingegeben! Gehen Sie bitte %1zurück%2 und "
 "versuchen Sie es erneut."
-msgstr ""
-"You just entered a wrong captcha! Please %1return%2 and correct your input."
+msgstr "You just entered a wrong captcha! Please %1return%2 and correct your input."
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:353
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:362
 msgid "Sie haben ein falsches Passwort eingegeben"
 msgstr "You entered a wrong password"
 
@@ -6788,8 +6855,7 @@ msgstr ""
 msgid ""
 "Sie haben entweder keine entsprechende Liste oder Sie sind nicht "
 "authentifiziert."
-msgstr ""
-"You either don't own the corresponding list or you are not authenticated."
+msgstr "You either don't own the corresponding list or you are not authenticated."
 
 #: ../templates/circulation:42
 msgid "Sie haben keine Ausleihen getätigt."
@@ -6847,8 +6913,7 @@ msgstr ""
 msgid ""
 "Sie konnten mit Ihrem angegebenen Benutzernamen und Passwort nicht "
 "erfolgreich authentifiziert werden"
-msgstr ""
-"You could not get authorized successfully with your user name and password."
+msgstr "You could not get authorized successfully with your user name and password."
 
 #. ("${viewdesc}","<a href=\"${config.databasechoice_loc}?sessionID=${sessionID};view=${view}\">","</a>")
 #: ../templates/profile/kuglight/searchmask:84
@@ -6856,8 +6921,12 @@ msgstr ""
 #: ../templates/profile/kugng/searchmask:75
 #: ../templates/profile/kugng/searchmask_simple:123
 #: ../templates/profile/kugng/searchmask_simple:230
-#: ../templates/profile/kugng/searchmask_simple:339 ../templates/searchmask:86
-#: ../templates/searchmask_simple:86 ../templates/views/edz/searchmask:88
+#: ../templates/profile/kugng/searchmask_simple:339
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:123
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:233
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:345
+#: ../templates/searchmask:86 ../templates/searchmask_simple:86
+#: ../templates/views/edz/searchmask:88
 #: ../templates/views/edz/searchmask_simple:82
 #: ../templates/views/inst404/searchmask:85
 #: ../templates/views/inst404/searchmask_simple:81
@@ -6902,8 +6971,12 @@ msgstr ""
 #: ../templates/profile/kugng/searchmask:85
 #: ../templates/profile/kugng/searchmask_simple:131
 #: ../templates/profile/kugng/searchmask_simple:238
-#: ../templates/profile/kugng/searchmask_simple:347 ../templates/searchmask:96
-#: ../templates/searchmask_simple:94 ../templates/views/edz/searchmask:110
+#: ../templates/profile/kugng/searchmask_simple:347
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:131
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:241
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:353
+#: ../templates/searchmask:96 ../templates/searchmask_simple:94
+#: ../templates/views/edz/searchmask:110
 #: ../templates/views/edz/searchmask_simple:103
 #: ../templates/views/gdonck/searchmask:90
 #: ../templates/views/gleuel/searchmask:90
@@ -7059,28 +7132,26 @@ msgid "Sie müssen einen Titel f&uuml;r Ihre Literaturliste eingeben."
 msgstr "You have to enter a title for your literature list."
 
 #: ../modules/OpenBib/Handler/Apache/LitLists.pm:201
-msgid ""
-"Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
+msgid "Sie müssen einen Titel oder einen Typ f&uuml;r Ihre Literaturliste eingeben."
 msgstr "You have to enter a title or type for your literature list."
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:1434
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:1437
 msgid "Sie müssen mindestens eine Beschreibung eingeben."
 msgstr "You have to enter at least a description."
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:420
-msgid ""
-"Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:431
+msgid "Sie müssen mindestens einen Katalognamen und eine Beschreibung eingeben."
 msgstr "You have to enter at least a catalogue name and a description."
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:808
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:816
 msgid "Sie müssen mindestens einen Namen f&uuml;r das Themenbebiet eingeben."
 msgstr "You have to enter at least the name of your subject."
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:694
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:705
 msgid "Sie müssen mindestens einen Profilnamen und eine Beschreibung eingeben."
 msgstr "You have to enter at least a profile name and a description."
 
-#: ../modules/OpenBib/Handler/Apache/Admin.pm:914
+#: ../modules/OpenBib/Handler/Apache/Admin.pm:922
 msgid ""
 "Sie müssen mindestens einen Viewnamen, eine Beschreibung sowie ein Katalog-"
 "Profil eingeben."
@@ -7238,7 +7309,7 @@ msgstr "Order by"
 msgid "Sortierung:"
 msgstr "Alphabetic sorting:"
 
-#: ../templates/profile/kuglight/userprefs:77
+#: ../templates/admin_edituser:58 ../templates/profile/kuglight/userprefs:77
 #: ../templates/profile/kugng/userprefs:71 ../templates/userprefs:71
 msgid "Sperre"
 msgstr "Lockout"
@@ -7262,9 +7333,10 @@ msgstr "Specific KUG entry points, called <i>views</i>:"
 #: ../templates/profile/kuglight/search_showtitset:33
 #: ../templates/profile/kuglight/searchmask:31
 #: ../templates/profile/kuglight/searchmask_simple:31
-#: ../templates/profile/kugng/info_60:45
+#: ../templates/profile/kugng/info_60:45 ../templates/profile/kugng/info_61:26
 #: ../templates/profile/kugng/searchmask:31
 #: ../templates/profile/kugng/searchmask_simple:453
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:462
 #: ../templates/search_showtitset:33 ../templates/searchmask:31
 #: ../templates/searchmask_simple:31 ../templates/views/edz/searchmask:31
 #: ../templates/views/edz/searchmask_simple:31
@@ -7373,11 +7445,15 @@ msgstr "Statistics"
 msgid "Status"
 msgstr "Status"
 
+#: ../templates/profile/kugng/views/inst431/newsflash:14
+msgid "Steckbrief der Bibliothek"
+msgstr "Information about library"
+
 #: ../templates/circulation_reserv:46
 msgid "Stelle"
 msgstr "Position"
 
-#: ../templates/profile/kuglight/userprefs:68
+#: ../templates/admin_edituser:48 ../templates/profile/kuglight/userprefs:68
 #: ../templates/profile/kugng/userprefs:62 ../templates/userprefs:62
 msgid "Strasse"
 msgstr "Street"
@@ -7393,7 +7469,8 @@ msgstr "Index-Search"
 #: ../templates/profile/kuglight/searchmask:103
 #: ../templates/profile/kugng/info_13:34
 #: ../templates/profile/kugng/searchmask:94
-#: ../templates/profile/kugng/searchmask_simple:521
+#: ../templates/profile/kugng/searchmask_simple:520
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:530
 #: ../templates/profile/kugng/views/kugng/searchmask:170
 #: ../templates/searchmask:105 ../templates/views/edz/searchmask:119
 #: ../templates/views/gdonck/searchmask:99
@@ -9172,13 +9249,15 @@ msgstr "Assign DBIS subjects"
 #: ../templates/profile/kugng/litlists_show_singlelist:76
 #: ../templates/profile/kugng/searchmask_simple:424
 #: ../templates/profile/kugng/searchmask_simple:51
-#: ../templates/profile/kugng/searchmask_simple:517
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:433
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:51
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:526
 msgid "Themengebiete"
 msgstr "Subjects"
 
-#: ../templates/profile/kugng/views/inst431/newsflash:15
+#: ../templates/profile/kugng/views/inst431/newsflash:64
 msgid "Tip: Digitaler Kartenkatalog"
-msgstr ""
+msgstr "Hint: Digital Card Catalogue"
 
 #: ../templates/admin_editcat:118
 msgid "Tit-Datei"
@@ -9238,8 +9317,7 @@ msgstr "Add to List of Interest"
 msgid ""
 "Titel mit der ISBN dieses Titels sind auch in folgenden anderen KUG-"
 "Katalogen vorhanden"
-msgstr ""
-"Titles with this ISBN are also available in the following KUG-catalogues"
+msgstr "Titles with this ISBN are also available in the following KUG-catalogues"
 
 #: ../templates/info_12:38
 msgid "Titel pro Katalog"
@@ -9457,12 +9535,12 @@ msgstr ""
 "beginning with the stem 'programm-' while   leaving the ending open: e.g. "
 "programming, programme or the German   programm etc.)"
 
-#: ../templates/mainnavigation:29
+#: ../templates/mainnavigation:29 ../templates/profile/kugng/info_61:32
 msgid "Tutorien"
 msgstr "Tutorials"
 
-#: ../templates/admin_editlogintarget:47 ../templates/admin_showlogintarget:42
-#: ../templates/admin_showlogintarget:60
+#: ../templates/admin_editlogintarget:47 ../templates/admin_showlogintarget:43
+#: ../templates/admin_showlogintarget:61
 msgid "Typ"
 msgstr "Type"
 
@@ -9521,8 +9599,7 @@ msgstr "To edit an already existing view please select the view name."
 msgid ""
 "Um einen bereits existierendes Katalog-Profil zu bearbeiten klicken Sie "
 "bitte auf den Profil-Namen."
-msgstr ""
-"To edit an already existing catalogue profile please select the profile name."
+msgstr "To edit an already existing catalogue profile please select the profile name."
 
 #: ../templates/admin_showsubjects:51
 msgid ""
@@ -9542,6 +9619,9 @@ msgstr "Please follow %1this link%2 to login again. "
 #: ../templates/profile/kugng/searchmask_simple:113
 #: ../templates/profile/kugng/searchmask_simple:220
 #: ../templates/profile/kugng/searchmask_simple:329
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:113
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:223
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:335
 #: ../templates/profile/kugng/views/kugng/searchmask:213
 #: ../templates/searchmask:143 ../templates/searchmask_simple:178
 #: ../templates/views/edz/searchmask:157
@@ -9909,7 +9989,8 @@ msgstr "Reservations"
 msgid "Vormerkungsfrist"
 msgstr "Reservation period"
 
-#: ../templates/admin_showuser_1:44 ../templates/profile/kuglight/userprefs:66
+#: ../templates/admin_edituser:42 ../templates/admin_showuser_1:44
+#: ../templates/profile/kuglight/userprefs:66
 #: ../templates/profile/kugng/userprefs:60 ../templates/userprefs:60
 msgid "Vorname"
 msgstr "First name"
@@ -9968,8 +10049,7 @@ msgstr "WebOPAC-URL"
 msgid ""
 "Wegen eines unerwarteten Problems kann der KUG in den n&auml;chsten Minuten\n"
 "leider nicht genutzt werden."
-msgstr ""
-"Due to an unexpectant event the KUG cannot be used for the next few minutes."
+msgstr "Due to an unexpectant event the KUG cannot be used for the next few minutes."
 
 #: ../templates/circset:27 ../templates/database/inst001/circset:124
 #: ../templates/database/inst001/circset:85 ../templates/dbis_showdbinfo:39
@@ -10020,9 +10100,9 @@ msgstr "Other Types of Enhancements:"
 msgid "Weitere Anreicherungen"
 msgstr "Other Types of Content Enrichment"
 
-#: ../templates/profile/kugng/views/inst431/newsflash:15
+#: ../templates/profile/kugng/views/inst431/newsflash:64
 msgid "Weitere Best&auml;nde im Digitalen Kartenkatalog"
-msgstr ""
+msgstr "More titles available in the Digital Card Catalogue"
 
 #. ("<a      href=\"http://blog.openbib.org/2008/06/18/zentrale-kataloganreicherung/\"      target=\"_blank\">OpenBibBlog</a>")
 #: ../templates/info:707 ../templates/views/kug/info:707
@@ -10246,8 +10326,7 @@ msgstr ""
 msgid ""
 "Wenn Sie weiter im KUG recherchieren m&ouml;chten, so klicken Sie bitte %"
 "1<b>hier</b>[_2}, um eine neue Sitzung zu beginnen."
-msgstr ""
-"To continue using KUG please click %1<b>here</b>[_2} to start a new session."
+msgstr "To continue using KUG please click %1<b>here</b>[_2} to start a new session."
 
 #: ../templates/info:870 ../templates/views/kug/info:870
 msgid ""
@@ -10339,8 +10418,10 @@ msgstr "Cloud of most frequently used tags"
 #: ../templates/profile/kugng/info_16:36 ../templates/profile/kugng/info_17:36
 #: ../templates/profile/kugng/info_18:36 ../templates/profile/kugng/info_19:36
 #: ../templates/profile/kugng/info_9:36
+#: ../templates/profile/kugng/searchmask_simple:517
 #: ../templates/profile/kugng/searchmask_simple:518
-#: ../templates/profile/kugng/searchmask_simple:519
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:527
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:528
 #: ../templates/views/kug/info:86 ../templates/views/kug/info:936
 msgid "Wolken"
 msgstr "Clouds"
@@ -10382,6 +10463,8 @@ msgstr "Please select a view:"
 
 #: ../templates/profile/kugng/searchmask_simple:204
 #: ../templates/profile/kugng/searchmask_simple:49
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:207
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:49
 msgid "Zeitschriften/Serien"
 msgstr "Journals/Series"
 
@@ -10429,6 +10512,9 @@ msgstr "Conditions of access "
 #: ../templates/profile/kugng/searchmask_simple:193
 #: ../templates/profile/kugng/searchmask_simple:302
 #: ../templates/profile/kugng/searchmask_simple:412
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:196
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:308
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:421
 #: ../templates/profile/kugng/views/kugng/searchmask:132
 #: ../templates/searchmask:66 ../templates/searchmask_simple:168
 #: ../templates/views/edz/searchmask:65
@@ -10659,10 +10745,9 @@ msgstr "in internal course of business"
 #: ../templates/profile/kugng/std_footer:18 ../templates/std_footer:17
 #: ../templates/views/portrait/std_footer:17
 msgid "ist ein Dienst der Universitäts- und Stadtbibliothek Köln"
-msgstr ""
-"is a public service of the Central Library of the University of Cologne"
+msgstr "is a public service of the Central Library of the University of Cologne"
 
-#: ../templates/profile/kuglight/userprefs:79
+#: ../templates/admin_edituser:60 ../templates/profile/kuglight/userprefs:79
 #: ../templates/profile/kugng/userprefs:73 ../templates/userprefs:73
 msgid "ja, seit"
 msgstr "yes, since"
@@ -10677,7 +10762,8 @@ msgstr "yes, since"
 msgid "katalogübergreifend"
 msgstr "spanning several catalogues"
 
-#: ../templates/profile/kugng/searchmask_simple:521
+#: ../templates/profile/kugng/searchmask_simple:520
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:530
 msgid "meistgenutzte Titel"
 msgstr "most often used titles"
 
@@ -10705,7 +10791,7 @@ msgstr ""
 "to the e-book is automatically added. Access restrictions might apply to e-"
 "books (only accessible from campus)."
 
-#: ../templates/profile/kuglight/userprefs:79
+#: ../templates/admin_edituser:60 ../templates/profile/kuglight/userprefs:79
 #: ../templates/profile/kugng/userprefs:73 ../templates/userprefs:73
 msgid "mit Grund"
 msgstr "with reason"
@@ -10719,9 +10805,8 @@ msgstr ""
 "given catalogue."
 
 #: ../templates/database/audiosmlg/drilldown_categorized:150
-#, fuzzy
 msgid "nach Album"
-msgstr "by person"
+msgstr "by album"
 
 #: ../templates/views/umschlaege/resultlists_showall:49
 #: ../templates/views/umschlaege/resultlists_showall_sortall:48
@@ -10757,13 +10842,12 @@ msgid "nach Fert.Jahr"
 msgstr "by year of production"
 
 #: ../templates/database/audiosmlg/drilldown_categorized:192
-#, fuzzy
 msgid "nach Genre"
-msgstr "by person"
+msgstr "by genre"
 
 #: ../templates/database/audiosmlg/drilldown_categorized:129
 msgid "nach Interpret/Gruppe"
-msgstr ""
+msgstr "by artist/group"
 
 #: ../templates/database/audiosmlg/drilldown_categorized:213
 #: ../templates/database/einbaende/drilldown_categorized:52
@@ -11111,7 +11195,7 @@ msgstr "by cooperation"
 msgid "nach am Umschlag Beteiligte"
 msgstr "by persons involved in cover art"
 
-#: ../templates/profile/kuglight/userprefs:81
+#: ../templates/admin_edituser:62 ../templates/profile/kuglight/userprefs:81
 #: ../templates/profile/kugng/userprefs:75 ../templates/userprefs:75
 msgid "nein"
 msgstr "no"
@@ -11206,7 +11290,8 @@ msgstr "bad"
 msgid "sehr gut"
 msgstr "very good"
 
-#: ../templates/profile/kugng/searchmask_simple:521
+#: ../templates/profile/kugng/searchmask_simple:520
+#: ../templates/profile/kugng/views/inst431/searchmask_simple:530
 msgid "spezialisierte KUG-Portale"
 msgstr "specialized KUG portals"
 
@@ -11284,3 +11369,4 @@ msgstr "Copy"
 #: ../templates/circulation_remind:34 ../templates/circulation_reserv:34
 msgid "Überziehungen / Gebühren"
 msgstr "Overdue/Fees"
+

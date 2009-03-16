@@ -218,6 +218,7 @@ courses_img: /images/openbib/courses.png
 delete_img: /images/openbib/cancel.png
 follow_img: /images/openbib/solidrightarrow.png
 info_img: /images/openbib/info.png
+help_img: /images/openbib/help.png
 hint_img: /images/openbib/hint.png
 lang_de_img: /images/openbib/de.png
 lang_en_img: /images/openbib/en.png

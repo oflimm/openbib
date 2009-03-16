@@ -229,6 +229,7 @@
 ../templates/profile/kugng/info_51
 ../templates/profile/kugng/info_52
 ../templates/profile/kugng/info_60
+../templates/profile/kugng/info_61
 ../templates/profile/kugng/info_9
 ../templates/profile/kugng/litlists_manage_lists
 ../templates/profile/kugng/litlists_manage_singlelist
@@ -265,6 +266,7 @@
 ../templates/profile/kugng/virtualsearch_result_start
 ../templates/profile/kugng/views/kugng/searchmask
 ../templates/profile/kugng/views/inst431/newsflash
+../templates/profile/kugng/views/inst431/searchmask_simple
 ../templates/resultlists_choice
 ../templates/resultlists_showall
 ../templates/resultlists_showall_sortall

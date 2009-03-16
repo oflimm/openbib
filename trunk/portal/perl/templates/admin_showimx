@@ -1,10 +1,10 @@
 [% SET title='KUG Administration - Import' %]
 [% SET show_foot_banner = 1 %]
-[% PROCESS std_header %]
+[% PROCESS common/subtemplate name="std_header" %]
 
   <body>
 
-[% PROCESS corporate_banner %]
+[% PROCESS common/subtemplate name="corporate_banner" %]
 
 <div id="maincontent">
 
@@ -57,6 +57,5 @@ value="&Auml;ndern" /></td><td>&nbsp;</td><td align="right"><input type="submit"
 </table>
 
 </form>
-<p />
 
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -11,11 +11,11 @@
 #
 #######################################################################
 -%]
-[% PROCESS std_header title='KUG Administration - Katalog bearbeiten' %]
+[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Katalog bearbeiten' %]
 
   <body>
 
-[% PROCESS corporate_banner %]
+[% PROCESS common/subtemplate name="corporate_banner" %]
 
 <div id="maincontent">
 
@@ -153,6 +153,4 @@ selected="selected"
 
 </div>
 
-<p />
-
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]

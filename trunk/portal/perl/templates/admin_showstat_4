@@ -13,11 +13,11 @@
 #
 #######################################################################
 -%]
-[% PROCESS std_header title='KUG Administration - Grundlegende Statistikinformationen' %]
+[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Grundlegende Statistikinformationen' %]
 
   <body>
 
-[% PROCESS corporate_banner %]
+[% PROCESS common/subtemplate name="corporate_banner" %]
 
 <div id="maincontent">
 
@@ -92,6 +92,4 @@
 </div>
 </div>
 
-<p />
-
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]

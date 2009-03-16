@@ -11,11 +11,11 @@
 #
 #######################################################################
 -%]
-[% PROCESS std_header title='KUG Administration - Anmeldeziele anzeigen' %]
+[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Anmeldeziele anzeigen' %]
 
   <body>
 
-[% PROCESS corporate_banner %]
+[% PROCESS common/subtemplate name="corporate_banner" %]
 
 <div id="maincontent">
 
@@ -25,6 +25,7 @@
 
 <ul class="tabbingmenu">
    <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showuser=1">[% msg.maketext("&Uuml;bersicht") %]</a></li>
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showuser=1;stid=1">[% msg.maketext("Nutzer suchen/bearbeiten") %]</a></li>
    <li><a class="active" href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showlogintarget=1">[% msg.maketext("Anmeldeziele") %]</a></li>
 </ul>
 
@@ -69,6 +70,4 @@
 </div>
 </div>
 
-<p />
-
-[% PROCESS std_footer %]
+[% PROCESS common/subtemplate name="std_footer" %]

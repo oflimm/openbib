@@ -1556,6 +1556,9 @@ sub get_recent_tags {
     my $count        = exists $arg_ref->{count}
         ? $arg_ref->{count}           : 5;
 
+    my $database     = exists $arg_ref->{database}
+        ? $arg_ref->{database}           : undef;
+
     # Log4perl logger erzeugen
   
     my $logger = get_logger();
@@ -1569,10 +1572,19 @@ sub get_recent_tags {
 
     return [] if (!defined $dbh);
 
-#    my $sql_stmnt = "select distinct t.tag, tt.tagid from tittag as tt, tags as t where tt.type = 1 and t.id=tt.tagid order by tt.ttid DESC limit $count";
-    my $sql_stmnt = "select t.tag, t.id, count(tt.tagid) as tagcount from tags as t, tittag as tt where t.id=tt.tagid and tt.type=1 group by tt.tagid order by tt.ttid DESC limit $count";
+    my $sql_stmnt = "";
+    my @sql_args  = ();
+    
+    if ($database){
+        $sql_stmnt = "select t.tag, t.id, count(tt.tagid) as tagcount from tags as t, tittag as tt where tt.titdb= ? and t.id=tt.tagid and tt.type=1 group by tt.tagid order by tt.ttid DESC limit $count";
+        push @sql_args, $database;
+    }
+    else {
+        $sql_stmnt = "select t.tag, t.id, count(tt.tagid) as tagcount from tags as t, tittag as tt where t.id=tt.tagid and tt.type=1 group by tt.tagid order by tt.ttid DESC limit $count";
+    }
+    
     my $request=$dbh->prepare($sql_stmnt) or $logger->error($DBI::errstr);
-    $request->execute() or $logger->error($DBI::errstr);
+    $request->execute(@sql_args) or $logger->error($DBI::errstr);
 
     my $tags_ref = [];
 

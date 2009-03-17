@@ -490,12 +490,17 @@ lizensierten Datenbanken[_2]","<a href=\"${config.dbis_loc}?sessionID=${sessionI
 
 <h4>[% msg.maketext("Die 5 zuletzt angelegten Literaturlisten") %]</h4>
 
-[% lastlitlists = user.get_recent_litlists({count => 5, subjectid => subjectid }) %]
+[%- IF subjectid ;
+       lastlitlists = user.get_recent_litlists({count => 5, subjectid => subjectid }) ;
+    ELSE ;
+       lastlitlists = user.get_recent_litlists({count => 5 }) ;
+    END ;
+-%]
 
 [% IF lastlitlists.size > 0 %]
 <ul class="recent_litlists">
 [%   FOREACH litlist IN lastlitlists %]
-<li><a href="[% config.litlists_loc %]?sessionID=[% sessionID %];action=show;litlistid=[% litlist.id%];do_showlitlist=1">[% litlist.title %]</a> ([% litlist.itemcount %])[%- IF litlist.userrole.${"librarian"} -%]&nbsp;<img src="[% config.university_img %]" title="[% msg.maketext("Erstellt durch Fachpersonal der Universit&auml;t") %]" alt="[% msg.maketext("Erstellt durch Fachpersonal der Universit&auml;t") %]" style="vertical-align:bottom"/>[%- END -%]</li>
+<li><a href="[% config.litlists_loc %]?sessionID=[% sessionID %];action=show;litlistid=[% litlist.id%];do_showlitlist=1">[% litlist.title %]</a> ([% litlist.itemcount %])[%- IF litlist.userrole.${"librarian"} -%]&nbsp;<img src="[% config.university_img %]" title="[% msg.maketext("Offizielle Literaturliste der Universit&auml;t") %]" alt="[% msg.maketext("Offizielle Literaturliste der Universit&auml;t") %]" style="vertical-align:bottom"/>[%- END -%]</li>
 [%   END %]
 </ul>
 [% END %]

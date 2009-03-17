@@ -41,22 +41,13 @@ function update_fak(yourform, checked, fak) {
 
 <div class="content">
 
+<p/>
+
 <form method="post" action="[% config.databasechoice_loc %]" enctype="application/x-www-form-urlencoded">
 <input type="hidden" name="hitrange" value="-1" />
 <input type="hidden" name="view" value="[% view %]" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 
-<p />
-<table width="100%">
-<tr><th><img style="vertical-align:bottom" src="[% config.hint_img %]" alt="[% msg.maketext("Hinweis") %]"/>[% msg.maketext("Hinweis") %]</th></tr>
-<tr><td class="boxedclear" style="font-size:0.8em">
-[% msg.maketext("Auf dieser Seite k&ouml;nnen Sie einzelne Kataloge als Suchziel auswählen. Bei aktiviertem JavaScript reicht ein Klick auf das Schaltelement einer übergeordneten hellblau hinterlegten Kategorie, um alle zugeh&ouml;rigen Kataloge automatisch auszuwählen<p />
-Nachdem Sie Ihre Auswahl getroffen haben aktivieren Sie bitte <b>Kataloge auswählen</b>. Sie springen dann auf die Rechercheseite und k&ouml;nnen Ihre Suchbegriffe eingeben. Ihre gerade
-getroffene Datenbankauswahl ist unter <b>Suchprofil</b> vorausgewählt. Nun müssen Sie nur noch auf <b>In ausgewählten Katalogen suchen</b> klicken, um in den ausgewählten
-Datenbanken zu recherchieren.") %]
-</td></tr>
-</table>
-<p />
 <input type="submit" name="do_choose" value="[% msg.maketext("Kataloge auswählen") %]" />&nbsp;<input type="reset" value="[% msg.maketext("Ursprüngliche Auswahl wiederherstellen") %]" />
 <p />
 <table>
@@ -111,7 +102,6 @@ Datenbanken zu recherchieren.") %]
 <input type="submit" name="do_choose" value="[% msg.maketext("Kataloge auswählen") %]" />&nbsp;<input type="reset" value="[% msg.maketext("Ursprüngliche Auswahl wiederherstellen") %]" />
 </form>
 <p />
-
 </div>
 
 [% PROCESS common/subtemplate name="std_footer" %]

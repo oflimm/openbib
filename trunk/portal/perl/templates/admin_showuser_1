@@ -48,6 +48,25 @@
 </table>
 </form>
 
+<p />
+[%#
+
+    msg.maketext("admin")     # Administrator
+    msg.maketext("librarian") # Bibliothekar
+    msg.maketext("lecturer")  # Dozent
+
+-%]
+<table width="100%">
+<tr><th>[% msg.maketext("Nutzer mit Rollen") %]</th></tr>
+<tr><td class="boxedclear">
+<ul class="subjectlist">
+[% FOREACH role IN user.get_all_roles %]
+<li><a href="[% config.admin_loc %]?sessionID=[% sessionID %];do_searchuser=1;roleid=[% role.id %]">[% msg.maketext(role.role) %]</a></li>
+[% END %]
+</ul>
+</td></tr>
+</table>
+
 </div>
 </div>
 

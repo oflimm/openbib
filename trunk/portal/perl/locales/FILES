@@ -250,11 +250,14 @@
 ../templates/profile/kugng/resultlists_showall
 ../templates/profile/kugng/resultlists_showall_sortall
 ../templates/profile/kugng/resultlists_showsinglepool
+../templates/profile/kugng/rssfeeds
+../templates/profile/kugng/searchmask_bottom_left
 ../templates/profile/kugng/searchmask_query
 ../templates/profile/kugng/searchmask_simple
 ../templates/profile/kugng/searchmask
 ../templates/profile/kugng/search_showtitlist
 ../templates/profile/kugng/search_showtitset
+../templates/profile/kugng/selfreg
 ../templates/profile/kugng/std_footer
 ../templates/profile/kugng/std_header
 ../templates/profile/kugng/tags_showtitlist
@@ -266,7 +269,7 @@
 ../templates/profile/kugng/virtualsearch_result_start
 ../templates/profile/kugng/views/kugng/searchmask
 ../templates/profile/kugng/views/inst431/newsflash
-../templates/profile/kugng/views/inst431/searchmask_simple
+../templates/profile/kugng/views/inst431/searchmask_bottom_left
 ../templates/resultlists_choice
 ../templates/resultlists_showall
 ../templates/resultlists_showall_sortall

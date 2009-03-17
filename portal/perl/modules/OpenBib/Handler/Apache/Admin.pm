@@ -351,7 +351,7 @@ sub handler {
   
     ###########################################################################
     elsif ($do_login) {
-    
+
         # Sessionid erzeugen
         if ($username ne $adminuser) {
             OpenBib::Common::Util::print_warning($msg->maketext("Sie haben als Benutzer entweder keinen oder nicht den Admin-Benutzer eingegeben"),$r,$msg);
@@ -373,6 +373,8 @@ sub handler {
 
             stylesheet => $stylesheet,
             sessionID  => $session->{ID},
+
+            session    => $session,
             config     => $config,
 
             msg        => $msg,
@@ -383,16 +385,17 @@ sub handler {
     }
   
     # Ab hier gehts nur weiter mit korrekter SessionID
-  
+
+    my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
+
     # Admin-SessionID ueberpruefen
-    my $adminsession = $session->is_authenticated_as($adminuser);
+    # Entweder als Master-Adminuser eingeloggt, oder der Benutzer besitzt die Admin-Rolle
+    my $adminsession = $session->is_authenticated_as($adminuser) || $user->is_admin;
 
     if (!$adminsession) {
         OpenBib::Common::Util::print_warning($msg->maketext("Sie greifen auf eine nicht autorisierte Session zu"),$r,$msg);
         return OK;
     }
-
-    my $user         = OpenBib::User->instance({sessionID => $session->{ID}});
 
     $logger->debug("Server: ".$r->get_server_name);
     ###########################################################################
@@ -529,6 +532,7 @@ sub handler {
                 katalog    => $katalog,
 		  
                 config     => $config,
+                session    => $session,
                 user       => $user,
                 msg        => $msg,
             };
@@ -581,6 +585,7 @@ sub handler {
                 katalog    => $katalog,
                 
                 config     => $config,
+                session    => $session,
                 user       => $user,
                 msg        => $msg,
             };
@@ -599,6 +604,7 @@ sub handler {
             kataloge   => $dbinfo_ref,
 
             config     => $config,
+            session    => $session,
             user       => $user,
             msg        => $msg,
         };
@@ -644,6 +650,7 @@ sub handler {
                 libinfo    => $libinfo_ref,
 		  
                 config     => $config,
+                session    => $session,
                 user       => $user,
                 msg        => $msg,
             };
@@ -661,6 +668,7 @@ sub handler {
             sessionID  => $session->{ID},
             profiles   => $profileinfo_ref,
             config     => $config,
+            session    => $session,
             user       => $user,
             msg        => $msg,
         };
@@ -751,6 +759,7 @@ sub handler {
                 dbnames    => \@dbnames,
 
                 config     => $config,
+                session    => $session,
                 user       => $user,
                 msg        => $msg,
             };
@@ -770,6 +779,7 @@ sub handler {
             sessionID  => $session->{ID},
             subjects   => $subjects_ref,
             config     => $config,
+            session    => $session,
             user       => $user,
             msg        => $msg,
         };
@@ -849,6 +859,7 @@ sub handler {
                 subject    => $subject_ref,
 
                 config     => $config,
+                session    => $session,
                 user       => $user,
                 msg        => $msg,
             };
@@ -868,6 +879,7 @@ sub handler {
             sessionID  => $session->{ID},
             views      => $viewinfo_ref,
             config     => $config,
+            session    => $session,
             user       => $user,
             msg        => $msg,
         };
@@ -996,6 +1008,7 @@ sub handler {
                 dbinfo     => $dbinfotable,
                 
                 config     => $config,
+                session    => $session,
                 user       => $user,
                 msg        => $msg,
             };
@@ -1095,6 +1108,7 @@ sub handler {
               allrssfeeds => $allrssfeed_ref,
 
               config      => $config,
+              session     => $session,
               user        => $user,
               msg         => $msg,
           };
@@ -1160,6 +1174,7 @@ sub handler {
             kataloge   => \@kataloge,
 
             config     => $config,
+            session    => $session,
             user       => $user,
             msg        => $msg,
         };
@@ -1183,6 +1198,7 @@ sub handler {
             sessions   => \@sessions,
 
             config     => $config,
+            session    => $session,
             user       => $user,
             msg        => $msg,
         };
@@ -1225,6 +1241,7 @@ sub handler {
                 queries    => \@queries,
 
                 config     => $config,
+                session    => $session,
                 user       => $user,
                 msg        => $msg,
             };
@@ -1466,6 +1483,7 @@ sub handler {
                 logintarget => $logintarget_ref,
                 
                 user        => $user,
+                session    => $session,
                 config      => $config,
                 msg         => $msg,
             };
@@ -1523,6 +1541,7 @@ sub handler {
                 sessionID  => $session->{ID},
 		  
                 config     => $config,
+                session    => $session,
                 user       => $user,
                 msg        => $msg,
             };
@@ -1538,32 +1557,39 @@ sub handler {
         my $userdbh
             = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
                 or $logger->error_die($DBI::errstr);
-
+        
         my $sql_stmt = "select userid from user where ";
         my @sql_where = ();
         my @sql_args = ();
 
-        if ($username) {
-            push @sql_where,"loginname = ?";
-            push @sql_args, $username;
+        if ($roleid) {
+            $sql_stmt = "select userid from userrole where roleid=?";
+            push @sql_args, $roleid;
         }
+        else {
+            if ($username) {
+                push @sql_where,"loginname = ?";
+                push @sql_args, $username;
+            }
+            
+            if ($commonname) {
+                push @sql_where, "nachname = ?";
+                push @sql_args, $commonname;
+            }
+            
+            if ($surname) {
+                push @sql_where, "vorname = ?";
+                push @sql_args, $surname;
+            }
 
-        if ($commonname) {
-            push @sql_where, "nachname = ?";
-            push @sql_args, $commonname;
+            if (!@sql_where){
+                OpenBib::Common::Util::print_warning($msg->maketext("Bitte geben Sie einen Suchbegriff ein."),$r,$msg);
+                return OK;
+            }
+            
+            $sql_stmt.=join(" and ",@sql_where);
         }
-
-        if ($surname) {
-            push @sql_where, "vorname = ?";
-            push @sql_args, $surname;
-        }
-
-        if (!@sql_where){
-            OpenBib::Common::Util::print_warning($msg->maketext("Bitte geben Sie einen Suchbegriff ein."),$r,$msg);
-            return OK;
-        }
-
-        $sql_stmt.=join(" and ",@sql_where);
+        
 
         $logger->debug($sql_stmt);
         
@@ -1610,6 +1636,7 @@ sub handler {
             sessionID  => $session->{ID},
             
             config     => $config,
+            session    => $session,
             user       => $user,
             msg        => $msg,
         };

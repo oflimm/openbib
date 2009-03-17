@@ -287,6 +287,7 @@ sub handler {
         
         statistics    => $statistics,
         config        => $config,
+        session       => $session,
         user          => $user,
         msg           => $msg,
     };

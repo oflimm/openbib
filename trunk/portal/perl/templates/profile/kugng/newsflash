@@ -27,9 +27,3 @@ href="http://blog.openbib.org/2009/03/02/neue-version-von-kug-und-openbib-im-bet
 target="_blank">Blog-Eintrag</a>.</li>
 
 </ul>
-
-<h3><img style="vertical-align:bottom" src="/images/openbib/courses.png" alt="[% msg.maketext("Schulungen") %]"/>&nbsp;[% msg.maketext("Schulungen") %]</h3>
-
-<ul>
-<li>[% msg.maketext("Wollen Sie den KUG besser kennenlernen und effizienter nutzen?! Wir bieten laufend [_1]KUG-Schulungen[_2] an!","<a href=\"http://www.ub.uni-koeln.de/service/kurse/kug/index_ger.html\" target=\"_blank\">","</a>") %]</li>
-</ul>

@@ -105,6 +105,7 @@ sub handler {
         stylesheet  => $stylesheet,
         sessionID   => $session->{ID},
         config      => $config,
+        session     => $session,
         user        => $user,
         msg         => $msg,
     };

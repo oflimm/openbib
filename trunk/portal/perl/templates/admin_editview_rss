@@ -44,10 +44,6 @@
 rsstypes = [
 "",
 "Neuzugang (generell)",
-"Neuzugang nach Verfasser",
-"Neuzugang nach K&ouml;rperschaft",
-"Neuzugang nach Schlagwort",
-"Neuzugang nach Systematik",
 ];
 
 neinja = ["Nein","Ja"];
@@ -71,25 +67,10 @@ neinja = ["Nein","Ja"];
 <option value="-1">[% msg.maketext("Kein prim&auml;rer RSS-Feed ausgew&auml;hlt") %]</option>
 
 [% FOREACH singlefeed IN allrssfeeds %]
-
-[% IF singlefeed.type == 1  %]
-[% feedid   = singlefeed.id %]
-
-<option value="[% feedid %]"
-
-[% IF view.primrssfeed == feedid %]
-selected="selected"
+[%-   NEXT IF singlefeed.type != 1  -%]
+[%-   feedid   = singlefeed.id -%]
+<option value="[% feedid %]"[%- IF view.primrssfeed == feedid -%] selected="selected"[%- END -%]>[% singlefeed.description %] / [% rsstypes.${singlefeed.type} %] ([% msg.maketext("Aktiv") %]: [% neinja.${singlefeed.active} %])</option>
 [% END %]
-
->[% singlefeed.description %] / [% rsstypes.${singlefeed.type} %]
-([% msg.maketext("Aktiv") %]: [% neinja.${singlefeed.active} %])
-</option>
-
-[% END %]
-
-[% END %]
-
-
 </select>
 <p />
 
@@ -118,21 +99,10 @@ selected="selected"
 <select name="rssids" multiple="multiple">
 
 [% FOREACH singlefeed IN allrssfeeds %]
-[% feedid   = singlefeed.id %]
-
-<option value="[% feedid %]"
-
-[% IF view.rssfeeds.${feedid} %]
-selected="selected"
+[%-   NEXT IF singlefeed.type != 1  -%]
+[%-   feedid   = singlefeed.id -%]
+<option value="[% feedid %]"[%- IF view.rssfeeds.${feedid} -%] selected="selected"[%- END -%]>[% singlefeed.description %] / [% rsstypes.${singlefeed.type} %] ([% msg.maketext("Aktiv") %]: [% neinja.${singlefeed.active} %])</option>
 [% END %]
-
->[% singlefeed.description %] / [% rsstypes.${singlefeed.type} %]
-([% msg.maketext("Aktiv") %]: [% neinja.${singlefeed.active} %])
-</option>
-
-[% END %]
-
-
 </select>
 <p />
 

@@ -4149,4 +4149,34 @@ sub set_autocompletion {
     return;
 }
 
+sub is_admin {
+    my ($self)=@_;
+
+    # Log4perl logger erzeugen
+    my $logger = get_logger();
+
+    my $config = OpenBib::Config->instance;
+    
+    # Verbindung zur SQL-Datenbank herstellen
+    my $dbh
+        = OpenBib::Database::DBI->connect("DBI:$config->{dbimodule}:dbname=$config->{userdbname};host=$config->{userdbhost};port=$config->{userdbport}", $config->{userdbuser}, $config->{userdbpasswd})
+            or $logger->error($DBI::errstr);
+
+    return undef if (!defined $dbh);
+
+    # Update des Autovervollstaendigung-Typs
+    my $request=$dbh->prepare("select count(ur.userid) as rowcount from userrole as ur ,role as r where ur.userid = ? and r.role = 'admin' and r.id=ur.roleid") or $logger->error($DBI::errstr);
+    $request->execute($self->{ID}) or $logger->error($DBI::errstr);
+    
+    my $result=$request->fetchrow_hashref;
+
+    my $rows=$result->{rowcount};
+
+    $request->finish();
+
+    return ($rows > 0)?1:0;
+
+    return;
+}
+
 1;

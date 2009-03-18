@@ -65,12 +65,12 @@
 %]:</b></td><td>
 <select name="targetid">
 [%- FOREACH target IN logintargets -%]
-[%-   IF target.description == 'USB K&ouml;ln' -%]
+[%-   IF target.id == 1 -%]
 <option value="[% target.id %]">[% target.description %]</option>
 [%-   END -%]
 [%- END -%]
 [%- FOREACH target IN logintargets -%]
-[%-   IF target.description != 'Selbstregistrierung' && target.description != 'USB K&ouml;ln' -%]
+[%-   IF target.id != 4 && target.id != 1 -%]
 <option value="[% target.id %]">[% target.description %]</option>
 [%-   END -%]
 [%- END -%]
@@ -103,7 +103,7 @@
 <tr><td align="right"><b>[% msg.maketext("Anmeldeziel")
 %]:</b></td><td>
 [%- FOREACH target IN logintargets -%]
-[%-   IF target.description == 'Selbstregistrierung' -%]
+[%-   IF target.id == 4 -%]
 <input type="hidden" name="targetid" value="[% target.id %]">
 [%-   END -%]
 [%- END -%]

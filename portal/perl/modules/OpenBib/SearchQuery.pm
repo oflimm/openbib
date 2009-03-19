@@ -152,7 +152,7 @@ sub set_from_apache_request {
 
     my ($fs, $verf, $hst, $hststring, $gtquelle, $swt, $kor, $sign, $inhalt, $isbn, $issn, $mart,$notation,$ejahr,$ejahrop);
 
-    my ($fsnorm, $verfnorm, $hstnorm, $hststringnorm, $gtquellenorm, $swtnorm, $kornorm, $signnorm, $inhaltnorm, $isbnnorm, $issnnorm, $martnorm,$notationnorm,$ejahrnorm);
+    my ($fsnorm, $verfnorm, $hstnorm, $hststringnorm, $gtquellenorm, $swtnorm, $kornorm, $signnorm, $inhaltnorm, $isbnnorm, $issnnorm, $martnorm,$notationnorm,$ejahrnorm,$indexterm,$indextermnorm);
     
     $fs        = $fsnorm        = decode_utf8($query->param('fs'))            || $query->param('fs')      || '';
     $verf      = $verfnorm      = decode_utf8($query->param('verf'))          || $query->param('verf')    || '';
@@ -169,6 +169,8 @@ sub set_from_apache_request {
     $notation  = $notationnorm  = decode_utf8($query->param('notation'))      || $query->param('notation')|| '';
     $ejahr     = $ejahrnorm     = decode_utf8($query->param('ejahr'))         || $query->param('ejahr')   || '';
     $ejahrop   =                  decode_utf8($query->param('ejahrop'))       || $query->param('ejahrop') || 'eq';
+
+    $indexterm = $indextermnorm = decode_utf8($query->param('indexterm'))     || $query->param('indexterm')|| '';
 
     my $autoplus      = $query->param('autoplus')      || '';
     my $verfindex     = $query->param('verfindex')     || '';
@@ -348,7 +350,12 @@ sub set_from_apache_request {
         content   => $ejahrnorm,
         searchreq => 1,
     });
-    
+
+    $indextermnorm  = OpenBib::Common::Util::grundform({
+        content   => $indextermnorm,
+        searchreq => 1,
+    });
+
     # Umwandlung impliziter ODER-Verknuepfung in UND-Verknuepfung
     if ($autoplus eq "1" && !$verfindex && !$korindex && !$swtindex) {
         $fsnorm       = OpenBib::VirtualSearch::Util::conv2autoplus($fsnorm)   if ($fs);
@@ -479,6 +486,13 @@ sub set_from_apache_request {
 			    norm  => $ejahrnorm,
 			    bool  => $boolejahr,
 			    arg   => $ejahrop,
+			   };
+    }
+
+    if ($indexterm){
+      $self->{_searchquery}->{indexterm}={
+			    val   => $indexterm,
+			    norm  => $indextermnorm,
 			   };
     }
 

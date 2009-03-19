@@ -18,7 +18,7 @@
 
 [% PROCESS common/subtemplate name="corporate_banner" %] 
 
-[% PROCESS common/subtemplate name="mainnavigation" %] 
+[% PROCESS common/subtemplate name="mainnavigation" active_menu = "login" %] 
 
 <div id="maincontent">
 
@@ -44,16 +44,16 @@
 <p />
 
 <table>
-<tr><td align="right"><b>[% msg.maketext("Anmeldeziel")
+<tr><td align="right"><b>[% msg.maketext("mit")
 %]:</b></td><td>
 <select name="targetid">
 [%- FOREACH target IN logintargets -%]
-[%-   IF target.description == 'USB K&ouml;ln' -%]
+[%-   IF target.id == 1 -%]
 <option value="[% target.id %]">[% target.description %]</option>
 [%-   END -%]
 [%- END -%]
 [%- FOREACH target IN logintargets -%]
-[%-   IF target.description != 'Selbstregistrierung' && target.description != 'USB K&ouml;ln' -%]
+[%-   IF target.id != 4 && target.id != 1 -%]
 <option value="[% target.id %]">[% target.description %]</option>
 [%-   END -%]
 [%- END -%]
@@ -82,21 +82,21 @@
 <tr><td class="boxedclear" style="font-size:9pt">
 <p />
 <table>
-<tr><td align="right"><b>[% msg.maketext("Anmeldeziel")
+<tr><td align="right"><b>[% msg.maketext("mit")
 %]:</b></td><td>
 [%- FOREACH target IN logintargets -%]
-[%-   IF target.description == 'Selbstregistrierung' -%]
+[%-   IF target.id == 4 -%]
 <input type="hidden" name="targetid" value="[% target.id %]">
+[% target.description %]
 [%-   END -%]
 [%- END -%]
-Selbstregistrierung
 </td></tr>
 <tr><td align="right"><b>[% msg.maketext("E-Mail-Adresse") %]</b></td><td><input type="text" name="loginname" value="[% loginname %]" /></td></tr>
 <tr><td align="right"><b>[% msg.maketext("Passwort") %]</b></td><td><input type="password" name="password" /></td></tr>
 <tr><td></td><td><input type="submit" value="[% msg.maketext("Einloggen") %]" /></td><td></td></tr>
 </table>
 <p/>
-<a href="[% config.selfreg_loc %]?sessionID=[% sessionID %];action=show">[% msg.maketext("Kennung einrichten") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% config.mailpassword_loc %]?sessionID=[% sessionID %];action=show">[% msg.maketext("Passwort vergessen?") %]</a>
+<a href="[% config.selfreg_loc %]?sessionID=[% sessionID %];action=show">[% msg.maketext("Registrieren") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% config.mailpassword_loc %]?sessionID=[% sessionID %];action=show">[% msg.maketext("Passwort vergessen?") %]</a>
 </td></tr>
 </table>
 </div><!-- End right_side -->

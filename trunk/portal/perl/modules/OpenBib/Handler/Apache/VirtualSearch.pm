@@ -106,10 +106,17 @@ sub handler {
     my $searchall     = $query->param('searchall')     || '';
     my $searchprofile = $query->param('searchprofile') || '';
 
+    # Index zusammen mit Eingabefelder 
     my $verfindex     = $query->param('verfindex')     || '';
     my $korindex      = $query->param('korindex')      || '';
     my $swtindex      = $query->param('swtindex')      || '';
     my $notindex      = $query->param('notindex')      || '';
+
+    # oder Index als separate Funktion
+    my $indextype    = $query->param('indextype')     || ''; # (verfindex, korindex, swtindex oder notindex)
+    my $indexterm    = $query->param('indexterm')     || '';
+    my $searchindex  = $query->param('searchindex')     || '';
+    
     my $profil        = $query->param('profil')        || '';
     my $trefferliste  = $query->param('trefferliste')  || '';
     my $queryid       = $query->param('queryid')       || '';
@@ -202,7 +209,7 @@ sub handler {
         # Wenn nur ein View angegeben wird, aber keine Submit-Funktion (s.u.),
         # z.B. wenn direkt von extern fuer einen View eine Recherche gestartet werden soll,
         # dann wird in den Datenbanken des View recherchiert
-        if ($view && !($searchall||$searchprofile||$verfindex||$korindex||$swtindex||$notindex)){
+        if ($view && !($searchall||$searchprofile||$searchindex||$verfindex||$korindex||$swtindex||$notindex)){
             $logger->debug("Selecting databases of view");
             @databases = $config->get_dbs_of_view($view);
         }
@@ -222,7 +229,7 @@ sub handler {
                     @databases = $config->get_active_databases();
                 }
             }
-            elsif ($searchprofile || $verfindex || $korindex || $swtindex || $notindex) {
+            elsif ($searchprofile || $searchindex || $verfindex || $korindex || $swtindex || $notindex) {
                 if ($profil eq "dbauswahl") {
                     $logger->debug("Selecting databases of users choice");
                     # Eventuell bestehende Auswahl zuruecksetzen
@@ -289,30 +296,35 @@ sub handler {
     ####################################################################
 
     $logger->debug(YAML::Dump($searchquery));
-    if ($verfindex || $korindex || $swtindex || $notindex) {
+    if ($searchindex || $verfindex || $korindex || $swtindex || $notindex) {
+        
         my $contentreq =
-            ($verfindex)?$searchquery->get_searchfield('verf'    )->{norm}:
-            ($korindex )?$searchquery->get_searchfield('kor'     )->{norm}:
-            ($swtindex )?$searchquery->get_searchfield('swt'     )->{norm}:
-            ($notindex )?$searchquery->get_searchfield('notation')->{norm}:undef;
+            ($searchindex)?$searchquery->get_searchfield('indexterm' )->{norm}:
+
+            ($verfindex)?$searchquery->get_searchfield('verf'         )->{norm}:
+            ($korindex )?$searchquery->get_searchfield('kor'          )->{norm}:
+            ($swtindex )?$searchquery->get_searchfield('swt'          )->{norm}:
+            ($notindex )?$searchquery->get_searchfield('notation'     )->{norm}:undef;
 
         my $type =
+            ($indextype)?$indextype:
+            
             ($verfindex)?'aut':
             ($korindex )?'kor':
             ($swtindex )?'swt':
             ($notindex )?'notation':undef;
 
         my $urlpart =
-            ($verfindex)?"verf=$contentreq;verfindex=Index":
-            ($korindex )?"kor=$contentreq;korindex=Index":
-            ($swtindex )?"swt=$contentreq;swtindex=Index":
-            ($notindex )?"notation=$contentreq;notindex=Index":undef;
+            ($type eq "aut"      )?"verf=$contentreq;verfindex=Index":
+            ($type eq "kor"      )?"kor=$contentreq;korindex=Index":
+            ($type eq "swt"      )?"swt=$contentreq;swtindex=Index":
+            ($type eq "notation" )?"notation=$contentreq;notindex=Index":undef;
 
         my $template =
-            ($verfindex)?$config->{"tt_virtualsearch_showverfindex_tname"}:
-            ($korindex )?$config->{"tt_virtualsearch_showkorindex_tname"}:
-            ($swtindex )?$config->{"tt_virtualsearch_showswtindex_tname"}:
-            ($notindex )?$config->{"tt_virtualsearch_shownotindex_tname"}:undef;
+            ($type eq "aut"      )?$config->{"tt_virtualsearch_showverfindex_tname"}:
+            ($type eq "kor"      )?$config->{"tt_virtualsearch_showkorindex_tname"}:
+            ($type eq "swt"      )?$config->{"tt_virtualsearch_showswtindex_tname"}:
+            ($type eq "notation" )?$config->{"tt_virtualsearch_shownotindex_tname"}:undef;
             
         $contentreq=~s/\+//g;
         $contentreq=~s/%2B//g;
@@ -546,6 +558,10 @@ sub handler {
                 return OK;
             }
         }
+    }
+
+    if ($searchquery->get_searchfield('searchterm')->{norm}) {
+        $firstsql=1;
     }
 
     if (!$firstsql) {

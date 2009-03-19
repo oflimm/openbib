@@ -35,8 +35,8 @@
 </ul>
 
 <div class="content">
-<p />
 
+<div id="infobox">
 <table width="100%">
 <tr><th><img style="vertical-align:bottom" src="[% config.hint_img %]" alt="[% msg.maketext("Hinweis") %]"/>&nbsp;[% msg.maketext("Hinweis") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.8em">
@@ -49,6 +49,10 @@ einem Normdaten-Eintrag verkn&uuml;pft wurden, umso grösser wird der zugehörig
 Wikipedia\" />","<a href=\"http://de.wikipedia.org/wiki/Wortwolke\" target=\"_blank\">engl. tag cloud</a>") %]
 </td></tr>
 </table>
+</div>
+
+<div id="mainmatter">
+
 <p />
 
 [%
@@ -92,6 +96,7 @@ Wikipedia\" />","<a href=\"http://de.wikipedia.org/wiki/Wortwolke\" target=\"_bl
   [%- END -%]
 [%- END -%]
 </table>
+</div>
 </div>
 </div>
 

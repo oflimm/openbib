@@ -35,3 +35,14 @@ ul.subjectlist li {
   border-bottom-width: 1px;  
 
 }
+
+#header2_uni_schriftzug {
+  border-bottom: 2px solid #00089e; /* Linie im Kopf */
+  padding-bottom: 3px;
+  display: block;
+  margin: 14px 80px 0 125px;
+}
+
+#maincontent{
+  margin-top: 25px;
+}

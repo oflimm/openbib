@@ -7,6 +7,8 @@ body {
   font-family: Arial,helv,Helvetica,Verdana,sans-serif;
   padding: 0px; */
 
+  background-color: white;
+
   font-family: trebuchet ms,verdana,tahoma,arial,sans-serif;  
   font-size: 80%;
   font-size-adjust: none;
@@ -17,6 +19,9 @@ body {
 /*  line-height: 1.8em; */
   margin: 0px; 
   padding: 0px; 
+
+/*  background: white url("/images/openbib/bgsiegel.gif") top right no-repeat; */
+
 }
 
 h1 {
@@ -130,7 +135,6 @@ th {
   font-size: 1.2em;
   font-weight: bold;
   color: black;
-  background-color: #ffffff;
   padding: 2px;
   text-align: left;
   vertical-align: top;
@@ -171,7 +175,6 @@ td.boxedfull {
 
 td.boxedclear {
   padding: 5px;
-  background-color: white;
   border-top-style: solid;
   border-top-color: lightblue;
   border-top-width: 1px;
@@ -190,7 +193,6 @@ td.boxedclear {
 
 td.options {
   padding: 5px;
-  background-color: white;
   border-top-style: solid;
   border-top-color: lightblue;
   border-top-width: 1px;
@@ -209,7 +211,6 @@ td.options {
 
 .titlenav {
   padding: 5px;
-  background-color: white;
   margin-top: 5px;
   border-top-style: solid;
   border-top-color: lightblue;
@@ -335,7 +336,6 @@ h2[class=nojs_show] {
   overflow: hidden; 
 /*  position: static; */
   font-family: Arial,helv,Helvetica,Verdana,sans-serif;
-  background: #ffffff;
   padding: 5px;
   border: 1px solid lightblue;
   border-top: none;
@@ -351,7 +351,6 @@ h2[class=nojs_show] {
 }
 
 .drilldown_categorized {
-  background: white;
 }
 
 .thumbnail {
@@ -365,7 +364,6 @@ h2[class=nojs_show] {
   /*  position: absolute;
   top: 110px;
   left: 0; */
-  background: white ;
   padding: 5px;
   margin-top: 15px;
   margin-left: 5px;
@@ -377,6 +375,7 @@ h2[class=nojs_show] {
 
 #mainnavigation{
   width: 100%;
+  padding: 5px;
 /*  position: absolute;
   top: 90px;
   left: 0; */
@@ -406,20 +405,17 @@ h2[class=nojs_show] {
 #mainnavigation a:link {
   color: darkblue;
 /*  font-weight: bold; */
-  background: #ffffff; /* Hintergrundfarbe Tab 'weiss'*/
   text-decoration: none; 
 }
 
 #mainnavigation a:visited {
   color: darkblue;
 /*  font-weight: bold; */
-  background: #ffffff; /* Hintergrundfarbe Tab 'weiss'*/
   text-decoration: none; 
 }
 
 #mainnavigation a:hover {
   color:      #000000; 
-  background: #ffffff;
   text-decoration:underline
 }
 
@@ -517,6 +513,15 @@ dt.review {
   right: 0px;
 }
 
+#header_uni_siegel_small {
+  background: url(/images/openbib/unisiegel_small.gif) center no-repeat;
+  width: 45px;
+  height: 45px;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+}
+
 #header_usb_siegel {
   background: url(/images/openbib/kuglogo.png) center no-repeat;
   width: 150px;
@@ -548,7 +553,7 @@ dt.review {
   border-bottom: 4px solid #00089e; /* Linie im Kopf */
   padding-bottom: 3px;
   display: block;
-  margin: 17px 0 0 190px;
+  margin: 7px 0 0 190px;
 }
 #header_uni_schriftzug,
 #header_uni_schriftzug span {
@@ -585,18 +590,57 @@ dt.review {
 }
 
 #header2 {
-  height: 65px;
-  width: 100%;
+  height: 60px;
+  width: 99.5%;
 /*  position: absolute;
   top: 0;
   left: 0; */
-  background: white ;
   padding: 0px;
 }
 
 #header2 #header_logo {
   float: left;
   width: 120px;
+}
+
+#header2_uni_schriftzug {
+  border-bottom: 2px solid #00089e; /* Linie im Kopf */
+  padding-bottom: 3px;
+  display: block;
+  margin: 14px 70px 0 125px;
+}
+#header2_uni_schriftzug,
+#header2_uni_schriftzug span {
+/*  font-family: "Arial Narrow", "DejaVu Sans Condensed", Arial, Verdana, Helvetica, sans-serif; */
+  font-family: Arial,helv,Helvetica,Verdana,sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  color: #000000;
+  text-decoration: none;
+}
+#header2_uni_schriftzug span:hover,
+#header2_uni_schriftzug:focus span {
+  color: #000000;
+  text-decoration: underline;
+}
+
+#header2_usb_schriftzug {
+  display: block;
+  margin: 3px 0 0 125px;
+}	
+#header2_usb_schriftzug,
+#header2_usb_schriftzug span {
+/*  font-family: "Arial Narrow", "DejaVu Sans Condensed", Arial, Verdana, Helvetica, sans-serif; */
+  font-family: Arial,helv,Helvetica,Verdana,sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  color: #000000;
+  text-decoration: none;
+}
+#header2_usb_schriftzug span:hover,
+#header2_usb_schriftzug:focus span {
+  color: #000000;
+  text-decoration: underline;
 }
 
 #header2 #header_simplesearch {
@@ -621,6 +665,12 @@ dt.review {
   border-bottom-color: lightblue;
   border-bottom-width: 1px;  
 
+}
+
+#header2 #header_right {
+  float: right;
+  width: 99.8%;
+  padding:0px;
 }
 
 .listnavigation {
@@ -707,7 +757,6 @@ dt.review {
   width: 23%;
   margin-top: 5px; 
   margin-right: 5px; 
-  background-color: white;
   border-top-style: solid;
   border-top-color: lightblue;
   border-top-width: 1px;
@@ -732,13 +781,11 @@ dt.review {
   width: 23%;
   margin-top: 5px; 
   margin-right: 5px; 
-  background-color: white;
 }
 
 .resultitems {
   width: 75%;
   margin-top: 5px;
-  background-color: white;
 }
 
 .item {
@@ -906,7 +953,6 @@ dt.review {
 
 .discover_sources {
   padding: 5px;
-  background-color: white;
   border-top-style: solid;
   border-top-color: lightblue;
   border-top-width: 1px;
@@ -977,7 +1023,6 @@ dt.review {
 
 .boxedclear {
   padding: 5px;
-  background-color: white;
   border-top-style: solid;
   border-top-color: lightblue;
   border-top-width: 1px;
@@ -1040,20 +1085,19 @@ dt.review {
   text-align: center;
 }
 
-.fullwidth {
-  width: 99.5%;
-}
-
 #searchmask {
   float: left; 
   padding: 0px;
   width: 65%;
-  background-color: white;
 /*  border-style: solid;
   border-color: lightblue;
   border-width: 1px;  
   -moz-border-radius: 12px;
   -webkit-border-radius: 12px; */
+}
+
+.fullwidth {
+  width: 99.5%;
 }
 
 #searchmask_types {
@@ -1078,7 +1122,6 @@ dt.review {
   width: 99.5%;
   text-align: center;
   height: auto;
-  background-color: white;
   border-style: solid;
   border-color: lightblue;
   border-width: 1px;  
@@ -1090,8 +1133,7 @@ dt.review {
 #searchmask_query {
   float: left;
   padding: 20px;
-  width: 40%;
-  background-color: white;
+  width: 45%;
 /*  border-style: solid;
   border-color: lightblue;
   border-width: 1px;  
@@ -1103,10 +1145,21 @@ dt.review {
   float: right;
   padding: 20px;
   width: 45%;
-  background-color: white;
   border-left-style: dashed;
   border-left-color: lightblue;
   border-left-width: 1px;  
+}
+
+#infobox {
+  float:right;
+  width: 20%;
+  margin-bottom: 0px;
+}
+
+#mainmatter {
+  float: left; 
+  padding: 0px;
+  width: 75%;
 }
 
 #teaser {
@@ -1119,6 +1172,28 @@ dt.review {
   position: static;
   width:auto;
   padding: 5px;
+  text-align: right; 
+/*  text-align: right; */
+/*  background-color: white;
+  border-top-style: solid;
+  border-top-color: lightblue;
+  border-top-width: 1px;
+  border-left-style: solid;
+  border-left-color: lightblue;
+  border-left-width: 1px;
+  border-right-style: solid;
+  border-right-color: lightblue;
+  border-right-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: lightblue;
+  border-bottom-width: 1px;  
+  -moz-border-radius: 12px;
+  -webkit-border-radius: 12px; */
+}
+
+#searchmask_types .langchoice {
+  float:right;
+  width:auto;
   text-align: right; 
 /*  text-align: right; */
 /*  background-color: white;
@@ -1217,6 +1292,12 @@ td.mostrecent {
 }
 
 .bigtext {
+  font-size: 1.3em;
+  font-weight: bold;
+}
+
+.active_menu {
+  font-size: 1.2em;
   font-weight: bold;
 }
 

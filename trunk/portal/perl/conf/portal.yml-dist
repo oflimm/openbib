@@ -226,6 +226,8 @@ listofinterest_img: /images/openbib/note.png
 liststyle_cover_img: /images/openbib/view_detailed.png
 liststyle_list_img: /images/openbib/view_text.png
 mail_img: /images/openbib/3d-file-blue-mailbox.png
+tutorial_img: /images/openbib/kaboodle_ger.png
+tutorial_with_audio_img: /images/openbib/multimedia_ger.png
 news_img: /images/openbib/newsflash.png
 next_img: /images/openbib/next.gif
 no_next_img: /images/openbib/no_next.png

@@ -107,7 +107,7 @@ function submitViaEnter(evt){
 
 [% PROCESS common/subtemplate name="corporate_banner" start=1 %] 
 
-[% PROCESS common/subtemplate name="mainnavigation" %] 
+[% PROCESS common/subtemplate name="mainnavigation" active_menu="searchmask" %] 
 
 <div id="maincontent">
 
@@ -123,7 +123,7 @@ function submitViaEnter(evt){
 <p />
 
 <form method="get" id="queries" action="http://[% config.servername %][% config.dispatchquery_loc %]">
-<b>[% msg.maketext("Früherer Recherchen") %]</b>&nbsp;
+<b>[% msg.maketext("Frühere Recherchen") %]</b>&nbsp;
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="view"      value="[% view %]" />
 
@@ -160,18 +160,11 @@ nutzen, bei der die Verwendung von JavaScript minimiert ist.","<a href=\"${confi
 
 
 <!-- Erste Spalte -->
-<table class="submitbuttons">
-  <tr><td><noscript><input type="submit" title="[% msg.maketext("Hier suchen Sie in allen Katalogen auf einmal") %]" name="searchall" value="[% msg.maketext("In allen Katalogen suchen") %]" /></noscript></td><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" /></td></tr>
-</table>
-
-<p />
 
 <table width="100%">
 <tr><th>[% msg.maketext("Suchbegriffe") %]</th></tr>
-<tr><td>
+<tr><td class="boxedclear">
 [% PROCESS common/subtemplate name="searchmask_query" %]
-</td></tr>
-</table>
 
 <p />
 <table class="submitbuttons">
@@ -187,39 +180,28 @@ nutzen, bei der die Verwendung von JavaScript minimiert ist.","<a href=\"${confi
 </td></tr>
 </table>
 
-<p />
-
-<table width="100%">
-<tr><th><span id="searchinfo_toggle">[% msg.maketext("Suchhilfe") %]&nbsp;<img src="[% config.toggle_show_img %]" alt="Toggle" /></span></th></tr>
-<tr><td class="boxedclear" id="searchinfo">
-[% PROCESS common/subtemplate name="search_info" %]
 </td></tr>
 </table>
 
 <p />
-<table class="submitbuttons">
-  <tr><td><noscript><input type="submit" title="[% msg.maketext("Hier suchen Sie in allen Katalogen auf einmal") %]" name="searchall" value="[% msg.maketext("In allen Katalogen suchen") %]" /></noscript></td><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" /></td></tr>
+<span class="bigtext">oder:</span>
+
+<p/>
+
+<table width="100%">
+<tr><th>[% msg.maketext("Index-Suche") %]</th></tr>
+<tr><td class="boxedclear">
+<table>
+<tr><td><select name="indextype"><option value="aut">[% msg.maketext("Personen") %]</option><option value="kor">[% msg.maketext("Institutionen") %]</option><option value="swt">[% msg.maketext("Schlagworte") %]</option><option value="notation">[% msg.maketext("Notation") %]</option></select></td><td><input type="text" name="indexterm" value="" size="30" maxlength="200" /></td><td><input type="submit" name="searchindex" value="[% msg.maketext("Los") %]" /></td></tr>
 </table>
-
-<p />
-
-[% msg.maketext("Für Verbesserungsvorschläge oder bei technischen Problemen können Sie uns unter [_1] kug@ub.uni-koeln.de [_2] erreichen.","<a href=\"http://www.ub.uni-koeln.de/usb-cgi/zms_makeEmail.pl?adr0=kug\" target=\"_blank\">","</a>") %]
-
+</td></tr>
+</table>
 
   <!-- BIX 'Zaehl-Pixel' USB - Kategorie: Opac-->
   <img src="http://bix.hdm-stuttgart.de/count.cgi?id=AB038&page=2" width="1" height="1"/>
 
-<p />
-<b>[% msg.maketext("Umfang des KUG: [_1] Titel in [_2] Katalogen","${alldbcount.all}","${alldbs}") %]</b>
-
 </div><!-- End searchmask_query -->
 <div id="searchmask_dbchoice"><!-- Begin searchmask_dbchoice -->
-
-<table class="submitbuttons">
-  <tr><td><noscript><input type="submit" title="[% msg.maketext("Hier suchen Sie in allen Katalogen auf einmal") %]" name="searchall" value="[% msg.maketext("In allen Katalogen suchen") %]" /></noscript></td><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" /></td></tr>
-</table>
-
-<p />
 
 <table>
 <tr><th>[% msg.maketext("Katalogauswahl") %]</th></tr>

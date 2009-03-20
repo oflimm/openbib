@@ -2069,6 +2069,8 @@ sub change_litlist {
         ? $arg_ref->{title}               : 'Literaturliste';
     my $type                = exists $arg_ref->{type}
         ? $arg_ref->{type}                : undef;
+    my $lecture             = exists $arg_ref->{lecture}
+        ? $arg_ref->{lecture}                : 0;
     my $subjectids_ref      = exists $arg_ref->{subjectids}
         ? $arg_ref->{subjectids}          : undef;
 
@@ -2090,8 +2092,8 @@ sub change_litlist {
     # Ratings sind Zahlen und Reviews, Titel sowie Nicknames bestehen nur aus Text
     $title    =~s/[^-+\p{Alphabetic}0-9\/:. '()"\?!]//g;
     
-    my $request=$dbh->prepare("update litlists set title=?, type=? where id=?") or $logger->error($DBI::errstr);
-    $request->execute($title,$type,$litlistid) or $logger->error($DBI::errstr);
+    my $request=$dbh->prepare("update litlists set title=?, type=?, lecture=? where id=?") or $logger->error($DBI::errstr);
+    $request->execute($title,$type,,$lecture,$litlistid) or $logger->error($DBI::errstr);
 
     unless (ref($subjectids_ref) eq 'ARRAY') {
         $subjectids_ref = [ $subjectids_ref ];
@@ -2521,6 +2523,7 @@ sub get_litlist_properties {
 
     my $title     = decode_utf8($result->{title});
     my $type      = $result->{type};
+    my $lecture   = $result->{lecture};
     my $tstamp    = $result->{tstamp};
     my $userid    = $result->{userid};
     my $itemcount = $self->get_number_of_litlistentries({litlistid => $litlistid});
@@ -2550,6 +2553,7 @@ sub get_litlist_properties {
                         userrole         => $self->get_roles_of_user($userid),
 			title            => $title,
 			type             => $type,
+                        lecture          => $lecture,
 		        itemcount        => $itemcount,
 			tstamp           => $tstamp,
                         subjects         => $subjects_ref,

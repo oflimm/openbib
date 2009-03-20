@@ -247,6 +247,7 @@ CREATE TABLE litlists (
  userid    INT(11)     NOT NULL,
  title     TEXT        NOT NULL,
  type      INT(3)      NOT NULL default '1',
+ lecture   INT(3)      NOT NULL default '0',
  PRIMARY KEY  (id),
  INDEX (id),
  INDEX (userid),

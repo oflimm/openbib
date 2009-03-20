@@ -33,13 +33,15 @@
 <input type="hidden" name="sessionID"  value="[% sessionID %]" />
 <input type="hidden" name="litlistid"  value="[% litlist.properties.id %]" />
 
+[% userrole = user.get_roles_of_user(litlist.properties.userid) %]
+
+[%# USE dumper;dumper.dump(litlist)%]
 <table width="100%">
 <tr><th>[% msg.maketext("Einstellungen &auml;ndern") %]</th></tr>
 <tr><td class="boxedclear" style="font-size:0.9em">
 <table>
-<tr><td><b>[% msg.maketext("Titel der Liste") %]</b></td><td><b>[% msg.maketext("Sichtbarkeit") %]</b></td></tr>
-<tr><td><input type="text" name="title" value="[% litlist.properties.title %]" size="50"/></td><td><select name="type"><option value="1" [% IF litlist.properties.type == 1%] selected="selected"[% END %]>[% msg.maketext("&ouml;ffentlich") %]</option><option value="2"[% IF litlist.properties.type == 2 %] selected="selected"[% END %]>[% msg.maketext("privat") %]</option></select></td><td><input
-type="submit" name="do_changelist" value="[% msg.maketext("&Auml;ndern") %]" /></td></tr>
+<tr><td><b>[% msg.maketext("Titel der Liste") %]</b></td><td><b>[% msg.maketext("Sichtbarkeit") %]</b></td>[%- IF userrole.${"librarian"} || userrole.${"lecturer"} -%]<td><b>[% msg.maketext("Offiziell") %]</b></td>[%- END -%]</tr>
+<tr><td><input type="text" name="title" value="[% litlist.properties.title %]" size="50"/></td><td><select name="type"><option value="1" [% IF litlist.properties.type == 1%] selected="selected"[% END %]>[% msg.maketext("&ouml;ffentlich") %]</option><option value="2"[% IF litlist.properties.type == 2 %] selected="selected"[% END %]>[% msg.maketext("privat") %]</option></select></td>[%- IF userrole.${"librarian"} || userrole.${"lecturer"} -%]<td><select name="lecture"><option value="1" [% IF litlist.properties.lecture == 1%] selected="selected"[% END %]>[% msg.maketext("Ja") %]</option><option value="0"[% IF litlist.properties.lecture == 0 %] selected="selected"[% END %]>[% msg.maketext("Nein") %]</option></select></td>[%- END -%]<td><input type="submit" name="do_changelist" value="[% msg.maketext("&Auml;ndern") %]" /></td></tr>
 <tr><td colspan="3"></td></tr>
 
 <tr><td colspan="3">Ordnen Sie Ihre Literaturliste thematisch ein</td></tr>

@@ -72,7 +72,7 @@ type="submit" name="do_addlist" value="[% msg.maketext("Neu") %]" /></td></tr>
 [% FOREACH litlist IN litlists %]
 <tr class="[% listrow %]"><td><a href="http://[%
 config.servername %][% config.litlists_loc %]?sessionID=[% sessionID
-%]&action=manage;litlistid=[% litlist.id %];do_showlitlist=1"><b>[% litlist.title %]</b></a></td><td>[% litlist.itemcount %]</td><td>[% IF litlist.type == 1 %]
+%]&action=manage;litlistid=[% litlist.id %];do_showlitlist=1"><b>[% litlist.title %]</b></a>&nbsp;[%- IF litlist.lecture -%]&nbsp;<img src="[% config.university_img %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</td><td>[% litlist.itemcount %]</td><td>[% IF litlist.type == 1 %]
 [% msg.maketext("&ouml;ffentlich") %]
 [% ELSE %] 
 [% msg.maketext("privat") %]

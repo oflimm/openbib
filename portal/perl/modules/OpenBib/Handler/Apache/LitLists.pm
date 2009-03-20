@@ -2,7 +2,7 @@
 #
 #  OpenBib::Handler::Apache::LitLists.pm
 #
-#  Copyright 2007-2008 Oliver Flimm <flimm@openbib.org>
+#  Copyright 2007-2009 Oliver Flimm <flimm@openbib.org>
 #
 #  Dieses Programm ist freie Software. Sie koennen es unter
 #  den Bedingungen der GNU General Public License, wie von der
@@ -90,6 +90,7 @@ sub handler {
     my $titisbn        = $query->param('titisbn')     || '';
     my $title          = decode_utf8($query->param('title'))        || '';
     my $type           = $query->param('type')        || 1;
+    my $lecture        = $query->param('lecture')     || 0;
     my $format         = $query->param('format')      || 'HTML';
     my $show           = $query->param('show')        || 'short';
     my $litlistid      = $query->param('litlistid')   || undef;
@@ -202,11 +203,17 @@ sub handler {
                 
                 return OK;
             }
+
+            my $userrole_ref = $user->get_roles_of_user($user->{ID});
+
+            if (!$userrole_ref->{librarian} && !$userrole_ref->{lecturer}){
+                $lecture = 0;
+            }
             
             my $litlist_properties_ref = $user->get_litlist_properties({ litlistid => $litlistid});
             
             if ($litlist_properties_ref->{userid} eq $user->{ID}){
-                $user->change_litlist({ title => $title, type => $type, litlistid => $litlistid, subjectids => \@subjectids });
+                $user->change_litlist({ title => $title, type => $type, lecture => $lecture, litlistid => $litlistid, subjectids => \@subjectids });
             }
             
             $r->internal_redirect("http://$config->{servername}$config->{litlists_loc}?sessionID=$session->{ID}&action=manage");

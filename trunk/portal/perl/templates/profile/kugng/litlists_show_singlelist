@@ -85,7 +85,7 @@
 <div class="resultlist">
   <div class="resultheader">
     <div class="catalogue">
-[% litlist.properties.title %][%- IF litlist.properties.userrole.${"librarian"} -%]&nbsp;<img src="[% config.university_img %]" title="[% msg.maketext("Offizielle Literaturliste der Universit&auml;t") %]" alt="[% msg.maketext("Offizielle Literaturliste der Universit&auml;t") %]" style="vertical-align:bottom"/>[%- END -%]
+[% litlist.properties.title %][%- IF litlist.properties.lecture -%]&nbsp;<img src="[% config.university_img %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]
     </div>
     <div class="hits">
 [% litlist.recordlist.get_size %] [% msg.maketext("Titel") %]
@@ -168,7 +168,7 @@
 <div id="additional_title_info">
 <ul>
 [% IF other_litlists.same_user.size > 0 %]
-<li><a href="#same_user"><span>[% msg.maketext("Andere Listen dieses Nutzers") %][%- IF litlist.properties.userrole.${"librarian"} -%]&nbsp;<img src="[% config.university_img %]" title="[% msg.maketext("Offizielle Literaturliste der Universit&auml;t") %]" alt="[% msg.maketext("Offizielle Literaturliste der Universit&auml;t") %]" style="vertical-align:bottom"/>[%- END -%]</span></a></li>
+<li><a href="#same_user"><span>[% msg.maketext("Andere Listen dieses Nutzers") %][%- IF litlist.properties.lecture -%]&nbsp;<img src="[% config.university_img %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</span></a></li>
 [% END %]
 
 [% IF other_litlists.same_title.size > 0 %]
@@ -178,7 +178,7 @@
 
 [% IF other_litlists.same_user.size > 0%] 
 
-<h2 class="nojs_show">[% msg.maketext("Andere Listen dieses Nutzer") %][%- IF litlist.properties.userrole.${"librarian"} -%]&nbsp;<img src="[% config.university_img %]" title="[% msg.maketext("Offizielle Literaturliste der Universit&auml;t") %]" alt="[% msg.maketext("Offizielle Literaturliste der Universit&auml;t") %]" style="vertical-align:bottom"/>[%- END -%]</h2>
+<h2 class="nojs_show">[% msg.maketext("Andere Listen dieses Nutzer") %]</h2>
 
 <div id="same_user">
 <!-- Begin: Gleicher Nutzer -->
@@ -187,7 +187,7 @@
 [% listrow = 'listrow1' %]
 [% FOREACH other_litlist IN other_litlists.same_user %]
 [%   IF other_litlist.type == 1 %]
-<tr class="[% listrow %]"><td><a href="http://[% config.servername %][% config.litlists_loc %]?sessionID=[% sessionID %];action=show;litlistid=[% other_litlist.id %];do_showlitlist=1"><b>[% other_litlist.title %]</b></a>&nbsp([% other_litlist.itemcount %] Titel)</td><td align="center"><a href="http://[% config.loadbalancerservername %][% config.connector_permalink_loc %]/[% other_litlist.userid %]/[% other_litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="Permanenter Link"><img src="[% config.permalink_img %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a></td></tr>
+<tr class="[% listrow %]"><td><a href="http://[% config.servername %][% config.litlists_loc %]?sessionID=[% sessionID %];action=show;litlistid=[% other_litlist.id %];do_showlitlist=1"><b>[% other_litlist.title %]</b></a>&nbsp([% other_litlist.itemcount %] Titel)[%- IF litlist.properties.lecture -%]&nbsp;<img src="[% config.university_img %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</td><td align="center"><a href="http://[% config.loadbalancerservername %][% config.connector_permalink_loc %]/[% other_litlist.userid %]/[% other_litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="Permanenter Link"><img src="[% config.permalink_img %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a></td></tr>
 
 [%     IF listrow == 'listrow1' %]
 [%       listrow = 'listrow2' %]
@@ -214,7 +214,7 @@
 [% listrow = 'listrow1' %]
 [% FOREACH other_litlist IN other_litlists.same_title %]
 [%   IF other_litlist.type == 1 %]
-<tr class="[% listrow %]"><td><a href="http://[% config.servername %][% config.litlists_loc %]?sessionID=[% sessionID %];action=show;litlistid=[% other_litlist.id %];do_showlitlist=1"><b>[% other_litlist.title %]</b></a>&nbsp([% other_litlist.itemcount %] Titel)&nbsp;[%- IF other_litlist.userrole.${"librarian"} -%]&nbsp;<img src="[% config.university_img %]" title="[% msg.maketext("Offizielle Literaturliste der Universit&auml;t") %]" alt="[% msg.maketext("Offizielle Literaturliste der Universit&auml;t") %]" style="vertical-align:bottom"/>[%- END -%]</td><td align="center"><a href="http://[% config.loadbalancerservername %][% config.connector_permalink_loc %]/[% other_litlist.userid %]/[% other_litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="Permanenter Link"><img src="[% config.permalink_img %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a></td></tr>
+<tr class="[% listrow %]"><td><a href="http://[% config.servername %][% config.litlists_loc %]?sessionID=[% sessionID %];action=show;litlistid=[% other_litlist.id %];do_showlitlist=1"><b>[% other_litlist.title %]</b></a>&nbsp([% other_litlist.itemcount %] Titel)&nbsp;[%- IF other_litlist.lecture -%]&nbsp;<img src="[% config.university_img %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</td><td align="center"><a href="http://[% config.loadbalancerservername %][% config.connector_permalink_loc %]/[% other_litlist.userid %]/[% other_litlist.id %]/6/[%- IF view -%][% view %]/[%- END -%]index.html" target="_blank" title="Permanenter Link"><img src="[% config.permalink_img %]" alt="[% msg.maketext("Als Permanenten Link verwenden") %]" border="0" /></a></td></tr>
 
 [%     IF listrow == 'listrow1' %]
 [%       listrow = 'listrow2' %]

@@ -88,6 +88,7 @@ sub handler {
     my $notation  = $query->param('notation')  || '';
     my $ejahr     = $query->param('ejahr')     || '';
     my $queryid   = $query->param('queryid')   || '';
+    my $maxcolumn = $query->param('maxcolumn') || $config->{databasechoice_maxcolumn};
   
     my %checkeddb;
 
@@ -137,7 +138,6 @@ sub handler {
             $checkeddb_ref->{$dbname}=1;
         }
         
-        my $maxcolumn = $config->{databasechoice_maxcolumn};
         my @catdb     = $config->get_infomatrix_of_active_databases({session => $session, checkeddb_ref => $checkeddb_ref, view => $view });
         
         # TT-Data erzeugen

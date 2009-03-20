@@ -122,7 +122,38 @@ sub handler {
     my $dbinfotable = OpenBib::Config::DatabaseInfoTable->instance;
 
     if ($session->get_number_of_items_in_resultlist() <= 0) {
-        OpenBib::Common::Util::print_warning($msg->maketext("Derzeit existiert (noch) keine Trefferliste"),$r,$msg);
+
+        my $loginname="";
+        my $password="";
+        
+        ($loginname,$password)=$user->get_credentials() if ($user->{ID} && $user->get_targettype_of_session($session->{ID}) ne "self");
+        
+        # Hash im Loginname ersetzen
+        $loginname=~s/#/\%23/;
+
+        # TT-Data erzeugen
+        my $ttdata={
+            view           => $view,
+            stylesheet     => $stylesheet,
+            sessionID      => $session->{ID},
+
+            loginname      => $loginname,
+            password       => $password,
+            
+            query          => $query,
+            
+            qopts          => $queryoptions->get_options,
+            database       => $database,
+            queryid        => $queryid,
+            offset         => $offset,
+            hitrange       => $hitrange,
+            config         => $config,
+            user           => $user,
+            msg            => $msg,
+        };
+        
+        OpenBib::Common::Util::print_page($config->{tt_resultlists_empty_tname},$ttdata,$r);
+
         return OK;
     }
     

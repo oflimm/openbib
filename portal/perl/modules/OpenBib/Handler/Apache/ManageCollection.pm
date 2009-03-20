@@ -302,7 +302,20 @@ sub handler {
         }
 
         if ($recordlist->get_size() == 0) {
-            OpenBib::Common::Util::print_warning($msg->maketext("Derzeit ist Ihre Merkliste leer"),$r,$msg);
+
+            # TT-Data erzeugen
+            my $ttdata={
+                view           => $view,
+                stylesheet     => $stylesheet,
+                sessionID      => $session->{ID},
+                qopts          => $queryoptions->get_options,
+
+                config         => $config,
+                user           => $user,
+                msg            => $msg,
+            };
+            
+            OpenBib::Common::Util::print_page($config->{tt_managecollection_empty_tname},$ttdata,$r);
             return OK;
         }
 

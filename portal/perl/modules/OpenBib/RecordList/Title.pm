@@ -595,8 +595,8 @@ sub _by_order_down {
     my %line1=%{$a->get_brief_normdata()};
     my %line2=%{$b->get_brief_normdata()};
 
-    my $line1=(exists $line1{T5100}[0]{content} && defined $line1{T5100}[0]{content})?cleanrl($line1{T5100}[0]{content}):"";
-    my $line2=(exists $line2{T5100}[0]{content} && defined $line2{T5100}[0]{content})?cleanrl($line2{T5100}[0]{content}):"";
+    my $line1=(exists $line1{T5100}[0]{content} && defined $line1{T5100}[0]{content})?_cleanrl($line1{T5100}[0]{content}):"";
+    my $line2=(exists $line2{T5100}[0]{content} && defined $line2{T5100}[0]{content})?_cleanrl($line2{T5100}[0]{content}):"";
 
     # Intelligentere Sortierung nach numerisch beginnenden Zaehlungen
     my ($zahl1,$zahl2,$rest1,$rest2);

@@ -375,12 +375,14 @@ tt_mailcollection_success_tname: mailcollection_success
 tt_mailpassword_mail_main_tname: mailpassword_mail_main
 tt_mailpassword_success_tname: mailpassword_success
 tt_mailpassword_tname: mailpassword
+tt_managecollection_empty_tname: managecollection_empty
 tt_managecollection_mail_tname: managecollection_mail
 tt_managecollection_print_tname: managecollection_print
 tt_managecollection_save_html_tname: managecollection_save_html
 tt_managecollection_save_plain_tname: managecollection_save_plain
 tt_managecollection_show_tname: managecollection_show
 tt_resultlists_choice_tname: resultlists_choice
+tt_resultlists_empty_tname: resultlists_empty
 tt_resultlists_showall_sortall_tname: resultlists_showall_sortall
 tt_resultlists_showall_tname: resultlists_showall
 tt_resultlists_showsinglepool_tname: resultlists_showsinglepool
@@ -425,7 +427,7 @@ tt_virtualsearch_showswtindex_tname: virtualsearch_showswtindex
 tt_virtualsearch_showverfindex_tname: virtualsearch_showverfindex
 
 # Anzahl der Spalten bei der Datenbankauswahlseite
-databasechoice_maxcolumn: 3
+databasechoice_maxcolumn: 1
 
 # Verschiedene Pfadangaben
 autoconv_dir: /opt/openbib/autoconv

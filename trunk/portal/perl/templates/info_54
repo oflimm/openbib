@@ -112,7 +112,7 @@
 <tr><td class="boxedclear">
 <ul class="subjectlist">
 [% FOREACH thisitem IN litlists%]
-<li><a href="[% config.litlists_loc %]?sessionID=[% sessionID %];action=show;litlistid=[% thisitem.id %];do_showlitlist=1">[% thisitem.title%]</a> ([% msg.maketext("[_1] Titel",thisitem.itemcount) %])[%- IF thisitem.lecture -%]&nbsp;<img src="[% config.university_img %]" title="Erstellt durch Fachpersonal der Universit&auml;t" alt="Erstellt durch Fachpersonal der Universit&auml;t" style="vertical-align:bottom"/>[%- END -%]</li>
+<li><a href="[% config.litlists_loc %]?sessionID=[% sessionID %];action=show;litlistid=[% thisitem.id %];do_showlitlist=1">[% thisitem.title%]</a> ([% msg.maketext("[_1] Titel",thisitem.itemcount) %])[%- IF thisitem.lecture -%]&nbsp;<img src="[% config.university_img %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</li>
 [% END %]
 </ul>
 </td></tr>

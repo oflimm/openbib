@@ -188,6 +188,7 @@
 ../templates/mailpassword_mail_main
 ../templates/mailpassword_success
 ../templates/mainnavigation
+../templates/managecollection_empty
 ../templates/managecollection_mail
 ../templates/managecollection_print
 ../templates/managecollection_save_html
@@ -279,6 +280,7 @@
 ../templates/profile/kugng/views/inst431/searchmask_simple
 ../templates/profile/kugng/views/inst431/searchmask_bottom_left
 ../templates/resultlists_choice
+../templates/resultlists_empty
 ../templates/resultlists_showall
 ../templates/resultlists_showall_sortall
 ../templates/resultlists_showsinglepool

@@ -20,7 +20,7 @@ body {
   margin: 0px; 
   padding: 0px; 
 
-/*  background: white url("/images/openbib/bgsiegel.gif") top right no-repeat; */
+ /*background: white url("/images/openbib/bgsiegel.gif") top right no-repeat; */
 
 }
 
@@ -54,6 +54,12 @@ h4, h5 {
 pre { 
   color: black;
   font-family : "Courier New", Courier, monospace;
+
+  white-space: pre-wrap;       /* css-3 */
+  white-space: -moz-pre-wrap !important;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ */
 }
 
 b {
@@ -1362,3 +1368,6 @@ ul.recent_tags {
   display:none;
 }
 
+.fs_field {
+  font-size: 1.2em;
+}

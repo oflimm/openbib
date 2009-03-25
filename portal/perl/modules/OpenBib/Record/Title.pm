@@ -967,6 +967,8 @@ sub set_brief_normdata_from_storable {
 sub print_to_handler {
     my ($self,$arg_ref)=@_;
 
+    my $format             = exists $arg_ref->{format}
+        ? $arg_ref->{format}             : 'full';
     my $queryid            = exists $arg_ref->{queryid}
         ? $arg_ref->{queryid}            : undef;
     my $r                  = exists $arg_ref->{apachereq}
@@ -1055,6 +1057,8 @@ sub print_to_handler {
         record      => $self,
         titidn      => $self->{id},
 
+        format      => $format,
+        
         # Wegen Template-Kompatabilitaet:
         normset     => $self->{_normset},
         mexnormset  => $self->{_mexset},

@@ -59,7 +59,7 @@
 <div class="litlists"><!-- Begin Litlist -->
 <div class="headline"><span id="litlists_toggle">[% msg.maketext("Literaturliste") %]&nbsp;<img style="vertical-align:bottom;" src="/images/openbib/toggle_plus.png" alt="Toggle" /></span></div>
 <div id="litlists_do"><!-- Begin Litlist do -->
-<p>
+
 [% 
    IF config.litlists ;
 
@@ -70,16 +70,23 @@
 
       IF litlists.size > 0 ;
 %]
-[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> in die bestehende Literaturliste &uuml;bernehmen: ") %]<select name="litlistid">[% FOREACH litlist IN litlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select><br/>
-<input type="submit" name="do_litlist_addentry" value="[% msg.maketext("Los") %]" />
+<p/>
+
+<table>
+<tr><td>[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> in die bestehende Literaturliste &uuml;bernehmen: ") %]</td></tr>
+<tr><td><select name="litlistid">[% FOREACH litlist IN litlists %]<option value="[% litlist.id %]">[% litlist.title %]</option>[% END %]</select></td></tr>
+<tr><td><div class="cssbutton glass kug"><input type="submit" name="do_litlist_addentry" value="[% msg.maketext("Los") %]" /></div></td></tr>
+</table>
 [%    END %]
 [% END %]
-</p>
-<p>
-[% msg.maketext("Anlegen einer neuen Literaturliste: ") %] <input type="text" name="title" /> <select name="littype"><option value="1">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select><br/>
- <input type="submit" name="do_addlitlist" value="[% msg.maketext("Los") %]" />
-</div>
+<p/>
 
+<table>
+<tr><td>[% msg.maketext("Anlegen einer neuen Literaturliste: ") %]</td></tr>
+<tr><td><input type="text" name="title" /> <select name="littype"><option value="1">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select> </td></tr>
+<tr><td><div class="cssbutton glass kug"><input type="submit" name="do_addlitlist" value="[% msg.maketext("Los") %]" /></div></td></tr>
+</table>
+</div>
 <p/>
 </div>
 
@@ -97,8 +104,10 @@ versehen: ") %]
 <tr><th>[% msg.maketext("Eingabe neuer Tags") %]</th></tr>
 <tr><td class="boxedclear">
 
-<input type="text"   name="tags"       value="" size="30" maxlength="200" id="inputfield"/><p />[% msg.maketext("Typ:") %]&nbsp;<select name="tags_type"><option value="1" selected="selected">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select>&nbsp;<input type="submit" name="do_addtags" value="[% msg.maketext("Hinzuf&uuml;gen") %]" />
-
+<table>
+<tr><td colspan="2"><input type="text"   name="tags"       value="" size="30" maxlength="200" id="inputfield"/></td></tr>
+<tr><td>[% msg.maketext("Typ:") %]&nbsp;<select name="tags_type"><option value="1" selected="selected">[% msg.maketext("&ouml;ffentlich") %]</option><option value="2">[% msg.maketext("privat") %]</option></select></td><td><div class="cssbutton glass kug"><input type="submit" name="do_addtags" value="[% msg.maketext("Hinzuf&uuml;gen") %]" /></div></td></tr>
+</table>
 </td></tr>
 </table>
 
@@ -136,7 +145,10 @@ verkn&uuml;pft mit dem Tag",itemcount) %]</span><a onclick="insert_tag(event); r
 </p>
 
 <p>
-<img src="[% config.delete_img %]" alt="[% msg.maketext("Entfernen") %]" />&nbsp;[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> aus der Merkliste entfernen") %] <input type="submit" name="do_collection_delentry" value="[% msg.maketext("Los") %]" />
+<table>
+<tr><td><img src="[% config.delete_img %]" alt="[% msg.maketext("Entfernen") %]" />&nbsp;[% msg.maketext("<b>Ausgew&auml;hlte Titel</b> aus der Merkliste entfernen") %]</td></tr>
+<tr><td><div class="cssbutton glass kug"><input type="submit" name="do_collection_delentry" value="[% msg.maketext("Los") %]" /></div></td></tr>
+</table>
 </p>
 
 [% END %]

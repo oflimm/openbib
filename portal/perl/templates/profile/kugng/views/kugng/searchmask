@@ -123,13 +123,18 @@ function submitViaEnter(evt){
 <p />
 
 <form method="get" id="queries" action="http://[% config.servername %][% config.dispatchquery_loc %]">
-<b>[% msg.maketext("Frühere Recherchen") %]</b>&nbsp;
+
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 <input type="hidden" name="view"      value="[% view %]" />
 
-[% PROCESS common/subtemplate name="select_queries" %]
+<table>
+<tr>
+<td><b>[% msg.maketext("Frühere Recherchen") %]</b>&nbsp;</td>
+<td>[% PROCESS common/subtemplate name="select_queries" %]</td>
+<td><div class="cssbutton glass kug"><input type="submit" name="do_newquery" value="[% msg.maketext("Als Suchvorlage") %]" /></div>&nbsp;&nbsp;</td><td><div class="cssbutton glass kug"><input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" /></div>&nbsp;&nbsp;</td><td><div class="cssbutton glass kug"><input type="submit" name="do_externalquery" value="[% msg.maketext("Weiter als externe Recherche") %]" style="background-color:#99CCFF" /></div></td>
+</tr>
+</table>
 
-<input type="submit" name="do_newquery" value="[% msg.maketext("Als Suchvorlage") %]" />&nbsp;&nbsp;<input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" />&nbsp;&nbsp;<input type="submit" name="do_externalquery" value="[% msg.maketext("Weiter als externe Recherche") %]" style="background-color:#99CCFF" />
 </form>
 <p />
 
@@ -146,30 +151,12 @@ function submitViaEnter(evt){
 
 <div id="searchmask_query"><!-- Begin searchmask_query -->
 
-<noscript>
-<table>
-<tr><th>[% msg.maketext("Sie haben JavaScript deaktiviert") %]</th></tr>
-<tr><td class="boxed" valign="top" style="font-size:0.8em">
-[% msg.maketext("Sie haben JavaScript in Ihrem Browser
-deaktiviert. Daher k&ouml;nnen Sie auf dieser Seite die Profilauswahl
-nicht verwenden. Alternativ k&ouml;nnen Sie eine [_1]alternative Version[_2]
-nutzen, bei der die Verwendung von JavaScript minimiert ist.","<a href=\"${config.startopac_loc}?view=${view}\" target=\"_parent\">","</a>") %]
-</td></tr>
-</table>
-</noscript>
-
-
 <!-- Erste Spalte -->
 
 <table width="100%">
 <tr><th>[% msg.maketext("Suchbegriffe") %]</th></tr>
 <tr><td class="boxedclear">
 [% PROCESS common/subtemplate name="searchmask_query" %]
-
-<p />
-<table class="submitbuttons">
-  <tr><td><noscript><input type="submit" title="[% msg.maketext("Hier suchen Sie in allen Katalogen auf einmal") %]" name="searchall" value="[% msg.maketext("In allen Katalogen suchen") %]" /></noscript></td><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" /></td></tr>
-</table>
 
 <p />
 
@@ -192,7 +179,7 @@ nutzen, bei der die Verwendung von JavaScript minimiert ist.","<a href=\"${confi
 <tr><th>[% msg.maketext("Index-Suche") %]</th></tr>
 <tr><td class="boxedclear">
 <table>
-<tr><td><select name="indextype"><option value="aut">[% msg.maketext("Personen") %]</option><option value="kor">[% msg.maketext("Institutionen") %]</option><option value="swt">[% msg.maketext("Schlagworte") %]</option><option value="notation">[% msg.maketext("Notation") %]</option></select></td><td><input type="text" name="indexterm" value="" size="30" maxlength="200" /></td><td><input type="submit" name="searchindex" value="[% msg.maketext("Los") %]" /></td></tr>
+<tr><td><select name="indextype"><option value="aut">[% msg.maketext("Personen") %]</option><option value="kor">[% msg.maketext("Institutionen") %]</option><option value="swt">[% msg.maketext("Schlagworte") %]</option><option value="notation">[% msg.maketext("Notation") %]</option></select></td><td><input type="text" name="indexterm" value="" size="30" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" name="searchindex" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
 </table>
 </td></tr>
 </table>
@@ -275,9 +262,9 @@ nutzen, bei der die Verwendung von JavaScript minimiert ist.","<a href=\"${confi
 </table>
 
 <p />
-<table class="submitbuttons">
-  <tr><td><noscript><input type="submit" title="[% msg.maketext("Hier suchen Sie in allen Katalogen auf einmal") %]" name="searchall" value="[% msg.maketext("In allen Katalogen suchen") %]" /></noscript></td><td><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("In ausgewählten Katalogen suchen") %]" /></td></tr>
-</table>
+<center>
+<div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suchen") %]" /></div>
+</center>
 
 </div><!-- End searchmask_dbchoice -->
 

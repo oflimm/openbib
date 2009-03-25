@@ -168,7 +168,7 @@
 <div id="additional_title_info">
 <ul>
 [% IF other_litlists.same_user.size > 0 %]
-<li><a href="#same_user"><span>[% msg.maketext("Andere Listen dieses Nutzers") %][%- IF litlist.properties.lecture -%]&nbsp;<img src="[% config.university_img %]" title="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" alt="[% msg.maketext("Offizielle Literaturliste des Instituts/Seminars") %]" style="vertical-align:bottom"/>[%- END -%]</span></a></li>
+<li><a href="#same_user"><span>[% msg.maketext("Andere Listen dieses Nutzers") %]</span></a></li>
 [% END %]
 
 [% IF other_litlists.same_title.size > 0 %]

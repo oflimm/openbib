@@ -122,7 +122,7 @@ $(document).ready(function(){
 [%   END %]
 [% END %]
 
-<h1>[% msg.maketext("Recherchieren Sie im KUG in [_1] Titeln und [_2] Katalogen","${alldbcount.all}","${alldbs}") %]</h1>
+<h1>[% msg.maketext("Recherchieren Sie in [_1] Titeln und [_2] Katalogen","${alldbcount.all.chunk(-3).join('.')}","${alldbs}") %]</h1>
 
 <form method="get" action="[% config.virtualsearch_loc %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
@@ -144,8 +144,8 @@ $(document).ready(function(){
 <input type="hidden" name="autoplus"  value="0" />
 
 <table>
-<tr><td class="bigtext">[% msg.maketext("Suche") %]&nbsp;</td><td><input id="to_focus" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="60" maxlength="200" /></td><td><input class="bigtext" type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Los") %]" /></td></tr>
-<tr><td class="bigtext">[% msg.maketext("In") %]</td><td colspan="2"><select name="profil">
+<tr><td colspan="2"><input id="to_focus" class="fs_field" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
+<tr><td colspan="3"><span class="bigtext">[% msg.maketext("in:") %]</span>&nbsp;<select name="profil">
 [%- IF dbchoice.size > 0 && dbchoice.size != num_of_sysprofiledbs -%]
 <option value="dbauswahl"[%- IF prevprofile == 'dbauswahl' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
 [% END %]
@@ -169,8 +169,8 @@ $(document).ready(function(){
 >- [% unit.desc %]</option>
 [% END %]
 </select></td></tr>
-<tr><td></td><td></td><td></td></tr>
-<tr><td colspan="2" align="left"><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
+<tr><td colspan="3">&nbsp;</td></tr>
+<tr><td align="left"><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
 </table>
 
 </form>
@@ -210,7 +210,7 @@ $(document).ready(function(){
 </script>
 [% END %]
 
-<h1>[% msg.maketext("Recherchieren Sie im KUG nach [_1] Zeitschriften/Serien in [_2] Katalogen","${alldbcount.serials}","${alldbs}") %]</h1>
+<h1>[% msg.maketext("Recherchieren Sie nach [_1] Zeitschriften/Serien in [_2] Katalogen","${alldbcount.serials.chunk(-3).join('.')}","${alldbs}") %]</h1>
 
 <form method="get" action="[% config.virtualsearch_loc %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
@@ -234,8 +234,8 @@ $(document).ready(function(){
 <input type="hidden" name="boolmart"  value="AND" />
 
 <table>
-<tr><td class="bigtext">[% msg.maketext("Suche") %]&nbsp;</td><td><input id="input_box_serials" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="60" maxlength="200" /></td><td><input class="bigtext" type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Los") %]" /></td></tr>
-<tr><td class="bigtext">[% msg.maketext("In") %]</td><td colspan="2"><select name="profil">
+<tr><td colspan="2"><input id="input_box_serials" class="fs_field" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
+<tr><td colspan="3"><span class="bigtext">[% msg.maketext("in:") %]</span>&nbsp;<select name="profil">
 [%- IF dbchoice.size > 0 && dbchoice.size != num_of_sysprofiledbs -%]
 <option value="dbauswahl"[%- IF prevprofile == 'dbauswahl' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
 [% END %]
@@ -259,9 +259,10 @@ $(document).ready(function(){
 >- [% unit.desc %]</option>
 [% END %]
 </select></td></tr>
-<tr><td></td><td></td><td></td></tr>
-<tr><td colspan="2" align="left"><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
+<tr><td colspan="3">&nbsp;</td></tr>
+<tr><td align="left"><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
 </table>
+
 </form>
 
 [% IF queries.size > 0 %]
@@ -300,7 +301,7 @@ $(document).ready(function(){
 </script>
 [% END %]
 
-<h1>[% msg.maketext("Recherchieren Sie im KUG nach [_1] Aufs&auml;tzen in [_2] Katalogen","${alldbcount.articles}","${alldbs}") %]</h1>
+<h1>[% msg.maketext("Recherchieren Sie nach [_1] Aufs&auml;tzen in [_2] Katalogen","${alldbcount.articles.chunk(-3).join('.')}","${alldbs}") %]</h1>
 
 <form method="get" action="[% config.virtualsearch_loc %]">
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
@@ -324,8 +325,8 @@ $(document).ready(function(){
 <input type="hidden" name="boolmart"  value="AND" />
 
 <table>
-<tr><td class="bigtext">[% msg.maketext("Suche") %]&nbsp;</td><td><input id="input_box_articles" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="60" maxlength="200" /></td><td><input class="bigtext" type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Los") %]" /></td></tr>
-<tr><td class="bigtext">[% msg.maketext("In") %]</td><td colspan="2"><select name="profil">
+<tr><td colspan="2"><input id="input_box_articles" class="fs_field" type="text" name="fs" value="[% searchquery.fs.val | html %]" size="50" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Hier suchen Sie in Ihrer Katalogauswahl bzw. Ihren Katalog-Profilen") %]" name="searchprofile" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
+<tr><td colspan="3"><span class="bigtext">[% msg.maketext("in:") %]</span>&nbsp;<select name="profil">
 [%- IF dbchoice.size > 0 && dbchoice.size != num_of_sysprofiledbs -%]
 <option value="dbauswahl"[%- IF prevprofile == 'dbauswahl' -%] selected="selected"[%- END -%]>Aktuelle Katalogauswahl ([% dbchoice.size %] Datenbank(en))</option>
 [% END %]
@@ -349,8 +350,8 @@ $(document).ready(function(){
 >- [% unit.desc %]</option>
 [% END %]
 </select></td></tr>
-<tr><td></td><td></td><td></td></tr>
-<tr><td colspan="2" align="left"><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
+<tr><td colspan="3">&nbsp;</td></tr>
+<tr><td align="left"><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced" class="navlink">[% msg.maketext("Erweiterte Suche") %]</a></td><td colspan="2"><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];fs=;titel=;verf=;kor=;swt=;hststring=;gtquelle=;sign=;isbn=;issn=;notation=" title="[% msg.maketext("Beginnen Sie eine neue Recherche") %]" class="navlink">[% msg.maketext("Neue Suche") %]</a></td></tr>
 </table>
 
 </form>
@@ -456,7 +457,7 @@ Literaturlisten usw.<p/>") %]
 </td></tr>
 <tr><td align="right"><b>[% msg.maketext("Kennung") %]</b></td><td><input type="text" name="loginname" value="[% loginname %]" /></td></tr>
 <tr><td align="right"><b>[% msg.maketext("Passwort") %]</b></td><td><input type="password" name="password" /></td></tr>
-<tr><td></td><td><input type="submit" value="[% msg.maketext("Einloggen") %]" /></td><td></td></tr>
+<tr><td></td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Einloggen") %]" /></div></td><td></td></tr>
 </table>
 <p />
 <a href="[% config.selfreg_loc %]?sessionID=[% sessionID %];action=show">[% msg.maketext("Registrieren") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% config.mailpassword_loc %]?sessionID=[% sessionID %];action=show">[% msg.maketext("Registriertes Passwort vergessen?") %]</a>

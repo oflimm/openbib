@@ -154,6 +154,7 @@ sub handler {
     my $collection        = $query->param('collection')        || '';
 
     my $queryid           = $query->param('queryid')           || '';
+    my $format            = $query->param('format')            || 'full';
 
     my $no_log            = $query->param('no_log')            || '';
 
@@ -630,6 +631,7 @@ sub handler {
                 stylesheet  => $stylesheet,
                 database    => $database,
                 poolname    => $poolname,
+                format      => $format,
                 prevurl     => $prevurl,
                 nexturl     => $nexturl,
                 qopts       => $queryoptions->get_options,
@@ -656,6 +658,7 @@ sub handler {
             OpenBib::Record::Title->new({database => $database, id => $searchsingletit})
                   ->load_full_record({dbh => $dbh})->print_to_handler({
                           apachereq          => $r,
+                          format             => $format,
                           stylesheet         => $stylesheet,
                           view               => $view,
                           msg                => $msg,

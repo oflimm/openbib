@@ -1,5 +1,5 @@
 /* CSS fuer neuere Browser ohne IE */
-
+/*
 input[type="submit"] {
   font: 100% Arial,helv,Helvetica,Verdana;
   border: 1px solid #ADD8E6;  
@@ -71,3 +71,4 @@ a.button:active {
   border-style: inset;
 } 
 
+*/

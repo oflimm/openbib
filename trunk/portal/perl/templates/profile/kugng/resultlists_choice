@@ -135,10 +135,12 @@
 <th>Alle bisherigen Recherchen</th></tr>
 <tr><td class="boxedclear">
 
-[% PROCESS common/subtemplate name="select_queries" %]
+<table>
+<tr><td>[% PROCESS common/subtemplate name="select_queries" %]</td><td><div class="cssbutton glass kug"><input type="submit" value="Auswahl" /></div></td></tr>
+</table>
 
-<input type="submit" value="Auswahl" />
-</td></tr></table>
+</td></tr>
+</table>
 </form>
 
 [% END %]

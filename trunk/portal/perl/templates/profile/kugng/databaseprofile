@@ -52,13 +52,13 @@ function update_fak(yourform, checked, fak) {
 <tr><th>[% msg.maketext("Profilmanagement") %]</th></tr>
 <tr><td class="boxed">
 <table>
-<tr><td align="left"><input type="text" title="[% msg.maketext("Falls leer, so geben Sie hier bitte einen neuen Profilnamen ein") %]" name="newprofile" value="[% profilname %]" size="30" maxlength="200" /></td><td align="left"><input type="submit" title="[% msg.maketext("Abspeicherung eines neuen oder bestehenden Profils") %]" name="do_saveprofile" value="[% msg.maketext("Profil speichern") %]" /></td><td></td><td width="90%">&nbsp;</td></tr>
+<tr><td align="left"><input type="text" title="[% msg.maketext("Falls leer, so geben Sie hier bitte einen neuen Profilnamen ein") %]" name="newprofile" value="[% profilname %]" size="30" maxlength="200" /></td><td align="left"><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Abspeicherung eines neuen oder bestehenden Profils") %]" name="do_saveprofile" value="[% msg.maketext("Profil speichern") %]" /></div></td><td></td><td width="90%">&nbsp;</td></tr>
 [%- IF userdbprofiles.size > 0 -%]
 <tr><td align="left"><select title="[% msg.maketext("W&auml;hlen Sie ein anzuzeigendes oder zu l&ouml;schendes Profil aus") %]" name="profilid">
 [%- FOREACH userdbprofile IN userdbprofiles -%]
 <option value="[% userdbprofile.profilid %]">[% userdbprofile.profilename %]</option>
 [%- END -%]
-</select></td><td align="left"><input type="submit" title="[% msg.maketext("Anzeige des ausgew&auml;hlten Profils") %]" name="do_showprofile" value="[% msg.maketext("Profil anzeigen") %]" /></td><td><input type="submit" title="[% msg.maketext("L&ouml;schung des ausgew&auml;hlten Profils") %]" name="do_delprofile" value="[% msg.maketext("Profil l&ouml;schen") %]" /></td><td></td></tr>
+</select></td><td align="left"><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("Anzeige des ausgew&auml;hlten Profils") %]" name="do_showprofile" value="[% msg.maketext("Profil anzeigen") %]" /></div></td><td><div class="cssbutton glass kug"><input type="submit" title="[% msg.maketext("L&ouml;schung des ausgew&auml;hlten Profils") %]" name="do_delprofile" value="[% msg.maketext("Profil l&ouml;schen") %]" /></div></td><td></td></tr>
 [%- END -%]
 <tr><td colspan="4"></td></tr>
 <tr><td colspan="4" align="left">[% msg.maketext("Definieren Sie oder bearbeiten Sie hier Ihre individuellen Katalogprofile. Diese werden gespeichert und stehen daher auch beim n&auml;chten Anmelden wieder zu Ihrer Verf&uuml;gung. Um ein hier definiertes Katalogprofil zu nutzen, w&auml;hlen Sie es in der Recherchemaske einfach unter <b>Suchprofil</b> aus und aktivieren zur Suche dann <b>In ausgew&auml;hlten Katalogen suchen</b>.") %]

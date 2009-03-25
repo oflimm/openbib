@@ -146,7 +146,7 @@ $(document).ready(function(){
 <tr><th>[% msg.maketext("Index-Suche") %]</th></tr>
 <tr><td class="boxedclear">
 <table>
-<tr><td style="text-align:center;"><select name="indextype"><option value="aut">[% msg.maketext("Personen") %]</option><option value="kor">[% msg.maketext("Institutionen") %]</option><option value="swt">[% msg.maketext("Schlagworte") %]</option><option value="notation">[% msg.maketext("Notation") %]</option></select></td><td><input type="text" name="indexterm" value="" size="30" maxlength="200" /></td><td><input type="submit" name="searchindex" value="[% msg.maketext("Los") %]" /></td></tr>
+<tr><td style="text-align:center;"><select name="indextype"><option value="aut">[% msg.maketext("Personen") %]</option><option value="kor">[% msg.maketext("Institutionen") %]</option><option value="swt">[% msg.maketext("Schlagworte") %]</option><option value="notation">[% msg.maketext("Notation") %]</option></select></td><td><input type="text" name="indexterm" value="" size="30" maxlength="200" /></td><td><div class="cssbutton glass kug"><input type="submit" name="searchindex" value="[% msg.maketext("Suchen") %]" /></div></td></tr>
 </table>
 </td></tr>
 </table>
@@ -161,9 +161,12 @@ $(document).ready(function(){
 <b>[% msg.maketext("Frühere Recherchen") %]</b>&nbsp;
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 
-[% PROCESS common/subtemplate name="select_queries" %]
-
-<input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" />
+<table>
+<tr>
+<td>[% PROCESS common/subtemplate name="select_queries" %]</td>
+<td><div class="cssbutton glass kug"><input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" /></div></td>
+</tr>
+</table>
 
 </form>
 [% END %]
@@ -222,7 +225,7 @@ $(document).ready(function(){
 
 [% PROCESS common/subtemplate name="select_queries" %]
 
-<input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" />
+<div class="cssbutton glass kug"><input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" /></div>
 
 </form>
 [% END %]
@@ -281,7 +284,7 @@ $(document).ready(function(){
 
 [% PROCESS common/subtemplate name="select_queries" %]
 
-<input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" />
+<div class="cssbutton glass kug"><input type="submit" name="do_resultlist" value="[% msg.maketext("Zur Trefferliste") %]" /></div>
 
 </form>
 [% END %]
@@ -373,7 +376,7 @@ Literaturlisten usw.<p/>") %]
 </td></tr>
 <tr><td align="right"><b>[% msg.maketext("Kennung") %]</b></td><td><input type="text" name="loginname" value="[% loginname %]" /></td></tr>
 <tr><td align="right"><b>[% msg.maketext("Passwort") %]</b></td><td><input type="password" name="password" /></td></tr>
-<tr><td></td><td><input type="submit" value="[% msg.maketext("Einloggen") %]" /></td><td></td></tr>
+<tr><td></td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Einloggen") %]" /></div></td><td></td></tr>
 </table>
 <p />
 <a href="[% config.selfreg_loc %]?sessionID=[% sessionID %];action=show">[% msg.maketext("E-Mail Adresse registrieren") %]</a>&nbsp;&nbsp;&#124;&nbsp;&nbsp;<a href="[% config.mailpassword_loc %]?sessionID=[% sessionID %];action=show">[% msg.maketext("Registriertes Passwort vergessen?") %]</a>

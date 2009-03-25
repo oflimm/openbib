@@ -48,7 +48,10 @@ function update_fak(yourform, checked, fak) {
 <input type="hidden" name="view" value="[% view %]" />
 <input type="hidden" name="sessionID" value="[% sessionID %]" />
 
-<input type="submit" name="do_choose" value="[% msg.maketext("Kataloge auswählen") %]" />&nbsp;<input type="reset" value="[% msg.maketext("Ursprüngliche Auswahl wiederherstellen") %]" />
+<table>
+<tr><td><div class="cssbutton glass kug"><input type="submit" name="do_choose" value="[% msg.maketext("Auswählen") %]" /></div>&nbsp;</td><td><div class="cssbutton glass kug"><input type="reset" value="[% msg.maketext("Ursprung") %]" /></div></td></tr>
+</table>
+
 <p />
 <table>
 <tr><td class="thickheadline" colspan="[% colspan %]" align="left"><input type="checkbox" name="fakult" value="inst" onclick="update_fak(this.form, this.checked,'inst')" /><b>[% msg.maketext("Alle Kataloge") %]</b></td></tr>
@@ -99,7 +102,9 @@ function update_fak(yourform, checked, fak) {
 [%- END -%]
 </table>
 <p />
-<input type="submit" name="do_choose" value="[% msg.maketext("Kataloge auswählen") %]" />&nbsp;<input type="reset" value="[% msg.maketext("Ursprüngliche Auswahl wiederherstellen") %]" />
+<table>
+<tr><td><div class="cssbutton glass kug"><input type="submit" name="do_choose" value="[% msg.maketext("Auswählen") %]" /></div>&nbsp;</td><td><div class="cssbutton glass kug"><input type="reset" value="[% msg.maketext("Ursprung") %]" /></div></td></tr>
+</table>
 </form>
 <p />
 </div>

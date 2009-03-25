@@ -54,7 +54,7 @@ verfremdet dargestellten Worte korrekt eingeben. Danach best&auml;tigen Sie bitt
 <tr><td align="right"><b>[% msg.maketext("E-Mail-Adresse") %]:</b></td><td><input type="text" name="loginname" /></td></tr>
 <tr><td align="right"><b>[% msg.maketext("Passwort") %]:</b></td><td><input type="password" name="password1" /></td></tr>
 <tr><td align="right"><b>[% msg.maketext("Passwort (wiederholt)") %]:</b></td><td><input type="password" name="password2" /></td></tr>
-<tr><td></td><td><input type="submit" value="[% msg.maketext("Registrieren") %]" /></td></tr>
+<tr><td></td><td><div class="cssbutton glass kug"><input type="submit" value="[% msg.maketext("Registrieren") %]" /></div></td></tr>
 </table>
 </td>
 [%- IF config.${"recaptcha_public_key"} -%]

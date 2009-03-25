@@ -169,6 +169,51 @@ $("#allreviews_toggle").click(function(){
 });
 // Ende Togglen / alle Reviews
 
+// Begin Togglen / Formate
+// Zuerst verstecken
+$("#formats_do").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#formats_toggle").click(function(){
+ $("#formats_do").toggle();
+});
+// Ende Togglen / Formate
+
+// Begin Togglen / Verwandte Personen
+// Zuerst verstecken
+$("#similarpersons_do").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#similarpersons_toggle").click(function(){
+ $("#similarpersons_do").toggle();
+});
+// Ende Togglen / Verwandte Personen
+
+// Begin Togglen / Verwandte Themen
+// Zuerst verstecken
+$("#similarsubjects_do").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#similarsubjects_toggle").click(function(){
+ $("#similarsubjects_do").toggle();
+});
+// Ende Togglen / Verwandte Personen
+
+// Begin Togglen / BibSonomy Tags
+// Zuerst verstecken
+$("#bibsonomy_tags_do").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#bibsonomy_tags_toggle").click(function(){
+ $("#bibsonomy_tags_do").toggle();
+});
+// Ende Togglen / BibSonomy_tags
+
+// Begin Togglen / Verschiedenes
+// Zuerst verstecken
+$("#misc_do").hide();
+// und bei Klick Sichtbarkeit togglen
+$("#misc_toggle").click(function(){
+ $("#misc_do").toggle();
+});
+// Ende Togglen / Verschiedenes
+
 // Begin Togglen / Literaturlisten
 // Zuerst verstecken
 $("#litlists_do").hide();

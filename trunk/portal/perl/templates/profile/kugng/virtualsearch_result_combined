@@ -36,32 +36,8 @@
 [%-   END -%]
 [%- END -%]
 
-<table width="100%">
-<tr><th>[% msg.maketext("Optionen") %]</th></tr>
-<tr><td class="boxed">
-<b>[% msg.maketext("Sortierung") %]:</b>&nbsp;
-<select name="sorttype">
-  <option value="relevance"[%- IF query.param('sorttype') == 'relevance' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Relevanz") %]</option>
-  <option value="author"[%- IF query.param('sorttype') == 'author' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Person") %]</option>
-  <option value="title"[%- IF query.param('sorttype') == 'title' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Titel") %]</option>
-  <option value="order"[%- IF query.param('sorttype') == 'order' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Z&auml;hlung") %]</option>
-  <option value="yearofpub"[%- IF query.param('sorttype') == 'yearofpub' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Jahr") %]</option>
-  <option value="publisher"[%- IF query.param('sorttype') == 'publisher' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Verlag") %]</option>
-  <option value="signature"[%- IF query.param('sorttype') == 'signature' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Signatur") %]</option>
-  <option value="popularity"[%- IF query.param('sorttype') == 'popularity' -%] selected="selected"[%- END -%]>[% msg.maketext("nach Popularit&auml;t") %]</option>
-</select>&nbsp;
-<select name="sortorder">
-  <option value="up"[%- IF query.param('sortorder') == 'up' -%] selected="selected"[%- END -%]>[% msg.maketext("aufsteigend") %]</option>
-  <option value="down"[%- IF query.param('sortorder') == 'down' -%] selected="selected"[%- END -%]>[% msg.maketext("absteigend") %]</option>
-</select>
-&nbsp;<input type="submit" value="[% msg.maketext("Los") %]" />
+[% PROCESS common/subtemplate name="titlist_options" %]
 
-&nbsp;&nbsp;<b>&#124;</b>&nbsp;&nbsp;
-
-<b>[% msg.maketext("Liste") %]:</b>&nbsp;<span id="listtype_cover" [% IF qopts.listtype == 'cover' %]style="font-weight:bold"[% END %]><img style="vertical-align:bottom" src="[% config.liststyle_cover_img %]" />&nbsp;<a href="[% config.virtualsearch_loc %]?[%- FOREACH qparam IN query.param -%][% IF ! qparam.match('^(listtype|bool|fs|verf|hst|hststring|gtquelle|swt|kor|sign|inhalt|isbn|issn|mart|notation|ejahr|ejahrop)',1) %][% qparam %]=[% query.param(qparam) %];[%- END -%][%- END -%]listtype=cover;[% sq.to_cgi_params %]">[% msg.maketext("Cover-Ansicht") %]</a></span>&nbsp;&nbsp;<span id="listtype_list" [% IF qopts.listtype == 'list' %]style="font-weight:bold"[% END%]><img style="vertical-align:bottom" src="[% config.liststyle_list_img %]" />&nbsp;<a href="[% config.virtualsearch_loc %]?[%- FOREACH qparam IN query.param -%][% IF ! qparam.match('^(listtype|bool|fs|verf|hst|hststring|gtquelle|swt|kor|sign|inhalt|isbn|issn|mart|notation|ejahr|ejahrop)',1) %][% qparam %]=[% query.param(qparam) %];[%- END -%][%- END -%]listtype=list;[% sq.to_cgi_params %]">[% msg.maketext("Listen-Ansicht") %]</a></span>
-
-</td></tr>
-</table>
 <p />
 </form>
 

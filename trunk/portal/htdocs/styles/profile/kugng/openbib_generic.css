@@ -1371,3 +1371,15 @@ ul.recent_tags {
 .fs_field {
   font-size: 1.2em;
 }
+
+.listoptions {
+  background: aliceblue;
+  width: 100%;
+  border-top-style: solid;
+  border-top-color: lightblue;
+  border-top-width: 1px; 
+  border-bottom-style: solid;
+  border-bottom-color: lightblue;
+  border-bottom-width: 1px; 
+
+}

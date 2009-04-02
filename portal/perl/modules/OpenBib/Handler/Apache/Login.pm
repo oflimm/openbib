@@ -85,7 +85,7 @@ sub handler {
     my $validtarget = ($query->param('validtarget'))?$query->param('validtarget'):'none';
     my $type      = ($query->param('type'))?$query->param('type'):'';
     my $loginname = ($query->param('loginname'))?$query->param('loginname'):'';
-    my $password  = ($query->param('password'))?$query->param('password'):'';
+    my $password  = decode_utf8($query->param('password')) || $query->param('password') || '';
 
     # Main-Actions
     my $do_login       = $query->param('do_login')        || '';

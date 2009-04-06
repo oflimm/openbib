@@ -1,0 +1,52 @@
+[%#-
+#######################################################################
+#
+# Templatename: admin_showsessions
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Uebersichtsliste aller aktuell bestehenden Sessions
+# mit ihren wichtigsten Informationen
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" title='KUG Administration - Bestehende Sessions anzeigen' %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %]
+
+<div id="maincontent">
+
+[% PROCESS common/subtemplate name="admin_navigation" active="sessions" %] 
+
+<div class="content">
+
+<ul class="tabbingmenu">
+   <li><a                href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1">Aktive Sessions (lokal)</a></li>
+   <li><a class="active" href="[% config.admin_loc %]?sessionID=[% sessionID %];do_showsessions=1;stid=1">Explorer</a></li>
+</ul>
+
+<div class="content">
+
+<form method="get" action="[%config.admin_loc %]">
+<input type="hidden" name="sessionID"         value="[% sessionID %]" />
+
+<table width="100%">
+<tr><th>Session-Explorer</th></tr>
+<tr><td class="boxedclear" style="font-size:0.9em">
+
+<table cellpadding="2">
+<tr><td><b>IP</b></td><td><input type="text" name="clientip"></td></tr>
+<tr><td><b>Zwischen Datum</b></td><td><input type="text" name="fromdate"> und <input type="text" name="todate"></td></tr>
+<tr><td colspan="2"><input type="submit" name="do_exploresessions" value="Suchen" /></td></tr>
+</table>
+</td></tr>
+</table>
+
+</div>
+</div>
+
+[% PROCESS common/subtemplate name="std_footer" %]

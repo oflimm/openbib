@@ -1,0 +1,126 @@
+[%#-
+#######################################################################
+#
+# Templatename: login
+#
+# Typ         : Mastertemplate       
+#
+# Aufgabe:
+#
+# Ausgabe einer Eingabemaske fuer die Authentifizierung am Portal
+# entsprechend verschiedener Authentifizierungs-Ziele
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+
+  <body>
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<div id="langchoice">
+<a href="[% config.info_loc %]?sessionID=[% sessionID %]#perskug"><img src="[% config.info_img %]"></a>&nbsp;
+[% IF config.lang.size > 1 %]
+[%   FOREACH l IN config.lang %]
+<a href="[% config.login_loc %]?sessionID=[% sessionID %];do_login=1;l=[% l %]"><img src="/images/openbib/[% l %].png" alt="[% msg.maketext("Sprach-Icon für [_1]",l) %]" /></a>&nbsp;
+[%   END %]
+[% END %]
+</div>
+
+<ul class="tabbingmenu">
+   <li><a class="active" href="[% config.login_loc %]?sessionID=[% sessionID %];view=[% view %];do_login=1">[% msg.maketext("Login") %]</a></li>
+   <li><a                href="[% config.selfreg_loc %]?sessionID=[% sessionID %];action=show">[% msg.maketext("Selbstregistrierung") %]</a></li>
+   <li><a                href="[% config.mailpassword_loc %]?sessionID=[% sessionID %];action=show">[% msg.maketext("Passwort vergessen?") %]</a></li>
+</ul>
+
+<div class="content">
+
+<p />
+<table width="100%">
+<tr><th>[% msg.maketext("Hinweis") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:9pt">
+[% msg.maketext("Sie haben [_1]Vorteile[_2], wenn Sie sich &uuml;ber <b>Mein KUG</b> anmelden.","<a href=\"${config.info_loc}?sessionID=${sessionID};view=${view}#meinkugvorteile\">","</a>") %]
+</td></tr>
+</table>
+
+<p />
+
+<form method="post" action="[% IF config.use_admin_https || config.distadmin.master %][% IF config.use_https %]https[%- ELSE -%]http[%- END -%]://[% config.servername %][% END %][% config.login_loc %]" enctype="application/x-www-form-urlencoded" target="_parent">
+<input type="hidden" name="do_auth"   value="1" />
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<input type="hidden" name="view"      value="[% view %]" />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Login mit einem Benutzerausweis") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:9pt">
+
+<p />
+
+<table>
+<tr><td align="right"><b>[% msg.maketext("Anmeldeziel")
+%]:</b></td><td>
+<select name="targetid">
+[%- FOREACH target IN logintargets -%]
+[%-   IF target.id == 1 -%]
+<option value="[% target.id %]">[% target.description %]</option>
+[%-   END -%]
+[%- END -%]
+[%- FOREACH target IN logintargets -%]
+[%-   IF target.id != 4 && target.id != 1 -%]
+<option value="[% target.id %]">[% target.description %]</option>
+[%-   END -%]
+[%- END -%]
+</select>
+</td></tr>
+<tr><td align="right"><b>[% msg.maketext("Benutzernummer") %]</b></td><td><input type="text" name="loginname" value="[% loginname %]" /></td></tr>
+<tr><td align="right"><b>[% msg.maketext("Passwort") %]</b></td><td><input type="password" name="password" /></td></tr>
+<tr><td></td><td><input type="submit" value="[% msg.maketext("Einloggen") %]" /></td><td></td></tr>
+</table>
+<p />
+[% msg.maketext("Haben Sie Ihr Passwort vergessen, dann finden Sie hier [_1]weitere Informationen[_2].","<a href=\"${config.info_loc}?sessionID=${sessionID};view=${view}#passwortbenutzerausweis\">","</a>") %]
+</td></tr>
+</table>
+
+</form>
+
+<p />
+
+<form method="post" action="[% IF config.use_admin_https || config.distadmin.master %][% IF config.use_https %]https[%- ELSE -%]http[%- END -%]://[% config.servername %][% END %][% config.login_loc %]" enctype="application/x-www-form-urlencoded" target="_parent">
+<input type="hidden" name="do_auth"   value="1" />
+<input type="hidden" name="sessionID" value="[% sessionID %]" />
+<input type="hidden" name="view"      value="[% view %]" />
+
+<table width="100%">
+<tr><th>[% msg.maketext("Login ohne Benutzerausweis") %]</th></tr>
+<tr><td class="boxedclear" style="font-size:9pt">
+<p />
+[% msg.maketext("Haben Sie sich schon &uuml;ber die Selbstregistrierung eine Kennung eingerichtet? Wenn nicht, so k&ouml;nnen Sie sich [_1]hier[_2] registrierten.","<a href=\"${config.selfreg_loc}?sessionID=${sessionID};view=${view};action=show\">","</a>") %]
+<table>
+<tr><td align="right"><b>[% msg.maketext("Anmeldeziel")
+%]:</b></td><td>
+[%- FOREACH target IN logintargets -%]
+[%-   IF target.id == 4 -%]
+<input type="hidden" name="targetid" value="[% target.id %]">
+[%-   END -%]
+[%- END -%]
+Selbstregistrierung
+</td></tr>
+<tr><td align="right"><b>[% msg.maketext("E-Mail-Adresse") %]</b></td><td><input type="text" name="loginname" value="[% loginname %]" /></td></tr>
+<tr><td align="right"><b>[% msg.maketext("Passwort") %]</b></td><td><input type="password" name="password" /></td></tr>
+<tr><td></td><td><input type="submit" value="[% msg.maketext("Einloggen") %]" /></td><td></td></tr>
+</table>
+<p>
+[% msg.maketext("Haben Sie Ihr Passwort vergessen, dann klicken Sie es sich [_1]<b>hier</b>[_2] per E-Mail zusenden lassen","<a href=\"http://${config.servername}${config.mailpassword_loc}?sessionID=${sessionID};action=show\">","</a>") %]
+</td></tr>
+</table>
+
+</form>
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

@@ -1,0 +1,58 @@
+[%#-
+#######################################################################
+#
+# Templatename: helpframe
+#
+# Typ         : Mastertemplate
+#
+# Aufgabe:
+#
+# Ausgabe von Hilfe- bzw. weiteren Information
+#
+#######################################################################
+-%]
+[% PROCESS common/subtemplate name="std_header" %]
+[% show_foot_banner = 1%]
+<body>
+[%
+  thisbk     = query.param("category");
+  bks        = config.load_bk;
+  thisbklist = statistics.get_result({id => view, type => 11, subkey => thisbk }); 
+%]
+[%
+  viewdbs = [];
+  IF view ;
+    viewdbs = config.get_dbs_of_view(view);
+  END ;
+%]
+
+[% PROCESS common/subtemplate name="corporate_banner" %] 
+
+[% PROCESS common/subtemplate name="mainnavigation" %] 
+
+<div id="maincontent">
+
+<ul class="tabbingmenu">
+   <li><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=simple">[% msg.maketext("Einfache Recherche") %]</a></li>
+   <li><a href="[% config.searchmask_loc %]?sessionID=[% sessionID %];view=[% view %];setmask=advanced">[% msg.maketext("Komplexe Recherche") %]</a></li>
+   <li><a class="active" href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];category=[% thisbk %];stid=52" title="[% msg.maketext("Systematisches Bl&auml;ttern") %]">[% msg.maketext("Systematisches Bl&auml;ttern") %]</a></li>
+   <li><a                href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %];[% IF viewdbs.size == 1 %]database=[% viewdbs.first %];stid=14[% ELSE %]stid=13[% END %]" title="[% msg.maketext("&Uuml;bersichten") %]">[% msg.maketext("&Uuml;bersichten") %]</a></li>
+</ul>
+
+<div class="content">
+<p />
+[%# USE dumper;dumper.dump(thisbklist)%]
+<h1>[% thisbk %] / [% bks.${thisbk.chunk(2).first} %] / [% bks.${thisbk} %]</h1>
+<table>
+[% FOREACH bkinfo IN thisbklist %]
+[%   thisdb    = bkinfo.key %]
+[%   thiscount = bkinfo.value %]
+<tr><td><a href="[% config.search_loc %]?sessionID=[% sessionID %];database=[% thisdb %];searchtitofcnt=[% thisbk %];category=E4100;hitrange=50">[% dbinfo.dbnames.${thisdb}.short %]</a></td><td align="right"><b>[% thiscount%]</b> Treffer</td></tr>
+[% END %]
+</table>
+
+</div>
+
+<p />
+
+[% PROCESS common/subtemplate name="std_footer" %]

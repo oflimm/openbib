@@ -1,0 +1,10 @@
+<!-- Begin Template: corporate_banner -->
+	<div id="header">
+		<a href="http://kug.ub.uni-koeln.de/" title="KUG Startseite" id="header_usb_siegel" target="_blank"></a>
+		<a href="http://www.uni-koeln.de" title="Startseite der Universität zu Köln" id="header_uni_schriftzug" target="_blank"><span>Universit&auml;t zu K&ouml;ln</span></a>
+
+		<a href="http://kug.ub.uni-koeln.de/" title="KUG Startseite" id="header_usb_schriftzug" target="_blank"><span>[% IF view %][% config.get_viewdesc_from_viewname(view) %][% ELSE %]K&ouml;lner Universit&auml;tsGesamtkatalog[% END %]</span></a>
+		<a href="http://www.uni-koeln.de" title="Startseite der Universit&auml;t zu Köln" id="header_uni_siegel" target="_blank"></a>
+
+        </div>
+<!-- End Template: corporate_banner -->

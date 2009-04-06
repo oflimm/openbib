@@ -1,0 +1,91 @@
+[%#-
+#######################################################################
+#
+# Templatename: virtualsearch_result_item
+#
+# Typ         : Mastertemplate (2/3)
+#
+# Aufgabe:
+#
+# Ausgabe der Suchergebnisse *eines* Katalogs
+#
+#######################################################################
+-%]
+<!-- Beginn Result Item -->
+[%- dbdesc   = dbinfo.dbnames.${database}.full -%]
+[%- dburl    = dbinfo.urls.${database} -%]
+<tr class="titlerow"><td>&nbsp;</td><td colspan="3"><img style="vertical-align:bottom" src="[% config.follow_img %]" alt="Weiterleitungs-Icon" />&nbsp;<a href="[% dburl %]" target="_blank">[% dbdesc | truncate(config.maxlength_dbname) %]</a></td><td
+align="right" colspan="2"><strong>[%- IF treffer == qopts.hitrange && qopts.sb == 'sql' -%]<a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#recherche">[% msg.maketext("mind.") %]&nbsp;[% treffer %] [% msg.maketext("Treffer") %]</a>[% ELSE %][% treffer %] [% msg.maketext("von") %] [% fullresultcount %] [% msg.maketext("Treffer") %][%- END -%]</strong></td><td class="popularitycount"><a href="[% config.info_loc %]?sessionID=[% sessionID %];view=[% view %]#popularity">P</a></td><td rowspan="[% IF fullresultcount <= qopts.hitrange %][% fullresultcount+3 %][% ELSE %][% qopts.hitrange+4 %][% END %]" valign="top" class="drilldown_categorized">[% IF drilldown && fullresultcount >= 10 && fullresultcount <= config.xapian_option.maxmatch %][% PROCESS common/subtemplate name="drilldown_categorized" %][% PROCESS common/subtemplate name="drilldown_cloud" %][% END %]</td></tr>
+[%- IF treffer == qopts.hitrange -%]
+<tr class="titlerow"><td>&nbsp;</td><td colspan="5"><b>[1 - [% qopts.hitrange %]]</b>&nbsp;<a href="[% config.resultlists_loc %]?sessionID=[% sessionID %];database=[% database %];queryid=[% queryid %];action=getnext;offset=[% qopts.hitrange %];hitrange=[% qopts.hitrange %];sb=[% qopts.sb %]">[weitere Treffer...]</a></td><td>&nbsp;</td></tr>
+[%- END -%]
+[% listrow = 'listrow2' %]
+[%- FOREACH record IN recordlist.get_records -%]
+[%- item = record.get_brief_normdata -%]
+[%# Verfasser konstruieren %]
+[%- persons = [] -%]
+[%- FOREACH part IN item.${'P0100'}  -%]
+[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.${'P0101'}  -%]
+[%-   IF part.supplement -%]
+[%-      part.content = "${part.content} ${part.supplement}" -%]
+[%-   END -%]
+[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsingleaut=${part.id}\">${part.content}</a>")-%]
+[%#- persons.push("${part.content}") -%]
+[%- END -%]
+[%- FOREACH part IN item.${'C0200'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- END -%]
+[%- FOREACH part IN item.${'C0201'}  -%]
+[%#- persons.push("${part.content}") -%]
+[%- persons.push("<a href=\"${config.search_loc}?sessionID=${sessionID};database=${item.database};searchsinglekor=${part.id}\">${part.content}</a>")-%]
+[%- END -%]
+[%- person = persons.join(' ; ') -%]
+
+[%# Titel konstruieren %]
+[%- title = item.${'T0331'}.first.content -%]
+[%- IF item.${'T0310'}.first.content -%]
+[%- title = item.${'T0310'}.first.content -%]
+[%- END -%]
+
+[%# Einbeziehung der Zaehlfelder T5100 %]
+[%- IF title && item.${'T5100'}.first.content -%]
+[%- order = item.${'T5100'}.first.content -%]
+[%-    IF title == order -%]
+[%-      title = "${order}."-%]
+[%-    ELSE -%]
+[%-      title = "${order}. ${title}" -%]
+[%-    END -%]
+[%- END -%]
+
+[%# Verlage konstruieren %]
+[%- publisher = item.${'T0412'}.first.content -%]
+
+[%# Ejahr konstruieren %]
+[%- yearofpub = item.${'T0425'}.first.content -%]
+
+[%# Signaturen konstruieren %]
+[%- signaturen = [] -%]
+[%- FOREACH part IN item.${'X0014'} -%]
+[%- signaturen.push("${part.content}") -%]
+[%- END -%]
+[%- signatur = signaturen.sort.unique.join(' ; ') -%]
+
+<tr class="[% listrow %]"><td class="listnr">[% loop.count %]</td><td class="thumbnail">[%- IF qopts.listtype == 'cover' -%]<img src="http://landschaftsbilder.ub.uni-koeln.de/digiarchive/landschaft/[% item.id %]/landschaft_thumb.jpg"/>[%- END -%]</td><td colspan="2"><span class="rlperson">[% person
+%]</span><br /><a href="[% config.search_loc %]?sessionID=[%
+sessionID %];queryid=[% queryid %];database=[% item.database %];searchsingletit=[% item.id
+%]"><strong><span class="rltitle">[% title %]</span></strong></a>, <span
+class="rlpublisher">[% publisher %]</span> <span class="rlyearofpub">[% yearofpub %]</span></td><td><span class="rlcollect"><a href="[% config.managecollection_loc %]?sessionID=[% sessionID %];action=insert;database=[% item.database %];singleidn=[% item.id %]" target="collectionstatus" title="[% msg.maketext("In die Merkliste") %]"><img src="[% config.listofinterest_img %]" alt="[% msg.maketext("In die Merkliste") %]" border="0" /></a></span></td><td align="left"><b>[% signatur %]</b></td><td class="popularitycount">[% item.popularity %]</td></tr>
+[%- IF listrow == 'listrow1' -%]
+[%- listrow = 'listrow2' -%]
+[%- ELSE -%]
+[%- listrow = 'listrow1' -%]
+[%- END -%]
+[% END %]
+<tr><td class="listnr">&nbsp;</td><td colspan="6"><b><span style="font-size:0.8em">in: [% resulttime %] [% msg.maketext("Sekunden") %]</span></b></td></tr>
+<tr><td colspan="7">&nbsp;</td></tr>
+<!-- Ende Result Item -->
+

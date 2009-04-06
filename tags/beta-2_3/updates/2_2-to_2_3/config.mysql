@@ -1,0 +1,5 @@
+alter table titcount add type tinyint after count;
+alter table titcount add index(type);
+update titcount set type=1;
+alter table dbinfo add use_libinfo bool after url;
+update dbinfo set use_libinfo=0;
